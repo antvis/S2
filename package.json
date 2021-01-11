@@ -50,6 +50,7 @@
     "antd": "^4.10.1",
     "classnames": "^2.2.5",
     "d3-ease": "^1.0.5",
+    "gitmoji-cli": "^3.2.18",
     "install": "^0.13.0",
     "lerna": "^3.22.1",
     "lodash": "^4.17.11"
