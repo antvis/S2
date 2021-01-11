@@ -1,0 +1,5 @@
+s2-site/site/**/*.js
+node_modules
+.cache
+public
+dist

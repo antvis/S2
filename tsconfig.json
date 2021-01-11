@@ -1,0 +1,21 @@
+{
+  "exclude": ["node_modules", "**/es", "**/lib"],
+  "include": ["package", "s2-site"],
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "target": "esnext",
+    "lib": ["dom", "es2017"]
+  }
+}
