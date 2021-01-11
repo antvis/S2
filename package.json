@@ -23,8 +23,7 @@
     "build:site": "cd ./packages/site && npm run start",
     "site:start": "cd ./packages/site && npm run start",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "pretty-quick": "pretty-quick",
-    "lint": "exit 0"
+    "pretty-quick": "pretty-quick"
   },
   "commitlint": {
     "extends": [
@@ -34,7 +33,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS && npm run lint"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
