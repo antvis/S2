@@ -1,21 +1,26 @@
 {
-  "exclude": ["node_modules", "**/es", "**/lib"],
-  "include": ["package", "s2-site"],
   "compilerOptions": {
     "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
     "declaration": true,
-    "skipLibCheck": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "target": "es5",
+    "outDir": "lib",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "noImplicitAny": true,
-    "noEmitOnError": true,
-    "noUnusedLocals": true,
-    "strictNullChecks": true,
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
-    "jsx": "react",
-    "target": "esnext",
-    "lib": ["dom", "es2017"]
-  }
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "types": [
+      "jest"
+    ],
+    "resolveJsonModule": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+
 }

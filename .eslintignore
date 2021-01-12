@@ -1,5 +1,6 @@
 s2-site/site/**/*.js
+packgaes/s2-core/dist
 node_modules
 .cache
 public
-dist
+
