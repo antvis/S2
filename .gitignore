@@ -1,12 +1,16 @@
 # Dependency directories
-node_modules/
-
-# gatsby files
-.cache/
-public
+*node_modules/
 
 # Mac files
 .DS_Store
 
-dist
-package-lock.json
+# site
+s2-site/dist
+s2-site/node_modules/
+
+
+# gatsby files
+s2-site/.cache/
+s2-site/public
+
+
