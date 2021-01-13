@@ -9,7 +9,6 @@ exports.shouldUpdateScroll = ({ routerProps, prevRouterProps }) => {
   }
   const { pathname: prevPathname } = prevRouterProps.location;
   const { pathname: currentPathname } = routerProps.location;
-  // 演示里的 Tabs 切换，不进行页面滚动
   if (
     prevPathname.includes('/examples/') &&
     currentPathname.includes('/examples/')
