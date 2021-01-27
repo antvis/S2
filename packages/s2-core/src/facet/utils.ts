@@ -1,0 +1,102 @@
+import { SimpleBBox, Group } from '@antv/g-canvas';
+import * as _ from 'lodash';
+
+import { Indexes } from '../utils/indexes';
+
+/**
+ * 计算偏移 scrollX、scrollY 的时候，在视窗中的节点索引
+ * @param scrollX
+ * @param scrollY
+ * @param widths
+ * @param heights
+ * @param viewport
+ * @param overScan
+ * @param rowRemainWidth
+ */
+export const calculateInViewIndexes = (
+  scrollX: number,
+  scrollY: number,
+  widths: number[],
+  heights: number[],
+  viewport: SimpleBBox,
+  overScan = 0,
+  rowRemainWidth?: number,
+): Indexes => {
+  // 算法逻辑：https://yuque.antfin-inc.com/eva-engine/specs/virtualized-scroll
+  // 1. 计算 x min、max
+  let xMin = _.findIndex(
+    widths,
+    (width: number, idx: number) => {
+      const x = scrollX;
+      return (
+        x >= width + (_.isNil(rowRemainWidth) ? 0 : rowRemainWidth) &&
+        x < widths[idx + 1]
+      );
+    },
+    0,
+  );
+  xMin = Math.max(xMin, 0);
+
+  let xMax = _.findIndex(
+    widths,
+    (width: number, idx: number) => {
+      const x = viewport.width + scrollX;
+      return x >= width && x < widths[idx + 1];
+    },
+    xMin,
+  );
+  xMax = Math.min(xMax === -1 ? Infinity : xMax, widths.length - 2);
+
+  // 2. 计算 y min、max
+  let yMin = _.findIndex(
+    heights,
+    (height: number, idx: number) => {
+      const y = scrollY;
+      return y >= height && y < heights[idx + 1];
+    },
+    0,
+  );
+
+  yMin = Math.max(yMin, 0);
+
+  let yMax = _.findIndex(
+    heights,
+    (height: number, idx: number) => {
+      const y = viewport.height + scrollY;
+      return y >= height && y < heights[idx + 1];
+    },
+    yMin,
+  );
+  yMax = Math.min(yMax === -1 ? Infinity : yMax, heights.length - 2);
+
+  return [xMin, xMax, yMin, yMax];
+};
+
+/**
+ * 优化滚动方向，对于小角度的滚动，固定为一个方向
+ * @param x
+ * @param y
+ */
+export const optimizeScrollXY = (x: number, y: number): [number, number] => {
+  const ANGLE = 2; // 调参工程师
+  const angle = Math.abs(x / y);
+
+  // 经过滚动优化之后的 x, y
+  const deltaX = angle < 1 / ANGLE ? 0 : x;
+  const deltaY = angle > ANGLE ? 0 : y;
+
+  return [deltaX, deltaY];
+};
+
+export const translateGroup = (
+  group: Group,
+  scrollX: number,
+  scrollY: number,
+) => {
+  const matrix = group.getMatrix();
+  // eslint-disable-next-line no-bitwise
+  const preX = matrix?.[6] | 0;
+  // eslint-disable-next-line no-bitwise
+  const preY = matrix?.[7] | 0;
+  group.translate(scrollX - preX, scrollY - preY);
+};

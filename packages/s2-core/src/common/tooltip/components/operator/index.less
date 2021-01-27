@@ -1,0 +1,62 @@
+.eva-facet-tooltip-operator {
+  color: rgba(0, 0, 0, 0.65);
+
+  .tooltip-operator-menus {
+    font-size: 12px;
+    line-height: 32px;
+    background: #f9f9f9;
+
+    // 覆盖 ant-d Menu 的样式
+
+    .ant-menu-item {
+      padding: 0 6px;
+      border-bottom: none;
+    }
+
+    .ant-menu-submenu {
+      border-bottom: none;
+
+      .ant-menu-submenu-title {
+        padding: 0 12px;
+
+        &:hover {
+          color: rgba(0, 0, 0, 0.65);
+        }
+      }
+    }
+
+    .ant-menu-item-selected,
+    .ant-menu-item-active,
+    .ant-menu-submenu-selected,
+    .ant-menu-submenu-active,
+    .ant-menu-submenu-open {
+      border-bottom: none !important;
+      color: rgba(0, 0, 0, 0.65) !important;
+    }
+  }
+}
+
+// 子菜单弹出菜单样式覆盖
+.eva-tooltip-menu-submenu-popup {
+  .ant-menu-item {
+    color: rgba(0, 0, 0, 0.65) !important;
+    font-size: 12px !important;
+    line-height: 32px !important;
+    height: 32px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .ant-menu {
+    margin-top: -6px !important; // 减少间距
+  }
+
+  .ant-menu-sub {
+    min-width: 100px !important;
+  }
+}
+
+.eva-tooltip-operator-icon {
+  margin-right: 0 !important;
+  margin-left: 6px;
+}

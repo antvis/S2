@@ -3,6 +3,7 @@
 
 # Mac files
 .DS_Store
+.idea/
 
 # site
 s2-site/dist
