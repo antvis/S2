@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { Pivot } from './pivot';
 import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant';
 

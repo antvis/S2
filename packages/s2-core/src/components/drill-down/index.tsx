@@ -3,7 +3,8 @@
  * On 2020-12-15
  */
 
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, Button, Input, Empty } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import classNames from 'classnames';

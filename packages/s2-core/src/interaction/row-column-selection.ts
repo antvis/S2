@@ -1,5 +1,5 @@
 import { Event, Group } from '@antv/g-canvas';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { ActionType, SortParam, Node } from '../index';
 import { Cell, ColCell, RowCell } from '../cell';
 import { getHeaderHierarchyQuery } from '../facet/layout/util';

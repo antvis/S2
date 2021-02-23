@@ -3,7 +3,7 @@
  * On 2020-10-12
  * definition for rule not found
  */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { map, min, max, isEmpty } from 'lodash';
 import { DrillDown, DrillDownProps } from './drill-down';
 import {
@@ -31,6 +31,7 @@ import {
   HandleDrillDown,
   UseDrillDownLayout,
 } from '../utils/drill-down/helper';
+import React = require('react');
 
 export interface PartDrillDownInfo {
   // 下钻的数据

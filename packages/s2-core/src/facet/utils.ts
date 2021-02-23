@@ -82,7 +82,7 @@ export const optimizeScrollXY = (x: number, y: number): [number, number] => {
   const angle = Math.abs(x / y);
 
   // 经过滚动优化之后的 x, y
-  const deltaX = angle < 1 / ANGLE ? 0 : x;
+  const deltaX = angle <= 1 / ANGLE ? 0 : x;
   const deltaY = angle > ANGLE ? 0 : y;
 
   return [deltaX, deltaY];

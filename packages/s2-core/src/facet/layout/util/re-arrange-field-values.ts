@@ -3,7 +3,7 @@
  * On 2020-02-25
  */
 import { get, isEmpty, mix } from '@antv/util';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { VALUE_FIELD } from '../../../common/constant';
 import { SpreadDataSet } from '../../../data-set';
 import TotalClass from '../total-class';

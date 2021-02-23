@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { DataCfg } from '../common/interface';
 
 export const DEFAULT_ROW = '_row_';

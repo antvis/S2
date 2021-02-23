@@ -131,7 +131,7 @@ export class ScrollBar extends Group {
   public updateThumbOffset(offset: number) {
     const newOffset = this.validateRange(offset);
     // 如果更新后的 offset 与原值相同，则不改变
-    if (this.thumbOffset === newOffset) {
+    if (this.thumbOffset === newOffset && newOffset !== 0) {
       return;
     }
     this.thumbOffset = newOffset;
@@ -197,11 +197,6 @@ export class ScrollBar extends Group {
       thumbOffset: this.thumbOffset,
       ratio: _.clamp(this.thumbOffset / (this.trackLen - this.thumbLen), 0, 1),
     });
-
-    // 渲染
-    if (this.get('canvas')) {
-      this.get('canvas').draw();
-    }
   }
 
   public updateTheme(theme: ScrollBarTheme) {

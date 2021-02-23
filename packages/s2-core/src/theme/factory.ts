@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import DefaultTheme from './default';
 import { SpreadSheetTheme } from './interface';
 
@@ -23,6 +23,6 @@ export const registerTheme = (
   if (getTheme(type)) {
     throw new Error(`Theme type '${type}' existed.`);
   }
-  THEME_MAP[type.toLowerCase()] = _.assign({}, DefaultTheme, theme);
+  THEME_MAP[type.toLowerCase()] = _.merge({}, DefaultTheme, theme);
   return THEME_MAP[type.toLowerCase()];
 };

@@ -948,10 +948,10 @@ export class SpreadsheetFacet extends BaseFacet {
 
   // 保存偏移
   private setScrollOffset(scrollX: number, scrollY: number) {
-    if (scrollX) {
+    if (!_.isUndefined(scrollX)) {
       this.spreadsheet.store.set('scrollX', scrollX);
     }
-    if (scrollY) {
+    if (!_.isUndefined(scrollY)) {
       this.spreadsheet.store.set('scrollY', scrollY);
     }
   }

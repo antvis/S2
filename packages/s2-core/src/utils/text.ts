@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');

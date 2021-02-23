@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 // 所有的 Icon 缓存
 const SVGMap: Record<string, string> = {};

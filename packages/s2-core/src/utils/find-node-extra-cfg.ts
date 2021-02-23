@@ -3,7 +3,7 @@
  * On 2020-05-25
  */
 import { Extra, StrategyValue } from '../common/interface';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 export default function findNodeExtraCfg(
   values: string[] | StrategyValue,

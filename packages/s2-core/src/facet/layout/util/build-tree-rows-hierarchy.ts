@@ -1,5 +1,5 @@
 import { each, mix } from '@antv/util';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { Pivot, SpreadDataSet } from '../../../data-set';
 import { i18n } from '../../../common/i18n';
 import { SpreadsheetFacetCfg } from '../../../common/interface';

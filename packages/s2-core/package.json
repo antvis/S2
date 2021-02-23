@@ -26,9 +26,7 @@
     "dist": "webpack --config webpack.config.js --mode production",
     "cpx:svg": "cpx \"src/**/*.svg\" lib; cpx \"src/**/*.svg\" esm",
     "cpx:less": "cpx \"src/**/*.less\" lib; cpx \"src/**/*.less\" esm",
-    "test-live": "DEBUG_MODE=1 jest __tests__/spreadsheet/spread-sheet-spec.tsx",
-    "drill-down": "DEBUG_MODE=1 jest __tests__/spreadsheet/drill-down/drill-down-demo-spec.tsx",
-    "no-cache": "DEBUG_MODE=1 npx jest --no-cache  __tests__/spreadsheet/add-custom-row-col-node-spec.ts",
+    "test-live": "DEBUG_MODE=1 jest tests/spreadsheet/spread-sheet-spec.tsx",
     "start": "webpack --config webpack-dev.config.js --mode development -w --progresss"
   },
   "commitlint": {
@@ -65,9 +63,7 @@
     "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "tslint": "^6.1.3",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-recommend-rule": "^1.4.7",
+    "@types/jest": "^26.0.20",
     "cpx": "^1.5.0",
     "css-loader": "^2.1.1",
     "d3-dsv": "^1.1.1",
@@ -91,6 +87,9 @@
     "ts-jest": "^25.4.0",
     "ts-loader": "^5.4.5",
     "ts-node": "^7.0.1",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-recommend-rule": "^1.4.7",
     "typescript": "^4.1.3",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^3.1.0",
@@ -119,7 +118,7 @@
       "!**/vendor/**"
     ],
     "transformIgnorePatterns": [],
-    "testRegex": "/__tests__/spreadsheet/.*-spec\\.(tsx|ts|js)?$",
+    "testRegex": "/tests/spreadsheet/.*-spec\\.(tsx|ts|js)?$",
     "transform": {
       "\\.(less|css)$": "jest-less-loader",
       "\\.svg$": "jest-raw-loader"
