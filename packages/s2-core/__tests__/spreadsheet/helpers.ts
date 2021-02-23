@@ -12,10 +12,7 @@ export const parseCSV = (csv, header?) => {
 };
 
 export const getMockData = (dataPath: string) => {
-  const data = fs.readFileSync(
-    path.resolve(__dirname, dataPath),
-    'utf8',
-  );
+  const data = fs.readFileSync(path.resolve(__dirname, dataPath), 'utf8');
   return parseCSV(data);
 };
 

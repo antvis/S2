@@ -8,12 +8,12 @@ import {
   SpreadSheet,
   SpreadsheetOptions,
 } from '../../src';
-import { getContainer, getMockData } from "./helpers";
+import { getContainer, getMockData } from './helpers';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Select, Switch } from 'antd';
 
-let data = getMockData("../datasets/tableau-supermarket.csv");
+let data = getMockData('../datasets/tableau-supermarket.csv');
 
 // @ts-ignore
 data = data.map((row) => {
