@@ -1,5 +1,5 @@
 // hierarchy to layout headers
-import { get, maxBy, minBy } from '@antv/util';
+import * as _ from 'lodash';
 import { Node } from './node';
 
 export interface MaxMinLabel {
@@ -96,16 +96,18 @@ export class Hierarchy {
     let maxLabel;
     let minLabel;
     if (this.maxLabelInLevel.get(level) === undefined) {
-      maxLabel = maxBy(allNodesInLevel, (value) => get(value, 'label.length'))
-        .label;
+      maxLabel = _.maxBy(allNodesInLevel, (value) =>
+        _.get(value, 'label.length'),
+      ).label;
       this.maxLabelInLevel.set(level, maxLabel);
     } else {
       maxLabel = this.maxLabelInLevel.get(level);
     }
 
     if (this.minLabelInLevel.get(level) === undefined) {
-      minLabel = minBy(allNodesInLevel, (value) => get(value, 'label.length'))
-        .label;
+      minLabel = _.minBy(allNodesInLevel, (value) =>
+        _.get(value, 'label.length'),
+      ).label;
       this.minLabelInLevel.set(level, minLabel);
     } else {
       minLabel = this.minLabelInLevel.get(level);

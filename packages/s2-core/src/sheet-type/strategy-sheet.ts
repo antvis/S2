@@ -8,7 +8,7 @@ import {
   ViewMeta,
 } from '../common/interface';
 import { BaseTooltip, StrategyTooltip } from '../tooltip';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { KEY_COLLAPSE_TREE_ROWS } from '../common/constant';
 import { SpreadsheetFacet } from '../facet';
 import SpreadSheet from './spread-sheet';
@@ -37,7 +37,7 @@ export default class StrategySheet extends SpreadSheet {
             cRows[n.id] = isCollapsed;
           });
       }
-      const options = _.deepMix({}, this.options, {
+      const options = _.merge({}, this.options, {
         style: {
           ...style,
           collapsedRows: cRows,

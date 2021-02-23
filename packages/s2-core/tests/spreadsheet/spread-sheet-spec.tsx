@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
+import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
   auto,
@@ -50,7 +51,7 @@ function MainLayout(props) {
   const onCheckChanged = (checked) => {
     setValueInCols(checked);
     setOptions(
-      _.deepMix({}, options, {
+      _.merge({}, options, {
         valueInCols: checked,
       }),
     );
@@ -58,7 +59,7 @@ function MainLayout(props) {
 
   const onCheckChanged1 = (checked) => {
     setOptions(
-      _.deepMix({}, options, {
+      _.merge({}, options, {
         hierarchyType: checked ? 'tree' : 'grid',
       }),
     );
@@ -66,7 +67,7 @@ function MainLayout(props) {
 
   const onCheckChanged2 = (checked) => {
     setDerivedValueMul(checked);
-    const next = _.deepMix({}, dataCfg, {
+    const next = _.merge({}, dataCfg, {
       fields: {
         derivedValues: dataCfg.fields.derivedValues.map((dv) => {
           const dvn = _.clone(dv);
@@ -252,8 +253,10 @@ describe('spreadsheet normal spec', () => {
     expect(1).toBe(1);
   });
 
-  ReactDOM.render(
-    <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
-    rootContainer,
-  );
+  act(() => {
+    ReactDOM.render(
+      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
+      rootContainer,
+    );
+  });
 });

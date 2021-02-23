@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { SpreadsheetFacet } from '..';
 import { BaseDataSet, Pivot } from '../../data-set';
 import { EXTRA_FIELD, VALUE_FIELD } from '../../common/constant';
@@ -118,8 +118,8 @@ export class Layout {
       // 数值挂行头且有列总计的特殊情况，需要强制返回node路径
       const colQuery = getDimsConditionByNode(col, isValueInColsTotal);
       const dataQuery = isValueInColsTotal
-        ? _.mix({}, rowQuery)
-        : _.mix({}, rowQuery, colQuery);
+        ? _.merge({}, rowQuery)
+        : _.merge({}, rowQuery, colQuery);
 
       let data = [];
       if (isInTree && isParentInTree) {
@@ -185,10 +185,7 @@ export class Layout {
       let fieldValue = null;
       const realData = _.get(data, [0], {});
       if (!_.isEmpty(realData)) {
-        if (
-          _.hasKey(realData, EXTRA_FIELD) ||
-          _.hasKey(realData, VALUE_FIELD)
-        ) {
+        if (_.has(realData, EXTRA_FIELD) || _.has(realData, VALUE_FIELD)) {
           valueField = _.get(realData, [EXTRA_FIELD], '');
           fieldValue = _.get(realData, [VALUE_FIELD], null);
         }

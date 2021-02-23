@@ -1,5 +1,5 @@
 import { measureTextWidth, measureTextWidthRoughly } from '../../../utils/text';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { DEFAULT_PADDING, VALUE_FIELD } from '../../../common/constant';
 import { DefaultTheme } from '../../../theme';
 import { SORT_ICON_SIZE } from './add-detail-type-sort-icon';

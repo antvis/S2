@@ -4,7 +4,7 @@
  */
 import { getEllipsisText, measureTextWidth } from '../utils/text';
 import { GM } from '@antv/g-gesture';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { GuiIcon } from '../common/icons';
 import { IGroup } from '@antv/g-canvas';
 import { renderRect, updateShapeAttr } from '../utils/g-renders';

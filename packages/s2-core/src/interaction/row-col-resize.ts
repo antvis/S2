@@ -1,5 +1,5 @@
 import { Event, Group, IGroup, IShape } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { ResizeInfo } from '../facet/header/interface';
 import { BaseInteraction } from './base';
@@ -53,16 +53,8 @@ export class RowColResize extends BaseInteraction {
   constructor(spreadsheet: BaseSpreadSheet) {
     super(spreadsheet);
     this.container = this.spreadsheet.foregroundGroup;
-    this.addEvent(
-      this.container,
-      'mousedown',
-      _.wrapBehavior(this, 'onMousedown'),
-    );
-    this.addEventListener(
-      document,
-      'mouseup',
-      _.wrapBehavior(this, 'onDocMouseup'),
-    );
+    this.addEvent(this.container, 'mousedown', this.onMousedown.bind(this));
+    this.addEventListener(document, 'mouseup', this.onDocMouseup.bind(this));
   }
 
   protected process(ev: Event) {
@@ -144,7 +136,7 @@ export class RowColResize extends BaseInteraction {
         this.spreadsheet.needUseCacheMeta = true;
         this.spreadsheet.emit(eventType, config);
         this.spreadsheet.setOptions(
-          _.deepMix({}, this.spreadsheet.options, { style: config }),
+          _.merge({}, this.spreadsheet.options, { style: config }),
         );
         this.renderSS();
       }

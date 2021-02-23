@@ -1,4 +1,4 @@
-import { get } from '@antv/util';
+import { get } from 'lodash';
 
 export default function getColHeight(node, colCfg, cellCfg) {
   const key: string = node.key;

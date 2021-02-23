@@ -1,4 +1,3 @@
-import { mix } from '@antv/util';
 import * as _ from 'lodash';
 import { Pivot } from '../../../data-set';
 import { i18n } from '../../../common/i18n';
@@ -89,7 +88,7 @@ export default function buildHeaderHierarchy(
     } else {
       value = col;
     }
-    const nodeQuery = mix({}, query, { [field]: value });
+    const nodeQuery = _.merge({}, query, { [field]: value });
     const id = `${parent.id}-${value}`;
     const isCollapsed = _.isBoolean(collapsedCols[id])
       ? collapsedCols[id]

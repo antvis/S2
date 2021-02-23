@@ -1,5 +1,5 @@
 import { Event, Group } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { isSelected } from '../utils/selected';
 import { Cell } from '../cell';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
@@ -19,11 +19,7 @@ export class CellSelection extends HoverInteraction {
 
   protected bindEvents() {
     super.bindEvents();
-    this.addEventListener(
-      document,
-      'click',
-      _.wrapBehavior(this, 'onDocumentClick'),
-    );
+    this.addEventListener(document, 'click', this.onDocumentClick.bind(this));
   }
 
   protected start(ev: Event) {
@@ -109,9 +105,9 @@ export class CellSelection extends HoverInteraction {
   private onDocumentClick(ev) {
     if (
       ev.target !== this.spreadsheet.container.get('el') &&
-      !_.contains(ev.target?.className, 'eva-facet') &&
-      !_.contains(ev.target?.className, 'ant-menu') &&
-      !_.contains(ev.target?.className, 'ant-input')
+      !_.includes(ev.target?.className, 'eva-facet') &&
+      !_.includes(ev.target?.className, 'ant-menu') &&
+      !_.includes(ev.target?.className, 'ant-input')
     ) {
       this.spreadsheet.store.set('selected', null);
       this.updateCell();

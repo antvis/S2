@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import {
   Aggregation,
   Data,
@@ -69,10 +69,6 @@ export abstract class BaseDataSet<T extends BaseParams> {
   /** 返回pivot实例 */
   public getPivot(): Pivot {
     return this.pivot;
-  }
-
-  public isFieldCategory(field: string): boolean {
-    return _.get(this.getFieldMeta(field), 'type', 'category') !== 'continuous';
   }
 
   /**

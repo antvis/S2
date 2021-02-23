@@ -2,8 +2,8 @@
  * Create By Bruce Too
  * On 2019-11-27
  */
-import { measureTextWidth } from '../../../index';
-import * as _ from '@antv/util';
+import { measureTextWidth } from '../../..';
+import * as _ from 'lodash';
 import { Pivot } from '../../../data-set';
 import {
   DEFAULT_PADDING,

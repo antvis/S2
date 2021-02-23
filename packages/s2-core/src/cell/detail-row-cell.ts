@@ -3,7 +3,7 @@
  * On 2019-11-01
  */
 import { getEllipsisText } from '../utils/text';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { isMobile } from '../utils/is-mobile';
 import { RowCell } from '.';
 
@@ -47,15 +47,8 @@ export class DetailRowCell extends RowCell {
       textStyle,
     );
 
-    let textAlign;
-    let textX;
-    if (!this.spreadsheet.dataSet.isFieldCategory(key)) {
-      textAlign = 'end';
-      textX = x + cellWidth;
-    } else {
-      textAlign = 'start';
-      textX = x;
-    }
+    const textAlign = 'start';
+    const textX = x;
     const textShape = this.addShape('text', {
       attrs: {
         x: textX,

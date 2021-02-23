@@ -1,5 +1,5 @@
 import { SimpleBBox, Group, Shape, IGroup } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { measureTextWidth } from '../..';
 import { getAdjustPosition } from '../../utils/text-absorption';
 import { BaseSpreadSheet } from '../..';

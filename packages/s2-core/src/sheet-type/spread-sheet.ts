@@ -11,7 +11,7 @@ import {
 } from '../common/interface';
 import { BaseDataSet, SpreadDataSet, DetailDataSet } from '../data-set';
 import { BaseTooltip, NormalTooltip } from '../tooltip';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -59,7 +59,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.handleDataSetChanged(options);
     this.handleColLayoutTypeChanged(options);
 
-    this.options = _.deepMix(
+    this.options = _.merge(
       {
         style: {}, // 默认对象，用户可不传
       },
@@ -76,7 +76,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.on(KEY_COLLAPSE_TREE_ROWS, (data) => {
       const { id, isCollapsed } = data;
       const style = this.options.style;
-      const options = _.deepMix({}, this.options, {
+      const options = _.merge({}, this.options, {
         style: {
           ...style,
           collapsedRows: {

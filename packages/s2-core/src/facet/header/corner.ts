@@ -1,5 +1,5 @@
 import { SimpleBBox, Group, Point, Shape } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { GuiIcon } from '../../common/icons';
 import { i18n } from '../../common/i18n';
 import { DetailCornerCell } from '../../cell';

@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { Selected } from '../common/store';
 
 const inRange = (idx: number, start: number, end: number) => {

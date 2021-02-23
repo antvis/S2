@@ -3,7 +3,7 @@
  * On 2019-12-03
  */
 import { getEllipsisText, measureTextWidth } from '../utils/text';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import {
   DEFAULT_PADDING,
   ICON_RADIUS,
@@ -31,20 +31,10 @@ export class DetailCornerCell extends CornerCell {
       'spreadsheet.theme.header.bolderText',
     );
     const text = getEllipsisText(label, cellWidth - seriesNumberW, textStyle);
-    let textAlign;
-    let textX;
-    let iconX;
-    if (this.spreadsheet.dataSet.isFieldCategory(key)) {
-      const textWidth = measureTextWidth(text, textStyle);
-      textAlign = 'start';
-      textX = position.x + x;
-      iconX = textX + textWidth + DEFAULT_PADDING;
-    } else {
-      textAlign = 'end';
-      textX =
-        position.x + x + cellWidth - DEFAULT_PADDING * 2 - ICON_RADIUS * 2;
-      iconX = textX + DEFAULT_PADDING;
-    }
+    let textAlign = 'end';
+    let textX =
+      position.x + x + cellWidth - DEFAULT_PADDING * 2 - ICON_RADIUS * 2;
+    const iconX = textX + DEFAULT_PADDING;
     if (key === KEY_SERIES_NUMBER_NODE) {
       textAlign = 'center';
       textX = position.x + x + cellWidth / 2;

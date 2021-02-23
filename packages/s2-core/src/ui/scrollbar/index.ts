@@ -3,7 +3,7 @@
  * On 2020-10-16
  */
 import { Event, IGroup, Group, IShape, Canvas } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { PointObject, ScrollBarCfg, ScrollBarTheme } from './interface';
 import { DEFAULT_THEME } from './style';
 
@@ -65,7 +65,7 @@ export class ScrollBar extends Group {
     this.thumbLen = thumbLen;
     this.position = position;
     this.minThumbLen = minThumbLen;
-    this.theme = _.deepMix({}, DEFAULT_THEME, theme);
+    this.theme = _.merge({}, DEFAULT_THEME, theme);
 
     this.initScrollBar();
   }
@@ -200,7 +200,7 @@ export class ScrollBar extends Group {
   }
 
   public updateTheme(theme: ScrollBarTheme) {
-    this.theme = _.deepMix({}, DEFAULT_THEME, theme);
+    this.theme = _.merge({}, DEFAULT_THEME, theme);
     this.thumbShape.attr('stroke', this.theme.default.thumbColor);
     this.thumbShape.attr('lineWidth', this.theme.default.size);
     this.thumbShape.attr('lineCap', this.theme.default.lineCap);

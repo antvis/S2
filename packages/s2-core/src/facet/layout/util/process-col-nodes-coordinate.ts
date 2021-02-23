@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { SpreadsheetFacet } from '../../index';
 import { SpreadsheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';

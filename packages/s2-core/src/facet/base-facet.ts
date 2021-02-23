@@ -1,5 +1,5 @@
 import { BBox, Group, Shape } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { calculateInViewIndexes } from './utils';
 import { Indexes, isXYInRange } from '../utils/indexes';
 import { KEY_GROUP_HOVER_BOX } from '../common/constant';

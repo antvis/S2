@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { DetailPivot } from '../../../data-set';
 import { SpreadsheetFacet } from '../../index';
 import { SpreadsheetFacetCfg } from '../../../common/interface';

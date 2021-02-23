@@ -1,5 +1,5 @@
 import { Event, Group } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { Cell } from '../cell';
 import { BaseSpreadSheet } from '../index';
 import { HoverInteraction } from './hover-interaction';
@@ -21,12 +21,12 @@ export class CellHover extends HoverInteraction {
     this.addEvent(
       this.spreadsheet.panelGroup,
       'mousemove',
-      _.wrapBehavior(this, 'onMouseMove'),
+      this.onMouseMove.bind(this),
     );
     this.addEventListener(
       this.spreadsheet.container.get('container'),
       'mouseleave',
-      _.wrapBehavior(this, 'hideHoverBox'),
+      this.hideHoverBox.bind(this),
     );
   }
 

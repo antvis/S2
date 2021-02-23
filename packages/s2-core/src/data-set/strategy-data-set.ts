@@ -6,7 +6,7 @@ import { BaseDataSet, Pivot } from './index';
 import { BaseParams } from './base-data-set';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { DataCfg } from '../common/interface';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant';
 
 export class StrategyDataSet extends BaseDataSet<BaseParams> {

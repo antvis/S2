@@ -1,5 +1,4 @@
-import * as _ from '@antv/util';
-import { find } from 'lodash';
+import * as _ from 'lodash';
 import { BaseDataSet, BaseParams } from './base-data-set';
 import { i18n } from '../common/i18n';
 import { DataCfg, DerivedValue, Formatter, Meta } from '../common/interface';
@@ -44,7 +43,7 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
   handleValues = (values: string[], derivedValues: DerivedValue[]) => {
     const tempValue = [];
     _.each(values, (v) => {
-      const findOne = find(derivedValues, (dv) => dv.valueField === v);
+      const findOne = _.find(derivedValues, (dv) => dv.valueField === v);
       if (findOne) {
         // 值存在衍生值，添加值和所有衍生值,或者第一个衍生值
         tempValue.push(v);
@@ -106,7 +105,7 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
     }
 
     // 3、meta 中添加新的字段信息（度量别名设置）
-    const enumAlias = new _.Cache<string>();
+    const enumAlias = new Map<string, string>();
 
     _.each(newValues, (value: string) => {
       // tslint:disable-next-line:no-shadowed-variable
@@ -120,7 +119,7 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
       {
         field: EXTRA_FIELD,
         name: EXTRA_FIELD,
-        formatter: (v) => enumAlias.get(v, v), // 格式化
+        formatter: (v) => enumAlias.get(v), // 格式化
       } as Meta,
       // 小计字段，为数值连续字段，格式化为自动数值格式化
       {

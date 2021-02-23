@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { SpreadsheetFacet } from '../../index';
 import { BaseFacet } from '../../base-facet';
 

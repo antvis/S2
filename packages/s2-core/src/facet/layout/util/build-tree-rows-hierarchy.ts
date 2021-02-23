@@ -1,4 +1,3 @@
-import { each, mix } from '@antv/util';
 import * as _ from 'lodash';
 import { Pivot, SpreadDataSet } from '../../../data-set';
 import { i18n } from '../../../common/i18n';
@@ -67,7 +66,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
 
   const { collapsedRows, hierarchyCollapse, values } = cfg;
 
-  each(fieldValues, (col) => {
+  _.each(fieldValues, (col) => {
     const isTotal = col instanceof TotalClass;
     let value;
     let label;
@@ -79,7 +78,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
       // 在此必须区分label和value，自动解析的场景下 value=label，但是在决策模式下如果
       // 用value去替代label 会导致query条件出错
       // 决策模式下的度量值文本名字设置（度量格式化的名字+衍生指标）
-      label = dataSet.getFieldName(col);
+      label = dataSet.getFieldName(col as string);
     } else {
       value = col;
       label = value;
@@ -116,7 +115,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
       isTotals: isTotal,
       isCollapsed: isCollapse,
       hierarchy,
-      query: mix({}, query, { [field]: value }),
+      query: _.merge({}, query, { [field]: value }),
       inCollapseNode,
       spreadsheet: cfg.spreadsheet,
     });

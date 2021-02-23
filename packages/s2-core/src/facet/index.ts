@@ -1,8 +1,6 @@
 import { BBox, Group, Shape } from '@antv/g-canvas';
 import { Wheel } from '@antv/g-gesture';
 import { ScrollBar } from '../ui/scrollbar';
-import { mix } from '@antv/util';
-import { deepMix } from '@antv/util';
 import * as d3Ease from 'd3-ease';
 import { interpolateArray } from 'd3-interpolate';
 import * as d3Timer from 'd3-timer';
@@ -673,7 +671,7 @@ export class SpreadsheetFacet extends BaseFacet {
     if (colNode && reachedBorderId.colId !== colNode.id) {
       this.spreadsheet.store.set(
         'lastReachedBorderId',
-        deepMix({}, reachedBorderId, {
+        _.merge({}, reachedBorderId, {
           colId: colNode.id,
         }),
       );
@@ -683,7 +681,7 @@ export class SpreadsheetFacet extends BaseFacet {
     if (rowNode && reachedBorderId.rowId !== rowNode.id) {
       this.spreadsheet.store.set(
         'lastReachedBorderId',
-        deepMix({}, reachedBorderId, {
+        _.merge({}, reachedBorderId, {
           rowId: rowNode.id,
         }),
       );

@@ -1,4 +1,4 @@
-import { get } from '@antv/util';
+import { get } from 'lodash';
 
 export default function getColWidth(node, colCfg, cellCfg) {
   const value = `${node.value}`;

@@ -1,4 +1,4 @@
-import { get } from '@antv/util';
+import { get } from 'lodash';
 
 export default function getRowWidth(node, rowCfg, cellCfg) {
   const key: string = node.key;

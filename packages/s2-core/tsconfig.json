@@ -1,6 +1,19 @@
 {
   "compilerOptions": {
-    "jsx": "react"
+    "module": "commonjs",
+    "declaration": true,
+    "sourceMap": true,
+    "target": "es5",
+    "outDir": "lib",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "downlevelIteration": true,
+    "resolveJsonModule": true
   },
-  "extends": "../../tslint.json"
+  "include": [
+    "src"
+  ]
 }

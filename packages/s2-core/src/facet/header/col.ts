@@ -1,5 +1,5 @@
 import { Group, Shape } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { Formatter, SortParam } from '../../common/interface';
 import { isHeaderCellInViewport } from '../../utils/is-header-cell-in-viewport';
 import { ColCell, DetailColCell } from '../../cell';

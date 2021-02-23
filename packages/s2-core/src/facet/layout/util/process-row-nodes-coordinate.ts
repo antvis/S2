@@ -2,7 +2,7 @@
  * Create By Bruce Too
  * On 2019-09-29
  */
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { SpreadsheetFacet } from '../../index';
 import { SpreadsheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';

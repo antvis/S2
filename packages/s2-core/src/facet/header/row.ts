@@ -1,6 +1,6 @@
 import { Group, Shape } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { isHeaderCellInViewport } from '../../utils/is-header-cell-in-viewport';
 import { RowCell } from '../../cell';
 import { DetailRowCell } from '../../cell/detail-row-cell';

@@ -1,5 +1,5 @@
 import { Point } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { DataItem, TooltipOptions } from '../index';
 import { Cell } from '../cell';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';

@@ -1,5 +1,5 @@
 import { getEllipsisText, measureTextWidth } from '../utils/text';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { GuiIcon } from '../common/icons';
 import { renderRect, updateShapeAttr } from '../utils/g-renders';
 import { HIT_AREA } from '../facet/header/base';

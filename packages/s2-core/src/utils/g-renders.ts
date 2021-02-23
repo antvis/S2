@@ -5,7 +5,7 @@
  * https://github.com/antvis/g
  */
 import { Group, IShape } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 
 export function renderRect(
   x,

@@ -1,5 +1,5 @@
 import { Event, Point } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { isMobile } from '../utils/is-mobile';
 import { KEY_JUMP_HREF } from '../common/constant';
 import { HoverInteraction } from './hover-interaction';

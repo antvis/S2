@@ -4,7 +4,6 @@ export { default as getDimsConditionByNode } from './get-dims-condition-by-node'
 export { default as getColHeight } from './get-col-height';
 export { default as getColWidth } from './get-col-width';
 export { default as getRowWidth } from './get-row-width';
-export { default as getUniqParents } from './get-uniq-parents';
 export { default as processRows } from './process-rows';
 export { default as processCols } from './process-cols';
 export { default as processColsList } from './process-cols-list';

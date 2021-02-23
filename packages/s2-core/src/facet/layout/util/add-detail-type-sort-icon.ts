@@ -1,5 +1,5 @@
 import { Group } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { GuiIcon } from '../../../common/icons';
 import { DEFAULT_PADDING, KEY_LIST_SORT } from '../../../common/constant';
 import { BaseSpreadSheet } from '../../..';
@@ -24,7 +24,7 @@ export function addDetailTypeSortIcon(
   const currentSortKey = spreadsheet.store.get('currentSortKey', {});
   let upIconType = 'SortUp';
   let downIconType = 'SortDown';
-  if (currentSortKey && _.hasKey(currentSortKey, key)) {
+  if (currentSortKey && _.has(currentSortKey, key)) {
     // 有配置,当前点击的过的key(某个维度)
     if (_.get(currentSortKey, key) === 'up') {
       // 点击过此维度的up

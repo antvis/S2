@@ -1,4 +1,3 @@
-import { each } from '@antv/util';
 import * as _ from 'lodash';
 import { Pivot } from '../../../data-set';
 import TotalClass from '../total-class';
@@ -18,7 +17,7 @@ export function handleKeepOnlyNodes(
   const keepOnlys = nodeInRow
     ? _.get(pivot.getKeepOnlyNodesIds(), 'rowIds')
     : _.get(pivot.getKeepOnlyNodesIds(), 'colIds');
-  each(fieldValues, (value) => {
+  _.each(fieldValues, (value) => {
     const currentId = `${parentId}-${value}`;
     let find;
     if (_.isEmpty(keepOnlys)) {

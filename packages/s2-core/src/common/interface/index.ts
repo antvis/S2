@@ -14,8 +14,6 @@ export type Aggregation = 'SUM' | 'AVG' | 'MIN' | 'MAX';
 export interface Meta {
   readonly field: string; // 字段 id
   readonly name: string; // 字段名称
-  // 衍生值类型（比率和比值）
-  readonly type?: 'rate' | 'value';
   // 格式化
   // 数值字段：一般用于格式化数字带戴维
   // 文本字段：一般用于做字段枚举值的别名

@@ -1,5 +1,4 @@
 import { Event, Point, Shape } from '@antv/g-canvas';
-import * as _ from '@antv/util';
 import { Cell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { HoverInteraction } from './hover-interaction';
@@ -135,7 +134,7 @@ export class BrushSelection extends HoverInteraction {
     this.addEventListener(
       this.spreadsheet.container.get('container'),
       'mouseleave',
-      _.wrapBehavior(this, '_hide'),
+      this.hide,
     );
   }
 
@@ -217,7 +216,7 @@ export class BrushSelection extends HoverInteraction {
     }) as Shape.Rect;
   }
 
-  private _hide = () => {
+  hide = () => {
     if (this.phase === 1) {
       this.hide();
       if (this.cells) {

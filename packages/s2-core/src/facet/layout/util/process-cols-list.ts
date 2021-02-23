@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import {
   DEFAULT_COLUMN,
   DEFAULT_ROW,

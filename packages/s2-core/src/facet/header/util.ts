@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 
 export const getCellPadding = () => {
   const padding = [12, 4, 12, 4];

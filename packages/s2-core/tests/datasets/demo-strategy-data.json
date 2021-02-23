@@ -50702,7 +50702,7 @@
     }
   ],
   "fields": {
-    "rows":[
+    "rows": [
       "MENU_LVL_1",
       "MENU_LVL_2",
       "CATEGORY",
@@ -50710,14 +50710,11 @@
       "INDICATOR_LVL_2",
       "INDICATOR_LVL_3"
     ],
-    "columns":[
-      "TIME_GRANULE",
-      "TIME_GRANULE_DETAIL"
-    ],
-    "value":"INDICATOR_VALUE",
-    "subValue":"INDICATOR_VALUE_TONGBI",
-    "subValueTONGBI":"INDICATOR_VALUE_TONGBI",
-    "subValueHUANBI":"INDICATOR_VALUE_HUANBI"
+    "columns": ["TIME_GRANULE", "TIME_GRANULE_DETAIL"],
+    "value": "INDICATOR_VALUE",
+    "subValue": "INDICATOR_VALUE_TONGBI",
+    "subValueTONGBI": "INDICATOR_VALUE_TONGBI",
+    "subValueHUANBI": "INDICATOR_VALUE_HUANBI"
   },
   "metaMap": {
     "数字金融7--消费信贷4-测试指标7-测试二级指标-": {

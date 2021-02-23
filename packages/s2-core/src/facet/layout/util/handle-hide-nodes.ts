@@ -1,4 +1,3 @@
-import { each } from '@antv/util';
 import * as _ from 'lodash';
 import { Pivot } from '../../../data-set';
 import TotalClass from '../total-class';
@@ -13,7 +12,7 @@ export function handleHideNodes(
   field: string,
   parentId: string,
 ) {
-  each(fieldValues, (value) => {
+  _.each(fieldValues, (value) => {
     const currentId = `${parentId}-${value}`;
     const find = _.find(pivot.getHideNodesIds(), (hideId) => {
       return _.isEqual(hideId, currentId);

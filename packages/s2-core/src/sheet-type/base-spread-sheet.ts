@@ -1,6 +1,6 @@
 import EE from '@antv/event-emitter';
 import { Canvas, IGroup } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { Store } from '../common/store';
 import {
   ColWidthCache,
@@ -164,13 +164,13 @@ export default abstract class BaseSpreadSheet extends EE {
       debug: _.get(options, 'debug', false),
       hierarchyType: options.hierarchyType || 'grid',
       hierarchyCollapse: _.get(options, 'hierarchyCollapse', false),
-      conditions: _.deepMix({}, safetyConditions, options.conditions || {}),
-      totals: _.deepMix({}, safetyTotals, options.totals || {}),
+      conditions: _.merge({}, safetyConditions, options.conditions || {}),
+      totals: _.merge({}, safetyTotals, options.totals || {}),
       linkFieldIds: options.linkFieldIds || [],
       pagination: options.pagination || false,
       containsRowHeader: _.get(options, 'containsRowHeader', true),
       spreadsheetType: _.get(options, 'spreadsheetType', true),
-      style: _.deepMix({}, DefaultStyleCfg(), options.style),
+      style: _.merge({}, DefaultStyleCfg(), options.style),
       showSeriesNumber: _.get(options, 'showSeriesNumber', false),
       hideNodesIds: options.hideNodesIds || [],
       keepOnlyNodesIds: options.keepOnlyNodesIds || [],
@@ -420,7 +420,7 @@ export default abstract class BaseSpreadSheet extends EE {
         throw new Error(`Theme type '${type}' not founded.`);
       }
     } else {
-      this.theme = _.deepMix({}, getTheme(type), theme);
+      this.theme = _.merge({}, getTheme(type), theme);
     }
   }
 
@@ -429,7 +429,7 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param pagination
    */
   public updatePagination(pagination: Pagination) {
-    this.options = _.deepMix({}, this.options, {
+    this.options = _.merge({}, this.options, {
       pagination,
     });
 
@@ -451,7 +451,7 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param height
    */
   public changeSize(width: number, height: number) {
-    this.options = _.deepMix({}, this.options, { width, height });
+    this.options = _.merge({}, this.options, { width, height });
     // resize the canvas
     this.container.changeSize(width, height);
   }
@@ -473,7 +473,7 @@ export default abstract class BaseSpreadSheet extends EE {
    */
   public isDerivedValue(field: string): boolean {
     const derivedValues = _.get(this, 'dataCfg.fields.derivedValues', []);
-    return _.find(derivedValues, (v) => _.contains(v.derivedValueField, field));
+    return _.find(derivedValues, (v) => _.includes(v.derivedValueField, field));
   }
 
   /**
@@ -486,7 +486,7 @@ export default abstract class BaseSpreadSheet extends EE {
     return (
       _.find(
         derivedValues,
-        (v) => field === v.valueField || _.contains(v.derivedValueField, field),
+        (v) => field === v.valueField || _.includes(v.derivedValueField, field),
       ) || {
         valueField: '',
         derivedValueField: [],
@@ -580,7 +580,7 @@ export default abstract class BaseSpreadSheet extends EE {
    */
   public updateScrollOffset(offsetConfig: OffsetConfig): void {
     this.facet.updateScrollOffset(
-      _.deepMix(
+      _.merge(
         {},
         {
           offsetX: {

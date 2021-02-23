@@ -2,7 +2,6 @@
  * Create By Bruce Too
  * On 2020-02-25
  */
-import { get, isEmpty, mix } from '@antv/util';
 import * as _ from 'lodash';
 import { VALUE_FIELD } from '../../../common/constant';
 import { SpreadDataSet } from '../../../data-set';
@@ -29,7 +28,7 @@ export function reArrangeFieldValues(
     const { sortFieldId, sortMethod, query: colQuery } = measureSort;
     const j = sortMethod === 'ASC' ? 1 : -1;
     const data = _.map(fieldValues, (value) => {
-      const query = mix({}, rowQuery, { [field]: value }, colQuery);
+      const query = _.merge({}, rowQuery, { [field]: value }, colQuery);
       const rowTotalsConfig = dataSet.pivot.getTotalsConfig(field);
       if (rowTotalsConfig.showSubTotals) {
         return dataSet.getData(query, {
@@ -48,13 +47,13 @@ export function reArrangeFieldValues(
       // 不展示小计，强制空缺
       return [];
     });
-    if (!isEmpty(data) && !_.every(data, (d) => isEmpty(d))) {
+    if (!_.isEmpty(data) && !_.every(data, (d) => _.isEmpty(d))) {
       const sortDatas = data.sort(
         (a, b) =>
-          (get(a, [0, VALUE_FIELD], 0) - get(b, [0, VALUE_FIELD], 0)) * j,
+          (_.get(a, [0, VALUE_FIELD], 0) - _.get(b, [0, VALUE_FIELD], 0)) * j,
       );
       const sortFiledValues = _.map(sortDatas, (value) => {
-        return get(value, [0, field], '');
+        return _.get(value, [0, field], '');
       });
       fieldValues.splice(0, fieldValues.length);
       fieldValues.push(...sortFiledValues);

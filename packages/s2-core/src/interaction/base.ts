@@ -1,5 +1,5 @@
 import { Event, Group, Canvas } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { Selected } from '../common/store';
 import { isSelected } from '../utils/selected';
@@ -86,18 +86,14 @@ export abstract class BaseInteraction {
     this.addEvent(
       this.triggerGroup(),
       this.getStarEvent(),
-      _.wrapBehavior(this, 'start'),
+      this.start.bind(this),
     );
     this.addEvent(
       this.triggerGroup(),
       this.getProcessEvent(),
-      _.wrapBehavior(this, 'process'),
+      this.process.bind(this),
     );
-    this.addEvent(
-      this.triggerGroup(),
-      this.getEndEvent(),
-      _.wrapBehavior(this, 'end'),
-    );
+    this.addEvent(this.triggerGroup(), this.getEndEvent(), this.end.bind(this));
   }
 
   protected unbindEvents() {
