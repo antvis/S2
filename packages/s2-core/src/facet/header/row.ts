@@ -1,0 +1,119 @@
+import { Group, Shape } from '@antv/g-canvas';
+import { GM } from '@antv/g-gesture';
+import * as _ from 'lodash';
+import { isHeaderCellInViewport } from '../../utils/is-header-cell-in-viewport';
+import { RowCell } from '../../cell';
+import { DetailRowCell } from '../../cell/detail-row-cell';
+import { COLOR_DEFAULT_RESIZER, Node } from '../..';
+import { BaseHeader, BaseHeaderConfig, HIT_AREA } from './base';
+import { translateGroup } from '../utils';
+
+export interface RowHeaderConfig extends BaseHeaderConfig {
+  // type of hierarchy
+  hierarchyType: 'tree' | 'grid';
+  // field ids that click to navigate
+  linkFieldIds: string[];
+  // series number group's width, will be 0 when not exists
+  seriesNumberWidth: number;
+}
+
+/**
+ * Row Header for SpreadSheet
+ */
+export class RowHeader extends BaseHeader<RowHeaderConfig> {
+  // mobile event
+  private gm: GM;
+
+  constructor(cfg: RowHeaderConfig) {
+    super(cfg);
+  }
+
+  public destroy() {
+    super.destroy();
+    if (this.gm) {
+      this.gm.destroy();
+    }
+  }
+
+  protected layout() {
+    const {
+      data,
+      spreadsheet,
+      offset,
+      width,
+      height,
+      seriesNumberWidth,
+      scrollY,
+      scrollX,
+    } = this.headerConfig;
+    const rowCell = spreadsheet?.facet?.cfg?.rowCell;
+    // row'cell only show when visible
+    const rowCellInRect = (item: Node): boolean => {
+      return (
+        height + scrollY > item.y && // bottom
+        scrollY < item.y + item.height && // top
+        width - seriesNumberWidth + scrollX > item.x && // left
+        scrollX - seriesNumberWidth < item.x + item.width
+      ); // right
+    };
+    _.each(data, (item: Node) => {
+      if (rowCellInRect(item) && item.height !== 0) {
+        let cell: Group;
+        // 首先由外部控制UI展示
+        if (rowCell) {
+          cell = rowCell(item, spreadsheet, this.headerConfig);
+        }
+        // 如果外部没处理，就用默认的
+        if (_.isEmpty(cell)) {
+          if (spreadsheet.isSpreadsheetType()) {
+            cell = new RowCell(item, spreadsheet, this.headerConfig);
+          } else {
+            cell = new DetailRowCell(item, spreadsheet, this.headerConfig);
+          }
+        }
+        item.belongsCell = cell;
+        this.add(cell);
+      }
+    });
+
+    // this.addShape('rect', {
+    //   attrs: {
+    //     x: 0,
+    //     y: scrollY,
+    //     width: scrollX + width,
+    //     height,
+    //     fill: '#0ff'
+    //   }
+    // });
+  }
+
+  protected offset() {
+    const { scrollY, scrollX, position, seriesNumberWidth } = this.headerConfig;
+    // 向右多移动的seriesNumberWidth是序号的宽度
+    translateGroup(
+      this,
+      position.x - scrollX + seriesNumberWidth,
+      position.y - scrollY,
+    );
+  }
+
+  protected clip(): void {
+    const {
+      width,
+      height,
+      scrollX,
+      scrollY,
+      seriesNumberWidth,
+    } = this.headerConfig;
+    this.setClip({
+      type: 'rect',
+      attrs: {
+        // 由于多移动了seriesNumberWidth跨度，所有需要向左切。 - 是反向剪裁（右 -> 左）
+        x: scrollX - seriesNumberWidth,
+        y: scrollY,
+        width,
+        height,
+      },
+    });
+  }
+}

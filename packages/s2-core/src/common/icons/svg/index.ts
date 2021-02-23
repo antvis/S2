@@ -1,0 +1,38 @@
+// 不本地直接引用svg，避免下游无依赖
+import {
+  CellDown,
+  CellUp,
+  GlobalAsc,
+  GlobalDesc,
+  GroupAsc,
+  GroupDesc,
+  Minus,
+  Plus,
+  SortDown,
+  SortUp,
+  SortDownSelected,
+  SortUpSelected,
+  InfoCircle,
+  HideSpreadIcon,
+  Trend,
+  DrillDownIcon,
+} from './svgs';
+
+export {
+  CellDown,
+  CellUp,
+  GlobalAsc,
+  GlobalDesc,
+  GroupAsc,
+  GroupDesc,
+  Minus,
+  Plus,
+  SortDown,
+  SortUp,
+  SortDownSelected,
+  SortUpSelected,
+  InfoCircle,
+  HideSpreadIcon,
+  Trend,
+  DrillDownIcon,
+};
