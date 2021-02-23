@@ -1,5 +1,3 @@
-import * as fs from 'fs';
-import * as path from 'path';
 import * as _ from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
@@ -10,19 +8,12 @@ import {
   SpreadSheet,
   SpreadsheetOptions,
 } from '../../src';
-import { parseCSV } from '../csv-loader';
+import { getContainer, getMockData } from "./helpers";
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Select, Switch } from 'antd';
 
-const { Option } = Select;
-
-let data = fs.readFileSync(
-  path.resolve(__dirname, '../datasets/tableau-supermarket.csv'),
-  'utf8',
-);
-
-data = parseCSV(data);
+let data = getMockData("../datasets/tableau-supermarket.csv");
 
 // @ts-ignore
 data = data.map((row) => {
@@ -32,10 +23,6 @@ data = data.map((row) => {
   row['count-huanbi'] = -0.4321;
   return row;
 });
-
-const rootContainer = document.createElement('div');
-rootContainer.setAttribute('style', 'margin-left: 32px');
-document.body.appendChild(rootContainer);
 
 function MainLayout(props) {
   const [options, setOptions] = React.useState(props.options);
@@ -186,21 +173,6 @@ const getDataCfg = () => {
         name: '利润',
         formatter: (v) => v,
       },
-      {
-        field: 'fieldA',
-        name: '一级目录',
-        formatter: (v) => v,
-      },
-      {
-        field: 'fieldB',
-        name: '二级目录',
-        formatter: (v) => v,
-      },
-      {
-        field: 'fieldC',
-        name: '三级目录',
-        formatter: (v) => v,
-      },
     ],
     data,
     sortParams: [
@@ -256,7 +228,7 @@ describe('spreadsheet normal spec', () => {
   act(() => {
     ReactDOM.render(
       <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
-      rootContainer,
+      getContainer(),
     );
   });
 });

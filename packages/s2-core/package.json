@@ -26,7 +26,7 @@
     "dist": "webpack --config webpack.config.js --mode production",
     "cpx:svg": "cpx \"src/**/*.svg\" lib; cpx \"src/**/*.svg\" esm",
     "cpx:less": "cpx \"src/**/*.less\" lib; cpx \"src/**/*.less\" esm",
-    "test-live": "DEBUG_MODE=1 jest tests/spreadsheet/spread-sheet-spec.tsx",
+    "test-live": "DEBUG_MODE=1 jest __tests__/spreadsheet/spread-sheet-spec.tsx",
     "start": "webpack --config webpack-dev.config.js --mode development -w --progresss"
   },
   "commitlint": {
@@ -117,7 +117,7 @@
       "!**/vendor/**"
     ],
     "transformIgnorePatterns": [],
-    "testRegex": "/tests/spreadsheet/.*-spec\\.(tsx|ts|js)?$",
+    "testRegex": "/__tests__/spreadsheet/.*-spec\\.(tsx|ts|js)?$",
     "transform": {
       "\\.(less|css)$": "jest-less-loader",
       "\\.svg$": "jest-raw-loader"

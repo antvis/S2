@@ -20,7 +20,10 @@
     "pivot table"
   ],
   "scripts": {
-    "core:start": "cd ./packages/s2-core && npm run start",
+    "clean": "rm -rf node_modules/",
+    "install": "tnpm i && cd ./packages/s2-core && tnpm i",
+    "core:start": "cd ./packages/s2-core && npm run test_live",
+    "core:build": "cd ./packages/s2-core && npm run build",
     "site:start": "cd ./s2-site && npm run start",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "pretty-quick": "pretty-quick",
