@@ -5,15 +5,15 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 
 module.exports = {
   entry: {
-    spreadsheet: './src/index.ts',
+    S2: './src/index.ts',
   },
   mode: 'production',
   devtool: 'source-map',
   output: {
     filename: '[name].min.js',
-    library: 'SpreadSheet',
+    library: 'S2',
     libraryTarget: 'commonjs2',
-    path: require('path').resolve(__dirname, './dist'),
+    path: resolve(__dirname, './dist'),
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.less'],
