@@ -2,6 +2,7 @@ import EE from '@antv/event-emitter';
 import { Canvas, IGroup } from '@antv/g-canvas';
 import * as _ from 'lodash';
 import { Store } from '../common/store';
+import { ext } from '@antv/matrix-util';
 import {
   ColWidthCache,
   DataCfg,
@@ -41,6 +42,8 @@ import { StrategyDataCell } from '../cell';
 import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
 import { DefaultStyleCfg } from '../common/default-style-cfg';
+
+const matrixTransform = ext.transform;
 
 /**
  * Create By Bruce Too
@@ -113,6 +116,8 @@ export default abstract class BaseSpreadSheet extends EE {
   // 是否需要使用view meta的cache(目前的场景 树结构collapse, 宽、高拖拽拽)，一次性消费
   public needUseCacheMeta: boolean;
 
+  public devicePixelRatioMedia: MediaQueryList;
+
   protected constructor(
     dom: string | HTMLElement,
     dataCfg: DataCfg,
@@ -127,6 +132,7 @@ export default abstract class BaseSpreadSheet extends EE {
     this.dataSet = this.initDataSet(this.options);
     this.tooltip = this.initTooltip();
     this.registerInteractions(this.options);
+    this.initDevicePixelRatioListener();
   }
 
   safetyDataCfg = (dataCfg: DataCfg): DataCfg => {
@@ -396,6 +402,7 @@ export default abstract class BaseSpreadSheet extends EE {
     this.tooltip.destroy();
     this.cellCache.clear();
     this.viewMetaCache.clear();
+    this.removeDevicePixelRatioListener();
   }
 
   /**
@@ -600,4 +607,44 @@ export default abstract class BaseSpreadSheet extends EE {
   public isValueInCols(): boolean {
     return this.options.valueInCols;
   }
+
+  private initDevicePixelRatioListener() {
+    this.devicePixelRatioMedia = window.matchMedia(
+      `(resolution: ${window.devicePixelRatio}dppx)`,
+    );
+    if (this.devicePixelRatioMedia?.addEventListener) {
+      this.devicePixelRatioMedia.addEventListener(
+        'change',
+        this.renderByDevicePixelRatio,
+      );
+    } else {
+      this.devicePixelRatioMedia.addListener(this.renderByDevicePixelRatio);
+    }
+  }
+
+  private removeDevicePixelRatioListener() {
+    if (this.devicePixelRatioMedia?.removeEventListener) {
+      this.devicePixelRatioMedia.removeEventListener(
+        'change',
+        this.renderByDevicePixelRatio,
+      );
+    } else {
+      this.devicePixelRatioMedia.removeListener(this.renderByDevicePixelRatio);
+    }
+  }
+
+  private renderByDevicePixelRatio = () => {
+    const { width, height } = this.options;
+    const ratio = window.devicePixelRatio;
+    const newWidth = Math.floor(width * ratio);
+    const newHeight = Math.floor(height * ratio);
+
+    this.container.resetMatrix();
+    this.container.set('pixelRatio', ratio);
+    this.container.changeSize(newWidth, newHeight);
+
+    matrixTransform(this.container.getMatrix(), [['scale', ratio, ratio]]);
+
+    this.render(false);
+  };
 }
