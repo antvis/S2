@@ -1,24 +1,32 @@
-import * as _ from 'lodash';
+import { isEmpty } from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Aggregation } from '../interface';
 import { BaseSpreadSheet } from '../../sheet-type';
 import { TooltipDetail } from './components/detail';
 import { Operator as TooltipOperator } from './components/operator';
+import { Infos } from './components/infos';
 import { TooltipSummary } from './components/summary';
-import './index.less';
+import { TooltipHeadInfo } from './components/head-info';
+import { Interpretation } from './components/interpretation';
 import {
   DataItem,
   ListItem,
   Position,
   SummaryProps,
   TooltipOptions,
+  HeadInfo,
+  ShowProps,
 } from './interface';
+import {
+  getPosition,
+  getOptions,
+  shouldIgnore,
+  manageContainerStyle,
+} from '../../utils/tooltip';
+import { CONTAINER_CLASS, DIVIDER_CLASS } from './constant';
 
-const CONTAINER_CLASS = 'eva-facet-tooltip';
-const DIVIDER_CLASS = 'eva-facet-tooltip-divider';
-const PositionXOffset = 10;
-const PositionYOffset = 10;
+import './index.less';
 
 /**
  * Base tooltips component
@@ -26,19 +34,14 @@ const PositionYOffset = 10;
 export abstract class BaseTooltip {
   // the type of Spreadsheet
   public spreadsheet: BaseSpreadSheet;
-
   // the type of aggregation, 'SUM' by default
   public aggregation: Aggregation = 'SUM';
-
   // the base container element
   protected container: HTMLElement;
-
   // react component
-  private tooltipComponent: any;
-
+  private _tooltipComponent: any;
   // mark if can enter into tooltips
-  private enterable = false;
-
+  private enterable: boolean = false;
   // tooltips position info
   protected position: Position = { x: 0, y: 0 };
 
@@ -54,33 +57,29 @@ export abstract class BaseTooltip {
    * @param options {@link TooltipOptions}
    * @param element
    */
-  public show(
-    position: Position,
-    data?: DataItem,
-    options?: TooltipOptions,
-    element?: React.ReactElement,
-  ) {
-    const { enterable } = this.getOptions(options);
-    const container = this.getContainer(options);
-    if (this.shouldIgnore(enterable, position)) {
+  public show(showOptions: ShowProps) {
+    const { position, data, options, element } = showOptions;
+    const { enterable } = getOptions(options);
+    const container = this.getContainer();
+    if (this.enterable && shouldIgnore(enterable, position, this.position)) {
       return;
+    } else {
+      this.enterable = enterable;
+      this.position = position;
     }
-    this.enterable = enterable;
-    this.position = position;
 
-    container.style.pointerEvents = enterable ? 'all' : 'none';
-    container.style.display = 'inline-block';
+    manageContainerStyle(container, {
+      pointerEvents: enterable ? 'all' : 'none',
+      display: 'inline-block',
+    });
 
-    if (this.tooltipComponent) {
-      ReactDOM.unmountComponentAtNode(container);
-    }
-    this.tooltipComponent = element
-      ? ReactDOM.render(this.renderComponent(element), container)
-      : ReactDOM.render(this.renderContent(data, options), container);
-    // 内容渲染完成后在调整位置
-    const { x, y } = this.getPosition(position);
-    container.style.left = `${x}px`;
-    container.style.top = `${y}px`;
+    this.unMountComponent(container);
+    this._tooltipComponent = element
+      ? ReactDOM.render(element, container)
+      : ReactDOM.render(this.renderContent(data, options), container); // 内容渲染完成后在调整位置
+    const { x, y } = getPosition(position, this.container);
+
+    manageContainerStyle(container, { left: `${x}px`, top: `${y}px` });
   }
 
   /**
@@ -88,13 +87,10 @@ export abstract class BaseTooltip {
    */
   public hide() {
     const container = this.getContainer();
-    container.style.display = 'none';
-    container.style.pointerEvents = 'none';
+    manageContainerStyle(container, { pointerEvents: 'none', display: 'none' });
     this.enterable = false;
     this.position = { x: 0, y: 0 };
-    if (this.tooltipComponent) {
-      ReactDOM.unmountComponentAtNode(container);
-    }
+    this.unMountComponent(container);
   }
 
   public destroy() {
@@ -103,69 +99,82 @@ export abstract class BaseTooltip {
     }
   }
 
-  /** hover 的数据是否是选中的 */
-  protected isHoverDataInSelectedData(
-    selectedData: DataItem[],
-    hoverData: DataItem,
-  ): boolean {
-    return _.some(selectedData, (dataItem: DataItem): boolean =>
-      _.isEqual(dataItem, hoverData),
-    );
-  }
-
-  /** 计算聚合值 */
-  protected getAggregationValue(data, field: string): number {
-    if (this.aggregation === 'SUM') {
-      return _.sumBy(data, (datum) => {
-        const v = _.get(datum, field, 0);
-        return _.isNil(v) ? 0 : Number.parseFloat(v);
-      });
-    }
-    return 0;
-  }
-
-  /** 是否显示概要信息 */
-  protected shouldShowSummary(
-    hoverData: DataItem,
-    selectedData: DataItem[],
-    options: TooltipOptions,
-  ): boolean {
-    const { actionType } = options;
-
-    const showSummary =
-      actionType === 'cellHover'
-        ? this.isHoverDataInSelectedData(selectedData, hoverData)
-        : true;
-
-    return !_.isEmpty(selectedData) && showSummary;
-  }
-
   protected renderContent(data?: DataItem, options?: TooltipOptions) {
-    const optionsIn = this.getOptions(options);
-    // FIXME: 若有性能瓶颈则考虑复用 tooltipComponent
-    const operation = this.getOperation(data, optionsIn);
-    const summary = this.getSummary(data, optionsIn);
-    const detail = this.renderDetail(data, options);
-    const divider =
-      summary && detail ? <div className={DIVIDER_CLASS} /> : null;
+    const _options = getOptions(options);
+    // FIXME: 若有性能瓶颈则考虑复用 _tooltipComponent
+    const operation = this.renderOperation(_options);
+    const summary = this.renderSummary(data, _options);
+    const interpretation = this.renderInterpretation(_options);
+    const detail = this.renderDetail(data, _options);
+    const headInfo = this.renderHeadInfo(data, _options);
+    const infos = this.renderInfos(_options);
     return (
       <div>
         {operation}
         {summary}
-        {divider}
+        {interpretation}
+        {headInfo}
         {detail}
+        {infos}
       </div>
     );
   }
 
-  protected renderComponent(element?: React.ReactElement) {
-    return element;
+  protected renderDivider() {
+    return <div className={DIVIDER_CLASS} />;
+  }
+
+  protected renderOperation(options?: TooltipOptions) {
+    const { operator } = options;
+
+    return (
+      operator && (
+        <TooltipOperator onClick={operator.onClick} menus={operator.menus} />
+      )
+    );
+  }
+
+  protected renderSummary(data: DataItem, options: TooltipOptions) {
+    const props = this.getSummaryProps(data, options);
+
+    return !isEmpty(props) && <TooltipSummary {...props} />;
+  }
+
+  protected renderHeadInfo(data: DataItem, options: TooltipOptions) {
+    const { cols, rows } = this.getHeadInfo(data, options);
+
+    return (
+      (!isEmpty(cols) || !isEmpty(rows)) && (
+        <>
+          {this.renderDivider()}
+          <TooltipHeadInfo cols={cols} rows={rows} />
+        </>
+      )
+    );
   }
 
   protected renderDetail(data?: DataItem, options?: TooltipOptions) {
-    const optionsIn = this.getOptions(options);
-    return this.getDetail(data, optionsIn);
+    const detailList = this.getDetailList(data, options);
+
+    return !isEmpty(detailList) && <TooltipDetail list={detailList} />;
   }
+
+  protected renderInfos(options?: TooltipOptions) {
+    const { infos } = options || {};
+
+    return infos && <Infos infos={infos} />;
+  }
+
+  protected renderInterpretation(options?: TooltipOptions) {
+    const { interpretation } = options;
+
+    return interpretation && <Interpretation {...interpretation} />;
+  }
+
+  protected abstract getHeadInfo(
+    hoverData: DataItem,
+    options?: TooltipOptions,
+  ): HeadInfo;
 
   protected abstract getDetailList(
     hoverData: DataItem,
@@ -177,20 +186,10 @@ export abstract class BaseTooltip {
     options: TooltipOptions,
   ): SummaryProps;
 
-  // get non-null default options
-  protected getOptions(options?: TooltipOptions) {
-    return {
-      actionType: '',
-      operator: { onClick: _.noop, menus: [] },
-      enterable: true,
-      ...options,
-    } as TooltipOptions;
-  }
-
   /**
    * ToolTips container element
    */
-  protected getContainer(options?: TooltipOptions): HTMLElement {
+  protected getContainer(): HTMLElement {
     if (!this.container) {
       // create a new div as container
       const container = document.createElement('div');
@@ -198,105 +197,13 @@ export abstract class BaseTooltip {
       this.container = container;
     }
     // change class every time!
-    this.container.className = this.getContainerClass(options);
+    this.container.className = CONTAINER_CLASS;
     return this.container;
   }
 
-  protected getContainerClass(options?: TooltipOptions) {
-    return CONTAINER_CLASS;
-  }
-
-  /**
-   * Get top operation component
-   * @param hoverData useless now
-   * @param options tooltips option
-   * @private
-   */
-  private getOperation(
-    hoverData: DataItem,
-    options: TooltipOptions,
-  ): JSX.Element {
-    const { operator } = options;
-    if (operator) {
-      const { onClick, menus } = operator;
-      return <TooltipOperator onClick={onClick} menus={menus} />;
+  protected unMountComponent(container?: HTMLElement) {
+    if (this._tooltipComponent) {
+      ReactDOM.unmountComponentAtNode(container);
     }
-    return null;
-  }
-
-  /**
-   * Get summary component
-   * @param hoverData
-   * @param options
-   * @private
-   */
-  private getSummary(
-    hoverData: DataItem,
-    options: TooltipOptions,
-  ): JSX.Element {
-    const props = this.getSummaryProps(hoverData, options);
-
-    if (_.isEmpty(props)) {
-      return null;
-    }
-
-    return <TooltipSummary {...props} />;
-  }
-
-  /**
-   * Get detail component(list component)
-   * @param hoverData
-   * @param options
-   * @private
-   */
-  private getDetail(hoverData: DataItem, options: TooltipOptions): JSX.Element {
-    const detailList = this.getDetailList(hoverData, options);
-
-    if (_.isEmpty(detailList)) {
-      return null;
-    }
-
-    return <TooltipDetail list={detailList} />;
-  }
-
-  /**
-   * Calculate tooltips's display position, to ensure display completely
-   * @param position originPosition
-   * @param viewportContainer
-   */
-  protected getPosition(
-    position: Position,
-    viewportContainer: HTMLElement = document.body,
-  ): Position {
-    const tooltipBCR = this.container.getBoundingClientRect();
-    const viewportBCR = viewportContainer.getBoundingClientRect();
-    let x = position.x + PositionXOffset;
-    let y = position.y + PositionYOffset;
-
-    if (x + tooltipBCR.width > viewportBCR.width) {
-      x = viewportBCR.width - tooltipBCR.width - 2;
-    }
-
-    if (y + tooltipBCR.height > viewportBCR.height) {
-      y = viewportBCR.height - tooltipBCR.height - 2;
-    }
-
-    return {
-      x,
-      y,
-      tipHeight: tooltipBCR.height,
-    };
-  }
-
-  private shouldIgnore(enterable, position: Position): boolean {
-    if (this.enterable && enterable) {
-      if (
-        Math.abs(position.x - this.position.x) < 20 &&
-        Math.abs(position.y - this.position.y) < 20
-      ) {
-        return true;
-      }
-    }
-    return false;
   }
 }

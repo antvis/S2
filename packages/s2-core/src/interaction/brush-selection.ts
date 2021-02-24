@@ -115,10 +115,13 @@ export class BrushSelection extends HoverInteraction {
       this.endOriginEvent = ev.originalEvent;
       const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
       this.getSelectedCells(brushRegion);
-      this.showTooltip({
-        x: this.endOriginEvent.clientX,
-        y: this.endOriginEvent.clientY,
-      });
+      const showOptions = {
+        position: {
+          x: this.endOriginEvent.clientX,
+          y: this.endOriginEvent.clientY,
+        },
+      };
+      this.showTooltip(showOptions);
       // 透明度为0会导致 hover 无法响应
       this.regionShape.attr({
         opacity: 0,

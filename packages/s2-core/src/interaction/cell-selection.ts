@@ -1,4 +1,4 @@
-import { Event, Group } from '@antv/g-canvas';
+import { Event } from '@antv/g-canvas';
 import * as _ from 'lodash';
 import { isSelected } from '../utils/selected';
 import { Cell } from '../cell';
@@ -80,11 +80,16 @@ export class CellSelection extends HoverInteraction {
         if (cellOperator) {
           operator = cellOperator;
         }
-        this.showTooltip(position, hoveringCellData, {
-          actionType: 'cellSelection',
-          isTotals,
-          operator,
-        });
+        const showOptions = {
+          position,
+          data: hoveringCellData,
+          options: {
+            actionType: 'cellSelection',
+            isTotals,
+            operator,
+          },
+        };
+        this.showTooltip(showOptions);
       }
     }
 

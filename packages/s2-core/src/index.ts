@@ -21,7 +21,6 @@ export * from './sheet-type';
 export * from './data-set';
 export * from './interaction';
 export * from './tooltip';
-export * from './common/tooltip/interface';
 export * from './common/constant';
 export * from './theme/interface';
 export * from './interaction/row-col-resize';

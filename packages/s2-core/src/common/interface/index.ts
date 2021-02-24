@@ -147,6 +147,17 @@ export interface Totals {
   readonly col?: Partial<Readonly<Total>>;
 }
 
+export interface Tooltip {
+  readonly showTooltip?: boolean;
+  readonly showOperation?: boolean;
+  readonly showSummary?: boolean;
+  readonly showDetail?: boolean;
+  readonly showInfos?: boolean;
+  readonly row?: Tooltip;
+  readonly col?: Tooltip;
+  readonly cell?: Tooltip;
+}
+
 export interface SortParam {
   /** 字段id，业务中一般是displayId */
   sortFieldId: string;
@@ -226,6 +237,7 @@ export interface SpreadsheetOptions {
   readonly conditions?: Conditions;
   // total config
   readonly totals?: Totals;
+  readonly tooltip?: Tooltip;
   // link field ids
   readonly linkFieldIds?: string[];
   // pagination config

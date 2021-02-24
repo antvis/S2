@@ -1,31 +1,11 @@
 import { Menu } from 'antd';
-import * as _ from 'lodash';
+import { size, map } from 'lodash';
 import * as React from 'react';
 import { getIcon, HtmlIcon } from '../../../icons';
+import { IMenu, IOperatorProps } from '../../interface';
+import { DEFAULT_ICON_PROPS, ICON_CLASS } from '../../constant';
 
 import './index.less';
-
-const DefaultIconProps = {
-  width: 14,
-  height: 14,
-  style: {
-    verticalAlign: 'sub',
-    marginRight: 4,
-  },
-};
-
-export interface IMenu {
-  readonly id: string; // 菜单的 id
-  readonly icon?: any; // 菜单的 icon
-  readonly text?: string; // 菜单的 文本
-  readonly children?: IMenu[]; // 二级菜单，TODO 理论上支持无限嵌套，目前仅仅测试了二级菜单
-}
-
-export interface IOperatorProps {
-  // 点击之后的回调
-  readonly onClick: (...params) => void;
-  readonly menus: IMenu[];
-}
 
 /**
  * tooltip 的菜单栏！
@@ -46,22 +26,22 @@ export class Operator extends React.PureComponent<IOperatorProps> {
     this.props.onClick(key, domEvent);
   };
 
-  renderIcon = (icon): JSX.Element => {
-    const CLS = 'eva-tooltip-operator-icon';
-
+  public renderIcon(icon): JSX.Element {
     if (getIcon(icon)) {
-      return <HtmlIcon className={CLS} type={icon} {...DefaultIconProps} />;
+      return (
+        <HtmlIcon className={ICON_CLASS} type={icon} {...DEFAULT_ICON_PROPS} />
+      );
     }
 
     const Component = icon;
-    return icon ? <Component className={CLS} /> : null;
-  };
+    return icon && <Component className={ICON_CLASS} />;
+  }
 
   public renderMenu(menu: IMenu): JSX.Element {
     const { id, icon, text, children } = menu;
 
     // 1. 如果存在子菜单，在使用 SubMenu
-    if (_.size(children)) {
+    if (size(children)) {
       const subMenuTitle = (
         <span className="submenu-title-wrapper">
           {text}
@@ -75,7 +55,7 @@ export class Operator extends React.PureComponent<IOperatorProps> {
           key={id}
           popupClassName="eva-tooltip-menu-submenu-popup"
         >
-          {_.map(children, (m: IMenu) => this.renderMenu(m))}
+          {map(children, (m: IMenu) => this.renderMenu(m))}
         </Menu.SubMenu>
       );
     }
@@ -98,7 +78,7 @@ export class Operator extends React.PureComponent<IOperatorProps> {
         onClick={this.onMenuClick}
         mode="horizontal"
       >
-        {_.map(menus, (menu: IMenu) => this.renderMenu(menu))}
+        {map(menus, (menu: IMenu) => this.renderMenu(menu))}
       </Menu>
     );
   }
@@ -106,18 +86,10 @@ export class Operator extends React.PureComponent<IOperatorProps> {
   public render(): JSX.Element {
     const { menus } = this.props;
 
-    // 没有菜单的时候，就都不显示了！
-    if (_.size(menus) === 0) {
-      return null;
-    }
-
     return (
-      <div className="eva-facet-tooltip-operator">
-        {this.renderMenus()}
-        {/* <span className="operation-button">仅显示</span> */}
-        {/* <span className="operation-button">排除</span> */}
-        {/* <span className="operation-button"><Icon type="table" /></span> */}
-      </div>
+      size(menus) !== 0 && (
+        <div className="eva-facet-tooltip-operator">{this.renderMenus()}</div>
+      )
     );
   }
 }

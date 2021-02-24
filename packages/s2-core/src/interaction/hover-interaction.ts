@@ -1,9 +1,8 @@
-import { Point } from '@antv/g-canvas';
 import * as _ from 'lodash';
-import { DataItem, TooltipOptions } from '../index';
 import { Cell } from '../cell';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { BaseInteraction } from './base';
+import { ShowProps } from '../common/tooltip/interface';
 
 /**
  * Base interaction for that contains hover&tooltips behaviors,
@@ -48,13 +47,9 @@ export class HoverInteraction extends BaseInteraction {
     }
   }
 
-  protected showTooltip(
-    position: Point,
-    hoverData?: DataItem,
-    options?: TooltipOptions,
-  ) {
+  protected showTooltip(showOptions: ShowProps) {
     if (!_.get(this, 'spreadsheet.options.hideTooltip')) {
-      this.spreadsheet.tooltip.show(position, hoverData, options);
+      this.spreadsheet.tooltip.show(showOptions);
     }
   }
 

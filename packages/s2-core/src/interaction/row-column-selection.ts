@@ -141,11 +141,16 @@ export class RowColumnSelection extends HoverInteraction {
         const hoveringCellData = _.get(meta, 'query') || {
           [_.get(meta, 'key')]: _.get(meta, 'value'),
         };
-        this.showTooltip(position, hoveringCellData, {
-          actionType,
-          operator: this.getSortOperator(showSortOperations),
-          enterable,
-        });
+        const showOptions = {
+          position,
+          data: hoveringCellData,
+          options: {
+            actionType,
+            operator: this.getSortOperator(showSortOperations),
+            enterable,
+          },
+        };
+        this.showTooltip(showOptions);
       }
     }
   }

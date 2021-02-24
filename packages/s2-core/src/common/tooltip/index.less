@@ -1,7 +1,7 @@
 .eva-facet-tooltip {
   // pointer-events: none;
   position: fixed;
-  min-width: 160px;
+  min-width: 200px;
   max-width: 640px;
   // 暂时先加上一个z-index
   z-index: 1024;
@@ -47,6 +47,21 @@
     }
   }
 
+  .eva-facet-tooltip-infos {
+    padding: 4px 12px;
+    line-height: 20px;
+    font-size: 12px;
+    color: #666666;
+    letter-spacing: -0.2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow-wrap: break-word;
+    background: rgba(249, 249, 249, 0.96);
+  }
+
   .eva-facet-tooltip-summary {
     text-align: left;
     line-height: 20px;
@@ -60,6 +75,33 @@
     .eva-facet-tooltip-summary-val {
       float: right;
     }
+  }
+
+  .eva-facet-tooltip-interpretation {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.65);
+    overflow: hidden;
+    padding: 12px 12px 4px;
+    .eva-facet-tooltip-interpretation-head {
+      margin-bottom: 12px;
+      .eva-facet-tooltip-interpretation-icon {
+        width: 14px;
+        height: 14px;
+      }
+      .eva-facet-tooltip-interpretation-name {
+        color: #000000;
+      }
+    }
+  }
+
+  .eva-facet-tooltip-head-info-list {
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    color: #a2a2a2;
+    letter-spacing: 0;
+    text-align: left;
+    padding: 12px 12px 4px;
+    line-height: 20px;
   }
 
   .eva-facet-tooltip-bold {

@@ -1,38 +1,44 @@
-import * as _ from 'lodash';
+import * as React from 'react';
+import {
+  isNil,
+  size,
+  filter,
+  concat,
+  compact,
+  map,
+  isEqual,
+  forEach,
+  get,
+  isArray,
+  isObject,
+  uniq,
+} from 'lodash';
 import { BaseTooltip } from '../common/tooltip';
 import { i18n } from '../common/i18n';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
-import * as React from 'react';
 import { SimpleTips } from '../common/tooltip/components/simple-tips';
 import {
-  ListItem,
-  SummaryProps,
-  DataItem,
-  TooltipOptions,
-  Position,
-} from '../index';
-
-/* 美化 */
-const getFriendlyVal = (val: any): number | string => {
-  const isInvalidNumber = _.isNumber(val) && _.isNaN(val);
-  const isEmptyString = val === '';
-  return _.isNil(val) || isInvalidNumber || isEmptyString ? '-' : val;
-};
+  getAggregationValue,
+  shouldShowSummary,
+  getPosition,
+  getFriendlyVal,
+  manageContainerStyle,
+} from '../utils/tooltip';
+import { ListItem, SummaryProps, DataItem, TooltipOptions, HeadInfo } from '..';
+import { ShowProps } from '../common/tooltip/interface';
 
 export class NormalTooltip extends BaseTooltip {
-  show(
-    position: Position,
-    data?: Record<string, any>,
-    options?: TooltipOptions,
-    element?: React.ReactElement,
-  ) {
-    super.show(position, data, options, element);
+  show(showOptions: ShowProps) {
+    const { options } = showOptions;
+    super.show(showOptions);
     if (options) {
       const { singleTips } = options;
       if (singleTips) {
-        const { x, y, tipHeight } = this.getPosition(this.position);
-        this.container.style.left = `${x - 100}px`;
-        this.container.style.top = `${y - tipHeight * 1.7}px`;
+        const { x, y, tipHeight } = getPosition(this.position, this.container);
+        manageContainerStyle(this.container, {
+          left: `${x - 100}px`,
+          top: `${y - tipHeight * 1.7}px`,
+        });
       }
     }
   }
@@ -45,15 +51,16 @@ export class NormalTooltip extends BaseTooltip {
     const valueFields = this.getSelectedValueFields(selectedData);
 
     if (
-      this.shouldShowSummary(hoverData, selectedData, options) &&
-      _.size(valueFields) > 0
+      shouldShowSummary(hoverData, selectedData, options) &&
+      size(valueFields) > 0
     ) {
       const firstField = valueFields[0];
       const firstFormatter = this.getFieldFormatter(firstField);
       const name = this.getSummaryName(valueFields, firstField, hoverData);
-      let aggregationValue = this.getAggregationValue(
+      let aggregationValue = getAggregationValue(
         selectedData,
         VALUE_FIELD,
+        this.aggregation,
       );
       aggregationValue = parseFloat(aggregationValue.toPrecision(12)); // 解决精度问题.
       const value = firstFormatter(aggregationValue);
@@ -74,10 +81,37 @@ export class NormalTooltip extends BaseTooltip {
       const { singleTips } = options;
       if (singleTips) {
         return <SimpleTips tips={data.tips} />;
+      } else {
+        return super.renderContent(data, options);
       }
+    } else {
       return super.renderContent(data, options);
     }
-    return super.renderContent(data, options);
+  }
+
+  protected getFieldList(fields: string[], hoverData: DataItem): ListItem[] {
+    const currFields = filter(
+      concat([], fields),
+      (field) => field !== EXTRA_FIELD && hoverData[field],
+    );
+    const fieldList = map(
+      currFields,
+      (field: string): ListItem => {
+        return this.getListItem(hoverData, field);
+      },
+    );
+    return fieldList;
+  }
+
+  protected getHeadInfo(hoverData: DataItem): HeadInfo {
+    if (hoverData) {
+      const colList = this.getFieldList(this.getColumnFields(), hoverData);
+      const rowList = this.getFieldList(this.getRowFields(), hoverData);
+
+      return { cols: colList, rows: rowList };
+    }
+
+    return { cols: [], rows: [] };
   }
 
   protected getDetailList(
@@ -86,25 +120,12 @@ export class NormalTooltip extends BaseTooltip {
   ): ListItem[] {
     if (hoverData) {
       const { isTotals } = options;
-      const colRowFields = _.filter(
-        _.concat([], this.getColumnFields(), this.getRowFields()),
-        (field) => field !== EXTRA_FIELD && hoverData[field],
-      );
-      const colRowList = _.map(
-        colRowFields,
-        (field: string): ListItem => {
-          return this.getListItem(hoverData, field);
-        },
-      );
+
       let valItem = [];
       if (isTotals) {
         // 小计总计
         valItem.push(
-          this.getListItem(
-            hoverData,
-            TOTAL_VALUE,
-            _.get(hoverData, VALUE_FIELD),
-          ),
+          this.getListItem(hoverData, TOTAL_VALUE, get(hoverData, VALUE_FIELD)),
         );
       } else {
         const field = hoverData[EXTRA_FIELD];
@@ -121,7 +142,7 @@ export class NormalTooltip extends BaseTooltip {
           // tooltip需要显示所有的衍生指标值
           if (
             derivedValue.derivedValueField.length > 1 &&
-            !_.isEqual(
+            !isEqual(
               derivedValue.derivedValueField,
               derivedValue.displayDerivedValueField,
             ) &&
@@ -131,23 +152,21 @@ export class NormalTooltip extends BaseTooltip {
           }
         } else {
           // 数值挂在行头，需要将所有的衍生指标展示
-          // eslint-disable-next-line no-lonely-if
           if (derivedValue.derivedValueField.length > 0) {
             valItem = this.getDerivedItemList(valItem, derivedValue, hoverData);
           }
         }
       }
 
-      return _.compact(_.concat([], colRowList, [...valItem]));
+      return compact(concat([], [...valItem]));
     }
   }
 
   private getDerivedItemList(valItem, derivedValue, hoverData: DataItem) {
     // 替换掉之前的valItem
-    // eslint-disable-next-line no-param-reassign
-    valItem = _.map(derivedValue.derivedValueField, (dv) => {
+    valItem = map(derivedValue.derivedValueField, (value: any) => {
       // if (hoverData[derivedValue]) { //  -- 不为空
-      return this.getListItem(hoverData, dv);
+      return this.getListItem(hoverData, value);
       // }
     });
     // 将主指标加进去 -- 不为空
@@ -157,14 +176,14 @@ export class NormalTooltip extends BaseTooltip {
     return valItem;
   }
 
-  private getListItem(
+  protected getListItem(
     data: DataItem,
     field: string,
     valueField?: string,
   ): ListItem {
     const name = this.getFieldName(field);
     const formatter = this.getFieldFormatter(field);
-    const value = formatter(valueField || data[field]);
+    const value = formatter(valueField ? valueField : data[field]);
     let icon;
     if (this.spreadsheet.isDerivedValue(field)) {
       if (data[field]) {
@@ -183,11 +202,11 @@ export class NormalTooltip extends BaseTooltip {
   }
 
   protected getColumnFields(): string[] {
-    return _.get(this.spreadsheet.dataSet.fields, 'columns', []);
+    return get(this.spreadsheet.dataSet.fields, 'columns', []);
   }
 
   // tslint:disable-next-line:ban-types
-  protected getFieldFormatter(field: string): (v) => any {
+  protected getFieldFormatter(field: string): Function {
     const formatter = this.spreadsheet.dataSet.getFieldFormatter(field);
 
     return (v: any) => {
@@ -200,7 +219,7 @@ export class NormalTooltip extends BaseTooltip {
   }
 
   protected getRowFields(): string[] {
-    return _.get(this.spreadsheet.dataSet.fields, 'rows', []);
+    return get(this.spreadsheet.dataSet.fields, 'rows', []);
   }
 
   private getSelectedData(): DataItem[] {
@@ -210,12 +229,12 @@ export class NormalTooltip extends BaseTooltip {
 
     const selectedData = [];
 
-    _.forEach(selectedCellIndexes, ([i, j]) => {
+    forEach(selectedCellIndexes, ([i, j]) => {
       const viewMeta = layoutResult.getViewMeta(i, j);
 
-      const data = _.get(viewMeta, 'data[0]');
+      const data = get(viewMeta, 'data[0]');
 
-      if (!_.isNil(data)) {
+      if (!isNil(data)) {
         selectedData.push(data);
       }
     });
@@ -228,49 +247,48 @@ export class NormalTooltip extends BaseTooltip {
 
     const selected = this.spreadsheet.store.get('selected');
 
-    if (_.isObject(selected)) {
-      const { type, indexes } = selected as any;
+    if (isObject(selected)) {
+      // @ts-ignore
+      const { type, indexes } = selected;
       let [ii, jj] = indexes;
       if (type === 'brush' || type === 'cell') {
-        const selectedIndexes = [];
-        ii = _.isArray(ii) ? ii : [ii, ii];
-        jj = _.isArray(jj) ? jj : [jj, jj];
+        const selectedIds = [];
+        ii = isArray(ii) ? ii : [ii, ii];
+        jj = isArray(jj) ? jj : [jj, jj];
 
         for (let i = ii[0]; i <= ii[1]; i++) {
           for (let j = jj[0]; j <= jj[1]; j++) {
-            selectedIndexes.push([i, j]);
+            selectedIds.push([i, j]);
           }
         }
-        return selectedIndexes;
+        return selectedIds;
       }
       // 选择行或者列
-      const sies = [];
+      const selectedIndexes = [];
       const leftNodes = type === 'row' ? colLeafNodes : rowLeafNodes;
       let indexs = type === 'row' ? ii : jj;
 
-      _.map(leftNodes, (row, idx) => {
-        indexs = _.isArray(indexs) ? indexs : [indexs, indexs];
+      map(leftNodes, (row, idx) => {
+        indexs = isArray(indexs) ? indexs : [indexs, indexs];
         for (let i = indexs[0]; i <= indexs[1]; i++) {
-          sies.push([i, idx]);
+          selectedIndexes.push([i, idx]);
         }
       });
-      return sies;
+      return selectedIndexes;
     }
 
     return [];
   }
 
   private getSelectedValueFields(selectedData: DataItem[]): string[] {
-    // return [ _.get(selectedData, [ 0, EXTRA_FIELD ]) ]; // 返回第一个的类型吗...
-    return _.uniq(selectedData.map((d) => d[EXTRA_FIELD]));
+    // return [ get(selectedData, [ 0, EXTRA_FIELD ]) ]; // 返回第一个的类型吗...
+    return uniq(selectedData.map((d) => d[EXTRA_FIELD]));
   }
-
   private getSummaryName(valueFields, firstField, hoverData): string {
     // 总计/小计场景显示“总计、小计”；圈选多个时候显示“度量”
-    // eslint-disable-next-line no-nested-ternary
-    return _.size(valueFields) !== 1
+    return size(valueFields) !== 1
       ? i18n('度量')
-      : _.get(hoverData, 'isGrandTotals')
+      : get(hoverData, 'isGrandTotals')
       ? i18n('总计')
       : this.getFieldName(firstField);
   }

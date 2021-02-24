@@ -1,28 +1,21 @@
-import * as _ from 'lodash';
+import { find, get, isEqual } from 'lodash';
 import * as React from 'react';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { HtmlIcon } from '../../icons';
-import { OperationProps, OperationState } from '../interface';
-
-const CONTAINER_CLASS = 'eva-facet-tooltip-operation';
-interface OrderOption {
-  sortMethod: 'ASC' | 'DESC';
-  type: 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
-  name: string;
-}
-const ORDER_OPTIONS: OrderOption[] = [
-  { sortMethod: 'ASC', type: 'groupAsc', name: '组内升序' },
-  { sortMethod: 'DESC', type: 'groupDesc', name: '组内降序' },
-  { sortMethod: null, type: 'none', name: '不排序' },
-];
+import { OperationProps, OperationState, OrderOption } from '../interface';
+import {
+  OPERATION_CONTAINER_CLASS,
+  ORDER_OPTIONS,
+  DEFAULT_ICON_PROPS,
+} from '../constant';
 
 export class TooltipOperation extends React.PureComponent<
   OperationProps,
   OperationState
 > {
   state = {
-    sortParam: this.props.plot.store.get('sortParam'),
+    sortParam: this.props.plot?.store?.get('sortParam'),
   };
 
   constructor(props) {
@@ -32,14 +25,14 @@ export class TooltipOperation extends React.PureComponent<
   handleSelectOrder = ({ key: type }) => {
     const { plot, sortFieldId, sortQuery } = this.props;
     // 刷新数据
-    const selectedOption = _.find(ORDER_OPTIONS, { type }) as OrderOption;
+    const selectedOption = find(ORDER_OPTIONS, { type }) as OrderOption;
     const sortParam =
       type === 'none'
         ? null
         : {
             type,
             sortFieldId,
-            sortMethod: _.get(selectedOption, 'sortMethod'),
+            sortMethod: get(selectedOption, 'sortMethod'),
             query: sortQuery,
           };
     // 排序条件，存到 store 中
@@ -59,25 +52,16 @@ export class TooltipOperation extends React.PureComponent<
   };
 
   getSortSelection = () => {
-    const { plot, sortFieldId, sortQuery } = this.props;
-    // const sortParam = plot.store.get('sortParam');
+    const { sortQuery } = this.props;
     const sortParam = this.state.sortParam;
     let selectedSortMethod = null;
-    if (sortParam && _.isEqual(_.get(sortParam, 'query'), sortQuery)) {
-      selectedSortMethod = _.get(sortParam, 'sortMethod', null);
+    if (sortParam && isEqual(get(sortParam, 'query'), sortQuery)) {
+      selectedSortMethod = get(sortParam, 'sortMethod', null);
     }
-    const selectedSortOption = _.find(ORDER_OPTIONS, {
+    const selectedSortOption = find(ORDER_OPTIONS, {
       sortMethod: selectedSortMethod,
     });
-    const selectedSortName = _.get(selectedSortOption, 'name');
-    const htmlIconProps = {
-      width: 14,
-      height: 14,
-      style: {
-        verticalAlign: 'sub',
-        marginRight: 4,
-      },
-    };
+    const selectedSortName = get(selectedSortOption, 'name');
     const menu = (
       <Menu
         selectedKeys={[selectedSortMethod]}
@@ -86,7 +70,7 @@ export class TooltipOperation extends React.PureComponent<
         {ORDER_OPTIONS.map((o: OrderOption) => {
           return (
             <Menu.Item className="operation-item" key={o.type}>
-              <HtmlIcon type={o.type} {...htmlIconProps} />
+              <HtmlIcon type={o.type} {...DEFAULT_ICON_PROPS} />
               {o.name}
             </Menu.Item>
           );
@@ -104,12 +88,7 @@ export class TooltipOperation extends React.PureComponent<
 
   render(): JSX.Element {
     return (
-      <div className={CONTAINER_CLASS}>
-        {/* <span className="operation-button">仅显示</span> */}
-        {/* <span className="operation-button">排除</span> */}
-        {this.getSortSelection()}
-        {/* <span className="operation-button"><Icon type="table" /></span> */}
-      </div>
+      <div className={OPERATION_CONTAINER_CLASS}>{this.getSortSelection()}</div>
     );
 
     return null;
