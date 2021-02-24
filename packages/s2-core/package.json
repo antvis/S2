@@ -48,6 +48,7 @@
     "@antv/event-emitter": "~0.1.0",
     "@antv/g-canvas": "^0.5.6",
     "@antv/g-gesture": "^1.0.0",
+    "@antv/matrix-util": "^3.0.4",
     "antd": "^4.10.1",
     "classnames": "^2.2.5",
     "d3-ease": "^1.0.5",
