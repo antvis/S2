@@ -23,6 +23,7 @@ import {
   KEY_GROUP_ROW_INDEX_RESIZER,
   KEY_GROUP_CORNER_RESIZER,
   KEY_GROUP_COL_RESIZER,
+  MAX_SCROLL_OFFSET,
 } from '../common/constant';
 import { BaseDataSet, SpreadDataSet } from '../data-set';
 import { BaseFacet } from './base-facet';
@@ -690,9 +691,8 @@ export class SpreadsheetFacet extends BaseFacet {
     }
   }
 
-  handlePCWheelEvent(ev: WheelEvent) {
-    const { deltaX, deltaY, layerX, layerY } = ev as any;
-    this.onWheel(deltaX, deltaY, layerX, layerY, ev);
+  handlePCWheelEvent(ev: WheelEvent & { layerX: number; layerY: number }) {
+    this.onWheel(ev);
   }
 
   /**
@@ -711,10 +711,10 @@ export class SpreadsheetFacet extends BaseFacet {
     // 监听 view 的 mobile wheel 事件
     this.mobileWheel.on('wheel', (ev) => {
       const originEvent = ev.event;
-      const { deltaX, deltaY, x, y } = ev;
+      const { x, y } = ev;
       // 移动端和PC端的 x,y 偏差大概是三倍(「大数据」算出来的！！),
       // 所以移动端上按下的点位置相对于view坐标，真实的点值 x = x / 3, y = y /3
-      this.onWheel(deltaX, deltaY, x / 3, y / 3, originEvent);
+      this.onWheel({ ...originEvent, layerX: x / 3, layerY: y / 3 });
     });
   }
 
@@ -975,17 +975,12 @@ export class SpreadsheetFacet extends BaseFacet {
   }
 
   // 滚动的时候，做动态渲染
-  private onWheel(
-    deltaX: number,
-    deltaY: number,
-    realX: number,
-    realY: number,
-    ev,
-  ) {
+  private onWheel(event: WheelEvent & { layerX: number; layerY: number }) {
+    const { deltaX, deltaY, layerX, layerY } = event;
     const [x, y] = optimizeScrollXY(deltaX, deltaY);
 
     if (this.shouldPreventWheelEvent(x, y)) {
-      ev.preventDefault();
+      event.preventDefault();
     }
 
     if (x > 0) {
@@ -1007,23 +1002,19 @@ export class SpreadsheetFacet extends BaseFacet {
     if (this.hRowScrollBar) {
       // 当存在独立rowScroller的时候，只有在对应的渲染范围滚动才有效
       if (
-        realX > this.viewportBBox.minX &&
-        realX < this.viewportBBox.maxX &&
-        realY > this.viewportBBox.minY &&
-        realY < this.viewportBBox.maxY &&
+        layerX > this.viewportBBox.minX &&
+        layerX < this.viewportBBox.maxX &&
+        layerY > this.viewportBBox.minY &&
+        layerY < this.viewportBBox.maxY &&
         this.hScrollBar
       ) {
         this.hScrollBar.updateThumbOffset(this.hScrollBar.thumbOffset + x / 8);
       }
-      // console.log('x:' + x + ' y:' + y);
-      // console.log('x1:' + (realX > this.cornerBBox.tl.x) + ' x2:' + (realX < this.cornerBBox.tr.x)
-      // + ' y1:' + (realY > this.cornerBBox.tl.y) + ' y2:'
-      // + (realY < this.cornerBBox.bl.y + this.viewportBBox.height));
       if (
-        realX > this.cornerBBox.minX &&
-        realX < this.cornerBBox.maxX &&
-        realY > this.cornerBBox.minY &&
-        realY < this.cornerBBox.maxY + this.viewportBBox.height
+        layerX > this.cornerBBox.minX &&
+        layerX < this.cornerBBox.maxX &&
+        layerY > this.cornerBBox.minY &&
+        layerY < this.cornerBBox.maxY + this.viewportBBox.height
       ) {
         this.hRowScrollBar.updateThumbOffset(
           this.hRowScrollBar.thumbOffset + x / 8,
@@ -1032,14 +1023,17 @@ export class SpreadsheetFacet extends BaseFacet {
     } else if (this.hScrollBar) {
       this.hScrollBar.updateThumbOffset(this.hScrollBar.thumbOffset + x / 8);
     }
-    // 垂直情况暂时不管
-    if (this.vScrollBar) {
-      this.vScrollBar.updateThumbOffset(this.vScrollBar.thumbOffset + y / 8);
-    }
-
+    this.vScrollBar?.updateThumbOffset(this.getOptimizedThumbOffsetTop(y));
     this.hideScrollBar();
     this.renderAfterScroll();
   }
+
+  private getOptimizedThumbOffsetTop = (deltaY: number) => {
+    return (
+      this.vScrollBar?.thumbOffset +
+      Math.max(-MAX_SCROLL_OFFSET, Math.min(deltaY / 8, MAX_SCROLL_OFFSET))
+    );
+  };
 
   private hideScrollBar() {
     if (isMobile()) {

@@ -59,3 +59,5 @@ export const KEY_AFTER_COLLAPSE_ROWS = 'spreadsheet:after-collapsed-rows';
 export const KEY_SERIES_NUMBER_NODE = 'series-number-node';
 
 export const KEY_COL_REAL_WIDTH_INFO = 'col-real-width-info';
+
+export const MAX_SCROLL_OFFSET = 10;
