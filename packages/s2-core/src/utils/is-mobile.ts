@@ -15,8 +15,8 @@ export function isIphoneX() {
   // eslint-disable-next-line no-restricted-globals
   return (
     /iphone/gi.test(navigator.userAgent) &&
-    screen.height === 812 &&
-    screen.width === 375
+    window.screen.height === 812 &&
+    window.screen.width === 375
   );
 }
 
