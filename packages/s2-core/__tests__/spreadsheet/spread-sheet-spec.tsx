@@ -9,13 +9,12 @@ import {
   SpreadsheetOptions,
 } from '../../src';
 import { getContainer, getMockData } from './helpers';
-import * as ReactDOM from 'react-dom';
-import * as React from 'react';
+import ReactDOM from 'react-dom';
+import React from 'react';
 import { Select, Switch } from 'antd';
 
 let data = getMockData('../datasets/tableau-supermarket.csv');
 
-// @ts-ignore
 data = data.map((row) => {
   row['profit-tongbi'] = 0.2233;
   row['profit-huanbi'] = -0.4411;
@@ -23,86 +22,6 @@ data = data.map((row) => {
   row['count-huanbi'] = -0.4321;
   return row;
 });
-
-function MainLayout(props) {
-  const [options, setOptions] = React.useState(props.options);
-  const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
-  const [valueInCols, setValueInCols] = React.useState(true);
-  const [derivedValueMul, setDerivedValueMul] = React.useState(false);
-
-  const onRowCellClick = (value) => {};
-  const onColCellClick = (value) => {};
-  const onDataCellClick = (value) => {
-    console.log(value);
-  };
-  const onCheckChanged = (checked) => {
-    setValueInCols(checked);
-    setOptions(
-      _.merge({}, options, {
-        valueInCols: checked,
-      }),
-    );
-  };
-
-  const onCheckChanged1 = (checked) => {
-    setOptions(
-      _.merge({}, options, {
-        hierarchyType: checked ? 'tree' : 'grid',
-      }),
-    );
-  };
-
-  const onCheckChanged2 = (checked) => {
-    setDerivedValueMul(checked);
-    const next = _.merge({}, dataCfg, {
-      fields: {
-        derivedValues: dataCfg.fields.derivedValues.map((dv) => {
-          const dvn = _.clone(dv);
-          dvn.displayDerivedValueField = checked
-            ? dv.derivedValueField
-            : [dv.derivedValueField[0]];
-          return dvn;
-        }),
-      },
-    });
-    setDataCfg(next);
-  };
-  return (
-    <div>
-      <div style={{ display: 'inline-block' }}>
-        <Switch
-          checkedChildren="挂列头"
-          unCheckedChildren="挂行头"
-          defaultChecked={valueInCols}
-          onChange={onCheckChanged}
-          style={{ marginRight: 10 }}
-        />
-        <Switch
-          checkedChildren="树形"
-          unCheckedChildren="平铺"
-          defaultChecked={false}
-          onChange={onCheckChanged1}
-          style={{ marginRight: 10 }}
-        />
-        <Switch
-          checkedChildren="多列"
-          unCheckedChildren="单列"
-          style={{ marginLeft: 10 }}
-          defaultChecked={derivedValueMul}
-          onChange={onCheckChanged2}
-        />
-      </div>
-      <SheetComponent
-        dataCfg={dataCfg}
-        options={options}
-        spreadsheet={getSpreadSheet}
-        onRowCellClick={onRowCellClick}
-        onColCellClick={onColCellClick}
-        onDataCellClick={onDataCellClick}
-      />
-    </div>
-  );
-}
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -219,6 +138,86 @@ const getOptions = () => {
     },
   };
 };
+
+function MainLayout(props) {
+  const [options, setOptions] = React.useState(props.options);
+  const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
+  const [valueInCols, setValueInCols] = React.useState(true);
+  const [derivedValueMul, setDerivedValueMul] = React.useState(false);
+
+  const onRowCellClick = (value) => {};
+  const onColCellClick = (value) => {};
+  const onDataCellClick = (value) => {
+    console.log(value);
+  };
+  const onCheckChanged = (checked) => {
+    setValueInCols(checked);
+    setOptions(
+      _.merge({}, options, {
+        valueInCols: checked,
+      }),
+    );
+  };
+
+  const onCheckChanged1 = (checked) => {
+    setOptions(
+      _.merge({}, options, {
+        hierarchyType: checked ? 'tree' : 'grid',
+      }),
+    );
+  };
+
+  const onCheckChanged2 = (checked) => {
+    setDerivedValueMul(checked);
+    const next = _.merge({}, dataCfg, {
+      fields: {
+        derivedValues: dataCfg.fields.derivedValues.map((dv) => {
+          const dvn = _.clone(dv);
+          dvn.displayDerivedValueField = checked
+            ? dv.derivedValueField
+            : [dv.derivedValueField[0]];
+          return dvn;
+        }),
+      },
+    });
+    setDataCfg(next);
+  };
+  return (
+    <div>
+      <div style={{ display: 'inline-block' }}>
+        <Switch
+          checkedChildren="挂列头"
+          unCheckedChildren="挂行头"
+          defaultChecked={valueInCols}
+          onChange={onCheckChanged}
+          style={{ marginRight: 10 }}
+        />
+        <Switch
+          checkedChildren="树形"
+          unCheckedChildren="平铺"
+          defaultChecked={false}
+          onChange={onCheckChanged1}
+          style={{ marginRight: 10 }}
+        />
+        <Switch
+          checkedChildren="多列"
+          unCheckedChildren="单列"
+          style={{ marginLeft: 10 }}
+          defaultChecked={derivedValueMul}
+          onChange={onCheckChanged2}
+        />
+      </div>
+      <SheetComponent
+        dataCfg={dataCfg}
+        options={options}
+        spreadsheet={getSpreadSheet}
+        onRowCellClick={onRowCellClick}
+        onColCellClick={onColCellClick}
+        onDataCellClick={onDataCellClick}
+      />
+    </div>
+  );
+}
 
 describe('spreadsheet normal spec', () => {
   test('demo', () => {

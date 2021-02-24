@@ -2,12 +2,11 @@
   "extends": [
     "airbnb-base/legacy",
     "prettier",
-//    "plugin:jest/recommended",
+    "plugin:jest/recommended",
     "plugin:react/recommended",
     "plugin:import/typescript",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier/react"
   ],
   "env": {
     "es6": true,
@@ -16,13 +15,22 @@
     "jest": true
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "plugins": ["prettier", "@typescript-eslint", "import"],
   "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+    },
+    "project": "./tsconfig.json",
     "sourceType": "module"
   },
+  "settings": {
+    "jest": {
+      "version": 26
+    },
+    "react": "detect"
+  },
   "rules": {
+    "prettier/prettier": "error",
     "semi": "off",
     "no-console": "off",
     "no-multi-spaces": "off",

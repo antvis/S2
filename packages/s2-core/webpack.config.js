@@ -64,10 +64,10 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.AggressiveMergingPlugin(),
-    ...(process.env.MODE === 'ANALYZER'
-      ? [new BundleAnalyzerPlugin({ analyzerMode: 'static' })]
-      : []),
-  ],
+    process.env.MODE === 'ANALYZER' && [
+      new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
+    ],
+  ].filter(Boolean),
   externals: {
     moment: 'moment',
     '../moment': 'moment',
