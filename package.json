@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "clean": "rm -rf node_modules/",
-    "install": "tnpm i && cd ./packages/s2-core && tnpm i",
+    "install": "npm i && cd ./packages/s2-core && npm i",
     "core:start": "cd ./packages/s2-core && npm run test_live",
     "core:build": "cd ./packages/s2-core && npm run build",
     "site:start": "cd ./s2-site && npm run start",
