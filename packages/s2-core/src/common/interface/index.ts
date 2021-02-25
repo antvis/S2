@@ -272,6 +272,9 @@ export interface SpreadsheetOptions {
   readonly rowCell?: CellCallback;
   // 自定义列头cell
   readonly colCell?: CellCallback;
+
+  readonly initTooltip?: TooltipCallback;
+  
   // 自定义 frame 边框
   readonly frame?: FrameCallback;
   // 角头可能需要全部自定义，而不是用交叉表概念的node来渲染
@@ -335,6 +338,11 @@ export type LayoutCallback = (
 
 export type CellCallback = (
   node: Node,
+  spreadsheet: BaseSpreadSheet,
+  ...restOptions
+) => Group;
+
+export type TooltipCallback = (
   spreadsheet: BaseSpreadSheet,
   ...restOptions
 ) => Group;

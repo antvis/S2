@@ -125,7 +125,7 @@ export default abstract class BaseSpreadSheet extends EE {
     this.dataCfg = this.safetyDataCfg(dataCfg);
     this.options = this.safetyOptions(options);
     this.dataSet = this.initDataSet(this.options);
-    this.tooltip = this.initTooltip();
+    this.tooltip = options?.initTooltip(this);
     this.registerInteractions(this.options);
   }
 
