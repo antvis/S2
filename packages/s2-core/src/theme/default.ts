@@ -84,4 +84,30 @@ export default {
     showCenterRightShadow: false,
     centerRightShadowWidth: 12,
   },
+  themeByState: {
+    dataCell: {
+      selected: {
+        backgroundColor: '#0000ff',
+        opacity: 0.8,
+      },
+      hover: {
+        backgroundColor: '#f4ffb8',
+        opacity: 0.8,
+      },
+      prepareSelect: {
+        prepareSelectBorderColor: '#000000',
+        prepareSelectBorderWidth: 1,
+      }
+    },
+    colCell: {
+      hover: {
+        backgroundColor: '#b5f5ec',
+      },
+    },
+    rowCell: {
+      hover: {
+        backgroundColor: '#d4b106',
+      },
+    },
+  },
 } as SpreadSheetTheme;

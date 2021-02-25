@@ -101,7 +101,7 @@ export default abstract class BaseSpreadSheet extends EE {
   public foregroundGroup: IGroup;
 
   // use to display cell's hover interactions
-  public hoverBoxGroup: IGroup;
+  // public hoverBoxGroup: IGroup;
 
   // cell cache
   public cellCache: LruCache<string, DataCell> = new LruCache(10000);
@@ -249,10 +249,10 @@ export default abstract class BaseSpreadSheet extends EE {
     });
 
     // hover box on panel group
-    this.hoverBoxGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_HOVER_BOX,
-      zIndex: PANEL_GROUP_HOVER_BOX_GROUP_ZINDEX,
-    });
+    // this.hoverBoxGroup = this.panelGroup.addGroup({
+    //   name: KEY_GROUP_HOVER_BOX,
+    //   zIndex: PANEL_GROUP_HOVER_BOX_GROUP_ZINDEX,
+    // });
   }
 
   /**

@@ -46,6 +46,9 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   // 4、render main text
   protected textShape: IShape;
+  
+  // 5、brush-select prepareSelect border
+  protected prepareSelectBorderShape: IShape;
 
   // cell config's conditions(Determine how to render this cell)
   protected conditions: Conditions;
@@ -241,6 +244,25 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.initConditionBgShape();
     this.initIconShape();
     this.initIntervalShape();
+    this.initPrepareSelectBorder()
+  }
+
+  /**
+   * Draw background condition shape
+   */
+  protected initPrepareSelectBorder() {
+    // 往内缩一个像素，避免和外边框重叠
+    const margin = 1;
+    const { x, y, height, width } = this.meta;
+    this.prepareSelectBorderShape = renderRect(
+      x + margin,
+      y + margin,
+      width - margin * 2,
+      height - margin * 2,
+      'transparent',
+      'transparent',
+      this,
+    );
   }
 
   /**

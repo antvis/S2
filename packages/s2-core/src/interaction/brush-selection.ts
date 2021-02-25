@@ -118,7 +118,7 @@ export class BrushSelection extends BaseInteraction {
         this.regionShape.attr({
           opacity: 0,
         });
-        this.hideHoverBox();
+        // this.hideHoverBox();
         this.draw();
       }
       this.phase = 0;
@@ -131,11 +131,11 @@ export class BrushSelection extends BaseInteraction {
   //   }
   // }
 
-  protected hideHoverBox() {
-    if (_.get(this.spreadsheet, 'hoverBoxGroup')) {
-      this.spreadsheet.hoverBoxGroup.clear();
-    }
-  }
+  // protected hideHoverBox() {
+  //   if (_.get(this.spreadsheet, 'hoverBoxGroup')) {
+  //     this.spreadsheet.hoverBoxGroup.clear();
+  //   }
+  // }
 
   protected bindEvents() {
     super.bindEvents();
@@ -186,26 +186,13 @@ export class BrushSelection extends BaseInteraction {
 
   // 刷选过程中的预选择外框
   protected showPrepareBrushSelectBorder(cells: DataCell[]) {
-    this.hideHoverBox();
-    cells.forEach((cell: DataCell) => {
-      const { x, y, width, height } = cell.getInteractiveBgShape().attrs;
-      // 往内缩一个像素，避免和外边框重叠
-      const margin = 1;
-      this.spreadsheet.hoverBoxGroup.addShape('rect', {
-        name: 'hoverBox',
-        attrs: {
-          x: x + margin,
-          y: +y + margin,
-          width: width - margin * 2,
-          height: height - margin * 2,
-          stroke: '#000',
-          zIndex: 999,
-        },
-        zIndex: 999,
-        capture: false, // 鼠标悬浮到 cell 上时，会添加 hoverBox，但继续 mousemove 会命中 hoverBox，所以去掉事件
+    if(cells.length) {
+      this.spreadsheet.clearState();
+      cells.forEach((cell: DataCell) => {
+        this.spreadsheet.setState(cell, 'prepareSelect');
       });
-    });
-    this.spreadsheet.panelGroup.sort();
+      this.spreadsheet.updateCellStyleByState();
+    }
   }
 
   private createRegionShape() {
@@ -229,7 +216,7 @@ export class BrushSelection extends BaseInteraction {
 
   public hide() {
     // this.hideTooltip();
-    this.hideHoverBox();
+    // this.hideHoverBox();
     if (this.cells) {
       this.spreadsheet.clearState();
     }

@@ -36,9 +36,10 @@ export default class State {
   }
 
   public clearState() {
-    _.forEach(this.stateStore.cells, (cell) =>
-      cell.setFillOpacity(cell.interactiveBgShape, 0),
-    );
+    _.forEach(this.stateStore.cells, (cell) => {
+      cell.setFillOpacity(cell.interactiveBgShape, 0);
+      cell.setStrokeOpacity(cell.prepareSelectBorderShape, 0);
+    });
     this.stateStore = {
       stateName: '',
       cells: [],

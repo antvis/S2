@@ -79,12 +79,17 @@ export abstract class BaseCell<T> extends Group {
           style,
         );
         this.setFillOpacity(this[currentShape], 1);
+        this.setStrokeOpacity(this[currentShape], 1);
       }
     });
   }
 
   public setFillOpacity(shape, opacity) {
     updateShapeAttr(shape, 'fillOpacity', opacity);
+  }
+
+  public setStrokeOpacity(shape, opacity) {
+    updateShapeAttr(shape, 'strokeOpacity', opacity);
   }
 
   // 获取当前类型
