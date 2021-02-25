@@ -1,7 +1,7 @@
 import { Group, IShape } from '@antv/g-canvas';
 import { BaseSpreadSheet, SpreadSheetTheme } from '..';
 import { updateShapeAttr } from '../utils/g-renders';
-import { DataCell, ColCell, CornerCell, RowCell } from "./";
+import { DataCell, ColCell, CornerCell, RowCell } from './';
 import * as shapeStyle from '../state/shapeStyleMap';
 import _ from 'lodash';
 
@@ -65,15 +65,22 @@ export abstract class BaseCell<T> extends Group {
 
   public updateByState(stateName) {
     const { themeByState } = this.theme;
-    const stateStyles = _.get(themeByState, [this.getCellType(), stateName])
+    const stateStyles = _.get(themeByState, [this.getCellType(), stateName]);
     _.each(stateStyles, (style, styleKey) => {
-      if(styleKey) {
+      if (styleKey) {
         // 找到对应的shape，并且找到cssStyple对应的shapestyle
-        const currentShape = _.findKey(shapeStyle.shapeAttrsMap, attrs => attrs.indexOf(styleKey) > -1);
-        updateShapeAttr(this[currentShape], shapeStyle.shapeStyleMap[styleKey], style);
+        const currentShape = _.findKey(
+          shapeStyle.shapeAttrsMap,
+          (attrs) => attrs.indexOf(styleKey) > -1,
+        );
+        updateShapeAttr(
+          this[currentShape],
+          shapeStyle.shapeStyleMap[styleKey],
+          style,
+        );
         this.setFillOpacity(this[currentShape], 1);
       }
-    })
+    });
   }
 
   public setFillOpacity(shape, opacity) {

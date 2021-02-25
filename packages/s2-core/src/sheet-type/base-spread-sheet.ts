@@ -42,8 +42,8 @@ import { StrategyDataCell } from '../cell';
 import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
 import { DefaultStyleCfg } from '../common/default-style-cfg';
-import { EventController } from "../interaction/events/event-controller";
-import State from '../state/state'
+import { EventController } from '../interaction/events/event-controller';
+import State from '../state/state';
 
 const matrixTransform = ext.transform;
 
@@ -122,7 +122,7 @@ export default abstract class BaseSpreadSheet extends EE {
   public eventController: EventController;
 
   // 状态管理器
-  public state = new State(this)
+  public state = new State(this);
 
   public devicePixelRatioMedia: MediaQueryList;
 
@@ -675,6 +675,8 @@ export default abstract class BaseSpreadSheet extends EE {
 
   public updateCellStyleByState() {
     const cells = this.getCurrentState().cells;
-    cells.forEach((cell: BaseCell<Node>) => {cell.updateByState(this.getCurrentState().stateName)})
+    cells.forEach((cell: BaseCell<Node>) => {
+      cell.updateByState(this.getCurrentState().stateName);
+    });
   }
 }

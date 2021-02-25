@@ -1,10 +1,14 @@
 import { Event, Group, Canvas, LooseObject } from '@antv/g-canvas';
 import * as _ from '@antv/util';
-import { BaseCell, DataCell, ColCell, CornerCell, RowCell } from "../../cell";
-import { S2Event, OriginEventType, DefaultEvent, DefaultEventType} from './types';
-import BaseSpreadSheet  from '../../sheet-type/base-spread-sheet';
+import { BaseCell, DataCell, ColCell, CornerCell, RowCell } from '../../cell';
+import {
+  S2Event,
+  OriginEventType,
+  DefaultEvent,
+  DefaultEventType,
+} from './types';
+import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
 export class EventController {
-
   protected spreadsheet: BaseSpreadSheet;
   // 保存触发的元素
   private target: LooseObject;
@@ -52,18 +56,14 @@ export class EventController {
       this.getProcessEvent(),
       this.process.bind(this),
     );
-    this.addEvent(
-      this.triggerGroup(),
-      this.getEndEvent(),
-      this.end.bind(this)
-    );
+    this.addEvent(this.triggerGroup(), this.getEndEvent(), this.end.bind(this));
 
     // 绑定原生事件
     this.addEventListener(window, OriginEventType.KEY_DOWN, (event) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_KEBOARDDOWN, event)
+      this.spreadsheet.emit(S2Event.GLOBAL_KEBOARDDOWN, event);
     });
     this.addEventListener(window, OriginEventType.KEY_UP, (event) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_KEBOARDUP, event)
+      this.spreadsheet.emit(S2Event.GLOBAL_KEBOARDUP, event);
     });
   }
 
@@ -85,14 +85,14 @@ export class EventController {
       case DataCell.name:
         this.spreadsheet.emit(S2Event.DATACELL_MOUSEDOWN, ev);
         break;
-      case RowCell.name: 
+      case RowCell.name:
         this.spreadsheet.emit(S2Event.ROWCELL_MOUSEDOWN, ev);
         break;
       case ColCell.name:
-        this.spreadsheet.emit(S2Event.COLCELL_MOUSEDOWN, ev)
+        this.spreadsheet.emit(S2Event.COLCELL_MOUSEDOWN, ev);
         break;
       case CornerCell.name:
-        this.spreadsheet.emit(S2Event.CORNER_MOUSEDOWN, ev)
+        this.spreadsheet.emit(S2Event.CORNER_MOUSEDOWN, ev);
         break;
       default:
         return;
@@ -101,9 +101,12 @@ export class EventController {
 
   protected process(ev: Event) {
     const cell = this.getCell(ev.target);
-    if(cell) {
+    if (cell) {
       // 如果hover的cell改变了，并且当前不需要屏蔽 hover
-      if(this.hoverTarget !== ev.target && !this.interceptEvent.has(DefaultEventType.Hover)) {
+      if (
+        this.hoverTarget !== ev.target &&
+        !this.interceptEvent.has(DefaultEventType.Hover)
+      ) {
         this.hoverTarget = ev.target;
         this.spreadsheet.clearState();
         this.spreadsheet.setState(cell, 'hover');
@@ -115,14 +118,14 @@ export class EventController {
         case DataCell.name:
           this.spreadsheet.emit(S2Event.DATACELL_MOUSEMOVE, ev);
           break;
-        case RowCell.name: 
+        case RowCell.name:
           this.spreadsheet.emit(S2Event.ROWCELL_MOUSEMOVE, ev);
           break;
         case ColCell.name:
-          this.spreadsheet.emit(S2Event.COLCELL_MOUSEMOVE, ev)
+          this.spreadsheet.emit(S2Event.COLCELL_MOUSEMOVE, ev);
           break;
         case CornerCell.name:
-          this.spreadsheet.emit(S2Event.CORNER_MOUSEMOVE, ev)
+          this.spreadsheet.emit(S2Event.CORNER_MOUSEMOVE, ev);
           break;
         default:
           return;
@@ -132,7 +135,7 @@ export class EventController {
 
   protected end(ev: Event) {
     const cell = this.getCell(ev.target);
-    if(cell) {
+    if (cell) {
       const cellType = this.getCellType(ev.target);
       // target相同，说明是一个cell内的click事件
       if (this.target === ev.target) {
@@ -145,7 +148,7 @@ export class EventController {
               colQuery: meta.colQuery,
             });
             break;
-          case RowCell.name: 
+          case RowCell.name:
             this.spreadsheet.emit(S2Event.ROWCELL_CLICK, {
               viewMeta: cell.getMeta(),
               query: cell.getMeta().query,
@@ -170,16 +173,16 @@ export class EventController {
       // 通用的mouseup事件
       switch (cellType) {
         case DataCell.name:
-          this.spreadsheet.emit(S2Event.DATACELL_MOUSEUP, ev)
+          this.spreadsheet.emit(S2Event.DATACELL_MOUSEUP, ev);
           break;
-        case RowCell.name: 
-          this.spreadsheet.emit(S2Event.ROWCELL_MOUSEUP, ev)
+        case RowCell.name:
+          this.spreadsheet.emit(S2Event.ROWCELL_MOUSEUP, ev);
           break;
         case ColCell.name:
-          this.spreadsheet.emit(S2Event.COLCELL_MOUSEUP, ev)
+          this.spreadsheet.emit(S2Event.COLCELL_MOUSEUP, ev);
           break;
         case CornerCell.name:
-          this.spreadsheet.emit(S2Event.CORNER_MOUSEUP, ev)
+          this.spreadsheet.emit(S2Event.CORNER_MOUSEUP, ev);
           break;
         default:
           return;
@@ -208,7 +211,7 @@ export class EventController {
     }
     return null;
   }
-  
+
   // 解绑事件
   protected unbindEvents() {
     this._clearEvents();
@@ -240,9 +243,9 @@ export class EventController {
   protected addEventListener(target, type, handler) {
     if (target.addEventListener) {
       target.addEventListener(type, handler);
-      this.eventListeners.push({target, type, handler});
+      this.eventListeners.push({ target, type, handler });
     } else {
-      console.error(`Please make sure ${target} has addEventListener function`)
+      console.error(`Please make sure ${target} has addEventListener function`);
     }
   }
 
@@ -265,5 +268,4 @@ export class EventController {
     });
     this.eventListeners.length = 0;
   }
-  
 }

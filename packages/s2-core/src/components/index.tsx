@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import { map, min, max, isEmpty } from 'lodash';
 import { DrillDown, DrillDownProps } from './drill-down';
-import { S2Event } from '../interaction/events/types'
+import { S2Event } from '../interaction/events/types';
 import {
   Node,
   SpreadSheetTheme,

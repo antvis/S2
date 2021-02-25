@@ -1,11 +1,10 @@
 import { Event, Point, Shape } from '@antv/g-canvas';
 import * as _ from '@antv/util';
-import { DataCell } from "../cell";
+import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { S2Event, DefaultEventType } from './events/types';
 import { BaseInteraction } from './base';
 import { DataItem, TooltipOptions } from '..';
-
 
 function getBrushRegion(p1, p2) {
   const leftX = Math.min(p1.x, p2.x);
@@ -53,7 +52,7 @@ export class BrushSelection extends BaseInteraction {
   private phase: 0 | 1 | 2;
 
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEDOWN, ev => {
+    this.spreadsheet.on(S2Event.DATACELL_MOUSEDOWN, (ev) => {
       const oe = ev.originalEvent as any;
       this.previousPoint = { x: oe.layerX, y: oe.layerY };
       this.cells = this.spreadsheet.getPanelAllCells();
@@ -71,14 +70,16 @@ export class BrushSelection extends BaseInteraction {
       this.draw();
       this.phase = 1;
       // this.hideTooltip();
-    })
+    });
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEMOVE, ev => {
+    this.spreadsheet.on(S2Event.DATACELL_MOUSEMOVE, (ev) => {
       if (this.phase) {
         // 屏蔽hover事件
-        this.spreadsheet.eventController.interceptEvent.add(DefaultEventType.Hover);
+        this.spreadsheet.eventController.interceptEvent.add(
+          DefaultEventType.Hover,
+        );
         ev.preventDefault();
         this.phase = 2;
         const oe = ev.originalEvent as any;
@@ -94,16 +95,16 @@ export class BrushSelection extends BaseInteraction {
         this.getHighlightCells(brushRegion);
         this.draw();
       }
-    })
+    });
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEUP, ev => {
+    this.spreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev) => {
       if (this.phase === 2) {
         /**
          * 模拟tableau的交互，原因是如果在mousedown阶段清空选中态，那单选的mouseup后的click无法实现反选
          */
-        this.spreadsheet.clearState()
+        this.spreadsheet.clearState();
         const oe = ev.originalEvent as any;
         this.endPoint = { x: oe.layerX, y: oe.layerY };
         this.endOriginEvent = ev.event;
@@ -121,7 +122,7 @@ export class BrushSelection extends BaseInteraction {
         this.draw();
       }
       this.phase = 0;
-    })
+    });
   }
 
   // protected showTooltip(position: Point, hoverData?: DataItem, options?: TooltipOptions) {
@@ -171,9 +172,9 @@ export class BrushSelection extends BaseInteraction {
   // 最终刷选的cell
   private getSelectedCells(region) {
     const selectedCells = this.getCellsInRegion(region);
-    selectedCells.forEach(cell => {
+    selectedCells.forEach((cell) => {
       this.spreadsheet.setState(cell, 'selected');
-    })
+    });
     this.spreadsheet.updateCellStyleByState();
   }
 
@@ -230,7 +231,7 @@ export class BrushSelection extends BaseInteraction {
     // this.hideTooltip();
     this.hideHoverBox();
     if (this.cells) {
-      this.spreadsheet.clearState()
+      this.spreadsheet.clearState();
     }
     if (this.regionShape) {
       this.regionShape.attr({
@@ -241,5 +242,5 @@ export class BrushSelection extends BaseInteraction {
     this.spreadsheet.eventController.interceptEvent.clear();
     this.phase = 0;
     this.draw();
-  };
+  }
 }
