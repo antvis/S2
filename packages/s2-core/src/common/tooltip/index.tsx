@@ -101,7 +101,6 @@ export abstract class BaseTooltip {
 
   protected renderContent(data?: DataItem, options?: TooltipOptions) {
     const _options = getOptions(options);
-    // FIXME: 若有性能瓶颈则考虑复用 _tooltipComponent
     const operation = this.renderOperation(_options);
     const summary = this.renderSummary(data, _options);
     const interpretation = this.renderInterpretation(_options);

@@ -11,7 +11,6 @@ import {
   get,
   isArray,
   isObject,
-  uniq,
 } from 'lodash';
 import { BaseTooltip } from '../common/tooltip';
 import { i18n } from '../common/i18n';
@@ -23,6 +22,7 @@ import {
   getPosition,
   getFriendlyVal,
   manageContainerStyle,
+  getSelectedValueFields,
 } from '../utils/tooltip';
 import { ListItem, SummaryProps, DataItem, TooltipOptions, HeadInfo } from '..';
 import { ShowProps } from '../common/tooltip/interface';
@@ -48,7 +48,7 @@ export class NormalTooltip extends BaseTooltip {
     options: TooltipOptions,
   ): SummaryProps {
     const selectedData = this.getSelectedData();
-    const valueFields = this.getSelectedValueFields(selectedData);
+    const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
 
     if (
       shouldShowSummary(hoverData, selectedData, options) &&
@@ -62,7 +62,7 @@ export class NormalTooltip extends BaseTooltip {
         VALUE_FIELD,
         this.aggregation,
       );
-      aggregationValue = parseFloat(aggregationValue.toPrecision(12)); // 解决精度问题.
+      aggregationValue = parseFloat(aggregationValue.toPrecision(12)); // solve accuracy problems
       const value = firstFormatter(aggregationValue);
       return {
         selectedData,
@@ -123,23 +123,23 @@ export class NormalTooltip extends BaseTooltip {
 
       let valItem = [];
       if (isTotals) {
-        // 小计总计
+        // total/subtotal
         valItem.push(
           this.getListItem(hoverData, TOTAL_VALUE, get(hoverData, VALUE_FIELD)),
         );
       } else {
         const field = hoverData[EXTRA_FIELD];
         if (hoverData[field]) {
-          // 过滤掉为空的
+          // filter empty
           valItem.push(this.getListItem(hoverData, field));
         }
         const derivedValue = this.spreadsheet.getDerivedValue(field);
         if (this.spreadsheet.isValueInCols()) {
-          // 数值挂在列头，按照度量自身来匹配展示的字段
-          // 1、存在多个衍生指标
-          // 2、只有单列的场景，
-          // 3、点击的cell属于衍生指标列
-          // tooltip需要显示所有的衍生指标值
+          // the value hangs at the head of the column, match the displayed fields according to the metric itself
+          // 1、multiple derivative indicators
+          // 2、only one column scene
+          // 3、the clicked cell belongs to the derived index column
+          // tooltip need to show all derivative indicators
           if (
             derivedValue.derivedValueField.length > 1 &&
             !isEqual(
@@ -151,7 +151,7 @@ export class NormalTooltip extends BaseTooltip {
             valItem = this.getDerivedItemList(valItem, derivedValue, hoverData);
           }
         } else {
-          // 数值挂在行头，需要将所有的衍生指标展示
+          // the value hangs at the head of the row，need to show all derivative indicators
           if (derivedValue.derivedValueField.length > 0) {
             valItem = this.getDerivedItemList(valItem, derivedValue, hoverData);
           }
@@ -163,13 +163,11 @@ export class NormalTooltip extends BaseTooltip {
   }
 
   private getDerivedItemList(valItem, derivedValue, hoverData: DataItem) {
-    // 替换掉之前的valItem
+    // replace old valItem
     valItem = map(derivedValue.derivedValueField, (value: any) => {
-      // if (hoverData[derivedValue]) { //  -- 不为空
       return this.getListItem(hoverData, value);
-      // }
     });
-    // 将主指标加进去 -- 不为空
+    // add main indicator -- not empty
     if (hoverData[derivedValue.valueField]) {
       valItem.unshift(this.getListItem(hoverData, derivedValue.valueField));
     }
@@ -263,7 +261,7 @@ export class NormalTooltip extends BaseTooltip {
         }
         return selectedIds;
       }
-      // 选择行或者列
+      // select row or coll
       const selectedIndexes = [];
       const leftNodes = type === 'row' ? colLeafNodes : rowLeafNodes;
       let indexs = type === 'row' ? ii : jj;
@@ -280,12 +278,8 @@ export class NormalTooltip extends BaseTooltip {
     return [];
   }
 
-  private getSelectedValueFields(selectedData: DataItem[]): string[] {
-    // return [ get(selectedData, [ 0, EXTRA_FIELD ]) ]; // 返回第一个的类型吗...
-    return uniq(selectedData.map((d) => d[EXTRA_FIELD]));
-  }
   private getSummaryName(valueFields, firstField, hoverData): string {
-    // 总计/小计场景显示“总计、小计”；圈选多个时候显示“度量”
+    // total or subtotal
     return size(valueFields) !== 1
       ? i18n('度量')
       : get(hoverData, 'isGrandTotals')

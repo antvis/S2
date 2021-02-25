@@ -2,7 +2,7 @@
  * @Description:
  * @author qingsheng
  * @date 2019/3/11
- * @warning EVA 编码委员会提醒您：代码千万行，注释第一行；编程不规范，同事两行泪！
+ * @warning
  */
 
 import { BaseSpreadSheet } from '../../sheet-type';
@@ -11,10 +11,10 @@ import { SortParam } from '../interface';
 export type DataItem = Record<string, any>;
 
 export interface IMenu {
-  readonly id: string; // 菜单的 id
-  readonly icon?: any; // 菜单的 icon
-  readonly text?: string; // 菜单的 文本
-  readonly children?: IMenu[]; // 二级菜单，TODO 理论上支持无限嵌套，目前仅仅测试了二级菜单
+  readonly id: string; // menu id
+  readonly icon?: any; // menu icon
+  readonly text?: string; // menu 文本
+  readonly children?: IMenu[]; // subMenu
 }
 
 export interface IOperatorProps {

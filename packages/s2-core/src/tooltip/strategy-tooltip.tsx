@@ -51,11 +51,11 @@ export class StrategyTooltip extends NormalTooltip {
     options?: TooltipOptions,
   ): HeadInfo {
     const rowFields = this.getRowFields() || [];
-    // 如果是有rows，values是数值时，直接用normal-tooltip
+    // if rows is not empty and values is data, use normal-tooltip
     if (rowFields.find((item) => item === EXTRA_FIELD)) {
       return super.getHeadInfo(hoverData);
     }
-    // 以下是数值挂行头
+    // the value hangs at the head of the column
     const { rightField } = this.getRightAndValueField(options);
     const index = rowFields.indexOf(rightField);
     const rows = [...rowFields];
@@ -89,20 +89,20 @@ export class StrategyTooltip extends NormalTooltip {
   ): ListItem[] {
     if (hoverData) {
       const rowFields = this.getRowFields() || [];
-      // 如果是有rows，values是数值时，直接用normal-tooltip
+      // if rows is not empty and values is data, use normal-tooltip
       if (rowFields.find((item) => item === EXTRA_FIELD)) {
         return super.getDetailList(hoverData, options);
       }
-      // 以下是数值挂行头
+      // the value hangs at the head of the column
       const { rightField, valueField } = this.getRightAndValueField(options);
-      // 衍生指标全部显示，无论是否有值
+      // show all derivative indicators no matter have value
       const valuesField = [rightField, ...this.getDerivedValues(valueField)];
 
       return map(
         valuesField,
         (field: string): ListItem => {
           if (isEqual(field, rightField)) {
-            // 度量维度的值单独取
+            // the value of the measure dimension is taken separately
             return this.getListItem(hoverData, hoverData[field]);
           } else {
             return this.getListItem(hoverData, field);

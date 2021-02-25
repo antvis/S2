@@ -7,6 +7,7 @@ import {
   isEmpty,
   noop,
   isNumber,
+  uniq,
 } from 'lodash';
 import { DataItem, Aggregation, TooltipOptions, Position } from '..';
 import {
@@ -15,7 +16,7 @@ import {
 } from '../common/tooltip/constant';
 
 /**
- * 计算聚合值
+ * calculate aggregate value
  */
 export const getAggregationValue = (
   data: DataItem[],
@@ -31,7 +32,7 @@ export const getAggregationValue = (
   return 0;
 };
 
-/** hover 的数据是否是选中的 */
+/** whether the data of hover is selected */
 export const isHoverDataInSelectedData = (
   selectedData: DataItem[],
   hoverData: DataItem,
@@ -42,7 +43,7 @@ export const isHoverDataInSelectedData = (
 };
 
 /**
- * 是否显示概要信息 - 是否要改到交互层？
+ * whether show summary - change to interaction?
  */
 export const shouldShowSummary = (
   hoverData: DataItem,
@@ -59,7 +60,7 @@ export const shouldShowSummary = (
 };
 
 /**
- * 计算tooltip显示位置
+ * calculate tooltip show position
  */
 export const getPosition = (
   position: Position,
@@ -87,7 +88,7 @@ export const getPosition = (
 };
 
 /**
- * 获取默认options
+ * get default options
  */
 export const getOptions = (options?: TooltipOptions) => {
   return {
@@ -115,7 +116,7 @@ export const shouldIgnore = (
 };
 
 /**
- * 給container加style
+ * add style to container
  */
 export const manageContainerStyle = (container, styles) => {
   if (container && styles) {
@@ -127,10 +128,17 @@ export const manageContainerStyle = (container, styles) => {
   return container;
 };
 
-/* 美化 */
+/* formate */
 export const getFriendlyVal = (val: any): number | string => {
   const isInvalidNumber = isNumber(val) && isNaN(val);
   const isEmptyString = val === '';
 
   return isNil(val) || isInvalidNumber || isEmptyString ? '-' : val;
+};
+
+export const getSelectedValueFields = (
+  selectedData: DataItem[],
+  field: string,
+): string[] => {
+  return uniq(selectedData.map((d) => d[field]));
 };

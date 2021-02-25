@@ -24,7 +24,7 @@ export class TooltipOperation extends React.PureComponent<
 
   handleSelectOrder = ({ key: type }) => {
     const { plot, sortFieldId, sortQuery } = this.props;
-    // 刷新数据
+    // refresh data
     const selectedOption = find(ORDER_OPTIONS, { type }) as OrderOption;
     const sortParam =
       type === 'none'
@@ -35,11 +35,11 @@ export class TooltipOperation extends React.PureComponent<
             sortMethod: get(selectedOption, 'sortMethod'),
             query: sortQuery,
           };
-    // 排序条件，存到 store 中
+    // sort condition, save to store
     plot.store.set('sortParam', sortParam);
     if ('setDataCfg' in plot) {
       const dataCfg = { ...plot.dataCfg };
-      // 手动排序的优先级高于全局配置
+      // priority of manual sorting is higher than global configuration
       dataCfg.sortParams = [].concat(sortParam || [], dataCfg.sortParams);
       // 声控编程 by lqs
       // 内部更新排序规则，直接使用dataset方法
