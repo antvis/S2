@@ -1,7 +1,7 @@
 import { Point } from '@antv/g-canvas';
 import * as _ from 'lodash';
 import { DataItem, TooltipOptions } from '../index';
-import { Cell } from '../cell';
+import { DataCell } from '../cell';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { BaseInteraction } from './base';
 
@@ -19,9 +19,9 @@ export class HoverInteraction extends BaseInteraction {
     this.hideHoverBox();
   };
 
-  protected showHoverBox(cells: Cell[]) {
+  protected showHoverBox(cells: DataCell[]) {
     this.hideHoverBox();
-    cells.forEach((cell: Cell) => {
+    cells.forEach((cell: DataCell) => {
       const { x, y, width, height } = cell.getInteractiveBgShape().attr();
       // 往内缩一个像素，避免和外边框重叠
       const margin = 1;

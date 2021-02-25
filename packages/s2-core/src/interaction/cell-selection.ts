@@ -1,14 +1,14 @@
 import { Event, Group } from '@antv/g-canvas';
 import * as _ from 'lodash';
 import { isSelected } from '../utils/selected';
-import { Cell } from '../cell';
+import { DataCell } from '../cell';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { HoverInteraction } from './hover-interaction';
 import { ViewMeta } from '../common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 
 /**
- * Panel Area's Cell Click Interaction
+ * Panel Area's DataCell Click Interaction
  */
 export class CellSelection extends HoverInteraction {
   private target;
@@ -93,7 +93,7 @@ export class CellSelection extends HoverInteraction {
 
   private getMetaInCell(target): ViewMeta {
     const cell = target;
-    if (cell instanceof Cell) {
+    if (cell instanceof DataCell) {
       return cell.getMeta();
     }
     if (cell) {

@@ -6,6 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import { map, min, max, isEmpty } from 'lodash';
 import { DrillDown, DrillDownProps } from './drill-down';
+import { S2Event } from '../interaction/events/types'
 import {
   Node,
   SpreadSheetTheme,
@@ -13,11 +14,11 @@ import {
   DataCfg,
   SpreadsheetOptions,
   SpreadSheet,
-  ColCell,
-  KEY_COLUMN_CELL_CLICK,
-  KEY_CORNER_CELL_CLICK,
-  KEY_ROW_CELL_CLICK,
-  KEY_SINGLE_CELL_CLICK,
+  // ColCell,
+  // KEY_COLUMN_CELL_CLICK,
+  // KEY_CORNER_CELL_CLICK,
+  // KEY_ROW_CELL_CLICK,
+  // KEY_SINGLE_CELL_CLICK,
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
   KEY_ROW_NODE_BORDER_REACHED,
@@ -91,6 +92,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     onRowCellClick,
     onColCellClick,
     onDataCellClick,
+    onCornerCellClick,
     getSpreadsheet,
     partDrillDown,
   } = props;
@@ -140,22 +142,23 @@ export const SheetComponent = (props: SpreadsheetProps) => {
         onCellScroll(value);
       }
     });
-    baseSpreadsheet.on(KEY_ROW_CELL_CLICK, (value) => {
+    baseSpreadsheet.on(S2Event.ROWCELL_CLICK, (value) => {
       if (onRowCellClick) {
+        console.log('ROWCELL_CLICK');
         onRowCellClick(value);
       }
     });
-    baseSpreadsheet.on(KEY_COLUMN_CELL_CLICK, (value) => {
+    baseSpreadsheet.on(S2Event.COLCELL_CLICK, (value) => {
       if (onColCellClick) {
         onColCellClick(value);
       }
     });
-    baseSpreadsheet.on(KEY_CORNER_CELL_CLICK, (value) => {
-      if (onRowCellClick) {
-        onRowCellClick(value);
+    baseSpreadsheet.on(S2Event.CORNER_CLICK, (value) => {
+      if (onCornerCellClick) {
+        onCornerCellClick(value);
       }
     });
-    baseSpreadsheet.on(KEY_SINGLE_CELL_CLICK, (value) => {
+    baseSpreadsheet.on(S2Event.DATACELL_CLICK, (value) => {
       if (onDataCellClick) {
         onDataCellClick(value);
       }
@@ -167,10 +170,10 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     baseSpreadsheet.off(KEY_ROW_NODE_BORDER_REACHED);
     baseSpreadsheet.off(KEY_COL_NODE_BORDER_REACHED);
     baseSpreadsheet.off(KEY_CELL_SCROLL);
-    baseSpreadsheet.off(KEY_ROW_CELL_CLICK);
-    baseSpreadsheet.off(KEY_COLUMN_CELL_CLICK);
-    baseSpreadsheet.off(KEY_CORNER_CELL_CLICK);
-    baseSpreadsheet.off(KEY_SINGLE_CELL_CLICK);
+    baseSpreadsheet.off(S2Event.ROWCELL_CLICK);
+    baseSpreadsheet.off(S2Event.COLCELL_CLICK);
+    baseSpreadsheet.off(S2Event.CORNER_CLICK);
+    baseSpreadsheet.off(S2Event.DATACELL_CLICK);
   };
 
   const iconClickCallback = (

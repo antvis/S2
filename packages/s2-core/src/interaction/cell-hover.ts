@@ -1,6 +1,6 @@
 import { Event, Group } from '@antv/g-canvas';
 import * as _ from 'lodash';
-import { Cell } from '../cell';
+import { DataCell } from '../cell';
 import { BaseSpreadSheet } from '../index';
 import { HoverInteraction } from './hover-interaction';
 
@@ -10,7 +10,7 @@ import { HoverInteraction } from './hover-interaction';
 export class CellHover extends HoverInteraction {
   private isDragging: boolean;
 
-  private selectedCell: Cell;
+  private selectedCell: DataCell;
 
   constructor(spreadsheet: BaseSpreadSheet) {
     super(spreadsheet);
@@ -39,7 +39,7 @@ export class CellHover extends HoverInteraction {
     this.isDragging = false;
   }
 
-  protected showHoverBox(cells: Cell[]) {
+  protected showHoverBox(cells: DataCell[]) {
     if (this.spreadsheet.isSpreadsheetType()) {
       super.showHoverBox(cells);
     } else {
@@ -66,7 +66,7 @@ export class CellHover extends HoverInteraction {
       return;
     }
     const cell = ev.target.get('parent');
-    if (cell instanceof Cell) {
+    if (cell instanceof DataCell) {
       this.showHoverBox([cell]);
       // 目前只有交叉表才有tooltips,明细表暂时木有
       if (this.spreadsheet.isSpreadsheetType()) {

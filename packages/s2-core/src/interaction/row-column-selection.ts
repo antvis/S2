@@ -1,7 +1,7 @@
 import { Event, Group } from '@antv/g-canvas';
 import * as _ from 'lodash';
 import { ActionType, SortParam, Node } from '../index';
-import { Cell, ColCell, RowCell } from '../cell';
+import { DataCell, ColCell, RowCell } from '../cell';
 import { getHeaderHierarchyQuery } from '../facet/layout/util';
 import { HoverInteraction } from './hover-interaction';
 import { DownOutlined } from '@ant-design/icons';
@@ -44,7 +44,7 @@ const MENUS = [
  * and high-light current row/column cells
  */
 export class RowColumnSelection extends HoverInteraction {
-  public cells: Cell[];
+  public cells: DataCell[];
 
   public selected: any[];
 

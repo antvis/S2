@@ -13,7 +13,7 @@ import {
   SpreadsheetOptions,
   ViewMeta,
 } from '../common/interface';
-import { Cell, DataPlaceHolderCell } from '../cell';
+import { DataCell, DataPlaceHolderCell } from '../cell';
 import {
   KEY_COL_REAL_WIDTH_INFO,
   KEY_GROUP_BACK_GROUND,
@@ -42,6 +42,8 @@ import { StrategyDataCell } from '../cell';
 import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
 import { DefaultStyleCfg } from '../common/default-style-cfg';
+import { EventController } from "../interaction/events/event-controller";
+import State from '../state/state'
 
 const matrixTransform = ext.transform;
 
@@ -102,7 +104,7 @@ export default abstract class BaseSpreadSheet extends EE {
   public hoverBoxGroup: IGroup;
 
   // cell cache
-  public cellCache: LruCache<string, Cell> = new LruCache(10000);
+  public cellCache: LruCache<string, DataCell> = new LruCache(10000);
 
   // cell 占位格缓存
   public cellPlaceHolderCache: LruCache<
@@ -115,6 +117,12 @@ export default abstract class BaseSpreadSheet extends EE {
 
   // 是否需要使用view meta的cache(目前的场景 树结构collapse, 宽、高拖拽拽)，一次性消费
   public needUseCacheMeta: boolean;
+
+  // 基础事件
+  public eventController: EventController;
+
+  // 状态管理器
+  public state = new State(this)
 
   public devicePixelRatioMedia: MediaQueryList;
 
@@ -131,8 +139,13 @@ export default abstract class BaseSpreadSheet extends EE {
     this.options = this.safetyOptions(options);
     this.dataSet = this.initDataSet(this.options);
     this.tooltip = this.initTooltip();
+    this.registerEventController();
     this.registerInteractions(this.options);
     this.initDevicePixelRatioListener();
+  }
+
+  protected registerEventController() {
+    this.eventController = new EventController(this);
   }
 
   safetyDataCfg = (dataCfg: DataCfg): DataCfg => {
@@ -348,11 +361,11 @@ export default abstract class BaseSpreadSheet extends EE {
     this.facet.render();
   }
 
-  protected getCorrectCell(facet: ViewMeta): Cell {
+  protected getCorrectCell(facet: ViewMeta): DataCell {
     // const valueHasDerivedValue = this.getDerivedValue(facet.valueField).derivedValueField.length === 0;
     // const isDerivedValue = this.isDerivedValue(facet.valueField);
     return this.isValueInCols()
-      ? new Cell(facet, this)
+      ? new DataCell(facet, this)
       : new StrategyDataCell(facet, this);
   }
 
@@ -538,11 +551,11 @@ export default abstract class BaseSpreadSheet extends EE {
    * Get all panel group cells
    * @param callback to handle each cell if needed
    */
-  public getPanelAllCells(callback?: (cell: Cell) => void): Cell[] {
+  public getPanelAllCells(callback?: (cell: DataCell) => void): DataCell[] {
     const children = this.panelGroup.get('children');
-    const cells: Cell[] = [];
+    const cells: DataCell[] = [];
     children.forEach((child) => {
-      if (child instanceof Cell) {
+      if (child instanceof DataCell) {
         cells.push(child);
         if (callback) {
           callback(child);
@@ -647,4 +660,21 @@ export default abstract class BaseSpreadSheet extends EE {
 
     this.render(false);
   };
+
+  public setState(cell, stateName) {
+    this.state.setState(cell, stateName);
+  }
+
+  public getCurrentState() {
+    return this.state.getCurrentState();
+  }
+
+  public clearState() {
+    this.state.clearState();
+  }
+
+  public updateCellStyleByState() {
+    const cells = this.getCurrentState().cells;
+    cells.forEach((cell: BaseCell<Node>) => {cell.updateByState(this.getCurrentState().stateName)})
+  }
 }

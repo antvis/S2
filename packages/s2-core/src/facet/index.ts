@@ -13,7 +13,7 @@ import {
 import { Formatter, Pagination, PlaceHolderMeta } from '../common/interface';
 import { diffIndexes, Indexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
-import { BaseCell, Cell } from '../cell';
+import { BaseCell, DataCell } from '../cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
@@ -576,7 +576,7 @@ export class SpreadsheetFacet extends BaseFacet {
                   newGroup as DataPlaceHolderCell,
                 );
               } else {
-                this.spreadsheet.cellCache.put(cacheKey, newGroup as Cell);
+                this.spreadsheet.cellCache.put(cacheKey, newGroup as DataCell);
               }
               if (!placeHolder) {
                 // 存储非placeHolder的meta

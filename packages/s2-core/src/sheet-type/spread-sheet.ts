@@ -29,7 +29,7 @@ import {
   RowColumnSelection,
   RowHeaderTextClick,
 } from '../interaction';
-import { ClickEvent } from '../interaction/click-event';
+// import { ClickEvent } from '../interaction/click-event';
 import { DetailFacet } from '../facet/detail';
 import { SpreadsheetFacet } from '../facet';
 import { SpreadParams } from '../data-set/spread-data-set';
@@ -165,7 +165,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
         CornerHeaderTextClick,
       );
     }
-    this.registerInteraction('spreadsheet:click-event', ClickEvent);
+    // this.registerInteraction('spreadsheet:click-event', ClickEvent);
     this.registerInteraction(
       'spreadsheet:row-header-text-click',
       RowHeaderTextClick,

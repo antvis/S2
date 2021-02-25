@@ -1,5 +1,5 @@
 import { Event } from '@antv/g-canvas';
-import { Cell, ColCell, CornerCell, RowCell } from '../cell';
+import { DataCell, ColCell, CornerCell, RowCell } from '../cell';
 import {
   KEY_COLUMN_CELL_CLICK,
   KEY_CORNER_CELL_CLICK,
@@ -38,7 +38,7 @@ export class ClickEvent extends BaseInteraction {
       return;
     }
 
-    if (target instanceof Cell) {
+    if (target instanceof DataCell) {
       // cell area's cell
       const meta = target.getMeta();
       // console.log(JSON.stringify(meta.rowQuery), JSON.stringify(meta.colQuery));

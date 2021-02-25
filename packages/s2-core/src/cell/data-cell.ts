@@ -22,7 +22,7 @@ const ICON_SIZE = 10;
 const ICON_PADDING = 2;
 
 /**
- * Cell for panelGroup area
+ * DataCell for panelGroup area
  * ----------------------------
  * |                  |       |
  * |interval      text| icon  |
@@ -33,7 +33,7 @@ const ICON_PADDING = 2;
  * 2、icon align in right with size {@link ICON_SIZE}
  * 3、left rect area is interval(in left) and text(in right)
  */
-export class Cell extends BaseCell<ViewMeta> {
+export class DataCell extends BaseCell<ViewMeta> {
   // 3、condition shapes
   // background color by bg condition
   protected conditionBgShape: IShape;

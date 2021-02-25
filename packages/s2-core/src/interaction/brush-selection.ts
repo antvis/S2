@@ -1,7 +1,11 @@
 import { Event, Point, Shape } from '@antv/g-canvas';
-import { Cell } from '../cell';
+import * as _ from '@antv/util';
+import { DataCell } from "../cell";
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
-import { HoverInteraction } from './hover-interaction';
+import { S2Event, DefaultEventType } from './events/types';
+import { BaseInteraction } from './base';
+import { DataItem, TooltipOptions } from '..';
+
 
 function getBrushRegion(p1, p2) {
   const leftX = Math.min(p1.x, p2.x);
@@ -31,21 +35,14 @@ function isInRegion(cellRegion, brushRegion) {
 /**
  * Panel area's brush selection interaction
  */
-export class BrushSelection extends HoverInteraction {
+export class BrushSelection extends BaseInteraction {
   public threshold: number;
-
-  public cells: Cell[];
-
-  public sum: number;
-
+  public cells: DataCell[];
+  // 从mousedown开始到mouseup canvas层面的选择框
   public regionShape: Shape.Rect;
-
   private previousPoint: Point;
-
   private endPoint: Point;
-
   private endOriginEvent: any;
-
   /**
    * 0: 初始态
    * 1: 触发mousedown
@@ -55,13 +52,11 @@ export class BrushSelection extends HoverInteraction {
    */
   private phase: 0 | 1 | 2;
 
-  protected start(ev: Event) {
-    const cell = ev.target.get('parent');
-    if (cell instanceof Cell) {
+  private bindMouseDown() {
+    this.spreadsheet.on(S2Event.DATACELL_MOUSEDOWN, ev => {
       const oe = ev.originalEvent as any;
       this.previousPoint = { x: oe.layerX, y: oe.layerY };
       this.cells = this.spreadsheet.getPanelAllCells();
-      this.sum = 0;
       if (!this.regionShape) {
         this.regionShape = this.createRegionShape();
       } else {
@@ -75,111 +70,89 @@ export class BrushSelection extends HoverInteraction {
       }
       this.draw();
       this.phase = 1;
-      this.hideTooltip();
-    }
+      // this.hideTooltip();
+    })
   }
 
-  protected process(ev: Event) {
-    // 暂时只有交叉表才多选！
-    if (
-      this.phase &&
-      this.spreadsheet.isSpreadsheetType() &&
-      !this.spreadsheet.isStrategyMode()
-    ) {
-      ev.preventDefault();
-      this.phase = 2;
-      const oe = ev.originalEvent as any;
-      const currentPoint = { x: oe.layerX, y: oe.layerY };
-      // 更新brushRegion
-      const brushRegion = getBrushRegion(this.previousPoint, currentPoint);
-      this.regionShape.attr({
-        x: brushRegion.leftX,
-        y: brushRegion.topY,
-        width: brushRegion.width,
-        height: brushRegion.height,
-      });
-      this.getHighlightCells(brushRegion);
-      this.draw();
-    }
+  private bindMouseMove() {
+    this.spreadsheet.on(S2Event.DATACELL_MOUSEMOVE, ev => {
+      if (this.phase) {
+        // 屏蔽hover事件
+        this.spreadsheet.eventController.interceptEvent.add(DefaultEventType.Hover);
+        ev.preventDefault();
+        this.phase = 2;
+        const oe = ev.originalEvent as any;
+        const currentPoint = { x: oe.layerX, y: oe.layerY };
+        // 更新brushRegion
+        const brushRegion = getBrushRegion(this.previousPoint, currentPoint);
+        this.regionShape.attr({
+          x: brushRegion.leftX,
+          y: brushRegion.topY,
+          width: brushRegion.width,
+          height: brushRegion.height,
+        });
+        this.getHighlightCells(brushRegion);
+        this.draw();
+      }
+    })
   }
 
-  protected end(ev: Event) {
-    if (this.phase === 2) {
-      /**
-       * 模拟tableau的交互，原因是如果在mousedown阶段清空选中态，那单选的mouseup后的click无法实现反选
-       */
-      this.spreadsheet.store.set('selected', null);
-      this.resetCell();
-      const oe = ev.originalEvent as any;
-      this.endPoint = { x: oe.layerX, y: oe.layerY };
-      this.endOriginEvent = ev.originalEvent;
-      const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
-      this.getSelectedCells(brushRegion);
-      this.showTooltip({
-        x: this.endOriginEvent.clientX,
-        y: this.endOriginEvent.clientY,
-      });
-      // 透明度为0会导致 hover 无法响应
-      this.regionShape.attr({
-        opacity: 0,
-      });
-      this.hideHoverBox();
-      this.draw();
+  private bindMouseUp() {
+    this.spreadsheet.on(S2Event.DATACELL_MOUSEUP, ev => {
+      if (this.phase === 2) {
+        /**
+         * 模拟tableau的交互，原因是如果在mousedown阶段清空选中态，那单选的mouseup后的click无法实现反选
+         */
+        this.spreadsheet.clearState()
+        const oe = ev.originalEvent as any;
+        this.endPoint = { x: oe.layerX, y: oe.layerY };
+        this.endOriginEvent = ev.event;
+        const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
+        this.getSelectedCells(brushRegion);
+        // this.showTooltip({
+        //   x: this.endOriginEvent.clientX,
+        //   y: this.endOriginEvent.clientY,
+        // });
+        // 透明度为0会导致 hover 无法响应
+        this.regionShape.attr({
+          opacity: 0,
+        });
+        this.hideHoverBox();
+        this.draw();
+      }
+      this.phase = 0;
+    })
+  }
+
+  // protected showTooltip(position: Point, hoverData?: DataItem, options?: TooltipOptions) {
+  //   if (!_.get(this, 'spreadsheet.options.hideTooltip')) {
+  //     this.spreadsheet.tooltip.show(position, hoverData, options);
+  //   }
+  // }
+
+  protected hideHoverBox() {
+    if (_.get(this.spreadsheet, 'hoverBoxGroup')) {
+      this.spreadsheet.hoverBoxGroup.clear();
     }
-    this.phase = 0;
   }
 
   protected bindEvents() {
     super.bindEvents();
+    this.bindMouseDown();
+    this.bindMouseMove();
+    this.bindMouseUp();
     this.addEventListener(
       this.spreadsheet.container.get('container'),
       'mouseleave',
-      this.hide,
+      this.hide.bind(this),
     );
   }
 
-  private getSelectedCells(region) {
+  private getCellsInRegion(region) {
     const containerMat = this.spreadsheet.panelGroup.attr('matrix');
     const containerX = containerMat[6];
     const containerY = containerMat[7];
-    const selectedCells: Cell[] = [];
-    this.cells.forEach((cell) => {
-      const bbox = cell.getBBox();
-      const leftX = containerX + bbox.minX;
-      const rightX = containerX + bbox.maxX;
-      const topY = containerY + bbox.minY;
-      const bottomY = containerY + bbox.maxY;
-      const cellRegion = { leftX, rightX, topY, bottomY };
-      const inRegion = isInRegion(cellRegion, region);
-      if (inRegion) {
-        selectedCells.push(cell);
-        this.sum++;
-      }
-    });
-
-    const rowIndex: number[] = selectedCells.map(
-      (cell) => cell.getMeta().rowIndex,
-    );
-    const colIndex: number[] = selectedCells.map(
-      (cell) => cell.getMeta().colIndex,
-    );
-
-    this.spreadsheet.store.set('selected', {
-      type: 'brush',
-      indexes: [
-        [Math.min(...rowIndex), Math.max(...rowIndex)],
-        [Math.min(...colIndex), Math.max(...colIndex)],
-      ],
-    });
-
-    selectedCells.forEach((cell: Cell) => cell.update());
-  }
-
-  private getHighlightCells(region) {
-    const containerMat = this.spreadsheet.panelGroup.attr('matrix');
-    const containerX = containerMat[6];
-    const containerY = containerMat[7];
-    const selectedCells = [];
+    const selectedCells: DataCell[] = [];
     this.cells.forEach((cell) => {
       const bbox = cell.getBBox();
       const leftX = containerX + bbox.minX;
@@ -192,13 +165,46 @@ export class BrushSelection extends HoverInteraction {
         selectedCells.push(cell);
       }
     });
-    this.showHoverBox(selectedCells);
+    return selectedCells;
   }
 
-  private resetCell() {
-    this.cells.forEach((cell) => {
-      cell.update();
+  // 最终刷选的cell
+  private getSelectedCells(region) {
+    const selectedCells = this.getCellsInRegion(region);
+    selectedCells.forEach(cell => {
+      this.spreadsheet.setState(cell, 'selected');
+    })
+    this.spreadsheet.updateCellStyleByState();
+  }
+
+  // 刷选过程中高亮的cell
+  private getHighlightCells(region) {
+    const selectedCells = this.getCellsInRegion(region);
+    this.showPrepareBrushSelectBorder(selectedCells);
+  }
+
+  // 刷选过程中的预选择外框
+  protected showPrepareBrushSelectBorder(cells: DataCell[]) {
+    this.hideHoverBox();
+    cells.forEach((cell: DataCell) => {
+      const { x, y, width, height } = cell.getInteractiveBgShape().attrs;
+      // 往内缩一个像素，避免和外边框重叠
+      const margin = 1;
+      this.spreadsheet.hoverBoxGroup.addShape('rect', {
+        name: 'hoverBox',
+        attrs: {
+          x: x + margin,
+          y: +y + margin,
+          width: width - margin * 2,
+          height: height - margin * 2,
+          stroke: '#000',
+          zIndex: 999,
+        },
+        zIndex: 999,
+        capture: false, // 鼠标悬浮到 cell 上时，会添加 hoverBox，但继续 mousemove 会命中 hoverBox，所以去掉事件
+      });
     });
+    this.spreadsheet.panelGroup.sort();
   }
 
   private createRegionShape() {
@@ -213,22 +219,27 @@ export class BrushSelection extends HoverInteraction {
         zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX,
       },
       capture: false,
-    }) as Shape.Rect;
+    });
   }
 
-  hide = () => {
-    if (this.phase === 1) {
-      this.hide();
-      if (this.cells) {
-        this.resetCell();
-      }
-      if (this.regionShape) {
-        this.regionShape.attr({
-          opacity: 0,
-        });
-      }
-      this.phase = 0;
-      this.draw();
+  // protected hideTooltip() {
+  //   this.spreadsheet.tooltip.hide();
+  // }
+
+  public hide() {
+    // this.hideTooltip();
+    this.hideHoverBox();
+    if (this.cells) {
+      this.spreadsheet.clearState()
     }
+    if (this.regionShape) {
+      this.regionShape.attr({
+        opacity: 0,
+      });
+    }
+    // 清空屏蔽的事件
+    this.spreadsheet.eventController.interceptEvent.clear();
+    this.phase = 0;
+    this.draw();
   };
 }

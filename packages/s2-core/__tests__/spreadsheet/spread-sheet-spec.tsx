@@ -109,8 +109,8 @@ const getDataCfg = () => {
 
 const getOptions = () => {
   return {
-    width: 500,
-    height: 400,
+    width: 1000,
+    height: 800,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: true,
@@ -136,6 +136,33 @@ const getOptions = () => {
       },
       device: 'pc',
     },
+  };
+};
+
+const getTheme = () => {
+  return {
+    themeByState: {
+      dataCell: {
+        selected: {
+          backgroundColor: '#0000ff',
+          opacity: 0.8,
+        },
+        hover: {
+          backgroundColor: '#f4ffb8',
+          opacity: 0.8,
+        }
+      },
+      colCell: {
+        hover: {
+          backgroundColor: '#b5f5ec',
+        }
+      },
+      rowCell: {
+        hover: {
+          backgroundColor: '#d4b106',
+        }
+      }
+    }
   };
 };
 
@@ -210,6 +237,7 @@ function MainLayout(props) {
       <SheetComponent
         dataCfg={dataCfg}
         options={options}
+        theme={props.theme}
         spreadsheet={getSpreadSheet}
         onRowCellClick={onRowCellClick}
         onColCellClick={onColCellClick}
@@ -226,7 +254,11 @@ describe('spreadsheet normal spec', () => {
 
   act(() => {
     ReactDOM.render(
-      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
+      <MainLayout
+        dataCfg={getDataCfg()}
+        options={getOptions()}
+        theme={getTheme()}
+      />,
       getContainer(),
     );
   });
