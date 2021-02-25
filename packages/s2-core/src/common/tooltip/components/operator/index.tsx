@@ -2,8 +2,8 @@ import { Menu } from 'antd';
 import { size, map } from 'lodash';
 import * as React from 'react';
 import { getIcon, HtmlIcon } from '../../../icons';
-import { IMenu, IOperatorProps } from '../../interface';
-import { DEFAULT_ICON_PROPS, ICON_CLASS } from '../../constant';
+import { IMenu, OperatorProps } from '../../interface';
+import { TOOLTIP_CLASS_PRE, DEFAULT_ICON_PROPS } from '../../constant';
 
 import './index.less';
 
@@ -13,32 +13,41 @@ import './index.less';
  *  - actions
  *    delay 300ms show
  */
-export class Operator extends React.PureComponent<IOperatorProps> {
-  public onMenuClick = (e) => {
+
+const Operator = (props: OperatorProps) => {
+  const { menus, onClick } = props;
+
+  const onMenuClick = (e) => {
     const { key, domEvent } = e;
 
-    this.props.onClick(key, domEvent);
+    onClick(key, domEvent);
   };
 
-  public renderIcon(icon): JSX.Element {
+  const renderIcon = (icon) => {
     if (getIcon(icon)) {
       return (
-        <HtmlIcon className={ICON_CLASS} type={icon} {...DEFAULT_ICON_PROPS} />
+        <HtmlIcon
+          className={`${TOOLTIP_CLASS_PRE}-operator-icon`}
+          type={icon}
+          {...DEFAULT_ICON_PROPS}
+        />
       );
     }
 
     const Component = icon;
-    return icon && <Component className={ICON_CLASS} />;
-  }
+    return (
+      icon && <Component className={`${TOOLTIP_CLASS_PRE}-operator-icon`} />
+    );
+  };
 
-  public renderMenu(menu: IMenu): JSX.Element {
+  const renderMenu = (menu: IMenu) => {
     const { id, icon, text, children } = menu;
 
     if (size(children)) {
       const subMenuTitle = (
-        <span className="submenu-title-wrapper">
+        <span>
           {text}
-          {this.renderIcon(icon)}
+          {renderIcon(icon)}
         </span>
       );
 
@@ -46,9 +55,9 @@ export class Operator extends React.PureComponent<IOperatorProps> {
         <Menu.SubMenu
           title={subMenuTitle}
           key={id}
-          popupClassName="eva-tooltip-menu-submenu-popup"
+          popupClassName={`${TOOLTIP_CLASS_PRE}-operator-submenu-popup`}
         >
-          {map(children, (m: IMenu) => this.renderMenu(m))}
+          {map(children, (m: IMenu) => renderMenu(m))}
         </Menu.SubMenu>
       );
     }
@@ -56,32 +65,28 @@ export class Operator extends React.PureComponent<IOperatorProps> {
     return (
       <Menu.Item key={id}>
         {text}
-        {this.renderIcon(icon)}
+        {renderIcon(icon)}
       </Menu.Item>
     );
-  }
+  };
 
-  public renderMenus(): JSX.Element {
-    const { menus } = this.props;
-
+  const renderMenus = () => {
     return (
       <Menu
-        className="tooltip-operator-menus"
-        onClick={this.onMenuClick}
+        className={`${TOOLTIP_CLASS_PRE}-operator-menus`}
+        onClick={onMenuClick}
         mode="horizontal"
       >
-        {map(menus, (menu: IMenu) => this.renderMenu(menu))}
+        {map(menus, (menu: IMenu) => renderMenu(menu))}
       </Menu>
     );
-  }
+  };
 
-  public render(): JSX.Element {
-    const { menus } = this.props;
+  return (
+    size(menus) !== 0 && (
+      <div className={`${TOOLTIP_CLASS_PRE}-operator`}>{renderMenus()}</div>
+    )
+  );
+};
 
-    return (
-      size(menus) !== 0 && (
-        <div className="eva-facet-tooltip-operator">{this.renderMenus()}</div>
-      )
-    );
-  }
-}
+export default Operator;

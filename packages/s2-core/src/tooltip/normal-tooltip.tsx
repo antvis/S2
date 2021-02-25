@@ -15,7 +15,7 @@ import {
 import { BaseTooltip } from '../common/tooltip';
 import { i18n } from '../common/i18n';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
-import { SimpleTips } from '../common/tooltip/components/simple-tips';
+import SimpleTips from '../common/tooltip/components/simple-tips';
 import {
   getAggregationValue,
   shouldShowSummary,

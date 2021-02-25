@@ -1,10 +1,3 @@
-/**
- * @Description:
- * @author qingsheng
- * @date 2019/3/11
- * @warning
- */
-
 import { BaseSpreadSheet } from '../../sheet-type';
 import { SortParam } from '../interface';
 
@@ -17,8 +10,7 @@ export interface IMenu {
   readonly children?: IMenu[]; // subMenu
 }
 
-export interface IOperatorProps {
-  // 点击之后的回调
+export interface OperatorProps {
   readonly onClick: (...params) => void;
   readonly menus: IMenu[];
 }
@@ -54,7 +46,7 @@ export type ActionType =
 export interface TooltipOptions {
   actionType?: ActionType;
   // button action on the top
-  operator?: IOperatorProps;
+  operator?: OperatorProps;
   enterable?: boolean;
   // totals or not
   isTotals?: boolean;
@@ -62,7 +54,6 @@ export interface TooltipOptions {
 
   interpretation?: InterpretationProps;
 
-  // 提供给外部任意传参数
   [key: string]: any;
 }
 

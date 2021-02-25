@@ -3,12 +3,13 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Aggregation } from '../interface';
 import { BaseSpreadSheet } from '../../sheet-type';
-import { TooltipDetail } from './components/detail';
-import { Operator as TooltipOperator } from './components/operator';
-import { Infos } from './components/infos';
-import { TooltipSummary } from './components/summary';
-import { TooltipHeadInfo } from './components/head-info';
-import { Interpretation } from './components/interpretation';
+import TooltipDetail from './components/detail';
+import TooltipOperator from './components/operator';
+import Infos from './components/infos';
+import Divider from './components/divider';
+import TooltipSummary from './components/summary';
+import TooltipHeadInfo from './components/head-info';
+import Interpretation from './components/interpretation';
 import {
   DataItem,
   ListItem,
@@ -24,7 +25,7 @@ import {
   shouldIgnore,
   manageContainerStyle,
 } from '../../utils/tooltip';
-import { CONTAINER_CLASS, DIVIDER_CLASS } from './constant';
+import { TOOLTIP_CLASS_PRE } from './constant';
 
 import './index.less';
 
@@ -61,6 +62,7 @@ export abstract class BaseTooltip {
     const { position, data, options, element } = showOptions;
     const { enterable } = getOptions(options);
     const container = this.getContainer();
+
     if (this.enterable && shouldIgnore(enterable, position, this.position)) {
       return;
     } else {
@@ -100,13 +102,13 @@ export abstract class BaseTooltip {
   }
 
   protected renderContent(data?: DataItem, options?: TooltipOptions) {
-    const _options = getOptions(options);
-    const operation = this.renderOperation(_options);
-    const summary = this.renderSummary(data, _options);
-    const interpretation = this.renderInterpretation(_options);
-    const detail = this.renderDetail(data, _options);
-    const headInfo = this.renderHeadInfo(data, _options);
-    const infos = this.renderInfos(_options);
+    const option = getOptions(options);
+    const operation = this.renderOperation(option);
+    const summary = this.renderSummary(data, option);
+    const interpretation = this.renderInterpretation(option);
+    const detail = this.renderDetail(data, option);
+    const headInfo = this.renderHeadInfo(data, option);
+    const infos = this.renderInfos(option);
     return (
       <div>
         {operation}
@@ -120,7 +122,7 @@ export abstract class BaseTooltip {
   }
 
   protected renderDivider() {
-    return <div className={DIVIDER_CLASS} />;
+    return <Divider />;
   }
 
   protected renderOperation(options?: TooltipOptions) {
@@ -196,7 +198,7 @@ export abstract class BaseTooltip {
       this.container = container;
     }
     // change class every time!
-    this.container.className = CONTAINER_CLASS;
+    this.container.className = `${TOOLTIP_CLASS_PRE}-container`;
     return this.container;
   }
 

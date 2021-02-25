@@ -1,9 +1,7 @@
-.eva-facet-tooltip {
-  // pointer-events: none;
+.ss-tooltip-container {
   position: fixed;
   min-width: 200px;
   max-width: 640px;
-  // 暂时先加上一个z-index
   z-index: 1024;
   display: inline-block;
   background: rgba(255, 255, 255, 0.96);
@@ -12,13 +10,12 @@
   font-family: 'Roboto', 'PingFang SC', 'Chinese Quote', '-apple-system',
     'BlinkMacSystemFont', 'Segoe UI', 'Hiragino Sans GB', 'Microsoft YaHei',
     'Helvetica Neue', Helvetica, Arial, sans-serif;
-  /* 英文&数字用Roboto，中文用 PingFang */
 
   &.trans-2-middle {
     transform: translateX(-90px) translateY(-160%);
     pointer-events: none;
   }
-  .eva-facet-tooltip-tips {
+  .ss-tooltip-tips {
     padding: 4px 12px;
     line-height: 20px;
     font-size: 12px;
@@ -31,7 +28,6 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow-wrap: break-word;
-    // https://juejin.im/post/5c7cb3e4e51d454a0c384305
     &:after {
       position: absolute;
       left: 50%;
@@ -47,7 +43,7 @@
     }
   }
 
-  .eva-facet-tooltip-infos {
+  .ss-tooltip-infos {
     padding: 4px 12px;
     line-height: 20px;
     font-size: 12px;
@@ -62,39 +58,36 @@
     background: rgba(249, 249, 249, 0.96);
   }
 
-  .eva-facet-tooltip-summary {
+  .ss-tooltip-summary {
     text-align: left;
     line-height: 20px;
     font-size: 12px;
     color: rgba(0, 0, 0, 0.65);
     overflow: hidden;
     padding: 12px 12px 4px;
-    .eva-facet-tooltip-summary-item {
-      // margin: 4px 0;
-    }
-    .eva-facet-tooltip-summary-val {
+    .ss-tooltip-summary-val {
       float: right;
     }
   }
 
-  .eva-facet-tooltip-interpretation {
+  .ss-tooltip-interpretation {
     font-size: 12px;
     color: rgba(0, 0, 0, 0.65);
     overflow: hidden;
     padding: 12px 12px 4px;
-    .eva-facet-tooltip-interpretation-head {
+    .ss-tooltip-interpretation-head {
       margin-bottom: 12px;
-      .eva-facet-tooltip-interpretation-icon {
+      .ss-tooltip-interpretation-icon {
         width: 14px;
         height: 14px;
       }
-      .eva-facet-tooltip-interpretation-name {
+      .ss-tooltip-interpretation-name {
         color: #000000;
       }
     }
   }
 
-  .eva-facet-tooltip-head-info-list {
+  .ss-tooltip-head-info-list {
     font-family: PingFangSC-Regular;
     font-size: 12px;
     color: #a2a2a2;
@@ -104,33 +97,33 @@
     line-height: 20px;
   }
 
-  .eva-facet-tooltip-bold {
+  .ss-tooltip-bold {
     font-weight: bold;
   }
-  .eva-facet-tooltip-highlight {
+  .ss-tooltip-highlight {
     color: rgba(0, 0, 0, 0.85);
   }
 
-  .eva-facet-tooltip-divider {
+  .ss-tooltip-divider {
     border-top: 1px solid #e9e9e9;
   }
-  .eva-facet-tooltip-list {
+  .ss-tooltip-detail-list {
     padding: 2px 12px 8px;
-    .eva-facet-tooltip-list-item {
+    .ss-tooltip-detail-item {
       font-size: 12px;
       color: rgba(0, 0, 0, 0.65);
       overflow: hidden;
       margin: 4px 0;
-      .eva-facet-tooltip-list-item-key {
+      .ss-tooltip-detail-item-key {
         margin-right: 20px;
       }
-      .eva-facet-tooltip-list-item-val {
+      .ss-tooltip-detail-item-val {
         float: right;
       }
     }
   }
 
-  .eva-facet-tooltip-rich-text {
+  .ss-tooltip-rich-text {
     padding: 2px 0px 8px;
     color: #666;
     font-size: 12px;
@@ -142,13 +135,6 @@
       padding: 0;
       margin: 0;
     }
-    // p {
-    // font-weight: 400;
-    // line-height: 20px;
-    // letter-spacing: -0.2px;
-    // color: #666;
-    // font-size: 12px;
-    // }
 
     h1 {
       font-size: 28px;
@@ -182,12 +168,6 @@
       color: #222;
     }
 
-    // a 链接默认颜色为primary
-    // a {
-    // color: #1890FF;
-    // text-decoration: none;
-    // }
-
     a {
       text-decoration: none;
     }
@@ -197,9 +177,6 @@
     a:visited,
     a:focus {
       text-decoration: none;
-      // !!!hack
-      // 因为神奇的口碑色(链接为红，hover 为蓝色)，导致需要禁掉 hover 效果，但发现 color 无法改动
-      // 这句 hack 就是说，除非鼠标 hover 在链接处一天一夜，不然看不见变色（也是没办法啊）
       transition: color 86400s ease-in 86400s;
     }
 

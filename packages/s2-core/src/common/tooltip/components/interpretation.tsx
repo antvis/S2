@@ -1,53 +1,55 @@
 import * as React from 'react';
 import { getIcon, HtmlIcon } from '../../icons';
 import { InterpretationProps } from '../interface';
-import {
-  INTERPRETATION_ICON_CLASS,
-  ICON_CLASS,
-  INTERPRETATION_CLASS,
-  INTERPRETATION_HEAD_CLASS,
-  INTERPRETATION_NAME_CLASS,
-} from '../constant';
+import { TOOLTIP_CLASS_PRE } from '../constant';
 
-export class Interpretation extends React.PureComponent<
-  InterpretationProps,
-  {}
-> {
-  public renderIcon(icon: any): JSX.Element {
+const Interpretation = (props: InterpretationProps) => {
+  const { name, icon, text, render } = props;
+
+  const renderIcon = () => {
     if (getIcon(icon)) {
-      return <HtmlIcon className={INTERPRETATION_ICON_CLASS} type={icon} />;
+      return (
+        <HtmlIcon
+          className={`${TOOLTIP_CLASS_PRE}-interpretation-icon`}
+          type={icon}
+        />
+      );
     }
     const Component = icon;
 
-    return icon && <Component className={ICON_CLASS} />;
-  }
+    return icon && <Component />;
+  };
 
-  public renderName(name: string): JSX.Element {
-    return name && <span className={INTERPRETATION_NAME_CLASS}>{name}</span>;
-  }
+  const renderName = () => {
+    return (
+      name && (
+        <span className={`${TOOLTIP_CLASS_PRE}-interpretation-name`}>
+          {name}
+        </span>
+      )
+    );
+  };
 
-  public renderText(text: string): JSX.Element {
+  const renderText = () => {
     return text && <div>{text}</div>;
-  }
+  };
 
-  public renderElement(element: React.ElementType): JSX.Element {
-    const Component = element;
+  const renderElement = () => {
+    const Component = render;
 
     return Component && <Component />;
-  }
+  };
 
-  public render(): JSX.Element {
-    const { name, icon, text, render } = this.props;
-
-    return (
-      <div className={INTERPRETATION_CLASS}>
-        <div className={INTERPRETATION_HEAD_CLASS}>
-          {this.renderIcon(icon)}
-          {this.renderName(name)}
-        </div>
-        {this.renderText(text)}
-        {this.renderElement(render)}
+  return (
+    <div className={`${TOOLTIP_CLASS_PRE}-interpretation`}>
+      <div className={`${TOOLTIP_CLASS_PRE}-interpretation-head`}>
+        {renderIcon()}
+        {renderName()}
       </div>
-    );
-  }
-}
+      {renderText()}
+      {renderElement()}
+    </div>
+  );
+};
+
+export default Interpretation;

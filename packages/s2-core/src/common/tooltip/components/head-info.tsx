@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { ListItem, HeadInfo } from '../interface';
-import { HEAD_INFO_CLASS } from '../constant';
+import { TOOLTIP_CLASS_PRE } from '../constant';
 
-export class TooltipHeadInfo extends React.PureComponent<HeadInfo, {}> {
-  render(): JSX.Element {
-    const { rows = [], cols = [] } = this.props;
+const TooltipHeadInfo = (props: HeadInfo) => {
+  const { rows = [], cols = [] } = props;
 
-    return (
-      <div className={HEAD_INFO_CLASS}>
-        {cols.map((item: ListItem) => item.value)?.join('/')}
-        {cols.length > 0 && rows.length > 0 && '，'}
-        {rows.map((item: ListItem) => item.value)?.join('/')}
-      </div>
-    );
-  }
-}
+  return (
+    <div className={`${TOOLTIP_CLASS_PRE}-head-info-list`}>
+      {cols.map((item: ListItem) => item.value)?.join('/')}
+      {cols.length > 0 && rows.length > 0 && '，'}
+      {rows.map((item: ListItem) => item.value)?.join('/')}
+    </div>
+  );
+};
+
+export default TooltipHeadInfo;

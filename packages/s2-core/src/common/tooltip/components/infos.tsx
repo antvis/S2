@@ -1,19 +1,11 @@
 import * as React from 'react';
 import { InfosProps } from '../interface';
-import { INFO_CLASS } from '../constant';
+import { TOOLTIP_CLASS_PRE } from '../constant';
 
-export class Infos extends React.PureComponent<InfosProps, {}> {
-  public render():
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | string
-    | number
-    | {}
-    | React.ReactNodeArray
-    | React.ReactPortal
-    | boolean
-    | null
-    | undefined {
-    const { infos = '' } = this.props;
-    return <div className={INFO_CLASS}>{infos}</div>;
-  }
-}
+const Infos = (props: InfosProps) => {
+  const { infos = '' } = props;
+
+  return <div className={`${TOOLTIP_CLASS_PRE}-infos`}>{infos}</div>;
+};
+
+export default Infos;
