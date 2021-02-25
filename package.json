@@ -1,5 +1,6 @@
 {
   "name": "s2",
+  "version": "0.0.1",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -20,8 +21,8 @@
     "pivot table"
   ],
   "scripts": {
-    "clean": "rimraf node_modules",
-    "install": "tnpm i && cd ./packages/s2-core && tnpm i",
+    "clean": "rimraf node_modules packages/*/node_modules",
+    "bootstrap": "npm run clean && tnpm i && cd ./packages/s2-core && tnpm i",
     "core:start": "cd ./packages/s2-core && npm run test-live",
     "core:build": "cd ./packages/s2-core && npm run build",
     "site:start": "cd ./s2-site && npm run start",
@@ -44,11 +45,13 @@
   "lint-staged": {
     "*.{js,jsx,tsx,ts,less,md,json}": [
       "pretty-quick —-staged"
+    ],
+    "*.{js,jsx,tsx,ts}": [
+      "eslint --fix"
     ]
   },
   "dependencies": {
     "gitmoji-cli": "^3.2.18",
-    "install": "^0.13.0",
     "lerna": "^3.22.1"
   },
   "devDependencies": {
