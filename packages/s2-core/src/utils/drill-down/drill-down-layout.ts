@@ -23,7 +23,8 @@ export const DrillDownLayout: LayoutCallback = (
       'drillDownActionIconLevel',
       -1,
     );
-    if (actionIconLevel > 0) {
+
+    if (actionIconLevel >= 0) {
       // 存在下钻的维度
       if (rowNode.level > actionIconLevel && rowNode.label === undefined) {
         rowNode.hideRowNode();

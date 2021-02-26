@@ -179,6 +179,7 @@ export abstract class BaseFacet {
     heights: number[];
     width0Indexes: number[];
     height0Indexes: number[];
+    realHeights?: number[];
   };
 
   // 渲染滚动条

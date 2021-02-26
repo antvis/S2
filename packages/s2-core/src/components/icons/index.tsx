@@ -1,8 +1,11 @@
 import React from 'react';
-import Icon from '@ant-design/icons';
+import './index.less';
 
-const CalendarSvg: React.FC = () => (
+const PRECLASS = 'ss-icon';
+
+export const CalendarIcon: React.FC = () => (
   <svg
+    className={PRECLASS}
     viewBox="0 0 1024 1024"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -18,8 +21,9 @@ const CalendarSvg: React.FC = () => (
   </svg>
 );
 
-const TextSvg: React.FC = () => (
+export const TextIcon: React.FC = () => (
   <svg
+    className={PRECLASS}
     viewBox="0 0 1024 1024"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -35,8 +39,9 @@ const TextSvg: React.FC = () => (
   </svg>
 );
 
-const LocationSvg: React.FC = () => (
+export const LocationIcon: React.FC = () => (
   <svg
+    className={PRECLASS}
     viewBox="0 0 1024 1024"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -52,8 +57,20 @@ const LocationSvg: React.FC = () => (
   </svg>
 );
 
-export const CalenderIcon = (): any => <Icon component={CalendarSvg} />;
-
-export const TextIcon = (): any => <Icon component={TextSvg} />;
-
-export const LocationIcon = (): any => <Icon component={LocationSvg} />;
+export const SearchIcon: React.FC = () => (
+  <svg
+    className={PRECLASS}
+    viewBox="0 0 1024 1024"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    p-id="21490"
+    width="12.6"
+    height="12.6"
+  >
+    <path
+      d="M950.016 898.016l-206.016-204.992Q832 586.016 832 448.032q0-159.008-112.512-271.488T448 64.032 176.512 176.544 64 448.032t112.512 271.488T448 832.032q138.016 0 244.992-88l206.016 206.016q10.016 10.016 24.992 10.016t26.016-10.016q10.016-11.008 10.016-26.016t-10.016-26.016zM568.992 736Q512 760 448 760T327.008 736q-56-24-99.488-67.488t-66.496-99.488q-24.992-56.992-24.992-120.992t24.992-120.992q23.008-56 66.496-99.488t99.488-67.488Q384 136.064 448 136.064t120.992 24q56 24 99.488 67.488t67.488 99.488q24 56.992 24 120.992t-24 120.992q-24 56-67.488 99.488T568.992 736z"
+      fill="currentColor"
+      p-id="21491"
+    ></path>
+  </svg>
+);

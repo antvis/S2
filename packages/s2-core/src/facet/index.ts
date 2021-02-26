@@ -388,11 +388,27 @@ export class SpreadsheetFacet extends BaseFacet {
       [0],
     );
 
+    // 下钻开启分页后补充空节点
+    // 需要把高度为0的补充结点过滤
+    const nodes = rowLeafNodes.filter((value) => value.height !== 0);
+    const realHeights = _.reduce(
+      nodes,
+      (result: number[], node: Node, idx: number) => {
+        result.push(_.last(result) + node.height);
+        if (node.isHide()) {
+          height0Indexes.push(node.cellIndex);
+        }
+        return result;
+      },
+      [0],
+    );
+
     return {
       widths,
       heights,
       width0Indexes,
       height0Indexes,
+      realHeights,
     };
   }
 
@@ -1082,7 +1098,7 @@ export class SpreadsheetFacet extends BaseFacet {
     // 如果配置了分页
     if (pagination) {
       const { current, pageSize } = pagination;
-      const heights = this.viewCellHeights;
+      const heights = this.calculateViewCellsWH().realHeights;
 
       const start = Math.max((current - 1) * pageSize, 0);
       const end = Math.min(current * pageSize, heights.length - 1);
@@ -1104,7 +1120,7 @@ export class SpreadsheetFacet extends BaseFacet {
     // 如果配置了分页
     if (pagination) {
       const { current, pageSize } = pagination;
-      const heights = this.viewCellHeights;
+      const heights = this.calculateViewCellsWH().realHeights;
 
       const offset = Math.max((current - 1) * pageSize, 0);
 
