@@ -118,7 +118,6 @@ export class BrushSelection extends BaseInteraction {
         this.regionShape.attr({
           opacity: 0,
         });
-        // this.hideHoverBox();
         this.draw();
       }
       this.phase = 0;
@@ -128,12 +127,6 @@ export class BrushSelection extends BaseInteraction {
   // protected showTooltip(position: Point, hoverData?: DataItem, options?: TooltipOptions) {
   //   if (!_.get(this, 'spreadsheet.options.hideTooltip')) {
   //     this.spreadsheet.tooltip.show(position, hoverData, options);
-  //   }
-  // }
-
-  // protected hideHoverBox() {
-  //   if (_.get(this.spreadsheet, 'hoverBoxGroup')) {
-  //     this.spreadsheet.hoverBoxGroup.clear();
   //   }
   // }
 
@@ -216,7 +209,6 @@ export class BrushSelection extends BaseInteraction {
 
   public hide() {
     // this.hideTooltip();
-    // this.hideHoverBox();
     if (this.cells) {
       this.spreadsheet.clearState();
     }

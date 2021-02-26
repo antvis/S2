@@ -100,9 +100,6 @@ export default abstract class BaseSpreadSheet extends EE {
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
 
-  // use to display cell's hover interactions
-  // public hoverBoxGroup: IGroup;
-
   // cell cache
   public cellCache: LruCache<string, DataCell> = new LruCache(10000);
 
@@ -217,7 +214,6 @@ export default abstract class BaseSpreadSheet extends EE {
    * 2. backgroundGroup
    * 3. panelGroup -- main facet group belongs to
    * 4. foregroundGroup
-   * 5. hoverBoxGroup (on panelGroup)
    * @param dom
    * @param options
    * @private
@@ -247,12 +243,6 @@ export default abstract class BaseSpreadSheet extends EE {
       name: KEY_GROUP_FORE_GROUND,
       zIndex: 2,
     });
-
-    // hover box on panel group
-    // this.hoverBoxGroup = this.panelGroup.addGroup({
-    //   name: KEY_GROUP_HOVER_BOX,
-    //   zIndex: PANEL_GROUP_HOVER_BOX_GROUP_ZINDEX,
-    // });
   }
 
   /**

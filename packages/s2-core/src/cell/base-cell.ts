@@ -4,7 +4,6 @@ import { updateShapeAttr } from '../utils/g-renders';
 import { DataCell, ColCell, CornerCell, RowCell } from './';
 import * as shapeStyle from '../state/shapeStyleMap';
 import _ from 'lodash';
-import { IShape } from '@antv/g-canvas';
 
 /**
  * Create By Bruce Too
