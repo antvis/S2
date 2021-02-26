@@ -4,7 +4,6 @@ import {
   isNil,
   some,
   isEqual,
-  isEmpty,
   noop,
   isNumber,
   uniq,
@@ -29,6 +28,7 @@ import {
   ListItem,
   HeadInfo,
   DataProps,
+  BaseSpreadSheet,
 } from '..';
 import {
   POSITION_X_OFFSET,
@@ -120,7 +120,7 @@ export const shouldIgnore = (
 /**
  * add style to container
  */
-export const manageContainerStyle = (container, styles) => {
+export const manageContainerStyle = (container, styles: any) => {
   if (container && styles) {
     Object.keys(styles)?.forEach((item) => {
       container.style[item] = styles[item];
@@ -139,13 +139,12 @@ export const getFriendlyVal = (val: any): number | string => {
 };
 
 export const getSummaryProps = (
-  spreadsheet,
+  spreadsheet: BaseSpreadSheet,
   hoverData: DataItem,
   options: TooltipOptions,
   aggregation: Aggregation = 'SUM',
 ): SummaryProps => {
   const selectedData = getSelectedData(spreadsheet);
-  console.log('selectedData:   ', selectedData);
   const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
 
   if (!options?.hideSummary && size(valueFields) > 0) {
@@ -180,7 +179,7 @@ export const getSelectedValueFields = (
   return uniq(selectedData.map((d) => d[field]));
 };
 
-export const getSelectedData = (spreadsheet): DataItem[] => {
+export const getSelectedData = (spreadsheet: BaseSpreadSheet): DataItem[] => {
   const layoutResult = spreadsheet?.facet?.layoutResult;
 
   const selectedCellIndexes = getSelectedCellIndexes(spreadsheet, layoutResult);
@@ -200,7 +199,10 @@ export const getSelectedData = (spreadsheet): DataItem[] => {
   return selectedData;
 };
 
-export const getSelectedCellIndexes = (spreadsheet, layoutResult) => {
+export const getSelectedCellIndexes = (
+  spreadsheet: BaseSpreadSheet,
+  layoutResult,
+) => {
   const { rowLeafNodes, colLeafNodes } = layoutResult;
 
   const selected = spreadsheet?.store?.get('selected');
@@ -239,7 +241,7 @@ export const getSelectedCellIndexes = (spreadsheet, layoutResult) => {
 };
 
 export const getSummaryName = (
-  spreadsheet,
+  spreadsheet: BaseSpreadSheet,
   valueFields,
   firstField,
   hoverData,
@@ -252,7 +254,10 @@ export const getSummaryName = (
     : spreadsheet?.dataSet?.getFieldName(firstField);
 };
 
-export const getFieldFormatter = (spreadsheet, field: string) => {
+export const getFieldFormatter = (
+  spreadsheet: BaseSpreadSheet,
+  field: string,
+) => {
   const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
 
   return (v: any) => {
@@ -261,7 +266,7 @@ export const getFieldFormatter = (spreadsheet, field: string) => {
 };
 
 export const getFieldList = (
-  spreadsheet,
+  spreadsheet: BaseSpreadSheet,
   fields: string[],
   hoverData: DataItem,
 ): ListItem[] => {
@@ -304,7 +309,10 @@ export const getListItem = (
   };
 };
 
-export const getHeadInfo = (spreadsheet, hoverData: DataItem): HeadInfo => {
+export const getHeadInfo = (
+  spreadsheet: BaseSpreadSheet,
+  hoverData: DataItem,
+): HeadInfo => {
   if (hoverData) {
     const colFields = get(spreadsheet?.dataSet?.fields, 'columns', []);
     const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
@@ -382,7 +390,7 @@ export const getDetailList = (
 };
 
 export const getDerivedItemList = (
-  spreadsheet,
+  spreadsheet: BaseSpreadSheet,
   valItem,
   derivedValue,
   hoverData: DataItem,
@@ -401,21 +409,35 @@ export const getDerivedItemList = (
 };
 
 export const getTooltipData = (
-  spreadsheet,
+  spreadsheet: BaseSpreadSheet,
   data?: DataProps,
   options?: TooltipOptions,
   aggregation?: Aggregation,
 ) => {
   const { interpretation, infos, tips } = data || {};
   const summary = getSummaryProps(spreadsheet, data, options, aggregation);
-  const headInfo = getHeadInfo(spreadsheet, data);
+  const headInfo = getStrategyHeadInfo(spreadsheet, data);
   const details = getDetailList(spreadsheet, data, options);
 
   return { summary, headInfo, details, interpretation, infos, tips };
 };
 
+export const getStrategyTooltipData = (
+  spreadsheet: BaseSpreadSheet,
+  data?: DataProps,
+  options?: TooltipOptions,
+  aggregation?: Aggregation,
+) => {
+  const { interpretation, infos, tips } = data || {};
+  const summary = getStrategySummary(spreadsheet, data, options);
+  const headInfo = getHeadInfo(spreadsheet, data);
+  const details = getStrategyDetailList(spreadsheet, data, options);
+
+  return { summary, headInfo, details, interpretation, infos, tips };
+};
+
 export const getStrategySummary = (
-  spreadsheet,
+  spreadsheet: BaseSpreadSheet,
   hoverData: Record<string, any>,
   options: TooltipOptions,
 ): SummaryProps => {
@@ -433,7 +455,7 @@ export const getStrategySummary = (
 };
 
 export const getRightAndValueField = (
-  spreadsheet,
+  spreadsheet: BaseSpreadSheet,
   options: TooltipOptions,
 ): { rightField: string; valueField: string } => {
   const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
@@ -445,7 +467,7 @@ export const getRightAndValueField = (
 };
 
 export const getStrategyDetailList = (
-  spreadsheet,
+  spreadsheet: BaseSpreadSheet,
   hoverData: Record<string, any>,
   options: TooltipOptions,
 ): ListItem[] => {
@@ -480,7 +502,10 @@ export const getStrategyDetailList = (
   }
 };
 
-export const getDerivedValues = (spreadsheet, valueField: string): string[] => {
+export const getDerivedValues = (
+  spreadsheet: BaseSpreadSheet,
+  valueField: string,
+): string[] => {
   const derivedValue = spreadsheet?.getDerivedValue(valueField);
   if (derivedValue) {
     return derivedValue.derivedValueField;
@@ -489,7 +514,7 @@ export const getDerivedValues = (spreadsheet, valueField: string): string[] => {
 };
 
 export const getStrategyHeadInfo = (
-  spreadsheet,
+  spreadsheet: BaseSpreadSheet,
   hoverData: DataItem,
   options?: TooltipOptions,
 ): HeadInfo => {

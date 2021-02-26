@@ -80,7 +80,7 @@ export class BaseTooltip {
     this.unMountComponent(container);
     this._tooltipComponent = element
       ? ReactDOM.render(element, container)
-      : ReactDOM.render(this.renderContent(data, options), container); // 内容渲染完成后在调整位置
+      : ReactDOM.render(this.renderContent(data, options), container);
     const { x, y } = getPosition(position, this.container);
 
     manageContainerStyle(container, { left: `${x}px`, top: `${y}px` });
@@ -110,7 +110,7 @@ export class BaseTooltip {
       data || {};
 
     if (showSingleTips) {
-      return <div>{this.renderSimpleTips(tips)}</div>;
+      return this.renderSimpleTips(tips);
     }
     return (
       <div>
