@@ -132,7 +132,7 @@ export const manageContainerStyle = (container, styles: any) => {
 
 /* formate */
 export const getFriendlyVal = (val: any): number | string => {
-  const isInvalidNumber = isNumber(val) && isNaN(val);
+  const isInvalidNumber = isNumber(val) && Number.isNaN(val);
   const isEmptyString = val === '';
 
   return isNil(val) || isInvalidNumber || isEmptyString ? '-' : val;
@@ -212,6 +212,7 @@ export const getSummaryName = (
   hoverData,
 ): string => {
   // total or subtotal
+  // eslint-disable-next-line
   return size(valueFields) !== 1
     ? i18n('度量')
     : get(hoverData, 'isGrandTotals')
@@ -231,13 +232,14 @@ export const getFieldFormatter = (
 };
 
 export const getListItem = (
-  spreadsheet,
+  spreadsheet: BaseSpreadSheet,
   data: DataItem,
   field: string,
   valueField?: string,
 ): ListItem => {
   const name = spreadsheet?.dataSet?.getFieldName(field);
   const formatter = getFieldFormatter(spreadsheet, field);
+  // eslint-disable-next-line
   const value = formatter(valueField ? valueField : data[field]);
   let icon;
   if (spreadsheet?.isDerivedValue(field)) {
@@ -356,16 +358,14 @@ export const getDetailList = (
             hoverData,
           );
         }
-      } else {
         // the value hangs at the head of the row，need to show all derivative indicators
-        if (derivedValue.derivedValueField.length > 0) {
-          valItem = getDerivedItemList(
-            spreadsheet,
-            valItem,
-            derivedValue,
-            hoverData,
-          );
-        }
+      } else if (derivedValue.derivedValueField.length > 0) {
+        valItem = getDerivedItemList(
+          spreadsheet,
+          valItem,
+          derivedValue,
+          hoverData,
+        );
       }
     }
 
