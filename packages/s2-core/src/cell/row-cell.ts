@@ -420,11 +420,11 @@ export class RowCell extends BaseCell<Node> {
       y,
       width,
       height,
-      this.theme.header.cell.interactiveBgColor,
+      'transparent',
       'transparent',
       this,
     );
-    updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
+    this.stateShapes.push(this.interactiveBgShape)
   }
 
   protected drawBackgroundColor() {

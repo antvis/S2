@@ -95,9 +95,8 @@ export default {
         opacity: 0.8,
       },
       prepareSelect: {
-        prepareSelectBorderColor: '#000000',
-        prepareSelectBorderWidth: 1,
-      }
+        prepareSelectBorderColor: '#002329',
+      },
     },
     colCell: {
       hover: {

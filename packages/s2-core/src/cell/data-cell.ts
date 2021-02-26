@@ -46,7 +46,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   // 4、render main text
   protected textShape: IShape;
-  
+
   // 5、brush-select prepareSelect border
   protected prepareSelectBorderShape: IShape;
 
@@ -118,13 +118,19 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected initCell() {
     this.conditions = this.spreadsheet.options?.conditions;
-    this.initBackgroundShape();
-    this.initInteractiveBgShape();
-    this.initConditionShapes();
-    this.initTextShape();
-    this.initBorderShape();
+    this.drawBackgroundShape();
+    this.drawStateShapes();
+    this.drawConditionShapes();
+    this.drawTextShape();
+    this.drawBorderShape();
     // 更新选中状态
     this.update();
+  }
+
+  // 根据state要改变样式的shape
+  protected drawStateShapes() {
+    this.initInteractiveBgShape();
+    this.initPrepareSelectBorderShape();
   }
 
   /**
@@ -184,7 +190,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   /**
    * Draw cell background
    */
-  protected initBackgroundShape() {
+  protected drawBackgroundShape() {
     const { x, y, height, width } = this.meta;
 
     let bgColor = this.theme.view.cell.backgroundColor;
@@ -240,17 +246,16 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Draw condition's shapes
    * icon, interval, background
    */
-  protected initConditionShapes() {
+  protected drawConditionShapes() {
     this.initConditionBgShape();
     this.initIconShape();
     this.initIntervalShape();
-    this.initPrepareSelectBorder()
   }
 
   /**
    * Draw background condition shape
    */
-  protected initPrepareSelectBorder() {
+  protected initPrepareSelectBorderShape() {
     // 往内缩一个像素，避免和外边框重叠
     const margin = 1;
     const { x, y, height, width } = this.meta;
@@ -263,6 +268,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       'transparent',
       this,
     );
+    this.stateShapes.push(this.prepareSelectBorderShape);
   }
 
   /**
@@ -280,6 +286,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       'transparent',
       this,
     );
+    this.stateShapes.push(this.interactiveBgShape);
   }
 
   /**
@@ -393,7 +400,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   /**
    * Render cell main text and derived text
    */
-  protected initTextShape() {
+  protected drawTextShape() {
     const { x, y, height, width } = this.getLeftAreaBBox();
     const { valueField: originField, isTotals } = this.meta;
 
@@ -441,7 +448,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Render cell border controlled by verticalBorder & horizontalBorder
    * @private
    */
-  protected initBorderShape() {
+  protected drawBorderShape() {
     const { x, y, height, width } = this.meta;
     const borderColor = this.theme.view.cell.borderColor;
     const borderWidth = this.theme.view.cell.borderWidth;

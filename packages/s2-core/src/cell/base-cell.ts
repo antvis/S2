@@ -4,6 +4,7 @@ import { updateShapeAttr } from '../utils/g-renders';
 import { DataCell, ColCell, CornerCell, RowCell } from './';
 import * as shapeStyle from '../state/shapeStyleMap';
 import _ from 'lodash';
+import { IShape } from '@antv/g-canvas';
 
 /**
  * Create By Bruce Too
@@ -27,6 +28,10 @@ export abstract class BaseCell<T> extends Group {
 
   // 2、render interactive background,
   protected interactiveBgShape: IShape;
+
+  // 3、需要根据state改变样式的shape集合
+  // 需要这个属性的原因是在state clear时知道具体哪些shape要hide。不然只能手动改，比较麻烦
+  protected stateShapes: IShape[] = [];
 
   public constructor(meta: T, spreadsheet: BaseSpreadSheet, ...restOptions) {
     super({});
@@ -78,10 +83,21 @@ export abstract class BaseCell<T> extends Group {
           shapeStyle.shapeStyleMap[styleKey],
           style,
         );
-        this.setFillOpacity(this[currentShape], 1);
-        this.setStrokeOpacity(this[currentShape], 1);
+        this.showShapeUnderState(currentShape);
       }
     });
+  }
+
+  public showShapeUnderState(currentShape) {
+    this.setFillOpacity(this[currentShape], 1);
+    this.setStrokeOpacity(this[currentShape], 1);
+  }
+
+  public hideShapeUnderState() {
+    this.stateShapes.forEach((shape: IShape) => {
+      this.setFillOpacity(shape, 0);
+      this.setStrokeOpacity(shape, 0);
+    })
   }
 
   public setFillOpacity(shape, opacity) {

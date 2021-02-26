@@ -140,9 +140,7 @@ const getOptions = () => {
 };
 
 const getTheme = () => {
-  return {
-    
-  };
+  return {};
 };
 
 function MainLayout(props) {

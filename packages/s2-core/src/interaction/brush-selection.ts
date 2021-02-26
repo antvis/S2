@@ -186,7 +186,7 @@ export class BrushSelection extends BaseInteraction {
 
   // 刷选过程中的预选择外框
   protected showPrepareBrushSelectBorder(cells: DataCell[]) {
-    if(cells.length) {
+    if (cells.length) {
       this.spreadsheet.clearState();
       cells.forEach((cell: DataCell) => {
         this.spreadsheet.setState(cell, 'prepareSelect');
