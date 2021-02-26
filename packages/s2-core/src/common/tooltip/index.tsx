@@ -10,6 +10,7 @@ import Divider from './components/divider';
 import TooltipSummary from './components/summary';
 import TooltipHeadInfo from './components/head-info';
 import Interpretation from './components/interpretation';
+import SimpleTips from './components/simple-tips';
 import {
   DataItem,
   ListItem,
@@ -18,6 +19,8 @@ import {
   TooltipOptions,
   HeadInfo,
   ShowProps,
+  OperatorProps,
+  DataProps,
 } from './interface';
 import {
   getPosition,
@@ -32,7 +35,7 @@ import './index.less';
 /**
  * Base tooltips component
  */
-export abstract class BaseTooltip {
+export class BaseTooltip {
   // the type of Spreadsheet
   public spreadsheet: BaseSpreadSheet;
   // the type of aggregation, 'SUM' by default
@@ -101,22 +104,23 @@ export abstract class BaseTooltip {
     }
   }
 
-  protected renderContent(data?: DataItem, options?: TooltipOptions) {
+  protected renderContent(data?: DataProps, options?: TooltipOptions) {
     const option = getOptions(options);
-    const operation = this.renderOperation(option);
-    const summary = this.renderSummary(data, option);
-    const interpretation = this.renderInterpretation(option);
-    const detail = this.renderDetail(data, option);
-    const headInfo = this.renderHeadInfo(data, option);
-    const infos = this.renderInfos(option);
+    const { operator, showSingleTips } = option;
+    const { summary, headInfo, details, interpretation, infos, tips } =
+      data || {};
+
+    if (showSingleTips) {
+      return <div>{this.renderSimpleTips(tips)}</div>;
+    }
     return (
       <div>
-        {operation}
-        {summary}
-        {interpretation}
-        {headInfo}
-        {detail}
-        {infos}
+        {this.renderOperation(operator)}
+        {this.renderSummary(summary)}
+        {this.renderInterpretation(interpretation)}
+        {this.renderHeadInfo(headInfo)}
+        {this.renderDetail(details)}
+        {this.renderInfos(infos)}
       </div>
     );
   }
@@ -125,9 +129,7 @@ export abstract class BaseTooltip {
     return <Divider />;
   }
 
-  protected renderOperation(options?: TooltipOptions) {
-    const { operator } = options;
-
+  protected renderOperation(operator: OperatorProps) {
     return (
       operator && (
         <TooltipOperator onClick={operator.onClick} menus={operator.menus} />
@@ -135,14 +137,16 @@ export abstract class BaseTooltip {
     );
   }
 
-  protected renderSummary(data: DataItem, options: TooltipOptions) {
-    const props = this.getSummaryProps(data, options);
-
-    return !isEmpty(props) && <TooltipSummary {...props} />;
+  protected renderSimpleTips(tips: string) {
+    return tips && <SimpleTips tips={tips} />;
   }
 
-  protected renderHeadInfo(data: DataItem, options: TooltipOptions) {
-    const { cols, rows } = this.getHeadInfo(data, options);
+  protected renderSummary(summary: SummaryProps) {
+    return !isEmpty(summary) && <TooltipSummary {...summary} />;
+  }
+
+  protected renderHeadInfo(headInfo: HeadInfo) {
+    const { cols, rows } = headInfo || {};
 
     return (
       (!isEmpty(cols) || !isEmpty(rows)) && (
@@ -154,38 +158,17 @@ export abstract class BaseTooltip {
     );
   }
 
-  protected renderDetail(data?: DataItem, options?: TooltipOptions) {
-    const detailList = this.getDetailList(data, options);
-
-    return !isEmpty(detailList) && <TooltipDetail list={detailList} />;
+  protected renderDetail(details: ListItem[]) {
+    return !isEmpty(details) && <TooltipDetail list={details} />;
   }
 
-  protected renderInfos(options?: TooltipOptions) {
-    const { infos } = options || {};
-
+  protected renderInfos(infos: string) {
     return infos && <Infos infos={infos} />;
   }
 
-  protected renderInterpretation(options?: TooltipOptions) {
-    const { interpretation } = options;
-
+  protected renderInterpretation(interpretation) {
     return interpretation && <Interpretation {...interpretation} />;
   }
-
-  protected abstract getHeadInfo(
-    hoverData: DataItem,
-    options?: TooltipOptions,
-  ): HeadInfo;
-
-  protected abstract getDetailList(
-    hoverData: DataItem,
-    options: TooltipOptions,
-  ): ListItem[];
-
-  protected abstract getSummaryProps(
-    hoverData: DataItem,
-    options: TooltipOptions,
-  ): SummaryProps;
 
   /**
    * ToolTips container element

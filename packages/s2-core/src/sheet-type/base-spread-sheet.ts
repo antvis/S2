@@ -24,7 +24,6 @@ import {
 import { BaseDataSet } from '../data-set';
 import { SpreadsheetFacet } from '../facet';
 import {
-  BaseCell,
   Conditions,
   Fields,
   Node,
@@ -32,7 +31,6 @@ import {
   BaseInteraction,
   SpreadSheetTheme,
 } from '../index';
-import { DetailFacet } from '../facet/detail';
 import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';

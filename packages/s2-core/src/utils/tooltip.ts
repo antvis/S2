@@ -8,8 +8,28 @@ import {
   noop,
   isNumber,
   uniq,
+  forEach,
+  isObject,
+  isArray,
+  map,
+  size,
+  filter,
+  concat,
+  compact,
 } from 'lodash';
-import { DataItem, Aggregation, TooltipOptions, Position } from '..';
+import { i18n } from '../common/i18n';
+import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
+import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
+import {
+  DataItem,
+  Aggregation,
+  TooltipOptions,
+  Position,
+  SummaryProps,
+  ListItem,
+  HeadInfo,
+  DataProps,
+} from '..';
 import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
@@ -40,23 +60,6 @@ export const isHoverDataInSelectedData = (
   return some(selectedData, (dataItem: DataItem): boolean =>
     isEqual(dataItem, hoverData),
   );
-};
-
-/**
- * whether show summary - change to interaction?
- */
-export const shouldShowSummary = (
-  hoverData: DataItem,
-  selectedData: DataItem[],
-  options: TooltipOptions,
-): boolean => {
-  const { actionType } = options;
-
-  const showSummary =
-    actionType === 'cellHover'
-      ? isHoverDataInSelectedData(selectedData, hoverData)
-      : true;
-  return !isEmpty(selectedData) && showSummary;
 };
 
 /**
@@ -92,7 +95,6 @@ export const getPosition = (
  */
 export const getOptions = (options?: TooltipOptions) => {
   return {
-    actionType: '',
     operator: { onClick: noop, menus: [] },
     enterable: true,
     ...options,
@@ -136,9 +138,380 @@ export const getFriendlyVal = (val: any): number | string => {
   return isNil(val) || isInvalidNumber || isEmptyString ? '-' : val;
 };
 
+export const getSummaryProps = (
+  spreadsheet,
+  hoverData: DataItem,
+  options: TooltipOptions,
+  aggregation: Aggregation = 'SUM',
+): SummaryProps => {
+  const selectedData = getSelectedData(spreadsheet);
+  console.log('selectedData:   ', selectedData);
+  const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
+
+  if (!options?.hideSummary && size(valueFields) > 0) {
+    const firstField = valueFields[0];
+    const firstFormatter = getFieldFormatter(spreadsheet, firstField);
+    const name = getSummaryName(
+      spreadsheet,
+      valueFields,
+      firstField,
+      hoverData,
+    );
+    let aggregationValue = getAggregationValue(
+      selectedData,
+      VALUE_FIELD,
+      aggregation,
+    );
+    aggregationValue = parseFloat(aggregationValue.toPrecision(12)); // solve accuracy problems
+    const value = firstFormatter(aggregationValue);
+    return {
+      selectedData,
+      name,
+      value,
+    };
+  }
+  return null;
+};
+
 export const getSelectedValueFields = (
   selectedData: DataItem[],
   field: string,
 ): string[] => {
   return uniq(selectedData.map((d) => d[field]));
+};
+
+export const getSelectedData = (spreadsheet): DataItem[] => {
+  const layoutResult = spreadsheet?.facet?.layoutResult;
+
+  const selectedCellIndexes = getSelectedCellIndexes(spreadsheet, layoutResult);
+
+  const selectedData = [];
+
+  forEach(selectedCellIndexes, ([i, j]) => {
+    const viewMeta = layoutResult.getViewMeta(i, j);
+
+    const data = get(viewMeta, 'data[0]');
+
+    if (!isNil(data)) {
+      selectedData.push(data);
+    }
+  });
+
+  return selectedData;
+};
+
+export const getSelectedCellIndexes = (spreadsheet, layoutResult) => {
+  const { rowLeafNodes, colLeafNodes } = layoutResult;
+
+  const selected = spreadsheet?.store?.get('selected');
+
+  if (isObject(selected)) {
+    // @ts-ignore
+    const { type, indexes } = selected;
+    let [ii, jj] = indexes;
+    if (type === 'brush' || type === 'cell') {
+      const selectedIds = [];
+      ii = isArray(ii) ? ii : [ii, ii];
+      jj = isArray(jj) ? jj : [jj, jj];
+
+      for (let i = ii[0]; i <= ii[1]; i++) {
+        for (let j = jj[0]; j <= jj[1]; j++) {
+          selectedIds.push([i, j]);
+        }
+      }
+      return selectedIds;
+    }
+    // select row or coll
+    const selectedIndexes = [];
+    const leftNodes = type === 'row' ? colLeafNodes : rowLeafNodes;
+    let indexs = type === 'row' ? ii : jj;
+
+    map(leftNodes, (row, idx) => {
+      indexs = isArray(indexs) ? indexs : [indexs, indexs];
+      for (let i = indexs[0]; i <= indexs[1]; i++) {
+        selectedIndexes.push([i, idx]);
+      }
+    });
+    return selectedIndexes;
+  }
+
+  return [];
+};
+
+export const getSummaryName = (
+  spreadsheet,
+  valueFields,
+  firstField,
+  hoverData,
+): string => {
+  // total or subtotal
+  return size(valueFields) !== 1
+    ? i18n('度量')
+    : get(hoverData, 'isGrandTotals')
+    ? i18n('总计')
+    : spreadsheet?.dataSet?.getFieldName(firstField);
+};
+
+export const getFieldFormatter = (spreadsheet, field: string) => {
+  const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
+
+  return (v: any) => {
+    return getFriendlyVal(formatter(v));
+  };
+};
+
+export const getFieldList = (
+  spreadsheet,
+  fields: string[],
+  hoverData: DataItem,
+): ListItem[] => {
+  const currFields = filter(
+    concat([], fields),
+    (field) => field !== EXTRA_FIELD && hoverData[field],
+  );
+  const fieldList = map(
+    currFields,
+    (field: string): ListItem => {
+      return getListItem(spreadsheet, hoverData, field);
+    },
+  );
+  return fieldList;
+};
+
+export const getListItem = (
+  spreadsheet,
+  data: DataItem,
+  field: string,
+  valueField?: string,
+): ListItem => {
+  const name = spreadsheet?.dataSet?.getFieldName(field);
+  const formatter = getFieldFormatter(spreadsheet, field);
+  const value = formatter(valueField ? valueField : data[field]);
+  let icon;
+  if (spreadsheet?.isDerivedValue(field)) {
+    if (data[field]) {
+      if (data[field] < 0) {
+        icon = 'CellDown';
+      } else {
+        icon = 'CellUp';
+      }
+    }
+  }
+  return {
+    name,
+    value,
+    icon,
+  };
+};
+
+export const getHeadInfo = (spreadsheet, hoverData: DataItem): HeadInfo => {
+  if (hoverData) {
+    const colFields = get(spreadsheet?.dataSet?.fields, 'columns', []);
+    const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
+    const colList = getFieldList(spreadsheet, colFields, hoverData);
+    const rowList = getFieldList(spreadsheet, rowFields, hoverData);
+
+    return { cols: colList, rows: rowList };
+  }
+
+  return { cols: [], rows: [] };
+};
+
+export const getDetailList = (
+  spreadsheet,
+  hoverData: DataItem,
+  options: TooltipOptions,
+): ListItem[] => {
+  if (hoverData) {
+    const { isTotals } = options;
+
+    let valItem = [];
+    if (isTotals) {
+      // total/subtotal
+      valItem.push(
+        getListItem(
+          spreadsheet,
+          hoverData,
+          TOTAL_VALUE,
+          get(hoverData, VALUE_FIELD),
+        ),
+      );
+    } else {
+      const field = hoverData[EXTRA_FIELD];
+      if (hoverData[field]) {
+        // filter empty
+        valItem.push(getListItem(spreadsheet, hoverData, field));
+      }
+      const derivedValue = spreadsheet?.getDerivedValue(field);
+      if (spreadsheet?.isValueInCols()) {
+        // the value hangs at the head of the column, match the displayed fields according to the metric itself
+        // 1、multiple derivative indicators
+        // 2、only one column scene
+        // 3、the clicked cell belongs to the derived index column
+        // tooltip need to show all derivative indicators
+        if (
+          derivedValue.derivedValueField.length > 1 &&
+          !isEqual(
+            derivedValue.derivedValueField,
+            derivedValue.displayDerivedValueField,
+          ) &&
+          spreadsheet?.isDerivedValue(field)
+        ) {
+          valItem = getDerivedItemList(
+            spreadsheet,
+            valItem,
+            derivedValue,
+            hoverData,
+          );
+        }
+      } else {
+        // the value hangs at the head of the row，need to show all derivative indicators
+        if (derivedValue.derivedValueField.length > 0) {
+          valItem = getDerivedItemList(
+            spreadsheet,
+            valItem,
+            derivedValue,
+            hoverData,
+          );
+        }
+      }
+    }
+
+    return compact(concat([], [...valItem]));
+  }
+};
+
+export const getDerivedItemList = (
+  spreadsheet,
+  valItem,
+  derivedValue,
+  hoverData: DataItem,
+) => {
+  // replace old valItem
+  valItem = map(derivedValue.derivedValueField, (value: any) => {
+    return getListItem(spreadsheet, hoverData, value);
+  });
+  // add main indicator -- not empty
+  if (hoverData[derivedValue.valueField]) {
+    valItem.unshift(
+      getListItem(spreadsheet, hoverData, derivedValue.valueField),
+    );
+  }
+  return valItem;
+};
+
+export const getTooltipData = (
+  spreadsheet,
+  data?: DataProps,
+  options?: TooltipOptions,
+  aggregation?: Aggregation,
+) => {
+  const { interpretation, infos, tips } = data || {};
+  const summary = getSummaryProps(spreadsheet, data, options, aggregation);
+  const headInfo = getHeadInfo(spreadsheet, data);
+  const details = getDetailList(spreadsheet, data, options);
+
+  return { summary, headInfo, details, interpretation, infos, tips };
+};
+
+export const getStrategySummary = (
+  spreadsheet,
+  hoverData: Record<string, any>,
+  options: TooltipOptions,
+): SummaryProps => {
+  if (hoverData) {
+    const { valueField } = getRightAndValueField(spreadsheet, options);
+    const { name, value } = getListItem(spreadsheet, hoverData, valueField);
+
+    return {
+      selectedData: [hoverData],
+      name,
+      value,
+    };
+  }
+  return null;
+};
+
+export const getRightAndValueField = (
+  spreadsheet,
+  options: TooltipOptions,
+): { rightField: string; valueField: string } => {
+  const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
+  const rowQuery = options?.rowQuery || {};
+  const rightField = getRightFieldInQuery(rowQuery, rowFields);
+  const valueField = get(rowQuery, rightField, '');
+
+  return { rightField, valueField };
+};
+
+export const getStrategyDetailList = (
+  spreadsheet,
+  hoverData: Record<string, any>,
+  options: TooltipOptions,
+): ListItem[] => {
+  if (hoverData) {
+    const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
+    // if rows is not empty and values is data, use normal-tooltip
+    if (rowFields.find((item) => item === EXTRA_FIELD)) {
+      return getDetailList(spreadsheet, hoverData, options);
+    }
+    // the value hangs at the head of the column
+    const { rightField, valueField } = getRightAndValueField(
+      spreadsheet,
+      options,
+    );
+    // show all derivative indicators no matter have value
+    const valuesField = [
+      rightField,
+      ...getDerivedValues(spreadsheet, valueField),
+    ];
+
+    return map(
+      valuesField,
+      (field: string): ListItem => {
+        if (isEqual(field, rightField)) {
+          // the value of the measure dimension is taken separately
+          return getListItem(spreadsheet, hoverData, hoverData[field]);
+        } else {
+          return getListItem(spreadsheet, hoverData, field);
+        }
+      },
+    );
+  }
+};
+
+export const getDerivedValues = (spreadsheet, valueField: string): string[] => {
+  const derivedValue = spreadsheet?.getDerivedValue(valueField);
+  if (derivedValue) {
+    return derivedValue.derivedValueField;
+  }
+  return [];
+};
+
+export const getStrategyHeadInfo = (
+  spreadsheet,
+  hoverData: DataItem,
+  options?: TooltipOptions,
+): HeadInfo => {
+  const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
+  // if rows is not empty and values is data, use normal-tooltip
+  if (rowFields.find((item) => item === EXTRA_FIELD)) {
+    return getHeadInfo(spreadsheet, hoverData);
+  }
+  // the value hangs at the head of the column
+  const { rightField } = getRightAndValueField(spreadsheet, options);
+  const index = rowFields.indexOf(rightField);
+  const rows = [...rowFields];
+  if (index !== -1) {
+    rows.splice(index + 1);
+  }
+  if (hoverData) {
+    const colFields = get(spreadsheet?.dataSet?.fields, 'cols', []);
+    const colList = getFieldList(spreadsheet, colFields, hoverData);
+    const rowList = getFieldList(spreadsheet, rows, hoverData);
+
+    return { cols: colList, rows: rowList };
+  }
+
+  return { cols: [], rows: [] };
 };

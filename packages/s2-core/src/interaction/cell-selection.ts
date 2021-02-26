@@ -6,6 +6,7 @@ import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { HoverInteraction } from './hover-interaction';
 import { ViewMeta } from '../common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
+import { getTooltipData } from '../utils/tooltip';
 
 /**
  * Panel Area's Cell Click Interaction
@@ -80,14 +81,19 @@ export class CellSelection extends HoverInteraction {
         if (cellOperator) {
           operator = cellOperator;
         }
+        const options = {
+          isTotals,
+          operator,
+        };
+        const tooltipData = getTooltipData(
+          this.spreadsheet,
+          hoveringCellData,
+          options,
+        );
         const showOptions = {
           position,
-          data: hoveringCellData,
-          options: {
-            actionType: 'cellSelection',
-            isTotals,
-            operator,
-          },
+          data: tooltipData,
+          options,
         };
         this.showTooltip(showOptions);
       }

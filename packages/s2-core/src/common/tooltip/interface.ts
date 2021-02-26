@@ -15,12 +15,6 @@ export interface OperatorProps {
   readonly menus: IMenu[];
 }
 
-export interface OrderOption {
-  sortMethod: 'ASC' | 'DESC';
-  type: 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
-  name: string;
-}
-
 export interface Position {
   readonly x: number;
   readonly y: number;
@@ -44,15 +38,13 @@ export type ActionType =
   | 'columnSelection';
 
 export interface TooltipOptions {
-  actionType?: ActionType;
+  hideSummary?: boolean;
   // button action on the top
   operator?: OperatorProps;
   enterable?: boolean;
   // totals or not
   isTotals?: boolean;
-  singleTips?: boolean;
-
-  interpretation?: InterpretationProps;
+  showSingleTips?: boolean;
 
   [key: string]: any;
 }
@@ -94,9 +86,18 @@ export type InfosProps = {
 
 export type ShowProps = {
   position: Position;
-  data?: DataItem;
+  data?: DataProps;
   options?: TooltipOptions;
   element?: React.ReactElement;
+};
+
+export type DataProps = {
+  summary?: SummaryProps;
+  details?: ListItem[];
+  headInfo?: HeadInfo;
+  tips?: string;
+  infos?: string;
+  interpretation?: InterpretationProps;
 };
 
 export type HeadInfo = {
