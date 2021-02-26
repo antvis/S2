@@ -138,67 +138,6 @@ export const getFriendlyVal = (val: any): number | string => {
   return isNil(val) || isInvalidNumber || isEmptyString ? '-' : val;
 };
 
-export const getSummaryProps = (
-  spreadsheet: BaseSpreadSheet,
-  hoverData: DataItem,
-  options: TooltipOptions,
-  aggregation: Aggregation = 'SUM',
-): SummaryProps => {
-  const selectedData = getSelectedData(spreadsheet);
-  const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
-
-  if (!options?.hideSummary && size(valueFields) > 0) {
-    const firstField = valueFields[0];
-    const firstFormatter = getFieldFormatter(spreadsheet, firstField);
-    const name = getSummaryName(
-      spreadsheet,
-      valueFields,
-      firstField,
-      hoverData,
-    );
-    let aggregationValue = getAggregationValue(
-      selectedData,
-      VALUE_FIELD,
-      aggregation,
-    );
-    aggregationValue = parseFloat(aggregationValue.toPrecision(12)); // solve accuracy problems
-    const value = firstFormatter(aggregationValue);
-    return {
-      selectedData,
-      name,
-      value,
-    };
-  }
-  return null;
-};
-
-export const getSelectedValueFields = (
-  selectedData: DataItem[],
-  field: string,
-): string[] => {
-  return uniq(selectedData.map((d) => d[field]));
-};
-
-export const getSelectedData = (spreadsheet: BaseSpreadSheet): DataItem[] => {
-  const layoutResult = spreadsheet?.facet?.layoutResult;
-
-  const selectedCellIndexes = getSelectedCellIndexes(spreadsheet, layoutResult);
-
-  const selectedData = [];
-
-  forEach(selectedCellIndexes, ([i, j]) => {
-    const viewMeta = layoutResult.getViewMeta(i, j);
-
-    const data = get(viewMeta, 'data[0]');
-
-    if (!isNil(data)) {
-      selectedData.push(data);
-    }
-  });
-
-  return selectedData;
-};
-
 export const getSelectedCellIndexes = (
   spreadsheet: BaseSpreadSheet,
   layoutResult,
@@ -208,7 +147,6 @@ export const getSelectedCellIndexes = (
   const selected = spreadsheet?.store?.get('selected');
 
   if (isObject(selected)) {
-    // @ts-ignore
     const { type, indexes } = selected;
     let [ii, jj] = indexes;
     if (type === 'brush' || type === 'cell') {
@@ -240,6 +178,33 @@ export const getSelectedCellIndexes = (
   return [];
 };
 
+export const getSelectedData = (spreadsheet: BaseSpreadSheet): DataItem[] => {
+  const layoutResult = spreadsheet?.facet?.layoutResult;
+
+  const selectedCellIndexes = getSelectedCellIndexes(spreadsheet, layoutResult);
+
+  const selectedData = [];
+
+  forEach(selectedCellIndexes, ([i, j]) => {
+    const viewMeta = layoutResult.getViewMeta(i, j);
+
+    const data = get(viewMeta, 'data[0]');
+
+    if (!isNil(data)) {
+      selectedData.push(data);
+    }
+  });
+
+  return selectedData;
+};
+
+export const getSelectedValueFields = (
+  selectedData: DataItem[],
+  field: string,
+): string[] => {
+  return uniq(selectedData.map((d) => d[field]));
+};
+
 export const getSummaryName = (
   spreadsheet: BaseSpreadSheet,
   valueFields,
@@ -263,24 +228,6 @@ export const getFieldFormatter = (
   return (v: any) => {
     return getFriendlyVal(formatter(v));
   };
-};
-
-export const getFieldList = (
-  spreadsheet: BaseSpreadSheet,
-  fields: string[],
-  hoverData: DataItem,
-): ListItem[] => {
-  const currFields = filter(
-    concat([], fields),
-    (field) => field !== EXTRA_FIELD && hoverData[field],
-  );
-  const fieldList = map(
-    currFields,
-    (field: string): ListItem => {
-      return getListItem(spreadsheet, hoverData, field);
-    },
-  );
-  return fieldList;
 };
 
 export const getListItem = (
@@ -309,6 +256,24 @@ export const getListItem = (
   };
 };
 
+export const getFieldList = (
+  spreadsheet: BaseSpreadSheet,
+  fields: string[],
+  hoverData: DataItem,
+): ListItem[] => {
+  const currFields = filter(
+    concat([], fields),
+    (field) => field !== EXTRA_FIELD && hoverData[field],
+  );
+  const fieldList = map(
+    currFields,
+    (field: string): ListItem => {
+      return getListItem(spreadsheet, hoverData, field);
+    },
+  );
+  return fieldList;
+};
+
 export const getHeadInfo = (
   spreadsheet: BaseSpreadSheet,
   hoverData: DataItem,
@@ -323,6 +288,25 @@ export const getHeadInfo = (
   }
 
   return { cols: [], rows: [] };
+};
+
+export const getDerivedItemList = (
+  spreadsheet: BaseSpreadSheet,
+  valItem,
+  derivedValue,
+  hoverData: DataItem,
+) => {
+  // replace old valItem
+  valItem = map(derivedValue.derivedValueField, (value: any) => {
+    return getListItem(spreadsheet, hoverData, value);
+  });
+  // add main indicator -- not empty
+  if (hoverData[derivedValue.valueField]) {
+    valItem.unshift(
+      getListItem(spreadsheet, hoverData, derivedValue.valueField),
+    );
+  }
+  return valItem;
 };
 
 export const getDetailList = (
@@ -389,23 +373,38 @@ export const getDetailList = (
   }
 };
 
-export const getDerivedItemList = (
+export const getSummaryProps = (
   spreadsheet: BaseSpreadSheet,
-  valItem,
-  derivedValue,
   hoverData: DataItem,
-) => {
-  // replace old valItem
-  valItem = map(derivedValue.derivedValueField, (value: any) => {
-    return getListItem(spreadsheet, hoverData, value);
-  });
-  // add main indicator -- not empty
-  if (hoverData[derivedValue.valueField]) {
-    valItem.unshift(
-      getListItem(spreadsheet, hoverData, derivedValue.valueField),
+  options: TooltipOptions,
+  aggregation: Aggregation = 'SUM',
+): SummaryProps => {
+  const selectedData = getSelectedData(spreadsheet);
+  const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
+
+  if (!options?.hideSummary && size(valueFields) > 0) {
+    const firstField = valueFields[0];
+    const firstFormatter = getFieldFormatter(spreadsheet, firstField);
+    const name = getSummaryName(
+      spreadsheet,
+      valueFields,
+      firstField,
+      hoverData,
     );
+    let aggregationValue = getAggregationValue(
+      selectedData,
+      VALUE_FIELD,
+      aggregation,
+    );
+    aggregationValue = parseFloat(aggregationValue.toPrecision(12)); // solve accuracy problems
+    const value = firstFormatter(aggregationValue);
+    return {
+      selectedData,
+      name,
+      value,
+    };
   }
-  return valItem;
+  return null;
 };
 
 export const getTooltipData = (
@@ -416,24 +415,22 @@ export const getTooltipData = (
 ) => {
   const { interpretation, infos, tips } = data || {};
   const summary = getSummaryProps(spreadsheet, data, options, aggregation);
-  const headInfo = getStrategyHeadInfo(spreadsheet, data);
+  const headInfo = getHeadInfo(spreadsheet, data);
   const details = getDetailList(spreadsheet, data, options);
 
   return { summary, headInfo, details, interpretation, infos, tips };
 };
 
-export const getStrategyTooltipData = (
+export const getRightAndValueField = (
   spreadsheet: BaseSpreadSheet,
-  data?: DataProps,
-  options?: TooltipOptions,
-  aggregation?: Aggregation,
-) => {
-  const { interpretation, infos, tips } = data || {};
-  const summary = getStrategySummary(spreadsheet, data, options);
-  const headInfo = getHeadInfo(spreadsheet, data);
-  const details = getStrategyDetailList(spreadsheet, data, options);
+  options: TooltipOptions,
+): { rightField: string; valueField: string } => {
+  const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
+  const rowQuery = options?.rowQuery || {};
+  const rightField = getRightFieldInQuery(rowQuery, rowFields);
+  const valueField = get(rowQuery, rightField, '');
 
-  return { summary, headInfo, details, interpretation, infos, tips };
+  return { rightField, valueField };
 };
 
 export const getStrategySummary = (
@@ -454,16 +451,15 @@ export const getStrategySummary = (
   return null;
 };
 
-export const getRightAndValueField = (
+export const getDerivedValues = (
   spreadsheet: BaseSpreadSheet,
-  options: TooltipOptions,
-): { rightField: string; valueField: string } => {
-  const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
-  const rowQuery = options?.rowQuery || {};
-  const rightField = getRightFieldInQuery(rowQuery, rowFields);
-  const valueField = get(rowQuery, rightField, '');
-
-  return { rightField, valueField };
+  valueField: string,
+): string[] => {
+  const derivedValue = spreadsheet?.getDerivedValue(valueField);
+  if (derivedValue) {
+    return derivedValue.derivedValueField;
+  }
+  return [];
 };
 
 export const getStrategyDetailList = (
@@ -494,23 +490,12 @@ export const getStrategyDetailList = (
         if (isEqual(field, rightField)) {
           // the value of the measure dimension is taken separately
           return getListItem(spreadsheet, hoverData, hoverData[field]);
-        } else {
-          return getListItem(spreadsheet, hoverData, field);
         }
+
+        return getListItem(spreadsheet, hoverData, field);
       },
     );
   }
-};
-
-export const getDerivedValues = (
-  spreadsheet: BaseSpreadSheet,
-  valueField: string,
-): string[] => {
-  const derivedValue = spreadsheet?.getDerivedValue(valueField);
-  if (derivedValue) {
-    return derivedValue.derivedValueField;
-  }
-  return [];
 };
 
 export const getStrategyHeadInfo = (
@@ -539,4 +524,17 @@ export const getStrategyHeadInfo = (
   }
 
   return { cols: [], rows: [] };
+};
+
+export const getStrategyTooltipData = (
+  spreadsheet: BaseSpreadSheet,
+  data?: DataProps,
+  options?: TooltipOptions,
+) => {
+  const { interpretation, infos, tips } = data || {};
+  const summary = getStrategySummary(spreadsheet, data, options);
+  const headInfo = getStrategyHeadInfo(spreadsheet, data);
+  const details = getStrategyDetailList(spreadsheet, data, options);
+
+  return { summary, headInfo, details, interpretation, infos, tips };
 };

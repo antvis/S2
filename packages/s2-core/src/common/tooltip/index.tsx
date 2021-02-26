@@ -42,7 +42,7 @@ export class BaseTooltip {
   // the base container element
   protected container: HTMLElement;
   // react component
-  private _tooltipComponent: any;
+  private tooltipComponent: any;
   // mark if can enter into tooltips
   private enterable: boolean = false;
   // tooltips position info
@@ -67,10 +67,9 @@ export class BaseTooltip {
 
     if (this.enterable && shouldIgnore(enterable, position, this.position)) {
       return;
-    } else {
-      this.enterable = enterable;
-      this.position = position;
     }
+    this.enterable = enterable;
+    this.position = position;
 
     manageContainerStyle(container, {
       pointerEvents: enterable ? 'all' : 'none',
@@ -78,7 +77,7 @@ export class BaseTooltip {
     });
 
     this.unMountComponent(container);
-    this._tooltipComponent = element
+    this.tooltipComponent = element
       ? ReactDOM.render(element, container)
       : ReactDOM.render(this.renderContent(data, options), container);
     const { x, y } = getPosition(position, this.container);
@@ -185,7 +184,7 @@ export class BaseTooltip {
   }
 
   protected unMountComponent(container?: HTMLElement) {
-    if (this._tooltipComponent) {
+    if (this.tooltipComponent) {
       ReactDOM.unmountComponentAtNode(container);
     }
   }
