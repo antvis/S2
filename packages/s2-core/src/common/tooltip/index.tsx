@@ -12,7 +12,6 @@ import TooltipHeadInfo from './components/head-info';
 import Interpretation from './components/interpretation';
 import SimpleTips from './components/simple-tips';
 import {
-  DataItem,
   ListItem,
   Position,
   SummaryProps,

@@ -4,9 +4,9 @@ import { SortParam } from '../interface';
 export type DataItem = Record<string, any>;
 
 export interface IMenu {
-  readonly id: string; // menu id
-  readonly icon?: any; // menu icon
-  readonly text?: string; // menu 文本
+  readonly id: string;
+  readonly icon?: any;
+  readonly text?: string;
   readonly children?: IMenu[]; // subMenu
 }
 

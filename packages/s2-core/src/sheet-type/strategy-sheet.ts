@@ -2,12 +2,8 @@
  * Create By Bruce Too
  * On 2020-06-17
  */
-import {
-  SpreadsheetFacetCfg,
-  SpreadsheetOptions,
-  ViewMeta,
-} from '../common/interface';
-import { BaseTooltip, StrategyTooltip } from '../tooltip';
+import { SpreadsheetFacetCfg, SpreadsheetOptions } from '../common/interface';
+import { BaseTooltip } from '../tooltip';
 import * as _ from 'lodash';
 import { KEY_COLLAPSE_TREE_ROWS } from '../common/constant';
 import { SpreadsheetFacet } from '../facet';
@@ -79,7 +75,7 @@ export default class StrategySheet extends SpreadSheet {
   }
 
   protected initTooltip(): BaseTooltip {
-    return new StrategyTooltip(this);
+    return new BaseTooltip(this);
   }
 
   protected registerInteractions(options: SpreadsheetOptions) {
