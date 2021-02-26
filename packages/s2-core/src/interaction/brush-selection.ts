@@ -78,7 +78,7 @@ export class BrushSelection extends BaseInteraction {
       if (this.phase) {
         // 屏蔽hover事件
         this.spreadsheet.eventController.interceptEvent.add(
-          DefaultEventType.Hover,
+          DefaultEventType.HOVER,
         );
         ev.preventDefault();
         this.phase = 2;

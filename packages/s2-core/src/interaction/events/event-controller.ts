@@ -105,7 +105,7 @@ export class EventController {
       // 如果hover的cell改变了，并且当前不需要屏蔽 hover
       if (
         this.hoverTarget !== ev.target &&
-        !this.interceptEvent.has(DefaultEventType.Hover)
+        !this.interceptEvent.has(DefaultEventType.HOVER)
       ) {
         this.hoverTarget = ev.target;
         this.spreadsheet.clearState();

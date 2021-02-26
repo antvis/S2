@@ -1,16 +1,17 @@
 import { Event, Group } from '@antv/g-canvas';
-import * as _ from 'lodash';
-import { isSelected } from '../utils/selected';
+import * as _ from '@antv/util';
+import { S2Event, DefaultEventType } from './events/types';
+// import { isSelected } from '../utils/selected';
 import { DataCell } from '../cell';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
-import { HoverInteraction } from './hover-interaction';
+import { BaseInteraction } from './base';
 import { ViewMeta } from '../common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 
 /**
  * Panel Area's DataCell Click Interaction
  */
-export class CellSelection extends HoverInteraction {
+export class CellSelection extends BaseInteraction {
   private target;
 
   constructor(spreadsheet: BaseSpreadSheet) {
@@ -19,106 +20,117 @@ export class CellSelection extends HoverInteraction {
 
   protected bindEvents() {
     super.bindEvents();
-    this.addEventListener(document, 'click', this.onDocumentClick.bind(this));
+    this.bindMouseDown();
+    this.bindMouseUp();
+    this.addEventListener(
+      document,
+      'click',
+      _.wrapBehavior(this, '_onDocumentClick')
+    );
   }
 
-  protected start(ev: Event) {
-    this.target = ev.target;
+  private bindMouseDown() {
+    this.spreadsheet.on(S2Event.DATACELL_MOUSEDOWN, ev => {
+      this.target = ev.target;
+    })
   }
 
-  protected end(ev: Event) {
-    ev.stopPropagation();
-    if (this.target !== ev.target) {
-      return;
-    }
-    const meta = this.getMetaInCell(ev.target);
+  private bindMouseUp() {
+    this.spreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev: Event) => {
+      ev.stopPropagation();
+      // 说明是mouseDown后按住鼠标移动，这种行为是刷选
+      // 刷选看 ---> brush-select
+      if (this.target !== ev.target) {
+        return;
+      }
+      const meta = this.getMetaInCell(ev.target);
 
-    if (meta) {
-      const selected = this.spreadsheet.store.get('selected');
+      if (meta) {
+        // selected通过state来接管，不需要再在 this.spreadsheet.store 中操作
+        const cell = this.spreadsheet.eventController.getCell(ev.target);
+        this.spreadsheet.clearState();
+        this.spreadsheet.setState(cell, 'selected');
+        this.spreadsheet.updateCellStyleByState();
+        this.spreadsheet.eventController.interceptEvent.add(DefaultEventType.HOVER);
 
-      if (isSelected(meta.rowIndex, meta.colIndex, selected)) {
-        this.spreadsheet.store.set('selected', null);
-        // this.hide();
-      } else {
-        this.spreadsheet.store.set('selected', {
-          type: 'cell',
-          indexes: [meta.rowIndex, meta.colIndex],
-        });
-        const position = {
-          x: ev.clientX,
-          y: ev.clientY,
-        };
-        const hoveringCellData = _.get(meta, 'data.0');
+        // const position = {
+        //   x: ev.event.clientX,
+        //   y: ev.event.clientY,
+        // };
+        // const hoveringCellData = _.get(meta, 'data.0');
         const isTotals = _.get(meta, 'isTotals', false);
+
+        // 决策模式下的总小计不tooltip
         if (isTotals && this.spreadsheet.isStrategyMode()) {
-          // 决策模式下的总小计不tooltip
           return;
         }
-        const cellOperator = this.spreadsheet.options?.cellOperator;
-        let operator = this.spreadsheet.options?.showTrend
-          ? {
-              onClick: (params) => {
-                if (params === 'showTrend') {
-                  // 展示趋势点击
-                  this.spreadsheet.emit('spread-trend-click', meta);
-                  // 隐藏tooltip
-                  this.hide();
-                }
-              },
-              menus: [
-                {
-                  id: 'showTrend',
-                  text: '趋势',
-                  icon: LineChartOutlined,
-                },
-              ],
-            }
-          : {
-              onClick: _.noop,
-              menus: [],
-            };
-        if (cellOperator) {
-          operator = cellOperator;
-        }
-        this.showTooltip(position, hoveringCellData, {
-          actionType: 'cellSelection',
-          isTotals,
-          operator,
-        });
-      }
-    }
 
-    this.updateCell();
+        // const cellOperator = this.spreadsheet.options?.cellOperator;
+        // let operator = this.spreadsheet.options?.showTrend
+        //   ? {
+        //       onClick: (params) => {
+        //         if (params === 'showTrend') {
+        //           // 展示趋势点击
+        //           this.spreadsheet.emit('spread-trend-click', meta);
+        //           // 隐藏tooltip
+        //           // this.hide();
+        //         }
+        //       },
+        //       menus: [
+        //         {
+        //           id: 'showTrend',
+        //           text: '趋势',
+        //           icon: LineChartOutlined,
+        //         },
+        //       ],
+        //     }
+        //   : {
+        //       onClick: _.noop,
+        //       menus: [],
+        //     };
+        // if (cellOperator) {
+        //   operator = cellOperator;
+        // }
+        // this.showTooltip(position, hoveringCellData, {
+        //   actionType: 'cellSelection',
+        //   isTotals,
+        //   operator,
+        // });
+      }
+      this._updateCell();
+    })
   }
 
   private getMetaInCell(target): ViewMeta {
-    const cell = target;
+    let cell = target;
     if (cell instanceof DataCell) {
       return cell.getMeta();
+    } else {
+      if (cell) {
+        return this.getMetaInCell(cell.get('parent'));
+      } else {
+        return null;
+      }
     }
-    if (cell) {
-      return this.getMetaInCell(cell.get('parent'));
-    }
-    return null;
   }
 
-  private onDocumentClick(ev) {
+  private _onDocumentClick(ev) {
     if (
       ev.target !== this.spreadsheet.container.get('el') &&
-      !_.includes(ev.target?.className, 'eva-facet') &&
-      !_.includes(ev.target?.className, 'ant-menu') &&
-      !_.includes(ev.target?.className, 'ant-input')
+      !_.contains(ev.target?.className, 'eva-facet') &&
+      !_.contains(ev.target?.className, 'ant-menu') &&
+      !_.contains(ev.target?.className, 'ant-input')
     ) {
-      this.spreadsheet.store.set('selected', null);
-      this.updateCell();
-      this.hide();
+      this.spreadsheet.clearState();
+      this.draw();
+      // this.hide();
     }
   }
 
-  private updateCell() {
-    this.spreadsheet.getPanelAllCells((cell) => {
-      cell.update();
-    });
+  private _updateCell() {
+    // this.spreadsheet.getPanelAllCells((cell) => {
+    //   cell.update();
+    // });
     this.draw();
   }
 }

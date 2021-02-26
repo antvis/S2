@@ -37,8 +37,8 @@ export enum OriginEventType {
 }
 
 export enum DefaultEventType {
-  Hover = 'hover',
-  Click = 'click',
+  HOVER = 'hover',
+  CLICK = 'click',
 }
 
-export type DefaultEvent = DefaultEventType.Hover | DefaultEventType.Click;
+export type DefaultEvent = DefaultEventType.HOVER | DefaultEventType.CLICK;
