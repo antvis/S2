@@ -17,7 +17,6 @@ export { BrushSelection } from './brush-selection';
 export { HeaderHover } from './header-hover';
 export { RowColumnSelection } from './row-column-selection';
 export { CellSelection } from './cell-selection';
-export { CellHover } from './cell-hover';
 export { RowColResize } from './row-col-resize';
 export { RowHeaderTextClick } from './row-header-text-click';
 export { CornerHeaderTextClick } from './corner-header-text-click';

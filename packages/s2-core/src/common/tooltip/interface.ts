@@ -29,7 +29,6 @@ export interface SortQuery {
 
 export type ActionType =
   | 'cellSelection'
-  | 'cellHover'
   | 'rowSelection'
   | 'columnSelection';
 

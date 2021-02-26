@@ -126,18 +126,9 @@ export abstract class BaseTooltip {
 
   /** 是否显示概要信息 */
   protected shouldShowSummary(
-    hoverData: DataItem,
     selectedData: DataItem[],
-    options: TooltipOptions,
   ): boolean {
-    const { actionType } = options;
-
-    const showSummary =
-      actionType === 'cellHover'
-        ? this.isHoverDataInSelectedData(selectedData, hoverData)
-        : true;
-
-    return !_.isEmpty(selectedData) && showSummary;
+    return !_.isEmpty(selectedData);
   }
 
   protected renderContent(data?: DataItem, options?: TooltipOptions) {
