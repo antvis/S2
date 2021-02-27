@@ -11,7 +11,7 @@ import {
 import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Select, Switch } from 'antd';
+import { Switch } from 'antd';
 
 let data = getMockData('../datasets/tableau-supermarket.csv');
 
@@ -145,8 +145,12 @@ function MainLayout(props) {
   const [valueInCols, setValueInCols] = React.useState(true);
   const [derivedValueMul, setDerivedValueMul] = React.useState(false);
 
-  const onRowCellClick = (value) => {};
-  const onColCellClick = (value) => {};
+  const onRowCellClick = (value) => {
+    console.log(value);
+  };
+  const onColCellClick = (value) => {
+    console.log(value);
+  };
   const onDataCellClick = (value) => {
     console.log(value);
   };
@@ -209,6 +213,7 @@ function MainLayout(props) {
       </div>
       <SheetComponent
         dataCfg={dataCfg}
+        adaptive={false}
         options={options}
         spreadsheet={getSpreadSheet}
         onRowCellClick={onRowCellClick}

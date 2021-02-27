@@ -153,7 +153,7 @@ export class BrushSelection extends HoverInteraction {
       const inRegion = isInRegion(cellRegion, region);
       if (inRegion) {
         selectedCells.push(cell);
-        this.sum++;
+        this.sum += 1;
       }
     });
 

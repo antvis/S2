@@ -33,6 +33,7 @@ export const auto = (
 
   let loop = 0;
   let power;
+
   while (true) {
     power = powers[loop] as number;
 

@@ -1,6 +1,15 @@
 import EE from '@antv/event-emitter';
 import { Canvas, IGroup } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import {
+  isString,
+  get,
+  merge,
+  clone,
+  isEqual,
+  find,
+  isFunction,
+  includes,
+} from 'lodash';
 import { Store } from '../common/store';
 import { ext } from '@antv/matrix-util';
 import {
@@ -25,7 +34,6 @@ import {
 import { BaseDataSet } from '../data-set';
 import { SpreadsheetFacet } from '../facet';
 import {
-  BaseCell,
   Conditions,
   Fields,
   Node,
@@ -33,7 +41,6 @@ import {
   BaseInteraction,
   SpreadSheetTheme,
 } from '../index';
-import { DetailFacet } from '../facet/detail';
 import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';
@@ -44,12 +51,6 @@ import { DebuggerUtil } from '../common/debug';
 import { DefaultStyleCfg } from '../common/default-style-cfg';
 
 const matrixTransform = ext.transform;
-
-/**
- * Create By Bruce Too
- * On 2020-06-17
- * 所有表入口的基类
- */
 export default abstract class BaseSpreadSheet extends EE {
   public static DEBUG_ON = false;
 
@@ -124,7 +125,7 @@ export default abstract class BaseSpreadSheet extends EE {
     options: SpreadsheetOptions,
   ) {
     super();
-    this.dom = _.isString(dom) ? document.getElementById(dom) : dom;
+    this.dom = isString(dom) ? document.getElementById(dom) : dom;
     this.initGroups(this.dom, options);
     this.bindEvents();
     this.dataCfg = this.safetyDataCfg(dataCfg);
@@ -167,20 +168,20 @@ export default abstract class BaseSpreadSheet extends EE {
       ...options,
       width: options.width || 600,
       height: options.height || 480,
-      debug: _.get(options, 'debug', false),
+      debug: get(options, 'debug', false),
       hierarchyType: options.hierarchyType || 'grid',
-      hierarchyCollapse: _.get(options, 'hierarchyCollapse', false),
-      conditions: _.merge({}, safetyConditions, options.conditions || {}),
-      totals: _.merge({}, safetyTotals, options.totals || {}),
+      hierarchyCollapse: get(options, 'hierarchyCollapse', false),
+      conditions: merge({}, safetyConditions, options.conditions || {}),
+      totals: merge({}, safetyTotals, options.totals || {}),
       linkFieldIds: options.linkFieldIds || [],
       pagination: options.pagination || false,
-      containsRowHeader: _.get(options, 'containsRowHeader', true),
-      spreadsheetType: _.get(options, 'spreadsheetType', true),
-      style: _.merge({}, DefaultStyleCfg(), options.style),
-      showSeriesNumber: _.get(options, 'showSeriesNumber', false),
+      containsRowHeader: get(options, 'containsRowHeader', true),
+      spreadsheetType: get(options, 'spreadsheetType', true),
+      style: merge({}, DefaultStyleCfg(), options.style),
+      showSeriesNumber: get(options, 'showSeriesNumber', false),
       hideNodesIds: options.hideNodesIds || [],
       keepOnlyNodesIds: options.keepOnlyNodesIds || [],
-      registerDefaultInteractions: _.get(
+      registerDefaultInteractions: get(
         options,
         'registerDefaultInteractions',
         true,
@@ -190,9 +191,9 @@ export default abstract class BaseSpreadSheet extends EE {
         colField: [],
       },
       hideRowColFields: options.hideRowColFields || [],
-      valueInCols: _.get(options, 'valueInCols', true),
-      needDataPlaceHolderCell: _.get(options, 'needDataPlaceHolderCell', false),
-      hideTooltip: _.get(options, 'hideTooltip', false),
+      valueInCols: get(options, 'valueInCols', true),
+      needDataPlaceHolderCell: get(options, 'needDataPlaceHolderCell', false),
+      hideTooltip: get(options, 'hideTooltip', false),
       // dataCell, cornerCell, rowCell, colCell, frame, cornerHeader, layout
       // layoutResult, hierarchy, layoutArrange 存在使用时校验，在此不处理
     } as SpreadsheetOptions;
@@ -363,11 +364,11 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param dataCfg
    */
   public setDataCfg(dataCfg: DataCfg): void {
-    const newDataCfg = _.clone(dataCfg);
+    const newDataCfg = clone(dataCfg);
     const lastSortParam = this.store.get('sortParam');
     const { sortParams } = newDataCfg;
     newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
-    if (!_.isEqual(dataCfg, this.dataSet)) {
+    if (!isEqual(dataCfg, this.dataSet)) {
       // 数据结构发生了任何改变，都需要清空所有meta 缓存
       this.viewMetaCache.clear();
     }
@@ -378,6 +379,7 @@ export default abstract class BaseSpreadSheet extends EE {
     if (this.tooltip) {
       this.tooltip.hide();
     }
+    console.debug(options);
   }
 
   public render(reloadData = true, callback?: () => void): void {
@@ -392,7 +394,7 @@ export default abstract class BaseSpreadSheet extends EE {
     }
 
     this.buildFacet();
-    if (_.isFunction(callback)) {
+    if (isFunction(callback)) {
       callback();
     }
   }
@@ -427,7 +429,7 @@ export default abstract class BaseSpreadSheet extends EE {
         throw new Error(`Theme type '${type}' not founded.`);
       }
     } else {
-      this.theme = _.merge({}, getTheme(type), theme);
+      this.theme = merge({}, getTheme(type), theme);
     }
   }
 
@@ -436,7 +438,7 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param pagination
    */
   public updatePagination(pagination: Pagination) {
-    this.options = _.merge({}, this.options, {
+    this.options = merge({}, this.options, {
       pagination,
     });
 
@@ -458,7 +460,7 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param height
    */
   public changeSize(width: number, height: number) {
-    this.options = _.merge({}, this.options, { width, height });
+    this.options = merge({}, this.options, { width, height });
     // resize the canvas
     this.container.changeSize(width, height);
   }
@@ -467,7 +469,7 @@ export default abstract class BaseSpreadSheet extends EE {
    * tree type must be in strategy mode
    */
   public isHierarchyTreeType(): boolean {
-    return _.get(this, 'options.hierarchyType', 'grid') === 'tree';
+    return get(this, 'options.hierarchyType', 'grid') === 'tree';
   }
 
   public isStrategyMode(): boolean {
@@ -479,8 +481,8 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param field
    */
   public isDerivedValue(field: string): boolean {
-    const derivedValues = _.get(this, 'dataCfg.fields.derivedValues', []);
-    return _.find(derivedValues, (v) => _.includes(v.derivedValueField, field));
+    const derivedValues = get(this, 'dataCfg.fields.derivedValues', []);
+    return find(derivedValues, (v) => includes(v.derivedValueField, field));
   }
 
   /**
@@ -489,11 +491,11 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param field
    */
   public getDerivedValue(field: string): DerivedValue {
-    const derivedValues = _.get(this, 'dataCfg.fields.derivedValues', []);
+    const derivedValues = get(this, 'dataCfg.fields.derivedValues', []);
     return (
-      _.find(
+      find(
         derivedValues,
-        (v) => field === v.valueField || _.includes(v.derivedValueField, field),
+        (v) => field === v.valueField || includes(v.derivedValueField, field),
       ) || {
         valueField: '',
         derivedValueField: [],
@@ -504,8 +506,7 @@ export default abstract class BaseSpreadSheet extends EE {
 
   public isColAdaptive(): boolean {
     return (
-      _.get(this, 'options.style.colCfg.colWidthType', 'adaptive') ===
-      'adaptive'
+      get(this, 'options.style.colCfg.colWidthType', 'adaptive') === 'adaptive'
     );
   }
 
@@ -513,7 +514,7 @@ export default abstract class BaseSpreadSheet extends EE {
    * Check if is SpreadSheet mode
    */
   public isSpreadsheetType(): boolean {
-    return _.get(this, 'options.spreadsheetType', true);
+    return get(this, 'options.spreadsheetType', true);
   }
 
   /**
@@ -522,8 +523,7 @@ export default abstract class BaseSpreadSheet extends EE {
    */
   public isScrollContainsRowHeader(): boolean {
     return (
-      !_.get(this, 'options.containsRowHeader', true) ||
-      !this.isSpreadsheetType()
+      !get(this, 'options.containsRowHeader', true) || !this.isSpreadsheetType()
     );
   }
 
@@ -531,7 +531,7 @@ export default abstract class BaseSpreadSheet extends EE {
    * Scroll Freeze Row Header
    */
   public freezeRowHeader(): boolean {
-    return !_.get(this, 'options.containsRowHeader', true);
+    return !get(this, 'options.containsRowHeader', true);
   }
 
   /**
@@ -562,7 +562,7 @@ export default abstract class BaseSpreadSheet extends EE {
   }
 
   public getRealColumnSize(): number {
-    return _.get(this, 'dataCfg.fields.columns', []).length + 1;
+    return get(this, 'dataCfg.fields.columns', []).length + 1;
   }
 
   /**
@@ -587,7 +587,7 @@ export default abstract class BaseSpreadSheet extends EE {
    */
   public updateScrollOffset(offsetConfig: OffsetConfig): void {
     this.facet.updateScrollOffset(
-      _.merge(
+      merge(
         {},
         {
           offsetX: {

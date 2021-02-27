@@ -1,13 +1,5 @@
 import { Group, IShape } from '@antv/g-canvas';
 import { BaseSpreadSheet, SpreadSheetTheme } from '..';
-
-/**
- * Create By Bruce Too
- * On 2019-10-12
- * Base cell for all nodes, contains in rowHeader,
- * colHeader, cornerHeader, cellArea
- */
-
 export abstract class BaseCell<T> extends Group {
   // cell's data meta info
   protected meta: T;
@@ -52,6 +44,7 @@ export abstract class BaseCell<T> extends Group {
    */
   protected handleRestOptions(...options) {
     // default do nothing
+    console.debug(options);
   }
 
   /**

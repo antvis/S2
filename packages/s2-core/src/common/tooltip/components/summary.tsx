@@ -6,7 +6,6 @@ const SUMMARY_CLASS = 'eva-facet-tooltip-summary';
 const SUMMARY_ITEM_CLASS = 'eva-facet-tooltip-summary-item';
 const SUMMARY_KEY_CLASS = 'eva-facet-tooltip-summary-key';
 const SUMMARY_VAL_CLASS = 'eva-facet-tooltip-summary-val';
-const HIGHLIGHT_CLASS = 'eva-facet-tooltip-highlight';
 const BOLD_CLASS = 'eva-facet-tooltip-bold';
 
 export class TooltipSummary extends React.PureComponent<SummaryProps> {

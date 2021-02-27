@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { each, get } from 'lodash';
 import {
   DEFAULT_COLUMN,
   DEFAULT_ROW,
@@ -19,7 +19,7 @@ function processCols(
   hierarchy: Hierarchy,
   dataSet,
 ) {
-  _.each(fields, (field: string) => {
+  each(fields, (field: string) => {
     // ignore col = EXTRA_FIELD
     if (
       field !== EXTRA_FIELD &&
@@ -62,12 +62,12 @@ export default function processColsList(
 
   // width / height for header area
   // 无论怎么变 都是以$$column$$来做判断，别问我为什么，我也是看规律发现的
-  colsHierarchy.height = _.get(
+  colsHierarchy.height = get(
     colCfg,
     'heightByField.$$column$$',
     cellCfg.height,
   );
-  _.each(rootNode.children, (node) => {
+  each(rootNode.children, (node) => {
     if (node) {
       colsHierarchy.width += node.width;
       // 每个node高度以最高的为标准~

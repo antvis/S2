@@ -1,7 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2020-12-13
- */
 import {
   DrillDownDataCache,
   DrillDownFieldInLevel,
@@ -55,6 +51,48 @@ export const UseDrillDownLayout = (options: SpreadsheetOptions) => {
 };
 
 /**
+ * 获取下钻缓存
+ * @param spreadsheet
+ * @param meta
+ */
+const getDrillDownCash = (spreadsheet: BaseSpreadSheet, meta: Node) => {
+  const drillDownDataCache = spreadsheet.store.get(
+    'drillDownDataCache',
+    [],
+  ) as DrillDownDataCache[];
+  const cache = drillDownDataCache.find((dc) => dc.rowId === meta.id);
+  return {
+    drillDownDataCache: drillDownDataCache,
+    drillDownCurrentCash: cache,
+  };
+};
+
+/**
+ * 点击下钻Icon的响应
+ * @param params
+ */
+export const HandleActionIconClick = (params: ActionIconParams) => {
+  const { meta, spreadsheet, event, callback, iconType } = params;
+  if (iconType === 'DrillDownIcon') {
+    spreadsheet.store.set('drillMeta', meta);
+    const { drillDownDataCache, drillDownCurrentCash } = getDrillDownCash(
+      spreadsheet,
+      meta,
+    );
+    const cache = drillDownCurrentCash?.drillField
+      ? [drillDownCurrentCash?.drillField]
+      : [];
+    const disabled = [];
+    // 父节点已经下钻过的维度不应该再下钻
+    drillDownDataCache.forEach((val) => {
+      if (meta.id.includes(val.rowId) && meta.id !== val.rowId)
+        disabled.push(val.drillField);
+    });
+    callback(event, spreadsheet, cache, disabled);
+  }
+};
+
+/**
  * 如果有下钻的配置，将配置映射到表内部
  * @param props
  * @param spreadsheet
@@ -105,48 +143,6 @@ export const HandleOptions = (
 };
 
 /**
- * 点击下钻Icon的响应
- * @param params
- */
-export const HandleActionIconClick = (params: ActionIconParams) => {
-  const { meta, spreadsheet, event, callback, iconType } = params;
-  if (iconType === 'DrillDownIcon') {
-    spreadsheet.store.set('drillMeta', meta);
-    const { drillDownDataCache, drillDownCurrentCash } = getDrillDownCash(
-      spreadsheet,
-      meta,
-    );
-    const cache = drillDownCurrentCash?.drillField
-      ? [drillDownCurrentCash?.drillField]
-      : [];
-    const disabled = [];
-    // 父节点已经下钻过的维度不应该再下钻
-    drillDownDataCache.forEach((val) => {
-      if (meta.id.includes(val.rowId) && meta.id !== val.rowId)
-        disabled.push(val.drillField);
-    });
-    callback(event, spreadsheet, cache, disabled);
-  }
-};
-
-/**
- * 获取下钻缓存
- * @param spreadsheet
- * @param meta
- */
-const getDrillDownCash = (spreadsheet: BaseSpreadSheet, meta: Node) => {
-  const drillDownDataCache = spreadsheet.store.get(
-    'drillDownDataCache',
-    [],
-  ) as DrillDownDataCache[];
-  const cache = drillDownDataCache.find((dc) => dc.rowId === meta.id);
-  return {
-    drillDownDataCache: drillDownDataCache,
-    drillDownCurrentCash: cache,
-  };
-};
-
-/**
  * 处理展示维值个数
  * @param spreadsheet
  * @param meta
@@ -163,6 +159,71 @@ const handleDrillItemsNum = (
   });
   const newItems = Array.from(items).slice(0, drillItemsNum);
   return drillData.filter((v) => newItems.includes(v[drillFields[0]]));
+};
+
+/**
+ * 清空下钻的信息！
+ * 按照rowId来清空
+ * 1、清空此该id以及其子id可能存在的所有数据缓存 drillDownDataCache
+ * 2、更新「level-维度」维度缓存的信息(只保留存在数据的level) drillDownFieldInLevel
+ * @param spreadsheet
+ * @param rowId 如果有rowId,按照rowId 清理，如果没有，全部清空
+ */
+export const ClearDrillDownInfo = (
+  spreadsheet: BaseSpreadSheet,
+  rowId?: string,
+) => {
+  const drillDownDataCache = spreadsheet.store.get(
+    'drillDownDataCache',
+    [],
+  ) as DrillDownDataCache[];
+  if (rowId) {
+    // 清空指定的下钻维度，逻辑就恶心了，处理如下
+    // 1. 清空rowId对应的数据缓存(需要考虑rowId的子节点是否有下钻)
+    const deleteDataCache = drillDownDataCache.find((d) => d?.rowId === rowId);
+    if (deleteDataCache) {
+      // 存在需要被删除的数据，进一步去确定子节点是否有下钻，需要一并删除此节点下的所有自定义下钻
+      const rowNode = spreadsheet.getRowNodes().find((n) => n.id === rowId);
+      const allChildrenIds = Node.getAllChildrenNode(rowNode).map((n) => n.id);
+      // 节点本身 & 包含在子节点中 需要被过滤
+      const restDataCache = drillDownDataCache.filter(
+        (d) => d?.rowId !== rowId && !includes(allChildrenIds, d?.rowId),
+      );
+      spreadsheet.store.set('drillDownDataCache', restDataCache);
+
+      // 2. 从剩下缓存中找到哪些level还存在数据，去除掉不存在数据的层级 更新drillDownFieldInLevel
+      const restDrillLevels = restDataCache.map((c) => c.drillLevel);
+      const drillDownFieldInLevel = spreadsheet.store.get(
+        'drillDownFieldInLevel',
+        [],
+      ) as DrillDownFieldInLevel[];
+      const restFieldInLevel = drillDownFieldInLevel.filter((d) =>
+        includes(restDrillLevels, d?.drillLevel),
+      );
+      spreadsheet.store.set('drillDownFieldInLevel', restFieldInLevel);
+
+      // 3. 需要从spreasheet中删除掉对应下钻后dataCfg
+      // 剩下的下钻信息会在 HandleConfigWhenDrillDown 中拼接处理
+      const originalDataCfg = spreadsheet.store.get('originalDataCfg');
+
+      if (!isEmpty(originalDataCfg)) {
+        spreadsheet.setDataCfg(originalDataCfg);
+      }
+    } else {
+      console.info(`No drill-down info exist in this ${rowId}`);
+    }
+  } else {
+    // 清空所有下钻后的dataCfg信息
+    // 因此如果缓存有下钻前原始dataCfg，需要清空所有的下钻数据
+    const originalDataCfg = spreadsheet.store.get('originalDataCfg');
+    if (!isEmpty(originalDataCfg)) {
+      spreadsheet.setDataCfg(originalDataCfg);
+    }
+
+    // 清空所有的下钻信息
+    spreadsheet.store.set('drillDownDataCache', []);
+    spreadsheet.store.set('drillDownFieldInLevel', []);
+  }
 };
 
 /**
@@ -190,7 +251,8 @@ export const HandleDrillDown = async (params: DrillDownParams) => {
           ? parseInt(drillItemsNum, 10)
           : drillItemsNum;
       // 只有数据存在的时候 才执行局部下钻逻辑
-      let { drillData, drillField } = info;
+      let { drillData } = info;
+      const { drillField } = info;
       // 处理设置了展示下钻维值个数的情况
       if (numberdrillItemsNum === 0) {
         drillData = [];
@@ -353,69 +415,4 @@ export const HandleConfigWhenDrillDown = (
     tempCfg.data = props.dataCfg.data;
   }
   spreadsheet.setDataCfg(tempCfg);
-};
-
-/**
- * 清空下钻的信息！
- * 按照rowId来清空
- * 1、清空此该id以及其子id可能存在的所有数据缓存 drillDownDataCache
- * 2、更新「level-维度」维度缓存的信息(只保留存在数据的level) drillDownFieldInLevel
- * @param spreadsheet
- * @param rowId 如果有rowId,按照rowId 清理，如果没有，全部清空
- */
-export const ClearDrillDownInfo = (
-  spreadsheet: BaseSpreadSheet,
-  rowId?: string,
-) => {
-  const drillDownDataCache = spreadsheet.store.get(
-    'drillDownDataCache',
-    [],
-  ) as DrillDownDataCache[];
-  if (rowId) {
-    // 清空指定的下钻维度，逻辑就恶心了，处理如下
-    // 1. 清空rowId对应的数据缓存(需要考虑rowId的子节点是否有下钻)
-    const deleteDataCache = drillDownDataCache.find((d) => d?.rowId === rowId);
-    if (deleteDataCache) {
-      // 存在需要被删除的数据，进一步去确定子节点是否有下钻，需要一并删除此节点下的所有自定义下钻
-      const rowNode = spreadsheet.getRowNodes().find((n) => n.id === rowId);
-      const allChildrenIds = Node.getAllChildrenNode(rowNode).map((n) => n.id);
-      // 节点本身 & 包含在子节点中 需要被过滤
-      const restDataCache = drillDownDataCache.filter(
-        (d) => d?.rowId !== rowId && !includes(allChildrenIds, d?.rowId),
-      );
-      spreadsheet.store.set('drillDownDataCache', restDataCache);
-
-      // 2. 从剩下缓存中找到哪些level还存在数据，去除掉不存在数据的层级 更新drillDownFieldInLevel
-      const restDrillLevels = restDataCache.map((c) => c.drillLevel);
-      const drillDownFieldInLevel = spreadsheet.store.get(
-        'drillDownFieldInLevel',
-        [],
-      ) as DrillDownFieldInLevel[];
-      const restFieldInLevel = drillDownFieldInLevel.filter((d) =>
-        includes(restDrillLevels, d?.drillLevel),
-      );
-      spreadsheet.store.set('drillDownFieldInLevel', restFieldInLevel);
-
-      // 3. 需要从spreasheet中删除掉对应下钻后dataCfg
-      // 剩下的下钻信息会在 HandleConfigWhenDrillDown 中拼接处理
-      const originalDataCfg = spreadsheet.store.get('originalDataCfg');
-
-      if (!isEmpty(originalDataCfg)) {
-        spreadsheet.setDataCfg(originalDataCfg);
-      }
-    } else {
-      console.info(`No drill-down info exist in this ${rowId}`);
-    }
-  } else {
-    // 清空所有下钻后的dataCfg信息
-    // 因此如果缓存有下钻前原始dataCfg，需要清空所有的下钻数据
-    const originalDataCfg = spreadsheet.store.get('originalDataCfg');
-    if (!isEmpty(originalDataCfg)) {
-      spreadsheet.setDataCfg(originalDataCfg);
-    }
-
-    // 清空所有的下钻信息
-    spreadsheet.store.set('drillDownDataCache', []);
-    spreadsheet.store.set('drillDownFieldInLevel', []);
-  }
 };

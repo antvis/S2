@@ -1,21 +1,13 @@
-import * as _ from 'lodash';
-import { SpreadsheetFacet } from '../../index';
+import { get } from 'lodash';
 import { BaseFacet } from '../../base-facet';
 
-/**
- * Create By Bruce Too
- * On 2020-03-18
- * Only when values has one dimension
- * and user config hideMeasureColumn === true
- */
 export default function checkHideMeasureColumn(
   facet: BaseFacet,
   needValue = false,
 ): [boolean, number, number] {
-  const { values, colCfg, spreadsheet } = facet.cfg;
+  const { values, colCfg } = facet.cfg;
   const isHide = !!(
-    _.get(values, 'length', 0) === 1 &&
-    _.get(colCfg, 'hideMeasureColumn', false)
+    get(values, 'length', 0) === 1 && get(colCfg, 'hideMeasureColumn', false)
   );
   let nodeY = 0;
   let nodeHeight = 0;

@@ -1,9 +1,5 @@
-/**
- * Create By Bruce Too
- * On 2020-10-16
- */
-import { Event, IGroup, Group, IShape, Canvas } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { Event, IGroup, Group, IShape } from '@antv/g-canvas';
+import { merge, clamp, get, each } from 'lodash';
 import { PointObject, ScrollBarCfg, ScrollBarTheme } from './interface';
 import { DEFAULT_THEME } from './style';
 
@@ -65,7 +61,7 @@ export class ScrollBar extends Group {
     this.thumbLen = thumbLen;
     this.position = position;
     this.minThumbLen = minThumbLen;
-    this.theme = _.merge({}, DEFAULT_THEME, theme);
+    this.theme = merge({}, DEFAULT_THEME, theme);
 
     this.initScrollBar();
   }
@@ -195,12 +191,12 @@ export class ScrollBar extends Group {
     // 发送事件
     this.emit('scroll-change', {
       thumbOffset: this.thumbOffset,
-      ratio: _.clamp(this.thumbOffset / (this.trackLen - this.thumbLen), 0, 1),
+      ratio: clamp(this.thumbOffset / (this.trackLen - this.thumbLen), 0, 1),
     });
   }
 
   public updateTheme(theme: ScrollBarTheme) {
-    this.theme = _.merge({}, DEFAULT_THEME, theme);
+    this.theme = merge({}, DEFAULT_THEME, theme);
     this.thumbShape.attr('stroke', this.theme.default.thumbColor);
     this.thumbShape.attr('lineWidth', this.theme.default.size);
     this.thumbShape.attr('lineCap', this.theme.default.lineCap);
@@ -308,7 +304,7 @@ export class ScrollBar extends Group {
     // 阻止冒泡
     e.preventDefault();
 
-    const event = this.isMobile ? _.get(e, 'touches.0', e) : e;
+    const event = this.isMobile ? get(e, 'touches.0', e) : e;
 
     const { clientX, clientY } = event;
 
@@ -350,7 +346,7 @@ export class ScrollBar extends Group {
       events.forEach((e) => {
         e.remove();
       });
-      _.each(this.eventHandlers, (eh) => {
+      each(this.eventHandlers, (eh) => {
         eh.target.off(eh.type, eh.handler);
       });
       this.eventHandlers.length = 0;
@@ -375,7 +371,7 @@ export class ScrollBar extends Group {
   private onMouseMove = (e) => {
     e.preventDefault();
 
-    const event = this.isMobile ? _.get(e, 'touches.0', e) : e;
+    const event = this.isMobile ? get(e, 'touches.0', e) : e;
 
     const clientX = event.clientX;
     const clientY = event.clientY;
@@ -402,12 +398,14 @@ export class ScrollBar extends Group {
     const { thumbColor } = this.theme.hover;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();
+    console.debug(e);
   };
 
   private onTrackMouseOut = (e) => {
     const { thumbColor } = this.theme.default;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();
+    console.debug(e);
   };
 
   // 判断滑块位置是否超出滑道区域

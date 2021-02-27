@@ -1,15 +1,9 @@
-/**
- * Create By yingying
- * On 2020-10-12
- */
-
 import React, { useEffect, useState } from 'react';
-import { map, min, max, isEmpty, debounce } from 'lodash';
+import { isEmpty, debounce, isFunction } from 'lodash';
 import { Spin } from 'antd';
 import { DataCfg, SpreadsheetOptions } from '../common/interface';
 import { DrillDown, DrillDownProps } from '../components/drill-down';
 import {
-  ColCell,
   KEY_COLUMN_CELL_CLICK,
   KEY_CORNER_CELL_CLICK,
   KEY_ROW_CELL_CLICK,
@@ -136,32 +130,32 @@ export const SheetComponent = (props: SpreadsheetProps) => {
           .map((value) => {
             return [value.level, value.id, value.label];
           });
-        onRowColLayout && onRowColLayout(rowNodes, colNodes);
+        if (isFunction(onRowColLayout)) onRowColLayout(rowNodes, colNodes);
       }
     });
     baseSpreadsheet.on(KEY_ROW_NODE_BORDER_REACHED, (value) => {
-      onRowCellScroll && onRowCellScroll(value);
+      if (isFunction(onRowCellScroll)) onRowCellScroll(value);
     });
     baseSpreadsheet.on(KEY_COL_NODE_BORDER_REACHED, (value) => {
-      onColCellScroll && onColCellScroll(value);
+      if (isFunction(onColCellScroll)) onColCellScroll(value);
     });
     baseSpreadsheet.on(KEY_CELL_SCROLL, (value) => {
-      onCellScroll && onCellScroll(value);
+      if (isFunction(onCellScroll)) onCellScroll(value);
     });
     baseSpreadsheet.on(KEY_ROW_CELL_CLICK, (value) => {
-      onRowCellClick && onRowCellClick(value);
+      if (isFunction(onRowCellClick)) onRowCellClick(value);
     });
     baseSpreadsheet.on(KEY_COLUMN_CELL_CLICK, (value) => {
-      onColCellClick && onColCellClick(value);
+      if (isFunction(onColCellClick)) onColCellClick(value);
     });
     baseSpreadsheet.on(KEY_CORNER_CELL_CLICK, (value) => {
-      onRowCellClick && onRowCellClick(value);
+      if (isFunction(onRowCellClick)) onRowCellClick(value);
     });
     baseSpreadsheet.on(KEY_SINGLE_CELL_CLICK, (value) => {
-      onDataCellClick && onDataCellClick(value);
+      if (isFunction(onDataCellClick)) onDataCellClick(value);
     });
     baseSpreadsheet.on(KEY_LIST_SORT, (value) => {
-      onListSort && onListSort(value);
+      if (isFunction(onListSort)) onListSort(value);
     });
   };
 
@@ -179,7 +173,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
 
   const iconClickCallback = (
     event: MouseEvent,
-    spreadsheet: BaseSpreadsheet,
+    sheet: BaseSpreadsheet,
     cashDrillFields: string[],
     disabledFields: string[],
   ) => {
@@ -191,7 +185,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
         disabledFields={disabledFields}
       />
     );
-    spreadsheet.tooltip.show(
+    sheet.tooltip.show(
       {
         x: event.clientX,
         y: event.clientY,
@@ -220,63 +214,63 @@ export const SheetComponent = (props: SpreadsheetProps) => {
   };
 
   // TODO 使用到的时候根据情况增加配置项
-  const updateScrollOffset = (nodeKey: string, isRow = true) => {
-    let item;
-    if (isRow) {
-      item = baseSpreadsheet
-        .getRowNodes()
-        .find((value) => value.id === nodeKey);
-      if (item) {
-        baseSpreadsheet.updateScrollOffset({
-          offsetY: {
-            value: item.y,
-          },
-        });
-      }
-    } else {
-      item = baseSpreadsheet
-        .getColumnNodes()
-        .find((value) => value.id === nodeKey);
-      if (item) {
-        baseSpreadsheet.updateScrollOffset({
-          offsetX: {
-            value: item.x,
-          },
-        });
-      }
-    }
-  };
+  // const updateScrollOffset = (nodeKey: string, isRow = true) => {
+  //   let item;
+  //   if (isRow) {
+  //     item = baseSpreadsheet
+  //       .getRowNodes()
+  //       .find((value) => value.id === nodeKey);
+  //     if (item) {
+  //       baseSpreadsheet.updateScrollOffset({
+  //         offsetY: {
+  //           value: item.y,
+  //         },
+  //       });
+  //     }
+  //   } else {
+  //     item = baseSpreadsheet
+  //       .getColumnNodes()
+  //       .find((value) => value.id === nodeKey);
+  //     if (item) {
+  //       baseSpreadsheet.updateScrollOffset({
+  //         offsetX: {
+  //           value: item.x,
+  //         },
+  //       });
+  //     }
+  //   }
+  // };
 
   // TODO 使用到的时候根据情况增加配置项
-  const selectColCell = (nodeKey: string) => {
-    const rowCell = baseSpreadsheet
-      .getColumnNodes()
-      .find((value) => value.id === nodeKey);
-    if (rowCell) {
-      if (rowCell.belongsCell) {
-        // @ts-ignore
-        const meta = rowCell.belongsCell.getMeta();
-        const idx = meta.cellIndex;
-        if (rowCell.belongsCell instanceof ColCell) {
-          if (idx === -1) {
-            const arr = map(Node.getAllLeavesOfNode(meta), 'cellIndex');
-            baseSpreadsheet.store.set('selected', {
-              type: 'column',
-              indexes: [-1, [min(arr), max(arr)]],
-            });
-          } else {
-            baseSpreadsheet.store.set('selected', {
-              type: 'column',
-              indexes: [-1, idx],
-            });
-          }
-          baseSpreadsheet.getPanelAllCells().forEach((value) => {
-            value.update();
-          });
-        }
-      }
-    }
-  };
+  // const selectColCell = (nodeKey: string) => {
+  //   const rowCell = baseSpreadsheet
+  //     .getColumnNodes()
+  //     .find((value) => value.id === nodeKey);
+  //   if (rowCell) {
+  //     if (rowCell.belongsCell) {
+  //       // @ts-ignore
+  //       const meta = rowCell.belongsCell.getMeta();
+  //       const idx = meta.cellIndex;
+  //       if (rowCell.belongsCell instanceof ColCell) {
+  //         if (idx === -1) {
+  //           const arr = map(Node.getAllLeavesOfNode(meta), 'cellIndex');
+  //           baseSpreadsheet.store.set('selected', {
+  //             type: 'column',
+  //             indexes: [-1, [min(arr), max(arr)]],
+  //           });
+  //         } else {
+  //           baseSpreadsheet.store.set('selected', {
+  //             type: 'column',
+  //             indexes: [-1, idx],
+  //           });
+  //         }
+  //         baseSpreadsheet.getPanelAllCells().forEach((value) => {
+  //           value.update();
+  //         });
+  //       }
+  //     }
+  //   }
+  // };
 
   const update = (reset?: () => void, action?: () => void) => {
     if (!ownSpreadsheet) return;
@@ -370,7 +364,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
         fetchData: partDrillDown.fetchData,
         drillItemsNum: partDrillDown?.drillItemsNum,
         spreadsheet: ownSpreadsheet,
-      }).then((res) => {
+      }).then(() => {
         setLoading(false);
         // TODO 异常处理
       });

@@ -203,6 +203,7 @@ export abstract class BaseTooltip {
   }
 
   protected getContainerClass(options?: TooltipOptions) {
+    console.debug(options);
     return CONTAINER_CLASS;
   }
 

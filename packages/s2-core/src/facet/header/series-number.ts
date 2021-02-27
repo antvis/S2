@@ -1,5 +1,5 @@
-import { SimpleBBox, Group, Shape, IGroup } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { SimpleBBox, IGroup } from '@antv/g-canvas';
+import { each, get } from 'lodash';
 import { measureTextWidth } from '../..';
 import { getAdjustPosition } from '../../utils/text-absorption';
 import { BaseSpreadSheet } from '../..';
@@ -46,7 +46,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       }
     });
     return new SeriesNumberHeader({
-      width: seriesNumberWidth,
+      width: cornerWidth,
       height,
       viewportWidth: width,
       viewportHeight: height,
@@ -62,7 +62,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   public clip(): void {
-    const { width, height, position, scrollX, scrollY } = this.headerConfig;
+    const { width, height, scrollX, scrollY } = this.headerConfig;
     this.setClip({
       type: 'rect',
       attrs: {
@@ -75,16 +75,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   public layout() {
-    const {
-      data,
-      offset,
-      width,
-      height,
-      position,
-      scrollX,
-      scrollY,
-    } = this.headerConfig;
-    _.each(data, (item: any) => {
+    const { data, offset, height } = this.headerConfig;
+    each(data, (item: any) => {
       const { y, height: cellHeight } = item;
       const isHeaderCellInViewport = this.isHeaderCellInViewport(
         y,
@@ -107,7 +99,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       }
     });
     const borderGroup = this.addGroup();
-    _.each(data, (item: any) => {
+    each(data, (item: any) => {
       const { y, height: cellHeight, isLeaf } = item;
       const isHeaderCellInViewport = this.isHeaderCellInViewport(
         y,
@@ -143,7 +135,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const { x, y, width, height } = cellData;
     group.addShape('rect', {
       attrs: {
-        fill: _.get(
+        fill: get(
           this.headerConfig,
           'spreadsheet.theme.header.cell.backgroundColor',
         ),
@@ -186,14 +178,14 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const padding = getCellPadding();
     const labelWidth = measureTextWidth(
       label,
-      _.get(this.headerConfig, 'spreadsheet.theme.header.text'),
+      get(this.headerConfig, 'spreadsheet.theme.header.text'),
     );
     padding.left = Math.max(Math.abs((cellWidth - labelWidth) / 2), 4);
     padding.right = padding.left;
     const textStyle =
       isLeaf && !isTotals
-        ? _.get(this.headerConfig, 'spreadsheet.theme.header.text')
-        : _.get(this.headerConfig, 'spreadsheet.theme.header.bolderText');
+        ? get(this.headerConfig, 'spreadsheet.theme.header.text')
+        : get(this.headerConfig, 'spreadsheet.theme.header.bolderText');
     const textY = getAdjustPosition(
       y + padding.top,
       cellHeight - padding.top - padding.bottom,

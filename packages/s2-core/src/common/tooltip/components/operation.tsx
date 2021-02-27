@@ -1,5 +1,5 @@
-import * as _ from 'lodash';
-import * as React from 'react';
+import { get, isEqual, find } from 'lodash';
+import React from 'react';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { HtmlIcon } from '../../icons';
@@ -32,14 +32,14 @@ export class TooltipOperation extends React.PureComponent<
   handleSelectOrder = ({ key: type }) => {
     const { plot, sortFieldId, sortQuery } = this.props;
     // 刷新数据
-    const selectedOption = _.find(ORDER_OPTIONS, { type }) as OrderOption;
+    const selectedOption = find(ORDER_OPTIONS, { type }) as OrderOption;
     const sortParam =
       type === 'none'
         ? null
         : {
             type,
             sortFieldId,
-            sortMethod: _.get(selectedOption, 'sortMethod'),
+            sortMethod: get(selectedOption, 'sortMethod'),
             query: sortQuery,
           };
     // 排序条件，存到 store 中
@@ -59,17 +59,16 @@ export class TooltipOperation extends React.PureComponent<
   };
 
   getSortSelection = () => {
-    const { plot, sortFieldId, sortQuery } = this.props;
-    // const sortParam = plot.store.get('sortParam');
+    const { sortQuery } = this.props;
     const sortParam = this.state.sortParam;
     let selectedSortMethod = null;
-    if (sortParam && _.isEqual(_.get(sortParam, 'query'), sortQuery)) {
-      selectedSortMethod = _.get(sortParam, 'sortMethod', null);
+    if (sortParam && isEqual(get(sortParam, 'query'), sortQuery)) {
+      selectedSortMethod = get(sortParam, 'sortMethod', null);
     }
-    const selectedSortOption = _.find(ORDER_OPTIONS, {
+    const selectedSortOption = find(ORDER_OPTIONS, {
       sortMethod: selectedSortMethod,
     });
-    const selectedSortName = _.get(selectedSortOption, 'name');
+    const selectedSortName = get(selectedSortOption, 'name');
     const htmlIconProps = {
       width: 14,
       height: 14,

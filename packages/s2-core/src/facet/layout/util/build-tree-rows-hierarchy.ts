@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { merge, each, isEmpty, isBoolean, remove } from 'lodash';
 import { Pivot, SpreadDataSet } from '../../../data-set';
 import { i18n } from '../../../common/i18n';
 import { SpreadsheetFacetCfg } from '../../../common/interface';
@@ -66,7 +66,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
 
   const { collapsedRows, hierarchyCollapse, values } = cfg;
 
-  _.each(fieldValues, (col) => {
+  each(fieldValues, (col) => {
     const isTotal = col instanceof TotalClass;
     let value;
     let label;
@@ -86,7 +86,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
     const id = `${parent.id}-${value}`;
 
     // check if current node is collapsed first, or use hierarchy config
-    let isCollapse = _.isBoolean(collapsedRows[id])
+    let isCollapse = isBoolean(collapsedRows[id])
       ? collapsedRows[id]
       : hierarchyCollapse;
     if (isTotal) {
@@ -94,13 +94,13 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
       isCollapse = false;
     }
     // 处理决策模式下，初始化节点的收缩状态，一次性！！
-    if (_.isBoolean(collapsedRows[id]) || hierarchyCollapse) {
+    if (isBoolean(collapsedRows[id]) || hierarchyCollapse) {
       // 有操作后节点的情况下，需要以操作的为准，isCollapse不变
     } else {
       // 没有操作的过节点的情况下，默认以配置为准
       const extra = findNodeExtraCfg(values, { [field]: value });
       // 必须不为空
-      if (extra && !_.isEmpty(label)) {
+      if (extra && !isEmpty(label)) {
         isCollapse = extra.collapse;
       }
     }
@@ -115,7 +115,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
       isTotals: isTotal,
       isCollapsed: isCollapse,
       hierarchy,
-      query: _.merge({}, query, { [field]: value }),
+      query: merge({}, query, { [field]: value }),
       inCollapseNode,
       spreadsheet: cfg.spreadsheet,
     });
@@ -127,14 +127,14 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
         if (push) {
           hierarchy.pushNode(node);
         }
-        _.each(another.nodes, (v) => {
+        each(another.nodes, (v) => {
           hierarchy.pushNode(v);
         });
         if (!push) {
           // new node insert before current
           hierarchy.pushNode(node);
           // adjust the index of current node
-          _.remove(parent.children, (v) => value === node);
+          remove(parent.children, (v) => v === node);
           parent.children.push(node);
         }
       } else {
