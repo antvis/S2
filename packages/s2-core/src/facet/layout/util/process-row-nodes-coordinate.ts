@@ -1,8 +1,4 @@
-/**
- * Create By Bruce Too
- * On 2019-09-29
- */
-import * as _ from 'lodash';
+import { each, get } from 'lodash';
 import { SpreadsheetFacet } from '../../index';
 import { SpreadsheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';
@@ -102,7 +98,7 @@ export default function processRowNodesCoordinate(
       }
     }
     // all nodes' width
-    _.each(rowsHierarchy.sampleNodesForAllLevels, (value: Node) => {
+    each(rowsHierarchy.sampleNodesForAllLevels, (value: Node) => {
       rowsHierarchy.width += value.width;
     });
   } else {
@@ -118,10 +114,6 @@ export default function processRowNodesCoordinate(
       rowsHierarchy.height += node.height;
     }
     // all nodes' width
-    rowsHierarchy.width = _.get(
-      rowsHierarchy,
-      'sampleNodeForLastLevel.width',
-      0,
-    );
+    rowsHierarchy.width = get(rowsHierarchy, 'sampleNodeForLastLevel.width', 0);
   }
 }

@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { memoize, isString, values, isArray, toString } from 'lodash';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -6,7 +6,7 @@ const ctx = canvas.getContext('2d');
 /**
  * 计算文本在画布中的宽度
  */
-export const measureTextWidth = _.memoize(
+export const measureTextWidth = memoize(
   (text: any, font): number => {
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } = font;
     ctx.font = [
@@ -16,9 +16,9 @@ export const measureTextWidth = _.memoize(
       `${fontSize}px`,
       fontFamily,
     ].join(' ');
-    return ctx.measureText(_.isString(text) ? text : '').width;
+    return ctx.measureText(isString(text) ? text : '').width;
   },
-  (text: any, font) => [text, ..._.values(font)].join(''),
+  (text: any, font) => [text, ...values(font)].join(''),
 );
 
 /**
@@ -36,8 +36,8 @@ export const getEllipsisTextInner = (text: any, maxWidth: number, font) => {
 
   let leftText;
 
-  if (!_.isString(text)) {
-    leftText = _.toString(text);
+  if (!isString(text)) {
+    leftText = toString(text);
   } else {
     leftText = text;
   }
@@ -149,7 +149,7 @@ export const getEllipsisText = (
 ) => {
   let font = {};
   let priority = priorityParam;
-  if (fontParam && _.isArray(fontParam)) {
+  if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
   } else {
     font = fontParam || {};

@@ -1,8 +1,14 @@
-/**
- * Create By Bruce Too
- * On 2020-02-25
- */
-import * as _ from 'lodash';
+import {
+  isArray,
+  last,
+  find,
+  every,
+  get,
+  isEmpty,
+  includes,
+  map,
+  merge,
+} from 'lodash';
 import { VALUE_FIELD } from '../../../common/constant';
 import { SpreadDataSet } from '../../../data-set';
 import TotalClass from '../total-class';
@@ -15,20 +21,20 @@ export function reArrangeFieldValues(
 ) {
   const { fields } = dataSet;
   const { values } = fields;
-  if (!_.isArray(values)) {
+  if (!isArray(values)) {
     return;
   }
   // find first measure value's sort params
-  const measureSort = _.find(dataSet.sortParams, (o) =>
-    _.includes(values, o.sortFieldId),
+  const measureSort = find(dataSet.sortParams, (o) =>
+    includes(values, o.sortFieldId),
   );
 
-  if (measureSort && _.last(dataSet.fields.rows) !== field) {
+  if (measureSort && last(dataSet.fields.rows) !== field) {
     // The most inner field values handle in pivot#_sort#495L
-    const { sortFieldId, sortMethod, query: colQuery } = measureSort;
+    const { sortMethod, query: colQuery } = measureSort;
     const j = sortMethod === 'ASC' ? 1 : -1;
-    const data = _.map(fieldValues, (value) => {
-      const query = _.merge({}, rowQuery, { [field]: value }, colQuery);
+    const data = map(fieldValues, (value) => {
+      const query = merge({}, rowQuery, { [field]: value }, colQuery);
       const rowTotalsConfig = dataSet.pivot.getTotalsConfig(field);
       if (rowTotalsConfig.showSubTotals) {
         return dataSet.getData(query, {
@@ -47,13 +53,13 @@ export function reArrangeFieldValues(
       // 不展示小计，强制空缺
       return [];
     });
-    if (!_.isEmpty(data) && !_.every(data, (d) => _.isEmpty(d))) {
+    if (!isEmpty(data) && !every(data, (d) => isEmpty(d))) {
       const sortDatas = data.sort(
         (a, b) =>
-          (_.get(a, [0, VALUE_FIELD], 0) - _.get(b, [0, VALUE_FIELD], 0)) * j,
+          (get(a, [0, VALUE_FIELD], 0) - get(b, [0, VALUE_FIELD], 0)) * j,
       );
-      const sortFiledValues = _.map(sortDatas, (value) => {
-        return _.get(value, [0, field], '');
+      const sortFiledValues = map(sortDatas, (value) => {
+        return get(value, [0, field], '');
       });
       fieldValues.splice(0, fieldValues.length);
       fieldValues.push(...sortFiledValues);

@@ -1,8 +1,20 @@
-/**
- * Create By Bruce Too
- * On 2019-09-29
- */
-import * as _ from 'lodash';
+import {
+  get,
+  find,
+  merge,
+  sortBy,
+  map,
+  set,
+  reduce,
+  slice,
+  last,
+  isEqual,
+  keys,
+  head,
+  filter,
+  each,
+  isArray,
+} from 'lodash';
 import { SpreadsheetFacet } from '../../index';
 import { ColWidthCache, SpreadsheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';
@@ -35,7 +47,7 @@ const colWidthHasRows = (
   // 因此不需要单独去找所谓的最大的衍生指标个数
   const displayDerivedValueFieldColumn = [];
   const maxDisplayLength =
-    _.head(derivedValues)?.displayDerivedValueField?.length || 0;
+    head(derivedValues)?.displayDerivedValueField?.length || 0;
   const allDisplayDerivedValueField = derivedValues.map(
     (dv) => dv.displayDerivedValueField,
   );
@@ -48,11 +60,11 @@ const colWidthHasRows = (
   // 存在当列信息的数据集合（这里是原始数据）
   const records = dataset.getData(getDimsConditionByNode(node));
   // 还需要找到该列存在的小计值
-  const totalData = _.filter(facet.spreadsheet.dataCfg.totalData, (td) => {
+  const totalData = filter(facet.spreadsheet.dataCfg.totalData, (td) => {
     const query = node.query;
     let isAllContains = true;
-    _.each(_.keys(query), (key) => {
-      if (!_.isEqual(query[key], td[key])) {
+    each(keys(query), (key) => {
+      if (!isEqual(query[key], td[key])) {
         isAllContains = false;
       }
     });
@@ -69,24 +81,24 @@ const colWidthHasRows = (
     maxSampleIndex,
   } = cfg.spreadsheet.options.style.colCfg;
   const getSecondLast = (data) => {
-    if (_.isArray(data)) {
+    if (isArray(data)) {
       if (data?.length > maxSampleIndex) {
-        return _.get(data, data?.length - maxSampleIndex);
+        return get(data, data?.length - maxSampleIndex);
       }
-      return _.get(data, 0, '');
+      return get(data, 0, '');
     }
     return '';
   };
   const sample = [
-    ..._.slice(totalData, 0, totalSample),
-    ..._.slice(records, 0, detailSample),
+    ...slice(totalData, 0, totalSample),
+    ...slice(records, 0, detailSample),
   ];
   // 数据中可能存在直接 数值，需要转换 为字符 + ''
   const maxText = (vs: string[]) => {
-    const sorted = _.sortBy(
+    const sorted = sortBy(
       sample.map((record) => {
         // 每个数据 是找所有度量格式化后的最大值
-        const single = _.sortBy(
+        const single = sortBy(
           vs.map((ms) => {
             const formatter = dataset.getFieldFormatter(ms);
             return formatter(record[ms] === undefined ? '' : record[ms]);
@@ -118,30 +130,26 @@ const colWidthHasRows = (
  * 原始数据是以列的形式返回，也就是 dataCfg.data 每个元素代表一列数据
  * 该列所有的指标和衍生指标都存放在单个元素中
  */
-const colWidthNoRows = (
-  cfg: SpreadsheetFacetCfg,
-  node: Node,
-  facet: SpreadsheetFacet,
-) => {
+const colWidthNoRows = (cfg: SpreadsheetFacetCfg, node: Node) => {
   const records = cfg.spreadsheet.dataCfg.data;
   const dataset = cfg.dataSet;
-  const currentColData = _.find(records, (td) => {
+  const currentColData = find(records, (td) => {
     const query = node.query;
     let isAllContains = true;
-    _.each(_.keys(query), (key) => {
-      if (!_.isEqual(query[key], td[key])) {
+    each(keys(query), (key) => {
+      if (!isEqual(query[key], td[key])) {
         isAllContains = false;
       }
     });
     return isAllContains;
   });
   const { values } = cfg.spreadsheet.dataCfg.fields;
-  const measures = _.get(values, 'measures', []);
-  const { detailSample, maxSampleIndex } = cfg.spreadsheet.options.style.colCfg;
+  const measures = get(values, 'measures', []);
+  const { detailSample } = cfg.spreadsheet.options.style.colCfg;
 
   const maxText = (vs: string[]) => {
     // 1、筛选前N个
-    const sample = _.slice(vs, 0, detailSample) as string[];
+    const sample = slice(vs, 0, detailSample) as string[];
     // 2、计算前N个格式化后的长度
     const topText = sample.map((s) => {
       // 防止是Number导致宽度计算为0
@@ -150,9 +158,9 @@ const colWidthNoRows = (
       return formatter(v === undefined ? '' : v);
     });
     // 3、按字符长度排序
-    const orderedText = _.sortBy(topText, (tm) => (tm + '').length);
+    const orderedText = sortBy(topText, (tm) => (tm + '').length);
     // 4、获取最大的字符
-    return _.last(orderedText);
+    return last(orderedText);
   };
 
   // 主指标的宽度
@@ -164,7 +172,7 @@ const colWidthNoRows = (
   const maxDerivedTextInCol = [];
   // 最大的衍生指标个数，说明有几列
   const maxDisplayLength =
-    _.head(derivedValues)?.displayDerivedValueField?.length || 0;
+    head(derivedValues)?.displayDerivedValueField?.length || 0;
   const allDisplayDerivedValueField = derivedValues.map(
     (dv) => dv.displayDerivedValueField,
   );
@@ -188,8 +196,8 @@ const getColWidthWithDerivedValue = (
 ) => {
   const cacheInfos = cfg.spreadsheet.store.get(KEY_COL_REAL_WIDTH_INFO);
   const widthCacheKey = `${JSON.stringify(node.query)}-width`;
-  const cacheWidth = _.get(cacheInfos, `realWidth.${widthCacheKey}`, null);
-  const lastUserDragWidth = _.get(
+  const cacheWidth = get(cacheInfos, `realWidth.${widthCacheKey}`, null);
+  const lastUserDragWidth = get(
     cacheInfos,
     `lastUserDragWidth.${node.value}`,
     null,
@@ -215,11 +223,11 @@ const getColWidthWithDerivedValue = (
    */
 
   const { values } = cfg.spreadsheet.dataCfg.fields;
-  let result;
-  if (_.isArray(values)) {
+  let result: { maxMainTextInCol: any; maxDerivedTextInCol: any };
+  if (isArray(values)) {
     result = colWidthHasRows(cfg, node, facet);
   } else {
-    result = colWidthNoRows(cfg, node, facet);
+    result = colWidthNoRows(cfg, node);
   }
   const { maxMainTextInCol, maxDerivedTextInCol } = result;
 
@@ -232,7 +240,7 @@ const getColWidthWithDerivedValue = (
   // 主指标+所有该列衍生指标对应的宽度
   const widthArray = [
     maxMainTextWidth,
-    ...maxDerivedTextInCol.map((v) => measureTextWidth(v, style) + 4),
+    ...maxDerivedTextInCol.map((v: any) => measureTextWidth(v, style) + 4),
   ];
   const { showDerivedIcon } = cfg.spreadsheet.options.style.colCfg;
   // 单个衍生指标的宽度 icon+padding/2+self
@@ -251,7 +259,7 @@ const getColWidthWithDerivedValue = (
   };
   infos.push(preInfo);
   width = preInfo.x + preInfo.width + STRATEGY_PADDING;
-  _.each(widthArray.slice(1), (value) => {
+  each(widthArray.slice(1), (value) => {
     const sdw = singleDerivedWidth(value);
     const currentInfo = {
       x: width,
@@ -267,7 +275,7 @@ const getColWidthWithDerivedValue = (
   // 下面的文本做offset处理（最牛逼的实现是考虑每个宽度的占比，用来缩放）
   const currentWidth = node.width;
   if (currentWidth > width) {
-    const wholeWidth = _.reduce(
+    const wholeWidth = reduce(
       infos,
       (rt, info) => {
         return rt + info.width;
@@ -280,9 +288,9 @@ const getColWidthWithDerivedValue = (
     const currentWholeWidth = currentWidth - restWidth;
     // 计算出每个文本宽度在除去了固定的padding后占剩余宽度的比率
     // 然后再在新的宽度中乘以该比率，得到新宽度下的文本宽度
-    infos = _.map(infos, (info) => {
-      _.set(info, 'width', (info.width / wholeWidth) * currentWholeWidth);
-      _.set(
+    infos = map(infos, (info) => {
+      set(info, 'width', (info.width / wholeWidth) * currentWholeWidth);
+      set(
         info,
         'x',
         (info.parent?.x || 0) + (info.parent?.width || 0) + STRATEGY_PADDING,
@@ -306,7 +314,7 @@ const getColWidthWithDerivedValue = (
   const oldInfos = cfg.spreadsheet.store.get(KEY_COL_REAL_WIDTH_INFO);
   cfg.spreadsheet.store.set(
     KEY_COL_REAL_WIDTH_INFO,
-    _.merge({}, oldInfos, newInfo),
+    merge({}, oldInfos, newInfo),
   );
 
   return width;
@@ -331,17 +339,17 @@ export default function processColLeafNodeWH(
 
   let prevCol = Node.blankNode();
 
-  // widthByFieldValue is user-dragged width
-  let fieldWidthSum = 0;
-  let fieldWidthNumber = 0;
-  // eslint-disable-next-line no-restricted-syntax
-  for (const current of colLeafNodes) {
-    const key = `widthByFieldValue.${current.value}`;
-    if (_.get(colCfg, key)) {
-      fieldWidthSum += _.get(colCfg, key);
-      fieldWidthNumber += 1;
-    }
-  }
+  // // widthByFieldValue is user-dragged width
+  // let fieldWidthSum = 0;
+  // let fieldWidthNumber = 0;
+  // // eslint-disable-next-line no-restricted-syntax
+  // for (const current of colLeafNodes) {
+  //   const key = `widthByFieldValue.${current.value}`;
+  //   if (get(colCfg, key)) {
+  //     fieldWidthSum += get(colCfg, key);
+  //     fieldWidthNumber += 1;
+  //   }
+  // }
 
   let currentColCellIndex = 0;
   // x & width for leaves
@@ -383,9 +391,9 @@ export default function processColLeafNodeWH(
       }
       // 如果该cell有拖拽过，用拖拽过的
       // 0e48088b-8bb3-48ac-ae8e-8ab08af46a7b:[DAY]:[RC]:[VALUE] 这样的id get 直接获取不到
-      // current.width =  _.get(colCfg, `widthByFieldValue.${current.value}`, current.width);
-      current.width = _.get(
-        _.get(colCfg, 'widthByFieldValue'),
+      // current.width =  get(colCfg, `widthByFieldValue.${current.value}`, current.width);
+      current.width = get(
+        get(colCfg, 'widthByFieldValue'),
         `${current.value}`,
         current.width,
       );

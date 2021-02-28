@@ -1,12 +1,4 @@
-/**
- * Create By Bruce Too
- * On 2020-06-17
- */
-import {
-  SpreadsheetFacetCfg,
-  SpreadsheetOptions,
-  ViewMeta,
-} from '../common/interface';
+import { SpreadsheetFacetCfg, SpreadsheetOptions } from '../common/interface';
 import { BaseTooltip, StrategyTooltip } from '../tooltip';
 import * as _ from 'lodash';
 import { KEY_COLLAPSE_TREE_ROWS } from '../common/constant';
@@ -76,6 +68,7 @@ export default class StrategySheet extends SpreadSheet {
     return new StrategyDataSet({
       spreadsheet: this,
     });
+    console.debug(options);
   }
 
   protected initTooltip(): BaseTooltip {

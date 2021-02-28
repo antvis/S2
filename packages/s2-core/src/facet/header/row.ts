@@ -1,11 +1,10 @@
-import { Group, Shape } from '@antv/g-canvas';
+import { Group } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
-import * as _ from 'lodash';
-import { isHeaderCellInViewport } from '../../utils/is-header-cell-in-viewport';
+import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell';
 import { DetailRowCell } from '../../cell/detail-row-cell';
-import { COLOR_DEFAULT_RESIZER, Node } from '../..';
-import { BaseHeader, BaseHeaderConfig, HIT_AREA } from './base';
+import { Node } from '../..';
+import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
 
 export interface RowHeaderConfig extends BaseHeaderConfig {
@@ -39,7 +38,6 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     const {
       data,
       spreadsheet,
-      offset,
       width,
       height,
       seriesNumberWidth,
@@ -56,7 +54,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         scrollX - seriesNumberWidth < item.x + item.width
       ); // right
     };
-    _.each(data, (item: Node) => {
+    each(data, (item: Node) => {
       if (rowCellInRect(item) && item.height !== 0) {
         let cell: Group;
         // 首先由外部控制UI展示
@@ -64,7 +62,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
           cell = rowCell(item, spreadsheet, this.headerConfig);
         }
         // 如果外部没处理，就用默认的
-        if (_.isEmpty(cell)) {
+        if (isEmpty(cell)) {
           if (spreadsheet.isSpreadsheetType()) {
             cell = new RowCell(item, spreadsheet, this.headerConfig);
           } else {

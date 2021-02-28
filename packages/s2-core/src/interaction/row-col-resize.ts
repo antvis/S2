@@ -1,5 +1,5 @@
-import { Event, Group, IGroup, IShape } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { Event, Group, IGroup } from '@antv/g-canvas';
+import { throttle, clone, merge, isNil, get } from 'lodash';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { ResizeInfo } from '../facet/header/interface';
 import { BaseInteraction } from './base';
@@ -58,7 +58,7 @@ export class RowColResize extends BaseInteraction {
   }
 
   protected process(ev: Event) {
-    _.throttle(
+    throttle(
       this.realProcess,
       33, // 30fps
       {},
@@ -66,6 +66,7 @@ export class RowColResize extends BaseInteraction {
   }
 
   protected end(ev: Event) {
+    console.debug(ev);
     if (this.resizeGroup) {
       this.resizeGroup.set('visible', false);
       const children = this.resizeGroup.getChildren();
@@ -136,7 +137,7 @@ export class RowColResize extends BaseInteraction {
         this.spreadsheet.needUseCacheMeta = true;
         this.spreadsheet.emit(eventType, config);
         this.spreadsheet.setOptions(
-          _.merge({}, this.spreadsheet.options, { style: config }),
+          merge({}, this.spreadsheet.options, { style: config }),
         );
         this.renderSS();
       }
@@ -152,7 +153,7 @@ export class RowColResize extends BaseInteraction {
       const children = this.resizeGroup.get('children');
       if (children) {
         const [, target] = this.resizeGroup.get('children');
-        const [start, end]: [string, number, number][] = _.clone(
+        const [start, end]: [string, number, number][] = clone(
           target.attr('path'),
         );
 
@@ -194,10 +195,10 @@ export class RowColResize extends BaseInteraction {
   private onMousedown = (ev: any) => {
     const shape: IGroup = ev.target;
     const info: ResizeInfo = shape.attr('appendInfo');
-    if (_.get(info, 'isTrigger')) {
+    if (get(info, 'isTrigger')) {
       this.hotsPot = shape;
       // 激活区域
-      if (_.isNil(this.resizeGroup)) {
+      if (isNil(this.resizeGroup)) {
         this.resizeGroup = this.container.addGroup();
         const attrs = {
           path: '',

@@ -1,9 +1,5 @@
-/**
- * Create By Bruce Too
- * On 2019-12-03
- */
-import { getEllipsisText, measureTextWidth } from '../utils/text';
-import * as _ from 'lodash';
+import { getEllipsisText } from '../utils/text';
+import { get } from 'lodash';
 import {
   DEFAULT_PADDING,
   ICON_RADIUS,
@@ -26,7 +22,7 @@ export class DetailCornerCell extends CornerCell {
     } = this.meta;
 
     const seriesNumberW = seriesNumberWidth || 0;
-    const textStyle = _.get(
+    const textStyle = get(
       this.headerConfig,
       'spreadsheet.theme.header.bolderText',
     );

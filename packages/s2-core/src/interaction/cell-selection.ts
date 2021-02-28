@@ -1,5 +1,5 @@
-import { Event, Group } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { Event } from '@antv/g-canvas';
+import { get, noop, includes } from 'lodash';
 import { isSelected } from '../utils/selected';
 import { Cell } from '../cell';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
@@ -48,8 +48,8 @@ export class CellSelection extends HoverInteraction {
           x: ev.clientX,
           y: ev.clientY,
         };
-        const hoveringCellData = _.get(meta, 'data.0');
-        const isTotals = _.get(meta, 'isTotals', false);
+        const hoveringCellData = get(meta, 'data.0');
+        const isTotals = get(meta, 'isTotals', false);
         if (isTotals && this.spreadsheet.isStrategyMode()) {
           // 决策模式下的总小计不tooltip
           return;
@@ -74,7 +74,7 @@ export class CellSelection extends HoverInteraction {
               ],
             }
           : {
-              onClick: _.noop,
+              onClick: noop,
               menus: [],
             };
         if (cellOperator) {
@@ -105,9 +105,9 @@ export class CellSelection extends HoverInteraction {
   private onDocumentClick(ev) {
     if (
       ev.target !== this.spreadsheet.container.get('el') &&
-      !_.includes(ev.target?.className, 'eva-facet') &&
-      !_.includes(ev.target?.className, 'ant-menu') &&
-      !_.includes(ev.target?.className, 'ant-input')
+      !includes(ev.target?.className, 'eva-facet') &&
+      !includes(ev.target?.className, 'ant-menu') &&
+      !includes(ev.target?.className, 'ant-input')
     ) {
       this.spreadsheet.store.set('selected', null);
       this.updateCell();

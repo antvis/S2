@@ -1,19 +1,28 @@
-import { BBox, Group, Shape } from '@antv/g-canvas';
+import { BBox } from '@antv/g-canvas';
 import { Wheel } from '@antv/g-gesture';
 import { ScrollBar } from '../ui/scrollbar';
-import * as d3Ease from 'd3-ease';
 import { interpolateArray } from 'd3-interpolate';
 import * as d3Timer from 'd3-timer';
-import * as _ from 'lodash';
+import {
+  get,
+  reduce,
+  last,
+  isEqual,
+  merge,
+  includes,
+  isNil,
+  forEach,
+  isUndefined,
+} from 'lodash';
 import {
   calculateInViewIndexes,
   optimizeScrollXY,
   translateGroup,
 } from './utils';
-import { Formatter, Pagination, PlaceHolderMeta } from '../common/interface';
+import { Formatter, PlaceHolderMeta } from '../common/interface';
 import { diffIndexes, Indexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
-import { BaseCell, Cell } from '../cell';
+import { Cell } from '../cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
@@ -25,7 +34,7 @@ import {
   KEY_GROUP_COL_RESIZER,
   MAX_SCROLL_OFFSET,
 } from '../common/constant';
-import { BaseDataSet, SpreadDataSet } from '../data-set';
+import { BaseDataSet } from '../data-set';
 import { BaseFacet } from './base-facet';
 import {
   Frame,
@@ -34,12 +43,7 @@ import {
   RowHeader,
   SeriesNumberHeader,
 } from './header';
-import {
-  LayoutResult,
-  OffsetConfig,
-  SpreadsheetFacetCfg,
-  ViewMeta,
-} from '../common/interface';
+import { OffsetConfig, SpreadsheetFacetCfg } from '../common/interface';
 import { Layout } from './layout';
 import { Hierarchy } from './layout/hierarchy';
 import { Node } from './layout/node';
@@ -108,6 +112,7 @@ export class SpreadsheetFacet extends BaseFacet {
     this.spreadsheet.on('spreadsheet:change-row-header-width', (config) => {
       this.setScrollOffset(0, undefined);
       this.setHRowScrollX(0);
+      console.debug(config);
     });
   }
 
@@ -128,7 +133,7 @@ export class SpreadsheetFacet extends BaseFacet {
     if (this.rowHeader) {
       return this.rowHeader;
     }
-    const { x, y, width, height } = this.viewportBBox;
+    const { y, width, height } = this.viewportBBox;
     const seriesNumberWidth = this.getSeriesNumberWidth();
     return new RowHeader({
       width: this.cornerBBox.width,
@@ -139,7 +144,7 @@ export class SpreadsheetFacet extends BaseFacet {
       data: this.layoutResult.rowNodes,
       offset: 0,
       hierarchyType: this.cfg.hierarchyType, // 是否为树状布局
-      linkFieldIds: _.get(this.cfg.spreadsheet, 'options.linkFieldIds'),
+      linkFieldIds: get(this.cfg.spreadsheet, 'options.linkFieldIds'),
       seriesNumberWidth,
       spreadsheet: this.spreadsheet,
     });
@@ -149,7 +154,7 @@ export class SpreadsheetFacet extends BaseFacet {
     if (this.columnHeader) {
       return this.columnHeader;
     }
-    const { x, y, width, height } = this.viewportBBox;
+    const { x, width, height } = this.viewportBBox;
     return new ColHeader({
       width,
       height: this.cornerBBox.height,
@@ -337,7 +342,7 @@ export class SpreadsheetFacet extends BaseFacet {
     const box = this.getCanvasHW();
     let width = box.width - br.x;
     let height =
-      box.height - br.y - _.get(this.cfg, 'spreadsheet.theme.scrollBar.size');
+      box.height - br.y - get(this.cfg, 'spreadsheet.theme.scrollBar.size');
 
     // 数据量小的时候，width 为实际的数据量大小
     const realWidth = this.getRealWidth();
@@ -363,10 +368,11 @@ export class SpreadsheetFacet extends BaseFacet {
     const { colLeafNodes, rowLeafNodes } = this.layoutResult;
 
     const width0Indexes = [];
-    const widths = _.reduce(
+    const widths = reduce(
       colLeafNodes,
       (result: number[], node: Node, idx: number) => {
-        result.push(_.last(result) + node.width);
+        console.debug(idx);
+        result.push(last(result) + node.width);
         if (node.width === 0) {
           width0Indexes.push(node.cellIndex);
         }
@@ -376,10 +382,26 @@ export class SpreadsheetFacet extends BaseFacet {
     );
 
     const height0Indexes = [];
-    const heights = _.reduce(
+    const heights = reduce(
       rowLeafNodes,
       (result: number[], node: Node, idx: number) => {
-        result.push(_.last(result) + node.height);
+        console.debug(idx);
+        result.push(last(result) + node.height);
+        if (node.isHide()) {
+          height0Indexes.push(node.cellIndex);
+        }
+        return result;
+      },
+      [0],
+    );
+
+    // 下钻开启分页后补充空节点
+    // 需要把高度为0的补充结点过滤
+    const nodes = rowLeafNodes.filter((value) => value.height !== 0);
+    const realHeights = reduce(
+      nodes,
+      (result: number[], node: Node) => {
+        result.push(last(result) + node.height);
         if (node.isHide()) {
           height0Indexes.push(node.cellIndex);
         }
@@ -393,6 +415,7 @@ export class SpreadsheetFacet extends BaseFacet {
       heights,
       width0Indexes,
       height0Indexes,
+      realHeights,
     };
   }
 
@@ -400,7 +423,7 @@ export class SpreadsheetFacet extends BaseFacet {
     if (this.centerBorder) {
       return this.centerBorder;
     }
-    const { x, y, width, height } = this.viewportBBox;
+    const { width, height } = this.viewportBBox;
     const cornerWidth = this.cornerBBox.width;
     const cornerHeight = this.cornerBBox.height;
     const frame = this.cfg?.frame;
@@ -413,10 +436,10 @@ export class SpreadsheetFacet extends BaseFacet {
       height: cornerHeight,
       viewportWidth: width,
       viewportHeight: height,
-      showCornerRightShadow: !_.isNil(this.hRowScrollBar),
+      showCornerRightShadow: !isNil(this.hRowScrollBar),
       // 当同时存在行头和panel滚动条时，展示viewport右边的shadow
       showViewPortRightShadow:
-        !_.isNil(this.hRowScrollBar) && !_.isNil(this.hScrollBar),
+        !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
       scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
       isSpreadsheetType: this.cfg.spreadsheet.isSpreadsheetType(),
       spreadsheet: this.cfg.spreadsheet,
@@ -491,7 +514,7 @@ export class SpreadsheetFacet extends BaseFacet {
       this.preIndexes = indexes;
     }
     const preIndexes = needPlaceHolder ? this.preIndexes : null;
-    if (!_.isEqual(indexes, preIndexes)) {
+    if (!isEqual(indexes, preIndexes)) {
       if (needPlaceHolder) {
         this.preIndexes = indexes;
       }
@@ -499,15 +522,15 @@ export class SpreadsheetFacet extends BaseFacet {
       // 过滤掉宽度/高度 为0的cell
       const newIndexes = add.filter(([i, j]) => {
         return (
-          !_.includes(this.viewCellWidth0Indexes, i) &&
-          !_.includes(this.viewCellHeight0Indexes, j)
+          !includes(this.viewCellWidth0Indexes, i) &&
+          !includes(this.viewCellHeight0Indexes, j)
         );
       });
       DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
         let cacheSize = 0;
         let noCacheSize = 0;
         const { rowLeafNodes, colLeafNodes } = this.layoutResult;
-        _.forEach(newIndexes, ([i, j]) => {
+        forEach(newIndexes, ([i, j]) => {
           const cacheKey = `${i}-${j}`;
           let cell;
           let viewMeta;
@@ -550,7 +573,7 @@ export class SpreadsheetFacet extends BaseFacet {
             }
           }
           if (cell) {
-            cacheSize++;
+            cacheSize += 1;
             // already cached
             if (viewMeta) {
               cell.set('children', []);
@@ -562,7 +585,7 @@ export class SpreadsheetFacet extends BaseFacet {
               }
             }
           } else {
-            noCacheSize++;
+            noCacheSize += 1;
             // add new cell
             // i = colIndex  j = rowIndex
             if (viewMeta) {
@@ -652,7 +675,7 @@ export class SpreadsheetFacet extends BaseFacet {
       .getColumnNodes()
       .find(
         (value) =>
-          _.includes(this.getScrollColField(), value.field) &&
+          includes(this.getScrollColField(), value.field) &&
           scrollX > value.x &&
           scrollX < value.x + value.width,
       );
@@ -660,7 +683,7 @@ export class SpreadsheetFacet extends BaseFacet {
       .getRowNodes()
       .find(
         (value) =>
-          _.includes(this.getScrollRowField(), value.field) &&
+          includes(this.getScrollRowField(), value.field) &&
           scrollY > value.y &&
           scrollY < value.y + value.height,
       );
@@ -672,7 +695,7 @@ export class SpreadsheetFacet extends BaseFacet {
     if (colNode && reachedBorderId.colId !== colNode.id) {
       this.spreadsheet.store.set(
         'lastReachedBorderId',
-        _.merge({}, reachedBorderId, {
+        merge({}, reachedBorderId, {
           colId: colNode.id,
         }),
       );
@@ -682,7 +705,7 @@ export class SpreadsheetFacet extends BaseFacet {
     if (rowNode && reachedBorderId.rowId !== rowNode.id) {
       this.spreadsheet.store.set(
         'lastReachedBorderId',
-        _.merge({}, reachedBorderId, {
+        merge({}, reachedBorderId, {
           rowId: rowNode.id,
         }),
       );
@@ -770,11 +793,11 @@ export class SpreadsheetFacet extends BaseFacet {
   }
 
   private getScrollColField(): string[] {
-    return _.get(this.spreadsheet, 'options.scrollReachNodeField.colField', []);
+    return get(this.spreadsheet, 'options.scrollReachNodeField.colField', []);
   }
 
   private getScrollRowField(): string[] {
-    return _.get(this.spreadsheet, 'options.scrollReachNodeField.rowField', []);
+    return get(this.spreadsheet, 'options.scrollReachNodeField.rowField', []);
   }
 
   private getCornerWidth(leftWidth: number, colsHierarchy: Hierarchy): number {
@@ -841,7 +864,7 @@ export class SpreadsheetFacet extends BaseFacet {
   private renderHScrollBar(width, realWidth, scrollX) {
     if (Math.floor(width) < Math.floor(realWidth)) {
       const halfScrollSize =
-        _.get(this.cfg, 'spreadsheet.theme.scrollBar.size') / 2;
+        get(this.cfg, 'spreadsheet.theme.scrollBar.size') / 2;
       // 根据rowHeader是否包含滚动条的配置来确定滚动条的属性设置
       const finalWidth =
         width +
@@ -926,7 +949,7 @@ export class SpreadsheetFacet extends BaseFacet {
           hRowScrollX,
           this.realCornerWidth -
             this.cornerBBox.width -
-            _.get(this.cfg, 'spreadsheet.theme.scrollBar.size') * 2,
+            get(this.cfg, 'spreadsheet.theme.scrollBar.size') * 2,
           true,
         );
         this.cornerHeader.onRowScrollX(hRowScrollX, KEY_GROUP_CORNER_RESIZER);
@@ -946,10 +969,10 @@ export class SpreadsheetFacet extends BaseFacet {
 
   // 保存偏移
   private setScrollOffset(scrollX: number, scrollY: number) {
-    if (!_.isUndefined(scrollX)) {
+    if (!isUndefined(scrollX)) {
       this.spreadsheet.store.set('scrollX', scrollX);
     }
-    if (!_.isUndefined(scrollY)) {
+    if (!isUndefined(scrollY)) {
       this.spreadsheet.store.set('scrollY', scrollY);
     }
   }
@@ -1070,7 +1093,7 @@ export class SpreadsheetFacet extends BaseFacet {
 
   /* 实际的数据宽度 */
   private getRealWidth(): number {
-    return _.last(this.viewCellWidths);
+    return last(this.viewCellWidths);
   }
 
   /**
@@ -1082,7 +1105,7 @@ export class SpreadsheetFacet extends BaseFacet {
     // 如果配置了分页
     if (pagination) {
       const { current, pageSize } = pagination;
-      const heights = this.viewCellHeights;
+      const heights = this.calculateViewCellsWH().realHeights;
 
       const start = Math.max((current - 1) * pageSize, 0);
       const end = Math.min(current * pageSize, heights.length - 1);
@@ -1092,7 +1115,7 @@ export class SpreadsheetFacet extends BaseFacet {
     }
 
     // 其他情况，当做不分页处理
-    return _.last(this.viewCellHeights);
+    return last(this.viewCellHeights);
   }
 
   /**
@@ -1104,7 +1127,7 @@ export class SpreadsheetFacet extends BaseFacet {
     // 如果配置了分页
     if (pagination) {
       const { current, pageSize } = pagination;
-      const heights = this.viewCellHeights;
+      const heights = this.calculateViewCellsWH().realHeights;
 
       const offset = Math.max((current - 1) * pageSize, 0);
 
@@ -1120,7 +1143,7 @@ export class SpreadsheetFacet extends BaseFacet {
     // 配置了分页
     if (pagination) {
       const { current, pageSize } = pagination;
-      const rowLeafNodes = _.get(this, 'layoutResult.rowLeafNodes', []);
+      const rowLeafNodes = get(this, 'layoutResult.rowLeafNodes', []);
       const total = rowLeafNodes.length;
 
       const pageCount = Math.floor((total - 1) / pageSize) + 1;

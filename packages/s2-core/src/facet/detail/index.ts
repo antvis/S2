@@ -51,12 +51,9 @@ export class DetailFacet extends SpreadsheetFacet {
 
   protected getCornerNodes(
     position,
-    width,
     height,
-    hierarchyType,
     rows,
     rowsHierarchy,
-    colsHierarchy,
     dataSet,
     seriesNumberWidth,
   ) {

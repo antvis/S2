@@ -1,10 +1,6 @@
-/**
- * Create By Bruce Too
- * On 2019-11-01
- */
 import { getEllipsisText, measureTextWidth } from '../utils/text';
 import { GM } from '@antv/g-gesture';
-import * as _ from 'lodash';
+import { each, get, has, find } from 'lodash';
 import { GuiIcon } from '../common/icons';
 import { IGroup } from '@antv/g-canvas';
 import { renderRect, updateShapeAttr } from '../utils/g-renders';
@@ -40,7 +36,7 @@ export class RowCell extends BaseCell<Node> {
 
   public update() {
     const selectedId = this.spreadsheet.store.get('rowColSelectedId');
-    if (selectedId && _.find(selectedId, (id) => id === this.meta.id)) {
+    if (selectedId && find(selectedId, (id) => id === this.meta.id)) {
       this.setActive();
     } else {
       this.setInactive();
@@ -53,12 +49,12 @@ export class RowCell extends BaseCell<Node> {
       'fillOpacity',
       this.theme.header.cell.interactiveFillOpacity[1],
     );
-    _.each(this.actionIcons, (icon) => icon.set('visible', true));
+    each(this.actionIcons, (icon) => icon.set('visible', true));
   }
 
   public setInactive() {
     updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
-    _.each(this.actionIcons, (icon) => icon.set('visible', false));
+    each(this.actionIcons, (icon) => icon.set('visible', false));
   }
 
   public destroy(): void {
@@ -117,7 +113,7 @@ export class RowCell extends BaseCell<Node> {
         this.spreadsheet.isHierarchyTreeType() &&
         this.spreadsheet.isSpreadsheetType()
       ) {
-        const { x, y, height, width, id } = this.meta;
+        const { x, y, height, width } = this.meta;
         for (let i = 0; i < iconTypes.length; i++) {
           const iconSize = ICON_RADIUS * 2;
           const iconRight =
@@ -165,7 +161,7 @@ export class RowCell extends BaseCell<Node> {
     return multiplier;
   }
 
-  protected getRowTextStyle(level, isTotals, isLeaf) {
+  protected getRowTextStyle(isTotals, isLeaf) {
     return isLeaf && !isTotals
       ? this.theme.header.text
       : this.theme.header.bolderText;
@@ -191,7 +187,6 @@ export class RowCell extends BaseCell<Node> {
       width: cellWidth,
       height: cellHeight,
       parent,
-      level,
       isLeaf,
       isTotals,
       isCustom,
@@ -204,7 +199,7 @@ export class RowCell extends BaseCell<Node> {
 
     // indent in tree
     const textIndent = this.getTextIndent();
-    const textStyle = this.getRowTextStyle(level, isTotals || isCustom, isLeaf);
+    const textStyle = this.getRowTextStyle(isTotals || isCustom, isLeaf);
     const maxWidth =
       cellWidth -
       textIndent -
@@ -230,10 +225,7 @@ export class RowCell extends BaseCell<Node> {
     });
     // handle link nodes
     if (linkFieldIds.includes(this.meta.key)) {
-      const device = _.get(
-        this.headerConfig,
-        'spreadsheet.options.style.device',
-      );
+      const device = get(this.headerConfig, 'spreadsheet.options.style.device');
       // 配置了链接跳转
       if (!isMobile(device)) {
         const textBBox = textShape.getBBox();
@@ -354,7 +346,7 @@ export class RowCell extends BaseCell<Node> {
       !this.spreadsheet.isValueInCols() &&
       this.meta.isLeaf &&
       this.meta.query &&
-      _.has(this.meta.query, EXTRA_FIELD)
+      has(this.meta.query, EXTRA_FIELD)
     ) {
       this.addShape('line', {
         attrs: {
@@ -434,7 +426,7 @@ export class RowCell extends BaseCell<Node> {
       !this.spreadsheet.isValueInCols() &&
       this.meta.rowIndex % 2 === 0 &&
       this.meta.query &&
-      _.has(this.meta.query, EXTRA_FIELD)
+      has(this.meta.query, EXTRA_FIELD)
     ) {
       bgColor = this.theme.view.cell.crossColor;
     }
