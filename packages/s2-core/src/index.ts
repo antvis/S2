@@ -1,7 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2020-04-28
- */
 export { registerTheme } from './theme';
 export { registerIcon } from './common/icons';
 export { setEVALocale } from './common/i18n';
@@ -10,7 +6,8 @@ export { Hierarchy } from './facet/layout/hierarchy';
 export { BaseInteraction } from './interaction/base';
 export { HoverInteraction } from './interaction/hover-interaction';
 export { GuiIcon } from './common/icons/gui-icon';
-export { SheetComponent, SpreadsheetProps } from './components';
+export { SpreadSheetOptionsBuilder } from './builder';
+export { SheetComponent, SpreadsheetProps, PartDrillDown } from './components';
 export { measureTextWidth } from './utils/text';
 export { auto } from './utils/formatter';
 export * from './facet/header';

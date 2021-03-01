@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { size, map, get, isArray } from 'lodash';
 import { Pivot } from './pivot';
 import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant';
 
@@ -10,6 +10,7 @@ export class DetailPivot extends Pivot {
   private dimValues: Map<string, [string, number, LineData][]>;
 
   public getDimValues(field: string, query?: any): string[] {
+    console.debug(query);
     const vals = this.dimValues.get(field);
     return (
       vals &&
@@ -24,12 +25,12 @@ export class DetailPivot extends Pivot {
     // 明细表中是通过行号和列维度名字来确定
     // ['rowIndex']: i,
     // ['colField']: col.key,
-    if (_.size(query) && this.dimValues) {
+    if (size(query) && this.dimValues) {
       // 该列维度下所有的值
       const values = this.dimValues.get(query.colField);
       // 第几行的值
       const value = values && values[query.rowIndex];
-      const item = _.get(value, '2', []);
+      const item = get(value, '2', []);
       return [
         {
           ...item,
@@ -38,7 +39,7 @@ export class DetailPivot extends Pivot {
         },
       ];
     }
-    if (!_.size(query)) {
+    if (!size(query)) {
       // 请求全部数据，用于条状图条件格式
       return this.config.data || [];
     }
@@ -48,7 +49,7 @@ export class DetailPivot extends Pivot {
   protected training() {
     const data = this.config.data;
     const { rows, cols, values } = this.config;
-    if (!_.isArray(values)) {
+    if (!isArray(values)) {
       // 在明细表的场景下，不可能不为数值
       return;
     }
@@ -93,7 +94,7 @@ export class DetailPivot extends Pivot {
     //     fieldValues && fieldValues.forEach((value) => {
     //       for (const d of data) {
     //         // 对应的行能匹配上, COLUMN_FIELD承载了原始数据对应的index行号
-    //         if (value && value[1] === _.get(d, EXTRA_FIELD, -1)) {
+    //         if (value && value[1] === get(d, EXTRA_FIELD, -1)) {
     //           newData.push(d);
     //           break;
     //         }
@@ -112,7 +113,7 @@ export class DetailPivot extends Pivot {
     // eslint-disable-next-line no-restricted-syntax
     for (const line of data) {
       // eslint-disable-next-line no-loop-func
-      _.map(allDims, (dim) => {
+      map(allDims, (dim) => {
         const dimValue = line[dim];
         if (!this.dimValues.has(dim)) {
           this.dimValues.set(dim, []);
@@ -122,7 +123,7 @@ export class DetailPivot extends Pivot {
         vals.push([dimValue, index, line]);
         return dimValue;
       });
-      index++;
+      index += 1;
     }
   }
 }

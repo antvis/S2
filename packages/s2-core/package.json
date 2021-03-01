@@ -17,7 +17,6 @@
   ],
   "scripts": {
     "test": "jest",
-    "tslint": "tslint -c ../../tslint.json --fix src/**/*.ts",
     "clean": "rimraf lib esm dist",
     "build": "run-s clean lib dist",
     "lib": "run-p lib:* cpx:*",
@@ -27,7 +26,7 @@
     "cpx:svg": "cpx \"src/**/*.svg\" lib; cpx \"src/**/*.svg\" esm",
     "cpx:less": "cpx \"src/**/*.less\" lib; cpx \"src/**/*.less\" esm",
     "test-live": "DEBUG_MODE=1 jest __tests__/spreadsheet/spread-sheet-spec.tsx",
-    "start": "webpack --config webpack-dev.config.js --mode development -w --progresss"
+    "start": "webpack --config webpack-dev.config.js --mode development --progress"
   },
   "commitlint": {
     "extends": [
@@ -37,23 +36,23 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "npm run test"
     }
   },
   "lint-staged": {
     "*.{js,jsx,tsx,ts,less,md,json}": [
       "pretty-quick —-staged"
     ],
-    "*.{ts,tsx}": [
-      "tslint -c ../../tslint.json --fix src/**/*.ts",
-      "prettier --write",
-      "git add"
+     "*.{js,jsx,tsx,ts}": [
+      "eslint --fix"
     ]
   },
   "dependencies": {
     "@antv/event-emitter": "~0.1.0",
     "@antv/g-canvas": "^0.5.6",
     "@antv/g-gesture": "^1.0.0",
+    "@antv/matrix-util": "^3.0.4",
     "antd": "^4.10.1",
     "classnames": "^2.2.5",
     "d3-ease": "^1.0.5",

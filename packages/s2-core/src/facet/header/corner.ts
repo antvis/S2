@@ -1,5 +1,5 @@
-import { SimpleBBox, Group, Point, Shape } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { SimpleBBox, Group, Point } from '@antv/g-canvas';
+import { get, last, includes, isEmpty } from 'lodash';
 import { GuiIcon } from '../../common/icons';
 import { i18n } from '../../common/i18n';
 import { DetailCornerCell } from '../../cell';
@@ -9,7 +9,7 @@ import {
   KEY_GROUP_CORNER_RESIZER,
   COLOR_DEFAULT_RESIZER,
 } from '../../common/constant';
-import { BaseDataSet, SpreadDataSet } from '../../data-set';
+import { BaseDataSet } from '../../data-set';
 import {
   BaseSpreadSheet,
   Hierarchy,
@@ -63,7 +63,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       { x: cornerBBox.x, y: cornerBBox.y },
       cornerWidth,
       cornerHeight,
-      cfg.hierarchyType,
       cfg.rows,
       layoutResult.rowsHierarchy,
       layoutResult.colsHierarchy,
@@ -92,7 +91,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     position: Point,
     width: number,
     height: number,
-    hierarchyType: string,
     rows: string[],
     rowsHierarchy: Hierarchy,
     colsHierarchy: Hierarchy,
@@ -133,7 +131,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
     // spreadsheet type tree mode
     if (isSpreadsheetType && ss.isHierarchyTreeType()) {
-      if (_.get(colsHierarchy, 'sampleNodeForLastLevel', undefined)) {
+      if (get(colsHierarchy, 'sampleNodeForLastLevel', undefined)) {
         const drillDownFieldInLevel = ss.store.get('drillDownFieldInLevel', []);
         const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
         const [isHide, nodeY, nodeHeight] = checkHideMeasureColumn(
@@ -145,7 +143,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           id: '',
           // 角头过滤下钻的维度
           value: rows
-            .filter((value) => !_.includes(drillFields, value))
+            .filter((value) => !includes(drillFields, value))
             .map((key: string): string => dataSet.getFieldName(key))
             .join('/'),
         });
@@ -164,7 +162,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       // eslint-disable-next-line no-lonely-if
       if (
         isSpreadsheetType &&
-        _.get(colsHierarchy, 'sampleNodeForLastLevel', undefined)
+        get(colsHierarchy, 'sampleNodeForLastLevel', undefined)
       ) {
         rowsHierarchy.sampleNodesForAllLevels.forEach((rowNode) => {
           const field = rows[rowNode.level];
@@ -249,7 +247,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         );
       }
 
-      if (_.isEmpty(cell)) {
+      if (isEmpty(cell)) {
         if (spreadsheet.isSpreadsheetType()) {
           cell = new CornerCell(
             item,
@@ -296,7 +294,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         y: position.y,
         width,
         height,
-        fill: _.get(
+        fill: get(
           this.headerConfig,
           'spreadsheet.theme.header.cell.cornerBackgroundColor',
         ),
@@ -385,7 +383,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         },
       });
     }
-    const cell: CornerData = _.get(data, '0', {});
+    const cell: CornerData = get(data, '0', {});
     resizer.addShape('rect', {
       attrs: {
         x: position.x,
@@ -399,7 +397,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           class: 'resize-trigger',
           type: 'row',
           affect: 'field',
-          id: _.last(this.get('cols')),
+          id: last(this.get('cols')),
           offsetX: position.x,
           offsetY: position.y + cell.y,
           width: cell.width,

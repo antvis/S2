@@ -1,5 +1,5 @@
-import { Event, Group } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { Event } from '@antv/g-canvas';
+import { map, size, get, min, max } from 'lodash';
 import { ActionType, SortParam, Node } from '../index';
 import { Cell, ColCell, RowCell } from '../cell';
 import { getHeaderHierarchyQuery } from '../facet/layout/util';
@@ -94,10 +94,10 @@ export class RowColumnSelection extends HoverInteraction {
           const idx = meta.cellIndex;
           if (idx === -1) {
             // 多行
-            const arr = _.map(Node.getAllLeavesOfNode(meta), 'cellIndex');
+            const arr = map(Node.getAllLeavesOfNode(meta), 'cellIndex');
             this.spreadsheet.store.set('selected', {
               type: 'row',
-              indexes: [[_.min(arr), _.max(arr)], -1],
+              indexes: [[min(arr), max(arr)], -1],
             });
           } else {
             // 单行
@@ -112,10 +112,10 @@ export class RowColumnSelection extends HoverInteraction {
           const idx = meta.cellIndex;
           if (idx === -1) {
             // 多列
-            const arr = _.map(Node.getAllLeavesOfNode(meta), 'cellIndex');
+            const arr = map(Node.getAllLeavesOfNode(meta), 'cellIndex');
             this.spreadsheet.store.set('selected', {
               type: 'column',
-              indexes: [-1, [_.min(arr), _.max(arr)]],
+              indexes: [-1, [min(arr), max(arr)]],
             });
           } else {
             // 单列
@@ -139,8 +139,8 @@ export class RowColumnSelection extends HoverInteraction {
           y: ev.clientY,
         };
         // 兼容明细表
-        const hoveringCellData = _.get(meta, 'query') || {
-          [_.get(meta, 'key')]: _.get(meta, 'value'),
+        const hoveringCellData = get(meta, 'query') || {
+          [get(meta, 'key')]: get(meta, 'value'),
         };
         const options = {
           operator: this.getSortOperator(showSortOperations),
@@ -174,7 +174,7 @@ export class RowColumnSelection extends HoverInteraction {
       if (menu.id === id) {
         targetMenu = menu;
       }
-      if (_.size(menu.children)) {
+      if (size(menu.children)) {
         targetMenu = this.findCurMenu(id, menu.children);
       }
     });

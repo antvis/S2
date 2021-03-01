@@ -1,5 +1,5 @@
 import { Group } from '@antv/g-canvas';
-import { BaseCell, Hierarchy, BaseSpreadSheet, Node } from '../../index';
+import { Hierarchy, BaseSpreadSheet, Node } from '../../index';
 import BaseSpreadsheet from '../../sheet-type/base-spread-sheet';
 import { BaseDataSet } from '../../data-set';
 import { BaseParams } from '../../data-set/base-data-set';

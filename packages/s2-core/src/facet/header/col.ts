@@ -1,7 +1,6 @@
-import { Group, Shape } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { Group } from '@antv/g-canvas';
+import { each, isEmpty } from 'lodash';
 import { Formatter, SortParam } from '../../common/interface';
-import { isHeaderCellInViewport } from '../../utils/is-header-cell-in-viewport';
 import { ColCell, DetailColCell } from '../../cell';
 import { Node } from '../..';
 import { BaseHeader, BaseHeaderConfig } from './base';
@@ -57,12 +56,9 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const {
       data,
       spreadsheet,
-      offset,
       cornerWidth,
       width,
-      height,
       scrollX,
-      scrollY,
     } = this.headerConfig;
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
@@ -73,13 +69,14 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
           item.x + item.width
       );
     };
-    _.each(data, (item: Node) => {
+    each(data, (node: Node) => {
+      const item = node;
       if (colCellInRect(item)) {
         let cell: Group;
         if (colCell) {
           cell = colCell(item, spreadsheet, this.headerConfig);
         }
-        if (_.isEmpty(cell)) {
+        if (isEmpty(cell)) {
           if (spreadsheet.isSpreadsheetType()) {
             cell = new ColCell(item, spreadsheet, this.headerConfig);
           } else {

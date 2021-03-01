@@ -1,15 +1,6 @@
-/**
- * Create By Bruce Too
- * On 2019-11-27
- */
 import { measureTextWidth } from '../../..';
-import * as _ from 'lodash';
-import { Pivot } from '../../../data-set';
-import {
-  DEFAULT_PADDING,
-  ICON_RADIUS,
-  TREE_ROW_DEFAULT_WIDTH,
-} from '../../../common/constant';
+import { get, set, includes } from 'lodash';
+import { DEFAULT_PADDING, ICON_RADIUS } from '../../../common/constant';
 import { SpreadsheetFacet } from '../../index';
 import { Hierarchy } from '../hierarchy';
 
@@ -21,12 +12,10 @@ export enum WidthType {
  * Integrate row header's col with col header's col, let theme to share canvas
  * width before render(default width)
  * @param facet
- * @param pivot
  * @param colsHierarchy
  */
 export default function processDefaultColWidthByType(
   facet: SpreadsheetFacet,
-  pivot: Pivot,
   colsHierarchy: Hierarchy,
 ) {
   const { rows, rowCfg, cellCfg } = facet.cfg;
@@ -51,10 +40,10 @@ export default function processDefaultColWidthByType(
       );
       const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
       const treeHeaderLabel = rows
-        .filter((value) => !_.includes(drillFields, value))
+        .filter((value) => !includes(drillFields, value))
         .map((key: string): string => facet.getDataset().getFieldName(key))
         .join('/');
-      const textStyle = _.get(facet, 'spreadsheet.theme.header.bolderText');
+      const textStyle = get(facet, 'spreadsheet.theme.header.bolderText');
       // [100, canvasW / 2]
       let width = Math.min(
         Math.max(100, measureTextWidth(treeHeaderLabel, textStyle)),
@@ -68,7 +57,7 @@ export default function processDefaultColWidthByType(
         // user drag happened
         width = rowCfg.treeRowsWidth;
       } else {
-        _.set(facet, 'cfg.treeRowsWidth', width);
+        set(facet, 'cfg.treeRowsWidth', width);
         // facet.cfg.treeRowsWidth = width;
       }
       const size = Math.max(1, colsHierarchy.getNotNullLeafs().length);
@@ -82,7 +71,7 @@ export default function processDefaultColWidthByType(
     if (rowCfg?.treeRowsWidth) {
       // user drag happened
       // facet.cfg.treeRowsWidth = rowCfg.treeRowsWidth + ICON_RADIUS * 2 + DEFAULT_PADDING * 2;
-      _.set(
+      set(
         facet,
         'cfg.treeRowsWidth',
         rowCfg.treeRowsWidth + ICON_RADIUS * 2 + DEFAULT_PADDING * 2,

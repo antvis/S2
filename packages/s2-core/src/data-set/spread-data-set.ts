@@ -1,12 +1,10 @@
-import * as _ from 'lodash';
+import { isArray, isEmpty, each, get, uniq, identity, find } from 'lodash';
 import { BaseDataSet, BaseParams } from './base-data-set';
 import { i18n } from '../common/i18n';
 import { DataCfg, DerivedValue, Formatter, Meta } from '../common/interface';
 import { auto } from '../index';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
-import { Pivot } from './pivot';
-
 export interface SpreadParams extends BaseParams {
   valueInCols: boolean;
 }
@@ -30,20 +28,20 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
     // 兼容总计小计场景
     if (field === TOTAL_VALUE) {
       let valueField;
-      if (_.isArray(this.fields.values)) {
-        valueField = _.get(this, 'fields.values.0');
+      if (isArray(this.fields.values)) {
+        valueField = get(this, 'fields.values.0');
       } else {
-        valueField = _.get(this, 'fields.values.valueField');
+        valueField = get(this, 'fields.values.valueField');
       }
-      return _.get(this.getFieldMeta(valueField), 'formatter', _.identity);
+      return get(this.getFieldMeta(valueField), 'formatter', identity);
     }
-    return _.get(this.getFieldMeta(field), 'formatter', _.identity);
+    return get(this.getFieldMeta(field), 'formatter', identity);
   }
 
   handleValues = (values: string[], derivedValues: DerivedValue[]) => {
     const tempValue = [];
-    _.each(values, (v) => {
-      const findOne = _.find(derivedValues, (dv) => dv.valueField === v);
+    each(values, (v) => {
+      const findOne = find(derivedValues, (dv) => dv.valueField === v);
       if (findOne) {
         // 值存在衍生值，添加值和所有衍生值,或者第一个衍生值
         tempValue.push(v);
@@ -80,7 +78,7 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
     if (this.valueInCols) {
       // value in cols
       // 总计存在时可能导致数据重复
-      newColumns = _.uniq([...columns, EXTRA_FIELD]);
+      newColumns = uniq([...columns, EXTRA_FIELD]);
       /*
        * 普通模式下，值挂在列时，需要将衍生指标作为新的列来渲染
        * 分两个情况
@@ -88,7 +86,7 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
        * [主指标1，衍生指标11，衍生指标12 - 主指标2，衍生指标21，衍生指标22]
        * 2、仅展示部分衍生指标（displayDerivedValueField），其他的以...显示
        */
-      if (_.isArray(values)) {
+      if (isArray(values)) {
         newValues = this.handleValues(values, derivedValues);
       }
     } else {
@@ -97,7 +95,7 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
       newRows = [...rows, EXTRA_FIELD];
     }
     // 新增的字段按照值域字段顺序排序
-    if (_.isArray(newValues)) {
+    if (isArray(newValues)) {
       newSortParams = sortParams.concat({
         sortFieldId: EXTRA_FIELD,
         sortBy: newValues,
@@ -107,10 +105,10 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
     // 3、meta 中添加新的字段信息（度量别名设置）
     const enumAlias = new Map<string, string>();
 
-    _.each(newValues, (value: string) => {
+    each(newValues, (value: string) => {
       // tslint:disable-next-line:no-shadowed-variable
-      const m = _.find(meta, (mt: Meta) => mt.field === value);
-      enumAlias.set(value, _.get(m, 'name', value));
+      const m = find(meta, (mt: Meta) => mt.field === value);
+      enumAlias.set(value, get(m, 'name', value));
     });
 
     const newMeta = [
@@ -134,8 +132,8 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
     const newData = [];
     // eslint-disable-next-line no-restricted-syntax
     for (const datum of data) {
-      if (!_.isEmpty(newValues)) {
-        _.each(newValues, (value: string) => {
+      if (!isEmpty(newValues)) {
+        each(newValues, (value: string) => {
           newData.push({
             ...datum,
             [EXTRA_FIELD]: value, // getFieldName(row, meta), // 替换为字段名称

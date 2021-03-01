@@ -1,9 +1,5 @@
-/**
- * Create By Bruce Too
- * On 2019-11-01
- */
 import { getEllipsisText } from '../utils/text';
-import * as _ from 'lodash';
+import { get } from 'lodash';
 import { isMobile } from '../utils/is-mobile';
 import { RowCell } from '.';
 
@@ -19,10 +15,10 @@ export class DetailRowCell extends RowCell {
     return false;
   }
 
-  protected getRowTextStyle(level, isTotals, isLeaf) {
+  protected getRowTextStyle(level, isTotals) {
     return level !== 0 && !isTotals
-      ? _.get(this.headerConfig, 'spreadsheet.theme.header.text')
-      : _.get(this.headerConfig, 'spreadsheet.theme.header.bolderText');
+      ? get(this.headerConfig, 'spreadsheet.theme.header.text')
+      : get(this.headerConfig, 'spreadsheet.theme.header.bolderText');
   }
 
   protected drawCellText() {
@@ -34,13 +30,11 @@ export class DetailRowCell extends RowCell {
       width: cellWidth,
       height: cellHeight,
       level,
-      isLeaf,
       isTotals,
       isCustom,
-      key,
     } = this.meta;
 
-    const textStyle = this.getRowTextStyle(level, isTotals || isCustom, isLeaf);
+    const textStyle = this.getRowTextStyle(level, isTotals || isCustom);
     const text = getEllipsisText(
       this.getFormattedValue(label),
       cellWidth,
@@ -61,10 +55,7 @@ export class DetailRowCell extends RowCell {
     });
     // handle link nodes
     if (linkFieldIds.includes(this.meta.key)) {
-      const device = _.get(
-        this.headerConfig,
-        'spreadsheet.options.style.device',
-      );
+      const device = get(this.headerConfig, 'spreadsheet.options.style.device');
       // 配置了链接跳转
       if (!isMobile(device)) {
         const textBBox = textShape.getBBox();

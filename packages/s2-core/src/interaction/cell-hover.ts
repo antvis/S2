@@ -1,5 +1,5 @@
 import { Event } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { get } from 'lodash';
 import { Cell } from '../cell';
 import { BaseSpreadSheet } from '../index';
 import { HoverInteraction } from './hover-interaction';
@@ -37,6 +37,7 @@ export class CellHover extends HoverInteraction {
 
   protected end(ev: Event) {
     this.isDragging = false;
+    console.debug(ev);
   }
 
   protected showHoverBox(cells: Cell[]) {
@@ -74,9 +75,9 @@ export class CellHover extends HoverInteraction {
           x: ev.clientX,
           y: ev.clientY,
         };
-        const hoveringCellData = _.get(cell, 'meta.data.0');
+        const hoveringCellData = get(cell, 'meta.data.0');
         const options = {
-          isTotals: _.get(cell, 'meta.isTotals', false),
+          isTotals: get(cell, 'meta.isTotals', false),
           hideSummary: true,
         };
         const tooltipData = getTooltipData(
@@ -98,5 +99,7 @@ export class CellHover extends HoverInteraction {
     this.draw();
   }
 
-  protected process(ev: Event) {}
+  protected process(ev: Event) {
+    console.debug(ev);
+  }
 }

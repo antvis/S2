@@ -2,12 +2,11 @@
   "extends": [
     "airbnb-base/legacy",
     "prettier",
-//    "plugin:jest/recommended",
+    "plugin:jest/recommended",
     "plugin:react/recommended",
     "plugin:import/typescript",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier/react"
   ],
   "env": {
     "es6": true,
@@ -16,35 +15,44 @@
     "jest": true
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "plugins": ["prettier", "@typescript-eslint", "import"],
   "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "project": "./tsconfig.json",
     "sourceType": "module"
   },
+  "settings": {
+    "jest": {
+      "version": 26
+    },
+    "react": "detect"
+  },
   "rules": {
-    "semi": "off",
-    "no-console": "off",
-    "no-multi-spaces": "off",
+    "prettier/prettier": 1,
+    "semi": 0,
+    "no-console": 0,
+    "no-multi-spaces": 0,
     "consistent-return": 0,
     "import/no-extraneous-dependencies": 0,
     "import/prefer-default-export": 0,
-    "no-plusplus": "off", // 允许使用++,--
-    "class-methods-use-this": "off", // 不强制使用 this, 因为子类可能复写方法
-    "no-param-reassign": "off", // 允许参数更改值
-    "@typescript-eslint/no-empty-function": "off", // 允许空方法,(默认实现)
-    "@typescript-eslint/explicit-module-boundary-types": "off", // 允许无返回  值
-    // 暂时关掉，没搞懂这个lint的配置 https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/extensions.md
-//    "import/extensions": [
-//      2,
-//      "always",
-//      {
-//        "ts": "never",
-//        "tsx": "never",
-//        "js": "never",
-//        "jsx": "never"
-//      }
-//    ],
+    "no-underscore-dangle": [
+      2,
+      {
+        "allowAfterThis": true
+      }
+    ],
+    "no-plusplus": [
+      1,
+      {
+        "allowForLoopAfterthoughts": true
+      }
+    ],
+    "class-methods-use-this": 0, // 不强制使用 this, 因为子类可能复写方法
+    "no-param-reassign": 0, // 允许参数更改值
+    "@typescript-eslint/no-empty-function": 0, // 允许空方法,(默认实现)
+    "@typescript-eslint/explicit-module-boundary-types": 0, // 允许无返回  值
     "import/no-named-default": 0,
     "react/jsx-filename-extension": [
       1,
@@ -71,11 +79,11 @@
     "@typescript-eslint/no-non-null-assertion": 0,
     "no-use-before-define": 0,
     "@typescript-eslint/no-use-before-define": [
-      "error"
+      2
     ],
     "no-shadow": 0,
     "@typescript-eslint/no-shadow": [
-      "error"
+      1
     ]
   }
 }

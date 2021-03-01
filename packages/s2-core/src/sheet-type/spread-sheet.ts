@@ -1,17 +1,12 @@
-/**
- * Create By Bruce Too
- * On 2020-06-17
- */
 import BaseSpreadSheet from './base-spread-sheet';
 import {
   DataCfg,
   SpreadsheetFacetCfg,
   SpreadsheetOptions,
-  ViewMeta,
 } from '../common/interface';
 import { BaseDataSet, SpreadDataSet, DetailDataSet } from '../data-set';
 import { BaseTooltip } from '../tooltip';
-import * as _ from 'lodash';
+import { get, set, isBoolean, merge } from 'lodash';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -59,7 +54,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.handleDataSetChanged(options);
     this.handleColLayoutTypeChanged(options);
 
-    this.options = _.merge(
+    this.options = merge(
       {
         style: {}, // 默认对象，用户可不传
       },
@@ -76,7 +71,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.on(KEY_COLLAPSE_TREE_ROWS, (data) => {
       const { id, isCollapsed } = data;
       const style = this.options.style;
-      const options = _.merge({}, this.options, {
+      const options = merge({}, this.options, {
         style: {
           ...style,
           collapsedRows: {
@@ -151,7 +146,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
 
   protected registerInteractions(options: SpreadsheetOptions) {
     this.interactions.clear();
-    if (_.get(options, 'registerDefaultInteractions', true) && !isMobile()) {
+    if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
       this.registerInteraction(
         'spreadsheet:row-col-selection',
         RowColumnSelection,
@@ -182,11 +177,11 @@ export default class SpreadSheet extends BaseSpreadSheet {
   ) {
     if (
       options.hierarchyCollapse !==
-        _.get(this, 'options.hierarchyCollapse', {}) &&
-      _.isBoolean(options.hierarchyCollapse)
+        get(this, 'options.hierarchyCollapse', {}) &&
+      isBoolean(options.hierarchyCollapse)
     ) {
       // 如果选择了默认折叠/展开，需要清除之前的折叠状态。
-      _.set(this, 'options.style.collapsedRows', {});
+      set(this, 'options.style.collapsedRows', {});
     }
   }
 
@@ -198,9 +193,9 @@ export default class SpreadSheet extends BaseSpreadSheet {
    */
   protected handleDataSetChanged(options: Partial<SpreadsheetOptions>) {
     if (
-      _.get(options, 'spreadsheetType') !==
-        _.get(this, 'options.spreadsheetType') ||
-      _.get(options, 'valueInCols') !== _.get(this, 'options.valueInCols')
+      get(options, 'spreadsheetType') !==
+        get(this, 'options.spreadsheetType') ||
+      get(options, 'valueInCols') !== get(this, 'options.valueInCols')
     ) {
       this.dataSet = this.initDataSet(options);
     }
@@ -213,11 +208,11 @@ export default class SpreadSheet extends BaseSpreadSheet {
    */
   protected handleColLayoutTypeChanged(options: Partial<SpreadsheetOptions>) {
     if (
-      _.get(options, 'style.colCfg.colWidthType') !==
-      _.get(this, 'options.style.colCfg.colWidthType')
+      get(options, 'style.colCfg.colWidthType') !==
+      get(this, 'options.style.colCfg.colWidthType')
     ) {
-      _.set(this, 'options.style.rowCfg.widthByField', {});
-      _.set(options, 'style.rowCfg.widthByField', {});
+      set(this, 'options.style.rowCfg.widthByField', {});
+      set(options, 'style.rowCfg.widthByField', {});
     }
   }
 }

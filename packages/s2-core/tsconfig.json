@@ -11,7 +11,11 @@
     "esModuleInterop": true,
     "jsx": "react",
     "downlevelIteration": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
   },
   "include": [
     "src"

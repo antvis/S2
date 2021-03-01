@@ -1,5 +1,5 @@
 import { SimpleBBox, Group } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { findIndex, isNil } from 'lodash';
 
 import { Indexes } from '../utils/indexes';
 
@@ -19,17 +19,16 @@ export const calculateInViewIndexes = (
   widths: number[],
   heights: number[],
   viewport: SimpleBBox,
-  overScan = 0,
   rowRemainWidth?: number,
 ): Indexes => {
   // 算法逻辑：https://yuque.antfin-inc.com/eva-engine/specs/virtualized-scroll
   // 1. 计算 x min、max
-  let xMin = _.findIndex(
+  let xMin = findIndex(
     widths,
     (width: number, idx: number) => {
       const x = scrollX;
       return (
-        x >= width + (_.isNil(rowRemainWidth) ? 0 : rowRemainWidth) &&
+        x >= width + (isNil(rowRemainWidth) ? 0 : rowRemainWidth) &&
         x < widths[idx + 1]
       );
     },
@@ -37,7 +36,7 @@ export const calculateInViewIndexes = (
   );
   xMin = Math.max(xMin, 0);
 
-  let xMax = _.findIndex(
+  let xMax = findIndex(
     widths,
     (width: number, idx: number) => {
       const x = viewport.width + scrollX;
@@ -48,7 +47,7 @@ export const calculateInViewIndexes = (
   xMax = Math.min(xMax === -1 ? Infinity : xMax, widths.length - 2);
 
   // 2. 计算 y min、max
-  let yMin = _.findIndex(
+  let yMin = findIndex(
     heights,
     (height: number, idx: number) => {
       const y = scrollY;
@@ -59,7 +58,7 @@ export const calculateInViewIndexes = (
 
   yMin = Math.max(yMin, 0);
 
-  let yMax = _.findIndex(
+  let yMax = findIndex(
     heights,
     (height: number, idx: number) => {
       const y = viewport.height + scrollY;

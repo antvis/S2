@@ -1,7 +1,7 @@
-import { BBox, Group, Shape } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { BBox, Group } from '@antv/g-canvas';
+import { get } from 'lodash';
 import { calculateInViewIndexes } from './utils';
-import { Indexes, isXYInRange } from '../utils/indexes';
+import { Indexes } from '../utils/indexes';
 import { KEY_GROUP_HOVER_BOX } from '../common/constant';
 import { BaseSpreadSheet } from '../sheet-type';
 import {
@@ -11,12 +11,6 @@ import {
 } from '../common/interface';
 import { DEBUG_HEADER_LAYOUT, DebuggerUtil } from '../common/debug';
 
-/**
- * Create By Bruce Too
- * On 2019-09-16
- * New base facet for SpreadSheet&ListSheet, this is totally
- * decoupled with G2, so not works with EA-PLOT now
- */
 export abstract class BaseFacet {
   // spreadsheet instance
   public spreadsheet: BaseSpreadSheet;
@@ -68,13 +62,13 @@ export abstract class BaseFacet {
   }
 
   public getSeriesNumberWidth(): number {
-    const showSeriesNumber = _.get(
+    const showSeriesNumber = get(
       this.cfg.spreadsheet,
       'options.showSeriesNumber',
       false,
     );
     return showSeriesNumber
-      ? _.get(this.cfg, 'spreadsheet.theme.header.seriesNumberWidth')
+      ? get(this.cfg, 'spreadsheet.theme.header.seriesNumberWidth')
       : 0;
   }
 
@@ -122,7 +116,7 @@ export abstract class BaseFacet {
    * Clip viewport by specific {@link viewportBBox}
    */
   protected addViewportClip() {
-    const { x, y, width, height } = this.viewportBBox;
+    const { width, height } = this.viewportBBox;
     this.panelGroup.setClip({
       type: 'rect',
       attrs: {
@@ -179,6 +173,7 @@ export abstract class BaseFacet {
     heights: number[];
     width0Indexes: number[];
     height0Indexes: number[];
+    realHeights?: number[];
   };
 
   // 渲染滚动条
@@ -212,7 +207,7 @@ export abstract class BaseFacet {
     let hoverChild;
     for (let i = children.length - 1; i >= 0; i--) {
       const child = children[i];
-      if (_.get(child, 'cfg.name') !== KEY_GROUP_HOVER_BOX) {
+      if (get(child, 'cfg.name') !== KEY_GROUP_HOVER_BOX) {
         children[i].remove(false);
       } else {
         hoverChild = child;
