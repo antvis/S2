@@ -35,22 +35,21 @@ import './index.less';
  * Base tooltips component
  */
 export class BaseTooltip {
-  // the type of Spreadsheet
-  public spreadsheet: BaseSpreadSheet;
-  // the type of aggregation, 'SUM' by default
-  public aggregation: Aggregation = 'SUM';
-  // the base container element
-  protected container: HTMLElement;
-  // react component
-  private tooltipComponent: any;
-  // mark if can enter into tooltips
-  private enterable: boolean = false;
-  // tooltips position info
-  protected position: Position = { x: 0, y: 0 };
+  public spreadsheet: BaseSpreadSheet; // the type of Spreadsheet
 
-  constructor(plot: BaseSpreadSheet, aggregation: Aggregation = 'SUM') {
+  public aggregation: Aggregation = 'SUM'; // the type of aggregation, 'SUM' by default
+
+  protected container: HTMLElement; // the base container element
+
+  private tooltipComponent: any; // react component
+
+  private enterable = false; // mark if can enter into tooltips
+
+  protected position: Position = { x: 0, y: 0 }; // tooltips position info
+
+  constructor(plot: BaseSpreadSheet, aggregation: Aggregation) {
     this.spreadsheet = plot;
-    this.aggregation = aggregation;
+    this.aggregation = aggregation || 'SUM';
   }
 
   /**
