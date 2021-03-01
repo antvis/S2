@@ -24,38 +24,43 @@
         }
       }
     }
-
+  }
+  #ss-tooltip-operator-menus {
     .ant-menu-item-selected,
     .ant-menu-item-active,
     .ant-menu-submenu-selected,
     .ant-menu-submenu-active,
     .ant-menu-submenu-open {
-      border-bottom: none !important;
-      color: rgba(0, 0, 0, 0.65) !important;
+      border-bottom: none;
+      color: rgba(0, 0, 0, 0.65);
     }
   }
 }
 
+.ant-menu-submenu,
+.ant-menu-submenu-popup,
+.ant-menu,
+.ant-menu-light,
 .ss-tooltip-operator-submenu-popup {
-  .ant-menu-item {
-    color: rgba(0, 0, 0, 0.65) !important;
-    font-size: 12px !important;
-    line-height: 32px !important;
-    height: 32px !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
+  .ant-menu,
+  .ant-menu-sub,
+  .ant-menu-vertical {
+    .ant-menu-item {
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 12px;
+      line-height: 32px;
+      height: 32px;
+      margin-top: 0;
+      margin-bottom: 0;
+      .ss-tooltip-operator-icon {
+        margin-left: 6px;
+      }
+    }
   }
-
   .ant-menu {
-    margin-top: -6px !important;
+    margin-top: -6px;
   }
-
   .ant-menu-sub {
-    min-width: 100px !important;
+    min-width: 100px;
   }
-}
-
-.ss-tooltip-operator-icon {
-  margin-right: 0 !important;
-  margin-left: 6px;
 }

@@ -74,6 +74,7 @@ const Operator = (props: OperatorProps) => {
     return (
       <Menu
         className={`${TOOLTIP_CLASS_PRE}-operator-menus`}
+        id={`${TOOLTIP_CLASS_PRE}-operator-menus`}
         onClick={onMenuClick}
         mode="horizontal"
       >
