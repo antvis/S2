@@ -24,7 +24,6 @@ import {
   BrushSelection,
   CellSelection,
   CornerHeaderTextClick,
-  HeaderHover,
   RowColResize,
   RowColumnSelection,
   RowHeaderTextClick,
@@ -159,7 +158,6 @@ export default class SpreadSheet extends BaseSpreadSheet {
       this.registerInteraction('spreadsheet:brush-selection', BrushSelection);
       this.registerInteraction('spreadsheet:cell-click', CellSelection);
       this.registerInteraction('spreadsheet:row-col-resize', RowColResize);
-      this.registerInteraction('spreadsheet:header-hover', HeaderHover);
       this.registerInteraction(
         'spreadsheet:corner-header-text-click',
         CornerHeaderTextClick,
