@@ -1,5 +1,5 @@
 import { Event, Point, Shape } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import * as _ from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { S2Event, DefaultEventType } from './events/types';
@@ -52,7 +52,7 @@ export class BrushSelection extends BaseInteraction {
   private phase: 0 | 1 | 2;
 
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEDOWN, (ev) => {
+    this.spreadsheet.on(S2Event.DATACELL_MOUSEDOWN, (ev: Event) => {
       const oe = ev.originalEvent as any;
       this.previousPoint = { x: oe.layerX, y: oe.layerY };
       this.cells = this.spreadsheet.getPanelAllCells();
