@@ -42,6 +42,9 @@
   "lint-staged": {
     "*.{js,jsx,tsx,ts,less,md,json}": [
       "pretty-quick —-staged"
+    ],
+     "*.{js,jsx,tsx,ts}": [
+      "eslint --fix"
     ]
   },
   "dependencies": {

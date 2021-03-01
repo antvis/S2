@@ -12,7 +12,6 @@ import {
   LayoutResultCallback,
   NodeField,
   Pagination,
-  PlaceHolderMeta,
   SpreadsheetOptions,
   Style,
   Totals,
