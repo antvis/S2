@@ -268,11 +268,11 @@ export class Pivot {
     if (has(query, field)) {
       return [query[field]];
     }
-    const map = this.getChildMeta(field, query);
-    if (!map) {
+    const metaMap = this.getChildMeta(field, query);
+    if (!metaMap) {
       return [];
     }
-    return this.sort(Array.from(map.keys()), field, query);
+    return this.sort(Array.from(metaMap.keys()), field, query);
   }
 
   public getAttr(attr) {
@@ -435,10 +435,10 @@ export class Pivot {
   }
 
   /** 获取树的节点路径，如果不存在该节点则初始化 */
-  private getPath(map: PivotMeta, upsert = true) {
+  private getPath(cursorMap: PivotMeta, upsert = true) {
     const getPathFunction = (dimValues: string[]): number[] => {
       const res = [];
-      let cursor = map;
+      let cursor = cursorMap;
 
       // eslint-disable-next-line no-restricted-syntax
       for (const key of dimValues) {
@@ -514,9 +514,9 @@ export class Pivot {
         );
         // 4. 得到排好序的维值数组
         const vs = map(records, field);
-        const set: Set<string> = new Set(vs);
-        set.delete(undefined);
-        const sortedDims = Array.from(set);
+        const dataSet: Set<string> = new Set(vs);
+        dataSet.delete(undefined);
+        const sortedDims = Array.from(dataSet);
         // 由于某些维值下无数据，需要补充入最终结果
         const otherDims = difference(arr, sortedDims);
 
