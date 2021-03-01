@@ -275,6 +275,8 @@ export interface SpreadsheetOptions {
 
   readonly initTooltip?: TooltipCallback;
 
+  readonly tooltipComponent?: React.ElementType;
+
   // 自定义 frame 边框
   readonly frame?: FrameCallback;
   // 角头可能需要全部自定义，而不是用交叉表概念的node来渲染

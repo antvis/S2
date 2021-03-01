@@ -196,6 +196,7 @@ export default abstract class BaseSpreadSheet extends EE {
       valueInCols: get(options, 'valueInCols', true),
       needDataPlaceHolderCell: get(options, 'needDataPlaceHolderCell', false),
       hideTooltip: get(options, 'hideTooltip', false),
+      tooltipComponent: options?.tooltipComponent,
       // dataCell, cornerCell, rowCell, colCell, frame, cornerHeader, layout
       // layoutResult, hierarchy, layoutArrange 存在使用时校验，在此不处理
     } as SpreadsheetOptions;

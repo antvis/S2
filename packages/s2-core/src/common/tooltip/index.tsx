@@ -41,7 +41,7 @@ export class BaseTooltip {
 
   protected container: HTMLElement; // the base container element
 
-  private tooltipComponent: any; // react component
+  private customComponent: any; // react component
 
   private enterable = false; // mark if can enter into tooltips
 
@@ -60,7 +60,7 @@ export class BaseTooltip {
    * @param element
    */
   public show(showOptions: ShowProps) {
-    const { position, data, options, element } = showOptions;
+    const { position, data, options } = showOptions;
     const { enterable } = getOptions(options);
     const container = this.getContainer();
 
@@ -76,7 +76,8 @@ export class BaseTooltip {
     });
 
     this.unMountComponent(container);
-    this.tooltipComponent = element
+    const element = this.spreadsheet?.options?.tooltipComponent;
+    this.customComponent = element
       ? ReactDOM.render(element, container)
       : ReactDOM.render(this.renderContent(data, options), container);
     const { x, y } = getPosition(position, this.container);
@@ -183,7 +184,7 @@ export class BaseTooltip {
   }
 
   protected unMountComponent(container?: HTMLElement) {
-    if (this.tooltipComponent) {
+    if (this.customComponent) {
       ReactDOM.unmountComponentAtNode(container);
     }
   }
