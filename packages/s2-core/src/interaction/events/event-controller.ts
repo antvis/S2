@@ -1,4 +1,4 @@
-import { Event, Group, Canvas, LooseObject } from '@antv/g-canvas';
+import { Event, Canvas, LooseObject } from '@antv/g-canvas';
 import * as _ from '@antv/util';
 import { BaseCell, DataCell, ColCell, CornerCell, RowCell } from '../../cell';
 import {
@@ -24,7 +24,7 @@ export class EventController {
     this.bindEvents();
   }
 
-  protected triggerGroup(): Group {
+  protected triggerGroup(): Canvas {
     return this.spreadsheet.container;
   }
 
@@ -80,52 +80,23 @@ export class EventController {
 
   protected start(ev: Event) {
     this.target = ev.target;
-    const cellType = this.getCellType(ev.target);
-    switch (cellType) {
-      case DataCell.name:
-        this.spreadsheet.emit(S2Event.DATACELL_MOUSEDOWN, ev);
-        break;
-      case RowCell.name:
-        this.spreadsheet.emit(S2Event.ROWCELL_MOUSEDOWN, ev);
-        break;
-      case ColCell.name:
-        this.spreadsheet.emit(S2Event.COLCELL_MOUSEDOWN, ev);
-        break;
-      case CornerCell.name:
-        this.spreadsheet.emit(S2Event.CORNER_MOUSEDOWN, ev);
-        break;
-      default:
-        return;
-    }
-  }
-
-  protected process(ev: Event) {
-    const cell = this.getCell(ev.target);
-    if (cell) {
-      // 如果hover的cell改变了，并且当前不需要屏蔽 hover
-      if (
-        this.hoverTarget !== ev.target &&
-        !this.interceptEvent.has(DefaultEventType.HOVER)
-      ) {
-        this.hoverTarget = ev.target;
-        this.spreadsheet.clearState();
-        this.spreadsheet.setState(cell, 'hover');
-        this.spreadsheet.updateCellStyleByState();
-        this.draw();
-      }
+    const appendInfo = _.get(ev.target, 'attrs.appendInfo');
+    if(appendInfo && appendInfo.isResizer) {
+      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEDOWN, ev);
+    } else {
       const cellType = this.getCellType(ev.target);
       switch (cellType) {
         case DataCell.name:
-          this.spreadsheet.emit(S2Event.DATACELL_MOUSEMOVE, ev);
+          this.spreadsheet.emit(S2Event.DATACELL_MOUSEDOWN, ev);
           break;
         case RowCell.name:
-          this.spreadsheet.emit(S2Event.ROWCELL_MOUSEMOVE, ev);
+          this.spreadsheet.emit(S2Event.ROWCELL_MOUSEDOWN, ev);
           break;
         case ColCell.name:
-          this.spreadsheet.emit(S2Event.COLCELL_MOUSEMOVE, ev);
+          this.spreadsheet.emit(S2Event.COLCELL_MOUSEDOWN, ev);
           break;
         case CornerCell.name:
-          this.spreadsheet.emit(S2Event.CORNER_MOUSEMOVE, ev);
+          this.spreadsheet.emit(S2Event.CORNER_MOUSEDOWN, ev);
           break;
         default:
           return;
@@ -133,59 +104,103 @@ export class EventController {
     }
   }
 
-  protected end(ev: Event) {
-    const cell = this.getCell(ev.target);
-    if (cell) {
-      const cellType = this.getCellType(ev.target);
-      // target相同，说明是一个cell内的click事件
-      if (this.target === ev.target) {
+  protected process(ev: Event) {
+    const appendInfo = _.get(ev.target, 'attrs.appendInfo');
+    if(appendInfo && appendInfo.isResizer) {
+      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEMOVE, ev);
+    } else {
+      const cell = this.getCell(ev.target);
+      if (cell) {
+        // 如果hover的cell改变了，并且当前不需要屏蔽 hover
+        if (
+          this.hoverTarget !== ev.target &&
+          !this.interceptEvent.has(DefaultEventType.HOVER)
+        ) {
+          this.hoverTarget = ev.target;
+          this.spreadsheet.clearState();
+          this.spreadsheet.setState(cell, 'hover');
+          this.spreadsheet.updateCellStyleByState();
+          this.draw();
+        }
+        const cellType = this.getCellType(ev.target);
         switch (cellType) {
           case DataCell.name:
-            const meta = cell.getMeta();
-            this.spreadsheet.emit(S2Event.DATACELL_CLICK, {
-              viewMeta: meta,
-              rowQuery: meta.rowQuery,
-              colQuery: meta.colQuery,
-            });
+            this.spreadsheet.emit(S2Event.DATACELL_MOUSEMOVE, ev);
             break;
           case RowCell.name:
-            this.spreadsheet.emit(S2Event.ROWCELL_CLICK, {
-              viewMeta: cell.getMeta(),
-              query: cell.getMeta().query,
-            });
+            this.spreadsheet.emit(S2Event.ROWCELL_MOUSEMOVE, ev);
             break;
           case ColCell.name:
-            this.spreadsheet.emit(S2Event.COLCELL_CLICK, {
-              viewMeta: cell.getMeta(),
-              query: cell.getMeta().query,
-            });
+            this.spreadsheet.emit(S2Event.COLCELL_MOUSEMOVE, ev);
             break;
           case CornerCell.name:
-            this.spreadsheet.emit(S2Event.CORNER_CLICK, {
-              viewMeta: cell.getMeta(),
-            });
+            this.spreadsheet.emit(S2Event.CORNER_MOUSEMOVE, ev);
             break;
           default:
             return;
         }
       }
+    }
+  }
 
-      // 通用的mouseup事件
-      switch (cellType) {
-        case DataCell.name:
-          this.spreadsheet.emit(S2Event.DATACELL_MOUSEUP, ev);
-          break;
-        case RowCell.name:
-          this.spreadsheet.emit(S2Event.ROWCELL_MOUSEUP, ev);
-          break;
-        case ColCell.name:
-          this.spreadsheet.emit(S2Event.COLCELL_MOUSEUP, ev);
-          break;
-        case CornerCell.name:
-          this.spreadsheet.emit(S2Event.CORNER_MOUSEUP, ev);
-          break;
-        default:
-          return;
+  protected end(ev: Event) {
+    const appendInfo = _.get(ev.target, 'attrs.appendInfo');
+    if(appendInfo && appendInfo.isResizer) {
+      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEUP, ev);
+    } else {
+      const cell = this.getCell(ev.target);
+      if (cell) {
+        const cellType = this.getCellType(ev.target);
+        // target相同，说明是一个cell内的click事件
+        if (this.target === ev.target) {
+          switch (cellType) {
+            case DataCell.name:
+              const meta = cell.getMeta();
+              this.spreadsheet.emit(S2Event.DATACELL_CLICK, {
+                viewMeta: meta,
+                rowQuery: meta.rowQuery,
+                colQuery: meta.colQuery,
+              });
+              break;
+            case RowCell.name:
+              this.spreadsheet.emit(S2Event.ROWCELL_CLICK, {
+                viewMeta: cell.getMeta(),
+                query: cell.getMeta().query,
+              });
+              break;
+            case ColCell.name:
+              this.spreadsheet.emit(S2Event.COLCELL_CLICK, {
+                viewMeta: cell.getMeta(),
+                query: cell.getMeta().query,
+              });
+              break;
+            case CornerCell.name:
+              this.spreadsheet.emit(S2Event.CORNER_CLICK, {
+                viewMeta: cell.getMeta(),
+              });
+              break;
+            default:
+              return;
+          }
+        }
+
+        // 通用的mouseup事件
+        switch (cellType) {
+          case DataCell.name:
+            this.spreadsheet.emit(S2Event.DATACELL_MOUSEUP, ev);
+            break;
+          case RowCell.name:
+            this.spreadsheet.emit(S2Event.ROWCELL_MOUSEUP, ev);
+            break;
+          case ColCell.name:
+            this.spreadsheet.emit(S2Event.COLCELL_MOUSEUP, ev);
+            break;
+          case CornerCell.name:
+            this.spreadsheet.emit(S2Event.CORNER_MOUSEUP, ev);
+            break;
+          default:
+            return;
+        }
       }
     }
   }

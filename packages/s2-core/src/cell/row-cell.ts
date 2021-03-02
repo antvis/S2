@@ -397,7 +397,7 @@ export class RowCell extends BaseCell<Node> {
           height: HIT_AREA,
           cursor: 'row-resize',
           appendInfo: {
-            isTrigger: true,
+            isResizer: true,
             class: 'resize-trigger',
             type: 'row',
             affect: 'cell',

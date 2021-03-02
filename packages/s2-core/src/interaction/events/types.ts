@@ -24,6 +24,10 @@ export enum S2Event {
   DATACELL_MOUSEMOVE = 'datacell:mousemove',
   CORNER_MOUSEMOVE = 'corner:mousemove',
 
+  GLOBAL_RESIZE_MOUSEDOWN = 'global:resize:mousedown',
+  GLOBAL_RESIZE_MOUSEMOVE = 'global:resize:mousemove',
+  GLOBAL_RESIZE_MOUSEUP = 'global:resize:mouseup',
+
   GLOBAL_KEBOARDDOWN = 'global:keyboarddown',
   GLOBAL_KEBOARDUP = 'global:keyboardup',
 }

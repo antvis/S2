@@ -188,7 +188,7 @@ export class CornerCell extends BaseCell<Node> {
         fill: COLOR_DEFAULT_RESIZER,
         cursor: 'col-resize',
         appendInfo: {
-          isTrigger: true,
+          isResizer: true,
           class: 'resize-trigger',
           type: 'col',
           id: field,

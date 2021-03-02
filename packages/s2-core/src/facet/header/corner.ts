@@ -373,7 +373,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           fill: COLOR_DEFAULT_RESIZER,
           cursor: 'col-resize',
           appendInfo: {
-            isTrigger: true,
+            isResizer: true,
             class: 'resize-trigger',
             type: 'col',
             affect: 'tree',
@@ -395,7 +395,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         fill: COLOR_DEFAULT_RESIZER,
         cursor: 'row-resize',
         appendInfo: {
-          isTrigger: true,
+          isResizer: true,
           class: 'resize-trigger',
           type: 'row',
           affect: 'field',

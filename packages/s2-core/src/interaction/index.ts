@@ -14,7 +14,6 @@
 
 // export { Tooltip } from './tooltip'; // 扩展 tooltip，不使用交互实现
 export { BrushSelection } from './brush-selection';
-export { HeaderHover } from './header-hover';
 export { RowColumnSelection } from './row-column-selection';
 export { CellSelection } from './cell-selection';
 export { RowColResize } from './row-col-resize';
