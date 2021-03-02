@@ -5,6 +5,7 @@ import { Cell, ColCell, RowCell } from '../cell';
 import { getHeaderHierarchyQuery } from '../facet/layout/util';
 import { HoverInteraction } from './hover-interaction';
 import { DownOutlined } from '@ant-design/icons';
+import { getTooltipData } from '../utils/tooltip';
 
 interface MenuType {
   id: string;
@@ -141,11 +142,21 @@ export class RowColumnSelection extends HoverInteraction {
         const hoveringCellData = get(meta, 'query') || {
           [get(meta, 'key')]: get(meta, 'value'),
         };
-        this.showTooltip(position, hoveringCellData, {
-          actionType,
+        const options = {
           operator: this.getSortOperator(showSortOperations),
           enterable,
-        });
+        };
+        const tooltipData = getTooltipData(
+          this.spreadsheet,
+          hoveringCellData,
+          options,
+        );
+        const showOptions = {
+          position,
+          data: tooltipData,
+          options,
+        };
+        this.showTooltip(showOptions);
       }
     }
   }

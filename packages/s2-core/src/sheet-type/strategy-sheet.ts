@@ -1,6 +1,6 @@
 import { SpreadsheetFacetCfg, SpreadsheetOptions } from '../common/interface';
-import { BaseTooltip, StrategyTooltip } from '../tooltip';
-import * as _ from 'lodash';
+import { BaseTooltip } from '../tooltip';
+import { isEmpty, merge } from 'lodash';
 import { KEY_COLLAPSE_TREE_ROWS } from '../common/constant';
 import { SpreadsheetFacet } from '../facet';
 import SpreadSheet from './spread-sheet';
@@ -23,13 +23,13 @@ export default class StrategySheet extends SpreadSheet {
         // B，C 节点的collapse状态必须跟随A
         Node.getAllChildrenNode(node)
           .filter((n) => {
-            return !n.isLeaf && _.isEmpty(n.label);
+            return !n.isLeaf && isEmpty(n.label);
           })
           .forEach((n) => {
             cRows[n.id] = isCollapsed;
           });
       }
-      const options = _.merge({}, this.options, {
+      const options = merge({}, this.options, {
         style: {
           ...style,
           collapsedRows: cRows,
@@ -72,7 +72,7 @@ export default class StrategySheet extends SpreadSheet {
   }
 
   protected initTooltip(): BaseTooltip {
-    return new StrategyTooltip(this);
+    return new BaseTooltip(this);
   }
 
   protected registerInteractions(options: SpreadsheetOptions) {

@@ -2,6 +2,7 @@ import { Event, Point, Shape } from '@antv/g-canvas';
 import { Cell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { HoverInteraction } from './hover-interaction';
+import { getTooltipData } from '../utils/tooltip';
 
 function getBrushRegion(p1, p2) {
   const leftX = Math.min(p1.x, p2.x);
@@ -115,10 +116,15 @@ export class BrushSelection extends HoverInteraction {
       this.endOriginEvent = ev.originalEvent;
       const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
       this.getSelectedCells(brushRegion);
-      this.showTooltip({
-        x: this.endOriginEvent.clientX,
-        y: this.endOriginEvent.clientY,
-      });
+      const tooltipData = getTooltipData(this.spreadsheet);
+      const showOptions = {
+        position: {
+          x: this.endOriginEvent.clientX,
+          y: this.endOriginEvent.clientY,
+        },
+        data: tooltipData,
+      };
+      this.showTooltip(showOptions);
       // 透明度为0会导致 hover 无法响应
       this.regionShape.attr({
         opacity: 0,

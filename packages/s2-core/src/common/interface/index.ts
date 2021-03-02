@@ -147,6 +147,17 @@ export interface Totals {
   readonly col?: Partial<Readonly<Total>>;
 }
 
+export interface Tooltip {
+  readonly showTooltip?: boolean;
+  readonly showOperation?: boolean;
+  readonly showSummary?: boolean;
+  readonly showDetail?: boolean;
+  readonly showInfos?: boolean;
+  readonly row?: Tooltip;
+  readonly col?: Tooltip;
+  readonly cell?: Tooltip;
+}
+
 export interface SortParam {
   /** 字段id，业务中一般是displayId */
   sortFieldId: string;
@@ -226,6 +237,7 @@ export interface SpreadsheetOptions {
   readonly conditions?: Conditions;
   // total config
   readonly totals?: Totals;
+  readonly tooltip?: Tooltip;
   // link field ids
   readonly linkFieldIds?: string[];
   // pagination config
@@ -260,6 +272,11 @@ export interface SpreadsheetOptions {
   readonly rowCell?: CellCallback;
   // 自定义列头cell
   readonly colCell?: CellCallback;
+
+  readonly initTooltip?: TooltipCallback;
+
+  readonly tooltipComponent?: React.ElementType;
+
   // 自定义 frame 边框
   readonly frame?: FrameCallback;
   // 角头可能需要全部自定义，而不是用交叉表概念的node来渲染
@@ -323,6 +340,11 @@ export type LayoutCallback = (
 
 export type CellCallback = (
   node: Node,
+  spreadsheet: BaseSpreadSheet,
+  ...restOptions
+) => Group;
+
+export type TooltipCallback = (
   spreadsheet: BaseSpreadSheet,
   ...restOptions
 ) => Group;

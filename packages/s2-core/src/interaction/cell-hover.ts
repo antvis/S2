@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import { Cell } from '../cell';
 import { BaseSpreadSheet } from '../index';
 import { HoverInteraction } from './hover-interaction';
-
+import { getTooltipData } from '../utils/tooltip';
 /**
  * Panel Areas's cell hover interaction
  */
@@ -76,10 +76,21 @@ export class CellHover extends HoverInteraction {
           y: ev.clientY,
         };
         const hoveringCellData = get(cell, 'meta.data.0');
-        this.showTooltip(position, hoveringCellData, {
-          actionType: 'cellHover',
+        const options = {
           isTotals: get(cell, 'meta.isTotals', false),
-        });
+          hideSummary: true,
+        };
+        const tooltipData = getTooltipData(
+          this.spreadsheet,
+          hoveringCellData,
+          options,
+        );
+        const showOptions = {
+          position,
+          data: tooltipData,
+          options,
+        };
+        this.showTooltip(showOptions);
       }
     } else {
       this.hide();

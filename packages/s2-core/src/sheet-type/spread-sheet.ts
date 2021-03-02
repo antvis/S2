@@ -5,7 +5,7 @@ import {
   SpreadsheetOptions,
 } from '../common/interface';
 import { BaseDataSet, SpreadDataSet, DetailDataSet } from '../data-set';
-import { BaseTooltip, NormalTooltip } from '../tooltip';
+import { BaseTooltip } from '../tooltip';
 import { get, set, isBoolean, merge } from 'lodash';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
@@ -141,7 +141,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
   }
 
   protected initTooltip(): BaseTooltip {
-    return new NormalTooltip(this);
+    return new BaseTooltip(this);
   }
 
   protected registerInteractions(options: SpreadsheetOptions) {
