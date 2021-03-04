@@ -186,15 +186,13 @@ export const SheetComponent = (props: SpreadsheetProps) => {
         disabledFields={disabledFields}
       />
     );
-    sheet.tooltip.show(
-      {
+    sheet.tooltip.show({
+      position: {
         x: event.clientX,
         y: event.clientY,
       },
-      {},
-      {},
       element,
-    );
+    });
   };
 
   const buildSpreadSheet = () => {
