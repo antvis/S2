@@ -6,7 +6,7 @@ import {
 import { DrillDownLayout } from './drill-down-layout';
 import { PartDrillDownInfo, SpreadsheetProps } from '../../components/index';
 import { BaseSpreadSheet } from '../../sheet-type';
-import { merge, concat, isEmpty, clone, includes, uniq } from 'lodash';
+import { merge, concat, isEmpty, clone, includes, uniq, get } from 'lodash';
 
 import { Node } from '../..';
 
@@ -115,7 +115,7 @@ export const HandleOptions = (
       let iconLevel = spreadsheet.store.get('drillDownActionIconLevel', -1);
       if (iconLevel < 0) {
         // 如果没有缓存，直接默认用叶子节点的层级
-        iconLevel = props.dataCfg.fields.rows.length - 1;
+        iconLevel = get(props, 'dataCfg.fields.rows.length', 1) - 1;
         // 缓存配置之初的icon层级
         spreadsheet.store.set('drillDownActionIconLevel', iconLevel);
       }
@@ -275,7 +275,7 @@ export const HandleDrillDown = async (params: DrillDownParams) => {
             drillLevel,
             drillData,
             drillField,
-          };
+          } as DrillDownDataCache;
           drillDownDataCache.push(newDrillDownData);
           spreadsheet.store.set('drillDownDataCache', drillDownDataCache);
           // 开始处理下钻逻辑

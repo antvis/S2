@@ -30,6 +30,7 @@ import { SpreadsheetFacet } from '../facet';
 import { SpreadParams } from '../data-set/spread-data-set';
 import { BaseFacet } from '../facet/base-facet';
 import { InteractionConstructor } from '../interaction/base';
+import { detectAttrsChangeAndAction } from '../utils/attrs-action';
 
 /**
  * 目前交叉表和明细的表类入口(后续会分拆出两个表)
@@ -53,6 +54,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.handleCollapseChangedInTreeMode(options);
     this.handleDataSetChanged(options);
     this.handleColLayoutTypeChanged(options);
+    this.handleChangeSize(options);
 
     this.options = merge(
       {
@@ -175,14 +177,17 @@ export default class SpreadSheet extends BaseSpreadSheet {
   protected handleCollapseChangedInTreeMode(
     options: Partial<SpreadsheetOptions>,
   ) {
-    if (
-      options.hierarchyCollapse !==
-        get(this, 'options.hierarchyCollapse', {}) &&
-      isBoolean(options.hierarchyCollapse)
-    ) {
-      // 如果选择了默认折叠/展开，需要清除之前的折叠状态。
-      set(this, 'options.style.collapsedRows', {});
-    }
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      'hierarchyCollapse',
+      (currentValue) => {
+        if (isBoolean(options.hierarchyCollapse)) {
+          // 如果选择了默认折叠/展开，需要清除之前的折叠状态。
+          set(this, 'options.style.collapsedRows', {});
+        }
+      },
+    );
   }
 
   /**
@@ -192,13 +197,14 @@ export default class SpreadSheet extends BaseSpreadSheet {
    * @private
    */
   protected handleDataSetChanged(options: Partial<SpreadsheetOptions>) {
-    if (
-      get(options, 'spreadsheetType') !==
-        get(this, 'options.spreadsheetType') ||
-      get(options, 'valueInCols') !== get(this, 'options.valueInCols')
-    ) {
-      this.dataSet = this.initDataSet(options);
-    }
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      ['spreadsheetType', 'valueInCols'],
+      (currentValue) => {
+        this.dataSet = this.initDataSet(options);
+      },
+    );
   }
 
   /**
@@ -207,12 +213,25 @@ export default class SpreadSheet extends BaseSpreadSheet {
    * @private
    */
   protected handleColLayoutTypeChanged(options: Partial<SpreadsheetOptions>) {
-    if (
-      get(options, 'style.colCfg.colWidthType') !==
-      get(this, 'options.style.colCfg.colWidthType')
-    ) {
-      set(this, 'options.style.rowCfg.widthByField', {});
-      set(options, 'style.rowCfg.widthByField', {});
-    }
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      'style.colCfg.colWidthType',
+      (currentValue) => {
+        set(this, 'options.style.rowCfg.widthByField', {});
+        set(options, 'style.rowCfg.widthByField', {});
+      },
+    );
+  }
+
+  protected handleChangeSize(options: Partial<SpreadsheetOptions>) {
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      ['width', 'height'],
+      (currentValue) => {
+        this.changeSize(options.width, options.height);
+      },
+    );
   }
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { isEmpty, debounce, isFunction } from 'lodash';
 import { Spin } from 'antd';
 import { DataCfg, SpreadsheetOptions } from '../common/interface';
-import { DrillDown, DrillDownProps } from '../components/drill-down';
+import { DrillDown, DrillDownProps } from './drill-down';
 import {
   KEY_COLUMN_CELL_CLICK,
   KEY_CORNER_CELL_CLICK,
@@ -27,6 +27,7 @@ import {
   HandleDrillDown,
   UseDrillDownLayout,
 } from '../utils/drill-down/helper';
+import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
 
 export interface PartDrillDownInfo {
   // 下钻的数据
@@ -201,9 +202,9 @@ export const SheetComponent = (props: SpreadsheetProps) => {
       UseDrillDownLayout(options);
       baseSpreadsheet = getSpreadSheet();
       bindEvent();
-      baseSpreadsheet.setDataCfg(dataCfg);
+      baseSpreadsheet.setDataCfg(safetyDataCfg(dataCfg));
       baseSpreadsheet.setOptions(
-        HandleOptions(props, baseSpreadsheet, iconClickCallback),
+        safetyOptions(HandleOptions(props, baseSpreadsheet, iconClickCallback)),
       );
       baseSpreadsheet.setTheme(theme);
       baseSpreadsheet.render();
@@ -330,7 +331,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     update(() => {
       ownSpreadsheet.setDataCfg(dataCfg);
     }, clearDrillDownInfo);
-  }, [dataCfg.fields.rows]);
+  }, [dataCfg?.fields?.rows]);
 
   useEffect(() => {
     update(() => {
