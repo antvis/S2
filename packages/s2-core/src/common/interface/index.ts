@@ -4,6 +4,7 @@ import BaseSpreadsheet from '../../sheet-type/base-spread-sheet';
 import { BaseDataSet } from '../../data-set';
 import { BaseParams } from '../../data-set/base-data-set';
 import { Frame } from '../../facet/header';
+import { BaseTooltip } from '../tooltip';
 
 export type Data = Record<string, string | number>;
 
@@ -347,7 +348,7 @@ export type CellCallback = (
 export type TooltipCallback = (
   spreadsheet: BaseSpreadSheet,
   ...restOptions
-) => Group;
+) => BaseTooltip;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => Group;
 // TODO 类型定义清楚！！
