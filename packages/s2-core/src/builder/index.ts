@@ -30,8 +30,6 @@ export class SpreadSheetOptionsBuilder {
 
   private _height: number;
 
-  private _hideTooltip: boolean;
-
   private _hierarchyCollapse: boolean;
 
   private _hierarchyType: 'grid' | 'tree';
@@ -103,7 +101,6 @@ export class SpreadSheetOptionsBuilder {
       conditions: this._conditions,
       width: this._width,
       height: this._height,
-      hideTooltip: this._hideTooltip || false,
       hierarchyCollapse: this._hierarchyCollapse || false,
       hierarchyType: this._hierarchyType || 'grid',
       linkFieldIds: this._linkFieldIds || [],
@@ -276,11 +273,6 @@ export class SpreadSheetOptionsBuilder {
     hierarchyCollapse: boolean,
   ): SpreadSheetOptionsBuilder {
     this._hierarchyCollapse = hierarchyCollapse;
-    return this;
-  }
-
-  public hideTooltip(hideTooltip: boolean): SpreadSheetOptionsBuilder {
-    this._hideTooltip = hideTooltip;
     return this;
   }
 

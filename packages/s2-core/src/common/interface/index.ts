@@ -230,8 +230,6 @@ export interface SpreadsheetOptions {
   readonly debug?: boolean;
   // row header hierarchy type
   readonly hierarchyType?: 'grid' | 'tree';
-  // hide default tooltips switch
-  readonly hideTooltip?: boolean;
   // row header in tree mode collapse all nodes
   readonly hierarchyCollapse?: boolean;
   // conditions config

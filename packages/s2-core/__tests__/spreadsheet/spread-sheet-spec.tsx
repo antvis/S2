@@ -137,6 +137,9 @@ const getOptions = () => {
       },
       device: 'pc',
     },
+    tooltip: {
+      showTooltip: true,
+    },
     // tooltipComponent: <div>component 测试</div>,
     initTooltip: (spreadsheet) => {
       return new CustomTooltip(spreadsheet);

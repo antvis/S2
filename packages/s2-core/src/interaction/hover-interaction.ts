@@ -48,7 +48,7 @@ export class HoverInteraction extends BaseInteraction {
   }
 
   protected showTooltip(showOptions: ShowProps) {
-    if (!_.get(this, 'spreadsheet.options.hideTooltip')) {
+    if (_.get(this, 'spreadsheet.options.tooltip.showTooltip')) {
       this.spreadsheet.tooltip.show(showOptions);
     }
   }
