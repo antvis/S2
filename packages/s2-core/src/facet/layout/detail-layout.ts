@@ -9,6 +9,7 @@ import { Node } from './node';
 import { processColsList, processRowsList } from './util';
 import { ColsResult } from './util/process-cols';
 import { RowsResult } from './util/process-rows';
+import { DEFAULT_FACET_CFG as DefaultCfg } from './default-facet-cfg';
 
 /**
  * ListSheet's Layout class
@@ -114,14 +115,15 @@ export class DetailLayout extends Layout {
     const rows = this.rows;
     const cols = this.values; // list-sheet don't have direct cols
     const { rowCfg, cellCfg } = this.facet.cfg;
-    let colWidth = cellCfg.width;
+    const defaultCellWidth = DefaultCfg.cellCfg.width;
+    let colWidth = defaultCellWidth;
     const colSize = Math.max(1, rows.length + cols.length);
     const canvasW = this.facet.getCanvasHW().width;
     if (this.facet.cfg.spreadsheet.isColAdaptive()) {
       // list-sheet's col width
       // width = DEFAULT_PADDING + realWidth + DEFAULT_PADDING + ICON_RADIUS * 2 + DEFAULT_PADDING
       const realWidth = Math.floor(canvasW / colSize);
-      colWidth = Math.max(cellCfg.width, realWidth);
+      colWidth = Math.max(defaultCellWidth, realWidth);
     } else {
       colWidth = -1;
     }

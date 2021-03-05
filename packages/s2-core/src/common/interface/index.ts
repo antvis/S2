@@ -302,7 +302,7 @@ export interface DrillDownDataCache {
   // 下钻的维度
   drillField: string;
   // 下钻的数据
-  drillData: Record<string, string | number>;
+  drillData: Record<string, string | number>[];
 }
 
 export interface DrillDownFieldInLevel {

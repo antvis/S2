@@ -23,6 +23,9 @@ import {
   has,
   difference,
   indexOf,
+  filter,
+  isNull,
+  isUndefined,
 } from 'lodash';
 import {
   Aggregation,
@@ -272,7 +275,9 @@ export class Pivot {
     if (!metaMap) {
       return [];
     }
-    return this.sort(Array.from(metaMap.keys()), field, query);
+    const result = this.sort(Array.from(metaMap.keys()), field, query);
+    // '' 空label 需要保留，值去除 undefined/null
+    return filter(result, (t) => !isNull(t) && !isUndefined(t));
   }
 
   public getAttr(attr) {

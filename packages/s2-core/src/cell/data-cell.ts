@@ -153,11 +153,12 @@ export class Cell extends BaseCell<ViewMeta> {
    */
   private getLeftAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
-
+    const iconCondition = this.findFieldCondition(this.conditions?.icon);
+    const isIconExist = iconCondition && iconCondition.mapping;
     return {
       x,
       y,
-      width: width - (this.iconShape ? ICON_SIZE + ICON_PADDING * 2 : 0),
+      width: width - (isIconExist ? ICON_SIZE + ICON_PADDING * 2 : 0),
       height,
     };
   }

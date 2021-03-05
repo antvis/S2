@@ -48,7 +48,7 @@ import { BaseParams } from '../data-set/base-data-set';
 import { StrategyDataCell } from '../cell';
 import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
-import { DefaultStyleCfg } from '../common/default-style-cfg';
+import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
 
 const matrixTransform = ext.transform;
 export default abstract class BaseSpreadSheet extends EE {
@@ -126,10 +126,10 @@ export default abstract class BaseSpreadSheet extends EE {
   ) {
     super();
     this.dom = isString(dom) ? document.getElementById(dom) : dom;
-    this.initGroups(this.dom, options);
+    this.dataCfg = safetyDataCfg(dataCfg);
+    this.options = safetyOptions(options);
+    this.initGroups(this.dom, this.options);
     this.bindEvents();
-    this.dataCfg = this.safetyDataCfg(dataCfg);
-    this.options = this.safetyOptions(options);
     this.dataSet = this.initDataSet(this.options);
     this.tooltip =
       (options?.initTooltip && options?.initTooltip(this)) ||
@@ -138,68 +138,6 @@ export default abstract class BaseSpreadSheet extends EE {
     this.initDevicePixelRatioListener();
   }
 
-  safetyDataCfg = (dataCfg: DataCfg): DataCfg => {
-    const { rows, columns, values, derivedValues } = dataCfg.fields;
-    const safetyFields = {
-      rows: rows || [],
-      columns: columns || [],
-      values: values || [],
-      derivedValues: derivedValues || [],
-    } as Fields;
-    return {
-      ...dataCfg,
-      meta: dataCfg.meta || [],
-      data: dataCfg.data || [],
-      sortParams: dataCfg.sortParams || [],
-      fields: safetyFields,
-    } as DataCfg;
-  };
-
-  safetyOptions = (options: SpreadsheetOptions): SpreadsheetOptions => {
-    const safetyConditions = {
-      text: [],
-      background: [],
-      interval: [],
-      icon: [],
-    } as Conditions;
-    const safetyTotals = {
-      row: {},
-      col: {},
-    } as Totals;
-    return {
-      ...options,
-      width: options.width || 600,
-      height: options.height || 480,
-      debug: get(options, 'debug', false),
-      hierarchyType: options.hierarchyType || 'grid',
-      hierarchyCollapse: get(options, 'hierarchyCollapse', false),
-      conditions: merge({}, safetyConditions, options.conditions || {}),
-      totals: merge({}, safetyTotals, options.totals || {}),
-      linkFieldIds: options.linkFieldIds || [],
-      pagination: options.pagination || false,
-      containsRowHeader: get(options, 'containsRowHeader', true),
-      spreadsheetType: get(options, 'spreadsheetType', true),
-      style: merge({}, DefaultStyleCfg(), options.style),
-      showSeriesNumber: get(options, 'showSeriesNumber', false),
-      hideNodesIds: options.hideNodesIds || [],
-      keepOnlyNodesIds: options.keepOnlyNodesIds || [],
-      registerDefaultInteractions: get(
-        options,
-        'registerDefaultInteractions',
-        true,
-      ),
-      scrollReachNodeField: options.scrollReachNodeField || {
-        rowField: [],
-        colField: [],
-      },
-      hideRowColFields: options.hideRowColFields || [],
-      valueInCols: get(options, 'valueInCols', true),
-      needDataPlaceHolderCell: get(options, 'needDataPlaceHolderCell', false),
-      tooltipComponent: options?.tooltipComponent,
-      // dataCell, cornerCell, rowCell, colCell, frame, cornerHeader, layout
-      // layoutResult, hierarchy, layoutArrange 存在使用时校验，在此不处理
-    } as SpreadsheetOptions;
-  };
 
   /**
    * Create all related groups, contains:
