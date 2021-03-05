@@ -1,7 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2021-03-04
- */
 import { isArray, isEqual, get } from 'lodash';
 export const detectAttrsChangeAndAction = (
   pre: Record<string, unknown>,
