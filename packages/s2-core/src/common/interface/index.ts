@@ -4,6 +4,7 @@ import BaseSpreadsheet from '../../sheet-type/base-spread-sheet';
 import { BaseDataSet } from '../../data-set';
 import { BaseParams } from '../../data-set/base-data-set';
 import { Frame } from '../../facet/header';
+import { BaseTooltip } from '../tooltip';
 
 export type Data = Record<string, string | number>;
 
@@ -229,8 +230,6 @@ export interface SpreadsheetOptions {
   readonly debug?: boolean;
   // row header hierarchy type
   readonly hierarchyType?: 'grid' | 'tree';
-  // hide default tooltips switch
-  readonly hideTooltip?: boolean;
   // row header in tree mode collapse all nodes
   readonly hierarchyCollapse?: boolean;
   // conditions config
@@ -347,7 +346,7 @@ export type CellCallback = (
 export type TooltipCallback = (
   spreadsheet: BaseSpreadSheet,
   ...restOptions
-) => Group;
+) => BaseTooltip;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => Group;
 // TODO 类型定义清楚！！
