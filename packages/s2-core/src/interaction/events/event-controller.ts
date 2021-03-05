@@ -8,6 +8,8 @@ import {
   DefaultEventType,
 } from './types';
 import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
+import { StateName } from '../../state/state'
+
 export class EventController {
   protected spreadsheet: BaseSpreadSheet;
   // 保存触发的元素
@@ -118,7 +120,7 @@ export class EventController {
         ) {
           this.hoverTarget = ev.target;
           this.spreadsheet.clearState();
-          this.spreadsheet.setState(cell, 'hover');
+          this.spreadsheet.setState(cell, StateName.HOVER);
           this.spreadsheet.updateCellStyleByState();
           this.draw();
         }
@@ -155,29 +157,16 @@ export class EventController {
         if (this.target === ev.target) {
           switch (cellType) {
             case DataCell.name:
-              const meta = cell.getMeta();
-              this.spreadsheet.emit(S2Event.DATACELL_CLICK, {
-                viewMeta: meta,
-                rowQuery: meta.rowQuery,
-                colQuery: meta.colQuery,
-              });
+              this.spreadsheet.emit(S2Event.DATACELL_CLICK, ev);
               break;
             case RowCell.name:
-              this.spreadsheet.emit(S2Event.ROWCELL_CLICK, {
-                viewMeta: cell.getMeta(),
-                query: cell.getMeta().query,
-              });
+              this.spreadsheet.emit(S2Event.ROWCELL_CLICK, ev);
               break;
             case ColCell.name:
-              this.spreadsheet.emit(S2Event.COLCELL_CLICK, {
-                viewMeta: cell.getMeta(),
-                query: cell.getMeta().query,
-              });
+              this.spreadsheet.emit(S2Event.COLCELL_CLICK, ev);
               break;
             case CornerCell.name:
-              this.spreadsheet.emit(S2Event.CORNER_CLICK, {
-                viewMeta: cell.getMeta(),
-              });
+              this.spreadsheet.emit(S2Event.CORNER_CLICK, ev);
               break;
             default:
               return;

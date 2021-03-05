@@ -4,6 +4,7 @@ import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { S2Event, DefaultEventType } from './events/types';
 import { BaseInteraction } from './base';
+import { StateName } from '../state/state'
 import { DataItem, TooltipOptions } from '..';
 
 function getBrushRegion(p1, p2) {
@@ -92,6 +93,12 @@ export class BrushSelection extends BaseInteraction {
           width: brushRegion.width,
           height: brushRegion.height,
         });
+        const currentState = this.spreadsheet.getCurrentState();
+        if (currentState.stateName === 'selectedCol') {
+          this.spreadsheet.getPanelAllCells().forEach((cell) => {
+            cell.hideShapeUnderState();
+          });
+        }
         this.getHighlightCells(brushRegion);
         this.draw();
       }
@@ -166,7 +173,7 @@ export class BrushSelection extends BaseInteraction {
   private getSelectedCells(region) {
     const selectedCells = this.getCellsInRegion(region);
     selectedCells.forEach((cell) => {
-      this.spreadsheet.setState(cell, 'selected');
+      this.spreadsheet.setState(cell, StateName.SELECTED);
     });
     this.spreadsheet.updateCellStyleByState();
   }
@@ -182,7 +189,7 @@ export class BrushSelection extends BaseInteraction {
     if (cells.length) {
       this.spreadsheet.clearState();
       cells.forEach((cell: DataCell) => {
-        this.spreadsheet.setState(cell, 'prepareSelect');
+        this.spreadsheet.setState(cell, StateName.PREPARE_SELECT);
       });
       this.spreadsheet.updateCellStyleByState();
     }
@@ -210,16 +217,16 @@ export class BrushSelection extends BaseInteraction {
   public hide() {
     // this.hideTooltip();
     if (this.cells) {
+      if (this.regionShape) {
+        this.regionShape.attr({
+          opacity: 0,
+        });
+      }
       this.spreadsheet.clearState();
+      this.spreadsheet.eventController.interceptEvent.clear();
+      // 清空屏蔽的事件
+      this.phase = 0;
+      this.draw();
     }
-    if (this.regionShape) {
-      this.regionShape.attr({
-        opacity: 0,
-      });
-    }
-    // 清空屏蔽的事件
-    this.spreadsheet.eventController.interceptEvent.clear();
-    this.phase = 0;
-    this.draw();
   }
 }

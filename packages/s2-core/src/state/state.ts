@@ -4,6 +4,11 @@ import _ from 'lodash';
 
 type S2AllCellType = DataCell | ColCell | CornerCell | RowCell;
 
+export enum StateName {
+  SELECTED = 'selected',
+  HOVER = 'hover',
+  PREPARE_SELECT = 'prepareSelect',
+}
 export default class State {
   protected spreadsheet: BaseSpreadSheet;
   protected stateStore = {
@@ -16,7 +21,7 @@ export default class State {
   }
   // 设置state
   // 表格当前只能存在一种状态，当stateName与stateStore中的状态不一致时，要清空之前存储的状态
-  public setState(cell: S2AllCellType, stateName: string) {
+  public setState(cell: S2AllCellType, stateName: StateName | string) {
     if (stateName !== this.stateStore.stateName) {
       // 当stateName与stateStore中的状态不一致时
       this.stateStore = {
@@ -36,9 +41,11 @@ export default class State {
   }
 
   public clearState() {
-    _.forEach(this.stateStore.cells, (cell) => {
-      cell.hideShapeUnderState();
-    });
+    if(this.stateStore.cells && this.stateStore.cells.length) {
+      _.forEach(this.stateStore.cells, (cell: S2AllCellType) => {
+        cell.hideShapeUnderState();
+      });
+    }
     this.stateStore = {
       stateName: '',
       cells: [],

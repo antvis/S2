@@ -205,7 +205,6 @@ export class RowColResize extends BaseInteraction {
   }
 
   private resizeMouseMove = (ev: any) => {
-    console.log('realProcess')
     // is dragging
     if (this.resizeGroup && this.resizeGroup.get('visible')) {
       ev.preventDefault();

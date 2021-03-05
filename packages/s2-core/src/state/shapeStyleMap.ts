@@ -1,6 +1,6 @@
 // shape的属性和css属性的映射
 export const shapeStyleMap = {
-  backgroundColor: 'fillStyle',
+  backgroundColor: 'fill',
   opacity: 'fillOpacity',
   prepareSelectBorderColor: 'stroke',
 };

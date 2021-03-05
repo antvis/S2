@@ -7,6 +7,7 @@ import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { BaseInteraction } from './base';
 import { ViewMeta } from '../common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
+import { StateName } from '../state/state'
 
 /**
  * Panel Area's DataCell Click Interaction
@@ -36,20 +37,23 @@ export class CellSelection extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev: Event) => {
+    this.spreadsheet.on(S2Event.DATACELL_CLICK, (ev: Event) => {
       ev.stopPropagation();
       // 说明是mouseDown后按住鼠标移动，这种行为是刷选
       // 刷选看 ---> brush-select
-      if (this.target !== ev.target) {
-        return;
-      }
       const meta = this.getMetaInCell(ev.target);
-
       if (meta) {
         // selected通过state来接管，不需要再在 this.spreadsheet.store 中操作
         const cell = this.spreadsheet.eventController.getCell(ev.target);
+        const currentState = this.spreadsheet.getCurrentState();
+        console.log('currentState', currentState)
+        if (currentState.stateName === 'selectedCol') {
+          this.spreadsheet.getPanelAllCells().forEach((cell) => {
+            cell.hideShapeUnderState();
+          });
+        }
         this.spreadsheet.clearState();
-        this.spreadsheet.setState(cell, 'selected');
+        this.spreadsheet.setState(cell, StateName.SELECTED);
         this.spreadsheet.updateCellStyleByState();
         this.spreadsheet.eventController.interceptEvent.add(DefaultEventType.HOVER);
 

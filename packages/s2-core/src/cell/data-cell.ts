@@ -8,13 +8,14 @@ import {
   renderLine,
   renderRect,
   renderText,
-  updateShapeAttr,
+  // updateShapeAttr,
 } from '../utils/g-renders';
-import { isSelected } from '../utils/selected';
+// import { isSelected } from '../utils/selected';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { BaseCell } from './base-cell';
 import { DerivedCell } from './derived-cell';
+import { StateName } from '../state/state'
 
 // default icon size
 const ICON_SIZE = 10;
@@ -58,15 +59,16 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public update() {
-    const selected = this.spreadsheet.store.get('selected');
-    if (_.isNil(selected)) {
-      this.setInactive();
-    } else {
-      const s = isSelected(this.meta.rowIndex, this.meta.colIndex, selected);
-      if (s) {
-        this.setActive();
+    const state = this.spreadsheet.getCurrentState();
+    const { stateName, cells: selectedCols } = state;
+    // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
+    if(stateName === 'selectedCol' && selectedCols.length) {
+      const currentColIndex = this.meta.colIndex;
+      const selectedColIndex = _.map(selectedCols, cell => cell.getMeta().cellIndex);
+      if(selectedColIndex.indexOf(currentColIndex) > -1) {
+        this.updateByState(StateName.SELECTED);
       } else {
-        this.setInactive();
+        this.hideShapeUnderState();
       }
     }
   }
@@ -95,21 +97,21 @@ export class DataCell extends BaseCell<ViewMeta> {
     };
   }
 
-  public setActive() {
-    updateShapeAttr(
-      this.interactiveBgShape,
-      'fillOpacity',
-      this.theme.view.cell.interactiveFillOpacity[1],
-    );
-  }
+  // public setActive() {
+  //   updateShapeAttr(
+  //     this.interactiveBgShape,
+  //     'fillOpacity',
+  //     this.theme.view.cell.interactiveFillOpacity[1],
+  //   );
+  // }
 
-  public setInactive() {
-    updateShapeAttr(
-      this.interactiveBgShape,
-      'fillOpacity',
-      this.theme.view.cell.interactiveFillOpacity[0],
-    );
-  }
+  // public setInactive() {
+  //   updateShapeAttr(
+  //     this.interactiveBgShape,
+  //     'fillOpacity',
+  //     this.theme.view.cell.interactiveFillOpacity[0],
+  //   );
+  // }
 
   public setMeta(viewMeta: ViewMeta) {
     super.setMeta(viewMeta);
@@ -282,7 +284,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       y,
       width,
       height,
-      fill,
+      'transparent',
       'transparent',
       this,
     );
