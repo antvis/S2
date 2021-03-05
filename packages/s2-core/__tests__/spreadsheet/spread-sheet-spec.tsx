@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { merge, clone } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
@@ -12,6 +12,7 @@ import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch } from 'antd';
+import { CustomTooltip } from './custom/custom-tooltip';
 
 let data = getMockData('../datasets/tableau-supermarket.csv');
 
@@ -136,6 +137,10 @@ const getOptions = () => {
       },
       device: 'pc',
     },
+    // tooltipComponent: <div>component 测试</div>,
+    initTooltip: (spreadsheet) => {
+      return new CustomTooltip(spreadsheet);
+    },
   };
 };
 
@@ -157,7 +162,7 @@ function MainLayout(props) {
   const onCheckChanged = (checked) => {
     setValueInCols(checked);
     setOptions(
-      _.merge({}, options, {
+      merge({}, options, {
         valueInCols: checked,
       }),
     );
@@ -165,7 +170,7 @@ function MainLayout(props) {
 
   const onCheckChanged1 = (checked) => {
     setOptions(
-      _.merge({}, options, {
+      merge({}, options, {
         hierarchyType: checked ? 'tree' : 'grid',
       }),
     );
@@ -173,10 +178,10 @@ function MainLayout(props) {
 
   const onCheckChanged2 = (checked) => {
     setDerivedValueMul(checked);
-    const next = _.merge({}, dataCfg, {
+    const next = merge({}, dataCfg, {
       fields: {
         derivedValues: dataCfg.fields.derivedValues.map((dv) => {
-          const dvn = _.clone(dv);
+          const dvn = clone(dv);
           dvn.displayDerivedValueField = checked
             ? dv.derivedValueField
             : [dv.derivedValueField[0]];
