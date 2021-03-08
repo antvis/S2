@@ -86,11 +86,8 @@ export class RowColumnSelection extends HoverInteraction {
         let showSortOperations = false;
         //  tooltip 是否可让鼠标进入
         let enterable = true;
-        // 显示 tooltip 的动作来源
-        let actionType: ActionType;
         if (cell instanceof RowCell) {
           // 行选中
-          actionType = 'rowSelection';
           const idx = meta.cellIndex;
           if (idx === -1) {
             // 多行
@@ -108,7 +105,6 @@ export class RowColumnSelection extends HoverInteraction {
           }
         } else if (cell instanceof ColCell) {
           // 列选中
-          actionType = 'columnSelection';
           const idx = meta.cellIndex;
           if (idx === -1) {
             // 多列

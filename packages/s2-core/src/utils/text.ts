@@ -52,8 +52,9 @@ export const getEllipsisTextInner = (text: any, maxWidth: number, font) => {
     return text;
   }
 
+  let runningStep1 = true;
   // 首先通过 step 计算，找出最大的未超出长度的
-  while (true) {
+  while (runningStep1) {
     // 更新字符串
     currentText = leftText.substr(0, STEP);
 
@@ -63,7 +64,7 @@ export const getEllipsisTextInner = (text: any, maxWidth: number, font) => {
     // 超出剩余宽度，则停止
     if (currentWidth + DOT_WIDTH > leftWidth) {
       if (currentWidth > leftWidth) {
-        break;
+        runningStep1 = false;
       }
     }
 
@@ -79,8 +80,9 @@ export const getEllipsisTextInner = (text: any, maxWidth: number, font) => {
     }
   }
 
+  let runningStep2 = true;
   // 最下的最后一个 STEP，使用 1 递增（用二分效果更高）
-  while (true) {
+  while (runningStep2) {
     // 更新字符串
     currentText = leftText.substr(0, 1);
 
@@ -89,7 +91,7 @@ export const getEllipsisTextInner = (text: any, maxWidth: number, font) => {
 
     // 超出剩余宽度，则停止
     if (currentWidth + DOT_WIDTH > leftWidth) {
-      break;
+      runningStep2 = false;
     }
 
     r.push(currentText);

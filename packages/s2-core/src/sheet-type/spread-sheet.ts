@@ -181,7 +181,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
       options,
       this.options,
       'hierarchyCollapse',
-      (currentValue) => {
+      () => {
         if (isBoolean(options.hierarchyCollapse)) {
           // 如果选择了默认折叠/展开，需要清除之前的折叠状态。
           set(this, 'options.style.collapsedRows', {});
@@ -201,7 +201,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
       options,
       this.options,
       ['spreadsheetType', 'valueInCols'],
-      (currentValue) => {
+      () => {
         this.dataSet = this.initDataSet(options);
       },
     );
@@ -217,7 +217,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
       options,
       this.options,
       'style.colCfg.colWidthType',
-      (currentValue) => {
+      () => {
         set(this, 'options.style.rowCfg.widthByField', {});
         set(options, 'style.rowCfg.widthByField', {});
       },
@@ -229,7 +229,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
       options,
       this.options,
       ['width', 'height'],
-      (currentValue) => {
+      () => {
         this.changeSize(options.width, options.height);
       },
     );

@@ -47,7 +47,7 @@ export class BaseTooltip {
 
   protected position: Position = { x: 0, y: 0 }; // tooltips position info
 
-  constructor(plot: BaseSpreadSheet, aggregation: Aggregation) {
+  constructor(plot: BaseSpreadSheet, aggregation?: Aggregation) {
     this.spreadsheet = plot;
     this.aggregation = aggregation || 'SUM';
   }
