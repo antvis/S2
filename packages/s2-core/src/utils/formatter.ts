@@ -33,14 +33,15 @@ export const auto = (
 
   let loop = 0;
   let power;
+  let running = true;
 
-  while (true) {
+  while (running) {
     power = powers[loop] as number;
 
     if (n >= power && loop < texts.length) {
       n /= power;
     } else {
-      break;
+      running = false;
     }
     ++loop;
   }

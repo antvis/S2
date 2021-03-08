@@ -33,14 +33,7 @@ import {
 } from '../common/constant';
 import { BaseDataSet } from '../data-set';
 import { SpreadsheetFacet } from '../facet';
-import {
-  Conditions,
-  Fields,
-  Node,
-  Totals,
-  BaseInteraction,
-  SpreadSheetTheme,
-} from '../index';
+import { Fields, Node, BaseInteraction, SpreadSheetTheme } from '../index';
 import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';
