@@ -1,13 +1,15 @@
-import { Event, Group } from '@antv/g-canvas';
 import * as _ from '@antv/util';
 import { S2Event, DefaultEventType } from './events/types';
 // import { isSelected } from '../utils/selected';
 import { DataCell } from '../cell';
+import { Event } from '@antv/g-canvas';
+import { get, noop, includes } from 'lodash';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { BaseInteraction } from './base';
 import { ViewMeta } from '../common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 import { StateName } from '../state/state'
+import { getTooltipData } from '../utils/tooltip';
 
 /**
  * Panel Area's DataCell Click Interaction
@@ -47,19 +49,17 @@ export class CellSelection extends BaseInteraction {
         this.spreadsheet.setState(cell, StateName.SELECTED);
         this.spreadsheet.updateCellStyleByState();
         this.spreadsheet.eventController.interceptEvent.add(DefaultEventType.HOVER);
+        this.draw();
 
         // const position = {
-        //   x: ev.event.clientX,
-        //   y: ev.event.clientY,
+        //   x: ev.clientX,
+        //   y: ev.clientY,
         // };
-        // const hoveringCellData = _.get(meta, 'data.0');
-        const isTotals = _.get(meta, 'isTotals', false);
-
-        // 决策模式下的总小计不tooltip
-        if (isTotals && this.spreadsheet.isStrategyMode()) {
-          return;
-        }
-
+        // const hoveringCellData = get(meta, 'data.0');
+        // const isTotals = get(meta, 'isTotals', false);
+        // if (isTotals && this.spreadsheet.isStrategyMode()) {
+        //   return;
+        // }
         // const cellOperator = this.spreadsheet.options?.cellOperator;
         // let operator = this.spreadsheet.options?.showTrend
         //   ? {
@@ -68,7 +68,7 @@ export class CellSelection extends BaseInteraction {
         //           // 展示趋势点击
         //           this.spreadsheet.emit('spread-trend-click', meta);
         //           // 隐藏tooltip
-        //           // this.hide();
+        //           this.hide();
         //         }
         //       },
         //       menus: [
@@ -80,19 +80,28 @@ export class CellSelection extends BaseInteraction {
         //       ],
         //     }
         //   : {
-        //       onClick: _.noop,
+        //       onClick: noop,
         //       menus: [],
         //     };
         // if (cellOperator) {
         //   operator = cellOperator;
         // }
-        // this.showTooltip(position, hoveringCellData, {
-        //   actionType: 'cellSelection',
+        // const options = {
         //   isTotals,
         //   operator,
-        // });
+        // };
+        // const tooltipData = getTooltipData(
+        //   this.spreadsheet,
+        //   hoveringCellData,
+        //   options,
+        // );
+        // const showOptions = {
+        //   position,
+        //   data: tooltipData,
+        //   options,
+        // };
+        // this.showTooltip(showOptions);
       }
-      this.draw();
     })
   }
 
@@ -112,9 +121,9 @@ export class CellSelection extends BaseInteraction {
   private _onDocumentClick(ev) {
     if (
       ev.target !== this.spreadsheet.container.get('el') &&
-      !_.contains(ev.target?.className, 'eva-facet') &&
-      !_.contains(ev.target?.className, 'ant-menu') &&
-      !_.contains(ev.target?.className, 'ant-input')
+      !includes(ev.target?.className, 'eva-facet') &&
+      !includes(ev.target?.className, 'ant-menu') &&
+      !includes(ev.target?.className, 'ant-input')
     ) {
       this.spreadsheet.clearState();
       this.draw();

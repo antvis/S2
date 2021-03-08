@@ -1,5 +1,16 @@
 import { getEllipsisText } from '../utils/text';
-import * as _ from 'lodash';
+import {
+  get,
+  isEmpty,
+  slice,
+  find,
+  keys,
+  isEqual,
+  set,
+  merge,
+  includes,
+  isArray,
+} from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { renderRect, renderText, updateShapeAttr } from '../utils/g-renders';
 import { DerivedCell, DataCell } from '.';
@@ -16,7 +27,7 @@ export class StrategyDataCell extends DataCell {
   }
 
   protected initTextShape() {
-    const { x, y, height, width, valueField, isTotals, colQuery } = this.meta;
+    const { x, y, height, valueField, isTotals, colQuery } = this.meta;
 
     //  the size of text condition is equal with valueFields size
     const textCondition = this.findFieldCondition(this.conditions?.text);
@@ -24,32 +35,32 @@ export class StrategyDataCell extends DataCell {
     // 主指标的条件格式
     const { formattedValue: text } = this.getData();
     const textStyle = isTotals
-      ? _.get(this.spreadsheet, 'theme.view.bolderText')
-      : _.get(this.spreadsheet, 'theme.view.text');
+      ? get(this.spreadsheet, 'theme.view.bolderText')
+      : get(this.spreadsheet, 'theme.view.text');
     let textFill = textStyle.fill;
-    if (_.get(textCondition, 'mapping')) {
+    if (get(textCondition, 'mapping')) {
       textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
 
-    const widthInfos = _.get(
+    const widthInfos = get(
       this.spreadsheet.store.get(KEY_COL_REAL_WIDTH_INFO),
       'widthInfos',
     );
-    const key = _.find(_.keys(widthInfos), (wi) =>
-      _.isEqual(JSON.parse(wi), colQuery),
+    const key = find(keys(widthInfos), (wi) =>
+      isEqual(JSON.parse(wi), colQuery),
     ) as any;
-    const infos = _.get(widthInfos, key);
-    const mainInfo = _.get(infos, 0);
+    const infos = get(widthInfos, key);
+    const mainInfo = get(infos, 0);
     // 1、绘制主指标
     const mainX = x + mainInfo?.x + mainInfo?.width;
     const mainY = y + height / 2;
     const values = this.spreadsheet.dataCfg.fields.values;
-    let finalText = text || (_.isArray(values) ? '-' : '');
-    if (_.isArray(values)) {
+    let finalText = text || (isArray(values) ? '-' : '');
+    if (isArray(values)) {
       // 行维度存在的情况
       finalText = text || '-';
     } else {
-      const exsis = _.includes(values?.measures, valueField);
+      const exsis = includes(values?.measures, valueField);
       finalText = text || (exsis ? '-' : '');
     }
     const mainText = getEllipsisText(finalText, mainInfo?.width, textStyle);
@@ -71,7 +82,7 @@ export class StrategyDataCell extends DataCell {
       mainX,
       mainY,
       mainText,
-      _.merge({}, textStyle, {
+      merge({}, textStyle, {
         textAlign: 'end',
       }),
       textFill,
@@ -79,15 +90,14 @@ export class StrategyDataCell extends DataCell {
     );
 
     // 2、绘制衍生指标
-    const derivedInfos = _.slice(infos, 1);
+    const derivedInfos = slice(infos, 1);
     const derivedValue = this.spreadsheet.getDerivedValue(valueField);
-    const derivedValues = derivedValue.derivedValueField;
     const displayDerivedValues = derivedValue.displayDerivedValueField;
-    if (_.isEmpty(derivedValue?.derivedValueField)) {
+    if (isEmpty(derivedValue?.derivedValueField)) {
       // 没有衍生指标
     } else {
       // 多列平铺
-      for (let i = 0; i < displayDerivedValues.length; i++) {
+      for (let i = 0; i < displayDerivedValues.length; i += 1) {
         const info = derivedInfos[i] as any;
         const currentDerivedX = x + info.x;
         const data = this.getDerivedData(displayDerivedValues[i]);
@@ -107,6 +117,6 @@ export class StrategyDataCell extends DataCell {
   }
 
   protected initCellRightBorder() {
-    _.set(this.spreadsheet, 'theme.view.cell.verticalBorder', true);
+    set(this.spreadsheet, 'theme.view.cell.verticalBorder', true);
   }
 }

@@ -15,7 +15,6 @@ import { ResizeInfo } from '../facet/header/interface';
 import { Node } from '..';
 import { BaseCell } from './base-cell';
 import { renderLine } from '../utils/g-renders';
-import doubleLineText from '../utils/double-line-text';
 import { IGroup } from '@antv/g-canvas';
 
 /**

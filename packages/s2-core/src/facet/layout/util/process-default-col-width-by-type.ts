@@ -1,17 +1,9 @@
-/**
- * Create By Bruce Too
- * On 2019-11-27
- */
 import { measureTextWidth } from '../../..';
-import * as _ from 'lodash';
-import { Pivot } from '../../../data-set';
-import {
-  DEFAULT_PADDING,
-  ICON_RADIUS,
-  TREE_ROW_DEFAULT_WIDTH,
-} from '../../../common/constant';
+import { get, set, includes, isEmpty } from 'lodash';
+import { DEFAULT_PADDING, ICON_RADIUS } from '../../../common/constant';
 import { SpreadsheetFacet } from '../../index';
 import { Hierarchy } from '../hierarchy';
+import { DEFAULT_FACET_CFG as DefaultCfg } from '../default-facet-cfg';
 
 export enum WidthType {
   Compat = -1, // 紧凑模式
@@ -21,16 +13,19 @@ export enum WidthType {
  * Integrate row header's col with col header's col, let theme to share canvas
  * width before render(default width)
  * @param facet
- * @param pivot
  * @param colsHierarchy
  */
 export default function processDefaultColWidthByType(
   facet: SpreadsheetFacet,
-  pivot: Pivot,
   colsHierarchy: Hierarchy,
 ) {
-  const { rows, rowCfg, cellCfg } = facet.cfg;
-  let colWidth = cellCfg.width;
+  const { rows, rowCfg, cellCfg, dataSet } = facet.cfg;
+  const defaultCellWidth = DefaultCfg.cellCfg.width;
+  if (isEmpty(dataSet.data)) {
+    // 数据没有的情况下，直接用默认值
+    return defaultCellWidth;
+  }
+  let colWidth = defaultCellWidth;
   const canvasW = facet.getCanvasHW().width;
   // 非决策模式下的列宽均分场景才能走这个逻辑
   if (
@@ -43,7 +38,7 @@ export default function processDefaultColWidthByType(
       const rowHeaderColSize = rows.length;
       const colHeaderColSize = colsHierarchy.getNotNullLeafs().length;
       const size = Math.max(1, rowHeaderColSize + colHeaderColSize);
-      colWidth = Math.max(cellCfg.width, canvasW / size);
+      colWidth = Math.max(defaultCellWidth, canvasW / size);
     } else {
       const drillDownFieldInLevel = facet.spreadsheet.store.get(
         'drillDownFieldInLevel',
@@ -51,10 +46,10 @@ export default function processDefaultColWidthByType(
       );
       const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
       const treeHeaderLabel = rows
-        .filter((value) => !_.includes(drillFields, value))
+        .filter((value) => !includes(drillFields, value))
         .map((key: string): string => facet.getDataset().getFieldName(key))
         .join('/');
-      const textStyle = _.get(facet, 'spreadsheet.theme.header.bolderText');
+      const textStyle = get(facet, 'spreadsheet.theme.header.bolderText');
       // [100, canvasW / 2]
       let width = Math.min(
         Math.max(100, measureTextWidth(treeHeaderLabel, textStyle)),
@@ -68,11 +63,11 @@ export default function processDefaultColWidthByType(
         // user drag happened
         width = rowCfg.treeRowsWidth;
       } else {
-        _.set(facet, 'cfg.treeRowsWidth', width);
+        set(facet, 'cfg.treeRowsWidth', width);
         // facet.cfg.treeRowsWidth = width;
       }
       const size = Math.max(1, colsHierarchy.getNotNullLeafs().length);
-      colWidth = Math.max(cellCfg.width, (canvasW - width) / size);
+      colWidth = Math.max(defaultCellWidth, (canvasW - width) / size);
     }
   } else {
     // 其他场景1、决策模式，2、自适应宽度场景，其中决策模式有单独的宽控制逻辑
@@ -82,7 +77,7 @@ export default function processDefaultColWidthByType(
     if (rowCfg?.treeRowsWidth) {
       // user drag happened
       // facet.cfg.treeRowsWidth = rowCfg.treeRowsWidth + ICON_RADIUS * 2 + DEFAULT_PADDING * 2;
-      _.set(
+      set(
         facet,
         'cfg.treeRowsWidth',
         rowCfg.treeRowsWidth + ICON_RADIUS * 2 + DEFAULT_PADDING * 2,

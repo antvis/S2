@@ -1,11 +1,12 @@
-import { Event, Group } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { Event } from '@antv/g-canvas';
+import { map, size, get, min, max, each } from 'lodash';
 import { ActionType, SortParam, Node } from '../index';
 import { DataCell, ColCell, RowCell } from '../cell';
 import { getHeaderHierarchyQuery } from '../facet/layout/util';
 import { DownOutlined } from '@ant-design/icons';
 import { S2Event, DefaultEventType } from './events/types';
 import { BaseInteraction } from './base';
+import { getTooltipData } from '../utils/tooltip';
 
 interface MenuType {
   id: string;
@@ -74,7 +75,7 @@ export class RowColumnSelection extends BaseInteraction {
         );
         if (idx === -1) {
           // 多行
-          _.each(Node.getAllLeavesOfNode(meta), (node: Node) => {
+          each(Node.getAllLeavesOfNode(meta), (node: Node) => {
             // 如果
             if(node.belongsCell) {
               this.spreadsheet.setState(node.belongsCell, 'selectedRow')
@@ -110,7 +111,7 @@ export class RowColumnSelection extends BaseInteraction {
         );
         if (idx === -1) {
           // 多列
-          _.each(Node.getAllLeavesOfNode(meta), (node: Node) => {
+          each(Node.getAllLeavesOfNode(meta), (node: Node) => {
             if(node.belongsCell) {
               this.spreadsheet.setState(node.belongsCell, 'selectedCol')
             }
@@ -128,19 +129,29 @@ export class RowColumnSelection extends BaseInteraction {
         // }
         this.resetCell();
         this.draw();
-        const position = {
-          x: ev.clientX,
-          y: ev.clientY,
-        };
+        // const position = {
+        //   x: ev.clientX,
+        //   y: ev.clientY,
+        // };
         // 兼容明细表
-        const hoveringCellData = _.get(meta, 'query') || {
-          [_.get(meta, 'key')]: _.get(meta, 'value'),
-        };
-        // this.showTooltip(position, hoveringCellData, {
-        //   actionType,
+        // const hoveringCellData = get(meta, 'query') || {
+        //   [get(meta, 'key')]: get(meta, 'value'),
+        // };
+        // const options = {
         //   operator: this.getSortOperator(showSortOperations),
         //   enterable,
-        // });
+        // };
+        // const tooltipData = getTooltipData(
+        //   this.spreadsheet,
+        //   hoveringCellData,
+        //   options,
+        // );
+        // const showOptions = {
+        //   position,
+        //   data: tooltipData,
+        //   options,
+        // };
+        // this.showTooltip(showOptions);
       }
     })
   }
@@ -158,7 +169,7 @@ export class RowColumnSelection extends BaseInteraction {
       if (menu.id === id) {
         targetMenu = menu;
       }
-      if (_.size(menu.children)) {
+      if (size(menu.children)) {
         targetMenu = this.findCurMenu(id, menu.children);
       }
     });

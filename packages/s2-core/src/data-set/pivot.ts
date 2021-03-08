@@ -1,4 +1,32 @@
-import * as _ from 'lodash';
+import {
+  reduce,
+  map,
+  max,
+  min,
+  isNil,
+  compact,
+  sum,
+  assign,
+  size,
+  set,
+  includes,
+  get,
+  isEmpty,
+  flattenDeep,
+  flattenDepth,
+  isNumber,
+  last,
+  intersection,
+  every,
+  each,
+  find,
+  has,
+  difference,
+  indexOf,
+  filter,
+  isNull,
+  isUndefined,
+} from 'lodash';
 import {
   Aggregation,
   KeepOnlyIds,
@@ -32,10 +60,10 @@ type PivotMeta = Map<
 
 export class Pivot {
   public static CalcFunc: Record<Aggregation, (arr: number[]) => number> = {
-    SUM: _.sum,
-    MIN: _.min,
-    MAX: _.max,
-    AVG: (arr: number[]) => _.sum(arr) / arr.length,
+    SUM: sum,
+    MIN: min,
+    MAX: max,
+    AVG: (arr: number[]) => sum(arr) / arr.length,
   };
 
   public config: Config;
@@ -68,7 +96,7 @@ export class Pivot {
   /** 外部传入的totalCache */
 
   constructor(cfg: Partial<Config>) {
-    this.config = _.assign(
+    this.config = assign(
       {
         rows: [],
         cols: [],
@@ -125,14 +153,14 @@ export class Pivot {
     | 'label'
     | 'subLabel'
   > {
-    const config = (_.get(
+    const config = (get(
       this.totals,
-      _.includes(this.config.rows, field) ? 'row' : 'col',
+      includes(this.config.rows, field) ? 'row' : 'col',
     ) || {}) as Total;
     // 设置全部增加小计 or 指定具体维度
     // subo: showSubTotals控制开关，subTotalsDimensions控制显示内容。
     const showSubTotals = config.showSubTotals
-      ? _.includes(config.subTotalsDimensions, field)
+      ? includes(config.subTotalsDimensions, field)
       : false;
     return {
       showSubTotals,
@@ -150,21 +178,21 @@ export class Pivot {
    */
   public getRecords(query?: DataType): DataType[] {
     const { rows, cols } = this.config;
-    if (_.isEmpty(query)) {
+    if (isEmpty(query)) {
       // 返回全部数据
-      return _.compact(_.flattenDeep(this.data));
+      return compact(flattenDeep(this.data));
     }
     const getRowPath = this.getPath(this.rowMeta, false);
     const rowPath = getRowPath(this.getQueryPath(rows, query));
     const getColPath = this.getPath(this.colMeta, false);
     const colPath = getColPath(this.getQueryPath(cols, query));
 
-    if (_.isEmpty(colPath) && _.isEmpty(rowPath)) {
+    if (isEmpty(colPath) && isEmpty(rowPath)) {
       return [];
     }
 
     // 如果查询条件错误，则返回无结果
-    if (_.includes(colPath, undefined) || _.includes(rowPath, undefined)) {
+    if (includes(colPath, undefined) || includes(rowPath, undefined)) {
       return [];
     }
 
@@ -173,13 +201,13 @@ export class Pivot {
     // 交叉图（离散 x 连续）场景，需要补充空值
     // 1. 行维度为类目轴
     if (rowPath.length === rows.length - 1 && colPath.length === cols.length) {
-      const last = _.last(rows);
-      const meta = this.getChildMeta(last, query);
+      const lastRows = last(rows);
+      const meta = this.getChildMeta(lastRows, query);
       const dimValues = meta ? meta.keys() : [];
-      const records = _.map(data, (o, i) => {
+      const records = map(data, (o, i) => {
         const r = this.getDataByPath(o, colPath);
-        if (_.isNil(r)) {
-          return this.getBlankRecord(query, { [last]: dimValues[i] });
+        if (isNil(r)) {
+          return this.getBlankRecord(query, { [lastRows]: dimValues[i] });
         }
         return r;
       });
@@ -187,13 +215,13 @@ export class Pivot {
     }
     // 2. 列维度为类目轴
     if (rowPath.length === rows.length && colPath.length === cols.length - 1) {
-      const last = _.last(cols);
-      const meta = this.getChildMeta(last, query);
+      const lastCols = last(cols);
+      const meta = this.getChildMeta(lastCols, query);
       const dimValues = meta ? meta.keys() : [];
       const arr = this.getDataByPath(data, colPath);
-      const records = _.map(arr, (o, i) => {
-        if (_.isNil(o)) {
-          return this.getBlankRecord(query, { [last]: dimValues[i] });
+      const records = map(arr, (o, i) => {
+        if (isNil(o)) {
+          return this.getBlankRecord(query, { [lastCols]: dimValues[i] });
         }
         return o;
       });
@@ -209,11 +237,11 @@ export class Pivot {
     // 4. 不需要补空值时，小计、排序场景
     const dataByRow =
       rowPath.length < rows.length
-        ? _.flattenDepth(data, rows.length - rowPath.length - 1)
+        ? flattenDepth(data, rows.length - rowPath.length - 1)
         : [data];
-    const dataArr = _.map(dataByRow, (o) => this.getDataByPath(o, colPath));
+    const dataArr = map(dataByRow, (o) => this.getDataByPath(o, colPath));
     const depth = cols.length - colPath.length;
-    return _.compact(_.flattenDepth(dataArr, depth));
+    return compact(flattenDepth(dataArr, depth));
   }
 
   /**
@@ -231,7 +259,7 @@ export class Pivot {
    */
   public getDimValues(field: string, query?: DataType): string[] {
     // first row/column
-    if (_.isEmpty(query)) {
+    if (isEmpty(query)) {
       const values = this.sortedDimValue.get(field);
       // no field's values exist
       if (!values) {
@@ -240,14 +268,16 @@ export class Pivot {
       return this.sort(Array.from(values), field);
     }
     // 特殊值的处理：getDimValues("type", { type: "A" })
-    if (_.has(query, field)) {
+    if (has(query, field)) {
       return [query[field]];
     }
-    const map = this.getChildMeta(field, query);
-    if (!map) {
+    const metaMap = this.getChildMeta(field, query);
+    if (!metaMap) {
       return [];
     }
-    return this.sort(Array.from(map.keys()), field, query);
+    const result = this.sort(Array.from(metaMap.keys()), field, query);
+    // '' 空label 需要保留，值去除 undefined/null
+    return filter(result, (t) => !isNull(t) && !isUndefined(t));
   }
 
   public getAttr(attr) {
@@ -303,10 +333,10 @@ export class Pivot {
         s = (Pivot.CalcFunc[calc] || Pivot.CalcFunc.SUM).call(
           null,
           // 修复小计总计平均值计算包含空数值场景。
-          _.compact(
-            _.map(records, (record) => {
+          compact(
+            map(records, (record) => {
               const v = record[field];
-              return _.isNil(v) ? null : Number.parseFloat(v);
+              return isNil(v) ? null : Number.parseFloat(v);
             }),
           ),
         );
@@ -327,7 +357,7 @@ export class Pivot {
    * 重新训练
    */
   public change(cfg: Config) {
-    this.constructor(_.assign({} as Config, this.config, cfg));
+    this.constructor(assign({} as Config, this.config, cfg));
   }
 
   /**
@@ -349,19 +379,19 @@ export class Pivot {
       const rowPath = getRowPath(rowArr);
       const colPath = getColPath(colArr);
       const path = rowPath.concat(colPath);
-      if (_.size(path) === 0) {
+      if (size(path) === 0) {
         // 没有row，没有col
         path.push(0);
       }
-      _.set(this.data, path, line);
+      set(this.data, path, line);
     }
     // 对维值map进行排序处理
-    _.each(rows.concat(cols).concat(values), (dim) => {
-      const sortParam = _.find(sortParams, ['sortFieldId', dim]);
-      const map = this.unSortedDimValue.get(dim);
+    each(rows.concat(cols).concat(values), (dim) => {
+      const sortParam = find(sortParams, ['sortFieldId', dim]);
+      const sortMap = this.unSortedDimValue.get(dim);
       // 无数据时，只有维度配置，但没有具体维值，需要容错
-      if (sortParam && map) {
-        const sorted = Array.from(map.entries());
+      if (sortParam && sortMap) {
+        const sorted = Array.from(sortMap.entries());
         if (sortParam.sortBy && sortParam?.sortFieldId === EXTRA_FIELD) {
           // 目前用在values的排序显示中(字段域的排序)
           sorted.sort(
@@ -370,7 +400,7 @@ export class Pivot {
         } else if (sortParam.sortMethod) {
           const j = sortParam.sortMethod === 'ASC' ? 1 : -1;
           sorted.sort((a: [string, string], b: [string, string]) => {
-            if (_.isNumber(a[1]) && _.isNumber(b[1])) {
+            if (isNumber(a[1]) && isNumber(b[1])) {
               // 数值比较，解决 '2' > '11' 场景
               return (a[1] - b[1]) * j;
             }
@@ -381,10 +411,10 @@ export class Pivot {
             return j;
           });
         }
-        this.sortedDimValue.set(dim, new Set(_.map(sorted, 0)));
-      } else if (map) {
+        this.sortedDimValue.set(dim, new Set(map(sorted, 0)));
+      } else if (sortMap) {
         // 去掉默认升序(不排序 为了性能)
-        this.sortedDimValue.set(dim, new Set(map.keys()));
+        this.sortedDimValue.set(dim, new Set(sortMap.keys()));
       }
     });
     this.unSortedDimValue.clear();
@@ -396,7 +426,7 @@ export class Pivot {
    * @param dims 维度id
    */
   private trainingDim(record: DataType, dims: string[]): string[] {
-    return _.map(dims, (dim) => {
+    return map(dims, (dim) => {
       const dimValue = record[dim];
       if (!this.unSortedDimValue.has(dim)) {
         this.unSortedDimValue.set(dim, new Map());
@@ -410,10 +440,10 @@ export class Pivot {
   }
 
   /** 获取树的节点路径，如果不存在该节点则初始化 */
-  private getPath(map: PivotMeta, upsert = true) {
-    return function (dimValues: string[]): number[] {
+  private getPath(cursorMap: PivotMeta, upsert = true) {
+    const getPathFunction = (dimValues: string[]): number[] => {
       const res = [];
-      let cursor = map;
+      let cursor = cursorMap;
 
       // eslint-disable-next-line no-restricted-syntax
       for (const key of dimValues) {
@@ -434,13 +464,14 @@ export class Pivot {
       }
       return res;
     };
+    return getPathFunction;
   }
 
   private getQueryPath(dims: string[], query: DataType): string[] {
-    return _.reduce(
+    return reduce(
       dims,
       (res: string[], id: string) => {
-        if (query && _.has(query, id)) {
+        if (query && has(query, id)) {
           res.push(query[id]);
         }
         return res;
@@ -458,12 +489,12 @@ export class Pivot {
   private sort(arr: string[], field: string, query?: any) {
     // todo：由于上层存在$$column$$逻辑，目前横向的按度量排序暂未实现
     const { sortParams, rows, cols, values } = this.config;
-    const sortParam = _.find(sortParams, { sortFieldId: field });
+    const sortParam = find(sortParams, { sortFieldId: field });
     // 1. 查找第一个度量排序，优先按照度量排序
-    const measureSort = _.find(sortParams, (o) =>
-      _.includes(values, o.sortFieldId),
+    const measureSort = find(sortParams, (o) =>
+      includes(values, o.sortFieldId),
     );
-    if (measureSort && _.last(rows) === field) {
+    if (measureSort && last(rows) === field) {
       // 2.1 分组度量排序
       // 特征：字段为最内层子节点，含行维度筛选条件
       // 2.2 全局度量排序
@@ -477,22 +508,22 @@ export class Pivot {
       // todo: 这里有不应该感知的外层逻辑，因为columns强制会是1，$$columns$$
       const isExtraValid =
         cols.length <= 1 ||
-        (cols.length > 1 && _.every(cols, (d) => _.has(measureSort.query, d)));
+        (cols.length > 1 && every(cols, (d) => has(measureSort.query, d)));
       if (isExtraValid) {
         const { sortFieldId, sortMethod, query: extra } = measureSort;
         const j = sortMethod === 'ASC' ? 1 : -1;
-        const q = _.assign({}, query, extra);
+        const q = assign({}, query, extra);
         // 3. 获取排好序的数据
         const records = this.getRecords(q).sort(
           (a, b) => (a[sortFieldId] - b[sortFieldId]) * j,
         );
         // 4. 得到排好序的维值数组
-        const vs = _.map(records, field);
-        const set: Set<string> = new Set(vs);
-        set.delete(undefined);
-        const sortedDims = Array.from(set);
+        const vs = map(records, field);
+        const dataSet: Set<string> = new Set(vs);
+        dataSet.delete(undefined);
+        const sortedDims = Array.from(dataSet);
         // 由于某些维值下无数据，需要补充入最终结果
-        const otherDims = _.difference(arr, sortedDims);
+        const otherDims = difference(arr, sortedDims);
 
         return sortedDims.concat(otherDims);
       }
@@ -502,7 +533,7 @@ export class Pivot {
     // dimValue已经是排好序的
     if (sortParam) {
       const sorted = Array.from(this.sortedDimValue.get(field));
-      return _.intersection(sorted, arr);
+      return intersection(sorted, arr);
     }
 
     return arr;
@@ -515,7 +546,7 @@ export class Pivot {
    */
   private getBlankRecord(query: any, insert?: any) {
     const { values } = this.config;
-    const t = _.reduce(
+    const t = reduce(
       values,
       (res, next) => {
         res[next] = null;
@@ -524,7 +555,7 @@ export class Pivot {
       {},
     );
 
-    return _.assign({}, query, t, insert);
+    return assign({}, query, t, insert);
   }
 
   /**
@@ -534,10 +565,10 @@ export class Pivot {
    */
   private getSortIndex(key: string, record: DataType): number | string {
     const { sortParams } = this.config;
-    const sortParam = _.find(sortParams, ['sortFieldId', key]);
+    const sortParam = find(sortParams, ['sortFieldId', key]);
     if (sortParam) {
-      if (!_.isEmpty(sortParam.sortBy)) {
-        return _.indexOf(sortParam.sortBy, record[key]);
+      if (!isEmpty(sortParam.sortBy)) {
+        return indexOf(sortParam.sortBy, record[key]);
       }
       if (sortParam.sortByField) {
         // 数值也转为文本，便于后续统一排序
@@ -551,7 +582,7 @@ export class Pivot {
   private getChildMeta(field: string, query?: DataType): PivotMeta {
     let meta;
     let dims;
-    if (_.includes(this.config.rows, field)) {
+    if (includes(this.config.rows, field)) {
       // field in rows
       meta = this.rowMeta;
       dims = this.config.rows;
@@ -564,11 +595,11 @@ export class Pivot {
       return undefined;
     }
 
-    const level = _.indexOf(dims, field);
+    const level = indexOf(dims, field);
     // eslint-disable-next-line no-restricted-syntax
     for (const dim of dims.slice(0, level)) {
-      if (_.has(query, dim)) {
-        const value = _.get(query, dim);
+      if (has(query, dim)) {
+        const value = get(query, dim);
         if (meta.has(value)) {
           meta = meta.get(value).children;
           // eslint-disable-next-line no-continue
@@ -587,6 +618,6 @@ export class Pivot {
    * lodash, get(o, []) => undefined，因为它无法区分'[]'等空值做key的场景
    */
   private getDataByPath(data: any, path: number[]) {
-    return _.size(path) ? _.get(data, path) : data;
+    return size(path) ? get(data, path) : data;
   }
 }

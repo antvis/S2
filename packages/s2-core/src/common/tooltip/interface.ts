@@ -1,15 +1,19 @@
-/**
- * @Description:
- * @author qingsheng
- * @date 2019/3/11
- * @warning EVA 编码委员会提醒您：代码千万行，注释第一行；编程不规范，同事两行泪！
- */
-
-import { IOperatorProps } from './components/operator';
 import { BaseSpreadSheet } from '../../sheet-type';
 import { SortParam } from '../interface';
 
 export type DataItem = Record<string, any>;
+
+export interface IMenu {
+  readonly id: string;
+  readonly icon?: any;
+  readonly text?: string;
+  readonly children?: IMenu[]; // subMenu
+}
+
+export interface OperatorProps {
+  readonly onClick: (...params) => void;
+  readonly menus: IMenu[];
+}
 
 export interface Position {
   readonly x: number;
@@ -33,21 +37,20 @@ export type ActionType =
   | 'columnSelection';
 
 export interface TooltipOptions {
-  actionType?: ActionType;
+  hideSummary?: boolean;
   // button action on the top
-  operator?: IOperatorProps;
+  operator?: OperatorProps;
   enterable?: boolean;
   // totals or not
   isTotals?: boolean;
-  singleTips?: boolean;
+  showSingleTips?: boolean;
 
-  // 提供给外部任意传参数
   [key: string]: any;
 }
 
 export interface SummaryProps {
   readonly name: string;
-  readonly value: number;
+  readonly value: number | string;
   readonly selectedData: DataItem[];
 }
 
@@ -67,4 +70,36 @@ export interface OperationState {
 
 export type DetailProps = {
   list: ListItem[];
+};
+
+export type InterpretationProps = {
+  name: string;
+  icon?: any;
+  text?: string;
+  render?: React.ElementType;
+};
+
+export type InfosProps = {
+  infos: string;
+};
+
+export type ShowProps = {
+  position: Position;
+  data?: DataProps;
+  options?: TooltipOptions;
+  element?: React.ReactElement;
+};
+
+export type DataProps = {
+  summary?: SummaryProps;
+  details?: ListItem[];
+  headInfo?: HeadInfo;
+  tips?: string;
+  infos?: string;
+  interpretation?: InterpretationProps;
+};
+
+export type HeadInfo = {
+  rows: ListItem[];
+  cols: ListItem[];
 };

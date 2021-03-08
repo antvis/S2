@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { each, isEmpty, merge, get, has } from 'lodash';
 import { SpreadsheetFacet } from '..';
 import { BaseDataSet, Pivot } from '../../data-set';
 import { EXTRA_FIELD, VALUE_FIELD } from '../../common/constant';
@@ -55,7 +55,7 @@ export class Layout {
     const { colLeafNodes, colsHierarchy } = this.getCols(rowsHierarchy);
 
     // 2、handle col width first by type(spreadsheet or list-sheet | (tree or grid))
-    processDefaultColWidthByType(this.facet, this.pivot, colsHierarchy);
+    processDefaultColWidthByType(this.facet, colsHierarchy);
     // 3、calculate all nodes coordinate
     processRowNodesCoordinate(
       this.cfg,
@@ -77,7 +77,7 @@ export class Layout {
       if (value.height !== 0) {
         // eslint-disable-next-line no-param-reassign
         value.rowIndexHeightExist = index;
-        index++;
+        index += 1;
       }
     });
     const dataSet = this.dataSet;
@@ -118,8 +118,8 @@ export class Layout {
       // 数值挂行头且有列总计的特殊情况，需要强制返回node路径
       const colQuery = getDimsConditionByNode(col, isValueInColsTotal);
       const dataQuery = isValueInColsTotal
-        ? _.merge({}, rowQuery)
-        : _.merge({}, rowQuery, colQuery);
+        ? merge({}, rowQuery)
+        : merge({}, rowQuery, colQuery);
 
       let data = [];
       if (isInTree && isParentInTree) {
@@ -175,7 +175,7 @@ export class Layout {
       }
 
       // mark grand totals node in origin data obj
-      _.each(data, (d) => {
+      each(data, (d) => {
         // eslint-disable-next-line no-param-reassign
         d.isGrandTotals = isGrandTotals;
         // eslint-disable-next-line no-param-reassign
@@ -183,15 +183,15 @@ export class Layout {
       });
       let valueField = '';
       let fieldValue = null;
-      const realData = _.get(data, [0], {});
-      if (!_.isEmpty(realData)) {
-        if (_.has(realData, EXTRA_FIELD) || _.has(realData, VALUE_FIELD)) {
-          valueField = _.get(realData, [EXTRA_FIELD], '');
-          fieldValue = _.get(realData, [VALUE_FIELD], null);
+      const realData = get(data, [0], {});
+      if (!isEmpty(realData)) {
+        if (has(realData, EXTRA_FIELD) || has(realData, VALUE_FIELD)) {
+          valueField = get(realData, [EXTRA_FIELD], '');
+          fieldValue = get(realData, [VALUE_FIELD], null);
         }
       } else {
         // 数据查询为空，需要默认带上可能存在的valueField
-        valueField = _.get(dataQuery, [EXTRA_FIELD], '');
+        valueField = get(dataQuery, [EXTRA_FIELD], '');
       }
       return {
         spreadsheet: ss,
@@ -228,6 +228,7 @@ export class Layout {
   }
 
   protected getCols(rowsHierarchy: Hierarchy): ColsResult {
+    console.debug(rowsHierarchy);
     return processCols(this.pivot, this.cfg, this.cols);
   }
 

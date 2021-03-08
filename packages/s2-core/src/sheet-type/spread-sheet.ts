@@ -1,17 +1,12 @@
-/**
- * Create By Bruce Too
- * On 2020-06-17
- */
 import BaseSpreadSheet from './base-spread-sheet';
 import {
   DataCfg,
   SpreadsheetFacetCfg,
   SpreadsheetOptions,
-  ViewMeta,
 } from '../common/interface';
 import { BaseDataSet, SpreadDataSet, DetailDataSet } from '../data-set';
-import { BaseTooltip, NormalTooltip } from '../tooltip';
-import * as _ from 'lodash';
+import { BaseTooltip } from '../tooltip';
+import { get, set, isBoolean, merge } from 'lodash';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -34,6 +29,7 @@ import { SpreadsheetFacet } from '../facet';
 import { SpreadParams } from '../data-set/spread-data-set';
 import { BaseFacet } from '../facet/base-facet';
 import { InteractionConstructor } from '../interaction/base';
+import { detectAttrsChangeAndAction } from '../utils/attrs-action';
 
 /**
  * 目前交叉表和明细的表类入口(后续会分拆出两个表)
@@ -57,8 +53,9 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.handleCollapseChangedInTreeMode(options);
     this.handleDataSetChanged(options);
     this.handleColLayoutTypeChanged(options);
+    this.handleChangeSize(options);
 
-    this.options = _.merge(
+    this.options = merge(
       {
         style: {}, // 默认对象，用户可不传
       },
@@ -75,7 +72,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.on(KEY_COLLAPSE_TREE_ROWS, (data) => {
       const { id, isCollapsed } = data;
       const style = this.options.style;
-      const options = _.merge({}, this.options, {
+      const options = merge({}, this.options, {
         style: {
           ...style,
           collapsedRows: {
@@ -145,12 +142,12 @@ export default class SpreadSheet extends BaseSpreadSheet {
   }
 
   protected initTooltip(): BaseTooltip {
-    return new NormalTooltip(this);
+    return new BaseTooltip(this);
   }
 
   protected registerInteractions(options: SpreadsheetOptions) {
     this.interactions.clear();
-    if (_.get(options, 'registerDefaultInteractions', true) && !isMobile()) {
+    if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
       this.registerInteraction(
         'spreadsheet:row-col-selection',
         RowColumnSelection,
@@ -178,14 +175,17 @@ export default class SpreadSheet extends BaseSpreadSheet {
   protected handleCollapseChangedInTreeMode(
     options: Partial<SpreadsheetOptions>,
   ) {
-    if (
-      options.hierarchyCollapse !==
-        _.get(this, 'options.hierarchyCollapse', {}) &&
-      _.isBoolean(options.hierarchyCollapse)
-    ) {
-      // 如果选择了默认折叠/展开，需要清除之前的折叠状态。
-      _.set(this, 'options.style.collapsedRows', {});
-    }
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      'hierarchyCollapse',
+      () => {
+        if (isBoolean(options.hierarchyCollapse)) {
+          // 如果选择了默认折叠/展开，需要清除之前的折叠状态。
+          set(this, 'options.style.collapsedRows', {});
+        }
+      },
+    );
   }
 
   /**
@@ -195,13 +195,14 @@ export default class SpreadSheet extends BaseSpreadSheet {
    * @private
    */
   protected handleDataSetChanged(options: Partial<SpreadsheetOptions>) {
-    if (
-      _.get(options, 'spreadsheetType') !==
-        _.get(this, 'options.spreadsheetType') ||
-      _.get(options, 'valueInCols') !== _.get(this, 'options.valueInCols')
-    ) {
-      this.dataSet = this.initDataSet(options);
-    }
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      ['spreadsheetType', 'valueInCols'],
+      () => {
+        this.dataSet = this.initDataSet(options);
+      },
+    );
   }
 
   /**
@@ -210,12 +211,25 @@ export default class SpreadSheet extends BaseSpreadSheet {
    * @private
    */
   protected handleColLayoutTypeChanged(options: Partial<SpreadsheetOptions>) {
-    if (
-      _.get(options, 'style.colCfg.colWidthType') !==
-      _.get(this, 'options.style.colCfg.colWidthType')
-    ) {
-      _.set(this, 'options.style.rowCfg.widthByField', {});
-      _.set(options, 'style.rowCfg.widthByField', {});
-    }
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      'style.colCfg.colWidthType',
+      () => {
+        set(this, 'options.style.rowCfg.widthByField', {});
+        set(options, 'style.rowCfg.widthByField', {});
+      },
+    );
+  }
+
+  protected handleChangeSize(options: Partial<SpreadsheetOptions>) {
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      ['width', 'height'],
+      () => {
+        this.changeSize(options.width, options.height);
+      },
+    );
   }
 }

@@ -1,9 +1,10 @@
 import { Group } from '@antv/g-canvas';
-import { BaseCell, Hierarchy, BaseSpreadSheet, Node } from '../../index';
+import { Hierarchy, BaseSpreadSheet, Node } from '../../index';
 import BaseSpreadsheet from '../../sheet-type/base-spread-sheet';
 import { BaseDataSet } from '../../data-set';
 import { BaseParams } from '../../data-set/base-data-set';
 import { Frame } from '../../facet/header';
+import { BaseTooltip } from '../tooltip';
 
 export type Data = Record<string, string | number>;
 
@@ -147,6 +148,17 @@ export interface Totals {
   readonly col?: Partial<Readonly<Total>>;
 }
 
+export interface Tooltip {
+  readonly showTooltip?: boolean;
+  readonly showOperation?: boolean;
+  readonly showSummary?: boolean;
+  readonly showDetail?: boolean;
+  readonly showInfos?: boolean;
+  readonly row?: Tooltip;
+  readonly col?: Tooltip;
+  readonly cell?: Tooltip;
+}
+
 export interface SortParam {
   /** 字段id，业务中一般是displayId */
   sortFieldId: string;
@@ -218,14 +230,13 @@ export interface SpreadsheetOptions {
   readonly debug?: boolean;
   // row header hierarchy type
   readonly hierarchyType?: 'grid' | 'tree';
-  // hide default tooltips switch
-  readonly hideTooltip?: boolean;
   // row header in tree mode collapse all nodes
   readonly hierarchyCollapse?: boolean;
   // conditions config
   readonly conditions?: Conditions;
   // total config
   readonly totals?: Totals;
+  readonly tooltip?: Tooltip;
   // link field ids
   readonly linkFieldIds?: string[];
   // pagination config
@@ -260,6 +271,11 @@ export interface SpreadsheetOptions {
   readonly rowCell?: CellCallback;
   // 自定义列头cell
   readonly colCell?: CellCallback;
+
+  readonly initTooltip?: TooltipCallback;
+
+  readonly tooltipComponent?: React.ElementType;
+
   // 自定义 frame 边框
   readonly frame?: FrameCallback;
   // 角头可能需要全部自定义，而不是用交叉表概念的node来渲染
@@ -286,7 +302,7 @@ export interface DrillDownDataCache {
   // 下钻的维度
   drillField: string;
   // 下钻的数据
-  drillData: Record<string, string | number>;
+  drillData: Record<string, string | number>[];
 }
 
 export interface DrillDownFieldInLevel {
@@ -326,6 +342,11 @@ export type CellCallback = (
   spreadsheet: BaseSpreadSheet,
   ...restOptions
 ) => Group;
+
+export type TooltipCallback = (
+  spreadsheet: BaseSpreadSheet,
+  ...restOptions
+) => BaseTooltip;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => Group;
 // TODO 类型定义清楚！！

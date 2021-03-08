@@ -33,15 +33,17 @@ export const auto = (
 
   let loop = 0;
   let power;
-  while (true) {
+  let running = true;
+
+  while (running) {
     power = powers[loop] as number;
 
     if (n >= power && loop < texts.length) {
       n /= power;
     } else {
-      break;
+      running = false;
     }
-    ++loop;
+    loop += 1;
   }
 
   // parseFloat 解决 toFixed 出现很多 0 结尾。

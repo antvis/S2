@@ -1,5 +1,5 @@
-import { Event, Group, Canvas } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { Event, Canvas } from '@antv/g-canvas';
+import { each } from 'lodash';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { Selected } from '../common/store';
 import { isSelected } from '../utils/selected';
@@ -101,14 +101,14 @@ export abstract class BaseInteraction {
   private clearEvents() {
     // clear Emit listener
     const eventHandlers = this.eventHandlers;
-    _.each(eventHandlers, (eh) => {
+    each(eventHandlers, (eh) => {
       eh.target.off(eh.type, eh.handler);
     });
     this.eventHandlers.length = 0;
 
     // clear Event listener
     const eventListeners = this.eventListeners;
-    _.each(eventListeners, (eh) => {
+    each(eventListeners, (eh) => {
       eh.target.removeEventListener(eh.type, eh.handler);
     });
     this.eventListeners.length = 0;

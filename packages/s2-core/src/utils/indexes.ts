@@ -27,8 +27,8 @@ export const allIndexes = (indexes: Indexes) => {
   const [minI, maxI, minJ, maxJ] = indexes;
   const r = [];
 
-  for (let i = minI; i <= maxI; i++) {
-    for (let j = minJ; j <= maxJ; j++) {
+  for (let i = minI; i <= maxI; i += 1) {
+    for (let j = minJ; j <= maxJ; j += 1) {
       r.push([i, j]);
     }
   }
@@ -76,8 +76,8 @@ export const diffIndexes = (
   }
 
   // sourceIndexes -> targetIndexes 过程中，add 新增的单元格
-  for (let i = targetMinI; i <= targetMaxI; i++) {
-    for (let j = targetMinJ; j <= targetMaxJ; j++) {
+  for (let i = targetMinI; i <= targetMaxI; i += 1) {
+    for (let j = targetMinJ; j <= targetMaxJ; j += 1) {
       if (!isXYInRange(i, j, sourceIndexes)) {
         add.push([i, j]);
       }

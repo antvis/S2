@@ -2,7 +2,6 @@ import { DataCfg } from '../common/interface';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD } from '../common/constant';
 import { SpreadDataSet, SpreadParams } from './spread-data-set';
-import { Pivot } from './pivot';
 import { DetailPivot } from './index';
 
 /**

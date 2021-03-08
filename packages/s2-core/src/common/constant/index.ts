@@ -60,3 +60,4 @@ export const KEY_SERIES_NUMBER_NODE = 'series-number-node';
 export const KEY_COL_REAL_WIDTH_INFO = 'col-real-width-info';
 
 export const MAX_SCROLL_OFFSET = 10;
+export const MIN_SCROLL_BAR_HEIGHT = 20;

@@ -6,6 +6,7 @@ import { S2Event, DefaultEventType } from './events/types';
 import { BaseInteraction } from './base';
 import { StateName } from '../state/state'
 import { DataItem, TooltipOptions } from '..';
+import { getTooltipData } from '../utils/tooltip';
 
 function getBrushRegion(p1, p2) {
   const leftX = Math.min(p1.x, p2.x);
@@ -94,7 +95,7 @@ export class BrushSelection extends BaseInteraction {
           height: brushRegion.height,
         });
         const currentState = this.spreadsheet.getCurrentState();
-        if (currentState.stateName === 'selectedCol') {
+        if (currentState.stateName === 'selectedCol' || currentState.stateName === 'selectedRow') {
           this.spreadsheet.getPanelAllCells().forEach((cell) => {
             cell.hideShapeUnderState();
           });
@@ -117,10 +118,15 @@ export class BrushSelection extends BaseInteraction {
         this.endOriginEvent = ev.event;
         const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
         this.getSelectedCells(brushRegion);
-        // this.showTooltip({
-        //   x: this.endOriginEvent.clientX,
-        //   y: this.endOriginEvent.clientY,
-        // });
+        // const tooltipData = getTooltipData(this.spreadsheet);
+        // const showOptions = {
+        //   position: {
+        //     x: this.endOriginEvent.clientX,
+        //     y: this.endOriginEvent.clientY,
+        //   },
+        //   data: tooltipData,
+        // };
+        // this.showTooltip(showOptions);
         // 透明度为0会导致 hover 无法响应
         this.regionShape.attr({
           opacity: 0,

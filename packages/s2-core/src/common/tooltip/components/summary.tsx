@@ -1,32 +1,33 @@
 import * as React from 'react';
 import { i18n } from '../../i18n';
 import { SummaryProps } from '../interface';
+import { TOOLTIP_CLASS_PRE } from '../constant';
 
-const SUMMARY_CLASS = 'eva-facet-tooltip-summary';
-const SUMMARY_ITEM_CLASS = 'eva-facet-tooltip-summary-item';
-const SUMMARY_KEY_CLASS = 'eva-facet-tooltip-summary-key';
-const SUMMARY_VAL_CLASS = 'eva-facet-tooltip-summary-val';
-const HIGHLIGHT_CLASS = 'eva-facet-tooltip-highlight';
-const BOLD_CLASS = 'eva-facet-tooltip-bold';
+const Summary = (props: SummaryProps) => {
+  const { selectedData = [], name, value } = props;
 
-export class TooltipSummary extends React.PureComponent<SummaryProps> {
-  public render(): JSX.Element {
-    const { selectedData, name, value } = this.props;
-    return (
-      <div className={SUMMARY_CLASS}>
-        <div className={SUMMARY_ITEM_CLASS}>
-          <span className={BOLD_CLASS}>
+  return (
+    selectedData.length > 1 && (
+      <div className={`${TOOLTIP_CLASS_PRE}-summary`}>
+        <div className={`${TOOLTIP_CLASS_PRE}-summary-item`}>
+          <span className={`${TOOLTIP_CLASS_PRE}-bold`}>
             {selectedData.length} {i18n('项')}
           </span>{' '}
           {i18n('已选择')}
         </div>
-        <div className={SUMMARY_ITEM_CLASS}>
-          <span className={SUMMARY_KEY_CLASS}>
+        <div className={`${TOOLTIP_CLASS_PRE}-summary-item`}>
+          <span className={`${TOOLTIP_CLASS_PRE}-summary-key`}>
             {name}（{i18n('总和')}）
           </span>
-          <span className={`${SUMMARY_VAL_CLASS} ${BOLD_CLASS}`}>{value}</span>
+          <span
+            className={`${TOOLTIP_CLASS_PRE}-summary-val ${TOOLTIP_CLASS_PRE}-bold`}
+          >
+            {value}
+          </span>
         </div>
       </div>
-    );
-  }
-}
+    )
+  );
+};
+
+export default Summary;
