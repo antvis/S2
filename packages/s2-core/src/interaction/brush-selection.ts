@@ -1,5 +1,5 @@
 import { Event, Point, IShape } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { get } from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { S2Event, DefaultEventType } from './events/types';
@@ -138,7 +138,7 @@ export class BrushSelection extends BaseInteraction {
   }
 
   // protected showTooltip(position: Point, hoverData?: DataItem, options?: TooltipOptions) {
-  //   if (!_.get(this, 'spreadsheet.options.hideTooltip')) {
+  //   if (!get(this, 'spreadsheet.options.hideTooltip')) {
   //     this.spreadsheet.tooltip.show(position, hoverData, options);
   //   }
   // }

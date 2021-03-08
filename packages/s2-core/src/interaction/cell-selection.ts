@@ -1,4 +1,4 @@
-import * as _ from '@antv/util';
+import { wrapBehavior } from '@antv/util';
 import { S2Event, DefaultEventType } from './events/types';
 // import { isSelected } from '../utils/selected';
 import { DataCell } from '../cell';
@@ -26,7 +26,7 @@ export class CellSelection extends BaseInteraction {
     this.addEventListener(
       document,
       'click',
-      _.wrapBehavior(this, '_onDocumentClick')
+      wrapBehavior(this, '_onDocumentClick')
     );
   }
 

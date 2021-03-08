@@ -1,5 +1,5 @@
 import { Event, Point } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { get }from 'lodash';
 import { isMobile } from '../utils/is-mobile';
 import { measureTextWidth } from '../utils/text';
 import { getCellPadding } from '../facet/header/util';
@@ -24,26 +24,26 @@ export class CornerHeaderTextClick extends BaseInteraction {
   
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.CORNER_MOUSEDOWN, (ev: Event) => {
-      this.targetPoint = _.get(ev, 'target.cfg.startPoint');
+      this.targetPoint = get(ev, 'target.cfg.startPoint');
     })
   }
 
   private bindMouseUp() {
     this.spreadsheet.on(S2Event.CORNER_MOUSEUP, (ev: Event) => {
-      if (this.targetPoint !== _.get(ev, 'target.cfg.startPoint')) {
+      if (this.targetPoint !== get(ev, 'target.cfg.startPoint')) {
         return;
       }
       const cornerExpand = this.spreadsheet.store.get('cornerExpand') || {};
-      const appendInfo = _.get(ev.target, 'attrs.appendInfo', {});
-      const text = _.get(ev.target, 'attrs.text', '');
-      const label = _.get(ev.target, 'attrs.appendInfo.cellData.label', '');
+      const appendInfo = get(ev.target, 'attrs.appendInfo', {});
+      const text = get(ev.target, 'attrs.text', '');
+      const label = get(ev.target, 'attrs.appendInfo.cellData.label', '');
       // 是行头title 且 有收起。或者之前点击过
       if (
         appendInfo.isCornerHeaderText &&
         (text.includes('..') || cornerExpand[label])
       ) {
         const labelWidth = Math.ceil(
-          measureTextWidth(label, _.get(this.spreadsheet, 'theme.header.text')),
+          measureTextWidth(label, get(this.spreadsheet, 'theme.header.text')),
         );
         const padding = getCellPadding();
         const { left, right } = padding;

@@ -3,7 +3,7 @@ import { BaseSpreadSheet, SpreadSheetTheme } from '..';
 import { updateShapeAttr } from '../utils/g-renders';
 import { DataCell, ColCell, CornerCell, RowCell } from './';
 import * as shapeStyle from '../state/shapeStyleMap';
-import _ from 'lodash';
+import { get, each findKey } from 'lodash';
 
 /**
  * Create By Bruce Too
@@ -70,11 +70,11 @@ export abstract class BaseCell<T> extends Group {
 
   public updateByState(stateName) {
     const { themeByState } = this.theme;
-    const stateStyles = _.get(themeByState, [this.getCellType(), stateName]);
-    _.each(stateStyles, (style, styleKey) => {
+    const stateStyles = get(themeByState, [this.getCellType(), stateName]);
+    each(stateStyles, (style, styleKey) => {
       if (styleKey) {
         // 找到对应的shape，并且找到cssStyple对应的shapestyle
-        const currentShape = _.findKey(
+        const currentShape = findKey(
           shapeStyle.shapeAttrsMap,
           (attrs) => attrs.indexOf(styleKey) > -1,
         );

@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { get }from 'lodash';
 import { DataItem, TooltipOptions } from '../index';
 import { DataCell } from '../cell';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
@@ -42,13 +42,13 @@ export class HoverInteraction extends BaseInteraction {
   // }
 
   // protected hideHoverBox() {
-  //   if (_.get(this.spreadsheet, 'hoverBoxGroup')) {
+  //   if (get(this.spreadsheet, 'hoverBoxGroup')) {
   //     this.spreadsheet.hoverBoxGroup.clear();
   //   }
   // }
 
   protected showTooltip(showOptions: ShowProps) {
-    if (_.get(this, 'spreadsheet.options.tooltip.showTooltip')) {
+    if (get(this, 'spreadsheet.options.tooltip.showTooltip')) {
       this.spreadsheet.tooltip.show(showOptions);
     }
   }

@@ -1,5 +1,5 @@
 import { Event, Canvas, LooseObject } from '@antv/g-canvas';
-import * as _ from '@antv/util';
+import { get, each } from 'lodash';
 import { BaseCell, DataCell, ColCell, CornerCell, RowCell } from '../../cell';
 import {
   S2Event,
@@ -82,7 +82,7 @@ export class EventController {
 
   protected start(ev: Event) {
     this.target = ev.target;
-    const appendInfo = _.get(ev.target, 'attrs.appendInfo');
+    const appendInfo = get(ev.target, 'attrs.appendInfo');
     if(appendInfo && appendInfo.isResizer) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEDOWN, ev);
     } else {
@@ -107,7 +107,7 @@ export class EventController {
   }
 
   protected process(ev: Event) {
-    const appendInfo = _.get(ev.target, 'attrs.appendInfo');
+    const appendInfo = get(ev.target, 'attrs.appendInfo');
     if(appendInfo && appendInfo.isResizer) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEMOVE, ev);
     } else {
@@ -146,7 +146,7 @@ export class EventController {
   }
 
   protected end(ev: Event) {
-    const appendInfo = _.get(ev.target, 'attrs.appendInfo');
+    const appendInfo = get(ev.target, 'attrs.appendInfo');
     if(appendInfo && appendInfo.isResizer) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEUP, ev);
     } else {
@@ -260,14 +260,14 @@ export class EventController {
   private _clearEvents() {
     // clear Emit listener
     const eventHandlers = this.eventHandlers;
-    _.each(eventHandlers, (eh) => {
+    each(eventHandlers, (eh) => {
       eh.target.off(eh.type, eh.handler);
     });
     this.eventHandlers.length = 0;
 
     // clear Event listener
     const eventListeners = this.eventListeners;
-    _.each(eventListeners, (eh) => {
+    each(eventListeners, (eh) => {
       eh.target.removeEventListener(eh.type, eh.handler);
     });
     this.eventListeners.length = 0;

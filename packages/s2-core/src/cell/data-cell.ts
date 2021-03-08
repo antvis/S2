@@ -1,6 +1,6 @@
 import { getEllipsisText } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { map, find, get, isEmpty, isNumber } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
@@ -65,7 +65,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     if(selectedCells.length) {
       if(stateName === 'selectedCol') {
         const currentColIndex = this.meta.colIndex;
-        const selectedColIndex = _.map(selectedCells, cell => cell.getMeta().cellIndex);
+        const selectedColIndex = map(selectedCells, cell => cell.getMeta().cellIndex);
         if(selectedColIndex.indexOf(currentColIndex) > -1) {
           this.updateByState(StateName.SELECTED);
         } else {
@@ -74,7 +74,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       } else if (stateName === 'selectedRow') {
         // 逻辑和selectedCol一致，row-select和col-select可能会有不同方式，暂时不合并
         const currentRowIndex = this.meta.rowIndex;
-        const selectedRowIndex = _.map(selectedCells, cell => cell.getMeta().rowIndex);
+        const selectedRowIndex = map(selectedCells, cell => cell.getMeta().rowIndex);
         if(selectedRowIndex.indexOf(currentRowIndex) > -1) {
           this.updateByState(StateName.SELECTED);
         } else {
@@ -190,7 +190,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param conditions
    */
   protected findFieldCondition(conditions: Condition[]): Condition {
-    return _.find(conditions, (item) => item.field === this.meta.valueField);
+    return find(conditions, (item) => item.field === this.meta.valueField);
   }
 
   /**
@@ -198,7 +198,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): CellMapping {
-    return condition?.mapping(this.meta.fieldValue, _.get(this.meta.data, [0]));
+    return condition?.mapping(this.meta.fieldValue, get(this.meta.data, [0]));
   }
 
   /**
@@ -314,7 +314,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       const attrs = this.mappingValue(iconCondition);
       const { formattedValue } = this.getData();
       // icon only show when icon not empty and value not null(empty)
-      if (!_.isEmpty(attrs?.icon) && formattedValue) {
+      if (!isEmpty(attrs?.icon) && formattedValue) {
         this.iconShape = new GuiIcon({
           type: attrs.icon,
           x: x + width - ICON_PADDING - ICON_SIZE,
@@ -392,11 +392,11 @@ export class DataCell extends BaseCell<ViewMeta> {
     if (data) {
       let value;
       if (isTotals) {
-        value = _.get(data, [0, VALUE_FIELD]);
+        value = get(data, [0, VALUE_FIELD]);
       } else {
-        value = _.get(data, [0, derivedValue]);
+        value = get(data, [0, derivedValue]);
       }
-      const up = _.isNumber(value) ? value >= 0 : false;
+      const up = isNumber(value) ? value >= 0 : false;
       const formatter = this.spreadsheet.dataSet.getFieldFormatter(
         derivedValue,
       );
