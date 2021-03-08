@@ -138,7 +138,6 @@ export default abstract class BaseSpreadSheet extends EE {
     this.initDevicePixelRatioListener();
   }
 
-
   /**
    * Create all related groups, contains:
    * 1. container -- base canvas group
