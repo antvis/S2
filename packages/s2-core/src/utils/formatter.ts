@@ -43,7 +43,7 @@ export const auto = (
     } else {
       running = false;
     }
-    ++loop;
+    loop += 1;
   }
 
   // parseFloat 解决 toFixed 出现很多 0 结尾。
