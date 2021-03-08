@@ -57,112 +57,90 @@ export class RowColumnSelection extends BaseInteraction {
   // 显示排序时，排序的查询参数
   public sortQuery: any;
 
-  private target;
-
   protected bindEvents() {
-    // this.bindMouseDown();
-    this.bindMouseUp();
+    this.bindColCellClick();
+    this.bindRowCellClick();
   }
 
-  // private bindMouseDown() {
-  //   this.spreadsheet.on(S2Event.COLCELL_MOUSEDOWN, (ev: Event) => {
-  //     this.target = ev.target;
-  //     this.cells = this.spreadsheet.getPanelAllCells();
-  //     this.selected = [];
-  //   })
-  // }
+  private bindRowCellClick() {
+    this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
+      const cell = this.spreadsheet.eventController.getCell(ev.target);
+      if (cell.getMeta().x !== undefined) {
+        const meta = cell.getMeta();
+        const idx = meta.cellIndex;
+        this.spreadsheet.clearState();
+        this.spreadsheet.eventController.interceptEvent.add(
+          DefaultEventType.HOVER,
+        );
+        if (idx === -1) {
+          // 多行
+          _.each(Node.getAllLeavesOfNode(meta), (node: Node) => {
+            // 如果
+            if(node.belongsCell) {
+              this.spreadsheet.setState(node.belongsCell, 'selectedRow')
+            }
+          })
+        } else {
+          // 单行
+          this.spreadsheet.setState(cell, 'selectedRow')
+        }
+        this.resetCell();
+        this.draw();
+      }
+    })
+  }
 
-  private bindMouseUp() {
+  private bindColCellClick() {
     this.spreadsheet.on(S2Event.COLCELL_CLICK, (ev: Event) => {
       const cell = this.spreadsheet.eventController.getCell(ev.target);
-      if (cell && (cell instanceof RowCell || cell instanceof ColCell)) {
-        if (cell.getMeta().x !== undefined) {
-          const meta = cell.getMeta();
-          if (this.selectedId === meta.id) {
-            // this.spreadsheet.store.set('selected', null);
-            // console.log('this.selectedId', this.selectedId)
-            // this.spreadsheet.clearState()
-            // this.resetCell();
-            this.selectedId = null;
-            this.draw();
-            return;
-          }
-          this.selectedId = meta.id;
-          // 是否显示排序选项
-          // let showSortOperations = false;
-          //  tooltip 是否可让鼠标进入
-          // let enterable = true;
-          // 显示 tooltip 的动作来源
-          let actionType: ActionType;
-          if (cell instanceof RowCell) {
-            // 行选中
-            actionType = 'rowSelection';
-            const idx = meta.cellIndex;
-            if (idx === -1) {
-              // 多行
-              const arr = _.map(Node.getAllLeavesOfNode(meta), 'cellIndex');
-              this.spreadsheet.store.set('selected', {
-                type: 'row',
-                indexes: [[_.min(arr), _.max(arr)], -1],
-              });
-            } else {
-              // 单行
-              this.spreadsheet.store.set('selected', {
-                type: 'row',
-                indexes: [idx, -1],
-              });
+      if (cell.getMeta().x !== undefined) {
+        const meta = cell.getMeta();
+        this.selectedId = meta.id;
+        // 是否显示排序选项
+        // let showSortOperations = false;
+        //  tooltip 是否可让鼠标进入
+        // let enterable = true;
+        // 显示 tooltip 的动作来源
+        let actionType: ActionType;
+        // actionType = 'columnSelection';
+        const idx = meta.cellIndex;
+        this.spreadsheet.clearState();
+        this.spreadsheet.eventController.interceptEvent.add(
+          DefaultEventType.HOVER,
+        );
+        if (idx === -1) {
+          // 多列
+          _.each(Node.getAllLeavesOfNode(meta), (node: Node) => {
+            if(node.belongsCell) {
+              this.spreadsheet.setState(node.belongsCell, 'selectedCol')
             }
-          } else if (cell instanceof ColCell) {
-            // 列选中
-            // actionType = 'columnSelection';
-            const idx = meta.cellIndex;
-            this.spreadsheet.clearState();
-            this.spreadsheet.eventController.interceptEvent.add(
-              DefaultEventType.HOVER,
-            );
-            if (idx === -1) {
-              // 多列
-              this.spreadsheet.clearState();
-              _.each(Node.getAllLeavesOfNode(meta), (node: Node) => {
-                this.spreadsheet.setState(node.belongsCell, 'selectedCol')
-              })
-              // (Node.getAllLeavesOfNode(meta), node => node.belongsCell);
-              // this.spreadsheet.store.set('selected', {
-              //   type: 'column',
-              //   indexes: [-1, [_.min(arr), _.max(arr)]],
-              // });
-            } else {
-              // 单列
-              this.spreadsheet.setState(cell, 'selectedCol')
-              // this.spreadsheet.store.set('selected', {
-              //   type: 'column',
-              //   indexes: [-1, idx],
-              // });
-            }
-            // if (meta.isLeaf) {
-            //   // 最后一行的列选中，显示 tooltip 时可操作排序
-            //   this.sortFieldId = meta.value;
-            //   this.sortQuery = getHeaderHierarchyQuery(meta);
-            //   enterable = true;
-            //   showSortOperations = true;
-            // }
-          }
-          this.resetCell();
-          this.draw();
-          const position = {
-            x: ev.clientX,
-            y: ev.clientY,
-          };
-          // 兼容明细表
-          const hoveringCellData = _.get(meta, 'query') || {
-            [_.get(meta, 'key')]: _.get(meta, 'value'),
-          };
-          // this.showTooltip(position, hoveringCellData, {
-          //   actionType,
-          //   operator: this.getSortOperator(showSortOperations),
-          //   enterable,
-          // });
+          })
+        } else {
+          // 单列
+          this.spreadsheet.setState(cell, 'selectedCol')
         }
+        // if (meta.isLeaf) {
+        //   // 最后一行的列选中，显示 tooltip 时可操作排序
+        //   this.sortFieldId = meta.value;
+        //   this.sortQuery = getHeaderHierarchyQuery(meta);
+        //   enterable = true;
+        //   showSortOperations = true;
+        // }
+        this.resetCell();
+        this.draw();
+        const position = {
+          x: ev.clientX,
+          y: ev.clientY,
+        };
+        // 兼容明细表
+        const hoveringCellData = _.get(meta, 'query') || {
+          [_.get(meta, 'key')]: _.get(meta, 'value'),
+        };
+        // this.showTooltip(position, hoveringCellData, {
+        //   actionType,
+        //   operator: this.getSortOperator(showSortOperations),
+        //   enterable,
+        // });
       }
     })
   }

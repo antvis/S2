@@ -13,7 +13,6 @@ import { StateName } from '../state/state'
  * Panel Area's DataCell Click Interaction
  */
 export class CellSelection extends BaseInteraction {
-  private target;
 
   constructor(spreadsheet: BaseSpreadSheet) {
     super(spreadsheet);
@@ -21,8 +20,7 @@ export class CellSelection extends BaseInteraction {
 
   protected bindEvents() {
     super.bindEvents();
-    this.bindMouseDown();
-    this.bindMouseUp();
+    this.bindClick();
     this.addEventListener(
       document,
       'click',
@@ -30,13 +28,7 @@ export class CellSelection extends BaseInteraction {
     );
   }
 
-  private bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEDOWN, ev => {
-      this.target = ev.target;
-    })
-  }
-
-  private bindMouseUp() {
+  private bindClick() {
     this.spreadsheet.on(S2Event.DATACELL_CLICK, (ev: Event) => {
       ev.stopPropagation();
       // 说明是mouseDown后按住鼠标移动，这种行为是刷选
@@ -46,7 +38,6 @@ export class CellSelection extends BaseInteraction {
         // selected通过state来接管，不需要再在 this.spreadsheet.store 中操作
         const cell = this.spreadsheet.eventController.getCell(ev.target);
         const currentState = this.spreadsheet.getCurrentState();
-        console.log('currentState', currentState)
         if (currentState.stateName === 'selectedCol') {
           this.spreadsheet.getPanelAllCells().forEach((cell) => {
             cell.hideShapeUnderState();
@@ -101,7 +92,7 @@ export class CellSelection extends BaseInteraction {
         //   operator,
         // });
       }
-      this._updateCell();
+      this.draw();
     })
   }
 
@@ -129,12 +120,5 @@ export class CellSelection extends BaseInteraction {
       this.draw();
       // this.hide();
     }
-  }
-
-  private _updateCell() {
-    // this.spreadsheet.getPanelAllCells((cell) => {
-    //   cell.update();
-    // });
-    this.draw();
   }
 }

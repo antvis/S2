@@ -60,15 +60,26 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const state = this.spreadsheet.getCurrentState();
-    const { stateName, cells: selectedCols } = state;
+    const { stateName, cells: selectedCells } = state;
     // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
-    if(stateName === 'selectedCol' && selectedCols.length) {
-      const currentColIndex = this.meta.colIndex;
-      const selectedColIndex = _.map(selectedCols, cell => cell.getMeta().cellIndex);
-      if(selectedColIndex.indexOf(currentColIndex) > -1) {
-        this.updateByState(StateName.SELECTED);
-      } else {
-        this.hideShapeUnderState();
+    if(selectedCells.length) {
+      if(stateName === 'selectedCol') {
+        const currentColIndex = this.meta.colIndex;
+        const selectedColIndex = _.map(selectedCells, cell => cell.getMeta().cellIndex);
+        if(selectedColIndex.indexOf(currentColIndex) > -1) {
+          this.updateByState(StateName.SELECTED);
+        } else {
+          this.hideShapeUnderState();
+        }
+      } else if (stateName === 'selectedRow') {
+        // 逻辑和selectedCol一致，row-select和col-select可能会有不同方式，暂时不合并
+        const currentRowIndex = this.meta.rowIndex;
+        const selectedRowIndex = _.map(selectedCells, cell => cell.getMeta().rowIndex);
+        if(selectedRowIndex.indexOf(currentRowIndex) > -1) {
+          this.updateByState(StateName.SELECTED);
+        } else {
+          this.hideShapeUnderState();
+        }
       }
     }
   }

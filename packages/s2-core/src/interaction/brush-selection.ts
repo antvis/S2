@@ -1,4 +1,4 @@
-import { Event, Point, Shape } from '@antv/g-canvas';
+import { Event, Point, IShape } from '@antv/g-canvas';
 import * as _ from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
@@ -39,7 +39,7 @@ export class BrushSelection extends BaseInteraction {
   public threshold: number;
   public cells: DataCell[];
   // 从mousedown开始到mouseup canvas层面的选择框
-  public regionShape: Shape.Rect;
+  public regionShape: IShape;
   private previousPoint: Point;
   private endPoint: Point;
   private endOriginEvent: any;
