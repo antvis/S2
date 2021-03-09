@@ -17,18 +17,20 @@ import {
 import { isMobile } from '../utils/is-mobile';
 import {
   BrushSelection,
-  CellSelection,
   CornerHeaderTextClick,
   RowColResize,
   RowColumnSelection,
   RowHeaderTextClick,
 } from '../interaction';
-// import { ClickEvent } from '../interaction/click-event';
+import {
+  DataCellClick
+} from '../interaction/events'
 import { DetailFacet } from '../facet/detail';
 import { SpreadsheetFacet } from '../facet';
 import { SpreadParams } from '../data-set/spread-data-set';
 import { BaseFacet } from '../facet/base-facet';
 import { InteractionConstructor } from '../interaction/base';
+import { EventConstructor } from '../interaction/events/base-event';
 import { detectAttrsChangeAndAction } from '../utils/attrs-action';
 
 /**
@@ -153,18 +155,26 @@ export default class SpreadSheet extends BaseSpreadSheet {
         RowColumnSelection,
       );
       this.registerInteraction('spreadsheet:brush-selection', BrushSelection);
-      this.registerInteraction('spreadsheet:cell-click', CellSelection);
       this.registerInteraction('spreadsheet:row-col-resize', RowColResize);
       this.registerInteraction(
         'spreadsheet:corner-header-text-click',
         CornerHeaderTextClick,
       );
     }
-    // this.registerInteraction('spreadsheet:click-event', ClickEvent);
     this.registerInteraction(
       'spreadsheet:row-header-text-click',
       RowHeaderTextClick,
     );
+  }
+
+  protected registerEvents() {
+    this.events.clear();
+    this.registerEvent('spreadsheet:data-cell-click', DataCellClick);
+  }
+
+  protected registerEvent(key: string, ctc: EventConstructor) {
+    // eslint-disable-next-line new-cap
+    this.events.set(key, new ctc(this));
   }
 
   protected registerInteraction(key: string, ctc: InteractionConstructor) {

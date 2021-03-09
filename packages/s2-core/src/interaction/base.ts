@@ -1,8 +1,7 @@
 import { Event, Canvas } from '@antv/g-canvas';
-import { each } from 'lodash';
+import { each, includes } from 'lodash';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
-import { Selected } from '../common/store';
-import { isSelected } from '../utils/selected';
+import { wrapBehavior } from '@antv/util';
 
 export type InteractionConstructor = new (
   spreadsheet: BaseSpreadSheet,
@@ -32,11 +31,9 @@ export abstract class BaseInteraction {
 
   private eventListeners: any[] = [];
 
-  protected isSelected: (i: number, j: number, selected: Selected) => boolean;
 
   public constructor(spreadsheet: BaseSpreadSheet) {
     this.spreadsheet = spreadsheet;
-    this.isSelected = isSelected;
     this.bindEvents();
   }
 
@@ -44,11 +41,20 @@ export abstract class BaseInteraction {
     this.unbindEvents();
   }
 
-  protected bindEvents() {}
+  protected bindEvents() {
+    // interaction全局事件
+    this.addEventListener(
+      document,
+      'click',
+      wrapBehavior(this, 'onDucumentClick')
+    );
+  }
 
   protected unbindEvents() {
     this.clearEvents();
   }
+
+  protected clearInteractionStyle() {}
 
   /**
    * Determine which group trigger the event
@@ -112,5 +118,20 @@ export abstract class BaseInteraction {
       eh.target.removeEventListener(eh.type, eh.handler);
     });
     this.eventListeners.length = 0;
+  }
+
+  // 清空所有interaction带来的任何样式的影响
+  protected onDucumentClick(ev) {
+    if (
+      ev.target !== this.spreadsheet.container.get('el') &&
+      !includes(ev.target?.className, 'eva-facet') &&
+      !includes(ev.target?.className, 'ant-menu') &&
+      !includes(ev.target?.className, 'ant-input')
+    ) {
+      this.spreadsheet.clearState();
+      this.spreadsheet.hideTooltip();
+      this.clearInteractionStyle();
+      this.draw();
+    }
   }
 }

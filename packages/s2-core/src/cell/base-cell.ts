@@ -3,7 +3,7 @@ import { BaseSpreadSheet, SpreadSheetTheme } from '..';
 import { updateShapeAttr } from '../utils/g-renders';
 import { DataCell, ColCell, CornerCell, RowCell } from './';
 import * as shapeStyle from '../state/shapeStyleMap';
-import { get, each findKey } from 'lodash';
+import { get, each, findKey } from 'lodash';
 
 /**
  * Create By Bruce Too
@@ -70,7 +70,11 @@ export abstract class BaseCell<T> extends Group {
 
   public updateByState(stateName) {
     const { themeByState } = this.theme;
-    const stateStyles = get(themeByState, [this.getCellType(), stateName]);
+    const originCellType = this.spreadsheet.getCellType(this);
+    // DataCell => dataCell
+    // theme的key首字母是小写
+    const cellType = `${originCellType.charAt(0).toLowerCase()}${originCellType.slice(1)}`;
+    const stateStyles = get(themeByState, [cellType, stateName]);
     each(stateStyles, (style, styleKey) => {
       if (styleKey) {
         // 找到对应的shape，并且找到cssStyple对应的shapestyle
@@ -106,21 +110,5 @@ export abstract class BaseCell<T> extends Group {
 
   public setStrokeOpacity(shape, opacity) {
     updateShapeAttr(shape, 'strokeOpacity', opacity);
-  }
-
-  // 获取当前类型
-  private getCellType() {
-    if (this instanceof DataCell) {
-      return 'dataCell';
-    }
-    if (this instanceof RowCell) {
-      return 'rowCell';
-    }
-    if (this instanceof ColCell) {
-      return 'colCell';
-    }
-    if (this instanceof CornerCell) {
-      return 'cornerCell';
-    }
   }
 }

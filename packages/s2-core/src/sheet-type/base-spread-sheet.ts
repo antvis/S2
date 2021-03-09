@@ -22,18 +22,17 @@ import {
   SpreadsheetOptions,
   ViewMeta,
 } from '../common/interface';
-import { DataCell, DataPlaceHolderCell } from '../cell';
+import { DataCell, BaseCell, RowCell, ColCell, DataPlaceHolderCell, CornerCell } from '../cell';
 import {
   KEY_COL_REAL_WIDTH_INFO,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
-  KEY_GROUP_HOVER_BOX,
   KEY_GROUP_PANEL_GROUND,
   PANEL_GROUP_HOVER_BOX_GROUP_ZINDEX,
 } from '../common/constant';
 import { BaseDataSet } from '../data-set';
 import { SpreadsheetFacet } from '../facet';
-import { Node, BaseInteraction, SpreadSheetTheme } from '../index';
+import { Node, BaseInteraction, SpreadSheetTheme, BaseEvent } from '../index';
 import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';
@@ -45,6 +44,7 @@ import { DefaultStyleCfg } from '../common/default-style-cfg';
 import { EventController } from '../interaction/events/event-controller';
 import State from '../state/state';
 import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
+import { ShowProps } from '../common/tooltip/interface';
 
 const matrixTransform = ext.transform;
 export default abstract class BaseSpreadSheet extends EE {
@@ -57,6 +57,8 @@ export default abstract class BaseSpreadSheet extends EE {
   public theme: SpreadSheetTheme = getTheme('default');
 
   public interactions: Map<string, BaseInteraction> = new Map();
+
+  public events: Map<string, BaseEvent> = new Map();
 
   // store some temporary data
   public store: Store = new Store();
@@ -80,7 +82,6 @@ export default abstract class BaseSpreadSheet extends EE {
    */
   public facet: BaseFacet;
 
-  // tooltips to show float dialog({@see HoverInteraction})
   public tooltip: BaseTooltip;
 
   // the base container, contains all groups
@@ -124,7 +125,7 @@ export default abstract class BaseSpreadSheet extends EE {
     options: SpreadsheetOptions,
   ) {
     super();
-    this.dom = isString(dom) ? document.getElementById(dom) : dom;
+    this.dom = isString(dom) ? document.getElementById(<string>dom) : <HTMLElement>dom;
     this.dataCfg = safetyDataCfg(dataCfg);
     this.options = safetyOptions(options);
     this.initGroups(this.dom, this.options);
@@ -134,6 +135,7 @@ export default abstract class BaseSpreadSheet extends EE {
     this.tooltip =
       (options?.initTooltip && options?.initTooltip(this)) ||
       this.initTooltip();
+    this.registerEvents();
     this.registerInteractions(this.options);
     this.initDevicePixelRatioListener();
   }
@@ -184,6 +186,9 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param options
    */
   protected abstract registerInteractions(options: SpreadsheetOptions): void;
+
+  //注册事件
+  protected abstract registerEvents(): void;
 
   protected abstract initDataSet(
     options: Partial<SpreadsheetOptions>,
@@ -601,5 +606,47 @@ export default abstract class BaseSpreadSheet extends EE {
     cells.forEach((cell: BaseCell<Node>) => {
       cell.updateByState(this.getCurrentState().stateName);
     });
+  }
+
+  public showTooltip(showOptions: ShowProps) {
+    if (get(this, 'options.tooltip.showTooltip')) {
+      this.tooltip.show(showOptions);
+    }
+  }
+
+  public hideTooltip() {
+    this.tooltip.hide()
+  }
+
+  // 获取当前cell实例
+  public getCell(target) {
+    let parent = target;
+    // 一直索引到g顶层的canvas来检查是否在指定的cell中
+    while (parent && !(parent instanceof Canvas)) {
+      if (parent instanceof BaseCell) {
+        // 在单元格中，返回true
+        return parent;
+      }
+      parent = parent.get('parent');
+    }
+    return null;
+  }
+
+  // 获取当前cell类型
+  public getCellType(target) {
+    const cell = this.getCell(target);
+    if (cell instanceof DataCell) {
+      return DataCell.name;
+    }
+    if (cell instanceof RowCell) {
+      return RowCell.name;
+    }
+    if (cell instanceof ColCell) {
+      return ColCell.name;
+    }
+    if (cell instanceof CornerCell) {
+      return CornerCell.name;
+    }
+    return '';
   }
 }

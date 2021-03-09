@@ -43,7 +43,6 @@ export class BrushSelection extends BaseInteraction {
   public regionShape: IShape;
   private previousPoint: Point;
   private endPoint: Point;
-  private endOriginEvent: any;
   /**
    * 0: 初始态
    * 1: 触发mousedown
@@ -115,18 +114,20 @@ export class BrushSelection extends BaseInteraction {
         this.spreadsheet.clearState();
         const oe = ev.originalEvent as any;
         this.endPoint = { x: oe.layerX, y: oe.layerY };
-        this.endOriginEvent = ev.event;
         const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
         this.getSelectedCells(brushRegion);
-        // const tooltipData = getTooltipData(this.spreadsheet);
-        // const showOptions = {
-        //   position: {
-        //     x: this.endOriginEvent.clientX,
-        //     y: this.endOriginEvent.clientY,
-        //   },
-        //   data: tooltipData,
-        // };
-        // this.showTooltip(showOptions);
+
+        // tooltip
+        const tooltipData = getTooltipData(this.spreadsheet);
+        const showOptions = {
+          position: {
+            x: ev.clientX,
+            y: ev.clientY,
+          },
+          data: tooltipData,
+        };
+        this.spreadsheet.showTooltip(showOptions);
+
         // 透明度为0会导致 hover 无法响应
         this.regionShape.attr({
           opacity: 0,
@@ -136,12 +137,6 @@ export class BrushSelection extends BaseInteraction {
       this.phase = 0;
     });
   }
-
-  // protected showTooltip(position: Point, hoverData?: DataItem, options?: TooltipOptions) {
-  //   if (!get(this, 'spreadsheet.options.hideTooltip')) {
-  //     this.spreadsheet.tooltip.show(position, hoverData, options);
-  //   }
-  // }
 
   protected bindEvents() {
     super.bindEvents();
@@ -216,12 +211,22 @@ export class BrushSelection extends BaseInteraction {
     });
   }
 
-  // protected hideTooltip() {
-  //   this.spreadsheet.tooltip.hide();
-  // }
-
   public hide() {
-    // this.hideTooltip();
+    // if (this.cells) {
+    //   if (this.regionShape) {
+    //     this.regionShape.attr({
+    //       opacity: 0,
+    //     });
+    //   }
+    //   this.spreadsheet.clearState();
+    //   this.spreadsheet.eventController.interceptEvent.clear();
+    //   // 清空屏蔽的事件
+    //   this.phase = 0;
+    //   this.draw();
+    // }
+  }
+
+  protected clearInteractionStyle() {
     if (this.cells) {
       if (this.regionShape) {
         this.regionShape.attr({

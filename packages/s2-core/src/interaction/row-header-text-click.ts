@@ -3,6 +3,7 @@ import { get, isEmpty, set, each, find } from 'lodash';
 import { KEY_JUMP_HREF } from '../common/constant';
 import { BaseInteraction } from './base';
 import { S2Event} from './events/types';
+import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 
 
 
@@ -10,7 +11,13 @@ import { S2Event} from './events/types';
  * Row header click navigation interaction
  */
 export class RowHeaderTextClick extends BaseInteraction {
+
+  constructor(spreadsheet: BaseSpreadSheet) {
+    super(spreadsheet);
+  }
+
   protected bindEvents() {
+    super.bindEvents();
     this.bindClick();
   }
 

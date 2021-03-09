@@ -7,6 +7,7 @@ import { DownOutlined } from '@ant-design/icons';
 import { S2Event, DefaultEventType } from './events/types';
 import { BaseInteraction } from './base';
 import { getTooltipData } from '../utils/tooltip';
+import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 
 interface MenuType {
   id: string;
@@ -58,14 +59,19 @@ export class RowColumnSelection extends BaseInteraction {
   // 显示排序时，排序的查询参数
   public sortQuery: any;
 
+  constructor(spreadsheet: BaseSpreadSheet) {
+    super(spreadsheet);
+  }
+
   protected bindEvents() {
+    super.bindEvents();
     this.bindColCellClick();
     this.bindRowCellClick();
   }
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
-      const cell = this.spreadsheet.eventController.getCell(ev.target);
+      const cell = this.spreadsheet.getCell(ev.target);
       if (cell.getMeta().x !== undefined) {
         const meta = cell.getMeta();
         const idx = meta.cellIndex;
@@ -93,7 +99,7 @@ export class RowColumnSelection extends BaseInteraction {
 
   private bindColCellClick() {
     this.spreadsheet.on(S2Event.COLCELL_CLICK, (ev: Event) => {
-      const cell = this.spreadsheet.eventController.getCell(ev.target);
+      const cell = this.spreadsheet.getCell(ev.target);
       if (cell.getMeta().x !== undefined) {
         const meta = cell.getMeta();
         this.selectedId = meta.id;

@@ -9,7 +9,6 @@ import {
 } from './types';
 import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
 import { StateName } from '../../state/state'
-
 export class EventController {
   protected spreadsheet: BaseSpreadSheet;
   // 保存触发的元素
@@ -86,7 +85,7 @@ export class EventController {
     if(appendInfo && appendInfo.isResizer) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEDOWN, ev);
     } else {
-      const cellType = this.getCellType(ev.target);
+      const cellType = this.spreadsheet.getCellType(ev.target);
       switch (cellType) {
         case DataCell.name:
           this.spreadsheet.emit(S2Event.DATACELL_MOUSEDOWN, ev);
@@ -109,9 +108,10 @@ export class EventController {
   protected process(ev: Event) {
     const appendInfo = get(ev.target, 'attrs.appendInfo');
     if(appendInfo && appendInfo.isResizer) {
+      // row-col-resize
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEMOVE, ev);
     } else {
-      const cell = this.getCell(ev.target);
+      const cell = this.spreadsheet.getCell(ev.target);
       if (cell) {
         // 如果hover的cell改变了，并且当前不需要屏蔽 hover
         if (
@@ -124,7 +124,7 @@ export class EventController {
           this.spreadsheet.updateCellStyleByState();
           this.draw();
         }
-        const cellType = this.getCellType(ev.target);
+        const cellType = this.spreadsheet.getCellType(ev.target);
         switch (cellType) {
           case DataCell.name:
             this.spreadsheet.emit(S2Event.DATACELL_MOUSEMOVE, ev);
@@ -150,9 +150,9 @@ export class EventController {
     if(appendInfo && appendInfo.isResizer) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEUP, ev);
     } else {
-      const cell = this.getCell(ev.target);
+      const cell = this.spreadsheet.getCell(ev.target);
       if (cell) {
-        const cellType = this.getCellType(ev.target);
+        const cellType = this.spreadsheet.getCellType(ev.target);
         // target相同，说明是一个cell内的click事件
         if (this.target === ev.target) {
           switch (cellType) {
@@ -202,41 +202,11 @@ export class EventController {
     this.unbindEvents();
   }
 
-  // 获取当前cell实例
-  public getCell(target) {
-    let parent = target.get('parent');
-    // 一直索引到g顶层的canvas来检查是否在指定的cell中
-    while (parent && !(parent instanceof Canvas)) {
-      if (parent instanceof BaseCell) {
-        // 在单元格中，返回true
-        return parent;
-      }
-      parent = parent.get('parent');
-    }
-    return null;
-  }
-
   // 解绑事件
   protected unbindEvents() {
-    this._clearEvents();
+    this.clearEvents();
   }
-
-  // 获取当前cell的类型
-  public getCellType(target) {
-    const cell = this.getCell(target);
-    if (cell instanceof DataCell) {
-      return DataCell.name;
-    }
-    if (cell instanceof RowCell) {
-      return RowCell.name;
-    }
-    if (cell instanceof ColCell) {
-      return ColCell.name;
-    }
-    if (cell instanceof CornerCell) {
-      return CornerCell.name;
-    }
-  }
+  
 
   /**
    * 用于绑定原生事件
@@ -257,7 +227,7 @@ export class EventController {
    * Auto clear all emit and event listeners, don't need clear by hand
    * @private
    */
-  private _clearEvents() {
+  private clearEvents() {
     // clear Emit listener
     const eventHandlers = this.eventHandlers;
     each(eventHandlers, (eh) => {

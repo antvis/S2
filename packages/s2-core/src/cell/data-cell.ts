@@ -10,7 +10,6 @@ import {
   renderText,
   // updateShapeAttr,
 } from '../utils/g-renders';
-// import { isSelected } from '../utils/selected';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { BaseCell } from './base-cell';
