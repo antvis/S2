@@ -1,4 +1,4 @@
-import { BBox } from '@antv/g-canvas';
+import type { BBox } from '@antv/g-canvas';
 import { Wheel } from '@antv/g-gesture';
 import { ScrollBar } from '../ui/scrollbar';
 import { interpolateArray } from 'd3-interpolate';
@@ -13,6 +13,7 @@ import {
   isNil,
   forEach,
   isUndefined,
+  debounce,
 } from 'lodash';
 import {
   calculateInViewIndexes,
@@ -79,8 +80,6 @@ export class SpreadsheetFacet extends BaseFacet {
   protected centerBorder: Frame;
 
   protected preHideScrollBarHandler;
-
-  protected preRenderHandler;
 
   protected preIndexes: Indexes;
 
@@ -495,7 +494,6 @@ export class SpreadsheetFacet extends BaseFacet {
     const [scrollX, scrollY, rowScrollX] = this.getScrollOffset();
     const { width, height } = this.viewportBBox;
     const realWidth = this.layoutResult.colsHierarchy.width;
-    // const realHeight = this.layoutResult.rowsHierarchy.height;
     const realHeight = this.getRealHeight();
 
     // scroll row header separate from the whole canvas
@@ -848,8 +846,10 @@ export class SpreadsheetFacet extends BaseFacet {
         MIN_SCROLL_BAR_HEIGHT,
       );
       const getOffsetTop = (scrollTop: number) =>
-        (scrollTop / (height - thumbHeight)) *
-        (realHeight - this.viewportBBox.height);
+        Math.floor(
+          (scrollTop / (height - thumbHeight)) *
+            (realHeight - this.viewportBBox.height),
+        );
 
       this.vScrollBar = new ScrollBar({
         isHorizontal: false,
@@ -998,7 +998,7 @@ export class SpreadsheetFacet extends BaseFacet {
   }
 
   private shouldPreventWheelEvent(x: number, y: number) {
-    const near = (current, offset): boolean => {
+    const near = (current: number, offset: number): boolean => {
       // 精度问题，所以取 0.99， 0.01
       return (offset > 0 && current >= 0.99) || (offset < 0 && current <= 0.01);
     };
@@ -1024,17 +1024,13 @@ export class SpreadsheetFacet extends BaseFacet {
 
     if (x > 0) {
       // 左滑，显示横向滑动条
-      if (this.hRowScrollBar) {
-        this.hRowScrollBar.updateTheme(this.scrollBarTouchTheme);
-      }
-      if (this.hScrollBar) {
-        this.hScrollBar.updateTheme(this.scrollBarTouchTheme);
-      }
+      this.hRowScrollBar?.updateTheme(this.scrollBarTouchTheme);
+      this.hScrollBar?.updateTheme(this.scrollBarTouchTheme);
     }
 
-    if (y > 0 && this.vScrollBar) {
+    if (y > 0) {
       // 上滑，显示横向滚动条
-      this.vScrollBar.updateTheme(this.scrollBarTouchTheme);
+      this.vScrollBar?.updateTheme(this.scrollBarTouchTheme);
     }
     // 将偏移设置到滚动条中
     // 降低滚轮速度
@@ -1074,26 +1070,19 @@ export class SpreadsheetFacet extends BaseFacet {
     );
   };
 
-  private hideScrollBar() {
+  private hideScrollBar = debounce(() => {
+    // only work in mobile
     if (isMobile()) {
-      // only work in mobile
-      clearTimeout(this.preHideScrollBarHandler);
-      this.preHideScrollBarHandler = setTimeout(() => {
-        this.hRowScrollBar?.updateTheme(this.scrollBarTheme);
-        this.hScrollBar?.updateTheme(this.scrollBarTheme);
-        this.vScrollBar?.updateTheme(this.scrollBarTheme);
-      }, 1000);
+      this.hRowScrollBar?.updateTheme(this.scrollBarTheme);
+      this.hScrollBar?.updateTheme(this.scrollBarTheme);
+      this.vScrollBar?.updateTheme(this.scrollBarTheme);
     }
-  }
+  }, 1000);
 
-  private renderAfterScroll() {
-    clearTimeout(this.preRenderHandler);
-    // 200ms内没有发生滚动，就重新渲染
-    this.preRenderHandler = setTimeout(() => {
-      this.spreadsheet.needUseCacheMeta = true;
-      this.dynamicRender(false);
-    }, 200);
-  }
+  private renderAfterScroll = debounce(() => {
+    this.spreadsheet.needUseCacheMeta = true;
+    this.dynamicRender(false);
+  }, 200);
 
   private getRealScrollX(scrollX: number, hRowScroll = 0) {
     return this.cfg.spreadsheet.isScrollContainsRowHeader()

@@ -1,4 +1,5 @@
-import { Event, IGroup, Group, IShape } from '@antv/g-canvas';
+import { Event, Group } from '@antv/g-canvas';
+import type { IShape, IElement, IGroup } from '@antv/g-canvas';
 import { merge, clamp, get, each } from 'lodash';
 import { PointObject, ScrollBarCfg, ScrollBarTheme } from './interface';
 import { DEFAULT_THEME } from './style';
@@ -92,11 +93,9 @@ export class ScrollBar extends Group {
     const newOffset = newTrackLen * offsetRate;
     this.trackLen = newTrackLen;
 
-    if (this.isHorizontal) {
-      this.trackShape.attr('x2', newTrackLen);
-    } else {
-      this.trackShape.attr('y2', newTrackLen);
-    }
+    const coordinate = this.isHorizontal ? 'x2' : 'y2';
+    this.trackShape.attr(coordinate, newTrackLen);
+
     this.updateThumbLen(newThumbLen);
     this.updateThumbOffset(newOffset);
     this.renderNewScrollBar();
@@ -112,11 +111,8 @@ export class ScrollBar extends Group {
       return;
     }
     this.thumbLen = newThumbLen;
-    if (this.isHorizontal) {
-      this.thumbShape.attr('x2', this.thumbOffset + newThumbLen);
-    } else {
-      this.thumbShape.attr('y2', this.thumbOffset + newThumbLen);
-    }
+    const coordinate = this.isHorizontal ? 'x2' : 'y2';
+    this.thumbShape.attr(coordinate, this.thumbOffset + newThumbLen);
     this.renderNewScrollBar();
   }
 
@@ -168,9 +164,7 @@ export class ScrollBar extends Group {
       });
     }
     // 渲染
-    if (this.get('canvas')) {
-      this.get('canvas').draw();
-    }
+    this.get('canvas')?.draw();
   }
 
   /**
@@ -314,7 +308,11 @@ export class ScrollBar extends Group {
     this.bindLaterEvent();
   };
 
-  protected addEvent(target, eventType, handler) {
+  protected addEvent(
+    target: IElement,
+    eventType: keyof HTMLElementEventMap,
+    handler: (e: MouseEvent) => void,
+  ) {
     target.on(eventType, handler);
     this.eventHandlers.push({ target, type: eventType, handler });
   }
@@ -354,7 +352,7 @@ export class ScrollBar extends Group {
   }
 
   // 点击滑道的事件回调,移动滑块位置
-  private onTrackClick = (e) => {
+  private onTrackClick = (e: MouseEvent) => {
     const containerDOM = this.get('canvas').get('container');
     const rect = containerDOM.getBoundingClientRect();
     const { clientX, clientY } = e;
@@ -368,7 +366,7 @@ export class ScrollBar extends Group {
 
   // 拖拽滑块的事件回调
   // 这里是 dom 原生事件，绑定在 dom 元素上的
-  private onMouseMove = (e) => {
+  private onMouseMove = (e: MouseEvent) => {
     e.preventDefault();
 
     const event = this.isMobile ? get(e, 'touches.0', e) : e;
@@ -387,21 +385,21 @@ export class ScrollBar extends Group {
   };
 
   // 滑块鼠标松开事件回调
-  private onMouseUp = (e) => {
+  private onMouseUp = (e: MouseEvent) => {
     this.emit('scroll-finish', {});
     // 松开鼠标时，清除所有事件
     e.preventDefault();
     this.clearEvents();
   };
 
-  private onTrackMouseOver = (e) => {
+  private onTrackMouseOver = (e: MouseEvent) => {
     const { thumbColor } = this.theme.hover;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();
     console.debug(e);
   };
 
-  private onTrackMouseOut = (e) => {
+  private onTrackMouseOut = (e: MouseEvent) => {
     const { thumbColor } = this.theme.default;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();
