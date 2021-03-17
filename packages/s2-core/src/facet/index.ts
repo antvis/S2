@@ -846,10 +846,8 @@ export class SpreadsheetFacet extends BaseFacet {
         MIN_SCROLL_BAR_HEIGHT,
       );
       const getOffsetTop = (scrollTop: number) =>
-        Math.floor(
-          (scrollTop / (height - thumbHeight)) *
-            (realHeight - this.viewportBBox.height),
-        );
+        (scrollTop / (height - thumbHeight)) *
+        (realHeight - this.viewportBBox.height);
 
       this.vScrollBar = new ScrollBar({
         isHorizontal: false,
@@ -986,15 +984,15 @@ export class SpreadsheetFacet extends BaseFacet {
   // 保存偏移
   private setScrollOffset(scrollX: number, scrollY: number) {
     if (!isUndefined(scrollX)) {
-      this.spreadsheet.store.set('scrollX', scrollX);
+      this.spreadsheet.store.set('scrollX', Math.floor(scrollX));
     }
     if (!isUndefined(scrollY)) {
-      this.spreadsheet.store.set('scrollY', scrollY);
+      this.spreadsheet.store.set('scrollY', Math.floor(scrollY));
     }
   }
 
   private setHRowScrollX(hScrollX: number) {
-    this.spreadsheet.store.set('hRowScrollX', hScrollX);
+    this.spreadsheet.store.set('hRowScrollX', Math.floor(hScrollX));
   }
 
   private shouldPreventWheelEvent(x: number, y: number) {
