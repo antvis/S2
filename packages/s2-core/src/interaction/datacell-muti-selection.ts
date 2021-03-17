@@ -3,7 +3,7 @@ import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { S2Event, DefaultEventType } from './events/types';
 import { BaseInteraction } from './base';
-import { StateName } from '../state/state'
+import { StateName } from '../state/state';
 import { DataItem, TooltipOptions } from '..';
 import { getTooltipData } from '../utils/tooltip';
 
@@ -20,17 +20,19 @@ export class DataCellMutiSelection extends BaseInteraction {
 
   private bindKeyboardDown() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDDOWN, (ev: KeyboardEvent) => {
-      if(ev.key === SHIFT_KEY) {
-        this.isMutiSelection = true
+      if (ev.key === SHIFT_KEY) {
+        this.isMutiSelection = true;
       }
     });
   }
 
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDUP, (ev: KeyboardEvent) => {
-      if(ev.key === SHIFT_KEY) {
+      if (ev.key === SHIFT_KEY) {
         this.isMutiSelection = false;
-        this.spreadsheet.eventController.interceptEvent.delete(DefaultEventType.CLICK);
+        this.spreadsheet.eventController.interceptEvent.delete(
+          DefaultEventType.CLICK,
+        );
       }
     });
   }
@@ -43,7 +45,10 @@ export class DataCellMutiSelection extends BaseInteraction {
       if (this.isMutiSelection && meta) {
         const currentState = this.spreadsheet.getCurrentState();
         // 手动把当前行头列头选择下的cell样式重置
-        if (currentState.stateName === StateName.COL_SELECTED || currentState.stateName === StateName.ROW_SELECTED) {
+        if (
+          currentState.stateName === StateName.COL_SELECTED ||
+          currentState.stateName === StateName.ROW_SELECTED
+        ) {
           this.spreadsheet.getPanelAllCells().forEach((cell) => {
             cell.hideShapeUnderState();
           });
@@ -62,6 +67,6 @@ export class DataCellMutiSelection extends BaseInteraction {
         this.spreadsheet.updateCellStyleByState();
         this.draw();
       }
-    })
+    });
   }
 }

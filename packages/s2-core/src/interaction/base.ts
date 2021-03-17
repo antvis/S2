@@ -31,7 +31,6 @@ export abstract class BaseInteraction {
 
   private eventListeners: any[] = [];
 
-
   public constructor(spreadsheet: BaseSpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.bindEvents();

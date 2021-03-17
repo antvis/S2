@@ -44,7 +44,7 @@ export default class State {
   }
 
   public clearState() {
-    if(this.stateStore.cells && this.stateStore.cells.length) {
+    if (this.stateStore.cells && this.stateStore.cells.length) {
       _.forEach(this.stateStore.cells, (cell: S2AllCellType) => {
         cell.hideShapeUnderState();
       });

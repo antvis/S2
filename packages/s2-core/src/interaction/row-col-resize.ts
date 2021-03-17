@@ -61,14 +61,14 @@ export class RowColResize extends BaseInteraction {
           this.resizeGroup.addShape('rect', {
             attrs: {
               appendInfo: {
-                isResizer: true
+                isResizer: true,
               },
               x: 0,
               y: 0,
               width: this.spreadsheet.facet.getCanvasHW().width,
               height: this.spreadsheet.facet.getCanvasHW().height,
               fill: 'transparent',
-            }
+            },
           });
         }
         this.resizeGroup.set('visible', true);
@@ -110,7 +110,7 @@ export class RowColResize extends BaseInteraction {
           this.draw();
         }
       }
-    })
+    });
   }
 
   private bindMouseMove() {
@@ -120,7 +120,7 @@ export class RowColResize extends BaseInteraction {
         33, // 30fps
         {},
       )(ev);
-    })
+    });
   }
 
   private bindMouseUp() {
@@ -130,9 +130,11 @@ export class RowColResize extends BaseInteraction {
         const children = this.resizeGroup.getChildren();
         if (children) {
           const info = this.getResizeInfo();
-          const startPoint: ['M', number, number] = children[0]?.attr('path')[0];
+          const startPoint: ['M', number, number] = children[0]?.attr(
+            'path',
+          )[0];
           const endPoint: ['M', number, number] = children[1]?.attr('path')[0];
-  
+
           let eventType: EventType;
           let config: any;
           // todo，如何优化这段代码？
@@ -200,7 +202,7 @@ export class RowColResize extends BaseInteraction {
           this.renderSS();
         }
       }
-    })
+    });
   }
 
   private resizeMouseMove = (ev: any) => {

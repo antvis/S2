@@ -31,10 +31,7 @@ export interface SortQuery {
   [key: string]: string;
 }
 
-export type ActionType =
-  | 'cellSelection'
-  | 'rowSelection'
-  | 'columnSelection';
+export type ActionType = 'cellSelection' | 'rowSelection' | 'columnSelection';
 
 export interface TooltipOptions {
   hideSummary?: boolean;

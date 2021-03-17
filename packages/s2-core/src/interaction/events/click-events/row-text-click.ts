@@ -1,21 +1,24 @@
 import { Event } from '@antv/g-canvas';
 import { get, isEmpty, set, each, find } from 'lodash';
 import { KEY_JUMP_HREF } from '../../../common/constant';
-import { S2Event, DefaultEventType} from '../types';
+import { S2Event, DefaultEventType } from '../types';
 import { BaseEvent } from '../base-event';
 
 /**
  * Row header click navigation interaction
  */
 export class RowTextClick extends BaseEvent {
-
   protected bindEvents() {
     this.bindRowCellClick();
   }
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
-      if (this.spreadsheet.eventController.interceptEvent.has(DefaultEventType.CLICK)) {
+      if (
+        this.spreadsheet.eventController.interceptEvent.has(
+          DefaultEventType.CLICK,
+        )
+      ) {
         return;
       }
       const appendInfo = get(ev.target, 'attrs.appendInfo', {});
@@ -49,6 +52,6 @@ export class RowTextClick extends BaseEvent {
           record,
         });
       }
-    })
+    });
   }
 }

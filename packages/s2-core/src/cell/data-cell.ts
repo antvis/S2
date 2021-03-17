@@ -14,7 +14,7 @@ import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { BaseCell } from './base-cell';
 import { DerivedCell } from './derived-cell';
-import { StateName } from '../state/state'
+import { StateName } from '../state/state';
 
 // default icon size
 const ICON_SIZE = 10;
@@ -61,11 +61,14 @@ export class DataCell extends BaseCell<ViewMeta> {
     const state = this.spreadsheet.getCurrentState();
     const { stateName, cells: selectedCells } = state;
     // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
-    if(selectedCells.length) {
-      if(stateName === StateName.COL_SELECTED) {
+    if (selectedCells.length) {
+      if (stateName === StateName.COL_SELECTED) {
         const currentColIndex = this.meta.colIndex;
-        const selectedColIndex = map(selectedCells, cell => cell.getMeta().cellIndex);
-        if(selectedColIndex.indexOf(currentColIndex) > -1) {
+        const selectedColIndex = map(
+          selectedCells,
+          (cell) => cell.getMeta().cellIndex,
+        );
+        if (selectedColIndex.indexOf(currentColIndex) > -1) {
           this.updateByState(StateName.SELECTED);
         } else {
           this.hideShapeUnderState();
@@ -73,8 +76,11 @@ export class DataCell extends BaseCell<ViewMeta> {
       } else if (stateName === StateName.ROW_SELECTED) {
         // 逻辑和selectedCol一致，row-select和col-select可能会有不同方式，暂时不合并
         const currentRowIndex = this.meta.rowIndex;
-        const selectedRowIndex = map(selectedCells, cell => cell.getMeta().rowIndex);
-        if(selectedRowIndex.indexOf(currentRowIndex) > -1) {
+        const selectedRowIndex = map(
+          selectedCells,
+          (cell) => cell.getMeta().rowIndex,
+        );
+        if (selectedRowIndex.indexOf(currentRowIndex) > -1) {
           this.updateByState(StateName.SELECTED);
         } else {
           this.hideShapeUnderState();

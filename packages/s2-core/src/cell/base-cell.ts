@@ -73,7 +73,9 @@ export abstract class BaseCell<T> extends Group {
     const originCellType = this.spreadsheet.getCellType(this);
     // DataCell => dataCell
     // theme的key首字母是小写
-    const cellType = `${originCellType.charAt(0).toLowerCase()}${originCellType.slice(1)}`;
+    const cellType = `${originCellType
+      .charAt(0)
+      .toLowerCase()}${originCellType.slice(1)}`;
     const stateStyles = get(themeByState, [cellType, stateName]);
     each(stateStyles, (style, styleKey) => {
       if (styleKey) {
@@ -101,7 +103,7 @@ export abstract class BaseCell<T> extends Group {
     this.stateShapes.forEach((shape: IShape) => {
       this.setFillOpacity(shape, 0);
       this.setStrokeOpacity(shape, 0);
-    })
+    });
   }
 
   public setFillOpacity(shape, opacity) {

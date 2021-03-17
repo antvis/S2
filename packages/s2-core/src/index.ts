@@ -19,4 +19,4 @@ export * from './interaction';
 export * from './tooltip';
 export * from './common/constant';
 export * from './theme/interface';
-export * from './interaction/events'
+export * from './interaction/events';

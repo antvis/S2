@@ -1,5 +1,5 @@
 import { Event, Point } from '@antv/g-canvas';
-import { get }from 'lodash';
+import { get } from 'lodash';
 import { isMobile } from '../../../utils/is-mobile';
 import { measureTextWidth } from '../../../utils/text';
 import { getCellPadding } from '../../../facet/header/util';
@@ -10,14 +10,17 @@ import { S2Event } from '../types';
  * Click corner header text to full expand(remove 「...」)
  */
 export class CornerTextClick extends BaseEvent {
-  
   protected bindEvents() {
     this.bindCornerClick();
   }
 
   private bindCornerClick() {
     this.spreadsheet.on(S2Event.CORNER_CLICK, (ev: Event) => {
-      if (this.spreadsheet.eventController.interceptEvent.has(DefaultEventType.CLICK)) {
+      if (
+        this.spreadsheet.eventController.interceptEvent.has(
+          DefaultEventType.CLICK,
+        )
+      ) {
         return;
       }
       const cornerExpand = this.spreadsheet.store.get('cornerExpand') || {};
@@ -46,7 +49,7 @@ export class CornerTextClick extends BaseEvent {
         }
         this.spreadsheet.render(false);
       }
-    })
+    });
   }
 
   protected getStarEvent(): string {

@@ -4,7 +4,7 @@ import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { S2Event, DefaultEventType } from './events/types';
 import { BaseInteraction } from './base';
-import { StateName } from '../state/state'
+import { StateName } from '../state/state';
 import { DataItem, TooltipOptions } from '..';
 import { getTooltipData } from '../utils/tooltip';
 
@@ -94,7 +94,10 @@ export class BrushSelection extends BaseInteraction {
           height: brushRegion.height,
         });
         const currentState = this.spreadsheet.getCurrentState();
-        if (currentState.stateName === StateName.COL_SELECTED || currentState.stateName === StateName.ROW_SELECTED) {
+        if (
+          currentState.stateName === StateName.COL_SELECTED ||
+          currentState.stateName === StateName.ROW_SELECTED
+        ) {
           this.spreadsheet.getPanelAllCells().forEach((cell) => {
             cell.hideShapeUnderState();
           });

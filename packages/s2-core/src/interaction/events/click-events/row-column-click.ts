@@ -48,7 +48,6 @@ const MENUS = [
  * and high-light current row/column cells
  */
 export class RowColumnClick extends BaseEvent {
-
   // 显示排序时，排序字段
   private sortFieldId: string;
 
@@ -63,7 +62,11 @@ export class RowColumnClick extends BaseEvent {
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
-      if (this.spreadsheet.eventController.interceptEvent.has(DefaultEventType.CLICK)) {
+      if (
+        this.spreadsheet.eventController.interceptEvent.has(
+          DefaultEventType.CLICK,
+        )
+      ) {
         return;
       }
       const cell = this.spreadsheet.getCell(ev.target);
@@ -78,24 +81,31 @@ export class RowColumnClick extends BaseEvent {
           // 多行
           each(Node.getAllLeavesOfNode(meta), (node: Node) => {
             // 如果
-            if(node.belongsCell) {
-              this.spreadsheet.setState(node.belongsCell, StateName.ROW_SELECTED)
+            if (node.belongsCell) {
+              this.spreadsheet.setState(
+                node.belongsCell,
+                StateName.ROW_SELECTED,
+              );
             }
-          })
+          });
         } else {
           // 单行
-          this.spreadsheet.setState(cell, StateName.ROW_SELECTED)
+          this.spreadsheet.setState(cell, StateName.ROW_SELECTED);
         }
         this.spreadsheet.updateCellStyleByState();
         this.resetCell();
         this.draw();
       }
-    })
+    });
   }
 
   private bindColCellClick() {
     this.spreadsheet.on(S2Event.COLCELL_CLICK, (ev: Event) => {
-      if (this.spreadsheet.eventController.interceptEvent.has(DefaultEventType.CLICK)) {
+      if (
+        this.spreadsheet.eventController.interceptEvent.has(
+          DefaultEventType.CLICK,
+        )
+      ) {
         return;
       }
       const cell = this.spreadsheet.getCell(ev.target);
@@ -116,13 +126,16 @@ export class RowColumnClick extends BaseEvent {
         if (idx === -1) {
           // 多列
           each(Node.getAllLeavesOfNode(meta), (node: Node) => {
-            if(node.belongsCell) {
-              this.spreadsheet.setState(node.belongsCell, StateName.COL_SELECTED)
+            if (node.belongsCell) {
+              this.spreadsheet.setState(
+                node.belongsCell,
+                StateName.COL_SELECTED,
+              );
             }
-          })
+          });
         } else {
           // 单列
-          this.spreadsheet.setState(cell, StateName.COL_SELECTED)
+          this.spreadsheet.setState(cell, StateName.COL_SELECTED);
         }
         // if (meta.isLeaf) {
         //   // 最后一行的列选中，显示 tooltip 时可操作排序
@@ -158,18 +171,21 @@ export class RowColumnClick extends BaseEvent {
         // };
         // this.showTooltip(showOptions);
       }
-    })
+    });
   }
 
   private bindResetSheetStyle() {
     this.spreadsheet.on(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT, () => {
       const currentState = this.spreadsheet.getCurrentState();
-      if (currentState.stateName === StateName.COL_SELECTED || currentState.stateName === StateName.ROW_SELECTED) {
+      if (
+        currentState.stateName === StateName.COL_SELECTED ||
+        currentState.stateName === StateName.ROW_SELECTED
+      ) {
         this.spreadsheet.getPanelAllCells().forEach((cell) => {
           cell.hideShapeUnderState();
         });
       }
-    })
+    });
   }
 
   private findCurMenu = (id: string, menus) => {

@@ -31,7 +31,7 @@ export enum S2Event {
   GLOBAL_KEYBOARDDOWN = 'global:keyboarddown',
   GLOBAL_KEYBOARDUP = 'global:keyboardup',
 
-  GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT = 'global:clear-interaction-style-effect'
+  GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT = 'global:clear-interaction-style-effect',
 }
 
 export enum OriginEventType {

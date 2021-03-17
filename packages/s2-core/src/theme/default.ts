@@ -104,7 +104,7 @@ export default {
       },
       colSelected: {
         backgroundColor: '#f759ab',
-      }
+      },
     },
     rowCell: {
       hover: {
@@ -112,7 +112,7 @@ export default {
       },
       rowSelected: {
         backgroundColor: '#f759ab',
-      }
+      },
     },
   },
 } as SpreadSheetTheme;

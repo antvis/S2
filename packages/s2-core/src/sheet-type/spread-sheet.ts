@@ -18,14 +18,14 @@ import { isMobile } from '../utils/is-mobile';
 import {
   BrushSelection,
   RowColResize,
-  DataCellMutiSelection
+  DataCellMutiSelection,
 } from '../interaction';
 import {
   DataCellClick,
   CornerTextClick,
   RowColumnClick,
-  RowTextClick
-} from '../interaction/events'
+  RowTextClick,
+} from '../interaction/events';
 import { DetailFacet } from '../facet/detail';
 import { SpreadsheetFacet } from '../facet';
 import { SpreadParams } from '../data-set/spread-data-set';
@@ -153,7 +153,10 @@ export default class SpreadSheet extends BaseSpreadSheet {
     if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
       this.registerInteraction('spreadsheet:brush-selection', BrushSelection);
       this.registerInteraction('spreadsheet:row-col-resize', RowColResize);
-      this.registerInteraction('spreadsheet:muti-selection', DataCellMutiSelection);
+      this.registerInteraction(
+        'spreadsheet:muti-selection',
+        DataCellMutiSelection,
+      );
     }
   }
 

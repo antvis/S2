@@ -7,11 +7,6 @@ export const shapeStyleMap = {
 
 // 设置属性的时候实际对应改变的shape映射
 export const shapeAttrsMap = {
-  interactiveBgShape: [
-    'backgroundColor',
-    'opacity'
-  ],
-  prepareSelectBorderShape: [
-    'prepareSelectBorderColor',
-  ],
+  interactiveBgShape: ['backgroundColor', 'opacity'],
+  prepareSelectBorderShape: ['prepareSelectBorderColor'],
 };

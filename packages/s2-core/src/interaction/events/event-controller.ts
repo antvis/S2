@@ -9,7 +9,7 @@ import {
   DefaultEventType,
 } from './types';
 import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
-import { StateName } from '../../state/state'
+import { StateName } from '../../state/state';
 export class EventController {
   protected spreadsheet: BaseSpreadSheet;
   // 保存触发的元素
@@ -61,16 +61,24 @@ export class EventController {
     this.addEvent(this.triggerGroup(), this.getEndEvent(), this.end.bind(this));
 
     // 绑定原生事件
-    this.addEventListener(window, OriginEventType.KEY_DOWN, (event: KeyboardEvent) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARDDOWN, event);
-    });
-    this.addEventListener(window, OriginEventType.KEY_UP, (event: KeyboardEvent) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARDUP, event);
-    });
+    this.addEventListener(
+      window,
+      OriginEventType.KEY_DOWN,
+      (event: KeyboardEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARDDOWN, event);
+      },
+    );
+    this.addEventListener(
+      window,
+      OriginEventType.KEY_UP,
+      (event: KeyboardEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARDUP, event);
+      },
+    );
     this.addEventListener(
       document,
       'click',
-      wrapBehavior(this, 'resetSheetStyle')
+      wrapBehavior(this, 'resetSheetStyle'),
     );
   }
 
@@ -104,7 +112,7 @@ export class EventController {
   protected start(ev: Event) {
     this.target = ev.target;
     const appendInfo = get(ev.target, 'attrs.appendInfo');
-    if(appendInfo && appendInfo.isResizer) {
+    if (appendInfo && appendInfo.isResizer) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEDOWN, ev);
     } else {
       const cellType = this.spreadsheet.getCellType(ev.target);
@@ -129,7 +137,7 @@ export class EventController {
 
   protected process(ev: Event) {
     const appendInfo = get(ev.target, 'attrs.appendInfo');
-    if(appendInfo && appendInfo.isResizer) {
+    if (appendInfo && appendInfo.isResizer) {
       // row-col-resize
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEMOVE, ev);
     } else {
@@ -169,7 +177,7 @@ export class EventController {
 
   protected end(ev: Event) {
     const appendInfo = get(ev.target, 'attrs.appendInfo');
-    if(appendInfo && appendInfo.isResizer) {
+    if (appendInfo && appendInfo.isResizer) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEUP, ev);
     } else {
       const cell = this.spreadsheet.getCell(ev.target);
@@ -228,7 +236,6 @@ export class EventController {
   protected unbindEvents() {
     this.clearEvents();
   }
-  
 
   /**
    * 用于绑定原生事件

@@ -1,2 +1,2 @@
 export { BaseEvent } from './base-event';
-export * from './click-events'
+export * from './click-events';

@@ -416,7 +416,7 @@ export class RowCell extends BaseCell<Node> {
       'transparent',
       this,
     );
-    this.stateShapes.push(this.interactiveBgShape)
+    this.stateShapes.push(this.interactiveBgShape);
   }
 
   protected drawBackgroundColor() {

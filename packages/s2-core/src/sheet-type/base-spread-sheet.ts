@@ -22,7 +22,14 @@ import {
   SpreadsheetOptions,
   ViewMeta,
 } from '../common/interface';
-import { DataCell, BaseCell, RowCell, ColCell, DataPlaceHolderCell, CornerCell } from '../cell';
+import {
+  DataCell,
+  BaseCell,
+  RowCell,
+  ColCell,
+  DataPlaceHolderCell,
+  CornerCell,
+} from '../cell';
 import {
   KEY_COL_REAL_WIDTH_INFO,
   KEY_GROUP_BACK_GROUND,
@@ -125,7 +132,9 @@ export default abstract class BaseSpreadSheet extends EE {
     options: SpreadsheetOptions,
   ) {
     super();
-    this.dom = isString(dom) ? document.getElementById(<string>dom) : <HTMLElement>dom;
+    this.dom = isString(dom)
+      ? document.getElementById(<string>dom)
+      : <HTMLElement>dom;
     this.dataCfg = safetyDataCfg(dataCfg);
     this.options = safetyOptions(options);
     this.initGroups(this.dom, this.options);
@@ -135,7 +144,7 @@ export default abstract class BaseSpreadSheet extends EE {
     this.tooltip =
       (options?.initTooltip && options?.initTooltip(this)) ||
       this.initTooltip();
-    
+
     // 注意这俩的顺序，不要反过来，因为interaction中会屏蔽event，但是event不会屏蔽interaction
     this.registerInteractions(this.options);
     this.registerEvents();
@@ -618,7 +627,7 @@ export default abstract class BaseSpreadSheet extends EE {
   }
 
   public hideTooltip() {
-    this.tooltip.hide()
+    this.tooltip.hide();
   }
 
   // 获取当前cell实例
