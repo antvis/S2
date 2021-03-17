@@ -19,6 +19,7 @@ import {
   BrushSelection,
   RowColResize,
   DataCellMutiSelection,
+  ColRowMutiSelection
 } from '../interaction';
 import {
   DataCellClick,
@@ -154,8 +155,12 @@ export default class SpreadSheet extends BaseSpreadSheet {
       this.registerInteraction('spreadsheet:brush-selection', BrushSelection);
       this.registerInteraction('spreadsheet:row-col-resize', RowColResize);
       this.registerInteraction(
-        'spreadsheet:muti-selection',
+        'spreadsheet:datacell-muti-selection',
         DataCellMutiSelection,
+      );
+      this.registerInteraction(
+        'spreadsheet:col-row-muti-selection',
+        ColRowMutiSelection,
       );
     }
   }

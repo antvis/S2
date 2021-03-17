@@ -16,3 +16,4 @@
 export { BrushSelection } from './brush-selection';
 export { RowColResize } from './row-col-resize';
 export { DataCellMutiSelection } from './datacell-muti-selection';
+export { ColRowMutiSelection } from './col-row-muti-selection';
