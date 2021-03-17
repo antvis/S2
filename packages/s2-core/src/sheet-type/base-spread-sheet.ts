@@ -135,8 +135,11 @@ export default abstract class BaseSpreadSheet extends EE {
     this.tooltip =
       (options?.initTooltip && options?.initTooltip(this)) ||
       this.initTooltip();
-    this.registerEvents();
+    
+    // 注意这俩的顺序，不要反过来，因为interaction中会屏蔽event，但是event不会屏蔽interaction
     this.registerInteractions(this.options);
+    this.registerEvents();
+
     this.initDevicePixelRatioListener();
   }
 

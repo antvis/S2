@@ -34,7 +34,6 @@ export class RowColResize extends BaseInteraction {
   }
 
   protected bindEvents() {
-    super.bindEvents();
     this.bindMouseDown();
     this.bindMouseMove();
     this.bindMouseUp();

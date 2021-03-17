@@ -94,7 +94,7 @@ export class BrushSelection extends BaseInteraction {
           height: brushRegion.height,
         });
         const currentState = this.spreadsheet.getCurrentState();
-        if (currentState.stateName === 'selectedCol' || currentState.stateName === 'selectedRow') {
+        if (currentState.stateName === StateName.COL_SELECTED || currentState.stateName === StateName.ROW_SELECTED) {
           this.spreadsheet.getPanelAllCells().forEach((cell) => {
             cell.hideShapeUnderState();
           });
@@ -108,10 +108,6 @@ export class BrushSelection extends BaseInteraction {
   private bindMouseUp() {
     this.spreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev) => {
       if (this.phase === 2) {
-        /**
-         * 模拟tableau的交互，原因是如果在mousedown阶段清空选中态，那单选的mouseup后的click无法实现反选
-         */
-        this.spreadsheet.clearState();
         const oe = ev.originalEvent as any;
         this.endPoint = { x: oe.layerX, y: oe.layerY };
         const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
@@ -139,15 +135,9 @@ export class BrushSelection extends BaseInteraction {
   }
 
   protected bindEvents() {
-    super.bindEvents();
     this.bindMouseDown();
     this.bindMouseMove();
     this.bindMouseUp();
-    this.addEventListener(
-      this.spreadsheet.container.get('container'),
-      'mouseleave',
-      this.hide.bind(this),
-    );
   }
 
   private getCellsInRegion(region) {
@@ -188,7 +178,6 @@ export class BrushSelection extends BaseInteraction {
   // 刷选过程中的预选择外框
   protected showPrepareBrushSelectBorder(cells: DataCell[]) {
     if (cells.length) {
-      this.spreadsheet.clearState();
       cells.forEach((cell: DataCell) => {
         this.spreadsheet.setState(cell, StateName.PREPARE_SELECT);
       });
@@ -209,35 +198,5 @@ export class BrushSelection extends BaseInteraction {
       },
       capture: false,
     });
-  }
-
-  public hide() {
-    // if (this.cells) {
-    //   if (this.regionShape) {
-    //     this.regionShape.attr({
-    //       opacity: 0,
-    //     });
-    //   }
-    //   this.spreadsheet.clearState();
-    //   this.spreadsheet.eventController.interceptEvent.clear();
-    //   // 清空屏蔽的事件
-    //   this.phase = 0;
-    //   this.draw();
-    // }
-  }
-
-  protected clearInteractionStyle() {
-    if (this.cells) {
-      if (this.regionShape) {
-        this.regionShape.attr({
-          opacity: 0,
-        });
-      }
-      this.spreadsheet.clearState();
-      this.spreadsheet.eventController.interceptEvent.clear();
-      // 清空屏蔽的事件
-      this.phase = 0;
-      this.draw();
-    }
   }
 }

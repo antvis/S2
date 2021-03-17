@@ -8,6 +8,8 @@ export enum StateName {
   SELECTED = 'selected',
   HOVER = 'hover',
   PREPARE_SELECT = 'prepareSelect',
+  COL_SELECTED = 'colSelected',
+  ROW_SELECTED = 'rowSelected',
 }
 export default class State {
   protected spreadsheet: BaseSpreadSheet;
@@ -24,6 +26,7 @@ export default class State {
   public setState(cell: S2AllCellType, stateName: StateName | string) {
     if (stateName !== this.stateStore.stateName) {
       // 当stateName与stateStore中的状态不一致时
+      this.clearState();
       this.stateStore = {
         stateName,
         cells: [cell],

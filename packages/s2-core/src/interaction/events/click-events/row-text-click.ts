@@ -1,28 +1,23 @@
 import { Event } from '@antv/g-canvas';
 import { get, isEmpty, set, each, find } from 'lodash';
-import { KEY_JUMP_HREF } from '../common/constant';
-import { BaseInteraction } from './base';
-import { S2Event} from './events/types';
-import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
-
-
+import { KEY_JUMP_HREF } from '../../../common/constant';
+import { S2Event, DefaultEventType} from '../types';
+import { BaseEvent } from '../base-event';
 
 /**
  * Row header click navigation interaction
  */
-export class RowHeaderTextClick extends BaseInteraction {
-
-  constructor(spreadsheet: BaseSpreadSheet) {
-    super(spreadsheet);
-  }
+export class RowTextClick extends BaseEvent {
 
   protected bindEvents() {
-    super.bindEvents();
-    this.bindClick();
+    this.bindRowCellClick();
   }
 
-  private bindClick() {
+  private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
+      if (this.spreadsheet.eventController.interceptEvent.has(DefaultEventType.CLICK)) {
+        return;
+      }
       const appendInfo = get(ev.target, 'attrs.appendInfo', {});
       if (appendInfo.isRowHeaderText) {
         // 行头内的文本

@@ -62,7 +62,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { stateName, cells: selectedCells } = state;
     // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
     if(selectedCells.length) {
-      if(stateName === 'selectedCol') {
+      if(stateName === StateName.COL_SELECTED) {
         const currentColIndex = this.meta.colIndex;
         const selectedColIndex = map(selectedCells, cell => cell.getMeta().cellIndex);
         if(selectedColIndex.indexOf(currentColIndex) > -1) {
@@ -70,7 +70,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         } else {
           this.hideShapeUnderState();
         }
-      } else if (stateName === 'selectedRow') {
+      } else if (stateName === StateName.ROW_SELECTED) {
         // 逻辑和selectedCol一致，row-select和col-select可能会有不同方式，暂时不合并
         const currentRowIndex = this.meta.rowIndex;
         const selectedRowIndex = map(selectedCells, cell => cell.getMeta().rowIndex);
@@ -106,22 +106,6 @@ export class DataCell extends BaseCell<ViewMeta> {
       formattedValue,
     };
   }
-
-  // public setActive() {
-  //   updateShapeAttr(
-  //     this.interactiveBgShape,
-  //     'fillOpacity',
-  //     this.theme.view.cell.interactiveFillOpacity[1],
-  //   );
-  // }
-
-  // public setInactive() {
-  //   updateShapeAttr(
-  //     this.interactiveBgShape,
-  //     'fillOpacity',
-  //     this.theme.view.cell.interactiveFillOpacity[0],
-  //   );
-  // }
 
   public setMeta(viewMeta: ViewMeta) {
     super.setMeta(viewMeta);

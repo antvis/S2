@@ -1,6 +1,7 @@
 import { Event, Canvas, LooseObject } from '@antv/g-canvas';
-import { get, each } from 'lodash';
+import { get, each, includes } from 'lodash';
 import { BaseCell, DataCell, ColCell, CornerCell, RowCell } from '../../cell';
+import { wrapBehavior } from '@antv/util';
 import {
   S2Event,
   OriginEventType,
@@ -60,12 +61,33 @@ export class EventController {
     this.addEvent(this.triggerGroup(), this.getEndEvent(), this.end.bind(this));
 
     // 绑定原生事件
-    this.addEventListener(window, OriginEventType.KEY_DOWN, (event) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_KEBOARDDOWN, event);
+    this.addEventListener(window, OriginEventType.KEY_DOWN, (event: KeyboardEvent) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARDDOWN, event);
     });
-    this.addEventListener(window, OriginEventType.KEY_UP, (event) => {
-      this.spreadsheet.emit(S2Event.GLOBAL_KEBOARDUP, event);
+    this.addEventListener(window, OriginEventType.KEY_UP, (event: KeyboardEvent) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARDUP, event);
     });
+    this.addEventListener(
+      document,
+      'click',
+      wrapBehavior(this, 'resetSheetStyle')
+    );
+  }
+
+  protected resetSheetStyle(ev) {
+    if (
+      ev.target !== this.spreadsheet.container.get('el') &&
+      !includes(ev.target?.className, 'eva-facet') &&
+      !includes(ev.target?.className, 'ant-menu') &&
+      !includes(ev.target?.className, 'ant-input')
+    ) {
+      this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
+      this.spreadsheet.clearState();
+      this.spreadsheet.hideTooltip();
+      // 屏蔽的事件都重新打开
+      this.spreadsheet.eventController.interceptEvent.clear();
+      this.draw();
+    }
   }
 
   /**

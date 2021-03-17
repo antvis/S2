@@ -87,7 +87,7 @@ export default {
   themeByState: {
     dataCell: {
       selected: {
-        backgroundColor: '#0000ff',
+        backgroundColor: '#ffd6e7',
         opacity: 0.8,
       },
       hover: {
@@ -102,11 +102,17 @@ export default {
       hover: {
         backgroundColor: '#b5f5ec',
       },
+      colSelected: {
+        backgroundColor: '#f759ab',
+      }
     },
     rowCell: {
       hover: {
         backgroundColor: '#d4b106',
       },
+      rowSelected: {
+        backgroundColor: '#f759ab',
+      }
     },
   },
 } as SpreadSheetTheme;

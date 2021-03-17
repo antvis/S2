@@ -41,20 +41,11 @@ export abstract class BaseInteraction {
     this.unbindEvents();
   }
 
-  protected bindEvents() {
-    // interaction全局事件
-    this.addEventListener(
-      document,
-      'click',
-      wrapBehavior(this, 'onDucumentClick')
-    );
-  }
+  protected bindEvents() {}
 
   protected unbindEvents() {
     this.clearEvents();
   }
-
-  protected clearInteractionStyle() {}
 
   /**
    * Determine which group trigger the event
@@ -118,20 +109,5 @@ export abstract class BaseInteraction {
       eh.target.removeEventListener(eh.type, eh.handler);
     });
     this.eventListeners.length = 0;
-  }
-
-  // 清空所有interaction带来的任何样式的影响
-  protected onDucumentClick(ev) {
-    if (
-      ev.target !== this.spreadsheet.container.get('el') &&
-      !includes(ev.target?.className, 'eva-facet') &&
-      !includes(ev.target?.className, 'ant-menu') &&
-      !includes(ev.target?.className, 'ant-input')
-    ) {
-      this.spreadsheet.clearState();
-      this.spreadsheet.hideTooltip();
-      this.clearInteractionStyle();
-      this.draw();
-    }
   }
 }

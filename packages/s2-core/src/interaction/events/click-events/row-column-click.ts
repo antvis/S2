@@ -1,13 +1,14 @@
 import { Event } from '@antv/g-canvas';
 import { map, size, get, min, max, each } from 'lodash';
-import { ActionType, SortParam, Node } from '../index';
-import { DataCell, ColCell, RowCell } from '../cell';
-import { getHeaderHierarchyQuery } from '../facet/layout/util';
+import { ActionType, SortParam, Node } from '../../../index';
+import { DataCell, ColCell, RowCell } from '../../../cell';
+import { getHeaderHierarchyQuery } from '../../../facet/layout/util';
 import { DownOutlined } from '@ant-design/icons';
-import { S2Event, DefaultEventType } from './events/types';
-import { BaseInteraction } from './base';
-import { getTooltipData } from '../utils/tooltip';
-import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
+import { S2Event, DefaultEventType } from '../types';
+import { BaseEvent } from '../base-event';
+import { StateName } from '../../../state/state';
+import { getTooltipData } from '../../../utils/tooltip';
+import BaseSpreadSheet from '../../../sheet-type/base-spread-sheet';
 
 interface MenuType {
   id: string;
@@ -46,31 +47,25 @@ const MENUS = [
  * Click row/column header leaf node to set sort types
  * and high-light current row/column cells
  */
-export class RowColumnSelection extends BaseInteraction {
-  public cells: DataCell[];
-
-  public selected: any[];
-
-  public selectedId: string;
+export class RowColumnClick extends BaseEvent {
 
   // 显示排序时，排序字段
-  public sortFieldId: string;
+  private sortFieldId: string;
 
   // 显示排序时，排序的查询参数
-  public sortQuery: any;
-
-  constructor(spreadsheet: BaseSpreadSheet) {
-    super(spreadsheet);
-  }
+  private sortQuery: any;
 
   protected bindEvents() {
-    super.bindEvents();
     this.bindColCellClick();
     this.bindRowCellClick();
+    this.bindResetSheetStyle();
   }
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
+      if (this.spreadsheet.eventController.interceptEvent.has(DefaultEventType.CLICK)) {
+        return;
+      }
       const cell = this.spreadsheet.getCell(ev.target);
       if (cell.getMeta().x !== undefined) {
         const meta = cell.getMeta();
@@ -84,13 +79,14 @@ export class RowColumnSelection extends BaseInteraction {
           each(Node.getAllLeavesOfNode(meta), (node: Node) => {
             // 如果
             if(node.belongsCell) {
-              this.spreadsheet.setState(node.belongsCell, 'selectedRow')
+              this.spreadsheet.setState(node.belongsCell, StateName.ROW_SELECTED)
             }
           })
         } else {
           // 单行
-          this.spreadsheet.setState(cell, 'selectedRow')
+          this.spreadsheet.setState(cell, StateName.ROW_SELECTED)
         }
+        this.spreadsheet.updateCellStyleByState();
         this.resetCell();
         this.draw();
       }
@@ -99,10 +95,12 @@ export class RowColumnSelection extends BaseInteraction {
 
   private bindColCellClick() {
     this.spreadsheet.on(S2Event.COLCELL_CLICK, (ev: Event) => {
+      if (this.spreadsheet.eventController.interceptEvent.has(DefaultEventType.CLICK)) {
+        return;
+      }
       const cell = this.spreadsheet.getCell(ev.target);
       if (cell.getMeta().x !== undefined) {
         const meta = cell.getMeta();
-        this.selectedId = meta.id;
         // 是否显示排序选项
         // let showSortOperations = false;
         //  tooltip 是否可让鼠标进入
@@ -119,12 +117,12 @@ export class RowColumnSelection extends BaseInteraction {
           // 多列
           each(Node.getAllLeavesOfNode(meta), (node: Node) => {
             if(node.belongsCell) {
-              this.spreadsheet.setState(node.belongsCell, 'selectedCol')
+              this.spreadsheet.setState(node.belongsCell, StateName.COL_SELECTED)
             }
           })
         } else {
           // 单列
-          this.spreadsheet.setState(cell, 'selectedCol')
+          this.spreadsheet.setState(cell, StateName.COL_SELECTED)
         }
         // if (meta.isLeaf) {
         //   // 最后一行的列选中，显示 tooltip 时可操作排序
@@ -133,6 +131,7 @@ export class RowColumnSelection extends BaseInteraction {
         //   enterable = true;
         //   showSortOperations = true;
         // }
+        this.spreadsheet.updateCellStyleByState();
         this.resetCell();
         this.draw();
         // const position = {
@@ -158,6 +157,17 @@ export class RowColumnSelection extends BaseInteraction {
         //   options,
         // };
         // this.showTooltip(showOptions);
+      }
+    })
+  }
+
+  private bindResetSheetStyle() {
+    this.spreadsheet.on(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT, () => {
+      const currentState = this.spreadsheet.getCurrentState();
+      if (currentState.stateName === StateName.COL_SELECTED || currentState.stateName === StateName.ROW_SELECTED) {
+        this.spreadsheet.getPanelAllCells().forEach((cell) => {
+          cell.hideShapeUnderState();
+        });
       }
     })
   }

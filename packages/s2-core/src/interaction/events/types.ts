@@ -28,8 +28,10 @@ export enum S2Event {
   GLOBAL_RESIZE_MOUSEMOVE = 'global:resize:mousemove',
   GLOBAL_RESIZE_MOUSEUP = 'global:resize:mouseup',
 
-  GLOBAL_KEBOARDDOWN = 'global:keyboarddown',
-  GLOBAL_KEBOARDUP = 'global:keyboardup',
+  GLOBAL_KEYBOARDDOWN = 'global:keyboarddown',
+  GLOBAL_KEYBOARDUP = 'global:keyboardup',
+
+  GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT = 'global:clear-interaction-style-effect'
 }
 
 export enum OriginEventType {

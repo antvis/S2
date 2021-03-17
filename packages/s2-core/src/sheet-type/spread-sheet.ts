@@ -17,13 +17,14 @@ import {
 import { isMobile } from '../utils/is-mobile';
 import {
   BrushSelection,
-  CornerHeaderTextClick,
   RowColResize,
-  RowColumnSelection,
-  RowHeaderTextClick,
+  DataCellMutiSelection
 } from '../interaction';
 import {
-  DataCellClick
+  DataCellClick,
+  CornerTextClick,
+  RowColumnClick,
+  RowTextClick
 } from '../interaction/events'
 import { DetailFacet } from '../facet/detail';
 import { SpreadsheetFacet } from '../facet';
@@ -150,26 +151,18 @@ export default class SpreadSheet extends BaseSpreadSheet {
   protected registerInteractions(options: SpreadsheetOptions) {
     this.interactions.clear();
     if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
-      this.registerInteraction(
-        'spreadsheet:row-col-selection',
-        RowColumnSelection,
-      );
       this.registerInteraction('spreadsheet:brush-selection', BrushSelection);
       this.registerInteraction('spreadsheet:row-col-resize', RowColResize);
-      this.registerInteraction(
-        'spreadsheet:corner-header-text-click',
-        CornerHeaderTextClick,
-      );
+      this.registerInteraction('spreadsheet:muti-selection', DataCellMutiSelection);
     }
-    this.registerInteraction(
-      'spreadsheet:row-header-text-click',
-      RowHeaderTextClick,
-    );
   }
 
   protected registerEvents() {
     this.events.clear();
     this.registerEvent('spreadsheet:data-cell-click', DataCellClick);
+    this.registerEvent('spreadsheet:corner-text-click', CornerTextClick);
+    this.registerEvent('spreadsheet:row-column-click', RowColumnClick);
+    this.registerEvent('spreadsheet:row-text-click', RowTextClick);
   }
 
   protected registerEvent(key: string, ctc: EventConstructor) {
