@@ -275,11 +275,11 @@ export class Pivot {
     if (has(query, field)) {
       return [query[field]];
     }
-    const map = this.getChildMeta(field, query);
-    if (!map) {
+    const metaMap = this.getChildMeta(field, query);
+    if (!metaMap) {
       return [];
     }
-    return this.sort(filterNull(Array.from(map.keys())), field, query);
+    return this.sort(filterNull(Array.from(metaMap.keys())), field, query);
   }
 
   public getAttr(attr) {
