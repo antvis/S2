@@ -1,6 +1,6 @@
 import { Event } from '@antv/g-canvas';
 import { map, size, get, min, max } from 'lodash';
-import { ActionType, SortParam, Node } from '../index';
+import { SortParam, Node } from '../index';
 import { Cell, ColCell, RowCell } from '../cell';
 import { getHeaderHierarchyQuery } from '../facet/layout/util';
 import { HoverInteraction } from './hover-interaction';

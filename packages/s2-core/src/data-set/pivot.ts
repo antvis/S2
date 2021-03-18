@@ -258,6 +258,10 @@ export class Pivot {
    * @param query 查询条件
    */
   public getDimValues(field: string, query?: DataType): string[] {
+    const filterNull = (values: string[]) => {
+      // '' 空label 需要保留，值去除 undefined/null
+      return filter(values, (t) => !isNull(t) && !isUndefined(t));
+    };
     // first row/column
     if (isEmpty(query)) {
       const values = this.sortedDimValue.get(field);
@@ -265,7 +269,7 @@ export class Pivot {
       if (!values) {
         return [];
       }
-      return this.sort(Array.from(values), field);
+      return this.sort(filterNull(Array.from(values)), field);
     }
     // 特殊值的处理：getDimValues("type", { type: "A" })
     if (has(query, field)) {
@@ -275,9 +279,7 @@ export class Pivot {
     if (!metaMap) {
       return [];
     }
-    const result = this.sort(Array.from(metaMap.keys()), field, query);
-    // '' 空label 需要保留，值去除 undefined/null
-    return filter(result, (t) => !isNull(t) && !isUndefined(t));
+    return this.sort(filterNull(Array.from(metaMap.keys())), field, query);
   }
 
   public getAttr(attr) {
