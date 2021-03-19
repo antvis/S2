@@ -116,7 +116,7 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
       // 虚拟列字段，为文本分类字段，格式化为字段值的别名
       {
         field: EXTRA_FIELD,
-        name: EXTRA_FIELD,
+        name: i18n('数值'),
         formatter: (v) => enumAlias.get(v), // 格式化
       } as Meta,
       // 小计字段，为数值连续字段，格式化为自动数值格式化
