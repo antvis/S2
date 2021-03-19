@@ -132,21 +132,15 @@ export abstract class BaseFacet {
    * 计算 x y 方向，视窗内 view 的 index
    * @param scrollX
    * @param scrollY
-   * @param overScan
    * @protected
    */
-  protected calculateXYIndexes(
-    scrollX: number,
-    scrollY: number,
-    overScan = 0,
-  ): Indexes {
+  protected calculateXYIndexes(scrollX: number, scrollY: number): Indexes {
     return calculateInViewIndexes(
       scrollX,
       scrollY,
       this.viewCellWidths,
       this.viewCellHeights,
       this.viewportBBox,
-      overScan,
     );
   }
 

@@ -1,4 +1,4 @@
-import type, { BBox } from '@antv/g-canvas';
+import { BBox } from '@antv/g-canvas';
 import { Wheel } from '@antv/g-gesture';
 import { ScrollBar } from '../ui/scrollbar';
 import { interpolateArray } from 'd3-interpolate';
@@ -742,13 +742,8 @@ export class SpreadsheetFacet extends BaseFacet {
     the viewport viewable area must vary with the horizontal distance of the scroll
    * @param scrollX
    * @param scrollY
-   * @param overScan
    */
-  protected calculateXYIndexes(
-    scrollX: number,
-    scrollY: number,
-    overScan = 0,
-  ): Indexes {
+  protected calculateXYIndexes(scrollX: number, scrollY: number): Indexes {
     return calculateInViewIndexes(
       scrollX,
       scrollY,
