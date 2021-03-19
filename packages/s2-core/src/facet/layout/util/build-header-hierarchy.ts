@@ -9,6 +9,7 @@ import { canNodeBeExpanded } from './can-node-be-expanded';
 import getDimsCondition from './get-dims-condition-by-node';
 import { handleHideNodes } from './handle-hide-nodes';
 import { handleKeepOnlyNodes } from './handle-keep-only-nodes';
+import { EXTRA_FIELD } from '../../../common/constant';
 
 function addTotalsNodes(
   pivot: Pivot,
@@ -72,6 +73,15 @@ export default function buildHeaderHierarchy(
   const query = getDimsCondition(parent, true);
   const fieldValues: (string | TotalClass)[] = pivot.getDimValues(key, query);
 
+  // when cols/values not exist,we need show table structure with empty body
+  if (
+    key === EXTRA_FIELD &&
+    _.includes(cfg.cols, key) &&
+    _.isEmpty(fieldValues)
+  ) {
+    // add empty measure node
+    fieldValues.push('');
+  }
   // handle keep only node in row/col by ids
   handleKeepOnlyNodes(pivot, fieldValues, field, parent.id);
   // handle handle nodes by node query
