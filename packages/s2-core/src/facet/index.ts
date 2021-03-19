@@ -1,4 +1,4 @@
-import type, { BBox } from '@antv/g-canvas';
+import { BBox } from '@antv/g-canvas';
 import { Wheel } from '@antv/g-gesture';
 import { ScrollBar } from '../ui/scrollbar';
 import { interpolateArray } from 'd3-interpolate';
@@ -52,7 +52,6 @@ import { Node } from './layout/node';
 import { BaseParams } from '../data-set/base-data-set';
 import { DEBUG_VIEW_RENDER, DebuggerUtil } from '../common/debug';
 import { DataPlaceHolderCell } from '../cell';
-import { DefaultStyleCfg } from '../common/default-style-cfg';
 
 interface Point {
   x: number;
@@ -309,8 +308,7 @@ export class SpreadsheetFacet extends BaseFacet {
     const { rowsHierarchy, colsHierarchy } = layoutResult;
 
     const leftWidth = rowsHierarchy.width + this.getSeriesNumberWidth();
-    // when col/values not exist, we need default height to display corner header
-    const height = colsHierarchy.height || DefaultStyleCfg().cellCfg.height;
+    const height = colsHierarchy.height;
 
     this.realCornerWidth = leftWidth;
     let renderWidth = leftWidth;
@@ -744,13 +742,8 @@ export class SpreadsheetFacet extends BaseFacet {
     the viewport viewable area must vary with the horizontal distance of the scroll
    * @param scrollX
    * @param scrollY
-   * @param overScan
    */
-  protected calculateXYIndexes(
-    scrollX: number,
-    scrollY: number,
-    overScan = 0,
-  ): Indexes {
+  protected calculateXYIndexes(scrollX: number, scrollY: number): Indexes {
     return calculateInViewIndexes(
       scrollX,
       scrollY,
