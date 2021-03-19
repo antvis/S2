@@ -1,4 +1,4 @@
-import type { BBox } from '@antv/g-canvas';
+import type, { BBox } from '@antv/g-canvas';
 import { Wheel } from '@antv/g-gesture';
 import { ScrollBar } from '../ui/scrollbar';
 import { interpolateArray } from 'd3-interpolate';
@@ -52,6 +52,7 @@ import { Node } from './layout/node';
 import { BaseParams } from '../data-set/base-data-set';
 import { DEBUG_VIEW_RENDER, DebuggerUtil } from '../common/debug';
 import { DataPlaceHolderCell } from '../cell';
+import { DefaultStyleCfg } from '../common/default-style-cfg';
 
 interface Point {
   x: number;
@@ -308,7 +309,8 @@ export class SpreadsheetFacet extends BaseFacet {
     const { rowsHierarchy, colsHierarchy } = layoutResult;
 
     const leftWidth = rowsHierarchy.width + this.getSeriesNumberWidth();
-    const height = colsHierarchy.height;
+    // when col/values not exist, we need default height to display corner header
+    const height = colsHierarchy.height || DefaultStyleCfg().cellCfg.height;
 
     this.realCornerWidth = leftWidth;
     let renderWidth = leftWidth;
@@ -755,7 +757,6 @@ export class SpreadsheetFacet extends BaseFacet {
       this.viewCellWidths,
       this.viewCellHeights,
       this.viewportBBox,
-      overScan,
       this.getRealScrollX(this.cornerBBox.width),
     );
   }
