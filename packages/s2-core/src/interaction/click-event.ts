@@ -33,35 +33,48 @@ export class ClickEvent extends BaseInteraction {
     if (this.target !== ev.target) {
       return;
     }
+    const currentCellData = ev.target?.attrs?.appendInfo?.cellData;
     const target = ev.target.get('parent');
-    if (!target) {
+    if (!target && !currentCellData) {
       return;
     }
 
+    const meta = target?.getMeta?.() || currentCellData;
+
+    const baseCellData = {
+      viewMeta: meta,
+      event: ev,
+    };
+
     if (target instanceof Cell) {
       // cell area's cell
-      const meta = target.getMeta();
-      // console.log(JSON.stringify(meta.rowQuery), JSON.stringify(meta.colQuery));
       this.spreadsheet.emit(KEY_SINGLE_CELL_CLICK, {
-        viewMeta: meta,
+        ...baseCellData,
         rowQuery: meta.rowQuery,
         colQuery: meta.colQuery,
       });
-      // this.spreadsheet.panelGroup.translate(0, meta.rowIndex%2 === 0 ? 10 : -10);
-    } else if (target instanceof RowCell) {
+      return;
+    }
+
+    if (target instanceof RowCell) {
       this.spreadsheet.emit(KEY_ROW_CELL_CLICK, {
-        viewMeta: target.getMeta(),
-        query: target.getMeta().query,
+        ...baseCellData,
+        query: meta.query,
       });
-    } else if (target instanceof ColCell) {
+      return;
+    }
+
+    if (target instanceof ColCell) {
       this.spreadsheet.emit(KEY_COLUMN_CELL_CLICK, {
-        viewMeta: target.getMeta(),
-        query: target.getMeta().query,
+        ...baseCellData,
+        query: meta.query,
       });
-    } else if (target instanceof CornerCell) {
-      this.spreadsheet.emit(KEY_CORNER_CELL_CLICK, {
-        viewMeta: target.getMeta(),
-      });
+      return;
+    }
+
+    if (target instanceof CornerCell || currentCellData) {
+      this.spreadsheet.emit(KEY_CORNER_CELL_CLICK, baseCellData);
+      return;
     }
   }
 }

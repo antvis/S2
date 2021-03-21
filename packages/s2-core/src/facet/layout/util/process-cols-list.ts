@@ -4,7 +4,7 @@ import {
   DEFAULT_ROW,
   DEFAULT_VALUE,
 } from '../../../utils/get-irregular-data';
-import { EXTRA_FIELD } from '../../../common/constant';
+import { EXTRA_FIELD, ID_SEPARATOR } from '../../../common/constant';
 import { DetailDataSet } from '../../../data-set';
 import { SpreadsheetFacet } from '../../index';
 import { SpreadsheetFacetCfg } from '../../../common/interface';
@@ -28,7 +28,7 @@ function processCols(
       field !== DEFAULT_VALUE
     ) {
       const node = new Node({
-        id: `${parent.id}-${field}`,
+        id: `${parent.id}${ID_SEPARATOR}${field}`,
         key: field,
         field,
         value: dataSet.getFieldName(field),
