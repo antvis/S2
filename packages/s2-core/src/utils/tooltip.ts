@@ -414,11 +414,46 @@ export const getTooltipData = (
   aggregation?: Aggregation,
 ) => {
   const { interpretation, infos, tips } = data || {};
-  const summary = getSummaryProps(spreadsheet, data, options, aggregation);
+  // const summaries = getSummaryProps(spreadsheet, data, options, aggregation);
+  // mock to test
+  const summaries = [
+    {
+      name: 'test',
+      value: 'ddddd',
+      selectedData: [
+        {
+          $$extra$$: 'profit-tongbi',
+          sub_type: '系固件',
+          type: '办公用品',
+        },
+        {
+          $$extra$$: 'profit',
+          sub_type: '系固件',
+          type: '办公用品',
+        },
+      ],
+    },
+    {
+      name: 'sddddd',
+      value: 'ddddd',
+      selectedData: [
+        {
+          $$extra$$: 'profit',
+          sub_type: '系固件',
+          type: '办公用品',
+        },
+        {
+          $$extra$$: 'profit',
+          sub_type: '系固件',
+          type: '办公用品',
+        },
+      ],
+    },
+  ];
   const headInfo = getHeadInfo(spreadsheet, data);
   const details = getDetailList(spreadsheet, data, options);
 
-  return { summary, headInfo, details, interpretation, infos, tips };
+  return { summaries, headInfo, details, interpretation, infos, tips };
 };
 
 export const getRightAndValueField = (
@@ -532,9 +567,9 @@ export const getStrategyTooltipData = (
   options?: TooltipOptions,
 ) => {
   const { interpretation, infos, tips } = data || {};
-  const summary = getStrategySummary(spreadsheet, data, options);
+  const summaries = getStrategySummary(spreadsheet, data, options);
   const headInfo = getStrategyHeadInfo(spreadsheet, data);
   const details = getStrategyDetailList(spreadsheet, data, options);
 
-  return { summary, headInfo, details, interpretation, infos, tips };
+  return { summaries, headInfo, details, interpretation, infos, tips };
 };
