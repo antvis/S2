@@ -31,7 +31,7 @@ export interface ActionIconParams {
   // 下钻维度的列表组件展示
   callback: (
     event: Event,
-    spreadsheet: BaseSpreadSheet,
+    sheetInstance: BaseSpreadSheet,
     cashDrillFields: string[],
     disabledFields: string[],
   ) => void;
@@ -180,7 +180,7 @@ export const HandleOptions = (
   spreadsheet: BaseSpreadSheet,
   callback: (
     event: MouseEvent,
-    spreadsheet: BaseSpreadSheet,
+    sheetInstance: BaseSpreadSheet,
     cashDownDrillFields: string[],
     disabledFields: string[],
   ) => void,
