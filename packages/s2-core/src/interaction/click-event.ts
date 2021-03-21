@@ -74,7 +74,6 @@ export class ClickEvent extends BaseInteraction {
 
     if (target instanceof CornerCell || currentCellData) {
       this.spreadsheet.emit(KEY_CORNER_CELL_CLICK, baseCellData);
-      return;
     }
   }
 }
