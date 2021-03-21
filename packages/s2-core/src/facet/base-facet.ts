@@ -197,11 +197,6 @@ export abstract class BaseFacet {
 
   protected abstract unbindEvents(): void;
 
-  /**
-   * The hoverBoxGroup still on panelGroup, we can't remove
-   * it when clean panelGroup
-   * @private
-   */
   protected clearAllGroup() {
     const children = this.panelGroup.cfg.children;
     let hoverChild;

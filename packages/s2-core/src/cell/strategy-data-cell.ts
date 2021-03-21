@@ -12,15 +12,15 @@ import {
   isArray,
 } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
-import { renderRect, renderText } from '../utils/g-renders';
-import { DerivedCell, Cell } from '.';
+import { renderRect, renderText, updateShapeAttr } from '../utils/g-renders';
+import { DerivedCell, DataCell } from '.';
 import { KEY_COL_REAL_WIDTH_INFO } from '../common/constant';
 
 /**
  * 决策形态的data-cell
  * 主要是新增衍生指标的实现
  */
-export class StrategyDataCell extends Cell {
+export class StrategyDataCell extends DataCell {
   protected initCell() {
     this.initCellRightBorder();
     super.initCell();

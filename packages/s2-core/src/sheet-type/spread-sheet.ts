@@ -17,19 +17,23 @@ import {
 import { isMobile } from '../utils/is-mobile';
 import {
   BrushSelection,
-  CellSelection,
-  CornerHeaderTextClick,
-  HeaderHover,
   RowColResize,
-  RowColumnSelection,
-  RowHeaderTextClick,
+  DataCellMutiSelection,
+  ColRowMutiSelection,
 } from '../interaction';
-import { ClickEvent } from '../interaction/click-event';
+import {
+  DataCellClick,
+  CornerTextClick,
+  RowColumnClick,
+  RowTextClick,
+} from '../interaction/events';
 import { DetailFacet } from '../facet/detail';
 import { SpreadsheetFacet } from '../facet';
 import { SpreadParams } from '../data-set/spread-data-set';
 import { BaseFacet } from '../facet/base-facet';
 import { InteractionConstructor } from '../interaction/base';
+import { EventConstructor } from '../interaction/events/base-event';
+import { detectAttrsChangeAndAction } from '../utils/attrs-action';
 
 /**
  * 目前交叉表和明细的表类入口(后续会分拆出两个表)
@@ -53,6 +57,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.handleCollapseChangedInTreeMode(options);
     this.handleDataSetChanged(options);
     this.handleColLayoutTypeChanged(options);
+    this.handleChangeSize(options);
 
     this.options = merge(
       {
@@ -147,24 +152,30 @@ export default class SpreadSheet extends BaseSpreadSheet {
   protected registerInteractions(options: SpreadsheetOptions) {
     this.interactions.clear();
     if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
-      this.registerInteraction(
-        'spreadsheet:row-col-selection',
-        RowColumnSelection,
-      );
       this.registerInteraction('spreadsheet:brush-selection', BrushSelection);
-      this.registerInteraction('spreadsheet:cell-click', CellSelection);
       this.registerInteraction('spreadsheet:row-col-resize', RowColResize);
-      this.registerInteraction('spreadsheet:header-hover', HeaderHover);
       this.registerInteraction(
-        'spreadsheet:corner-header-text-click',
-        CornerHeaderTextClick,
+        'spreadsheet:datacell-muti-selection',
+        DataCellMutiSelection,
+      );
+      this.registerInteraction(
+        'spreadsheet:col-row-muti-selection',
+        ColRowMutiSelection,
       );
     }
-    this.registerInteraction('spreadsheet:click-event', ClickEvent);
-    this.registerInteraction(
-      'spreadsheet:row-header-text-click',
-      RowHeaderTextClick,
-    );
+  }
+
+  protected registerEvents() {
+    this.events.clear();
+    this.registerEvent('spreadsheet:data-cell-click', DataCellClick);
+    this.registerEvent('spreadsheet:corner-text-click', CornerTextClick);
+    this.registerEvent('spreadsheet:row-column-click', RowColumnClick);
+    this.registerEvent('spreadsheet:row-text-click', RowTextClick);
+  }
+
+  protected registerEvent(key: string, ctc: EventConstructor) {
+    // eslint-disable-next-line new-cap
+    this.events.set(key, new ctc(this));
   }
 
   protected registerInteraction(key: string, ctc: InteractionConstructor) {
@@ -175,14 +186,17 @@ export default class SpreadSheet extends BaseSpreadSheet {
   protected handleCollapseChangedInTreeMode(
     options: Partial<SpreadsheetOptions>,
   ) {
-    if (
-      options.hierarchyCollapse !==
-        get(this, 'options.hierarchyCollapse', {}) &&
-      isBoolean(options.hierarchyCollapse)
-    ) {
-      // 如果选择了默认折叠/展开，需要清除之前的折叠状态。
-      set(this, 'options.style.collapsedRows', {});
-    }
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      'hierarchyCollapse',
+      () => {
+        if (isBoolean(options.hierarchyCollapse)) {
+          // 如果选择了默认折叠/展开，需要清除之前的折叠状态。
+          set(this, 'options.style.collapsedRows', {});
+        }
+      },
+    );
   }
 
   /**
@@ -192,13 +206,14 @@ export default class SpreadSheet extends BaseSpreadSheet {
    * @private
    */
   protected handleDataSetChanged(options: Partial<SpreadsheetOptions>) {
-    if (
-      get(options, 'spreadsheetType') !==
-        get(this, 'options.spreadsheetType') ||
-      get(options, 'valueInCols') !== get(this, 'options.valueInCols')
-    ) {
-      this.dataSet = this.initDataSet(options);
-    }
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      ['spreadsheetType', 'valueInCols'],
+      () => {
+        this.dataSet = this.initDataSet(options);
+      },
+    );
   }
 
   /**
@@ -207,12 +222,25 @@ export default class SpreadSheet extends BaseSpreadSheet {
    * @private
    */
   protected handleColLayoutTypeChanged(options: Partial<SpreadsheetOptions>) {
-    if (
-      get(options, 'style.colCfg.colWidthType') !==
-      get(this, 'options.style.colCfg.colWidthType')
-    ) {
-      set(this, 'options.style.rowCfg.widthByField', {});
-      set(options, 'style.rowCfg.widthByField', {});
-    }
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      'style.colCfg.colWidthType',
+      () => {
+        set(this, 'options.style.rowCfg.widthByField', {});
+        set(options, 'style.rowCfg.widthByField', {});
+      },
+    );
+  }
+
+  protected handleChangeSize(options: Partial<SpreadsheetOptions>) {
+    detectAttrsChangeAndAction(
+      options,
+      this.options,
+      ['width', 'height'],
+      () => {
+        this.changeSize(options.width, options.height);
+      },
+    );
   }
 }

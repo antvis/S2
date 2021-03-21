@@ -22,7 +22,7 @@ import {
 import { Formatter, PlaceHolderMeta } from '../common/interface';
 import { diffIndexes, Indexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
-import { Cell } from '../cell';
+import { BaseCell, DataCell } from '../cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
@@ -33,6 +33,7 @@ import {
   KEY_GROUP_CORNER_RESIZER,
   KEY_GROUP_COL_RESIZER,
   MAX_SCROLL_OFFSET,
+  MIN_SCROLL_BAR_HEIGHT,
 } from '../common/constant';
 import { BaseDataSet } from '../data-set';
 import { BaseFacet } from './base-facet';
@@ -599,7 +600,7 @@ export class SpreadsheetFacet extends BaseFacet {
                   newGroup as DataPlaceHolderCell,
                 );
               } else {
-                this.spreadsheet.cellCache.put(cacheKey, newGroup as Cell);
+                this.spreadsheet.cellCache.put(cacheKey, newGroup as DataCell);
               }
               if (!placeHolder) {
                 // 存储非placeHolder的meta
@@ -734,10 +735,16 @@ export class SpreadsheetFacet extends BaseFacet {
     // 监听 view 的 mobile wheel 事件
     this.mobileWheel.on('wheel', (ev) => {
       const originEvent = ev.event;
-      const { x, y } = ev;
+      const { deltaX, deltaY, x, y } = ev;
       // 移动端和PC端的 x,y 偏差大概是三倍(「大数据」算出来的！！),
       // 所以移动端上按下的点位置相对于view坐标，真实的点值 x = x / 3, y = y /3
-      this.onWheel({ ...originEvent, layerX: x / 3, layerY: y / 3 });
+      this.onWheel({
+        ...originEvent,
+        deltaX,
+        deltaY,
+        layerX: x / 3,
+        layerY: y / 3,
+      });
     });
   }
 
@@ -830,25 +837,34 @@ export class SpreadsheetFacet extends BaseFacet {
     return renderWidth;
   }
 
-  private renderVScrollBar(height, realHeight, scrollY) {
+  private renderVScrollBar(
+    height: number,
+    realHeight: number,
+    scrollY: number,
+  ) {
     if (height < realHeight) {
+      const thumbHeight = Math.max(
+        (height / realHeight) * height,
+        MIN_SCROLL_BAR_HEIGHT,
+      );
+      const getOffsetTop = (scrollTop: number) =>
+        (scrollTop / (height - thumbHeight)) *
+        (realHeight - this.viewportBBox.height);
+
       this.vScrollBar = new ScrollBar({
         isHorizontal: false,
         trackLen: height,
-        thumbLen: (height / realHeight) * height,
+        thumbLen: thumbHeight,
+        thumbOffset: getOffsetTop(scrollY),
         position: {
           x: this.viewportBBox.maxX - this.scrollBarHeight,
           y: this.viewportBBox.minY,
         },
-        thumbOffset: (scrollY * this.viewportBBox.height) / realHeight,
         theme: this.scrollBarTheme,
       });
 
       this.vScrollBar.on('scroll-change', ({ thumbOffset }) => {
-        this.setScrollOffset(
-          undefined,
-          (thumbOffset / this.vScrollBar.trackLen) * realHeight,
-        );
+        this.setScrollOffset(undefined, getOffsetTop(thumbOffset));
         this.dynamicRender(true);
       });
 
@@ -861,7 +877,7 @@ export class SpreadsheetFacet extends BaseFacet {
     }
   }
 
-  private renderHScrollBar(width, realWidth, scrollX) {
+  private renderHScrollBar(width: number, realWidth: number, scrollX: number) {
     if (Math.floor(width) < Math.floor(realWidth)) {
       const halfScrollSize =
         get(this.cfg, 'spreadsheet.theme.scrollBar.size') / 2;
@@ -1063,15 +1079,9 @@ export class SpreadsheetFacet extends BaseFacet {
       // only work in mobile
       clearTimeout(this.preHideScrollBarHandler);
       this.preHideScrollBarHandler = setTimeout(() => {
-        if (this.hRowScrollBar) {
-          this.hRowScrollBar.updateTheme(this.scrollBarTheme);
-        }
-        if (this.hScrollBar) {
-          this.hScrollBar.updateTheme(this.scrollBarTheme);
-        }
-        if (this.vScrollBar) {
-          this.vScrollBar.updateTheme(this.scrollBarTheme);
-        }
+        this.hRowScrollBar?.updateTheme(this.scrollBarTheme);
+        this.hScrollBar?.updateTheme(this.scrollBarTheme);
+        this.vScrollBar?.updateTheme(this.scrollBarTheme);
       }, 1000);
     }
   }

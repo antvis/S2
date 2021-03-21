@@ -9,9 +9,9 @@ export class DataPlaceHolderCell extends BaseCell<PlaceHolderMeta> {
   }
 
   protected initCell() {
-    this.initBackgroundShape();
-    this.initBorderShape();
-    this.initTextShape();
+    this.drawBackgroundShape();
+    this.drawBorderShape();
+    this.drawTextShape();
   }
 
   setMeta(viewMeta: PlaceHolderMeta) {
@@ -23,7 +23,7 @@ export class DataPlaceHolderCell extends BaseCell<PlaceHolderMeta> {
     return '...';
   }
 
-  protected initTextShape() {
+  protected drawTextShape() {
     const { x, y, height, width } = this.meta;
     let textStyle = this.spreadsheet.theme.view.text;
     const textFill = textStyle.fill;
@@ -47,7 +47,7 @@ export class DataPlaceHolderCell extends BaseCell<PlaceHolderMeta> {
   /**
    * Draw cell background
    */
-  protected initBackgroundShape() {
+  protected drawBackgroundShape() {
     const { x, y, height, width } = this.meta;
 
     const bgColor = this.theme.view.cell.backgroundColor;
@@ -67,7 +67,7 @@ export class DataPlaceHolderCell extends BaseCell<PlaceHolderMeta> {
    * Render cell border controlled by verticalBorder & horizontalBorder
    * @private
    */
-  protected initBorderShape() {
+  protected drawBorderShape() {
     const { x, y, height, width } = this.meta;
     const borderColor = this.theme.view.cell.borderColor;
     const borderWidth = this.theme.view.cell.borderWidth;

@@ -10,6 +10,6 @@ export class CustomTooltip extends BaseTooltip {
   }
 
   protected renderInfos(infos: string) {
-    return <Infos infos={'重写info测试'} />;
+    return <Infos infos={`重写info测试 ${infos}`} />;
   }
 }

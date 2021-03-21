@@ -1,6 +1,6 @@
 import { getEllipsisText } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { map, find, get, isEmpty, isNumber } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
@@ -8,13 +8,13 @@ import {
   renderLine,
   renderRect,
   renderText,
-  updateShapeAttr,
+  // updateShapeAttr,
 } from '../utils/g-renders';
-import { isSelected } from '../utils/selected';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { BaseCell } from './base-cell';
 import { DerivedCell } from './derived-cell';
+import { StateName } from '../state/state';
 
 // default icon size
 const ICON_SIZE = 10;
@@ -22,7 +22,7 @@ const ICON_SIZE = 10;
 const ICON_PADDING = 2;
 
 /**
- * Cell for panelGroup area
+ * DataCell for panelGroup area
  * ----------------------------
  * |                  |       |
  * |interval      text| icon  |
@@ -33,7 +33,7 @@ const ICON_PADDING = 2;
  * 2、icon align in right with size {@link ICON_SIZE}
  * 3、left rect area is interval(in left) and text(in right)
  */
-export class Cell extends BaseCell<ViewMeta> {
+export class DataCell extends BaseCell<ViewMeta> {
   // 3、condition shapes
   // background color by bg condition
   protected conditionBgShape: IShape;
@@ -47,6 +47,9 @@ export class Cell extends BaseCell<ViewMeta> {
   // 4、render main text
   protected textShape: IShape;
 
+  // 5、brush-select prepareSelect border
+  protected prepareSelectBorderShape: IShape;
+
   // cell config's conditions(Determine how to render this cell)
   protected conditions: Conditions;
 
@@ -55,15 +58,33 @@ export class Cell extends BaseCell<ViewMeta> {
   }
 
   public update() {
-    const selected = this.spreadsheet.store.get('selected');
-    if (_.isNil(selected)) {
-      this.setInactive();
-    } else {
-      const s = isSelected(this.meta.rowIndex, this.meta.colIndex, selected);
-      if (s) {
-        this.setActive();
-      } else {
-        this.setInactive();
+    const state = this.spreadsheet.getCurrentState();
+    const { stateName, cells: selectedCells } = state;
+    // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
+    if (selectedCells.length) {
+      if (stateName === StateName.COL_SELECTED) {
+        const currentColIndex = this.meta.colIndex;
+        const selectedColIndex = map(
+          selectedCells,
+          (cell) => cell.getMeta().cellIndex,
+        );
+        if (selectedColIndex.indexOf(currentColIndex) > -1) {
+          this.updateByState(StateName.SELECTED);
+        } else {
+          this.hideShapeUnderState();
+        }
+      } else if (stateName === StateName.ROW_SELECTED) {
+        // 逻辑和selectedCol一致，row-select和col-select可能会有不同方式，暂时不合并
+        const currentRowIndex = this.meta.rowIndex;
+        const selectedRowIndex = map(
+          selectedCells,
+          (cell) => cell.getMeta().rowIndex,
+        );
+        if (selectedRowIndex.indexOf(currentRowIndex) > -1) {
+          this.updateByState(StateName.SELECTED);
+        } else {
+          this.hideShapeUnderState();
+        }
       }
     }
   }
@@ -92,22 +113,6 @@ export class Cell extends BaseCell<ViewMeta> {
     };
   }
 
-  public setActive() {
-    updateShapeAttr(
-      this.interactiveBgShape,
-      'fillOpacity',
-      this.theme.view.cell.interactiveFillOpacity[1],
-    );
-  }
-
-  public setInactive() {
-    updateShapeAttr(
-      this.interactiveBgShape,
-      'fillOpacity',
-      this.theme.view.cell.interactiveFillOpacity[0],
-    );
-  }
-
   public setMeta(viewMeta: ViewMeta) {
     super.setMeta(viewMeta);
     this.initCell();
@@ -115,13 +120,19 @@ export class Cell extends BaseCell<ViewMeta> {
 
   protected initCell() {
     this.conditions = this.spreadsheet.options?.conditions;
-    this.initBackgroundShape();
-    this.initInteractiveBgShape();
-    this.initConditionShapes();
-    this.initTextShape();
-    this.initBorderShape();
+    this.drawBackgroundShape();
+    this.drawStateShapes();
+    this.drawConditionShapes();
+    this.drawTextShape();
+    this.drawBorderShape();
     // 更新选中状态
     this.update();
+  }
+
+  // 根据state要改变样式的shape
+  protected drawStateShapes() {
+    this.initInteractiveBgShape();
+    this.initPrepareSelectBorderShape();
   }
 
   /**
@@ -153,11 +164,12 @@ export class Cell extends BaseCell<ViewMeta> {
    */
   private getLeftAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
-
+    const iconCondition = this.findFieldCondition(this.conditions?.icon);
+    const isIconExist = iconCondition && iconCondition.mapping;
     return {
       x,
       y,
-      width: width - (this.iconShape ? ICON_SIZE + ICON_PADDING * 2 : 0),
+      width: width - (isIconExist ? ICON_SIZE + ICON_PADDING * 2 : 0),
       height,
     };
   }
@@ -167,7 +179,7 @@ export class Cell extends BaseCell<ViewMeta> {
    * @param conditions
    */
   protected findFieldCondition(conditions: Condition[]): Condition {
-    return _.find(conditions, (item) => item.field === this.meta.valueField);
+    return find(conditions, (item) => item.field === this.meta.valueField);
   }
 
   /**
@@ -175,13 +187,13 @@ export class Cell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): CellMapping {
-    return condition?.mapping(this.meta.fieldValue, _.get(this.meta.data, [0]));
+    return condition?.mapping(this.meta.fieldValue, get(this.meta.data, [0]));
   }
 
   /**
    * Draw cell background
    */
-  protected initBackgroundShape() {
+  protected drawBackgroundShape() {
     const { x, y, height, width } = this.meta;
 
     let bgColor = this.theme.view.cell.backgroundColor;
@@ -237,10 +249,29 @@ export class Cell extends BaseCell<ViewMeta> {
    * Draw condition's shapes
    * icon, interval, background
    */
-  protected initConditionShapes() {
+  protected drawConditionShapes() {
     this.initConditionBgShape();
     this.initIconShape();
     this.initIntervalShape();
+  }
+
+  /**
+   * Draw background condition shape
+   */
+  protected initPrepareSelectBorderShape() {
+    // 往内缩一个像素，避免和外边框重叠
+    const margin = 1;
+    const { x, y, height, width } = this.meta;
+    this.prepareSelectBorderShape = renderRect(
+      x + margin,
+      y + margin,
+      width - margin * 2,
+      height - margin * 2,
+      'transparent',
+      'transparent',
+      this,
+    );
+    this.stateShapes.push(this.prepareSelectBorderShape);
   }
 
   /**
@@ -254,10 +285,11 @@ export class Cell extends BaseCell<ViewMeta> {
       y,
       width,
       height,
-      fill,
+      'transparent',
       'transparent',
       this,
     );
+    this.stateShapes.push(this.interactiveBgShape);
   }
 
   /**
@@ -271,7 +303,7 @@ export class Cell extends BaseCell<ViewMeta> {
       const attrs = this.mappingValue(iconCondition);
       const { formattedValue } = this.getData();
       // icon only show when icon not empty and value not null(empty)
-      if (!_.isEmpty(attrs?.icon) && formattedValue) {
+      if (!isEmpty(attrs?.icon) && formattedValue) {
         this.iconShape = new GuiIcon({
           type: attrs.icon,
           x: x + width - ICON_PADDING - ICON_SIZE,
@@ -349,11 +381,11 @@ export class Cell extends BaseCell<ViewMeta> {
     if (data) {
       let value;
       if (isTotals) {
-        value = _.get(data, [0, VALUE_FIELD]);
+        value = get(data, [0, VALUE_FIELD]);
       } else {
-        value = _.get(data, [0, derivedValue]);
+        value = get(data, [0, derivedValue]);
       }
-      const up = _.isNumber(value) ? value >= 0 : false;
+      const up = isNumber(value) ? value >= 0 : false;
       const formatter = this.spreadsheet.dataSet.getFieldFormatter(
         derivedValue,
       );
@@ -371,7 +403,7 @@ export class Cell extends BaseCell<ViewMeta> {
   /**
    * Render cell main text and derived text
    */
-  protected initTextShape() {
+  protected drawTextShape() {
     const { x, y, height, width } = this.getLeftAreaBBox();
     const { valueField: originField, isTotals } = this.meta;
 
@@ -419,7 +451,7 @@ export class Cell extends BaseCell<ViewMeta> {
    * Render cell border controlled by verticalBorder & horizontalBorder
    * @private
    */
-  protected initBorderShape() {
+  protected drawBorderShape() {
     const { x, y, height, width } = this.meta;
     const borderColor = this.theme.view.cell.borderColor;
     const borderWidth = this.theme.view.cell.borderWidth;

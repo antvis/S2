@@ -110,8 +110,8 @@ const getDataCfg = () => {
 
 const getOptions = () => {
   return {
-    width: 500,
-    height: 400,
+    width: 1000,
+    height: 800,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: true,
@@ -147,6 +147,10 @@ const getOptions = () => {
   };
 };
 
+const getTheme = () => {
+  return {};
+};
+
 function MainLayout(props) {
   const [options, setOptions] = React.useState(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
@@ -154,13 +158,13 @@ function MainLayout(props) {
   const [derivedValueMul, setDerivedValueMul] = React.useState(false);
 
   const onRowCellClick = (value) => {
-    console.log(value);
+    // console.log(value);
   };
   const onColCellClick = (value) => {
-    console.log(value);
+    // console.log(value);
   };
   const onDataCellClick = (value) => {
-    console.log(value);
+    // console.log(value);
   };
   const onCheckChanged = (checked) => {
     setValueInCols(checked);
@@ -223,6 +227,7 @@ function MainLayout(props) {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
+        theme={props.theme}
         spreadsheet={getSpreadSheet}
         onRowCellClick={onRowCellClick}
         onColCellClick={onColCellClick}
@@ -239,7 +244,11 @@ describe('spreadsheet normal spec', () => {
 
   act(() => {
     ReactDOM.render(
-      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
+      <MainLayout
+        dataCfg={getDataCfg()}
+        options={getOptions()}
+        theme={getTheme()}
+      />,
       getContainer(),
     );
   });

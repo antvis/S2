@@ -2,13 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { isEmpty, debounce, isFunction } from 'lodash';
 import { Spin } from 'antd';
 import { DataCfg, SpreadsheetOptions } from '../common/interface';
-import { DrillDown, DrillDownProps } from '../components/drill-down';
-import {
-  KEY_COLUMN_CELL_CLICK,
-  KEY_CORNER_CELL_CLICK,
-  KEY_ROW_CELL_CLICK,
-  KEY_SINGLE_CELL_CLICK,
-} from '..';
+import { DrillDown, DrillDownProps } from './drill-down';
+import { S2Event } from '../interaction/events/types';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
@@ -27,6 +22,7 @@ import {
   HandleDrillDown,
   UseDrillDownLayout,
 } from '../utils/drill-down/helper';
+import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
 
 export interface PartDrillDownInfo {
   // 下钻的数据
@@ -100,6 +96,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     onRowCellClick,
     onColCellClick,
     onDataCellClick,
+    onCornerCellClick,
     getSpreadsheet,
     partDrillDown,
   } = props;
@@ -142,20 +139,25 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     baseSpreadsheet.on(KEY_CELL_SCROLL, (value) => {
       if (isFunction(onCellScroll)) onCellScroll(value);
     });
-    baseSpreadsheet.on(KEY_ROW_CELL_CLICK, (value) => {
-      if (isFunction(onRowCellClick)) onRowCellClick(value);
+    baseSpreadsheet.on(S2Event.ROWCELL_CLICK, (value) => {
+      if (onRowCellClick) {
+        onRowCellClick(value);
+      }
     });
-    baseSpreadsheet.on(KEY_COLUMN_CELL_CLICK, (value) => {
-      if (isFunction(onColCellClick)) onColCellClick(value);
+    baseSpreadsheet.on(S2Event.COLCELL_CLICK, (value) => {
+      if (onColCellClick) {
+        onColCellClick(value);
+      }
     });
-    baseSpreadsheet.on(KEY_CORNER_CELL_CLICK, (value) => {
-      if (isFunction(onRowCellClick)) onRowCellClick(value);
+    baseSpreadsheet.on(S2Event.CORNER_CLICK, (value) => {
+      if (onCornerCellClick) {
+        onCornerCellClick(value);
+      }
     });
-    baseSpreadsheet.on(KEY_SINGLE_CELL_CLICK, (value) => {
-      if (isFunction(onDataCellClick)) onDataCellClick(value);
-    });
-    baseSpreadsheet.on(KEY_LIST_SORT, (value) => {
-      if (isFunction(onListSort)) onListSort(value);
+    baseSpreadsheet.on(S2Event.DATACELL_CLICK, (value) => {
+      if (onDataCellClick) {
+        onDataCellClick(value);
+      }
     });
   };
 
@@ -164,11 +166,10 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     baseSpreadsheet.off(KEY_ROW_NODE_BORDER_REACHED);
     baseSpreadsheet.off(KEY_COL_NODE_BORDER_REACHED);
     baseSpreadsheet.off(KEY_CELL_SCROLL);
-    baseSpreadsheet.off(KEY_ROW_CELL_CLICK);
-    baseSpreadsheet.off(KEY_COLUMN_CELL_CLICK);
-    baseSpreadsheet.off(KEY_CORNER_CELL_CLICK);
-    baseSpreadsheet.off(KEY_SINGLE_CELL_CLICK);
-    baseSpreadsheet.off(KEY_LIST_SORT);
+    baseSpreadsheet.off(S2Event.ROWCELL_CLICK);
+    baseSpreadsheet.off(S2Event.COLCELL_CLICK);
+    baseSpreadsheet.off(S2Event.CORNER_CLICK);
+    baseSpreadsheet.off(S2Event.DATACELL_CLICK);
   };
 
   const iconClickCallback = (
@@ -185,15 +186,13 @@ export const SheetComponent = (props: SpreadsheetProps) => {
         disabledFields={disabledFields}
       />
     );
-    sheet.tooltip.show(
-      {
+    sheet.tooltip.show({
+      position: {
         x: event.clientX,
         y: event.clientY,
       },
-      {},
-      {},
       element,
-    );
+    });
   };
 
   const buildSpreadSheet = () => {
@@ -201,9 +200,9 @@ export const SheetComponent = (props: SpreadsheetProps) => {
       UseDrillDownLayout(options);
       baseSpreadsheet = getSpreadSheet();
       bindEvent();
-      baseSpreadsheet.setDataCfg(dataCfg);
+      baseSpreadsheet.setDataCfg(safetyDataCfg(dataCfg));
       baseSpreadsheet.setOptions(
-        HandleOptions(props, baseSpreadsheet, iconClickCallback),
+        safetyOptions(HandleOptions(props, baseSpreadsheet, iconClickCallback)),
       );
       baseSpreadsheet.setTheme(theme);
       baseSpreadsheet.render();
@@ -330,7 +329,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     update(() => {
       ownSpreadsheet.setDataCfg(dataCfg);
     }, clearDrillDownInfo);
-  }, [dataCfg.fields.rows]);
+  }, [dataCfg?.fields?.rows]);
 
   useEffect(() => {
     update(() => {
