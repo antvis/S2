@@ -6,7 +6,17 @@ import {
 import { DrillDownLayout } from './drill-down-layout';
 import { PartDrillDownInfo, SpreadsheetProps } from '../../components/index';
 import { BaseSpreadSheet } from '../../sheet-type';
-import { merge, concat, isEmpty, clone, includes, uniq, get } from 'lodash';
+import {
+  merge,
+  set,
+  concat,
+  isEmpty,
+  clone,
+  includes,
+  uniq,
+  get,
+  isEqual,
+} from 'lodash';
 
 import { Node } from '../..';
 
@@ -44,6 +54,7 @@ export interface DrillDownParams {
  * @constructor
  */
 export const UseDrillDownLayout = (options: SpreadsheetOptions) => {
+  if (isEqual(options.layout, DrillDownLayout)) return;
   // 缓存外部的layout到options变量
   options.otterLayout = options.layout;
   // 替换下钻的layout为内部默认
@@ -74,7 +85,7 @@ const getDrillDownCash = (spreadsheet: BaseSpreadSheet, meta: Node) => {
 export const HandleActionIconClick = (params: ActionIconParams) => {
   const { meta, spreadsheet, event, callback, iconType } = params;
   if (iconType === 'DrillDownIcon') {
-    spreadsheet.store.set('drillMeta', meta);
+    spreadsheet.store.set('drillDownMeta', meta);
     const { drillDownDataCache, drillDownCurrentCash } = getDrillDownCash(
       spreadsheet,
       meta,
@@ -90,75 +101,6 @@ export const HandleActionIconClick = (params: ActionIconParams) => {
     });
     callback(event, spreadsheet, cache, disabled);
   }
-};
-
-/**
- * 如果有下钻的配置，将配置映射到表内部
- * @param props
- * @param spreadsheet
- * @param element
- * @constructor
- */
-export const HandleOptions = (
-  props: SpreadsheetProps,
-  spreadsheet: BaseSpreadSheet,
-  callback: (
-    event: MouseEvent,
-    spreadsheet: BaseSpreadSheet,
-    cashDownDrillFields: string[],
-    disabledFields: string[],
-  ) => void,
-): SpreadsheetOptions => {
-  if (props.partDrillDown) {
-    const { open } = props.partDrillDown;
-    if (open) {
-      let iconLevel = spreadsheet.store.get('drillDownActionIconLevel', -1);
-      if (iconLevel < 0) {
-        // 如果没有缓存，直接默认用叶子节点的层级
-        iconLevel = get(props, 'dataCfg.fields.rows.length', 1) - 1;
-        // 缓存配置之初的icon层级
-        spreadsheet.store.set('drillDownActionIconLevel', iconLevel);
-      }
-      return merge({}, props.options, {
-        rowActionIcons: {
-          iconTypes: ['DrillDownIcon'],
-          display: {
-            level: iconLevel,
-            operator: '>=',
-          },
-          action: (iconType: string, meta: Node, event: Event) => {
-            HandleActionIconClick({
-              iconType,
-              meta,
-              event,
-              spreadsheet,
-              callback,
-            });
-          },
-        },
-      });
-    }
-  }
-  return props.options;
-};
-
-/**
- * 处理展示维值个数
- * @param spreadsheet
- * @param meta
- */
-const handleDrillItemsNum = (
-  drillFields: string[],
-  drillData: Record<string, string | number>[],
-  drillItemsNum: number,
-) => {
-  const items = new Set();
-  drillData.forEach((v) => {
-    // 先只考虑一次下钻一层的情况
-    items.add(v[drillFields[0]]);
-  });
-  const newItems = Array.from(items).slice(0, drillItemsNum);
-  return drillData.filter((v) => newItems.includes(v[drillFields[0]]));
 };
 
 /**
@@ -213,7 +155,7 @@ export const ClearDrillDownInfo = (
       console.info(`No drill-down info exist in this ${rowId}`);
     }
   } else {
-    // 清空所有下钻后的dataCfg信息
+    // 需要对应清空所有下钻后的dataCfg信息
     // 因此如果缓存有下钻前原始dataCfg，需要清空所有的下钻数据
     const originalDataCfg = spreadsheet.store.get('originalDataCfg');
     if (!isEmpty(originalDataCfg)) {
@@ -224,6 +166,78 @@ export const ClearDrillDownInfo = (
     spreadsheet.store.set('drillDownDataCache', []);
     spreadsheet.store.set('drillDownFieldInLevel', []);
   }
+};
+
+/**
+ * 如果有下钻的配置，将配置映射到表内部
+ * @param props
+ * @param spreadsheet
+ * @param element
+ * @constructor
+ */
+export const HandleOptions = (
+  props: SpreadsheetProps,
+  spreadsheet: BaseSpreadSheet,
+  callback: (
+    event: MouseEvent,
+    spreadsheet: BaseSpreadSheet,
+    cashDownDrillFields: string[],
+    disabledFields: string[],
+  ) => void,
+): SpreadsheetOptions => {
+  if (props?.partDrillDown) {
+    UseDrillDownLayout(props.options);
+    const { open, customDisplayByRowName } = props.partDrillDown;
+    if (open) {
+      let iconLevel = spreadsheet.store.get('drillDownActionIconLevel', -1);
+      if (iconLevel < 0) {
+        // 如果没有缓存，直接默认用叶子节点的层级
+        iconLevel = get(props, 'dataCfg.fields.rows.length', 1) - 1;
+        // 缓存配置之初的icon层级
+        spreadsheet.store.set('drillDownActionIconLevel', iconLevel);
+      }
+      return merge({}, props.options, {
+        rowActionIcons: {
+          iconTypes: ['DrillDownIcon'],
+          display: {
+            level: iconLevel,
+            operator: '>=',
+          },
+          customDisplayByRowName: customDisplayByRowName,
+          action: (iconType: string, meta: Node, event: Event) => {
+            HandleActionIconClick({
+              iconType,
+              meta,
+              event,
+              spreadsheet,
+              callback,
+            });
+          },
+        },
+      });
+    }
+    set(props.options, 'rowActionIcons', null);
+  }
+  return props.options;
+};
+
+/**
+ * 处理展示维值个数
+ * @param spreadsheet
+ * @param meta
+ */
+const handleDrillItemsNum = (
+  drillFields: string[],
+  drillData: Record<string, string | number>[],
+  drillItemsNum: number,
+) => {
+  const items = new Set();
+  drillData.forEach((v) => {
+    // 先只考虑一次下钻一层的情况
+    items.add(v[drillFields[0]]);
+  });
+  const newItems = Array.from(items).slice(0, drillItemsNum);
+  return drillData.filter((v) => newItems.includes(v[drillFields[0]]));
 };
 
 /**
@@ -242,7 +256,7 @@ export const ClearDrillDownInfo = (
  */
 export const HandleDrillDown = async (params: DrillDownParams) => {
   const { rows, fetchData, spreadsheet, drillFields, drillItemsNum } = params;
-  const meta = spreadsheet.store.get('drillMeta');
+  const meta = spreadsheet.store.get('drillDownMeta');
   // 点击局部数据下钻(能走到这里逻辑，partDrillDown肯定不为空)
   try {
     await fetchData(meta, drillFields).then((info) => {
@@ -275,7 +289,7 @@ export const HandleDrillDown = async (params: DrillDownParams) => {
             drillLevel,
             drillData,
             drillField,
-          } as DrillDownDataCache;
+          };
           drillDownDataCache.push(newDrillDownData);
           spreadsheet.store.set('drillDownDataCache', drillDownDataCache);
           // 开始处理下钻逻辑
@@ -321,10 +335,6 @@ export const HandleDrillDown = async (params: DrillDownParams) => {
           tempCfg.data = concat(spreadsheet.dataCfg.data, drillData);
           spreadsheet.setDataCfg(tempCfg);
           spreadsheet.render();
-          return {
-            success: true,
-            errMsg: '',
-          };
         };
 
         if (drillDownCurrentCash) {
@@ -334,28 +344,15 @@ export const HandleDrillDown = async (params: DrillDownParams) => {
             // 删除此下钻节点相关的数据缓存（WARNING 如果同层级存在不同维度，会清空！！！）
             ClearDrillDownInfo(spreadsheet, drillDownCurrentCash.rowId);
             startDrillDown();
-          } else {
-            // 下钻维度一样，那就是上层逻辑有问题！！！
-            return {
-              success: false,
-              errMsg: '该维度已经在上层下钻',
-            };
           }
         } else {
           // rowId上不存在cache, 新添加
           startDrillDown();
         }
       }
-      return {
-        success: false,
-        errMsg: '',
-      };
     });
   } catch (e) {
-    return {
-      success: false,
-      errMsg: JSON.stringify(e),
-    };
+    console.error(`error:${JSON.stringify(e)}`);
   }
 };
 
@@ -415,4 +412,16 @@ export const HandleConfigWhenDrillDown = (
     tempCfg.data = props.dataCfg.data;
   }
   spreadsheet.setDataCfg(tempCfg);
+};
+
+/**
+ * 重置下钻的配置
+ * @param spreadsheet
+ */
+export const resetDrillDownCfg = (spreadsheet: BaseSpreadSheet) => {
+  spreadsheet.store.set('drillDownActionIconLevel', -1);
+  // 清空所有的下钻信息
+  spreadsheet.store.set('drillDownDataCache', []);
+  spreadsheet.store.set('drillDownFieldInLevel', []);
+  spreadsheet.store.set('drillDownMeta', []);
 };

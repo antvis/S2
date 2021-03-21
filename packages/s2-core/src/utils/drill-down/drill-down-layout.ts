@@ -1,7 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2020-12-13
- */
 import { LayoutCallback } from '../../common/interface';
 import { size } from 'lodash';
 
