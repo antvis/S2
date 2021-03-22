@@ -19,7 +19,7 @@ import {
   BrushSelection,
   RowColResize,
   DataCellMutiSelection,
-  ColRowMutiSelection
+  ColRowMutiSelection,
 } from '../interaction';
 import {
   DataCellClick,

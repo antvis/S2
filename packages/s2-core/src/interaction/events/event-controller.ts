@@ -12,12 +12,17 @@ import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
 import { StateName } from '../../state/state';
 export class EventController {
   protected spreadsheet: BaseSpreadSheet;
+
   // 保存触发的元素
   private target: LooseObject;
+
   // 保存hover的元素
   private hoverTarget: LooseObject;
+
   private eventHandlers: any[] = [];
+
   private eventListeners: any[] = [];
+
   // 用来标记需要拦截的事件，interaction和本身的hover等事件可能会有冲突，在interaction
   public interceptEvent: Set<DefaultEvent> = new Set();
 
@@ -130,7 +135,6 @@ export class EventController {
           this.spreadsheet.emit(S2Event.CORNER_MOUSEDOWN, ev);
           break;
         default:
-          return;
       }
     }
   }
@@ -169,7 +173,6 @@ export class EventController {
             this.spreadsheet.emit(S2Event.CORNER_MOUSEMOVE, ev);
             break;
           default:
-            return;
         }
       }
     }
@@ -218,7 +221,6 @@ export class EventController {
             this.spreadsheet.emit(S2Event.CORNER_MOUSEUP, ev);
             break;
           default:
-            return;
         }
       }
     }

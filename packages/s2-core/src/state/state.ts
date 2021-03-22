@@ -13,6 +13,7 @@ export enum StateName {
 }
 export default class State {
   protected spreadsheet: BaseSpreadSheet;
+
   protected stateStore = {
     stateName: '',
     cells: [],
@@ -21,6 +22,7 @@ export default class State {
   constructor(spreadsheet: BaseSpreadSheet) {
     this.spreadsheet = spreadsheet;
   }
+
   // 设置state
   // 表格当前只能存在一种状态，当stateName与stateStore中的状态不一致时，要清空之前存储的状态
   public setState(cell: S2AllCellType, stateName: StateName | string) {

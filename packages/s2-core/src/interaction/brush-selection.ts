@@ -38,11 +38,16 @@ function isInRegion(cellRegion, brushRegion) {
  */
 export class BrushSelection extends BaseInteraction {
   public threshold: number;
+
   public cells: DataCell[];
+
   // 从mousedown开始到mouseup canvas层面的选择框
   public regionShape: IShape;
+
   private previousPoint: Point;
+
   private endPoint: Point;
+
   /**
    * 0: 初始态
    * 1: 触发mousedown

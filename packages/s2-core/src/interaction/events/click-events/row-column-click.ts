@@ -108,7 +108,7 @@ export class RowColumnClick extends BaseEvent {
       ) {
         return;
       }
-      console.log(111)
+      console.log(111);
       const cell = this.spreadsheet.getCell(ev.target);
       if (cell.getMeta().x !== undefined) {
         const meta = cell.getMeta();

@@ -199,7 +199,7 @@ export default abstract class BaseSpreadSheet extends EE {
    */
   protected abstract registerInteractions(options: SpreadsheetOptions): void;
 
-  //注册事件
+  // 注册事件
   protected abstract registerEvents(): void;
 
   protected abstract initDataSet(

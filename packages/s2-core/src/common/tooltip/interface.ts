@@ -88,7 +88,7 @@ export type ShowProps = {
 };
 
 export type DataProps = {
-  summary?: SummaryProps;
+  summaries?: SummaryProps[];
   details?: ListItem[];
   headInfo?: HeadInfo;
   tips?: string;

@@ -12,7 +12,7 @@ import { Node } from '../index';
 const SHIFT_KEY = 'Shift';
 
 export class ColRowMutiSelection extends BaseInteraction {
-  private isMutiSelection: boolean = false;
+  private isMutiSelection = false;
 
   protected bindEvents() {
     this.bindKeyboardDown();
@@ -42,7 +42,7 @@ export class ColRowMutiSelection extends BaseInteraction {
 
   private bindColCellClick() {
     this.spreadsheet.on(S2Event.COLCELL_CLICK, (ev) => {
-      if(this.isMutiSelection) {
+      if (this.isMutiSelection) {
         // 屏蔽hover和click
         this.spreadsheet.eventController.interceptEvent.add(
           DefaultEventType.CLICK,
@@ -73,12 +73,12 @@ export class ColRowMutiSelection extends BaseInteraction {
           this.draw();
         }
       }
-    })
+    });
   }
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
-      if(this.isMutiSelection) {
+      if (this.isMutiSelection) {
         // 屏蔽hover和click
         this.spreadsheet.eventController.interceptEvent.add(
           DefaultEventType.CLICK,
@@ -112,7 +112,6 @@ export class ColRowMutiSelection extends BaseInteraction {
     });
   }
 
-  
   private resetCell() {
     this.spreadsheet.getPanelAllCells().forEach((cell) => {
       cell.update();

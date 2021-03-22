@@ -10,7 +10,7 @@ import { getTooltipData } from '../utils/tooltip';
 const SHIFT_KEY = 'Shift';
 
 export class DataCellMutiSelection extends BaseInteraction {
-  private isMutiSelection: boolean = false;
+  private isMutiSelection = false;
 
   protected bindEvents() {
     this.bindKeyboardDown();
