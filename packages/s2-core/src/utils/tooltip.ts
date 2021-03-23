@@ -15,6 +15,7 @@ import {
   filter,
   concat,
   compact,
+  find,
 } from 'lodash';
 import { i18n } from '../common/i18n';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
@@ -34,6 +35,8 @@ import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
+
+import { StateName } from '../state/state';
 
 /**
  * calculate aggregate value
@@ -141,60 +144,39 @@ export const getFriendlyVal = (val: any): number | string => {
 export const getSelectedCellIndexes = (
   spreadsheet: BaseSpreadSheet,
   layoutResult,
+  hoverData
 ) => {
   const { rowLeafNodes, colLeafNodes } = layoutResult;
-
-  const selected = spreadsheet?.store?.get('selected');
-
-  if (isObject(selected)) {
-    const { type, indexes } = selected;
-    let [ii, jj] = indexes;
-    if (type === 'brush' || type === 'cell') {
-      const selectedIds = [];
-      ii = isArray(ii) ? ii : [ii, ii];
-      jj = isArray(jj) ? jj : [jj, jj];
-
-      for (let i = ii[0]; i <= ii[1]; i++) {
-        for (let j = jj[0]; j <= jj[1]; j++) {
-          selectedIds.push([i, j]);
-        }
-      }
-      return selectedIds;
-    }
-    // select row or coll
-    const selectedIndexes = [];
-    const leftNodes = type === 'row' ? colLeafNodes : rowLeafNodes;
-    let indexs = type === 'row' ? ii : jj;
-
-    map(leftNodes, (row, idx) => {
-      indexs = isArray(indexs) ? indexs : [indexs, indexs];
-      for (let i = indexs[0]; i <= indexs[1]; i++) {
-        selectedIndexes.push([i, idx]);
-      }
+  const selectedIndexes = [];
+  const currentState = spreadsheet.getCurrentState();
+  const { stateName, cells } = currentState;
+  if (stateName === StateName.COL_SELECTED) {
+    const currentHeaderCell = find(cells, cell => cell.getMeta().cellIndex === hoverData.colIndex)
+    map(rowLeafNodes, (row, index) => {
+      selectedIndexes.push([index, currentHeaderCell.getMeta().cellIndex]);
     });
-    return selectedIndexes;
+  } else if (stateName === StateName.ROW_SELECTED) {
+    map(cells, (cell) => {
+      const rowIndex = cell.getMeta().rowIndex;
+      map(colLeafNodes, (col, index) => {
+        selectedIndexes.push([rowIndex, index]);
+      });
+    });
   }
-
-  return [];
+  return selectedIndexes;
 };
 
-export const getSelectedData = (spreadsheet: BaseSpreadSheet): DataItem[] => {
+export const getSelectedData = (spreadsheet: BaseSpreadSheet, hoverData: DataItem): DataItem[] => {
   const layoutResult = spreadsheet?.facet?.layoutResult;
-
-  const selectedCellIndexes = getSelectedCellIndexes(spreadsheet, layoutResult);
-
+  const selectedCellIndexes = getSelectedCellIndexes(spreadsheet, layoutResult, hoverData);
   const selectedData = [];
-
   forEach(selectedCellIndexes, ([i, j]) => {
     const viewMeta = layoutResult.getViewMeta(i, j);
-
     const data = get(viewMeta, 'data[0]');
-
     if (!isNil(data)) {
       selectedData.push(data);
     }
   });
-
   return selectedData;
 };
 
@@ -208,16 +190,19 @@ export const getSelectedValueFields = (
 export const getSummaryName = (
   spreadsheet: BaseSpreadSheet,
   valueFields,
-  firstField,
+  currentField,
   hoverData,
 ): string => {
   // total or subtotal
-  // eslint-disable-next-line
-  return size(valueFields) !== 1
-    ? i18n('度量')
-    : get(hoverData, 'isGrandTotals')
-    ? i18n('总计')
-    : spreadsheet?.dataSet?.getFieldName(firstField);
+  if (size(valueFields) !== 1) {
+    return i18n('度量');
+  }
+
+  if(get(hoverData, 'isGrandTotals')) {
+    return i18n('总计');
+  }
+
+  return spreadsheet?.dataSet?.getFieldName(currentField);
 };
 
 export const getFieldFormatter = (
@@ -379,81 +364,49 @@ export const getSummaryProps = (
   options: TooltipOptions,
   aggregation: Aggregation = 'SUM',
 ): SummaryProps => {
-  const selectedData = getSelectedData(spreadsheet);
+  // 拿到列内所有data-cell的数据
+  const selectedData = getSelectedData(spreadsheet, hoverData);
   const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
-
-  if (!options?.hideSummary && size(valueFields) > 0) {
-    const firstField = valueFields[0];
-    const firstFormatter = getFieldFormatter(spreadsheet, firstField);
+  if (size(valueFields) > 0) {
+    const currentField = hoverData[EXTRA_FIELD]
+    const currentFormatter = getFieldFormatter(spreadsheet, currentField);
     const name = getSummaryName(
       spreadsheet,
       valueFields,
-      firstField,
+      currentField,
       hoverData,
     );
+    console.log()
     let aggregationValue = getAggregationValue(
       selectedData,
       VALUE_FIELD,
       aggregation,
     );
     aggregationValue = parseFloat(aggregationValue.toPrecision(12)); // solve accuracy problems
-    const value = firstFormatter(aggregationValue);
+    const value = currentFormatter(aggregationValue);
     return {
       selectedData,
       name,
       value,
     };
   }
-  return null;
 };
 
 export const getTooltipData = (
   spreadsheet: BaseSpreadSheet,
-  data?: DataProps,
+  data?: DataProps[],
   options?: TooltipOptions,
   aggregation?: Aggregation,
 ) => {
-  const { interpretation, infos, tips } = data || {};
-  // const summaries = getSummaryProps(spreadsheet, data, options, aggregation);
-  // mock to test
-  const summaries = [
-    {
-      name: 'test',
-      value: 'ddddd',
-      selectedData: [
-        {
-          $$extra$$: 'profit-tongbi',
-          sub_type: '系固件',
-          type: '办公用品',
-        },
-        {
-          $$extra$$: 'profit',
-          sub_type: '系固件',
-          type: '办公用品',
-        },
-      ],
-    },
-    {
-      name: 'sddddd',
-      value: 'ddddd',
-      selectedData: [
-        {
-          $$extra$$: 'profit',
-          sub_type: '系固件',
-          type: '办公用品',
-        },
-        {
-          $$extra$$: 'profit',
-          sub_type: '系固件',
-          type: '办公用品',
-        },
-      ],
-    },
-  ];
-  const headInfo = getHeadInfo(spreadsheet, data);
-  const details = getDetailList(spreadsheet, data, options);
-
-  return { summaries, headInfo, details, interpretation, infos, tips };
+  let summaries = null, headInfo = null, details = null;
+  if (!options?.hideSummary) {
+    summaries = map(data, d => getSummaryProps(spreadsheet, d, options, aggregation));
+  } else {
+    headInfo = getHeadInfo(spreadsheet, data[0]);
+    details = getDetailList(spreadsheet, data[0], options);
+  }
+  const { interpretation, infos, tips } = data[0] || {};
+  return { summaries, interpretation, infos, tips, headInfo, details };
 };
 
 export const getRightAndValueField = (

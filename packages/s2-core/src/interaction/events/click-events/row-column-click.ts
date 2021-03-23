@@ -1,6 +1,6 @@
 import { Event } from '@antv/g-canvas';
 import { map, size, get, min, max, each } from 'lodash';
-import { ActionType, SortParam, Node } from '../../../index';
+import { SortParam, Node } from '../../../index';
 import { DataCell, ColCell, RowCell } from '../../../cell';
 import { getHeaderHierarchyQuery } from '../../../facet/layout/util';
 import { DownOutlined } from '@ant-design/icons';
@@ -108,17 +108,10 @@ export class RowColumnClick extends BaseEvent {
       ) {
         return;
       }
-      console.log(111);
       const cell = this.spreadsheet.getCell(ev.target);
-      if (cell.getMeta().x !== undefined) {
-        const meta = cell.getMeta();
-        // 是否显示排序选项
-        // let showSortOperations = false;
-        //  tooltip 是否可让鼠标进入
-        // let enterable = true;
-        // 显示 tooltip 的动作来源
-        let actionType: ActionType;
-        // actionType = 'columnSelection';
+      let cellInfos = [];
+      const meta = cell.getMeta();
+      if (meta.x !== undefined) {
         const idx = meta.cellIndex;
         this.spreadsheet.clearState();
         this.spreadsheet.eventController.interceptEvent.add(
@@ -126,7 +119,13 @@ export class RowColumnClick extends BaseEvent {
         );
         if (idx === -1) {
           // 多列
-          each(Node.getAllLeavesOfNode(meta), (node: Node) => {
+          const leafNodes = Node.getAllLeavesOfNode(meta);
+          cellInfos = map(leafNodes, node => ({
+            ...get(node, 'query'),
+            colIndex: node.cellIndex,
+            rowIndex: node.rowIndex,
+          }));
+          each(leafNodes, (node: Node) => {
             if (node.belongsCell) {
               this.spreadsheet.setState(
                 node.belongsCell,
@@ -137,42 +136,55 @@ export class RowColumnClick extends BaseEvent {
         } else {
           // 单列
           this.spreadsheet.setState(cell, StateName.COL_SELECTED);
+          cellInfos = [{
+            ...get(meta, 'query'),
+            colIndex: meta.cellIndex,
+            rowIndex: meta.rowIndex,
+          }];
         }
-        // if (meta.isLeaf) {
-        //   // 最后一行的列选中，显示 tooltip 时可操作排序
-        //   this.sortFieldId = meta.value;
-        //   this.sortQuery = getHeaderHierarchyQuery(meta);
-        //   enterable = true;
-        //   showSortOperations = true;
-        // }
+
+        this.handleTooltip(ev, meta, cellInfos)
+
         this.spreadsheet.updateCellStyleByState();
         this.resetCell();
         this.draw();
-        // const position = {
-        //   x: ev.clientX,
-        //   y: ev.clientY,
-        // };
-        // 兼容明细表
-        // const hoveringCellData = get(meta, 'query') || {
-        //   [get(meta, 'key')]: get(meta, 'value'),
-        // };
-        // const options = {
-        //   operator: this.getSortOperator(showSortOperations),
-        //   enterable,
-        // };
-        // const tooltipData = getTooltipData(
-        //   this.spreadsheet,
-        //   hoveringCellData,
-        //   options,
-        // );
-        // const showOptions = {
-        //   position,
-        //   data: tooltipData,
-        //   options,
-        // };
-        // this.showTooltip(showOptions);
       }
     });
+  }
+
+  private handleTooltip(ev, meta, cellInfos) {
+    // 是否显示排序选项
+    // let showSortOperations = false;
+    //  tooltip 是否可让鼠标进入
+    // if (meta.isLeaf) {
+    //   // 最后一行的列选中，显示 tooltip 时可操作排序
+    //   this.sortFieldId = meta.value;
+    //   this.sortQuery = getHeaderHierarchyQuery(meta);
+    //   enterable = true;
+    //   showSortOperations = true;
+    // }
+
+    const position = {
+      x: ev.clientX,
+      y: ev.clientY,
+    };
+
+    const options = {
+      // operator: this.getSortOperator(showSortOperations),
+      enterable: true,
+    };
+
+    const tooltipData = getTooltipData(
+      this.spreadsheet,
+      cellInfos,
+      options,
+    );
+    const showOptions = {
+      position,
+      data: tooltipData,
+      options,
+    };
+    this.spreadsheet.showTooltip(showOptions);
   }
 
   private bindResetSheetStyle() {
@@ -189,57 +201,57 @@ export class RowColumnClick extends BaseEvent {
     });
   }
 
-  private findCurMenu = (id: string, menus) => {
-    let targetMenu: MenuType = {
-      id: '',
-      text: '',
-      type: '',
-      sortMethod: '',
-      icon: '',
-    };
-    // eslint-disable-next-line array-callback-return
-    menus.map((menu) => {
-      if (menu.id === id) {
-        targetMenu = menu;
-      }
-      if (size(menu.children)) {
-        targetMenu = this.findCurMenu(id, menu.children);
-      }
-    });
-    return targetMenu;
-  };
+  // private findCurMenu = (id: string, menus) => {
+  //   let targetMenu: MenuType = {
+  //     id: '',
+  //     text: '',
+  //     type: '',
+  //     sortMethod: '',
+  //     icon: '',
+  //   };
+  //   // eslint-disable-next-line array-callback-return
+  //   menus.map((menu) => {
+  //     if (menu.id === id) {
+  //       targetMenu = menu;
+  //     }
+  //     if (size(menu.children)) {
+  //       targetMenu = this.findCurMenu(id, menu.children);
+  //     }
+  //   });
+  //   return targetMenu;
+  // };
 
-  private onClick = (id: string) => {
-    const { sortFieldId, sortQuery } = this;
+  // private onClick = (id: string) => {
+  //   const { sortFieldId, sortQuery } = this;
 
-    this.spreadsheet.tooltip.hide();
-    const curMenu = this.findCurMenu(id, MENUS);
-    const sortParam =
-      id === 'SORT-NONE'
-        ? null
-        : ({
-            type: curMenu.type,
-            sortFieldId,
-            sortMethod: curMenu.sortMethod,
-            query: sortQuery,
-          } as SortParam);
-    // 排序条件，存到 store 中
-    this.spreadsheet.store.set('sortParam', sortParam);
-    this.spreadsheet.setDataCfg({ ...this.spreadsheet.dataCfg });
-    this.spreadsheet.render();
-  };
+  //   this.spreadsheet.tooltip.hide();
+  //   const curMenu = this.findCurMenu(id, MENUS);
+  //   const sortParam =
+  //     id === 'SORT-NONE'
+  //       ? null
+  //       : ({
+  //           type: curMenu.type,
+  //           sortFieldId,
+  //           sortMethod: curMenu.sortMethod,
+  //           query: sortQuery,
+  //         } as SortParam);
+  //   // 排序条件，存到 store 中
+  //   this.spreadsheet.store.set('sortParam', sortParam);
+  //   this.spreadsheet.setDataCfg({ ...this.spreadsheet.dataCfg });
+  //   this.spreadsheet.render();
+  // };
 
-  /**
-   * showSortOperations boolean
-   */
-  private getSortOperator(showSortOperations) {
-    return showSortOperations
-      ? {
-          onClick: this.onClick,
-          menus: MENUS,
-        }
-      : null;
-  }
+  // /**
+  //  * showSortOperations boolean
+  //  */
+  // private getSortOperator(showSortOperations) {
+  //   return showSortOperations
+  //     ? {
+  //         onClick: this.onClick,
+  //         menus: MENUS,
+  //       }
+  //     : null;
+  // }
 
   /**
    * 重置cell

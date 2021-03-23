@@ -31,8 +31,6 @@ export interface SortQuery {
   [key: string]: string;
 }
 
-export type ActionType = 'cellSelection' | 'rowSelection' | 'columnSelection';
-
 export interface TooltipOptions {
   hideSummary?: boolean;
   // button action on the top
@@ -41,7 +39,6 @@ export interface TooltipOptions {
   // totals or not
   isTotals?: boolean;
   showSingleTips?: boolean;
-
   [key: string]: any;
 }
 

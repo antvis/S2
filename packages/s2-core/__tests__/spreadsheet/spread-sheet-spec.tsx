@@ -38,19 +38,19 @@ const getDataCfg = () => {
       // rows has value
       rows: ['area', 'province', 'city'],
       columns: ['type', 'sub_type'],
-      values: ['profit'],
-      derivedValues: [
-        {
-          valueField: 'profit',
-          derivedValueField: ['profit-tongbi', 'profit-huanbi'],
-          displayDerivedValueField: ['profit-tongbi'],
-        },
-        {
-          valueField: 'count',
-          derivedValueField: ['count-tongbi', 'count-huanbi'],
-          displayDerivedValueField: ['count-tongbi'],
-        },
-      ],
+      values: ['profit', 'count'],
+      // derivedValues: [
+      //   {
+      //     valueField: 'profit',
+      //     derivedValueField: ['profit-tongbi', 'profit-huanbi'],
+      //     displayDerivedValueField: ['profit-tongbi'],
+      //   },
+      //   {
+      //     valueField: 'count',
+      //     derivedValueField: ['count-tongbi', 'count-huanbi'],
+      //     displayDerivedValueField: ['count-tongbi'],
+      //   },
+      // ],
     },
     meta: [
       {

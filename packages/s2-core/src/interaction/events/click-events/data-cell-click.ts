@@ -65,12 +65,14 @@ export class DataCellClick extends BaseEvent {
       x: ev.clientX,
       y: ev.clientY,
     };
-    const hoveringCellData = get(meta, 'data.0');
+    const currentCellMeta = get(meta, 'data.0');
     const isTotals = get(meta, 'isTotals', false);
     if (isTotals && this.spreadsheet.isStrategyMode()) {
       return;
     }
+
     const cellOperator = this.spreadsheet.options?.cellOperator;
+
     let operator = this.spreadsheet.options?.showTrend
       ? {
           onClick: (params) => {
@@ -99,11 +101,15 @@ export class DataCellClick extends BaseEvent {
     const options = {
       isTotals,
       operator,
-      enterable: false,
+      enterable: true,
+      hideSummary: true,
     };
+
+    console.log('currentCellMeta', currentCellMeta)
+
     const tooltipData = getTooltipData(
       this.spreadsheet,
-      hoveringCellData,
+      [currentCellMeta],
       options,
     );
     const showOptions = {
