@@ -6,7 +6,7 @@ import { BaseInteraction } from './base';
 import { StateName } from '../state/state';
 import { DataItem, TooltipOptions } from '..';
 import { getTooltipData } from '../utils/tooltip';
-import { each } from 'lodash';
+import { each, map, get } from 'lodash';
 import { Node } from '../index';
 
 const SHIFT_KEY = 'Shift';
@@ -48,6 +48,7 @@ export class ColRowMutiSelection extends BaseInteraction {
           DefaultEventType.CLICK,
         );
         const cell = this.spreadsheet.getCell(ev.target);
+        let cellInfos = [];
         if (cell.getMeta().x !== undefined) {
           const meta = cell.getMeta();
           const idx = meta.cellIndex;
@@ -56,7 +57,8 @@ export class ColRowMutiSelection extends BaseInteraction {
           );
           if (idx === -1) {
             // 多列
-            each(Node.getAllLeavesOfNode(meta), (node: Node) => {
+            const leafNodes = Node.getAllLeavesOfNode(meta);
+            each(leafNodes, (node: Node) => {
               if (node.belongsCell) {
                 this.spreadsheet.setState(
                   node.belongsCell,
@@ -68,6 +70,16 @@ export class ColRowMutiSelection extends BaseInteraction {
             // 单列
             this.spreadsheet.setState(cell, StateName.COL_SELECTED);
           }
+          const currentState = this.spreadsheet.getCurrentState();
+          const { stateName, cells } = currentState;
+          if(stateName === StateName.COL_SELECTED) {
+            cellInfos = map(cells, cell => ({
+              ...get(cell.getMeta(), 'query'),
+              colIndex: cell.getMeta().cellIndex,
+              rowIndex: cell.getMeta().rowIndex,
+            }));
+          }
+          this.handleTooltip(ev, meta, cellInfos)
           this.spreadsheet.updateCellStyleByState();
           this.resetCell();
           this.draw();
@@ -110,6 +122,29 @@ export class ColRowMutiSelection extends BaseInteraction {
         }
       }
     });
+  }
+
+  private handleTooltip(ev, meta, cellInfos) {
+    const position = {
+      x: ev.clientX,
+      y: ev.clientY,
+    };
+
+    const options = {
+      enterable: true,
+    };
+
+    const tooltipData = getTooltipData(
+      this.spreadsheet,
+      cellInfos,
+      options,
+    );
+    const showOptions = {
+      position,
+      data: tooltipData,
+      options,
+    };
+    this.spreadsheet.showTooltip(showOptions);
   }
 
   private resetCell() {

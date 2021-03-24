@@ -16,6 +16,8 @@ import {
   concat,
   compact,
   find,
+  findIndex,
+  each
 } from 'lodash';
 import { i18n } from '../common/i18n';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
@@ -392,6 +394,20 @@ export const getSummaryProps = (
   }
 };
 
+const mergeSummaries = (summaries) => {
+  const result = [];
+  each(summaries, summary => {
+    const summaryInResultIndex = findIndex(result, i => i.name === summary.name);
+    if(summaryInResultIndex > -1) {
+      result[summaryInResultIndex].value += summary.value;
+      result[summaryInResultIndex].selectedData = result[summaryInResultIndex].selectedData.concat(summary.selectedData);
+    } else {
+      result.push(summary);
+    }
+  })
+  return result;
+}
+
 export const getTooltipData = (
   spreadsheet: BaseSpreadSheet,
   data?: DataProps[],
@@ -400,7 +416,9 @@ export const getTooltipData = (
 ) => {
   let summaries = null, headInfo = null, details = null;
   if (!options?.hideSummary) {
-    summaries = map(data, d => getSummaryProps(spreadsheet, d, options, aggregation));
+    // 如果summaries中有相同name的向，则合并为同一项；
+    summaries = mergeSummaries(map(data, d => getSummaryProps(spreadsheet, d, options, aggregation)));
+    console.log()
   } else {
     headInfo = getHeadInfo(spreadsheet, data[0]);
     details = getDetailList(spreadsheet, data[0], options);

@@ -120,11 +120,6 @@ export class RowColumnClick extends BaseEvent {
         if (idx === -1) {
           // 多列
           const leafNodes = Node.getAllLeavesOfNode(meta);
-          cellInfos = map(leafNodes, node => ({
-            ...get(node, 'query'),
-            colIndex: node.cellIndex,
-            rowIndex: node.rowIndex,
-          }));
           each(leafNodes, (node: Node) => {
             if (node.belongsCell) {
               this.spreadsheet.setState(
@@ -136,12 +131,17 @@ export class RowColumnClick extends BaseEvent {
         } else {
           // 单列
           this.spreadsheet.setState(cell, StateName.COL_SELECTED);
-          cellInfos = [{
-            ...get(meta, 'query'),
-            colIndex: meta.cellIndex,
-            rowIndex: meta.rowIndex,
-          }];
         }
+
+        const currentState = this.spreadsheet.getCurrentState();
+          const { stateName, cells } = currentState;
+          if(stateName === StateName.COL_SELECTED) {
+            cellInfos = map(cells, cell => ({
+              ...get(cell.getMeta(), 'query'),
+              colIndex: cell.getMeta().cellIndex,
+              rowIndex: cell.getMeta().rowIndex,
+            }));
+          }
 
         this.handleTooltip(ev, meta, cellInfos)
 
