@@ -51,7 +51,7 @@ export interface PartDrillDown {
   drillItemsNum?: number;
   // 根据行头名自定义展示
   customDisplayByRowName?: {
-    // 行头名称，如果有层级关系需要用 '-' 连接
+    // 行头名称，如果有层级关系需要用 '[&]' 连接
     rowNames: string[];
     // 指定行头名称是否展示icon
     mode: 'pick' | 'omit';
@@ -307,7 +307,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
 
     if (isFunction(reset)) reset();
 
-    if (!isEmpty(partDrillDown) && !isEmpty(props.dataCfg)) {
+    if (!isEmpty(props.dataCfg)) {
       HandleConfigWhenDrillDown(props, ownSpreadsheet);
     }
 
@@ -394,7 +394,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
   useEffect(() => {
     if (isEmpty(partDrillDown?.clearDrillDown)) return;
     clearDrillDownInfo(partDrillDown?.clearDrillDown?.rowId);
-  }, [JSON.stringify(partDrillDown?.clearDrillDown)]);
+  }, [partDrillDown?.clearDrillDown]);
 
   useEffect(() => {
     if (!partDrillDown?.drillItemsNum) return;
@@ -406,7 +406,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     if (isEmpty(partDrillDown?.drillConfig?.dataSet))
       resetDrillDownCfg(ownSpreadsheet);
     update(setOptions);
-  }, [JSON.stringify(partDrillDown?.drillConfig?.dataSet)]);
+  }, [partDrillDown?.drillConfig?.dataSet]);
 
   return (
     <Spin spinning={isLoading === undefined ? loading : isLoading}>

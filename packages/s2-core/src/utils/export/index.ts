@@ -18,7 +18,7 @@ export const copyToClipboard = (str: string) => {
 export const download = (str: string, fileName: string) => {
   const link = document.createElement('a');
   link.download = `${fileName}.csv`;
-  // 解决中文乱码问题
+  // Avoid errors in Chinese encoding.
   const dataBlob = new Blob([`\ufeff${str}`], {
     type: 'text/csv;charset=utf-8',
   });
@@ -28,7 +28,7 @@ export const download = (str: string, fileName: string) => {
   URL.revokeObjectURL(link.href);
 };
 
-/* 明细表的处理 */
+/* Process the data in detail mode. */
 const processValueInDetail = (
   sheetInstance: BaseSpreadSheet,
   split: string,
@@ -61,14 +61,14 @@ const processValueInDetail = (
   return res;
 };
 
-/* 数值挂列头的处理 */
+/* Process the data when the value position is on the columns.  */
 const processValueInCol = (
   viewMeta: ViewMeta,
   sheetInstance: BaseSpreadSheet,
   isFormat?: boolean,
 ): string => {
   if (!viewMeta) {
-    // meta 为null，补空行
+    // If the meta equals null, replacing it with blank line.
     return getCsvString('');
   }
   const { fieldValue, valueField } = viewMeta;
@@ -79,7 +79,7 @@ const processValueInCol = (
   return getCsvString(mainFormatter(fieldValue));
 };
 
-/* 数值挂行头的处理 */
+/* Process the data when the value position is on the rows. */
 const processValueInRow = (
   viewMeta: ViewMeta,
   sheetInstance: BaseSpreadSheet,
@@ -90,7 +90,7 @@ const processValueInRow = (
   const derivedValue = head(derivedValues);
   if (viewMeta) {
     const { data, fieldValue, valueField } = viewMeta;
-    // 主指标
+    // The main measure.
     if (!isFormat) {
       tempCell.push(fieldValue);
     } else {
@@ -98,10 +98,9 @@ const processValueInRow = (
       tempCell.push(mainFormatter(fieldValue));
     }
 
-    // 衍生指标å
     const currentDV = sheetInstance.getDerivedValue(valueField);
     if (currentDV && !isEmpty(currentDV.derivedValueField)) {
-      // 维度下存在衍生指标
+      // When the derivedValue under the dimensions.
       for (const dv of currentDV.derivedValueField) {
         const derivedData = get(data, [0, dv]);
         if (!isFormat) {
@@ -113,10 +112,10 @@ const processValueInRow = (
       }
     }
   } else {
-    // meta 为null，补空
+    // If the meta equals null then it will be replaced by '-'.
     tempCell.push(getCsvString('-'));
     if (!isEmpty(derivedValue?.derivedValueField)) {
-      // 维度下存在衍生指标
+      // When the derivedValue under the dimensions.
       for (const dv of derivedValue.derivedValueField) {
         tempCell.push(getCsvString(dv));
       }
@@ -145,18 +144,18 @@ export const copyData = (
   const { valueInCols, spreadsheetType } = sheetInstance.options;
   const rows = clone(rowsHierarchy?.rows);
 
-  /** 获取行维度表头 */
+  /** Get the table header of rows. */
   const rowsHeader = rows.map((item) =>
     sheetInstance.dataSet.getFieldName(item),
   );
 
   const rowLength = rowsHeader.length;
 
-  /** 获取列维度表头，由于有维度需要转化 */
+  /** Get the table header of Columns. */
   const tempColHeader = clone(colLeafNodes).map((colItem) => {
     let curColItem = colItem;
     const tempCol = [];
-    /** 列维度生成 */
+    // Generate the column dimensions.
     while (curColItem.level !== undefined) {
       tempCol.push(curColItem.label);
       curColItem = curColItem.parent;
@@ -165,16 +164,16 @@ export const copyData = (
   });
   const colLevel = tempColHeader[0].length;
   const colHeader: string[][] = [];
-  /** 将列维度层数转化为相应数组 */
+  // Convert the number of column dimension levels to the corresponding array.
   for (let i = colLevel - 1; i >= 0; i -= 1) {
-    /** 数据字段映射key-name */
+    // The map of data set: key-name
     const colHeaderItem = tempColHeader
       .map((item) => item[i])
       .map((colItem) => sheetInstance.dataSet.getFieldName(colItem));
     colHeader.push(colHeaderItem);
   }
 
-  /** 构造表头 */
+  // Genarate the table header.
   const headers = colHeader.map((item, index) => {
     return index < colHeader.length - 1
       ? Array(rowLength).concat(...item)
@@ -187,24 +186,24 @@ export const copyData = (
     })
     .join('\r\n');
 
-  /* 构造表体明细 */
+  // Genarate the table body.
   let detailRows = [];
 
   if (!spreadsheetType) {
     detailRows = processValueInDetail(sheetInstance, split, isFormat);
   } else {
-    // 过滤出关系的行头叶子节点
+    // Filter out the realated row head leaf nodes.
     const caredRowLeafNodes = rowLeafNodes.filter((row) => row.height !== 0);
     for (const rowNode of caredRowLeafNodes) {
-      // 去掉label本身的行首空格
-      rowNode.label = rowNode.label.replace(/^\s*/g, '');
+      // Removing the space at the beginning of the line of the label.
+      rowNode.label = rowNode.label ? rowNode.label.replace(/^\s*/g, '') : '';
       const id = rowNode.id.replace(/^root\[&\]*/, '');
       const tempLine = id.split(ID_SEPARATOR);
       const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));
       tempLine[tempLine.length - 1] = lastLabel;
       const { rows: tempRows } = sheetInstance?.dataCfg?.fields;
 
-      // 补齐行头空格位 兼容下钻模式
+      // Adapt to drill down mode.
       const emptyLength = tempRows.length - tempLine.length;
       for (let i = 0; i < emptyLength; i++) {
         tempLine.push('');
