@@ -14,6 +14,7 @@ import {
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_ROW_RESIZER,
   COLOR_DEFAULT_RESIZER,
+  ID_SEPARATOR,
 } from '../common/constant';
 import { HIT_AREA } from '../facet/header/base';
 import { ResizeInfo } from '../facet/header/interface';
@@ -89,52 +90,67 @@ export class RowCell extends BaseCell<Node> {
 
   protected drawActionIcons() {
     const rowActionIcons = this.spreadsheet.options.rowActionIcons;
-    if (rowActionIcons) {
-      const { iconTypes, display, action } = rowActionIcons;
-      const showIcon = () => {
-        const level = this.meta.level;
-        const { level: rowLevel, operator } = display;
-        // eslint-disable-next-line default-case
-        switch (operator) {
-          case '<':
-            return level < rowLevel;
-          case '<=':
-            return level <= rowLevel;
-          case '=':
-            return level === rowLevel;
-          case '>':
-            return level > rowLevel;
-          case '>=':
-            return level >= rowLevel;
-        }
-      };
+    if (!rowActionIcons) return;
+    const {
+      iconTypes,
+      display,
+      action,
+      customDisplayByRowName,
+    } = rowActionIcons;
+    if (customDisplayByRowName) {
+      const { rowNames, mode } = customDisplayByRowName;
+      const rowIds = rowNames.map((rowName) => `root${ID_SEPARATOR}${rowName}`);
+
       if (
-        showIcon() &&
-        this.spreadsheet.isHierarchyTreeType() &&
-        this.spreadsheet.isSpreadsheetType()
-      ) {
-        const { x, y, height, width } = this.meta;
-        for (let i = 0; i < iconTypes.length; i++) {
-          const iconSize = ICON_RADIUS * 2;
-          const iconRight =
-            (iconSize + DEFAULT_PADDING) * (iconTypes.length - i);
-          const icon = new GuiIcon({
-            type: iconTypes[i],
-            x: x + width - iconRight,
-            y: y + (height - iconSize) / 2,
-            width: iconSize,
-            height: iconSize,
-          });
-          icon.set('visible', false);
-          icon.on('click', (e: Event) => {
-            action(iconTypes[i], this.meta, e);
-          });
-          this.add(icon);
-          if (!this.actionIcons) {
-            this.actionIcons = [];
-          }
-          this.actionIcons.push(icon);
+        (mode === 'omit' && rowIds.includes(this.meta.id)) ||
+        (mode === 'pick' && !rowIds.includes(this.meta.id))
+      )
+        return;
+    }
+    const showIcon = () => {
+      const level = this.meta.level;
+      const { level: rowLevel, operator } = display;
+      switch (operator) {
+        case '<':
+          return level < rowLevel;
+        case '<=':
+          return level <= rowLevel;
+        case '=':
+          return level === rowLevel;
+        case '>':
+          return level > rowLevel;
+        case '>=':
+          return level >= rowLevel;
+        default:
+          break;
+      }
+    };
+
+    if (
+      showIcon() &&
+      this.spreadsheet.isHierarchyTreeType() &&
+      this.spreadsheet.isSpreadsheetType()
+    ) {
+      const { x, y, height, width } = this.meta;
+      for (let i = 0; i < iconTypes.length; i++) {
+        const iconSize = ICON_RADIUS * 2;
+        const iconRight = (iconSize + DEFAULT_PADDING) * (iconTypes.length - i);
+        const icon = new GuiIcon({
+          type: iconTypes[i],
+          x: x + width - iconRight,
+          y: y + (height - iconSize) / 2,
+          width: iconSize,
+          height: iconSize,
+        });
+        icon.set('visible', false);
+        icon.on('click', (e: Event) => {
+          action(iconTypes[i], this.meta, e);
+        });
+        this.add(icon);
+        if (!this.actionIcons) {
+          this.actionIcons = [];
         }
+        this.actionIcons.push(icon);
       }
     }
   }

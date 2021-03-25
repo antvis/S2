@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { isEmpty, debounce, isFunction } from 'lodash';
 import { Spin } from 'antd';
 import { DataCfg, SpreadsheetOptions } from '../common/interface';
-import { DrillDown, DrillDownProps } from './drill-down';
+import { DrillDown, DrillDownProps } from '../components/drill-down';
+import { Header, HeaderCfgProps } from '../components/header';
+
 import {
   KEY_COLUMN_CELL_CLICK,
   KEY_CORNER_CELL_CLICK,
@@ -25,9 +27,9 @@ import {
   HandleConfigWhenDrillDown,
   HandleOptions,
   HandleDrillDown,
-  UseDrillDownLayout,
-} from '../utils/drill-down/helper';
+} from '..';
 import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
+import { resetDrillDownCfg } from '../utils/drill-down/helper';
 
 export interface PartDrillDownInfo {
   // 下钻的数据
@@ -47,6 +49,13 @@ export interface PartDrillDown {
   drillConfig: DrillDownProps;
   // 展示的下钻维值个数
   drillItemsNum?: number;
+  // 根据行头名自定义展示
+  customDisplayByRowName?: {
+    // 行头名称，如果有层级关系需要用 '[&]' 连接
+    rowNames: string[];
+    // 指定行头名称是否展示icon
+    mode: 'pick' | 'omit';
+  };
   fetchData: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;
 }
 
@@ -57,13 +66,14 @@ export interface SpreadsheetProps {
     options: SpreadsheetOptions,
   ) => BaseSpreadsheet;
   dataCfg: DataCfg;
+  options: SpreadsheetOptions;
   isLoading?: boolean;
   // 部分下钻功能
   partDrillDown?: PartDrillDown;
   // 窗口自适应
   adaptive?: boolean;
-  options: SpreadsheetOptions;
   theme?: SpreadSheetTheme;
+  header?: HeaderCfgProps;
   rowLevel?: number;
   colLevel?: number;
   onListSort?: (params: { sortFieldId: string; sortMethod: string }) => void;
@@ -89,6 +99,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     dataCfg,
     options,
     adaptive = true,
+    header,
     theme,
     rowLevel,
     colLevel,
@@ -100,6 +111,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     onCellScroll,
     onRowCellClick,
     onColCellClick,
+    onCornerCellClick,
     onDataCellClick,
     getSpreadsheet,
     partDrillDown,
@@ -150,7 +162,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
       if (isFunction(onColCellClick)) onColCellClick(value);
     });
     baseSpreadsheet.on(KEY_CORNER_CELL_CLICK, (value) => {
-      if (isFunction(onRowCellClick)) onRowCellClick(value);
+      if (isFunction(onCornerCellClick)) onCornerCellClick(value);
     });
     baseSpreadsheet.on(KEY_SINGLE_CELL_CLICK, (value) => {
       if (isFunction(onDataCellClick)) onDataCellClick(value);
@@ -174,7 +186,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
 
   const iconClickCallback = (
     event: MouseEvent,
-    sheet: BaseSpreadsheet,
+    sheetInstance: BaseSpreadsheet,
     cashDrillFields: string[],
     disabledFields: string[],
   ) => {
@@ -186,7 +198,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
         disabledFields={disabledFields}
       />
     );
-    sheet.tooltip.show({
+    sheetInstance.tooltip.show({
       position: {
         x: event.clientX,
         y: event.clientY,
@@ -197,10 +209,10 @@ export const SheetComponent = (props: SpreadsheetProps) => {
 
   const buildSpreadSheet = () => {
     if (!baseSpreadsheet) {
-      UseDrillDownLayout(options);
       baseSpreadsheet = getSpreadSheet();
       bindEvent();
       baseSpreadsheet.setDataCfg(safetyDataCfg(dataCfg));
+      baseSpreadsheet.store.set('originalDataCfg', dataCfg);
       baseSpreadsheet.setOptions(
         safetyOptions(HandleOptions(props, baseSpreadsheet, iconClickCallback)),
       );
@@ -271,11 +283,34 @@ export const SheetComponent = (props: SpreadsheetProps) => {
   //   }
   // };
 
-  const update = (reset?: () => void, action?: () => void) => {
+  const preHandleDataCfg = (config: DataCfg) => {
+    if (partDrillDown) {
+      resetDrillDownCfg(ownSpreadsheet);
+    }
+    return config;
+  };
+
+  const setOptions = () => {
+    ownSpreadsheet.setOptions(
+      safetyOptions(HandleOptions(props, ownSpreadsheet, iconClickCallback)),
+    );
+  };
+
+  const setDataCfg = () => {
+    const newDataCfg = preHandleDataCfg(dataCfg);
+    ownSpreadsheet.setDataCfg(newDataCfg);
+    ownSpreadsheet.store.set('originalDataCfg', newDataCfg);
+  };
+
+  const update = (reset?: () => void) => {
     if (!ownSpreadsheet) return;
-    if (reset) reset();
-    if (action) action();
-    HandleConfigWhenDrillDown(props, ownSpreadsheet);
+
+    if (isFunction(reset)) reset();
+
+    if (!isEmpty(props.dataCfg)) {
+      HandleConfigWhenDrillDown(props, ownSpreadsheet);
+    }
+
     ownSpreadsheet.render();
     setLoading(false);
   };
@@ -285,6 +320,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
    * @param rowId 不传表示全部清空
    */
   const clearDrillDownInfo = (rowId?: string) => {
+    if (!ownSpreadsheet) return;
     setLoading(true);
     ClearDrillDownInfo(ownSpreadsheet, rowId);
     update();
@@ -320,23 +356,11 @@ export const SheetComponent = (props: SpreadsheetProps) => {
   }, [resizeTimeStamp]);
 
   useEffect(() => {
-    update(() => {
-      ownSpreadsheet.setDataCfg(dataCfg);
-    });
+    update(setDataCfg);
   }, [dataCfg]);
 
   useEffect(() => {
-    update(() => {
-      ownSpreadsheet.setDataCfg(dataCfg);
-    }, clearDrillDownInfo);
-  }, [dataCfg?.fields?.rows]);
-
-  useEffect(() => {
-    update(() => {
-      ownSpreadsheet.setOptions(
-        HandleOptions(props, ownSpreadsheet, iconClickCallback),
-      );
-    });
+    update(setOptions);
   }, [options]);
 
   useEffect(() => {
@@ -354,7 +378,7 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     if (!ownSpreadsheet) return;
     ownSpreadsheet.tooltip.hide();
     if (isEmpty(drillFields)) {
-      clearDrillDownInfo(ownSpreadsheet.store.get('drillMeta')?.id);
+      clearDrillDownInfo(ownSpreadsheet.store.get('drillDownMeta')?.id);
     } else {
       setLoading(true);
       HandleDrillDown({
@@ -363,20 +387,30 @@ export const SheetComponent = (props: SpreadsheetProps) => {
         fetchData: partDrillDown.fetchData,
         drillItemsNum: partDrillDown?.drillItemsNum,
         spreadsheet: ownSpreadsheet,
-      }).then(() => {
-        setLoading(false);
-        // TODO 异常处理
       });
     }
   }, [drillFields]);
 
   useEffect(() => {
-    if (!partDrillDown || !partDrillDown.clearDrillDown) return;
-    clearDrillDownInfo(partDrillDown.clearDrillDown?.rowId);
-  }, [partDrillDown]);
+    if (isEmpty(partDrillDown?.clearDrillDown)) return;
+    clearDrillDownInfo(partDrillDown?.clearDrillDown?.rowId);
+  }, [partDrillDown?.clearDrillDown]);
+
+  useEffect(() => {
+    if (!partDrillDown?.drillItemsNum) return;
+    clearDrillDownInfo();
+  }, [partDrillDown?.drillItemsNum]);
+
+  useEffect(() => {
+    if (!partDrillDown || !ownSpreadsheet) return;
+    if (isEmpty(partDrillDown?.drillConfig?.dataSet))
+      resetDrillDownCfg(ownSpreadsheet);
+    update(setOptions);
+  }, [partDrillDown?.drillConfig?.dataSet]);
 
   return (
     <Spin spinning={isLoading === undefined ? loading : isLoading}>
+      {header && <Header {...header} sheet={ownSpreadsheet} />}
       <div
         ref={(e: HTMLDivElement) => {
           container = e;

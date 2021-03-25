@@ -6,6 +6,7 @@ import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import getAdaptiveRowWidth from './get-adaptive-row-width';
 import { RowsResult } from './process-rows';
+import { ID_SEPARATOR } from '../../../common/constant';
 
 function generateNodes(
   field: string,
@@ -17,7 +18,7 @@ function generateNodes(
   if (rowValues) {
     rowValues.forEach((value, k) => {
       const node = new Node({
-        id: `${parent.id}-${field}`,
+        id: `${parent.id}${ID_SEPARATOR}${field}`,
         key: field,
         field,
         value,

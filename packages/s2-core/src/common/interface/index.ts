@@ -319,6 +319,13 @@ export interface RowActionIcons {
     level: number; // 层级
     operator: '>' | '=' | '<' | '>=' | '<='; // 层级关系
   };
+  // 根据行头名自定义展示
+  customDisplayByRowName?: {
+    // 行头名称，如果有层级关系需要用 '-' 连接
+    rowNames: string[];
+    // 指定行头名称是否展示icon
+    mode: 'pick' | 'omit';
+  };
   // 具体的动作
   action: (iconType: string, meta: Node, event: Event) => void;
 }

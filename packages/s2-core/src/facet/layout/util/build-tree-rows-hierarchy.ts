@@ -11,6 +11,7 @@ import { handleHideNodes } from './handle-hide-nodes';
 import { handleKeepOnlyNodes } from './handle-keep-only-nodes';
 import { reArrangeFieldValues } from './re-arrange-field-values';
 import findNodeExtraCfg from '../../../utils/find-node-extra-cfg';
+import { ID_SEPARATOR } from '../../../common/constant';
 
 export interface TreeParams {
   pivot: Pivot;
@@ -83,7 +84,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
       value = col;
       label = value;
     }
-    const id = `${parent.id}-${value}`;
+    const id = `${parent.id}${ID_SEPARATOR}${value}`;
 
     // check if current node is collapsed first, or use hierarchy config
     let isCollapse = isBoolean(collapsedRows[id])

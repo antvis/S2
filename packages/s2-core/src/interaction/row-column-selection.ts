@@ -3,6 +3,7 @@ import { map, size, get, min, max } from 'lodash';
 import { SortParam, Node } from '../index';
 import { Cell, ColCell, RowCell } from '../cell';
 import { getHeaderHierarchyQuery } from '../facet/layout/util';
+import { KEY_LIST_SORT } from '../common/constant';
 import { HoverInteraction } from './hover-interaction';
 import { DownOutlined } from '@ant-design/icons';
 import { getTooltipData } from '../utils/tooltip';
@@ -191,6 +192,12 @@ export class RowColumnSelection extends HoverInteraction {
             sortMethod: curMenu.sortMethod,
             query: sortQuery,
           } as SortParam);
+
+    this.spreadsheet.emit(KEY_LIST_SORT, {
+      sortParam: sortParam,
+      layoutResult: this.spreadsheet.facet.layoutResult,
+    });
+
     // 排序条件，存到 store 中
     this.spreadsheet.store.set('sortParam', sortParam);
     this.spreadsheet.setDataCfg({ ...this.spreadsheet.dataCfg });
