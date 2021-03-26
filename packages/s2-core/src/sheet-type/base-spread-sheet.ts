@@ -9,6 +9,7 @@ import {
   find,
   isFunction,
   includes,
+  debounce,
 } from 'lodash';
 import { Store } from '../common/store';
 import { ext } from '@antv/matrix-util';
@@ -112,6 +113,8 @@ export default abstract class BaseSpreadSheet extends EE {
 
   public devicePixelRatioMedia: MediaQueryList;
 
+  public viewport = window as typeof window & { visualViewport: Element };
+
   protected constructor(
     dom: string | HTMLElement,
     dataCfg: DataCfg,
@@ -129,6 +132,7 @@ export default abstract class BaseSpreadSheet extends EE {
       this.initTooltip();
     this.registerInteractions(this.options);
     this.initDevicePixelRatioListener();
+    this.initDeviceZoomListener();
   }
 
   /**
@@ -337,6 +341,7 @@ export default abstract class BaseSpreadSheet extends EE {
     this.cellCache.clear();
     this.viewMetaCache.clear();
     this.removeDevicePixelRatioListener();
+    this.removeDeviceZoomListener();
   }
 
   /**
@@ -547,10 +552,12 @@ export default abstract class BaseSpreadSheet extends EE {
     if (this.devicePixelRatioMedia?.addEventListener) {
       this.devicePixelRatioMedia.addEventListener(
         'change',
-        this.renderByDevicePixelRatio,
+        this.renderByDevicePixelRatioChanged,
       );
     } else {
-      this.devicePixelRatioMedia.addListener(this.renderByDevicePixelRatio);
+      this.devicePixelRatioMedia.addListener(
+        this.renderByDevicePixelRatioChanged,
+      );
     }
   }
 
@@ -558,16 +565,43 @@ export default abstract class BaseSpreadSheet extends EE {
     if (this.devicePixelRatioMedia?.removeEventListener) {
       this.devicePixelRatioMedia.removeEventListener(
         'change',
-        this.renderByDevicePixelRatio,
+        this.renderByDevicePixelRatioChanged,
       );
     } else {
-      this.devicePixelRatioMedia.removeListener(this.renderByDevicePixelRatio);
+      this.devicePixelRatioMedia.removeListener(
+        this.renderByDevicePixelRatioChanged,
+      );
     }
   }
 
-  private renderByDevicePixelRatio = () => {
+  private initDeviceZoomListener() {
+    // VisualViewport support browser zoom & mac touch tablet
+    this.viewport?.visualViewport?.addEventListener(
+      'resize',
+      this.renderByZoomScale,
+    );
+  }
+
+  private removeDeviceZoomListener() {
+    this.viewport?.visualViewport?.removeEventListener(
+      'resize',
+      this.renderByZoomScale,
+    );
+  }
+
+  private renderByZoomScale = debounce((e) => {
+    const ratio = Math.max(e.target.scale, window.devicePixelRatio);
+    if (ratio > 1) {
+      this.renderByDevicePixelRatio(ratio);
+    }
+  }, 350);
+
+  private renderByDevicePixelRatioChanged = () => {
+    this.renderByDevicePixelRatio();
+  };
+
+  private renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
     const { width, height } = this.options;
-    const ratio = window.devicePixelRatio;
     const newWidth = Math.floor(width * ratio);
     const newHeight = Math.floor(height * ratio);
 
