@@ -1,6 +1,4 @@
 import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
-import { includes } from 'lodash';
-import { wrapBehavior } from '@antv/util';
 
 export type EventConstructor = new (spreadsheet: BaseSpreadSheet) => BaseEvent;
 

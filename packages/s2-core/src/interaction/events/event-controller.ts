@@ -4,8 +4,7 @@ import { wrapBehavior } from '@antv/util';
 import {
   S2Event,
   OriginEventType,
-  DefaultEvent,
-  DefaultEventType,
+  DefaultInterceptEventType
 } from './types';
 import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
 import { StateName } from '../../state/state';
@@ -21,9 +20,6 @@ export class EventController {
   private eventHandlers: any[] = [];
 
   private eventListeners: any[] = [];
-
-  // 用来标记需要拦截的事件，interaction和本身的hover等事件可能会有冲突，在interaction
-  public interceptEvent: Set<DefaultEvent> = new Set();
 
   constructor(spreadsheet: BaseSpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -97,7 +93,7 @@ export class EventController {
       this.spreadsheet.clearState();
       this.spreadsheet.hideTooltip();
       // 屏蔽的事件都重新打开
-      this.spreadsheet.eventController.interceptEvent.clear();
+      this.spreadsheet.interceptEvent.clear();
       this.draw();
     }
   }
@@ -149,7 +145,7 @@ export class EventController {
         // 如果hover的cell改变了，并且当前不需要屏蔽 hover
         if (
           this.hoverTarget !== ev.target &&
-          !this.interceptEvent.has(DefaultEventType.HOVER)
+          !this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.HOVER)
         ) {
           this.hoverTarget = ev.target;
           this.spreadsheet.clearState();

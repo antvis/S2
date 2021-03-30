@@ -1,7 +1,7 @@
 import { Event } from '@antv/g-canvas';
 import { get, isEmpty, set, each, find } from 'lodash';
 import { KEY_JUMP_HREF } from '../../../common/constant';
-import { S2Event, DefaultEventType } from '../types';
+import { S2Event, DefaultInterceptEventType } from '../types';
 import { BaseEvent } from '../base-event';
 
 /**
@@ -15,8 +15,8 @@ export class RowTextClick extends BaseEvent {
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
       if (
-        this.spreadsheet.eventController.interceptEvent.has(
-          DefaultEventType.CLICK,
+        this.spreadsheet.interceptEvent.has(
+          DefaultInterceptEventType.CLICK,
         )
       ) {
         return;

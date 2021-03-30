@@ -4,7 +4,7 @@ import { isMobile } from '../../../utils/is-mobile';
 import { measureTextWidth } from '../../../utils/text';
 import { getCellPadding } from '../../../facet/header/util';
 import { BaseEvent } from '../base-event';
-import { S2Event } from '../types';
+import { S2Event, DefaultInterceptEventType } from '../types';
 
 /**
  * Click corner header text to full expand(remove 「...」)
@@ -17,8 +17,8 @@ export class CornerTextClick extends BaseEvent {
   private bindCornerClick() {
     this.spreadsheet.on(S2Event.CORNER_CLICK, (ev: Event) => {
       if (
-        this.spreadsheet.eventController.interceptEvent.has(
-          DefaultEventType.CLICK,
+        this.spreadsheet.interceptEvent.has(
+          DefaultInterceptEventType.CLICK,
         )
       ) {
         return;

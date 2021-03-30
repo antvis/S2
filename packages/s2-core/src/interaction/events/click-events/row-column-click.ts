@@ -3,7 +3,7 @@ import { SortParam, Node } from '../../../index';
 import { DataCell, ColCell, RowCell } from '../../../cell';
 import { getHeaderHierarchyQuery } from '../../../facet/layout/util';
 import { DownOutlined } from '@ant-design/icons';
-import { S2Event, DefaultEventType } from '../types';
+import { S2Event, DefaultInterceptEventType } from '../types';
 import { BaseEvent } from '../base-event';
 import { StateName } from '../../../state/state';
 import { getTooltipData } from '../../../utils/tooltip';
@@ -62,8 +62,8 @@ export class RowColumnClick extends BaseEvent {
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
       if (
-        this.spreadsheet.eventController.interceptEvent.has(
-          DefaultEventType.CLICK,
+        this.spreadsheet.interceptEvent.has(
+          DefaultInterceptEventType.CLICK,
         )
       ) {
         return;
@@ -74,8 +74,8 @@ export class RowColumnClick extends BaseEvent {
         const meta = cell.getMeta();
         const idx = meta.cellIndex;
         this.spreadsheet.clearState();
-        this.spreadsheet.eventController.interceptEvent.add(
-          DefaultEventType.HOVER,
+        this.spreadsheet.interceptEvent.add(
+          DefaultInterceptEventType.HOVER,
         );
         if (idx === -1) {
           // 多行
@@ -117,8 +117,8 @@ export class RowColumnClick extends BaseEvent {
   private bindColCellClick() {
     this.spreadsheet.on(S2Event.COLCELL_CLICK, (ev: Event) => {
       if (
-        this.spreadsheet.eventController.interceptEvent.has(
-          DefaultEventType.CLICK,
+        this.spreadsheet.interceptEvent.has(
+          DefaultInterceptEventType.CLICK,
         )
       ) {
         return;
@@ -129,8 +129,8 @@ export class RowColumnClick extends BaseEvent {
       if (meta.x !== undefined) {
         const idx = meta.cellIndex;
         this.spreadsheet.clearState();
-        this.spreadsheet.eventController.interceptEvent.add(
-          DefaultEventType.HOVER,
+        this.spreadsheet.interceptEvent.add(
+          DefaultInterceptEventType.HOVER,
         );
         if (idx === -1) {
           // 多列

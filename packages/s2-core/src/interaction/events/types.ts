@@ -42,9 +42,9 @@ export enum OriginEventType {
   KEY_UP = 'keyup',
 }
 
-export enum DefaultEventType {
+export enum DefaultInterceptEventType {
   HOVER = 'hover',
   CLICK = 'click',
 }
 
-export type DefaultEvent = DefaultEventType.HOVER | DefaultEventType.CLICK;
+export type DefaultInterceptEvent = DefaultInterceptEventType.HOVER | DefaultInterceptEventType.CLICK;

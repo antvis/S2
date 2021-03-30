@@ -49,6 +49,7 @@ import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
 import { DefaultStyleCfg } from '../common/default-style-cfg';
 import { EventController } from '../interaction/events/event-controller';
+import { DefaultInterceptEvent } from '../interaction/events/types';
 import State from '../state/state';
 import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
 import { ShowProps } from '../common/tooltip/interface';
@@ -125,6 +126,9 @@ export default abstract class BaseSpreadSheet extends EE {
   public state = new State(this);
 
   public devicePixelRatioMedia: MediaQueryList;
+
+  // 用来标记需要拦截的事件，interaction和本身的hover等事件可能会有冲突，在interaction
+  public interceptEvent: Set<DefaultInterceptEvent> = new Set();
 
   protected constructor(
     dom: string | HTMLElement,

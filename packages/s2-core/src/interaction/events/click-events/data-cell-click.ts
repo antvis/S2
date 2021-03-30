@@ -1,5 +1,5 @@
 import { BaseEvent } from '../base-event';
-import { S2Event, DefaultEventType } from '../types';
+import { S2Event, DefaultInterceptEventType } from '../types';
 import { Event } from '@antv/g-canvas';
 import { get, noop } from 'lodash';
 import { ViewMeta } from '../../../common/interface';
@@ -16,8 +16,8 @@ export class DataCellClick extends BaseEvent {
     this.spreadsheet.on(S2Event.DATACELL_CLICK, (ev: Event) => {
       ev.stopPropagation();
       if (
-        this.spreadsheet.eventController.interceptEvent.has(
-          DefaultEventType.CLICK,
+        this.spreadsheet.interceptEvent.has(
+          DefaultInterceptEventType.CLICK,
         )
       ) {
         return;
@@ -49,8 +49,8 @@ export class DataCellClick extends BaseEvent {
           this.spreadsheet.clearState();
           this.spreadsheet.setState(cell, StateName.SELECTED);
           this.spreadsheet.updateCellStyleByState();
-          this.spreadsheet.eventController.interceptEvent.add(
-            DefaultEventType.HOVER,
+          this.spreadsheet.interceptEvent.add(
+            DefaultInterceptEventType.HOVER,
           );
           this.handleTooltip(ev, meta);
         }

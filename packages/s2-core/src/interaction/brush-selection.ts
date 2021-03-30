@@ -1,7 +1,7 @@
 import { get, each, find, isEqual } from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
-import { S2Event, DefaultEventType } from './events/types';
+import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
 import { StateName } from '../state/state';
 import { DataItem, TooltipOptions } from '..';
@@ -87,8 +87,8 @@ export class BrushSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.DATACELL_MOUSEMOVE, (ev) => {
       if (this.phase) {
         // 屏蔽hover事件
-        this.spreadsheet.eventController.interceptEvent.add(
-          DefaultEventType.HOVER,
+        this.spreadsheet.interceptEvent.add(
+          DefaultInterceptEventType.HOVER,
         );
         ev.preventDefault();
         this.phase = 2;
