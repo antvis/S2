@@ -367,11 +367,12 @@ export const getSelectedCellIndexes = (
       selectedIndexes.push([index, currentHeaderCell.getMeta().cellIndex]);
     });
   } else if (stateName === StateName.ROW_SELECTED) {
-    map(cells, (cell) => {
-      const rowIndex = cell.getMeta().rowIndex;
-      map(colLeafNodes, (col, index) => {
-        selectedIndexes.push([rowIndex, index]);
-      });
+    const currentHeaderCell = find(
+      cells,
+      (cell) => cell.getMeta().rowIndex === cellInfo.rowIndex,
+    );
+    map(colLeafNodes, (col, index) => {
+      selectedIndexes.push([currentHeaderCell.getMeta().rowIndex, index]);
     });
   }
   return selectedIndexes;
@@ -390,6 +391,7 @@ export const getSelectedData = (
     stateName === StateName.COL_SELECTED ||
     stateName === StateName.ROW_SELECTED
   ) {
+    // 行头列头单选多选
     const selectedCellIndexes = getSelectedCellIndexes(
       spreadsheet,
       layoutResult,
@@ -403,6 +405,7 @@ export const getSelectedData = (
       }
     });
   } else {
+    // 其他（刷选，datacell多选）
     const indexName = spreadsheet.options.valueInCols ? 'colIndex' : 'rowIndex';
     // 先筛选出同一index下的cell 避免重复计算
     const cellsWithCellIndex = filter(
@@ -424,15 +427,17 @@ export const getTooltipData = (
   aggregation?: Aggregation,
 ) => {
   let summaries = null,
-    headInfo = null,
-    details = null;
+      headInfo = null,
+      details = null;
   if (!options?.hideSummary) {
+    // 计算总计小计
     summaries = map(cellInfos, (cellInfo) =>
       getSummaryProps(spreadsheet, cellInfo, options, aggregation),
     );
     // 如果summaries中有相同name的向，则合并为同一项；
     summaries = mergeSummaries(summaries);
   } else {
+    // 如果隐藏总计小计说明是datacell点击，只展示单个cell的详细信息
     headInfo = getHeadInfo(spreadsheet, cellInfos[0]);
     details = getDetailList(spreadsheet, cellInfos[0], options);
   }

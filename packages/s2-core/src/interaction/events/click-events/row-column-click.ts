@@ -1,4 +1,3 @@
-import { Event } from '@antv/g-canvas';
 import { map, size, get, min, max, each } from 'lodash';
 import { SortParam, Node } from '../../../index';
 import { DataCell, ColCell, RowCell } from '../../../cell';
@@ -70,6 +69,7 @@ export class RowColumnClick extends BaseEvent {
         return;
       }
       const cell = this.spreadsheet.getCell(ev.target);
+      let cellInfos = [];
       if (cell.getMeta().x !== undefined) {
         const meta = cell.getMeta();
         const idx = meta.cellIndex;
@@ -92,6 +92,21 @@ export class RowColumnClick extends BaseEvent {
           // 单行
           this.spreadsheet.setState(cell, StateName.ROW_SELECTED);
         }
+
+        const currentState = this.spreadsheet.getCurrentState();
+        const { stateName, cells } = currentState;
+        if (stateName === StateName.ROW_SELECTED) {
+          cellInfos = map(cells, (cell) => ({
+            ...get(cell.getMeta(), 'query'),
+            colIndex: cell.getMeta().cellIndex,
+            rowIndex: cell.getMeta().rowIndex,
+          }));
+        }
+        
+        if(!this.spreadsheet.options.valueInCols) {
+          this.handleTooltip(ev, meta, cellInfos);
+        }
+
         this.spreadsheet.updateCellStyleByState();
         this.resetCell();
         this.draw();
@@ -142,8 +157,10 @@ export class RowColumnClick extends BaseEvent {
             rowIndex: cell.getMeta().rowIndex,
           }));
         }
-
-        this.handleTooltip(ev, meta, cellInfos);
+        
+        if(this.spreadsheet.options.valueInCols) {
+          this.handleTooltip(ev, meta, cellInfos);
+        }
 
         this.spreadsheet.updateCellStyleByState();
         this.resetCell();
@@ -175,6 +192,8 @@ export class RowColumnClick extends BaseEvent {
     };
 
     const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
+
+    console.log('tooltipData', tooltipData)
     const showOptions = {
       position,
       data: tooltipData,
