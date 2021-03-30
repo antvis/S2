@@ -1,4 +1,3 @@
-import { Event, Canvas, LooseObject } from '@antv/g-canvas';
 import { get, each, includes } from 'lodash';
 import { BaseCell, DataCell, ColCell, CornerCell, RowCell } from '../../cell';
 import { wrapBehavior } from '@antv/util';

@@ -132,8 +132,8 @@ export class BrushSelection extends BaseInteraction {
         const currentState = this.spreadsheet.getCurrentState();
         const { stateName, cells } = currentState;
         const cellInfos = [];
-        if(stateName === StateName.SELECTED) {
-          each(cells, cell => {
+        if (stateName === StateName.SELECTED) {
+          each(cells, (cell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
             const query = cell.getMeta()[valueInCols ? 'colQuery' : 'rowQuery'];
             if (query) {
@@ -143,11 +143,11 @@ export class BrushSelection extends BaseInteraction {
                 rowIndex: !valueInCols ? cell.getMeta().rowIndex : null,
               };
 
-              if(!find(cellInfos, info => isEqual(info, cellInfo))) {
+              if (!find(cellInfos, (info) => isEqual(info, cellInfo))) {
                 cellInfos.push(cellInfo);
               }
             }
-          })
+          });
         }
         this.handleTooltip(ev, cellInfos);
       }
@@ -160,16 +160,12 @@ export class BrushSelection extends BaseInteraction {
       x: ev.clientX,
       y: ev.clientY,
     };
-    
+
     const options = {
       enterable: true,
     };
 
-    const tooltipData = getTooltipData(
-      this.spreadsheet,
-      cellInfos,
-      options
-    );
+    const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
     const showOptions = {
       position,
       data: tooltipData,

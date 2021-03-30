@@ -72,14 +72,14 @@ export class ColRowMutiSelection extends BaseInteraction {
           }
           const currentState = this.spreadsheet.getCurrentState();
           const { stateName, cells } = currentState;
-          if(stateName === StateName.COL_SELECTED) {
-            cellInfos = map(cells, cell => ({
+          if (stateName === StateName.COL_SELECTED) {
+            cellInfos = map(cells, (cell) => ({
               ...get(cell.getMeta(), 'query'),
               colIndex: cell.getMeta().cellIndex,
               rowIndex: cell.getMeta().rowIndex,
             }));
           }
-          this.handleTooltip(ev, meta, cellInfos)
+          this.handleTooltip(ev, meta, cellInfos);
           this.spreadsheet.updateCellStyleByState();
           this.resetCell();
           this.draw();
@@ -133,12 +133,8 @@ export class ColRowMutiSelection extends BaseInteraction {
     const options = {
       enterable: true,
     };
-    
-    const tooltipData = getTooltipData(
-      this.spreadsheet,
-      cellInfos,
-      options,
-    );
+
+    const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
     const showOptions = {
       position,
       data: tooltipData,

@@ -17,7 +17,7 @@ import {
   compact,
   find,
   findIndex,
-  each
+  each,
 } from 'lodash';
 import { i18n } from '../common/i18n';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
@@ -142,7 +142,6 @@ export const getFriendlyVal = (val: any): number | string => {
 
   return isNil(val) || isInvalidNumber || isEmptyString ? '-' : val;
 };
-
 
 export const getFieldFormatter = (
   spreadsheet: BaseSpreadSheet,
@@ -303,7 +302,7 @@ export const getSummaryName = (
   currentField,
   cellInfo,
 ): string => {
-  if(get(cellInfo, 'isGrandTotals')) {
+  if (get(cellInfo, 'isGrandTotals')) {
     return i18n('总计');
   }
 
@@ -327,7 +326,7 @@ export const getSummaryProps = (
   const selectedData = getSelectedData(spreadsheet, cellInfo);
   const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
   if (size(valueFields) > 0) {
-    const currentField = cellInfo[EXTRA_FIELD]
+    const currentField = cellInfo[EXTRA_FIELD];
     const currentFormatter = getFieldFormatter(spreadsheet, currentField);
     const name = getSummaryName(
       spreadsheet,
@@ -353,14 +352,17 @@ export const getSummaryProps = (
 export const getSelectedCellIndexes = (
   spreadsheet: BaseSpreadSheet,
   layoutResult,
-  cellInfo
+  cellInfo,
 ) => {
   const { rowLeafNodes, colLeafNodes } = layoutResult;
   const selectedIndexes = [];
   const currentState = spreadsheet.getCurrentState();
   const { stateName, cells } = currentState;
   if (stateName === StateName.COL_SELECTED) {
-    const currentHeaderCell = find(cells, cell => cell.getMeta().cellIndex === cellInfo.colIndex)
+    const currentHeaderCell = find(
+      cells,
+      (cell) => cell.getMeta().cellIndex === cellInfo.colIndex,
+    );
     map(rowLeafNodes, (row, index) => {
       selectedIndexes.push([index, currentHeaderCell.getMeta().cellIndex]);
     });
@@ -375,14 +377,24 @@ export const getSelectedCellIndexes = (
   return selectedIndexes;
 };
 
-export const getSelectedData = (spreadsheet: BaseSpreadSheet, cellInfo: DataItem): DataItem[] => {
+export const getSelectedData = (
+  spreadsheet: BaseSpreadSheet,
+  cellInfo: DataItem,
+): DataItem[] => {
   const layoutResult = spreadsheet?.facet?.layoutResult;
   let selectedData = [];
   const currentState = spreadsheet.getCurrentState();
   const { stateName, cells } = currentState;
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
-  if (stateName === StateName.COL_SELECTED || stateName === StateName.ROW_SELECTED) {
-    const selectedCellIndexes = getSelectedCellIndexes(spreadsheet, layoutResult, cellInfo);
+  if (
+    stateName === StateName.COL_SELECTED ||
+    stateName === StateName.ROW_SELECTED
+  ) {
+    const selectedCellIndexes = getSelectedCellIndexes(
+      spreadsheet,
+      layoutResult,
+      cellInfo,
+    );
     forEach(selectedCellIndexes, ([i, j]) => {
       const viewMeta = layoutResult.getViewMeta(i, j);
       const data = get(viewMeta, 'data[0]');
@@ -393,9 +405,14 @@ export const getSelectedData = (spreadsheet: BaseSpreadSheet, cellInfo: DataItem
   } else {
     const indexName = spreadsheet.options.valueInCols ? 'colIndex' : 'rowIndex';
     // 先筛选出同一index下的cell 避免重复计算
-    const cellsWithCellIndex = filter(cells, cell => (cell.getMeta()[indexName] === cellInfo[indexName]));
-    
-    selectedData = map(cellsWithCellIndex, cell => get(cell.getMeta(), 'data[0]'));
+    const cellsWithCellIndex = filter(
+      cells,
+      (cell) => cell.getMeta()[indexName] === cellInfo[indexName],
+    );
+
+    selectedData = map(cellsWithCellIndex, (cell) =>
+      get(cell.getMeta(), 'data[0]'),
+    );
   }
   return selectedData;
 };
@@ -406,9 +423,13 @@ export const getTooltipData = (
   options?: TooltipOptions,
   aggregation?: Aggregation,
 ) => {
-  let summaries = null, headInfo = null, details = null;
+  let summaries = null,
+    headInfo = null,
+    details = null;
   if (!options?.hideSummary) {
-    summaries = map(cellInfos, cellInfo => getSummaryProps(spreadsheet, cellInfo, options, aggregation))
+    summaries = map(cellInfos, (cellInfo) =>
+      getSummaryProps(spreadsheet, cellInfo, options, aggregation),
+    );
     // 如果summaries中有相同name的向，则合并为同一项；
     summaries = mergeSummaries(summaries);
   } else {
@@ -421,17 +442,22 @@ export const getTooltipData = (
 
 const mergeSummaries = (summaries) => {
   const result = [];
-  each(summaries, summary => {
-    const summaryInResultIndex = findIndex(result, i => i.name === summary.name);
-    if(summaryInResultIndex > -1) {
+  each(summaries, (summary) => {
+    const summaryInResultIndex = findIndex(
+      result,
+      (i) => i.name === summary.name,
+    );
+    if (summaryInResultIndex > -1) {
       result[summaryInResultIndex].value += summary.value;
-      result[summaryInResultIndex].selectedData = result[summaryInResultIndex].selectedData.concat(summary.selectedData);
+      result[summaryInResultIndex].selectedData = result[
+        summaryInResultIndex
+      ].selectedData.concat(summary.selectedData);
     } else {
       result.push(summary);
     }
-  })
+  });
   return result;
-}
+};
 
 export const getRightAndValueField = (
   spreadsheet: BaseSpreadSheet,
