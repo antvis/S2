@@ -1,11 +1,10 @@
-import { Event, Point, IShape } from '@antv/g-canvas';
-import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { S2Event, DefaultEventType } from './events/types';
 import { BaseInteraction } from './base';
 import { StateName } from '../state/state';
 import { DataItem, TooltipOptions } from '..';
 import { getTooltipData } from '../utils/tooltip';
+import { each, isEqual, find } from 'lodash';
 
 const SHIFT_KEY = 'Shift';
 
@@ -44,10 +43,11 @@ export class DataCellMutiSelection extends BaseInteraction {
       const meta = cell.getMeta();
       if (this.isMutiSelection && meta) {
         const currentState = this.spreadsheet.getCurrentState();
+        const { stateName, cells } = currentState;
         // 手动把当前行头列头选择下的cell样式重置
         if (
-          currentState.stateName === StateName.COL_SELECTED ||
-          currentState.stateName === StateName.ROW_SELECTED
+          stateName === StateName.COL_SELECTED ||
+          stateName === StateName.ROW_SELECTED
         ) {
           this.spreadsheet.getPanelAllCells().forEach((cell) => {
             cell.hideShapeUnderState();
@@ -66,7 +66,50 @@ export class DataCellMutiSelection extends BaseInteraction {
         this.spreadsheet.setState(cell, StateName.SELECTED);
         this.spreadsheet.updateCellStyleByState();
         this.draw();
+        
+        const cellInfos = [];
+        if(stateName === StateName.SELECTED) {
+          each(cells, cell => {
+            const valueInCols = this.spreadsheet.options.valueInCols;
+            const query = cell.getMeta()[valueInCols ? 'colQuery' : 'rowQuery'];
+            if (query) {
+              const cellInfo = {
+                ...query,
+                colIndex: valueInCols ? cell.getMeta().colIndex : null,
+                rowIndex: !valueInCols ? cell.getMeta().rowIndex : null,
+              };
+
+              if(!find(cellInfos, info => isEqual(info, cellInfo))) {
+                cellInfos.push(cellInfo);
+              }
+            }
+          })
+        }
+        this.handleTooltip(ev, cellInfos);
       }
     });
+  }
+
+  private handleTooltip(ev, cellInfos) {
+    const position = {
+      x: ev.clientX,
+      y: ev.clientY,
+    };
+    
+    const options = {
+      enterable: true,
+    };
+
+    const tooltipData = getTooltipData(
+      this.spreadsheet,
+      cellInfos,
+      options
+    );
+    const showOptions = {
+      position,
+      data: tooltipData,
+      options,
+    };
+    this.spreadsheet.showTooltip(showOptions);
   }
 }

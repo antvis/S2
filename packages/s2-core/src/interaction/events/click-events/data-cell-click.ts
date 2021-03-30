@@ -105,8 +105,6 @@ export class DataCellClick extends BaseEvent {
       hideSummary: true,
     };
 
-    console.log('currentCellMeta', currentCellMeta)
-
     const tooltipData = getTooltipData(
       this.spreadsheet,
       [currentCellMeta],

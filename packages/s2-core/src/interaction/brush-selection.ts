@@ -1,5 +1,4 @@
-import { Event, Point, IShape } from '@antv/g-canvas';
-import { get } from 'lodash';
+import { get, each, find, isEqual } from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { S2Event, DefaultEventType } from './events/types';
@@ -57,6 +56,12 @@ export class BrushSelection extends BaseInteraction {
    */
   private phase: 0 | 1 | 2;
 
+  protected bindEvents() {
+    this.bindMouseDown();
+    this.bindMouseMove();
+    this.bindMouseUp();
+  }
+
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.DATACELL_MOUSEDOWN, (ev: Event) => {
       const oe = ev.originalEvent as any;
@@ -75,7 +80,6 @@ export class BrushSelection extends BaseInteraction {
       }
       this.draw();
       this.phase = 1;
-      // this.hideTooltip();
     });
   }
 
@@ -120,32 +124,58 @@ export class BrushSelection extends BaseInteraction {
         this.endPoint = { x: oe.layerX, y: oe.layerY };
         const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
         this.getSelectedCells(brushRegion);
-
-        // tooltip
-        const tooltipData = getTooltipData(this.spreadsheet);
-        const showOptions = {
-          position: {
-            x: ev.clientX,
-            y: ev.clientY,
-          },
-          data: tooltipData,
-        };
-        this.spreadsheet.showTooltip(showOptions);
-
         // 透明度为0会导致 hover 无法响应
         this.regionShape.attr({
           opacity: 0,
         });
         this.draw();
+        const currentState = this.spreadsheet.getCurrentState();
+        const { stateName, cells } = currentState;
+        const cellInfos = [];
+        if(stateName === StateName.SELECTED) {
+          each(cells, cell => {
+            const valueInCols = this.spreadsheet.options.valueInCols;
+            const query = cell.getMeta()[valueInCols ? 'colQuery' : 'rowQuery'];
+            if (query) {
+              const cellInfo = {
+                ...query,
+                colIndex: valueInCols ? cell.getMeta().colIndex : null,
+                rowIndex: !valueInCols ? cell.getMeta().rowIndex : null,
+              };
+
+              if(!find(cellInfos, info => isEqual(info, cellInfo))) {
+                cellInfos.push(cellInfo);
+              }
+            }
+          })
+        }
+        this.handleTooltip(ev, cellInfos);
       }
       this.phase = 0;
     });
   }
 
-  protected bindEvents() {
-    this.bindMouseDown();
-    this.bindMouseMove();
-    this.bindMouseUp();
+  private handleTooltip(ev, cellInfos) {
+    const position = {
+      x: ev.clientX,
+      y: ev.clientY,
+    };
+    
+    const options = {
+      enterable: true,
+    };
+
+    const tooltipData = getTooltipData(
+      this.spreadsheet,
+      cellInfos,
+      options
+    );
+    const showOptions = {
+      position,
+      data: tooltipData,
+      options,
+    };
+    this.spreadsheet.showTooltip(showOptions);
   }
 
   private getCellsInRegion(region) {
@@ -186,6 +216,7 @@ export class BrushSelection extends BaseInteraction {
   // 刷选过程中的预选择外框
   protected showPrepareBrushSelectBorder(cells: DataCell[]) {
     if (cells.length) {
+      this.spreadsheet.clearState();
       cells.forEach((cell: DataCell) => {
         this.spreadsheet.setState(cell, StateName.PREPARE_SELECT);
       });

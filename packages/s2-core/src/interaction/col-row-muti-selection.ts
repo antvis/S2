@@ -133,7 +133,7 @@ export class ColRowMutiSelection extends BaseInteraction {
     const options = {
       enterable: true,
     };
-
+    
     const tooltipData = getTooltipData(
       this.spreadsheet,
       cellInfos,

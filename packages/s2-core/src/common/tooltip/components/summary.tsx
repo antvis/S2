@@ -26,18 +26,16 @@ const Summary = (props: { summaries: SummaryProps[] }) => {
       const { selectedData = [], name, value } = item || {};
 
       return (
-        selectedData?.length > 1 && (
-          <div className={`${TOOLTIP_CLASS_PRE}-summary-item`}>
-            <span className={`${TOOLTIP_CLASS_PRE}-summary-key`}>
-              {name}（{i18n('总和')}）
-            </span>
-            <span
-              className={`${TOOLTIP_CLASS_PRE}-summary-val ${TOOLTIP_CLASS_PRE}-bold`}
-            >
-              {value}
-            </span>
-          </div>
-        )
+        <div className={`${TOOLTIP_CLASS_PRE}-summary-item`}>
+          <span className={`${TOOLTIP_CLASS_PRE}-summary-key`}>
+            {name}（{i18n('总和')}）
+          </span>
+          <span
+            className={`${TOOLTIP_CLASS_PRE}-summary-val ${TOOLTIP_CLASS_PRE}-bold`}
+          >
+            {value}
+          </span>
+        </div>
       );
     });
   };
