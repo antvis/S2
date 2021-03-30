@@ -7,7 +7,7 @@ const ctx = canvas.getContext('2d');
  * 计算文本在画布中的宽度
  */
 export const measureTextWidth = memoize(
-  (text: any, font): number => {
+  (text: any = '', font: CSSStyleDeclaration): number => {
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } = font;
     ctx.font = [
       fontStyle,
@@ -16,7 +16,7 @@ export const measureTextWidth = memoize(
       `${fontSize}px`,
       fontFamily,
     ].join(' ');
-    return ctx.measureText(isString(text) ? text : '').width;
+    return ctx.measureText(`${text}`).width;
   },
   (text: any, font) => [text, ...values(font)].join(''),
 );
@@ -30,7 +30,11 @@ export const measureTextWidth = memoize(
  * @param maxWidth
  * @param font
  */
-export const getEllipsisTextInner = (text: any, maxWidth: number, font) => {
+export const getEllipsisTextInner = (
+  text: any,
+  maxWidth: number,
+  font: CSSStyleDeclaration,
+) => {
   const STEP = 16; // 每次 16，调参工程师
   const DOT_WIDTH = measureTextWidth('...', font);
 
@@ -116,7 +120,10 @@ export const getEllipsisTextInner = (text: any, maxWidth: number, font) => {
  * @param text
  * @param font
  */
-export const measureTextWidthRoughly = (text: any, font = {}): number => {
+export const measureTextWidthRoughly = (
+  text: any,
+  font: CSSStyleDeclaration = {} as CSSStyleDeclaration,
+): number => {
   const alphaWidth = measureTextWidth('a', font);
   const chineseWidth = measureTextWidth('蚂', font);
 
@@ -146,15 +153,15 @@ export const measureTextWidthRoughly = (text: any, font = {}): number => {
 export const getEllipsisText = (
   text: string,
   maxWidth: number,
-  fontParam?,
+  fontParam?: CSSStyleDeclaration,
   priorityParam?: string[],
 ) => {
-  let font = {};
+  let font = {} as CSSStyleDeclaration;
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
   } else {
-    font = fontParam || {};
+    font = fontParam || ({} as CSSStyleDeclaration);
   }
   if (!priority || !priority.length) {
     return getEllipsisTextInner(text, maxWidth, font);
