@@ -7,7 +7,7 @@ const ctx = canvas.getContext('2d');
  * 计算文本在画布中的宽度
  */
 export const measureTextWidth = memoize(
-  (text: any = '', font: CSSStyleDeclaration): number => {
+  (text: any = '', font: any): number => {
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } = font;
     ctx.font = [
       fontStyle,
@@ -33,7 +33,7 @@ export const measureTextWidth = memoize(
 export const getEllipsisTextInner = (
   text: any,
   maxWidth: number,
-  font: CSSStyleDeclaration,
+  font: any,
 ) => {
   const STEP = 16; // 每次 16，调参工程师
   const DOT_WIDTH = measureTextWidth('...', font);
@@ -120,10 +120,7 @@ export const getEllipsisTextInner = (
  * @param text
  * @param font
  */
-export const measureTextWidthRoughly = (
-  text: any,
-  font: CSSStyleDeclaration = {} as CSSStyleDeclaration,
-): number => {
+export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
   const alphaWidth = measureTextWidth('a', font);
   const chineseWidth = measureTextWidth('蚂', font);
 
@@ -153,15 +150,15 @@ export const measureTextWidthRoughly = (
 export const getEllipsisText = (
   text: string,
   maxWidth: number,
-  fontParam?: CSSStyleDeclaration,
+  fontParam?: any,
   priorityParam?: string[],
 ) => {
-  let font = {} as CSSStyleDeclaration;
+  let font = {};
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
   } else {
-    font = fontParam || ({} as CSSStyleDeclaration);
+    font = fontParam || {};
   }
   if (!priority || !priority.length) {
     return getEllipsisTextInner(text, maxWidth, font);

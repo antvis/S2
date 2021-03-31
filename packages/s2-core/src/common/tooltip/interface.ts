@@ -23,7 +23,7 @@ export interface Position {
 
 export type ListItem = {
   name: string;
-  value: string;
+  value: string | number;
   icon?: string;
 };
 
