@@ -7,8 +7,14 @@ const ctx = canvas.getContext('2d');
  * 计算文本在画布中的宽度
  */
 export const measureTextWidth = memoize(
-  (text: any = '', font: any): number => {
-    const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } = font;
+  (text: number | string = '', font: unknown): number => {
+    const {
+      fontSize,
+      fontFamily,
+      fontWeight,
+      fontStyle,
+      fontVariant,
+    } = font as CSSStyleDeclaration;
     ctx.font = [
       fontStyle,
       fontVariant,
@@ -33,7 +39,7 @@ export const measureTextWidth = memoize(
 export const getEllipsisTextInner = (
   text: any,
   maxWidth: number,
-  font: any,
+  font: CSSStyleDeclaration,
 ) => {
   const STEP = 16; // 每次 16，调参工程师
   const DOT_WIDTH = measureTextWidth('...', font);
@@ -150,7 +156,7 @@ export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
 export const getEllipsisText = (
   text: string,
   maxWidth: number,
-  fontParam?: any,
+  fontParam?: unknown,
   priorityParam?: string[],
 ) => {
   let font = {};
@@ -161,7 +167,7 @@ export const getEllipsisText = (
     font = fontParam || {};
   }
   if (!priority || !priority.length) {
-    return getEllipsisTextInner(text, maxWidth, font);
+    return getEllipsisTextInner(text, maxWidth, font as CSSStyleDeclaration);
   }
 
   const leftSubTexts = [];
@@ -209,7 +215,11 @@ export const getEllipsisText = (
       const subWidth = measureTextWidth(subText, font);
       // fix-边界处理: when subWidth <= DOT_WIDTH 不做 ... 处理
       if (remainWidth < subWidth && subWidth > DOT_WIDTH) {
-        const ellipsis = getEllipsisTextInner(subText, remainWidth, font);
+        const ellipsis = getEllipsisTextInner(
+          subText,
+          remainWidth,
+          font as CSSStyleDeclaration,
+        );
         result = result.replace(subText, ellipsis);
         remainWidth = 0;
       } else {
