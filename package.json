@@ -32,10 +32,10 @@
     "site:start": "cd ./s2-site && npm run start",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "pretty-quick": "pretty-quick",
-    "lint": "npm run tsc && npm run lint:script",
+    "lint": "npm run core:tsc && npm run lint:script",
     "lint:script": "eslint . --ext '.js,.jsx,.ts,.tsx'",
     "lint-fix": "npm run lint-fix:script",
-    "lint-fix:script": "eslint . --ext '.jsx,.ts,.tsx' --fix"
+    "lint-fix:script": "npm run lint:script -- --fix"
   },
   "commitlint": {
     "extends": [
