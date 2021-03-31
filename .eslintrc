@@ -27,7 +27,9 @@
     "jest": {
       "version": 26
     },
-    "react": "detect"
+    "react": {
+  		"version": "detect"
+    }
   },
   "rules": {
     "prettier/prettier": 1,

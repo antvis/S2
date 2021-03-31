@@ -16,4 +16,8 @@ s2-site/node_modules/
 s2-site/.cache/
 s2-site/public
 
+lib
+esm
+dist
+
 

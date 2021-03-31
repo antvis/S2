@@ -147,7 +147,7 @@ export const getSelectedCellIndexes = (
   const selected = spreadsheet?.store?.get('selected');
 
   if (isObject(selected)) {
-    const { type, indexes } = selected;
+    const { type, indexes } = selected as any;
     let [ii, jj] = indexes;
     if (type === 'brush' || type === 'cell') {
       const selectedIds = [];

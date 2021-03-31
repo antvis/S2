@@ -274,7 +274,7 @@ export interface SpreadsheetOptions {
 
   readonly initTooltip?: TooltipCallback;
 
-  readonly tooltipComponent?: React.ElementType;
+  readonly tooltipComponent?: JSX.Element;
 
   // 自定义 frame 边框
   readonly frame?: FrameCallback;

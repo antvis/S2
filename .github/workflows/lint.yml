@@ -20,7 +20,5 @@ jobs:
       - name: Install dependencies
         run: npm run bootstrap:ci
 
-      - name: Lint scripts and styles
-        run: npm run  lint
-        env:
-          CI: true
+      - name: Lint scripts
+        run: npm run lint

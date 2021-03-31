@@ -7,8 +7,14 @@ const ctx = canvas.getContext('2d');
  * 计算文本在画布中的宽度
  */
 export const measureTextWidth = memoize(
-  (text: any = '', font: CSSStyleDeclaration): number => {
-    const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } = font;
+  (text: number | string = '', font: unknown): number => {
+    const {
+      fontSize,
+      fontFamily,
+      fontWeight,
+      fontStyle,
+      fontVariant,
+    } = font as CSSStyleDeclaration;
     ctx.font = [
       fontStyle,
       fontVariant,
@@ -120,10 +126,7 @@ export const getEllipsisTextInner = (
  * @param text
  * @param font
  */
-export const measureTextWidthRoughly = (
-  text: any,
-  font: CSSStyleDeclaration = {} as CSSStyleDeclaration,
-): number => {
+export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
   const alphaWidth = measureTextWidth('a', font);
   const chineseWidth = measureTextWidth('蚂', font);
 
@@ -153,18 +156,18 @@ export const measureTextWidthRoughly = (
 export const getEllipsisText = (
   text: string,
   maxWidth: number,
-  fontParam?: CSSStyleDeclaration,
+  fontParam?: unknown,
   priorityParam?: string[],
 ) => {
-  let font = {} as CSSStyleDeclaration;
+  let font = {};
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
   } else {
-    font = fontParam || ({} as CSSStyleDeclaration);
+    font = fontParam || {};
   }
   if (!priority || !priority.length) {
-    return getEllipsisTextInner(text, maxWidth, font);
+    return getEllipsisTextInner(text, maxWidth, font as CSSStyleDeclaration);
   }
 
   const leftSubTexts = [];
@@ -212,7 +215,11 @@ export const getEllipsisText = (
       const subWidth = measureTextWidth(subText, font);
       // fix-边界处理: when subWidth <= DOT_WIDTH 不做 ... 处理
       if (remainWidth < subWidth && subWidth > DOT_WIDTH) {
-        const ellipsis = getEllipsisTextInner(subText, remainWidth, font);
+        const ellipsis = getEllipsisTextInner(
+          subText,
+          remainWidth,
+          font as CSSStyleDeclaration,
+        );
         result = result.replace(subText, ellipsis);
         remainWidth = 0;
       } else {

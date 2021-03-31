@@ -10,7 +10,6 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "jsx": "react",
     "downlevelIteration": true,
     "resolveJsonModule": true,
     "lib": [
