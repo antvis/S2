@@ -26,9 +26,9 @@ const Summary = (props: { summaries: SummaryProps[] }) => {
       const { selectedData = [], name, value } = item || {};
 
       return (
-        <div className={`${TOOLTIP_CLASS_PRE}-summary-item`}>
+        <div key={name} className={`${TOOLTIP_CLASS_PRE}-summary-item`}>
           <span className={`${TOOLTIP_CLASS_PRE}-summary-key`}>
-            {name}（{i18n('总和')}）
+            {name}（{i18n('总和')}
           </span>
           <span
             className={`${TOOLTIP_CLASS_PRE}-summary-val ${TOOLTIP_CLASS_PRE}-bold`}

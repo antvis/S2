@@ -316,39 +316,6 @@ export const getSelectedValueFields = (
   return uniq(selectedData.map((d) => d[field]));
 };
 
-export const getSummaryProps = (
-  spreadsheet: BaseSpreadSheet,
-  cellInfo: DataItem,
-  options: TooltipOptions,
-  aggregation: Aggregation = 'SUM',
-): SummaryProps => {
-  // 拿到列内所有data-cell的数据
-  const selectedData = getSelectedData(spreadsheet, cellInfo);
-  const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
-  if (size(valueFields) > 0) {
-    const currentField = cellInfo[EXTRA_FIELD];
-    const currentFormatter = getFieldFormatter(spreadsheet, currentField);
-    const name = getSummaryName(
-      spreadsheet,
-      valueFields,
-      currentField,
-      cellInfo,
-    );
-    let aggregationValue = getAggregationValue(
-      selectedData,
-      VALUE_FIELD,
-      aggregation,
-    );
-    aggregationValue = parseFloat(aggregationValue.toPrecision(12)); // solve accuracy problems
-    const value = currentFormatter(aggregationValue);
-    return {
-      selectedData,
-      name,
-      value,
-    };
-  }
-};
-
 export const getSelectedCellIndexes = (
   spreadsheet: BaseSpreadSheet,
   layoutResult,
@@ -420,6 +387,58 @@ export const getSelectedData = (
   return selectedData;
 };
 
+export const getSummaryProps = (
+  spreadsheet: BaseSpreadSheet,
+  cellInfo: DataItem,
+  options: TooltipOptions,
+  aggregation: Aggregation = 'SUM',
+): SummaryProps => {
+  // 拿到列内所有data-cell的数据
+  const selectedData = getSelectedData(spreadsheet, cellInfo);
+  const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
+  if (size(valueFields) > 0) {
+    const currentField = cellInfo[EXTRA_FIELD];
+    const currentFormatter = getFieldFormatter(spreadsheet, currentField);
+    const name = getSummaryName(
+      spreadsheet,
+      valueFields,
+      currentField,
+      cellInfo,
+    );
+    let aggregationValue = getAggregationValue(
+      selectedData,
+      VALUE_FIELD,
+      aggregation,
+    );
+    aggregationValue = parseFloat(aggregationValue.toPrecision(12)); // solve accuracy problems
+    const value = currentFormatter(aggregationValue);
+    return {
+      selectedData,
+      name,
+      value,
+    };
+  }
+};
+
+const mergeSummaries = (summaries) => {
+  const result = [];
+  each(summaries, (summary) => {
+    const summaryInResultIndex = findIndex(
+      result,
+      (i) => i.name === summary.name,
+    );
+    if (summaryInResultIndex > -1) {
+      result[summaryInResultIndex].value += summary.value;
+      result[summaryInResultIndex].selectedData = result[
+        summaryInResultIndex
+      ].selectedData.concat(summary.selectedData);
+    } else {
+      result.push(summary);
+    }
+  });
+  return result;
+};
+
 export const getTooltipData = (
   spreadsheet: BaseSpreadSheet,
   cellInfos?: DataProps[],
@@ -443,25 +462,6 @@ export const getTooltipData = (
   }
   const { interpretation, infos, tips } = cellInfos[0] || {};
   return { summaries, interpretation, infos, tips, headInfo, details };
-};
-
-const mergeSummaries = (summaries) => {
-  const result = [];
-  each(summaries, (summary) => {
-    const summaryInResultIndex = findIndex(
-      result,
-      (i) => i.name === summary.name,
-    );
-    if (summaryInResultIndex > -1) {
-      result[summaryInResultIndex].value += summary.value;
-      result[summaryInResultIndex].selectedData = result[
-        summaryInResultIndex
-      ].selectedData.concat(summary.selectedData);
-    } else {
-      result.push(summary);
-    }
-  });
-  return result;
 };
 
 export const getRightAndValueField = (
