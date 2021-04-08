@@ -68,6 +68,7 @@ export abstract class BaseCell<T> extends Group {
    */
   protected abstract initCell();
 
+  // 根据当前state来更新cell的样式
   public updateByState(stateName) {
     const { themeByState } = this.theme;
     const originCellType = this.spreadsheet.getCellType(this);

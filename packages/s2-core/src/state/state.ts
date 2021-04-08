@@ -7,6 +7,7 @@ type S2AllCellType = DataCell | ColCell | CornerCell | RowCell;
 export enum StateName {
   SELECTED = 'selected',
   HOVER = 'hover',
+  KEEP_HOVER = 'keepHover',
   PREPARE_SELECT = 'prepareSelect',
   COL_SELECTED = 'colSelected',
   ROW_SELECTED = 'rowSelected',

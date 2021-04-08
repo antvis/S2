@@ -48,7 +48,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected textShape: IShape;
 
   // 5、brush-select prepareSelect border
-  protected prepareSelectBorderShape: IShape;
+  protected activeBorderShape: IShape;
 
   // cell config's conditions(Determine how to render this cell)
   protected conditions: Conditions;
@@ -131,8 +131,8 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   // 根据state要改变样式的shape
   protected drawStateShapes() {
-    this.initInteractiveBgShape();
-    this.initPrepareSelectBorderShape();
+    this.drawInteractiveBgShape();
+    this.drawActiveBorderShape();
   }
 
   /**
@@ -221,7 +221,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   /**
    * Draw background condition shape
    */
-  protected initConditionBgShape() {
+  protected drawConditionBgShape() {
     const { x, y, height, width } = this.meta;
     let fill = 'rgba(255, 255, 255, 0)';
     let stroke = 'transparent';
@@ -250,19 +250,19 @@ export class DataCell extends BaseCell<ViewMeta> {
    * icon, interval, background
    */
   protected drawConditionShapes() {
-    this.initConditionBgShape();
-    this.initIconShape();
-    this.initIntervalShape();
+    this.drawConditionBgShape();
+    this.drawIconShape();
+    this.drawIntervalShape();
   }
 
   /**
-   * Draw background condition shape
+   * 绘制hover悬停，刷选的外框
    */
-  protected initPrepareSelectBorderShape() {
+  protected drawActiveBorderShape() {
     // 往内缩一个像素，避免和外边框重叠
     const margin = 1;
     const { x, y, height, width } = this.meta;
-    this.prepareSelectBorderShape = renderRect(
+    this.activeBorderShape = renderRect(
       x + margin,
       y + margin,
       width - margin * 2,
@@ -271,13 +271,13 @@ export class DataCell extends BaseCell<ViewMeta> {
       'transparent',
       this,
     );
-    this.stateShapes.push(this.prepareSelectBorderShape);
+    this.stateShapes.push(this.activeBorderShape);
   }
 
   /**
    * Draw interactive color
    */
-  protected initInteractiveBgShape() {
+  protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
     const fill = this.theme.view.cell.interactiveBgColor;
     this.interactiveBgShape = renderRect(
@@ -296,7 +296,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Draw icon condition shape
    * @private
    */
-  protected initIconShape() {
+  protected drawIconShape() {
     const { x, y, height, width } = this.meta;
     const iconCondition = this.findFieldCondition(this.conditions?.icon);
     if (iconCondition && iconCondition.mapping) {
@@ -321,7 +321,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Draw interval condition shape
    * @private
    */
-  protected initIntervalShape() {
+  protected drawIntervalShape() {
     const { x, y, height, width } = this.getLeftAreaBBox();
 
     const intervalCondition = this.findFieldCondition(

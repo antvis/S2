@@ -61,7 +61,7 @@ export default {
     cell: {
       borderColor: ['#E8E8E8', 'transparent'],
       borderWidth: [1, 0],
-      crossColor: '#F5F7FA',
+      // crossColor: '#F5F7FA',
       backgroundColor: '#fff',
       backgroundHoverColor: '#F5F7FA',
       interactiveBgColor: '#1890ff',
@@ -91,8 +91,11 @@ export default {
         opacity: 0.8,
       },
       hover: {
-        backgroundColor: '#f4ffb8',
-        opacity: 0.8,
+        backgroundColor: '#d8d8d8',
+      },
+      keepHover: {
+        backgroundColor: '#d8d8d8',
+        hoverBorderColor: '#000000'
       },
       prepareSelect: {
         prepareSelectBorderColor: '#002329',

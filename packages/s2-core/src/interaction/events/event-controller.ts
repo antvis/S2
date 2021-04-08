@@ -1,4 +1,4 @@
-import { Event, LooseObject } from '@antv/g-canvas';
+import { Event, LooseObject, Canvas } from '@antv/g-canvas';
 import { get, each, includes } from 'lodash';
 import { BaseCell, DataCell, ColCell, CornerCell, RowCell } from '../../cell';
 import { wrapBehavior } from '@antv/util';
@@ -21,6 +21,8 @@ export class EventController {
   private eventHandlers: any[] = [];
 
   private eventListeners: any[] = [];
+
+  private hoverTimer: number = null;
 
   constructor(spreadsheet: BaseSpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -142,19 +144,29 @@ export class EventController {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEMOVE, ev);
     } else {
       const cell = this.spreadsheet.getCell(ev.target);
+      const cellType = this.spreadsheet.getCellType(ev.target);
       if (cell) {
         // 如果hover的cell改变了，并且当前不需要屏蔽 hover
         if (
           this.hoverTarget !== ev.target &&
           !this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.HOVER)
         ) {
-          this.hoverTarget = ev.target;
-          this.spreadsheet.clearState();
-          this.spreadsheet.setState(cell, StateName.HOVER);
-          this.spreadsheet.updateCellStyleByState();
-          this.draw();
+          switch (cellType) {
+            case DataCell.name:
+              this.spreadsheet.emit(S2Event.DATACELL_HOVER, ev);
+              break;
+            case RowCell.name:
+              this.spreadsheet.emit(S2Event.ROWCELL_HOVER, ev);
+              break;
+            case ColCell.name:
+              this.spreadsheet.emit(S2Event.COLCELL_HOVER, ev);
+              break;
+            case CornerCell.name:
+              this.spreadsheet.emit(S2Event.CORNER_HOVER, ev);
+              break;
+            default:
+          }
         }
-        const cellType = this.spreadsheet.getCellType(ev.target);
         switch (cellType) {
           case DataCell.name:
             this.spreadsheet.emit(S2Event.DATACELL_MOUSEMOVE, ev);
@@ -241,7 +253,7 @@ export class EventController {
    * @param type
    * @param handler
    */
-  protected addEventListener(target, type, handler) {
+  protected addEventListener(target: any, type: string, handler: Function) {
     if (target.addEventListener) {
       target.addEventListener(type, handler);
       this.eventListeners.push({ target, type, handler });

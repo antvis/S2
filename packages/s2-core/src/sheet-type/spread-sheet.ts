@@ -26,6 +26,7 @@ import {
   CornerTextClick,
   RowColumnClick,
   RowTextClick,
+  HoverEvent
 } from '../interaction/events';
 import { DetailFacet } from '../facet/detail';
 import { SpreadsheetFacet } from '../facet';
@@ -171,6 +172,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.registerEvent('spreadsheet:corner-text-click', CornerTextClick);
     this.registerEvent('spreadsheet:row-column-click', RowColumnClick);
     this.registerEvent('spreadsheet:row-text-click', RowTextClick);
+    this.registerEvent('spreadsheet:hover', HoverEvent);
   }
 
   protected registerEvent(key: string, ctc: EventConstructor) {
