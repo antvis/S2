@@ -822,7 +822,7 @@ export class SpreadsheetFacet extends BaseFacet {
         isHorizontal: false,
         trackLen: height,
         thumbLen: thumbHeight,
-        thumbOffset: getOffsetTop(scrollY),
+        thumbOffset: (scrollY * this.viewportBBox.height) / realHeight,
         position: {
           x: this.viewportBBox.maxX - this.scrollBarHeight,
           y: this.viewportBBox.minY,
