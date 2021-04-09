@@ -1,0 +1,14 @@
+name: 🔊 PR Ding Talk Notify
+
+on: pull_request
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: lijinke666/ding-talk-pr-notify@master
+        with:
+          ding_talk_token: ${{ secrets.DING_TALK_ACCESS_TOKEN}}
+          repoUrl: 'https://github.com/antvis/S2/pulls'
+          atAll: true
