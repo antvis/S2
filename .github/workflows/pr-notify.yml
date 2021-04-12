@@ -1,6 +1,8 @@
 name: 🔊 PR Ding Talk Notify
 
-on: pull_request
+on:
+  pull_request:
+    types: [opened]
 
 jobs:
   preview:
