@@ -100,6 +100,7 @@ export default {
       prepareSelect: {
         prepareSelectBorderColor: '#002329',
       },
+      
       hoverLinkage: {
         backgroundColor: '#F3F7FF',
       }
