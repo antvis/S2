@@ -135,7 +135,7 @@ export abstract class BaseFacet {
    * @param overScan
    * @protected
    */
-  protected calculateXYIndexes(
+  public calculateXYIndexes(
     scrollX: number,
     scrollY: number,
     overScan = 0,
@@ -220,4 +220,8 @@ export abstract class BaseFacet {
   public abstract getContentHeight(): number;
 
   public abstract updateScrollOffset(offsetConfig: OffsetConfig);
+
+  public abstract getScrollOffset(): number[];
+
+  public abstract getDefaultScrollY(): number;
 }

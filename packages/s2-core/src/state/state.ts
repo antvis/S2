@@ -7,6 +7,7 @@ type S2AllCellType = DataCell | ColCell | CornerCell | RowCell;
 export enum StateName {
   SELECTED = 'selected',
   HOVER = 'hover',
+  HOVER_LINKAGE = 'hoverLinkage', // hover时，同列和同行有联动的十字选中效果
   KEEP_HOVER = 'keepHover',
   PREPARE_SELECT = 'prepareSelect',
   COL_SELECTED = 'colSelected',
@@ -30,6 +31,7 @@ export default class State {
     if (stateName !== this.stateStore.stateName) {
       // 当stateName与stateStore中的状态不一致时
       this.clearState();
+      this.spreadsheet.hideTooltip();
       this.stateStore = {
         stateName,
         cells: [cell],

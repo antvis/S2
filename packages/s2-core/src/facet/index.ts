@@ -771,7 +771,7 @@ export class SpreadsheetFacet extends BaseFacet {
    * @param scrollY
    * @param overScan
    */
-  protected calculateXYIndexes(
+  public calculateXYIndexes(
     scrollX: number,
     scrollY: number,
     overScan = 0,
@@ -975,7 +975,7 @@ export class SpreadsheetFacet extends BaseFacet {
   }
 
   // 获取偏移
-  private getScrollOffset() {
+  public getScrollOffset() {
     return [
       this.spreadsheet.store.get('scrollX', 0),
       this.spreadsheet.store.get('scrollY', 0),
@@ -1131,7 +1131,7 @@ export class SpreadsheetFacet extends BaseFacet {
   /**
    * 计算初始的 y 滚动偏移，包含分页计算
    */
-  private getDefaultScrollY(): number {
+  public getDefaultScrollY(): number {
     const { pagination } = this.cfg;
 
     // 如果配置了分页

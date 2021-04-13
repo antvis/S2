@@ -496,11 +496,18 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param callback to handle each cell if needed
    */
   public getPanelAllCells(callback?: (cell: DataCell) => void): DataCell[] {
+    const [scrollX, sy] = this.facet.getScrollOffset();
+    const scrollY = sy + this.facet.getDefaultScrollY();
+    const indexes = this.facet.calculateXYIndexes(scrollX, scrollY);
+    const [minColIndex, maxColIndex, minRowIndex, maxRowIndex] = indexes;
     const children = this.panelGroup.get('children');
     const cells: DataCell[] = [];
     children.forEach((child) => {
       if (child instanceof DataCell) {
-        cells.push(child);
+        const { colIndex, rowIndex } = child.getMeta();
+        if(colIndex >= minColIndex && colIndex <= maxColIndex && rowIndex >= minRowIndex && rowIndex <= maxRowIndex ) {
+          cells.push(child);
+        }
         if (callback) {
           callback(child);
         }

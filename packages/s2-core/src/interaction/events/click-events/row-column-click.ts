@@ -108,7 +108,7 @@ export class RowColumnClick extends BaseEvent {
         }
 
         this.spreadsheet.updateCellStyleByState();
-        this.resetCell();
+        this.upDatePanelAllCellsStyle();
         this.draw();
       }
     });
@@ -163,7 +163,7 @@ export class RowColumnClick extends BaseEvent {
         }
 
         this.spreadsheet.updateCellStyleByState();
-        this.resetCell();
+        this.upDatePanelAllCellsStyle();
         this.draw();
       }
     });
@@ -269,9 +269,9 @@ export class RowColumnClick extends BaseEvent {
   // }
 
   /**
-   * 重置cell
+   * 更新视图内cell的样式
    */
-  private resetCell() {
+  private upDatePanelAllCellsStyle() {
     this.spreadsheet.getPanelAllCells().forEach((cell) => {
       cell.update();
     });

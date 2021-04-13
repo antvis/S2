@@ -1,3 +1,4 @@
+import { Event, Point, IShape } from '@antv/g-canvas';
 import { get, each, find, isEqual } from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';

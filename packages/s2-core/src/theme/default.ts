@@ -87,8 +87,8 @@ export default {
   themeByState: {
     dataCell: {
       selected: {
-        backgroundColor: '#ffd6e7',
-        opacity: 0.8,
+        backgroundColor: '#d8d8d8',
+        hoverBorderColor: '#000000'
       },
       hover: {
         backgroundColor: '#d8d8d8',
@@ -100,6 +100,9 @@ export default {
       prepareSelect: {
         prepareSelectBorderColor: '#002329',
       },
+      hoverLinkage: {
+        backgroundColor: '#F3F7FF',
+      }
     },
     colCell: {
       hover: {

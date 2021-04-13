@@ -1,6 +1,6 @@
 import { getEllipsisText } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
-import { map, find, get, isEmpty, isNumber } from 'lodash';
+import { map, find, get, isEmpty, isNumber, first } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
@@ -59,13 +59,14 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const state = this.spreadsheet.getCurrentState();
-    const { stateName, cells: selectedCells } = state;
+    const { stateName, cells } = state;
     // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
-    if (selectedCells.length) {
+    // 如果当前是hover，要绘制出十字交叉的行列样式
+    if (cells.length) {
       if (stateName === StateName.COL_SELECTED) {
         const currentColIndex = this.meta.colIndex;
         const selectedColIndex = map(
-          selectedCells,
+          cells,
           (cell) => cell.getMeta().cellIndex,
         );
         if (selectedColIndex.indexOf(currentColIndex) > -1) {
@@ -77,12 +78,29 @@ export class DataCell extends BaseCell<ViewMeta> {
         // 逻辑和selectedCol一致，row-select和col-select可能会有不同方式，暂时不合并
         const currentRowIndex = this.meta.rowIndex;
         const selectedRowIndex = map(
-          selectedCells,
+          cells,
           (cell) => cell.getMeta().rowIndex,
         );
         if (selectedRowIndex.indexOf(currentRowIndex) > -1) {
           this.updateByState(StateName.SELECTED);
         } else {
+          this.hideShapeUnderState();
+        }
+      } else if (stateName === StateName.HOVER && !isEmpty(cells)) {
+        // 如果当前是hover，要绘制出十字交叉的行列样式
+        const currentHoverCell = first(cells);
+        const currentColIndex = this.meta.colIndex;
+        const currentRowIndex = this.meta.rowIndex;
+        // 当视图内的cell行列index与hover的cell一致，且不是当前hover的cell时，绘制hover的十字样式
+        if(
+          (
+            currentColIndex === currentHoverCell.getMeta().colIndex ||
+            currentRowIndex === currentHoverCell.getMeta().rowIndex
+          ) && this !== currentHoverCell
+        ) {
+          this.updateByState(StateName.HOVER_LINKAGE);
+        } else if (this !== currentHoverCell) {
+          // 当视图内的cell行列index与hover的cell 不一致，且不是当前hover的cell时，隐藏其他样式
           this.hideShapeUnderState();
         }
       }

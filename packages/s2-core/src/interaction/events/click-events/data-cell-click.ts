@@ -44,6 +44,7 @@ export class DataCellClick extends BaseEvent {
         ) {
           // 点击当前已选cell 则取消当前cell的选中状态
           this.spreadsheet.clearState();
+          this.spreadsheet.interceptEvent.clear();
           this.spreadsheet.hideTooltip();
         } else {
           this.spreadsheet.clearState();
