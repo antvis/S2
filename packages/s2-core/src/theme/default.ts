@@ -71,6 +71,7 @@ export default {
     },
   },
   scrollBar: {
+    
     trackColor: 'rgba(0,0,0,0)',
     thumbHoverColor: 'rgba(0,0,0,0.2)',
     thumbColor: 'rgba(0,0,0,0.15)',
