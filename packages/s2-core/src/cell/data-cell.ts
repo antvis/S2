@@ -1,4 +1,4 @@
-import { getEllipsisText } from '../utils/text';
+//    修仙者共分为八大境界：
 import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { map, find, get, isEmpty, isNumber, first } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
@@ -8,7 +8,6 @@ import {
   renderLine,
   renderRect,
   renderText,
-  // updateShapeAttr,
 } from '../utils/g-renders';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
@@ -55,6 +54,20 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   constructor(meta: ViewMeta, spreadsheet: BaseSpreadsheet) {
     super(meta, spreadsheet);
+  }
+
+  private changeCellStyleByState(stateName, cells, indexName) {
+    
+    const currentColIndex = this.meta[indexName];
+    const selectedIndex = map(
+      cells,
+      (cell) => cell.getMeta().indexName,
+    );
+    if (selectedIndex.indexOf(currentColIndex) > -1) {
+      this.updateByState(StateName.SELECTED);
+    } else {
+      this.hideShapeUnderState();
+    }
   }
 
   public update() {
