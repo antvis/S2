@@ -10,7 +10,6 @@ import { Indexes } from '../utils/indexes';
  * @param widths
  * @param heights
  * @param viewport
- * @param overScan
  * @param rowRemainWidth
  */
 export const calculateInViewIndexes = (

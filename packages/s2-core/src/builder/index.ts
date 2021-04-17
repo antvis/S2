@@ -90,9 +90,6 @@ export class SpreadSheetOptionsBuilder {
   // 行列 维度值的自定义排序
   private _layoutArrange: LayoutArrangeCallback;
 
-  // 是否需要显示 placeHolder
-  private _needDataPlaceHolderCell: boolean;
-
   private _debug: boolean;
 
   public build(): SpreadsheetOptions {
@@ -129,17 +126,11 @@ export class SpreadSheetOptionsBuilder {
       layoutResult: this._layoutResult,
       hierarchy: this._hierarchy,
       layoutArrange: this._layoutArrange,
-      needDataPlaceHolderCell: this._needDataPlaceHolderCell,
     } as SpreadsheetOptions;
   }
 
   public debug(debug: boolean) {
     this._debug = debug;
-    return this;
-  }
-
-  public needDataPlaceHolderCell(needDataPlaceHolderCell: boolean) {
-    this._needDataPlaceHolderCell = needDataPlaceHolderCell;
     return this;
   }
 
