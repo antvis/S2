@@ -238,7 +238,6 @@ export class SpreadsheetFacet extends BaseFacet {
       this.dynamicRender();
       if (elapsed > duration) {
         this.timer.stop();
-        this.renderAfterScroll();
       }
     });
   }
@@ -769,10 +768,6 @@ export class SpreadsheetFacet extends BaseFacet {
         this.dynamicRender();
       });
 
-      this.vScrollBar.on('scroll-finish', () => {
-        this.dynamicRender();
-      });
-
       this.foregroundGroup.add(this.vScrollBar);
     }
   }
@@ -816,10 +811,6 @@ export class SpreadsheetFacet extends BaseFacet {
           (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth,
           undefined,
         );
-        this.dynamicRender();
-      });
-
-      this.hScrollBar.on('scroll-finish', () => {
         this.dynamicRender();
       });
 
@@ -949,7 +940,6 @@ export class SpreadsheetFacet extends BaseFacet {
     }
     this.vScrollBar?.updateThumbOffset(this.getOptimizedThumbOffsetTop(y));
     this.hideScrollBar();
-    this.renderAfterScroll();
   }
 
   private getOptimizedThumbOffsetTop = (deltaY: number) => {
@@ -967,10 +957,6 @@ export class SpreadsheetFacet extends BaseFacet {
       this.vScrollBar?.updateTheme(this.scrollBarTheme);
     }
   }, 1000);
-
-  private renderAfterScroll = debounce(() => {
-    this.dynamicRender();
-  }, 200);
 
   private getRealScrollX(scrollX: number, hRowScroll = 0) {
     return this.cfg.spreadsheet.isScrollContainsRowHeader()
