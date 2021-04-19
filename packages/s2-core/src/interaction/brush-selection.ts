@@ -1,11 +1,10 @@
 import { Event, Point, IShape } from '@antv/g-canvas';
-import { get, each, find, isEqual } from 'lodash';
+import { each, find, isEqual, isEmpty } from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
 import { StateName } from '../state/state';
-import { DataItem, TooltipOptions } from '..';
 import { getTooltipData } from '../utils/tooltip';
 
 function getBrushRegion(p1, p2) {
@@ -136,16 +135,19 @@ export class BrushSelection extends BaseInteraction {
         if (stateName === StateName.SELECTED) {
           each(cells, (cell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
-            const query = cell.getMeta()[valueInCols ? 'colQuery' : 'rowQuery'];
-            if (query) {
-              const cellInfo = {
-                ...query,
-                colIndex: valueInCols ? cell.getMeta().colIndex : null,
-                rowIndex: !valueInCols ? cell.getMeta().rowIndex : null,
-              };
+            const meta = cell.getMeta();
+            if(!isEmpty(meta)) {
+              const query = [valueInCols ? 'colQuery' : 'rowQuery'];
+              if (query) {
+                const cellInfo = {
+                  ...query,
+                  colIndex: valueInCols ? cell.getMeta().colIndex : null,
+                  rowIndex: !valueInCols ? cell.getMeta().rowIndex : null,
+                };
 
-              if (!find(cellInfos, (info) => isEqual(info, cellInfo))) {
-                cellInfos.push(cellInfo);
+                if (!this.isInCellInfos(cellInfos, cellInfo)) {
+                  cellInfos.push(cellInfo);
+                }
               }
             }
           });
@@ -154,6 +156,10 @@ export class BrushSelection extends BaseInteraction {
       }
       this.phase = 0;
     });
+  }
+
+  private isInCellInfos(cellInfos, info): boolean {
+    return !!find(cellInfos, i => isEqual(i, info))
   }
 
   private handleTooltip(ev, cellInfos) {

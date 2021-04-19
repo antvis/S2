@@ -328,10 +328,10 @@ export const getSelectedCellIndexes = (
   if (stateName === StateName.COL_SELECTED) {
     const currentHeaderCell = find(
       cells,
-      (cell) => cell.getMeta().cellIndex === cellInfo.colIndex,
+      (cell) => cell.getMeta().colIndex === cellInfo.colIndex,
     );
     map(rowLeafNodes, (row, index) => {
-      selectedIndexes.push([index, currentHeaderCell.getMeta().cellIndex]);
+      selectedIndexes.push([index, currentHeaderCell.getMeta().colIndex]);
     });
   } else if (stateName === StateName.ROW_SELECTED) {
     const currentHeaderCell = find(

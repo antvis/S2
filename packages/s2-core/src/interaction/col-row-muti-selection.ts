@@ -51,7 +51,7 @@ export class ColRowMutiSelection extends BaseInteraction {
         let cellInfos = [];
         if (cell.getMeta().x !== undefined) {
           const meta = cell.getMeta();
-          const idx = meta.cellIndex;
+          const idx = meta.colIndex;
           this.spreadsheet.interceptEvent.add(
             DefaultInterceptEventType.HOVER,
           );
@@ -75,7 +75,7 @@ export class ColRowMutiSelection extends BaseInteraction {
           if (stateName === StateName.COL_SELECTED) {
             cellInfos = map(cells, (cell) => ({
               ...get(cell.getMeta(), 'query'),
-              colIndex: cell.getMeta().cellIndex,
+              colIndex: cell.getMeta().colIndex,
               rowIndex: cell.getMeta().rowIndex,
             }));
           }
@@ -98,7 +98,7 @@ export class ColRowMutiSelection extends BaseInteraction {
         const cell = this.spreadsheet.getCell(ev.target);
         if (cell.getMeta().x !== undefined) {
           const meta = cell.getMeta();
-          const idx = meta.cellIndex;
+          const idx = meta.colIndex;
           this.spreadsheet.interceptEvent.add(
             DefaultInterceptEventType.HOVER,
           );

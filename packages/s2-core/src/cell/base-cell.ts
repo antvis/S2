@@ -1,7 +1,6 @@
 import { Group, IShape } from '@antv/g-canvas';
 import { BaseSpreadSheet, SpreadSheetTheme } from '..';
 import { updateShapeAttr } from '../utils/g-renders';
-import { DataCell, ColCell, CornerCell, RowCell } from './';
 import * as shapeStyle from '../state/shapeStyleMap';
 import { get, each, findKey } from 'lodash';
 

@@ -32,7 +32,7 @@ export default function processRowNodesCoordinate(
   // (or branches included in tree hierarchy type)
   // eslint-disable-next-line no-restricted-syntax
   for (const cell of rowLeafNodes) {
-    cell.cellIndex = currentRowCellIndex;
+    cell.colIndex = currentRowCellIndex;
     currentRowCellIndex += 1;
     cell.y = prevRow.y + prevRow.height;
     cell.height = cellCfg.height + 2 * cellCfg.padding;

@@ -166,7 +166,7 @@ export class Node {
   public value: string;
 
   // cell index in layout list(TODO What's use for?)
-  public cellIndex = -1;
+  public colIndex = -1;
 
   // node's level in tree hierarchy
   public level = 0;

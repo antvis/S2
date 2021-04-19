@@ -249,10 +249,10 @@ export const SheetComponent = (props: SpreadsheetProps) => {
   //     if (rowCell.belongsCell) {
   //       // @ts-ignore
   //       const meta = rowCell.belongsCell.getMeta();
-  //       const idx = meta.cellIndex;
+  //       const idx = meta.colIndex;
   //       if (rowCell.belongsCell instanceof ColCell) {
   //         if (idx === -1) {
-  //           const arr = map(Node.getAllLeavesOfNode(meta), 'cellIndex');
+  //           const arr = map(Node.getAllLeavesOfNode(meta), 'colIndex');
   //           baseSpreadsheet.store.set('selected', {
   //             type: 'column',
   //             indexes: [-1, [min(arr), max(arr)]],

@@ -1,7 +1,6 @@
-import { Event, Canvas } from '@antv/g-canvas';
-import { each, includes } from 'lodash';
+import { Canvas } from '@antv/g-canvas';
+import { each } from 'lodash';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
-import { wrapBehavior } from '@antv/util';
 
 export type InteractionConstructor = new (
   spreadsheet: BaseSpreadSheet,

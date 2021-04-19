@@ -72,7 +72,7 @@ export class RowColumnClick extends BaseEvent {
       let cellInfos = [];
       if (cell.getMeta().x !== undefined) {
         const meta = cell.getMeta();
-        const idx = meta.cellIndex;
+        const idx = meta.colIndex;
         this.spreadsheet.clearState();
         this.spreadsheet.interceptEvent.add(
           DefaultInterceptEventType.HOVER,
@@ -98,7 +98,7 @@ export class RowColumnClick extends BaseEvent {
         if (stateName === StateName.ROW_SELECTED) {
           cellInfos = map(cells, (cell) => ({
             ...get(cell.getMeta(), 'query'),
-            colIndex: cell.getMeta().cellIndex,
+            colIndex: cell.getMeta().colIndex,
             rowIndex: cell.getMeta().rowIndex,
           }));
         }
@@ -127,7 +127,7 @@ export class RowColumnClick extends BaseEvent {
       let cellInfos = [];
       const meta = cell.getMeta();
       if (meta.x !== undefined) {
-        const idx = meta.cellIndex;
+        const idx = meta.colIndex;
         this.spreadsheet.clearState();
         this.spreadsheet.interceptEvent.add(
           DefaultInterceptEventType.HOVER,
@@ -153,7 +153,7 @@ export class RowColumnClick extends BaseEvent {
         if (stateName === StateName.COL_SELECTED) {
           cellInfos = map(cells, (cell) => ({
             ...get(cell.getMeta(), 'query'),
-            colIndex: cell.getMeta().cellIndex,
+            colIndex: cell.getMeta().colIndex,
             rowIndex: cell.getMeta().rowIndex,
           }));
         }

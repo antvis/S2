@@ -1,14 +1,12 @@
 import { Event, LooseObject, Canvas } from '@antv/g-canvas';
 import { get, each, includes } from 'lodash';
-import { BaseCell, DataCell, ColCell, CornerCell, RowCell } from '../../cell';
-import { wrapBehavior } from '@antv/util';
+import { DataCell, ColCell, CornerCell, RowCell } from '../../cell';
 import {
   S2Event,
   OriginEventType,
   DefaultInterceptEventType
 } from './types';
 import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
-import { StateName } from '../../state/state';
 export class EventController {
   protected spreadsheet: BaseSpreadSheet;
 
@@ -21,8 +19,6 @@ export class EventController {
   private eventHandlers: any[] = [];
 
   private eventListeners: any[] = [];
-
-  private hoverTimer: number = null;
 
   constructor(spreadsheet: BaseSpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -81,11 +77,13 @@ export class EventController {
     this.addEventListener(
       document,
       'click',
-      wrapBehavior(this, 'resetSheetStyle'),
+      (event: Event) => {
+        this.resetSheetStyle(event)
+      },
     );
   }
 
-  protected resetSheetStyle(ev) {
+  protected resetSheetStyle(ev: Event) {
     if (
       ev.target !== this.spreadsheet.container.get('el') &&
       !includes(ev.target?.className, 'eva-facet') &&

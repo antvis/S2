@@ -1,7 +1,7 @@
 import { BaseEvent } from '../base-event';
 import { S2Event, DefaultInterceptEventType } from '../types';
 import { Event } from '@antv/g-canvas';
-import { get, noop } from 'lodash';
+import { get, noop, set } from 'lodash';
 import { ViewMeta } from '../../../common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 import { StateName } from '../../../state/state';
@@ -38,23 +38,25 @@ export class DataCellClick extends BaseEvent {
             cell.hideShapeUnderState();
           });
         }
+        this.spreadsheet.clearState();
         if (
           currentState.stateName === StateName.SELECTED &&
           currentState.cells.indexOf(cell) > -1
         ) {
           // 点击当前已选cell 则取消当前cell的选中状态
-          this.spreadsheet.clearState();
           this.spreadsheet.interceptEvent.clear();
           this.spreadsheet.hideTooltip();
         } else {
-          this.spreadsheet.clearState();
           this.spreadsheet.setState(cell, StateName.SELECTED);
           this.spreadsheet.updateCellStyleByState();
+          // set(cell.interactiveBgShape, 'attr.fill', '#ff0000')
+
           this.spreadsheet.interceptEvent.add(
             DefaultInterceptEventType.HOVER,
           );
           this.handleTooltip(ev, meta);
         }
+
         this.draw();
       }
     });

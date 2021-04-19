@@ -1,4 +1,5 @@
-//    修仙者共分为八大境界：
+//    陈凡心中好奇，这阿彪实力还是蛮强的，那晚吃了自己一腿，估计也只是受点内伤，养大半个月早该好了，现在怎么手又断了？
+import { getEllipsisText } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { map, find, get, isEmpty, isNumber, first } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
@@ -56,15 +57,16 @@ export class DataCell extends BaseCell<ViewMeta> {
     super(meta, spreadsheet);
   }
 
-  private changeCellStyleByState(stateName, cells, indexName) {
-    
-    const currentColIndex = this.meta[indexName];
-    const selectedIndex = map(
+  // dataCell根据state 改变当前样式，
+  private changeCellStyleByState(needGetIndexKey, changeStyleStateName) {
+    const { cells } = this.spreadsheet.getCurrentState();
+    const currentIndex = this.meta[needGetIndexKey];
+    const selectedIndexes = map(
       cells,
-      (cell) => cell.getMeta().indexName,
+      (cell) => cell.getMeta()[needGetIndexKey],
     );
-    if (selectedIndex.indexOf(currentColIndex) > -1) {
-      this.updateByState(StateName.SELECTED);
+    if (selectedIndexes.indexOf(currentIndex) > -1) {
+      this.updateByState(changeStyleStateName);
     } else {
       this.hideShapeUnderState();
     }
@@ -73,32 +75,13 @@ export class DataCell extends BaseCell<ViewMeta> {
   public update() {
     const state = this.spreadsheet.getCurrentState();
     const { stateName, cells } = state;
-    // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
-    // 如果当前是hover，要绘制出十字交叉的行列样式
     if (cells.length) {
+      // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
+      // 二者操作一致，function合并
       if (stateName === StateName.COL_SELECTED) {
-        const currentColIndex = this.meta.colIndex;
-        const selectedColIndex = map(
-          cells,
-          (cell) => cell.getMeta().cellIndex,
-        );
-        if (selectedColIndex.indexOf(currentColIndex) > -1) {
-          this.updateByState(StateName.SELECTED);
-        } else {
-          this.hideShapeUnderState();
-        }
+        this.changeCellStyleByState('colIndex', StateName.SELECTED)
       } else if (stateName === StateName.ROW_SELECTED) {
-        // 逻辑和selectedCol一致，row-select和col-select可能会有不同方式，暂时不合并
-        const currentRowIndex = this.meta.rowIndex;
-        const selectedRowIndex = map(
-          cells,
-          (cell) => cell.getMeta().rowIndex,
-        );
-        if (selectedRowIndex.indexOf(currentRowIndex) > -1) {
-          this.updateByState(StateName.SELECTED);
-        } else {
-          this.hideShapeUnderState();
-        }
+        this.changeCellStyleByState('rowIndex', StateName.SELECTED)
       } else if (stateName === StateName.HOVER && !isEmpty(cells)) {
         // 如果当前是hover，要绘制出十字交叉的行列样式
         const currentHoverCell = first(cells);
@@ -310,7 +293,6 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
-    const fill = this.theme.view.cell.interactiveBgColor;
     this.interactiveBgShape = renderRect(
       x,
       y,

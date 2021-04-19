@@ -1,6 +1,6 @@
-import { Event, LooseObject } from '@antv/g-canvas';
-import { get, isEmpty, set, each, find } from 'lodash';
-import { S2Event, DefaultInterceptEventType } from './types';
+import { Event } from '@antv/g-canvas';
+import { get } from 'lodash';
+import { S2Event } from './types';
 import { BaseEvent } from './base-event';
 import { StateName } from '../../state/state';
 import { ViewMeta } from '../../common/interface';

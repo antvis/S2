@@ -375,7 +375,7 @@ export class SpreadsheetFacet extends BaseFacet {
         console.debug(idx);
         result.push(last(result) + node.width);
         if (node.width === 0) {
-          width0Indexes.push(node.cellIndex);
+          width0Indexes.push(node.colIndex);
         }
         return result;
       },
@@ -389,7 +389,7 @@ export class SpreadsheetFacet extends BaseFacet {
         console.debug(idx);
         result.push(last(result) + node.height);
         if (node.isHide()) {
-          height0Indexes.push(node.cellIndex);
+          height0Indexes.push(node.colIndex);
         }
         return result;
       },
@@ -404,7 +404,7 @@ export class SpreadsheetFacet extends BaseFacet {
       (result: number[], node: Node) => {
         result.push(last(result) + node.height);
         if (node.isHide()) {
-          height0Indexes.push(node.cellIndex);
+          height0Indexes.push(node.colIndex);
         }
         return result;
       },
