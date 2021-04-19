@@ -2,7 +2,7 @@ import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
 import { StateName } from '../state/state';
 import { getTooltipData } from '../utils/tooltip';
-import { each, isEqual, find } from 'lodash';
+import { each, isEqual, find, isEmpty } from 'lodash';
 
 const SHIFT_KEY = 'Shift';
 
@@ -69,16 +69,19 @@ export class DataCellMutiSelection extends BaseInteraction {
         if (stateName === StateName.SELECTED) {
           each(cells, (cell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
-            const query = cell.getMeta()[valueInCols ? 'colQuery' : 'rowQuery'];
-            if (query) {
-              const cellInfo = {
-                ...query,
-                colIndex: valueInCols ? cell.getMeta().colIndex : null,
-                rowIndex: !valueInCols ? cell.getMeta().rowIndex : null,
-              };
+            const meta = cell.getMeta();
+            if(!isEmpty(meta)) {
+              const query = meta[valueInCols ? 'colQuery' : 'rowQuery'];
+              if (query) {
+                const cellInfo = {
+                  ...query,
+                  colIndex: valueInCols ? meta.colIndex : null,
+                  rowIndex: !valueInCols ? meta.rowIndex : null,
+                };
 
-              if (!find(cellInfos, (info) => isEqual(info, cellInfo))) {
-                cellInfos.push(cellInfo);
+                if (!find(cellInfos, (info) => isEqual(info, cellInfo))) {
+                  cellInfos.push(cellInfo);
+                }
               }
             }
           });

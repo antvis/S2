@@ -85,7 +85,7 @@ export default {
     showCenterRightShadow: false,
     centerRightShadowWidth: 12,
   },
-  themeByState: {
+  stateTheme: {
     dataCell: {
       selected: {
         backgroundColor: '#d8d8d8',

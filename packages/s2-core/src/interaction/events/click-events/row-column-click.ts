@@ -51,7 +51,7 @@ export class RowColumnClick extends BaseEvent {
   private sortFieldId: string;
 
   // 显示排序时，排序的查询参数
-  private sortQuery: any;
+  private sortQuery: Record<string, string>;
 
   protected bindEvents() {
     this.bindColCellClick();
@@ -193,7 +193,6 @@ export class RowColumnClick extends BaseEvent {
 
     const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
 
-    console.log('tooltipData', tooltipData)
     const showOptions = {
       position,
       data: tooltipData,

@@ -26,19 +26,9 @@ export class DataCellClick extends BaseEvent {
       const meta = cell.getMeta();
       if (meta) {
         // selected通过state来接管，不需要再在 this.spreadsheet.store 中操作
-        const cell = this.spreadsheet.getCell(ev.target);
-        const currentState = this.spreadsheet.getCurrentState();
-        // 由于行头和列头的选择的模式并不是把一整行或者一整列的cell都setState
-        // 因此需要在这里手动把当前行头列头选择下的cell样式重置
-        if (
-          currentState.stateName === StateName.COL_SELECTED ||
-          currentState.stateName === StateName.ROW_SELECTED
-        ) {
-          this.spreadsheet.getPanelAllCells().forEach((cell) => {
-            cell.hideShapeUnderState();
-          });
-        }
+        this.spreadsheet.clearStyleIndependent();
         this.spreadsheet.clearState();
+        const currentState = this.spreadsheet.getCurrentState();
         if (
           currentState.stateName === StateName.SELECTED &&
           currentState.cells.indexOf(cell) > -1
@@ -49,7 +39,6 @@ export class DataCellClick extends BaseEvent {
         } else {
           this.spreadsheet.setState(cell, StateName.SELECTED);
           this.spreadsheet.updateCellStyleByState();
-          // set(cell.interactiveBgShape, 'attr.fill', '#ff0000')
 
           this.spreadsheet.interceptEvent.add(
             DefaultInterceptEventType.HOVER,

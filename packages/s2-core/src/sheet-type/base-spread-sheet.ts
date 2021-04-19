@@ -35,7 +35,6 @@ import {
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
   KEY_GROUP_PANEL_GROUND,
-  PANEL_GROUP_HOVER_BOX_GROUP_ZINDEX,
 } from '../common/constant';
 import { BaseDataSet } from '../data-set';
 import { SpreadsheetFacet } from '../facet';
@@ -47,12 +46,12 @@ import { BaseParams } from '../data-set/base-data-set';
 import { StrategyDataCell } from '../cell';
 import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
-import { DefaultStyleCfg } from '../common/default-style-cfg';
 import { EventController } from '../interaction/events/event-controller';
 import { DefaultInterceptEvent } from '../interaction/events/types';
 import State from '../state/state';
 import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
 import { ShowProps } from '../common/tooltip/interface';
+import { StateName } from '../state/state'
 
 const matrixTransform = ext.transform;
 export default abstract class BaseSpreadSheet extends EE {
@@ -671,5 +670,20 @@ export default abstract class BaseSpreadSheet extends EE {
       return CornerCell.name;
     }
     return '';
+  }
+
+  // 由于行头和列头的选择的模式并不是把一整行或者一整列的cell都setState
+  // 因此需要手动把当前行头列头选择下的cell样式重置
+  public clearStyleIndependent() {
+    const currentState = this.getCurrentState();
+    if (
+      currentState.stateName === StateName.COL_SELECTED ||
+      currentState.stateName === StateName.ROW_SELECTED ||
+      currentState.stateName === StateName.HOVER
+    ) {
+      this.getPanelAllCells().forEach((cell) => {
+        cell.hideShapeUnderState();
+      });
+    }
   }
 }

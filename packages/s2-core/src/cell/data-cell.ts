@@ -1,4 +1,3 @@
-//    陈凡心中好奇，这阿彪实力还是蛮强的，那晚吃了自己一腿，估计也只是受点内伤，养大半个月早该好了，现在怎么手又断了？
 import { getEllipsisText } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { map, find, get, isEmpty, isNumber, first } from 'lodash';

@@ -25,17 +25,18 @@ export class HoverEvent extends BaseEvent {
       this.changeState(cell, StateName.HOVER);
       if(this.hoverTimer) {
         window.clearTimeout(this.hoverTimer);
-        this.hoverTimer = window.setTimeout(() => {
-          this.changeState(cell, StateName.KEEP_HOVER);
-          this.handleTooltip(ev, meta)
-        }, 800);
+        this.changeStateToHoverKeep(cell, ev, meta);
       } else {
-        this.hoverTimer = window.setTimeout(() => {
-          this.changeState(cell, StateName.KEEP_HOVER);
-          this.handleTooltip(ev, meta)
-        }, 800);
+        this.changeStateToHoverKeep(cell, ev, meta);
       }
     })
+  }
+
+  private changeStateToHoverKeep(cell, ev, meta) {
+    this.hoverTimer = window.setTimeout(() => {
+      this.changeState(cell, StateName.KEEP_HOVER);
+      this.handleTooltip(ev, meta)
+    }, 800);
   }
 
   private changeState(cell, cellName) {
@@ -44,7 +45,7 @@ export class HoverEvent extends BaseEvent {
     this.spreadsheet.getPanelAllCells().forEach((cell) => {
       cell.update();
     });
-    this.spreadsheet.container.draw();
+    this.draw();
   }
 
   private handleTooltip(ev: Event, meta: ViewMeta) {

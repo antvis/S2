@@ -102,15 +102,8 @@ export class BrushSelection extends BaseInteraction {
           width: brushRegion.width,
           height: brushRegion.height,
         });
-        const currentState = this.spreadsheet.getCurrentState();
-        if (
-          currentState.stateName === StateName.COL_SELECTED ||
-          currentState.stateName === StateName.ROW_SELECTED
-        ) {
-          this.spreadsheet.getPanelAllCells().forEach((cell) => {
-            cell.hideShapeUnderState();
-          });
-        }
+
+        this.spreadsheet.clearStyleIndependent();
         this.getHighlightCells(brushRegion);
         this.draw();
       }
@@ -137,12 +130,12 @@ export class BrushSelection extends BaseInteraction {
             const valueInCols = this.spreadsheet.options.valueInCols;
             const meta = cell.getMeta();
             if(!isEmpty(meta)) {
-              const query = [valueInCols ? 'colQuery' : 'rowQuery'];
+              const query = meta[valueInCols ? 'colQuery' : 'rowQuery'];
               if (query) {
                 const cellInfo = {
                   ...query,
-                  colIndex: valueInCols ? cell.getMeta().colIndex : null,
-                  rowIndex: !valueInCols ? cell.getMeta().rowIndex : null,
+                  colIndex: valueInCols ? meta.colIndex : null,
+                  rowIndex: !valueInCols ? meta.rowIndex : null,
                 };
 
                 if (!this.isInCellInfos(cellInfos, cellInfo)) {
