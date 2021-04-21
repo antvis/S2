@@ -23,6 +23,8 @@ import { Node } from '../index';
 import { BaseCell } from './base-cell';
 import { FONT_SIZE } from '../theme/default';
 
+const ICON_SIZE = ICON_RADIUS * 2;
+
 export class RowCell extends BaseCell<Node> {
   protected headerConfig: RowHeaderConfig;
 
@@ -60,9 +62,7 @@ export class RowCell extends BaseCell<Node> {
 
   public destroy(): void {
     super.destroy();
-    if (this.gm) {
-      this.gm.destroy();
-    }
+    this.gm?.destroy();
   }
 
   protected handleRestOptions(...options) {
@@ -133,14 +133,14 @@ export class RowCell extends BaseCell<Node> {
     ) {
       const { x, y, height, width } = this.meta;
       for (let i = 0; i < iconTypes.length; i++) {
-        const iconSize = ICON_RADIUS * 2;
-        const iconRight = (iconSize + DEFAULT_PADDING) * (iconTypes.length - i);
+        const iconRight =
+          (FONT_SIZE + DEFAULT_PADDING) * (iconTypes.length - i);
         const icon = new GuiIcon({
           type: iconTypes[i],
           x: x + width - iconRight,
-          y: y + (height - iconSize) / 2,
-          width: iconSize,
-          height: iconSize,
+          y: y + (height - FONT_SIZE) / 2,
+          width: FONT_SIZE,
+          height: FONT_SIZE,
         });
         icon.set('visible', false);
         icon.on('click', (e: Event) => {
@@ -206,6 +206,7 @@ export class RowCell extends BaseCell<Node> {
       isLeaf,
       isTotals,
       isCustom,
+      level,
     } = this.meta;
     let content = this.getFormattedValue(label);
     // grid & is totals content is empty
@@ -216,23 +217,23 @@ export class RowCell extends BaseCell<Node> {
     // indent in tree
     const textIndent = this.getTextIndent();
     const textStyle = this.getRowTextStyle(isTotals || isCustom, isLeaf);
+    const padding = DEFAULT_PADDING * level + DEFAULT_PADDING;
     const maxWidth =
-      cellWidth -
-      textIndent -
-      DEFAULT_PADDING * 2 -
-      (this.isTreeType() ? ICON_RADIUS * 2 : 0);
+      cellWidth - textIndent - padding - (this.isTreeType() ? ICON_SIZE : 0);
     const text = getEllipsisText(content, maxWidth, textStyle);
-    const textY = getAdjustPosition(y, cellHeight, offset, height, FONT_SIZE);
+    const textY =
+      getAdjustPosition(y, cellHeight, offset, height, FONT_SIZE) +
+      FONT_SIZE / 2;
+    const textXPadding = this.isTreeType() ? padding : cellWidth / 2;
+    const leafExtraPadding =
+      isLeaf || isTotals ? ICON_SIZE + DEFAULT_PADDING : 0;
+    const textX = x + textIndent + textXPadding - leafExtraPadding;
 
-    const textX =
-      x +
-      textIndent +
-      (this.isTreeType() ? DEFAULT_PADDING * 2 : cellWidth / 2);
     const textAlign = this.isTreeType() ? 'start' : 'center';
     const textShape = this.addShape('text', {
       attrs: {
         x: textX,
-        y: textY + FONT_SIZE / 2,
+        y: textY,
         textAlign,
         text,
         ...textStyle,
@@ -284,16 +285,20 @@ export class RowCell extends BaseCell<Node> {
         isCollapsed,
         id,
         hierarchy,
+        level,
       } = this.meta;
       const textIndent = this.getTextIndent();
       const textY = getAdjustPosition(y, cellHeight, offset, height, FONT_SIZE);
-      const iconSize = ICON_RADIUS * 2;
+      const padding = DEFAULT_PADDING * level;
+      const baseIconX = x + textIndent - ICON_SIZE;
+      const iconX = level >= 1 ? baseIconX + padding : baseIconX;
+      const iconY = textY + (FONT_SIZE - ICON_SIZE) / 2;
       const icon = new GuiIcon({
         type: isCollapsed ? 'plus' : 'MinusSquare',
-        x: x + textIndent - iconSize,
-        y: textY + (FONT_SIZE - iconSize) / 2,
-        width: iconSize,
-        height: iconSize,
+        x: iconX,
+        y: iconY,
+        width: ICON_SIZE,
+        height: ICON_SIZE,
       });
       icon.on('click', () => {
         // 折叠行头时因scrollY没变，导致底层出现空白

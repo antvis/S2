@@ -57,7 +57,7 @@ export class CornerCell extends BaseCell<Node> {
       return;
     }
     const extraPadding = this.spreadsheet.isHierarchyTreeType()
-      ? ICON_RADIUS * 2 + DEFAULT_PADDING * 2
+      ? ICON_RADIUS * 2 + DEFAULT_PADDING
       : 0;
     const textStyle = _.get(
       this.headerConfig,
