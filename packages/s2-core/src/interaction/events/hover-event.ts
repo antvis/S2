@@ -11,8 +11,6 @@ import { getTooltipData } from '../../utils/tooltip';
  */
 export class HoverEvent extends BaseEvent {
 
-  private hoverTimer: number = null;
-
   protected bindEvents() {
     this.bindDataCellHover();
   }
@@ -23,8 +21,8 @@ export class HoverEvent extends BaseEvent {
       const meta: ViewMeta = cell.getMeta();
       this.spreadsheet.clearState();
       this.changeState(cell, StateName.HOVER);
-      if(this.hoverTimer) {
-        window.clearTimeout(this.hoverTimer);
+      if(this.spreadsheet.hoverTimer) {
+        window.clearTimeout(this.spreadsheet.hoverTimer);
         this.changeStateToHoverKeep(cell, ev, meta);
       } else {
         this.changeStateToHoverKeep(cell, ev, meta);
@@ -33,7 +31,7 @@ export class HoverEvent extends BaseEvent {
   }
 
   private changeStateToHoverKeep(cell, ev, meta) {
-    this.hoverTimer = window.setTimeout(() => {
+    this.spreadsheet.hoverTimer = window.setTimeout(() => {
       this.changeState(cell, StateName.KEEP_HOVER);
       this.handleTooltip(ev, meta)
     }, 800);

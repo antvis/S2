@@ -112,6 +112,10 @@ export class EventController {
 
   protected start(ev: Event) {
     this.target = ev.target;
+    // 任何点击都该取消hover的后续keep态
+    if(this.spreadsheet.hoverTimer) {
+      clearTimeout(this.spreadsheet.hoverTimer)
+    }
     const appendInfo = get(ev.target, 'attrs.appendInfo');
     if (appendInfo && appendInfo.isResizer) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSEDOWN, ev);
@@ -144,6 +148,22 @@ export class EventController {
       const cell = this.spreadsheet.getCell(ev.target);
       const cellType = this.spreadsheet.getCellType(ev.target);
       if (cell) {
+        switch (cellType) {
+          case DataCell.name:
+            this.spreadsheet.emit(S2Event.DATACELL_MOUSEMOVE, ev);
+            break;
+          case RowCell.name:
+            this.spreadsheet.emit(S2Event.ROWCELL_MOUSEMOVE, ev);
+            break;
+          case ColCell.name:
+            this.spreadsheet.emit(S2Event.COLCELL_MOUSEMOVE, ev);
+            break;
+          case CornerCell.name:
+            this.spreadsheet.emit(S2Event.CORNER_MOUSEMOVE, ev);
+            break;
+          default:
+        }
+
         // 如果hover的cell改变了，并且当前不需要屏蔽 hover
         if (
           this.hoverTarget !== ev.target &&
@@ -164,21 +184,6 @@ export class EventController {
               break;
             default:
           }
-        }
-        switch (cellType) {
-          case DataCell.name:
-            this.spreadsheet.emit(S2Event.DATACELL_MOUSEMOVE, ev);
-            break;
-          case RowCell.name:
-            this.spreadsheet.emit(S2Event.ROWCELL_MOUSEMOVE, ev);
-            break;
-          case ColCell.name:
-            this.spreadsheet.emit(S2Event.COLCELL_MOUSEMOVE, ev);
-            break;
-          case CornerCell.name:
-            this.spreadsheet.emit(S2Event.CORNER_MOUSEMOVE, ev);
-            break;
-          default:
         }
       }
     }

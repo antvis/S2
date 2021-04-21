@@ -1,13 +1,10 @@
-import { map, size, get, min, max, each } from 'lodash';
+import { map, size, get, min, max, each, pick, assign } from 'lodash';
 import { SortParam, Node } from '../../../index';
-import { DataCell, ColCell, RowCell } from '../../../cell';
-import { getHeaderHierarchyQuery } from '../../../facet/layout/util';
 import { DownOutlined } from '@ant-design/icons';
 import { S2Event, DefaultInterceptEventType } from '../types';
 import { BaseEvent } from '../base-event';
 import { StateName } from '../../../state/state';
 import { getTooltipData } from '../../../utils/tooltip';
-import BaseSpreadSheet from '../../../sheet-type/base-spread-sheet';
 
 interface MenuType {
   id: string;
@@ -96,11 +93,7 @@ export class RowColumnClick extends BaseEvent {
         const currentState = this.spreadsheet.getCurrentState();
         const { stateName, cells } = currentState;
         if (stateName === StateName.ROW_SELECTED) {
-          cellInfos = map(cells, (cell) => ({
-            ...get(cell.getMeta(), 'query'),
-            colIndex: cell.getMeta().colIndex,
-            rowIndex: cell.getMeta().rowIndex,
-          }));
+          cellInfos = this.mergeCellInfo(cells)
         }
         
         if(!this.spreadsheet.options.valueInCols) {
@@ -108,7 +101,7 @@ export class RowColumnClick extends BaseEvent {
         }
 
         this.spreadsheet.updateCellStyleByState();
-        this.upDatePanelAllCellsStyle();
+        this.spreadsheet.upDatePanelAllCellsStyle();
         this.draw();
       }
     });
@@ -151,11 +144,7 @@ export class RowColumnClick extends BaseEvent {
         const currentState = this.spreadsheet.getCurrentState();
         const { stateName, cells } = currentState;
         if (stateName === StateName.COL_SELECTED) {
-          cellInfos = map(cells, (cell) => ({
-            ...get(cell.getMeta(), 'query'),
-            colIndex: cell.getMeta().colIndex,
-            rowIndex: cell.getMeta().rowIndex,
-          }));
+          cellInfos = this.mergeCellInfo(cells)
         }
         
         if(this.spreadsheet.options.valueInCols) {
@@ -163,10 +152,17 @@ export class RowColumnClick extends BaseEvent {
         }
 
         this.spreadsheet.updateCellStyleByState();
-        this.upDatePanelAllCellsStyle();
+        this.spreadsheet.upDatePanelAllCellsStyle();
         this.draw();
       }
     });
+  }
+
+  private mergeCellInfo(cells) {
+    return map(cells, stateCell => {
+      const stateCellMeta = stateCell.getMeta();
+      return assign({}, stateCellMeta.query || {}, pick(stateCellMeta, ['colIndex', 'rowIndex']))
+    })
   }
 
   private handleTooltip(ev, meta, cellInfos) {
@@ -203,15 +199,7 @@ export class RowColumnClick extends BaseEvent {
 
   private bindResetSheetStyle() {
     this.spreadsheet.on(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT, () => {
-      const currentState = this.spreadsheet.getCurrentState();
-      if (
-        currentState.stateName === StateName.COL_SELECTED ||
-        currentState.stateName === StateName.ROW_SELECTED
-      ) {
-        this.spreadsheet.getPanelAllCells().forEach((cell) => {
-          cell.hideShapeUnderState();
-        });
-      }
+      this.spreadsheet.clearStyleIndependent()
     });
   }
 
@@ -266,13 +254,4 @@ export class RowColumnClick extends BaseEvent {
   //       }
   //     : null;
   // }
-
-  /**
-   * 更新视图内cell的样式
-   */
-  private upDatePanelAllCellsStyle() {
-    this.spreadsheet.getPanelAllCells().forEach((cell) => {
-      cell.update();
-    });
-  }
 }

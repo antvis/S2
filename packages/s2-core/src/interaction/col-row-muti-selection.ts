@@ -81,7 +81,7 @@ export class ColRowMutiSelection extends BaseInteraction {
           }
           this.handleTooltip(ev, meta, cellInfos);
           this.spreadsheet.updateCellStyleByState();
-          this.resetCell();
+          this.spreadsheet.upDatePanelAllCellsStyle();
           this.draw();
         }
       }
@@ -117,7 +117,7 @@ export class ColRowMutiSelection extends BaseInteraction {
             this.spreadsheet.setState(cell, StateName.ROW_SELECTED);
           }
           this.spreadsheet.updateCellStyleByState();
-          this.resetCell();
+          this.spreadsheet.upDatePanelAllCellsStyle();
           this.draw();
         }
       }
@@ -141,11 +141,5 @@ export class ColRowMutiSelection extends BaseInteraction {
       options,
     };
     this.spreadsheet.showTooltip(showOptions);
-  }
-
-  private resetCell() {
-    this.spreadsheet.getPanelAllCells().forEach((cell) => {
-      cell.update();
-    });
   }
 }

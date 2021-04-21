@@ -27,19 +27,21 @@ export class DataCellClick extends BaseEvent {
       if (meta) {
         // selected通过state来接管，不需要再在 this.spreadsheet.store 中操作
         this.spreadsheet.clearStyleIndependent();
-        this.spreadsheet.clearState();
         const currentState = this.spreadsheet.getCurrentState();
         if (
           currentState.stateName === StateName.SELECTED &&
           currentState.cells.indexOf(cell) > -1
         ) {
           // 点击当前已选cell 则取消当前cell的选中状态
+          // 这里的clearState虽然在if和eles里都有，但是不要抽出来，因为需要先判断在清空
+          // 且else中需要先清空之前选择的cell，然后再赋值新的
+          this.spreadsheet.clearState();
           this.spreadsheet.interceptEvent.clear();
           this.spreadsheet.hideTooltip();
         } else {
+          this.spreadsheet.clearState();
           this.spreadsheet.setState(cell, StateName.SELECTED);
           this.spreadsheet.updateCellStyleByState();
-
           this.spreadsheet.interceptEvent.add(
             DefaultInterceptEventType.HOVER,
           );
