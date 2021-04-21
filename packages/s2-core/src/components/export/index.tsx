@@ -50,7 +50,7 @@ export const Export: React.FC<ExportProps> = ({
     if (copyToClipboard(data)) {
       message.success(successText);
     } else {
-      message.success(errorText);
+      message.error(errorText);
     }
   };
 
@@ -60,7 +60,7 @@ export const Export: React.FC<ExportProps> = ({
       download(data, fileName);
       message.success(successText);
     } catch (err) {
-      message.success(errorText);
+      message.error(errorText);
     }
   };
 
