@@ -38,6 +38,7 @@ export const Export: React.FC<ExportProps> = ({
   downloadOringinalText = '下载原始数据',
   downloadFormatText = '下载格式化数据',
   successText = '操作成功',
+  errorText = '操作失败',
   sheet,
   fileName = 'sheet',
   ...restProps
@@ -46,14 +47,21 @@ export const Export: React.FC<ExportProps> = ({
 
   const exportData = (isFormat: boolean) => {
     const data = copyData(sheet, '\t', isFormat);
-    copyToClipboard(data);
-    message.success(successText);
+    if (copyToClipboard(data)) {
+      message.success(successText);
+    } else {
+      message.success(errorText);
+    }
   };
 
   const downLoadData = (isFormat: boolean) => {
     const data = copyData(sheet, ',', isFormat);
-    download(data, fileName);
-    message.success(successText);
+    try {
+      download(data, fileName);
+      message.success(successText);
+    } catch (err) {
+      message.success(errorText);
+    }
   };
 
   const menu = (
