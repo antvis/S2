@@ -5,6 +5,7 @@ import { BaseEvent } from './base-event';
 import { StateName } from '../../state/state';
 import { ViewMeta } from '../../common/interface';
 import { getTooltipData } from '../../utils/tooltip';
+import { KEEP_HOVER_TIME } from './constant'
 
 /**
  * Row header click navigation interaction
@@ -34,15 +35,13 @@ export class HoverEvent extends BaseEvent {
     this.spreadsheet.hoverTimer = window.setTimeout(() => {
       this.changeState(cell, StateName.KEEP_HOVER);
       this.handleTooltip(ev, meta)
-    }, 800);
+    }, KEEP_HOVER_TIME);
   }
 
   private changeState(cell, cellName) {
     this.spreadsheet.setState(cell, cellName);
     this.spreadsheet.updateCellStyleByState();
-    this.spreadsheet.getPanelAllCells().forEach((cell) => {
-      cell.update();
-    });
+    this.spreadsheet.upDatePanelAllCellsStyle();
     this.draw();
   }
 

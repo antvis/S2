@@ -105,7 +105,7 @@ export class EventController {
    * @param eventType
    * @param handler
    */
-  protected addEvent(target, eventType, handler) {
+  protected addEvent(target, eventType: string, handler: Function) {
     target.on(eventType, handler);
     this.eventHandlers.push({ target, type: eventType, handler });
   }

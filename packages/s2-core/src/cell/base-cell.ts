@@ -3,14 +3,6 @@ import { BaseSpreadSheet, SpreadSheetTheme } from '..';
 import { updateShapeAttr } from '../utils/g-renders';
 import * as shapeStyle from '../state/shapeStyleMap';
 import { get, each, findKey } from 'lodash';
-
-/**
- * Create By Bruce Too
- * On 2019-10-12
- * Base cell for all nodes, contains in rowHeader,
- * colHeader, cornerHeader, cellArea
- */
-
 export abstract class BaseCell<T> extends Group {
   // cell's data meta info
   protected meta: T;
