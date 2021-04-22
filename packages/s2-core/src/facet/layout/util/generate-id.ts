@@ -18,6 +18,7 @@ export const generateId = (
   const customHeaders = get(cfg, 'spreadsheet.options.customHeaderCells');
   const mode = customHeaders?.mode;
   const cellLabels = customHeaders?.cellLabels;
+  console.log(cellLabels);
 
   if (isEmpty(cellLabels)) return id;
 
