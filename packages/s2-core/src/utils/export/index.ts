@@ -1,5 +1,5 @@
 import { BaseSpreadSheet } from '../../sheet-type';
-import { head, last, isEmpty, get, clone } from 'lodash';
+import { head, last, isEmpty, get, clone, trim } from 'lodash';
 import { ViewMeta } from '../..';
 import { ID_SEPARATOR } from '../../common/constant';
 import { getCsvString } from './export-worker';
@@ -212,7 +212,7 @@ export const copyData = (
     const caredRowLeafNodes = rowLeafNodes.filter((row) => row.height !== 0);
     for (const rowNode of caredRowLeafNodes) {
       // Removing the space at the beginning of the line of the label.
-      rowNode.label = rowNode.label ? rowNode.label.replace(/^\s*/g, '') : '';
+      rowNode.label = trim(rowNode?.label);
       const id = rowNode.id.replace(/^root\[&\]*/, '');
       const tempLine = id.split(ID_SEPARATOR);
       const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));
