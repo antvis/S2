@@ -58,7 +58,7 @@ export abstract class BaseFacet {
   public render(): void {
     this.renderHeaders();
     this.renderScrollBars();
-    this.dynamicRender();
+    this.dynamicRender(false);
   }
 
   public getSeriesNumberWidth(): number {
@@ -179,7 +179,7 @@ export abstract class BaseFacet {
   /**
    * 动态渲染
    */
-  protected abstract dynamicRender(): void;
+  protected abstract dynamicRender(delay: boolean): void;
 
   protected abstract afterInitial(): void;
 

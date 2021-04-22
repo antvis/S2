@@ -1,6 +1,6 @@
 import { BBox } from '@antv/g-canvas';
 import { Wheel } from '@antv/g-gesture';
-import { ScrollBar } from '../ui/scrollbar';
+import { ScrollBar, ScrollType } from '../ui/scrollbar';
 import { interpolateArray } from 'd3-interpolate';
 import * as d3Timer from 'd3-timer';
 import {
@@ -13,6 +13,7 @@ import {
   forEach,
   isUndefined,
   debounce,
+  isEmpty,
 } from 'lodash';
 import {
   calculateInViewIndexes,
@@ -97,9 +98,11 @@ export class SpreadsheetFacet extends BaseFacet {
     },
   };
 
-  protected timer: d3Timer.Timer = null;
+  protected timer: d3Timer.Timer;
 
   private mobileWheel: Wheel;
+
+  private wheelEvent: null | (() => any);
 
   constructor(cfg: SpreadsheetFacetCfg) {
     super(cfg);
@@ -107,7 +110,6 @@ export class SpreadsheetFacet extends BaseFacet {
     this.spreadsheet.on('spreadsheet:change-row-header-width', (config) => {
       this.setScrollOffset(0, undefined);
       this.setHRowScrollX(0);
-      console.debug(config);
     });
   }
 
@@ -495,7 +497,7 @@ export class SpreadsheetFacet extends BaseFacet {
   }
 
   private renderRealCell(indexes: Indexes) {
-    const { add } = diffIndexes(this.preIndexes, indexes);
+    const { add, remove } = diffIndexes(this.preIndexes, indexes);
     // Filter cells with width/height of zero
     const newIndexes = add.filter(([i, j]) => {
       return (
@@ -531,17 +533,50 @@ export class SpreadsheetFacet extends BaseFacet {
         }
       });
       DebuggerUtil.getInstance().logger(
-        `Number of new cells:${newIndexes.length} cached:${cacheSize} no cache:${noCacheSize}`,
+        `Number of cells:${newIndexes.length} cached:${cacheSize} no cache:${noCacheSize}`,
       );
     });
-    this.preIndexes = indexes;
+    if (!isEmpty(newIndexes)) {
+      this.preIndexes = indexes;
+    }
   }
 
-  protected dynamicRender() {
-    const [scrollX, sy, hRowScroll] = this.getScrollOffset();
-    const scrollY = sy + this.getDefaultScrollY();
-    const indexes = this.calculateXYIndexes(scrollX, scrollY);
+  private debounceRenderCell = debounce((indexes) => {
     this.renderRealCell(indexes);
+  }, 60);
+
+  /**
+   * When scroll behavior happened, only render one time in 60ms period,
+   * but render immediately in initiate
+   * @param delay debounce render cell
+   * @protected
+   */
+  protected dynamicRender(delay = true) {
+    const [scrollX, sy, hRowScroll] = this.getScrollOffset();
+    const scrollY = sy + this.getPaginationScrollY();
+    const indexes = this.calculateXYIndexes(scrollX, scrollY);
+    if (delay) {
+      this.debounceRenderCell(indexes);
+    } else {
+      this.renderRealCell(indexes);
+    }
+    this.translateRelatedGroups(scrollX, scrollY, hRowScroll);
+    this.spreadsheet.emit(KEY_CELL_SCROLL, { scrollX, scrollY });
+  }
+
+  /**
+   * Translate panelGroup, rowHeader, cornerHeader, columnHeader ect
+   * according to new scroll offset
+   * @param scrollX
+   * @param scrollY
+   * @param hRowScroll
+   * @private
+   */
+  private translateRelatedGroups(
+    scrollX: number,
+    scrollY: number,
+    hRowScroll: number,
+  ) {
     translateGroup(
       this.panelGroup,
       this.cornerBBox.width - scrollX,
@@ -585,7 +620,6 @@ export class SpreadsheetFacet extends BaseFacet {
         height: this.viewportBBox.height,
       },
     });
-    this.spreadsheet.emit(KEY_CELL_SCROLL, { scrollX, scrollY });
   }
 
   protected fireReachBorderEvent(scrollX: number, scrollY: number) {
@@ -634,9 +668,12 @@ export class SpreadsheetFacet extends BaseFacet {
   }
 
   protected bindEvents() {
+    if (!this.wheelEvent) {
+      this.wheelEvent = this.handlePCWheelEvent.bind(this);
+    }
     (this.spreadsheet.container.get('el') as HTMLElement).addEventListener(
       'wheel',
-      this.handlePCWheelEvent.bind(this),
+      this.wheelEvent,
     );
 
     // mock wheel event fo mobile
@@ -659,7 +696,7 @@ export class SpreadsheetFacet extends BaseFacet {
   protected unbindEvents(): void {
     (this.spreadsheet.container.get('el') as HTMLElement).removeEventListener(
       'wheel',
-      this.handlePCWheelEvent.bind(this),
+      this.wheelEvent,
     );
     this.mobileWheel.destroy();
     this.setHRowScrollX(0);
@@ -763,7 +800,7 @@ export class SpreadsheetFacet extends BaseFacet {
         theme: this.scrollBarTheme,
       });
 
-      this.vScrollBar.on('scroll-change', ({ thumbOffset }) => {
+      this.vScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
         this.setScrollOffset(undefined, getOffsetTop(thumbOffset));
         this.dynamicRender();
       });
@@ -806,7 +843,7 @@ export class SpreadsheetFacet extends BaseFacet {
         theme: this.scrollBarTheme,
       });
 
-      this.hScrollBar.on('scroll-change', ({ thumbOffset }) => {
+      this.hScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
         this.setScrollOffset(
           (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth,
           undefined,
@@ -838,7 +875,7 @@ export class SpreadsheetFacet extends BaseFacet {
         theme: this.scrollBarTheme,
       });
 
-      this.hRowScrollBar.on('scroll-change', ({ thumbOffset }) => {
+      this.hRowScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
         const hRowScrollX =
           (thumbOffset / this.hRowScrollBar.trackLen) * this.realCornerWidth;
         this.setHRowScrollX(hRowScrollX);
@@ -860,7 +897,7 @@ export class SpreadsheetFacet extends BaseFacet {
     }
   }
 
-  private getScrollOffset() {
+  private getScrollOffset(): [number, number, number] {
     return [
       this.spreadsheet.store.get('scrollX', 0),
       this.spreadsheet.store.get('scrollY', 0),
@@ -985,7 +1022,11 @@ export class SpreadsheetFacet extends BaseFacet {
     return last(this.viewCellHeights);
   }
 
-  private getDefaultScrollY(): number {
+  /**
+   * if pagination exist, adjust scrollY
+   * @private
+   */
+  private getPaginationScrollY(): number {
     const { pagination } = this.cfg;
 
     if (pagination) {

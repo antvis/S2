@@ -4,6 +4,10 @@ import { merge, clamp, get, each } from 'lodash';
 import { PointObject, ScrollBarCfg, ScrollBarTheme } from './interface';
 import { DEFAULT_THEME } from './style';
 
+export enum ScrollType {
+  ScrollChange = 'scroll-change',
+  ScrollEnd = 'scroll-end',
+}
 export class ScrollBar extends Group {
   // 滚动条的布局，横向 | 纵向, 非必传，默认为 false(纵向)
   public isHorizontal: boolean;
@@ -183,7 +187,7 @@ export class ScrollBar extends Group {
   // 绘制新的 scrollBar
   public renderNewScrollBar() {
     // 发送事件
-    this.emit('scroll-change', {
+    this.emit(ScrollType.ScrollChange, {
       thumbOffset: this.thumbOffset,
       ratio: clamp(this.thumbOffset / (this.trackLen - this.thumbLen), 0, 1),
     });
@@ -395,6 +399,7 @@ export class ScrollBar extends Group {
 
   // 滑块鼠标松开事件回调
   private onMouseUp = (e: MouseEvent) => {
+    this.emit(ScrollType.ScrollEnd, {});
     // 松开鼠标时，清除所有事件
     e.preventDefault();
     this.clearEvents();

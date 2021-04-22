@@ -38,7 +38,7 @@ import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';
 import { BaseParams } from '../data-set/base-data-set';
-import { StrategyDataCell } from '../cell';
+import { DataDerivedCell } from '../cell';
 import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
 import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
@@ -271,11 +271,9 @@ export default abstract class BaseSpreadSheet extends EE {
   }
 
   protected getCorrectCell(facet: ViewMeta): Cell {
-    // const valueHasDerivedValue = this.getDerivedValue(facet.valueField).derivedValueField.length === 0;
-    // const isDerivedValue = this.isDerivedValue(facet.valueField);
     return this.isValueInCols()
       ? new Cell(facet, this)
-      : new StrategyDataCell(facet, this);
+      : new DataDerivedCell(facet, this);
   }
 
   /**

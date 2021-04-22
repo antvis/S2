@@ -95,7 +95,6 @@ export interface SpreadsheetProps {
 export const SheetComponent = (props: SpreadsheetProps) => {
   const {
     spreadsheet,
-    // TODO dataCfg细化
     dataCfg,
     options,
     adaptive = true,
