@@ -12,6 +12,10 @@
     "esModuleInterop": true,
     "downlevelIteration": true,
     "resolveJsonModule": true,
+    "baseUrl": ".",
+     "paths": {
+      "src/*": ["./src/*"],
+    },
     "lib": [
       "esnext",
       "dom"

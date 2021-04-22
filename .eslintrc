@@ -16,13 +16,6 @@
   },
   "parser": "@typescript-eslint/parser",
   "plugins": ["prettier", "@typescript-eslint", "import"],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "project": "./tsconfig.json",
-    "sourceType": "module"
-  },
   "settings": {
     "jest": {
       "version": 26

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { isEmpty, debounce, isFunction } from 'lodash';
 import { Spin } from 'antd';
-import { DataCfg } from '@src/common/interface';
-import { DrillDown } from '@src/components/drill-down';
-import { Header } from '@src/components/header';
+import { DataCfg } from 'src/common/interface';
+import { DrillDown } from '../../drill-down';
+import { Header } from '../../header';
 import {
   KEY_COLUMN_CELL_CLICK,
   KEY_CORNER_CELL_CLICK,
@@ -13,18 +13,18 @@ import {
   HandleConfigWhenDrillDown,
   HandleOptions,
   HandleDrillDown,
-} from '@src/index';
+} from 'src/index';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
   KEY_ROW_NODE_BORDER_REACHED,
   KEY_CELL_SCROLL,
   KEY_LIST_SORT,
-} from '@src/common/constant';
-import BaseSpreadsheet from '@src/sheet-type/base-spread-sheet';
-import SpreadSheet from '@src/sheet-type/spread-sheet';
-import { safetyDataCfg, safetyOptions } from '@src/utils/safety-config';
-import { resetDrillDownCfg } from '@src/utils/drill-down/helper';
+} from 'src/common/constant';
+import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
+import SpreadSheet from 'src/sheet-type/spread-sheet';
+import { safetyDataCfg, safetyOptions } from 'src/utils/safety-config';
+import { resetDrillDownCfg } from 'src/utils/drill-down/helper';
 import { BaseSheetProps } from '../interface';
 
 export const BaseSheet = (props: BaseSheetProps) => {
