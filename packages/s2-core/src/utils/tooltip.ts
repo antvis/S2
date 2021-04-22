@@ -30,6 +30,7 @@ import {
   DataProps,
   BaseSpreadSheet,
 } from '..';
+import { getDerivedDataState } from '../utils/text';
 import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
@@ -244,7 +245,7 @@ export const getListItem = (
   let icon;
   if (spreadsheet?.isDerivedValue(field)) {
     if (data[field]) {
-      if (data[field] < 0) {
+      if (!getDerivedDataState(data[field])) {
         icon = 'CellDown';
       } else {
         icon = 'CellUp';

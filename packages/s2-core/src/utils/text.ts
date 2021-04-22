@@ -1,4 +1,4 @@
-import { memoize, isString, values, isArray, toString } from 'lodash';
+import { memoize, isString, values, isArray, toString, isNumber } from 'lodash';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -229,4 +229,17 @@ export const getEllipsisText = (
   });
 
   return result;
+};
+
+/**
+ * To decide whether the derived data is positive or negtive.
+ * Two cases needed to be considered since  the derived value could be number or string.
+ * @param value
+ * @param font
+ */
+export const getDerivedDataState = (value: number | string): boolean => {
+  if (isNumber(value)) {
+    return value >= 0;
+  }
+  return !/^-/.test(value);
 };
