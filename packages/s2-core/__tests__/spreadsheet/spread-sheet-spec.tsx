@@ -136,6 +136,10 @@ const getOptions = () => {
         height: 32,
       },
       device: 'pc',
+      customHeaderCells: {
+        cellLabels: ['办公用品[&]系固件[&]profit'],
+        mode: 'omit',
+      },
     },
     tooltip: {
       showTooltip: true,

@@ -44,7 +44,7 @@ export abstract class BaseCell<T> extends Group {
    */
   protected handleRestOptions(...options) {
     // default do nothing
-    console.debug(options);
+    console.info(options);
   }
 
   /**
