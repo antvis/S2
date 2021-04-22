@@ -362,8 +362,7 @@ export class SpreadsheetFacet extends BaseFacet {
     const width0Indexes = [];
     const widths = reduce(
       colLeafNodes,
-      (result: number[], node: Node, idx: number) => {
-        console.debug(idx);
+      (result: number[], node: Node) => {
         result.push(last(result) + node.width);
         if (node.width === 0) {
           width0Indexes.push(node.cellIndex);
@@ -376,8 +375,7 @@ export class SpreadsheetFacet extends BaseFacet {
     const height0Indexes = [];
     const heights = reduce(
       rowLeafNodes,
-      (result: number[], node: Node, idx: number) => {
-        console.debug(idx);
+      (result: number[], node: Node) => {
         result.push(last(result) + node.height);
         if (node.isHide()) {
           height0Indexes.push(node.cellIndex);

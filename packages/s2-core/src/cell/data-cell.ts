@@ -10,6 +10,7 @@ import {
   renderText,
   updateShapeAttr,
 } from '../utils/g-renders';
+import { getDerivedDataState } from '../utils/text';
 import { isSelected } from '../utils/selected';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
@@ -354,7 +355,7 @@ export class Cell extends BaseCell<ViewMeta> {
       } else {
         value = _.get(data, [0, derivedValue]);
       }
-      const up = _.isNumber(value) ? value >= 0 : false;
+      const up = getDerivedDataState(value);
       const formatter = this.spreadsheet.dataSet.getFieldFormatter(
         derivedValue,
       );
