@@ -42,6 +42,7 @@ import { DataDerivedCell } from '../cell';
 import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
 import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
+import { isMobile } from '../utils/is-mobile';
 
 const matrixTransform = ext.transform;
 export default abstract class BaseSpreadSheet extends EE {
@@ -564,6 +565,9 @@ export default abstract class BaseSpreadSheet extends EE {
   }
 
   private renderByZoomScale = debounce((e) => {
+    if (isMobile()) {
+      return;
+    }
     const ratio = Math.max(e.target.scale, window.devicePixelRatio);
     if (ratio > 1) {
       this.renderByDevicePixelRatio(ratio);

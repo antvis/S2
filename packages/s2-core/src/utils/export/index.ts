@@ -1,31 +1,39 @@
 import { BaseSpreadSheet } from '../../sheet-type';
-import { head, last, isEmpty, get, clone } from 'lodash';
+import { head, last, isEmpty, get, clone, trim } from 'lodash';
 import { ViewMeta } from '../..';
 import { ID_SEPARATOR } from '../../common/constant';
 import { getCsvString } from './export-worker';
 
-// TODO 异常处理
 export const copyToClipboard = (str: string) => {
-  const el = document.createElement('textarea');
-  el.value = str;
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand('copy');
-  document.body.removeChild(el);
+  try {
+    const el = document.createElement('textarea');
+    el.value = str;
+    document.body.appendChild(el);
+    el.select();
+    const succes = document.execCommand('copy');
+    document.body.removeChild(el);
+    return succes;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
 };
 
-// TODO 异常处理 低版本兼容
 export const download = (str: string, fileName: string) => {
-  const link = document.createElement('a');
-  link.download = `${fileName}.csv`;
-  // Avoid errors in Chinese encoding.
-  const dataBlob = new Blob([`\ufeff${str}`], {
-    type: 'text/csv;charset=utf-8',
-  });
+  try {
+    const link = document.createElement('a');
+    link.download = `${fileName}.csv`;
+    // Avoid errors in Chinese encoding.
+    const dataBlob = new Blob([`\ufeff${str}`], {
+      type: 'text/csv;charset=utf-8',
+    });
 
-  link.href = URL.createObjectURL(dataBlob);
-  link.click();
-  URL.revokeObjectURL(link.href);
+    link.href = URL.createObjectURL(dataBlob);
+    link.click();
+    URL.revokeObjectURL(link.href);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 /* Process the data in detail mode. */
@@ -144,41 +152,49 @@ export const copyData = (
   const { valueInCols, spreadsheetType } = sheetInstance.options;
   const rows = clone(rowsHierarchy?.rows);
 
-  /** Get the table header of rows. */
+  // Genarate the table header.
+
   const rowsHeader = rows.map((item) =>
     sheetInstance.dataSet.getFieldName(item),
   );
 
   const rowLength = rowsHeader.length;
 
-  /** Get the table header of Columns. */
-  const tempColHeader = clone(colLeafNodes).map((colItem) => {
-    let curColItem = colItem;
-    const tempCol = [];
-    // Generate the column dimensions.
-    while (curColItem.level !== undefined) {
-      tempCol.push(curColItem.label);
-      curColItem = curColItem.parent;
-    }
-    return tempCol;
-  });
-  const colLevel = tempColHeader[0].length;
-  const colHeader: string[][] = [];
-  // Convert the number of column dimension levels to the corresponding array.
-  for (let i = colLevel - 1; i >= 0; i -= 1) {
-    // The map of data set: key-name
-    const colHeaderItem = tempColHeader
-      .map((item) => item[i])
-      .map((colItem) => sheetInstance.dataSet.getFieldName(colItem));
-    colHeader.push(colHeaderItem);
-  }
+  let headers: string[][] = [];
 
-  // Genarate the table header.
-  const headers = colHeader.map((item, index) => {
-    return index < colHeader.length - 1
-      ? Array(rowLength).concat(...item)
-      : rowsHeader.concat(...item);
-  });
+  if (isEmpty(colLeafNodes) && !spreadsheetType) {
+    // 兼容明细表只有行头的情况
+    headers = [rowsHeader];
+  } else {
+    // Get the table header of Columns.
+    const tempColHeader = clone(colLeafNodes).map((colItem) => {
+      let curColItem = colItem;
+      const tempCol = [];
+      // Generate the column dimensions.
+      while (curColItem.level !== undefined) {
+        tempCol.push(curColItem.label);
+        curColItem = curColItem.parent;
+      }
+      return tempCol;
+    });
+    const colLevel = tempColHeader[0].length;
+    const colHeader: string[][] = [];
+    // Convert the number of column dimension levels to the corresponding array.
+    for (let i = colLevel - 1; i >= 0; i -= 1) {
+      // The map of data set: key-name
+      const colHeaderItem = tempColHeader
+        .map((item) => item[i])
+        .map((colItem) => sheetInstance.dataSet.getFieldName(colItem));
+      colHeader.push(colHeaderItem);
+    }
+
+    // Genarate the table header.
+    headers = colHeader.map((item, index) => {
+      return index < colHeader.length - 1
+        ? Array(rowLength).concat(...item)
+        : rowsHeader.concat(...item);
+    });
+  }
 
   const headerRow = headers
     .map((header) => {
@@ -196,7 +212,7 @@ export const copyData = (
     const caredRowLeafNodes = rowLeafNodes.filter((row) => row.height !== 0);
     for (const rowNode of caredRowLeafNodes) {
       // Removing the space at the beginning of the line of the label.
-      rowNode.label = rowNode.label ? rowNode.label.replace(/^\s*/g, '') : '';
+      rowNode.label = trim(rowNode?.label);
       const id = rowNode.id.replace(/^root\[&\]*/, '');
       const tempLine = id.split(ID_SEPARATOR);
       const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));

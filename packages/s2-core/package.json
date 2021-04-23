@@ -122,6 +122,9 @@
     "transform": {
       "\\.(less|css)$": "jest-less-loader",
       "\\.svg$": "jest-raw-loader"
+    },
+    "moduleNameMapper": {
+      "^src/(.*)": "<rootDir>/src/$1"
     }
   }
 }
