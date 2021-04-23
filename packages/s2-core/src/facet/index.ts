@@ -10,10 +10,12 @@ import {
   merge,
   includes,
   isNil,
-  forEach,
+  each,
   isUndefined,
   debounce,
   isEmpty,
+  filter,
+  find,
 } from 'lodash';
 import {
   calculateInViewIndexes,
@@ -23,7 +25,7 @@ import {
 import { Formatter } from '../common/interface';
 import { diffIndexes, Indexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
-import { Cell } from '../cell';
+import { BaseCell, Cell } from '../cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
@@ -496,9 +498,11 @@ export class SpreadsheetFacet extends BaseFacet {
     this.renderVScrollBar(height, realHeight, scrollY);
   }
 
-  private renderRealCell(indexes: Indexes) {
+  private realCellRender(scrollX: number, scrollY: number) {
+    const indexes = this.calculateXYIndexes(scrollX, scrollY);
     const { add, remove } = diffIndexes(this.preIndexes, indexes);
     // Filter cells with width/height of zero
+    // TODO brucetoo check if viewCellWidth0Indexes needed
     const newIndexes = add.filter(([i, j]) => {
       return (
         !includes(this.viewCellWidth0Indexes, i) &&
@@ -506,34 +510,30 @@ export class SpreadsheetFacet extends BaseFacet {
       );
     });
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
-      let cacheSize = 0;
-      let noCacheSize = 0;
-      forEach(newIndexes, ([i, j]) => {
-        const cacheKey = `${i}-${j}`;
-        const cell = this.spreadsheet.cellCache.get(cacheKey);
+      // add new cell in panelCell
+      each(newIndexes, ([i, j]) => {
         const viewMeta = this.layoutResult.getViewMeta(j, i);
-
-        if (cell) {
-          cacheSize += 1;
-          // already cached
-          if (viewMeta) {
-            cell.set('children', []);
-            cell.setMeta(viewMeta);
-            this.panelGroup.add(cell);
-          }
-        } else {
-          noCacheSize += 1;
-          // add new cell
-          // i = colIndex  j = rowIndex
-          if (viewMeta) {
-            const newGroup = this.cfg.dataCell(viewMeta);
-            this.panelGroup.add(newGroup);
-            this.spreadsheet.cellCache.put(cacheKey, newGroup as Cell);
-          }
+        if (viewMeta) {
+          const cell = this.cfg.dataCell(viewMeta);
+          // mark cell for removing
+          cell.set('name', `${i}-${j}`);
+          this.panelGroup.add(cell);
         }
       });
+      const allCells = filter(
+        this.panelGroup.getChildren(),
+        (child) => child instanceof BaseCell,
+      );
+      // remove cell from panelCell
+      each(remove, ([i, j]) => {
+        const findOne = find(
+          allCells,
+          (cell) => cell.get('name') === `${i}-${j}`,
+        );
+        findOne?.remove(true);
+      });
       DebuggerUtil.getInstance().logger(
-        `Number of cells:${newIndexes.length} cached:${cacheSize} no cache:${noCacheSize}`,
+        `Render Cell Panel: ${allCells?.length}, Add: ${newIndexes?.length}, Remove: ${remove?.length}`,
       );
     });
     if (!isEmpty(newIndexes)) {
@@ -541,12 +541,17 @@ export class SpreadsheetFacet extends BaseFacet {
     }
   }
 
-  private debounceRenderCell = debounce((indexes) => {
-    this.renderRealCell(indexes);
-  }, 60);
+  /**
+   * How long about the delay period, need be re-considered,
+   * for now only delay, oppose to immediately
+   * @private
+   */
+  private debounceRenderCell = debounce((scrollX: number, scrollY: number) => {
+    this.realCellRender(scrollX, scrollY);
+  });
 
   /**
-   * When scroll behavior happened, only render one time in 60ms period,
+   * When scroll behavior happened, only render one time in a period,
    * but render immediately in initiate
    * @param delay debounce render cell
    * @protected
@@ -554,11 +559,10 @@ export class SpreadsheetFacet extends BaseFacet {
   protected dynamicRender(delay = true) {
     const [scrollX, sy, hRowScroll] = this.getScrollOffset();
     const scrollY = sy + this.getPaginationScrollY();
-    const indexes = this.calculateXYIndexes(scrollX, scrollY);
     if (delay) {
-      this.debounceRenderCell(indexes);
+      this.debounceRenderCell(scrollX, scrollY);
     } else {
-      this.renderRealCell(indexes);
+      this.realCellRender(scrollX, scrollY);
     }
     this.translateRelatedGroups(scrollX, scrollY, hRowScroll);
     this.spreadsheet.emit(KEY_CELL_SCROLL, { scrollX, scrollY });

@@ -95,9 +95,6 @@ export default abstract class BaseSpreadSheet extends EE {
   // use to display cell's hover interactions
   public hoverBoxGroup: IGroup;
 
-  // cell cache
-  public cellCache: LruCache<string, Cell> = new LruCache(10000);
-
   public devicePixelRatioMedia: MediaQueryList;
 
   public viewport = window as typeof window & { visualViewport: Element };
@@ -317,7 +314,6 @@ export default abstract class BaseSpreadSheet extends EE {
   public destroy(): void {
     this.facet.destroy();
     this.tooltip.destroy();
-    this.cellCache.clear();
     this.removeDevicePixelRatioListener();
     this.removeDeviceZoomListener();
   }
