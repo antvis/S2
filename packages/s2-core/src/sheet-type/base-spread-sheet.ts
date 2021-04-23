@@ -292,7 +292,7 @@ export default abstract class BaseSpreadSheet extends EE {
     if (this.tooltip) {
       this.tooltip.hide();
     }
-    console.debug(options);
+    console.info(options);
   }
 
   public render(reloadData = true, callback?: () => void): void {

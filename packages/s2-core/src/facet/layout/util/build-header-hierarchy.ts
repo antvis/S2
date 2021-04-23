@@ -17,7 +17,8 @@ import { canNodeBeExpanded } from './can-node-be-expanded';
 import getDimsCondition from './get-dims-condition-by-node';
 import { handleHideNodes } from './handle-hide-nodes';
 import { handleKeepOnlyNodes } from './handle-keep-only-nodes';
-import { EXTRA_FIELD, ID_SEPARATOR } from '../../../common/constant';
+import { EXTRA_FIELD } from '../../../common/constant';
+import { generateId } from './generate-id';
 
 function addTotalsNodes(
   pivot: Pivot,
@@ -103,7 +104,8 @@ export default function buildHeaderHierarchy(
       value = col;
     }
     const nodeQuery = merge({}, query, { [field]: value });
-    const id = `${parent.id}${ID_SEPARATOR}${value}`;
+    const id = generateId(parent.id, value, cfg);
+    if (!id) return;
     const isCollapsed = isBoolean(collapsedCols[id])
       ? collapsedCols[id]
       : false;

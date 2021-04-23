@@ -1,18 +1,11 @@
 import { merge, clone } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
-import {
-  auto,
-  DataCfg,
-  SheetComponent,
-  SpreadSheet,
-  SpreadsheetOptions,
-} from '../../src';
+import { auto, SheetComponent } from '../../src';
 import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Switch } from 'antd';
-import { CustomTooltip } from './custom/custom-tooltip';
+import { Switch, Input } from 'antd';
 
 let data = getMockData('../datasets/tableau-supermarket.csv');
 
@@ -23,14 +16,6 @@ data = data.map((row) => {
   row['count-huanbi'] = -0.4321;
   return row;
 });
-
-const getSpreadSheet = (
-  dom: string | HTMLElement,
-  dataCfg: DataCfg,
-  options: SpreadsheetOptions,
-) => {
-  return new SpreadSheet(dom, dataCfg, options);
-};
 
 const getDataCfg = () => {
   return {
@@ -110,9 +95,8 @@ const getDataCfg = () => {
 
 const getOptions = () => {
   return {
-    debug: true,
-    width: 500,
-    height: 400,
+    width: 1000,
+    height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: true,
@@ -138,11 +122,12 @@ const getOptions = () => {
       },
       device: 'pc',
     },
+    customHeaderCells: {
+      cellLabels: ['办公用品[&]系固件[&]profit'],
+      mode: 'omit',
+    },
     tooltip: {
       showTooltip: true,
-    },
-    initTooltip: (spreadsheet) => {
-      return new CustomTooltip(spreadsheet);
     },
   };
 };
@@ -153,15 +138,6 @@ function MainLayout(props) {
   const [valueInCols, setValueInCols] = React.useState(true);
   const [derivedValueMul, setDerivedValueMul] = React.useState(false);
 
-  const onRowCellClick = (value) => {
-    console.log(value);
-  };
-  const onColCellClick = (value) => {
-    console.log(value);
-  };
-  const onDataCellClick = (value) => {
-    console.log(value);
-  };
   const onCheckChanged = (checked) => {
     setValueInCols(checked);
     setOptions(
@@ -219,15 +195,7 @@ function MainLayout(props) {
           onChange={onCheckChanged2}
         />
       </div>
-      <SheetComponent
-        dataCfg={dataCfg}
-        adaptive={false}
-        options={options}
-        spreadsheet={getSpreadSheet}
-        onRowCellClick={onRowCellClick}
-        onColCellClick={onColCellClick}
-        onDataCellClick={onDataCellClick}
-      />
+      <SheetComponent dataCfg={dataCfg} adaptive={false} options={options} />
     </div>
   );
 }

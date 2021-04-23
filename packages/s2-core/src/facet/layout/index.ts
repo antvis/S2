@@ -228,7 +228,7 @@ export class Layout {
   }
 
   protected getCols(rowsHierarchy: Hierarchy): ColsResult {
-    console.debug(rowsHierarchy);
+    console.info(rowsHierarchy);
     return processCols(this.pivot, this.cfg, this.cols);
   }
 

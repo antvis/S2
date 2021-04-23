@@ -13,6 +13,7 @@ import {
   NodeField,
   Pagination,
   SpreadsheetOptions,
+  CustomHeaderCells,
   Style,
   Totals,
 } from '../common/interface';
@@ -45,6 +46,8 @@ export class SpreadSheetOptionsBuilder {
   private _style: Partial<Style>;
 
   private _totals: Totals;
+
+  private _customHeaderCells: CustomHeaderCells;
 
   private _showSeriesNumber: boolean;
 
@@ -106,6 +109,7 @@ export class SpreadSheetOptionsBuilder {
       spreadsheetType: this._spreadsheetType,
       style: deepMix({}, DefaultStyleCfg(), this._style),
       totals: this._totals,
+      customHeaderCells: this._customHeaderCells,
       showSeriesNumber: this._showSeriesNumber || false,
       hideNodesIds: this._hideNodesIds || [],
       keepOnlyNodesIds: this._keepOnlyNodesIds || { rowIds: [], colIds: [] },
@@ -228,6 +232,13 @@ export class SpreadSheetOptionsBuilder {
 
   public style(style: Partial<Style>): SpreadSheetOptionsBuilder {
     this._style = style;
+    return this;
+  }
+
+  public customHeaderCells(
+    customHeaderCells: CustomHeaderCells,
+  ): SpreadSheetOptionsBuilder {
+    this._customHeaderCells = customHeaderCells;
     return this;
   }
 
