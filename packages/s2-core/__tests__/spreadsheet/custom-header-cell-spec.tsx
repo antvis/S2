@@ -5,8 +5,7 @@ import { auto, SheetComponent } from '../../src';
 import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Switch } from 'antd';
-import { CustomTooltip } from './custom/custom-tooltip';
+import { Switch, Input } from 'antd';
 
 let data = getMockData('../datasets/tableau-supermarket.csv');
 
@@ -129,9 +128,6 @@ const getOptions = () => {
     },
     tooltip: {
       showTooltip: true,
-    },
-    initTooltip: (spreadsheet) => {
-      return new CustomTooltip(spreadsheet);
     },
   };
 };
