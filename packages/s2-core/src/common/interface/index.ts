@@ -263,8 +263,6 @@ export interface SpreadsheetOptions {
   readonly valueInCols?: boolean;
   // 自定义单元格cell
   readonly dataCell?: DataCellCallback;
-  // 是否需要显示 place holder cell
-  readonly needDataPlaceHolderCell?: boolean;
   // 自定义cornerCell
   readonly cornerCell?: CellCallback;
   // 自定义行头cell
@@ -465,8 +463,6 @@ export interface SpreadsheetFacetCfg {
   pagination?: Pagination;
   // born single cell's draw group
   dataCell: DataCellCallback;
-  // 自定义单元格 place holder cell
-  needDataPlaceHolderCell?: boolean;
   // 自定义cornerCell
   cornerCell?: CellCallback;
   // 自定义行头cell
@@ -485,17 +481,6 @@ export interface SpreadsheetFacetCfg {
   layout?: LayoutCallback;
   // 布局结果交由外部控制
   layoutResult?: LayoutResultCallback;
-}
-
-export interface PlaceHolderMeta {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  rowNode: Node;
-  colNode: Node;
-  spreadsheet: BaseSpreadSheet;
-  [key: string]: any;
 }
 
 export interface ViewMeta {

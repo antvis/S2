@@ -4,6 +4,10 @@ import { merge, clamp, get, each } from 'lodash';
 import { PointObject, ScrollBarCfg, ScrollBarTheme } from './interface';
 import { DEFAULT_THEME } from './style';
 
+export enum ScrollType {
+  ScrollChange = 'scroll-change',
+  ScrollEnd = 'scroll-end',
+}
 export class ScrollBar extends Group {
   // 滚动条的布局，横向 | 纵向, 非必传，默认为 false(纵向)
   public isHorizontal: boolean;
@@ -183,7 +187,7 @@ export class ScrollBar extends Group {
   // 绘制新的 scrollBar
   public renderNewScrollBar() {
     // 发送事件
-    this.emit('scroll-change', {
+    this.emit(ScrollType.ScrollChange, {
       thumbOffset: this.thumbOffset,
       ratio: clamp(this.thumbOffset / (this.trackLen - this.thumbLen), 0, 1),
     });
@@ -317,6 +321,15 @@ export class ScrollBar extends Group {
     this.eventHandlers.push({ target, type: eventType, handler });
   }
 
+  addEventListener = (target, eventType, callback) => {
+    target?.addEventListener(eventType, callback, false);
+    return {
+      remove: function () {
+        target?.removeEventListener(eventType, callback, false);
+      },
+    };
+  };
+
   private bindLaterEvent() {
     const canvas = this.get('canvas');
     const containerDOM = canvas.get('container');
@@ -324,18 +337,18 @@ export class ScrollBar extends Group {
     let events = [];
     if (this.isMobile) {
       events = [
-        containerDOM.addEventListener('touchmove', this.onMouseMove),
-        containerDOM.addEventListener('touchend', this.onMouseUp),
-        containerDOM.addEventListener('touchcancel', this.onMouseUp),
+        this.addEventListener(containerDOM, 'touchmove', this.onMouseMove),
+        this.addEventListener(containerDOM, 'touchend', this.onMouseUp),
+        this.addEventListener(containerDOM, 'touchcancel', this.onMouseUp),
       ];
       this.addEvent(canvas, 'touchend', this.onMouseUp);
       this.addEvent(canvas, 'touchcancel', this.onMouseUp);
     } else {
       events = [
-        containerDOM.addEventListener('mousemove', this.onMouseMove),
-        containerDOM.addEventListener('mouseup', this.onMouseUp),
+        this.addEventListener(containerDOM, 'mousemove', this.onMouseMove),
+        this.addEventListener(containerDOM, 'mouseup', this.onMouseUp),
         // 为了保证划出 canvas containerDom 时还没触发 mouseup
-        containerDOM.addEventListener('mouseleave', this.onMouseUp),
+        this.addEventListener(containerDOM, 'mouseleave', this.onMouseUp),
       ];
       this.addEvent(canvas, 'mouseup', this.onMouseUp);
     }
@@ -386,7 +399,7 @@ export class ScrollBar extends Group {
 
   // 滑块鼠标松开事件回调
   private onMouseUp = (e: MouseEvent) => {
-    this.emit('scroll-finish', {});
+    this.emit(ScrollType.ScrollEnd, {});
     // 松开鼠标时，清除所有事件
     e.preventDefault();
     this.clearEvents();

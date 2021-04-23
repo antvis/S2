@@ -1,29 +1,31 @@
 import { BBox } from '@antv/g-canvas';
 import { Wheel } from '@antv/g-gesture';
-import { ScrollBar } from '../ui/scrollbar';
+import { ScrollBar, ScrollType } from '../ui/scrollbar';
 import { interpolateArray } from 'd3-interpolate';
 import * as d3Timer from 'd3-timer';
 import {
   get,
   reduce,
   last,
-  isEqual,
   merge,
   includes,
   isNil,
-  forEach,
+  each,
   isUndefined,
   debounce,
+  isEmpty,
+  filter,
+  find,
 } from 'lodash';
 import {
   calculateInViewIndexes,
   optimizeScrollXY,
   translateGroup,
 } from './utils';
-import { Formatter, PlaceHolderMeta } from '../common/interface';
+import { Formatter } from '../common/interface';
 import { diffIndexes, Indexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
-import { Cell } from '../cell';
+import { BaseCell, Cell } from '../cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
@@ -51,7 +53,6 @@ import { Hierarchy } from './layout/hierarchy';
 import { Node } from './layout/node';
 import { BaseParams } from '../data-set/base-data-set';
 import { DEBUG_VIEW_RENDER, DebuggerUtil } from '../common/debug';
-import { DataPlaceHolderCell } from '../cell';
 
 interface Point {
   x: number;
@@ -99,9 +100,11 @@ export class SpreadsheetFacet extends BaseFacet {
     },
   };
 
-  protected timer: d3Timer.Timer = null;
+  protected timer: d3Timer.Timer;
 
   private mobileWheel: Wheel;
+
+  private wheelEvent: null | (() => any);
 
   constructor(cfg: SpreadsheetFacetCfg) {
     super(cfg);
@@ -109,7 +112,6 @@ export class SpreadsheetFacet extends BaseFacet {
     this.spreadsheet.on('spreadsheet:change-row-header-width', (config) => {
       this.setScrollOffset(0, undefined);
       this.setHRowScrollX(0);
-      console.info(config);
     });
   }
 
@@ -237,10 +239,9 @@ export class SpreadsheetFacet extends BaseFacet {
             this.vScrollBar.trackLen,
         );
       }
-      this.dynamicRender(true);
+      this.dynamicRender();
       if (elapsed > duration) {
         this.timer.stop();
-        this.renderAfterScroll();
       }
     });
   }
@@ -264,8 +265,7 @@ export class SpreadsheetFacet extends BaseFacet {
           this.vScrollBar.trackLen,
       );
     }
-    this.spreadsheet.needUseCacheMeta = true;
-    this.dynamicRender(false);
+    this.dynamicRender();
   }
 
   protected adjustXAndY(x: number, y: number): Point {
@@ -496,117 +496,89 @@ export class SpreadsheetFacet extends BaseFacet {
     this.renderVScrollBar(height, realHeight, scrollY);
   }
 
-  private renderRealCell(indexes: Indexes, placeHolder: boolean) {
-    const needDataPlaceHolderCell = this.cfg.needDataPlaceHolderCell;
-    const needPlaceHolder = placeHolder && needDataPlaceHolderCell;
-    if (!this.preIndexes) {
+  private realCellRender(scrollX: number, scrollY: number) {
+    const indexes = this.calculateXYIndexes(scrollX, scrollY);
+    const { add, remove } = diffIndexes(this.preIndexes, indexes);
+    // Filter cells with width/height of zero
+    // TODO brucetoo check if viewCellWidth0Indexes needed
+    const newIndexes = add.filter(([i, j]) => {
+      return (
+        !includes(this.viewCellWidth0Indexes, i) &&
+        !includes(this.viewCellHeight0Indexes, j)
+      );
+    });
+    DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
+      // add new cell in panelCell
+      each(newIndexes, ([i, j]) => {
+        const viewMeta = this.layoutResult.getViewMeta(j, i);
+        if (viewMeta) {
+          const cell = this.cfg.dataCell(viewMeta);
+          // mark cell for removing
+          cell.set('name', `${i}-${j}`);
+          this.panelGroup.add(cell);
+        }
+      });
+      const allCells = filter(
+        this.panelGroup.getChildren(),
+        (child) => child instanceof BaseCell,
+      );
+      // remove cell from panelCell
+      each(remove, ([i, j]) => {
+        const findOne = find(
+          allCells,
+          (cell) => cell.get('name') === `${i}-${j}`,
+        );
+        findOne?.remove(true);
+      });
+      DebuggerUtil.getInstance().logger(
+        `Render Cell Panel: ${allCells?.length}, Add: ${newIndexes?.length}, Remove: ${remove?.length}`,
+      );
+    });
+    if (!isEmpty(newIndexes)) {
       this.preIndexes = indexes;
-    }
-    const preIndexes = needPlaceHolder ? this.preIndexes : null;
-    if (!isEqual(indexes, preIndexes)) {
-      if (needPlaceHolder) {
-        this.preIndexes = indexes;
-      }
-      const { add } = diffIndexes(preIndexes, indexes);
-      // Filter cells with width/height of zero
-      const newIndexes = add.filter(([i, j]) => {
-        return (
-          !includes(this.viewCellWidth0Indexes, i) &&
-          !includes(this.viewCellHeight0Indexes, j)
-        );
-      });
-      DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
-        let cacheSize = 0;
-        let noCacheSize = 0;
-        const { rowLeafNodes, colLeafNodes } = this.layoutResult;
-        forEach(newIndexes, ([i, j]) => {
-          const cacheKey = `${i}-${j}`;
-          let cell;
-          let viewMeta;
-          const row = rowLeafNodes[j];
-          const col = colLeafNodes[i];
-
-          if (needPlaceHolder) {
-            cell = this.spreadsheet.cellPlaceHolderCache.get(cacheKey);
-          } else {
-            cell = this.spreadsheet.cellCache.get(cacheKey);
-          }
-          if (needPlaceHolder) {
-            viewMeta = {
-              x: col.x,
-              y: row.y,
-              width: col.width,
-              height: row.height,
-              rowNode: row,
-              colNode: col,
-              spreadsheet: this.spreadsheet,
-            } as PlaceHolderMeta;
-          } else {
-            // eslint-disable-next-line no-lonely-if
-            if (this.spreadsheet.needUseCacheMeta) {
-              viewMeta = this.spreadsheet.viewMetaCache.get(cacheKey);
-              if (!viewMeta) {
-                // if cell is viewMeta, need calculate
-                viewMeta = this.layoutResult.getViewMeta(j, i);
-              } else {
-                // if contain cache, only need adjust x,y,width,height of cell
-                viewMeta.x = col.x;
-                viewMeta.y = row.y;
-                viewMeta.width = col.width;
-                viewMeta.height = row.height;
-              }
-            } else {
-              viewMeta = this.layoutResult.getViewMeta(j, i);
-            }
-          }
-          if (cell) {
-            cacheSize += 1;
-            // already cached
-            if (viewMeta) {
-              cell.set('children', []);
-              cell.setMeta(viewMeta);
-              this.panelGroup.add(cell);
-              if (!placeHolder) {
-                // 即使有cell也需要缓存最新的meta值
-                this.spreadsheet.viewMetaCache.put(cacheKey, viewMeta);
-              }
-            }
-          } else {
-            noCacheSize += 1;
-            // add new cell
-            // i = colIndex  j = rowIndex
-            if (viewMeta) {
-              const newGroup = needPlaceHolder
-                ? new DataPlaceHolderCell(viewMeta, this.spreadsheet)
-                : this.cfg.dataCell(viewMeta);
-              this.panelGroup.add(newGroup);
-              if (needPlaceHolder) {
-                this.spreadsheet.cellPlaceHolderCache.put(
-                  cacheKey,
-                  newGroup as DataPlaceHolderCell,
-                );
-              } else {
-                this.spreadsheet.cellCache.put(cacheKey, newGroup as Cell);
-              }
-              if (!placeHolder) {
-                this.spreadsheet.viewMetaCache.put(cacheKey, viewMeta);
-              }
-            }
-          }
-        });
-        DebuggerUtil.getInstance().logger(
-          `Number of new cells:${newIndexes.length} cached:${cacheSize} no cache:${noCacheSize}`,
-        );
-      });
-      this.spreadsheet.needUseCacheMeta = false;
     }
   }
 
-  protected dynamicRender(placeHolder: boolean) {
+  /**
+   * How long about the delay period, need be re-considered,
+   * for now only delay, oppose to immediately
+   * @private
+   */
+  private debounceRenderCell = debounce((scrollX: number, scrollY: number) => {
+    this.realCellRender(scrollX, scrollY);
+  });
+
+  /**
+   * When scroll behavior happened, only render one time in a period,
+   * but render immediately in initiate
+   * @param delay debounce render cell
+   * @protected
+   */
+  protected dynamicRender(delay = true) {
     const [scrollX, sy, hRowScroll] = this.getScrollOffset();
-    const scrollY = sy + this.getDefaultScrollY();
-    const indexes = this.calculateXYIndexes(scrollX, scrollY);
-    this.renderRealCell(indexes, placeHolder);
+    const scrollY = sy + this.getPaginationScrollY();
+    if (delay) {
+      this.debounceRenderCell(scrollX, scrollY);
+    } else {
+      this.realCellRender(scrollX, scrollY);
+    }
+    this.translateRelatedGroups(scrollX, scrollY, hRowScroll);
+    this.spreadsheet.emit(KEY_CELL_SCROLL, { scrollX, scrollY });
+  }
+
+  /**
+   * Translate panelGroup, rowHeader, cornerHeader, columnHeader ect
+   * according to new scroll offset
+   * @param scrollX
+   * @param scrollY
+   * @param hRowScroll
+   * @private
+   */
+  private translateRelatedGroups(
+    scrollX: number,
+    scrollY: number,
+    hRowScroll: number,
+  ) {
     translateGroup(
       this.panelGroup,
       this.cornerBBox.width - scrollX,
@@ -650,7 +622,6 @@ export class SpreadsheetFacet extends BaseFacet {
         height: this.viewportBBox.height,
       },
     });
-    this.spreadsheet.emit(KEY_CELL_SCROLL, { scrollX, scrollY });
   }
 
   protected fireReachBorderEvent(scrollX: number, scrollY: number) {
@@ -699,9 +670,12 @@ export class SpreadsheetFacet extends BaseFacet {
   }
 
   protected bindEvents() {
+    if (!this.wheelEvent) {
+      this.wheelEvent = this.handlePCWheelEvent.bind(this);
+    }
     (this.spreadsheet.container.get('el') as HTMLElement).addEventListener(
       'wheel',
-      this.handlePCWheelEvent.bind(this),
+      this.wheelEvent,
     );
 
     // mock wheel event fo mobile
@@ -724,7 +698,7 @@ export class SpreadsheetFacet extends BaseFacet {
   protected unbindEvents(): void {
     (this.spreadsheet.container.get('el') as HTMLElement).removeEventListener(
       'wheel',
-      this.handlePCWheelEvent.bind(this),
+      this.wheelEvent,
     );
     this.mobileWheel.destroy();
     this.setHRowScrollX(0);
@@ -828,14 +802,9 @@ export class SpreadsheetFacet extends BaseFacet {
         theme: this.scrollBarTheme,
       });
 
-      this.vScrollBar.on('scroll-change', ({ thumbOffset }) => {
+      this.vScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
         this.setScrollOffset(undefined, getOffsetTop(thumbOffset));
-        this.dynamicRender(true);
-      });
-
-      this.vScrollBar.on('scroll-finish', () => {
-        this.spreadsheet.needUseCacheMeta = true;
-        this.dynamicRender(false);
+        this.dynamicRender();
       });
 
       this.foregroundGroup.add(this.vScrollBar);
@@ -876,17 +845,12 @@ export class SpreadsheetFacet extends BaseFacet {
         theme: this.scrollBarTheme,
       });
 
-      this.hScrollBar.on('scroll-change', ({ thumbOffset }) => {
+      this.hScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
         this.setScrollOffset(
           (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth,
           undefined,
         );
-        this.dynamicRender(true);
-      });
-
-      this.hScrollBar.on('scroll-finish', () => {
-        this.spreadsheet.needUseCacheMeta = true;
-        this.dynamicRender(false);
+        this.dynamicRender();
       });
 
       this.foregroundGroup.add(this.hScrollBar);
@@ -913,7 +877,7 @@ export class SpreadsheetFacet extends BaseFacet {
         theme: this.scrollBarTheme,
       });
 
-      this.hRowScrollBar.on('scroll-change', ({ thumbOffset }) => {
+      this.hRowScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
         const hRowScrollX =
           (thumbOffset / this.hRowScrollBar.trackLen) * this.realCornerWidth;
         this.setHRowScrollX(hRowScrollX);
@@ -935,7 +899,7 @@ export class SpreadsheetFacet extends BaseFacet {
     }
   }
 
-  private getScrollOffset() {
+  private getScrollOffset(): [number, number, number] {
     return [
       this.spreadsheet.store.get('scrollX', 0),
       this.spreadsheet.store.get('scrollY', 0),
@@ -1015,7 +979,6 @@ export class SpreadsheetFacet extends BaseFacet {
     }
     this.vScrollBar?.updateThumbOffset(this.getOptimizedThumbOffsetTop(y));
     this.hideScrollBar();
-    this.renderAfterScroll();
   }
 
   private getOptimizedThumbOffsetTop = (deltaY: number) => {
@@ -1033,11 +996,6 @@ export class SpreadsheetFacet extends BaseFacet {
       this.vScrollBar?.updateTheme(this.scrollBarTheme);
     }
   }, 1000);
-
-  private renderAfterScroll = debounce(() => {
-    this.spreadsheet.needUseCacheMeta = true;
-    this.dynamicRender(false);
-  }, 200);
 
   private getRealScrollX(scrollX: number, hRowScroll = 0) {
     return this.cfg.spreadsheet.isScrollContainsRowHeader()
@@ -1066,7 +1024,11 @@ export class SpreadsheetFacet extends BaseFacet {
     return last(this.viewCellHeights);
   }
 
-  private getDefaultScrollY(): number {
+  /**
+   * if pagination exist, adjust scrollY
+   * @private
+   */
+  private getPaginationScrollY(): number {
     const { pagination } = this.cfg;
 
     if (pagination) {
