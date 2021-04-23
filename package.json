@@ -23,7 +23,6 @@
   "scripts": {
     "clean": "rimraf node_modules packages/*/node_modules",
     "bootstrap": "npm i && cd ./packages/s2-core && npm i && cd ../../s2-site && npm i",
-    "bootstrap:ci": "npm i && cd ./packages/s2-core && npm i && cd ../../s2-site && npm i",
     "cd:core": "cd ./packages/s2-core",
     "core:start": "cd ./packages/s2-core && npm run test-live",
     "core:build": "cd ./packages/s2-core && npm run build",
