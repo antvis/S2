@@ -163,7 +163,7 @@ export const copyData = (
   let headers: string[][] = [];
 
   if (isEmpty(colLeafNodes) && !spreadsheetType) {
-    // 兼容明细表只有行头的情况
+    // when there is no column in detail mode
     headers = [rowsHeader];
   } else {
     // Get the table header of Columns.

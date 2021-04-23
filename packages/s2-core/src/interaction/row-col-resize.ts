@@ -66,7 +66,7 @@ export class RowColResize extends BaseInteraction {
   }
 
   protected end(ev: Event) {
-    console.debug(ev);
+    console.info(ev);
     if (this.resizeGroup) {
       this.resizeGroup.set('visible', false);
       const children = this.resizeGroup.getChildren();
