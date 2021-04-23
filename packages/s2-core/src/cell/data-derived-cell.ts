@@ -17,10 +17,12 @@ import { DerivedCell, Cell } from '.';
 import { KEY_COL_REAL_WIDTH_INFO } from '../common/constant';
 
 /**
- * 决策形态的data-cell
- * 主要是新增衍生指标的实现
+ * Data with derived data cell
+ * |----------|------------|
+ * | main data|derived data|
+ * |----------|------------|
  */
-export class StrategyDataCell extends Cell {
+export class DataDerivedCell extends Cell {
   protected initCell() {
     this.initCellRightBorder();
     super.initCell();
@@ -55,13 +57,13 @@ export class StrategyDataCell extends Cell {
     const mainX = x + mainInfo?.x + mainInfo?.width;
     const mainY = y + height / 2;
     const values = this.spreadsheet.dataCfg.fields.values;
-    let finalText = text || (isArray(values) ? '-' : '');
+    let finalText: string;
     if (isArray(values)) {
       // 行维度存在的情况
       finalText = text || '-';
     } else {
-      const exsis = includes(values?.measures, valueField);
-      finalText = text || (exsis ? '-' : '');
+      const exist = includes(values?.measures, valueField);
+      finalText = text || (exist ? '-' : '');
     }
     const mainText = getEllipsisText(finalText, mainInfo?.width, textStyle);
 
@@ -99,7 +101,7 @@ export class StrategyDataCell extends Cell {
       // 多列平铺
       for (let i = 0; i < displayDerivedValues.length; i += 1) {
         const info = derivedInfos[i] as any;
-        const currentDerivedX = x + info.x;
+        const currentDerivedX = x + info?.x;
         const data = this.getDerivedData(displayDerivedValues[i]);
         this.add(
           new DerivedCell({

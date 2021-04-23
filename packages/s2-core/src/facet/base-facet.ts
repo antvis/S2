@@ -178,9 +178,8 @@ export abstract class BaseFacet {
 
   /**
    * 动态渲染
-   * @param placeHolder 是否是placeHolder
    */
-  protected abstract dynamicRender(placeHolder: boolean): void;
+  protected abstract dynamicRender(delay: boolean): void;
 
   protected abstract afterInitial(): void;
 

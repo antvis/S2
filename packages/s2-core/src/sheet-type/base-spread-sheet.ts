@@ -5,7 +5,6 @@ import {
   get,
   merge,
   clone,
-  isEqual,
   find,
   isFunction,
   includes,
@@ -23,7 +22,7 @@ import {
   SpreadsheetOptions,
   ViewMeta,
 } from '../common/interface';
-import { Cell, DataPlaceHolderCell } from '../cell';
+import { Cell } from '../cell';
 import {
   KEY_COL_REAL_WIDTH_INFO,
   KEY_GROUP_BACK_GROUND,
@@ -39,7 +38,7 @@ import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';
 import { BaseParams } from '../data-set/base-data-set';
-import { StrategyDataCell } from '../cell';
+import { DataDerivedCell } from '../cell';
 import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
 import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
@@ -96,21 +95,6 @@ export default abstract class BaseSpreadSheet extends EE {
 
   // use to display cell's hover interactions
   public hoverBoxGroup: IGroup;
-
-  // cell cache
-  public cellCache: LruCache<string, Cell> = new LruCache(10000);
-
-  // cell 占位格缓存
-  public cellPlaceHolderCache: LruCache<
-    string,
-    DataPlaceHolderCell
-  > = new LruCache(10000);
-
-  // cell 真实数据缓存（只用于树结构collapse, 宽、高拖拽拽）
-  public viewMetaCache: LruCache<string, ViewMeta> = new LruCache(1000);
-
-  // 是否需要使用view meta的cache(目前的场景 树结构collapse, 宽、高拖拽拽)，一次性消费
-  public needUseCacheMeta: boolean;
 
   public devicePixelRatioMedia: MediaQueryList;
 
@@ -217,7 +201,6 @@ export default abstract class BaseSpreadSheet extends EE {
       hideNodesIds,
       keepOnlyNodesIds,
       dataCell,
-      needDataPlaceHolderCell,
       cornerCell,
       rowCell,
       colCell,
@@ -265,7 +248,6 @@ export default abstract class BaseSpreadSheet extends EE {
       values,
       derivedValues,
       dataCell: dataCell || defaultCell,
-      needDataPlaceHolderCell,
       cornerCell,
       rowCell,
       colCell,
@@ -287,11 +269,9 @@ export default abstract class BaseSpreadSheet extends EE {
   }
 
   protected getCorrectCell(facet: ViewMeta): Cell {
-    // const valueHasDerivedValue = this.getDerivedValue(facet.valueField).derivedValueField.length === 0;
-    // const isDerivedValue = this.isDerivedValue(facet.valueField);
     return this.isValueInCols()
       ? new Cell(facet, this)
-      : new StrategyDataCell(facet, this);
+      : new DataDerivedCell(facet, this);
   }
 
   /**
@@ -305,10 +285,6 @@ export default abstract class BaseSpreadSheet extends EE {
     const lastSortParam = this.store.get('sortParam');
     const { sortParams } = newDataCfg;
     newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
-    if (!isEqual(dataCfg, this.dataSet)) {
-      // 数据结构发生了任何改变，都需要清空所有meta 缓存
-      this.viewMetaCache.clear();
-    }
     this.dataCfg = newDataCfg;
   }
 
@@ -339,8 +315,6 @@ export default abstract class BaseSpreadSheet extends EE {
   public destroy(): void {
     this.facet.destroy();
     this.tooltip.destroy();
-    this.cellCache.clear();
-    this.viewMetaCache.clear();
     this.removeDevicePixelRatioListener();
     this.removeDeviceZoomListener();
   }

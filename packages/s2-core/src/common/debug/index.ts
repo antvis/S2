@@ -4,9 +4,9 @@
  */
 
 // debug info
-export const DEBUG_TRAINING_DATA = '训练数据';
-export const DEBUG_HEADER_LAYOUT = 'Header布局';
-export const DEBUG_VIEW_RENDER = '单元格渲染';
+export const DEBUG_TRAINING_DATA = 'Training Data';
+export const DEBUG_HEADER_LAYOUT = 'Header Layout';
+export const DEBUG_VIEW_RENDER = 'Data Cell Render';
 
 export class DebuggerUtil {
   private static instance: DebuggerUtil;

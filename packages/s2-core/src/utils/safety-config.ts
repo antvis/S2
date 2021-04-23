@@ -78,7 +78,6 @@ export const safetyOptions = (
     },
     hideRowColFields: options.hideRowColFields || [],
     valueInCols: _.get(options, 'valueInCols', true),
-    needDataPlaceHolderCell: _.get(options, 'needDataPlaceHolderCell', false),
     hideTooltip: _.get(options, 'hideTooltip', false),
     // dataCell, cornerCell, rowCell, colCell, frame, cornerHeader, layout
     // layoutResult, hierarchy, layoutArrange 存在使用时校验，在此不处理

@@ -58,7 +58,7 @@ interface StoreKey {
 }
 
 /**
- * Store something in {@link Spreadsheet} temporary along with it's lifecycle
+ * Store something in {@link SpreadSheet} temporary along with it's lifecycle
  * All the keys need be declare in {@see StoreKey} first
  */
 export class Store {
