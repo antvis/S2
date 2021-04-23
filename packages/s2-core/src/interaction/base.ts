@@ -61,13 +61,15 @@ export abstract class BaseInteraction {
    * @param ev
    */
   protected start(ev: Event) {
-    console.info(ev);
+    console.debug(ev);
   }
 
-  protected process(ev: Event) {}
+  protected process(ev: Event) {
+    console.debug(ev);
+  }
 
   protected end(ev: Event) {
-    console.info(ev);
+    console.debug(ev);
   }
 
   /**

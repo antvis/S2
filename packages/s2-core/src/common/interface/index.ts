@@ -290,8 +290,6 @@ export interface SpreadsheetOptions {
   layoutArrange?: LayoutArrangeCallback;
   // 行头 action icon的配置
   rowActionIcons?: RowActionIcons;
-  // custom config of showing colums and rows
-  customHeaderCells?: CustomHeaderCells;
   // 其他任意的选择配置
   [key: string]: any;
 }
@@ -323,7 +321,7 @@ export interface RowActionIcons {
   };
   // 根据行头名自定义展示
   customDisplayByRowName?: {
-    // Row headers, using the ID_SEPARATOR('[&]') to join two labels when there are hierarchical relations between them.
+    // 行头名称，如果有层级关系需要用 '-' 连接
     rowNames: string[];
     // 指定行头名称是否展示icon
     mode: 'pick' | 'omit';
@@ -412,16 +410,6 @@ export interface ColCfg {
   showDerivedIcon?: boolean;
   // 列宽取计算的第几个最大值
   maxSampleIndex?: number;
-}
-
-/**
- * The label names of rows or column.
- * Using the ID_SEPARATOR('[&]') to join two labels
- * when there are hierarchical relations between them.
- */
-export interface CustomHeaderCells {
-  cellLabels: string[];
-  mode?: 'pick' | 'omit';
 }
 
 /**

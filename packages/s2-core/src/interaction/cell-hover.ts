@@ -37,7 +37,7 @@ export class CellHover extends HoverInteraction {
 
   protected end(ev: Event) {
     this.isDragging = false;
-    console.info(ev);
+    console.debug(ev);
   }
 
   protected showHoverBox(cells: Cell[]) {
@@ -99,5 +99,7 @@ export class CellHover extends HoverInteraction {
     this.draw();
   }
 
-  protected process(ev: Event) {}
+  protected process(ev: Event) {
+    console.debug(ev);
+  }
 }

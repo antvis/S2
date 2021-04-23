@@ -109,7 +109,7 @@ export class SpreadsheetFacet extends BaseFacet {
     this.spreadsheet.on('spreadsheet:change-row-header-width', (config) => {
       this.setScrollOffset(0, undefined);
       this.setHRowScrollX(0);
-      console.info(config);
+      console.debug(config);
     });
   }
 

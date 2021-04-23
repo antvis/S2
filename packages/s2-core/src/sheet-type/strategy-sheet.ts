@@ -68,7 +68,7 @@ export default class StrategySheet extends SpreadSheet {
     return new StrategyDataSet({
       spreadsheet: this,
     });
-    console.info(options);
+    console.debug(options);
   }
 
   protected initTooltip(): BaseTooltip {

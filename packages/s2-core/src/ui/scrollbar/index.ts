@@ -396,14 +396,14 @@ export class ScrollBar extends Group {
     const { thumbColor } = this.theme.hover;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();
-    console.info(e);
+    console.debug(e);
   };
 
   private onTrackMouseOut = (e: MouseEvent) => {
     const { thumbColor } = this.theme.default;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();
-    console.info(e);
+    console.debug(e);
   };
 
   // 判断滑块位置是否超出滑道区域

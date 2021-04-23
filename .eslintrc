@@ -20,7 +20,7 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "project": "./packages/**/tsconfig.json",
+    "project": "./tsconfig.json",
     "sourceType": "module"
   },
   "settings": {
