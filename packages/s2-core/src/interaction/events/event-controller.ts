@@ -1,4 +1,4 @@
-import { Event, LooseObject, Canvas } from '@antv/g-canvas';
+import { Event, LooseObject, Canvas, IElement } from '@antv/g-canvas';
 import { get, each, includes } from 'lodash';
 import { DataCell, ColCell, CornerCell, RowCell } from '../../cell';
 import {
@@ -7,6 +7,17 @@ import {
   DefaultInterceptEventType
 } from './types';
 import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
+
+interface EventListener {
+  target: EventTarget,
+  type: string,
+  handler: EventListenerOrEventListenerObject
+}
+interface EventHandler {
+  target: IElement,
+  type: string,
+  handler: Function
+}
 export class EventController {
   protected spreadsheet: BaseSpreadSheet;
 
@@ -16,9 +27,9 @@ export class EventController {
   // 保存hover的元素
   private hoverTarget: LooseObject;
 
-  private eventHandlers: any[] = [];
+  private eventHandlers: EventHandler[] = [];
 
-  private eventListeners: any[] = [];
+  private eventListeners: EventListener[] = [];
 
   constructor(spreadsheet: BaseSpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -77,18 +88,18 @@ export class EventController {
     this.addEventListener(
       document,
       'click',
-      (event: Event) => {
+      (event: MouseEvent) => {
         this.resetSheetStyle(event)
       },
     );
   }
 
-  protected resetSheetStyle(ev: Event) {
+  protected resetSheetStyle(ev: MouseEvent) {
     if (
       ev.target !== this.spreadsheet.container.get('el') &&
-      !includes(ev.target?.className, 'eva-facet') &&
-      !includes(ev.target?.className, 'ant-menu') &&
-      !includes(ev.target?.className, 'ant-input')
+      !includes((<HTMLElement>ev.target)?.className, 'eva-facet') &&
+      !includes((<HTMLElement>ev.target)?.className, 'ant-menu') &&
+      !includes((<HTMLElement>ev.target)?.className, 'ant-input')
     ) {
       this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
       this.spreadsheet.clearState();
@@ -97,17 +108,6 @@ export class EventController {
       this.spreadsheet.interceptEvent.clear();
       this.draw();
     }
-  }
-
-  /**
-   * Add emit listeners for better release control
-   * @param target
-   * @param eventType
-   * @param handler
-   */
-  protected addEvent(target, eventType: string, handler: Function) {
-    target.on(eventType, handler);
-    this.eventHandlers.push({ target, type: eventType, handler });
   }
 
   protected start(ev: Event) {
@@ -251,12 +251,23 @@ export class EventController {
   }
 
   /**
+   * Add emit listeners for better release control
+   * @param target
+   * @param eventType
+   * @param handler
+   */
+protected addEvent(target: IElement, eventType: string, handler: Function) {
+    target.on(eventType, handler);
+    this.eventHandlers.push({ target, type: eventType, handler });
+  }
+
+  /**
    * 用于绑定原生事件
    * @param target
    * @param type
    * @param handler
    */
-  protected addEventListener(target: any, type: string, handler: Function) {
+  protected addEventListener(target: EventTarget, type: string, handler: EventListenerOrEventListenerObject) {
     if (target.addEventListener) {
       target.addEventListener(type, handler);
       this.eventListeners.push({ target, type, handler });

@@ -2,7 +2,7 @@ import { Group, IShape } from '@antv/g-canvas';
 import { BaseSpreadSheet, SpreadSheetTheme } from '..';
 import { updateShapeAttr } from '../utils/g-renders';
 import * as shapeStyle from '../state/shapeStyleMap';
-import { get, each, findKey } from 'lodash';
+import { get, each, findKey, includes } from 'lodash';
 export abstract class BaseCell<T> extends Group {
   // cell's data meta info
   protected meta: T;
@@ -74,7 +74,7 @@ export abstract class BaseCell<T> extends Group {
         // 找到对应的shape，并且找到cssStyple对应的shapestyle
         const currentShape = findKey(
           shapeStyle.shapeAttrsMap,
-          (attrs) => attrs.indexOf(styleKey) > -1,
+          (attrs) => includes(attrs, styleKey),
         );
         updateShapeAttr(
           this[currentShape],

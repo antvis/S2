@@ -1,4 +1,4 @@
-import { Event, IGroup, Group, IShape } from '@antv/g-canvas';
+import { Event, IGroup, Group, IShape, IElement } from '@antv/g-canvas';
 import { merge, clamp, get, each } from 'lodash';
 import { PointObject, ScrollBarCfg, ScrollBarTheme } from './interface';
 import { DEFAULT_THEME } from './style';
@@ -314,7 +314,7 @@ export class ScrollBar extends Group {
     this.bindLaterEvent();
   };
 
-  protected addEvent(target, eventType, handler) {
+  protected addEvent(target: IElement, eventType: string, handler: Function) {
     target.on(eventType, handler);
     this.eventHandlers.push({ target, type: eventType, handler });
   }

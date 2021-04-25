@@ -1,6 +1,6 @@
 import { DataCell, ColCell, CornerCell, RowCell } from '../cell';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
-import _ from 'lodash';
+import { forEach, includes } from 'lodash';
 
 type S2AllCellType = DataCell | ColCell | CornerCell | RowCell;
 
@@ -15,7 +15,7 @@ export enum StateName {
 }
 export default class State {
   protected spreadsheet: BaseSpreadSheet;
-
+  // TODO: stateStore改为多例模式
   protected stateStore = {
     stateName: '',
     cells: [],
@@ -38,7 +38,7 @@ export default class State {
       };
     } else {
       const currentStateCells = this.stateStore.cells;
-      if (currentStateCells.indexOf(cell) === -1) {
+      if (includes(currentStateCells, cell)) {
         currentStateCells.push(cell);
       }
     }
@@ -50,7 +50,7 @@ export default class State {
 
   public clearState() {
     if (this.stateStore.cells && this.stateStore.cells.length) {
-      _.forEach(this.stateStore.cells, (cell: S2AllCellType) => {
+      forEach(this.stateStore.cells, (cell: S2AllCellType) => {
         cell.hideShapeUnderState();
       });
     }

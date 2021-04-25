@@ -35,6 +35,7 @@ import { BaseFacet } from '../facet/base-facet';
 import { InteractionConstructor } from '../interaction/base';
 import { EventConstructor } from '../interaction/events/base-event';
 import { detectAttrsChangeAndAction } from '../utils/attrs-action';
+import { InteractionNames, EventNames} from '../interaction/constant'
 
 /**
  * 目前交叉表和明细的表类入口(后续会分拆出两个表)
@@ -153,14 +154,14 @@ export default class SpreadSheet extends BaseSpreadSheet {
   protected registerInteractions(options: SpreadsheetOptions) {
     this.interactions.clear();
     if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
-      this.registerInteraction('spreadsheet:brush-selection', BrushSelection);
-      this.registerInteraction('spreadsheet:row-col-resize', RowColResize);
+      this.registerInteraction(InteractionNames.BRUSH_SELECTION_INTERACTION, BrushSelection);
+      this.registerInteraction(InteractionNames.COL_ROW_RESIZE_INTERACTION, RowColResize);
       this.registerInteraction(
-        'spreadsheet:datacell-muti-selection',
+        InteractionNames.DATACELL_MUTI_SELECTION_INTERACTION,
         DataCellMutiSelection,
       );
       this.registerInteraction(
-        'spreadsheet:col-row-muti-selection',
+        InteractionNames.COL_ROW_MUTI_SELECTION_INTERACTION,
         ColRowMutiSelection,
       );
     }
@@ -168,11 +169,11 @@ export default class SpreadSheet extends BaseSpreadSheet {
 
   protected registerEvents() {
     this.events.clear();
-    this.registerEvent('spreadsheet:data-cell-click', DataCellClick);
-    this.registerEvent('spreadsheet:corner-text-click', CornerTextClick);
-    this.registerEvent('spreadsheet:row-column-click', RowColumnClick);
-    this.registerEvent('spreadsheet:row-text-click', RowTextClick);
-    this.registerEvent('spreadsheet:hover', HoverEvent);
+    this.registerEvent(EventNames.DATACELL_CLICK_EVENT, DataCellClick);
+    this.registerEvent(EventNames.CORNER_TEXT_CLICK_EVENT, CornerTextClick);
+    this.registerEvent(EventNames.ROW_COLUMN_CLICK_EVENT, RowColumnClick);
+    this.registerEvent(EventNames.ROW_TEXT_CLICK_EVENT, RowTextClick);
+    this.registerEvent(EventNames.HOVER_EVENT, HoverEvent);
   }
 
   protected registerEvent(key: string, ctc: EventConstructor) {

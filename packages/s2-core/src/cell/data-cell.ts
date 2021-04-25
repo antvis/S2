@@ -1,6 +1,6 @@
 import { getEllipsisText } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
-import { map, find, get, isEmpty, isNumber, first } from 'lodash';
+import { map, find, get, isEmpty, isNumber, first, includes } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
@@ -64,7 +64,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       cells,
       (cell) => cell.getMeta()[needGetIndexKey],
     );
-    if (selectedIndexes.indexOf(currentIndex) > -1) {
+    if (includes(selectedIndexes, currentIndex)) {
       this.updateByState(changeStyleStateName);
     } else {
       this.hideShapeUnderState();

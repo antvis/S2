@@ -1,4 +1,4 @@
-// shape的属性和css属性的映射
+// 主题配置和canvas属性的映射
 export const shapeStyleMap = {
   backgroundColor: 'fill',
   opacity: 'fillOpacity',
