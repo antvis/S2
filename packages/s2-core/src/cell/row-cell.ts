@@ -208,28 +208,29 @@ export class RowCell extends BaseCell<Node> {
       isCustom,
       level,
     } = this.meta;
-    let content = this.getFormattedValue(label);
+    const isTreeType = this.isTreeType();
     // grid & is totals content is empty
-    if (!this.isTreeType() && parent.isTotals) {
-      content = '';
-    }
+    const content =
+      !isTreeType && parent.isTotals ? '' : this.getFormattedValue(label);
 
     // indent in tree
     const textIndent = this.getTextIndent();
     const textStyle = this.getRowTextStyle(isTotals || isCustom, isLeaf);
-    const padding = DEFAULT_PADDING * level + DEFAULT_PADDING;
+    const padding = isTreeType
+      ? DEFAULT_PADDING * level + DEFAULT_PADDING
+      : DEFAULT_PADDING * 2;
     const maxWidth =
-      cellWidth - textIndent - padding - (this.isTreeType() ? ICON_SIZE : 0);
+      cellWidth - textIndent - padding - (isTreeType ? ICON_SIZE : 0);
     const text = getEllipsisText(content, maxWidth, textStyle);
     const textY =
       getAdjustPosition(y, cellHeight, offset, height, FONT_SIZE) +
       FONT_SIZE / 2;
-    const textXPadding = this.isTreeType() ? padding : cellWidth / 2;
+    const textXPadding = isTreeType ? padding : cellWidth / 2;
     const leafExtraPadding =
       isLeaf || isTotals ? ICON_SIZE + DEFAULT_PADDING : 0;
     const textX = x + textIndent + textXPadding - leafExtraPadding;
 
-    const textAlign = this.isTreeType() ? 'start' : 'center';
+    const textAlign = isTreeType ? 'start' : 'center';
     const textShape = this.addShape('text', {
       attrs: {
         x: textX,
