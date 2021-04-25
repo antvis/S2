@@ -12,7 +12,7 @@ interface EventListener {
 interface EventHandler {
   target: IElement;
   type: string;
-  handler: Function;
+  handler: (ev: Event) => void;
 }
 export class EventController {
   protected spreadsheet: BaseSpreadSheet;
@@ -101,6 +101,7 @@ export class EventController {
       this.draw();
     }
   }
+
   // TODO: 需要再考虑一下应该是触发后再屏蔽？还是拦截后再触发，从我的实际重构来看，无法预料到用户的下一步操作，只能全都emit，然后再按照实际的操作把不对应的interaction屏蔽掉。
   protected start(ev: Event) {
     this.target = ev.target;
@@ -248,7 +249,11 @@ export class EventController {
    * @param eventType
    * @param handler
    */
-  protected addEvent(target: IElement, eventType: string, handler: Function) {
+  protected addEvent(
+    target: IElement,
+    eventType: string,
+    handler: (ev: Event) => void,
+  ) {
     target.on(eventType, handler);
     this.eventHandlers.push({ target, type: eventType, handler });
   }

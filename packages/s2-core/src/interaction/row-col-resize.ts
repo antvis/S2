@@ -1,4 +1,4 @@
-import { Event, Group, IGroup } from '@antv/g-canvas';
+import { Group, IGroup } from '@antv/g-canvas';
 import { throttle, clone, merge, isNil, get } from 'lodash';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { ResizeInfo } from '../facet/header/interface';
@@ -124,7 +124,7 @@ export class RowColResize extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSEUP, (ev) => {
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSEUP, () => {
       if (this.resizeGroup) {
         this.resizeGroup.set('visible', false);
         const children = this.resizeGroup.getChildren();

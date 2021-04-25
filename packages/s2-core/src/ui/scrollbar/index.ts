@@ -314,7 +314,11 @@ export class ScrollBar extends Group {
     this.bindLaterEvent();
   };
 
-  protected addEvent(target: IElement, eventType: string, handler: Function) {
+  protected addEvent(
+    target: IElement,
+    eventType: string,
+    handler: (ev: Event) => void,
+  ) {
     target.on(eventType, handler);
     this.eventHandlers.push({ target, type: eventType, handler });
   }
@@ -387,21 +391,21 @@ export class ScrollBar extends Group {
   };
 
   // 滑块鼠标松开事件回调
-  private onMouseUp = (e) => {
+  private onMouseUp = (e: Event) => {
     this.emit('scroll-finish', {});
     // 松开鼠标时，清除所有事件
     e.preventDefault();
     this.clearEvents();
   };
 
-  private onTrackMouseOver = (e) => {
+  private onTrackMouseOver = (e: Event) => {
     const { thumbColor } = this.theme.hover;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();
     console.debug(e);
   };
 
-  private onTrackMouseOut = (e) => {
+  private onTrackMouseOut = (e: Event) => {
     const { thumbColor } = this.theme.default;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();

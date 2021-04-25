@@ -23,7 +23,7 @@ const Summary = (props: { summaries: SummaryProps[] }) => {
 
   const renderSummary = () => {
     return summaries?.map((item) => {
-      const { selectedData = [], name, value } = item || {};
+      const { name, value } = item || {};
 
       return (
         <div key={name} className={`${TOOLTIP_CLASS_PRE}-summary-item`}>

@@ -158,13 +158,13 @@ function MainLayout(props) {
   const [derivedValueMul, setDerivedValueMul] = React.useState(false);
 
   const onRowCellClick = (value) => {
-    // console.log(value);
+    console.log(value);
   };
   const onColCellClick = (value) => {
-    // console.log(value);
+    console.log(value);
   };
   const onDataCellClick = (value) => {
-    // console.log(value);
+    console.log(value);
   };
   const onCheckChanged = (checked) => {
     setValueInCols(checked);

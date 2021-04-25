@@ -15,6 +15,7 @@ export enum StateName {
 }
 export default class State {
   protected spreadsheet: BaseSpreadSheet;
+
   // TODO: stateStore改为多例模式
   protected stateStore = {
     stateName: '',
@@ -38,7 +39,7 @@ export default class State {
       };
     } else {
       const currentStateCells = this.stateStore.cells;
-      if (includes(currentStateCells, cell)) {
+      if (!includes(currentStateCells, cell)) {
         currentStateCells.push(cell);
       }
     }

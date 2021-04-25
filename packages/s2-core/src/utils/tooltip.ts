@@ -9,8 +9,6 @@ import {
   isNumber,
   uniq,
   forEach,
-  isObject,
-  isArray,
   map,
   size,
   filter,
@@ -446,9 +444,9 @@ export const getTooltipData = (
   options?: TooltipOptions,
   aggregation?: Aggregation,
 ) => {
-  let summaries = null,
-    headInfo = null,
-    details = null;
+  let summaries = null;
+  let headInfo = null;
+  let details = null;
   if (!options?.hideSummary) {
     // 计算总计小计
     summaries = map(cellInfos, (cellInfo) =>

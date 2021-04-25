@@ -12,7 +12,7 @@ import {
   isArray,
 } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
-import { renderRect, renderText, updateShapeAttr } from '../utils/g-renders';
+import { renderRect, renderText } from '../utils/g-renders';
 import { DerivedCell, DataCell } from '.';
 import { KEY_COL_REAL_WIDTH_INFO } from '../common/constant';
 

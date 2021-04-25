@@ -1,12 +1,9 @@
-import { Event, Point, IShape } from '@antv/g-canvas';
-import { DataCell } from '../cell';
-import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
+import { Event } from '@antv/g-canvas';
 import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
 import { StateName } from '../state/state';
-import { DataItem, TooltipOptions } from '..';
 import { getTooltipData } from '../utils/tooltip';
-import { each, map, get } from 'lodash';
+import { each, map, assign, pick } from 'lodash';
 import { Node } from '../index';
 
 const SHIFT_KEY = 'Shift';
@@ -67,11 +64,7 @@ export class ColRowMutiSelection extends BaseInteraction {
           const currentState = this.spreadsheet.getCurrentState();
           const { stateName, cells } = currentState;
           if (stateName === StateName.COL_SELECTED) {
-            cellInfos = map(cells, (cell) => ({
-              ...get(cell.getMeta(), 'query'),
-              colIndex: cell.getMeta().colIndex,
-              rowIndex: cell.getMeta().rowIndex,
-            }));
+            cellInfos = this.mergeCellInfo(cells);
           }
           this.handleTooltip(ev, meta, cellInfos);
           this.spreadsheet.updateCellStyleByState();
@@ -111,6 +104,18 @@ export class ColRowMutiSelection extends BaseInteraction {
           this.draw();
         }
       }
+    });
+  }
+
+  // TODO: mergeCellInfo 不应该存在，应该放在tooltip的util中，但是util现在有点case by case，等util改造后收敛这里的tooltip方式
+  private mergeCellInfo(cells) {
+    return map(cells, (stateCell) => {
+      const stateCellMeta = stateCell.getMeta();
+      return assign(
+        {},
+        stateCellMeta.query || {},
+        pick(stateCellMeta, ['colIndex', 'rowIndex']),
+      );
     });
   }
 

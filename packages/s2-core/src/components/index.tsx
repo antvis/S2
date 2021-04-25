@@ -9,7 +9,6 @@ import {
   KEY_COL_NODE_BORDER_REACHED,
   KEY_ROW_NODE_BORDER_REACHED,
   KEY_CELL_SCROLL,
-  KEY_LIST_SORT,
 } from '../common/constant';
 import { Node } from '..';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
@@ -88,7 +87,6 @@ export const SheetComponent = (props: SpreadsheetProps) => {
     rowLevel,
     colLevel,
     isLoading,
-    onListSort,
     onRowColLayout,
     onRowCellScroll,
     onColCellScroll,

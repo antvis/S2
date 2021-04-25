@@ -22,7 +22,7 @@ import {
 import { Formatter, PlaceHolderMeta } from '../common/interface';
 import { diffIndexes, Indexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
-import { BaseCell, DataCell } from '../cell';
+import { DataCell } from '../cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,

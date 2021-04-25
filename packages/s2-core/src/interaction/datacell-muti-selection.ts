@@ -40,37 +40,29 @@ export class DataCellMutiSelection extends BaseInteraction {
       if (this.isMutiSelection && meta) {
         const currentState = this.spreadsheet.getCurrentState();
         const { stateName, cells } = currentState;
-        // 手动把当前行头列头选择下的cell样式重置
-        if (
-          stateName === StateName.COL_SELECTED ||
-          stateName === StateName.ROW_SELECTED
-        ) {
-          this.spreadsheet.getPanelAllCells().forEach((cell) => {
-            cell.hideShapeUnderState();
-          });
-        }
+        this.spreadsheet.clearStyleIndependent();
         // 屏蔽hover和click
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
         // 先把之前的tooltip隐藏
         this.spreadsheet.hideTooltip();
-        const cell = this.spreadsheet.getCell(ev.target);
         this.spreadsheet.setState(cell, StateName.SELECTED);
         this.spreadsheet.updateCellStyleByState();
         this.draw();
 
         const cellInfos = [];
         if (stateName === StateName.SELECTED) {
-          each(cells, (cell) => {
+          each(cells, (stateCell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
-            const meta = cell.getMeta();
-            if (!isEmpty(meta)) {
-              const query = meta[valueInCols ? 'colQuery' : 'rowQuery'];
+            const stateCellMeta = stateCell.getMeta();
+            if (!isEmpty(stateCellMeta)) {
+              const query =
+                stateCellMeta[valueInCols ? 'colQuery' : 'rowQuery'];
               if (query) {
                 const cellInfo = {
                   ...query,
-                  colIndex: valueInCols ? meta.colIndex : null,
-                  rowIndex: !valueInCols ? meta.rowIndex : null,
+                  colIndex: valueInCols ? stateCellMeta.colIndex : null,
+                  rowIndex: !valueInCols ? stateCellMeta.rowIndex : null,
                 };
 
                 if (!find(cellInfos, (info) => isEqual(info, cellInfo))) {
