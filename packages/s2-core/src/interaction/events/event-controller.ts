@@ -1,22 +1,18 @@
 import { Event, LooseObject, Canvas, IElement } from '@antv/g-canvas';
 import { get, each, includes } from 'lodash';
 import { DataCell, ColCell, CornerCell, RowCell } from '../../cell';
-import {
-  S2Event,
-  OriginEventType,
-  DefaultInterceptEventType
-} from './types';
+import { S2Event, OriginEventType, DefaultInterceptEventType } from './types';
 import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
 
 interface EventListener {
-  target: EventTarget,
-  type: string,
-  handler: EventListenerOrEventListenerObject
+  target: EventTarget;
+  type: string;
+  handler: EventListenerOrEventListenerObject;
 }
 interface EventHandler {
-  target: IElement,
-  type: string,
-  handler: Function
+  target: IElement;
+  type: string;
+  handler: Function;
 }
 export class EventController {
   protected spreadsheet: BaseSpreadSheet;
@@ -85,13 +81,9 @@ export class EventController {
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARDUP, event);
       },
     );
-    this.addEventListener(
-      document,
-      'click',
-      (event: MouseEvent) => {
-        this.resetSheetStyle(event)
-      },
-    );
+    this.addEventListener(document, 'click', (event: MouseEvent) => {
+      this.resetSheetStyle(event);
+    });
   }
 
   protected resetSheetStyle(ev: MouseEvent) {
@@ -109,12 +101,12 @@ export class EventController {
       this.draw();
     }
   }
-
+  // TODO: 需要再考虑一下应该是触发后再屏蔽？还是拦截后再触发，从我的实际重构来看，无法预料到用户的下一步操作，只能全都emit，然后再按照实际的操作把不对应的interaction屏蔽掉。
   protected start(ev: Event) {
     this.target = ev.target;
     // 任何点击都该取消hover的后续keep态
-    if(this.spreadsheet.hoverTimer) {
-      clearTimeout(this.spreadsheet.hoverTimer)
+    if (this.spreadsheet.hoverTimer) {
+      clearTimeout(this.spreadsheet.hoverTimer);
     }
     const appendInfo = get(ev.target, 'attrs.appendInfo');
     if (appendInfo && appendInfo.isResizer) {
@@ -256,7 +248,7 @@ export class EventController {
    * @param eventType
    * @param handler
    */
-protected addEvent(target: IElement, eventType: string, handler: Function) {
+  protected addEvent(target: IElement, eventType: string, handler: Function) {
     target.on(eventType, handler);
     this.eventHandlers.push({ target, type: eventType, handler });
   }
@@ -267,7 +259,11 @@ protected addEvent(target: IElement, eventType: string, handler: Function) {
    * @param type
    * @param handler
    */
-  protected addEventListener(target: EventTarget, type: string, handler: EventListenerOrEventListenerObject) {
+  protected addEventListener(
+    target: EventTarget,
+    type: string,
+    handler: EventListenerOrEventListenerObject,
+  ) {
     if (target.addEventListener) {
       target.addEventListener(type, handler);
       this.eventListeners.push({ target, type, handler });

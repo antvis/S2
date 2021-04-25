@@ -71,7 +71,6 @@ export default {
     },
   },
   scrollBar: {
-    
     trackColor: 'rgba(0,0,0,0)',
     thumbHoverColor: 'rgba(0,0,0,0.2)',
     thumbColor: 'rgba(0,0,0,0.15)',
@@ -89,22 +88,22 @@ export default {
     dataCell: {
       selected: {
         backgroundColor: '#d8d8d8',
-        hoverBorderColor: '#000000'
+        hoverBorderColor: '#000000',
       },
       hover: {
         backgroundColor: '#d8d8d8',
       },
       keepHover: {
         backgroundColor: '#d8d8d8',
-        hoverBorderColor: '#000000'
+        hoverBorderColor: '#000000',
       },
       prepareSelect: {
         prepareSelectBorderColor: '#002329',
       },
-      
+
       hoverLinkage: {
         backgroundColor: '#F3F7FF',
-      }
+      },
     },
     colCell: {
       hover: {

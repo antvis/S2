@@ -15,9 +15,7 @@ export class RowTextClick extends BaseEvent {
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
       if (
-        this.spreadsheet.interceptEvent.has(
-          DefaultInterceptEventType.CLICK,
-        )
+        this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.CLICK)
       ) {
         return;
       }

@@ -26,7 +26,7 @@ import {
   CornerTextClick,
   RowColumnClick,
   RowTextClick,
-  HoverEvent
+  HoverEvent,
 } from '../interaction/events';
 import { DetailFacet } from '../facet/detail';
 import { SpreadsheetFacet } from '../facet';
@@ -35,7 +35,7 @@ import { BaseFacet } from '../facet/base-facet';
 import { InteractionConstructor } from '../interaction/base';
 import { EventConstructor } from '../interaction/events/base-event';
 import { detectAttrsChangeAndAction } from '../utils/attrs-action';
-import { InteractionNames, EventNames} from '../interaction/constant'
+import { InteractionNames, EventNames } from '../interaction/constant';
 
 /**
  * 目前交叉表和明细的表类入口(后续会分拆出两个表)
@@ -154,8 +154,14 @@ export default class SpreadSheet extends BaseSpreadSheet {
   protected registerInteractions(options: SpreadsheetOptions) {
     this.interactions.clear();
     if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
-      this.registerInteraction(InteractionNames.BRUSH_SELECTION_INTERACTION, BrushSelection);
-      this.registerInteraction(InteractionNames.COL_ROW_RESIZE_INTERACTION, RowColResize);
+      this.registerInteraction(
+        InteractionNames.BRUSH_SELECTION_INTERACTION,
+        BrushSelection,
+      );
+      this.registerInteraction(
+        InteractionNames.COL_ROW_RESIZE_INTERACTION,
+        RowColResize,
+      );
       this.registerInteraction(
         InteractionNames.DATACELL_MUTI_SELECTION_INTERACTION,
         DataCellMutiSelection,

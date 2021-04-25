@@ -33,9 +33,7 @@ export class ColRowMutiSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDUP, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
         this.isMutiSelection = false;
-        this.spreadsheet.interceptEvent.delete(
-          DefaultInterceptEventType.CLICK,
-        );
+        this.spreadsheet.interceptEvent.delete(DefaultInterceptEventType.CLICK);
       }
     });
   }
@@ -44,17 +42,13 @@ export class ColRowMutiSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.COLCELL_CLICK, (ev) => {
       if (this.isMutiSelection) {
         // 屏蔽hover和click
-        this.spreadsheet.interceptEvent.add(
-          DefaultInterceptEventType.CLICK,
-        );
+        this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
         const cell = this.spreadsheet.getCell(ev.target);
         let cellInfos = [];
         if (cell.getMeta().x !== undefined) {
           const meta = cell.getMeta();
           const idx = meta.colIndex;
-          this.spreadsheet.interceptEvent.add(
-            DefaultInterceptEventType.HOVER,
-          );
+          this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
           if (idx === -1) {
             // 多列
             const leafNodes = Node.getAllLeavesOfNode(meta);
@@ -92,16 +86,12 @@ export class ColRowMutiSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
       if (this.isMutiSelection) {
         // 屏蔽hover和click
-        this.spreadsheet.interceptEvent.add(
-          DefaultInterceptEventType.CLICK,
-        );
+        this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
         const cell = this.spreadsheet.getCell(ev.target);
         if (cell.getMeta().x !== undefined) {
           const meta = cell.getMeta();
           const idx = meta.colIndex;
-          this.spreadsheet.interceptEvent.add(
-            DefaultInterceptEventType.HOVER,
-          );
+          this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
           if (idx === -1) {
             // 多行
             each(Node.getAllLeavesOfNode(meta), (node: Node) => {

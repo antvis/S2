@@ -17,9 +17,7 @@ export class CornerTextClick extends BaseEvent {
   private bindCornerClick() {
     this.spreadsheet.on(S2Event.CORNER_CLICK, (ev: Event) => {
       if (
-        this.spreadsheet.interceptEvent.has(
-          DefaultInterceptEventType.CLICK,
-        )
+        this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.CLICK)
       ) {
         return;
       }

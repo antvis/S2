@@ -4,11 +4,7 @@ import { map, find, get, isEmpty, isNumber, first, includes } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
-import {
-  renderLine,
-  renderRect,
-  renderText,
-} from '../utils/g-renders';
+import { renderLine, renderRect, renderText } from '../utils/g-renders';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { BaseCell } from './base-cell';
@@ -78,20 +74,19 @@ export class DataCell extends BaseCell<ViewMeta> {
       // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
       // 二者操作一致，function合并
       if (stateName === StateName.COL_SELECTED) {
-        this.changeCellStyleByState('colIndex', StateName.SELECTED)
+        this.changeCellStyleByState('colIndex', StateName.SELECTED);
       } else if (stateName === StateName.ROW_SELECTED) {
-        this.changeCellStyleByState('rowIndex', StateName.SELECTED)
+        this.changeCellStyleByState('rowIndex', StateName.SELECTED);
       } else if (stateName === StateName.HOVER && !isEmpty(cells)) {
         // 如果当前是hover，要绘制出十字交叉的行列样式
         const currentHoverCell = first(cells);
         const currentColIndex = this.meta.colIndex;
         const currentRowIndex = this.meta.rowIndex;
         // 当视图内的cell行列index与hover的cell一致，且不是当前hover的cell时，绘制hover的十字样式
-        if(
-          (
-            currentColIndex === currentHoverCell.getMeta().colIndex ||
-            currentRowIndex === currentHoverCell.getMeta().rowIndex
-          ) && this !== currentHoverCell
+        if (
+          (currentColIndex === currentHoverCell.getMeta().colIndex ||
+            currentRowIndex === currentHoverCell.getMeta().rowIndex) &&
+          this !== currentHoverCell
         ) {
           this.updateByState(StateName.HOVER_LINKAGE);
         } else if (this !== currentHoverCell) {

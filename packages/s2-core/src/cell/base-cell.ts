@@ -72,9 +72,8 @@ export abstract class BaseCell<T> extends Group {
     each(stateStyles, (style, styleKey) => {
       if (styleKey) {
         // 找到对应的shape，并且找到cssStyple对应的shapestyle
-        const currentShape = findKey(
-          shapeStyle.shapeAttrsMap,
-          (attrs) => includes(attrs, styleKey),
+        const currentShape = findKey(shapeStyle.shapeAttrsMap, (attrs) =>
+          includes(attrs, styleKey),
         );
         updateShapeAttr(
           this[currentShape],

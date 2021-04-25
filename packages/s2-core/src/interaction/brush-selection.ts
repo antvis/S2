@@ -87,9 +87,7 @@ export class BrushSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.DATACELL_MOUSEMOVE, (ev) => {
       if (this.phase) {
         // 屏蔽hover事件
-        this.spreadsheet.interceptEvent.add(
-          DefaultInterceptEventType.HOVER,
-        );
+        this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
         ev.preventDefault();
         this.phase = 2;
         const oe = ev.originalEvent as any;
@@ -129,7 +127,7 @@ export class BrushSelection extends BaseInteraction {
           each(cells, (cell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
             const meta = cell.getMeta();
-            if(!isEmpty(meta)) {
+            if (!isEmpty(meta)) {
               const query = meta[valueInCols ? 'colQuery' : 'rowQuery'];
               if (query) {
                 const cellInfo = {
@@ -152,7 +150,7 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private isInCellInfos(cellInfos, info): boolean {
-    return !!find(cellInfos, i => isEqual(i, info))
+    return !!find(cellInfos, (i) => isEqual(i, info));
   }
 
   private handleTooltip(ev, cellInfos) {

@@ -27,9 +27,7 @@ export class DataCellMutiSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDUP, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
         this.isMutiSelection = false;
-        this.spreadsheet.interceptEvent.delete(
-          DefaultInterceptEventType.CLICK,
-        );
+        this.spreadsheet.interceptEvent.delete(DefaultInterceptEventType.CLICK);
       }
     });
   }
@@ -52,12 +50,8 @@ export class DataCellMutiSelection extends BaseInteraction {
           });
         }
         // 屏蔽hover和click
-        this.spreadsheet.interceptEvent.add(
-          DefaultInterceptEventType.CLICK,
-        );
-        this.spreadsheet.interceptEvent.add(
-          DefaultInterceptEventType.HOVER,
-        );
+        this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
+        this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
         // 先把之前的tooltip隐藏
         this.spreadsheet.hideTooltip();
         const cell = this.spreadsheet.getCell(ev.target);
@@ -70,7 +64,7 @@ export class DataCellMutiSelection extends BaseInteraction {
           each(cells, (cell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
             const meta = cell.getMeta();
-            if(!isEmpty(meta)) {
+            if (!isEmpty(meta)) {
               const query = meta[valueInCols ? 'colQuery' : 'rowQuery'];
               if (query) {
                 const cellInfo = {

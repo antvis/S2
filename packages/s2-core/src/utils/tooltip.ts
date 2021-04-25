@@ -447,8 +447,8 @@ export const getTooltipData = (
   aggregation?: Aggregation,
 ) => {
   let summaries = null,
-      headInfo = null,
-      details = null;
+    headInfo = null,
+    details = null;
   if (!options?.hideSummary) {
     // 计算总计小计
     summaries = map(cellInfos, (cellInfo) =>

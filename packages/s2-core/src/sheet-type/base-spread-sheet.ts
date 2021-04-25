@@ -51,7 +51,7 @@ import { DefaultInterceptEvent } from '../interaction/events/types';
 import State from '../state/state';
 import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
 import { ShowProps } from '../common/tooltip/interface';
-import { StateName } from '../state/state'
+import { StateName } from '../state/state';
 
 const matrixTransform = ext.transform;
 export default abstract class BaseSpreadSheet extends EE {
@@ -508,7 +508,12 @@ export default abstract class BaseSpreadSheet extends EE {
     children.forEach((child) => {
       if (child instanceof DataCell) {
         const { colIndex, rowIndex } = child.getMeta();
-        if(colIndex >= minColIndex && colIndex <= maxColIndex && rowIndex >= minRowIndex && rowIndex <= maxRowIndex ) {
+        if (
+          colIndex >= minColIndex &&
+          colIndex <= maxColIndex &&
+          rowIndex >= minRowIndex &&
+          rowIndex <= maxRowIndex
+        ) {
           cells.push(child);
         }
         if (callback) {

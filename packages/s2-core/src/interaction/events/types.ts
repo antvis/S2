@@ -47,4 +47,6 @@ export enum DefaultInterceptEventType {
   CLICK = 'click',
 }
 
-export type DefaultInterceptEvent = DefaultInterceptEventType.HOVER | DefaultInterceptEventType.CLICK;
+export type DefaultInterceptEvent =
+  | DefaultInterceptEventType.HOVER
+  | DefaultInterceptEventType.CLICK;

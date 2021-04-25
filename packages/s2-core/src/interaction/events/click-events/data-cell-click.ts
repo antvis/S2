@@ -16,9 +16,7 @@ export class DataCellClick extends BaseEvent {
     this.spreadsheet.on(S2Event.DATACELL_CLICK, (ev: Event) => {
       ev.stopPropagation();
       if (
-        this.spreadsheet.interceptEvent.has(
-          DefaultInterceptEventType.CLICK,
-        )
+        this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.CLICK)
       ) {
         return;
       }
@@ -42,9 +40,7 @@ export class DataCellClick extends BaseEvent {
           this.spreadsheet.clearState();
           this.spreadsheet.setState(cell, StateName.SELECTED);
           this.spreadsheet.updateCellStyleByState();
-          this.spreadsheet.interceptEvent.add(
-            DefaultInterceptEventType.HOVER,
-          );
+          this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
           this.handleTooltip(ev, meta);
         }
 
