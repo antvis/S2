@@ -126,14 +126,14 @@ export class ColCell extends BaseCell<Node> {
       ? SORT_ICON_SIZE + SORT_ICON_MARGIN_RIGHT
       : 0;
     const textStyle =
-      isLeaf && !isTotals && !this.headerConfig.spreadsheet.isStrategyMode()
+      isLeaf && !isTotals
         ? this.spreadsheet.theme.header.text
         : this.spreadsheet.theme.header.bolderText;
     let text = getEllipsisText(content, cellWidth - sortIconPadding, textStyle);
     const textWidth = measureTextWidth(text, textStyle);
     let textX;
     let textAlign;
-    if (isLeaf && !this.headerConfig.spreadsheet.isStrategyMode()) {
+    if (isLeaf) {
       // 最后一个层级的维值，固定居右(但是排除决策模式的场景)
       textX = x + cellWidth - sortIconPadding - SORT_ICON_MARGIN_RIGHT;
       textAlign = 'end';
@@ -181,8 +181,7 @@ export class ColCell extends BaseCell<Node> {
         derivedValue.derivedValueField,
         derivedValue.displayDerivedValueField,
       ) &&
-      derivedValue.derivedValueField.length > 1 &&
-      !this.spreadsheet.isStrategyMode()
+      derivedValue.derivedValueField.length > 1
     ) {
       // 1、非决策模式下
       // 2、衍生值部分显示

@@ -84,8 +84,7 @@ export class BrushSelection extends HoverInteraction {
     // 暂时只有交叉表才多选！
     if (
       this.phase &&
-      this.spreadsheet.isSpreadsheetType() &&
-      !this.spreadsheet.isStrategyMode()
+      this.spreadsheet.isSpreadsheetType()
     ) {
       ev.preventDefault();
       this.phase = 2;

@@ -54,10 +54,6 @@ export default class StrategySheet extends SpreadSheet {
     return true;
   }
 
-  isStrategyMode(): boolean {
-    return true;
-  }
-
   protected initFacet(facetCfg: SpreadsheetFacetCfg): BaseFacet {
     return new SpreadsheetFacet(facetCfg);
   }

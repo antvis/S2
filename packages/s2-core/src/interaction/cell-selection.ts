@@ -51,7 +51,7 @@ export class CellSelection extends HoverInteraction {
         };
         const hoveringCellData = get(meta, 'data.0');
         const isTotals = get(meta, 'isTotals', false);
-        if (isTotals && this.spreadsheet.isStrategyMode()) {
+        if (isTotals) {
           // 决策模式下的总小计不tooltip
           return;
         }
