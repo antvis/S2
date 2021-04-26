@@ -1,4 +1,4 @@
-import { memoize, isString, values, isArray, toString } from 'lodash';
+import { memoize, isString, values, isArray, toString, isNumber } from 'lodash';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -7,8 +7,14 @@ const ctx = canvas.getContext('2d');
  * 计算文本在画布中的宽度
  */
 export const measureTextWidth = memoize(
-  (text: any, font): number => {
-    const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } = font;
+  (text: number | string = '', font: unknown): number => {
+    const {
+      fontSize,
+      fontFamily,
+      fontWeight,
+      fontStyle,
+      fontVariant,
+    } = font as CSSStyleDeclaration;
     ctx.font = [
       fontStyle,
       fontVariant,
@@ -16,7 +22,7 @@ export const measureTextWidth = memoize(
       `${fontSize}px`,
       fontFamily,
     ].join(' ');
-    return ctx.measureText(isString(text) ? text : '').width;
+    return ctx.measureText(`${text}`).width;
   },
   (text: any, font) => [text, ...values(font)].join(''),
 );
@@ -30,7 +36,11 @@ export const measureTextWidth = memoize(
  * @param maxWidth
  * @param font
  */
-export const getEllipsisTextInner = (text: any, maxWidth: number, font) => {
+export const getEllipsisTextInner = (
+  text: any,
+  maxWidth: number,
+  font: CSSStyleDeclaration,
+) => {
   const STEP = 16; // 每次 16，调参工程师
   const DOT_WIDTH = measureTextWidth('...', font);
 
@@ -116,7 +126,7 @@ export const getEllipsisTextInner = (text: any, maxWidth: number, font) => {
  * @param text
  * @param font
  */
-export const measureTextWidthRoughly = (text: any, font = {}): number => {
+export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
   const alphaWidth = measureTextWidth('a', font);
   const chineseWidth = measureTextWidth('蚂', font);
 
@@ -146,7 +156,7 @@ export const measureTextWidthRoughly = (text: any, font = {}): number => {
 export const getEllipsisText = (
   text: string,
   maxWidth: number,
-  fontParam?,
+  fontParam?: unknown,
   priorityParam?: string[],
 ) => {
   let font = {};
@@ -157,7 +167,7 @@ export const getEllipsisText = (
     font = fontParam || {};
   }
   if (!priority || !priority.length) {
-    return getEllipsisTextInner(text, maxWidth, font);
+    return getEllipsisTextInner(text, maxWidth, font as CSSStyleDeclaration);
   }
 
   const leftSubTexts = [];
@@ -205,7 +215,11 @@ export const getEllipsisText = (
       const subWidth = measureTextWidth(subText, font);
       // fix-边界处理: when subWidth <= DOT_WIDTH 不做 ... 处理
       if (remainWidth < subWidth && subWidth > DOT_WIDTH) {
-        const ellipsis = getEllipsisTextInner(subText, remainWidth, font);
+        const ellipsis = getEllipsisTextInner(
+          subText,
+          remainWidth,
+          font as CSSStyleDeclaration,
+        );
         result = result.replace(subText, ellipsis);
         remainWidth = 0;
       } else {
@@ -215,4 +229,17 @@ export const getEllipsisText = (
   });
 
   return result;
+};
+
+/**
+ * To decide whether the derived data is positive or negtive.
+ * Two cases needed to be considered since  the derived value could be number or string.
+ * @param value
+ * @param font
+ */
+export const getDerivedDataState = (value: number | string): boolean => {
+  if (isNumber(value)) {
+    return value >= 0;
+  }
+  return !/^-/.test(value);
 };

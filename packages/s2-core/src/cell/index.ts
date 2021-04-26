@@ -11,14 +11,12 @@ import { DerivedCell } from './derived-cell';
 import { DetailRowCell } from './detail-row-cell';
 import { DetailCornerCell } from './detail-corner-cell';
 import { DetailColCell } from './detail-col-cell';
-import { StrategyDataCell } from './strategy-data-cell';
-import { DataPlaceHolderCell } from './data-place-holder-cell';
+import { DataDerivedCell } from './data-derived-cell';
 
 export {
-  StrategyDataCell,
+  DataDerivedCell,
   DetailColCell,
   DetailCornerCell,
-  DataPlaceHolderCell,
   DetailRowCell,
   DerivedCell,
   RowCell,

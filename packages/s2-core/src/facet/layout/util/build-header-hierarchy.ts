@@ -1,4 +1,12 @@
-import * as _ from 'lodash';
+import {
+  size,
+  includes,
+  isEmpty,
+  each,
+  merge,
+  isBoolean,
+  remove,
+} from 'lodash';
 import { Pivot } from '../../../data-set';
 import { i18n } from '../../../common/i18n';
 import { SpreadsheetFacetCfg } from '../../../common/interface';
@@ -9,6 +17,8 @@ import { canNodeBeExpanded } from './can-node-be-expanded';
 import getDimsCondition from './get-dims-condition-by-node';
 import { handleHideNodes } from './handle-hide-nodes';
 import { handleKeepOnlyNodes } from './handle-keep-only-nodes';
+import { EXTRA_FIELD } from '../../../common/constant';
+import { generateId } from './generate-id';
 
 function addTotalsNodes(
   pivot: Pivot,
@@ -48,7 +58,7 @@ function handleTotals(
     // sub totals from 1 to length - 1
     const previousField = fields[index - 1];
     // NOTE: if current field's only has one child, we don't need sub totals
-    if (_.size(fieldValues) > 1) {
+    if (size(fieldValues) > 1) {
       // [a, b, c] (start from second index, b -> a, c -> b)
       addTotalsNodes(pivot, previousField, fieldValues, true);
     }
@@ -72,6 +82,11 @@ export default function buildHeaderHierarchy(
   const query = getDimsCondition(parent, true);
   const fieldValues: (string | TotalClass)[] = pivot.getDimValues(key, query);
 
+  // when cols/values not exist,we need show table structure with empty body
+  if (key === EXTRA_FIELD && includes(cfg.cols, key) && isEmpty(fieldValues)) {
+    // add empty measure node
+    fieldValues.push('');
+  }
   // handle keep only node in row/col by ids
   handleKeepOnlyNodes(pivot, fieldValues, field, parent.id);
   // handle handle nodes by node query
@@ -80,7 +95,7 @@ export default function buildHeaderHierarchy(
   handleTotals(field, fields, index, fieldValues, pivot);
   const { collapsedCols } = cfg;
   // generate all nodes(normal and totals) of this field
-  _.each(fieldValues, (col) => {
+  each(fieldValues, (col) => {
     const isTotal = col instanceof TotalClass;
     let value;
     if (isTotal) {
@@ -88,9 +103,10 @@ export default function buildHeaderHierarchy(
     } else {
       value = col;
     }
-    const nodeQuery = _.merge({}, query, { [field]: value });
-    const id = `${parent.id}-${value}`;
-    const isCollapsed = _.isBoolean(collapsedCols[id])
+    const nodeQuery = merge({}, query, { [field]: value });
+    const id = generateId(parent.id, value, cfg);
+    if (!id) return;
+    const isCollapsed = isBoolean(collapsedCols[id])
       ? collapsedCols[id]
       : false;
     const node = new Node({
@@ -117,14 +133,14 @@ export default function buildHeaderHierarchy(
         if (push) {
           hierarchy.pushNode(node);
         }
-        _.each(another.nodes, (v) => {
+        each(another.nodes, (v) => {
           hierarchy.pushNode(v);
         });
         if (!push) {
           // new node insert before current
           hierarchy.pushNode(node);
           // adjust the index of current node
-          _.remove(parent.children, (v) => v === node);
+          remove(parent.children, (v) => v === node);
           parent.children.push(node);
         }
       } else {

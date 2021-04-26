@@ -6,4 +6,5 @@ export const EN_US = {
   已选择: 'selected',
   序号: 'Index',
   度量: 'Measure',
+  数值: 'Measure',
 };

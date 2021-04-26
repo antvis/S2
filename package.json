@@ -22,15 +22,19 @@
   ],
   "scripts": {
     "clean": "rimraf node_modules packages/*/node_modules",
-    "bootstrap": "tnpm i && cd ./packages/s2-core && tnpm i && cd ../../s2-site && tnpm i",
-    "bootstrap:ci": "npm i && cd ./packages/s2-core && npm i && cd ../../s2-site && npm i",
+    "bootstrap": "npm i && cd ./packages/s2-core && npm i && cd ../../s2-site && npm i",
+    "cd:core": "cd ./packages/s2-core",
     "core:start": "cd ./packages/s2-core && npm run test-live",
     "core:build": "cd ./packages/s2-core && npm run build",
+    "core:tsc": "cd ./packages/s2-core && npm run tsc",
+    "tsc": "tsc --noEmit",
     "site:start": "cd ./s2-site && npm run start",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "pretty-quick": "pretty-quick",
-    "lint": "eslint . --ext '.js,.jsx,.ts,.tsx'",
-    "lint:fix": "eslint . --ext '.jsx,.ts,.tsx' --fix"
+    "lint": "npm run core:tsc && npm run lint:script",
+    "lint:script": "eslint . --ext '.js,.jsx,.ts,.tsx'",
+    "lint-fix": "npm run lint-fix:script",
+    "lint-fix:script": "npm run lint:script -- --fix"
   },
   "commitlint": {
     "extends": [
@@ -40,7 +44,8 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "cd ./packages/s2-core && npm run test"
     }
   },
   "lint-staged": {

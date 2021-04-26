@@ -13,6 +13,7 @@ import {
   NodeField,
   Pagination,
   SpreadsheetOptions,
+  CustomHeaderCells,
   Style,
   Totals,
 } from '../common/interface';
@@ -45,6 +46,8 @@ export class SpreadSheetOptionsBuilder {
   private _style: Partial<Style>;
 
   private _totals: Totals;
+
+  private _customHeaderCells: CustomHeaderCells;
 
   private _showSeriesNumber: boolean;
 
@@ -90,9 +93,6 @@ export class SpreadSheetOptionsBuilder {
   // 行列 维度值的自定义排序
   private _layoutArrange: LayoutArrangeCallback;
 
-  // 是否需要显示 placeHolder
-  private _needDataPlaceHolderCell: boolean;
-
   private _debug: boolean;
 
   public build(): SpreadsheetOptions {
@@ -109,6 +109,7 @@ export class SpreadSheetOptionsBuilder {
       spreadsheetType: this._spreadsheetType,
       style: deepMix({}, DefaultStyleCfg(), this._style),
       totals: this._totals,
+      customHeaderCells: this._customHeaderCells,
       showSeriesNumber: this._showSeriesNumber || false,
       hideNodesIds: this._hideNodesIds || [],
       keepOnlyNodesIds: this._keepOnlyNodesIds || { rowIds: [], colIds: [] },
@@ -129,17 +130,11 @@ export class SpreadSheetOptionsBuilder {
       layoutResult: this._layoutResult,
       hierarchy: this._hierarchy,
       layoutArrange: this._layoutArrange,
-      needDataPlaceHolderCell: this._needDataPlaceHolderCell,
     } as SpreadsheetOptions;
   }
 
   public debug(debug: boolean) {
     this._debug = debug;
-    return this;
-  }
-
-  public needDataPlaceHolderCell(needDataPlaceHolderCell: boolean) {
-    this._needDataPlaceHolderCell = needDataPlaceHolderCell;
     return this;
   }
 
@@ -237,6 +232,13 @@ export class SpreadSheetOptionsBuilder {
 
   public style(style: Partial<Style>): SpreadSheetOptionsBuilder {
     this._style = style;
+    return this;
+  }
+
+  public customHeaderCells(
+    customHeaderCells: CustomHeaderCells,
+  ): SpreadSheetOptionsBuilder {
+    this._customHeaderCells = customHeaderCells;
     return this;
   }
 

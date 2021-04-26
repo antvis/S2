@@ -1,28 +1,31 @@
 import { BBox } from '@antv/g-canvas';
 import { Wheel } from '@antv/g-gesture';
-import { ScrollBar } from '../ui/scrollbar';
+import { ScrollBar, ScrollType } from '../ui/scrollbar';
 import { interpolateArray } from 'd3-interpolate';
 import * as d3Timer from 'd3-timer';
 import {
   get,
   reduce,
   last,
-  isEqual,
   merge,
   includes,
   isNil,
-  forEach,
+  each,
   isUndefined,
+  debounce,
+  isEmpty,
+  filter,
+  find,
 } from 'lodash';
 import {
   calculateInViewIndexes,
   optimizeScrollXY,
   translateGroup,
 } from './utils';
-import { Formatter, PlaceHolderMeta } from '../common/interface';
+import { Formatter } from '../common/interface';
 import { diffIndexes, Indexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
-import { DataCell } from '../cell';
+import { BaseCell } from '../cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
@@ -50,15 +53,12 @@ import { Hierarchy } from './layout/hierarchy';
 import { Node } from './layout/node';
 import { BaseParams } from '../data-set/base-data-set';
 import { DEBUG_VIEW_RENDER, DebuggerUtil } from '../common/debug';
-import { DataPlaceHolderCell } from '../cell';
 
 interface Point {
   x: number;
   y: number;
 }
-/**
- * 交叉表自定义分面布局
- */
+
 export class SpreadsheetFacet extends BaseFacet {
   public cfg: SpreadsheetFacetCfg;
 
@@ -80,8 +80,6 @@ export class SpreadsheetFacet extends BaseFacet {
 
   protected preHideScrollBarHandler;
 
-  protected preRenderHandler;
-
   protected preIndexes: Indexes;
 
   protected realCornerWidth: number;
@@ -102,18 +100,18 @@ export class SpreadsheetFacet extends BaseFacet {
     },
   };
 
-  protected timer: d3Timer.Timer = null;
+  protected timer: d3Timer.Timer;
 
-  // mobileWheel 事件包装
   private mobileWheel: Wheel;
+
+  private wheelEvent: null | (() => any);
 
   constructor(cfg: SpreadsheetFacetCfg) {
     super(cfg);
-    // 当发生拖拽row-header-width事件时，清空所有滚动条scrollX的值, 见 interaction/row-col-resize.ts
-    this.spreadsheet.on('spreadsheet:change-row-header-width', (config) => {
+    // clear scrollX when emit change-row-header-width event, see: interaction/row-col-resize.ts
+    this.spreadsheet.on('spreadsheet:change-row-header-width', () => {
       this.setScrollOffset(0, undefined);
       this.setHRowScrollX(0);
-      console.debug(config);
     });
   }
 
@@ -144,7 +142,7 @@ export class SpreadsheetFacet extends BaseFacet {
       position: { x: 0, y },
       data: this.layoutResult.rowNodes,
       offset: 0,
-      hierarchyType: this.cfg.hierarchyType, // 是否为树状布局
+      hierarchyType: this.cfg.hierarchyType,
       linkFieldIds: get(this.cfg.spreadsheet, 'options.linkFieldIds'),
       seriesNumberWidth,
       spreadsheet: this.spreadsheet,
@@ -172,9 +170,6 @@ export class SpreadsheetFacet extends BaseFacet {
     });
   }
 
-  /**
-   * 获取内容高度
-   */
   public getContentHeight(): number {
     const { rowsHierarchy, colsHierarchy } = this.layoutResult;
     return rowsHierarchy.height + colsHierarchy.height;
@@ -244,10 +239,9 @@ export class SpreadsheetFacet extends BaseFacet {
             this.vScrollBar.trackLen,
         );
       }
-      this.dynamicRender(true);
+      this.dynamicRender();
       if (elapsed > duration) {
         this.timer.stop();
-        this.renderAfterScroll();
       }
     });
   }
@@ -271,8 +265,7 @@ export class SpreadsheetFacet extends BaseFacet {
           this.vScrollBar.trackLen,
       );
     }
-    this.spreadsheet.needUseCacheMeta = true;
-    this.dynamicRender(false);
+    this.dynamicRender();
   }
 
   protected adjustXAndY(x: number, y: number): Point {
@@ -345,7 +338,6 @@ export class SpreadsheetFacet extends BaseFacet {
     let height =
       box.height - br.y - get(this.cfg, 'spreadsheet.theme.scrollBar.size');
 
-    // 数据量小的时候，width 为实际的数据量大小
     const realWidth = this.getRealWidth();
     const realHeight = this.getRealHeight();
 
@@ -364,15 +356,13 @@ export class SpreadsheetFacet extends BaseFacet {
     };
   }
 
-  // 计算这个 view 分面 cell 占用的宽高序列
   protected calculateViewCellsWH() {
     const { colLeafNodes, rowLeafNodes } = this.layoutResult;
 
     const width0Indexes = [];
     const widths = reduce(
       colLeafNodes,
-      (result: number[], node: Node, idx: number) => {
-        console.debug(idx);
+      (result: number[], node: Node) => {
         result.push(last(result) + node.width);
         if (node.width === 0) {
           width0Indexes.push(node.colIndex);
@@ -385,8 +375,7 @@ export class SpreadsheetFacet extends BaseFacet {
     const height0Indexes = [];
     const heights = reduce(
       rowLeafNodes,
-      (result: number[], node: Node, idx: number) => {
-        console.debug(idx);
+      (result: number[], node: Node) => {
         result.push(last(result) + node.height);
         if (node.isHide()) {
           height0Indexes.push(node.colIndex);
@@ -438,7 +427,7 @@ export class SpreadsheetFacet extends BaseFacet {
       viewportWidth: width,
       viewportHeight: height,
       showCornerRightShadow: !isNil(this.hRowScrollBar),
-      // 当同时存在行头和panel滚动条时，展示viewport右边的shadow
+      // When both a row header and a panel scroll bar exist, show viewport shadow
       showViewPortRightShadow:
         !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
       scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
@@ -495,7 +484,6 @@ export class SpreadsheetFacet extends BaseFacet {
     const [scrollX, scrollY, rowScrollX] = this.getScrollOffset();
     const { width, height } = this.viewportBBox;
     const realWidth = this.layoutResult.colsHierarchy.width;
-    // const realHeight = this.layoutResult.rowsHierarchy.height;
     const realHeight = this.getRealHeight();
 
     // scroll row header separate from the whole canvas
@@ -508,123 +496,89 @@ export class SpreadsheetFacet extends BaseFacet {
     this.renderVScrollBar(height, realHeight, scrollY);
   }
 
-  private renderRealCell(indexes: Indexes, placeHolder: boolean) {
-    const needDataPlaceHolderCell = this.cfg.needDataPlaceHolderCell;
-    const needPlaceHolder = placeHolder && needDataPlaceHolderCell;
-    if (!this.preIndexes) {
+  private realCellRender(scrollX: number, scrollY: number) {
+    const indexes = this.calculateXYIndexes(scrollX, scrollY);
+    const { add, remove } = diffIndexes(this.preIndexes, indexes);
+    // Filter cells with width/height of zero
+    // TODO brucetoo check if viewCellWidth0Indexes needed
+    const newIndexes = add.filter(([i, j]) => {
+      return (
+        !includes(this.viewCellWidth0Indexes, i) &&
+        !includes(this.viewCellHeight0Indexes, j)
+      );
+    });
+    DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
+      // add new cell in panelCell
+      each(newIndexes, ([i, j]) => {
+        const viewMeta = this.layoutResult.getViewMeta(j, i);
+        if (viewMeta) {
+          const cell = this.cfg.dataCell(viewMeta);
+          // mark cell for removing
+          cell.set('name', `${i}-${j}`);
+          this.panelGroup.add(cell);
+        }
+      });
+      const allCells = filter(
+        this.panelGroup.getChildren(),
+        (child) => child instanceof BaseCell,
+      );
+      // remove cell from panelCell
+      each(remove, ([i, j]) => {
+        const findOne = find(
+          allCells,
+          (cell) => cell.get('name') === `${i}-${j}`,
+        );
+        findOne?.remove(true);
+      });
+      DebuggerUtil.getInstance().logger(
+        `Render Cell Panel: ${allCells?.length}, Add: ${newIndexes?.length}, Remove: ${remove?.length}`,
+      );
+    });
+    if (!isEmpty(newIndexes)) {
       this.preIndexes = indexes;
-    }
-    const preIndexes = needPlaceHolder ? this.preIndexes : null;
-    if (!isEqual(indexes, preIndexes)) {
-      if (needPlaceHolder) {
-        this.preIndexes = indexes;
-      }
-      const { add } = diffIndexes(preIndexes, indexes);
-      // 过滤掉宽度/高度 为0的cell
-      const newIndexes = add.filter(([i, j]) => {
-        return (
-          !includes(this.viewCellWidth0Indexes, i) &&
-          !includes(this.viewCellHeight0Indexes, j)
-        );
-      });
-      DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
-        let cacheSize = 0;
-        let noCacheSize = 0;
-        const { rowLeafNodes, colLeafNodes } = this.layoutResult;
-        forEach(newIndexes, ([i, j]) => {
-          const cacheKey = `${i}-${j}`;
-          let cell;
-          let viewMeta;
-          const row = rowLeafNodes[j];
-          const col = colLeafNodes[i];
-
-          if (needPlaceHolder) {
-            cell = this.spreadsheet.cellPlaceHolderCache.get(cacheKey);
-          } else {
-            cell = this.spreadsheet.cellCache.get(cacheKey);
-          }
-          if (needPlaceHolder) {
-            // 是placeHolder场景，且配置了需要显示placeHolder
-            viewMeta = {
-              x: col.x,
-              y: row.y,
-              width: col.width,
-              height: row.height,
-              rowNode: row,
-              colNode: col,
-              spreadsheet: this.spreadsheet,
-            } as PlaceHolderMeta;
-          } else {
-            // 是否使用meta缓存
-            // eslint-disable-next-line no-lonely-if
-            if (this.spreadsheet.needUseCacheMeta) {
-              viewMeta = this.spreadsheet.viewMetaCache.get(cacheKey);
-              if (!viewMeta) {
-                // 新增cell的场景可能为viewMeta，重新计算
-                viewMeta = this.layoutResult.getViewMeta(j, i);
-              } else {
-                // 存在缓存，只需要调整cell的宽高度,x,y 信息
-                viewMeta.x = col.x;
-                viewMeta.y = row.y;
-                viewMeta.width = col.width;
-                viewMeta.height = row.height;
-              }
-            } else {
-              viewMeta = this.layoutResult.getViewMeta(j, i);
-            }
-          }
-          if (cell) {
-            cacheSize += 1;
-            // already cached
-            if (viewMeta) {
-              cell.set('children', []);
-              cell.setMeta(viewMeta);
-              this.panelGroup.add(cell);
-              if (!placeHolder) {
-                // 即使有cell也需要缓存最新的meta值
-                this.spreadsheet.viewMetaCache.put(cacheKey, viewMeta);
-              }
-            }
-          } else {
-            noCacheSize += 1;
-            // add new cell
-            // i = colIndex  j = rowIndex
-            if (viewMeta) {
-              const newGroup = needPlaceHolder
-                ? new DataPlaceHolderCell(viewMeta, this.spreadsheet)
-                : this.cfg.dataCell(viewMeta);
-              this.panelGroup.add(newGroup);
-              if (needPlaceHolder) {
-                this.spreadsheet.cellPlaceHolderCache.put(
-                  cacheKey,
-                  newGroup as DataPlaceHolderCell,
-                );
-              } else {
-                this.spreadsheet.cellCache.put(cacheKey, newGroup as DataCell);
-              }
-              if (!placeHolder) {
-                // 存储非placeHolder的meta
-                this.spreadsheet.viewMetaCache.put(cacheKey, viewMeta);
-              }
-            }
-          }
-        });
-        DebuggerUtil.getInstance().logger(
-          `新增单元格个数:${newIndexes.length} 有缓存:${cacheSize} 无缓存:${noCacheSize}`,
-        );
-      });
-      this.spreadsheet.needUseCacheMeta = false;
     }
   }
 
   /**
-   * 动态渲染逻辑, 新增部分只渲染placeHolder
+   * How long about the delay period, need be re-considered,
+   * for now only delay, oppose to immediately
+   * @private
    */
-  protected dynamicRender(placeHolder: boolean) {
+  private debounceRenderCell = debounce((scrollX: number, scrollY: number) => {
+    this.realCellRender(scrollX, scrollY);
+  });
+
+  /**
+   * When scroll behavior happened, only render one time in a period,
+   * but render immediately in initiate
+   * @param delay debounce render cell
+   * @protected
+   */
+  protected dynamicRender(delay = true) {
     const [scrollX, sy, hRowScroll] = this.getScrollOffset();
-    const scrollY = sy + this.getDefaultScrollY();
-    const indexes = this.calculateXYIndexes(scrollX, scrollY);
-    this.renderRealCell(indexes, placeHolder);
+    const scrollY = sy + this.getPaginationScrollY();
+    if (delay) {
+      this.debounceRenderCell(scrollX, scrollY);
+    } else {
+      this.realCellRender(scrollX, scrollY);
+    }
+    this.translateRelatedGroups(scrollX, scrollY, hRowScroll);
+    this.spreadsheet.emit(KEY_CELL_SCROLL, { scrollX, scrollY });
+  }
+
+  /**
+   * Translate panelGroup, rowHeader, cornerHeader, columnHeader ect
+   * according to new scroll offset
+   * @param scrollX
+   * @param scrollY
+   * @param hRowScroll
+   * @private
+   */
+  private translateRelatedGroups(
+    scrollX: number,
+    scrollY: number,
+    hRowScroll: number,
+  ) {
     translateGroup(
       this.panelGroup,
       this.cornerBBox.width - scrollX,
@@ -668,7 +622,6 @@ export class SpreadsheetFacet extends BaseFacet {
         height: this.viewportBBox.height,
       },
     });
-    this.spreadsheet.emit(KEY_CELL_SCROLL, { scrollX, scrollY });
   }
 
   protected fireReachBorderEvent(scrollX: number, scrollY: number) {
@@ -692,7 +645,6 @@ export class SpreadsheetFacet extends BaseFacet {
       rowId: '',
       colId: '',
     });
-    // console.log(scrollY, rowNode, reachedBorderId)
     if (colNode && reachedBorderId.colId !== colNode.id) {
       this.spreadsheet.store.set(
         'lastReachedBorderId',
@@ -701,7 +653,6 @@ export class SpreadsheetFacet extends BaseFacet {
         }),
       );
       this.spreadsheet.emit(KEY_COL_NODE_BORDER_REACHED, colNode);
-      // console.log('find colNode', colNode.id)
     }
     if (rowNode && reachedBorderId.rowId !== rowNode.id) {
       this.spreadsheet.store.set(
@@ -711,7 +662,6 @@ export class SpreadsheetFacet extends BaseFacet {
         }),
       );
       this.spreadsheet.emit(KEY_ROW_NODE_BORDER_REACHED, rowNode);
-      // console.log('find rowNode', rowNode.id)
     }
   }
 
@@ -719,25 +669,22 @@ export class SpreadsheetFacet extends BaseFacet {
     this.onWheel(ev);
   }
 
-  /**
-   * 监听 view 的 wheel 事件
-   */
   protected bindEvents() {
-    // 1. 监听 wheel 事件，pc 端的滚动
+    if (!this.wheelEvent) {
+      this.wheelEvent = this.handlePCWheelEvent.bind(this);
+    }
     (this.spreadsheet.container.get('el') as HTMLElement).addEventListener(
       'wheel',
-      this.handlePCWheelEvent.bind(this),
+      this.wheelEvent,
     );
 
-    // 2. 移动端的事件，使用 touch 组装
+    // mock wheel event fo mobile
     this.mobileWheel = new Wheel(this.spreadsheet.container);
 
-    // 监听 view 的 mobile wheel 事件
     this.mobileWheel.on('wheel', (ev) => {
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
-      // 移动端和PC端的 x,y 偏差大概是三倍(「大数据」算出来的！！),
-      // 所以移动端上按下的点位置相对于view坐标，真实的点值 x = x / 3, y = y /3
+      // The coordinates of mobile and pc are three times different
       this.onWheel({
         ...originEvent,
         deltaX,
@@ -751,11 +698,9 @@ export class SpreadsheetFacet extends BaseFacet {
   protected unbindEvents(): void {
     (this.spreadsheet.container.get('el') as HTMLElement).removeEventListener(
       'wheel',
-      this.handlePCWheelEvent.bind(this),
+      this.wheelEvent,
     );
-    // 移动端事件
     this.mobileWheel.destroy();
-    // 清空所有的滚动值
     this.setHRowScrollX(0);
     this.setHRowScrollX(0);
   }
@@ -765,24 +710,18 @@ export class SpreadsheetFacet extends BaseFacet {
   }
 
   /**
-   * 重写目的是为了考虑rowHeader支持滚动条时, viewport可视区域必须随滚动的横向距离来变化
-   * 暂时未考虑 colHeader的滚动 @轻生
+   * The purpose of this rewrite is to take into account that when rowHeader supports scrollbars
+    the viewport viewable area must vary with the horizontal distance of the scroll
    * @param scrollX
    * @param scrollY
-   * @param overScan
    */
-  public calculateXYIndexes(
-    scrollX: number,
-    scrollY: number,
-    overScan = 0,
-  ): Indexes {
+  public calculateXYIndexes(scrollX: number, scrollY: number): Indexes {
     return calculateInViewIndexes(
       scrollX,
       scrollY,
       this.viewCellWidths,
       this.viewCellHeights,
       this.viewportBBox,
-      overScan,
       this.getRealScrollX(this.cornerBBox.width),
     );
   }
@@ -855,7 +794,7 @@ export class SpreadsheetFacet extends BaseFacet {
         isHorizontal: false,
         trackLen: height,
         thumbLen: thumbHeight,
-        thumbOffset: getOffsetTop(scrollY),
+        thumbOffset: (scrollY * this.viewportBBox.height) / realHeight,
         position: {
           x: this.viewportBBox.maxX - this.scrollBarHeight,
           y: this.viewportBBox.minY,
@@ -863,14 +802,9 @@ export class SpreadsheetFacet extends BaseFacet {
         theme: this.scrollBarTheme,
       });
 
-      this.vScrollBar.on('scroll-change', ({ thumbOffset }) => {
+      this.vScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
         this.setScrollOffset(undefined, getOffsetTop(thumbOffset));
-        this.dynamicRender(true);
-      });
-
-      this.vScrollBar.on('scroll-finish', () => {
-        this.spreadsheet.needUseCacheMeta = true;
-        this.dynamicRender(false);
+        this.dynamicRender();
       });
 
       this.foregroundGroup.add(this.vScrollBar);
@@ -881,7 +815,6 @@ export class SpreadsheetFacet extends BaseFacet {
     if (Math.floor(width) < Math.floor(realWidth)) {
       const halfScrollSize =
         get(this.cfg, 'spreadsheet.theme.scrollBar.size') / 2;
-      // 根据rowHeader是否包含滚动条的配置来确定滚动条的属性设置
       const finalWidth =
         width +
         (this.cfg.spreadsheet.isScrollContainsRowHeader()
@@ -901,7 +834,7 @@ export class SpreadsheetFacet extends BaseFacet {
           ? this.cornerBBox.width
           : 0);
 
-      // TODO 统一下滑块的计算算法，抽成方法~
+      // TODO abstract
       this.hScrollBar = new ScrollBar({
         isHorizontal: true,
         trackLen: finalWidth,
@@ -911,28 +844,20 @@ export class SpreadsheetFacet extends BaseFacet {
         thumbOffset: (scrollX * finalWidth) / finaleRealWidth,
         theme: this.scrollBarTheme,
       });
-      // 算法: 滑块 / 滑道 = 滑道 / 真实宽度
-      // 滑道是指可见的滑动区域，肯定 < 真实宽度/高度
 
-      this.hScrollBar.on('scroll-change', ({ thumbOffset }) => {
-        // 对 thumbOffset 转化成实际的位置像素
+      this.hScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
         this.setScrollOffset(
           (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth,
           undefined,
         );
-        this.dynamicRender(true);
-      });
-
-      this.hScrollBar.on('scroll-finish', () => {
-        this.spreadsheet.needUseCacheMeta = true;
-        this.dynamicRender(false);
+        this.dynamicRender();
       });
 
       this.foregroundGroup.add(this.hScrollBar);
     }
   }
 
-  private renderRowScrollBar(rowScrollX) {
+  private renderRowScrollBar(rowScrollX: number) {
     if (
       !this.cfg.spreadsheet.isScrollContainsRowHeader() &&
       this.cornerBBox.width < this.realCornerWidth
@@ -952,7 +877,7 @@ export class SpreadsheetFacet extends BaseFacet {
         theme: this.scrollBarTheme,
       });
 
-      this.hRowScrollBar.on('scroll-change', ({ thumbOffset }) => {
+      this.hRowScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
         const hRowScrollX =
           (thumbOffset / this.hRowScrollBar.trackLen) * this.realCornerWidth;
         this.setHRowScrollX(hRowScrollX);
@@ -974,8 +899,7 @@ export class SpreadsheetFacet extends BaseFacet {
     }
   }
 
-  // 获取偏移
-  public getScrollOffset() {
+  public getScrollOffset(): [number, number, number] {
     return [
       this.spreadsheet.store.get('scrollX', 0),
       this.spreadsheet.store.get('scrollY', 0),
@@ -983,37 +907,33 @@ export class SpreadsheetFacet extends BaseFacet {
     ];
   }
 
-  // 保存偏移
   private setScrollOffset(scrollX: number, scrollY: number) {
     if (!isUndefined(scrollX)) {
-      this.spreadsheet.store.set('scrollX', scrollX);
+      this.spreadsheet.store.set('scrollX', Math.floor(scrollX));
     }
     if (!isUndefined(scrollY)) {
-      this.spreadsheet.store.set('scrollY', scrollY);
+      this.spreadsheet.store.set('scrollY', Math.floor(scrollY));
     }
   }
 
   private setHRowScrollX(hScrollX: number) {
-    this.spreadsheet.store.set('hRowScrollX', hScrollX);
+    this.spreadsheet.store.set('hRowScrollX', Math.floor(hScrollX));
   }
 
   private shouldPreventWheelEvent(x: number, y: number) {
-    const near = (current, offset): boolean => {
-      // 精度问题，所以取 0.99， 0.01
+    const near = (current: number, offset: number): boolean => {
+      // precision
       return (offset > 0 && current >= 0.99) || (offset < 0 && current <= 0.01);
     };
 
     if (x !== 0) {
-      // 左右滑 - 判断 水平滚动，且不接近边缘
       return this.hScrollBar && !near(this.hScrollBar.current(), x);
     }
     if (y !== 0) {
-      // 判断 垂直滚动，且不接近边缘
       return this.vScrollBar && !near(this.vScrollBar.current(), y);
     }
   }
 
-  // 滚动的时候，做动态渲染
   private onWheel(event: WheelEvent & { layerX: number; layerY: number }) {
     const { deltaX, deltaY, layerX, layerY } = event;
     const [x, y] = optimizeScrollXY(deltaX, deltaY);
@@ -1023,23 +943,18 @@ export class SpreadsheetFacet extends BaseFacet {
     }
 
     if (x > 0) {
-      // 左滑，显示横向滑动条
-      if (this.hRowScrollBar) {
-        this.hRowScrollBar.updateTheme(this.scrollBarTouchTheme);
-      }
-      if (this.hScrollBar) {
-        this.hScrollBar.updateTheme(this.scrollBarTouchTheme);
-      }
+      // Scroll left, show scroll bar
+      this.hRowScrollBar?.updateTheme(this.scrollBarTouchTheme);
+      this.hScrollBar?.updateTheme(this.scrollBarTouchTheme);
     }
 
-    if (y > 0 && this.vScrollBar) {
-      // 上滑，显示横向滚动条
-      this.vScrollBar.updateTheme(this.scrollBarTouchTheme);
+    if (y > 0) {
+      // Scroll top, show scroll bar
+      this.vScrollBar?.updateTheme(this.scrollBarTouchTheme);
     }
-    // 将偏移设置到滚动条中
-    // 降低滚轮速度
+    // Optimize scroll speed
     if (this.hRowScrollBar) {
-      // 当存在独立rowScroller的时候，只有在对应的渲染范围滚动才有效
+      // When rowScrollBar is exists, scrolling is only valid at the corresponding render range
       if (
         layerX > this.viewportBBox.minX &&
         layerX < this.viewportBBox.maxX &&
@@ -1064,7 +979,6 @@ export class SpreadsheetFacet extends BaseFacet {
     }
     this.vScrollBar?.updateThumbOffset(this.getOptimizedThumbOffsetTop(y));
     this.hideScrollBar();
-    this.renderAfterScroll();
   }
 
   private getOptimizedThumbOffsetTop = (deltaY: number) => {
@@ -1074,26 +988,14 @@ export class SpreadsheetFacet extends BaseFacet {
     );
   };
 
-  private hideScrollBar() {
+  private hideScrollBar = debounce(() => {
+    // only work in mobile
     if (isMobile()) {
-      // only work in mobile
-      clearTimeout(this.preHideScrollBarHandler);
-      this.preHideScrollBarHandler = setTimeout(() => {
-        this.hRowScrollBar?.updateTheme(this.scrollBarTheme);
-        this.hScrollBar?.updateTheme(this.scrollBarTheme);
-        this.vScrollBar?.updateTheme(this.scrollBarTheme);
-      }, 1000);
+      this.hRowScrollBar?.updateTheme(this.scrollBarTheme);
+      this.hScrollBar?.updateTheme(this.scrollBarTheme);
+      this.vScrollBar?.updateTheme(this.scrollBarTheme);
     }
-  }
-
-  private renderAfterScroll() {
-    clearTimeout(this.preRenderHandler);
-    // 200ms内没有发生滚动，就重新渲染
-    this.preRenderHandler = setTimeout(() => {
-      this.spreadsheet.needUseCacheMeta = true;
-      this.dynamicRender(false);
-    }, 200);
-  }
+  }, 1000);
 
   private getRealScrollX(scrollX: number, hRowScroll = 0) {
     return this.cfg.spreadsheet.isScrollContainsRowHeader()
@@ -1101,18 +1003,13 @@ export class SpreadsheetFacet extends BaseFacet {
       : hRowScroll;
   }
 
-  /* 实际的数据宽度 */
   private getRealWidth(): number {
     return last(this.viewCellWidths);
   }
 
-  /**
-   * 拿到实际的高度：分页高度、总高度
-   */
   private getRealHeight(): number {
     const { pagination } = this.cfg;
 
-    // 如果配置了分页
     if (pagination) {
       const { current, pageSize } = pagination;
       const heights = this.calculateViewCellsWH().realHeights;
@@ -1120,21 +1017,20 @@ export class SpreadsheetFacet extends BaseFacet {
       const start = Math.max((current - 1) * pageSize, 0);
       const end = Math.min(current * pageSize, heights.length - 1);
 
-      // 结束位置 - 开始位置 = 高度
+      // end position - start position = height
       return heights[end] - heights[start];
     }
 
-    // 其他情况，当做不分页处理
     return last(this.viewCellHeights);
   }
 
   /**
-   * 计算初始的 y 滚动偏移，包含分页计算
+   * if pagination exist, adjust scrollY
+   * @private
    */
-  public getDefaultScrollY(): number {
+  public getPaginationScrollY(): number {
     const { pagination } = this.cfg;
 
-    // 如果配置了分页
     if (pagination) {
       const { current, pageSize } = pagination;
       const heights = this.calculateViewCellsWH().realHeights;
@@ -1144,13 +1040,11 @@ export class SpreadsheetFacet extends BaseFacet {
       return heights[offset];
     }
 
-    // 其他情况，当做不分页处理
     return 0;
   }
 
   private emitPagination() {
     const { pagination } = this.cfg;
-    // 配置了分页
     if (pagination) {
       const { current, pageSize } = pagination;
       const rowLeafNodes = get(this, 'layoutResult.rowLeafNodes', []);
@@ -1158,7 +1052,6 @@ export class SpreadsheetFacet extends BaseFacet {
 
       const pageCount = Math.floor((total - 1) / pageSize) + 1;
 
-      // 发送事件
       this.cfg.spreadsheet.emit('spreadsheet:pagination', {
         pageSize,
         pageCount,

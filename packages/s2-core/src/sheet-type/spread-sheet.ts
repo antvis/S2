@@ -92,7 +92,6 @@ export default class SpreadSheet extends BaseSpreadSheet {
       });
       this.setOptions(options);
 
-      this.needUseCacheMeta = true;
       this.render(false, () => {
         this.emit(KEY_AFTER_COLLAPSE_ROWS, {
           collapsedRows: options.style.collapsedRows,
@@ -114,7 +113,6 @@ export default class SpreadSheet extends BaseSpreadSheet {
           collapsedRows: {},
         },
       });
-      this.needUseCacheMeta = true;
       this.render(false);
     });
   }

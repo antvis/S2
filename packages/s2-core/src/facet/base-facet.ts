@@ -2,7 +2,6 @@ import { BBox, Group } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { calculateInViewIndexes } from './utils';
 import { Indexes } from '../utils/indexes';
-import { KEY_GROUP_HOVER_BOX } from '../common/constant';
 import { BaseSpreadSheet } from '../sheet-type';
 import {
   LayoutResult,
@@ -132,21 +131,15 @@ export abstract class BaseFacet {
    * 计算 x y 方向，视窗内 view 的 index
    * @param scrollX
    * @param scrollY
-   * @param overScan
    * @protected
    */
-  public calculateXYIndexes(
-    scrollX: number,
-    scrollY: number,
-    overScan = 0,
-  ): Indexes {
+  public calculateXYIndexes(scrollX: number, scrollY: number): Indexes {
     return calculateInViewIndexes(
       scrollX,
       scrollY,
       this.viewCellWidths,
       this.viewCellHeights,
       this.viewportBBox,
-      overScan,
     );
   }
 
@@ -184,9 +177,8 @@ export abstract class BaseFacet {
 
   /**
    * 动态渲染
-   * @param placeHolder 是否是placeHolder
    */
-  protected abstract dynamicRender(placeHolder: boolean): void;
+  protected abstract dynamicRender(delay: boolean): void;
 
   protected abstract afterInitial(): void;
 
@@ -199,20 +191,11 @@ export abstract class BaseFacet {
 
   protected clearAllGroup() {
     const children = this.panelGroup.cfg.children;
-    let hoverChild;
     for (let i = children.length - 1; i >= 0; i--) {
-      const child = children[i];
-      if (get(child, 'cfg.name') !== KEY_GROUP_HOVER_BOX) {
-        children[i].remove(false);
-      } else {
-        hoverChild = child;
-      }
+      children[i].remove(false);
     }
-    this.panelGroup.cfg.children = [hoverChild];
     this.foregroundGroup.set('children', []);
     this.backgroundGroup.set('children', []);
-    // this.foregroundGroup.clear(); group clear will destroy all children
-    // this.backgroundGroup.clear();
   }
 
   public abstract getCanvasHW();
@@ -223,5 +206,5 @@ export abstract class BaseFacet {
 
   public abstract getScrollOffset(): number[];
 
-  public abstract getDefaultScrollY(): number;
+  public abstract getPaginationScrollY(): number;
 }

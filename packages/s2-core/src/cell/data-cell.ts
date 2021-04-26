@@ -1,10 +1,11 @@
 import { getEllipsisText } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
-import { map, find, get, isEmpty, isNumber, first, includes } from 'lodash';
+import { map, find, get, isEmpty, first, includes } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
+import { getDerivedDataState } from '../utils/text';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { BaseCell } from './base-cell';
@@ -392,7 +393,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       } else {
         value = get(data, [0, derivedValue]);
       }
-      const up = isNumber(value) ? value >= 0 : false;
+      const up = getDerivedDataState(value);
       const formatter = this.spreadsheet.dataSet.getFieldFormatter(
         derivedValue,
       );

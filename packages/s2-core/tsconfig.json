@@ -10,9 +10,12 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "jsx": "react",
     "downlevelIteration": true,
     "resolveJsonModule": true,
+    "baseUrl": ".",
+     "paths": {
+      "src/*": ["./src/*"],
+    },
     "lib": [
       "esnext",
       "dom"

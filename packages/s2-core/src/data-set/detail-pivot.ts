@@ -10,7 +10,7 @@ export class DetailPivot extends Pivot {
   private dimValues: Map<string, [string, number, LineData][]>;
 
   public getDimValues(field: string, query?: any): string[] {
-    console.debug(query);
+    console.info(query);
     const vals = this.dimValues.get(field);
     return (
       vals &&

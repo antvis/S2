@@ -7,10 +7,9 @@ import getColHeight from './get-col-height';
 import hideRowColumnsByFields from './hide-row-columns-by-fields';
 import processColLeafNodeWH from './process-col-leaf-node-wh';
 import handleLayoutHook from './handle-layout-hook';
+import { ID_SEPARATOR } from '../../../common/constant';
 
 /**
- * Create By Bruce Too
- * On 2019-11-27
  * Set all nodes x,y,width,height etc coordinate in colHeader
  */
 export default function processColNodesCoordinate(
@@ -51,7 +50,7 @@ export default function processColNodesCoordinate(
     } else {
       node.y = node.parent.y + node.parent.height;
     }
-    if (node.isLeaf && node.id !== 'root-undefined') {
+    if (node.isLeaf && node.id !== `root${ID_SEPARATOR}undefined`) {
       // all node's width
       colsHierarchy.width += node.width;
     }

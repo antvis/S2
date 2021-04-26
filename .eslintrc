@@ -16,21 +16,17 @@
   },
   "parser": "@typescript-eslint/parser",
   "plugins": ["prettier", "@typescript-eslint", "import"],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "project": "./tsconfig.json",
-    "sourceType": "module"
-  },
   "settings": {
     "jest": {
       "version": 26
     },
-    "react": "detect"
+    "react": {
+  		"version": "detect"
+    }
   },
   "rules": {
     "prettier/prettier": 1,
+    "no-restricted-syntax": 0,
     "semi": 0,
     "no-console": 0,
     "no-multi-spaces": 0,

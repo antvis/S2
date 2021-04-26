@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const resolve = require('path').resolve;
+const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 
@@ -16,6 +17,9 @@ module.exports = {
     path: resolve(__dirname, './dist'),
   },
   resolve: {
+    alias: {
+      src: path.resolve(__dirname, './src'),
+    },
     extensions: ['.tsx', '.ts', '.js', '.less'],
   },
   module: {

@@ -263,8 +263,6 @@ export interface SpreadsheetOptions {
   readonly valueInCols?: boolean;
   // 自定义单元格cell
   readonly dataCell?: DataCellCallback;
-  // 是否需要显示 place holder cell
-  readonly needDataPlaceHolderCell?: boolean;
   // 自定义cornerCell
   readonly cornerCell?: CellCallback;
   // 自定义行头cell
@@ -274,7 +272,7 @@ export interface SpreadsheetOptions {
 
   readonly initTooltip?: TooltipCallback;
 
-  readonly tooltipComponent?: React.ElementType;
+  readonly tooltipComponent?: JSX.Element;
 
   // 自定义 frame 边框
   readonly frame?: FrameCallback;
@@ -290,6 +288,8 @@ export interface SpreadsheetOptions {
   layoutArrange?: LayoutArrangeCallback;
   // 行头 action icon的配置
   rowActionIcons?: RowActionIcons;
+  // custom config of showing colums and rows
+  customHeaderCells?: CustomHeaderCells;
   // 其他任意的选择配置
   [key: string]: any;
 }
@@ -318,6 +318,13 @@ export interface RowActionIcons {
   display: {
     level: number; // 层级
     operator: '>' | '=' | '<' | '>=' | '<='; // 层级关系
+  };
+  // 根据行头名自定义展示
+  customDisplayByRowName?: {
+    // Row headers, using the ID_SEPARATOR('[&]') to join two labels when there are hierarchical relations between them.
+    rowNames: string[];
+    // 指定行头名称是否展示icon
+    mode: 'pick' | 'omit';
   };
   // 具体的动作
   action: (iconType: string, meta: Node, event: Event) => void;
@@ -406,6 +413,16 @@ export interface ColCfg {
 }
 
 /**
+ * The label names of rows or column.
+ * Using the ID_SEPARATOR('[&]') to join two labels
+ * when there are hierarchical relations between them.
+ */
+export interface CustomHeaderCells {
+  cellLabels: string[];
+  mode?: 'pick' | 'omit';
+}
+
+/**
  * Spreadsheet and ListSheet facet config
  */
 export interface SpreadsheetFacetCfg {
@@ -446,8 +463,6 @@ export interface SpreadsheetFacetCfg {
   pagination?: Pagination;
   // born single cell's draw group
   dataCell: DataCellCallback;
-  // 自定义单元格 place holder cell
-  needDataPlaceHolderCell?: boolean;
   // 自定义cornerCell
   cornerCell?: CellCallback;
   // 自定义行头cell
@@ -466,17 +481,6 @@ export interface SpreadsheetFacetCfg {
   layout?: LayoutCallback;
   // 布局结果交由外部控制
   layoutResult?: LayoutResultCallback;
-}
-
-export interface PlaceHolderMeta {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  rowNode: Node;
-  colNode: Node;
-  spreadsheet: BaseSpreadSheet;
-  [key: string]: any;
 }
 
 export interface ViewMeta {

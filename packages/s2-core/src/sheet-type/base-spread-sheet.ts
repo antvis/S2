@@ -5,10 +5,10 @@ import {
   get,
   merge,
   clone,
-  isEqual,
   find,
   isFunction,
   includes,
+  debounce,
 } from 'lodash';
 import { Store } from '../common/store';
 import { ext } from '@antv/matrix-util';
@@ -22,14 +22,7 @@ import {
   SpreadsheetOptions,
   ViewMeta,
 } from '../common/interface';
-import {
-  DataCell,
-  BaseCell,
-  RowCell,
-  ColCell,
-  DataPlaceHolderCell,
-  CornerCell,
-} from '../cell';
+import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
   KEY_COL_REAL_WIDTH_INFO,
   KEY_GROUP_BACK_GROUND,
@@ -43,7 +36,7 @@ import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';
 import { BaseParams } from '../data-set/base-data-set';
-import { StrategyDataCell } from '../cell';
+import { DataDerivedCell } from '../cell';
 import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
 import { EventController } from '../interaction/events/event-controller';
@@ -52,6 +45,7 @@ import State from '../state/state';
 import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
 import { ShowProps } from '../common/tooltip/interface';
 import { StateName } from '../state/state';
+import { isMobile } from '../utils/is-mobile';
 
 const matrixTransform = ext.transform;
 export default abstract class BaseSpreadSheet extends EE {
@@ -106,12 +100,6 @@ export default abstract class BaseSpreadSheet extends EE {
   // cell cache
   public cellCache: LruCache<string, DataCell> = new LruCache(10000);
 
-  // cell 占位格缓存
-  public cellPlaceHolderCache: LruCache<
-    string,
-    DataPlaceHolderCell
-  > = new LruCache(10000);
-
   // cell 真实数据缓存（只用于树结构collapse, 宽、高拖拽拽）
   public viewMetaCache: LruCache<string, ViewMeta> = new LruCache(1000);
 
@@ -132,6 +120,8 @@ export default abstract class BaseSpreadSheet extends EE {
   // hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
   // 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
   public hoverTimer: number = null;
+
+  public viewport = window as typeof window & { visualViewport: Element };
 
   protected constructor(
     dom: string | HTMLElement,
@@ -157,6 +147,7 @@ export default abstract class BaseSpreadSheet extends EE {
     this.registerEvents();
 
     this.initDevicePixelRatioListener();
+    this.initDeviceZoomListener();
   }
 
   protected registerEventController() {
@@ -240,7 +231,6 @@ export default abstract class BaseSpreadSheet extends EE {
       hideNodesIds,
       keepOnlyNodesIds,
       dataCell,
-      needDataPlaceHolderCell,
       cornerCell,
       rowCell,
       colCell,
@@ -288,7 +278,6 @@ export default abstract class BaseSpreadSheet extends EE {
       values,
       derivedValues,
       dataCell: dataCell || defaultCell,
-      needDataPlaceHolderCell,
       cornerCell,
       rowCell,
       colCell,
@@ -310,11 +299,9 @@ export default abstract class BaseSpreadSheet extends EE {
   }
 
   protected getCorrectCell(facet: ViewMeta): DataCell {
-    // const valueHasDerivedValue = this.getDerivedValue(facet.valueField).derivedValueField.length === 0;
-    // const isDerivedValue = this.isDerivedValue(facet.valueField);
     return this.isValueInCols()
       ? new DataCell(facet, this)
-      : new StrategyDataCell(facet, this);
+      : new DataDerivedCell(facet, this);
   }
 
   /**
@@ -328,10 +315,6 @@ export default abstract class BaseSpreadSheet extends EE {
     const lastSortParam = this.store.get('sortParam');
     const { sortParams } = newDataCfg;
     newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
-    if (!isEqual(dataCfg, this.dataSet)) {
-      // 数据结构发生了任何改变，都需要清空所有meta 缓存
-      this.viewMetaCache.clear();
-    }
     this.dataCfg = newDataCfg;
   }
 
@@ -339,7 +322,7 @@ export default abstract class BaseSpreadSheet extends EE {
     if (this.tooltip) {
       this.tooltip.hide();
     }
-    console.debug(options);
+    console.info(options);
   }
 
   public render(reloadData = true, callback?: () => void): void {
@@ -362,9 +345,8 @@ export default abstract class BaseSpreadSheet extends EE {
   public destroy(): void {
     this.facet.destroy();
     this.tooltip.destroy();
-    this.cellCache.clear();
-    this.viewMetaCache.clear();
     this.removeDevicePixelRatioListener();
+    this.removeDeviceZoomListener();
   }
 
   /**
@@ -500,7 +482,7 @@ export default abstract class BaseSpreadSheet extends EE {
    */
   public getPanelAllCells(callback?: (cell: DataCell) => void): DataCell[] {
     const [scrollX, sy] = this.facet.getScrollOffset();
-    const scrollY = sy + this.facet.getDefaultScrollY();
+    const scrollY = sy + this.facet.getPaginationScrollY();
     const indexes = this.facet.calculateXYIndexes(scrollX, scrollY);
     const [minColIndex, maxColIndex, minRowIndex, maxRowIndex] = indexes;
     const children = this.panelGroup.get('children');
@@ -587,10 +569,12 @@ export default abstract class BaseSpreadSheet extends EE {
     if (this.devicePixelRatioMedia?.addEventListener) {
       this.devicePixelRatioMedia.addEventListener(
         'change',
-        this.renderByDevicePixelRatio,
+        this.renderByDevicePixelRatioChanged,
       );
     } else {
-      this.devicePixelRatioMedia.addListener(this.renderByDevicePixelRatio);
+      this.devicePixelRatioMedia.addListener(
+        this.renderByDevicePixelRatioChanged,
+      );
     }
   }
 
@@ -598,16 +582,46 @@ export default abstract class BaseSpreadSheet extends EE {
     if (this.devicePixelRatioMedia?.removeEventListener) {
       this.devicePixelRatioMedia.removeEventListener(
         'change',
-        this.renderByDevicePixelRatio,
+        this.renderByDevicePixelRatioChanged,
       );
     } else {
-      this.devicePixelRatioMedia.removeListener(this.renderByDevicePixelRatio);
+      this.devicePixelRatioMedia.removeListener(
+        this.renderByDevicePixelRatioChanged,
+      );
     }
   }
 
-  private renderByDevicePixelRatio = () => {
+  private initDeviceZoomListener() {
+    // VisualViewport support browser zoom & mac touch tablet
+    this.viewport?.visualViewport?.addEventListener(
+      'resize',
+      this.renderByZoomScale,
+    );
+  }
+
+  private removeDeviceZoomListener() {
+    this.viewport?.visualViewport?.removeEventListener(
+      'resize',
+      this.renderByZoomScale,
+    );
+  }
+
+  private renderByZoomScale = debounce((e) => {
+    if (isMobile()) {
+      return;
+    }
+    const ratio = Math.max(e.target.scale, window.devicePixelRatio);
+    if (ratio > 1) {
+      this.renderByDevicePixelRatio(ratio);
+    }
+  }, 350);
+
+  private renderByDevicePixelRatioChanged = () => {
+    this.renderByDevicePixelRatio();
+  };
+
+  private renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
     const { width, height } = this.options;
-    const ratio = window.devicePixelRatio;
     const newWidth = Math.floor(width * ratio);
     const newHeight = Math.floor(height * ratio);
 
