@@ -149,6 +149,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     return new BaseTooltip(this);
   }
 
+  // TODO: registerInteraction时要key到底有没有用？目前是没有的，但是代码中一直有，有key也符合规范，但是否必须？
   protected registerInteractions(options: SpreadsheetOptions) {
     this.interactions.clear();
     if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
