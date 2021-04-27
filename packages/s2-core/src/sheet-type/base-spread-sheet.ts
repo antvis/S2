@@ -14,12 +14,16 @@ import { Store } from '../common/store';
 import { ext } from '@antv/matrix-util';
 import {
   ColWidthCache,
-  DerivedValue, safetyDataConfig,
+  DerivedValue,
+  safetyDataConfig,
   OffsetConfig,
-  Pagination, S2DataConfig, S2Options,
+  Pagination,
+  S2DataConfig,
+  S2Options,
   SpreadsheetFacetCfg,
-  ViewMeta, safetyOptions
-} from "../common/interface";
+  ViewMeta,
+  safetyOptions,
+} from '../common/interface';
 import { Cell } from '../cell';
 import {
   KEY_COL_REAL_WIDTH_INFO,

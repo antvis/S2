@@ -27,12 +27,7 @@ import {
   isNull,
   isUndefined,
 } from 'lodash';
-import {
-  Aggregation,
-  SortParams,
-  Total,
-  Totals,
-} from '../common/interface';
+import { Aggregation, SortParams, Total, Totals } from '../common/interface';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { DEBUG_TRAINING_DATA, DebuggerUtil } from '../common/debug';
 import { EXTRA_FIELD } from '../common/constant';

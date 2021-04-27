@@ -1,7 +1,7 @@
 import { merge, each, isEmpty, isBoolean, remove } from 'lodash';
 import { Pivot, SpreadDataSet } from '../../../data-set';
-import { i18n } from "src/common/i18n";
-import { SpreadsheetFacetCfg } from "src/common/interface";
+import { i18n } from 'src/common/i18n';
+import { SpreadsheetFacetCfg } from 'src/common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import TotalClass from '../total-class';

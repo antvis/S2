@@ -4,9 +4,10 @@ import {
   Data,
   Fields,
   Formatter,
-  Meta, S2DataConfig,
-  SortParams
-} from "../common/interface";
+  Meta,
+  S2DataConfig,
+  SortParams,
+} from '../common/interface';
 import { Pivot } from './pivot';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';

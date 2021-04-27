@@ -1,15 +1,24 @@
 import {
   CellCallback,
-  Conditions, CornerHeaderCallback, CustomHeaderCells,
-  DataCellCallback, FrameCallback, HierarchyCallback, LayoutArrangeCallback, LayoutCallback, LayoutResultCallback,
+  Conditions,
+  CornerHeaderCallback,
+  CustomHeaderCells,
+  DataCellCallback,
+  FrameCallback,
+  HierarchyCallback,
+  LayoutArrangeCallback,
+  LayoutCallback,
+  LayoutResultCallback,
   NodeField,
-  Pagination, RowActionIcons,
+  Pagination,
+  RowActionIcons,
   Style,
-  Tooltip, TooltipCallback,
-  Totals
-} from "src/common/interface/index";
-import { TREE_ROW_DEFAULT_WIDTH } from "src/common/constant";
-import { merge } from "lodash";
+  Tooltip,
+  TooltipCallback,
+  Totals,
+} from 'src/common/interface/index';
+import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
+import { merge } from 'lodash';
 
 /**
  * Create By Bruce Too
@@ -21,11 +30,11 @@ export interface S2Options {
   // canvas's height
   readonly height: number;
   // s2 mode
-  readonly mode?: "pivot" | "table";
+  readonly mode?: 'pivot' | 'table';
   // debug info for developer
   readonly debug?: boolean;
   // row header hierarchy type only work in pivot mode
-  readonly hierarchyType?: "grid" | "tree";
+  readonly hierarchyType?: 'grid' | 'tree';
   // conditions config
   readonly conditions?: Conditions;
   // total config（TODO jili keep this??）
@@ -53,7 +62,7 @@ export interface S2Options {
   // extra styles
   readonly style?: Partial<Style>;
 
-  /*************CUSTOM CELL/HEADER HOOKS*****************/
+  /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
   readonly dataCell?: DataCellCallback;
   // custom corner cell
@@ -71,7 +80,7 @@ export interface S2Options {
   // replace the whole default tooltip component
   readonly tooltipComponent?: JSX.Element;
 
-  /*************CUSTOM LIFECYCLE HOOKS*****************/
+  /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
   // eg: add/delete some nodes in specified position
   readonly hierarchy: HierarchyCallback;
@@ -85,7 +94,6 @@ export interface S2Options {
   // extra options if needed
   [key: string]: any;
 }
-
 
 export const defaultStyle = {
   treeRowsWidth: TREE_ROW_DEFAULT_WIDTH,
@@ -111,15 +119,14 @@ export const defaultStyle = {
     maxSampleIndex: 1,
   },
   device: 'pc',
-} as Style
-
+} as Style;
 
 export const defaultOptions = {
   width: 600,
   height: 480,
-  mode: "pivot",
+  mode: 'pivot',
   debug: false,
-  hierarchyType: "grid",
+  hierarchyType: 'grid',
   conditions: {},
   totals: {},
   tooltip: {},
@@ -135,4 +142,5 @@ export const defaultOptions = {
   style: defaultStyle,
 } as S2Options;
 
-export const safetyOptions = (options: S2Options) => merge({}, defaultOptions, options);
+export const safetyOptions = (options: S2Options) =>
+  merge({}, defaultOptions, options);

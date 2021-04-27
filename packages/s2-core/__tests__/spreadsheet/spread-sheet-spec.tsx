@@ -2,10 +2,12 @@ import { merge, clone } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
-  auto, S2DataConfig, S2Options,
+  auto,
+  S2DataConfig,
+  S2Options,
   SheetComponent,
-  SpreadSheet
-} from "../../src";
+  SpreadSheet,
+} from '../../src';
 import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';

@@ -1,8 +1,9 @@
 import BaseSpreadSheet from './base-spread-sheet';
 import {
-  S2DataConfig, S2Options,
-  SpreadsheetFacetCfg
-} from "../common/interface";
+  S2DataConfig,
+  S2Options,
+  SpreadsheetFacetCfg,
+} from '../common/interface';
 import { BaseDataSet, SpreadDataSet, DetailDataSet } from '../data-set';
 import { BaseTooltip } from '../tooltip';
 import { get, set, isBoolean, merge } from 'lodash';
@@ -171,9 +172,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.interactions.set(key, new ctc(this));
   }
 
-  protected handleCollapseChangedInTreeMode(
-    options: Partial<S2Options>,
-  ) {
+  protected handleCollapseChangedInTreeMode(options: Partial<S2Options>) {
     detectAttrsChangeAndAction(
       options,
       this.options,

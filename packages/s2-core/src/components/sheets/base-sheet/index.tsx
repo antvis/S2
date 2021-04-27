@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { isEmpty, debounce, isFunction } from 'lodash';
 import { Spin } from 'antd';
-import { S2DataConfig, safetyDataConfig, safetyOptions } from "src/common/interface";
+import {
+  S2DataConfig,
+  safetyDataConfig,
+  safetyOptions,
+} from 'src/common/interface';
 import { DrillDown } from '../../drill-down';
 import { Header } from '../../header';
 import {

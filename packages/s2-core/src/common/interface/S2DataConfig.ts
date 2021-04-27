@@ -1,5 +1,12 @@
-import { Data, DerivedValue, Fields, Meta, SortParams, StrategyValue } from "src/common/interface/index";
-import { merge } from "lodash";
+import {
+  Data,
+  DerivedValue,
+  Fields,
+  Meta,
+  SortParams,
+  StrategyValue,
+} from 'src/common/interface/index';
+import { merge } from 'lodash';
 /**
  * Create By Bruce Too
  * On 2021/4/27
@@ -8,7 +15,7 @@ export interface S2DataConfig {
   // origin detail data
   data: Record<string, string | number>[];
   // total data(grandTotal, subTotal)
-  totalData: Record<string, string | number>[]
+  totalData: Record<string, string | number>[];
   // data keys for render row,columns,values etc
   fields: Fields;
   // data keys mata info
@@ -25,10 +32,11 @@ export const defaultDataConfig = {
     rows: [],
     columns: [],
     values: [],
-    derivedValues: []
+    derivedValues: [],
   },
   meta: [],
   sortParams: [],
 } as S2DataConfig;
 
-export const safetyDataConfig = (dataConfig: S2DataConfig) => merge({}, defaultDataConfig, dataConfig);
+export const safetyDataConfig = (dataConfig: S2DataConfig) =>
+  merge({}, defaultDataConfig, dataConfig);

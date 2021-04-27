@@ -1,7 +1,12 @@
 import { isArray, isEmpty, each, get, uniq, identity, find } from 'lodash';
 import { BaseDataSet, BaseParams } from './base-data-set';
 import { i18n } from '../common/i18n';
-import { S2DataConfig, DerivedValue, Formatter, Meta } from '../common/interface';
+import {
+  S2DataConfig,
+  DerivedValue,
+  Formatter,
+  Meta,
+} from '../common/interface';
 import { auto } from '../index';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';

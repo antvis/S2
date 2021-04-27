@@ -57,9 +57,7 @@ export default class StrategySheet extends SpreadSheet {
     return new SpreadsheetFacet(facetCfg);
   }
 
-  protected initDataSet(
-    options: Partial<S2Options>,
-  ): BaseDataSet<BaseParams> {
+  protected initDataSet(options: Partial<S2Options>): BaseDataSet<BaseParams> {
     return new StrategyDataSet({
       spreadsheet: this,
     });
