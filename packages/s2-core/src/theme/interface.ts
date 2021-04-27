@@ -12,7 +12,7 @@ export interface CellTheme {
   crossColor?: string;
   // dataCell 单元格背景色
   backgroundColor?: string;
-  // row Cell 单元格背景色
+  // row cell 单元格背景色
   rowBackgroundColor?: string;
   // col cell 单元格背景色
   colBackgroundColor?: string;

@@ -1,8 +1,6 @@
-import { Event, Canvas } from '@antv/g-canvas';
+import { Canvas } from '@antv/g-canvas';
 import { each } from 'lodash';
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
-import { Selected } from '../common/store';
-import { isSelected } from '../utils/selected';
 
 export type InteractionConstructor = new (
   spreadsheet: BaseSpreadSheet,
@@ -28,24 +26,12 @@ export type InteractionConstructor = new (
 export abstract class BaseInteraction {
   protected spreadsheet: BaseSpreadSheet;
 
-  private startEvent: string;
-
-  private processEvent: string;
-
-  private endEvent: string;
-
   private eventHandlers: any[] = [];
 
   private eventListeners: any[] = [];
 
-  protected isSelected: (i: number, j: number, selected: Selected) => boolean;
-
   public constructor(spreadsheet: BaseSpreadSheet) {
     this.spreadsheet = spreadsheet;
-    this.startEvent = this.getStarEvent();
-    this.processEvent = this.getProcessEvent();
-    this.endEvent = this.getEndEvent();
-    this.isSelected = isSelected;
     this.bindEvents();
   }
 
@@ -53,52 +39,7 @@ export abstract class BaseInteraction {
     this.unbindEvents();
   }
 
-  /**
-   * Real action method, override this callback do what ever you want
-   * start => {@link getStarEvent}
-   * process => {@link getProcessEvent}
-   * end => {@link getEndEvent}
-   * @param ev
-   */
-  protected start(ev: Event) {
-    console.info(ev);
-  }
-
-  protected process(ev: Event) {}
-
-  protected end(ev: Event) {
-    console.info(ev);
-  }
-
-  /**
-   * All event name in the progress
-   * start -> process -> end
-   */
-  protected getStarEvent(): string {
-    return 'mousedown';
-  }
-
-  protected getProcessEvent(): string {
-    return 'mousemove';
-  }
-
-  protected getEndEvent(): string {
-    return 'mouseup';
-  }
-
-  protected bindEvents() {
-    this.addEvent(
-      this.triggerGroup(),
-      this.getStarEvent(),
-      this.start.bind(this),
-    );
-    this.addEvent(
-      this.triggerGroup(),
-      this.getProcessEvent(),
-      this.process.bind(this),
-    );
-    this.addEvent(this.triggerGroup(), this.getEndEvent(), this.end.bind(this));
-  }
+  protected bindEvents() {}
 
   protected unbindEvents() {
     this.clearEvents();

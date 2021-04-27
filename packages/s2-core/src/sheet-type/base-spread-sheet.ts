@@ -22,18 +22,16 @@ import {
   SpreadsheetOptions,
   ViewMeta,
 } from '../common/interface';
-import { Cell } from '../cell';
+import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
   KEY_COL_REAL_WIDTH_INFO,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
-  KEY_GROUP_HOVER_BOX,
   KEY_GROUP_PANEL_GROUND,
-  PANEL_GROUP_HOVER_BOX_GROUP_ZINDEX,
 } from '../common/constant';
 import { BaseDataSet } from '../data-set';
 import { SpreadsheetFacet } from '../facet';
-import { Node, BaseInteraction, SpreadSheetTheme } from '../index';
+import { Node, BaseInteraction, SpreadSheetTheme, BaseEvent } from '../index';
 import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';
@@ -41,7 +39,12 @@ import { BaseParams } from '../data-set/base-data-set';
 import { DataDerivedCell } from '../cell';
 import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
+import { EventController } from '../interaction/events/event-controller';
+import { DefaultInterceptEvent } from '../interaction/events/types';
+import State from '../state/state';
 import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
+import { ShowProps } from '../common/tooltip/interface';
+import { StateName } from '../state/state';
 import { isMobile } from '../utils/is-mobile';
 
 const matrixTransform = ext.transform;
@@ -55,6 +58,8 @@ export default abstract class BaseSpreadSheet extends EE {
   public theme: SpreadSheetTheme = getTheme('default');
 
   public interactions: Map<string, BaseInteraction> = new Map();
+
+  public events: Map<string, BaseEvent> = new Map();
 
   // store some temporary data
   public store: Store = new Store();
@@ -78,7 +83,6 @@ export default abstract class BaseSpreadSheet extends EE {
    */
   public facet: BaseFacet;
 
-  // tooltips to show float dialog({@see HoverInteraction})
   public tooltip: BaseTooltip;
 
   // the base container, contains all groups
@@ -93,10 +97,29 @@ export default abstract class BaseSpreadSheet extends EE {
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
 
-  // use to display cell's hover interactions
-  public hoverBoxGroup: IGroup;
+  // cell cache
+  public cellCache: LruCache<string, DataCell> = new LruCache(10000);
+
+  // cell 真实数据缓存（只用于树结构collapse, 宽、高拖拽拽）
+  public viewMetaCache: LruCache<string, ViewMeta> = new LruCache(1000);
+
+  // 是否需要使用view meta的cache(目前的场景 树结构collapse, 宽、高拖拽拽)，一次性消费
+  public needUseCacheMeta: boolean;
+
+  // 基础事件
+  public eventController: EventController;
+
+  // 状态管理器
+  public state = new State(this);
 
   public devicePixelRatioMedia: MediaQueryList;
+
+  // 用来标记需要拦截的事件，interaction和本身的hover等事件可能会有冲突，有冲突时在此屏蔽
+  public interceptEvent: Set<DefaultInterceptEvent> = new Set();
+
+  // hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
+  // 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
+  public hoverTimer: number = null;
 
   public viewport = window as typeof window & { visualViewport: Element };
 
@@ -106,18 +129,29 @@ export default abstract class BaseSpreadSheet extends EE {
     options: SpreadsheetOptions,
   ) {
     super();
-    this.dom = isString(dom) ? document.getElementById(dom) : dom;
+    this.dom = isString(dom)
+      ? document.getElementById(<string>dom)
+      : <HTMLElement>dom;
     this.dataCfg = safetyDataCfg(dataCfg);
     this.options = safetyOptions(options);
     this.initGroups(this.dom, this.options);
     this.bindEvents();
     this.dataSet = this.initDataSet(this.options);
+    this.registerEventController();
     this.tooltip =
       (options?.initTooltip && options?.initTooltip(this)) ||
       this.initTooltip();
+
+    // 注意这俩的顺序，不要反过来，因为interaction中会屏蔽event，但是event不会屏蔽interaction
     this.registerInteractions(this.options);
+    this.registerEvents();
+
     this.initDevicePixelRatioListener();
     this.initDeviceZoomListener();
+  }
+
+  protected registerEventController() {
+    this.eventController = new EventController(this);
   }
 
   /**
@@ -126,7 +160,6 @@ export default abstract class BaseSpreadSheet extends EE {
    * 2. backgroundGroup
    * 3. panelGroup -- main facet group belongs to
    * 4. foregroundGroup
-   * 5. hoverBoxGroup (on panelGroup)
    * @param dom
    * @param options
    * @private
@@ -156,12 +189,6 @@ export default abstract class BaseSpreadSheet extends EE {
       name: KEY_GROUP_FORE_GROUND,
       zIndex: 2,
     });
-
-    // hover box on panel group
-    this.hoverBoxGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_HOVER_BOX,
-      zIndex: PANEL_GROUP_HOVER_BOX_GROUP_ZINDEX,
-    });
   }
 
   /**
@@ -169,6 +196,9 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param options
    */
   protected abstract registerInteractions(options: SpreadsheetOptions): void;
+
+  // 注册事件
+  protected abstract registerEvents(): void;
 
   protected abstract initDataSet(
     options: Partial<SpreadsheetOptions>,
@@ -268,9 +298,9 @@ export default abstract class BaseSpreadSheet extends EE {
     this.facet.render();
   }
 
-  protected getCorrectCell(facet: ViewMeta): Cell {
+  protected getCorrectCell(facet: ViewMeta): DataCell {
     return this.isValueInCols()
-      ? new Cell(facet, this)
+      ? new DataCell(facet, this)
       : new DataDerivedCell(facet, this);
   }
 
@@ -450,12 +480,24 @@ export default abstract class BaseSpreadSheet extends EE {
    * Get all panel group cells
    * @param callback to handle each cell if needed
    */
-  public getPanelAllCells(callback?: (cell: Cell) => void): Cell[] {
+  public getPanelAllCells(callback?: (cell: DataCell) => void): DataCell[] {
+    const [scrollX, sy] = this.facet.getScrollOffset();
+    const scrollY = sy + this.facet.getPaginationScrollY();
+    const indexes = this.facet.calculateXYIndexes(scrollX, scrollY);
+    const [minColIndex, maxColIndex, minRowIndex, maxRowIndex] = indexes;
     const children = this.panelGroup.get('children');
-    const cells: Cell[] = [];
+    const cells: DataCell[] = [];
     children.forEach((child) => {
-      if (child instanceof Cell) {
-        cells.push(child);
+      if (child instanceof DataCell) {
+        const { colIndex, rowIndex } = child.getMeta();
+        if (
+          colIndex >= minColIndex &&
+          colIndex <= maxColIndex &&
+          rowIndex >= minRowIndex &&
+          rowIndex <= maxRowIndex
+        ) {
+          cells.push(child);
+        }
         if (callback) {
           callback(child);
         }
@@ -591,4 +633,86 @@ export default abstract class BaseSpreadSheet extends EE {
 
     this.render(false);
   };
+
+  public setState(cell, stateName) {
+    this.state.setState(cell, stateName);
+  }
+
+  public getCurrentState() {
+    return this.state.getCurrentState();
+  }
+
+  public clearState() {
+    this.state.clearState();
+  }
+
+  public updateCellStyleByState() {
+    const cells = this.getCurrentState().cells;
+    cells.forEach((cell: BaseCell<Node>) => {
+      cell.updateByState(this.getCurrentState().stateName);
+    });
+  }
+
+  public showTooltip(showOptions: ShowProps) {
+    if (get(this, 'options.tooltip.showTooltip')) {
+      this.tooltip.show(showOptions);
+    }
+  }
+
+  public hideTooltip() {
+    this.tooltip.hide();
+  }
+
+  // 获取当前cell实例
+  public getCell(target) {
+    let parent = target;
+    // 一直索引到g顶层的canvas来检查是否在指定的cell中
+    while (parent && !(parent instanceof Canvas)) {
+      if (parent instanceof BaseCell) {
+        // 在单元格中，返回true
+        return parent;
+      }
+      parent = parent.get('parent');
+    }
+    return null;
+  }
+
+  // 获取当前cell类型
+  public getCellType(target) {
+    const cell = this.getCell(target);
+    if (cell instanceof DataCell) {
+      return DataCell.name;
+    }
+    if (cell instanceof RowCell) {
+      return RowCell.name;
+    }
+    if (cell instanceof ColCell) {
+      return ColCell.name;
+    }
+    if (cell instanceof CornerCell) {
+      return CornerCell.name;
+    }
+    return '';
+  }
+
+  // 由于行头和列头的选择的模式并不是把一整行或者一整列的cell都setState
+  // 因此需要手动把当前行头列头选择下的cell样式重置
+  public clearStyleIndependent() {
+    const currentState = this.getCurrentState();
+    if (
+      currentState.stateName === StateName.COL_SELECTED ||
+      currentState.stateName === StateName.ROW_SELECTED ||
+      currentState.stateName === StateName.HOVER
+    ) {
+      this.getPanelAllCells().forEach((cell) => {
+        cell.hideShapeUnderState();
+      });
+    }
+  }
+
+  public upDatePanelAllCellsStyle() {
+    this.getPanelAllCells().forEach((cell) => {
+      cell.update();
+    });
+  }
 }

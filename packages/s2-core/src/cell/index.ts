@@ -5,7 +5,7 @@
 import { BaseCell } from './base-cell';
 import { ColCell } from './col-cell';
 import { CornerCell } from './corner-cell';
-import { Cell } from './data-cell';
+import { DataCell } from './data-cell';
 import { RowCell } from './row-cell';
 import { DerivedCell } from './derived-cell';
 import { DetailRowCell } from './detail-row-cell';
@@ -21,7 +21,7 @@ export {
   DerivedCell,
   RowCell,
   ColCell,
-  Cell,
+  DataCell,
   CornerCell,
   BaseCell,
 };

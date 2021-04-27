@@ -38,19 +38,19 @@ const getDataCfg = () => {
       // rows has value
       rows: ['area', 'province', 'city'],
       columns: ['type', 'sub_type'],
-      values: ['profit'],
-      derivedValues: [
-        {
-          valueField: 'profit',
-          derivedValueField: ['profit-tongbi', 'profit-huanbi'],
-          displayDerivedValueField: ['profit-tongbi'],
-        },
-        {
-          valueField: 'count',
-          derivedValueField: ['count-tongbi', 'count-huanbi'],
-          displayDerivedValueField: ['count-tongbi'],
-        },
-      ],
+      values: ['profit', 'count'],
+      // derivedValues: [
+      //   {
+      //     valueField: 'profit',
+      //     derivedValueField: ['profit-tongbi', 'profit-huanbi'],
+      //     displayDerivedValueField: ['profit-tongbi'],
+      //   },
+      //   {
+      //     valueField: 'count',
+      //     derivedValueField: ['count-tongbi', 'count-huanbi'],
+      //     displayDerivedValueField: ['count-tongbi'],
+      //   },
+      // ],
     },
     meta: [
       {
@@ -111,8 +111,8 @@ const getDataCfg = () => {
 const getOptions = () => {
   return {
     debug: true,
-    width: 500,
-    height: 400,
+    width: 1000,
+    height: 800,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: true,
@@ -145,6 +145,10 @@ const getOptions = () => {
       return new CustomTooltip(spreadsheet);
     },
   };
+};
+
+const getTheme = () => {
+  return {};
 };
 
 function MainLayout(props) {
@@ -223,6 +227,7 @@ function MainLayout(props) {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
+        theme={props.theme}
         spreadsheet={getSpreadSheet}
         onRowCellClick={onRowCellClick}
         onColCellClick={onColCellClick}
@@ -239,7 +244,11 @@ describe('spreadsheet normal spec', () => {
 
   act(() => {
     ReactDOM.render(
-      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
+      <MainLayout
+        dataCfg={getDataCfg()}
+        options={getOptions()}
+        theme={getTheme()}
+      />,
       getContainer(),
     );
   });

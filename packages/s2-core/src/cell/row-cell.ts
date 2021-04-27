@@ -65,6 +65,7 @@ export class RowCell extends BaseCell<Node> {
     this.gm?.destroy();
   }
 
+  // TODO: options能不能不要固定顺序？headerConfig必须是 0下的吗？
   protected handleRestOptions(...options) {
     this.headerConfig = options[0];
   }
@@ -411,7 +412,7 @@ export class RowCell extends BaseCell<Node> {
           height: HIT_AREA,
           cursor: 'row-resize',
           appendInfo: {
-            isTrigger: true,
+            isResizer: true,
             class: 'resize-trigger',
             type: 'row',
             affect: 'cell',
@@ -434,11 +435,11 @@ export class RowCell extends BaseCell<Node> {
       y,
       width,
       height,
-      this.theme.header.cell.interactiveBgColor,
+      'transparent',
       'transparent',
       this,
     );
-    updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
+    this.stateShapes.push(this.interactiveBgShape);
   }
 
   protected drawBackgroundColor() {

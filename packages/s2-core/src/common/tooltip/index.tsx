@@ -105,7 +105,7 @@ export class BaseTooltip {
   protected renderContent(data?: DataProps, options?: TooltipOptions) {
     const option = getOptions(options);
     const { operator, showSingleTips } = option;
-    const { summary, headInfo, details, interpretation, infos, tips } =
+    const { summaries, headInfo, details, interpretation, infos, tips } =
       data || {};
 
     if (showSingleTips) {
@@ -114,7 +114,7 @@ export class BaseTooltip {
     return (
       <div>
         {this.renderOperation(operator)}
-        {this.renderSummary(summary)}
+        {this.renderSummary(summaries)}
         {this.renderInterpretation(interpretation)}
         {this.renderHeadInfo(headInfo)}
         {this.renderDetail(details)}
@@ -139,8 +139,8 @@ export class BaseTooltip {
     return tips && <SimpleTips tips={tips} />;
   }
 
-  protected renderSummary(summary: SummaryProps) {
-    return !isEmpty(summary) && <TooltipSummary {...summary} />;
+  protected renderSummary(summaries: SummaryProps[]) {
+    return !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
   }
 
   protected renderHeadInfo(headInfo: HeadInfo) {

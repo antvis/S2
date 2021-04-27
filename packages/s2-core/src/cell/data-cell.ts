@@ -1,21 +1,16 @@
 import { getEllipsisText } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import { map, find, get, isEmpty, first, includes } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
-import {
-  renderLine,
-  renderRect,
-  renderText,
-  updateShapeAttr,
-} from '../utils/g-renders';
+import { renderLine, renderRect, renderText } from '../utils/g-renders';
 import { getDerivedDataState } from '../utils/text';
-import { isSelected } from '../utils/selected';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { BaseCell } from './base-cell';
 import { DerivedCell } from './derived-cell';
+import { StateName } from '../state/state';
 
 // default icon size
 const ICON_SIZE = 10;
@@ -23,7 +18,7 @@ const ICON_SIZE = 10;
 const ICON_PADDING = 2;
 
 /**
- * Cell for panelGroup area
+ * DataCell for panelGroup area
  * ----------------------------
  * |                  |       |
  * |interval      text| icon  |
@@ -34,7 +29,7 @@ const ICON_PADDING = 2;
  * 2、icon align in right with size {@link ICON_SIZE}
  * 3、left rect area is interval(in left) and text(in right)
  */
-export class Cell extends BaseCell<ViewMeta> {
+export class DataCell extends BaseCell<ViewMeta> {
   // 3、condition shapes
   // background color by bg condition
   protected conditionBgShape: IShape;
@@ -48,6 +43,9 @@ export class Cell extends BaseCell<ViewMeta> {
   // 4、render main text
   protected textShape: IShape;
 
+  // 5、brush-select prepareSelect border
+  protected activeBorderShape: IShape;
+
   // cell config's conditions(Determine how to render this cell)
   protected conditions: Conditions;
 
@@ -55,16 +53,47 @@ export class Cell extends BaseCell<ViewMeta> {
     super(meta, spreadsheet);
   }
 
-  public update() {
-    const selected = this.spreadsheet.store.get('selected');
-    if (_.isNil(selected)) {
-      this.setInactive();
+  // dataCell根据state 改变当前样式，
+  private changeCellStyleByState(needGetIndexKey, changeStyleStateName) {
+    const { cells } = this.spreadsheet.getCurrentState();
+    const currentIndex = this.meta[needGetIndexKey];
+    const selectedIndexes = map(
+      cells,
+      (cell) => cell.getMeta()[needGetIndexKey],
+    );
+    if (includes(selectedIndexes, currentIndex)) {
+      this.updateByState(changeStyleStateName);
     } else {
-      const s = isSelected(this.meta.rowIndex, this.meta.colIndex, selected);
-      if (s) {
-        this.setActive();
-      } else {
-        this.setInactive();
+      this.hideShapeUnderState();
+    }
+  }
+
+  public update() {
+    const state = this.spreadsheet.getCurrentState();
+    const { stateName, cells } = state;
+    if (cells.length) {
+      // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
+      // 二者操作一致，function合并
+      if (stateName === StateName.COL_SELECTED) {
+        this.changeCellStyleByState('colIndex', StateName.SELECTED);
+      } else if (stateName === StateName.ROW_SELECTED) {
+        this.changeCellStyleByState('rowIndex', StateName.SELECTED);
+      } else if (stateName === StateName.HOVER && !isEmpty(cells)) {
+        // 如果当前是hover，要绘制出十字交叉的行列样式
+        const currentHoverCell = first(cells);
+        const currentColIndex = this.meta.colIndex;
+        const currentRowIndex = this.meta.rowIndex;
+        // 当视图内的cell行列index与hover的cell一致，且不是当前hover的cell时，绘制hover的十字样式
+        if (
+          (currentColIndex === currentHoverCell.getMeta().colIndex ||
+            currentRowIndex === currentHoverCell.getMeta().rowIndex) &&
+          this !== currentHoverCell
+        ) {
+          this.updateByState(StateName.HOVER_LINKAGE);
+        } else if (this !== currentHoverCell) {
+          // 当视图内的cell行列index与hover的cell 不一致，且不是当前hover的cell时，隐藏其他样式
+          this.hideShapeUnderState();
+        }
       }
     }
   }
@@ -93,22 +122,6 @@ export class Cell extends BaseCell<ViewMeta> {
     };
   }
 
-  public setActive() {
-    updateShapeAttr(
-      this.interactiveBgShape,
-      'fillOpacity',
-      this.theme.view.cell.interactiveFillOpacity[1],
-    );
-  }
-
-  public setInactive() {
-    updateShapeAttr(
-      this.interactiveBgShape,
-      'fillOpacity',
-      this.theme.view.cell.interactiveFillOpacity[0],
-    );
-  }
-
   public setMeta(viewMeta: ViewMeta) {
     super.setMeta(viewMeta);
     this.initCell();
@@ -116,13 +129,19 @@ export class Cell extends BaseCell<ViewMeta> {
 
   protected initCell() {
     this.conditions = this.spreadsheet.options?.conditions;
-    this.initBackgroundShape();
-    this.initInteractiveBgShape();
-    this.initConditionShapes();
-    this.initTextShape();
-    this.initBorderShape();
+    this.drawBackgroundShape();
+    this.drawStateShapes();
+    this.drawConditionShapes();
+    this.drawTextShape();
+    this.drawBorderShape();
     // 更新选中状态
     this.update();
+  }
+
+  // 根据state要改变样式的shape
+  protected drawStateShapes() {
+    this.drawInteractiveBgShape();
+    this.drawActiveBorderShape();
   }
 
   /**
@@ -169,7 +188,7 @@ export class Cell extends BaseCell<ViewMeta> {
    * @param conditions
    */
   protected findFieldCondition(conditions: Condition[]): Condition {
-    return _.find(conditions, (item) => item.field === this.meta.valueField);
+    return find(conditions, (item) => item.field === this.meta.valueField);
   }
 
   /**
@@ -177,13 +196,13 @@ export class Cell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): CellMapping {
-    return condition?.mapping(this.meta.fieldValue, _.get(this.meta.data, [0]));
+    return condition?.mapping(this.meta.fieldValue, get(this.meta.data, [0]));
   }
 
   /**
    * Draw cell background
    */
-  protected initBackgroundShape() {
+  protected drawBackgroundShape() {
     const { x, y, height, width } = this.meta;
 
     let bgColor = this.theme.view.cell.backgroundColor;
@@ -211,7 +230,7 @@ export class Cell extends BaseCell<ViewMeta> {
   /**
    * Draw background condition shape
    */
-  protected initConditionBgShape() {
+  protected drawConditionBgShape() {
     const { x, y, height, width } = this.meta;
     let fill = 'rgba(255, 255, 255, 0)';
     let stroke = 'transparent';
@@ -239,41 +258,60 @@ export class Cell extends BaseCell<ViewMeta> {
    * Draw condition's shapes
    * icon, interval, background
    */
-  protected initConditionShapes() {
-    this.initConditionBgShape();
-    this.initIconShape();
-    this.initIntervalShape();
+  protected drawConditionShapes() {
+    this.drawConditionBgShape();
+    this.drawIconShape();
+    this.drawIntervalShape();
+  }
+
+  /**
+   * 绘制hover悬停，刷选的外框
+   */
+  protected drawActiveBorderShape() {
+    // 往内缩一个像素，避免和外边框重叠
+    const margin = 1;
+    const { x, y, height, width } = this.meta;
+    this.activeBorderShape = renderRect(
+      x + margin,
+      y + margin,
+      width - margin * 2,
+      height - margin * 2,
+      'transparent',
+      'transparent',
+      this,
+    );
+    this.stateShapes.push(this.activeBorderShape);
   }
 
   /**
    * Draw interactive color
    */
-  protected initInteractiveBgShape() {
+  protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
-    const fill = this.theme.view.cell.interactiveBgColor;
     this.interactiveBgShape = renderRect(
       x,
       y,
       width,
       height,
-      fill,
+      'transparent',
       'transparent',
       this,
     );
+    this.stateShapes.push(this.interactiveBgShape);
   }
 
   /**
    * Draw icon condition shape
    * @private
    */
-  protected initIconShape() {
+  protected drawIconShape() {
     const { x, y, height, width } = this.meta;
     const iconCondition = this.findFieldCondition(this.conditions?.icon);
     if (iconCondition && iconCondition.mapping) {
       const attrs = this.mappingValue(iconCondition);
       const { formattedValue } = this.getData();
       // icon only show when icon not empty and value not null(empty)
-      if (!_.isEmpty(attrs?.icon) && formattedValue) {
+      if (!isEmpty(attrs?.icon) && formattedValue) {
         this.iconShape = new GuiIcon({
           type: attrs.icon,
           x: x + width - ICON_PADDING - ICON_SIZE,
@@ -291,7 +329,7 @@ export class Cell extends BaseCell<ViewMeta> {
    * Draw interval condition shape
    * @private
    */
-  protected initIntervalShape() {
+  protected drawIntervalShape() {
     const { x, y, height, width } = this.getLeftAreaBBox();
 
     const intervalCondition = this.findFieldCondition(
@@ -351,9 +389,9 @@ export class Cell extends BaseCell<ViewMeta> {
     if (data) {
       let value;
       if (isTotals) {
-        value = _.get(data, [0, VALUE_FIELD]);
+        value = get(data, [0, VALUE_FIELD]);
       } else {
-        value = _.get(data, [0, derivedValue]);
+        value = get(data, [0, derivedValue]);
       }
       const up = getDerivedDataState(value);
       const formatter = this.spreadsheet.dataSet.getFieldFormatter(
@@ -373,7 +411,7 @@ export class Cell extends BaseCell<ViewMeta> {
   /**
    * Render cell main text and derived text
    */
-  protected initTextShape() {
+  protected drawTextShape() {
     const { x, y, height, width } = this.getLeftAreaBBox();
     const { valueField: originField, isTotals } = this.meta;
 
@@ -421,7 +459,7 @@ export class Cell extends BaseCell<ViewMeta> {
    * Render cell border controlled by verticalBorder & horizontalBorder
    * @private
    */
-  protected initBorderShape() {
+  protected drawBorderShape() {
     const { x, y, height, width } = this.meta;
     const borderColor = this.theme.view.cell.borderColor;
     const borderWidth = this.theme.view.cell.borderWidth;
