@@ -1,7 +1,7 @@
 import { isArray, isEmpty, each, get, uniq, identity, find } from 'lodash';
 import { BaseDataSet, BaseParams } from './base-data-set';
 import { i18n } from '../common/i18n';
-import { DataCfg, DerivedValue, Formatter, Meta } from '../common/interface';
+import { S2DataConfig, DerivedValue, Formatter, Meta } from '../common/interface';
 import { auto } from '../index';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
@@ -65,7 +65,7 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
    * 3、value replace all rows(strategy status) -- fields.rows is empty
    * @param dataCfg
    */
-  protected preProcess(dataCfg: DataCfg): DataCfg {
+  protected preProcess(dataCfg: S2DataConfig): S2DataConfig {
     const newDataCfg = processIrregularData(dataCfg);
 
     const { data, meta = [], fields, sortParams = [] } = newDataCfg;
@@ -73,7 +73,7 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
 
     let newColumns = columns;
     let newRows = rows;
-    let newSortParams: DataCfg['sortParams'] = sortParams;
+    let newSortParams: S2DataConfig['sortParams'] = sortParams;
     let newValues = values;
     if (this.valueInCols) {
       // value in cols

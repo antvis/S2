@@ -1,4 +1,4 @@
-import { SpreadsheetFacetCfg, SpreadsheetOptions } from '../common/interface';
+import { SpreadsheetFacetCfg, S2Options } from '../common/interface';
 import { BaseTooltip } from '../tooltip';
 import { isEmpty, merge } from 'lodash';
 import { KEY_COLLAPSE_TREE_ROWS } from '../common/constant';
@@ -50,7 +50,6 @@ export default class StrategySheet extends SpreadSheet {
   }
 
   isHierarchyTreeType(): boolean {
-    // TODO 目前的决策模式下，就只有树形结构！！！
     return true;
   }
 
@@ -59,7 +58,7 @@ export default class StrategySheet extends SpreadSheet {
   }
 
   protected initDataSet(
-    options: Partial<SpreadsheetOptions>,
+    options: Partial<S2Options>,
   ): BaseDataSet<BaseParams> {
     return new StrategyDataSet({
       spreadsheet: this,
@@ -71,7 +70,7 @@ export default class StrategySheet extends SpreadSheet {
     return new BaseTooltip(this);
   }
 
-  protected registerInteractions(options: SpreadsheetOptions) {
+  protected registerInteractions(options: S2Options) {
     super.registerInteractions(options);
   }
 }

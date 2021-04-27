@@ -1,9 +1,8 @@
 import BaseSpreadSheet from './base-spread-sheet';
 import {
-  DataCfg,
-  SpreadsheetFacetCfg,
-  SpreadsheetOptions,
-} from '../common/interface';
+  S2DataConfig, S2Options,
+  SpreadsheetFacetCfg
+} from "../common/interface";
 import { BaseDataSet, SpreadDataSet, DetailDataSet } from '../data-set';
 import { BaseTooltip } from '../tooltip';
 import { get, set, isBoolean, merge } from 'lodash';
@@ -38,13 +37,13 @@ import { detectAttrsChangeAndAction } from '../utils/attrs-action';
 export default class SpreadSheet extends BaseSpreadSheet {
   public constructor(
     dom: string | HTMLElement,
-    dataCfg: DataCfg,
-    options: SpreadsheetOptions,
+    dataCfg: S2DataConfig,
+    options: S2Options,
   ) {
     super(dom, dataCfg, options);
   }
 
-  public setOptions(options: SpreadsheetOptions) {
+  public setOptions(options: S2Options) {
     super.setOptions(options);
     /**
      * Update new spreadsheet configs {@see options}
@@ -123,7 +122,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
   }
 
   protected initDataSet(
-    options: Partial<SpreadsheetOptions>,
+    options: Partial<S2Options>,
   ): BaseDataSet<SpreadParams> {
     const { spreadsheetType, valueInCols = true } = options;
     if (!spreadsheetType) {
@@ -144,7 +143,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     return new BaseTooltip(this);
   }
 
-  protected registerInteractions(options: SpreadsheetOptions) {
+  protected registerInteractions(options: S2Options) {
     this.interactions.clear();
     if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
       this.registerInteraction(
@@ -173,7 +172,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
   }
 
   protected handleCollapseChangedInTreeMode(
-    options: Partial<SpreadsheetOptions>,
+    options: Partial<S2Options>,
   ) {
     detectAttrsChangeAndAction(
       options,
@@ -194,7 +193,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
    * @param options outside passed new options
    * @private
    */
-  protected handleDataSetChanged(options: Partial<SpreadsheetOptions>) {
+  protected handleDataSetChanged(options: Partial<S2Options>) {
     detectAttrsChangeAndAction(
       options,
       this.options,
@@ -210,7 +209,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
    * @param options outside saved options
    * @private
    */
-  protected handleColLayoutTypeChanged(options: Partial<SpreadsheetOptions>) {
+  protected handleColLayoutTypeChanged(options: Partial<S2Options>) {
     detectAttrsChangeAndAction(
       options,
       this.options,
@@ -222,7 +221,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     );
   }
 
-  protected handleChangeSize(options: Partial<SpreadsheetOptions>) {
+  protected handleChangeSize(options: Partial<S2Options>) {
     detectAttrsChangeAndAction(
       options,
       this.options,

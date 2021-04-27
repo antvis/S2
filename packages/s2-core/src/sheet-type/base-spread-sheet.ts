@@ -14,14 +14,12 @@ import { Store } from '../common/store';
 import { ext } from '@antv/matrix-util';
 import {
   ColWidthCache,
-  DataCfg,
-  DerivedValue,
+  DerivedValue, safetyDataConfig,
   OffsetConfig,
-  Pagination,
+  Pagination, S2DataConfig, S2Options,
   SpreadsheetFacetCfg,
-  SpreadsheetOptions,
-  ViewMeta,
-} from '../common/interface';
+  ViewMeta, safetyOptions
+} from "../common/interface";
 import { Cell } from '../cell';
 import {
   KEY_COL_REAL_WIDTH_INFO,
@@ -40,7 +38,6 @@ import { BaseFacet } from '../facet/base-facet';
 import { BaseParams } from '../data-set/base-data-set';
 import { DataDerivedCell } from '../cell';
 import { DebuggerUtil } from '../common/debug';
-import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
 import { isMobile } from '../utils/is-mobile';
 
 const matrixTransform = ext.transform;
@@ -59,10 +56,10 @@ export default abstract class BaseSpreadSheet extends EE {
   public store: Store = new Store();
 
   // the original data config
-  public dataCfg: DataCfg;
+  public dataCfg: S2DataConfig;
 
   // Spreadsheet's configurations
-  public options: SpreadsheetOptions;
+  public options: S2Options;
 
   /**
    * processed data structure, include {@link Fields}, {@link Meta}
@@ -101,12 +98,12 @@ export default abstract class BaseSpreadSheet extends EE {
 
   protected constructor(
     dom: string | HTMLElement,
-    dataCfg: DataCfg,
-    options: SpreadsheetOptions,
+    dataCfg: S2DataConfig,
+    options: S2Options,
   ) {
     super();
     this.dom = isString(dom) ? document.getElementById(dom) : dom;
-    this.dataCfg = safetyDataCfg(dataCfg);
+    this.dataCfg = safetyDataConfig(dataCfg);
     this.options = safetyOptions(options);
     this.initGroups(this.dom, this.options);
     this.bindEvents();
@@ -120,6 +117,27 @@ export default abstract class BaseSpreadSheet extends EE {
   }
 
   /**
+   * Update data config and keep pre-sort operations
+   * Group sort params kept in {@see store} and
+   * Priority: group sort > advanced sort
+   * @param dataCfg
+   */
+  public setDataCfg(dataCfg: S2DataConfig): void {
+    const newDataCfg = clone(dataCfg);
+    const lastSortParam = this.store.get('sortParam');
+    const { sortParams } = newDataCfg;
+    newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
+    this.dataCfg = newDataCfg;
+  }
+
+  public setOptions(options: S2Options): void {
+    if (this.tooltip) {
+      this.tooltip.hide();
+    }
+    console.info(options);
+  }
+
+  /**
    * Create all related groups, contains:
    * 1. container -- base canvas group
    * 2. backgroundGroup
@@ -130,7 +148,7 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param options
    * @private
    */
-  protected initGroups(dom: HTMLElement, options: SpreadsheetOptions): void {
+  protected initGroups(dom: HTMLElement, options: S2Options): void {
     const { width, height } = options;
 
     // base canvas group
@@ -163,16 +181,6 @@ export default abstract class BaseSpreadSheet extends EE {
     });
   }
 
-  /**
-   * 注册交互（组件按自己的场景写交互，继承此方法注册）
-   * @param options
-   */
-  protected abstract registerInteractions(options: SpreadsheetOptions): void;
-
-  protected abstract initDataSet(
-    options: Partial<SpreadsheetOptions>,
-  ): BaseDataSet<BaseParams>;
-
   protected abstract initTooltip(): BaseTooltip;
 
   protected abstract bindEvents(): void;
@@ -181,11 +189,25 @@ export default abstract class BaseSpreadSheet extends EE {
     return new SpreadsheetFacet(facetCfg);
   }
 
+  /**
+   * 注册交互（组件按自己的场景写交互，继承此方法注册）
+   * @param options
+   */
+  protected abstract registerInteractions(options: S2Options): void;
+
+  protected getCorrectCell(facet: ViewMeta): Cell {
+    return this.isValueInCols()
+      ? new Cell(facet, this)
+      : new DataDerivedCell(facet, this);
+  }
+
+  protected abstract initDataSet(
+    options: Partial<S2Options>,
+  ): BaseDataSet<BaseParams>;
+
   protected buildFacet(): void {
-    const { fields } = this.dataSet;
-    if (!fields) {
-      return;
-    }
+    const { fields, meta } = this.dataSet;
+
     const { rows, columns, values, derivedValues } = fields;
 
     const {
@@ -220,13 +242,10 @@ export default abstract class BaseSpreadSheet extends EE {
       treeRowsWidth,
     } = style;
     this.dataSet.pivot.updateTotals(totals);
-    this.dataSet.pivot.updateHideNodesIds(hideNodesIds);
-    this.dataSet.pivot.updateKeepOnlyNodesIds(keepOnlyNodesIds);
 
     const defaultCell = (facet: ViewMeta) => this.getCorrectCell(facet);
     DebuggerUtil.getInstance().setDebug(debug);
     // the new facetCfg of facet
-    // TODO 我觉得这个cfg可以干掉，因为完全就是options的映射
     const facetCfg = {
       spreadsheet: this,
       dataSet: this.dataSet,
@@ -234,7 +253,7 @@ export default abstract class BaseSpreadSheet extends EE {
       collapsedRows,
       collapsedCols,
       hierarchyCollapse,
-      meta: this.dataCfg.meta,
+      meta: meta,
       cols: columns,
       rows,
       cellCfg,
@@ -265,33 +284,6 @@ export default abstract class BaseSpreadSheet extends EE {
     this.facet = this.initFacet(facetCfg);
     // render facet
     this.facet.render();
-  }
-
-  protected getCorrectCell(facet: ViewMeta): Cell {
-    return this.isValueInCols()
-      ? new Cell(facet, this)
-      : new DataDerivedCell(facet, this);
-  }
-
-  /**
-   * Update data config and keep pre-sort operations
-   * Group sort params kept in {@see store} and
-   * Priority: group sort > advanced sort
-   * @param dataCfg
-   */
-  public setDataCfg(dataCfg: DataCfg): void {
-    const newDataCfg = clone(dataCfg);
-    const lastSortParam = this.store.get('sortParam');
-    const { sortParams } = newDataCfg;
-    newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
-    this.dataCfg = newDataCfg;
-  }
-
-  public setOptions(options: SpreadsheetOptions): void {
-    if (this.tooltip) {
-      this.tooltip.hide();
-    }
-    console.info(options);
   }
 
   public render(reloadData = true, callback?: () => void): void {

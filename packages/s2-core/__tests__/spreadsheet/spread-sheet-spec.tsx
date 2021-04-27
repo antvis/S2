@@ -2,12 +2,10 @@ import { merge, clone } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
-  auto,
-  DataCfg,
+  auto, S2DataConfig, S2Options,
   SheetComponent,
-  SpreadSheet,
-  SpreadsheetOptions,
-} from '../../src';
+  SpreadSheet
+} from "../../src";
 import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
@@ -26,8 +24,8 @@ data = data.map((row) => {
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
-  dataCfg: DataCfg,
-  options: SpreadsheetOptions,
+  dataCfg: S2DataConfig,
+  options: S2Options,
 ) => {
   return new SpreadSheet(dom, dataCfg, options);
 };
