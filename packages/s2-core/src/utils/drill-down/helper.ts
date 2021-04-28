@@ -382,7 +382,7 @@ export const HandleConfigWhenDrillDown = (
     // 树状模式显示下钻信息，平铺模式隐藏！！
     if (
       props.options.hierarchyType === 'tree' &&
-      props.options.spreadsheetType
+      props.options.mode === 'pivot'
     ) {
       const drillDownFieldInLevel = spreadsheet.store.get(
         'drillDownFieldInLevel',

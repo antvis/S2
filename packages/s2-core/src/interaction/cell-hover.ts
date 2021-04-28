@@ -41,7 +41,7 @@ export class CellHover extends HoverInteraction {
   }
 
   protected showHoverBox(cells: Cell[]) {
-    if (this.spreadsheet.isSpreadsheetType()) {
+    if (this.spreadsheet.isPivotMode()) {
       super.showHoverBox(cells);
     } else {
       // 明细表
@@ -70,7 +70,7 @@ export class CellHover extends HoverInteraction {
     if (cell instanceof Cell) {
       this.showHoverBox([cell]);
       // 目前只有交叉表才有tooltips,明细表暂时木有
-      if (this.spreadsheet.isSpreadsheetType()) {
+      if (this.spreadsheet.isPivotMode()) {
         const position = {
           x: ev.clientX,
           y: ev.clientY,

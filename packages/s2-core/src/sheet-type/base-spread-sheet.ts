@@ -414,10 +414,10 @@ export default abstract class BaseSpreadSheet extends EE {
   }
 
   /**
-   * Check if is SpreadSheet mode
+   * Check if is pivot mode
    */
-  public isSpreadsheetType(): boolean {
-    return get(this, 'options.spreadsheetType', true);
+  public isPivotMode(): boolean {
+    return this.options?.mode === 'pivot';
   }
 
   /**
@@ -425,16 +425,14 @@ export default abstract class BaseSpreadSheet extends EE {
    * For now contains row header in ListSheet mode by default
    */
   public isScrollContainsRowHeader(): boolean {
-    return (
-      !get(this, 'options.containsRowHeader', true) || !this.isSpreadsheetType()
-    );
+    return !this.freezeRowHeader() || !this.isPivotMode();
   }
 
   /**
    * Scroll Freeze Row Header
    */
   public freezeRowHeader(): boolean {
-    return !get(this, 'options.containsRowHeader', true);
+    return this.options?.freezeRowHeader;
   }
 
   /**

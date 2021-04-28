@@ -149,7 +149,7 @@ export const copyData = (
     colLeafNodes,
     getViewMeta,
   } = sheetInstance?.facet?.layoutResult;
-  const { valueInCols, spreadsheetType } = sheetInstance.options;
+  const { valueInCols } = sheetInstance.options;
   const rows = clone(rowsHierarchy?.rows);
 
   // Genarate the table header.
@@ -162,7 +162,7 @@ export const copyData = (
 
   let headers: string[][] = [];
 
-  if (isEmpty(colLeafNodes) && !spreadsheetType) {
+  if (isEmpty(colLeafNodes) && !sheetInstance.isPivotMode()) {
     // when there is no column in detail mode
     headers = [rowsHeader];
   } else {
@@ -205,7 +205,7 @@ export const copyData = (
   // Genarate the table body.
   let detailRows = [];
 
-  if (!spreadsheetType) {
+  if (!sheetInstance.isPivotMode()) {
     detailRows = processValueInDetail(sheetInstance, split, isFormat);
   } else {
     // Filter out the realated row head leaf nodes.

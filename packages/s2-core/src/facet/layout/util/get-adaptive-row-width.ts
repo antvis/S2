@@ -25,7 +25,7 @@ import { WidthType } from './process-default-col-width-by-type';
  * @param cellCfg
  * @param facet
  * @param cfg
- * @param isSpreadsheetType
+ * @param isPivotMode
  */
 export default function getAdaptiveRowWidth(
   rowsHierarchy: Hierarchy,
@@ -34,7 +34,7 @@ export default function getAdaptiveRowWidth(
   cellCfg: CellCfg,
   facet: SpreadsheetFacet,
   cfg: SpreadsheetFacetCfg,
-  isSpreadsheetType = true,
+  isPivotMode = true,
 ) {
   if (rowCfg.width === WidthType.Compat) {
     // compat
@@ -54,7 +54,7 @@ export default function getAdaptiveRowWidth(
       // 没有记录
       const fieldLabel = cfg.dataSet.getFieldName(field) || '';
       let label;
-      if (isSpreadsheetType) {
+      if (isPivotMode) {
         // 交叉表 情况
         // 检查node在哪个层级，通过层级的所有cols值来获取该层级最大的宽度
         const { maxLabel } = rowsHierarchy.getMinMaxLabelInLevel(node.level);
@@ -84,7 +84,7 @@ export default function getAdaptiveRowWidth(
     width = DEFAULT_PADDING + realWidth + DEFAULT_PADDING + ICON_RADIUS * 2 + DEFAULT_PADDING
      */
     let newWidth;
-    if (isSpreadsheetType) {
+    if (isPivotMode) {
       newWidth = maxLabelRealWidth + DEFAULT_PADDING * 3;
     } else {
       newWidth = maxLabelRealWidth + DEFAULT_PADDING * 3 + ICON_RADIUS * 2;

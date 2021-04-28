@@ -113,8 +113,8 @@ export default class SpreadSheet extends BaseSpreadSheet {
   }
 
   protected initFacet(facetCfg: SpreadsheetFacetCfg): BaseFacet {
-    const { spreadsheetType } = this.options;
-    if (!spreadsheetType) {
+    const { mode } = this.options;
+    if (mode === 'table') {
       // ListSheet
       return new DetailFacet(facetCfg);
     }
@@ -125,8 +125,8 @@ export default class SpreadSheet extends BaseSpreadSheet {
   protected initDataSet(
     options: Partial<S2Options>,
   ): BaseDataSet<SpreadParams> {
-    const { spreadsheetType, valueInCols = true } = options;
-    if (!spreadsheetType) {
+    const { mode, valueInCols = true } = options;
+    if (mode === 'table') {
       // 明细表
       return new DetailDataSet({
         spreadsheet: this,
@@ -196,7 +196,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     detectAttrsChangeAndAction(
       options,
       this.options,
-      ['spreadsheetType', 'valueInCols'],
+      ['mode', 'valueInCols'],
       () => {
         this.dataSet = this.initDataSet(options);
       },

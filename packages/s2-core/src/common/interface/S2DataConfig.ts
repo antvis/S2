@@ -15,7 +15,7 @@ export interface S2DataConfig {
   // origin detail data
   data: Record<string, string | number>[];
   // total data(grandTotal, subTotal)
-  totalData: Record<string, string | number>[];
+  totalData?: Record<string, string | number>[];
   // data keys for render row,columns,values etc
   fields: Fields;
   // data keys mata info

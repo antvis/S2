@@ -326,14 +326,14 @@ const getColWidthWithDerivedValue = (
  * @param rowsHierarchy
  * @param cfg
  * @param facet
- * @param isSpreadsheetType
+ * @param isPivotMode
  */
 export default function processColLeafNodeWH(
   colLeafNodes: Node[],
   rowsHierarchy: Hierarchy,
   cfg: SpreadsheetFacetCfg,
   facet: SpreadsheetFacet,
-  isSpreadsheetType: boolean,
+  isPivotMode: boolean,
 ) {
   const { cellCfg, colCfg } = cfg;
 
@@ -368,7 +368,7 @@ export default function processColLeafNodeWH(
     if (cellCfg.width === WidthType.Compat) {
       // compat
       const dataset = facet.getDataset();
-      if (isSpreadsheetType) {
+      if (isPivotMode) {
         // 节点的宽度由文本宽度决定
         const records = dataset.getData(getDimsConditionByNode(current));
         const colLabel = dataset.getFieldName(current.label);

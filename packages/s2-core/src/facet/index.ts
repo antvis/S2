@@ -431,7 +431,7 @@ export class SpreadsheetFacet extends BaseFacet {
       showViewPortRightShadow:
         !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
       scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
-      isSpreadsheetType: this.cfg.spreadsheet.isSpreadsheetType(),
+      isPivotMode: this.cfg.spreadsheet.isPivotMode(),
       spreadsheet: this.cfg.spreadsheet,
     };
     return frame ? frame(frameCfg) : new Frame(frameCfg);
@@ -534,9 +534,7 @@ export class SpreadsheetFacet extends BaseFacet {
         `Render Cell Panel: ${allCells?.length}, Add: ${newIndexes?.length}, Remove: ${remove?.length}`,
       );
     });
-    if (!isEmpty(newIndexes)) {
-      this.preIndexes = indexes;
-    }
+    this.preIndexes = indexes;
   }
 
   /**
@@ -614,11 +612,11 @@ export class SpreadsheetFacet extends BaseFacet {
     this.panelGroup.setClip({
       type: 'rect',
       attrs: {
-        x: this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX,
+        x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
         y: scrollY,
         width:
           this.viewportBBox.width +
-          (this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0),
+          (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
         height: this.viewportBBox.height,
       },
     });

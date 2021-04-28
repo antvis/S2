@@ -82,7 +82,7 @@ export class BrushSelection extends HoverInteraction {
 
   protected process(ev: Event) {
     // 暂时只有交叉表才多选！
-    if (this.phase && this.spreadsheet.isSpreadsheetType()) {
+    if (this.phase && this.spreadsheet.isPivotMode()) {
       ev.preventDefault();
       this.phase = 2;
       const oe = ev.originalEvent as any;

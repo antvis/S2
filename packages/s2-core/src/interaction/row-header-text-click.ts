@@ -49,7 +49,7 @@ export class RowHeaderTextClick extends HoverInteraction {
         });
       }
       // list view need row index
-      if (!this.spreadsheet?.options?.spreadsheetType) {
+      if (!this.spreadsheet.isPivotMode()) {
         set(record, 'rowIndex', rowIndex);
       }
       this.spreadsheet.emit(KEY_JUMP_HREF, {

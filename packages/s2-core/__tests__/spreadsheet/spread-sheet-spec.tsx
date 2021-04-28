@@ -11,7 +11,7 @@ import {
 import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Switch } from 'antd';
+import { Switch, Checkbox } from 'antd';
 import { CustomTooltip } from './custom/custom-tooltip';
 
 let data = getMockData('../datasets/tableau-supermarket.csv');
@@ -116,8 +116,8 @@ const getOptions = () => {
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: true,
-    containsRowHeader: true,
-    spreadsheetType: true,
+    freezeRowHeader: false,
+    mode: 'pivot',
     valueInCols: true,
     conditions: {
       text: [],
@@ -152,6 +152,9 @@ function MainLayout(props) {
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
   const [valueInCols, setValueInCols] = React.useState(true);
   const [derivedValueMul, setDerivedValueMul] = React.useState(false);
+  const [freezeRowHeader, setFreezeRowHeader] = React.useState(
+    props.options.freezeRowHeader,
+  );
 
   const onRowCellClick = (value) => {
     console.log(value);
@@ -194,6 +197,16 @@ function MainLayout(props) {
     });
     setDataCfg(next);
   };
+
+  const onCheckChanged3 = (e) => {
+    setOptions(
+      merge({}, options, {
+        freezeRowHeader: e.target.checked,
+      }),
+    );
+    setFreezeRowHeader(e.target.checked);
+  };
+
   return (
     <div>
       <div style={{ display: 'inline-block' }}>
@@ -214,10 +227,14 @@ function MainLayout(props) {
         <Switch
           checkedChildren="多列"
           unCheckedChildren="单列"
-          style={{ marginLeft: 10 }}
+          style={{ marginRight: 10 }}
           defaultChecked={derivedValueMul}
           onChange={onCheckChanged2}
         />
+
+        <Checkbox onChange={onCheckChanged3} defaultChecked={freezeRowHeader}>
+          冻结行头
+        </Checkbox>
       </div>
       <SheetComponent
         dataCfg={dataCfg}
