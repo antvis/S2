@@ -17,20 +17,25 @@ import {
 import { isMobile } from '../utils/is-mobile';
 import {
   BrushSelection,
-  CellSelection,
-  CornerHeaderTextClick,
-  HeaderHover,
   RowColResize,
-  RowColumnSelection,
-  RowHeaderTextClick,
+  DataCellMutiSelection,
+  ColRowMutiSelection,
 } from '../interaction';
-import { ClickEvent } from '../interaction/click-event';
+import {
+  DataCellClick,
+  CornerTextClick,
+  RowColumnClick,
+  RowTextClick,
+  HoverEvent,
+} from '../interaction/events';
 import { DetailFacet } from '../facet/detail';
 import { SpreadsheetFacet } from '../facet';
 import { SpreadParams } from '../data-set/spread-data-set';
 import { BaseFacet } from '../facet/base-facet';
 import { InteractionConstructor } from '../interaction/base';
+import { EventConstructor } from '../interaction/events/base-event';
 import { detectAttrsChangeAndAction } from '../utils/attrs-action';
+import { InteractionNames, EventNames } from '../interaction/constant';
 
 /**
  * 目前交叉表和明细的表类入口(后续会分拆出两个表)
@@ -144,27 +149,41 @@ export default class SpreadSheet extends BaseSpreadSheet {
     return new BaseTooltip(this);
   }
 
+  // TODO: registerInteraction时要key到底有没有用？目前是没有的，但是代码中一直有，有key也符合规范，但是否必须？
   protected registerInteractions(options: S2Options) {
     this.interactions.clear();
     if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
       this.registerInteraction(
-        'spreadsheet:row-col-selection',
-        RowColumnSelection,
+        InteractionNames.BRUSH_SELECTION_INTERACTION,
+        BrushSelection,
       );
-      this.registerInteraction('spreadsheet:brush-selection', BrushSelection);
-      this.registerInteraction('spreadsheet:cell-click', CellSelection);
-      this.registerInteraction('spreadsheet:row-col-resize', RowColResize);
-      this.registerInteraction('spreadsheet:header-hover', HeaderHover);
       this.registerInteraction(
-        'spreadsheet:corner-header-text-click',
-        CornerHeaderTextClick,
+        InteractionNames.COL_ROW_RESIZE_INTERACTION,
+        RowColResize,
+      );
+      this.registerInteraction(
+        InteractionNames.DATACELL_MUTI_SELECTION_INTERACTION,
+        DataCellMutiSelection,
+      );
+      this.registerInteraction(
+        InteractionNames.COL_ROW_MUTI_SELECTION_INTERACTION,
+        ColRowMutiSelection,
       );
     }
-    this.registerInteraction('spreadsheet:click-event', ClickEvent);
-    this.registerInteraction(
-      'spreadsheet:row-header-text-click',
-      RowHeaderTextClick,
-    );
+  }
+
+  protected registerEvents() {
+    this.events.clear();
+    this.registerEvent(EventNames.DATACELL_CLICK_EVENT, DataCellClick);
+    this.registerEvent(EventNames.CORNER_TEXT_CLICK_EVENT, CornerTextClick);
+    this.registerEvent(EventNames.ROW_COLUMN_CLICK_EVENT, RowColumnClick);
+    this.registerEvent(EventNames.ROW_TEXT_CLICK_EVENT, RowTextClick);
+    this.registerEvent(EventNames.HOVER_EVENT, HoverEvent);
+  }
+
+  protected registerEvent(key: string, ctc: EventConstructor) {
+    // eslint-disable-next-line new-cap
+    this.events.set(key, new ctc(this));
   }
 
   protected registerInteraction(key: string, ctc: InteractionConstructor) {

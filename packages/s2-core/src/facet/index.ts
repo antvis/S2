@@ -25,7 +25,7 @@ import {
 import { Formatter } from '../common/interface';
 import { diffIndexes, Indexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
-import { BaseCell, Cell } from '../cell';
+import { BaseCell } from '../cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
@@ -109,7 +109,7 @@ export class SpreadsheetFacet extends BaseFacet {
   constructor(cfg: SpreadsheetFacetCfg) {
     super(cfg);
     // clear scrollX when emit change-row-header-width event, see: interaction/row-col-resize.ts
-    this.spreadsheet.on('spreadsheet:change-row-header-width', (config) => {
+    this.spreadsheet.on('spreadsheet:change-row-header-width', () => {
       this.setScrollOffset(0, undefined);
       this.setHRowScrollX(0);
     });
@@ -365,7 +365,7 @@ export class SpreadsheetFacet extends BaseFacet {
       (result: number[], node: Node) => {
         result.push(last(result) + node.width);
         if (node.width === 0) {
-          width0Indexes.push(node.cellIndex);
+          width0Indexes.push(node.colIndex);
         }
         return result;
       },
@@ -378,7 +378,7 @@ export class SpreadsheetFacet extends BaseFacet {
       (result: number[], node: Node) => {
         result.push(last(result) + node.height);
         if (node.isHide()) {
-          height0Indexes.push(node.cellIndex);
+          height0Indexes.push(node.colIndex);
         }
         return result;
       },
@@ -393,7 +393,7 @@ export class SpreadsheetFacet extends BaseFacet {
       (result: number[], node: Node) => {
         result.push(last(result) + node.height);
         if (node.isHide()) {
-          height0Indexes.push(node.cellIndex);
+          height0Indexes.push(node.colIndex);
         }
         return result;
       },
@@ -713,7 +713,7 @@ export class SpreadsheetFacet extends BaseFacet {
    * @param scrollX
    * @param scrollY
    */
-  protected calculateXYIndexes(scrollX: number, scrollY: number): Indexes {
+  public calculateXYIndexes(scrollX: number, scrollY: number): Indexes {
     return calculateInViewIndexes(
       scrollX,
       scrollY,
@@ -897,7 +897,7 @@ export class SpreadsheetFacet extends BaseFacet {
     }
   }
 
-  private getScrollOffset(): [number, number, number] {
+  public getScrollOffset(): [number, number, number] {
     return [
       this.spreadsheet.store.get('scrollX', 0),
       this.spreadsheet.store.get('scrollY', 0),
@@ -1026,7 +1026,7 @@ export class SpreadsheetFacet extends BaseFacet {
    * if pagination exist, adjust scrollY
    * @private
    */
-  private getPaginationScrollY(): number {
+  public getPaginationScrollY(): number {
     const { pagination } = this.cfg;
 
     if (pagination) {

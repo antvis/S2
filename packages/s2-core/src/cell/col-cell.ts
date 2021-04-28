@@ -217,11 +217,11 @@ export class ColCell extends BaseCell<Node> {
       y,
       width,
       height,
-      this.theme.header.cell.interactiveBgColor,
+      'transparent',
       'transparent',
       this,
     );
-    updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
+    this.stateShapes.push(this.interactiveBgShape);
   }
 
   private showSortIcon() {
@@ -284,7 +284,7 @@ export class ColCell extends BaseCell<Node> {
           height: HIT_AREA,
           cursor: 'row-resize',
           appendInfo: {
-            isTrigger: true,
+            isResizer: true,
             class: 'resize-trigger',
             type: 'row',
             id: this.getColHotSpotKey(),
@@ -309,7 +309,7 @@ export class ColCell extends BaseCell<Node> {
           height: cellHeight,
           cursor: 'col-resize',
           appendInfo: {
-            isTrigger: true,
+            isResizer: true,
             class: 'resize-trigger',
             type: 'col',
             affect: 'cell',

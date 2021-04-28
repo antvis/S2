@@ -351,12 +351,12 @@ export default function processColLeafNodeWH(
   //   }
   // }
 
-  let currentColCellIndex = 0;
+  let currentColIndex = 0;
   // x & width for leaves
   // eslint-disable-next-line no-restricted-syntax
   for (const current of colLeafNodes) {
-    current.cellIndex = currentColCellIndex;
-    currentColCellIndex += 1;
+    current.colIndex = currentColIndex;
+    currentColIndex += 1;
     current.x = prevCol.x + prevCol.width;
     const [isHide] = checkHideMeasureColumn(facet);
     if (isHide) {

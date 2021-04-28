@@ -14,10 +14,6 @@
 
 // export { Tooltip } from './tooltip'; // 扩展 tooltip，不使用交互实现
 export { BrushSelection } from './brush-selection';
-export { HeaderHover } from './header-hover';
-export { RowColumnSelection } from './row-column-selection';
-export { CellSelection } from './cell-selection';
-export { CellHover } from './cell-hover';
 export { RowColResize } from './row-col-resize';
-export { RowHeaderTextClick } from './row-header-text-click';
-export { CornerHeaderTextClick } from './corner-header-text-click';
+export { DataCellMutiSelection } from './datacell-muti-selection';
+export { ColRowMutiSelection } from './col-row-muti-selection';
