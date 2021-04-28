@@ -123,7 +123,9 @@ export default abstract class BaseSpreadSheet extends EE {
     options: S2Options,
   ) {
     super();
-    this.dom = isString(dom) ? document.getElementById(<string>dom) : <HTMLElement>dom;
+    this.dom = isString(dom)
+      ? document.getElementById(<string>dom)
+      : <HTMLElement>dom;
     this.dataCfg = safetyDataConfig(dataCfg);
     this.options = safetyOptions(options);
     this.initGroups(this.dom, this.options);
@@ -218,7 +220,7 @@ export default abstract class BaseSpreadSheet extends EE {
    */
   protected abstract registerInteractions(options: S2Options): void;
 
-  protected getCorrectCell(facet: ViewMeta): Cell {
+  protected getCorrectCell(facet: ViewMeta): DataCell {
     return this.isValueInCols()
       ? new DataCell(facet, this)
       : new DataDerivedCell(facet, this);
