@@ -20,10 +20,6 @@ import {
 import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
 import { merge } from 'lodash';
 
-/**
- * Create By Bruce Too
- * On 2021/4/26
- */
 export interface S2Options {
   // canvas's width
   readonly width: number;
@@ -37,7 +33,7 @@ export interface S2Options {
   readonly hierarchyType?: 'grid' | 'tree';
   // conditions config
   readonly conditions?: Conditions;
-  // total config（TODO jili keep this??）
+  // total config
   readonly totals?: Totals;
   // s2 tooltip configs
   readonly tooltip?: Tooltip;
@@ -57,11 +53,10 @@ export interface S2Options {
   readonly valueInCols?: boolean;
   // custom config of showing columns and rows
   readonly customHeaderCells?: CustomHeaderCells;
-  // row header action icon's config TODO keep this?
+  // row header action icon's config
   readonly rowActionIcons?: RowActionIcons;
   // extra styles
   readonly style?: Partial<Style>;
-
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
   readonly dataCell?: DataCellCallback;
@@ -79,7 +74,6 @@ export interface S2Options {
   readonly initTooltip?: TooltipCallback;
   // replace the whole default tooltip component
   readonly tooltipComponent?: JSX.Element;
-
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
   // eg: add/delete some nodes in specified position
@@ -90,7 +84,6 @@ export interface S2Options {
   layout?: LayoutCallback;
   // determine the data of cells in Cartesian coordinates
   readonly layoutResult?: LayoutResultCallback;
-
   // extra options if needed
   [key: string]: any;
 }

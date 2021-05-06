@@ -7,10 +7,6 @@ import {
   StrategyValue,
 } from 'src/common/interface/index';
 import { merge } from 'lodash';
-/**
- * Create By Bruce Too
- * On 2021/4/27
- */
 export interface S2DataConfig {
   // origin detail data
   data: Record<string, string | number>[];
