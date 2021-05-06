@@ -37,6 +37,7 @@ import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';
 import { BaseParams } from '../data-set/base-data-set';
 import { DataDerivedCell } from '../cell';
+import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
 import { EventController } from '../interaction/events/event-controller';
 import { DefaultInterceptEvent } from '../interaction/events/types';
