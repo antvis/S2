@@ -27,13 +27,7 @@ import {
   isNull,
   isUndefined,
 } from 'lodash';
-import {
-  Aggregation,
-  KeepOnlyIds,
-  SortParams,
-  Total,
-  Totals,
-} from '../common/interface';
+import { Aggregation, SortParams, Total, Totals } from '../common/interface';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { DEBUG_TRAINING_DATA, DebuggerUtil } from '../common/debug';
 import { EXTRA_FIELD } from '../common/constant';
@@ -70,10 +64,6 @@ export class Pivot {
 
   /** 总计、小计配置 */
   public totals: Totals;
-
-  public hideNodesIds: string[];
-
-  public keepOnlyNodesIds: KeepOnlyIds;
 
   public totalsCacheGift: Map<string, number>;
 
@@ -113,29 +103,13 @@ export class Pivot {
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRAINING_DATA, () => {
       this.training();
       DebuggerUtil.getInstance().logger(
-        `数据长度(小计):${(this.config.data || []).length}`,
+        `Data Size :${this.config.data?.length}`,
       );
     });
   }
 
   public updateTotals(totals: Totals = {}) {
     this.totals = totals;
-  }
-
-  public updateHideNodesIds(hideNodesIds: string[]) {
-    this.hideNodesIds = hideNodesIds;
-  }
-
-  public updateKeepOnlyNodesIds(keepOnlyNodesIds: KeepOnlyIds) {
-    this.keepOnlyNodesIds = keepOnlyNodesIds;
-  }
-
-  public getHideNodesIds(): string[] {
-    return this.hideNodesIds;
-  }
-
-  public getKeepOnlyNodesIds(): KeepOnlyIds {
-    return this.keepOnlyNodesIds;
   }
 
   /**

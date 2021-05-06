@@ -68,7 +68,7 @@ export class DetailFacet extends SpreadsheetFacet {
         y: position.y,
         width: seriesNumberWidth,
         height,
-        spreadsheetType: false,
+        isPivotMode: false,
       });
     }
 
@@ -83,7 +83,7 @@ export class DetailFacet extends SpreadsheetFacet {
         width: rowNode.width,
         height,
         field,
-        spreadsheetType: false,
+        isPivotMode: false,
         spreadsheet: this.spreadsheet,
       });
     });

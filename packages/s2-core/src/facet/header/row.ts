@@ -63,7 +63,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         }
         // 如果外部没处理，就用默认的
         if (isEmpty(cell)) {
-          if (spreadsheet.isSpreadsheetType()) {
+          if (spreadsheet.isPivotMode()) {
             cell = new RowCell(item, spreadsheet, this.headerConfig);
           } else {
             cell = new DetailRowCell(item, spreadsheet, this.headerConfig);

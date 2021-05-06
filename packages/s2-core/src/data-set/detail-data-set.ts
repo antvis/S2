@@ -1,4 +1,4 @@
-import { DataCfg } from '../common/interface';
+import { S2DataConfig } from '../common/interface';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD } from '../common/constant';
 import { SpreadDataSet, SpreadParams } from './spread-data-set';
@@ -16,7 +16,7 @@ export class DetailDataSet extends SpreadDataSet {
    * 对数据集预处理
    * 明细表需要在所有行末尾增加一列，代表当前行在原始数据里面的index
    */
-  protected preProcess(dataCfg: DataCfg): DataCfg {
+  protected preProcess(dataCfg: S2DataConfig): S2DataConfig {
     const newDataCfg = processIrregularData(dataCfg);
     const { data, meta, fields, sortParams = [] } = newDataCfg;
     const { columns } = fields;

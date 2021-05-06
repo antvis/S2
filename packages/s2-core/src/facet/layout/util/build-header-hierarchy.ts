@@ -15,8 +15,6 @@ import { Node } from '../node';
 import TotalClass from '../total-class';
 import { canNodeBeExpanded } from './can-node-be-expanded';
 import getDimsCondition from './get-dims-condition-by-node';
-import { handleHideNodes } from './handle-hide-nodes';
-import { handleKeepOnlyNodes } from './handle-keep-only-nodes';
 import { EXTRA_FIELD } from '../../../common/constant';
 import { generateId } from './generate-id';
 
@@ -87,10 +85,6 @@ export default function buildHeaderHierarchy(
     // add empty measure node
     fieldValues.push('');
   }
-  // handle keep only node in row/col by ids
-  handleKeepOnlyNodes(pivot, fieldValues, field, parent.id);
-  // handle handle nodes by node query
-  handleHideNodes(pivot, fieldValues, field, parent.id);
   // handle totals nodes
   handleTotals(field, fields, index, fieldValues, pivot);
   const { collapsedCols } = cfg;

@@ -1,5 +1,5 @@
 import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
-import { DataCfg, SpreadsheetOptions } from 'src/common/interface';
+import { S2DataConfig, S2Options } from 'src/common/interface';
 import { DrillDownProps } from 'src/components/drill-down';
 import { HeaderCfgProps } from 'src/components/header';
 import { Node, SpreadSheetTheme } from 'src/index';
@@ -37,11 +37,11 @@ export interface PartDrillDown {
 export interface BaseSheetProps {
   spreadsheet?: (
     dom: string | HTMLElement,
-    dataCfg: DataCfg,
-    options: SpreadsheetOptions,
+    dataCfg: S2DataConfig,
+    options: S2Options,
   ) => BaseSpreadsheet;
-  dataCfg: DataCfg;
-  options: SpreadsheetOptions;
+  dataCfg: S2DataConfig;
+  options: S2Options;
   isLoading?: boolean;
   partDrillDown?: PartDrillDown;
   adaptive?: boolean;

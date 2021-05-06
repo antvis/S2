@@ -1,10 +1,14 @@
 import { Group } from '@antv/g-canvas';
 import { Hierarchy, BaseSpreadSheet, Node } from '../../index';
 import BaseSpreadsheet from '../../sheet-type/base-spread-sheet';
-import { BaseDataSet } from '../../data-set';
-import { BaseParams } from '../../data-set/base-data-set';
-import { Frame } from '../../facet/header';
+import { BaseDataSet } from 'src/data-set';
+import { BaseParams } from 'src/data-set/base-data-set';
+import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
+import { S2DataConfig, safetyDataConfig } from './S2DataConfig';
+import { S2Options, safetyOptions } from './S2Options';
+
+export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions };
 
 export type Data = Record<string, string | number>;
 
@@ -14,12 +18,11 @@ export type Aggregation = 'SUM' | 'AVG' | 'MIN' | 'MAX';
 
 export interface Meta {
   readonly field: string; // 字段 id
-  readonly name: string; // 字段名称
+  readonly name?: string; // 字段名称
   // 格式化
   // 数值字段：一般用于格式化数字带戴维
   // 文本字段：一般用于做字段枚举值的别名
   readonly formatter?: Formatter;
-  readonly formula?: string; // 字段公式
   readonly aggregation?: Aggregation;
 }
 
@@ -79,7 +82,7 @@ export interface Fields {
   // 行字段列表
   rows: string[];
   // 列字段列表
-  columns: string[];
+  columns?: string[];
   // 值字段列表（最终会被转换成一个 column 字段）
   values?: string[] | StrategyValue;
   // 衍生指标
@@ -169,8 +172,6 @@ export interface SortParam {
   sortByField?: string;
   /** 筛选条件，缩小排序范围 */
   query?: Record<string, any>;
-  // type use in group sort
-  type?: string;
 }
 
 export type SortParams = SortParam[];
@@ -186,19 +187,6 @@ export interface Style {
   readonly colCfg?: ColCfg;
   readonly rowCfg?: RowCfg;
   readonly device?: 'pc' | 'mobile'; // 设备，pc || mobile
-}
-
-export interface DataCfg {
-  // 数据
-  data: Data[];
-  /* 字段域，行列值 */
-  fields: Fields;
-  // 字段信息
-  meta?: Meta[];
-  /** 排序 */
-  sortParams?: SortParams;
-  // 额外的属性，由外部传入
-  [key: string]: any;
 }
 
 export type Pagination =
@@ -219,79 +207,6 @@ export interface NodeField {
   rowField?: string[];
   // 列头中需要监听滚动吸「左」的度量id
   colField?: string[];
-}
-
-/* Spreadsheet's config used by outside */
-export interface SpreadsheetOptions {
-  // canvas's width
-  readonly width: number;
-  // canvas's height
-  readonly height: number;
-  readonly debug?: boolean;
-  // row header hierarchy type
-  readonly hierarchyType?: 'grid' | 'tree';
-  // row header in tree mode collapse all nodes
-  readonly hierarchyCollapse?: boolean;
-  // conditions config
-  readonly conditions?: Conditions;
-  // total config
-  readonly totals?: Totals;
-  readonly tooltip?: Tooltip;
-  // link field ids
-  readonly linkFieldIds?: string[];
-  // pagination config
-  readonly pagination?: Pagination;
-  // scrollbar option(if scroll contains row header)
-  readonly containsRowHeader?: boolean;
-  // spreadsheet = true, listSheet = false
-  readonly spreadsheetType?: boolean;
-  // extra styles
-  readonly style?: Partial<Style>;
-  // show Series Number
-  readonly showSeriesNumber?: boolean;
-  // hide node's ids
-  readonly hideNodesIds?: string[];
-  // keep only node's ids
-  readonly keepOnlyNodesIds?: KeepOnlyIds;
-  // register default interactions
-  readonly registerDefaultInteractions?: boolean;
-  // scroll reach node border(which field node belongs to) event config
-  readonly scrollReachNodeField?: NodeField;
-  // hide row, col with fields
-  readonly hideRowColFields?: string[];
-  // measure values in cols as new col
-  readonly valueInCols?: boolean;
-  // 自定义单元格cell
-  readonly dataCell?: DataCellCallback;
-  // 自定义cornerCell
-  readonly cornerCell?: CellCallback;
-  // 自定义行头cell
-  readonly rowCell?: CellCallback;
-  // 自定义列头cell
-  readonly colCell?: CellCallback;
-
-  readonly initTooltip?: TooltipCallback;
-
-  readonly tooltipComponent?: JSX.Element;
-
-  // 自定义 frame 边框
-  readonly frame?: FrameCallback;
-  // 角头可能需要全部自定义，而不是用交叉表概念的node来渲染
-  cornerHeader?: CornerHeaderCallback;
-  // 自定义layout
-  layout?: LayoutCallback;
-  // 布局结果交由外部控制
-  layoutResult?: LayoutResultCallback;
-  // 行列结构的自定义
-  hierarchy: HierarchyCallback;
-  // 布局排序规则自定义(维度值的排序)
-  layoutArrange?: LayoutArrangeCallback;
-  // 行头 action icon的配置
-  rowActionIcons?: RowActionIcons;
-  // custom config of showing colums and rows
-  customHeaderCells?: CustomHeaderCells;
-  // 其他任意的选择配置
-  [key: string]: any;
 }
 
 export interface DrillDownDataCache {
@@ -371,11 +286,6 @@ export type HierarchyCallback = (
   spreadsheet: BaseSpreadSheet,
   node: Node,
 ) => HierarchyResult;
-
-export interface KeepOnlyIds {
-  rowIds?: string[];
-  colIds?: string[];
-}
 
 export interface CellCfg {
   width?: number;

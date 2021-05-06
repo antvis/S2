@@ -1,14 +1,12 @@
 import { merge, each, isEmpty, isBoolean, remove } from 'lodash';
 import { Pivot, SpreadDataSet } from '../../../data-set';
-import { i18n } from '../../../common/i18n';
-import { SpreadsheetFacetCfg } from '../../../common/interface';
+import { i18n } from 'src/common/i18n';
+import { SpreadsheetFacetCfg } from 'src/common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import TotalClass from '../total-class';
 import { canNodeBeExpanded } from './can-node-be-expanded';
 import getDimsCondition from './get-dims-condition-by-node';
-import { handleHideNodes } from './handle-hide-nodes';
-import { handleKeepOnlyNodes } from './handle-keep-only-nodes';
 import { reArrangeFieldValues } from './re-arrange-field-values';
 import findNodeExtraCfg from '../../../utils/find-node-extra-cfg';
 import { generateId } from './generate-id';
@@ -53,11 +51,6 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
   }
   const totalsConfig = pivot.getTotalsConfig(field);
 
-  // handle keep only node in row/col by ids
-  handleKeepOnlyNodes(pivot, fieldValues, field, parent.id);
-  // handle handle nodes by node query
-  handleHideNodes(pivot, fieldValues, field, parent.id);
-
   // tree mode only has grand totals, but if there are subTotals configs, it will
   // display in cross-area cell
   if (field === fields[0] && totalsConfig.showGrandTotals) {
@@ -74,12 +67,6 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
     if (isTotal) {
       value = i18n((col as TotalClass).label);
       label = value;
-    } else if (cfg.spreadsheet.isStrategyMode()) {
-      value = col;
-      // 在此必须区分label和value，自动解析的场景下 value=label，但是在决策模式下如果
-      // 用value去替代label 会导致query条件出错
-      // 决策模式下的度量值文本名字设置（度量格式化的名字+衍生指标）
-      label = dataSet.getFieldName(col as string);
     } else {
       value = col;
       label = value;

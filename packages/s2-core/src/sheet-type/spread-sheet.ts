@@ -1,8 +1,8 @@
 import BaseSpreadSheet from './base-spread-sheet';
 import {
-  DataCfg,
+  S2DataConfig,
+  S2Options,
   SpreadsheetFacetCfg,
-  SpreadsheetOptions,
 } from '../common/interface';
 import { BaseDataSet, SpreadDataSet, DetailDataSet } from '../data-set';
 import { BaseTooltip } from '../tooltip';
@@ -43,13 +43,13 @@ import { InteractionNames, EventNames } from '../interaction/constant';
 export default class SpreadSheet extends BaseSpreadSheet {
   public constructor(
     dom: string | HTMLElement,
-    dataCfg: DataCfg,
-    options: SpreadsheetOptions,
+    dataCfg: S2DataConfig,
+    options: S2Options,
   ) {
     super(dom, dataCfg, options);
   }
 
-  public setOptions(options: SpreadsheetOptions) {
+  public setOptions(options: S2Options) {
     super.setOptions(options);
     /**
      * Update new spreadsheet configs {@see options}
@@ -118,8 +118,8 @@ export default class SpreadSheet extends BaseSpreadSheet {
   }
 
   protected initFacet(facetCfg: SpreadsheetFacetCfg): BaseFacet {
-    const { spreadsheetType } = this.options;
-    if (!spreadsheetType) {
+    const { mode } = this.options;
+    if (mode === 'table') {
       // ListSheet
       return new DetailFacet(facetCfg);
     }
@@ -128,10 +128,10 @@ export default class SpreadSheet extends BaseSpreadSheet {
   }
 
   protected initDataSet(
-    options: Partial<SpreadsheetOptions>,
+    options: Partial<S2Options>,
   ): BaseDataSet<SpreadParams> {
-    const { spreadsheetType, valueInCols = true } = options;
-    if (!spreadsheetType) {
+    const { mode, valueInCols = true } = options;
+    if (mode === 'table') {
       // 明细表
       return new DetailDataSet({
         spreadsheet: this,
@@ -150,7 +150,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
   }
 
   // TODO: registerInteraction时要key到底有没有用？目前是没有的，但是代码中一直有，有key也符合规范，但是否必须？
-  protected registerInteractions(options: SpreadsheetOptions) {
+  protected registerInteractions(options: S2Options) {
     this.interactions.clear();
     if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
       this.registerInteraction(
@@ -191,9 +191,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.interactions.set(key, new ctc(this));
   }
 
-  protected handleCollapseChangedInTreeMode(
-    options: Partial<SpreadsheetOptions>,
-  ) {
+  protected handleCollapseChangedInTreeMode(options: Partial<S2Options>) {
     detectAttrsChangeAndAction(
       options,
       this.options,
@@ -213,11 +211,11 @@ export default class SpreadSheet extends BaseSpreadSheet {
    * @param options outside passed new options
    * @private
    */
-  protected handleDataSetChanged(options: Partial<SpreadsheetOptions>) {
+  protected handleDataSetChanged(options: Partial<S2Options>) {
     detectAttrsChangeAndAction(
       options,
       this.options,
-      ['spreadsheetType', 'valueInCols'],
+      ['mode', 'valueInCols'],
       () => {
         this.dataSet = this.initDataSet(options);
       },
@@ -229,7 +227,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
    * @param options outside saved options
    * @private
    */
-  protected handleColLayoutTypeChanged(options: Partial<SpreadsheetOptions>) {
+  protected handleColLayoutTypeChanged(options: Partial<S2Options>) {
     detectAttrsChangeAndAction(
       options,
       this.options,
@@ -241,7 +239,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     );
   }
 
-  protected handleChangeSize(options: Partial<SpreadsheetOptions>) {
+  protected handleChangeSize(options: Partial<S2Options>) {
     detectAttrsChangeAndAction(
       options,
       this.options,

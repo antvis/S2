@@ -55,9 +55,9 @@ export class Frame extends Group {
   private addCornerRightBorder() {
     const cfg = this.cfg;
     // 是否是交叉表
-    const { isSpreadsheetType } = cfg;
+    const { isPivotMode } = cfg;
     // 明细表啥也不要
-    if (!isSpreadsheetType) {
+    if (!isPivotMode) {
       return;
     }
     const { width, height, viewportHeight, position } = cfg;

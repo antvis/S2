@@ -100,14 +100,14 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   ): Node[] {
     const cornerNodes: Node[] = [];
 
-    const isSpreadsheetType = ss.isSpreadsheetType();
+    const isPivotMode = ss.isPivotMode();
     // check if show series number node
     if (seriesNumberWidth) {
       // 1、spreadsheet must have at least one node in last level
       // 2、listSheet don't have other conditions
       if (
-        (isSpreadsheetType && colsHierarchy.sampleNodeForLastLevel) ||
-        !isSpreadsheetType
+        (isPivotMode && colsHierarchy.sampleNodeForLastLevel) ||
+        !isPivotMode
       ) {
         const sNode: Node = new Node({
           key: KEY_SERIES_NUMBER_NODE, // mark series node
@@ -116,21 +116,21 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         });
         sNode.x = position.x;
         // different type different y
-        sNode.y = isSpreadsheetType
+        sNode.y = isPivotMode
           ? colsHierarchy.sampleNodeForLastLevel.y
           : position.y;
         sNode.width = seriesNumberWidth;
         // different type different height
-        sNode.height = isSpreadsheetType
+        sNode.height = isPivotMode
           ? colsHierarchy.sampleNodeForLastLevel.height
           : height;
-        sNode.spreadsheetType = isSpreadsheetType;
+        sNode.isPivotMode = isPivotMode;
         cornerNodes.push(sNode);
       }
     }
 
     // spreadsheet type tree mode
-    if (isSpreadsheetType && ss.isHierarchyTreeType()) {
+    if (isPivotMode && ss.isHierarchyTreeType()) {
       if (get(colsHierarchy, 'sampleNodeForLastLevel', undefined)) {
         const drillDownFieldInLevel = ss.store.get('drillDownFieldInLevel', []);
         const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
@@ -154,14 +154,14 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           ? nodeHeight
           : colsHierarchy.sampleNodeForLastLevel.height;
         cNode.seriesNumberWidth = seriesNumberWidth;
-        cNode.spreadsheetType = isSpreadsheetType;
+        cNode.isPivotMode = isPivotMode;
         cornerNodes.push(cNode);
       }
     } else {
       // spreadsheet type
       // eslint-disable-next-line no-lonely-if
       if (
-        isSpreadsheetType &&
+        isPivotMode &&
         get(colsHierarchy, 'sampleNodeForLastLevel', undefined)
       ) {
         rowsHierarchy.sampleNodesForAllLevels.forEach((rowNode) => {
@@ -176,7 +176,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           cNode.width = rowNode.width;
           cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
           cNode.field = field;
-          cNode.spreadsheetType = isSpreadsheetType;
+          cNode.isPivotMode = isPivotMode;
           cNode.spreadsheet = ss;
           cornerNodes.push(cNode);
         });
@@ -194,7 +194,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           cNode.width = rowNode.width;
           cNode.height = height;
           cNode.field = field;
-          cNode.spreadsheetType = isSpreadsheetType;
+          cNode.isPivotMode = isPivotMode;
           cNode.spreadsheet = ss;
           cornerNodes.push(cNode);
         });
@@ -248,7 +248,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       }
 
       if (isEmpty(cell)) {
-        if (spreadsheet.isSpreadsheetType()) {
+        if (spreadsheet.isPivotMode()) {
           cell = new CornerCell(
             item,
             this.headerConfig.spreadsheet,
@@ -309,7 +309,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   protected addIcon() {
     if (
       this.headerConfig.spreadsheet.isHierarchyTreeType() &&
-      this.headerConfig.spreadsheet.isSpreadsheetType()
+      this.headerConfig.spreadsheet.isPivotMode()
     ) {
       // 只有交叉表才有icon
       const {

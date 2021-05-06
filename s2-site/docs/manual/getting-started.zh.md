@@ -72,7 +72,7 @@ const options = {
   height: 660,
   hierarchyType: 'grid',
   showSeriesNumber: true,
-  spreadsheetType: true,
+  mode: 'pivot',
   valueInCols: true,
   style: {
     treeRowsWidth: 100,
