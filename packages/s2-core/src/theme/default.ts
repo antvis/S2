@@ -61,7 +61,7 @@ export default {
     cell: {
       borderColor: ['#E8E8E8', 'transparent'],
       borderWidth: [1, 0],
-      crossColor: '#F5F7FA',
+      // crossColor: '#F5F7FA',
       backgroundColor: '#fff',
       backgroundHoverColor: '#F5F7FA',
       interactiveBgColor: '#1890ff',
@@ -83,5 +83,43 @@ export default {
     horizontalBorderWidth: 2,
     showCenterRightShadow: false,
     centerRightShadowWidth: 12,
+  },
+  stateTheme: {
+    dataCell: {
+      selected: {
+        backgroundColor: '#d8d8d8',
+        hoverBorderColor: '#000000',
+      },
+      hover: {
+        backgroundColor: '#d8d8d8',
+      },
+      keepHover: {
+        backgroundColor: '#d8d8d8',
+        hoverBorderColor: '#000000',
+      },
+      prepareSelect: {
+        prepareSelectBorderColor: '#002329',
+      },
+
+      hoverLinkage: {
+        backgroundColor: '#F3F7FF',
+      },
+    },
+    colCell: {
+      hover: {
+        backgroundColor: '#b5f5ec',
+      },
+      colSelected: {
+        backgroundColor: '#f759ab',
+      },
+    },
+    rowCell: {
+      hover: {
+        backgroundColor: '#d4b106',
+      },
+      rowSelected: {
+        backgroundColor: '#f759ab',
+      },
+    },
   },
 } as SpreadSheetTheme;

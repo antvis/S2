@@ -13,7 +13,7 @@ import {
 } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { renderRect, renderText } from '../utils/g-renders';
-import { DerivedCell, Cell } from '.';
+import { DerivedCell, DataCell } from '.';
 import { KEY_COL_REAL_WIDTH_INFO } from '../common/constant';
 
 /**
@@ -22,7 +22,7 @@ import { KEY_COL_REAL_WIDTH_INFO } from '../common/constant';
  * | main data|derived data|
  * |----------|------------|
  */
-export class DataDerivedCell extends Cell {
+export class DataDerivedCell extends DataCell {
   protected initCell() {
     this.initCellRightBorder();
     super.initCell();

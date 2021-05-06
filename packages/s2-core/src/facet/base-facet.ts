@@ -2,7 +2,6 @@ import { BBox, Group } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { calculateInViewIndexes } from './utils';
 import { Indexes } from '../utils/indexes';
-import { KEY_GROUP_HOVER_BOX } from '../common/constant';
 import { BaseSpreadSheet } from '../sheet-type';
 import {
   LayoutResult,
@@ -134,7 +133,7 @@ export abstract class BaseFacet {
    * @param scrollY
    * @protected
    */
-  protected calculateXYIndexes(scrollX: number, scrollY: number): Indexes {
+  public calculateXYIndexes(scrollX: number, scrollY: number): Indexes {
     return calculateInViewIndexes(
       scrollX,
       scrollY,
@@ -190,27 +189,13 @@ export abstract class BaseFacet {
 
   protected abstract unbindEvents(): void;
 
-  /**
-   * The hoverBoxGroup still on panelGroup, we can't remove
-   * it when clean panelGroup
-   * @private
-   */
   protected clearAllGroup() {
     const children = this.panelGroup.cfg.children;
-    let hoverChild;
     for (let i = children.length - 1; i >= 0; i--) {
-      const child = children[i];
-      if (get(child, 'cfg.name') !== KEY_GROUP_HOVER_BOX) {
-        children[i].remove(false);
-      } else {
-        hoverChild = child;
-      }
+      children[i].remove(false);
     }
-    this.panelGroup.cfg.children = [hoverChild];
     this.foregroundGroup.set('children', []);
     this.backgroundGroup.set('children', []);
-    // this.foregroundGroup.clear(); group clear will destroy all children
-    // this.backgroundGroup.clear();
   }
 
   public abstract getCanvasHW();
@@ -218,4 +203,8 @@ export abstract class BaseFacet {
   public abstract getContentHeight(): number;
 
   public abstract updateScrollOffset(offsetConfig: OffsetConfig);
+
+  public abstract getScrollOffset(): number[];
+
+  public abstract getPaginationScrollY(): number;
 }

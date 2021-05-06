@@ -25,7 +25,6 @@ export const PANEL_GROUP_HOVER_BOX_GROUP_ZINDEX = 1;
 export const KEY_GROUP_BACK_GROUND = 'backGroundGroup';
 export const KEY_GROUP_FORE_GROUND = 'foreGroundGroup';
 export const KEY_GROUP_PANEL_GROUND = 'panelGroup';
-export const KEY_GROUP_HOVER_BOX = 'hoverBoxGroup';
 export const KEY_GROUP_ROW_RESIZER = 'rowResizerGroup';
 export const KEY_GROUP_ROW_INDEX_RESIZER = 'rowIndexResizerGroup';
 export const KEY_GROUP_CORNER_RESIZER = 'cornerResizerGroup';
