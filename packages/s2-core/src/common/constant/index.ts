@@ -49,6 +49,7 @@ export const KEY_ROW_NODE_BORDER_REACHED =
   'spreadsheet:row-node-border-reached';
 export const KEY_TREE_ROWS_COLLAPSE_ALL = 'spreadsheet:toggle-collapse-all';
 export const KEY_CELL_SCROLL = 'spreadsheet:cell-scroll';
+export const KEY_PAGINATION = 'spreadsheet:pagination';
 
 // x-report to ss
 export const KEY_UPDATE_PROPS = 'spreadsheet-update-props';

@@ -1,8 +1,3 @@
-/**
- * Create By yingying
- * On 2020-12-15
- */
-
 import React, { useState, useEffect } from 'react';
 import { ConfigProvider, Menu, Button, Input, Empty } from 'antd';
 import classNames from 'classnames';
@@ -14,6 +9,7 @@ import {
   SearchIcon,
 } from '../icons/index';
 import { isEmpty } from 'lodash';
+
 import './index.less';
 export interface DataSet {
   icon?: React.ReactNode;

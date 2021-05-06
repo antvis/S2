@@ -5,7 +5,7 @@ import { auto, SheetComponent } from '../../src';
 import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Switch, Input } from 'antd';
+import { Switch } from 'antd';
 
 let data = getMockData('../datasets/tableau-supermarket.csv');
 

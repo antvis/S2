@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { isEmpty, debounce, isFunction } from 'lodash';
-import { Spin } from 'antd';
-import { DataCfg } from 'src/common/interface';
+import { isEmpty, debounce, isFunction, get, merge } from 'lodash';
+import { Spin, Pagination } from 'antd';
 import { DrillDown } from '../../drill-down';
 import { Header } from '../../header';
 import {
@@ -20,12 +19,16 @@ import {
   KEY_ROW_NODE_BORDER_REACHED,
   KEY_CELL_SCROLL,
   KEY_LIST_SORT,
+  KEY_PAGINATION,
 } from 'src/common/constant';
 import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
 import SpreadSheet from 'src/sheet-type/spread-sheet';
 import { safetyDataCfg, safetyOptions } from 'src/utils/safety-config';
 import { resetDrillDownCfg } from 'src/utils/drill-down/helper';
+import { DataCfg, Pagination as PaginationCfg } from 'src/common/interface';
 import { BaseSheetProps } from '../interface';
+
+import './index.less';
 
 export const BaseSheet = (props: BaseSheetProps) => {
   const {
@@ -52,11 +55,16 @@ export const BaseSheet = (props: BaseSheetProps) => {
     partDrillDown,
   } = props;
   let container: HTMLDivElement;
+  const PRECLASS = 'ss-pagination';
   let baseSpreadsheet: BaseSpreadsheet;
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<BaseSpreadsheet>();
   const [drillFields, setDrillFields] = useState<string[]>([]);
   const [resizeTimeStamp, setResizeTimeStamp] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [total, setTotal] = useState<number>();
+  const [current, setCurrent] = useState<number>(
+    options?.pagination?.current || 1,
+  );
 
   const getSpreadSheet = (): BaseSpreadsheet => {
     if (spreadsheet) {
@@ -81,6 +89,11 @@ export const BaseSheet = (props: BaseSheetProps) => {
         if (isFunction(onRowColLayout)) onRowColLayout(rowNodes, colNodes);
       }
     });
+
+    baseSpreadsheet.on(KEY_PAGINATION, (data: PaginationCfg): void => {
+      setTotal(data?.total);
+    });
+
     baseSpreadsheet.on(KEY_ROW_NODE_BORDER_REACHED, (value) => {
       if (isFunction(onRowCellScroll)) onRowCellScroll(value);
     });
@@ -109,6 +122,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
 
   const unBindEvent = () => {
     baseSpreadsheet.off(KEY_AFTER_HEADER_LAYOUT);
+    baseSpreadsheet.off(KEY_PAGINATION);
     baseSpreadsheet.off(KEY_ROW_NODE_BORDER_REACHED);
     baseSpreadsheet.off(KEY_COL_NODE_BORDER_REACHED);
     baseSpreadsheet.off(KEY_CELL_SCROLL);
@@ -140,23 +154,6 @@ export const BaseSheet = (props: BaseSheetProps) => {
       },
       element,
     });
-  };
-
-  const buildSpreadSheet = () => {
-    if (!baseSpreadsheet) {
-      baseSpreadsheet = getSpreadSheet();
-      bindEvent();
-      baseSpreadsheet.setDataCfg(safetyDataCfg(dataCfg));
-      baseSpreadsheet.store.set('originalDataCfg', dataCfg);
-      baseSpreadsheet.setOptions(
-        safetyOptions(HandleOptions(props, baseSpreadsheet, iconClickCallback)),
-      );
-      baseSpreadsheet.setTheme(theme);
-      baseSpreadsheet.render();
-      setLoading(false);
-      setOwnSpreadsheet(baseSpreadsheet);
-      if (getSpreadsheet) getSpreadsheet(baseSpreadsheet);
-    }
   };
 
   // TODO 使用到的时候根据情况增加配置项
@@ -225,9 +222,14 @@ export const BaseSheet = (props: BaseSheetProps) => {
     return config;
   };
 
-  const setOptions = () => {
-    ownSpreadsheet.setOptions(
-      safetyOptions(HandleOptions(props, ownSpreadsheet, iconClickCallback)),
+  const setOptions = (
+    spreadsheet?: BaseSpreadsheet,
+    sheetProps?: BaseSheetProps,
+  ) => {
+    const curSheet = spreadsheet || ownSpreadsheet;
+    const curProps = sheetProps || props;
+    curSheet.setOptions(
+      safetyOptions(HandleOptions(curProps, curSheet, iconClickCallback)),
     );
   };
 
@@ -264,6 +266,51 @@ export const BaseSheet = (props: BaseSheetProps) => {
   const debounceResize = debounce((e: Event) => {
     setResizeTimeStamp(e.timeStamp);
   }, 200);
+
+  const renderPagination = (): JSX.Element => {
+    const paginationCfg = get(options, 'pagination', false);
+    // not show the pagination
+    if (isEmpty(paginationCfg)) {
+      return null;
+    }
+    const pageSize = get(paginationCfg, 'pageSize', Infinity);
+    // only show the pagenation when the pageSiz > 5
+    const showQuickJumper = total / pageSize > 5;
+
+    return (
+      <div className={PRECLASS}>
+        <Pagination
+          current={current}
+          total={total}
+          pageSize={pageSize}
+          // TODO 外部定义的pageSize和内部PageSize改变的优先级处理
+          showSizeChanger={false}
+          size={'small'}
+          showQuickJumper={showQuickJumper}
+          onChange={(page) => setCurrent(page)}
+        />
+        <span className={`${PRECLASS}-count`} title={`共计${total}条'`}>
+          共计{total || ' - '}条
+        </span>
+      </div>
+    );
+  };
+
+
+  const buildSpreadSheet = () => {
+    if (!baseSpreadsheet) {
+      baseSpreadsheet = getSpreadSheet();
+      bindEvent();
+      baseSpreadsheet.setDataCfg(safetyDataCfg(dataCfg));
+      baseSpreadsheet.store.set('originalDataCfg', dataCfg);
+      setOptions(baseSpreadsheet, props);
+      baseSpreadsheet.setTheme(theme);
+      baseSpreadsheet.render();
+      setLoading(false);
+      setOwnSpreadsheet(baseSpreadsheet);
+      if (getSpreadsheet) getSpreadsheet(baseSpreadsheet);
+    }
+  };
 
   useEffect(() => {
     buildSpreadSheet();
@@ -338,10 +385,25 @@ export const BaseSheet = (props: BaseSheetProps) => {
 
   useEffect(() => {
     if (!partDrillDown || !ownSpreadsheet) return;
-    if (isEmpty(partDrillDown?.drillConfig?.dataSet))
+    if (isEmpty(partDrillDown?.drillConfig?.dataSet)) {
       resetDrillDownCfg(ownSpreadsheet);
+    }
     update(setOptions);
   }, [partDrillDown?.drillConfig?.dataSet]);
+
+  useEffect(() => {
+    if (!ownSpreadsheet || isEmpty(options?.pagination)) return;
+    const newOptions = merge({}, options, {
+      pagination: {
+        current: current,
+      },
+    });
+    const newProps = merge({}, props, {
+      options: newOptions,
+    });
+    setOptions(ownSpreadsheet, newProps);
+    update();
+  }, [current]);
 
   return (
     <Spin spinning={isLoading === undefined ? loading : isLoading}>
@@ -351,6 +413,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
           container = e;
         }}
       />
+      {renderPagination()}
     </Spin>
   );
 };

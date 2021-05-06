@@ -1,4 +1,4 @@
-import { merge, clone } from 'lodash';
+import { merge, clone, omit } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
@@ -110,9 +110,9 @@ const getDataCfg = () => {
 
 const getOptions = () => {
   return {
-    debug: true,
-    width: 500,
-    height: 400,
+    debug: false,
+    width: 1000,
+    height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: true,
@@ -152,6 +152,7 @@ function MainLayout(props) {
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
   const [valueInCols, setValueInCols] = React.useState(true);
   const [derivedValueMul, setDerivedValueMul] = React.useState(false);
+  const [showPagination, setShowPagination] = React.useState(false);
 
   const onRowCellClick = (value) => {
     console.log(value);
@@ -194,6 +195,22 @@ function MainLayout(props) {
     });
     setDataCfg(next);
   };
+
+  const onCheckChanged3 = (checked) => {
+    setShowPagination(checked);
+    if (checked) {
+      setOptions(
+        merge({}, options, {
+          pagination: {
+            pageSize: 20,
+            current: 1,
+          },
+        }),
+      );
+    } else {
+      setOptions(omit(options, ['pagination']));
+    }
+  };
   return (
     <div>
       <div style={{ display: 'inline-block' }}>
@@ -217,6 +234,13 @@ function MainLayout(props) {
           style={{ marginLeft: 10 }}
           defaultChecked={derivedValueMul}
           onChange={onCheckChanged2}
+        />
+        <Switch
+          checkedChildren="分页"
+          unCheckedChildren="不分页"
+          style={{ marginLeft: 10 }}
+          defaultChecked={showPagination}
+          onChange={onCheckChanged3}
         />
       </div>
       <SheetComponent

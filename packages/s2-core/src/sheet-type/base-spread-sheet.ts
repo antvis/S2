@@ -39,7 +39,6 @@ import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';
 import { BaseParams } from '../data-set/base-data-set';
 import { DataDerivedCell } from '../cell';
-import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
 import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
 import { isMobile } from '../utils/is-mobile';
@@ -292,7 +291,6 @@ export default abstract class BaseSpreadSheet extends EE {
     if (this.tooltip) {
       this.tooltip.hide();
     }
-    console.info(options);
   }
 
   public render(reloadData = true, callback?: () => void): void {
