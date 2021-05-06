@@ -194,7 +194,6 @@ export class RowColResize extends BaseInteraction {
                 break;
             }
           }
-          this.spreadsheet.needUseCacheMeta = true;
           this.spreadsheet.emit(eventType, config);
           this.spreadsheet.setOptions(
             merge({}, this.spreadsheet.options, { style: config }),
