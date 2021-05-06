@@ -189,7 +189,6 @@ export interface Style {
   readonly device?: 'pc' | 'mobile'; // 设备，pc || mobile
 }
 
-
 export type Pagination = {
   // 每页数量
   pageSize: number;

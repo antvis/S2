@@ -218,7 +218,7 @@ function MainLayout(props) {
       setOptions(omit(options, ['pagination']));
     }
   };
-  
+
   const onCheckChanged4 = (e) => {
     setOptions(
       merge({}, options, {

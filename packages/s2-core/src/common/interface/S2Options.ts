@@ -114,7 +114,7 @@ export const defaultStyle = {
   device: 'pc',
 } as Style;
 
-export const defaultOptions = {
+export const defaultOptions = ({
   width: 600,
   height: 480,
   mode: 'pivot',
@@ -133,7 +133,7 @@ export const defaultOptions = {
   customHeaderCells: null,
   rowActionIcons: null,
   style: defaultStyle,
-} as S2Options;
+} as unknown) as S2Options;
 
 export const safetyOptions = (options: S2Options) =>
   merge({}, defaultOptions, options);

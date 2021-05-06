@@ -5,7 +5,7 @@ import {
   S2DataConfig,
   safetyDataConfig,
   safetyOptions,
-  Pagination as PaginationCfg
+  Pagination as PaginationCfg,
 } from 'src/common/interface';
 import { DrillDown } from '../../drill-down';
 import { Header } from '../../header';
@@ -298,7 +298,6 @@ export const BaseSheet = (props: BaseSheetProps) => {
       </div>
     );
   };
-
 
   const buildSpreadSheet = () => {
     if (!baseSpreadsheet) {
