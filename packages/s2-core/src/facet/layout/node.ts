@@ -16,7 +16,7 @@ export interface BaseNodeConfig {
   isCollapsed?: boolean;
   isGrandTotals?: boolean;
   hierarchy?: Hierarchy;
-  spreadsheetType?: boolean;
+  isPivotMode?: boolean;
   seriesNumberWidth?: number;
   field?: string;
   spreadsheet?: BaseSpreadSheet;
@@ -201,8 +201,8 @@ export class Node {
   // node's hierarchy
   public hierarchy: Hierarchy;
 
-  // is spreadsheet not ListSheet
-  public spreadsheetType: boolean;
+  // is pivot mode
+  public isPivotMode: boolean;
 
   // series number width
   public seriesNumberWidth: number;
@@ -239,7 +239,7 @@ export class Node {
       isGrandTotals,
       isCollapsed,
       hierarchy,
-      spreadsheetType,
+      isPivotMode,
       seriesNumberWidth,
       field,
       spreadsheet,
@@ -260,7 +260,7 @@ export class Node {
     this.isSubTotals = isSubTotals;
     this.isCollapsed = isCollapsed;
     this.hierarchy = hierarchy;
-    this.spreadsheetType = spreadsheetType;
+    this.isPivotMode = isPivotMode;
     this.seriesNumberWidth = seriesNumberWidth;
     this.field = field;
     this.spreadsheet = spreadsheet;

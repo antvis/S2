@@ -5,7 +5,6 @@ export { Node } from './facet/layout/node';
 export { Hierarchy } from './facet/layout/hierarchy';
 export { BaseInteraction } from './interaction/base';
 export { GuiIcon } from './common/icons/gui-icon';
-export { SpreadSheetOptionsBuilder } from './builder';
 export { SheetComponent } from './components';
 export { SpreadsheetProps, PartDrillDown } from './components/index';
 export { DrillDown, DrillDownProps } from './components/drill-down';

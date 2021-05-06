@@ -1,7 +1,7 @@
 import {
   DrillDownDataCache,
   DrillDownFieldInLevel,
-  SpreadsheetOptions,
+  S2Options,
 } from '../../common/interface';
 import { DrillDownLayout } from './drill-down-layout';
 import { PartDrillDownInfo, SpreadsheetProps } from 'src/components/index';
@@ -53,7 +53,7 @@ export interface DrillDownParams {
  * @param options
  * @constructor
  */
-export const UseDrillDownLayout = (options: SpreadsheetOptions) => {
+export const UseDrillDownLayout = (options: S2Options) => {
   if (isEqual(options.layout, DrillDownLayout)) return;
   // 缓存外部的layout到options变量
   options.otterLayout = options.layout;
@@ -172,7 +172,7 @@ export const ClearDrillDownInfo = (
  * 如果有下钻的配置，将配置映射到表内部
  * @param props
  * @param spreadsheet
- * @param element
+ * @param callback
  * @constructor
  */
 export const HandleOptions = (
@@ -184,7 +184,7 @@ export const HandleOptions = (
     cashDownDrillFields: string[],
     disabledFields: string[],
   ) => void,
-): SpreadsheetOptions => {
+): S2Options => {
   if (props?.partDrillDown) {
     UseDrillDownLayout(props.options);
     const { open, customDisplayByRowName } = props.partDrillDown;
@@ -223,8 +223,9 @@ export const HandleOptions = (
 
 /**
  * 处理展示维值个数
- * @param spreadsheet
- * @param meta
+ * @param drillFields
+ * @param drillData
+ * @param drillItemsNum
  */
 const handleDrillItemsNum = (
   drillFields: string[],
@@ -381,7 +382,7 @@ export const HandleConfigWhenDrillDown = (
     // 树状模式显示下钻信息，平铺模式隐藏！！
     if (
       props.options.hierarchyType === 'tree' &&
-      props.options.spreadsheetType
+      props.options.mode === 'pivot'
     ) {
       const drillDownFieldInLevel = spreadsheet.store.get(
         'drillDownFieldInLevel',

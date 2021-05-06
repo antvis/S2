@@ -28,11 +28,11 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   ): SeriesNumberHeader {
     const { width, height } = viewportBBox;
     const seriesNodes: Node[] = [];
-    const isSpreadsheetType = spreadsheet.isSpreadsheetType();
+    const isPivotMode = spreadsheet.isPivotMode();
     leafNodes.forEach((node: Node): void => {
       // 1、is spreadsheet and node is not total(grand or sub)
       // 2、is listSheet
-      if ((isSpreadsheetType && !node.isTotals) || !isSpreadsheetType) {
+      if ((isPivotMode && !node.isTotals) || !isPivotMode) {
         const sNode = new Node({
           id: '',
           key: '',

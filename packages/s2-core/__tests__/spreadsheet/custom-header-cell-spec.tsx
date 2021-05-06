@@ -100,8 +100,8 @@ const getOptions = () => {
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: true,
-    containsRowHeader: true,
-    spreadsheetType: true,
+    freezeRowHeader: true,
+    mode: 'pivot',
     valueInCols: true,
     conditions: {
       text: [],

@@ -2,10 +2,10 @@ import * as _ from 'lodash';
 import {
   Aggregation,
   Data,
-  DataCfg,
   Fields,
   Formatter,
   Meta,
+  S2DataConfig,
   SortParams,
 } from '../common/interface';
 import { Pivot } from './pivot';
@@ -101,7 +101,7 @@ export abstract class BaseDataSet<T extends BaseParams> {
    * 重新设置数据配置，重新 load 数据
    * @param dataCfg
    */
-  public setDataCfg(dataCfg: DataCfg) {
+  public setDataCfg(dataCfg: S2DataConfig) {
     // 每次重新设置数据的时候，需要清空缓存
     this.getFieldMeta.cache.clear();
 
@@ -245,7 +245,7 @@ export abstract class BaseDataSet<T extends BaseParams> {
   /**
    * 预处理数据
    */
-  protected abstract preProcess(dataCfg: DataCfg): DataCfg;
+  protected abstract preProcess(dataCfg: S2DataConfig): S2DataConfig;
 
   protected createPivot() {
     // 创建 pivot 需要的数据源实例

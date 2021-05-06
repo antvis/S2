@@ -44,9 +44,9 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     this.setClip({
       type: 'rect',
       attrs: {
-        x: spreadsheet.freezeRowHeader() ? 0 : scrollX,
+        x: spreadsheet.freezeRowHeader() ? scrollX : 0,
         y: 0,
-        width: width + (spreadsheet.freezeRowHeader() ? scrollX : 0),
+        width: width + (spreadsheet.freezeRowHeader() ? 0 : scrollX),
         height,
       },
     });
@@ -65,7 +65,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const colCellInRect = (item: Node): boolean => {
       return (
         width + scrollX > item.x &&
-        scrollX - (spreadsheet.freezeRowHeader() ? cornerWidth : 0) <
+        scrollX - (spreadsheet.freezeRowHeader() ? 0 : cornerWidth) <
           item.x + item.width
       );
     };
@@ -77,7 +77,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
           cell = colCell(item, spreadsheet, this.headerConfig);
         }
         if (isEmpty(cell)) {
-          if (spreadsheet.isSpreadsheetType()) {
+          if (spreadsheet.isPivotMode()) {
             cell = new ColCell(item, spreadsheet, this.headerConfig);
           } else {
             cell = new DetailColCell(item, spreadsheet, this.headerConfig);

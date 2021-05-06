@@ -28,10 +28,7 @@ export default function processDefaultColWidthByType(
   let colWidth = defaultCellWidth;
   const canvasW = facet.getCanvasHW().width;
   // 非决策模式下的列宽均分场景才能走这个逻辑
-  if (
-    !facet.spreadsheet.isStrategyMode() &&
-    facet.spreadsheet.isColAdaptive()
-  ) {
+  if (facet.spreadsheet.isColAdaptive()) {
     // equal width [celCfg.width, canvasW]
     if (!facet.spreadsheet.isHierarchyTreeType()) {
       // canvasW / (rowHeader's col size + colHeader's col size) = [celCfg.width, canvasW]

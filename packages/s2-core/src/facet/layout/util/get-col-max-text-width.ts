@@ -17,14 +17,14 @@ const MAX_TEXT_PADDING = 36;
  * @param current Hierarchy
  * @param records { $$column$$,$$value$$,area,city,date,order_amt,province,sub_type,type }
  * @param colLabel 当列的label值
- * @param isSpreadsheetType
+ * @param isPivotMode
  * @return number
  */
 export default function getColMaxTextWidth(
   current,
   records,
   colLabel,
-  isSpreadsheetType,
+  isPivotMode,
   dataset,
 ) {
   const { isLeaf, isTotals } = current;
@@ -35,7 +35,7 @@ export default function getColMaxTextWidth(
       : DefaultTheme.header.bolderText;
 
   // 性能优化：由于同列量级相同，故取前50行比较取字符最长的。
-  if (isSpreadsheetType) {
+  if (isPivotMode) {
     // 交叉表
     const maxTextRecord = _.maxBy(records.slice(0, 50), (record) => {
       // 20191218 修复 record[VALUE_FIELD] = null 问题

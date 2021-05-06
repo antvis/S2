@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { isEmpty, debounce, isFunction, get, merge } from 'lodash';
 import { Spin, Pagination } from 'antd';
+import {
+  S2DataConfig,
+  safetyDataConfig,
+  safetyOptions,
+  Pagination as PaginationCfg
+} from 'src/common/interface';
 import { DrillDown } from '../../drill-down';
 import { Header } from '../../header';
 import {
@@ -23,9 +29,7 @@ import {
 } from 'src/common/constant';
 import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
 import SpreadSheet from 'src/sheet-type/spread-sheet';
-import { safetyDataCfg, safetyOptions } from 'src/utils/safety-config';
 import { resetDrillDownCfg } from 'src/utils/drill-down/helper';
-import { DataCfg, Pagination as PaginationCfg } from 'src/common/interface';
 import { BaseSheetProps } from '../interface';
 
 import './index.less';
@@ -33,7 +37,6 @@ import './index.less';
 export const BaseSheet = (props: BaseSheetProps) => {
   const {
     spreadsheet,
-    // TODO dataCfg细化
     dataCfg,
     options,
     adaptive = true,
@@ -215,7 +218,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
   //   }
   // };
 
-  const preHandleDataCfg = (config: DataCfg) => {
+  const preHandleDataCfg = (config: S2DataConfig) => {
     if (partDrillDown) {
       resetDrillDownCfg(ownSpreadsheet);
     }
@@ -301,7 +304,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
     if (!baseSpreadsheet) {
       baseSpreadsheet = getSpreadSheet();
       bindEvent();
-      baseSpreadsheet.setDataCfg(safetyDataCfg(dataCfg));
+      baseSpreadsheet.setDataCfg(safetyDataConfig(dataCfg));
       baseSpreadsheet.store.set('originalDataCfg', dataCfg);
       setOptions(baseSpreadsheet, props);
       baseSpreadsheet.setTheme(theme);

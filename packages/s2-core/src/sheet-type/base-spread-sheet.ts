@@ -14,13 +14,15 @@ import { Store } from '../common/store';
 import { ext } from '@antv/matrix-util';
 import {
   ColWidthCache,
-  DataCfg,
   DerivedValue,
+  safetyDataConfig,
   OffsetConfig,
   Pagination,
+  S2DataConfig,
+  S2Options,
   SpreadsheetFacetCfg,
-  SpreadsheetOptions,
   ViewMeta,
+  safetyOptions,
 } from '../common/interface';
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
@@ -37,12 +39,10 @@ import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';
 import { BaseParams } from '../data-set/base-data-set';
 import { DataDerivedCell } from '../cell';
-import { LruCache } from '../facet/layout/util/lru-cache';
 import { DebuggerUtil } from '../common/debug';
 import { EventController } from '../interaction/events/event-controller';
 import { DefaultInterceptEvent } from '../interaction/events/types';
 import State from '../state/state';
-import { safetyDataCfg, safetyOptions } from '../utils/safety-config';
 import { ShowProps } from '../common/tooltip/interface';
 import { StateName } from '../state/state';
 import { isMobile } from '../utils/is-mobile';
@@ -65,10 +65,10 @@ export default abstract class BaseSpreadSheet extends EE {
   public store: Store = new Store();
 
   // the original data config
-  public dataCfg: DataCfg;
+  public dataCfg: S2DataConfig;
 
   // Spreadsheet's configurations
-  public options: SpreadsheetOptions;
+  public options: S2Options;
 
   /**
    * processed data structure, include {@link Fields}, {@link Meta}
@@ -97,14 +97,8 @@ export default abstract class BaseSpreadSheet extends EE {
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
 
-  // cell cache
-  public cellCache: LruCache<string, DataCell> = new LruCache(10000);
-
-  // cell 真实数据缓存（只用于树结构collapse, 宽、高拖拽拽）
-  public viewMetaCache: LruCache<string, ViewMeta> = new LruCache(1000);
-
-  // 是否需要使用view meta的cache(目前的场景 树结构collapse, 宽、高拖拽拽)，一次性消费
-  public needUseCacheMeta: boolean;
+  // use to display cell's hover interactions
+  public hoverBoxGroup: IGroup;
 
   // 基础事件
   public eventController: EventController;
@@ -125,14 +119,14 @@ export default abstract class BaseSpreadSheet extends EE {
 
   protected constructor(
     dom: string | HTMLElement,
-    dataCfg: DataCfg,
-    options: SpreadsheetOptions,
+    dataCfg: S2DataConfig,
+    options: S2Options,
   ) {
     super();
     this.dom = isString(dom)
       ? document.getElementById(<string>dom)
       : <HTMLElement>dom;
-    this.dataCfg = safetyDataCfg(dataCfg);
+    this.dataCfg = safetyDataConfig(dataCfg);
     this.options = safetyOptions(options);
     this.initGroups(this.dom, this.options);
     this.bindEvents();
@@ -155,6 +149,27 @@ export default abstract class BaseSpreadSheet extends EE {
   }
 
   /**
+   * Update data config and keep pre-sort operations
+   * Group sort params kept in {@see store} and
+   * Priority: group sort > advanced sort
+   * @param dataCfg
+   */
+  public setDataCfg(dataCfg: S2DataConfig): void {
+    const newDataCfg = clone(dataCfg);
+    const lastSortParam = this.store.get('sortParam');
+    const { sortParams } = newDataCfg;
+    newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
+    this.dataCfg = newDataCfg;
+  }
+
+  public setOptions(options: S2Options): void {
+    if (this.tooltip) {
+      this.tooltip.hide();
+    }
+    console.info(options);
+  }
+
+  /**
    * Create all related groups, contains:
    * 1. container -- base canvas group
    * 2. backgroundGroup
@@ -164,7 +179,7 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param options
    * @private
    */
-  protected initGroups(dom: HTMLElement, options: SpreadsheetOptions): void {
+  protected initGroups(dom: HTMLElement, options: S2Options): void {
     const { width, height } = options;
 
     // base canvas group
@@ -191,19 +206,6 @@ export default abstract class BaseSpreadSheet extends EE {
     });
   }
 
-  /**
-   * 注册交互（组件按自己的场景写交互，继承此方法注册）
-   * @param options
-   */
-  protected abstract registerInteractions(options: SpreadsheetOptions): void;
-
-  // 注册事件
-  protected abstract registerEvents(): void;
-
-  protected abstract initDataSet(
-    options: Partial<SpreadsheetOptions>,
-  ): BaseDataSet<BaseParams>;
-
   protected abstract initTooltip(): BaseTooltip;
 
   protected abstract bindEvents(): void;
@@ -212,11 +214,28 @@ export default abstract class BaseSpreadSheet extends EE {
     return new SpreadsheetFacet(facetCfg);
   }
 
+  /**
+   * 注册交互（组件按自己的场景写交互，继承此方法注册）
+   * @param options
+   */
+  protected abstract registerInteractions(options: S2Options): void;
+
+  protected getCorrectCell(facet: ViewMeta): DataCell {
+    return this.isValueInCols()
+      ? new DataCell(facet, this)
+      : new DataDerivedCell(facet, this);
+  }
+
+  // 注册事件
+  protected abstract registerEvents(): void;
+
+  protected abstract initDataSet(
+    options: Partial<S2Options>,
+  ): BaseDataSet<BaseParams>;
+
   protected buildFacet(): void {
-    const { fields } = this.dataSet;
-    if (!fields) {
-      return;
-    }
+    const { fields, meta } = this.dataSet;
+
     const { rows, columns, values, derivedValues } = fields;
 
     const {
@@ -251,13 +270,10 @@ export default abstract class BaseSpreadSheet extends EE {
       treeRowsWidth,
     } = style;
     this.dataSet.pivot.updateTotals(totals);
-    this.dataSet.pivot.updateHideNodesIds(hideNodesIds);
-    this.dataSet.pivot.updateKeepOnlyNodesIds(keepOnlyNodesIds);
 
     const defaultCell = (facet: ViewMeta) => this.getCorrectCell(facet);
     DebuggerUtil.getInstance().setDebug(debug);
     // the new facetCfg of facet
-    // TODO 我觉得这个cfg可以干掉，因为完全就是options的映射
     const facetCfg = {
       spreadsheet: this,
       dataSet: this.dataSet,
@@ -265,7 +281,7 @@ export default abstract class BaseSpreadSheet extends EE {
       collapsedRows,
       collapsedCols,
       hierarchyCollapse,
-      meta: this.dataCfg.meta,
+      meta: meta,
       cols: columns,
       rows,
       cellCfg,
@@ -296,32 +312,6 @@ export default abstract class BaseSpreadSheet extends EE {
     this.facet = this.initFacet(facetCfg);
     // render facet
     this.facet.render();
-  }
-
-  protected getCorrectCell(facet: ViewMeta): DataCell {
-    return this.isValueInCols()
-      ? new DataCell(facet, this)
-      : new DataDerivedCell(facet, this);
-  }
-
-  /**
-   * Update data config and keep pre-sort operations
-   * Group sort params kept in {@see store} and
-   * Priority: group sort > advanced sort
-   * @param dataCfg
-   */
-  public setDataCfg(dataCfg: DataCfg): void {
-    const newDataCfg = clone(dataCfg);
-    const lastSortParam = this.store.get('sortParam');
-    const { sortParams } = newDataCfg;
-    newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
-    this.dataCfg = newDataCfg;
-  }
-
-  public setOptions(options: SpreadsheetOptions): void {
-    if (this.tooltip) {
-      this.tooltip.hide();
-    }
   }
 
   public render(reloadData = true, callback?: () => void): void {
@@ -413,10 +403,6 @@ export default abstract class BaseSpreadSheet extends EE {
     return get(this, 'options.hierarchyType', 'grid') === 'tree';
   }
 
-  public isStrategyMode(): boolean {
-    return false;
-  }
-
   /**
    * 判断某个维度是否是衍生指标
    * @param field
@@ -452,10 +438,10 @@ export default abstract class BaseSpreadSheet extends EE {
   }
 
   /**
-   * Check if is SpreadSheet mode
+   * Check if is pivot mode
    */
-  public isSpreadsheetType(): boolean {
-    return get(this, 'options.spreadsheetType', true);
+  public isPivotMode(): boolean {
+    return this.options?.mode === 'pivot';
   }
 
   /**
@@ -463,16 +449,14 @@ export default abstract class BaseSpreadSheet extends EE {
    * For now contains row header in ListSheet mode by default
    */
   public isScrollContainsRowHeader(): boolean {
-    return (
-      !get(this, 'options.containsRowHeader', true) || !this.isSpreadsheetType()
-    );
+    return !this.freezeRowHeader() || !this.isPivotMode();
   }
 
   /**
    * Scroll Freeze Row Header
    */
   public freezeRowHeader(): boolean {
-    return !get(this, 'options.containsRowHeader', true);
+    return this.options?.freezeRowHeader;
   }
 
   /**
@@ -480,23 +464,11 @@ export default abstract class BaseSpreadSheet extends EE {
    * @param callback to handle each cell if needed
    */
   public getPanelAllCells(callback?: (cell: DataCell) => void): DataCell[] {
-    const [scrollX, sy] = this.facet.getScrollOffset();
-    const scrollY = sy + this.facet.getPaginationScrollY();
-    const indexes = this.facet.calculateXYIndexes(scrollX, scrollY);
-    const [minColIndex, maxColIndex, minRowIndex, maxRowIndex] = indexes;
     const children = this.panelGroup.get('children');
     const cells: DataCell[] = [];
     children.forEach((child) => {
       if (child instanceof DataCell) {
-        const { colIndex, rowIndex } = child.getMeta();
-        if (
-          colIndex >= minColIndex &&
-          colIndex <= maxColIndex &&
-          rowIndex >= minRowIndex &&
-          rowIndex <= maxRowIndex
-        ) {
-          cells.push(child);
-        }
+        cells.push(child);
         if (callback) {
           callback(child);
         }

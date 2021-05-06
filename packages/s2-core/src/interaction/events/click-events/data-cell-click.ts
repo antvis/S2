@@ -57,7 +57,7 @@ export class DataCellClick extends BaseEvent {
     };
     const currentCellMeta = get(meta, 'data.0');
     const isTotals = get(meta, 'isTotals', false);
-    if (isTotals && this.spreadsheet.isStrategyMode()) {
+    if (isTotals) {
       return;
     }
 

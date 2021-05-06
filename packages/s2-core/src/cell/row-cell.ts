@@ -130,7 +130,7 @@ export class RowCell extends BaseCell<Node> {
     if (
       showIcon() &&
       this.spreadsheet.isHierarchyTreeType() &&
-      this.spreadsheet.isSpreadsheetType()
+      this.spreadsheet.isPivotMode()
     ) {
       const { x, y, height, width } = this.meta;
       for (let i = 0; i < iconTypes.length; i++) {
@@ -349,7 +349,7 @@ export class RowCell extends BaseCell<Node> {
     if (
       !this.meta.isLeaf ||
       (this.meta.isLeaf && !this.spreadsheet.isValueInCols()) ||
-      !this.spreadsheet.isSpreadsheetType()
+      !this.spreadsheet.isPivotMode()
     ) {
       const textIndent = this.getTextIndent();
       this.addShape('line', {

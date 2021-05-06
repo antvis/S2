@@ -14,8 +14,8 @@ order: 1
 | tooltip | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) | ✓ |  |  |  tooltip总配置 |
 | linkFieldIds | string[] |  |  | [] | 外链跳转 |
 | pagination | [Pagination](#) | ✓ |  |  | 分页配置 |
-| containsRowHeader | boolean | ✓ |  | false | 滚动是否包括行头 |
-| spreadsheetType | boolean |  |  |  | spreadsheet = true, listSheet（普通 table） = false |
+| freezeRowHeader | boolean | ✓ |  | false | 冻结行头 |
+| pivot | pivot/table |  |  |  | pivot = 交叉表, table = 普通 table |
 | width | number | ✓ |  |  | canvas 的宽度 |
 | height | number | ✓ |  |  | canvas 的高度 |
 | style | [Style](#) | ✓ |  |  | 附加样式 |

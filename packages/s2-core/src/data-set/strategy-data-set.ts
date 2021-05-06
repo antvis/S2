@@ -1,7 +1,7 @@
 import { BaseDataSet } from './index';
 import { BaseParams } from './base-data-set';
 import { processIrregularData } from '../utils/get-irregular-data';
-import { DataCfg } from '../common/interface';
+import { S2DataConfig } from '../common/interface';
 import { isEmpty, each, isArray } from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from '../common/constant';
 
@@ -10,7 +10,7 @@ export class StrategyDataSet extends BaseDataSet<BaseParams> {
     super(params);
   }
 
-  protected preProcess(dataCfg: DataCfg): DataCfg {
+  protected preProcess(dataCfg: S2DataConfig): S2DataConfig {
     const newDataCfg = processIrregularData(dataCfg);
     const { data = [], meta, fields, sortParams = [] } = newDataCfg;
     const { columns, rows, values } = fields;

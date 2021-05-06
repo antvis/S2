@@ -1,5 +1,5 @@
 import { cloneDeep, size } from 'lodash';
-import { DataCfg } from '../common/interface';
+import { S2DataConfig } from '../common/interface';
 
 export const DEFAULT_ROW = '_row_';
 export const DEFAULT_COLUMN = '_column_';
@@ -9,7 +9,7 @@ export const DEFAULT_VALUE = '_value_';
  * 如果当前数据有异常情况，处理数据。
  * 异常情况：仅列、仅行、仅行列
  */
-export function processIrregularData(dataCfg: DataCfg) {
+export function processIrregularData(dataCfg: S2DataConfig) {
   // const newDataCfg = JSON.parse(JSON.stringify(dataCfg)); 不能使用 JSON.parse(JSON.stringify())，有format函数
   const newDataCfg = cloneDeep(dataCfg);
   const { fields } = newDataCfg;

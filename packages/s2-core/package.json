@@ -17,7 +17,7 @@
     "pivot table"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "",
     "clean": "rimraf lib esm dist",
     "build": "run-s clean lib dist",
     "lib": "run-p lib:* cpx:*",

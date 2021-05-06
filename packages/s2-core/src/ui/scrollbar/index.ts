@@ -323,12 +323,11 @@ export class ScrollBar extends Group {
 
   addEventListener = (target, eventType, callback) => {
     target?.addEventListener(eventType, callback, false);
-    // TODO: 下方为哦豁增加的return，未发现实际意义，暂时注释
-    // return {
-    //   remove: function () {
-    //     target?.removeEventListener(eventType, callback, false);
-    //   },
-    // };
+    return {
+      remove: function () {
+        target?.removeEventListener(eventType, callback, false);
+      },
+    };
   };
 
   private bindLaterEvent() {
@@ -356,7 +355,7 @@ export class ScrollBar extends Group {
 
     this.clearEvents = () => {
       events.forEach((e) => {
-        e.remove();
+        e?.remove();
       });
       each(this.eventHandlers, (eh) => {
         eh.target.off(eh.type, eh.handler);
