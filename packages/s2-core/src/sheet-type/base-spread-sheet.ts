@@ -247,8 +247,6 @@ export default abstract class BaseSpreadSheet extends EE {
       hierarchyType,
       hierarchyCollapse,
       pagination,
-      hideNodesIds,
-      keepOnlyNodesIds,
       dataCell,
       cornerCell,
       rowCell,

@@ -355,7 +355,7 @@ export class ScrollBar extends Group {
 
     this.clearEvents = () => {
       events.forEach((e) => {
-        e?.remove();
+        e.remove();
       });
       each(this.eventHandlers, (eh) => {
         eh.target.off(eh.type, eh.handler);

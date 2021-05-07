@@ -7,4 +7,6 @@ export const EN_US = {
   序号: 'Index',
   度量: 'Measure',
   数值: 'Measure',
+  共计: 'Total',
+  条: '',
 };

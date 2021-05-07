@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { isEmpty, debounce, isFunction, get, merge } from 'lodash';
 import { Spin, Pagination } from 'antd';
+import { i18n } from 'src/common/i18n';
 import {
   S2DataConfig,
   safetyDataConfig,
@@ -58,7 +59,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
     partDrillDown,
   } = props;
   let container: HTMLDivElement;
-  const PRECLASS = 'ss-pagination';
+  const PRECLASS = 's2-pagination';
   let baseSpreadsheet: BaseSpreadsheet;
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<BaseSpreadsheet>();
   const [drillFields, setDrillFields] = useState<string[]>([]);
@@ -93,7 +94,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
       }
     });
 
-    baseSpreadsheet.on(KEY_PAGINATION, (data: PaginationCfg): void => {
+    baseSpreadsheet.on(KEY_PAGINATION, (data: PaginationCfg) => {
       setTotal(data?.total);
     });
 
@@ -226,10 +227,10 @@ export const BaseSheet = (props: BaseSheetProps) => {
   };
 
   const setOptions = (
-    spreadsheet?: BaseSpreadsheet,
+    sheetInstance?: BaseSpreadsheet,
     sheetProps?: BaseSheetProps,
   ) => {
-    const curSheet = spreadsheet || ownSpreadsheet;
+    const curSheet = sheetInstance || ownSpreadsheet;
     const curProps = sheetProps || props;
     curSheet.setOptions(
       safetyOptions(HandleOptions(curProps, curSheet, iconClickCallback)),
@@ -277,7 +278,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
       return null;
     }
     const pageSize = get(paginationCfg, 'pageSize', Infinity);
-    // only show the pagenation when the pageSiz > 5
+    // only show the pagenation when the pageSize > 5
     const showQuickJumper = total / pageSize > 5;
 
     return (
@@ -292,8 +293,13 @@ export const BaseSheet = (props: BaseSheetProps) => {
           showQuickJumper={showQuickJumper}
           onChange={(page) => setCurrent(page)}
         />
-        <span className={`${PRECLASS}-count`} title={`共计${total}条'`}>
-          共计{total || ' - '}条
+        <span
+          className={`${PRECLASS}-count`}
+          title={`${i18n('共计')}${total}${i18n('条')}`}
+        >
+          {i18n('共计')}
+          {total || ' - '}
+          {i18n('条')}
         </span>
       </div>
     );

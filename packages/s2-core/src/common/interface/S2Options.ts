@@ -77,7 +77,7 @@ export interface S2Options {
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
   // eg: add/delete some nodes in specified position
-  readonly hierarchy: HierarchyCallback;
+  readonly hierarchy?: HierarchyCallback;
   // determine the order of every row/column tree branch
   readonly layoutArrange?: LayoutArrangeCallback;
   // determine the location(x,y,width,height eg..) of every node
@@ -114,7 +114,7 @@ export const defaultStyle = {
   device: 'pc',
 } as Style;
 
-export const defaultOptions = ({
+export const defaultOptions = {
   width: 600,
   height: 480,
   mode: 'pivot',
@@ -124,7 +124,6 @@ export const defaultOptions = ({
   totals: {},
   tooltip: {},
   linkFieldIds: [],
-  pagination: false,
   freezeRowHeader: true,
   showSeriesNumber: false,
   scrollReachNodeField: {},
@@ -133,7 +132,7 @@ export const defaultOptions = ({
   customHeaderCells: null,
   rowActionIcons: null,
   style: defaultStyle,
-} as unknown) as S2Options;
+} as S2Options;
 
 export const safetyOptions = (options: S2Options) =>
   merge({}, defaultOptions, options);
