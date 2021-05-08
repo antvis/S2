@@ -1,5 +1,5 @@
 import { BaseSpreadSheet } from '../../sheet-type';
-import { head, last, isEmpty, get, clone, trim } from 'lodash';
+import { head, last, isEmpty, get, clone, trim, max } from 'lodash';
 import { ViewMeta } from '../..';
 import { ID_SEPARATOR } from '../../common/constant';
 import { getCsvString } from './export-worker';
@@ -77,14 +77,14 @@ const processValueInCol = (
 ): string => {
   if (!viewMeta) {
     // If the meta equals null, replacing it with blank line.
-    return getCsvString('');
+    return '';
   }
   const { fieldValue, valueField } = viewMeta;
   if (!isFormat) {
-    return getCsvString(fieldValue);
+    return `${fieldValue}`;
   }
   const mainFormatter = sheetInstance.dataSet.getFieldFormatter(valueField);
-  return getCsvString(mainFormatter(fieldValue));
+  return mainFormatter(fieldValue);
 };
 
 /* Process the data when the value position is on the rows. */
@@ -121,11 +121,11 @@ const processValueInRow = (
     }
   } else {
     // If the meta equals null then it will be replaced by '-'.
-    tempCell.push(getCsvString('-'));
+    tempCell.push('-');
     if (!isEmpty(derivedValue?.derivedValueField)) {
       // When the derivedValue under the dimensions.
       for (const dv of derivedValue.derivedValueField) {
-        tempCell.push(getCsvString(dv));
+        tempCell.push(dv);
       }
     }
   }
@@ -177,7 +177,12 @@ export const copyData = (
       }
       return tempCol;
     });
-    const colLevel = tempColHeader[0].length;
+
+    const colLevels = tempColHeader.map((colHeader) => {
+      return colHeader.length;
+    });
+    const colLevel = max(colLevels);
+
     const colHeader: string[][] = [];
     // Convert the number of column dimension levels to the corresponding array.
     for (let i = colLevel - 1; i >= 0; i -= 1) {
@@ -235,7 +240,11 @@ export const copyData = (
         }
       }
 
-      detailRows.push(tempLine.join(split));
+      const lineString = tempLine
+        .map((value) => getCsvString(value))
+        .join(split);
+
+      detailRows.push(lineString);
     }
   }
 
