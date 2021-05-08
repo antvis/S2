@@ -64,3 +64,4 @@ export const MAX_SCROLL_OFFSET = 10;
 export const MIN_SCROLL_BAR_HEIGHT = 20;
 
 export const ID_SEPARATOR = '[&]';
+export const EMPTY_PLACEHOLDER = '-';
