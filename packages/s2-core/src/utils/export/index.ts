@@ -1,7 +1,7 @@
 import { BaseSpreadSheet } from '../../sheet-type';
 import { head, last, isEmpty, get, clone, trim, max } from 'lodash';
 import { ViewMeta } from '../..';
-import { ID_SEPARATOR } from '../../common/constant';
+import { ID_SEPARATOR, EMPTY_PLACEHOLDER } from '../../common/constant';
 import { getCsvString } from './export-worker';
 
 export const copyToClipboard = (str: string) => {
@@ -121,7 +121,7 @@ const processValueInRow = (
     }
   } else {
     // If the meta equals null then it will be replaced by '-'.
-    tempCell.push('-');
+    tempCell.push(EMPTY_PLACEHOLDER);
     if (!isEmpty(derivedValue?.derivedValueField)) {
       // When the derivedValue under the dimensions.
       for (const dv of derivedValue.derivedValueField) {
@@ -178,9 +178,7 @@ export const copyData = (
       return tempCol;
     });
 
-    const colLevels = tempColHeader.map((colHeader) => {
-      return colHeader.length;
-    });
+    const colLevels = tempColHeader.map((colHeader) => colHeader.length);
     const colLevel = max(colLevels);
 
     const colHeader: string[][] = [];
