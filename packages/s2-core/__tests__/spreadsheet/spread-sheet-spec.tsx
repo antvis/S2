@@ -1,4 +1,4 @@
-import { merge, clone } from 'lodash';
+import { merge, clone, omit } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
@@ -156,6 +156,7 @@ function MainLayout(props) {
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
   const [valueInCols, setValueInCols] = React.useState(true);
   const [derivedValueMul, setDerivedValueMul] = React.useState(false);
+  const [showPagination, setShowPagination] = React.useState(false);
   const [freezeRowHeader, setFreezeRowHeader] = React.useState(
     props.options.freezeRowHeader,
   );
@@ -202,7 +203,23 @@ function MainLayout(props) {
     setDataCfg(next);
   };
 
-  const onCheckChanged3 = (e) => {
+  const onCheckChanged3 = (checked) => {
+    setShowPagination(checked);
+    if (checked) {
+      setOptions(
+        merge({}, options, {
+          pagination: {
+            pageSize: 20,
+            current: 1,
+          },
+        }),
+      );
+    } else {
+      setOptions(omit(options, ['pagination']));
+    }
+  };
+
+  const onCheckChanged4 = (e) => {
     setOptions(
       merge({}, options, {
         freezeRowHeader: e.target.checked,
@@ -235,8 +252,15 @@ function MainLayout(props) {
           defaultChecked={derivedValueMul}
           onChange={onCheckChanged2}
         />
+        <Switch
+          checkedChildren="分页"
+          unCheckedChildren="不分页"
+          style={{ marginLeft: 10 }}
+          defaultChecked={showPagination}
+          onChange={onCheckChanged3}
+        />
 
-        <Checkbox onChange={onCheckChanged3} defaultChecked={freezeRowHeader}>
+        <Checkbox onChange={onCheckChanged4} defaultChecked={freezeRowHeader}>
           冻结行头
         </Checkbox>
       </div>

@@ -1,11 +1,4 @@
-import {
-  Data,
-  DerivedValue,
-  Fields,
-  Meta,
-  SortParams,
-  StrategyValue,
-} from 'src/common/interface/index';
+import { Fields, Meta, SortParams } from 'src/common/interface/index';
 import { merge } from 'lodash';
 export interface S2DataConfig {
   // origin detail data

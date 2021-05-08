@@ -189,18 +189,16 @@ export interface Style {
   readonly device?: 'pc' | 'mobile'; // 设备，pc || mobile
 }
 
-export type Pagination =
-  | false
-  | {
-      // 每页数量
-      readonly pageSize: number;
-      // 当前页
-      readonly current: number; // 从 1 开始
-      // 数据总条数
-      readonly total?: number;
-      // 总页数（ant.d 组件不需要，所以不传了）
-      readonly pageCount?: number;
-    };
+export type Pagination = {
+  // 每页数量
+  pageSize: number;
+  // 当前页
+  current: number; // 从 1 开始
+  // 数据总条数
+  total?: number;
+  // 总页数（ant.d 组件不需要，所以不传了）
+  pageCount?: number;
+};
 
 export interface NodeField {
   // 行头中需要监听滚动吸顶的度量id
