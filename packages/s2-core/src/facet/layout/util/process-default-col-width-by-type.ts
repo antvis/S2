@@ -25,6 +25,8 @@ export default function processDefaultColWidthByType(
     // 数据没有的情况下，直接用默认值
     return defaultCellWidth;
   }
+  // use the width set by the user
+  if (cellCfg?.width) return cellCfg?.width;
   let colWidth = defaultCellWidth;
   const canvasW = facet.getCanvasHW().width;
   // 非决策模式下的列宽均分场景才能走这个逻辑

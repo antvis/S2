@@ -4,6 +4,7 @@ import { map, find, get, isEmpty, first, includes } from 'lodash';
 import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
+import { DataItem } from '../common/interface/S2DataConfig';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
 import { getDerivedDataState } from '../utils/text';
 import { VALUE_FIELD } from '../common/constant';
@@ -102,7 +103,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return this.interactiveBgShape;
   }
 
-  public getData(): { value: number; formattedValue: string } {
+  public getData(): { value: DataItem; formattedValue: DataItem } {
     const rowField = this.meta.rowId;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowField);
     let formatter;
@@ -169,9 +170,9 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   /**
    * Get left rest area size by icon condition
-   * @private
+   * @protected
    */
-  private getLeftAreaBBox(): SimpleBBox {
+  protected getLeftAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
     const iconCondition = this.findFieldCondition(this.conditions?.icon);
     const isIconExist = iconCondition && iconCondition.mapping;
@@ -196,7 +197,8 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): CellMapping {
-    return condition?.mapping(this.meta.fieldValue, get(this.meta.data, [0]));
+    const value = this.meta.fieldValue as number;
+    return condition?.mapping(value, get(this.meta.data, [0]));
   }
 
   /**
@@ -448,7 +450,11 @@ export class DataCell extends BaseCell<ViewMeta> {
       this.textShape,
       x + width - padding[1],
       y + height / 2,
-      getEllipsisText(text || '-', width - padding[3] - padding[1], textStyle),
+      getEllipsisText(
+        `${text || '-'}`,
+        width - padding[3] - padding[1],
+        textStyle,
+      ),
       textStyle,
       textFill,
       this,

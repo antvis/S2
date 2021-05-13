@@ -1,5 +1,5 @@
 import { getEllipsisText } from '../utils/text';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { isIphoneX } from '../utils/is-mobile';
 import {
   DEFAULT_PADDING,

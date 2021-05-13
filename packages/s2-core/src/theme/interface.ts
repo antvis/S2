@@ -62,7 +62,16 @@ export interface HeaderTheme {
   seriesNumberWidth?: number;
 }
 
+export interface DerivedMeasureTextTheme {
+  mainUp?: string;
+  mainDown?: string;
+  minorUp?: string;
+  minorDown?: string;
+}
+
 export interface ViewTheme {
+  minorText?: TextTheme;
+  derivedMeasureText?: DerivedMeasureTextTheme;
   text?: TextTheme;
   bolderText?: TextTheme;
   cell?: CellTheme;

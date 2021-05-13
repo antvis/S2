@@ -7,6 +7,7 @@ import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
 import { S2DataConfig, safetyDataConfig } from './S2DataConfig';
 import { S2Options, safetyOptions } from './S2Options';
+import { CustomInteraction } from '../../interaction/base';
 
 export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions };
 
@@ -289,6 +290,7 @@ export interface CellCfg {
   width?: number;
   height?: number;
   padding?: number;
+  lineHeight?: number;
 }
 
 export interface RowCfg {
@@ -389,6 +391,8 @@ export interface SpreadsheetFacetCfg {
   layout?: LayoutCallback;
   // 布局结果交由外部控制
   layoutResult?: LayoutResultCallback;
+  // custom Interaction
+  customInteraction?: CustomInteraction[];
 }
 
 export interface ViewMeta {
@@ -410,7 +414,7 @@ export interface ViewMeta {
   // value field(unique field id) for conditions setting
   valueField: string;
   // field's real display label value
-  fieldValue: number;
+  fieldValue: DataItem;
   // subTotals or grandTotals
   isTotals?: boolean;
   // cell's row query condition

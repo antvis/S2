@@ -18,7 +18,6 @@ import {
   KEY_TREE_ROWS_COLLAPSE_ALL,
 } from '../../index';
 import { LayoutResult, SpreadsheetFacetCfg } from '../../common/interface';
-import checkHideMeasureColumn from '../layout/util/check-hide-measure-column';
 import { BaseHeader, BaseHeaderConfig, HIT_AREA } from './base';
 import { CornerData, ResizeInfo } from './interface';
 import { BaseParams } from '../../data-set/base-data-set';
@@ -106,7 +105,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       // 1、spreadsheet must have at least one node in last level
       // 2、listSheet don't have other conditions
       if (
-        (isPivotMode && colsHierarchy.sampleNodeForLastLevel) ||
+        (isPivotMode && colsHierarchy?.sampleNodeForLastLevel) ||
         !isPivotMode
       ) {
         const sNode: Node = new Node({
@@ -114,15 +113,15 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           id: '',
           value: i18n('序号'),
         });
-        sNode.x = position.x;
+        sNode.x = position?.x;
         // different type different y
         sNode.y = isPivotMode
-          ? colsHierarchy.sampleNodeForLastLevel.y
-          : position.y;
+          ? colsHierarchy?.sampleNodeForLastLevel?.y
+          : position?.y;
         sNode.width = seriesNumberWidth;
         // different type different height
         sNode.height = isPivotMode
-          ? colsHierarchy.sampleNodeForLastLevel.height
+          ? colsHierarchy?.sampleNodeForLastLevel?.height
           : height;
         sNode.isPivotMode = isPivotMode;
         cornerNodes.push(sNode);
@@ -134,10 +133,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       if (get(colsHierarchy, 'sampleNodeForLastLevel', undefined)) {
         const drillDownFieldInLevel = ss.store.get('drillDownFieldInLevel', []);
         const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
-        const [isHide, nodeY, nodeHeight] = checkHideMeasureColumn(
-          ss.facet,
-          true,
-        );
+
         const cNode: Node = new Node({
           key: '',
           id: '',
@@ -148,11 +144,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
             .join('/'),
         });
         cNode.x = position.x + seriesNumberWidth;
-        cNode.y = isHide ? nodeY : colsHierarchy.sampleNodeForLastLevel.y;
+        cNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
         cNode.width = width;
-        cNode.height = isHide
-          ? nodeHeight
-          : colsHierarchy.sampleNodeForLastLevel.height;
+        cNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
         cNode.seriesNumberWidth = seriesNumberWidth;
         cNode.isPivotMode = isPivotMode;
         cornerNodes.push(cNode);
