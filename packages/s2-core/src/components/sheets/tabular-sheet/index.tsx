@@ -92,14 +92,10 @@ export const TabularSheet = (props: BaseSheetProps) => {
     );
   };
 
-
-  const setOptions = (spreadsheet?: BaseSpreadsheet) => {
+  const setOptions = (sheetInstance?: BaseSpreadsheet) => {
     const newOptions = buildOptions();
-    if (spreadsheet) {
-      spreadsheet.setOptions(newOptions);
-    } else {
-      ownSpreadsheet.setOptions(newOptions);
-    }
+    const curSheet = sheetInstance || ownSpreadsheet;
+    curSheet.setOptions(newOptions);
   };
 
   const setDataCfg = () => {

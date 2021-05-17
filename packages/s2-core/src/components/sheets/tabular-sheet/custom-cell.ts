@@ -19,7 +19,7 @@ export class CustomCell extends DataCell {
    */
 
   // TODO 条件格式还是需要的，加上条件格式就可以实现用户增长的策略分析表
-  protected initTextShape() {
+  protected drawTextShape() {
     const { x, y, height, width } = this.getLeftAreaBBox();
     const { formattedValue: text } = this.getData();
     const labelStyle = this.theme?.view?.bolderText;

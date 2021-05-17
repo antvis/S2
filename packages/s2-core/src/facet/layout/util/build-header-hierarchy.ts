@@ -15,6 +15,7 @@ import { Node } from '../node';
 import TotalClass from '../total-class';
 import { canNodeBeExpanded } from './can-node-be-expanded';
 import getDimsCondition from './get-dims-condition-by-node';
+import checkHideMeasureColumn from '../util/check-hide-measure-column';
 import { EXTRA_FIELD } from '../../../common/constant';
 import { handleHideNodes } from './handle-hide-nodes';
 import { generateId } from './generate-id';
@@ -157,7 +158,9 @@ export default function buildHeaderHierarchy(
       hierarchy.maxLevel = index;
     }
 
-    if (index === fields.length - 1 || isTotal || isCollapsed) {
+    const [totalLevels] = checkHideMeasureColumn(cfg, fields);
+
+    if (index === totalLevels - 1 || isTotal || isCollapsed) {
       node.isLeaf = true;
       hierarchy.pushIndexNode(node);
       node.rowIndex = hierarchy.getIndexNodes().length - 1;

@@ -1,42 +1,25 @@
+import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
   S2DataConfig,
+  S2Options,
   SheetComponent,
   SpreadSheet,
-  S2Options,
 } from '../../src';
-import * as ReactDOM from 'react-dom';
-import * as React from 'react';
-import { act } from 'react-dom/test-utils';
+import { getContainer, getMockData } from './helpers';
+import ReactDOM from 'react-dom';
+import React from 'react';
+import { CustomTooltip } from './custom/custom-tooltip';
 
-const rootContainer = document.createElement('div');
-rootContainer.setAttribute('style', 'margin-left: 32px');
-document.body.appendChild(rootContainer);
+let data = getMockData('../datasets/tableau-supermarket.csv');
 
-const demo = <div>text</div>;
-
-const onRowCellClick = (value) => {
-  console.log(value);
-};
-const onColCellClick = (value) => {
-  console.log(value);
-};
-const onCornerCellClick = (value) => {
-  console.log(value);
-};
-
-const onListSort = (value) => {
-  console.log(value);
-};
-const onDataCellClick = (value) => {
-  console.log(value);
-  const { spreadsheet } = value.viewMeta;
-  spreadsheet.tooltip.hide();
-  spreadsheet.tooltip.show(
-    { x: value.event.clientX, y: value.event.clientY },
-    demo,
-  );
-};
+data = data.map((row) => {
+  row['profit-tongbi'] = 0.2233;
+  row['profit-huanbi'] = -0.4411;
+  row['count-tongbi'] = 0.1234;
+  row['count-huanbi'] = -0.4321;
+  return row;
+});
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -187,39 +170,40 @@ const mockData = {
   ],
 } as S2DataConfig;
 
+
 const options = {
-  width: 1800,
+  width: 1000,
   height: 600,
   hierarchyType: 'grid',
   style: {
     cellCfg: {
       lineHeight: 30,
-      width: 120,
-      height: 120,
+      width: 500,
+      height: 300,
       minorMeasureRowIndex: 3,
       firstDerivedMeasureRowIndex: 2,
     },
   },
 } as S2Options;
 
-describe('spreadsheet normal spec', () => {
+
+
+describe('spreadsheet tabular spec', () => {
   test('demo', () => {
     expect(1).toBe(1);
   });
+
   act(() => {
     ReactDOM.render(
       <SheetComponent
-        sheetType={'tabular'}
+        sheetType="tabular"
         dataCfg={mockData}
+        adaptive={false}
         options={options}
         spreadsheet={getSpreadSheet}
-        onRowCellClick={onRowCellClick}
-        onColCellClick={onColCellClick}
-        onDataCellClick={onDataCellClick}
-        onCornerCellClick={onCornerCellClick}
-        onListSort={onListSort}
+     
       />,
-      rootContainer,
+      getContainer(),
     );
   });
 });
