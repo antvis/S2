@@ -121,58 +121,60 @@ export class Layout {
         ? merge({}, rowQuery)
         : merge({}, rowQuery, colQuery);
 
-      let data = [];
-      if (isInTree && isParentInTree) {
-        // tree mode & collapse
-        // 父节点
-        if (rowTotalsConfig.showSubTotals) {
-          data = dataSet.getData(dataQuery, {
-            row: {
-              isTotals: true,
-              isGrandTotals: row.isGrandTotals,
-              isSubTotals: true,
-            },
-            col: {
-              isTotals: col.isTotals,
-              isGrandTotals: col.isGrandTotals,
-              isSubTotals: col.isSubTotals,
-            },
-          });
-        } else {
-          // 是🌲状且不需要展示小计行，需要有两个处理场景
-          // 1. 该row id下有下钻维度，则这行显示原始的值(不按小计处理)
-          // 2. 没有下钻维度，由于没有配小计 显示为 -
-          const drillDownDataCache = ss.store.get(
-            'drillDownDataCache',
-            [],
-          ) as DrillDownDataCache[];
-          const cache = drillDownDataCache.find((dc) => dc.rowId === row.id);
-          if (cache) {
-            data = dataSet.getData(dataQuery);
-          } else {
-            data = [];
-          }
-        }
-      } else {
-        data = dataSet.getData(dataQuery, {
-          row: {
-            isTotals: row.isTotals,
-            isGrandTotals: row.isGrandTotals,
-            isSubTotals: row.isSubTotals,
-            otherQuery: colQuery,
-            isCollapsedHasTotals:
-              rowTotalsConfig.showSubTotals && row.isCollapsed,
-          },
-          col: {
-            isTotals: col.isTotals,
-            isGrandTotals: col.isGrandTotals,
-            isSubTotals: col.isSubTotals,
-            otherQuery: rowQuery,
-            isCollapsedHasTotals:
-              colTotalsConfig.showSubTotals && col.isCollapsed,
-          },
-        });
-      }
+      const test = dataSet.getData(dataQuery);
+      console.log(`${i}-${j}`, dataQuery, test);
+      const data = test;
+      // if (isInTree && isParentInTree) {
+      //   // tree mode & collapse
+      //   // 父节点
+      //   if (rowTotalsConfig.showSubTotals) {
+      //     data = dataSet.getData(dataQuery, {
+      //       row: {
+      //         isTotals: true,
+      //         isGrandTotals: row.isGrandTotals,
+      //         isSubTotals: true,
+      //       },
+      //       col: {
+      //         isTotals: col.isTotals,
+      //         isGrandTotals: col.isGrandTotals,
+      //         isSubTotals: col.isSubTotals,
+      //       },
+      //     });
+      //   } else {
+      //     // 是🌲状且不需要展示小计行，需要有两个处理场景
+      //     // 1. 该row id下有下钻维度，则这行显示原始的值(不按小计处理)
+      //     // 2. 没有下钻维度，由于没有配小计 显示为 -
+      //     const drillDownDataCache = ss.store.get(
+      //       'drillDownDataCache',
+      //       [],
+      //     ) as DrillDownDataCache[];
+      //     const cache = drillDownDataCache.find((dc) => dc.rowId === row.id);
+      //     if (cache) {
+      //       data = dataSet.getData(dataQuery);
+      //     } else {
+      //       data = [];
+      //     }
+      //   }
+      // } else {
+      //   data = dataSet.getData(dataQuery, {
+      //     row: {
+      //       isTotals: row.isTotals,
+      //       isGrandTotals: row.isGrandTotals,
+      //       isSubTotals: row.isSubTotals,
+      //       otherQuery: colQuery,
+      //       isCollapsedHasTotals:
+      //         rowTotalsConfig.showSubTotals && row.isCollapsed,
+      //     },
+      //     col: {
+      //       isTotals: col.isTotals,
+      //       isGrandTotals: col.isGrandTotals,
+      //       isSubTotals: col.isSubTotals,
+      //       otherQuery: rowQuery,
+      //       isCollapsedHasTotals:
+      //         colTotalsConfig.showSubTotals && col.isCollapsed,
+      //     },
+      //   });
+      // }
 
       // mark grand totals node in origin data obj
       each(data, (d) => {

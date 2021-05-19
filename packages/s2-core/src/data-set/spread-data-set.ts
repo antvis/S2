@@ -10,6 +10,7 @@ import {
 import { auto } from '../index';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
+import { DebuggerUtil } from 'src/common/debug';
 export interface SpreadParams extends BaseParams {
   valueInCols: boolean;
 }
@@ -135,6 +136,7 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
     // 4. 数据按照 newValues 字段扩展成 newColumnName 字段
     // 将原一条数据，转化成 newValues.length 条数据
     const newData = [];
+    console.log(`pre data -> ${JSON.stringify(data)}`);
     // eslint-disable-next-line no-restricted-syntax
     for (const datum of data) {
       if (!isEmpty(newValues)) {
@@ -151,7 +153,7 @@ export class SpreadDataSet extends BaseDataSet<SpreadParams> {
         });
       }
     }
-
+    console.log(`after data -> ${JSON.stringify(newData)}`);
     // 返回新的结构
     return {
       data: newData,

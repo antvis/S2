@@ -345,28 +345,28 @@ export class DataCell extends BaseCell<ViewMeta> {
         let scale;
         let zero;
         let current;
-        if (attrs.isCompare) {
-          // value in range(compare) condition
-          scale = this.getIntervalScale(attrs.minValue || 0, attrs.maxValue);
-          zero = scale(0); // 零点
-          current = scale(this.meta.fieldValue); // 当前数据点
-        } else {
-          // the other conditions， keep old logic
-          // TODO this logic need be changed!!!
-          const summaryField = this.meta.valueField;
-          const pivot = this.spreadsheet.dataSet.pivot;
-          if (pivot) {
-            const MIN = summaryField
-              ? pivot.getTotals(summaryField, {}, 'MIN')
-              : 0;
-            const MAX = summaryField
-              ? pivot.getTotals(summaryField, {}, 'MAX')
-              : 0;
-            scale = this.getIntervalScale(MIN, MAX);
-            zero = scale(0); // 零点
-            current = scale(this.meta.fieldValue); // 当前数据点
-          }
-        }
+        // if (attrs.isCompare) {
+        // value in range(compare) condition
+        scale = this.getIntervalScale(attrs.minValue || 0, attrs.maxValue);
+        zero = scale(0); // 零点
+        current = scale(this.meta.fieldValue); // 当前数据点
+        // } else {
+        // the other conditions， keep old logic
+        // TODO this logic need be changed!!!
+        // const summaryField = this.meta.valueField;
+        // const pivot = this.spreadsheet.dataSet.pivot;
+        // if (pivot) {
+        //   const MIN = summaryField
+        //     ? pivot.getTotals(summaryField, {}, 'MIN')
+        //     : 0;
+        //   const MAX = summaryField
+        //     ? pivot.getTotals(summaryField, {}, 'MAX')
+        //     : 0;
+        //   scale = this.getIntervalScale(MIN, MAX);
+        //   zero = scale(0); // 零点
+        //   current = scale(this.meta.fieldValue); // 当前数据点
+        // }
+        // }
         // eslint-disable-next-line no-multi-assign
         stroke = fill = attrs.fill;
 
