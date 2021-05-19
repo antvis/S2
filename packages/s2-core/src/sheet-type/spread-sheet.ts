@@ -35,7 +35,7 @@ import { BaseFacet } from '../facet/base-facet';
 import { InteractionConstructor } from '../interaction/base';
 import { EventConstructor } from '../interaction/events/base-event';
 import { detectAttrsChangeAndAction } from '../utils/attrs-action';
-import { InteractionNames, EventNames } from '../interaction/constant';
+import { InteractionNames, EventNames } from 'src/common/constant/interatcion';
 
 /**
  * 目前交叉表和明细的表类入口(后续会分拆出两个表)

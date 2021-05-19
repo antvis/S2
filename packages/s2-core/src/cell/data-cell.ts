@@ -11,7 +11,7 @@ import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { BaseCell } from './base-cell';
 import { DerivedCell } from './derived-cell';
-import { StateName } from '../state/state';
+import { SelectedStateName } from 'src/common/constant/interatcion';
 
 // default icon size
 const ICON_SIZE = 10;
@@ -75,11 +75,11 @@ export class DataCell extends BaseCell<ViewMeta> {
     if (cells.length) {
       // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
       // 二者操作一致，function合并
-      if (stateName === StateName.COL_SELECTED) {
-        this.changeCellStyleByState('colIndex', StateName.SELECTED);
-      } else if (stateName === StateName.ROW_SELECTED) {
-        this.changeCellStyleByState('rowIndex', StateName.SELECTED);
-      } else if (stateName === StateName.HOVER && !isEmpty(cells)) {
+      if (stateName === SelectedStateName.COL_SELECTED) {
+        this.changeCellStyleByState('colIndex', SelectedStateName.SELECTED);
+      } else if (stateName === SelectedStateName.ROW_SELECTED) {
+        this.changeCellStyleByState('rowIndex', SelectedStateName.SELECTED);
+      } else if (stateName === SelectedStateName.HOVER && !isEmpty(cells)) {
         // 如果当前是hover，要绘制出十字交叉的行列样式
         const currentHoverCell = first(cells);
         const currentColIndex = this.meta.colIndex;
@@ -90,7 +90,7 @@ export class DataCell extends BaseCell<ViewMeta> {
             currentRowIndex === currentHoverCell.getMeta().rowIndex) &&
           this !== currentHoverCell
         ) {
-          this.updateByState(StateName.HOVER_LINKAGE);
+          this.updateByState(SelectedStateName.HOVER_LINKAGE);
         } else if (this !== currentHoverCell) {
           // 当视图内的cell行列index与hover的cell 不一致，且不是当前hover的cell时，隐藏其他样式
           this.hideShapeUnderState();
@@ -197,7 +197,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): CellMapping {
-    const value = this.meta.fieldValue as number;
+    const value = (this.meta.fieldValue as unknown) as number;
     return condition?.mapping(value, get(this.meta.data, [0]));
   }
 

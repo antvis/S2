@@ -12,3 +12,15 @@ export enum EventNames {
   ROW_TEXT_CLICK_EVENT = 'spreadsheet:row-text-click',
   HOVER_EVENT = 'spreadsheet:hover',
 }
+
+export enum SelectedStateName {
+  SELECTED = 'selected',
+  HOVER = 'hover',
+  HOVER_LINKAGE = 'hoverLinkage', // hover时，同列和同行有联动的十字选中效果
+  KEEP_HOVER = 'keepHover',
+  PREPARE_SELECT = 'prepareSelect',
+  COL_SELECTED = 'colSelected',
+  ROW_SELECTED = 'rowSelected',
+}
+
+export const KEEP_HOVER_TIME = 800;

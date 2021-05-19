@@ -44,7 +44,7 @@ import { EventController } from '../interaction/events/event-controller';
 import { DefaultInterceptEvent } from '../interaction/events/types';
 import State from '../state/state';
 import { ShowProps } from '../common/tooltip/interface';
-import { StateName } from '../state/state';
+import { SelectedStateName } from 'src/common/constant/interatcion';
 import { isMobile } from '../utils/is-mobile';
 
 const matrixTransform = ext.transform;
@@ -669,9 +669,9 @@ export default abstract class BaseSpreadSheet extends EE {
   public clearStyleIndependent() {
     const currentState = this.getCurrentState();
     if (
-      currentState.stateName === StateName.COL_SELECTED ||
-      currentState.stateName === StateName.ROW_SELECTED ||
-      currentState.stateName === StateName.HOVER
+      currentState.stateName === SelectedStateName.COL_SELECTED ||
+      currentState.stateName === SelectedStateName.ROW_SELECTED ||
+      currentState.stateName === SelectedStateName.HOVER
     ) {
       this.getPanelAllCells().forEach((cell) => {
         cell.hideShapeUnderState();
