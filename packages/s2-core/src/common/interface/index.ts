@@ -289,6 +289,9 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
+  // for adaptive layout
+  maxWidth?: number;
+  minWidth?: number;
   padding?: number;
   lineHeight?: number;
 }
