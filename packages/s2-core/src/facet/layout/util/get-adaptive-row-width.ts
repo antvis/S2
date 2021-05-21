@@ -64,7 +64,7 @@ export default function getAdaptiveRowWidth(
         label =
           _.maxBy(
             cfg.dataSet
-              .getSortedDimensionValues(field)
+              .getDimensionValues(field)
               .filter((value) => !_.isEmpty(value))
               .slice(0, 20),
             (value) => value.toString().length,

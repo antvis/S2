@@ -75,7 +75,7 @@ export default function buildHeaderHierarchy(
   const index = fields.indexOf(currentField);
   const key = currentField;
   const query = getDimsCondition(parent, true);
-  const fieldValues: (string | TotalClass)[] = cfg.dataSet.getSortedDimensionValues(key, query);
+  const fieldValues: (string | TotalClass)[] = cfg.dataSet.getDimensionValues(key, query);
 
   // when cols/values not exist,we need show table structure with empty body
   if (key === EXTRA_FIELD && includes(cfg.cols, key) && isEmpty(fieldValues)) {

@@ -58,7 +58,7 @@ const colWidthHasRows = (
   }
   const dataset = facet.getDataset();
   // 存在当列信息的数据集合（这里是原始数据）
-  const records = dataset.getData(getDimsConditionByNode(node));
+  const records = dataset.getCellData(getDimsConditionByNode(node));
   // 还需要找到该列存在的小计值
   const totalData = filter(facet.spreadsheet.dataCfg.totalData, (td) => {
     const query = node.query;
@@ -370,7 +370,7 @@ export default function processColLeafNodeWH(
       const dataset = facet.getDataset();
       if (isPivotMode) {
         // 节点的宽度由文本宽度决定
-        const records = dataset.getData(getDimsConditionByNode(current));
+        const records = dataset.getCellData(getDimsConditionByNode(current));
         const colLabel = dataset.getFieldName(current.label);
         current.width = getColMaxTextWidth(
           current,
@@ -380,7 +380,7 @@ export default function processColLeafNodeWH(
           dataset,
         );
       } else {
-        const dims = dataset.getSortedDimensionValues(current.key);
+        const dims = dataset.getDimensionValues(current.key);
         current.width = getColMaxTextWidth(
           current,
           dims,

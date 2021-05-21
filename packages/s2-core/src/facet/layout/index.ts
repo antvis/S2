@@ -1,9 +1,8 @@
 import { each, isEmpty, merge, get, has } from 'lodash';
 import { SpreadsheetFacet } from '..';
-import { BaseDataSet, Pivot } from '../../data-set';
+import { BaseDataSet } from '../../data-set';
 import { EXTRA_FIELD, VALUE_FIELD } from '../../common/constant';
 import {
-  DrillDownDataCache,
   LayoutResult,
   SpreadsheetFacetCfg,
   StrategyValue,
@@ -16,7 +15,7 @@ import { ColsResult } from './util/process-cols';
 import processDefaultColWidthByType from './util/process-default-col-width-by-type';
 import processRowNodesCoordinate from './util/process-row-nodes-coordinate';
 import { RowsResult } from './util/process-rows';
-import { BaseParams } from 'src/data-set/base-data-set';
+import { BaseDataSetParams } from "src/data-set/interface";
 
 /**
  * SpreadSheet's Layout class
@@ -26,7 +25,7 @@ export class Layout {
 
   public cfg: SpreadsheetFacetCfg;
 
-  public dataSet: BaseDataSet<BaseParams>;
+  public dataSet: BaseDataSet<BaseDataSetParams>;
 
   public hierarchyType: string;
 
@@ -118,7 +117,7 @@ export class Layout {
         ? merge({}, rowQuery)
         : merge({}, rowQuery, colQuery);
 
-      const test = dataSet.getData(dataQuery);
+      const test = dataSet.getCellData(dataQuery);
       console.log(`${i}-${j}`, dataQuery, test);
       const data = test;
       // if (isInTree && isParentInTree) {

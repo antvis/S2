@@ -54,7 +54,7 @@ export class DetailLayout extends Layout {
         ['colField']: col.key,
       };
       // make return value structure look like normal layout
-      const data = dataSet.getData(dataQuery);
+      const data = dataSet.getCellData(dataQuery);
       return {
         x,
         y,

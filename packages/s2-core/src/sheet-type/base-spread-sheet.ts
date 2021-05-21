@@ -37,7 +37,6 @@ import { Node, BaseInteraction, SpreadSheetTheme, BaseEvent } from '../index';
 import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from '../facet/base-facet';
-import { BaseParams } from '../data-set/base-data-set';
 import { DataDerivedCell } from '../cell';
 import { DebuggerUtil } from '../common/debug';
 import { EventController } from '../interaction/events/event-controller';
@@ -46,6 +45,7 @@ import State from '../state/state';
 import { ShowProps } from '../common/tooltip/interface';
 import { StateName } from '../state/state';
 import { isMobile } from '../utils/is-mobile';
+import { BaseDataSetParams } from "src/data-set/interface";
 
 const matrixTransform = ext.transform;
 export default abstract class BaseSpreadSheet extends EE {
@@ -74,7 +74,7 @@ export default abstract class BaseSpreadSheet extends EE {
    * processed data structure, include {@link Fields}, {@link Meta}
    * {@link Data}, {@link SortParams}
    */
-  public dataSet: BaseDataSet<BaseParams>;
+  public dataSet: BaseDataSet<BaseDataSetParams>;
 
   /**
    * Facet: determine how to render headers/cell
@@ -231,7 +231,7 @@ export default abstract class BaseSpreadSheet extends EE {
 
   protected abstract initDataSet(
     options: Partial<S2Options>,
-  ): BaseDataSet<BaseParams>;
+  ): BaseDataSet<BaseDataSetParams>;
 
   protected buildFacet(): void {
     const { fields, meta } = this.dataSet;

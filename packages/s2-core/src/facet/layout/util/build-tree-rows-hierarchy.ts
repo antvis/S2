@@ -35,7 +35,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
   const index = fields.indexOf(field);
   const key = field;
   const query = getDimsCondition(parent, true);
-  let fieldValues: (string | TotalClass)[] = dataSet.getSortedDimensionValues(key, query);
+  let fieldValues: (string | TotalClass)[] = dataSet.getDimensionValues(key, query);
   // re-arrange field values by subGrand values
   reArrangeFieldValues(query, field, fieldValues, dataSet);
   // custom re-arrange

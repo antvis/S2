@@ -1,14 +1,14 @@
 import { S2DataConfig } from '../common/interface';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD } from '../common/constant';
-import { SpreadDataSet, SpreadParams } from './spread-data-set';
-import { DetailPivot } from './index';
+import { DetailPivot, PivotDataSet } from "./index";
+import { PivotDataSetParams } from "src/data-set/interface";
 
 /**
  * 明细表的DataSet工具类
  */
-export class DetailDataSet extends SpreadDataSet {
-  constructor(params: SpreadParams) {
+export class DetailDataSet extends PivotDataSet {
+  constructor(params: PivotDataSetParams) {
     super(params);
   }
 

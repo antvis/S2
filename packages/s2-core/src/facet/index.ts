@@ -50,8 +50,8 @@ import { OffsetConfig, SpreadsheetFacetCfg } from '../common/interface';
 import { Layout } from './layout';
 import { Hierarchy } from './layout/hierarchy';
 import { Node } from './layout/node';
-import { BaseParams } from '../data-set/base-data-set';
 import { DEBUG_VIEW_RENDER, DebuggerUtil } from '../common/debug';
+import { BaseDataSetParams } from "src/data-set/interface";
 
 interface Point {
   x: number;
@@ -76,8 +76,6 @@ export class SpreadsheetFacet extends BaseFacet {
   protected rowIndexHeader: SeriesNumberHeader;
 
   protected centerBorder: Frame;
-
-  protected preHideScrollBarHandler;
 
   protected preIndexes: Indexes;
 
@@ -114,7 +112,7 @@ export class SpreadsheetFacet extends BaseFacet {
     });
   }
 
-  public getDataset(): BaseDataSet<BaseParams> {
+  public getDataset(): BaseDataSet<BaseDataSetParams> {
     return this.cfg.dataSet;
   }
 

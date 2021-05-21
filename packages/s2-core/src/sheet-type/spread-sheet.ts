@@ -4,7 +4,6 @@ import {
   S2Options,
   SpreadsheetFacetCfg,
 } from '../common/interface';
-import { BaseDataSet, SpreadDataSet, DetailDataSet } from '../data-set';
 import { BaseTooltip } from '../tooltip';
 import { get, set, isBoolean, merge } from 'lodash';
 import {
@@ -30,12 +29,12 @@ import {
 } from '../interaction/events';
 import { DetailFacet } from '../facet/detail';
 import { SpreadsheetFacet } from '../facet';
-import { SpreadParams } from '../data-set/spread-data-set';
 import { BaseFacet } from '../facet/base-facet';
 import { InteractionConstructor } from '../interaction/base';
 import { EventConstructor } from '../interaction/events/base-event';
 import { detectAttrsChangeAndAction } from '../utils/attrs-action';
 import { InteractionNames, EventNames } from '../interaction/constant';
+import { PivotDataSet } from "src/data-set";
 
 /**
  * 目前交叉表和明细的表类入口(后续会分拆出两个表)
@@ -129,17 +128,18 @@ export default class SpreadSheet extends BaseSpreadSheet {
 
   protected initDataSet(
     options: Partial<S2Options>,
-  ): BaseDataSet<SpreadParams> {
+  ): PivotDataSet {
     const { mode, valueInCols = true } = options;
-    if (mode === 'table') {
-      // 明细表
-      return new DetailDataSet({
-        spreadsheet: this,
-        valueInCols,
-      });
-    }
+    // TODO table data set
+    // if (mode === 'table') {
+    //   // 明细表
+    //   return new DetailDataSet({
+    //     spreadsheet: this,
+    //     valueInCols,
+    //   });
+    // }
     // 交叉表
-    return new SpreadDataSet({
+    return new PivotDataSet({
       spreadsheet: this,
       valueInCols,
     });

@@ -37,7 +37,7 @@ export function reArrangeFieldValues(
       const query = merge({}, rowQuery, { [field]: value }, colQuery);
       const rowTotalsConfig = dataSet.getTotalsConfig(field);
       if (rowTotalsConfig.showSubTotals) {
-        return dataSet.getData(query);
+        return dataSet.getCellData(query);
       }
       // 不展示小计，强制空缺
       return [];
