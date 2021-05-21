@@ -7,29 +7,27 @@ import {
   isBoolean,
   remove,
 } from 'lodash';
-import { Pivot } from '../../../data-set';
-import { i18n } from '../../../common/i18n';
-import { SpreadsheetFacetCfg } from '../../../common/interface';
+import { i18n } from "src/common/i18n";
+import { SpreadsheetFacetCfg } from "src/common/interface";
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import TotalClass from '../total-class';
 import { canNodeBeExpanded } from './can-node-be-expanded';
 import getDimsCondition from './get-dims-condition-by-node';
-import { EXTRA_FIELD } from '../../../common/constant';
+import { EXTRA_FIELD } from "src/common/constant";
 import { generateId } from './generate-id';
 
 function addTotalsNodes(
-  pivot: Pivot,
+  cfg: SpreadsheetFacetCfg,
   field: string,
   fieldValues: (string | TotalClass)[],
   isSubTotals: boolean,
 ) {
-  const totalsConfig = pivot.getTotalsConfig(field);
+  const totalsConfig = cfg.dataSet.getTotalsConfig(field);
   const option = isSubTotals
     ? totalsConfig.showSubTotals
     : totalsConfig.showGrandTotals;
   if (option) {
-    // eslint-disable-next-line no-nested-ternary
     const func = isSubTotals
       ? totalsConfig.reverseSubLayout
         ? 'unshift'
@@ -45,40 +43,39 @@ function addTotalsNodes(
 }
 
 function handleTotals(
-  field: string,
+  currentField: string,
   fields: string[],
   index,
   fieldValues: (string | TotalClass)[],
-  pivot: Pivot,
+  cfg: SpreadsheetFacetCfg,
 ) {
   // put all totals nodes in appropriate place
-  if (field !== fields[0]) {
+  if (currentField !== fields[0]) {
     // sub totals from 1 to length - 1
     const previousField = fields[index - 1];
     // NOTE: if current field's only has one child, we don't need sub totals
     if (size(fieldValues) > 1) {
       // [a, b, c] (start from second index, b -> a, c -> b)
-      addTotalsNodes(pivot, previousField, fieldValues, true);
+      addTotalsNodes(cfg, previousField, fieldValues, true);
     }
-  } else if (field === fields[0]) {
+  } else if (currentField === fields[0]) {
     // grand totals in first field level
     // check if there are grand totals in first field
-    addTotalsNodes(pivot, fields[0], fieldValues, false);
+    addTotalsNodes(cfg, fields[0], fieldValues, false);
   }
 }
 
 export default function buildHeaderHierarchy(
-  pivot: Pivot,
   parent: Node,
-  field: string,
+  currentField: string,
   fields: string[],
   cfg: SpreadsheetFacetCfg,
   hierarchy: Hierarchy,
 ) {
-  const index = fields.indexOf(field);
-  const key = field;
+  const index = fields.indexOf(currentField);
+  const key = currentField;
   const query = getDimsCondition(parent, true);
-  const fieldValues: (string | TotalClass)[] = pivot.getDimValues(key, query);
+  const fieldValues: (string | TotalClass)[] = cfg.dataSet.getSortedDimensionValues(key, query);
 
   // when cols/values not exist,we need show table structure with empty body
   if (key === EXTRA_FIELD && includes(cfg.cols, key) && isEmpty(fieldValues)) {
@@ -86,7 +83,7 @@ export default function buildHeaderHierarchy(
     fieldValues.push('');
   }
   // handle totals nodes
-  handleTotals(field, fields, index, fieldValues, pivot);
+  handleTotals(currentField, fields, index, fieldValues, cfg);
   const { collapsedCols } = cfg;
   // generate all nodes(normal and totals) of this field
   each(fieldValues, (col) => {
@@ -97,7 +94,7 @@ export default function buildHeaderHierarchy(
     } else {
       value = col;
     }
-    const nodeQuery = merge({}, query, { [field]: value });
+    const nodeQuery = merge({}, query, { [currentField]: value });
     const id = generateId(parent.id, value, cfg);
     if (!id) return;
     const isCollapsed = isBoolean(collapsedCols[id])
@@ -108,7 +105,7 @@ export default function buildHeaderHierarchy(
       key,
       value,
       level: index,
-      field,
+      field: currentField,
       parent,
       isTotals: isTotal,
       isCollapsed,
@@ -159,7 +156,6 @@ export default function buildHeaderHierarchy(
     }
     if (canNodeBeExpanded(index < fields.length - 1, isCollapsed, isTotal)) {
       buildHeaderHierarchy(
-        pivot,
         node,
         fields[index + 1],
         fields,

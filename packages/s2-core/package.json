@@ -62,7 +62,8 @@
     "d3-ease": "^1.0.5",
     "gitmoji-cli": "^3.2.18",
     "install": "^0.13.0",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "ts-priority-queue": "0.1.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

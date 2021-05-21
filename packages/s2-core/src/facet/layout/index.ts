@@ -28,8 +28,6 @@ export class Layout {
 
   public dataSet: BaseDataSet<BaseParams>;
 
-  public pivot: Pivot;
-
   public hierarchyType: string;
 
   public cols: string[];
@@ -41,7 +39,6 @@ export class Layout {
   constructor(facet: SpreadsheetFacet) {
     this.facet = facet;
     this.dataSet = facet.getDataset();
-    this.pivot = this.dataSet.getPivot();
     this.cfg = facet.cfg;
     this.cols = this.cfg.cols;
     this.rows = this.cfg.rows;
@@ -96,8 +93,8 @@ export class Layout {
         return null;
       }
       // 树状表格没有小计行，需要判断该单元格是否展示聚合数据
-      const rowTotalsConfig = dataSet.pivot.getTotalsConfig(row.key);
-      const colTotalsConfig = dataSet.pivot.getTotalsConfig(col.key);
+      const rowTotalsConfig = dataSet.getTotalsConfig(row.key);
+      const colTotalsConfig = dataSet.getTotalsConfig(col.key);
       // 是否是树状布局
       const isInTree = ss.isHierarchyTreeType();
       // 是否是父节点对应的单元格
@@ -231,10 +228,10 @@ export class Layout {
 
   protected getCols(rowsHierarchy: Hierarchy): ColsResult {
     console.info(rowsHierarchy);
-    return processCols(this.pivot, this.cfg, this.cols);
+    return processCols(this.facet);
   }
 
   protected getRows(): RowsResult {
-    return processRows(this.pivot, this.cfg, this.rows, this.facet);
+    return processRows(this.facet);
   }
 }

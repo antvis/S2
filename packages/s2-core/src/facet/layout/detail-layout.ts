@@ -54,7 +54,7 @@ export class DetailLayout extends Layout {
         ['colField']: col.key,
       };
       // make return value structure look like normal layout
-      const data = dataSet.pivot.getRecords(dataQuery);
+      const data = dataSet.getData(dataQuery);
       return {
         x,
         y,
@@ -86,12 +86,13 @@ export class DetailLayout extends Layout {
   protected getRows(): RowsResult {
     // TODO 为冻结行头预留接口, 否则默认全部当列渲染 这个有个问题就是当冻结行头=0列的时候
     const rows = this.rows;
-    return processRowsList(
-      this.pivot as DetailPivot,
-      this.cfg,
-      rows,
-      this.facet,
-    );
+    return null;
+    // return processRowsList(
+    //   this.pivot as DetailPivot,
+    //   this.cfg,
+    //   rows,
+    //   this.facet,
+    // );
   }
 
   protected getCols(rowsHierarchy: Hierarchy): ColsResult {

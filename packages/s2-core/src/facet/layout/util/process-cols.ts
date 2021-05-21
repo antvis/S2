@@ -1,8 +1,7 @@
-import { Pivot } from '../../../data-set';
-import { SpreadsheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import buildHeaderHierarchy from './build-header-hierarchy';
+import { SpreadsheetFacet } from "src/facet";
 
 export interface ColsResult {
   // all column leaf nodes
@@ -11,14 +10,12 @@ export interface ColsResult {
   colsHierarchy: Hierarchy;
 }
 
-export default function processCols(
-  pivot: Pivot,
-  cfg: SpreadsheetFacetCfg,
-  cols: string[],
-) {
+export default function processCols(facet: SpreadsheetFacet) {
   const rootNode = Node.rootNode();
+  const { cfg } = facet;
+  const cols = cfg.cols;
   const colsHierarchy = new Hierarchy();
-  buildHeaderHierarchy(pivot, rootNode, cols[0], cols, cfg, colsHierarchy);
+  buildHeaderHierarchy(rootNode, cols[0], cols, cfg, colsHierarchy);
   const colLeafNodes = colsHierarchy.getLeafs();
   return {
     colLeafNodes,

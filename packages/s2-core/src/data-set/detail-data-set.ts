@@ -53,7 +53,7 @@ export class DetailDataSet extends SpreadDataSet {
     return new DetailPivot({
       cols: columns,
       rows,
-      data: this.data,
+      data: [],
       values: values as string[],
       sortParams: this.sortParams,
       spreadsheet: this.spreadsheet,

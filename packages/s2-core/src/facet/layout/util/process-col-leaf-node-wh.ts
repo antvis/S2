@@ -380,7 +380,7 @@ export default function processColLeafNodeWH(
           dataset,
         );
       } else {
-        const dims = dataset.getPivot().getDimValues(current.key);
+        const dims = dataset.getSortedDimensionValues(current.key);
         current.width = getColMaxTextWidth(
           current,
           dims,

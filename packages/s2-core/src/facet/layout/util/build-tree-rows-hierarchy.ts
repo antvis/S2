@@ -1,5 +1,5 @@
 import { merge, each, isEmpty, isBoolean, remove } from 'lodash';
-import { Pivot, SpreadDataSet } from '../../../data-set';
+import { SpreadDataSet } from '../../../data-set';
 import { i18n } from 'src/common/i18n';
 import { SpreadsheetFacetCfg } from 'src/common/interface';
 import { Hierarchy } from '../hierarchy';
@@ -12,7 +12,6 @@ import findNodeExtraCfg from '../../../utils/find-node-extra-cfg';
 import { generateId } from './generate-id';
 
 export interface TreeParams {
-  pivot: Pivot;
   parent: Node;
   field: string;
   fields: string[];
@@ -25,7 +24,6 @@ export interface TreeParams {
 
 export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
   const {
-    pivot,
     parent,
     field,
     fields,
@@ -37,7 +35,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
   const index = fields.indexOf(field);
   const key = field;
   const query = getDimsCondition(parent, true);
-  let fieldValues: (string | TotalClass)[] = pivot.getDimValues(key, query);
+  let fieldValues: (string | TotalClass)[] = dataSet.getSortedDimensionValues(key, query);
   // re-arrange field values by subGrand values
   reArrangeFieldValues(query, field, fieldValues, dataSet);
   // custom re-arrange
@@ -49,7 +47,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
       fieldValues as string[],
     );
   }
-  const totalsConfig = pivot.getTotalsConfig(field);
+  const totalsConfig = dataSet.getTotalsConfig(field);
 
   // tree mode only has grand totals, but if there are subTotals configs, it will
   // display in cross-area cell
@@ -156,7 +154,6 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
      */
     if (canNodeBeExpanded(index < fields.length - 1, false, isTotal)) {
       buildTreeRowsHierarchy({
-        pivot,
         parent: node,
         field: fields[index + 1],
         fields,

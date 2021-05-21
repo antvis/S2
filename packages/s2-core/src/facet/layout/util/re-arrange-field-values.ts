@@ -35,20 +35,9 @@ export function reArrangeFieldValues(
     const j = sortMethod === 'ASC' ? 1 : -1;
     const data = map(fieldValues, (value) => {
       const query = merge({}, rowQuery, { [field]: value }, colQuery);
-      const rowTotalsConfig = dataSet.pivot.getTotalsConfig(field);
+      const rowTotalsConfig = dataSet.getTotalsConfig(field);
       if (rowTotalsConfig.showSubTotals) {
-        return dataSet.getData(query, {
-          row: {
-            isTotals: true,
-            isGrandTotals: false,
-            isSubTotals: true,
-          },
-          col: {
-            isTotals: false,
-            isGrandTotals: false,
-            isSubTotals: false,
-          },
-        });
+        return dataSet.getData(query);
       }
       // 不展示小计，强制空缺
       return [];

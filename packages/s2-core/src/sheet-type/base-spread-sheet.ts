@@ -72,7 +72,7 @@ export default abstract class BaseSpreadSheet extends EE {
 
   /**
    * processed data structure, include {@link Fields}, {@link Meta}
-   * {@link Data}, {@link SortParams}, {@link Pivot}
+   * {@link Data}, {@link SortParams}
    */
   public dataSet: BaseDataSet<BaseParams>;
 
@@ -267,7 +267,6 @@ export default abstract class BaseSpreadSheet extends EE {
       collapsedCols,
       treeRowsWidth,
     } = style;
-    this.dataSet.pivot.updateTotals(totals);
 
     const defaultCell = (facet: ViewMeta) => this.getCorrectCell(facet);
     DebuggerUtil.getInstance().setDebug(debug);
@@ -334,14 +333,6 @@ export default abstract class BaseSpreadSheet extends EE {
     this.tooltip.destroy();
     this.removeDevicePixelRatioListener();
     this.removeDeviceZoomListener();
-  }
-
-  /**
-   * Preset totalCache by users.
-   * @param cache
-   */
-  public setTotalCache(cache: Map<string, number>): void {
-    this.dataSet.pivot.updateTotalCacheGift(cache);
   }
 
   /**

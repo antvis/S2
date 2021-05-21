@@ -63,8 +63,8 @@ export default function getAdaptiveRowWidth(
         // 明细表 情况
         label =
           _.maxBy(
-            cfg.dataSet.pivot
-              .getDimValues(field)
+            cfg.dataSet
+              .getSortedDimensionValues(field)
               .filter((value) => !_.isEmpty(value))
               .slice(0, 20),
             (value) => value.toString().length,

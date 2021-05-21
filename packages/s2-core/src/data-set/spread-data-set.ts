@@ -10,7 +10,6 @@ import {
 import { auto } from '../index';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
-import { DebuggerUtil } from 'src/common/debug';
 export interface SpreadParams extends BaseParams {
   valueInCols: boolean;
 }

@@ -1,6 +1,4 @@
-import { Pivot } from '../../../data-set';
 import { SpreadsheetFacet } from '../../index';
-import { SpreadsheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import buildHeaderHierarchy from './build-header-hierarchy';
@@ -15,12 +13,9 @@ export interface RowsResult {
   rowsHierarchy: Hierarchy;
 }
 
-export default function processRows(
-  pivot: Pivot,
-  cfg: SpreadsheetFacetCfg,
-  rows: string[],
-  facet: SpreadsheetFacet,
-) {
+export default function processRows(facet: SpreadsheetFacet,) {
+  const { cfg } = facet;
+  const { rows } = cfg;
   const rowsHierarchy = new Hierarchy();
   rowsHierarchy.rows = rows;
   const rootNode = Node.rootNode();
@@ -28,7 +23,6 @@ export default function processRows(
   let rowLeafNodes: Node[] = [];
   if (cfg.spreadsheet.isHierarchyTreeType()) {
     buildTreeRowsHierarchy({
-      pivot,
       parent: rootNode,
       field: rows[0],
       fields: rows,
@@ -39,7 +33,7 @@ export default function processRows(
     } as TreeParams);
     rowLeafNodes = rowsHierarchy.getNodes();
   } else {
-    buildHeaderHierarchy(pivot, rootNode, rows[0], rows, cfg, rowsHierarchy);
+    buildHeaderHierarchy(rootNode, rows[0], rows, cfg, rowsHierarchy);
     rowLeafNodes = rowsHierarchy.getLeafs();
   }
   return {
