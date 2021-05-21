@@ -2,7 +2,6 @@ import { isEmpty } from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Aggregation } from '../interface';
-import { BaseSpreadSheet } from '../../sheet-type';
 import TooltipDetail from './components/detail';
 import TooltipOperator from './components/operator';
 import Infos from './components/infos';
@@ -30,12 +29,13 @@ import {
 import { TOOLTIP_CLASS_PRE } from './constant';
 
 import './index.less';
+import { SpreadSheet } from "src/sheet-type";
 
 /**
  * Base tooltips component
  */
 export class BaseTooltip {
-  public spreadsheet: BaseSpreadSheet; // the type of Spreadsheet
+  public spreadsheet: SpreadSheet; // the type of Spreadsheet
 
   public aggregation: Aggregation = 'SUM'; // the type of aggregation, 'SUM' by default
 
@@ -47,8 +47,8 @@ export class BaseTooltip {
 
   protected position: Position = { x: 0, y: 0 }; // tooltips position info
 
-  constructor(plot: BaseSpreadSheet, aggregation?: Aggregation) {
-    this.spreadsheet = plot;
+  constructor(spreadsheet: SpreadSheet, aggregation?: Aggregation) {
+    this.spreadsheet = spreadsheet;
     this.aggregation = aggregation || 'SUM';
   }
 

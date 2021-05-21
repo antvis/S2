@@ -1,7 +1,6 @@
 import { getEllipsisText } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { map, find, get, isEmpty, first, includes } from 'lodash';
-import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
@@ -11,6 +10,7 @@ import { ViewMeta } from '../common/interface';
 import { BaseCell } from './base-cell';
 import { DerivedCell } from './derived-cell';
 import { StateName } from '../state/state';
+import { SpreadSheet } from "src/sheet-type";
 
 // default icon size
 const ICON_SIZE = 10;
@@ -49,7 +49,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   // cell config's conditions(Determine how to render this cell)
   protected conditions: Conditions;
 
-  constructor(meta: ViewMeta, spreadsheet: BaseSpreadsheet) {
+  constructor(meta: ViewMeta, spreadsheet: SpreadSheet) {
     super(meta, spreadsheet);
   }
 

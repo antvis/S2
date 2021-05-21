@@ -1,9 +1,9 @@
 import { Group, IGroup } from '@antv/g-canvas';
 import { throttle, clone, merge, isNil, get } from 'lodash';
-import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { ResizeInfo } from '../facet/header/interface';
 import { BaseInteraction } from './base';
 import { S2Event } from './events/types';
+import { SpreadSheet } from "src/sheet-type";
 
 const MIN_CELL_WIDTH = 28;
 const MIN_CELL_HEIGHT = 16;
@@ -28,7 +28,7 @@ export class RowColResize extends BaseInteraction {
 
   private startPos: { offsetX?: number; offsetY?: number } = {};
 
-  constructor(spreadsheet: BaseSpreadSheet) {
+  constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
     this.container = this.spreadsheet.foregroundGroup;
   }

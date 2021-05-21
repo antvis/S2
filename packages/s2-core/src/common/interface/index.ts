@@ -1,12 +1,11 @@
 import { Group } from '@antv/g-canvas';
-import { Hierarchy, BaseSpreadSheet, Node } from '../../index';
-import BaseSpreadsheet from '../../sheet-type/base-spread-sheet';
+import { Hierarchy, SpreadSheet, Node } from '../../index';
 import { BaseDataSet } from 'src/data-set';
-import { BaseParams } from 'src/data-set/base-data-set';
 import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
 import { S2DataConfig, safetyDataConfig } from './S2DataConfig';
 import { S2Options, safetyOptions } from './S2Options';
+import { BaseDataSetParams } from "src/data-set/interface";
 
 export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions };
 
@@ -245,26 +244,26 @@ export interface RowActionIcons {
 
 // Hook 渲染和布局相关的函数类型定义
 export type LayoutArrangeCallback = (
-  spreadsheet: BaseSpreadSheet,
+  spreadsheet: SpreadSheet,
   parent: Node,
   field: string,
   fieldValues: string[],
 ) => string[];
 
 export type LayoutCallback = (
-  spreadsheet: BaseSpreadSheet,
+  spreadsheet: SpreadSheet,
   rowNode: Node,
   colNode: Node,
 ) => void;
 
 export type CellCallback = (
   node: Node,
-  spreadsheet: BaseSpreadSheet,
+  spreadsheet: SpreadSheet,
   ...restOptions
 ) => Group;
 
 export type TooltipCallback = (
-  spreadsheet: BaseSpreadSheet,
+  spreadsheet: SpreadSheet,
   ...restOptions
 ) => BaseTooltip;
 
@@ -273,7 +272,7 @@ export type DataCellCallback = (viewMeta: ViewMeta) => Group;
 export type FrameCallback = (cfg: any) => Frame;
 export type CornerHeaderCallback = (
   parent: Group,
-  spreadsheet: BaseSpreadSheet,
+  spreadsheet: SpreadSheet,
   ...restOptions
 ) => void;
 // 透出默认的布局结果，返回新的结果
@@ -281,7 +280,7 @@ export type LayoutResultCallback = (layoutResult: LayoutResult) => LayoutResult;
 // 行列结构的自定义
 export type HierarchyResult = { nodes: Node[]; push: boolean };
 export type HierarchyCallback = (
-  spreadsheet: BaseSpreadSheet,
+  spreadsheet: SpreadSheet,
   node: Node,
 ) => HierarchyResult;
 
@@ -335,9 +334,9 @@ export interface CustomHeaderCells {
  */
 export interface SpreadsheetFacetCfg {
   // spreadsheet interface
-  spreadsheet: BaseSpreadsheet;
+  spreadsheet: SpreadSheet;
   // data set of spreadsheet
-  dataSet: BaseDataSet<BaseParams>;
+  dataSet: BaseDataSet<BaseDataSetParams>;
   // columns fields
   cols: string[];
   // rows fields
@@ -392,7 +391,7 @@ export interface SpreadsheetFacetCfg {
 }
 
 export interface ViewMeta {
-  spreadsheet: BaseSpreadSheet;
+  spreadsheet: SpreadSheet;
   // cell's coordination-x
   x: number;
   // cell's coordination-y
@@ -433,7 +432,7 @@ export interface LayoutResult {
   rowLeafNodes: Node[];
   colLeafNodes: Node[];
   getViewMeta: (rowIndex: number, colIndex: number) => ViewMeta;
-  spreadsheet: BaseSpreadSheet;
+  spreadsheet: SpreadSheet;
 }
 
 export interface OffsetConfig {

@@ -2,7 +2,7 @@ import { Event, LooseObject, Canvas, IElement } from '@antv/g-canvas';
 import { get, each, includes } from 'lodash';
 import { DataCell, ColCell, CornerCell, RowCell } from '../../cell';
 import { S2Event, OriginEventType, DefaultInterceptEventType } from './types';
-import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
+import { SpreadSheet } from "src/sheet-type";
 
 interface EventListener {
   target: EventTarget;
@@ -15,7 +15,7 @@ interface EventHandler {
   handler: (ev: Event) => void;
 }
 export class EventController {
-  protected spreadsheet: BaseSpreadSheet;
+  protected spreadsheet: SpreadSheet;
 
   // 保存触发的元素
   private target: LooseObject;
@@ -27,7 +27,7 @@ export class EventController {
 
   private eventListeners: EventListener[] = [];
 
-  constructor(spreadsheet: BaseSpreadSheet) {
+  constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.bindEvents();
   }

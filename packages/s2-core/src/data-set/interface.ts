@@ -1,10 +1,10 @@
-// TODO add object data value
-import BaseSpreadSheet from "../sheet-type/base-spread-sheet";
+import { SpreadSheet } from "src/sheet-type";
 
+// TODO add object data value
 export type DataType = Record<string, any>;
 
 export interface BaseDataSetParams {
-  spreadsheet: BaseSpreadSheet;
+  spreadsheet: SpreadSheet;
 }
 
 export interface PivotDataSetParams extends BaseDataSetParams{

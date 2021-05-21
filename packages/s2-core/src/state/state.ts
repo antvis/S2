@@ -1,6 +1,6 @@
 import { DataCell, ColCell, CornerCell, RowCell } from '../cell';
-import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { forEach, includes } from 'lodash';
+import { SpreadSheet } from "src/sheet-type";
 
 type S2AllCellType = DataCell | ColCell | CornerCell | RowCell;
 
@@ -14,7 +14,7 @@ export enum StateName {
   ROW_SELECTED = 'rowSelected',
 }
 export default class State {
-  protected spreadsheet: BaseSpreadSheet;
+  protected spreadsheet: SpreadSheet;
 
   // TODO: stateStore改为多例模式
   protected stateStore = {
@@ -22,7 +22,7 @@ export default class State {
     cells: [],
   };
 
-  constructor(spreadsheet: BaseSpreadSheet) {
+  constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
   }
 

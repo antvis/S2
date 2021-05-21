@@ -1,5 +1,5 @@
 import { Group, IShape } from '@antv/g-canvas';
-import { BaseSpreadSheet, SpreadSheetTheme } from '..';
+import { SpreadSheet, SpreadSheetTheme } from "..";
 import { updateShapeAttr } from '../utils/g-renders';
 import * as shapeStyle from '../state/shapeStyleMap';
 import { get, each, findKey, includes } from 'lodash';
@@ -8,7 +8,7 @@ export abstract class BaseCell<T> extends Group {
   protected meta: T;
 
   // spreadsheet entrance instance
-  protected spreadsheet: BaseSpreadSheet;
+  protected spreadsheet: SpreadSheet;
 
   // spreadsheet's theme
   protected theme: SpreadSheetTheme;
@@ -23,7 +23,7 @@ export abstract class BaseCell<T> extends Group {
   // 需要这个属性的原因是在state clear时知道具体哪些shape要hide。不然只能手动改，比较麻烦
   protected stateShapes: IShape[] = [];
 
-  public constructor(meta: T, spreadsheet: BaseSpreadSheet, ...restOptions) {
+  public constructor(meta: T, spreadsheet: SpreadSheet, ...restOptions) {
     super({});
     this.meta = meta;
     this.spreadsheet = spreadsheet;

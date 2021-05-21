@@ -97,9 +97,6 @@ export default abstract class BaseSpreadSheet extends EE {
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
 
-  // use to display cell's hover interactions
-  public hoverBoxGroup: IGroup;
-
   // 基础事件
   public eventController: EventController;
 
@@ -132,9 +129,7 @@ export default abstract class BaseSpreadSheet extends EE {
     this.bindEvents();
     this.dataSet = this.initDataSet(this.options);
     this.registerEventController();
-    this.tooltip =
-      (options?.initTooltip && options?.initTooltip(this)) ||
-      this.initTooltip();
+    this.tooltip = options?.initTooltip?.(this) || this.initTooltip();
 
     // 注意这俩的顺序，不要反过来，因为interaction中会屏蔽event，但是event不会屏蔽interaction
     this.registerInteractions(this.options);

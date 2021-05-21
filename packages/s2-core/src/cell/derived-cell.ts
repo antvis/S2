@@ -1,10 +1,10 @@
 import { Group } from '@antv/g-canvas';
-import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { get } from 'lodash';
 import { measureTextWidth, getEllipsisText } from '../utils/text';
 import { GuiIcon } from '../common/icons';
 import { STRATEGY_ICON_WIDTH, STRATEGY_PADDING } from '../common/constant';
 import { renderRect } from '../utils/g-renders';
+import { SpreadSheet } from "src/sheet-type";
 
 /**
  * Create By Bruce Too
@@ -22,7 +22,7 @@ export interface DerivedCellParams {
   width: number;
   up: boolean;
   text: string;
-  spreadsheet: BaseSpreadsheet;
+  spreadsheet: SpreadSheet;
 }
 
 export class DerivedCell extends Group {
@@ -40,7 +40,7 @@ export class DerivedCell extends Group {
       icon = 'CellDown';
     }
 
-    if (BaseSpreadsheet.DEBUG_ON) {
+    if (SpreadSheet.DEBUG_ON) {
       renderRect(x, y, width, height, '#f11', 0, this);
     }
 

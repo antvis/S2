@@ -1,9 +1,9 @@
 import { Canvas } from '@antv/g-canvas';
 import { each } from 'lodash';
-import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
+import { SpreadSheet } from "src/sheet-type";
 
 export type InteractionConstructor = new (
-  spreadsheet: BaseSpreadSheet,
+  spreadsheet: SpreadSheet,
 ) => BaseInteraction;
 
 /**
@@ -24,13 +24,13 @@ export type InteractionConstructor = new (
  * Use {@link draw} to redraw the canvas
  */
 export abstract class BaseInteraction {
-  protected spreadsheet: BaseSpreadSheet;
+  protected spreadsheet: SpreadSheet;
 
   private eventHandlers: any[] = [];
 
   private eventListeners: any[] = [];
 
-  public constructor(spreadsheet: BaseSpreadSheet) {
+  public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.bindEvents();
   }

@@ -1,8 +1,7 @@
-import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
 import { S2DataConfig, S2Options } from 'src/common/interface';
 import { DrillDownProps } from 'src/components/drill-down';
 import { HeaderCfgProps } from 'src/components/header';
-import { Node, SpreadSheetTheme } from 'src/index';
+import { Node, SpreadSheet, SpreadSheetTheme } from "src/index";
 
 export interface PartDrillDownInfo {
   // The data of drill down
@@ -39,7 +38,7 @@ export interface BaseSheetProps {
     dom: string | HTMLElement,
     dataCfg: S2DataConfig,
     options: S2Options,
-  ) => BaseSpreadsheet;
+  ) => SpreadSheet;
   dataCfg: S2DataConfig;
   options: S2Options;
   isLoading?: boolean;
@@ -62,5 +61,5 @@ export interface BaseSheetProps {
   onColCellClick?: (value) => void;
   onCornerCellClick?: (value) => void;
   onDataCellClick?: (value) => void;
-  getSpreadsheet?: (spreadsheet: BaseSpreadsheet) => void;
+  getSpreadsheet?: (spreadsheet: SpreadSheet) => void;
 }

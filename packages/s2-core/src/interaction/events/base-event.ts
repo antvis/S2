@@ -1,13 +1,13 @@
-import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
+import { SpreadSheet } from "src/sheet-type";
 
-export type EventConstructor = new (spreadsheet: BaseSpreadSheet) => BaseEvent;
+export type EventConstructor = new (spreadsheet: SpreadSheet) => BaseEvent;
 
 export class BaseEvent {
-  protected spreadsheet: BaseSpreadSheet;
+  protected spreadsheet: SpreadSheet;
 
   private eventListeners: any[] = [];
 
-  constructor(spreadsheet: BaseSpreadSheet) {
+  constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.bindEvents();
   }

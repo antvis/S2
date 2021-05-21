@@ -6,8 +6,8 @@ import {
   S2DataConfig,
   SortParams,
 } from "../common/interface";
-import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { BaseDataSetParams, DataType } from "src/data-set/interface";
+import { SpreadSheet } from "src/sheet-type";
 
 export abstract class BaseDataSet<T extends BaseDataSetParams> {
   // 字段域信息
@@ -26,7 +26,7 @@ export abstract class BaseDataSet<T extends BaseDataSetParams> {
   public sortParams: SortParams;
 
   // 交叉表入口对象实例
-  protected spreadsheet: BaseSpreadSheet;
+  protected spreadsheet: SpreadSheet;
 
   protected constructor(params: T) {
     this.spreadsheet = params.spreadsheet;

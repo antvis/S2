@@ -18,8 +18,8 @@ import {
   ClearDrillDownInfo,
   HandleConfigWhenDrillDown,
   HandleOptions,
-  HandleDrillDown,
-} from 'src/index';
+  HandleDrillDown, SpreadSheet
+} from "src/index";
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
@@ -28,8 +28,6 @@ import {
   KEY_LIST_SORT,
   KEY_PAGINATION,
 } from 'src/common/constant';
-import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
-import SpreadSheet from 'src/sheet-type/spread-sheet';
 import { resetDrillDownCfg } from 'src/utils/drill-down/helper';
 import { BaseSheetProps } from '../interface';
 
@@ -60,8 +58,8 @@ export const BaseSheet = (props: BaseSheetProps) => {
   } = props;
   let container: HTMLDivElement;
   const PRECLASS = 's2-pagination';
-  let baseSpreadsheet: BaseSpreadsheet;
-  const [ownSpreadsheet, setOwnSpreadsheet] = useState<BaseSpreadsheet>();
+  let baseSpreadsheet: SpreadSheet;
+  const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
   const [drillFields, setDrillFields] = useState<string[]>([]);
   const [resizeTimeStamp, setResizeTimeStamp] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -70,7 +68,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
     options?.pagination?.current || 1,
   );
 
-  const getSpreadSheet = (): BaseSpreadsheet => {
+  const getSpreadSheet = (): SpreadSheet => {
     if (spreadsheet) {
       return spreadsheet(container, dataCfg, options);
     }
@@ -139,7 +137,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
 
   const iconClickCallback = (
     event: MouseEvent,
-    sheetInstance: BaseSpreadsheet,
+    sheetInstance: SpreadSheet,
     cashDrillFields: string[],
     disabledFields: string[],
   ) => {
@@ -227,7 +225,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
   };
 
   const setOptions = (
-    sheetInstance?: BaseSpreadsheet,
+    sheetInstance?: SpreadSheet,
     sheetProps?: BaseSheetProps,
   ) => {
     const curSheet = sheetInstance || ownSpreadsheet;
