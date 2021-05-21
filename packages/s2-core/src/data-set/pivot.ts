@@ -29,9 +29,9 @@ import {
   isArray,
 } from 'lodash';
 import { Aggregation, SortParams, Total, Totals } from '../common/interface';
-import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { DEBUG_TRAINING_DATA, DebuggerUtil } from '../common/debug';
 import { EXTRA_FIELD } from '../common/constant';
+import { SpreadSheet } from "src/sheet-type";
 
 interface Config {
   rows: string[];
@@ -39,7 +39,7 @@ interface Config {
   values: string[];
   data: DataType[];
   sortParams: SortParams;
-  spreadsheet: BaseSpreadsheet;
+  spreadsheet: SpreadSheet;
 }
 
 // use for single data raw or query params

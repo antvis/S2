@@ -45,7 +45,6 @@ import State from '../state/state';
 import { ShowProps } from '../common/tooltip/interface';
 import { StateName } from '../state/state';
 import { isMobile } from '../utils/is-mobile';
-import { BaseDataSetParams } from "src/data-set/interface";
 
 const matrixTransform = ext.transform;
 export default abstract class BaseSpreadSheet extends EE {
@@ -74,7 +73,7 @@ export default abstract class BaseSpreadSheet extends EE {
    * processed data structure, include {@link Fields}, {@link Meta}
    * {@link Data}, {@link SortParams}
    */
-  public dataSet: BaseDataSet<BaseDataSetParams>;
+  public dataSet: BaseDataSet;
 
   /**
    * Facet: determine how to render headers/cell
@@ -226,7 +225,7 @@ export default abstract class BaseSpreadSheet extends EE {
 
   protected abstract initDataSet(
     options: Partial<S2Options>,
-  ): BaseDataSet<BaseDataSetParams>;
+  ): BaseDataSet;
 
   protected buildFacet(): void {
     const { fields, meta } = this.dataSet;

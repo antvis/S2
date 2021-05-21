@@ -6,10 +6,10 @@ import {
   S2DataConfig,
   SortParams,
 } from "../common/interface";
-import { BaseDataSetParams, DataType } from "src/data-set/interface";
+import { DataType } from "src/data-set/interface";
 import { SpreadSheet } from "src/sheet-type";
 
-export abstract class BaseDataSet<T extends BaseDataSetParams> {
+export abstract class BaseDataSet {
   // 字段域信息
   public fields: Fields;
 
@@ -28,8 +28,8 @@ export abstract class BaseDataSet<T extends BaseDataSetParams> {
   // 交叉表入口对象实例
   protected spreadsheet: SpreadSheet;
 
-  protected constructor(params: T) {
-    this.spreadsheet = params.spreadsheet;
+  public constructor(spreadsheet: SpreadSheet) {
+    this.spreadsheet = spreadsheet;
   }
 
   /**
@@ -74,7 +74,4 @@ export abstract class BaseDataSet<T extends BaseDataSetParams> {
   public abstract getDimensionValues(field: string, query?: DataType): string[];
 
   public abstract getCellData(query: DataType): DataType[];
-
-  // TODO delete this when facet done
-  public abstract getTotalsConfig(field: string);
 }

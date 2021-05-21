@@ -3,11 +3,9 @@ import { BaseTooltip } from '../tooltip';
 import { isEmpty, merge } from 'lodash';
 import { KEY_COLLAPSE_TREE_ROWS } from '../common/constant';
 import { SpreadsheetFacet } from '../facet';
-import SpreadSheet from './spread-sheet';
 import { StrategyDataSet, BaseDataSet } from '../data-set';
 import { BaseFacet } from '../facet/base-facet';
 import { Node } from '../index';
-import { BaseDataSetParams } from "src/data-set/interface";
 
 export default class StrategySheet extends SpreadSheet {
   protected bindEvents() {
@@ -57,7 +55,7 @@ export default class StrategySheet extends SpreadSheet {
     return new SpreadsheetFacet(facetCfg);
   }
 
-  protected initDataSet(options: Partial<S2Options>): BaseDataSet<BaseDataSetParams> {
+  protected initDataSet(options: Partial<S2Options>): BaseDataSet {
     return new StrategyDataSet({
       spreadsheet: this,
     });

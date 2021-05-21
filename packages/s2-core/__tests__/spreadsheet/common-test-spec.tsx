@@ -213,6 +213,7 @@ const getDataCfg = () => {
       rows: ['province', 'city'],
       columns: ['category', 'subCategory'],
       values: ['price'],
+      valueInCols: true,
     },
     meta: [
       {
@@ -236,7 +237,6 @@ const getOptions = () => {
     showSeriesNumber: false,
     freezeRowHeader: false,
     mode: 'pivot',
-    valueInCols: true,
     totals: {
       row: {
         showGrandTotals: true,

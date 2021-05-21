@@ -15,7 +15,6 @@ import { ColsResult } from './util/process-cols';
 import processDefaultColWidthByType from './util/process-default-col-width-by-type';
 import processRowNodesCoordinate from './util/process-row-nodes-coordinate';
 import { RowsResult } from './util/process-rows';
-import { BaseDataSetParams } from "src/data-set/interface";
 
 /**
  * SpreadSheet's Layout class
@@ -25,7 +24,7 @@ export class Layout {
 
   public cfg: SpreadsheetFacetCfg;
 
-  public dataSet: BaseDataSet<BaseDataSetParams>;
+  public dataSet: BaseDataSet;
 
   public hierarchyType: string;
 
@@ -92,8 +91,8 @@ export class Layout {
         return null;
       }
       // 树状表格没有小计行，需要判断该单元格是否展示聚合数据
-      const rowTotalsConfig = dataSet.getTotalsConfig(row.key);
-      const colTotalsConfig = dataSet.getTotalsConfig(col.key);
+      const rowTotalsConfig = ss.getTotalsConfig(row.key);
+      const colTotalsConfig = ss.getTotalsConfig(col.key);
       // 是否是树状布局
       const isInTree = ss.isHierarchyTreeType();
       // 是否是父节点对应的单元格

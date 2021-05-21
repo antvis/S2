@@ -19,6 +19,8 @@ import {
 } from 'src/common/interface/index';
 import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
 import { merge } from 'lodash';
+import { BaseDataSet } from "src/data-set";
+import { SpreadSheet } from "src/sheet-type";
 
 export interface S2Options {
   // canvas's width
@@ -49,8 +51,6 @@ export interface S2Options {
   readonly scrollReachNodeField?: NodeField;
   // hide row, col with fields
   readonly hideRowColFields?: string[];
-  // measure values in cols as new col, only works in 'pivot' mode
-  readonly valueInCols?: boolean;
   // custom config of showing columns and rows
   readonly customHeaderCells?: CustomHeaderCells;
   // row header action icon's config
@@ -74,6 +74,8 @@ export interface S2Options {
   readonly initTooltip?: TooltipCallback;
   // replace the whole default tooltip component
   readonly tooltipComponent?: JSX.Element;
+  // custom data set
+  readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
   // eg: add/delete some nodes in specified position

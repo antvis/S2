@@ -1,15 +1,12 @@
 import { BaseDataSet } from "src/data-set";
-import { DataType, PivotDataSetParams, PivotMeta } from "src/data-set/interface";
+import { DataType, PivotMeta } from "src/data-set/interface";
 import { DerivedValue, Meta, S2DataConfig, Total, Totals } from "src/common/interface";
 import { i18n } from "src/common/i18n";
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from "src/common/constant";
 import { auto } from "src/utils/formatter";
 import * as _ from "lodash";
 
-export class PivotDataSet extends BaseDataSet<PivotDataSetParams> {
-  // measure stay in cols or rows
-  public valueInCols: boolean;
-
+export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
   public rowPivotMeta: PivotMeta;
 
@@ -21,11 +18,6 @@ export class PivotDataSet extends BaseDataSet<PivotDataSetParams> {
 
   // un-sorted dimension values
   protected unSortedDimensionValues: Map<string, Set<string>>;
-
-  public constructor(params: PivotDataSetParams) {
-    super(params);
-    this.valueInCols = params.valueInCols;
-  }
 
   /**
    * When data related config changed, we need
@@ -52,6 +44,8 @@ export class PivotDataSet extends BaseDataSet<PivotDataSetParams> {
    */
   transformIndexesData = () => {
     const { rows, columns, values } = this.fields;
+    // const realRows = _.filter(rows, r => r != EXTRA_FIELD);
+    // const realColumns = _.filter(columns, r => r != EXTRA_FIELD).concat(EXTRA_FIELD);
     for (const data of this.originData) {
       const rowDimensionValues = this.transformDimensionsValues(data, rows);
       const colDimensionValues = this.transformDimensionsValues(data, columns);
@@ -189,7 +183,7 @@ export class PivotDataSet extends BaseDataSet<PivotDataSetParams> {
               children: new Map(),
             });
           } else {
-            return path;
+            return path.push(0);
           }
         }
         const meta = currentMeta.get(value);
@@ -206,13 +200,13 @@ export class PivotDataSet extends BaseDataSet<PivotDataSetParams> {
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const { data, meta = [], fields, sortParams = [] } = dataCfg;
-    const { columns, rows, values, derivedValues } = fields;
+    const { columns, rows, values, derivedValues, valueInCols } = fields;
 
     let newColumns = columns;
     let newRows = rows;
     let newSortParams: S2DataConfig['sortParams'] = sortParams;
     let newValues = values;
-    if (this.valueInCols) {
+    if (valueInCols) {
       // value in cols
       // 总计存在时可能导致数据重复
       newColumns = _.uniq([...columns, EXTRA_FIELD]);
@@ -339,10 +333,7 @@ export class PivotDataSet extends BaseDataSet<PivotDataSetParams> {
       );
     }
     const rowDimensionValues = getDimensionValues(rows, query);
-    const colDimensionValues = getDimensionValues(
-      columns.filter((v) => v !== EXTRA_FIELD),
-      query,
-    );
+    const colDimensionValues = getDimensionValues(columns, query);
     const path = this.getDataPath(
       rowDimensionValues,
       colDimensionValues,
@@ -375,26 +366,4 @@ export class PivotDataSet extends BaseDataSet<PivotDataSetParams> {
     return tempValue;
   };
 
-  /**
-   * get total's config by dimension id
-   * @param dimension unique dimension id
-   */
-  public getTotalsConfig(
-    dimension: string,
-  ): Partial<Totals['row']> {
-    const { totals } = this.spreadsheet.options;
-    const { rows } = this.fields;
-    const totalConfig = _.get(totals, _.includes(rows, dimension) ? 'row' : 'col', {}) as Total;
-    const showSubTotals = totalConfig.showSubTotals
-      ? _.includes(totalConfig.subTotalsDimensions, dimension)
-      : false;
-    return {
-      showSubTotals,
-      showGrandTotals: totalConfig.showGrandTotals,
-      reverseLayout: totalConfig.reverseLayout,
-      reverseSubLayout: totalConfig.reverseSubLayout,
-      label: totalConfig.label || i18n('总计'),
-      subLabel: totalConfig.subLabel || i18n('小计'),
-    };
-  }
 }

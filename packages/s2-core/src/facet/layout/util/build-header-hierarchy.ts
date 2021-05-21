@@ -23,7 +23,7 @@ function addTotalsNodes(
   fieldValues: (string | TotalClass)[],
   isSubTotals: boolean,
 ) {
-  const totalsConfig = cfg.dataSet.getTotalsConfig(field);
+  const totalsConfig = cfg.spreadsheet.getTotalsConfig(field);
   const option = isSubTotals
     ? totalsConfig.showSubTotals
     : totalsConfig.showGrandTotals;

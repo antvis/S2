@@ -51,7 +51,6 @@ import { Layout } from './layout';
 import { Hierarchy } from './layout/hierarchy';
 import { Node } from './layout/node';
 import { DEBUG_VIEW_RENDER, DebuggerUtil } from '../common/debug';
-import { BaseDataSetParams } from "src/data-set/interface";
 
 interface Point {
   x: number;
@@ -112,7 +111,7 @@ export class SpreadsheetFacet extends BaseFacet {
     });
   }
 
-  public getDataset(): BaseDataSet<BaseDataSetParams> {
+  public getDataset(): BaseDataSet {
     return this.cfg.dataSet;
   }
 

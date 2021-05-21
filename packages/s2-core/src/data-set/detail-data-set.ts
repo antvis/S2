@@ -2,16 +2,11 @@ import { S2DataConfig } from '../common/interface';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD } from '../common/constant';
 import { DetailPivot, PivotDataSet } from "./index";
-import { PivotDataSetParams } from "src/data-set/interface";
 
 /**
  * 明细表的DataSet工具类
  */
 export class DetailDataSet extends PivotDataSet {
-  constructor(params: PivotDataSetParams) {
-    super(params);
-  }
-
   /**
    * 对数据集预处理
    * 明细表需要在所有行末尾增加一列，代表当前行在原始数据里面的index

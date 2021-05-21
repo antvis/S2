@@ -2,17 +2,17 @@ import { BBox, Group } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { calculateInViewIndexes } from './utils';
 import { Indexes } from '../utils/indexes';
-import { BaseSpreadSheet } from '../sheet-type';
 import {
   LayoutResult,
   OffsetConfig,
   SpreadsheetFacetCfg,
 } from '../common/interface';
 import { DEBUG_HEADER_LAYOUT, DebuggerUtil } from '../common/debug';
+import { SpreadSheet } from "src/sheet-type";
 
 export abstract class BaseFacet {
   // spreadsheet instance
-  public spreadsheet: BaseSpreadSheet;
+  public spreadsheet: SpreadSheet;
 
   // corner box
   public cornerBBox: BBox;

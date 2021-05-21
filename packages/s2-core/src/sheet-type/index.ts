@@ -22,8 +22,8 @@ import {
   S2Options,
   SpreadsheetFacetCfg,
   ViewMeta,
-  safetyOptions,
-} from '../common/interface';
+  safetyOptions, Totals, Total
+} from "../common/interface";
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
@@ -54,8 +54,8 @@ import State from '../state/state';
 import { ShowProps } from '../common/tooltip/interface';
 import { StateName } from '../state/state';
 import { isMobile } from '../utils/is-mobile';
-import { BaseDataSetParams } from "src/data-set/interface";
 import { EventNames, InteractionNames } from "src/interaction/constant";
+import { i18n } from "src/common/i18n";
 
 const matrixTransform = ext.transform;
 export class SpreadSheet extends EE {
@@ -84,7 +84,7 @@ export class SpreadSheet extends EE {
    * processed data structure, include {@link Fields}, {@link Meta}
    * {@link Data}, {@link SortParams}
    */
-  public dataSet: BaseDataSet<BaseDataSetParams>;
+  public dataSet: BaseDataSet;
 
   /**
    * Facet: determine how to render headers/cell
@@ -131,16 +131,31 @@ export class SpreadSheet extends EE {
     this.dom = isString(dom) ? document.getElementById(dom) : dom as HTMLElement;
     this.dataCfg = safetyDataConfig(dataCfg);
     this.options = safetyOptions(options);
+    this.dataSet = this.getDataSet(this.options);
+    this.tooltip = this.getTooltip(options?.initTooltip);
+
+    DebuggerUtil.getInstance().setDebug(options?.debug);
     this.initGroups(this.dom, this.options);
     this.bindEvents();
-    this.dataSet = this.initDataSet(this.options);
-    this.tooltip = options?.initTooltip?.(this) || new BaseTooltip(this);
 
     // TODO 这个三个好乱，@缨缨 梳理下？
     this.registerEventController();
     // 注意这俩的顺序，不要反过来，因为interaction中会屏蔽event，但是event不会屏蔽interaction
     this.registerInteractions(this.options);
-    this.registerEventsAndListeners();
+    this.registerEvents();
+  }
+
+  getTooltip = (initTooltip: S2Options['initTooltip']): BaseTooltip => {
+    return initTooltip?.(this) || new BaseTooltip(this);
+  }
+
+  getDataSet = (options: S2Options): BaseDataSet => {
+    const { mode, dataSet } = options;
+    if (dataSet) {
+      return dataSet(this);
+    }
+    // TODO table data set
+    return mode === "table" ? new PivotDataSet(this) : new PivotDataSet(this);
   }
 
   /**
@@ -161,7 +176,10 @@ export class SpreadSheet extends EE {
     if (this.tooltip) {
       this.tooltip.hide();
     }
-    console.info(options);
+    this.options = merge(
+      this.options,
+      options,
+    );
   }
 
   public render(reloadData = true, callback?: () => void): void {
@@ -456,6 +474,29 @@ export class SpreadSheet extends EE {
     });
   }
 
+  /**
+   * get total's config by dimension id
+   * @param dimension unique dimension id
+   */
+  public getTotalsConfig(
+    dimension: string,
+  ): Partial<Totals['row']> {
+    const { totals } = this.options;
+    const { rows } = this.dataCfg.fields;
+    const totalConfig = get(totals, includes(rows, dimension) ? 'row' : 'col', {}) as Total;
+    const showSubTotals = totalConfig.showSubTotals
+      ? includes(totalConfig.subTotalsDimensions, dimension)
+      : false;
+    return {
+      showSubTotals,
+      showGrandTotals: totalConfig.showGrandTotals,
+      reverseLayout: totalConfig.reverseLayout,
+      reverseSubLayout: totalConfig.reverseSubLayout,
+      label: totalConfig.label || i18n('总计'),
+      subLabel: totalConfig.subLabel || i18n('小计'),
+    };
+  }
+
   protected registerEventController() {
     this.eventController = new EventController(this);
   }
@@ -497,134 +538,20 @@ export class SpreadSheet extends EE {
     });
   }
 
-  protected bindEvents() {
-    this.off(KEY_COLLAPSE_TREE_ROWS);
-    this.off(KEY_UPDATE_PROPS);
-    this.off(KEY_TREE_ROWS_COLLAPSE_ALL);
-    // collapse rows in tree mode of SpreadSheet
-    this.on(KEY_COLLAPSE_TREE_ROWS, (data) => {
-      const { id, isCollapsed } = data;
-      const style = this.options.style;
-      const options = merge({}, this.options, {
-        style: {
-          ...style,
-          collapsedRows: {
-            [id]: isCollapsed,
-          },
-        },
-      });
-      // post to x-report to store state
-      this.emit(KEY_COLLAPSE_ROWS, {
-        collapsedRows: options.style.collapsedRows,
-      });
-      this.setOptions(options);
-
-      this.render(false, () => {
-        this.emit(KEY_AFTER_COLLAPSE_ROWS, {
-          collapsedRows: options.style.collapsedRows,
-        });
-      });
-    });
-    // 收起、展开按钮
-    this.on(KEY_TREE_ROWS_COLLAPSE_ALL, (isCollapse) => {
-      this.setOptions({
-        ...this.options,
-        hierarchyCollapse: !isCollapse,
-        style: {
-          ...this.options?.style,
-          collapsedRows: {},
-        },
-      });
-      this.render(false);
-    });
-  }
-
-  /**
-   * 注册交互（组件按自己的场景写交互，继承此方法注册）
-   * @param options
-   */
-  protected registerInteractions(options: S2Options) {
-    this.interactions.clear();
-    if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
-      this.interactions.set(InteractionNames.BRUSH_SELECTION_INTERACTION, new BrushSelection(this));
-      this.interactions.set(InteractionNames.COL_ROW_RESIZE_INTERACTION, new RowColResize(this));
-      this.interactions.set(InteractionNames.DATACELL_MUTI_SELECTION_INTERACTION, new DataCellMutiSelection(this));
-      this.interactions.set(InteractionNames.COL_ROW_MUTI_SELECTION_INTERACTION, new ColRowMutiSelection(this));
-    }
-  }
-
-  protected getCorrectCell(facet: ViewMeta): DataCell {
-    return this.isValueInCols()
-      ? new DataCell(facet, this)
-      : new DataDerivedCell(facet, this);
-  }
-
-  // 注册事件
-  protected registerEventsAndListeners() {
-    this.events.clear();
-    this.events.set(EventNames.DATACELL_CLICK_EVENT, new DataCellClick(this));
-    this.events.set(EventNames.CORNER_TEXT_CLICK_EVENT, new CornerTextClick(this));
-    this.events.set(EventNames.ROW_COLUMN_CLICK_EVENT, new RowColumnClick(this));
-    this.events.set(EventNames.ROW_TEXT_CLICK_EVENT, new RowTextClick(this));
-    this.events.set(EventNames.HOVER_EVENT, new HoverEvent(this));
-    this.initDevicePixelRatioListener();
-    this.initDeviceZoomListener();
-  }
-
-  protected initDataSet(options: Partial<S2Options>): PivotDataSet {
-    const { mode, valueInCols = true } = options;
-    // TODO table data set
-    // if (mode === 'table') {
-    //   // 明细表
-    //   return new DetailDataSet({
-    //     spreadsheet: this,
-    //     valueInCols,
-    //   });
-    // }
-    // 交叉表
-    return new PivotDataSet({
-      spreadsheet: this,
-      valueInCols,
-    });
-  }
-
-  protected buildFacet(): void {
+  buildFacet = () => {
     const { fields, meta } = this.dataSet;
-
     const { rows, columns, values, derivedValues } = fields;
-
     const {
-      debug,
-      width,
-      height,
-      style,
-      totals,
-      hierarchyType,
-      hierarchyCollapse,
-      pagination,
-      dataCell,
-      cornerCell,
-      rowCell,
-      colCell,
-      frame,
-      layout,
-      cornerHeader,
-      layoutResult,
-      hierarchy,
-      layoutArrange,
+      width, height, style, hierarchyType, hierarchyCollapse, pagination,
+      dataCell, cornerCell, rowCell, colCell, frame, layout, cornerHeader,
+      layoutResult, hierarchy, layoutArrange
     } = this.options;
 
     const {
-      cellCfg,
-      colCfg,
-      rowCfg,
-      collapsedRows,
-      collapsedCols,
-      treeRowsWidth,
+      cellCfg, colCfg, rowCfg, collapsedRows, collapsedCols, treeRowsWidth
     } = style;
 
     const defaultCell = (facet: ViewMeta) => this.getCorrectCell(facet);
-    DebuggerUtil.getInstance().setDebug(debug);
     // the new facetCfg of facet
     const facetCfg = {
       spreadsheet: this,
@@ -660,6 +587,82 @@ export class SpreadSheet extends EE {
     this.facet = new SpreadsheetFacet(facetCfg);
     // render facet
     this.facet.render();
+  }
+
+  /**
+   * 注册交互（组件按自己的场景写交互，继承此方法注册）
+   * @param options
+   */
+  protected registerInteractions(options: S2Options) {
+    this.interactions.clear();
+    if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
+      this.interactions.set(InteractionNames.BRUSH_SELECTION_INTERACTION, new BrushSelection(this));
+      this.interactions.set(InteractionNames.COL_ROW_RESIZE_INTERACTION, new RowColResize(this));
+      this.interactions.set(InteractionNames.DATACELL_MUTI_SELECTION_INTERACTION, new DataCellMutiSelection(this));
+      this.interactions.set(InteractionNames.COL_ROW_MUTI_SELECTION_INTERACTION, new ColRowMutiSelection(this));
+    }
+  }
+
+  protected getCorrectCell(facet: ViewMeta): DataCell {
+    return this.isValueInCols()
+      ? new DataCell(facet, this)
+      : new DataDerivedCell(facet, this);
+  }
+
+  protected bindEvents() {
+    this.off(KEY_COLLAPSE_TREE_ROWS);
+    this.off(KEY_UPDATE_PROPS);
+    this.off(KEY_TREE_ROWS_COLLAPSE_ALL);
+    // collapse rows in tree mode of SpreadSheet
+    this.on(KEY_COLLAPSE_TREE_ROWS, (data) => {
+      const { id, isCollapsed } = data;
+      const style = this.options.style;
+      const options = merge({}, this.options, {
+        style: {
+          ...style,
+          collapsedRows: {
+            [id]: isCollapsed,
+          },
+        },
+      });
+      // post to x-report to store state
+      this.emit(KEY_COLLAPSE_ROWS, {
+        collapsedRows: options.style.collapsedRows,
+      });
+      this.setOptions(options);
+
+      this.render(false, () => {
+        this.emit(KEY_AFTER_COLLAPSE_ROWS, {
+          collapsedRows: options.style.collapsedRows,
+        });
+      });
+    });
+    // 收起、展开按钮
+    this.on(KEY_TREE_ROWS_COLLAPSE_ALL, (isCollapse) => {
+
+      this.setOptions({
+        ...this.options,
+        hierarchyCollapse: !isCollapse,
+        style: {
+          ...this.options?.style,
+          collapsedRows: {}
+        }
+      });
+      this.render(false);
+    });
+
+    this.initDevicePixelRatioListener();
+    this.initDeviceZoomListener();
+  }
+
+  // 注册事件
+  protected registerEvents() {
+    this.events.clear();
+    this.events.set(EventNames.DATACELL_CLICK_EVENT, new DataCellClick(this));
+    this.events.set(EventNames.CORNER_TEXT_CLICK_EVENT, new CornerTextClick(this));
+    this.events.set(EventNames.ROW_COLUMN_CLICK_EVENT, new RowColumnClick(this));
+    this.events.set(EventNames.ROW_TEXT_CLICK_EVENT, new RowTextClick(this));
+    this.events.set(EventNames.HOVER_EVENT, new HoverEvent(this));
   }
 
   private initDevicePixelRatioListener() {

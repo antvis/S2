@@ -5,7 +5,6 @@ import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
 import { S2DataConfig, safetyDataConfig } from './S2DataConfig';
 import { S2Options, safetyOptions } from './S2Options';
-import { BaseDataSetParams } from "src/data-set/interface";
 
 export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions };
 
@@ -86,6 +85,8 @@ export interface Fields {
   values?: string[] | StrategyValue;
   // 衍生指标
   derivedValues?: DerivedValue[];
+  // measure values in cols as new col, only works in 'pivot' mode
+  valueInCols?: boolean;
 }
 
 type MappingFunction = (
@@ -336,7 +337,7 @@ export interface SpreadsheetFacetCfg {
   // spreadsheet interface
   spreadsheet: SpreadSheet;
   // data set of spreadsheet
-  dataSet: BaseDataSet<BaseDataSetParams>;
+  dataSet: BaseDataSet;
   // columns fields
   cols: string[];
   // rows fields
