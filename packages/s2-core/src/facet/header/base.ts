@@ -1,5 +1,5 @@
 import { Group, Point } from '@antv/g-canvas';
-import { BaseSpreadSheet, Node } from '../../index';
+import { Node, SpreadSheet } from "../../index";
 
 export const HIT_AREA = 10;
 
@@ -26,7 +26,7 @@ export interface BaseHeaderConfig {
   // group's all nodes
   data: Node[];
   // spreadsheet entrance instance
-  spreadsheet: BaseSpreadSheet;
+  spreadsheet: SpreadSheet;
 }
 
 /**
@@ -53,12 +53,9 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    * @param type 当前重绘的header类型
    */
   protected clearResizerGroup(type: string) {
-    const foregroundGroup = this.get('parent');
+    const foregroundGroup = this.get("parent");
     const resizerGroup = foregroundGroup?.findById(type);
-
-    if (resizerGroup) {
-      resizerGroup.remove();
-    }
+    resizerGroup?.remove();
   }
 
   // start render header
@@ -119,7 +116,6 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
 
   /**
    * Check whether header cell in viewPort
-   * TODO OPTIMIZE ME!!!
    * @param gridPos
    * @param gridSize
    * @param viewportPos

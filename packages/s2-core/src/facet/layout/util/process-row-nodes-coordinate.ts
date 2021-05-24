@@ -1,6 +1,5 @@
 import { each, get } from 'lodash';
-import { SpreadsheetFacet } from '../../index';
-import { SpreadsheetFacetCfg } from '../../../common/interface';
+import { BaseFacet } from "src/facet";
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import getAdaptiveRowWidth from './get-adaptive-row-width';
@@ -20,12 +19,11 @@ import handleLayoutHook from './handle-layout-hook';
  * @param rowsHierarchy row type 'tree' | 'grid'
  */
 export default function processRowNodesCoordinate(
-  cfg: SpreadsheetFacetCfg,
-  facet: SpreadsheetFacet,
+  facet: BaseFacet,
   rowsHierarchy: Hierarchy,
   rowLeafNodes: Node[],
 ) {
-  const { cellCfg, rowCfg } = cfg;
+  const { cellCfg, rowCfg, spreadsheet } = facet.cfg;
   let prevRow = Node.blankNode();
   let currentRowCellIndex = 0;
   // y & height & width for leaves node
@@ -36,17 +34,17 @@ export default function processRowNodesCoordinate(
     currentRowCellIndex += 1;
     cell.y = prevRow.y + prevRow.height;
     cell.height = cellCfg.height + 2 * cellCfg.padding;
-    hideRowColumnsByFields(cfg.spreadsheet, facet, cell, true);
+    hideRowColumnsByFields(spreadsheet, facet, cell, true);
     cell.width = getAdaptiveRowWidth(
       rowsHierarchy,
       cell,
       rowCfg,
       cellCfg,
       facet,
-      cfg,
+      facet.cfg,
     );
     // 叶子节点回调
-    handleLayoutHook(cfg, cell, null);
+    handleLayoutHook(facet.cfg, cell, null);
     prevRow = cell;
   }
 
@@ -76,11 +74,11 @@ export default function processRowNodesCoordinate(
           rowCfg,
           cellCfg,
           facet,
-          cfg,
+          facet.cfg,
         );
         // mark pre-parent
         // 非叶子节点回调
-        handleLayoutHook(cfg, parent, null);
+        handleLayoutHook(facet.cfg, parent, null);
         prevRowParent = parent;
       }
     }
@@ -105,10 +103,10 @@ export default function processRowNodesCoordinate(
     const rowsStack = rowLeafNodes.slice(0);
     while (rowsStack.length) {
       const node = rowsStack.shift();
-      node.width = cfg?.rowCfg?.treeRowsWidth || cfg.treeRowsWidth;
-      if (!cfg?.rowCfg?.treeRowsWidth) {
+      node.width = facet.cfg?.rowCfg?.treeRowsWidth || facet.cfg.treeRowsWidth;
+      if (!facet.cfg?.rowCfg?.treeRowsWidth) {
         // user not drag
-        handleLayoutHook(cfg, node, null);
+        handleLayoutHook(facet.cfg, node, null);
       }
       // all node's height
       rowsHierarchy.height += node.height;

@@ -1,7 +1,7 @@
 import { measureTextWidth } from '../../..';
 import { get, set, includes, isEmpty } from 'lodash';
 import { DEFAULT_PADDING, ICON_RADIUS } from '../../../common/constant';
-import { SpreadsheetFacet } from '../../index';
+import { BaseFacet } from "src/facet";
 import { Hierarchy } from '../hierarchy';
 import { DEFAULT_FACET_CFG as DefaultCfg } from '../default-facet-cfg';
 
@@ -16,12 +16,12 @@ export enum WidthType {
  * @param colsHierarchy
  */
 export default function processDefaultColWidthByType(
-  facet: SpreadsheetFacet,
+  facet: BaseFacet,
   colsHierarchy: Hierarchy,
 ) {
   const { rows, rowCfg, cellCfg, dataSet } = facet.cfg;
   const defaultCellWidth = DefaultCfg.cellCfg.width;
-  if (isEmpty(dataSet.data)) {
+  if (isEmpty(dataSet.originData)) {
     // 数据没有的情况下，直接用默认值
     return defaultCellWidth;
   }
@@ -44,7 +44,7 @@ export default function processDefaultColWidthByType(
       const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
       const treeHeaderLabel = rows
         .filter((value) => !includes(drillFields, value))
-        .map((key: string): string => facet.getDataset().getFieldName(key))
+        .map((key: string): string => facet.spreadsheet.dataSet.getFieldName(key))
         .join('/');
       const textStyle = get(facet, 'spreadsheet.theme.header.bolderText');
       // [100, canvasW / 2]

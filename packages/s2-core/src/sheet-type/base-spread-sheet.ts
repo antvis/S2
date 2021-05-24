@@ -20,7 +20,7 @@ import {
   Pagination,
   S2DataConfig,
   S2Options,
-  SpreadsheetFacetCfg,
+  SpreadSheetFacetCfg,
   ViewMeta,
   safetyOptions,
 } from '../common/interface';
@@ -204,7 +204,7 @@ export default abstract class BaseSpreadSheet extends EE {
 
   protected abstract bindEvents(): void;
 
-  protected initFacet(facetCfg: SpreadsheetFacetCfg): BaseFacet {
+  protected initFacet(facetCfg: SpreadSheetFacetCfg): BaseFacet {
     return new SpreadsheetFacet(facetCfg);
   }
 
@@ -294,7 +294,7 @@ export default abstract class BaseSpreadSheet extends EE {
       layoutResult,
       hierarchy,
       layoutArrange,
-    } as SpreadsheetFacetCfg;
+    } as SpreadSheetFacetCfg;
 
     if (this.facet) {
       // destroy pre-facet if exists

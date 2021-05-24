@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
-import { SpreadsheetFacet } from '../../index';
-import { SpreadsheetFacetCfg } from '../../../common/interface';
+import { BaseFacet } from "src/facet";
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import getColHeight from './get-col-height';
@@ -16,11 +15,10 @@ export default function processColNodesCoordinate(
   colLeafNodes: Node[],
   rowsHierarchy: Hierarchy,
   colsHierarchy: Hierarchy,
-  cfg: SpreadsheetFacetCfg,
-  facet: SpreadsheetFacet,
+  facet: BaseFacet,
 ) {
-  const { cellCfg, colCfg } = cfg;
-  processColLeafNodeWH(colLeafNodes, rowsHierarchy, cfg, facet, true);
+  const { cellCfg, colCfg, spreadsheet } = facet.cfg;
+  processColLeafNodeWH(colLeafNodes, rowsHierarchy, facet.cfg, facet, true);
   // width & height for branches
   const colsStack = colLeafNodes.slice(0);
   let prevColParent = null;
@@ -37,8 +35,8 @@ export default function processColNodesCoordinate(
         });
       parent.height = getColHeight(parent, colCfg, cellCfg);
       // 非叶子节点回调
-      handleLayoutHook(cfg, null, parent);
-      hideRowColumnsByFields(cfg.spreadsheet, facet, parent);
+      handleLayoutHook(facet.cfg, null, parent);
+      hideRowColumnsByFields(spreadsheet, facet, parent);
       prevColParent = parent;
     }
   }

@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { DetailPivot } from '../../../data-set';
 import { SpreadsheetFacet } from '../../index';
-import { SpreadsheetFacetCfg } from '../../../common/interface';
+import { SpreadSheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import getAdaptiveRowWidth from './get-adaptive-row-width';
@@ -37,7 +37,7 @@ function generateNodes(
 
 export default function processRowsList(
   pivot: DetailPivot,
-  cfg: SpreadsheetFacetCfg,
+  cfg: SpreadSheetFacetCfg,
   rows: string[],
   facet: SpreadsheetFacet,
 ) {

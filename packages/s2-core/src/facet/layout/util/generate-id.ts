@@ -1,6 +1,6 @@
 import { get, isEmpty } from 'lodash';
 import { ID_SEPARATOR } from '../../../common/constant';
-import { SpreadsheetFacetCfg } from '../../../common/interface';
+import { SpreadSheetFacetCfg } from '../../../common/interface';
 /**
  * Row and column header node id generator.
  * Users can make specific rows or columns display or hidden according to the option configuration
@@ -12,7 +12,7 @@ import { SpreadsheetFacetCfg } from '../../../common/interface';
 export const generateId = (
   parentId: string,
   value: string,
-  cfg: SpreadsheetFacetCfg,
+  cfg: SpreadSheetFacetCfg,
 ): string => {
   const id = `${parentId}${ID_SEPARATOR}${value}`;
   const customHeaders = get(cfg, 'spreadsheet.options.customHeaderCells');

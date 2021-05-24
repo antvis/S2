@@ -8,7 +8,7 @@ import {
   remove,
 } from 'lodash';
 import { i18n } from "src/common/i18n";
-import { SpreadsheetFacetCfg } from "src/common/interface";
+import { SpreadSheetFacetCfg } from "src/common/interface";
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import TotalClass from '../total-class';
@@ -18,7 +18,7 @@ import { EXTRA_FIELD } from "src/common/constant";
 import { generateId } from './generate-id';
 
 function addTotalsNodes(
-  cfg: SpreadsheetFacetCfg,
+  cfg: SpreadSheetFacetCfg,
   field: string,
   fieldValues: (string | TotalClass)[],
   isSubTotals: boolean,
@@ -47,7 +47,7 @@ function handleTotals(
   fields: string[],
   index,
   fieldValues: (string | TotalClass)[],
-  cfg: SpreadsheetFacetCfg,
+  cfg: SpreadSheetFacetCfg,
 ) {
   // put all totals nodes in appropriate place
   if (currentField !== fields[0]) {
@@ -69,7 +69,7 @@ export default function buildHeaderHierarchy(
   parent: Node,
   currentField: string,
   fields: string[],
-  cfg: SpreadsheetFacetCfg,
+  cfg: SpreadSheetFacetCfg,
   hierarchy: Hierarchy,
 ) {
   const index = fields.indexOf(currentField);

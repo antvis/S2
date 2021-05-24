@@ -1,10 +1,9 @@
 import { each, isEmpty, merge, get, has } from 'lodash';
-import { SpreadsheetFacet } from '..';
 import { BaseDataSet } from '../../data-set';
 import { EXTRA_FIELD, VALUE_FIELD } from '../../common/constant';
 import {
   LayoutResult,
-  SpreadsheetFacetCfg,
+  SpreadSheetFacetCfg,
   StrategyValue,
   ViewMeta,
 } from '../../common/interface';
@@ -15,14 +14,15 @@ import { ColsResult } from './util/process-cols';
 import processDefaultColWidthByType from './util/process-default-col-width-by-type';
 import processRowNodesCoordinate from './util/process-row-nodes-coordinate';
 import { RowsResult } from './util/process-rows';
+import { BaseFacet } from "src/facet";
 
 /**
  * SpreadSheet's Layout class
  */
 export class Layout {
-  public facet: SpreadsheetFacet;
+  public facet: BaseFacet;
 
-  public cfg: SpreadsheetFacetCfg;
+  public cfg: SpreadSheetFacetCfg;
 
   public dataSet: BaseDataSet;
 
@@ -34,9 +34,9 @@ export class Layout {
 
   public values: string[] | StrategyValue;
 
-  constructor(facet: SpreadsheetFacet) {
+  constructor(facet: BaseFacet) {
     this.facet = facet;
-    this.dataSet = facet.getDataset();
+    this.dataSet = facet.cfg.dataSet;
     this.cfg = facet.cfg;
     this.cols = this.cfg.cols;
     this.rows = this.cfg.rows;
@@ -53,7 +53,6 @@ export class Layout {
     processDefaultColWidthByType(this.facet, colsHierarchy);
     // 3、calculate all nodes coordinate
     processRowNodesCoordinate(
-      this.cfg,
       this.facet,
       rowsHierarchy,
       rowLeafNodes,
@@ -62,7 +61,6 @@ export class Layout {
       colLeafNodes,
       rowsHierarchy,
       colsHierarchy,
-      this.cfg,
       this.facet,
     );
 

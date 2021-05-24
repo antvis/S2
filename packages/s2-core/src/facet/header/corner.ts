@@ -17,7 +17,7 @@ import {
   CornerCell,
   KEY_TREE_ROWS_COLLAPSE_ALL,
 } from '../../index';
-import { LayoutResult, SpreadsheetFacetCfg } from '../../common/interface';
+import { LayoutResult, SpreadSheetFacetCfg } from '../../common/interface';
 import checkHideMeasureColumn from '../layout/util/check-hide-measure-column';
 import { BaseHeader, BaseHeaderConfig, HIT_AREA } from './base';
 import { CornerData, ResizeInfo } from './interface';
@@ -52,7 +52,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     viewportBBox: SimpleBBox,
     cornerBBox: SimpleBBox,
     seriesNumberWidth: number,
-    cfg: SpreadsheetFacetCfg,
+    cfg: SpreadSheetFacetCfg,
     layoutResult: LayoutResult,
     ss: BaseSpreadSheet,
   ) {

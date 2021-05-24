@@ -5,7 +5,7 @@ import { SpreadsheetFacet } from '../../index';
 import {
   CellCfg,
   RowCfg,
-  SpreadsheetFacetCfg,
+  SpreadSheetFacetCfg,
 } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
@@ -33,7 +33,7 @@ export default function getAdaptiveRowWidth(
   rowCfg: RowCfg,
   cellCfg: CellCfg,
   facet: SpreadsheetFacet,
-  cfg: SpreadsheetFacetCfg,
+  cfg: SpreadSheetFacetCfg,
   isPivotMode = true,
 ) {
   if (rowCfg.width === WidthType.Compat) {

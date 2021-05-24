@@ -20,7 +20,7 @@ import {
   Pagination,
   S2DataConfig,
   S2Options,
-  SpreadsheetFacetCfg,
+  SpreadSheetFacetCfg,
   ViewMeta,
   safetyOptions, Totals, Total
 } from "../common/interface";
@@ -33,7 +33,6 @@ import {
   KEY_GROUP_PANEL_GROUND, KEY_TREE_ROWS_COLLAPSE_ALL, KEY_UPDATE_PROPS
 } from "../common/constant";
 import { BaseDataSet, PivotDataSet } from "../data-set";
-import { SpreadsheetFacet } from '../facet';
 import {
   Node,
   BaseInteraction,
@@ -56,6 +55,7 @@ import { StateName } from '../state/state';
 import { isMobile } from '../utils/is-mobile';
 import { EventNames, InteractionNames } from "src/interaction/constant";
 import { i18n } from "src/common/i18n";
+import { PivotFacet } from "src/facet";
 
 const matrixTransform = ext.transform;
 export class SpreadSheet extends EE {
@@ -582,9 +582,9 @@ export class SpreadSheet extends EE {
       layoutResult,
       hierarchy,
       layoutArrange,
-    } as SpreadsheetFacetCfg;
+    } as SpreadSheetFacetCfg;
     this.facet?.destroy();
-    this.facet = new SpreadsheetFacet(facetCfg);
+    this.facet = new PivotFacet(facetCfg);
     // render facet
     this.facet.render();
   }

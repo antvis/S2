@@ -1,7 +1,7 @@
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import buildHeaderHierarchy from './build-header-hierarchy';
-import { SpreadsheetFacet } from "src/facet";
+import { BaseFacet } from "src/facet";
 
 export interface ColsResult {
   // all column leaf nodes
@@ -10,7 +10,7 @@ export interface ColsResult {
   colsHierarchy: Hierarchy;
 }
 
-export default function processCols(facet: SpreadsheetFacet) {
+export default function processCols(facet: BaseFacet) {
   const rootNode = Node.rootNode();
   const { cfg } = facet;
   const cols = cfg.cols;

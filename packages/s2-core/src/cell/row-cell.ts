@@ -308,7 +308,7 @@ export class RowCell extends BaseCell<Node> {
           const oldScrollY = this.spreadsheet.store.get('scrollY');
           // 可视窗口高度
           const viewportHeight =
-            this.spreadsheet.facet.viewportBBox.height || 0;
+            this.spreadsheet.facet.panelBBox.height || 0;
           // 被折叠项的高度
           const deleteHeight = getAllChildrenNodeHeight(this.meta);
           // 折叠后真实高度

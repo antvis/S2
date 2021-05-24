@@ -2,7 +2,7 @@ import BaseSpreadSheet from './base-spread-sheet';
 import {
   S2DataConfig,
   S2Options,
-  SpreadsheetFacetCfg,
+  SpreadSheetFacetCfg,
 } from '../common/interface';
 import { BaseTooltip } from '../tooltip';
 import { get, set, isBoolean, merge } from 'lodash';
@@ -116,7 +116,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     });
   }
 
-  protected initFacet(facetCfg: SpreadsheetFacetCfg): BaseFacet {
+  protected initFacet(facetCfg: SpreadSheetFacetCfg): BaseFacet {
     const { mode } = this.options;
     if (mode === 'table') {
       // ListSheet

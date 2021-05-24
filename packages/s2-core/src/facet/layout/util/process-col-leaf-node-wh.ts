@@ -16,7 +16,7 @@ import {
   isArray,
 } from 'lodash';
 import { SpreadsheetFacet } from '../../index';
-import { ColWidthCache, SpreadsheetFacetCfg } from '../../../common/interface';
+import { ColWidthCache, SpreadSheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import checkHideMeasureColumn from './check-hide-measure-column';
@@ -38,7 +38,7 @@ import { KEY_COL_REAL_WIDTH_INFO, measureTextWidth } from '../../../index';
  * 当前每一列的数据是由小计+度量组成的
  */
 const colWidthHasRows = (
-  cfg: SpreadsheetFacetCfg,
+  cfg: SpreadSheetFacetCfg,
   node: Node,
   facet: SpreadsheetFacet,
 ) => {
@@ -130,7 +130,7 @@ const colWidthHasRows = (
  * 原始数据是以列的形式返回，也就是 dataCfg.data 每个元素代表一列数据
  * 该列所有的指标和衍生指标都存放在单个元素中
  */
-const colWidthNoRows = (cfg: SpreadsheetFacetCfg, node: Node) => {
+const colWidthNoRows = (cfg: SpreadSheetFacetCfg, node: Node) => {
   const records = cfg.spreadsheet.dataCfg.data;
   const dataset = cfg.dataSet;
   const currentColData = find(records, (td) => {
@@ -190,7 +190,7 @@ const colWidthNoRows = (cfg: SpreadsheetFacetCfg, node: Node) => {
 };
 
 const getColWidthWithDerivedValue = (
-  cfg: SpreadsheetFacetCfg,
+  cfg: SpreadSheetFacetCfg,
   node: Node,
   facet: SpreadsheetFacet,
 ) => {
@@ -331,7 +331,7 @@ const getColWidthWithDerivedValue = (
 export default function processColLeafNodeWH(
   colLeafNodes: Node[],
   rowsHierarchy: Hierarchy,
-  cfg: SpreadsheetFacetCfg,
+  cfg: SpreadSheetFacetCfg,
   facet: SpreadsheetFacet,
   isPivotMode: boolean,
 ) {

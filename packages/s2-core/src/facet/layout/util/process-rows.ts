@@ -1,4 +1,4 @@
-import { SpreadsheetFacet } from '../../index';
+import { BaseFacet } from "src/facet";
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import buildHeaderHierarchy from './build-header-hierarchy';
@@ -13,7 +13,7 @@ export interface RowsResult {
   rowsHierarchy: Hierarchy;
 }
 
-export default function processRows(facet: SpreadsheetFacet,) {
+export default function processRows(facet: BaseFacet) {
   const { cfg } = facet;
   const { rows } = cfg;
   const rowsHierarchy = new Hierarchy();
@@ -28,7 +28,7 @@ export default function processRows(facet: SpreadsheetFacet,) {
       fields: rows,
       cfg,
       hierarchy: rowsHierarchy,
-      dataSet: facet.getDataset(),
+      dataSet: facet.spreadsheet.dataSet,
       inCollapseNode: false,
     } as TreeParams);
     rowLeafNodes = rowsHierarchy.getNodes();

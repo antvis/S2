@@ -1,7 +1,7 @@
 import { merge, each, isEmpty, isBoolean, remove } from 'lodash';
 import { SpreadDataSet } from '../../../data-set';
 import { i18n } from 'src/common/i18n';
-import { SpreadsheetFacetCfg } from 'src/common/interface';
+import { SpreadSheetFacetCfg } from 'src/common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import TotalClass from '../total-class';
@@ -15,7 +15,7 @@ export interface TreeParams {
   parent: Node;
   field: string;
   fields: string[];
-  cfg: SpreadsheetFacetCfg;
+  cfg: SpreadSheetFacetCfg;
   hierarchy: Hierarchy;
   dataSet: SpreadDataSet;
   // check if this node in collapse node

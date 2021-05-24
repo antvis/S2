@@ -2,7 +2,7 @@ import { i18n } from '../../common/i18n';
 import { EXTRA_FIELD } from '../../common/constant';
 import { CornerHeader, SeriesNumberHeader } from '../header';
 import { SpreadsheetFacet } from '../index';
-import { SpreadsheetFacetCfg } from '../../common/interface';
+import { SpreadSheetFacetCfg } from '../../common/interface';
 import { Layout } from '../layout';
 import { DetailLayout } from '../layout/detail-layout';
 
@@ -17,7 +17,7 @@ import { DetailLayout } from '../layout/detail-layout';
  * centerBorder - 对应区域的分割线,在明细中默认只有一个维度和维度值的分割线
  */
 export class DetailFacet extends SpreadsheetFacet {
-  constructor(cfg: SpreadsheetFacetCfg) {
+  constructor(cfg: SpreadSheetFacetCfg) {
     super(cfg);
   }
 
@@ -26,7 +26,7 @@ export class DetailFacet extends SpreadsheetFacet {
       return this.cornerHeader;
     }
     return CornerHeader.getCornerHeader(
-      this.viewportBBox,
+      this.panelBBox,
       this.cornerBBox,
       this.getSeriesNumberWidth(),
       this.cfg,
@@ -41,7 +41,7 @@ export class DetailFacet extends SpreadsheetFacet {
 
   protected getSeriesNumberHeader(): SeriesNumberHeader {
     return SeriesNumberHeader.getSeriesNumberHeader(
-      this.viewportBBox,
+      this.panelBBox,
       this.getSeriesNumberWidth(),
       this.layoutResult.rowLeafNodes,
       this.spreadsheet,

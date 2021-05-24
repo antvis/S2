@@ -7,7 +7,7 @@ import {
 import { EXTRA_FIELD, ID_SEPARATOR } from '../../../common/constant';
 import { DetailDataSet } from '../../../data-set';
 import { SpreadsheetFacet } from '../../index';
-import { SpreadsheetFacetCfg } from '../../../common/interface';
+import { SpreadSheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import processColLeafNodeWH from './process-col-leaf-node-wh';
@@ -47,7 +47,7 @@ function processCols(
 
 export default function processColsList(
   facet: SpreadsheetFacet,
-  cfg: SpreadsheetFacetCfg,
+  cfg: SpreadSheetFacetCfg,
   cols: string[],
   dataSet: DetailDataSet,
   rowsHierarchy: Hierarchy,

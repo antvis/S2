@@ -1,4 +1,4 @@
-import { SpreadsheetFacetCfg, S2Options } from '../common/interface';
+import { SpreadSheetFacetCfg, S2Options } from '../common/interface';
 import { BaseTooltip } from '../tooltip';
 import { isEmpty, merge } from 'lodash';
 import { KEY_COLLAPSE_TREE_ROWS } from '../common/constant';
@@ -51,7 +51,7 @@ export default class StrategySheet extends SpreadSheet {
     return true;
   }
 
-  protected initFacet(facetCfg: SpreadsheetFacetCfg): BaseFacet {
+  protected initFacet(facetCfg: SpreadSheetFacetCfg): BaseFacet {
     return new SpreadsheetFacet(facetCfg);
   }
 

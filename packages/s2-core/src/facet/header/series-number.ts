@@ -1,8 +1,7 @@
 import { SimpleBBox, IGroup } from '@antv/g-canvas';
 import { each, get } from 'lodash';
-import { measureTextWidth } from '../..';
+import { measureTextWidth, SpreadSheet } from "../..";
 import { getAdjustPosition } from '../../utils/text-absorption';
-import { BaseSpreadSheet } from '../..';
 import { Node } from '../..';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { getCellPadding } from './util';
@@ -23,7 +22,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     viewportBBox: SimpleBBox,
     seriesNumberWidth: number,
     leafNodes: Node[],
-    spreadsheet: BaseSpreadSheet,
+    spreadsheet: SpreadSheet,
     cornerWidth: number,
   ): SeriesNumberHeader {
     const { width, height } = viewportBBox;

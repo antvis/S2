@@ -1,4 +1,4 @@
-import { SimpleBBox, Group } from '@antv/g-canvas';
+import { SimpleBBox, Group, IGroup } from "@antv/g-canvas";
 import { findIndex, isNil } from 'lodash';
 
 import { Indexes } from '../utils/indexes';
@@ -87,14 +87,14 @@ export const optimizeScrollXY = (x: number, y: number): [number, number] => {
 };
 
 export const translateGroup = (
-  group: Group,
+  group: IGroup,
   scrollX: number,
   scrollY: number,
 ) => {
   const matrix = group.getMatrix();
   // eslint-disable-next-line no-bitwise
-  const preX = matrix?.[6] | 0;
+  const preX = matrix?.[6] ?? 0;
   // eslint-disable-next-line no-bitwise
-  const preY = matrix?.[7] | 0;
+  const preY = matrix?.[7] ?? 0;
   group.translate(scrollX - preX, scrollY - preY);
 };

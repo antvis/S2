@@ -331,9 +331,9 @@ export interface CustomHeaderCells {
 }
 
 /**
- * Spreadsheet and ListSheet facet config
+ * Spreadsheet facet config
  */
-export interface SpreadsheetFacetCfg {
+export interface SpreadSheetFacetCfg {
   // spreadsheet interface
   spreadsheet: SpreadSheet;
   // data set of spreadsheet
