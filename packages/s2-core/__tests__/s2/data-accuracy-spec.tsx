@@ -99,7 +99,7 @@ const getOptions = () => {
     debug: true,
     width: 800,
     height: 600,
-    hierarchyType: 'grid',
+    hierarchyType: 'tree',
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: false,

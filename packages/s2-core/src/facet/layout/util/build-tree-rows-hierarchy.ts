@@ -1,5 +1,4 @@
 import { merge, each, isEmpty, isBoolean, remove } from 'lodash';
-import { SpreadDataSet } from '../../../data-set';
 import { i18n } from 'src/common/i18n';
 import { SpreadSheetFacetCfg } from 'src/common/interface';
 import { Hierarchy } from '../hierarchy';
@@ -10,6 +9,7 @@ import getDimsCondition from './get-dims-condition-by-node';
 import { reArrangeFieldValues } from './re-arrange-field-values';
 import findNodeExtraCfg from '../../../utils/find-node-extra-cfg';
 import { generateId } from './generate-id';
+import { BaseDataSet } from "src/data-set";
 
 export interface TreeParams {
   parent: Node;
@@ -17,7 +17,7 @@ export interface TreeParams {
   fields: string[];
   cfg: SpreadSheetFacetCfg;
   hierarchy: Hierarchy;
-  dataSet: SpreadDataSet;
+  dataSet: BaseDataSet;
   // check if this node in collapse node
   inCollapseNode: boolean;
 }
@@ -47,7 +47,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
       fieldValues as string[],
     );
   }
-  const totalsConfig = dataSet.getTotalsConfig(field);
+  const totalsConfig = cfg.spreadsheet.getTotalsConfig(field);
 
   // tree mode only has grand totals, but if there are subTotals configs, it will
   // display in cross-area cell
