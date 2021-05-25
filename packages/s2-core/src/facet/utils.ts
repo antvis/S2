@@ -25,9 +25,9 @@ export const calculateInViewIndexes = (
   let xMin = findIndex(
     widths,
     (width: number, idx: number) => {
-      const x = scrollX;
+      const x = scrollX - (isNil(rowRemainWidth) ? 0 : rowRemainWidth);
       return (
-        x >= width + (isNil(rowRemainWidth) ? 0 : rowRemainWidth) &&
+        x >= width &&
         x < widths[idx + 1]
       );
     },
