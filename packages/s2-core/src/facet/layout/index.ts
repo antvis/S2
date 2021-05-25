@@ -170,12 +170,9 @@ export class Layout {
       // }
 
       // mark grand totals node in origin data obj
-      each(data, (d) => {
-        // eslint-disable-next-line no-param-reassign
-        d.isGrandTotals = isGrandTotals;
-        // eslint-disable-next-line no-param-reassign
-        d.isSubTotals = isSubTotals || isSubTotalsInTree;
-      });
+      data.isGrandTotals = isGrandTotals;
+      // eslint-disable-next-line no-param-reassign
+      data.isSubTotals = isSubTotals || isSubTotalsInTree;
       let valueField = '';
       let fieldValue = null;
       const realData = get(data, [0], {});

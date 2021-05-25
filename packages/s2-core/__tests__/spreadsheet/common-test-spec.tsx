@@ -8,7 +8,7 @@ import {
   SheetComponent,
   SpreadSheet,
 } from '../../src';
-import { getContainer, getMockData } from './helpers';
+import { getContainer, getMockData } from '../helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch, Checkbox } from 'antd';
@@ -109,55 +109,55 @@ import { CustomTooltip } from './custom/custom-tooltip';
 // ];
 // province, city, category, subCategory, price(EXTRA_VALUE)
 const data = [
-  {
-    price: 1,
-  },
-  {
-    province: '辽宁省',
-    price: 2,
-  },
-  {
-    province: '辽宁省',
-    price: 3,
-    city: '达州市',
-  },
-  {
-    province: '辽宁省',
-    price: 4,
-    city: '芜湖市',
-  },
-  {
-    price: 5,
-    category: '家具',
-  },
-  {
-    province: '辽宁省',
-    price: 6,
-    category: '家具',
-  },
-  {
-    price: 7,
-    province: '辽宁省',
-    city: '达州市',
-    category: '家具',
-  },
-  {
-    price: 8,
-    province: '辽宁省',
-    city: '芜湖市',
-    category: '家具',
-  },
-  {
-    price: 9,
-    category: '家具',
-    subCategory: '桌子',
-  },
-  {
-    price: 10,
-    province: '辽宁省',
-    category: '家具',
-    subCategory: '桌子',
-  },
+  // {
+  //   price: 1,
+  // },
+  // {
+  //   province: '辽宁省',
+  //   price: 2,
+  // },
+  // {
+  //   province: '辽宁省',
+  //   price: 3,
+  //   city: '达州市',
+  // },
+  // {
+  //   province: '辽宁省',
+  //   price: 4,
+  //   city: '芜湖市',
+  // },
+  // {
+  //   price: 5,
+  //   category: '家具',
+  // },
+  // {
+  //   province: '辽宁省',
+  //   price: 6,
+  //   category: '家具',
+  // },
+  // {
+  //   price: 7,
+  //   province: '辽宁省',
+  //   city: '达州市',
+  //   category: '家具',
+  // },
+  // {
+  //   price: 8,
+  //   province: '辽宁省',
+  //   city: '芜湖市',
+  //   category: '家具',
+  // },
+  // {
+  //   price: 9,
+  //   category: '家具',
+  //   subCategory: '桌子',
+  // },
+  // {
+  //   price: 10,
+  //   province: '辽宁省',
+  //   category: '家具',
+  //   subCategory: '桌子',
+  // },
   {
     price: 11,
     province: '辽宁省',
@@ -173,17 +173,17 @@ const data = [
     subCategory: '桌子',
   },
 
-  {
-    price: 13,
-    category: '家具',
-    subCategory: '椅子',
-  },
-  {
-    price: 14,
-    province: '辽宁省',
-    category: '家具',
-    subCategory: '椅子',
-  },
+  // {
+  //   price: 13,
+  //   category: '家具',
+  //   subCategory: '椅子',
+  // },
+  // {
+  //   price: 14,
+  //   province: '辽宁省',
+  //   category: '家具',
+  //   subCategory: '椅子',
+  // },
   {
     price: 15,
     province: '辽宁省',

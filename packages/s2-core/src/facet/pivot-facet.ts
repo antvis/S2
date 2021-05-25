@@ -44,6 +44,7 @@ export class PivotFacet extends BaseFacet {
       }
     });
     const dataSet = this.cfg.dataSet;
+    const values = dataSet.fields.values;
     const ss = this.spreadsheet;
 
     function getViewMeta(rowIndex: number, colIndex: number): ViewMeta {
@@ -80,28 +81,34 @@ export class PivotFacet extends BaseFacet {
       const rowQuery = getDimsConditionByNode(row, isSubTotalsInTree);
       // 数值挂行头且有列总计的特殊情况，需要强制返回node路径
       const colQuery = getDimsConditionByNode(col, isValueInColsTotal);
-      const dataQuery = isValueInColsTotal
-        ? _.merge({}, rowQuery)
-        : _.merge({}, rowQuery, colQuery);
+      // const dataQuery = isValueInColsTotal
+      //   ? _.merge({}, rowQuery)
+      //   : _.merge({}, rowQuery, colQuery);
+
+      // TODO 根据valueInCols来确定查询的度量id是什么？
+      //  这里查询的逻辑 需要重新再梳理，需要考虑 tree和非tree模式
+      const measureQuery = {};
+      if(isGrandTotals || isSubTotals) {
+        if (!_.isEmpty(values)) {
+          _.set(measureQuery, `${EXTRA_FIELD}`, values[0]);
+        }
+      }
+
+      const dataQuery = _.merge({}, rowQuery, colQuery, measureQuery);
 
       const test = dataSet.getCellData(dataQuery);
-      console.log(`${i}-${j}`, dataQuery, test);
+      // console.log(`${i}-${j}`, dataQuery, test);
       const data = test;
 
       // mark grand totals node in origin data obj
-      _.each(data, (d) => {
-        // eslint-disable-next-line no-param-reassign
-        d.isGrandTotals = isGrandTotals;
-        // eslint-disable-next-line no-param-reassign
-        d.isSubTotals = isSubTotals || isSubTotalsInTree;
-      });
+      data.isGrandTotals = isGrandTotals;
+      data.isSubTotals = isSubTotals || isSubTotalsInTree;
       let valueField = '';
       let fieldValue = null;
-      const realData = _.get(data, [0], {});
-      if (!_.isEmpty(realData)) {
-        if (_.has(realData, EXTRA_FIELD) || _.has(realData, VALUE_FIELD)) {
-          valueField = _.get(realData, [EXTRA_FIELD], '');
-          fieldValue = _.get(realData, [VALUE_FIELD], null);
+      if (!_.isEmpty(data)) {
+        if (_.has(data, EXTRA_FIELD) || _.has(data, VALUE_FIELD)) {
+          valueField = _.get(data, [EXTRA_FIELD], '');
+          fieldValue = _.get(data, [VALUE_FIELD], null);
         }
       } else {
         // 数据查询为空，需要默认带上可能存在的valueField

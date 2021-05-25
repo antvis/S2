@@ -5,6 +5,7 @@ import { i18n } from "src/common/i18n";
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from "src/common/constant";
 import { auto } from "src/utils/formatter";
 import * as _ from "lodash";
+import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from "src/common/debug";
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -33,7 +34,9 @@ export class PivotDataSet extends BaseDataSet {
     this.indexesData = [];
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
-    this.transformIndexesData();
+    DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
+      this.transformIndexesData();
+    });
     // TODO remove this function and unSortedDimensionValues/sortedDimensionValues
     //  when sortParams be reconstructed
     this.handleDimensionValuesSort();
@@ -54,7 +57,7 @@ export class PivotDataSet extends BaseDataSet {
       if (_.size(path) === 0) {
         path.push(0);
       }
-      console.log('path:', path, data);
+      // console.log('path:', path, data);
       _.set(this.indexesData, path, data);
     }
   }
@@ -175,7 +178,7 @@ export class PivotDataSet extends BaseDataSet {
     ): number[] => {
       let currentMeta = isRow ? this.rowPivotMeta : this.colPivotMeta;
       const path = [];
-      _.each(dimensionValues, (value) => {
+      for (const value of dimensionValues) {
         if (!currentMeta.has(value)) {
           if (firstCreate) {
             currentMeta.set(value, {
@@ -183,13 +186,18 @@ export class PivotDataSet extends BaseDataSet {
               children: new Map(),
             });
           } else {
-            return path.push(0);
+            // the most case happened in total cell
+            const meta = currentMeta.get(value);
+            if (meta) {
+              path.push(meta.level);
+            }
+            break;
           }
         }
         const meta = currentMeta.get(value);
         path.push(meta.level);
         currentMeta = meta.children;
-      });
+      }
       return path;
     };
     const rowPath = getPath(firstCreate, rowDimensionValues);
@@ -261,7 +269,6 @@ export class PivotDataSet extends BaseDataSet {
     // 4. 数据按照 newValues 字段扩展成 newColumnName 字段
     // 将原一条数据，转化成 newValues.length 条数据
     const newData = [];
-    console.log(`pre data -> ${JSON.stringify(data)}`);
     // eslint-disable-next-line no-restricted-syntax
     for (const datum of data) {
       if (!_.isEmpty(newValues)) {
@@ -278,7 +285,6 @@ export class PivotDataSet extends BaseDataSet {
         });
       }
     }
-    console.log(`after data -> ${JSON.stringify(newData)}`);
     // 返回新的结构
     return {
       data: newData,
@@ -319,7 +325,7 @@ export class PivotDataSet extends BaseDataSet {
     return filterUndefined(Array.from(meta.keys()));
   }
 
-  public getCellData(query: DataType): DataType[] {
+  public getCellData(query: DataType): DataType {
     const { rows, columns, values } = this.fields;
     const getDimensionValues = (dimensions: string[], query: DataType): string[] => {
       return _.reduce(
@@ -339,12 +345,13 @@ export class PivotDataSet extends BaseDataSet {
       colDimensionValues,
       false,
     );
-    let data = _.size(path) ? _.get(this.indexesData, path) : this.indexesData;
-    if (!_.isArray(data)) {
-      data = [data];
+
+    let data = _.size(path) ? _.get(this.indexesData, path) : {};
+    if (_.isArray(data)) {
+      data = {};
     }
-    console.log('path------:', path, data);
-    return _.compact(_.flattenDeep(data));
+    DebuggerUtil.getInstance().logger("get data:", path, data);
+    return data || {};
   }
 
   handleValues = (values: string[], derivedValues: DerivedValue[]) => {

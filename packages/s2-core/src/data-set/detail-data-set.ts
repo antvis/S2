@@ -1,12 +1,13 @@
 import { S2DataConfig } from '../common/interface';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD } from '../common/constant';
-import { DetailPivot, PivotDataSet } from "./index";
+import { BaseDataSet, DetailPivot, PivotDataSet } from "./index";
+import { DataType } from "src/data-set/interface";
 
 /**
  * 明细表的DataSet工具类
  */
-export class DetailDataSet extends PivotDataSet {
+export class DetailDataSet extends BaseDataSet {
   /**
    * 对数据集预处理
    * 明细表需要在所有行末尾增加一列，代表当前行在原始数据里面的index
@@ -53,5 +54,17 @@ export class DetailDataSet extends PivotDataSet {
       sortParams: this.sortParams,
       spreadsheet: this.spreadsheet,
     });
+  }
+
+  getCellData(query: DataType): DataType[] {
+    return [];
+  }
+
+  getDimensionValues(field: string, query?: DataType): string[] {
+    return [];
+  }
+
+  processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
+    return undefined;
   }
 }

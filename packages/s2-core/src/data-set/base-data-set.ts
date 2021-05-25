@@ -73,5 +73,5 @@ export abstract class BaseDataSet {
 
   public abstract getDimensionValues(field: string, query?: DataType): string[];
 
-  public abstract getCellData(query: DataType): DataType[];
+  public abstract getCellData(query: DataType): DataType;
 }

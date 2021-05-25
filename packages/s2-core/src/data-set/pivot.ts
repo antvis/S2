@@ -29,7 +29,7 @@ import {
   isArray,
 } from 'lodash';
 import { Aggregation, SortParams, Total, Totals } from '../common/interface';
-import { DEBUG_TRAINING_DATA, DebuggerUtil } from '../common/debug';
+import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from '../common/debug';
 import { EXTRA_FIELD } from '../common/constant';
 import { SpreadSheet } from "src/sheet-type";
 
@@ -100,7 +100,7 @@ export class Pivot {
     this.sortedDimValue = new Map();
     this.totalsCache = new Map();
     this.totalsCacheGift = new Map();
-    DebuggerUtil.getInstance().debugCallback(DEBUG_TRAINING_DATA, () => {
+    DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
       this.training();
       DebuggerUtil.getInstance().logger(
         `Data Size :${this.config.data?.length}`,
@@ -166,7 +166,6 @@ export class Pivot {
     if (!isArray(data)) {
       data = [data];
     }
-    console.log('path------:', path, data);
     // 如果存在attrs，此时record是一个数组，不需要再进行嵌套
     return compact(flattenDeep(data));
   }
@@ -300,7 +299,6 @@ export class Pivot {
         // 没有row，没有col
         path.push(0);
       }
-      console.log('path:', path, line);
       set(this.data, path, line);
     }
     // 对维值map进行排序处理

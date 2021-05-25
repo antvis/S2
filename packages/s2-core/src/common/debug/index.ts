@@ -4,7 +4,7 @@
  */
 
 // debug info
-export const DEBUG_TRAINING_DATA = 'Training Data';
+export const DEBUG_TRANSFORM_DATA = 'Transform Data';
 export const DEBUG_HEADER_LAYOUT = 'Header Layout';
 export const DEBUG_VIEW_RENDER = 'Data Cell Render';
 
@@ -40,9 +40,9 @@ export class DebuggerUtil {
     }
   };
 
-  public logger = (info: string) => {
+  public logger = (info: string, ...params) => {
     if (this.debug) {
-      console.log(info);
+      console.log(info, ...params);
     }
   };
 }

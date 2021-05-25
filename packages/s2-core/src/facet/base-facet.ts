@@ -752,8 +752,8 @@ export abstract class BaseFacet {
 
   realCellRender = (scrollX: number, scrollY: number) => {
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
+    DebuggerUtil.getInstance().logger('renderIndex:', this.preCellIndexes, indexes);
     const { add, remove } = diffIndexes(this.preCellIndexes, indexes);
-    // Filter cells with width/height of zero
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
       // add new cell in panelCell
       _.each(add, ([i, j]) => {

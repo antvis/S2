@@ -28,7 +28,7 @@
     "cpx:less": "cpx \"src/**/*.less\" lib; cpx \"src/**/*.less\" esm",
     "test-custom-header-cell": "DEBUG_MODE=1 jest __tests__/spreadsheet/custom-header-cell-spec.tsx",
     "test-live": "DEBUG_MODE=1 jest __tests__/spreadsheet/spread-sheet-spec.tsx",
-    "test-common": "DEBUG_MODE=1 jest __tests__/spreadsheet/common-test-spec.tsx",
+    "test-common": "DEBUG_MODE=1 jest __tests__/s2/data-accuracy-spec.tsx",
     "test-pressure": "DEBUG_MODE=1 jest __tests__/spreadsheet/pressure-test-spec.tsx",
     "start": "webpack --config webpack-dev.config.js --mode development --progress",
     "tsc": "tsc --noEmit"
@@ -122,7 +122,7 @@
       "!**/vendor/**"
     ],
     "transformIgnorePatterns": [],
-    "testRegex": "/__tests__/spreadsheet/.*-spec\\.(tsx|ts|js)?$",
+    "testRegex": "/__tests__/s2/.*-spec\\.(tsx|ts|js)?$",
     "transform": {
       "\\.(less|css)$": "jest-less-loader",
       "\\.svg$": "jest-raw-loader"
