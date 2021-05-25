@@ -2,6 +2,7 @@ import { find, isEqual, forEach } from 'lodash';
 import { BaseSpreadSheet } from 'src';
 import { SelectedStateName } from 'src/common/constant/interatcion';
 import { SelectedState, Cell } from 'src/common/interface/interaction';
+import { MergedCells } from 'src/cell/merged-cells';
 
 /**
  *  according to the coordinates of the starting point of the rectangle,
@@ -66,7 +67,7 @@ const getNextEdge = (curEdge: number[], edges: number[][]) => {
  * return all the points of the polygon
  * @param cells the collection of information of cells which needed be merged
  */
-const getPolygonPoints = (cells: Cell[]) => {
+export const getPolygonPoints = (cells: Cell[]) => {
   let allEdges = [];
 
   cells.forEach((cell) => {
@@ -77,7 +78,6 @@ const getPolygonPoints = (cells: Cell[]) => {
   allEdges = unique(allEdges);
 
   let allPoints = [];
-
   const startEdge = allEdges[0];
   let curEdge = startEdge;
   let nextEdge = [];
@@ -87,6 +87,7 @@ const getPolygonPoints = (cells: Cell[]) => {
     nextEdge = getNextEdge(curEdge, allEdges);
     curEdge = nextEdge;
   }
+  return allPoints;
 };
 
 /**
@@ -99,16 +100,9 @@ export const drawMergeCellBg = (
   curSelectedState: SelectedState,
 ) => {
   const { stateName, cells } = curSelectedState;
-  const allPoints = getPolygonPoints(cells);
+  // const allPoints = getPolygonPoints(cells);
   if (stateName === SelectedStateName.SELECTED) {
-    const cellTheme = sheet.theme.view.cell;
-    sheet.facet.panelGroup.addShape('polygon', {
-      attrs: {
-        points: allPoints,
-        stroke: cellTheme.borderColor[0],
-        fill: cellTheme.backgroundColor,
-        lineWidth: cellTheme.borderWidth[0],
-      },
-    });
+    // const cellTheme = sheet.theme.view.cell;
+    sheet.facet.panelGroup.add(new MergedCells(cells, sheet ));
   }
 };

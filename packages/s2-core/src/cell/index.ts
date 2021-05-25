@@ -1,11 +1,8 @@
-/**
- * Create By Bruce Too
- * On 2020-04-01
- */
 import { BaseCell } from './base-cell';
 import { ColCell } from './col-cell';
 import { CornerCell } from './corner-cell';
 import { DataCell } from './data-cell';
+import { MergedCells } from './merged-cells';
 import { RowCell } from './row-cell';
 import { DerivedCell } from './derived-cell';
 import { DetailRowCell } from './detail-row-cell';
@@ -22,6 +19,7 @@ export {
   RowCell,
   ColCell,
   DataCell,
+  MergedCells,
   CornerCell,
   BaseCell,
 };

@@ -1,25 +1,17 @@
 import { act } from 'react-dom/test-utils';
+import { drawMergeCellBg } from '../../src/utils/interactions/merge-cell';
 import 'antd/dist/antd.min.css';
 import {
+  BaseSpreadSheet,
   S2DataConfig,
   S2Options,
   SheetComponent,
   SpreadSheet,
 } from '../../src';
-import { getContainer, getMockData } from './helpers';
+import { Button } from 'antd';
+import { getContainer } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { CustomTooltip } from './custom/custom-tooltip';
-
-let data = getMockData('../datasets/tableau-supermarket.csv');
-
-data = data.map((row) => {
-  row['profit-tongbi'] = 0.2233;
-  row['profit-huanbi'] = -0.4411;
-  row['count-tongbi'] = 0.1234;
-  row['count-huanbi'] = -0.4321;
-  return row;
-});
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -170,7 +162,6 @@ const mockData = {
   ],
 } as S2DataConfig;
 
-
 const options = {
   width: 1000,
   height: 600,
@@ -178,7 +169,7 @@ const options = {
   style: {
     cellCfg: {
       lineHeight: 30,
-      width: 500,
+      width: 400,
       height: 300,
       minorMeasureRowIndex: 3,
       firstDerivedMeasureRowIndex: 2,
@@ -186,7 +177,48 @@ const options = {
   },
 } as S2Options;
 
+let sheet;
+let curSelectedState;
 
+const demo = (
+  <div>
+    <Button
+      onClick={() => {
+        drawMergeCellBg(sheet, curSelectedState);
+      }}
+    >
+      合并单元格
+    </Button>
+  </div>
+);
+
+const onDataCellMouseUp = (value) => {
+  console.log(value);
+  sheet = value?.viewMeta?.spreadsheet;
+  curSelectedState = sheet.getCurrentState();
+  sheet.tooltip.show({
+    position: { x: value.event.clientX, y: value.event.clientY },
+    element: demo,
+  });
+};
+
+const onRowCellClick = (value) => {
+  console.log(value);
+  sheet = value?.viewMeta?.spreadsheet;
+  sheet.tooltip.show({
+    position: { x: value.event.clientX, y: value.event.clientY },
+    element: demo,
+  });
+};
+
+const onColCellClick = (value) => {
+  console.log(value);
+  sheet = value?.viewMeta?.spreadsheet;
+  sheet.tooltip.show({
+    position: { x: value.event.clientX, y: value.event.clientY },
+    element: demo,
+  });
+};
 
 describe('spreadsheet tabular spec', () => {
   test('demo', () => {
@@ -201,7 +233,9 @@ describe('spreadsheet tabular spec', () => {
         adaptive={false}
         options={options}
         spreadsheet={getSpreadSheet}
-     
+        onDataCellMouseUp={onDataCellMouseUp}
+        onRowCellClick={onRowCellClick}
+        onColCellClick={onColCellClick}
       />,
       getContainer(),
     );

@@ -1,5 +1,6 @@
 import { merge, clone, omit } from 'lodash';
 import { act } from 'react-dom/test-utils';
+import { drawMergeCellBg } from '../../src/utils/interactions/merge-cell';
 import 'antd/dist/antd.min.css';
 import {
   auto,
@@ -11,7 +12,7 @@ import {
 import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Switch, Checkbox } from 'antd';
+import { Switch, Checkbox, Button } from 'antd';
 import { CustomTooltip } from './custom/custom-tooltip';
 
 let data = getMockData('../datasets/tableau-supermarket.csv');
@@ -138,9 +139,9 @@ const getOptions = () => {
       },
       device: 'pc',
     },
-    tooltip: {
-      showTooltip: true,
-    },
+    // tooltip: {
+    //   showTooltip: true,
+    // },
     initTooltip: (spreadsheet) => {
       return new CustomTooltip(spreadsheet);
     },
@@ -170,6 +171,32 @@ function MainLayout(props) {
   const onDataCellClick = (value) => {
     console.log(value);
   };
+
+  let sheet;
+  let curSelectedState;
+
+  const demo = (
+    <div>
+      <Button
+        onClick={() => {
+          drawMergeCellBg(sheet, curSelectedState);
+        }}
+      >
+        合并单元格
+      </Button>
+    </div>
+  );
+
+  const onDataCellMouseUp = (value) => {
+    console.log(value);
+    sheet = value?.viewMeta?.spreadsheet;
+    curSelectedState = sheet.getCurrentState();
+    sheet.tooltip.show({
+      position: { x: value.event.clientX, y: value.event.clientY },
+      element: demo,
+    });
+  };
+
   const onCheckChanged = (checked) => {
     setValueInCols(checked);
     setOptions(
@@ -270,6 +297,7 @@ function MainLayout(props) {
         options={options}
         theme={props.theme}
         spreadsheet={getSpreadSheet}
+        onDataCellMouseUp={onDataCellMouseUp}
         onRowCellClick={onRowCellClick}
         onColCellClick={onColCellClick}
         onDataCellClick={onDataCellClick}
