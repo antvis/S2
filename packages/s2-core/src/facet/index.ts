@@ -24,6 +24,7 @@ import {
 import { Formatter } from '../common/interface';
 import { diffIndexes, Indexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
+import {updateMergedCells} from '../utils/interactions/merge-cell';
 import { BaseCell } from '../cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
@@ -517,18 +518,23 @@ export class SpreadsheetFacet extends BaseFacet {
           this.panelGroup.add(cell);
         }
       });
+
       const allCells = filter(
         this.panelGroup.getChildren(),
         (child) => child instanceof BaseCell,
       );
+  
       // remove cell from panelCell
       each(remove, ([i, j]) => {
         const findOne = find(
           allCells,
           (cell) => cell.get('name') === `${i}-${j}`,
         );
-        findOne?.remove(true);
+        findOne?.remove(true)
       });
+    
+      updateMergedCells(this.spreadsheet);
+  
       DebuggerUtil.getInstance().logger(
         `Render Cell Panel: ${allCells?.length}, Add: ${newIndexes?.length}, Remove: ${remove?.length}`,
       );

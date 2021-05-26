@@ -23,6 +23,7 @@ import {
 } from '../interaction';
 import {
   DataCellClick,
+  MergedCellsClick,
   CornerTextClick,
   RowColumnClick,
   RowTextClick,
@@ -178,6 +179,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.registerEvent(EventNames.CORNER_TEXT_CLICK_EVENT, CornerTextClick);
     this.registerEvent(EventNames.ROW_COLUMN_CLICK_EVENT, RowColumnClick);
     this.registerEvent(EventNames.ROW_TEXT_CLICK_EVENT, RowTextClick);
+    this.registerEvent(EventNames.MERGEDCELLS_CLICK_EVENT, MergedCellsClick);
     this.registerEvent(EventNames.HOVER_EVENT, HoverEvent);
   }
 

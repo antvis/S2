@@ -24,7 +24,7 @@ import {
   ViewMeta,
   safetyOptions,
 } from '../common/interface';
-import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
+import { DataCell, BaseCell, RowCell, ColCell, CornerCell, MergedCells} from '../cell';
 import {
   KEY_COL_REAL_WIDTH_INFO,
   KEY_GROUP_BACK_GROUND,
@@ -660,6 +660,9 @@ export default abstract class BaseSpreadSheet extends EE {
     }
     if (cell instanceof CornerCell) {
       return CornerCell.name;
+    }
+    if (cell instanceof MergedCells) {
+      return MergedCells.name;
     }
     return '';
   }

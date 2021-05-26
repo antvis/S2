@@ -6,6 +6,7 @@ export const getBaseCellData = (ev: Event) => {
   const meta = target?.getMeta?.() || currentCellData;
 
   const baseCellData = {
+    target: target,
     viewMeta: meta,
     event: ev,
   };

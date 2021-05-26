@@ -28,10 +28,13 @@ import {
   KEY_LIST_SORT,
   KEY_PAGINATION,
 } from 'src/common/constant';
+import { S2Event } from 'src/interaction/events/types';
+import { getBaseCellData } from 'src/utils/interactions/formatter';
 import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
 import SpreadSheet from 'src/sheet-type/spread-sheet';
 import { resetDrillDownCfg } from 'src/utils/drill-down/helper';
 import { BaseSheetProps } from '../interface';
+import {Event }from '@antv/g-canvas';
 
 import './index.less';
 
@@ -56,6 +59,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
     onCornerCellClick,
     onDataCellClick,
     getSpreadsheet,
+    onDataCellMouseUp,
     partDrillDown,
   } = props;
   let container: HTMLDivElement;
@@ -96,6 +100,11 @@ export const BaseSheet = (props: BaseSheetProps) => {
 
     baseSpreadsheet.on(KEY_PAGINATION, (data: PaginationCfg) => {
       setTotal(data?.total);
+    });
+    baseSpreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev: Event) => {
+      if (isFunction(onDataCellMouseUp)) {
+        onDataCellMouseUp(getBaseCellData(ev));
+      }
     });
 
     baseSpreadsheet.on(KEY_ROW_NODE_BORDER_REACHED, (value) => {

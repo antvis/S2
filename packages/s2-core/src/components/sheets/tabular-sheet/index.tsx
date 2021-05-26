@@ -12,18 +12,14 @@ import {
 import { merge } from 'lodash';
 import { Spin } from 'antd';
 import { Header } from '../../header';
-
+import { S2Event } from 'src/interaction/events/types';
+import { getBaseCellData } from 'src/utils/interactions/formatter';
 import { TabularDataCell } from './tabular-data-cell';
 import { TabularTheme } from './tabular-theme';
-import {
-  KEY_COLUMN_CELL_CLICK,
-  KEY_CORNER_CELL_CLICK,
-  KEY_ROW_CELL_CLICK,
-  KEY_SINGLE_CELL_CLICK,
-} from 'src/index';
 import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
 import SpreadSheet from 'src/sheet-type/spread-sheet';
 import { BaseSheetProps } from '../interface';
+import { Event } from '@antv/g-canvas';
 import {
   safetyDataConfig,
   safetyOptions,
@@ -42,8 +38,8 @@ export const TabularSheet = (props: BaseSheetProps) => {
     isLoading,
     onRowCellClick,
     onColCellClick,
-    onCornerCellClick,
-    onDataCellClick,
+    onMergedCellsClick,
+    onDataCellMouseUp,
     getSpreadsheet,
   } = props;
   let container: HTMLDivElement;
@@ -119,25 +115,35 @@ export const TabularSheet = (props: BaseSheetProps) => {
   };
 
   const bindEvent = () => {
-    baseSpreadsheet.on(KEY_ROW_CELL_CLICK, (value) => {
-      if (isFunction(onRowCellClick)) onRowCellClick(value);
+    baseSpreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev: Event) => {
+      if (isFunction(onDataCellMouseUp)) {
+        onDataCellMouseUp(getBaseCellData(ev));
+      }
     });
-    baseSpreadsheet.on(KEY_COLUMN_CELL_CLICK, (value) => {
-      if (isFunction(onColCellClick)) onColCellClick(value);
+    baseSpreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
+      if (isFunction(onRowCellClick)) {
+        onRowCellClick(getBaseCellData(ev));
+      }
     });
-    baseSpreadsheet.on(KEY_CORNER_CELL_CLICK, (value) => {
-      if (isFunction(onCornerCellClick)) onCornerCellClick(value);
+    baseSpreadsheet.on(S2Event.COLCELL_CLICK, (ev: Event) => {
+      if (isFunction(onColCellClick)) {
+        onColCellClick(getBaseCellData(ev));
+      }
     });
-    baseSpreadsheet.on(KEY_SINGLE_CELL_CLICK, (value) => {
-      if (isFunction(onDataCellClick)) onDataCellClick(value);
+
+    baseSpreadsheet.on(S2Event.MERGEDCELLS_CLICK, (ev: Event) => {
+      console.log('ev', ev);
+      if (isFunction(onMergedCellsClick)) {
+        onMergedCellsClick(getBaseCellData(ev));
+      }
     });
   };
 
   const unBindEvent = () => {
-    baseSpreadsheet.off(KEY_ROW_CELL_CLICK);
-    baseSpreadsheet.off(KEY_COLUMN_CELL_CLICK);
-    baseSpreadsheet.off(KEY_CORNER_CELL_CLICK);
-    baseSpreadsheet.off(KEY_SINGLE_CELL_CLICK);
+    baseSpreadsheet.off(S2Event.MERGEDCELLS_CLICK);
+    baseSpreadsheet.off(S2Event.ROWCELL_CLICK);
+    baseSpreadsheet.off(S2Event.COLCELL_CLICK);
+    baseSpreadsheet.off(S2Event.DATACELL_MOUSEUP);
   };
 
   const buildSpreadSheet = () => {
@@ -155,7 +161,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     }
   };
 
-  const debounceResize = debounce((e: Event) => {
+  const debounceResize = debounce((e) => {
     setResizeTimeStamp(e.timeStamp);
   }, 200);
 

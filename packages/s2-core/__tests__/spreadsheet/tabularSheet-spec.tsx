@@ -1,8 +1,7 @@
 import { act } from 'react-dom/test-utils';
-import { drawMergeCellBg } from '../../src/utils/interactions/merge-cell';
+import { mergeCell } from '../../src/utils/interactions/merge-cell';
 import 'antd/dist/antd.min.css';
 import {
-  BaseSpreadSheet,
   S2DataConfig,
   S2Options,
   SheetComponent,
@@ -180,11 +179,11 @@ const options = {
 let sheet;
 let curSelectedState;
 
-const demo = (
+const dataCellTooltip = (
   <div>
     <Button
       onClick={() => {
-        drawMergeCellBg(sheet, curSelectedState);
+        mergeCell(sheet, curSelectedState);
       }}
     >
       合并单元格
@@ -192,13 +191,20 @@ const demo = (
   </div>
 );
 
+const mgergedCellsTooltip = (
+  <div>
+    合并后的tooltip
+  </div>
+);
+
+
 const onDataCellMouseUp = (value) => {
   console.log(value);
   sheet = value?.viewMeta?.spreadsheet;
   curSelectedState = sheet.getCurrentState();
   sheet.tooltip.show({
     position: { x: value.event.clientX, y: value.event.clientY },
-    element: demo,
+    element: dataCellTooltip,
   });
 };
 
@@ -207,7 +213,7 @@ const onRowCellClick = (value) => {
   sheet = value?.viewMeta?.spreadsheet;
   sheet.tooltip.show({
     position: { x: value.event.clientX, y: value.event.clientY },
-    element: demo,
+    element: dataCellTooltip,
   });
 };
 
@@ -216,9 +222,17 @@ const onColCellClick = (value) => {
   sheet = value?.viewMeta?.spreadsheet;
   sheet.tooltip.show({
     position: { x: value.event.clientX, y: value.event.clientY },
-    element: demo,
+    element: dataCellTooltip,
   });
 };
+
+const onMergedCellsClick = (value) => {
+  sheet = value?.target?.cells[0].spreadsheet;
+  sheet.tooltip.show({
+    position: { x: value.event.clientX, y: value.event.clientY },
+    element: mgergedCellsTooltip,
+  });
+}
 
 describe('spreadsheet tabular spec', () => {
   test('demo', () => {
@@ -236,6 +250,7 @@ describe('spreadsheet tabular spec', () => {
         onDataCellMouseUp={onDataCellMouseUp}
         onRowCellClick={onRowCellClick}
         onColCellClick={onColCellClick}
+        onMergedCellsClick={onMergedCellsClick}
       />,
       getContainer(),
     );

@@ -1,6 +1,5 @@
-import { find, isEqual, forEach } from 'lodash';
+import { find, isEqual, forEach, isEmpty, filter} from 'lodash';
 import { BaseSpreadSheet } from 'src';
-import { SelectedStateName } from 'src/common/constant/interatcion';
 import { SelectedState, Cell } from 'src/common/interface/interaction';
 import { MergedCells } from 'src/cell/merged-cells';
 
@@ -95,14 +94,57 @@ export const getPolygonPoints = (cells: Cell[]) => {
  * @param sheet the base sheet instance
  * @param curSelectedState
  */
-export const drawMergeCellBg = (
+export const mergeCell = (
   sheet: BaseSpreadSheet,
   curSelectedState: SelectedState,
 ) => {
-  const { stateName, cells } = curSelectedState;
-  // const allPoints = getPolygonPoints(cells);
-  if (stateName === SelectedStateName.SELECTED) {
-    // const cellTheme = sheet.theme.view.cell;
-    sheet.facet.panelGroup.add(new MergedCells(cells, sheet ));
+  const {  cells } = curSelectedState;
+  if(!isEmpty(cells)) {
+    let mergedCells = sheet.store.get('mergedCells') || [];
+    mergedCells.push(cells);
+    sheet.store.set('mergedCells', mergedCells);
+    sheet.facet.panelGroup.add(new MergedCells('', sheet, cells));
   }
 };
+
+const ifSubset = (a: any[], b: any[]) => {
+  let res = true;
+  a.forEach((item) => {
+    if(!find(b, item)) res = false;
+  })
+  return res;
+}
+
+
+/**
+ * upddate the merge
+ * @param sheet the base sheet instance
+ * @param curSelectedState
+ */
+export const updateMergedCells = (sheet:BaseSpreadSheet) => {
+  let allMergedCells = sheet.store.get('mergedCells');
+  if(isEmpty(allMergedCells)) return;
+  const allCells = filter(
+    sheet.panelGroup.getChildren(),
+    (child) => !(child instanceof MergedCells),
+  );
+  
+  if(isEmpty(allCells)) return;
+    
+  const mergedCells = filter(
+    sheet.panelGroup.getChildren(),
+    (child) => (child instanceof MergedCells),
+  );
+
+  allMergedCells.forEach((cells: Cell[]) => {
+    // the merged cells are partially within the visible range
+    if(!ifSubset(cells, allCells)) {
+       const findOne = find(
+        mergedCells,
+        (item) => isEqual(item?.cells, cells),
+      );
+      findOne?.remove(true);
+      sheet.facet.panelGroup.add(new MergedCells('', sheet, cells));
+    }
+   });
+}

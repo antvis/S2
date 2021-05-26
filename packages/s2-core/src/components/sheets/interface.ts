@@ -3,6 +3,7 @@ import { S2DataConfig, S2Options } from 'src/common/interface';
 import { DrillDownProps } from 'src/components/drill-down';
 import { HeaderCfgProps } from 'src/components/header';
 import { Node, SpreadSheetTheme } from 'src/index';
+import {Event} from '@antv/g-canvas';
 
 export interface PartDrillDownInfo {
   // The data of drill down
@@ -58,9 +59,11 @@ export interface BaseSheetProps {
     scrollY: number;
     thumbOffset: number;
   }) => void;
-  onRowCellClick?: (value) => void;
-  onColCellClick?: (value) => void;
-  onCornerCellClick?: (value) => void;
-  onDataCellClick?: (value) => void;
+  onRowCellClick?: (ev: Event) => void;
+  onColCellClick?: (ev: Event) => void;
+  onCornerCellClick?: (ev: Event) => void;
+  onDataCellClick?: (ev: Event) => void;
+  onDataCellMouseUp?: (ev: Event) => void;
+  onMergedCellsClick?: (ev: Event) => void;
   getSpreadsheet?: (spreadsheet: BaseSpreadsheet) => void;
 }

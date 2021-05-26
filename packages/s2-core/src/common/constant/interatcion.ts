@@ -7,6 +7,7 @@ export enum InteractionNames {
 
 export enum EventNames {
   DATACELL_CLICK_EVENT = 'spreadsheet:data-cell-click',
+  MERGEDCELLS_CLICK_EVENT = 'spreadsheet:merged-cells-click',
   CORNER_TEXT_CLICK_EVENT = 'spreadsheet:corner-text-click',
   ROW_COLUMN_CLICK_EVENT = 'spreadsheet:row-column-click',
   ROW_TEXT_CLICK_EVENT = 'spreadsheet:row-text-click',

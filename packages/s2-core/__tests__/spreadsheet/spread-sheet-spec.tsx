@@ -1,6 +1,6 @@
 import { merge, clone, omit } from 'lodash';
 import { act } from 'react-dom/test-utils';
-import { drawMergeCellBg } from '../../src/utils/interactions/merge-cell';
+import { mergeCell } from '../../src/utils/interactions/merge-cell';
 import 'antd/dist/antd.min.css';
 import {
   auto,
@@ -179,7 +179,7 @@ function MainLayout(props) {
     <div>
       <Button
         onClick={() => {
-          drawMergeCellBg(sheet, curSelectedState);
+          mergeCell(sheet, curSelectedState);
         }}
       >
         合并单元格
