@@ -1,4 +1,10 @@
 import { memoize, isString, values, isArray, toString, isNumber } from 'lodash';
+import { DataItem, MultiData } from 'src/common/interface/S2DataConfig';
+import { renderText } from 'src/utils/g-renders';
+import { isObject, get, merge, clone } from 'lodash';
+import { PADDING_LEFT, PADDING_RIGHT } from 'src/common/constant';
+import { IShape } from '@antv/g-canvas';
+import { S2Options, SpreadSheetTheme } from 'src';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -75,6 +81,7 @@ export const getEllipsisTextInner = (
     if (currentWidth + DOT_WIDTH > leftWidth) {
       if (currentWidth > leftWidth) {
         runningStep1 = false;
+        break;
       }
     }
 
@@ -102,6 +109,7 @@ export const getEllipsisTextInner = (
     // 超出剩余宽度，则停止
     if (currentWidth + DOT_WIDTH > leftWidth) {
       runningStep2 = false;
+      break;
     }
 
     r.push(currentText);
@@ -242,4 +250,133 @@ export const getDerivedDataState = (value: number | string): boolean => {
     return value >= 0;
   }
   return !/^-/.test(value);
+};
+
+const calX = (x: number, padding: number[], total?: number) => {
+  const extra = total || 0;
+  return x + padding[PADDING_RIGHT] / 2 + extra;
+};
+
+const getStyle = (
+  rowIndex: number,
+  colIndex: number,
+  value: string | number,
+  options: S2Options,
+  theme: SpreadSheetTheme,
+) => {
+  const cellCfg = get(options, 'style.cellCfg', {});
+  const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
+  const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
+  const isMinor = rowIndex === minorMeasureIndex;
+  const isDerivedMeasure = colIndex >= derivedMeasureIndex;
+  const style = isMinor
+    ? clone(theme?.view?.minorText)
+    : clone(theme?.view?.text);
+  const derivedMeasureText = theme?.view?.derivedMeasureText;
+  const upFill = isMinor
+    ? derivedMeasureText?.minorUp
+    : derivedMeasureText?.mainUp || '#F46649';
+  const downFill = isMinor
+    ? derivedMeasureText?.minorDown
+    : derivedMeasureText?.mainDown || '2AA491';
+  if (isDerivedMeasure) {
+    const isUp = getDerivedDataState(value);
+    return merge(style, {
+      fill: isUp ? upFill : downFill,
+    });
+  }
+  return style;
+};
+
+/**
+ * @desc draw text shape of object
+ * @param cell
+ */
+export const drawObjectText = (cell) => {
+  const { x, y, height, width } = cell.getLeftAreaBBox();
+  const { formattedValue: text } = cell.getData();
+  const labelStyle = cell.theme?.view?.bolderText;
+  const textStyle = cell.theme?.view?.text;
+  const textFill = textStyle?.fill;
+  const padding = cell.theme?.view?.cell?.padding;
+
+  // 指标个数相同，任取其一即可
+  const realWidth = width / (text?.values[0].length + 1);
+  const realHeight = height / (text?.values.length + 1);
+  renderText(
+    cell.textShape,
+    calX(x, padding),
+    y + realHeight / 2,
+    getEllipsisText(
+      text?.label || '-',
+      width - padding[PADDING_LEFT],
+      labelStyle,
+    ),
+    labelStyle,
+    textFill,
+    cell,
+  );
+
+  const { values } = text;
+  let curText: string | number;
+  let curX: number;
+  let curY: number = y + realHeight / 2;
+  let curWidth: number;
+  let totalWidth = 0;
+  let curTextShape: IShape;
+  for (let i = 0; i < values.length; i += 1) {
+    curY = y + realHeight / 2 + realHeight * (i + 1); // 加上label的高度
+    totalWidth = 0;
+    for (let j = 0; j < values[i].length; j += 1) {
+      curText = values[i][j] || '-';
+      const curStyle = getStyle(
+        i,
+        j,
+        curText,
+        cell?.spreadsheet?.options,
+        cell?.theme,
+      );
+      curWidth = j === 0 ? realWidth * 2 : realWidth;
+      curX = calX(x, padding, totalWidth);
+      totalWidth += curWidth;
+      curTextShape = renderText(
+        cell.textShape,
+        curX,
+        curY,
+        getEllipsisText(`${curText}`, curWidth, curStyle),
+        curStyle,
+        curStyle?.fill,
+        cell,
+      );
+    }
+  }
+};
+
+/**
+ * @desc draw text shape of string
+ * @param cell
+ */
+export const drawStringText = (cell) => {
+  const { x, y, height, width } = cell.getLeftAreaBBox();
+  const { formattedValue: text } = cell.getData();
+  const { isTotals } = cell.meta;
+  const textStyle = isTotals
+    ? cell.theme.view.bolderText
+    : cell.theme.view.text;
+  const textFill = textStyle?.fill;
+  const padding = cell.theme.view.cell.padding;
+
+  cell.textShape = renderText(
+    cell.textShape,
+    x + width - padding[PADDING_RIGHT],
+    y + height / 2,
+    getEllipsisText(
+      `${text || '-'}`,
+      width - padding[PADDING_LEFT] - padding[PADDING_RIGHT],
+      textStyle,
+    ),
+    textStyle,
+    textFill,
+    cell,
+  );
 };

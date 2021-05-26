@@ -24,7 +24,14 @@ import {
   ViewMeta,
   safetyOptions,
 } from '../common/interface';
-import { DataCell, BaseCell, RowCell, ColCell, CornerCell, MergedCells} from '../cell';
+import {
+  DataCell,
+  BaseCell,
+  RowCell,
+  ColCell,
+  CornerCell,
+  MergedCells,
+} from '../cell';
 import {
   KEY_COL_REAL_WIDTH_INFO,
   KEY_GROUP_BACK_GROUND,

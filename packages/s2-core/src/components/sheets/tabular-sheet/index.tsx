@@ -132,7 +132,6 @@ export const TabularSheet = (props: BaseSheetProps) => {
     });
 
     baseSpreadsheet.on(S2Event.MERGEDCELLS_CLICK, (ev: Event) => {
-      console.log('ev', ev);
       if (isFunction(onMergedCellsClick)) {
         onMergedCellsClick(getBaseCellData(ev));
       }

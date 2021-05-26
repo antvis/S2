@@ -1,6 +1,12 @@
 import { Event, LooseObject, Canvas, IElement } from '@antv/g-canvas';
 import { get, each, includes } from 'lodash';
-import { DataCell, ColCell, CornerCell, RowCell, MergedCells } from '../../cell';
+import {
+  DataCell,
+  ColCell,
+  CornerCell,
+  RowCell,
+  MergedCells,
+} from '../../cell';
 import { S2Event, OriginEventType, DefaultInterceptEventType } from './types';
 import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
 
@@ -222,7 +228,7 @@ export class EventController {
               this.spreadsheet.emit(S2Event.MERGEDCELLS_CLICK, ev);
               break;
             default:
-             break;
+              break;
           }
         }
 

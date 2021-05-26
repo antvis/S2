@@ -19,7 +19,7 @@ export function renderRect(
 ): IShape {
   return (
     group &&
-    group.addShape('rect', {
+    group?.addShape?.('rect', {
       attrs: {
         x,
         y,
@@ -41,7 +41,7 @@ export function renderPolygon(
 ): IShape {
   return (
     group &&
-    group.addShape('polygon', {
+    group?.addShape?.('polygon', {
       attrs: {
         points,
         stroke,
@@ -66,7 +66,7 @@ export function renderText(
   }
   return (
     group &&
-    group.addShape('text', {
+    group?.addShape?.('text', {
       attrs: {
         x,
         y,
@@ -89,7 +89,7 @@ export function renderLine(
 ): IShape {
   return (
     group &&
-    group.addShape('line', {
+    group?.addShape?.('line', {
       attrs: {
         x1,
         y1,

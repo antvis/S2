@@ -11,10 +11,6 @@ import {
 import { DrillDown } from '../../drill-down';
 import { Header } from '../../header';
 import {
-  KEY_COLUMN_CELL_CLICK,
-  KEY_CORNER_CELL_CLICK,
-  KEY_ROW_CELL_CLICK,
-  KEY_SINGLE_CELL_CLICK,
   ClearDrillDownInfo,
   HandleConfigWhenDrillDown,
   HandleOptions,
@@ -34,7 +30,7 @@ import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
 import SpreadSheet from 'src/sheet-type/spread-sheet';
 import { resetDrillDownCfg } from 'src/utils/drill-down/helper';
 import { BaseSheetProps } from '../interface';
-import {Event }from '@antv/g-canvas';
+import { Event } from '@antv/g-canvas';
 
 import './index.less';
 
@@ -57,9 +53,10 @@ export const BaseSheet = (props: BaseSheetProps) => {
     onRowCellClick,
     onColCellClick,
     onCornerCellClick,
+    onMergedCellsClick,
     onDataCellClick,
-    getSpreadsheet,
     onDataCellMouseUp,
+    getSpreadsheet,
     partDrillDown,
   } = props;
   let container: HTMLDivElement;
@@ -101,33 +98,42 @@ export const BaseSheet = (props: BaseSheetProps) => {
     baseSpreadsheet.on(KEY_PAGINATION, (data: PaginationCfg) => {
       setTotal(data?.total);
     });
+
     baseSpreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev: Event) => {
       if (isFunction(onDataCellMouseUp)) {
         onDataCellMouseUp(getBaseCellData(ev));
       }
     });
 
+    baseSpreadsheet.on(S2Event.MERGEDCELLS_CLICK, (ev: Event) => {
+      if (isFunction(onMergedCellsClick)) {
+        onMergedCellsClick(getBaseCellData(ev));
+      }
+    });
+
+    baseSpreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
+      if (isFunction(onRowCellClick)) {
+        onRowCellClick(getBaseCellData(ev));
+      }
+    });
+    baseSpreadsheet.on(S2Event.COLCELL_CLICK, (ev: Event) => {
+      if (isFunction(onColCellClick)) {
+        onColCellClick(getBaseCellData(ev));
+      }
+    });
+
     baseSpreadsheet.on(KEY_ROW_NODE_BORDER_REACHED, (value) => {
       if (isFunction(onRowCellScroll)) onRowCellScroll(value);
     });
+
     baseSpreadsheet.on(KEY_COL_NODE_BORDER_REACHED, (value) => {
       if (isFunction(onColCellScroll)) onColCellScroll(value);
     });
+
     baseSpreadsheet.on(KEY_CELL_SCROLL, (value) => {
       if (isFunction(onCellScroll)) onCellScroll(value);
     });
-    baseSpreadsheet.on(KEY_ROW_CELL_CLICK, (value) => {
-      if (isFunction(onRowCellClick)) onRowCellClick(value);
-    });
-    baseSpreadsheet.on(KEY_COLUMN_CELL_CLICK, (value) => {
-      if (isFunction(onColCellClick)) onColCellClick(value);
-    });
-    baseSpreadsheet.on(KEY_CORNER_CELL_CLICK, (value) => {
-      if (isFunction(onCornerCellClick)) onCornerCellClick(value);
-    });
-    baseSpreadsheet.on(KEY_SINGLE_CELL_CLICK, (value) => {
-      if (isFunction(onDataCellClick)) onDataCellClick(value);
-    });
+
     baseSpreadsheet.on(KEY_LIST_SORT, (value) => {
       if (isFunction(onListSort)) onListSort(value);
     });
@@ -139,11 +145,11 @@ export const BaseSheet = (props: BaseSheetProps) => {
     baseSpreadsheet.off(KEY_ROW_NODE_BORDER_REACHED);
     baseSpreadsheet.off(KEY_COL_NODE_BORDER_REACHED);
     baseSpreadsheet.off(KEY_CELL_SCROLL);
-    baseSpreadsheet.off(KEY_ROW_CELL_CLICK);
-    baseSpreadsheet.off(KEY_COLUMN_CELL_CLICK);
-    baseSpreadsheet.off(KEY_CORNER_CELL_CLICK);
-    baseSpreadsheet.off(KEY_SINGLE_CELL_CLICK);
     baseSpreadsheet.off(KEY_LIST_SORT);
+    baseSpreadsheet.off(S2Event.MERGEDCELLS_CLICK);
+    baseSpreadsheet.off(S2Event.ROWCELL_CLICK);
+    baseSpreadsheet.off(S2Event.COLCELL_CLICK);
+    baseSpreadsheet.off(S2Event.DATACELL_MOUSEUP);
   };
 
   const iconClickCallback = (

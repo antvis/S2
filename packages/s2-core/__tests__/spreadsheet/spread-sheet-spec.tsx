@@ -175,7 +175,7 @@ function MainLayout(props) {
   let sheet;
   let curSelectedState;
 
-  const demo = (
+  const dataCellTooltip = (
     <div>
       <Button
         onClick={() => {
@@ -187,13 +187,24 @@ function MainLayout(props) {
     </div>
   );
 
+  const mgergedCellsTooltip = <div>合并后的tooltip</div>;
+
   const onDataCellMouseUp = (value) => {
     console.log(value);
     sheet = value?.viewMeta?.spreadsheet;
     curSelectedState = sheet.getCurrentState();
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },
-      element: demo,
+      element: dataCellTooltip,
+    });
+  };
+
+  const onMergedCellsClick = (value) => {
+    console.log(value);
+    sheet = value?.target?.cells[0].spreadsheet;
+    sheet.tooltip.show({
+      position: { x: value.event.clientX, y: value.event.clientY },
+      element: mgergedCellsTooltip,
     });
   };
 
@@ -301,6 +312,7 @@ function MainLayout(props) {
         onRowCellClick={onRowCellClick}
         onColCellClick={onColCellClick}
         onDataCellClick={onDataCellClick}
+        onMergedCellsClick={onMergedCellsClick}
       />
     </div>
   );

@@ -118,7 +118,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
     const formattedValue = formatter(this.meta.fieldValue);
     return {
-      value: this.meta.fieldValue,
+      value: this.meta.fieldValue as DataItem,
       formattedValue,
     };
   }

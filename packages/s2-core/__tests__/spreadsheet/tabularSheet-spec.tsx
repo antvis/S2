@@ -191,12 +191,7 @@ const dataCellTooltip = (
   </div>
 );
 
-const mgergedCellsTooltip = (
-  <div>
-    合并后的tooltip
-  </div>
-);
-
+const mgergedCellsTooltip = <div>合并后的tooltip</div>;
 
 const onDataCellMouseUp = (value) => {
   console.log(value);
@@ -227,12 +222,13 @@ const onColCellClick = (value) => {
 };
 
 const onMergedCellsClick = (value) => {
+  console.log(value);
   sheet = value?.target?.cells[0].spreadsheet;
   sheet.tooltip.show({
     position: { x: value.event.clientX, y: value.event.clientY },
     element: mgergedCellsTooltip,
   });
-}
+};
 
 describe('spreadsheet tabular spec', () => {
   test('demo', () => {
