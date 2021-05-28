@@ -10,34 +10,36 @@ import {
   merge,
 } from 'lodash';
 import { VALUE_FIELD } from '../../../common/constant';
-import { SpreadDataSet } from '../../../data-set';
-import TotalClass from '../total-class';
+import { BaseDataSet } from "../../../data-set";
+import { TotalClass } from '../total-class';
+import { FileValue } from "src/facet/layout/interface";
+import { SpreadSheetFacetCfg } from "src/common/interface";
 
 export function reArrangeFieldValues(
   rowQuery: Record<string, any>,
   field: string,
-  fieldValues: (string | TotalClass)[],
-  dataSet: SpreadDataSet,
+  fieldValues: FileValue[],
+  cfg: SpreadSheetFacetCfg,
 ) {
-  const { fields } = dataSet;
+  const { fields } = cfg.dataSet;
   const { values } = fields;
   if (!isArray(values)) {
     return;
   }
   // find first measure value's sort params
-  const measureSort = find(dataSet.sortParams, (o) =>
+  const measureSort = find(cfg.dataSet.sortParams, (o) =>
     includes(values, o.sortFieldId),
   );
 
-  if (measureSort && last(dataSet.fields.rows) !== field) {
+  if (measureSort && last(cfg.dataSet.fields.rows) !== field) {
     // The most inner field values handle in pivot#_sort#495L
     const { sortMethod, query: colQuery } = measureSort;
     const j = sortMethod === 'ASC' ? 1 : -1;
     const data = map(fieldValues, (value) => {
       const query = merge({}, rowQuery, { [field]: value }, colQuery);
-      const rowTotalsConfig = dataSet.getTotalsConfig(field);
+      const rowTotalsConfig = cfg.spreadsheet.getTotalsConfig(field);
       if (rowTotalsConfig.showSubTotals) {
-        return dataSet.getCellData(query);
+        return cfg.dataSet.getCellData(query);
       }
       // 不展示小计，强制空缺
       return [];

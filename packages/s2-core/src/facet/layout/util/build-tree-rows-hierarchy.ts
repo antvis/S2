@@ -3,7 +3,7 @@ import { i18n } from 'src/common/i18n';
 import { SpreadSheetFacetCfg } from 'src/common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
-import TotalClass from '../total-class';
+import { TotalClass } from '../total-class';
 import { canNodeBeExpanded } from './can-node-be-expanded';
 import getDimsCondition from './get-dims-condition-by-node';
 import { reArrangeFieldValues } from './re-arrange-field-values';
@@ -37,7 +37,7 @@ export default function buildTreeRowsHierarchy(treeParams: TreeParams) {
   const query = getDimsCondition(parent, true);
   let fieldValues: (string | TotalClass)[] = dataSet.getDimensionValues(key, query);
   // re-arrange field values by subGrand values
-  reArrangeFieldValues(query, field, fieldValues, dataSet);
+  reArrangeFieldValues(query, field, fieldValues, cfg);
   // custom re-arrange
   if (cfg.layoutArrange) {
     fieldValues = cfg.layoutArrange(

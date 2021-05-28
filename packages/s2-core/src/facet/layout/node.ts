@@ -1,7 +1,7 @@
 import { Group } from '@antv/g-canvas';
 import * as _ from 'lodash';
 import { Hierarchy } from './hierarchy';
-import { BaseSpreadSheet } from '../..';
+import { SpreadSheet } from '../..';
 
 export interface BaseNodeConfig {
   id: string;
@@ -19,7 +19,7 @@ export interface BaseNodeConfig {
   isPivotMode?: boolean;
   seriesNumberWidth?: number;
   field?: string;
-  spreadsheet?: BaseSpreadSheet;
+  spreadsheet?: SpreadSheet;
   query?: Record<string, any>;
   belongsCell?: Group;
   inCollapseNode?: boolean;
@@ -183,11 +183,8 @@ export class Node {
   // node is grand total or subtotal(not normal node)
   public isTotals: boolean;
 
-  // node represent grand total
-  public isGrandTotals: boolean;
-
-  // node represent sub total
-  public isSubTotals: boolean;
+  // node represent total measure
+  public isTotalMeasure: boolean
 
   // node is collapsed
   public isCollapsed: boolean;
@@ -211,7 +208,7 @@ export class Node {
   public field: string;
 
   // spreadsheet instance
-  public spreadsheet: BaseSpreadSheet;
+  public spreadsheet: SpreadSheet;
 
   // node self's query condition(represent where node stay)
   public query?: Record<string, any>;
@@ -235,8 +232,6 @@ export class Node {
       level,
       rowIndex,
       isTotals,
-      isSubTotals,
-      isGrandTotals,
       isCollapsed,
       hierarchy,
       isPivotMode,
@@ -247,6 +242,7 @@ export class Node {
       belongsCell,
       inCollapseNode,
       rowIndexHeightExist,
+      isTotalMeasure,
     } = cfg;
     this.id = id;
     this.key = key;
@@ -256,8 +252,6 @@ export class Node {
     this.level = level;
     this.rowIndex = rowIndex;
     this.isTotals = isTotals;
-    this.isGrandTotals = isGrandTotals;
-    this.isSubTotals = isSubTotals;
     this.isCollapsed = isCollapsed;
     this.hierarchy = hierarchy;
     this.isPivotMode = isPivotMode;
@@ -268,6 +262,7 @@ export class Node {
     this.belongsCell = belongsCell;
     this.inCollapseNode = inCollapseNode;
     this.rowIndexHeightExist = rowIndexHeightExist;
+    this.isTotalMeasure = isTotalMeasure;
     if (parent) {
       parent.children.push(this);
     }

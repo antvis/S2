@@ -10,9 +10,17 @@ import {
 import { getContainer } from '../helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { data1, data2, data3, data4, data5 } from "../datasets/data-accuracy";
+import { data1, data2, data3, data4, data5, data6 } from "../datasets/data-accuracy";
 
 const spreadsheet1 = (
+  dom: string | HTMLElement,
+  dataCfg: S2DataConfig,
+  options: S2Options,
+) => {
+  return new SpreadSheet(dom, dataCfg, options);
+};
+
+const spreadsheet6 = (
   dom: string | HTMLElement,
   dataCfg: S2DataConfig,
   options: S2Options,
@@ -70,6 +78,9 @@ const getData = (index: number) => {
     case 5:
       realData = data5;
       break;
+    case 6:
+      realData = data6;
+      break;
   }
   return realData;
 }
@@ -79,7 +90,7 @@ const getDataCfg = (index: number) => {
     fields: {
       rows: ['province', 'city'],
       columns: ['category', 'subCategory'],
-      values: ['price'],
+      values: index !== 6 ? ['price'] : ['price', 'account'],
       valueInCols: true,
     },
     meta: [
@@ -87,6 +98,11 @@ const getDataCfg = (index: number) => {
         field: 'price',
         name: '单价',
         formatter: (v) => auto(v),
+      },
+      {
+        field: 'account',
+        name: '账号',
+        formatter: (v) => v + '个',
       },
     ],
     data: getData(index),
@@ -99,7 +115,7 @@ const getOptions = () => {
     debug: true,
     width: 800,
     height: 600,
-    hierarchyType: 'tree',
+    hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: false,
@@ -158,7 +174,7 @@ const wrapComponent = (text, component) => {
 function MainLayout(props) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {wrapComponent('小计+总计+明细数据',
+      {wrapComponent('小计+总计+明细数据+单个指标',
         <SheetComponent
           dataCfg={getDataCfg(1)}
           adaptive={false}
@@ -166,38 +182,46 @@ function MainLayout(props) {
           spreadsheet={spreadsheet1}
         />
       )}
-      {wrapComponent('只有明细数据',
+      {wrapComponent('小计+总计+明细数据+两个指标',
         <SheetComponent
-          dataCfg={getDataCfg(2)}
+          dataCfg={getDataCfg(6)}
           adaptive={false}
           options={getOptions()}
-          spreadsheet={spreadsheet2}
+          spreadsheet={spreadsheet6}
         />
       )}
-      {wrapComponent('只有小计，总计数据',
-        <SheetComponent
-          dataCfg={getDataCfg(3)}
-          adaptive={false}
-          options={getOptions()}
-          spreadsheet={spreadsheet3}
-        />
-      )}
-      {wrapComponent('总计 + 明细数据',
-        <SheetComponent
-          dataCfg={getDataCfg(4)}
-          adaptive={false}
-          options={getOptions()}
-          spreadsheet={spreadsheet4}
-        />
-      )}
-      {wrapComponent('小计 + 明细数据',
-        <SheetComponent
-          dataCfg={getDataCfg(5)}
-          adaptive={false}
-          options={getOptions()}
-          spreadsheet={spreadsheet5}
-        />
-      )}
+      {/*{wrapComponent('只有明细数据',*/}
+      {/*  <SheetComponent*/}
+      {/*    dataCfg={getDataCfg(2)}*/}
+      {/*    adaptive={false}*/}
+      {/*    options={getOptions()}*/}
+      {/*    spreadsheet={spreadsheet2}*/}
+      {/*  />*/}
+      {/*)}*/}
+      {/*{wrapComponent('只有小计，总计数据',*/}
+      {/*  <SheetComponent*/}
+      {/*    dataCfg={getDataCfg(3)}*/}
+      {/*    adaptive={false}*/}
+      {/*    options={getOptions()}*/}
+      {/*    spreadsheet={spreadsheet3}*/}
+      {/*  />*/}
+      {/*)}*/}
+      {/*{wrapComponent('总计 + 明细数据',*/}
+      {/*  <SheetComponent*/}
+      {/*    dataCfg={getDataCfg(4)}*/}
+      {/*    adaptive={false}*/}
+      {/*    options={getOptions()}*/}
+      {/*    spreadsheet={spreadsheet4}*/}
+      {/*  />*/}
+      {/*)}*/}
+      {/*{wrapComponent('小计 + 明细数据',*/}
+      {/*  <SheetComponent*/}
+      {/*    dataCfg={getDataCfg(5)}*/}
+      {/*    adaptive={false}*/}
+      {/*    options={getOptions()}*/}
+      {/*    spreadsheet={spreadsheet5}*/}
+      {/*  />*/}
+      {/*)}*/}
     </div>
   );
 }

@@ -33,7 +33,7 @@ export default function processDefaultColWidthByType(
     if (!facet.spreadsheet.isHierarchyTreeType()) {
       // canvasW / (rowHeader's col size + colHeader's col size) = [celCfg.width, canvasW]
       const rowHeaderColSize = rows.length;
-      const colHeaderColSize = colsHierarchy.getNotNullLeafs().length;
+      const colHeaderColSize = colsHierarchy.getNotNullLeaves().length;
       const size = Math.max(1, rowHeaderColSize + colHeaderColSize);
       colWidth = Math.max(defaultCellWidth, canvasW / size);
     } else {
@@ -63,7 +63,7 @@ export default function processDefaultColWidthByType(
         set(facet, 'cfg.treeRowsWidth', width);
         // facet.cfg.treeRowsWidth = width;
       }
-      const size = Math.max(1, colsHierarchy.getNotNullLeafs().length);
+      const size = Math.max(1, colsHierarchy.getNotNullLeaves().length);
       colWidth = Math.max(defaultCellWidth, (canvasW - width) / size);
     }
   } else {

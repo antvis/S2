@@ -57,7 +57,7 @@ export default function processColsList(
   const colsHierarchy = new Hierarchy();
   processCols(rootNode, cols, colsHierarchy, dataSet);
 
-  const colLeafNodes = colsHierarchy.getLeafs();
+  const colLeafNodes = colsHierarchy.getLeaves();
   processColLeafNodeWH(colLeafNodes, rowsHierarchy, cfg, facet, false);
 
   // width / height for header area

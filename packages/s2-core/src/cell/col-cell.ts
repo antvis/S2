@@ -120,7 +120,8 @@ export class ColCell extends BaseCell<Node> {
 
     // 格式化枚举值
     const f = this.headerConfig.formatter(key);
-    const content = f(parent.isTotals ? '' : label);
+    // const content = f(parent.isTotals ? '' : label);
+    const content = f(label);
 
     const sortIconPadding = this.showSortIcon()
       ? SORT_ICON_SIZE + SORT_ICON_MARGIN_RIGHT

@@ -40,11 +40,11 @@ export class Hierarchy {
   private minLabelInLevel: Map<number, string> = new Map<number, string>();
 
   // get all leaf nodes
-  public getLeafs(): Node[] {
+  public getLeaves(): Node[] {
     return this.allNodesWithoutRoot.filter((value) => value.isLeaf);
   }
 
-  public getNotNullLeafs(): Node[] {
+  public getNotNullLeaves(): Node[] {
     return this.allNodesWithoutRoot.filter(
       (value) => value.isLeaf && value.id !== `root${ID_SEPARATOR}undefined`,
     );

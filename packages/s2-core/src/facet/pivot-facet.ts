@@ -7,17 +7,24 @@ import {
 } from "src/common/constant";
 import * as _ from "lodash";
 import { BaseFacet } from "src/facet/index";
-import { getDimsConditionByNode, processCols, processRows } from "src/facet/layout/util";
+import { processCols, processRows } from "src/facet/layout/util";
 import processDefaultColWidthByType from "src/facet/layout/util/process-default-col-width-by-type";
 import processRowNodesCoordinate from "src/facet/layout/util/process-row-nodes-coordinate";
 import processColNodesCoordinate from "src/facet/layout/util/process-col-nodes-coordinate";
+import { buildHeaderHierarchy } from "src/facet/layout/build-header-hierarchy";
 
 export class PivotFacet extends BaseFacet {
 
   protected doLayout(): LayoutResult {
     // 1、layout all nodes in rowHeader and colHeader
-    const { rowLeafNodes, rowsHierarchy } = processRows(this);
-    const { colLeafNodes, colsHierarchy } = processCols(this);
+    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } = buildHeaderHierarchy({
+      isRowHeader: true,
+      facetCfg: this.cfg,
+    });
+    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } = buildHeaderHierarchy({
+      isRowHeader: false,
+      facetCfg: this.cfg,
+    });
 
     // 2、handle col width first by type(spreadsheet or list-sheet | (tree or grid))
     processDefaultColWidthByType(this, colsHierarchy);
@@ -55,56 +62,14 @@ export class PivotFacet extends BaseFacet {
       if (!row || !col) {
         return null;
       }
-      // 高度等于0 直接返回空，不创建任何的cell和数据计算
-      if (row.isHide()) {
-        return null;
-      }
-      // 树状表格没有小计行，需要判断该单元格是否展示聚合数据
-      const rowTotalsConfig = ss.getTotalsConfig(row.key);
-      const colTotalsConfig = ss.getTotalsConfig(col.key);
-      // 是否是树状布局
-      const isInTree = ss.isHierarchyTreeType();
-      // 是否是父节点对应的单元格
-      // 收起时，判断是否是叶子节点；展开时判断是否有
-      const isParentInTree = !row.isLeaf;
-      // 父节点是否需要展示小计 -- tree mode don't need subTotals
-      const isSubTotalsInTree =
-        isInTree && rowTotalsConfig.showSubTotals && isParentInTree;
-      // check if the node is totals(grandTotal or subTotal)
-      const isTotals: boolean =
-        isSubTotalsInTree || row.isTotals || col.isTotals;
-      // grand totals node
-      const isGrandTotals = row.isGrandTotals || col.isGrandTotals;
-      const isSubTotals = row.isSubTotals || col.isSubTotals;
-      const isValueInColsTotal = !ss.options.valueInCols && col.isGrandTotals;
-      // isSubTotalsInTree use to get the whole path of node by force
-      const rowQuery = getDimsConditionByNode(row, isSubTotalsInTree);
-      // 数值挂行头且有列总计的特殊情况，需要强制返回node路径
-      const colQuery = getDimsConditionByNode(col, isValueInColsTotal);
-      // const dataQuery = isValueInColsTotal
-      //   ? _.merge({}, rowQuery)
-      //   : _.merge({}, rowQuery, colQuery);
-
-      // TODO 根据valueInCols来确定查询的度量id是什么？
-      //  这里查询的逻辑 需要重新再梳理，需要考虑 tree和非tree模式
-      const measureQuery = {};
-      if(isGrandTotals || isSubTotals) {
-        if (!_.isEmpty(values)) {
-          _.set(measureQuery, `${EXTRA_FIELD}`, values[0]);
-        }
-      }
-
-      const dataQuery = _.merge({}, rowQuery, colQuery, measureQuery);
-
-      const test = dataSet.getCellData(dataQuery);
-      // console.log(`${i}-${j}`, dataQuery, test);
-      const data = test;
-
-      // mark grand totals node in origin data obj
-      data.isGrandTotals = isGrandTotals;
-      data.isSubTotals = isSubTotals || isSubTotalsInTree;
+      const rowQuery = row.query;
+      const colQuery = col.query;
+      const dataQuery = _.merge({}, rowQuery, colQuery);
+      const data = dataSet.getCellData(dataQuery);
+      // data.isTotals = row.isTotals || col.isTotalMeasure;
       let valueField = '';
       let fieldValue = null;
+      // TODO fix me
       if (!_.isEmpty(data)) {
         if (_.has(data, EXTRA_FIELD) || _.has(data, VALUE_FIELD)) {
           valueField = _.get(data, [EXTRA_FIELD], '');
@@ -123,7 +88,7 @@ export class PivotFacet extends BaseFacet {
         data,
         rowIndex: i,
         colIndex: j,
-        isTotals,
+        isTotals: row.isTotals || row.isTotalMeasure || col.isTotals || col.isTotalMeasure,
         valueField,
         fieldValue,
         rowQuery,
