@@ -1,6 +1,6 @@
-import { merge, clone, omit } from 'lodash';
+import { merge, clone, omit, forEach } from 'lodash';
 import { act } from 'react-dom/test-utils';
-import { mergeCell } from '../../src/utils/interactions/merge-cell';
+import { mergeCells } from '../../src/utils/interactions/merge-cells';
 import 'antd/dist/antd.min.css';
 import {
   auto,
@@ -139,6 +139,14 @@ const getOptions = () => {
       },
       device: 'pc',
     },
+    mergedCellsInfo: [[
+      { colIndex: 1, rowIndex: 6 },
+      { colIndex: 1, rowIndex: 7, showText: true },
+      { colIndex: 2, rowIndex: 6 },
+      { colIndex: 2, rowIndex: 7 },
+      { colIndex: 3, rowIndex: 6 },
+      { colIndex: 3, rowIndex: 7 }
+    ]],
     // tooltip: {
     //   showTooltip: true,
     // },
@@ -173,13 +181,13 @@ function MainLayout(props) {
   };
 
   let sheet;
-  let curSelectedState;
+  let mergedCellsInfo = [];
 
   const dataCellTooltip = (
     <div>
       <Button
         onClick={() => {
-          mergeCell(sheet, curSelectedState);
+          mergeCells(sheet, mergedCellsInfo);
         }}
       >
         合并单元格
@@ -192,7 +200,15 @@ function MainLayout(props) {
   const onDataCellMouseUp = (value) => {
     console.log(value);
     sheet = value?.viewMeta?.spreadsheet;
-    curSelectedState = sheet.getCurrentState();
+    const curSelectedState = sheet.getCurrentState();
+    const { cells } = curSelectedState;
+    mergedCellsInfo = [];
+    forEach(cells, (cell) => {
+      mergedCellsInfo.push({
+        colIndex: cell?.meta?.colIndex,
+        rowIndex: cell?.meta?.rowIndex
+      })
+    });
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },
       element: dataCellTooltip,

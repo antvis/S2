@@ -12,7 +12,7 @@ export { measureTextWidth } from './utils/text';
 export { auto } from './utils/formatter';
 export * from './utils/drill-down/helper';
 export * from './utils/export/index';
-export * from './utils/interactions/merge-cell';
+export * from './utils/interactions/merge-cells';
 export * from './cell';
 export * from './theme/interface';
 export * from './common/tooltip/interface';

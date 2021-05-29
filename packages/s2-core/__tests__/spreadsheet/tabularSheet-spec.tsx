@@ -1,5 +1,5 @@
 import { act } from 'react-dom/test-utils';
-import { mergeCell } from '../../src/utils/interactions/merge-cell';
+import { mergeCells } from '../../src/utils/interactions/merge-cells';
 import 'antd/dist/antd.min.css';
 import {
   S2DataConfig,
@@ -11,6 +11,7 @@ import { Button } from 'antd';
 import { getContainer } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
+import { forEach } from 'lodash';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -82,6 +83,42 @@ const mockData = {
       'MEASURE-最近7天登端天数-COMPARE-MINUS': -20,
       value: {
         label: '花呗男16',
+        values: [
+          ['最近7天登端天数', 1, 3423423, 323],
+          ['自然月新登用户数', 1, 3423423, 323],
+          ['最近7天登端天数', 1, 3423423, 323],
+          ['自然月新登用户数', 1, 3423423, 323],
+        ],
+      },
+    },
+    {
+      'DIMENSION-sex': '男',
+      'DIMENSION-age': 17,
+      'COLUMNDIMENSION-scene': '花呗',
+      'DATE-日期': '2021-04-11',
+      'MEASURE-最近7天登端天数': 2,
+      'MEASURE-最近7天登端天数-COMPARE-VALUE': 0.002,
+      'MEASURE-最近7天登端天数-COMPARE-MINUS': -20,
+      value: {
+        label: '花呗男17',
+        values: [
+          ['最近7天登端天数', 1, 3423423, 323],
+          ['自然月新登用户数', 1, 3423423, 323],
+          ['最近7天登端天数', 1, 3423423, 323],
+          ['自然月新登用户数', 1, 3423423, 323],
+        ],
+      },
+    },
+    {
+      'DIMENSION-sex': '女',
+      'DIMENSION-age': 16,
+      'COLUMNDIMENSION-scene': '账单',
+      'DATE-日期': '2021-04-11',
+      'MEASURE-最近7天登端天数': 1888883,
+      'MEASURE-最近7天登端天数-COMPARE-VALUE': 0.0001,
+      'MEASURE-最近7天登端天数-COMPARE-MINUS': -50,
+      value: {
+        label: '账单女16',
         values: [
           ['最近7天登端天数', 1, 3423423, 323],
           ['自然月新登用户数', 1, 3423423, 323],
@@ -177,13 +214,13 @@ const options = {
 } as S2Options;
 
 let sheet;
-let curSelectedState;
+let mergedCellsInfo = [];
 
 const dataCellTooltip = (
   <div>
     <Button
       onClick={() => {
-        mergeCell(sheet, curSelectedState);
+        mergeCells(sheet, mergedCellsInfo);
       }}
     >
       合并单元格
@@ -196,7 +233,15 @@ const mgergedCellsTooltip = <div>合并后的tooltip</div>;
 const onDataCellMouseUp = (value) => {
   console.log(value);
   sheet = value?.viewMeta?.spreadsheet;
-  curSelectedState = sheet.getCurrentState();
+  const curSelectedState = sheet.getCurrentState();
+  const { cells } = curSelectedState;
+  mergedCellsInfo = [];
+  forEach(cells, (cell) => {
+    mergedCellsInfo.push({
+      colIndex: cell?.meta?.colIndex,
+      rowIndex: cell?.meta?.rowIndex
+    })
+  });
   sheet.tooltip.show({
     position: { x: value.event.clientX, y: value.event.clientY },
     element: dataCellTooltip,

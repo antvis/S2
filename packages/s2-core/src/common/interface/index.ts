@@ -326,7 +326,7 @@ export interface ColCfg {
 }
 
 /**
- * The label names of rows or column.
+ * the label names of rows or columns.
  * Using the ID_SEPARATOR('[&]') to join two labels
  * when there are hierarchical relations between them.
  */
@@ -334,6 +334,17 @@ export interface CustomHeaderCells {
   cellLabels: string[];
   mode?: 'pick' | 'omit';
 }
+
+
+/**
+ * the index of rows or columns.
+ */
+ export interface MergedCellInfo {
+  colIndex?: number;
+  rowIndex?: number;
+  showText?: boolean;
+} 
+
 
 /**
  * Spreadsheet and ListSheet facet config

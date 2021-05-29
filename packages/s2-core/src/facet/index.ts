@@ -24,7 +24,7 @@ import {
 import { Formatter } from '../common/interface';
 import { diffIndexes, Indexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
-import { updateMergedCells } from '../utils/interactions/merge-cell';
+import { updateMergedCells } from '../utils/interactions/merge-cells';
 import { BaseCell } from '../cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,

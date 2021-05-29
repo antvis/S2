@@ -4,7 +4,6 @@ import { ViewMeta } from './index';
 export type S2CellType = DataCell | ColCell | CornerCell | RowCell;
 
 export interface Cell {
-  getMeta();
   cell: S2CellType;
   meta: ViewMeta;
 }
