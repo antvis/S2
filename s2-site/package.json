@@ -2,7 +2,7 @@
   "name": "@antv/s2-site",
   "private": true,
   "description": "S2 sites deployed on gh-pages",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "keywords": [
     "antv",
     "s2",

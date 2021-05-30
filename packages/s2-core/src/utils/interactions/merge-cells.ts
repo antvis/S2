@@ -1,4 +1,13 @@
-import { find, isEqual, forEach, isEmpty, filter, merge, isArray, remove } from 'lodash';
+import {
+  find,
+  isEqual,
+  forEach,
+  isEmpty,
+  filter,
+  merge,
+  isArray,
+  remove,
+} from 'lodash';
 import { BaseSpreadSheet, DataCell } from 'src';
 import { Cell } from 'src/common/interface/interaction';
 import { MergedCellInfo } from 'src/common/interface/index';
@@ -94,33 +103,35 @@ export const getPolygonPoints = (cells: Cell[]) => {
  * @param cellsInfos
  * @param allCells
  */
- const getCellsByInfo = (cellsInfos: MergedCellInfo[], allCells: Cell[]) => {
-  if(!isArray(cellsInfos)) return;
+const getCellsByInfo = (cellsInfos: MergedCellInfo[], allCells: Cell[]) => {
+  if (!isArray(cellsInfos)) return;
   let cells = [];
   let cellsMeta;
   forEach(cellsInfos, (cellInfo: MergedCellInfo) => {
     const findCell = find(allCells, (cell: Cell) => {
-      const {meta} = cell;
-      if( meta?.colIndex === cellInfo?.colIndex 
-        && meta?.rowIndex === cellInfo?.rowIndex) {
-          return cell;
-        }
+      const { meta } = cell;
+      if (
+        meta?.colIndex === cellInfo?.colIndex &&
+        meta?.rowIndex === cellInfo?.rowIndex
+      ) {
+        return cell;
+      }
     }) as Cell;
-    if(findCell) {
+    if (findCell) {
       cells.push(findCell);
-      if( cellInfo?.showText) cellsMeta = findCell?.meta;
-    };
-  })
+      if (cellInfo?.showText) cellsMeta = findCell?.meta;
+    }
+  });
 
-  if(!isEmpty(cells) && !cellsMeta) {
+  if (!isEmpty(cells) && !cellsMeta) {
     cellsMeta = cells[0]?.meta; // 如果没有指定合并后的文本绘制的位置，默认画在选择的第一个单元格内
   }
 
   return {
     cells: cells,
-    viewMeta: cellsMeta
+    viewMeta: cellsMeta,
   };
-}
+};
 
 /**
  * draw the background of the merged cell
@@ -133,21 +144,22 @@ export const mergeCells = (
   cellsInfo: MergedCellInfo[],
   hideData?: boolean,
 ) => {
-  const allCells = filter(
+  const allCells = (filter(
     sheet.panelGroup.getChildren(),
-    (child) => !(child instanceof MergedCells)
-  ) as unknown as Cell[];
-  const {cells, viewMeta}  = getCellsByInfo(cellsInfo, allCells);
- 
+    (child) => !(child instanceof MergedCells),
+  ) as unknown) as Cell[];
+  const { cells, viewMeta } = getCellsByInfo(cellsInfo, allCells);
+
   if (!isEmpty(cells)) {
     const mergedCellsInfo = sheet.options?.mergedCellsInfo || [];
     mergedCellsInfo.push(cellsInfo);
-    sheet.setOptions(merge(sheet.options, {mergedCellsInfo: mergedCellsInfo}));
+    sheet.setOptions(
+      merge(sheet.options, { mergedCellsInfo: mergedCellsInfo }),
+    );
     const value = hideData ? '' : viewMeta;
     sheet.facet.panelGroup.add(new MergedCells(value, sheet, cells));
   }
 };
-
 
 /**
  * decide if collection a is the subset of collection b
@@ -167,8 +179,8 @@ const ifSubset = (a: any[], b: any[]) => {
  * @param a
  * @param b
  */
- const getOverlap = (a: any[], b: any[]) => {
- let res = [];
+const getOverlap = (a: any[], b: any[]) => {
+  let res = [];
   a.forEach((item) => {
     if (find(b, item)) res.push(item);
   });
@@ -176,10 +188,11 @@ const ifSubset = (a: any[], b: any[]) => {
 };
 
 const removeMergedCells = (cells: Cell[], mergedCells: MergedCells) => {
-  const findOne = find(mergedCells, (item: MergedCells) => isEqual(cells, item.cells)) as MergedCells;
+  const findOne = find(mergedCells, (item: MergedCells) =>
+    isEqual(cells, item.cells),
+  ) as MergedCells;
   findOne?.remove(true);
-}
-
+};
 
 /**
  * upddate the merge
@@ -190,10 +203,10 @@ export const updateMergedCells = (sheet: BaseSpreadSheet) => {
   const mergedCellsInfo = sheet.options?.mergedCellsInfo;
   if (isEmpty(mergedCellsInfo)) return;
 
-  const allCells = filter(
+  const allCells = (filter(
     sheet.panelGroup.getChildren(),
-    (child) => !(child instanceof MergedCells)
-  ) as unknown as Cell[];
+    (child) => !(child instanceof MergedCells),
+  ) as unknown) as Cell[];
   if (isEmpty(allCells)) return;
 
   let allMergedCells = [];
@@ -201,28 +214,28 @@ export const updateMergedCells = (sheet: BaseSpreadSheet) => {
     allMergedCells.push(getCellsByInfo(cellsInfo, allCells));
   });
 
-  const oldMergedCells = filter(
+  const oldMergedCells = (filter(
     sheet.panelGroup.getChildren(),
-    (child) => child instanceof MergedCells
-  ) as unknown as MergedCells;
+    (child) => child instanceof MergedCells,
+  ) as unknown) as MergedCells;
 
   allMergedCells.forEach((mergedCell) => {
-    const {cells, viewMeta} = mergedCell;
+    const { cells, viewMeta } = mergedCell;
     const commonCells = getOverlap(cells, allCells);
     // 合并单元格已经不在当前可视区域内
-    if(commonCells.length === 0) {
-      removeMergedCells(mergedCell, oldMergedCells)
-    } else if(commonCells.length > 0 && commonCells.length < cells.length) {
+    if (commonCells.length === 0) {
+      removeMergedCells(mergedCell, oldMergedCells);
+    } else if (commonCells.length > 0 && commonCells.length < cells.length) {
       // 合并的单元格部分在当前可视区域内
       removeMergedCells(mergedCell, oldMergedCells);
       sheet.facet.panelGroup.add(new MergedCells(viewMeta, sheet, cells));
     } else {
-      const findOne = find(oldMergedCells, (item: MergedCells) => isEqual(mergedCell, item.cells)) as MergedCells;
+      const findOne = find(oldMergedCells, (item: MergedCells) =>
+        isEqual(mergedCell, item.cells),
+      ) as MergedCells;
       // 如果合并单元格完全在可视区域内，且之前没有添加道panelGroup中，需要重新添加
-      if(!findOne) sheet.facet.panelGroup.add(new MergedCells(viewMeta, sheet, cells));
+      if (!findOne)
+        sheet.facet.panelGroup.add(new MergedCells(viewMeta, sheet, cells));
     }
-  })
+  });
 };
-
-
-

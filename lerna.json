@@ -1,11 +1,11 @@
 {
-  "version": "*",
-  "npmClient": "yarn",
+  "version": "0.1.0",
+  "npmClient": "npm",
   "useWorkspaces": true,
   "command": {
-    "version": {
-      "ignoreChanges": ["*.md", "**/*.test.ts", "**/*.spec.ts"],
-      "message": "chore(release): publish"
+    "publish": {
+      "ignoreChanges": ["*.md", "**/_tests_/**"],
+      "message": "chore(release): :sparkles: publish %s"
     },
     "bootstrap": {
       "npmClientArgs": ["--no-package-lock", "--no-ci"]

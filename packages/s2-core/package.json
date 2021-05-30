@@ -1,7 +1,6 @@
 {
   "name": "@antv/s2",
-  "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
@@ -48,7 +47,7 @@
     "*.{js,jsx,tsx,ts,less,md,json}": [
       "pretty-quick —-staged"
     ],
-     "*.{js,jsx,tsx,ts}": [
+    "*.{js,jsx,tsx,ts}": [
       "eslint --fix"
     ]
   },
@@ -76,6 +75,7 @@
     "jest-less-loader": "^0.1.1",
     "jest-raw-loader": "^1.0.1",
     "jest-url-loader": "^0.1.0",
+    "lerna-changelog": "^1.0.1",
     "less": "^3.11.1",
     "less-loader": "^4.1.0",
     "lint-staged": "^9.2.3",

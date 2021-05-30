@@ -139,14 +139,16 @@ const getOptions = () => {
       },
       device: 'pc',
     },
-    mergedCellsInfo: [[
-      { colIndex: 1, rowIndex: 6 },
-      { colIndex: 1, rowIndex: 7, showText: true },
-      { colIndex: 2, rowIndex: 6 },
-      { colIndex: 2, rowIndex: 7 },
-      { colIndex: 3, rowIndex: 6 },
-      { colIndex: 3, rowIndex: 7 }
-    ]],
+    mergedCellsInfo: [
+      [
+        { colIndex: 1, rowIndex: 6 },
+        { colIndex: 1, rowIndex: 7, showText: true },
+        { colIndex: 2, rowIndex: 6 },
+        { colIndex: 2, rowIndex: 7 },
+        { colIndex: 3, rowIndex: 6 },
+        { colIndex: 3, rowIndex: 7 },
+      ],
+    ],
     // tooltip: {
     //   showTooltip: true,
     // },
@@ -206,8 +208,8 @@ function MainLayout(props) {
     forEach(cells, (cell) => {
       mergedCellsInfo.push({
         colIndex: cell?.meta?.colIndex,
-        rowIndex: cell?.meta?.rowIndex
-      })
+        rowIndex: cell?.meta?.rowIndex,
+      });
     });
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },

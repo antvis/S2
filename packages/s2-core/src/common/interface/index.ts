@@ -335,16 +335,14 @@ export interface CustomHeaderCells {
   mode?: 'pick' | 'omit';
 }
 
-
 /**
  * the index of rows or columns.
  */
- export interface MergedCellInfo {
+export interface MergedCellInfo {
   colIndex?: number;
   rowIndex?: number;
   showText?: boolean;
-} 
-
+}
 
 /**
  * Spreadsheet and ListSheet facet config

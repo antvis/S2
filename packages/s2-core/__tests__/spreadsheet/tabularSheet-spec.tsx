@@ -239,8 +239,8 @@ const onDataCellMouseUp = (value) => {
   forEach(cells, (cell) => {
     mergedCellsInfo.push({
       colIndex: cell?.meta?.colIndex,
-      rowIndex: cell?.meta?.rowIndex
-    })
+      rowIndex: cell?.meta?.rowIndex,
+    });
   });
   sheet.tooltip.show({
     position: { x: value.event.clientX, y: value.event.clientY },
