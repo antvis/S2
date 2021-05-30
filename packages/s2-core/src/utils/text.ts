@@ -1,7 +1,6 @@
 import { memoize, isString, values, isArray, toString, isNumber } from 'lodash';
-import { DataItem, MultiData } from 'src/common/interface/S2DataConfig';
 import { renderText } from 'src/utils/g-renders';
-import { isObject, get, merge, clone } from 'lodash';
+import { get, merge, clone } from 'lodash';
 import { PADDING_LEFT, PADDING_RIGHT } from 'src/common/constant';
 import { IShape } from '@antv/g-canvas';
 import { S2Options, SpreadSheetTheme } from 'src';
@@ -14,13 +13,8 @@ const ctx = canvas.getContext('2d');
  */
 export const measureTextWidth = memoize(
   (text: number | string = '', font: unknown): number => {
-    const {
-      fontSize,
-      fontFamily,
-      fontWeight,
-      fontStyle,
-      fontVariant,
-    } = font as CSSStyleDeclaration;
+    const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
+      font as CSSStyleDeclaration;
     ctx.font = [
       fontStyle,
       fontVariant,

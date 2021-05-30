@@ -5,14 +5,14 @@ import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { BaseCell } from './base-cell';
 import { isEmpty, isObject } from 'lodash';
 import { DataItem } from '../common/interface/S2DataConfig';
-import { Cell } from 'src/common/interface/interaction';
+import { S2CellType } from 'src/common/interface/interaction';
 import { ViewMeta } from '../common/interface';
 
 /**
  * Cell for panelGroup area
  */
 export class MergedCells extends BaseCell<ViewMeta> {
-  public cells: Cell[];
+  public cells: S2CellType[];
 
   protected textShape: IShape;
 
@@ -75,7 +75,7 @@ export class MergedCells extends BaseCell<ViewMeta> {
     );
   }
 
-  handleRestOptions(...options: Cell[][]) {
+  handleRestOptions(...options: S2CellType[][]) {
     this.cells = options[0];
   }
 

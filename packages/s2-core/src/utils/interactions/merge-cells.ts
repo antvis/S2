@@ -6,10 +6,9 @@ import {
   filter,
   merge,
   isArray,
-  remove,
 } from 'lodash';
-import { BaseSpreadSheet, DataCell } from 'src';
-import { Cell } from 'src/common/interface/interaction';
+import { BaseSpreadSheet } from 'src';
+import { S2CellType } from 'src/common/interface/interaction';
 import { MergedCellInfo } from 'src/common/interface/index';
 import { MergedCells } from 'src/cell/merged-cells';
 
@@ -76,11 +75,11 @@ const getNextEdge = (curEdge: number[], edges: number[][]) => {
  * return all the points of the polygon
  * @param cells the collection of information of cells which needed be merged
  */
-export const getPolygonPoints = (cells: Cell[]) => {
+export const getPolygonPoints = (cells: S2CellType[]) => {
   let allEdges = [];
 
   cells.forEach((cell) => {
-    const meta = cell?.meta;
+    const meta = cell.getMeta();
     const { x, y, width, height } = meta;
     allEdges = allEdges.concat(getRectangleEdges(x, y, width, height));
   });
@@ -103,23 +102,26 @@ export const getPolygonPoints = (cells: Cell[]) => {
  * @param cellsInfos
  * @param allCells
  */
-const getCellsByInfo = (cellsInfos: MergedCellInfo[], allCells: Cell[]) => {
+const getCellsByInfo = (
+  cellsInfos: MergedCellInfo[],
+  allCells: S2CellType[],
+) => {
   if (!isArray(cellsInfos)) return;
   const cells = [];
   let cellsMeta;
   forEach(cellsInfos, (cellInfo: MergedCellInfo) => {
-    const findCell = find(allCells, (cell: Cell) => {
-      const { meta } = cell;
+    const findCell = find(allCells, (cell: S2CellType) => {
+      const meta = cell?.getMeta();
       if (
         meta?.colIndex === cellInfo?.colIndex &&
         meta?.rowIndex === cellInfo?.rowIndex
       ) {
         return cell;
       }
-    }) as Cell;
+    }) as S2CellType;
     if (findCell) {
       cells.push(findCell);
-      if (cellInfo?.showText) cellsMeta = findCell?.meta;
+      if (cellInfo?.showText) cellsMeta = findCell?.getMeta();
     }
   });
 
@@ -144,10 +146,10 @@ export const mergeCells = (
   cellsInfo: MergedCellInfo[],
   hideData?: boolean,
 ) => {
-  const allCells = (filter(
+  const allCells = filter(
     sheet.panelGroup.getChildren(),
     (child) => !(child instanceof MergedCells),
-  ) as unknown) as Cell[];
+  ) as unknown as S2CellType[];
   const { cells, viewMeta } = getCellsByInfo(cellsInfo, allCells);
 
   if (!isEmpty(cells)) {
@@ -159,19 +161,6 @@ export const mergeCells = (
     const value = hideData ? '' : viewMeta;
     sheet.facet.panelGroup.add(new MergedCells(value, sheet, cells));
   }
-};
-
-/**
- * decide if collection a is the subset of collection b
- * @param a
- * @param b
- */
-const ifSubset = (a: any[], b: any[]) => {
-  let res = true;
-  a.forEach((item) => {
-    if (!find(b, item)) res = false;
-  });
-  return res;
 };
 
 /**
@@ -187,7 +176,7 @@ const getOverlap = (a: any[], b: any[]) => {
   return res;
 };
 
-const removeMergedCells = (cells: Cell[], mergedCells: MergedCells) => {
+const removeMergedCells = (cells: S2CellType[], mergedCells: MergedCells) => {
   const findOne = find(mergedCells, (item: MergedCells) =>
     isEqual(cells, item.cells),
   ) as MergedCells;
@@ -203,10 +192,10 @@ export const updateMergedCells = (sheet: BaseSpreadSheet) => {
   const mergedCellsInfo = sheet.options?.mergedCellsInfo;
   if (isEmpty(mergedCellsInfo)) return;
 
-  const allCells = (filter(
+  const allCells = filter(
     sheet.panelGroup.getChildren(),
     (child) => !(child instanceof MergedCells),
-  ) as unknown) as Cell[];
+  ) as unknown as S2CellType[];
   if (isEmpty(allCells)) return;
 
   const allMergedCells = [];
@@ -214,10 +203,10 @@ export const updateMergedCells = (sheet: BaseSpreadSheet) => {
     allMergedCells.push(getCellsByInfo(cellsInfo, allCells));
   });
 
-  const oldMergedCells = (filter(
+  const oldMergedCells = filter(
     sheet.panelGroup.getChildren(),
     (child) => child instanceof MergedCells,
-  ) as unknown) as MergedCells;
+  ) as unknown as MergedCells;
 
   allMergedCells.forEach((mergedCell) => {
     const { cells, viewMeta } = mergedCell;

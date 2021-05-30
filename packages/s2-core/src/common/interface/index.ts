@@ -1,17 +1,15 @@
 import { Group } from '@antv/g-canvas';
-import { Hierarchy, BaseSpreadSheet, Node, DataItem } from '../../index';
+import { Hierarchy, BaseSpreadSheet, Node } from '../../index';
 import BaseSpreadsheet from '../../sheet-type/base-spread-sheet';
 import { BaseDataSet } from 'src/data-set';
 import { BaseParams } from 'src/data-set/base-data-set';
 import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
-import { S2DataConfig, safetyDataConfig } from './S2DataConfig';
+import { S2DataConfig, safetyDataConfig, Data, DataItem } from './S2DataConfig';
 import { S2Options, safetyOptions } from './S2Options';
 import { CustomInteraction } from '../../interaction/base';
 
-export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions };
-
-export type Data = Record<string, string | number>;
+export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions, Data };
 
 export type Formatter = (v: any) => string;
 

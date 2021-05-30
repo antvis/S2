@@ -30,7 +30,7 @@ import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
 import SpreadSheet from 'src/sheet-type/spread-sheet';
 import { resetDrillDownCfg } from 'src/utils/drill-down/helper';
 import { BaseSheetProps } from '../interface';
-import { Event } from '@antv/g-canvas';
+import { Event as GEvent } from '@antv/g-canvas';
 
 import './index.less';
 
@@ -52,9 +52,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
     onCellScroll,
     onRowCellClick,
     onColCellClick,
-    onCornerCellClick,
     onMergedCellsClick,
-    onDataCellClick,
     onDataCellMouseUp,
     getSpreadsheet,
     partDrillDown,
@@ -99,24 +97,24 @@ export const BaseSheet = (props: BaseSheetProps) => {
       setTotal(data?.total);
     });
 
-    baseSpreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev: GEvent) => {
       if (isFunction(onDataCellMouseUp)) {
         onDataCellMouseUp(getBaseCellData(ev));
       }
     });
 
-    baseSpreadsheet.on(S2Event.MERGEDCELLS_CLICK, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.MERGEDCELLS_CLICK, (ev: GEvent) => {
       if (isFunction(onMergedCellsClick)) {
         onMergedCellsClick(getBaseCellData(ev));
       }
     });
 
-    baseSpreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.ROWCELL_CLICK, (ev: GEvent) => {
       if (isFunction(onRowCellClick)) {
         onRowCellClick(getBaseCellData(ev));
       }
     });
-    baseSpreadsheet.on(S2Event.COLCELL_CLICK, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.COLCELL_CLICK, (ev: GEvent) => {
       if (isFunction(onColCellClick)) {
         onColCellClick(getBaseCellData(ev));
       }

@@ -214,7 +214,7 @@ const options = {
   mergedCellsInfo: [
     [
       { colIndex: 1, rowIndex: 0 },
-      { colIndex: 1, rowIndex: 1, showText: true }
+      { colIndex: 1, rowIndex: 1, showText: true },
     ],
   ],
 } as S2Options;

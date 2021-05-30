@@ -60,7 +60,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     const currentIndex = this.meta[needGetIndexKey];
     const selectedIndexes = map(
       cells,
-      (cell) => cell?.meta[needGetIndexKey],
+      (cell) => cell?.getMeta()[needGetIndexKey],
     );
     if (includes(selectedIndexes, currentIndex)) {
       this.updateByState(changeStyleStateName);
@@ -86,8 +86,8 @@ export class DataCell extends BaseCell<ViewMeta> {
         const currentRowIndex = this.meta.rowIndex;
         // 当视图内的cell行列index与hover的cell一致，且不是当前hover的cell时，绘制hover的十字样式
         if (
-          (currentColIndex === currentHoverCell?.meta.colIndex ||
-            currentRowIndex === currentHoverCell?.meta.rowIndex) &&
+          (currentColIndex === currentHoverCell?.getMeta().colIndex ||
+            currentRowIndex === currentHoverCell?.getMeta().rowIndex) &&
           this !== currentHoverCell
         ) {
           this.updateByState(SelectedStateName.HOVER_LINKAGE);
@@ -197,7 +197,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): CellMapping {
-    const value = (this.meta.fieldValue as unknown) as number;
+    const value = this.meta.fieldValue as unknown as number;
     return condition?.mapping(value, get(this.meta.data, [0]));
   }
 
@@ -396,9 +396,8 @@ export class DataCell extends BaseCell<ViewMeta> {
         value = get(data, [0, derivedValue]);
       }
       const up = getDerivedDataState(value);
-      const formatter = this.spreadsheet.dataSet.getFieldFormatter(
-        derivedValue,
-      );
+      const formatter =
+        this.spreadsheet.dataSet.getFieldFormatter(derivedValue);
       return {
         value: formatter ? formatter(value) : value,
         up,
