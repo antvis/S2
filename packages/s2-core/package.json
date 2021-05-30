@@ -4,6 +4,20 @@
   "main": "lib/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
+  "description": "effective spreadsheet render core lib",
+  "homepage": "https://s2.antv.vision",
+  "author": "https://github.com/orgs/antvis/people",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/S2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/S2/issues"
+  },
   "files": [
     "esm",
     "lib",
@@ -19,6 +33,7 @@
     "test": "",
     "clean": "rimraf lib esm dist",
     "build": "run-s clean lib dist",
+    "coverage": "jest --coverage",
     "lib": "run-p lib:* cpx:*",
     "lib:cjs": "tsc -p tsconfig.json --target ES5 --module commonjs --outDir lib",
     "lib:esm": "tsc -p tsconfig.json --target ES5 --module ESNext --outDir esm",

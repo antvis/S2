@@ -16,8 +16,10 @@ s2-site/node_modules/
 s2-site/.cache/
 s2-site/public
 
-lib
-esm
-dist
+# s2-core
+packages/s2-core/lib/
+packages/s2-core/esm/
+packages/s2-core/dist/
+packages/s2-core/coverage/
 
 

@@ -60,7 +60,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     const currentIndex = this.meta[needGetIndexKey];
     const selectedIndexes = map(
       cells,
-      (cell) => cell.getMeta()[needGetIndexKey],
+      (cell) => cell?.meta[needGetIndexKey],
     );
     if (includes(selectedIndexes, currentIndex)) {
       this.updateByState(changeStyleStateName);
@@ -86,8 +86,8 @@ export class DataCell extends BaseCell<ViewMeta> {
         const currentRowIndex = this.meta.rowIndex;
         // 当视图内的cell行列index与hover的cell一致，且不是当前hover的cell时，绘制hover的十字样式
         if (
-          (currentColIndex === currentHoverCell.getMeta().colIndex ||
-            currentRowIndex === currentHoverCell.getMeta().rowIndex) &&
+          (currentColIndex === currentHoverCell?.meta.colIndex ||
+            currentRowIndex === currentHoverCell?.meta.rowIndex) &&
           this !== currentHoverCell
         ) {
           this.updateByState(SelectedStateName.HOVER_LINKAGE);

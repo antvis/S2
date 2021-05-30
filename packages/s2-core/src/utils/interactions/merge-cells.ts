@@ -105,7 +105,7 @@ export const getPolygonPoints = (cells: Cell[]) => {
  */
 const getCellsByInfo = (cellsInfos: MergedCellInfo[], allCells: Cell[]) => {
   if (!isArray(cellsInfos)) return;
-  let cells = [];
+  const cells = [];
   let cellsMeta;
   forEach(cellsInfos, (cellInfo: MergedCellInfo) => {
     const findCell = find(allCells, (cell: Cell) => {
@@ -180,7 +180,7 @@ const ifSubset = (a: any[], b: any[]) => {
  * @param b
  */
 const getOverlap = (a: any[], b: any[]) => {
-  let res = [];
+  const res = [];
   a.forEach((item) => {
     if (find(b, item)) res.push(item);
   });
@@ -209,7 +209,7 @@ export const updateMergedCells = (sheet: BaseSpreadSheet) => {
   ) as unknown) as Cell[];
   if (isEmpty(allCells)) return;
 
-  let allMergedCells = [];
+  const allMergedCells = [];
   mergedCellsInfo.forEach((cellsInfo: MergedCellInfo[]) => {
     allMergedCells.push(getCellsByInfo(cellsInfo, allCells));
   });
