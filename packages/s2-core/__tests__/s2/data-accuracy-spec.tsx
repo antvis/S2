@@ -174,14 +174,14 @@ const wrapComponent = (text, component) => {
 function MainLayout(props) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {wrapComponent('小计+总计+明细数据+单个指标',
-        <SheetComponent
-          dataCfg={getDataCfg(1)}
-          adaptive={false}
-          options={getOptions()}
-          spreadsheet={spreadsheet1}
-        />
-      )}
+      {/*{wrapComponent('小计+总计+明细数据+单个指标',*/}
+      {/*  <SheetComponent*/}
+      {/*    dataCfg={getDataCfg(1)}*/}
+      {/*    adaptive={false}*/}
+      {/*    options={getOptions()}*/}
+      {/*    spreadsheet={spreadsheet1}*/}
+      {/*  />*/}
+      {/*)}*/}
       {wrapComponent('小计+总计+明细数据+两个指标',
         <SheetComponent
           dataCfg={getDataCfg(6)}

@@ -211,7 +211,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     const crossColor = this.theme.view.cell.crossColor;
     // 隔行颜色的配置
     if (this.spreadsheet.isPivotMode() && crossColor) {
-      if (this.meta.rowIndexHeightExist % 2 === 0) {
+      if (this.meta.rowIndex % 2 === 0) {
         // 偶数行展示灰色背景，因为index是从0开始的
         bgColor = crossColor;
       }

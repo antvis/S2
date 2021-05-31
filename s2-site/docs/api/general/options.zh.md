@@ -304,7 +304,6 @@ object 必选,_ default：{}_ 功能描述：单元个数据和位置等信息
 | colQuery | Array<Record<string, any>> |  |  |  | 列查询条件 |
 | rowId | string |  |  |  | 单元格的行 id |
 | colId | string |  |  |  | 单元格的列 id |
-| rowIndexHeightExist | number |  |  |  | 高度存在时的行索引，用于决策模式下的隔行颜色区分   |
 | [key: string] | any |  |  |  | 其他任意的选择配置 |
 
 keepOnlyNodesIds keepOnlyNodesIds

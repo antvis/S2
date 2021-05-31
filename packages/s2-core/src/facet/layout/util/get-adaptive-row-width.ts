@@ -1,7 +1,6 @@
 import { measureTextWidth } from '../../../utils/text';
 import * as _ from 'lodash';
 import { DEFAULT_PADDING, ICON_RADIUS } from '../../../common/constant';
-import { SpreadsheetFacet } from '../../index';
 import {
   CellCfg,
   RowCfg,
@@ -11,6 +10,7 @@ import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import getRowWidth from './get-row-width';
 import { WidthType } from './process-default-col-width-by-type';
+import { BaseFacet } from "src/facet";
 
 /**
  * Get rowHeader col node's width
@@ -32,13 +32,13 @@ export default function getAdaptiveRowWidth(
   node: Node,
   rowCfg: RowCfg,
   cellCfg: CellCfg,
-  facet: SpreadsheetFacet,
+  facet: BaseFacet,
   cfg: SpreadSheetFacetCfg,
   isPivotMode = true,
 ) {
   if (rowCfg.width === WidthType.Compat) {
     // compat
-    const field = rowsHierarchy.rows[node.level];
+    const field = cfg.rows[node.level];
     const store = facet.cfg.spreadsheet.store;
     const fieldLevelMaxLabel = store.get('fieldLevelMaxLabel') || {};
     const { isLeaf, isTotals } = node;

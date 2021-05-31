@@ -420,8 +420,6 @@ export interface ViewMeta {
   // rowId of cell
   rowId?: string;
   colId?: string;
-  // 高度存在的时候(不为0)的行索引，用于决策模式下的隔行颜色区分 -- 目前用在定义在行头cell，用在data-cell
-  rowIndexHeightExist?: number;
   [key: string]: any;
 }
 

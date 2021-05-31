@@ -1,11 +1,7 @@
-export { default as buildHeaderHierarchy } from './build-header-hierarchy';
-export { default as buildTreeRowsHierarchy } from './build-tree-rows-hierarchy';
 export { default as getDimsConditionByNode } from './get-dims-condition-by-node';
 export { default as getColHeight } from './get-col-height';
 export { default as getColWidth } from './get-col-width';
 export { default as getRowWidth } from './get-row-width';
-export { default as processRows } from './process-rows';
-export { default as processCols } from './process-cols';
 export { default as processColsList } from './process-cols-list';
 export { default as processRowsList } from './process-rows-list';
 export { default as getHeaderHierarchyQuery } from './get-header-hierarchy-query';

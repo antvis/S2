@@ -2,7 +2,7 @@ import { Group } from '@antv/g-canvas';
 import * as _ from 'lodash';
 import { GuiIcon } from '../../../common/icons';
 import { DEFAULT_PADDING, KEY_LIST_SORT } from '../../../common/constant';
-import { BaseSpreadSheet } from '../../..';
+import { SpreadSheet } from '../../..';
 
 // 排序按钮的宽度
 export const SORT_ICON_SIZE = 8;
@@ -10,7 +10,7 @@ export const SORT_ICON_SIZE = 8;
 // 明细表排序icon
 export function addDetailTypeSortIcon(
   parent: Group,
-  spreadsheet: BaseSpreadSheet,
+  spreadsheet: SpreadSheet,
   textX,
   textY,
   key,

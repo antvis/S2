@@ -23,7 +23,6 @@ export interface BaseNodeConfig {
   query?: Record<string, any>;
   belongsCell?: Group;
   inCollapseNode?: boolean;
-  rowIndexHeightExist?: number;
   [key: string]: any;
 }
 
@@ -217,9 +216,6 @@ export class Node {
 
   public inCollapseNode?: boolean;
 
-  // 高度存在的时候(不为0)的行索引，用于决策模式下的隔行颜色区分
-  public rowIndexHeightExist?: number;
-
   [key: string]: any;
 
   constructor(cfg: BaseNodeConfig) {
@@ -241,7 +237,6 @@ export class Node {
       query,
       belongsCell,
       inCollapseNode,
-      rowIndexHeightExist,
       isTotalMeasure,
     } = cfg;
     this.id = id;
@@ -261,7 +256,6 @@ export class Node {
     this.query = query;
     this.belongsCell = belongsCell;
     this.inCollapseNode = inCollapseNode;
-    this.rowIndexHeightExist = rowIndexHeightExist;
     this.isTotalMeasure = isTotalMeasure;
     if (parent) {
       parent.children.push(this);

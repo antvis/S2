@@ -7,7 +7,6 @@ import {
 } from "src/common/constant";
 import * as _ from "lodash";
 import { BaseFacet } from "src/facet/index";
-import { processCols, processRows } from "src/facet/layout/util";
 import processDefaultColWidthByType from "src/facet/layout/util/process-default-col-width-by-type";
 import processRowNodesCoordinate from "src/facet/layout/util/process-row-nodes-coordinate";
 import processColNodesCoordinate from "src/facet/layout/util/process-col-nodes-coordinate";
@@ -41,15 +40,6 @@ export class PivotFacet extends BaseFacet {
       colsHierarchy,
       this,
     );
-    // 处理行头中的叶子节点，计算出高度不为0的叶子的节点的rowIndex
-    let index = 0;
-    rowLeafNodes.forEach((value) => {
-      if (value.height !== 0) {
-        // eslint-disable-next-line no-param-reassign
-        value.rowIndexHeightExist = index;
-        index += 1;
-      }
-    });
     const dataSet = this.cfg.dataSet;
     const values = dataSet.fields.values;
     const ss = this.spreadsheet;
@@ -95,7 +85,6 @@ export class PivotFacet extends BaseFacet {
         colQuery,
         rowId: row.id,
         colId: col.id,
-        rowIndexHeightExist: row.rowIndexHeightExist,
       } as ViewMeta;
     }
 

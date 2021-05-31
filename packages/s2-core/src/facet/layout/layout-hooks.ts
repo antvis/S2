@@ -4,6 +4,13 @@ import { SpreadSheetFacetCfg } from "src/common/interface";
 import { Hierarchy } from "src/facet/layout/hierarchy";
 import * as _ from "lodash";
 
+/**
+ * re-arrange field values by custom arrange hooks
+ * @param fieldValues
+ * @param spreadsheet
+ * @param parent
+ * @param field
+ */
 export const layoutArrange = (fieldValues: string[], spreadsheet: SpreadSheet, parent: Node, field: string): string[] => {
   const layoutArrange = spreadsheet.options.layoutArrange;
   if (layoutArrange) {

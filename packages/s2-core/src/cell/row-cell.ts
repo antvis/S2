@@ -211,8 +211,7 @@ export class RowCell extends BaseCell<Node> {
     } = this.meta;
     const isTreeType = this.isTreeType();
     // grid & is totals content is empty
-    const content =
-      !isTreeType && parent.isTotals ? '' : this.getFormattedValue(label);
+    const content = this.getFormattedValue(label);
 
     // indent in tree
     const textIndent = this.getTextIndent();
