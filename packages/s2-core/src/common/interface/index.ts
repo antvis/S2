@@ -472,7 +472,7 @@ export interface ColWidthCache {
   lastUserDragWidth: Record<string, number>;
 }
 
-export interface Position {
+export interface CellPosition {
   x: number;
   y: number;
 }

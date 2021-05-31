@@ -50,7 +50,7 @@ import {
 import {
   OffsetConfig,
   SpreadsheetFacetCfg,
-  Position,
+  CellPosition,
 } from '../common/interface';
 import { Layout } from './layout';
 import { Hierarchy } from './layout/hierarchy';
@@ -267,7 +267,7 @@ export class SpreadsheetFacet extends BaseFacet {
     this.dynamicRender();
   }
 
-  protected adjustXAndY(x: number, y: number): Position {
+  protected adjustXAndY(x: number, y: number): CellPosition {
     let newX = x;
     let newY = y;
     if (x !== undefined) {

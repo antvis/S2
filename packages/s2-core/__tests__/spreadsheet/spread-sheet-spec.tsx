@@ -11,7 +11,7 @@ import {
 import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Switch, Checkbox, Button } from 'antd';
+import { Switch, Checkbox } from 'antd';
 import { CustomTooltip } from './custom/custom-tooltip';
 
 let data = getMockData('../datasets/tableau-supermarket.csv');

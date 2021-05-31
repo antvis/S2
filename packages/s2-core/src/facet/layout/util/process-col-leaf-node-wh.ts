@@ -74,8 +74,11 @@ const colWidthHasRows = (
   const measures = values as string[];
 
   // 小计10个，明细数据30个（默认）
-  const { totalSample, detailSample, maxSampleIndex } =
-    cfg.spreadsheet.options.style.colCfg;
+  const {
+    totalSample,
+    detailSample,
+    maxSampleIndex,
+  } = cfg.spreadsheet.options.style.colCfg;
   const getSecondLast = (data) => {
     if (isArray(data)) {
       if (data?.length > maxSampleIndex) {

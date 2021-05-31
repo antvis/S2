@@ -306,8 +306,12 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       this.headerConfig.spreadsheet.isPivotMode()
     ) {
       // 只有交叉表才有icon
-      const { hierarchyCollapse, position, height, spreadsheet } =
-        this.headerConfig;
+      const {
+        hierarchyCollapse,
+        position,
+        height,
+        spreadsheet,
+      } = this.headerConfig;
       const colHeight = spreadsheet.options.style.colCfg.height;
       const icon = new GuiIcon({
         type: hierarchyCollapse ? 'plus' : 'MinusSquare',
@@ -334,8 +338,13 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   private handleHotsSpotArea() {
-    const { data, position, width, height, seriesNumberWidth } =
-      this.headerConfig;
+    const {
+      data,
+      position,
+      width,
+      height,
+      seriesNumberWidth,
+    } = this.headerConfig;
     const prevResizer = this.headerConfig.spreadsheet.foregroundGroup.findById(
       KEY_GROUP_CORNER_RESIZER,
     );

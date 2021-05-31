@@ -85,8 +85,12 @@ export abstract class BaseFacet {
     });
 
     // all cell's width&height
-    const { widths, heights, width0Indexes, height0Indexes } =
-      this.calculateViewCellsWH();
+    const {
+      widths,
+      heights,
+      width0Indexes,
+      height0Indexes,
+    } = this.calculateViewCellsWH();
     this.viewCellWidths = widths;
     this.viewCellHeights = heights;
     this.viewCellWidth0Indexes = width0Indexes;

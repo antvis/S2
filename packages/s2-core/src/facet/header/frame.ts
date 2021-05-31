@@ -105,8 +105,13 @@ export class Frame extends Group {
 
   private addCornerRightShadowIfNeeded() {
     const cfg = this.cfg;
-    const { width, height, viewportHeight, position, showCornerRightShadow } =
-      cfg;
+    const {
+      width,
+      height,
+      viewportHeight,
+      position,
+      showCornerRightShadow,
+    } = cfg;
     if (
       showCornerRightShadow ||
       _.get(cfg.spreadsheet, 'theme.center.showCornerRightShadow')

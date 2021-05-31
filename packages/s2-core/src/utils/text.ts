@@ -13,8 +13,13 @@ const ctx = canvas.getContext('2d');
  */
 export const measureTextWidth = memoize(
   (text: number | string = '', font: unknown): number => {
-    const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
-      font as CSSStyleDeclaration;
+    const {
+      fontSize,
+      fontFamily,
+      fontWeight,
+      fontStyle,
+      fontVariant,
+    } = font as CSSStyleDeclaration;
     ctx.font = [
       fontStyle,
       fontVariant,
@@ -311,18 +316,18 @@ export const drawObjectText = (cell) => {
     cell,
   );
 
-  const { values } = text;
+  const { values: textValues } = text;
   let curText: string | number;
   let curX: number;
   let curY: number = y + realHeight / 2;
   let curWidth: number;
   let totalWidth = 0;
   let curTextShape: IShape;
-  for (let i = 0; i < values.length; i += 1) {
+  for (let i = 0; i < textValues.length; i += 1) {
     curY = y + realHeight / 2 + realHeight * (i + 1); // 加上label的高度
     totalWidth = 0;
-    for (let j = 0; j < values[i].length; j += 1) {
-      curText = values[i][j] || '-';
+    for (let j = 0; j < textValues[i].length; j += 1) {
+      curText = textValues[i][j] || '-';
       const curStyle = getStyle(
         i,
         j,
