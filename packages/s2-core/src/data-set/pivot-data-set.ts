@@ -325,7 +325,7 @@ export class PivotDataSet extends BaseDataSet {
     return filterUndefined(Array.from(meta.keys()));
   }
 
-  public getCellData(query: DataType): DataType {
+  public getCellData(query: DataType): DataType[] {
     const { rows, columns, values } = this.fields;
     const getDimensionValues = (dimensions: string[], query: DataType): string[] => {
       return _.reduce(
@@ -347,11 +347,11 @@ export class PivotDataSet extends BaseDataSet {
     );
 
     let data = _.size(path) ? _.get(this.indexesData, path) : {};
-    if (_.isArray(data)) {
-      data = {};
+    if (!_.isArray(data)) {
+      data = [data];
     }
     DebuggerUtil.getInstance().logger("get data:", path, data);
-    return data || {};
+    return _.compact(_.flattenDeep(data));
   }
 
   handleValues = (values: string[], derivedValues: DerivedValue[]) => {

@@ -15,7 +15,7 @@ import {
   each,
   isArray,
 } from 'lodash';
-import { SpreadsheetFacet } from '../../index';
+import { BaseFacet } from '../../index';
 import { ColWidthCache, SpreadSheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
@@ -40,7 +40,7 @@ import { KEY_COL_REAL_WIDTH_INFO, measureTextWidth } from '../../../index';
 const colWidthHasRows = (
   cfg: SpreadSheetFacetCfg,
   node: Node,
-  facet: SpreadsheetFacet,
+  facet: BaseFacet,
 ) => {
   const derivedValues = cfg.derivedValues || [];
   // 业务上层业务中，目前所有需要被展示的衍生指标的个数都是相等的，
@@ -56,7 +56,7 @@ const colWidthHasRows = (
       allDisplayDerivedValueField.map((ddv) => ddv[i]),
     );
   }
-  const dataset = facet.getDataset();
+  const dataset = cfg.dataSet;
   // 存在当列信息的数据集合（这里是原始数据）
   const records = dataset.getCellData(getDimsConditionByNode(node));
   // 还需要找到该列存在的小计值
@@ -192,7 +192,7 @@ const colWidthNoRows = (cfg: SpreadSheetFacetCfg, node: Node) => {
 const getColWidthWithDerivedValue = (
   cfg: SpreadSheetFacetCfg,
   node: Node,
-  facet: SpreadsheetFacet,
+  facet: BaseFacet,
 ) => {
   const cacheInfos = cfg.spreadsheet.store.get(KEY_COL_REAL_WIDTH_INFO);
   const widthCacheKey = `${JSON.stringify(node.query)}-width`;
@@ -332,7 +332,7 @@ export default function processColLeafNodeWH(
   colLeafNodes: Node[],
   rowsHierarchy: Hierarchy,
   cfg: SpreadSheetFacetCfg,
-  facet: SpreadsheetFacet,
+  facet: BaseFacet,
   isPivotMode: boolean,
 ) {
   const { cellCfg, colCfg } = cfg;
@@ -367,7 +367,7 @@ export default function processColLeafNodeWH(
     // The priority: widthByFieldValue(user-dragged) > colWidthType > others
     if (cellCfg.width === WidthType.Compat) {
       // compat
-      const dataset = facet.getDataset();
+      const dataset = cfg.dataSet;
       if (isPivotMode) {
         // 节点的宽度由文本宽度决定
         const records = dataset.getCellData(getDimsConditionByNode(current));

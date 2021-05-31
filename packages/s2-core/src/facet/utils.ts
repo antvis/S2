@@ -67,6 +67,14 @@ export const calculateInViewIndexes = (
   );
   yMax = Math.min(yMax === -1 ? Infinity : yMax, heights.length - 2);
 
+  // use direction
+  // const halfWidthSize = Math.ceil(xMax - xMin / 4);
+  // const halfHeightSize = Math.ceil(yMax - yMin / 4);
+  // xMin = Math.max(0, xMin - halfWidthSize)
+  // xMax = xMax + halfWidthSize;
+  // yMin = Math.max(0, yMin - halfHeightSize);
+  // yMax = yMax + halfHeightSize;
+
   return [xMin, xMax, yMin, yMax];
 };
 

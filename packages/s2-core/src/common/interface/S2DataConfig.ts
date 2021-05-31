@@ -22,6 +22,7 @@ export const defaultDataConfig = {
     columns: [],
     values: [],
     derivedValues: [],
+    valueInCols: true,
   },
   meta: [],
   sortParams: [],
