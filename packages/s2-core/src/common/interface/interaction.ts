@@ -6,8 +6,3 @@ export interface SelectedState {
   stateName: string;
   cells: S2CellType[];
 }
-
-export interface Posision {
-  x: number;
-  y: number;
-}

@@ -1,14 +1,29 @@
+import { forEach } from 'lodash';
 import { act } from 'react-dom/test-utils';
+import { mergeCells } from '../../src/utils/interactions/merge-cells';
 import 'antd/dist/antd.min.css';
 import {
+  auto,
   S2DataConfig,
   S2Options,
   SheetComponent,
   SpreadSheet,
 } from '../../src';
-import { getContainer } from './helpers';
+import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
+import { Switch, Button } from 'antd';
+import { CustomTooltip } from './custom/custom-tooltip';
+
+let data = getMockData('../datasets/tableau-supermarket.csv');
+
+data = data.map((row) => {
+  row['profit-tongbi'] = 0.2233;
+  row['profit-huanbi'] = -0.4411;
+  row['count-tongbi'] = 0.1234;
+  row['count-huanbi'] = -0.4321;
+  return row;
+});
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -18,7 +33,113 @@ const getSpreadSheet = (
   return new SpreadSheet(dom, dataCfg, options);
 };
 
-const mockData = {
+const baseDataCfg = {
+  fields: {
+    // rows has value
+    rows: ['area', 'province', 'city'],
+    columns: ['type', 'sub_type'],
+    values: ['profit', 'count'],
+  },
+  meta: [
+    {
+      field: 'profit-tongbi',
+      name: '利润同比',
+      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+    },
+    {
+      field: 'profit-huanbi',
+      name: '利润环比',
+      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+    },
+    {
+      field: 'count-tongbi',
+      name: '个数同比',
+      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+    },
+    {
+      field: 'count-huanbi',
+      name: '个数环比',
+      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+    },
+    {
+      field: 'sale_amt',
+      name: '销售额',
+      formatter: (v) => v,
+    },
+    {
+      field: 'count',
+      name: '销售个数',
+      formatter: (v) => v,
+    },
+    {
+      field: 'discount',
+      name: '折扣',
+      formatter: (v) => v,
+    },
+    {
+      field: 'profit',
+      name: '利润',
+      formatter: (v) => v,
+    },
+  ],
+  data,
+  sortParams: [
+    {
+      sortFieldId: 'area',
+      sortMethod: 'ASC',
+    },
+    {
+      sortFieldId: 'province',
+      sortMethod: 'DESC',
+    },
+  ],
+} as S2DataConfig;
+
+const baseOptions = {
+  debug: true,
+  width: 800,
+  height: 600,
+  hierarchyType: 'grid',
+  hierarchyCollapse: false,
+  showSeriesNumber: true,
+  freezeRowHeader: false,
+  mode: 'pivot',
+  valueInCols: true,
+  conditions: {
+    text: [],
+    interval: [],
+    background: [],
+    icon: [],
+  },
+  style: {
+    treeRowsWidth: 100,
+    collapsedRows: {},
+    colCfg: {
+      widthByFieldValue: {},
+      heightByField: {},
+      colWidthType: 'compact',
+    },
+    cellCfg: {
+      height: 32,
+    },
+    device: 'pc',
+  },
+  mergedCellsInfo: [
+    [
+      { colIndex: 1, rowIndex: 6 },
+      { colIndex: 1, rowIndex: 7, showText: true },
+      { colIndex: 2, rowIndex: 6 },
+      { colIndex: 2, rowIndex: 7 },
+      { colIndex: 3, rowIndex: 6 },
+      { colIndex: 3, rowIndex: 7 },
+    ],
+  ],
+  initTooltip: (spreadsheet) => {
+    return new CustomTooltip(spreadsheet);
+  },
+} as S2Options;
+
+const tabularDataCfg = {
   fields: {
     rows: ['COLUMNDIMENSION-scene'],
     columns: ['DIMENSION-sex', 'DIMENSION-age'],
@@ -195,7 +316,7 @@ const mockData = {
   ],
 } as S2DataConfig;
 
-const options = {
+const tabularOptions = {
   width: 1000,
   height: 600,
   hierarchyType: 'grid',
@@ -208,23 +329,135 @@ const options = {
       firstDerivedMeasureRowIndex: 2,
     },
   },
+  mergedCellsInfo: [
+    [
+      { colIndex: 0, rowIndex: 0 },
+      { colIndex: 0, rowIndex: 1, showText: true },
+    ],
+  ],
 } as S2Options;
 
-describe('spreadsheet tabular spec', () => {
+const getDataCfg = (sheetType: 'base' | 'tabular') => {
+  switch (sheetType) {
+    case 'tabular':
+      return tabularDataCfg;
+    case 'base':
+    default:
+      return baseDataCfg;
+  }
+};
+
+const getOptions = (sheetType: 'base' | 'tabular') => {
+  switch (sheetType) {
+    case 'tabular':
+      return tabularOptions;
+    case 'base':
+    default:
+      return baseOptions;
+  }
+};
+
+function MainLayout() {
+  const [sheetType, setSheetType] = React.useState<'base' | 'tabular'>('base');
+  const [options, setOptions] = React.useState<S2Options>(getOptions('base'));
+  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(
+    getDataCfg('base'),
+  );
+
+  const onRowCellClick = (value) => {
+    console.log(value);
+  };
+  const onColCellClick = (value) => {
+    console.log(value);
+  };
+  const onDataCellClick = (value) => {
+    console.log(value);
+  };
+
+  let sheet;
+  let mergedCellsInfo = [];
+
+  const dataCellTooltip = (
+    <div>
+      <Button
+        onClick={() => {
+          mergeCells(sheet, mergedCellsInfo);
+        }}
+      >
+        合并单元格
+      </Button>
+    </div>
+  );
+
+  const mgergedCellsTooltip = <div>合并后的tooltip</div>;
+
+  const onDataCellMouseUp = (value) => {
+    console.log(value);
+    sheet = value?.viewMeta?.spreadsheet;
+    const curSelectedState = sheet.getCurrentState();
+    const { cells } = curSelectedState;
+    mergedCellsInfo = [];
+    forEach(cells, (cell) => {
+      mergedCellsInfo.push({
+        colIndex: cell?.meta?.colIndex,
+        rowIndex: cell?.meta?.rowIndex,
+      });
+    });
+    sheet.tooltip.show({
+      position: { x: value.event.clientX, y: value.event.clientY },
+      element: dataCellTooltip,
+    });
+  };
+
+  const onMergedCellsClick = (value) => {
+    console.log(value);
+    sheet = value?.target?.cells[0].spreadsheet;
+    sheet.tooltip.show({
+      position: { x: value.event.clientX, y: value.event.clientY },
+      element: mgergedCellsTooltip,
+    });
+  };
+
+  const onCheckChanged = (checked) => {
+    const type = checked ? 'base' : 'tabular';
+    setSheetType(type);
+    setDataCfg(getDataCfg(type));
+    setOptions(getOptions(type));
+  };
+
+  return (
+    <div>
+      <div style={{ display: 'inline-block' }}>
+        <Switch
+          checkedChildren="base"
+          unCheckedChildren="tabular"
+          defaultChecked={true}
+          onChange={onCheckChanged}
+          style={{ marginRight: 10 }}
+        />
+      </div>
+      <SheetComponent
+        sheetType={sheetType}
+        dataCfg={dataCfg}
+        adaptive={false}
+        options={options}
+        spreadsheet={getSpreadSheet}
+        onDataCellMouseUp={onDataCellMouseUp}
+        onRowCellClick={onRowCellClick}
+        onColCellClick={onColCellClick}
+        onDataCellClick={onDataCellClick}
+        onMergedCellsClick={onMergedCellsClick}
+      />
+    </div>
+  );
+}
+
+describe('spreadsheet normal spec', () => {
   test('demo', () => {
     expect(1).toBe(1);
   });
 
   act(() => {
-    ReactDOM.render(
-      <SheetComponent
-        sheetType="tabular"
-        dataCfg={mockData}
-        adaptive={false}
-        options={options}
-        spreadsheet={getSpreadSheet}
-      />,
-      getContainer(),
-    );
+    ReactDOM.render(<MainLayout />, getContainer());
   });
 });

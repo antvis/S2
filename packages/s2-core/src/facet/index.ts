@@ -47,17 +47,16 @@ import {
   RowHeader,
   SeriesNumberHeader,
 } from './header';
-import { OffsetConfig, SpreadsheetFacetCfg } from '../common/interface';
+import {
+  OffsetConfig,
+  SpreadsheetFacetCfg,
+  Position,
+} from '../common/interface';
 import { Layout } from './layout';
 import { Hierarchy } from './layout/hierarchy';
 import { Node } from './layout/node';
 import { BaseParams } from '../data-set/base-data-set';
 import { DEBUG_VIEW_RENDER, DebuggerUtil } from '../common/debug';
-
-interface Point {
-  x: number;
-  y: number;
-}
 
 export class SpreadsheetFacet extends BaseFacet {
   public cfg: SpreadsheetFacetCfg;
@@ -268,7 +267,7 @@ export class SpreadsheetFacet extends BaseFacet {
     this.dynamicRender();
   }
 
-  protected adjustXAndY(x: number, y: number): Point {
+  protected adjustXAndY(x: number, y: number): Position {
     let newX = x;
     let newY = y;
     if (x !== undefined) {

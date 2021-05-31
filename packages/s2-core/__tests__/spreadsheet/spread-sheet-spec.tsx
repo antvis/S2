@@ -1,6 +1,5 @@
-import { merge, clone, omit, forEach } from 'lodash';
+import { merge, clone, omit } from 'lodash';
 import { act } from 'react-dom/test-utils';
-import { mergeCells } from '../../src/utils/interactions/merge-cells';
 import 'antd/dist/antd.min.css';
 import {
   auto,
@@ -40,18 +39,18 @@ const getDataCfg = () => {
       rows: ['area', 'province', 'city'],
       columns: ['type', 'sub_type'],
       values: ['profit', 'count'],
-      // derivedValues: [
-      //   {
-      //     valueField: 'profit',
-      //     derivedValueField: ['profit-tongbi', 'profit-huanbi'],
-      //     displayDerivedValueField: ['profit-tongbi'],
-      //   },
-      //   {
-      //     valueField: 'count',
-      //     derivedValueField: ['count-tongbi', 'count-huanbi'],
-      //     displayDerivedValueField: ['count-tongbi'],
-      //   },
-      // ],
+      derivedValues: [
+        {
+          valueField: 'profit',
+          derivedValueField: ['profit-tongbi', 'profit-huanbi'],
+          displayDerivedValueField: ['profit-tongbi'],
+        },
+        {
+          valueField: 'count',
+          derivedValueField: ['count-tongbi', 'count-huanbi'],
+          displayDerivedValueField: ['count-tongbi'],
+        },
+      ],
     },
     meta: [
       {
@@ -139,19 +138,9 @@ const getOptions = () => {
       },
       device: 'pc',
     },
-    mergedCellsInfo: [
-      [
-        { colIndex: 1, rowIndex: 6 },
-        { colIndex: 1, rowIndex: 7, showText: true },
-        { colIndex: 2, rowIndex: 6 },
-        { colIndex: 2, rowIndex: 7 },
-        { colIndex: 3, rowIndex: 6 },
-        { colIndex: 3, rowIndex: 7 },
-      ],
-    ],
-    // tooltip: {
-    //   showTooltip: true,
-    // },
+    tooltip: {
+      showTooltip: true,
+    },
     initTooltip: (spreadsheet) => {
       return new CustomTooltip(spreadsheet);
     },
@@ -171,60 +160,6 @@ function MainLayout(props) {
   const [freezeRowHeader, setFreezeRowHeader] = React.useState(
     props.options.freezeRowHeader,
   );
-
-  const onRowCellClick = (value) => {
-    console.log(value);
-  };
-  const onColCellClick = (value) => {
-    console.log(value);
-  };
-  const onDataCellClick = (value) => {
-    console.log(value);
-  };
-
-  let sheet;
-  let mergedCellsInfo = [];
-
-  const dataCellTooltip = (
-    <div>
-      <Button
-        onClick={() => {
-          mergeCells(sheet, mergedCellsInfo);
-        }}
-      >
-        合并单元格
-      </Button>
-    </div>
-  );
-
-  const mgergedCellsTooltip = <div>合并后的tooltip</div>;
-
-  const onDataCellMouseUp = (value) => {
-    console.log(value);
-    sheet = value?.viewMeta?.spreadsheet;
-    const curSelectedState = sheet.getCurrentState();
-    const { cells } = curSelectedState;
-    mergedCellsInfo = [];
-    forEach(cells, (cell) => {
-      mergedCellsInfo.push({
-        colIndex: cell?.meta?.colIndex,
-        rowIndex: cell?.meta?.rowIndex,
-      });
-    });
-    sheet.tooltip.show({
-      position: { x: value.event.clientX, y: value.event.clientY },
-      element: dataCellTooltip,
-    });
-  };
-
-  const onMergedCellsClick = (value) => {
-    console.log(value);
-    sheet = value?.target?.cells[0].spreadsheet;
-    sheet.tooltip.show({
-      position: { x: value.event.clientX, y: value.event.clientY },
-      element: mgergedCellsTooltip,
-    });
-  };
 
   const onCheckChanged = (checked) => {
     setValueInCols(checked);
@@ -326,11 +261,6 @@ function MainLayout(props) {
         options={options}
         theme={props.theme}
         spreadsheet={getSpreadSheet}
-        onDataCellMouseUp={onDataCellMouseUp}
-        onRowCellClick={onRowCellClick}
-        onColCellClick={onColCellClick}
-        onDataCellClick={onDataCellClick}
-        onMergedCellsClick={onMergedCellsClick}
       />
     </div>
   );

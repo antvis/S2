@@ -471,3 +471,8 @@ export interface ColWidthCache {
   // 上次用户拖拽的宽度
   lastUserDragWidth: Record<string, number>;
 }
+
+export interface Position {
+  x: number;
+  y: number;
+}

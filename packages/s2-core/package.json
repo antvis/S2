@@ -43,6 +43,7 @@
     "test-custom-header-cell": "DEBUG_MODE=1 jest __tests__/spreadsheet/custom-header-cell-spec.tsx",
     "test-live": "DEBUG_MODE=1 jest __tests__/spreadsheet/spread-sheet-spec.tsx",
     "test-tabular": "DEBUG_MODE=1 jest __tests__/spreadsheet/tabularSheet-spec.tsx",
+    "test-merge-cells": "DEBUG_MODE=1 jest __tests__/spreadsheet/merge-cells-spec.tsx",
     "start": "webpack --config webpack-dev.config.js --mode development --progress",
     "tsc": "tsc --noEmit"
   },
