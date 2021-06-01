@@ -45,7 +45,7 @@ import {
   SeriesNumberHeader,
 } from 'src/facet/header';
 import { BaseCell } from 'src/cell';
-import { updateMergedCells } from "src/utils/interactions/merge-cells";
+import { updateMergedCells } from 'src/utils/interactions/merge-cells';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -761,11 +761,11 @@ export abstract class BaseFacet {
 
   realCellRender = (scrollX: number, scrollY: number) => {
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
-    DebuggerUtil.getInstance().logger(
-      'renderIndex:',
-      this.preCellIndexes,
-      indexes,
-    );
+    // DebuggerUtil.getInstance().logger(
+    //   'renderIndex:',
+    //   this.preCellIndexes,
+    //   indexes,
+    // );
     const { add, remove } = diffIndexes(this.preCellIndexes, indexes);
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
       // add new cell in panelCell
@@ -791,9 +791,9 @@ export abstract class BaseFacet {
         findOne?.remove(true);
       });
       updateMergedCells(this.spreadsheet);
-      DebuggerUtil.getInstance().logger(
-        `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
-      );
+      // DebuggerUtil.getInstance().logger(
+      //   `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
+      // );
     });
     this.preCellIndexes = indexes;
   };

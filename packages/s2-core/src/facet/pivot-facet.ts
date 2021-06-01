@@ -50,8 +50,12 @@ export class PivotFacet extends BaseFacet {
       }
       const rowQuery = row.query;
       const colQuery = col.query;
+      const isTotals = row.isTotals ||
+        row.isTotalMeasure ||
+        col.isTotals ||
+        col.isTotalMeasure;
       const dataQuery = _.merge({}, rowQuery, colQuery);
-      let data = dataSet.getCellData(dataQuery);
+      let data = dataSet.getCellData(dataQuery, isTotals);
       data = _.get(data, '0');
       // data.isTotals = row.isTotals || col.isTotalMeasure;
       let valueField = '';
@@ -75,11 +79,7 @@ export class PivotFacet extends BaseFacet {
         data,
         rowIndex: i,
         colIndex: j,
-        isTotals:
-          row.isTotals ||
-          row.isTotalMeasure ||
-          col.isTotals ||
-          col.isTotalMeasure,
+        isTotals,
         valueField,
         fieldValue,
         rowQuery,

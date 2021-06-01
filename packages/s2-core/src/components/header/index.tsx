@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { PageHeader } from 'antd';
 import { Export, ExportCfgProps } from '../export';
 import classNames from 'classnames';
-import { SpreadSheet } from "src/sheet-type";
+import { SpreadSheet } from 'src/sheet-type';
 
 export interface HeaderCfgProps {
   style?: React.CSSProperties;

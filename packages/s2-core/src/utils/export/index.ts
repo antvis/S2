@@ -1,4 +1,4 @@
-import { SpreadSheet } from "../../sheet-type";
+import { SpreadSheet } from '../../sheet-type';
 import { head, last, isEmpty, get, clone, trim, max } from 'lodash';
 import { ViewMeta } from '../..';
 import { ID_SEPARATOR, EMPTY_PLACEHOLDER } from '../../common/constant';

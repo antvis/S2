@@ -23,7 +23,7 @@ import {
   safetyOptions,
   S2Options,
 } from 'src/common/interface';
-import { SpreadSheet } from "src/sheet-type";
+import { SpreadSheet } from 'src/sheet-type';
 
 export const TabularSheet = (props: BaseSheetProps) => {
   const {

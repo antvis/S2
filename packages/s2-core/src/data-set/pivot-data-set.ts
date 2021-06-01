@@ -59,7 +59,7 @@ export class PivotDataSet extends BaseDataSet {
       const rowDimensionValues = this.transformDimensionsValues(data, rows);
       const colDimensionValues = this.transformDimensionsValues(data, columns);
       // this.transformDimensionsValues(data, values);
-      const path = this.getDataPath(rowDimensionValues, colDimensionValues);
+      const path = this.getDataPath(rowDimensionValues, colDimensionValues)?.[2];
       if (_.size(path) === 0) {
         path.push(0);
       }
@@ -179,7 +179,7 @@ export class PivotDataSet extends BaseDataSet {
     rowDimensionValues: string[],
     colDimensionValues: string[],
     firstCreate = true,
-  ): number[] => {
+  ): number[][] => {
     const getPath = (
       firstCreate: boolean,
       dimensionValues: string[],
@@ -212,7 +212,7 @@ export class PivotDataSet extends BaseDataSet {
     const rowPath = getPath(firstCreate, rowDimensionValues);
     const colPath = getPath(firstCreate, colDimensionValues, false);
     const result = rowPath.concat(...colPath);
-    return result;
+    return [rowPath, colPath, result];
   };
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
@@ -334,37 +334,61 @@ export class PivotDataSet extends BaseDataSet {
     return filterUndefined(Array.from(meta.keys()));
   }
 
-  public getCellData(query: DataType): DataType[] {
+  getQueryDimValues = (dimensions: string[], query: DataType,): string[] => {
+    return _.reduce(
+      dimensions,
+      (res: string[], dimension: string) => {
+        // push undefined when not exist
+        res.push(query[dimension]);
+        return res;
+      },
+      [],
+    );
+  };
+
+  public getCellData(query: DataType, isTotals: boolean): DataType[] {
     const { rows, columns, values } = this.fields;
-    const getDimensionValues = (
-      dimensions: string[],
-      query: DataType,
-    ): string[] => {
-      return _.reduce(
-        dimensions,
-        (res: string[], dimension: string) => {
-          // push undefined when not exist
-          res.push(query[dimension]);
-          return res;
-        },
-        [],
-      );
-    };
-    const rowDimensionValues = getDimensionValues(rows, query);
-    const colDimensionValues = getDimensionValues(columns, query);
+    const rowDimensionValues = this.getQueryDimValues(rows, query);
+    const colDimensionValues = this.getQueryDimValues(columns, query);
     const path = this.getDataPath(
       rowDimensionValues,
       colDimensionValues,
       false,
     );
 
-    let data = _.size(path) ? _.get(this.indexesData, path) : {};
+    let data;
+    const size = _.size(path[2]);
+    if (isTotals) {
+      if (size === rows.length + columns.length) {
+        data = _.get(this.indexesData, path[2]);
+      } else {
+        data = [{}];
+      }
+    } else {
+      data = size ? _.get(this.indexesData, path[2]) : [{}];
+    }
     if (!_.isArray(data)) {
       data = [data];
     }
-    DebuggerUtil.getInstance().logger('get data:', path, data);
+    // DebuggerUtil.getInstance().logger('get data:', path, data);
     return _.compact(_.flattenDeep(data));
   }
+
+  // public getRecords(query: DataType): DataType[]{
+  //   if (!_.isEmpty(query)) {
+  //     return _.compact(_.flattenDeep(this.indexesData));
+  //   }
+  //   const { rows, columns } = this.fields;
+  //   const rowDimensionValues = this.getQueryDimValues(rows, query);
+  //   const colDimensionValues = this.getQueryDimValues(columns, query);
+  //   const [rowPath, colPath, path] = this.getDataPath(
+  //     rowDimensionValues,
+  //     colDimensionValues,
+  //     false,
+  //   );
+  //
+  //   return null;
+  // }
 
   handleValues = (values: string[], derivedValues: DerivedValue[]) => {
     const tempValue = [];

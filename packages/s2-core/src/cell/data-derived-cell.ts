@@ -12,9 +12,9 @@ import {
   isArray,
 } from 'lodash';
 import { renderRect, renderText } from '../utils/g-renders';
-import { DerivedCell, DataCell } from ".";
+import { DerivedCell, DataCell } from '.';
 import { KEY_COL_REAL_WIDTH_INFO } from '../common/constant';
-import { SpreadSheet } from "src/sheet-type";
+import { SpreadSheet } from 'src/sheet-type';
 
 /**
  * Data with derived data cell

@@ -24,5 +24,5 @@ export {
   DataCell,
   MergedCells,
   CornerCell,
-  BaseCell
+  BaseCell,
 };

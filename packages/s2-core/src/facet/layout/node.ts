@@ -54,7 +54,7 @@ export class Node {
       query,
       belongsCell,
       inCollapseNode,
-      isTotalMeasure
+      isTotalMeasure,
     } = cfg;
     this.id = id;
     this.key = key;
@@ -215,9 +215,9 @@ export class Node {
 
   public static blankNode(): Node {
     return new Node({
-      id: "",
-      key: "",
-      value: ""
+      id: '',
+      key: '',
+      value: '',
     });
   }
 
@@ -256,9 +256,9 @@ export class Node {
 
   public static rootNode(): Node {
     return new Node({
-      id: "root",
-      key: "",
-      value: ""
+      id: 'root',
+      key: '',
+      value: '',
     });
   }
 

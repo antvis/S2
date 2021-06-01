@@ -53,18 +53,23 @@ import {
   CornerTextClick,
   RowColumnClick,
   RowTextClick,
-  HoverEvent, MergedCellsClick
-} from "../index";
+  HoverEvent,
+  MergedCellsClick,
+} from '../index';
 import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
-import { BaseFacet } from "src/facet";
+import { BaseFacet } from 'src/facet';
 import { DebuggerUtil } from '../common/debug';
 import { EventController } from '../interaction/events/event-controller';
 import { DefaultInterceptEvent } from '../interaction/events/types';
 import { State } from '../state/state';
 import { ShowProps } from '../common/tooltip/interface';
 import { isMobile } from '../utils/is-mobile';
-import { EventNames, InteractionNames, SelectedStateName } from "src/common/constant/interatcion";
+import {
+  EventNames,
+  InteractionNames,
+  SelectedStateName,
+} from 'src/common/constant/interatcion';
 import { i18n } from 'src/common/i18n';
 import { PivotFacet } from 'src/facet';
 
@@ -710,7 +715,10 @@ export class SpreadSheet extends EE {
       new RowColumnClick(this),
     );
     this.events.set(EventNames.ROW_TEXT_CLICK_EVENT, new RowTextClick(this));
-    this.events.set(EventNames.MERGEDCELLS_CLICK_EVENT, new MergedCellsClick(this));
+    this.events.set(
+      EventNames.MERGEDCELLS_CLICK_EVENT,
+      new MergedCellsClick(this),
+    );
     this.events.set(EventNames.HOVER_EVENT, new HoverEvent(this));
   }
 

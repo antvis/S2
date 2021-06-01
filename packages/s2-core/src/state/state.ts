@@ -8,8 +8,8 @@ export class State {
 
   // TODO: stateStore改为多例模式
   protected stateStore: SelectedState = {
-    stateName: "",
-    cells: []
+    stateName: '',
+    cells: [],
   };
 
   constructor(spreadsheet: SpreadSheet) {
@@ -25,7 +25,7 @@ export class State {
       this.spreadsheet.hideTooltip();
       this.stateStore = {
         stateName,
-        cells: [cell]
+        cells: [cell],
       };
     } else {
       const currentStateCells = this.stateStore.cells;
@@ -46,8 +46,8 @@ export class State {
       });
     }
     this.stateStore = {
-      stateName: "",
-      cells: []
+      stateName: '',
+      cells: [],
     };
   }
-};
+}

@@ -2,6 +2,7 @@ import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
   auto,
+  EXTRA_FIELD,
   S2DataConfig,
   S2Options,
   SheetComponent,
@@ -19,52 +20,18 @@ import {
   data6,
 } from '../datasets/data-accuracy';
 
-const spreadsheet1 = (
+let spreadsheet1: SpreadSheet;
+const setSpreadSheet = (
   dom: string | HTMLElement,
   dataCfg: S2DataConfig,
   options: S2Options,
+  index: number,
 ) => {
-  return new SpreadSheet(dom, dataCfg, options);
-};
-
-const spreadsheet6 = (
-  dom: string | HTMLElement,
-  dataCfg: S2DataConfig,
-  options: S2Options,
-) => {
-  return new SpreadSheet(dom, dataCfg, options);
-};
-
-const spreadsheet2 = (
-  dom: string | HTMLElement,
-  dataCfg: S2DataConfig,
-  options: S2Options,
-) => {
-  return new SpreadSheet(dom, dataCfg, options);
-};
-
-const spreadsheet3 = (
-  dom: string | HTMLElement,
-  dataCfg: S2DataConfig,
-  options: S2Options,
-) => {
-  return new SpreadSheet(dom, dataCfg, options);
-};
-
-const spreadsheet4 = (
-  dom: string | HTMLElement,
-  dataCfg: S2DataConfig,
-  options: S2Options,
-) => {
-  return new SpreadSheet(dom, dataCfg, options);
-};
-
-const spreadsheet5 = (
-  dom: string | HTMLElement,
-  dataCfg: S2DataConfig,
-  options: S2Options,
-) => {
-  return new SpreadSheet(dom, dataCfg, options);
+  const ss = new SpreadSheet(dom, dataCfg, options);
+  if (index === 1) {
+    spreadsheet1 = ss;
+  }
+  return ss;
 };
 
 const getData = (index: number) => {
@@ -97,7 +64,7 @@ const getDataCfg = (index: number) => {
     fields: {
       rows: ['province', 'city'],
       columns: ['category', 'subCategory'],
-      values: index !== 6 ? ['price'] : ['price', 'account'],
+      values: ['price'],
       valueInCols: true,
     },
     meta: [
@@ -179,66 +146,97 @@ const wrapComponent = (text, component) => {
 function MainLayout(props) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {/*{wrapComponent('小计+总计+明细数据+单个指标',*/}
-      {/*  <SheetComponent*/}
-      {/*    dataCfg={getDataCfg(1)}*/}
-      {/*    adaptive={false}*/}
-      {/*    options={getOptions()}*/}
-      {/*    spreadsheet={spreadsheet1}*/}
-      {/*  />*/}
-      {/*)}*/}
       {wrapComponent(
-        '小计+总计+明细数据+两个指标',
+        '小计+总计+明细数据+单个指标',
         <SheetComponent
-          dataCfg={getDataCfg(6)}
+          dataCfg={getDataCfg(1)}
           adaptive={false}
           options={getOptions()}
-          spreadsheet={spreadsheet6}
+          spreadsheet={(
+            dom: string | HTMLElement,
+            dataCfg: S2DataConfig,
+            options: S2Options,
+          ) => {
+            return setSpreadSheet(dom, dataCfg, options, 1);
+          }}
         />,
       )}
-      {/*{wrapComponent('只有明细数据',*/}
-      {/*  <SheetComponent*/}
-      {/*    dataCfg={getDataCfg(2)}*/}
-      {/*    adaptive={false}*/}
-      {/*    options={getOptions()}*/}
-      {/*    spreadsheet={spreadsheet2}*/}
-      {/*  />*/}
-      {/*)}*/}
-      {/*{wrapComponent('只有小计，总计数据',*/}
-      {/*  <SheetComponent*/}
-      {/*    dataCfg={getDataCfg(3)}*/}
-      {/*    adaptive={false}*/}
-      {/*    options={getOptions()}*/}
-      {/*    spreadsheet={spreadsheet3}*/}
-      {/*  />*/}
-      {/*)}*/}
-      {/*{wrapComponent('总计 + 明细数据',*/}
-      {/*  <SheetComponent*/}
-      {/*    dataCfg={getDataCfg(4)}*/}
-      {/*    adaptive={false}*/}
-      {/*    options={getOptions()}*/}
-      {/*    spreadsheet={spreadsheet4}*/}
-      {/*  />*/}
-      {/*)}*/}
-      {/*{wrapComponent('小计 + 明细数据',*/}
-      {/*  <SheetComponent*/}
-      {/*    dataCfg={getDataCfg(5)}*/}
-      {/*    adaptive={false}*/}
-      {/*    options={getOptions()}*/}
-      {/*    spreadsheet={spreadsheet5}*/}
-      {/*  />*/}
-      {/*)}*/}
+      {wrapComponent(
+        '只有明细数据',
+        <SheetComponent
+          dataCfg={getDataCfg(2)}
+          adaptive={false}
+          options={getOptions()}
+          spreadsheet={(
+            dom: string | HTMLElement,
+            dataCfg: S2DataConfig,
+            options: S2Options,
+          ) => {
+            return setSpreadSheet(dom, dataCfg, options, 2);
+          }}
+        />,
+      )}
+      {wrapComponent(
+        '只有小计，总计数据',
+        <SheetComponent
+          dataCfg={getDataCfg(3)}
+          adaptive={false}
+          options={getOptions()}
+          spreadsheet={(
+            dom: string | HTMLElement,
+            dataCfg: S2DataConfig,
+            options: S2Options,
+          ) => {
+            return setSpreadSheet(dom, dataCfg, options, 3);
+          }}
+        />,
+      )}
+      {wrapComponent(
+        '总计 + 明细数据',
+        <SheetComponent
+          dataCfg={getDataCfg(4)}
+          adaptive={false}
+          options={getOptions()}
+          spreadsheet={(
+            dom: string | HTMLElement,
+            dataCfg: S2DataConfig,
+            options: S2Options,
+          ) => {
+            return setSpreadSheet(dom, dataCfg, options, 4);
+          }}
+        />,
+      )}
+      {wrapComponent(
+        '小计 + 明细数据',
+        <SheetComponent
+          dataCfg={getDataCfg(5)}
+          adaptive={false}
+          options={getOptions()}
+          spreadsheet={(
+            dom: string | HTMLElement,
+            dataCfg: S2DataConfig,
+            options: S2Options,
+          ) => {
+            return setSpreadSheet(dom, dataCfg, options, 5);
+          }}
+        />,
+      )}
     </div>
   );
 }
 
-describe('data accuracy spec', () => {
-  test('demo', () => {
-    // TODO 断言每个数据流是否符合预期
-    expect(1).toBe(1);
-  });
-
+describe('data accuracy one measure spec', () => {
   act(() => {
     ReactDOM.render(<MainLayout />, getContainer());
+  });
+  spreadsheet1.setDataCfg(getDataCfg(1));
+  test('Totals + Details + Single Measure', () => {
+    expect(data1.length).toBe(16);
+    expect(spreadsheet1.dataSet.originData.length).toBe(16);
+    expect(spreadsheet1.dataSet.fields.valueInCols).toBe(true);
+    expect(spreadsheet1.dataSet.fields.columns.includes(EXTRA_FIELD)).toBe(
+      true,
+    );
+    expect(spreadsheet1.dataSet.fields.rows.includes(EXTRA_FIELD)).toBe(false);
   });
 });

@@ -29,8 +29,9 @@ import {
   SummaryProps,
   ListItem,
   HeadInfo,
-  DataProps, SpreadSheet
-} from "..";
+  DataProps,
+  SpreadSheet,
+} from '..';
 import { getDerivedDataState } from '../utils/text';
 import {
   POSITION_X_OFFSET,
@@ -141,10 +142,7 @@ export const getFriendlyVal = (val: any): number | string => {
   return isNil(val) || isInvalidNumber || isEmptyString ? '-' : val;
 };
 
-export const getFieldFormatter = (
-  spreadsheet: SpreadSheet,
-  field: string,
-) => {
+export const getFieldFormatter = (spreadsheet: SpreadSheet, field: string) => {
   const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
 
   return (v: any) => {

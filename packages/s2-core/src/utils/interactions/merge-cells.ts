@@ -10,7 +10,7 @@ import {
 import { S2CellType } from 'src/common/interface/interaction';
 import { MergedCellInfo } from 'src/common/interface/index';
 import { MergedCells } from 'src/cell/merged-cells';
-import { SpreadSheet } from "src/sheet-type";
+import { SpreadSheet } from 'src/sheet-type';
 
 /**
  *  according to the coordinates of the starting point of the rectangle,
