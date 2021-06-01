@@ -1,4 +1,4 @@
-import { SimpleBBox, Group, IGroup } from "@antv/g-canvas";
+import { SimpleBBox, Group, IGroup } from '@antv/g-canvas';
 import { findIndex, isNil } from 'lodash';
 
 import { Indexes } from '../utils/indexes';
@@ -26,10 +26,7 @@ export const calculateInViewIndexes = (
     widths,
     (width: number, idx: number) => {
       const x = scrollX - (isNil(rowRemainWidth) ? 0 : rowRemainWidth);
-      return (
-        x >= width &&
-        x < widths[idx + 1]
-      );
+      return x >= width && x < widths[idx + 1];
     },
     0,
   );

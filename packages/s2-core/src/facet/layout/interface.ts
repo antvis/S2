@@ -1,9 +1,9 @@
-import { TotalClass } from "src/facet/layout/total-class";
-import { TotalMeasure } from "src/facet/layout/total-measure";
-import { Node } from "src/facet/layout/node";
-import { SpreadSheetFacetCfg } from "src/common/interface";
-import { Hierarchy } from "src/facet/layout/hierarchy";
-import { SpreadSheet } from "src/sheet-type";
+import { TotalClass } from 'src/facet/layout/total-class';
+import { TotalMeasure } from 'src/facet/layout/total-measure';
+import { Node } from 'src/facet/layout/node';
+import { SpreadSheetFacetCfg } from 'src/common/interface';
+import { Hierarchy } from 'src/facet/layout/hierarchy';
+import { SpreadSheet } from 'src/sheet-type';
 
 export type FileValue = string | TotalClass | TotalMeasure;
 
@@ -48,7 +48,7 @@ export interface HeaderNodesParams {
   hierarchy: Hierarchy;
   parentNode: Node;
   level: number;
-  query: Record<string, any>
+  query: Record<string, any>;
 }
 
 export interface TreeHeaderParams {

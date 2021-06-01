@@ -10,7 +10,14 @@ import {
 import { getContainer } from '../helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { data1, data2, data3, data4, data5, data6 } from "../datasets/data-accuracy";
+import {
+  data1,
+  data2,
+  data3,
+  data4,
+  data5,
+  data6,
+} from '../datasets/data-accuracy';
 
 const spreadsheet1 = (
   dom: string | HTMLElement,
@@ -83,7 +90,7 @@ const getData = (index: number) => {
       break;
   }
   return realData;
-}
+};
 
 const getDataCfg = (index: number) => {
   return {
@@ -164,12 +171,10 @@ const wrapComponent = (text, component) => {
   return (
     <div>
       <div>{text}</div>
-      <div style={{ height: "300px" }}>
-        {component}
-      </div>
+      <div style={{ height: '300px' }}>{component}</div>
     </div>
   );
-}
+};
 
 function MainLayout(props) {
   return (
@@ -182,13 +187,14 @@ function MainLayout(props) {
       {/*    spreadsheet={spreadsheet1}*/}
       {/*  />*/}
       {/*)}*/}
-      {wrapComponent('小计+总计+明细数据+两个指标',
+      {wrapComponent(
+        '小计+总计+明细数据+两个指标',
         <SheetComponent
           dataCfg={getDataCfg(6)}
           adaptive={false}
           options={getOptions()}
           spreadsheet={spreadsheet6}
-        />
+        />,
       )}
       {/*{wrapComponent('只有明细数据',*/}
       {/*  <SheetComponent*/}
@@ -233,9 +239,6 @@ describe('data accuracy spec', () => {
   });
 
   act(() => {
-    ReactDOM.render(
-      <MainLayout />,
-      getContainer(),
-    );
+    ReactDOM.render(<MainLayout />, getContainer());
   });
 });

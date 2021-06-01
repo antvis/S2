@@ -31,7 +31,7 @@ import {
 import { Aggregation, SortParams, Total, Totals } from '../common/interface';
 import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from '../common/debug';
 import { EXTRA_FIELD } from '../common/constant';
-import { SpreadSheet } from "src/sheet-type";
+import { SpreadSheet } from 'src/sheet-type';
 
 interface Config {
   rows: string[];

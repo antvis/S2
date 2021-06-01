@@ -3,7 +3,7 @@ import { Menu, Dropdown, message } from 'antd';
 import classNames from 'classnames';
 import { DotIcon } from '../icons/index';
 import { copyData, copyToClipboard, download } from '../../utils/export';
-import { BaseSpreadSheet } from '../../sheet-type';
+import { SpreadSheet } from "src/sheet-type";
 
 export interface DataSet {
   icon?: React.ReactNode;
@@ -27,7 +27,7 @@ export interface ExportCfgProps {
   fileName?: string;
 }
 export interface ExportProps extends ExportCfgProps {
-  sheet: BaseSpreadSheet;
+  sheet: SpreadSheet;
 }
 
 export const Export: React.FC<ExportProps> = ({

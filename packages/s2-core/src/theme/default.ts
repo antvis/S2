@@ -110,7 +110,7 @@ export default {
         backgroundColor: '#b5f5ec',
       },
       colSelected: {
-        backgroundColor: '#f759ab',
+        backgroundColor: '#F3F7FF',
       },
     },
     rowCell: {
@@ -118,7 +118,7 @@ export default {
         backgroundColor: '#d4b106',
       },
       rowSelected: {
-        backgroundColor: '#f759ab',
+        backgroundColor: '#F3F7FF',
       },
     },
   },

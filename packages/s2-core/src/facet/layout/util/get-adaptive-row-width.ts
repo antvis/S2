@@ -10,7 +10,7 @@ import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import getRowWidth from './get-row-width';
 import { WidthType } from './process-default-col-width-by-type';
-import { BaseFacet } from "src/facet";
+import { BaseFacet } from 'src/facet';
 
 /**
  * Get rowHeader col node's width

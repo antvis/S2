@@ -1,8 +1,8 @@
-import { SpreadSheet } from "src/sheet-type";
-import { Node } from "src/facet/layout/node";
-import { SpreadSheetFacetCfg } from "src/common/interface";
-import { Hierarchy } from "src/facet/layout/hierarchy";
-import * as _ from "lodash";
+import { SpreadSheet } from 'src/sheet-type';
+import { Node } from 'src/facet/layout/node';
+import { SpreadSheetFacetCfg } from 'src/common/interface';
+import { Hierarchy } from 'src/facet/layout/hierarchy';
+import * as _ from 'lodash';
 
 /**
  * re-arrange field values by custom arrange hooks
@@ -11,18 +11,18 @@ import * as _ from "lodash";
  * @param parent
  * @param field
  */
-export const layoutArrange = (fieldValues: string[], spreadsheet: SpreadSheet, parent: Node, field: string): string[] => {
+export const layoutArrange = (
+  fieldValues: string[],
+  spreadsheet: SpreadSheet,
+  parent: Node,
+  field: string,
+): string[] => {
   const layoutArrange = spreadsheet.options.layoutArrange;
   if (layoutArrange) {
-    return layoutArrange(
-      spreadsheet,
-      parent,
-      field,
-      fieldValues,
-    );
+    return layoutArrange(spreadsheet, parent, field, fieldValues);
   }
   return fieldValues;
-}
+};
 
 /**
  * Push node directly or custom push according to Hierarchy Hooks
@@ -31,7 +31,12 @@ export const layoutArrange = (fieldValues: string[], spreadsheet: SpreadSheet, p
  * @param currentNode
  * @param hierarchy
  */
-export const layoutHierarchy = (facetCfg: SpreadSheetFacetCfg, parentNode: Node, currentNode: Node, hierarchy: Hierarchy) => {
+export const layoutHierarchy = (
+  facetCfg: SpreadSheetFacetCfg,
+  parentNode: Node,
+  currentNode: Node,
+  hierarchy: Hierarchy,
+) => {
   if (facetCfg.hierarchy) {
     const another = facetCfg.hierarchy(facetCfg.spreadsheet, currentNode);
     const push = another?.push;
@@ -58,4 +63,4 @@ export const layoutHierarchy = (facetCfg: SpreadSheetFacetCfg, parentNode: Node,
     // no extra node exist
     hierarchy.pushNode(currentNode);
   }
-}
+};

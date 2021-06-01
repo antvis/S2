@@ -1,4 +1,4 @@
-import { SpreadSheet } from "src/sheet-type";
+import { SpreadSheet } from 'src/sheet-type';
 
 export type EventConstructor = new (spreadsheet: SpreadSheet) => BaseEvent;
 

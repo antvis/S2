@@ -319,7 +319,7 @@ export const data5 = [
 export const data6 = [
   {
     price: 1,
-    account: 11
+    account: 11,
   },
   {
     province: '辽宁省',

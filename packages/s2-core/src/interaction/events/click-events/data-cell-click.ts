@@ -4,7 +4,7 @@ import { Event } from '@antv/g-canvas';
 import { get, noop, includes } from 'lodash';
 import { ViewMeta } from '../../../common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
-import { StateName } from '../../../state/state';
+import { SelectedStateName } from 'src/common/constant/interatcion';
 import { getTooltipData } from '../../../utils/tooltip';
 
 export class DataCellClick extends BaseEvent {
@@ -27,7 +27,7 @@ export class DataCellClick extends BaseEvent {
         this.spreadsheet.clearStyleIndependent();
         const currentState = this.spreadsheet.getCurrentState();
         if (
-          currentState.stateName === StateName.SELECTED &&
+          currentState.stateName === SelectedStateName.SELECTED &&
           includes(currentState.cells, cell)
         ) {
           // 点击当前已选cell 则取消当前cell的选中状态
@@ -38,7 +38,7 @@ export class DataCellClick extends BaseEvent {
           this.spreadsheet.hideTooltip();
         } else {
           this.spreadsheet.clearState();
-          this.spreadsheet.setState(cell, StateName.SELECTED);
+          this.spreadsheet.setState(cell, SelectedStateName.SELECTED);
           this.spreadsheet.updateCellStyleByState();
           this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
           this.handleTooltip(ev, meta);

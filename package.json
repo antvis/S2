@@ -1,18 +1,9 @@
 {
   "name": "s2",
-  "version": "0.0.1",
   "private": true,
   "workspaces": [
     "packages/*",
     "s2-site/*"
-  ],
-  "main": "lib/index.js",
-  "module": "esm/index.js",
-  "types": "lib/index.d.ts",
-  "files": [
-    "esm",
-    "lib",
-    "README.md"
   ],
   "keywords": [
     "antv",
@@ -22,10 +13,12 @@
   ],
   "scripts": {
     "clean": "rimraf node_modules packages/*/node_modules",
+    "clear": "lerna clean && lerna clean -y",
     "bootstrap": "npm i && cd ./packages/s2-core && npm i && cd ../../s2-site && npm i",
     "cd:core": "cd ./packages/s2-core",
     "core:start": "cd ./packages/s2-core && npm run test-live",
     "core:build": "cd ./packages/s2-core && npm run build",
+    "core:test": "cd ./packages/s2-core && npm run test",
     "core:tsc": "cd ./packages/s2-core && npm run tsc",
     "tsc": "tsc --noEmit",
     "site:start": "cd ./s2-site && npm run start",
@@ -57,8 +50,8 @@
     ]
   },
   "dependencies": {
-    "gitmoji-cli": "^3.2.18",
     "@ant-design/icons": "^4.1.0",
+    "gitmoji-cli": "^3.2.18",
     "lerna": "^3.22.1"
   },
   "devDependencies": {

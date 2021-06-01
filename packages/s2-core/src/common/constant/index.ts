@@ -65,3 +65,8 @@ export const MIN_SCROLL_BAR_HEIGHT = 20;
 
 export const ID_SEPARATOR = '[&]';
 export const EMPTY_PLACEHOLDER = '-';
+
+export const PADDING_TOP = 0;
+export const PADDING_RIGHT = 1;
+export const PADDING_DOWN = 2;
+export const PADDING_LEFT = 3;

@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { PageHeader } from 'antd';
 import { Export, ExportCfgProps } from '../export';
 import classNames from 'classnames';
-import { BaseSpreadSheet } from '../../sheet-type';
+import { SpreadSheet } from "src/sheet-type";
 
 export interface HeaderCfgProps {
   style?: React.CSSProperties;
@@ -14,7 +14,7 @@ export interface HeaderCfgProps {
 }
 
 export interface HeaderProps extends HeaderCfgProps {
-  sheet: BaseSpreadSheet;
+  sheet: SpreadSheet;
 }
 
 export const Header: React.FC<HeaderProps> = ({

@@ -1,6 +1,6 @@
 import { SimpleBBox, IGroup } from '@antv/g-canvas';
 import { each, get } from 'lodash';
-import { measureTextWidth, SpreadSheet } from "../..";
+import { measureTextWidth, SpreadSheet } from '../..';
 import { getAdjustPosition } from '../../utils/text-absorption';
 import { Node } from '../..';
 import { BaseHeader, BaseHeaderConfig } from './base';

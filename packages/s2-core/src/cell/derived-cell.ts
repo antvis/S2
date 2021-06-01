@@ -4,7 +4,7 @@ import { measureTextWidth, getEllipsisText } from '../utils/text';
 import { GuiIcon } from '../common/icons';
 import { STRATEGY_ICON_WIDTH, STRATEGY_PADDING } from '../common/constant';
 import { renderRect } from '../utils/g-renders';
-import { SpreadSheet } from "src/sheet-type";
+import { SpreadSheet } from 'src/sheet-type';
 
 /**
  * Create By Bruce Too

@@ -4,7 +4,7 @@ import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
-import { StateName } from '../state/state';
+import { SelectedStateName } from 'src/common/constant/interatcion';
 import { getTooltipData } from '../utils/tooltip';
 
 function getBrushRegion(p1, p2) {
@@ -108,45 +108,15 @@ export class BrushSelection extends BaseInteraction {
     });
   }
 
-  private bindMouseUp() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev) => {
-      if (this.phase === 2) {
-        const oe = ev.originalEvent as any;
-        this.endPoint = { x: oe.layerX, y: oe.layerY };
-        const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
-        this.getSelectedCells(brushRegion);
-        // 透明度为0会导致 hover 无法响应
-        this.regionShape.attr({
-          opacity: 0,
-        });
-        this.draw();
-        const currentState = this.spreadsheet.getCurrentState();
-        const { stateName, cells } = currentState;
-        const cellInfos = [];
-        if (stateName === StateName.SELECTED) {
-          each(cells, (cell) => {
-            const valueInCols = this.spreadsheet.options.valueInCols;
-            const meta = cell.getMeta();
-            if (!isEmpty(meta)) {
-              const query = meta[valueInCols ? 'colQuery' : 'rowQuery'];
-              if (query) {
-                const cellInfo = {
-                  ...query,
-                  colIndex: valueInCols ? meta.colIndex : null,
-                  rowIndex: !valueInCols ? meta.rowIndex : null,
-                };
-
-                if (!this.isInCellInfos(cellInfos, cellInfo)) {
-                  cellInfos.push(cellInfo);
-                }
-              }
-            }
-          });
-        }
-        this.handleTooltip(ev, cellInfos);
-      }
-      this.phase = 0;
-    });
+  // 刷选过程中的预选择外框
+  protected showPrepareBrushSelectBorder(cells: DataCell[]) {
+    if (cells.length) {
+      this.spreadsheet.clearState();
+      cells.forEach((cell: DataCell) => {
+        this.spreadsheet.setState(cell, SelectedStateName.PREPARE_SELECT);
+      });
+      this.spreadsheet.updateCellStyleByState();
+    }
   }
 
   private isInCellInfos(cellInfos, info): boolean {
@@ -192,13 +162,45 @@ export class BrushSelection extends BaseInteraction {
     return selectedCells;
   }
 
-  // 最终刷选的cell
-  private getSelectedCells(region) {
-    const selectedCells = this.getCellsInRegion(region);
-    selectedCells.forEach((cell) => {
-      this.spreadsheet.setState(cell, StateName.SELECTED);
+  private bindMouseUp() {
+    this.spreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev) => {
+      if (this.phase === 2) {
+        const oe = ev.originalEvent as any;
+        this.endPoint = { x: oe.layerX, y: oe.layerY };
+        const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
+        this.getSelectedCells(brushRegion);
+        // 透明度为0会导致 hover 无法响应
+        this.regionShape.attr({
+          opacity: 0,
+        });
+        this.draw();
+        const currentState = this.spreadsheet.getCurrentState();
+        const { stateName, cells } = currentState;
+        const cellInfos = [];
+        if (stateName === SelectedStateName.SELECTED) {
+          each(cells, (cell) => {
+            const valueInCols = this.spreadsheet.options.valueInCols;
+            const meta = cell.getMeta();
+            if (!isEmpty(meta)) {
+              const query = meta[valueInCols ? 'colQuery' : 'rowQuery'];
+              if (query) {
+                const cellInfo = {
+                  ...query,
+                  colIndex: valueInCols ? meta.colIndex : null,
+                  rowIndex: !valueInCols ? meta.rowIndex : null,
+                };
+
+                if (!this.isInCellInfos(cellInfos, cellInfo)) {
+                  cellInfos.push(cellInfo);
+                }
+              }
+            }
+          });
+        }
+        this.handleTooltip(ev, cellInfos);
+      }
+      this.phase = 0;
     });
-    this.spreadsheet.updateCellStyleByState();
   }
 
   // 刷选过程中高亮的cell
@@ -207,15 +209,13 @@ export class BrushSelection extends BaseInteraction {
     this.showPrepareBrushSelectBorder(selectedCells);
   }
 
-  // 刷选过程中的预选择外框
-  protected showPrepareBrushSelectBorder(cells: DataCell[]) {
-    if (cells.length) {
-      this.spreadsheet.clearState();
-      cells.forEach((cell: DataCell) => {
-        this.spreadsheet.setState(cell, StateName.PREPARE_SELECT);
-      });
-      this.spreadsheet.updateCellStyleByState();
-    }
+  // 最终刷选的cell
+  private getSelectedCells(region) {
+    const selectedCells = this.getCellsInRegion(region);
+    selectedCells.forEach((cell) => {
+      this.spreadsheet.setState(cell, SelectedStateName.SELECTED);
+    });
+    this.spreadsheet.updateCellStyleByState();
   }
 
   private createRegionShape() {

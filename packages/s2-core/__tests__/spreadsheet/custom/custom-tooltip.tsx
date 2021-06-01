@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { BaseTooltip } from '../../../src/tooltip';
 import Infos from '../../../src/common/tooltip/components/infos';
-import { BaseSpreadSheet } from '../../../src/sheet-type';
-import { Aggregation } from '../../../src';
+import { Aggregation, SpreadSheet } from "../../../src";
 
 export class CustomTooltip extends BaseTooltip {
-  constructor(plot: BaseSpreadSheet, aggregation?: Aggregation) {
+  constructor(plot: SpreadSheet, aggregation?: Aggregation) {
     super(plot, aggregation);
   }
 

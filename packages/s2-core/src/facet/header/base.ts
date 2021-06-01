@@ -1,5 +1,5 @@
 import { Group, Point } from '@antv/g-canvas';
-import { Node, SpreadSheet } from "../../index";
+import { Node, SpreadSheet } from '../../index';
 
 export const HIT_AREA = 10;
 
@@ -53,7 +53,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    * @param type 当前重绘的header类型
    */
   protected clearResizerGroup(type: string) {
-    const foregroundGroup = this.get("parent");
+    const foregroundGroup = this.get('parent');
     const resizerGroup = foregroundGroup?.findById(type);
     resizerGroup?.remove();
   }

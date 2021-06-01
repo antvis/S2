@@ -5,9 +5,9 @@ import {
   Meta,
   S2DataConfig,
   SortParams,
-} from "../common/interface";
-import { DataType } from "src/data-set/interface";
-import { SpreadSheet } from "src/sheet-type";
+} from '../common/interface';
+import { DataType } from 'src/data-set/interface';
+import { SpreadSheet } from 'src/sheet-type';
 
 export abstract class BaseDataSet {
   // 字段域信息

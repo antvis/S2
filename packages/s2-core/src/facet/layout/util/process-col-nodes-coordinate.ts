@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { BaseFacet } from "src/facet";
+import { BaseFacet } from 'src/facet';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import getColHeight from './get-col-height';

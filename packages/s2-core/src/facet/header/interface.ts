@@ -6,8 +6,8 @@
  */
 
 import { Formatter, SortParam } from '../../common/interface';
-import { BaseSpreadSheet } from '../..';
 import { Hierarchy } from '../layout/hierarchy';
+import { SpreadSheet } from "src/sheet-type";
 
 export interface CornerData {
   x: number;
@@ -67,7 +67,7 @@ export interface Cfg {
   // 是否配置了rowHeader滚动条包含
   scrollContainsRowHeader?: boolean;
 
-  spreadsheet?: BaseSpreadSheet;
+  spreadsheet?: SpreadSheet;
 }
 
 export interface ResizeInfo {

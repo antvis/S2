@@ -32,20 +32,51 @@ export interface BaseNodeConfig {
  * Node for cornerHeader, colHeader, rowHeader
  */
 export class Node {
-  public static blankNode(): Node {
-    return new Node({
-      id: '',
-      key: '',
-      value: '',
-    });
-  }
+  // node represent total measure
+  public isTotalMeasure: boolean;
 
-  public static rootNode(): Node {
-    return new Node({
-      id: 'root',
-      key: '',
-      value: '',
-    });
+  constructor(cfg: BaseNodeConfig) {
+    const {
+      id,
+      key,
+      value,
+      label,
+      parent,
+      level,
+      rowIndex,
+      isTotals,
+      isCollapsed,
+      hierarchy,
+      isPivotMode,
+      seriesNumberWidth,
+      field,
+      spreadsheet,
+      query,
+      belongsCell,
+      inCollapseNode,
+      isTotalMeasure
+    } = cfg;
+    this.id = id;
+    this.key = key;
+    this.value = value;
+    this.label = label || value;
+    this.parent = parent;
+    this.level = level;
+    this.rowIndex = rowIndex;
+    this.isTotals = isTotals;
+    this.isCollapsed = isCollapsed;
+    this.hierarchy = hierarchy;
+    this.isPivotMode = isPivotMode;
+    this.seriesNumberWidth = seriesNumberWidth;
+    this.field = field;
+    this.spreadsheet = spreadsheet;
+    this.query = query;
+    this.belongsCell = belongsCell;
+    this.inCollapseNode = inCollapseNode;
+    this.isTotalMeasure = isTotalMeasure;
+    if (parent) {
+      parent.children.push(this);
+    }
   }
 
   /**
@@ -182,8 +213,13 @@ export class Node {
   // node is grand total or subtotal(not normal node)
   public isTotals: boolean;
 
-  // node represent total measure
-  public isTotalMeasure: boolean
+  public static blankNode(): Node {
+    return new Node({
+      id: "",
+      key: "",
+      value: ""
+    });
+  }
 
   // node is collapsed
   public isCollapsed: boolean;
@@ -218,48 +254,12 @@ export class Node {
 
   [key: string]: any;
 
-  constructor(cfg: BaseNodeConfig) {
-    const {
-      id,
-      key,
-      value,
-      label,
-      parent,
-      level,
-      rowIndex,
-      isTotals,
-      isCollapsed,
-      hierarchy,
-      isPivotMode,
-      seriesNumberWidth,
-      field,
-      spreadsheet,
-      query,
-      belongsCell,
-      inCollapseNode,
-      isTotalMeasure,
-    } = cfg;
-    this.id = id;
-    this.key = key;
-    this.value = value;
-    this.label = label || value;
-    this.parent = parent;
-    this.level = level;
-    this.rowIndex = rowIndex;
-    this.isTotals = isTotals;
-    this.isCollapsed = isCollapsed;
-    this.hierarchy = hierarchy;
-    this.isPivotMode = isPivotMode;
-    this.seriesNumberWidth = seriesNumberWidth;
-    this.field = field;
-    this.spreadsheet = spreadsheet;
-    this.query = query;
-    this.belongsCell = belongsCell;
-    this.inCollapseNode = inCollapseNode;
-    this.isTotalMeasure = isTotalMeasure;
-    if (parent) {
-      parent.children.push(this);
-    }
+  public static rootNode(): Node {
+    return new Node({
+      id: "root",
+      key: "",
+      value: ""
+    });
   }
 
   public hideRowNode() {

@@ -1,5 +1,5 @@
 import { Group, IShape } from '@antv/g-canvas';
-import { SpreadSheet, SpreadSheetTheme } from "..";
+import { SpreadSheet, SpreadSheetTheme } from '..';
 import { updateShapeAttr } from '../utils/g-renders';
 import * as shapeStyle from '../state/shapeStyleMap';
 import { get, each, findKey, includes } from 'lodash';

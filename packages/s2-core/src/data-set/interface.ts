@@ -1,4 +1,3 @@
-
 // TODO add object data value
 export type DataType = Record<string, any>;
 

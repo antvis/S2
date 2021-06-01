@@ -1,4 +1,4 @@
-import { BaseSpreadSheet } from '../../sheet-type';
+import { SpreadSheet } from "../../sheet-type";
 import { head, last, isEmpty, get, clone, trim, max } from 'lodash';
 import { ViewMeta } from '../..';
 import { ID_SEPARATOR, EMPTY_PLACEHOLDER } from '../../common/constant';
@@ -38,11 +38,11 @@ export const download = (str: string, fileName: string) => {
 
 /* Process the data in detail mode. */
 const processValueInDetail = (
-  sheetInstance: BaseSpreadSheet,
+  sheetInstance: SpreadSheet,
   split: string,
   isFormat?: boolean,
 ): string[] => {
-  const { data } = sheetInstance.dataSet;
+  const { originData: data } = sheetInstance.dataSet;
   const { rows, values } = sheetInstance.dataCfg?.fields;
   const res = [];
   for (const record of data) {
@@ -72,7 +72,7 @@ const processValueInDetail = (
 /* Process the data when the value position is on the columns.  */
 const processValueInCol = (
   viewMeta: ViewMeta,
-  sheetInstance: BaseSpreadSheet,
+  sheetInstance: SpreadSheet,
   isFormat?: boolean,
 ): string => {
   if (!viewMeta) {
@@ -90,7 +90,7 @@ const processValueInCol = (
 /* Process the data when the value position is on the rows. */
 const processValueInRow = (
   viewMeta: ViewMeta,
-  sheetInstance: BaseSpreadSheet,
+  sheetInstance: SpreadSheet,
   isFormat?: boolean,
 ): string => {
   const tempCell = [];
@@ -139,7 +139,7 @@ const processValueInRow = (
  * @param split
  */
 export const copyData = (
-  sheetInstance: BaseSpreadSheet,
+  sheetInstance: SpreadSheet,
   split: string,
   isFormat?: boolean,
 ): string => {

@@ -1,11 +1,17 @@
-import { BaseDataSet } from "src/data-set";
-import { DataType, PivotMeta } from "src/data-set/interface";
-import { DerivedValue, Meta, S2DataConfig, Total, Totals } from "src/common/interface";
-import { i18n } from "src/common/i18n";
-import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from "src/common/constant";
-import { auto } from "src/utils/formatter";
-import * as _ from "lodash";
-import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from "src/common/debug";
+import { BaseDataSet } from 'src/data-set';
+import { DataType, PivotMeta } from 'src/data-set/interface';
+import {
+  DerivedValue,
+  Meta,
+  S2DataConfig,
+  Total,
+  Totals,
+} from 'src/common/interface';
+import { i18n } from 'src/common/i18n';
+import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from 'src/common/constant';
+import { auto } from 'src/utils/formatter';
+import * as _ from 'lodash';
+import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from 'src/common/debug';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -60,7 +66,7 @@ export class PivotDataSet extends BaseDataSet {
       // console.log('path:', path, data);
       _.set(this.indexesData, path, data);
     }
-  }
+  };
 
   /**
    * Transform a origin single data to dimension values
@@ -77,7 +83,10 @@ export class PivotDataSet extends BaseDataSet {
    * @param record
    * @param dimensions
    */
-  transformDimensionsValues = (record: DataType, dimensions: string[]): string[] => {
+  transformDimensionsValues = (
+    record: DataType,
+    dimensions: string[],
+  ): string[] => {
     return _.map(dimensions, (dimension) => {
       const dimensionValue = record[dimension];
       if (!this.unSortedDimensionValues.has(dimension)) {
@@ -87,7 +96,7 @@ export class PivotDataSet extends BaseDataSet {
       values.add(this.getSortIndex(dimension, record));
       return dimensionValue;
     });
-  }
+  };
 
   // TODO remove this when sortParams be constructed
   getSortIndex = (key: string, record: DataType): string => {
@@ -103,7 +112,7 @@ export class PivotDataSet extends BaseDataSet {
       }
     }
     return record[key];
-  }
+  };
 
   handleDimensionValuesSort = () => {
     const { rows, columns, values } = this.fields;
@@ -142,7 +151,7 @@ export class PivotDataSet extends BaseDataSet {
       }
     });
     this.unSortedDimensionValues.clear();
-  }
+  };
 
   /**
    * Transform a single data to path
@@ -327,7 +336,10 @@ export class PivotDataSet extends BaseDataSet {
 
   public getCellData(query: DataType): DataType[] {
     const { rows, columns, values } = this.fields;
-    const getDimensionValues = (dimensions: string[], query: DataType): string[] => {
+    const getDimensionValues = (
+      dimensions: string[],
+      query: DataType,
+    ): string[] => {
       return _.reduce(
         dimensions,
         (res: string[], dimension: string) => {
@@ -337,7 +349,7 @@ export class PivotDataSet extends BaseDataSet {
         },
         [],
       );
-    }
+    };
     const rowDimensionValues = getDimensionValues(rows, query);
     const colDimensionValues = getDimensionValues(columns, query);
     const path = this.getDataPath(
@@ -350,7 +362,7 @@ export class PivotDataSet extends BaseDataSet {
     if (!_.isArray(data)) {
       data = [data];
     }
-    DebuggerUtil.getInstance().logger("get data:", path, data);
+    DebuggerUtil.getInstance().logger('get data:', path, data);
     return _.compact(_.flattenDeep(data));
   }
 
@@ -372,5 +384,4 @@ export class PivotDataSet extends BaseDataSet {
     });
     return tempValue;
   };
-
 }

@@ -3,14 +3,14 @@ import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { map, find, get, isEmpty, first, includes } from 'lodash';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
+import { DataItem } from '../common/interface/S2DataConfig';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
 import { getDerivedDataState } from '../utils/text';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
-import { BaseCell } from './base-cell';
-import { DerivedCell } from './derived-cell';
-import { StateName } from '../state/state';
-import { SpreadSheet } from "src/sheet-type";
+import { DerivedCell, BaseCell } from '.';
+import { SelectedStateName } from 'src/common/constant/interatcion';
+import { SpreadSheet } from 'src/sheet-type';
 
 // default icon size
 const ICON_SIZE = 10;
@@ -53,43 +53,28 @@ export class DataCell extends BaseCell<ViewMeta> {
     super(meta, spreadsheet);
   }
 
-  // dataCell根据state 改变当前样式，
-  private changeCellStyleByState(needGetIndexKey, changeStyleStateName) {
-    const { cells } = this.spreadsheet.getCurrentState();
-    const currentIndex = this.meta[needGetIndexKey];
-    const selectedIndexes = map(
-      cells,
-      (cell) => cell.getMeta()[needGetIndexKey],
-    );
-    if (includes(selectedIndexes, currentIndex)) {
-      this.updateByState(changeStyleStateName);
-    } else {
-      this.hideShapeUnderState();
-    }
-  }
-
   public update() {
     const state = this.spreadsheet.getCurrentState();
     const { stateName, cells } = state;
     if (cells.length) {
       // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
       // 二者操作一致，function合并
-      if (stateName === StateName.COL_SELECTED) {
-        this.changeCellStyleByState('colIndex', StateName.SELECTED);
-      } else if (stateName === StateName.ROW_SELECTED) {
-        this.changeCellStyleByState('rowIndex', StateName.SELECTED);
-      } else if (stateName === StateName.HOVER && !isEmpty(cells)) {
+      if (stateName === SelectedStateName.COL_SELECTED) {
+        this.changeCellStyleByState('colIndex', SelectedStateName.SELECTED);
+      } else if (stateName === SelectedStateName.ROW_SELECTED) {
+        this.changeCellStyleByState('rowIndex', SelectedStateName.SELECTED);
+      } else if (stateName === SelectedStateName.HOVER && !isEmpty(cells)) {
         // 如果当前是hover，要绘制出十字交叉的行列样式
         const currentHoverCell = first(cells);
         const currentColIndex = this.meta.colIndex;
         const currentRowIndex = this.meta.rowIndex;
         // 当视图内的cell行列index与hover的cell一致，且不是当前hover的cell时，绘制hover的十字样式
         if (
-          (currentColIndex === currentHoverCell.getMeta().colIndex ||
-            currentRowIndex === currentHoverCell.getMeta().rowIndex) &&
+          (currentColIndex === currentHoverCell?.getMeta().colIndex ||
+            currentRowIndex === currentHoverCell?.getMeta().rowIndex) &&
           this !== currentHoverCell
         ) {
-          this.updateByState(StateName.HOVER_LINKAGE);
+          this.updateByState(SelectedStateName.HOVER_LINKAGE);
         } else if (this !== currentHoverCell) {
           // 当视图内的cell行列index与hover的cell 不一致，且不是当前hover的cell时，隐藏其他样式
           this.hideShapeUnderState();
@@ -98,11 +83,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  public getInteractiveBgShape() {
-    return this.interactiveBgShape;
-  }
-
-  public getData(): { value: number; formattedValue: string } {
+  public getData(): { value: DataItem; formattedValue: DataItem } {
     const rowField = this.meta.rowId;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowField);
     let formatter;
@@ -117,8 +98,28 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
     const formattedValue = formatter(this.meta.fieldValue);
     return {
-      value: this.meta.fieldValue,
+      value: this.meta.fieldValue as DataItem,
       formattedValue,
+    };
+  }
+
+  public getInteractiveBgShape() {
+    return this.interactiveBgShape;
+  }
+
+  /**
+   * Get left rest area size by icon condition
+   * @protected
+   */
+  protected getLeftAreaBBox(): SimpleBBox {
+    const { x, y, height, width } = this.meta;
+    const iconCondition = this.findFieldCondition(this.conditions?.icon);
+    const isIconExist = iconCondition && iconCondition.mapping;
+    return {
+      x,
+      y,
+      width: width - (isIconExist ? ICON_SIZE + ICON_PADDING * 2 : 0),
+      height,
     };
   }
 
@@ -168,19 +169,12 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   /**
-   * Get left rest area size by icon condition
-   * @private
+   * Mapping value to get condition related attrs
+   * @param condition
    */
-  private getLeftAreaBBox(): SimpleBBox {
-    const { x, y, height, width } = this.meta;
-    const iconCondition = this.findFieldCondition(this.conditions?.icon);
-    const isIconExist = iconCondition && iconCondition.mapping;
-    return {
-      x,
-      y,
-      width: width - (isIconExist ? ICON_SIZE + ICON_PADDING * 2 : 0),
-      height,
-    };
+  protected mappingValue(condition: Condition): CellMapping {
+    const value = (this.meta.fieldValue as unknown) as number;
+    return condition?.mapping(value, get(this.meta.data, [0]));
   }
 
   /**
@@ -192,11 +186,54 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   /**
-   * Mapping value to get condition related attrs
-   * @param condition
+   * Render cell main text and derived text
    */
-  protected mappingValue(condition: Condition): CellMapping {
-    return condition?.mapping(this.meta.fieldValue, get(this.meta.data, [0]));
+  protected drawTextShape() {
+    const { x, y, height, width } = this.getLeftAreaBBox();
+    const { valueField: originField, isTotals } = this.meta;
+
+    if (this.spreadsheet.isDerivedValue(originField)) {
+      const data = this.getDerivedData(originField, isTotals);
+      // 衍生指标的cell, 需要单独的处理
+      this.add(
+        new DerivedCell({
+          x,
+          y,
+          height,
+          width,
+          up: data.up,
+          text: data.value,
+          spreadsheet: this.spreadsheet,
+        }),
+      );
+      return;
+    }
+    // 其他常态数据下的cell
+    //  the size of text condition is equal with valueFields size
+    const textCondition = this.findFieldCondition(this.conditions?.text);
+
+    const { formattedValue: text } = this.getData();
+    const textStyle = isTotals
+      ? this.theme.view.bolderText
+      : this.theme.view.text;
+    let textFill = textStyle.fill;
+    if (textCondition?.mapping) {
+      textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
+    }
+    const padding = this.theme.view.cell.padding;
+    this.textShape = renderText(
+      this.textShape,
+      x + width - padding[1],
+      y + height / 2,
+      getEllipsisText(
+        `${text || '-'}`,
+        width - padding[3] - padding[1],
+        textStyle,
+      ),
+      textStyle,
+      textFill,
+      this,
+    );
   }
 
   /**
@@ -408,51 +445,19 @@ export class DataCell extends BaseCell<ViewMeta> {
     };
   }
 
-  /**
-   * Render cell main text and derived text
-   */
-  protected drawTextShape() {
-    const { x, y, height, width } = this.getLeftAreaBBox();
-    const { valueField: originField, isTotals } = this.meta;
-
-    if (this.spreadsheet.isDerivedValue(originField)) {
-      const data = this.getDerivedData(originField, isTotals);
-      // 衍生指标的cell, 需要单独的处理
-      this.add(
-        new DerivedCell({
-          x,
-          y,
-          height,
-          width,
-          up: data.up,
-          text: data.value,
-          spreadsheet: this.spreadsheet,
-        }),
-      );
-      return;
-    }
-    // 其他常态数据下的cell
-    //  the size of text condition is equal with valueFields size
-    const textCondition = this.findFieldCondition(this.conditions?.text);
-
-    const { formattedValue: text } = this.getData();
-    const textStyle = isTotals
-      ? this.theme.view.bolderText
-      : this.theme.view.text;
-    let textFill = textStyle.fill;
-    if (textCondition?.mapping) {
-      textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
-    }
-    const padding = this.theme.view.cell.padding;
-    this.textShape = renderText(
-      this.textShape,
-      x + width - padding[1],
-      y + height / 2,
-      getEllipsisText(text || '-', width - padding[3] - padding[1], textStyle),
-      textStyle,
-      textFill,
-      this,
+  // dataCell根据state 改变当前样式，
+  private changeCellStyleByState(needGetIndexKey, changeStyleStateName) {
+    const { cells } = this.spreadsheet.getCurrentState();
+    const currentIndex = this.meta[needGetIndexKey];
+    const selectedIndexes = map(
+      cells,
+      (cell) => cell?.getMeta()[needGetIndexKey],
     );
+    if (includes(selectedIndexes, currentIndex)) {
+      this.updateByState(changeStyleStateName);
+    } else {
+      this.hideShapeUnderState();
+    }
   }
 
   /**

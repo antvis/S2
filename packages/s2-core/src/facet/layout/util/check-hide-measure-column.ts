@@ -1,23 +1,19 @@
-import { get } from 'lodash';
-import { BaseFacet } from '../../base-facet';
+import { without, get } from 'lodash';
+import { EXTRA_FIELD } from 'src/common/constant';
+import { SpreadsheetFacetCfg } from 'src/common/interface';
 
 export default function checkHideMeasureColumn(
-  facet: BaseFacet,
-  needValue = false,
-): [boolean, number, number] {
-  const { values, colCfg } = facet.cfg;
-  const isHide = !!(
-    get(values, 'length', 0) === 1 && get(colCfg, 'hideMeasureColumn', false)
-  );
-  let nodeY = 0;
-  let nodeHeight = 0;
-  if (isHide && needValue) {
-    const colsHierarchy = facet.layoutResult.colsHierarchy;
-    const preLevelNode = colsHierarchy.getNodes(colsHierarchy.maxLevel - 1)[0];
-    if (preLevelNode) {
-      nodeY = preLevelNode.y;
-      nodeHeight = preLevelNode.height;
-    }
+  cfg: SpreadsheetFacetCfg,
+  fields: string[],
+): [number] {
+  const hideMeasureColumn = get(cfg, 'colCfg.hideMeasureColumn', false);
+  let totalLevels;
+  if (hideMeasureColumn) {
+    // 把指标列去掉
+    totalLevels = without(fields, EXTRA_FIELD).length;
+  } else {
+    totalLevels = fields.length;
   }
-  return [isHide, nodeY, nodeHeight];
+
+  return [totalLevels];
 }

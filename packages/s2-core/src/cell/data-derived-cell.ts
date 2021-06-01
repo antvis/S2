@@ -11,10 +11,10 @@ import {
   includes,
   isArray,
 } from 'lodash';
-import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
 import { renderRect, renderText } from '../utils/g-renders';
-import { DerivedCell, DataCell } from '.';
+import { DerivedCell, DataCell } from ".";
 import { KEY_COL_REAL_WIDTH_INFO } from '../common/constant';
+import { SpreadSheet } from "src/sheet-type";
 
 /**
  * Data with derived data cell
@@ -28,7 +28,7 @@ export class DataDerivedCell extends DataCell {
     super.initCell();
   }
 
-  protected initTextShape() {
+  protected drawTextShape() {
     const { x, y, height, valueField, isTotals, colQuery } = this.meta;
 
     //  the size of text condition is equal with valueFields size
@@ -57,7 +57,7 @@ export class DataDerivedCell extends DataCell {
     const mainX = x + mainInfo?.x + mainInfo?.width;
     const mainY = y + height / 2;
     const values = this.spreadsheet.dataCfg.fields.values;
-    let finalText: string;
+    let finalText;
     if (isArray(values)) {
       // 行维度存在的情况
       finalText = text || '-';
@@ -67,7 +67,7 @@ export class DataDerivedCell extends DataCell {
     }
     const mainText = getEllipsisText(finalText, mainInfo?.width, textStyle);
 
-    if (BaseSpreadsheet.DEBUG_ON) {
+    if (SpreadSheet.DEBUG_ON) {
       renderRect(
         x + mainInfo?.x,
         y,

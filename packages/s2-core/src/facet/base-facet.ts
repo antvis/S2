@@ -1,31 +1,51 @@
-import { BBox, Group, IGroup, Point } from "@antv/g-canvas";
-import * as _  from 'lodash';
-import { calculateInViewIndexes, optimizeScrollXY, translateGroup } from "./utils";
-import { diffIndexes, Indexes } from "../utils/indexes";
+import { BBox, Group, IGroup, Point } from '@antv/g-canvas';
+import * as _ from 'lodash';
+import {
+  calculateInViewIndexes,
+  optimizeScrollXY,
+  translateGroup,
+} from './utils';
+import { diffIndexes, Indexes } from '../utils/indexes';
 import {
   Formatter,
   LayoutResult,
   OffsetConfig,
-  SpreadSheetFacetCfg
-} from "../common/interface";
-import { DEBUG_HEADER_LAYOUT, DEBUG_VIEW_RENDER, DebuggerUtil } from "../common/debug";
-import { SpreadSheet } from "src/sheet-type";
+  SpreadSheetFacetCfg,
+} from '../common/interface';
 import {
-  KEY_AFTER_HEADER_LAYOUT, KEY_CELL_SCROLL, KEY_GROUP_COL_RESIZER, KEY_GROUP_CORNER_RESIZER,
+  DEBUG_HEADER_LAYOUT,
+  DEBUG_VIEW_RENDER,
+  DebuggerUtil,
+} from '../common/debug';
+import { SpreadSheet } from 'src/sheet-type';
+import {
+  KEY_AFTER_HEADER_LAYOUT,
+  KEY_CELL_SCROLL,
+  KEY_GROUP_COL_RESIZER,
+  KEY_GROUP_CORNER_RESIZER,
   KEY_GROUP_ROW_INDEX_RESIZER,
   KEY_GROUP_ROW_RESIZER,
-  KEY_PAGINATION, MAX_SCROLL_OFFSET, MIN_SCROLL_BAR_HEIGHT
-} from "src/common/constant";
-import { Node } from "src/facet/layout/node";
-import { Hierarchy } from "src/facet/layout/hierarchy";
-import { Wheel } from "@antv/g-gesture";
+  KEY_PAGINATION,
+  MAX_SCROLL_OFFSET,
+  MIN_SCROLL_BAR_HEIGHT,
+} from 'src/common/constant';
+import { Node } from 'src/facet/layout/node';
+import { Hierarchy } from 'src/facet/layout/hierarchy';
+import { Wheel } from '@antv/g-gesture';
 import * as d3Timer from 'd3-timer';
 import { interpolateArray } from 'd3-interpolate';
-import { ScrollBar, ScrollType } from "src/ui/scrollbar";
-import { getTheme } from "src/theme";
-import { isMobile } from "src/utils/is-mobile";
-import { ColHeader, CornerHeader, Frame, RowHeader, SeriesNumberHeader } from "src/facet/header";
-import { BaseCell } from "src/cell";
+import { ScrollBar, ScrollType } from 'src/ui/scrollbar';
+import { getTheme } from 'src/theme';
+import { isMobile } from 'src/utils/is-mobile';
+import {
+  ColHeader,
+  CornerHeader,
+  Frame,
+  RowHeader,
+  SeriesNumberHeader,
+} from 'src/facet/header';
+import { BaseCell } from 'src/cell';
+import { updateMergedCells } from "src/utils/interactions/merge-cells";
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -78,7 +98,7 @@ export abstract class BaseFacet {
 
   protected centerFrame: Frame;
 
-  protected scrollBarSize = getTheme("default").scrollBar.size;
+  protected scrollBarSize = getTheme('default').scrollBar.size;
 
   protected scrollBarTheme = {
     default: {
@@ -138,7 +158,7 @@ export abstract class BaseFacet {
     });
 
     this.emitPaginationEvent();
-  }
+  };
 
   /**
    * Start render, call from outside
@@ -160,7 +180,7 @@ export abstract class BaseFacet {
       : 0;
   }
 
-  public getCanvasHW(): { width: number, height: number } {
+  public getCanvasHW(): { width: number; height: number } {
     return {
       width: this.cfg.width,
       height: this.cfg.height,
@@ -218,7 +238,7 @@ export abstract class BaseFacet {
     if (!_.isUndefined(hScrollX)) {
       this.spreadsheet.store.set('hRowScrollX', Math.floor(hScrollX));
     }
-  }
+  };
 
   getScrollOffset = (): [number, number, number] => {
     return [
@@ -226,7 +246,7 @@ export abstract class BaseFacet {
       this.spreadsheet.store.get('scrollY', 0),
       this.spreadsheet.store.get('hRowScrollX', 0),
     ];
-  }
+  };
 
   emitPaginationEvent = () => {
     const { pagination } = this.cfg;
@@ -244,9 +264,9 @@ export abstract class BaseFacet {
         current,
       });
     }
-  }
+  };
 
-  unbindEvents = () =>  {
+  unbindEvents = () => {
     (this.spreadsheet.container.get('el') as HTMLElement).removeEventListener(
       'wheel',
       this.wheelEvent,
@@ -254,7 +274,7 @@ export abstract class BaseFacet {
     this.mobileWheel.destroy();
     this.setScrollOffset(undefined, undefined, 0);
     this.setScrollOffset(undefined, undefined, 0);
-  }
+  };
 
   clipPanelGroup = () => {
     this.foregroundGroup = this.spreadsheet.foregroundGroup;
@@ -270,7 +290,7 @@ export abstract class BaseFacet {
         height,
       },
     });
-  }
+  };
 
   calculateCellWidthHeight = () => {
     const { colLeafNodes, rowLeafNodes } = this.layoutResult;
@@ -293,7 +313,7 @@ export abstract class BaseFacet {
     );
     this.viewCellWidths = widths;
     this.viewCellHeights = heights;
-  }
+  };
 
   /**
    * The purpose of this rewrite is to take into account that when rowHeader supports scrollbars
@@ -309,15 +329,15 @@ export abstract class BaseFacet {
       this.viewCellWidths,
       this.viewCellHeights,
       this.panelBBox,
-      this.getRealScrollX(this.cornerBBox.width)
+      this.getRealScrollX(this.cornerBBox.width),
     );
-  }
+  };
 
   getRealScrollX = (scrollX: number, hRowScroll = 0) => {
     return this.cfg.spreadsheet.isScrollContainsRowHeader()
       ? scrollX
       : hRowScroll;
-  }
+  };
 
   calculateCornerBBox = () => {
     const { rowsHierarchy, colsHierarchy } = this.layoutResult;
@@ -370,7 +390,7 @@ export abstract class BaseFacet {
       renderWidth = leftWidth;
     }
     return renderWidth;
-  }
+  };
 
   calculatePanelBBox = () => {
     const corner = this.cornerBBox;
@@ -402,7 +422,7 @@ export abstract class BaseFacet {
 
   getRealWidth = (): number => {
     return _.last(this.viewCellWidths);
-  }
+  };
 
   getRealHeight = (): number => {
     const { pagination } = this.cfg;
@@ -416,7 +436,7 @@ export abstract class BaseFacet {
       return heights[end] - heights[start];
     }
     return _.last(this.viewCellHeights);
-  }
+  };
 
   clearAllGroup = () => {
     const children = this.panelGroup.cfg.children;
@@ -425,7 +445,7 @@ export abstract class BaseFacet {
     }
     this.foregroundGroup.set('children', []);
     this.backgroundGroup.set('children', []);
-  }
+  };
 
   scrollWithAnimation = (offsetConfig: OffsetConfig) => {
     const { x: newX, y: newY } = this.adjustXAndY(
@@ -451,7 +471,7 @@ export abstract class BaseFacet {
         this.timer.stop();
       }
     });
-  }
+  };
 
   scrollImmediately = (offsetConfig: OffsetConfig) => {
     const { x: newX, y: newY } = this.adjustXAndY(
@@ -460,50 +480,43 @@ export abstract class BaseFacet {
     );
     this.setScrollOffset(newX, newY, undefined);
     this.startScroll(newX, newY);
-  }
+  };
 
   startScroll = (newX: number, newY: number) => {
     const [scrollX, scrollY] = this.getScrollOffset();
     if (newX !== undefined) {
       this.hScrollBar?.onlyUpdateThumbOffset(
         (scrollX / this.layoutResult.colsHierarchy.width) *
-        this.hScrollBar.trackLen,
+          this.hScrollBar.trackLen,
       );
     }
     if (newY !== undefined) {
       this.vScrollBar?.onlyUpdateThumbOffset(
         (scrollY / this.layoutResult.rowsHierarchy.height) *
-        this.vScrollBar.trackLen,
+          this.vScrollBar.trackLen,
       );
     }
     this.dynamicRenderCell();
-  }
+  };
 
   adjustXAndY = (x: number, y: number): Point => {
     let newX = x;
     let newY = y;
     if (x !== undefined) {
-      if (
-        x + this.panelBBox.width >=
-        this.layoutResult.colsHierarchy.width
-      ) {
+      if (x + this.panelBBox.width >= this.layoutResult.colsHierarchy.width) {
         newX = this.layoutResult.colsHierarchy.width - this.panelBBox.width;
       }
     }
     if (y !== undefined) {
-      if (
-        y + this.panelBBox.height >=
-        this.layoutResult.rowsHierarchy.height
-      ) {
-        newY =
-          this.layoutResult.rowsHierarchy.height - this.panelBBox.height;
+      if (y + this.panelBBox.height >= this.layoutResult.rowsHierarchy.height) {
+        newY = this.layoutResult.rowsHierarchy.height - this.panelBBox.height;
       }
     }
     return {
       x: newX,
       y: newY,
     };
-  }
+  };
 
   renderRowScrollBar = (rowScrollX: number) => {
     if (
@@ -514,14 +527,12 @@ export abstract class BaseFacet {
         isHorizontal: true,
         trackLen: this.cornerBBox.width - this.scrollBarSize / 2,
         thumbLen:
-          (this.cornerBBox.width * this.cornerBBox.width) /
-          this.cornerWidth,
+          (this.cornerBBox.width * this.cornerBBox.width) / this.cornerWidth,
         position: {
           x: this.cornerBBox.minX + this.scrollBarSize / 2,
           y: this.panelBBox.maxY - this.scrollBarSize / 2,
         },
-        thumbOffset:
-          (rowScrollX * this.cornerBBox.width) / this.cornerWidth,
+        thumbOffset: (rowScrollX * this.cornerBBox.width) / this.cornerWidth,
         theme: this.scrollBarTheme,
       });
 
@@ -536,16 +547,14 @@ export abstract class BaseFacet {
         );
         this.centerFrame.onChangeShadowVisibility(
           hRowScrollX,
-          this.cornerWidth -
-          this.cornerBBox.width -
-          this.scrollBarSize * 2,
+          this.cornerWidth - this.cornerBBox.width - this.scrollBarSize * 2,
           true,
         );
         this.cornerHeader.onRowScrollX(hRowScrollX, KEY_GROUP_CORNER_RESIZER);
       });
       this.foregroundGroup.add(this.hRowScrollBar);
     }
-  }
+  };
 
   renderHScrollBar = (width: number, realWidth: number, scrollX: number) => {
     if (Math.floor(width) < Math.floor(realWidth)) {
@@ -584,14 +593,14 @@ export abstract class BaseFacet {
         this.setScrollOffset(
           (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth,
           undefined,
-          undefined
+          undefined,
         );
         this.dynamicRenderCell();
       });
 
       this.foregroundGroup.add(this.hScrollBar);
     }
-  }
+  };
 
   renderVScrollBar = (height: number, realHeight: number, scrollY: number) => {
     if (height < realHeight) {
@@ -622,7 +631,7 @@ export abstract class BaseFacet {
 
       this.foregroundGroup.add(this.vScrollBar);
     }
-  }
+  };
 
   shouldPreventWheelEvent = (x: number, y: number) => {
     const near = (current: number, offset: number): boolean => {
@@ -636,7 +645,7 @@ export abstract class BaseFacet {
     if (y !== 0) {
       return this.vScrollBar && !near(this.vScrollBar.current(), y);
     }
-  }
+  };
 
   getOptimizedThumbOffsetTop = (deltaY: number) => {
     return (
@@ -690,7 +699,7 @@ export abstract class BaseFacet {
     }
     this.vScrollBar?.updateThumbOffset(this.getOptimizedThumbOffsetTop(y));
     this.hideScrollBar();
-  }
+  };
 
   /**
    * Translate panelGroup, rowHeader, cornerHeader, columnHeader ect
@@ -748,11 +757,15 @@ export abstract class BaseFacet {
         height: this.panelBBox.height,
       },
     });
-  }
+  };
 
   realCellRender = (scrollX: number, scrollY: number) => {
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
-    DebuggerUtil.getInstance().logger('renderIndex:', this.preCellIndexes, indexes);
+    DebuggerUtil.getInstance().logger(
+      'renderIndex:',
+      this.preCellIndexes,
+      indexes,
+    );
     const { add, remove } = diffIndexes(this.preCellIndexes, indexes);
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
       // add new cell in panelCell
@@ -777,12 +790,13 @@ export abstract class BaseFacet {
         );
         findOne?.remove(true);
       });
+      updateMergedCells(this.spreadsheet);
       DebuggerUtil.getInstance().logger(
         `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
       );
     });
     this.preCellIndexes = indexes;
-  }
+  };
 
   /**
    * How long about the delay period, need be re-considered,
@@ -871,9 +885,9 @@ export abstract class BaseFacet {
         data: this.layoutResult.rowNodes,
         offset: 0,
         hierarchyType: this.cfg.hierarchyType,
-        linkFieldIds: _.get(this.cfg.spreadsheet, "options.linkFieldIds"),
+        linkFieldIds: _.get(this.cfg.spreadsheet, 'options.linkFieldIds'),
         seriesNumberWidth,
-        spreadsheet: this.spreadsheet
+        spreadsheet: this.spreadsheet,
       });
     }
     return this.rowHeader;
@@ -971,5 +985,4 @@ export abstract class BaseFacet {
   }
 
   protected abstract doLayout(): LayoutResult;
-
 }

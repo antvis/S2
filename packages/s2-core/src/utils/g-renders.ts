@@ -6,19 +6,20 @@
  */
 import { Group, IShape } from '@antv/g-canvas';
 import * as _ from 'lodash';
+import { TextTheme } from 'src/theme/interface';
 
 export function renderRect(
-  x,
-  y,
-  width,
-  height,
-  fill,
-  stroke,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  fill: string,
+  stroke: string | number,
   group: Group,
 ): IShape {
   return (
     group &&
-    group.addShape('rect', {
+    group?.addShape?.('rect', {
       attrs: {
         x,
         y,
@@ -31,23 +32,21 @@ export function renderRect(
   );
 }
 
-export function renderTextOnly(
-  x,
-  y,
-  text,
-  textStyle,
-  fill,
+export function renderPolygon(
+  points: number[][],
+  stroke: string,
+  fill: string,
+  lineWidth: number,
   group: Group,
 ): IShape {
   return (
     group &&
-    group.addShape('text', {
+    group?.addShape?.('polygon', {
       attrs: {
-        x,
-        y,
-        text,
-        ...textStyle,
+        points,
+        stroke,
         fill,
+        lineWidth,
       },
     })
   );
@@ -55,11 +54,11 @@ export function renderTextOnly(
 
 export function renderText(
   self: IShape,
-  x,
-  y,
-  text,
-  textStyle,
-  fill,
+  x: number,
+  y: number,
+  text: any,
+  textStyle: TextTheme,
+  fill: string,
   group: Group,
 ): IShape {
   if (self && group && group.contain(self)) {
@@ -67,7 +66,7 @@ export function renderText(
   }
   return (
     group &&
-    group.addShape('text', {
+    group?.addShape?.('text', {
       attrs: {
         x,
         y,
@@ -80,17 +79,17 @@ export function renderText(
 }
 
 export function renderLine(
-  x1,
-  y1,
-  x2,
-  y2,
-  stroke,
-  lineWidth,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  stroke: string,
+  lineWidth: number,
   group: Group,
 ): IShape {
   return (
     group &&
-    group.addShape('line', {
+    group?.addShape?.('line', {
       attrs: {
         x1,
         y1,

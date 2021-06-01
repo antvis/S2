@@ -1,11 +1,11 @@
 import {
   BuildHeaderParams,
   BuildHeaderResult,
-} from "src/facet/layout/interface";
-import { Hierarchy } from "src/facet/layout/hierarchy";
-import { Node } from "src/facet/layout/node";
-import { buildRowTreeHierarchy } from "src/facet/layout/build-row-tree-hierarchy";
-import { buildGridHierarchy } from "src/facet/layout/build-gird-hierarchy";
+} from 'src/facet/layout/interface';
+import { Hierarchy } from 'src/facet/layout/hierarchy';
+import { Node } from 'src/facet/layout/node';
+import { buildRowTreeHierarchy } from 'src/facet/layout/build-row-tree-hierarchy';
+import { buildGridHierarchy } from 'src/facet/layout/build-gird-hierarchy';
 /**
  * Header Hierarchy
  * - row header
@@ -23,7 +23,9 @@ import { buildGridHierarchy } from "src/facet/layout/build-gird-hierarchy";
  *   - table layout
  * @param params
  */
-export const buildHeaderHierarchy = (params: BuildHeaderParams): BuildHeaderResult => {
+export const buildHeaderHierarchy = (
+  params: BuildHeaderParams,
+): BuildHeaderResult => {
   const { isRowHeader, facetCfg } = params;
   const { rows, cols, values, spreadsheet } = facetCfg;
   const isValueInCols = spreadsheet.dataCfg.fields.valueInCols;
@@ -40,12 +42,12 @@ export const buildHeaderHierarchy = (params: BuildHeaderParams): BuildHeaderResu
           fields: rows,
           facetCfg,
           parentNode: rootNode,
-          hierarchy
+          hierarchy,
         });
         return {
           hierarchy,
-          leafNodes: hierarchy.getNodes()
-        } as BuildHeaderResult
+          leafNodes: hierarchy.getNodes(),
+        } as BuildHeaderResult;
       } else {
         // row grid hierarchy
         const addTotalMeasureInTotal = !isValueInCols && moreThanOneValue;
@@ -85,6 +87,6 @@ export const buildHeaderHierarchy = (params: BuildHeaderParams): BuildHeaderResu
   }
   return {
     hierarchy,
-    leafNodes: hierarchy.getLeaves()
-  } as BuildHeaderResult
+    leafNodes: hierarchy.getLeaves(),
+  } as BuildHeaderResult;
 };

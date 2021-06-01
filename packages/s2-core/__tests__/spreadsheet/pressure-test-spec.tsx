@@ -36,7 +36,7 @@ for (let i = 0; i < 100; i++) {
       province: '四川省',
       city: `成都市 ${i}`,
       category: `家具 ${j}`,
-    })
+    });
   }
 }
 const getSpreadSheet = (

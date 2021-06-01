@@ -2,7 +2,7 @@ import { map, each, pick, assign } from 'lodash';
 import { Node } from '../../../index';
 import { S2Event, DefaultInterceptEventType } from '../types';
 import { BaseEvent } from '../base-event';
-import { StateName } from '../../../state/state';
+import { SelectedStateName } from 'src/common/constant/interatcion';
 import { getTooltipData } from '../../../utils/tooltip';
 // TODO: tooltip的菜单栏配置（在点击行头或列头的时候tooltip的样式）
 export class RowColumnClick extends BaseEvent {
@@ -33,18 +33,18 @@ export class RowColumnClick extends BaseEvent {
             if (node.belongsCell) {
               this.spreadsheet.setState(
                 node.belongsCell,
-                StateName.ROW_SELECTED,
+                SelectedStateName.ROW_SELECTED,
               );
             }
           });
         } else {
           // 单行
-          this.spreadsheet.setState(cell, StateName.ROW_SELECTED);
+          this.spreadsheet.setState(cell, SelectedStateName.ROW_SELECTED);
         }
 
         const currentState = this.spreadsheet.getCurrentState();
         const { stateName, cells } = currentState;
-        if (stateName === StateName.ROW_SELECTED) {
+        if (stateName === SelectedStateName.ROW_SELECTED) {
           cellInfos = this.mergeCellInfo(cells);
         }
 
@@ -80,18 +80,18 @@ export class RowColumnClick extends BaseEvent {
             if (node.belongsCell) {
               this.spreadsheet.setState(
                 node.belongsCell,
-                StateName.COL_SELECTED,
+                SelectedStateName.COL_SELECTED,
               );
             }
           });
         } else {
           // 单列
-          this.spreadsheet.setState(cell, StateName.COL_SELECTED);
+          this.spreadsheet.setState(cell, SelectedStateName.COL_SELECTED);
         }
 
         const currentState = this.spreadsheet.getCurrentState();
         const { stateName, cells } = currentState;
-        if (stateName === StateName.COL_SELECTED) {
+        if (stateName === SelectedStateName.COL_SELECTED) {
           cellInfos = this.mergeCellInfo(cells);
         }
 

@@ -1,11 +1,11 @@
-import { FileValue, TreeHeaderParams } from "src/facet/layout/interface";
-import getDimsCondition from "src/facet/layout/util/get-dims-condition-by-node";
-import { layoutArrange, layoutHierarchy } from "src/facet/layout/layout-hooks";
-import { TotalClass } from "src/facet/layout/total-class";
-import { i18n } from "src/common/i18n";
-import { generateId } from "src/facet/layout/util/generate-id";
-import { Node } from "src/facet/layout/node";
-import * as _ from 'lodash'
+import { FileValue, TreeHeaderParams } from 'src/facet/layout/interface';
+import getDimsCondition from 'src/facet/layout/util/get-dims-condition-by-node';
+import { layoutArrange, layoutHierarchy } from 'src/facet/layout/layout-hooks';
+import { TotalClass } from 'src/facet/layout/total-class';
+import { i18n } from 'src/common/i18n';
+import { generateId } from 'src/facet/layout/util/generate-id';
+import { Node } from 'src/facet/layout/node';
+import * as _ from 'lodash';
 
 /**
  * Only row header has tree hierarchy, in this scene:
@@ -15,7 +15,13 @@ import * as _ from 'lodash'
  */
 export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const { parentNode, currentField, fields, facetCfg, hierarchy } = params;
-  const { dataSet , spreadsheet, collapsedRows, hierarchyCollapse, values  } = facetCfg;
+  const {
+    dataSet,
+    spreadsheet,
+    collapsedRows,
+    hierarchyCollapse,
+    values,
+  } = facetCfg;
   const index = fields.indexOf(currentField);
   const query = getDimsCondition(parentNode, true);
   let fieldValues: FileValue[];
@@ -42,7 +48,9 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       nodeQuery = _.merge({}, query, { [currentField]: value });
     }
     const uniqueId = generateId(parentNode.id, value, facetCfg);
-    let isCollapse = _.isBoolean(collapsedRows[uniqueId]) ? collapsedRows[uniqueId] : hierarchyCollapse;
+    let isCollapse = _.isBoolean(collapsedRows[uniqueId])
+      ? collapsedRows[uniqueId]
+      : hierarchyCollapse;
     // TODO special logic to custom control node's collapsed state
     // if (isTotal) {
     //   // 总计用户不会有收缩状态
@@ -92,7 +100,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
         fields,
         facetCfg,
         parentNode: node,
-        hierarchy
+        hierarchy,
       });
     }
   }

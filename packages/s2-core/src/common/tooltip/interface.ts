@@ -1,4 +1,4 @@
-import { BaseSpreadSheet } from '../../sheet-type';
+import { SpreadSheet } from '../../sheet-type';
 import { SortParam } from '../interface';
 
 export type DataItem = Record<string, any>;
@@ -53,7 +53,7 @@ export interface TipsProps {
 }
 
 export interface OperationProps {
-  plot: BaseSpreadSheet;
+  plot: SpreadSheet;
   sortFieldId: string;
   sortQuery: SortQuery;
 }

@@ -1,26 +1,31 @@
-import { LayoutResult, ViewMeta } from "src/common/interface";
+import { LayoutResult, ViewMeta } from 'src/common/interface';
 import {
   EXTRA_FIELD,
   KEY_COL_NODE_BORDER_REACHED,
   KEY_ROW_NODE_BORDER_REACHED,
-  VALUE_FIELD
-} from "src/common/constant";
-import * as _ from "lodash";
-import { BaseFacet } from "src/facet/index";
-import processDefaultColWidthByType from "src/facet/layout/util/process-default-col-width-by-type";
-import processRowNodesCoordinate from "src/facet/layout/util/process-row-nodes-coordinate";
-import processColNodesCoordinate from "src/facet/layout/util/process-col-nodes-coordinate";
-import { buildHeaderHierarchy } from "src/facet/layout/build-header-hierarchy";
+  VALUE_FIELD,
+} from 'src/common/constant';
+import * as _ from 'lodash';
+import { BaseFacet } from 'src/facet/index';
+import processDefaultColWidthByType from 'src/facet/layout/util/process-default-col-width-by-type';
+import processRowNodesCoordinate from 'src/facet/layout/util/process-row-nodes-coordinate';
+import processColNodesCoordinate from 'src/facet/layout/util/process-col-nodes-coordinate';
+import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 
 export class PivotFacet extends BaseFacet {
-
   protected doLayout(): LayoutResult {
     // 1、layout all nodes in rowHeader and colHeader
-    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } = buildHeaderHierarchy({
+    const {
+      leafNodes: rowLeafNodes,
+      hierarchy: rowsHierarchy,
+    } = buildHeaderHierarchy({
       isRowHeader: true,
       facetCfg: this.cfg,
     });
-    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } = buildHeaderHierarchy({
+    const {
+      leafNodes: colLeafNodes,
+      hierarchy: colsHierarchy,
+    } = buildHeaderHierarchy({
       isRowHeader: false,
       facetCfg: this.cfg,
     });
@@ -29,17 +34,8 @@ export class PivotFacet extends BaseFacet {
     processDefaultColWidthByType(this, colsHierarchy);
 
     // 3、calculate all nodes coordinate
-    processRowNodesCoordinate(
-      this,
-      rowsHierarchy,
-      rowLeafNodes,
-    );
-    processColNodesCoordinate(
-      colLeafNodes,
-      rowsHierarchy,
-      colsHierarchy,
-      this,
-    );
+    processRowNodesCoordinate(this, rowsHierarchy, rowLeafNodes);
+    processColNodesCoordinate(colLeafNodes, rowsHierarchy, colsHierarchy, this);
     const dataSet = this.cfg.dataSet;
     const values = dataSet.fields.values;
     const ss = this.spreadsheet;
@@ -56,7 +52,7 @@ export class PivotFacet extends BaseFacet {
       const colQuery = col.query;
       const dataQuery = _.merge({}, rowQuery, colQuery);
       let data = dataSet.getCellData(dataQuery);
-      data = _.get(data, "0");
+      data = _.get(data, '0');
       // data.isTotals = row.isTotals || col.isTotalMeasure;
       let valueField = '';
       let fieldValue = null;
@@ -79,7 +75,11 @@ export class PivotFacet extends BaseFacet {
         data,
         rowIndex: i,
         colIndex: j,
-        isTotals: row.isTotals || row.isTotalMeasure || col.isTotals || col.isTotalMeasure,
+        isTotals:
+          row.isTotals ||
+          row.isTotalMeasure ||
+          col.isTotals ||
+          col.isTotalMeasure,
         valueField,
         fieldValue,
         rowQuery,

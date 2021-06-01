@@ -39,7 +39,7 @@ const getDataCfg = () => {
       rows: ['area', 'province', 'city'],
       columns: ['type', 'sub_type'],
       values: ['profit', 'count'],
-      valueInCols: true
+      valueInCols: true,
       // derivedValues: [
       //   {
       //     valueField: 'profit',
@@ -176,7 +176,7 @@ function MainLayout(props) {
       merge({}, dataCfg, {
         fields: {
           valueInCols: checked,
-        }
+        },
       }),
     );
   };

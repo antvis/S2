@@ -16,11 +16,12 @@ import {
   Tooltip,
   TooltipCallback,
   Totals,
+  MergedCellInfo,
 } from 'src/common/interface/index';
 import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
 import { merge } from 'lodash';
-import { BaseDataSet } from "src/data-set";
-import { SpreadSheet } from "src/sheet-type";
+import { BaseDataSet } from 'src/data-set';
+import { SpreadSheet } from 'src/sheet-type';
 
 export interface S2Options {
   // canvas's width
@@ -86,6 +87,9 @@ export interface S2Options {
   layout?: LayoutCallback;
   // determine the data of cells in Cartesian coordinates
   readonly layoutResult?: LayoutResultCallback;
+
+  // the collection of row id and column id of cells which to be merged
+  readonly mergedCellsInfo?: MergedCellInfo[][];
   // extra options if needed
   [key: string]: any;
 }

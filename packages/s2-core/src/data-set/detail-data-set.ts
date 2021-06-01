@@ -1,8 +1,8 @@
 import { S2DataConfig } from '../common/interface';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD } from '../common/constant';
-import { BaseDataSet, DetailPivot, PivotDataSet } from "./index";
-import { DataType } from "src/data-set/interface";
+import { BaseDataSet, DetailPivot, PivotDataSet } from './index';
+import { DataType } from 'src/data-set/interface';
 
 /**
  * 明细表的DataSet工具类

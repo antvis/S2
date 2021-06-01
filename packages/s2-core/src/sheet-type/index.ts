@@ -22,17 +22,24 @@ import {
   S2Options,
   SpreadSheetFacetCfg,
   ViewMeta,
-  safetyOptions, Totals, Total
-} from "../common/interface";
+  safetyOptions,
+  Totals,
+  Total,
+} from '../common/interface';
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
+// import { DataDerivedCell } from '../cell/data-derived-cell'
 import {
   KEY_AFTER_COLLAPSE_ROWS,
-  KEY_COL_REAL_WIDTH_INFO, KEY_COLLAPSE_ROWS, KEY_COLLAPSE_TREE_ROWS,
+  KEY_COL_REAL_WIDTH_INFO,
+  KEY_COLLAPSE_ROWS,
+  KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
-  KEY_GROUP_PANEL_GROUND, KEY_TREE_ROWS_COLLAPSE_ALL, KEY_UPDATE_PROPS
-} from "../common/constant";
-import { BaseDataSet, PivotDataSet } from "../data-set";
+  KEY_GROUP_PANEL_GROUND,
+  KEY_TREE_ROWS_COLLAPSE_ALL,
+  KEY_UPDATE_PROPS,
+} from '../common/constant';
+import { BaseDataSet, PivotDataSet } from '../data-set';
 import {
   Node,
   BaseInteraction,
@@ -40,22 +47,26 @@ import {
   BaseEvent,
   BrushSelection,
   RowColResize,
-  DataCellMutiSelection, ColRowMutiSelection, DataCellClick, CornerTextClick, RowColumnClick, RowTextClick, HoverEvent
+  DataCellMutiSelection,
+  ColRowMutiSelection,
+  DataCellClick,
+  CornerTextClick,
+  RowColumnClick,
+  RowTextClick,
+  HoverEvent, MergedCellsClick
 } from "../index";
 import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
-import { BaseFacet } from '../facet/base-facet';
-import { DataDerivedCell } from '../cell';
+import { BaseFacet } from "src/facet";
 import { DebuggerUtil } from '../common/debug';
 import { EventController } from '../interaction/events/event-controller';
 import { DefaultInterceptEvent } from '../interaction/events/types';
-import State from '../state/state';
+import { State } from '../state/state';
 import { ShowProps } from '../common/tooltip/interface';
-import { StateName } from '../state/state';
 import { isMobile } from '../utils/is-mobile';
-import { EventNames, InteractionNames } from "src/interaction/constant";
-import { i18n } from "src/common/i18n";
-import { PivotFacet } from "src/facet";
+import { EventNames, InteractionNames, SelectedStateName } from "src/common/constant/interatcion";
+import { i18n } from 'src/common/i18n';
+import { PivotFacet } from 'src/facet';
 
 const matrixTransform = ext.transform;
 export class SpreadSheet extends EE {
@@ -128,7 +139,9 @@ export class SpreadSheet extends EE {
     options: S2Options,
   ) {
     super();
-    this.dom = isString(dom) ? document.getElementById(dom) : dom as HTMLElement;
+    this.dom = isString(dom)
+      ? document.getElementById(dom)
+      : (dom as HTMLElement);
     this.dataCfg = safetyDataConfig(dataCfg);
     this.options = safetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
@@ -147,7 +160,7 @@ export class SpreadSheet extends EE {
 
   getTooltip = (initTooltip: S2Options['initTooltip']): BaseTooltip => {
     return initTooltip?.(this) || new BaseTooltip(this);
-  }
+  };
 
   getDataSet = (options: S2Options): BaseDataSet => {
     const { mode, dataSet } = options;
@@ -155,8 +168,8 @@ export class SpreadSheet extends EE {
       return dataSet(this);
     }
     // TODO table data set
-    return mode === "table" ? new PivotDataSet(this) : new PivotDataSet(this);
-  }
+    return mode === 'table' ? new PivotDataSet(this) : new PivotDataSet(this);
+  };
 
   /**
    * Update data config and keep pre-sort operations
@@ -176,10 +189,7 @@ export class SpreadSheet extends EE {
     if (this.tooltip) {
       this.tooltip.hide();
     }
-    this.options = merge(
-      this.options,
-      options,
-    );
+    this.options = merge(this.options, options);
   }
 
   public render(reloadData = true, callback?: () => void): void {
@@ -390,7 +400,7 @@ export class SpreadSheet extends EE {
   }
 
   public isValueInCols(): boolean {
-    return this.options.valueInCols;
+    return this.dataSet.fields.valueInCols;
   }
 
   public setState(cell, stateName) {
@@ -407,7 +417,7 @@ export class SpreadSheet extends EE {
 
   public updateCellStyleByState() {
     const cells = this.getCurrentState().cells;
-    cells.forEach((cell: BaseCell<Node>) => {
+    cells.forEach((cell) => {
       cell.updateByState(this.getCurrentState().stateName);
     });
   }
@@ -458,9 +468,9 @@ export class SpreadSheet extends EE {
   public clearStyleIndependent() {
     const currentState = this.getCurrentState();
     if (
-      currentState.stateName === StateName.COL_SELECTED ||
-      currentState.stateName === StateName.ROW_SELECTED ||
-      currentState.stateName === StateName.HOVER
+      currentState.stateName === SelectedStateName.COL_SELECTED ||
+      currentState.stateName === SelectedStateName.ROW_SELECTED ||
+      currentState.stateName === SelectedStateName.HOVER
     ) {
       this.getPanelAllCells().forEach((cell) => {
         cell.hideShapeUnderState();
@@ -478,12 +488,14 @@ export class SpreadSheet extends EE {
    * get total's config by dimension id
    * @param dimension unique dimension id
    */
-  public getTotalsConfig(
-    dimension: string,
-  ): Partial<Totals['row']> {
+  public getTotalsConfig(dimension: string): Partial<Totals['row']> {
     const { totals } = this.options;
     const { rows } = this.dataCfg.fields;
-    const totalConfig = get(totals, includes(rows, dimension) ? 'row' : 'col', {}) as Total;
+    const totalConfig = get(
+      totals,
+      includes(rows, dimension) ? 'row' : 'col',
+      {},
+    ) as Total;
     const showSubTotals = totalConfig.showSubTotals
       ? includes(totalConfig.subTotalsDimensions, dimension)
       : false;
@@ -542,13 +554,31 @@ export class SpreadSheet extends EE {
     const { fields, meta } = this.dataSet;
     const { rows, columns, values, derivedValues } = fields;
     const {
-      width, height, style, hierarchyType, hierarchyCollapse, pagination,
-      dataCell, cornerCell, rowCell, colCell, frame, layout, cornerHeader,
-      layoutResult, hierarchy, layoutArrange
+      width,
+      height,
+      style,
+      hierarchyType,
+      hierarchyCollapse,
+      pagination,
+      dataCell,
+      cornerCell,
+      rowCell,
+      colCell,
+      frame,
+      layout,
+      cornerHeader,
+      layoutResult,
+      hierarchy,
+      layoutArrange,
     } = this.options;
 
     const {
-      cellCfg, colCfg, rowCfg, collapsedRows, collapsedCols, treeRowsWidth
+      cellCfg,
+      colCfg,
+      rowCfg,
+      collapsedRows,
+      collapsedCols,
+      treeRowsWidth,
     } = style;
 
     const defaultCell = (facet: ViewMeta) => this.getCorrectCell(facet);
@@ -587,7 +617,7 @@ export class SpreadSheet extends EE {
     this.facet = new PivotFacet(facetCfg);
     // render facet
     this.facet.render();
-  }
+  };
 
   /**
    * 注册交互（组件按自己的场景写交互，继承此方法注册）
@@ -596,17 +626,30 @@ export class SpreadSheet extends EE {
   protected registerInteractions(options: S2Options) {
     this.interactions.clear();
     if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
-      this.interactions.set(InteractionNames.BRUSH_SELECTION_INTERACTION, new BrushSelection(this));
-      this.interactions.set(InteractionNames.COL_ROW_RESIZE_INTERACTION, new RowColResize(this));
-      this.interactions.set(InteractionNames.DATACELL_MUTI_SELECTION_INTERACTION, new DataCellMutiSelection(this));
-      this.interactions.set(InteractionNames.COL_ROW_MUTI_SELECTION_INTERACTION, new ColRowMutiSelection(this));
+      this.interactions.set(
+        InteractionNames.BRUSH_SELECTION_INTERACTION,
+        new BrushSelection(this),
+      );
+      this.interactions.set(
+        InteractionNames.COL_ROW_RESIZE_INTERACTION,
+        new RowColResize(this),
+      );
+      this.interactions.set(
+        InteractionNames.DATACELL_MUTI_SELECTION_INTERACTION,
+        new DataCellMutiSelection(this),
+      );
+      this.interactions.set(
+        InteractionNames.COL_ROW_MUTI_SELECTION_INTERACTION,
+        new ColRowMutiSelection(this),
+      );
     }
   }
 
   protected getCorrectCell(facet: ViewMeta): DataCell {
-    return this.isValueInCols()
-      ? new DataCell(facet, this)
-      : new DataDerivedCell(facet, this);
+    return new DataCell(facet, this);
+    // return this.isValueInCols()
+    //   ? new DataCell(facet, this)
+    //   : new DataDerivedCell(facet, this);
   }
 
   protected bindEvents() {
@@ -639,14 +682,13 @@ export class SpreadSheet extends EE {
     });
     // 收起、展开按钮
     this.on(KEY_TREE_ROWS_COLLAPSE_ALL, (isCollapse) => {
-
       this.setOptions({
         ...this.options,
         hierarchyCollapse: !isCollapse,
         style: {
           ...this.options?.style,
-          collapsedRows: {}
-        }
+          collapsedRows: {},
+        },
       });
       this.render(false);
     });
@@ -659,9 +701,16 @@ export class SpreadSheet extends EE {
   protected registerEvents() {
     this.events.clear();
     this.events.set(EventNames.DATACELL_CLICK_EVENT, new DataCellClick(this));
-    this.events.set(EventNames.CORNER_TEXT_CLICK_EVENT, new CornerTextClick(this));
-    this.events.set(EventNames.ROW_COLUMN_CLICK_EVENT, new RowColumnClick(this));
+    this.events.set(
+      EventNames.CORNER_TEXT_CLICK_EVENT,
+      new CornerTextClick(this),
+    );
+    this.events.set(
+      EventNames.ROW_COLUMN_CLICK_EVENT,
+      new RowColumnClick(this),
+    );
     this.events.set(EventNames.ROW_TEXT_CLICK_EVENT, new RowTextClick(this));
+    this.events.set(EventNames.MERGEDCELLS_CLICK_EVENT, new MergedCellsClick(this));
     this.events.set(EventNames.HOVER_EVENT, new HoverEvent(this));
   }
 

@@ -3,12 +3,11 @@ import { Hierarchy, SpreadSheet, Node } from '../../index';
 import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
-import { S2DataConfig, safetyDataConfig } from './S2DataConfig';
+import { S2DataConfig, safetyDataConfig, Data, DataItem } from './S2DataConfig';
 import { S2Options, safetyOptions } from './S2Options';
+import { CustomInteraction } from '../../interaction/base';
 
-export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions };
-
-export type Data = Record<string, string | number>;
+export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions, Data };
 
 export type Formatter = (v: any) => string;
 
@@ -288,7 +287,11 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
+  // for adaptive layout
+  maxWidth?: number;
+  minWidth?: number;
   padding?: number;
+  lineHeight?: number;
 }
 
 export interface RowCfg {
@@ -321,13 +324,22 @@ export interface ColCfg {
 }
 
 /**
- * The label names of rows or column.
+ * the label names of rows or columns.
  * Using the ID_SEPARATOR('[&]') to join two labels
  * when there are hierarchical relations between them.
  */
 export interface CustomHeaderCells {
   cellLabels: string[];
   mode?: 'pick' | 'omit';
+}
+
+/**
+ * the index of rows or columns.
+ */
+export interface MergedCellInfo {
+  colIndex?: number;
+  rowIndex?: number;
+  showText?: boolean;
 }
 
 /**
@@ -389,6 +401,8 @@ export interface SpreadSheetFacetCfg {
   layout?: LayoutCallback;
   // 布局结果交由外部控制
   layoutResult?: LayoutResultCallback;
+  // custom Interaction
+  customInteraction?: CustomInteraction[];
 }
 
 export interface ViewMeta {
@@ -410,7 +424,7 @@ export interface ViewMeta {
   // value field(unique field id) for conditions setting
   valueField: string;
   // field's real display label value
-  fieldValue: number;
+  fieldValue: DataItem;
   // subTotals or grandTotals
   isTotals?: boolean;
   // cell's row query condition
@@ -454,4 +468,9 @@ export interface ColWidthCache {
   realWidth: Record<string, number>;
   // 上次用户拖拽的宽度
   lastUserDragWidth: Record<string, number>;
+}
+
+export interface CellPosition {
+  x: number;
+  y: number;
 }

@@ -5,7 +5,7 @@ import {
 } from '../../common/interface';
 import { DrillDownLayout } from './drill-down-layout';
 import { PartDrillDownInfo, SpreadsheetProps } from 'src/components/index';
-import { BaseSpreadSheet } from '../../sheet-type';
+import { SpreadSheet } from '../../sheet-type';
 import {
   merge,
   set,
@@ -27,11 +27,11 @@ export interface ActionIconParams {
   iconType: string;
   // 点击事件event
   event: Event;
-  spreadsheet: BaseSpreadSheet;
+  spreadsheet: SpreadSheet;
   // 下钻维度的列表组件展示
   callback: (
     event: Event,
-    sheetInstance: BaseSpreadSheet,
+    sheetInstance: SpreadSheet,
     cashDrillFields: string[],
     disabledFields: string[],
   ) => void;
@@ -42,7 +42,7 @@ export interface DrillDownParams {
   rows: string[];
   // 下钻维度
   drillFields: string[];
-  spreadsheet: BaseSpreadSheet;
+  spreadsheet: SpreadSheet;
   // 下钻维值显示个数
   drillItemsNum?: number | string;
   // 下钻维度后获取数据
@@ -66,7 +66,7 @@ export const UseDrillDownLayout = (options: S2Options) => {
  * @param spreadsheet
  * @param meta
  */
-const getDrillDownCash = (spreadsheet: BaseSpreadSheet, meta: Node) => {
+const getDrillDownCash = (spreadsheet: SpreadSheet, meta: Node) => {
   const drillDownDataCache = spreadsheet.store.get(
     'drillDownDataCache',
     [],
@@ -112,7 +112,7 @@ export const HandleActionIconClick = (params: ActionIconParams) => {
  * @param rowId 如果有rowId,按照rowId 清理，如果没有，全部清空
  */
 export const ClearDrillDownInfo = (
-  spreadsheet: BaseSpreadSheet,
+  spreadsheet: SpreadSheet,
   rowId?: string,
 ) => {
   const drillDownDataCache = spreadsheet.store.get(
@@ -177,10 +177,10 @@ export const ClearDrillDownInfo = (
  */
 export const HandleOptions = (
   props: SpreadsheetProps,
-  spreadsheet: BaseSpreadSheet,
+  spreadsheet: SpreadSheet,
   callback: (
     event: MouseEvent,
-    sheetInstance: BaseSpreadSheet,
+    sheetInstance: SpreadSheet,
     cashDownDrillFields: string[],
     disabledFields: string[],
   ) => void,
@@ -371,7 +371,7 @@ export const HandleDrillDown = async (params: DrillDownParams) => {
  */
 export const HandleConfigWhenDrillDown = (
   props: SpreadsheetProps,
-  spreadsheet: BaseSpreadSheet,
+  spreadsheet: SpreadSheet,
 ) => {
   const drillDownDataCache = spreadsheet.store.get(
     'drillDownDataCache',
@@ -419,7 +419,7 @@ export const HandleConfigWhenDrillDown = (
  * 重置下钻的配置
  * @param spreadsheet
  */
-export const resetDrillDownCfg = (spreadsheet: BaseSpreadSheet) => {
+export const resetDrillDownCfg = (spreadsheet: SpreadSheet) => {
   spreadsheet.store.set('drillDownActionIconLevel', -1);
   // 清空所有的下钻信息
   spreadsheet.store.set('drillDownDataCache', []);

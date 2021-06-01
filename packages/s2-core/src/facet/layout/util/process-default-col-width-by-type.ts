@@ -1,7 +1,7 @@
 import { measureTextWidth } from '../../..';
 import { get, set, includes, isEmpty } from 'lodash';
 import { DEFAULT_PADDING, ICON_RADIUS } from '../../../common/constant';
-import { BaseFacet } from "src/facet";
+import { BaseFacet } from 'src/facet';
 import { Hierarchy } from '../hierarchy';
 import { DEFAULT_FACET_CFG as DefaultCfg } from '../default-facet-cfg';
 
@@ -25,6 +25,7 @@ export default function processDefaultColWidthByType(
     // 数据没有的情况下，直接用默认值
     return defaultCellWidth;
   }
+
   let colWidth = defaultCellWidth;
   const canvasW = facet.getCanvasHW().width;
   // 非决策模式下的列宽均分场景才能走这个逻辑
@@ -44,7 +45,9 @@ export default function processDefaultColWidthByType(
       const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
       const treeHeaderLabel = rows
         .filter((value) => !includes(drillFields, value))
-        .map((key: string): string => facet.spreadsheet.dataSet.getFieldName(key))
+        .map((key: string): string =>
+          facet.spreadsheet.dataSet.getFieldName(key),
+        )
         .join('/');
       const textStyle = get(facet, 'spreadsheet.theme.header.bolderText');
       // [100, canvasW / 2]
@@ -82,6 +85,18 @@ export default function processDefaultColWidthByType(
     } else {
       facet.cfg.treeRowsWidth += ICON_RADIUS * 2 + DEFAULT_PADDING * 2;
     }
+  }
+
+  // if the user sets the maximum width, the colWidth must not be greater than this value
+  const maxWidth = cellCfg?.maxWidth;
+  if (maxWidth) {
+    colWidth = Math.min(cellCfg?.maxWidth, colWidth);
+  }
+
+  // if the user sets the minimum width, the colWidth must not be less than this value
+  const minWidth = cellCfg?.minWidth;
+  if (minWidth) {
+    colWidth = Math.max(cellCfg?.minWidth, colWidth);
   }
   // reset rowHeader,colHeader cell width
   rowCfg.width = colWidth;
