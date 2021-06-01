@@ -1,6 +1,12 @@
 import { Event, LooseObject, Canvas, IElement } from '@antv/g-canvas';
 import { get, each, includes } from 'lodash';
-import { DataCell, ColCell, CornerCell, RowCell } from '../../cell';
+import {
+  DataCell,
+  ColCell,
+  CornerCell,
+  RowCell,
+  MergedCells,
+} from '../../cell';
 import { S2Event, OriginEventType, DefaultInterceptEventType } from './types';
 import BaseSpreadSheet from '../../sheet-type/base-spread-sheet';
 
@@ -87,6 +93,7 @@ export class EventController {
   }
 
   protected resetSheetStyle(ev: MouseEvent) {
+    // TODO tooltip 隐藏判断
     if (
       ev.target !== this.spreadsheet.container.get('el') &&
       !includes((<HTMLElement>ev.target)?.className, 'eva-facet') &&
@@ -95,7 +102,7 @@ export class EventController {
     ) {
       this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
       this.spreadsheet.clearState();
-      this.spreadsheet.hideTooltip();
+      // this.spreadsheet.hideTooltip();
       // 屏蔽的事件都重新打开
       this.spreadsheet.interceptEvent.clear();
       this.draw();
@@ -127,7 +134,11 @@ export class EventController {
         case CornerCell.name:
           this.spreadsheet.emit(S2Event.CORNER_MOUSEDOWN, ev);
           break;
+        case MergedCells.name:
+          this.spreadsheet.emit(S2Event.MERGEDCELLS_MOUSEDOWN, ev);
+          break;
         default:
+          break;
       }
     }
   }
@@ -154,7 +165,11 @@ export class EventController {
           case CornerCell.name:
             this.spreadsheet.emit(S2Event.CORNER_MOUSEMOVE, ev);
             break;
+          case MergedCells.name:
+            this.spreadsheet.emit(S2Event.MERGEDCELLS_MOUSEMOVE, ev);
+            break;
           default:
+            break;
         }
 
         // 如果hover的cell改变了，并且当前不需要屏蔽 hover
@@ -175,7 +190,11 @@ export class EventController {
             case CornerCell.name:
               this.spreadsheet.emit(S2Event.CORNER_HOVER, ev);
               break;
+            case MergedCells.name:
+              this.spreadsheet.emit(S2Event.MERGEDCELLS_HOVER, ev);
+              break;
             default:
+              break;
           }
         }
       }
@@ -205,8 +224,11 @@ export class EventController {
             case CornerCell.name:
               this.spreadsheet.emit(S2Event.CORNER_CLICK, ev);
               break;
+            case MergedCells.name:
+              this.spreadsheet.emit(S2Event.MERGEDCELLS_CLICK, ev);
+              break;
             default:
-              return;
+              break;
           }
         }
 
@@ -224,7 +246,11 @@ export class EventController {
           case CornerCell.name:
             this.spreadsheet.emit(S2Event.CORNER_MOUSEUP, ev);
             break;
+          case MergedCells.name:
+            this.spreadsheet.emit(S2Event.MERGEDCELLS_MOUSEUP, ev);
+            break;
           default:
+            break;
         }
       }
     }

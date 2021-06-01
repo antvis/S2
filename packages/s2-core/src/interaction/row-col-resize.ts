@@ -57,7 +57,7 @@ export class RowColResize extends BaseInteraction {
           this.resizeGroup.addShape('path', { attrs });
           this.resizeGroup.addShape('path', { attrs });
           // 加这个shape是其实是一层透明的mask遮罩
-          // 防止resize过程中触发到别的interaction，因此大小为画布到校，move时在遮罩上move，截断了下层
+          // 防止resize过程中触发到别的interaction，因此加了遮罩，触发resize后在遮罩上滚动
           this.resizeGroup.addShape('rect', {
             attrs: {
               appendInfo: {

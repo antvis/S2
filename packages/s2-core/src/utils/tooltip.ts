@@ -37,8 +37,7 @@ import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
-
-import { StateName } from '../state/state';
+import { SelectedStateName } from 'src/common/constant/interatcion';
 
 /**
  * calculate aggregate value
@@ -325,7 +324,7 @@ export const getSelectedCellIndexes = (
   const selectedIndexes = [];
   const currentState = spreadsheet.getCurrentState();
   const { stateName, cells } = currentState;
-  if (stateName === StateName.COL_SELECTED) {
+  if (stateName === SelectedStateName.COL_SELECTED) {
     const currentHeaderCell = find(
       cells,
       (cell) => cell.getMeta().colIndex === cellInfo.colIndex,
@@ -333,7 +332,7 @@ export const getSelectedCellIndexes = (
     map(rowLeafNodes, (row, index) => {
       selectedIndexes.push([index, currentHeaderCell.getMeta().colIndex]);
     });
-  } else if (stateName === StateName.ROW_SELECTED) {
+  } else if (stateName === SelectedStateName.ROW_SELECTED) {
     const currentHeaderCell = find(
       cells,
       (cell) => cell.getMeta().rowIndex === cellInfo.rowIndex,
@@ -355,8 +354,8 @@ export const getSelectedData = (
   const { stateName, cells } = currentState;
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
   if (
-    stateName === StateName.COL_SELECTED ||
-    stateName === StateName.ROW_SELECTED
+    stateName === SelectedStateName.COL_SELECTED ||
+    stateName === SelectedStateName.ROW_SELECTED
   ) {
     // 行头列头单选多选
     const selectedCellIndexes = getSelectedCellIndexes(

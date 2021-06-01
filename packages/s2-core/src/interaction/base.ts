@@ -6,6 +6,11 @@ export type InteractionConstructor = new (
   spreadsheet: BaseSpreadSheet,
 ) => BaseInteraction;
 
+export interface CustomInteraction {
+  key: string;
+  interaction: InteractionConstructor;
+}
+
 /**
  * Base interaction for SpreadSheet/ListSheet
  * There are three events we need care, override them to DIY

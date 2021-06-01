@@ -24,6 +24,7 @@ import {
 import { Formatter } from '../common/interface';
 import { diffIndexes, Indexes } from '../utils/indexes';
 import { isMobile } from '../utils/is-mobile';
+import { updateMergedCells } from '../utils/interactions/merge-cells';
 import { BaseCell } from '../cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
@@ -46,17 +47,16 @@ import {
   RowHeader,
   SeriesNumberHeader,
 } from './header';
-import { OffsetConfig, SpreadsheetFacetCfg } from '../common/interface';
+import {
+  OffsetConfig,
+  SpreadsheetFacetCfg,
+  CellPosition,
+} from '../common/interface';
 import { Layout } from './layout';
 import { Hierarchy } from './layout/hierarchy';
 import { Node } from './layout/node';
 import { BaseParams } from '../data-set/base-data-set';
 import { DEBUG_VIEW_RENDER, DebuggerUtil } from '../common/debug';
-
-interface Point {
-  x: number;
-  y: number;
-}
 
 export class SpreadsheetFacet extends BaseFacet {
   public cfg: SpreadsheetFacetCfg;
@@ -267,7 +267,7 @@ export class SpreadsheetFacet extends BaseFacet {
     this.dynamicRender();
   }
 
-  protected adjustXAndY(x: number, y: number): Point {
+  protected adjustXAndY(x: number, y: number): CellPosition {
     let newX = x;
     let newY = y;
     if (x !== undefined) {
@@ -517,10 +517,12 @@ export class SpreadsheetFacet extends BaseFacet {
           this.panelGroup.add(cell);
         }
       });
+
       const allCells = filter(
         this.panelGroup.getChildren(),
         (child) => child instanceof BaseCell,
       );
+
       // remove cell from panelCell
       each(remove, ([i, j]) => {
         const findOne = find(
@@ -529,6 +531,9 @@ export class SpreadsheetFacet extends BaseFacet {
         );
         findOne?.remove(true);
       });
+
+      updateMergedCells(this.spreadsheet);
+
       DebuggerUtil.getInstance().logger(
         `Render Cell Panel: ${allCells?.length}, Add: ${newIndexes?.length}, Remove: ${remove?.length}`,
       );

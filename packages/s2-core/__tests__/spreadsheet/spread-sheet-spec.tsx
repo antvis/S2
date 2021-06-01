@@ -39,18 +39,18 @@ const getDataCfg = () => {
       rows: ['area', 'province', 'city'],
       columns: ['type', 'sub_type'],
       values: ['profit', 'count'],
-      // derivedValues: [
-      //   {
-      //     valueField: 'profit',
-      //     derivedValueField: ['profit-tongbi', 'profit-huanbi'],
-      //     displayDerivedValueField: ['profit-tongbi'],
-      //   },
-      //   {
-      //     valueField: 'count',
-      //     derivedValueField: ['count-tongbi', 'count-huanbi'],
-      //     displayDerivedValueField: ['count-tongbi'],
-      //   },
-      // ],
+      derivedValues: [
+        {
+          valueField: 'profit',
+          derivedValueField: ['profit-tongbi', 'profit-huanbi'],
+          displayDerivedValueField: ['profit-tongbi'],
+        },
+        {
+          valueField: 'count',
+          derivedValueField: ['count-tongbi', 'count-huanbi'],
+          displayDerivedValueField: ['count-tongbi'],
+        },
+      ],
     },
     meta: [
       {
@@ -161,15 +161,6 @@ function MainLayout(props) {
     props.options.freezeRowHeader,
   );
 
-  const onRowCellClick = (value) => {
-    console.log(value);
-  };
-  const onColCellClick = (value) => {
-    console.log(value);
-  };
-  const onDataCellClick = (value) => {
-    console.log(value);
-  };
   const onCheckChanged = (checked) => {
     setValueInCols(checked);
     setOptions(
@@ -270,9 +261,6 @@ function MainLayout(props) {
         options={options}
         theme={props.theme}
         spreadsheet={getSpreadSheet}
-        onRowCellClick={onRowCellClick}
-        onColCellClick={onColCellClick}
-        onDataCellClick={onDataCellClick}
       />
     </div>
   );

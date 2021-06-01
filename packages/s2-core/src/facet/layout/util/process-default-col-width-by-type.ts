@@ -25,6 +25,7 @@ export default function processDefaultColWidthByType(
     // 数据没有的情况下，直接用默认值
     return defaultCellWidth;
   }
+
   let colWidth = defaultCellWidth;
   const canvasW = facet.getCanvasHW().width;
   // 非决策模式下的列宽均分场景才能走这个逻辑
@@ -82,6 +83,18 @@ export default function processDefaultColWidthByType(
     } else {
       facet.cfg.treeRowsWidth += ICON_RADIUS * 2 + DEFAULT_PADDING * 2;
     }
+  }
+
+  // if the user sets the maximum width, the colWidth must not be greater than this value
+  const maxWidth = cellCfg?.maxWidth;
+  if (maxWidth) {
+    colWidth = Math.min(cellCfg?.maxWidth, colWidth);
+  }
+
+  // if the user sets the minimum width, the colWidth must not be less than this value
+  const minWidth = cellCfg?.minWidth;
+  if (minWidth) {
+    colWidth = Math.max(cellCfg?.minWidth, colWidth);
   }
   // reset rowHeader,colHeader cell width
   rowCfg.width = colWidth;

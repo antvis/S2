@@ -57,7 +57,7 @@ export class DataDerivedCell extends DataCell {
     const mainX = x + mainInfo?.x + mainInfo?.width;
     const mainY = y + height / 2;
     const values = this.spreadsheet.dataCfg.fields.values;
-    let finalText: string;
+    let finalText;
     if (isArray(values)) {
       // 行维度存在的情况
       finalText = text || '-';

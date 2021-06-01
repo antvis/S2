@@ -19,7 +19,6 @@ import { SpreadsheetFacet } from '../../index';
 import { ColWidthCache, SpreadsheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
-import checkHideMeasureColumn from './check-hide-measure-column';
 import getColHeight from './get-col-height';
 import getColMaxTextWidth from './get-col-max-text-width';
 import getColWidth from './get-col-width';
@@ -358,12 +357,8 @@ export default function processColLeafNodeWH(
     current.colIndex = currentColIndex;
     currentColIndex += 1;
     current.x = prevCol.x + prevCol.width;
-    const [isHide] = checkHideMeasureColumn(facet);
-    if (isHide) {
-      current.hideColNode();
-    } else {
-      current.height = getColHeight(current, colCfg, cellCfg);
-    }
+    current.height = getColHeight(current, colCfg, cellCfg);
+
     // The priority: widthByFieldValue(user-dragged) > colWidthType > others
     if (cellCfg.width === WidthType.Compat) {
       // compat

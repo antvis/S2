@@ -23,6 +23,7 @@ import {
 } from '../interaction';
 import {
   DataCellClick,
+  MergedCellsClick,
   CornerTextClick,
   RowColumnClick,
   RowTextClick,
@@ -35,7 +36,7 @@ import { BaseFacet } from '../facet/base-facet';
 import { InteractionConstructor } from '../interaction/base';
 import { EventConstructor } from '../interaction/events/base-event';
 import { detectAttrsChangeAndAction } from '../utils/attrs-action';
-import { InteractionNames, EventNames } from '../interaction/constant';
+import { InteractionNames, EventNames } from 'src/common/constant/interatcion';
 
 /**
  * 目前交叉表和明细的表类入口(后续会分拆出两个表)
@@ -178,6 +179,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
     this.registerEvent(EventNames.CORNER_TEXT_CLICK_EVENT, CornerTextClick);
     this.registerEvent(EventNames.ROW_COLUMN_CLICK_EVENT, RowColumnClick);
     this.registerEvent(EventNames.ROW_TEXT_CLICK_EVENT, RowTextClick);
+    this.registerEvent(EventNames.MERGEDCELLS_CLICK_EVENT, MergedCellsClick);
     this.registerEvent(EventNames.HOVER_EVENT, HoverEvent);
   }
 

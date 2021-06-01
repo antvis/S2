@@ -60,7 +60,7 @@ export class BaseTooltip {
    * @param element
    */
   public show(showOptions: ShowProps) {
-    const { position, data, options } = showOptions;
+    const { position, data, options, element } = showOptions;
     const { enterable } = getOptions(options);
     const container = this.getContainer();
 
@@ -76,9 +76,9 @@ export class BaseTooltip {
     });
 
     this.unMountComponent(container);
-    const element = this.spreadsheet?.options?.tooltipComponent;
-    this.customComponent = element
-      ? ReactDOM.render(element, container)
+    const customDom = element || this.spreadsheet?.options?.tooltipComponent;
+    this.customComponent = customDom
+      ? ReactDOM.render(customDom, container)
       : ReactDOM.render(this.renderContent(data, options), container);
     const { x, y } = getPosition(position, this.container);
 

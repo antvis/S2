@@ -1,12 +1,14 @@
-import { SpreadSheetTheme } from './interface';
-import { isWindows } from '../utils/is-mobile';
+import { SpreadSheetTheme } from 'src';
+import { isWindows } from 'src/utils/is-mobile';
 
 const FONT_FAMILY =
   'Roboto, PingFangSC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
 
 export const FONT_SIZE = 12;
+export const FONT_SIZE_MINOR = 11;
+
 /* 交叉表的样式 */
-export default {
+export const TabularTheme = {
   fontFamily: FONT_FAMILY,
   // 表头
   header: {
@@ -17,7 +19,7 @@ export default {
       rowBackgroundColor: '#fff',
       colBackgroundColor: '#fff',
       cornerBackgroundColor: '#fff',
-      interactiveBgColor: '#F5F7FA',
+      interactiveBgColor: '#ebf2ff',
       interactiveFillOpacity: [0, 1],
       padding: [12, 4, 12, 4],
       textIndent: 12,
@@ -48,7 +50,23 @@ export default {
       fill: 'rgba(0, 0, 0, 0.85)',
       fontWeight: 'normal',
       textBaseline: 'middle',
-      textAlign: 'right',
+      textAlign: 'left',
+    },
+    // 次级文本，如副指标
+    minorText: {
+      fontSize: FONT_SIZE_MINOR,
+      fontFamily: FONT_FAMILY,
+      fill: 'rgba(0, 0, 0, 0.45)',
+      fontWeight: 'normal',
+      textBaseline: 'middle',
+      textAlign: 'left',
+    },
+    // 衍生指标
+    derivedMeasureText: {
+      mainUp: '#F46649',
+      mainDown: '#2AA491',
+      minorUp: '#f9ae9e',
+      minorDown: '#a9dad2',
     },
     bolderText: {
       fontSize: FONT_SIZE,
@@ -56,17 +74,17 @@ export default {
       fill: 'rgba(0, 0, 0, 1)',
       fontWeight: isWindows() ? 'bold' : '520',
       textBaseline: 'middle',
-      textAlign: 'right',
+      textAlign: 'left',
     },
     cell: {
-      borderColor: ['#E8E8E8', 'transparent'],
-      borderWidth: [1, 0],
-      // crossColor: '#F5F7FA',
+      borderColor: ['#E8E8E8', '#BBBBBB'],
+      borderWidth: [1, 1],
+      crossColor: '#fff',
       backgroundColor: '#fff',
-      backgroundHoverColor: '#F5F7FA',
-      interactiveBgColor: '#1890ff',
-      interactiveFillOpacity: [0, 0.25],
-      padding: [12, 4, 12, 4],
+      backgroundHoverColor: '#ebf2ff',
+      interactiveBgColor: '#ebf2ff',
+      interactiveFillOpacity: [0, 1],
+      padding: [16, 12, 16, 12],
       intervalBgHeight: 12,
     },
   },
@@ -80,46 +98,8 @@ export default {
     verticalBorderColor: '#BBBBBB',
     verticalBorderWidth: 1,
     horizontalBorderColor: '#BBBBBB',
-    horizontalBorderWidth: 2,
+    horizontalBorderWidth: 1,
     showCenterRightShadow: false,
-    centerRightShadowWidth: 12,
-  },
-  stateTheme: {
-    dataCell: {
-      selected: {
-        backgroundColor: '#d8d8d8',
-        hoverBorderColor: '#000000',
-      },
-      hover: {
-        backgroundColor: '#d8d8d8',
-      },
-      keepHover: {
-        backgroundColor: '#d8d8d8',
-        hoverBorderColor: '#000000',
-      },
-      prepareSelect: {
-        prepareSelectBorderColor: '#002329',
-      },
-
-      hoverLinkage: {
-        backgroundColor: '#F3F7FF',
-      },
-    },
-    colCell: {
-      hover: {
-        backgroundColor: '#b5f5ec',
-      },
-      colSelected: {
-        backgroundColor: '#F3F7FF',
-      },
-    },
-    rowCell: {
-      hover: {
-        backgroundColor: '#d4b106',
-      },
-      rowSelected: {
-        backgroundColor: '#F3F7FF',
-      },
-    },
+    centerRightShadowWidth: 0,
   },
 } as SpreadSheetTheme;
