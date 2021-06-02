@@ -26,6 +26,9 @@ export class PivotDataSet extends BaseDataSet {
   // un-sorted dimension values
   protected unSortedDimensionValues: Map<string, Set<string>>;
 
+  // each path items max index
+  protected pathIndexMax = [];
+
   /**
    * When data related config changed, we need
    * 1、re-process config
@@ -53,13 +56,11 @@ export class PivotDataSet extends BaseDataSet {
    */
   transformIndexesData = () => {
     const { rows, columns, values } = this.fields;
-    // const realRows = _.filter(rows, r => r != EXTRA_FIELD);
-    // const realColumns = _.filter(columns, r => r != EXTRA_FIELD).concat(EXTRA_FIELD);
     for (const data of this.originData) {
       const rowDimensionValues = this.transformDimensionsValues(data, rows);
       const colDimensionValues = this.transformDimensionsValues(data, columns);
       // this.transformDimensionsValues(data, values);
-      const path = this.getDataPath(rowDimensionValues, colDimensionValues)?.[2];
+      const path = this.getDataPath(rowDimensionValues, colDimensionValues);
       if (_.size(path) === 0) {
         path.push(0);
       }
@@ -174,12 +175,14 @@ export class PivotDataSet extends BaseDataSet {
    * @param rowDimensionValues data's row dimension values
    * @param colDimensionValues data's column dimension values
    * @param firstCreate first create meta info
+   * @param careUndefined
    */
   getDataPath = (
     rowDimensionValues: string[],
     colDimensionValues: string[],
     firstCreate = true,
-  ): number[][] => {
+    careUndefined = false,
+  ): number[] => {
     const getPath = (
       firstCreate: boolean,
       dimensionValues: string[],
@@ -204,7 +207,11 @@ export class PivotDataSet extends BaseDataSet {
           }
         }
         const meta = currentMeta.get(value);
-        path.push(meta.level);
+        if (_.isUndefined(value) && careUndefined) {
+          path.push(value);
+        } else {
+          path.push(meta.level);
+        }
         currentMeta = meta.children;
       }
       return path;
@@ -212,7 +219,7 @@ export class PivotDataSet extends BaseDataSet {
     const rowPath = getPath(firstCreate, rowDimensionValues);
     const colPath = getPath(firstCreate, colDimensionValues, false);
     const result = rowPath.concat(...colPath);
-    return [rowPath, colPath, result];
+    return result;
   };
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
@@ -329,9 +336,13 @@ export class PivotDataSet extends BaseDataSet {
           meta = meta.get(value).children;
         }
       }
+      // TODO sort dimension values
+      return filterUndefined(Array.from(meta.keys()));
+    } else {
+      return filterUndefined(
+        Array.from(this.sortedDimensionValues.get(field))
+      );
     }
-    // TODO sort dimension values
-    return filterUndefined(Array.from(meta.keys()));
   }
 
   getQueryDimValues = (dimensions: string[], query: DataType,): string[] => {
@@ -346,8 +357,8 @@ export class PivotDataSet extends BaseDataSet {
     );
   };
 
-  public getCellData(query: DataType, isTotals: boolean): DataType[] {
-    const { rows, columns, values } = this.fields;
+  public getCellData(query: DataType, isTotals?: boolean): DataType[] {
+    const { rows, columns } = this.fields;
     const rowDimensionValues = this.getQueryDimValues(rows, query);
     const colDimensionValues = this.getQueryDimValues(columns, query);
     const path = this.getDataPath(
@@ -357,15 +368,15 @@ export class PivotDataSet extends BaseDataSet {
     );
 
     let data;
-    const size = _.size(path[2]);
+    const size = _.size(path);
     if (isTotals) {
       if (size === rows.length + columns.length) {
-        data = _.get(this.indexesData, path[2]);
+        data = _.get(this.indexesData, path);
       } else {
         data = [{}];
       }
     } else {
-      data = size ? _.get(this.indexesData, path[2]) : [{}];
+      data = size ? _.get(this.indexesData, path) : [{}];
     }
     if (!_.isArray(data)) {
       data = [data];
@@ -374,21 +385,39 @@ export class PivotDataSet extends BaseDataSet {
     return _.compact(_.flattenDeep(data));
   }
 
-  // public getRecords(query: DataType): DataType[]{
-  //   if (!_.isEmpty(query)) {
-  //     return _.compact(_.flattenDeep(this.indexesData));
-  //   }
-  //   const { rows, columns } = this.fields;
-  //   const rowDimensionValues = this.getQueryDimValues(rows, query);
-  //   const colDimensionValues = this.getQueryDimValues(columns, query);
-  //   const [rowPath, colPath, path] = this.getDataPath(
-  //     rowDimensionValues,
-  //     colDimensionValues,
-  //     false,
-  //   );
-  //
-  //   return null;
-  // }
+  public getMultiData(query: DataType): DataType[]{
+    if (_.isEmpty(query)) {
+      return _.compact(_.flattenDeep(this.indexesData));
+    }
+    const { rows, columns } = this.fields;
+    const rowDimensionValues = this.getQueryDimValues(rows, query);
+    const colDimensionValues = this.getQueryDimValues(columns, query);
+    const path = this.getDataPath(
+      rowDimensionValues,
+      colDimensionValues,
+      false,
+      true
+    );
+    let hadUndefined = false;
+    let currentData = this.indexesData;
+    for (let i = 0; i < path.length; i++) {
+      const current = path[i];
+      if (hadUndefined) {
+        if (_.isUndefined(current)) {
+          currentData = _.flatten(currentData) as [];
+        } else {
+          currentData = currentData.map(d => d[current]).filter(d => !_.isUndefined(d)) as [];
+        }
+      } else {
+        if (_.isUndefined(current)) {
+          hadUndefined = true;
+        } else {
+          currentData = currentData[current];
+        }
+      }
+    }
+    return _.compact(_.flattenDeep(currentData));
+  }
 
   handleValues = (values: string[], derivedValues: DerivedValue[]) => {
     const tempValue = [];

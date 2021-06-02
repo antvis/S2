@@ -69,9 +69,44 @@ export abstract class BaseDataSet {
 
   /********************NEED IMPLEMENT BY USER CASE*************************/
 
+  /**
+   * Try to process dataConfig in different mode
+   * @param dataCfg
+   */
   public abstract processDataCfg(dataCfg: S2DataConfig): S2DataConfig;
 
+  /**
+   * 1、query !== null
+   * province  city => field
+   *   辽宁省
+   *          达州市
+   *          芜湖市
+   *  field = province
+   *  query = {province: '辽宁省'}
+   *  => [达州市,芜湖市]
+   *
+   *  2、query = null
+   *  query param is not necessary, when just
+   *  get some field's all dimension values
+   *
+   * @param field current dimensions
+   * @param query dimension value query
+   */
   public abstract getDimensionValues(field: string, query?: DataType): string[];
 
+  /**
+   * In most case, this function to get the specific
+   * cross data cell data. And we need mark total if
+   * the pending cell is totals cell
+   * @param query
+   * @param isTotals
+   */
   public abstract getCellData(query: DataType, isTotals?: boolean): DataType[];
+
+  /**
+   * To get a row or column cells data;
+   * if query is empty, return all data
+   * @param query
+   */
+  public abstract getMultiData(query: DataType): DataType[];
 }
