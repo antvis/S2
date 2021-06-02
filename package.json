@@ -1,5 +1,5 @@
 {
-  "name": "s2",
+  "name": "@antv/s2",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -8,8 +8,8 @@
   "keywords": [
     "antv",
     "s2",
-    "spreadsheet",
-    "pivot table"
+    "pivot table",
+    "spreadsheet"
   ],
   "scripts": {
     "clean": "rimraf node_modules packages/*/node_modules",

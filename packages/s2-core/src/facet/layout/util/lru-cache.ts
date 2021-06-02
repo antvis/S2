@@ -1,6 +1,4 @@
 /**
- * Create By Bruce Too
- * On 2019-10-11
  * LRU cache, can specify cache size
  */
 export class LruCache<T, P> {

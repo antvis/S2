@@ -1,7 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2020-05-25
- */
 import { Extra, StrategyValue } from '../common/interface';
 import * as _ from 'lodash';
 

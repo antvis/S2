@@ -5,7 +5,7 @@
   "command": {
     "publish": {
       "ignoreChanges": ["*.md", "**/_tests_/**"],
-      "message": "chore(release): :sparkles: publish %s"
+      "message": "chore(release): :bookmark: publish %s"
     },
     "bootstrap": {
       "npmClientArgs": ["--no-package-lock", "--no-ci"]

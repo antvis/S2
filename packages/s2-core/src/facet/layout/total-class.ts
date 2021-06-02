@@ -1,6 +1,4 @@
 /**
- * Create By Bruce Too
- * On 2019-10-22
  * Class to mark '小计' & '总计'
  */
 export default class TotalClass {

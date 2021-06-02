@@ -1,7 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2020-08-13
- */
 import { getEllipsisText } from '../utils/text';
 
 const canvas = document.createElement('canvas');

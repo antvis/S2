@@ -1,6 +1,4 @@
 /**
- * Create By Bruce Too
- * On 2019-10-15
  * Utils to render all g supported shape
  * https://github.com/antvis/g
  */
