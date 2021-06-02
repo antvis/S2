@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "module": "commonjs",
     "declaration": true,
     "sourceMap": true,
@@ -15,12 +16,12 @@
       "dom"
     ],
     "types": [
-      "jest"
+      "jest",
+      "node"
     ],
     "resolveJsonModule": true
   },
   "exclude": [
-    "node_modules"
-  ],
-
+    "node_modules",
+  ]
 }

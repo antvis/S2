@@ -3,4 +3,7 @@ packgaes/s2-core/dist
 node_modules
 .cache
 public
+lib
+esm
+dist
 

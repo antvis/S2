@@ -8,14 +8,14 @@ order: 1
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | :-- | :-- | :-: | :-- | :-- | :-- | --- |
 | hierarchyType | string |  | 'grid' | 'tree'; | grid | 行头的展示方式，grid：平铺网格结构， tree： 树状结构。 |
-| hideTooltip | boolean |  | boolean | false | 是否默认展示的 tooltip |
 | hierarchyCollapse | string |  | boolean | false | 在树状结构模式下行头是否默认展开。 |
 | conditions | [Conditions](#) | ✓ |  |  | 条件模式配置 |
 | totals | [Totals](#) | ✓ |  |  | 小计总结配置 |
+| tooltip | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) | ✓ |  |  |  tooltip总配置 |
 | linkFieldIds | string[] |  |  | [] | 外链跳转 |
 | pagination | [Pagination](#) | ✓ |  |  | 分页配置 |
-| containsRowHeader | boolean | ✓ |  | false | 滚动是否包括行头 |
-| spreadsheetType | boolean |  |  |  | spreadsheet = true, listSheet（普通 table） = false |
+| freezeRowHeader | boolean | ✓ |  | false | 冻结行头 |
+| pivot | pivot/table |  |  |  | pivot = 交叉表, table = 普通 table |
 | width | number | ✓ |  |  | canvas 的宽度 |
 | height | number | ✓ |  |  | canvas 的高度 |
 | style | [Style](#) | ✓ |  |  | 附加样式 |
@@ -36,6 +36,8 @@ order: 1
 | layout | [LayoutCallback](#) |  |  |  | 自定义 layout |
 | layoutResult | [LayoutResultCallback](#) |  |  |  | 布局结果自定义 |
 | hierarchy | [HierarchyCallback](#) |  |  |  | 行列结构的自定义 |
+| initTooltip | [TooltipCallback](#) |  |  |  | tooltip弹框自定义 |
+| tooltipComponent | React.ElementType |  |  |  | tooltip弹框自定义 |
 | [key: string] | any |  |  |  | 其他任意的选择配置 |
 
 ###
@@ -156,6 +158,21 @@ object **必选**,_ default：null_ 功能描述： 小计总计算配置
 | reverseSubLayout | boolean | ✓ |  | false | 小计布局位置，默认下或右 |
 | label | string |  |  |  | 总计别名 |
 | subLabel | string |  |  |  | 小计别名 |
+
+## Tooltip
+
+object **必选**,_ default：null_ 功能描述： tooltip配置
+
+| 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| showTooltip | boolean |  |  | false | 是否展示tooltip |
+| showOperation | boolean |  |  | false | 是否展示操作栏 |
+| showSummary | boolean |  |  | false | 是否展示统计信息 |
+| showDetail | boolean |  |  | false | 是否展示轴（表头行列）字段 |
+| showInfos | boolean |  |  | false | 是否展示快捷操作提示 |
+| row | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) |  |  |  | 行头配置 |
+| col | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) |  |  |  | 列头配置 |
+| cell | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) |  |  |  | 单元格配置 |
 
 ## Pagination
 
@@ -393,4 +410,17 @@ HierarchyCallback = (spreadsheet: BaseSpreadSheet, node: Node) =>
 | nodes | [Node[]]() |  |  |  | 需要额外增加的节点 |
 | push | boolean |  |  |  | push 在 node 前(false)或者后(true)增加额外的节点(nodes) |
 
-##
+## TooltipCallback
+
+```js
+TooltipCallback = (spreadsheet: BaseSpreadSheet) =>
+  BaseTooltip;
+```
+
+功能描述：行列布局结构自定义回调函数参数：
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| spreadsheet | [BaseSpreadSheet]() | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+
+返回：[BaseTooltip](#)

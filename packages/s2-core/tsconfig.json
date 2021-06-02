@@ -1,3 +1,27 @@
 {
-  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "module": "commonjs",
+    "declaration": true,
+    "sourceMap": true,
+    "target": "es5",
+    "outDir": "lib",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "downlevelIteration": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+     "paths": {
+      "src/*": ["./src/*"],
+    },
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+  },
+  "include": [
+    "src"
+  ]
 }

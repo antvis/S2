@@ -1,9 +1,23 @@
 {
   "name": "@antv/s2",
-  "private": true,
+  "version": "0.1.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
+  "description": "effective spreadsheet render core lib",
+  "homepage": "https://s2.antv.vision",
+  "author": "https://github.com/orgs/antvis/people",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/S2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/S2/issues"
+  },
   "files": [
     "esm",
     "lib",
@@ -16,19 +30,22 @@
     "pivot table"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "",
     "clean": "rimraf lib esm dist",
     "build": "run-s clean lib dist",
+    "coverage": "jest --coverage",
     "lib": "run-p lib:* cpx:*",
     "lib:cjs": "tsc -p tsconfig.json --target ES5 --module commonjs --outDir lib",
     "lib:esm": "tsc -p tsconfig.json --target ES5 --module ESNext --outDir esm",
     "dist": "webpack --config webpack.config.js --mode production",
     "cpx:svg": "cpx \"src/**/*.svg\" lib; cpx \"src/**/*.svg\" esm",
     "cpx:less": "cpx \"src/**/*.less\" lib; cpx \"src/**/*.less\" esm",
+    "test-custom-header-cell": "DEBUG_MODE=1 jest __tests__/spreadsheet/custom-header-cell-spec.tsx",
     "test-live": "DEBUG_MODE=1 jest __tests__/spreadsheet/spread-sheet-spec.tsx",
-    "drill-down": "DEBUG_MODE=1 jest __tests__/spreadsheet/drill-down/drill-down-demo-spec.tsx",
-    "no-cache": "DEBUG_MODE=1 npx jest --no-cache  __tests__/spreadsheet/add-custom-row-col-node-spec.ts",
-    "start": "webpack --config webpack-dev.config.js --mode development -w --progresss"
+    "test-tabular": "DEBUG_MODE=1 jest __tests__/spreadsheet/tabularSheet-spec.tsx",
+    "test-merge-cells": "DEBUG_MODE=1 jest __tests__/spreadsheet/merge-cells-spec.tsx",
+    "start": "webpack --config webpack-dev.config.js --mode development --progress",
+    "tsc": "tsc --noEmit"
   },
   "commitlint": {
     "extends": [
@@ -38,34 +55,32 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "npm run test"
     }
   },
   "lint-staged": {
     "*.{js,jsx,tsx,ts,less,md,json}": [
       "pretty-quick —-staged"
     ],
-    "*.{ts,tsx}": [
-      "tslint -c tslint.json --fix",
-      "prettier --write",
-      "git add"
+    "*.{js,jsx,tsx,ts}": [
+      "eslint --fix"
     ]
   },
   "dependencies": {
-    "@ant-design/icons": "^4.3.0",
     "@antv/event-emitter": "~0.1.0",
-    "@antv/g": "~3.5.0-beta.1",
-    "@antv/g-gesture": "~0.1.0-beta.1",
-    "@antv/util": "~2.0.4",
+    "@antv/g-canvas": "^0.5.6",
+    "@antv/g-gesture": "^1.0.0",
+    "@antv/matrix-util": "^3.0.4",
     "antd": "^4.10.1",
     "classnames": "^2.2.5",
     "d3-ease": "^1.0.5",
     "gitmoji-cli": "^3.2.18",
     "install": "^0.13.0",
-    "lerna": "^3.22.1",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.20",
     "cpx": "^1.5.0",
     "css-loader": "^2.1.1",
     "d3-dsv": "^1.1.1",
@@ -76,6 +91,7 @@
     "jest-less-loader": "^0.1.1",
     "jest-raw-loader": "^1.0.1",
     "jest-url-loader": "^0.1.0",
+    "lerna-changelog": "^1.0.1",
     "less": "^3.11.1",
     "less-loader": "^4.1.0",
     "lint-staged": "^9.2.3",
@@ -86,15 +102,17 @@
     "react-dom": "16.8.4",
     "rimraf": "^3.0.0",
     "style-loader": "^0.23.1",
-    "svg-inline-loader": "^0.8.0",
     "ts-jest": "^25.4.0",
     "ts-loader": "^5.4.5",
     "ts-node": "^7.0.1",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-recommend-rule": "^1.4.7",
     "typescript": "^4.1.3",
-    "webpack": "^4.43.0",
-    "webpack-bundle-analyzer": "^3.1.0",
-    "webpack-cli": "^3.1.2",
-    "webpack-merge": "^4.2.1"
+    "webpack": "^5.35.0",
+    "webpack-bundle-analyzer": "^4.4.1",
+    "webpack-cli": "^4.6.0",
+    "webpack-merge": "^5.7.3"
   },
   "license": "MIT",
   "jest": {
@@ -122,6 +140,9 @@
     "transform": {
       "\\.(less|css)$": "jest-less-loader",
       "\\.svg$": "jest-raw-loader"
+    },
+    "moduleNameMapper": {
+      "^src/(.*)": "<rootDir>/src/$1"
     }
   }
 }

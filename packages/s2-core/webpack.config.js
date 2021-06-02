@@ -1,21 +1,25 @@
 const webpack = require('webpack');
 const resolve = require('path').resolve;
+const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 
 module.exports = {
   entry: {
-    spreadsheet: './src/index.ts',
+    S2: './src/index.ts',
   },
   mode: 'production',
   devtool: 'source-map',
   output: {
     filename: '[name].min.js',
-    library: 'SpreadSheet',
+    library: 'S2',
     libraryTarget: 'commonjs2',
-    path: require('path').resolve(__dirname, './dist'),
+    path: resolve(__dirname, './dist'),
   },
   resolve: {
+    alias: {
+      src: path.resolve(__dirname, './src'),
+    },
     extensions: ['.tsx', '.ts', '.js', '.less'],
   },
   module: {
@@ -64,10 +68,10 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.AggressiveMergingPlugin(),
-    ...(process.env.MODE === 'ANALYZER'
-      ? [new BundleAnalyzerPlugin({ analyzerMode: 'static' })]
-      : []),
-  ],
+    process.env.MODE === 'ANALYZER' && [
+      new BundleAnalyzerPlugin({ analyzerMode: 'static' }),
+    ],
+  ].filter(Boolean),
   externals: {
     moment: 'moment',
     '../moment': 'moment',
