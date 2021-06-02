@@ -49,12 +49,8 @@
       "eslint --fix"
     ]
   },
-  "dependencies": {
-    "@ant-design/icons": "^4.1.0",
-    "gitmoji-cli": "^3.2.18",
-    "lerna": "^3.22.1"
-  },
   "devDependencies": {
+    "lerna": "^3.22.1",
     "@commitlint/cli": "^12.0.0",
     "@commitlint/config-conventional": "^12.0.0",
     "@types/jest": "^26.0.20",
