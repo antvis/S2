@@ -46,8 +46,6 @@ export class PivotDataSet extends BaseDataSet {
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
       this.transformIndexesData();
     });
-    // TODO remove this function and unSortedDimensionValues/sortedDimensionValues
-    //  when sortParams be reconstructed
     this.handleDimensionValuesSort();
   }
 
@@ -222,6 +220,24 @@ export class PivotDataSet extends BaseDataSet {
     return result;
   };
 
+  /**
+   * Trans
+   * @param values
+   * @param derivedValues
+   */
+  getValues = (values: string[], derivedValues: DerivedValue[]) => {
+    const tempValue = [];
+    _.each(values, (v) => {
+      const findOne = _.find(derivedValues, (dv) => dv.valueField === v);
+      tempValue.push(v);
+      if (findOne) { // derived value exist
+        const dvs = findOne.derivedValueField;
+        tempValue.push(...dvs);
+      }
+    });
+    return tempValue;
+  };
+
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const { data, meta = [], fields, sortParams = [] } = dataCfg;
     const { columns, rows, values, derivedValues, valueInCols } = fields;
@@ -232,60 +248,37 @@ export class PivotDataSet extends BaseDataSet {
     let newValues = values;
     if (valueInCols) {
       // value in cols
-      // 总计存在时可能导致数据重复
       newColumns = _.uniq([...columns, EXTRA_FIELD]);
-      /*
-       * 普通模式下，值挂在列时，需要将衍生指标作为新的列来渲染
-       * 分两个情况
-       * 1、全部平铺，就所有衍生指标展开显示
-       * [主指标1，衍生指标11，衍生指标12 - 主指标2，衍生指标21，衍生指标22]
-       * 2、仅展示部分衍生指标（displayDerivedValueField），其他的以...显示
-       */
-      if (_.isArray(values)) {
-        newValues = this.handleValues(values, derivedValues);
-      }
+      newValues = this.getValues(values, derivedValues);
     } else {
       // value in rows
-      // TODO 值挂在行头时，衍生指标是按决策显示的方式显示在单元格中
       newRows = [...rows, EXTRA_FIELD];
     }
     // 新增的字段按照值域字段顺序排序
-    if (_.isArray(newValues)) {
-      newSortParams = sortParams.concat({
-        sortFieldId: EXTRA_FIELD,
-        sortBy: newValues,
-      });
-    }
+    newSortParams = sortParams.concat({
+      sortFieldId: EXTRA_FIELD,
+      sortBy: newValues
+    });
 
-    // 3、meta 中添加新的字段信息（度量别名设置）
+    // meta 中添加新的字段信息（度量别名设置）
     const enumAlias = new Map<string, string>();
-
     _.each(newValues, (value: string) => {
-      // tslint:disable-next-line:no-shadowed-variable
       const m = _.find(meta, (mt: Meta) => mt.field === value);
       enumAlias.set(value, _.get(m, 'name', value));
     });
 
     const newMeta = [
       ...meta,
-      // 虚拟列字段，为文本分类字段，格式化为字段值的别名
+      // 虚拟列字段，为文本分类字段
       {
         field: EXTRA_FIELD,
         name: i18n('数值'),
         formatter: (v) => enumAlias.get(v), // 格式化
       } as Meta,
-      // 小计字段，为数值连续字段，格式化为自动数值格式化
-      {
-        field: TOTAL_VALUE,
-        name: i18n('小计'),
-        formatter: (v) => auto(v),
-      } as Meta,
     ];
 
-    // 4. 数据按照 newValues 字段扩展成 newColumnName 字段
-    // 将原一条数据，转化成 newValues.length 条数据
+    // transform values to EXTRA_FIELD key
     const newData = [];
-    // eslint-disable-next-line no-restricted-syntax
     for (const datum of data) {
       if (!_.isEmpty(newValues)) {
         _.each(newValues, (value: string) => {
@@ -418,23 +411,4 @@ export class PivotDataSet extends BaseDataSet {
     }
     return _.compact(_.flattenDeep(currentData));
   }
-
-  handleValues = (values: string[], derivedValues: DerivedValue[]) => {
-    const tempValue = [];
-    _.each(values, (v) => {
-      const findOne = _.find(derivedValues, (dv) => dv.valueField === v);
-      if (findOne) {
-        // 值存在衍生值，添加值和所有衍生值,或者第一个衍生值
-        tempValue.push(v);
-        // 全部展示衍生值 -- 跟进需要展示的衍生指标来决定添加多少列
-        // 优先展示部分衍生值（如果有） -- 优先值
-        const dvs = findOne.displayDerivedValueField;
-        tempValue.push(...dvs);
-      } else {
-        // 值不存在衍生值，只需要添加值
-        tempValue.push(v);
-      }
-    });
-    return tempValue;
-  };
 }

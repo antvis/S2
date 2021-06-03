@@ -50,39 +50,22 @@ export interface Extra {
   collapse: boolean;
   remark: string;
 }
-export interface StrategyValue {
-  fields: string[];
-  data: Record<string, any>[];
-  extra?: Extra[];
-  // 提供给外部扩展使用
-  [key: string]: any;
-}
 
 export interface DerivedValue {
-  // 对应的value维度
+  // which value that derived values belong to
   valueField: string;
-  // value对应的衍生指标
+  // value's derived value fields
   derivedValueField: string[];
-  /**
-   * 需要被 显示的衍生指标
-   * 1、普通场景下 -- 数值挂列头生效
-   *   - 直接多列显示（将衍生值作为value来展示）
-   *   - 只显示部分列+...的形式
-   * 2、决策分析场景下 -- 没有所谓数值挂行.列头
-   *   - 平铺(只显示部分)
-   *   - 全显示
-   */
-  displayDerivedValueField: string[];
 }
 
 export interface Fields {
-  // 行字段列表
+  // row fields
   rows: string[];
-  // 列字段列表
+  // columns fields
   columns?: string[];
-  // 值字段列表（最终会被转换成一个 column 字段）
-  values?: string[] | StrategyValue;
-  // 衍生指标
+  // value fields
+  values?: string[];
+  // derived values
   derivedValues?: DerivedValue[];
   // measure values in cols as new col, only works in 'pivot' mode
   valueInCols?: boolean;
@@ -355,7 +338,7 @@ export interface SpreadSheetFacetCfg {
   // rows fields
   rows: string[];
   // values fields
-  values: string[] | StrategyValue;
+  values: string[];
   // 衍生指标
   derivedValues?: DerivedValue[];
   // cross-tab area's cell config
