@@ -2,10 +2,10 @@ import { BaseEvent } from '../base-event';
 import { S2Event, DefaultInterceptEventType } from '../types';
 import { Event } from '@antv/g-canvas';
 import { get, noop, includes } from 'lodash';
-import { ViewMeta } from '../../../common/interface';
+import { ViewMeta } from '@/common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
-import { SelectedStateName } from 'src/common/constant/interatcion';
-import { getTooltipData } from '../../../utils/tooltip';
+import { SelectedStateName } from '@/common/constant/interatcion';
+import { getTooltipData } from '@/utils/tooltip';
 
 export class DataCellClick extends BaseEvent {
   protected bindEvents() {

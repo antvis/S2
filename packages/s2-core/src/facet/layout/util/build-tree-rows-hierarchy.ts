@@ -1,14 +1,14 @@
 import { merge, each, isEmpty, isBoolean, remove } from 'lodash';
-import { Pivot, SpreadDataSet } from '../../../data-set';
-import { i18n } from 'src/common/i18n';
-import { SpreadsheetFacetCfg } from 'src/common/interface';
+import { Pivot, SpreadDataSet } from '@/data-set';
+import { i18n } from '@/common/i18n';
+import { SpreadsheetFacetCfg } from '@/common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import TotalClass from '../total-class';
 import { canNodeBeExpanded } from './can-node-be-expanded';
 import getDimsCondition from './get-dims-condition-by-node';
 import { reArrangeFieldValues } from './re-arrange-field-values';
-import findNodeExtraCfg from '../../../utils/find-node-extra-cfg';
+import findNodeExtraCfg from '@/utils/find-node-extra-cfg';
 import { generateId } from './generate-id';
 
 export interface TreeParams {

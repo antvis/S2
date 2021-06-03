@@ -1,8 +1,8 @@
-import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
-import { S2DataConfig, S2Options } from 'src/common/interface';
-import { DrillDownProps } from 'src/components/drill-down';
-import { HeaderCfgProps } from 'src/components/header';
-import { Node, SpreadSheetTheme } from 'src/index';
+import BaseSpreadsheet from '@/sheet-type/base-spread-sheet';
+import { S2DataConfig, S2Options } from '@/common/interface';
+import { DrillDownProps } from '@/components/drill-down';
+import { HeaderCfgProps } from '@/components/header';
+import { Node, SpreadSheetTheme } from '@/index';
 import { Event } from '@antv/g-canvas';
 
 export interface PartDrillDownInfo {

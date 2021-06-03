@@ -1,5 +1,6 @@
 {
   "name": "@antv/s2",
+  "version": "0.1.0-alpha.0",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -12,7 +13,7 @@
     "spreadsheet"
   ],
   "scripts": {
-    "clean": "rimraf node_modules packages/*/node_modules",
+    "clean": "rimraf node_modules s2-site/node_modules packages/*/node_modules",
     "clear": "lerna clean && lerna clean -y",
     "bootstrap": "npm i && cd ./packages/s2-core && npm i && cd ../../s2-site && npm i",
     "cd:core": "cd ./packages/s2-core",

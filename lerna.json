@@ -4,17 +4,11 @@
   "useWorkspaces": true,
   "command": {
     "publish": {
-      "ignoreChanges": [
-        "*.md",
-        "**/_tests_/**"
-      ],
+      "ignoreChanges": ["*.md", "**/_tests_/**"],
       "message": "chore(release): :bookmark: publish %s"
     },
     "bootstrap": {
-      "npmClientArgs": [
-        "--no-package-lock",
-        "--no-ci"
-      ]
+      "npmClientArgs": ["--no-package-lock", "--no-ci"]
     }
   },
   "changelog": {
@@ -31,8 +25,5 @@
       "pr(test)": ":white_check_mark: Test Case"
     }
   },
-  "packages": [
-    "packages/*",
-    "s2-site/*"
-  ]
+  "packages": ["packages/sr-core"]
 }

@@ -17,8 +17,8 @@ import {
   TooltipCallback,
   Totals,
   MergedCellInfo,
-} from 'src/common/interface/index';
-import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
+} from '@/common/interface/index';
+import { TREE_ROW_DEFAULT_WIDTH } from '@/common/constant';
 import { merge } from 'lodash';
 
 export interface S2Options {

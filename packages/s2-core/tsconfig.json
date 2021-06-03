@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
      "paths": {
-      "src/*": ["./src/*"],
+      "@/*": ["./src/*", "./lib/*", "./esm/*"],
     },
     "lib": [
       "esnext",
@@ -23,5 +23,6 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "exclude": ["node_modules", "_tests_"]
 }

@@ -21,7 +21,8 @@
     ],
     "resolveJsonModule": true
   },
-  "exclude": [
-    "node_modules",
+  "include": [
+    "packages",
+    "s2-site"
   ]
 }

@@ -1,6 +1,6 @@
 import { without, get } from 'lodash';
-import { EXTRA_FIELD } from 'src/common/constant';
-import { SpreadsheetFacetCfg } from 'src/common/interface';
+import { EXTRA_FIELD } from '@/common/constant';
+import { SpreadsheetFacetCfg } from '@/common/interface';
 
 export default function checkHideMeasureColumn(
   cfg: SpreadsheetFacetCfg,
