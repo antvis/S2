@@ -95,12 +95,8 @@ export class ColCell extends BaseCell<Node> {
   }
 
   protected drawCellText() {
-    const {
-      offset,
-      width,
-      scrollContainsRowHeader,
-      cornerWidth,
-    } = this.headerConfig;
+    const { offset, width, scrollContainsRowHeader, cornerWidth } =
+      this.headerConfig;
     const {
       label,
       x,
