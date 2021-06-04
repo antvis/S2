@@ -3,7 +3,7 @@ import { renderRect } from '../utils/g-renders';
 import { DEFAULT_PADDING, EXTRA_FIELD, ICON_RADIUS } from '../common/constant';
 import { addDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
 import { DefaultTheme } from '../theme';
-import { ColCell } from '.';
+import { ColCell } from '@/cell/col-cell';
 export class DetailColCell extends ColCell {
   protected drawCellText() {
     const { spreadsheet } = this.headerConfig;

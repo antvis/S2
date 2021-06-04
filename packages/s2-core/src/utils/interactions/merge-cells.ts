@@ -7,7 +7,7 @@ import {
   merge,
   isArray,
 } from 'lodash';
-import { BaseSpreadSheet } from 'src';
+import BaseSpreadSheet from '@/sheet-type/base-spread-sheet';
 import { S2CellType } from '@/common/interface/interaction';
 import { MergedCellInfo } from '@/common/interface/index';
 import { MergedCells } from '@/cell/merged-cells';

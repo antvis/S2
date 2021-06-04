@@ -15,7 +15,7 @@ import {
   HandleConfigWhenDrillDown,
   HandleOptions,
   HandleDrillDown,
-} from '@/index';
+} from '@/utils/drill-down/helper';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,

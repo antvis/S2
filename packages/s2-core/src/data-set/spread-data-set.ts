@@ -7,7 +7,7 @@ import {
   Formatter,
   Meta,
 } from '../common/interface';
-import { auto } from '../index';
+import { auto } from '@/utils/formatter';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
 export interface SpreadParams extends BaseParams {

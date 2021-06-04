@@ -1,5 +1,4 @@
-import { BaseDataSet } from './index';
-import { BaseParams } from './base-data-set';
+import { BaseDataSet, BaseParams } from './base-data-set';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { S2DataConfig } from '../common/interface';
 import { isEmpty, each, isArray } from 'lodash';
