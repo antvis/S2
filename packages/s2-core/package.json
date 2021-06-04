@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
