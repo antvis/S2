@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { isEmpty, debounce, isFunction, get, merge } from 'lodash';
 import { Spin, Pagination } from 'antd';
-import { i18n } from 'src/common/i18n';
+import { i18n } from '@/common/i18n';
 import {
   S2DataConfig,
   safetyDataConfig,
   safetyOptions,
   Pagination as PaginationCfg,
-} from 'src/common/interface';
+} from '@/common/interface';
 import { DrillDown } from '../../drill-down';
 import { Header } from '../../header';
 import {
@@ -15,7 +15,7 @@ import {
   HandleConfigWhenDrillDown,
   HandleOptions,
   HandleDrillDown,
-} from 'src/utils/drill-down/helper';
+} from '@/utils/drill-down/helper';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
@@ -23,12 +23,12 @@ import {
   KEY_CELL_SCROLL,
   KEY_LIST_SORT,
   KEY_PAGINATION,
-} from 'src/common/constant';
-import { S2Event } from 'src/interaction/events/types';
-import { getBaseCellData } from 'src/utils/interactions/formatter';
-import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
-import SpreadSheet from 'src/sheet-type/spread-sheet';
-import { resetDrillDownCfg } from 'src/utils/drill-down/helper';
+} from '@/common/constant';
+import { S2Event } from '@/interaction/events/types';
+import { getBaseCellData } from '@/utils/interactions/formatter';
+import BaseSpreadsheet from '@/sheet-type/base-spread-sheet';
+import SpreadSheet from '@/sheet-type/spread-sheet';
+import { resetDrillDownCfg } from '@/utils/drill-down/helper';
 import { BaseSheetProps } from '../interface';
 import { Event as GEvent } from '@antv/g-canvas';
 

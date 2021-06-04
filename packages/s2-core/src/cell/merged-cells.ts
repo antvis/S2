@@ -1,11 +1,11 @@
-import { renderPolygon } from 'src/utils/g-renders';
-import { getPolygonPoints } from 'src/utils/interactions/merge-cells';
-import { drawObjectText, drawStringText } from 'src/utils/text';
+import { renderPolygon } from '../utils/g-renders';
+import { getPolygonPoints } from '../utils/interactions/merge-cells';
+import { drawObjectText, drawStringText } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { BaseCell } from './base-cell';
 import { isEmpty, isObject } from 'lodash';
 import { DataItem } from '../common/interface/S2DataConfig';
-import { S2CellType } from 'src/common/interface/interaction';
+import { S2CellType } from '../common/interface/interaction';
 import { ViewMeta } from '../common/interface';
 
 /**

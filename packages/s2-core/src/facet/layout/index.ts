@@ -16,7 +16,7 @@ import { ColsResult } from './util/process-cols';
 import processDefaultColWidthByType from './util/process-default-col-width-by-type';
 import processRowNodesCoordinate from './util/process-row-nodes-coordinate';
 import { RowsResult } from './util/process-rows';
-import { BaseParams } from 'src/data-set/base-data-set';
+import { BaseParams } from '@/data-set/base-data-set';
 
 /**
  * SpreadSheet's Layout class

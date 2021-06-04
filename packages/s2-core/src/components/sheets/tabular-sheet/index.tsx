@@ -12,19 +12,15 @@ import {
 import { merge } from 'lodash';
 import { Spin } from 'antd';
 import { Header } from '../../header';
-import { S2Event } from 'src/interaction/events/types';
-import { getBaseCellData } from 'src/utils/interactions/formatter';
+import { S2Event } from '@/interaction/events/types';
+import { getBaseCellData } from '@/utils/interactions/formatter';
 import { TabularDataCell } from './tabular-data-cell';
 import { TabularTheme } from './tabular-theme';
-import BaseSpreadsheet from 'src/sheet-type/base-spread-sheet';
-import SpreadSheet from 'src/sheet-type/spread-sheet';
+import BaseSpreadsheet from '@/sheet-type/base-spread-sheet';
+import SpreadSheet from '@/sheet-type/spread-sheet';
 import { BaseSheetProps } from '../interface';
 import { Event } from '@antv/g-canvas';
-import {
-  safetyDataConfig,
-  safetyOptions,
-  S2Options,
-} from 'src/common/interface';
+import { safetyDataConfig, safetyOptions, S2Options } from '@/common/interface';
 
 export const TabularSheet = (props: BaseSheetProps) => {
   const {

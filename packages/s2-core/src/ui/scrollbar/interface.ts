@@ -1,7 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2020-10-16
- */
 export interface ScrollBarCfg {
   // 布局 横向(horizontal) | 纵向(vertical)
   readonly isHorizontal?: boolean;

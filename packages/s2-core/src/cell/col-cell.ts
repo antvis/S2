@@ -17,10 +17,6 @@ import {
 
 const SORT_ICON_SIZE = 14;
 const SORT_ICON_MARGIN_RIGHT = 4;
-/**
- * Create By Bruce Too
- * On 2019-11-04
- */
 export class ColCell extends BaseCell<Node> {
   protected headerConfig: ColHeaderConfig;
   // protected bottomBorderHotSpot: Set<string>;
@@ -99,12 +95,8 @@ export class ColCell extends BaseCell<Node> {
   }
 
   protected drawCellText() {
-    const {
-      offset,
-      width,
-      scrollContainsRowHeader,
-      cornerWidth,
-    } = this.headerConfig;
+    const { offset, width, scrollContainsRowHeader, cornerWidth } =
+      this.headerConfig;
     const {
       label,
       x,

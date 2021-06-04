@@ -1,8 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2020-03-27
- */
-
 export interface CellTheme {
   // cell's border color [horizontal, vertical]
   borderColor?: [string, string];

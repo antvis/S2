@@ -1,6 +1,4 @@
 /**
- * Create By Bruce Too
- * On 2020-07-15
  * 从 这样的结构中找到当前cell对应的value度量值
  * values: {
  *   fields: [],

@@ -1,10 +1,3 @@
-/**
- * @Description:
- * @author qingsheng
- * @date 2019/2/26
- * @warning EVA 编码委员会提醒您：代码千万行，注释第一行；编程不规范，同事两行泪！
- */
-
 import { Formatter, SortParam } from '../../common/interface';
 import { BaseSpreadSheet } from '../..';
 import { Hierarchy } from '../layout/hierarchy';

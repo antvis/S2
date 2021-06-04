@@ -1,13 +1,13 @@
 import { Group } from '@antv/g-canvas';
-import { Hierarchy, BaseSpreadSheet, Node } from '../../index';
-import BaseSpreadsheet from '../../sheet-type/base-spread-sheet';
-import { BaseDataSet } from 'src/data-set';
-import { BaseParams } from 'src/data-set/base-data-set';
-import { Frame } from 'src/facet/header';
+import { Hierarchy, BaseSpreadSheet, Node } from '@/index';
+import BaseSpreadsheet from '@/sheet-type/base-spread-sheet';
+import { BaseDataSet } from '@/data-set';
+import { BaseParams } from '@/data-set/base-data-set';
+import { Frame } from '@/facet/header';
 import { BaseTooltip } from '../tooltip';
 import { S2DataConfig, safetyDataConfig, Data, DataItem } from './S2DataConfig';
 import { S2Options, safetyOptions } from './S2Options';
-import { CustomInteraction } from '../../interaction/base';
+import { CustomInteraction } from '@/interaction/base';
 
 export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions, Data };
 

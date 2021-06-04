@@ -1,7 +1,7 @@
 import { Event } from '@antv/g-canvas';
 import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
-import { SelectedStateName } from 'src/common/constant/interatcion';
+import { SelectedStateName } from '@/common/constant/interatcion';
 import { getTooltipData } from '../utils/tooltip';
 import { each, map, assign, pick } from 'lodash';
 import { Node } from 'src/facet/layout/node';

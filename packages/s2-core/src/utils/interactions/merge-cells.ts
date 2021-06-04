@@ -7,10 +7,10 @@ import {
   merge,
   isArray,
 } from 'lodash';
-import BaseSpreadSheet from 'src/sheet-type/base-spread-sheet';
-import { S2CellType } from 'src/common/interface/interaction';
-import { MergedCellInfo } from 'src/common/interface/index';
-import { MergedCells } from 'src/cell/merged-cells';
+import BaseSpreadSheet from '@/sheet-type/base-spread-sheet';
+import { S2CellType } from '@/common/interface/interaction';
+import { MergedCellInfo } from '@/common/interface/index';
+import { MergedCells } from '@/cell/merged-cells';
 
 /**
  *  according to the coordinates of the starting point of the rectangle,

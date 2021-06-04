@@ -2,9 +2,9 @@ import {
   DrillDownDataCache,
   DrillDownFieldInLevel,
   S2Options,
-} from '../../common/interface';
+} from '@/common/interface';
 import { DrillDownLayout } from './drill-down-layout';
-import { PartDrillDownInfo, SpreadsheetProps } from 'src/components/index';
+import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
 import { BaseSpreadSheet } from '../../sheet-type';
 import {
   merge,
