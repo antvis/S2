@@ -2,7 +2,7 @@ import { S2DataConfig } from '../common/interface';
 import { processIrregularData } from '../utils/get-irregular-data';
 import { EXTRA_FIELD } from '../common/constant';
 import { SpreadDataSet, SpreadParams } from './spread-data-set';
-import { DetailPivot } from './index';
+import { DetailPivot } from 'src/data-set/detail-pivot';
 
 /**
  * 明细表的DataSet工具类

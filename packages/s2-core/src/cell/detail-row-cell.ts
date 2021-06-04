@@ -1,7 +1,7 @@
 import { getEllipsisText } from '../utils/text';
 import { get } from 'lodash';
 import { isMobile } from '../utils/is-mobile';
-import { RowCell } from '.';
+import { RowCell } from 'src/cell/row-cell';
 
 export class DetailRowCell extends RowCell {
   /**

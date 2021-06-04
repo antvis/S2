@@ -22,14 +22,15 @@ import { Node } from '../node';
 import getColHeight from './get-col-height';
 import getColMaxTextWidth from './get-col-max-text-width';
 import getColWidth from './get-col-width';
-import { getDimsConditionByNode } from './index';
+import getDimsConditionByNode from './get-dims-condition-by-node';
 import {
   STRATEGY_PADDING,
   STRATEGY_ICON_WIDTH,
 } from '../../../common/constant';
 import handleLayoutHook from './handle-layout-hook';
 import { WidthType } from './process-default-col-width-by-type';
-import { KEY_COL_REAL_WIDTH_INFO, measureTextWidth } from '../../../index';
+import { KEY_COL_REAL_WIDTH_INFO } from 'src/common/constant';
+import { measureTextWidth } from 'src/utils/text';
 
 /**
  * 行头有维度
@@ -74,11 +75,8 @@ const colWidthHasRows = (
   const measures = values as string[];
 
   // 小计10个，明细数据30个（默认）
-  const {
-    totalSample,
-    detailSample,
-    maxSampleIndex,
-  } = cfg.spreadsheet.options.style.colCfg;
+  const { totalSample, detailSample, maxSampleIndex } =
+    cfg.spreadsheet.options.style.colCfg;
   const getSecondLast = (data) => {
     if (isArray(data)) {
       if (data?.length > maxSampleIndex) {

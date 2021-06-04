@@ -3,7 +3,7 @@ import { renderRect } from '../utils/g-renders';
 import { DEFAULT_PADDING, EXTRA_FIELD, ICON_RADIUS } from '../common/constant';
 import { addDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
 import { DefaultTheme } from '../theme';
-import { ColCell } from '.';
+import { ColCell } from 'src/cell/col-cell';
 /**
  * Create By Bruce Too
  * On 2019-11-04

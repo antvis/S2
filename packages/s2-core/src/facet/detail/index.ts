@@ -1,7 +1,7 @@
 import { i18n } from '../../common/i18n';
 import { EXTRA_FIELD } from '../../common/constant';
 import { CornerHeader, SeriesNumberHeader } from '../header';
-import { SpreadsheetFacet } from '../index';
+import { SpreadsheetFacet } from 'src/facet';
 import { SpreadsheetFacetCfg } from '../../common/interface';
 import { Layout } from '../layout';
 import { DetailLayout } from '../layout/detail-layout';

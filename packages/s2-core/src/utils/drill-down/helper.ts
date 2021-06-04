@@ -18,7 +18,7 @@ import {
   isEqual,
 } from 'lodash';
 
-import { Node } from '../..';
+import { Node } from 'src/facet/layout/node';
 
 export interface ActionIconParams {
   // 点击节点信息

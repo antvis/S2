@@ -10,13 +10,11 @@ import {
   COLOR_DEFAULT_RESIZER,
 } from '../../common/constant';
 import { BaseDataSet } from '../../data-set';
-import {
-  BaseSpreadSheet,
-  Hierarchy,
-  Node,
-  CornerCell,
-  KEY_TREE_ROWS_COLLAPSE_ALL,
-} from '../../index';
+import { KEY_TREE_ROWS_COLLAPSE_ALL } from 'src/common/constant';
+import { Node } from 'src/facet/layout/node';
+import { Hierarchy } from 'src/facet/layout/hierarchy';
+import BaseSpreadSheet from 'src/sheet-type/base-spread-sheet';
+import { CornerCell } from 'src/cell/corner-cell';
 import { LayoutResult, SpreadsheetFacetCfg } from '../../common/interface';
 import { BaseHeader, BaseHeaderConfig, HIT_AREA } from './base';
 import { CornerData, ResizeInfo } from './interface';
@@ -306,12 +304,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       this.headerConfig.spreadsheet.isPivotMode()
     ) {
       // 只有交叉表才有icon
-      const {
-        hierarchyCollapse,
-        position,
-        height,
-        spreadsheet,
-      } = this.headerConfig;
+      const { hierarchyCollapse, position, height, spreadsheet } =
+        this.headerConfig;
       const colHeight = spreadsheet.options.style.colCfg.height;
       const icon = new GuiIcon({
         type: hierarchyCollapse ? 'plus' : 'MinusSquare',
@@ -338,13 +332,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   private handleHotsSpotArea() {
-    const {
-      data,
-      position,
-      width,
-      height,
-      seriesNumberWidth,
-    } = this.headerConfig;
+    const { data, position, width, height, seriesNumberWidth } =
+      this.headerConfig;
     const prevResizer = this.headerConfig.spreadsheet.foregroundGroup.findById(
       KEY_GROUP_CORNER_RESIZER,
     );

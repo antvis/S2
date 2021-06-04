@@ -1,5 +1,5 @@
 import { map, each, pick, assign } from 'lodash';
-import { Node } from '../../../index';
+import { Node } from 'src/facet/layout/node';
 import { S2Event, DefaultInterceptEventType } from '../types';
 import { BaseEvent } from '../base-event';
 import { SelectedStateName } from 'src/common/constant/interatcion';

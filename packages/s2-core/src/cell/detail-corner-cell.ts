@@ -6,7 +6,7 @@ import {
   KEY_SERIES_NUMBER_NODE,
 } from '../common/constant';
 import { addDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
-import { CornerCell } from '.';
+import { CornerCell } from 'src/cell/corner-cell';
 
 export class DetailCornerCell extends CornerCell {
   protected drawCellText() {
