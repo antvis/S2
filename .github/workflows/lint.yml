@@ -18,7 +18,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm i --no-optional && cd ./packages/s2-core && npm i --no-optional && cd ../../s2-site && npm i
+        run: npm run bootstrap:ci
 
       - name: Lint scripts
         run: npm run lint

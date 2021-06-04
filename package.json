@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "bootstrap": "npm i && cd ./packages/s2-core && npm i && cd ../../s2-site && npm i",
+    "bootstrap:ci": "npm ci --no-optional && cd ./packages/s2-core && npm ci --no-optional && cd ../../s2-site && npm ci --no-optional",
     "cd:core": "cd ./packages/s2-core",
     "clean": "rimraf node_modules s2-site/node_modules packages/*/node_modules",
     "clear": "lerna clean && lerna clean -y",
