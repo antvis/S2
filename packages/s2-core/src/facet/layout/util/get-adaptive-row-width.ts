@@ -1,4 +1,4 @@
-import { measureTextWidth } from '../../../utils/text';
+import { measureTextWidth } from "src/utils/text";
 import * as _ from 'lodash';
 import { DEFAULT_PADDING, ICON_RADIUS } from '../../../common/constant';
 import {
@@ -9,7 +9,6 @@ import {
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
 import getRowWidth from './get-row-width';
-import { WidthType } from './process-default-col-width-by-type';
 import { BaseFacet } from 'src/facet';
 
 /**
@@ -36,7 +35,7 @@ export default function getAdaptiveRowWidth(
   cfg: SpreadSheetFacetCfg,
   isPivotMode = true,
 ) {
-  if (rowCfg.width === WidthType.Compat) {
+  if (rowCfg.width === -1) {
     // compat
     const field = cfg.rows[node.level];
     const store = facet.cfg.spreadsheet.store;

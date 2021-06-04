@@ -46,9 +46,9 @@ const colWidthHasRows = (
   // 因此不需要单独去找所谓的最大的衍生指标个数
   const displayDerivedValueFieldColumn = [];
   const maxDisplayLength =
-    head(derivedValues)?.displayDerivedValueField?.length || 0;
+    head(derivedValues)?.derivedValueField?.length || 0;
   const allDisplayDerivedValueField = derivedValues.map(
-    (dv) => dv.displayDerivedValueField,
+    (dv) => dv.derivedValueField,
   );
   for (let i = 0; i < maxDisplayLength; i++) {
     displayDerivedValueFieldColumn.push(
@@ -171,9 +171,9 @@ const colWidthNoRows = (cfg: SpreadSheetFacetCfg, node: Node) => {
   const maxDerivedTextInCol = [];
   // 最大的衍生指标个数，说明有几列
   const maxDisplayLength =
-    head(derivedValues)?.displayDerivedValueField?.length || 0;
+    head(derivedValues)?.derivedValueField?.length || 0;
   const allDisplayDerivedValueField = derivedValues.map(
-    (dv) => dv.displayDerivedValueField,
+    (dv) => dv.derivedValueField,
   );
   for (let i = 0; i < maxDisplayLength; i++) {
     const singleDerivedColMeasures = allDisplayDerivedValueField.map(
@@ -338,21 +338,8 @@ export default function processColLeafNodeWH(
 
   let prevCol = Node.blankNode();
 
-  // // widthByFieldValue is user-dragged width
-  // let fieldWidthSum = 0;
-  // let fieldWidthNumber = 0;
-  // // eslint-disable-next-line no-restricted-syntax
-  // for (const current of colLeafNodes) {
-  //   const key = `widthByFieldValue.${current.value}`;
-  //   if (get(colCfg, key)) {
-  //     fieldWidthSum += get(colCfg, key);
-  //     fieldWidthNumber += 1;
-  //   }
-  // }
-
   let currentColIndex = 0;
   // x & width for leaves
-  // eslint-disable-next-line no-restricted-syntax
   for (const current of colLeafNodes) {
     current.colIndex = currentColIndex;
     currentColIndex += 1;

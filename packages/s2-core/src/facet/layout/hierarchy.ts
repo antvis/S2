@@ -100,7 +100,7 @@ export class Hierarchy {
       maxLabel = _.maxBy(allNodesInLevel, (value) =>
         _.get(value, 'label.length'),
       ).label;
-      this.maxLabelInLevel.set(level, maxLabel);
+      this.maxLabelInLevel.set(level, `${maxLabel}`);
     } else {
       maxLabel = this.maxLabelInLevel.get(level);
     }
@@ -109,7 +109,7 @@ export class Hierarchy {
       minLabel = _.minBy(allNodesInLevel, (value) =>
         _.get(value, 'label.length'),
       ).label;
-      this.minLabelInLevel.set(level, minLabel);
+      this.minLabelInLevel.set(level, `${minLabel}`);
     } else {
       minLabel = this.minLabelInLevel.get(level);
     }

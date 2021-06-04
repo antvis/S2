@@ -2,7 +2,6 @@ import { measureTextWidth, measureTextWidthRoughly } from '../../../utils/text';
 import * as _ from 'lodash';
 import { DEFAULT_PADDING, VALUE_FIELD } from '../../../common/constant';
 import { DefaultTheme } from '../../../theme';
-import { SORT_ICON_SIZE } from './add-detail-type-sort-icon';
 
 const MIN_TEXT_WIDTH = 60;
 // 总计没有统计我们策略里面，总计一般情况下不会多余4位数，所以手动增加padding适应总计。
@@ -72,7 +71,6 @@ export default function getColMaxTextWidth(
         const colWidth =
           maxTextRecordWidth +
           MAX_TEXT_PADDING +
-          SORT_ICON_SIZE +
           DEFAULT_PADDING;
         return Math.max(MIN_TEXT_WIDTH, colWidth);
       }

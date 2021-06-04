@@ -33,7 +33,7 @@ export default function processRowNodesCoordinate(
     cell.colIndex = currentRowCellIndex;
     currentRowCellIndex += 1;
     cell.y = prevRow.y + prevRow.height;
-    cell.height = cellCfg.height + 2 * cellCfg.padding;
+    cell.height = cellCfg.height + cellCfg.padding[0] + cellCfg.padding[2];
     hideRowColumnsByFields(spreadsheet, facet, cell, true);
     cell.width = getAdaptiveRowWidth(
       rowsHierarchy,

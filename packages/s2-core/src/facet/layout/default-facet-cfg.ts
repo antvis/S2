@@ -1,19 +1,17 @@
 export const DEFAULT_FACET_CFG = {
   hierarchyType: 'grid', // grid / tree
   treeRowsWidth: 100,
-  plotSize: {
-    width: 640,
-    height: 480,
-  },
+  width: 640,
+  height: 480,
   collapsedRows: {},
   collapsedCols: {},
   cols: [], // required
   rows: [], // required
-  // cell 配置，cell 可能是一个 view，也可能是 view 里的某一行或者某一列
+  // cross cell
   cellCfg: {
     width: 96,
     height: 32, // 列高统一用 cell 高
-    padding: 0,
+    padding: [0,4,0,4],
   },
   colCfg: {
     height: 32,
@@ -28,6 +26,7 @@ export const DEFAULT_FACET_CFG = {
   },
   rowCfg: {
     width: 96,
+    treeRowsWidth: 100,
     widthByField: {
       // [field]: width,
     },

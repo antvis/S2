@@ -112,7 +112,7 @@ const getOptions = () => {
       colCfg: {
         widthByFieldValue: {},
         heightByField: {},
-        colWidthType: 'adaptive',
+        colWidthType: 'compat',
       },
       cellCfg: {
         height: 32,

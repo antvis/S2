@@ -147,7 +147,7 @@ export const copyData = (
     rowsHierarchy,
     rowLeafNodes,
     colLeafNodes,
-    getViewMeta,
+    getCellMeta,
   } = sheetInstance?.facet?.layoutResult;
   const { valueInCols } = sheetInstance.options;
   const rows = clone(rowsHierarchy?.rows);
@@ -230,10 +230,10 @@ export const copyData = (
 
       for (const colNode of colLeafNodes) {
         if (valueInCols) {
-          const viewMeta = getViewMeta(rowNode.cellIndex, colNode.cellIndex);
+          const viewMeta = getCellMeta(rowNode.cellIndex, colNode.cellIndex);
           tempLine.push(processValueInCol(viewMeta, sheetInstance, isFormat));
         } else {
-          const viewMeta = getViewMeta(rowNode.cellIndex, colNode.cellIndex);
+          const viewMeta = getCellMeta(rowNode.cellIndex, colNode.cellIndex);
           tempLine.push(processValueInRow(viewMeta, sheetInstance, isFormat));
         }
       }

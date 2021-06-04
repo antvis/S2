@@ -60,7 +60,7 @@ const generateHeaderNodes = (params: HeaderNodesParams) => {
     addMeasureInTotalQuery,
     addTotalMeasureInTotal,
   } = params;
-  const { spreadsheet, collapsedCols } = facetCfg;
+  const { spreadsheet, collapsedCols, dataSet } = facetCfg;
   for (const fieldValue of fieldValues) {
     const isTotals = fieldValue instanceof TotalClass;
     const isTotalMeasure = fieldValue instanceof TotalMeasure;

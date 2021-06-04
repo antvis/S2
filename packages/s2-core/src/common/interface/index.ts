@@ -270,10 +270,7 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
-  // for adaptive layout
-  maxWidth?: number;
-  minWidth?: number;
-  padding?: number;
+  padding?: [number, number, number, number];
   lineHeight?: number;
 }
 
@@ -427,7 +424,7 @@ export interface LayoutResult {
   rowsHierarchy: Hierarchy;
   rowLeafNodes: Node[];
   colLeafNodes: Node[];
-  getViewMeta: (rowIndex: number, colIndex: number) => ViewMeta;
+  getCellMeta: (rowIndex: number, colIndex: number) => ViewMeta;
   spreadsheet: SpreadSheet;
 }
 

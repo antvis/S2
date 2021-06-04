@@ -88,16 +88,16 @@ export default function processDefaultColWidthByType(
   }
 
   // if the user sets the maximum width, the colWidth must not be greater than this value
-  const maxWidth = cellCfg?.maxWidth;
-  if (maxWidth) {
-    colWidth = Math.min(cellCfg?.maxWidth, colWidth);
-  }
-
-  // if the user sets the minimum width, the colWidth must not be less than this value
-  const minWidth = cellCfg?.minWidth;
-  if (minWidth) {
-    colWidth = Math.max(cellCfg?.minWidth, colWidth);
-  }
+  // const maxWidth = cellCfg?.maxWidth;
+  // if (maxWidth) {
+  //   colWidth = Math.min(cellCfg?.maxWidth, colWidth);
+  // }
+  //
+  // // if the user sets the minimum width, the colWidth must not be less than this value
+  // const minWidth = cellCfg?.minWidth;
+  // if (minWidth) {
+  //   colWidth = Math.max(cellCfg?.minWidth, colWidth);
+  // }
   // reset rowHeader,colHeader cell width
   rowCfg.width = colWidth;
   cellCfg.width = colWidth;

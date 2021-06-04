@@ -216,9 +216,11 @@ export class RowCell extends BaseCell<Node> {
     // indent in tree
     const textIndent = this.getTextIndent();
     const textStyle = this.getRowTextStyle(isTotals || isCustom, isLeaf);
+    // TODO use cell padding
+    const [top, right, bottom, left] = this.spreadsheet.facet.cfg.cellCfg.padding;
     const padding = isTreeType
-      ? DEFAULT_PADDING * level + DEFAULT_PADDING
-      : DEFAULT_PADDING * 2;
+      ? left * level
+      : left;
     const maxWidth =
       cellWidth - textIndent - padding - (isTreeType ? ICON_SIZE : 0);
     const text = getEllipsisText(content, maxWidth, textStyle);
@@ -226,9 +228,9 @@ export class RowCell extends BaseCell<Node> {
       getAdjustPosition(y, cellHeight, offset, height, FONT_SIZE) +
       FONT_SIZE / 2;
     const textXPadding = isTreeType ? padding : cellWidth / 2;
-    const leafExtraPadding =
-      isLeaf || isTotals ? ICON_SIZE + DEFAULT_PADDING : 0;
-    const textX = x + textIndent + textXPadding - leafExtraPadding;
+    // const leafExtraPadding =
+    //   isLeaf || isTotals ? ICON_SIZE + DEFAULT_PADDING : 0;
+    const textX = x + textIndent + textXPadding;
 
     const textAlign = isTreeType ? 'start' : 'center';
     const textShape = this.addShape('text', {

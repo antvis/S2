@@ -361,7 +361,7 @@ export const getSelectedData = (
       cellInfo,
     );
     forEach(selectedCellIndexes, ([i, j]) => {
-      const viewMeta = layoutResult.getViewMeta(i, j);
+      const viewMeta = layoutResult.getCellMeta(i, j);
       const data = get(viewMeta, 'data[0]');
       if (!isNil(data)) {
         selectedData.push(data);

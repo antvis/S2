@@ -3,8 +3,8 @@
  * On 2020-03-30
  */
 import * as _ from 'lodash';
-import { BaseSpreadSheet } from '../../../index';
-import { SpreadsheetFacet } from '../../index';
+import { SpreadSheet } from "../../../index";
+import { BaseFacet } from "../../index";
 import { Node } from '../node';
 
 /**
@@ -17,8 +17,8 @@ import { Node } from '../node';
  * @param inRow
  */
 export default function hideRowColumnsByFields(
-  ss: BaseSpreadSheet,
-  facet: SpreadsheetFacet,
+  ss: SpreadSheet,
+  facet: BaseFacet,
   node: Node,
   inRow = false,
 ) {

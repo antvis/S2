@@ -770,7 +770,7 @@ export abstract class BaseFacet {
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
       // add new cell in panelCell
       _.each(add, ([i, j]) => {
-        const viewMeta = this.layoutResult.getViewMeta(j, i);
+        const viewMeta = this.layoutResult.getCellMeta(j, i);
         if (viewMeta) {
           const cell = this.cfg.dataCell(viewMeta);
           // mark cell for removing
