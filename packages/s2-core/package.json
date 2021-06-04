@@ -160,5 +160,7 @@
       "^src/(.*)": "<rootDir>/src/$1"
     }
   },
-  "sideEffects": ["*.css"]
+  "sideEffects": [
+    "*.css"
+  ]
 }
