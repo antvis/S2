@@ -1,9 +1,9 @@
 s2-site/site/**/*.js
 packgaes/s2-core/dist
+packgaes/s2-core/lib
+packgaes/s2-core/esm
+packgaes/s2-core/dist/node_modules
 node_modules
 .cache
-public
-lib
-esm
-dist
+
 

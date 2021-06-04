@@ -1,4 +1,4 @@
-import { DataCell, ColCell, CornerCell, RowCell } from 'src/cell';
+import { DataCell, ColCell, CornerCell, RowCell } from '@/cell';
 
 export type S2CellType = DataCell | ColCell | CornerCell | RowCell;
 

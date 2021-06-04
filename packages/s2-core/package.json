@@ -1,9 +1,10 @@
 {
   "name": "@antv/s2",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha.3",
   "main": "lib/index.js",
   "module": "esm/index.js",
-  "types": "lib/index.d.ts",
+  "unpkg": "dist/s2.min.js",
+  "types": "esm/index.d.ts",
   "description": "effective spreadsheet render core lib",
   "homepage": "https://s2.antv.vision",
   "author": "https://github.com/orgs/antvis/people",
@@ -32,12 +33,13 @@
   "scripts": {
     "test": "",
     "clean": "rimraf lib esm dist",
-    "build": "run-s clean lib dist",
+    "build": "run-s clean lib",
+    "lib": "run-p rollup:*",
+    "rollup:es": "FORMAT=es rollup -c rollup.config.js",
+    "rollup:cjs": "FORMAT=cjs rollup -c rollup.config.js",
+    "rollup:umd": "FORMAT=umd rollup -c rollup.config.js",
+    "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
     "coverage": "jest --coverage",
-    "lib": "run-p lib:* cpx:*",
-    "lib:cjs": "tsc -p tsconfig.json --target ES5 --module commonjs --outDir lib",
-    "lib:esm": "tsc -p tsconfig.json --target ES5 --module ESNext --outDir esm",
-    "dist": "webpack --config webpack.config.js --mode production",
     "cpx:svg": "cpx \"src/**/*.svg\" lib; cpx \"src/**/*.svg\" esm",
     "cpx:less": "cpx \"src/**/*.less\" lib; cpx \"src/**/*.less\" esm",
     "test-custom-header-cell": "DEBUG_MODE=1 jest __tests__/spreadsheet/custom-header-cell-spec.tsx",
@@ -71,53 +73,62 @@
       "eslint --fix"
     ]
   },
+  "peerDependencies": {
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  },
   "dependencies": {
     "@antv/event-emitter": "~0.1.0",
     "@antv/g-canvas": "^0.5.6",
     "@antv/g-gesture": "^1.0.0",
     "@antv/matrix-util": "^3.0.4",
-    "antd": "^4.10.1",
+    "antd": "4.15.4",
     "classnames": "^2.2.5",
     "d3-ease": "^1.0.5",
-    "gitmoji-cli": "^3.2.18",
-    "install": "^0.13.0",
     "lodash": "^4.17.11",
-    "ts-priority-queue": "0.1.1"
+    "tslib": "^2.2.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@rollup/plugin-typescript": "^8.2.1",
     "@types/jest": "^26.0.20",
+    "@types/lodash": "^4.14.168",
+    "@types/node": "^14.14.31",
+    "@types/react": "*",
+    "@types/react-dom": "*",
     "cpx": "^1.5.0",
-    "css-loader": "^2.1.1",
+    "css-loader": "^5.2.6",
     "d3-dsv": "^1.1.1",
     "husky": "^3.0.0",
+    "install": "^0.13.0",
     "jest": "^24.9.0",
-    "jest-electron": "^0.1.7",
+    "jest-electron": "^0.1.11",
     "jest-extended": "^0.11.2",
     "jest-less-loader": "^0.1.1",
     "jest-raw-loader": "^1.0.1",
     "jest-url-loader": "^0.1.0",
-    "lerna-changelog": "^1.0.1",
     "less": "^3.11.1",
-    "less-loader": "^4.1.0",
+    "less-loader": "^9.0.0",
     "lint-staged": "^9.2.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
-    "react": "16.8.4",
-    "react-dom": "16.8.4",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "rimraf": "^3.0.0",
+    "rollup": "^2.33.3",
+    "rollup-plugin-less": "^1.1.3",
+    "rollup-plugin-terser": "^7.0.2",
     "style-loader": "^0.23.1",
-    "ts-jest": "^25.4.0",
+    "ts-jest": "^24.3.0",
     "ts-loader": "^5.4.5",
-    "ts-node": "^7.0.1",
+    "ts-node": "^8.0.3",
+    "tsconfig-paths": "^3.9.0",
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
     "tslint-recommend-rule": "^1.4.7",
-    "typescript": "^4.1.3",
-    "webpack": "^5.35.0",
-    "webpack-bundle-analyzer": "^4.4.1",
-    "webpack-cli": "^4.6.0",
-    "webpack-merge": "^5.7.3"
+    "typescript": "^4.1.3"
   },
   "license": "MIT",
   "jest": {
@@ -147,7 +158,11 @@
       "\\.svg$": "jest-raw-loader"
     },
     "moduleNameMapper": {
+      "^@/(.*)": "<rootDir>/src/$1",
       "^src/(.*)": "<rootDir>/src/$1"
     }
-  }
+  },
+  "sideEffects": [
+    "*.css"
+  ]
 }

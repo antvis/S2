@@ -16,11 +16,6 @@ import { Node } from '..';
 import { BaseCell } from './base-cell';
 import { renderLine } from '../utils/g-renders';
 import { IGroup } from '@antv/g-canvas';
-
-/**
- * Create By Bruce Too
- * On 2019-11-06
- */
 export class CornerCell extends BaseCell<Node> {
   protected headerConfig: CornerHeaderConfig;
 

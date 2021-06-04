@@ -1,4 +1,4 @@
-import { Node } from '../';
+import { Node } from '@/facet/layout/node';
 
 /**
  * 获取当前node所有children的总高度

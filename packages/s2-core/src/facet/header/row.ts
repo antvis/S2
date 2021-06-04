@@ -3,7 +3,7 @@ import { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell';
 import { DetailRowCell } from '../../cell/detail-row-cell';
-import { Node } from '../..';
+import { Node } from '@/facet/layout/node';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
 

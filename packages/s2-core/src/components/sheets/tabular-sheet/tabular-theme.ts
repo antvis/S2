@@ -1,5 +1,5 @@
-import { SpreadSheetTheme } from 'src';
-import { isWindows } from 'src/utils/is-mobile';
+import { SpreadSheetTheme } from '@/index';
+import { isWindows } from '@/utils/is-mobile';
 
 const FONT_FAMILY =
   'Roboto, PingFangSC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';

@@ -2,7 +2,7 @@ import { merge, clone } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import { auto, SheetComponent } from '../../src';
-import { getContainer, getMockData } from '../helpers';
+import { getContainer, getMockData } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch } from 'antd';

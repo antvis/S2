@@ -1,8 +1,5 @@
 /**
  * @Description: 请严格要求 svg 的 viewBox，若设计产出的 svg 不是此规格，请叫其修改为 '0 0 1024 1024'
- * @author qingsheng
- * @date 2019/3/14
- * @warning EVA 编码委员会提醒您：代码千万行，注释第一行；编程不规范，同事两行泪！
  */
 import { Group, Shape } from '@antv/g-canvas';
 import { getIcon } from './factory';

@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    "module": "commonjs",
+    "module": "esnext",
     "declaration": true,
     "sourceMap": true,
     "target": "es5",
-    "outDir": "lib",
     "importHelpers": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
@@ -14,14 +13,19 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
      "paths": {
+      "@/*": ["./src/*"],
       "src/*": ["./src/*"],
     },
     "lib": [
       "esnext",
       "dom"
     ],
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+    ]
   },
   "include": [
     "src"
-  ]
+  ],
+  "exclude": ["node_modules", "_tests_"]
 }

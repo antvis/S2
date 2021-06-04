@@ -1,5 +1,5 @@
 {
-  "name": "s2",
+  "name": "@antv/s2",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -8,19 +8,21 @@
   "keywords": [
     "antv",
     "s2",
-    "spreadsheet",
-    "pivot table"
+    "pivot table",
+    "spreadsheet"
   ],
   "scripts": {
-    "clean": "rimraf node_modules packages/*/node_modules",
-    "clear": "lerna clean && lerna clean -y",
     "bootstrap": "npm i && cd ./packages/s2-core && npm i && cd ../../s2-site && npm i",
+    "bootstrap:ci": "npm ci --no-optional && cd ./packages/s2-core && npm ci --no-optional && cd ../../s2-site && npm ci --no-optional",
     "cd:core": "cd ./packages/s2-core",
+    "clean": "rimraf node_modules s2-site/node_modules packages/*/node_modules",
+    "clear": "lerna clean && lerna clean -y",
     "core:start": "cd ./packages/s2-core && npm run test-live",
-    "core:build": "cd ./packages/s2-core && npm run build",
+    "core:build": "cd ./packages/s2-core && lerna run build --include-dependencies --stream",
+    "core:release": "cd ./packages/s2-core && lerna run build --include-dependencies --stream && lerna publish",
     "core:test": "cd ./packages/s2-core && npm run test",
     "core:tsc": "cd ./packages/s2-core && npm run tsc",
-    "tsc": "tsc --noEmit",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "site:start": "cd ./s2-site && npm run start",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "pretty-quick": "pretty-quick",
@@ -49,11 +51,6 @@
       "eslint --fix"
     ]
   },
-  "dependencies": {
-    "@ant-design/icons": "^4.1.0",
-    "gitmoji-cli": "^3.2.18",
-    "lerna": "^3.22.1"
-  },
   "devDependencies": {
     "@commitlint/cli": "^12.0.0",
     "@commitlint/config-conventional": "^12.0.0",
@@ -64,6 +61,7 @@
     "@types/react-dom": "17.0.1",
     "@typescript-eslint/eslint-plugin": "^4.15.2",
     "@typescript-eslint/parser": "^4.15.2",
+    "conventional-changelog-cli": "^2.1.1",
     "cpx": "^1.5.0",
     "eslint": "^7.20.0",
     "eslint-config-airbnb-base": "^14.2.1",
@@ -76,6 +74,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "gh-pages": "^3.1.0",
     "husky": "^3.0.0",
+    "lerna": "^3.22.1",
     "lint-staged": "^10.5.4",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",

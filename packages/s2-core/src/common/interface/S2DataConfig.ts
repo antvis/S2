@@ -1,4 +1,4 @@
-import { Fields, Meta, SortParams } from 'src/common/interface/index';
+import { Fields, Meta, SortParams } from '@/common/interface/index';
 import { merge } from 'lodash';
 
 /** use for tabularSheet
