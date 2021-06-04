@@ -162,5 +162,8 @@
   },
   "sideEffects": [
     "*.css"
-  ]
+  ],
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
+  }
 }
