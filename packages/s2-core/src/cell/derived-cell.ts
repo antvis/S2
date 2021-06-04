@@ -7,8 +7,6 @@ import { STRATEGY_ICON_WIDTH, STRATEGY_PADDING } from '../common/constant';
 import { renderRect } from '../utils/g-renders';
 
 /**
- * Create By Bruce Too
- * On 2020-05-27
  * 衍生指标的设计
  * _ _ _ _ _ _ _ _ _ _
  * |      |           |

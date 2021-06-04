@@ -51,7 +51,7 @@ import { EventController } from '../interaction/events/event-controller';
 import { DefaultInterceptEvent } from '../interaction/events/types';
 import State from '../state/state';
 import { ShowProps } from '../common/tooltip/interface';
-import { SelectedStateName } from 'src/common/constant/interatcion';
+import { SelectedStateName } from '../common/constant/interatcion';
 import { isMobile } from '../utils/is-mobile';
 
 const matrixTransform = ext.transform;

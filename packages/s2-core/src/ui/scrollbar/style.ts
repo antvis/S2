@@ -1,7 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2020-10-16
- */
 import { ScrollBarStyle, ScrollBarTheme } from './interface';
 
 const DEFAULT_STYLE: ScrollBarStyle = {

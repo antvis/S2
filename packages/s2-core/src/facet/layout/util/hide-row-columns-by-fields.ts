@@ -1,7 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2020-03-30
- */
 import * as _ from 'lodash';
 import { BaseSpreadSheet } from '../../../index';
 import { SpreadsheetFacet } from '../../index';

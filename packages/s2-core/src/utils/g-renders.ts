@@ -1,12 +1,10 @@
 /**
- * Create By Bruce Too
- * On 2019-10-15
  * Utils to render all g supported shape
  * https://github.com/antvis/g
  */
 import { Group, IShape } from '@antv/g-canvas';
 import * as _ from 'lodash';
-import { TextTheme } from 'src/theme/interface';
+import { TextTheme } from '@/theme/interface';
 
 export function renderRect(
   x: number,

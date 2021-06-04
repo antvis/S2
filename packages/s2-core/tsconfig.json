@@ -14,14 +14,19 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
      "paths": {
+      "@/*": ["./src/*"],
       "src/*": ["./src/*"],
     },
     "lib": [
       "esnext",
       "dom"
     ],
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+    ]
   },
   "include": [
     "src"
-  ]
+  ],
+  "exclude": ["node_modules", "_tests_"]
 }

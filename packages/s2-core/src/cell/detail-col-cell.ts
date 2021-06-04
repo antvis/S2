@@ -4,10 +4,6 @@ import { DEFAULT_PADDING, EXTRA_FIELD, ICON_RADIUS } from '../common/constant';
 import { addDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
 import { DefaultTheme } from '../theme';
 import { ColCell } from '.';
-/**
- * Create By Bruce Too
- * On 2019-11-04
- */
 export class DetailColCell extends ColCell {
   protected drawCellText() {
     const { spreadsheet } = this.headerConfig;

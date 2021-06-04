@@ -28,8 +28,6 @@ export interface BaseNodeConfig {
 }
 
 /**
- * Create By Bruce Too
- * On 2019-09-26
  * Node for cornerHeader, colHeader, rowHeader
  */
 export class Node {

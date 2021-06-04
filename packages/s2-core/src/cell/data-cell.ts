@@ -11,7 +11,7 @@ import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { BaseCell } from './base-cell';
 import { DerivedCell } from './derived-cell';
-import { SelectedStateName } from 'src/common/constant/interatcion';
+import { SelectedStateName } from '@/common/constant/interatcion';
 
 // default icon size
 const ICON_SIZE = 10;

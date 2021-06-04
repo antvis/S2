@@ -1,8 +1,8 @@
 const webpack = require('webpack');
 const resolve = require('path').resolve;
 const path = require('path');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   entry: {
@@ -18,9 +18,10 @@ module.exports = {
   },
   resolve: {
     alias: {
-      src: path.resolve(__dirname, './src'),
+      src: path.resolve('./src'),
+      '@': path.resolve('./src'),
     },
-    extensions: ['.tsx', '.ts', '.js', '.less'],
+    extensions: ['.tsx', '.ts', '.js', '.json', '.less'],
   },
   module: {
     rules: [

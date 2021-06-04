@@ -1,7 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2020-04-30
- */
 import { BaseDataSet } from './base-data-set';
 import { SpreadDataSet } from './spread-data-set';
 import { DetailDataSet } from './detail-data-set';

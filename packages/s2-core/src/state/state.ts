@@ -1,7 +1,7 @@
 import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
 import { forEach, includes } from 'lodash';
-import { S2CellType, SelectedState } from 'src/common/interface/interaction';
-import { SelectedStateName } from 'src/common/constant/interatcion';
+import { S2CellType, SelectedState } from '@/common/interface/interaction';
+import { SelectedStateName } from '@/common/constant/interatcion';
 export default class State {
   protected spreadsheet: BaseSpreadSheet;
 
