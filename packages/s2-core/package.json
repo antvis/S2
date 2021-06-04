@@ -80,6 +80,7 @@
     "antd": "4.15.4",
     "classnames": "^2.2.5",
     "d3-ease": "^1.0.5",
+    "fsevents": "^2.3.2",
     "install": "^0.13.0",
     "lodash": "^4.17.11",
     "tslib": "^2.2.0"
