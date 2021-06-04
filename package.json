@@ -113,6 +113,6 @@
     }
   },
   "optionalDependencies": {
-    "fsevents": "*"
+    "fsevents": ">=1.0.0"
   }
 }
