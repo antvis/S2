@@ -5,7 +5,7 @@ import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
 import { S2DataConfig, safetyDataConfig, Data, DataItem } from './S2DataConfig';
 import { S2Options, safetyOptions } from './S2Options';
-import { CustomInteraction } from '../../interaction/base';
+import { CustomInteraction } from "@/interaction/base";
 
 export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions, Data };
 

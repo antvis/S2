@@ -1,7 +1,7 @@
 /**
  * Class to mark '小计' & '总计'
  */
-export default class TotalClass {
+export class TotalClass {
   public label: string;
 
   public isSubTotals: boolean;
