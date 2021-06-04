@@ -29,8 +29,8 @@ import {
 } from '../../../common/constant';
 import handleLayoutHook from './handle-layout-hook';
 import { WidthType } from './process-default-col-width-by-type';
-import { KEY_COL_REAL_WIDTH_INFO } from 'src/common/constant';
-import { measureTextWidth } from 'src/utils/text';
+import { KEY_COL_REAL_WIDTH_INFO } from '@/common/constant';
+import { measureTextWidth } from '@/utils/text';
 
 /**
  * 行头有维度

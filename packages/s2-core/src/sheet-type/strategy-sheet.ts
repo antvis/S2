@@ -7,7 +7,7 @@ import SpreadSheet from './spread-sheet';
 import { BaseParams } from '../data-set/base-data-set';
 import { StrategyDataSet, BaseDataSet } from '../data-set';
 import { BaseFacet } from '../facet/base-facet';
-import { Node } from 'src/facet/layout/node';
+import { Node } from '@/facet/layout/node';
 
 export default class StrategySheet extends SpreadSheet {
   protected bindEvents() {

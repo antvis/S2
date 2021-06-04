@@ -1,7 +1,7 @@
 import { Group } from '@antv/g-canvas';
 import * as _ from 'lodash';
 import { Hierarchy } from './hierarchy';
-import BaseSpreadSheet from 'src/sheet-type/base-spread-sheet';
+import BaseSpreadSheet from '@/sheet-type/base-spread-sheet';
 
 export interface BaseNodeConfig {
   id: string;

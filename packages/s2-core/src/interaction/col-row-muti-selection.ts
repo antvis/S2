@@ -4,7 +4,7 @@ import { BaseInteraction } from './base';
 import { SelectedStateName } from '@/common/constant/interatcion';
 import { getTooltipData } from '../utils/tooltip';
 import { each, map, assign, pick } from 'lodash';
-import { Node } from 'src/facet/layout/node';
+import { Node } from '@/facet/layout/node';
 
 const SHIFT_KEY = 'Shift';
 

@@ -10,11 +10,11 @@ import {
   COLOR_DEFAULT_RESIZER,
 } from '../../common/constant';
 import { BaseDataSet } from '../../data-set';
-import { KEY_TREE_ROWS_COLLAPSE_ALL } from 'src/common/constant';
-import { Node } from 'src/facet/layout/node';
-import { Hierarchy } from 'src/facet/layout/hierarchy';
-import BaseSpreadSheet from 'src/sheet-type/base-spread-sheet';
-import { CornerCell } from 'src/cell/corner-cell';
+import { KEY_TREE_ROWS_COLLAPSE_ALL } from '@/common/constant';
+import { Node } from '@/facet/layout/node';
+import { Hierarchy } from '@/facet/layout/hierarchy';
+import BaseSpreadSheet from '@/sheet-type/base-spread-sheet';
+import { CornerCell } from '@/cell/corner-cell';
 import { LayoutResult, SpreadsheetFacetCfg } from '../../common/interface';
 import { BaseHeader, BaseHeaderConfig, HIT_AREA } from './base';
 import { CornerData, ResizeInfo } from './interface';
