@@ -1,6 +1,5 @@
 {
   "name": "@antv/s2",
-  "version": "0.1.0-alpha.0",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -18,7 +17,7 @@
     "bootstrap": "npm i && cd ./packages/s2-core && npm i && cd ../../s2-site && npm i",
     "cd:core": "cd ./packages/s2-core",
     "core:start": "cd ./packages/s2-core && npm run test-live",
-    "core:build": "cd ./packages/s2-core && npm run build",
+    "core:build": "lerna run build --include-dependencies --stream",
     "core:test": "cd ./packages/s2-core && npm run test",
     "core:tsc": "cd ./packages/s2-core && npm run tsc",
     "tsc": "tsc --noEmit",
@@ -51,7 +50,6 @@
     ]
   },
   "devDependencies": {
-    "lerna": "^3.22.1",
     "@commitlint/cli": "^12.0.0",
     "@commitlint/config-conventional": "^12.0.0",
     "@types/jest": "^26.0.20",
@@ -73,6 +71,8 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "gh-pages": "^3.1.0",
     "husky": "^3.0.0",
+    "lerna": "^3.22.1",
+    "lerna-changelog": "^1.0.1",
     "lint-staged": "^10.5.4",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",

@@ -14,7 +14,8 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
      "paths": {
-      "@/*": ["./src/*", "./lib/*", "./esm/*"],
+      "@/*": ["./src/*"],
+      "src/*": ["./src/*"],
     },
     "lib": [
       "esnext",
