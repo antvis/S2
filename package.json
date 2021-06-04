@@ -111,8 +111,5 @@
       "\\.(less|css)$": "jest-less-loader",
       "\\.svg$": "jest-raw-loader"
     }
-  },
-  "optionalDependencies": {
-    "fsevents": ">=1.0.0"
   }
 }

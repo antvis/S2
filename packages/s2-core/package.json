@@ -164,6 +164,6 @@
     "*.css"
   ],
   "optionalDependencies": {
-    "fsevents": ">=1.0.0"
+    "fsevents": "~2.3.1"
   }
 }
