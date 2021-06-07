@@ -405,7 +405,7 @@ export class PivotDataSet extends BaseDataSet {
         if (_.isUndefined(current)) {
           hadUndefined = true;
         } else {
-          currentData = currentData[current];
+          currentData = currentData?.[current];
         }
       }
     }
