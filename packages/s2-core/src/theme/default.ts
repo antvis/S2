@@ -6,7 +6,7 @@ const FONT_FAMILY =
 
 export const FONT_SIZE = 12;
 /* 交叉表的样式 */
-export default {
+export const DefaultTheme = {
   fontFamily: FONT_FAMILY,
   // 表头
   header: {
