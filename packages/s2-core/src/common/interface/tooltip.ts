@@ -1,7 +1,7 @@
 import { SpreadSheet } from '../../sheet-type';
 import { SortParam } from '../interface';
 
-export type DataItem = Record<string, any>;
+export type TooltipDataItem = Record<string, any>;
 
 export interface IMenu {
   readonly id: string;
@@ -45,7 +45,7 @@ export interface TooltipOptions {
 export interface SummaryProps {
   readonly name: string;
   readonly value: number | string;
-  readonly selectedData: DataItem[];
+  readonly selectedData: TooltipDataItem[];
 }
 
 export interface TipsProps {

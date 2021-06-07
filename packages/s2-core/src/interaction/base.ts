@@ -2,15 +2,6 @@ import { Canvas } from '@antv/g-canvas';
 import { each } from 'lodash';
 import { SpreadSheet } from 'src/sheet-type';
 
-export type InteractionConstructor = new (
-  spreadsheet: SpreadSheet,
-) => BaseInteraction;
-
-export interface CustomInteraction {
-  key: string;
-  interaction: InteractionConstructor;
-}
-
 /**
  * Base interaction for SpreadSheet/ListSheet
  * There are three events we need care, override them to DIY

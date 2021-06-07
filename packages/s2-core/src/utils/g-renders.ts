@@ -4,7 +4,7 @@
  */
 import { Group, IShape } from '@antv/g-canvas';
 import * as _ from 'lodash';
-import { TextTheme } from '@/theme/interface';
+import { TextTheme } from '@/common/interface/theme';
 
 export function renderRect(
   x: number,
