@@ -337,7 +337,7 @@ export class PivotDataSet extends BaseDataSet {
     );
   };
 
-  public getCellData(query: DataType, isTotals?: boolean): DataType[] {
+  public getCellData(query: DataType): DataType {
     const { rows, columns } = this.fields;
     const rowDimensionValues = this.getQueryDimValues(rows, query);
     const colDimensionValues = this.getQueryDimValues(columns, query);
@@ -346,23 +346,9 @@ export class PivotDataSet extends BaseDataSet {
       colDimensionValues,
       false,
     );
-
-    let data;
-    const size = _.size(path);
-    if (isTotals) {
-      if (size === rows.length + columns.length) {
-        data = _.get(this.indexesData, path);
-      } else {
-        data = [{}];
-      }
-    } else {
-      data = size ? _.get(this.indexesData, path) : [{}];
-    }
-    if (!_.isArray(data)) {
-      data = [data];
-    }
-    // DebuggerUtil.getInstance().logger('get data:', path, data);
-    return _.compact(_.flattenDeep(data));
+    const data = _.get(this.indexesData, path);
+    // DebuggerUtil.getInstance().logger('get cell data:', path, data);
+    return data;
   }
 
   public getMultiData(query: DataType, isTotals?: boolean): DataType[] {

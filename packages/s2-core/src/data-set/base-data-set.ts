@@ -99,9 +99,8 @@ export abstract class BaseDataSet {
    * cross data cell data. And we need mark total if
    * the pending cell is totals cell
    * @param query
-   * @param isTotals
    */
-  public abstract getCellData(query: DataType, isTotals?: boolean): DataType[];
+  public abstract getCellData(query: DataType): DataType;
 
   /**
    * To get a row or column cells data;

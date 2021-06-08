@@ -37,7 +37,6 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
         nodeQuery = _.merge({}, query, {
           [EXTRA_FIELD]: spreadsheet?.dataSet?.fields.values[0],
         });
-        adjustedField = EXTRA_FIELD;
         isLeaf = true;
       } else {
         // root[&]四川[&]总计 => {province: '四川'}

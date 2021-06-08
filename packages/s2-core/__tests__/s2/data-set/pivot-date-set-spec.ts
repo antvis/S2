@@ -37,18 +37,18 @@ describe('Test Pivot Date Set', () => {
   it('get data cell', () => {
     // price grand total
     const query1 = { $$extra$$: 'price' };
-    const result1 = pivotDataSet.getCellData(query1, true);
-    expect(_.get(result1, `0.${VALUE_FIELD}`)).toEqual(1);
+    const result1 = pivotDataSet.getCellData(query1);
+    expect(_.get(result1, `${VALUE_FIELD}`)).toEqual(1);
 
     // category' price sub total
     const query2 = { category: '家具', $$extra$$: 'price' };
-    const result2 = pivotDataSet.getCellData(query2, true);
-    expect(_.get(result2, `0.${VALUE_FIELD}`)).toEqual(5);
+    const result2 = pivotDataSet.getCellData(query2);
+    expect(_.get(result2, `${VALUE_FIELD}`)).toEqual(5);
 
     // provinces' price sub total
     const query3 = { province: '辽宁省', $$extra$$: 'price' };
-    const result3 = pivotDataSet.getCellData(query3, true);
-    expect(_.get(result3, `0.${VALUE_FIELD}`)).toEqual(2);
+    const result3 = pivotDataSet.getCellData(query3);
+    expect(_.get(result3, `${VALUE_FIELD}`)).toEqual(2);
 
     // detail cell
     const query4 = {
@@ -59,7 +59,7 @@ describe('Test Pivot Date Set', () => {
       $$extra$$: 'price',
     };
     const result4 = pivotDataSet.getCellData(query4);
-    expect(_.get(result4, `0.${VALUE_FIELD}`)).toEqual(12);
+    expect(_.get(result4, `${VALUE_FIELD}`)).toEqual(12);
   });
 
   it('get multi data', () => {

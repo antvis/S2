@@ -36,6 +36,7 @@ const setSpreadSheet = (
 
 const getData = (index: number) => {
   let realData = [];
+  // eslint-disable-next-line default-case
   switch (index) {
     case 1:
       realData = data1;
