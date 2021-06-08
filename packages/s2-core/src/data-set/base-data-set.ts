@@ -67,7 +67,7 @@ export abstract class BaseDataSet {
     this.indexesData = [];
   }
 
-  /********************NEED IMPLEMENT BY USER CASE*************************/
+  /** ******************NEED IMPLEMENT BY USER CASE************************ */
 
   /**
    * Try to process dataConfig in different mode

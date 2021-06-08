@@ -1,6 +1,6 @@
 import { get, isEmpty } from 'lodash';
-import { ID_SEPARATOR } from "@/common/constant";
-import { SpreadSheetFacetCfg } from "@/common/interface";
+import { ID_SEPARATOR } from '@/common/constant';
+import { SpreadSheetFacetCfg } from '@/common/interface';
 /**
  * Row and column header node id generator.
  * Users can make specific rows or columns display or hidden according to the option configuration

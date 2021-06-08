@@ -5,7 +5,7 @@ import {
 } from '@/common/interface';
 import { DrillDownLayout } from './drill-down-layout';
 import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
-import { SpreadSheet } from "@/sheet-type";
+import { SpreadSheet } from '@/sheet-type';
 import {
   merge,
   set,

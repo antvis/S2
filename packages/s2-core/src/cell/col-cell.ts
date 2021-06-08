@@ -1,15 +1,14 @@
-import { getEllipsisText, measureTextWidth } from "@/utils/text";
+import { getEllipsisText, measureTextWidth } from '@/utils/text';
 import * as _ from 'lodash';
-import { GuiIcon } from "@/common/icons";
-import { renderRect, updateShapeAttr } from "@/utils/g-renders";
-import { HIT_AREA } from "@/facet/header/base";
-import { ColHeaderConfig } from "@/facet/header/col";
-import { ResizeInfo } from "@/facet/header/interface";
+import { GuiIcon } from '@/common/icons';
+import { renderRect, updateShapeAttr } from '@/utils/g-renders';
+import { HIT_AREA } from '@/facet/header/base';
+import { ColHeaderConfig } from '@/facet/header/col';
+import { ResizeInfo } from '@/facet/header/interface';
 import { Node } from '../index';
 import { BaseCell } from './base-cell';
 import { IGroup } from '@antv/g-canvas';
 import {
-  EXTRA_FIELD,
   KEY_GROUP_COL_RESIZER,
   COLOR_DEFAULT_RESIZER,
 } from '../common/constant';
@@ -106,11 +105,9 @@ export class ColCell extends BaseCell<Node> {
       y,
       width: cellWidth,
       height: cellHeight,
-      parent,
       isLeaf,
       isTotals,
       key,
-      value,
     } = this.meta;
 
     // 格式化枚举值
@@ -125,7 +122,11 @@ export class ColCell extends BaseCell<Node> {
       isLeaf && !isTotals
         ? this.spreadsheet.theme.header.text
         : this.spreadsheet.theme.header.bolderText;
-    let text = getEllipsisText(content, cellWidth - sortIconPadding, textStyle);
+    const text = getEllipsisText(
+      content,
+      cellWidth - sortIconPadding,
+      textStyle,
+    );
     const textWidth = measureTextWidth(text, textStyle);
     let textX;
     let textAlign;
