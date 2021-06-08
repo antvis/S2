@@ -1,6 +1,5 @@
 import { LayoutResult, ViewMeta } from "src/common/interface";
 import {
-  DEFAULT_PADDING,
   EXTRA_FIELD, ICON_RADIUS,
   KEY_COL_NODE_BORDER_REACHED,
   KEY_ROW_NODE_BORDER_REACHED,
@@ -216,9 +215,7 @@ export class PivotFacet extends BaseFacet {
     } else {
       if (cellCfg.width === -1) {
         // compat
-        // TODO 自定义小计cell的查询数据还有问题
-        const query = getDimsConditionByNode(col);
-        const datas = dataSet.getMultiData(query);
+        const datas = dataSet.getMultiData(col.query, col.isTotalMeasure);
         const colLabel = col.label;
         // assume there are no derived values in current cols
         const allLabels = datas.map(data => `${data[VALUE_FIELD]}`)?.slice(0, 50);
