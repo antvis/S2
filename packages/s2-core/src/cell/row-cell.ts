@@ -1,12 +1,12 @@
 import { getEllipsisText, measureTextWidth } from '../utils/text';
 import { GM } from '@antv/g-gesture';
 import { each, get, has, find } from 'lodash';
-import { GuiIcon } from '../common/icons';
+import { GuiIcon } from '@/common/icons';
 import { IGroup } from '@antv/g-canvas';
-import { renderRect, updateShapeAttr } from '../utils/g-renders';
-import { isMobile } from '../utils/is-mobile';
-import { getAdjustPosition } from '../utils/text-absorption';
-import { getAllChildrenNodeHeight } from '../utils/get-all-children-node-height';
+import { renderRect, updateShapeAttr } from '@/utils/g-renders';
+import { isMobile } from '@/utils/is-mobile';
+import { getAdjustPosition } from '@/utils/text-absorption';
+import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import {
   DEFAULT_PADDING,
   EXTRA_FIELD,
@@ -16,12 +16,12 @@ import {
   COLOR_DEFAULT_RESIZER,
   ID_SEPARATOR,
 } from '../common/constant';
-import { HIT_AREA } from '../facet/header/base';
-import { ResizeInfo } from '../facet/header/interface';
-import { RowHeaderConfig } from '../facet/header/row';
+import { HIT_AREA } from '@/facet/header/base';
+import { ResizeInfo } from '@/facet/header/interface';
+import { RowHeaderConfig } from '@/facet/header/row';
 import { Node } from '../index';
 import { BaseCell } from './base-cell';
-import { FONT_SIZE } from '../theme/default';
+import { FONT_SIZE } from '@/theme/default';
 
 const ICON_SIZE = ICON_RADIUS * 2;
 
@@ -203,7 +203,6 @@ export class RowCell extends BaseCell<Node> {
       y,
       width: cellWidth,
       height: cellHeight,
-      parent,
       isLeaf,
       isTotals,
       isCustom,
@@ -217,10 +216,8 @@ export class RowCell extends BaseCell<Node> {
     const textIndent = this.getTextIndent();
     const textStyle = this.getRowTextStyle(isTotals || isCustom, isLeaf);
     // TODO use cell padding
-    const [top, right, bottom, left] = this.spreadsheet.facet.cfg.cellCfg.padding;
-    const padding = isTreeType
-      ? left * level
-      : left;
+    const left = this.spreadsheet.facet.cfg.cellCfg.padding[3];
+    const padding = isTreeType ? left * level : left;
     const maxWidth =
       cellWidth - textIndent - padding - (isTreeType ? ICON_SIZE : 0);
     const text = getEllipsisText(content, maxWidth, textStyle);

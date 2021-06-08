@@ -17,9 +17,13 @@ export const layoutArrange = (
   parent: Node,
   field: string,
 ): string[] => {
-  const layoutArrange = spreadsheet.options.layoutArrange;
-  if (layoutArrange) {
-    return layoutArrange(spreadsheet, parent, field, fieldValues);
+  if (spreadsheet.options.layoutArrange) {
+    return spreadsheet.options.layoutArrange(
+      spreadsheet,
+      parent,
+      field,
+      fieldValues,
+    );
   }
   return fieldValues;
 };
@@ -62,5 +66,22 @@ export const layoutHierarchy = (
   } else {
     // no extra node exist
     hierarchy.pushNode(currentNode);
+  }
+};
+
+/**
+ * custom control every header node's coordinates
+ * @param facetCfg
+ * @param rowNode
+ * @param colNode
+ */
+export const layoutNodes = (
+  facetCfg: SpreadSheetFacetCfg,
+  rowNode: Node,
+  colNode: Node,
+) => {
+  const layout = facetCfg?.layout;
+  if (layout) {
+    layout(facetCfg.spreadsheet, rowNode, colNode);
   }
 };

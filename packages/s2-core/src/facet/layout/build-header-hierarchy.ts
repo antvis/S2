@@ -44,10 +44,6 @@ export const buildHeaderHierarchy = (
           parentNode: rootNode,
           hierarchy,
         });
-        return {
-          hierarchy,
-          leafNodes: hierarchy.getNodes(),
-        } as BuildHeaderResult;
       } else {
         // row grid hierarchy
         const addTotalMeasureInTotal = !isValueInCols && moreThanOneValue;
@@ -66,24 +62,22 @@ export const buildHeaderHierarchy = (
     } else {
       // TODO table mode -> row
     }
+  } else if (isPivotMode) {
+    // only has grid hierarchy
+    const addTotalMeasureInTotal = isValueInCols && moreThanOneValue;
+    // value in cols and only has one value(or none)
+    const addMeasureInTotalQuery = isValueInCols && !moreThanOneValue;
+    buildGridHierarchy({
+      addTotalMeasureInTotal,
+      addMeasureInTotalQuery,
+      parentNode: rootNode,
+      currentField: cols[0],
+      fields: cols,
+      facetCfg,
+      hierarchy,
+    });
   } else {
-    if (isPivotMode) {
-      // only has grid hierarchy
-      const addTotalMeasureInTotal = isValueInCols && moreThanOneValue;
-      // value in cols and only has one value(or none)
-      const addMeasureInTotalQuery = isValueInCols && !moreThanOneValue;
-      buildGridHierarchy({
-        addTotalMeasureInTotal,
-        addMeasureInTotalQuery,
-        parentNode: rootNode,
-        currentField: cols[0],
-        fields: cols,
-        facetCfg,
-        hierarchy,
-      });
-    } else {
-      // TODO table mode -> col
-    }
+    // TODO table mode -> col
   }
   return {
     hierarchy,

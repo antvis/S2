@@ -8,7 +8,7 @@ const THEME_MAP: Record<string, LooseObject> = {
   default: DefaultTheme,
 };
 /**
- * get the theme according to the type 
+ * get the theme according to the type
  * @param type
  */
 export const getTheme = (type: string): SpreadSheetTheme => {

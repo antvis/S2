@@ -10,7 +10,7 @@ import {
   includes,
   debounce,
 } from 'lodash';
-import { Store } from '../common/store';
+import { Store } from '@/common/store';
 import { ext } from '@antv/matrix-util';
 import {
   ColWidthCache,
@@ -25,9 +25,9 @@ import {
   safetyOptions,
   Totals,
   Total,
+  ShowProps,
 } from '../common/interface';
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
-// import { DataDerivedCell } from '../cell/data-derived-cell'
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COL_REAL_WIDTH_INFO,
@@ -59,12 +59,11 @@ import {
 import { getTheme, registerTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from 'src/facet';
-import { DebuggerUtil } from '../common/debug';
-import { EventController } from '../interaction/events/event-controller';
-import { DefaultInterceptEvent } from '../interaction/events/types';
-import { State } from '../state/state';
-import { ShowProps } from '../common/interface';
-import { isMobile } from '../utils/is-mobile';
+import { DebuggerUtil } from '@/common/debug';
+import { EventController } from '@/interaction/events/event-controller';
+import { DefaultInterceptEvent } from '@/interaction/events/types';
+import { State } from '@/state/state';
+import { isMobile } from '@/utils/is-mobile';
 import {
   EventNames,
   InteractionNames,

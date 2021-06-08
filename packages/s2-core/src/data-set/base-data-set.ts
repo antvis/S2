@@ -67,7 +67,7 @@ export abstract class BaseDataSet {
     this.indexesData = [];
   }
 
-  /********************NEED IMPLEMENT BY USER CASE*************************/
+  /** ******************NEED IMPLEMENT BY USER CASE************************ */
 
   /**
    * Try to process dataConfig in different mode
@@ -107,6 +107,7 @@ export abstract class BaseDataSet {
    * To get a row or column cells data;
    * if query is empty, return all data
    * @param query
+   * @param isTotals
    */
-  public abstract getMultiData(query: DataType): DataType[];
+  public abstract getMultiData(query: DataType, isTotals?: boolean): DataType[];
 }
