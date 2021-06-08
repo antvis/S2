@@ -12,6 +12,7 @@ import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from 'src/common/constant';
 import { auto } from 'src/utils/formatter';
 import * as _ from 'lodash';
 import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from 'src/common/debug';
+import { Node } from "@/facet/layout/node";
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -378,11 +379,11 @@ export class PivotDataSet extends BaseDataSet {
     return _.compact(_.flattenDeep(data));
   }
 
-  public getMultiData(query: DataType): DataType[]{
+  public getMultiData(query: DataType, isTotals?: boolean): DataType[]{
     if (_.isEmpty(query)) {
       return _.compact(_.flattenDeep(this.indexesData));
     }
-    const { rows, columns } = this.fields;
+    const { rows, columns, valueInCols } = this.fields;
     const rowDimensionValues = this.getQueryDimValues(rows, query);
     const colDimensionValues = this.getQueryDimValues(columns, query);
     const path = this.getDataPath(
@@ -409,6 +410,21 @@ export class PivotDataSet extends BaseDataSet {
         }
       }
     }
-    return _.compact(_.flattenDeep(currentData));
+    let result = _.compact(_.flattenDeep(currentData));
+    if (isTotals) {
+      // need filter extra data
+      if (valueInCols) {
+        // grand total =>  {$$extra$$: 'price'}
+        // sub total => {$$extra$$: 'price', category: 'xxxx'}
+        // [undefined, undefined, "price"] => [category]
+        const firstColFieldIndex = colDimensionValues.indexOf(undefined);
+        let columnField;
+        if (firstColFieldIndex !== -1) {
+          columnField = columns[firstColFieldIndex];
+          result = result.filter(r => !_.has(r, columnField));
+        }
+      }
+    }
+    return result;
   }
 }

@@ -57,7 +57,7 @@ describe("Test Pivot Date Set", () => {
 
   });
 
-  it("get records", function() {
+  it("get multi data", function() {
     const sortValues = (values: number[]) => values.sort((a, b) => a - b);
 
     // path = [undefined, undefined, 1, 1, 0]
@@ -87,5 +87,15 @@ describe("Test Pivot Date Set", () => {
     const query5 = { $$extra$$: "price" };
     let result5 = pivotDataSet.getMultiData(query5);
     expect(sortValues(result5.map(v => v[VALUE_FIELD]))).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+
+    // mark as grand total node query
+    const query6 = { $$extra$$: "price" };
+    let result6 = pivotDataSet.getMultiData(query6, true);
+    expect(sortValues(result6.map(v => v[VALUE_FIELD]))).toEqual([1, 2, 3, 4]);
+
+    // mark as sub total node query
+    const query7 = { category: "家具", $$extra$$: "price" };
+    let result7 = pivotDataSet.getMultiData(query7, true);
+    expect(sortValues(result7.map(v => v[VALUE_FIELD]))).toEqual([5, 6, 7, 8]);
   });
 });
