@@ -63,15 +63,15 @@ import { DebuggerUtil } from '../common/debug';
 import { EventController } from '../interaction/events/event-controller';
 import { DefaultInterceptEvent } from '../interaction/events/types';
 import { State } from '../state/state';
-import { ShowProps } from '../common/tooltip/interface';
+import { ShowProps } from '../common/interface';
 import { isMobile } from '../utils/is-mobile';
 import {
   EventNames,
   InteractionNames,
   SelectedStateName,
-} from 'src/common/constant/interatcion';
-import { i18n } from 'src/common/i18n';
-import { PivotFacet } from 'src/facet';
+} from '../common/constant';
+import { i18n } from '../common/i18n';
+import { PivotFacet } from '../facet';
 
 const matrixTransform = ext.transform;
 export class SpreadSheet extends EE {

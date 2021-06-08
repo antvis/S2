@@ -1,13 +1,15 @@
-import { SpreadSheetTheme } from './interface';
+import { SpreadSheetTheme } from '../common/interface';
 import { isWindows } from '../utils/is-mobile';
+import { THEME_CFG } from '../common/constant/index';
 
-const FONT_FAMILY =
-  'Roboto, PingFangSC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
+const { fontFamily, fontSize } = THEME_CFG;
+  
 
-export const FONT_SIZE = 12;
+
+
 /* 交叉表的样式 */
 export const DefaultTheme = {
-  fontFamily: FONT_FAMILY,
+  fontFamily: fontFamily,
   // 表头
   header: {
     cell: {
@@ -23,14 +25,14 @@ export const DefaultTheme = {
       textIndent: 12,
     },
     text: {
-      fontSize: FONT_SIZE,
-      fontFamily: FONT_FAMILY,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
       fill: 'rgba(0,0,0,1)',
       textBaseline: 'middle',
     },
     bolderText: {
-      fontSize: FONT_SIZE,
-      fontFamily: FONT_FAMILY,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
       fill: 'rgba(0,0,0,0.85)',
       fontWeight: isWindows() ? 'bold' : '520',
       textBaseline: 'middle',
@@ -43,16 +45,16 @@ export const DefaultTheme = {
   // 视窗内
   view: {
     text: {
-      fontSize: FONT_SIZE,
-      fontFamily: FONT_FAMILY,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
       fill: 'rgba(0, 0, 0, 0.85)',
       fontWeight: 'normal',
       textBaseline: 'middle',
       textAlign: 'right',
     },
     bolderText: {
-      fontSize: FONT_SIZE,
-      fontFamily: FONT_FAMILY,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
       fill: 'rgba(0, 0, 0, 1)',
       fontWeight: isWindows() ? 'bold' : '520',
       textBaseline: 'middle',
