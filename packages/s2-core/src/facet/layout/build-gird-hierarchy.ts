@@ -60,13 +60,14 @@ const generateHeaderNodes = (params: HeaderNodesParams) => {
     addMeasureInTotalQuery,
     addTotalMeasureInTotal,
   } = params;
-  const { spreadsheet, collapsedCols, dataSet } = facetCfg;
+  const { spreadsheet, collapsedCols } = facetCfg;
   for (const fieldValue of fieldValues) {
     const isTotals = fieldValue instanceof TotalClass;
     const isTotalMeasure = fieldValue instanceof TotalMeasure;
     let value;
     let nodeQuery;
     let isLeaf = false;
+    let adjustedField = currentField;
     if (isTotals) {
       value = i18n((fieldValue as TotalClass).label);
       if (addMeasureInTotalQuery) {
@@ -74,6 +75,7 @@ const generateHeaderNodes = (params: HeaderNodesParams) => {
         nodeQuery = _.merge({}, query, {
           [EXTRA_FIELD]: spreadsheet?.dataSet?.fields.values[0],
         });
+        adjustedField = EXTRA_FIELD;
         isLeaf = true;
       } else {
         // root[&]四川[&]总计 => {province: '四川'}
@@ -86,6 +88,7 @@ const generateHeaderNodes = (params: HeaderNodesParams) => {
       value = i18n((fieldValue as TotalMeasure).label);
       // root[&]四川[&]总计[&]price => {province: '四川',EXTRA_FIELD: 'price' }
       nodeQuery = _.merge({}, query, { [EXTRA_FIELD]: value });
+      adjustedField = EXTRA_FIELD;
       isLeaf = true;
     } else {
       value = fieldValue;
@@ -101,10 +104,10 @@ const generateHeaderNodes = (params: HeaderNodesParams) => {
     // create new header nodes
     const node = new Node({
       id: uniqueId,
-      key: currentField,
+      key: adjustedField,
       value,
       level,
-      field: currentField,
+      field: adjustedField,
       parent: parentNode,
       isTotals,
       isTotalMeasure,

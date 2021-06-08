@@ -214,7 +214,7 @@ export class PivotFacet extends BaseFacet {
     } else {
       if (cellCfg.width === -1) {
         // compat
-        const datas = dataSet.getMultiData(col.query, col.isTotalMeasure);
+        const datas = dataSet.getMultiData(col.query, col.isTotals || col.isTotalMeasure);
         const colLabel = col.label;
         // assume there are no derived values in current cols
         const allLabels = datas.map(data => `${data[VALUE_FIELD]}`)?.slice(0, 50);
