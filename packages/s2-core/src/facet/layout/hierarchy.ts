@@ -1,12 +1,7 @@
 // hierarchy to layout headers
 import * as _ from 'lodash';
 import { Node } from './node';
-import { ID_SEPARATOR } from '../../common/constant';
-
-export interface MaxMinLabel {
-  minLabel: string;
-  maxLabel: string;
-}
+import { ID_SEPARATOR } from "@/common/constant";
 
 /**
  * Row and Column hierarchy to handle all contained nodes
@@ -35,19 +30,9 @@ export class Hierarchy {
 
   private indexNode: Node[] = [];
 
-  private maxLabelInLevel: Map<number, string> = new Map<number, string>();
-
-  private minLabelInLevel: Map<number, string> = new Map<number, string>();
-
   // get all leaf nodes
   public getLeaves(): Node[] {
     return this.allNodesWithoutRoot.filter((value) => value.isLeaf);
-  }
-
-  public getNotNullLeaves(): Node[] {
-    return this.allNodesWithoutRoot.filter(
-      (value) => value.isLeaf && value.id !== `root${ID_SEPARATOR}undefined`,
-    );
   }
 
   /**
@@ -85,37 +70,5 @@ export class Hierarchy {
 
   public getIndexNodes(): Node[] {
     return this.indexNode;
-  }
-
-  /**
-   * get max/min label in specific level
-   * @param level
-   */
-  public getMinMaxLabelInLevel(level = 0): MaxMinLabel {
-    // the top 50 nodes in level
-    const allNodesInLevel = this.getNodes(level).slice(0, 50);
-    let maxLabel;
-    let minLabel;
-    if (this.maxLabelInLevel.get(level) === undefined) {
-      maxLabel = _.maxBy(allNodesInLevel, (value) =>
-        _.get(value, 'label.length'),
-      ).label;
-      this.maxLabelInLevel.set(level, `${maxLabel}`);
-    } else {
-      maxLabel = this.maxLabelInLevel.get(level);
-    }
-
-    if (this.minLabelInLevel.get(level) === undefined) {
-      minLabel = _.minBy(allNodesInLevel, (value) =>
-        _.get(value, 'label.length'),
-      ).label;
-      this.minLabelInLevel.set(level, `${minLabel}`);
-    } else {
-      minLabel = this.minLabelInLevel.get(level);
-    }
-    return {
-      minLabel,
-      maxLabel,
-    } as MaxMinLabel;
   }
 }

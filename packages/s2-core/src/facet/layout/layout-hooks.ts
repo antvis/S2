@@ -64,3 +64,20 @@ export const layoutHierarchy = (
     hierarchy.pushNode(currentNode);
   }
 };
+
+/**
+ * custom control every header node's coordinates
+ * @param facetCfg
+ * @param rowNode
+ * @param colNode
+ */
+export const layoutNodes = (
+  facetCfg: SpreadSheetFacetCfg,
+  rowNode: Node,
+  colNode: Node,
+) => {
+  const layout = facetCfg?.layout;
+  if (layout) {
+    layout(facetCfg.spreadsheet, rowNode, colNode);
+  }
+}

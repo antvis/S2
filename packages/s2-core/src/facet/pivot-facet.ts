@@ -11,9 +11,8 @@ import { buildHeaderHierarchy } from "src/facet/layout/build-header-hierarchy";
 import { Node } from "src/facet/layout/node";
 import { measureTextWidth, measureTextWidthRoughly } from "src/utils/text";
 import { Hierarchy } from "src/facet/layout/hierarchy";
-import { getDimsConditionByNode } from "src/facet/layout/util";
-import handleLayoutHook from "src/facet/layout/util/handle-layout-hook";
 import { DebuggerUtil } from "src/common/debug";
+import { layoutNodes } from "@/facet/layout/layout-hooks";
 
 export class PivotFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
@@ -174,7 +173,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.y = preLevelSample.y + preLevelSample.height;
       }
       currentNode.height = this.getColNodeHeight(currentNode);
-      handleLayoutHook(this.cfg, null, currentNode);
+      layoutNodes(this.cfg, null, currentNode);
     }
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
   };
@@ -289,7 +288,7 @@ export class PivotFacet extends BaseFacet {
         }
       }
       currentNode.width = this.calculateRowLeafNodesWidth(currentNode);
-      handleLayoutHook(this.cfg, currentNode, null);
+      layoutNodes(this.cfg, currentNode, null);
     }
     if (!isTree) {
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);

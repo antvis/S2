@@ -1,12 +1,11 @@
-import { getEllipsisText, measureTextWidth } from '../utils/text';
+import { getEllipsisText, measureTextWidth } from "@/utils/text";
 import * as _ from 'lodash';
-import { GuiIcon } from '../common/icons';
-import { renderRect, updateShapeAttr } from '../utils/g-renders';
-import { HIT_AREA } from '../facet/header/base';
-import { ColHeaderConfig } from '../facet/header/col';
-import { ResizeInfo } from '../facet/header/interface';
+import { GuiIcon } from "@/common/icons";
+import { renderRect, updateShapeAttr } from "@/utils/g-renders";
+import { HIT_AREA } from "@/facet/header/base";
+import { ColHeaderConfig } from "@/facet/header/col";
+import { ResizeInfo } from "@/facet/header/interface";
 import { Node } from '../index';
-import { getHeaderHierarchyQuery } from '../facet/layout/util';
 import { BaseCell } from './base-cell';
 import { IGroup } from '@antv/g-canvas';
 import {
@@ -172,28 +171,28 @@ export class ColCell extends BaseCell<Node> {
         textX = x + cellWidth / 2;
       }
     }
-    const derivedValue = this.spreadsheet.getDerivedValue(value);
-    if (
-      !_.isEqual(
-        derivedValue.derivedValueField,
-        derivedValue.displayDerivedValueField,
-      ) &&
-      derivedValue.derivedValueField.length > 1
-    ) {
-      // 1、非决策模式下
-      // 2、衍生值部分显示
-      // 3、存在多个衍生值（ > 1 ） 首先自己必须是衍生指标
-      // 4、改列属于衍生值列，且是最后一个优先显示的衍生指标
-      // 满足上述四个条件，需要...在字段后面，表示还有省略的衍生值
-      if (
-        key === EXTRA_FIELD &&
-        this.spreadsheet.isDerivedValue(value) &&
-        _.last(derivedValue.displayDerivedValueField) === value
-      ) {
-        // 度量列，找到 value值
-        text += '...';
-      }
-    }
+    // const derivedValue = this.spreadsheet.getDerivedValue(value);
+    // if (
+    //   !_.isEqual(
+    //     derivedValue.derivedValueField,
+    //     derivedValue.displayDerivedValueField,
+    //   ) &&
+    //   derivedValue.derivedValueField.length > 1
+    // ) {
+    //   // 1、非决策模式下
+    //   // 2、衍生值部分显示
+    //   // 3、存在多个衍生值（ > 1 ） 首先自己必须是衍生指标
+    //   // 4、改列属于衍生值列，且是最后一个优先显示的衍生指标
+    //   // 满足上述四个条件，需要...在字段后面，表示还有省略的衍生值
+    //   if (
+    //     key === EXTRA_FIELD &&
+    //     this.spreadsheet.isDerivedValue(value) &&
+    //     _.last(derivedValue.displayDerivedValueField) === value
+    //   ) {
+    //     // 度量列，找到 value值
+    //     text += '...';
+    //   }
+    // }
     this.addShape('text', {
       attrs: {
         x: textX,
@@ -223,7 +222,7 @@ export class ColCell extends BaseCell<Node> {
 
   private showSortIcon() {
     const { sortParam } = this.headerConfig;
-    const query = getHeaderHierarchyQuery(this.meta);
+    const query = this.meta.query;
     return (
       _.isEqual(_.get(sortParam, 'query'), query) &&
       _.get(sortParam, 'type') !== 'none'
