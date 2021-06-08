@@ -1,10 +1,6 @@
 import { BaseDataSet } from 'src/data-set';
 import { DataType, PivotMeta } from 'src/data-set/interface';
-import {
-  DerivedValue,
-  Meta,
-  S2DataConfig,
-} from 'src/common/interface';
+import { DerivedValue, Meta, S2DataConfig } from 'src/common/interface';
 import { i18n } from 'src/common/i18n';
 import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import * as _ from 'lodash';
@@ -178,10 +174,7 @@ export class PivotDataSet extends BaseDataSet {
     firstCreate = true,
     careUndefined = false,
   ): number[] => {
-    const getPath = (
-      dimensionValues: string[],
-      isRow = true,
-    ): number[] => {
+    const getPath = (dimensionValues: string[], isRow = true): number[] => {
       let currentMeta = isRow ? this.rowPivotMeta : this.colPivotMeta;
       const path = [];
       for (const value of dimensionValues) {
