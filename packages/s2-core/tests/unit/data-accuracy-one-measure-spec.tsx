@@ -8,7 +8,7 @@ import {
   SheetComponent,
   SpreadSheet,
 } from '../../src';
-import { getContainer } from '../helpers';
+import { getContainer } from '../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import {
@@ -18,7 +18,7 @@ import {
   data4,
   data5,
   data6,
-} from '../datasets/data-accuracy';
+} from '../data/data-accuracy';
 
 let spreadsheet1: SpreadSheet;
 const setSpreadSheet = (
