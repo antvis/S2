@@ -128,12 +128,9 @@
       "!**/node_modules/**",
       "!**/vendor/**"
     ],
-    "coverageReporters": [
-      "text-summary",
-      "html"
-    ],
+    "coverageReporters":["text-summary","html"],
     "transformIgnorePatterns": [],
-    "testRegex": "/tests/(s2|spreadsheet)/.*(-|\\.)spec\\.(tsx|ts|js)?$",
+    "testRegex": "/__tests__/(s2|spreadsheet)/.*(-|\\.)spec\\.(tsx|ts|js)?$",
     "transform": {
       "\\.(less|css)$": "jest-less-loader",
       "\\.svg$": "jest-raw-loader"
