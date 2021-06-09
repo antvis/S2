@@ -12,20 +12,13 @@
     "downlevelIteration": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
-     "paths": {
+    "paths": {
       "@/*": ["./src/*"],
-      "src/*": ["./src/*"],
+      "src/*": ["./src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "plugins": [
-      { "transform": "typescript-transform-paths" },
-    ]
+    "lib": ["esnext", "dom"],
+    "plugins": [{ "transform": "typescript-transform-paths" }]
   },
-  "include": [
-    "src"
-  ],
-  "exclude": ["node_modules", "_tests_"]
+
+  "exclude": ["node_modules","coverage"]
 }
