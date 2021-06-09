@@ -31,7 +31,6 @@
     "pivot table"
   ],
   "scripts": {
-    "test": "",
     "clean": "rimraf lib esm dist",
     "build": "run-s clean lib",
     "lib": "run-p rollup:*",
@@ -42,6 +41,7 @@
     "coverage": "jest --coverage",
     "cpx:svg": "cpx \"src/**/*.svg\" lib; cpx \"src/**/*.svg\" esm",
     "cpx:less": "cpx \"src/**/*.less\" lib; cpx \"src/**/*.less\" esm",
+    "test":"jest",
     "test-custom-header-cell": "DEBUG_MODE=1 jest __tests__/spreadsheet/custom-header-cell-spec.tsx",
     "test-live": "DEBUG_MODE=1 jest __tests__/s2/spread-sheet-spec.tsx",
     "test-accuracy1": "DEBUG_MODE=1 jest __tests__/s2/data-accuracy-one-measure-spec.tsx",
