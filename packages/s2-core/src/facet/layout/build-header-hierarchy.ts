@@ -42,7 +42,7 @@ export const buildHeaderHierarchy = (
           fields: rows,
           facetCfg,
           parentNode: rootNode,
-          hierarchy
+          hierarchy,
         });
         return {
           hierarchy,
@@ -60,7 +60,7 @@ export const buildHeaderHierarchy = (
         currentField: rows[0],
         fields: rows,
         facetCfg,
-        hierarchy
+        hierarchy,
       });
     } else {
       // TODO table mode -> row

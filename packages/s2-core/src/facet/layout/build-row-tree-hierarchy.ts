@@ -15,12 +15,7 @@ import * as _ from 'lodash';
  */
 export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const { parentNode, currentField, fields, facetCfg, hierarchy } = params;
-  const {
-    dataSet,
-    spreadsheet,
-    collapsedRows,
-    hierarchyCollapse,
-  } = facetCfg;
+  const { dataSet, spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
   const index = fields.indexOf(currentField);
   const query = getDimsCondition(parentNode, true);
   const dimValues = dataSet.getDimensionValues(currentField, query);
