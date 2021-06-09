@@ -3,7 +3,7 @@
  * On 2021/5/25
  */
 
-/*******single measures******/
+/** *****single measures***** */
 // contains all data(grandTotal, subTotal, detail data)
 export const data1 = [
   {
@@ -316,7 +316,7 @@ export const data5 = [
   },
 ];
 
-/*******two measures******/
+/** *****two measures***** */
 
 // more than one measure(value)
 export const data6 = [

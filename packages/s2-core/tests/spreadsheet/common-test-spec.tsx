@@ -8,7 +8,7 @@ import {
   SheetComponent,
   SpreadSheet,
 } from '../../src';
-import { getContainer, getMockData } from '../helpers';
+import { getContainer, getMockData } from '../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch, Checkbox } from 'antd';
