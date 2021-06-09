@@ -42,23 +42,26 @@ export const buildHeaderHierarchy = (
           fields: rows,
           facetCfg,
           parentNode: rootNode,
-          hierarchy,
+          hierarchy
         });
-      } else {
-        // row grid hierarchy
-        const addTotalMeasureInTotal = !isValueInCols && moreThanOneValue;
-        // value in rows and only has one value(or none)
-        const addMeasureInTotalQuery = !isValueInCols && !moreThanOneValue;
-        buildGridHierarchy({
-          addTotalMeasureInTotal,
-          addMeasureInTotalQuery,
-          parentNode: rootNode,
-          currentField: rows[0],
-          fields: rows,
-          facetCfg,
+        return {
           hierarchy,
-        });
+          leafNodes: hierarchy.getNodes(),
+        } as BuildHeaderResult;
       }
+      // row grid hierarchy
+      const addTotalMeasureInTotal = !isValueInCols && moreThanOneValue;
+      // value in rows and only has one value(or none)
+      const addMeasureInTotalQuery = !isValueInCols && !moreThanOneValue;
+      buildGridHierarchy({
+        addTotalMeasureInTotal,
+        addMeasureInTotalQuery,
+        parentNode: rootNode,
+        currentField: rows[0],
+        fields: rows,
+        facetCfg,
+        hierarchy
+      });
     } else {
       // TODO table mode -> row
     }

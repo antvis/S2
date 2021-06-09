@@ -20,13 +20,16 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     spreadsheet,
     collapsedRows,
     hierarchyCollapse,
-    values,
   } = facetCfg;
   const index = fields.indexOf(currentField);
   const query = getDimsCondition(parentNode, true);
-  let fieldValues: FileValue[];
   const dimValues = dataSet.getDimensionValues(currentField, query);
-  fieldValues = layoutArrange(dimValues, spreadsheet, parentNode, currentField);
+  const fieldValues: FileValue[] = layoutArrange(
+    dimValues,
+    spreadsheet,
+    parentNode,
+    currentField,
+  );
   const totalsConfig = spreadsheet.getTotalsConfig(currentField);
 
   // tree mode only has grand totals, but if there are subTotals configs, it will
@@ -48,7 +51,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       nodeQuery = _.merge({}, query, { [currentField]: value });
     }
     const uniqueId = generateId(parentNode.id, value, facetCfg);
-    let isCollapse = _.isBoolean(collapsedRows[uniqueId])
+    const isCollapse = _.isBoolean(collapsedRows[uniqueId])
       ? collapsedRows[uniqueId]
       : hierarchyCollapse;
     // TODO special logic to custom control node's collapsed state
