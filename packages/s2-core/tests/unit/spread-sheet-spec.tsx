@@ -8,13 +8,13 @@ import {
   SheetComponent,
   SpreadSheet,
 } from '../../src';
-import { getContainer, getMockData } from '../helpers';
+import { getContainer, getMockData } from '../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch, Checkbox } from 'antd';
 import { CustomTooltip } from '../spreadsheet/custom/custom-tooltip';
 
-let data = getMockData('../__tests__/datasets/tableau-supermarket.csv');
+let data = getMockData('../tests/data/tableau-supermarket.csv');
 
 data = data.map((row) => {
   row['profit-tongbi'] = 0.2233;

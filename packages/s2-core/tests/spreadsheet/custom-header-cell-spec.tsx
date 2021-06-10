@@ -2,12 +2,12 @@ import { merge, clone } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import { auto, SheetComponent } from '../../src';
-import { getContainer, getMockData } from './helpers';
+import { getContainer, getMockData } from '../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch } from 'antd';
 
-let data = getMockData('../datasets/tableau-supermarket.csv');
+let data = getMockData('../data/tableau-supermarket.csv');
 
 data = data.map((row) => {
   row['profit-tongbi'] = 0.2233;

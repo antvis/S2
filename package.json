@@ -85,32 +85,5 @@
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   },
-  "license": "MIT",
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "diagnostics": {
-          "warnOnly": true
-        }
-      }
-    },
-    "runner": "jest-electron/runner",
-    "testEnvironment": "jest-electron/environment",
-    "setupFilesAfterEnv": [
-      "jest-extended"
-    ],
-    "preset": "ts-jest",
-    "collectCoverage": false,
-    "collectCoverageFrom": [
-      "src/**/*.{ts,js}",
-      "!**/node_modules/**",
-      "!**/vendor/**"
-    ],
-    "transformIgnorePatterns": [],
-    "testRegex": "/__tests__/spreadsheet/.*-spec\\.(tsx|ts|js)?$",
-    "transform": {
-      "\\.(less|css)$": "jest-less-loader",
-      "\\.svg$": "jest-raw-loader"
-    }
-  }
+  "license": "MIT"
 }
