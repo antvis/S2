@@ -56,7 +56,7 @@ import {
   HoverEvent,
   MergedCellsClick,
 } from '../index';
-import { getTheme, registerTheme } from '../theme';
+import { getTheme } from '../theme';
 import { BaseTooltip } from '../tooltip';
 import { BaseFacet } from 'src/facet';
 import { DebuggerUtil } from '@/common/debug';
@@ -227,15 +227,7 @@ export class SpreadSheet extends EE {
    * @param theme
    */
   public setTheme(theme: SpreadSheetTheme, type = 'default'): void {
-    if (!getTheme(type)) {
-      if (theme) {
-        this.theme = registerTheme(type, theme);
-      } else {
-        throw new Error(`Theme type '${type}' not founded.`);
-      }
-    } else {
-      this.theme = merge({}, getTheme(type), theme);
-    }
+    this.theme = merge({}, getTheme(type), theme);
   }
 
   /**

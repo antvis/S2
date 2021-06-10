@@ -1,3 +1,37 @@
+export interface StyleConfig {
+  brandColor: string;
+  mainColor: string;
+  backgroundColor: string;
+  paletteSemanticRed: string;
+  paletteSemanticGreen: string;
+  fontSize: {
+    h1: number;
+    h2: number;
+    h3: number;
+  };
+  fontOpacity: {
+    h1: number;
+    h2: number;
+    h3: number;
+  };
+  borderWidth: {
+    h1: number;
+    h2: number;
+    h3: number;
+  };
+  borderOpacity: {
+    h1: number;
+    h2: number;
+    h3: number;
+  };
+  padding: {
+    left: number;
+    top: number;
+    right: number;
+    down: number;
+  };
+}
+
 export interface CellTheme {
   // cell's border color [horizontal, vertical]
   borderColor?: [string, string];
