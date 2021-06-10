@@ -54,7 +54,6 @@ interface StoreKey {
   drillDownDataCache: DrillDownDataCache[];
   // 每个层级下钻的维度缓存
   drillDownFieldInLevel: DrillDownFieldInLevel[];
-  [key: string]: any;
 }
 
 /**
@@ -62,18 +61,18 @@ interface StoreKey {
  * All the keys need be declare in {@see StoreKey} first
  */
 export class Store {
-  private store: Record<string, any> = {};
+  private store: Partial<StoreKey> = {};
 
-  public set<T extends keyof StoreKey>(key: string, val: StoreKey[T]) {
+  public set<T extends keyof StoreKey>(key: T, val: StoreKey[T]) {
     this.store[key] = val;
   }
 
   public get<T extends keyof StoreKey>(
-    key: string,
+    key: T,
     defaultValue?: StoreKey[T],
   ): StoreKey[T] {
     const v = this.store[key];
-    return v === undefined ? defaultValue : v;
+    return (v as StoreKey[T]) ?? defaultValue;
   }
 
   public clear() {
