@@ -56,8 +56,7 @@ export class PivotFacet extends BaseFacet {
         col.isTotals ||
         col.isTotalMeasure;
       const dataQuery = _.merge({}, rowQuery, colQuery);
-      let data = dataSet.getCellData(dataQuery, isTotals);
-      data = _.get(data, '0');
+      const data = dataSet.getCellData(dataQuery);
       let valueField;
       let fieldValue = null;
       if (!_.isEmpty(data)) {

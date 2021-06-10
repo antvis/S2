@@ -1,8 +1,11 @@
 import { Event } from '@antv/g-canvas';
-import { get, isEmpty, set, each, find } from 'lodash';
+import { get, isEmpty, find, head } from 'lodash';
 import { KEY_JUMP_HREF } from '../../../common/constant';
 import { S2Event, DefaultInterceptEventType } from '../types';
 import { BaseEvent } from '../base-event';
+import { Data } from '../../../common/interface/s2DataConfig';
+import { CellAppendInfo } from '../../../common/interface';
+import { Node } from '../../../facet/layout/node';
 
 /**
  * Row header click navigation interaction
@@ -19,37 +22,76 @@ export class RowTextClick extends BaseEvent {
       ) {
         return;
       }
-      const appendInfo = get(ev.target, 'attrs.appendInfo', {});
+      const appendInfo = get(
+        ev.target,
+        'attrs.appendInfo',
+        {},
+      ) as CellAppendInfo;
+
       if (appendInfo.isRowHeaderText) {
-        // 行头内的文本
-        const cellData = get(ev.target, 'attrs.appendInfo.cellData');
+        const { cellData } = appendInfo;
         const key = cellData.key;
-        // 从当前节点出发往上遍历树拿到数据，如点中的是西湖区，则需要拿到 { 省份: 浙江省, 城市: 杭州市, 区县: 西湖区 }
-        let node = cellData;
-        const record = {};
-        while (node.parent) {
-          record[node.key] = node.value;
-          node = node.parent;
-        }
-        // 透传本行所有数据，供跳转时解析参数
-        const currentRowData = find(
-          this.spreadsheet.dataCfg.data,
-          (d) => d[key] === cellData.value,
-        );
-        if (!isEmpty(currentRowData)) {
-          each(currentRowData, (v, k) => {
-            record[k] = v;
-          });
-        }
-        // 明细表需要增加rowIndex透出
-        if (!get(this, 'spreadsheet.options.spreadsheetType')) {
-          set(record, 'rowIndex', cellData.rowIndex);
-        }
+        const rowData = this.getRowData(cellData);
+
         this.spreadsheet.emit(KEY_JUMP_HREF, {
           key,
-          record,
+          record: rowData,
         });
       }
     });
   }
+
+  private getRowData = (cellData: Node): Data => {
+    let node = cellData;
+    const nodeData: Data = {};
+    while (node.parent) {
+      nodeData[node.key] = node.value;
+      node = node.parent;
+    }
+    const rowIndex = this.getRowIndex(cellData);
+    const originalRowData = this.getOriginalRowData(cellData, rowIndex);
+    const rowData: Data = {
+      ...originalRowData,
+      ...nodeData,
+      rowIndex,
+    };
+
+    return rowData;
+  };
+
+  private getOriginalRowData = (cellData: Node, rowIndex: number) => {
+    const { options } = this.spreadsheet;
+    const { showGrandTotals, showSubTotals, reverseLayout, reverseSubLayout } =
+      options?.totals?.row || {};
+
+    // If grand totals, sub totals enabled and in the table head
+    const grandTotalsRowIndexDiff = showGrandTotals && reverseLayout ? 1 : 0;
+    const subTotalsRowIndexDiff = showSubTotals && reverseSubLayout ? 1 : 0;
+
+    const dataIndex = Math.max(
+      0,
+      rowIndex - grandTotalsRowIndexDiff - subTotalsRowIndexDiff,
+    );
+
+    const currentRowData = find(
+      this.spreadsheet.dataCfg.data,
+      (row: Data, index: number) =>
+        row[cellData.key] === cellData.value && index === dataIndex,
+    );
+    return currentRowData;
+  };
+
+  private getRowIndex = (cellData: Node) => {
+    const isTree = this.spreadsheet?.options?.hierarchyType === 'tree';
+    if (isTree) {
+      let child = cellData;
+      while (!isEmpty(child.children)) {
+        child = head(child.children);
+      }
+      return cellData.rowIndex ?? child.rowIndex;
+    }
+    // if current cell has no row index, return dynamic computed value
+    const rowIndex = Math.floor(cellData.y / cellData.height);
+    return cellData.rowIndex ?? rowIndex;
+  };
 }
