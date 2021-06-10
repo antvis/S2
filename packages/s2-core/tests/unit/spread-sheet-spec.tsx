@@ -14,7 +14,7 @@ import React from 'react';
 import { Switch, Checkbox } from 'antd';
 import { CustomTooltip } from '../spreadsheet/custom/custom-tooltip';
 
-let data = getMockData('../tests/data/tableau-supermarket.csv');
+let data = getMockData('../data/tableau-supermarket.csv');
 
 data = data.map((row) => {
   row['profit-tongbi'] = 0.2233;
