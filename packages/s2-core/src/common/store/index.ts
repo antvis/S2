@@ -1,4 +1,5 @@
 import {
+  ColWidthCache,
   DrillDownDataCache,
   DrillDownFieldInLevel,
   SortParam,
@@ -54,6 +55,9 @@ interface StoreKey {
   drillDownDataCache: DrillDownDataCache[];
   // 每个层级下钻的维度缓存
   drillDownFieldInLevel: DrillDownFieldInLevel[];
+
+  // 列宽信息缓存
+  colRealWidthInfo: ColWidthCache;
 }
 
 /**
