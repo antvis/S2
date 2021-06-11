@@ -21,6 +21,7 @@
     "core:build": "cd ./packages/s2-core && lerna run build --include-dependencies --stream",
     "core:release": "cd ./packages/s2-core && lerna run build --include-dependencies --stream && lerna publish",
     "core:test": "cd ./packages/s2-core && npm run test",
+    "core-test:live": "cd ./packages/s2-core && npm run test:live",
     "core:tsc": "cd ./packages/s2-core && npm run tsc",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "site:start": "cd ./s2-site && npm run start",
@@ -40,7 +41,7 @@
     "hooks": {
       "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-push": "cd ./packages/s2-core && npm run test"
+      "pre-push": "cd ./packages/s2-core && npm run test:coverage"
     }
   },
   "lint-staged": {
