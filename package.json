@@ -41,7 +41,7 @@
     "hooks": {
       "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-push": "cd ./packages/s2-core && npm run test"
+      "pre-push": "cd ./packages/s2-core && npm run test:coverage"
     }
   },
   "lint-staged": {

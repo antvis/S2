@@ -10,7 +10,7 @@
   "author": "https://github.com/orgs/antvis/people",
   "directories": {
     "lib": "lib",
-    "test": "__tests__"
+    "test": "tests"
   },
   "repository": {
     "type": "git",
@@ -38,11 +38,11 @@
     "rollup:cjs": "FORMAT=cjs rollup -c rollup.config.js",
     "rollup:umd": "FORMAT=umd rollup -c rollup.config.js",
     "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
-    "coverage": "jest --coverage",
     "cpx:svg": "cpx \"src/**/*.svg\" lib; cpx \"src/**/*.svg\" esm",
     "cpx:less": "cpx \"src/**/*.less\" lib; cpx \"src/**/*.less\" esm",
-    "test": "jest",
     "test:live": "node ./scripts/test-live",
+    "test": "jest",
+    "test:coverage": "npm run test -- --coverage",
     "start": "webpack --config webpack-dev.config.js --mode development --progress",
     "tsc": "tsc --noEmit"
   },
@@ -118,7 +118,7 @@
       "jest-extended"
     ],
     "preset": "ts-jest",
-    "collectCoverage": true,
+    "collectCoverage": false,
     "collectCoverageFrom": [
       "src/**/*.{ts,js}",
       "!**/node_modules/**",
@@ -129,7 +129,7 @@
       "html"
     ],
     "transformIgnorePatterns": [],
-    "testRegex": "/tests/(s2|spreadsheet)/.*(-|\\.)spec\\.(tsx|ts|js)?$",
+    "testRegex": "/tests/.*(-|\\.)spec\\.(tsx|ts|js)?$",
     "transform": {
       "\\.(less|css)$": "jest-less-loader",
       "\\.svg$": "jest-raw-loader"

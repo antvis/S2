@@ -30,7 +30,6 @@ import {
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
-  KEY_COL_REAL_WIDTH_INFO,
   KEY_COLLAPSE_ROWS,
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_BACK_GROUND,
@@ -201,7 +200,7 @@ export class SpreadSheet extends EE {
     if (reloadData) {
       this.dataSet.setDataCfg(this.dataCfg);
       // 有数据变化，情况列宽度计算的缓存
-      this.store.set(KEY_COL_REAL_WIDTH_INFO, {
+      this.store.set('colRealWidthInfo', {
         widthInfos: {},
         realWidth: {},
       } as ColWidthCache);
