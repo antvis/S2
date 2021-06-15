@@ -9,12 +9,7 @@ import { DetailRowCell } from './detail-row-cell';
 import { DetailCornerCell } from './detail-corner-cell';
 import { DetailColCell } from './detail-col-cell';
 
-// NOTE There is a circular references  problem when I was exporting both
-// the base and derived types from the same file
-// import { DataDerivedCell } from './data-derived-cell';
-
 export {
-  // DataDerivedCell,
   DetailColCell,
   DetailCornerCell,
   DetailRowCell,

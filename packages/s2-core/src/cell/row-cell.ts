@@ -31,8 +31,6 @@ export class RowCell extends BaseCell<Node> {
   // 绘制完其他后，需要额外绘制的起始x坐标
   protected lastStartDrawX: number;
 
-  protected actionIcons: GuiIcon[];
-
   // TODO type define
   // mobile event
   private gm: GM;
@@ -66,7 +64,7 @@ export class RowCell extends BaseCell<Node> {
   }
 
   // TODO: options能不能不要固定顺序？headerConfig必须是 0下的吗？
-  protected handleRestOptions(...options) {
+  protected handleRestOptions(...options: RowHeaderConfig[]) {
     this.headerConfig = options[0];
   }
 
@@ -178,7 +176,7 @@ export class RowCell extends BaseCell<Node> {
     return multiplier;
   }
 
-  protected getRowTextStyle(isTotals, isLeaf) {
+  protected getRowTextStyle(isTotals: number, isLeaf: boolean) {
     return isLeaf && !isTotals
       ? this.theme.header.text
       : this.theme.header.bolderText;

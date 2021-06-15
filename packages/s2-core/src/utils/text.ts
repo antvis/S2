@@ -274,10 +274,10 @@ const getStyle = (
   const derivedMeasureText = theme?.view?.derivedMeasureText;
   const upFill = isMinor
     ? derivedMeasureText?.minorUp
-    : derivedMeasureText?.mainUp || '#F46649';
+    : derivedMeasureText?.mainUp || theme.dataCell.icon.upIconColor;
   const downFill = isMinor
     ? derivedMeasureText?.minorDown
-    : derivedMeasureText?.mainDown || '2AA491';
+    : derivedMeasureText?.mainDown || theme.dataCell.icon.downIconColor;
   if (isDerivedMeasure) {
     const isUp = getDerivedDataState(value);
     return merge(style, {

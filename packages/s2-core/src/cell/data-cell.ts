@@ -3,7 +3,7 @@ import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { map, find, get, isEmpty, first, includes } from 'lodash';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
-import { DataItem } from '../common/interface/S2DataConfig';
+import { DataItem } from '../common/interface/s2DataConfig';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
 import { getDerivedDataState } from '../utils/text';
 import { VALUE_FIELD } from '../common/constant';
@@ -11,11 +11,6 @@ import { ViewMeta } from '../common/interface';
 import { DerivedCell, BaseCell } from '.';
 import { SelectedStateName } from 'src/common/constant/interatcion';
 import { SpreadSheet } from 'src/sheet-type';
-
-// default icon size
-const ICON_SIZE = 10;
-// default icon padding
-const ICON_PADDING = 2;
 
 /**
  * DataCell for panelGroup area
@@ -194,6 +189,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     if (this.spreadsheet.isDerivedValue(originField)) {
       const data = this.getDerivedData(originField, isTotals);
+      const dataValue = data.value as string;
       // 衍生指标的cell, 需要单独的处理
       this.add(
         new DerivedCell({
@@ -202,7 +198,7 @@ export class DataCell extends BaseCell<ViewMeta> {
           height,
           width,
           up: data.up,
-          text: data.value,
+          text: dataValue,
           spreadsheet: this.spreadsheet,
         }),
       );
@@ -214,20 +210,20 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     const { formattedValue: text } = this.getData();
     const textStyle = isTotals
-      ? this.theme.view.bolderText
-      : this.theme.view.text;
+      ? this.theme.dataCell.bolderText
+      : this.theme.dataCell.text;
     let textFill = textStyle.fill;
     if (textCondition?.mapping) {
       textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
-    const padding = this.theme.view.cell.padding;
+    const padding = this.theme.dataCell.cell.padding;
     this.textShape = renderText(
       this.textShape,
-      x + width - padding[1],
+      x + width - padding.right,
       y + height / 2,
       getEllipsisText(
         `${text || '-'}`,
-        width - padding[3] - padding[1],
+        width - padding.left - padding.right,
         textStyle,
       ),
       textStyle,
@@ -242,10 +238,10 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected drawBackgroundShape() {
     const { x, y, height, width } = this.meta;
 
-    let bgColor = this.theme.view.cell.backgroundColor;
+    let bgColor = this.theme.dataCell.cell.backgroundColor;
     const stroke = 'transparent';
 
-    const crossColor = this.theme.view.cell.crossColor;
+    const crossColor = this.theme.dataCell.cell.crossColor;
     // 隔行颜色的配置
     if (this.spreadsheet.isPivotMode() && crossColor) {
       if (this.meta.rowIndex % 2 === 0) {
@@ -343,6 +339,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawIconShape() {
     const { x, y, height, width } = this.meta;
+    const { icon } = this.theme.dataCell;
     const iconCondition = this.findFieldCondition(this.conditions?.icon);
     if (iconCondition && iconCondition.mapping) {
       const attrs = this.mappingValue(iconCondition);
@@ -351,10 +348,10 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (!isEmpty(attrs?.icon) && formattedValue) {
         this.iconShape = new GuiIcon({
           type: attrs.icon,
-          x: x + width - ICON_PADDING - ICON_SIZE,
-          y: y + height / 2 - ICON_SIZE / 2,
-          width: ICON_SIZE,
-          height: ICON_SIZE,
+          x: x + width - icon.padding.left - icon.size,
+          y: y + height / 2 - icon.size / 2,
+          width: icon.size,
+          height: icon.size,
           fill: attrs.fill,
         });
         this.add(this.iconShape);
@@ -379,14 +376,15 @@ export class DataCell extends BaseCell<ViewMeta> {
       const attrs = this.mappingValue(intervalCondition);
       if (attrs) {
         // interval shape exist
-        let scale;
-        let zero;
-        let current;
         // if (attrs.isCompare) {
         // value in range(compare) condition
-        scale = this.getIntervalScale(attrs.minValue || 0, attrs.maxValue);
-        zero = scale(0); // 零点
-        current = scale(this.meta.fieldValue); // 当前数据点
+        const scale = this.getIntervalScale(
+          attrs.minValue || 0,
+          attrs.maxValue,
+        );
+        const zero = scale(0); // 零点
+        const fieldValue = this.meta.fieldValue as number;
+        const current = scale(fieldValue); // 当前数据点
         // } else {
         // the other conditions， keep old logic
         // TODO this logic need be changed!!!
@@ -407,12 +405,12 @@ export class DataCell extends BaseCell<ViewMeta> {
         // eslint-disable-next-line no-multi-assign
         stroke = fill = attrs.fill;
 
-        const bgHeight = this.theme.view.cell.intervalBgHeight;
+        const barChartHeight = this.theme.dataCell.cell.miniBarChartHeight;
         this.intervalShape = renderRect(
           x + width * zero,
-          y + height / 2 - bgHeight / 2,
+          y + height / 2 - barChartHeight / 2,
           width * (current - zero),
-          bgHeight,
+          barChartHeight,
           fill,
           stroke,
           this,
@@ -424,7 +422,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected getDerivedData(derivedValue: string, isTotals = false) {
     const data = this.meta.data;
     if (data) {
-      let value;
+      let value: string | number;
       if (isTotals) {
         value = get(data, [0, VALUE_FIELD]);
       } else {
@@ -466,11 +464,18 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawBorderShape() {
     const { x, y, height, width } = this.meta;
-    const borderColor = this.theme.view.cell.borderColor;
-    const borderWidth = this.theme.view.cell.borderWidth;
+    const { cell } = this.theme.dataCell;
 
     // horizontal border
-    renderLine(x, y, x + width, y, borderColor[0], borderWidth[0], this);
+    renderLine(
+      x,
+      y,
+      x + width,
+      y,
+      cell.horizontalBorderColor,
+      cell.horizontalBorderWidth,
+      this,
+    );
 
     // vertical border
     renderLine(
@@ -478,8 +483,8 @@ export class DataCell extends BaseCell<ViewMeta> {
       y,
       x + width,
       y + height,
-      borderColor[1],
-      borderWidth[1],
+      cell.verticalBorderColor,
+      cell.verticalBorderWidth,
       this,
     );
   }

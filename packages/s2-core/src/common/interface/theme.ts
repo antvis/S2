@@ -1,35 +1,57 @@
 export interface StyleConfig {
-  brandColor: string;
-  mainColor: string;
-  backgroundColor: string;
-  paletteSemanticRed: string;
-  paletteSemanticGreen: string;
-  fontSize: {
-    h1: number;
-    h2: number;
-    h3: number;
+  // --------- color -----------
+  brandColor?: string;
+  neutralColor?: string;
+  backgroundColor?: string;
+  paletteSemanticRed?: string;
+  paletteSemanticGreen?: string;
+
+  // --------- text -------------
+  fontSize?: {
+    h1?: number;
+    h2?: number;
+    h3?: number;
   };
-  fontOpacity: {
-    h1: number;
-    h2: number;
-    h3: number;
+  fontOpacity?: {
+    h1?: number;
+    h2?: number;
+    h3?: number;
   };
-  borderWidth: {
-    h1: number;
-    h2: number;
-    h3: number;
+  textIndnt?: number;
+
+  // ---------- border ----------
+  borderWidth?: {
+    h1?: number;
+    h2?: number;
+    h3?: number;
   };
-  borderOpacity: {
-    h1: number;
-    h2: number;
-    h3: number;
+  borderOpacity?: {
+    h1?: number;
+    h2?: number;
+    h3?: number;
   };
-  padding: {
-    left: number;
-    top: number;
-    right: number;
-    down: number;
+
+  // ---------- icon --------------
+  iconSize?: {
+    h1?: number;
+    h2?: number;
   };
+  iconMargin?: {
+    left?: number;
+    top?: number;
+    right?: number;
+    down?: number;
+  };
+
+  // ----------- cell ------------
+  padding?: {
+    left?: number;
+    top?: number;
+    right?: number;
+    down?: number;
+  };
+
+ [key: string]: any;
 }
 
 export interface CellTheme {

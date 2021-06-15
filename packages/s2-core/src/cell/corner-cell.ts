@@ -2,7 +2,6 @@ import { getEllipsisText } from '../utils/text';
 import _ from 'lodash';
 import { isIphoneX } from '../utils/is-mobile';
 import {
-  DEFAULT_PADDING,
   EXTRA_FIELD,
   ICON_RADIUS,
   KEY_SERIES_NUMBER_NODE,
@@ -47,16 +46,18 @@ export class CornerCell extends BaseCell<Node> {
       key,
       seriesNumberWidth,
     } = this.meta;
+    const { corner, icon } = this.theme;
+
     if (_.isEqual(label, EXTRA_FIELD)) {
       // dont render extra node
       return;
     }
     const extraPadding = this.spreadsheet.isHierarchyTreeType()
-      ? ICON_RADIUS * 2 + DEFAULT_PADDING
+      ? icon.radius * 2 + corner.padding.left
       : 0;
     const textStyle = _.get(
       this.headerConfig,
-      'spreadsheet.theme.header.bolderText',
+      'spreadsheet.theme.corner.bolderText',
     );
     const seriesNumberW = seriesNumberWidth || 0;
     const text = getEllipsisText(
@@ -156,8 +157,8 @@ export class CornerCell extends BaseCell<Node> {
         y,
         x,
         y + cellHeight,
-        this.theme.header.cell.borderColor[0],
-        this.theme.header.cell.borderWidth[0],
+        this.theme.corner.cell.horizontalBorderColor,
+        this.theme.corner.cell.horizontalBorderWidth,
         this,
       );
     }

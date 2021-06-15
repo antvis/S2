@@ -37,8 +37,8 @@ export class DataDerivedCell extends DataCell {
     // 主指标的条件格式
     const { formattedValue: text } = this.getData();
     const textStyle = isTotals
-      ? get(this.spreadsheet, 'theme.view.bolderText')
-      : get(this.spreadsheet, 'theme.view.text');
+      ? get(this.spreadsheet, 'theme.dataCell.bolderText')
+      : get(this.spreadsheet, 'theme.dataCell.text');
     let textFill = textStyle.fill;
     if (get(textCondition, 'mapping')) {
       textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
@@ -103,6 +103,7 @@ export class DataDerivedCell extends DataCell {
         const info = derivedInfos[i] as any;
         const currentDerivedX = x + info?.x;
         const data = this.getDerivedData(displayDerivedValues[i]);
+        const dataValue = data.value as string;
         this.add(
           new DerivedCell({
             x: currentDerivedX,
@@ -110,7 +111,7 @@ export class DataDerivedCell extends DataCell {
             height,
             width: info?.width,
             up: data.up,
-            text: data.value,
+            text: dataValue,
             spreadsheet: this.spreadsheet,
           }),
         );
@@ -119,6 +120,6 @@ export class DataDerivedCell extends DataCell {
   }
 
   protected initCellRightBorder() {
-    set(this.spreadsheet, 'theme.view.cell.verticalBorder', true);
+    set(this.spreadsheet, 'theme.dataCell.cell.verticalBorderColor', true);
   }
 }

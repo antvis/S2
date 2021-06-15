@@ -1,5 +1,5 @@
 import { getEllipsisText, measureTextWidth } from '@/utils/text';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { GuiIcon } from '@/common/icons';
 import { renderRect, updateShapeAttr } from '@/utils/g-renders';
 import { HIT_AREA } from '@/facet/header/base';
@@ -13,8 +13,6 @@ import {
   COLOR_DEFAULT_RESIZER,
 } from '../common/constant';
 
-const SORT_ICON_SIZE = 14;
-const SORT_ICON_MARGIN_RIGHT = 4;
 export class ColCell extends BaseCell<Node> {
   protected headerConfig: ColHeaderConfig;
   // protected bottomBorderHotSpot: Set<string>;
@@ -32,8 +30,8 @@ export class ColCell extends BaseCell<Node> {
   public setActive() {
     updateShapeAttr(
       this.interactiveBgShape,
-      'fillOpacity',
-      this.theme.header.cell.interactiveFillOpacity[1],
+      'fill',
+      this.theme.colHeader.cell.selectedBackgroundColor,
     );
   }
 
@@ -86,8 +84,8 @@ export class ColCell extends BaseCell<Node> {
       y,
       cellWidth,
       cellHeight,
-      this.theme.header.cell.colBackgroundColor,
-      this.theme.header.cell.borderColor[0],
+      this.theme.colheader.cell.colBackgroundColor,
+      this.theme.colheader.cell.horizontalBorderWidth,
       this,
     );
   }
@@ -110,29 +108,28 @@ export class ColCell extends BaseCell<Node> {
       key,
     } = this.meta;
 
+    const { icon, text, bolderText } = this.theme.colheader;
+
     // 格式化枚举值
     const f = this.headerConfig.formatter(key);
     // const content = f(parent.isTotals ? '' : label);
     const content = f(label);
 
     const sortIconPadding = this.showSortIcon()
-      ? SORT_ICON_SIZE + SORT_ICON_MARGIN_RIGHT
+      ? icon.size + icon.margin.right
       : 0;
-    const textStyle =
-      isLeaf && !isTotals
-        ? this.spreadsheet.theme.header.text
-        : this.spreadsheet.theme.header.bolderText;
-    const text = getEllipsisText(
+    const textStyle = isLeaf && !isTotals ? text : bolderText;
+    const textShape = getEllipsisText(
       content,
       cellWidth - sortIconPadding,
       textStyle,
     );
-    const textWidth = measureTextWidth(text, textStyle);
-    let textX;
-    let textAlign;
+    const textWidth = measureTextWidth(textShape, textStyle);
+    let textX: number;
+    let textAlign: string;
     if (isLeaf) {
       // 最后一个层级的维值，固定居右(但是排除决策模式的场景)
-      textX = x + cellWidth - sortIconPadding - SORT_ICON_MARGIN_RIGHT;
+      textX = x + cellWidth - sortIconPadding - icon.margin.right;
       textAlign = 'end';
     } else {
       textAlign = 'center';
@@ -198,7 +195,7 @@ export class ColCell extends BaseCell<Node> {
       attrs: {
         x: textX,
         y: y + cellHeight / 2,
-        text,
+        textShape,
         textAlign,
         ...textStyle,
         cursor: 'pointer',
@@ -232,17 +229,18 @@ export class ColCell extends BaseCell<Node> {
 
   // 绘制排序icon
   private drawSortIcon() {
+    const { icon } = this.theme.colheader;
     if (this.showSortIcon()) {
       const { sortParam } = this.headerConfig;
       const { x, y, width: cellWidth, height: cellHeight } = this.meta;
-      const icon = new GuiIcon({
+      const iconShape = new GuiIcon({
         type: _.get(sortParam, 'type', 'none'),
-        x: x + cellWidth - SORT_ICON_SIZE - SORT_ICON_MARGIN_RIGHT,
-        y: y + (cellHeight - SORT_ICON_SIZE) / 2,
-        width: SORT_ICON_SIZE,
-        height: SORT_ICON_SIZE,
+        x: x + cellWidth - icon.size - icon.margin.right,
+        y: y + (cellHeight - icon.size) / 2,
+        width: icon.size,
+        height: icon.size,
       });
-      this.add(icon);
+      this.add(iconShape);
     }
   }
 
@@ -331,7 +329,7 @@ export class ColCell extends BaseCell<Node> {
           y1: y + cellHeight,
           x2: x + cellWidth,
           y2: y + height + viewportHeight, // 高度有多，通过 clip 裁剪掉
-          stroke: this.theme.header.cell.borderColor[0],
+          stroke: this.theme.colHeader.cell.horizontalBorderColor,
           lineWidth: 1,
         },
       });

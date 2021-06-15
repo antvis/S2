@@ -2,7 +2,6 @@ import { Group } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { measureTextWidth, getEllipsisText } from '../utils/text';
 import { GuiIcon } from '../common/icons';
-import { STRATEGY_ICON_WIDTH, STRATEGY_PADDING } from '../common/constant';
 import { renderRect } from '../utils/g-renders';
 import { SpreadSheet } from 'src/sheet-type';
 
@@ -33,6 +32,7 @@ export class DerivedCell extends Group {
 
   private initCell(params: DerivedCellParams) {
     const { x, y, text, up, spreadsheet, height, width } = params;
+    const { icon: iconCfg } = spreadsheet.theme.dataCell.icon;
     let icon = 'CellUp';
     if (up) {
       icon = 'CellUp';
@@ -45,7 +45,7 @@ export class DerivedCell extends Group {
     }
 
     const showIcon = spreadsheet.options.style.colCfg.showDerivedIcon;
-    const textStyle = get(spreadsheet, 'theme.view.text');
+    const textStyle = get(spreadsheet, 'theme.dataCell.text');
     if (!text) {
       this.addShape('text', {
         attrs: {
@@ -63,9 +63,9 @@ export class DerivedCell extends Group {
     const textX = x + width;
     const textY = y + height / 2;
     let maxTextWidth = width;
-    let renderText;
+    let renderText: string | number;
     if (showIcon) {
-      maxTextWidth = width - STRATEGY_ICON_WIDTH + STRATEGY_PADDING / 2;
+      maxTextWidth = width - iconCfg.size + iconCfg.margin.left;
       // 显示icon去掉负号
       renderText = getEllipsisText(text + '', maxTextWidth, textStyle).replace(
         '-',
@@ -81,15 +81,15 @@ export class DerivedCell extends Group {
         text: renderText,
         ...textStyle,
         textAlign: 'end',
-        fill: up ? '#F46649' : '#2AA491',
+        fill: up ? iconCfg.upIconColor : iconCfg.downIconColor,
       },
     });
 
     if (showIcon) {
       // 2. 红涨绿跌 icon
       const textWidth = measureTextWidth(renderText, textStyle);
-      const padding = STRATEGY_PADDING / 2;
-      const iconWH = STRATEGY_ICON_WIDTH;
+      const padding = iconCfg.margin.left;
+      const iconWH = iconCfg.size;
       const iconX = x + width - textWidth - padding - iconWH;
       const iconY = y + height / 2 - iconWH / 2;
       this.add(
@@ -99,7 +99,7 @@ export class DerivedCell extends Group {
           y: up ? iconY - 1 : iconY,
           width: iconWH,
           height: iconWH,
-          fill: up ? '#F46649' : '#2AA491',
+          fill: up ? iconCfg.upIconColor : iconCfg.downIconColor,
         }),
       );
     }

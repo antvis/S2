@@ -3,11 +3,11 @@ import { BLACK, WHITE } from '@/common/constant';
 export const defaultStyle = {
   // --------- color -----------
   brandColor: '#3471F9',
-  mainColor: BLACK,
+  neutralColor: BLACK,
   backgroundColor: WHITE,
   paletteSemanticRed: '#F46649',
   paletteSemanticGreen: '#2AA491',
-  // --------- font -------------
+  // --------- text -------------
   fontSize: {
     h1: 16,
     h2: 14,
@@ -18,6 +18,8 @@ export const defaultStyle = {
     h2: 0.85,
     h3: 0.65,
   },
+  textIndent: 12,
+  textAlign: 'middle',
   // ---------- border ----------
   borderWidth: {
     h1: 2,
@@ -29,6 +31,25 @@ export const defaultStyle = {
     h2: 0.2,
     h3: 0.3,
   },
+  // ---------- icon --------------
+  iconRadius: 4,
+  iconSize: {
+    h1: 14,
+    h2: 10,
+  },
+  iconMargin: {
+    left: 4,
+    top: 4,
+    right: 4,
+    bottom: 4,
+  },
+  iconPadding: {
+    left: 2,
+    top: 2,
+    right: 8,
+    bottom: 2,
+  },
+  // ----------- cell ------------
   padding: {
     left: 8,
     top: 10,
