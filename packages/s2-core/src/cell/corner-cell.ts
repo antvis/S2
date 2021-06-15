@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { isIphoneX } from '../utils/is-mobile';
 import {
   EXTRA_FIELD,
-  ICON_RADIUS,
   KEY_SERIES_NUMBER_NODE,
   KEY_GROUP_CORNER_RESIZER,
   COLOR_DEFAULT_RESIZER,

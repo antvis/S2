@@ -35,7 +35,8 @@ export const defaultStyle = {
   iconRadius: 4,
   iconSize: {
     h1: 14,
-    h2: 10,
+    h2: 12,
+    h3: 10,
   },
   iconMargin: {
     left: 4,

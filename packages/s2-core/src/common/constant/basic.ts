@@ -3,15 +3,6 @@ export const VALUE_FIELD = '$$value$$';
 export const EXTRA_FIELD = '$$extra$$';
 export const TOTAL_VALUE = '$$total$$';
 // export const COLUMN_FIELD_KEY = '$$column_key$$';
-// icon radius
-export const ICON_RADIUS = 6;
-// cell default padding
-export const DEFAULT_PADDING = 4;
-// tree row default width
-export const TREE_ROW_DEFAULT_WIDTH = 100;
-
-export const STRATEGY_PADDING = 8; // 各种padding 左右和元素边界
-export const STRATEGY_ICON_WIDTH = 10; // 三角icon 宽度
 
 // frontgroundGroup 上的 children 层叠顺序
 export const FRONT_GROUND_GROUP_CONTAINER_ZINDEX = 0; // 约定这个 z-index 为 0 的 container 作为基准
@@ -29,9 +20,6 @@ export const KEY_GROUP_ROW_RESIZER = 'rowResizerGroup';
 export const KEY_GROUP_ROW_INDEX_RESIZER = 'rowIndexResizerGroup';
 export const KEY_GROUP_CORNER_RESIZER = 'cornerResizerGroup';
 export const KEY_GROUP_COL_RESIZER = 'colResizerGroup';
-
-// color
-export const COLOR_DEFAULT_RESIZER = 'rgba(33,33,33,0)';
 
 // event keys
 export const KEY_LIST_SORT = 'spreadsheet:list-sort';

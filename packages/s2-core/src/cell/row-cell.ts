@@ -8,9 +8,7 @@ import { isMobile } from '@/utils/is-mobile';
 import { getAdjustPosition } from '@/utils/text-absorption';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import {
-  DEFAULT_PADDING,
   EXTRA_FIELD,
-  ICON_RADIUS,
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_ROW_RESIZER,
   COLOR_DEFAULT_RESIZER,
@@ -21,10 +19,6 @@ import { ResizeInfo } from '@/facet/header/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { Node } from '../index';
 import { BaseCell } from './base-cell';
-import { FONT_SIZE } from '@/theme/default';
-
-const ICON_SIZE = ICON_RADIUS * 2;
-
 export class RowCell extends BaseCell<Node> {
   protected headerConfig: RowHeaderConfig;
 
@@ -90,12 +84,8 @@ export class RowCell extends BaseCell<Node> {
   protected drawActionIcons() {
     const rowActionIcons = this.spreadsheet.options.rowActionIcons;
     if (!rowActionIcons) return;
-    const {
-      iconTypes,
-      display,
-      action,
-      customDisplayByRowName,
-    } = rowActionIcons;
+    const { iconTypes, display, action, customDisplayByRowName } =
+      rowActionIcons;
     if (customDisplayByRowName) {
       const { rowNames, mode } = customDisplayByRowName;
       const rowIds = rowNames.map((rowName) => `root${ID_SEPARATOR}${rowName}`);
@@ -131,15 +121,16 @@ export class RowCell extends BaseCell<Node> {
       this.spreadsheet.isPivotMode()
     ) {
       const { x, y, height, width } = this.meta;
+      const { cell, text } = this.theme.rowHeader;
       for (let i = 0; i < iconTypes.length; i++) {
         const iconRight =
-          (FONT_SIZE + DEFAULT_PADDING) * (iconTypes.length - i);
+          (text.fontSize + cell.padding.left) * (iconTypes.length - i);
         const icon = new GuiIcon({
           type: iconTypes[i],
           x: x + width - iconRight,
-          y: y + (height - FONT_SIZE) / 2,
-          width: FONT_SIZE,
-          height: FONT_SIZE,
+          y: y + (height - text.fontSize) / 2,
+          width: text.fontSize,
+          height: text.fontSize,
         });
         icon.set('visible', false);
         icon.on('click', (e: Event) => {
@@ -164,7 +155,7 @@ export class RowCell extends BaseCell<Node> {
     if (!this.isTreeType()) {
       return 0;
     }
-    const baseIndent = this.theme.header.cell.textIndent;
+    const baseIndent = this.theme.rowHeader.text.textIndent;
     let parent = this.meta.parent;
     let multiplier = baseIndent;
     while (parent) {
@@ -178,8 +169,8 @@ export class RowCell extends BaseCell<Node> {
 
   protected getRowTextStyle(isTotals: number, isLeaf: boolean) {
     return isLeaf && !isTotals
-      ? this.theme.header.text
-      : this.theme.header.bolderText;
+      ? this.theme.rowHeader.text
+      : this.theme.rowHeader.bolderText;
   }
 
   protected getFormattedValue(value: string): string {
@@ -206,6 +197,7 @@ export class RowCell extends BaseCell<Node> {
       isCustom,
       level,
     } = this.meta;
+    const { text: textCfg, icon: iconCfg } = this.theme.rowHeader;
     const isTreeType = this.isTreeType();
     // grid & is totals content is empty
     const content = this.getFormattedValue(label);
@@ -217,14 +209,14 @@ export class RowCell extends BaseCell<Node> {
     const left = this.spreadsheet.facet.cfg.cellCfg.padding[3];
     const padding = isTreeType ? left * level : left;
     const maxWidth =
-      cellWidth - textIndent - padding - (isTreeType ? ICON_SIZE : 0);
+      cellWidth - textIndent - padding - (isTreeType ? iconCfg.size : 0);
     const text = getEllipsisText(content, maxWidth, textStyle);
     const textY =
-      getAdjustPosition(y, cellHeight, offset, height, FONT_SIZE) +
-      FONT_SIZE / 2;
+      getAdjustPosition(y, cellHeight, offset, height, textCfg.fontSize) +
+      textCfg.fontSize / 2;
     const textXPadding = isTreeType ? padding : cellWidth / 2;
     // const leafExtraPadding =
-    //   isLeaf || isTotals ? ICON_SIZE + DEFAULT_PADDING : 0;
+    //   isLeaf || isTotals ? iconCfg.size + DEFAULT_PADDING : 0;
     const textX = x + textIndent + textXPadding;
 
     const textAlign = isTreeType ? 'start' : 'center';
@@ -285,18 +277,29 @@ export class RowCell extends BaseCell<Node> {
         hierarchy,
         level,
       } = this.meta;
+      const {
+        text: textCfg,
+        icon: iconCfg,
+        cell: cellCfg,
+      } = this.theme.rowHeader;
       const textIndent = this.getTextIndent();
-      const textY = getAdjustPosition(y, cellHeight, offset, height, FONT_SIZE);
-      const padding = DEFAULT_PADDING * level;
-      const baseIconX = x + textIndent - ICON_SIZE;
+      const textY = getAdjustPosition(
+        y,
+        cellHeight,
+        offset,
+        height,
+        textCfg.fontSize,
+      );
+      const padding = cellCfg.paddin.left * level;
+      const baseIconX = x + textIndent - iconCfg.size;
       const iconX = level >= 1 ? baseIconX + padding : baseIconX;
-      const iconY = textY + (FONT_SIZE - ICON_SIZE) / 2;
+      const iconY = textY + (textCfg.fontSize - iconCfg.size) / 2;
       const icon = new GuiIcon({
         type: isCollapsed ? 'plus' : 'MinusSquare',
         x: iconX,
         y: iconY,
-        width: ICON_SIZE,
-        height: ICON_SIZE,
+        width: iconCfg.size,
+        height: iconCfg.size,
       });
       icon.on('click', () => {
         // 折叠行头时因scrollY没变，导致底层出现空白
@@ -353,8 +356,8 @@ export class RowCell extends BaseCell<Node> {
           y1: y,
           x2: position.x + width + viewportWidth + scrollX,
           y2: y,
-          stroke: this.theme.header.cell.borderColor[0],
-          lineWidth: this.theme.header.cell.borderWidth[0],
+          stroke: this.theme.rowHeader.cell.horizontalBorderColor,
+          lineWidth: this.theme.rowHeader.cell.horizontalBorderWidth,
         },
       });
     }
@@ -372,8 +375,8 @@ export class RowCell extends BaseCell<Node> {
           y1: y,
           x2: x,
           y2: y + cellHeight,
-          stroke: this.theme.header.cell.borderColor[1],
-          lineWidth: this.theme.header.cell.borderColor[1],
+          stroke: this.theme.rowHeader.cell.verticalBorderColor,
+          lineWidth: this.theme.rowHeader.cell.verticalBorderWidth,
         },
       });
     }
@@ -438,7 +441,7 @@ export class RowCell extends BaseCell<Node> {
   }
 
   protected drawBackgroundColor() {
-    let bgColor = this.spreadsheet.theme.header.cell.rowBackgroundColor;
+    let bgColor = this.spreadsheet.theme.rowHeader.cell.backgroundColor;
     const { x, y, height, width } = this.meta;
     if (
       !this.spreadsheet.isValueInCols() &&
@@ -446,7 +449,7 @@ export class RowCell extends BaseCell<Node> {
       this.meta.query &&
       has(this.meta.query, EXTRA_FIELD)
     ) {
-      bgColor = this.theme.view.cell.crossColor;
+      bgColor = this.theme.dataCell.cell.crossColor;
     }
     renderRect(x, y, width, height, bgColor, 'transparent', this);
   }

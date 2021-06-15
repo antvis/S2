@@ -35,6 +35,7 @@ export interface StyleConfig {
   iconSize?: {
     h1?: number;
     h2?: number;
+    h3?: number;
   };
   iconMargin?: {
     left?: number;
@@ -51,7 +52,7 @@ export interface StyleConfig {
     down?: number;
   };
 
- [key: string]: any;
+  [key: string]: any;
 }
 
 export interface CellTheme {

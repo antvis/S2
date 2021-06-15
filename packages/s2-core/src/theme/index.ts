@@ -58,7 +58,7 @@ export const getTheme = (type: string) => {
       },
       icon: {
         radius: iconRadius,
-        size: iconSize.h1,
+        size: iconSize.h2,
         margin: iconMargin,
       },
       seriesNumberWidth: 50,
@@ -171,7 +171,7 @@ export const getTheme = (type: string) => {
         upIconColor: paletteSemanticGreen,
         downIconColor: paletteSemanticRed,
         radius: iconRadius,
-        size: iconSize.h2,
+        size: iconSize.h3,
         margin: iconMargin,
         padding: iconpadding,
       },
