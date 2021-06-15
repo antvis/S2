@@ -13,7 +13,6 @@ import {
 } from 'lodash';
 import { renderRect, renderText } from '../utils/g-renders';
 import { DerivedCell, DataCell } from '.';
-import { KEY_COL_REAL_WIDTH_INFO } from '../common/constant';
 import { SpreadSheet } from 'src/sheet-type';
 
 /**
@@ -45,7 +44,7 @@ export class DataDerivedCell extends DataCell {
     }
 
     const widthInfos = get(
-      this.spreadsheet.store.get(KEY_COL_REAL_WIDTH_INFO),
+      this.spreadsheet.store.get('colRealWidthInfo'),
       'widthInfos',
     );
     const key = find(keys(widthInfos), (wi) =>
