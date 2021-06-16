@@ -3,6 +3,7 @@ import {
   DrillDownFieldInLevel,
   SortParam,
 } from '../interface';
+import { Node } from '@/facet/layout/node';
 
 export interface Selected {
   type:
@@ -48,12 +49,12 @@ interface StoreKey {
   isInitCollapseState: boolean;
   // 行。列选中单元的id
   rowColSelectedId: string[];
-  // 初次下钻icon 需要显示的 行level，用于控制哪些节点需要显示icon
-  drillDownActionIconLevel: number;
-  // 下钻row id 对应的数据缓存，便于清空；以及 平铺到树形切换
-  drillDownDataCache: DrillDownDataCache[];
-  // 每个层级下钻的维度缓存
-  drillDownFieldInLevel: DrillDownFieldInLevel[];
+  // drill-down node id's data path map
+  drillDownIdPathMap: Map<string, number[][]>;
+  // drill-down node self
+  drillDownNode: Node;
+
+  [key: string]: any;
 }
 
 /**

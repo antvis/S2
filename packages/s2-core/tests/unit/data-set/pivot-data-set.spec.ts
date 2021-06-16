@@ -3,9 +3,12 @@ import { S2DataConfig } from 'src/common/interface';
 import { SpreadSheet } from 'src/sheet-type';
 import { PivotDataSet } from 'src/data-set/pivot-data-set';
 import _ from 'lodash';
+import { Node } from '@/facet/layout/node';
 
 jest.mock('src/sheet-type');
+jest.mock('src/facet/layout/node');
 const MockSpreadSheet = (SpreadSheet as any) as jest.Mock<SpreadSheet>;
+const MockNode = (Node as any) as jest.Mock<Node>;
 
 describe('Pivot Dataset Test', () => {
   let dataSet: PivotDataSet;
@@ -439,6 +442,40 @@ describe('Pivot Dataset Test', () => {
 
     test('should get correct data cell', () => {
       dataSet.setDataCfg(dataCfg);
+      // find exact single data cell
+      const result1 = dataSet.getCellData({
+        province: '辽宁省',
+        city: '达州市',
+        category: '电脑',
+        [EXTRA_FIELD]: 'price',
+      });
+      expect(result1).toEqual({
+        province: '辽宁省',
+        city: '达州市',
+        category: '电脑',
+        price: 1,
+        [EXTRA_FIELD]: 'price',
+        [VALUE_FIELD]: 1,
+      });
+
+      // find total price of province
+      const result2 = dataSet.getCellData({
+        province: '辽宁省',
+      });
+      expect(result2[0]).toEqual({
+        [EXTRA_FIELD]: 'price',
+        [VALUE_FIELD]: 10,
+        price: 10,
+        province: '辽宁省',
+      });
+    });
+
+    // TODO
+    test('should get correct data cell with rowNode', () => {
+      dataSet.setDataCfg(dataCfg);
+      const rowNode = new MockNode();
+      const drillDownData = [];
+      dataSet.transformDrillDownData('sex', drillDownData, rowNode);
       // find exact single data cell
       const result1 = dataSet.getCellData({
         province: '辽宁省',

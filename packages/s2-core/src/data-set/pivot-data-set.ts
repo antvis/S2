@@ -1,10 +1,11 @@
 import { BaseDataSet } from 'src/data-set';
-import { DataType, PivotMeta } from 'src/data-set/interface';
+import { DataPathParams, DataType, PivotMeta } from 'src/data-set/interface';
 import { DerivedValue, Meta, S2DataConfig } from 'src/common/interface';
 import { i18n } from 'src/common/i18n';
 import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import * as _ from 'lodash';
 import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from 'src/common/debug';
+import { Node } from '@/facet/layout/node';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -37,27 +38,103 @@ export class PivotDataSet extends BaseDataSet {
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
-      this.transformIndexesData();
+      const { rows, columns } = this.fields;
+      this.transformIndexesData(rows, columns, this.originData);
     });
     this.handleDimensionValuesSort();
   }
 
   /**
+   * Provide a way to append some drill-down data in indexesData
+   * @param extraRowField
+   * @param drillDownData
+   * @param rowNode
+   */
+  public transformDrillDownData(
+    extraRowField: string,
+    drillDownData: DataType[],
+    rowNode: Node,
+  ) {
+    // don't need care about columns now
+    const { columns } = this.fields;
+    const rows = Node.getFieldPath(rowNode);
+    const store = this.spreadsheet.store;
+    // 1、add extra fields info in data by values
+    const values = this.fields.values;
+    for (const drillDownDatum of drillDownData) {
+      for (const value of values) {
+        _.merge(drillDownDatum, {
+          [EXTRA_FIELD]: value,
+          [VALUE_FIELD]: drillDownDatum[value],
+        });
+      }
+    }
+    // 2、transform data
+    const drillDownDataPaths = this.transformIndexesData(
+      [...rows, extraRowField],
+      columns,
+      drillDownData,
+    );
+    // 3、record data paths by nodeId
+    const rowNodeId = rowNode.id;
+    const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
+    if (idPathMap.has(rowNodeId)) {
+      // current node has one drill-down field, clean it, add new one
+      idPathMap
+        .get(rowNodeId)
+        .map((path) => _.set(this.indexesData, path, undefined));
+    }
+    // set new drill-down data path
+    idPathMap.set(rowNodeId, drillDownDataPaths);
+    store.set('drillDownIdPathMap', idPathMap);
+  }
+
+  /**
+   * Clear drill down data by rowNodeId
+   * rowNodeId is undefined => clear all
+   * @param rowNodeId
+   */
+  public clearDrillDownData(rowNodeId?: string) {
+    const store = this.spreadsheet.store;
+    const idPathMap = store.get('drillDownIdPathMap');
+    if (rowNodeId) {
+      idPathMap
+        .get(rowNodeId)
+        .map((path) => _.set(this.indexesData, path, undefined));
+      idPathMap.delete(rowNodeId);
+    } else {
+      _.flatten(Array.from(idPathMap.values()))?.map((path) =>
+        _.set(this.indexesData, path, undefined),
+      );
+      idPathMap.clear();
+    }
+    store.set('drillDownIdPathMap', idPathMap);
+  }
+
+  /**
    * Transform origin data to indexed data
    */
-  transformIndexesData = () => {
-    const { rows, columns } = this.fields;
-    for (const data of this.originData) {
+  transformIndexesData = (
+    rows: string[],
+    columns: string[],
+    originData: DataType[],
+  ): number[][] => {
+    const paths = [];
+    for (const data of originData) {
       const rowDimensionValues = this.transformDimensionsValues(data, rows);
       const colDimensionValues = this.transformDimensionsValues(data, columns);
       // this.transformDimensionsValues(data, values);
-      const path = this.getDataPath(rowDimensionValues, colDimensionValues);
-      if (_.size(path) === 0) {
-        path.push(0);
-      }
+      const path = this.getDataPath({
+        rowDimensionValues,
+        colDimensionValues,
+        firstCreate: true,
+        rowFields: rows,
+      });
+      paths.push(path);
       // console.log('path:', path, data);
       _.set(this.indexesData, path, data);
     }
+    return paths;
   };
 
   /**
@@ -163,21 +240,22 @@ export class PivotDataSet extends BaseDataSet {
    * rowDimensionValues = [辽宁省, 达州市]
    * colDimensionValues = [家具, 椅子, price]
    *
-   * @param rowDimensionValues data's row dimension values
-   * @param colDimensionValues data's column dimension values
-   * @param firstCreate first create meta info
-   * @param careUndefined
+   * @param params
    */
-  getDataPath = (
-    rowDimensionValues: string[],
-    colDimensionValues: string[],
-    firstCreate = true,
-    careUndefined = false,
-  ): number[] => {
+  getDataPath = (params: DataPathParams): number[] => {
+    const {
+      rowDimensionValues,
+      colDimensionValues,
+      careUndefined,
+      firstCreate,
+      rowFields,
+    } = params;
     const getPath = (dimensionValues: string[], isRow = true): number[] => {
       let currentMeta = isRow ? this.rowPivotMeta : this.colPivotMeta;
+      const fields = isRow ? rowFields : [];
       const path = [];
-      for (const value of dimensionValues) {
+      for (let i = 0; i < dimensionValues.length; i++) {
+        const value = dimensionValues[i];
         if (!currentMeta.has(value)) {
           if (firstCreate) {
             currentMeta.set(value, {
@@ -194,6 +272,10 @@ export class PivotDataSet extends BaseDataSet {
           }
         }
         const meta = currentMeta.get(value);
+        if (firstCreate) {
+          // mark child field
+          meta.childField = fields?.[i + 1];
+        }
         if (_.isUndefined(value) && careUndefined) {
           path.push(value);
         } else {
@@ -337,15 +419,12 @@ export class PivotDataSet extends BaseDataSet {
     );
   };
 
-  public getCellData(query: DataType): DataType {
-    const { rows, columns } = this.fields;
+  public getCellData(query: DataType, rowNode?: Node): DataType {
+    const { columns, rows: originRows } = this.fields;
+    const rows = Node.getFieldPath(rowNode) ?? originRows;
     const rowDimensionValues = this.getQueryDimValues(rows, query);
     const colDimensionValues = this.getQueryDimValues(columns, query);
-    const path = this.getDataPath(
-      rowDimensionValues,
-      colDimensionValues,
-      false,
-    );
+    const path = this.getDataPath({ rowDimensionValues, colDimensionValues });
     const data = _.get(this.indexesData, path);
     // DebuggerUtil.getInstance().logger('get cell data:', path, data);
     return data;
@@ -355,15 +434,15 @@ export class PivotDataSet extends BaseDataSet {
     if (_.isEmpty(query)) {
       return _.compact(_.flattenDeep(this.indexesData));
     }
+    // TODO adapt drill down scene
     const { rows, columns, valueInCols } = this.fields;
     const rowDimensionValues = this.getQueryDimValues(rows, query);
     const colDimensionValues = this.getQueryDimValues(columns, query);
-    const path = this.getDataPath(
+    const path = this.getDataPath({
       rowDimensionValues,
       colDimensionValues,
-      false,
-      true,
-    );
+      careUndefined: true,
+    });
     let hadUndefined = false;
     let currentData = this.indexesData;
     for (let i = 0; i < path.length; i++) {

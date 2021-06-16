@@ -1,11 +1,26 @@
 import { FileValue, TreeHeaderParams } from 'src/facet/layout/interface';
-import getDimsCondition from 'src/facet/layout/util/get-dims-condition-by-node';
 import { layoutArrange, layoutHierarchy } from 'src/facet/layout/layout-hooks';
 import { TotalClass } from 'src/facet/layout/total-class';
 import { i18n } from 'src/common/i18n';
 import { generateId } from 'src/facet/layout/util/generate-id';
 import { Node } from 'src/facet/layout/node';
 import * as _ from 'lodash';
+import { SpreadSheet } from '@/sheet-type';
+
+const addTotals = (
+  spreadsheet: SpreadSheet,
+  currentField: string,
+  fieldValues: FileValue[],
+) => {
+  const totalsConfig = spreadsheet.getTotalsConfig(currentField);
+  // tree mode only has grand totals, but if there are subTotals configs, it will
+  // display in cross-area cell
+  // TODO valueInCol = false and one or more values
+  if (totalsConfig.showGrandTotals) {
+    const func = totalsConfig.reverseLayout ? 'unshift' : 'push';
+    fieldValues[func](new TotalClass(totalsConfig.label, false, true));
+  }
+};
 
 /**
  * Only row header has tree hierarchy, in this scene:
@@ -14,28 +29,33 @@ import * as _ from 'lodash';
  * @param params
  */
 export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
-  const { parentNode, currentField, fields, facetCfg, hierarchy } = params;
-  const { dataSet, spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
-  const index = fields.indexOf(currentField);
-  const query = getDimsCondition(parentNode, true);
-  const dimValues = dataSet.getDimensionValues(currentField, query);
+  const {
+    parentNode,
+    currentField,
+    level,
+    facetCfg,
+    hierarchy,
+    pivotMeta,
+  } = params;
+  const { spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
+  const query = parentNode.query;
+  const dimValues = Array.from(pivotMeta.keys());
   const fieldValues: FileValue[] = layoutArrange(
     dimValues,
     spreadsheet,
     parentNode,
     currentField,
   );
-  const totalsConfig = spreadsheet.getTotalsConfig(currentField);
 
-  // tree mode only has grand totals, but if there are subTotals configs, it will
-  // display in cross-area cell
-  if (currentField === fields[0] && totalsConfig.showGrandTotals) {
-    const func = totalsConfig.reverseLayout ? 'unshift' : 'push';
-    fieldValues[func](new TotalClass(totalsConfig.label, false, true));
+  if (level === 0) {
+    addTotals(spreadsheet, currentField, fieldValues);
   }
 
   for (const fieldValue of fieldValues) {
     const isTotals = fieldValue instanceof TotalClass;
+    const pivotMetaValue = isTotals
+      ? null
+      : pivotMeta.get(fieldValue as string);
     let value;
     let nodeQuery = query;
     if (isTotals) {
@@ -70,7 +90,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       key: currentField,
       label: value,
       value,
-      level: index,
+      level,
       parent: parentNode,
       field: currentField,
       isTotals,
@@ -82,20 +102,16 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
 
     layoutHierarchy(facetCfg, parentNode, node, hierarchy);
 
-    // TODO re-check this logic
-    if (index > hierarchy.maxLevel) {
-      hierarchy.sampleNodesForAllLevels.push(node);
-      hierarchy.sampleNodeForLastLevel = node;
-      hierarchy.maxLevel = index;
-    }
-    if (index === fields.length - 1 || isTotals) {
+    const emptyChildren = _.isEmpty(pivotMetaValue?.children);
+    if (emptyChildren || isTotals) {
       node.isLeaf = true;
     }
 
-    if (index < fields.length - 1 && !isCollapse && !isTotals) {
+    if (!emptyChildren && !isCollapse && !isTotals) {
       buildRowTreeHierarchy({
-        currentField: fields[index + 1],
-        fields,
+        level: level + 1,
+        currentField: pivotMetaValue.childField,
+        pivotMeta: pivotMetaValue.children,
         facetCfg,
         parentNode: node,
         hierarchy,

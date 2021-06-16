@@ -8,6 +8,7 @@ import {
 } from '../common/interface';
 import { DataType } from 'src/data-set/interface';
 import { SpreadSheet } from 'src/sheet-type';
+import { Node } from '@/facet/layout/node';
 
 export abstract class BaseDataSet {
   // 字段域信息
@@ -99,8 +100,9 @@ export abstract class BaseDataSet {
    * cross data cell data. And we need mark total if
    * the pending cell is totals cell
    * @param query
+   * @param rowNode some times, we need rowNode to locate data
    */
-  public abstract getCellData(query: DataType): DataType;
+  public abstract getCellData(query: DataType, rowNode?: Node): DataType;
 
   /**
    * To get a row or column cells data;

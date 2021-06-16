@@ -47,6 +47,7 @@
     "test-accuracy1": "DEBUG_MODE=1 jest __tests__/s2/data-accuracy-one-measure-spec.tsx",
     "test-pivot": "DEBUG_MODE=1 jest __tests__/s2/data-set/pivot-data-set.spec.ts --verbose",
     "test-accuracy2": "DEBUG_MODE=1 jest __tests__/s2/data-accuracy-two-measures-spec.tsx",
+    "test-drill-down": "DEBUG_MODE=1 jest tests/spreadsheet/part-drill-down-spec.tsx",
     "test-pressure": "DEBUG_MODE=1 jest __tests__/spreadsheet/pressure-test-spec.tsx",
     "test-tabular": "DEBUG_MODE=1 jest __tests__/spreadsheet/tabularSheet-spec.tsx",
     "test-merge-cells": "DEBUG_MODE=1 jest __tests__/spreadsheet/merge-cells-spec.tsx",
@@ -122,7 +123,7 @@
       "jest-extended"
     ],
     "preset": "ts-jest",
-    "collectCoverage": true,
+    "collectCoverage": false,
     "collectCoverageFrom": [
       "src/**/*.{ts,js}",
       "!**/node_modules/**",

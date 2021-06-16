@@ -3,20 +3,13 @@ import { isEmpty, debounce, isFunction, get, merge } from 'lodash';
 import { Spin, Pagination } from 'antd';
 import { i18n } from 'src/common/i18n';
 import {
-  S2DataConfig,
   safetyDataConfig,
   safetyOptions,
   Pagination as PaginationCfg,
 } from 'src/common/interface';
 import { DrillDown } from '../../drill-down';
 import { Header } from '../../header';
-import {
-  ClearDrillDownInfo,
-  HandleConfigWhenDrillDown,
-  HandleOptions,
-  HandleDrillDown,
-  SpreadSheet,
-} from 'src/index';
+import { HandleDrillDownIcon, HandleDrillDown, SpreadSheet } from 'src/index';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_COL_NODE_BORDER_REACHED,
@@ -27,7 +20,6 @@ import {
 } from 'src/common/constant';
 import { S2Event } from 'src/interaction/events/types';
 import { getBaseCellData } from 'src/utils/interactions/formatter';
-import { resetDrillDownCfg } from 'src/utils/drill-down/helper';
 import { BaseSheetProps } from '../interface';
 import { Event as GEvent } from '@antv/g-canvas';
 
@@ -152,14 +144,14 @@ export const BaseSheet = (props: BaseSheetProps) => {
   const iconClickCallback = (
     event: MouseEvent,
     sheetInstance: SpreadSheet,
-    cashDrillFields: string[],
-    disabledFields: string[],
+    cacheDrillFields?: string[],
+    disabledFields?: string[],
   ) => {
     const element = (
       <DrillDown
         {...partDrillDown.drillConfig}
         setDrillFields={setDrillFields}
-        drillFields={cashDrillFields}
+        drillFields={cacheDrillFields}
         disabledFields={disabledFields}
       />
     );
@@ -231,13 +223,6 @@ export const BaseSheet = (props: BaseSheetProps) => {
   //   }
   // };
 
-  const preHandleDataCfg = (config: S2DataConfig) => {
-    if (partDrillDown) {
-      resetDrillDownCfg(ownSpreadsheet);
-    }
-    return config;
-  };
-
   const setOptions = (
     sheetInstance?: SpreadSheet,
     sheetProps?: BaseSheetProps,
@@ -245,26 +230,18 @@ export const BaseSheet = (props: BaseSheetProps) => {
     const curSheet = sheetInstance || ownSpreadsheet;
     const curProps = sheetProps || props;
     curSheet.setOptions(
-      safetyOptions(HandleOptions(curProps, curSheet, iconClickCallback)),
+      safetyOptions(HandleDrillDownIcon(curProps, curSheet, iconClickCallback)),
     );
   };
 
   const setDataCfg = () => {
-    const newDataCfg = preHandleDataCfg(dataCfg);
-    ownSpreadsheet.setDataCfg(newDataCfg);
-    ownSpreadsheet.store.set('originalDataCfg', newDataCfg);
+    ownSpreadsheet.setDataCfg(dataCfg);
   };
 
-  const update = (reset?: () => void) => {
+  const update = (reset?: () => void, reloadData = true) => {
     if (!ownSpreadsheet) return;
-
     if (isFunction(reset)) reset();
-
-    if (!isEmpty(props.dataCfg)) {
-      HandleConfigWhenDrillDown(props, ownSpreadsheet);
-    }
-
-    ownSpreadsheet.render();
+    ownSpreadsheet.render(reloadData);
     setLoading(false);
   };
 
@@ -275,7 +252,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
   const clearDrillDownInfo = (rowId?: string) => {
     if (!ownSpreadsheet) return;
     setLoading(true);
-    ClearDrillDownInfo(ownSpreadsheet, rowId);
+    ownSpreadsheet.clearDrillDownData(rowId);
     update();
   };
 
@@ -290,7 +267,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
       return null;
     }
     const pageSize = get(paginationCfg, 'pageSize', Infinity);
-    // only show the pagenation when the pageSize > 5
+    // only show the pagination when the pageSize > 5
     const showQuickJumper = total / pageSize > 5;
 
     return (
@@ -362,7 +339,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
   }, [dataCfg]);
 
   useEffect(() => {
-    update(setOptions);
+    update(setOptions, false);
   }, [options]);
 
   useEffect(() => {
@@ -405,9 +382,6 @@ export const BaseSheet = (props: BaseSheetProps) => {
 
   useEffect(() => {
     if (!partDrillDown || !ownSpreadsheet) return;
-    if (isEmpty(partDrillDown?.drillConfig?.dataSet)) {
-      resetDrillDownCfg(ownSpreadsheet);
-    }
     update(setOptions);
   }, [partDrillDown?.drillConfig?.dataSet]);
 

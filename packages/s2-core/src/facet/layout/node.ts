@@ -80,6 +80,25 @@ export class Node {
   }
 
   /**
+   * Get node's field path
+   * eg: node.id = root[&]东北[&]黑龙江
+   * => [area, province]
+   * @param node
+   */
+  public static getFieldPath(node: Node): string[] {
+    if (node) {
+      let parent = node.parent;
+      const fieldPath = [node.field];
+      while (parent && parent.id !== 'root') {
+        fieldPath.push(parent.field);
+        parent = parent.parent;
+      }
+      return fieldPath.reverse();
+    }
+    return [];
+  }
+
+  /**
    * Get all leaves in this node branch, eg:
    *        c1
    *    b1〈
