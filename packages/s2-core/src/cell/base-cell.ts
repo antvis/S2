@@ -24,7 +24,7 @@ export abstract class BaseCell<T> extends Group {
   // 需要这个属性的原因是在state clear时知道具体哪些shape要hide。不然只能手动改，比较麻烦
   protected stateShapes: IShape[] = [];
 
-  protected actionIcons: GuiIcon[];
+  // protected actionIcons: GuiIcon[];
 
   public constructor(meta: T, spreadsheet: SpreadSheet, ...restOptions: any) {
     super({});
@@ -63,28 +63,28 @@ export abstract class BaseCell<T> extends Group {
 
   // 根据当前state来更新cell的样式
   public updateByState(stateName: string) {
-    // const { stateTheme } = this.theme;
-    // const originCellType = this.spreadsheet.getCellType(this);
-    // // DataCell => dataCell
-    // // theme的key首字母是小写
-    // const cellType = `${originCellType
-    //   .charAt(0)
-    //   .toLowerCase()}${originCellType.slice(1)}`;
-    // const stateStyles = get(stateTheme, [cellType, stateName]);
-    // each(stateStyles, (style, styleKey) => {
-    //   if (styleKey) {
-    //     // 找到对应的shape，并且找到cssStyple对应的shapestyle
-    //     const currentShape = findKey(shapeStyle.shapeAttrsMap, (attrs) =>
-    //       includes(attrs, styleKey),
-    //     );
-    //     updateShapeAttr(
-    //       this[currentShape],
-    //       shapeStyle.shapeStyleMap[styleKey],
-    //       style,
-    //     );
-    //     this.showShapeUnderState(currentShape);
-    //   }
-    // });
+    const { stateTheme } = this.theme;
+    const originCellType = this.spreadsheet.getCellType(this);
+    // DataCell => dataCell
+    // theme的key首字母是小写
+    const cellType = `${originCellType
+      .charAt(0)
+      .toLowerCase()}${originCellType.slice(1)}`;
+    const stateStyles = get(stateTheme, [cellType, stateName]);
+    each(stateStyles, (style, styleKey) => {
+      if (styleKey) {
+        // 找到对应的shape，并且找到cssStyple对应的shapestyle
+        const currentShape = findKey(shapeStyle.shapeAttrsMap, (attrs) =>
+          includes(attrs, styleKey),
+        );
+        updateShapeAttr(
+          this[currentShape],
+          shapeStyle.shapeStyleMap[styleKey],
+          style,
+        );
+        this.showShapeUnderState(currentShape);
+      }
+    });
   }
 
   public showShapeUnderState(currentShape: string) {

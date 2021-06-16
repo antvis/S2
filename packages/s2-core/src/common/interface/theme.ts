@@ -45,7 +45,7 @@ export interface StyleConfig {
   };
 
   // ----------- cell ------------
-  padding?: {
+  cellPadding?: {
     left?: number;
     top?: number;
     right?: number;

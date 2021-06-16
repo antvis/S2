@@ -1,10 +1,8 @@
-import { BLACK, WHITE } from '@/common/constant';
-
 export const defaultStyle = {
   // --------- color -----------
   brandColor: '#3471F9',
-  neutralColor: BLACK,
-  backgroundColor: WHITE,
+  neutralColor: '#000000',
+  backgroundColor: '#FFFFFF',
   paletteSemanticRed: '#F46649',
   paletteSemanticGreen: '#2AA491',
   // --------- text -------------
@@ -15,8 +13,8 @@ export const defaultStyle = {
   },
   fontOpacity: {
     h1: 1,
-    h2: 0.85,
-    h3: 0.65,
+    h2: 1,
+    h3: 1,
   },
   textIndent: 12,
   textAlign: 'middle',
@@ -28,7 +26,7 @@ export const defaultStyle = {
   },
   borderOpacity: {
     h1: 1,
-    h2: 0.2,
+    h2: 1,
     h3: 0.3,
   },
   // ---------- icon --------------
@@ -51,7 +49,7 @@ export const defaultStyle = {
     bottom: 2,
   },
   // ----------- cell ------------
-  padding: {
+  cellPadding: {
     left: 8,
     top: 10,
     right: 8,

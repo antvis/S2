@@ -24,7 +24,7 @@ export class DetailCornerCell extends CornerCell {
     const seriesNumberW = seriesNumberWidth || 0;
     const textStyle = get(
       this.headerConfig,
-      'spreadsheet.theme.header.bolderText',
+      'spreadsheet.theme.corner.bolderText',
     );
     const text = getEllipsisText(label, cellWidth - seriesNumberW, textStyle);
     let textAlign = 'end';

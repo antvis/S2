@@ -25,6 +25,8 @@ export class RowCell extends BaseCell<Node> {
   // 绘制完其他后，需要额外绘制的起始x坐标
   protected lastStartDrawX: number;
 
+  protected actionIcons: GuiIcon[];
+
   // TODO type define
   // mobile event
   private gm: GM;
@@ -39,11 +41,7 @@ export class RowCell extends BaseCell<Node> {
   }
 
   public setActive() {
-    updateShapeAttr(
-      this.interactiveBgShape,
-      'fillOpacity',
-      this.theme.header.cell.interactiveFillOpacity[1],
-    );
+    updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 1);
     each(this.actionIcons, (icon) => icon.set('visible', true));
   }
 

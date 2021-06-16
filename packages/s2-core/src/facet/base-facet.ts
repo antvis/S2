@@ -106,6 +106,7 @@ export abstract class BaseFacet {
       size: isMobile() ? this.scrollBarSize / 2 : this.scrollBarSize,
     },
   };
+
   hideScrollBar = _.debounce(() => {
     // only work in mobile
     if (isMobile()) {
@@ -114,12 +115,14 @@ export abstract class BaseFacet {
       this.vScrollBar?.updateTheme(this.scrollBarTheme);
     }
   }, 1000);
+
   protected scrollBarTouchTheme = {
     default: {
       thumbColor: 'rgba(0,0,0,0.15)',
       size: isMobile() ? this.scrollBarSize / 2 : this.scrollBarSize,
     },
   };
+
   protected preCellIndexes: Indexes;
 
   public constructor(cfg: SpreadSheetFacetCfg) {
@@ -176,7 +179,7 @@ export abstract class BaseFacet {
       false,
     );
     return showSeriesNumber
-      ? _.get(this.cfg, 'spreadsheet.theme.header.seriesNumberWidth')
+      ? _.get(this.cfg, 'spreadsheet.theme.rowHeader.seriesNumberWidth')
       : 0;
   }
 
@@ -903,7 +906,8 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
         offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
@@ -957,7 +961,8 @@ export abstract class BaseFacet {
         // When both a row header and a panel scroll bar exist, show viewport shadow
         showViewPortRightShadow:
           !_.isNil(this.hRowScrollBar) && !_.isNil(this.hScrollBar),
-        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
         spreadsheet: this.cfg.spreadsheet,
       };

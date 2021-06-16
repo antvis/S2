@@ -328,6 +328,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
       baseSpreadsheet.render();
       setLoading(false);
       setOwnSpreadsheet(baseSpreadsheet);
+      console.log(baseSpreadsheet.getPanelAllCells());
       if (getSpreadsheet) getSpreadsheet(baseSpreadsheet);
     }
   };

@@ -13,13 +13,8 @@ const ctx = canvas.getContext('2d');
  */
 export const measureTextWidth = memoize(
   (text: number | string = '', font: unknown): number => {
-    const {
-      fontSize,
-      fontFamily,
-      fontWeight,
-      fontStyle,
-      fontVariant,
-    } = font as CSSStyleDeclaration;
+    const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
+      font as CSSStyleDeclaration;
     ctx.font = [
       fontStyle,
       fontVariant,
@@ -360,18 +355,18 @@ export const drawStringText = (cell) => {
   const { formattedValue: text } = cell.getData();
   const { isTotals } = cell.meta;
   const textStyle = isTotals
-    ? cell.theme.view.bolderText
-    : cell.theme.view.text;
+    ? cell.theme.dataCell.bolderText
+    : cell.theme.dataCell.text;
   const textFill = textStyle?.fill;
-  const padding = cell.theme.view.cell.padding;
+  const padding = cell.theme.dataCell.cell.padding;
 
   cell.textShape = renderText(
     cell.textShape,
-    x + width - padding[PADDING_RIGHT],
+    x + width - padding.right,
     y + height / 2,
     getEllipsisText(
       `${text || '-'}`,
-      width - padding[PADDING_LEFT] - padding[PADDING_RIGHT],
+      width - padding.left - padding.right,
       textStyle,
     ),
     textStyle,

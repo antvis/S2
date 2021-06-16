@@ -84,19 +84,15 @@ export class ColCell extends BaseCell<Node> {
       y,
       cellWidth,
       cellHeight,
-      this.theme.colheader.cell.colBackgroundColor,
-      this.theme.colheader.cell.horizontalBorderWidth,
+      this.theme.colHeader.cell.colBackgroundColor,
+      this.theme.colHeader.cell.horizontalBorderWidth,
       this,
     );
   }
 
   protected drawCellText() {
-    const {
-      offset,
-      width,
-      scrollContainsRowHeader,
-      cornerWidth,
-    } = this.headerConfig;
+    const { offset, width, scrollContainsRowHeader, cornerWidth } =
+      this.headerConfig;
     const {
       label,
       x,
@@ -108,7 +104,7 @@ export class ColCell extends BaseCell<Node> {
       key,
     } = this.meta;
 
-    const { icon, text, bolderText } = this.theme.colheader;
+    const { icon, text, bolderText } = this.theme.colHeader;
 
     // 格式化枚举值
     const f = this.headerConfig.formatter(key);
@@ -229,7 +225,7 @@ export class ColCell extends BaseCell<Node> {
 
   // 绘制排序icon
   private drawSortIcon() {
-    const { icon } = this.theme.colheader;
+    const { icon } = this.theme.colHeader;
     if (this.showSortIcon()) {
       const { sortParam } = this.headerConfig;
       const { x, y, width: cellWidth, height: cellHeight } = this.meta;

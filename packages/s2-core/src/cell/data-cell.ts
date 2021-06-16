@@ -108,12 +108,13 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected getLeftAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
+    const { icon } = this.theme.dataCell;
     const iconCondition = this.findFieldCondition(this.conditions?.icon);
     const isIconExist = iconCondition && iconCondition.mapping;
     return {
       x,
       y,
-      width: width - (isIconExist ? ICON_SIZE + ICON_PADDING * 2 : 0),
+      width: width - (isIconExist ? icon.size + icon.padding.left : 0),
       height,
     };
   }
@@ -168,7 +169,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): CellMapping {
-    const value = (this.meta.fieldValue as unknown) as number;
+    const value = this.meta.fieldValue as unknown as number;
     return condition?.mapping(value, get(this.meta.data, [0]));
   }
 
@@ -429,9 +430,8 @@ export class DataCell extends BaseCell<ViewMeta> {
         value = get(data, [0, derivedValue]);
       }
       const up = getDerivedDataState(value);
-      const formatter = this.spreadsheet.dataSet.getFieldFormatter(
-        derivedValue,
-      );
+      const formatter =
+        this.spreadsheet.dataSet.getFieldFormatter(derivedValue);
       return {
         value: formatter ? formatter(value) : value,
         up,
