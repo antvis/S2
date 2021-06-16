@@ -39,13 +39,20 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   } = params;
   const { spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
   const query = parentNode.query;
+  const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
   const dimValues = Array.from(pivotMeta.keys());
-  const fieldValues: FileValue[] = layoutArrange(
+  let fieldValues: FileValue[] = layoutArrange(
     dimValues,
     spreadsheet,
     parentNode,
     currentField,
   );
+
+  // limit displayed drill down data by drillItemsNum
+  const drillItemsNum = spreadsheet.store.get('drillItemsNum');
+  if (drillItemsNum && isDrillDownItem) {
+    fieldValues = fieldValues.slice(0, drillItemsNum);
+  }
 
   if (level === 0) {
     addTotals(spreadsheet, currentField, fieldValues);

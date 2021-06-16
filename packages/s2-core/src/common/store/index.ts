@@ -39,20 +39,18 @@ interface StoreKey {
   sortParam: SortParam;
   // corner text expand info
   cornerExpand: Record<string, number>;
-  // record field values max label length
-  fieldLevelMaxLabel: Record<string, number>;
   // list-sheet's field sort type(up or down)
   currentSortKey: Record<string, 'up' | 'down'>;
   // last reached border node id
   lastReachedBorderId: ReachedBorderId;
-  // maker first render logic
-  isInitCollapseState: boolean;
   // 行。列选中单元的id
   rowColSelectedId: string[];
   // drill-down node id's data path map
   drillDownIdPathMap: Map<string, number[][]>;
   // drill-down node self
   drillDownNode: Node;
+  // display drill-down data count
+  drillItemsNum: number;
 
   [key: string]: any;
 }

@@ -100,7 +100,7 @@ function MainLayout(props) {
       ],
       mode: 'pick',
     },
-    drillItemsNum: 1,
+    drillItemsNum: 2,
     fetchData: (meta, drillFields) =>
       new Promise<PartDrillDownInfo>((resolve) => {
         // 弹窗 -> 选择 -> 请求数据
