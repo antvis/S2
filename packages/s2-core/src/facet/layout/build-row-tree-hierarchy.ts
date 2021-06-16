@@ -66,9 +66,11 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       nodeQuery = _.merge({}, query, { [currentField]: value });
     }
     const uniqueId = generateId(parentNode.id, value, facetCfg);
-    const isCollapse = _.isBoolean(collapsedRows[uniqueId])
-      ? collapsedRows[uniqueId]
-      : hierarchyCollapse;
+    const collapsedRow = collapsedRows[uniqueId];
+    const isCollapse =
+      _.isBoolean(collapsedRow) && collapsedRow
+        ? collapsedRow
+        : hierarchyCollapse;
     // TODO special logic to custom control node's collapsed state
     // if (isTotal) {
     //   // 总计用户不会有收缩状态

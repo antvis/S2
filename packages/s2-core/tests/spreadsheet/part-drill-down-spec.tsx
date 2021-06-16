@@ -1,7 +1,5 @@
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
-import * as fs from 'fs';
-import * as path from 'path';
 import {
   auto,
   ID_SEPARATOR,
@@ -10,17 +8,17 @@ import {
   S2Options,
   SheetComponent,
 } from '@/index';
-import { getContainer, parseCSV } from '../util/helpers';
+import { getContainer } from '../util/helpers';
 import ReactDOM from 'react-dom';
 import { PartDrillDownInfo } from '@/components';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Switch, Button, Layout } from 'antd';
 const { Header, Sider, Content } = Layout;
 import { merge } from 'lodash';
 import {
   drillDownData1,
   drillDownData2,
-  drillDownData3,
+  // drillDownData3,
   drillDownData4,
   originData,
 } from '../data/data-drill-down';
@@ -154,14 +152,6 @@ function MainLayout(props) {
     );
   };
 
-  const clearDrillDown = (rowId: string) => {
-    setPartDrillDown(
-      merge({}, partDrillDown, {
-        clearDrillDown: { rowId: rowId },
-      }),
-    );
-  };
-
   return (
     <div>
       <Layout>
@@ -181,17 +171,6 @@ function MainLayout(props) {
             >
               清空全部下钻
             </Button>
-            <Button
-              type={'primary'}
-              style={{ marginRight: 10 }}
-              onClick={(e) => {
-                clearDrillDown(
-                  `root${ID_SEPARATOR}东北${ID_SEPARATOR}黑龙江${ID_SEPARATOR}男`,
-                );
-              }}
-            >
-              清空[东北-黑龙江-男]下钻
-            </Button>
           </Header>
           <Content style={{ backgroundColor: '#ffffff' }}>
             <SheetComponent
@@ -205,13 +184,13 @@ function MainLayout(props) {
         </Layout>
         <Sider theme={'light'}>
           <div>
-            ① 由于数据完全是mock,只有关键场景覆盖,可以通过下面步骤来体验下钻功能
-            <div>1、点击[东北-黑龙江] 下钻维度「sex」</div>
-            <div>2、点击[东北-黑龙江-男] 下钻维度「quality」</div>
-            <div>3、点击[东北-吉林] 下钻维度「sex」</div>
+            ① 下钻支持同一层级下钻不同维度，可按如下简单体验效果
+            <div>点击[辽宁省-达州市] 选择下钻维度「country」</div>
+            <div>点击[辽宁省-达州市-县城1] 选择下钻维度「village」</div>
+            <div>点击[四川省-眉山市] 选择下钻维度「village」</div>
           </div>
-          <div>② 点击已经下钻过的节点, 清空下钻</div>
-          <div>③ 下钻过的节点, 下钻其他维度</div>
+          <div>② 可清空下钻(部分或者全部)</div>
+          <div>③ 可切换行头布局方式(grid-tree)</div>
         </Sider>
       </Layout>
     </div>
