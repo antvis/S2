@@ -1,9 +1,9 @@
-import { defaultStyle } from '../../theme/style/default';
-import { StyleConfig } from '../interface';
+import { paletteDefault } from '../../theme/palette/default';
+import { Palette } from '../interface';
 
 // Map of the theme
-export const STYLE_MAP: Record<string, StyleConfig> = {
-  default: defaultStyle,
+export const PALETTE_MAP: Record<string, Palette> = {
+  default: paletteDefault,
 };
 
 export const FONT_FAMILY =

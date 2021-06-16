@@ -1,6 +1,6 @@
-import { SpreadSheetTheme, StyleConfig } from '../common/interface';
+import { SpreadSheetTheme, Palette } from '../common/interface';
 import { isWindows } from '../utils/is-mobile';
-import { getStyleConfig, calcColorByOpacity } from '../utils/theme';
+import { getPaletteByType } from '../utils/theme';
 import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
 
 /**
@@ -8,185 +8,257 @@ import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
  * @param  type
  */
 export const getTheme = (type: string) => {
-  const styleConfig: StyleConfig = getStyleConfig(type);
-  const {
-    brandColor,
-    neutralColor,
-    backgroundColor,
-    paletteSemanticRed,
-    paletteSemanticGreen,
-    fontSize,
-    fontOpacity,
-    textIndent,
-    iconRadius,
-    iconSize,
-    iconMargin,
-    iconPadding,
-    borderWidth,
-    borderOpacity,
-    cellPadding,
-  } = styleConfig;
+  const palette: Palette = getPaletteByType(type);
+  const { brandColors, grayColors, semanticColors } = palette;
 
   return {
-    rowHeader: {
+    // ------------- Header -------------------
+    corner: {
       cell: {
-        horizontalBorderColor: calcColorByOpacity(
-          neutralColor,
-          borderOpacity.h2,
-        ),
-        verticalBorderColor: calcColorByOpacity(neutralColor, borderOpacity.h2),
-        horizontalBorderWidth: borderWidth.h2,
-        verticalBorderWidth: borderWidth.h1,
-        backgroundColor: backgroundColor,
-        hoverBackgroundColor: calcColorByOpacity(brandColor, 0.32),
-        selectedBackgroundColor: calcColorByOpacity(neutralColor, 0.32),
-        padding: cellPadding,
+        // ----------- background color -----------
+        backgroundColor: brandColors[5],
+        hoverBackgroundColor: brandColors[6],
+        selectedBackgroundColor: brandColors[6],
+        // ----------- border color --------------
+        horizontalBorderColor: grayColors[5],
+        verticalBorderColor: grayColors[3],
+        hoverBorderColor: grayColors[9],
+        selectedBorderColor: grayColors[9],
+        // ----------- border width --------------
+        horizontalBorderWidth: 2,
+        verticalBorderWidth: 1,
+        hoverBorderWidth: 1,
+        selectedBorderWidth: 2,
+        // -------------- padding -----------------
+        padding: {
+          top: 12,
+          right: 4,
+          bottom: 12,
+          left: 4,
+        },
       },
       text: {
         fontFamily: FONT_FAMILY,
-        fontSize: fontSize.h3,
+        fontSize: 14,
         fontWeight: 'normal',
-        fill: calcColorByOpacity(neutralColor, fontOpacity.h3),
-        textAlign: 'right',
+        fill: grayColors[0],
+        textAlign: 'middle',
         textBaseline: 'middle',
-        textIndent: textIndent,
+        textIndent: 12,
       },
       bolderText: {
         fontFamily: FONT_FAMILY,
-        fontSize: fontSize,
+        fontSize: 14,
         fontWeight: isWindows() ? 'bold' : '520',
-        fill: calcColorByOpacity(neutralColor, borderOpacity.h2),
+        fill: grayColors[9],
         textBaseline: 'middle',
       },
       icon: {
-        radius: iconRadius,
-        size: iconSize.h2,
-        margin: iconMargin,
+        radius: 4,
+        size: 14,
+        margin: {
+          top: 4,
+          right: 4,
+          bottom: 4,
+          left: 4,
+        },
+        padding: {
+          top: 2,
+          right: 2,
+          bottom: 2,
+          left: 2,
+        },
       },
-      seriesNumberWidth: 50,
     },
     colHeader: {
       cell: {
-        horizontalBorderColor: calcColorByOpacity(
-          neutralColor,
-          borderOpacity.h2,
-        ),
-        verticalBorderColor: calcColorByOpacity(neutralColor, borderOpacity.h2),
-        horizontalBorderWidth: borderWidth.h1,
-        verticalBorderWidth: borderWidth.h2,
-        backgroundColor: backgroundColor,
-        hoverBackgroundColor: calcColorByOpacity(brandColor, 0.32),
-        selectedBackgroundColor: calcColorByOpacity(neutralColor, 0.32),
-        padding: cellPadding,
+        // ----------- background color -----------
+        backgroundColor: brandColors[5],
+        hoverBackgroundColor: brandColors[6],
+        selectedBackgroundColor: brandColors[6],
+        // ----------- border color --------------
+        horizontalBorderColor: grayColors[5],
+        verticalBorderColor: grayColors[3],
+        hoverBorderColor: grayColors[9],
+        selectedBorderColor: grayColors[9],
+        // ----------- border width --------------
+        horizontalBorderWidth: 2,
+        verticalBorderWidth: 1,
+        hoverBorderWidth: 1,
+        selectedBorderWidth: 2,
+        // -------------- padding -----------------
+        padding: {
+          top: 12,
+          right: 4,
+          bottom: 12,
+          left: 4,
+        },
       },
       text: {
         fontFamily: FONT_FAMILY,
-        fontSize: fontSize.h2,
+        fontSize: 14,
         fontWeight: 'normal',
-        fill: calcColorByOpacity(neutralColor, fontOpacity.h2),
+        fill: grayColors[0],
         textAlign: 'middle',
         textBaseline: 'middle',
-        textIndent: textIndent,
+        textIndent: 12,
       },
       bolderText: {
         fontFamily: FONT_FAMILY,
-        fontSize: fontSize.h2,
+        fontSize: 14,
         fontWeight: isWindows() ? 'bold' : '520',
-        fill: calcColorByOpacity(neutralColor, borderOpacity.h2),
+        fill: grayColors[9],
         textBaseline: 'middle',
       },
       icon: {
-        radius: iconRadius,
-        size: iconSize.h1,
-        margin: iconMargin,
-        padding: iconPadding,
+        downIconColor: semanticColors.red,
+        upIconColor: semanticColors.green,
+        radius: 4,
+        size: 14,
+
+        margin: {
+          top: 4,
+          right: 4,
+          bottom: 4,
+          left: 4,
+        },
+        padding: {
+          top: 2,
+          right: 2,
+          bottom: 2,
+          left: 2,
+        },
       },
     },
-    corner: {
+    rowHeader: {
+      bolderText: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: isWindows() ? 'bold' : '520',
+        fill: grayColors[9],
+        textBaseline: 'middle',
+      },
+      text: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fill: grayColors[9],
+        textAlign: 'left',
+        textBaseline: 'middle',
+        textIndent: 12,
+      },
       cell: {
-        horizontalBorderColor: calcColorByOpacity(
-          neutralColor,
-          borderOpacity.h1,
-        ),
-        verticalBorderColor: calcColorByOpacity(neutralColor, borderOpacity.h1),
-        horizontalBorderWidth: borderWidth.h1,
-        verticalBorderWidth: borderWidth.h2,
-        backgroundColor: backgroundColor,
-        padding: cellPadding,
-      },
-      text: {
-        fontFamily: FONT_FAMILY,
-        fontSize: fontSize.h2,
-        fontWeight: 'normal',
-        fill: calcColorByOpacity(neutralColor, fontOpacity.h2),
-        textAlign: 'middle',
-        textBaseline: 'middle',
-        textIndent: textIndent,
-      },
-      bolderText: {
-        fontFamily: FONT_FAMILY,
-        fontSize: fontSize.h2,
-        fontWeight: isWindows() ? 'bold' : '520',
-        fill: calcColorByOpacity(neutralColor, borderOpacity.h2),
-        textBaseline: 'middle',
+        // ----------- background color -----------
+        backgroundColor: brandColors[0],
+        hoverBackgroundColor: brandColors[1],
+        selectedBackgroundColor: brandColors[1],
+        // ----------- border color --------------
+        horizontalBorderColor: grayColors[4],
+        verticalBorderColor: grayColors[5],
+        hoverBorderColor: grayColors[9],
+        selectedBorderColor: grayColors[9],
+        // ----------- border width --------------
+        horizontalBorderWidth: 1,
+        verticalBorderWidth: 2,
+        hoverBorderWidth: 1,
+        selectedBorderWidth: 2,
+        // -------------- padding -----------------
+        padding: {
+          top: 12,
+          right: 4,
+          bottom: 12,
+          left: 4,
+        },
       },
       icon: {
-        radius: iconRadius,
-        size: iconSize.h1,
-        margin: iconMargin,
-        padding: iconPadding,
+        radius: 4,
+        size: 14,
+        margin: {
+          top: 4,
+          right: 4,
+          bottom: 4,
+          left: 4,
+        },
+        padding: {
+          top: 2,
+          right: 2,
+          bottom: 2,
+          left: 2,
+        },
       },
+      seriesNumberWidth: 50,
     },
+    // ------------- DataCell -------------------
     dataCell: {
+      bolderText: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: isWindows() ? 'bold' : '520',
+        fill: grayColors[8],
+        textBaseline: 'middle',
+        textAlign: 'right',
+      },
+      text: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fill: grayColors[8],
+        textAlign: 'right',
+        textBaseline: 'middle',
+        textIndent: 12,
+      },
       cell: {
-        horizontalBorderColor: calcColorByOpacity(
-          neutralColor,
-          borderOpacity.h2,
-        ),
-        verticalBorderColor: calcColorByOpacity(neutralColor, borderOpacity.h2),
-        horizontalBorderWidth: borderWidth.h2,
-        verticalBorderWidth: borderWidth.h2,
-        backgroundColor: backgroundColor,
-        crossColor: calcColorByOpacity(brandColor, borderOpacity.h2),
-        padding: cellPadding,
-        selectedBackgroundColor: calcColorByOpacity(brandColor, 0.32),
-        selectedBorderColor: calcColorByOpacity(neutralColor, borderOpacity.h2),
-        hoverBorderColor: calcColorByOpacity(neutralColor, borderOpacity.h2),
-        hoverbBackgroundColor: calcColorByOpacity(brandColor, 0.32),
-        prepareSelectBorderColor: calcColorByOpacity(brandColor, 0.32),
-        hoverLinkageBackgroundColor: calcColorByOpacity(brandColor, 0.32),
+        // ----------- background color -----------
+        crossColor: brandColors[0],
+        backgroundColor: grayColors[0],
+        hoverBackgroundColor: brandColors[1],
+        hoverLinkageBackgroundColor: brandColors[1],
+        selectedBackgroundColor: brandColors[1],
+        // ----------- border color --------------
+        horizontalBorderColor: grayColors[0],
+        verticalBorderColor: grayColors[3],
+        hoverBorderColor: grayColors[9],
+        selectedBorderColor: grayColors[9],
+        prepareSelectBorderColor: brandColors[2],
+
+        // ----------- border width --------------
+        horizontalBorderWidth: 1,
+        verticalBorderWidth: 2,
+        hoverBorderWidth: 1,
+        selectedBorderWidth: 2,
+
+        // -------------- padding -----------------
+        padding: {
+          top: 12,
+          right: 4,
+          bottom: 12,
+          left: 4,
+        },
+        // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
       },
-      text: {
-        fontFamily: FONT_FAMILY,
-        fontSize: fontSize.h3,
-        fontWeight: 'normal',
-        fill: calcColorByOpacity(neutralColor, fontOpacity.h3),
-        textAlign: 'right',
-        textBaseline: 'middle',
-        textIndent: textIndent,
-      },
-      bolderText: {
-        fontFamily: FONT_FAMILY,
-        fontSize: fontSize.h3,
-        fontWeight: isWindows() ? 'bold' : '520',
-        fill: calcColorByOpacity(neutralColor, borderOpacity.h2),
-        textBaseline: 'middle',
-        textAlign: 'right',
-      },
       icon: {
-        upIconColor: paletteSemanticGreen,
-        downIconColor: paletteSemanticRed,
-        radius: iconRadius,
-        size: iconSize.h3,
-        margin: iconMargin,
-        padding: iconPadding,
+        radius: 4,
+        size: 10,
+        margin: {
+          top: 4,
+          right: 4,
+          bottom: 4,
+          left: 4,
+        },
+        padding: {
+          top: 2,
+          right: 2,
+          bottom: 2,
+          left: 2,
+        },
       },
     },
+    // ------------- scrollBar -------------------
     scrollBar: {
-      trackColor: neutralColor,
-      thumbHoverColor: calcColorByOpacity(neutralColor, 0.2),
-      thumbColor: calcColorByOpacity(neutralColor, 0.15),
+      trackColor: 'rgba(0,0,0,0)',
+      thumbHoverColor: 'rgba(0,0,0,0.2)',
+      thumbColor: 'rgba(0,0,0,0.15)',
       size: 6,
       hoverSize: 16,
     },
