@@ -47,7 +47,7 @@ const getOptions = () => {
   return {
     debug: true,
     width: 600,
-    height: 400,
+    height: 500,
     hierarchyType: 'tree',
     hierarchyCollapse: false,
     showSeriesNumber: false,

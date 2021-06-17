@@ -273,7 +273,7 @@ export class PivotDataSet extends BaseDataSet {
         }
         const meta = currentMeta.get(value);
         if (firstCreate) {
-          // mark child field
+          // mark the child field
           meta.childField = fields?.[i + 1];
         }
         if (_.isUndefined(value) && careUndefined) {

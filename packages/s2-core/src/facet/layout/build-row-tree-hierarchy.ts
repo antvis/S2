@@ -4,7 +4,7 @@ import { TotalClass } from 'src/facet/layout/total-class';
 import { i18n } from 'src/common/i18n';
 import { generateId } from 'src/facet/layout/util/generate-id';
 import { Node } from 'src/facet/layout/node';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { SpreadSheet } from '@/sheet-type';
 
 const addTotals = (
@@ -13,8 +13,8 @@ const addTotals = (
   fieldValues: FileValue[],
 ) => {
   const totalsConfig = spreadsheet.getTotalsConfig(currentField);
-  // tree mode only has grand totals, but if there are subTotals configs, it will
-  // display in cross-area cell
+  // tree mode only has grand totals, but if there are subTotals configs,
+  // it will display in cross-area cell
   // TODO valueInCol = false and one or more values
   if (totalsConfig.showGrandTotals) {
     const func = totalsConfig.reverseLayout ? 'unshift' : 'push';

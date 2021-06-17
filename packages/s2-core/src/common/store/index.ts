@@ -41,11 +41,11 @@ interface StoreKey {
   lastReachedBorderId: ReachedBorderId;
   // 行。列选中单元的id
   rowColSelectedId: string[];
-  // drill-down node id's data path map
+  // 下钻节点id和对应生成的 path寻址路径
   drillDownIdPathMap: Map<string, number[][]>;
-  // drill-down node self
+  // 当前下钻节点
   drillDownNode: Node;
-  // display drill-down data count
+  // 下钻数据的个数控制
   drillItemsNum: number;
 
   [key: string]: any;
