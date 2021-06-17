@@ -55,7 +55,6 @@ export class PivotDataSet extends BaseDataSet {
     drillDownData: DataType[],
     rowNode: Node,
   ) {
-    // don't need care about columns now
     const { columns } = this.fields;
     const rows = Node.getFieldPath(rowNode);
     const store = this.spreadsheet.store;
