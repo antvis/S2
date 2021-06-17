@@ -5,7 +5,7 @@ import { PivotDataSet } from 'src/data-set/pivot-data-set';
 import _ from 'lodash';
 
 jest.mock('src/sheet-type');
-const MockSpreadSheet = (SpreadSheet as any) as jest.Mock<SpreadSheet>;
+const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
 
 describe('Pivot Dataset Test', () => {
   let dataSet: PivotDataSet;

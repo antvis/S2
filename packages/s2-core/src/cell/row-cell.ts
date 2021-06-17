@@ -288,7 +288,7 @@ export class RowCell extends BaseCell<Node> {
         height,
         textCfg.fontSize,
       );
-      const padding = cellCfg.paddin.left * level;
+      const padding = cellCfg.padding.left * level;
       const baseIconX = x + textIndent - iconCfg.size;
       const iconX = level >= 1 ? baseIconX + padding : baseIconX;
       const iconY = textY + (textCfg.fontSize - iconCfg.size) / 2;

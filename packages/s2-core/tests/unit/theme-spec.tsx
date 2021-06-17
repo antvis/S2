@@ -232,7 +232,7 @@ function MainLayout(props) {
 
   return (
     <div>
-      <div style={{ display: 'inline-block' }}>
+      <div style={{ display: 'inline-block', marginBottom: '16px' }}>
         <Switch
           checkedChildren="挂列头"
           unCheckedChildren="挂行头"
@@ -257,7 +257,7 @@ function MainLayout(props) {
         <Switch
           checkedChildren="分页"
           unCheckedChildren="不分页"
-          style={{ marginLeft: 10 }}
+          style={{ marginRight: 10 }}
           defaultChecked={showPagination}
           onChange={onCheckChanged3}
         />

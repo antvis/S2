@@ -14,6 +14,23 @@ export const getTheme = (type: string) => {
   return {
     // ------------- Header -------------------
     corner: {
+      bolderText: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 14,
+        fontWeight: isWindows() ? 'bold' : '520',
+        fill: brandColors[0],
+        textAlign: 'left',
+        textBaseline: 'middle',
+      },
+      text: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 14,
+        fontWeight: 'normal',
+        fill: brandColors[0],
+        textAlign: 'left',
+        textBaseline: 'middle',
+        textIndent: 12,
+      },
       cell: {
         // ----------- background color -----------
         backgroundColor: brandColors[5],
@@ -36,22 +53,6 @@ export const getTheme = (type: string) => {
           bottom: 12,
           left: 4,
         },
-      },
-      text: {
-        fontFamily: FONT_FAMILY,
-        fontSize: 14,
-        fontWeight: 'normal',
-        fill: grayColors[0],
-        textAlign: 'middle',
-        textBaseline: 'middle',
-        textIndent: 12,
-      },
-      bolderText: {
-        fontFamily: FONT_FAMILY,
-        fontSize: 14,
-        fontWeight: isWindows() ? 'bold' : '520',
-        fill: grayColors[9],
-        textBaseline: 'middle',
       },
       icon: {
         radius: 4,
@@ -71,6 +72,23 @@ export const getTheme = (type: string) => {
       },
     },
     colHeader: {
+      bolderText: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 14,
+        fontWeight: isWindows() ? 'bold' : '520',
+        fill: brandColors[0],
+        textAlign: 'middle',
+        textBaseline: 'middle',
+      },
+      text: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 14,
+        fontWeight: 'normal',
+        fill: brandColors[0],
+        textAlign: 'middle',
+        textBaseline: 'middle',
+        textIndent: 12,
+      },
       cell: {
         // ----------- background color -----------
         backgroundColor: brandColors[5],
@@ -93,22 +111,6 @@ export const getTheme = (type: string) => {
           bottom: 12,
           left: 4,
         },
-      },
-      text: {
-        fontFamily: FONT_FAMILY,
-        fontSize: 14,
-        fontWeight: 'normal',
-        fill: grayColors[0],
-        textAlign: 'middle',
-        textBaseline: 'middle',
-        textIndent: 12,
-      },
-      bolderText: {
-        fontFamily: FONT_FAMILY,
-        fontSize: 14,
-        fontWeight: isWindows() ? 'bold' : '520',
-        fill: grayColors[9],
-        textBaseline: 'middle',
       },
       icon: {
         downIconColor: semanticColors.red,
@@ -136,6 +138,7 @@ export const getTheme = (type: string) => {
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : '520',
         fill: grayColors[9],
+        textAlign: 'left',
         textBaseline: 'middle',
       },
       text: {
@@ -195,8 +198,8 @@ export const getTheme = (type: string) => {
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : '520',
         fill: grayColors[8],
-        textBaseline: 'middle',
         textAlign: 'right',
+        textBaseline: 'middle',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -215,8 +218,8 @@ export const getTheme = (type: string) => {
         hoverLinkageBackgroundColor: brandColors[1],
         selectedBackgroundColor: brandColors[1],
         // ----------- border color --------------
-        horizontalBorderColor: grayColors[0],
-        verticalBorderColor: grayColors[3],
+        horizontalBorderColor: grayColors[3],
+        verticalBorderColor: grayColors[0],
         hoverBorderColor: grayColors[9],
         selectedBorderColor: grayColors[9],
         prepareSelectBorderColor: brandColors[2],

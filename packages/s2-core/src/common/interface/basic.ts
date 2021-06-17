@@ -3,12 +3,9 @@ import { Hierarchy, SpreadSheet, Node } from '../../index';
 import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
-import { S2DataConfig, safetyDataConfig, Data, DataItem } from './s2DataConfig';
-import { S2Options, safetyOptions } from './s2Options';
+import { DataItem } from './s2DataConfig';
 import { CustomInteraction } from './interaction';
 import { ResizeInfo } from '../../facet/header/interface';
-
-export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions, Data };
 
 export type Formatter = (v: any) => string;
 

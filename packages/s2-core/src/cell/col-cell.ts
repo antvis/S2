@@ -84,8 +84,8 @@ export class ColCell extends BaseCell<Node> {
       y,
       cellWidth,
       cellHeight,
-      this.theme.colHeader.cell.colBackgroundColor,
-      this.theme.colHeader.cell.horizontalBorderWidth,
+      this.theme.colHeader.cell.backgroundColor,
+      this.theme.colHeader.cell.horizontalBorderColor,
       this,
     );
   }
@@ -104,7 +104,12 @@ export class ColCell extends BaseCell<Node> {
       key,
     } = this.meta;
 
-    const { icon, text, bolderText } = this.theme.colHeader;
+    const {
+      icon: iconCfg,
+      text: textCfg,
+      bolderText: bolderTextCfg,
+      cell: cellCfg,
+    } = this.theme.colHeader;
 
     // 格式化枚举值
     const f = this.headerConfig.formatter(key);
@@ -112,23 +117,23 @@ export class ColCell extends BaseCell<Node> {
     const content = f(label);
 
     const sortIconPadding = this.showSortIcon()
-      ? icon.size + icon.margin.right
+      ? iconCfg.size + iconCfg.margin.right
       : 0;
-    const textStyle = isLeaf && !isTotals ? text : bolderText;
-    const textShape = getEllipsisText(
+    const textStyle = isLeaf && !isTotals ? textCfg : bolderTextCfg;
+    const text = getEllipsisText(
       content,
       cellWidth - sortIconPadding,
       textStyle,
     );
-    const textWidth = measureTextWidth(textShape, textStyle);
+    const textWidth = measureTextWidth(text, textStyle);
     let textX: number;
     let textAlign: string;
     if (isLeaf) {
-      // 最后一个层级的维值，固定居右(但是排除决策模式的场景)
-      textX = x + cellWidth - sortIconPadding - icon.margin.right;
-      textAlign = 'end';
+      // 最后一个层级的维值，与 dataCell 对齐方式保持一致
+      textX = x + cellWidth - sortIconPadding - iconCfg.margin.right;
+      textAlign = this.theme.dataCell.text.textAlign;
     } else {
-      textAlign = 'center';
+      textAlign = textStyle.textAlign;
       // scroll keep in center
       const cellLeft = x - offset;
       const cellRight = cellLeft + cellWidth;
@@ -191,7 +196,7 @@ export class ColCell extends BaseCell<Node> {
       attrs: {
         x: textX,
         y: y + cellHeight / 2,
-        textShape,
+        text,
         textAlign,
         ...textStyle,
         cursor: 'pointer',

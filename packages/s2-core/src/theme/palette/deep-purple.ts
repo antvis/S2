@@ -1,6 +1,7 @@
 export const paletteDeepPurple = {
   // --------- brand colors -----------
   brandColors: [
+    '#FFFFFF',
     '#00068C',
     '#001BA7',
     '#2F32C3',
