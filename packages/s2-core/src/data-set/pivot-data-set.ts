@@ -3,7 +3,7 @@ import { DataPathParams, DataType, PivotMeta } from 'src/data-set/interface';
 import { DerivedValue, Meta, S2DataConfig } from 'src/common/interface';
 import { i18n } from 'src/common/i18n';
 import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from 'src/common/debug';
 import { Node } from '@/facet/layout/node';
 
@@ -59,7 +59,7 @@ export class PivotDataSet extends BaseDataSet {
     const { columns } = this.fields;
     const rows = Node.getFieldPath(rowNode);
     const store = this.spreadsheet.store;
-    // 1、add extra fields info in data by values
+    // 1、通过values在data中注入额外的维度信息
     const values = this.fields.values;
     for (const drillDownDatum of drillDownData) {
       for (const value of values) {
@@ -69,7 +69,7 @@ export class PivotDataSet extends BaseDataSet {
         });
       }
     }
-    // 2、transform data
+    // 2、转换数据
     const drillDownDataPaths = this.transformIndexesData(
       [...rows, extraRowField],
       columns,
@@ -79,7 +79,7 @@ export class PivotDataSet extends BaseDataSet {
     const rowNodeId = rowNode.id;
     const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
     if (idPathMap.has(rowNodeId)) {
-      // current node has one drill-down field, clean it, add new one
+      // the current node has a drill-down field, clean it and add new one
       idPathMap
         .get(rowNodeId)
         .map((path) => _.set(this.indexesData, path, undefined));
@@ -127,7 +127,7 @@ export class PivotDataSet extends BaseDataSet {
       const path = this.getDataPath({
         rowDimensionValues,
         colDimensionValues,
-        firstCreate: true,
+        isFirstCreate: true,
         rowFields: rows,
       });
       paths.push(path);
@@ -247,7 +247,7 @@ export class PivotDataSet extends BaseDataSet {
       rowDimensionValues,
       colDimensionValues,
       careUndefined,
-      firstCreate,
+      isFirstCreate,
       rowFields,
     } = params;
     const getPath = (dimensionValues: string[], isRow = true): number[] => {
@@ -257,7 +257,7 @@ export class PivotDataSet extends BaseDataSet {
       for (let i = 0; i < dimensionValues.length; i++) {
         const value = dimensionValues[i];
         if (!currentMeta.has(value)) {
-          if (firstCreate) {
+          if (isFirstCreate) {
             currentMeta.set(value, {
               level: currentMeta.size,
               children: new Map(),
@@ -272,7 +272,7 @@ export class PivotDataSet extends BaseDataSet {
           }
         }
         const meta = currentMeta.get(value);
-        if (firstCreate) {
+        if (isFirstCreate) {
           // mark the child field
           meta.childField = fields?.[i + 1];
         }

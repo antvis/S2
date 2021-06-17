@@ -15,9 +15,9 @@ export type DataPathParams = {
   rowDimensionValues: string[];
   colDimensionValues: string[];
   // first create data path
-  firstCreate?: boolean;
-  // use in multi query data
+  isFirstCreate?: boolean;
+  // use for multiple data queries
   careUndefined?: boolean;
-  // use in row tree mode to append extra info
+  // use in row tree mode to append fields information
   rowFields?: string[];
 };
