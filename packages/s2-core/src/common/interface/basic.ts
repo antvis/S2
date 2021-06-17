@@ -190,24 +190,6 @@ export interface NodeField {
   colField?: string[];
 }
 
-export interface DrillDownDataCache {
-  // 执行下钻的行头id
-  rowId: string;
-  // 下钻的行头level
-  drillLevel: number;
-  // 下钻的维度
-  drillField: string;
-  // 下钻的数据
-  drillData: Record<string, string | number>[];
-}
-
-export interface DrillDownFieldInLevel {
-  // 下钻的维度
-  drillField: string;
-  // 下钻的层级
-  drillLevel: number;
-}
-
 export interface RowActionIcons {
   iconTypes: string[];
   // 需要展示的层级(行头)
@@ -438,17 +420,6 @@ export interface OffsetConfig {
     value: number | undefined;
     animate?: boolean;
   };
-}
-
-export interface ColWidthCache {
-  // 列宽每个cell中文本的信息（文本包括 主指标和衍生指标）
-  // 包括了 key（col的query），
-  // value（x是文本绘制的起始位置， width 是当前文本的实际宽度）
-  widthInfos: Record<string, any>;
-  // 当前列id 对应的真实列宽度
-  realWidth: Record<string, number>;
-  // 上次用户拖拽的宽度
-  lastUserDragWidth: Record<string, number>;
 }
 
 export interface CellPosition {

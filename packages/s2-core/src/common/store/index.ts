@@ -1,9 +1,4 @@
-import {
-  ColWidthCache,
-  DrillDownDataCache,
-  DrillDownFieldInLevel,
-  SortParam,
-} from '../interface';
+import { SortParam } from '../interface';
 import { Node } from '@/facet/layout/node';
 
 export interface Selected {
@@ -52,8 +47,6 @@ interface StoreKey {
   drillDownNode: Node;
   // display drill-down data count
   drillItemsNum: number;
-  // 列宽信息缓存
-  colRealWidthInfo: ColWidthCache;
 
   [key: string]: any;
 }
