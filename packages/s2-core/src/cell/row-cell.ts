@@ -355,6 +355,7 @@ export class RowCell extends BaseCell<Node> {
           x2: position.x + width + viewportWidth + scrollX,
           y2: y,
           stroke: this.theme.rowHeader.cell.horizontalBorderColor,
+          opacity: this.theme.rowHeader.cell.horizontalBorderOpacity,
           lineWidth: this.theme.rowHeader.cell.horizontalBorderWidth,
         },
       });
@@ -374,6 +375,7 @@ export class RowCell extends BaseCell<Node> {
           x2: x,
           y2: y + cellHeight,
           stroke: this.theme.rowHeader.cell.verticalBorderColor,
+          opacity: this.theme.rowHeader.cell.verticalBorderOpacity,
           lineWidth: this.theme.rowHeader.cell.verticalBorderWidth,
         },
       });

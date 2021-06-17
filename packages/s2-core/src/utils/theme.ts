@@ -2,9 +2,15 @@ import { Palette } from '../common/interface/theme';
 import { PALETTE_MAP } from '../common/constant';
 
 /**
- * get the palette according to the theme type
- * @param type
+ * 获取当前的主题色板
+ * @param type 主题名
+ * @param hueInvert 是否为颜色转至模式，默认为 false
  */
-export const getPaletteByType = (type: string): Palette => {
-  return PALETTE_MAP[type.toLowerCase()];
+export const getPalette = (type: string, hueInvert?: boolean): Palette => {
+  const platte = PALETTE_MAP[type.toLowerCase()];
+  if (hueInvert) {
+    platte.brandColors.reverse();
+    platte.grayColors.reverse();
+  }
+  return platte;
 };

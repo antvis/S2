@@ -14,6 +14,7 @@ export function renderRect(
   fill: string,
   stroke: string | number,
   group: Group,
+  opacity?: number,
 ): IShape {
   return (
     group &&
@@ -24,6 +25,7 @@ export function renderRect(
         width,
         height,
         fill,
+        opacity,
         stroke,
       },
     })
@@ -36,6 +38,7 @@ export function renderPolygon(
   fill: string,
   lineWidth: number,
   group: Group,
+  opacity?: number,
 ): IShape {
   return (
     group &&
@@ -44,6 +47,7 @@ export function renderPolygon(
         points,
         stroke,
         fill,
+        opacity,
         lineWidth,
       },
     })
@@ -84,6 +88,7 @@ export function renderLine(
   stroke: string,
   lineWidth: number,
   group: Group,
+  opacity?: number,
 ): IShape {
   return (
     group &&
@@ -94,6 +99,7 @@ export function renderLine(
         x2,
         y2,
         stroke,
+        opacity,
         lineWidth,
       },
     })

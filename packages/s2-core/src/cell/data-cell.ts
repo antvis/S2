@@ -242,12 +242,12 @@ export class DataCell extends BaseCell<ViewMeta> {
     let bgColor = this.theme.dataCell.cell.backgroundColor;
     const stroke = 'transparent';
 
-    const crossColor = this.theme.dataCell.cell.crossColor;
+    const crossBackgroundColor = this.theme.dataCell.cell.crossBackgroundColor;
     // 隔行颜色的配置
-    if (this.spreadsheet.isPivotMode() && crossColor) {
+    if (this.spreadsheet.isPivotMode() && crossBackgroundColor) {
       if (this.meta.rowIndex % 2 === 0) {
         // 偶数行展示灰色背景，因为index是从0开始的
-        bgColor = crossColor;
+        bgColor = crossBackgroundColor;
       }
     }
     this.backgroundShape = renderRect(
@@ -475,6 +475,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       cell.horizontalBorderColor,
       cell.horizontalBorderWidth,
       this,
+      cell.horizontalBorderColorOpacity,
     );
 
     // vertical border
@@ -486,6 +487,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       cell.verticalBorderColor,
       cell.verticalBorderWidth,
       this,
+      cell.horizontalBorderColorOpacity,
     );
   }
 }

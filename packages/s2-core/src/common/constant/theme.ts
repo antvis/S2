@@ -1,9 +1,11 @@
 import { paletteDefault } from '../../theme/palette/default';
+import { palettePurple } from '../../theme/palette/purple';
 import { Palette } from '../interface';
 
 // Map of the theme
 export const PALETTE_MAP: Record<string, Palette> = {
   default: paletteDefault,
+  purple: palettePurple,
 };
 
 export const FONT_FAMILY =

@@ -79,7 +79,7 @@ export class SpreadSheet extends EE {
   public dom: HTMLElement;
 
   // theme config
-  public theme: SpreadSheetTheme = getTheme('default');
+  public theme: SpreadSheetTheme;
 
   public interactions: Map<string, BaseInteraction> = new Map();
 
@@ -225,8 +225,12 @@ export class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setTheme(theme: SpreadSheetTheme, type = 'default'): void {
-    this.theme = merge({}, getTheme(type), theme);
+  public setTheme(
+    theme: SpreadSheetTheme,
+    type = 'default',
+    hueIvert = true,
+  ): void {
+    this.theme = merge({}, getTheme(type, hueIvert), theme);
   }
 
   /**

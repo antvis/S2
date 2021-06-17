@@ -1,14 +1,14 @@
 import { SpreadSheetTheme, Palette } from '../common/interface';
 import { isWindows } from '../utils/is-mobile';
-import { getPaletteByType } from '../utils/theme';
+import { getPalette } from '../utils/theme';
 import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
 
 /**
  * @describe generate the theme according to the type
  * @param  type
  */
-export const getTheme = (type: string) => {
-  const palette: Palette = getPaletteByType(type);
+export const getTheme = (type: string, hueInvert?: boolean) => {
+  const palette: Palette = getPalette(type, hueInvert);
   const { brandColors, grayColors, semanticColors } = palette;
 
   return {
@@ -19,6 +19,7 @@ export const getTheme = (type: string) => {
         fontSize: 14,
         fontWeight: isWindows() ? 'bold' : '520',
         fill: brandColors[0],
+        opacity: 1,
         textAlign: 'left',
         textBaseline: 'middle',
       },
@@ -27,18 +28,22 @@ export const getTheme = (type: string) => {
         fontSize: 14,
         fontWeight: 'normal',
         fill: brandColors[0],
+        opacity: 1,
         textAlign: 'left',
         textBaseline: 'middle',
         textIndent: 12,
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[5],
-        hoverBackgroundColor: brandColors[6],
-        selectedBackgroundColor: brandColors[6],
+        backgroundColor: brandColors[6],
+        backgroundColorOpacity: 1,
+        hoverBackgroundColor: brandColors[7],
+        selectedBackgroundColor: brandColors[7],
         // ----------- border color --------------
         horizontalBorderColor: grayColors[5],
+        horizontalBorderColorOpacity: 1,
         verticalBorderColor: grayColors[3],
+        verticalBorderColorOpacity: 1,
         hoverBorderColor: grayColors[9],
         selectedBorderColor: grayColors[9],
         // ----------- border width --------------
@@ -77,6 +82,7 @@ export const getTheme = (type: string) => {
         fontSize: 14,
         fontWeight: isWindows() ? 'bold' : '520',
         fill: brandColors[0],
+        opacity: 1,
         textAlign: 'middle',
         textBaseline: 'middle',
       },
@@ -85,18 +91,22 @@ export const getTheme = (type: string) => {
         fontSize: 14,
         fontWeight: 'normal',
         fill: brandColors[0],
+        opacity: 1,
         textAlign: 'middle',
         textBaseline: 'middle',
         textIndent: 12,
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[5],
-        hoverBackgroundColor: brandColors[6],
-        selectedBackgroundColor: brandColors[6],
+        backgroundColor: brandColors[6],
+        backgroundColorOpacity: 1,
+        hoverBackgroundColor: brandColors[7],
+        selectedBackgroundColor: brandColors[7],
         // ----------- border color --------------
         horizontalBorderColor: grayColors[5],
+        horizontalBorderColorOpacity: 1,
         verticalBorderColor: grayColors[3],
+        verticalBorderColorOpacity: 1,
         hoverBorderColor: grayColors[9],
         selectedBorderColor: grayColors[9],
         // ----------- border width --------------
@@ -138,6 +148,7 @@ export const getTheme = (type: string) => {
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : '520',
         fill: grayColors[9],
+        opacity: '1',
         textAlign: 'left',
         textBaseline: 'middle',
       },
@@ -146,18 +157,22 @@ export const getTheme = (type: string) => {
         fontSize: 12,
         fontWeight: 'normal',
         fill: grayColors[9],
+        opacity: '1',
         textAlign: 'left',
         textBaseline: 'middle',
         textIndent: 12,
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[0],
-        hoverBackgroundColor: brandColors[1],
-        selectedBackgroundColor: brandColors[1],
+        backgroundColor: brandColors[1],
+        backgroundColorOpacity: 1,
+        hoverBackgroundColor: brandColors[2],
+        selectedBackgroundColor: brandColors[2],
         // ----------- border color --------------
         horizontalBorderColor: grayColors[4],
+        horizontalBorderColorOpacity: 1,
         verticalBorderColor: grayColors[5],
+        verticalBorderColorOpacity: 1,
         hoverBorderColor: grayColors[9],
         selectedBorderColor: grayColors[9],
         // ----------- border width --------------
@@ -198,6 +213,7 @@ export const getTheme = (type: string) => {
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : '520',
         fill: grayColors[8],
+        opacity: 1,
         textAlign: 'right',
         textBaseline: 'middle',
       },
@@ -206,23 +222,27 @@ export const getTheme = (type: string) => {
         fontSize: 12,
         fontWeight: 'normal',
         fill: grayColors[8],
+        opacity: 1,
         textAlign: 'right',
         textBaseline: 'middle',
         textIndent: 12,
       },
       cell: {
         // ----------- background color -----------
-        crossColor: brandColors[0],
+        crossBackgroundColor: brandColors[1],
         backgroundColor: grayColors[0],
-        hoverBackgroundColor: brandColors[1],
-        hoverLinkageBackgroundColor: brandColors[1],
-        selectedBackgroundColor: brandColors[1],
+        backgroundColorOpacity: 1,
+        hoverBackgroundColor: brandColors[2],
+        hoverLinkageBackgroundColor: brandColors[2],
+        selectedBackgroundColor: brandColors[2],
         // ----------- border color --------------
         horizontalBorderColor: grayColors[3],
+        horizontalBorderColorOpacity: 0,
         verticalBorderColor: grayColors[0],
+        verticalBorderColorOpacity: 1,
         hoverBorderColor: grayColors[9],
         selectedBorderColor: grayColors[9],
-        prepareSelectBorderColor: brandColors[2],
+        prepareSelectBorderColor: brandColors[3],
 
         // ----------- border width --------------
         horizontalBorderWidth: 1,
