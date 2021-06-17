@@ -6,6 +6,7 @@ import { BaseTooltip } from '../tooltip';
 import { S2DataConfig, safetyDataConfig, Data, DataItem } from './s2DataConfig';
 import { S2Options, safetyOptions } from './s2Options';
 import { CustomInteraction } from './interaction';
+import { ResizeInfo } from '../../facet/header/interface';
 
 export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions, Data };
 
@@ -453,4 +454,10 @@ export interface ColWidthCache {
 export interface CellPosition {
   x: number;
   y: number;
+}
+
+export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
+  isCornerHeaderText?: boolean;
+  isRowHeaderText?: boolean;
+  cellData?: T;
 }
