@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { ConfigProvider, Menu, Button, Input, Empty } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
 import classNames from 'classnames';
 import zhCN from 'antd/lib/locale/zh_CN';
 import {
   CalendarIcon,
-  TextIcon,
   LocationIcon,
   SearchIcon,
+  TextIcon,
 } from '../icons/index';
 import { isEmpty } from 'lodash';
 
 import './index.less';
+
 export interface DataSet {
   icon?: React.ReactNode;
   name: string;
@@ -43,7 +44,7 @@ export const DrillDown: React.FC<DrillDownProps> = ({
   setDrillFields,
   ...restProps
 }) => {
-  const PRECLASS = 'ss-drill-down';
+  const PRE_CLASS = 'ss-drill-down';
   const DRILL_DOWN_ICON_MAP = {
     text: <TextIcon />,
     location: <LocationIcon />,
@@ -51,21 +52,16 @@ export const DrillDown: React.FC<DrillDownProps> = ({
   };
 
   const getOptions = () => {
-    const res = dataSet.map((val: DataSet) => {
+    return dataSet.map((val: DataSet) => {
       const item = val;
-      if (disabledFields && disabledFields.includes(item.value)) {
-        item.disabled = true;
-      } else {
-        item.disabled = false;
-      }
+      item.disabled = !!(disabledFields && disabledFields.includes(item.value));
       return item;
     });
-    return res;
   };
 
   const [options, setOptions] = useState<DataSet[]>(getOptions());
 
-  const handelSearch = (e: any) => {
+  const handleSearch = (e: any) => {
     const { value } = e.target;
 
     if (!value) {
@@ -77,15 +73,15 @@ export const DrillDown: React.FC<DrillDownProps> = ({
     }
   };
 
-  const handelSelect = (vaule: any) => {
-    const key = vaule?.selectedKeys;
+  const handleSelect = (value: any) => {
+    const key = value?.selectedKeys;
     if (getDrillFields) {
       getDrillFields([...key]);
     }
     if (setDrillFields) setDrillFields([...key]);
   };
 
-  const handelClear = (e: React.MouseEvent<HTMLElement>) => {
+  const handleClear = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     if (getDrillFields) getDrillFields([]);
     if (setDrillFields) setDrillFields([]);
@@ -97,41 +93,41 @@ export const DrillDown: React.FC<DrillDownProps> = ({
 
   return (
     <ConfigProvider locale={zhCN}>
-      <div className={classNames(PRECLASS, className)} {...restProps}>
-        <header className={`${PRECLASS}-header`}>
+      <div className={classNames(PRE_CLASS, className)} {...restProps}>
+        <header className={`${PRE_CLASS}-header`}>
           <div>{titleText}</div>
           <Button
             type="link"
             disabled={isEmpty(drillFields)}
-            onClick={handelClear}
+            onClick={handleClear}
           >
             {clearButtonText}
           </Button>
         </header>
         <Input
-          className={`${PRECLASS}-search`}
+          className={`${PRE_CLASS}-search`}
           placeholder={searchText}
-          onChange={handelSearch}
-          onPressEnter={handelSearch}
+          onChange={handleSearch}
+          onPressEnter={handleSearch}
           prefix={<SearchIcon />}
           allowClear
         />
         {isEmpty(options) && (
           <Empty
             imageStyle={{ height: '64px' }}
-            className={`${PRECLASS}-empty`}
+            className={`${PRE_CLASS}-empty`}
           />
         )}
         <Menu
-          className={`${PRECLASS}-menu`}
+          className={`${PRE_CLASS}-menu`}
           selectedKeys={drillFields}
-          onSelect={handelSelect}
+          onSelect={handleSelect}
         >
           {options.map((option) => (
             <Menu.Item
               key={option.value}
               disabled={option.disabled}
-              className={`${PRECLASS}-menu-item`}
+              className={`${PRE_CLASS}-menu-item`}
               icon={
                 option.icon ? option.icon : DRILL_DOWN_ICON_MAP[option.type]
               }

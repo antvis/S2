@@ -4,6 +4,7 @@ import { Node } from 'src/facet/layout/node';
 import { SpreadSheetFacetCfg } from 'src/common/interface';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { SpreadSheet } from 'src/sheet-type';
+import { PivotMeta, PivotMetaValue } from '@/data-set/interface';
 
 export type FileValue = string | TotalClass | TotalMeasure;
 
@@ -53,8 +54,9 @@ export interface HeaderNodesParams {
 
 export interface TreeHeaderParams {
   parentNode: Node;
-  currentField: string;
-  fields: string[];
   facetCfg: SpreadSheetFacetCfg;
   hierarchy: Hierarchy;
+  currentField: string;
+  level: number;
+  pivotMeta: PivotMeta;
 }

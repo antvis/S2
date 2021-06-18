@@ -8,6 +8,7 @@ import {
 } from '../common/interface';
 import { DataType } from 'src/data-set/interface';
 import { SpreadSheet } from 'src/sheet-type';
+import { Node } from '@/facet/layout/node';
 
 export abstract class BaseDataSet {
   // 字段域信息
@@ -95,12 +96,12 @@ export abstract class BaseDataSet {
   public abstract getDimensionValues(field: string, query?: DataType): string[];
 
   /**
-   * In most case, this function to get the specific
-   * cross data cell data. And we need mark total if
-   * the pending cell is totals cell
+   * In most cases, this function to get the specific
+   * cross data cell data
    * @param query
+   * @param rowNode
    */
-  public abstract getCellData(query: DataType): DataType;
+  public abstract getCellData(query: DataType, rowNode?: Node): DataType;
 
   /**
    * To get a row or column cells data;

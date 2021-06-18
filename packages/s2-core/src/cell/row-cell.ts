@@ -57,7 +57,7 @@ export class RowCell extends BaseCell<Node> {
 
   public setInactive() {
     updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
-    each(this.actionIcons, (icon) => icon.set('visible', false));
+    // each(this.actionIcons, (icon) => icon.set('visible', false));
   }
 
   public destroy(): void {
@@ -128,7 +128,7 @@ export class RowCell extends BaseCell<Node> {
     };
 
     if (
-      showIcon() &&
+      // showIcon() &&
       this.spreadsheet.isHierarchyTreeType() &&
       this.spreadsheet.isPivotMode()
     ) {
@@ -143,7 +143,7 @@ export class RowCell extends BaseCell<Node> {
           width: FONT_SIZE,
           height: FONT_SIZE,
         });
-        icon.set('visible', false);
+        icon.set('visible', true);
         icon.on('click', (e: Event) => {
           action(iconTypes[i], this.meta, e);
         });

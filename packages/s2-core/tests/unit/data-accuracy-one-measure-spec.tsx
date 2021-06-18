@@ -132,7 +132,7 @@ const getOptions = () => {
     tooltip: {
       showTooltip: true,
     },
-  };
+  } as S2Options;
 };
 
 const wrapComponent = (text, component) => {

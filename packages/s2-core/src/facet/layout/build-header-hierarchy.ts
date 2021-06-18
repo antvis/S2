@@ -6,6 +6,7 @@ import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Node } from 'src/facet/layout/node';
 import { buildRowTreeHierarchy } from 'src/facet/layout/build-row-tree-hierarchy';
 import { buildGridHierarchy } from 'src/facet/layout/build-gird-hierarchy';
+import { PivotDataSet } from '@/data-set';
 /**
  * Header Hierarchy
  * - row header
@@ -27,7 +28,7 @@ export const buildHeaderHierarchy = (
   params: BuildHeaderParams,
 ): BuildHeaderResult => {
   const { isRowHeader, facetCfg } = params;
-  const { rows, cols, values, spreadsheet } = facetCfg;
+  const { rows, cols, values, spreadsheet, dataSet } = facetCfg;
   const isValueInCols = spreadsheet.dataCfg.fields.valueInCols;
   const isPivotMode = spreadsheet.isPivotMode();
   const moreThanOneValue = values.length > 1;
@@ -38,8 +39,9 @@ export const buildHeaderHierarchy = (
       if (spreadsheet.isHierarchyTreeType()) {
         // row tree hierarchy(value must stay in colHeader)
         buildRowTreeHierarchy({
+          level: 0,
           currentField: rows[0],
-          fields: rows,
+          pivotMeta: (dataSet as PivotDataSet).rowPivotMeta,
           facetCfg,
           parentNode: rootNode,
           hierarchy,
