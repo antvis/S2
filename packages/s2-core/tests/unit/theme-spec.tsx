@@ -13,16 +13,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch, Checkbox } from 'antd';
 import { CustomTooltip } from '../spreadsheet/custom/custom-tooltip';
-
-let data = getMockData('../data/tableau-supermarket.csv');
-
-data = data.map((row) => {
-  row['profit-tongbi'] = 0.2233;
-  row['profit-huanbi'] = -0.4411;
-  row['count-tongbi'] = 0.1234;
-  row['count-huanbi'] = -0.4321;
-  return row;
-});
+import * as dataCfg from '../data/derived-value-record.json';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -33,80 +24,7 @@ const getSpreadSheet = (
 };
 
 const getDataCfg = () => {
-  return {
-    fields: {
-      // rows has value
-      rows: ['area', 'province', 'city'],
-      columns: ['type', 'sub_type'],
-      values: ['profit', 'count'],
-      valueInCols: true,
-      // derivedValues: [
-      //   {
-      //     valueField: 'profit',
-      //     derivedValueField: ['profit-tongbi', 'profit-huanbi'],
-      //     displayDerivedValueField: ['profit-tongbi'],
-      //   },
-      //   {
-      //     valueField: 'count',
-      //     derivedValueField: ['count-tongbi', 'count-huanbi'],
-      //     displayDerivedValueField: ['count-tongbi'],
-      //   },
-      // ],
-    },
-    meta: [
-      {
-        field: 'profit-tongbi',
-        name: '利润同比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'profit-huanbi',
-        name: '利润环比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'count-tongbi',
-        name: '个数同比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'count-huanbi',
-        name: '个数环比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'sale_amt',
-        name: '销售额',
-        formatter: (v) => v,
-      },
-      {
-        field: 'count',
-        name: '销售个数',
-        formatter: (v) => v,
-      },
-      {
-        field: 'discount',
-        name: '折扣',
-        formatter: (v) => v,
-      },
-      {
-        field: 'profit',
-        name: '利润',
-        formatter: (v) => v,
-      },
-    ],
-    data,
-    sortParams: [
-      {
-        sortFieldId: 'area',
-        sortMethod: 'ASC',
-      },
-      {
-        sortFieldId: 'province',
-        sortMethod: 'DESC',
-      },
-    ],
-  };
+  return dataCfg;
 };
 
 const getOptions = () => {
@@ -117,7 +35,7 @@ const getOptions = () => {
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: true,
-    freezeRowHeader: false,
+    freezeRowHeader: true,
     mode: 'pivot',
     conditions: {
       text: [],
@@ -157,9 +75,7 @@ function MainLayout(props) {
   const [valueInCols, setValueInCols] = React.useState(true);
   const [derivedValueMul, setDerivedValueMul] = React.useState(false);
   const [showPagination, setShowPagination] = React.useState(false);
-  const [freezeRowHeader, setFreezeRowHeader] = React.useState(
-    props.options.freezeRowHeader,
-  );
+  const [sheetType, setSheetType] = React.useState(true);
 
   const onRowCellClick = (value) => {
     console.log(value);
@@ -221,13 +137,13 @@ function MainLayout(props) {
     }
   };
 
-  const onCheckChanged4 = (e) => {
+  const onCheckChanged4 = (checked) => {
     setOptions(
       merge({}, options, {
-        freezeRowHeader: e.target.checked,
+        spreadsheetType: checked,
       }),
     );
-    setFreezeRowHeader(e.target.checked);
+    setSheetType(checked);
   };
 
   return (
@@ -261,10 +177,13 @@ function MainLayout(props) {
           defaultChecked={showPagination}
           onChange={onCheckChanged3}
         />
-
-        <Checkbox onChange={onCheckChanged4} defaultChecked={freezeRowHeader}>
-          冻结行头
-        </Checkbox>
+        {/* <Switch
+          checkedChildren="交叉表"
+          unCheckedChildren="明细表"
+          style={{ marginRight: 10 }}
+          defaultChecked={true}
+          onChange={onCheckChanged4}
+        /> */}
       </div>
       <SheetComponent
         dataCfg={dataCfg}

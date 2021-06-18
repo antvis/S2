@@ -228,7 +228,7 @@ export class SpreadSheet extends EE {
   public setTheme(
     theme: SpreadSheetTheme,
     type = 'default',
-    hueIvert = true,
+    hueIvert = false,
   ): void {
     this.theme = merge({}, getTheme(type, hueIvert), theme);
   }

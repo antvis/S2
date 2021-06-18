@@ -43,27 +43,18 @@ export class CornerCell extends BaseCell<Node> {
       width: cellWidth,
       height: cellHeight,
       key,
-      seriesNumberWidth,
     } = this.meta;
-    const { corner, icon } = this.theme;
+    const { corner } = this.theme;
 
     if (_.isEqual(label, EXTRA_FIELD)) {
-      // dont render extra node
+      // don't render extra node
       return;
     }
     const extraPadding = this.spreadsheet.isHierarchyTreeType()
-      ? icon.radius * 2 + corner.padding.left
-      : 0;
-    const textStyle = _.get(
-      this.headerConfig,
-      'spreadsheet.theme.corner.bolderText',
-    );
-    const seriesNumberW = seriesNumberWidth || 0;
-    const text = getEllipsisText(
-      label,
-      cellWidth - seriesNumberW - extraPadding,
-      textStyle,
-    );
+      ? corner.icon.size + corner.icon.margin.right
+      : corner.cell.padding.left;
+    const textStyle = _.get(this.headerConfig, 'spreadsheet.theme.corner.text');
+    const text = getEllipsisText(label, cellWidth - extraPadding, textStyle);
     const ellipseIndex = text.indexOf('...');
     let firstLine = text;
     let secondLine = '';
@@ -77,31 +68,12 @@ export class CornerCell extends BaseCell<Node> {
       // 第二行重新计算...逻辑
       secondLine = getEllipsisText(
         secondLine,
-        cellWidth - seriesNumberW - extraPadding,
+        cellWidth - extraPadding,
         textStyle,
       );
     }
 
-    let textX = position.x + x + extraPadding + cellWidth / 2;
-    /* corner text align scene
-  - center:
-  1、is spreadsheet but not tree mode
-  2、is listSheet and node is series number
-  - left(but contains cell padding):  --- default
-  1、is spreadsheet and tree mode
-  - left(no cell padding)
-  1、is listSheet but node is not series number
-   */
-    let textAlign = 'center';
-    if (
-      !this.spreadsheet.isHierarchyTreeType() ||
-      key === KEY_SERIES_NUMBER_NODE
-    ) {
-      textAlign = 'center';
-    } else if (this.spreadsheet.isHierarchyTreeType()) {
-      textX = position.x + x + extraPadding;
-      textAlign = 'start';
-    }
+    const textX = position.x + x + extraPadding;
     const textY =
       position.y +
       y +
@@ -112,10 +84,10 @@ export class CornerCell extends BaseCell<Node> {
         x: textX,
         y: textY,
         text: firstLine,
-        textAlign,
         ...textStyle,
         appendInfo: {
-          isCornerHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
+          // 标记为行头文本，方便做链接跳转直接识别
+          isCornerHeaderText: true,
           cellData: this.meta,
         },
       },
@@ -129,7 +101,8 @@ export class CornerCell extends BaseCell<Node> {
           text: secondLine,
           ...textStyle,
           appendInfo: {
-            isCornerHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
+            // 标记为行头文本，方便做链接跳转直接识别
+            isCornerHeaderText: true,
             cellData: this.meta,
           },
         },
@@ -146,7 +119,7 @@ export class CornerCell extends BaseCell<Node> {
         y: position.y + y,
         width: cellWidth,
         height: cellHeight,
-        stroke: 'transparent',
+        opacity: this.theme.corner.cell.backgroundColorOpacity,
       },
     });
 

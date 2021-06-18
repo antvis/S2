@@ -41,7 +41,7 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         selectedBackgroundColor: brandColors[7],
         // ----------- border color --------------
         horizontalBorderColor: grayColors[5],
-        horizontalBorderColorOpacity: 1,
+        horizontalBorderColorOpacity: 2,
         verticalBorderColor: grayColors[3],
         verticalBorderColorOpacity: 1,
         hoverBorderColor: grayColors[9],
@@ -54,9 +54,9 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         // -------------- padding -----------------
         padding: {
           top: 12,
-          right: 4,
+          right: 8,
           bottom: 12,
-          left: 4,
+          left: 8,
         },
       },
       icon: {
