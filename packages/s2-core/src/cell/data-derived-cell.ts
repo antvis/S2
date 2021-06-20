@@ -11,7 +11,7 @@ import {
   includes,
   isArray,
 } from 'lodash';
-import { renderRect, renderText } from '../utils/g-renders';
+import { renderRect, renderText } from '@/utils/g-renders';
 import { DerivedCell, DataCell } from '.';
 import { SpreadSheet } from 'src/sheet-type';
 
@@ -44,7 +44,7 @@ export class DataDerivedCell extends DataCell {
     }
 
     const widthInfos = get(
-      this.spreadsheet.store.get('colRealWidthInfo'),
+      this.spreadsheet.store.get('col-real-width-info'),
       'widthInfos',
     );
     const key = find(keys(widthInfos), (wi) =>
@@ -93,7 +93,7 @@ export class DataDerivedCell extends DataCell {
     // 2、绘制衍生指标
     const derivedInfos = slice(infos, 1);
     const derivedValue = this.spreadsheet.getDerivedValue(valueField);
-    const displayDerivedValues = derivedValue.displayDerivedValueField;
+    const displayDerivedValues = derivedValue.derivedValueField;
     if (isEmpty(derivedValue?.derivedValueField)) {
       // 没有衍生指标
     } else {

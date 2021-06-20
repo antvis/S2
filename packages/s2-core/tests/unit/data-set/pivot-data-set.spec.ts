@@ -1,10 +1,13 @@
-import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
+import { EXTRA_FIELD, ID_SEPARATOR, VALUE_FIELD } from 'src/common/constant';
 import { S2DataConfig } from 'src/common/interface';
 import { SpreadSheet } from 'src/sheet-type';
 import { PivotDataSet } from 'src/data-set/pivot-data-set';
 import _ from 'lodash';
+import { BaseNodeConfig, Node } from '@/facet/layout/node';
+import { drillDownData1, drillDownData2 } from '../../data/data-drill-down';
 
 jest.mock('src/sheet-type');
+jest.mock('src/facet/layout/node');
 const MockSpreadSheet = (SpreadSheet as any) as jest.Mock<SpreadSheet>;
 
 describe('Pivot Dataset Test', () => {
@@ -465,6 +468,50 @@ describe('Pivot Dataset Test', () => {
         price: 10,
         province: '辽宁省',
       });
+    });
+
+    // TODO how to test?
+    test('should get correct data cell with rowNode', () => {
+      // dataCfg.fields.columns = ['category', 'subCategory'];
+      // dataCfg.data = drillDownData1;
+      // dataSet.setDataCfg(dataCfg);
+      // // city
+      // const rowNode = new Node({} as BaseNodeConfig);
+      // rowNode.field = 'city';
+      // rowNode.id = `root${ID_SEPARATOR}辽宁省${ID_SEPARATOR}达州市`;
+      // // province
+      // rowNode.parent = new Node({} as BaseNodeConfig);
+      // rowNode.parent.field = 'province';
+      // rowNode.parent.id = `root${ID_SEPARATOR}辽宁省`;
+      // // root
+      // rowNode.parent.parent = new Node({} as BaseNodeConfig);
+      // rowNode.parent.parent.field = '';
+      // rowNode.parent.parent.id = 'root';
+      //
+      // // start drill down
+      // dataSet.transformDrillDownData('country', drillDownData2, rowNode);
+      // // find exact single data cell
+      // const result1 = dataSet.getCellData(
+      //   {
+      //     province: '辽宁省',
+      //     city: '达州市',
+      //     country: '县城1',
+      //     category: '家具',
+      //     subCategory: '家具',
+      //     [EXTRA_FIELD]: 'price',
+      //   },
+      //   rowNode,
+      // );
+      // expect(result1).toEqual({
+      //   province: '辽宁省',
+      //   city: '达州市',
+      //   country: '县城1',
+      //   category: '家具',
+      //   subCategory: '家具',
+      //   price: 111,
+      //   [EXTRA_FIELD]: 'price',
+      //   [VALUE_FIELD]: 111,
+      // });
     });
 
     test('should get correct multi data cells', () => {

@@ -174,6 +174,13 @@ export class SpreadSheet extends EE {
     return mode === 'table' ? new PivotDataSet(this) : new PivotDataSet(this);
   };
 
+  public clearDrillDownData(rowNodeId?: string) {
+    if (this.dataSet instanceof PivotDataSet) {
+      this.dataSet.clearDrillDownData(rowNodeId);
+      this.render(false);
+    }
+  }
+
   /**
    * Update data config and keep pre-sort operations
    * Group sort params kept in {@see store} and
@@ -196,16 +203,9 @@ export class SpreadSheet extends EE {
   }
 
   public render(reloadData = true, callback?: () => void): void {
-    // 有些属性变化是不需要重新训练数据的，比如树结构的收缩
     if (reloadData) {
       this.dataSet.setDataCfg(this.dataCfg);
-      // 有数据变化，情况列宽度计算的缓存
-      this.store.set('colRealWidthInfo', {
-        widthInfos: {},
-        realWidth: {},
-      } as ColWidthCache);
     }
-
     this.buildFacet();
     if (isFunction(callback)) {
       callback();
@@ -299,7 +299,6 @@ export class SpreadSheet extends EE {
       ) || {
         valueField: '',
         derivedValueField: [],
-        displayDerivedValueField: [],
       }
     );
   }

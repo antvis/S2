@@ -56,7 +56,7 @@ export class PivotFacet extends BaseFacet {
         col.isTotals ||
         col.isTotalMeasure;
       const dataQuery = _.merge({}, rowQuery, colQuery);
-      const data = dataSet.getCellData(dataQuery);
+      const data = dataSet.getCellData(dataQuery, row);
       let valueField;
       let fieldValue = null;
       if (!_.isEmpty(data)) {
@@ -285,11 +285,11 @@ export class PivotFacet extends BaseFacet {
     const isTree = spreadsheet.isHierarchyTreeType();
 
     // 1、calculate first node's width in every level
-    for (const levelSample of rowsHierarchy.sampleNodesForAllLevels) {
-      levelSample.width = this.calculateRowLeafNodesWidth(levelSample);
-      if (isTree) {
-        rowsHierarchy.width = levelSample.width;
-      } else {
+    if (isTree) {
+      rowsHierarchy.width = this.getTreeRowHeaderWidth();
+    } else {
+      for (const levelSample of rowsHierarchy.sampleNodesForAllLevels) {
+        levelSample.width = this.calculateRowLeafNodesWidth(levelSample);
         rowsHierarchy.width += levelSample.width;
       }
     }
