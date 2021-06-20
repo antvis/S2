@@ -1,7 +1,7 @@
 import { LooseObject } from '@antv/g-base';
 import { merge } from 'lodash';
 import { DefaultTheme } from './default';
-import { SpreadSheetTheme } from './interface';
+import { SpreadSheetTheme } from '@/common/interface';
 
 // Map of the theme
 const THEME_MAP: Record<string, LooseObject> = {
