@@ -51,6 +51,9 @@ export class DataCellClick extends BaseEvent {
 
   // 处理tooltip
   private handleTooltip(ev: Event, meta: ViewMeta) {
+    if (!this.spreadsheet.options?.tooltip?.showTooltip) {
+      return;
+    }
     const position = {
       x: ev.clientX,
       y: ev.clientY,

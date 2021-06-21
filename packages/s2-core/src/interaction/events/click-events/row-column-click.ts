@@ -49,7 +49,7 @@ export class RowColumnClick extends BaseEvent {
         }
 
         if (!this.spreadsheet.options.valueInCols) {
-          this.handleTooltip(ev, meta, cellInfos);
+          this.handleTooltip(ev, cellInfos);
         }
 
         this.spreadsheet.updateCellStyleByState();
@@ -96,7 +96,7 @@ export class RowColumnClick extends BaseEvent {
         }
 
         if (this.spreadsheet.options.valueInCols) {
-          this.handleTooltip(ev, meta, cellInfos);
+          this.handleTooltip(ev, cellInfos);
         }
 
         this.spreadsheet.updateCellStyleByState();
@@ -117,7 +117,10 @@ export class RowColumnClick extends BaseEvent {
     });
   }
 
-  private handleTooltip(ev, meta, cellInfos) {
+  private handleTooltip(ev, cellInfos) {
+    if (!this.spreadsheet.options?.tooltip?.showTooltip) {
+      return;
+    }
     const position = {
       x: ev.clientX,
       y: ev.clientY,

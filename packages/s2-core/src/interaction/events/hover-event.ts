@@ -45,6 +45,9 @@ export class HoverEvent extends BaseEvent {
   }
 
   private handleTooltip(ev: Event, meta: ViewMeta) {
+    if (!this.spreadsheet.options?.tooltip?.showTooltip) {
+      return;
+    }
     const position = {
       x: ev.clientX,
       y: ev.clientY,
