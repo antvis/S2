@@ -37,10 +37,10 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     hierarchy,
     pivotMeta,
   } = params;
-  const { spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
+  const { spreadsheet, dataSet, collapsedRows, hierarchyCollapse } = facetCfg;
   const query = parentNode.query;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
-  const dimValues = Array.from(pivotMeta.keys());
+  const dimValues = dataSet.getDimensionValues(currentField, query);
   let fieldValues: FileValue[] = layoutArrange(
     dimValues,
     spreadsheet,
