@@ -1,13 +1,13 @@
 export const paletteDefault = {
   // --------- brand colors -----------
   brandColors: [
-    '#FFFFFF',
+    '#000000',
     '#F0F7FF',
     '#D9EAFF',
     '#B0D1FF',
     '#87B5FF',
     '#5E97FF',
-    '#3471F9',
+    '#ffffff',
     '#2254D4',
     '#133AAD',
     '#082487',

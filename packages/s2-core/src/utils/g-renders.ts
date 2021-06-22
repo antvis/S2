@@ -3,7 +3,7 @@
  * https://github.com/antvis/g
  */
 import { Group, IShape } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { TextTheme } from '@/common/interface/theme';
 
 export function renderRect(
@@ -55,16 +55,18 @@ export function renderPolygon(
 }
 
 export function renderText(
-  self: IShape,
+  shapes: IShape[],
   x: number,
   y: number,
   text: any,
   textStyle: TextTheme,
-  fill: string,
   group: Group,
+  extrInfo?: any,
 ): IShape {
-  if (self && group && group.contain(self)) {
-    group.removeChild(self, true);
+  if (!_.isEmpty(shapes) && group) {
+    _.forEach(shapes, (shape: IShape) => {
+      if (group.contain(shape)) group.removeChild(shape, true);
+    });
   }
   return (
     group &&
@@ -74,7 +76,7 @@ export function renderText(
         y,
         text,
         ...textStyle,
-        fill,
+        ...extrInfo,
       },
     })
   );

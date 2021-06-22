@@ -7,7 +7,6 @@ export interface Palette {
   semanticColors?: {
     red?: string;
     green?: string;
-    yellow?: string;
   };
 }
 
@@ -103,3 +102,9 @@ export interface SpreadSheetTheme {
   center?: CenterTheme;
   [key: string]: any;
 }
+
+// 文本内容的水平对齐方式, 默认 left
+export type TextAlign = 'left' | 'center' | 'right';
+
+// 绘制文本时的基线, 对应垂直方向对齐方式 默认 bottom
+export type TextBaseline = 'top' | 'middle' | 'bottom';

@@ -4,6 +4,7 @@ import { get, merge, clone } from 'lodash';
 import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
 import { IShape } from '@antv/g-canvas';
 import { S2Options, SpreadSheetTheme } from '@/index';
+import { Position, CellBoxCfg } from '@/common/interface';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -349,6 +350,7 @@ export const drawObjectText = (cell) => {
 /**
  * @desc draw text shape of string
  * @param cell
+ * @returns 文本左上角起点坐标
  */
 export const drawStringText = (cell) => {
   const { x, y, height, width } = cell.getLeftAreaBBox();
@@ -373,4 +375,53 @@ export const drawStringText = (cell) => {
     textFill,
     cell,
   );
+};
+
+/**
+ * @desc 根据单元格起点和配置（宽、高、水平对齐、垂直对齐）获取文字定位点坐标信息
+ * ************************************************
+ *     +-------------------------------------+
+ *     |                  |                  |
+ *     |            paddingTop               |
+ *     |                  |                  |
+ *     |  paddingLeft  |Text|  paddingRight  |
+ *     |                  |                  |
+ *     |            paddingBottom            |
+ *     |                  |                  |
+ *     +-------------------------------------+
+ * ************************************************
+ * @param cellBoxCfg
+ */
+export const getTextPosition = (cellBoxCfg: CellBoxCfg): Position => {
+  const { x, y, width, height, textAlign, textBaseline, padding } = cellBoxCfg;
+  let textX: number;
+  let textY: number;
+  switch (textAlign) {
+    case 'right':
+      textX = x + width - padding?.right;
+      break;
+    case 'center':
+      textX = x + width / 2;
+      break;
+    default:
+      textX = x + padding?.left;
+      break;
+  }
+
+  switch (textBaseline) {
+    case 'top':
+      textY = y + padding?.top;
+      break;
+    case 'middle':
+      textY = y + height / 2;
+      break;
+    default:
+      textY = y + height - padding?.bottom;
+      break;
+  }
+
+  return {
+    x: textX,
+    y: textY,
+  };
 };

@@ -1,22 +1,22 @@
-export const palettePurple = {
+export const paletteBlue = {
   // --------- brand colors -----------
   brandColors: [
     '#FFFFFF',
-    '#F9F0FF',
-    '#EBCCFF',
-    '#CCB0FF',
-    '#AE95FF',
-    '#907BFF',
-    '#7262FD',
-    '#5349E0',
-    '#2F32C3',
-    '#001BA7',
-    '#00068C',
+    '#F0F7FF',
+    '#D9EAFF',
+    '#B0D1FF',
+    '#87B5FF',
+    '#5E97FF',
+    '#3471F9',
+    '#2254D4',
+    '#133AAD',
+    '#082487',
+    '#051661',
   ],
 
   // ----------neutral colors ----------
   grayColors: [
-    '#FFFFF',
+    '#FFFFFF',
     '#FAFAFA',
     '#F5F5F5',
     '#E9E9E9',

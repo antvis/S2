@@ -7,13 +7,13 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
-} from '../../src';
-import { getContainer, getMockData } from '../util/helpers';
+} from '../../../src';
+import { getContainer, getMockData } from '../../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Switch, Checkbox } from 'antd';
-import { CustomTooltip } from '../spreadsheet/custom/custom-tooltip';
-import * as dataCfg from '../data/derived-value-record.json';
+import { Switch } from 'antd';
+import { CustomTooltip } from '../../spreadsheet/custom/custom-tooltip';
+import * as dataCfg from '../../data/derived-value-record.json';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -42,6 +42,26 @@ const getOptions = () => {
       interval: [],
       background: [],
       icon: [],
+    },
+    totals: {
+      row: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        aggregation: 'SUM',
+        aggregationSub: 'AVG',
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['province'],
+      },
+      col: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        aggregation: 'SUM',
+        aggregationSub: 'SUM',
+        reverseLayout: false,
+        reverseSubLayout: false,
+        subTotalsDimensions: ['type'],
+      },
     },
     style: {
       treeRowsWidth: 100,

@@ -20,8 +20,6 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         fontWeight: isWindows() ? 'bold' : '520',
         fill: brandColors[0],
         opacity: 1,
-        textAlign: 'left',
-        textBaseline: 'middle',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -29,9 +27,9 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         fontWeight: 'normal',
         fill: brandColors[0],
         opacity: 1,
+        textIndent: 12,
         textAlign: 'left',
         textBaseline: 'middle',
-        textIndent: 12,
       },
       cell: {
         // ----------- background color -----------
@@ -40,18 +38,18 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         hoverBackgroundColor: brandColors[7],
         selectedBackgroundColor: brandColors[7],
         // ----------- border color --------------
-        horizontalBorderColor: grayColors[5],
-        horizontalBorderColorOpacity: 2,
+        horizontalBorderColor: grayColors[3],
+        horizontalBorderColorOpacity: 1,
         verticalBorderColor: grayColors[3],
         verticalBorderColorOpacity: 1,
         hoverBorderColor: grayColors[9],
         selectedBorderColor: grayColors[9],
         // ----------- border width --------------
-        horizontalBorderWidth: 2,
+        horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
         hoverBorderWidth: 1,
         selectedBorderWidth: 2,
-        // -------------- padding -----------------
+        // -------------- layout -----------------
         padding: {
           top: 12,
           right: 8,
@@ -60,19 +58,20 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         },
       },
       icon: {
+        fill: brandColors[0],
         radius: 4,
         size: 14,
         margin: {
-          top: 4,
-          right: 4,
-          bottom: 4,
-          left: 4,
+          top: 0,
+          right: 8,
+          bottom: 0,
+          left: 0,
         },
         padding: {
-          top: 2,
-          right: 2,
-          bottom: 2,
-          left: 2,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
         },
       },
     },
@@ -83,8 +82,6 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         fontWeight: isWindows() ? 'bold' : '520',
         fill: brandColors[0],
         opacity: 1,
-        textAlign: 'middle',
-        textBaseline: 'middle',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -92,7 +89,7 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         fontWeight: 'normal',
         fill: brandColors[0],
         opacity: 1,
-        textAlign: 'middle',
+        textAlign: 'center',
         textBaseline: 'middle',
         textIndent: 12,
       },
@@ -103,23 +100,23 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         hoverBackgroundColor: brandColors[7],
         selectedBackgroundColor: brandColors[7],
         // ----------- border color --------------
-        horizontalBorderColor: grayColors[5],
+        horizontalBorderColor: grayColors[3],
         horizontalBorderColorOpacity: 1,
         verticalBorderColor: grayColors[3],
         verticalBorderColorOpacity: 1,
         hoverBorderColor: grayColors[9],
         selectedBorderColor: grayColors[9],
         // ----------- border width --------------
-        horizontalBorderWidth: 2,
+        horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
         hoverBorderWidth: 1,
         selectedBorderWidth: 2,
-        // -------------- padding -----------------
+        // -------------- layout -----------------
         padding: {
           top: 12,
-          right: 4,
+          right: 8,
           bottom: 12,
-          left: 4,
+          left: 8,
         },
       },
       icon: {
@@ -127,7 +124,6 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         upIconColor: semanticColors.green,
         radius: 4,
         size: 14,
-
         margin: {
           top: 4,
           right: 4,
@@ -149,8 +145,6 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         fontWeight: isWindows() ? 'bold' : '520',
         fill: grayColors[9],
         opacity: '1',
-        textAlign: 'left',
-        textBaseline: 'middle',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -164,31 +158,32 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[1],
+        backgroundColor: brandColors[6],
         backgroundColorOpacity: 1,
         hoverBackgroundColor: brandColors[2],
         selectedBackgroundColor: brandColors[2],
         // ----------- border color --------------
-        horizontalBorderColor: grayColors[4],
+        horizontalBorderColor: grayColors[3],
         horizontalBorderColorOpacity: 1,
-        verticalBorderColor: grayColors[5],
+        verticalBorderColor: grayColors[3],
         verticalBorderColorOpacity: 1,
         hoverBorderColor: grayColors[9],
         selectedBorderColor: grayColors[9],
         // ----------- border width --------------
         horizontalBorderWidth: 1,
-        verticalBorderWidth: 2,
+        verticalBorderWidth: 0,
         hoverBorderWidth: 1,
         selectedBorderWidth: 2,
-        // -------------- padding -----------------
+        // -------------- layout -----------------
         padding: {
           top: 12,
-          right: 4,
+          right: 8,
           bottom: 12,
-          left: 4,
+          left: 8,
         },
       },
       icon: {
+        fill: brandColors[0],
         radius: 4,
         size: 14,
         margin: {
@@ -204,7 +199,7 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
           left: 2,
         },
       },
-      seriesNumberWidth: 50,
+      seriesNumberWidth: 80,
     },
     // ------------- DataCell -------------------
     dataCell: {
@@ -238,29 +233,28 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         // ----------- border color --------------
         horizontalBorderColor: grayColors[3],
         horizontalBorderColorOpacity: 0,
-        verticalBorderColor: grayColors[0],
+        verticalBorderColor: grayColors[3],
         verticalBorderColorOpacity: 1,
         hoverBorderColor: grayColors[9],
         selectedBorderColor: grayColors[9],
         prepareSelectBorderColor: brandColors[3],
-
         // ----------- border width --------------
         horizontalBorderWidth: 1,
-        verticalBorderWidth: 2,
+        verticalBorderWidth: 0,
         hoverBorderWidth: 1,
         selectedBorderWidth: 2,
-
-        // -------------- padding -----------------
+        // -------------- layout -----------------
         padding: {
           top: 12,
-          right: 4,
+          right: 8,
           bottom: 12,
-          left: 4,
+          left: 8,
         },
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
       },
       icon: {
+        fill: brandColors[0],
         radius: 4,
         size: 10,
         margin: {
@@ -284,6 +278,18 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
       thumbColor: 'rgba(0,0,0,0.15)',
       size: 6,
       hoverSize: 16,
+    },
+    // ------------- split line -----------------
+    splitLine: {
+      horizontalBorderColor: grayColors[5],
+      horizontalBorderColorOpacity: 1,
+      horizontalBorderWidth: 1,
+      verticalBorderColor: grayColors[5],
+      verticalBorderColorOpacity: 1,
+      verticalBorderWidth: 2,
+      showRightShadow: true,
+      shadowWidth: 8,
+      shadowColors: ['rgba(0,0,0,0)', 'rgba(0,0,0,0.04)'],
     },
   } as SpreadSheetTheme;
 };

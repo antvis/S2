@@ -1,5 +1,11 @@
 import { Group } from '@antv/g-canvas';
-import { Hierarchy, SpreadSheet, Node } from '../../index';
+import {
+  Hierarchy,
+  SpreadSheet,
+  Node,
+  TextAlign,
+  TextBaseline,
+} from '../../index';
 import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
@@ -342,9 +348,10 @@ export interface SpreadSheetFacetCfg {
   rowCfg: RowCfg;
   // column cell config
   colCfg: ColCfg;
-  // width/height of plot
-  width;
-  height;
+  // width
+  width: number;
+  // height of plot
+  height: number;
   // tree mode rows width
   treeRowsWidth: number;
   // all collapsed rows(node id <=> isCollapse) -- only use in tree mode row header
@@ -448,13 +455,35 @@ export interface ColWidthCache {
   lastUserDragWidth: Record<string, number>;
 }
 
-export interface CellPosition {
-  x: number;
-  y: number;
-}
-
 export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
   isCornerHeaderText?: boolean;
   isRowHeaderText?: boolean;
   cellData?: T;
+}
+
+/**
+ * 单元格属性配置
+ */
+export interface CellBoxCfg {
+  // 起点坐标 x 值
+  x: number;
+  // 起点坐标 y 值
+  y: number;
+  // 单元格宽度
+  width: number;
+  // 单元格高度
+  height: number;
+  // 对应 g text textAlign 属性 https://g.antv.vision/zh/docs/api/shape/text#textalign
+  // 水平对齐方式, 默认 left
+  textAlign?: TextAlign;
+  // 对应 g text baseline 属性 https://g.antv.vision/zh/docs/api/shape/text#textbaseline
+  // 垂直对齐方式，默认 bottom
+  textBaseline?: TextBaseline;
+  // 单元格 padding 值
+  padding?: {
+    top?: number;
+    left?: number;
+    right?: number;
+    bottom?: number;
+  };
 }
