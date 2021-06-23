@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TipsProps } from '../interface';
+import { TipsProps } from '@/common/interface';
 import { TOOLTIP_CLASS_PRE } from '../constant';
 
 const SimpleTips = (props: TipsProps) => {

@@ -3,7 +3,7 @@ import React from 'react';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { HtmlIcon } from '../../icons';
-import { OperationProps, OperationState } from '../interface';
+import { OperationProps, OperationState } from '@/common/interface';
 
 const CONTAINER_CLASS = 'eva-facet-tooltip-operation';
 interface OrderOption {

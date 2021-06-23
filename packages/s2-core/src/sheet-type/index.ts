@@ -13,7 +13,6 @@ import {
 import { Store } from '@/common/store';
 import { ext } from '@antv/matrix-util';
 import {
-  ColWidthCache,
   DerivedValue,
   safetyDataConfig,
   OffsetConfig,

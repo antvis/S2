@@ -2,7 +2,7 @@ import { Menu } from 'antd';
 import { size, map } from 'lodash';
 import * as React from 'react';
 import { getIcon, HtmlIcon } from '../../../icons';
-import { IMenu, OperatorProps } from '../../interface';
+import { IMenu, OperatorProps } from '@/common/interface';
 import { TOOLTIP_CLASS_PRE, DEFAULT_ICON_PROPS } from '../../constant';
 
 import './index.less';

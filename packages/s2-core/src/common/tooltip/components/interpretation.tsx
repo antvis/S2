@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { getIcon, HtmlIcon } from '../../icons';
-import { InterpretationProps } from '../interface';
+import { InterpretationProps } from '@/common/interface';
 import { TOOLTIP_CLASS_PRE } from '../constant';
 
 const Interpretation = (props: InterpretationProps) => {
