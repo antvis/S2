@@ -78,6 +78,9 @@ export class DataCellMutiSelection extends BaseInteraction {
   }
 
   private handleTooltip(ev, cellInfos) {
+    if (!this.spreadsheet.options?.tooltip?.showTooltip) {
+      return;
+    }
     const position = {
       x: ev.clientX,
       y: ev.clientY,
