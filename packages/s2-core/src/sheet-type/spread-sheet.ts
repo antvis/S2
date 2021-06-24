@@ -186,6 +186,7 @@ export default class SpreadSheet extends BaseSpreadSheet {
   protected registerEvent(key: string, ctc: EventConstructor) {
     // eslint-disable-next-line new-cap
     this.events.set(key, new ctc(this));
+    console.log(key, ctc);
   }
 
   protected registerInteraction(key: string, ctc: InteractionConstructor) {
