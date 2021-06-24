@@ -1,14 +1,19 @@
 {
-  "version": "0.1.0-alpha.5",
+  "version": "0.1.0-alpha.6",
   "npmClient": "npm",
   "useWorkspaces": true,
   "command": {
     "publish": {
-      "ignoreChanges": ["*.md", "**/_tests_/**"],
+      "ignoreChanges": [
+        "*.md",
+        "**/_tests_/**"
+      ],
       "message": "chore(release): :bookmark: publish %s"
     },
     "bootstrap": {
-      "npmClientArgs": ["--no-ci"]
+      "npmClientArgs": [
+        "--no-ci"
+      ]
     }
   },
   "changelog": {
@@ -25,5 +30,7 @@
       "pr(test)": ":white_check_mark: Test Case"
     }
   },
-  "packages": ["packages/sr-core"]
+  "packages": [
+    "packages/sr-core"
+  ]
 }
