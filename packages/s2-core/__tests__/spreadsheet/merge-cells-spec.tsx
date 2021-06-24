@@ -96,7 +96,7 @@ const baseDataCfg = {
 } as S2DataConfig;
 
 const baseOptions = {
-  debug: true,
+  debug: false,
   width: 800,
   height: 600,
   hierarchyType: 'grid',
