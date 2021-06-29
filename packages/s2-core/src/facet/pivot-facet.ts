@@ -55,7 +55,17 @@ export class PivotFacet extends BaseFacet {
         row.isTotalMeasure ||
         col.isTotals ||
         col.isTotalMeasure;
-      const dataQuery = _.merge({}, rowQuery, colQuery);
+      const hideMeasure =
+        spreadsheet.facet.cfg.colCfg.hideMeasureColumn ?? false;
+      // 如果hide measure query中是没有度量信息的，所以需要自动补上
+      // 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
+      // 因此默认只会去 第一个度量拼接query
+      const measureInfo = hideMeasure
+        ? {
+            [EXTRA_FIELD]: dataSet.fields.values?.[0],
+          }
+        : {};
+      const dataQuery = _.merge({}, rowQuery, colQuery, measureInfo);
       const data = dataSet.getCellData(dataQuery, row);
       let valueField;
       let fieldValue = null;
