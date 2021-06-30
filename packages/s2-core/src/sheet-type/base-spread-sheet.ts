@@ -624,9 +624,11 @@ export default abstract class BaseSpreadSheet extends EE {
 
   public updateCellStyleByState() {
     const cells = this.getCurrentState().cells;
+    console.info('cells to be updated:', cells);
     cells.forEach((cell) => {
       cell.updateByState(this.getCurrentState().stateName);
     });
+    console.info('updated cells', cells);
   }
 
   public showTooltip(showOptions: ShowProps) {

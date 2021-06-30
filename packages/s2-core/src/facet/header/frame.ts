@@ -1,5 +1,5 @@
 import { Group } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { translateGroup } from '../utils';
 
 export class Frame extends Group {
@@ -105,13 +105,8 @@ export class Frame extends Group {
 
   private addCornerRightShadowIfNeeded() {
     const cfg = this.cfg;
-    const {
-      width,
-      height,
-      viewportHeight,
-      position,
-      showCornerRightShadow,
-    } = cfg;
+    const { width, height, viewportHeight, position, showCornerRightShadow } =
+      cfg;
     if (
       showCornerRightShadow ||
       _.get(cfg.spreadsheet, 'theme.center.showCornerRightShadow')

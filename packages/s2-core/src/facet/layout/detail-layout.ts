@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from '../../common/constant';
 import { DetailDataSet, DetailPivot } from '../../data-set';
 import { SpreadsheetFacet } from '../index';

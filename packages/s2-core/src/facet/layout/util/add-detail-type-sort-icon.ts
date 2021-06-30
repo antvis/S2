@@ -1,5 +1,5 @@
 import { Group } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { GuiIcon } from '../../../common/icons';
 import { DEFAULT_PADDING, KEY_LIST_SORT } from '../../../common/constant';
 import { BaseSpreadSheet } from '../../..';

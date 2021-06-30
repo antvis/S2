@@ -7,7 +7,7 @@
  * }
  * 当点击某个cell的时候，通过rowQuery 去fields中匹配出 value field
  */
-import * as _ from 'lodash';
+import _ from 'lodash';
 export default function getRightFieldInQuery(
   rowQuery: Record<string, any>,
   rowFields: string[],
