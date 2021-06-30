@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 export const getCellPadding = () => {
   const padding = [12, 4, 12, 4];

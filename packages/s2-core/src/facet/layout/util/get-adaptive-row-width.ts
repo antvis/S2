@@ -1,5 +1,5 @@
 import { measureTextWidth } from '../../../utils/text';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { DEFAULT_PADDING, ICON_RADIUS } from '../../../common/constant';
 import { SpreadsheetFacet } from '../../index';
 import {

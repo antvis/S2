@@ -1,5 +1,5 @@
 // hierarchy to layout headers
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { Node } from './node';
 import { ID_SEPARATOR } from '../../common/constant';
 

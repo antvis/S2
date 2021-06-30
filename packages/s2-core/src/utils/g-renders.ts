@@ -3,7 +3,7 @@
  * https://github.com/antvis/g
  */
 import { Group, IShape } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { TextTheme } from '@/theme/interface';
 
 export function renderRect(
@@ -101,7 +101,9 @@ export function renderLine(
 }
 
 export function updateShapeAttr(shape: IShape, attribute: string, value: any) {
+  console.info('before setting:', shape, attribute, value);
   if (shape) {
     _.set(shape, `attrs.${attribute}`, value);
+    console.info('after setting:', shape, attribute, value);
   }
 }

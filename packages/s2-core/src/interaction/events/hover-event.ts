@@ -20,7 +20,6 @@ export class HoverEvent extends BaseEvent {
       const cell = this.spreadsheet.getCell(ev.target);
       const meta: ViewMeta = cell.getMeta();
       this.spreadsheet.clearState();
-      console.info('hover cell', cell);
       this.changeState(cell, SelectedStateName.HOVER);
       if (this.spreadsheet.hoverTimer) {
         window.clearTimeout(this.spreadsheet.hoverTimer);
@@ -40,15 +39,9 @@ export class HoverEvent extends BaseEvent {
 
   private changeState(cell, cellName) {
     this.spreadsheet.setState(cell, cellName);
-    console.info('start updateCellStyleByState');
     this.spreadsheet.updateCellStyleByState();
-    console.info('end updateCellStyleByState');
-    console.info('start upDatePanelAllCellsStyle');
     this.spreadsheet.upDatePanelAllCellsStyle();
-    console.info('end upDatePanelAllCellsStyle');
-    console.info('start draw');
     this.draw();
-    console.info('draw end');
   }
 
   private handleTooltip(ev: Event, meta: ViewMeta) {

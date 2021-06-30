@@ -1,5 +1,5 @@
 import { Group } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { translateGroup } from '../utils';
 
 export class Frame extends Group {

@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import DefaultTheme from './default';
 import { SpreadSheetTheme } from './interface';
 
