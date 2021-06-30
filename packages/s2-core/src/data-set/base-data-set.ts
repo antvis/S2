@@ -60,11 +60,9 @@ export abstract class BaseDataSet<T extends BaseParams> {
   /**
    * 查找字段信息
    */
-  public getFieldMeta = _.memoize(
-    (field: string): Meta => {
-      return _.find(this.meta, (m: Meta) => m.field === field);
-    },
-  );
+  public getFieldMeta = _.memoize((field: string): Meta => {
+    return _.find(this.meta, (m: Meta) => m.field === field);
+  });
 
   /** 返回pivot实例 */
   public getPivot(): Pivot {
