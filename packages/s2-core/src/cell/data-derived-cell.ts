@@ -61,7 +61,7 @@ export class DataDerivedCell extends DataCell {
       // 行维度存在的情况
       finalText = text || '-';
     } else {
-      const exist = includes(values?.measures, valueField);
+      const exist = includes((values as any)?.measures, valueField);
       finalText = text || (exist ? '-' : '');
     }
     const mainText = getEllipsisText(finalText, mainInfo?.width, textStyle);

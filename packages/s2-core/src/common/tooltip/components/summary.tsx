@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { i18n } from '../../i18n';
-import { SummaryProps } from '../interface';
+import { SummaryProps } from '@/common/interface';
 import { TOOLTIP_CLASS_PRE } from '../constant';
 
 const Summary = (props: { summaries: SummaryProps[] }) => {
