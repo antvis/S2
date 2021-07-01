@@ -101,9 +101,7 @@ export function renderLine(
 }
 
 export function updateShapeAttr(shape: IShape, attribute: string, value: any) {
-  console.info('before setting:', shape, attribute, value);
   if (shape) {
     set(shape, `attrs.${attribute}`, value);
-    console.info('after setting:', shape, attribute, value);
   }
 }
