@@ -38,6 +38,7 @@ import {
   KEY_GROUP_FORE_GROUND,
   KEY_GROUP_PANEL_GROUND,
 } from '../common/constant';
+import { CellTypes } from '../common/constant/interatcion';
 import { BaseDataSet } from '../data-set';
 import { SpreadsheetFacet } from '../facet';
 import { Node, BaseInteraction, SpreadSheetTheme, BaseEvent } from '../index';
@@ -624,11 +625,9 @@ export default abstract class BaseSpreadSheet extends EE {
 
   public updateCellStyleByState() {
     const cells = this.getCurrentState().cells;
-    console.info('cells to be updated:', cells);
     cells.forEach((cell) => {
       cell.updateByState(this.getCurrentState().stateName);
     });
-    console.info('updated cells', cells);
   }
 
   public showTooltip(showOptions: ShowProps) {
@@ -659,19 +658,19 @@ export default abstract class BaseSpreadSheet extends EE {
   public getCellType(target) {
     const cell = this.getCell(target);
     if (cell instanceof DataCell) {
-      return DataCell.name;
+      return CellTypes.DATACELL;
     }
     if (cell instanceof RowCell) {
-      return RowCell.name;
+      return CellTypes.ROWCELL;
     }
     if (cell instanceof ColCell) {
-      return ColCell.name;
+      return CellTypes.COLCELL;
     }
     if (cell instanceof CornerCell) {
-      return CornerCell.name;
+      return CellTypes.CORNERCELL;
     }
     if (cell instanceof MergedCells) {
-      return MergedCells.name;
+      return CellTypes.MERGEDCELLS;
     }
     return '';
   }
