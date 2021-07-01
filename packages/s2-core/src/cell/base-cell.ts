@@ -74,6 +74,10 @@ export abstract class BaseCell<T> extends Group {
         const currentShape = findKey(shapeStyle.shapeAttrsMap, (attrs) =>
           includes(attrs, styleKey),
         );
+        console.info('currentShape:', currentShape);
+        console.info('styleKey:', styleKey);
+        console.info('attr:', shapeStyle.shapeStyleMap[styleKey]);
+        console.info('style:', style);
         updateShapeAttr(
           this[currentShape],
           shapeStyle.shapeStyleMap[styleKey],
