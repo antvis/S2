@@ -61,13 +61,17 @@ export abstract class BaseCell<T> extends Group {
   // 根据当前state来更新cell的样式
   public updateByState(stateName) {
     const { stateTheme } = this.theme;
+    console.info('stateTheme:', stateTheme);
     const originCellType = this.spreadsheet.getCellType(this);
+    console.info('originCellType:', originCellType);
     // DataCell => dataCell
     // theme的key首字母是小写
     const cellType = `${originCellType
       .charAt(0)
       .toLowerCase()}${originCellType.slice(1)}`;
+    console.info('cellType:', cellType);
     const stateStyles = get(stateTheme, [cellType, stateName]);
+    console.info('stateStyles:', stateStyles);
     each(stateStyles, (style, styleKey) => {
       if (styleKey) {
         // 找到对应的shape，并且找到cssStyple对应的shapestyle
