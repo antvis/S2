@@ -158,11 +158,13 @@ export interface Sort {
   query?: Record<string, any>;
 }
 
+export interface SortFuncParam extends Sort {
+  data: Array<string | Record<string, any>>;
+}
+
 export interface SortParam extends Sort {
   /** 自定义func */
-  sortFunc?: (
-    v: { data: Array<string | Record<string, any>> } | Sort,
-  ) => Array<string>;
+  sortFunc?: (v: SortFuncParam) => Array<string>;
 }
 
 export type SortParams = SortParam[];

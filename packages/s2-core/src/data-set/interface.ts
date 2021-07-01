@@ -20,4 +20,5 @@ export type DataPathParams = {
   careUndefined?: boolean;
   // use in row tree mode to append fields information
   rowFields?: string[];
+  colFields?: string[];
 };

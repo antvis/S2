@@ -142,6 +142,7 @@ export class PivotDataSet extends BaseDataSet {
         colDimensionValues,
         isFirstCreate: true,
         rowFields: rows,
+        colFields: columns,
       });
       paths.push(path);
       set(this.indexesData, path, data);
@@ -181,38 +182,37 @@ export class PivotDataSet extends BaseDataSet {
   };
 
   handleDimensionValuesSort = () => {
-    const { values } = this.fields;
+    // TODO: fieldId is total
     each(this.sortParams || [], (item) => {
       const { sortFieldId, sortBy, sortMethod, sortByField, query, sortFunc } =
         item || {};
-      const sortMap = this.sortedDimensionValues.get(sortFieldId);
-      let sorted = Array.from(sortMap.keys());
+      const sortMaps = [...this.sortedDimensionValues.get(sortFieldId)?.keys()];
+      let sorted = [];
       // 根据其他字段排序（组内排序）
       if (sortByField) {
         let currentData = this.getMultiData(query) || [];
-        if (values.includes(sortByField)) {
-          currentData = currentData.filter(
-            (i) => i[EXTRA_FIELD] === sortByField,
-          );
-        }
         // 自定义方法
         if (sortFunc) {
-          sorted = sortFunc({ data: currentData, ...item }) || sorted;
+          sorted = sortFunc({ data: currentData, ...item }) || sortMaps;
         } else if (sortMethod) {
           sorted = sortAction(currentData, sortMethod, sortByField)?.map(
             (item) => item[sortFieldId],
           );
         }
       } else if (sortFunc) {
-        sorted = sortFunc({ data: sorted, ...item }) || sorted;
+        sorted = sortFunc({ data: sortMaps, ...item }) || sortMaps;
       } else if (sortBy) {
         // 自定义列表
         sorted = sortBy;
       } else if (sortMethod) {
         // 升/降序
-        sorted = sortAction(sorted, sortMethod) as string[];
+        sorted = sortAction(sortMaps, sortMethod) as string[];
       }
-      this.sortedDimensionValues.set(sortFieldId, new Set(sorted));
+
+      this.sortedDimensionValues.set(
+        sortFieldId,
+        new Set([...sorted, ...sortMaps]),
+      );
     });
   };
 
@@ -243,10 +243,11 @@ export class PivotDataSet extends BaseDataSet {
       careUndefined,
       isFirstCreate,
       rowFields,
+      colFields,
     } = params;
     const getPath = (dimensionValues: string[], isRow = true): number[] => {
       let currentMeta = isRow ? this.rowPivotMeta : this.colPivotMeta;
-      const fields = isRow ? rowFields : [];
+      const fields = isRow ? rowFields : colFields;
       const path = [];
       for (let i = 0; i < dimensionValues.length; i++) {
         const value = dimensionValues[i];
@@ -262,13 +263,16 @@ export class PivotDataSet extends BaseDataSet {
             if (meta) {
               path.push(meta.level);
             }
+            if (!careUndefined) {
+              break;
+            }
           }
         }
         const meta = currentMeta.get(value);
         if (isUndefined(value) && careUndefined) {
           path.push(value);
         } else {
-          path.push(meta.level);
+          path.push(meta?.level);
         }
         if (meta) {
           if (isFirstCreate) {
@@ -392,12 +396,24 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     if (!isEmpty(query)) {
+      let sortedMeta = [];
       for (const dimension of dimensions) {
         const value = get(query, dimension);
         if (meta.has(value) && !isUndefined(value)) {
+          const childField = meta.get(value)?.childField;
           meta = meta.get(value).children;
+          if (this.sortedDimensionValues.has(childField)) {
+            sortedMeta = [...this.sortedDimensionValues.get(childField)];
+          }
         }
       }
+      if (sortedMeta?.length > 0) {
+        return filterUndefined(
+          this.getIntersections(sortedMeta, [...meta.keys()]),
+        );
+      }
+
+      return filterUndefined([...meta.keys()]);
     }
 
     if (this.sortedDimensionValues.has(field)) {
@@ -457,7 +473,7 @@ export class PivotDataSet extends BaseDataSet {
           currentData = flatten(currentData) as [];
         } else {
           currentData = currentData
-            .map((d) => d[current])
+            .map((d) => d && d[current])
             .filter((d) => !isUndefined(d)) as [];
         }
       } else if (isUndefined(current)) {
