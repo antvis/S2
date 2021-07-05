@@ -1,14 +1,12 @@
-import { EXTRA_FIELD, ID_SEPARATOR, VALUE_FIELD } from 'src/common/constant';
+import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import { S2DataConfig } from 'src/common/interface';
 import { SpreadSheet } from 'src/sheet-type';
 import { PivotDataSet } from 'src/data-set/pivot-data-set';
 import _ from 'lodash';
-import { BaseNodeConfig, Node } from '@/facet/layout/node';
-import { drillDownData1, drillDownData2 } from '../../data/data-drill-down';
 
 jest.mock('src/sheet-type');
 jest.mock('src/facet/layout/node');
-const MockSpreadSheet = (SpreadSheet as any) as jest.Mock<SpreadSheet>;
+const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
 
 describe('Pivot Dataset Test', () => {
   let dataSet: PivotDataSet;
@@ -542,13 +540,12 @@ describe('Pivot Dataset Test', () => {
         ['category', '家具'],
       ]);
 
-      // can't find any data
       const result4 = dataSet.getMultiData({
         province: '四川省',
         category: '家具',
       });
 
-      expect(result4).toBeArrayOfSize(0);
+      expect(result4).toBeArrayOfSize(2);
     });
 
     test('should get correct multi data cells with total values', () => {
