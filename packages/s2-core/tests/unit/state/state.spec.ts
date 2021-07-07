@@ -5,8 +5,8 @@ import { State } from '@/state/state';
 
 jest.mock('@/sheet-type');
 jest.mock('@/cell/row-cell');
-const MockSpreadSheet = (SpreadSheet as any) as jest.Mock<SpreadSheet>;
-const MockRowCell = (RowCell as any) as jest.Mock<RowCell>;
+const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
+const MockRowCell = RowCell as any as jest.Mock<RowCell>;
 describe('State Test', () => {
   let state: State;
   let mockInstance;

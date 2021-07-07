@@ -173,7 +173,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): CellMapping {
-    const value = (this.meta.fieldValue as unknown) as number;
+    const value = this.meta.fieldValue as unknown as number;
     return condition?.mapping(value, get(this.meta.data, [0]));
   }
 
@@ -379,14 +379,15 @@ export class DataCell extends BaseCell<ViewMeta> {
       const attrs = this.mappingValue(intervalCondition);
       if (attrs) {
         // interval shape exist
-        let scale;
-        let zero;
-        let current;
+
         // if (attrs.isCompare) {
         // value in range(compare) condition
-        scale = this.getIntervalScale(attrs.minValue || 0, attrs.maxValue);
-        zero = scale(0); // 零点
-        current = scale(this.meta.fieldValue); // 当前数据点
+        const scale = this.getIntervalScale(
+          attrs.minValue || 0,
+          attrs.maxValue,
+        );
+        const zero = scale(0); // 零点
+        const current = scale(this.meta.fieldValue); // 当前数据点
         // } else {
         // the other conditions， keep old logic
         // TODO this logic need be changed!!!
@@ -431,9 +432,8 @@ export class DataCell extends BaseCell<ViewMeta> {
         value = get(data, [0, derivedValue]);
       }
       const up = getDerivedDataState(value);
-      const formatter = this.spreadsheet.dataSet.getFieldFormatter(
-        derivedValue,
-      );
+      const formatter =
+        this.spreadsheet.dataSet.getFieldFormatter(derivedValue);
       return {
         value: formatter ? formatter(value) : value,
         up,

@@ -3,6 +3,14 @@ import { DrillDownProps } from 'src/components/drill-down';
 import { HeaderCfgProps } from 'src/components/header';
 import { Node, SpreadSheet, SpreadSheetTheme } from 'src/index';
 import { Event } from '@antv/g-canvas';
+import {
+  CellScrollPosition,
+  TargetCellData,
+  LayoutCol,
+  LayoutRow,
+  ListSortParams,
+  TargetLayoutNode,
+} from 'src/common/interface/events';
 
 export interface PartDrillDownInfo {
   // The data of drill down
@@ -47,20 +55,16 @@ export interface BaseSheetProps {
   header?: HeaderCfgProps;
   rowLevel?: number;
   colLevel?: number;
-  onListSort?: (params: { sortFieldId: string; sortMethod: string }) => void;
-  onRowColLayout?: (rows, cols) => void;
-  onRowCellScroll?: (reachedRow) => void;
-  onColCellScroll?: (reachedCol) => void;
-  onCellScroll?: (position: {
-    scrollX: number;
-    scrollY: number;
-    thumbOffset: number;
-  }) => void;
-  onRowCellClick?: (ev: Event) => void;
-  onColCellClick?: (ev: Event) => void;
-  onCornerCellClick?: (ev: Event) => void;
-  onDataCellClick?: (ev: Event) => void;
-  onDataCellMouseUp?: (ev: Event) => void;
-  onMergedCellsClick?: (ev: Event) => void;
+  onListSort?: (params: ListSortParams) => void;
+  onRowColLayout?: (rows: LayoutRow[], cols: LayoutCol[]) => void;
+  onRowCellScroll?: (reachedRow: TargetLayoutNode) => void;
+  onColCellScroll?: (reachedCol: TargetLayoutNode) => void;
+  onCellScroll?: (position: CellScrollPosition) => void;
+  onRowCellClick?: (data: TargetCellData) => void;
+  onColCellClick?: (data: TargetCellData) => void;
+  onCornerCellClick?: (data: TargetCellData) => void;
+  onDataCellClick?: (data: TargetCellData) => void;
+  onDataCellMouseUp?: (data: TargetCellData) => void;
+  onMergedCellsClick?: (data: TargetCellData) => void;
   getSpreadsheet?: (spreadsheet: SpreadSheet) => void;
 }
