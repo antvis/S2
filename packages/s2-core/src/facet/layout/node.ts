@@ -86,7 +86,8 @@ export class Node {
    * @param node
    */
   public static getFieldPath(node: Node): string[] {
-    if (node) {
+    if (node && !node.isTotals) {
+      // total nodes don't need rows from node self
       let parent = node.parent;
       const fieldPath = [node.field];
       while (parent && parent.id !== 'root') {
