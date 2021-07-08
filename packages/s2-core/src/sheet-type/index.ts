@@ -25,7 +25,8 @@ import {
   Totals,
   Total,
   ShowProps,
-} from '../common/interface';
+  SpreadsheetMountContainer,
+} from 'src/common/interface';
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
@@ -66,16 +67,17 @@ import {
   EventNames,
   InteractionNames,
   SelectedStateName,
-} from 'src/common/constant/interatcion';
+} from '@/common/constant/interaction';
 import { i18n } from 'src/common/i18n';
 import { PivotFacet } from 'src/facet';
 
 const matrixTransform = ext.transform;
+
 export class SpreadSheet extends EE {
   public static DEBUG_ON = false;
 
   // dom id
-  public dom: HTMLElement;
+  public dom: SpreadsheetMountContainer;
 
   // theme config
   public theme: SpreadSheetTheme = getTheme('default');
@@ -136,7 +138,7 @@ export class SpreadSheet extends EE {
   public viewport = window as typeof window & { visualViewport: Element };
 
   public constructor(
-    dom: string | HTMLElement,
+    dom: SpreadsheetMountContainer,
     dataCfg: S2DataConfig,
     options: S2Options,
   ) {

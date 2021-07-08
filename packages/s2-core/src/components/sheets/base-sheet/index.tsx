@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, StrictMode } from 'react';
+import React, { useEffect, useState, useRef, StrictMode, memo } from 'react';
 import { isEmpty, debounce, isFunction, get, merge, forIn } from 'lodash';
 import { Spin, Pagination } from 'antd';
 import { i18n } from 'src/common/i18n';
@@ -6,14 +6,13 @@ import {
   safetyDataConfig,
   safetyOptions,
   Pagination as PaginationCfg,
-  S2Options,
-  S2DataConfig,
   LayoutResult,
   CellScrollPosition,
   LayoutCol,
   LayoutRow,
   ListSortParams,
   TargetLayoutNode,
+  SpreadsheetConstructor,
 } from 'src/common/interface';
 import { DrillDown } from '../../drill-down';
 import { Header } from '../../header';
@@ -25,7 +24,7 @@ import {
   KEY_CELL_SCROLL,
   KEY_LIST_SORT,
   KEY_PAGINATION,
-} from 'src/common/constant';
+} from 'src/common/constant/events';
 import { S2Event } from 'src/interaction/events/types';
 import { getBaseCellData } from 'src/utils/interactions/formatter';
 import { BaseSheetProps } from '../interface';
@@ -35,7 +34,7 @@ import './index.less';
 
 const PRE_CLASS = 's2-pagination';
 
-export const BaseSheet = (props: BaseSheetProps) => {
+export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
     spreadsheet,
     dataCfg,
@@ -71,11 +70,12 @@ export const BaseSheet = (props: BaseSheetProps) => {
   );
 
   const getSpreadSheet = (): SpreadSheet => {
-    const params: [string | HTMLElement, S2DataConfig, S2Options] = [
+    const params: SpreadsheetConstructor = [
       container.current,
       dataCfg,
       options,
     ];
+    // TODO: 改个名字 spreadsheet => customSpreadsheet 之类的?
     if (spreadsheet) {
       return spreadsheet(...params);
     }
@@ -87,7 +87,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
       KEY_AFTER_HEADER_LAYOUT,
       (layoutResult: LayoutResult) => {
         if (rowLevel && colLevel) {
-          // TODO: 这里不返回 {level: '', id: '', label: ''} 这样的结构
+          // TODO: 这里为啥返回 {level: '', id: '', label: ''} 这样的结构
           const rows: LayoutRow[] = layoutResult.rowsHierarchy
             .getNodesLessThanLevel(rowLevel)
             .map((value) => {
@@ -133,7 +133,6 @@ export const BaseSheet = (props: BaseSheetProps) => {
       [KEY_CELL_SCROLL]: (value: CellScrollPosition) => {
         onCellScroll?.(value);
       },
-      // TODO: 这里没有地方 emit ?
       [KEY_LIST_SORT]: (value: ListSortParams) => {
         onListSort?.(value);
       },
@@ -429,4 +428,4 @@ export const BaseSheet = (props: BaseSheetProps) => {
       </Spin>
     </StrictMode>
   );
-};
+});

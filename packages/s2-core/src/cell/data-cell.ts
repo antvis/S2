@@ -9,7 +9,7 @@ import { getDerivedDataState } from '../utils/text';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { DerivedCell, BaseCell } from '.';
-import { SelectedStateName } from 'src/common/constant/interatcion';
+import { SelectedStateName } from '@/common/constant/interaction';
 import { SpreadSheet } from 'src/sheet-type';
 
 // default icon size
@@ -387,7 +387,7 @@ export class DataCell extends BaseCell<ViewMeta> {
           attrs.maxValue,
         );
         const zero = scale(0); // 零点
-        const current = scale(this.meta.fieldValue); // 当前数据点
+        const current = scale(this.meta.fieldValue as number); // 当前数据点
         // } else {
         // the other conditions， keep old logic
         // TODO this logic need be changed!!!

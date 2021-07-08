@@ -1,16 +1,17 @@
-import { S2DataConfig, S2Options } from 'src/common/interface';
-import { DrillDownProps } from 'src/components/drill-down';
-import { HeaderCfgProps } from 'src/components/header';
-import { Node, SpreadSheet, SpreadSheetTheme } from 'src/index';
-import { Event } from '@antv/g-canvas';
 import {
+  S2DataConfig,
+  S2Options,
   CellScrollPosition,
-  TargetCellData,
+  TargetCellInfo,
   LayoutCol,
   LayoutRow,
   ListSortParams,
   TargetLayoutNode,
-} from 'src/common/interface/events';
+  SpreadsheetConstructor,
+} from 'src/common/interface';
+import { DrillDownProps } from 'src/components/drill-down';
+import { HeaderCfgProps } from 'src/components/header';
+import { Node, SpreadSheet, SpreadSheetTheme } from 'src/index';
 
 export interface PartDrillDownInfo {
   // The data of drill down
@@ -41,11 +42,7 @@ export interface PartDrillDown {
 }
 
 export interface BaseSheetProps {
-  spreadsheet?: (
-    dom: string | HTMLElement,
-    dataCfg: S2DataConfig,
-    options: S2Options,
-  ) => SpreadSheet;
+  spreadsheet?: (...args: SpreadsheetConstructor) => SpreadSheet;
   dataCfg: S2DataConfig;
   options: S2Options;
   isLoading?: boolean;
@@ -60,11 +57,11 @@ export interface BaseSheetProps {
   onRowCellScroll?: (reachedRow: TargetLayoutNode) => void;
   onColCellScroll?: (reachedCol: TargetLayoutNode) => void;
   onCellScroll?: (position: CellScrollPosition) => void;
-  onRowCellClick?: (data: TargetCellData) => void;
-  onColCellClick?: (data: TargetCellData) => void;
-  onCornerCellClick?: (data: TargetCellData) => void;
-  onDataCellClick?: (data: TargetCellData) => void;
-  onDataCellMouseUp?: (data: TargetCellData) => void;
-  onMergedCellsClick?: (data: TargetCellData) => void;
+  onRowCellClick?: (data: TargetCellInfo) => void;
+  onColCellClick?: (data: TargetCellInfo) => void;
+  onCornerCellClick?: (data: TargetCellInfo) => void;
+  onDataCellClick?: (data: TargetCellInfo) => void;
+  onDataCellMouseUp?: (data: TargetCellInfo) => void;
+  onMergedCellsClick?: (data: TargetCellInfo) => void;
   getSpreadsheet?: (spreadsheet: SpreadSheet) => void;
 }

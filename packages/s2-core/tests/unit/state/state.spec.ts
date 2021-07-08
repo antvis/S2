@@ -1,5 +1,5 @@
 import { RowCell } from '@/cell/row-cell';
-import { SelectedStateName } from '@/common/constant/interatcion';
+import { SelectedStateName } from '@/common/constant/interaction';
 import { SpreadSheet } from '@/sheet-type';
 import { State } from '@/state/state';
 

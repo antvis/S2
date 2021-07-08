@@ -20,7 +20,7 @@ export type LayoutRow = [number, string, string];
 
 export type LayoutCol = [number, string, string];
 
-export interface TargetCellData {
+export interface TargetCellInfo {
   target: any;
   event: Event;
   viewMeta: Node;
