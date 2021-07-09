@@ -2,7 +2,7 @@ import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import { S2DataConfig } from 'src/common/interface';
 import { SpreadSheet } from 'src/sheet-type';
 import { PivotDataSet } from 'src/data-set/pivot-data-set';
-import _ from 'lodash';
+import { get } from 'lodash';
 
 jest.mock('src/sheet-type');
 jest.mock('src/facet/layout/node');
@@ -136,7 +136,7 @@ describe('Pivot Dataset Test', () => {
       const indexesData = dataSet.indexesData;
 
       // 辽宁
-      expect(_.get(indexesData, '0.0.0.0')).toEqual({
+      expect(get(indexesData, '0.0.0.0')).toEqual({
         province: '辽宁省',
         city: '达州市',
         category: '电脑',
@@ -145,7 +145,7 @@ describe('Pivot Dataset Test', () => {
         [VALUE_FIELD]: 1,
       });
 
-      expect(_.get(indexesData, '0.1.1.0')).toEqual({
+      expect(get(indexesData, '0.1.1.0')).toEqual({
         province: '辽宁省',
         city: '芜湖市',
         category: '手机',
@@ -154,7 +154,7 @@ describe('Pivot Dataset Test', () => {
         [VALUE_FIELD]: 2,
       });
 
-      expect(_.get(indexesData, '0.1.2.0')).toEqual({
+      expect(get(indexesData, '0.1.2.0')).toEqual({
         province: '辽宁省',
         city: '芜湖市',
         category: '家具',
@@ -164,7 +164,7 @@ describe('Pivot Dataset Test', () => {
       });
 
       // 四川
-      expect(_.get(indexesData, '1.0.2.0')).toEqual({
+      expect(get(indexesData, '1.0.2.0')).toEqual({
         province: '四川省',
         city: '成都市',
         category: '家具',
@@ -173,7 +173,7 @@ describe('Pivot Dataset Test', () => {
         [VALUE_FIELD]: 4,
       });
 
-      expect(_.get(indexesData, '1.0.0.0')).toEqual({
+      expect(get(indexesData, '1.0.0.0')).toEqual({
         province: '四川省',
         city: '成都市',
         category: '电脑',
@@ -182,7 +182,7 @@ describe('Pivot Dataset Test', () => {
         [VALUE_FIELD]: 5,
       });
 
-      expect(_.get(indexesData, '1.1.2.0')).toEqual({
+      expect(get(indexesData, '1.1.2.0')).toEqual({
         province: '四川省',
         city: '简阳市',
         category: '家具',
@@ -309,7 +309,7 @@ describe('Pivot Dataset Test', () => {
       const indexesData = dataSet.indexesData;
 
       // 辽宁
-      expect(_.get(indexesData, '0.0.0.0')).toEqual({
+      expect(get(indexesData, '0.0.0.0')).toEqual({
         province: '辽宁省',
         city: '达州市',
         category: '电脑',
@@ -318,7 +318,7 @@ describe('Pivot Dataset Test', () => {
         [VALUE_FIELD]: 1,
       });
 
-      expect(_.get(indexesData, '0.1.0.1')).toEqual({
+      expect(get(indexesData, '0.1.0.1')).toEqual({
         province: '辽宁省',
         city: '芜湖市',
         category: '手机',
@@ -327,7 +327,7 @@ describe('Pivot Dataset Test', () => {
         [VALUE_FIELD]: 2,
       });
 
-      expect(_.get(indexesData, '0.1.0.2')).toEqual({
+      expect(get(indexesData, '0.1.0.2')).toEqual({
         province: '辽宁省',
         city: '芜湖市',
         category: '家具',
@@ -337,7 +337,7 @@ describe('Pivot Dataset Test', () => {
       });
 
       // 四川
-      expect(_.get(indexesData, '1.0.0.2')).toEqual({
+      expect(get(indexesData, '1.0.0.2')).toEqual({
         province: '四川省',
         city: '成都市',
         category: '家具',
@@ -346,7 +346,7 @@ describe('Pivot Dataset Test', () => {
         [VALUE_FIELD]: 4,
       });
 
-      expect(_.get(indexesData, '1.0.0.0')).toEqual({
+      expect(get(indexesData, '1.0.0.0')).toEqual({
         province: '四川省',
         city: '成都市',
         category: '电脑',
@@ -355,7 +355,7 @@ describe('Pivot Dataset Test', () => {
         [VALUE_FIELD]: 5,
       });
 
-      expect(_.get(indexesData, '1.1.0.2')).toEqual({
+      expect(get(indexesData, '1.1.0.2')).toEqual({
         province: '四川省',
         city: '简阳市',
         category: '家具',
@@ -366,7 +366,7 @@ describe('Pivot Dataset Test', () => {
     });
   });
 
-  describe('Test For Query Date Cells', () => {
+  describe('Test For Query Data Cells', () => {
     beforeEach(() => {
       dataCfg = {
         fields: {
@@ -382,21 +382,6 @@ describe('Pivot Dataset Test', () => {
           },
         ],
         data: [
-          {
-            province: '辽宁省',
-            price: 10,
-          },
-          {
-            province: '辽宁省',
-            category: '电脑',
-            price: 1,
-          },
-          {
-            province: '辽宁省',
-            category: '手机',
-            price: 1,
-          },
-
           {
             province: '辽宁省',
             city: '达州市',
@@ -436,16 +421,19 @@ describe('Pivot Dataset Test', () => {
         ],
         sortParams: [],
       };
+      dataSet.setDataCfg(dataCfg);
     });
 
     test('should get correct data cell', () => {
       dataSet.setDataCfg(dataCfg);
       // find exact single data cell
       const result1 = dataSet.getCellData({
-        province: '辽宁省',
-        city: '达州市',
-        category: '电脑',
-        [EXTRA_FIELD]: 'price',
+        query: {
+          province: '辽宁省',
+          city: '达州市',
+          category: '电脑',
+          [EXTRA_FIELD]: 'price',
+        },
       });
       expect(result1).toEqual({
         province: '辽宁省',
@@ -454,17 +442,6 @@ describe('Pivot Dataset Test', () => {
         price: 1,
         [EXTRA_FIELD]: 'price',
         [VALUE_FIELD]: 1,
-      });
-
-      // find total price of province
-      const result2 = dataSet.getCellData({
-        province: '辽宁省',
-      });
-      expect(result2[0]).toEqual({
-        [EXTRA_FIELD]: 'price',
-        [VALUE_FIELD]: 10,
-        price: 10,
-        province: '辽宁省',
       });
     });
 
@@ -517,13 +494,12 @@ describe('Pivot Dataset Test', () => {
 
       // get all indexesData
       const result1 = dataSet.getMultiData({});
-      expect(result1).toBeArrayOfSize(9);
-
+      expect(result1).toBeArrayOfSize(6);
       // find all data cells belong to same province
       const result2 = dataSet.getMultiData({
         province: '辽宁省',
       });
-      expect(result2).toBeArrayOfSize(6);
+      expect(result2).toBeArrayOfSize(3);
 
       // find all data cells belong to same province and city
       const result3 = dataSet.getMultiData({
@@ -546,24 +522,6 @@ describe('Pivot Dataset Test', () => {
       });
 
       expect(result4).toBeArrayOfSize(2);
-    });
-
-    test('should get correct multi data cells with total values', () => {
-      dataSet.setDataCfg(dataCfg);
-
-      // find grand total price
-      const result1 = dataSet.getMultiData(
-        {
-          [EXTRA_FIELD]: 'price',
-        },
-        true,
-      );
-      expect(result1[0]).toEqual({
-        province: '辽宁省',
-        price: 10,
-        [EXTRA_FIELD]: 'price',
-        [VALUE_FIELD]: 10,
-      });
     });
 
     test('should get correct dimension values', () => {
@@ -595,6 +553,194 @@ describe('Pivot Dataset Test', () => {
         category: '家具',
       });
       expect(result5).toEqual(['price']);
+    });
+  });
+
+  describe('Test For Query Data Cells With Total Value ', () => {
+    beforeEach(() => {
+      dataCfg = {
+        fields: {
+          rows: ['province', 'city'],
+          columns: ['category'],
+          values: ['price'],
+          valueInCols: true,
+        },
+        meta: [
+          {
+            field: 'price',
+            name: '单价',
+          },
+        ],
+        data: [
+          {
+            province: '辽宁省',
+            city: '达州市',
+            category: '电脑',
+            price: 1,
+          },
+          {
+            province: '辽宁省',
+            city: '芜湖市',
+            category: '手机',
+            price: 2,
+          },
+          {
+            province: '辽宁省',
+            city: '芜湖市',
+            category: '家具',
+            price: 3,
+          },
+          {
+            province: '四川省',
+            city: '成都市',
+            category: '家具',
+            price: 4,
+          },
+          {
+            province: '四川省',
+            city: '成都市',
+            category: '电脑',
+            price: 5,
+          },
+          {
+            province: '四川省',
+            city: '简阳市',
+            category: '家具',
+            price: 6,
+          },
+        ],
+        totalData: [
+          {
+            price: 20,
+          },
+          {
+            province: '辽宁省',
+            price: 10,
+          },
+          {
+            province: '辽宁省',
+            category: '电脑',
+            price: 1,
+          },
+          {
+            category: '手机',
+            price: 2,
+          },
+        ],
+        sortParams: [],
+      };
+      dataSet.setDataCfg(dataCfg);
+    });
+
+    test('should get correct data cell', () => {
+      dataSet.setDataCfg(dataCfg);
+      // find exact single data cell
+      const result1 = dataSet.getCellData({
+        query: {
+          province: '辽宁省',
+          city: '达州市',
+          category: '电脑',
+          [EXTRA_FIELD]: 'price',
+        },
+      });
+      expect(result1).toEqual({
+        province: '辽宁省',
+        city: '达州市',
+        category: '电脑',
+        price: 1,
+        [EXTRA_FIELD]: 'price',
+        [VALUE_FIELD]: 1,
+      });
+    });
+
+    test('should get correct data cell with total value', () => {
+      // find total price of province
+      const result1 = dataSet.getCellData({
+        query: {
+          [EXTRA_FIELD]: 'price',
+        },
+        isTotals: true,
+      });
+      expect(result1).toEqual({
+        price: 20,
+        [EXTRA_FIELD]: 'price',
+      });
+
+      const result2 = dataSet.getCellData({
+        query: {
+          province: '辽宁省',
+          [EXTRA_FIELD]: 'price',
+        },
+        isTotals: true,
+      });
+      expect(result2).toEqual({
+        province: '辽宁省',
+        price: 10,
+        [EXTRA_FIELD]: 'price',
+      });
+
+      const result3 = dataSet.getCellData({
+        query: {
+          category: '手机',
+          [EXTRA_FIELD]: 'price',
+        },
+        isTotals: true,
+      });
+      expect(result3).toEqual({
+        category: '手机',
+        price: 2,
+        [EXTRA_FIELD]: 'price',
+      });
+
+      const result4 = dataSet.getCellData({
+        query: {
+          category: '电脑',
+          province: '辽宁省',
+          [EXTRA_FIELD]: 'price',
+        },
+        isTotals: true,
+      });
+      expect(result4).toEqual({
+        province: '辽宁省',
+        category: '电脑',
+        price: 1,
+        [EXTRA_FIELD]: 'price',
+      });
+    });
+
+    test('should get correct multi data cells with total values', () => {
+      dataSet.setDataCfg(dataCfg);
+
+      // get all indexesData
+      const result1 = dataSet.getMultiData({}, true);
+      expect(result1).toBeArrayOfSize(10);
+      // find all data cells belong to same province
+      const result2 = dataSet.getMultiData({
+        province: '辽宁省',
+      });
+      expect(result2).toBeArrayOfSize(3);
+
+      // find all data cells belong to same province and city
+      const result3 = dataSet.getMultiData({
+        province: '四川省',
+        city: '成都市',
+      });
+
+      expect(result3[0]).toContainEntries([
+        ['city', '成都市'],
+        ['category', '电脑'],
+      ]);
+      expect(result3[1]).toContainEntries([
+        ['city', '成都市'],
+        ['category', '家具'],
+      ]);
+
+      const result4 = dataSet.getMultiData({
+        province: '四川省',
+        category: '家具',
+      });
+
+      expect(result4).toBeArrayOfSize(2);
     });
   });
 
@@ -720,7 +866,7 @@ describe('Pivot Dataset Test', () => {
       const indexesData = dataSet.indexesData;
 
       // 辽宁 -> 达州 -> 电脑
-      expect(_.get(indexesData, '0.0.0.0')).toEqual({
+      expect(get(indexesData, '0.0.0.0')).toEqual({
         province: '辽宁省',
         city: '达州市',
         category: '电脑',
@@ -730,7 +876,7 @@ describe('Pivot Dataset Test', () => {
         [VALUE_FIELD]: 1,
       });
 
-      expect(_.get(indexesData, '0.0.0.1')).toEqual({
+      expect(get(indexesData, '0.0.0.1')).toEqual({
         province: '辽宁省',
         city: '达州市',
         category: '电脑',
