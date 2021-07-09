@@ -66,7 +66,11 @@ export class PivotFacet extends BaseFacet {
           }
         : {};
       const dataQuery = merge({}, rowQuery, colQuery, measureInfo);
-      const data = dataSet.getCellData(dataQuery, row, isTotals);
+      const data = dataSet.getCellData({
+        query: dataQuery,
+        rowNode: row,
+        isTotals,
+      });
       let valueField;
       let fieldValue = null;
       if (!isEmpty(data)) {
@@ -75,7 +79,6 @@ export class PivotFacet extends BaseFacet {
         if (isTotals) {
           valueField = get(dataQuery, [EXTRA_FIELD], '');
           fieldValue = get(data, valueField, null);
-          // console.log(222, dataQuery, data, valueField, fieldValue)
         }
       } else {
         valueField = get(dataQuery, [EXTRA_FIELD], '');

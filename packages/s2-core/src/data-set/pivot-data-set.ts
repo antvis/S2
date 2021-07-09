@@ -1,8 +1,13 @@
 import { BaseDataSet } from 'src/data-set';
-import { DataPathParams, DataType, PivotMeta } from 'src/data-set/interface';
+import {
+  DataPathParams,
+  DataType,
+  PivotMeta,
+  CellDataParams,
+} from 'src/data-set/interface';
 import { DerivedValue, Meta, S2DataConfig } from 'src/common/interface';
 import { i18n } from 'src/common/i18n';
-import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
+import { EXTRA_FIELD, VALUE_FIELD, TOTAL_VALUE } from 'src/common/constant';
 import {
   map,
   find,
@@ -20,6 +25,7 @@ import {
   merge,
   flatten,
   has,
+  keys,
 } from 'lodash';
 import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from 'src/common/debug';
 import { Node } from '@/facet/layout/node';
@@ -53,7 +59,12 @@ export class PivotDataSet extends BaseDataSet {
     this.colPivotMeta = new Map();
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
       const { rows, columns } = this.fields;
-      this.transformIndexesData(rows, columns, this.originData);
+      this.transformIndexesData(
+        rows,
+        columns,
+        this.originData,
+        this.totalData || [],
+      );
     });
 
     this.handleDimensionValuesSort();
@@ -132,21 +143,24 @@ export class PivotDataSet extends BaseDataSet {
     rows: string[],
     columns: string[],
     originData: DataType[],
+    totalData?: DataType[],
   ): number[][] => {
     const paths = [];
-    for (const data of originData) {
+    for (const data of [...originData, ...totalData]) {
       const rowDimensionValues = this.transformDimensionsValues(data, rows);
       const colDimensionValues = this.transformDimensionsValues(data, columns);
       const path = this.getDataPath({
         rowDimensionValues,
         colDimensionValues,
         isFirstCreate: true,
+        careUndefined: totalData?.length > 0,
         rowFields: rows,
         colFields: columns,
       });
       paths.push(path);
       set(this.indexesData, path, data);
     }
+
     return paths;
   };
 
@@ -258,7 +272,6 @@ export class PivotDataSet extends BaseDataSet {
               children: new Map(),
             });
           } else {
-            // the most case happened in total cell
             const meta = currentMeta.get(value);
             if (meta) {
               path.push(meta.level);
@@ -312,12 +325,13 @@ export class PivotDataSet extends BaseDataSet {
   };
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
-    const { data, meta = [], fields, sortParams = [] } = dataCfg;
+    const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
     const { columns, rows, values, derivedValues, valueInCols } = fields;
 
     let newColumns = columns;
     let newRows = rows;
     let newValues = values;
+    let newTotalData = [];
     if (valueInCols) {
       // value in cols
       newColumns = uniq([...columns, EXTRA_FIELD]);
@@ -362,6 +376,12 @@ export class PivotDataSet extends BaseDataSet {
       }
     }
 
+    totalData?.forEach((item) => {
+      newValues?.forEach((vi) => {
+        newTotalData.push({ ...item, [EXTRA_FIELD]: vi });
+      });
+    });
+
     // 返回新的结构
     return {
       data: newData,
@@ -372,6 +392,7 @@ export class PivotDataSet extends BaseDataSet {
         columns: newColumns,
         values: newValues,
       },
+      totalData: newTotalData,
       sortParams,
     };
   }
@@ -439,12 +460,21 @@ export class PivotDataSet extends BaseDataSet {
     );
   };
 
-  public getCellData(query: DataType, rowNode?: Node): DataType {
+  public getCellData(params: CellDataParams): DataType {
+    const { query, rowNode, isTotals = false } = params || {};
+
     const { columns, rows: originRows } = this.fields;
-    const rows = Node.getFieldPath(rowNode) ?? originRows;
+    let rows = originRows;
+    if (!isTotals) {
+      rows = Node.getFieldPath(rowNode) ?? originRows;
+    }
     const rowDimensionValues = this.getQueryDimValues(rows, query);
     const colDimensionValues = this.getQueryDimValues(columns, query);
-    const path = this.getDataPath({ rowDimensionValues, colDimensionValues });
+    const path = this.getDataPath({
+      rowDimensionValues,
+      colDimensionValues,
+      careUndefined: isTotals,
+    });
     const data = get(this.indexesData, path);
     // DebuggerUtil.getInstance().logger('get cell data:', path, data);
     return data;
@@ -452,7 +482,7 @@ export class PivotDataSet extends BaseDataSet {
 
   public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
     if (isEmpty(query)) {
-      return compact(flattenDeep(this.indexesData));
+      return compact(this.flatten(this.indexesData));
     }
     // TODO adapt drill down scene
     const { rows, columns, valueInCols } = this.fields;
@@ -463,7 +493,7 @@ export class PivotDataSet extends BaseDataSet {
       colDimensionValues,
       careUndefined: true,
     });
-    let hadUndefined = false;
+    let hadUndefined: boolean = false;
     let currentData = this.indexesData;
 
     for (let i = 0; i < path.length; i++) {
@@ -500,4 +530,16 @@ export class PivotDataSet extends BaseDataSet {
 
     return result;
   }
+
+  flatten = (data) =>
+    keys(data)?.reduce((pre, next) => {
+      const item = get(data, next);
+      if (!Array.isArray(item) && next !== 'undefined') {
+        pre?.push(item);
+      } else {
+        pre = pre.concat(this.flatten(item));
+      }
+
+      return pre;
+    }, []);
 }

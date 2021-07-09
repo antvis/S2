@@ -20,7 +20,7 @@ export const addTotals = (params: TotalParams) => {
     // check to see if grand total is added
     if (totalsConfig.showGrandTotals) {
       func = totalsConfig.reverseLayout ? 'unshift' : 'push';
-      value = new TotalClass(totalsConfig.label, false);
+      value = new TotalClass(totalsConfig.label, false, true);
     }
   } else if (totalsConfig.showSubTotals && size(fieldValues) > 1) {
     if (currentField !== EXTRA_FIELD) {
