@@ -29,9 +29,7 @@ export enum CellTypes {
   ROWCELL = 'rowCell',
   COLCELL = 'colCell',
   CORNERCELL = 'cornerCell',
-  MERGEDCELLS = 'mergedCells'
+  MERGEDCELLS = 'mergedCells',
 }
 
 export const KEEP_HOVER_TIME = 800;
-
-

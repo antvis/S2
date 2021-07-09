@@ -4,16 +4,11 @@
   "useWorkspaces": true,
   "command": {
     "publish": {
-      "ignoreChanges": [
-        "*.md",
-        "**/_tests_/**"
-      ],
+      "ignoreChanges": ["*.md", "**/_tests_/**"],
       "message": "chore(release): :bookmark: publish %s"
     },
     "bootstrap": {
-      "npmClientArgs": [
-        "--no-ci"
-      ]
+      "npmClientArgs": ["--no-ci"]
     }
   },
   "changelog": {
@@ -27,10 +22,9 @@
       "pr(documentation)": ":book: Documentation",
       "pr(enhancement)": ":rocket: Enhancement",
       "pr(refactor)": ":100: Refactoring",
-      "pr(test)": ":white_check_mark: Test Case"
+      "pr(test)": ":white_check_mark: Test Case",
+      "pr(docs)": "::memo: Docs Update"
     }
   },
-  "packages": [
-    "packages/sr-core"
-  ]
+  "packages": ["packages/sr-core"]
 }
