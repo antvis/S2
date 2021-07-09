@@ -22,8 +22,7 @@
       "pr(documentation)": ":book: Documentation",
       "pr(enhancement)": ":rocket: Enhancement",
       "pr(refactor)": ":100: Refactoring",
-      "pr(test)": ":white_check_mark: Test Case",
-      "pr(docs)": "::memo: Docs Update"
+      "pr(test)": ":white_check_mark: Test Case"
     }
   },
   "packages": ["packages/sr-core"]
