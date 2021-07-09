@@ -1,7 +1,7 @@
 import { SpreadSheet } from 'src/sheet-type';
 import { forEach, includes } from 'lodash';
 import { S2CellType, SelectedState } from 'src/common/interface/interaction';
-import { SelectedStateName } from 'src/common/constant/interatcion';
+import { SelectedStateName } from '@/common/constant/interaction';
 
 export class State {
   protected spreadsheet: SpreadSheet;

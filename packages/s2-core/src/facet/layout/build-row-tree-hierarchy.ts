@@ -29,14 +29,8 @@ const addTotals = (
  * @param params
  */
 export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
-  const {
-    parentNode,
-    currentField,
-    level,
-    facetCfg,
-    hierarchy,
-    pivotMeta,
-  } = params;
+  const { parentNode, currentField, level, facetCfg, hierarchy, pivotMeta } =
+    params;
   const { spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
   const query = parentNode.query;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;

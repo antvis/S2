@@ -10,7 +10,7 @@ import { ResizeInfo } from '../../facet/header/interface';
 
 export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions, Data };
 
-export type Formatter = (v: any) => string;
+export type Formatter = (v: unknown) => string;
 
 export type Aggregation = 'SUM' | 'AVG' | 'MIN' | 'MAX';
 
@@ -328,8 +328,8 @@ export interface SpreadSheetFacetCfg {
   // column cell config
   colCfg: ColCfg;
   // width/height of plot
-  width;
-  height;
+  width: number;
+  height: number;
   // tree mode rows width
   treeRowsWidth: number;
   // all collapsed rows(node id <=> isCollapse) -- only use in tree mode row header
@@ -432,3 +432,11 @@ export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
   isRowHeaderText?: boolean;
   cellData?: T;
 }
+
+export type SpreadsheetMountContainer = string | HTMLElement;
+
+export type SpreadsheetConstructor = [
+  SpreadsheetMountContainer,
+  S2DataConfig,
+  S2Options,
+];

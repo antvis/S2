@@ -15,7 +15,7 @@
     "jest": true
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["prettier", "@typescript-eslint", "import"],
+  "plugins": ["prettier", "@typescript-eslint", "import", "react-hooks"],
   "settings": {
     "jest": {
       "version": 26
@@ -25,6 +25,8 @@
     }
   },
   "rules": {
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
     "prettier/prettier": 1,
     "no-restricted-syntax": 0,
     "semi": 0,
