@@ -54,6 +54,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       isLeaf = true;
     } else if (spreadsheet.isTableMode()) {
       value = fieldValue as string;
+      adjustedField = fieldValue as string;
       nodeQuery = _.merge({}, query, { [value]: value });
       isLeaf = true;
     } else {
@@ -71,10 +72,10 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     // create new header nodes
     const node = new Node({
       id: uniqueId,
-      key: value,
+      key: adjustedField,
       value,
       level,
-      field: value,
+      field: adjustedField,
       parent: parentNode,
       isTotals,
       isTotalMeasure,

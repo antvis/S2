@@ -344,7 +344,7 @@ export class PivotDataSet extends BaseDataSet {
       {
         field: EXTRA_FIELD,
         name: i18n('数值'),
-        formatter: (v) => enumAlias.get(v), // 格式化
+        formatter: (v: string) => enumAlias.get(v), // 格式化
       } as Meta,
     ];
 
