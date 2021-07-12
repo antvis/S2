@@ -420,7 +420,8 @@ export class PivotDataSet extends BaseDataSet {
 
   public getCellData(query: DataType, rowNode?: Node): DataType {
     const { columns, rows: originRows } = this.fields;
-    const rows = Node.getFieldPath(rowNode) ?? originRows;
+    const newRows = Node.getFieldPath(rowNode);
+    const rows = _.isEmpty(newRows) ? originRows : newRows;
     const rowDimensionValues = this.getQueryDimValues(rows, query);
     const colDimensionValues = this.getQueryDimValues(columns, query);
     const path = this.getDataPath({ rowDimensionValues, colDimensionValues });

@@ -4,7 +4,7 @@ import { Event } from '@antv/g-canvas';
 import { get, noop, includes } from 'lodash';
 import { ViewMeta } from '@/common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
-import { SelectedStateName } from '@/common/constant/interatcion';
+import { SelectedStateName } from '@/common/constant/interaction';
 import { getTooltipData } from '@/utils/tooltip';
 
 export class DataCellClick extends BaseEvent {

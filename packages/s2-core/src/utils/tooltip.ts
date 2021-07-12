@@ -37,7 +37,7 @@ import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
-import { SelectedStateName } from 'src/common/constant/interatcion';
+import { SelectedStateName } from '@/common/constant/interaction';
 
 /**
  * calculate aggregate value
@@ -186,12 +186,9 @@ export const getFieldList = (
     concat([], fields),
     (field) => field !== EXTRA_FIELD && hoverData[field],
   );
-  const fieldList = map(
-    currFields,
-    (field: string): ListItem => {
-      return getListItem(spreadsheet, hoverData, field);
-    },
-  );
+  const fieldList = map(currFields, (field: string): ListItem => {
+    return getListItem(spreadsheet, hoverData, field);
+  });
   return fieldList;
 };
 
@@ -409,7 +406,7 @@ export const getSummaryProps = (
     aggregationValue = parseFloat(aggregationValue.toPrecision(12)); // solve accuracy problems
     const value = currentFormatter(aggregationValue);
     return {
-      selectedData,
+      selectedData: selectedData as any,
       name,
       value,
     };
@@ -447,14 +444,14 @@ export const getTooltipData = (
   if (!options?.hideSummary) {
     // 计算总计小计
     summaries = map(cellInfos, (cellInfo) =>
-      getSummaryProps(spreadsheet, cellInfo, options, aggregation),
+      getSummaryProps(spreadsheet, cellInfo as any, options, aggregation),
     );
     // 如果summaries中有相同name的向，则合并为同一项；
     summaries = mergeSummaries(summaries);
   } else {
     // 如果隐藏总计小计说明是datacell点击，只展示单个cell的详细信息
-    headInfo = getHeadInfo(spreadsheet, cellInfos[0]);
-    details = getDetailList(spreadsheet, cellInfos[0], options);
+    headInfo = getHeadInfo(spreadsheet, cellInfos[0] as any);
+    details = getDetailList(spreadsheet, cellInfos[0] as any, options);
   }
   const { interpretation, infos, tips } = cellInfos[0] || {};
   return { summaries, interpretation, infos, tips, headInfo, details };
@@ -479,7 +476,11 @@ export const getStrategySummary = (
 ): SummaryProps => {
   if (hoverData) {
     const { valueField } = getRightAndValueField(spreadsheet, options);
-    const { name, value } = getListItem(spreadsheet, hoverData, valueField);
+    const { name, value } = getListItem(
+      spreadsheet,
+      hoverData as any,
+      valueField,
+    );
 
     return {
       selectedData: [hoverData],
@@ -510,7 +511,7 @@ export const getStrategyDetailList = (
     const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
     // if rows is not empty and values is data, use normal-tooltip
     if (rowFields.find((item) => item === EXTRA_FIELD)) {
-      return getDetailList(spreadsheet, hoverData, options);
+      return getDetailList(spreadsheet, hoverData as any, options);
     }
     // the value hangs at the head of the column
     const { rightField, valueField } = getRightAndValueField(
@@ -523,17 +524,14 @@ export const getStrategyDetailList = (
       ...getDerivedValues(spreadsheet, valueField),
     ];
 
-    return map(
-      valuesField,
-      (field: string): ListItem => {
-        if (isEqual(field, rightField)) {
-          // the value of the measure dimension is taken separately
-          return getListItem(spreadsheet, hoverData, hoverData[field]);
-        }
+    return map(valuesField, (field: string): ListItem => {
+      if (isEqual(field, rightField)) {
+        // the value of the measure dimension is taken separately
+        return getListItem(spreadsheet, hoverData as any, hoverData[field]);
+      }
 
-        return getListItem(spreadsheet, hoverData, field);
-      },
-    );
+      return getListItem(spreadsheet, hoverData as any, field);
+    });
   }
 };
 
@@ -572,7 +570,7 @@ export const getStrategyTooltipData = (
 ) => {
   const { interpretation, infos, tips } = data || {};
   const summaries = getStrategySummary(spreadsheet, data, options);
-  const headInfo = getStrategyHeadInfo(spreadsheet, data);
+  const headInfo = getStrategyHeadInfo(spreadsheet, data as any);
   const details = getStrategyDetailList(spreadsheet, data, options);
 
   return { summaries, headInfo, details, interpretation, infos, tips };

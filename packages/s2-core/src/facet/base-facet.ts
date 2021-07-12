@@ -47,6 +47,7 @@ import {
 } from 'src/facet/header';
 import { BaseCell } from 'src/cell';
 import { updateMergedCells } from 'src/utils/interactions/merge-cells';
+import { CellScrollPosition } from 'src/common/interface/events';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -905,7 +906,8 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
         offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
@@ -959,7 +961,8 @@ export abstract class BaseFacet {
         // When both a row header and a panel scroll bar exist, show viewport shadow
         showViewPortRightShadow:
           !_.isNil(this.hRowScrollBar) && !_.isNil(this.hScrollBar),
-        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
         spreadsheet: this.cfg.spreadsheet,
       };
@@ -983,7 +986,9 @@ export abstract class BaseFacet {
       this.realCellRender(scrollX, scrollY);
     }
     this.translateRelatedGroups(scrollX, scrollY, hRowScroll);
-    this.spreadsheet.emit(KEY_CELL_SCROLL, { scrollX, scrollY });
+
+    const cellScrollData: CellScrollPosition = { scrollX, scrollY };
+    this.spreadsheet.emit(KEY_CELL_SCROLL, cellScrollData);
   }
 
   protected abstract doLayout(): LayoutResult;

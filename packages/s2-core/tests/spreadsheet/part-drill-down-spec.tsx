@@ -60,6 +60,7 @@ const getOptions = () => {
         widthByFieldValue: {},
         heightByField: {},
         colWidthType: 'adaptive',
+        hideMeasureColumn: true,
       },
       cellCfg: {
         height: 32,
