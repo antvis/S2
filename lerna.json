@@ -25,5 +25,5 @@
       "pr(test)": ":white_check_mark: Test Case"
     }
   },
-  "packages": ["packages/sr-core"]
+  "packages": ["packages/s2-core"]
 }
