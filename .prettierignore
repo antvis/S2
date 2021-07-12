@@ -22,6 +22,10 @@ CNAME
 LICENSE
 s2-site/.cache
 s2-site/public
+.history
+esm
+dist
+lib
 
 
 

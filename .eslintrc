@@ -25,7 +25,9 @@
     }
   },
   "rules": {
-    "prettier/prettier": 1,
+    "import/order": 2,
+    "import/no-default-export": 1,
+    "prettier/prettier": 2,
     "no-restricted-syntax": 0,
     "semi": 0,
     "no-console": 0,

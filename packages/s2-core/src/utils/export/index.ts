@@ -143,12 +143,8 @@ export const copyData = (
   split: string,
   isFormat?: boolean,
 ): string => {
-  const {
-    rowsHierarchy,
-    rowLeafNodes,
-    colLeafNodes,
-    getViewMeta,
-  } = sheetInstance?.facet?.layoutResult;
+  const { rowsHierarchy, rowLeafNodes, colLeafNodes, getViewMeta } =
+    sheetInstance?.facet?.layoutResult;
   const { valueInCols } = sheetInstance.options;
   const rows = clone(rowsHierarchy?.rows);
 
