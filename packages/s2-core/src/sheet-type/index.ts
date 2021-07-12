@@ -13,7 +13,6 @@ import {
 import { Store } from '@/common/store';
 import { ext } from '@antv/matrix-util';
 import {
-  ColWidthCache,
   DerivedValue,
   safetyDataConfig,
   OffsetConfig,
@@ -38,7 +37,7 @@ import {
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
 } from '../common/constant';
-import { BaseDataSet, PivotDataSet } from '../data-set';
+import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
 import {
   Node,
   BaseInteraction,
@@ -69,7 +68,7 @@ import {
   SelectedStateName,
 } from 'src/common/constant/interatcion';
 import { i18n } from 'src/common/i18n';
-import { PivotFacet } from 'src/facet';
+import { PivotFacet, TableFacet } from 'src/facet';
 
 const matrixTransform = ext.transform;
 export class SpreadSheet extends EE {
@@ -170,8 +169,7 @@ export class SpreadSheet extends EE {
     if (dataSet) {
       return dataSet(this);
     }
-    // TODO table data set
-    return mode === 'table' ? new PivotDataSet(this) : new PivotDataSet(this);
+    return mode === 'table' ? new TableDataSet(this) : new PivotDataSet(this);
   };
 
   public clearDrillDownData(rowNodeId?: string) {
@@ -314,6 +312,13 @@ export class SpreadSheet extends EE {
    */
   public isPivotMode(): boolean {
     return this.options?.mode === 'pivot';
+  }
+
+  /**
+   * Check if is pivot mode
+   */
+  public isTableMode(): boolean {
+    return this.options?.mode === 'table';
   }
 
   /**
@@ -616,7 +621,13 @@ export class SpreadSheet extends EE {
       layoutArrange,
     } as SpreadSheetFacetCfg;
     this.facet?.destroy();
-    this.facet = new PivotFacet(facetCfg);
+
+    if (this.isPivotMode()) {
+      this.facet = new PivotFacet(facetCfg);
+    } else {
+      this.facet = new TableFacet(facetCfg);
+    }
+
     // render facet
     this.facet.render();
   };

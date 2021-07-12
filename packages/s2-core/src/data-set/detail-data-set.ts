@@ -1,3 +1,26 @@
+import { S2DataConfig } from '@/common/interface';
+import { Node } from '@/facet/layout/node';
+import { BaseDataSet } from 'src/data-set';
+import { DataType } from './interface';
+
+export class DetailDataSet extends BaseDataSet {
+  public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
+    return dataCfg;
+  }
+
+  public getDimensionValues(field: string, query?: DataType): string[] {
+    return [];
+  }
+
+  public getCellData(query: DataType, rowNode?: Node): DataType {
+    return null;
+  }
+
+  public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
+    return [];
+  }
+}
+
 // import { S2DataConfig } from '../common/interface';
 // import { processIrregularData } from '../utils/get-irregular-data';
 // import { EXTRA_FIELD } from '../common/constant';

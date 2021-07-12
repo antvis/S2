@@ -7,6 +7,7 @@ import { Node } from 'src/facet/layout/node';
 import { buildRowTreeHierarchy } from 'src/facet/layout/build-row-tree-hierarchy';
 import { buildGridHierarchy } from 'src/facet/layout/build-gird-hierarchy';
 import { PivotDataSet } from '@/data-set';
+import { generateHeaderNodes } from '@/facet/layout/util/generate-row-nodes';
 /**
  * Header Hierarchy
  * - row header
@@ -29,6 +30,7 @@ export const buildHeaderHierarchy = (
 ): BuildHeaderResult => {
   const { isRowHeader, facetCfg } = params;
   const { rows, cols, values, spreadsheet, dataSet } = facetCfg;
+
   const isValueInCols = spreadsheet.dataCfg.fields.valueInCols;
   const isPivotMode = spreadsheet.isPivotMode();
   const moreThanOneValue = values.length > 1;
@@ -82,7 +84,18 @@ export const buildHeaderHierarchy = (
       hierarchy,
     });
   } else {
-    // TODO table mode -> col
+    generateHeaderNodes({
+      currentField: cols[0],
+      fields: cols,
+      fieldValues: cols,
+      facetCfg,
+      hierarchy,
+      parentNode: rootNode,
+      level: 0,
+      query: {},
+      addMeasureInTotalQuery: false,
+      addTotalMeasureInTotal: false,
+    });
   }
   return {
     hierarchy,

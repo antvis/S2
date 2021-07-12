@@ -60,3 +60,19 @@ export interface TreeHeaderParams {
   level: number;
   pivotMeta: PivotMeta;
 }
+
+export interface ViewCellHeights {
+  getCellHeight: (index: number) => number;
+
+  getTotalHeight: () => number;
+
+  getTotalLength: () => number;
+
+  getIndexRange: (
+    minHeight: number,
+    maxHeight: number,
+  ) => {
+    start: number;
+    end: number;
+  };
+}

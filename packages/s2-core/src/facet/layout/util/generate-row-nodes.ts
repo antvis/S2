@@ -51,6 +51,10 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       nodeQuery = _.merge({}, query, { [EXTRA_FIELD]: value });
       adjustedField = EXTRA_FIELD;
       isLeaf = true;
+    } else if (spreadsheet.isTableMode()) {
+      value = fieldValue as string;
+      nodeQuery = _.merge({}, query, { [value]: value });
+      isLeaf = true;
     } else {
       value = fieldValue;
       // root[&]四川[&]成都 => {province: '四川', city: '成都' }
@@ -65,10 +69,10 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     // create new header nodes
     const node = new Node({
       id: uniqueId,
-      key: adjustedField,
+      key: value,
       value,
       level,
-      field: adjustedField,
+      field: value,
       parent: parentNode,
       isTotals,
       isTotalMeasure,
