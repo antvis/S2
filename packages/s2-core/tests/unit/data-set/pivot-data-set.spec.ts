@@ -6,7 +6,7 @@ import { get } from 'lodash';
 
 jest.mock('src/sheet-type');
 jest.mock('src/facet/layout/node');
-const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
+const MockSpreadSheet = (SpreadSheet as any) as jest.Mock<SpreadSheet>;
 
 describe('Pivot Dataset Test', () => {
   let dataSet: PivotDataSet;
@@ -556,7 +556,7 @@ describe('Pivot Dataset Test', () => {
     });
   });
 
-  describe('Test For Query Data Cells With Total Value ', () => {
+  describe('Test For Query Data Cells With Total Value', () => {
     beforeEach(() => {
       dataCfg = {
         fields: {
@@ -616,6 +616,10 @@ describe('Pivot Dataset Test', () => {
           {
             province: '辽宁省',
             price: 10,
+          },
+          {
+            province: '四川省',
+            price: 12,
           },
           {
             province: '辽宁省',
@@ -708,39 +712,201 @@ describe('Pivot Dataset Test', () => {
       });
     });
 
-    test('should get correct multi data cells with total values', () => {
-      dataSet.setDataCfg(dataCfg);
+    describe('Test For Query Data Cells With Total Value And Value In Cols', () => {
+      test('should get correct multi data cells with total values and value in cols', () => {
+        // get all indexesData
+        expect(dataSet.getMultiData({})).toBeArrayOfSize(11);
 
-      // get all indexesData
-      const result1 = dataSet.getMultiData({}, true);
-      expect(result1).toBeArrayOfSize(10);
-      // find all data cells belong to same province
-      const result2 = dataSet.getMultiData({
-        province: '辽宁省',
+        // get data of all price cols
+        expect(
+          dataSet.getMultiData({
+            $$extra$$: 'price',
+          }),
+        ).toBeArrayOfSize(11);
+
+        // get data of total price col
+        expect(
+          dataSet.getMultiData(
+            {
+              $$extra$$: 'price',
+            },
+            true,
+          ),
+        ).toBeArrayOfSize(3);
+
+        // get data of total price row
+        expect(
+          dataSet.getMultiData(
+            {
+              $$extra$$: 'price',
+            },
+            true,
+            true,
+          ),
+        ).toBeArrayOfSize(2);
+
+        // get all data of 辽宁省
+        expect(
+          dataSet.getMultiData({
+            province: '辽宁省',
+          }),
+        ).toBeArrayOfSize(5);
+
+        // get subTotal data of 辽宁省
+        expect(
+          dataSet.getMultiData(
+            {
+              province: '辽宁省',
+            },
+            true,
+          ),
+        ).toBeArrayOfSize(2);
+
+        // get all data of 辽宁省-芜湖市 row
+        expect(
+          dataSet.getMultiData({
+            province: '辽宁省',
+            city: '芜湖市',
+          }),
+        ).toBeArrayOfSize(2);
+
+        // get all data of 电脑 col
+        expect(
+          dataSet.getMultiData({
+            category: '电脑',
+          }),
+        ).toBeArrayOfSize(3);
+
+        // get all data of 四川省-家具
+        expect(
+          dataSet.getMultiData({
+            category: '家具',
+            province: '四川省',
+          }),
+        ).toBeArrayOfSize(2);
       });
-      expect(result2).toBeArrayOfSize(3);
+    });
 
-      // find all data cells belong to same province and city
-      const result3 = dataSet.getMultiData({
-        province: '四川省',
-        city: '成都市',
+    describe('Test For Query Data Cells With Total Value And Value In Rows ', () => {
+      beforeEach(() => {
+        dataCfg = {
+          ...dataCfg,
+          fields: {
+            rows: ['province', 'city'],
+            columns: ['category'],
+            values: ['price'],
+            valueInCols: false,
+          },
+          totalData: [
+            {
+              price: 20,
+            },
+            {
+              province: '辽宁省',
+              price: 10,
+            },
+            {
+              province: '四川省',
+              price: 12,
+            },
+            {
+              province: '辽宁省',
+              category: '电脑',
+              price: 1,
+            },
+            {
+              category: '手机',
+              price: 2,
+            },
+          ],
+        };    
+        dataSet.setDataCfg(dataCfg);
       });
 
-      expect(result3[0]).toContainEntries([
-        ['city', '成都市'],
-        ['category', '电脑'],
-      ]);
-      expect(result3[1]).toContainEntries([
-        ['city', '成都市'],
-        ['category', '家具'],
-      ]);
+      test('should get correct multi data cells with total values and value in rows', () => {
+        dataSet.setDataCfg(dataCfg);
+        // get all indexesData
+        expect(dataSet.getMultiData({})).toBeArrayOfSize(11);
 
-      const result4 = dataSet.getMultiData({
-        province: '四川省',
-        category: '家具',
+        // get data of all price rows
+        expect(
+          dataSet.getMultiData(
+            {
+              $$extra$$: 'price',
+            },
+          ),
+        ).toBeArrayOfSize(11);
+
+        // get data of total price row
+        expect(
+          dataSet.getMultiData(
+            {
+              $$extra$$: 'price',
+            },
+            true,
+            true,
+          ),
+        ).toBeArrayOfSize(2);
+
+        // get data of total price col
+        expect(
+          dataSet.getMultiData(
+            {
+              $$extra$$: 'price',
+            },
+            true,
+          ),
+        ).toBeArrayOfSize(3);
+
+        // get all data of 辽宁省
+        expect(
+          dataSet.getMultiData({
+            province: '辽宁省',
+          }),
+        ).toBeArrayOfSize(5);
+
+        // get subTotal data of 辽宁省
+        expect(
+          dataSet.getMultiData(
+            {
+              province: '辽宁省',
+            },
+            true,
+          ),
+        ).toBeArrayOfSize(2);
+
+        // get all data of 辽宁省-芜湖市 row
+        expect(
+          dataSet.getMultiData({
+            province: '辽宁省',
+            city: '芜湖市',
+          }),
+        ).toBeArrayOfSize(2);
+
+        // get all data of 辽宁省-芜湖市 price row
+        expect(
+          dataSet.getMultiData({
+            province: '辽宁省',
+            city: '芜湖市',
+            $$extra$$: 'price',
+          }),
+        ).toBeArrayOfSize(2);
+
+        // get all data of 电脑 col
+        expect(
+          dataSet.getMultiData({
+            category: '电脑',
+          }),
+        ).toBeArrayOfSize(3);
+
+        // get all data of 四川省-家具
+        expect(
+          dataSet.getMultiData({
+            category: '家具',
+            province: '四川省',
+          }),
+        ).toBeArrayOfSize(2);
       });
-
-      expect(result4).toBeArrayOfSize(2);
     });
   });
 
