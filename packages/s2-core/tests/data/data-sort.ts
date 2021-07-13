@@ -247,3 +247,70 @@ export const dataCfg = {
   ],
   data: originData,
 };
+
+export const totalData = [
+  {
+    price: '100',
+    cost: '200',
+  },
+  {
+    area: '东北',
+    cost: '14',
+    price: '24',
+  },
+  {
+    area: '东北',
+    type: '办公用品',
+    cost: '23',
+    price: '27',
+  },
+  {
+    area: '东北',
+    type: '办公用品',
+    sub_type: '笔',
+    cost: '26',
+    price: '39',
+  },
+  {
+    area: '东北',
+    province: '吉林',
+    cost: '30',
+    price: '40',
+  },
+  {
+    area: '东北',
+    province: '辽宁',
+    cost: '31',
+    price: '39',
+  },
+  {
+    area: '东北',
+    province: '吉林',
+    city: '白山',
+    cost: '10',
+    price: '20',
+  },
+  {
+    area: '东北',
+    province: '吉林',
+    city: '丹东',
+    cost: '12',
+    price: '21',
+  },
+  {
+    area: '东北',
+    province: '吉林',
+    type: '办公用品',
+    sub_type: '笔',
+    cost: '11',
+    price: '12',
+  },
+  {
+    area: '东北',
+    province: '吉林',
+    type: '办公用品',
+    sub_type: '纸张',
+    cost: '10',
+    price: '13',
+  },
+];
