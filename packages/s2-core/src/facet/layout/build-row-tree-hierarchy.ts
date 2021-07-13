@@ -4,8 +4,10 @@ import { TotalClass } from 'src/facet/layout/total-class';
 import { i18n } from 'src/common/i18n';
 import { generateId } from 'src/facet/layout/util/generate-id';
 import { Node } from 'src/facet/layout/node';
-import _ from 'lodash';
+import { isEmpty, merge, isBoolean } from 'lodash';
 import { SpreadSheet } from '@/sheet-type';
+import { getIntersections, filterUndefined } from '@/utils/data-set-operate';
+import { PivotDataSet } from '@/data-set';
 
 const addTotals = (
   spreadsheet: SpreadSheet,
@@ -40,7 +42,13 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const { spreadsheet, dataSet, collapsedRows, hierarchyCollapse } = facetCfg;
   const query = parentNode.query;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
-  const dimValues = dataSet.getDimensionValues(currentField, query);
+  const dimValues = filterUndefined(
+    getIntersections(
+      [...(dataSet as PivotDataSet)?.sortedDimensionValues?.get(currentField)],
+      [...pivotMeta.keys()],
+    ),
+  );
+
   let fieldValues: FileValue[] = layoutArrange(
     dimValues,
     spreadsheet,
@@ -61,8 +69,8 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   for (const fieldValue of fieldValues) {
     const isTotals = fieldValue instanceof TotalClass;
     const pivotMetaValue = isTotals
-      ? null
-      : pivotMeta.get(fieldValue as string);
+    ? null
+    : pivotMeta.get(fieldValue as string);
     let value;
     let nodeQuery = query;
     if (isTotals) {
@@ -70,12 +78,12 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       nodeQuery = query;
     } else {
       value = fieldValue;
-      nodeQuery = _.merge({}, query, { [currentField]: value });
+      nodeQuery = merge({}, query, { [currentField]: value });
     }
     const uniqueId = generateId(parentNode.id, value, facetCfg);
     const collapsedRow = collapsedRows[uniqueId];
     const isCollapse =
-      _.isBoolean(collapsedRow) && collapsedRow
+      isBoolean(collapsedRow) && collapsedRow
         ? collapsedRow
         : hierarchyCollapse;
     // TODO special logic to custom control node's collapsed state
@@ -111,7 +119,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
 
     layoutHierarchy(facetCfg, parentNode, node, hierarchy);
 
-    const emptyChildren = _.isEmpty(pivotMetaValue?.children);
+    const emptyChildren = isEmpty(pivotMetaValue?.children);
     if (emptyChildren || isTotals) {
       node.isLeaf = true;
     }
