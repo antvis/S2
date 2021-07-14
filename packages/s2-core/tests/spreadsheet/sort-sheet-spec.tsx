@@ -1,4 +1,4 @@
-import { merge, clone } from 'lodash';
+import { merge } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
@@ -12,6 +12,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch } from 'antd';
 import { CustomTooltip } from './custom/custom-tooltip';
+import { originData, totalData } from '../data/data-sort';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -26,6 +27,7 @@ const mockDataCfg = {
     rows: ['area', 'province', 'city'],
     columns: ['type', 'sub_type'],
     values: ['cost', 'price'],
+    valueInCols: true,
   },
   meta: [
     {
@@ -49,245 +51,151 @@ const mockDataCfg = {
       name: '成本',
     },
   ],
-  data: [
-    {
-      area: '东北',
-      province: '吉林',
-      city: '白山',
-      type: '办公用品',
-      sub_type: '纸张',
-      cost: '2',
-      price: '8',
-    },
-    {
-      area: '东北',
-      province: '吉林',
-      city: '白山',
-      type: '办公用品',
-      sub_type: '笔',
-      cost: '3',
-      price: '9',
-    },
-    {
-      area: '东北',
-      province: '辽宁',
-      city: '抚顺',
-      type: '办公用品',
-      sub_type: '纸张',
-      cost: '2',
-      price: '9',
-    },
-    {
-      area: '东北',
-      province: '辽宁',
-      city: '抚顺',
-      type: '办公用品',
-      sub_type: '笔',
-      cost: '5',
-      price: '12',
-    },
-    {
-      area: '东北',
-      province: '辽宁',
-      city: '抚顺',
-      type: '家具产品',
-      sub_type: '办公装饰品',
-      cost: '3',
-      price: '4',
-    },
-    {
-      area: '东北',
-      province: '辽宁',
-      city: '抚顺',
-      type: '家具产品',
-      sub_type: '餐桌',
-      cost: '5',
-      price: '1',
-    },
-    {
-      area: '东北',
-      province: '辽宁',
-      city: '朝阳',
-      type: '家具产品',
-      sub_type: '办公装饰品',
-      cost: '32',
-      price: '4',
-    },
-    {
-      area: '东北',
-      province: '辽宁',
-      city: '朝阳',
-      type: '办公用品',
-      sub_type: '纸张',
-      cost: '52',
-      price: '4',
-    },
-    {
-      area: '东北',
-      province: '辽宁',
-      city: '朝阳',
-      type: '办公用品',
-      sub_type: '笔',
-      cost: '52',
-      price: '4',
-    },
-    {
-      area: '东北',
-      province: '辽宁',
-      city: '朝阳',
-      type: '家具产品',
-      sub_type: '餐桌',
-      cost: '5',
-      price: '2',
-    },
-    {
-      area: '东北',
-      province: '吉林',
-      city: '白山',
-      type: '家具产品',
-      sub_type: '办公装饰品',
-      cost: '4',
-      price: '4',
-    },
-    {
-      area: '东北',
-      province: '吉林',
-      city: '白山',
-      type: '家具产品',
-      sub_type: '餐桌',
-      cost: '8',
-      price: '14',
-    },
-    {
-      area: '东北',
-      province: '吉林',
-      city: '丹东',
-      type: '家具产品',
-      sub_type: '办公装饰品',
-      cost: '6',
-      price: '2',
-    },
-    {
-      area: '东北',
-      province: '吉林',
-      city: '丹东',
-      type: '家具产品',
-      sub_type: '餐桌',
-      cost: '14',
-      price: '9',
-    },
-    {
-      area: '东北',
-      province: '吉林',
-      city: '丹东',
-      type: '办公用品',
-      sub_type: '纸张',
-      cost: '6',
-      price: '1',
-    },
-    {
-      area: '东北',
-      province: '吉林',
-      city: '丹东',
-      type: '办公用品',
-      sub_type: '笔',
-      cost: '64',
-      price: '1',
-    },
-    {
-      area: '东南',
-      province: '浙江',
-      city: '杭州',
-      type: '办公用品',
-      sub_type: '纸张',
-      cost: '6',
-      price: '5',
-    },
-    {
-      area: '东南',
-      province: '浙江',
-      city: '杭州',
-      type: '办公用品',
-      sub_type: '笔',
-      cost: '64',
-      price: '52',
-    },
-    {
-      area: '东南',
-      province: '浙江',
-      city: '舟山',
-      type: '办公用品',
-      sub_type: '纸张',
-      cost: '6',
-      price: '5',
-    },
-    {
-      area: '东南',
-      province: '浙江',
-      city: '舟山',
-      type: '办公用品',
-      sub_type: '笔',
-      cost: '-',
-      price: '5',
-    },
-    {
-      area: '东南',
-      province: '浙江',
-      city: '杭州',
-      type: '家具产品',
-      sub_type: '办公装饰品',
-      cost: '2',
-      price: '3',
-    },
-    {
-      area: '东南',
-      province: '浙江',
-      city: '杭州',
-      type: '家具产品',
-      sub_type: '餐桌',
-      cost: '32',
-      price: '3',
-    },
-    {
-      area: '东南',
-      province: '浙江',
-      city: '舟山',
-      type: '家具产品',
-      sub_type: '办公装饰品',
-      cost: '42',
-      price: '13',
-    },
-    {
-      area: '东南',
-      province: '浙江',
-      city: '舟山',
-      type: '家具产品',
-      sub_type: '餐桌',
-      cost: '2',
-      price: '34',
-    },
-  ],
+  data: originData,
+  totalData,
   sortParams: [
-    { sortFieldId: 'type', sortMethod: 'DESC' },
-    { sortFieldId: 'sub_type', sortMethod: 'ASC' },
-    { sortFieldId: 'area', sortBy: ['东南', '东北'] },
+    // use sortMethod to sort
+    // { sortFieldId: 'type', sortMethod: 'DESC' },
+    // { sortFieldId: 'sub_type', sortMethod: 'ASC' },
+    // { sortFieldId: 'area', sortMethod: 'DESC' },
+    // { sortFieldId: 'province', sortMethod: 'DESC' },
+    // { sortFieldId: 'city', sortMethod: 'ASC' },
+    // { sortFieldId: '$$extra$$', sortMethod: 'DESC' },
+
+    // use sortBy to sort
+    // { sortFieldId: 'type', sortBy: ['家具产品', '办公用品'] },
+    // lack some data
+    // { sortFieldId: 'sub_type', sortBy: ['办公装饰品', '笔'] },
+    // not in same province
+    // { sortFieldId: 'province', sortBy: ['辽宁', '吉林', '广东'] },
+    // {
+    //   sortFieldId: 'city',
+    //   sortBy: ['汕头', '广州', '朝阳', '抚顺', '白山', '丹东'],
+    // },
+    // { sortFieldId: 'area', sortBy: ['中南', '东北'] },
+    // { sortFieldId: '$$extra$$', sortBy: ['cost', 'price'] },
+    // { sortFieldId: 'type', sortBy: ['家具产品', '办公用品'] },
+    // {
+    //   sortFieldId: 'sub_type',
+    //   sortBy: ['办公装饰品', '餐桌'],
+    //   query: { type: '家具产品' },
+    // },
+    // {
+    //   sortFieldId: 'sub_type',
+    //   sortBy: ['笔', '纸张'],
+    //   query: { type: '办公用品' },
+    // },
+    // { sortFieldId: 'area', sortBy: ['中南', '东北'] },
+    // {
+    //   sortFieldId: 'province',
+    //   sortBy: ['辽宁', '吉林'],
+    //   query: { area: '东北' },
+    // },
+    // {
+    //   sortFieldId: 'city',
+    //   sortBy: ['朝阳', '抚顺'],
+    //   query: {
+    //     area: '东北',
+    //     province: '辽宁',
+    //   },
+    // },
+    // { sortFieldId: '$$extra$$', sortBy: ['cost', 'price'] },
+
+    // use sortByMeasure to sort
+    // {
+    //   sortFieldId: 'sub_type',
+    //   sortMethod: 'DESC',
+    //   sortByMeasure: 'cost',
+    //   query: {
+    //     area: '东北',
+    //     province: '辽宁',
+    //     city: '抚顺',
+    //     $$extra$$: 'cost',
+    //   },
+    // },
+    // {
+    //   sortFieldId: 'city',
+    //   sortMethod: 'DESC',
+    //   sortByMeasure: 'price',
+    //   query: {
+    //     type: '家具产品',
+    //     sub_type: '餐桌',
+    //   },
+    // {
+    //   sortFieldId: 'city',
+    //   sortMethod: 'ASC',
+    //   sortByMeasure: 'price',
+    //   query: {
+    //     type: '办公用品',
+    //     sub_type: '笔',
+    //     $$extra$$: 'price',
+    //     area: '中南',
+    //     province: '广东',
+    //   },
+    // },
+    // {
+    //   sortFieldId: 'sub_type',
+    //   sortMethod: 'DESC',
+    //   sortByMeasure: 'price',
+    //   query: {
+    //     type: '办公用品',
+    //     $$extra$$: 'price',
+    //     area: '东北',
+    //     province: '吉林',
+    //     city: '白山',
+    //   },
+    // },
+
+    // use sortByMeasure（TOTAL_VALUE） to sort
+    {
+      sortFieldId: 'type',
+      sortMethod: 'DESC',
+      sortByMeasure: '$$total$$',
+      query: {
+        $$extra$$: 'price',
+      },
+    },
     {
       sortFieldId: 'sub_type',
-      sortMethod: 'ASC',
-      sortByField: 'cost',
+      sortMethod: 'DESC',
+      sortByMeasure: '$$total$$',
       query: {
+        $$extra$$: 'cost',
         area: '东北',
-        province: '辽宁',
-        city: '抚顺',
+        province: '吉林',
+      },
+    },
+    {
+      sortFieldId: 'area',
+      sortMethod: 'ASC',
+      sortByMeasure: '$$total$$',
+      query: {
+        $$extra$$: 'price',
+      },
+    },
+    {
+      sortFieldId: 'province',
+      sortMethod: 'DESC',
+      sortByMeasure: '$$total$$',
+      query: {
+        $$extra$$: 'cost',
       },
     },
     {
       sortFieldId: 'city',
       sortMethod: 'DESC',
-      sortByField: 'price',
+      sortByMeasure: '$$total$$',
       query: {
-        type: '家具产品',
-        sub_type: '餐桌',
+        $$extra$$: 'cost',
+      },
+    },
+    {
+      sortFieldId: 'city',
+      sortMethod: 'DESC',
+      sortByMeasure: '$$total$$',
+      query: {
+        $$extra$$: 'cost',
+        type: '办公用品',
       },
     },
   ],
@@ -313,17 +221,35 @@ const getOptions = () => {
       treeRowsWidth: 100,
       collapsedRows: {},
       colCfg: {
+        width: 80,
         widthByFieldValue: {},
         heightByField: {},
         colWidthType: 'compact',
       },
       cellCfg: {
+        width: 80,
         height: 32,
       },
       device: 'pc',
     },
     tooltip: {
-      showTooltip: true,
+      showTooltip: false,
+    },
+    totals: {
+      row: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['area', 'province'],
+      },
+      col: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['type'],
+      },
     },
     initTooltip: (spreadsheet) => {
       return new CustomTooltip(spreadsheet);
@@ -331,25 +257,11 @@ const getOptions = () => {
   };
 };
 
-const getTheme = () => {
-  return {};
-};
-
 function MainLayout(props) {
   const [options, setOptions] = React.useState(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
   const [valueInCols, setValueInCols] = React.useState(true);
-  const [derivedValueMul, setDerivedValueMul] = React.useState(false);
 
-  const onRowCellClick = (value) => {
-    console.log(value);
-  };
-  const onColCellClick = (value) => {
-    console.log(value);
-  };
-  const onDataCellClick = (value) => {
-    console.log(value);
-  };
   const onCheckChanged = (checked) => {
     setValueInCols(checked);
     setDataCfg(
@@ -393,9 +305,6 @@ function MainLayout(props) {
         options={options}
         theme={props.theme}
         spreadsheet={getSpreadSheet}
-        onRowCellClick={onRowCellClick}
-        onColCellClick={onColCellClick}
-        onDataCellClick={onDataCellClick}
       />
     </div>
   );
@@ -408,11 +317,7 @@ describe('spreadsheet normal spec', () => {
 
   act(() => {
     ReactDOM.render(
-      <MainLayout
-        dataCfg={mockDataCfg}
-        options={getOptions()}
-        theme={getTheme()}
-      />,
+      <MainLayout dataCfg={mockDataCfg} options={getOptions()} />,
       getContainer(),
     );
   });
