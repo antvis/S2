@@ -313,4 +313,30 @@ export const totalData = [
     cost: '10',
     price: '13',
   },
+  {
+    type: '办公用品',
+    cost: '22',
+    price: '34',
+  },
+  {
+    type: '家具产品',
+    cost: '55',
+    price: '66',
+  },
+  {
+    area: '东北',
+    type: '办公用品',
+    province: '辽宁',
+    city: '抚顺',
+    cost: '1',
+    price: '3',
+  },
+  {
+    area: '东北',
+    type: '办公用品',
+    province: '辽宁',
+    city: '朝阳',
+    cost: '33',
+    price: '22',
+  },
 ];
