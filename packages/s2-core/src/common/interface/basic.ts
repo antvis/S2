@@ -152,8 +152,8 @@ export interface Sort {
   sortMethod?: SortMethod;
   /** 自定义排序 */
   sortBy?: string[];
-  /** 按照其他字段排序 */
-  sortByField?: string;
+  /** 按照数值字段排序 */
+  sortByMeasure?: string;
   /** 筛选条件，缩小排序范围 */
   query?: Record<string, any>;
 }
