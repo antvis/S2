@@ -1,5 +1,5 @@
 import { LayoutResult, ViewMeta } from 'src/common/interface';
-import { VALUE_FIELD, ICON_RADIUS } from 'src/common/constant';
+import { ICON_RADIUS, SERIES_NUMBER_FIELD } from 'src/common/constant';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
@@ -13,7 +13,6 @@ export class TableFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     const { dataSet, spreadsheet, cellCfg } = this.cfg;
 
-    // 1、layout all nodes in rowHeader and colHeader
     const {
       leafNodes: rowLeafNodes,
       hierarchy: rowsHierarchy,
@@ -37,15 +36,21 @@ export class TableFacet extends BaseFacet {
     );
 
     const getCellMeta = (rowIndex: number, colIndex: number) => {
-      console.log(colIndex, colLeafNodes);
+      const showSeriesNumber = this.getSeriesNumberWidth() > 0;
       const col = colLeafNodes[colIndex];
       const cellHeight =
         cellCfg.height + cellCfg.padding[0] + cellCfg.padding[2];
 
-      const data = dataSet.getCellData({
-        col: col.field,
-        rowIndex,
-      });
+      let data;
+
+      if (showSeriesNumber && col.field === SERIES_NUMBER_FIELD) {
+        data = rowIndex + 1;
+      } else {
+        data = dataSet.getCellData({
+          col: col.field,
+          rowIndex,
+        });
+      }
 
       return {
         spreadsheet,
@@ -89,17 +94,23 @@ export class TableFacet extends BaseFacet {
     colsHierarchy: Hierarchy,
   ) {
     this.calculateColWidth(colLeafNodes);
-    // this.calculateRowNodesCoordinate(rowLeafNodes, rowsHierarchy);
     this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
+  }
+
+  private getAdaptiveColWidth(colLeafNodes: Node[]) {
+    const { cellCfg } = this.cfg;
+    const colHeaderColSize = colLeafNodes.length;
+    const canvasW = this.getCanvasHW().width;
+    const size = Math.max(1, colHeaderColSize);
+    return Math.max(cellCfg.width, canvasW / size);
   }
 
   private calculateColWidth(colLeafNodes: Node[]) {
     const { rowCfg, cellCfg } = this.cfg;
     let colWidth;
     if (this.spreadsheet.isColAdaptive()) {
-      // TODO
+      colWidth = this.getAdaptiveColWidth(colLeafNodes);
     } else {
-      // compat
       colWidth = -1;
     }
 
@@ -151,20 +162,17 @@ export class TableFacet extends BaseFacet {
     if (userDragWidth) {
       colWidth = userDragWidth;
     } else if (cellCfg.width === -1) {
-      // compat
-      const datas = dataSet.getMultiData(
-        col.query,
-        col.isTotals || col.isTotalMeasure,
-      );
+      const datas = dataSet.getMultiData({});
       const colLabel = col.label;
-      // assume there are no derived values in current cols
-      const allLabels = datas
-        .map((data) => `${data[VALUE_FIELD]}`)
-        ?.slice(0, 50);
+
+      const allLabels = datas.map((data) => `${data[col.value]}`)?.slice(0, 50);
       allLabels.push(colLabel);
       const maxLabel = _.maxBy(allLabels, (label) =>
         measureTextWidthRoughly(label),
       );
+
+      const seriesNumberWidth = this.getSeriesNumberWidth();
+
       const textStyle = spreadsheet.theme.header.bolderText;
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
@@ -176,15 +184,18 @@ export class TableFacet extends BaseFacet {
         cellCfg.padding[1] +
         cellCfg.padding[3] +
         ICON_RADIUS * 2;
+
+      if (col.field === SERIES_NUMBER_FIELD) {
+        colWidth = seriesNumberWidth;
+      }
     } else {
-      // adaptive
       colWidth = cellCfg.width;
     }
-    // TODO derived values in same cell
+
     return colWidth;
   }
 
-  protected getViewCellHeights(layoutResult: LayoutResult) {
+  protected getViewCellHeights() {
     const { dataSet, cellCfg } = this.cfg;
 
     const cellHeight = cellCfg.height + cellCfg.padding[0] + cellCfg.padding[2];
@@ -194,7 +205,7 @@ export class TableFacet extends BaseFacet {
         return cellHeight * dataSet.originData.length;
       },
 
-      getCellHeight: (index: number) => {
+      getCellHeight: () => {
         return cellHeight;
       },
 

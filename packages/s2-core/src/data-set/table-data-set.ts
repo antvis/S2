@@ -13,11 +13,10 @@ export class TableDataSet extends BaseDataSet {
   }
 
   public getCellData(query: DataType, rowNode?: Node): DataType {
-    console.log(query);
     return this.originData[query.rowIndex][query.col];
   }
 
   public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
-    return [];
+    return this.originData;
   }
 }
