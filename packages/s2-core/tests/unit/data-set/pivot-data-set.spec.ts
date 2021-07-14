@@ -784,6 +784,14 @@ describe('Pivot Dataset Test', () => {
             province: '四川省',
           }),
         ).toBeArrayOfSize(2);
+
+        // get all data of 四川省-小计-家具
+        expect(
+          dataSet.getMultiData({
+            category: '家具',
+            province: '四川省',
+          }, true),
+        ).toBeArrayOfSize(0);
       });
     });
 
