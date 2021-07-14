@@ -1,7 +1,8 @@
 import { S2DataConfig } from 'src/common/interface';
 import { SpreadSheet } from 'src/sheet-type';
 import { PivotDataSet } from 'src/data-set/pivot-data-set';
-import { dataCfg as mockDataCfg } from '../../data/data-sort';
+import { dataCfg as mockDataCfg, totalData } from '../../data/data-sort';
+import { getIntersections, filterUndefined } from '@/utils/data-set-operate';
 
 jest.mock('src/sheet-type');
 jest.mock('src/facet/layout/node');
@@ -85,7 +86,7 @@ describe('Pivot Sort Test', () => {
     getValueWhenInRowTest();
   };
 
-  const getTestListWhenInColByFieldId = () => {
+  const getTestListWhenInColByMeasure = () => {
     test('should get correct col data', () => {
       expect(dataSet?.getDimensionValues('type')).toEqual([
         '办公用品',
@@ -133,7 +134,7 @@ describe('Pivot Sort Test', () => {
     getValueWhenInColTest();
   };
 
-  const getTestListWhenInRowByFieldId = () => {
+  const getTestListWhenInRowByMeasure = () => {
     test('should get correct col data', () => {
       expect(dataSet?.getDimensionValues('type')).toEqual([
         '办公用品',
@@ -264,42 +265,7 @@ describe('Pivot Sort Test', () => {
       valueInCols ? getTestListWhenInCol() : getTestListWhenInRow();
     });
 
-    describe('Test For Dimension Sort By Other FieldId (Row Or Col)', () => {
-      beforeEach(() => {
-        dataCfg = {
-          ...dataCfg,
-          sortParams: [
-            // TODO: fieldId is total
-            {
-              sortFieldId: 'sub_type',
-              sortMethod: 'DESC',
-              sortByField: 'cost',
-              query: {
-                area: '东北',
-                province: '辽宁',
-                city: '抚顺',
-                $$extra$$: 'cost',
-              },
-            },
-            {
-              sortFieldId: 'city',
-              sortMethod: 'DESC',
-              sortByField: 'price',
-              query: {
-                type: '家具产品',
-                sub_type: '餐桌',
-              },
-            },
-          ],
-        };
-        dataSet.setDataCfg(dataCfg);
-      });
-      valueInCols
-        ? getTestListWhenInColByFieldId()
-        : getTestListWhenInRowByFieldId();
-    });
-
-    describe('Test For Dimension Sort By Other FieldId (Row And Col)', () => {
+    describe('Test For Dimension Sort By Measure (Row And Col)', () => {
       beforeEach(() => {
         dataCfg = {
           ...dataCfg,
@@ -307,7 +273,7 @@ describe('Pivot Sort Test', () => {
             {
               sortFieldId: 'city',
               sortMethod: 'ASC',
-              sortByField: 'cost',
+              sortByMeasure: 'cost',
               query: {
                 type: '办公用品',
                 sub_type: '纸张',
@@ -319,7 +285,7 @@ describe('Pivot Sort Test', () => {
             {
               sortFieldId: 'city',
               sortMethod: 'ASC',
-              sortByField: 'price',
+              sortByMeasure: 'price',
               query: {
                 type: '办公用品',
                 sub_type: '笔',
@@ -331,7 +297,7 @@ describe('Pivot Sort Test', () => {
             {
               sortFieldId: 'city',
               sortMethod: 'ASC',
-              sortByField: 'price',
+              sortByMeasure: 'price',
               query: {
                 type: '办公用品',
                 sub_type: '笔',
@@ -343,7 +309,7 @@ describe('Pivot Sort Test', () => {
             {
               sortFieldId: 'sub_type',
               sortMethod: 'DESC',
-              sortByField: 'price',
+              sortByMeasure: 'price',
               query: {
                 type: '办公用品',
                 $$extra$$: 'price',
@@ -357,8 +323,105 @@ describe('Pivot Sort Test', () => {
         dataSet.setDataCfg(dataCfg);
       });
       valueInCols
-        ? getTestListWhenInColByFieldId()
-        : getTestListWhenInRowByFieldId();
+        ? getTestListWhenInColByMeasure()
+        : getTestListWhenInRowByMeasure();
+    });
+
+    describe('Test For Dimension Sort By Measure If Lack Data and SortMethod is ASC', () => {
+      beforeEach(() => {
+        dataCfg = {
+          ...dataCfg,
+          sortParams: [
+            {
+              sortFieldId: 'city',
+              sortMethod: 'ASC',
+              sortByMeasure: 'cost',
+              query: {
+                type: '办公用品',
+                sub_type: '笔',
+                $$extra$$: 'cost',
+                area: '中南',
+                province: '广东',
+              },
+            },
+          ],
+        };
+        dataSet.setDataCfg(dataCfg);
+      });
+      test('should get correct row city data', () => {
+        expect(
+          dataSet?.getDimensionValues('city', {
+            area: '中南',
+            province: '广东',
+          }),
+        ).toEqual(['广州', '汕头']);
+      });
+    });
+
+    describe('Test For Dimension Sort By Measure Which Is TOTAL_VALUE', () => {
+      beforeEach(() => {
+        dataCfg = {
+          ...dataCfg,
+          sortParams: [
+            {
+              sortFieldId: 'type',
+              sortMethod: 'DESC',
+              sortByMeasure: '$$total$$',
+              query: {
+                $$extra$$: 'price',
+              },
+            },
+            {
+              sortFieldId: 'sub_type',
+              sortMethod: 'DESC',
+              sortByMeasure: '$$total$$',
+              query: {
+                $$extra$$: 'cost',
+                area: '东北',
+                province: '吉林',
+              },
+            },
+            {
+              sortFieldId: 'area',
+              sortMethod: 'ASC',
+              sortByMeasure: '$$total$$',
+              query: {
+                $$extra$$: 'price',
+              },
+            },
+            {
+              sortFieldId: 'province',
+              sortMethod: 'DESC',
+              sortByMeasure: '$$total$$',
+              query: {
+                $$extra$$: 'cost',
+              },
+            },
+            {
+              sortFieldId: 'city',
+              sortMethod: 'DESC',
+              sortByMeasure: '$$total$$',
+              query: {
+                $$extra$$: 'cost',
+              },
+            },
+            {
+              sortFieldId: 'city',
+              sortMethod: 'DESC',
+              sortByMeasure: '$$total$$',
+              query: {
+                $$extra$$: 'cost',
+                type: '办公用品',
+              },
+            },
+          ],
+          totalData,
+        };
+        dataSet.setDataCfg(dataCfg);
+      });
+
+      getColTest();
+      getRowTest();
     });
 
     describe('Test For Dimension Sort By SortFunc', () => {
@@ -404,29 +467,29 @@ describe('Pivot Sort Test', () => {
       valueInCols ? getTestListWhenInCol() : getTestListWhenInRow();
     });
 
-    describe('Test For Dimension Sort By Other FieldId And SortFunc', () => {
+    describe('Test For Dimension Sort By Measure And SortFunc', () => {
       beforeEach(() => {
         dataCfg = {
           ...dataCfg,
           sortParams: [
             {
               sortFieldId: 'city',
-              sortByField: 'price',
+              sortByMeasure: 'price',
               sortFunc: function (params) {
-                const { data, sortByField, sortFieldId } = params || {};
+                const { data, sortByMeasure, sortFieldId } = params || {};
                 return data
-                  ?.sort((a, b) => b[sortByField] - a[sortByField])
+                  ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])
                   ?.map((item) => item[sortFieldId]);
               },
               query: { type: '家具产品', sub_type: '餐桌', $$extra$$: 'price' },
             },
             {
               sortFieldId: 'sub_type',
-              sortByField: 'cost',
+              sortByMeasure: 'cost',
               sortFunc: function (params) {
-                const { data, sortByField, sortFieldId } = params || {};
+                const { data, sortByMeasure, sortFieldId } = params || {};
                 return data
-                  ?.sort((a, b) => b[sortByField] - a[sortByField])
+                  ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])
                   ?.map((item) => item[sortFieldId]);
               },
               query: { type: '东北', sub_type: '辽宁', city: '抚顺' },
@@ -437,8 +500,8 @@ describe('Pivot Sort Test', () => {
       });
 
       valueInCols
-        ? getTestListWhenInColByFieldId()
-        : getTestListWhenInRowByFieldId();
+        ? getTestListWhenInColByMeasure()
+        : getTestListWhenInRowByMeasure();
     });
   };
 
@@ -452,11 +515,6 @@ describe('Pivot Sort Test', () => {
         },
       };
       dataSet.setDataCfg(dataCfg);
-      const options = {
-        ...dataSet?.spreadsheet?.options,
-        hierarchyType: 'grid',
-      };
-      dataSet.spreadsheet?.setOptions(options);
     });
 
     getDimensionSortTest(true);
@@ -472,54 +530,54 @@ describe('Pivot Sort Test', () => {
         },
       };
       dataSet.setDataCfg(dataCfg);
-      const options = {
-        ...dataSet?.spreadsheet?.options,
-        hierarchyType: 'grid',
-      };
-      dataSet.spreadsheet?.setOptions(options);
     });
     getDimensionSortTest(false);
   });
 
-  describe('Test For Value In Cols And Row Tree Hierarchy', () => {
+  describe('Test For Row Tree Hierarchy', () => {
     beforeEach(() => {
       dataCfg = {
-        ...mockDataCfg,
-        fields: {
-          ...mockDataCfg?.fields,
-          valueInCols: true,
-        },
+        ...dataCfg,
+        sortParams: [
+          { sortFieldId: 'type', sortMethod: 'DESC' },
+          { sortFieldId: 'sub_type', sortMethod: 'ASC' },
+          { sortFieldId: 'area', sortMethod: 'DESC' },
+          { sortFieldId: 'province', sortMethod: 'DESC' },
+          { sortFieldId: 'city', sortMethod: 'ASC' },
+          { sortFieldId: '$$extra$$', sortMethod: 'ASC' },
+        ],
       };
-      // @ts-ignore
-      const { spreadsheet } = dataSet;
       dataSet.setDataCfg(dataCfg);
-      const options = {
-        ...spreadsheet?.options,
-        hierarchyType: 'tree',
-      };
-      spreadsheet?.setOptions(options);
     });
-    getDimensionSortTest(true);
-  });
 
-  describe('Test For Value In Rows And Row Tree Hierarchy', () => {
-    beforeEach(() => {
-      dataCfg = {
-        ...mockDataCfg,
-        fields: {
-          ...mockDataCfg?.fields,
-          valueInCols: false,
-        },
-      };
-      // @ts-ignore
-      const { spreadsheet } = dataSet;
-      dataSet.setDataCfg(dataCfg);
-      const options = {
-        ...spreadsheet?.options,
-        hierarchyType: 'tree',
-      };
-      spreadsheet?.setOptions(options);
+    test('should get correct row data', () => {
+      const data1 = filterUndefined(
+        getIntersections(
+          [...(dataSet as PivotDataSet)?.sortedDimensionValues?.get('area')],
+          ['东北', '中南'],
+        ),
+      );
+      expect(data1).toEqual(['中南', '东北']);
+
+      const data2 = filterUndefined(
+        getIntersections(
+          [
+            ...(dataSet as PivotDataSet)?.sortedDimensionValues?.get(
+              'province',
+            ),
+          ],
+          ['吉林', '辽宁'],
+        ),
+      );
+      expect(data2).toEqual(['辽宁', '吉林']);
+
+      const data3 = filterUndefined(
+        getIntersections(
+          [...(dataSet as PivotDataSet)?.sortedDimensionValues?.get('city')],
+          ['抚顺', '朝阳'],
+        ),
+      );
+      expect(data3).toEqual(['朝阳', '抚顺']);
     });
-    getDimensionSortTest(false);
   });
 });
