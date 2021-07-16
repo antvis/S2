@@ -70,7 +70,7 @@ export class PivotDataSet extends BaseDataSet {
         rows,
         columns,
         this.originData,
-        this.totalData || [],
+        this.totalData,
       );
     });
 
