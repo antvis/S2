@@ -66,12 +66,7 @@ export class PivotDataSet extends BaseDataSet {
     this.colPivotMeta = new Map();
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
       const { rows, columns } = this.fields;
-      this.transformIndexesData(
-        rows,
-        columns,
-        this.originData,
-        this.totalData,
-      );
+      this.transformIndexesData(rows, columns, this.originData, this.totalData);
     });
 
     this.handleDimensionValuesSort();
@@ -203,6 +198,12 @@ export class PivotDataSet extends BaseDataSet {
   };
 
   handleDimensionValuesSort = () => {
+    /**
+     * 排序优先级：
+     * 1、sortParams里的条件优先级高于原始数据
+     * 2、sortParams多个item：按照顺序优先级，排在后面的优先级高
+     * 3、item中多个条件：sortByField > sortFunc > sortBy > sortMethod
+     */
     each(this.sortParams || [], (item) => {
       const {
         sortFieldId,
