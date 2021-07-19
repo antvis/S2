@@ -123,6 +123,9 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     if (emptyChildren || isTotals) {
       node.isLeaf = true;
     }
+    if(!emptyChildren) {
+      node.isTotals = true;
+    }
 
     if (!emptyChildren && !isCollapse && !isTotals) {
       buildRowTreeHierarchy({

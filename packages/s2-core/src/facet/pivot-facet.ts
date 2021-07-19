@@ -48,15 +48,13 @@ export class PivotFacet extends BaseFacet {
       if (!row || !col) {
         return null;
       }
-      const isTree = spreadsheet.isHierarchyTreeType();
       const rowQuery = row.query;
       const colQuery = col.query;
       const isTotals =
         row.isTotals ||
         row.isTotalMeasure ||
         col.isTotals ||
-        col.isTotalMeasure ||
-        (isTree && !row?.isLeaf); // 树形结构的小计节点为非叶子节点 - 数值在列头
+        col.isTotalMeasure
       const hideMeasure =
         spreadsheet.facet.cfg.colCfg.hideMeasureColumn ?? false;
       // 如果hide measure query中是没有度量信息的，所以需要自动补上
