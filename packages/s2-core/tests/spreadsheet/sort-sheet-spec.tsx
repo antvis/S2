@@ -6,7 +6,7 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
-  TOTAL_VALUE
+  TOTAL_VALUE,
 } from '../../src';
 import { getContainer } from '../util/helpers';
 import ReactDOM from 'react-dom';

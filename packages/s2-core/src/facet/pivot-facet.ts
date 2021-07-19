@@ -18,16 +18,20 @@ import { layoutNodes } from '@/facet/layout/layout-hooks';
 export class PivotFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     // 1、layout all nodes in rowHeader and colHeader
-    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: true,
-        facetCfg: this.cfg,
-      });
-    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: false,
-        facetCfg: this.cfg,
-      });
+    const {
+      leafNodes: rowLeafNodes,
+      hierarchy: rowsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: true,
+      facetCfg: this.cfg,
+    });
+    const {
+      leafNodes: colLeafNodes,
+      hierarchy: colsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: false,
+      facetCfg: this.cfg,
+    });
     // 2、calculate all related nodes coordinate
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -50,7 +54,7 @@ export class PivotFacet extends BaseFacet {
         row.isTotals ||
         row.isTotalMeasure ||
         col.isTotals ||
-        col.isTotalMeasure
+        col.isTotalMeasure;
       const hideMeasure =
         spreadsheet.facet.cfg.colCfg.hideMeasureColumn ?? false;
       // 如果hide measure query中是没有度量信息的，所以需要自动补上

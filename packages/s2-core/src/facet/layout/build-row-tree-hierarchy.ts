@@ -69,8 +69,8 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   for (const fieldValue of fieldValues) {
     const isTotals = fieldValue instanceof TotalClass;
     const pivotMetaValue = isTotals
-    ? null
-    : pivotMeta.get(fieldValue as string);
+      ? null
+      : pivotMeta.get(fieldValue as string);
     let value;
     let nodeQuery = query;
     if (isTotals) {
@@ -123,7 +123,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     if (emptyChildren || isTotals) {
       node.isLeaf = true;
     }
-    if(!emptyChildren) {
+    if (!emptyChildren) {
       node.isTotals = true;
     }
 

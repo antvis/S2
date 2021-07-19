@@ -24,7 +24,6 @@ export type DataPathParams = {
   colFields?: string[];
 };
 
-
 export interface CellDataParams {
   query: DataType;
   isTotals?: boolean;

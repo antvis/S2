@@ -791,15 +791,18 @@ describe('Pivot Dataset Test', () => {
 
         // get all data of 四川省-小计-家具
         expect(
-          dataSet.getMultiData({
-            category: '家具',
-            province: '四川省',
-          }, true),
+          dataSet.getMultiData(
+            {
+              category: '家具',
+              province: '四川省',
+            },
+            true,
+          ),
         ).toBeArrayOfSize(0);
       });
     });
 
-    describe('Test For Query Data Cells With Total Value And Value In Rows ', () => {
+    describe('Test For Query Data Cells With Total Value And Value In Rows', () => {
       beforeEach(() => {
         dataCfg = {
           ...dataCfg,
@@ -831,7 +834,7 @@ describe('Pivot Dataset Test', () => {
               price: 2,
             },
           ],
-        };    
+        };
         dataSet.setDataCfg(dataCfg);
       });
 
@@ -842,11 +845,9 @@ describe('Pivot Dataset Test', () => {
 
         // get data of all price rows
         expect(
-          dataSet.getMultiData(
-            {
-              $$extra$$: 'price',
-            },
-          ),
+          dataSet.getMultiData({
+            $$extra$$: 'price',
+          }),
         ).toBeArrayOfSize(11);
 
         // get data of total price row
