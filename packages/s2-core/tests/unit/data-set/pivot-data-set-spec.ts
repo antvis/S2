@@ -668,6 +668,7 @@ describe('Pivot Dataset Test', () => {
       expect(result1).toEqual({
         price: 20,
         [EXTRA_FIELD]: 'price',
+        [VALUE_FIELD]: 20,
       });
 
       const result2 = dataSet.getCellData({
@@ -681,6 +682,7 @@ describe('Pivot Dataset Test', () => {
         province: '辽宁省',
         price: 10,
         [EXTRA_FIELD]: 'price',
+        [VALUE_FIELD]: 10,
       });
 
       const result3 = dataSet.getCellData({
@@ -694,6 +696,7 @@ describe('Pivot Dataset Test', () => {
         category: '手机',
         price: 2,
         [EXTRA_FIELD]: 'price',
+        [VALUE_FIELD]: 2,
       });
 
       const result4 = dataSet.getCellData({
@@ -709,6 +712,7 @@ describe('Pivot Dataset Test', () => {
         category: '电脑',
         price: 1,
         [EXTRA_FIELD]: 'price',
+        [VALUE_FIELD]: 1,
       });
     });
 
