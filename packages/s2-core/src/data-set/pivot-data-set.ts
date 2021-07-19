@@ -5,7 +5,7 @@ import {
   PivotMeta,
   CellDataParams,
 } from 'src/data-set/interface';
-import { DerivedValue, Meta, S2DataConfig } from 'src/common/interface';
+import { DerivedValue, Meta, S2DataConfig, Data } from 'src/common/interface';
 import { i18n } from 'src/common/i18n';
 import { EXTRA_FIELD, VALUE_FIELD, TOTAL_VALUE } from 'src/common/constant';
 import {
@@ -383,7 +383,6 @@ export class PivotDataSet extends BaseDataSet {
     let newColumns = columns;
     let newRows = rows;
     let newValues = values;
-    let newTotalData = [];
     if (valueInCols) {
       // value in cols
       newColumns = uniq([...columns, EXTRA_FIELD]);
@@ -410,29 +409,30 @@ export class PivotDataSet extends BaseDataSet {
       } as Meta,
     ];
 
-    // transform values to EXTRA_FIELD key
-    const newData = [];
-    for (const datum of data) {
-      if (!isEmpty(newValues)) {
-        each(newValues, (value: string) => {
-          newData.push({
-            ...datum,
-            [EXTRA_FIELD]: value, // getFieldName(row, meta), // 替换为字段名称
-            [VALUE_FIELD]: datum[value],
+    const getDataIncludesExtraKey = (list: Data[]) => {
+      let dataIncludesExtraKey = [];
+      list?.forEach((datum) => {
+        if (!isEmpty(newValues)) {
+          newValues?.forEach((vi) => {
+            dataIncludesExtraKey.push({
+              ...datum,
+              [EXTRA_FIELD]: vi,
+              [VALUE_FIELD]: datum[vi],
+            });
           });
-        });
-      } else {
-        newData.push({
-          ...datum,
-        });
-      }
-    }
-
-    totalData?.forEach((item) => {
-      newValues?.forEach((vi) => {
-        newTotalData.push({ ...item, [EXTRA_FIELD]: vi });
+        } else {
+          dataIncludesExtraKey.push({
+            ...datum,
+          });
+        }
       });
-    });
+
+      return dataIncludesExtraKey;
+    };
+
+    // transform values to EXTRA_FIELD key
+    const newData = getDataIncludesExtraKey(data) || [];
+    const newTotalData = getDataIncludesExtraKey(totalData) || [];
 
     // 返回新的结构
     return {
