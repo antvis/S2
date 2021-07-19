@@ -6,7 +6,7 @@ import {
   S2DataConfig,
   SortParams,
 } from '../common/interface';
-import { DataType } from 'src/data-set/interface';
+import { DataType, CellDataParams } from 'src/data-set/interface';
 import { SpreadSheet } from 'src/sheet-type';
 import { Node } from '@/facet/layout/node';
 
@@ -19,6 +19,9 @@ export abstract class BaseDataSet {
 
   // origin data
   public originData: DataType[];
+
+  // total data
+  public totalData: DataType[];
 
   // multidimensional array to indexes data
   public indexesData: [];
@@ -36,9 +39,11 @@ export abstract class BaseDataSet {
   /**
    * 查找字段信息
    */
-  public getFieldMeta = _.memoize((field: string): Meta => {
-    return _.find(this.meta, (m: Meta) => m.field === field);
-  });
+  public getFieldMeta = _.memoize(
+    (field: string): Meta => {
+      return _.find(this.meta, (m: Meta) => m.field === field);
+    },
+  );
 
   /**
    * 获得字段名称
@@ -58,10 +63,13 @@ export abstract class BaseDataSet {
 
   public setDataCfg(dataCfg: S2DataConfig) {
     this.getFieldMeta.cache.clear();
-    const { fields, meta, data, sortParams } = this.processDataCfg(dataCfg);
+    const { fields, meta, data, totalData, sortParams } = this.processDataCfg(
+      dataCfg,
+    );
     this.fields = fields;
     this.meta = meta;
     this.originData = data;
+    this.totalData = totalData;
     this.sortParams = sortParams;
     this.indexesData = [];
   }
@@ -99,7 +107,7 @@ export abstract class BaseDataSet {
    * @param query
    * @param rowNode
    */
-  public abstract getCellData(query: DataType, rowNode?: Node): DataType;
+  public abstract getCellData(params: CellDataParams): DataType;
 
   /**
    * To get a row or column cells data;

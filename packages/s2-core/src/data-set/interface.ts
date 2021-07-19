@@ -1,3 +1,4 @@
+import { Node } from '@/facet/layout/node';
 // TODO add object data value
 export type DataType = Record<string, any>;
 
@@ -20,4 +21,11 @@ export type DataPathParams = {
   careUndefined?: boolean;
   // use in row tree mode to append fields information
   rowFields?: string[];
+  colFields?: string[];
 };
+
+export interface CellDataParams {
+  query: DataType;
+  isTotals?: boolean;
+  rowNode?: Node;
+}

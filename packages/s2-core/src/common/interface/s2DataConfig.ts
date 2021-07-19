@@ -38,6 +38,7 @@ export interface S2DataConfig {
 
 export const defaultDataConfig = {
   data: [],
+  totalData: [],
   fields: {
     rows: [],
     columns: [],
