@@ -6,6 +6,7 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
+  TOTAL_VALUE
 } from '../../src';
 import { getContainer } from '../util/helpers';
 import ReactDOM from 'react-dom';
@@ -150,7 +151,7 @@ const mockDataCfg = {
     {
       sortFieldId: 'type',
       sortMethod: 'DESC',
-      sortByMeasure: '$$total$$',
+      sortByMeasure: TOTAL_VALUE,
       query: {
         $$extra$$: 'price',
       },
@@ -158,7 +159,7 @@ const mockDataCfg = {
     {
       sortFieldId: 'sub_type',
       sortMethod: 'DESC',
-      sortByMeasure: '$$total$$',
+      sortByMeasure: TOTAL_VALUE,
       query: {
         $$extra$$: 'cost',
         area: '东北',
@@ -168,7 +169,7 @@ const mockDataCfg = {
     {
       sortFieldId: 'area',
       sortMethod: 'ASC',
-      sortByMeasure: '$$total$$',
+      sortByMeasure: TOTAL_VALUE,
       query: {
         $$extra$$: 'price',
       },
@@ -176,7 +177,7 @@ const mockDataCfg = {
     {
       sortFieldId: 'province',
       sortMethod: 'DESC',
-      sortByMeasure: '$$total$$',
+      sortByMeasure: TOTAL_VALUE,
       query: {
         $$extra$$: 'cost',
       },
@@ -184,7 +185,7 @@ const mockDataCfg = {
     {
       sortFieldId: 'city',
       sortMethod: 'DESC',
-      sortByMeasure: '$$total$$',
+      sortByMeasure: TOTAL_VALUE,
       query: {
         $$extra$$: 'cost',
       },
@@ -192,7 +193,7 @@ const mockDataCfg = {
     {
       sortFieldId: 'city',
       sortMethod: 'DESC',
-      sortByMeasure: '$$total$$',
+      sortByMeasure: TOTAL_VALUE,
       query: {
         $$extra$$: 'cost',
         type: '办公用品',
