@@ -190,7 +190,7 @@ export class PivotDataSet extends BaseDataSet {
       if (!this.sortedDimensionValues.has(dimension)) {
         this.sortedDimensionValues.set(dimension, new Set());
       }
-      let values = this.sortedDimensionValues.get(dimension);
+      const values = this.sortedDimensionValues.get(dimension);
       values.add(record[dimension]);
 
       return dimensionValue;
@@ -405,12 +405,12 @@ export class PivotDataSet extends BaseDataSet {
       {
         field: EXTRA_FIELD,
         name: i18n('数值'),
-        formatter: (v) => enumAlias.get(v), // 格式化
+        formatter: (v: string) => enumAlias.get(v), // 格式化
       } as Meta,
     ];
 
     const getDataIncludesExtraKey = (list: Data[]) => {
-      let dataIncludesExtraKey = [];
+      const dataIncludesExtraKey = [];
       list?.forEach((datum) => {
         if (!isEmpty(newValues)) {
           newValues?.forEach((vi) => {
@@ -540,7 +540,7 @@ export class PivotDataSet extends BaseDataSet {
       colDimensionValues,
       careUndefined: true,
     });
-    let hadUndefined: boolean = false;
+    let hadUndefined = false;
     let currentData = this.indexesData;
 
     for (let i = 0; i < path.length; i++) {
@@ -577,22 +577,24 @@ export class PivotDataSet extends BaseDataSet {
         // 行总计
         fieldKeys = rowKeys;
       } else {
-        // 只有一个值，此时为总计列
-        if (keys(query)?.length === 1 && has(query, EXTRA_FIELD)) {
+        // 只有一个值，此时为列总计
+        const isCol = keys(query)?.length === 1 && has(query, EXTRA_FIELD);
+
+        if (isCol) {
           fieldKeys = colKeys;
         } else {
-          // 如果是行小计
-          if (
-            isEveryUndefined(
-              colDimensionValues?.filter((item) => !valueList?.includes(item)),
-            )
-          ) {
+          const getTotalStatus = (dimensions: string[]) => {
+            return isEveryUndefined(
+              dimensions?.filter((item) => !valueList?.includes(item)),
+            );
+          };
+          const isRowTotal = getTotalStatus(colDimensionValues);
+          const isColTotal = getTotalStatus(rowDimensionValues);
+
+          if (isRowTotal) {
+            // 行小计
             fieldKeys = rowKeys;
-          } else if (
-            isEveryUndefined(
-              rowDimensionValues?.filter((item) => !valueList?.includes(item)),
-            )
-          ) {
+          } else if (isColTotal) {
             // 列小计
             fieldKeys = colKeys;
           } else {
@@ -601,15 +603,12 @@ export class PivotDataSet extends BaseDataSet {
           }
         }
       }
-      result = result.filter((r) => {
-        if (
+      result = result.filter(
+        (r) =>
           !fieldKeys?.find(
             (item) => item !== EXTRA_FIELD && keys(r)?.includes(item),
-          )
-        ) {
-          return r;
-        }
-      });
+          ),
+      );
     }
 
     return result;
