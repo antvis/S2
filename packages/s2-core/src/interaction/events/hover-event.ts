@@ -2,10 +2,10 @@ import { Event } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { S2Event } from './types';
 import { BaseEvent } from './base-event';
-import { SelectedStateName } from '@/common/constant/interatcion';
+import { SelectedStateName } from '@/common/constant/interaction';
 import { ViewMeta } from '@/common/interface';
 import { getTooltipData } from '@/utils/tooltip';
-import { KEEP_HOVER_TIME } from '@/common/constant/interatcion';
+import { KEEP_HOVER_TIME } from '@/common/constant/interaction';
 
 /**
  * Row header click navigation interaction
