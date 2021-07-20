@@ -8,7 +8,6 @@ import {
 } from '../common/interface';
 import { DataType, CellDataParams } from 'src/data-set/interface';
 import { SpreadSheet } from 'src/sheet-type';
-import { Node } from '@/facet/layout/node';
 
 export abstract class BaseDataSet {
   // 字段域信息
@@ -104,8 +103,7 @@ export abstract class BaseDataSet {
   /**
    * In most cases, this function to get the specific
    * cross data cell data
-   * @param query
-   * @param rowNode
+   * @param params
    */
   public abstract getCellData(params: CellDataParams): DataType;
 

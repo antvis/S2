@@ -7,6 +7,7 @@ import { Node } from 'src/facet/layout/node';
 import { buildRowTreeHierarchy } from 'src/facet/layout/build-row-tree-hierarchy';
 import { buildGridHierarchy } from 'src/facet/layout/build-gird-hierarchy';
 import { PivotDataSet } from '@/data-set';
+import { buildRowCustomTreeHierarchy } from '@/facet/layout/build-row-custom-tree-hierarchy';
 /**
  * Header Hierarchy
  * - row header
@@ -28,7 +29,7 @@ export const buildHeaderHierarchy = (
   params: BuildHeaderParams,
 ): BuildHeaderResult => {
   const { isRowHeader, facetCfg } = params;
-  const { rows, cols, values, spreadsheet, dataSet } = facetCfg;
+  const { rows, cols, values, spreadsheet, dataSet, hierarchyType } = facetCfg;
   const isValueInCols = spreadsheet.dataCfg.fields.valueInCols;
   const isPivotMode = spreadsheet.isPivotMode();
   const moreThanOneValue = values.length > 1;
@@ -37,15 +38,27 @@ export const buildHeaderHierarchy = (
   if (isRowHeader) {
     if (isPivotMode) {
       if (spreadsheet.isHierarchyTreeType()) {
-        // row tree hierarchy(value must stay in colHeader)
-        buildRowTreeHierarchy({
-          level: 0,
-          currentField: rows[0],
-          pivotMeta: (dataSet as PivotDataSet).rowPivotMeta,
-          facetCfg,
-          parentNode: rootNode,
-          hierarchy,
-        });
+        if (hierarchyType === 'tree') {
+          // row tree hierarchy(value must stay in colHeader)
+          buildRowTreeHierarchy({
+            level: 0,
+            currentField: rows[0],
+            pivotMeta: (dataSet as PivotDataSet).rowPivotMeta,
+            facetCfg,
+            parentNode: rootNode,
+            hierarchy,
+          });
+        } else {
+          const customTreeItems = facetCfg.dataSet.fields.customTreeItems;
+          // row custom tree header
+          buildRowCustomTreeHierarchy({
+            customTreeItems: customTreeItems,
+            facetCfg,
+            level: 0,
+            parentNode: rootNode,
+            hierarchy,
+          });
+        }
         return {
           hierarchy,
           leafNodes: hierarchy.getNodes(),
@@ -65,7 +78,7 @@ export const buildHeaderHierarchy = (
         hierarchy,
       });
     } else {
-      // TODO table mode -> row
+      throw new Error('There are not header hierarchy in table mode');
     }
   } else if (isPivotMode) {
     // only has grid hierarchy
@@ -82,7 +95,7 @@ export const buildHeaderHierarchy = (
       hierarchy,
     });
   } else {
-    // TODO table mode -> col
+    throw new Error('There are not header hierarchy in table mode');
   }
   return {
     hierarchy,

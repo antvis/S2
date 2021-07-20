@@ -21,6 +21,16 @@ export interface MultiData {
 export type DataItem = string | number | MultiData;
 
 export type Data = Record<string, DataItem>;
+
+export interface CustomTreeItem {
+  key: string;
+  title: string;
+  // 是否收起（默认都展开）
+  collapsed?: boolean;
+  description?: string;
+  children?: CustomTreeItem[];
+}
+
 export interface S2DataConfig {
   // origin detail data
   data: Data[];
@@ -44,6 +54,7 @@ export const defaultDataConfig = {
     columns: [],
     values: [],
     derivedValues: [],
+    customTreeItems: [],
     valueInCols: true,
   },
   meta: [],
