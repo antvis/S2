@@ -11,7 +11,16 @@ import {
 import { getContainer } from '../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { data6, data7, data8, data9, data10 } from '../data/data-accuracy';
+import {
+  data6,
+  data7,
+  data9,
+  data10,
+  totalData6,
+  totalData8,
+  totalData9,
+  totalData10,
+} from '../data/data-accuracy';
 
 let spreadsheet1: SpreadSheet;
 const setSpreadSheet = (
@@ -27,25 +36,35 @@ const setSpreadSheet = (
   return ss;
 };
 
-const getData = (index: number) => {
+const getData = (index: number, isTotal?: boolean) => {
   let realData = [];
+  let totalData = [];
   // eslint-disable-next-line default-case
   switch (index) {
     case 1:
       realData = data6;
+      totalData = totalData6;
       break;
     case 2:
       realData = data7;
+      totalData = [];
       break;
     case 3:
-      realData = data8;
+      realData = [];
+      totalData = totalData8;
       break;
     case 4:
       realData = data9;
+      totalData = totalData9;
       break;
     case 5:
       realData = data10;
+      totalData = totalData10;
       break;
+  }
+
+  if (isTotal) {
+    return totalData;
   }
   return realData;
 };
@@ -71,6 +90,7 @@ const getDataCfg = (index: number) => {
       },
     ],
     data: getData(index),
+    totalData: getData(index, true),
     sortParams: [],
   };
 };
@@ -152,66 +172,66 @@ function MainLayout(props) {
           }}
         />,
       )}
-      {/*  {wrapComponent( */}
-      {/*    '只有明细数据', */}
-      {/*    <SheetComponent */}
-      {/*      dataCfg={getDataCfg(2)} */}
-      {/*      adaptive={false} */}
-      {/*      options={getOptions()} */}
-      {/*      spreadsheet={( */}
-      {/*        dom: string | HTMLElement, */}
-      {/*        dataCfg: S2DataConfig, */}
-      {/*        options: S2Options, */}
-      {/*      ) => { */}
-      {/*        return setSpreadSheet(dom, dataCfg, options, 2); */}
-      {/*      }} */}
-      {/*    />, */}
-      {/*  )} */}
-      {/*  {wrapComponent( */}
-      {/*    '只有小计，总计数据', */}
-      {/*    <SheetComponent */}
-      {/*      dataCfg={getDataCfg(3)} */}
-      {/*      adaptive={false} */}
-      {/*      options={getOptions()} */}
-      {/*      spreadsheet={( */}
-      {/*        dom: string | HTMLElement, */}
-      {/*        dataCfg: S2DataConfig, */}
-      {/*        options: S2Options, */}
-      {/*      ) => { */}
-      {/*        return setSpreadSheet(dom, dataCfg, options, 3); */}
-      {/*      }} */}
-      {/*    />, */}
-      {/*  )} */}
-      {/*  {wrapComponent( */}
-      {/*    '总计 + 明细数据', */}
-      {/*    <SheetComponent */}
-      {/*      dataCfg={getDataCfg(4)} */}
-      {/*      adaptive={false} */}
-      {/*      options={getOptions()} */}
-      {/*      spreadsheet={( */}
-      {/*        dom: string | HTMLElement, */}
-      {/*        dataCfg: S2DataConfig, */}
-      {/*        options: S2Options, */}
-      {/*      ) => { */}
-      {/*        return setSpreadSheet(dom, dataCfg, options, 4); */}
-      {/*      }} */}
-      {/*    />, */}
-      {/*  )} */}
-      {/*  {wrapComponent( */}
-      {/*    '小计 + 明细数据', */}
-      {/*    <SheetComponent */}
-      {/*      dataCfg={getDataCfg(5)} */}
-      {/*      adaptive={false} */}
-      {/*      options={getOptions()} */}
-      {/*      spreadsheet={( */}
-      {/*        dom: string | HTMLElement, */}
-      {/*        dataCfg: S2DataConfig, */}
-      {/*        options: S2Options, */}
-      {/*      ) => { */}
-      {/*        return setSpreadSheet(dom, dataCfg, options, 5); */}
-      {/*      }} */}
-      {/*    />, */}
-      {/*  )} */}
+      {/* {wrapComponent(
+        '只有明细数据',
+        <SheetComponent
+          dataCfg={getDataCfg(2)}
+          adaptive={false}
+          options={getOptions()}
+          spreadsheet={(
+            dom: string | HTMLElement,
+            dataCfg: S2DataConfig,
+            options: S2Options,
+          ) => {
+            return setSpreadSheet(dom, dataCfg, options, 2);
+          }}
+        />,
+      )} */}
+      {/* {wrapComponent(
+        '只有小计，总计数据',
+        <SheetComponent
+          dataCfg={getDataCfg(3)}
+          adaptive={false}
+          options={getOptions()}
+          spreadsheet={(
+            dom: string | HTMLElement,
+            dataCfg: S2DataConfig,
+            options: S2Options,
+          ) => {
+            return setSpreadSheet(dom, dataCfg, options, 3);
+          }}
+        />,
+      )} */}
+      {/* {wrapComponent(
+        '总计 + 明细数据',
+        <SheetComponent
+          dataCfg={getDataCfg(4)}
+          adaptive={false}
+          options={getOptions()}
+          spreadsheet={(
+            dom: string | HTMLElement,
+            dataCfg: S2DataConfig,
+            options: S2Options,
+          ) => {
+            return setSpreadSheet(dom, dataCfg, options, 4);
+          }}
+        />,
+      )} */}
+      {/* {wrapComponent(
+        '小计 + 明细数据',
+        <SheetComponent
+          dataCfg={getDataCfg(5)}
+          adaptive={false}
+          options={getOptions()}
+          spreadsheet={(
+            dom: string | HTMLElement,
+            dataCfg: S2DataConfig,
+            options: S2Options,
+          ) => {
+            return setSpreadSheet(dom, dataCfg, options, 5);
+          }}
+        />,
+      )} */}
     </div>
   );
 }
