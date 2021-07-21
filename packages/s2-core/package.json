@@ -33,7 +33,7 @@
   "scripts": {
     "test": "",
     "clean": "rimraf lib esm dist",
-    "build": "run-s clean lib",
+    "build": "run-s clean lib bundlesize",
     "lib": "run-p rollup:*",
     "rollup:es": "FORMAT=es rollup -c rollup.config.js",
     "rollup:cjs": "FORMAT=cjs rollup -c rollup.config.js",
@@ -46,19 +46,13 @@
     "test-live": "DEBUG_MODE=1 jest __tests__/spreadsheet/spread-sheet-spec.tsx",
     "test-tabular": "DEBUG_MODE=1 jest __tests__/spreadsheet/tabularSheet-spec.tsx",
     "test-merge-cells": "DEBUG_MODE=1 jest __tests__/spreadsheet/merge-cells-spec.tsx",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "bundlesize": "bundlesize"
   },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-push": "npm run test"
-    }
   },
   "lint-staged": {
     "*.{js,jsx,tsx,ts,less,md,json}": [
@@ -92,10 +86,10 @@
     "@types/node": "^16.3.0",
     "@types/react": "17.0.14",
     "@types/react-dom": "17.0.9",
+    "bundlesize": "^0.18.1",
     "cpx": "^1.5.0",
     "css-loader": "^5.2.6",
     "d3-dsv": "^1.1.1",
-    "husky": "^4.3.8",
     "jest": "^27.0.6",
     "jest-electron": "^0.1.11",
     "jest-extended": "^0.11.5",
@@ -158,6 +152,17 @@
     }
   },
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "dist/*"
+  ],
+  "bundlesize": [
+    {
+      "path": "./dist/s2.min.js",
+      "maxSize": "120 kB"
+    },
+    {
+      "path": "./dist/s2.css",
+      "maxSize": "5 kB"
+    }
   ]
 }
