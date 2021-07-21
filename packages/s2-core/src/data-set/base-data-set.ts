@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { memoize, find, get, identity } from 'lodash';
 import {
   Fields,
   Formatter,
@@ -6,7 +6,7 @@ import {
   S2DataConfig,
   SortParams,
 } from '../common/interface';
-import { DataType } from 'src/data-set/interface';
+import { DataType, CellDataParams } from 'src/data-set/interface';
 import { SpreadSheet } from 'src/sheet-type';
 import { Node } from '@/facet/layout/node';
 
@@ -19,6 +19,9 @@ export abstract class BaseDataSet {
 
   // origin data
   public originData: DataType[];
+
+  // total data
+  public totalData: DataType[];
 
   // multidimensional array to indexes data
   public indexesData: [];
@@ -36,8 +39,8 @@ export abstract class BaseDataSet {
   /**
    * 查找字段信息
    */
-  public getFieldMeta = _.memoize((field: string): Meta => {
-    return _.find(this.meta, (m: Meta) => m.field === field);
+  public getFieldMeta = memoize((field: string): Meta => {
+    return find(this.meta, (m: Meta) => m.field === field);
   });
 
   /**
@@ -45,7 +48,7 @@ export abstract class BaseDataSet {
    * @param field
    */
   public getFieldName(field: string): string {
-    return _.get(this.getFieldMeta(field), 'name', field);
+    return get(this.getFieldMeta(field), 'name', field);
   }
 
   /**
@@ -53,15 +56,17 @@ export abstract class BaseDataSet {
    * @param field
    */
   public getFieldFormatter(field: string): Formatter {
-    return _.get(this.getFieldMeta(field), 'formatter', _.identity);
+    return get(this.getFieldMeta(field), 'formatter', identity);
   }
 
   public setDataCfg(dataCfg: S2DataConfig) {
     this.getFieldMeta.cache.clear();
-    const { fields, meta, data, sortParams } = this.processDataCfg(dataCfg);
+    const { fields, meta, data, totalData, sortParams } =
+      this.processDataCfg(dataCfg);
     this.fields = fields;
     this.meta = meta;
     this.originData = data;
+    this.totalData = totalData;
     this.sortParams = sortParams;
     this.indexesData = [];
   }
@@ -99,13 +104,18 @@ export abstract class BaseDataSet {
    * @param query
    * @param rowNode
    */
-  public abstract getCellData(query: DataType, rowNode?: Node): DataType;
+  public abstract getCellData(params: CellDataParams): DataType;
 
   /**
    * To get a row or column cells data;
    * if query is empty, return all data
    * @param query
    * @param isTotals
+   * @param isRow
    */
-  public abstract getMultiData(query: DataType, isTotals?: boolean): DataType[];
+  public abstract getMultiData(
+    query: DataType,
+    isTotals?: boolean,
+    isRow?: boolean,
+  ): DataType[];
 }

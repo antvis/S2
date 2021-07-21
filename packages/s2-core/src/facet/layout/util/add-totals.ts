@@ -4,8 +4,13 @@ import { EXTRA_FIELD } from '@/common/constant';
 import { size } from 'lodash';
 
 export const addTotals = (params: TotalParams) => {
-  const { isFirstField, currentField, fieldValues, spreadsheet, lastField } =
-    params;
+  const {
+    isFirstField,
+    currentField,
+    fieldValues,
+    spreadsheet,
+    lastField,
+  } = params;
   const totalsConfig = spreadsheet.getTotalsConfig(
     isFirstField ? currentField : lastField,
   );
@@ -15,7 +20,7 @@ export const addTotals = (params: TotalParams) => {
     // check to see if grand total is added
     if (totalsConfig.showGrandTotals) {
       func = totalsConfig.reverseLayout ? 'unshift' : 'push';
-      value = new TotalClass(totalsConfig.label, false);
+      value = new TotalClass(totalsConfig.label, false, true);
     }
   } else if (totalsConfig.showSubTotals && size(fieldValues) > 1) {
     if (currentField !== EXTRA_FIELD) {
