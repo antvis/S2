@@ -3,7 +3,7 @@ import { SpreadsheetFacet } from '../../index';
 import { SpreadsheetFacetCfg } from '../../../common/interface';
 import { Hierarchy } from '../hierarchy';
 import { Node } from '../node';
-import { ID_SEPARATOR, ROOT_ID } from '../../../common/constant';
+import { generateNodeName } from './../../../utils/name-generator';
 import getColHeight from './get-col-height';
 import hideRowColumnsByFields from './hide-row-columns-by-fields';
 import processColLeafNodeWH from './process-col-leaf-node-wh';
@@ -50,7 +50,7 @@ export default function processColNodesCoordinate(
     } else {
       node.y = node.parent.y + node.parent.height;
     }
-    if (node.isLeaf && node.id !== `${ROOT_ID}${ID_SEPARATOR}undefined`) {
+    if (node.isLeaf && node.id !== generateNodeName('undefined')) {
       // all node's width
       colsHierarchy.width += node.width;
     }
