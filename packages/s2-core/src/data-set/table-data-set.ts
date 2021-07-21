@@ -1,7 +1,6 @@
 import { S2DataConfig } from '@/common/interface';
-import { Node } from '@/facet/layout/node';
 import { BaseDataSet } from 'src/data-set';
-import { DataType } from './interface';
+import { DataType, CellDataParams } from './interface';
 
 export class TableDataSet extends BaseDataSet {
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
@@ -12,7 +11,8 @@ export class TableDataSet extends BaseDataSet {
     return [];
   }
 
-  public getCellData(query: DataType, rowNode?: Node): DataType {
+  public getCellData(params: CellDataParams): DataType {
+    const { query } = params;
     return this.originData[query.rowIndex][query.col];
   }
 

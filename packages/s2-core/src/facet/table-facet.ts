@@ -47,8 +47,10 @@ export class TableFacet extends BaseFacet {
         data = rowIndex + 1;
       } else {
         data = dataSet.getCellData({
-          col: col.field,
-          rowIndex,
+          query: {
+            col: col.field,
+            rowIndex,
+          },
         });
       }
 

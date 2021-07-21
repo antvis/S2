@@ -6,7 +6,16 @@ import {
   KEY_ROW_NODE_BORDER_REACHED,
   VALUE_FIELD,
 } from 'src/common/constant';
-import { includes, get, merge, isEmpty, maxBy } from 'lodash';
+import {
+  includes,
+  get,
+  merge,
+  isEmpty,
+  maxBy,
+  findIndex,
+  last,
+  reduce,
+} from 'lodash';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Node } from 'src/facet/layout/node';
@@ -503,10 +512,10 @@ export class PivotFacet extends BaseFacet {
   protected getViewCellHeights(layoutResult: LayoutResult) {
     const { rowLeafNodes } = layoutResult;
 
-    const heights = _.reduce(
+    const heights = reduce(
       rowLeafNodes,
       (result: number[], node: Node) => {
-        result.push(_.last(result) + node.height);
+        result.push(last(result) + node.height);
         return result;
       },
       [0],
@@ -514,7 +523,7 @@ export class PivotFacet extends BaseFacet {
 
     return {
       getTotalHeight: () => {
-        return _.last(heights);
+        return last(heights);
       },
 
       getCellHeight: (index: number) => {
@@ -526,7 +535,7 @@ export class PivotFacet extends BaseFacet {
       },
 
       getIndexRange: (minHeight: number, maxHeight: number) => {
-        let yMin = _.findIndex(
+        let yMin = findIndex(
           heights,
           (height: number, idx: number) => {
             const y = minHeight;
@@ -537,7 +546,7 @@ export class PivotFacet extends BaseFacet {
 
         yMin = Math.max(yMin, 0);
 
-        let yMax = _.findIndex(
+        let yMax = findIndex(
           heights,
           (height: number, idx: number) => {
             const y = maxHeight;
