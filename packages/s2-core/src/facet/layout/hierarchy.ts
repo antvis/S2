@@ -1,7 +1,7 @@
 // hierarchy to layout headers
 import _ from 'lodash';
+import { ID_SEPARATOR, ROOT_ID } from '../../common/constant';
 import { Node } from './node';
-import { ID_SEPARATOR } from '../../common/constant';
 
 export interface MaxMinLabel {
   minLabel: string;
@@ -46,7 +46,8 @@ export class Hierarchy {
 
   public getNotNullLeafs(): Node[] {
     return this.allNodesWithoutRoot.filter(
-      (value) => value.isLeaf && value.id !== `root${ID_SEPARATOR}undefined`,
+      (value) =>
+        value.isLeaf && value.id !== `${ROOT_ID}${ID_SEPARATOR}undefined`,
     );
   }
 

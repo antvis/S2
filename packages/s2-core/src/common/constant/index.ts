@@ -63,7 +63,9 @@ export const KEY_COL_REAL_WIDTH_INFO = 'col-real-width-info';
 export const MAX_SCROLL_OFFSET = 10;
 export const MIN_SCROLL_BAR_HEIGHT = 20;
 
+export const ROOT_ID = 'root'; // root 关键字
 export const ID_SEPARATOR = '[&]';
+export const ROOT_BEGINNING_REGEX = /^root\[&\]*/;
 export const EMPTY_PLACEHOLDER = '-';
 
 export const PADDING_TOP = 0;

@@ -1,7 +1,8 @@
 import { Group } from '@antv/g-canvas';
 import _ from 'lodash';
-import { Hierarchy } from './hierarchy';
 import BaseSpreadSheet from '@/sheet-type/base-spread-sheet';
+import { ROOT_ID } from './../../common/constant/index';
+import { Hierarchy } from './hierarchy';
 
 export interface BaseNodeConfig {
   id: string;
@@ -41,7 +42,7 @@ export class Node {
 
   public static rootNode(): Node {
     return new Node({
-      id: 'root',
+      id: ROOT_ID,
       key: '',
       value: '',
     });
