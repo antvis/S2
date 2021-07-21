@@ -1,6 +1,7 @@
 import { get, isEmpty } from 'lodash';
-import { ID_SEPARATOR, ROOT_ID } from '../../../common/constant';
+import { ID_SEPARATOR } from '../../../common/constant';
 import { SpreadsheetFacetCfg } from '../../../common/interface';
+import { generateNodeName } from './../../../utils/name-generator';
 /**
  * Row and column header node id generator.
  * Users can make specific rows or columns display or hidden according to the option configuration
@@ -21,9 +22,7 @@ export const generateId = (
 
   if (isEmpty(cellLabels)) return id;
 
-  const customIds = cellLabels.map(
-    (v: string) => `${ROOT_ID}${ID_SEPARATOR}${v}`,
-  );
+  const customIds = cellLabels.map(generateNodeName);
 
   let res: string;
 

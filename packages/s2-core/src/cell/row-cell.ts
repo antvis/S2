@@ -14,15 +14,14 @@ import {
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_ROW_RESIZER,
   COLOR_DEFAULT_RESIZER,
-  ID_SEPARATOR,
 } from '../common/constant';
 import { HIT_AREA } from '../facet/header/base';
 import { ResizeInfo } from '../facet/header/interface';
 import { RowHeaderConfig } from '../facet/header/row';
 import { Node } from '../index';
 import { FONT_SIZE } from '../theme/default';
+import { generateNodeName } from './../utils/name-generator';
 import { BaseCell } from './base-cell';
-import { ROOT_ID } from './../common/constant/index';
 
 const ICON_SIZE = ICON_RADIUS * 2;
 
@@ -101,9 +100,7 @@ export class RowCell extends BaseCell<Node> {
     } = rowActionIcons;
     if (customDisplayByRowName) {
       const { rowNames, mode } = customDisplayByRowName;
-      const rowIds = rowNames.map(
-        (rowName) => `${ROOT_ID}${ID_SEPARATOR}${rowName}`,
-      );
+      const rowIds = rowNames.map(generateNodeName);
 
       if (
         (mode === 'omit' && rowIds.includes(this.meta.id)) ||
