@@ -6,7 +6,7 @@ import { Hierarchy } from '@/facet/layout/hierarchy';
 import { SpreadSheet } from '@/sheet-type';
 import { PivotMeta } from '@/data-set/interface';
 
-export type FileValue = string | TotalClass | TotalMeasure;
+export type FieldValue = string | TotalClass | TotalMeasure;
 
 export interface BuildHeaderParams {
   isRowHeader: boolean;
@@ -35,14 +35,14 @@ export interface TotalParams {
   isFirstField: boolean;
   currentField: string;
   lastField: string;
-  fieldValues: FileValue[];
+  fieldValues: FieldValue[];
   spreadsheet: SpreadSheet;
 }
 
 export interface HeaderNodesParams {
   currentField: string;
   fields: string[];
-  fieldValues: FileValue[];
+  fieldValues: FieldValue[];
   addTotalMeasureInTotal: boolean;
   addMeasureInTotalQuery: boolean;
   facetCfg: SpreadSheetFacetCfg;
