@@ -22,3 +22,6 @@ jobs:
 
       - name: Lint scripts
         run: npm run lint
+
+      - name: Lint core bundle size
+        run: npm run bundlesize
