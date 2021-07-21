@@ -1,7 +1,8 @@
-import { BaseSpreadSheet } from '../../sheet-type';
 import { head, last, isEmpty, get, clone, trim, max } from 'lodash';
+import { BaseSpreadSheet } from '../../sheet-type';
 import { ViewMeta } from '../..';
 import { ID_SEPARATOR, EMPTY_PLACEHOLDER } from '../../common/constant';
+import { ROOT_BEGINNING_REGEX } from './../../common/constant/index';
 import { getCsvString } from './export-worker';
 
 export const copyToClipboard = (str: string) => {
@@ -143,8 +144,12 @@ export const copyData = (
   split: string,
   isFormat?: boolean,
 ): string => {
-  const { rowsHierarchy, rowLeafNodes, colLeafNodes, getViewMeta } =
-    sheetInstance?.facet?.layoutResult;
+  const {
+    rowsHierarchy,
+    rowLeafNodes,
+    colLeafNodes,
+    getViewMeta,
+  } = sheetInstance?.facet?.layoutResult;
   const { valueInCols } = sheetInstance.options;
   const rows = clone(rowsHierarchy?.rows);
 
@@ -212,7 +217,7 @@ export const copyData = (
     for (const rowNode of caredRowLeafNodes) {
       // Removing the space at the beginning of the line of the label.
       rowNode.label = trim(rowNode?.label);
-      const id = rowNode.id.replace(/^root\[&\]*/, '');
+      const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
       const tempLine = id.split(ID_SEPARATOR);
       const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));
       tempLine[tempLine.length - 1] = lastLabel;
