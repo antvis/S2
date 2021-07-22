@@ -51,13 +51,6 @@ const getOptions = () => {
     hierarchyCollapse: false,
     freezeRowHeader: false,
     mode: 'pivot',
-    valueInCols: true,
-    conditions: {
-      text: [],
-      interval: [],
-      background: [],
-      icon: [],
-    },
     style: {
       treeRowsWidth: 120,
       collapsedRows: {},
@@ -69,7 +62,6 @@ const getOptions = () => {
       cellCfg: {
         height: 32,
       },
-      device: 'pc',
     },
     tooltip: {
       showTooltip: true,

@@ -1,5 +1,5 @@
 import { Fields, Meta, SortParams } from '@/common/interface/index';
-import { merge } from 'lodash';
+import { merge, isEmpty } from 'lodash';
 
 /** use for tabularSheet
  *  eg. { label: '余额女',
@@ -61,5 +61,11 @@ export const defaultDataConfig = {
   sortParams: [],
 } as S2DataConfig;
 
-export const safetyDataConfig = (dataConfig: S2DataConfig) =>
-  merge({}, defaultDataConfig, dataConfig);
+export const safetyDataConfig = (dataConfig: S2DataConfig) => {
+  const result = merge({}, defaultDataConfig, dataConfig) as S2DataConfig;
+  if (!isEmpty(result.fields.customTreeItems)) {
+    // when there are custom tree config, valueInCols must be false
+    result.fields.valueInCols = false;
+  }
+  return result;
+};
