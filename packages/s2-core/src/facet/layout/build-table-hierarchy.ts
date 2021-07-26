@@ -10,13 +10,13 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
 
   const showSeriesNumber = get(spreadsheet, 'options.showSeriesNumber', false);
 
-  const fields = cols.map((val) => dataSet.getFieldName(val));
+  const fields = [...cols];
 
-  const fieldValues = [...cols];
+  const fieldValues = cols.map((val) => dataSet.getFieldName(val));
 
   if (showSeriesNumber) {
-    fields.unshift(i18n('序号'));
-    fieldValues.unshift(SERIES_NUMBER_FIELD);
+    fields.unshift(SERIES_NUMBER_FIELD);
+    fieldValues.unshift(i18n('序号'));
   }
 
   generateHeaderNodes({

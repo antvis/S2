@@ -54,10 +54,9 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       adjustedField = EXTRA_FIELD;
       isLeaf = true;
     } else if (spreadsheet.isTableMode()) {
-      value = fields[index];
-      adjustedField = fieldValue as string;
-      console.log(value, adjustedField);
-      nodeQuery = _.merge({}, query, { [value]: value });
+      value = fieldValue;
+      adjustedField = fields[index];
+      nodeQuery = _.merge({}, query, { [adjustedField]: value });
       isLeaf = true;
     } else {
       value = fieldValue;

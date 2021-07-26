@@ -28,7 +28,7 @@ const plugins = [
   resolve(),
   typescript({
     outDir: outDir,
-    abortOnError: false,
+    abortOnError: true,
   }),
   less({
     output: outDir + '/index.css',

@@ -4,7 +4,7 @@ import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Node } from 'src/facet/layout/node';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { layoutNodes } from 'src/facet/layout/layout-hooks';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 import { DebuggerUtil } from 'src/common/debug';
@@ -85,8 +85,7 @@ export class TableFacet extends BaseFacet {
       spreadsheet,
     } as LayoutResult;
 
-    const callback = this.cfg?.layoutResult;
-    return callback ? callback(layoutResult) : layoutResult;
+    return layoutResult;
   }
 
   private calculateNodesCoordinate(
@@ -164,10 +163,10 @@ export class TableFacet extends BaseFacet {
     if (userDragWidth) {
       colWidth = userDragWidth;
     } else if (cellCfg.width === -1) {
-      const datas = dataSet.getMultiData({});
+      const datas = dataSet.originData;
       const colLabel = col.label;
 
-      const allLabels = datas.map((data) => `${data[col.value]}`)?.slice(0, 50);
+      const allLabels = datas.map((data) => `${data[col.key]}`)?.slice(0, 50);
       allLabels.push(colLabel);
       const maxLabel = _.maxBy(allLabels, (label) =>
         measureTextWidthRoughly(label),
