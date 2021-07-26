@@ -1,13 +1,24 @@
 import { Event, Group } from '@antv/g-canvas';
-import type { IShape, IElement, IGroup } from '@antv/g-canvas';
+import type { IShape, IElement, IGroup, ShapeAttrs } from '@antv/g-canvas';
 import { merge, clamp, get, each } from 'lodash';
-import { PointObject, ScrollBarCfg, ScrollBarTheme } from './interface';
+import type { PointObject, ScrollBarCfg, ScrollBarTheme } from './interface';
 import { DEFAULT_THEME } from './style';
 
 export enum ScrollType {
   ScrollChange = 'scroll-change',
   ScrollEnd = 'scroll-end',
 }
+
+export interface EventListenerReturn {
+  remove: () => void;
+}
+
+export interface EventHandler {
+  target: IElement;
+  type: keyof HTMLElementEventMap;
+  handler: (e: MouseEvent) => void;
+}
+
 export class ScrollBar extends Group {
   // 滚动条的布局，横向 | 纵向, 非必传，默认为 false(纵向)
   public isHorizontal: boolean;
@@ -45,7 +56,7 @@ export class ScrollBar extends Group {
   // 清除事件
   private clearEvents: () => void;
 
-  private eventHandlers: any[] = [];
+  private eventHandlers: EventHandler[] = [];
 
   constructor(scrollBarCfg: ScrollBarCfg) {
     super(scrollBarCfg);
@@ -70,6 +81,12 @@ export class ScrollBar extends Group {
 
     this.initScrollBar();
   }
+
+  getCoordinates = () => {
+    const from = this.isHorizontal ? 'x1' : 'y1';
+    const to = this.isHorizontal ? 'x2' : 'y2';
+    return { from, to };
+  };
 
   /**
    * 当前滑块滑动的位置 0 ~ 1
@@ -97,8 +114,8 @@ export class ScrollBar extends Group {
     const newOffset = newTrackLen * offsetRate;
     this.trackLen = newTrackLen;
 
-    const coordinate = this.isHorizontal ? 'x2' : 'y2';
-    this.trackShape.attr(coordinate, newTrackLen);
+    const coordinate = this.getCoordinates();
+    this.trackShape.attr(coordinate.to, newTrackLen);
 
     this.updateThumbLen(newThumbLen);
     this.updateThumbOffset(newOffset);
@@ -115,8 +132,8 @@ export class ScrollBar extends Group {
       return;
     }
     this.thumbLen = newThumbLen;
-    const coordinate = this.isHorizontal ? 'x2' : 'y2';
-    this.thumbShape.attr(coordinate, this.thumbOffset + newThumbLen);
+    const coordinate = this.getCoordinates();
+    this.thumbShape.attr(coordinate.to, this.thumbOffset + newThumbLen);
     this.renderNewScrollBar();
   }
 
@@ -124,25 +141,23 @@ export class ScrollBar extends Group {
    * 更新滑块的 offset 值
    * @param offset
    */
-  public updateThumbOffset(offset: number) {
+  public updateThumbOffset(offset: number, updateScrollBar = true) {
     const newOffset = this.validateRange(offset);
     // 如果更新后的 offset 与原值相同，则不改变
     if (this.thumbOffset === newOffset && newOffset !== 0) {
       return;
     }
     this.thumbOffset = newOffset;
-    if (this.isHorizontal) {
-      this.thumbShape.attr({
-        x1: newOffset,
-        x2: newOffset + this.thumbLen,
-      });
-    } else {
-      this.thumbShape.attr({
-        y1: newOffset,
-        y2: newOffset + this.thumbLen,
-      });
+
+    const { from, to } = this.getCoordinates();
+    this.thumbShape.attr({
+      [from]: newOffset,
+      [to]: newOffset + this.thumbLen,
+    });
+
+    if (updateScrollBar) {
+      this.renderNewScrollBar();
     }
-    this.renderNewScrollBar();
   }
 
   /**
@@ -150,24 +165,7 @@ export class ScrollBar extends Group {
    * @param offset
    */
   public onlyUpdateThumbOffset(offset: number) {
-    const newOffset = this.validateRange(offset);
-    // 如果更新后的 offset 与原值相同，则不改变
-    if (this.thumbOffset === newOffset) {
-      return;
-    }
-    this.thumbOffset = newOffset;
-    if (this.isHorizontal) {
-      this.thumbShape.attr({
-        x1: newOffset,
-        x2: newOffset + this.thumbLen,
-      });
-    } else {
-      this.thumbShape.attr({
-        y1: newOffset,
-        y2: newOffset + this.thumbLen,
-      });
-    }
-    // 渲染
+    this.updateThumbOffset(offset, false);
     this.get('canvas')?.draw();
   }
 
@@ -186,7 +184,6 @@ export class ScrollBar extends Group {
 
   // 绘制新的 scrollBar
   public renderNewScrollBar() {
-    // 发送事件
     this.emit(ScrollType.ScrollChange, {
       thumbOffset: this.thumbOffset,
       ratio: clamp(this.thumbOffset / (this.trackLen - this.thumbLen), 0, 1),
@@ -225,28 +222,31 @@ export class ScrollBar extends Group {
   // 创建滑道的 shape
   private createTrackShape(group: IGroup): IShape {
     const { lineCap = 'round', trackColor, size } = this.theme.default;
+
+    const baseAttrs: ShapeAttrs = {
+      lineWidth: size,
+      stroke: trackColor,
+      lineCap,
+    };
+
     if (this.isHorizontal) {
       return group.addShape('line', {
         attrs: {
+          ...baseAttrs,
           x1: 0,
           y1: size / 2,
           x2: this.trackLen,
           y2: size / 2,
-          lineWidth: size,
-          stroke: trackColor,
-          lineCap,
         },
       });
     }
     return group.addShape('line', {
       attrs: {
+        ...baseAttrs,
         x1: size / 2,
         y1: 0,
         x2: size / 2,
         y2: this.trackLen,
-        lineWidth: size,
-        stroke: trackColor,
-        lineCap,
       },
     });
   }
@@ -254,35 +254,35 @@ export class ScrollBar extends Group {
   // 创建滑块的 shape
   private createThumbShape(group: IGroup): IShape {
     const { size, lineCap, thumbColor } = this.theme.default;
+    const baseAttrs: ShapeAttrs = {
+      lineWidth: size,
+      stroke: thumbColor,
+      lineCap,
+      cursor: 'default',
+    };
+
     if (this.isHorizontal) {
       return group.addShape('line', {
         attrs: {
+          ...baseAttrs,
           x1: this.thumbOffset,
           y1: size / 2,
           x2: this.thumbOffset + this.thumbLen,
           y2: size / 2,
-          lineWidth: size,
-          stroke: thumbColor,
-          lineCap,
-          cursor: 'default',
         },
       });
     }
     return group.addShape('line', {
       attrs: {
+        ...baseAttrs,
         x1: size / 2,
         y1: this.thumbOffset,
         x2: size / 2,
         y2: this.thumbOffset + this.thumbLen,
-        lineWidth: size,
-        stroke: thumbColor,
-        lineCap,
-        cursor: 'default',
       },
     });
   }
 
-  // 事件绑定
   private bindEvents() {
     this.on('mousedown', this.onStartEvent(false));
     // 因为上层交叉表交互 prevent 事件，导致 container 上的 mouseup 事件没有执行，
@@ -299,7 +299,7 @@ export class ScrollBar extends Group {
 
   private onStartEvent = (isMobile: boolean) => (e: Event) => {
     this.isMobile = isMobile;
-    // 阻止冒泡
+
     e.preventDefault();
 
     const event = this.isMobile ? get(e, 'touches.0', e) : e;
@@ -313,18 +313,22 @@ export class ScrollBar extends Group {
   };
 
   protected addEvent(
-    target: IElement,
-    eventType: keyof HTMLElementEventMap,
-    handler: (e: MouseEvent) => void,
+    target: EventHandler['target'],
+    type: EventHandler['type'],
+    handler: EventHandler['handler'],
   ) {
-    target.on(eventType, handler);
-    this.eventHandlers.push({ target, type: eventType, handler });
+    target.on(type, handler);
+    this.eventHandlers.push({ target, type, handler });
   }
 
-  addEventListener = (target, eventType, callback) => {
+  addEventListener = (
+    target: EventTarget,
+    eventType: keyof HTMLElementEventMap,
+    callback: EventListenerOrEventListenerObject,
+  ): EventListenerReturn => {
     target?.addEventListener(eventType, callback, false);
     return {
-      remove: function () {
+      remove: () => {
         target?.removeEventListener(eventType, callback, false);
       },
     };
@@ -332,9 +336,9 @@ export class ScrollBar extends Group {
 
   private bindLaterEvent() {
     const canvas = this.get('canvas');
-    const containerDOM = canvas.get('container');
+    const containerDOM: EventTarget = canvas.get('container');
 
-    let events = [];
+    let events: EventListenerReturn[] = [];
     if (this.isMobile) {
       events = [
         this.addEventListener(containerDOM, 'touchmove', this.onMouseMove),
