@@ -84,7 +84,7 @@ function MainLayout(props) {
 }
 
 describe('buildTableHierarchy', () => {
-  test('sort action with number arr', () => {
+  test('should generate nodes and hierarchy correctly', () => {
     act(() => {
       ReactDOM.render(
         <MainLayout
