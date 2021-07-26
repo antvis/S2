@@ -1,4 +1,4 @@
-import { FileValue, TreeHeaderParams } from 'src/facet/layout/interface';
+import { FieldValue, TreeHeaderParams } from 'src/facet/layout/interface';
 import { layoutArrange, layoutHierarchy } from 'src/facet/layout/layout-hooks';
 import { TotalClass } from 'src/facet/layout/total-class';
 import { i18n } from 'src/common/i18n';
@@ -12,7 +12,7 @@ import { PivotDataSet } from '@/data-set';
 const addTotals = (
   spreadsheet: SpreadSheet,
   currentField: string,
-  fieldValues: FileValue[],
+  fieldValues: FieldValue[],
 ) => {
   const totalsConfig = spreadsheet.getTotalsConfig(currentField);
   // tree mode only has grand totals, but if there are subTotals configs,
@@ -49,7 +49,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
     ),
   );
 
-  let fieldValues: FileValue[] = layoutArrange(
+  let fieldValues: FieldValue[] = layoutArrange(
     dimValues,
     facetCfg,
     parentNode,
