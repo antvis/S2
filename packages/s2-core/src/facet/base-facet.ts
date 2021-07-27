@@ -123,7 +123,7 @@ export abstract class BaseFacet {
     },
   };
 
-  frameId: ReturnType<typeof requestAnimationFrame> = null;
+  scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
 
   hideScrollBar = () => {
     this.hRowScrollBar?.updateTheme(this.scrollBarTheme);
@@ -760,9 +760,9 @@ export abstract class BaseFacet {
       event.preventDefault();
     }
 
-    cancelAnimationFrame(this.frameId);
+    cancelAnimationFrame(this.scrollFrameId);
 
-    this.frameId = requestAnimationFrame(() => {
+    this.scrollFrameId = requestAnimationFrame(() => {
       if (optimizedDeltaX > 0) {
         this.showHScrollBar();
       }
