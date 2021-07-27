@@ -731,15 +731,16 @@ export abstract class BaseFacet {
     this.vScrollBar?.updateThumbOffset(offsetTop);
   };
 
-  isScrollInTop = (deltaY: number) => {
+  isScrollToTop = (deltaY: number) => {
     return deltaY <= 0 && Math.floor(this.vScrollBar?.thumbOffset) <= 0;
   };
 
-  isScrollInBottom = () => {
+  isScrollToBottom = (deltaY: number) => {
     return (
+      deltaY >= 0 &&
       Math.ceil(this.vScrollBar?.thumbOffset) +
         Math.ceil(this.vScrollBar?.thumbLen) >=
-      this.panelBBox?.height
+        this.panelBBox?.height
     );
   };
 
@@ -748,7 +749,10 @@ export abstract class BaseFacet {
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(deltaX, deltaY);
 
     // 如果已经滚动在顶部或底部, 则无需触发滚动事件, 减少单元格重绘
-    if (this.isScrollInTop(optimizedDeltaY) || this.isScrollInBottom()) {
+    if (
+      this.isScrollToTop(optimizedDeltaY) ||
+      this.isScrollToBottom(optimizedDeltaY)
+    ) {
       return;
     }
 
