@@ -481,8 +481,8 @@ export abstract class BaseFacet {
       this.timer.stop();
     }
     const duration = 200;
-    const oldOffset = this.getScrollOffset();
-    const newOffset = [
+    const oldOffset = Object.values(this.getScrollOffset());
+    const newOffset: number[] = [
       newX === undefined ? oldOffset[0] : newX,
       newY === undefined ? oldOffset[1] : newY,
     ];

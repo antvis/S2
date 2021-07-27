@@ -586,7 +586,7 @@ export class SpreadSheet extends EE {
 
     const defaultCell = (facet: ViewMeta) => this.getCorrectCell(facet);
     // the new facetCfg of facet
-    const facetCfg = {
+    const facetCfg: SpreadSheetFacetCfg = {
       spreadsheet: this,
       dataSet: this.dataSet,
       hierarchyType,
@@ -615,10 +615,9 @@ export class SpreadSheet extends EE {
       layoutResult,
       hierarchy,
       layoutArrange,
-    } as SpreadSheetFacetCfg;
+    };
     this.facet?.destroy();
     this.facet = new PivotFacet(facetCfg);
-    // render facet
     this.facet.render();
   };
 
