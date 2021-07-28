@@ -86,22 +86,6 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       isBoolean(collapsedRow) && collapsedRow
         ? collapsedRow
         : hierarchyCollapse;
-    // TODO special logic to custom control node's collapsed state
-    // if (isTotal) {
-    //   // 总计用户不会有收缩状态
-    //   isCollapse = false;
-    // }
-    // // 处理决策模式下，初始化节点的收缩状态，一次性！！
-    // if (_.isBoolean(collapsedRows[uniqueId]) || hierarchyCollapse) {
-    //   // 有操作后节点的情况下，需要以操作的为准，isCollapse不变
-    // } else {
-    //   // 没有操作的过节点的情况下，默认以配置为准
-    //   const extra = findNodeExtraCfg(values, { [currentField]: value });
-    //   // 必须不为空
-    //   if (extra && !_.isEmpty(value)) {
-    //     isCollapse = extra.collapse;
-    //   }
-    // }
     const node = new Node({
       id: uniqueId,
       key: currentField,
