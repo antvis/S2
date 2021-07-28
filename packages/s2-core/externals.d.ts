@@ -53,7 +53,7 @@ declare module 'lodash' {
   // 获取当前路径对应的属性类型
   type MatchPathType<
     TObject extends Record<string, any>,
-    TPath extends string,
+    TPath extends string
   > = TObject extends (infer Item)[]
     ? TPath extends `${number}.${infer Rest}`
       ? Rest extends AllPaths<TObject[number]>
@@ -79,7 +79,7 @@ declare module 'lodash' {
   type PathOf<
     TObject extends Record<string, any>,
     TPath extends string,
-    Current extends string = '',
+    Current extends string = ''
   > = TObject extends unknown[]
     ? TPath extends `${number}.${infer R}`
       ? PathOf<TObject[number], R, `${Current}${number}.`>

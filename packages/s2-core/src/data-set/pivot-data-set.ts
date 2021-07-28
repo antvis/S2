@@ -145,7 +145,7 @@ export class PivotDataSet extends BaseDataSet {
     rows: string[],
     columns: string[],
     originData: DataType[],
-    totalData?: DataType[],
+    totalData: DataType[] = [],
   ): number[][] => {
     const paths = [];
     for (const data of [...originData, ...totalData]) {

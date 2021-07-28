@@ -3,6 +3,7 @@ import { Canvas, IGroup } from '@antv/g-canvas';
 import {
   isString,
   get,
+  set,
   merge,
   clone,
   find,
@@ -70,6 +71,7 @@ import {
 } from '@/common/constant/interaction';
 import { i18n } from 'src/common/i18n';
 import { PivotFacet } from 'src/facet';
+import CustomTreePivotDataSet from '@/data-set/custom-tree-pivot-data-set';
 
 const matrixTransform = ext.transform;
 
@@ -167,12 +169,18 @@ export class SpreadSheet extends EE {
   };
 
   getDataSet = (options: S2Options): BaseDataSet => {
-    const { mode, dataSet } = options;
+    const { mode, dataSet, hierarchyType } = options;
     if (dataSet) {
       return dataSet(this);
     }
+    let realDataSet;
+    if (hierarchyType === 'customTree') {
+      realDataSet = new CustomTreePivotDataSet(this);
+    } else {
+      realDataSet = new PivotDataSet(this);
+    }
     // TODO table data set
-    return mode === 'table' ? new PivotDataSet(this) : new PivotDataSet(this);
+    return mode === 'table' ? realDataSet : realDataSet;
   };
 
   public clearDrillDownData(rowNodeId?: string) {
@@ -274,7 +282,9 @@ export class SpreadSheet extends EE {
    * tree type must be in strategy mode
    */
   public isHierarchyTreeType(): boolean {
-    return get(this, 'options.hierarchyType', 'grid') === 'tree';
+    const type = this.options.hierarchyType;
+    // custom tree and tree!!!
+    return type === 'tree' || type === 'customTree';
   }
 
   /**
@@ -685,14 +695,13 @@ export class SpreadSheet extends EE {
     });
     // 收起、展开按钮
     this.on(KEY_TREE_ROWS_COLLAPSE_ALL, (isCollapse) => {
-      this.setOptions({
+      const options = {
         ...this.options,
         hierarchyCollapse: !isCollapse,
-        style: {
-          ...this.options?.style,
-          collapsedRows: {},
-        },
-      });
+      };
+      // 清空用户操作的缓存
+      set(options, 'style.collapsedRows', {});
+      this.setOptions(options);
       this.render(false);
     });
 
