@@ -223,6 +223,7 @@ describe('spreadsheet tabular spec', () => {
         adaptive={false}
         options={options}
         spreadsheet={getSpreadSheet}
+        header={{exportCfg: {open: true}}}
       />,
       getContainer(),
     );
