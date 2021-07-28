@@ -90,10 +90,7 @@ describe('custom tree header spec', () => {
 
   act(() => {
     ReactDOM.render(
-      <MainLayout
-        dataCfg={getDataCfg()}
-        options={getOptions()}
-      />,
+      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
       getContainer(),
     );
   });
