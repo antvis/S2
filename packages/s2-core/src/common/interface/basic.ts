@@ -1,12 +1,12 @@
 import { Group } from '@antv/g-canvas';
-import { Hierarchy, SpreadSheet, Node } from '../../index';
+import { Hierarchy, SpreadSheet, Node, CustomTreeItem } from '../../index';
 import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
 import { S2DataConfig, safetyDataConfig, Data, DataItem } from './s2DataConfig';
 import { S2Options, safetyOptions } from './s2Options';
 import { CustomInteraction } from './interaction';
-import { ResizeInfo } from '../../facet/header/interface';
+import { ResizeInfo } from '@/facet/header/interface';
 
 export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions, Data };
 
@@ -63,6 +63,8 @@ export interface DerivedValue {
 export interface Fields {
   // row fields
   rows: string[];
+  // custom tree data(only use in row header in pivot mode)
+  customTreeItems?: CustomTreeItem[];
   // columns fields
   columns?: string[];
   // value fields

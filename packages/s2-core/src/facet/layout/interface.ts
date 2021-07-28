@@ -1,7 +1,7 @@
 import { TotalClass } from 'src/facet/layout/total-class';
 import { TotalMeasure } from 'src/facet/layout/total-measure';
 import { Node } from 'src/facet/layout/node';
-import { SpreadSheetFacetCfg } from 'src/common/interface';
+import { CustomTreeItem, SpreadSheetFacetCfg } from 'src/common/interface';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { SpreadSheet } from 'src/sheet-type';
 import { PivotMeta, PivotMetaValue } from '@/data-set/interface';
@@ -81,4 +81,12 @@ export interface ViewCellHeights {
     start: number;
     end: number;
   };
+}
+
+export interface CustomTreeHeaderParams {
+  facetCfg: SpreadSheetFacetCfg;
+  parentNode: Node;
+  level: number;
+  hierarchy: Hierarchy;
+  customTreeItems: CustomTreeItem[];
 }

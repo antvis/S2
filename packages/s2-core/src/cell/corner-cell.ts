@@ -149,18 +149,6 @@ export class CornerCell extends BaseCell<Node> {
         stroke: 'transparent',
       },
     });
-
-    if (!this.spreadsheet.isValueInCols() && _.isEqual(label, EXTRA_FIELD)) {
-      renderLine(
-        x,
-        y,
-        x,
-        y + cellHeight,
-        this.theme.header.cell.borderColor[0],
-        this.theme.header.cell.borderWidth[0],
-        this,
-      );
-    }
   }
 
   private drawHotspot() {

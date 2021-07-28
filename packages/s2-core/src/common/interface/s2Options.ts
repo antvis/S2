@@ -33,7 +33,7 @@ export interface S2Options {
   // debug info for developer
   readonly debug?: boolean;
   // row header hierarchy type only work in pivot mode
-  readonly hierarchyType?: 'grid' | 'tree';
+  readonly hierarchyType?: 'grid' | 'tree' | 'customTree';
   // conditions config
   readonly conditions?: Conditions;
   // total config

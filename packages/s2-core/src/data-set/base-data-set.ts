@@ -8,7 +8,6 @@ import {
 } from '../common/interface';
 import { DataType, CellDataParams } from 'src/data-set/interface';
 import { SpreadSheet } from 'src/sheet-type';
-import { Node } from '@/facet/layout/node';
 
 export abstract class BaseDataSet {
   // 字段域信息
@@ -39,9 +38,11 @@ export abstract class BaseDataSet {
   /**
    * 查找字段信息
    */
-  public getFieldMeta = memoize((field: string): Meta => {
-    return find(this.meta, (m: Meta) => m.field === field);
-  });
+  public getFieldMeta = memoize(
+    (field: string): Meta => {
+      return find(this.meta, (m: Meta) => m.field === field);
+    },
+  );
 
   /**
    * 获得字段名称
@@ -61,8 +62,9 @@ export abstract class BaseDataSet {
 
   public setDataCfg(dataCfg: S2DataConfig) {
     this.getFieldMeta.cache.clear();
-    const { fields, meta, data, totalData, sortParams } =
-      this.processDataCfg(dataCfg);
+    const { fields, meta, data, totalData, sortParams } = this.processDataCfg(
+      dataCfg,
+    );
     this.fields = fields;
     this.meta = meta;
     this.originData = data;
@@ -101,8 +103,7 @@ export abstract class BaseDataSet {
   /**
    * In most cases, this function to get the specific
    * cross data cell data
-   * @param query
-   * @param rowNode
+   * @param params
    */
   public abstract getCellData(params: CellDataParams): DataType;
 
