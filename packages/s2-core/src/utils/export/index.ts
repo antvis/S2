@@ -1,9 +1,10 @@
-import { head, last, isEmpty, get, clone, trim, max } from 'lodash';
+import { head, last, isEmpty, get, clone, trim, max, isObject, forEach } from 'lodash';
 import { BaseSpreadSheet } from '../../sheet-type';
 import { ViewMeta } from '../..';
 import { ID_SEPARATOR, EMPTY_PLACEHOLDER } from '../../common/constant';
 import { ROOT_BEGINNING_REGEX } from './../../common/constant/index';
 import { getCsvString } from './export-worker';
+import { MultiData } from '@/common/interface/S2DataConfig';
 
 export const copyToClipboard = (str: string) => {
   try {
@@ -36,6 +37,24 @@ export const download = (str: string, fileName: string) => {
     console.error(e);
   }
 };
+
+/* 
+ * Process the multi-measure
+ * use the ' ' to divide different measures in the same line
+ * use the '$' to divide different lines
+ */
+const processObjectValue = (data: MultiData) => {
+  // TODO 如何去业务化
+  const tempCell = data?.label ? [data?.label] : [];
+  const values = data?.values;
+  if(!isEmpty(values)) {
+    forEach(values, (value) => {
+      tempCell.push(value.join(' '));
+    });
+  }
+  return tempCell.join('$');
+}
+
 
 /* Process the data in detail mode. */
 const processValueInDetail = (
@@ -81,6 +100,11 @@ const processValueInCol = (
     return '';
   }
   const { fieldValue, valueField } = viewMeta;
+
+  if(isObject(fieldValue)) {
+    return processObjectValue(fieldValue);
+  }
+
   if (!isFormat) {
     return `${fieldValue}`;
   }
