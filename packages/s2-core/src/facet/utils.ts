@@ -1,6 +1,7 @@
 import { SimpleBBox, Group, IGroup } from '@antv/g-canvas';
 import { findIndex, isNil } from 'lodash';
 
+import { ViewCellHeights } from './layout/interface';
 import { Indexes } from '../utils/indexes';
 
 /**
@@ -16,7 +17,7 @@ export const calculateInViewIndexes = (
   scrollX: number,
   scrollY: number,
   widths: number[],
-  heights: number[],
+  heights: ViewCellHeights,
   viewport: SimpleBBox,
   rowRemainWidth?: number,
 ): Indexes => {
@@ -42,27 +43,10 @@ export const calculateInViewIndexes = (
   );
   xMax = Math.min(xMax === -1 ? Infinity : xMax, widths.length - 2);
 
-  // 2. 计算 y min、max
-  let yMin = findIndex(
-    heights,
-    (height: number, idx: number) => {
-      const y = scrollY;
-      return y >= height && y < heights[idx + 1];
-    },
-    0,
+  const { start: yMin, end: yMax } = heights.getIndexRange(
+    scrollY,
+    viewport.height + scrollY,
   );
-
-  yMin = Math.max(yMin, 0);
-
-  let yMax = findIndex(
-    heights,
-    (height: number, idx: number) => {
-      const y = viewport.height + scrollY;
-      return y >= height && y < heights[idx + 1];
-    },
-    yMin,
-  );
-  yMax = Math.min(yMax === -1 ? Infinity : yMax, heights.length - 2);
 
   // use direction
   // const halfWidthSize = Math.ceil(xMax - xMin / 4);

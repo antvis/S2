@@ -61,6 +61,28 @@ export interface TreeHeaderParams {
   pivotMeta: PivotMeta;
 }
 
+export interface TableHeaderParams {
+  parentNode: Node;
+  facetCfg: SpreadSheetFacetCfg;
+  hierarchy: Hierarchy;
+}
+
+export interface ViewCellHeights {
+  getCellHeight: (index: number) => number;
+
+  getTotalHeight: () => number;
+
+  getTotalLength: () => number;
+
+  getIndexRange: (
+    minHeight: number,
+    maxHeight: number,
+  ) => {
+    start: number;
+    end: number;
+  };
+}
+
 export interface CustomTreeHeaderParams {
   facetCfg: SpreadSheetFacetCfg;
   parentNode: Node;

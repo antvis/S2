@@ -1,7 +1,7 @@
 import { getEllipsisText } from '../utils/text';
 import { renderRect } from '../utils/g-renders';
 import { DEFAULT_PADDING, EXTRA_FIELD, ICON_RADIUS } from '../common/constant';
-// import { addDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
+import { addDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
 import { DefaultTheme } from '../theme';
 import { ColCell } from '@/cell/col-cell';
 export class DetailColCell extends ColCell {
@@ -36,13 +36,13 @@ export class DetailColCell extends ColCell {
       },
     });
 
-    // addDetailTypeSortIcon(
-    //   this,
-    //   spreadsheet,
-    //   textX + DEFAULT_PADDING,
-    //   textY,
-    //   key,
-    // );
+    addDetailTypeSortIcon(
+      this,
+      spreadsheet,
+      textX + DEFAULT_PADDING,
+      textY,
+      key,
+    );
   }
 
   protected drawRectBackground() {

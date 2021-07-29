@@ -293,4 +293,8 @@ export class Node {
   public isHide() {
     return this.height === 0 || this.width === 0;
   }
+
+  public toJSON() {
+    return _.omit(this, ['hierarchy', 'parent', 'spreadsheet']);
+  }
 }

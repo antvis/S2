@@ -20,5 +20,5 @@
     "plugins": [{ "transform": "typescript-transform-paths" }]
   },
 
-  "exclude": ["node_modules","coverage"]
+  "exclude": ["node_modules","coverage","esm","lib","dist","tests"]
 }

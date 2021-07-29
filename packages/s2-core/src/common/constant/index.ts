@@ -5,6 +5,7 @@ export * from './events';
 export const VALUE_FIELD = '$$value$$';
 export const EXTRA_FIELD = '$$extra$$';
 export const TOTAL_VALUE = '$$total$$';
+export const SERIES_NUMBER_FIELD = '$$number$$';
 // export const COLUMN_FIELD_KEY = '$$column_key$$';
 // icon radius
 export const ICON_RADIUS = 6;
