@@ -32,6 +32,7 @@ import { Node } from 'src/facet/layout/node';
 import { ViewCellHeights } from 'src/facet/layout/interface';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Wheel } from '@antv/g-gesture';
+import type { GestureEvent } from '@antv/g-gesture';
 import * as d3Timer from 'd3-timer';
 import { interpolateArray } from 'd3-interpolate';
 import { ScrollBar, ScrollType } from 'src/ui/scrollbar';
@@ -171,7 +172,7 @@ export abstract class BaseFacet {
     // mock wheel event fo mobile
     this.mobileWheel = new Wheel(this.spreadsheet.container);
 
-    this.mobileWheel.on('wheel', (ev: WheelEvent & { event: WheelEvent }) => {
+    this.mobileWheel.on('wheel', (ev: GestureEvent) => {
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
@@ -181,7 +182,7 @@ export abstract class BaseFacet {
         deltaY,
         layerX: x / 3,
         layerY: y / 3,
-      });
+      } as unknown as S2WheelEvent);
     });
   };
 
@@ -755,7 +756,7 @@ export abstract class BaseFacet {
     }
 
     if (this.shouldPreventWheelEvent(optimizedDeltaX, optimizedDeltaY)) {
-      event?.preventDefault?.();
+      event.preventDefault?.();
     }
 
     cancelAnimationFrame(this.scrollFrameId);
