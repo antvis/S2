@@ -755,7 +755,7 @@ export abstract class BaseFacet {
     }
 
     if (this.shouldPreventWheelEvent(optimizedDeltaX, optimizedDeltaY)) {
-      event.preventDefault();
+      event?.preventDefault?.();
     }
 
     cancelAnimationFrame(this.scrollFrameId);

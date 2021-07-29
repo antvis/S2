@@ -27,6 +27,7 @@ import {
   Total,
   ShowProps,
   SpreadsheetMountContainer,
+  ThemeType,
 } from 'src/common/interface';
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
@@ -235,7 +236,7 @@ export class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setTheme(theme: SpreadSheetTheme, type = 'default'): void {
+  public setTheme(theme: SpreadSheetTheme, type: ThemeType = 'default'): void {
     if (!getTheme(type)) {
       if (theme) {
         this.theme = registerTheme(type, theme);
