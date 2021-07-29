@@ -6,6 +6,7 @@ import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Node } from 'src/facet/layout/node';
 import { buildRowTreeHierarchy } from 'src/facet/layout/build-row-tree-hierarchy';
 import { buildGridHierarchy } from 'src/facet/layout/build-gird-hierarchy';
+import { buildTableHierarchy } from 'src/facet/layout/build-table-hierarchy';
 import { PivotDataSet } from '@/data-set';
 import { buildRowCustomTreeHierarchy } from '@/facet/layout/build-row-custom-tree-hierarchy';
 import { SpreadSheet } from '@/sheet-type';
@@ -85,19 +86,19 @@ const handleRowHeaderHierarchy = (params: HeaderParams) => {
     } else {
       handleGridRowColHierarchy(params);
     }
-  } else {
-    // TODO 光生哥看下是否需要更改
-    throw new Error('There are not header hierarchy in table mode');
   }
 };
 
 const handleColHeaderHierarchy = (params: HeaderParams) => {
-  const { isPivotMode } = params;
+  const { isPivotMode, hierarchy, rootNode, facetCfg } = params;
   if (isPivotMode) {
     handleGridRowColHierarchy(params);
   } else {
-    // TODO 光生哥看下是否需要更改
-    throw new Error('There are not header hierarchy in table mode');
+    buildTableHierarchy({
+      parentNode: rootNode,
+      hierarchy,
+      facetCfg,
+    });
   }
 };
 

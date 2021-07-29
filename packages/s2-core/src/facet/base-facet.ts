@@ -30,6 +30,7 @@ import {
   MIN_SCROLL_BAR_HEIGHT,
 } from 'src/common/constant';
 import { Node } from 'src/facet/layout/node';
+import { ViewCellHeights } from 'src/facet/layout/interface';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Wheel } from '@antv/g-gesture';
 import * as d3Timer from 'd3-timer';
@@ -73,7 +74,7 @@ export abstract class BaseFacet {
 
   public viewCellWidths: number[];
 
-  public viewCellHeights: number[];
+  public viewCellHeights: ViewCellHeights;
 
   public cornerWidth: number;
 
@@ -221,7 +222,7 @@ export abstract class BaseFacet {
       const { current, pageSize } = pagination;
       const heights = this.viewCellHeights;
       const offset = Math.max((current - 1) * pageSize, 0);
-      return heights[offset];
+      return heights.getCellHeight(offset);
     }
     return 0;
   }
@@ -297,7 +298,7 @@ export abstract class BaseFacet {
   };
 
   calculateCellWidthHeight = () => {
-    const { colLeafNodes, rowLeafNodes } = this.layoutResult;
+    const { colLeafNodes } = this.layoutResult;
     const widths = _.reduce(
       colLeafNodes,
       (result: number[], node: Node) => {
@@ -307,16 +308,8 @@ export abstract class BaseFacet {
       [0],
     );
 
-    const heights = _.reduce(
-      rowLeafNodes,
-      (result: number[], node: Node) => {
-        result.push(_.last(result) + node.height);
-        return result;
-      },
-      [0],
-    );
     this.viewCellWidths = widths;
-    this.viewCellHeights = heights;
+    this.viewCellHeights = this.getViewCellHeights(this.layoutResult);
   };
 
   /**
@@ -354,6 +347,10 @@ export abstract class BaseFacet {
     if (!this.cfg.spreadsheet.isScrollContainsRowHeader()) {
       renderWidth = this.getCornerWidth(leftWidth, colsHierarchy);
     }
+    if (!this.cfg.spreadsheet.isPivotMode()) {
+      renderWidth = 0;
+    }
+
     this.cornerBBox = {
       x: 0,
       y: 0,
@@ -430,16 +427,17 @@ export abstract class BaseFacet {
 
   getRealHeight = (): number => {
     const { pagination } = this.cfg;
+    const heights = this.viewCellHeights;
+
     if (pagination) {
       const { current, pageSize } = pagination;
-      const heights = this.viewCellHeights;
 
       const start = Math.max((current - 1) * pageSize, 0);
-      const end = Math.min(current * pageSize, heights.length - 1);
+      const end = Math.min(current * pageSize, heights.getTotalLength() - 1);
 
-      return heights[end] - heights[start];
+      return heights.getCellHeight(end) - heights.getCellHeight(start);
     }
-    return _.last(this.viewCellHeights);
+    return heights.getTotalHeight();
   };
 
   clearAllGroup = () => {
@@ -771,6 +769,7 @@ export abstract class BaseFacet {
     //   indexes,
     // );
     const { add, remove } = diffIndexes(this.preCellIndexes, indexes);
+
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
       // add new cell in panelCell
       _.each(add, ([i, j]) => {
@@ -991,4 +990,8 @@ export abstract class BaseFacet {
   }
 
   protected abstract doLayout(): LayoutResult;
+
+  protected abstract getViewCellHeights(
+    layoutResult: LayoutResult,
+  ): ViewCellHeights;
 }

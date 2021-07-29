@@ -6,7 +6,16 @@ import {
   KEY_ROW_NODE_BORDER_REACHED,
   VALUE_FIELD,
 } from 'src/common/constant';
-import { includes, get, merge, isEmpty, maxBy } from 'lodash';
+import {
+  includes,
+  get,
+  merge,
+  isEmpty,
+  maxBy,
+  findIndex,
+  last,
+  reduce,
+} from 'lodash';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Node } from 'src/facet/layout/node';
@@ -500,5 +509,60 @@ export class PivotFacet extends BaseFacet {
 
   private getScrollRowField(): string[] {
     return get(this.spreadsheet, 'options.scrollReachNodeField.rowField', []);
+  }
+
+  protected getViewCellHeights(layoutResult: LayoutResult) {
+    const { rowLeafNodes } = layoutResult;
+
+    const heights = reduce(
+      rowLeafNodes,
+      (result: number[], node: Node) => {
+        result.push(last(result) + node.height);
+        return result;
+      },
+      [0],
+    );
+
+    return {
+      getTotalHeight: () => {
+        return last(heights);
+      },
+
+      getCellHeight: (index: number) => {
+        return heights[index];
+      },
+
+      getTotalLength: () => {
+        return heights.length;
+      },
+
+      getIndexRange: (minHeight: number, maxHeight: number) => {
+        let yMin = findIndex(
+          heights,
+          (height: number, idx: number) => {
+            const y = minHeight;
+            return y >= height && y < heights[idx + 1];
+          },
+          0,
+        );
+
+        yMin = Math.max(yMin, 0);
+
+        let yMax = findIndex(
+          heights,
+          (height: number, idx: number) => {
+            const y = maxHeight;
+            return y >= height && y < heights[idx + 1];
+          },
+          yMin,
+        );
+        yMax = Math.min(yMax === -1 ? Infinity : yMax, heights.length - 2);
+
+        return {
+          start: yMin,
+          end: yMax,
+        };
+      },
+    };
   }
 }

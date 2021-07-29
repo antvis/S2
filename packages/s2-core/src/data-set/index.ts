@@ -4,5 +4,6 @@
  */
 import { BaseDataSet } from './base-data-set';
 import { PivotDataSet } from './pivot-data-set';
+import { TableDataSet } from './table-data-set';
 
-export { BaseDataSet, PivotDataSet };
+export { BaseDataSet, PivotDataSet, TableDataSet };

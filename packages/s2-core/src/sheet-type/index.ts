@@ -39,7 +39,7 @@ import {
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
 } from '../common/constant';
-import { BaseDataSet, PivotDataSet } from '../data-set';
+import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
 import {
   Node,
   BaseInteraction,
@@ -70,7 +70,7 @@ import {
   SelectedStateName,
 } from '@/common/constant/interaction';
 import { i18n } from 'src/common/i18n';
-import { PivotFacet } from 'src/facet';
+import { PivotFacet, TableFacet } from 'src/facet';
 import CustomTreePivotDataSet from '@/data-set/custom-tree-pivot-data-set';
 
 const matrixTransform = ext.transform;
@@ -173,14 +173,15 @@ export class SpreadSheet extends EE {
     if (dataSet) {
       return dataSet(this);
     }
+
     let realDataSet;
     if (hierarchyType === 'customTree') {
       realDataSet = new CustomTreePivotDataSet(this);
     } else {
       realDataSet = new PivotDataSet(this);
     }
-    // TODO table data set
-    return mode === 'table' ? realDataSet : realDataSet;
+
+    return mode === 'table' ? new TableDataSet(this) : realDataSet;
   };
 
   public clearDrillDownData(rowNodeId?: string) {
@@ -325,6 +326,13 @@ export class SpreadSheet extends EE {
    */
   public isPivotMode(): boolean {
     return this.options?.mode === 'pivot';
+  }
+
+  /**
+   * Check if is pivot mode
+   */
+  public isTableMode(): boolean {
+    return this.options?.mode === 'table';
   }
 
   /**
@@ -585,8 +593,14 @@ export class SpreadSheet extends EE {
 
   buildFacet = () => {
     this.facet?.destroy();
+
     const facetCfg = this.getFacetCfgFromDataSerAndOptions();
-    this.facet = new PivotFacet(facetCfg);
+    if (this.isPivotMode()) {
+      this.facet = new PivotFacet(facetCfg);
+    } else {
+      this.facet = new TableFacet(facetCfg);
+    }
+
     // render facet
     this.facet.render();
   };
