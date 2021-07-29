@@ -34,7 +34,7 @@ const getOptions = () => {
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
-    showSeriesNumber: true,
+    showSeriesNumber: false,
     freezeRowHeader: true,
     mode: 'pivot',
     conditions: {
@@ -42,26 +42,6 @@ const getOptions = () => {
       interval: [],
       background: [],
       icon: [],
-    },
-    totals: {
-      row: {
-        showGrandTotals: true,
-        showSubTotals: true,
-        aggregation: 'SUM',
-        aggregationSub: 'AVG',
-        reverseLayout: true,
-        reverseSubLayout: true,
-        subTotalsDimensions: ['province'],
-      },
-      col: {
-        showGrandTotals: true,
-        showSubTotals: true,
-        aggregation: 'SUM',
-        aggregationSub: 'SUM',
-        reverseLayout: false,
-        reverseSubLayout: false,
-        subTotalsDimensions: ['type'],
-      },
     },
     style: {
       treeRowsWidth: 100,

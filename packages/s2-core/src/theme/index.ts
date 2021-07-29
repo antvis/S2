@@ -27,9 +27,8 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         fontWeight: 'normal',
         fill: brandColors[0],
         opacity: 1,
-        textIndent: 12,
         textAlign: 'left',
-        textBaseline: 'middle',
+        textIndent: 12,
       },
       cell: {
         // ----------- background color -----------
@@ -67,13 +66,69 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
           bottom: 0,
           left: 0,
         },
+      },
+    },
+    rowHeader: {
+      bolderText: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: isWindows() ? 'bold' : '520',
+        fill: grayColors[9],
+        opacity: 1,
+      },
+      text: {
+        fontFamily: FONT_FAMILY,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fill: grayColors[9],
+        opacity: 1,
+        textAlign: 'right',
+        textIndent: 12,
+      },
+      cell: {
+        // ----------- background color -----------
+        backgroundColor: brandColors[1],
+        backgroundColorOpacity: 1,
+        hoverBackgroundColor: brandColors[2],
+        selectedBackgroundColor: brandColors[2],
+        // ----------- border color --------------
+        horizontalBorderColor: grayColors[3],
+        horizontalBorderColorOpacity: 1,
+        verticalBorderColor: grayColors[3],
+        verticalBorderColorOpacity: 1,
+        hoverBorderColor: grayColors[9],
+        selectedBorderColor: grayColors[9],
+        // ----------- border width --------------
+        horizontalBorderWidth: 1,
+        verticalBorderWidth: 0,
+        hoverBorderWidth: 1,
+        selectedBorderWidth: 2,
+        // -------------- layout -----------------
         padding: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
+          top: 12,
+          right: 8,
+          bottom: 12,
+          left: 8,
         },
       },
+      icon: {
+        fill: brandColors[0],
+        radius: 4,
+        size: 14,
+        margin: {
+          top: 4,
+          right: 4,
+          bottom: 4,
+          left: 4,
+        },
+        padding: {
+          top: 2,
+          right: 2,
+          bottom: 2,
+          left: 2,
+        },
+      },
+      seriesNumberWidth: 80,
     },
     colHeader: {
       bolderText: {
@@ -89,8 +144,6 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         fontWeight: 'normal',
         fill: brandColors[0],
         opacity: 1,
-        textAlign: 'center',
-        textBaseline: 'middle',
         textIndent: 12,
       },
       cell: {
@@ -138,69 +191,6 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         },
       },
     },
-    rowHeader: {
-      bolderText: {
-        fontFamily: FONT_FAMILY,
-        fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
-        fill: grayColors[9],
-        opacity: '1',
-      },
-      text: {
-        fontFamily: FONT_FAMILY,
-        fontSize: 12,
-        fontWeight: 'normal',
-        fill: grayColors[9],
-        opacity: '1',
-        textAlign: 'left',
-        textBaseline: 'middle',
-        textIndent: 12,
-      },
-      cell: {
-        // ----------- background color -----------
-        backgroundColor: brandColors[6],
-        backgroundColorOpacity: 1,
-        hoverBackgroundColor: brandColors[2],
-        selectedBackgroundColor: brandColors[2],
-        // ----------- border color --------------
-        horizontalBorderColor: grayColors[3],
-        horizontalBorderColorOpacity: 1,
-        verticalBorderColor: grayColors[3],
-        verticalBorderColorOpacity: 1,
-        hoverBorderColor: grayColors[9],
-        selectedBorderColor: grayColors[9],
-        // ----------- border width --------------
-        horizontalBorderWidth: 1,
-        verticalBorderWidth: 0,
-        hoverBorderWidth: 1,
-        selectedBorderWidth: 2,
-        // -------------- layout -----------------
-        padding: {
-          top: 12,
-          right: 8,
-          bottom: 12,
-          left: 8,
-        },
-      },
-      icon: {
-        fill: brandColors[0],
-        radius: 4,
-        size: 14,
-        margin: {
-          top: 4,
-          right: 4,
-          bottom: 4,
-          left: 4,
-        },
-        padding: {
-          top: 2,
-          right: 2,
-          bottom: 2,
-          left: 2,
-        },
-      },
-      seriesNumberWidth: 80,
-    },
     // ------------- DataCell -------------------
     dataCell: {
       bolderText: {
@@ -232,7 +222,7 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         selectedBackgroundColor: brandColors[2],
         // ----------- border color --------------
         horizontalBorderColor: grayColors[3],
-        horizontalBorderColorOpacity: 0,
+        horizontalBorderColorOpacity: 1,
         verticalBorderColor: grayColors[3],
         verticalBorderColorOpacity: 1,
         hoverBorderColor: grayColors[9],

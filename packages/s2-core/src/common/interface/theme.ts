@@ -39,10 +39,11 @@ export interface TextTheme {
   opacity?: number;
   textAlign?: TextAlign;
   textBaseline?: TextBaseline;
+  textIndent?: number;
 }
 
 export interface CellTheme {
-  /* 偶数行单元格背景色 */
+  /* 奇数行单元格背景色 */
   crossBackgroundColor?: string;
   /* 单元格背景色 */
   backgroundColor?: string;

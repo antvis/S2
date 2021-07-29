@@ -19,6 +19,8 @@ export class Frame extends Group {
     this.addViewPortRightShadowIfNeeded();
     // 一级纵向分割线右侧的shadow
     this.addSplitLineRightShadow();
+    // 绘制行头区域背景色
+    // this.addRowHeaderBackground();
   }
 
   /**
@@ -181,5 +183,24 @@ export class Frame extends Group {
         },
       });
     }
+  }
+
+  private addRowHeaderBackground() {
+    const cfg = this.cfg;
+    const { width, height, viewportHeight, position, spreadsheet } = cfg;
+    console.log(cfg);
+    const rowHeaderTheme = _.get(spreadsheet, 'theme.rowHeader');
+
+    const x = position.x;
+    const y = position.y;
+    this.addShape('rect', {
+      attrs: {
+        x,
+        y,
+        width: width,
+        height: height,
+        fill: rowHeaderTheme.cell.backgroundColor,
+      },
+    });
   }
 }

@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { getEllipsisText, getTextPosition } from '../utils/text';
-import { isIphoneX } from '../utils/is-mobile';
+import { getEllipsisText } from '../utils/text';
+import { isIPhoneX } from '../utils/is-mobile';
 import { IShape } from '@antv/g-canvas';
-import { renderLine, renderRect, renderText } from '../utils/g-renders';
+import { renderText } from '../utils/g-renders';
 import {
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZER,
@@ -47,25 +47,22 @@ export class CornerCell extends BaseCell<Node> {
       return;
     }
 
-    const iconStyle = _.get(this.theme, 'corner.icon');
-    const cellStyle = _.get(this.theme, 'corner.cell');
-    const textStyle = _.get(this.theme, 'corner.text');
-
-    // 当表处于树状结构下，文本对齐方式为：水平居左，垂直居中，此模式下不支持更改对齐方式
-    if (
-      this.headerConfig.spreadsheet.isHierarchyTreeType() &&
-      this.headerConfig.spreadsheet.isPivotMode()
-    ) {
-      textStyle.textAlign = 'left';
-      textStyle.textBaseline = 'middle';
-    }
+    const cornerTheme = _.get(this.theme, 'corner');
+    const textStyle = cornerTheme?.bolderText;
+    const iconStyle = cornerTheme?.icon;
+    const cellPadding = cornerTheme?.cell?.padding;
+    // 起点坐标为左上
+    textStyle.textAlign = 'left';
+    textStyle.textBaseline = 'top';
 
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
     const extraPadding = this.ifNeedIcon()
       ? iconStyle?.size + iconStyle?.margin?.left + iconStyle?.margin?.right
       : 0;
 
-    const text = getEllipsisText(label, cellWidth - extraPadding, textStyle);
+    const totalPadding = extraPadding + cellPadding?.left + cellPadding?.right;
+
+    const text = getEllipsisText(label, cellWidth - totalPadding, textStyle);
     const ellipseIndex = text.indexOf('...');
     let firstLine = text;
     let secondLine = '';
@@ -73,29 +70,19 @@ export class CornerCell extends BaseCell<Node> {
     // 存在文字的省略号 & 展示为tree结构
     if (ellipseIndex !== -1 && this.spreadsheet.isHierarchyTreeType()) {
       // 剪裁到 ... 最有点的后1个像素位置
-      const lastIndex = ellipseIndex + (isIphoneX ? 1 : 0);
+      const lastIndex = ellipseIndex + (isIPhoneX ? 1 : 0);
       firstLine = label.substr(0, lastIndex);
       secondLine = label.slice(lastIndex);
       // 第二行重新计算...逻辑
       secondLine = getEllipsisText(
         secondLine,
-        cellWidth - extraPadding,
+        cellWidth - totalPadding,
         textStyle,
       );
     }
 
-    const cellBoxCfg = {
-      x: position.x + x + extraPadding,
-      y: position.y + y,
-      width: cellWidth - extraPadding,
-      height: cellHeight,
-      textAlign: textStyle?.textAlign,
-      textBaseline: textStyle?.textBaseline,
-      padding: cellStyle?.padding,
-    } as CellBoxCfg;
-
-    const textPosition = getTextPosition(cellBoxCfg);
-
+    const textX = position.x + x + extraPadding + cellPadding.left;
+    const textY = position.y + y + cellPadding.top;
     const extraInfo = {
       appendInfo: {
         // 标记为行头文本，方便做链接跳转直接识别
@@ -107,8 +94,8 @@ export class CornerCell extends BaseCell<Node> {
     this.textShapes.push(
       renderText(
         this.textShapes,
-        textPosition.x,
-        textPosition.y,
+        textX,
+        textY,
         firstLine,
         textStyle,
         this,
@@ -123,7 +110,7 @@ export class CornerCell extends BaseCell<Node> {
       this.textShapes.push(
         renderText(
           this.textShapes,
-          textPosition.x,
+          textX,
           position.y + y + cellHeight * 0.65,
           secondLine,
           textStyle,

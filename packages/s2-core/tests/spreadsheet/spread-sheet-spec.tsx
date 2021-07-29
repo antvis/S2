@@ -133,6 +133,9 @@ const getOptions = () => {
         heightByField: {},
         colWidthType: 'compact',
       },
+      rowCfg: {
+        width: 200,
+      },
       cellCfg: {
         height: 32,
       },

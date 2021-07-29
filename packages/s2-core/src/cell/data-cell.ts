@@ -219,7 +219,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
     const padding = this.theme.dataCell.cell.padding;
     this.textShape = renderText(
-      this.textShape,
+      [this.textShape],
       x + width - padding.right,
       y + height / 2,
       getEllipsisText(
@@ -228,7 +228,6 @@ export class DataCell extends BaseCell<ViewMeta> {
         textStyle,
       ),
       textStyle,
-      textFill,
       this,
     );
   }

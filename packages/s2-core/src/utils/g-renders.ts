@@ -58,10 +58,10 @@ export function renderText(
   shapes: IShape[],
   x: number,
   y: number,
-  text: any,
+  text: string,
   textStyle: TextTheme,
   group: Group,
-  extrInfo?: any,
+  extrStyle?: any,
 ): IShape {
   if (!_.isEmpty(shapes) && group) {
     _.forEach(shapes, (shape: IShape) => {
@@ -76,7 +76,7 @@ export function renderText(
         y,
         text,
         ...textStyle,
-        ...extrInfo,
+        ...extrStyle,
       },
     })
   );

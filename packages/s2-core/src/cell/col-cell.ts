@@ -108,7 +108,6 @@ export class ColCell extends BaseCell<Node> {
       icon: iconCfg,
       text: textCfg,
       bolderText: bolderTextCfg,
-      cell: cellCfg,
     } = this.theme.colHeader;
 
     // 格式化枚举值
@@ -125,17 +124,20 @@ export class ColCell extends BaseCell<Node> {
       cellWidth - sortIconPadding,
       textStyle,
     );
+    textStyle.textBaseline = 'middle';
     const textWidth = measureTextWidth(text, textStyle);
     let textX: number;
     let textAlign: string;
+    const padding = _.get(this, 'theme.colHeader.cell.padding');
     if (isLeaf) {
       // 最后一个层级的维值，与 dataCell 对齐方式保持一致
-      textX = x + cellWidth - sortIconPadding - iconCfg.margin.right;
+      textX =
+        x + cellWidth - sortIconPadding - iconCfg.margin.right - padding.left;
       textAlign = this.theme.dataCell.text.textAlign;
     } else {
       textAlign = textStyle.textAlign;
       // scroll keep in center
-      const cellLeft = x - offset;
+      const cellLeft = x - offset - padding.left - padding.right;
       const cellRight = cellLeft + cellWidth;
       const viewportLeft = !scrollContainsRowHeader ? 0 : -cornerWidth;
       const viewportWidth = !scrollContainsRowHeader
@@ -152,7 +154,7 @@ export class ColCell extends BaseCell<Node> {
         const restWidth = cellWidth - (viewportLeft - cellLeft);
         if (restWidth < textWidth) {
           textX = offset + restWidth;
-          textAlign = 'end';
+          textAlign = 'right';
         } else {
           textX = offset - extraW + restWidth / 2;
         }
@@ -161,7 +163,7 @@ export class ColCell extends BaseCell<Node> {
         const restWidth = cellWidth - (cellRight - viewportRight);
         if (restWidth < textWidth) {
           textX = x;
-          textAlign = 'start';
+          textAlign = 'left';
         } else {
           textX = x + restWidth / 2;
         }

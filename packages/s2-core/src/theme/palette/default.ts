@@ -17,16 +17,16 @@ export const paletteDefault = {
   // ----------neutral colors ----------
   grayColors: [
     '#FFFFFF',
-    '#FAFAFA',
-    '#F5F5F5',
-    '#E9E9E9',
-    '#D9D9D9',
-    '#BFBFBF',
-    '#8C8C8C',
-    '#595959',
-    '#262626',
-    '#0E0E0E',
-    '#000000',
+    '#F7F8FA',
+    '#EFF1F6',
+    '#E6E9F1',
+    '#D1D4DC',
+    '#B8BBC3',
+    '#888B93',
+    '#585B63',
+    '#282B33',
+    '#121826',
+    '#060C1A',
   ],
 
   // ---------- colors ----------
