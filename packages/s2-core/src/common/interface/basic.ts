@@ -7,6 +7,12 @@ import { S2DataConfig, safetyDataConfig, Data, DataItem } from './s2DataConfig';
 import { S2Options, safetyOptions } from './s2Options';
 import { CustomInteraction } from './interaction';
 import { ResizeInfo } from '@/facet/header/interface';
+import {
+  LayoutArrange,
+  LayoutCoordinate,
+  LayoutDataPosition,
+  LayoutHierarchy,
+} from '@/common/interface/hooks';
 
 export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions, Data };
 
@@ -23,34 +29,6 @@ export interface Meta {
   // 文本字段：一般用于做字段枚举值的别名
   readonly formatter?: Formatter;
   readonly aggregation?: Aggregation;
-}
-
-/**
- * Strategy mode's value type
- * data's key size must be equals fields.length
- * value can be empty
- * FieldC(Last fields is real value field)
- * example:
- * {
- *   fields: [fieldA, fieldB, fieldC],
- *   data: [
- *   {
- *     fieldA: 'valueA',
- *     fieldB: 'valueB',
- *     fieldC: 'valueC',
- *   }
- *   {
- *     fieldA: 'valueA',
- *     fieldB: '',
- *     fieldC: 'valueC',
- *   }
- *   ]
- * }
- */
-export interface Extra {
-  key: string;
-  collapse: boolean;
-  remark: string;
 }
 
 export interface DerivedValue {
@@ -326,34 +304,34 @@ export interface SpreadSheetFacetCfg {
   // data set of spreadsheet
   dataSet: BaseDataSet;
   // columns fields
-  cols: string[];
+  columns?: string[];
   // rows fields
-  rows: string[];
+  rows?: string[];
   // values fields
-  values: string[];
+  values?: string[];
   // 衍生指标
   derivedValues?: DerivedValue[];
   // cross-tab area's cell config
-  cellCfg: CellCfg;
+  cellCfg?: CellCfg;
   // row cell config
-  rowCfg: RowCfg;
+  rowCfg?: RowCfg;
   // column cell config
-  colCfg: ColCfg;
+  colCfg?: ColCfg;
   // width/height of plot
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   // tree mode rows width
-  treeRowsWidth: number;
+  treeRowsWidth?: number;
   // all collapsed rows(node id <=> isCollapse) -- only use in tree mode row header
-  collapsedRows: Record<string, boolean>;
+  collapsedRows?: Record<string, boolean>;
   // use in col header
-  collapsedCols: Record<string, boolean>;
+  collapsedCols?: Record<string, boolean>;
   // hierarchy' type
-  hierarchyType: 'grid' | 'tree';
+  hierarchyType?: 'grid' | 'tree';
   // check if hierarchy is collapse
-  hierarchyCollapse: boolean;
+  hierarchyCollapse?: boolean;
   // field's meta info
-  meta: Meta[];
+  meta?: Meta[];
   // paginate config
   pagination?: Pagination;
   // born single cell's draw group
@@ -368,14 +346,14 @@ export interface SpreadSheetFacetCfg {
   frame?: FrameCallback;
   // 角头可能需要全部自定义，而不是用交叉表概念的node来渲染
   cornerHeader?: CornerHeaderCallback;
-  // 布局排序规则自定义(维度值的排序)
-  layoutArrange?: LayoutArrangeCallback;
-  // 布局结构(某个节点前后插入节点)
-  hierarchy?: HierarchyCallback;
-  // 自定义layout -- 用于控制每一个需要控制的行列节点
-  layout?: LayoutCallback;
-  // 布局结果交由外部控制
-  layoutResult?: LayoutResultCallback;
+  // determine what does row/column tree hierarchy look like
+  layoutHierarchy?: LayoutHierarchy;
+  // determine the order of every row/column tree branch
+  layoutArrange?: LayoutArrange;
+  // determine the location(x,y,width,height eg..) of every node
+  layoutCoordinate?: LayoutCoordinate;
+  // determine the data of cells in Cartesian coordinates
+  layoutDataPosition?: LayoutDataPosition;
   // custom Interaction
   customInteraction?: CustomInteraction[];
 }
@@ -432,11 +410,6 @@ export interface OffsetConfig {
     value: number | undefined;
     animate?: boolean;
   };
-}
-
-export interface CellPosition {
-  x: number;
-  y: number;
 }
 
 export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {

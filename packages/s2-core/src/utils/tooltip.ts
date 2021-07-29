@@ -559,7 +559,7 @@ export const getStrategyHeadInfo = (
     rows.splice(index + 1);
   }
   if (hoverData) {
-    const colFields = get(spreadsheet?.dataSet?.fields, 'cols', []);
+    const colFields = get(spreadsheet?.dataSet?.fields, 'columns', []);
     const colList = getFieldList(spreadsheet, colFields, hoverData);
     const rowList = getFieldList(spreadsheet, rows, hoverData);
 

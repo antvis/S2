@@ -51,7 +51,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
 
   let fieldValues: FileValue[] = layoutArrange(
     dimValues,
-    spreadsheet,
+    facetCfg,
     parentNode,
     currentField,
   );
@@ -101,7 +101,12 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       spreadsheet,
     });
 
-    layoutHierarchy(facetCfg, parentNode, node, hierarchy);
+    const expandCurrentNode = layoutHierarchy(
+      facetCfg,
+      parentNode,
+      node,
+      hierarchy,
+    );
 
     const emptyChildren = isEmpty(pivotMetaValue?.children);
     if (emptyChildren || isTotals) {
@@ -111,7 +116,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       node.isTotals = true;
     }
 
-    if (!emptyChildren && !isCollapse && !isTotals) {
+    if (!emptyChildren && !isCollapse && !isTotals && expandCurrentNode) {
       buildRowTreeHierarchy({
         level: level + 1,
         currentField: pivotMetaValue.childField,

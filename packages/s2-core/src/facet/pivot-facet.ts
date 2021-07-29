@@ -13,7 +13,10 @@ import { Node } from 'src/facet/layout/node';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { DebuggerUtil } from 'src/common/debug';
-import { layoutNodes } from '@/facet/layout/layout-hooks';
+import {
+  layoutCoordinate,
+  layoutDataPosition,
+} from '@/facet/layout/layout-hooks';
 
 export class PivotFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
@@ -113,8 +116,7 @@ export class PivotFacet extends BaseFacet {
       getCellMeta,
       spreadsheet,
     } as LayoutResult;
-    const callback = this.cfg?.layoutResult;
-    return callback ? callback(layoutResult) : layoutResult;
+    return layoutDataPosition(this.cfg, layoutResult);
   }
 
   // TODO cell sticky border event
@@ -207,7 +209,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.y = preLevelSample.y + preLevelSample.height;
       }
       currentNode.height = this.getColNodeHeight(currentNode);
-      layoutNodes(this.cfg, null, currentNode);
+      layoutCoordinate(this.cfg, null, currentNode);
     }
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
   }
@@ -342,7 +344,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.x = preLevelSample.x + preLevelSample.width;
       }
       currentNode.width = this.calculateRowLeafNodesWidth(currentNode);
-      layoutNodes(this.cfg, currentNode, null);
+      layoutCoordinate(this.cfg, currentNode, null);
     }
     if (!isTree) {
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);

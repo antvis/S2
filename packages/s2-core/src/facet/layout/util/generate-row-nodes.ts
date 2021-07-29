@@ -80,16 +80,20 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       spreadsheet,
     });
 
-    layoutHierarchy(facetCfg, parentNode, node, hierarchy);
+    const expandCurrentNode = layoutHierarchy(
+      facetCfg,
+      parentNode,
+      node,
+      hierarchy,
+    );
 
-    // TODO find another way?
     if (level > hierarchy.maxLevel) {
       hierarchy.sampleNodesForAllLevels.push(node);
       hierarchy.sampleNodeForLastLevel = node;
       hierarchy.maxLevel = level;
     }
 
-    const isLeafNode = isLeaf || isCollapsed;
+    const isLeafNode = isLeaf || isCollapsed || expandCurrentNode;
     if (isLeafNode) {
       node.isLeaf = true;
       hierarchy.pushIndexNode(node);
