@@ -74,6 +74,7 @@ export const DefaultTheme = {
     trackColor: 'rgba(0,0,0,0)',
     thumbHoverColor: 'rgba(0,0,0,0.2)',
     thumbColor: 'rgba(0,0,0,0.15)',
+    mobileThumbColor: 'rgba(0,0,0,0)',
     size: 8,
   },
   center: {

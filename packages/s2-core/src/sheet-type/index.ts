@@ -27,6 +27,7 @@ import {
   Total,
   ShowProps,
   SpreadsheetMountContainer,
+  ThemeType,
 } from 'src/common/interface';
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
@@ -235,7 +236,7 @@ export class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setTheme(theme: SpreadSheetTheme, type = 'default'): void {
+  public setTheme(theme: SpreadSheetTheme, type: ThemeType = 'default'): void {
     if (!getTheme(type)) {
       if (theme) {
         this.theme = registerTheme(type, theme);
@@ -604,7 +605,7 @@ export class SpreadSheet extends EE {
 
     const defaultCell = (facet: ViewMeta) => this.getCorrectCell(facet);
     // the new facetCfg of facet
-    const facetCfg = {
+    const facetCfg: SpreadSheetFacetCfg = {
       spreadsheet: this,
       dataSet: this.dataSet,
       hierarchyType,
@@ -633,7 +634,7 @@ export class SpreadSheet extends EE {
       layoutResult,
       hierarchy,
       layoutArrange,
-    } as SpreadSheetFacetCfg;
+    };
     this.facet?.destroy();
 
     if (this.isPivotMode()) {

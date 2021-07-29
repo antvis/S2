@@ -1,17 +1,16 @@
-import { LooseObject } from '@antv/g-base';
 import { merge } from 'lodash';
 import { DefaultTheme } from './default';
-import { SpreadSheetTheme } from '@/common/interface';
+import { SpreadSheetTheme, ThemeType } from '@/common/interface';
 
 // Map of the theme
-const THEME_MAP: Record<string, LooseObject> = {
+const THEME_MAP: Record<ThemeType, SpreadSheetTheme> = {
   default: DefaultTheme,
 };
 /**
  * get the theme according to the type
  * @param type
  */
-export const getTheme = (type: string): SpreadSheetTheme => {
+export const getTheme = (type: ThemeType = 'default'): SpreadSheetTheme => {
   return THEME_MAP[type.toLowerCase()];
 };
 
@@ -21,7 +20,7 @@ export const getTheme = (type: string): SpreadSheetTheme => {
  * @param theme
  */
 export const registerTheme = (
-  type: string,
+  type: ThemeType,
   theme: SpreadSheetTheme,
 ): SpreadSheetTheme => {
   if (getTheme(type)) {
