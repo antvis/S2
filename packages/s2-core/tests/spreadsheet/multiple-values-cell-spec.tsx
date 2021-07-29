@@ -31,14 +31,8 @@ const getDataCfg = (): S2DataConfig => {
     fields: {
       rows: ['province', 'city'],
       columns: ['type'],
-      values: ['price', 'count'],
+      values: ['price', 'rc', 'ac', 'count'],
       valueInCols: true,
-      derivedValues: [
-        {
-          valueField: 'price',
-          derivedValueField: ['rc', 'ac'],
-        },
-      ],
     },
     meta: [
       {
@@ -76,6 +70,7 @@ const getOptions = (): S2Options => {
     showSeriesNumber: false,
     freezeRowHeader: false,
     mode: 'pivot',
+    derivedValues: ['ac', 'rc'],
     conditions: {
       text: [],
       interval: [],

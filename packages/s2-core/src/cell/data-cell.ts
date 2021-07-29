@@ -2,15 +2,21 @@ import { getEllipsisText, getTextPosition } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { map, find, get, isEmpty, first, includes } from 'lodash';
 import { GuiIcon } from '../common/icons';
-import { CellMapping, Condition, Conditions } from '../common/interface';
-import { DataItem } from '../common/interface/s2DataConfig';
+import {
+  CellMapping,
+  Condition,
+  Conditions,
+  IconCondition,
+  ViewMeta,
+} from '../common/interface';
+import { DataItem } from '../common/interface/S2DataConfig';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
 import { getDerivedDataState } from '../utils/text';
 import { VALUE_FIELD } from '../common/constant';
-import { ViewMeta } from '../common/interface';
 import { DerivedCell, BaseCell } from '.';
 import { SelectedStateName } from '@/common/constant/interaction';
 import { SpreadSheet } from 'src/sheet-type';
+import { getIconPosition } from '@/utils/condition';
 
 /**
  * DataCell for panelGroup area
@@ -106,15 +112,19 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Get left rest area size by icon condition
    * @protected
    */
-  protected getLeftAreaBBox(): SimpleBBox {
+  protected getContentAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
-    const { icon } = this.theme.dataCell;
-    const iconCondition = this.findFieldCondition(this.conditions?.icon);
+    const iconCondition: IconCondition = this.findFieldCondition(
+      this.conditions?.icon,
+    );
     const isIconExist = iconCondition && iconCondition.mapping;
+    const iconWidth = isIconExist ? ICON_SIZE + ICON_PADDING * 2 : 0;
+    const isIconRight = getIconPosition(iconCondition) === 'right';
+
     return {
-      x,
+      x: isIconRight ? x : x + iconWidth,
       y,
-      width: width - (isIconExist ? icon.size + icon.padding?.left : 0),
+      width: width - iconWidth,
       height,
     };
   }
@@ -185,10 +195,8 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Render cell main text and derived text
    */
   protected drawTextShape() {
-    const { x, y, height, width } = this.getLeftAreaBBox();
-
+    const { x, y, height, width } = this.getContentAreaBBox();
     const { valueField: originField, isTotals } = this.meta;
-
     if (this.spreadsheet.isDerivedValue(originField)) {
       const data = this.getDerivedData(originField, isTotals);
       const dataValue = data.value as string;
@@ -352,21 +360,26 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawIconShape() {
     const { x, y, height, width } = this.meta;
-    const { icon } = this.theme.dataCell;
-    const iconCondition = this.findFieldCondition(this.conditions?.icon);
+    const iconCondition: IconCondition = this.findFieldCondition(
+      this.conditions?.icon,
+    );
     if (iconCondition && iconCondition.mapping) {
       const attrs = this.mappingValue(iconCondition);
+      const isIconRight = getIconPosition(iconCondition) === 'right';
       const { formattedValue } = this.getData();
       // icon only show when icon not empty and value not null(empty)
       if (!isEmpty(attrs?.icon) && formattedValue) {
         this.iconShape = new GuiIcon({
           type: attrs.icon,
-          x: x + width - icon.margin.left - icon.size,
-          y: y + height / 2 - icon.size / 2,
-          width: icon.size,
-          height: icon.size,
+          x: isIconRight
+            ? x + width - ICON_PADDING - ICON_SIZE
+            : x + ICON_PADDING,
+          y: y + height / 2 - ICON_SIZE / 2,
+          width: ICON_SIZE,
+          height: ICON_SIZE,
           fill: attrs.fill,
         });
+
         this.add(this.iconShape);
       }
     }
@@ -377,7 +390,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @private
    */
   protected drawIntervalShape() {
-    const { x, y, height, width } = this.getLeftAreaBBox();
+    const { x, y, height, width } = this.getContentAreaBBox();
 
     const intervalCondition = this.findFieldCondition(
       this.conditions?.interval,

@@ -1,3 +1,4 @@
+import { updateConditionsByDerivedValues } from './../../utils/condition';
 import {
   CellCallback,
   Conditions,
@@ -40,6 +41,8 @@ export interface S2Options {
   readonly debug?: boolean;
   // row header hierarchy type only work in pivot mode
   readonly hierarchyType?: 'grid' | 'tree' | 'customTree';
+  // 兜底以前的衍生指标概念
+  readonly derivedValues?: string[];
   // conditions config
   readonly conditions?: Conditions;
   // total config
@@ -64,6 +67,7 @@ export interface S2Options {
   readonly rowActionIcons?: RowActionIcons;
   // extra styles
   readonly style?: Partial<Style>;
+
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
   readonly dataCell?: DataCellCallback;
@@ -145,11 +149,15 @@ export const defaultOptions = {
   showSeriesNumber: false,
   scrollReachNodeField: {},
   hideRowColFields: [],
-  valueInCols: true,
   customHeaderCells: null,
   rowActionIcons: null,
   style: defaultStyle,
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>
-  merge({}, defaultOptions, options);
+  merge({}, defaultOptions, options, {
+    conditions: updateConditionsByDerivedValues(
+      options.conditions,
+      options.derivedValues,
+    ),
+  });

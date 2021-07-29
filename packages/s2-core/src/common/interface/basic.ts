@@ -82,12 +82,15 @@ export interface Condition {
   readonly field: string;
   readonly mapping: MappingFunction;
 }
+export interface IconCondition extends Condition {
+  readonly iconPosition?: 'left' | 'right'; // right by default
+}
 
 export interface Conditions {
   readonly text?: Condition[];
   readonly background?: Condition[];
   readonly interval?: Condition[];
-  readonly icon?: Condition[];
+  readonly icon?: IconCondition[];
 }
 
 export interface Total {
