@@ -99,7 +99,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       hierarchy.maxLevel = level;
     }
 
-    const isLeafNode = isLeaf || isCollapsed || expandCurrentNode;
+    const isLeafNode = isLeaf || isCollapsed || !expandCurrentNode;
     if (isLeafNode) {
       node.isLeaf = true;
       hierarchy.pushIndexNode(node);

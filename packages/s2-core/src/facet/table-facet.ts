@@ -5,7 +5,7 @@ import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Node } from 'src/facet/layout/node';
 import _ from 'lodash';
-import { layoutNodes } from 'src/facet/layout/layout-hooks';
+import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 import { DebuggerUtil } from 'src/common/debug';
 
@@ -147,7 +147,7 @@ export class TableFacet extends BaseFacet {
       currentNode.y = 0;
 
       currentNode.height = this.getColNodeHeight(currentNode);
-      layoutNodes(this.cfg, null, currentNode);
+      layoutCoordinate(this.cfg, null, currentNode);
     }
   }
 

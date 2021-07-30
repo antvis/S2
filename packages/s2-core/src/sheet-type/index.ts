@@ -575,7 +575,7 @@ export class SpreadSheet extends EE {
    * 避免每次新增、变更dataSet和options时，生成SpreadSheetFacetCfg
    * 要多出定义匹配的问题，直接按需&部分拆分options/dataSet合并为facetCfg
    */
-  getFacetCfgFromDataSerAndOptions = (): SpreadSheetFacetCfg => {
+  getFacetCfgFromDataSetAndOptions = (): SpreadSheetFacetCfg => {
     const { fields, meta } = this.dataSet;
     const { style, dataCell } = this.options;
     // 默认单元格实现
@@ -593,14 +593,12 @@ export class SpreadSheet extends EE {
 
   buildFacet = () => {
     this.facet?.destroy();
-
-    const facetCfg = this.getFacetCfgFromDataSerAndOptions();
+    const facetCfg = this.getFacetCfgFromDataSetAndOptions();
     if (this.isPivotMode()) {
       this.facet = new PivotFacet(facetCfg);
     } else {
       this.facet = new TableFacet(facetCfg);
     }
-
     // render facet
     this.facet.render();
   };
