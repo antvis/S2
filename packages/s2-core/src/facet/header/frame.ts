@@ -13,14 +13,8 @@ export class Frame extends Group {
     this.addCornerRightBorder();
     // corner底部的横线条
     this.addCornerBottomBorder();
-    // corner/row右边的渐变框,和行头滚动条相关的shadow
-    this.addCornerRightShadowIfNeeded();
-    // viewport/panel右边的渐变框
-    this.addViewPortRightShadowIfNeeded();
     // 一级纵向分割线右侧的shadow
     this.addSplitLineRightShadow();
-    // 绘制行头区域背景色
-    // this.addRowHeaderBackground();
   }
 
   /**
@@ -107,70 +101,22 @@ export class Frame extends Group {
     });
   }
 
-  private addViewPortRightShadowIfNeeded() {
-    const cfg = this.cfg;
-    const {
-      width,
-      height,
-      viewportWidth,
-      viewportHeight,
-      position,
-      showViewPortRightShadow,
-      scrollX,
-      spreadsheet,
-    } = cfg;
-    const splitLine = _.get(spreadsheet, 'theme.splitLine');
-    if (splitLine.showRightShadow || showViewPortRightShadow) {
-      const x =
-        position.x +
-        width +
-        viewportWidth -
-        splitLine.shadowWidth +
-        (scrollX || 0);
-      const y = position.y + height;
-      this.addShape('rect', {
-        attrs: {
-          x,
-          y,
-          width: splitLine.shadowWidth,
-          height: viewportHeight,
-          fill: `l (0) 0:${splitLine.shadowColors[0]} 1:${splitLine.shadowColors[1]}`,
-        },
-      });
-    }
-  }
-
-  private addCornerRightShadowIfNeeded() {
-    const cfg = this.cfg;
-    const {
-      width,
-      height,
-      viewportHeight,
-      position,
-      showCornerRightShadow,
-      spreadsheet,
-    } = cfg;
-    const splitLine = _.get(spreadsheet, 'theme.splitLine');
-    if (showCornerRightShadow) {
-      const x = position.x + width - splitLine.shadowWidth;
-      const y = position.y + height;
-      this.addShape('rect', {
-        attrs: {
-          x,
-          y,
-          width: splitLine.shadowWidth,
-          height: viewportHeight,
-          fill: `l (0) 0:${splitLine.shadowColors[0]} 1:${splitLine.shadowColors[1]}`,
-        },
-      });
-    }
-  }
-
   private addSplitLineRightShadow() {
     const cfg = this.cfg;
-    const { width, height, viewportHeight, position, spreadsheet } = cfg;
+    const {
+      width,
+      height,
+      viewportHeight,
+      position,
+      spreadsheet,
+      showViewPortRightShadow,
+    } = cfg;
     const splitLine = _.get(spreadsheet, 'theme.splitLine');
-    if (splitLine.showRightShadow) {
+    if (
+      splitLine.showRightShadow &&
+      showViewPortRightShadow &&
+      this.cfg.spreadsheet.freezeRowHeader()
+    ) {
       const x = position.x + width;
       const y = position.y;
       this.addShape('rect', {
@@ -183,24 +129,5 @@ export class Frame extends Group {
         },
       });
     }
-  }
-
-  private addRowHeaderBackground() {
-    const cfg = this.cfg;
-    const { width, height, viewportHeight, position, spreadsheet } = cfg;
-    console.log(cfg);
-    const rowHeaderTheme = _.get(spreadsheet, 'theme.rowHeader');
-
-    const x = position.x;
-    const y = position.y;
-    this.addShape('rect', {
-      attrs: {
-        x,
-        y,
-        width: width,
-        height: height,
-        fill: rowHeaderTheme.cell.backgroundColor,
-      },
-    });
   }
 }

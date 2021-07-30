@@ -2,18 +2,17 @@ import { merge, clone, omit } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
-  auto,
   S2DataConfig,
   S2Options,
   SheetComponent,
   SpreadSheet,
 } from '../../../src';
-import { getContainer, getMockData } from '../../util/helpers';
+import { getContainer } from '../../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch } from 'antd';
 import { CustomTooltip } from '../../spreadsheet/custom/custom-tooltip';
-import * as dataCfg from '../../data/derived-value-record.json';
+import * as dataCfg from '../../data/demo-value-record.json';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -30,12 +29,12 @@ const getDataCfg = () => {
 const getOptions = () => {
   return {
     debug: true,
-    width: 800,
+    width: 400,
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: false,
-    freezeRowHeader: true,
+    freezeRowHeader: false,
     mode: 'pivot',
     conditions: {
       text: [],

@@ -1,4 +1,4 @@
-import { getEllipsisText } from '../utils/text';
+import { getEllipsisText, getTextPosition } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { map, find, get, isEmpty, first, includes } from 'lodash';
 import { GuiIcon } from '../common/icons';
@@ -9,7 +9,7 @@ import { getDerivedDataState } from '../utils/text';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { DerivedCell, BaseCell } from '.';
-import { SelectedStateName } from 'src/common/constant/interatcion';
+import { SelectedStateName } from '@/common/constant/interaction';
 import { SpreadSheet } from 'src/sheet-type';
 
 /**
@@ -186,11 +186,13 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawTextShape() {
     const { x, y, height, width } = this.getLeftAreaBBox();
+
     const { valueField: originField, isTotals } = this.meta;
 
     if (this.spreadsheet.isDerivedValue(originField)) {
       const data = this.getDerivedData(originField, isTotals);
       const dataValue = data.value as string;
+      // TODO 衍生指标改造完后可去掉
       // 衍生指标的cell, 需要单独的处理
       this.add(
         new DerivedCell({
@@ -218,15 +220,26 @@ export class DataCell extends BaseCell<ViewMeta> {
       textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
     const padding = this.theme.dataCell.cell.padding;
+    const ellipsisText = getEllipsisText(
+      `${text || '-'}`,
+      width - padding.left - padding.right,
+      textStyle,
+    );
+    const cellBoxCfg = {
+      x,
+      y,
+      height,
+      width,
+      textAlign: textStyle.textAlign,
+      textBaseline: textStyle.textBaseline,
+      padding,
+    };
+    const position = getTextPosition(cellBoxCfg);
     this.textShape = renderText(
       [this.textShape],
-      x + width - padding.right,
-      y + height / 2,
-      getEllipsisText(
-        `${text || '-'}`,
-        width - padding.left - padding.right,
-        textStyle,
-      ),
+      position.x,
+      position.y,
+      ellipsisText,
       textStyle,
       this,
     );

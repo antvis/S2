@@ -1,4 +1,8 @@
-import { getEllipsisText, measureTextWidth } from '@/utils/text';
+import {
+  getEllipsisText,
+  measureTextWidth,
+  getTextPosition,
+} from '@/utils/text';
 import _ from 'lodash';
 import { GuiIcon } from '@/common/icons';
 import { renderRect, updateShapeAttr } from '@/utils/g-renders';
@@ -119,25 +123,38 @@ export class ColCell extends BaseCell<Node> {
       ? iconCfg.size + iconCfg.margin.right
       : 0;
     const textStyle = isLeaf && !isTotals ? textCfg : bolderTextCfg;
+    const padding = _.get(this, 'theme.colHeader.cell.padding');
     const text = getEllipsisText(
       content,
-      cellWidth - sortIconPadding,
+      cellWidth - sortIconPadding - padding?.left - padding?.right,
       textStyle,
     );
-    textStyle.textBaseline = 'middle';
     const textWidth = measureTextWidth(text, textStyle);
     let textX: number;
-    let textAlign: string;
-    const padding = _.get(this, 'theme.colHeader.cell.padding');
+    let textY: number;
+    let textAlign: 'left' | 'right' | 'center';
     if (isLeaf) {
       // 最后一个层级的维值，与 dataCell 对齐方式保持一致
-      textX =
-        x + cellWidth - sortIconPadding - iconCfg.margin.right - padding.left;
-      textAlign = this.theme.dataCell.text.textAlign;
+      textAlign = _.get(this, 'theme.dataCell.text.textAlign');
+      const textBaseline = _.get(this, 'theme.dataCell.text.textBaseline');
+      textStyle.textBaseline = textBaseline;
+      const cellBoxCfg = {
+        x,
+        y,
+        width: cellWidth,
+        height: cellHeight,
+        textAlign,
+        textBaseline,
+        padding,
+      };
+      const position = getTextPosition(cellBoxCfg);
+      textX = position.x;
+      textY = position.y;
     } else {
-      textAlign = textStyle.textAlign;
+      textAlign = 'center';
+      textStyle.textBaseline = 'middle';
       // scroll keep in center
-      const cellLeft = x - offset - padding.left - padding.right;
+      const cellLeft = x - offset - padding?.left - padding?.right;
       const cellRight = cellLeft + cellWidth;
       const viewportLeft = !scrollContainsRowHeader ? 0 : -cornerWidth;
       const viewportWidth = !scrollContainsRowHeader
@@ -162,7 +179,7 @@ export class ColCell extends BaseCell<Node> {
         // right out
         const restWidth = cellWidth - (cellRight - viewportRight);
         if (restWidth < textWidth) {
-          textX = x;
+          textX = x + padding?.left;
           textAlign = 'left';
         } else {
           textX = x + restWidth / 2;
@@ -171,6 +188,7 @@ export class ColCell extends BaseCell<Node> {
         // all in center
         textX = x + cellWidth / 2;
       }
+      textY = y + cellHeight / 2;
     }
     // const derivedValue = this.spreadsheet.getDerivedValue(value);
     // if (
@@ -197,7 +215,7 @@ export class ColCell extends BaseCell<Node> {
     this.addShape('text', {
       attrs: {
         x: textX,
-        y: y + cellHeight / 2,
+        y: textY,
         text,
         textAlign,
         ...textStyle,

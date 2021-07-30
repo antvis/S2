@@ -8,7 +8,6 @@ import { isMobile } from '@/utils/is-mobile';
 import { getAdjustPosition } from '@/utils/text-absorption';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import {
-  EXTRA_FIELD,
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_ROW_RESIZER,
   COLOR_DEFAULT_RESIZER,

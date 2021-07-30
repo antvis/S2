@@ -2,7 +2,7 @@ import { map, each, pick, assign } from 'lodash';
 import { Node } from '../../../index';
 import { S2Event, DefaultInterceptEventType } from '../types';
 import { BaseEvent } from '../base-event';
-import { SelectedStateName } from 'src/common/constant/interatcion';
+import { SelectedStateName } from '@/common/constant/interaction';
 import { getTooltipData } from '../../../utils/tooltip';
 // TODO: tooltip的菜单栏配置（在点击行头或列头的时候tooltip的样式）
 export class RowColumnClick extends BaseEvent {

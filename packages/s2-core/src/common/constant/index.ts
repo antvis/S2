@@ -1,3 +1,3 @@
 export * from './basic';
-export * from './interatcion';
+export * from './interaction';
 export * from './theme';
