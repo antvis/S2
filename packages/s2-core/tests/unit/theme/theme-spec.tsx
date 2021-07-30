@@ -1,18 +1,25 @@
-import { merge, clone, omit } from 'lodash';
+import { merge } from 'lodash';
 import { act } from 'react-dom/test-utils';
-import 'antd/dist/antd.min.css';
 import {
   S2DataConfig,
   S2Options,
   SheetComponent,
   SpreadSheet,
+  ThemeName,
 } from '../../../src';
 import { getContainer } from '../../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Switch } from 'antd';
+import { Switch, Checkbox, Space, Radio } from 'antd';
 import { CustomTooltip } from '../../spreadsheet/custom/custom-tooltip';
 import * as dataCfg from '../../data/demo-value-record.json';
+
+import 'antd/dist/antd.min.css';
+
+interface MainLayoutProps {
+  dataCfg: S2DataConfig;
+  options: S2Options;
+}
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -29,7 +36,7 @@ const getDataCfg = () => {
 const getOptions = () => {
   return {
     debug: true,
-    width: 400,
+    width: 800,
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
@@ -68,13 +75,14 @@ const getTheme = () => {
   return {};
 };
 
-function MainLayout(props) {
+function MainLayout(props: MainLayoutProps) {
   const [options, setOptions] = React.useState(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
   const [valueInCols, setValueInCols] = React.useState(true);
-  const [derivedValueMul, setDerivedValueMul] = React.useState(false);
-  const [showPagination, setShowPagination] = React.useState(false);
-  const [sheetType, setSheetType] = React.useState(true);
+  const [freezeRowHeader, setFreezeRowHeader] = React.useState(
+    props.options.freezeRowHeader,
+  );
+  const [themeName, setThemeName] = React.useState<ThemeName>('default');
 
   const onRowCellClick = (value) => {
     console.log(value);
@@ -85,6 +93,7 @@ function MainLayout(props) {
   const onDataCellClick = (value) => {
     console.log(value);
   };
+
   const onCheckChanged = (checked) => {
     setValueInCols(checked);
     setDataCfg(
@@ -104,91 +113,49 @@ function MainLayout(props) {
     );
   };
 
-  const onCheckChanged2 = (checked) => {
-    setDerivedValueMul(checked);
-    const next = merge({}, dataCfg, {
-      fields: {
-        derivedValues: dataCfg.fields.derivedValues.map((dv) => {
-          const dvn = clone(dv);
-          dvn.displayDerivedValueField = checked
-            ? dv.derivedValueField
-            : [dv.derivedValueField[0]];
-          return dvn;
-        }),
-      },
-    });
-    setDataCfg(next);
-  };
-
-  const onCheckChanged3 = (checked) => {
-    setShowPagination(checked);
-    if (checked) {
-      setOptions(
-        merge({}, options, {
-          pagination: {
-            pageSize: 20,
-            current: 1,
-          },
-        }),
-      );
-    } else {
-      setOptions(omit(options, ['pagination']));
-    }
-  };
-
-  const onCheckChanged4 = (checked) => {
+  const onCheckChanged2 = (e) => {
     setOptions(
       merge({}, options, {
-        spreadsheetType: checked,
+        freezeRowHeader: e.target.checked,
       }),
     );
-    setSheetType(checked);
+    setFreezeRowHeader(e.target.checked);
+  };
+
+  const onRadioChange = (e) => {
+    setThemeName(e.target.value);
   };
 
   return (
     <div>
       <div style={{ display: 'inline-block', marginBottom: '16px' }}>
-        <Switch
-          checkedChildren="挂列头"
-          unCheckedChildren="挂行头"
-          defaultChecked={valueInCols}
-          onChange={onCheckChanged}
-          style={{ marginRight: 10 }}
-        />
-        <Switch
-          checkedChildren="树形"
-          unCheckedChildren="平铺"
-          defaultChecked={false}
-          onChange={onCheckChanged1}
-          style={{ marginRight: 10 }}
-        />
-        <Switch
-          checkedChildren="多列"
-          unCheckedChildren="单列"
-          style={{ marginRight: 10 }}
-          defaultChecked={derivedValueMul}
-          onChange={onCheckChanged2}
-        />
-        <Switch
-          checkedChildren="分页"
-          unCheckedChildren="不分页"
-          style={{ marginRight: 10 }}
-          defaultChecked={showPagination}
-          onChange={onCheckChanged3}
-        />
-        {/* <Switch
-          checkedChildren="交叉表"
-          unCheckedChildren="明细表"
-          style={{ marginRight: 10 }}
-          defaultChecked={true}
-          onChange={onCheckChanged4}
-        /> */}
+        <Space>
+          <Switch
+            checkedChildren="挂列头"
+            unCheckedChildren="挂行头"
+            defaultChecked={valueInCols}
+            onChange={onCheckChanged}
+          />
+          <Switch
+            checkedChildren="树形"
+            unCheckedChildren="平铺"
+            defaultChecked={false}
+            onChange={onCheckChanged1}
+          />
+          <Checkbox onChange={onCheckChanged2} defaultChecked={freezeRowHeader}>
+            冻结行头
+          </Checkbox>
+          <Radio.Group onChange={onRadioChange} defaultValue="default">
+            <Radio.Button value="default">简约风</Radio.Button>
+            <Radio.Button value="blue">多彩风</Radio.Button>
+          </Radio.Group>
+        </Space>
       </div>
       <SheetComponent
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
-        theme={props.theme}
+        themeCfg={{ name: themeName }}
         spreadsheet={getSpreadSheet}
         onRowCellClick={onRowCellClick}
         onColCellClick={onColCellClick}
@@ -205,11 +172,7 @@ describe('spreadsheet normal spec', () => {
 
   act(() => {
     ReactDOM.render(
-      <MainLayout
-        dataCfg={getDataCfg()}
-        options={getOptions()}
-        theme={getTheme()}
-      />,
+      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
       getContainer(),
     );
   });

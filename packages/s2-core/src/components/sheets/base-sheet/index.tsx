@@ -40,7 +40,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
     options,
     adaptive = true,
     header,
-    theme,
+    themeCfg,
     rowLevel,
     colLevel,
     isLoading,
@@ -324,7 +324,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
       baseSpreadsheet.setDataCfg(safetyDataConfig(dataCfg));
       baseSpreadsheet.store.set('originalDataCfg', dataCfg);
       setOptions(baseSpreadsheet, props);
-      baseSpreadsheet.setTheme(theme);
+      baseSpreadsheet.setTheme(themeCfg);
       baseSpreadsheet.render();
       setLoading(false);
       setOwnSpreadsheet(baseSpreadsheet);
@@ -367,9 +367,9 @@ export const BaseSheet = (props: BaseSheetProps) => {
 
   useEffect(() => {
     update(() => {
-      ownSpreadsheet.setTheme(theme);
+      ownSpreadsheet.setTheme(themeCfg);
     });
-  }, [theme]);
+  }, [JSON.stringify(themeCfg)]);
 
   useEffect(() => {
     if (!ownSpreadsheet) return;

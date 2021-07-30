@@ -1,15 +1,16 @@
-import { SpreadSheetTheme, Palette } from '../common/interface';
+import { SpreadSheetTheme, Palette, ThemeCfg } from '../common/interface';
 import { isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
 import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
 
 /**
  * @describe generate the theme according to the type
- * @param  type
+ * @param  name
  */
-export const getTheme = (type: string, hueInvert?: boolean) => {
-  const palette: Palette = getPalette(type, hueInvert);
-  const { brandColors, grayColors, semanticColors } = palette;
+export const getTheme = (themeCfg: ThemeCfg) => {
+  const { palette, name, hueInvert } = themeCfg;
+  const themePalette: Palette = palette || getPalette(name, hueInvert);
+  const { brandColors, grayColors, semanticColors } = themePalette;
 
   return {
     // ------------- Header -------------------
@@ -32,22 +33,10 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[6],
+        backgroundColor: brandColors[4],
         backgroundColorOpacity: 1,
-        hoverBackgroundColor: brandColors[7],
-        selectedBackgroundColor: brandColors[7],
-        // ----------- border color --------------
-        horizontalBorderColor: grayColors[3],
-        horizontalBorderColorOpacity: 1,
-        verticalBorderColor: grayColors[3],
-        verticalBorderColorOpacity: 1,
-        hoverBorderColor: grayColors[9],
-        selectedBorderColor: grayColors[9],
-        // ----------- border width --------------
-        horizontalBorderWidth: 1,
-        verticalBorderWidth: 1,
-        hoverBorderWidth: 1,
-        selectedBorderWidth: 2,
+        hoverBackgroundColor: brandColors[5],
+        selectedBackgroundColor: brandColors[5],
         // -------------- layout -----------------
         padding: {
           top: 12,
@@ -73,14 +62,14 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : '520',
-        fill: grayColors[9],
+        fill: grayColors[6],
         opacity: 1,
       },
       text: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
         fontWeight: 'normal',
-        fill: grayColors[9],
+        fill: grayColors[6],
         opacity: 1,
         textAlign: 'right',
         textIndent: 12,
@@ -91,14 +80,14 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         backgroundColorOpacity: 1,
         hoverBackgroundColor: brandColors[2],
         selectedBackgroundColor: brandColors[2],
-        // ----------- border color --------------
-        horizontalBorderColor: grayColors[3],
+        // ----------- bottom border color --------------
+        horizontalBorderColor: grayColors[1],
         horizontalBorderColorOpacity: 1,
-        verticalBorderColor: grayColors[3],
+        verticalBorderColor: grayColors[1],
         verticalBorderColorOpacity: 1,
-        hoverBorderColor: grayColors[9],
-        selectedBorderColor: grayColors[9],
-        // ----------- border width --------------
+        hoverBorderColor: grayColors[6],
+        selectedBorderColor: grayColors[6],
+        // ----------- bottom border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 0,
         hoverBorderWidth: 1,
@@ -148,17 +137,17 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[6],
+        backgroundColor: brandColors[4],
         backgroundColorOpacity: 1,
-        hoverBackgroundColor: brandColors[7],
-        selectedBackgroundColor: brandColors[7],
+        hoverBackgroundColor: brandColors[5],
+        selectedBackgroundColor: brandColors[5],
         // ----------- border color --------------
-        horizontalBorderColor: grayColors[3],
+        horizontalBorderColor: grayColors[2],
         horizontalBorderColorOpacity: 1,
-        verticalBorderColor: grayColors[3],
+        verticalBorderColor: grayColors[2],
         verticalBorderColorOpacity: 1,
-        hoverBorderColor: grayColors[9],
-        selectedBorderColor: grayColors[9],
+        hoverBorderColor: grayColors[6],
+        selectedBorderColor: grayColors[6],
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
@@ -197,7 +186,7 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : '520',
-        fill: grayColors[8],
+        fill: grayColors[5],
         opacity: 1,
         textAlign: 'right',
         textBaseline: 'middle',
@@ -206,7 +195,7 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
         fontWeight: 'normal',
-        fill: grayColors[8],
+        fill: grayColors[5],
         opacity: 1,
         textAlign: 'right',
         textBaseline: 'middle',
@@ -221,12 +210,12 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
         hoverLinkageBackgroundColor: brandColors[2],
         selectedBackgroundColor: brandColors[2],
         // ----------- border color --------------
-        horizontalBorderColor: grayColors[3],
+        horizontalBorderColor: grayColors[1],
         horizontalBorderColorOpacity: 1,
-        verticalBorderColor: grayColors[3],
+        verticalBorderColor: grayColors[1],
         verticalBorderColorOpacity: 1,
-        hoverBorderColor: grayColors[9],
-        selectedBorderColor: grayColors[9],
+        hoverBorderColor: grayColors[6],
+        selectedBorderColor: grayColors[6],
         prepareSelectBorderColor: brandColors[3],
         // ----------- border width --------------
         horizontalBorderWidth: 1,
@@ -271,10 +260,10 @@ export const getTheme = (type: string, hueInvert?: boolean) => {
     },
     // ------------- split line -----------------
     splitLine: {
-      horizontalBorderColor: grayColors[5],
+      horizontalBorderColor: grayColors[4],
       horizontalBorderColorOpacity: 1,
-      horizontalBorderWidth: 1,
-      verticalBorderColor: grayColors[5],
+      horizontalBorderWidth: 2,
+      verticalBorderColor: grayColors[3],
       verticalBorderColorOpacity: 1,
       verticalBorderWidth: 2,
       showRightShadow: true,

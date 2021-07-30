@@ -1,5 +1,3 @@
-import { CornerCell } from '@/cell';
-
 // 文本内容的水平对齐方式, 默认 left
 export type TextAlign = 'left' | 'center' | 'right';
 
@@ -157,4 +155,17 @@ export interface SpreadSheetTheme {
   splitLine?: SplitLine;
   /* 额外属性字段 */
   [key: string]: any;
+}
+
+export type ThemeName = 'default' | 'blue';
+
+export interface ThemeCfg {
+  /* 主题 */
+  theme?: SpreadSheetTheme;
+  /* 色板 */
+  palette?: Palette;
+  /* 主题名 */
+  name?: ThemeName;
+  /* 是否色板转置 */
+  hueInvert?: boolean;
 }

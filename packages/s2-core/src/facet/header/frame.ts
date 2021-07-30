@@ -9,10 +9,12 @@ export class Frame extends Group {
   }
 
   public layout() {
-    // corner右边的竖线条
-    this.addCornerRightBorder();
     // corner底部的横线条
     this.addCornerBottomBorder();
+    // corner右边的竖线条
+    this.addCornerRightBorder();
+    // viewport/panel右边的渐变框
+    this.addViewPortRightShadowIfNeeded();
     // 一级纵向分割线右侧的shadow
     this.addSplitLineRightShadow();
   }
@@ -65,9 +67,9 @@ export class Frame extends Group {
         y1,
         x2: x,
         y2,
-        stroke: splitLine.horizontalBorderColor,
-        lineWidth: splitLine.horizontalBorderWidth,
-        opacity: splitLine.horizontalBorderOpacity,
+        stroke: splitLine.verticalBorderColor,
+        lineWidth: splitLine.verticalBorderWidth,
+        opacity: splitLine.verticalBorderOpacity,
       },
     });
   }
@@ -94,11 +96,44 @@ export class Frame extends Group {
         y1: y,
         x2,
         y2: y,
-        stroke: splitLine.verticalBorderColor,
-        lineWidth: splitLine.verticalBorderWidth,
-        opacity: splitLine.verticalBorderOpacity,
+        stroke: splitLine.horizontalBorderColor,
+        lineWidth: splitLine.horizontalBorderWidth,
+        opacity: splitLine.horizontalBorderOpacity,
       },
     });
+  }
+
+  private addViewPortRightShadowIfNeeded() {
+    const cfg = this.cfg;
+    const {
+      width,
+      height,
+      viewportWidth,
+      viewportHeight,
+      position,
+      showViewPortRightShadow,
+      scrollX,
+      spreadsheet,
+    } = cfg;
+    const splitLine = _.get(spreadsheet, 'theme.splitLine');
+    if (splitLine.showRightShadow || showViewPortRightShadow) {
+      const x =
+        position.x +
+        width +
+        viewportWidth -
+        splitLine.shadowWidth +
+        (scrollX || 0);
+      const y = position.y + height;
+      this.addShape('rect', {
+        attrs: {
+          x,
+          y,
+          width: splitLine.shadowWidth,
+          height: viewportHeight,
+          fill: `l (0) 0:${splitLine.shadowColors[0]} 1:${splitLine.shadowColors[1]}`,
+        },
+      });
+    }
   }
 
   private addSplitLineRightShadow() {

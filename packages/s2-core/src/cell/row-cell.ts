@@ -184,7 +184,7 @@ export class RowCell extends BaseCell<Node> {
 
   protected drawRectBorder() {
     const { position, width, viewportWidth, scrollX } = this.headerConfig;
-    const { x, y, height: cellHeight } = this.meta;
+    const { x, y } = this.meta;
     // 1、bottom border
     const textIndent = this.getTextIndent();
     this.addShape('line', {

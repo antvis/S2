@@ -1,4 +1,4 @@
-import { Palette } from '../common/interface/theme';
+import { Palette, themeName } from '../common/interface/theme';
 import { PALETTE_MAP } from '../common/constant';
 
 /**
@@ -6,8 +6,9 @@ import { PALETTE_MAP } from '../common/constant';
  * @param type 主题名
  * @param hueInvert 是否为颜色转至模式，默认为 false
  */
-export const getPalette = (type: string, hueInvert?: boolean): Palette => {
-  const platte = PALETTE_MAP[type.toLowerCase()];
+export const getPalette = (type?: themeName, hueInvert?: boolean): Palette => {
+  const themeName = type || 'default';
+  const platte = PALETTE_MAP[themeName.toLowerCase()];
   if (hueInvert) {
     platte.brandColors.reverse();
     platte.grayColors.reverse();

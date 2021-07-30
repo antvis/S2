@@ -26,6 +26,7 @@ import {
   Totals,
   Total,
   ShowProps,
+  ThemeCfg,
 } from '../common/interface';
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
@@ -225,12 +226,9 @@ export class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setTheme(
-    theme: SpreadSheetTheme,
-    type = 'default',
-    hueIvert = false,
-  ): void {
-    this.theme = merge({}, getTheme(type, hueIvert), theme);
+  public setTheme(themeCfg: ThemeCfg): void {
+    const { theme } = themeCfg;
+    this.theme = merge({}, getTheme(themeCfg), theme);
   }
 
   /**
