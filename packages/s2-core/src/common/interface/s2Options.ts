@@ -42,7 +42,7 @@ export interface S2Options {
   // row header hierarchy type only work in pivot mode
   readonly hierarchyType?: 'grid' | 'tree' | 'customTree';
   // 兜底以前的衍生指标概念
-  readonly derivedValues?: string[];
+  readonly useDefaultConditionValues?: string[];
   // conditions config
   readonly conditions?: Conditions;
   // total config
@@ -158,6 +158,6 @@ export const safetyOptions = (options: S2Options) =>
   merge({}, defaultOptions, options, {
     conditions: updateConditionsByDerivedValues(
       options.conditions,
-      options.derivedValues,
+      options.useDefaultConditionValues,
     ),
   });

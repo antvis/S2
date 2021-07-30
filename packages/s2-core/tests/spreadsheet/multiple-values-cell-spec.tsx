@@ -70,7 +70,7 @@ const getOptions = (): S2Options => {
     showSeriesNumber: false,
     freezeRowHeader: false,
     mode: 'pivot',
-    derivedValues: ['ac', 'rc'],
+    useDefaultConditionValues: ['ac', 'rc'],
     conditions: {
       text: [],
       interval: [],
