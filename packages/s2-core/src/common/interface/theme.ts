@@ -157,7 +157,7 @@ export interface SpreadSheetTheme {
   [key: string]: any;
 }
 
-export type ThemeName = 'default' | 'blue';
+export type ThemeName = 'default' | 'simple' | 'colorful';
 
 export interface ThemeCfg {
   /* 主题 */

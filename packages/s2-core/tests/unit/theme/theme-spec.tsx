@@ -41,7 +41,7 @@ const getOptions = () => {
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: false,
-    freezeRowHeader: false,
+    freezeRowHeader: true,
     mode: 'pivot',
     conditions: {
       text: [],
@@ -146,8 +146,9 @@ function MainLayout(props: MainLayoutProps) {
             冻结行头
           </Checkbox>
           <Radio.Group onChange={onRadioChange} defaultValue="default">
-            <Radio.Button value="default">简约风</Radio.Button>
-            <Radio.Button value="blue">多彩风</Radio.Button>
+            <Radio.Button value="default">默认</Radio.Button>
+            <Radio.Button value="simple">简约蓝</Radio.Button>
+            <Radio.Button value="colorful">多彩蓝</Radio.Button>
           </Radio.Group>
         </Space>
       </div>
