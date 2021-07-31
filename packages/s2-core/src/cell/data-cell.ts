@@ -55,9 +55,9 @@ export class DataCell extends BaseCell<ViewMeta> {
       // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
       // 二者操作一致，function合并
       if (stateName === SelectedStateName.COL_SELECTED) {
-        this.changeCellStyleByState('colIndex', SelectedStateName.SELECTED);
+        this.changeCellStyleByState('colIndex');
       } else if (stateName === SelectedStateName.ROW_SELECTED) {
-        this.changeCellStyleByState('rowIndex', SelectedStateName.SELECTED);
+        this.changeCellStyleByState('rowIndex');
       } else if (stateName === SelectedStateName.HOVER && !isEmpty(cells)) {
         // 如果当前是hover，要绘制出十字交叉的行列样式
         const currentHoverCell = first(cells);
@@ -69,7 +69,7 @@ export class DataCell extends BaseCell<ViewMeta> {
             currentRowIndex === currentHoverCell?.getMeta().rowIndex) &&
           this !== currentHoverCell
         ) {
-          this.updateByState(SelectedStateName.HOVER_LINKAGE);
+          this.updateByState();
         } else if (this !== currentHoverCell) {
           // 当视图内的cell行列index与hover的cell 不一致，且不是当前hover的cell时，隐藏其他样式
           this.hideShapeUnderState();
@@ -456,7 +456,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   // dataCell根据state 改变当前样式，
-  private changeCellStyleByState(needGetIndexKey, changeStyleStateName) {
+  private changeCellStyleByState(needGetIndexKey) {
     const { cells } = this.spreadsheet.getCurrentState();
     const currentIndex = this.meta[needGetIndexKey];
     const selectedIndexes = map(
@@ -464,7 +464,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       (cell) => cell?.getMeta()[needGetIndexKey],
     );
     if (includes(selectedIndexes, currentIndex)) {
-      this.updateByState(changeStyleStateName);
+      this.updateByState();
     } else {
       this.hideShapeUnderState();
     }

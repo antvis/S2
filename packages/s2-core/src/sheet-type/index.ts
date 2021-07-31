@@ -415,7 +415,7 @@ export class SpreadSheet extends EE {
   public updateCellStyleByState() {
     const cells = this.getCurrentState().cells;
     cells.forEach((cell) => {
-      cell.updateByState(this.getCurrentState().stateName);
+      cell.updateByState();
     });
   }
 
