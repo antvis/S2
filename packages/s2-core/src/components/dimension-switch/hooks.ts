@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { Children, ReactElement, ReactNode, useState } from 'react';
 import { DimensionType } from './dimension';
 
@@ -23,5 +24,5 @@ export const useCustomChild = (
 };
 
 export const useHide = (data: DimensionType[]) => {
-  return data.every((dimension) => dimension.items.length === 0);
+  return data.every((dimension) => isEmpty(dimension.items));
 };

@@ -1,26 +1,30 @@
-.dimension-switch-container {
+@prefix: ss-dimension-switch;
+@dropdown-prefix: ss-dropdown;
+
+.@{prefix}-overlay {
   .ant-modal-body,
   .ant-popover-inner {
     overflow: hidden;
   }
 }
-.icon-button {
+
+.@{prefix}-icon-button {
   padding: 0 !important;
   border: none !important;
   box-shadow: none !important;
 }
 
-.popover-title {
+.@{prefix}-popover-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 40px;
-  .icon-button {
+  .@{prefix}-icon-button {
     color: rgba(0, 0, 0, 0.45);
   }
 }
 
-.dropdown-container {
+.@{dropdown-prefix}-overlay {
   .ant-popover-inner-content {
     position: relative;
     padding: 8px;
@@ -29,14 +33,14 @@
     }
     [class^='summary'] {
       position: absolute;
-      bottom: 8px;
+      bottom: 10px;
       z-index: 10;
       width: 148px;
     }
   }
 }
-.dropdown {
-  display: flex;
+.@{dropdown-prefix} {
+  display: inline-flex;
   align-items: center;
   min-width: 94px;
   max-width: 250px;

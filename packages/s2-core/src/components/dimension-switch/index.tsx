@@ -15,14 +15,15 @@ import { i18n } from '@/common/i18n';
 import './index.less';
 
 interface DimensionSwitchMultipleProps {
+  overlayClassName?: string;
   data: DimensionType[];
-  visible?: boolean;
   onUpdateDisableItems?: (type: string, checkedList: string[]) => string[];
   onSubmit?: (result: DimensionType[]) => void;
 }
 export const DimensionSwitchModal: FC<
   DimensionSwitchMultipleProps & { onModalVisibilityChange?: () => void }
 > = ({
+  overlayClassName,
   data,
   onSubmit: onOuterSubmit,
   onUpdateDisableItems,
@@ -32,7 +33,11 @@ export const DimensionSwitchModal: FC<
   const { visible, show, hide } = useVisible();
   const shouldHide = useHide(data);
   const child = useCustomChild(
-    <Button size="small" className={'icon-button'} icon={<EditOutlined />} />,
+    <Button
+      size="small"
+      className={'ss-dimension-switch-icon-button'}
+      icon={<EditOutlined />}
+    />,
     children,
   );
   const onSubmit = (result: DimensionType[]) => {
@@ -53,7 +58,7 @@ export const DimensionSwitchModal: FC<
         onCancel={() => hide()}
         destroyOnClose={true}
         width="fit-content"
-        wrapClassName={'dimension-switch-container'}
+        wrapClassName={cx('ss-dimension-switch-overlay', overlayClassName)}
         afterClose={onModalVisibilityChange}
       >
         <DimensionSwitch
@@ -67,6 +72,7 @@ export const DimensionSwitchModal: FC<
 };
 
 export const DimensionSwitchPopover: FC<DimensionSwitchMultipleProps> = ({
+  overlayClassName,
   data,
   onSubmit: onOuterSubmit,
   onUpdateDisableItems,
@@ -90,11 +96,11 @@ export const DimensionSwitchPopover: FC<DimensionSwitchMultipleProps> = ({
       trigger="click"
       visible={visible}
       title={
-        <div className={'popover-title'}>
+        <div className={'ss-dimension-switch-popover-title'}>
           {i18n('选择分析信息')}{' '}
           <Button
             size="small"
-            className={'icon-button'}
+            className={'ss-dimension-switch-icon-button'}
             icon={<CloseOutlined />}
             onClick={hide}
           />
@@ -107,7 +113,7 @@ export const DimensionSwitchPopover: FC<DimensionSwitchMultipleProps> = ({
           onUpdateDisableItems={onUpdateDisableItems}
         />
       }
-      overlayClassName={'dimension-switch-container'}
+      overlayClassName={cx('ss-dimension-switch-overlay', overlayClassName)}
       destroyTooltipOnHide={true}
     >
       {cloneElement(child, { onClick: toggle })}
@@ -116,11 +122,13 @@ export const DimensionSwitchPopover: FC<DimensionSwitchMultipleProps> = ({
 };
 
 interface DimensionSwitchDropdownProps {
+  overlayClassName?: string;
   dimension: DimensionType;
   onUpdateDisableItems?: (type: string, checkedList: string[]) => string[];
   onSubmit?: (result: DimensionType[]) => void;
 }
 export const DimensionSwitchDropdown: FC<DimensionSwitchDropdownProps> = ({
+  overlayClassName,
   dimension,
   onSubmit: onOuterSubmit,
   onUpdateDisableItems,
@@ -150,9 +158,13 @@ export const DimensionSwitchDropdown: FC<DimensionSwitchDropdownProps> = ({
         />
       }
       destroyTooltipOnHide={true}
-      overlayClassName={cx('dimension-switch-container', 'dropdown-container')}
+      overlayClassName={cx(
+        'ss-dimension-switch-overlay',
+        'ss-dropdown-overlay',
+        overlayClassName,
+      )}
     >
-      <div className={'dropdown'} onClick={toggle}>
+      <div className={'ss-dropdown'} onClick={toggle}>
         <span className={'label'}>{dimension.displayName}</span>
         <span className={'content'}>{selectContent}</span>
         {visible ? <UpOutlined /> : <DownOutlined />}
