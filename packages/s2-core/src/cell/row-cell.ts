@@ -46,7 +46,7 @@ export class RowCell extends BaseCell<Node> {
 
   public setInactive() {
     updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
-    each(this.actionIcons, (icon) => icon.set('visible', false));
+    // each(this.actionIcons, (icon) => icon.set('visible', false));
   }
 
   public destroy(): void {

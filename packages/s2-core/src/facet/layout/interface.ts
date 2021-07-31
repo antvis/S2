@@ -1,9 +1,10 @@
-import { TotalClass } from 'src/facet/layout/total-class';
-import { TotalMeasure } from 'src/facet/layout/total-measure';
-import { Node } from 'src/facet/layout/node';
-import { SpreadSheetFacetCfg } from 'src/common/interface';
-import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { SpreadSheet } from 'src/sheet-type';
+import { TotalClass } from '@/facet/layout/total-class';
+import { TotalMeasure } from '@/facet/layout/total-measure';
+import { Node } from '@/facet/layout/node';
+import { CustomTreeItem, SpreadSheetFacetCfg } from '@/common/interface';
+import { Hierarchy } from '@/facet/layout/hierarchy';
+import { SpreadSheet } from '@/sheet-type';
+import { PivotMeta } from '@/data-set/interface';
 
 export type FileValue = string | TotalClass | TotalMeasure;
 
@@ -53,8 +54,39 @@ export interface HeaderNodesParams {
 
 export interface TreeHeaderParams {
   parentNode: Node;
-  currentField: string;
-  fields: string[];
   facetCfg: SpreadSheetFacetCfg;
   hierarchy: Hierarchy;
+  currentField: string;
+  level: number;
+  pivotMeta: PivotMeta;
+}
+
+export interface TableHeaderParams {
+  parentNode: Node;
+  facetCfg: SpreadSheetFacetCfg;
+  hierarchy: Hierarchy;
+}
+
+export interface ViewCellHeights {
+  getCellHeight: (index: number) => number;
+
+  getTotalHeight: () => number;
+
+  getTotalLength: () => number;
+
+  getIndexRange: (
+    minHeight: number,
+    maxHeight: number,
+  ) => {
+    start: number;
+    end: number;
+  };
+}
+
+export interface CustomTreeHeaderParams {
+  facetCfg: SpreadSheetFacetCfg;
+  parentNode: Node;
+  level: number;
+  hierarchy: Hierarchy;
+  customTreeItems: CustomTreeItem[];
 }

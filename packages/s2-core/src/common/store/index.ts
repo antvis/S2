@@ -1,9 +1,5 @@
-import {
-  ColWidthCache,
-  DrillDownDataCache,
-  DrillDownFieldInLevel,
-  SortParam,
-} from '../interface';
+import { SortParam } from '../interface';
+import { Node } from '@/facet/layout/node';
 
 export interface Selected {
   type:
@@ -39,25 +35,20 @@ interface StoreKey {
   sortParam: SortParam;
   // corner text expand info
   cornerExpand: Record<string, number>;
-  // record field values max label length
-  fieldLevelMaxLabel: Record<string, number>;
   // list-sheet's field sort type(up or down)
   currentSortKey: Record<string, 'up' | 'down'>;
   // last reached border node id
   lastReachedBorderId: ReachedBorderId;
-  // maker first render logic
-  isInitCollapseState: boolean;
   // 行。列选中单元的id
   rowColSelectedId: string[];
-  // 初次下钻icon 需要显示的 行level，用于控制哪些节点需要显示icon
-  drillDownActionIconLevel: number;
-  // 下钻row id 对应的数据缓存，便于清空；以及 平铺到树形切换
-  drillDownDataCache: DrillDownDataCache[];
-  // 每个层级下钻的维度缓存
-  drillDownFieldInLevel: DrillDownFieldInLevel[];
+  // 下钻节点id和对应生成的 path寻址路径
+  drillDownIdPathMap: Map<string, number[][]>;
+  // 当前下钻节点
+  drillDownNode: Node;
+  // 下钻数据的个数控制
+  drillItemsNum: number;
 
-  // 列宽信息缓存
-  colRealWidthInfo: ColWidthCache;
+  [key: string]: any;
 }
 
 /**

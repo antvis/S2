@@ -9,14 +9,18 @@ import {
 } from '../../common/constant';
 import { BaseDataSet } from '../../data-set';
 import { SpreadSheet, Hierarchy, Node, CornerCell } from '../../index';
-import { LayoutResult, SpreadSheetFacetCfg } from '../../common/interface';
+import {
+  LayoutResult,
+  S2Options,
+  SpreadSheetFacetCfg,
+} from '../../common/interface';
 import { BaseHeader, BaseHeaderConfig, HIT_AREA } from './base';
 import { CornerData, ResizeInfo } from './interface';
 import { translateGroup } from '../utils';
 
 export interface CornerHeaderConfig extends BaseHeaderConfig {
   // header's hierarchy type
-  hierarchyType: 'grid' | 'tree';
+  hierarchyType: S2Options['hierarchyType'];
   // the hierarchy collapse or not
   hierarchyCollapse: boolean;
   // column fields

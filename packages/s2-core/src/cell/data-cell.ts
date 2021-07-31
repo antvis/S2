@@ -361,7 +361,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (!isEmpty(attrs?.icon) && formattedValue) {
         this.iconShape = new GuiIcon({
           type: attrs.icon,
-          x: x + width - icon.padding.left - icon.size,
+          x: x + width - icon.margin.left - icon.size,
           y: y + height / 2 - icon.size / 2,
           width: icon.size,
           height: icon.size,

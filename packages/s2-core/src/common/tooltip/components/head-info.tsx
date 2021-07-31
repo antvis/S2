@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ListItem, HeadInfo } from '../interface';
+import { ListItem, HeadInfo } from '@/common/interface';
 import { TOOLTIP_CLASS_PRE } from '../constant';
 
 const TooltipHeadInfo = (props: HeadInfo) => {

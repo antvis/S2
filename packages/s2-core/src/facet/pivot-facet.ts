@@ -6,7 +6,16 @@ import {
   KEY_ROW_NODE_BORDER_REACHED,
   VALUE_FIELD,
 } from 'src/common/constant';
-import * as _ from 'lodash';
+import {
+  includes,
+  get,
+  merge,
+  isEmpty,
+  maxBy,
+  findIndex,
+  last,
+  reduce,
+} from 'lodash';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Node } from 'src/facet/layout/node';
@@ -51,16 +60,35 @@ export class PivotFacet extends BaseFacet {
         row.isTotalMeasure ||
         col.isTotals ||
         col.isTotalMeasure;
-      const dataQuery = _.merge({}, rowQuery, colQuery);
-      const data = dataSet.getCellData(dataQuery);
+      const hideMeasure =
+        spreadsheet.facet.cfg.colCfg.hideMeasureColumn ?? false;
+      // 如果hide measure query中是没有度量信息的，所以需要自动补上
+      // 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
+      // 因此默认只会去 第一个度量拼接query
+      const measureInfo = hideMeasure
+        ? {
+            [EXTRA_FIELD]: dataSet.fields.values?.[0],
+          }
+        : {};
+      const dataQuery = merge({}, rowQuery, colQuery, measureInfo);
+      const data = dataSet.getCellData({
+        query: dataQuery,
+        rowNode: row,
+        isTotals,
+      });
       let valueField;
       let fieldValue = null;
-      if (!_.isEmpty(data)) {
-        valueField = _.get(data, [EXTRA_FIELD], '');
-        fieldValue = _.get(data, [VALUE_FIELD], null);
+      if (!isEmpty(data)) {
+        valueField = get(data, [EXTRA_FIELD], '');
+        fieldValue = get(data, [VALUE_FIELD], null);
+        if (isTotals) {
+          valueField = get(dataQuery, [EXTRA_FIELD], '');
+          fieldValue = get(data, valueField, null);
+        }
       } else {
-        valueField = _.get(dataQuery, [EXTRA_FIELD], '');
+        valueField = get(dataQuery, [EXTRA_FIELD], '');
       }
+
       return {
         spreadsheet,
         x: col.x,
@@ -100,7 +128,7 @@ export class PivotFacet extends BaseFacet {
       .getColumnNodes()
       .find(
         (value) =>
-          _.includes(this.getScrollColField(), value.field) &&
+          includes(this.getScrollColField(), value.field) &&
           scrollX > value.x &&
           scrollX < value.x + value.width,
       );
@@ -108,7 +136,7 @@ export class PivotFacet extends BaseFacet {
       .getRowNodes()
       .find(
         (value) =>
-          _.includes(this.getScrollRowField(), value.field) &&
+          includes(this.getScrollRowField(), value.field) &&
           scrollY > value.y &&
           scrollY < value.y + value.height,
       );
@@ -119,7 +147,7 @@ export class PivotFacet extends BaseFacet {
     if (colNode && reachedBorderId.colId !== colNode.id) {
       this.spreadsheet.store.set(
         'lastReachedBorderId',
-        _.merge({}, reachedBorderId, {
+        merge({}, reachedBorderId, {
           colId: colNode.id,
         }),
       );
@@ -128,7 +156,7 @@ export class PivotFacet extends BaseFacet {
     if (rowNode && reachedBorderId.rowId !== rowNode.id) {
       this.spreadsheet.store.set(
         'lastReachedBorderId',
-        _.merge({}, reachedBorderId, {
+        merge({}, reachedBorderId, {
           rowId: rowNode.id,
         }),
       );
@@ -218,8 +246,8 @@ export class PivotFacet extends BaseFacet {
     const { cellCfg, colCfg, dataSet, spreadsheet } = this.cfg;
     // 0e48088b-8bb3-48ac-ae8e-8ab08af46a7b:[DAY]:[RC]:[VALUE] 这样的id get 直接获取不到
     // current.width =  get(colCfg, `widthByFieldValue.${current.value}`, current.width);
-    const userDragWidth = _.get(
-      _.get(colCfg, 'widthByFieldValue'),
+    const userDragWidth = get(
+      get(colCfg, 'widthByFieldValue'),
       `${col.value}`,
       col.width,
     );
@@ -238,7 +266,7 @@ export class PivotFacet extends BaseFacet {
         .map((data) => `${data[VALUE_FIELD]}`)
         ?.slice(0, 50);
       allLabels.push(colLabel);
-      const maxLabel = _.maxBy(allLabels, (label) =>
+      const maxLabel = maxBy(allLabels, (label) =>
         measureTextWidthRoughly(label),
       );
       const textStyle = spreadsheet.theme.colHeader.bolderText;
@@ -261,7 +289,7 @@ export class PivotFacet extends BaseFacet {
 
   private getColNodeHeight(col: Node) {
     const { colCfg } = this.cfg;
-    const userDragWidth = _.get(colCfg, `heightByField.${col.key}`);
+    const userDragWidth = get(colCfg, `heightByField.${col.key}`);
     return userDragWidth || colCfg.height;
   }
 
@@ -281,11 +309,11 @@ export class PivotFacet extends BaseFacet {
     const isTree = spreadsheet.isHierarchyTreeType();
 
     // 1、calculate first node's width in every level
-    for (const levelSample of rowsHierarchy.sampleNodesForAllLevels) {
-      levelSample.width = this.calculateRowLeafNodesWidth(levelSample);
-      if (isTree) {
-        rowsHierarchy.width = levelSample.width;
-      } else {
+    if (isTree) {
+      rowsHierarchy.width = this.getTreeRowHeaderWidth();
+    } else {
+      for (const levelSample of rowsHierarchy.sampleNodesForAllLevels) {
+        levelSample.width = this.calculateRowLeafNodesWidth(levelSample);
         rowsHierarchy.width += levelSample.width;
       }
     }
@@ -358,7 +386,7 @@ export class PivotFacet extends BaseFacet {
       // all node's width is the same
       return this.getTreeRowHeaderWidth();
     }
-    const userDragWidth = _.get(rowCfg, `widthByField.${node.key}`);
+    const userDragWidth = get(rowCfg, `widthByField.${node.key}`);
     if (userDragWidth) {
       return userDragWidth;
     }
@@ -367,7 +395,7 @@ export class PivotFacet extends BaseFacet {
       const { field } = node;
       // row nodes max label
       const dimValues = dataSet.getDimensionValues(node.field)?.slice(0, 50);
-      const maxLabel = _.maxBy(dimValues, (v) => `${v}`.length);
+      const maxLabel = maxBy(dimValues, (v) => `${v}`.length);
       // field name
       const fieldName = dataSet.getFieldName(field);
       const measureText =
@@ -470,10 +498,65 @@ export class PivotFacet extends BaseFacet {
   }
 
   private getScrollColField(): string[] {
-    return _.get(this.spreadsheet, 'options.scrollReachNodeField.colField', []);
+    return get(this.spreadsheet, 'options.scrollReachNodeField.colField', []);
   }
 
   private getScrollRowField(): string[] {
-    return _.get(this.spreadsheet, 'options.scrollReachNodeField.rowField', []);
+    return get(this.spreadsheet, 'options.scrollReachNodeField.rowField', []);
+  }
+
+  protected getViewCellHeights(layoutResult: LayoutResult) {
+    const { rowLeafNodes } = layoutResult;
+
+    const heights = reduce(
+      rowLeafNodes,
+      (result: number[], node: Node) => {
+        result.push(last(result) + node.height);
+        return result;
+      },
+      [0],
+    );
+
+    return {
+      getTotalHeight: () => {
+        return last(heights);
+      },
+
+      getCellHeight: (index: number) => {
+        return heights[index];
+      },
+
+      getTotalLength: () => {
+        return heights.length;
+      },
+
+      getIndexRange: (minHeight: number, maxHeight: number) => {
+        let yMin = findIndex(
+          heights,
+          (height: number, idx: number) => {
+            const y = minHeight;
+            return y >= height && y < heights[idx + 1];
+          },
+          0,
+        );
+
+        yMin = Math.max(yMin, 0);
+
+        let yMax = findIndex(
+          heights,
+          (height: number, idx: number) => {
+            const y = maxHeight;
+            return y >= height && y < heights[idx + 1];
+          },
+          yMin,
+        );
+        yMax = Math.min(yMax === -1 ? Infinity : yMax, heights.length - 2);
+
+        return {
+          start: yMin,
+          end: yMax,
+        };
+      },
+    };
   }
 }

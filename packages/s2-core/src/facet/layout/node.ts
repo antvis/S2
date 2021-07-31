@@ -80,6 +80,26 @@ export class Node {
   }
 
   /**
+   * Get node's field path
+   * eg: node.id = root[&]东北[&]黑龙江
+   * => [area, province]
+   * @param node
+   */
+  public static getFieldPath(node: Node): string[] {
+    if (node && !node.isTotals) {
+      // total nodes don't need rows from node self
+      let parent = node.parent;
+      const fieldPath = [node.field];
+      while (parent && parent.id !== 'root') {
+        fieldPath.push(parent.field);
+        parent = parent.parent;
+      }
+      return fieldPath.reverse();
+    }
+    return [];
+  }
+
+  /**
    * Get all leaves in this node branch, eg:
    *        c1
    *    b1〈
@@ -272,5 +292,9 @@ export class Node {
 
   public isHide() {
     return this.height === 0 || this.width === 0;
+  }
+
+  public toJSON() {
+    return _.omit(this, ['hierarchy', 'parent', 'spreadsheet']);
   }
 }

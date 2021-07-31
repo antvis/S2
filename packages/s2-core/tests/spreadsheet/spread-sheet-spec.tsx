@@ -11,8 +11,9 @@ import {
 import { getContainer, getMockData } from '../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Switch, Checkbox } from 'antd';
+import { Switch, Checkbox, Space } from 'antd';
 import { CustomTooltip } from './custom/custom-tooltip';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
 let data = getMockData('../data/tableau-supermarket.csv');
 
@@ -108,7 +109,7 @@ const getDataCfg = () => {
   };
 };
 
-const getOptions = () => {
+const getOptions = (): S2Options => {
   return {
     debug: true,
     width: 800,
@@ -160,7 +161,7 @@ function MainLayout(props) {
     props.options.freezeRowHeader,
   );
 
-  const onCheckChanged = (checked) => {
+  const onCheckChanged = (checked: boolean) => {
     setValueInCols(checked);
     setOptions(
       merge({}, options, {
@@ -169,7 +170,7 @@ function MainLayout(props) {
     );
   };
 
-  const onCheckChanged1 = (checked) => {
+  const onCheckChanged1 = (checked: boolean) => {
     setOptions(
       merge({}, options, {
         hierarchyType: checked ? 'tree' : 'grid',
@@ -177,7 +178,7 @@ function MainLayout(props) {
     );
   };
 
-  const onCheckChanged2 = (checked) => {
+  const onCheckChanged2 = (checked: boolean) => {
     setDerivedValueMul(checked);
     const next = merge({}, dataCfg, {
       fields: {
@@ -193,7 +194,7 @@ function MainLayout(props) {
     setDataCfg(next);
   };
 
-  const onCheckChanged3 = (checked) => {
+  const onCheckChanged3 = (checked: boolean) => {
     setShowPagination(checked);
     if (checked) {
       setOptions(
@@ -209,7 +210,7 @@ function MainLayout(props) {
     }
   };
 
-  const onCheckChanged4 = (e) => {
+  const onCheckChanged4 = (e: CheckboxChangeEvent) => {
     setOptions(
       merge({}, options, {
         freezeRowHeader: e.target.checked,
@@ -220,7 +221,7 @@ function MainLayout(props) {
 
   return (
     <div>
-      <div style={{ display: 'inline-block' }}>
+      <Space size="middle" style={{ marginBottom: 20 }}>
         <Switch
           checkedChildren="挂列头"
           unCheckedChildren="挂行头"
@@ -233,27 +234,23 @@ function MainLayout(props) {
           unCheckedChildren="平铺"
           defaultChecked={false}
           onChange={onCheckChanged1}
-          style={{ marginRight: 10 }}
         />
         <Switch
           checkedChildren="多列"
           unCheckedChildren="单列"
-          style={{ marginRight: 10 }}
           defaultChecked={derivedValueMul}
           onChange={onCheckChanged2}
         />
         <Switch
           checkedChildren="分页"
           unCheckedChildren="不分页"
-          style={{ marginLeft: 10 }}
           defaultChecked={showPagination}
           onChange={onCheckChanged3}
         />
-
         <Checkbox onChange={onCheckChanged4} defaultChecked={freezeRowHeader}>
           冻结行头
         </Checkbox>
-      </div>
+      </Space>
       <SheetComponent
         dataCfg={dataCfg}
         adaptive={false}

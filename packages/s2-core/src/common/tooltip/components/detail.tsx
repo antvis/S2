@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { HtmlIcon } from '../../icons';
-import { DetailProps, ListItem } from '../interface';
+import { DetailProps, ListItem } from '@/common/interface';
 import { TOOLTIP_CLASS_PRE } from '../constant';
 
 const TooltipDetail = (props: DetailProps) => {

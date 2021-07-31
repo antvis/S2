@@ -3,6 +3,7 @@ import { Canvas, IGroup } from '@antv/g-canvas';
 import {
   isString,
   get,
+  set,
   merge,
   clone,
   find,
@@ -13,7 +14,6 @@ import {
 import { Store } from '@/common/store';
 import { ext } from '@antv/matrix-util';
 import {
-  ColWidthCache,
   DerivedValue,
   safetyDataConfig,
   OffsetConfig,
@@ -26,8 +26,9 @@ import {
   Totals,
   Total,
   ShowProps,
+  SpreadsheetMountContainer,
   ThemeCfg,
-} from '../common/interface';
+} from 'src/common/interface';
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
@@ -39,7 +40,7 @@ import {
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
 } from '../common/constant';
-import { BaseDataSet, PivotDataSet } from '../data-set';
+import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
 import {
   Node,
   BaseInteraction,
@@ -70,14 +71,16 @@ import {
   SelectedStateName,
 } from '../common/constant';
 import { i18n } from '../common/i18n';
-import { PivotFacet } from '../facet';
+import { PivotFacet, TableFacet } from '../facet';
+import CustomTreePivotDataSet from '@/data-set/custom-tree-pivot-data-set';
 
 const matrixTransform = ext.transform;
+
 export class SpreadSheet extends EE {
   public static DEBUG_ON = false;
 
   // dom id
-  public dom: HTMLElement;
+  public dom: SpreadsheetMountContainer;
 
   // theme config
   public theme: SpreadSheetTheme;
@@ -138,7 +141,7 @@ export class SpreadSheet extends EE {
   public viewport = window as typeof window & { visualViewport: Element };
 
   public constructor(
-    dom: string | HTMLElement,
+    dom: SpreadsheetMountContainer,
     dataCfg: S2DataConfig,
     options: S2Options,
   ) {
@@ -167,13 +170,27 @@ export class SpreadSheet extends EE {
   };
 
   getDataSet = (options: S2Options): BaseDataSet => {
-    const { mode, dataSet } = options;
+    const { mode, dataSet, hierarchyType } = options;
     if (dataSet) {
       return dataSet(this);
     }
-    // TODO table data set
-    return mode === 'table' ? new PivotDataSet(this) : new PivotDataSet(this);
+
+    let realDataSet;
+    if (hierarchyType === 'customTree') {
+      realDataSet = new CustomTreePivotDataSet(this);
+    } else {
+      realDataSet = new PivotDataSet(this);
+    }
+
+    return mode === 'table' ? new TableDataSet(this) : realDataSet;
   };
+
+  public clearDrillDownData(rowNodeId?: string) {
+    if (this.dataSet instanceof PivotDataSet) {
+      this.dataSet.clearDrillDownData(rowNodeId);
+      this.render(false);
+    }
+  }
 
   /**
    * Update data config and keep pre-sort operations
@@ -197,16 +214,9 @@ export class SpreadSheet extends EE {
   }
 
   public render(reloadData = true, callback?: () => void): void {
-    // 有些属性变化是不需要重新训练数据的，比如树结构的收缩
     if (reloadData) {
       this.dataSet.setDataCfg(this.dataCfg);
-      // 有数据变化，情况列宽度计算的缓存
-      this.store.set('colRealWidthInfo', {
-        widthInfos: {},
-        realWidth: {},
-      } as ColWidthCache);
     }
-
     this.buildFacet();
     if (isFunction(callback)) {
       callback();
@@ -267,7 +277,9 @@ export class SpreadSheet extends EE {
    * tree type must be in strategy mode
    */
   public isHierarchyTreeType(): boolean {
-    return get(this, 'options.hierarchyType', 'grid') === 'tree';
+    const type = this.options.hierarchyType;
+    // custom tree and tree!!!
+    return type === 'tree' || type === 'customTree';
   }
 
   /**
@@ -293,7 +305,6 @@ export class SpreadSheet extends EE {
       ) || {
         valueField: '',
         derivedValueField: [],
-        displayDerivedValueField: [],
       }
     );
   }
@@ -309,6 +320,13 @@ export class SpreadSheet extends EE {
    */
   public isPivotMode(): boolean {
     return this.options?.mode === 'pivot';
+  }
+
+  /**
+   * Check if is pivot mode
+   */
+  public isTableMode(): boolean {
+    return this.options?.mode === 'table';
   }
 
   /**
@@ -580,7 +598,7 @@ export class SpreadSheet extends EE {
 
     const defaultCell = (facet: ViewMeta) => this.getCorrectCell(facet);
     // the new facetCfg of facet
-    const facetCfg = {
+    const facetCfg: SpreadSheetFacetCfg = {
       spreadsheet: this,
       dataSet: this.dataSet,
       hierarchyType,
@@ -609,9 +627,15 @@ export class SpreadSheet extends EE {
       layoutResult,
       hierarchy,
       layoutArrange,
-    } as SpreadSheetFacetCfg;
+    };
     this.facet?.destroy();
-    this.facet = new PivotFacet(facetCfg);
+
+    if (this.isPivotMode()) {
+      this.facet = new PivotFacet(facetCfg);
+    } else {
+      this.facet = new TableFacet(facetCfg);
+    }
+
     // render facet
     this.facet.render();
   };
@@ -679,14 +703,13 @@ export class SpreadSheet extends EE {
     });
     // 收起、展开按钮
     this.on(KEY_TREE_ROWS_COLLAPSE_ALL, (isCollapse) => {
-      this.setOptions({
+      const options = {
         ...this.options,
         hierarchyCollapse: !isCollapse,
-        style: {
-          ...this.options?.style,
-          collapsedRows: {},
-        },
-      });
+      };
+      // 清空用户操作的缓存
+      set(options, 'style.collapsedRows', {});
+      this.setOptions(options);
       this.render(false);
     });
 

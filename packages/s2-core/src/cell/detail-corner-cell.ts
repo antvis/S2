@@ -5,7 +5,6 @@ import {
   ICON_RADIUS,
   KEY_SERIES_NUMBER_NODE,
 } from '../common/constant';
-import { addDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
 import { CornerCell } from '@/cell/corner-cell';
 
 export class DetailCornerCell extends CornerCell {
@@ -53,13 +52,13 @@ export class DetailCornerCell extends CornerCell {
 
     // listSheet type and not series number node
     if (key !== KEY_SERIES_NUMBER_NODE) {
-      addDetailTypeSortIcon(
-        this,
-        this.headerConfig.spreadsheet,
-        iconX,
-        textY,
-        key,
-      );
+      // addDetailTypeSortIcon(
+      //   this,
+      //   this.headerConfig.spreadsheet,
+      //   iconX,
+      //   textY,
+      //   key,
+      // );
     }
   }
 }

@@ -19,7 +19,7 @@ import {
   ShowProps,
   OperatorProps,
   DataProps,
-} from './interface';
+} from '@/common/interface';
 import {
   getPosition,
   getOptions,

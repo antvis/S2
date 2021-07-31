@@ -22,8 +22,10 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     addMeasureInTotalQuery,
     addTotalMeasureInTotal,
   } = params;
-  const { spreadsheet, collapsedCols } = facetCfg;
-  for (const fieldValue of fieldValues) {
+  const { spreadsheet, collapsedCols, colCfg } = facetCfg;
+  const hideMeasure = colCfg.hideMeasureColumn ?? false;
+
+  for (const [index, fieldValue] of fieldValues.entries()) {
     const isTotals = fieldValue instanceof TotalClass;
     const isTotalMeasure = fieldValue instanceof TotalMeasure;
     let value;
@@ -51,11 +53,17 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       nodeQuery = _.merge({}, query, { [EXTRA_FIELD]: value });
       adjustedField = EXTRA_FIELD;
       isLeaf = true;
+    } else if (spreadsheet.isTableMode()) {
+      value = fieldValue;
+      adjustedField = fields[index];
+      nodeQuery = _.merge({}, query, { [adjustedField]: value });
+      isLeaf = true;
     } else {
       value = fieldValue;
       // root[&]四川[&]成都 => {province: '四川', city: '成都' }
       nodeQuery = _.merge({}, query, { [currentField]: value });
-      isLeaf = level === fields.length - 1;
+      const extraSize = hideMeasure ? 2 : 1;
+      isLeaf = level === fields.length - extraSize;
     }
     const uniqueId = generateId(parentNode.id, value, facetCfg);
     // TODO need merge with collapsedRows

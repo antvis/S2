@@ -1,4 +1,4 @@
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2';
 import less from 'rollup-plugin-less';
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
@@ -28,6 +28,7 @@ const plugins = [
   resolve(),
   typescript({
     outDir: outDir,
+    abortOnError: true,
   }),
   less({
     output: outDir + '/index.css',

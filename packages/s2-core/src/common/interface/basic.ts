@@ -5,17 +5,20 @@ import {
   Node,
   TextAlign,
   TextBaseline,
-} from '../../index';
+  S2Options,
+} from '@/index';
+import { CustomTreeItem } from '@/common/interface';
 import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
-import { DataItem } from './s2DataConfig';
+import { DataItem, S2DataConfig } from './s2DataConfig';
 import { CustomInteraction } from './interaction';
-import { ResizeInfo } from '../../facet/header/interface';
+import { ResizeInfo } from '@/facet/header/interface';
 
-export type Formatter = (v: any) => string;
+export type Formatter = (v: unknown) => string;
 
 export type Aggregation = 'SUM' | 'AVG' | 'MIN' | 'MAX';
+export type SortMethod = 'ASC' | 'DESC';
 
 export interface Meta {
   readonly field: string; // 字段 id
@@ -65,6 +68,8 @@ export interface DerivedValue {
 export interface Fields {
   // row fields
   rows: string[];
+  // custom tree data(only use in row header in pivot mode)
+  customTreeItems?: CustomTreeItem[];
   // columns fields
   columns?: string[];
   // value fields
@@ -148,16 +153,25 @@ export interface Tooltip {
   readonly cell?: Tooltip;
 }
 
-export interface SortParam {
+export interface Sort {
   /** 字段id，业务中一般是displayId */
   sortFieldId: string;
-  sortMethod?: 'ASC' | 'DESC';
+  sortMethod?: SortMethod;
   /** 自定义排序 */
   sortBy?: string[];
-  /** 按照其他字段排序 */
-  sortByField?: string;
+  /** 按照数值字段排序 */
+  sortByMeasure?: string;
   /** 筛选条件，缩小排序范围 */
   query?: Record<string, any>;
+}
+
+export interface SortFuncParam extends Sort {
+  data: Array<string | Record<string, any>>;
+}
+
+export interface SortParam extends Sort {
+  /** 自定义func */
+  sortFunc?: (v: SortFuncParam) => Array<string>;
 }
 
 export type SortParams = SortParam[];
@@ -191,24 +205,6 @@ export interface NodeField {
   rowField?: string[];
   // 列头中需要监听滚动吸「左」的度量id
   colField?: string[];
-}
-
-export interface DrillDownDataCache {
-  // 执行下钻的行头id
-  rowId: string;
-  // 下钻的行头level
-  drillLevel: number;
-  // 下钻的维度
-  drillField: string;
-  // 下钻的数据
-  drillData: Record<string, string | number>[];
-}
-
-export interface DrillDownFieldInLevel {
-  // 下钻的维度
-  drillField: string;
-  // 下钻的层级
-  drillLevel: number;
 }
 
 export interface RowActionIcons {
@@ -348,9 +344,8 @@ export interface SpreadSheetFacetCfg {
   rowCfg: RowCfg;
   // column cell config
   colCfg: ColCfg;
-  // width
+  // width/height of plot
   width: number;
-  // height of plot
   height: number;
   // tree mode rows width
   treeRowsWidth: number;
@@ -359,7 +354,7 @@ export interface SpreadSheetFacetCfg {
   // use in col header
   collapsedCols: Record<string, boolean>;
   // hierarchy' type
-  hierarchyType: 'grid' | 'tree';
+  hierarchyType: S2Options['hierarchyType'];
   // check if hierarchy is collapse
   hierarchyCollapse: boolean;
   // field's meta info
@@ -444,15 +439,9 @@ export interface OffsetConfig {
   };
 }
 
-export interface ColWidthCache {
-  // 列宽每个cell中文本的信息（文本包括 主指标和衍生指标）
-  // 包括了 key（col的query），
-  // value（x是文本绘制的起始位置， width 是当前文本的实际宽度）
-  widthInfos: Record<string, any>;
-  // 当前列id 对应的真实列宽度
-  realWidth: Record<string, number>;
-  // 上次用户拖拽的宽度
-  lastUserDragWidth: Record<string, number>;
+export interface CellPosition {
+  x: number;
+  y: number;
 }
 
 export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
@@ -487,3 +476,10 @@ export interface CellBoxCfg {
     bottom?: number;
   };
 }
+export type SpreadsheetMountContainer = string | HTMLElement;
+
+export type SpreadsheetConstructor = [
+  SpreadsheetMountContainer,
+  S2DataConfig,
+  S2Options,
+];

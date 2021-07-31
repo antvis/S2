@@ -100,7 +100,7 @@ export interface ScrollBarTheme {
   thumbHoverColor?: string;
   /* 滚动条颜色 */
   thumbColor?: string;
-  /* 滚动条尺寸 */
+  mobileThumbColor?: string;
   size?: number;
   /* 滚动条 hover 态尺寸 */
   hoverSize?: number;
@@ -155,7 +155,6 @@ export interface SpreadSheetTheme {
 }
 
 export type ThemeName = 'default' | 'simple' | 'colorful';
-
 export interface ThemeCfg {
   /* 主题 */
   theme?: SpreadSheetTheme;

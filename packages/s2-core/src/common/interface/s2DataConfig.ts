@@ -1,5 +1,5 @@
 import { Fields, Meta, SortParams } from '@/common/interface/index';
-import { merge } from 'lodash';
+import { merge, isEmpty } from 'lodash';
 
 /** use for tabularSheet
  *  eg. { label: '余额女',
@@ -21,6 +21,16 @@ export interface MultiData {
 export type DataItem = string | number | MultiData;
 
 export type Data = Record<string, DataItem>;
+
+export interface CustomTreeItem {
+  key: string;
+  title: string;
+  // 是否收起（默认都展开）
+  collapsed?: boolean;
+  description?: string;
+  children?: CustomTreeItem[];
+}
+
 export interface S2DataConfig {
   // origin detail data
   data: Data[];
@@ -38,16 +48,24 @@ export interface S2DataConfig {
 
 export const defaultDataConfig = {
   data: [],
+  totalData: [],
   fields: {
     rows: [],
     columns: [],
     values: [],
     derivedValues: [],
+    customTreeItems: [],
     valueInCols: true,
   },
   meta: [],
   sortParams: [],
 } as S2DataConfig;
 
-export const safetyDataConfig = (dataConfig: S2DataConfig) =>
-  merge({}, defaultDataConfig, dataConfig);
+export const safetyDataConfig = (dataConfig: S2DataConfig) => {
+  const result = merge({}, defaultDataConfig, dataConfig) as S2DataConfig;
+  if (!isEmpty(result.fields.customTreeItems)) {
+    // when there are custom tree config, valueInCols must be false
+    result.fields.valueInCols = false;
+  }
+  return result;
+};

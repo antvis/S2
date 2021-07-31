@@ -14,10 +14,14 @@ import React from 'react';
 import {
   data1,
   data2,
-  data3,
   data4,
   data5,
   data6,
+  totalData1,
+  totalData3,
+  totalData4,
+  totalData5,
+  totalData6,
 } from '../data/data-accuracy';
 
 let spreadsheet1: SpreadSheet;
@@ -34,28 +38,39 @@ const setSpreadSheet = (
   return ss;
 };
 
-const getData = (index: number) => {
+const getData = (index: number, isTotal?: boolean) => {
   let realData = [];
+  let totalData = [];
   // eslint-disable-next-line default-case
   switch (index) {
     case 1:
       realData = data1;
+      totalData = totalData1;
       break;
     case 2:
       realData = data2;
+      totalData = [];
       break;
     case 3:
-      realData = data3;
+      realData = [];
+      totalData = totalData3;
       break;
     case 4:
       realData = data4;
+      totalData = totalData4;
       break;
     case 5:
       realData = data5;
+      totalData = totalData5;
       break;
     case 6:
       realData = data6;
+      totalData = totalData6;
       break;
+  }
+
+  if (isTotal) {
+    return totalData;
   }
   return realData;
 };
@@ -81,6 +96,7 @@ const getDataCfg = (index: number) => {
       },
     ],
     data: getData(index),
+    totalData: getData(index, true),
     sortParams: [],
   };
 };

@@ -6,10 +6,11 @@ import { DetailRowCell } from '../../cell/detail-row-cell';
 import { Node } from '@/facet/layout/node';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
+import { S2Options } from '../../common/interface';
 
 export interface RowHeaderConfig extends BaseHeaderConfig {
   // type of hierarchy
-  hierarchyType: 'tree' | 'grid';
+  hierarchyType: S2Options['hierarchyType'];
   // field ids that click to navigate
   linkFieldIds: string[];
   // series number group's width, will be 0 when not exists
