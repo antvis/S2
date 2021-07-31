@@ -98,7 +98,7 @@ export abstract class BaseFacet {
 
   protected centerFrame: Frame;
 
-  protected scrollBarSize = getTheme('default').scrollBar.size;
+  protected scrollBarSize = getTheme({ name: 'default' }).scrollBar.size;
 
   protected scrollBarTheme = {
     default: {

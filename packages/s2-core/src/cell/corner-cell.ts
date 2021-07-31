@@ -12,7 +12,7 @@ import {
 import { HIT_AREA } from '../facet/header/base';
 import { CornerHeaderConfig } from '../facet/header/corner';
 import { ResizeInfo } from '../facet/header/interface';
-import { CellBoxCfg, GuiIcon, Node, Position } from '..';
+import { GuiIcon, Node } from '..';
 import { BaseCell } from './base-cell';
 import { IGroup } from '@antv/g-canvas';
 export class CornerCell extends BaseCell<Node> {
@@ -35,7 +35,7 @@ export class CornerCell extends BaseCell<Node> {
     this.textShapes = [];
     this.drawCellRect();
     this.drawCellText();
-    this.drawHotspot();
+    this.drawHotpot();
   }
 
   protected drawCellText() {
@@ -53,7 +53,7 @@ export class CornerCell extends BaseCell<Node> {
     const cellPadding = cornerTheme?.cell?.padding;
     // 起点坐标为左上
     textStyle.textAlign = 'left';
-    textStyle.textBaseline = 'top';
+    textStyle.textBaseline = 'middle';
 
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
     const extraPadding = this.ifNeedIcon()
@@ -81,8 +81,6 @@ export class CornerCell extends BaseCell<Node> {
       );
     }
 
-    const textX = position.x + x + extraPadding + cellPadding.left;
-    const textY = position.y + y + cellPadding.top;
     const extraInfo = {
       appendInfo: {
         // 标记为行头文本，方便做链接跳转直接识别
@@ -90,10 +88,16 @@ export class CornerCell extends BaseCell<Node> {
         cellData: this.meta,
       },
     };
+
+    const textX = position.x + x + extraPadding + cellPadding.left;
+    const textY =
+      position.y +
+      y +
+      (_.isEmpty(secondLine) ? cellHeight / 2 : cellHeight / 4);
     // first line
     this.textShapes.push(
       renderText(
-        this.textShapes,
+        [this.textShapes[0]],
         textX,
         textY,
         firstLine,
@@ -103,13 +107,11 @@ export class CornerCell extends BaseCell<Node> {
       ),
     );
 
-    // TODO: 单元格统一开启换行，推拽列宽动态换行
     // second line
     if (!_.isEmpty(secondLine)) {
-      // first line
       this.textShapes.push(
         renderText(
-          this.textShapes,
+          [this.textShapes[1]],
           textX,
           position.y + y + cellHeight * 0.65,
           secondLine,
@@ -171,7 +173,7 @@ export class CornerCell extends BaseCell<Node> {
     });
   }
 
-  private drawHotspot() {
+  private drawHotpot() {
     const prevResizer = this.spreadsheet.foregroundGroup.findById(
       KEY_GROUP_CORNER_RESIZER,
     );

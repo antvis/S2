@@ -132,9 +132,7 @@ export class RowCell extends BaseCell<Node> {
         height,
         textCfg.fontSize,
       );
-      const padding = cellCfg.padding.left * level;
-      const baseIconX = x + textIndent - iconCfg.size;
-      const iconX = level >= 1 ? baseIconX + padding : baseIconX;
+      const iconX = x + textIndent;
       const iconY = textY + (textCfg.fontSize - iconCfg.size) / 2;
       const icon = new GuiIcon({
         type: isCollapsed ? 'plus' : 'MinusSquare',
@@ -208,12 +206,16 @@ export class RowCell extends BaseCell<Node> {
     if (!this.isTreeType()) {
       return 0;
     }
-    const baseIndent = get(this.theme, 'rowHeader.text.textIndent');
+    const cellPadding = get(this.theme, 'rowHeader.cell.padding');
+    const baseIndent = cellPadding.left;
+    const iconTheme = get(this.theme, 'rowHeader.icon');
+    const iconWidth =
+      iconTheme.size + iconTheme.margin.left + iconTheme.margin.right;
     let parent = this.meta.parent;
     let multiplier = baseIndent;
     while (parent) {
       if (parent.height !== 0) {
-        multiplier += baseIndent;
+        multiplier += baseIndent + iconWidth;
       }
       parent = parent.parent;
     }
@@ -247,33 +249,31 @@ export class RowCell extends BaseCell<Node> {
       height: cellHeight,
       isLeaf,
       isTotals,
-      level,
     } = this.meta;
-    const { text: textCfg, icon: iconCfg } = this.theme.rowHeader;
+    const { text: textTheme, icon: iconTheme } = this.theme.rowHeader;
     const isTreeType = this.isTreeType();
     // grid & is totals content is empty
     const content = this.getFormattedValue(label);
+    const iconWidth =
+      iconTheme.size + iconTheme.margin.left + iconTheme.margin.right;
 
-    // indent in tree
-    const textIndent = this.getTextIndent();
     const textStyle = this.getRowTextStyle(isTotals, isLeaf);
     textStyle.textAlign = 'left';
     textStyle.textBaseline = 'top';
     const cellPadding = get(this.theme, 'rowHeader.cell.padding');
-
-    const totalPadding = isTreeType
-      ? cellPadding?.left * level
-      : cellPadding?.left + cellPadding?.right;
-    const maxWidth =
-      cellWidth - textIndent - totalPadding - (isTreeType ? iconCfg.size : 0);
+    const totalPadding = cellPadding?.left + cellPadding?.right;
+    const textIndent = !isTreeType
+      ? this.getTextIndent() + cellPadding?.left
+      : this.getTextIndent() + iconWidth;
+    const maxWidth = cellWidth - textIndent - totalPadding;
     const text = getEllipsisText(content, maxWidth, textStyle);
-    const textX = x + textIndent + cellPadding?.left;
+    const textX = x + textIndent;
     const textY = getAdjustPosition(
       y,
       cellHeight,
       offset,
       height,
-      textCfg.fontSize,
+      textTheme.fontSize,
     );
 
     const textShape = this.addShape('text', {

@@ -50,7 +50,7 @@ const getOptions = () => {
       icon: [],
     },
     style: {
-      treeRowsWidth: 100,
+      // treeRowsWidth: 120,
       collapsedRows: {},
       colCfg: {
         widthByFieldValue: {},

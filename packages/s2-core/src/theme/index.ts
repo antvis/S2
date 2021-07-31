@@ -29,7 +29,6 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         fill: brandColors[0],
         opacity: 1,
         textAlign: 'left',
-        textIndent: 12,
       },
       cell: {
         // ----------- background color -----------
@@ -50,9 +49,7 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         radius: 4,
         size: 14,
         margin: {
-          top: 0,
-          right: 8,
-          bottom: 0,
+          right: 4,
           left: 0,
         },
       },
@@ -72,7 +69,6 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         fill: grayColors[6],
         opacity: 1,
         textAlign: 'right',
-        textIndent: 12,
       },
       cell: {
         // ----------- background color -----------
@@ -90,8 +86,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         // ----------- bottom border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 0,
-        hoverBorderWidth: 1,
-        selectedBorderWidth: 2,
+        hoverBorderWidth: 0,
+        selectedBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
           top: 12,
@@ -105,16 +101,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         radius: 4,
         size: 14,
         margin: {
-          top: 4,
           right: 4,
-          bottom: 4,
-          left: 4,
-        },
-        padding: {
-          top: 2,
-          right: 2,
-          bottom: 2,
-          left: 2,
+          left: 0,
         },
       },
       seriesNumberWidth: 80,
@@ -133,7 +121,6 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         fontWeight: 'normal',
         fill: brandColors[0],
         opacity: 1,
-        textIndent: 12,
       },
       cell: {
         // ----------- background color -----------
@@ -151,8 +138,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
-        hoverBorderWidth: 1,
-        selectedBorderWidth: 2,
+        hoverBorderWidth: 0,
+        selectedBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
           top: 12,
@@ -167,16 +154,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         radius: 4,
         size: 14,
         margin: {
-          top: 4,
           right: 4,
-          bottom: 4,
-          left: 4,
-        },
-        padding: {
-          top: 2,
-          right: 2,
-          bottom: 2,
-          left: 2,
+          left: 0,
         },
       },
     },
@@ -199,7 +178,6 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         opacity: 1,
         textAlign: 'right',
         textBaseline: 'middle',
-        textIndent: 12,
       },
       cell: {
         // ----------- background color -----------
@@ -220,8 +198,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 0,
-        hoverBorderWidth: 1,
-        selectedBorderWidth: 2,
+        hoverBorderWidth: 0,
+        selectedBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
           top: 12,
@@ -237,16 +215,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         radius: 4,
         size: 10,
         margin: {
-          top: 4,
           right: 4,
-          bottom: 4,
-          left: 4,
-        },
-        padding: {
-          top: 2,
-          right: 2,
-          bottom: 2,
-          left: 2,
+          left: 0,
         },
       },
     },

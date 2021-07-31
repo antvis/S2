@@ -37,7 +37,6 @@ export interface TextTheme {
   opacity?: number;
   textAlign?: TextAlign;
   textBaseline?: TextBaseline;
-  textIndent?: number;
 }
 
 export interface CellTheme {
@@ -92,8 +91,6 @@ export interface IconTheme {
   size?: number;
   /* icon 外边距 */
   margin?: Margin;
-  /* icon 内边距 */
-  padding?: Padding;
 }
 
 export interface ScrollBarTheme {

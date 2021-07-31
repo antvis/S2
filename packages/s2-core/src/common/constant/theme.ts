@@ -20,7 +20,7 @@ export const ICON_RADIUS = 6;
 // cell default padding
 export const DEFAULT_PADDING = 4;
 // tree row default width
-export const TREE_ROW_DEFAULT_WIDTH = 100;
+export const TREE_ROW_DEFAULT_WIDTH = 120;
 
 export const STRATEGY_PADDING = 8; // 各种padding 左右和元素边界
 export const STRATEGY_ICON_WIDTH = 10; // 三角icon 宽度
