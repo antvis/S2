@@ -103,6 +103,7 @@ export default function processDefaultColWidthByType(
   // if (!facet.spreadsheet.isValueInCols()) {
   //   cellCfg.width = WidthType.ValueInRow;
   // }
+  facet.spreadsheet.store.set('adaptiveColWidth', colWidth);
 
   return colWidth;
 }
