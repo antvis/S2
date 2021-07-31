@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu, Dropdown, message } from 'antd';
-import classNames from 'classnames';
+import cx from 'classnames';
 import { DotIcon } from '../icons/index';
 import { copyData, copyToClipboard, download } from '../../utils/export';
 import { SpreadSheet } from 'src/sheet-type';
@@ -85,7 +85,7 @@ export const Export: React.FC<ExportProps> = ({
     <Dropdown
       overlay={menu}
       trigger={['click']}
-      className={classNames(PRECLASS, className)}
+      className={cx(PRECLASS, className)}
       {...restProps}
     >
       <a

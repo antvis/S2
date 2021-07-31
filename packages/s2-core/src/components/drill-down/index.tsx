@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
-import classNames from 'classnames';
+import cx from 'classnames';
 import zhCN from 'antd/lib/locale/zh_CN';
 import {
   CalendarIcon,
@@ -93,7 +93,7 @@ export const DrillDown: React.FC<DrillDownProps> = ({
 
   return (
     <ConfigProvider locale={zhCN}>
-      <div className={classNames(PRE_CLASS, className)} {...restProps}>
+      <div className={cx(PRE_CLASS, className)} {...restProps}>
         <header className={`${PRE_CLASS}-header`}>
           <div>{titleText}</div>
           <Button
