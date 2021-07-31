@@ -150,10 +150,6 @@ const getOptions = () => {
   };
 };
 
-const getTheme = () => {
-  return {};
-};
-
 function MainLayout(props) {
   const [options, setOptions] = React.useState(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
@@ -276,11 +272,7 @@ describe('spreadsheet normal spec', () => {
 
   act(() => {
     ReactDOM.render(
-      <MainLayout
-        dataCfg={getDataCfg()}
-        options={getOptions()}
-        theme={getTheme()}
-      />,
+      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
       getContainer(),
     );
   });

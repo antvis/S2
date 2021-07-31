@@ -71,10 +71,6 @@ const getOptions = () => {
   };
 };
 
-const getTheme = () => {
-  return {};
-};
-
 function MainLayout(props: MainLayoutProps) {
   const [options, setOptions] = React.useState(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
