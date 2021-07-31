@@ -207,7 +207,7 @@ export abstract class BaseFacet {
       false,
     );
     return showSeriesNumber
-      ? _.get(this.cfg, 'spreadsheet.theme.rowHeader.seriesNumberWidth')
+      ? get(this.cfg, 'spreadsheet.theme.rowHeader.seriesNumberWidth')
       : 0;
   }
 

@@ -237,7 +237,7 @@ export class SpreadSheet extends EE {
    * @param theme
    */
   public setTheme(themeCfg: ThemeCfg): void {
-    const { theme } = themeCfg;
+    const theme = themeCfg?.theme || {};
     this.theme = merge({}, getTheme(themeCfg), theme);
   }
 

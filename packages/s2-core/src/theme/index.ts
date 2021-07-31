@@ -8,8 +8,8 @@ import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
  * @param  name
  */
 export const getTheme = (themeCfg: ThemeCfg) => {
-  const { palette, name, hueInvert } = themeCfg;
-  const themePalette: Palette = palette || getPalette(name, hueInvert);
+  const themePalette: Palette =
+    themeCfg?.palette || getPalette(themeCfg?.name, themeCfg?.hueInvert);
   const { brandColors, grayColors, semanticColors } = themePalette;
 
   return {

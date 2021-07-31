@@ -116,7 +116,7 @@ const getOptions = (): S2Options => {
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
-    showSeriesNumber: true,
+    showSeriesNumber: false,
     freezeRowHeader: false,
     mode: 'pivot',
     valueInCols: true,
@@ -255,7 +255,6 @@ function MainLayout(props) {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
-        theme={props.theme}
         spreadsheet={getSpreadSheet}
       />
     </div>
