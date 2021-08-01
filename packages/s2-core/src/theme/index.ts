@@ -149,8 +149,7 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         },
       },
       icon: {
-        downIconColor: semanticColors.red,
-        upIconColor: semanticColors.green,
+        fill: brandColors[0],
         radius: 4,
         size: 14,
         margin: {
@@ -212,6 +211,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
       },
       icon: {
         fill: brandColors[0],
+        downIconColor: semanticColors.red,
+        upIconColor: semanticColors.green,
         radius: 4,
         size: 10,
         margin: {

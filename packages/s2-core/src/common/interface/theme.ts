@@ -9,9 +9,11 @@ export interface Palette {
   /* neutral colors */
   grayColors: string[];
   /* semantic colors */
-  semanticColors?: {
+  semanticColors: {
     red?: string;
     green?: string;
+    /* 额外颜色字段 */
+    [key: string]: string;
   };
 }
 
@@ -85,6 +87,10 @@ export interface CellTheme {
 export interface IconTheme {
   /* icon 填充色 */
   fill?: string;
+  /* 下跌 icon 填充色 */
+  downIconColor?: string;
+  /* 上涨 icon 填充色 */
+  upIconColor?: string;
   /* icon 圆角 */
   radius?: number;
   /* icon  大小 */
