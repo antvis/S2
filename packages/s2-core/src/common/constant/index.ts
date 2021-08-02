@@ -1,5 +1,6 @@
 // TODO: 常量分类, 而不是所有都放在一个文件
 export * from './events';
+export * from './scroll';
 
 // 值字段的 id 是固定的！
 export const VALUE_FIELD = '$$value$$';
@@ -39,9 +40,6 @@ export const COLOR_DEFAULT_RESIZER = 'rgba(33,33,33,0)';
 
 // key of series number node in corner header
 export const KEY_SERIES_NUMBER_NODE = 'series-number-node';
-
-export const MAX_SCROLL_OFFSET = 10;
-export const MIN_SCROLL_BAR_HEIGHT = 20;
 
 export const ID_SEPARATOR = '[&]';
 export const EMPTY_PLACEHOLDER = '-';

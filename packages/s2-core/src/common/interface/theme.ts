@@ -46,6 +46,7 @@ export interface ScrollBarTheme {
   trackColor?: string;
   thumbHoverColor?: string;
   thumbColor?: string;
+  mobileThumbColor?: string;
   size?: number;
 }
 
@@ -90,3 +91,5 @@ export interface SpreadSheetTheme {
   center?: CenterTheme;
   [key: string]: any;
 }
+
+export type ThemeType = 'default';
