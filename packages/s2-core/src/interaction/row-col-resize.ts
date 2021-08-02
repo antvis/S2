@@ -203,10 +203,28 @@ export class RowColResize extends BaseInteraction {
     });
   }
 
+  // 获取列拖拽的最小宽度
+  private getMinCellWidth = () => {
+    let adaptiveColWidth: number;
+    // 列等宽平铺模式下，需要限定拖拽最小宽度为等宽值
+    if (
+      this.spreadsheet.isColAdaptive() &&
+      !this.spreadsheet.isHierarchyTreeType()
+    ) {
+      adaptiveColWidth = this.spreadsheet.store.get(
+        'adaptiveColWidth',
+      ) as number;
+    }
+    const cellWidth = adaptiveColWidth || MIN_CELL_WIDTH;
+    return cellWidth;
+  };
+
   private resizeMouseMove = (ev: any) => {
     // is dragging
     if (this.resizeGroup && this.resizeGroup.get('visible')) {
       ev.preventDefault();
+
+      const minCellWidth = this.getMinCellWidth();
       const info = this.getResizeInfo();
       const children = this.resizeGroup.get('children');
       if (children) {
@@ -218,10 +236,10 @@ export class RowColResize extends BaseInteraction {
         if (info.type === 'col') {
           // 横向移动
           let offset = ev.originalEvent.offsetX - this.startPos.offsetX;
-          if (start[1] + offset - info.offsetX < MIN_CELL_WIDTH) {
+          if (start[1] + offset - info.offsetX < minCellWidth) {
             // 禁止拖到最小宽度
-            this.startPos.offsetX = info.offsetX + MIN_CELL_WIDTH;
-            offset = info.offsetX + MIN_CELL_WIDTH - start[1];
+            this.startPos.offsetX = info.offsetX + minCellWidth;
+            offset = info.offsetX + minCellWidth - start[1];
           } else {
             this.startPos.offsetX = ev.originalEvent.offsetX;
           }

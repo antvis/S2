@@ -54,7 +54,8 @@ interface StoreKey {
   drillDownDataCache: DrillDownDataCache[];
   // 每个层级下钻的维度缓存
   drillDownFieldInLevel: DrillDownFieldInLevel[];
-  [key: string]: any;
+  // 列宽等分模式下初始化计算的列宽
+  adaptiveColWidth: number;
 }
 
 /**
