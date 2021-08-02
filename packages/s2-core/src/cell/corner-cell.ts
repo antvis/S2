@@ -211,7 +211,7 @@ export class CornerCell extends BaseCell<Node> {
     return (
       this.headerConfig.spreadsheet.isHierarchyTreeType() &&
       this.headerConfig.spreadsheet.isPivotMode() &&
-      this.meta.x === 0
+      this.meta?.x === 0
     );
   }
 }

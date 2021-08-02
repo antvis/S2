@@ -24,12 +24,7 @@ export interface Padding {
   left?: number;
 }
 
-export interface Margin {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-}
+export interface Margin extends Padding {}
 
 export interface TextTheme {
   fontFamily?: string;
@@ -130,7 +125,10 @@ export interface SplitLine {
   /* 阴影宽度 */
   shadowWidth?: number;
   /* 阴影线性渐变色，第一个为起始颜色，第二个为结束颜色 */
-  shadowColors?: [string, string];
+  shadowColors?: {
+    start: string,
+    end: string
+  };
 }
 export interface DefaultCellTheme {
   /* 粗体文本样式 */

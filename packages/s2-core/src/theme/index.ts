@@ -239,7 +239,10 @@ export const getTheme = (themeCfg: ThemeCfg) => {
       verticalBorderWidth: 2,
       showRightShadow: true,
       shadowWidth: 8,
-      shadowColors: ['rgba(0,0,0,0)', 'rgba(0,0,0,0.04)'],
+      shadowColors: {
+        start: 'rgba(0,0,0,0)', 
+        end: 'rgba(0,0,0,0.04)'
+      },
     },
   } as SpreadSheetTheme;
 };

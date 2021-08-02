@@ -4,7 +4,7 @@ import {
   getTextPosition,
 } from '@/utils/text';
 import _ from 'lodash';
-import { GuiIcon } from '@/common/icons';
+
 import { renderRect, updateShapeAttr } from '@/utils/g-renders';
 import { HIT_AREA } from '@/facet/header/base';
 import { ColHeaderConfig } from '@/facet/header/col';
@@ -12,6 +12,8 @@ import { ResizeInfo } from '@/facet/header/interface';
 import { Node } from '../index';
 import { BaseCell } from './base-cell';
 import { IGroup } from '@antv/g-canvas';
+import { GuiIcon } from '@/common/icons';
+import { TextAlign } from '@/common/interface/theme';
 import {
   KEY_GROUP_COL_RESIZER,
   COLOR_DEFAULT_RESIZER,
@@ -132,7 +134,7 @@ export class ColCell extends BaseCell<Node> {
     const textWidth = measureTextWidth(text, textStyle);
     let textX: number;
     let textY: number;
-    let textAlign: 'left' | 'right' | 'center';
+    let textAlign: TextAlign;
     if (isLeaf) {
       // 最后一个层级的维值，与 dataCell 对齐方式保持一致
       textAlign = _.get(this, 'theme.dataCell.text.textAlign');

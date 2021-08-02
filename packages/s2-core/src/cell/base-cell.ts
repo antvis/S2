@@ -25,7 +25,7 @@ export abstract class BaseCell<T> extends Group {
 
   // protected actionIcons: GuiIcon[];
 
-  public constructor(meta: T, spreadsheet: SpreadSheet, ...restOptions: any) {
+  public constructor(meta: T, spreadsheet: SpreadSheet, ...restOptions: unknown[]) {
     super({});
     this.meta = meta;
     this.spreadsheet = spreadsheet;

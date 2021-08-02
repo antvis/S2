@@ -130,7 +130,7 @@ export class Frame extends Group {
           y,
           width: splitLine.shadowWidth,
           height: viewportHeight,
-          fill: `l (0) 0:${splitLine.shadowColors[0]} 1:${splitLine.shadowColors[1]}`,
+          fill: `l (0) 0:${splitLine.shadowColors?.start} 1:${splitLine.shadowColors?.end}`,
         },
       });
     }
@@ -160,7 +160,7 @@ export class Frame extends Group {
           y,
           width: splitLine.shadowWidth,
           height: viewportHeight + height,
-          fill: `l (0) 0:${splitLine.shadowColors[1]} 1:${splitLine.shadowColors[0]}`,
+          fill: `l (0) 0:${splitLine.shadowColors?.start} 1:${splitLine.shadowColors?.end}`,
         },
       });
     }

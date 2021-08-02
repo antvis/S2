@@ -28,7 +28,7 @@ import {
   ShowProps,
   SpreadsheetMountContainer,
   ThemeCfg,
-} from 'src/common/interface';
+} from '@/common/interface';
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
@@ -39,7 +39,7 @@ import {
   KEY_GROUP_PANEL_GROUND,
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
-} from '../common/constant';
+} from '@/common/constant';
 import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
 import {
   Node,
@@ -56,10 +56,10 @@ import {
   RowTextClick,
   HoverEvent,
   MergedCellsClick,
-} from '../index';
-import { getTheme } from '../theme';
-import { BaseTooltip } from '../tooltip';
-import { BaseFacet } from 'src/facet';
+} from '@/index';
+import { getTheme } from '@/theme';
+import { BaseTooltip } from '@/tooltip';
+import { BaseFacet } from '@/facet';
 import { DebuggerUtil } from '@/common/debug';
 import { EventController } from '@/interaction/events/event-controller';
 import { DefaultInterceptEvent } from '@/interaction/events/types';
@@ -69,9 +69,9 @@ import {
   EventNames,
   InteractionNames,
   SelectedStateName,
-} from '../common/constant';
-import { i18n } from '../common/i18n';
-import { PivotFacet, TableFacet } from '../facet';
+} from '@/common/constant';
+import { i18n } from '@/common/i18n';
+import { PivotFacet, TableFacet } from '@/facet';
 import CustomTreePivotDataSet from '@/data-set/custom-tree-pivot-data-set';
 
 const matrixTransform = ext.transform;
