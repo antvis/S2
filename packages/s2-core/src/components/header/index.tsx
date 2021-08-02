@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { PageHeader } from 'antd';
 import { Export, ExportCfgProps } from '../export';
-import classNames from 'classnames';
+import cx from 'classnames';
 import { SpreadSheet } from 'src/sheet-type';
 
 export interface HeaderCfgProps {
@@ -36,7 +36,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <PageHeader
-      className={classNames(PRECLASS, className)}
+      className={cx(PRECLASS, className)}
       ghost={false}
       title={title}
       extra={extraDoms}
