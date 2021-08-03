@@ -64,14 +64,14 @@ export const layoutHierarchy = (
       const { push, unshift } = layoutHierarchy;
       let currentIndex = parentNode.children.length;
       let hierarchyIndex = hierarchy.getNodes().length;
-      if (unshift && _.size(unshift) > 0) {
+      if (_.size(unshift) > 0) {
         _.each(unshift, (v) => {
           addNode(v);
         });
         currentIndex = parentNode.children.length;
         hierarchyIndex = hierarchy.getNodes().length;
       }
-      if (push && _.size(push) > 0) {
+      if (_.size(push) > 0) {
         _.each(push, (v) => {
           addNode(v);
         });

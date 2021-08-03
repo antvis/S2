@@ -354,7 +354,7 @@ export interface SpreadSheetFacetCfg {
   cornerHeader?: CornerHeaderCallback;
   // determine what does row/column tree hierarchy look like
   layoutHierarchy?: LayoutHierarchy;
-  // determine the order of every row/column tree branch
+  // determine the order of each row/column tree branch
   layoutArrange?: LayoutArrange;
   // determine the location(x,y,width,height eg..) of every node
   layoutCoordinate?: LayoutCoordinate;

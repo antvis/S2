@@ -13,8 +13,8 @@ export type LayoutArrange = (
 ) => string[];
 
 /**
- * determine what does row/column hierarchy looks like
- * eg: add/delete some nodes in specified position
+ * determine what does row/column hierarchy look like
+ * eg: add/delete some nodes in the specified position
  */
 export type LayoutHierarchy = (
   spreadsheet: SpreadSheet,
