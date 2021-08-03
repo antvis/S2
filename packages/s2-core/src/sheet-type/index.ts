@@ -64,7 +64,7 @@ import {
   HoverEvent,
   MergedCellsClick,
 } from '@/index';
-import { getTheme } from '@/theme';
+import { getTheme, TABLE_THEME_FALLBACK } from '@/theme';
 import { BaseTooltip } from '@/tooltip';
 import { BaseFacet } from '@/facet';
 import { DebuggerUtil } from '@/common/debug';
@@ -244,7 +244,11 @@ export class SpreadSheet extends EE {
    * @param theme
    */
   public setTheme(themeCfg: ThemeCfg): void {
-    const theme = themeCfg?.theme || {};
+    let fallback = {};
+    if (this.isTableMode()) {
+      fallback = TABLE_THEME_FALLBACK;
+    }
+    const theme = themeCfg?.theme || fallback;
     this.theme = merge({}, getTheme(themeCfg), theme);
   }
 

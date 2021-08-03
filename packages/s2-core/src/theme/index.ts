@@ -36,6 +36,18 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         backgroundColorOpacity: 1,
         hoverBackgroundColor: brandColors[5],
         selectedBackgroundColor: brandColors[5],
+        // ----------- border color --------------
+        horizontalBorderColor: grayColors[2],
+        horizontalBorderColorOpacity: 1,
+        verticalBorderColor: grayColors[2],
+        verticalBorderColorOpacity: 1,
+        hoverBorderColor: grayColors[6],
+        selectedBorderColor: grayColors[6],
+        // ----------- border width --------------
+        horizontalBorderWidth: 1,
+        verticalBorderWidth: 1,
+        hoverBorderWidth: 0,
+        selectedBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
           top: 12,
@@ -240,9 +252,17 @@ export const getTheme = (themeCfg: ThemeCfg) => {
       showRightShadow: true,
       shadowWidth: 8,
       shadowColors: {
-        left: 'rgba(0,0,0,0.04)', 
-        right: 'rgba(0,0,0,0)'
+        left: 'rgba(0,0,0,0.04)',
+        right: 'rgba(0,0,0,0)',
       },
     },
   } as SpreadSheetTheme;
+};
+
+export const TABLE_THEME_FALLBACK = {
+  corner: {
+    bolderText: {
+      textAlign: 'center',
+    },
+  },
 };
