@@ -1,7 +1,7 @@
 import { getEllipsisText } from '../utils/text';
 import { get } from 'lodash';
 import { isMobile } from '../utils/is-mobile';
-import { DataCell } from '@/cell/data-cell';
+import { DataCell } from 'src/cell/data-cell';
 export class DetailRowCell extends DataCell {
   protected drawTextShape() {
     const textShape = super.drawTextShape();

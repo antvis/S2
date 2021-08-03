@@ -11,7 +11,7 @@ import { ViewMeta } from '../common/interface';
 import { DerivedCell } from './derived-cell';
 import { BaseCell } from './base-cell';
 import { SelectedStateName } from '@/common/constant/interaction';
-import { SpreadSheet } from 'src/sheet-type';
+import type { SpreadSheet } from 'src/sheet-type';
 
 // default icon size
 const ICON_SIZE = 10;

@@ -4,7 +4,7 @@ import { measureTextWidth, getEllipsisText } from '../utils/text';
 import { GuiIcon } from '../common/icons';
 import { STRATEGY_ICON_WIDTH, STRATEGY_PADDING } from '../common/constant';
 import { renderRect } from '../utils/g-renders';
-import { SpreadSheet } from 'src/sheet-type';
+import type { SpreadSheet } from 'src/sheet-type';
 
 /**
  * Create By Bruce Too
@@ -40,9 +40,9 @@ export class DerivedCell extends Group {
       icon = 'CellDown';
     }
 
-    if (SpreadSheet.DEBUG_ON) {
-      renderRect(x, y, width, height, '#f11', 0, this);
-    }
+    // if (SpreadSheet.DEBUG_ON) {
+    //   renderRect(x, y, width, height, '#f11', 0, this);
+    // }
 
     const showIcon = spreadsheet.options.style.colCfg.showDerivedIcon;
     const textStyle = get(spreadsheet, 'theme.view.text');
