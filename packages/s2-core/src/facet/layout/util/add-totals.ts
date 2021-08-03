@@ -4,8 +4,13 @@ import { EXTRA_FIELD } from '@/common/constant';
 import { size } from 'lodash';
 
 export const addTotals = (params: TotalParams) => {
-  const { isFirstField, currentField, fieldValues, spreadsheet, lastField } =
-    params;
+  const {
+    isFirstField,
+    currentField,
+    fieldValues,
+    spreadsheet,
+    lastField,
+  } = params;
   const totalsConfig = spreadsheet.getTotalsConfig(
     isFirstField ? currentField : lastField,
   );

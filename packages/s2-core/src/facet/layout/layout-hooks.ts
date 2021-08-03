@@ -1,25 +1,24 @@
-import { SpreadSheet } from 'src/sheet-type';
 import { Node } from 'src/facet/layout/node';
-import { SpreadSheetFacetCfg } from 'src/common/interface';
+import { LayoutResult, SpreadSheetFacetCfg } from 'src/common/interface';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 /**
  * re-arrange field values by custom arrange hooks
  * @param fieldValues
- * @param spreadsheet
+ * @param facetCfg
  * @param parent
  * @param field
  */
 export const layoutArrange = (
   fieldValues: string[],
-  spreadsheet: SpreadSheet,
+  facetCfg: SpreadSheetFacetCfg,
   parent: Node,
   field: string,
 ): string[] => {
-  if (spreadsheet.options.layoutArrange) {
-    return spreadsheet.options.layoutArrange(
-      spreadsheet,
+  if (facetCfg.layoutArrange) {
+    return facetCfg.layoutArrange(
+      facetCfg.spreadsheet,
       parent,
       field,
       fieldValues,
@@ -40,33 +39,53 @@ export const layoutHierarchy = (
   parentNode: Node,
   currentNode: Node,
   hierarchy: Hierarchy,
-) => {
-  if (facetCfg.hierarchy) {
-    const another = facetCfg.hierarchy(facetCfg.spreadsheet, currentNode);
-    const push = another?.push;
-    if (another.nodes.length > 0) {
-      // 存在节点，按push 或者 unshift插入
-      if (push) {
-        hierarchy.pushNode(currentNode);
+): boolean => {
+  let expandCurrentNode = true;
+  const addNode = (node: Node, insetIndex = -1, hierarchyIndex = -1) => {
+    if (insetIndex === -1) {
+      // add in parent
+      parentNode.children.push(node);
+      hierarchy.pushNode(node);
+    } else {
+      parentNode.children.splice(insetIndex, 0, node);
+      hierarchy.pushNode(node, hierarchyIndex);
+    }
+  };
+  if (facetCfg.layoutHierarchy) {
+    const layoutHierarchy = facetCfg.layoutHierarchy(
+      facetCfg.spreadsheet,
+      currentNode,
+    );
+    if (layoutHierarchy) {
+      const deleteNode = !_.isBoolean(layoutHierarchy?.delete)
+        ? false
+        : layoutHierarchy?.delete;
+      expandCurrentNode = !deleteNode;
+      const { push, unshift } = layoutHierarchy;
+      let currentIndex = parentNode.children.length;
+      let hierarchyIndex = hierarchy.getNodes().length;
+      if (_.size(unshift) > 0) {
+        _.each(unshift, (v) => {
+          addNode(v);
+        });
+        currentIndex = parentNode.children.length;
+        hierarchyIndex = hierarchy.getNodes().length;
       }
-      _.each(another.nodes, (v) => {
-        hierarchy.pushNode(v);
-      });
-      if (!push) {
-        // new node insert before current
-        hierarchy.pushNode(currentNode);
-        // adjust the index of current node
-        _.remove(parentNode.children, (v) => v === currentNode);
-        parentNode.children.push(currentNode);
+      if (_.size(push) > 0) {
+        _.each(push, (v) => {
+          addNode(v);
+        });
+      }
+      if (!deleteNode) {
+        addNode(currentNode, currentIndex, hierarchyIndex);
       }
     } else {
-      // 不存在节点，正常插入
-      hierarchy.pushNode(currentNode);
+      addNode(currentNode);
     }
   } else {
-    // no extra node exist
-    hierarchy.pushNode(currentNode);
+    addNode(currentNode);
   }
+  return expandCurrentNode;
 };
 
 /**
@@ -75,13 +94,36 @@ export const layoutHierarchy = (
  * @param rowNode
  * @param colNode
  */
-export const layoutNodes = (
+export const layoutCoordinate = (
   facetCfg: SpreadSheetFacetCfg,
   rowNode: Node,
   colNode: Node,
 ) => {
-  const layout = facetCfg?.layout;
-  if (layout) {
-    layout(facetCfg.spreadsheet, rowNode, colNode);
+  if (facetCfg?.layoutCoordinate) {
+    // only leaf node's coordinates can be modified
+    if (rowNode?.isLeaf || colNode?.isLeaf) {
+      facetCfg?.layoutCoordinate(facetCfg.spreadsheet, rowNode, colNode);
+    }
   }
+};
+
+/**
+ * Custom position cell's data
+ * @param facetCfg
+ * @param layoutResult
+ */
+export const layoutDataPosition = (
+  facetCfg: SpreadSheetFacetCfg,
+  layoutResult: LayoutResult,
+): LayoutResult => {
+  const dataPosition = facetCfg?.layoutDataPosition;
+  if (dataPosition) {
+    const { getCellMeta } = layoutResult;
+    const handledGetCellMeta = dataPosition(facetCfg.spreadsheet, getCellMeta);
+    return {
+      ...layoutResult,
+      getCellMeta: handledGetCellMeta,
+    };
+  }
+  return layoutResult;
 };

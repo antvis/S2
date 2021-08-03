@@ -6,7 +6,7 @@ import { getIntersections, filterUndefined } from '@/utils/data-set-operate';
 
 jest.mock('src/sheet-type');
 jest.mock('src/facet/layout/node');
-const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
+const MockSpreadSheet = (SpreadSheet as any) as jest.Mock<SpreadSheet>;
 
 describe('Pivot Sort Test', () => {
   let dataSet: PivotDataSet;
@@ -38,9 +38,9 @@ describe('Pivot Sort Test', () => {
     test('returns the correct row data', () => {
       expect(dataSet?.getDimensionValues('area')).toEqual(['中南', '东北']);
 
-      expect(dataSet?.getDimensionValues('province', { area: '东北' })).toEqual(
-        ['辽宁', '吉林'],
-      );
+      expect(
+        dataSet?.getDimensionValues('province', { area: '东北' }),
+      ).toEqual(['辽宁', '吉林']);
 
       expect(
         dataSet?.getDimensionValues('city', {

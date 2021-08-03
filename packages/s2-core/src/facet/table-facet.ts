@@ -5,7 +5,7 @@ import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Node } from 'src/facet/layout/node';
 import _ from 'lodash';
-import { layoutNodes } from 'src/facet/layout/layout-hooks';
+import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 import { DebuggerUtil } from 'src/common/debug';
 
@@ -13,16 +13,20 @@ export class TableFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     const { dataSet, spreadsheet, cellCfg } = this.cfg;
 
-    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: true,
-        facetCfg: this.cfg,
-      });
-    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: false,
-        facetCfg: this.cfg,
-      });
+    const {
+      leafNodes: rowLeafNodes,
+      hierarchy: rowsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: true,
+      facetCfg: this.cfg,
+    });
+    const {
+      leafNodes: colLeafNodes,
+      hierarchy: colsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: false,
+      facetCfg: this.cfg,
+    });
 
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -143,7 +147,7 @@ export class TableFacet extends BaseFacet {
       currentNode.y = 0;
 
       currentNode.height = this.getColNodeHeight(currentNode);
-      layoutNodes(this.cfg, null, currentNode);
+      layoutCoordinate(this.cfg, null, currentNode);
     }
   }
 
@@ -195,7 +199,8 @@ export class TableFacet extends BaseFacet {
   protected getViewCellHeights() {
     const { dataSet, cellCfg } = this.cfg;
 
-    const cellHeight = cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
+    const cellHeight =
+      cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
 
     return {
       getTotalHeight: () => {

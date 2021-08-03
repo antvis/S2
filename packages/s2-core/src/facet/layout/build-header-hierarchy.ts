@@ -123,7 +123,7 @@ export const buildHeaderHierarchy = (
   params: BuildHeaderParams,
 ): BuildHeaderResult => {
   const { isRowHeader, facetCfg } = params;
-  const { values, spreadsheet, rows, cols } = facetCfg;
+  const { values, spreadsheet, rows, columns } = facetCfg;
   const isValueInCols = spreadsheet.dataCfg.fields.valueInCols;
   const isPivotMode = spreadsheet.isPivotMode();
   const moreThanOneValue = values.length > 1;
@@ -137,7 +137,7 @@ export const buildHeaderHierarchy = (
     hierarchy,
     spreadsheet,
     facetCfg,
-    fields: isRowHeader ? rows : cols,
+    fields: isRowHeader ? rows : columns,
   } as HeaderParams;
   if (isRowHeader) {
     handleRowHeaderHierarchy(headParams);

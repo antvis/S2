@@ -6,13 +6,13 @@ import { get } from 'lodash';
 
 export const buildTableHierarchy = (params: TableHeaderParams) => {
   const { facetCfg, hierarchy, parentNode } = params;
-  const { cols, spreadsheet, dataSet } = facetCfg;
+  const { columns, spreadsheet, dataSet } = facetCfg;
 
   const showSeriesNumber = get(spreadsheet, 'options.showSeriesNumber', false);
 
-  const fields = [...cols];
+  const fields = [...columns];
 
-  const fieldValues = cols.map((val) => dataSet.getFieldName(val));
+  const fieldValues = columns.map((val) => dataSet.getFieldName(val));
 
   if (showSeriesNumber) {
     fields.unshift(SERIES_NUMBER_FIELD);
@@ -20,7 +20,7 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
   }
 
   generateHeaderNodes({
-    currentField: cols[0],
+    currentField: columns[0],
     fields,
     fieldValues,
     facetCfg,

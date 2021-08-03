@@ -4,7 +4,7 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
-import { diffIndexes, Indexes } from '../utils/indexes';
+import { diffIndexes, Indexes } from '@/utils/indexes';
 import type {
   Formatter,
   LayoutResult,
@@ -114,6 +114,8 @@ export abstract class BaseFacet {
 
   protected centerFrame: Frame;
 
+  protected scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
+
   protected scrollBarSize = getTheme({ name: 'default' }).scrollBar.size;
 
   protected scrollBarTheme = {
@@ -125,7 +127,12 @@ export abstract class BaseFacet {
     },
   };
 
-  scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
+  protected scrollBarTouchTheme = {
+    default: {
+      thumbColor: THEME.scrollBar.thumbColor,
+      size: isMobile() ? this.scrollBarSize / 2 : this.scrollBarSize,
+    },
+  };
 
   hideScrollBar = () => {
     this.hRowScrollBar?.updateTheme(this.scrollBarTheme);
@@ -139,13 +146,6 @@ export abstract class BaseFacet {
     if (isMobile()) {
       this.delayHideScrollBar();
     }
-  };
-
-  protected scrollBarTouchTheme = {
-    default: {
-      thumbColor: THEME.scrollBar.thumbColor,
-      size: isMobile() ? this.scrollBarSize / 2 : this.scrollBarSize,
-    },
   };
 
   protected preCellIndexes: Indexes;
@@ -176,13 +176,13 @@ export abstract class BaseFacet {
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
-      this.onWheel({
+      this.onWheel(({
         ...originEvent,
         deltaX,
         deltaY,
         layerX: x / 3,
         layerY: y / 3,
-      } as unknown as S2WheelEvent);
+      } as unknown) as S2WheelEvent);
     });
   };
 
@@ -995,8 +995,7 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
@@ -1050,8 +1049,7 @@ export abstract class BaseFacet {
         // When both a row header and a panel scroll bar exist, show viewport shadow
         showViewPortRightShadow:
           !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
         spreadsheet: this.cfg.spreadsheet,
       };

@@ -22,21 +22,28 @@ import { Node } from 'src/facet/layout/node';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { DebuggerUtil } from 'src/common/debug';
-import { layoutNodes } from '@/facet/layout/layout-hooks';
+import {
+  layoutCoordinate,
+  layoutDataPosition,
+} from '@/facet/layout/layout-hooks';
 
 export class PivotFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     // 1、layout all nodes in rowHeader and colHeader
-    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: true,
-        facetCfg: this.cfg,
-      });
-    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: false,
-        facetCfg: this.cfg,
-      });
+    const {
+      leafNodes: rowLeafNodes,
+      hierarchy: rowsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: true,
+      facetCfg: this.cfg,
+    });
+    const {
+      leafNodes: colLeafNodes,
+      hierarchy: colsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: false,
+      facetCfg: this.cfg,
+    });
     // 2、calculate all related nodes coordinate
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -118,8 +125,7 @@ export class PivotFacet extends BaseFacet {
       getCellMeta,
       spreadsheet,
     } as LayoutResult;
-    const callback = this.cfg?.layoutResult;
-    return callback ? callback(layoutResult) : layoutResult;
+    return layoutDataPosition(this.cfg, layoutResult);
   }
 
   // TODO cell sticky border event
@@ -212,7 +218,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.y = preLevelSample.y + preLevelSample.height;
       }
       currentNode.height = this.getColNodeHeight(currentNode);
-      layoutNodes(this.cfg, null, currentNode);
+      layoutCoordinate(this.cfg, null, currentNode);
     }
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
   }
@@ -330,7 +336,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.colIndex = i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
         currentNode.height =
-          cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;  
+          cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
         preLeafNode = currentNode;
         // mark row hierarchy's height
         rowsHierarchy.height += currentNode.height;
@@ -347,7 +353,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.x = preLevelSample.x + preLevelSample.width;
       }
       currentNode.width = this.calculateRowLeafNodesWidth(currentNode);
-      layoutNodes(this.cfg, currentNode, null);
+      layoutCoordinate(this.cfg, currentNode, null);
     }
     if (!isTree) {
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
@@ -494,7 +500,8 @@ export class PivotFacet extends BaseFacet {
     const rowHeaderWidth = Math.min(canvasW / 2, this.getTreeRowHeaderWidth());
     // calculate col width
     const colSize = Math.max(1, colLeafNodes.length);
-    return (canvasW - rowHeaderWidth) / colSize;
+    const { cellCfg } = this.cfg;
+    return Math.max(cellCfg.width, (canvasW - rowHeaderWidth) / colSize);
   }
 
   private getScrollColField(): string[] {

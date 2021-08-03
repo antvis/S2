@@ -133,8 +133,12 @@ export class CornerCell extends BaseCell<Node> {
    */
   private drawIcon() {
     // 只有交叉表才有icon
-    const { hierarchyCollapse, height, spreadsheet, position } =
-      this.headerConfig;
+    const {
+      hierarchyCollapse,
+      height,
+      spreadsheet,
+      position,
+    } = this.headerConfig;
     const iconStyle = _.get(this.theme, 'corner.icon');
     const textStyle = _.get(this.theme, 'corner.text');
     const colHeight = spreadsheet.options.style.colCfg.height;

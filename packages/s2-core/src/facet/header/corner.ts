@@ -1,13 +1,13 @@
 import { SimpleBBox, Group, Point } from '@antv/g-canvas';
 import { get, last, includes, isEmpty } from 'lodash';
-import { i18n } from '../../common/i18n';
-import { DetailCornerCell } from '../../cell';
+import { i18n } from '@/common/i18n';
+import { DetailCornerCell } from '@/cell';
 import {
   KEY_SERIES_NUMBER_NODE,
   KEY_GROUP_CORNER_RESIZER,
   COLOR_DEFAULT_RESIZER,
 } from '../../common/constant';
-import { BaseDataSet } from '../../data-set';
+import { BaseDataSet } from '@/data-set';
 import { SpreadSheet, Hierarchy, Node, CornerCell } from '../../index';
 import {
   LayoutResult,
@@ -24,7 +24,7 @@ export interface CornerHeaderConfig extends BaseHeaderConfig {
   // the hierarchy collapse or not
   hierarchyCollapse: boolean;
   // column fields
-  cols: string[];
+  columns: string[];
   // series number width
   seriesNumberWidth: number;
 }
@@ -75,7 +75,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       offset: 0,
       hierarchyType: cfg.hierarchyType, // 是否为树状布局
       hierarchyCollapse: cfg.hierarchyCollapse,
-      cols: cfg.cols,
+      columns: cfg.columns,
       seriesNumberWidth,
       spreadsheet: ss,
     });
@@ -291,8 +291,13 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   private handleHotsSpotArea() {
-    const { data, position, width, height, seriesNumberWidth } =
-      this.headerConfig;
+    const {
+      data,
+      position,
+      width,
+      height,
+      seriesNumberWidth,
+    } = this.headerConfig;
     const prevResizer = this.headerConfig.spreadsheet.foregroundGroup.findById(
       KEY_GROUP_CORNER_RESIZER,
     );
@@ -339,7 +344,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           class: 'resize-trigger',
           type: 'row',
           affect: 'field',
-          id: last(this.get('cols')),
+          id: last(this.get('columns')),
           offsetX: position.x,
           offsetY: position.y + cell.y,
           width: cell.width,
