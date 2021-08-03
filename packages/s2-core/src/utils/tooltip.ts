@@ -309,7 +309,7 @@ export const getSelectedValueFields = (
   selectedData: DataItem[],
   field: string,
 ): string[] => {
-  return uniq(selectedData.map((d) => d[field]));
+  return uniq(selectedData.map((d) => get(d, field)));
 };
 
 export const getSelectedCellIndexes = (

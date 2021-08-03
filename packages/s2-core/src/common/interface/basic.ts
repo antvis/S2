@@ -327,7 +327,7 @@ export interface SpreadSheetFacetCfg {
   // use in col header
   collapsedCols?: Record<string, boolean>;
   // hierarchy' type
-  hierarchyType?: 'grid' | 'tree';
+  hierarchyType: S2Options['hierarchyType'];
   // check if hierarchy is collapse
   hierarchyCollapse?: boolean;
   // field's meta info
