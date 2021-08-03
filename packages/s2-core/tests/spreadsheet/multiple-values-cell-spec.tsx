@@ -1,4 +1,4 @@
-import { merge } from 'lodash';
+import { cloneDeep, merge } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
@@ -121,37 +121,24 @@ function MainLayout(props) {
 
   const onArrangementChange = (value: string) => {
     setArrangement(value);
-    console.log('values', value);
-
+    const newData = cloneDeep(dataCfg);
     switch (value) {
       case 'normal':
-        setDataCfg(
-          merge({}, dataCfg, {
-            fields: {
-              data: multipleDataWithNormal,
-            },
-          }),
-        );
+        newData.data = multipleDataWithNormal;
         break;
       case 'bottom':
-        setDataCfg(
-          merge({}, dataCfg, {
-            data: multipleDataWithBottom,
-          }),
-        );
+        newData.data = multipleDataWithBottom;
+
         break;
       case 'combine':
-        setDataCfg(
-          merge({}, dataCfg, {
-            data: multipleDataWithCombine,
-          }),
-        );
+        newData.data = multipleDataWithCombine;
         break;
-
       default:
         break;
     }
+    setDataCfg(newData);
   };
+  console.log('values', dataCfg);
   return (
     <div>
       <div style={{ display: 'inline-block', marginBottom: 20 }}>
