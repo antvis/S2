@@ -157,7 +157,7 @@ const getOptions = () => {
     debug: true,
     width: 800,
     height: 600,
-    hierarchyType: 'tree',
+    hierarchyType: 'grid',
     hierarchyCollapse: false,
     freezeRowHeader: true,
     mode: 'pivot',
@@ -200,13 +200,23 @@ const MainLayout = ({ options, dataCfg }) => {
 describe('layout hooks spec', () => {
   test('layout arrange hook', () => {
     const { rowLeafNodes } = innerSS.facet.layoutResult;
-    const arrangeValues = rowLeafNodes.slice(2, 5).map((v) => v.label);
+    let arrangeValues;
+    if (innerSS.options.hierarchyType === 'tree') {
+      arrangeValues = rowLeafNodes.slice(2, 5).map((v) => v.label);
+    } else {
+      arrangeValues = rowLeafNodes.slice(0, 3).map((v) => v.label);
+    }
     expect(arrangeValues).toEqual(['东莞', '珠海', '海门']);
   });
 
   test('layout hierarchy hook', () => {
     const { rowLeafNodes } = innerSS.facet.layoutResult;
-    const addValues = rowLeafNodes.slice(5, 8).map((v) => v.label);
+    let addValues;
+    if (innerSS.options.hierarchyType === 'tree') {
+      addValues = rowLeafNodes.slice(5, 8).map((v) => v.label);
+    } else {
+      addValues = rowLeafNodes.slice(3, 6).map((v) => v.label);
+    }
     expect(addValues).toEqual(['前序节点A', '广州', '后序节点A']);
   });
 
