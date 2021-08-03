@@ -1,61 +1,15 @@
 import { getEllipsisText } from '../utils/text';
 import { get } from 'lodash';
 import { isMobile } from '../utils/is-mobile';
-import { RowCell } from '@/cell/row-cell';
-
-export class DetailRowCell extends RowCell {
-  /**
-   * ListSheet has no text indent
-   */
-  protected getTextIndent(): number | number {
-    return 0;
-  }
-
-  protected isTreeType(): boolean {
-    return false;
-  }
-
-  protected getRowTextStyle(level, isTotals) {
-    return level !== 0 && !isTotals
-      ? get(this.headerConfig, 'spreadsheet.theme.header.text')
-      : get(this.headerConfig, 'spreadsheet.theme.header.bolderText');
-  }
-
-  protected drawCellText() {
-    const { linkFieldIds = [] } = this.headerConfig;
-    const {
-      label,
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      level,
-      isTotals,
-      isCustom,
-    } = this.meta;
-
-    const textStyle = this.getRowTextStyle(level, isTotals || isCustom);
-    const text = getEllipsisText(
-      this.getFormattedValue(label),
-      cellWidth,
-      textStyle,
-    );
-
-    const textAlign = 'start';
-    const textX = x;
-    const textShape = this.addShape('text', {
-      attrs: {
-        x: textX,
-        y: y + cellHeight / 2,
-        textAlign,
-        text,
-        ...textStyle,
-        cursor: 'pointer',
-      },
-    });
+import { DataCell } from '@/cell/data-cell';
+export class DetailRowCell extends DataCell {
+  protected drawTextShape() {
+    const textShape = super.drawTextShape();
+    const linkFieldIds = get(this.spreadsheet, 'options.linkFieldIds');
+    const textStyle = get(this.spreadsheet, 'theme.header.text');
     // handle link nodes
-    if (linkFieldIds.includes(this.meta.key)) {
-      const device = get(this.headerConfig, 'spreadsheet.options.style.device');
+    if (linkFieldIds.includes(this.meta.key) && textShape) {
+      const device = get(this.spreadsheet, 'options.style.device');
       // 配置了链接跳转
       if (!isMobile(device)) {
         const textBBox = textShape.getBBox();
@@ -86,6 +40,14 @@ export class DetailRowCell extends RowCell {
       }
     }
 
-    return textX;
+    if (textShape) {
+      const { x, width } = this.getLeftAreaBBox();
+      textShape.attr({
+        x: x + width / 2,
+        textAlign: 'center',
+      });
+    }
+
+    return textShape;
   }
 }

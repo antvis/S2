@@ -176,13 +176,13 @@ export abstract class BaseFacet {
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
-      this.onWheel({
+      this.onWheel(({
         ...originEvent,
         deltaX,
         deltaY,
         layerX: x / 3,
         layerY: y / 3,
-      } as unknown as S2WheelEvent);
+      } as unknown) as S2WheelEvent);
     });
   };
 
@@ -731,14 +731,13 @@ export abstract class BaseFacet {
   };
 
   isScrollToTop = (deltaY: number) => {
-    return deltaY <= 0 && Math.floor(this.vScrollBar?.thumbOffset) <= 0;
+    return deltaY <= 0 && this.vScrollBar?.thumbOffset <= 0;
   };
 
   isScrollToBottom = (deltaY: number) => {
     return (
       deltaY >= 0 &&
-      Math.ceil(this.vScrollBar?.thumbOffset) +
-        Math.ceil(this.vScrollBar?.thumbLen) >=
+      this.vScrollBar?.thumbOffset + this.vScrollBar?.thumbLen >=
         this.panelBBox?.height
     );
   };
@@ -995,8 +994,7 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
@@ -1050,8 +1048,7 @@ export abstract class BaseFacet {
         // When both a row header and a panel scroll bar exist, show viewport shadow
         showViewPortRightShadow:
           !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
         spreadsheet: this.cfg.spreadsheet,
       };

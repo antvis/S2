@@ -8,7 +8,8 @@ import { renderLine, renderRect, renderText } from '../utils/g-renders';
 import { getDerivedDataState } from '../utils/text';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
-import { DerivedCell, BaseCell } from '.';
+import { DerivedCell } from './derived-cell';
+import { BaseCell } from './base-cell';
 import { SelectedStateName } from '@/common/constant/interaction';
 import { SpreadSheet } from 'src/sheet-type';
 
@@ -188,7 +189,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   /**
    * Render cell main text and derived text
    */
-  protected drawTextShape() {
+  protected drawTextShape(): IShape | void {
     const { x, y, height, width } = this.getLeftAreaBBox();
     const { valueField: originField, isTotals } = this.meta;
 
@@ -234,6 +235,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       textFill,
       this,
     );
+    return this.textShape;
   }
 
   /**

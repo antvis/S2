@@ -19,10 +19,15 @@ export class DetailColCell extends ColCell {
     // 列头默认粗体
     const textStyle = DefaultTheme.header.bolderText;
 
-    const extraPadding = DEFAULT_PADDING * 2 + ICON_RADIUS * 2;
-    const text = getEllipsisText(content, cellWidth - extraPadding, textStyle);
+    const rightPadding = DEFAULT_PADDING * 2 + ICON_RADIUS * 2;
+    const leftPadding = DEFAULT_PADDING;
+    const text = getEllipsisText(
+      content,
+      cellWidth - leftPadding - rightPadding,
+      textStyle,
+    );
     // ListSheet's text always stay in right
-    const textX = x + cellWidth - extraPadding;
+    const textX = x + cellWidth - rightPadding;
 
     const textY = y + cellHeight / 2;
     this.addShape('text', {

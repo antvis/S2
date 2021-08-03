@@ -1,5 +1,9 @@
 import { LayoutResult, ViewMeta } from 'src/common/interface';
-import { ICON_RADIUS, SERIES_NUMBER_FIELD } from 'src/common/constant';
+import {
+  ICON_RADIUS,
+  SERIES_NUMBER_FIELD,
+  DEFAULT_PADDING,
+} from 'src/common/constant';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
@@ -182,8 +186,7 @@ export class TableFacet extends BaseFacet {
       );
       colWidth =
         measureTextWidth(maxLabel, textStyle) +
-        cellCfg.padding[1] +
-        cellCfg.padding[3] +
+        DEFAULT_PADDING * 3 +
         ICON_RADIUS * 2;
 
       if (col.field === SERIES_NUMBER_FIELD) {

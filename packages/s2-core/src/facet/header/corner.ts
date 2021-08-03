@@ -2,7 +2,6 @@ import { SimpleBBox, Group, Point } from '@antv/g-canvas';
 import { get, last, includes, isEmpty } from 'lodash';
 import { GuiIcon } from '../../common/icons';
 import { i18n } from '../../common/i18n';
-import { DetailCornerCell } from '../../cell';
 import {
   ICON_RADIUS,
   KEY_SERIES_NUMBER_NODE,
@@ -245,19 +244,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       }
 
       if (isEmpty(cell)) {
-        if (spreadsheet.isPivotMode()) {
-          cell = new CornerCell(
-            item,
-            this.headerConfig.spreadsheet,
-            this.headerConfig,
-          );
-        } else {
-          cell = new DetailCornerCell(
-            item,
-            this.headerConfig.spreadsheet,
-            this.headerConfig,
-          );
-        }
+        cell = new CornerCell(
+          item,
+          this.headerConfig.spreadsheet,
+          this.headerConfig,
+        );
       }
       this.add(cell);
     });
@@ -309,8 +300,12 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       this.headerConfig.spreadsheet.isPivotMode()
     ) {
       // 只有交叉表才有icon
-      const { hierarchyCollapse, position, height, spreadsheet } =
-        this.headerConfig;
+      const {
+        hierarchyCollapse,
+        position,
+        height,
+        spreadsheet,
+      } = this.headerConfig;
       const colHeight = spreadsheet.options.style.colCfg.height;
       const icon = new GuiIcon({
         type: hierarchyCollapse ? 'plus' : 'MinusSquare',
@@ -337,8 +332,13 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   private handleHotsSpotArea() {
-    const { data, position, width, height, seriesNumberWidth } =
-      this.headerConfig;
+    const {
+      data,
+      position,
+      width,
+      height,
+      seriesNumberWidth,
+    } = this.headerConfig;
     const prevResizer = this.headerConfig.spreadsheet.foregroundGroup.findById(
       KEY_GROUP_CORNER_RESIZER,
     );

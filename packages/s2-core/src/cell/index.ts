@@ -6,7 +6,6 @@ import { MergedCells } from './merged-cells';
 import { RowCell } from './row-cell';
 import { DerivedCell } from './derived-cell';
 import { DetailRowCell } from './detail-row-cell';
-import { DetailCornerCell } from './detail-corner-cell';
 import { DetailColCell } from './detail-col-cell';
 
 // NOTE There is a circular references  problem when I was exporting both
@@ -16,7 +15,6 @@ import { DetailColCell } from './detail-col-cell';
 export {
   // DataDerivedCell,
   DetailColCell,
-  DetailCornerCell,
   DetailRowCell,
   DerivedCell,
   RowCell,

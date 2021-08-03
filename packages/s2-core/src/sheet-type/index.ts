@@ -29,7 +29,14 @@ import {
   SpreadsheetMountContainer,
   ThemeType,
 } from 'src/common/interface';
-import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
+import {
+  DataCell,
+  BaseCell,
+  RowCell,
+  ColCell,
+  CornerCell,
+  DetailRowCell,
+} from '../cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -674,6 +681,13 @@ export class SpreadSheet extends EE {
   }
 
   protected getCorrectCell(facet: ViewMeta): DataCell {
+    if (
+      this.isTableMode() &&
+      this.options.showSeriesNumber &&
+      facet.colIndex === 0
+    ) {
+      return new DetailRowCell(facet, this);
+    }
     return new DataCell(facet, this);
     // return this.isValueInCols()
     //   ? new DataCell(facet, this)
