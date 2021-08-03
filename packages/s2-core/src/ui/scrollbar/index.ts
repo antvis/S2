@@ -191,6 +191,28 @@ export class ScrollBar extends Group {
     this.get('canvas')?.draw();
   };
 
+  addEventListener = (
+    target: EventTarget,
+    eventType: keyof HTMLElementEventMap,
+    callback: EventListenerOrEventListenerObject,
+  ): EventListenerReturn => {
+    target?.addEventListener(eventType, callback, false);
+    return {
+      remove: () => {
+        target?.removeEventListener(eventType, callback, false);
+      },
+    };
+  };
+
+  protected addEvent = (
+    target: EventHandler['target'],
+    type: EventHandler['type'],
+    handler: EventHandler['handler'],
+  ) => {
+    target.on(type, handler);
+    this.eventHandlers.push({ target, type, handler });
+  };
+
   private initScrollBar = () => {
     this.scrollBarGroup = this.createScrollBarGroup();
     this.scrollBarGroup.move(this.position.x, this.position.y);
@@ -287,41 +309,20 @@ export class ScrollBar extends Group {
     this.thumbShape.on('mouseout', this.onTrackMouseOut);
   };
 
-  private onStartEvent =
-    (isMobile: boolean) => (e: MouseEvent | TouchEvent) => {
-      e.preventDefault();
-
-      this.isMobile = isMobile;
-
-      const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
-      const { clientX, clientY } = event;
-
-      // 将开始的点记录下来
-      this.startPos = this.isHorizontal ? clientX : clientY;
-
-      this.bindLaterEvent();
-    };
-
-  protected addEvent = (
-    target: EventHandler['target'],
-    type: EventHandler['type'],
-    handler: EventHandler['handler'],
+  private onStartEvent = (isMobile: boolean) => (
+    e: MouseEvent | TouchEvent,
   ) => {
-    target.on(type, handler);
-    this.eventHandlers.push({ target, type, handler });
-  };
+    e.preventDefault();
 
-  addEventListener = (
-    target: EventTarget,
-    eventType: keyof HTMLElementEventMap,
-    callback: EventListenerOrEventListenerObject,
-  ): EventListenerReturn => {
-    target?.addEventListener(eventType, callback, false);
-    return {
-      remove: () => {
-        target?.removeEventListener(eventType, callback, false);
-      },
-    };
+    this.isMobile = isMobile;
+
+    const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
+    const { clientX, clientY } = event;
+
+    // 将开始的点记录下来
+    this.startPos = this.isHorizontal ? clientX : clientY;
+
+    this.bindLaterEvent();
   };
 
   private bindLaterEvent = () => {

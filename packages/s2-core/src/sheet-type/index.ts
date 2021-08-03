@@ -576,77 +576,43 @@ export class SpreadSheet extends EE {
     });
   }
 
-  buildFacet = () => {
+  /**
+   * 避免每次新增、变更dataSet和options时，生成SpreadSheetFacetCfg
+   * 要多出定义匹配的问题，直接按需&部分拆分options/dataSet合并为facetCfg
+   */
+  getFacetCfgFromDataSetAndOptions = (): SpreadSheetFacetCfg => {
     const { fields, meta } = this.dataSet;
-    const { rows, columns, values, derivedValues } = fields;
-    const {
-      width,
-      height,
-      style,
-      hierarchyType,
-      hierarchyCollapse,
-      pagination,
-      dataCell,
-      cornerCell,
-      rowCell,
-      colCell,
-      frame,
-      layout,
-      cornerHeader,
-      layoutResult,
-      hierarchy,
-      layoutArrange,
-    } = this.options;
-
-    const {
-      cellCfg,
-      colCfg,
-      rowCfg,
-      collapsedRows,
-      collapsedCols,
-      treeRowsWidth,
-    } = style;
-
-    const defaultCell = (facet: ViewMeta) => this.getCorrectCell(facet);
-    // the new facetCfg of facet
-    const facetCfg: SpreadSheetFacetCfg = {
+    const { style, dataCell } = this.options;
+    // 默认单元格实现
+    const defaultCell = (facet: ViewMeta) => {
+      if (
+        this.isTableMode() &&
+        this.options.showSeriesNumber &&
+        facet.colIndex === 0
+      ) {
+        return new DetailRowCell(facet, this);
+      }
+      return new DataCell(facet, this);
+    };
+    return {
+      ...fields,
+      ...style,
+      ...this.options,
+      meta,
       spreadsheet: this,
       dataSet: this.dataSet,
-      hierarchyType,
-      collapsedRows,
-      collapsedCols,
-      hierarchyCollapse,
-      meta: meta,
-      cols: columns,
-      rows,
-      cellCfg,
-      colCfg,
-      width,
-      height,
-      rowCfg,
-      treeRowsWidth,
-      pagination,
-      values,
-      derivedValues,
-      dataCell: dataCell || defaultCell,
-      cornerCell,
-      rowCell,
-      colCell,
-      frame,
-      layout,
-      cornerHeader,
-      layoutResult,
-      hierarchy,
-      layoutArrange,
-    };
-    this.facet?.destroy();
+      dataCell: dataCell ?? defaultCell,
+    } as SpreadSheetFacetCfg;
+  };
 
+  buildFacet = () => {
+    this.facet?.destroy();
+    const facetCfg = this.getFacetCfgFromDataSetAndOptions();
     if (this.isPivotMode()) {
       this.facet = new PivotFacet(facetCfg);
     } else {
       this.facet = new TableFacet(facetCfg);
     }
-
     // render facet
     this.facet.render();
   };
@@ -675,20 +641,6 @@ export class SpreadSheet extends EE {
         new ColRowMutiSelection(this),
       );
     }
-  }
-
-  protected getCorrectCell(facet: ViewMeta): DataCell {
-    if (
-      this.isTableMode() &&
-      this.options.showSeriesNumber &&
-      facet.colIndex === 0
-    ) {
-      return new DetailRowCell(facet, this);
-    }
-    return new DataCell(facet, this);
-    // return this.isValueInCols()
-    //   ? new DataCell(facet, this)
-    //   : new DataDerivedCell(facet, this);
   }
 
   protected bindEvents() {
@@ -804,7 +756,6 @@ export class SpreadSheet extends EE {
   };
 
   // 由于行头和列头的选择的模式并不是把一整行或者一整列的cell都setState
-
   private renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
     const { width, height } = this.options;
     const newWidth = Math.floor(width * ratio);

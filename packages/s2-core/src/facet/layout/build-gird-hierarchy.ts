@@ -52,7 +52,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     const dimValues = dataSet.getDimensionValues(currentField, query);
     const arrangedValues = layoutArrange(
       dimValues,
-      spreadsheet,
+      facetCfg,
       parentNode,
       currentField,
     );

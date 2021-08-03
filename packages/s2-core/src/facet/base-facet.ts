@@ -4,7 +4,7 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
-import { diffIndexes, Indexes } from '../utils/indexes';
+import { diffIndexes, Indexes } from '@/utils/indexes';
 import type {
   Formatter,
   LayoutResult,
@@ -114,6 +114,8 @@ export abstract class BaseFacet {
 
   protected centerFrame: Frame;
 
+  protected scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
+
   protected scrollBarSize = getTheme({ name: 'default' }).scrollBar.size;
 
   protected scrollBarTheme = {
@@ -125,7 +127,12 @@ export abstract class BaseFacet {
     },
   };
 
-  scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
+  protected scrollBarTouchTheme = {
+    default: {
+      thumbColor: THEME.scrollBar.thumbColor,
+      size: isMobile() ? this.scrollBarSize / 2 : this.scrollBarSize,
+    },
+  };
 
   hideScrollBar = () => {
     this.hRowScrollBar?.updateTheme(this.scrollBarTheme);
@@ -139,13 +146,6 @@ export abstract class BaseFacet {
     if (isMobile()) {
       this.delayHideScrollBar();
     }
-  };
-
-  protected scrollBarTouchTheme = {
-    default: {
-      thumbColor: THEME.scrollBar.thumbColor,
-      size: isMobile() ? this.scrollBarSize / 2 : this.scrollBarSize,
-    },
   };
 
   protected preCellIndexes: Indexes;

@@ -24,7 +24,7 @@ export interface Padding {
   left?: number;
 }
 
-export interface Margin extends Padding {}
+export type Margin = Padding;
 
 export interface TextTheme {
   fontFamily?: string;
@@ -127,9 +127,9 @@ export interface SplitLine {
   /* 阴影线性渐变色 */
   shadowColors?: {
     /* 线性变化左侧颜色 */
-    left: string,
+    left: string;
     /* 线性变化右侧颜色 */
-    right: string
+    right: string;
   };
 }
 export interface DefaultCellTheme {

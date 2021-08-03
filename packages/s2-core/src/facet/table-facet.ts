@@ -6,7 +6,8 @@ import { SORT_ICON_WIDTH } from 'src/facet/layout/util/add-detail-type-sort-icon
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Node } from 'src/facet/layout/node';
 import { get, maxBy } from 'lodash';
-import { layoutNodes } from 'src/facet/layout/layout-hooks';
+import _ from 'lodash';
+import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 import { DebuggerUtil } from 'src/common/debug';
 
@@ -148,7 +149,7 @@ export class TableFacet extends BaseFacet {
       currentNode.y = 0;
 
       currentNode.height = this.getColNodeHeight(currentNode);
-      layoutNodes(this.cfg, null, currentNode);
+      layoutCoordinate(this.cfg, null, currentNode);
     }
   }
 
