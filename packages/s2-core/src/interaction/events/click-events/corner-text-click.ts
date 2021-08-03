@@ -1,8 +1,8 @@
 import { Event } from '@antv/g-canvas';
 import { get } from 'lodash';
-import { isMobile } from '../../../utils/is-mobile';
-import { measureTextWidth } from '../../../utils/text';
-import { getCellPadding } from '../../../facet/header/util';
+import { isMobile } from '@/utils/is-mobile';
+import { measureTextWidth } from '@/utils/text';
+import { getCellPadding } from '@/facet/header/util';
 import { BaseEvent } from '../base-event';
 import { S2Event, DefaultInterceptEventType } from '../types';
 
@@ -31,7 +31,7 @@ export class CornerTextClick extends BaseEvent {
         (text.includes('..') || cornerExpand[label])
       ) {
         const labelWidth = Math.ceil(
-          measureTextWidth(label, get(this.spreadsheet, 'theme.header.text')),
+          measureTextWidth(label, get(this.spreadsheet, 'theme.corner.text')),
         );
         const padding = getCellPadding();
         const { left, right } = padding;

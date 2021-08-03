@@ -11,7 +11,8 @@ import {
 } from 'src/common/interface';
 import { DrillDownProps } from 'src/components/drill-down';
 import { HeaderCfgProps } from 'src/components/header';
-import { Node, SpreadSheet, SpreadSheetTheme } from 'src/index';
+import { Node, SpreadSheet, ThemeCfg } from 'src/index';
+import { Event } from '@antv/g-canvas';
 
 export interface PartDrillDownInfo {
   // The data of drill down
@@ -48,7 +49,7 @@ export interface BaseSheetProps {
   isLoading?: boolean;
   partDrillDown?: PartDrillDown;
   adaptive?: boolean;
-  theme?: SpreadSheetTheme;
+  themeCfg?: ThemeCfg;
   header?: HeaderCfgProps;
   rowLevel?: number;
   colLevel?: number;

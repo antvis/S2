@@ -24,12 +24,10 @@ export const sortAction = (
         if (Number(a) && Number(b)) {
           return (Number(a) - Number(b)) * sort;
         }
-        // @ts-ignore
-        if (specialValues?.includes(a)) {
+        if (specialValues?.includes(a.toString())) {
           return -sort;
         }
-        // @ts-ignore
-        if (Number(a) && specialValues?.includes(b)) {
+        if (Number(a) && specialValues?.includes(b.toString())) {
           return sort;
         }
       }

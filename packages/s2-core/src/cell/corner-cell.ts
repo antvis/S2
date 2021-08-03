@@ -1,23 +1,24 @@
-import { getEllipsisText } from '../utils/text';
 import _ from 'lodash';
-import { isIphoneX } from '../utils/is-mobile';
+import { getEllipsisText } from '../utils/text';
+import { isIPhoneX } from '../utils/is-mobile';
+import { IShape } from '@antv/g-canvas';
+import { renderText } from '../utils/g-renders';
 import {
-  DEFAULT_PADDING,
   EXTRA_FIELD,
-  ICON_RADIUS,
-  KEY_SERIES_NUMBER_NODE,
   KEY_GROUP_CORNER_RESIZER,
   COLOR_DEFAULT_RESIZER,
+  KEY_TREE_ROWS_COLLAPSE_ALL,
 } from '../common/constant';
 import { HIT_AREA } from '../facet/header/base';
 import { CornerHeaderConfig } from '../facet/header/corner';
 import { ResizeInfo } from '../facet/header/interface';
-import { Node } from '..';
+import { GuiIcon, Node } from '..';
 import { BaseCell } from './base-cell';
-import { renderLine } from '../utils/g-renders';
 import { IGroup } from '@antv/g-canvas';
 export class CornerCell extends BaseCell<Node> {
   protected headerConfig: CornerHeaderConfig;
+
+  protected textShapes: IShape[];
 
   protected handleRestOptions(...options) {
     if (options.length === 0) {
@@ -31,39 +32,37 @@ export class CornerCell extends BaseCell<Node> {
   public update() {}
 
   protected initCell() {
+    this.textShapes = [];
     this.drawCellRect();
     this.drawCellText();
-    this.drawHotspot();
+    this.drawHotpot();
   }
 
   protected drawCellText() {
     const { position } = this.headerConfig;
-    const {
-      label,
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      key,
-      seriesNumberWidth,
-    } = this.meta;
+    const { label, x, y, width: cellWidth, height: cellHeight } = this.meta;
+
     if (_.isEqual(label, EXTRA_FIELD)) {
-      // dont render extra node
+      // don't render extra node
       return;
     }
-    const extraPadding = this.spreadsheet.isHierarchyTreeType()
-      ? ICON_RADIUS * 2 + DEFAULT_PADDING
+
+    const cornerTheme = _.get(this.theme, 'corner');
+    const textStyle = cornerTheme?.bolderText;
+    const iconStyle = cornerTheme?.icon;
+    const cellPadding = cornerTheme?.cell?.padding;
+    // 起点坐标为左上
+    textStyle.textAlign = 'left';
+    textStyle.textBaseline = 'middle';
+
+    // 当为树状结构下需要计算文本前收起展开的icon占的位置
+    const extraPadding = this.ifNeedIcon()
+      ? iconStyle?.size + iconStyle?.margin?.left + iconStyle?.margin?.right
       : 0;
-    const textStyle = _.get(
-      this.headerConfig,
-      'spreadsheet.theme.header.bolderText',
-    );
-    const seriesNumberW = seriesNumberWidth || 0;
-    const text = getEllipsisText(
-      label,
-      cellWidth - seriesNumberW - extraPadding,
-      textStyle,
-    );
+
+    const totalPadding = extraPadding + cellPadding?.left + cellPadding?.right;
+
+    const text = getEllipsisText(label, cellWidth - totalPadding, textStyle);
     const ellipseIndex = text.indexOf('...');
     let firstLine = text;
     let secondLine = '';
@@ -71,87 +70,114 @@ export class CornerCell extends BaseCell<Node> {
     // 存在文字的省略号 & 展示为tree结构
     if (ellipseIndex !== -1 && this.spreadsheet.isHierarchyTreeType()) {
       // 剪裁到 ... 最有点的后1个像素位置
-      const lastIndex = ellipseIndex + (isIphoneX() ? 1 : 0);
+      const lastIndex = ellipseIndex + (isIPhoneX ? 1 : 0);
       firstLine = label.substr(0, lastIndex);
       secondLine = label.slice(lastIndex);
       // 第二行重新计算...逻辑
       secondLine = getEllipsisText(
         secondLine,
-        cellWidth - seriesNumberW - extraPadding,
+        cellWidth - totalPadding,
         textStyle,
       );
     }
 
-    let textX = position.x + x + extraPadding + cellWidth / 2;
-    /* corner text align scene
-  - center:
-  1、is spreadsheet but not tree mode
-  2、is listSheet and node is series number
-  - left(but contains cell padding):  --- default
-  1、is spreadsheet and tree mode
-  - left(no cell padding)
-  1、is listSheet but node is not series number
-   */
-    let textAlign = 'center';
-    if (
-      !this.spreadsheet.isHierarchyTreeType() ||
-      key === KEY_SERIES_NUMBER_NODE
-    ) {
-      textAlign = 'center';
-    } else if (this.spreadsheet.isHierarchyTreeType()) {
-      textX = position.x + x + extraPadding;
-      textAlign = 'start';
-    }
+    const extraInfo = {
+      appendInfo: {
+        // 标记为行头文本，方便做链接跳转直接识别
+        isCornerHeaderText: true,
+        cellData: this.meta,
+      },
+    };
+
+    const textX = position.x + x + extraPadding + cellPadding.left;
     const textY =
       position.y +
       y +
       (_.isEmpty(secondLine) ? cellHeight / 2 : cellHeight / 4);
     // first line
-    this.addShape('text', {
-      attrs: {
-        x: textX,
-        y: textY,
-        text: firstLine,
-        textAlign,
-        ...textStyle,
-        appendInfo: {
-          isCornerHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
-          cellData: this.meta,
-        },
-      },
-    });
+    this.textShapes.push(
+      renderText(
+        [this.textShapes[0]],
+        textX,
+        textY,
+        firstLine,
+        textStyle,
+        this,
+        extraInfo,
+      ),
+    );
+
     // second line
     if (!_.isEmpty(secondLine)) {
-      this.addShape('text', {
-        attrs: {
-          x: textX,
-          y: position.y + y + cellHeight * 0.65,
-          text: secondLine,
-          ...textStyle,
-          appendInfo: {
-            isCornerHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
-            cellData: this.meta,
-          },
-        },
-      });
+      this.textShapes.push(
+        renderText(
+          [this.textShapes[1]],
+          textX,
+          position.y + y + cellHeight * 0.65,
+          secondLine,
+          textStyle,
+          this,
+          extraInfo,
+        ),
+      );
     }
+
+    // 如果为树状模式，角头第一个单元格前需要绘制收起展开的icon
+    if (this.ifNeedIcon()) {
+      this.drawIcon();
+    }
+  }
+
+  /**
+   * 绘制折叠展开的icon
+   */
+  private drawIcon() {
+    // 只有交叉表才有icon
+    const {
+      hierarchyCollapse,
+      height,
+      spreadsheet,
+      position,
+    } = this.headerConfig;
+    const iconStyle = _.get(this.theme, 'corner.icon');
+    const textStyle = _.get(this.theme, 'corner.text');
+    const colHeight = spreadsheet.options.style.colCfg.height;
+    const icon = new GuiIcon({
+      type: hierarchyCollapse ? 'plus' : 'MinusSquare',
+      x:
+        position.x +
+        this.theme.corner.cell?.padding?.left +
+        iconStyle?.margin?.left,
+      y: height - colHeight / 2 - iconStyle.size / 2,
+      width: iconStyle.size,
+      height: iconStyle.size,
+      fill: textStyle.fill,
+    });
+    icon.on('click', () => {
+      this.headerConfig.spreadsheet.store.set('scrollY', 0);
+      this.headerConfig.spreadsheet.emit(
+        KEY_TREE_ROWS_COLLAPSE_ALL,
+        hierarchyCollapse,
+      );
+    });
+    this.add(icon);
   }
 
   private drawCellRect() {
     const { position } = this.headerConfig;
-    const { x, y, width: cellWidth, height: cellHeight, label } = this.meta;
+    const { x, y, width: cellWidth, height: cellHeight } = this.meta;
     this.addShape('rect', {
       attrs: {
         x: position.x + x,
         y: position.y + y,
         width: cellWidth,
         height: cellHeight,
-        stroke: 'transparent',
+        opacity: this.theme.corner.cell.backgroundColorOpacity,
       },
     });
   }
 
-  private drawHotspot() {
+  private drawHotpot() {
     const prevResizer = this.spreadsheet.foregroundGroup.findById(
       KEY_GROUP_CORNER_RESIZER,
     );
@@ -182,5 +208,14 @@ export class CornerCell extends BaseCell<Node> {
         } as ResizeInfo,
       },
     });
+  }
+
+  private ifNeedIcon() {
+    // 批量折叠或者展开的icon，只存在树状结构的第一个cell前
+    return (
+      this.headerConfig.spreadsheet.isHierarchyTreeType() &&
+      this.headerConfig.spreadsheet.isPivotMode() &&
+      this.meta?.x === 0
+    );
   }
 }

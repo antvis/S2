@@ -4,7 +4,6 @@ import { GuiIcon } from '@/common/icons';
 import { i18n } from '@/common/i18n';
 import { DetailCornerCell } from '@/cell';
 import {
-  ICON_RADIUS,
   KEY_SERIES_NUMBER_NODE,
   KEY_GROUP_CORNER_RESIZER,
   COLOR_DEFAULT_RESIZER,
@@ -233,7 +232,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     }
     // 背景
     this.addBgRect();
-    this.addIcon();
     data.forEach((item: Node) => {
       let cell: Group;
       if (cornerCell) {
@@ -293,51 +291,10 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         height,
         fill: get(
           this.headerConfig,
-          'spreadsheet.theme.header.cell.cornerBackgroundColor',
+          'spreadsheet.theme.corner.cell.backgroundColor',
         ),
-        stroke: 'transparent',
       },
     });
-  }
-
-  /**
-   * 批量折叠或者展开，只有在树状结构有
-   */
-  protected addIcon() {
-    if (
-      this.headerConfig.spreadsheet.isHierarchyTreeType() &&
-      this.headerConfig.spreadsheet.isPivotMode()
-    ) {
-      // 只有交叉表才有icon
-      const {
-        hierarchyCollapse,
-        position,
-        height,
-        spreadsheet,
-      } = this.headerConfig;
-      const colHeight = spreadsheet.options.style.colCfg.height;
-      const icon = new GuiIcon({
-        type: hierarchyCollapse ? 'plus' : 'MinusSquare',
-        x: position.x,
-        y: height - colHeight / 2 - ICON_RADIUS,
-        width: ICON_RADIUS * 2,
-        height: ICON_RADIUS * 2,
-      });
-      icon.on('click', () => {
-        this.headerConfig.spreadsheet.store.set('scrollY', 0);
-        this.headerConfig.spreadsheet.emit(
-          KEY_TREE_ROWS_COLLAPSE_ALL,
-          hierarchyCollapse,
-        );
-      });
-      // this.gm = new GM(icon, {
-      //   gestures: ['Tap'],
-      // });
-      // this.gm.on('tap', () => {
-      //   spreadsheet.emit('spreadsheet:collapsedRows', { id, isCollapsed: !isCollapsed });
-      // });
-      this.add(icon);
-    }
   }
 
   private handleHotsSpotArea() {

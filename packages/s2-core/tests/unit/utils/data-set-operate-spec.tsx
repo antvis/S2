@@ -5,7 +5,7 @@ import {
 } from '@/utils/data-set-operate';
 
 describe('Data Set Operate Test', () => {
-  let data = [];
+  const data = [];
   describe('Dataset Operate Test That Data Has No undefined', () => {
     beforeEach(() => {
       const paths = [

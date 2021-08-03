@@ -1,4 +1,4 @@
-export { registerTheme, DefaultTheme } from './theme';
+export { getTheme } from './theme';
 export { registerIcon } from './common/icons';
 export { setEVALocale } from './common/i18n';
 export { Node } from './facet/layout/node';

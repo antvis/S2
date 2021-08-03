@@ -1,6 +1,7 @@
 /**
  * @Description: 请严格要求 svg 的 viewBox，若设计产出的 svg 不是此规格，请叫其修改为 '0 0 1024 1024'
  */
+import { TextAlign, TextBaseline } from '@/common/interface';
 import { Group, Shape } from '@antv/g-canvas';
 import { getIcon } from './factory';
 
@@ -92,13 +93,24 @@ export class GuiIcon extends Group {
    * 渲染
    */
   private render(): void {
-    const { x, y, width, height, type, fill } = this.cfg;
+    const {
+      x,
+      y,
+      width,
+      height,
+      type,
+      fill,
+      textAlign,
+      textBaseline,
+    } = this.cfg;
     const image = new Shape.Image({
       attrs: {
         x,
         y,
         width,
         height,
+        textAlign,
+        textBaseline,
       },
     });
 

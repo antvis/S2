@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { ZH_CN } from './zh_CN';
 import { EN_US } from './en_US';
 

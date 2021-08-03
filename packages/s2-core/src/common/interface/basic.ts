@@ -1,10 +1,18 @@
 import { Group } from '@antv/g-canvas';
-import { Hierarchy, SpreadSheet, Node, CustomTreeItem } from '../../index';
+import {
+  Hierarchy,
+  SpreadSheet,
+  Node,
+  TextAlign,
+  TextBaseline,
+  S2Options,
+} from '@/index';
+import { CustomTreeItem } from '@/common/interface';
 import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
-import { S2DataConfig, safetyDataConfig, Data, DataItem } from './s2DataConfig';
-import { S2Options, safetyOptions } from './s2Options';
+import { DataItem, S2DataConfig } from './s2DataConfig';
+import { Padding } from '../interface/theme';
 import { CustomInteraction } from './interaction';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
@@ -13,8 +21,6 @@ import {
   LayoutDataPosition,
   LayoutHierarchy,
 } from '@/common/interface/hooks';
-
-export { S2DataConfig, safetyDataConfig, S2Options, safetyOptions, Data };
 
 export type Formatter = (v: unknown) => string;
 
@@ -243,7 +249,7 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
-  padding?: [number, number, number, number];
+  padding?: Padding;
   lineHeight?: number;
 }
 
@@ -419,6 +425,27 @@ export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
   cellData?: T;
 }
 
+/**
+ * 单元格属性配置
+ */
+export interface CellBoxCfg {
+  // 起点坐标 x 值
+  x: number;
+  // 起点坐标 y 值
+  y: number;
+  // 单元格宽度
+  width: number;
+  // 单元格高度
+  height: number;
+  // 对应 g text textAlign 属性 https://g.antv.vision/zh/docs/api/shape/text#textalign
+  // 水平对齐方式, 默认 left
+  textAlign?: TextAlign;
+  // 对应 g text baseline 属性 https://g.antv.vision/zh/docs/api/shape/text#textbaseline
+  // 垂直对齐方式，默认 bottom
+  textBaseline?: TextBaseline;
+  // 单元格 padding 值
+  padding?: Padding;
+}
 export type SpreadsheetMountContainer = string | HTMLElement;
 
 export type SpreadsheetConstructor = [

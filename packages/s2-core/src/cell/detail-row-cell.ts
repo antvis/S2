@@ -17,8 +17,8 @@ export class DetailRowCell extends RowCell {
 
   protected getRowTextStyle(level, isTotals) {
     return level !== 0 && !isTotals
-      ? get(this.headerConfig, 'spreadsheet.theme.header.text')
-      : get(this.headerConfig, 'spreadsheet.theme.header.bolderText');
+      ? get(this.headerConfig, 'spreadsheet.theme.rowHeader.text')
+      : get(this.headerConfig, 'spreadsheet.theme.rowHeader.bolderText');
   }
 
   protected drawCellText() {

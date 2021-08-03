@@ -50,7 +50,7 @@ export const getFieldKeysByDimensionValues = (
   dimensionValues: string[] | undefined[],
   dimensions: string[] | undefined[],
 ) => {
-  let result = [];
+  const result = [];
   dimensionValues?.forEach((item, index) => {
     if (item === undefined) {
       if (dimensions[index]) {

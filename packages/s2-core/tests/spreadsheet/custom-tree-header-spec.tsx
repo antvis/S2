@@ -76,7 +76,6 @@ function MainLayout({ options, dataCfg }) {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
-        theme={{}}
         spreadsheet={getSpreadSheet}
       />
     </div>

@@ -42,7 +42,7 @@ export abstract class BaseInteraction {
   }
 
   /**
-   * Determine which group trigger the event
+   * Determine which group triggers the event
    *   public container: Canvas;  --- works all area in canvas
    *   backgroundGroup: Group;  --- forget it.
    *   panelGroup: Group;  --- only works in panel area
