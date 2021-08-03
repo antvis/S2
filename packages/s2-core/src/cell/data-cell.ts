@@ -13,7 +13,7 @@ import { DataItem } from '../common/interface/S2DataConfig';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
 import { getDerivedDataState } from '../utils/text';
 import { VALUE_FIELD } from '../common/constant';
-import { DerivedCell, BaseCell } from '.';
+import { BaseCell } from '.';
 import { SelectedStateName } from '@/common/constant/interaction';
 import { SpreadSheet } from 'src/sheet-type';
 import { getIconPosition } from '@/utils/condition';
@@ -114,11 +114,12 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected getContentAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
+    const { size, margin } = this.theme.dataCell.icon;
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,
     );
     const isIconExist = iconCondition && iconCondition.mapping;
-    const iconWidth = isIconExist ? ICON_SIZE + ICON_PADDING * 2 : 0;
+    const iconWidth = isIconExist ? size + margin.left + margin.right : 0;
     const isIconRight = getIconPosition(iconCondition) === 'right';
 
     return {
@@ -196,25 +197,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawTextShape() {
     const { x, y, height, width } = this.getContentAreaBBox();
-    const { valueField: originField, isTotals } = this.meta;
-    if (this.spreadsheet.isDerivedValue(originField)) {
-      const data = this.getDerivedData(originField, isTotals);
-      const dataValue = data.value as string;
-      // TODO 衍生指标改造完后可去掉
-      // 衍生指标的cell, 需要单独的处理
-      this.add(
-        new DerivedCell({
-          x,
-          y,
-          height,
-          width,
-          up: data.up,
-          text: dataValue,
-          spreadsheet: this.spreadsheet,
-        }),
-      );
-      return;
-    }
+    const { isTotals } = this.meta;
     // 其他常态数据下的cell
     //  the size of text condition is equal with valueFields size
     const textCondition = this.findFieldCondition(this.conditions?.text);
@@ -367,16 +350,15 @@ export class DataCell extends BaseCell<ViewMeta> {
       const attrs = this.mappingValue(iconCondition);
       const isIconRight = getIconPosition(iconCondition) === 'right';
       const { formattedValue } = this.getData();
+      const { margin, size } = this.theme.dataCell.icon;
       // icon only show when icon not empty and value not null(empty)
       if (!isEmpty(attrs?.icon) && formattedValue) {
         this.iconShape = new GuiIcon({
           type: attrs.icon,
-          x: isIconRight
-            ? x + width - ICON_PADDING - ICON_SIZE
-            : x + ICON_PADDING,
-          y: y + height / 2 - ICON_SIZE / 2,
-          width: ICON_SIZE,
-          height: ICON_SIZE,
+          x: isIconRight ? x + width - margin?.left - size : x + margin?.left,
+          y: y + height / 2 - size / 2,
+          width: size,
+          height: size,
           fill: attrs.fill,
         });
 

@@ -1,15 +1,21 @@
+import { IconTheme } from './../../../src/common/interface/theme';
 import {
   isPositive,
-  updateConditionsByDerivedValues,
+  updateConditionsByValues,
 } from './../../../src/utils/condition';
 import { getIconPosition } from '../../../src/utils/condition';
 
 describe('Condition Test', () => {
+  const iconTheme: IconTheme = {
+    upIconColor: 'red',
+    downIconColor: 'green',
+  };
+
   describe('getIconPositions Test', () => {
     test('should return right by default', () => {
       expect(
         getIconPosition({
-          fieldValue: 'value',
+          field: 'value',
           mapping: () => ({ fill: 'red' }),
         }),
       ).toEqual('right');
@@ -18,7 +24,7 @@ describe('Condition Test', () => {
     test(`should return left when it's left`, () => {
       expect(
         getIconPosition({
-          fieldValue: 'value',
+          field: 'value',
           iconPosition: 'left',
           mapping: () => ({ fill: 'red' }),
         }),
@@ -40,11 +46,11 @@ describe('Condition Test', () => {
 
   describe('updateConditionsByDerivedValues Test', () => {
     test(`should return origin conditions when there is not derived values`, () => {
-      expect(updateConditionsByDerivedValues({}, [])).toEqual({});
+      expect(updateConditionsByValues({}, [], iconTheme)).toEqual({});
     });
 
     test(`should return expected conditions when there is derived value without conflict`, () => {
-      expect(updateConditionsByDerivedValues({}, ['value'])).toEqual({
+      expect(updateConditionsByValues({}, ['value'], iconTheme)).toEqual({
         background: undefined,
         interval: undefined,
         icon: [
@@ -65,17 +71,18 @@ describe('Condition Test', () => {
 
     test(`should return expected conditions when there is derived value with conflict`, () => {
       expect(
-        updateConditionsByDerivedValues(
+        updateConditionsByValues(
           {
             icon: [
               {
                 field: 'value',
                 iconPosition: 'right',
-                mapping: () => {},
+                mapping: () => ({ fill: 'red' }),
               },
             ],
           },
           ['value'],
+          iconTheme,
         ),
       ).toEqual({
         background: undefined,

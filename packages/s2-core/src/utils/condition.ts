@@ -1,34 +1,41 @@
-import { Condition, Conditions, IconCondition } from '@/common/interface';
+import {
+  Condition,
+  Conditions,
+  IconCondition,
+  IconTheme,
+  Palette,
+} from '@/common/interface';
 import { isNumber } from 'lodash';
 
 export const getIconPosition = (condition: IconCondition) => {
   return condition?.iconPosition ?? 'right';
 };
 
-const UP_FILL_COLOR = '#F46649';
-const DOWN_FILL_COLOR = '#2AA491';
 const UP_ICON = 'CellUp';
 const DOWN_ICON = 'CellDown';
 
-const isPositive = (value: number | string): boolean => {
+export const isPositive = (value: number | string): boolean => {
   if (isNumber(value)) {
     return value >= 0;
   }
   return !/^-/.test(value);
 };
 
-const generateDerivedValueCondition = (derivedValues: string[] = []) => {
+const generateDefaultCondition = (
+  values: string[] = [],
+  iconTheme: IconTheme,
+) => {
   const iconCondition: IconCondition[] = [];
   const textCondition: Condition[] = [];
 
-  derivedValues.forEach((value) => {
+  values.forEach((value) => {
     iconCondition.push({
       field: value,
       iconPosition: 'left',
       mapping(fieldValue: string | number) {
         const positive = isPositive(fieldValue);
         return {
-          fill: positive ? UP_FILL_COLOR : DOWN_FILL_COLOR,
+          fill: positive ? iconTheme.upIconColor : iconTheme.downIconColor,
           icon: positive ? UP_ICON : DOWN_ICON,
         };
       },
@@ -38,7 +45,7 @@ const generateDerivedValueCondition = (derivedValues: string[] = []) => {
       mapping(fieldValue: string | number) {
         const positive = isPositive(fieldValue);
         return {
-          fill: positive ? UP_FILL_COLOR : DOWN_FILL_COLOR,
+          fill: positive ? iconTheme.upIconColor : iconTheme.downIconColor,
         };
       },
     });
@@ -59,16 +66,18 @@ const updateCondition = (
   return result;
 };
 
-export const updateConditionsByDerivedValues = (
+export const updateConditionsByValues = (
   conditions: Conditions = {},
-  derivedValues: string[] = [],
+  values: string[] = [],
+  iconTheme: IconTheme,
 ) => {
-  if (derivedValues.length === 0) {
+  if (values.length === 0) {
     return conditions;
   }
 
-  const { textCondition, iconCondition } = generateDerivedValueCondition(
-    derivedValues,
+  const { textCondition, iconCondition } = generateDefaultCondition(
+    values,
+    iconTheme,
   );
 
   const updatedConditions: Conditions = {

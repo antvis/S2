@@ -1,4 +1,3 @@
-import { updateConditionsByDerivedValues } from './../../utils/condition';
 import {
   CellCallback,
   Conditions,
@@ -155,9 +154,4 @@ export const defaultOptions = {
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>
-  merge({}, defaultOptions, options, {
-    conditions: updateConditionsByDerivedValues(
-      options.conditions,
-      options.useDefaultConditionValues,
-    ),
-  });
+  merge({}, defaultOptions, options);
