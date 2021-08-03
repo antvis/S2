@@ -1,6 +1,5 @@
 import { SimpleBBox, Group, Point } from '@antv/g-canvas';
 import { get, last, includes, isEmpty } from 'lodash';
-import { GuiIcon } from '@/common/icons';
 import { i18n } from '@/common/i18n';
 import { DetailCornerCell } from '@/cell';
 import {
@@ -9,13 +8,7 @@ import {
   COLOR_DEFAULT_RESIZER,
 } from '../../common/constant';
 import { BaseDataSet } from '@/data-set';
-import {
-  SpreadSheet,
-  Hierarchy,
-  Node,
-  CornerCell,
-  KEY_TREE_ROWS_COLLAPSE_ALL,
-} from '../../index';
+import { SpreadSheet, Hierarchy, Node, CornerCell } from '../../index';
 import {
   LayoutResult,
   S2Options,
