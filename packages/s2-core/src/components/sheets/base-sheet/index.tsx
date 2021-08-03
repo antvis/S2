@@ -41,7 +41,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     options,
     adaptive = true,
     header,
-    theme,
+    themeCfg,
     rowLevel,
     colLevel,
     isLoading,
@@ -322,7 +322,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     baseSpreadsheet.current.setDataCfg(safetyDataConfig(dataCfg));
     baseSpreadsheet.current.store.set('originalDataCfg', dataCfg);
     setOptions(baseSpreadsheet.current, props);
-    baseSpreadsheet.current.setTheme(theme);
+    baseSpreadsheet.current.setTheme(themeCfg);
     baseSpreadsheet.current.render();
     setLoading(false);
     setOwnSpreadsheet(baseSpreadsheet.current);
@@ -364,9 +364,9 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
 
   useEffect(() => {
     update(() => {
-      ownSpreadsheet.setTheme(theme);
+      ownSpreadsheet.setTheme(themeCfg);
     });
-  }, [theme]);
+  }, [JSON.stringify(themeCfg)]);
 
   useEffect(() => {
     if (!ownSpreadsheet) return;

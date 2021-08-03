@@ -114,7 +114,7 @@ export abstract class BaseFacet {
 
   protected centerFrame: Frame;
 
-  protected scrollBarSize = THEME.scrollBar.size;
+  protected scrollBarSize = getTheme({ name: 'default' }).scrollBar.size;
 
   protected scrollBarTheme = {
     default: {
@@ -207,7 +207,7 @@ export abstract class BaseFacet {
       false,
     );
     return showSeriesNumber
-      ? get(this.cfg, 'spreadsheet.theme.header.seriesNumberWidth')
+      ? get(this.cfg, 'spreadsheet.theme.rowHeader.seriesNumberWidth')
       : 0;
   }
 

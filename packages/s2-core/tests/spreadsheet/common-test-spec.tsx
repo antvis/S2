@@ -277,10 +277,6 @@ const getOptions = () => {
   };
 };
 
-const getTheme = () => {
-  return {};
-};
-
 function MainLayout(props) {
   return (
     <div>
@@ -288,7 +284,6 @@ function MainLayout(props) {
         dataCfg={props.dataCfg}
         adaptive={false}
         options={props.options}
-        theme={props.theme}
         spreadsheet={getSpreadSheet}
       />
     </div>

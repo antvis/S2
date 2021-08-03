@@ -61,10 +61,6 @@ const getOptions = () => {
   };
 };
 
-const getTheme = () => {
-  return {};
-};
-
 function MainLayout(props) {
   const [options, setOptions] = React.useState(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
@@ -76,7 +72,6 @@ function MainLayout(props) {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
-        theme={props.theme}
         spreadsheet={getSpreadSheet}
       />
     </div>
@@ -87,11 +82,7 @@ describe('buildTableHierarchy', () => {
   test('should generate nodes and hierarchy correctly', () => {
     act(() => {
       ReactDOM.render(
-        <MainLayout
-          dataCfg={getDataCfg()}
-          options={getOptions()}
-          theme={getTheme()}
-        />,
+        <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
         getContainer(),
       );
     });

@@ -37,7 +37,7 @@ import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
-import { SelectedStateName } from '@/common/constant/interaction';
+import { SelectedStateName } from '@/common/constant';
 
 /**
  * calculate aggregate value
