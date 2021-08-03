@@ -37,7 +37,7 @@ import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
-import { SelectedStateName } from '@/common/constant/interaction';
+import { SelectedStateName } from '@/common/constant';
 
 /**
  * calculate aggregate value
@@ -186,9 +186,12 @@ export const getFieldList = (
     concat([], fields),
     (field) => field !== EXTRA_FIELD && hoverData[field],
   );
-  const fieldList = map(currFields, (field: string): ListItem => {
-    return getListItem(spreadsheet, hoverData, field);
-  });
+  const fieldList = map(
+    currFields,
+    (field: string): ListItem => {
+      return getListItem(spreadsheet, hoverData, field);
+    },
+  );
   return fieldList;
 };
 
@@ -524,14 +527,17 @@ export const getStrategyDetailList = (
       ...getDerivedValues(spreadsheet, valueField),
     ];
 
-    return map(valuesField, (field: string): ListItem => {
-      if (isEqual(field, rightField)) {
-        // the value of the measure dimension is taken separately
-        return getListItem(spreadsheet, hoverData as any, hoverData[field]);
-      }
+    return map(
+      valuesField,
+      (field: string): ListItem => {
+        if (isEqual(field, rightField)) {
+          // the value of the measure dimension is taken separately
+          return getListItem(spreadsheet, hoverData as any, hoverData[field]);
+        }
 
-      return getListItem(spreadsheet, hoverData as any, field);
-    });
+        return getListItem(spreadsheet, hoverData as any, field);
+      },
+    );
   }
 };
 
@@ -553,7 +559,7 @@ export const getStrategyHeadInfo = (
     rows.splice(index + 1);
   }
   if (hoverData) {
-    const colFields = get(spreadsheet?.dataSet?.fields, 'cols', []);
+    const colFields = get(spreadsheet?.dataSet?.fields, 'columns', []);
     const colList = getFieldList(spreadsheet, colFields, hoverData);
     const rowList = getFieldList(spreadsheet, rows, hoverData);
 

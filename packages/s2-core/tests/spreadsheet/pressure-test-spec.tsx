@@ -117,10 +117,6 @@ const getOptions = () => {
   };
 };
 
-const getTheme = () => {
-  return {};
-};
-
 function MainLayout(props) {
   return (
     <div>
@@ -128,7 +124,6 @@ function MainLayout(props) {
         dataCfg={props.dataCfg}
         adaptive={false}
         options={props.options}
-        theme={props.theme}
         spreadsheet={getSpreadSheet}
       />
     </div>
@@ -142,11 +137,7 @@ describe('spreadsheet normal spec', () => {
 
   act(() => {
     ReactDOM.render(
-      <MainLayout
-        dataCfg={getDataCfg()}
-        options={getOptions()}
-        theme={getTheme()}
-      />,
+      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
       getContainer(),
     );
   });

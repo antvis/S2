@@ -2,13 +2,13 @@ import { sortAction } from '@/utils/sort-action';
 
 describe('Sort Action Test', () => {
   describe('Sort Action', () => {
-    test('test sort action with number arr', () => {
+    test('sort action with number arr', () => {
       const data = [1, 3, 2];
       expect(sortAction(data, 'ASC')).toEqual([1, 2, 3]);
       expect(sortAction(data, 'DESC')).toEqual([3, 2, 1]);
     });
 
-    test('test sort action with number-string and number arr', () => {
+    test('sort action with number-string and number arr', () => {
       const data1 = ['11', '3', 2];
       expect(sortAction(data1, 'ASC')).toEqual(['11', 2, '3']);
       expect(sortAction(data1, 'DESC')).toEqual(['3', 2, '11']);
@@ -18,7 +18,7 @@ describe('Sort Action Test', () => {
       expect(sortAction(data2, 'DESC')).toEqual(['3', '2', '11']);
     });
 
-    test('test sort action with string arr', () => {
+    test('sort action with string arr', () => {
       const data = ['a', 'c', 'b'];
       expect(sortAction(data, 'ASC')).toEqual(['a', 'b', 'c']);
       expect(sortAction(data, 'DESC')).toEqual(['c', 'b', 'a']);
@@ -32,7 +32,7 @@ describe('Sort Action Test', () => {
       expect(sortAction(data2, 'DESC')).toEqual(['啊', '2', '11']);
     });
 
-    test('test sort action with object arr', () => {
+    test('sort action with object arr', () => {
       const data1 = [{ a: 1 }, { a: 3 }, { a: 2 }];
       expect(sortAction(data1, 'ASC', 'a')).toEqual([
         { a: 1 },

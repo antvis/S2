@@ -13,17 +13,23 @@ export abstract class BaseCell<T> extends Group {
   // spreadsheet's theme
   protected theme: SpreadSheetTheme;
 
-  // 1、background control by icon condition
+  // background control by icon condition
   protected backgroundShape: IShape;
 
-  // 2、render interactive background,
+  // render interactive background,
   protected interactiveBgShape: IShape;
 
-  // 3、需要根据state改变样式的shape集合
+  // 需要根据state改变样式的shape集合
   // 需要这个属性的原因是在state clear时知道具体哪些shape要hide。不然只能手动改，比较麻烦
   protected stateShapes: IShape[] = [];
 
-  public constructor(meta: T, spreadsheet: SpreadSheet, ...restOptions) {
+  // protected actionIcons: GuiIcon[];
+
+  public constructor(
+    meta: T,
+    spreadsheet: SpreadSheet,
+    ...restOptions: unknown[]
+  ) {
     super({});
     this.meta = meta;
     this.spreadsheet = spreadsheet;
@@ -35,7 +41,7 @@ export abstract class BaseCell<T> extends Group {
   /**
    * Update cell's selected state
    */
-  public abstract update();
+  public abstract update(): void;
 
   public getMeta(): T {
     return this.meta;
@@ -49,25 +55,24 @@ export abstract class BaseCell<T> extends Group {
    * in case there are more params to be handled
    * @param options any type's rest params
    */
-  protected handleRestOptions(...options) {
+  protected handleRestOptions(...options: any) {
     // default do nothing
   }
 
   /**
    * Determine how to render this cell area
    */
-  protected abstract initCell();
+  protected abstract initCell(): void;
 
   // 根据当前state来更新cell的样式
-  public updateByState(stateName) {
-    const { stateTheme } = this.theme;
+  public updateByState() {
     const originCellType = this.spreadsheet.getCellType(this);
     // DataCell => dataCell
     // theme的key首字母是小写
     const cellType = `${originCellType
       .charAt(0)
       .toLowerCase()}${originCellType.slice(1)}`;
-    const stateStyles = get(stateTheme, [cellType, stateName]);
+    const stateStyles = get(this.theme, `${cellType}.cell`);
     each(stateStyles, (style, styleKey) => {
       if (styleKey) {
         // 找到对应的shape，并且找到cssStyple对应的shapestyle
@@ -84,7 +89,7 @@ export abstract class BaseCell<T> extends Group {
     });
   }
 
-  public showShapeUnderState(currentShape) {
+  public showShapeUnderState(currentShape: string) {
     this.setFillOpacity(this[currentShape], 1);
     this.setStrokeOpacity(this[currentShape], 1);
   }
@@ -96,11 +101,11 @@ export abstract class BaseCell<T> extends Group {
     });
   }
 
-  public setFillOpacity(shape, opacity) {
+  public setFillOpacity(shape: IShape, opacity: number) {
     updateShapeAttr(shape, 'fillOpacity', opacity);
   }
 
-  public setStrokeOpacity(shape, opacity) {
+  public setStrokeOpacity(shape: IShape, opacity: number) {
     updateShapeAttr(shape, 'strokeOpacity', opacity);
   }
 }

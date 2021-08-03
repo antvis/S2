@@ -1,10 +1,10 @@
-import { TotalClass } from 'src/facet/layout/total-class';
-import { TotalMeasure } from 'src/facet/layout/total-measure';
-import { Node } from 'src/facet/layout/node';
-import { CustomTreeItem, SpreadSheetFacetCfg } from 'src/common/interface';
-import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { SpreadSheet } from 'src/sheet-type';
-import { PivotMeta, PivotMetaValue } from '@/data-set/interface';
+import { TotalClass } from '@/facet/layout/total-class';
+import { TotalMeasure } from '@/facet/layout/total-measure';
+import { Node } from '@/facet/layout/node';
+import { CustomTreeItem, SpreadSheetFacetCfg } from '@/common/interface';
+import { Hierarchy } from '@/facet/layout/hierarchy';
+import { SpreadSheet } from '@/sheet-type';
+import { PivotMeta } from '@/data-set/interface';
 
 export type FileValue = string | TotalClass | TotalMeasure;
 

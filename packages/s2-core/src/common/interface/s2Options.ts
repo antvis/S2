@@ -17,11 +17,17 @@ import {
   TooltipCallback,
   Totals,
   MergedCellInfo,
-} from 'src/common/interface/index';
+} from '@/common/interface/basic';
 import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
 import { merge } from 'lodash';
 import { BaseDataSet } from 'src/data-set';
 import { SpreadSheet } from 'src/sheet-type';
+import {
+  LayoutArrange,
+  LayoutCoordinate,
+  LayoutDataPosition,
+  LayoutHierarchy,
+} from '@/common/interface/hooks';
 
 export interface S2Options {
   // canvas's width
@@ -77,19 +83,19 @@ export interface S2Options {
   readonly tooltipComponent?: JSX.Element;
   // custom data set
   readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
+  // the collection of row id and column id of cells which to be merged
+  readonly mergedCellsInfo?: MergedCellInfo[][];
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
   // eg: add/delete some nodes in specified position
-  readonly hierarchy?: HierarchyCallback;
+  layoutHierarchy?: LayoutHierarchy;
   // determine the order of every row/column tree branch
-  readonly layoutArrange?: LayoutArrangeCallback;
+  layoutArrange?: LayoutArrange;
   // determine the location(x,y,width,height eg..) of every node
-  layout?: LayoutCallback;
+  layoutCoordinate?: LayoutCoordinate;
   // determine the data of cells in Cartesian coordinates
-  readonly layoutResult?: LayoutResultCallback;
-
-  // the collection of row id and column id of cells which to be merged
-  readonly mergedCellsInfo?: MergedCellInfo[][];
+  layoutDataPosition?: LayoutDataPosition;
+  /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // extra options if needed
   [key: string]: any;
 }
@@ -101,7 +107,12 @@ export const defaultStyle = {
   cellCfg: {
     width: 96,
     height: 30,
-    padding: [0, 4, 0, 4],
+    padding: {
+      top: 8,
+      right: 12,
+      bottom: 8,
+      left: 12,
+    },
   },
   rowCfg: {
     width: 96,

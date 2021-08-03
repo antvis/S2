@@ -51,7 +51,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
 
   let fieldValues: FileValue[] = layoutArrange(
     dimValues,
-    spreadsheet,
+    facetCfg,
     parentNode,
     currentField,
   );
@@ -80,7 +80,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       value = fieldValue;
       nodeQuery = merge({}, query, { [currentField]: value });
     }
-    const uniqueId = generateId(parentNode.id, value, facetCfg);
+    const uniqueId = generateId(parentNode.id, value, spreadsheet);
     const collapsedRow = collapsedRows[uniqueId];
     const isCollapse =
       isBoolean(collapsedRow) && collapsedRow
@@ -101,8 +101,6 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       spreadsheet,
     });
 
-    layoutHierarchy(facetCfg, parentNode, node, hierarchy);
-
     const emptyChildren = isEmpty(pivotMetaValue?.children);
     if (emptyChildren || isTotals) {
       node.isLeaf = true;
@@ -111,7 +109,14 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       node.isTotals = true;
     }
 
-    if (!emptyChildren && !isCollapse && !isTotals) {
+    const expandCurrentNode = layoutHierarchy(
+      facetCfg,
+      parentNode,
+      node,
+      hierarchy,
+    );
+
+    if (!emptyChildren && !isCollapse && !isTotals && expandCurrentNode) {
       buildRowTreeHierarchy({
         level: level + 1,
         currentField: pivotMetaValue.childField,

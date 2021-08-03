@@ -27,8 +27,8 @@ import {
   Total,
   ShowProps,
   SpreadsheetMountContainer,
-  ThemeType,
-} from 'src/common/interface';
+  ThemeCfg,
+} from '@/common/interface';
 import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
@@ -39,7 +39,7 @@ import {
   KEY_GROUP_PANEL_GROUND,
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
-} from '../common/constant';
+} from '@/common/constant';
 import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
 import {
   Node,
@@ -56,10 +56,10 @@ import {
   RowTextClick,
   HoverEvent,
   MergedCellsClick,
-} from '../index';
-import { getTheme, registerTheme } from '../theme';
-import { BaseTooltip } from '../tooltip';
-import { BaseFacet } from 'src/facet';
+} from '@/index';
+import { getTheme } from '@/theme';
+import { BaseTooltip } from '@/tooltip';
+import { BaseFacet } from '@/facet';
 import { DebuggerUtil } from '@/common/debug';
 import { EventController } from '@/interaction/events/event-controller';
 import { DefaultInterceptEvent } from '@/interaction/events/types';
@@ -69,9 +69,9 @@ import {
   EventNames,
   InteractionNames,
   SelectedStateName,
-} from '@/common/constant/interaction';
-import { i18n } from 'src/common/i18n';
-import { PivotFacet, TableFacet } from 'src/facet';
+} from '@/common/constant';
+import { i18n } from '@/common/i18n';
+import { PivotFacet, TableFacet } from '@/facet';
 import CustomTreePivotDataSet from '@/data-set/custom-tree-pivot-data-set';
 
 const matrixTransform = ext.transform;
@@ -83,7 +83,7 @@ export class SpreadSheet extends EE {
   public dom: SpreadsheetMountContainer;
 
   // theme config
-  public theme: SpreadSheetTheme = getTheme('default');
+  public theme: SpreadSheetTheme;
 
   public interactions: Map<string, BaseInteraction> = new Map();
 
@@ -236,16 +236,9 @@ export class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setTheme(theme: SpreadSheetTheme, type: ThemeType = 'default'): void {
-    if (!getTheme(type)) {
-      if (theme) {
-        this.theme = registerTheme(type, theme);
-      } else {
-        throw new Error(`Theme type '${type}' not founded.`);
-      }
-    } else {
-      this.theme = merge({}, getTheme(type), theme);
-    }
+  public setTheme(themeCfg: ThemeCfg): void {
+    const theme = themeCfg?.theme || {};
+    this.theme = merge({}, getTheme(themeCfg), theme);
   }
 
   /**
@@ -440,7 +433,7 @@ export class SpreadSheet extends EE {
   public updateCellStyleByState() {
     const cells = this.getCurrentState().cells;
     cells.forEach((cell) => {
-      cell.updateByState(this.getCurrentState().stateName);
+      cell.updateByState();
     });
   }
 
@@ -572,77 +565,34 @@ export class SpreadSheet extends EE {
     });
   }
 
-  buildFacet = () => {
+  /**
+   * 避免每次新增、变更dataSet和options时，生成SpreadSheetFacetCfg
+   * 要多出定义匹配的问题，直接按需&部分拆分options/dataSet合并为facetCfg
+   */
+  getFacetCfgFromDataSetAndOptions = (): SpreadSheetFacetCfg => {
     const { fields, meta } = this.dataSet;
-    const { rows, columns, values, derivedValues } = fields;
-    const {
-      width,
-      height,
-      style,
-      hierarchyType,
-      hierarchyCollapse,
-      pagination,
-      dataCell,
-      cornerCell,
-      rowCell,
-      colCell,
-      frame,
-      layout,
-      cornerHeader,
-      layoutResult,
-      hierarchy,
-      layoutArrange,
-    } = this.options;
-
-    const {
-      cellCfg,
-      colCfg,
-      rowCfg,
-      collapsedRows,
-      collapsedCols,
-      treeRowsWidth,
-    } = style;
-
-    const defaultCell = (facet: ViewMeta) => this.getCorrectCell(facet);
-    // the new facetCfg of facet
-    const facetCfg: SpreadSheetFacetCfg = {
+    const { style, dataCell } = this.options;
+    // 默认单元格实现
+    const defaultCell = (facet: ViewMeta) => new DataCell(facet, this);
+    return {
+      ...fields,
+      ...style,
+      ...this.options,
+      meta,
       spreadsheet: this,
       dataSet: this.dataSet,
-      hierarchyType,
-      collapsedRows,
-      collapsedCols,
-      hierarchyCollapse,
-      meta: meta,
-      cols: columns,
-      rows,
-      cellCfg,
-      colCfg,
-      width,
-      height,
-      rowCfg,
-      treeRowsWidth,
-      pagination,
-      values,
-      derivedValues,
-      dataCell: dataCell || defaultCell,
-      cornerCell,
-      rowCell,
-      colCell,
-      frame,
-      layout,
-      cornerHeader,
-      layoutResult,
-      hierarchy,
-      layoutArrange,
-    };
-    this.facet?.destroy();
+      dataCell: dataCell ?? defaultCell,
+    } as SpreadSheetFacetCfg;
+  };
 
+  buildFacet = () => {
+    this.facet?.destroy();
+    const facetCfg = this.getFacetCfgFromDataSetAndOptions();
     if (this.isPivotMode()) {
       this.facet = new PivotFacet(facetCfg);
     } else {
       this.facet = new TableFacet(facetCfg);
     }
-
     // render facet
     this.facet.render();
   };
@@ -671,13 +621,6 @@ export class SpreadSheet extends EE {
         new ColRowMutiSelection(this),
       );
     }
-  }
-
-  protected getCorrectCell(facet: ViewMeta): DataCell {
-    return new DataCell(facet, this);
-    // return this.isValueInCols()
-    //   ? new DataCell(facet, this)
-    //   : new DataDerivedCell(facet, this);
   }
 
   protected bindEvents() {
@@ -793,7 +736,6 @@ export class SpreadSheet extends EE {
   };
 
   // 由于行头和列头的选择的模式并不是把一整行或者一整列的cell都setState
-
   private renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
     const { width, height } = this.options;
     const newWidth = Math.floor(width * ratio);

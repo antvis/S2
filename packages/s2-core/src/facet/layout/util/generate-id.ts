@@ -1,21 +1,21 @@
 import { get, isEmpty } from 'lodash';
 import { ID_SEPARATOR } from '@/common/constant';
-import { SpreadSheetFacetCfg } from '@/common/interface';
+import { SpreadSheet } from '@/sheet-type';
 /**
  * Row and column header node id generator.
  * Users can make specific rows or columns display or hidden according to the option configuration
  * @param parentId
  * @param value
- * @param cfg
+ * @param spreadsheet
  */
 
 export const generateId = (
   parentId: string,
   value: string,
-  cfg: SpreadSheetFacetCfg,
+  spreadsheet: SpreadSheet,
 ): string => {
   const id = `${parentId}${ID_SEPARATOR}${value}`;
-  const customHeaders = get(cfg, 'spreadsheet.options.customHeaderCells');
+  const customHeaders = get(spreadsheet, 'options.customHeaderCells');
   const mode = customHeaders?.mode;
   const cellLabels = customHeaders?.cellLabels;
 

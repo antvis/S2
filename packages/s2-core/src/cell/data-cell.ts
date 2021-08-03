@@ -1,9 +1,9 @@
-import { getEllipsisText } from '../utils/text';
+import { getEllipsisText, getTextPosition } from '../utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { map, find, get, isEmpty, first, includes } from 'lodash';
 import { GuiIcon } from '../common/icons';
 import { CellMapping, Condition, Conditions } from '../common/interface';
-import { DataItem } from '../common/interface/S2DataConfig';
+import { DataItem } from '../common/interface/s2DataConfig';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
 import { getDerivedDataState } from '../utils/text';
 import { VALUE_FIELD } from '../common/constant';
@@ -11,11 +11,6 @@ import { ViewMeta } from '../common/interface';
 import { DerivedCell, BaseCell } from '.';
 import { SelectedStateName } from '@/common/constant/interaction';
 import { SpreadSheet } from 'src/sheet-type';
-
-// default icon size
-const ICON_SIZE = 10;
-// default icon padding
-const ICON_PADDING = 2;
 
 /**
  * DataCell for panelGroup area
@@ -60,9 +55,9 @@ export class DataCell extends BaseCell<ViewMeta> {
       // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
       // 二者操作一致，function合并
       if (stateName === SelectedStateName.COL_SELECTED) {
-        this.changeCellStyleByState('colIndex', SelectedStateName.SELECTED);
+        this.changeCellStyleByState('colIndex');
       } else if (stateName === SelectedStateName.ROW_SELECTED) {
-        this.changeCellStyleByState('rowIndex', SelectedStateName.SELECTED);
+        this.changeCellStyleByState('rowIndex');
       } else if (stateName === SelectedStateName.HOVER && !isEmpty(cells)) {
         // 如果当前是hover，要绘制出十字交叉的行列样式
         const currentHoverCell = first(cells);
@@ -74,7 +69,7 @@ export class DataCell extends BaseCell<ViewMeta> {
             currentRowIndex === currentHoverCell?.getMeta().rowIndex) &&
           this !== currentHoverCell
         ) {
-          this.updateByState(SelectedStateName.HOVER_LINKAGE);
+          this.updateByState();
         } else if (this !== currentHoverCell) {
           // 当视图内的cell行列index与hover的cell 不一致，且不是当前hover的cell时，隐藏其他样式
           this.hideShapeUnderState();
@@ -113,12 +108,13 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected getLeftAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
+    const { icon } = this.theme.dataCell;
     const iconCondition = this.findFieldCondition(this.conditions?.icon);
     const isIconExist = iconCondition && iconCondition.mapping;
     return {
       x,
       y,
-      width: width - (isIconExist ? ICON_SIZE + ICON_PADDING * 2 : 0),
+      width: width - (isIconExist ? icon.size + icon.padding?.left : 0),
       height,
     };
   }
@@ -190,10 +186,13 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawTextShape() {
     const { x, y, height, width } = this.getLeftAreaBBox();
+
     const { valueField: originField, isTotals } = this.meta;
 
     if (this.spreadsheet.isDerivedValue(originField)) {
       const data = this.getDerivedData(originField, isTotals);
+      const dataValue = data.value as string;
+      // TODO 衍生指标改造完后可去掉
       // 衍生指标的cell, 需要单独的处理
       this.add(
         new DerivedCell({
@@ -202,7 +201,7 @@ export class DataCell extends BaseCell<ViewMeta> {
           height,
           width,
           up: data.up,
-          text: data.value,
+          text: dataValue,
           spreadsheet: this.spreadsheet,
         }),
       );
@@ -214,24 +213,34 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     const { formattedValue: text } = this.getData();
     const textStyle = isTotals
-      ? this.theme.view.bolderText
-      : this.theme.view.text;
+      ? this.theme.dataCell.bolderText
+      : this.theme.dataCell.text;
     let textFill = textStyle.fill;
     if (textCondition?.mapping) {
       textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
-    const padding = this.theme.view.cell.padding;
-    this.textShape = renderText(
-      this.textShape,
-      x + width - padding[1],
-      y + height / 2,
-      getEllipsisText(
-        `${text || '-'}`,
-        width - padding[3] - padding[1],
-        textStyle,
-      ),
+    const padding = this.theme.dataCell.cell.padding;
+    const ellipsisText = getEllipsisText(
+      `${text || '-'}`,
+      width - padding?.left - padding?.right,
       textStyle,
-      textFill,
+    );
+    const cellBoxCfg = {
+      x,
+      y,
+      height,
+      width,
+      textAlign: textStyle.textAlign,
+      textBaseline: textStyle.textBaseline,
+      padding,
+    };
+    const position = getTextPosition(cellBoxCfg);
+    this.textShape = renderText(
+      [this.textShape],
+      position.x,
+      position.y,
+      ellipsisText,
+      textStyle,
       this,
     );
   }
@@ -242,15 +251,15 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected drawBackgroundShape() {
     const { x, y, height, width } = this.meta;
 
-    let bgColor = this.theme.view.cell.backgroundColor;
+    let bgColor = this.theme.dataCell.cell.backgroundColor;
     const stroke = 'transparent';
 
-    const crossColor = this.theme.view.cell.crossColor;
+    const crossBackgroundColor = this.theme.dataCell.cell.crossBackgroundColor;
     // 隔行颜色的配置
-    if (this.spreadsheet.isPivotMode() && crossColor) {
+    if (this.spreadsheet.isPivotMode() && crossBackgroundColor) {
       if (this.meta.rowIndex % 2 === 0) {
         // 偶数行展示灰色背景，因为index是从0开始的
-        bgColor = crossColor;
+        bgColor = crossBackgroundColor;
       }
     }
     this.backgroundShape = renderRect(
@@ -343,6 +352,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawIconShape() {
     const { x, y, height, width } = this.meta;
+    const { icon } = this.theme.dataCell;
     const iconCondition = this.findFieldCondition(this.conditions?.icon);
     if (iconCondition && iconCondition.mapping) {
       const attrs = this.mappingValue(iconCondition);
@@ -351,10 +361,10 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (!isEmpty(attrs?.icon) && formattedValue) {
         this.iconShape = new GuiIcon({
           type: attrs.icon,
-          x: x + width - ICON_PADDING - ICON_SIZE,
-          y: y + height / 2 - ICON_SIZE / 2,
-          width: ICON_SIZE,
-          height: ICON_SIZE,
+          x: x + width - icon.margin.left - icon.size,
+          y: y + height / 2 - icon.size / 2,
+          width: icon.size,
+          height: icon.size,
           fill: attrs.fill,
         });
         this.add(this.iconShape);
@@ -379,7 +389,6 @@ export class DataCell extends BaseCell<ViewMeta> {
       const attrs = this.mappingValue(intervalCondition);
       if (attrs) {
         // interval shape exist
-
         // if (attrs.isCompare) {
         // value in range(compare) condition
         const scale = this.getIntervalScale(
@@ -387,7 +396,8 @@ export class DataCell extends BaseCell<ViewMeta> {
           attrs.maxValue,
         );
         const zero = scale(0); // 零点
-        const current = scale(this.meta.fieldValue as number); // 当前数据点
+        const fieldValue = this.meta.fieldValue as number;
+        const current = scale(fieldValue); // 当前数据点
         // } else {
         // the other conditions， keep old logic
         // TODO this logic need be changed!!!
@@ -408,12 +418,12 @@ export class DataCell extends BaseCell<ViewMeta> {
         // eslint-disable-next-line no-multi-assign
         stroke = fill = attrs.fill;
 
-        const bgHeight = this.theme.view.cell.intervalBgHeight;
+        const barChartHeight = this.theme.dataCell.cell.miniBarChartHeight;
         this.intervalShape = renderRect(
           x + width * zero,
-          y + height / 2 - bgHeight / 2,
+          y + height / 2 - barChartHeight / 2,
           width * (current - zero),
-          bgHeight,
+          barChartHeight,
           fill,
           stroke,
           this,
@@ -425,7 +435,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected getDerivedData(derivedValue: string, isTotals = false) {
     const data = this.meta.data;
     if (data) {
-      let value;
+      let value: string | number;
       if (isTotals) {
         value = get(data, [0, VALUE_FIELD]);
       } else {
@@ -447,7 +457,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   // dataCell根据state 改变当前样式，
-  private changeCellStyleByState(needGetIndexKey, changeStyleStateName) {
+  private changeCellStyleByState(needGetIndexKey) {
     const { cells } = this.spreadsheet.getCurrentState();
     const currentIndex = this.meta[needGetIndexKey];
     const selectedIndexes = map(
@@ -455,7 +465,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       (cell) => cell?.getMeta()[needGetIndexKey],
     );
     if (includes(selectedIndexes, currentIndex)) {
-      this.updateByState(changeStyleStateName);
+      this.updateByState();
     } else {
       this.hideShapeUnderState();
     }
@@ -467,11 +477,19 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawBorderShape() {
     const { x, y, height, width } = this.meta;
-    const borderColor = this.theme.view.cell.borderColor;
-    const borderWidth = this.theme.view.cell.borderWidth;
+    const { cell } = this.theme.dataCell;
 
     // horizontal border
-    renderLine(x, y, x + width, y, borderColor[0], borderWidth[0], this);
+    renderLine(
+      x,
+      y,
+      x + width,
+      y,
+      cell.horizontalBorderColor,
+      cell.horizontalBorderWidth,
+      this,
+      cell.horizontalBorderColorOpacity,
+    );
 
     // vertical border
     renderLine(
@@ -479,9 +497,10 @@ export class DataCell extends BaseCell<ViewMeta> {
       y,
       x + width,
       y + height,
-      borderColor[1],
-      borderWidth[1],
+      cell.verticalBorderColor,
+      cell.verticalBorderWidth,
       this,
+      cell.horizontalBorderColorOpacity,
     );
   }
 }

@@ -304,7 +304,6 @@ function MainLayout(props) {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
-        theme={props.theme}
         spreadsheet={getSpreadSheet}
       />
     </div>
