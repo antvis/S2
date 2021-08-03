@@ -1,7 +1,7 @@
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
-  GetCellData,
+  GetCellMeta,
   Node,
   S2DataConfig,
   S2Options,
@@ -127,8 +127,8 @@ const CustomLayoutCoordinate = (
 
 const CustomLayoutDataPosition = (
   spreadsheet: SpreadSheet,
-  getCellData: GetCellData,
-): GetCellData => {
+  getCellData: GetCellMeta,
+): GetCellMeta => {
   const getCellMeta = (rowIndex: number, colIndex: number): ViewMeta => {
     const viewMeta = getCellData(rowIndex, colIndex);
     // 更改0，0 坐标的值为 999

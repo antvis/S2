@@ -389,7 +389,7 @@ export interface ViewMeta {
   colId?: string;
   [key: string]: any;
 }
-export type GetCellData = (rowIndex: number, colIndex: number) => ViewMeta;
+export type GetCellMeta = (rowIndex: number, colIndex: number) => ViewMeta;
 
 export interface LayoutResult {
   colNodes: Node[];
@@ -398,7 +398,7 @@ export interface LayoutResult {
   rowsHierarchy: Hierarchy;
   rowLeafNodes: Node[];
   colLeafNodes: Node[];
-  getCellMeta: GetCellData;
+  getCellMeta: GetCellMeta;
   spreadsheet: SpreadSheet;
 }
 
