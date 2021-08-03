@@ -119,9 +119,9 @@ const CustomLayoutCoordinate = (
   rowNode: Node,
   colNode: Node,
 ) => {
-  // 东莞 这行高度调整为50
+  // 东莞 这行高度调整为70
   if (rowNode?.label === '东莞') {
-    rowNode.height = 50;
+    rowNode.height = 70;
   }
 };
 
@@ -223,7 +223,7 @@ describe('layout hooks spec', () => {
   test('layout coordinate hook', () => {
     const { rowLeafNodes } = innerSS.facet.layoutResult;
     const item = rowLeafNodes.find((rn) => rn.label === '东莞');
-    expect(item?.height).toEqual(50);
+    expect(item?.height).toEqual(70);
   });
 
   test('layout data position hook', () => {
