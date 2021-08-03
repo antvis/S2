@@ -5,7 +5,7 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
-import { diffIndexes, Indexes } from '../utils/indexes';
+import { diffIndexes, Indexes } from '@/utils/indexes';
 import {
   Formatter,
   LayoutResult,

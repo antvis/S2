@@ -46,10 +46,6 @@ export class ColCell extends BaseCell<Node> {
   }
 
   protected initCell() {
-    // when height == 0,draw nothing
-    if (this.meta.isHide()) {
-      return;
-    }
     // 1、draw rect background
     this.drawRectBackground();
     // 2、interactive background shape

@@ -500,7 +500,8 @@ export class PivotFacet extends BaseFacet {
     const rowHeaderWidth = Math.min(canvasW / 2, this.getTreeRowHeaderWidth());
     // calculate col width
     const colSize = Math.max(1, colLeafNodes.length);
-    return (canvasW - rowHeaderWidth) / colSize;
+    const { cellCfg } = this.cfg;
+    return Math.max(cellCfg.width, (canvasW - rowHeaderWidth) / colSize);
   }
 
   private getScrollColField(): string[] {

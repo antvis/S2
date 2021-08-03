@@ -57,9 +57,14 @@ export class Hierarchy {
   /**
    * Add new node
    * @param value
+   * @param insetIndex
    */
-  public pushNode(value: Node) {
-    this.allNodesWithoutRoot.push(value);
+  public pushNode(value: Node, insetIndex = -1) {
+    if (insetIndex === -1) {
+      this.allNodesWithoutRoot.push(value);
+    } else {
+      this.allNodesWithoutRoot.splice(insetIndex, 0, value);
+    }
   }
 
   public pushIndexNode(value: Node) {

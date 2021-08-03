@@ -65,7 +65,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       const extraSize = hideMeasure ? 2 : 1;
       isLeaf = level === fields.length - extraSize;
     }
-    const uniqueId = generateId(parentNode.id, value, facetCfg);
+    const uniqueId = generateId(parentNode.id, value, spreadsheet);
     // TODO need merge with collapsedRows
     const isCollapsed = _.isBoolean(collapsedCols[uniqueId])
       ? collapsedCols[uniqueId]
@@ -84,6 +84,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       hierarchy,
       query: nodeQuery,
       spreadsheet,
+      isLeaf: isLeaf || isCollapsed,
     });
 
     const expandCurrentNode = layoutHierarchy(

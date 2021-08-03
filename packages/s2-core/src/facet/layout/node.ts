@@ -23,6 +23,7 @@ export interface BaseNodeConfig {
   query?: Record<string, any>;
   belongsCell?: Group;
   inCollapseNode?: boolean;
+  isLeaf?: boolean;
   [key: string]: any;
 }
 
@@ -34,6 +35,8 @@ export interface BaseNodeConfig {
 export class Node {
   // node represent total measure
   public isTotalMeasure: boolean;
+
+  public config: BaseNodeConfig;
 
   constructor(cfg: BaseNodeConfig) {
     const {
@@ -55,6 +58,7 @@ export class Node {
       belongsCell,
       inCollapseNode,
       isTotalMeasure,
+      isLeaf,
     } = cfg;
     this.id = id;
     this.key = key;
@@ -74,9 +78,15 @@ export class Node {
     this.belongsCell = belongsCell;
     this.inCollapseNode = inCollapseNode;
     this.isTotalMeasure = isTotalMeasure;
-    if (parent) {
-      parent.children.push(this);
-    }
+    this.isLeaf = isLeaf;
+    // if (parent) {
+    //   parent.children.push(this);
+    // }
+    // 这里存在一个问题，由于目前所有内置成员变量都是public, 可以直接通过实例.属性 来更新
+    // 属性值，导致更新后有些无法同步到config中，后续再处理下
+    this.config = Object.getOwnPropertyNames(this).reduce((result, name) => {
+      return { ...result, [name]: this[name] };
+    }, {}) as BaseNodeConfig;
   }
 
   /**
@@ -280,18 +290,6 @@ export class Node {
       key: '',
       value: '',
     });
-  }
-
-  public hideRowNode() {
-    this.height = 0;
-  }
-
-  public hideColNode() {
-    this.width = 0;
-  }
-
-  public isHide() {
-    return this.height === 0 || this.width === 0;
   }
 
   public toJSON() {

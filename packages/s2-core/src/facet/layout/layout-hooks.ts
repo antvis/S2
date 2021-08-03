@@ -41,39 +41,49 @@ export const layoutHierarchy = (
   hierarchy: Hierarchy,
 ): boolean => {
   let expandCurrentNode = true;
+  const addNode = (node: Node, insetIndex = -1, hierarchyIndex = -1) => {
+    if (insetIndex === -1) {
+      // add in parent
+      parentNode.children.push(node);
+      hierarchy.pushNode(node);
+    } else {
+      parentNode.children.splice(insetIndex, 0, node);
+      hierarchy.pushNode(node, hierarchyIndex);
+    }
+  };
   if (facetCfg.layoutHierarchy) {
     const layoutHierarchy = facetCfg.layoutHierarchy(
       facetCfg.spreadsheet,
       currentNode,
     );
-    const deleteNode = _.isBoolean(layoutHierarchy?.delete)
-      ? false
-      : layoutHierarchy?.delete;
-    const parentChildren = currentNode.parent?.children;
-    if (!deleteNode) {
-      // push node directly
-      hierarchy.pushNode(currentNode);
+    if (layoutHierarchy) {
+      const deleteNode = !_.isBoolean(layoutHierarchy?.delete)
+        ? false
+        : layoutHierarchy?.delete;
+      expandCurrentNode = !deleteNode;
+      const { push, unshift } = layoutHierarchy;
+      let currentIndex = parentNode.children.length;
+      let hierarchyIndex = hierarchy.getNodes().length;
+      if (unshift && _.size(unshift) > 0) {
+        _.each(unshift, (v) => {
+          addNode(v);
+        });
+        currentIndex = parentNode.children.length;
+        hierarchyIndex = hierarchy.getNodes().length;
+      }
+      if (push && _.size(push) > 0) {
+        _.each(push, (v) => {
+          addNode(v);
+        });
+      }
+      if (!deleteNode) {
+        addNode(currentNode, currentIndex, hierarchyIndex);
+      }
     } else {
-      // remove from parent
-      _.remove(parentChildren, (child) => child === currentNode);
-      expandCurrentNode = false;
-    }
-    const { push, unshift } = layoutHierarchy;
-    if (push && _.size(push) > 0) {
-      _.each(push, (v) => {
-        hierarchy.pushNode(v);
-      });
-    }
-    if (unshift && _.size(unshift) > 0) {
-      _.each(unshift, (v) => {
-        hierarchy.pushNode(v);
-      });
-      // adjust the index of current node
-      _.remove(parentChildren, (child) => child === currentNode);
-      parentChildren.push(currentNode);
+      addNode(currentNode);
     }
   } else {
-    hierarchy.pushNode(currentNode);
+    addNode(currentNode);
   }
   return expandCurrentNode;
 };
@@ -90,7 +100,10 @@ export const layoutCoordinate = (
   colNode: Node,
 ) => {
   if (facetCfg?.layoutCoordinate) {
-    facetCfg?.layoutCoordinate(facetCfg.spreadsheet, rowNode, colNode);
+    // only leaf node's coordinates can be modified
+    if (rowNode?.isLeaf || colNode?.isLeaf) {
+      facetCfg?.layoutCoordinate(facetCfg.spreadsheet, rowNode, colNode);
+    }
   }
 };
 
@@ -104,5 +117,13 @@ export const layoutDataPosition = (
   layoutResult: LayoutResult,
 ): LayoutResult => {
   const dataPosition = facetCfg?.layoutDataPosition;
-  return dataPosition ? dataPosition(layoutResult) : layoutResult;
+  if (dataPosition) {
+    const { getCellMeta } = layoutResult;
+    const handledGetCellMeta = dataPosition(facetCfg.spreadsheet, getCellMeta);
+    return {
+      ...layoutResult,
+      getCellMeta: handledGetCellMeta,
+    };
+  }
+  return layoutResult;
 };

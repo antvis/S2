@@ -1,6 +1,6 @@
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type';
-import { LayoutResult } from '@/common/interface/basic';
+import { GetCellData } from '@/common/interface/basic';
 
 /**
  * determine the order of every row/column tree branch
@@ -39,4 +39,7 @@ export type LayoutCoordinate = (
 /**
  * determine the data of cells in Cartesian coordinates
  */
-export type LayoutDataPosition = (layoutResult: LayoutResult) => LayoutResult;
+export type LayoutDataPosition = (
+  spreadsheet: SpreadSheet,
+  getCellData: GetCellData,
+) => GetCellData;
