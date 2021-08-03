@@ -17,20 +17,16 @@ export class TableFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     const { dataSet, spreadsheet, cellCfg } = this.cfg;
 
-    const {
-      leafNodes: rowLeafNodes,
-      hierarchy: rowsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: true,
-      facetCfg: this.cfg,
-    });
-    const {
-      leafNodes: colLeafNodes,
-      hierarchy: colsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: false,
-      facetCfg: this.cfg,
-    });
+    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: true,
+        facetCfg: this.cfg,
+      });
+    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: false,
+        facetCfg: this.cfg,
+      });
 
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -43,7 +39,7 @@ export class TableFacet extends BaseFacet {
       const showSeriesNumber = this.getSeriesNumberWidth() > 0;
       const col = colLeafNodes[colIndex];
       const cellHeight =
-        cellCfg.height + cellCfg.padding[0] + cellCfg.padding[2];
+        cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
 
       let data;
 
@@ -186,7 +182,8 @@ export class TableFacet extends BaseFacet {
       );
       colWidth =
         measureTextWidth(maxLabel, textStyle) +
-        DEFAULT_PADDING * 3 +
+        cellCfg.padding?.left +
+        cellCfg.padding?.right +
         ICON_RADIUS * 2;
 
       if (col.field === SERIES_NUMBER_FIELD) {
@@ -202,7 +199,7 @@ export class TableFacet extends BaseFacet {
   protected getViewCellHeights() {
     const { dataSet, cellCfg } = this.cfg;
 
-    const cellHeight = cellCfg.height + cellCfg.padding[0] + cellCfg.padding[2];
+    const cellHeight = cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
 
     return {
       getTotalHeight: () => {

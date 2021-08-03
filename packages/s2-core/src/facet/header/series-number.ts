@@ -136,7 +136,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       attrs: {
         fill: get(
           this.headerConfig,
-          'spreadsheet.theme.header.cell.backgroundColor',
+          'spreadsheet.theme.rowHeader.cell.backgroundColor',
         ),
         stroke: 'transparent',
         x,
@@ -157,7 +157,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         y1: y,
         x2: position.x + width,
         y2: y,
-        stroke: this.headerConfig.spreadsheet.theme.header.cell.borderColor[0],
+        stroke:
+          this.headerConfig.spreadsheet.theme.corner.cell.horizontalBorderColor,
         lineWidth: 1,
       },
     });
@@ -177,14 +178,14 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const padding = getCellPadding();
     const labelWidth = measureTextWidth(
       label,
-      get(this.headerConfig, 'spreadsheet.theme.header.text'),
+      get(this.headerConfig, 'spreadsheet.theme.rowHeader.text'),
     );
     padding.left = Math.max(Math.abs((cellWidth - labelWidth) / 2), 4);
     padding.right = padding.left;
     const textStyle =
       isLeaf && !isTotals
-        ? get(this.headerConfig, 'spreadsheet.theme.header.text')
-        : get(this.headerConfig, 'spreadsheet.theme.header.bolderText');
+        ? get(this.headerConfig, 'spreadsheet.theme.rowHeader.text')
+        : get(this.headerConfig, 'spreadsheet.theme.rowHeader.bolderText');
     const textY = getAdjustPosition(
       y + padding.top,
       cellHeight - padding.top - padding.bottom,

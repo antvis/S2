@@ -6,7 +6,7 @@ export class DetailRowCell extends DataCell {
   protected drawTextShape() {
     const textShape = super.drawTextShape();
     const linkFieldIds = get(this.spreadsheet, 'options.linkFieldIds');
-    const textStyle = get(this.spreadsheet, 'theme.header.text');
+    const textStyle = get(this.spreadsheet, 'theme.rowHeader.bolderText');
     // handle link nodes
     if (linkFieldIds.includes(this.meta.key) && textShape) {
       const device = get(this.spreadsheet, 'options.style.device');

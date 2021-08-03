@@ -1,8 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2020-10-23
- */
-
 // debug info
 export const DEBUG_TRANSFORM_DATA = 'Transform Data';
 export const DEBUG_HEADER_LAYOUT = 'Header Layout';

@@ -116,7 +116,7 @@ const getOptions = (): S2Options => {
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
-    showSeriesNumber: true,
+    showSeriesNumber: false,
     freezeRowHeader: false,
     mode: 'pivot',
     valueInCols: true,
@@ -134,6 +134,9 @@ const getOptions = (): S2Options => {
         heightByField: {},
         colWidthType: 'compact',
       },
+      rowCfg: {
+        width: 200,
+      },
       cellCfg: {
         height: 32,
       },
@@ -146,10 +149,6 @@ const getOptions = (): S2Options => {
       return new CustomTooltip(spreadsheet);
     },
   };
-};
-
-const getTheme = () => {
-  return {};
 };
 
 function MainLayout(props) {
@@ -256,7 +255,6 @@ function MainLayout(props) {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
-        theme={props.theme}
         spreadsheet={getSpreadSheet}
       />
     </div>
@@ -270,11 +268,7 @@ describe('spreadsheet normal spec', () => {
 
   act(() => {
     ReactDOM.render(
-      <MainLayout
-        dataCfg={getDataCfg()}
-        options={getOptions()}
-        theme={getTheme()}
-      />,
+      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
       getContainer(),
     );
   });

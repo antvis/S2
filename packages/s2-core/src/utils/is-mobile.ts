@@ -11,10 +11,10 @@ export function isMobile(device?) {
   );
 }
 
-export function isIphoneX() {
+export function isIPhoneX() {
   // eslint-disable-next-line no-restricted-globals
   return (
-    /iphone/gi.test(navigator.userAgent) &&
+    /iPhone/gi.test(navigator.userAgent) &&
     window.screen.height === 812 &&
     window.screen.width === 375
   );

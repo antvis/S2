@@ -27,20 +27,16 @@ import { layoutNodes } from '@/facet/layout/layout-hooks';
 export class PivotFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     // 1、layout all nodes in rowHeader and colHeader
-    const {
-      leafNodes: rowLeafNodes,
-      hierarchy: rowsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: true,
-      facetCfg: this.cfg,
-    });
-    const {
-      leafNodes: colLeafNodes,
-      hierarchy: colsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: false,
-      facetCfg: this.cfg,
-    });
+    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: true,
+        facetCfg: this.cfg,
+      });
+    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: false,
+        facetCfg: this.cfg,
+      });
     // 2、calculate all related nodes coordinate
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -273,7 +269,7 @@ export class PivotFacet extends BaseFacet {
       const maxLabel = maxBy(allLabels, (label) =>
         measureTextWidthRoughly(label),
       );
-      const textStyle = spreadsheet.theme.header.bolderText;
+      const textStyle = spreadsheet.theme.colHeader.bolderText;
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
         col.field,
@@ -281,8 +277,8 @@ export class PivotFacet extends BaseFacet {
       );
       colWidth =
         measureTextWidth(maxLabel, textStyle) +
-        cellCfg.padding[1] +
-        cellCfg.padding[3];
+        cellCfg.padding?.left +
+        cellCfg.padding?.right;
     } else {
       // adaptive
       colWidth = cellCfg.width;
@@ -334,7 +330,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.colIndex = i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
         currentNode.height =
-          cellCfg.height + cellCfg.padding[0] + cellCfg.padding[2];
+          cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;  
         preLeafNode = currentNode;
         // mark row hierarchy's height
         rowsHierarchy.height += currentNode.height;
@@ -406,7 +402,7 @@ export class PivotFacet extends BaseFacet {
         measureTextWidthRoughly(maxLabel) > measureTextWidthRoughly(fieldName)
           ? maxLabel
           : fieldName;
-      const textStyle = spreadsheet.theme.header.bolderText;
+      const textStyle = spreadsheet.theme.rowHeader.bolderText;
       DebuggerUtil.getInstance().logger(
         'Max Label In Row:',
         field,
@@ -414,8 +410,8 @@ export class PivotFacet extends BaseFacet {
       );
       return (
         measureTextWidth(measureText, textStyle) +
-        cellCfg.padding[1] +
-        cellCfg.padding[3]
+        cellCfg.padding?.left +
+        cellCfg.padding?.right
       );
     }
     // adaptive
@@ -479,13 +475,13 @@ export class PivotFacet extends BaseFacet {
     const treeHeaderLabel = rows
       .map((key: string): string => dataSet.getFieldName(key))
       .join('/');
-    const textStyle = this.spreadsheet.theme.header.bolderText;
+    const textStyle = this.spreadsheet.theme.rowHeader.bolderText;
     // TODO icon radius and padding things
     const maxLabelWidth =
       measureTextWidth(treeHeaderLabel, textStyle) +
       ICON_RADIUS * 2 +
-      cellCfg.padding[1] +
-      cellCfg.padding[3];
+      cellCfg.padding?.left +
+      cellCfg.padding?.right;
     const width = Math.max(treeRowsWidth, maxLabelWidth);
     // NOTE: mark as user drag to calculate only one time
     rowCfg.treeRowsWidth = width;

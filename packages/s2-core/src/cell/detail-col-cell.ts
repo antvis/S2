@@ -2,7 +2,6 @@ import { getEllipsisText } from '../utils/text';
 import { renderRect } from '../utils/g-renders';
 import { DEFAULT_PADDING, EXTRA_FIELD, ICON_RADIUS } from '../common/constant';
 import { addDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
-import { DefaultTheme } from '../theme';
 import { ColCell } from '@/cell/col-cell';
 export class DetailColCell extends ColCell {
   protected drawCellText() {
@@ -17,7 +16,7 @@ export class DetailColCell extends ColCell {
     } = this.meta;
     const content = label;
     // 列头默认粗体
-    const textStyle = DefaultTheme.header.bolderText;
+    const textStyle = this.theme.colHeader.bolderText;
 
     const rightPadding = DEFAULT_PADDING * 2 + ICON_RADIUS * 2;
     const leftPadding = DEFAULT_PADDING;
@@ -57,7 +56,7 @@ export class DetailColCell extends ColCell {
       y,
       cellWidth,
       cellHeight,
-      DefaultTheme.header.cell.backgroundColor,
+      this.theme.colHeader.cell.backgroundColor,
       'rgba(0,0,0,0)',
       this,
     );

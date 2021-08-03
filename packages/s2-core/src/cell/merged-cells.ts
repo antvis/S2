@@ -4,7 +4,7 @@ import { drawObjectText, drawStringText } from 'src/utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { BaseCell } from './base-cell';
 import { isEmpty, isObject } from 'lodash';
-import { DataItem } from '../common/interface/S2DataConfig';
+import { DataItem } from '../common/interface/s2DataConfig';
 import { S2CellType } from 'src/common/interface/interaction';
 import { ViewMeta } from '../common/interface';
 
@@ -69,12 +69,12 @@ export class MergedCells extends BaseCell<ViewMeta> {
    */
   protected drawBackgroundShape() {
     const allPoints = getPolygonPoints(this.cells);
-    const cellTheme = this.theme.view.cell;
+    const cellTheme = this.theme.dataCell.cell;
     this.backgroundShape = renderPolygon(
       allPoints,
-      cellTheme.borderColor[0],
+      cellTheme.horizontalBorderColor,
       cellTheme.backgroundColor,
-      cellTheme.borderWidth[0],
+      cellTheme.horizontalBorderWidth,
       this,
     );
   }

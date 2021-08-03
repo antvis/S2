@@ -27,8 +27,8 @@ import {
   Total,
   ShowProps,
   SpreadsheetMountContainer,
-  ThemeType,
-} from 'src/common/interface';
+  ThemeCfg,
+} from '@/common/interface';
 import {
   DataCell,
   BaseCell,
@@ -46,7 +46,7 @@ import {
   KEY_GROUP_PANEL_GROUND,
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
-} from '../common/constant';
+} from '@/common/constant';
 import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
 import {
   Node,
@@ -63,10 +63,10 @@ import {
   RowTextClick,
   HoverEvent,
   MergedCellsClick,
-} from '../index';
-import { getTheme, registerTheme } from '../theme';
-import { BaseTooltip } from '../tooltip';
-import { BaseFacet } from 'src/facet';
+} from '@/index';
+import { getTheme } from '@/theme';
+import { BaseTooltip } from '@/tooltip';
+import { BaseFacet } from '@/facet';
 import { DebuggerUtil } from '@/common/debug';
 import { EventController } from '@/interaction/events/event-controller';
 import { DefaultInterceptEvent } from '@/interaction/events/types';
@@ -76,9 +76,9 @@ import {
   EventNames,
   InteractionNames,
   SelectedStateName,
-} from '@/common/constant/interaction';
-import { i18n } from 'src/common/i18n';
-import { PivotFacet, TableFacet } from 'src/facet';
+} from '@/common/constant';
+import { i18n } from '@/common/i18n';
+import { PivotFacet, TableFacet } from '@/facet';
 import CustomTreePivotDataSet from '@/data-set/custom-tree-pivot-data-set';
 
 const matrixTransform = ext.transform;
@@ -90,7 +90,7 @@ export class SpreadSheet extends EE {
   public dom: SpreadsheetMountContainer;
 
   // theme config
-  public theme: SpreadSheetTheme = getTheme('default');
+  public theme: SpreadSheetTheme;
 
   public interactions: Map<string, BaseInteraction> = new Map();
 
@@ -243,16 +243,9 @@ export class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setTheme(theme: SpreadSheetTheme, type: ThemeType = 'default'): void {
-    if (!getTheme(type)) {
-      if (theme) {
-        this.theme = registerTheme(type, theme);
-      } else {
-        throw new Error(`Theme type '${type}' not founded.`);
-      }
-    } else {
-      this.theme = merge({}, getTheme(type), theme);
-    }
+  public setTheme(themeCfg: ThemeCfg): void {
+    const theme = themeCfg?.theme || {};
+    this.theme = merge({}, getTheme(themeCfg), theme);
   }
 
   /**
@@ -447,7 +440,7 @@ export class SpreadSheet extends EE {
   public updateCellStyleByState() {
     const cells = this.getCurrentState().cells;
     cells.forEach((cell) => {
-      cell.updateByState(this.getCurrentState().stateName);
+      cell.updateByState();
     });
   }
 
