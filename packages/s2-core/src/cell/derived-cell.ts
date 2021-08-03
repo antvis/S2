@@ -32,7 +32,7 @@ export class DerivedCell extends Group {
 
   private initCell(params: DerivedCellParams) {
     const { x, y, text, up, spreadsheet, height, width } = params;
-    const { icon: iconCfg } = spreadsheet.theme.dataCell.icon;
+    const { icon: iconCfg } = spreadsheet.theme.dataCell;
     let icon = 'CellUp';
     if (up) {
       icon = 'CellUp';

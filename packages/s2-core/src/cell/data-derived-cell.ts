@@ -79,7 +79,7 @@ export class DataDerivedCell extends DataCell {
     }
 
     this.textShape = renderText(
-      this.textShape,
+      [this.textShape],
       mainX,
       mainY,
       mainText,
