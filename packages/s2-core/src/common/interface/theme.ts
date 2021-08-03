@@ -124,10 +124,12 @@ export interface SplitLine {
   showRightShadow?: boolean;
   /* 阴影宽度 */
   shadowWidth?: number;
-  /* 阴影线性渐变色，第一个为起始颜色，第二个为结束颜色 */
+  /* 阴影线性渐变色 */
   shadowColors?: {
-    start: string,
-    end: string
+    /* 线性变化左侧颜色 */
+    left: string,
+    /* 线性变化右侧颜色 */
+    right: string
   };
 }
 export interface DefaultCellTheme {

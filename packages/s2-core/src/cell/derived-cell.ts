@@ -88,7 +88,7 @@ export class DerivedCell extends Group {
     if (showIcon) {
       // 2. 红涨绿跌 icon
       const textWidth = measureTextWidth(renderText, textStyle);
-      const padding = iconCfg.margin.left;
+      const padding = iconCfg.margin?.left;
       const iconWH = iconCfg.size;
       const iconX = x + width - textWidth - padding - iconWH;
       const iconY = y + height / 2 - iconWH / 2;

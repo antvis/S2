@@ -240,8 +240,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
       showRightShadow: true,
       shadowWidth: 8,
       shadowColors: {
-        start: 'rgba(0,0,0,0)', 
-        end: 'rgba(0,0,0,0.04)'
+        left: 'rgba(0,0,0,0.04)', 
+        right: 'rgba(0,0,0,0)'
       },
     },
   } as SpreadSheetTheme;

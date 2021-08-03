@@ -406,7 +406,7 @@ export class RowCell extends BaseCell<Node> {
       const { cell, text } = this.theme.rowHeader;
       for (let i = 0; i < iconTypes.length; i++) {
         const iconRight =
-          (text.fontSize + cell.padding.left) * (iconTypes.length - i);
+          (text.fontSize + cell.padding?.left) * (iconTypes.length - i);
         const icon = new GuiIcon({
           type: iconTypes[i],
           x: x + width - iconRight,

@@ -114,7 +114,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return {
       x,
       y,
-      width: width - (isIconExist ? icon.size + icon.padding.left : 0),
+      width: width - (isIconExist ? icon.size + icon.padding?.left : 0),
       height,
     };
   }
@@ -222,7 +222,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     const padding = this.theme.dataCell.cell.padding;
     const ellipsisText = getEllipsisText(
       `${text || '-'}`,
-      width - padding.left - padding.right,
+      width - padding?.left - padding?.right,
       textStyle,
     );
     const cellBoxCfg = {

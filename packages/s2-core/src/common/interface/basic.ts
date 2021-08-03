@@ -12,6 +12,7 @@ import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
 import { DataItem, S2DataConfig } from './s2DataConfig';
+import { Padding } from '../interface/theme';
 import { CustomInteraction } from './interaction';
 import { ResizeInfo } from '@/facet/header/interface';
 
@@ -270,7 +271,7 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
-  padding?: [number, number, number, number];
+  padding?:Padding;
   lineHeight?: number;
 }
 
@@ -469,12 +470,7 @@ export interface CellBoxCfg {
   // 垂直对齐方式，默认 bottom
   textBaseline?: TextBaseline;
   // 单元格 padding 值
-  padding?: {
-    top?: number;
-    left?: number;
-    right?: number;
-    bottom?: number;
-  };
+  padding?: Padding;
 }
 export type SpreadsheetMountContainer = string | HTMLElement;
 
