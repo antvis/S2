@@ -5,7 +5,7 @@ import {
   PivotMeta,
   CellDataParams,
 } from 'src/data-set/interface';
-import { DerivedValue, Meta, S2DataConfig, Data } from 'src/common/interface';
+import { Meta, S2DataConfig, Data } from 'src/common/interface';
 import { i18n } from 'src/common/i18n';
 import { EXTRA_FIELD, VALUE_FIELD, TOTAL_VALUE } from 'src/common/constant';
 import {
@@ -357,36 +357,16 @@ export class PivotDataSet extends BaseDataSet {
     return result;
   };
 
-  /**
-   * Trans
-   * @param values
-   * @param derivedValues
-   */
-  getValues = (values: string[], derivedValues: DerivedValue[]) => {
-    const tempValue = [];
-    each(values, (v) => {
-      const findOne = find(derivedValues, (dv) => dv.valueField === v);
-      tempValue.push(v);
-      if (findOne) {
-        // derived value exist
-        const dvs = findOne.derivedValueField;
-        tempValue.push(...dvs);
-      }
-    });
-    return tempValue;
-  };
-
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
-    const { columns, rows, values, derivedValues, valueInCols } = fields;
+    const { columns, rows, values, valueInCols } = fields;
 
     let newColumns = columns;
     let newRows = rows;
-    let newValues = values;
+    const newValues = values;
     if (valueInCols) {
       // value in cols
       newColumns = uniq([...columns, EXTRA_FIELD]);
-      newValues = this.getValues(values, derivedValues);
     } else {
       // value in rows
       newRows = [...rows, EXTRA_FIELD];

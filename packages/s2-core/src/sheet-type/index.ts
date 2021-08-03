@@ -6,15 +6,14 @@ import {
   set,
   merge,
   clone,
-  find,
   isFunction,
   includes,
   debounce,
+  isEmpty,
 } from 'lodash';
 import { Store } from '@/common/store';
 import { ext } from '@antv/matrix-util';
 import {
-  DerivedValue,
   safetyDataConfig,
   OffsetConfig,
   Pagination,
@@ -73,6 +72,7 @@ import {
 import { i18n } from '@/common/i18n';
 import { PivotFacet, TableFacet } from '@/facet';
 import CustomTreePivotDataSet from '@/data-set/custom-tree-pivot-data-set';
+import { updateConditionsByValues } from '@/utils/condition';
 
 const matrixTransform = ext.transform;
 
@@ -239,6 +239,20 @@ export class SpreadSheet extends EE {
   public setTheme(themeCfg: ThemeCfg): void {
     const theme = themeCfg?.theme || {};
     this.theme = merge({}, getTheme(themeCfg), theme);
+    this.updateDefaultConditions();
+  }
+
+  private updateDefaultConditions() {
+    if (isEmpty(this.options.useDefaultConditionValues)) {
+      return;
+    }
+    const { conditions, useDefaultConditionValues } = this.options;
+    const updatedConditions = updateConditionsByValues(
+      conditions,
+      useDefaultConditionValues,
+      this.theme.dataCell.icon,
+    );
+    this.setOptions({ conditions: updatedConditions } as S2Options);
   }
 
   /**
@@ -282,13 +296,15 @@ export class SpreadSheet extends EE {
     return type === 'tree' || type === 'customTree';
   }
 
+  // 下面两个函数被其他很多地方用到，包括但不限于export功能，tooltip
+  // 那些部分逻辑不熟悉，担心导致大面积崩坏，先移除逻辑，保留一个壳子
+  // TODO: 彻底移除 derived 函数
   /**
    * 判断某个维度是否是衍生指标
    * @param field
    */
   public isDerivedValue(field: string): boolean {
-    const derivedValues = get(this, 'dataCfg.fields.derivedValues', []);
-    return find(derivedValues, (v) => includes(v.derivedValueField, field));
+    return false;
   }
 
   /**
@@ -296,17 +312,11 @@ export class SpreadSheet extends EE {
    * 分别检查每个 主指标和衍生指标
    * @param field
    */
-  public getDerivedValue(field: string): DerivedValue {
-    const derivedValues = get(this, 'dataCfg.fields.derivedValues', []);
-    return (
-      find(
-        derivedValues,
-        (v) => field === v.valueField || includes(v.derivedValueField, field),
-      ) || {
-        valueField: '',
-        derivedValueField: [],
-      }
-    );
+  public getDerivedValue(field: string) {
+    return {
+      valueField: '',
+      derivedValueField: [],
+    };
   }
 
   public isColAdaptive(): boolean {

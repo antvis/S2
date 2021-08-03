@@ -11,8 +11,6 @@ import {
 } from '../common/interface';
 import { DataItem } from '../common/interface/S2DataConfig';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
-import { getDerivedDataState } from '../utils/text';
-import { VALUE_FIELD } from '../common/constant';
 import { BaseCell } from '.';
 import { SelectedStateName } from '@/common/constant/interaction';
 import { SpreadSheet } from 'src/sheet-type';
@@ -425,30 +423,6 @@ export class DataCell extends BaseCell<ViewMeta> {
         );
       }
     }
-  }
-
-  protected getDerivedData(derivedValue: string, isTotals = false) {
-    const data = this.meta.data;
-    if (data) {
-      let value: string | number;
-      if (isTotals) {
-        value = get(data, [0, VALUE_FIELD]);
-      } else {
-        value = get(data, [0, derivedValue]);
-      }
-      const up = getDerivedDataState(value);
-      const formatter = this.spreadsheet.dataSet.getFieldFormatter(
-        derivedValue,
-      );
-      return {
-        value: formatter ? formatter(value) : value,
-        up,
-      };
-    }
-    return {
-      value: '',
-      up: false,
-    };
   }
 
   // dataCell根据state 改变当前样式，

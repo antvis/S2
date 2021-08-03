@@ -152,7 +152,6 @@ function MainLayout(props) {
         break;
     }
   };
-  console.log('datacfg', dataCfg);
   return (
     <div>
       <div style={{ display: 'inline-block', marginBottom: 20 }}>

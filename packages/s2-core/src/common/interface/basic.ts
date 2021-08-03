@@ -37,11 +37,33 @@ export interface Meta {
   readonly aggregation?: Aggregation;
 }
 
-export interface DerivedValue {
-  // which value that derived values belong to
-  valueField: string;
-  // value's derived value fields
-  derivedValueField: string[];
+
+/**
+ * Strategy mode's value type
+ * data's key size must be equals fields.length
+ * value can be empty
+ * FieldC(Last fields is real value field)
+ * example:
+ * {
+ *   fields: [fieldA, fieldB, fieldC],
+ *   data: [
+ *   {
+ *     fieldA: 'valueA',
+ *     fieldB: 'valueB',
+ *     fieldC: 'valueC',
+ *   }
+ *   {
+ *     fieldA: 'valueA',
+ *     fieldB: '',
+ *     fieldC: 'valueC',
+ *   }
+ *   ]
+ * }
+ */
+export interface Extra {
+  key: string;
+  collapse: boolean;
+  remark: string;
 }
 
 export interface Fields {
@@ -53,8 +75,6 @@ export interface Fields {
   columns?: string[];
   // value fields
   values?: string[];
-  // derived values
-  derivedValues?: DerivedValue[];
   // measure values in cols as new col, only works in 'pivot' mode
   valueInCols?: boolean;
 }
@@ -279,8 +299,6 @@ export interface ColCfg {
   // 列宽计算小计，明细数据采样的个数
   totalSample?: number;
   detailSample?: number;
-  // 列显示衍生指标icon
-  showDerivedIcon?: boolean;
   // 列宽取计算的第几个最大值
   maxSampleIndex?: number;
 }
@@ -317,9 +335,7 @@ export interface SpreadSheetFacetCfg {
   // rows fields
   rows?: string[];
   // values fields
-  values?: string[];
-  // 衍生指标
-  derivedValues?: DerivedValue[];
+  values: string[];
   // cross-tab area's cell config
   cellCfg?: CellCfg;
   // row cell config

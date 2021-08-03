@@ -94,7 +94,8 @@ const processValueInRow = (
   isFormat?: boolean,
 ): string => {
   const tempCell = [];
-  const { derivedValues } = sheetInstance.dataCfg.fields;
+  // TODO: 处理derivedValues
+  const derivedValues = [];
   const derivedValue = head(derivedValues);
   if (viewMeta) {
     const { data, fieldValue, valueField } = viewMeta;

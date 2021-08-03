@@ -290,6 +290,9 @@ function MainLayout(props) {
   );
 }
 
+function getTheme() {
+  return {};
+}
 describe('spreadsheet normal spec', () => {
   test('demo', () => {
     expect(1).toBe(1);

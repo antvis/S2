@@ -128,7 +128,6 @@ export const defaultStyle = {
     colWidthType: 'adaptive',
     totalSample: 10,
     detailSample: 30,
-    showDerivedIcon: true,
     maxSampleIndex: 1,
   },
   device: 'pc',
