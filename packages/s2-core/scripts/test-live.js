@@ -25,7 +25,7 @@ async function main() {
 
   const jestSpinner = ora('测试运行中...').start();
   try {
-    execSync(`DEBUG_MODE=1 jest ${selectedPath.path}`);
+    execSync(`DEBUG_MODE=1 npx jest ${selectedPath.path}`);
     jestSpinner.succeed('测试运行完成.');
   } catch (error) {
     jestSpinner.fail();

@@ -217,8 +217,11 @@ export class TableFacet extends BaseFacet {
 
       getIndexRange: (minHeight: number, maxHeight: number) => {
         const yMin = Math.floor(minHeight / cellHeight);
-        const yMax = Math.floor(maxHeight / cellHeight);
-
+        // 防止数组index溢出导致报错
+        const yMax =
+          maxHeight % cellHeight === 0
+            ? maxHeight / cellHeight - 1
+            : Math.floor(maxHeight / cellHeight);
         return {
           start: yMin,
           end: yMax,
