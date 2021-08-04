@@ -37,7 +37,6 @@ export interface Meta {
   readonly aggregation?: Aggregation;
 }
 
-
 /**
  * Strategy mode's value type
  * data's key size must be equals fields.length
@@ -102,8 +101,10 @@ export interface Condition {
   readonly field: string;
   readonly mapping: MappingFunction;
 }
+
+type IconPosition = 'left' | 'right';
 export interface IconCondition extends Condition {
-  readonly iconPosition?: 'left' | 'right'; // right by default
+  readonly iconPosition?: IconPosition; // right by default
 }
 
 export interface Conditions {

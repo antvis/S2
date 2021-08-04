@@ -1,9 +1,9 @@
-import { IconTheme } from './../../../src/common/interface/theme';
+import { IconTheme } from '@/common/interface/theme';
 import {
+  getIconPosition,
   isPositive,
   updateConditionsByValues,
-} from './../../../src/utils/condition';
-import { getIconPosition } from '../../../src/utils/condition';
+} from '@/utils/condition';
 
 describe('Condition Test', () => {
   const iconTheme: IconTheme = {
