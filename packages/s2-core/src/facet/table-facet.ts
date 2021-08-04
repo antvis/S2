@@ -2,11 +2,9 @@ import { LayoutResult, ViewMeta } from 'src/common/interface';
 import { SERIES_NUMBER_FIELD } from 'src/common/constant';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
-import { SORT_ICON_WIDTH } from 'src/facet/layout/util/add-detail-type-sort-icon';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Node } from 'src/facet/layout/node';
 import { get, maxBy } from 'lodash';
-import _ from 'lodash';
 import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 import { DebuggerUtil } from 'src/common/debug';
@@ -175,8 +173,8 @@ export class TableFacet extends BaseFacet {
       );
 
       const seriesNumberWidth = this.getSeriesNumberWidth();
-
-      const textStyle = get(spreadsheet, 'theme.rowHeader.bolderText');
+      const iconSize = get(spreadsheet, 'theme.colHeader.icon.size');
+      const textStyle = get(spreadsheet, 'theme.colHeader.bolderText');
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
         col.field,
@@ -186,7 +184,7 @@ export class TableFacet extends BaseFacet {
         measureTextWidth(maxLabel, textStyle) +
         cellCfg.padding?.left +
         cellCfg.padding?.right +
-        SORT_ICON_WIDTH;
+        iconSize;
 
       if (col.field === SERIES_NUMBER_FIELD) {
         colWidth = seriesNumberWidth;

@@ -4,7 +4,6 @@ import { getEllipsisText, getTextPosition } from '../utils/text';
 import { EXTRA_FIELD } from '../common/constant';
 import {
   addDetailTypeSortIcon,
-  SORT_ICON_WIDTH,
 } from '../facet/layout/util/add-detail-type-sort-icon';
 
 export class DetailColCell extends ColCell {
@@ -22,12 +21,13 @@ export class DetailColCell extends ColCell {
 
     const textStyle = get(this, 'theme.colHeader.bolderText');
     const padding = get(this, 'theme.colHeader.cell.padding');
-    const rightPadding = padding?.right + SORT_ICON_WIDTH;
+    const iconSize = get(this, 'theme.colHeader.icon.size');
+    const rightPadding = padding?.right + iconSize;
     const leftPadding = padding?.left;
 
-    const textAlign = get(this, 'theme.dataCell.text.textAlign');
-    const textBaseline = get(this, 'theme.dataCell.text.textBaseline');
-    textStyle.textBaseline = textBaseline;
+    const textAlign = get(textStyle, 'textAlign');
+    const textBaseline = get(textStyle, 'textBaseline');
+
     const cellBoxCfg = {
       x,
       y,
@@ -65,7 +65,7 @@ export class DetailColCell extends ColCell {
     addDetailTypeSortIcon(
       this,
       spreadsheet,
-      x + cellWidth - SORT_ICON_WIDTH,
+      x + cellWidth - iconSize,
       textY,
       key,
     );

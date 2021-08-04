@@ -185,7 +185,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   /**
    * Render cell main text and derived text
    */
-  protected drawTextShape(): IShape | void {
+  protected drawTextShape() {
     const { x, y, height, width } = this.getLeftAreaBBox();
 
     const { valueField: originField, isTotals } = this.meta;
@@ -244,7 +244,6 @@ export class DataCell extends BaseCell<ViewMeta> {
       textStyle,
       this,
     );
-    return this.textShape;
   }
 
   /**

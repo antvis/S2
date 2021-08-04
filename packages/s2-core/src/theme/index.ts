@@ -21,6 +21,7 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         fontWeight: isWindows() ? 'bold' : '520',
         fill: brandColors[0],
         opacity: 1,
+        textAlign: 'center',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -73,6 +74,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         fontWeight: isWindows() ? 'bold' : '520',
         fill: grayColors[6],
         opacity: 1,
+        textAlign: 'center',
+        textBaseline: 'middle',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -126,6 +129,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         fontWeight: isWindows() ? 'bold' : '520',
         fill: brandColors[0],
         opacity: 1,
+        textAlign: 'center',
+        textBaseline: 'middle',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -257,12 +262,4 @@ export const getTheme = (themeCfg: ThemeCfg) => {
       },
     },
   } as SpreadSheetTheme;
-};
-
-export const TABLE_THEME_FALLBACK = {
-  corner: {
-    bolderText: {
-      textAlign: 'center',
-    },
-  },
 };

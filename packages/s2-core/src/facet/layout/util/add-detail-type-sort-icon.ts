@@ -6,8 +6,6 @@ import { SpreadSheet } from '../../..';
 
 // 排序按钮的宽度
 export const SORT_ICON_SIZE = 8;
-// 排序按钮的总宽度（算上 padding）
-export const SORT_ICON_WIDTH = 12;
 
 // 明细表排序icon
 export function addDetailTypeSortIcon(
