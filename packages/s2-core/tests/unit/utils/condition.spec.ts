@@ -44,12 +44,12 @@ describe('Condition Test', () => {
     });
   });
 
-  describe('updateConditionsByDerivedValues Test', () => {
-    test(`should return origin conditions when there is not derived values`, () => {
+  describe('updateConditionsByValues Test', () => {
+    test(`should return origin conditions when there is not values`, () => {
       expect(updateConditionsByValues({}, [], iconTheme)).toEqual({});
     });
 
-    test(`should return expected conditions when there is derived value without conflict`, () => {
+    test(`should return expected conditions when there is value without conflict`, () => {
       expect(updateConditionsByValues({}, ['value'], iconTheme)).toEqual({
         background: undefined,
         interval: undefined,
@@ -69,7 +69,7 @@ describe('Condition Test', () => {
       });
     });
 
-    test(`should return expected conditions when there is derived value with conflict`, () => {
+    test(`should return expected conditions when there is value with conflict`, () => {
       expect(
         updateConditionsByValues(
           {

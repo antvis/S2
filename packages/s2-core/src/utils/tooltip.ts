@@ -161,15 +161,7 @@ export const getListItem = (
   // eslint-disable-next-line
   const value = formatter(valueField ? valueField : data[field]);
   let icon;
-  if (spreadsheet?.isDerivedValue(field)) {
-    if (data[field]) {
-      if (!getDerivedDataState(data[field])) {
-        icon = 'CellDown';
-      } else {
-        icon = 'CellUp';
-      }
-    }
-  }
+
   return {
     name,
     value,
@@ -255,7 +247,11 @@ export const getDetailList = (
         // filter empty
         valItem.push(getListItem(spreadsheet, hoverData, field));
       }
-      const derivedValue = spreadsheet?.getDerivedValue(field);
+      // TODO: 这里有没有考虑到一个场景，如何兼容原来的衍生指标不展示多项的情况？比如配置了日环比和日同比，只展示日环比，日同比放在tooltip里才展示
+      const derivedValue = {
+        derivedValueField: [],
+        displayDerivedValueField: [],
+      };
       if (spreadsheet?.isValueInCols()) {
         // the value hangs at the head of the column, match the displayed fields according to the metric itself
         // 1、multiple derivative indicators
@@ -498,10 +494,6 @@ export const getDerivedValues = (
   spreadsheet: SpreadSheet,
   valueField: string,
 ): string[] => {
-  const derivedValue = spreadsheet?.getDerivedValue(valueField);
-  if (derivedValue) {
-    return derivedValue.derivedValueField;
-  }
   return [];
 };
 

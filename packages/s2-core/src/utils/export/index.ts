@@ -107,7 +107,7 @@ const processValueInRow = (
       tempCell.push(mainFormatter(fieldValue));
     }
 
-    const currentDV = sheetInstance.getDerivedValue(valueField);
+    const currentDV = { derivedValueField: [] };
     if (currentDV && !isEmpty(currentDV.derivedValueField)) {
       // When the derivedValue under the dimensions.
       for (const dv of currentDV.derivedValueField) {

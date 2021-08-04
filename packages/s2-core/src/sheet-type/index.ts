@@ -296,29 +296,6 @@ export class SpreadSheet extends EE {
     return type === 'tree' || type === 'customTree';
   }
 
-  // 下面两个函数被其他很多地方用到，包括但不限于export功能，tooltip
-  // 那些部分逻辑不熟悉，担心导致大面积崩坏，先移除逻辑，保留一个壳子
-  // TODO: 彻底移除 derived 函数
-  /**
-   * 判断某个维度是否是衍生指标
-   * @param field
-   */
-  public isDerivedValue(field: string): boolean {
-    return false;
-  }
-
-  /**
-   * 获取任意度量对应的指标对象（包含主指标和衍生指标）
-   * 分别检查每个 主指标和衍生指标
-   * @param field
-   */
-  public getDerivedValue(field: string) {
-    return {
-      valueField: '',
-      derivedValueField: [],
-    };
-  }
-
   public isColAdaptive(): boolean {
     return (
       get(this, 'options.style.colCfg.colWidthType', 'adaptive') === 'adaptive'
