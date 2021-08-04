@@ -290,9 +290,6 @@ function MainLayout(props) {
   );
 }
 
-function getTheme() {
-  return {};
-}
 describe('spreadsheet normal spec', () => {
   test('demo', () => {
     expect(1).toBe(1);
@@ -300,11 +297,7 @@ describe('spreadsheet normal spec', () => {
 
   act(() => {
     ReactDOM.render(
-      <MainLayout
-        dataCfg={getDataCfg()}
-        options={getOptions()}
-        theme={getTheme()}
-      />,
+      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
       getContainer(),
     );
   });
