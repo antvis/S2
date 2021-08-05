@@ -153,7 +153,7 @@ const getOptions = () => {
 
 const wrapComponent = (text, component) => {
   return (
-    <div>
+    <div style={{ marginBottom: 30 }}>
       <div>{text}</div>
       <div style={{ height: '300px' }}>{component}</div>
     </div>
@@ -248,8 +248,8 @@ describe('data accuracy one measure spec', () => {
   });
   spreadsheet1.setDataCfg(getDataCfg(1));
   test('Totals + Details + Single Measure', () => {
-    expect(data1.length).toBe(16);
-    expect(spreadsheet1.dataSet.originData.length).toBe(16);
+    expect(data1.length).toBe(9);
+    expect(spreadsheet1.dataSet.originData.length).toBe(9);
     expect(spreadsheet1.dataSet.fields.valueInCols).toBe(true);
     expect(spreadsheet1.dataSet.fields.columns.includes(EXTRA_FIELD)).toBe(
       true,

@@ -7,12 +7,12 @@ export class DetailRowCell extends DataCell {
   protected drawTextShape() {
     const { x, y, height, width } = this.getLeftAreaBBox();
     const { formattedValue: text } = this.getData();
-    const textStyle = this.theme.rowHeader?.bolderText
-    const padding = this.theme.rowHeader?.cell?.padding
+    const textStyle = this.theme.rowHeader?.bolderText;
+    const padding = this.theme.rowHeader?.cell?.padding;
 
     const ellipsisText = getEllipsisText(
       `${text || '-'}`,
-      width - padding?.left  - padding?.right,
+      width - padding?.left - padding?.right,
       textStyle,
     );
     const cellBoxCfg = {
@@ -33,7 +33,6 @@ export class DetailRowCell extends DataCell {
       textStyle,
       this,
     );
-
 
     const linkFieldIds = get(this.spreadsheet, 'options.linkFieldIds');
 
