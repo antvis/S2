@@ -21,6 +21,7 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         fontWeight: isWindows() ? 'bold' : '520',
         fill: brandColors[0],
         opacity: 1,
+        textAlign: 'center',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -36,6 +37,18 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         backgroundColorOpacity: 1,
         hoverBackgroundColor: brandColors[5],
         selectedBackgroundColor: brandColors[5],
+        // ----------- border color --------------
+        horizontalBorderColor: grayColors[2],
+        horizontalBorderColorOpacity: 1,
+        verticalBorderColor: grayColors[2],
+        verticalBorderColorOpacity: 1,
+        hoverBorderColor: grayColors[6],
+        selectedBorderColor: grayColors[6],
+        // ----------- border width --------------
+        horizontalBorderWidth: 1,
+        verticalBorderWidth: 1,
+        hoverBorderWidth: 0,
+        selectedBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
           top: 12,
@@ -61,6 +74,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         fontWeight: isWindows() ? 'bold' : '520',
         fill: grayColors[6],
         opacity: 1,
+        textAlign: 'center',
+        textBaseline: 'middle',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -114,6 +129,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         fontWeight: isWindows() ? 'bold' : '520',
         fill: brandColors[0],
         opacity: 1,
+        textAlign: 'center',
+        textBaseline: 'middle',
       },
       text: {
         fontFamily: FONT_FAMILY,

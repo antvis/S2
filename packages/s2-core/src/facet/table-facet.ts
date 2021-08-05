@@ -1,10 +1,10 @@
 import { LayoutResult, ViewMeta } from 'src/common/interface';
-import { ICON_RADIUS, SERIES_NUMBER_FIELD } from 'src/common/constant';
+import { SERIES_NUMBER_FIELD } from 'src/common/constant';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Node } from 'src/facet/layout/node';
-import _ from 'lodash';
+import { get, maxBy } from 'lodash';
 import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 import { DebuggerUtil } from 'src/common/debug';
@@ -121,7 +121,7 @@ export class TableFacet extends BaseFacet {
 
   private getColNodeHeight(col: Node) {
     const { colCfg } = this.cfg;
-    const userDragWidth = _.get(colCfg, `heightByField.${col.key}`);
+    const userDragWidth = get(colCfg, `heightByField.${col.key}`);
     return userDragWidth || colCfg.height;
   }
 
@@ -154,8 +154,8 @@ export class TableFacet extends BaseFacet {
   private calculateColLeafNodesWidth(col: Node): number {
     const { cellCfg, colCfg, dataSet, spreadsheet } = this.cfg;
 
-    const userDragWidth = _.get(
-      _.get(colCfg, 'widthByFieldValue'),
+    const userDragWidth = get(
+      get(colCfg, 'widthByFieldValue'),
       `${col.value}`,
       col.width,
     );
@@ -168,13 +168,13 @@ export class TableFacet extends BaseFacet {
 
       const allLabels = datas.map((data) => `${data[col.key]}`)?.slice(0, 50);
       allLabels.push(colLabel);
-      const maxLabel = _.maxBy(allLabels, (label) =>
+      const maxLabel = maxBy(allLabels, (label) =>
         measureTextWidthRoughly(label),
       );
 
       const seriesNumberWidth = this.getSeriesNumberWidth();
-
-      const textStyle = spreadsheet.theme.header.bolderText;
+      const iconSize = get(spreadsheet, 'theme.colHeader.icon.size');
+      const textStyle = get(spreadsheet, 'theme.colHeader.bolderText');
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
         col.field,
@@ -184,7 +184,7 @@ export class TableFacet extends BaseFacet {
         measureTextWidth(maxLabel, textStyle) +
         cellCfg.padding?.left +
         cellCfg.padding?.right +
-        ICON_RADIUS * 2;
+        iconSize;
 
       if (col.field === SERIES_NUMBER_FIELD) {
         colWidth = seriesNumberWidth;

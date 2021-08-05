@@ -29,7 +29,14 @@ import {
   SpreadsheetMountContainer,
   ThemeCfg,
 } from '@/common/interface';
-import { DataCell, BaseCell, RowCell, ColCell, CornerCell } from '../cell';
+import {
+  DataCell,
+  BaseCell,
+  RowCell,
+  ColCell,
+  CornerCell,
+  DetailRowCell,
+} from '../cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -573,7 +580,16 @@ export class SpreadSheet extends EE {
     const { fields, meta } = this.dataSet;
     const { style, dataCell } = this.options;
     // 默认单元格实现
-    const defaultCell = (facet: ViewMeta) => new DataCell(facet, this);
+    const defaultCell = (facet: ViewMeta) => {
+      if (
+        this.isTableMode() &&
+        this.options.showSeriesNumber &&
+        facet.colIndex === 0
+      ) {
+        return new DetailRowCell(facet, this);
+      }
+      return new DataCell(facet, this);
+    };
     return {
       ...fields,
       ...style,

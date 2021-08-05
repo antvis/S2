@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import { measureTextWidth, getEllipsisText } from '../utils/text';
 import { GuiIcon } from '../common/icons';
 import { renderRect } from '../utils/g-renders';
-import { SpreadSheet } from 'src/sheet-type';
+import type { SpreadSheet } from 'src/sheet-type';
 
 /**
  * Create By Bruce Too
@@ -32,7 +32,7 @@ export class DerivedCell extends Group {
 
   private initCell(params: DerivedCellParams) {
     const { x, y, text, up, spreadsheet, height, width } = params;
-    const { icon: iconCfg } = spreadsheet.theme.dataCell.icon;
+    const { icon: iconCfg } = spreadsheet.theme.dataCell;
     let icon = 'CellUp';
     if (up) {
       icon = 'CellUp';
@@ -40,9 +40,9 @@ export class DerivedCell extends Group {
       icon = 'CellDown';
     }
 
-    if (SpreadSheet.DEBUG_ON) {
-      renderRect(x, y, width, height, '#f11', 0, this);
-    }
+    // if (SpreadSheet.DEBUG_ON) {
+    //   renderRect(x, y, width, height, '#f11', 0, this);
+    // }
 
     const showIcon = spreadsheet.options.style.colCfg.showDerivedIcon;
     const textStyle = get(spreadsheet, 'theme.dataCell.text');

@@ -406,7 +406,7 @@ export const getTextPosition = (cellBoxCfg: CellBoxCfg): Position => {
       textX = x + width - padding?.right;
       break;
     case 'center':
-      textX = x + width / 2;
+      textX = x + padding?.left + (width - padding?.left - padding?.right) / 2;
       break;
     default:
       textX = x + padding?.left;

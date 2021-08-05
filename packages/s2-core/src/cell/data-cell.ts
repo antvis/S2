@@ -8,9 +8,10 @@ import { renderLine, renderRect, renderText } from '../utils/g-renders';
 import { getDerivedDataState } from '../utils/text';
 import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
-import { DerivedCell, BaseCell } from '.';
+import { DerivedCell } from './derived-cell';
+import { BaseCell } from './base-cell';
 import { SelectedStateName } from '@/common/constant/interaction';
-import { SpreadSheet } from 'src/sheet-type';
+import type { SpreadSheet } from 'src/sheet-type';
 
 /**
  * DataCell for panelGroup area

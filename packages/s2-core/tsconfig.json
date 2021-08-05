@@ -17,8 +17,13 @@
       "src/*": ["./src/*"]
     },
     "lib": ["esnext", "dom"],
-    "plugins": [{ "transform": "typescript-transform-paths" }]
+    "plugins": [
+      {
+        "transform": "@zerollup/ts-transform-paths",
+        "exclude": ["*"]
+      }
+    ]
   },
 
-  "exclude": ["node_modules","coverage","esm","lib","dist"]
+  "exclude": ["node_modules", "coverage", "esm", "lib", "dist"]
 }

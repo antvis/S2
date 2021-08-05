@@ -257,7 +257,7 @@ export class RowCell extends BaseCell<Node> {
     const iconWidth =
       iconTheme.size + iconTheme.margin.left + iconTheme.margin.right;
 
-    const textStyle = this.getRowTextStyle(isTotals, isLeaf);
+    const textStyle = { ...this.getRowTextStyle(isTotals, isLeaf) };
     textStyle.textAlign = 'left';
     textStyle.textBaseline = 'top';
     const cellPadding = get(this.theme, 'rowHeader.cell.padding');

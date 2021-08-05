@@ -2,7 +2,6 @@ import { Group } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell';
-import { DetailRowCell } from '../../cell/detail-row-cell';
 import { Node } from '@/facet/layout/node';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
@@ -66,8 +65,6 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         if (isEmpty(cell)) {
           if (spreadsheet.isPivotMode()) {
             cell = new RowCell(item, spreadsheet, this.headerConfig);
-          } else {
-            cell = new DetailRowCell(item, spreadsheet, this.headerConfig);
           }
         }
         item.belongsCell = cell;
