@@ -2,9 +2,7 @@ import { ColCell } from '@/cell/col-cell';
 import { get } from 'lodash';
 import { getEllipsisText, getTextPosition } from '../utils/text';
 import { EXTRA_FIELD } from '../common/constant';
-import {
-  addDetailTypeSortIcon,
-} from '../facet/layout/util/add-detail-type-sort-icon';
+import { addDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
 
 export class DetailColCell extends ColCell {
   protected drawCellText() {

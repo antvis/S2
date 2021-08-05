@@ -21,6 +21,7 @@ interface HeaderParams {
   spreadsheet: SpreadSheet;
   facetCfg: SpreadSheetFacetCfg;
   fields: string[];
+  isRowHeader: boolean;
 }
 
 const handleGridRowColHierarchy = (params: HeaderParams) => {
@@ -31,11 +32,19 @@ const handleGridRowColHierarchy = (params: HeaderParams) => {
     facetCfg,
     hierarchy,
     fields,
+    isRowHeader,
   } = params;
-  // row grid hierarchy
-  const addTotalMeasureInTotal = !isValueInCols && moreThanOneValue;
-  // value in rows and only has one value(or none)
-  const addMeasureInTotalQuery = !isValueInCols && !moreThanOneValue;
+  // add new total measure in total node
+  let addTotalMeasureInTotal;
+  // add measure info in total query
+  let addMeasureInTotalQuery;
+  if (isRowHeader) {
+    addTotalMeasureInTotal = !isValueInCols && moreThanOneValue;
+    addMeasureInTotalQuery = !isValueInCols && !moreThanOneValue;
+  } else {
+    addTotalMeasureInTotal = isValueInCols && moreThanOneValue;
+    addMeasureInTotalQuery = isValueInCols && !moreThanOneValue;
+  }
   buildGridHierarchy({
     addTotalMeasureInTotal,
     addMeasureInTotalQuery,
@@ -138,6 +147,7 @@ export const buildHeaderHierarchy = (
     spreadsheet,
     facetCfg,
     fields: isRowHeader ? rows : columns,
+    isRowHeader,
   } as HeaderParams;
   if (isRowHeader) {
     handleRowHeaderHierarchy(headParams);
