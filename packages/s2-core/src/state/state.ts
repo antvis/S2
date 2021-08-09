@@ -7,10 +7,7 @@ export class State {
   protected spreadsheet: SpreadSheet;
 
   // TODO: stateStore改为多例模式
-  protected stateStore: SelectedState = {
-    stateName: '',
-    cells: [],
-  };
+  protected stateStore: SelectedState;
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -45,9 +42,6 @@ export class State {
         cell.hideShapeUnderState();
       });
     }
-    this.stateStore = {
-      stateName: '',
-      cells: [],
-    };
+    this.stateStore = {};
   }
 }

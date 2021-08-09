@@ -40,7 +40,7 @@ export class RowColResize extends BaseInteraction {
   }
 
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSEDOWN, (ev) => {
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, (ev) => {
       const shape: IGroup = ev.target;
       const info: ResizeInfo = shape.attr('appendInfo');
       if (get(info, 'isResizer')) {
@@ -114,7 +114,7 @@ export class RowColResize extends BaseInteraction {
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSEMOVE, (ev) => {
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, (ev) => {
       throttle(
         this.resizeMouseMove,
         33, // 30fps
@@ -124,15 +124,14 @@ export class RowColResize extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSEUP, () => {
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_UP, () => {
       if (this.resizeGroup) {
         this.resizeGroup.set('visible', false);
         const children = this.resizeGroup.getChildren();
         if (children) {
           const info = this.getResizeInfo();
-          const startPoint: ['M', number, number] = children[0]?.attr(
-            'path',
-          )[0];
+          const startPoint: ['M', number, number] =
+            children[0]?.attr('path')[0];
           const endPoint: ['M', number, number] = children[1]?.attr('path')[0];
 
           let eventType: EventType;

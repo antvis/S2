@@ -57,9 +57,9 @@ export class DataCell extends BaseCell<ViewMeta> {
       const firstCell = first(cells);
       // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
       // 二者操作一致，function合并
-      if (firstCell.type === CellTypes.COL_CELL) {
+      if (firstCell.cellType === CellTypes.COL_CELL) {
         this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
-      } else if (firstCell.type === CellTypes.ROW_CELL) {
+      } else if (firstCell.cellType === CellTypes.ROW_CELL) {
         this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
       } else if (stateName === InteractionStateName.HOVER && !isEmpty(cells)) {
         // 如果当前是hover，要绘制出十字交叉的行列样式

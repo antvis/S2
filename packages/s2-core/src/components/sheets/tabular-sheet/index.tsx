@@ -114,23 +114,23 @@ export const TabularSheet = (props: BaseSheetProps) => {
   };
 
   const bindEvent = () => {
-    baseSpreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (ev: Event) => {
       if (isFunction(onDataCellMouseUp)) {
         onDataCellMouseUp(getBaseCellData(ev));
       }
     });
-    baseSpreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.ROW_CELL_CLICK, (ev: Event) => {
       if (isFunction(onRowCellClick)) {
         onRowCellClick(getBaseCellData(ev));
       }
     });
-    baseSpreadsheet.on(S2Event.COLCELL_CLICK, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.COL_CELL_CLICK, (ev: Event) => {
       if (isFunction(onColCellClick)) {
         onColCellClick(getBaseCellData(ev));
       }
     });
 
-    baseSpreadsheet.on(S2Event.MERGEDCELLS_CLICK, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.MERGED_CELLS_CLICK, (ev: Event) => {
       if (isFunction(onMergedCellsClick)) {
         onMergedCellsClick(getBaseCellData(ev));
       }
@@ -138,10 +138,10 @@ export const TabularSheet = (props: BaseSheetProps) => {
   };
 
   const unBindEvent = () => {
-    baseSpreadsheet.off(S2Event.MERGEDCELLS_CLICK);
-    baseSpreadsheet.off(S2Event.ROWCELL_CLICK);
-    baseSpreadsheet.off(S2Event.COLCELL_CLICK);
-    baseSpreadsheet.off(S2Event.DATACELL_MOUSEUP);
+    baseSpreadsheet.off(S2Event.MERGED_CELLS_CLICK);
+    baseSpreadsheet.off(S2Event.ROW_CELL_CLICK);
+    baseSpreadsheet.off(S2Event.COL_CELL_CLICK);
+    baseSpreadsheet.off(S2Event.DATA_CELL_MOUSE_UP);
   };
 
   const buildSpreadSheet = () => {

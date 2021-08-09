@@ -7,7 +7,7 @@ import * as shapeStyle from '../state/shapeStyleMap';
 import { get, each, findKey, includes } from 'lodash';
 export abstract class BaseCell<T> extends Group {
   // used to determine the cell type
-  public type: CellTypes;
+  public cellType: CellTypes;
   // cell's data meta info
   protected meta: T;
 

@@ -13,7 +13,7 @@ export class RowColumnClick extends BaseEvent {
   }
 
   private bindRowCellClick() {
-    this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
+    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (ev: Event) => {
       if (
         this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.CLICK)
       ) {
@@ -60,7 +60,7 @@ export class RowColumnClick extends BaseEvent {
   }
 
   private bindColCellClick() {
-    this.spreadsheet.on(S2Event.COLCELL_CLICK, (ev: Event) => {
+    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (ev: Event) => {
       if (
         this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.CLICK)
       ) {

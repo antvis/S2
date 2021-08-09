@@ -16,7 +16,7 @@ export class HoverEvent extends BaseEvent {
   }
 
   private bindDataCellHover() {
-    this.spreadsheet.on(S2Event.DATACELL_HOVER, (ev: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (ev: Event) => {
       const cell = this.spreadsheet.getCell(ev.target);
       const meta: ViewMeta = cell.getMeta();
       this.spreadsheet.clearState();

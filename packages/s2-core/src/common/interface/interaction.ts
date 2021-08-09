@@ -6,8 +6,8 @@ import { InteractionStateName } from '../constant';
 export type S2CellType = DataCell | ColCell | CornerCell | RowCell;
 
 export interface SelectedState {
-  stateName: InteractionStateName | '';
-  cells: S2CellType[];
+  stateName?: InteractionStateName;
+  cells?: S2CellType[];
 }
 
 export type InteractionConstructor = new (

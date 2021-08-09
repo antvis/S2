@@ -13,7 +13,7 @@ export class DataCellClick extends BaseEvent {
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATACELL_CLICK, (ev: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (ev: Event) => {
       ev.stopPropagation();
       if (
         this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.CLICK)

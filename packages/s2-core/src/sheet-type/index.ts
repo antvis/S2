@@ -473,14 +473,13 @@ export class SpreadSheet extends EE {
   // 获取当前cell类型
   public getCellType(target) {
     const cell = this.getCell(target);
-    return cell?.type;
+    return cell?.cellType;
   }
 
   // 因此需要手动把当前行头列头选择下的cell样式重置
   public clearStyleIndependent() {
     const currentState = this.getCurrentState();
     if (
-      currentState.stateName === InteractionStateName.SELECTED ||
       currentState.stateName === InteractionStateName.SELECTED ||
       currentState.stateName === InteractionStateName.HOVER
     ) {
@@ -619,11 +618,11 @@ export class SpreadSheet extends EE {
         new RowColResize(this),
       );
       this.interactions.set(
-        InteractionNames.DATACELL_MUTI_SELECTION_INTERACTION,
+        InteractionNames.DATA_CELL_MULTI_SELECTION_INTERACTION,
         new DataCellMutiSelection(this),
       );
       this.interactions.set(
-        InteractionNames.COL_ROW_MUTI_SELECTION_INTERACTION,
+        InteractionNames.COL_ROW_MULTI_SELECTION_INTERACTION,
         new ColRowMutiSelection(this),
       );
     }
@@ -676,7 +675,7 @@ export class SpreadSheet extends EE {
   // 注册事件
   protected registerEvents() {
     this.events.clear();
-    this.events.set(EventNames.DATACELL_CLICK_EVENT, new DataCellClick(this));
+    this.events.set(EventNames.DATA_CELL_CLICK_EVENT, new DataCellClick(this));
     this.events.set(
       EventNames.CORNER_TEXT_CLICK_EVENT,
       new CornerTextClick(this),
@@ -687,7 +686,7 @@ export class SpreadSheet extends EE {
     );
     this.events.set(EventNames.ROW_TEXT_CLICK_EVENT, new RowTextClick(this));
     this.events.set(
-      EventNames.MERGEDCELLS_CLICK_EVENT,
+      EventNames.MERGED_CELLS_CLICK_EVENT,
       new MergedCellsClick(this),
     );
     this.events.set(EventNames.HOVER_EVENT, new HoverEvent(this));

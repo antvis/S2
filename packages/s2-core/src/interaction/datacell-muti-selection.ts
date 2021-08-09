@@ -16,7 +16,7 @@ export class DataCellMutiSelection extends BaseInteraction {
   }
 
   private bindKeyboardDown() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDDOWN, (ev: KeyboardEvent) => {
+    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_DOWN, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
         this.isMutiSelection = true;
       }
@@ -24,7 +24,7 @@ export class DataCellMutiSelection extends BaseInteraction {
   }
 
   private bindKeyboardUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDUP, (ev: KeyboardEvent) => {
+    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
         this.isMutiSelection = false;
         this.spreadsheet.interceptEvent.delete(DefaultInterceptEventType.CLICK);
@@ -33,7 +33,7 @@ export class DataCellMutiSelection extends BaseInteraction {
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATACELL_CLICK, (ev) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (ev) => {
       ev.stopPropagation();
       const cell = this.spreadsheet.getCell(ev.target);
       const meta = cell.getMeta();

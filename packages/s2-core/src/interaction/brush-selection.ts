@@ -63,7 +63,7 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEDOWN, (ev: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
       const oe = ev.originalEvent as any;
       this.previousPoint = { x: oe.layerX, y: oe.layerY };
       this.cells = this.spreadsheet.getPanelAllCells();
@@ -84,7 +84,7 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEMOVE, (ev) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (ev) => {
       if (this.phase) {
         // 屏蔽hover事件
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
@@ -163,7 +163,7 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (ev) => {
       if (this.phase === 2) {
         const oe = ev.originalEvent as any;
         this.endPoint = { x: oe.layerX, y: oe.layerY };
