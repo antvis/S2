@@ -112,16 +112,16 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       [KEY_PAGINATION]: (data: PaginationCfg) => {
         setTotal(data?.total);
       },
-      [S2Event.DATACELL_MOUSEUP]: (ev: GEvent) => {
+      [S2Event.DATA_CELL_MOUSE_UP]: (ev: GEvent) => {
         onDataCellMouseUp?.(getBaseCellData(ev));
       },
-      [S2Event.MERGEDCELLS_CLICK]: (ev: GEvent) => {
+      [S2Event.MERGED_CELLS_CLICK]: (ev: GEvent) => {
         onMergedCellsClick?.(getBaseCellData(ev));
       },
-      [S2Event.ROWCELL_CLICK]: (ev: GEvent) => {
+      [S2Event.ROW_CELL_CLICK]: (ev: GEvent) => {
         onRowCellClick?.(getBaseCellData(ev));
       },
-      [S2Event.COLCELL_CLICK]: (ev: GEvent) => {
+      [S2Event.COL_CELL_CLICK]: (ev: GEvent) => {
         onColCellClick?.(getBaseCellData(ev));
       },
       [KEY_ROW_NODE_BORDER_REACHED]: (targetRow: TargetLayoutNode) => {
@@ -151,10 +151,10 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       KEY_COL_NODE_BORDER_REACHED,
       KEY_CELL_SCROLL,
       KEY_LIST_SORT,
-      S2Event.MERGEDCELLS_CLICK,
-      S2Event.ROWCELL_CLICK,
-      S2Event.COLCELL_CLICK,
-      S2Event.DATACELL_MOUSEUP,
+      S2Event.MERGED_CELLS_CLICK,
+      S2Event.ROW_CELL_CLICK,
+      S2Event.COL_CELL_CLICK,
+      S2Event.DATA_CELL_MOUSE_UP,
     ].forEach((eventName) => {
       baseSpreadsheet.current.off(eventName);
     });

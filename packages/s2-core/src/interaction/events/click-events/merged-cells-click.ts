@@ -8,7 +8,7 @@ export class MergedCellsClick extends BaseEvent {
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.MERGEDCELLS_CLICK, (ev: Event) => {
+    this.spreadsheet.on(S2Event.MERGED_CELLS_CLICK, (ev: Event) => {
       ev.stopPropagation();
     });
   }

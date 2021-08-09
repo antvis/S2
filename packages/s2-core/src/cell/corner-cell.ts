@@ -8,6 +8,7 @@ import {
   KEY_GROUP_CORNER_RESIZER,
   COLOR_DEFAULT_RESIZER,
   KEY_TREE_ROWS_COLLAPSE_ALL,
+  CellTypes,
 } from '../common/constant';
 import { HIT_AREA } from '../facet/header/base';
 import { CornerHeaderConfig } from '../facet/header/corner';
@@ -32,6 +33,7 @@ export class CornerCell extends BaseCell<Node> {
   public update() {}
 
   protected initCell() {
+    this.type = CellTypes.COL_CELL;
     this.textShapes = [];
     this.drawCellRect();
     this.drawCellText();
@@ -149,12 +151,8 @@ export class CornerCell extends BaseCell<Node> {
    */
   private drawIcon() {
     // 只有交叉表才有icon
-    const {
-      hierarchyCollapse,
-      height,
-      spreadsheet,
-      position,
-    } = this.headerConfig;
+    const { hierarchyCollapse, height, spreadsheet, position } =
+      this.headerConfig;
     const iconStyle = _.get(this.theme, 'corner.icon');
     const textStyle = _.get(this.theme, 'corner.text');
     const colHeight = spreadsheet.options.style.colCfg.height;

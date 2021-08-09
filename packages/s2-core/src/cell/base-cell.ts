@@ -1,10 +1,13 @@
 import { Group, IShape } from '@antv/g-canvas';
 import { SpreadSheetTheme } from 'src/common/interface';
+import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import type { SpreadSheet } from '../sheet-type';
 import { updateShapeAttr } from '../utils/g-renders';
 import * as shapeStyle from '../state/shapeStyleMap';
 import { get, each, findKey, includes } from 'lodash';
 export abstract class BaseCell<T> extends Group {
+  // used to determine the cell type
+  public cellType: CellTypes;
   // cell's data meta info
   protected meta: T;
 
@@ -66,20 +69,21 @@ export abstract class BaseCell<T> extends Group {
   protected abstract initCell(): void;
 
   // 根据当前state来更新cell的样式
-  public updateByState() {
+  public updateByState(stateName: InteractionStateName) {
     const originCellType = this.spreadsheet.getCellType(this);
     // DataCell => dataCell
     // theme的key首字母是小写
     const cellType = `${originCellType
       .charAt(0)
       .toLowerCase()}${originCellType.slice(1)}`;
-    const stateStyles = get(this.theme, `${cellType}.cell`);
+    const stateStyles = get(this.theme, `${cellType}.cell.${stateName}`);
     each(stateStyles, (style, styleKey) => {
       if (styleKey) {
         // 找到对应的shape，并且找到cssStyple对应的shapestyle
         const currentShape = findKey(shapeStyle.shapeAttrsMap, (attrs) =>
           includes(attrs, styleKey),
         );
+        if (!currentShape) return;
         updateShapeAttr(
           this[currentShape],
           shapeStyle.shapeStyleMap[styleKey],

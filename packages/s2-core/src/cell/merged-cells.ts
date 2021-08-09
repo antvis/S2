@@ -4,6 +4,7 @@ import { drawObjectText, drawStringText } from 'src/utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { BaseCell } from './base-cell';
 import { isEmpty, isObject } from 'lodash';
+import { CellTypes } from '../common/constant';
 import { DataItem } from '../common/interface/s2DataConfig';
 import { S2CellType } from 'src/common/interface/interaction';
 import { ViewMeta } from '../common/interface';
@@ -43,6 +44,7 @@ export class MergedCells extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
+    this.type = CellTypes.MERGED_CELLS;
     // TODO：1、条件格式支持； 2、交互态扩展； 3、合并后的单元格文字布局及文字内容（目前参考Excel合并后只保留第一个单元格子的数据）
     this.drawBackgroundShape();
     // this.drawStateShapes();

@@ -1,6 +1,6 @@
 import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
-import { SelectedStateName } from '../common/constant/interaction';
+import { InteractionStateName } from '../common/constant/interaction';
 import { getTooltipData } from '../utils/tooltip';
 import { each, isEqual, find, isEmpty } from 'lodash';
 
@@ -16,7 +16,7 @@ export class DataCellMutiSelection extends BaseInteraction {
   }
 
   private bindKeyboardDown() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDDOWN, (ev: KeyboardEvent) => {
+    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_DOWN, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
         this.isMutiSelection = true;
       }
@@ -24,7 +24,7 @@ export class DataCellMutiSelection extends BaseInteraction {
   }
 
   private bindKeyboardUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDUP, (ev: KeyboardEvent) => {
+    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
         this.isMutiSelection = false;
         this.spreadsheet.interceptEvent.delete(DefaultInterceptEventType.CLICK);
@@ -33,7 +33,7 @@ export class DataCellMutiSelection extends BaseInteraction {
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATACELL_CLICK, (ev) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (ev) => {
       ev.stopPropagation();
       const cell = this.spreadsheet.getCell(ev.target);
       const meta = cell.getMeta();
@@ -46,12 +46,12 @@ export class DataCellMutiSelection extends BaseInteraction {
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
         // 先把之前的tooltip隐藏
         this.spreadsheet.hideTooltip();
-        this.spreadsheet.setState(cell, SelectedStateName.SELECTED);
+        this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
         this.spreadsheet.updateCellStyleByState();
         this.draw();
 
         const cellInfos = [];
-        if (stateName === SelectedStateName.SELECTED) {
+        if (stateName === InteractionStateName.SELECTED) {
           each(cells, (stateCell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
             const stateCellMeta = stateCell.getMeta();
