@@ -160,11 +160,12 @@ export class DataCell extends BaseCell<ViewMeta> {
       this.conditions?.icon,
     );
 
-    const iconCfg: IconCfg = {
+    const iconCfg: IconCfg = iconCondition && {
       size,
       margin,
       iconPosition: getIconLayoutPosition(iconCondition),
     };
+
     return getTextAndIconArea(bbox, iconCfg)[type];
   }
 
@@ -250,15 +251,13 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawTextShape() {
     const { width } = this.getBBoxByAreaType();
-    const { isTotals } = this.meta;
     // 其他常态数据下的cell
     //  the size of text condition is equal with valueFields size
     const textCondition = this.findFieldCondition(this.conditions?.text);
 
     const { formattedValue: text } = this.getData();
-    const textStyle = isTotals
-      ? this.theme.dataCell.bolderText
-      : this.theme.dataCell.text;
+    console.log('text', text, textCondition);
+    const textStyle = this.getTextStyle();
     if (textCondition?.mapping) {
       textStyle.fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
@@ -382,7 +381,6 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @private
    */
   protected drawIconShape() {
-    const { x, y, height, width } = this.meta;
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,
     );
