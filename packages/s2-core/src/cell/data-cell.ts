@@ -10,7 +10,6 @@ import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { DerivedCell } from './derived-cell';
 import { BaseCell } from './base-cell';
-import { ColCell, RowCell } from '@/cell';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import type { SpreadSheet } from 'src/sheet-type';
 
@@ -52,8 +51,10 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const state = this.spreadsheet.getCurrentState();
-    const { stateName, cells } = state;
-    if (cells.length) {
+    const stateName = state?.stateName;
+    const cells = state?.cells;
+
+    if (!isEmpty(cells)) {
       const firstCell = first(cells);
       // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
       // 二者操作一致，function合并
@@ -128,7 +129,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
-    this.type = CellTypes.DATA_CELL;
+    this.cellType = CellTypes.DATA_CELL;
     this.conditions = this.spreadsheet.options?.conditions;
     this.drawBackgroundShape();
     this.drawStateShapes();

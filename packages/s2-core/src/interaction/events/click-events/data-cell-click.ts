@@ -27,7 +27,7 @@ export class DataCellClick extends BaseEvent {
         this.spreadsheet.clearStyleIndependent();
         const currentState = this.spreadsheet.getCurrentState();
         if (
-          currentState.stateName === InteractionStateName.SELECTED &&
+          currentState?.stateName === InteractionStateName.SELECTED &&
           includes(currentState.cells, cell)
         ) {
           // 点击当前已选cell 则取消当前cell的选中状态

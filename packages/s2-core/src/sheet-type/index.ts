@@ -480,8 +480,8 @@ export class SpreadSheet extends EE {
   public clearStyleIndependent() {
     const currentState = this.getCurrentState();
     if (
-      currentState.stateName === InteractionStateName.SELECTED ||
-      currentState.stateName === InteractionStateName.HOVER
+      currentState?.stateName === InteractionStateName.SELECTED ||
+      currentState?.stateName === InteractionStateName.HOVER
     ) {
       this.getPanelAllCells().forEach((cell) => {
         cell.hideShapeUnderState();

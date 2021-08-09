@@ -39,7 +39,8 @@ export class DataCellMutiSelection extends BaseInteraction {
       const meta = cell.getMeta();
       if (this.isMutiSelection && meta) {
         const currentState = this.spreadsheet.getCurrentState();
-        const { stateName, cells } = currentState;
+        const stateName = currentState?.stateName;
+        const cells = currentState?.cells;
         this.spreadsheet.clearStyleIndependent();
         // 屏蔽hover和click
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
