@@ -33,7 +33,7 @@ export class CornerCell extends BaseCell<Node> {
   public update() {}
 
   protected initCell() {
-    this.type = CellTypes.COLCELL;
+    this.type = CellTypes.COL_CELL;
     this.textShapes = [];
     this.drawCellRect();
     this.drawCellText();

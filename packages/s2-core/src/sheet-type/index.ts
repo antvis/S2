@@ -474,19 +474,19 @@ export class SpreadSheet extends EE {
   public getCellType(target) {
     const cell = this.getCell(target);
     if (cell instanceof DataCell) {
-      return CellTypes.DATACELL;
+      return CellTypes.DATA_CELL;
     }
     if (cell instanceof RowCell) {
-      return CellTypes.ROWCELL;
+      return CellTypes.ROW_CELL;
     }
     if (cell instanceof ColCell) {
-      return CellTypes.COLCELL;
+      return CellTypes.COL_CELL;
     }
     if (cell instanceof CornerCell) {
-      return CellTypes.CORNERCELL;
+      return CellTypes.CORNER_CELL;
     }
     if (cell instanceof MergedCells) {
-      return CellTypes.MERGEDCELLS;
+      return CellTypes.MERGED_CELLS;
     }
     return '';
   }

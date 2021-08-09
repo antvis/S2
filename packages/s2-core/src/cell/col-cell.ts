@@ -51,7 +51,7 @@ export class ColCell extends BaseCell<Node> {
   }
 
   protected initCell() {
-    this.type = CellTypes.COLCELL;
+    this.type = CellTypes.COL_CELL;
     // 1、draw rect background
     this.drawRectBackground();
     // 2、interactive background shape

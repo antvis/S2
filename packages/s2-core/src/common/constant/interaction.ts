@@ -22,11 +22,11 @@ export enum InteractionStateName {
 }
 
 export enum CellTypes {
-  DATACELL = 'dataCell',
-  ROWCELL = 'rowCell',
-  COLCELL = 'colCell',
-  CORNERCELL = 'cornerCell',
-  MERGEDCELLS = 'mergedCells',
+  DATA_CELL = 'dataCell',
+  ROW_CELL = 'rowCell',
+  COL_CELL = 'colCell',
+  CORNER_CELL = 'cornerCell',
+  MERGED_CELLS = 'mergedCells',
 }
 
 export const HOVER_FOCUS_TIME = 800;
