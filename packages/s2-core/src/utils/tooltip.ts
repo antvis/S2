@@ -423,7 +423,7 @@ const mergeSummaries = (summaries) => {
   each(summaries, (summary) => {
     const summaryInResultIndex = findIndex(
       result,
-      (i) => i.name === summary.name,
+      (i) => i?.name === summary?.name,
     );
     if (summaryInResultIndex > -1) {
       result[summaryInResultIndex].value += summary.value;

@@ -9,7 +9,7 @@ import { Node } from '../index';
 const SHIFT_KEY = 'Shift';
 
 export class ColRowMutiSelection extends BaseInteraction {
-  private isMutiSelection = false;
+  private isMultiSelection = false;
 
   protected bindEvents() {
     this.bindKeyboardDown();
@@ -21,7 +21,7 @@ export class ColRowMutiSelection extends BaseInteraction {
   private bindKeyboardDown() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_DOWN, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
-        this.isMutiSelection = true;
+        this.isMultiSelection = true;
       }
     });
   }
@@ -29,15 +29,15 @@ export class ColRowMutiSelection extends BaseInteraction {
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
-        this.isMutiSelection = false;
+        this.isMultiSelection = false;
         this.spreadsheet.interceptEvent.delete(DefaultInterceptEventType.CLICK);
       }
     });
   }
 
   private bindColCellClick() {
-    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (ev) => {
-      if (this.isMutiSelection) {
+    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (ev: Event) => {
+      if (this.isMultiSelection) {
         // 屏蔽hover和click
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
         const cell = this.spreadsheet.getCell(ev.target);
@@ -78,7 +78,7 @@ export class ColRowMutiSelection extends BaseInteraction {
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (ev: Event) => {
-      if (this.isMutiSelection) {
+      if (this.isMultiSelection) {
         // 屏蔽hover和click
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
         const cell = this.spreadsheet.getCell(ev.target);
