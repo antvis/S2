@@ -1,26 +1,27 @@
-import { Group } from '@antv/g-canvas';
-import {
-  Hierarchy,
-  SpreadSheet,
-  Node,
-  TextAlign,
-  TextBaseline,
-  S2Options,
-} from '@/index';
 import { CustomTreeItem } from '@/common/interface';
-import { BaseDataSet } from 'src/data-set';
-import { Frame } from 'src/facet/header';
-import { BaseTooltip } from '../tooltip';
-import { DataItem, S2DataConfig } from './s2DataConfig';
-import { Padding } from '../interface/theme';
-import { CustomInteraction } from './interaction';
-import { ResizeInfo } from '@/facet/header/interface';
 import {
   LayoutArrange,
   LayoutCoordinate,
   LayoutDataPosition,
   LayoutHierarchy,
 } from '@/common/interface/hooks';
+import { ResizeInfo } from '@/facet/header/interface';
+import {
+  Hierarchy,
+  Node,
+  S2Options,
+  SpreadSheet,
+  TextAlign,
+  TextBaseline,
+} from '@/index';
+import { Group } from '@antv/g-canvas';
+import { BaseDataSet } from 'src/data-set';
+import { Frame } from 'src/facet/header';
+import { Padding } from '../interface/theme';
+import { BaseTooltip } from '../tooltip';
+import { CustomInteraction } from './interaction';
+import { DataItem, S2DataConfig } from './s2DataConfig';
+import { IconTheme } from './theme';
 
 export type Formatter = (v: unknown) => string;
 
@@ -106,6 +107,9 @@ type IconPosition = 'left' | 'right';
 export interface IconCondition extends Condition {
   readonly iconPosition?: IconPosition; // right by default
 }
+
+export type IconCfg = Pick<IconTheme, 'size' | 'margin'> &
+  Pick<IconCondition, 'iconPosition'>;
 
 export interface Conditions {
   readonly text?: Condition[];

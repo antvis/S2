@@ -1,6 +1,14 @@
-import { getEllipsisText, getTextPosition } from '../utils/text';
-import { SimpleBBox, IShape } from '@antv/g-canvas';
-import { map, find, get, isEmpty, first, includes } from 'lodash';
+import { SelectedStateName } from '@/common/constant/interaction';
+import { CellBoxCfg } from '@/common/interface';
+import { getIconLayoutPosition } from '@/utils/condition';
+import {
+  getContentArea,
+  getIconPosition,
+  getTextPosition,
+} from '@/utils/data-cell';
+import { IShape, SimpleBBox } from '@antv/g-canvas';
+import { find, first, get, includes, isEmpty, map } from 'lodash';
+import type { SpreadSheet } from 'src/sheet-type';
 import { GuiIcon } from '../common/icons';
 import {
   CellMapping,
@@ -11,10 +19,10 @@ import {
 } from '../common/interface';
 import { DataItem } from '../common/interface/S2DataConfig';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
+import { getEllipsisText } from '../utils/text';
+import { IconCfg } from './../common/interface/basic';
+import { getTextAndIconArea } from './../utils/data-cell';
 import { BaseCell } from './base-cell';
-import { SelectedStateName } from '@/common/constant/interaction';
-import type { SpreadSheet } from 'src/sheet-type';
-import { getIconPosition } from '@/utils/condition';
 
 /**
  * DataCell for panelGroup area
@@ -107,25 +115,72 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   /**
-   * Get left rest area size by icon condition
+   * @description get cell text style
+   * @protected
+   */
+  protected getTextStyle() {
+    const { isTotals } = this.meta;
+    const textStyle = isTotals
+      ? this.theme.dataCell.bolderText
+      : this.theme.dataCell.text;
+    return textStyle;
+  }
+
+  /**
+   * Get content area size that contains icon and text
    * @protected
    */
   protected getContentAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
+    const { padding } = this.theme.dataCell.cell;
+    const textStyle = this.getTextStyle();
+
+    const cfg: CellBoxCfg = {
+      x,
+      y,
+      height,
+      width,
+      textAlign: textStyle.textAlign,
+      textBaseline: textStyle.textBaseline,
+      padding,
+    };
+
+    return getContentArea(cfg);
+  }
+
+  /**
+   * @description get text or icon bbox
+   * @param {('text' | 'icon')} [type='text']
+   */
+  protected getBBoxByAreaType(type: 'text' | 'icon' = 'text') {
+    const bbox = this.getContentAreaBBox();
+
     const { size, margin } = this.theme.dataCell.icon;
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,
     );
-    const isIconExist = iconCondition && iconCondition.mapping;
-    const iconWidth = isIconExist ? size + margin.left + margin.right : 0;
-    const isIconRight = getIconPosition(iconCondition) === 'right';
 
-    return {
-      x: isIconRight ? x : x + iconWidth,
-      y,
-      width: width - iconWidth,
-      height,
+    const iconCfg: IconCfg = {
+      size,
+      margin,
+      iconPosition: getIconLayoutPosition(iconCondition),
     };
+    return getTextAndIconArea(bbox, iconCfg)[type];
+  }
+
+  protected getTextPosition() {
+    const textStyle = this.getTextStyle();
+    return getTextPosition(this.getBBoxByAreaType(), textStyle);
+  }
+
+  protected getIconPosition() {
+    const { size } = this.theme.dataCell.icon;
+    const textStyle = this.getTextStyle();
+    return getIconPosition(
+      this.getBBoxByAreaType('icon'),
+      size,
+      textStyle.textBaseline,
+    );
   }
 
   public setMeta(viewMeta: ViewMeta) {
@@ -194,7 +249,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Render cell main text and derived text
    */
   protected drawTextShape() {
-    const { x, y, height, width } = this.getContentAreaBBox();
+    const { width } = this.getBBoxByAreaType();
     const { isTotals } = this.meta;
     // 其他常态数据下的cell
     //  the size of text condition is equal with valueFields size
@@ -204,26 +259,13 @@ export class DataCell extends BaseCell<ViewMeta> {
     const textStyle = isTotals
       ? this.theme.dataCell.bolderText
       : this.theme.dataCell.text;
-    let textFill = textStyle.fill;
     if (textCondition?.mapping) {
-      textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
+      textStyle.fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
-    const padding = this.theme.dataCell.cell.padding;
-    const ellipsisText = getEllipsisText(
-      `${text || '-'}`,
-      width - padding?.left - padding?.right,
-      textStyle,
-    );
-    const cellBoxCfg = {
-      x,
-      y,
-      height,
-      width,
-      textAlign: textStyle.textAlign,
-      textBaseline: textStyle.textBaseline,
-      padding,
-    };
-    const position = getTextPosition(cellBoxCfg);
+
+    const ellipsisText = getEllipsisText(`${text || '-'}`, width, textStyle);
+
+    const position = this.getTextPosition();
     this.textShape = renderText(
       [this.textShape],
       position.x,
@@ -346,15 +388,14 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
     if (iconCondition && iconCondition.mapping) {
       const attrs = this.mappingValue(iconCondition);
-      const isIconRight = getIconPosition(iconCondition) === 'right';
+      const position = this.getIconPosition();
       const { formattedValue } = this.getData();
-      const { margin, size } = this.theme.dataCell.icon;
+      const { size } = this.theme.dataCell.icon;
       // icon only show when icon not empty and value not null(empty)
       if (!isEmpty(attrs?.icon) && formattedValue) {
         this.iconShape = new GuiIcon({
+          ...position,
           type: attrs.icon,
-          x: isIconRight ? x + width - margin?.right - size : x + margin?.left,
-          y: y + height / 2 - size / 2,
           width: size,
           height: size,
           fill: attrs.fill,

@@ -1,6 +1,6 @@
 import { IconTheme } from '@/common/interface/theme';
 import {
-  getIconPosition,
+  getIconLayoutPosition,
   isPositive,
   updateConditionsByValues,
 } from '@/utils/condition';
@@ -11,10 +11,10 @@ describe('Condition Test', () => {
     downIconColor: 'green',
   };
 
-  describe('getIconPositions Test', () => {
+  describe('getIconLayoutPosition Test', () => {
     test('should return right by default', () => {
       expect(
-        getIconPosition({
+        getIconLayoutPosition({
           field: 'value',
           mapping: () => ({ fill: 'red' }),
         }),
@@ -23,7 +23,7 @@ describe('Condition Test', () => {
 
     test(`should return left when it's left`, () => {
       expect(
-        getIconPosition({
+        getIconLayoutPosition({
           field: 'value',
           iconPosition: 'left',
           mapping: () => ({ fill: 'red' }),
