@@ -13,7 +13,7 @@ export class TableDataSet extends BaseDataSet {
 
   public getCellData(params: CellDataParams): DataType {
     const { query } = params;
-    return this.originData[query.rowIndex][query.col];
+    return this.originData[query.rowIndex]?.[query.col];
   }
 
   public getMultiData(query: DataType, isTotals?: boolean): DataType[] {

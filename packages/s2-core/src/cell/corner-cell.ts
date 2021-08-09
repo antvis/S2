@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { getEllipsisText } from '../utils/text';
+import { getEllipsisText, getTextPosition } from '../utils/text';
 import { isIPhoneX } from '../utils/is-mobile';
 import { IShape } from '@antv/g-canvas';
 import { renderText } from '../utils/g-renders';
@@ -48,12 +48,16 @@ export class CornerCell extends BaseCell<Node> {
     }
 
     const cornerTheme = _.get(this.theme, 'corner');
-    const textStyle = cornerTheme?.bolderText;
+    const textStyle = { ...cornerTheme?.bolderText };
     const iconStyle = cornerTheme?.icon;
     const cellPadding = cornerTheme?.cell?.padding;
     // 起点坐标为左上
     textStyle.textAlign = 'left';
     textStyle.textBaseline = 'middle';
+
+    if (this.spreadsheet.isTableMode()) {
+      textStyle.textAlign = cornerTheme.bolderText?.textAlign;
+    }
 
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
     const extraPadding = this.ifNeedIcon()
@@ -89,7 +93,19 @@ export class CornerCell extends BaseCell<Node> {
       },
     };
 
-    const textX = position.x + x + extraPadding + cellPadding.left;
+    const { x: textX } = getTextPosition({
+      x: position.x + x,
+      y: position.y + y,
+      width: cellWidth,
+      height: cellHeight,
+      textAlign: textStyle.textAlign,
+      textBaseline: textStyle.textBaseline,
+      padding: {
+        left: extraPadding + cellPadding.left,
+        right: cellPadding.right,
+      },
+    });
+
     const textY =
       position.y +
       y +
@@ -166,14 +182,20 @@ export class CornerCell extends BaseCell<Node> {
   private drawCellRect() {
     const { position } = this.headerConfig;
     const { x, y, width: cellWidth, height: cellHeight } = this.meta;
+    const attrs: any = {
+      x: position.x + x,
+      y: position.y + y,
+      width: cellWidth,
+      height: cellHeight,
+      opacity: this.theme.corner.cell.backgroundColorOpacity,
+    };
+
+    if (this.spreadsheet.isTableMode()) {
+      attrs.stroke = this.theme.corner.cell.horizontalBorderColor;
+    }
+
     this.addShape('rect', {
-      attrs: {
-        x: position.x + x,
-        y: position.y + y,
-        width: cellWidth,
-        height: cellHeight,
-        opacity: this.theme.corner.cell.backgroundColorOpacity,
-      },
+      attrs,
     });
   }
 

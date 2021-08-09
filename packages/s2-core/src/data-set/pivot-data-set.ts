@@ -311,6 +311,9 @@ export class PivotDataSet extends BaseDataSet {
       rowFields,
       colFields,
     } = params;
+    // 根据行、列维度值生成对应的 path路径，有两个情况
+    // 如果是汇总格子：path = [0,undefined, 0] path中会存在undefined的值（这里在indexesData里面会映射）
+    // 如果是明细格子: path = [0,0,0] 全数字，无undefined存在
     const getPath = (dimensionValues: string[], isRow = true): number[] => {
       let currentMeta = isRow ? this.rowPivotMeta : this.colPivotMeta;
       const fields = isRow ? rowFields : colFields;
@@ -361,20 +364,12 @@ export class PivotDataSet extends BaseDataSet {
     const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
     const { columns, rows, values, valueInCols } = fields;
 
-    let newColumns = columns;
-    let newRows = rows;
-    const newValues = values;
-    if (valueInCols) {
-      // value in cols
-      newColumns = uniq([...columns, EXTRA_FIELD]);
-    } else {
-      // value in rows
-      newRows = [...rows, EXTRA_FIELD];
-    }
+    const newColumns = valueInCols ? uniq([...columns, EXTRA_FIELD]) : columns;
+    const newRows = !valueInCols ? uniq([...rows, EXTRA_FIELD]) : rows;
 
     // meta 中添加新的字段信息（度量别名设置）
     const enumAlias = new Map<string, string>();
-    each(newValues, (value: string) => {
+    each(values, (value: string) => {
       const m = find(meta, (mt: Meta) => mt.field === value);
       enumAlias.set(value, get(m, 'name', value));
     });
@@ -385,15 +380,15 @@ export class PivotDataSet extends BaseDataSet {
       {
         field: EXTRA_FIELD,
         name: i18n('数值'),
-        formatter: (v: string) => enumAlias.get(v), // 格式化
+        formatter: (value: string) => enumAlias.get(value), // 格式化
       } as Meta,
     ];
 
-    const getDataIncludesExtraKey = (list: Data[]) => {
+    const addExtraKey = (originData: Data[]) => {
       const dataIncludesExtraKey = [];
-      list?.forEach((datum) => {
-        if (!isEmpty(newValues)) {
-          newValues?.forEach((vi) => {
+      originData?.forEach((datum) => {
+        if (!isEmpty(values)) {
+          values.forEach((vi) => {
             dataIncludesExtraKey.push({
               ...datum,
               [EXTRA_FIELD]: vi,
@@ -411,8 +406,8 @@ export class PivotDataSet extends BaseDataSet {
     };
 
     // transform values to EXTRA_FIELD key
-    const newData = getDataIncludesExtraKey(data) || [];
-    const newTotalData = getDataIncludesExtraKey(totalData) || [];
+    const newData = addExtraKey(data);
+    const newTotalData = addExtraKey(totalData);
 
     // 返回新的结构
     return {
@@ -422,7 +417,7 @@ export class PivotDataSet extends BaseDataSet {
         ...fields,
         rows: newRows,
         columns: newColumns,
-        values: newValues,
+        values,
       },
       totalData: newTotalData,
       sortParams,

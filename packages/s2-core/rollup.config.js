@@ -3,6 +3,7 @@ import less from 'rollup-plugin-less';
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
+import ttypescript from 'ttypescript';
 
 const format = process.env.FORMAT;
 
@@ -29,6 +30,8 @@ const plugins = [
   typescript({
     outDir: outDir,
     abortOnError: true,
+    tsconfig: 'tsconfig.json',
+    typescript: ttypescript,
   }),
   less({
     output: outDir + '/index.css',

@@ -7,24 +7,6 @@
 // contains all data(grandTotal, subTotal, detail data)
 export const data1 = [
   {
-    price: 7,
-    province: '辽宁省',
-    city: '达州市',
-    category: '家具',
-  },
-  {
-    price: 8,
-    province: '辽宁省',
-    city: '芜湖市',
-    category: '家具',
-  },
-  {
-    price: 10,
-    province: '辽宁省',
-    category: '家具',
-    subCategory: '桌子',
-  },
-  {
     price: 11,
     province: '辽宁省',
     city: '达州市',
@@ -37,17 +19,6 @@ export const data1 = [
     city: '芜湖市',
     category: '家具',
     subCategory: '桌子',
-  },
-  {
-    price: 13,
-    category: '家具',
-    subCategory: '椅子',
-  },
-  {
-    price: 14,
-    province: '辽宁省',
-    category: '家具',
-    subCategory: '椅子',
   },
   {
     price: 15,
@@ -95,6 +66,35 @@ export const totalData1 = [
     price: 9,
     category: '家具',
     subCategory: '桌子',
+  },
+  {
+    price: 7,
+    province: '辽宁省',
+    city: '达州市',
+    category: '家具',
+  },
+  {
+    price: 8,
+    province: '辽宁省',
+    city: '芜湖市',
+    category: '家具',
+  },
+  {
+    price: 10,
+    province: '辽宁省',
+    category: '家具',
+    subCategory: '桌子',
+  },
+  {
+    price: 13,
+    category: '家具',
+    subCategory: '椅子',
+  },
+  {
+    price: 14,
+    province: '辽宁省',
+    category: '家具',
+    subCategory: '椅子',
   },
 ];
 

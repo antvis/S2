@@ -2,6 +2,7 @@
 export const VALUE_FIELD = '$$value$$';
 export const EXTRA_FIELD = '$$extra$$';
 export const TOTAL_VALUE = '$$total$$';
+export const SERIES_NUMBER_FIELD = '$$series_number$$';
 // export const COLUMN_FIELD_KEY = '$$column_key$$';
 
 // frontgroundGroup 上的 children 层叠顺序

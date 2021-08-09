@@ -1,7 +1,8 @@
 import { Group } from '@antv/g-canvas';
 import { each, isEmpty } from 'lodash';
+import { SERIES_NUMBER_FIELD } from 'src/common/constant';
 import { Formatter, SortParam } from '../../common/interface';
-import { ColCell, DetailColCell } from '../../cell';
+import { ColCell, DetailColCell, CornerCell } from '../../cell';
 import { Node } from '../..';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
@@ -60,6 +61,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       width,
       scrollX,
     } = this.headerConfig;
+
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
     const colCellInRect = (item: Node): boolean => {
@@ -76,9 +78,12 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
         if (colCell) {
           cell = colCell(item, spreadsheet, this.headerConfig);
         }
+
         if (isEmpty(cell)) {
           if (spreadsheet.isPivotMode()) {
             cell = new ColCell(item, spreadsheet, this.headerConfig);
+          } else if (item.field === SERIES_NUMBER_FIELD) {
+            cell = new CornerCell(item, spreadsheet, this.headerConfig);
           } else {
             cell = new DetailColCell(item, spreadsheet, this.headerConfig);
           }

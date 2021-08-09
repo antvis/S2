@@ -1,7 +1,6 @@
 import { SimpleBBox, Group, Point } from '@antv/g-canvas';
 import { get, last, includes, isEmpty } from 'lodash';
 import { i18n } from '@/common/i18n';
-import { DetailCornerCell } from '@/cell';
 import {
   KEY_SERIES_NUMBER_NODE,
   KEY_GROUP_CORNER_RESIZER,
@@ -236,19 +235,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       }
 
       if (isEmpty(cell)) {
-        if (spreadsheet.isPivotMode()) {
-          cell = new CornerCell(
-            item,
-            this.headerConfig.spreadsheet,
-            this.headerConfig,
-          );
-        } else {
-          cell = new DetailCornerCell(
-            item,
-            this.headerConfig.spreadsheet,
-            this.headerConfig,
-          );
-        }
+        cell = new CornerCell(
+          item,
+          this.headerConfig.spreadsheet,
+          this.headerConfig,
+        );
       }
       this.add(cell);
     });

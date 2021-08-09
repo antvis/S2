@@ -11,9 +11,9 @@ import {
 } from '../common/interface';
 import { DataItem } from '../common/interface/S2DataConfig';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
-import { BaseCell } from '.';
+import { BaseCell } from './base-cell';
 import { SelectedStateName } from '@/common/constant/interaction';
-import { SpreadSheet } from 'src/sheet-type';
+import type { SpreadSheet } from 'src/sheet-type';
 import { getIconPosition } from '@/utils/condition';
 
 /**

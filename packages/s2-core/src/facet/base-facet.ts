@@ -731,14 +731,13 @@ export abstract class BaseFacet {
   };
 
   isScrollToTop = (deltaY: number) => {
-    return deltaY <= 0 && Math.floor(this.vScrollBar?.thumbOffset) <= 0;
+    return deltaY <= 0 && this.vScrollBar?.thumbOffset <= 0;
   };
 
   isScrollToBottom = (deltaY: number) => {
     return (
       deltaY >= 0 &&
-      Math.ceil(this.vScrollBar?.thumbOffset) +
-        Math.ceil(this.vScrollBar?.thumbLen) >=
+      this.vScrollBar?.thumbOffset + this.vScrollBar?.thumbLen >=
         this.panelBBox?.height
     );
   };

@@ -1,64 +1,47 @@
-import { getEllipsisText } from '../utils/text';
+import { getEllipsisText, getTextPosition } from '../utils/text';
 import { get } from 'lodash';
+import { DataCell } from 'src/cell/data-cell';
 import { isMobile } from '../utils/is-mobile';
-import { RowCell } from '@/cell/row-cell';
+import { renderText } from '../utils/g-renders';
+export class DetailRowCell extends DataCell {
+  protected drawTextShape() {
+    const { x, y, height, width } = this.getLeftAreaBBox();
+    const { formattedValue: text } = this.getData();
+    const textStyle = this.theme.rowHeader?.bolderText;
+    const padding = this.theme.rowHeader?.cell?.padding;
 
-export class DetailRowCell extends RowCell {
-  /**
-   * ListSheet has no text indent
-   */
-  protected getTextIndent(): number | number {
-    return 0;
-  }
-
-  protected isTreeType(): boolean {
-    return false;
-  }
-
-  protected getRowTextStyle(level, isTotals) {
-    return level !== 0 && !isTotals
-      ? get(this.headerConfig, 'spreadsheet.theme.rowHeader.text')
-      : get(this.headerConfig, 'spreadsheet.theme.rowHeader.bolderText');
-  }
-
-  protected drawCellText() {
-    const { linkFieldIds = [] } = this.headerConfig;
-    const {
-      label,
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      level,
-      isTotals,
-      isCustom,
-    } = this.meta;
-
-    const textStyle = this.getRowTextStyle(level, isTotals || isCustom);
-    const text = getEllipsisText(
-      this.getFormattedValue(label),
-      cellWidth,
+    const ellipsisText = getEllipsisText(
+      `${text || '-'}`,
+      width - padding?.left - padding?.right,
       textStyle,
     );
+    const cellBoxCfg = {
+      x,
+      y,
+      height,
+      width,
+      textAlign: textStyle.textAlign,
+      textBaseline: textStyle.textBaseline,
+      padding,
+    };
+    const position = getTextPosition(cellBoxCfg);
+    this.textShape = renderText(
+      [this.textShape],
+      position.x,
+      position.y,
+      ellipsisText,
+      textStyle,
+      this,
+    );
 
-    const textAlign = 'start';
-    const textX = x;
-    const textShape = this.addShape('text', {
-      attrs: {
-        x: textX,
-        y: y + cellHeight / 2,
-        textAlign,
-        text,
-        ...textStyle,
-        cursor: 'pointer',
-      },
-    });
+    const linkFieldIds = get(this.spreadsheet, 'options.linkFieldIds');
+
     // handle link nodes
-    if (linkFieldIds.includes(this.meta.key)) {
-      const device = get(this.headerConfig, 'spreadsheet.options.style.device');
+    if (linkFieldIds.includes(this.meta.key) && this.textShape) {
+      const device = get(this.spreadsheet, 'options.style.device');
       // 配置了链接跳转
       if (!isMobile(device)) {
-        const textBBox = textShape.getBBox();
+        const textBBox = this.textShape.getBBox();
         this.addShape('line', {
           attrs: {
             x1: textBBox.bl.x,
@@ -69,14 +52,14 @@ export class DetailRowCell extends RowCell {
             lineWidth: 1,
           },
         });
-        textShape.attr({
+        this.textShape.attr({
           appendInfo: {
             isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
             cellData: this.meta,
           },
         });
       } else {
-        textShape.attr({
+        this.textShape.attr({
           fill: '#0000ee',
           appendInfo: {
             isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
@@ -85,7 +68,5 @@ export class DetailRowCell extends RowCell {
         });
       }
     }
-
-    return textX;
   }
 }
