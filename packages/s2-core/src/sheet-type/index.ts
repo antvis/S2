@@ -473,22 +473,7 @@ export class SpreadSheet extends EE {
   // 获取当前cell类型
   public getCellType(target) {
     const cell = this.getCell(target);
-    if (cell instanceof DataCell) {
-      return CellTypes.DATA_CELL;
-    }
-    if (cell instanceof RowCell) {
-      return CellTypes.ROW_CELL;
-    }
-    if (cell instanceof ColCell) {
-      return CellTypes.COL_CELL;
-    }
-    if (cell instanceof CornerCell) {
-      return CellTypes.CORNER_CELL;
-    }
-    if (cell instanceof MergedCells) {
-      return CellTypes.MERGED_CELLS;
-    }
-    return '';
+    return cell?.type;
   }
 
   // 因此需要手动把当前行头列头选择下的cell样式重置
