@@ -3,11 +3,10 @@ import {
   Conditions,
   IconCondition,
   IconTheme,
-  Palette,
 } from '@/common/interface';
 import { isNumber } from 'lodash';
 
-export const getIconPosition = (condition: IconCondition) => {
+export const getIconLayoutPosition = (condition: IconCondition) => {
   return condition?.iconPosition ?? 'right';
 };
 
