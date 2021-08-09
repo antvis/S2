@@ -256,10 +256,12 @@ export class DataCell extends BaseCell<ViewMeta> {
     const textCondition = this.findFieldCondition(this.conditions?.text);
 
     const { formattedValue: text } = this.getData();
-    console.log('text', text, textCondition);
+
     const textStyle = this.getTextStyle();
+    let textFill = textStyle.fill;
+
     if (textCondition?.mapping) {
-      textStyle.fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
+      textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
 
     const ellipsisText = getEllipsisText(`${text || '-'}`, width, textStyle);
@@ -270,7 +272,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       position.x,
       position.y,
       ellipsisText,
-      textStyle,
+      { ...textStyle, fill: textFill },
       this,
     );
   }
