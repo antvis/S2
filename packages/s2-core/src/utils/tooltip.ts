@@ -37,7 +37,7 @@ import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
-import { SelectedStateName } from '@/common/constant';
+import { InteractionStateName } from '@/common/constant';
 
 /**
  * calculate aggregate value
@@ -186,12 +186,9 @@ export const getFieldList = (
     concat([], fields),
     (field) => field !== EXTRA_FIELD && hoverData[field],
   );
-  const fieldList = map(
-    currFields,
-    (field: string): ListItem => {
-      return getListItem(spreadsheet, hoverData, field);
-    },
-  );
+  const fieldList = map(currFields, (field: string): ListItem => {
+    return getListItem(spreadsheet, hoverData, field);
+  });
   return fieldList;
 };
 
@@ -321,7 +318,7 @@ export const getSelectedCellIndexes = (
   const selectedIndexes = [];
   const currentState = spreadsheet.getCurrentState();
   const { stateName, cells } = currentState;
-  if (stateName === SelectedStateName.COL_SELECTED) {
+  if (stateName === InteractionStateName.SELECTED) {
     const currentHeaderCell = find(
       cells,
       (cell) => cell.getMeta().colIndex === cellInfo.colIndex,
@@ -329,7 +326,7 @@ export const getSelectedCellIndexes = (
     map(rowLeafNodes, (row, index) => {
       selectedIndexes.push([index, currentHeaderCell.getMeta().colIndex]);
     });
-  } else if (stateName === SelectedStateName.ROW_SELECTED) {
+  } else if (stateName === InteractionStateName.SELECTED) {
     const currentHeaderCell = find(
       cells,
       (cell) => cell.getMeta().rowIndex === cellInfo.rowIndex,
@@ -351,8 +348,8 @@ export const getSelectedData = (
   const { stateName, cells } = currentState;
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
   if (
-    stateName === SelectedStateName.COL_SELECTED ||
-    stateName === SelectedStateName.ROW_SELECTED
+    stateName === InteractionStateName.SELECTED ||
+    stateName === InteractionStateName.SELECTED
   ) {
     // 行头列头单选多选
     const selectedCellIndexes = getSelectedCellIndexes(
@@ -527,17 +524,14 @@ export const getStrategyDetailList = (
       ...getDerivedValues(spreadsheet, valueField),
     ];
 
-    return map(
-      valuesField,
-      (field: string): ListItem => {
-        if (isEqual(field, rightField)) {
-          // the value of the measure dimension is taken separately
-          return getListItem(spreadsheet, hoverData as any, hoverData[field]);
-        }
+    return map(valuesField, (field: string): ListItem => {
+      if (isEqual(field, rightField)) {
+        // the value of the measure dimension is taken separately
+        return getListItem(spreadsheet, hoverData as any, hoverData[field]);
+      }
 
-        return getListItem(spreadsheet, hoverData as any, field);
-      },
-    );
+      return getListItem(spreadsheet, hoverData as any, field);
+    });
   }
 };
 

@@ -12,6 +12,7 @@ import {
   KEY_GROUP_ROW_RESIZER,
   COLOR_DEFAULT_RESIZER,
   ID_SEPARATOR,
+  CellTypes,
 } from '../common/constant';
 import { HIT_AREA } from '@/facet/header/base';
 import { ResizeInfo } from '@/facet/header/interface';
@@ -60,6 +61,7 @@ export class RowCell extends BaseCell<Node> {
   }
 
   protected initCell() {
+    this.type = CellTypes.ROWCELL;
     // 1、draw rect background
     this.drawBackgroundColor();
     this.drawInteractiveBgShape();
@@ -366,12 +368,8 @@ export class RowCell extends BaseCell<Node> {
   protected drawActionIcons() {
     const rowActionIcons = this.spreadsheet.options.rowActionIcons;
     if (!rowActionIcons) return;
-    const {
-      iconTypes,
-      display,
-      action,
-      customDisplayByRowName,
-    } = rowActionIcons;
+    const { iconTypes, display, action, customDisplayByRowName } =
+      rowActionIcons;
     if (customDisplayByRowName) {
       const { rowNames, mode } = customDisplayByRowName;
       const rowIds = rowNames.map((rowName) => `root${ID_SEPARATOR}${rowName}`);

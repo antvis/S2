@@ -1,7 +1,7 @@
 import { Event } from '@antv/g-canvas';
 import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
-import { SelectedStateName } from '@/common/constant/interaction';
+import { InteractionStateName } from '@/common/constant/interaction';
 import { getTooltipData } from '../utils/tooltip';
 import { each, map, assign, pick } from 'lodash';
 import { Node } from '../index';
@@ -53,17 +53,17 @@ export class ColRowMutiSelection extends BaseInteraction {
               if (node.belongsCell) {
                 this.spreadsheet.setState(
                   node.belongsCell,
-                  SelectedStateName.COL_SELECTED,
+                  InteractionStateName.SELECTED,
                 );
               }
             });
           } else {
             // 单列
-            this.spreadsheet.setState(cell, SelectedStateName.COL_SELECTED);
+            this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
           }
           const currentState = this.spreadsheet.getCurrentState();
           const { stateName, cells } = currentState;
-          if (stateName === SelectedStateName.COL_SELECTED) {
+          if (stateName === InteractionStateName.SELECTED) {
             cellInfos = this.mergeCellInfo(cells);
           }
           this.handleTooltip(ev, meta, cellInfos);
@@ -91,13 +91,13 @@ export class ColRowMutiSelection extends BaseInteraction {
               if (node.belongsCell) {
                 this.spreadsheet.setState(
                   node.belongsCell,
-                  SelectedStateName.ROW_SELECTED,
+                  InteractionStateName.SELECTED,
                 );
               }
             });
           } else {
             // 单行
-            this.spreadsheet.setState(cell, SelectedStateName.ROW_SELECTED);
+            this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
           }
           this.spreadsheet.updateCellStyleByState();
           this.spreadsheet.upDatePanelAllCellsStyle();

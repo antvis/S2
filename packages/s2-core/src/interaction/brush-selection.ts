@@ -4,7 +4,7 @@ import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
-import { SelectedStateName } from '@/common/constant/interaction';
+import { InteractionStateName } from '@/common/constant/interaction';
 import { getTooltipData } from '../utils/tooltip';
 
 function getBrushRegion(p1, p2) {
@@ -113,7 +113,7 @@ export class BrushSelection extends BaseInteraction {
     if (cells.length) {
       this.spreadsheet.clearState();
       cells.forEach((cell: DataCell) => {
-        this.spreadsheet.setState(cell, SelectedStateName.PREPARE_SELECT);
+        this.spreadsheet.setState(cell, InteractionStateName.PREPARE_SELECT);
       });
       this.spreadsheet.updateCellStyleByState();
     }
@@ -177,7 +177,7 @@ export class BrushSelection extends BaseInteraction {
         const currentState = this.spreadsheet.getCurrentState();
         const { stateName, cells } = currentState;
         const cellInfos = [];
-        if (stateName === SelectedStateName.SELECTED) {
+        if (stateName === InteractionStateName.SELECTED) {
           each(cells, (cell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
             const meta = cell.getMeta();
@@ -213,7 +213,7 @@ export class BrushSelection extends BaseInteraction {
   private getSelectedCells(region) {
     const selectedCells = this.getCellsInRegion(region);
     selectedCells.forEach((cell) => {
-      this.spreadsheet.setState(cell, SelectedStateName.SELECTED);
+      this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
     });
     this.spreadsheet.updateCellStyleByState();
   }

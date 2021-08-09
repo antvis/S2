@@ -1,6 +1,6 @@
 import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
-import { SelectedStateName } from '../common/constant/interaction';
+import { InteractionStateName } from '../common/constant/interaction';
 import { getTooltipData } from '../utils/tooltip';
 import { each, isEqual, find, isEmpty } from 'lodash';
 
@@ -46,12 +46,12 @@ export class DataCellMutiSelection extends BaseInteraction {
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
         // 先把之前的tooltip隐藏
         this.spreadsheet.hideTooltip();
-        this.spreadsheet.setState(cell, SelectedStateName.SELECTED);
+        this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
         this.spreadsheet.updateCellStyleByState();
         this.draw();
 
         const cellInfos = [];
-        if (stateName === SelectedStateName.SELECTED) {
+        if (stateName === InteractionStateName.SELECTED) {
           each(cells, (stateCell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
             const stateCellMeta = stateCell.getMeta();

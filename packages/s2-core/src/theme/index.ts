@@ -35,26 +35,30 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         // ----------- background color -----------
         backgroundColor: brandColors[4],
         backgroundColorOpacity: 1,
-        hoverBackgroundColor: brandColors[5],
-        selectedBackgroundColor: brandColors[5],
         // ----------- border color --------------
         horizontalBorderColor: grayColors[2],
         horizontalBorderColorOpacity: 1,
         verticalBorderColor: grayColors[2],
         verticalBorderColorOpacity: 1,
-        hoverBorderColor: grayColors[6],
-        selectedBorderColor: grayColors[6],
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
-        hoverBorderWidth: 0,
-        selectedBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
           top: 12,
           right: 8,
           bottom: 12,
           left: 8,
+        },
+        // -------------- hover -------------------
+        hover: {
+          backgroundColor: brandColors[2],
+        },
+        // -------------- selected -------------------
+        selected: {
+          backgroundColor: brandColors[2],
+          borderColor: grayColors[6],
+          borderWidth: 1,
         },
       },
       icon: {
@@ -89,26 +93,30 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         // ----------- background color -----------
         backgroundColor: brandColors[1],
         backgroundColorOpacity: 1,
-        hoverBackgroundColor: brandColors[2],
-        selectedBackgroundColor: brandColors[2],
         // ----------- bottom border color --------------
         horizontalBorderColor: grayColors[1],
         horizontalBorderColorOpacity: 1,
         verticalBorderColor: grayColors[1],
         verticalBorderColorOpacity: 1,
-        hoverBorderColor: grayColors[6],
-        selectedBorderColor: grayColors[6],
         // ----------- bottom border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 0,
-        hoverBorderWidth: 0,
-        selectedBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
           top: 12,
           right: 8,
           bottom: 12,
           left: 8,
+        },
+        // -------------- hover -------------------
+        hover: {
+          backgroundColor: brandColors[2],
+        },
+        // -------------- selected -------------------
+        selected: {
+          backgroundColor: brandColors[2],
+          borderColor: grayColors[6],
+          borderWidth: 1,
         },
       },
       icon: {
@@ -143,26 +151,30 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         // ----------- background color -----------
         backgroundColor: brandColors[4],
         backgroundColorOpacity: 1,
-        hoverBackgroundColor: brandColors[5],
-        selectedBackgroundColor: brandColors[5],
         // ----------- border color --------------
         horizontalBorderColor: grayColors[2],
         horizontalBorderColorOpacity: 1,
         verticalBorderColor: grayColors[2],
         verticalBorderColorOpacity: 1,
-        hoverBorderColor: grayColors[6],
-        selectedBorderColor: grayColors[6],
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 1,
-        hoverBorderWidth: 0,
-        selectedBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
           top: 12,
           right: 8,
           bottom: 12,
           left: 8,
+        },
+        // -------------- hover -------------------
+        hover: {
+          backgroundColor: brandColors[2],
+        },
+        // -------------- selected -------------------
+        selected: {
+          backgroundColor: brandColors[2],
+          borderColor: grayColors[6],
+          borderWidth: 1,
         },
       },
       icon: {
@@ -200,28 +212,40 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         crossBackgroundColor: brandColors[1],
         backgroundColor: grayColors[0],
         backgroundColorOpacity: 1,
-        hoverBackgroundColor: brandColors[2],
-        hoverLinkageBackgroundColor: brandColors[2],
-        selectedBackgroundColor: brandColors[2],
         // ----------- border color --------------
         horizontalBorderColor: grayColors[1],
         horizontalBorderColorOpacity: 1,
         verticalBorderColor: grayColors[1],
         verticalBorderColorOpacity: 1,
-        hoverBorderColor: grayColors[6],
-        selectedBorderColor: grayColors[6],
-        prepareSelectBorderColor: brandColors[3],
         // ----------- border width --------------
         horizontalBorderWidth: 1,
         verticalBorderWidth: 0,
-        hoverBorderWidth: 0,
-        selectedBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
           top: 12,
           right: 8,
           bottom: 12,
           left: 8,
+        },
+        // -------------- hover -------------------
+        hover: {
+          backgroundColor: brandColors[2],
+        },
+        // -------------- keep hover -------------------
+        hoverFocus: {
+          backgroundColor: brandColors[2],
+          borderColor: grayColors[6],
+          borderWidth: 1,
+        },
+        // -------------- selected -------------------
+        selected: {
+          backgroundColor: brandColors[2],
+          borderColor: grayColors[6],
+          borderWidth: 1,
+        },
+        // -------------- prepareSelect --------------
+        prepareSelect: {
+          borderColor: brandColors[3],
         },
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,

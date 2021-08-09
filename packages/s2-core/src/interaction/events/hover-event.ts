@@ -2,10 +2,10 @@ import { Event } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { S2Event } from './types';
 import { BaseEvent } from './base-event';
-import { SelectedStateName } from '@/common/constant/interaction';
+import { InteractionStateName } from '@/common/constant/interaction';
 import { ViewMeta } from '@/common/interface';
 import { getTooltipData } from '@/utils/tooltip';
-import { KEEP_HOVER_TIME } from '@/common/constant/interaction';
+import { HOVER_FOCUS_TIME } from '@/common/constant/interaction';
 
 /**
  * Row header click navigation interaction
@@ -20,7 +20,7 @@ export class HoverEvent extends BaseEvent {
       const cell = this.spreadsheet.getCell(ev.target);
       const meta: ViewMeta = cell.getMeta();
       this.spreadsheet.clearState();
-      this.changeState(cell, SelectedStateName.HOVER);
+      this.changeState(cell, InteractionStateName.HOVER);
       if (this.spreadsheet.hoverTimer) {
         window.clearTimeout(this.spreadsheet.hoverTimer);
         this.changeStateToHoverKeep(cell, ev, meta);
@@ -32,9 +32,9 @@ export class HoverEvent extends BaseEvent {
 
   private changeStateToHoverKeep(cell, ev, meta) {
     this.spreadsheet.hoverTimer = window.setTimeout(() => {
-      this.changeState(cell, SelectedStateName.KEEP_HOVER);
+      this.changeState(cell, InteractionStateName.HOVER_FOCUS);
       this.handleTooltip(ev, meta);
-    }, KEEP_HOVER_TIME);
+    }, HOVER_FOCUS_TIME);
   }
 
   private changeState(cell, cellName) {

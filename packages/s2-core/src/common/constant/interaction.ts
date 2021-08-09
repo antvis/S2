@@ -14,14 +14,19 @@ export enum EventNames {
   HOVER_EVENT = 'spreadsheet:hover',
 }
 
-export enum SelectedStateName {
+export enum InteractionStateName {
   SELECTED = 'selected',
   HOVER = 'hover',
-  HOVER_LINKAGE = 'hoverLinkage', // hover时，同列和同行有联动的十字选中效果
-  KEEP_HOVER = 'keepHover',
+  HOVER_FOCUS = 'hoverFocus',
   PREPARE_SELECT = 'prepareSelect',
-  COL_SELECTED = 'colSelected',
-  ROW_SELECTED = 'rowSelected',
 }
 
-export const KEEP_HOVER_TIME = 800;
+export enum CellTypes {
+  DATACELL = 'dataCell',
+  ROWCELL = 'rowCell',
+  COLCELL = 'colCell',
+  CORNERCELL = 'cornerCell',
+  MERGEDCELLS = 'mergedCells',
+}
+
+export const HOVER_FOCUS_TIME = 800;

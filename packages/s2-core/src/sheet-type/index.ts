@@ -36,6 +36,7 @@ import {
   ColCell,
   CornerCell,
   DetailRowCell,
+  MergedCells,
 } from '../cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
@@ -46,6 +47,7 @@ import {
   KEY_GROUP_PANEL_GROUND,
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
+  CellTypes,
 } from '@/common/constant';
 import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
 import {
@@ -75,7 +77,7 @@ import { isMobile } from '@/utils/is-mobile';
 import {
   EventNames,
   InteractionNames,
-  SelectedStateName,
+  InteractionStateName,
 } from '@/common/constant';
 import { i18n } from '@/common/i18n';
 import { PivotFacet, TableFacet } from '@/facet';
@@ -440,7 +442,7 @@ export class SpreadSheet extends EE {
   public updateCellStyleByState() {
     const cells = this.getCurrentState().cells;
     cells.forEach((cell) => {
-      cell.updateByState();
+      cell.updateByState(this.getCurrentState().stateName);
     });
   }
 
@@ -472,16 +474,19 @@ export class SpreadSheet extends EE {
   public getCellType(target) {
     const cell = this.getCell(target);
     if (cell instanceof DataCell) {
-      return DataCell.name;
+      return CellTypes.DATACELL;
     }
     if (cell instanceof RowCell) {
-      return RowCell.name;
+      return CellTypes.ROWCELL;
     }
     if (cell instanceof ColCell) {
-      return ColCell.name;
+      return CellTypes.COLCELL;
     }
     if (cell instanceof CornerCell) {
-      return CornerCell.name;
+      return CellTypes.CORNERCELL;
+    }
+    if (cell instanceof MergedCells) {
+      return CellTypes.MERGEDCELLS;
     }
     return '';
   }
@@ -490,9 +495,9 @@ export class SpreadSheet extends EE {
   public clearStyleIndependent() {
     const currentState = this.getCurrentState();
     if (
-      currentState.stateName === SelectedStateName.COL_SELECTED ||
-      currentState.stateName === SelectedStateName.ROW_SELECTED ||
-      currentState.stateName === SelectedStateName.HOVER
+      currentState.stateName === InteractionStateName.SELECTED ||
+      currentState.stateName === InteractionStateName.SELECTED ||
+      currentState.stateName === InteractionStateName.HOVER
     ) {
       this.getPanelAllCells().forEach((cell) => {
         cell.hideShapeUnderState();

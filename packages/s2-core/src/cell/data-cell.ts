@@ -10,7 +10,8 @@ import { VALUE_FIELD } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { DerivedCell } from './derived-cell';
 import { BaseCell } from './base-cell';
-import { SelectedStateName } from '@/common/constant/interaction';
+import { ColCell, RowCell } from '@/cell';
+import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import type { SpreadSheet } from 'src/sheet-type';
 
 /**
@@ -53,13 +54,14 @@ export class DataCell extends BaseCell<ViewMeta> {
     const state = this.spreadsheet.getCurrentState();
     const { stateName, cells } = state;
     if (cells.length) {
+      const firstCell = first(cells);
       // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
       // 二者操作一致，function合并
-      if (stateName === SelectedStateName.COL_SELECTED) {
-        this.changeCellStyleByState('colIndex');
-      } else if (stateName === SelectedStateName.ROW_SELECTED) {
-        this.changeCellStyleByState('rowIndex');
-      } else if (stateName === SelectedStateName.HOVER && !isEmpty(cells)) {
+      if (firstCell.type === CellTypes.COLCELL) {
+        this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
+      } else if (firstCell.type === CellTypes.ROWCELL) {
+        this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
+      } else if (stateName === InteractionStateName.HOVER && !isEmpty(cells)) {
         // 如果当前是hover，要绘制出十字交叉的行列样式
         const currentHoverCell = first(cells);
         const currentColIndex = this.meta.colIndex;
@@ -70,7 +72,7 @@ export class DataCell extends BaseCell<ViewMeta> {
             currentRowIndex === currentHoverCell?.getMeta().rowIndex) &&
           this !== currentHoverCell
         ) {
-          this.updateByState();
+          this.updateByState(InteractionStateName.HOVER);
         } else if (this !== currentHoverCell) {
           // 当视图内的cell行列index与hover的cell 不一致，且不是当前hover的cell时，隐藏其他样式
           this.hideShapeUnderState();
@@ -115,7 +117,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return {
       x,
       y,
-      width: width - (isIconExist ? icon.size + icon.padding?.left : 0),
+      width: width - (isIconExist ? icon.size + icon.margin?.left : 0),
       height,
     };
   }
@@ -126,6 +128,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
+    this.type = CellTypes.DATACELL;
     this.conditions = this.spreadsheet.options?.conditions;
     this.drawBackgroundShape();
     this.drawStateShapes();
@@ -170,7 +173,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): CellMapping {
-    const value = (this.meta.fieldValue as unknown) as number;
+    const value = this.meta.fieldValue as unknown as number;
     return condition?.mapping(value, get(this.meta.data, [0]));
   }
 
@@ -443,9 +446,8 @@ export class DataCell extends BaseCell<ViewMeta> {
         value = get(data, [0, derivedValue]);
       }
       const up = getDerivedDataState(value);
-      const formatter = this.spreadsheet.dataSet.getFieldFormatter(
-        derivedValue,
-      );
+      const formatter =
+        this.spreadsheet.dataSet.getFieldFormatter(derivedValue);
       return {
         value: formatter ? formatter(value) : value,
         up,
@@ -458,7 +460,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   // dataCell根据state 改变当前样式，
-  private changeCellStyleByState(needGetIndexKey) {
+  private changeCellStyleByState(needGetIndexKey, changeStyleStateName) {
     const { cells } = this.spreadsheet.getCurrentState();
     const currentIndex = this.meta[needGetIndexKey];
     const selectedIndexes = map(
@@ -466,7 +468,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       (cell) => cell?.getMeta()[needGetIndexKey],
     );
     if (includes(selectedIndexes, currentIndex)) {
-      this.updateByState();
+      this.updateByState(changeStyleStateName);
     } else {
       this.hideShapeUnderState();
     }
