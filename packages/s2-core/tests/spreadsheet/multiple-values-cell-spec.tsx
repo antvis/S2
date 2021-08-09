@@ -1,29 +1,30 @@
-import { cloneDeep, merge } from 'lodash';
-import { act } from 'react-dom/test-utils';
+import { Radio, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
+import { cloneDeep, merge } from 'lodash';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
 import {
   S2DataConfig,
   S2Options,
   SheetComponent,
   SpreadSheet,
 } from '../../src';
-import { getContainer } from '../util/helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
-import { Switch, Radio } from 'antd';
-
 import {
-  multipleDataWithNormal,
   multipleDataWithBottom,
   multipleDataWithCombine,
+  multipleDataWithNormal,
 } from '../data/multiple-values-cell-mock-data';
+import { getContainer } from '../util/helpers';
 
+let sheet: SpreadSheet;
 const getSpreadSheet = (
   dom: string | HTMLElement,
   dataCfg: S2DataConfig,
   options: S2Options,
 ) => {
-  return new SpreadSheet(dom, dataCfg, options);
+  sheet = new SpreadSheet(dom, dataCfg, options);
+  return sheet;
 };
 
 const getDataCfg = (): S2DataConfig => {
@@ -177,14 +178,41 @@ function MainLayout(props) {
 }
 
 describe('spreadsheet multiple values cell spec', () => {
-  test('demo', () => {
-    expect(1).toBe(1);
-  });
-
   act(() => {
     ReactDOM.render(
       <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
       getContainer(),
     );
+  });
+
+  test('should generate default conditions', () => {
+    const { icon, text } = sheet.options.conditions;
+
+    expect(icon).toHaveLength(2);
+    expect(text).toHaveLength(2);
+
+    expect(icon).toEqual([
+      {
+        field: 'ac',
+        iconPosition: 'left',
+        mapping: expect.any(Function),
+      },
+      {
+        field: 'rc',
+        iconPosition: 'left',
+        mapping: expect.any(Function),
+      },
+    ]);
+
+    expect(text).toEqual([
+      {
+        field: 'ac',
+        mapping: expect.any(Function),
+      },
+      {
+        field: 'rc',
+        mapping: expect.any(Function),
+      },
+    ]);
   });
 });
