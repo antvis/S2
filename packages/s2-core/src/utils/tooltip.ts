@@ -44,6 +44,7 @@ import {
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
 import { InteractionStateName } from '@/common/constant';
+import { S2CellType } from '@/common/interface';
 
 /**
  * calculate aggregate value
@@ -578,4 +579,47 @@ export const getStrategyTooltipData = (
   const details = getStrategyDetailList(spreadsheet, data, options);
 
   return { summaries, headInfo, details, interpretation, infos, tips };
+};
+
+export function keyEqualTo(key: string, compareKey: string) {
+  if (!key || !compareKey) {
+    return false;
+  }
+  return String(key).toLowerCase() === String(compareKey).toLowerCase();
+}
+
+export const processCopyData = (cells: S2CellType[][]): string => {
+  return cells.reduce(
+    (pre, cur) =>
+      pre +
+      cur.reduce((prev, curr) => prev + curr.getMeta().fieldValue + '\t', '') +
+      '\n',
+    '',
+  );
+};
+
+export const getTwoDimData = (cells: S2CellType[]) => {
+  if (!cells.length) return;
+  const twoDimDataArray: S2CellType[][] = [];
+  const { rowIndex: firstRowIndex, colIndex: firstColIndex } =
+    cells[0].getMeta();
+
+  cells.forEach((e) => {
+    const { rowIndex, colIndex } = e.getMeta();
+    const [diffRow, diffCol] = [
+      rowIndex - firstRowIndex,
+      colIndex - firstColIndex,
+    ];
+    if (twoDimDataArray[diffRow]) {
+      twoDimDataArray[diffRow][diffCol] = e;
+    } else {
+      twoDimDataArray[diffRow] = [];
+      twoDimDataArray[diffRow][diffCol] = e;
+    }
+  });
+  return twoDimDataArray;
+};
+
+export const getCopyData = (cells: S2CellType[]) => {
+  return processCopyData(getTwoDimData(cells));
 };

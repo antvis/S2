@@ -3,6 +3,7 @@ import { get, each, includes } from 'lodash';
 import { CellTypes } from '@/common/constant';
 import { S2Event, OriginEventType, DefaultInterceptEventType } from './types';
 import { SpreadSheet } from 'src/sheet-type';
+import { getCopyData, keyEqualTo } from '@/utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -72,6 +73,11 @@ export class EventController {
       OriginEventType.KEY_DOWN,
       (event: KeyboardEvent) => {
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_DOWN, event);
+        // windows and macos copy
+        if (keyEqualTo(event.key, 'c') && (event.metaKey || event.ctrlKey)) {
+          const { cells } = this.spreadsheet.getCurrentState();
+          this.spreadsheet.emit(S2Event.GLOBAL_COPY, getCopyData(cells));
+        }
       },
     );
     this.addEventListener(

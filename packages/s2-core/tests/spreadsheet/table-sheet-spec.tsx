@@ -10,16 +10,18 @@ import { getContainer, getMockData } from '../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { CustomTooltip } from './custom/custom-tooltip';
+import { useEffect } from 'react';
+import { S2Event } from '@/interaction/events/types';
 
 const data = getMockData('../data/tableau-supermarket.csv');
 
-const getSpreadSheet = (
-  dom: string | HTMLElement,
-  dataCfg: S2DataConfig,
-  options: S2Options,
-) => {
-  return new SpreadSheet(dom, dataCfg, options);
-};
+const getSpreadSheet =
+  (ref) =>
+  (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
+    const s2 = new SpreadSheet(dom, dataCfg, options);
+    ref.current = s2;
+    return s2;
+  };
 
 const getDataCfg = () => {
   return {
@@ -87,6 +89,17 @@ const getOptions = () => {
 function MainLayout(props) {
   const [options, setOptions] = React.useState(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
+  const s2Ref = React.useRef<SpreadSheet>(null);
+
+  useEffect(() => {
+    const logData = (data) => {
+      console.log(data);
+    };
+    s2Ref.current.on(S2Event.GLOBAL_COPY, logData);
+    return () => {
+      s2Ref.current.off(S2Event.GLOBAL_COPY, logData);
+    };
+  }, []);
 
   return (
     <div>
@@ -95,7 +108,7 @@ function MainLayout(props) {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
-        spreadsheet={getSpreadSheet}
+        spreadsheet={getSpreadSheet(s2Ref)}
       />
     </div>
   );
