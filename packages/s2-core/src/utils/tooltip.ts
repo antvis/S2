@@ -192,9 +192,12 @@ export const getFieldList = (
     concat([], fields),
     (field) => field !== EXTRA_FIELD && hoverData[field],
   );
-  const fieldList = map(currFields, (field: string): ListItem => {
-    return getListItem(spreadsheet, hoverData, field);
-  });
+  const fieldList = map(
+    currFields,
+    (field: string): ListItem => {
+      return getListItem(spreadsheet, hoverData, field);
+    },
+  );
   return fieldList;
 };
 
@@ -528,14 +531,17 @@ export const getStrategyDetailList = (
       ...getDerivedValues(spreadsheet, valueField),
     ];
 
-    return map(valuesField, (field: string): ListItem => {
-      if (isEqual(field, rightField)) {
-        // the value of the measure dimension is taken separately
-        return getListItem(spreadsheet, hoverData as any, hoverData[field]);
-      }
+    return map(
+      valuesField,
+      (field: string): ListItem => {
+        if (isEqual(field, rightField)) {
+          // the value of the measure dimension is taken separately
+          return getListItem(spreadsheet, hoverData as any, hoverData[field]);
+        }
 
-      return getListItem(spreadsheet, hoverData as any, field);
-    });
+        return getListItem(spreadsheet, hoverData as any, field);
+      },
+    );
   }
 };
 

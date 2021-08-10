@@ -7,7 +7,7 @@ import {
 } from 'src/data-set/interface';
 import { Meta, S2DataConfig, Data } from 'src/common/interface';
 import { i18n } from 'src/common/i18n';
-import { EXTRA_FIELD, VALUE_FIELD, TOTAL_VALUE } from 'src/common/constant';
+import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import {
   map,
   find,
@@ -28,7 +28,7 @@ import {
 } from 'lodash';
 import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from 'src/common/debug';
 import { Node } from '@/facet/layout/node';
-import { sortAction } from 'src/utils/sort-action';
+import { handleSortAction } from 'src/utils/sort-action';
 import {
   getIntersections,
   filterUndefined,
@@ -36,8 +36,8 @@ import {
   flatten as customFlatten,
   isEveryUndefined,
   getFieldKeysByDimensionValues,
-  sortByItems,
 } from '@/utils/data-set-operate';
+
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
   public rowPivotMeta: PivotMeta;
@@ -197,88 +197,30 @@ export class PivotDataSet extends BaseDataSet {
     });
   };
 
+  /**
+   * 排序优先级：
+   * 1、sortParams里的条件优先级高于原始数据
+   * 2、sortParams多个item：按照顺序优先级，排在后面的优先级高
+   * 3、item中多个条件：sortByField > sortFunc > sortBy > sortMethod
+   */
   handleDimensionValuesSort = () => {
-    /**
-     * 排序优先级：
-     * 1、sortParams里的条件优先级高于原始数据
-     * 2、sortParams多个item：按照顺序优先级，排在后面的优先级高
-     * 3、item中多个条件：sortByField > sortFunc > sortBy > sortMethod
-     */
-    each(this.sortParams || [], (item) => {
-      const {
+    each(this.sortParams, (item) => {
+      const { sortFieldId, sortByMeasure } = item;
+      // 万物排序的前提
+      if (!sortFieldId) return;
+      const originValues = [
+        ...this.sortedDimensionValues.get(sortFieldId)?.keys(),
+      ];
+      const result = handleSortAction({
+        dataSet: this,
+        sortParam: item,
+        originValues,
+        isSortByMeasure: !isEmpty(sortByMeasure),
+      });
+      this.sortedDimensionValues.set(
         sortFieldId,
-        sortBy,
-        sortMethod,
-        sortByMeasure,
-        query,
-        sortFunc,
-      } = item || {};
-
-      const getSortedDataIfLackData = (
-        sorted: string[] | undefined[],
-        sortMaps: string[] | undefined[],
-      ) => {
-        let sortList = [...new Set(sorted)] as string[];
-        if (sortMethod === 'ASC') {
-          sortList = sortByItems(sortMaps, sortList);
-        }
-
-        return sortList;
-      };
-
-      if (sortFieldId) {
-        const sortMaps = [
-          ...this.sortedDimensionValues.get(sortFieldId)?.keys(),
-        ];
-        let sorted = [];
-        // 根据其他字段排序（组内排序）
-        if (sortByMeasure) {
-          let currentData = [];
-          // fieldId is total
-          if (sortByMeasure === TOTAL_VALUE) {
-            const isRow =
-              this.fields?.columns?.includes(sortFieldId) &&
-              keys(query)?.length === 1 &&
-              has(query, EXTRA_FIELD);
-            currentData = this.getMultiData(query, true, isRow) || [];
-          } else {
-            currentData = this.getMultiData(query) || [];
-          }
-          // 自定义方法
-          if (sortFunc) {
-            sorted = sortFunc({ data: currentData, ...item }) || sortMaps;
-          } else if (sortMethod) {
-            // 如果是升序，需要将无数据的项放到前面
-            sorted = getSortedDataIfLackData(
-              sortAction(
-                currentData,
-                sortMethod,
-                sortByMeasure === TOTAL_VALUE
-                  ? query[EXTRA_FIELD]
-                  : sortByMeasure,
-              )?.map((item) => item[sortFieldId]),
-              sortMaps,
-            );
-          }
-        } else if (sortFunc) {
-          sorted = sortFunc({ data: sortMaps, ...item }) || sortMaps;
-        } else if (sortBy) {
-          // 自定义列表
-          sorted = sortBy;
-        } else if (sortMethod) {
-          // 升/降序
-          // 如果是升序，需要将无数据的项放到前面
-          sorted = getSortedDataIfLackData(
-            sortAction(sortMaps, sortMethod) as string[],
-            sortMaps,
-          );
-        }
-
-        this.sortedDimensionValues.set(
-          sortFieldId,
-          new Set([...sorted, ...sortMaps]),
-        );
-      }
+        new Set([...result, ...originValues]),
+      );
     });
   };
 
@@ -591,6 +533,6 @@ export class PivotDataSet extends BaseDataSet {
       );
     }
 
-    return result;
+    return result || [];
   }
 }
