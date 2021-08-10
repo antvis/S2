@@ -1,3 +1,4 @@
+import { DOWN_ICON, UP_ICON } from '@/common/constant';
 import {
   Condition,
   Conditions,
@@ -9,9 +10,6 @@ import { isNumber } from 'lodash';
 export const getIconLayoutPosition = (condition: IconCondition) => {
   return condition?.iconPosition ?? 'right';
 };
-
-const UP_ICON = 'CellUp';
-const DOWN_ICON = 'CellDown';
 
 export const isPositive = (value: number | string): boolean => {
   if (isNumber(value)) {
