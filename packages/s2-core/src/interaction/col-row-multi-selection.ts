@@ -8,7 +8,7 @@ import { Node } from '../index';
 
 const SHIFT_KEY = 'Shift';
 
-export class ColRowMutiSelection extends BaseInteraction {
+export class ColRowMultiSelection extends BaseInteraction {
   private isMultiSelection = false;
 
   protected bindEvents() {

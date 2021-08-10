@@ -1,12 +1,9 @@
 import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
-import { InteractionStateName } from '../common/constant/interaction';
 import { getTooltipData } from '../utils/tooltip';
 import { each, isEqual, find, isEmpty } from 'lodash';
-
-const SHIFT_KEY = 'Shift';
-
-export class DataCellMutiSelection extends BaseInteraction {
+import { InteractionStateName, SHIFT_KEY } from '@/common/constant';
+export class DataCellMultiSelection extends BaseInteraction {
   private isMultiSelection = false;
 
   protected bindEvents() {

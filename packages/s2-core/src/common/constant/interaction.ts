@@ -5,15 +5,6 @@ export enum InteractionNames {
   COL_ROW_MULTI_SELECTION_INTERACTION = 'spreadsheet:col-row-multi-selection',
 }
 
-export enum EventNames {
-  DATA_CELL_CLICK_EVENT = 'spreadsheet:data-cell-click',
-  MERGED_CELLS_CLICK_EVENT = 'spreadsheet:merged-cells-click',
-  CORNER_TEXT_CLICK_EVENT = 'spreadsheet:corner-text-click',
-  ROW_COLUMN_CLICK_EVENT = 'spreadsheet:row-column-click',
-  ROW_TEXT_CLICK_EVENT = 'spreadsheet:row-text-click',
-  HOVER_EVENT = 'spreadsheet:hover',
-}
-
 export enum InteractionStateName {
   SELECTED = 'selected',
   HOVER = 'hover',
@@ -30,3 +21,5 @@ export enum CellTypes {
 }
 
 export const HOVER_FOCUS_TIME = 800;
+
+export const SHIFT_KEY = 'Shift';
