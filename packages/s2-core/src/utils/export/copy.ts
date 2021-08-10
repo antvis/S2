@@ -19,7 +19,6 @@ export const processCopyData = (cells: S2CellType[][]): string => {
 
 export const getTwoDimData = (cells: S2CellType[]) => {
   if (!cells?.length) return [];
-  const twoDimDataArray: S2CellType[][] = [];
   const [minCell, maxCell] = [
     { row: Infinity, col: Infinity },
     { row: 0, col: 0 },
@@ -32,16 +31,18 @@ export const getTwoDimData = (cells: S2CellType[]) => {
     maxCell.col = Math.max(colIndex, maxCell.col);
     maxCell.row = Math.max(rowIndex, maxCell.row);
   });
+  const [rowLen, colLen] = [
+    maxCell.row - minCell.row + 1,
+    maxCell.col - minCell.col + 1,
+  ];
+  const twoDimDataArray: S2CellType[][] = new Array(rowLen)
+    .fill('')
+    .map(() => new Array(colLen).fill(''));
 
   cells.forEach((e) => {
     const { rowIndex, colIndex } = e.getMeta();
     const [diffRow, diffCol] = [rowIndex - minCell.row, colIndex - minCell.col];
-    if (twoDimDataArray[diffRow]) {
-      twoDimDataArray[diffRow][diffCol] = e;
-    } else {
-      twoDimDataArray[diffRow] = new Array(maxCell.col - minCell.col).fill('');
-      twoDimDataArray[diffRow][diffCol] = e;
-    }
+    twoDimDataArray[diffRow][diffCol] = e;
   });
   return twoDimDataArray;
 };
