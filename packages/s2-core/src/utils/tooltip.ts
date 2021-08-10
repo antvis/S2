@@ -44,7 +44,6 @@ import {
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
 import { InteractionStateName } from '@/common/constant';
-import { S2CellType } from '@/common/interface';
 
 /**
  * calculate aggregate value
