@@ -129,7 +129,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
-    this.cellType = CellTypes.DATA_CELL;
+    this.cellType = this.getCellType();
     this.conditions = this.spreadsheet.options?.conditions;
     this.drawBackgroundShape();
     this.drawStateShapes();
@@ -138,6 +138,10 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawBorderShape();
     // 更新选中状态
     this.update();
+  }
+
+  protected getCellType() {
+    return CellTypes.DATA_CELL;
   }
 
   // 根据state要改变样式的shape

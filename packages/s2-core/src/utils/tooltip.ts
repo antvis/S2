@@ -324,8 +324,7 @@ export const getSelectedCellIndexes = (
   const selectedIndexes = [];
   const currentState = spreadsheet.getCurrentState();
   const cells = currentState?.cells;
-  if (isEmpty(cells)) return null;
-  if (cells[0]?.cellType === CellTypes.COL_CELL) {
+  if (cells?.[0]?.cellType === CellTypes.COL_CELL) {
     const currentHeaderCell = find(
       cells,
       (cell) => cell.getMeta().colIndex === cellInfo.colIndex,
@@ -333,7 +332,7 @@ export const getSelectedCellIndexes = (
     map(rowLeafNodes, (row, index) => {
       selectedIndexes.push([index, currentHeaderCell.getMeta().colIndex]);
     });
-  } else if (cells[0]?.cellType === CellTypes.ROW_CELL) {
+  } else if (cells?.[0]?.cellType === CellTypes.ROW_CELL) {
     const currentHeaderCell = find(
       cells,
       (cell) => cell.getMeta().rowIndex === cellInfo.rowIndex,
