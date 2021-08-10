@@ -1,15 +1,15 @@
 import { Event } from '@antv/g-canvas';
 import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
-import { SelectedStateName } from '@/common/constant/interaction';
+import { InteractionStateName } from '@/common/constant/interaction';
 import { getTooltipData } from '../utils/tooltip';
 import { each, map, assign, pick } from 'lodash';
 import { Node } from '../index';
 
 const SHIFT_KEY = 'Shift';
 
-export class ColRowMutiSelection extends BaseInteraction {
-  private isMutiSelection = false;
+export class ColRowMultiSelection extends BaseInteraction {
+  private isMultiSelection = false;
 
   protected bindEvents() {
     this.bindKeyboardDown();
@@ -19,25 +19,25 @@ export class ColRowMutiSelection extends BaseInteraction {
   }
 
   private bindKeyboardDown() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDDOWN, (ev: KeyboardEvent) => {
+    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_DOWN, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
-        this.isMutiSelection = true;
+        this.isMultiSelection = true;
       }
     });
   }
 
   private bindKeyboardUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDUP, (ev: KeyboardEvent) => {
+    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
-        this.isMutiSelection = false;
+        this.isMultiSelection = false;
         this.spreadsheet.interceptEvent.delete(DefaultInterceptEventType.CLICK);
       }
     });
   }
 
   private bindColCellClick() {
-    this.spreadsheet.on(S2Event.COLCELL_CLICK, (ev) => {
-      if (this.isMutiSelection) {
+    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (ev: Event) => {
+      if (this.isMultiSelection) {
         // 屏蔽hover和click
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
         const cell = this.spreadsheet.getCell(ev.target);
@@ -53,17 +53,18 @@ export class ColRowMutiSelection extends BaseInteraction {
               if (node.belongsCell) {
                 this.spreadsheet.setState(
                   node.belongsCell,
-                  SelectedStateName.COL_SELECTED,
+                  InteractionStateName.SELECTED,
                 );
               }
             });
           } else {
             // 单列
-            this.spreadsheet.setState(cell, SelectedStateName.COL_SELECTED);
+            this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
           }
           const currentState = this.spreadsheet.getCurrentState();
-          const { stateName, cells } = currentState;
-          if (stateName === SelectedStateName.COL_SELECTED) {
+          const stateName = currentState?.stateName;
+          const cells = currentState?.cells;
+          if (stateName === InteractionStateName.SELECTED) {
             cellInfos = this.mergeCellInfo(cells);
           }
           this.handleTooltip(ev, meta, cellInfos);
@@ -76,8 +77,8 @@ export class ColRowMutiSelection extends BaseInteraction {
   }
 
   private bindRowCellClick() {
-    this.spreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
-      if (this.isMutiSelection) {
+    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (ev: Event) => {
+      if (this.isMultiSelection) {
         // 屏蔽hover和click
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
         const cell = this.spreadsheet.getCell(ev.target);
@@ -91,13 +92,13 @@ export class ColRowMutiSelection extends BaseInteraction {
               if (node.belongsCell) {
                 this.spreadsheet.setState(
                   node.belongsCell,
-                  SelectedStateName.ROW_SELECTED,
+                  InteractionStateName.SELECTED,
                 );
               }
             });
           } else {
             // 单行
-            this.spreadsheet.setState(cell, SelectedStateName.ROW_SELECTED);
+            this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
           }
           this.spreadsheet.updateCellStyleByState();
           this.spreadsheet.upDatePanelAllCellsStyle();

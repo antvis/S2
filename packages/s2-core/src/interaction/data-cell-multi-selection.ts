@@ -1,13 +1,10 @@
 import { S2Event, DefaultInterceptEventType } from './events/types';
 import { BaseInteraction } from './base';
-import { SelectedStateName } from '../common/constant/interaction';
 import { getTooltipData } from '../utils/tooltip';
 import { each, isEqual, find, isEmpty } from 'lodash';
-
-const SHIFT_KEY = 'Shift';
-
-export class DataCellMutiSelection extends BaseInteraction {
-  private isMutiSelection = false;
+import { InteractionStateName, SHIFT_KEY } from '@/common/constant';
+export class DataCellMultiSelection extends BaseInteraction {
+  private isMultiSelection = false;
 
   protected bindEvents() {
     this.bindKeyboardDown();
@@ -16,42 +13,43 @@ export class DataCellMutiSelection extends BaseInteraction {
   }
 
   private bindKeyboardDown() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDDOWN, (ev: KeyboardEvent) => {
+    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_DOWN, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
-        this.isMutiSelection = true;
+        this.isMultiSelection = true;
       }
     });
   }
 
   private bindKeyboardUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARDUP, (ev: KeyboardEvent) => {
+    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
-        this.isMutiSelection = false;
+        this.isMultiSelection = false;
         this.spreadsheet.interceptEvent.delete(DefaultInterceptEventType.CLICK);
       }
     });
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATACELL_CLICK, (ev) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (ev) => {
       ev.stopPropagation();
       const cell = this.spreadsheet.getCell(ev.target);
       const meta = cell.getMeta();
-      if (this.isMutiSelection && meta) {
+      if (this.isMultiSelection && meta) {
         const currentState = this.spreadsheet.getCurrentState();
-        const { stateName, cells } = currentState;
+        const stateName = currentState?.stateName;
+        const cells = currentState?.cells;
         this.spreadsheet.clearStyleIndependent();
         // 屏蔽hover和click
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
         // 先把之前的tooltip隐藏
         this.spreadsheet.hideTooltip();
-        this.spreadsheet.setState(cell, SelectedStateName.SELECTED);
+        this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
         this.spreadsheet.updateCellStyleByState();
         this.draw();
 
         const cellInfos = [];
-        if (stateName === SelectedStateName.SELECTED) {
+        if (stateName === InteractionStateName.SELECTED) {
           each(cells, (stateCell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
             const stateCellMeta = stateCell.getMeta();

@@ -4,17 +4,11 @@ import { ResizeInfo } from '../facet/header/interface';
 import { BaseInteraction } from './base';
 import { S2Event } from './events/types';
 import { SpreadSheet } from 'src/sheet-type';
-
-const MIN_CELL_WIDTH = 28;
-const MIN_CELL_HEIGHT = 16;
-
-export enum EventType {
-  ROW_W = 'spreadsheet:change-row-header-width',
-  COL_W = 'spreadsheet:change-column-header-width',
-  ROW_H = 'spreadsheet:change-row-header-height',
-  COL_H = 'spreadsheet:change-column-header-height',
-  TREE_W = 'spreadsheet:change-tree-width',
-}
+import {
+  ResizeEventType,
+  MIN_CELL_WIDTH,
+  MIN_CELL_HEIGHT,
+} from '@/common/constant';
 
 /**
  * Resize row&col width/height interaction
@@ -40,7 +34,7 @@ export class RowColResize extends BaseInteraction {
   }
 
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSEDOWN, (ev) => {
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, (ev) => {
       const shape: IGroup = ev.target;
       const info: ResizeInfo = shape.attr('appendInfo');
       if (get(info, 'isResizer')) {
@@ -114,7 +108,7 @@ export class RowColResize extends BaseInteraction {
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSEMOVE, (ev) => {
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, (ev) => {
       throttle(
         this.resizeMouseMove,
         33, // 30fps
@@ -124,7 +118,7 @@ export class RowColResize extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSEUP, () => {
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_UP, () => {
       if (this.resizeGroup) {
         this.resizeGroup.set('visible', false);
         const children = this.resizeGroup.getChildren();
@@ -135,14 +129,14 @@ export class RowColResize extends BaseInteraction {
           )[0];
           const endPoint: ['M', number, number] = children[1]?.attr('path')[0];
 
-          let eventType: EventType;
+          let resizeEventType: ResizeEventType;
           let config: any;
           // todo，如何优化这段代码？
           if (info.type === 'col') {
             // eslint-disable-next-line default-case
             switch (info.affect) {
               case 'field':
-                eventType = EventType.ROW_W;
+                resizeEventType = ResizeEventType.ROW_W;
                 config = {
                   rowCfg: {
                     widthByField: {
@@ -152,7 +146,7 @@ export class RowColResize extends BaseInteraction {
                 };
                 break;
               case 'tree':
-                eventType = EventType.TREE_W;
+                resizeEventType = ResizeEventType.TREE_W;
                 config = {
                   rowCfg: {
                     treeRowsWidth: endPoint[1] - startPoint[1],
@@ -160,7 +154,7 @@ export class RowColResize extends BaseInteraction {
                 };
                 break;
               case 'cell':
-                eventType = EventType.COL_W;
+                resizeEventType = ResizeEventType.COL_W;
                 config = {
                   colCfg: {
                     widthByFieldValue: {
@@ -174,7 +168,7 @@ export class RowColResize extends BaseInteraction {
             // eslint-disable-next-line default-case
             switch (info.affect) {
               case 'field':
-                eventType = EventType.COL_H;
+                resizeEventType = ResizeEventType.COL_H;
                 config = {
                   colCfg: {
                     heightByField: {
@@ -185,7 +179,7 @@ export class RowColResize extends BaseInteraction {
                 break;
               case 'cell':
               case 'tree':
-                eventType = EventType.ROW_H;
+                resizeEventType = ResizeEventType.ROW_H;
                 config = {
                   cellCfg: {
                     height: endPoint[2] - startPoint[2],
@@ -194,7 +188,7 @@ export class RowColResize extends BaseInteraction {
                 break;
             }
           }
-          this.spreadsheet.emit(eventType, config);
+          this.spreadsheet.emit(resizeEventType, config);
           this.spreadsheet.setOptions(
             merge({}, this.spreadsheet.options, { style: config }),
           );

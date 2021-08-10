@@ -12,6 +12,7 @@ import {
   KEY_GROUP_ROW_RESIZER,
   COLOR_DEFAULT_RESIZER,
   ID_SEPARATOR,
+  CellTypes,
 } from '../common/constant';
 import { HIT_AREA } from '@/facet/header/base';
 import { ResizeInfo } from '@/facet/header/interface';
@@ -60,6 +61,7 @@ export class RowCell extends BaseCell<Node> {
   }
 
   protected initCell() {
+    this.cellType = this.getCellType();
     // 1、draw rect background
     this.drawBackgroundColor();
     this.drawInteractiveBgShape();
@@ -73,6 +75,10 @@ export class RowCell extends BaseCell<Node> {
     this.drawHotSpotInLeaf();
     // 6、draw action icon shapes: trend icon, drill-down icon ...
     this.drawActionIcons();
+  }
+
+  protected getCellType() {
+    return CellTypes.ROW_CELL;
   }
 
   protected drawBackgroundColor() {

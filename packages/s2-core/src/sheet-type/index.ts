@@ -35,6 +35,7 @@ import {
   ColCell,
   CornerCell,
   DetailRowCell,
+  MergedCells,
 } from '../cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
@@ -45,6 +46,7 @@ import {
   KEY_GROUP_PANEL_GROUND,
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
+  CellTypes,
 } from '@/common/constant';
 import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
 import {
@@ -54,8 +56,8 @@ import {
   BaseEvent,
   BrushSelection,
   RowColResize,
-  DataCellMutiSelection,
-  ColRowMutiSelection,
+  DataCellMultiSelection,
+  ColRowMultiSelection,
   DataCellClick,
   CornerTextClick,
   RowColumnClick,
@@ -74,7 +76,7 @@ import { isMobile } from '@/utils/is-mobile';
 import {
   EventNames,
   InteractionNames,
-  SelectedStateName,
+  InteractionStateName,
 } from '@/common/constant';
 import { i18n } from '@/common/i18n';
 import { PivotFacet, TableFacet } from '@/facet';
@@ -427,7 +429,7 @@ export class SpreadSheet extends EE {
   public updateCellStyleByState() {
     const cells = this.getCurrentState().cells;
     cells.forEach((cell) => {
-      cell.updateByState();
+      cell.updateByState(this.getCurrentState().stateName);
     });
   }
 
@@ -458,28 +460,15 @@ export class SpreadSheet extends EE {
   // 获取当前cell类型
   public getCellType(target) {
     const cell = this.getCell(target);
-    if (cell instanceof DataCell) {
-      return DataCell.name;
-    }
-    if (cell instanceof RowCell) {
-      return RowCell.name;
-    }
-    if (cell instanceof ColCell) {
-      return ColCell.name;
-    }
-    if (cell instanceof CornerCell) {
-      return CornerCell.name;
-    }
-    return '';
+    return cell?.cellType;
   }
 
   // 因此需要手动把当前行头列头选择下的cell样式重置
   public clearStyleIndependent() {
     const currentState = this.getCurrentState();
     if (
-      currentState.stateName === SelectedStateName.COL_SELECTED ||
-      currentState.stateName === SelectedStateName.ROW_SELECTED ||
-      currentState.stateName === SelectedStateName.HOVER
+      currentState?.stateName === InteractionStateName.SELECTED ||
+      currentState?.stateName === InteractionStateName.HOVER
     ) {
       this.getPanelAllCells().forEach((cell) => {
         cell.hideShapeUnderState();
@@ -616,12 +605,12 @@ export class SpreadSheet extends EE {
         new RowColResize(this),
       );
       this.interactions.set(
-        InteractionNames.DATACELL_MUTI_SELECTION_INTERACTION,
-        new DataCellMutiSelection(this),
+        InteractionNames.DATA_CELL_MULTI_SELECTION_INTERACTION,
+        new DataCellMultiSelection(this),
       );
       this.interactions.set(
-        InteractionNames.COL_ROW_MUTI_SELECTION_INTERACTION,
-        new ColRowMutiSelection(this),
+        InteractionNames.COL_ROW_MULTI_SELECTION_INTERACTION,
+        new ColRowMultiSelection(this),
       );
     }
   }
@@ -673,7 +662,7 @@ export class SpreadSheet extends EE {
   // 注册事件
   protected registerEvents() {
     this.events.clear();
-    this.events.set(EventNames.DATACELL_CLICK_EVENT, new DataCellClick(this));
+    this.events.set(EventNames.DATA_CELL_CLICK_EVENT, new DataCellClick(this));
     this.events.set(
       EventNames.CORNER_TEXT_CLICK_EVENT,
       new CornerTextClick(this),
@@ -684,7 +673,7 @@ export class SpreadSheet extends EE {
     );
     this.events.set(EventNames.ROW_TEXT_CLICK_EVENT, new RowTextClick(this));
     this.events.set(
-      EventNames.MERGEDCELLS_CLICK_EVENT,
+      EventNames.MERGED_CELLS_CLICK_EVENT,
       new MergedCellsClick(this),
     );
     this.events.set(EventNames.HOVER_EVENT, new HoverEvent(this));

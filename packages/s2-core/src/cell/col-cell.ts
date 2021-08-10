@@ -5,6 +5,7 @@ import {
 } from '@/utils/text';
 import _ from 'lodash';
 
+import { CellTypes } from '@/common/constant';
 import { renderRect, updateShapeAttr } from '@/utils/g-renders';
 import { HIT_AREA } from '@/facet/header/base';
 import { ColHeaderConfig } from '@/facet/header/col';
@@ -50,6 +51,7 @@ export class ColCell extends BaseCell<Node> {
   }
 
   protected initCell() {
+    this.cellType = this.getCellType();
     // 1、draw rect background
     this.drawRectBackground();
     // 2、interactive background shape
@@ -64,6 +66,10 @@ export class ColCell extends BaseCell<Node> {
     this.drawHotSpot();
 
     this.updateSelected();
+  }
+
+  protected getCellType() {
+    return CellTypes.COL_CELL;
   }
 
   private updateSelected() {

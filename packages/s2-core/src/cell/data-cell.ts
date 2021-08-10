@@ -1,4 +1,4 @@
-import { SelectedStateName } from '@/common/constant/interaction';
+import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { CellBoxCfg } from '@/common/interface';
 import { getIconLayoutPosition } from '@/utils/condition';
 import {
@@ -62,15 +62,18 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const state = this.spreadsheet.getCurrentState();
-    const { stateName, cells } = state;
-    if (cells.length) {
+    const stateName = state?.stateName;
+    const cells = state?.cells;
+
+    if (!isEmpty(cells)) {
+      const firstCell = first(cells);
       // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
       // 二者操作一致，function合并
-      if (stateName === SelectedStateName.COL_SELECTED) {
-        this.changeCellStyleByState('colIndex');
-      } else if (stateName === SelectedStateName.ROW_SELECTED) {
-        this.changeCellStyleByState('rowIndex');
-      } else if (stateName === SelectedStateName.HOVER && !isEmpty(cells)) {
+      if (firstCell.cellType === CellTypes.COL_CELL) {
+        this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
+      } else if (firstCell.cellType === CellTypes.ROW_CELL) {
+        this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
+      } else if (stateName === InteractionStateName.HOVER && !isEmpty(cells)) {
         // 如果当前是hover，要绘制出十字交叉的行列样式
         const currentHoverCell = first(cells);
         const currentColIndex = this.meta.colIndex;
@@ -81,7 +84,7 @@ export class DataCell extends BaseCell<ViewMeta> {
             currentRowIndex === currentHoverCell?.getMeta().rowIndex) &&
           this !== currentHoverCell
         ) {
-          this.updateByState();
+          this.updateByState(InteractionStateName.HOVER);
         } else if (this !== currentHoverCell) {
           // 当视图内的cell行列index与hover的cell 不一致，且不是当前hover的cell时，隐藏其他样式
           this.hideShapeUnderState();
@@ -190,6 +193,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
+    this.cellType = this.getCellType();
     this.conditions = this.spreadsheet.options?.conditions;
     this.drawBackgroundShape();
     this.drawStateShapes();
@@ -198,6 +202,10 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawBorderShape();
     // 更新选中状态
     this.update();
+  }
+
+  protected getCellType() {
+    return CellTypes.DATA_CELL;
   }
 
   // 根据state要改变样式的shape
@@ -467,7 +475,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   // dataCell根据state 改变当前样式，
-  private changeCellStyleByState(needGetIndexKey) {
+  private changeCellStyleByState(needGetIndexKey, changeStyleStateName) {
     const { cells } = this.spreadsheet.getCurrentState();
     const currentIndex = this.meta[needGetIndexKey];
     const selectedIndexes = map(
@@ -475,7 +483,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       (cell) => cell?.getMeta()[needGetIndexKey],
     );
     if (includes(selectedIndexes, currentIndex)) {
-      this.updateByState();
+      this.updateByState(changeStyleStateName);
     } else {
       this.hideShapeUnderState();
     }

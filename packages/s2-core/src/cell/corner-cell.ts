@@ -8,6 +8,7 @@ import {
   KEY_GROUP_CORNER_RESIZER,
   COLOR_DEFAULT_RESIZER,
   KEY_TREE_ROWS_COLLAPSE_ALL,
+  CellTypes,
 } from '../common/constant';
 import { HIT_AREA } from '../facet/header/base';
 import { CornerHeaderConfig } from '../facet/header/corner';
@@ -32,10 +33,15 @@ export class CornerCell extends BaseCell<Node> {
   public update() {}
 
   protected initCell() {
+    this.cellType = this.getCellType();
     this.textShapes = [];
     this.drawCellRect();
     this.drawCellText();
     this.drawHotpot();
+  }
+
+  protected getCellType() {
+    return CellTypes.CORNER_CELL;
   }
 
   protected drawCellText() {

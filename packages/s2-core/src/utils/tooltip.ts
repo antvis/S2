@@ -17,9 +17,15 @@ import {
   find,
   findIndex,
   each,
+  isEmpty,
 } from 'lodash';
 import { i18n } from '../common/i18n';
-import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '../common/constant';
+import {
+  CellTypes,
+  EXTRA_FIELD,
+  TOTAL_VALUE,
+  VALUE_FIELD,
+} from '@/common/constant';
 import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
 import {
   DataItem,
@@ -37,7 +43,7 @@ import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
-import { SelectedStateName } from '@/common/constant';
+import { InteractionStateName } from '@/common/constant';
 
 /**
  * calculate aggregate value
@@ -316,8 +322,8 @@ export const getSelectedCellIndexes = (
   const { rowLeafNodes, colLeafNodes } = layoutResult;
   const selectedIndexes = [];
   const currentState = spreadsheet.getCurrentState();
-  const { stateName, cells } = currentState;
-  if (stateName === SelectedStateName.COL_SELECTED) {
+  const cells = currentState?.cells;
+  if (cells?.[0]?.cellType === CellTypes.COL_CELL) {
     const currentHeaderCell = find(
       cells,
       (cell) => cell.getMeta().colIndex === cellInfo.colIndex,
@@ -325,7 +331,7 @@ export const getSelectedCellIndexes = (
     map(rowLeafNodes, (row, index) => {
       selectedIndexes.push([index, currentHeaderCell.getMeta().colIndex]);
     });
-  } else if (stateName === SelectedStateName.ROW_SELECTED) {
+  } else if (cells?.[0]?.cellType === CellTypes.ROW_CELL) {
     const currentHeaderCell = find(
       cells,
       (cell) => cell.getMeta().rowIndex === cellInfo.rowIndex,
@@ -344,12 +350,10 @@ export const getSelectedData = (
   const layoutResult = spreadsheet?.facet?.layoutResult;
   let selectedData = [];
   const currentState = spreadsheet.getCurrentState();
-  const { stateName, cells } = currentState;
+  const stateName = currentState?.stateName;
+  const cells = currentState?.cells;
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
-  if (
-    stateName === SelectedStateName.COL_SELECTED ||
-    stateName === SelectedStateName.ROW_SELECTED
-  ) {
+  if (stateName === InteractionStateName.SELECTED) {
     // 行头列头单选多选
     const selectedCellIndexes = getSelectedCellIndexes(
       spreadsheet,
@@ -417,7 +421,7 @@ const mergeSummaries = (summaries) => {
   each(summaries, (summary) => {
     const summaryInResultIndex = findIndex(
       result,
-      (i) => i.name === summary.name,
+      (i) => i?.name === summary?.name,
     );
     if (summaryInResultIndex > -1) {
       result[summaryInResultIndex].value += summary.value;

@@ -1,10 +1,6 @@
 // event keys
 export const KEY_LIST_SORT = 'spreadsheet:list-sort';
 export const KEY_COLLAPSE_TREE_ROWS = 'spreadsheet:collapsed-tree-rows';
-export const KEY_ROW_CELL_CLICK = 'spreadsheet:row-cell-click';
-export const KEY_COLUMN_CELL_CLICK = 'spreadsheet:column-cell-click';
-export const KEY_CORNER_CELL_CLICK = 'spreadsheet:corner-cell-click';
-export const KEY_SINGLE_CELL_CLICK = 'spreadsheet:single-cell-click';
 export const KEY_JUMP_HREF = 'spreadsheet:jump-href';
 export const KEY_AFTER_HEADER_LAYOUT = 'spreadsheet:after-header-layout';
 export const KEY_COL_NODE_BORDER_REACHED =
@@ -19,3 +15,22 @@ export const KEY_PAGINATION = 'spreadsheet:pagination';
 export const KEY_UPDATE_PROPS = 'spreadsheet-update-props';
 export const KEY_COLLAPSE_ROWS = 'spreadsheet:collapsed-rows';
 export const KEY_AFTER_COLLAPSE_ROWS = 'spreadsheet:after-collapsed-rows';
+
+// interaction event names
+export enum EventNames {
+  DATA_CELL_CLICK_EVENT = 'spreadsheet:data-cell-click',
+  MERGED_CELLS_CLICK_EVENT = 'spreadsheet:merged-cells-click',
+  CORNER_TEXT_CLICK_EVENT = 'spreadsheet:corner-text-click',
+  ROW_COLUMN_CLICK_EVENT = 'spreadsheet:row-column-click',
+  ROW_TEXT_CLICK_EVENT = 'spreadsheet:row-text-click',
+  HOVER_EVENT = 'spreadsheet:hover',
+}
+
+//
+export enum ResizeEventType {
+  ROW_W = 'spreadsheet:change-row-header-width',
+  COL_W = 'spreadsheet:change-column-header-width',
+  ROW_H = 'spreadsheet:change-row-header-height',
+  COL_H = 'spreadsheet:change-column-header-height',
+  TREE_W = 'spreadsheet:change-tree-width',
+}

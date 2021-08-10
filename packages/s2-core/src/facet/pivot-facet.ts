@@ -199,10 +199,12 @@ export class PivotFacet extends BaseFacet {
       levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
     }
+    let currentCollIndex = 0;
     for (let i = 0; i < allNodes.length; i++) {
       const currentNode = allNodes[i];
       if (currentNode.isLeaf) {
-        currentNode.colIndex = i;
+        currentNode.colIndex = currentCollIndex;
+        currentCollIndex += 1;
         currentNode.x = preLeafNode.x + preLeafNode.width;
         currentNode.width = this.calculateColLeafNodesWidth(currentNode);
         colsHierarchy.width += currentNode.width;

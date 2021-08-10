@@ -23,6 +23,11 @@ export interface Padding {
   bottom?: number;
   left?: number;
 }
+export interface InteractionState {
+  backgroundColor?: string;
+  borderColor?: string;
+  borderWidth?: number;
+}
 
 export type Margin = Padding;
 
@@ -43,12 +48,6 @@ export interface CellTheme {
   backgroundColor?: string;
   /* 单元格背景色透明度 */
   backgroundColorOpacity?: number;
-  /* hover 态单元格背景色 */
-  hoverBackgroundColor?: string;
-  /* hover 十字器背景色 */
-  hoverLinkageBackgroundColor?: string;
-  /* 选中态单元格背景色 */
-  selectedBackgroundColor?: string;
   /* 单元格水平边线颜色 */
   horizontalBorderColor?: string;
   /* 单元格水平边线颜色透明度 */
@@ -57,22 +56,20 @@ export interface CellTheme {
   verticalBorderColor?: string;
   /* 单元格垂直边线颜色透明度 */
   verticalBorderColorOpacity?: number;
-  /* hover 态单元格边线颜色 */
-  hoverBorderColor?: string;
-  /* 选中态单元格边线颜色 */
-  selectedBorderColor?: string;
-  /* 预选中态单元格边线 */
-  prepareSelectBorderColor?: string;
   /* 单元格水平边线宽度 */
   horizontalBorderWidth?: number;
   /* 单元格垂直边线宽度 */
   verticalBorderWidth?: number;
-  /* hover 态单元格边线宽度 */
-  hoverBorderWidth?: number;
-  /* 选中态单元格边线宽度 */
-  selectedBorderWidth?: number;
   /* 单元格内边距 */
   padding: Padding;
+  /* hover 单元格状态 */
+  hover?: InteractionState;
+  /* hover 焦点单元格 */
+  hoverFocus?: InteractionState;
+  /* 选中态 */
+  selected?: InteractionState;
+  /* 预选中态 */
+  prepareSelect?: InteractionState;
   /* 单元格内条件格式-迷你条形图高度 */
   miniBarChartHeight?: number;
   /* 额外属性字段 */
