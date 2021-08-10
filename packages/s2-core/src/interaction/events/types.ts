@@ -35,7 +35,7 @@ export enum S2Event {
 
   GLOBAL_KEYBOARD_DOWN = 'global:keyboard-down',
   GLOBAL_KEYBOARD_UP = 'global:keyboard-up',
-  GLOBAL_COPY = 'global:copy',
+  GLOBAL_COPIED = 'global:copied',
 
   GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT = 'global:clear-interaction-style-effect',
 }
