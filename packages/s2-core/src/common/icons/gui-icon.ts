@@ -93,16 +93,8 @@ export class GuiIcon extends Group {
    * 渲染
    */
   private render(): void {
-    const {
-      x,
-      y,
-      width,
-      height,
-      type,
-      fill,
-      textAlign,
-      textBaseline,
-    } = this.cfg;
+    const { x, y, width, height, type, fill, textAlign, textBaseline } =
+      this.cfg;
     const image = new Shape.Image({
       attrs: {
         x,

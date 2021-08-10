@@ -157,8 +157,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         y1: y,
         x2: position.x + width,
         y2: y,
-        stroke: this.headerConfig.spreadsheet.theme.corner.cell
-          .horizontalBorderColor,
+        stroke:
+          this.headerConfig.spreadsheet.theme.corner.cell.horizontalBorderColor,
         lineWidth: 1,
       },
     });

@@ -11,6 +11,7 @@
 .eslintrc
 .eslintignore
 .stylelintrc.json
+lerna.json
 yarn.lock
 yarn-error.log
 npm-debug.log
