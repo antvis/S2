@@ -43,7 +43,8 @@ export class RowColumnClick extends BaseEvent {
         }
 
         const currentState = this.spreadsheet.getCurrentState();
-        const { stateName, cells } = currentState;
+        const stateName = currentState?.stateName;
+        const cells = currentState?.cells;
         if (stateName === InteractionStateName.SELECTED) {
           cellInfos = this.mergeCellInfo(cells);
         }
@@ -90,7 +91,8 @@ export class RowColumnClick extends BaseEvent {
         }
 
         const currentState = this.spreadsheet.getCurrentState();
-        const { stateName, cells } = currentState;
+        const stateName = currentState?.stateName;
+        const cells = currentState?.cells;
         if (stateName === InteractionStateName.SELECTED) {
           cellInfos = this.mergeCellInfo(cells);
         }

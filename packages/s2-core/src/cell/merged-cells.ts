@@ -44,12 +44,16 @@ export class MergedCells extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
-    this.type = CellTypes.MERGED_CELLS;
+    this.cellType = this.getCellType();
     // TODO：1、条件格式支持； 2、交互态扩展； 3、合并后的单元格文字布局及文字内容（目前参考Excel合并后只保留第一个单元格子的数据）
     this.drawBackgroundShape();
     // this.drawStateShapes();
     this.drawTextShape();
     // this.update();
+  }
+
+  protected getCellType() {
+    return CellTypes.MERGED_CELLS;
   }
 
   /**

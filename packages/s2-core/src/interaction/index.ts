@@ -15,5 +15,5 @@
 // export { Tooltip } from './tooltip'; // 扩展 tooltip，不使用交互实现
 export { BrushSelection } from './brush-selection';
 export { RowColResize } from './row-col-resize';
-export { DataCellMutiSelection } from './datacell-muti-selection';
-export { ColRowMutiSelection } from './col-row-muti-selection';
+export { DataCellMultiSelection } from './data-cell-multi-selection';
+export { ColRowMultiSelection } from './col-row-multi-selection';

@@ -175,7 +175,8 @@ export class BrushSelection extends BaseInteraction {
         });
         this.draw();
         const currentState = this.spreadsheet.getCurrentState();
-        const { stateName, cells } = currentState;
+        const stateName = currentState?.stateName;
+        const cells = currentState?.cells;
         const cellInfos = [];
         if (stateName === InteractionStateName.SELECTED) {
           each(cells, (cell) => {

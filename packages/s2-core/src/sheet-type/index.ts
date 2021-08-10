@@ -57,8 +57,8 @@ import {
   BaseEvent,
   BrushSelection,
   RowColResize,
-  DataCellMutiSelection,
-  ColRowMutiSelection,
+  DataCellMultiSelection,
+  ColRowMultiSelection,
   DataCellClick,
   CornerTextClick,
   RowColumnClick,
@@ -480,8 +480,8 @@ export class SpreadSheet extends EE {
   public clearStyleIndependent() {
     const currentState = this.getCurrentState();
     if (
-      currentState.stateName === InteractionStateName.SELECTED ||
-      currentState.stateName === InteractionStateName.HOVER
+      currentState?.stateName === InteractionStateName.SELECTED ||
+      currentState?.stateName === InteractionStateName.HOVER
     ) {
       this.getPanelAllCells().forEach((cell) => {
         cell.hideShapeUnderState();
@@ -619,11 +619,11 @@ export class SpreadSheet extends EE {
       );
       this.interactions.set(
         InteractionNames.DATA_CELL_MULTI_SELECTION_INTERACTION,
-        new DataCellMutiSelection(this),
+        new DataCellMultiSelection(this),
       );
       this.interactions.set(
         InteractionNames.COL_ROW_MULTI_SELECTION_INTERACTION,
-        new ColRowMutiSelection(this),
+        new ColRowMultiSelection(this),
       );
     }
   }

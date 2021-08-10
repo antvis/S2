@@ -202,7 +202,7 @@ export class EventController {
     } else {
       const cell = this.spreadsheet.getCell(ev.target);
       if (cell) {
-        const cellType = this.spreadsheet.getCellType(ev.target);
+        const cellType = cell?.cellType;
         // target相同，说明是一个cell内的click事件
         if (this.target === ev.target) {
           switch (cellType) {

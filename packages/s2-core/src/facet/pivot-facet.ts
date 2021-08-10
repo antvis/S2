@@ -30,20 +30,16 @@ import {
 export class PivotFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     // 1、layout all nodes in rowHeader and colHeader
-    const {
-      leafNodes: rowLeafNodes,
-      hierarchy: rowsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: true,
-      facetCfg: this.cfg,
-    });
-    const {
-      leafNodes: colLeafNodes,
-      hierarchy: colsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: false,
-      facetCfg: this.cfg,
-    });
+    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: true,
+        facetCfg: this.cfg,
+      });
+    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: false,
+        facetCfg: this.cfg,
+      });
     // 2、calculate all related nodes coordinate
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -199,10 +195,12 @@ export class PivotFacet extends BaseFacet {
       levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
     }
+    let currentCollIndex = 0;
     for (let i = 0; i < allNodes.length; i++) {
       const currentNode = allNodes[i];
       if (currentNode.isLeaf) {
-        currentNode.colIndex = i;
+        currentNode.colIndex = currentCollIndex;
+        currentCollIndex += 1;
         currentNode.x = preLeafNode.x + preLeafNode.width;
         currentNode.width = this.calculateColLeafNodesWidth(currentNode);
         colsHierarchy.width += currentNode.width;
