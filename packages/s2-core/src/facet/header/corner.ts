@@ -282,8 +282,13 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   private handleHotsSpotArea() {
-    const { data, position, width, height, seriesNumberWidth } =
-      this.headerConfig;
+    const {
+      data,
+      position,
+      width,
+      height,
+      seriesNumberWidth,
+    } = this.headerConfig;
     const prevResizer = this.headerConfig.spreadsheet.foregroundGroup.findById(
       KEY_GROUP_CORNER_RESIZER,
     );
