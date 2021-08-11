@@ -54,13 +54,8 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected layout() {
-    const {
-      data,
-      spreadsheet,
-      cornerWidth,
-      width,
-      scrollX,
-    } = this.headerConfig;
+    const { data, spreadsheet, cornerWidth, width, scrollX } =
+      this.headerConfig;
 
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
