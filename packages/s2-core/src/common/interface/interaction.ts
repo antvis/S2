@@ -19,7 +19,7 @@ export interface CustomInteraction {
   interaction: InteractionConstructor;
 }
 
-export interface S2Range {
+export interface S2CellBrushRange {
   leftX: number;
   topY: number;
   rightX: number;
