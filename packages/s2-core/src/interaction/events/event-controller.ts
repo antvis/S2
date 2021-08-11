@@ -74,7 +74,11 @@ export class EventController {
       (event: KeyboardEvent) => {
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_DOWN, event);
         // windows and macos copy
-        if (keyEqualTo(event.key, 'c') && (event.metaKey || event.ctrlKey)) {
+        if (
+          this.spreadsheet.options.enbleCopy &&
+          keyEqualTo(event.key, 'c') &&
+          (event.metaKey || event.ctrlKey)
+        ) {
           this.spreadsheet.emit(
             S2Event.GLOBAL_COPIED,
             getSelectedData(this.spreadsheet),

@@ -68,6 +68,7 @@ const getOptions = () => {
     height: 600,
     showSeriesNumber: true,
     mode: 'table',
+    enbleCopy: true,
     style: {
       colCfg: {
         colWidthType: 'compact',
@@ -95,9 +96,9 @@ function MainLayout(props) {
     const logData = (data) => {
       console.log(data);
     };
-    s2Ref.current.on(S2Event.GLOBAL_COPY, logData);
+    s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
     return () => {
-      s2Ref.current.off(S2Event.GLOBAL_COPY, logData);
+      s2Ref.current.off(S2Event.GLOBAL_COPIED, logData);
     };
   }, []);
 
