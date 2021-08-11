@@ -28,15 +28,7 @@ import {
   SpreadsheetMountContainer,
   ThemeCfg,
 } from '@/common/interface';
-import {
-  DataCell,
-  BaseCell,
-  RowCell,
-  ColCell,
-  CornerCell,
-  DetailRowCell,
-  MergedCells,
-} from '../cell';
+import { DataCell, BaseCell, DetailRowCell } from '../cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -46,9 +38,13 @@ import {
   KEY_GROUP_PANEL_GROUND,
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
-  CellTypes,
 } from '@/common/constant';
-import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
+import {
+  BaseDataSet,
+  CustomTreePivotDataSet,
+  PivotDataSet,
+  TableDataSet,
+} from '../data-set';
 import {
   Node,
   BaseInteraction,
@@ -80,8 +76,6 @@ import {
 } from '@/common/constant';
 import { i18n } from '@/common/i18n';
 import { PivotFacet, TableFacet } from '@/facet';
-import CustomTreePivotDataSet from '@/data-set/custom-tree-pivot-data-set';
-import { updateConditionsByValues } from '@/utils/condition';
 
 const matrixTransform = ext.transform;
 
