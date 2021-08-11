@@ -1,6 +1,6 @@
 import { Event } from '@antv/g-canvas';
 import { get } from 'lodash';
-import { S2Event } from './types';
+import { S2Event } from '@/common/constant';
 import { BaseEvent } from './base-event';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { ViewMeta } from '@/common/interface';

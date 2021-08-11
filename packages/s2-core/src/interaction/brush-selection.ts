@@ -2,7 +2,7 @@ import { Event, Point, IShape } from '@antv/g-canvas';
 import { each, find, isEqual, isEmpty } from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
-import { S2Event, DefaultInterceptEventType } from './events/types';
+import { S2Event, DefaultInterceptEventType } from '@/common/constant';
 import { BaseInteraction } from './base';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { getTooltipData } from '../utils/tooltip';

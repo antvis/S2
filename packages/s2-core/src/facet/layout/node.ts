@@ -1,5 +1,5 @@
 import { Group } from '@antv/g-canvas';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { Hierarchy } from './hierarchy';
 import { SpreadSheet } from '../..';
 

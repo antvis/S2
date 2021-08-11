@@ -4,7 +4,7 @@ import { isMobile } from '@/utils/is-mobile';
 import { measureTextWidth } from '@/utils/text';
 import { getCellPadding } from '@/facet/header/util';
 import { BaseEvent } from '../base-event';
-import { S2Event, DefaultInterceptEventType } from '../types';
+import { S2Event, DefaultInterceptEventType } from '@/common/constant';
 
 /**
  * Click corner header text to full expand(remove 「...」)
