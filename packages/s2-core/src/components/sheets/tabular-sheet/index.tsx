@@ -13,7 +13,7 @@ import { merge } from 'lodash';
 import { Spin } from 'antd';
 import { Header } from '../../header';
 import { S2Event } from 'src/interaction/events/types';
-import { getBaseCellData } from 'src/utils/interactions/formatter';
+import { getBaseCellData } from '@/utils/interaction/formatter';
 import { TabularDataCell } from './tabular-data-cell';
 import { TabularTheme } from './tabular-theme';
 import { BaseSheetProps } from '../interface';

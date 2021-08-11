@@ -31,17 +31,6 @@ import {
   S2CellType,
 } from '@/common/interface';
 import { DataCell, BaseCell, DetailRowCell } from '../cell';
-import {
-  KEY_AFTER_COLLAPSE_ROWS,
-  KEY_COLLAPSE_ROWS,
-  KEY_COLLAPSE_TREE_ROWS,
-  KEY_GROUP_BACK_GROUND,
-  KEY_GROUP_FORE_GROUND,
-  KEY_GROUP_PANEL_GROUND,
-  KEY_TREE_ROWS_COLLAPSE_ALL,
-  KEY_UPDATE_PROPS,
-  InteractionStateName,
-} from '@/common/constant';
 import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
 import {
   Node,
@@ -66,8 +55,16 @@ import { DebuggerUtil } from '@/common/debug';
 import { EventController } from '@/interaction/events/event-controller';
 import { DefaultInterceptEvent } from '@/interaction/events/types';
 import { isMobile } from '@/utils/is-mobile';
-import { setState, clearState } from '@/utils/interactions/state-controller';
+import { setState, clearState } from '@/utils/interaction/state-controller';
 import {
+  KEY_AFTER_COLLAPSE_ROWS,
+  KEY_COLLAPSE_ROWS,
+  KEY_COLLAPSE_TREE_ROWS,
+  KEY_GROUP_BACK_GROUND,
+  KEY_GROUP_FORE_GROUND,
+  KEY_GROUP_PANEL_GROUND,
+  KEY_TREE_ROWS_COLLAPSE_ALL,
+  KEY_UPDATE_PROPS,
   EventNames,
   InteractionNames,
   InteractionStateName,

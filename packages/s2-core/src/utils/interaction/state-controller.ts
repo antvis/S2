@@ -8,7 +8,7 @@ import { isEmpty, forEach, includes } from 'lodash';
  * @param spreadsheet sheet instance
  */
 export const clearState = (spreadsheet: SpreadSheet) => {
-  const stateInfo = spreadsheet.getCurrentState();
+  const stateInfo = spreadsheet.store.get('interactionStateInfo');
   if (!isEmpty(stateInfo?.cells)) {
     forEach(stateInfo?.cells, (cell: S2CellType) => {
       cell.hideShapeUnderState();
@@ -27,7 +27,7 @@ export const setState = (
   stateName: InteractionStateName,
   spreadsheet: SpreadSheet,
 ) => {
-  const stateInfo = spreadsheet.getCurrentState();
+  const stateInfo = spreadsheet.store.get('interactionStateInfo');
   if (stateName !== stateInfo?.stateName) {
     // There can only be one state in the table. When the stateName is inconsistent with the state in the stateInfo, the previously stored state should be cleared.
     clearState(spreadsheet);
