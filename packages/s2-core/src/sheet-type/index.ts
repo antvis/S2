@@ -53,7 +53,7 @@ import { BaseTooltip } from '@/tooltip';
 import { BaseFacet } from '@/facet';
 import { DebuggerUtil } from '@/common/debug';
 import { EventController } from '@/interaction/events/event-controller';
-import { DefaultInterceptEvent } from '@/interaction/events/types';
+import { DefaultInterceptEvent } from '@/common/constant';
 import { isMobile } from '@/utils/is-mobile';
 import { setState, clearState } from '@/utils/interaction/state-controller';
 import {

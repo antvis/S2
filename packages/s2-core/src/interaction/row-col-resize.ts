@@ -2,7 +2,7 @@ import { Group, IGroup } from '@antv/g-canvas';
 import { throttle, clone, merge, isNil, get } from 'lodash';
 import { ResizeInfo } from '../facet/header/interface';
 import { BaseInteraction } from './base';
-import { S2Event } from './events/types';
+import { S2Event } from '@/common/constant';
 import { SpreadSheet } from 'src/sheet-type';
 import {
   ResizeEventType,

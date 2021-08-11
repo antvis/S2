@@ -1,7 +1,11 @@
 import { Event, LooseObject, Canvas, IElement } from '@antv/g-canvas';
 import { get, each, includes } from 'lodash';
 import { CellTypes } from '@/common/constant';
-import { S2Event, OriginEventType, DefaultInterceptEventType } from './types';
+import {
+  S2Event,
+  OriginEventType,
+  DefaultInterceptEventType,
+} from '@/common/constant';
 import { SpreadSheet } from 'src/sheet-type';
 
 interface EventListener {

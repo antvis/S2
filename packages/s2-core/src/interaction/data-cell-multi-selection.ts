@@ -1,5 +1,5 @@
 import { Event } from '@antv/g-canvas';
-import { S2Event, DefaultInterceptEventType } from './events/types';
+import { S2Event, DefaultInterceptEventType } from '@/common/constant';
 import { BaseInteraction } from './base';
 import { getTooltipData } from '../utils/tooltip';
 import { each, isEqual, find, isEmpty } from 'lodash';
