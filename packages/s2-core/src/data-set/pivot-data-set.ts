@@ -331,7 +331,7 @@ export class PivotDataSet extends BaseDataSet {
       } as Meta,
     ];
 
-    // 目前源数据的是按照DI中的现状（一条数据不是代表一个格子），处理的模板
+    // 目前源数据的是按照之前数据的现状（一条数据不是代表一个格子），处理的模板
     // 按values平铺展开data, 添加extraKey，冗余数据的量随着values增加而
     // 增加，而且双层循环的效率也随着而降低效率
     const multiValueTransform = (originData: Data[]) => {
