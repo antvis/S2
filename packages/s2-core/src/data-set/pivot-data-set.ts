@@ -303,18 +303,23 @@ export class PivotDataSet extends BaseDataSet {
   };
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
-    const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
+    const {
+      data,
+      meta = [],
+      fields,
+      sortParams = [],
+      totalData,
+      standardData,
+    } = dataCfg;
     const { columns, rows, values, valueInCols } = fields;
 
     const newColumns = valueInCols ? uniq([...columns, EXTRA_FIELD]) : columns;
     const newRows = !valueInCols ? uniq([...rows, EXTRA_FIELD]) : rows;
 
-    // meta 中添加新的字段信息（度量别名设置）
-    const enumAlias = new Map<string, string>();
-    each(values, (value: string) => {
-      const m = find(meta, (mt: Meta) => mt.field === value);
-      enumAlias.set(value, get(m, 'name', value));
-    });
+    const valueFormatter = (value: string) => {
+      const findOne = find(meta, (mt: Meta) => mt.field === value);
+      return get(findOne, 'name', value);
+    };
 
     const newMeta = [
       ...meta,
@@ -322,34 +327,46 @@ export class PivotDataSet extends BaseDataSet {
       {
         field: EXTRA_FIELD,
         name: i18n('数值'),
-        formatter: (value: string) => enumAlias.get(value), // 格式化
+        formatter: (value: string) => valueFormatter(value), // 格式化
       } as Meta,
     ];
 
-    const addExtraKey = (originData: Data[]) => {
-      const dataIncludesExtraKey = [];
+    // 目前源数据的是按照之前数据的现状（一条数据不是代表一个格子），处理的模板
+    // 按values平铺展开data, 添加extraKey，冗余数据的量随着values增加而
+    // 增加，而且双层循环的效率也随着而降低效率
+    const multiValueTransform = (originData: Data[]) => {
+      const transformedData = [];
       originData?.forEach((datum) => {
         if (!isEmpty(values)) {
           values.forEach((vi) => {
-            dataIncludesExtraKey.push({
+            transformedData.push({
               ...datum,
               [EXTRA_FIELD]: vi,
               [VALUE_FIELD]: datum[vi],
             });
           });
         } else {
-          dataIncludesExtraKey.push({
-            ...datum,
-          });
+          transformedData.push(datum);
         }
       });
-
-      return dataIncludesExtraKey;
+      return transformedData;
     };
 
-    // transform values to EXTRA_FIELD key
-    const newData = addExtraKey(data);
-    const newTotalData = addExtraKey(totalData);
+    // 标准的数据中，一条数据代表一个格子；不存在一条数据中多个value的情况
+    const standardTransform = (originData: Data[]) => {
+      return originData.map((datum) => {
+        const valueKey = find(keys(datum), (k) => includes(values, k));
+        return {
+          ...datum,
+          [EXTRA_FIELD]: valueKey,
+          [VALUE_FIELD]: datum[valueKey],
+        };
+      });
+    };
+
+    const transformer = standardData ? standardTransform : multiValueTransform;
+    const newData = transformer(data);
+    const newTotalData = transformer(totalData);
 
     // 返回新的结构
     return {
@@ -472,7 +489,6 @@ export class PivotDataSet extends BaseDataSet {
     if (isEmpty(query)) {
       return compact(customFlattenDeep(this.indexesData));
     }
-    // TODO adapt drill down scene
     const { rows, columns, values: valueList } = this.fields;
     const rowDimensionValues = this.getQueryDimValues(rows, query);
     const colDimensionValues = this.getQueryDimValues(columns, query);
