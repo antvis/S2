@@ -1,9 +1,12 @@
-import { get, isEqual, find } from 'lodash';
-import React from 'react';
-import { Menu, Dropdown } from 'antd';
+import {
+  TooltipOperationOptions,
+  TooltipOperationState,
+} from '@/common/interface';
 import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, Menu } from 'antd';
+import { find, get, isEqual } from 'lodash';
+import React from 'react';
 import { HtmlIcon } from '../../icons';
-import { OperationProps, OperationState } from '@/common/interface';
 
 const CONTAINER_CLASS = 'eva-facet-tooltip-operation';
 interface OrderOption {
@@ -18,8 +21,8 @@ const ORDER_OPTIONS: OrderOption[] = [
 ];
 
 export class TooltipOperation extends React.PureComponent<
-  OperationProps,
-  OperationState
+  TooltipOperationOptions,
+  TooltipOperationState
 > {
   state = {
     sortParam: this.props.plot.store.get('sortParam'),

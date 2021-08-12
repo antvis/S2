@@ -1,11 +1,11 @@
-import { Event } from '@antv/g-canvas';
-import { S2Event, DefaultInterceptEventType } from '@/common/constant';
-import { BaseInteraction } from './base';
+import { DefaultInterceptEventType, S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
-import { getTooltipData } from '../utils/tooltip';
-import { each, map, assign, pick } from 'lodash';
-import { Node } from '../index';
 import { S2CellType } from '@/common/interface';
+import { Node } from '@/index';
+import { getTooltipData } from '@/utils/tooltip';
+import { Event } from '@antv/g-canvas';
+import { assign, each, map, pick } from 'lodash';
+import { BaseInteraction } from './base';
 
 const SHIFT_KEY = 'Shift';
 

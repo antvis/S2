@@ -1,8 +1,8 @@
+import { TooltipTipsOptions } from '@/common/interface';
 import * as React from 'react';
-import { TipsProps } from '@/common/interface';
 import { TOOLTIP_CLASS_PRE } from '../constant';
 
-const SimpleTips = (props: TipsProps) => {
+const SimpleTips = (props: TooltipTipsOptions) => {
   const { tips = '' } = props;
 
   return <div className={`${TOOLTIP_CLASS_PRE}-tips`}>{tips}</div>;

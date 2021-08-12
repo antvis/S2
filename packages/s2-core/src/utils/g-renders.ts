@@ -2,9 +2,9 @@
  * Utils to render all g supported shape
  * https://github.com/antvis/g
  */
+import { TextTheme } from '@/common/interface/theme';
 import { Group, IShape } from '@antv/g-canvas';
 import _ from 'lodash';
-import { TextTheme } from '@/common/interface/theme';
 
 export function renderRect(
   x: number,
@@ -16,20 +16,18 @@ export function renderRect(
   group: Group,
   opacity?: number,
 ): IShape {
-  return (
-    group &&
-    group?.addShape?.('rect', {
-      attrs: {
-        x,
-        y,
-        width,
-        height,
-        fill,
-        opacity,
-        stroke,
-      },
-    })
-  );
+  return group?.addShape?.('rect', {
+    zIndex: 1,
+    attrs: {
+      x,
+      y,
+      width,
+      height,
+      fill,
+      opacity,
+      stroke,
+    },
+  });
 }
 
 export function renderPolygon(

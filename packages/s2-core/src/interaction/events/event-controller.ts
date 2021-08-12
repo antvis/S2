@@ -1,12 +1,12 @@
-import { Event, LooseObject, Canvas, IElement } from '@antv/g-canvas';
-import { get, each, includes } from 'lodash';
-import { CellTypes } from '@/common/constant';
 import {
-  S2Event,
-  OriginEventType,
+  CellTypes,
   DefaultInterceptEventType,
+  OriginEventType,
+  S2Event,
 } from '@/common/constant';
-import { SpreadSheet } from 'src/sheet-type';
+import { SpreadSheet } from '@/sheet-type';
+import { Canvas, Event, IElement, LooseObject } from '@antv/g-canvas';
+import { each, get, includes } from 'lodash';
 
 interface EventListener {
   target: EventTarget;
@@ -98,6 +98,7 @@ export class EventController {
       !includes((<HTMLElement>ev.target)?.className, 'ant-menu') &&
       !includes((<HTMLElement>ev.target)?.className, 'ant-input')
     ) {
+      this.spreadsheet.facet.hideInteractionMask();
       this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
       this.spreadsheet.clearState();
       // this.spreadsheet.hideTooltip();

@@ -1,77 +1,77 @@
-import EE from '@antv/event-emitter';
-import { Canvas, IGroup } from '@antv/g-canvas';
+import { BaseCell, DataCell, DetailRowCell } from '@/cell';
 import {
-  isString,
-  get,
-  set,
-  merge,
-  clone,
-  find,
-  isFunction,
-  includes,
-  debounce,
-} from 'lodash';
-import { Store } from '@/common/store';
-import { ext } from '@antv/matrix-util';
-import {
-  DerivedValue,
-  safetyDataConfig,
-  OffsetConfig,
-  Pagination,
-  S2DataConfig,
-  S2Options,
-  SpreadSheetFacetCfg,
-  ViewMeta,
-  safetyOptions,
-  Totals,
-  Total,
-  ShowProps,
-  SpreadsheetMountContainer,
-  ThemeCfg,
-  S2CellType,
-} from '@/common/interface';
-import { DataCell, BaseCell, DetailRowCell } from '../cell';
-import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
-import {
-  Node,
-  BaseInteraction,
-  SpreadSheetTheme,
-  BaseEvent,
-  BrushSelection,
-  RowColResize,
-  DataCellMultiSelection,
-  ColRowMultiSelection,
-  DataCellClick,
-  CornerTextClick,
-  RowColumnClick,
-  RowTextClick,
-  HoverEvent,
-  MergedCellsClick,
-} from '@/index';
-import { getTheme } from '@/theme';
-import { BaseTooltip } from '@/tooltip';
-import { BaseFacet } from '@/facet';
-import { DebuggerUtil } from '@/common/debug';
-import { EventController } from '@/interaction/events/event-controller';
-import { DefaultInterceptEvent } from '@/common/constant';
-import { isMobile } from '@/utils/is-mobile';
-import { setState, clearState } from '@/utils/interaction/state-controller';
-import {
+  DefaultInterceptEvent,
+  EventNames,
+  InteractionNames,
+  InteractionStateName,
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
+  KEY_GROUP_MASK_GROUP,
   KEY_GROUP_PANEL_GROUND,
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
-  EventNames,
-  InteractionNames,
-  InteractionStateName,
 } from '@/common/constant';
+import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
-import { PivotFacet, TableFacet } from '@/facet';
-import CustomTreePivotDataSet from '@/data-set/custom-tree-pivot-data-set';
+import {
+  DerivedValue,
+  OffsetConfig,
+  Pagination,
+  S2CellType,
+  S2DataConfig,
+  S2Options,
+  safetyDataConfig,
+  safetyOptions,
+  SpreadSheetFacetCfg,
+  SpreadsheetMountContainer,
+  ThemeCfg,
+  TooltipShowOptions,
+  Total,
+  Totals,
+  ViewMeta,
+} from '@/common/interface';
+import { Store } from '@/common/store';
+import { BaseDataSet, PivotDataSet, TableDataSet } from '@/data-set';
+import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
+import { BaseFacet, PivotFacet, TableFacet } from '@/facet';
+import {
+  BaseEvent,
+  BaseInteraction,
+  BrushSelection,
+  ColRowMultiSelection,
+  CornerTextClick,
+  DataCellClick,
+  DataCellMultiSelection,
+  HoverEvent,
+  MergedCellsClick,
+  Node,
+  RowColResize,
+  RowColumnClick,
+  RowTextClick,
+  SpreadSheetTheme,
+} from '@/index';
+import { EventController } from '@/interaction/events/event-controller';
+import { getTheme } from '@/theme';
+import { BaseTooltip } from '@/tooltip';
+import { clearState, setState } from '@/utils/interaction/state-controller';
+import { isMobile } from '@/utils/is-mobile';
+import EE from '@antv/event-emitter';
+import { Canvas, CanvasCfg, Event, IGroup } from '@antv/g-canvas';
+import { ext } from '@antv/matrix-util';
+import {
+  clone,
+  debounce,
+  find,
+  get,
+  includes,
+  isFunction,
+  isString,
+  merge,
+  set,
+} from 'lodash';
 
 const matrixTransform = ext.transform;
 
@@ -113,11 +113,15 @@ export class SpreadSheet extends EE {
   // the base container, contains all groups
   public container: Canvas;
 
+  public maskContainer: Canvas;
+
   // the background group, render bgColor...
   public backgroundGroup: IGroup;
 
   // facet cell area group, it contains all cross-tab's cell
   public panelGroup: IGroup;
+
+  public maskGroup: IGroup;
 
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
@@ -414,12 +418,28 @@ export class SpreadSheet extends EE {
     return this.dataSet.fields.valueInCols;
   }
 
+  // TODO: 交互 state 相关的方法 感觉加一个 interaction 的命名空间 更好
+
   public setState(cell: S2CellType, stateName: InteractionStateName) {
     setState(cell, stateName, this);
   }
 
   public getCurrentState() {
     return this.store.get('interactionStateInfo');
+  }
+
+  public isSelected() {
+    const currentState = this.getCurrentState();
+    return currentState?.stateName === InteractionStateName.SELECTED;
+  }
+
+  public getActiveCells() {
+    const currentState = this.getCurrentState();
+    return currentState?.cells || [];
+  }
+
+  public isSelectedCell(cell: S2CellType) {
+    return this.isSelected() && includes(this.getActiveCells(), cell);
   }
 
   public clearState() {
@@ -433,7 +453,7 @@ export class SpreadSheet extends EE {
     });
   }
 
-  public showTooltip(showOptions: ShowProps) {
+  public showTooltip(showOptions: TooltipShowOptions) {
     if (get(this, 'options.tooltip.showTooltip')) {
       this.tooltip.show(showOptions);
     }
@@ -444,13 +464,15 @@ export class SpreadSheet extends EE {
   }
 
   // 获取当前cell实例
-  public getCell(target) {
+  public getCell<T extends S2CellType = S2CellType>(
+    target: Event['target'],
+  ): T {
     let parent = target;
     // 一直索引到g顶层的canvas来检查是否在指定的cell中
     while (parent && !(parent instanceof Canvas)) {
       if (parent instanceof BaseCell) {
         // 在单元格中，返回true
-        return parent;
+        return parent as T;
       }
       parent = parent.get('parent');
     }
@@ -458,7 +480,7 @@ export class SpreadSheet extends EE {
   }
 
   // 获取当前cell类型
-  public getCellType(target) {
+  public getCellType(target: Event['target']) {
     const cell = this.getCell(target);
     return cell?.cellType;
   }
@@ -523,15 +545,15 @@ export class SpreadSheet extends EE {
    */
   protected initGroups(dom: HTMLElement, options: S2Options): void {
     const { width, height } = options;
-
-    // base canvas group
-    this.container = new Canvas({
+    const canvasCfg: CanvasCfg = {
       container: dom,
       width,
       height,
       localRefresh: false,
-      // autoDraw: false,
-    });
+    };
+
+    // base canvas group
+    this.container = new Canvas(canvasCfg);
 
     // the main three layer groups
     this.backgroundGroup = this.container.addGroup({
@@ -546,7 +568,26 @@ export class SpreadSheet extends EE {
       name: KEY_GROUP_FORE_GROUND,
       zIndex: 2,
     });
+
+    if (this.options.selectedCellsSpotlight) {
+      this.initMaskContainer(canvasCfg);
+    }
   }
+
+  initMaskContainer = (canvasCfg: CanvasCfg) => {
+    this.maskContainer = new Canvas(canvasCfg);
+
+    const canvas = this.maskContainer.get('el') as HTMLCanvasElement;
+    canvas.style.position = 'absolute';
+    canvas.style.left = '0';
+    canvas.style.top = '0';
+    canvas.style.pointerEvents = 'none';
+
+    this.maskGroup = this.maskContainer.addGroup({
+      name: KEY_GROUP_MASK_GROUP,
+      zIndex: 3,
+    });
+  };
 
   /**
    * 避免每次新增、变更dataSet和options时，生成SpreadSheetFacetCfg

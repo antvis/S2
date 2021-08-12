@@ -1,8 +1,8 @@
+import { ListItem, TooltipHeadInfo } from '@/common/interface';
 import * as React from 'react';
-import { ListItem, HeadInfo } from '@/common/interface';
 import { TOOLTIP_CLASS_PRE } from '../constant';
 
-const TooltipHeadInfo = (props: HeadInfo) => {
+const TooltipHeadInfo = (props: TooltipHeadInfo) => {
   const { rows = [], cols = [] } = props;
 
   return (

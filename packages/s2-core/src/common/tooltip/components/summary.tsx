@@ -1,9 +1,9 @@
+import { TooltipSummaryOptions } from '@/common/interface';
 import * as React from 'react';
 import { i18n } from '../../i18n';
-import { SummaryProps } from '@/common/interface';
 import { TOOLTIP_CLASS_PRE } from '../constant';
 
-const Summary = (props: { summaries: SummaryProps[] }) => {
+const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
   const { summaries = [] } = props;
 
   const renderSelected = () => {

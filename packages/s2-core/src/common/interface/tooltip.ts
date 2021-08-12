@@ -10,12 +10,12 @@ export interface IMenu {
   readonly children?: IMenu[]; // subMenu
 }
 
-export interface OperatorProps {
-  readonly onClick: (...params) => void;
+export interface TooltipOperatorOptions {
+  readonly onClick: (...params: unknown[]) => void;
   readonly menus: IMenu[];
 }
 
-export interface Position {
+export interface TooltipPosition {
   readonly x: number;
   readonly y: number;
   readonly tipHeight?: number;
@@ -34,7 +34,7 @@ export interface SortQuery {
 export interface TooltipOptions {
   hideSummary?: boolean;
   // button action on the top
-  operator?: OperatorProps;
+  operator?: TooltipOperatorOptions;
   enterable?: boolean;
   // totals or not
   isTotals?: boolean;
@@ -42,31 +42,31 @@ export interface TooltipOptions {
   [key: string]: any;
 }
 
-export interface SummaryProps {
+export interface TooltipSummaryOptions {
   readonly name: string;
   readonly value: number | string;
   readonly selectedData: TooltipDataItem[];
 }
 
-export interface TipsProps {
+export interface TooltipTipsOptions {
   readonly tips: string;
 }
 
-export interface OperationProps {
+export interface TooltipOperationOptions {
   plot: SpreadSheet;
   sortFieldId: string;
   sortQuery: SortQuery;
 }
 
-export interface OperationState {
+export interface TooltipOperationState {
   sortParam: SortParam;
 }
 
-export type DetailProps = {
+export type TooltipDetailProps = {
   list: ListItem[];
 };
 
-export type InterpretationProps = {
+export type TooltipInterpretationOptions = {
   name: string;
   icon?: any;
   text?: string;
@@ -77,23 +77,23 @@ export type InfosProps = {
   infos: string;
 };
 
-export type ShowProps = {
-  position: Position;
-  data?: DataProps;
+export type TooltipShowOptions = {
+  position: TooltipPosition;
+  data?: TooltipData;
   options?: TooltipOptions;
   element?: React.ReactElement;
 };
 
-export type DataProps = {
-  summaries?: SummaryProps[];
+export type TooltipData = {
+  summaries?: TooltipSummaryOptions[];
   details?: ListItem[];
-  headInfo?: HeadInfo;
+  headInfo?: TooltipHeadInfo;
   tips?: string;
   infos?: string;
-  interpretation?: InterpretationProps;
+  interpretation?: TooltipInterpretationOptions;
 };
 
-export type HeadInfo = {
+export type TooltipHeadInfo = {
   rows: ListItem[];
   cols: ListItem[];
 };

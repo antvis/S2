@@ -1,22 +1,23 @@
-import type { BBox, IGroup, Point } from '@antv/g-canvas';
-import {
-  calculateInViewIndexes,
-  optimizeScrollXY,
-  translateGroup,
-} from './utils';
 import { diffIndexes, Indexes } from '@/utils/indexes';
-import type {
-  Formatter,
-  LayoutResult,
-  OffsetConfig,
-  SpreadSheetFacetCfg,
-} from '../common/interface';
+import { updateMergedCells } from '@/utils/interaction/merge-cells';
+import type { BBox, IGroup, IShape, Point } from '@antv/g-canvas';
+import type { GestureEvent } from '@antv/g-gesture';
+import { Wheel } from '@antv/g-gesture';
+import { interpolateArray } from 'd3-interpolate';
+import * as d3Timer from 'd3-timer';
 import {
-  DEBUG_HEADER_LAYOUT,
-  DEBUG_VIEW_RENDER,
-  DebuggerUtil,
-} from '../common/debug';
-import { SpreadSheet } from 'src/sheet-type';
+  debounce,
+  each,
+  filter,
+  find,
+  get,
+  isEmpty,
+  isNil,
+  isUndefined,
+  last,
+  reduce
+} from 'lodash';
+import { BaseCell } from 'src/cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_CELL_SCROLL,
@@ -26,44 +27,46 @@ import {
   KEY_GROUP_ROW_RESIZER,
   KEY_PAGINATION,
   MAX_SCROLL_OFFSET,
-  MIN_SCROLL_BAR_HEIGHT,
+  MIN_SCROLL_BAR_HEIGHT
 } from 'src/common/constant';
-import { Node } from 'src/facet/layout/node';
-import { ViewCellHeights } from 'src/facet/layout/interface';
-import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { Wheel } from '@antv/g-gesture';
-import type { GestureEvent } from '@antv/g-gesture';
-import * as d3Timer from 'd3-timer';
-import { interpolateArray } from 'd3-interpolate';
-import { ScrollBar, ScrollType } from 'src/ui/scrollbar';
-import { getTheme } from 'src/theme';
-import { isMobile } from 'src/utils/is-mobile';
+import type { CellScrollPosition } from 'src/common/interface/events';
+import type { S2WheelEvent, ScrollOffset } from 'src/common/interface/scroll';
 import {
   ColHeader,
   CornerHeader,
   Frame,
   RowHeader,
-  SeriesNumberHeader,
+  SeriesNumberHeader
 } from 'src/facet/header';
-import { BaseCell } from 'src/cell';
-import { updateMergedCells } from '@/utils/interaction/merge-cells';
-import type { CellScrollPosition } from 'src/common/interface/events';
-import type { S2WheelEvent, ScrollOffset } from 'src/common/interface/scroll';
+import { Hierarchy } from 'src/facet/layout/hierarchy';
+import { ViewCellHeights } from 'src/facet/layout/interface';
+import { Node } from 'src/facet/layout/node';
+import { SpreadSheet } from 'src/sheet-type';
+import { getTheme } from 'src/theme';
+import { ScrollBar, ScrollType } from 'src/ui/scrollbar';
+import { isMobile } from 'src/utils/is-mobile';
 import {
-  debounce,
-  each,
-  filter,
-  find,
-  get,
-  isNil,
-  isUndefined,
-  last,
-  reduce,
-} from 'lodash';
+  DebuggerUtil,
+  DEBUG_HEADER_LAYOUT,
+  DEBUG_VIEW_RENDER
+} from '../common/debug';
+import type {
+  Formatter,
+  InteractionMaskRect,
+  InteractionMaskRectPosition,
+  LayoutResult,
+  OffsetConfig,
+  SpreadSheetFacetCfg
+} from '../common/interface';
+import {
+  calculateInViewIndexes,
+  optimizeScrollXY,
+  translateGroup
+} from './utils';
 
 // TODO: 这里的主题不应该用 default 吧, 代码里面都是写死的 defaultDataConfig
 
-const THEME = getTheme('default');
+const THEME = getTheme({ name: 'default' });
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -134,6 +137,12 @@ export abstract class BaseFacet {
     },
   };
 
+  maskShape: IShape;
+
+  showInteractionMaskFrameId: ReturnType<typeof requestAnimationFrame>;
+
+  selectedCellsHighlightFrameId: ReturnType<typeof requestAnimationFrame>;
+
   hideScrollBar = () => {
     this.hRowScrollBar?.updateTheme(this.scrollBarTheme);
     this.hScrollBar?.updateTheme(this.scrollBarTheme);
@@ -162,10 +171,9 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    (this.spreadsheet.container.get('el') as HTMLElement).addEventListener(
-      'wheel',
-      this.onWheel,
-    );
+    (
+      this.spreadsheet.container.get('el') as HTMLCanvasElement
+    ).addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
@@ -431,6 +439,7 @@ export abstract class BaseFacet {
 
     width = Math.min(width, realWidth);
     height = Math.min(height, realHeight);
+
     this.panelBBox = {
       x: br.x,
       y: br.y,
@@ -441,6 +450,95 @@ export abstract class BaseFacet {
       minX: br.x,
       minY: br.y,
     };
+
+    this.spreadsheet.store.set('panelBBox', this.panelBBox);
+  };
+
+  /**
+   * 显示交互遮罩 (聚光灯高亮效果)
+   * @description 原理:
+   * 1. 利用离屏 canvas 的特性, 在单元格对应的 canvas 上, 堆叠了一个新的 canvas, 大小和 (panelBBox) 区域一样大
+   * 2. 先用一个100%的遮罩盖住单元格 然后 capture: false 和 pointer-events: none, 让遮罩可以被穿透
+   *    然后利用 context.clearRect 的特性 在 canvas 挖个洞
+   * 3. 对于单选或刷选, 根据 interactionStateInfo 里面选中的 cells 对应的 meta 坐标信息, 清空对应的蒙层区域
+   * 4. 初次裁剪完毕后, 还需要考虑滚动的场景, 抛一个 getMaskRectPosition 根据滚动的 offsetLeft 和 offsetTop 进行裁剪区域同步
+   *    这样滚动时让高亮的区域始终跟着选中的单元格走
+   * 5. 另一种方案是每次选中后 遍历所有未选中的单元格, 改变背景色, 同时由于是虚拟滚动, 还需要在每次滚动更改新增的单元格背景色, 开销大
+   * @param getMaskRectPosition
+   * @returns
+   */
+  showInteractionMask = (
+    getMaskRectPosition?: (
+      position: InteractionMaskRectPosition,
+    ) => InteractionMaskRectPosition,
+  ) => {
+    if (!this.spreadsheet.options.selectedCellsSpotlight) {
+      return;
+    }
+
+    const selectedCells = this.spreadsheet.getActiveCells();
+    console.log('selectedCells: ', selectedCells);
+    if (!this.spreadsheet.isSelected() || isEmpty(selectedCells)) {
+      cancelAnimationFrame(this.showInteractionMaskFrameId);
+      return;
+    }
+
+    cancelAnimationFrame(this.showInteractionMaskFrameId);
+    this.showInteractionMaskFrameId = requestAnimationFrame(() => {
+      // 原遮罩会在选中的单元格上面裁剪同等大小, 更新时需要重置
+      this.hideInteractionMask();
+      this.maskShape = this.spreadsheet.maskGroup?.addShape('rect', {
+        capture: false,
+        attrs: {
+          x: this.panelBBox.x,
+          y: this.panelBBox.y,
+          width: this.panelBBox.width,
+          height: this.panelBBox.height,
+          fill: '#fff',
+          opacity: 0.6,
+        },
+      });
+      selectedCells.forEach((cell) => {
+        const meta = cell.getMeta();
+        const defaultMaskRectPosition: InteractionMaskRectPosition = {
+          x: this.panelBBox.x + meta.x,
+          y: this.panelBBox.y + meta.y,
+        };
+        const maskRectPosition: InteractionMaskRectPosition =
+          getMaskRectPosition?.(defaultMaskRectPosition) ||
+          defaultMaskRectPosition;
+
+        this.addSelectedCellsHighlightArea({
+          ...maskRectPosition,
+          width: meta.width,
+          height: meta.height,
+        });
+      });
+    });
+  };
+
+  hideInteractionMask = () => {
+    this.maskShape?.remove();
+  };
+
+  addSelectedCellsHighlightArea = (
+    interactionMaskRect: InteractionMaskRect,
+  ) => {
+    // 如果高亮区域已经超出可视区域, 则不需要继续实时更新了
+    if (
+      interactionMaskRect.y > this.panelBBox.maxY &&
+      interactionMaskRect.x > this.panelBBox.maxX
+    ) {
+      cancelAnimationFrame(this.selectedCellsHighlightFrameId);
+      return;
+    }
+    this.selectedCellsHighlightFrameId = requestAnimationFrame(() => {
+      const { x, y, width, height } = interactionMaskRect;
+      const maskCtx: CanvasRenderingContext2D =
+        this.spreadsheet.maskContainer.get('context');
+
+      maskCtx.clearRect(x, y, width, height);
+    });
   };
 
   getRealWidth = (): number => {
@@ -614,8 +712,11 @@ export abstract class BaseFacet {
       });
 
       this.hScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
+        const offsetLeft =
+          (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth;
+        this.updateInteractionMask(offsetLeft, 0);
         this.setScrollOffset({
-          scrollX: (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth,
+          scrollX: offsetLeft,
         });
         this.dynamicRenderCell();
       });
@@ -647,6 +748,7 @@ export abstract class BaseFacet {
       });
 
       this.vScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
+        this.updateInteractionMask(0, getOffsetTop(thumbOffset));
         this.setScrollOffset({ scrollY: getOffsetTop(thumbOffset) });
         this.dynamicRenderCell();
       });
@@ -742,11 +844,19 @@ export abstract class BaseFacet {
     );
   };
 
+  updateInteractionMask = (offsetLeft: number, offsetTop: number) => {
+    this.showInteractionMask(({ x, y }) => ({
+      x: x - offsetLeft,
+      y: y - offsetTop,
+    }));
+  };
+
   onWheel = (event: S2WheelEvent) => {
     const { deltaX, deltaY, layerX, layerY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(deltaX, deltaY);
 
     // 如果已经滚动在顶部或底部, 则无需触发滚动事件, 减少单元格重绘
+    // TODO: 这里需要迁移 spreadsheet 的逻辑
     if (
       this.isScrollToTop(optimizedDeltaY) ||
       this.isScrollToBottom(optimizedDeltaY)
@@ -1077,6 +1187,9 @@ export abstract class BaseFacet {
 
     const cellScrollData: CellScrollPosition = { scrollX, scrollY };
     this.spreadsheet.emit(KEY_CELL_SCROLL, cellScrollData);
+
+    // this.showMask();
+    // maskCtx.clearRect(500, 500, 20, 20);
   }
 
   protected abstract doLayout(): LayoutResult;

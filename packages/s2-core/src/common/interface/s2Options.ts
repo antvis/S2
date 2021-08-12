@@ -5,10 +5,7 @@ import {
   CustomHeaderCells,
   DataCellCallback,
   FrameCallback,
-  HierarchyCallback,
-  LayoutArrangeCallback,
-  LayoutCallback,
-  LayoutResultCallback,
+  MergedCellInfo,
   NodeField,
   Pagination,
   RowActionIcons,
@@ -16,18 +13,17 @@ import {
   Tooltip,
   TooltipCallback,
   Totals,
-  MergedCellInfo,
 } from '@/common/interface/basic';
-import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
-import { merge } from 'lodash';
-import { BaseDataSet } from 'src/data-set';
-import { SpreadSheet } from 'src/sheet-type';
 import {
   LayoutArrange,
   LayoutCoordinate,
   LayoutDataPosition,
   LayoutHierarchy,
 } from '@/common/interface/hooks';
+import { merge } from 'lodash';
+import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
+import { BaseDataSet } from 'src/data-set';
+import { SpreadSheet } from 'src/sheet-type';
 
 export interface S2Options {
   // canvas's width
@@ -95,6 +91,8 @@ export interface S2Options {
   layoutCoordinate?: LayoutCoordinate;
   // determine the data of cells in Cartesian coordinates
   layoutDataPosition?: LayoutDataPosition;
+  // Focus selected cell, like the spotlight
+  selectedCellsSpotlight?: boolean;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // extra options if needed
   [key: string]: any;
@@ -149,6 +147,7 @@ export const defaultOptions = {
   customHeaderCells: null,
   rowActionIcons: null,
   style: defaultStyle,
+  selectedCellsSpotlight: false,
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>

@@ -1,17 +1,24 @@
-import { getEllipsisText, getTextPosition } from '../utils/text';
-import { SimpleBBox, IShape } from '@antv/g-canvas';
-import { map, find, get, isEmpty, first, includes } from 'lodash';
+import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
+import { IShape, SimpleBBox } from '@antv/g-canvas';
+import { find, first, get, includes, isEmpty, map } from 'lodash';
+import type { SpreadSheet } from 'src/sheet-type';
+import { VALUE_FIELD } from '../common/constant';
 import { GuiIcon } from '../common/icons';
-import { CellMapping, Condition, Conditions } from '../common/interface';
+import {
+  CellMapping,
+  Condition,
+  Conditions,
+  ViewMeta,
+} from '../common/interface';
 import { DataItem } from '../common/interface/s2DataConfig';
 import { renderLine, renderRect, renderText } from '../utils/g-renders';
-import { getDerivedDataState } from '../utils/text';
-import { VALUE_FIELD } from '../common/constant';
-import { ViewMeta } from '../common/interface';
-import { DerivedCell } from './derived-cell';
+import {
+  getDerivedDataState,
+  getEllipsisText,
+  getTextPosition,
+} from '../utils/text';
 import { BaseCell } from './base-cell';
-import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
-import type { SpreadSheet } from 'src/sheet-type';
+import { DerivedCell } from './derived-cell';
 
 /**
  * DataCell for panelGroup area

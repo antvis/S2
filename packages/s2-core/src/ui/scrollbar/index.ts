@@ -1,6 +1,6 @@
+import type { IElement, IGroup, IShape, ShapeAttrs } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
-import type { IShape, IElement, IGroup, ShapeAttrs } from '@antv/g-canvas';
-import { merge, clamp, get, each } from 'lodash';
+import { clamp, each, get, merge } from 'lodash';
 import type { PointObject, ScrollBarCfg, ScrollBarTheme } from './interface';
 import { DEFAULT_THEME } from './style';
 

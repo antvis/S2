@@ -14,7 +14,11 @@ export class BaseEvent {
 
   protected bindEvents() {}
 
-  protected addEventListener(target, type, handler) {
+  protected addEventListener(
+    target: EventTarget,
+    type: keyof HTMLElementEventMap,
+    handler: EventListenerOrEventListenerObject,
+  ) {
     if (target.addEventListener) {
       target.addEventListener(type, handler);
       this.eventListeners.push({ target, type, handler });
