@@ -436,6 +436,7 @@ export const getTooltipData = (params: TooltipDataParam) => {
   let headInfo = null;
   let details = null;
   const firstCellInfo = get(cellInfos, '0') || {};
+  // TODO：tabular类型数据需要补充兼容
   if (!options?.hideSummary) {
     // 计算多项的sum（默认为sum，可自定义）
     summaries = map(cellInfos, (cellInfo) =>
