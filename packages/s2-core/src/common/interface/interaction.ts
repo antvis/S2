@@ -18,3 +18,12 @@ export interface CustomInteraction {
   key: string;
   interaction: InteractionConstructor;
 }
+
+export interface S2CellBrushRange {
+  leftX: number;
+  topY: number;
+  rightX: number;
+  bottomY: number;
+  width: number;
+  height: number;
+}

@@ -20,7 +20,7 @@ export const KEY_AFTER_COLLAPSE_ROWS = 'spreadsheet:after-collapsed-rows';
 export enum EventNames {
   DATA_CELL_CLICK_EVENT = 'spreadsheet:data-cell-click',
   MERGED_CELLS_CLICK_EVENT = 'spreadsheet:merged-cells-click',
-  CORNER_TEXT_CLICK_EVENT = 'spreadsheet:corner-text-click',
+  CORNER_TEXT_CLICK_EVENT = 'spreadsheet:corner-cell-text-click',
   ROW_COLUMN_CLICK_EVENT = 'spreadsheet:row-column-click',
   ROW_TEXT_CLICK_EVENT = 'spreadsheet:row-text-click',
   HOVER_EVENT = 'spreadsheet:hover',
@@ -71,6 +71,7 @@ export enum S2Event {
 
   GLOBAL_KEYBOARD_DOWN = 'global:keyboard-down',
   GLOBAL_KEYBOARD_UP = 'global:keyboard-up',
+  GLOBAL_COPIED = 'global:copied',
 
   GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT = 'global:clear-interaction-style-effect',
 }
