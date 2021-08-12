@@ -275,7 +275,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         height,
         fill: get(
           this.headerConfig,
-          'spreadsheet.theme.corner.cell.backgroundColor',
+          'spreadsheet.theme.cornerCell.cell.backgroundColor',
         ),
       },
     });

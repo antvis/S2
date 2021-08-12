@@ -17,9 +17,9 @@ export class DetailColCell extends ColCell {
     } = this.meta;
     const content = label;
 
-    const textStyle = get(this, 'theme.colHeader.bolderText');
-    const padding = get(this, 'theme.colHeader.cell.padding');
-    const iconSize = get(this, 'theme.colHeader.icon.size');
+    const textStyle = get(this, 'theme.colCell.bolderText');
+    const padding = get(this, 'theme.colCell.cell.padding');
+    const iconSize = get(this, 'theme.colCell.icon.size');
     const rightPadding = padding?.right + iconSize;
     const leftPadding = padding?.left;
 
