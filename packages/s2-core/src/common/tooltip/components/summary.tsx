@@ -8,7 +8,7 @@ const Summary = (props: { summaries: SummaryProps[] }) => {
 
   const renderSelected = () => {
     const selectedCount = summaries?.reduce((pre, next) => {
-      return pre + next?.selectedData?.length;
+      return pre + (next?.selectedData?.length || 0);
     }, 0);
 
     return (
@@ -28,7 +28,7 @@ const Summary = (props: { summaries: SummaryProps[] }) => {
       return (
         <div key={name} className={`${TOOLTIP_CLASS_PRE}-summary-item`}>
           <span className={`${TOOLTIP_CLASS_PRE}-summary-key`}>
-            {name}（{i18n('总和')}
+            {name || i18n('所选项')}（{i18n('总和')})
           </span>
           <span
             className={`${TOOLTIP_CLASS_PRE}-summary-val ${TOOLTIP_CLASS_PRE}-bold`}

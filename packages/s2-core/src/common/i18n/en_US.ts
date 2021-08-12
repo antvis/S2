@@ -17,4 +17,5 @@ export const EN_US = {
   搜索: 'Search',
   恢复: 'Recover',
   '已选 {} 项': 'selected {} item',
+  所选项: 'selected items',
 };
