@@ -5,6 +5,7 @@ import {
   S2Event,
 } from '@/common/constant';
 import { SpreadSheet } from '@/sheet-type';
+import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 import { Canvas, Event, IElement, LooseObject } from '@antv/g-canvas';
 import { each, get, includes } from 'lodash';
 
@@ -76,6 +77,17 @@ export class EventController {
       OriginEventType.KEY_DOWN,
       (event: KeyboardEvent) => {
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_DOWN, event);
+        // windows and macos copy
+        if (
+          this.spreadsheet.options.enbleCopy &&
+          keyEqualTo(event.key, 'c') &&
+          (event.metaKey || event.ctrlKey)
+        ) {
+          this.spreadsheet.emit(
+            S2Event.GLOBAL_COPIED,
+            getSelectedData(this.spreadsheet),
+          );
+        }
       },
     );
     this.addEventListener(

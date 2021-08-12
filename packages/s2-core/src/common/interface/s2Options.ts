@@ -81,6 +81,8 @@ export interface S2Options {
   readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
   // the collection of row id and column id of cells which to be merged
   readonly mergedCellsInfo?: MergedCellInfo[][];
+  // enable Command + C to copy spread data
+  readonly enbleCopy?: boolean;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
   // eg: add/delete some nodes in specified position
