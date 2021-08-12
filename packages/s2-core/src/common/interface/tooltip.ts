@@ -97,3 +97,21 @@ export type HeadInfo = {
   rows: ListItem[];
   cols: ListItem[];
 };
+
+export type DataParam = {
+  spreadsheet: SpreadSheet;
+  options?: TooltipOptions;
+  isHeader?: boolean; // 是否是行头/列头
+  getShowValue?: (
+    selectedData: TooltipDataItem[],
+    valueField: string,
+  ) => string | number; // 自定义value
+};
+
+export interface SummaryParam extends DataParam {
+  cellInfo: TooltipDataItem;
+}
+
+export interface TooltipDataParam extends DataParam {
+  cellInfos: TooltipDataItem[];
+}

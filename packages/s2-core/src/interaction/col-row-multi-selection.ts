@@ -130,7 +130,12 @@ export class ColRowMultiSelection extends BaseInteraction {
       enterable: true,
     };
 
-    const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
+    const tooltipData = getTooltipData({
+      spreadsheet: this.spreadsheet,
+      cellInfos,
+      options,
+      isHeader: true,
+    });
     const showOptions = {
       position,
       data: tooltipData,

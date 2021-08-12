@@ -49,23 +49,24 @@ export class HoverEvent extends BaseEvent {
       x: ev.clientX,
       y: ev.clientY,
     };
-    const currentCellMeta = get(meta, 'data.0');
+    const currentCellMeta = get(meta, 'data');
     const isTotals = get(meta, 'isTotals', false);
-    if (isTotals) {
-      return;
-    }
-
     const options = {
       isTotals,
       enterable: true,
       hideSummary: true,
     };
 
-    const tooltipData = getTooltipData(
-      this.spreadsheet,
-      [currentCellMeta],
+    const tooltipData = getTooltipData({
+      spreadsheet: this.spreadsheet,
+      cellInfos: [
+        currentCellMeta || {
+          ...get(meta, 'rowQuery'),
+          ...get(meta, 'colQuery'),
+        },
+      ],
       options,
-    );
+    });
     const showOptions = {
       position,
       data: tooltipData,

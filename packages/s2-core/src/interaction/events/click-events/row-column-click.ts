@@ -46,7 +46,7 @@ export class RowColumnClick extends BaseEvent {
         const stateName = currentState?.stateName;
         const cells = currentState?.cells;
         if (stateName === InteractionStateName.SELECTED) {
-          cellInfos = this.mergeCellInfo(cells);
+          cellInfos = this.mergeCellInfo(cells, 'rowIndex');
         }
 
         if (!this.spreadsheet.options.valueInCols) {
@@ -94,7 +94,7 @@ export class RowColumnClick extends BaseEvent {
         const stateName = currentState?.stateName;
         const cells = currentState?.cells;
         if (stateName === InteractionStateName.SELECTED) {
-          cellInfos = this.mergeCellInfo(cells);
+          cellInfos = this.mergeCellInfo(cells, 'colIndex');
         }
 
         if (this.spreadsheet.options.valueInCols) {
@@ -108,13 +108,13 @@ export class RowColumnClick extends BaseEvent {
     });
   }
 
-  private mergeCellInfo(cells) {
+  private mergeCellInfo(cells, index) {
     return map(cells, (stateCell) => {
       const stateCellMeta = stateCell.getMeta();
       return assign(
         {},
         stateCellMeta.query || {},
-        pick(stateCellMeta, ['colIndex', 'rowIndex']),
+        pick(stateCellMeta, [index]),
       );
     });
   }
@@ -130,7 +130,12 @@ export class RowColumnClick extends BaseEvent {
       enterable: true,
     };
 
-    const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
+    const tooltipData = getTooltipData({
+      spreadsheet: this.spreadsheet,
+      cellInfos,
+      options,
+      isHeader: true,
+    });
 
     const showOptions = {
       position,

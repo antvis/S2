@@ -85,7 +85,11 @@ export class DataCellMultiSelection extends BaseInteraction {
       enterable: true,
     };
 
-    const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
+    const tooltipData = getTooltipData({
+      spreadsheet: this.spreadsheet,
+      cellInfos,
+      options,
+    });
     const showOptions = {
       position,
       data: tooltipData,
