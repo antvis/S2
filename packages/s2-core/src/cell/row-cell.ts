@@ -82,7 +82,7 @@ export class RowCell extends BaseCell<Node> {
   }
 
   protected drawBackgroundColor() {
-    const { rowHeader: rowHeaderStyle } = this.spreadsheet.theme;
+    const { rowCell: rowHeaderStyle } = this.spreadsheet.theme;
     const bgColor = rowHeaderStyle.cell.backgroundColor;
     const { x, y, height, width } = this.meta;
 
@@ -129,7 +129,7 @@ export class RowCell extends BaseCell<Node> {
         text: textCfg,
         icon: iconCfg,
         cell: cellCfg,
-      } = this.theme.rowHeader;
+      } = this.theme.rowCell;
       const textIndent = this.getTextIndent();
       const textY = getAdjustPosition(
         y,
@@ -197,9 +197,9 @@ export class RowCell extends BaseCell<Node> {
         y1: y,
         x2: position.x + width + viewportWidth + scrollX,
         y2: y,
-        stroke: this.theme.rowHeader.cell.horizontalBorderColor,
-        opacity: this.theme.rowHeader.cell.horizontalBorderOpacity,
-        lineWidth: this.theme.rowHeader.cell.horizontalBorderWidth,
+        stroke: this.theme.rowCell.cell.horizontalBorderColor,
+        opacity: this.theme.rowCell.cell.horizontalBorderOpacity,
+        lineWidth: this.theme.rowCell.cell.horizontalBorderWidth,
       },
     });
   }
@@ -212,9 +212,9 @@ export class RowCell extends BaseCell<Node> {
     if (!this.isTreeType()) {
       return 0;
     }
-    const cellPadding = get(this.theme, 'rowHeader.cell.padding');
+    const cellPadding = get(this.theme, 'rowCell.cell.padding');
     const baseIndent = cellPadding.left;
-    const iconTheme = get(this.theme, 'rowHeader.icon');
+    const iconTheme = get(this.theme, 'rowCell.icon');
     const iconWidth =
       iconTheme.size + iconTheme.margin.left + iconTheme.margin.right;
     let parent = this.meta.parent;
@@ -230,8 +230,8 @@ export class RowCell extends BaseCell<Node> {
 
   protected getRowTextStyle(isTotals: boolean, isLeaf: boolean) {
     return isLeaf && !isTotals
-      ? this.theme.rowHeader.text
-      : this.theme.rowHeader.bolderText;
+      ? this.theme.rowCell.text
+      : this.theme.rowCell.bolderText;
   }
 
   protected getFormattedValue(value: string): string {
@@ -256,7 +256,7 @@ export class RowCell extends BaseCell<Node> {
       isLeaf,
       isTotals,
     } = this.meta;
-    const { text: textTheme, icon: iconTheme } = this.theme.rowHeader;
+    const { text: textTheme, icon: iconTheme } = this.theme.rowCell;
     const isTreeType = this.isTreeType();
     // grid & is totals content is empty
     const content = this.getFormattedValue(label);
@@ -266,7 +266,7 @@ export class RowCell extends BaseCell<Node> {
     const textStyle = { ...this.getRowTextStyle(isTotals, isLeaf) };
     textStyle.textAlign = 'left';
     textStyle.textBaseline = 'top';
-    const cellPadding = get(this.theme, 'rowHeader.cell.padding');
+    const cellPadding = get(this.theme, 'rowCell.cell.padding');
     const totalPadding = cellPadding?.left + cellPadding?.right;
     const textIndent = !isTreeType
       ? this.getTextIndent() + cellPadding?.left
@@ -409,7 +409,7 @@ export class RowCell extends BaseCell<Node> {
       this.spreadsheet.isPivotMode()
     ) {
       const { x, y, height, width } = this.meta;
-      const { cell, text } = this.theme.rowHeader;
+      const { cell, text } = this.theme.rowCell;
       for (let i = 0; i < iconTypes.length; i++) {
         const iconRight =
           (text.fontSize + cell.padding?.left) * (iconTypes.length - i);

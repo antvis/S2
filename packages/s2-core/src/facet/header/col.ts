@@ -29,7 +29,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   /**
    * Make colHeader scroll with hScrollBar
    * @param scrollX horizontal offset
-   * @param cornerWidth only has real meaning when scroll contains rowHeader
+   * @param cornerWidth only has real meaning when scroll contains rowCell
    * @param type
    */
   public onColScroll(scrollX: number, cornerWidth: number, type: string): void {
