@@ -7,6 +7,7 @@ import {
   DefaultInterceptEventType,
 } from '@/common/constant';
 import { SpreadSheet } from 'src/sheet-type';
+import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 
 interface EventListener {
   target: EventTarget;
@@ -76,6 +77,17 @@ export class EventController {
       OriginEventType.KEY_DOWN,
       (event: KeyboardEvent) => {
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_DOWN, event);
+        // windows and macos copy
+        if (
+          this.spreadsheet.options.enbleCopy &&
+          keyEqualTo(event.key, 'c') &&
+          (event.metaKey || event.ctrlKey)
+        ) {
+          this.spreadsheet.emit(
+            S2Event.GLOBAL_COPIED,
+            getSelectedData(this.spreadsheet),
+          );
+        }
       },
     );
     this.addEventListener(

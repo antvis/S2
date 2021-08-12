@@ -6,8 +6,8 @@ import { setState, clearState } from '@/utils/interaction/state-controller';
 
 jest.mock('@/sheet-type');
 jest.mock('@/cell/row-cell');
-const MockSpreadSheet = (SpreadSheet as any) as jest.Mock<SpreadSheet>;
-const MockRowCell = (RowCell as any) as jest.Mock<RowCell>;
+const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
+const MockRowCell = RowCell as any as jest.Mock<RowCell>;
 describe('State Test', () => {
   let mockInstance: SpreadSheet;
   let mockRowCellInstance: RowCell;

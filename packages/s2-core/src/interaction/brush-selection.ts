@@ -6,8 +6,9 @@ import { S2Event, DefaultInterceptEventType } from '@/common/constant';
 import { BaseInteraction } from './base';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { getTooltipData } from '../utils/tooltip';
+import { S2CellBrushRange } from '@/common/interface';
 
-function getBrushRegion(p1, p2) {
+function getBrushRegion(p1, p2): S2CellBrushRange {
   const leftX = Math.min(p1.x, p2.x);
   const rightX = Math.max(p1.x, p2.x);
   const topY = Math.min(p1.y, p2.y);
@@ -142,7 +143,7 @@ export class BrushSelection extends BaseInteraction {
     this.spreadsheet.showTooltip(showOptions);
   }
 
-  private getCellsInRegion(region) {
+  private getCellsInRegion(region: S2CellBrushRange) {
     const containerMat = this.spreadsheet.panelGroup.attr('matrix');
     const containerX = containerMat[6];
     const containerY = containerMat[7];
@@ -205,13 +206,13 @@ export class BrushSelection extends BaseInteraction {
   }
 
   // 刷选过程中高亮的cell
-  private getHighlightCells(region) {
+  private getHighlightCells(region: S2CellBrushRange) {
     const selectedCells = this.getCellsInRegion(region);
     this.showPrepareBrushSelectBorder(selectedCells);
   }
 
   // 最终刷选的cell
-  private getSelectedCells(region) {
+  private getSelectedCells(region: S2CellBrushRange) {
     const selectedCells = this.getCellsInRegion(region);
     selectedCells.forEach((cell) => {
       this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
