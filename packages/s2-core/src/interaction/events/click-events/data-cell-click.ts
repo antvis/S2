@@ -1,5 +1,5 @@
 import { BaseEvent } from '../base-event';
-import { S2Event, DefaultInterceptEventType } from '../types';
+import { S2Event, DefaultInterceptEventType } from '@/common/constant';
 import { Event } from '@antv/g-canvas';
 import { get, noop, includes } from 'lodash';
 import { ViewMeta } from '@/common/interface';

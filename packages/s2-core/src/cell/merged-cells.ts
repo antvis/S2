@@ -1,5 +1,5 @@
 import { renderPolygon } from 'src/utils/g-renders';
-import { getPolygonPoints } from 'src/utils/interactions/merge-cells';
+import { getPolygonPoints } from '@/utils/interaction/merge-cells';
 import { drawObjectText, drawStringText } from 'src/utils/text';
 import { SimpleBBox, IShape } from '@antv/g-canvas';
 import { BaseCell } from './base-cell';

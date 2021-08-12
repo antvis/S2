@@ -28,27 +28,9 @@ import {
   ShowProps,
   SpreadsheetMountContainer,
   ThemeCfg,
+  S2CellType,
 } from '@/common/interface';
-import {
-  DataCell,
-  BaseCell,
-  RowCell,
-  ColCell,
-  CornerCell,
-  DetailRowCell,
-  MergedCells,
-} from '../cell';
-import {
-  KEY_AFTER_COLLAPSE_ROWS,
-  KEY_COLLAPSE_ROWS,
-  KEY_COLLAPSE_TREE_ROWS,
-  KEY_GROUP_BACK_GROUND,
-  KEY_GROUP_FORE_GROUND,
-  KEY_GROUP_PANEL_GROUND,
-  KEY_TREE_ROWS_COLLAPSE_ALL,
-  KEY_UPDATE_PROPS,
-  CellTypes,
-} from '@/common/constant';
+import { DataCell, BaseCell, DetailRowCell } from '../cell';
 import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
 import {
   Node,
@@ -71,10 +53,18 @@ import { BaseTooltip } from '@/tooltip';
 import { BaseFacet } from '@/facet';
 import { DebuggerUtil } from '@/common/debug';
 import { EventController } from '@/interaction/events/event-controller';
-import { DefaultInterceptEvent } from '@/interaction/events/types';
-import { State } from '@/state/state';
+import { DefaultInterceptEvent } from '@/common/constant';
 import { isMobile } from '@/utils/is-mobile';
+import { setState, clearState } from '@/utils/interaction/state-controller';
 import {
+  KEY_AFTER_COLLAPSE_ROWS,
+  KEY_COLLAPSE_ROWS,
+  KEY_COLLAPSE_TREE_ROWS,
+  KEY_GROUP_BACK_GROUND,
+  KEY_GROUP_FORE_GROUND,
+  KEY_GROUP_PANEL_GROUND,
+  KEY_TREE_ROWS_COLLAPSE_ALL,
+  KEY_UPDATE_PROPS,
   EventNames,
   InteractionNames,
   InteractionStateName,
@@ -134,9 +124,6 @@ export class SpreadSheet extends EE {
 
   // 基础事件
   public eventController: EventController;
-
-  // 状态管理器
-  public state = new State(this);
 
   public devicePixelRatioMedia: MediaQueryList;
 
@@ -427,21 +414,21 @@ export class SpreadSheet extends EE {
     return this.dataSet.fields.valueInCols;
   }
 
-  public setState(cell, stateName) {
-    this.state.setState(cell, stateName);
+  public setState(cell: S2CellType, stateName: InteractionStateName) {
+    setState(cell, stateName, this);
   }
 
   public getCurrentState() {
-    return this.state.getCurrentState();
+    return this.store.get('interactionStateInfo');
   }
 
   public clearState() {
-    this.state.clearState();
+    clearState(this);
   }
 
   public updateCellStyleByState() {
     const cells = this.getCurrentState().cells;
-    cells.forEach((cell) => {
+    cells.forEach((cell: S2CellType) => {
       cell.updateByState(this.getCurrentState().stateName);
     });
   }

@@ -1,6 +1,6 @@
 import { map, each, pick, assign } from 'lodash';
 import { Node } from '../../../index';
-import { S2Event, DefaultInterceptEventType } from '../types';
+import { S2Event, DefaultInterceptEventType } from '@/common/constant';
 import { BaseEvent } from '../base-event';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { getTooltipData } from '../../../utils/tooltip';

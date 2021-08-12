@@ -240,6 +240,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         // -------------- selected -------------------
         selected: {
           backgroundColor: brandColors[2],
+          borderColor: grayColors[6],
+          borderWidth: 1,
         },
         // -------------- prepareSelect --------------
         prepareSelect: {

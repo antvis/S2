@@ -1,8 +1,10 @@
-import { S2Event, DefaultInterceptEventType } from './events/types';
+import { Event } from '@antv/g-canvas';
+import { S2Event, DefaultInterceptEventType } from '@/common/constant';
 import { BaseInteraction } from './base';
 import { getTooltipData } from '../utils/tooltip';
 import { each, isEqual, find, isEmpty } from 'lodash';
 import { InteractionStateName, SHIFT_KEY } from '@/common/constant';
+import { S2CellType } from '@/common/interface';
 export class DataCellMultiSelection extends BaseInteraction {
   private isMultiSelection = false;
 
@@ -30,9 +32,9 @@ export class DataCellMultiSelection extends BaseInteraction {
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (ev) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (ev: Event) => {
       ev.stopPropagation();
-      const cell = this.spreadsheet.getCell(ev.target);
+      const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
       const meta = cell.getMeta();
       if (this.isMultiSelection && meta) {
         const currentState = this.spreadsheet.getCurrentState();

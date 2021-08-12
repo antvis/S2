@@ -15,7 +15,7 @@ export { measureTextWidth } from './utils/text';
 export { auto } from './utils/formatter';
 export * from './utils/drill-down/helper';
 export * from './utils/export/index';
-export * from './utils/interactions/merge-cells';
+export * from './utils/interaction/merge-cells';
 export * from './cell';
 export * from './common/interface/index';
 export * from './sheet-type';

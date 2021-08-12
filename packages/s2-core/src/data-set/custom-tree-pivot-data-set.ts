@@ -1,10 +1,10 @@
-import { PivotDataSet } from '@/data-set/index';
+import { PivotDataSet } from '@/data-set';
 import { CellDataParams, DataType } from '@/data-set/interface';
 import { S2DataConfig } from '@/common/interface';
 import _ from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 
-export default class CustomTreePivotDataSet extends PivotDataSet {
+export class CustomTreePivotDataSet extends PivotDataSet {
   getCellData(params: CellDataParams): DataType {
     const { query } = params;
     const { columns, rows } = this.fields;

@@ -1,10 +1,11 @@
 import { Event } from '@antv/g-canvas';
-import { S2Event, DefaultInterceptEventType } from './events/types';
+import { S2Event, DefaultInterceptEventType } from '@/common/constant';
 import { BaseInteraction } from './base';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { getTooltipData } from '../utils/tooltip';
 import { each, map, assign, pick } from 'lodash';
 import { Node } from '../index';
+import { S2CellType } from '@/common/interface';
 
 const SHIFT_KEY = 'Shift';
 
@@ -40,19 +41,20 @@ export class ColRowMultiSelection extends BaseInteraction {
       if (this.isMultiSelection) {
         // 屏蔽hover和click
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
-        const cell = this.spreadsheet.getCell(ev.target);
+        const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
         let cellInfos = [];
         if (cell.getMeta().x !== undefined) {
-          const meta = cell.getMeta();
+          const meta = cell.getMeta() as Node;
           const idx = meta.colIndex;
           this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
           if (idx === -1) {
             // 多列
             const leafNodes = Node.getAllLeavesOfNode(meta);
             each(leafNodes, (node: Node) => {
-              if (node.belongsCell) {
+              const belongsCell = node.belongsCell as S2CellType;
+              if (belongsCell) {
                 this.spreadsheet.setState(
-                  node.belongsCell,
+                  belongsCell,
                   InteractionStateName.SELECTED,
                 );
               }
@@ -81,17 +83,18 @@ export class ColRowMultiSelection extends BaseInteraction {
       if (this.isMultiSelection) {
         // 屏蔽hover和click
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
-        const cell = this.spreadsheet.getCell(ev.target);
+        const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
         if (cell.getMeta().x !== undefined) {
-          const meta = cell.getMeta();
+          const meta = cell.getMeta() as Node;
           const idx = meta.colIndex;
           this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
           if (idx === -1) {
             // 多行
             each(Node.getAllLeavesOfNode(meta), (node: Node) => {
-              if (node.belongsCell) {
+              const belongsCell = node.belongsCell as S2CellType;
+              if (belongsCell) {
                 this.spreadsheet.setState(
-                  node.belongsCell,
+                  belongsCell,
                   InteractionStateName.SELECTED,
                 );
               }

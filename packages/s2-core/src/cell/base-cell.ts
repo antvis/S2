@@ -1,9 +1,13 @@
 import { Group, IShape } from '@antv/g-canvas';
-import { SpreadSheetTheme } from 'src/common/interface';
-import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import type { SpreadSheet } from '../sheet-type';
 import { updateShapeAttr } from '../utils/g-renders';
-import * as shapeStyle from '../state/shapeStyleMap';
+import { SpreadSheetTheme } from '@/common/interface';
+import {
+  CellTypes,
+  InteractionStateName,
+  SHAPE_STYLE_MAP,
+  SHAPE_ATTRS_MAP,
+} from '@/common/constant';
 import { get, each, findKey, includes } from 'lodash';
 export abstract class BaseCell<T> extends Group {
   // used to determine the cell type
@@ -80,15 +84,11 @@ export abstract class BaseCell<T> extends Group {
     each(stateStyles, (style, styleKey) => {
       if (styleKey) {
         // 找到对应的shape，并且找到cssStyple对应的shapestyle
-        const currentShape = findKey(shapeStyle.shapeAttrsMap, (attrs) =>
+        const currentShape = findKey(SHAPE_ATTRS_MAP, (attrs) =>
           includes(attrs, styleKey),
         );
         if (!currentShape) return;
-        updateShapeAttr(
-          this[currentShape],
-          shapeStyle.shapeStyleMap[styleKey],
-          style,
-        );
+        updateShapeAttr(this[currentShape], SHAPE_STYLE_MAP[styleKey], style);
         this.showShapeUnderState(currentShape);
       }
     });

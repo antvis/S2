@@ -50,7 +50,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public update() {
-    const state = this.spreadsheet.getCurrentState();
+    const state = this.spreadsheet.store.get('interactionStateInfo');
     const stateName = state?.stateName;
     const cells = state?.cells;
 
@@ -466,7 +466,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   // dataCell根据state 改变当前样式，
   private changeCellStyleByState(needGetIndexKey, changeStyleStateName) {
-    const { cells } = this.spreadsheet.getCurrentState();
+    const cells = this.spreadsheet.store.get('interactionStateInfo')?.cells;
     const currentIndex = this.meta[needGetIndexKey];
     const selectedIndexes = map(
       cells,

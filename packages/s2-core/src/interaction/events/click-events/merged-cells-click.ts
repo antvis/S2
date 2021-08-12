@@ -1,5 +1,5 @@
 import { BaseEvent } from '../base-event';
-import { S2Event } from '../types';
+import { S2Event } from '@/common/constant';
 import { Event } from '@antv/g-canvas';
 
 export class MergedCellsClick extends BaseEvent {

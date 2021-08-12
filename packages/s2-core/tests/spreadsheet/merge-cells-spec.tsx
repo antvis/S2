@@ -1,6 +1,6 @@
 import { forEach } from 'lodash';
 import { act } from 'react-dom/test-utils';
-import { mergeCells } from '../../src/utils/interactions/merge-cells';
+import { mergeCells } from '../../src/utils/interaction/merge-cells';
 import 'antd/dist/antd.min.css';
 import {
   auto,
