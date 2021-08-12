@@ -57,9 +57,10 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected handleSelect(cells: S2CellType[]) {
     // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
     // 二者操作一致，function合并
-    if (cells?.[0].cellType === CellTypes.COL_CELL) {
+    const currentCellType = cells?.[0].cellType;
+    if (currentCellType === CellTypes.COL_CELL) {
       this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
-    } else if (cells?.[0].cellType === CellTypes.ROW_CELL) {
+    } else if (currentCellType === CellTypes.ROW_CELL) {
       this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
     }
   }
