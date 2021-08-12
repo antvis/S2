@@ -2,7 +2,7 @@ import { Group, IGroup } from '@antv/g-canvas';
 import { throttle, clone, merge, isNil, get } from 'lodash';
 import { ResizeInfo } from '../facet/header/interface';
 import { BaseInteraction } from './base';
-import { S2Event } from './events/types';
+import { S2Event } from '@/common/constant';
 import { SpreadSheet } from 'src/sheet-type';
 import {
   ResizeEventType,
@@ -124,9 +124,8 @@ export class RowColResize extends BaseInteraction {
         const children = this.resizeGroup.getChildren();
         if (children) {
           const info = this.getResizeInfo();
-          const startPoint: ['M', number, number] = children[0]?.attr(
-            'path',
-          )[0];
+          const startPoint: ['M', number, number] =
+            children[0]?.attr('path')[0];
           const endPoint: ['M', number, number] = children[1]?.attr('path')[0];
 
           let resizeEventType: ResizeEventType;

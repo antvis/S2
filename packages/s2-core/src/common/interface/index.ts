@@ -6,3 +6,4 @@ export * from './theme';
 export * from './tooltip';
 export * from './theme';
 export * from './events';
+export * from './store';

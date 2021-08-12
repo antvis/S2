@@ -24,8 +24,6 @@
     "core:tsc": "cd ./packages/s2-core && npm run tsc",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "site:start": "cd ./s2-site && npm run start",
-    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "pretty-quick": "pretty-quick",
     "lint": "npm run core:tsc && npm run lint:script",
     "lint:script": "eslint . --ext '.js,.jsx,.ts,.tsx'",
     "lint-fix": "npm run lint-fix:script",
@@ -45,9 +43,6 @@
   },
   "lint-staged": {
     "*.{js,jsx,tsx,ts,less,md,json}": [
-      "pretty-quick —-staged"
-    ],
-    "*.{js,jsx,tsx,ts}": [
       "eslint --fix"
     ]
   },

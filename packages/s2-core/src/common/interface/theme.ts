@@ -23,7 +23,7 @@ export interface Padding {
   bottom?: number;
   left?: number;
 }
-export interface InteractionState {
+export interface InteractionStateTheme {
   backgroundColor?: string;
   borderColor?: string;
   borderWidth?: number;
@@ -63,13 +63,13 @@ export interface CellTheme {
   /* 单元格内边距 */
   padding: Padding;
   /* hover 单元格状态 */
-  hover?: InteractionState;
+  hover?: InteractionStateTheme;
   /* hover 焦点单元格 */
-  hoverFocus?: InteractionState;
+  hoverFocus?: InteractionStateTheme;
   /* 选中态 */
-  selected?: InteractionState;
+  selected?: InteractionStateTheme;
   /* 预选中态 */
-  prepareSelect?: InteractionState;
+  prepareSelect?: InteractionStateTheme;
   /* 单元格内条件格式-迷你条形图高度 */
   miniBarChartHeight?: number;
   /* 额外属性字段 */
