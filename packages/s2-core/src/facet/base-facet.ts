@@ -15,7 +15,7 @@ import {
   isNil,
   isUndefined,
   last,
-  reduce
+  reduce,
 } from 'lodash';
 import { BaseCell } from 'src/cell';
 import {
@@ -27,7 +27,7 @@ import {
   KEY_GROUP_ROW_RESIZER,
   KEY_PAGINATION,
   MAX_SCROLL_OFFSET,
-  MIN_SCROLL_BAR_HEIGHT
+  MIN_SCROLL_BAR_HEIGHT,
 } from 'src/common/constant';
 import type { CellScrollPosition } from 'src/common/interface/events';
 import type { S2WheelEvent, ScrollOffset } from 'src/common/interface/scroll';
@@ -36,7 +36,7 @@ import {
   CornerHeader,
   Frame,
   RowHeader,
-  SeriesNumberHeader
+  SeriesNumberHeader,
 } from 'src/facet/header';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { ViewCellHeights } from 'src/facet/layout/interface';
@@ -48,7 +48,7 @@ import { isMobile } from 'src/utils/is-mobile';
 import {
   DebuggerUtil,
   DEBUG_HEADER_LAYOUT,
-  DEBUG_VIEW_RENDER
+  DEBUG_VIEW_RENDER,
 } from '../common/debug';
 import type {
   Formatter,
@@ -56,12 +56,12 @@ import type {
   InteractionMaskRectPosition,
   LayoutResult,
   OffsetConfig,
-  SpreadSheetFacetCfg
+  SpreadSheetFacetCfg,
 } from '../common/interface';
 import {
   calculateInViewIndexes,
   optimizeScrollXY,
-  translateGroup
+  translateGroup,
 } from './utils';
 
 // TODO: 这里的主题不应该用 default 吧, 代码里面都是写死的 defaultDataConfig
@@ -477,7 +477,6 @@ export abstract class BaseFacet {
     }
 
     const selectedCells = this.spreadsheet.getActiveCells();
-    console.log('selectedCells: ', selectedCells);
     if (!this.spreadsheet.isSelected() || isEmpty(selectedCells)) {
       cancelAnimationFrame(this.showInteractionMaskFrameId);
       return;

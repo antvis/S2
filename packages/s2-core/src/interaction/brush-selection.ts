@@ -202,7 +202,7 @@ export class BrushSelection extends BaseInteraction {
           });
           this.spreadsheet.facet.showInteractionMask();
         }
-        // this.handleTooltip(ev, cellInfos);
+        this.handleTooltip(ev, cellInfos);
       }
       this.phase = 0;
     });
