@@ -10,9 +10,9 @@ export const copyToClipboard = (str: string) => {
     el.value = str;
     document.body.appendChild(el);
     el.select();
-    const succes = document.execCommand('copy');
+    const success = document.execCommand('copy');
     document.body.removeChild(el);
-    return succes;
+    return success;
   } catch (e) {
     console.error(e);
     return false;
@@ -148,7 +148,7 @@ export const copyData = (
   const { valueInCols } = sheetInstance.options;
   const rows = clone(rowsHierarchy?.rows);
 
-  // Genarate the table header.
+  // Generate the table header.
 
   const rowsHeader = rows.map((item) =>
     sheetInstance.dataSet.getFieldName(item),
@@ -187,7 +187,7 @@ export const copyData = (
       colHeader.push(colHeaderItem);
     }
 
-    // Genarate the table header.
+    // Generate the table header.
     headers = colHeader.map((item, index) => {
       return index < colHeader.length - 1
         ? Array(rowLength).concat(...item)
@@ -201,13 +201,13 @@ export const copyData = (
     })
     .join('\r\n');
 
-  // Genarate the table body.
+  // Generate the table body.
   let detailRows = [];
 
   if (!sheetInstance.isPivotMode()) {
     detailRows = processValueInDetail(sheetInstance, split, isFormat);
   } else {
-    // Filter out the realated row head leaf nodes.
+    // Filter out the related row head leaf nodes.
     const caredRowLeafNodes = rowLeafNodes.filter((row) => row.height !== 0);
     for (const rowNode of caredRowLeafNodes) {
       // Removing the space at the beginning of the line of the label.

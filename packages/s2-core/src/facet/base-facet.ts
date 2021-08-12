@@ -46,7 +46,7 @@ import {
   SeriesNumberHeader,
 } from 'src/facet/header';
 import { BaseCell } from 'src/cell';
-import { updateMergedCells } from 'src/utils/interactions/merge-cells';
+import { updateMergedCells } from '@/utils/interaction/merge-cells';
 import type { CellScrollPosition } from 'src/common/interface/events';
 import type { S2WheelEvent, ScrollOffset } from 'src/common/interface/scroll';
 import {

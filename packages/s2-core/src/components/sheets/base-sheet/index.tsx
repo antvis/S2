@@ -25,8 +25,8 @@ import {
   KEY_LIST_SORT,
   KEY_PAGINATION,
 } from 'src/common/constant/events';
-import { S2Event } from 'src/interaction/events/types';
-import { getBaseCellData } from 'src/utils/interactions/formatter';
+import { S2Event } from '@/common/constant';
+import { getBaseCellData } from '@/utils/interaction/formatter';
 import { BaseSheetProps } from '../interface';
 import { Event as GEvent } from '@antv/g-canvas';
 

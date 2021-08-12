@@ -1,7 +1,7 @@
 import { Event } from '@antv/g-canvas';
 import { get, isEmpty, find, head } from 'lodash';
 import { KEY_JUMP_HREF } from '../../../common/constant';
-import { S2Event, DefaultInterceptEventType } from '../types';
+import { S2Event, DefaultInterceptEventType } from '@/common/constant';
 import { BaseEvent } from '../base-event';
 import { Data } from '../../../common/interface/s2DataConfig';
 import { CellAppendInfo } from '../../../common/interface';

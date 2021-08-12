@@ -23,3 +23,16 @@ export enum CellTypes {
 export const HOVER_FOCUS_TIME = 800;
 
 export const SHIFT_KEY = 'Shift';
+
+// 主题配置和canvas属性的映射
+export const SHAPE_STYLE_MAP = {
+  backgroundColor: 'fill',
+  opacity: 'fillOpacity',
+  borderColor: 'stroke',
+};
+
+// 设置属性的时候实际对应改变的shape映射
+export const SHAPE_ATTRS_MAP = {
+  interactiveBgShape: ['backgroundColor', 'opacity'],
+  activeBorderShape: ['borderColor', 'backgroundColor'],
+};
