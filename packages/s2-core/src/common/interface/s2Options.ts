@@ -82,7 +82,7 @@ export interface S2Options {
   // the collection of row id and column id of cells which to be merged
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // enable Command + C to copy spread data
-  readonly enbleCopy?: boolean;
+  readonly enableCopy?: boolean;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
   // eg: add/delete some nodes in specified position

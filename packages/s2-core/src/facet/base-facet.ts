@@ -1,6 +1,6 @@
 import { diffIndexes, Indexes } from '@/utils/indexes';
 import { updateMergedCells } from '@/utils/interaction/merge-cells';
-import type { BBox, IGroup, IShape, Point } from '@antv/g-canvas';
+import type { BBox, IGroup, Point } from '@antv/g-canvas';
 import type { GestureEvent } from '@antv/g-gesture';
 import { Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
@@ -11,7 +11,6 @@ import {
   filter,
   find,
   get,
-  isEmpty,
   isNil,
   isUndefined,
   last,
@@ -52,8 +51,6 @@ import {
 } from '../common/debug';
 import type {
   Formatter,
-  InteractionMaskRect,
-  InteractionMaskRectPosition,
   LayoutResult,
   OffsetConfig,
   SpreadSheetFacetCfg,
@@ -136,12 +133,6 @@ export abstract class BaseFacet {
       size: isMobile() ? this.scrollBarSize / 2 : this.scrollBarSize,
     },
   };
-
-  maskShape: IShape;
-
-  showInteractionMaskFrameId: ReturnType<typeof requestAnimationFrame>;
-
-  selectedCellsHighlightFrameId: ReturnType<typeof requestAnimationFrame>;
 
   hideScrollBar = () => {
     this.hRowScrollBar?.updateTheme(this.scrollBarTheme);
@@ -454,92 +445,6 @@ export abstract class BaseFacet {
     this.spreadsheet.store.set('panelBBox', this.panelBBox);
   };
 
-  /**
-   * 显示交互遮罩 (聚光灯高亮效果)
-   * @description 原理:
-   * 1. 利用离屏 canvas 的特性, 在单元格对应的 canvas 上, 堆叠了一个新的 canvas, 大小和 (panelBBox) 区域一样大
-   * 2. 先用一个100%的遮罩盖住单元格 然后 capture: false 和 pointer-events: none, 让遮罩可以被穿透
-   *    然后利用 context.clearRect 的特性 在 canvas 挖个洞
-   * 3. 对于单选或刷选, 根据 interactionStateInfo 里面选中的 cells 对应的 meta 坐标信息, 清空对应的蒙层区域
-   * 4. 初次裁剪完毕后, 还需要考虑滚动的场景, 抛一个 getMaskRectPosition 根据滚动的 offsetLeft 和 offsetTop 进行裁剪区域同步
-   *    这样滚动时让高亮的区域始终跟着选中的单元格走
-   * 5. 另一种方案是每次选中后 遍历所有未选中的单元格, 改变背景色, 同时由于是虚拟滚动, 还需要在每次滚动更改新增的单元格背景色, 开销大
-   * @param getMaskRectPosition
-   * @returns
-   */
-  showInteractionMask = (
-    getMaskRectPosition?: (
-      position: InteractionMaskRectPosition,
-    ) => InteractionMaskRectPosition,
-  ) => {
-    if (!this.spreadsheet.options.selectedCellsSpotlight) {
-      return;
-    }
-
-    const selectedCells = this.spreadsheet.getActiveCells();
-    if (!this.spreadsheet.isSelected() || isEmpty(selectedCells)) {
-      cancelAnimationFrame(this.showInteractionMaskFrameId);
-      return;
-    }
-
-    cancelAnimationFrame(this.showInteractionMaskFrameId);
-    this.showInteractionMaskFrameId = requestAnimationFrame(() => {
-      // 原遮罩会在选中的单元格上面裁剪同等大小, 更新时需要重置
-      this.hideInteractionMask();
-      this.maskShape = this.spreadsheet.maskGroup?.addShape('rect', {
-        capture: false,
-        attrs: {
-          x: this.panelBBox.x,
-          y: this.panelBBox.y,
-          width: this.panelBBox.width,
-          height: this.panelBBox.height,
-          fill: '#fff',
-          opacity: 0.6,
-        },
-      });
-      selectedCells.forEach((cell) => {
-        const meta = cell.getMeta();
-        const defaultMaskRectPosition: InteractionMaskRectPosition = {
-          x: this.panelBBox.x + meta.x,
-          y: this.panelBBox.y + meta.y,
-        };
-        const maskRectPosition: InteractionMaskRectPosition =
-          getMaskRectPosition?.(defaultMaskRectPosition) ||
-          defaultMaskRectPosition;
-
-        this.addSelectedCellsHighlightArea({
-          ...maskRectPosition,
-          width: meta.width,
-          height: meta.height,
-        });
-      });
-    });
-  };
-
-  hideInteractionMask = () => {
-    this.maskShape?.remove();
-  };
-
-  addSelectedCellsHighlightArea = (
-    interactionMaskRect: InteractionMaskRect,
-  ) => {
-    // 如果高亮区域已经超出可视区域, 则不需要继续实时更新了
-    if (
-      interactionMaskRect.y > this.panelBBox.maxY &&
-      interactionMaskRect.x > this.panelBBox.maxX
-    ) {
-      cancelAnimationFrame(this.selectedCellsHighlightFrameId);
-      return;
-    }
-    this.selectedCellsHighlightFrameId = requestAnimationFrame(() => {
-      const { x, y, width, height } = interactionMaskRect;
-      const maskCtx: CanvasRenderingContext2D =
-        this.spreadsheet.maskContainer.get('context');
-
-      maskCtx.clearRect(x, y, width, height);
-    });
-  };
-
   getRealWidth = (): number => {
     return last(this.viewCellWidths);
   };
@@ -713,7 +618,6 @@ export abstract class BaseFacet {
       this.hScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
         const offsetLeft =
           (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth;
-        this.updateInteractionMask(offsetLeft, 0);
         this.setScrollOffset({
           scrollX: offsetLeft,
         });
@@ -747,7 +651,6 @@ export abstract class BaseFacet {
       });
 
       this.vScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
-        this.updateInteractionMask(0, getOffsetTop(thumbOffset));
         this.setScrollOffset({ scrollY: getOffsetTop(thumbOffset) });
         this.dynamicRenderCell();
       });
@@ -841,13 +744,6 @@ export abstract class BaseFacet {
       this.vScrollBar?.thumbOffset + this.vScrollBar?.thumbLen >=
         this.panelBBox?.height
     );
-  };
-
-  updateInteractionMask = (offsetLeft: number, offsetTop: number) => {
-    this.showInteractionMask(({ x, y }) => ({
-      x: x - offsetLeft,
-      y: y - offsetTop,
-    }));
   };
 
   onWheel = (event: S2WheelEvent) => {
@@ -1186,9 +1082,6 @@ export abstract class BaseFacet {
 
     const cellScrollData: CellScrollPosition = { scrollX, scrollY };
     this.spreadsheet.emit(KEY_CELL_SCROLL, cellScrollData);
-
-    // this.showMask();
-    // maskCtx.clearRect(500, 500, 20, 20);
   }
 
   protected abstract doLayout(): LayoutResult;

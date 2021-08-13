@@ -1,23 +1,23 @@
-import { getEllipsisText, measureTextWidth } from '../utils/text';
-import { GM } from '@antv/g-gesture';
-import { each, get, has, find } from 'lodash';
 import { GuiIcon } from '@/common/icons';
-import { IGroup } from '@antv/g-canvas';
-import { renderRect, updateShapeAttr } from '@/utils/g-renders';
-import { isMobile } from '@/utils/is-mobile';
-import { getAdjustPosition } from '@/utils/text-absorption';
-import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
-import {
-  KEY_COLLAPSE_TREE_ROWS,
-  KEY_GROUP_ROW_RESIZER,
-  COLOR_DEFAULT_RESIZER,
-  ID_SEPARATOR,
-  CellTypes,
-} from '../common/constant';
 import { HIT_AREA } from '@/facet/header/base';
 import { ResizeInfo } from '@/facet/header/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
+import { renderRect, updateShapeAttr } from '@/utils/g-renders';
+import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
+import { isMobile } from '@/utils/is-mobile';
+import { getAdjustPosition } from '@/utils/text-absorption';
+import { IGroup } from '@antv/g-canvas';
+import { GM } from '@antv/g-gesture';
+import { each, find, get } from 'lodash';
+import {
+  CellTypes,
+  COLOR_DEFAULT_RESIZER,
+  ID_SEPARATOR,
+  KEY_COLLAPSE_TREE_ROWS,
+  KEY_GROUP_ROW_RESIZER,
+} from '../common/constant';
 import { Node } from '../index';
+import { getEllipsisText, measureTextWidth } from '../utils/text';
 import { BaseCell } from './base-cell';
 export class RowCell extends BaseCell<Node> {
   protected headerConfig: RowHeaderConfig;
@@ -86,30 +86,28 @@ export class RowCell extends BaseCell<Node> {
     const bgColor = rowHeaderStyle.cell.backgroundColor;
     const { x, y, height, width } = this.meta;
 
-    renderRect(
+    renderRect(this, {
       x,
       y,
       width,
       height,
-      bgColor,
-      'transparent',
-      this,
-      rowHeaderStyle.cell.backgroundColorOpacity,
-    );
+      fill: bgColor,
+      stroke: 'transparent',
+      opacity: rowHeaderStyle.cell.backgroundColorOpacity,
+    });
   }
 
   // 交互使用的背景色
   protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
-    this.interactiveBgShape = renderRect(
+    this.interactiveBgShape = renderRect(this, {
       x,
       y,
       width,
       height,
-      'transparent',
-      'transparent',
-      this,
-    );
+      fill: 'transparent',
+      stroke: 'transparent',
+    });
     this.stateShapes.push(this.interactiveBgShape);
   }
 

@@ -1,9 +1,10 @@
-import { map, each, pick, assign } from 'lodash';
-import { Node } from '../../../index';
-import { S2Event, DefaultInterceptEventType } from '@/common/constant';
-import { BaseEvent } from '../base-event';
+import { DefaultInterceptEventType, S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
+import { assign, each, map, pick } from 'lodash';
+import { S2CellType, ViewMeta } from '../../../common/interface';
+import { Node } from '../../../index';
 import { getTooltipData } from '../../../utils/tooltip';
+import { BaseEvent } from '../base-event';
 // TODO: tooltip的菜单栏配置（在点击行头或列头的时候tooltip的样式）
 export class RowColumnClick extends BaseEvent {
   protected bindEvents() {
@@ -22,7 +23,7 @@ export class RowColumnClick extends BaseEvent {
       const cell = this.spreadsheet.getCell(ev.target);
       let cellInfos = [];
       if (cell.getMeta().x !== undefined) {
-        const meta = cell.getMeta();
+        const meta = cell.getMeta() as Node;
         const idx = meta.colIndex;
         this.spreadsheet.clearState();
         this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
@@ -55,6 +56,7 @@ export class RowColumnClick extends BaseEvent {
 
         this.spreadsheet.updateCellStyleByState();
         this.spreadsheet.upDatePanelAllCellsStyle();
+        this.spreadsheet.showInteractionMask();
         this.draw();
       }
     });
@@ -68,8 +70,7 @@ export class RowColumnClick extends BaseEvent {
         return;
       }
       const cell = this.spreadsheet.getCell(ev.target);
-      let cellInfos = [];
-      const meta = cell.getMeta();
+      const meta = cell.getMeta() as Node;
       if (meta.x !== undefined) {
         const idx = meta.colIndex;
         this.spreadsheet.clearState();
@@ -90,12 +91,9 @@ export class RowColumnClick extends BaseEvent {
           this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
         }
 
-        const currentState = this.spreadsheet.getCurrentState();
-        const stateName = currentState?.stateName;
-        const cells = currentState?.cells;
-        if (stateName === InteractionStateName.SELECTED) {
-          cellInfos = this.mergeCellInfo(cells);
-        }
+        const cellInfos = this.spreadsheet.isSelectedState()
+          ? this.mergeCellInfo(this.spreadsheet.getActiveCells())
+          : [];
 
         if (this.spreadsheet.options.valueInCols) {
           this.handleTooltip(ev, meta, cellInfos);
@@ -103,12 +101,13 @@ export class RowColumnClick extends BaseEvent {
 
         this.spreadsheet.updateCellStyleByState();
         this.spreadsheet.upDatePanelAllCellsStyle();
+        this.spreadsheet.showInteractionMask();
         this.draw();
       }
     });
   }
 
-  private mergeCellInfo(cells) {
+  private mergeCellInfo(cells: S2CellType[]): ViewMeta[] {
     return map(cells, (stateCell) => {
       const stateCellMeta = stateCell.getMeta();
       return assign(

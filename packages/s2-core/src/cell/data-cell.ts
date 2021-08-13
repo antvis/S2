@@ -1,22 +1,22 @@
+import { VALUE_FIELD } from '@/common/constant';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
-import { IShape, SimpleBBox } from '@antv/g-canvas';
-import { find, first, get, includes, isEmpty, map } from 'lodash';
-import type { SpreadSheet } from 'src/sheet-type';
-import { VALUE_FIELD } from '../common/constant';
-import { GuiIcon } from '../common/icons';
+import { GuiIcon } from '@/common/icons';
 import {
   CellMapping,
   Condition,
   Conditions,
   ViewMeta,
-} from '../common/interface';
-import { DataItem } from '../common/interface/s2DataConfig';
-import { renderLine, renderRect, renderText } from '../utils/g-renders';
+} from '@/common/interface';
+import { DataItem } from '@/common/interface/s2DataConfig';
+import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import {
   getDerivedDataState,
   getEllipsisText,
   getTextPosition,
-} from '../utils/text';
+} from '@/utils/text';
+import { IShape, SimpleBBox } from '@antv/g-canvas';
+import { find, first, get, includes, isEmpty, map } from 'lodash';
+import type { SpreadSheet } from 'src/sheet-type';
 import { BaseCell } from './base-cell';
 import { DerivedCell } from './derived-cell';
 
@@ -49,27 +49,32 @@ export class DataCell extends BaseCell<ViewMeta> {
   // 5、brush-select prepareSelect border
   protected activeBorderShape: IShape;
 
-  // cell config's conditions(Determine how to render this cell)
+  // cell configs conditions(Determine how to render this cell)
   protected conditions: Conditions;
 
   constructor(meta: ViewMeta, spreadsheet: SpreadSheet) {
     super(meta, spreadsheet);
   }
 
+  // 这一大坨if else 我看晕了说真的
   public update() {
-    const state = this.spreadsheet.store.get('interactionStateInfo');
-    const stateName = state?.stateName;
-    const cells = state?.cells;
-
-    if (!isEmpty(cells)) {
+    if (this.spreadsheet.hasActiveCells()) {
+      const stateName = this.spreadsheet.getCurrentStateName();
+      const cells = this.spreadsheet.getActiveCells();
       const firstCell = first(cells);
       // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
       // 二者操作一致，function合并
       if (firstCell.cellType === CellTypes.COL_CELL) {
         this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
-      } else if (firstCell.cellType === CellTypes.ROW_CELL) {
+        return;
+      }
+
+      if (firstCell.cellType === CellTypes.ROW_CELL) {
         this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
-      } else if (stateName === InteractionStateName.HOVER && !isEmpty(cells)) {
+        return;
+      }
+
+      if (stateName === InteractionStateName.HOVER && !isEmpty(cells)) {
         // 如果当前是hover，要绘制出十字交叉的行列样式
         const currentHoverCell = first(cells);
         const currentColIndex = this.meta.colIndex;
@@ -135,6 +140,16 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.initCell();
   }
 
+  public setCellsSpotlight() {
+    if (
+      this.spreadsheet.options.selectedCellsSpotlight &&
+      this.spreadsheet.isSelectedState() &&
+      !this.spreadsheet.isSelectedCell(this)
+    ) {
+      this.setBgColorOpacity();
+    }
+  }
+
   protected initCell() {
     this.cellType = this.getCellType();
     this.conditions = this.spreadsheet.options?.conditions;
@@ -145,6 +160,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawBorderShape();
     // 更新选中状态
     this.update();
+    this.setCellsSpotlight();
   }
 
   protected getCellType() {
@@ -261,32 +277,37 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
   }
 
+  public getBackgroundColor(): string {
+    const crossBackgroundColor = this.theme.dataCell.cell.crossBackgroundColor;
+    if (
+      this.spreadsheet.isPivotMode() &&
+      crossBackgroundColor &&
+      this.meta.rowIndex % 2 === 0
+    ) {
+      // 隔行颜色的配置
+      // 偶数行展示灰色背景，因为index是从0开始的
+      return crossBackgroundColor;
+    }
+
+    return this.theme.dataCell.cell.backgroundColor;
+  }
+
   /**
    * Draw cell background
    */
   protected drawBackgroundShape() {
     const { x, y, height, width } = this.meta;
-
-    let bgColor = this.theme.dataCell.cell.backgroundColor;
     const stroke = 'transparent';
+    const bgColor = this.getBackgroundColor();
 
-    const crossBackgroundColor = this.theme.dataCell.cell.crossBackgroundColor;
-    // 隔行颜色的配置
-    if (this.spreadsheet.isPivotMode() && crossBackgroundColor) {
-      if (this.meta.rowIndex % 2 === 0) {
-        // 偶数行展示灰色背景，因为index是从0开始的
-        bgColor = crossBackgroundColor;
-      }
-    }
-    this.backgroundShape = renderRect(
+    this.backgroundShape = renderRect(this, {
       x,
       y,
       width,
       height,
       bgColor,
       stroke,
-      this,
-    );
+    });
   }
 
   /**
@@ -303,15 +324,14 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (attrs) {
         // eslint-disable-next-line no-multi-assign
         stroke = fill = attrs.fill;
-        this.conditionBgShape = renderRect(
+        this.conditionBgShape = renderRect(this, {
           x,
           y,
           width,
           height,
           fill,
           stroke,
-          this,
-        );
+        });
       }
     }
   }
@@ -333,15 +353,14 @@ export class DataCell extends BaseCell<ViewMeta> {
     // 往内缩一个像素，避免和外边框重叠
     const margin = 1;
     const { x, y, height, width } = this.meta;
-    this.activeBorderShape = renderRect(
-      x + margin,
-      y + margin,
-      width - margin * 2,
-      height - margin * 2,
-      'transparent',
-      'transparent',
-      this,
-    );
+    this.activeBorderShape = renderRect(this, {
+      x: x + margin,
+      y: y + margin,
+      width: width - margin * 2,
+      height: height - margin * 2,
+      fill: 'transparent',
+      stroke: 'transparent',
+    });
     this.stateShapes.push(this.activeBorderShape);
   }
 
@@ -350,15 +369,14 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
-    this.interactiveBgShape = renderRect(
+    this.interactiveBgShape = renderRect(this, {
       x,
       y,
       width,
       height,
-      'transparent',
-      'transparent',
-      this,
-    );
+      fill: 'transparent',
+      stroke: 'transparent',
+    });
     this.stateShapes.push(this.interactiveBgShape);
   }
 
@@ -435,15 +453,14 @@ export class DataCell extends BaseCell<ViewMeta> {
         stroke = fill = attrs.fill;
 
         const barChartHeight = this.theme.dataCell.cell.miniBarChartHeight;
-        this.intervalShape = renderRect(
-          x + width * zero,
-          y + height / 2 - barChartHeight / 2,
-          width * (current - zero),
-          barChartHeight,
+        this.intervalShape = renderRect(this, {
+          x: x + width * zero,
+          y: y + height / 2 - barChartHeight / 2,
+          width: width * (current - zero),
+          height: barChartHeight,
           fill,
           stroke,
-          this,
-        );
+        });
       }
     }
   }
@@ -472,15 +489,21 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   // dataCell根据state 改变当前样式，
-  private changeCellStyleByState(needGetIndexKey, changeStyleStateName) {
-    const cells = this.spreadsheet.store.get('interactionStateInfo')?.cells;
-    const currentIndex = this.meta[needGetIndexKey];
-    const selectedIndexes = map(
-      cells,
-      (cell) => cell?.getMeta()[needGetIndexKey],
+  private changeCellStyleByState(
+    needGetIndexKey: 'rowIndex' | 'colIndex',
+    changeStyleStateName: InteractionStateName,
+  ) {
+    const cells = this.spreadsheet.getActiveCells();
+    const currentCellIndex = get(this.meta, needGetIndexKey);
+    const selectedCellIndexes = map(cells, (cell) =>
+      get(cell?.getMeta(), needGetIndexKey),
     );
-    if (includes(selectedIndexes, currentIndex)) {
+    if (includes(selectedCellIndexes, currentCellIndex)) {
       this.updateByState(changeStyleStateName);
+      requestAnimationFrame(() => {
+        this.resetOpacity();
+        this.spreadsheet.container.draw();
+      });
     } else {
       this.hideShapeUnderState();
     }

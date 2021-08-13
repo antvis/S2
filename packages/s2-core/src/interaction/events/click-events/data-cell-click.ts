@@ -9,13 +9,12 @@ import {
 } from '@/common/interface';
 import { getTooltipData } from '@/utils/tooltip';
 import { LineChartOutlined } from '@ant-design/icons';
-import { Event, IShape } from '@antv/g-canvas';
+import { Event } from '@antv/g-canvas';
 import { get, noop } from 'lodash';
+import { DataCell } from '../../../cell/data-cell';
 import { BaseEvent } from '../base-event';
 
 export class DataCellClick extends BaseEvent {
-  maskShape: IShape;
-
   protected bindEvents() {
     this.onDataCellClick();
   }
@@ -28,7 +27,7 @@ export class DataCellClick extends BaseEvent {
       ) {
         return;
       }
-      const cell = this.spreadsheet.getCell(event.target);
+      const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta() as ViewMeta;
       if (meta) {
         // selected通过state来接管，不需要再在 this.spreadsheet.store 中操作
@@ -41,7 +40,7 @@ export class DataCellClick extends BaseEvent {
           this.spreadsheet.clearState();
           this.spreadsheet.interceptEvent.clear();
           this.spreadsheet.hideTooltip();
-          this.hideInteractionMask();
+          this.spreadsheet.hideInteractionMask();
         } else {
           this.spreadsheet.clearState();
           this.spreadsheet.setState(
@@ -50,21 +49,13 @@ export class DataCellClick extends BaseEvent {
           );
           this.spreadsheet.updateCellStyleByState();
           this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
+          this.spreadsheet.showInteractionMask();
           this.showTooltip(event, meta);
         }
 
-        this.showInteractionMask();
         this.draw();
       }
     });
-  }
-
-  private hideInteractionMask() {
-    this.spreadsheet.facet.hideInteractionMask();
-  }
-
-  private showInteractionMask() {
-    this.spreadsheet.facet.showInteractionMask();
   }
 
   private showTooltip(event: Event, meta: ViewMeta) {

@@ -1,13 +1,13 @@
-import { renderPolygon } from 'src/utils/g-renders';
 import { getPolygonPoints } from '@/utils/interaction/merge-cells';
-import { drawObjectText, drawStringText } from 'src/utils/text';
-import { SimpleBBox, IShape } from '@antv/g-canvas';
-import { BaseCell } from './base-cell';
+import { IShape, SimpleBBox } from '@antv/g-canvas';
 import { isEmpty, isObject } from 'lodash';
-import { CellTypes } from '../common/constant';
-import { DataItem } from '../common/interface/s2DataConfig';
 import { S2CellType } from 'src/common/interface/interaction';
+import { renderPolygon } from 'src/utils/g-renders';
+import { drawObjectText, drawStringText } from 'src/utils/text';
+import { CellTypes } from '../common/constant';
 import { ViewMeta } from '../common/interface';
+import { DataItem } from '../common/interface/s2DataConfig';
+import { BaseCell } from './base-cell';
 
 /**
  * Cell for panelGroup area
@@ -76,13 +76,12 @@ export class MergedCells extends BaseCell<ViewMeta> {
   protected drawBackgroundShape() {
     const allPoints = getPolygonPoints(this.cells);
     const cellTheme = this.theme.dataCell.cell;
-    this.backgroundShape = renderPolygon(
-      allPoints,
-      cellTheme.horizontalBorderColor,
-      cellTheme.backgroundColor,
-      cellTheme.horizontalBorderWidth,
-      this,
-    );
+    this.backgroundShape = renderPolygon(this, {
+      points: allPoints,
+      stroke: cellTheme.horizontalBorderColor,
+      fill: cellTheme.backgroundColor,
+      lineHeight: cellTheme.horizontalBorderWidth,
+    });
   }
 
   /**

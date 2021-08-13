@@ -1,10 +1,15 @@
-import { Event } from '@antv/g-canvas';
-import { S2Event, DefaultInterceptEventType } from '@/common/constant';
-import { BaseInteraction } from './base';
-import { getTooltipData } from '../utils/tooltip';
-import { each, isEqual, find, isEmpty } from 'lodash';
-import { InteractionStateName, SHIFT_KEY } from '@/common/constant';
+import {
+  DefaultInterceptEventType,
+  InteractionStateName,
+  S2Event,
+  SHIFT_KEY,
+} from '@/common/constant';
 import { S2CellType } from '@/common/interface';
+import { Event } from '@antv/g-canvas';
+import { each, find, isEmpty, isEqual } from 'lodash';
+import { getTooltipData } from '../utils/tooltip';
+import { BaseInteraction } from './base';
+
 export class DataCellMultiSelection extends BaseInteraction {
   private isMultiSelection = false;
 
@@ -72,6 +77,7 @@ export class DataCellMultiSelection extends BaseInteraction {
             }
           });
         }
+        this.spreadsheet.showInteractionMask();
         this.handleTooltip(ev, cellInfos);
       }
     });

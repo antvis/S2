@@ -79,7 +79,7 @@ export class EventController {
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_DOWN, event);
         // windows and macos copy
         if (
-          this.spreadsheet.options.enbleCopy &&
+          this.spreadsheet.options.enableCopy &&
           keyEqualTo(event.key, 'c') &&
           (event.metaKey || event.ctrlKey)
         ) {
@@ -110,7 +110,7 @@ export class EventController {
       !includes((<HTMLElement>ev.target)?.className, 'ant-menu') &&
       !includes((<HTMLElement>ev.target)?.className, 'ant-input')
     ) {
-      this.spreadsheet.facet.hideInteractionMask();
+      this.spreadsheet.hideInteractionMask();
       this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
       this.spreadsheet.clearState();
       // this.spreadsheet.hideTooltip();

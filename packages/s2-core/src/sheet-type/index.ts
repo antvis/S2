@@ -9,7 +9,6 @@ import {
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
-  KEY_GROUP_MASK_GROUP,
   KEY_GROUP_PANEL_GROUND,
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
@@ -67,6 +66,7 @@ import {
   find,
   get,
   includes,
+  isEmpty,
   isFunction,
   isString,
   merge,
@@ -348,8 +348,8 @@ export class SpreadSheet extends EE {
    * Get all panel group cells
    * @param callback to handle each cell if needed
    */
-  public getPanelAllCells(callback?: (cell: DataCell) => void): DataCell[] {
-    const children = this.panelGroup.get('children');
+  public getPanelAllDataCells(callback?: (cell: DataCell) => void): DataCell[] {
+    const children = this.panelGroup.getChildren();
     const cells: DataCell[] = [];
     children.forEach((child) => {
       if (child instanceof DataCell) {
@@ -360,6 +360,12 @@ export class SpreadSheet extends EE {
       }
     });
     return cells;
+  }
+
+  public getPanelAllUnSelectedDataCells() {
+    return this.getPanelAllDataCells().filter(
+      (cell) => !this.getActiveCells().includes(cell),
+    );
   }
 
   public getRowNodes(level = -1): Node[] {
@@ -428,9 +434,17 @@ export class SpreadSheet extends EE {
     return this.store.get('interactionStateInfo');
   }
 
-  public isSelected() {
+  public getCurrentStateName() {
+    return this.getCurrentState().stateName;
+  }
+
+  public isSelectedState() {
     const currentState = this.getCurrentState();
     return currentState?.stateName === InteractionStateName.SELECTED;
+  }
+
+  public isSelectedCell(cell: S2CellType) {
+    return this.isSelectedState() && includes(this.getActiveCells(), cell);
   }
 
   public getActiveCells() {
@@ -438,8 +452,32 @@ export class SpreadSheet extends EE {
     return currentState?.cells || [];
   }
 
-  public isSelectedCell(cell: S2CellType) {
-    return this.isSelected() && includes(this.getActiveCells(), cell);
+  public hasActiveCells() {
+    return !isEmpty(this.getActiveCells());
+  }
+
+  /**
+   * 显示交互遮罩 (聚光灯高亮效果)
+   */
+  public showInteractionMask() {
+    if (!this.options.selectedCellsSpotlight) {
+      return;
+    }
+    this.getActiveCells().forEach((cell) => {
+      cell.resetOpacity();
+    });
+    this.getPanelAllUnSelectedDataCells().forEach((cell) => {
+      cell.setBgColorOpacity();
+    });
+  }
+
+  public hideInteractionMask() {
+    if (!this.options.selectedCellsSpotlight) {
+      return;
+    }
+    this.getPanelAllUnSelectedDataCells().forEach((cell) => {
+      cell.resetOpacity();
+    });
   }
 
   public clearState() {
@@ -447,9 +485,9 @@ export class SpreadSheet extends EE {
   }
 
   public updateCellStyleByState() {
-    const cells = this.getCurrentState().cells;
-    cells.forEach((cell: S2CellType) => {
-      cell.updateByState(this.getCurrentState().stateName);
+    const cells = this.getActiveCells();
+    cells.forEach((cell) => {
+      cell.updateByState(this.getCurrentStateName());
     });
   }
 
@@ -492,14 +530,14 @@ export class SpreadSheet extends EE {
       currentState?.stateName === InteractionStateName.SELECTED ||
       currentState?.stateName === InteractionStateName.HOVER
     ) {
-      this.getPanelAllCells().forEach((cell) => {
+      this.getPanelAllDataCells().forEach((cell) => {
         cell.hideShapeUnderState();
       });
     }
   }
 
   public upDatePanelAllCellsStyle() {
-    this.getPanelAllCells().forEach((cell) => {
+    this.getPanelAllDataCells().forEach((cell) => {
       cell.update();
     });
   }
@@ -569,25 +607,10 @@ export class SpreadSheet extends EE {
       zIndex: 2,
     });
 
-    if (this.options.selectedCellsSpotlight) {
-      this.initMaskContainer(canvasCfg);
-    }
+    // if (this.options.selectedCellsSpotlight) {
+    //   this.initMaskContainer(canvasCfg);
+    // }
   }
-
-  initMaskContainer = (canvasCfg: CanvasCfg) => {
-    this.maskContainer = new Canvas(canvasCfg);
-
-    const canvas = this.maskContainer.get('el') as HTMLCanvasElement;
-    canvas.style.position = 'absolute';
-    canvas.style.left = '0';
-    canvas.style.top = '0';
-    canvas.style.pointerEvents = 'none';
-
-    this.maskGroup = this.maskContainer.addGroup({
-      name: KEY_GROUP_MASK_GROUP,
-      zIndex: 3,
-    });
-  };
 
   /**
    * 避免每次新增、变更dataSet和options时，生成SpreadSheetFacetCfg

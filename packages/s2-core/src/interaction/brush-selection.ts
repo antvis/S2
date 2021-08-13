@@ -72,7 +72,7 @@ export class BrushSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
       const oe = ev.originalEvent as any;
       this.previousPoint = { x: oe.layerX, y: oe.layerY };
-      this.cells = this.spreadsheet.getPanelAllCells();
+      this.cells = this.spreadsheet.getPanelAllDataCells();
       if (!this.regionShape) {
         this.regionShape = this.createRegionShape();
       } else {
@@ -182,7 +182,7 @@ export class BrushSelection extends BaseInteraction {
 
         const cells = this.spreadsheet.getActiveCells();
         const cellInfos: TooltipData[] = [];
-        if (this.spreadsheet.isSelected()) {
+        if (this.spreadsheet.isSelectedState()) {
           each(cells, (cell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
             const meta = cell.getMeta();
@@ -201,7 +201,7 @@ export class BrushSelection extends BaseInteraction {
               }
             }
           });
-          this.spreadsheet.facet.showInteractionMask();
+          this.spreadsheet.showInteractionMask();
         }
         this.handleTooltip(ev, cellInfos);
       }

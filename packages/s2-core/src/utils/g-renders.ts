@@ -3,53 +3,20 @@
  * https://github.com/antvis/g
  */
 import { TextTheme } from '@/common/interface/theme';
-import { Group, IShape } from '@antv/g-canvas';
+import { Group, IShape, ShapeAttrs } from '@antv/g-canvas';
 import _ from 'lodash';
 
-export function renderRect(
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  fill: string,
-  stroke: string | number,
-  group: Group,
-  opacity?: number,
-): IShape {
+export function renderRect(group: Group, attrs: ShapeAttrs): IShape {
   return group?.addShape?.('rect', {
     zIndex: 1,
-    attrs: {
-      x,
-      y,
-      width,
-      height,
-      fill,
-      opacity,
-      stroke,
-    },
+    attrs,
   });
 }
 
-export function renderPolygon(
-  points: number[][],
-  stroke: string,
-  fill: string,
-  lineWidth: number,
-  group: Group,
-  opacity?: number,
-): IShape {
-  return (
-    group &&
-    group?.addShape?.('polygon', {
-      attrs: {
-        points,
-        stroke,
-        fill,
-        opacity,
-        lineWidth,
-      },
-    })
-  );
+export function renderPolygon(group: Group, attrs: ShapeAttrs): IShape {
+  return group?.addShape?.('polygon', {
+    attrs,
+  });
 }
 
 export function renderText(
@@ -59,25 +26,22 @@ export function renderText(
   text: string,
   textStyle: TextTheme,
   group: Group,
-  extrStyle?: any,
+  extraStyle?: any,
 ): IShape {
   if (!_.isEmpty(shapes) && group) {
     _.forEach(shapes, (shape: IShape) => {
       if (group.contain(shape)) group.removeChild(shape, true);
     });
   }
-  return (
-    group &&
-    group?.addShape?.('text', {
-      attrs: {
-        x,
-        y,
-        text,
-        ...textStyle,
-        ...extrStyle,
-      },
-    })
-  );
+  return group?.addShape?.('text', {
+    attrs: {
+      x,
+      y,
+      text,
+      ...textStyle,
+      ...extraStyle,
+    },
+  });
 }
 
 export function renderLine(
@@ -90,23 +54,24 @@ export function renderLine(
   group: Group,
   opacity?: number,
 ): IShape {
-  return (
-    group &&
-    group?.addShape?.('line', {
-      attrs: {
-        x1,
-        y1,
-        x2,
-        y2,
-        stroke,
-        opacity,
-        lineWidth,
-      },
-    })
-  );
+  return group?.addShape?.('line', {
+    attrs: {
+      x1,
+      y1,
+      x2,
+      y2,
+      stroke,
+      opacity,
+      lineWidth,
+    },
+  });
 }
 
-export function updateShapeAttr(shape: IShape, attribute: string, value: any) {
+export function updateShapeAttr(
+  shape: IShape,
+  attribute: keyof ShapeAttrs,
+  value: ShapeAttrs[keyof ShapeAttrs],
+) {
   if (shape) {
     _.set(shape, `attrs.${attribute}`, value);
   }

@@ -1,19 +1,19 @@
-import { getEllipsisText } from '../utils/text';
+import { renderRect, renderText } from '@/utils/g-renders';
 import {
-  get,
-  isEmpty,
-  slice,
   find,
-  keys,
-  isEqual,
-  set,
-  merge,
+  get,
   includes,
   isArray,
+  isEmpty,
+  isEqual,
+  keys,
+  merge,
+  set,
+  slice,
 } from 'lodash';
-import { renderRect, renderText } from '@/utils/g-renders';
-import { DerivedCell, DataCell } from '.';
 import { SpreadSheet } from 'src/sheet-type';
+import { DataCell, DerivedCell } from '.';
+import { getEllipsisText } from '../utils/text';
 
 /**
  * Data with derived data cell
@@ -67,15 +67,14 @@ export class DataDerivedCell extends DataCell {
     const mainText = getEllipsisText(finalText, mainInfo?.width, textStyle);
 
     if (SpreadSheet.DEBUG_ON) {
-      renderRect(
-        x + mainInfo?.x,
-        y,
-        mainInfo?.width,
+      renderRect(this, {
+        x: x + mainInfo?.x,
+        y: y,
+        width: mainInfo?.width,
         height,
-        '#ef1',
-        '#ffffffff',
-        this,
-      );
+        fill: '#ef1',
+        stroke: '#ffffffff',
+      });
     }
 
     this.textShape = renderText(
