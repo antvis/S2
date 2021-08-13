@@ -37,7 +37,7 @@ export class ColCell extends BaseCell<Node> {
     updateShapeAttr(
       this.interactiveBgShape,
       'fill',
-      this.theme.colHeader.cell.selectedBackgroundColor,
+      this.theme.colCell.cell.selectedBackgroundColor,
     );
   }
 
@@ -91,8 +91,8 @@ export class ColCell extends BaseCell<Node> {
       y,
       width: cellWidth,
       height: cellHeight,
-      fill: this.theme.colHeader.cell.backgroundColor,
-      stroke: this.theme.colHeader.cell.horizontalBorderColor,
+      fill: this.theme.colCell.cell.backgroundColor,
+      stroke: this.theme.colCell.cell.horizontalBorderColor,
     });
   }
 
@@ -114,7 +114,7 @@ export class ColCell extends BaseCell<Node> {
       icon: iconCfg,
       text: textCfg,
       bolderText: bolderTextCfg,
-    } = this.theme.colHeader;
+    } = this.theme.colCell;
 
     // 格式化枚举值
     const f = this.headerConfig.formatter(key);
@@ -125,7 +125,7 @@ export class ColCell extends BaseCell<Node> {
       ? iconCfg.size + iconCfg.margin.right
       : 0;
     const textStyle = isLeaf && !isTotals ? textCfg : bolderTextCfg;
-    const padding = _.get(this, 'theme.colHeader.cell.padding');
+    const padding = _.get(this, 'theme.colCell.cell.padding');
     const text = getEllipsisText(
       content,
       cellWidth - sortIconPadding - padding?.left - padding?.right,
@@ -251,7 +251,7 @@ export class ColCell extends BaseCell<Node> {
 
   // 绘制排序icon
   private drawSortIcon() {
-    const { icon } = this.theme.colHeader;
+    const { icon } = this.theme.colCell;
     if (this.showSortIcon()) {
       const { sortParam } = this.headerConfig;
       const { x, y, width: cellWidth, height: cellHeight } = this.meta;
@@ -351,7 +351,7 @@ export class ColCell extends BaseCell<Node> {
           y1: y + cellHeight,
           x2: x + cellWidth,
           y2: y + height + viewportHeight, // 高度有多，通过 clip 裁剪掉
-          stroke: this.theme.colHeader.cell.horizontalBorderColor,
+          stroke: this.theme.colCell.cell.horizontalBorderColor,
           lineWidth: 1,
         },
       });

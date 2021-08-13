@@ -142,11 +142,11 @@ export interface DefaultCellTheme {
 
 export interface SpreadSheetTheme {
   /* 角头样式 */
-  corner?: DefaultCellTheme;
+  cornerCell?: DefaultCellTheme;
   /* 行头样式 */
-  rowHeader?: DefaultCellTheme;
+  rowCell?: DefaultCellTheme;
   /* 列头样式 */
-  colHeader?: DefaultCellTheme;
+  colCell?: DefaultCellTheme;
   /* 交叉单于格样式 */
   dataCell?: DefaultCellTheme;
   /* 滚动条样式 */

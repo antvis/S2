@@ -169,8 +169,8 @@ export class TableFacet extends BaseFacet {
       );
 
       const seriesNumberWidth = this.getSeriesNumberWidth();
-      const iconSize = get(spreadsheet, 'theme.colHeader.icon.size');
-      const textStyle = get(spreadsheet, 'theme.colHeader.bolderText');
+      const iconSize = get(spreadsheet, 'theme.colCell.icon.size');
+      const textStyle = get(spreadsheet, 'theme.colCell.bolderText');
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
         col.field,

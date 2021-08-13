@@ -1,22 +1,23 @@
 import { VALUE_FIELD } from '@/common/constant';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
-import { GuiIcon } from '@/common/icons';
 import {
   CellMapping,
   Condition,
   Conditions,
+  S2CellType,
   ViewMeta,
 } from '@/common/interface';
-import { DataItem } from '@/common/interface/s2DataConfig';
-import { renderLine, renderRect, renderText } from '@/utils/g-renders';
+import { IShape, SimpleBBox } from '@antv/g-canvas';
+import { find, first, get, includes, isEmpty, map } from 'lodash';
+import type { SpreadSheet } from 'src/sheet-type';
+import { GuiIcon } from '../common/icons';
+import { DataItem } from '../common/interface/s2DataConfig';
+import { renderLine, renderRect, renderText } from '../utils/g-renders';
 import {
   getDerivedDataState,
   getEllipsisText,
   getTextPosition,
-} from '@/utils/text';
-import { IShape, SimpleBBox } from '@antv/g-canvas';
-import { find, first, get, includes, isEmpty, map } from 'lodash';
-import type { SpreadSheet } from 'src/sheet-type';
+} from '../utils/text';
 import { BaseCell } from './base-cell';
 import { DerivedCell } from './derived-cell';
 
@@ -56,41 +57,52 @@ export class DataCell extends BaseCell<ViewMeta> {
     super(meta, spreadsheet);
   }
 
-  // 这一大坨if else 我看晕了说真的
+  protected handleSelect(cells: S2CellType[]) {
+    // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
+    // 二者操作一致，function合并
+    const currentCellType = cells?.[0].cellType;
+    if (currentCellType === CellTypes.COL_CELL) {
+      this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
+    } else if (currentCellType === CellTypes.ROW_CELL) {
+      this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
+    }
+  }
+
+  protected handleHover(cells: S2CellType[]) {
+    // 如果当前是hover，要绘制出十字交叉的行列样式
+    const currentHoverCell = first(cells) as S2CellType;
+    if (currentHoverCell.cellType !== CellTypes.DATA_CELL) {
+      this.hideShapeUnderState();
+      return;
+    }
+    const currentColIndex = this.meta.colIndex;
+    const currentRowIndex = this.meta.rowIndex;
+    // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
+    if (
+      currentColIndex === currentHoverCell?.getMeta().colIndex ||
+      currentRowIndex === currentHoverCell?.getMeta().rowIndex
+    ) {
+      this.updateByState(InteractionStateName.HOVER);
+    } else {
+      // 当视图内的 cell 行列 index 与 hover 的 cell 不一致，隐藏其他样式
+      this.hideShapeUnderState();
+    }
+  }
+
   public update() {
-    if (this.spreadsheet.hasActiveCells()) {
-      const stateName = this.spreadsheet.getCurrentStateName();
-      const cells = this.spreadsheet.getActiveCells();
-      const firstCell = first(cells);
-      // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
-      // 二者操作一致，function合并
-      if (firstCell.cellType === CellTypes.COL_CELL) {
-        this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
-        return;
-      }
-
-      if (firstCell.cellType === CellTypes.ROW_CELL) {
-        this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
-        return;
-      }
-
-      if (stateName === InteractionStateName.HOVER && !isEmpty(cells)) {
-        // 如果当前是hover，要绘制出十字交叉的行列样式
-        const currentHoverCell = first(cells);
-        const currentColIndex = this.meta.colIndex;
-        const currentRowIndex = this.meta.rowIndex;
-        // 当视图内的cell行列index与hover的cell一致，且不是当前hover的cell时，绘制hover的十字样式
-        if (
-          (currentColIndex === currentHoverCell?.getMeta().colIndex ||
-            currentRowIndex === currentHoverCell?.getMeta().rowIndex) &&
-          this !== currentHoverCell
-        ) {
-          this.updateByState(InteractionStateName.HOVER);
-        } else if (this !== currentHoverCell) {
-          // 当视图内的cell行列index与hover的cell 不一致，且不是当前hover的cell时，隐藏其他样式
-          this.hideShapeUnderState();
-        }
-      }
+    const state = this.spreadsheet.getCurrentState();
+    const stateName = state?.stateName;
+    const cells = state?.cells;
+    if (isEmpty(cells)) return;
+    switch (stateName) {
+      case InteractionStateName.SELECTED:
+        this.handleSelect(cells);
+        break;
+      case InteractionStateName.HOVER:
+        this.handleHover(cells);
+        break;
+      default:
+        break;
     }
   }
 
@@ -490,16 +502,14 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   // dataCell根据state 改变当前样式，
   private changeCellStyleByState(
-    needGetIndexKey: 'rowIndex' | 'colIndex',
-    changeStyleStateName: InteractionStateName,
+    index: 'colIndex' | 'rowIndex',
+    stateName: InteractionStateName,
   ) {
-    const cells = this.spreadsheet.getActiveCells();
-    const currentCellIndex = get(this.meta, needGetIndexKey);
-    const selectedCellIndexes = map(cells, (cell) =>
-      get(cell?.getMeta(), needGetIndexKey),
-    );
-    if (includes(selectedCellIndexes, currentCellIndex)) {
-      this.updateByState(changeStyleStateName);
+    const cells = this.spreadsheet.getCurrentState()?.cells;
+    const currentIndex = this.meta[index];
+    const selectedIndexes = map(cells, (cell) => cell?.getMeta()[index]);
+    if (includes(selectedIndexes, currentIndex)) {
+      this.updateByState(stateName);
       requestAnimationFrame(() => {
         this.resetOpacity();
         this.spreadsheet.container.draw();
