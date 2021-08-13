@@ -1,4 +1,4 @@
-import { BaseDataSet } from 'src/data-set';
+import { BaseDataSet } from 'src/data-set/base-data-set';
 import {
   DataPathParams,
   DataType,

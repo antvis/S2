@@ -1,4 +1,4 @@
-import { PivotDataSet } from '@/data-set';
+import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { CellDataParams, DataType } from '@/data-set/interface';
 import { S2DataConfig } from '@/common/interface';
 import _ from 'lodash';
