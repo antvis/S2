@@ -31,7 +31,7 @@ export class DataCellMultiSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (ev: KeyboardEvent) => {
       if (ev.key === SHIFT_KEY) {
         this.isMultiSelection = false;
-        this.spreadsheet.interceptEvent.delete(DefaultInterceptEventType.CLICK);
+        this.interaction.interceptEvent.delete(DefaultInterceptEventType.CLICK);
       }
     });
   }
@@ -42,17 +42,17 @@ export class DataCellMultiSelection extends BaseInteraction {
       const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
       const meta = cell.getMeta();
       if (this.isMultiSelection && meta) {
-        const currentState = this.spreadsheet.getCurrentState();
+        const currentState = this.interaction.getCurrentState();
         const stateName = currentState?.stateName;
         const cells = currentState?.cells;
-        this.spreadsheet.clearStyleIndependent();
+        this.interaction.clearStyleIndependent();
         // 屏蔽hover和click
-        this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.CLICK);
-        this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
+        this.interaction.interceptEvent.add(DefaultInterceptEventType.CLICK);
+        this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
         // 先把之前的tooltip隐藏
         this.spreadsheet.hideTooltip();
-        this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
-        this.spreadsheet.updateCellStyleByState();
+        this.interaction.setState(cell, InteractionStateName.SELECTED);
+        this.interaction.updateCellStyleByState();
         this.draw();
 
         const cellInfos = [];
@@ -77,7 +77,7 @@ export class DataCellMultiSelection extends BaseInteraction {
             }
           });
         }
-        this.spreadsheet.showInteractionMask();
+        this.interaction.showInteractionMask();
         this.handleTooltip(ev, cellInfos);
       }
     });

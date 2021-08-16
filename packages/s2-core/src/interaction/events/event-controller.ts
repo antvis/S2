@@ -8,17 +8,20 @@ import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 import { Canvas, Event, IElement, LooseObject } from '@antv/g-canvas';
 import { each, get, includes } from 'lodash';
+import { RootInteraction } from '../root';
 
 interface EventListener {
   target: EventTarget;
   type: string;
   handler: EventListenerOrEventListenerObject;
 }
+
 interface EventHandler {
   target: IElement;
   type: string;
   handler: (ev: Event) => void;
 }
+
 export class EventController {
   protected spreadsheet: SpreadSheet;
 
@@ -32,8 +35,11 @@ export class EventController {
 
   private eventListeners: EventListener[] = [];
 
-  constructor(spreadsheet: SpreadSheet) {
+  interaction: RootInteraction;
+
+  constructor(spreadsheet: SpreadSheet, interaction: RootInteraction) {
     this.spreadsheet = spreadsheet;
+    this.interaction = interaction;
     this.bindEvents();
   }
 
@@ -110,12 +116,12 @@ export class EventController {
       !includes((<HTMLElement>ev.target)?.className, 'ant-menu') &&
       !includes((<HTMLElement>ev.target)?.className, 'ant-input')
     ) {
-      this.spreadsheet.hideInteractionMask();
+      this.interaction.hideInteractionMask();
       this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
-      this.spreadsheet.clearState();
+      this.interaction.clearState();
       // this.spreadsheet.hideTooltip();
       // 屏蔽的事件都重新打开
-      this.spreadsheet.interceptEvent.clear();
+      this.interaction.interceptEvent.clear();
       this.draw();
     }
   }
@@ -124,8 +130,8 @@ export class EventController {
   protected start(ev: Event) {
     this.target = ev.target;
     // 任何点击都该取消hover的后续keep态
-    if (this.spreadsheet.hoverTimer) {
-      clearTimeout(this.spreadsheet.hoverTimer);
+    if (this.interaction.hoverTimer) {
+      clearTimeout(this.interaction.hoverTimer);
     }
     const appendInfo = get(ev.target, 'attrs.appendInfo');
     if (appendInfo && appendInfo.isResizer) {
@@ -186,7 +192,7 @@ export class EventController {
         // 如果hover的cell改变了，并且当前不需要屏蔽 hover
         if (
           this.hoverTarget !== ev.target &&
-          !this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.HOVER)
+          !this.interaction.interceptEvent.has(DefaultInterceptEventType.HOVER)
         ) {
           switch (cellType) {
             case CellTypes.DATA_CELL:

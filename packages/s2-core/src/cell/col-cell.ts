@@ -1,9 +1,15 @@
-import { CellTypes } from '@/common/constant';
+import { BaseCell } from '@/cell/base-cell';
+import {
+  CellTypes,
+  COLOR_DEFAULT_RESIZER,
+  KEY_GROUP_COL_RESIZER,
+} from '@/common/constant';
 import { GuiIcon } from '@/common/icons';
 import { TextAlign } from '@/common/interface/theme';
 import { HIT_AREA } from '@/facet/header/base';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { ResizeInfo } from '@/facet/header/interface';
+import { Node } from '@/index';
 import { renderRect, updateShapeAttr } from '@/utils/g-renders';
 import {
   getEllipsisText,
@@ -12,12 +18,6 @@ import {
 } from '@/utils/text';
 import { IGroup } from '@antv/g-canvas';
 import _ from 'lodash';
-import {
-  COLOR_DEFAULT_RESIZER,
-  KEY_GROUP_COL_RESIZER,
-} from '../common/constant';
-import { Node } from '../index';
-import { BaseCell } from './base-cell';
 
 export class ColCell extends BaseCell<Node> {
   protected headerConfig: ColHeaderConfig;

@@ -1,14 +1,15 @@
+import {
+  MIN_CELL_HEIGHT,
+  MIN_CELL_WIDTH,
+  ResizeEventType,
+  S2Event,
+} from '@/common/constant';
 import { Group, IGroup } from '@antv/g-canvas';
-import { throttle, clone, merge, isNil, get } from 'lodash';
+import { clone, get, isNil, merge, throttle } from 'lodash';
+import { SpreadSheet } from 'src/sheet-type';
 import { ResizeInfo } from '../facet/header/interface';
 import { BaseInteraction } from './base';
-import { S2Event } from '@/common/constant';
-import { SpreadSheet } from 'src/sheet-type';
-import {
-  ResizeEventType,
-  MIN_CELL_WIDTH,
-  MIN_CELL_HEIGHT,
-} from '@/common/constant';
+import { RootInteraction } from './root';
 
 /**
  * Resize row&col width/height interaction
@@ -22,8 +23,8 @@ export class RowColResize extends BaseInteraction {
 
   private startPos: { offsetX?: number; offsetY?: number } = {};
 
-  constructor(spreadsheet: SpreadSheet) {
-    super(spreadsheet);
+  constructor(spreadsheet: SpreadSheet, interaction: RootInteraction) {
+    super(spreadsheet, interaction);
     this.container = this.spreadsheet.foregroundGroup;
   }
 

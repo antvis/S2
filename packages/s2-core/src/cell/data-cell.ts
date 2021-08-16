@@ -1,25 +1,25 @@
+import { BaseCell } from '@/cell/base-cell';
+import { DerivedCell } from '@/cell/derived-cell';
 import { VALUE_FIELD } from '@/common/constant';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
+import { GuiIcon } from '@/common/icons';
 import {
   CellMapping,
   Condition,
   Conditions,
   S2CellType,
-  ViewMeta,
+  ViewMeta
 } from '@/common/interface';
-import { IShape, SimpleBBox } from '@antv/g-canvas';
-import { find, first, get, includes, isEmpty, map } from 'lodash';
-import type { SpreadSheet } from 'src/sheet-type';
-import { GuiIcon } from '../common/icons';
-import { DataItem } from '../common/interface/s2DataConfig';
-import { renderLine, renderRect, renderText } from '../utils/g-renders';
+import { DataItem } from '@/common/interface/s2DataConfig';
+import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import {
   getDerivedDataState,
   getEllipsisText,
-  getTextPosition,
-} from '../utils/text';
-import { BaseCell } from './base-cell';
-import { DerivedCell } from './derived-cell';
+  getTextPosition
+} from '@/utils/text';
+import { IShape, SimpleBBox } from '@antv/g-canvas';
+import { find, first, get, includes, isEmpty, map } from 'lodash';
+import type { SpreadSheet } from 'src/sheet-type';
 
 /**
  * DataCell for panelGroup area
@@ -60,10 +60,12 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected handleSelect(cells: S2CellType[]) {
     // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
     // 二者操作一致，function合并
-    const currentCellType = cells?.[0].cellType;
+    const currentCellType = cells?.[0]?.cellType;
     if (currentCellType === CellTypes.COL_CELL) {
       this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
-    } else if (currentCellType === CellTypes.ROW_CELL) {
+      return;
+    }
+    if (currentCellType === CellTypes.ROW_CELL) {
       this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
     }
   }
@@ -90,10 +92,13 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public update() {
-    const state = this.spreadsheet.getCurrentState();
-    const stateName = state?.stateName;
-    const cells = state?.cells;
-    if (isEmpty(cells)) return;
+    const stateName = this.spreadsheet.interaction.getCurrentStateName();
+    const cells = this.spreadsheet.interaction.getActiveCells();
+
+    if (isEmpty(cells)) {
+      return;
+    }
+
     switch (stateName) {
       case InteractionStateName.SELECTED:
         this.handleSelect(cells);
@@ -155,8 +160,8 @@ export class DataCell extends BaseCell<ViewMeta> {
   public setCellsSpotlight() {
     if (
       this.spreadsheet.options.selectedCellsSpotlight &&
-      this.spreadsheet.isSelectedState() &&
-      !this.spreadsheet.isSelectedCell(this)
+      this.spreadsheet.interaction.isSelectedState() &&
+      !this.spreadsheet.interaction.isSelectedCell(this)
     ) {
       this.setBgColorOpacity();
     }
@@ -505,9 +510,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     index: 'colIndex' | 'rowIndex',
     stateName: InteractionStateName,
   ) {
-    const cells = this.spreadsheet.getCurrentState()?.cells;
-    const currentIndex = this.meta[index];
-    const selectedIndexes = map(cells, (cell) => cell?.getMeta()[index]);
+    const cells = this.spreadsheet.interaction.getActiveCells();
+    const currentIndex = get(this.meta, index);
+    const selectedIndexes = map(cells, (cell) => get(cell?.getMeta(), index));
     if (includes(selectedIndexes, currentIndex)) {
       this.updateByState(stateName);
       requestAnimationFrame(() => {
