@@ -247,8 +247,8 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
         prepareSelect: {
           borderColor: brandColors[3],
         },
-        // -------------- un selected --------------
-        unSelected: {
+        // -------------- out of spotlight --------------
+        outOfTheSpotlight: {
           opacity: 0.3,
         },
         // ------------- mini chart ---------------

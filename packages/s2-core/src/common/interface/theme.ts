@@ -73,8 +73,8 @@ export interface CellTheme {
   prepareSelect?: InteractionStateTheme;
   /* 单元格内条件格式-迷你条形图高度 */
   miniBarChartHeight?: number;
-  /* 未选中的单元格 */
-  unSelected?: InteractionStateTheme;
+  /* 聚光灯之外的单元格 */
+  outOfTheSpotlight?: InteractionStateTheme;
   /* 额外属性字段 */
   [key: string]: any;
 }
