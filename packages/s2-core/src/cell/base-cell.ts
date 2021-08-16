@@ -120,7 +120,10 @@ export abstract class BaseCell<T> extends Group {
     this.setBgColorOpacity(1);
   }
 
-  public setBgColorOpacity(opacity: string | number = 0.3) {
+  public setBgColorOpacity(
+    opacity: string | number = this.theme.dataCell?.cell?.unSelected?.opacity ||
+      1,
+  ) {
     updateShapeAttr(this.backgroundShape, SHAPE_STYLE_MAP.opacity, opacity);
     updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.opacity, opacity);
   }

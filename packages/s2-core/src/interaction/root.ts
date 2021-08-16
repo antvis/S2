@@ -6,7 +6,7 @@ import {
   ColRowMultiSelection,
   DataCellMultiSelection,
   RowColResize,
-} from '.';
+} from './';
 import {
   BaseEvent,
   CornerTextClick,
@@ -16,13 +16,15 @@ import {
   EventNames,
   HoverEvent,
   InteractionNames,
+  InteractionStateInfo,
   InteractionStateName,
+  INTERACTION_STATE_INFO_KEY,
   MergedCellsClick,
   RowColumnClick,
   RowTextClick,
   S2CellType,
   SpreadSheet,
-} from '..';
+} from '@/index';
 import { BaseInteraction } from './base';
 import { EventController } from './events/event-controller';
 
@@ -42,6 +44,8 @@ export class RootInteraction {
 
   public eventController: EventController;
 
+  private defaultState: InteractionStateInfo = {};
+
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.registerEventController();
@@ -54,16 +58,27 @@ export class RootInteraction {
     setState(cell, stateName, this.spreadsheet);
   }
 
-  public getCurrentState() {
-    return this.spreadsheet.store.get('interactionStateInfo') || {};
+  public getState() {
+    return (
+      this.spreadsheet.store.get(INTERACTION_STATE_INFO_KEY) ||
+      this.defaultState
+    );
+  }
+
+  public resetState() {
+    this.spreadsheet.store.set(INTERACTION_STATE_INFO_KEY, this.defaultState);
   }
 
   public getCurrentStateName() {
-    return this.getCurrentState().stateName;
+    return this.getState().stateName;
+  }
+
+  public isEqualStateName(stateName: InteractionStateName) {
+    return this.getCurrentStateName() === stateName;
   }
 
   public isSelectedState() {
-    const currentState = this.getCurrentState();
+    const currentState = this.getState();
     return currentState?.stateName === InteractionStateName.SELECTED;
   }
 
@@ -72,7 +87,7 @@ export class RootInteraction {
   }
 
   public getActiveCells() {
-    const currentState = this.getCurrentState();
+    const currentState = this.getState();
     return currentState?.cells || [];
   }
 
@@ -80,10 +95,11 @@ export class RootInteraction {
     return !isEmpty(this.getActiveCells());
   }
 
-  /**
-   * 显示交互遮罩 (聚光灯高亮效果)
-   */
-  public showInteractionMask() {
+  public addActiveCells(cells: S2CellType[] = []) {
+    this.getActiveCells().push(...cells);
+  }
+
+  public showSelectedCellsSpotlight() {
     if (!this.spreadsheet.options.selectedCellsSpotlight) {
       return;
     }
@@ -95,7 +111,7 @@ export class RootInteraction {
     });
   }
 
-  public hideInteractionMask() {
+  public hideSelectedCellsSpotlight() {
     if (!this.spreadsheet.options.selectedCellsSpotlight) {
       return;
     }
@@ -112,7 +128,7 @@ export class RootInteraction {
   }
 
   public clearStyleIndependent() {
-    const currentState = this.getCurrentState();
+    const currentState = this.getState();
     if (
       currentState?.stateName === InteractionStateName.SELECTED ||
       currentState?.stateName === InteractionStateName.HOVER
@@ -123,7 +139,7 @@ export class RootInteraction {
     }
   }
 
-  public upDatePanelAllCellsStyle() {
+  public updateDatePanelAllCellsStyle() {
     this.getPanelAllDataCells().forEach((cell) => {
       cell.update();
     });

@@ -40,7 +40,7 @@ export class DataCellClick extends BaseEvent {
           this.interaction.clearState();
           this.interaction.interceptEvent.clear();
           this.spreadsheet.hideTooltip();
-          this.interaction.hideInteractionMask();
+          this.interaction.hideSelectedCellsSpotlight();
         } else {
           this.interaction.clearState();
           this.interaction.setState(
@@ -49,7 +49,7 @@ export class DataCellClick extends BaseEvent {
           );
           this.interaction.updateCellStyleByState();
           this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
-          this.interaction.showInteractionMask();
+          this.interaction.showSelectedCellsSpotlight();
           this.showTooltip(event, meta);
         }
 

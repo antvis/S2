@@ -116,7 +116,7 @@ export class EventController {
       !includes((<HTMLElement>ev.target)?.className, 'ant-menu') &&
       !includes((<HTMLElement>ev.target)?.className, 'ant-input')
     ) {
-      this.interaction.hideInteractionMask();
+      this.interaction.hideSelectedCellsSpotlight();
       this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
       this.interaction.clearState();
       // this.spreadsheet.hideTooltip();

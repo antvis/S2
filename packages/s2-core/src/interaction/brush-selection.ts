@@ -201,7 +201,7 @@ export class BrushSelection extends BaseInteraction {
               }
             }
           });
-          this.interaction.showInteractionMask();
+          this.interaction.showSelectedCellsSpotlight();
         }
         this.handleTooltip(ev, cellInfos);
       }

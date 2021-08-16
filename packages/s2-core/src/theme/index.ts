@@ -7,7 +7,7 @@ import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
  * @describe generate the theme according to the type
  * @param  name
  */
-export const getTheme = (themeCfg: ThemeCfg) => {
+export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
   const themePalette: Palette =
     themeCfg?.palette || getPalette(themeCfg?.name, themeCfg?.hueInvert);
   const { brandColors, grayColors, semanticColors } = themePalette;
@@ -243,9 +243,13 @@ export const getTheme = (themeCfg: ThemeCfg) => {
           borderColor: grayColors[6],
           borderWidth: 1,
         },
-        // -------------- prepareSelect --------------
+        // -------------- prepare select --------------
         prepareSelect: {
           borderColor: brandColors[3],
+        },
+        // -------------- un selected --------------
+        unSelected: {
+          opacity: 0.3,
         },
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
@@ -285,5 +289,5 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         right: 'rgba(0,0,0,0)',
       },
     },
-  } as SpreadSheetTheme;
+  };
 };

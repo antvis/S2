@@ -63,7 +63,7 @@ export class ColRowMultiSelection extends BaseInteraction {
             // 单列
             this.interaction.setState(cell, InteractionStateName.SELECTED);
           }
-          const currentState = this.interaction.getCurrentState();
+          const currentState = this.interaction.getState();
           const stateName = currentState?.stateName;
           const cells = currentState?.cells;
           if (stateName === InteractionStateName.SELECTED) {
@@ -71,8 +71,8 @@ export class ColRowMultiSelection extends BaseInteraction {
           }
           this.handleTooltip(ev, meta, cellInfos);
           this.interaction.updateCellStyleByState();
-          this.interaction.upDatePanelAllCellsStyle();
-          this.interaction.showInteractionMask();
+          this.interaction.updateDatePanelAllCellsStyle();
+          this.interaction.showSelectedCellsSpotlight();
           this.draw();
         }
       }
@@ -105,8 +105,8 @@ export class ColRowMultiSelection extends BaseInteraction {
             this.interaction.setState(cell, InteractionStateName.SELECTED);
           }
           this.interaction.updateCellStyleByState();
-          this.interaction.upDatePanelAllCellsStyle();
-          this.interaction.showInteractionMask();
+          this.interaction.updateDatePanelAllCellsStyle();
+          this.interaction.showSelectedCellsSpotlight();
           this.draw();
         }
       }

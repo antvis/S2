@@ -36,3 +36,5 @@ export const SHAPE_ATTRS_MAP = {
   interactiveBgShape: ['backgroundColor', 'opacity'],
   activeBorderShape: ['borderColor', 'backgroundColor'],
 };
+
+export const INTERACTION_STATE_INFO_KEY = 'interactionStateInfo';

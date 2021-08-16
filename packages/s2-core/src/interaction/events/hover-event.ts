@@ -76,7 +76,7 @@ export class HoverEvent extends BaseEvent {
   private changeState(cell: S2CellType, stateName: InteractionStateName) {
     this.interaction.setState(cell, stateName);
     this.interaction.updateCellStyleByState();
-    this.interaction.upDatePanelAllCellsStyle();
+    this.interaction.updateDatePanelAllCellsStyle();
     this.draw();
   }
 

@@ -1,3 +1,4 @@
+import { Group } from '@antv/g-canvas';
 import _ from 'lodash';
 import { SpreadSheet } from '../..';
 import { S2CellType } from '../../common/interface';
@@ -278,7 +279,7 @@ export class Node {
   // node self's query condition(represent where node stay)
   public query?: Record<string, any>;
 
-  public belongsCell?: S2CellType;
+  public belongsCell?: Group;
 
   public inCollapseNode?: boolean;
 

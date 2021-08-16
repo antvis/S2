@@ -8,14 +8,14 @@ import {
   Condition,
   Conditions,
   S2CellType,
-  ViewMeta
+  ViewMeta,
 } from '@/common/interface';
 import { DataItem } from '@/common/interface/s2DataConfig';
 import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import {
   getDerivedDataState,
   getEllipsisText,
-  getTextPosition
+  getTextPosition,
 } from '@/utils/text';
 import { IShape, SimpleBBox } from '@antv/g-canvas';
 import { find, first, get, includes, isEmpty, map } from 'lodash';
@@ -322,7 +322,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       y,
       width,
       height,
-      bgColor,
+      fill: bgColor,
       stroke,
     });
   }
