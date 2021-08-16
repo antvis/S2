@@ -25,18 +25,6 @@ export interface CustomInteraction {
   interaction: InteractionConstructor;
 }
 
-export interface InteractionMaskRect {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-export interface InteractionMaskRectPosition {
-  x: number;
-  y: number;
-}
-
 export interface S2CellBrushRange {
   leftX: number;
   topY: number;

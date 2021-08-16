@@ -1,7 +1,6 @@
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
-import { get } from 'http';
-import { includes, isEmpty } from 'lodash';
+import { get, includes, isEmpty } from 'lodash';
 import {
   BrushSelection,
   ColRowMultiSelection,

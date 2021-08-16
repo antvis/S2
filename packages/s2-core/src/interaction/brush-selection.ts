@@ -3,7 +3,6 @@ import { InteractionStateName } from '@/common/constant/interaction';
 import { S2CellBrushRange } from '@/common/interface';
 import { Event, IShape, Point } from '@antv/g-canvas';
 import { each, find, isEmpty, isEqual } from 'lodash';
-import { SpreadSheet } from '..';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import {
@@ -13,7 +12,6 @@ import {
 } from '../common/interface';
 import { getTooltipData } from '../utils/tooltip';
 import { BaseInteraction } from './base';
-import { RootInteraction } from './root';
 
 function getBrushRegion(p1, p2): S2CellBrushRange {
   const leftX = Math.min(p1.x, p2.x);
@@ -63,10 +61,6 @@ export class BrushSelection extends BaseInteraction {
    * 目前没有太大影响，但实现上做成避免和click的行为定义冲突
    */
   private phase: 0 | 1 | 2;
-
-  constructor(spreadsheet: SpreadSheet, interaction: RootInteraction) {
-    super(spreadsheet, interaction);
-  }
 
   protected bindEvents() {
     this.bindMouseDown();
@@ -174,7 +168,7 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (ev) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (ev: Event) => {
       if (this.phase === 2) {
         const oe = ev.originalEvent as any;
         this.endPoint = { x: oe.layerX, y: oe.layerY };
