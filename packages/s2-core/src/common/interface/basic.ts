@@ -1,10 +1,4 @@
 import { CustomTreeItem } from '@/common/interface';
-import {
-  LayoutArrange,
-  LayoutCoordinate,
-  LayoutDataPosition,
-  LayoutHierarchy,
-} from '@/common/interface/hooks';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
   Hierarchy,
@@ -19,7 +13,6 @@ import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { Padding } from '../interface/theme';
 import { BaseTooltip } from '../tooltip';
-import { CustomInteraction } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { IconTheme } from './theme';
 
@@ -340,65 +333,16 @@ export type MappingDataItemCallback = (
 /**
  * Spreadsheet facet config
  */
-export interface SpreadSheetFacetCfg {
+export interface SpreadSheetFacetCfg
+  extends Fields,
+    Omit<S2Options, 'dataSet'>,
+    Style {
   // spreadsheet interface
   spreadsheet: SpreadSheet;
   // data set of spreadsheet
   dataSet: BaseDataSet;
-  // columns fields
-  columns?: string[];
-  // rows fields
-  rows?: string[];
-  // values fields
-  values: string[];
-  // cross-tab area's cell config
-  cellCfg?: CellCfg;
-  // row cell config
-  rowCfg?: RowCfg;
-  // column cell config
-  colCfg?: ColCfg;
-  // width/height of plot
-  width?: number;
-  height?: number;
-  // tree mode rows width
-  treeRowsWidth?: number;
-  // all collapsed rows(node id <=> isCollapse) -- only use in tree mode row header
-  collapsedRows?: Record<string, boolean>;
-  // use in col header
-  collapsedCols?: Record<string, boolean>;
-  // hierarchy' type
-  hierarchyType: S2Options['hierarchyType'];
-  // check if hierarchy is collapse
-  hierarchyCollapse?: boolean;
   // field's meta info
   meta?: Meta[];
-  // paginate config
-  pagination?: Pagination;
-  // born single cell's draw group
-  dataCell: DataCellCallback;
-  // 自定义cornerCell
-  cornerCell?: CellCallback;
-  // 自定义行头cell
-  rowCell?: CellCallback;
-  // 自定义列头cell
-  colCell?: CellCallback;
-  // 自定义 frame 边框 TODO 类型定义！！
-  frame?: FrameCallback;
-  // 角头可能需要全部自定义，而不是用交叉表概念的node来渲染
-  cornerHeader?: CornerHeaderCallback;
-  // determine what does row/column tree hierarchy look like
-  layoutHierarchy?: LayoutHierarchy;
-  // determine the order of each row/column tree branch
-  layoutArrange?: LayoutArrange;
-  // determine the location(x,y,width,height eg..) of every node
-  layoutCoordinate?: LayoutCoordinate;
-  // determine the data of cells in Cartesian coordinates
-  layoutDataPosition?: LayoutDataPosition;
-  // custom Interaction
-  customInteraction?: CustomInteraction[];
-
-  filterDisplayDataItem?: FilterDataItemCallback;
-  mappingDisplayDataItem?: MappingDataItemCallback;
 }
 
 export interface ViewMeta {
