@@ -1,10 +1,9 @@
+import { IMenu, TooltipOperatorOptions } from '@/common/interface';
 import { Menu } from 'antd';
-import { size, map } from 'lodash';
+import { map, size } from 'lodash';
 import * as React from 'react';
 import { getIcon, HtmlIcon } from '../../../icons';
-import { IMenu, OperatorProps } from '@/common/interface';
-import { TOOLTIP_CLASS_PRE, DEFAULT_ICON_PROPS } from '../../constant';
-
+import { DEFAULT_ICON_PROPS, TOOLTIP_CLASS_PRE } from '../../constant';
 import './index.less';
 
 /**
@@ -14,7 +13,7 @@ import './index.less';
  *    delay 300ms show
  */
 
-const Operator = (props: OperatorProps) => {
+const Operator = (props: TooltipOperatorOptions) => {
   const { menus, onClick } = props;
 
   const onMenuClick = (e) => {

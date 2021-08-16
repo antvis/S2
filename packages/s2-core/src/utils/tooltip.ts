@@ -1,49 +1,48 @@
 // TODO: tooltip util 有点case by case
 import {
-  sumBy,
-  get,
-  isNil,
-  some,
-  isEqual,
-  noop,
-  isNumber,
-  uniq,
-  forEach,
-  map,
-  size,
-  filter,
-  concat,
-  compact,
-  find,
-  findIndex,
-  each,
-  isEmpty,
-} from 'lodash';
-import { i18n } from '../common/i18n';
-import {
   CellTypes,
   EXTRA_FIELD,
+  InteractionStateName,
   TOTAL_VALUE,
   VALUE_FIELD,
 } from '@/common/constant';
-import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
 import {
-  DataItem,
+  compact,
+  concat,
+  each,
+  filter,
+  find,
+  findIndex,
+  forEach,
+  get,
+  isEqual,
+  isNil,
+  isNumber,
+  map,
+  noop,
+  size,
+  some,
+  sumBy,
+  uniq,
+} from 'lodash';
+import {
   Aggregation,
-  TooltipOptions,
-  Position,
-  SummaryProps,
+  DataItem,
   ListItem,
-  HeadInfo,
-  DataProps,
   SpreadSheet,
+  TooltipData,
+  TooltipHeadInfo,
+  TooltipOptions,
+  TooltipPosition,
+  TooltipSummaryOptions,
 } from '..';
-import { getDerivedDataState } from '../utils/text';
+import { i18n } from '../common/i18n';
 import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
-import { InteractionStateName } from '@/common/constant';
+import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
+import { getDerivedDataState } from '../utils/text';
 
 /**
  * calculate aggregate value
@@ -76,10 +75,10 @@ export const isHoverDataInSelectedData = (
  * calculate tooltip show position
  */
 export const getPosition = (
-  position: Position,
+  position: TooltipPosition,
   currContainer: HTMLElement = document.body,
   viewportContainer: HTMLElement = document.body,
-): Position => {
+): TooltipPosition => {
   const tooltipBCR = currContainer.getBoundingClientRect();
   const viewportBCR = viewportContainer.getBoundingClientRect();
   let x = position.x + POSITION_X_OFFSET;
@@ -113,8 +112,8 @@ export const getOptions = (options?: TooltipOptions) => {
 
 export const shouldIgnore = (
   enterable: boolean,
-  position: Position,
-  currPosition: Position,
+  position: TooltipPosition,
+  currPosition: TooltipPosition,
 ): boolean => {
   if (enterable) {
     if (
@@ -193,7 +192,7 @@ export const getFieldList = (
 export const getHeadInfo = (
   spreadsheet: SpreadSheet,
   hoverData: DataItem,
-): HeadInfo => {
+): TooltipHeadInfo => {
   if (hoverData) {
     const colFields = get(spreadsheet?.dataSet?.fields, 'columns', []);
     const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
@@ -318,7 +317,7 @@ export const getSelectedCellIndexes = (
 ) => {
   const { rowLeafNodes, colLeafNodes } = layoutResult;
   const selectedIndexes = [];
-  const currentState = spreadsheet.getCurrentState();
+  const currentState = spreadsheet.interaction.getCurrentState();
   const cells = currentState?.cells;
   if (cells?.[0]?.cellType === CellTypes.COL_CELL) {
     const currentHeaderCell = find(
@@ -346,7 +345,7 @@ export const getSelectedData = (
 ): DataItem[] => {
   const layoutResult = spreadsheet?.facet?.layoutResult;
   let selectedData = [];
-  const currentState = spreadsheet.getCurrentState();
+  const currentState = spreadsheet.interaction.getCurrentState();
   const stateName = currentState?.stateName;
   const cells = currentState?.cells;
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
@@ -385,7 +384,7 @@ export const getSummaryProps = (
   cellInfo: DataItem,
   options: TooltipOptions,
   aggregation: Aggregation = 'SUM',
-): SummaryProps => {
+): TooltipSummaryOptions => {
   // 拿到列内所有data-cell的数据
   const selectedData = getSelectedData(spreadsheet, cellInfo);
   const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
@@ -434,10 +433,10 @@ const mergeSummaries = (summaries) => {
 
 export const getTooltipData = (
   spreadsheet: SpreadSheet,
-  cellInfos?: DataProps[],
+  cellInfos?: TooltipData[],
   options?: TooltipOptions,
   aggregation?: Aggregation,
-) => {
+): TooltipData => {
   let summaries = null;
   let headInfo = null;
   let details = null;
@@ -473,7 +472,7 @@ export const getStrategySummary = (
   spreadsheet: SpreadSheet,
   hoverData: Record<string, any>,
   options: TooltipOptions,
-): SummaryProps => {
+): TooltipSummaryOptions => {
   if (hoverData) {
     const { valueField } = getRightAndValueField(spreadsheet, options);
     const { name, value } = getListItem(
@@ -535,7 +534,7 @@ export const getStrategyHeadInfo = (
   spreadsheet: SpreadSheet,
   hoverData: DataItem,
   options?: TooltipOptions,
-): HeadInfo => {
+): TooltipHeadInfo => {
   const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
   // if rows is not empty and values is data, use normal-tooltip
   if (rowFields.find((item) => item === EXTRA_FIELD)) {
@@ -561,7 +560,7 @@ export const getStrategyHeadInfo = (
 
 export const getStrategyTooltipData = (
   spreadsheet: SpreadSheet,
-  data?: DataProps,
+  data?: TooltipData,
   options?: TooltipOptions,
 ) => {
   const { interpretation, infos, tips } = data || {};

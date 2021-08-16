@@ -1,6 +1,10 @@
-import { merge, clone, omit } from 'lodash';
-import { act } from 'react-dom/test-utils';
+import { Checkbox, Space, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { clone, merge, omit } from 'lodash';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
 import {
   auto,
   S2DataConfig,
@@ -9,11 +13,7 @@ import {
   SpreadSheet,
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
-import { Switch, Checkbox, Space } from 'antd';
 import { CustomTooltip } from './custom/custom-tooltip';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
 let data = getMockData('../data/tableau-supermarket.csv');
 
@@ -148,11 +148,12 @@ const getOptions = (): S2Options => {
     initTooltip: (spreadsheet) => {
       return new CustomTooltip(spreadsheet);
     },
+    selectedCellsSpotlight: true,
   };
 };
 
 function MainLayout(props) {
-  const [options, setOptions] = React.useState(props.options);
+  const [options, setOptions] = React.useState<S2Options>(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
   const [valueInCols, setValueInCols] = React.useState(true);
   const [derivedValueMul, setDerivedValueMul] = React.useState(false);
@@ -161,21 +162,17 @@ function MainLayout(props) {
     props.options.freezeRowHeader,
   );
 
+  const updateOptions = (updatedOptions: Partial<S2Options>) => {
+    setOptions(merge({}, options, updatedOptions));
+  };
+
   const onCheckChanged = (checked: boolean) => {
     setValueInCols(checked);
-    setOptions(
-      merge({}, options, {
-        valueInCols: checked,
-      }),
-    );
+    updateOptions({ valueInCols: checked });
   };
 
   const onCheckChanged1 = (checked: boolean) => {
-    setOptions(
-      merge({}, options, {
-        hierarchyType: checked ? 'tree' : 'grid',
-      }),
-    );
+    updateOptions({ hierarchyType: checked ? 'tree' : 'grid' });
   };
 
   const onCheckChanged2 = (checked: boolean) => {
@@ -206,16 +203,12 @@ function MainLayout(props) {
         }),
       );
     } else {
-      setOptions(omit(options, ['pagination']));
+      setOptions(omit(options, ['pagination']) as S2Options);
     }
   };
 
   const onCheckChanged4 = (e: CheckboxChangeEvent) => {
-    setOptions(
-      merge({}, options, {
-        freezeRowHeader: e.target.checked,
-      }),
-    );
+    updateOptions({ freezeRowHeader: e.target.checked });
     setFreezeRowHeader(e.target.checked);
   };
 
@@ -247,6 +240,14 @@ function MainLayout(props) {
           defaultChecked={showPagination}
           onChange={onCheckChanged3}
         />
+        <Switch
+          checkedChildren="选中聚光灯开"
+          unCheckedChildren="选中聚光灯关"
+          defaultChecked={options.selectedCellsSpotlight}
+          onChange={(checked) => {
+            updateOptions({ selectedCellsSpotlight: checked });
+          }}
+        />
         <Checkbox onChange={onCheckChanged4} defaultChecked={freezeRowHeader}>
           冻结行头
         </Checkbox>
@@ -254,7 +255,7 @@ function MainLayout(props) {
       <SheetComponent
         dataCfg={dataCfg}
         adaptive={false}
-        options={options}
+        options={options as S2Options}
         spreadsheet={getSpreadSheet}
       />
     </div>

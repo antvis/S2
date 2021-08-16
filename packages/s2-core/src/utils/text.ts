@@ -1,10 +1,19 @@
-import { memoize, isString, values, isArray, toString, isNumber } from 'lodash';
-import { renderText } from '@/utils/g-renders';
-import { get, merge, clone } from 'lodash';
 import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
-import { IShape } from '@antv/g-canvas';
+import { CellBoxCfg, TooltipPosition } from '@/common/interface';
 import { S2Options, SpreadSheetTheme } from '@/index';
-import { Position, CellBoxCfg } from '@/common/interface';
+import { renderText } from '@/utils/g-renders';
+import { IShape } from '@antv/g-canvas';
+import {
+  clone,
+  get,
+  isArray,
+  isNumber,
+  isString,
+  memoize,
+  merge,
+  toString,
+  values,
+} from 'lodash';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -14,13 +23,8 @@ const ctx = canvas.getContext('2d');
  */
 export const measureTextWidth = memoize(
   (text: number | string = '', font: unknown): number => {
-    const {
-      fontSize,
-      fontFamily,
-      fontWeight,
-      fontStyle,
-      fontVariant,
-    } = font as CSSStyleDeclaration;
+    const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
+      font as CSSStyleDeclaration;
     ctx.font = [
       fontStyle,
       fontVariant,
@@ -397,7 +401,7 @@ export const drawStringText = (cell) => {
  * ************************************************
  * @param cellBoxCfg
  */
-export const getTextPosition = (cellBoxCfg: CellBoxCfg): Position => {
+export const getTextPosition = (cellBoxCfg: CellBoxCfg): TooltipPosition => {
   const { x, y, width, height, textAlign, textBaseline, padding } = cellBoxCfg;
   let textX: number;
   let textY: number;

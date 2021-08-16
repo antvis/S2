@@ -1,14 +1,15 @@
-import { Group, IShape } from '@antv/g-canvas';
-import type { SpreadSheet } from '../sheet-type';
-import { updateShapeAttr } from '../utils/g-renders';
-import { SpreadSheetTheme } from '@/common/interface';
 import {
   CellTypes,
   InteractionStateName,
-  SHAPE_STYLE_MAP,
   SHAPE_ATTRS_MAP,
+  SHAPE_STYLE_MAP,
 } from '@/common/constant';
-import { get, each, findKey, includes } from 'lodash';
+import { SpreadSheetTheme } from '@/common/interface';
+import { Group, IShape } from '@antv/g-canvas';
+import { each, findKey, get, includes } from 'lodash';
+import type { SpreadSheet } from '../sheet-type';
+import { updateShapeAttr } from '../utils/g-renders';
+
 export abstract class BaseCell<T> extends Group {
   // used to determine the cell type
   public cellType: CellTypes;
@@ -24,6 +25,8 @@ export abstract class BaseCell<T> extends Group {
 
   // background control by icon condition
   protected backgroundShape: IShape;
+
+  protected textShape: IShape;
 
   // render interactive background,
   protected interactiveBgShape: IShape;
@@ -83,7 +86,6 @@ export abstract class BaseCell<T> extends Group {
     const stateStyles = get(this.theme, `${this.cellType}.cell.${stateName}`);
     each(stateStyles, (style, styleKey) => {
       if (styleKey) {
-        // 找到对应的shape，并且找到cssStyple对应的shapestyle
         const currentShape = findKey(SHAPE_ATTRS_MAP, (attrs) =>
           includes(attrs, styleKey),
         );
@@ -112,5 +114,14 @@ export abstract class BaseCell<T> extends Group {
 
   public setStrokeOpacity(shape: IShape, opacity: number) {
     updateShapeAttr(shape, 'strokeOpacity', opacity);
+  }
+
+  public resetOpacity() {
+    this.setBgColorOpacity(1);
+  }
+
+  public setBgColorOpacity(opacity: string | number = 0.3) {
+    updateShapeAttr(this.backgroundShape, SHAPE_STYLE_MAP.opacity, opacity);
+    updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.opacity, opacity);
   }
 }

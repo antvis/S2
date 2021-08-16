@@ -86,7 +86,7 @@ export interface S2Options {
   // the collection of row id and column id of cells which to be merged
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // enable Command + C to copy spread data
-  readonly enbleCopy?: boolean;
+  readonly enableCopy?: boolean;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
   // eg: add/delete some nodes in specified position
@@ -104,6 +104,9 @@ export interface S2Options {
     valueField: string,
     data: DataItem,
   ) => Record<string, string | number>;
+  // Focus selected cell, like the spotlight
+  selectedCellsSpotlight?: boolean;
+  /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // extra options if needed
   [key: string]: any;
 }
@@ -155,6 +158,7 @@ export const defaultOptions = {
   customHeaderCells: null,
   rowActionIcons: null,
   style: defaultStyle,
+  selectedCellsSpotlight: false,
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>

@@ -1,12 +1,17 @@
-import { Event, Point, IShape } from '@antv/g-canvas';
-import { each, find, isEqual, isEmpty } from 'lodash';
+import { DefaultInterceptEventType, S2Event } from '@/common/constant';
+import { InteractionStateName } from '@/common/constant/interaction';
+import { S2CellBrushRange } from '@/common/interface';
+import { Event, IShape, Point } from '@antv/g-canvas';
+import { each, find, isEmpty, isEqual } from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
-import { S2Event, DefaultInterceptEventType } from '@/common/constant';
-import { BaseInteraction } from './base';
-import { InteractionStateName } from '@/common/constant/interaction';
+import {
+  TooltipData,
+  TooltipOptions,
+  TooltipPosition,
+} from '../common/interface';
 import { getTooltipData } from '../utils/tooltip';
-import { S2CellBrushRange } from '@/common/interface';
+import { BaseInteraction } from './base';
 
 function getBrushRegion(p1, p2): S2CellBrushRange {
   const leftX = Math.min(p1.x, p2.x);
@@ -67,7 +72,7 @@ export class BrushSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
       const oe = ev.originalEvent as any;
       this.previousPoint = { x: oe.layerX, y: oe.layerY };
-      this.cells = this.spreadsheet.getPanelAllCells();
+      this.cells = this.interaction.getPanelAllDataCells();
       if (!this.regionShape) {
         this.regionShape = this.createRegionShape();
       } else {
@@ -85,10 +90,10 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (ev) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (ev: Event) => {
       if (this.phase) {
         // 屏蔽hover事件
-        this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
+        this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
         ev.preventDefault();
         this.phase = 2;
         const oe = ev.originalEvent as any;
@@ -102,7 +107,7 @@ export class BrushSelection extends BaseInteraction {
           height: brushRegion.height,
         });
 
-        this.spreadsheet.clearStyleIndependent();
+        this.interaction.clearStyleIndependent();
         this.getHighlightCells(brushRegion);
         this.draw();
       }
@@ -112,35 +117,34 @@ export class BrushSelection extends BaseInteraction {
   // 刷选过程中的预选择外框
   protected showPrepareBrushSelectBorder(cells: DataCell[]) {
     if (cells.length) {
-      this.spreadsheet.clearState();
+      this.interaction.clearState();
       cells.forEach((cell: DataCell) => {
-        this.spreadsheet.setState(cell, InteractionStateName.PREPARE_SELECT);
+        this.interaction.setState(cell, InteractionStateName.PREPARE_SELECT);
       });
-      this.spreadsheet.updateCellStyleByState();
+      this.interaction.updateCellStyleByState();
     }
   }
 
-  private isInCellInfos(cellInfos, info): boolean {
+  private isInCellInfos(cellInfos: TooltipData[], info: TooltipData): boolean {
     return !!find(cellInfos, (i) => isEqual(i, info));
   }
 
-  private handleTooltip(ev, cellInfos) {
-    const position = {
+  private handleTooltip(ev: Event, cellInfos: TooltipData[]) {
+    const position: TooltipPosition = {
       x: ev.clientX,
       y: ev.clientY,
     };
 
-    const options = {
+    const options: TooltipOptions = {
       enterable: true,
     };
 
     const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
-    const showOptions = {
+    this.spreadsheet.showTooltip({
       position,
       data: tooltipData,
       options,
-    };
-    this.spreadsheet.showTooltip(showOptions);
+    });
   }
 
   private getCellsInRegion(region: S2CellBrushRange) {
@@ -164,7 +168,7 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (ev) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (ev: Event) => {
       if (this.phase === 2) {
         const oe = ev.originalEvent as any;
         this.endPoint = { x: oe.layerX, y: oe.layerY };
@@ -175,18 +179,17 @@ export class BrushSelection extends BaseInteraction {
           opacity: 0,
         });
         this.draw();
-        const currentState = this.spreadsheet.getCurrentState();
-        const stateName = currentState?.stateName;
-        const cells = currentState?.cells;
-        const cellInfos = [];
-        if (stateName === InteractionStateName.SELECTED) {
+
+        const cells = this.interaction.getActiveCells();
+        const cellInfos: TooltipData[] = [];
+        if (this.interaction.isSelectedState()) {
           each(cells, (cell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
             const meta = cell.getMeta();
             if (!isEmpty(meta)) {
               const query = meta[valueInCols ? 'colQuery' : 'rowQuery'];
               if (query) {
-                const cellInfo = {
+                const cellInfo: TooltipData = {
                   ...query,
                   colIndex: valueInCols ? meta.colIndex : null,
                   rowIndex: !valueInCols ? meta.rowIndex : null,
@@ -198,6 +201,7 @@ export class BrushSelection extends BaseInteraction {
               }
             }
           });
+          this.interaction.showInteractionMask();
         }
         this.handleTooltip(ev, cellInfos);
       }
@@ -215,9 +219,9 @@ export class BrushSelection extends BaseInteraction {
   private getSelectedCells(region: S2CellBrushRange) {
     const selectedCells = this.getCellsInRegion(region);
     selectedCells.forEach((cell) => {
-      this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
+      this.interaction.setState(cell, InteractionStateName.SELECTED);
     });
-    this.spreadsheet.updateCellStyleByState();
+    this.interaction.updateCellStyleByState();
   }
 
   private createRegionShape() {

@@ -1,35 +1,33 @@
+import {
+  ListItem,
+  TooltipData,
+  TooltipHeadInfo,
+  TooltipOperatorOptions,
+  TooltipOptions,
+  TooltipPosition,
+  TooltipShowOptions,
+  TooltipSummaryOptions,
+} from '@/common/interface';
 import { isEmpty } from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { SpreadSheet } from 'src/sheet-type';
+import {
+  getOptions,
+  getPosition,
+  manageContainerStyle,
+  shouldIgnore,
+} from '../../utils/tooltip';
 import { Aggregation } from '../interface';
 import TooltipDetail from './components/detail';
-import TooltipOperator from './components/operator';
-import Infos from './components/infos';
 import Divider from './components/divider';
-import TooltipSummary from './components/summary';
-import TooltipHeadInfo from './components/head-info';
+import Infos from './components/infos';
 import Interpretation from './components/interpretation';
+import TooltipOperator from './components/operator';
 import SimpleTips from './components/simple-tips';
-import {
-  ListItem,
-  Position,
-  SummaryProps,
-  TooltipOptions,
-  HeadInfo,
-  ShowProps,
-  OperatorProps,
-  DataProps,
-} from '@/common/interface';
-import {
-  getPosition,
-  getOptions,
-  shouldIgnore,
-  manageContainerStyle,
-} from '../../utils/tooltip';
+import TooltipSummary from './components/summary';
 import { TOOLTIP_CLASS_PRE } from './constant';
-
 import './index.less';
-import { SpreadSheet } from 'src/sheet-type';
 
 /**
  * Base tooltips component
@@ -45,7 +43,7 @@ export class BaseTooltip {
 
   private enterable = false; // mark if can enter into tooltips
 
-  protected position: Position = { x: 0, y: 0 }; // tooltips position info
+  protected position: TooltipPosition = { x: 0, y: 0 }; // tooltips position info
 
   constructor(spreadsheet: SpreadSheet, aggregation?: Aggregation) {
     this.spreadsheet = spreadsheet;
@@ -59,7 +57,7 @@ export class BaseTooltip {
    * @param options {@link TooltipOptions}
    * @param element
    */
-  public show(showOptions: ShowProps) {
+  public show(showOptions: TooltipShowOptions) {
     const { position, data, options, element } = showOptions;
     const { enterable } = getOptions(options);
     const container = this.getContainer();
@@ -102,7 +100,7 @@ export class BaseTooltip {
     }
   }
 
-  protected renderContent(data?: DataProps, options?: TooltipOptions) {
+  protected renderContent(data?: TooltipData, options?: TooltipOptions) {
     const option = getOptions(options);
     const { operator, showSingleTips } = option;
     const { summaries, headInfo, details, interpretation, infos, tips } =
@@ -127,7 +125,7 @@ export class BaseTooltip {
     return <Divider />;
   }
 
-  protected renderOperation(operator: OperatorProps) {
+  protected renderOperation(operator: TooltipOperatorOptions) {
     return (
       operator && (
         <TooltipOperator onClick={operator.onClick} menus={operator.menus} />
@@ -139,11 +137,11 @@ export class BaseTooltip {
     return tips && <SimpleTips tips={tips} />;
   }
 
-  protected renderSummary(summaries: SummaryProps[]) {
+  protected renderSummary(summaries: TooltipSummaryOptions[]) {
     return !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
   }
 
-  protected renderHeadInfo(headInfo: HeadInfo) {
+  protected renderHeadInfo(headInfo: TooltipHeadInfo) {
     const { cols, rows } = headInfo || {};
 
     return (

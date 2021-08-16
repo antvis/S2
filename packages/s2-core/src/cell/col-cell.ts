@@ -1,24 +1,23 @@
+import { BaseCell } from '@/cell/base-cell';
 import {
-  getEllipsisText,
-  measureTextWidth,
-  getTextPosition,
-} from '@/utils/text';
-import _ from 'lodash';
-
-import { CellTypes } from '@/common/constant';
-import { renderRect, updateShapeAttr } from '@/utils/g-renders';
+  CellTypes,
+  COLOR_DEFAULT_RESIZER,
+  KEY_GROUP_COL_RESIZER,
+} from '@/common/constant';
+import { GuiIcon } from '@/common/icons';
+import { TextAlign } from '@/common/interface/theme';
 import { HIT_AREA } from '@/facet/header/base';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { ResizeInfo } from '@/facet/header/interface';
-import { Node } from '../index';
-import { BaseCell } from './base-cell';
-import { IGroup } from '@antv/g-canvas';
-import { GuiIcon } from '@/common/icons';
-import { TextAlign } from '@/common/interface/theme';
+import { Node } from '@/index';
+import { renderRect, updateShapeAttr } from '@/utils/g-renders';
 import {
-  KEY_GROUP_COL_RESIZER,
-  COLOR_DEFAULT_RESIZER,
-} from '../common/constant';
+  getEllipsisText,
+  getTextPosition,
+  measureTextWidth,
+} from '@/utils/text';
+import { IGroup } from '@antv/g-canvas';
+import _ from 'lodash';
 
 export class ColCell extends BaseCell<Node> {
   protected headerConfig: ColHeaderConfig;
@@ -87,15 +86,14 @@ export class ColCell extends BaseCell<Node> {
 
   protected drawRectBackground() {
     const { x, y, width: cellWidth, height: cellHeight } = this.meta;
-    this.backgroundShape = renderRect(
+    this.backgroundShape = renderRect(this, {
       x,
       y,
-      cellWidth,
-      cellHeight,
-      this.theme.colCell.cell.backgroundColor,
-      this.theme.colCell.cell.horizontalBorderColor,
-      this,
-    );
+      width: cellWidth,
+      height: cellHeight,
+      fill: this.theme.colCell.cell.backgroundColor,
+      stroke: this.theme.colCell.cell.horizontalBorderColor,
+    });
   }
 
   protected drawCellText() {
@@ -231,15 +229,14 @@ export class ColCell extends BaseCell<Node> {
   // 交互使用的背景色
   protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
-    this.interactiveBgShape = renderRect(
+    this.interactiveBgShape = renderRect(this, {
       x,
       y,
       width,
       height,
-      'transparent',
-      'transparent',
-      this,
-    );
+      fill: 'transparent',
+      stroke: 'transparent',
+    });
     this.stateShapes.push(this.interactiveBgShape);
   }
 

@@ -1,7 +1,7 @@
-import { Group } from '@antv/g-canvas';
 import _ from 'lodash';
-import { Hierarchy } from './hierarchy';
 import { SpreadSheet } from '../..';
+import { S2CellType } from '../../common/interface';
+import { Hierarchy } from './hierarchy';
 
 export interface BaseNodeConfig {
   id: string;
@@ -21,7 +21,7 @@ export interface BaseNodeConfig {
   field?: string;
   spreadsheet?: SpreadSheet;
   query?: Record<string, any>;
-  belongsCell?: Group;
+  belongsCell?: S2CellType;
   inCollapseNode?: boolean;
   isLeaf?: boolean;
   [key: string]: any;
@@ -278,7 +278,7 @@ export class Node {
   // node self's query condition(represent where node stay)
   public query?: Record<string, any>;
 
-  public belongsCell?: Group;
+  public belongsCell?: S2CellType;
 
   public inCollapseNode?: boolean;
 
