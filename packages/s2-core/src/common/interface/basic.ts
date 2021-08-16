@@ -158,6 +158,7 @@ export interface Tooltip {
   readonly row?: Tooltip;
   readonly col?: Tooltip;
   readonly cell?: Tooltip;
+  readonly dataMapping?: () => unknown;
 }
 
 export interface Sort {
@@ -327,6 +328,10 @@ export interface MergedCellInfo {
   showText?: boolean;
 }
 
+export type FilterDataItemCallback = (
+  valueField: string,
+  data: DataItem,
+) => DataItem;
 /**
  * Spreadsheet facet config
  */
@@ -386,6 +391,7 @@ export interface SpreadSheetFacetCfg {
   layoutDataPosition?: LayoutDataPosition;
   // custom Interaction
   customInteraction?: CustomInteraction[];
+  filterDisplayDataItem?: FilterDataItemCallback;
 }
 
 export interface ViewMeta {

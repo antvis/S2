@@ -1,5 +1,12 @@
-import { CellBoxCfg, IconCfg, TextTheme } from '@/common/interface';
+import {
+  CellBoxCfg,
+  Data,
+  FilterDataItemCallback,
+  IconCfg,
+  TextTheme,
+} from '@/common/interface';
 import { SimpleBBox } from '@antv/g-canvas';
+import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import { TextBaseline } from './../common/interface/theme';
 
 export const getContentArea = (cellBoxCfg: CellBoxCfg) => {
@@ -124,4 +131,13 @@ export const getIconPosition = (
     x,
     y: iconY,
   };
+};
+
+export const getDisplayDataItem = (
+  data: Data,
+  callback?: FilterDataItemCallback,
+) => {
+  return callback
+    ? callback(data[EXTRA_FIELD] as string, data[VALUE_FIELD])
+    : data[VALUE_FIELD];
 };

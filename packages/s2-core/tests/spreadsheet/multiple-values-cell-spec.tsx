@@ -82,7 +82,7 @@ const getOptions = (): S2Options => {
       colCfg: {
         widthByFieldValue: {},
         heightByField: {},
-        colWidthType: 'adaptive',
+        colWidthType: 'compact',
       },
       cellCfg: {
         height: 32,
@@ -139,7 +139,7 @@ function MainLayout(props) {
     }
     setDataCfg(newData);
   };
-  console.log('values', dataCfg);
+
   return (
     <div>
       <div style={{ display: 'inline-block', marginBottom: 20 }}>

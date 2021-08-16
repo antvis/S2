@@ -1,4 +1,18 @@
-import { LayoutResult, ViewMeta } from 'src/common/interface';
+import {
+  layoutCoordinate,
+  layoutDataPosition,
+} from '@/facet/layout/layout-hooks';
+import { getDisplayDataItem } from '@/utils/data-cell';
+import {
+  findIndex,
+  get,
+  includes,
+  isEmpty,
+  last,
+  maxBy,
+  merge,
+  reduce,
+} from 'lodash';
 import {
   EXTRA_FIELD,
   ICON_RADIUS,
@@ -6,26 +20,13 @@ import {
   KEY_ROW_NODE_BORDER_REACHED,
   VALUE_FIELD,
 } from 'src/common/constant';
-import {
-  includes,
-  get,
-  merge,
-  isEmpty,
-  maxBy,
-  findIndex,
-  last,
-  reduce,
-} from 'lodash';
+import { DebuggerUtil } from 'src/common/debug';
+import { LayoutResult, ViewMeta } from 'src/common/interface';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
+import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Node } from 'src/facet/layout/node';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
-import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { DebuggerUtil } from 'src/common/debug';
-import {
-  layoutCoordinate,
-  layoutDataPosition,
-} from '@/facet/layout/layout-hooks';
 
 export class PivotFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
@@ -247,7 +248,8 @@ export class PivotFacet extends BaseFacet {
   }
 
   private calculateColLeafNodesWidth(col: Node): number {
-    const { cellCfg, colCfg, dataSet, spreadsheet } = this.cfg;
+    const { cellCfg, colCfg, dataSet, spreadsheet, filterDisplayDataItem } =
+      this.cfg;
     // 0e48088b-8bb3-48ac-ae8e-8ab08af46a7b:[DAY]:[RC]:[VALUE] 这样的id get 直接获取不到
     // current.width =  get(colCfg, `widthByFieldValue.${current.value}`, current.width);
     const userDragWidth = get(
@@ -265,9 +267,9 @@ export class PivotFacet extends BaseFacet {
         col.isTotals || col.isTotalMeasure,
       );
       const colLabel = col.label;
-      // assume there are no derived values in current cols
+      // will deal with real width calculation in multiple values render pr
       const allLabels = datas
-        .map((data) => `${data[VALUE_FIELD]}`)
+        .map((data) => `${getDisplayDataItem(data, filterDisplayDataItem)}`)
         ?.slice(0, 50);
       allLabels.push(colLabel);
       const maxLabel = maxBy(allLabels, (label) =>
