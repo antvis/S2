@@ -7,7 +7,7 @@ import {
 import { SpreadSheetTheme } from '@/common/interface';
 import { Group, IShape } from '@antv/g-canvas';
 import { each, findKey, get, includes } from 'lodash';
-import type { SpreadSheet } from '../sheet-type';
+import { SpreadSheet } from '../sheet-type';
 import { updateShapeAttr } from '../utils/g-renders';
 
 export abstract class BaseCell<T> extends Group {
