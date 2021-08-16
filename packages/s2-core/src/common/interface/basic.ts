@@ -412,7 +412,7 @@ export interface ViewMeta {
   // cell's height
   height: number;
   // cell origin data raws(multiple data)
-  data: Record<string, any>[];
+  data: Record<string, any>;
   // cell' row index (in rowLeafNodes)
   rowIndex: number;
   // cell' col index (in colLeafNodes)

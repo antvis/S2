@@ -52,6 +52,16 @@ const getDataCfg = (): S2DataConfig => {
         formatter: (v: string) => v,
       },
       {
+        field: 'price-ac',
+        name: '售价(同比)',
+        formatter: (v: string) => v,
+      },
+      {
+        field: 'price-rc',
+        name: '售价(环比)',
+        formatter: (v: string) => v,
+      },
+      {
         field: 'count',
         name: '销售个数',
         formatter: (v: string) => v,
@@ -77,6 +87,16 @@ const getOptions = (): S2Options => {
       interval: [],
       background: [],
       icon: [],
+    },
+    tooltip: {
+      showTooltip: true,
+    },
+    mappingDisplayDataItem(field, data) {
+      return {
+        price: 12,
+        'price-ac': 0.2,
+        'price-rc': -0.3,
+      };
     },
     style: {
       colCfg: {

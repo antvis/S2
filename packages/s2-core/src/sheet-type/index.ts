@@ -41,7 +41,6 @@ import { ext } from '@antv/matrix-util';
 import {
   clone,
   debounce,
-  find,
   get,
   includes,
   isEmpty,
@@ -362,6 +361,10 @@ export class SpreadSheet extends EE {
 
   public hideTooltip() {
     this.tooltip.hide();
+  }
+
+  public getTooltipDataItemMappingCallback() {
+    return get(this, 'options.mappingDisplayDataItem');
   }
 
   // 获取当前cell实例
