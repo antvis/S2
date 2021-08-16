@@ -24,6 +24,7 @@ const getSpreadSheet = (
   options: S2Options,
 ) => {
   sheet = new SpreadSheet(dom, dataCfg, options);
+  window.sheet = sheet;
   return sheet;
 };
 
@@ -68,6 +69,7 @@ const getDataCfg = (): S2DataConfig => {
       },
     ],
     data: multipleDataWithNormal,
+    standardData: false,
   };
 };
 
