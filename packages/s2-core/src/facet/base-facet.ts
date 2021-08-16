@@ -1,54 +1,10 @@
-import type { BBox, IGroup, Point } from '@antv/g-canvas';
-import {
-  calculateInViewIndexes,
-  optimizeScrollXY,
-  translateGroup,
-} from './utils';
 import { diffIndexes, Indexes } from '@/utils/indexes';
-import type {
-  Formatter,
-  LayoutResult,
-  OffsetConfig,
-  SpreadSheetFacetCfg,
-} from '../common/interface';
-import {
-  DEBUG_HEADER_LAYOUT,
-  DEBUG_VIEW_RENDER,
-  DebuggerUtil,
-} from '../common/debug';
-import { SpreadSheet } from 'src/sheet-type';
-import {
-  KEY_AFTER_HEADER_LAYOUT,
-  KEY_CELL_SCROLL,
-  KEY_GROUP_COL_RESIZER,
-  KEY_GROUP_CORNER_RESIZER,
-  KEY_GROUP_ROW_INDEX_RESIZER,
-  KEY_GROUP_ROW_RESIZER,
-  KEY_PAGINATION,
-  MAX_SCROLL_OFFSET,
-  MIN_SCROLL_BAR_HEIGHT,
-} from 'src/common/constant';
-import { Node } from 'src/facet/layout/node';
-import { ViewCellHeights } from 'src/facet/layout/interface';
-import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { Wheel } from '@antv/g-gesture';
-import type { GestureEvent } from '@antv/g-gesture';
-import * as d3Timer from 'd3-timer';
-import { interpolateArray } from 'd3-interpolate';
-import { ScrollBar, ScrollType } from 'src/ui/scrollbar';
-import { getTheme } from 'src/theme';
-import { isMobile } from 'src/utils/is-mobile';
-import {
-  ColHeader,
-  CornerHeader,
-  Frame,
-  RowHeader,
-  SeriesNumberHeader,
-} from 'src/facet/header';
-import { BaseCell } from 'src/cell';
 import { updateMergedCells } from '@/utils/interaction/merge-cells';
-import type { CellScrollPosition } from 'src/common/interface/events';
-import type { S2WheelEvent, ScrollOffset } from 'src/common/interface/scroll';
+import type { BBox, IGroup, Point } from '@antv/g-canvas';
+import type { GestureEvent } from '@antv/g-gesture';
+import { Wheel } from '@antv/g-gesture';
+import { interpolateArray } from 'd3-interpolate';
+import * as d3Timer from 'd3-timer';
 import {
   debounce,
   each,
@@ -60,10 +16,54 @@ import {
   last,
   reduce,
 } from 'lodash';
+import { BaseCell } from 'src/cell';
+import {
+  KEY_AFTER_HEADER_LAYOUT,
+  KEY_CELL_SCROLL,
+  KEY_GROUP_COL_RESIZER,
+  KEY_GROUP_CORNER_RESIZER,
+  KEY_GROUP_ROW_INDEX_RESIZER,
+  KEY_GROUP_ROW_RESIZER,
+  KEY_PAGINATION,
+  MAX_SCROLL_OFFSET,
+  MIN_SCROLL_BAR_HEIGHT,
+} from 'src/common/constant';
+import type { CellScrollPosition } from 'src/common/interface/events';
+import type { S2WheelEvent, ScrollOffset } from 'src/common/interface/scroll';
+import {
+  ColHeader,
+  CornerHeader,
+  Frame,
+  RowHeader,
+  SeriesNumberHeader,
+} from 'src/facet/header';
+import { Hierarchy } from 'src/facet/layout/hierarchy';
+import { ViewCellHeights } from 'src/facet/layout/interface';
+import { Node } from 'src/facet/layout/node';
+import { SpreadSheet } from 'src/sheet-type';
+import { getTheme } from 'src/theme';
+import { ScrollBar, ScrollType } from 'src/ui/scrollbar';
+import { isMobile } from 'src/utils/is-mobile';
+import {
+  DebuggerUtil,
+  DEBUG_HEADER_LAYOUT,
+  DEBUG_VIEW_RENDER,
+} from '../common/debug';
+import type {
+  Formatter,
+  LayoutResult,
+  OffsetConfig,
+  SpreadSheetFacetCfg,
+} from '../common/interface';
+import {
+  calculateInViewIndexes,
+  optimizeScrollXY,
+  translateGroup,
+} from './utils';
 
 // TODO: 这里的主题不应该用 default 吧, 代码里面都是写死的 defaultDataConfig
 
-const THEME = getTheme('default');
+const THEME = getTheme({ name: 'default' });
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -162,10 +162,9 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    (this.spreadsheet.container.get('el') as HTMLElement).addEventListener(
-      'wheel',
-      this.onWheel,
-    );
+    (
+      this.spreadsheet.container.get('el') as HTMLCanvasElement
+    ).addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
@@ -431,6 +430,7 @@ export abstract class BaseFacet {
 
     width = Math.min(width, realWidth);
     height = Math.min(height, realHeight);
+
     this.panelBBox = {
       x: br.x,
       y: br.y,
@@ -441,6 +441,8 @@ export abstract class BaseFacet {
       minX: br.x,
       minY: br.y,
     };
+
+    this.spreadsheet.store.set('panelBBox', this.panelBBox);
   };
 
   getRealWidth = (): number => {
@@ -614,8 +616,10 @@ export abstract class BaseFacet {
       });
 
       this.hScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
+        const offsetLeft =
+          (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth;
         this.setScrollOffset({
-          scrollX: (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth,
+          scrollX: offsetLeft,
         });
         this.dynamicRenderCell();
       });
@@ -747,6 +751,7 @@ export abstract class BaseFacet {
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(deltaX, deltaY);
 
     // 如果已经滚动在顶部或底部, 则无需触发滚动事件, 减少单元格重绘
+    // TODO: 这里需要迁移 spreadsheet 的逻辑
     if (
       this.isScrollToTop(optimizedDeltaY) ||
       this.isScrollToBottom(optimizedDeltaY)

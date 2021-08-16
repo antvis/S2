@@ -1,9 +1,9 @@
+import { ListItem, TooltipDetailProps } from '@/common/interface';
 import * as React from 'react';
 import { HtmlIcon } from '../../icons';
-import { DetailProps, ListItem } from '@/common/interface';
 import { TOOLTIP_CLASS_PRE } from '../constant';
 
-const TooltipDetail = (props: DetailProps) => {
+const TooltipDetail = (props: TooltipDetailProps) => {
   const { list = [] } = props;
 
   return (

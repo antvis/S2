@@ -1,47 +1,56 @@
-import { BaseEvent } from '../base-event';
-import { S2Event, DefaultInterceptEventType } from '@/common/constant';
-import { Event } from '@antv/g-canvas';
-import { get, noop, includes } from 'lodash';
-import { ViewMeta } from '@/common/interface';
-import { LineChartOutlined } from '@ant-design/icons';
+import { DefaultInterceptEventType, S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
+import {
+  S2CellType,
+  TooltipOperatorOptions,
+  TooltipOptions,
+  TooltipPosition,
+  ViewMeta,
+} from '@/common/interface';
 import { getTooltipData } from '@/utils/tooltip';
+import { LineChartOutlined } from '@ant-design/icons';
+import { Event } from '@antv/g-canvas';
+import { get, noop } from 'lodash';
+import { DataCell } from '../../../cell/data-cell';
+import { BaseEvent } from '../base-event';
 
 export class DataCellClick extends BaseEvent {
   protected bindEvents() {
-    this.bindDataCellClick();
+    this.onDataCellClick();
   }
 
-  private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (ev: Event) => {
-      ev.stopPropagation();
+  private onDataCellClick() {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
+      event.stopPropagation();
       if (
-        this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.CLICK)
+        this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)
       ) {
         return;
       }
-      const cell = this.spreadsheet.getCell(ev.target);
-      const meta = cell.getMeta();
+      const cell: DataCell = this.spreadsheet.getCell(event.target);
+      const meta = cell.getMeta() as ViewMeta;
       if (meta) {
         // selected通过state来接管，不需要再在 this.spreadsheet.store 中操作
-        this.spreadsheet.clearStyleIndependent();
-        const currentState = this.spreadsheet.getCurrentState();
-        if (
-          currentState?.stateName === InteractionStateName.SELECTED &&
-          includes(currentState.cells, cell)
-        ) {
+        this.interaction.clearStyleIndependent();
+
+        if (this.interaction.isSelectedCell(cell)) {
           // 点击当前已选cell 则取消当前cell的选中状态
-          // 这里的clearState虽然在if和eles里都有，但是不要抽出来，因为需要先判断在清空
+          // 这里的clearState虽然在if和else里都有，但是不要抽出来，因为需要先判断在清空
           // 且else中需要先清空之前选择的cell，然后再赋值新的
-          this.spreadsheet.clearState();
-          this.spreadsheet.interceptEvent.clear();
+          this.interaction.clearState();
+          this.interaction.interceptEvent.clear();
           this.spreadsheet.hideTooltip();
+          this.interaction.hideInteractionMask();
         } else {
-          this.spreadsheet.clearState();
-          this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
-          this.spreadsheet.updateCellStyleByState();
-          this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
-          this.handleTooltip(ev, meta);
+          this.interaction.clearState();
+          this.interaction.setState(
+            cell as S2CellType,
+            InteractionStateName.SELECTED,
+          );
+          this.interaction.updateCellStyleByState();
+          this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
+          this.interaction.showInteractionMask();
+          this.showTooltip(event, meta);
         }
 
         this.draw();
@@ -49,21 +58,17 @@ export class DataCellClick extends BaseEvent {
     });
   }
 
-  // 处理tooltip
-  private handleTooltip(ev: Event, meta: ViewMeta) {
-    const position = {
-      x: ev.clientX,
-      y: ev.clientY,
-    };
-    const currentCellMeta = get(meta, 'data.0');
+  private showTooltip(event: Event, meta: ViewMeta) {
+    const currentCellMeta: Record<string, unknown> = get(meta, 'data.0');
     const isTotals = get(meta, 'isTotals', false);
     if (isTotals) {
       return;
     }
 
-    const cellOperator = this.spreadsheet.options?.cellOperator;
+    const cellOperator: TooltipOperatorOptions =
+      this.spreadsheet.options?.cellOperator;
 
-    let operator = this.spreadsheet.options?.showTrend
+    let operator: TooltipOperatorOptions = this.spreadsheet.options?.showTrend
       ? {
           onClick: (params) => {
             if (params === 'showTrend') {
@@ -85,10 +90,17 @@ export class DataCellClick extends BaseEvent {
           onClick: noop,
           menus: [],
         };
+
     if (cellOperator) {
       operator = cellOperator;
     }
-    const options = {
+
+    const position: TooltipPosition = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+
+    const options: TooltipOptions = {
       isTotals,
       operator,
       enterable: true,
@@ -100,11 +112,11 @@ export class DataCellClick extends BaseEvent {
       [currentCellMeta],
       options,
     );
-    const showOptions = {
+
+    this.spreadsheet.showTooltip({
       position,
       data: tooltipData,
       options,
-    };
-    this.spreadsheet.showTooltip(showOptions);
+    });
   }
 }

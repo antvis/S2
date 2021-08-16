@@ -1,61 +1,4 @@
-import EE from '@antv/event-emitter';
-import { Canvas, IGroup } from '@antv/g-canvas';
-import {
-  isString,
-  get,
-  set,
-  merge,
-  clone,
-  find,
-  isFunction,
-  includes,
-  debounce,
-} from 'lodash';
-import { Store } from '@/common/store';
-import { ext } from '@antv/matrix-util';
-import {
-  DerivedValue,
-  safetyDataConfig,
-  OffsetConfig,
-  Pagination,
-  S2DataConfig,
-  S2Options,
-  SpreadSheetFacetCfg,
-  ViewMeta,
-  safetyOptions,
-  Totals,
-  Total,
-  ShowProps,
-  SpreadsheetMountContainer,
-  ThemeCfg,
-  S2CellType,
-} from '@/common/interface';
-import { DataCell, BaseCell, DetailRowCell } from '../cell';
-import { BaseDataSet, PivotDataSet, TableDataSet } from '../data-set';
-import {
-  Node,
-  BaseInteraction,
-  SpreadSheetTheme,
-  BaseEvent,
-  BrushSelection,
-  RowColResize,
-  DataCellMultiSelection,
-  ColRowMultiSelection,
-  DataCellClick,
-  CornerTextClick,
-  RowColumnClick,
-  RowTextClick,
-  HoverEvent,
-  MergedCellsClick,
-} from '@/index';
-import { getTheme } from '@/theme';
-import { BaseTooltip } from '@/tooltip';
-import { BaseFacet } from '@/facet';
-import { DebuggerUtil } from '@/common/debug';
-import { EventController } from '@/interaction/events/event-controller';
-import { DefaultInterceptEvent } from '@/common/constant';
-import { isMobile } from '@/utils/is-mobile';
-import { setState, clearState } from '@/utils/interaction/state-controller';
+import { BaseCell, DataCell, DetailRowCell } from '@/cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -65,13 +8,49 @@ import {
   KEY_GROUP_PANEL_GROUND,
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
-  EventNames,
-  InteractionNames,
-  InteractionStateName,
 } from '@/common/constant';
+import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
-import { PivotFacet, TableFacet } from '@/facet';
-import CustomTreePivotDataSet from '@/data-set/custom-tree-pivot-data-set';
+import {
+  DerivedValue,
+  OffsetConfig,
+  Pagination,
+  S2CellType,
+  S2DataConfig,
+  S2Options,
+  safetyDataConfig,
+  safetyOptions,
+  SpreadSheetFacetCfg,
+  SpreadsheetMountContainer,
+  ThemeCfg,
+  TooltipShowOptions,
+  Total,
+  Totals,
+  ViewMeta,
+} from '@/common/interface';
+import { BaseDataSet, PivotDataSet, TableDataSet } from '@/data-set';
+import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
+import { BaseFacet, PivotFacet, TableFacet } from '@/facet';
+import { Node, SpreadSheetTheme } from '@/index';
+import { getTheme } from '@/theme';
+import { BaseTooltip } from '@/tooltip';
+import { isMobile } from '@/utils/is-mobile';
+import EE from '@antv/event-emitter';
+import { Canvas, CanvasCfg, Event, IGroup } from '@antv/g-canvas';
+import { ext } from '@antv/matrix-util';
+import {
+  clone,
+  debounce,
+  find,
+  get,
+  includes,
+  isFunction,
+  isString,
+  merge,
+  set,
+} from 'lodash';
+import { Store } from '../common/store';
+import { RootInteraction } from '../interaction/root';
 
 const matrixTransform = ext.transform;
 
@@ -84,12 +63,8 @@ export class SpreadSheet extends EE {
   // theme config
   public theme: SpreadSheetTheme;
 
-  public interactions: Map<string, BaseInteraction> = new Map();
-
-  public events: Map<string, BaseEvent> = new Map();
-
   // store some temporary data
-  public store: Store = new Store();
+  public store = new Store();
 
   // the original data config
   public dataCfg: S2DataConfig;
@@ -113,28 +88,24 @@ export class SpreadSheet extends EE {
   // the base container, contains all groups
   public container: Canvas;
 
+  public maskContainer: Canvas;
+
   // the background group, render bgColor...
   public backgroundGroup: IGroup;
 
   // facet cell area group, it contains all cross-tab's cell
   public panelGroup: IGroup;
 
+  public maskGroup: IGroup;
+
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
 
-  // 基础事件
-  public eventController: EventController;
-
   public devicePixelRatioMedia: MediaQueryList;
 
-  // 用来标记需要拦截的事件，interaction和本身的hover等事件可能会有冲突，有冲突时在此屏蔽
-  public interceptEvent: Set<DefaultInterceptEvent> = new Set();
-
-  // hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
-  // 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
-  public hoverTimer: number = null;
-
   public viewport = window as typeof window & { visualViewport: Element };
+
+  public interaction: RootInteraction;
 
   public constructor(
     dom: SpreadsheetMountContainer,
@@ -153,12 +124,11 @@ export class SpreadSheet extends EE {
     DebuggerUtil.getInstance().setDebug(options?.debug);
     this.initGroups(this.dom, this.options);
     this.bindEvents();
+    this.initInteraction();
+  }
 
-    // TODO 这个三个好乱，@缨缨 梳理下？
-    this.registerEventController();
-    // 注意这俩的顺序，不要反过来，因为interaction中会屏蔽event，但是event不会屏蔽interaction
-    this.registerInteractions(this.options);
-    this.registerEvents();
+  initInteraction() {
+    this.interaction = new RootInteraction(this);
   }
 
   getTooltip = (initTooltip: S2Options['initTooltip']): BaseTooltip => {
@@ -340,24 +310,6 @@ export class SpreadSheet extends EE {
     return this.options?.freezeRowHeader;
   }
 
-  /**
-   * Get all panel group cells
-   * @param callback to handle each cell if needed
-   */
-  public getPanelAllCells(callback?: (cell: DataCell) => void): DataCell[] {
-    const children = this.panelGroup.get('children');
-    const cells: DataCell[] = [];
-    children.forEach((child) => {
-      if (child instanceof DataCell) {
-        cells.push(child);
-        if (callback) {
-          callback(child);
-        }
-      }
-    });
-    return cells;
-  }
-
   public getRowNodes(level = -1): Node[] {
     if (level === -1) {
       return this.facet.layoutResult.rowNodes;
@@ -414,26 +366,7 @@ export class SpreadSheet extends EE {
     return this.dataSet.fields.valueInCols;
   }
 
-  public setState(cell: S2CellType, stateName: InteractionStateName) {
-    setState(cell, stateName, this);
-  }
-
-  public getCurrentState() {
-    return this.store.get('interactionStateInfo');
-  }
-
-  public clearState() {
-    clearState(this);
-  }
-
-  public updateCellStyleByState() {
-    const cells = this.getCurrentState().cells;
-    cells.forEach((cell: S2CellType) => {
-      cell.updateByState(this.getCurrentState().stateName);
-    });
-  }
-
-  public showTooltip(showOptions: ShowProps) {
+  public showTooltip(showOptions: TooltipShowOptions) {
     if (get(this, 'options.tooltip.showTooltip')) {
       this.tooltip.show(showOptions);
     }
@@ -444,13 +377,15 @@ export class SpreadSheet extends EE {
   }
 
   // 获取当前cell实例
-  public getCell(target) {
+  public getCell<T extends S2CellType = S2CellType>(
+    target: Event['target'],
+  ): T {
     let parent = target;
     // 一直索引到g顶层的canvas来检查是否在指定的cell中
     while (parent && !(parent instanceof Canvas)) {
       if (parent instanceof BaseCell) {
         // 在单元格中，返回true
-        return parent;
+        return parent as T;
       }
       parent = parent.get('parent');
     }
@@ -458,28 +393,9 @@ export class SpreadSheet extends EE {
   }
 
   // 获取当前cell类型
-  public getCellType(target) {
+  public getCellType(target: Event['target']) {
     const cell = this.getCell(target);
     return cell?.cellType;
-  }
-
-  // 因此需要手动把当前行头列头选择下的cell样式重置
-  public clearStyleIndependent() {
-    const currentState = this.getCurrentState();
-    if (
-      currentState?.stateName === InteractionStateName.SELECTED ||
-      currentState?.stateName === InteractionStateName.HOVER
-    ) {
-      this.getPanelAllCells().forEach((cell) => {
-        cell.hideShapeUnderState();
-      });
-    }
-  }
-
-  public upDatePanelAllCellsStyle() {
-    this.getPanelAllCells().forEach((cell) => {
-      cell.update();
-    });
   }
 
   /**
@@ -507,10 +423,6 @@ export class SpreadSheet extends EE {
     };
   }
 
-  protected registerEventController() {
-    this.eventController = new EventController(this);
-  }
-
   /**
    * Create all related groups, contains:
    * 1. container -- base canvas group
@@ -523,15 +435,15 @@ export class SpreadSheet extends EE {
    */
   protected initGroups(dom: HTMLElement, options: S2Options): void {
     const { width, height } = options;
-
-    // base canvas group
-    this.container = new Canvas({
+    const canvasCfg: CanvasCfg = {
       container: dom,
       width,
       height,
       localRefresh: false,
-      // autoDraw: false,
-    });
+    };
+
+    // base canvas group
+    this.container = new Canvas(canvasCfg);
 
     // the main three layer groups
     this.backgroundGroup = this.container.addGroup({
@@ -589,32 +501,6 @@ export class SpreadSheet extends EE {
     this.facet.render();
   };
 
-  /**
-   * 注册交互（组件按自己的场景写交互，继承此方法注册）
-   * @param options
-   */
-  protected registerInteractions(options: S2Options) {
-    this.interactions.clear();
-    if (get(options, 'registerDefaultInteractions', true) && !isMobile()) {
-      this.interactions.set(
-        InteractionNames.BRUSH_SELECTION_INTERACTION,
-        new BrushSelection(this),
-      );
-      this.interactions.set(
-        InteractionNames.COL_ROW_RESIZE_INTERACTION,
-        new RowColResize(this),
-      );
-      this.interactions.set(
-        InteractionNames.DATA_CELL_MULTI_SELECTION_INTERACTION,
-        new DataCellMultiSelection(this),
-      );
-      this.interactions.set(
-        InteractionNames.COL_ROW_MULTI_SELECTION_INTERACTION,
-        new ColRowMultiSelection(this),
-      );
-    }
-  }
-
   protected bindEvents() {
     this.off(KEY_COLLAPSE_TREE_ROWS);
     this.off(KEY_UPDATE_PROPS);
@@ -657,26 +543,6 @@ export class SpreadSheet extends EE {
 
     this.initDevicePixelRatioListener();
     this.initDeviceZoomListener();
-  }
-
-  // 注册事件
-  protected registerEvents() {
-    this.events.clear();
-    this.events.set(EventNames.DATA_CELL_CLICK_EVENT, new DataCellClick(this));
-    this.events.set(
-      EventNames.CORNER_TEXT_CLICK_EVENT,
-      new CornerTextClick(this),
-    );
-    this.events.set(
-      EventNames.ROW_COLUMN_CLICK_EVENT,
-      new RowColumnClick(this),
-    );
-    this.events.set(EventNames.ROW_TEXT_CLICK_EVENT, new RowTextClick(this));
-    this.events.set(
-      EventNames.MERGED_CELLS_CLICK_EVENT,
-      new MergedCellsClick(this),
-    );
-    this.events.set(EventNames.HOVER_EVENT, new HoverEvent(this));
   }
 
   private initDevicePixelRatioListener() {

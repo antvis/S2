@@ -1,10 +1,12 @@
-import { map, each, pick, assign } from 'lodash';
-import { Node } from '../../../index';
-import { S2Event, DefaultInterceptEventType } from '@/common/constant';
-import { BaseEvent } from '../base-event';
+import { DefaultInterceptEventType, S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
+import { assign, each, map, pick } from 'lodash';
+import { S2CellType, ViewMeta } from '../../../common/interface';
+import { Node } from '../../../index';
 import { getTooltipData } from '../../../utils/tooltip';
+import { BaseEvent } from '../base-event';
 // TODO: tooltip的菜单栏配置（在点击行头或列头的时候tooltip的样式）
+
 export class RowColumnClick extends BaseEvent {
   protected bindEvents() {
     this.bindColCellClick();
@@ -15,23 +17,23 @@ export class RowColumnClick extends BaseEvent {
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (ev: Event) => {
       if (
-        this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.CLICK)
+        this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)
       ) {
         return;
       }
       const cell = this.spreadsheet.getCell(ev.target);
       let cellInfos = [];
       if (cell.getMeta().x !== undefined) {
-        const meta = cell.getMeta();
+        const meta = cell.getMeta() as Node;
         const idx = meta.colIndex;
-        this.spreadsheet.clearState();
-        this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
+        this.interaction.clearState();
+        this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
         if (idx === -1) {
           // 多行
           each(Node.getAllLeavesOfNode(meta), (node: Node) => {
             // 如果
             if (node.belongsCell) {
-              this.spreadsheet.setState(
+              this.interaction.setState(
                 node.belongsCell,
                 InteractionStateName.SELECTED,
               );
@@ -39,10 +41,10 @@ export class RowColumnClick extends BaseEvent {
           });
         } else {
           // 单行
-          this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
+          this.interaction.setState(cell, InteractionStateName.SELECTED);
         }
 
-        const currentState = this.spreadsheet.getCurrentState();
+        const currentState = this.interaction.getCurrentState();
         const stateName = currentState?.stateName;
         const cells = currentState?.cells;
         if (stateName === InteractionStateName.SELECTED) {
@@ -53,8 +55,9 @@ export class RowColumnClick extends BaseEvent {
           this.handleTooltip(ev, meta, cellInfos);
         }
 
-        this.spreadsheet.updateCellStyleByState();
-        this.spreadsheet.upDatePanelAllCellsStyle();
+        this.interaction.updateCellStyleByState();
+        this.interaction.upDatePanelAllCellsStyle();
+        this.interaction.showInteractionMask();
         this.draw();
       }
     });
@@ -63,23 +66,22 @@ export class RowColumnClick extends BaseEvent {
   private bindColCellClick() {
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (ev: Event) => {
       if (
-        this.spreadsheet.interceptEvent.has(DefaultInterceptEventType.CLICK)
+        this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)
       ) {
         return;
       }
       const cell = this.spreadsheet.getCell(ev.target);
-      let cellInfos = [];
-      const meta = cell.getMeta();
+      const meta = cell.getMeta() as Node;
       if (meta.x !== undefined) {
         const idx = meta.colIndex;
-        this.spreadsheet.clearState();
-        this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
+        this.interaction.clearState();
+        this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
         if (idx === -1) {
           // 多列
           const leafNodes = Node.getAllLeavesOfNode(meta);
           each(leafNodes, (node: Node) => {
             if (node.belongsCell) {
-              this.spreadsheet.setState(
+              this.interaction.setState(
                 node.belongsCell,
                 InteractionStateName.SELECTED,
               );
@@ -87,28 +89,26 @@ export class RowColumnClick extends BaseEvent {
           });
         } else {
           // 单列
-          this.spreadsheet.setState(cell, InteractionStateName.SELECTED);
+          this.interaction.setState(cell, InteractionStateName.SELECTED);
         }
 
-        const currentState = this.spreadsheet.getCurrentState();
-        const stateName = currentState?.stateName;
-        const cells = currentState?.cells;
-        if (stateName === InteractionStateName.SELECTED) {
-          cellInfos = this.mergeCellInfo(cells);
-        }
+        const cellInfos = this.interaction.isSelectedState()
+          ? this.mergeCellInfo(this.interaction.getActiveCells())
+          : [];
 
         if (this.spreadsheet.options.valueInCols) {
           this.handleTooltip(ev, meta, cellInfos);
         }
 
-        this.spreadsheet.updateCellStyleByState();
-        this.spreadsheet.upDatePanelAllCellsStyle();
+        this.interaction.updateCellStyleByState();
+        this.interaction.upDatePanelAllCellsStyle();
+        this.interaction.showInteractionMask();
         this.draw();
       }
     });
   }
 
-  private mergeCellInfo(cells) {
+  private mergeCellInfo(cells: S2CellType[]): ViewMeta[] {
     return map(cells, (stateCell) => {
       const stateCellMeta = stateCell.getMeta();
       return assign(
@@ -142,7 +142,7 @@ export class RowColumnClick extends BaseEvent {
 
   private bindResetSheetStyle() {
     this.spreadsheet.on(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT, () => {
-      this.spreadsheet.clearStyleIndependent();
+      this.interaction.clearStyleIndependent();
     });
   }
 }
