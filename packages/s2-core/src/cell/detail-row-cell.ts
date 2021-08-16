@@ -7,8 +7,8 @@ export class DetailRowCell extends DataCell {
   protected drawTextShape() {
     const { x, y, height, width } = this.getLeftAreaBBox();
     const { formattedValue: text } = this.getData();
-    const textStyle = this.theme.rowHeader?.bolderText;
-    const padding = this.theme.rowHeader?.cell?.padding;
+    const textStyle = this.theme.rowCell?.bolderText;
+    const padding = this.theme.rowCell?.cell?.padding;
 
     const ellipsisText = getEllipsisText(
       `${text || '-'}`,

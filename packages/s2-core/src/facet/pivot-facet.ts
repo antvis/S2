@@ -275,7 +275,7 @@ export class PivotFacet extends BaseFacet {
       const maxLabel = maxBy(allLabels, (label) =>
         measureTextWidthRoughly(label),
       );
-      const textStyle = spreadsheet.theme.colHeader.bolderText;
+      const textStyle = spreadsheet.theme.colCell.bolderText;
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
         col.field,
@@ -408,7 +408,7 @@ export class PivotFacet extends BaseFacet {
         measureTextWidthRoughly(maxLabel) > measureTextWidthRoughly(fieldName)
           ? maxLabel
           : fieldName;
-      const textStyle = spreadsheet.theme.rowHeader.bolderText;
+      const textStyle = spreadsheet.theme.rowCell.bolderText;
       DebuggerUtil.getInstance().logger(
         'Max Label In Row:',
         field,
@@ -481,7 +481,7 @@ export class PivotFacet extends BaseFacet {
     const treeHeaderLabel = rows
       .map((key: string): string => dataSet.getFieldName(key))
       .join('/');
-    const textStyle = this.spreadsheet.theme.rowHeader.bolderText;
+    const textStyle = this.spreadsheet.theme.rowCell.bolderText;
     // TODO icon radius and padding things
     const maxLabelWidth =
       measureTextWidth(treeHeaderLabel, textStyle) +

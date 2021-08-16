@@ -13,8 +13,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
   const { brandColors, grayColors, semanticColors } = themePalette;
 
   return {
-    // ------------- Header -------------------
-    corner: {
+    // ------------- Headers -------------------
+    cornerCell: {
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 14,
@@ -52,11 +52,11 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         },
         // -------------- hover -------------------
         hover: {
-          backgroundColor: brandColors[2],
+          backgroundColor: brandColors[5],
         },
         // -------------- selected -------------------
         selected: {
-          backgroundColor: brandColors[2],
+          backgroundColor: brandColors[5],
           borderColor: grayColors[6],
           borderWidth: 1,
         },
@@ -71,7 +71,7 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         },
       },
     },
-    rowHeader: {
+    rowCell: {
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
@@ -130,7 +130,7 @@ export const getTheme = (themeCfg: ThemeCfg) => {
       },
       seriesNumberWidth: 80,
     },
-    colHeader: {
+    colCell: {
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 14,
@@ -168,11 +168,11 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         },
         // -------------- hover -------------------
         hover: {
-          backgroundColor: brandColors[2],
+          backgroundColor: brandColors[5],
         },
         // -------------- selected -------------------
         selected: {
-          backgroundColor: brandColors[2],
+          backgroundColor: brandColors[5],
           borderColor: grayColors[6],
           borderWidth: 1,
         },

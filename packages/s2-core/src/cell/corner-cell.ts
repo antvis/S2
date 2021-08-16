@@ -53,7 +53,7 @@ export class CornerCell extends BaseCell<Node> {
       return;
     }
 
-    const cornerTheme = _.get(this.theme, 'corner');
+    const cornerTheme = _.get(this.theme, 'cornerCell');
     const textStyle = { ...cornerTheme?.bolderText };
     const iconStyle = cornerTheme?.icon;
     const cellPadding = cornerTheme?.cell?.padding;
@@ -157,14 +157,14 @@ export class CornerCell extends BaseCell<Node> {
     // 只有交叉表才有icon
     const { hierarchyCollapse, height, spreadsheet, position } =
       this.headerConfig;
-    const iconStyle = _.get(this.theme, 'corner.icon');
-    const textStyle = _.get(this.theme, 'corner.text');
+    const iconStyle = _.get(this.theme, 'cornerCell.icon');
+    const textStyle = _.get(this.theme, 'cornerCell.text');
     const colHeight = spreadsheet.options.style.colCfg.height;
     const icon = new GuiIcon({
       type: hierarchyCollapse ? 'plus' : 'MinusSquare',
       x:
         position.x +
-        this.theme.corner.cell?.padding?.left +
+        this.theme.cornerCell.cell?.padding?.left +
         iconStyle?.margin?.left,
       y: height - colHeight / 2 - iconStyle.size / 2,
       width: iconStyle.size,
@@ -189,11 +189,11 @@ export class CornerCell extends BaseCell<Node> {
       y: position.y + y,
       width: cellWidth,
       height: cellHeight,
-      opacity: this.theme.corner.cell.backgroundColorOpacity,
+      opacity: this.theme.cornerCell.cell.backgroundColorOpacity,
     };
 
     if (this.spreadsheet.isTableMode()) {
-      attrs.stroke = this.theme.corner.cell.horizontalBorderColor;
+      attrs.stroke = this.theme.cornerCell.cell.horizontalBorderColor;
     }
 
     this.addShape('rect', {

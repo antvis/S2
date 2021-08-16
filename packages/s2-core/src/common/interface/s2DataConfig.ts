@@ -36,6 +36,8 @@ export interface S2DataConfig {
   data: Data[];
   // total data(grandTotal, subTotal)
   totalData?: Data[];
+  // mark data as standard(one data only represent one cell)
+  standardData?: boolean;
   // data keys for render row,columns,values etc
   fields: Fields;
   // data keys mata info
@@ -58,6 +60,7 @@ export const defaultDataConfig = {
   },
   meta: [],
   sortParams: [],
+  standardData: true,
 } as S2DataConfig;
 
 export const safetyDataConfig = (dataConfig: S2DataConfig) => {

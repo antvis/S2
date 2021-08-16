@@ -275,20 +275,15 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         height,
         fill: get(
           this.headerConfig,
-          'spreadsheet.theme.corner.cell.backgroundColor',
+          'spreadsheet.theme.cornerCell.cell.backgroundColor',
         ),
       },
     });
   }
 
   private handleHotsSpotArea() {
-    const {
-      data,
-      position,
-      width,
-      height,
-      seriesNumberWidth,
-    } = this.headerConfig;
+    const { data, position, width, height, seriesNumberWidth } =
+      this.headerConfig;
     const prevResizer = this.headerConfig.spreadsheet.foregroundGroup.findById(
       KEY_GROUP_CORNER_RESIZER,
     );

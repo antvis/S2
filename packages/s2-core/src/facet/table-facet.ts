@@ -13,20 +13,16 @@ export class TableFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     const { dataSet, spreadsheet, cellCfg } = this.cfg;
 
-    const {
-      leafNodes: rowLeafNodes,
-      hierarchy: rowsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: true,
-      facetCfg: this.cfg,
-    });
-    const {
-      leafNodes: colLeafNodes,
-      hierarchy: colsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: false,
-      facetCfg: this.cfg,
-    });
+    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: true,
+        facetCfg: this.cfg,
+      });
+    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: false,
+        facetCfg: this.cfg,
+      });
 
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -173,8 +169,8 @@ export class TableFacet extends BaseFacet {
       );
 
       const seriesNumberWidth = this.getSeriesNumberWidth();
-      const iconSize = get(spreadsheet, 'theme.colHeader.icon.size');
-      const textStyle = get(spreadsheet, 'theme.colHeader.bolderText');
+      const iconSize = get(spreadsheet, 'theme.colCell.icon.size');
+      const textStyle = get(spreadsheet, 'theme.colCell.bolderText');
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
         col.field,
