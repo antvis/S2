@@ -1,13 +1,16 @@
 import {
   getContentArea,
-  getDisplayDataItem,
   getIconPosition,
   getTextAndIconArea,
   getTextPosition,
+  handleDataItem,
 } from '@/utils/data-cell';
 import { SimpleBBox } from '@antv/g-canvas';
 import { EXTRA_FIELD, VALUE_FIELD } from './../../../src/common/constant/basic';
-import { FilterDataItemCallback } from './../../../src/common/interface/basic';
+import {
+  FilterDataItemCallback,
+  MappingDataItemCallback,
+} from './../../../src/common/interface/basic';
 import { Data, MultiData } from './../../../src/common/interface/s2DataConfig';
 
 describe('Data Cell Content Test', () => {
@@ -189,10 +192,10 @@ describe('Display Data Item Callback Test', () => {
       [EXTRA_FIELD]: 'price',
       [VALUE_FIELD]: 20,
     };
-    expect(getDisplayDataItem(data)).toEqual(20);
+    expect(handleDataItem(data)).toEqual(20);
   });
 
-  test('should return filter data value when there is callback with multiple data item', () => {
+  test('should return filter data value when there is filter callback with multiple data item', () => {
     const data: Data = {
       city: '成都',
       price: {
@@ -211,8 +214,36 @@ describe('Display Data Item Callback Test', () => {
       }
       return item;
     };
-    expect(getDisplayDataItem(data, callback)).toEqual({
+    expect(handleDataItem(data, callback)).toEqual({
       values: [[12, 0.2]],
+    });
+  });
+
+  test('should return mapped data item  when there is mapping callback with multiple data item', () => {
+    const data: Data = {
+      city: '成都',
+      price: {
+        values: [[12, 0.2, -0.3]],
+      },
+      [EXTRA_FIELD]: 'value',
+      [VALUE_FIELD]: {
+        values: [[12, 0.2, -0.3]],
+      },
+    };
+    const callback: MappingDataItemCallback = (field, item) => {
+      if (field === 'value') {
+        return {
+          price: 12,
+          'price-ac': 0.2,
+          'price-rc': -0.3,
+        };
+      }
+      return item;
+    };
+    expect(handleDataItem(data, callback)).toEqual({
+      price: 12,
+      'price-ac': 0.2,
+      'price-rc': -0.3,
     });
   });
 });

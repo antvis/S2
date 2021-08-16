@@ -1,12 +1,13 @@
 import {
   CellBoxCfg,
-  Data,
   FilterDataItemCallback,
   IconCfg,
+  MappingDataItemCallback,
   TextTheme,
 } from '@/common/interface';
 import { SimpleBBox } from '@antv/g-canvas';
 import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
+import { Data } from './../common/interface/s2DataConfig';
 import { TextBaseline } from './../common/interface/theme';
 
 export const getContentArea = (cellBoxCfg: CellBoxCfg) => {
@@ -133,9 +134,9 @@ export const getIconPosition = (
   };
 };
 
-export const getDisplayDataItem = (
+export const handleDataItem = (
   data: Data,
-  callback?: FilterDataItemCallback,
+  callback?: FilterDataItemCallback | MappingDataItemCallback,
 ) => {
   return callback
     ? callback(data[EXTRA_FIELD] as string, data[VALUE_FIELD])

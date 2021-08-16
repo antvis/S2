@@ -5,6 +5,7 @@ import {
   CustomHeaderCells,
   DataCellCallback,
   FrameCallback,
+  MappingDataItemCallback,
   MergedCellInfo,
   NodeField,
   Pagination,
@@ -22,9 +23,9 @@ import {
 } from '@/common/interface/hooks';
 import { merge } from 'lodash';
 import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
-import { DataItem } from 'src/common/interface';
 import { BaseDataSet } from 'src/data-set';
 import { SpreadSheet } from 'src/sheet-type';
+import { FilterDataItemCallback } from './basic';
 
 export interface S2Options {
   // canvas's width
@@ -97,16 +98,16 @@ export interface S2Options {
   layoutCoordinate?: LayoutCoordinate;
   // determine the data of cells in Cartesian coordinates
   layoutDataPosition?: LayoutDataPosition;
+
   /** ***********CUSTOM DATA CELL RENDER HOOKS**************** */
   // determine the display part of multiple data item
-  filterDisplayDataItem?: (valueField: string, data: DataItem) => DataItem;
-  mappingDisplayData?: (
-    valueField: string,
-    data: DataItem,
-  ) => Record<string, string | number>;
+  filterDisplayDataItem?: FilterDataItemCallback;
+  // determine data mapping when shows in tooltip
+  mappingDisplayDataItem?: MappingDataItemCallback;
   // Focus selected cell, like the spotlight
   selectedCellsSpotlight?: boolean;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
+
   // extra options if needed
   [key: string]: any;
 }

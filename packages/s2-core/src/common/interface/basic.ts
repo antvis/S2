@@ -332,6 +332,11 @@ export type FilterDataItemCallback = (
   valueField: string,
   data: DataItem,
 ) => DataItem;
+
+export type MappingDataItemCallback = (
+  valueField: string,
+  data: DataItem,
+) => Record<string, string | number> | DataItem;
 /**
  * Spreadsheet facet config
  */
@@ -391,7 +396,9 @@ export interface SpreadSheetFacetCfg {
   layoutDataPosition?: LayoutDataPosition;
   // custom Interaction
   customInteraction?: CustomInteraction[];
+
   filterDisplayDataItem?: FilterDataItemCallback;
+  mappingDisplayDataItem?: MappingDataItemCallback;
 }
 
 export interface ViewMeta {

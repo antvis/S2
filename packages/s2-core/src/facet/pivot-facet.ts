@@ -2,7 +2,7 @@ import {
   layoutCoordinate,
   layoutDataPosition,
 } from '@/facet/layout/layout-hooks';
-import { getDisplayDataItem } from '@/utils/data-cell';
+import { handleDataItem } from '@/utils/data-cell';
 import {
   findIndex,
   get,
@@ -269,7 +269,7 @@ export class PivotFacet extends BaseFacet {
       const colLabel = col.label;
       // will deal with real width calculation in multiple values render pr
       const allLabels = datas
-        .map((data) => `${getDisplayDataItem(data, filterDisplayDataItem)}`)
+        .map((data) => `${handleDataItem(data, filterDisplayDataItem)}`)
         ?.slice(0, 50);
       allLabels.push(colLabel);
       const maxLabel = maxBy(allLabels, (label) =>

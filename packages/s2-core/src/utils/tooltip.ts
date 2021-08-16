@@ -42,7 +42,6 @@ import {
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
 import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
-import { getDerivedDataState } from '../utils/text';
 
 /**
  * calculate aggregate value
