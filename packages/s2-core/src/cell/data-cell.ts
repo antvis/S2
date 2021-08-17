@@ -225,7 +225,6 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
-    this.cellType = this.getCellType();
     this.conditions = this.spreadsheet.options?.conditions;
     this.drawBackgroundShape();
     this.drawStateShapes();
@@ -237,7 +236,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.setCellsSpotlight();
   }
 
-  protected getCellType() {
+  public get cellType() {
     return CellTypes.DATA_CELL;
   }
 

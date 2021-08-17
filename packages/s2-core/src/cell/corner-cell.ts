@@ -1,21 +1,20 @@
+import { IGroup, IShape } from '@antv/g-canvas';
 import _ from 'lodash';
-import { getEllipsisText, getTextPosition } from '../utils/text';
-import { isIPhoneX } from '../utils/is-mobile';
-import { IShape } from '@antv/g-canvas';
-import { renderText } from '../utils/g-renders';
+import { GuiIcon, Node } from '..';
 import {
+  CellTypes,
+  COLOR_DEFAULT_RESIZER,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZER,
-  COLOR_DEFAULT_RESIZER,
   KEY_TREE_ROWS_COLLAPSE_ALL,
-  CellTypes,
 } from '../common/constant';
 import { HIT_AREA } from '../facet/header/base';
 import { CornerHeaderConfig } from '../facet/header/corner';
 import { ResizeInfo } from '../facet/header/interface';
-import { GuiIcon, Node } from '..';
+import { renderText } from '../utils/g-renders';
+import { isIPhoneX } from '../utils/is-mobile';
+import { getEllipsisText, getTextPosition } from '../utils/text';
 import { BaseCell } from './base-cell';
-import { IGroup } from '@antv/g-canvas';
 export class CornerCell extends BaseCell<Node> {
   protected headerConfig: CornerHeaderConfig;
 
@@ -33,14 +32,13 @@ export class CornerCell extends BaseCell<Node> {
   public update() {}
 
   protected initCell() {
-    this.cellType = this.getCellType();
     this.textShapes = [];
     this.drawCellRect();
     this.drawCellText();
     this.drawHotpot();
   }
 
-  protected getCellType() {
+  public get cellType() {
     return CellTypes.CORNER_CELL;
   }
 

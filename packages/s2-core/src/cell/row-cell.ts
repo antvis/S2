@@ -61,7 +61,6 @@ export class RowCell extends BaseCell<Node> {
   }
 
   protected initCell() {
-    this.cellType = this.getCellType();
     // 1、draw rect background
     this.drawBackgroundColor();
     this.drawInteractiveBgShape();
@@ -77,7 +76,7 @@ export class RowCell extends BaseCell<Node> {
     this.drawActionIcons();
   }
 
-  protected getCellType() {
+  public get cellType() {
     return CellTypes.ROW_CELL;
   }
 

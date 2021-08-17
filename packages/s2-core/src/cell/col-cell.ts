@@ -50,7 +50,6 @@ export class ColCell extends BaseCell<Node> {
   }
 
   protected initCell() {
-    this.cellType = this.getCellType();
     // 1、draw rect background
     this.drawRectBackground();
     // 2、interactive background shape
@@ -67,7 +66,7 @@ export class ColCell extends BaseCell<Node> {
     this.updateSelected();
   }
 
-  protected getCellType() {
+  public get cellType() {
     return CellTypes.COL_CELL;
   }
 

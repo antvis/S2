@@ -11,9 +11,6 @@ import { SpreadSheet } from '../sheet-type';
 import { updateShapeAttr } from '../utils/g-renders';
 
 export abstract class BaseCell<T> extends Group {
-  // used to determine the cell type
-  public cellType: CellTypes;
-
   // cell's data meta info
   protected meta: T;
 
@@ -50,11 +47,6 @@ export abstract class BaseCell<T> extends Group {
     this.initCell();
   }
 
-  /**
-   * Update cell's selected state
-   */
-  public abstract update(): void;
-
   public getMeta(): T {
     return this.meta;
   }
@@ -67,32 +59,39 @@ export abstract class BaseCell<T> extends Group {
    * in case there are more params to be handled
    * @param options any type's rest params
    */
-  protected handleRestOptions(...options: any) {
+  protected handleRestOptions(...options: unknown[]) {
     // default do nothing
   }
+
+  /**
+   * Update cell's selected state
+   */
+  public abstract update(): void;
+
+  /**
+   * Return the type of the cell
+   */
+  public abstract get cellType(): CellTypes;
 
   /**
    * Determine how to render this cell area
    */
   protected abstract initCell(): void;
 
-  /**
-   * Return the type of the cell
-   */
-  protected abstract getCellType(): CellTypes;
+  /* -------------------------------------------------------------------------- */
+  /*                common functions that will be used in subtype               */
+  /* -------------------------------------------------------------------------- */
 
   // 根据当前state来更新cell的样式
   public updateByState(stateName: InteractionStateName) {
     const stateStyles = get(this.theme, `${this.cellType}.cell.${stateName}`);
     each(stateStyles, (style, styleKey) => {
-      if (styleKey) {
-        const currentShape = findKey(SHAPE_ATTRS_MAP, (attrs) =>
-          includes(attrs, styleKey),
-        );
-        if (!currentShape) return;
-        updateShapeAttr(this[currentShape], SHAPE_STYLE_MAP[styleKey], style);
-        this.showShapeUnderState(currentShape);
-      }
+      const currentShape = findKey(SHAPE_ATTRS_MAP, (attrs) =>
+        includes(attrs, styleKey),
+      );
+      if (!currentShape) return;
+      updateShapeAttr(this[currentShape], SHAPE_STYLE_MAP[styleKey], style);
+      this.showShapeUnderState(currentShape);
     });
   }
 
