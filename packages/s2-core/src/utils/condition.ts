@@ -5,7 +5,7 @@ import {
   IconCondition,
   IconTheme,
 } from '@/common/interface';
-import { isNumber } from 'lodash';
+import { isEmpty, isNumber } from 'lodash';
 
 export const getIconLayoutPosition = (condition: IconCondition) => {
   return condition?.iconPosition ?? 'right';
@@ -18,6 +18,9 @@ export const isPositive = (value: number | string): boolean => {
   return !/^-/.test(value);
 };
 
+/**
+ * generate default conditions, including icon condition and text condition
+ */
 const generateDefaultCondition = (
   values: string[] = [],
   iconTheme: IconTheme,
@@ -50,6 +53,12 @@ const generateDefaultCondition = (
   return { textCondition, iconCondition };
 };
 
+/**
+ * merge updated conditions into original conditions, if update condition exists in original conditions, the original one has higher priority
+ * @param rawCondition conditions in options cfg
+ * @param updatedCondition conditions which need to merge into raw conditions, and have lower priority
+ * @returns merged conditions
+ */
 const updateCondition = (
   rawCondition: Condition[] = [],
   updatedCondition: Condition[] = [],
@@ -63,12 +72,19 @@ const updateCondition = (
   return result;
 };
 
+/**
+ * handle useDefaultConditionValues in options cfg, map them into default conditions
+ * @param conditions conditions in options cfg
+ * @param values represent useDefaultConditionValues in options cfg
+ * @param iconTheme semantic color that icon will use
+ * @returns merged options
+ */
 export const updateConditionsByValues = (
   conditions: Conditions = {},
   values: string[] = [],
   iconTheme: IconTheme,
 ) => {
-  if (values.length === 0) {
+  if (isEmpty(values)) {
     return conditions;
   }
 

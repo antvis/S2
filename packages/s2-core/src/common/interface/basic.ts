@@ -151,7 +151,6 @@ export interface Tooltip {
   readonly row?: Tooltip;
   readonly col?: Tooltip;
   readonly cell?: Tooltip;
-  readonly dataMapping?: () => unknown;
 }
 
 export interface Sort {
