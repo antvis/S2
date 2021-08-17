@@ -1,22 +1,26 @@
 import { BaseCell } from '@/cell/base-cell';
-import { DerivedCell } from '@/cell/derived-cell';
-import { VALUE_FIELD } from '@/common/constant';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
 import {
+  CellBoxCfg,
   CellMapping,
   Condition,
   Conditions,
+  IconCfg,
+  IconCondition,
   S2CellType,
-  ViewMeta
+  ViewMeta,
 } from '@/common/interface';
 import { DataItem } from '@/common/interface/s2DataConfig';
-import { renderLine, renderRect, renderText } from '@/utils/g-renders';
+import { getIconLayoutPosition } from '@/utils/condition';
 import {
-  getDerivedDataState,
-  getEllipsisText,
-  getTextPosition
-} from '@/utils/text';
+  getContentArea,
+  getIconPosition,
+  getTextAndIconArea,
+  getTextPosition,
+} from '@/utils/data-cell';
+import { renderLine, renderRect, renderText } from '@/utils/g-renders';
+import { getEllipsisText } from '@/utils/text';
 import { IShape, SimpleBBox } from '@antv/g-canvas';
 import { find, first, get, includes, isEmpty, map } from 'lodash';
 import type { SpreadSheet } from 'src/sheet-type';
@@ -136,20 +140,73 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   /**
-   * Get left rest area size by icon condition
+   * @description get cell text style
    * @protected
    */
-  protected getLeftAreaBBox(): SimpleBBox {
+  protected getTextStyle() {
+    const { isTotals } = this.meta;
+    const textStyle = isTotals
+      ? this.theme.dataCell.bolderText
+      : this.theme.dataCell.text;
+    return textStyle;
+  }
+
+  /**
+   * Get content area size that contains icon and text
+   * @protected
+   */
+  protected getContentAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
-    const { icon } = this.theme.dataCell;
-    const iconCondition = this.findFieldCondition(this.conditions?.icon);
-    const isIconExist = iconCondition && iconCondition.mapping;
-    return {
+    const { padding } = this.theme.dataCell.cell;
+    const textStyle = this.getTextStyle();
+
+    const cfg: CellBoxCfg = {
       x,
       y,
-      width: width - (isIconExist ? icon.size + icon.margin?.left : 0),
       height,
+      width,
+      textAlign: textStyle.textAlign,
+      textBaseline: textStyle.textBaseline,
+      padding,
     };
+
+    return getContentArea(cfg);
+  }
+
+  /**
+   * @description get text or icon bbox
+   * @param {('text' | 'icon')} [type='text']
+   */
+  protected getBBoxByAreaType(type: 'text' | 'icon' = 'text') {
+    const bbox = this.getContentAreaBBox();
+
+    const { size, margin } = this.theme.dataCell.icon;
+    const iconCondition: IconCondition = this.findFieldCondition(
+      this.conditions?.icon,
+    );
+
+    const iconCfg: IconCfg = iconCondition && {
+      size,
+      margin,
+      iconPosition: getIconLayoutPosition(iconCondition),
+    };
+
+    return getTextAndIconArea(bbox, iconCfg)[type];
+  }
+
+  protected getTextPosition() {
+    const textStyle = this.getTextStyle();
+    return getTextPosition(this.getBBoxByAreaType(), textStyle);
+  }
+
+  protected getIconPosition() {
+    const { size } = this.theme.dataCell.icon;
+    const textStyle = this.getTextStyle();
+    return getIconPosition(
+      this.getBBoxByAreaType('icon'),
+      size,
+      textStyle.textBaseline,
+    );
   }
 
   public setMeta(viewMeta: ViewMeta) {
@@ -234,62 +291,29 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Render cell main text and derived text
    */
   protected drawTextShape() {
-    const { x, y, height, width } = this.getLeftAreaBBox();
-
-    const { valueField: originField, isTotals } = this.meta;
-
-    if (this.spreadsheet.isDerivedValue(originField)) {
-      const data = this.getDerivedData(originField, isTotals);
-      const dataValue = data.value as string;
-      // TODO 衍生指标改造完后可去掉
-      // 衍生指标的cell, 需要单独的处理
-      this.add(
-        new DerivedCell({
-          x,
-          y,
-          height,
-          width,
-          up: data.up,
-          text: dataValue,
-          spreadsheet: this.spreadsheet,
-        }),
-      );
-      return;
-    }
+    const { width } = this.getBBoxByAreaType();
     // 其他常态数据下的cell
     //  the size of text condition is equal with valueFields size
     const textCondition = this.findFieldCondition(this.conditions?.text);
 
     const { formattedValue: text } = this.getData();
-    const textStyle = isTotals
-      ? this.theme.dataCell.bolderText
-      : this.theme.dataCell.text;
+
+    const textStyle = this.getTextStyle();
     let textFill = textStyle.fill;
+
     if (textCondition?.mapping) {
       textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
-    const padding = this.theme.dataCell.cell.padding;
-    const ellipsisText = getEllipsisText(
-      `${text || '-'}`,
-      width - padding?.left - padding?.right,
-      textStyle,
-    );
-    const cellBoxCfg = {
-      x,
-      y,
-      height,
-      width,
-      textAlign: textStyle.textAlign,
-      textBaseline: textStyle.textBaseline,
-      padding,
-    };
-    const position = getTextPosition(cellBoxCfg);
+
+    const ellipsisText = getEllipsisText(`${text || '-'}`, width, textStyle);
+
+    const position = this.getTextPosition();
     this.textShape = renderText(
       [this.textShape],
       position.x,
       position.y,
       ellipsisText,
-      textStyle,
+      { ...textStyle, fill: textFill },
       this,
     );
   }
@@ -402,22 +426,24 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @private
    */
   protected drawIconShape() {
-    const { x, y, height, width } = this.meta;
-    const { icon } = this.theme.dataCell;
-    const iconCondition = this.findFieldCondition(this.conditions?.icon);
+    const iconCondition: IconCondition = this.findFieldCondition(
+      this.conditions?.icon,
+    );
     if (iconCondition && iconCondition.mapping) {
       const attrs = this.mappingValue(iconCondition);
+      const position = this.getIconPosition();
       const { formattedValue } = this.getData();
+      const { size } = this.theme.dataCell.icon;
       // icon only show when icon not empty and value not null(empty)
       if (!isEmpty(attrs?.icon) && formattedValue) {
         this.iconShape = new GuiIcon({
+          ...position,
           type: attrs.icon,
-          x: x + width - icon.margin.left - icon.size,
-          y: y + height / 2 - icon.size / 2,
-          width: icon.size,
-          height: icon.size,
+          width: size,
+          height: size,
           fill: attrs.fill,
         });
+
         this.add(this.iconShape);
       }
     }
@@ -428,7 +454,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @private
    */
   protected drawIntervalShape() {
-    const { x, y, height, width } = this.getLeftAreaBBox();
+    const { x, y, height, width } = this.getContentAreaBBox();
 
     const intervalCondition = this.findFieldCondition(
       this.conditions?.interval,
@@ -480,29 +506,6 @@ export class DataCell extends BaseCell<ViewMeta> {
         });
       }
     }
-  }
-
-  protected getDerivedData(derivedValue: string, isTotals = false) {
-    const data = this.meta.data;
-    if (data) {
-      let value: string | number;
-      if (isTotals) {
-        value = get(data, [0, VALUE_FIELD]);
-      } else {
-        value = get(data, [0, derivedValue]);
-      }
-      const up = getDerivedDataState(value);
-      const formatter =
-        this.spreadsheet.dataSet.getFieldFormatter(derivedValue);
-      return {
-        value: formatter ? formatter(value) : value,
-        up,
-      };
-    }
-    return {
-      value: '',
-      up: false,
-    };
   }
 
   // dataCell根据state 改变当前样式，

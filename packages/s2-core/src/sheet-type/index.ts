@@ -12,7 +12,6 @@ import {
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
 import {
-  DerivedValue,
   OffsetConfig,
   Pagination,
   S2CellType,
@@ -34,6 +33,7 @@ import { BaseFacet, PivotFacet, TableFacet } from '@/facet';
 import { Node, SpreadSheetTheme } from '@/index';
 import { getTheme } from '@/theme';
 import { BaseTooltip } from '@/tooltip';
+import { updateConditionsByValues } from '@/utils/condition';
 import { isMobile } from '@/utils/is-mobile';
 import EE from '@antv/event-emitter';
 import { Canvas, CanvasCfg, Event, IGroup } from '@antv/g-canvas';
@@ -41,9 +41,9 @@ import { ext } from '@antv/matrix-util';
 import {
   clone,
   debounce,
-  find,
   get,
   includes,
+  isEmpty,
   isFunction,
   isString,
   merge,
@@ -205,6 +205,20 @@ export class SpreadSheet extends EE {
   public setTheme(themeCfg: ThemeCfg): void {
     const theme = themeCfg?.theme || {};
     this.theme = merge({}, getTheme(themeCfg), theme);
+    this.updateDefaultConditions();
+  }
+
+  private updateDefaultConditions() {
+    if (isEmpty(this.options.useDefaultConditionValues)) {
+      return;
+    }
+    const { conditions, useDefaultConditionValues } = this.options;
+    const updatedConditions = updateConditionsByValues(
+      conditions,
+      useDefaultConditionValues,
+      this.theme.dataCell.icon,
+    );
+    this.setOptions({ conditions: updatedConditions } as S2Options);
   }
 
   /**
@@ -246,33 +260,6 @@ export class SpreadSheet extends EE {
     const type = this.options.hierarchyType;
     // custom tree and tree!!!
     return type === 'tree' || type === 'customTree';
-  }
-
-  /**
-   * 判断某个维度是否是衍生指标
-   * @param field
-   */
-  public isDerivedValue(field: string): boolean {
-    const derivedValues = get(this, 'dataCfg.fields.derivedValues', []);
-    return find(derivedValues, (v) => includes(v.derivedValueField, field));
-  }
-
-  /**
-   * 获取任意度量对应的指标对象（包含主指标和衍生指标）
-   * 分别检查每个 主指标和衍生指标
-   * @param field
-   */
-  public getDerivedValue(field: string): DerivedValue {
-    const derivedValues = get(this, 'dataCfg.fields.derivedValues', []);
-    return (
-      find(
-        derivedValues,
-        (v) => field === v.valueField || includes(v.derivedValueField, field),
-      ) || {
-        valueField: '',
-        derivedValueField: [],
-      }
-    );
   }
 
   public isColAdaptive(): boolean {
@@ -374,6 +361,10 @@ export class SpreadSheet extends EE {
 
   public hideTooltip() {
     this.tooltip.hide();
+  }
+
+  public getTooltipDataItemMappingCallback() {
+    return get(this, 'options.mappingDisplayDataItem');
   }
 
   // 获取当前cell实例

@@ -27,6 +27,7 @@ import {
 } from 'lodash';
 import {
   Aggregation,
+  Data,
   DataItem,
   ListItem,
   SpreadSheet,
@@ -42,7 +43,8 @@ import {
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
 import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
-import { getDerivedDataState } from '../utils/text';
+import { handleDataItem } from './data-cell';
+import { isMultiDataItem } from './data-item-type-checker';
 
 /**
  * calculate aggregate value
@@ -157,7 +159,7 @@ export const getFieldFormatter = (spreadsheet: SpreadSheet, field: string) => {
 
 export const getListItem = (
   spreadsheet: SpreadSheet,
-  data: DataItem,
+  data: Data,
   field: string,
   valueField?: string,
 ): ListItem => {
@@ -165,27 +167,17 @@ export const getListItem = (
   const formatter = getFieldFormatter(spreadsheet, field);
   // eslint-disable-next-line
   const value = formatter(valueField ? valueField : data[field]);
-  let icon;
-  if (spreadsheet?.isDerivedValue(field)) {
-    if (data[field]) {
-      if (!getDerivedDataState(data[field])) {
-        icon = 'CellDown';
-      } else {
-        icon = 'CellUp';
-      }
-    }
-  }
+
   return {
     name,
     value,
-    icon,
   };
 };
 
 export const getFieldList = (
   spreadsheet: SpreadSheet,
   fields: string[],
-  hoverData: DataItem,
+  hoverData: Data,
 ): ListItem[] => {
   const currFields = filter(
     concat([], fields),
@@ -199,7 +191,7 @@ export const getFieldList = (
 
 export const getHeadInfo = (
   spreadsheet: SpreadSheet,
-  hoverData: DataItem,
+  hoverData: Data,
 ): TooltipHeadInfo => {
   if (hoverData) {
     const colFields = get(spreadsheet?.dataSet?.fields, 'columns', []);
@@ -213,34 +205,15 @@ export const getHeadInfo = (
   return { cols: [], rows: [] };
 };
 
-export const getDerivedItemList = (
-  spreadsheet: SpreadSheet,
-  valItem,
-  derivedValue,
-  hoverData: DataItem,
-) => {
-  // replace old valItem
-  valItem = map(derivedValue.derivedValueField, (value: any) => {
-    return getListItem(spreadsheet, hoverData, value);
-  });
-  // add main indicator -- not empty
-  if (hoverData[derivedValue.valueField]) {
-    valItem.unshift(
-      getListItem(spreadsheet, hoverData, derivedValue.valueField),
-    );
-  }
-  return valItem;
-};
-
 export const getDetailList = (
-  spreadsheet,
-  hoverData: DataItem,
+  spreadsheet: SpreadSheet,
+  hoverData: Data,
   options: TooltipOptions,
 ): ListItem[] => {
   if (hoverData) {
     const { isTotals } = options;
 
-    let valItem = [];
+    const valItem = [];
     if (isTotals) {
       // total/subtotal
       valItem.push(
@@ -248,49 +221,34 @@ export const getDetailList = (
           spreadsheet,
           hoverData,
           TOTAL_VALUE,
-          get(hoverData, VALUE_FIELD),
+          get(hoverData, VALUE_FIELD) as string,
         ),
       );
     } else {
-      const field = hoverData[EXTRA_FIELD];
-      if (hoverData[field]) {
-        // filter empty
-        valItem.push(getListItem(spreadsheet, hoverData, field));
-      }
-      const derivedValue = spreadsheet?.getDerivedValue(field);
-      if (spreadsheet?.isValueInCols()) {
-        // the value hangs at the head of the column, match the displayed fields according to the metric itself
-        // 1、multiple derivative indicators
-        // 2、only one column scene
-        // 3、the clicked cell belongs to the derived index column
-        // tooltip need to show all derivative indicators
+      const field = hoverData[EXTRA_FIELD] as string;
+      const value = hoverData[field];
+      // filter empty
+      if (value) {
+        // multiple data should be mapped firstly
         if (
-          derivedValue.derivedValueField.length > 1 &&
-          !isEqual(
-            derivedValue.derivedValueField,
-            derivedValue.displayDerivedValueField,
-          ) &&
-          spreadsheet?.isDerivedValue(field)
+          isMultiDataItem(value) &&
+          spreadsheet.getTooltipDataItemMappingCallback()
         ) {
-          valItem = getDerivedItemList(
-            spreadsheet,
-            valItem,
-            derivedValue,
+          const mappedResult = handleDataItem(
             hoverData,
-          );
+            spreadsheet.getTooltipDataItemMappingCallback(),
+          ) as Record<string, string | number>;
+
+          forEach(mappedResult, (_, key) => {
+            valItem.push(getListItem(spreadsheet, mappedResult, key));
+          });
+        } else {
+          valItem.push(getListItem(spreadsheet, hoverData, field));
         }
-        // the value hangs at the head of the row，need to show all derivative indicators
-      } else if (derivedValue.derivedValueField.length > 0) {
-        valItem = getDerivedItemList(
-          spreadsheet,
-          valItem,
-          derivedValue,
-          hoverData,
-        );
       }
     }
 
-    return compact(concat([], [...valItem]));
+    return compact(valItem);
   }
 };
 
@@ -435,6 +393,7 @@ const mergeSummaries = (summaries) => {
   return result;
 };
 
+// TODO: tooltip 很多cellInfos类型不正确，需要整体重新梳理
 export const getTooltipData = (
   spreadsheet: SpreadSheet,
   cellInfos?: TooltipData[],
@@ -453,8 +412,9 @@ export const getTooltipData = (
     summaries = mergeSummaries(summaries);
   } else {
     // 如果隐藏总计小计说明是datacell点击，只展示单个cell的详细信息
-    headInfo = getHeadInfo(spreadsheet, cellInfos[0] as any);
-    details = getDetailList(spreadsheet, cellInfos[0] as any, options);
+    headInfo = getHeadInfo(spreadsheet, cellInfos[0] as Data);
+    details = getDetailList(spreadsheet, cellInfos[0] as Data, options);
+    console.log('details,', details);
   }
   const { interpretation, infos, tips } = cellInfos[0] || {};
   return { summaries, interpretation, infos, tips, headInfo, details };
@@ -470,111 +430,4 @@ export const getRightAndValueField = (
   const valueField = get(rowQuery, rightField, '');
 
   return { rightField, valueField };
-};
-
-export const getStrategySummary = (
-  spreadsheet: SpreadSheet,
-  hoverData: Record<string, any>,
-  options: TooltipOptions,
-): TooltipSummaryOptions => {
-  if (hoverData) {
-    const { valueField } = getRightAndValueField(spreadsheet, options);
-    const { name, value } = getListItem(
-      spreadsheet,
-      hoverData as any,
-      valueField,
-    );
-
-    return {
-      selectedData: [hoverData],
-      name,
-      value,
-    };
-  }
-  return null;
-};
-
-export const getDerivedValues = (
-  spreadsheet: SpreadSheet,
-  valueField: string,
-): string[] => {
-  const derivedValue = spreadsheet?.getDerivedValue(valueField);
-  if (derivedValue) {
-    return derivedValue.derivedValueField;
-  }
-  return [];
-};
-
-export const getStrategyDetailList = (
-  spreadsheet: SpreadSheet,
-  hoverData: Record<string, any>,
-  options: TooltipOptions,
-): ListItem[] => {
-  if (hoverData) {
-    const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
-    // if rows is not empty and values is data, use normal-tooltip
-    if (rowFields.find((item) => item === EXTRA_FIELD)) {
-      return getDetailList(spreadsheet, hoverData as any, options);
-    }
-    // the value hangs at the head of the column
-    const { rightField, valueField } = getRightAndValueField(
-      spreadsheet,
-      options,
-    );
-    // show all derivative indicators no matter have value
-    const valuesField = [
-      rightField,
-      ...getDerivedValues(spreadsheet, valueField),
-    ];
-
-    return map(valuesField, (field: string): ListItem => {
-      if (isEqual(field, rightField)) {
-        // the value of the measure dimension is taken separately
-        return getListItem(spreadsheet, hoverData as any, hoverData[field]);
-      }
-
-      return getListItem(spreadsheet, hoverData as any, field);
-    });
-  }
-};
-
-export const getStrategyHeadInfo = (
-  spreadsheet: SpreadSheet,
-  hoverData: DataItem,
-  options?: TooltipOptions,
-): TooltipHeadInfo => {
-  const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
-  // if rows is not empty and values is data, use normal-tooltip
-  if (rowFields.find((item) => item === EXTRA_FIELD)) {
-    return getHeadInfo(spreadsheet, hoverData);
-  }
-  // the value hangs at the head of the column
-  const { rightField } = getRightAndValueField(spreadsheet, options);
-  const index = rowFields.indexOf(rightField);
-  const rows = [...rowFields];
-  if (index !== -1) {
-    rows.splice(index + 1);
-  }
-  if (hoverData) {
-    const colFields = get(spreadsheet?.dataSet?.fields, 'columns', []);
-    const colList = getFieldList(spreadsheet, colFields, hoverData);
-    const rowList = getFieldList(spreadsheet, rows, hoverData);
-
-    return { cols: colList, rows: rowList };
-  }
-
-  return { cols: [], rows: [] };
-};
-
-export const getStrategyTooltipData = (
-  spreadsheet: SpreadSheet,
-  data?: TooltipData,
-  options?: TooltipOptions,
-) => {
-  const { interpretation, infos, tips } = data || {};
-  const summaries = getStrategySummary(spreadsheet, data, options);
-  const headInfo = getStrategyHeadInfo(spreadsheet, data as any);
-  const details = getStrategyDetailList(spreadsheet, data, options);
-
-  return { summaries, headInfo, details, interpretation, infos, tips };
 };

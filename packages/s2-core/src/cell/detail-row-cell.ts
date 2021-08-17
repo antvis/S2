@@ -1,11 +1,11 @@
-import { getEllipsisText, getTextPosition } from '../utils/text';
 import { get } from 'lodash';
 import { DataCell } from 'src/cell/data-cell';
-import { isMobile } from '../utils/is-mobile';
 import { renderText } from '../utils/g-renders';
+import { isMobile } from '../utils/is-mobile';
+import { getEllipsisText, getTextPosition } from '../utils/text';
 export class DetailRowCell extends DataCell {
   protected drawTextShape() {
-    const { x, y, height, width } = this.getLeftAreaBBox();
+    const { x, y, height, width } = this.getContentAreaBBox();
     const { formattedValue: text } = this.getData();
     const textStyle = this.theme.rowCell?.bolderText;
     const padding = this.theme.rowCell?.cell?.padding;
