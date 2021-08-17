@@ -148,6 +148,7 @@ const getOptions = (): S2Options => {
     initTooltip: (spreadsheet) => {
       return new CustomTooltip(spreadsheet);
     },
+    showTrend: true,
     selectedCellsSpotlight: true,
   };
 };

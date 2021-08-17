@@ -40,7 +40,7 @@ export class BaseTooltip {
 
   protected container: HTMLElement; // the base container element
 
-  private customComponent: any; // react component
+  private customComponent: ReturnType<typeof ReactDOM.render>; // react component
 
   private enterable = false; // mark if can enter into tooltips
 
