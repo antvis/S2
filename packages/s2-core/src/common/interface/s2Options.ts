@@ -149,7 +149,7 @@ export const defaultOptions = {
   customHeaderCells: null,
   rowActionIcons: null,
   style: defaultStyle,
-  selectedCellsSpotlight: false,
+  selectedCellsSpotlight: true,
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>

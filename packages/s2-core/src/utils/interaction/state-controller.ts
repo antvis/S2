@@ -8,13 +8,20 @@ import { isEmpty, forEach, includes } from 'lodash';
  * @param spreadsheet sheet instance
  */
 export const clearState = (spreadsheet: SpreadSheet) => {
-  const stateInfo = spreadsheet.store.get('interactionStateInfo');
-  if (!isEmpty(stateInfo?.cells)) {
-    forEach(stateInfo?.cells, (cell: S2CellType) => {
-      cell.hideShapeUnderState();
+  const allCells = spreadsheet.interaction.getPanelAllDataCells();
+  if (!isEmpty(allCells)) {
+    forEach(allCells, (cell: S2CellType) => {
+      cell.hideInteractionShape();
     });
   }
   spreadsheet.store.set('interactionStateInfo', {});
+  if (spreadsheet.options.selectedCellsSpotlight) {
+    const unSelectedCells =
+      spreadsheet.interaction.getPanelAllUnSelectedDataCells() || [];
+    unSelectedCells.forEach((cell) => {
+      cell.clearUnselectedState();
+    });
+  }
 };
 
 /**

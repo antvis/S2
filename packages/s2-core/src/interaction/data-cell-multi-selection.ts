@@ -53,7 +53,6 @@ export class DataCellMultiSelection extends BaseInteraction {
         this.spreadsheet.hideTooltip();
         this.interaction.setState(cell, InteractionStateName.SELECTED);
         this.interaction.updateCellStyleByState();
-        this.draw();
 
         const cellInfos = [];
         if (stateName === InteractionStateName.SELECTED) {
@@ -77,7 +76,6 @@ export class DataCellMultiSelection extends BaseInteraction {
             }
           });
         }
-        this.interaction.showInteractionMask();
         this.handleTooltip(ev, cellInfos);
       }
     });

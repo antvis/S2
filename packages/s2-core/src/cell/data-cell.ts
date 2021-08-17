@@ -8,14 +8,14 @@ import {
   Condition,
   Conditions,
   S2CellType,
-  ViewMeta
+  ViewMeta,
 } from '@/common/interface';
 import { DataItem } from '@/common/interface/s2DataConfig';
 import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import {
   getDerivedDataState,
   getEllipsisText,
-  getTextPosition
+  getTextPosition,
 } from '@/utils/text';
 import { IShape, SimpleBBox } from '@antv/g-canvas';
 import { find, first, get, includes, isEmpty, map } from 'lodash';
@@ -48,7 +48,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected textShape: IShape;
 
   // 5、brush-select prepareSelect border
-  protected activeBorderShape: IShape;
+  protected interactiveBorderShape: IShape;
 
   // cell configs conditions(Determine how to render this cell)
   protected conditions: Conditions;
@@ -58,15 +58,26 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected handleSelect(cells: S2CellType[]) {
-    // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
-    // 二者操作一致，function合并
     const currentCellType = cells?.[0]?.cellType;
-    if (currentCellType === CellTypes.COL_CELL) {
-      this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
-      return;
-    }
-    if (currentCellType === CellTypes.ROW_CELL) {
-      this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
+    switch (currentCellType) {
+      // 列刷选
+      case CellTypes.COL_CELL:
+        this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
+        break;
+      // 行刷选
+      case CellTypes.ROW_CELL:
+        this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
+        break;
+      // 单元格单选/多选
+      case CellTypes.DATA_CELL:
+        if (includes(cells, this)) {
+          this.updateByState(InteractionStateName.SELECTED);
+        } else if (this.spreadsheet.options.selectedCellsSpotlight) {
+          this.updateByState(InteractionStateName.UNSELECTED);
+        }
+        break;
+      default:
+        break;
     }
   }
 
@@ -74,7 +85,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     // 如果当前是hover，要绘制出十字交叉的行列样式
     const currentHoverCell = first(cells) as S2CellType;
     if (currentHoverCell.cellType !== CellTypes.DATA_CELL) {
-      this.hideShapeUnderState();
+      this.hideInteractionShape();
       return;
     }
     const currentColIndex = this.meta.colIndex;
@@ -87,7 +98,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       this.updateByState(InteractionStateName.HOVER);
     } else {
       // 当视图内的 cell 行列 index 与 hover 的 cell 不一致，隐藏其他样式
-      this.hideShapeUnderState();
+      this.hideInteractionShape();
     }
   }
 
@@ -95,7 +106,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
     const cells = this.spreadsheet.interaction.getActiveCells();
 
-    if (isEmpty(cells)) {
+    if (isEmpty(cells) || !stateName) {
       return;
     }
 
@@ -157,16 +168,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.initCell();
   }
 
-  public setCellsSpotlight() {
-    if (
-      this.spreadsheet.options.selectedCellsSpotlight &&
-      this.spreadsheet.interaction.isSelectedState() &&
-      !this.spreadsheet.interaction.isSelectedCell(this)
-    ) {
-      this.setBgColorOpacity();
-    }
-  }
-
   protected initCell() {
     this.cellType = this.getCellType();
     this.conditions = this.spreadsheet.options?.conditions;
@@ -177,7 +178,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawBorderShape();
     // 更新选中状态
     this.update();
-    this.setCellsSpotlight();
   }
 
   protected getCellType() {
@@ -187,7 +187,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   // 根据state要改变样式的shape
   protected drawStateShapes() {
     this.drawInteractiveBgShape();
-    this.drawActiveBorderShape();
+    this.drawInteractiveBorderShape();
   }
 
   /**
@@ -322,7 +322,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       y,
       width,
       height,
-      bgColor,
+      fill: bgColor,
       stroke,
     });
   }
@@ -366,11 +366,11 @@ export class DataCell extends BaseCell<ViewMeta> {
   /**
    * 绘制hover悬停，刷选的外框
    */
-  protected drawActiveBorderShape() {
+  protected drawInteractiveBorderShape() {
     // 往内缩一个像素，避免和外边框重叠
     const margin = 1;
     const { x, y, height, width } = this.meta;
-    this.activeBorderShape = renderRect(this, {
+    this.interactiveBorderShape = renderRect(this, {
       x: x + margin,
       y: y + margin,
       width: width - margin * 2,
@@ -378,7 +378,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       fill: 'transparent',
       stroke: 'transparent',
     });
-    this.stateShapes.push(this.activeBorderShape);
+    this.stateShapes.push(this.interactiveBorderShape);
   }
 
   /**
@@ -515,12 +515,8 @@ export class DataCell extends BaseCell<ViewMeta> {
     const selectedIndexes = map(cells, (cell) => get(cell?.getMeta(), index));
     if (includes(selectedIndexes, currentIndex)) {
       this.updateByState(stateName);
-      requestAnimationFrame(() => {
-        this.resetOpacity();
-        this.spreadsheet.container.draw();
-      });
     } else {
-      this.hideShapeUnderState();
+      this.hideInteractionShape();
     }
   }
 

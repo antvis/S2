@@ -59,7 +59,7 @@ export class RootInteraction {
   }
 
   public getCurrentStateName() {
-    return this.getCurrentState().stateName;
+    return this.getCurrentState()?.stateName;
   }
 
   public isSelectedState() {
@@ -80,29 +80,25 @@ export class RootInteraction {
     return !isEmpty(this.getActiveCells());
   }
 
-  /**
-   * 显示交互遮罩 (聚光灯高亮效果)
-   */
-  public showInteractionMask() {
-    if (!this.spreadsheet.options.selectedCellsSpotlight) {
-      return;
-    }
-    this.getActiveCells().forEach((cell) => {
-      cell.resetOpacity();
-    });
-    this.getPanelAllUnSelectedDataCells().forEach((cell) => {
-      cell.setBgColorOpacity();
-    });
-  }
+  // /**
+  //  * @description update states of those unselected cells
+  //  */
+  // public updateSelectedCells() {
+  //   this.getActiveCells().forEach((cell) => {
+  //     cell.update();
+  //   });
+  // }
 
-  public hideInteractionMask() {
-    if (!this.spreadsheet.options.selectedCellsSpotlight) {
-      return;
-    }
-    this.getPanelAllUnSelectedDataCells().forEach((cell) => {
-      cell.resetOpacity();
-    });
-  }
+  // /**
+  //  * @description update states of those selected cells
+  //  */
+  // public updateUnSelectedCells() {
+  //   if (this.spreadsheet.options.selectedCellsSpotlight) {
+  //     this.getPanelAllUnSelectedDataCells().forEach((cell) => {
+  //       cell.update();
+  //     });
+  //   }
+  // }
 
   public updateCellStyleByState() {
     const cells = this.getActiveCells();
@@ -118,7 +114,7 @@ export class RootInteraction {
       currentState?.stateName === InteractionStateName.HOVER
     ) {
       this.getPanelAllDataCells().forEach((cell) => {
-        cell.hideShapeUnderState();
+        cell.hideInteractionShape();
       });
     }
   }
@@ -186,8 +182,26 @@ export class RootInteraction {
     this.eventController = new EventController(this.spreadsheet, this);
   }
 
+  public draw() {
+    this.spreadsheet.container.draw();
+  }
+
   public clearState() {
     clearState(this.spreadsheet);
+    // this.upDatePanelAllCellsStyle();
+    this.draw();
+  }
+
+  public changeState(cells: S2CellType[], stateName: InteractionStateName) {
+    if (!isEmpty(cells)) {
+      clearState(this.spreadsheet);
+      cells.forEach((cell) => {
+        this.setState(cell, stateName);
+      });
+      // this.updateCellStyleByState();
+      this.upDatePanelAllCellsStyle();
+      this.draw();
+    }
   }
 
   // 注册事件

@@ -230,22 +230,31 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         // -------------- hover -------------------
         hover: {
           backgroundColor: brandColors[2],
+          backgroundOpacity: 1,
         },
         // -------------- keep hover -------------------
         hoverFocus: {
           backgroundColor: brandColors[2],
+          backgroundOpacity: 1,
           borderColor: grayColors[6],
-          borderWidth: 1,
+          borderOpacity: 1,
         },
         // -------------- selected -------------------
         selected: {
           backgroundColor: brandColors[2],
+          backgroundOpacity: 1,
           borderColor: grayColors[6],
-          borderWidth: 1,
+          borderOpacity: 1,
+        },
+        // -------------- unselected -------------------
+        unselected: {
+          backgroundOpacity: 0.3,
+          textOpacity: 0.3,
         },
         // -------------- prepareSelect --------------
         prepareSelect: {
           borderColor: brandColors[3],
+          backgroundColor: brandColors[2],
         },
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,

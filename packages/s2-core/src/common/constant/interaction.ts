@@ -7,6 +7,7 @@ export enum InteractionNames {
 
 export enum InteractionStateName {
   SELECTED = 'selected',
+  UNSELECTED = 'unselected',
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
   PREPARE_SELECT = 'prepareSelect',
@@ -27,12 +28,16 @@ export const SHIFT_KEY = 'Shift';
 // 主题配置和canvas属性的映射
 export const SHAPE_STYLE_MAP = {
   backgroundColor: 'fill',
-  opacity: 'fillOpacity',
+  backgroundOpacity: 'fillOpacity',
+  textOpacity: 'fillOpacity',
+  borderOpacity: 'strokeOpacity',
   borderColor: 'stroke',
 };
 
 // 设置属性的时候实际对应改变的shape映射
 export const SHAPE_ATTRS_MAP = {
-  interactiveBgShape: ['backgroundColor', 'opacity'],
-  activeBorderShape: ['borderColor', 'backgroundColor'],
+  interactiveBgShape: ['backgroundColor', 'backgroundOpacity'],
+  interactiveBorderShape: ['borderColor', 'borderOpacity'],
+  backgroundShape: ['backgroundOpacity'],
+  textShape: ['textOpacity'],
 };

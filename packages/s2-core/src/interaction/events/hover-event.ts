@@ -14,17 +14,16 @@ import { BaseEvent } from './base-event';
  */
 export class HoverEvent extends BaseEvent {
   protected bindEvents() {
-    this.bindDataCellHover();
-    this.bindRowCellHover();
-    this.bindColCellHover();
+    // this.bindDataCellHover();
+    // this.bindRowCellHover();
+    // this.bindColCellHover();
   }
 
   private bindDataCellHover() {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (ev: Event) => {
       const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
       const meta = cell.getMeta() as ViewMeta;
-      this.interaction.clearState();
-      this.changeState(cell, InteractionStateName.HOVER);
+      this.interaction.changeState([cell], InteractionStateName.HOVER);
       if (this.interaction.hoverTimer) {
         window.clearTimeout(this.interaction.hoverTimer);
         this.changeStateToHoverFocus(cell, ev, meta);
@@ -38,8 +37,7 @@ export class HoverEvent extends BaseEvent {
     this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (ev: Event) => {
       const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
       const meta = cell.getMeta() as ViewMeta;
-      this.interaction.clearState();
-      this.changeState(cell, InteractionStateName.HOVER);
+      this.interaction.changeState([cell], InteractionStateName.HOVER);
       this.handleTooltip(ev, meta);
     });
   }
@@ -48,8 +46,7 @@ export class HoverEvent extends BaseEvent {
     this.spreadsheet.on(S2Event.COL_CELL_HOVER, (ev: Event) => {
       const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
       const meta = cell.getMeta() as ViewMeta;
-      this.interaction.clearState();
-      this.changeState(cell, InteractionStateName.HOVER);
+      this.interaction.changeState([cell], InteractionStateName.HOVER);
       this.handleTooltip(ev, meta);
     });
   }
@@ -62,22 +59,9 @@ export class HoverEvent extends BaseEvent {
    */
   private changeStateToHoverFocus(cell: S2CellType, ev: Event, meta: ViewMeta) {
     this.interaction.hoverTimer = window.setTimeout(() => {
-      this.changeState(cell, InteractionStateName.HOVER_FOCUS);
+      this.interaction.changeState([cell], InteractionStateName.HOVER_FOCUS);
       this.handleTooltip(ev, meta);
     }, HOVER_FOCUS_TIME);
-  }
-
-  /**
-   * @description change the data cell state
-   * @param cell
-   * @param ev
-   * @param meta
-   */
-  private changeState(cell: S2CellType, stateName: InteractionStateName) {
-    this.interaction.setState(cell, stateName);
-    this.interaction.updateCellStyleByState();
-    this.interaction.upDatePanelAllCellsStyle();
-    this.draw();
   }
 
   /**

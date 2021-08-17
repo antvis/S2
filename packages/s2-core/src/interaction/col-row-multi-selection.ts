@@ -72,8 +72,6 @@ export class ColRowMultiSelection extends BaseInteraction {
           this.handleTooltip(ev, meta, cellInfos);
           this.interaction.updateCellStyleByState();
           this.interaction.upDatePanelAllCellsStyle();
-          this.interaction.showInteractionMask();
-          this.draw();
         }
       }
     });
@@ -106,8 +104,6 @@ export class ColRowMultiSelection extends BaseInteraction {
           }
           this.interaction.updateCellStyleByState();
           this.interaction.upDatePanelAllCellsStyle();
-          this.interaction.showInteractionMask();
-          this.draw();
         }
       }
     });

@@ -91,37 +91,21 @@ export abstract class BaseCell<T> extends Group {
         );
         if (!currentShape) return;
         updateShapeAttr(this[currentShape], SHAPE_STYLE_MAP[styleKey], style);
-        this.showShapeUnderState(currentShape);
       }
     });
   }
 
-  public showShapeUnderState(currentShape: string) {
-    this.setFillOpacity(this[currentShape], 1);
-    this.setStrokeOpacity(this[currentShape], 1);
-  }
-
-  public hideShapeUnderState() {
+  public hideInteractionShape() {
     this.stateShapes.forEach((shape: IShape) => {
-      this.setFillOpacity(shape, 0);
-      this.setStrokeOpacity(shape, 0);
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0);
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent');
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0);
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderColor, 'transparent');
     });
   }
 
-  public setFillOpacity(shape: IShape, opacity: number) {
-    updateShapeAttr(shape, 'fillOpacity', opacity);
-  }
-
-  public setStrokeOpacity(shape: IShape, opacity: number) {
-    updateShapeAttr(shape, 'strokeOpacity', opacity);
-  }
-
-  public resetOpacity() {
-    this.setBgColorOpacity(1);
-  }
-
-  public setBgColorOpacity(opacity: string | number = 0.3) {
-    updateShapeAttr(this.backgroundShape, SHAPE_STYLE_MAP.opacity, opacity);
-    updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.opacity, opacity);
+  public clearUnselectedState() {
+    updateShapeAttr(this.backgroundShape, SHAPE_STYLE_MAP.backgroundOpacity, 1);
+    updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.textOpacity, 1);
   }
 }

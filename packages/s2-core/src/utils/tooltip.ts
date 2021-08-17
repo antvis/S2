@@ -418,20 +418,20 @@ export const getSummaryProps = (
 
 const mergeSummaries = (summaries) => {
   const result = [];
-  each(summaries, (summary) => {
-    const summaryInResultIndex = findIndex(
-      result,
-      (i) => i?.name === summary?.name,
-    );
-    if (summaryInResultIndex > -1) {
-      result[summaryInResultIndex].value += summary.value;
-      result[summaryInResultIndex].selectedData = result[
-        summaryInResultIndex
-      ].selectedData.concat(summary.selectedData);
-    } else {
-      result.push(summary);
-    }
-  });
+  // each(summaries, (summary) => {
+  //   const summaryInResultIndex = findIndex(
+  //     result,
+  //     (i) => i?.name === summary?.name,
+  //   );
+  //   if (summaryInResultIndex > -1) {
+  //     result[summaryInResultIndex].value += summary.value;
+  //     result[summaryInResultIndex].selectedData = result[
+  //       summaryInResultIndex
+  //     ].selectedData.concat(summary.selectedData);
+  //   } else {
+  //     result.push(summary);
+  //   }
+  // });
   return result;
 };
 

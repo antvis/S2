@@ -2,7 +2,7 @@ import { DefaultInterceptEventType, S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { S2CellBrushRange } from '@/common/interface';
 import { Event, IShape, Point } from '@antv/g-canvas';
-import { each, find, isEmpty, isEqual } from 'lodash';
+import { each, find, isEmpty, isEqual, get } from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import {
@@ -84,7 +84,6 @@ export class BrushSelection extends BaseInteraction {
           opacity: 0.3,
         });
       }
-      this.draw();
       this.phase = 1;
     });
   }
@@ -109,20 +108,8 @@ export class BrushSelection extends BaseInteraction {
 
         this.interaction.clearStyleIndependent();
         this.getHighlightCells(brushRegion);
-        this.draw();
       }
     });
-  }
-
-  // 刷选过程中的预选择外框
-  protected showPrepareBrushSelectBorder(cells: DataCell[]) {
-    if (cells.length) {
-      this.interaction.clearState();
-      cells.forEach((cell: DataCell) => {
-        this.interaction.setState(cell, InteractionStateName.PREPARE_SELECT);
-      });
-      this.interaction.updateCellStyleByState();
-    }
   }
 
   private isInCellInfos(cellInfos: TooltipData[], info: TooltipData): boolean {
@@ -178,7 +165,6 @@ export class BrushSelection extends BaseInteraction {
         this.regionShape.attr({
           opacity: 0,
         });
-        this.draw();
 
         const cells = this.interaction.getActiveCells();
         const cellInfos: TooltipData[] = [];
@@ -201,7 +187,6 @@ export class BrushSelection extends BaseInteraction {
               }
             }
           });
-          this.interaction.showInteractionMask();
         }
         this.handleTooltip(ev, cellInfos);
       }
@@ -212,16 +197,16 @@ export class BrushSelection extends BaseInteraction {
   // 刷选过程中高亮的cell
   private getHighlightCells(region: S2CellBrushRange) {
     const selectedCells = this.getCellsInRegion(region);
-    this.showPrepareBrushSelectBorder(selectedCells);
+    this.interaction.changeState(
+      selectedCells,
+      InteractionStateName.PREPARE_SELECT,
+    );
   }
 
   // 最终刷选的cell
   private getSelectedCells(region: S2CellBrushRange) {
     const selectedCells = this.getCellsInRegion(region);
-    selectedCells.forEach((cell) => {
-      this.interaction.setState(cell, InteractionStateName.SELECTED);
-    });
-    this.interaction.updateCellStyleByState();
+    this.interaction.changeState(selectedCells, InteractionStateName.SELECTED);
   }
 
   private createRegionShape() {
@@ -231,7 +216,7 @@ export class BrushSelection extends BaseInteraction {
         height: 0,
         x: this.previousPoint.x,
         y: this.previousPoint.y,
-        fill: '#1890FF',
+        fill: get(this.spreadsheet, 'theme.dataCell.cell.prepareSelect'),
         opacity: 0.3,
         zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX,
       },

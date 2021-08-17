@@ -102,7 +102,6 @@ export class RowColResize extends BaseInteraction {
           cellEndBorder.attr('cursor', `${info.type}-resize`);
           const header = this.getHeaderGroup();
           this.resizeGroup.move(header.get('x'), header.get('y'));
-          this.draw();
         }
       }
     });
@@ -240,7 +239,6 @@ export class RowColResize extends BaseInteraction {
           });
         }
         cellEndBorder.attr('path', [start, end]);
-        this.draw();
       }
     }
   };

@@ -57,8 +57,6 @@ export class RowColumnClick extends BaseEvent {
 
         this.interaction.updateCellStyleByState();
         this.interaction.upDatePanelAllCellsStyle();
-        this.interaction.showInteractionMask();
-        this.draw();
       }
     });
   }
@@ -102,8 +100,6 @@ export class RowColumnClick extends BaseEvent {
 
         this.interaction.updateCellStyleByState();
         this.interaction.upDatePanelAllCellsStyle();
-        this.interaction.showInteractionMask();
-        this.draw();
       }
     });
   }
