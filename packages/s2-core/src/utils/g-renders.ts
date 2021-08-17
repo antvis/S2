@@ -4,7 +4,7 @@
  */
 import { TextTheme } from '@/common/interface/theme';
 import { Group, IShape, ShapeAttrs } from '@antv/g-canvas';
-import _ from 'lodash';
+import { forEach, isEmpty, set } from 'lodash';
 
 export function renderRect(group: Group, attrs: ShapeAttrs): IShape {
   return group?.addShape?.('rect', {
@@ -28,8 +28,8 @@ export function renderText(
   group: Group,
   extraStyle?: any,
 ): IShape {
-  if (!_.isEmpty(shapes) && group) {
-    _.forEach(shapes, (shape: IShape) => {
+  if (!isEmpty(shapes) && group) {
+    forEach(shapes, (shape: IShape) => {
       if (group.contain(shape)) group.removeChild(shape, true);
     });
   }
@@ -67,12 +67,12 @@ export function renderLine(
   });
 }
 
-export function updateShapeAttr(
+export function updateShapeAttr<K extends keyof ShapeAttrs>(
   shape: IShape,
-  attribute: keyof ShapeAttrs,
-  value: ShapeAttrs[keyof ShapeAttrs],
+  attribute: K,
+  value: ShapeAttrs[K],
 ) {
   if (shape) {
-    _.set(shape, `attrs.${attribute}`, value);
+    set(shape, `attrs.${attribute}`, value);
   }
 }
