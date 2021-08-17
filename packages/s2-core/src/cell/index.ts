@@ -4,12 +4,12 @@ import { CornerCell } from './corner-cell';
 import { DataCell } from './data-cell';
 import { MergedCells } from './merged-cells';
 import { RowCell } from './row-cell';
-import { DetailRowCell } from './detail-row-cell';
+import { DetailDataCell } from './detail-data-cell';
 import { DetailColCell } from './detail-col-cell';
 
 export {
   DetailColCell,
-  DetailRowCell,
+  DetailDataCell,
   RowCell,
   ColCell,
   DataCell,

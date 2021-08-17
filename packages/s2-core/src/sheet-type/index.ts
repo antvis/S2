@@ -1,4 +1,4 @@
-import { BaseCell, DataCell, DetailRowCell } from '@/cell';
+import { BaseCell, DataCell, DetailDataCell } from '@/cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -465,7 +465,7 @@ export class SpreadSheet extends EE {
         this.options.showSeriesNumber &&
         facet.colIndex === 0
       ) {
-        return new DetailRowCell(facet, this);
+        return new DetailDataCell(facet, this);
       }
       return new DataCell(facet, this);
     };

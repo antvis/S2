@@ -3,7 +3,7 @@ import { DataCell } from 'src/cell/data-cell';
 import { renderText } from '../utils/g-renders';
 import { isMobile } from '../utils/is-mobile';
 import { getEllipsisText, getTextPosition } from '../utils/text';
-export class DetailRowCell extends DataCell {
+export class DetailDataCell extends DataCell {
   protected drawTextShape() {
     const { x, y, height, width } = this.getContentAreaBBox();
     const { formattedValue: text } = this.getData();
