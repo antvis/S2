@@ -16,10 +16,10 @@ import { BaseEvent } from '../base-event';
 
 export class DataCellClick extends BaseEvent {
   protected bindEvents() {
-    this.onDataCellClick();
+    this.bindDataCellClick();
   }
 
-  private onDataCellClick() {
+  private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
       if (

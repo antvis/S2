@@ -70,13 +70,13 @@ export class DataCell extends BaseCell<ViewMeta> {
   protected handleSelect(cells: S2CellType[]) {
     const currentCellType = cells?.[0]?.cellType;
     switch (currentCellType) {
-      // 列刷选
+      // 列多选
       case CellTypes.COL_CELL:
-        this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
+        this.changeRowColSelectState('colIndex', cells);
         break;
-      // 行刷选
+      // 行多选
       case CellTypes.ROW_CELL:
-        this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
+        this.changeRowColSelectState('rowIndex', cells);
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
@@ -517,16 +517,20 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  // dataCell根据state 改变当前样式，
-  private changeCellStyleByState(
+  /**
+   * @description change the state style for column selection or row selection
+   * @param index colIndex / rowIndex
+   */
+  private changeRowColSelectState(
     index: 'colIndex' | 'rowIndex',
-    stateName: InteractionStateName,
+    cells: S2CellType[],
   ) {
-    const cells = this.spreadsheet.interaction.getActiveCells();
     const currentIndex = get(this.meta, index);
     const selectedIndexes = map(cells, (cell) => get(cell?.getMeta(), index));
     if (includes(selectedIndexes, currentIndex)) {
-      this.updateByState(stateName);
+      this.updateByState(InteractionStateName.SELECTED);
+    } else if (this.spreadsheet.options.selectedCellsSpotlight) {
+      this.updateByState(InteractionStateName.UNSELECTED);
     } else {
       this.hideInteractionShape();
     }

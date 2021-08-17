@@ -14,93 +14,53 @@ export class RowColumnClick extends BaseEvent {
     this.bindResetSheetStyle();
   }
 
+  private handleRowColClick(ev: Event) {
+    if (this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)) {
+      return;
+    }
+    const cell = this.spreadsheet.getCell(ev.target);
+    const meta = cell.getMeta() as Node;
+    if (meta.x !== undefined) {
+      const idx = meta.colIndex;
+      this.interaction.clearState();
+      this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
+      if (idx === -1) {
+        // 多列
+        const leafNodes = Node.getAllLeavesOfNode(meta);
+        console.log(leafNodes);
+        const selectedCells: S2CellType[] = [];
+        each(leafNodes, (node: Node) => {
+          if (node.belongsCell) {
+            selectedCells.push(node.belongsCell);
+          }
+        });
+        this.interaction.changeState(
+          selectedCells,
+          InteractionStateName.SELECTED,
+        );
+      } else {
+        // 单列
+        this.interaction.changeState([cell], InteractionStateName.SELECTED);
+      }
+
+      const cellInfos = this.interaction.isSelectedState()
+        ? this.mergeCellInfo(this.interaction.getActiveCells())
+        : [];
+
+      if (this.spreadsheet.options.valueInCols) {
+        this.handleTooltip(ev, meta, cellInfos);
+      }
+    }
+  }
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (ev: Event) => {
-      if (
-        this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)
-      ) {
-        return;
-      }
-      const cell = this.spreadsheet.getCell(ev.target);
-      let cellInfos = [];
-      if (cell.getMeta().x !== undefined) {
-        const meta = cell.getMeta() as Node;
-        const idx = meta.colIndex;
-        this.interaction.clearState();
-        this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
-        if (idx === -1) {
-          // 多行
-          each(Node.getAllLeavesOfNode(meta), (node: Node) => {
-            // 如果
-            if (node.belongsCell) {
-              this.interaction.setState(
-                node.belongsCell as S2CellType,
-                InteractionStateName.SELECTED,
-              );
-            }
-          });
-        } else {
-          // 单行
-          this.interaction.setState(cell, InteractionStateName.SELECTED);
-        }
-
-        const currentState = this.interaction.getState();
-        const stateName = currentState?.stateName;
-        const cells = currentState?.cells;
-        if (stateName === InteractionStateName.SELECTED) {
-          cellInfos = this.mergeCellInfo(cells);
-        }
-
-        if (!this.spreadsheet.options.valueInCols) {
-          this.handleTooltip(ev, meta, cellInfos);
-        }
-
-        this.interaction.updateCellStyleByState();
-        this.interaction.updatePanelGroupAllDataCellsStyle();
-      }
+      this.handleRowColClick(ev);
     });
   }
 
   private bindColCellClick() {
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (ev: Event) => {
-      if (
-        this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)
-      ) {
-        return;
-      }
-      const cell = this.spreadsheet.getCell(ev.target);
-      const meta = cell.getMeta() as Node;
-      if (meta.x !== undefined) {
-        const idx = meta.colIndex;
-        this.interaction.clearState();
-        this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
-        if (idx === -1) {
-          // 多列
-          const leafNodes = Node.getAllLeavesOfNode(meta);
-          each(leafNodes, (node: Node) => {
-            if (node.belongsCell) {
-              this.interaction.setState(
-                node.belongsCell as S2CellType,
-                InteractionStateName.SELECTED,
-              );
-            }
-          });
-        } else {
-          // 单列
-          this.interaction.setState(cell, InteractionStateName.SELECTED);
-        }
-
-        const cellInfos = this.interaction.isSelectedState()
-          ? this.mergeCellInfo(this.interaction.getActiveCells())
-          : [];
-
-        if (this.spreadsheet.options.valueInCols) {
-          this.handleTooltip(ev, meta, cellInfos);
-        }
-
-        this.interaction.updateCellStyleByState();
-        this.interaction.updatePanelGroupAllDataCellsStyle();
-      }
+      this.handleRowColClick(ev);
     });
   }
 
