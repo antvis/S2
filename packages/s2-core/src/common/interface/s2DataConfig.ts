@@ -55,7 +55,6 @@ export const defaultDataConfig = {
     rows: [],
     columns: [],
     values: [],
-    derivedValues: [],
     customTreeItems: [],
     valueInCols: true,
   },

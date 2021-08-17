@@ -1,5 +1,5 @@
-import { paletteDefault } from '../../theme/palette/default';
 import { paletteColorfulBlue } from '../../theme/palette/colorful-blue';
+import { paletteDefault } from '../../theme/palette/default';
 import { paletteSimpleBlue } from '../../theme/palette/simple-blue';
 import { Palette } from '../interface';
 
@@ -26,3 +26,7 @@ export const STRATEGY_PADDING = 8; // 各种padding 左右和元素边界
 export const STRATEGY_ICON_WIDTH = 10; // 三角icon 宽度
 // color
 export const COLOR_DEFAULT_RESIZER = 'rgba(33,33,33,0)';
+
+// default condition's icon
+export const UP_ICON = 'CellUp';
+export const DOWN_ICON = 'CellDown';

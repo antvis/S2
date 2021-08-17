@@ -1,4 +1,8 @@
+import { Checkbox, Radio, Space, Switch } from 'antd';
+import 'antd/dist/antd.min.css';
 import { merge } from 'lodash';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import {
   S2DataConfig,
@@ -7,14 +11,9 @@ import {
   SpreadSheet,
   ThemeName,
 } from '../../../src';
-import { getContainer } from '../../util/helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
-import { Switch, Checkbox, Space, Radio } from 'antd';
-import { CustomTooltip } from '../../spreadsheet/custom/custom-tooltip';
 import * as dataCfg from '../../data/demo-value-record.json';
-
-import 'antd/dist/antd.min.css';
+import { CustomTooltip } from '../../spreadsheet/custom/custom-tooltip';
+import { getContainer } from '../../util/helpers';
 
 interface MainLayoutProps {
   dataCfg: S2DataConfig;
@@ -43,6 +42,7 @@ const getOptions = () => {
     showSeriesNumber: false,
     freezeRowHeader: true,
     mode: 'pivot',
+    useDefaultConditionValues: ['price'],
     conditions: {
       text: [],
       interval: [],

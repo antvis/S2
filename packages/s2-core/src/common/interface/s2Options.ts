@@ -5,6 +5,7 @@ import {
   CustomHeaderCells,
   DataCellCallback,
   FrameCallback,
+  MappingDataItemCallback,
   MergedCellInfo,
   NodeField,
   Pagination,
@@ -24,6 +25,7 @@ import { merge } from 'lodash';
 import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
 import { BaseDataSet } from 'src/data-set';
 import { SpreadSheet } from 'src/sheet-type';
+import { FilterDataItemCallback } from './basic';
 
 export interface S2Options {
   // canvas's width
@@ -36,6 +38,8 @@ export interface S2Options {
   readonly debug?: boolean;
   // row header hierarchy type only work in pivot mode
   readonly hierarchyType?: 'grid' | 'tree' | 'customTree';
+  // 兜底以前的衍生指标概念
+  readonly useDefaultConditionValues?: string[];
   // conditions config
   readonly conditions?: Conditions;
   // total config
@@ -60,6 +64,7 @@ export interface S2Options {
   readonly rowActionIcons?: RowActionIcons;
   // extra styles
   readonly style?: Partial<Style>;
+
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
   readonly dataCell?: DataCellCallback;
@@ -93,9 +98,16 @@ export interface S2Options {
   layoutCoordinate?: LayoutCoordinate;
   // determine the data of cells in Cartesian coordinates
   layoutDataPosition?: LayoutDataPosition;
+
+  /** ***********CUSTOM DATA CELL RENDER HOOKS**************** */
+  // determine the display part of multiple data item
+  filterDisplayDataItem?: FilterDataItemCallback;
+  // determine data mapping when shows in tooltip
+  mappingDisplayDataItem?: MappingDataItemCallback;
   // Focus selected cell, like the spotlight
   selectedCellsSpotlight?: boolean;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
+
   // extra options if needed
   [key: string]: any;
 }
@@ -125,7 +137,6 @@ export const defaultStyle = {
     colWidthType: 'adaptive',
     totalSample: 10,
     detailSample: 30,
-    showDerivedIcon: true,
     maxSampleIndex: 1,
   },
   device: 'pc',
@@ -145,7 +156,6 @@ export const defaultOptions = {
   showSeriesNumber: false,
   scrollReachNodeField: {},
   hideRowColFields: [],
-  valueInCols: true,
   customHeaderCells: null,
   rowActionIcons: null,
   style: defaultStyle,

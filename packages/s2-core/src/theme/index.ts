@@ -1,7 +1,7 @@
-import { SpreadSheetTheme, Palette, ThemeCfg } from '../common/interface';
+import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
+import { Palette, SpreadSheetTheme, ThemeCfg } from '../common/interface';
 import { isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
-import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
 
 /**
  * @describe generate the theme according to the type
@@ -262,7 +262,7 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
         size: 10,
         margin: {
           right: 4,
-          left: 0,
+          left: 4,
         },
       },
     },
