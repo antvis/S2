@@ -1,6 +1,7 @@
 import { DefaultInterceptEventType, S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { S2CellBrushRange } from '@/common/interface';
+import { updateShapeAttr } from '@/utils/g-renders';
 import { Event, IShape, Point } from '@antv/g-canvas';
 import { each, find, isEmpty, isEqual, get } from 'lodash';
 import { DataCell } from '../cell';
@@ -13,7 +14,7 @@ import {
 import { getTooltipData } from '../utils/tooltip';
 import { BaseInteraction } from './base';
 
-function getBrushRegion(p1, p2): S2CellBrushRange {
+function getBrushRegion(p1: Point, p2: Point): S2CellBrushRange {
   const leftX = Math.min(p1.x, p2.x);
   const rightX = Math.max(p1.x, p2.x);
   const topY = Math.min(p1.y, p2.y);
@@ -24,7 +25,10 @@ function getBrushRegion(p1, p2): S2CellBrushRange {
   return { leftX, rightX, topY, bottomY, width, height };
 }
 
-function isInRegion(cellRegion, brushRegion) {
+function isInRegion(
+  cellRegion: S2CellBrushRange,
+  brushRegion: S2CellBrushRange,
+) {
   const cellCenterX = (cellRegion.leftX + cellRegion.rightX) / 2;
   const cellCenterY = (cellRegion.topY + cellRegion.bottomY) / 2;
   const regionCenterX = (brushRegion.leftX + brushRegion.rightX) / 2;
@@ -68,6 +72,10 @@ export class BrushSelection extends BaseInteraction {
     this.bindMouseUp();
   }
 
+  private getPrepareSelectMaskTheme() {
+    return get(this.spreadsheet, 'theme.prepareSelectMask');
+  }
+
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
       const oe = ev.originalEvent as any;
@@ -81,7 +89,6 @@ export class BrushSelection extends BaseInteraction {
           y: this.previousPoint.y,
           width: 0,
           height: 0,
-          opacity: 0.3,
         });
       }
       this.phase = 1;
@@ -104,6 +111,7 @@ export class BrushSelection extends BaseInteraction {
           y: brushRegion.topY,
           width: brushRegion.width,
           height: brushRegion.height,
+          fillOpacity: this.getPrepareSelectMaskTheme()?.backgroundOpacity,
         });
 
         this.interaction.clearStyleIndependent();
@@ -163,7 +171,7 @@ export class BrushSelection extends BaseInteraction {
         this.getSelectedCells(brushRegion);
         // 透明度为0会导致 hover 无法响应
         this.regionShape.attr({
-          opacity: 0,
+          fillOpacity: 0,
         });
 
         const cells = this.interaction.getActiveCells();
@@ -210,14 +218,15 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private createRegionShape() {
+    const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
     return this.spreadsheet.foregroundGroup.addShape('rect', {
       attrs: {
         width: 0,
         height: 0,
         x: this.previousPoint.x,
         y: this.previousPoint.y,
-        fill: get(this.spreadsheet, 'theme.dataCell.cell.prepareSelect'),
-        opacity: 0.3,
+        fill: prepareSelectMaskTheme?.backgroundColor,
+        fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
         zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX,
       },
       capture: false,

@@ -153,6 +153,8 @@ export interface SpreadSheetTheme {
   scrollBar?: ScrollBarTheme;
   /* 分割线样式 */
   splitLine?: SplitLine;
+  /* 刷选遮罩 */
+  prepareSelectMask?: InteractionStateTheme;
   /* 额外属性字段 */
   [key: string]: any;
 }

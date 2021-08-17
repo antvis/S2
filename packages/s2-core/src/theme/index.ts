@@ -243,8 +243,6 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         selected: {
           backgroundColor: brandColors[2],
           backgroundOpacity: 1,
-          borderColor: grayColors[6],
-          borderOpacity: 1,
         },
         // -------------- unselected -------------------
         unselected: {
@@ -253,8 +251,8 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         },
         // -------------- prepareSelect --------------
         prepareSelect: {
-          borderColor: brandColors[3],
-          backgroundColor: brandColors[2],
+          borderColor: grayColors[6],
+          borderOpacity: 1,
         },
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
@@ -293,6 +291,11 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         left: 'rgba(0,0,0,0.1)',
         right: 'rgba(0,0,0,0)',
       },
+    },
+    // ------------- prepareSelectMask -----------------
+    prepareSelectMask: {
+      backgroundColor: brandColors[6],
+      backgroundOpacity: 0.3,
     },
   } as SpreadSheetTheme;
 };

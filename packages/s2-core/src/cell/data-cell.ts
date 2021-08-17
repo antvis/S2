@@ -57,6 +57,12 @@ export class DataCell extends BaseCell<ViewMeta> {
     super(meta, spreadsheet);
   }
 
+  protected handlePrepareSelect(cells: S2CellType[]) {
+    if (includes(cells, this)) {
+      this.updateByState(InteractionStateName.PREPARE_SELECT);
+    }
+  }
+
   protected handleSelect(cells: S2CellType[]) {
     const currentCellType = cells?.[0]?.cellType;
     switch (currentCellType) {
@@ -111,6 +117,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
 
     switch (stateName) {
+      case InteractionStateName.PREPARE_SELECT:
+        this.handlePrepareSelect(cells);
+        break;
       case InteractionStateName.SELECTED:
         this.handleSelect(cells);
         break;

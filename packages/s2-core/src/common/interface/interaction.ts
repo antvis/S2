@@ -30,6 +30,6 @@ export interface S2CellBrushRange {
   topY: number;
   rightX: number;
   bottomY: number;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
