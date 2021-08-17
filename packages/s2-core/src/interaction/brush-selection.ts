@@ -80,7 +80,7 @@ export class BrushSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
       const oe = ev.originalEvent as any;
       this.previousPoint = { x: oe.layerX, y: oe.layerY };
-      this.cells = this.interaction.getPanelAllDataCells();
+      this.cells = this.interaction.getPanelGroupAllDataCells();
       if (!this.regionShape) {
         this.regionShape = this.createRegionShape();
       } else {

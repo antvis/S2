@@ -1,13 +1,13 @@
-import { SpreadSheetTheme, Palette, ThemeCfg } from '../common/interface';
+import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
+import { Palette, SpreadSheetTheme, ThemeCfg } from '../common/interface';
 import { isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
-import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
 
 /**
  * @describe generate the theme according to the type
  * @param  name
  */
-export const getTheme = (themeCfg: ThemeCfg) => {
+export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
   const themePalette: Palette =
     themeCfg?.palette || getPalette(themeCfg?.name, themeCfg?.hueInvert);
   const { brandColors, grayColors, semanticColors } = themePalette;
@@ -249,10 +249,14 @@ export const getTheme = (themeCfg: ThemeCfg) => {
           backgroundOpacity: 0.3,
           textOpacity: 0.3,
         },
-        // -------------- prepareSelect --------------
+        // -------------- prepare select --------------
         prepareSelect: {
           borderColor: grayColors[6],
           borderOpacity: 1,
+        },
+        // -------------- out of spotlight --------------
+        outOfTheSpotlight: {
+          opacity: 0.3,
         },
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
@@ -265,7 +269,7 @@ export const getTheme = (themeCfg: ThemeCfg) => {
         size: 10,
         margin: {
           right: 4,
-          left: 0,
+          left: 4,
         },
       },
     },

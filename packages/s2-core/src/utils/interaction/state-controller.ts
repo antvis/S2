@@ -1,14 +1,14 @@
 import { InteractionStateName } from '@/common/constant';
 import { S2CellType } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
-import { isEmpty, forEach, includes } from 'lodash';
+import { forEach, includes, isEmpty } from 'lodash';
 
 /**
  * @desc clear the interaction state information
  * @param spreadsheet sheet instance
  */
 export const clearState = (spreadsheet: SpreadSheet) => {
-  const allCells = spreadsheet.interaction.getPanelAllDataCells();
+  const allCells = spreadsheet.interaction.getPanelGroupAllDataCells();
   if (!isEmpty(allCells)) {
     forEach(allCells, (cell: S2CellType) => {
       cell.hideInteractionShape();
@@ -17,7 +17,7 @@ export const clearState = (spreadsheet: SpreadSheet) => {
   spreadsheet.store.set('interactionStateInfo', {});
   if (spreadsheet.options.selectedCellsSpotlight) {
     const unSelectedCells =
-      spreadsheet.interaction.getPanelAllUnSelectedDataCells() || [];
+      spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
     unSelectedCells.forEach((cell) => {
       cell.clearUnselectedState();
     });
@@ -34,8 +34,7 @@ export const setState = (
   stateName: InteractionStateName,
   spreadsheet: SpreadSheet,
 ) => {
-  const stateInfo = spreadsheet.store.get('interactionStateInfo');
-  if (stateName !== stateInfo?.stateName) {
+  if (!spreadsheet.interaction.isEqualStateName(stateName)) {
     // There can only be one state in the table. When the stateName is inconsistent with the state in the stateInfo, the previously stored state should be cleared.
     clearState(spreadsheet);
     spreadsheet.hideTooltip();
@@ -44,10 +43,7 @@ export const setState = (
       cells: [cell],
     };
     spreadsheet.store.set('interactionStateInfo', stateStore);
-  } else {
-    const currentStateCells = stateInfo?.cells;
-    if (!includes(currentStateCells, cell)) {
-      currentStateCells.push(cell);
-    }
+  } else if (!includes(spreadsheet.interaction.getActiveCells(), cell)) {
+    spreadsheet.interaction.addActiveCells([cell]);
   }
 };

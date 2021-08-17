@@ -6,7 +6,7 @@ import {
   ColRowMultiSelection,
   DataCellMultiSelection,
   RowColResize,
-} from '.';
+} from './';
 import {
   BaseEvent,
   CornerTextClick,
@@ -16,13 +16,15 @@ import {
   EventNames,
   HoverEvent,
   InteractionNames,
+  InteractionStateInfo,
   InteractionStateName,
+  INTERACTION_STATE_INFO_KEY,
   MergedCellsClick,
   RowColumnClick,
   RowTextClick,
   S2CellType,
   SpreadSheet,
-} from '..';
+} from '@/index';
 import { BaseInteraction } from './base';
 import { EventController } from './events/event-controller';
 
@@ -42,6 +44,8 @@ export class RootInteraction {
 
   public eventController: EventController;
 
+  private defaultState: InteractionStateInfo = {};
+
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.registerEventController();
@@ -54,16 +58,27 @@ export class RootInteraction {
     setState(cell, stateName, this.spreadsheet);
   }
 
-  public getCurrentState() {
-    return this.spreadsheet.store.get('interactionStateInfo') || {};
+  public getState() {
+    return (
+      this.spreadsheet.store.get(INTERACTION_STATE_INFO_KEY) ||
+      this.defaultState
+    );
+  }
+
+  public resetState() {
+    this.spreadsheet.store.set(INTERACTION_STATE_INFO_KEY, this.defaultState);
   }
 
   public getCurrentStateName() {
-    return this.getCurrentState()?.stateName;
+    return this.getState().stateName;
+  }
+
+  public isEqualStateName(stateName: InteractionStateName) {
+    return this.getCurrentStateName() === stateName;
   }
 
   public isSelectedState() {
-    const currentState = this.getCurrentState();
+    const currentState = this.getState();
     return currentState?.stateName === InteractionStateName.SELECTED;
   }
 
@@ -72,7 +87,7 @@ export class RootInteraction {
   }
 
   public getActiveCells() {
-    const currentState = this.getCurrentState();
+    const currentState = this.getState();
     return currentState?.cells || [];
   }
 
@@ -80,25 +95,9 @@ export class RootInteraction {
     return !isEmpty(this.getActiveCells());
   }
 
-  // /**
-  //  * @description update states of those unselected cells
-  //  */
-  // public updateSelectedCells() {
-  //   this.getActiveCells().forEach((cell) => {
-  //     cell.update();
-  //   });
-  // }
-
-  // /**
-  //  * @description update states of those selected cells
-  //  */
-  // public updateUnSelectedCells() {
-  //   if (this.spreadsheet.options.selectedCellsSpotlight) {
-  //     this.getPanelAllUnSelectedDataCells().forEach((cell) => {
-  //       cell.update();
-  //     });
-  //   }
-  // }
+  public addActiveCells(cells: S2CellType[] = []) {
+    this.getActiveCells().push(...cells);
+  }
 
   public updateCellStyleByState() {
     const cells = this.getActiveCells();
@@ -108,45 +107,34 @@ export class RootInteraction {
   }
 
   public clearStyleIndependent() {
-    const currentState = this.getCurrentState();
+    const currentState = this.getState();
     if (
       currentState?.stateName === InteractionStateName.SELECTED ||
       currentState?.stateName === InteractionStateName.HOVER
     ) {
-      this.getPanelAllDataCells().forEach((cell) => {
+      this.getPanelGroupAllDataCells().forEach((cell) => {
         cell.hideInteractionShape();
       });
     }
   }
 
-  public upDatePanelAllCellsStyle() {
-    this.getPanelAllDataCells().forEach((cell) => {
+  public updatePanelGroupAllDataCellsStyle() {
+    this.getPanelGroupAllDataCells().forEach((cell) => {
       cell.update();
     });
   }
 
-  public getPanelAllUnSelectedDataCells() {
-    return this.getPanelAllDataCells().filter(
+  public getPanelGroupAllUnSelectedDataCells() {
+    return this.getPanelGroupAllDataCells().filter(
       (cell) => !this.getActiveCells().includes(cell),
     );
   }
 
-  /**
-   * Get all panel group cells
-   * @param callback to handle each cell if needed
-   */
-  public getPanelAllDataCells(callback?: (cell: DataCell) => void): DataCell[] {
+  public getPanelGroupAllDataCells(): DataCell[] {
     const children = this.spreadsheet.panelGroup.getChildren();
-    const cells: DataCell[] = [];
-    children.forEach((child) => {
-      if (child instanceof DataCell) {
-        cells.push(child);
-        if (callback) {
-          callback(child);
-        }
-      }
-    });
-    return cells;
+    return (
+      (children.filter((cell) => cell instanceof DataCell) as DataCell[]) || []
+    );
   }
 
   /**
@@ -188,7 +176,6 @@ export class RootInteraction {
 
   public clearState() {
     clearState(this.spreadsheet);
-    // this.upDatePanelAllCellsStyle();
     this.draw();
   }
 
@@ -198,10 +185,15 @@ export class RootInteraction {
       cells.forEach((cell) => {
         this.setState(cell, stateName);
       });
-      // this.updateCellStyleByState();
       this.upDatePanelAllCellsStyle();
       this.draw();
     }
+  }
+  upDatePanelAllCellsStyle() {
+    const cells = this.getPanelGroupAllDataCells();
+    cells.forEach((cell: DataCell) => {
+      cell.update();
+    });
   }
 
   // 注册事件

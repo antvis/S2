@@ -1,3 +1,4 @@
+import { Group } from '@antv/g-canvas';
 import _ from 'lodash';
 import { SpreadSheet } from '../..';
 import { S2CellType } from '../../common/interface';

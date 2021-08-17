@@ -46,7 +46,7 @@ export class DataCellClick extends BaseEvent {
   }
 
   private showTooltip(event: Event, meta: ViewMeta) {
-    const currentCellMeta: Record<string, unknown> = get(meta, 'data.0');
+    const currentCellMeta: Record<string, unknown> = get(meta, 'data');
     const isTotals = get(meta, 'isTotals', false);
     if (isTotals) {
       return;

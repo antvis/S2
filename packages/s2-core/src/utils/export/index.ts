@@ -94,7 +94,8 @@ const processValueInRow = (
   isFormat?: boolean,
 ): string => {
   const tempCell = [];
-  const { derivedValues } = sheetInstance.dataCfg.fields;
+  // TODO: 处理derivedValues
+  const derivedValues = [];
   const derivedValue = head(derivedValues);
   if (viewMeta) {
     const { data, fieldValue, valueField } = viewMeta;
@@ -106,7 +107,7 @@ const processValueInRow = (
       tempCell.push(mainFormatter(fieldValue));
     }
 
-    const currentDV = sheetInstance.getDerivedValue(valueField);
+    const currentDV = { derivedValueField: [] };
     if (currentDV && !isEmpty(currentDV.derivedValueField)) {
       // When the derivedValue under the dimensions.
       for (const dv of currentDV.derivedValueField) {
@@ -143,8 +144,12 @@ export const copyData = (
   split: string,
   isFormat?: boolean,
 ): string => {
-  const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
-    sheetInstance?.facet?.layoutResult;
+  const {
+    rowsHierarchy,
+    rowLeafNodes,
+    colLeafNodes,
+    getCellMeta,
+  } = sheetInstance?.facet?.layoutResult;
   const { valueInCols } = sheetInstance.options;
   const rows = clone(rowsHierarchy?.rows);
 

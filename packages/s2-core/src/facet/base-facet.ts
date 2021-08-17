@@ -440,7 +440,7 @@ export abstract class BaseFacet {
       maxY: br.y + height,
       minX: br.x,
       minY: br.y,
-    };
+    } as BBox;
 
     this.spreadsheet.store.set('panelBBox', this.panelBBox);
   };

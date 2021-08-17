@@ -41,3 +41,5 @@ export const SHAPE_ATTRS_MAP = {
   backgroundShape: ['backgroundOpacity'],
   textShape: ['textOpacity'],
 };
+
+export const INTERACTION_STATE_INFO_KEY = 'interactionStateInfo';

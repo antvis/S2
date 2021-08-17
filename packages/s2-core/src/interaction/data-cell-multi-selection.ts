@@ -42,7 +42,7 @@ export class DataCellMultiSelection extends BaseInteraction {
       const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
       const meta = cell.getMeta();
       if (this.isMultiSelection && meta) {
-        const currentState = this.interaction.getCurrentState();
+        const currentState = this.interaction.getState();
         const stateName = currentState?.stateName;
         const cells = currentState?.cells;
         this.interaction.clearStyleIndependent();

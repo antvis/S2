@@ -48,7 +48,7 @@ export const getTwoDimData = (cells: S2CellType[]) => {
 };
 
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
-  const { cells } = spreadsheet.getCurrentState();
+  const cells = spreadsheet.interaction.getActiveCells();
   const data = processCopyData(getTwoDimData(cells));
   if (data) {
     copyToClipboard(data);

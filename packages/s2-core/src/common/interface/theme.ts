@@ -27,6 +27,7 @@ export interface InteractionStateTheme {
   backgroundColor?: string;
   borderColor?: string;
   borderWidth?: number;
+  opacity?: string | number;
 }
 
 export type Margin = Padding;
@@ -72,6 +73,8 @@ export interface CellTheme {
   prepareSelect?: InteractionStateTheme;
   /* 单元格内条件格式-迷你条形图高度 */
   miniBarChartHeight?: number;
+  /* 聚光灯之外的单元格 */
+  outOfTheSpotlight?: InteractionStateTheme;
   /* 额外属性字段 */
   [key: string]: any;
 }
@@ -138,6 +141,7 @@ export interface DefaultCellTheme {
   cell?: CellTheme;
   /* 图标样式 */
   icon?: IconTheme;
+  seriesNumberWidth?: number;
 }
 
 export interface SpreadSheetTheme {

@@ -1,26 +1,20 @@
-import { Group } from '@antv/g-canvas';
-import {
-  Hierarchy,
-  SpreadSheet,
-  Node,
-  TextAlign,
-  TextBaseline,
-  S2Options,
-} from '@/index';
 import { CustomTreeItem } from '@/common/interface';
-import { BaseDataSet } from 'src/data-set';
-import { Frame } from 'src/facet/header';
-import { BaseTooltip } from '../tooltip';
-import { DataItem, S2DataConfig } from './s2DataConfig';
-import { Padding } from '../interface/theme';
-import { CustomInteraction } from './interaction';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
-  LayoutArrange,
-  LayoutCoordinate,
-  LayoutDataPosition,
-  LayoutHierarchy,
-} from '@/common/interface/hooks';
+  Hierarchy,
+  Node,
+  S2Options,
+  SpreadSheet,
+  TextAlign,
+  TextBaseline,
+} from '@/index';
+import { BaseDataSet } from 'src/data-set';
+import { Frame } from 'src/facet/header';
+import { Padding } from '../interface/theme';
+import { BaseTooltip } from '../tooltip';
+import { DataItem, S2DataConfig } from './s2DataConfig';
+import { S2CellType } from './interaction';
+import { IconTheme } from './theme';
 
 export type Formatter = (v: unknown) => string;
 
@@ -37,11 +31,32 @@ export interface Meta {
   readonly aggregation?: Aggregation;
 }
 
-export interface DerivedValue {
-  // which value that derived values belong to
-  valueField: string;
-  // value's derived value fields
-  derivedValueField: string[];
+/**
+ * Strategy mode's value type
+ * data's key size must be equals fields.length
+ * value can be empty
+ * FieldC(Last fields is real value field)
+ * example:
+ * {
+ *   fields: [fieldA, fieldB, fieldC],
+ *   data: [
+ *   {
+ *     fieldA: 'valueA',
+ *     fieldB: 'valueB',
+ *     fieldC: 'valueC',
+ *   }
+ *   {
+ *     fieldA: 'valueA',
+ *     fieldB: '',
+ *     fieldC: 'valueC',
+ *   }
+ *   ]
+ * }
+ */
+export interface Extra {
+  key: string;
+  collapse: boolean;
+  remark: string;
 }
 
 export interface Fields {
@@ -53,8 +68,6 @@ export interface Fields {
   columns?: string[];
   // value fields
   values?: string[];
-  // derived values
-  derivedValues?: DerivedValue[];
   // measure values in cols as new col, only works in 'pivot' mode
   valueInCols?: boolean;
 }
@@ -83,11 +96,19 @@ export interface Condition {
   readonly mapping: MappingFunction;
 }
 
+type IconPosition = 'left' | 'right';
+export interface IconCondition extends Condition {
+  readonly iconPosition?: IconPosition; // right by default
+}
+
+export type IconCfg = Pick<IconTheme, 'size' | 'margin'> &
+  Pick<IconCondition, 'iconPosition'>;
+
 export interface Conditions {
   readonly text?: Condition[];
   readonly background?: Condition[];
   readonly interval?: Condition[];
-  readonly icon?: Condition[];
+  readonly icon?: IconCondition[];
 }
 
 export interface Total {
@@ -222,18 +243,18 @@ export type CellCallback = (
   node: Node,
   spreadsheet: SpreadSheet,
   ...restOptions
-) => Group;
+) => S2CellType;
 
 export type TooltipCallback = (
   spreadsheet: SpreadSheet,
   ...restOptions
 ) => BaseTooltip;
 
-export type DataCellCallback = (viewMeta: ViewMeta) => Group;
+export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
 // TODO 类型定义清楚！！
 export type FrameCallback = (cfg: any) => Frame;
 export type CornerHeaderCallback = (
-  parent: Group,
+  parent: S2CellType,
   spreadsheet: SpreadSheet,
   ...restOptions
 ) => void;
@@ -276,8 +297,6 @@ export interface ColCfg {
   // 列宽计算小计，明细数据采样的个数
   totalSample?: number;
   detailSample?: number;
-  // 列显示衍生指标icon
-  showDerivedIcon?: boolean;
   // 列宽取计算的第几个最大值
   maxSampleIndex?: number;
 }
@@ -301,67 +320,28 @@ export interface MergedCellInfo {
   showText?: boolean;
 }
 
+export type FilterDataItemCallback = (
+  valueField: string,
+  data: DataItem,
+) => DataItem;
+
+export type MappingDataItemCallback = (
+  valueField: string,
+  data: DataItem,
+) => Record<string, string | number> | DataItem;
 /**
  * Spreadsheet facet config
  */
-export interface SpreadSheetFacetCfg {
+export interface SpreadSheetFacetCfg
+  extends Fields,
+    Omit<S2Options, 'dataSet'>,
+    Style {
   // spreadsheet interface
   spreadsheet: SpreadSheet;
   // data set of spreadsheet
   dataSet: BaseDataSet;
-  // columns fields
-  columns?: string[];
-  // rows fields
-  rows?: string[];
-  // values fields
-  values?: string[];
-  // 衍生指标
-  derivedValues?: DerivedValue[];
-  // cross-tab area's cell config
-  cellCfg?: CellCfg;
-  // row cell config
-  rowCfg?: RowCfg;
-  // column cell config
-  colCfg?: ColCfg;
-  // width/height of plot
-  width?: number;
-  height?: number;
-  // tree mode rows width
-  treeRowsWidth?: number;
-  // all collapsed rows(node id <=> isCollapse) -- only use in tree mode row header
-  collapsedRows?: Record<string, boolean>;
-  // use in col header
-  collapsedCols?: Record<string, boolean>;
-  // hierarchy' type
-  hierarchyType: S2Options['hierarchyType'];
-  // check if hierarchy is collapse
-  hierarchyCollapse?: boolean;
   // field's meta info
   meta?: Meta[];
-  // paginate config
-  pagination?: Pagination;
-  // born single cell's draw group
-  dataCell: DataCellCallback;
-  // 自定义cornerCell
-  cornerCell?: CellCallback;
-  // 自定义行头cell
-  rowCell?: CellCallback;
-  // 自定义列头cell
-  colCell?: CellCallback;
-  // 自定义 frame 边框 TODO 类型定义！！
-  frame?: FrameCallback;
-  // 角头可能需要全部自定义，而不是用交叉表概念的node来渲染
-  cornerHeader?: CornerHeaderCallback;
-  // determine what does row/column tree hierarchy look like
-  layoutHierarchy?: LayoutHierarchy;
-  // determine the order of each row/column tree branch
-  layoutArrange?: LayoutArrange;
-  // determine the location(x,y,width,height eg..) of every node
-  layoutCoordinate?: LayoutCoordinate;
-  // determine the data of cells in Cartesian coordinates
-  layoutDataPosition?: LayoutDataPosition;
-  // custom Interaction
-  customInteraction?: CustomInteraction[];
 }
 
 export interface ViewMeta {
@@ -375,7 +355,7 @@ export interface ViewMeta {
   // cell's height
   height: number;
   // cell origin data raws(multiple data)
-  data: Record<string, any>[];
+  data: Record<string, any>;
   // cell' row index (in rowLeafNodes)
   rowIndex: number;
   // cell' col index (in colLeafNodes)

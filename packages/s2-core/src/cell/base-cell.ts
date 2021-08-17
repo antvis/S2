@@ -4,10 +4,10 @@ import {
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
-import { SpreadSheetTheme } from '@/common/interface';
+import { InteractionStateTheme, SpreadSheetTheme } from '@/common/interface';
 import { Group, IShape } from '@antv/g-canvas';
 import { each, findKey, get, includes } from 'lodash';
-import type { SpreadSheet } from '../sheet-type';
+import { SpreadSheet } from '../sheet-type';
 import { updateShapeAttr } from '../utils/g-renders';
 
 export abstract class BaseCell<T> extends Group {

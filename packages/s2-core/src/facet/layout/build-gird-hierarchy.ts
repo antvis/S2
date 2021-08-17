@@ -1,4 +1,5 @@
-import { FileValue, GridHeaderParams } from '@/facet/layout/interface';
+import { TotalClass } from 'src/facet/layout/total-class';
+import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { layoutArrange } from '@/facet/layout/layout-hooks';
 import getDimsCondition from '@/facet/layout/util/get-dims-condition-by-node';
@@ -8,7 +9,7 @@ import { EXTRA_FIELD } from '@/common/constant';
 import { SpreadSheetFacetCfg } from '@/common/interface';
 
 const hideMeasureColumn = (
-  fieldValues: FileValue[],
+  fieldValues: FieldValue[],
   field: string,
   cfg: SpreadSheetFacetCfg,
 ) => {
@@ -37,7 +38,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
   } = params;
   const index = fields.indexOf(currentField);
   const { dataSet, values, spreadsheet } = facetCfg;
-  const fieldValues = [] as FileValue[];
+  const fieldValues = [] as FieldValue[];
   let query = {};
   if (parentNode.isTotals) {
     // add total measures
