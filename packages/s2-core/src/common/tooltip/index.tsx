@@ -1,12 +1,12 @@
 import {
   ListItem,
   TooltipData,
-  TooltipHeadInfo,
   TooltipOperatorOptions,
   TooltipOptions,
   TooltipPosition,
   TooltipShowOptions,
   TooltipSummaryOptions,
+  TooltipHeadInfo as TooltipHeadInfoType,
 } from '@/common/interface';
 import { isEmpty } from 'lodash';
 import * as React from 'react';
@@ -21,6 +21,7 @@ import {
 import { Aggregation } from '../interface';
 import TooltipDetail from './components/detail';
 import Divider from './components/divider';
+import TooltipHeadInfo from './components/head-info';
 import Infos from './components/infos';
 import Interpretation from './components/interpretation';
 import TooltipOperator from './components/operator';
@@ -141,7 +142,7 @@ export class BaseTooltip {
     return !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
   }
 
-  protected renderHeadInfo(headInfo: TooltipHeadInfo) {
+  protected renderHeadInfo(headInfo: TooltipHeadInfoType) {
     const { cols, rows } = headInfo || {};
 
     return (

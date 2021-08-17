@@ -279,7 +279,7 @@ export const getSelectedCellIndexes = (
 ) => {
   const { rowLeafNodes, colLeafNodes } = layoutResult;
   const selectedIndexes = [];
-  const currentState = spreadsheet.interaction.getCurrentState();
+  const currentState = spreadsheet.interaction.getState();
   const cells = currentState?.cells;
   if (cells?.[0]?.cellType === CellTypes.COL_CELL) {
     const currentHeaderCell = find(
@@ -307,7 +307,7 @@ export const getSelectedData = (
 ): DataItem[] => {
   const layoutResult = spreadsheet?.facet?.layoutResult;
   let selectedData = [];
-  const currentState = spreadsheet.interaction.getCurrentState();
+  const currentState = spreadsheet.interaction.getState();
   const stateName = currentState?.stateName;
   const cells = currentState?.cells;
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要

@@ -202,7 +202,7 @@ export class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setTheme(themeCfg: ThemeCfg): void {
+  public setThemeCfg(themeCfg: ThemeCfg): void {
     const theme = themeCfg?.theme || {};
     this.theme = merge({}, getTheme(themeCfg), theme);
     this.updateDefaultConditions();
@@ -328,7 +328,7 @@ export class SpreadSheet extends EE {
    * indicate not update current value
    * @param offsetConfig
    * default offsetX(horizontal scroll need animation)
-   * but offsetY(vertical scroll dont need animation)
+   * but offsetY(vertical scroll don't need animation)
    */
   public updateScrollOffset(offsetConfig: OffsetConfig): void {
     this.facet.updateScrollOffset(

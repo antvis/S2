@@ -1,5 +1,8 @@
 import { SortParam, InteractionStateInfo } from '../interface';
 import { Node } from '@/facet/layout/node';
+import { PartDrillDownInfo } from '../../components/sheets/interface';
+import { S2DataConfig } from './s2DataConfig';
+import { BBox } from '@antv/g-canvas';
 
 export interface Selected {
   type:
@@ -49,5 +52,10 @@ export interface StoreKey {
   interactionStateInfo: InteractionStateInfo;
   // row, column, brush, cell selected
   selected: Selected;
-  [key: string]: any;
+  drillDownFieldInLevel: PartDrillDownInfo[];
+  originalDataCfg: S2DataConfig;
+  drillDownMeta: any;
+  panelBBox: BBox;
+
+  [key: string]: unknown;
 }

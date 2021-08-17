@@ -346,7 +346,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       y,
       width,
       height,
-      bgColor,
+      fill: bgColor,
       stroke,
     });
   }

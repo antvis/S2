@@ -1,7 +1,6 @@
-import { Group } from '@antv/g-canvas';
 import { each, isEmpty } from 'lodash';
 import { SERIES_NUMBER_FIELD } from 'src/common/constant';
-import { Formatter, SortParam } from '../../common/interface';
+import { Formatter, S2CellType, SortParam } from '../../common/interface';
 import { ColCell, DetailColCell, CornerCell } from '../../cell';
 import { Node } from '../..';
 import { BaseHeader, BaseHeaderConfig } from './base';
@@ -69,7 +68,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     each(data, (node: Node) => {
       const item = node;
       if (colCellInRect(item)) {
-        let cell: Group;
+        let cell: S2CellType;
         if (colCell) {
           cell = colCell(item, spreadsheet, this.headerConfig);
         }

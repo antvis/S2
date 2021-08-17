@@ -33,7 +33,9 @@ export const TabularSheet = (props: BaseSheetProps) => {
     options,
     adaptive = true,
     header,
-    theme = TabularTheme,
+    themeCfg = {
+      theme: TabularTheme,
+    },
     isLoading,
     onRowCellClick,
     onColCellClick,
@@ -151,7 +153,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
       const newDataCfg = safetyDataConfig(dataCfg);
       baseSpreadsheet.setDataCfg(newDataCfg);
       setOptions(baseSpreadsheet);
-      baseSpreadsheet.setTheme(theme);
+      baseSpreadsheet.setThemeCfg(themeCfg);
       baseSpreadsheet.render();
       setLoading(false);
       setOwnSpreadsheet(baseSpreadsheet);
@@ -198,9 +200,9 @@ export const TabularSheet = (props: BaseSheetProps) => {
 
   useEffect(() => {
     update(() => {
-      ownSpreadsheet.setTheme(theme);
+      ownSpreadsheet.setThemeCfg(themeCfg);
     });
-  }, [JSON.stringify(theme)]);
+  }, [JSON.stringify(themeCfg)]);
 
   useEffect(() => {
     if (!ownSpreadsheet) return;

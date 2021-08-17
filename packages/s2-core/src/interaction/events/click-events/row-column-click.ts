@@ -34,7 +34,7 @@ export class RowColumnClick extends BaseEvent {
             // 如果
             if (node.belongsCell) {
               this.interaction.setState(
-                node.belongsCell,
+                node.belongsCell as S2CellType,
                 InteractionStateName.SELECTED,
               );
             }
@@ -44,7 +44,7 @@ export class RowColumnClick extends BaseEvent {
           this.interaction.setState(cell, InteractionStateName.SELECTED);
         }
 
-        const currentState = this.interaction.getCurrentState();
+        const currentState = this.interaction.getState();
         const stateName = currentState?.stateName;
         const cells = currentState?.cells;
         if (stateName === InteractionStateName.SELECTED) {
@@ -56,8 +56,8 @@ export class RowColumnClick extends BaseEvent {
         }
 
         this.interaction.updateCellStyleByState();
-        this.interaction.upDatePanelAllCellsStyle();
-        this.interaction.showInteractionMask();
+        this.interaction.updatePanelGroupAllDataCellsStyle();
+        this.interaction.showSelectedCellsSpotlight();
         this.draw();
       }
     });
@@ -82,7 +82,7 @@ export class RowColumnClick extends BaseEvent {
           each(leafNodes, (node: Node) => {
             if (node.belongsCell) {
               this.interaction.setState(
-                node.belongsCell,
+                node.belongsCell as S2CellType,
                 InteractionStateName.SELECTED,
               );
             }
@@ -101,8 +101,8 @@ export class RowColumnClick extends BaseEvent {
         }
 
         this.interaction.updateCellStyleByState();
-        this.interaction.upDatePanelAllCellsStyle();
-        this.interaction.showInteractionMask();
+        this.interaction.updatePanelGroupAllDataCellsStyle();
+        this.interaction.showSelectedCellsSpotlight();
         this.draw();
       }
     });

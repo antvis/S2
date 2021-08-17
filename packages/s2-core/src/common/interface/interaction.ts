@@ -4,12 +4,12 @@ import { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName } from '../constant';
 import { ViewMeta } from './basic';
 
-export type S2CellType =
+export type S2CellType<T extends Record<string, unknown> = ViewMeta> =
   | DataCell
   | ColCell
   | CornerCell
   | RowCell
-  | BaseCell<ViewMeta>;
+  | BaseCell<T>;
 
 export interface InteractionStateInfo {
   stateName?: InteractionStateName;

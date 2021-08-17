@@ -8,12 +8,12 @@ import {
   TextAlign,
   TextBaseline,
 } from '@/index';
-import { Group } from '@antv/g-canvas';
 import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { Padding } from '../interface/theme';
 import { BaseTooltip } from '../tooltip';
 import { DataItem, S2DataConfig } from './s2DataConfig';
+import { S2CellType } from './interaction';
 import { IconTheme } from './theme';
 
 export type Formatter = (v: unknown) => string;
@@ -243,18 +243,18 @@ export type CellCallback = (
   node: Node,
   spreadsheet: SpreadSheet,
   ...restOptions
-) => Group;
+) => S2CellType;
 
 export type TooltipCallback = (
   spreadsheet: SpreadSheet,
   ...restOptions
 ) => BaseTooltip;
 
-export type DataCellCallback = (viewMeta: ViewMeta) => Group;
+export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
 // TODO 类型定义清楚！！
 export type FrameCallback = (cfg: any) => Frame;
 export type CornerHeaderCallback = (
-  parent: Group,
+  parent: S2CellType,
   spreadsheet: SpreadSheet,
   ...restOptions
 ) => void;
