@@ -106,7 +106,7 @@ export class RootInteraction {
     this.getActiveCells().forEach((cell) => {
       cell.resetOpacity();
     });
-    this.getPanelAllUnSelectedDataCells().forEach((cell) => {
+    this.getPanelGroupAllUnSelectedDataCells().forEach((cell) => {
       cell.setBgColorOpacity();
     });
   }
@@ -115,9 +115,16 @@ export class RootInteraction {
     if (!this.spreadsheet.options.selectedCellsSpotlight) {
       return;
     }
-    this.getPanelAllUnSelectedDataCells().forEach((cell) => {
+    this.getPanelGroupAllUnSelectedDataCells().forEach((cell) => {
       cell.resetOpacity();
     });
+  }
+
+  public toggleSelectedCellsSpotlight(visible: boolean) {
+    if (visible) {
+      return this.showSelectedCellsSpotlight();
+    }
+    this.hideSelectedCellsSpotlight();
   }
 
   public updateCellStyleByState() {
@@ -133,40 +140,27 @@ export class RootInteraction {
       currentState?.stateName === InteractionStateName.SELECTED ||
       currentState?.stateName === InteractionStateName.HOVER
     ) {
-      this.getPanelAllDataCells().forEach((cell) => {
+      this.getPanelGroupAllDataCells().forEach((cell) => {
         cell.hideShapeUnderState();
       });
     }
   }
 
-  public updateDatePanelAllCellsStyle() {
-    this.getPanelAllDataCells().forEach((cell) => {
+  public updatePanelGroupAllDataCellsStyle() {
+    this.getPanelGroupAllDataCells().forEach((cell) => {
       cell.update();
     });
   }
 
-  public getPanelAllUnSelectedDataCells() {
-    return this.getPanelAllDataCells().filter(
+  public getPanelGroupAllUnSelectedDataCells() {
+    return this.getPanelGroupAllDataCells().filter(
       (cell) => !this.getActiveCells().includes(cell),
     );
   }
 
-  /**
-   * Get all panel group cells
-   * @param callback to handle each cell if needed
-   */
-  public getPanelAllDataCells(callback?: (cell: DataCell) => void): DataCell[] {
+  public getPanelGroupAllDataCells(): DataCell[] {
     const children = this.spreadsheet.panelGroup.getChildren();
-    const cells: DataCell[] = [];
-    children.forEach((child) => {
-      if (child instanceof DataCell) {
-        cells.push(child);
-        if (callback) {
-          callback(child);
-        }
-      }
-    });
-    return cells;
+    return children.filter((cell) => cell instanceof DataCell) as DataCell[];
   }
 
   /**

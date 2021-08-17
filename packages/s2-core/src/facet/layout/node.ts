@@ -279,7 +279,7 @@ export class Node {
   // node self's query condition(represent where node stay)
   public query?: Record<string, any>;
 
-  public belongsCell?: Group;
+  public belongsCell?: S2CellType;
 
   public inCollapseNode?: boolean;
 

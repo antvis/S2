@@ -71,7 +71,7 @@ export class ColRowMultiSelection extends BaseInteraction {
           }
           this.handleTooltip(ev, meta, cellInfos);
           this.interaction.updateCellStyleByState();
-          this.interaction.updateDatePanelAllCellsStyle();
+          this.interaction.updatePanelGroupAllDataCellsStyle();
           this.interaction.showSelectedCellsSpotlight();
           this.draw();
         }
@@ -105,7 +105,7 @@ export class ColRowMultiSelection extends BaseInteraction {
             this.interaction.setState(cell, InteractionStateName.SELECTED);
           }
           this.interaction.updateCellStyleByState();
-          this.interaction.updateDatePanelAllCellsStyle();
+          this.interaction.updatePanelGroupAllDataCellsStyle();
           this.interaction.showSelectedCellsSpotlight();
           this.draw();
         }

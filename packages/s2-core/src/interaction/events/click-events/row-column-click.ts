@@ -56,7 +56,7 @@ export class RowColumnClick extends BaseEvent {
         }
 
         this.interaction.updateCellStyleByState();
-        this.interaction.updateDatePanelAllCellsStyle();
+        this.interaction.updatePanelGroupAllDataCellsStyle();
         this.interaction.showSelectedCellsSpotlight();
         this.draw();
       }
@@ -101,7 +101,7 @@ export class RowColumnClick extends BaseEvent {
         }
 
         this.interaction.updateCellStyleByState();
-        this.interaction.updateDatePanelAllCellsStyle();
+        this.interaction.updatePanelGroupAllDataCellsStyle();
         this.interaction.showSelectedCellsSpotlight();
         this.draw();
       }

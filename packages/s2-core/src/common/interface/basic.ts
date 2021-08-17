@@ -1,4 +1,3 @@
-import { Group } from '@antv/g-canvas';
 import {
   Hierarchy,
   SpreadSheet,
@@ -13,7 +12,7 @@ import { Frame } from 'src/facet/header';
 import { BaseTooltip } from '../tooltip';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { Padding } from '../interface/theme';
-import { CustomInteraction } from './interaction';
+import { CustomInteraction, S2CellType } from './interaction';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
   LayoutArrange,
@@ -222,18 +221,18 @@ export type CellCallback = (
   node: Node,
   spreadsheet: SpreadSheet,
   ...restOptions
-) => Group;
+) => S2CellType;
 
 export type TooltipCallback = (
   spreadsheet: SpreadSheet,
   ...restOptions
 ) => BaseTooltip;
 
-export type DataCellCallback = (viewMeta: ViewMeta) => Group;
+export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
 // TODO 类型定义清楚！！
 export type FrameCallback = (cfg: any) => Frame;
 export type CornerHeaderCallback = (
-  parent: Group,
+  parent: S2CellType,
   spreadsheet: SpreadSheet,
   ...restOptions
 ) => void;

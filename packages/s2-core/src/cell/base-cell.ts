@@ -4,7 +4,7 @@ import {
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
-import { SpreadSheetTheme } from '@/common/interface';
+import { InteractionStateTheme, SpreadSheetTheme } from '@/common/interface';
 import { Group, IShape } from '@antv/g-canvas';
 import { each, findKey, get, includes } from 'lodash';
 import { SpreadSheet } from '../sheet-type';
@@ -121,8 +121,8 @@ export abstract class BaseCell<T> extends Group {
   }
 
   public setBgColorOpacity(
-    opacity: string | number = this.theme.dataCell?.cell?.outOfTheSpotlight
-      ?.opacity || 1,
+    opacity: InteractionStateTheme['opacity'] = this.theme.dataCell?.cell
+      ?.outOfTheSpotlight?.opacity,
   ) {
     updateShapeAttr(this.backgroundShape, SHAPE_STYLE_MAP.opacity, opacity);
     updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.opacity, opacity);

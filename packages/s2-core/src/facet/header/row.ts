@@ -1,11 +1,10 @@
-import { Group } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell';
 import { Node } from '@/facet/layout/node';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
-import { S2Options } from '../../common/interface';
+import { S2CellType, S2Options } from '../../common/interface';
 
 export interface RowHeaderConfig extends BaseHeaderConfig {
   // type of hierarchy
@@ -56,7 +55,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     };
     each(data, (item: Node) => {
       if (rowCellInRect(item) && item.height !== 0) {
-        let cell: Group;
+        let cell: S2CellType;
         // 首先由外部控制UI展示
         if (rowCell) {
           cell = rowCell(item, spreadsheet, this.headerConfig);
