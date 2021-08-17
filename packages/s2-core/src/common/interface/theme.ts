@@ -24,6 +24,7 @@ export interface Padding {
   left?: number;
 }
 export interface InteractionStateTheme {
+  backgroundOpacity?: number;
   backgroundColor?: string;
   borderColor?: string;
   borderWidth?: number;

@@ -245,6 +245,7 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           backgroundOpacity: 1,
         },
         // -------------- unselected -------------------
+        // TODO: 条件格式的icon和mini chart也需要置灰
         unselected: {
           backgroundOpacity: 0.3,
           textOpacity: 0.3,
