@@ -1,4 +1,3 @@
-import { BaseCell } from '@/cell/base-cell';
 import {
   CellTypes,
   COLOR_DEFAULT_RESIZER,
@@ -9,28 +8,21 @@ import { TextAlign } from '@/common/interface/theme';
 import { HIT_AREA } from '@/facet/header/base';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { ResizeInfo } from '@/facet/header/interface';
-import { Node } from '@/index';
-import { renderRect, updateShapeAttr } from '@/utils/g-renders';
+import { renderRect, renderText, updateShapeAttr } from '@/utils/g-renders';
 import {
   getEllipsisText,
   getTextPosition,
   measureTextWidth,
 } from '@/utils/text';
 import { IGroup } from '@antv/g-canvas';
-import _ from 'lodash';
+import { get, isEqual } from 'lodash';
+import { HeaderCell } from './header-cell';
 
-export class ColCell extends BaseCell<Node> {
+export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;
-  // protected bottomBorderHotSpot: Set<string>;
-  // TODO type define
 
-  public update() {
-    const selectedId = this.spreadsheet.store.get('rowColSelectedId');
-    if (selectedId && _.find(selectedId, (id) => id === this.meta.id)) {
-      this.setActive();
-    } else {
-      this.setInactive();
-    }
+  public get cellType() {
+    return CellTypes.COL_CELL;
   }
 
   public setActive() {
@@ -43,10 +35,6 @@ export class ColCell extends BaseCell<Node> {
 
   public setInactive() {
     updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
-  }
-
-  protected handleRestOptions(...options) {
-    this.headerConfig = options[0];
   }
 
   protected initCell() {
@@ -62,21 +50,6 @@ export class ColCell extends BaseCell<Node> {
     this.drawRightBorder();
     // 5、draw hot-spot rect
     this.drawHotSpot();
-
-    this.updateSelected();
-  }
-
-  public get cellType() {
-    return CellTypes.COL_CELL;
-  }
-
-  private updateSelected() {
-    const selectedId = this.spreadsheet.store.get('rowColSelectedId');
-    if (selectedId && _.find(selectedId, (id) => id === this.meta.id)) {
-      this.setActive();
-    } else {
-      this.setInactive();
-    }
   }
 
   protected getColHotSpotKey() {
@@ -124,7 +97,7 @@ export class ColCell extends BaseCell<Node> {
       ? iconCfg.size + iconCfg.margin.right
       : 0;
     const textStyle = isLeaf && !isTotals ? textCfg : bolderTextCfg;
-    const padding = _.get(this, 'theme.colCell.cell.padding');
+    const padding = get(this, 'theme.colCell.cell.padding');
     const text = getEllipsisText(
       content,
       cellWidth - sortIconPadding - padding?.left - padding?.right,
@@ -136,8 +109,8 @@ export class ColCell extends BaseCell<Node> {
     let textAlign: TextAlign;
     if (isLeaf) {
       // 最后一个层级的维值，与 dataCell 对齐方式保持一致
-      textAlign = _.get(this, 'theme.dataCell.text.textAlign');
-      const textBaseline = _.get(this, 'theme.dataCell.text.textBaseline');
+      textAlign = get(this, 'theme.dataCell.text.textAlign');
+      const textBaseline = get(this, 'theme.dataCell.text.textBaseline');
       textStyle.textBaseline = textBaseline;
       const cellBoxCfg = {
         x,
@@ -193,7 +166,7 @@ export class ColCell extends BaseCell<Node> {
     }
     // const derivedValue = this.spreadsheet.getDerivedValue(value);
     // if (
-    //   !_.isEqual(
+    //   !isEqual(
     //     derivedValue.derivedValueField,
     //     derivedValue.displayDerivedValueField,
     //   ) &&
@@ -207,22 +180,24 @@ export class ColCell extends BaseCell<Node> {
     //   if (
     //     key === EXTRA_FIELD &&
     //     this.spreadsheet.isDerivedValue(value) &&
-    //     _.last(derivedValue.displayDerivedValueField) === value
+    //     last(derivedValue.displayDerivedValueField) === value
     //   ) {
     //     // 度量列，找到 value值
     //     text += '...';
     //   }
     // }
-    this.addShape('text', {
-      attrs: {
-        x: textX,
-        y: textY,
-        text,
+    this.textShape = renderText(
+      [this.textShape],
+      textX,
+      textY,
+      text,
+      {
         textAlign,
         ...textStyle,
-        cursor: 'pointer',
       },
-    });
+      this,
+      { cursor: 'pointer' },
+    );
   }
 
   // 交互使用的背景色
@@ -243,8 +218,8 @@ export class ColCell extends BaseCell<Node> {
     const { sortParam } = this.headerConfig;
     const query = this.meta.query;
     return (
-      _.isEqual(_.get(sortParam, 'query'), query) &&
-      _.get(sortParam, 'type') !== 'none'
+      isEqual(get(sortParam, 'query'), query) &&
+      get(sortParam, 'type') !== 'none'
     );
   }
 
@@ -255,7 +230,7 @@ export class ColCell extends BaseCell<Node> {
       const { sortParam } = this.headerConfig;
       const { x, y, width: cellWidth, height: cellHeight } = this.meta;
       const iconShape = new GuiIcon({
-        type: _.get(sortParam, 'type', 'none'),
+        type: get(sortParam, 'type', 'none'),
         x: x + cellWidth - icon.size - icon.margin.right,
         y: y + (cellHeight - icon.size) / 2,
         width: icon.size,

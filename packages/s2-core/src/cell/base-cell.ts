@@ -6,9 +6,13 @@ import {
 } from '@/common/constant';
 import { InteractionStateTheme, SpreadSheetTheme } from '@/common/interface';
 import { Group, IShape } from '@antv/g-canvas';
-import { each, findKey, get, includes } from 'lodash';
+import { each, findKey, get, includes, toNumber } from 'lodash';
 import { SpreadSheet } from '../sheet-type';
-import { updateShapeAttr } from '../utils/g-renders';
+import {
+  updateFillOpacity,
+  updateShapeAttr,
+  updateStrokeOpacity,
+} from '../utils/g-renders';
 
 export abstract class BaseCell<T> extends Group {
   // cell's data meta info
@@ -64,11 +68,6 @@ export abstract class BaseCell<T> extends Group {
   }
 
   /**
-   * Update cell's selected state
-   */
-  public abstract update(): void;
-
-  /**
    * Return the type of the cell
    */
   public abstract get cellType(): CellTypes;
@@ -77,6 +76,11 @@ export abstract class BaseCell<T> extends Group {
    * Determine how to render this cell area
    */
   protected abstract initCell(): void;
+
+  /**
+   * Update cell's selected state
+   */
+  public abstract update(): void;
 
   /* -------------------------------------------------------------------------- */
   /*                common functions that will be used in subtype               */
@@ -95,24 +99,16 @@ export abstract class BaseCell<T> extends Group {
     });
   }
 
-  public showShapeUnderState(currentShape: string) {
-    this.setFillOpacity(this[currentShape], 1);
-    this.setStrokeOpacity(this[currentShape], 1);
+  private showShapeUnderState(currentShape: string) {
+    updateFillOpacity(this[currentShape], 1);
+    updateStrokeOpacity(this[currentShape], 1);
   }
 
   public hideShapeUnderState() {
     this.stateShapes.forEach((shape: IShape) => {
-      this.setFillOpacity(shape, 0);
-      this.setStrokeOpacity(shape, 0);
+      updateFillOpacity(shape, 0);
+      updateStrokeOpacity(shape, 0);
     });
-  }
-
-  public setFillOpacity(shape: IShape, opacity: number) {
-    updateShapeAttr(shape, 'fillOpacity', opacity);
-  }
-
-  public setStrokeOpacity(shape: IShape, opacity: number) {
-    updateShapeAttr(shape, 'strokeOpacity', opacity);
   }
 
   public resetOpacity() {
@@ -123,7 +119,7 @@ export abstract class BaseCell<T> extends Group {
     opacity: InteractionStateTheme['opacity'] = this.theme.dataCell?.cell
       ?.outOfTheSpotlight?.opacity,
   ) {
-    updateShapeAttr(this.backgroundShape, SHAPE_STYLE_MAP.opacity, opacity);
-    updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.opacity, opacity);
+    updateFillOpacity(this.backgroundShape, toNumber(opacity));
+    updateFillOpacity(this.textShape, toNumber(opacity));
   }
 }

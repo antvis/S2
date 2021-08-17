@@ -30,3 +30,5 @@ export const COLOR_DEFAULT_RESIZER = 'rgba(33,33,33,0)';
 // default condition's icon
 export const UP_ICON = 'CellUp';
 export const DOWN_ICON = 'CellDown';
+
+export const LINK_TEXT_COLOR_IN_HEADER = '#0000ee';

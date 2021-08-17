@@ -76,3 +76,11 @@ export function updateShapeAttr<K extends keyof ShapeAttrs>(
     set(shape, `attrs.${attribute}`, value);
   }
 }
+
+export function updateFillOpacity(shape: IShape, opacity: number) {
+  updateShapeAttr(shape, 'fillOpacity', opacity);
+}
+
+export function updateStrokeOpacity(shape: IShape, opacity: number) {
+  updateShapeAttr(shape, 'strokeOpacity', opacity);
+}
