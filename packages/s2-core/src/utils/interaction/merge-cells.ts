@@ -1,15 +1,15 @@
 import {
-  find,
-  isEqual,
-  forEach,
-  isEmpty,
   filter,
-  merge,
+  find,
+  forEach,
   isArray,
+  isEmpty,
+  isEqual,
+  merge,
 } from 'lodash';
-import { S2CellType } from 'src/common/interface/interaction';
-import { MergedCellInfo } from 'src/common/interface/index';
 import { MergedCells } from 'src/cell/merged-cells';
+import { MergedCellInfo } from 'src/common/interface/index';
+import { S2CellType } from 'src/common/interface/interaction';
 import { SpreadSheet } from 'src/sheet-type';
 
 /**
@@ -146,10 +146,10 @@ export const mergeCells = (
   cellsInfo: MergedCellInfo[],
   hideData?: boolean,
 ) => {
-  const allCells = (filter(
+  const allCells = filter(
     sheet.panelGroup.getChildren(),
     (child) => !(child instanceof MergedCells),
-  ) as unknown) as S2CellType[];
+  ) as unknown as S2CellType[];
   const { cells, viewMeta } = getCellsByInfo(cellsInfo, allCells);
 
   if (!isEmpty(cells)) {
@@ -192,10 +192,10 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   const mergedCellsInfo = sheet.options?.mergedCellsInfo;
   if (isEmpty(mergedCellsInfo)) return;
 
-  const allCells = (filter(
+  const allCells = filter(
     sheet.panelGroup.getChildren(),
     (child) => !(child instanceof MergedCells),
-  ) as unknown) as S2CellType[];
+  ) as unknown as S2CellType[];
   if (isEmpty(allCells)) return;
 
   const allMergedCells = [];
@@ -203,10 +203,10 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
     allMergedCells.push(getCellsByInfo(cellsInfo, allCells));
   });
 
-  const oldMergedCells = (filter(
+  const oldMergedCells = filter(
     sheet.panelGroup.getChildren(),
     (child) => child instanceof MergedCells,
-  ) as unknown) as MergedCells;
+  ) as unknown as MergedCells;
 
   allMergedCells.forEach((mergedCell) => {
     const { cells, viewMeta } = mergedCell;

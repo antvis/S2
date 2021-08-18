@@ -8,7 +8,12 @@ import { TextAlign } from '@/common/interface/theme';
 import { HIT_AREA } from '@/facet/header/base';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { ResizeInfo } from '@/facet/header/interface';
-import { renderRect, renderText, updateShapeAttr } from '@/utils/g-renders';
+import {
+  renderRect,
+  renderText,
+  updateFillOpacity,
+  updateShapeAttr,
+} from '@/utils/g-renders';
 import {
   getEllipsisText,
   getTextPosition,
@@ -27,14 +32,14 @@ export class ColCell extends HeaderCell {
 
   public setActive() {
     updateShapeAttr(
-      this.interactiveBgShape,
+      this.stateShapes.get('interactiveBgShape'),
       'fill',
       this.theme.colCell.cell.selectedBackgroundColor,
     );
   }
 
   public setInactive() {
-    updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
+    updateFillOpacity(this.stateShapes.get('interactiveBgShape'), 0);
   }
 
   protected initCell() {
@@ -50,6 +55,7 @@ export class ColCell extends HeaderCell {
     this.drawRightBorder();
     // 5、draw hot-spot rect
     this.drawHotSpot();
+    this.update();
   }
 
   protected getColHotSpotKey() {
@@ -203,15 +209,17 @@ export class ColCell extends HeaderCell {
   // 交互使用的背景色
   protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
-    this.interactiveBgShape = renderRect(this, {
-      x,
-      y,
-      width,
-      height,
-      fill: 'transparent',
-      stroke: 'transparent',
-    });
-    this.stateShapes.push(this.interactiveBgShape);
+    this.stateShapes.set(
+      'interactiveBgShape',
+      renderRect(this, {
+        x,
+        y,
+        width,
+        height,
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
+    );
   }
 
   private showSortIcon() {

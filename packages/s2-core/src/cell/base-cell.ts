@@ -13,6 +13,7 @@ import {
   updateShapeAttr,
   updateStrokeOpacity,
 } from '../utils/g-renders';
+import { StateShapeLayer } from './../common/interface/interaction';
 
 export abstract class BaseCell<T> extends Group {
   // cell's data meta info
@@ -24,22 +25,14 @@ export abstract class BaseCell<T> extends Group {
   // spreadsheet's theme
   protected theme: SpreadSheetTheme;
 
-  // background control by icon condition
+  // background control shape
   protected backgroundShape: IShape;
 
+  // text control shape
   protected textShape: IShape;
 
-  // render interactive background,
-  protected interactiveBgShape: IShape;
-
-  // brush-select prepareSelect border
-  protected activeBorderShape: IShape;
-
-  // 需要根据state改变样式的shape集合
-  // 需要这个属性的原因是在state clear时知道具体哪些shape要hide。不然只能手动改，比较麻烦
-  protected stateShapes: IShape[] = [];
-
-  // protected actionIcons: GuiIcon[];
+  // interactive control shapes, unify read and manipulate operations
+  protected stateShapes = new Map<StateShapeLayer, IShape>();
 
   public constructor(
     meta: T,
@@ -95,16 +88,24 @@ export abstract class BaseCell<T> extends Group {
     each(stateStyles, (style, styleKey) => {
       const currentShape = findKey(SHAPE_ATTRS_MAP, (attrs) =>
         includes(attrs, styleKey),
+      ) as StateShapeLayer | undefined;
+
+      if (!currentShape || !this.stateShapes.has(currentShape)) {
+        return;
+      }
+
+      updateShapeAttr(
+        this.stateShapes.get(currentShape),
+        SHAPE_STYLE_MAP[styleKey],
+        style,
       );
-      if (!currentShape) return;
-      updateShapeAttr(this[currentShape], SHAPE_STYLE_MAP[styleKey], style);
       this.showShapeUnderState(currentShape);
     });
   }
 
-  private showShapeUnderState(currentShape: string) {
-    updateFillOpacity(this[currentShape], 1);
-    updateStrokeOpacity(this[currentShape], 1);
+  private showShapeUnderState(currentShape: StateShapeLayer) {
+    updateFillOpacity(this.stateShapes.get(currentShape), 1);
+    updateStrokeOpacity(this.stateShapes.get(currentShape), 1);
   }
 
   public hideShapeUnderState() {

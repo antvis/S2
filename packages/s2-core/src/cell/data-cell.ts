@@ -126,10 +126,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     };
   }
 
-  public getInteractiveBgShape() {
-    return this.interactiveBgShape;
-  }
-
   /**
    * @description get cell text style
    * @protected
@@ -380,15 +376,17 @@ export class DataCell extends BaseCell<ViewMeta> {
     // 往内缩一个像素，避免和外边框重叠
     const margin = 1;
     const { x, y, height, width } = this.meta;
-    this.activeBorderShape = renderRect(this, {
-      x: x + margin,
-      y: y + margin,
-      width: width - margin * 2,
-      height: height - margin * 2,
-      fill: 'transparent',
-      stroke: 'transparent',
-    });
-    this.stateShapes.push(this.activeBorderShape);
+    this.stateShapes.set(
+      'activeBorderShape',
+      renderRect(this, {
+        x: x + margin,
+        y: y + margin,
+        width: width - margin * 2,
+        height: height - margin * 2,
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
+    );
   }
 
   /**
@@ -396,15 +394,17 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
-    this.interactiveBgShape = renderRect(this, {
-      x,
-      y,
-      width,
-      height,
-      fill: 'transparent',
-      stroke: 'transparent',
-    });
-    this.stateShapes.push(this.interactiveBgShape);
+    this.stateShapes.set(
+      'interactiveBgShape',
+      renderRect(this, {
+        x,
+        y,
+        width,
+        height,
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
+    );
   }
 
   /**

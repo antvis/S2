@@ -1,3 +1,4 @@
+import { StateShapeLayer } from './../interface/interaction';
 export enum InteractionNames {
   BRUSH_SELECTION_INTERACTION = 'spreadsheet:brush-selection',
   COL_ROW_RESIZE_INTERACTION = 'spreadsheet:row-col-resize',
@@ -10,6 +11,7 @@ export enum InteractionStateName {
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
   PREPARE_SELECT = 'prepareSelect',
+  OUT_OF_SPOTLIGHT = 'outOfTheSpotlight',
 }
 
 export enum CellTypes {
@@ -32,7 +34,7 @@ export const SHAPE_STYLE_MAP = {
 };
 
 // 设置属性的时候实际对应改变的shape映射
-export const SHAPE_ATTRS_MAP = {
+export const SHAPE_ATTRS_MAP: { [K in StateShapeLayer]: string[] } = {
   interactiveBgShape: ['backgroundColor', 'opacity'],
   activeBorderShape: ['borderColor', 'backgroundColor'],
 };

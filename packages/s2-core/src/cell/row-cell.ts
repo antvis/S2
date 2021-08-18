@@ -2,7 +2,7 @@ import { GuiIcon } from '@/common/icons';
 import { HIT_AREA } from '@/facet/header/base';
 import { ResizeInfo } from '@/facet/header/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
-import { renderRect, renderText, updateShapeAttr } from '@/utils/g-renders';
+import { renderRect, renderText, updateFillOpacity } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { isMobile } from '@/utils/is-mobile';
 import { getAdjustPosition } from '@/utils/text-absorption';
@@ -36,12 +36,12 @@ export class RowCell extends HeaderCell {
   }
 
   public setActive() {
-    updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 1);
+    updateFillOpacity(this.stateShapes.get('interactiveBgShape'), 1);
     each(this.actionIcons, (icon) => icon.set('visible', true));
   }
 
   public setInactive() {
-    updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
+    updateFillOpacity(this.stateShapes.get('interactiveBgShape'), 0);
     // each(this.actionIcons, (icon) => icon.set('visible', false));
   }
 
@@ -85,15 +85,17 @@ export class RowCell extends HeaderCell {
   // 交互使用的背景色
   protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
-    this.interactiveBgShape = renderRect(this, {
-      x,
-      y,
-      width,
-      height,
-      fill: 'transparent',
-      stroke: 'transparent',
-    });
-    this.stateShapes.push(this.interactiveBgShape);
+    this.stateShapes.set(
+      'interactiveBgShape',
+      renderRect(this, {
+        x,
+        y,
+        width,
+        height,
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
+    );
   }
 
   protected drawIconInTree() {
