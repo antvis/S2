@@ -1,3 +1,5 @@
+export { InteractionEvent } from './interaction';
+
 // event keys
 export const KEY_LIST_SORT = 'spreadsheet:list-sort';
 export const KEY_COLLAPSE_TREE_ROWS = 'spreadsheet:collapsed-tree-rows';
@@ -15,16 +17,6 @@ export const KEY_PAGINATION = 'spreadsheet:pagination';
 export const KEY_UPDATE_PROPS = 'spreadsheet-update-props';
 export const KEY_COLLAPSE_ROWS = 'spreadsheet:collapsed-rows';
 export const KEY_AFTER_COLLAPSE_ROWS = 'spreadsheet:after-collapsed-rows';
-
-// interaction event names
-export enum EventNames {
-  DATA_CELL_CLICK_EVENT = 'spreadsheet:data-cell-click',
-  MERGED_CELLS_CLICK_EVENT = 'spreadsheet:merged-cells-click',
-  CORNER_TEXT_CLICK_EVENT = 'spreadsheet:corner-cell-text-click',
-  ROW_COLUMN_CLICK_EVENT = 'spreadsheet:row-column-click',
-  ROW_TEXT_CLICK_EVENT = 'spreadsheet:row-text-click',
-  HOVER_EVENT = 'spreadsheet:hover',
-}
 
 export enum ResizeEventType {
   ROW_W = 'spreadsheet:change-row-header-width',

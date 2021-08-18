@@ -174,7 +174,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
         disabledFields={disabledFields}
       />
     );
-    sheetInstance.tooltip.show({
+    sheetInstance.showTooltip({
       position: {
         x: event.clientX,
         y: event.clientY,
@@ -375,7 +375,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
 
   useEffect(() => {
     if (!ownSpreadsheet) return;
-    ownSpreadsheet.tooltip.hide();
+    ownSpreadsheet.hideTooltip();
     if (isEmpty(drillFields)) {
       clearDrillDownInfo(ownSpreadsheet.store.get('drillDownMeta')?.id);
     } else {

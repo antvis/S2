@@ -202,7 +202,7 @@ const mockDataCfg = {
   ],
 };
 
-const getOptions = () => {
+const getOptions = (): S2Options => {
   return {
     debug: true,
     width: 800,
@@ -222,7 +222,7 @@ const getOptions = () => {
       treeRowsWidth: 100,
       collapsedRows: {},
       colCfg: {
-        width: 80,
+        // width: 80,
         widthByFieldValue: {},
         heightByField: {},
         colWidthType: 'compact',
@@ -235,6 +235,9 @@ const getOptions = () => {
     },
     tooltip: {
       showTooltip: false,
+      renderTooltip: (spreadsheet) => {
+        return new CustomTooltip(spreadsheet);
+      },
     },
     totals: {
       row: {
@@ -251,9 +254,6 @@ const getOptions = () => {
         reverseSubLayout: true,
         subTotalsDimensions: ['type'],
       },
-    },
-    initTooltip: (spreadsheet) => {
-      return new CustomTooltip(spreadsheet);
     },
   };
 };

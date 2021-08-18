@@ -2,6 +2,7 @@ import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
   S2DataConfig,
+  S2Event,
   S2Options,
   SheetComponent,
   SpreadSheet,
@@ -11,7 +12,6 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { CustomTooltip } from './custom/custom-tooltip';
 import { useEffect } from 'react';
-import { S2Event } from '@/interaction/events/types';
 
 const data = getMockData('../data/tableau-supermarket.csv');
 
@@ -62,7 +62,7 @@ const getDataCfg = () => {
   };
 };
 
-const getOptions = () => {
+const getOptions = (): S2Options => {
   return {
     width: 800,
     height: 600,
@@ -80,9 +80,9 @@ const getOptions = () => {
     },
     tooltip: {
       showTooltip: true,
-    },
-    initTooltip: (spreadsheet) => {
-      return new CustomTooltip(spreadsheet);
+      renderTooltip: (spreadsheet) => {
+        return new CustomTooltip(spreadsheet);
+      },
     },
   };
 };
