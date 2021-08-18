@@ -119,7 +119,7 @@ export class EventController {
       this.interaction.hideSelectedCellsSpotlight();
       this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
       this.interaction.clearState();
-      // this.spreadsheet.hideTooltip();
+      this.spreadsheet.hideTooltip();
       // 屏蔽的事件都重新打开
       this.interaction.interceptEvent.clear();
       this.draw();

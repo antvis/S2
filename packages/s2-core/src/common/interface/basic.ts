@@ -151,6 +151,10 @@ export interface Tooltip {
   readonly row?: Tooltip;
   readonly col?: Tooltip;
   readonly cell?: Tooltip;
+  // custom tooltips
+  readonly renderTooltip?: RenderTooltip;
+  // replace the whole default tooltip component
+  readonly tooltipComponent?: JSX.Element;
 }
 
 export interface Sort {
@@ -245,10 +249,7 @@ export type CellCallback = (
   ...restOptions
 ) => S2CellType;
 
-export type TooltipCallback = (
-  spreadsheet: SpreadSheet,
-  ...restOptions
-) => BaseTooltip;
+export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
 // TODO 类型定义清楚！！
