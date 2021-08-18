@@ -1,6 +1,6 @@
 // 这里存放 emit 事件 透出的信息
 
-import { Node } from 'src/facet/layout/node';
+import { Node } from '@/facet/layout/node';
 import { Event } from '@antv/g-canvas';
 
 export interface CellScrollPosition {

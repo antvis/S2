@@ -50,16 +50,6 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           bottom: 12,
           left: 8,
         },
-        // -------------- hover -------------------
-        hover: {
-          backgroundColor: brandColors[5],
-        },
-        // -------------- selected -------------------
-        selected: {
-          backgroundColor: brandColors[5],
-          borderColor: grayColors[6],
-          borderWidth: 1,
-        },
       },
       icon: {
         fill: brandColors[0],
@@ -111,12 +101,7 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
         // -------------- hover -------------------
         hover: {
           backgroundColor: brandColors[2],
-        },
-        // -------------- selected -------------------
-        selected: {
-          backgroundColor: brandColors[2],
-          borderColor: grayColors[6],
-          borderWidth: 1,
+          backgroundOpacity: 1,
         },
       },
       icon: {
@@ -169,12 +154,7 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
         // -------------- hover -------------------
         hover: {
           backgroundColor: brandColors[5],
-        },
-        // -------------- selected -------------------
-        selected: {
-          backgroundColor: brandColors[5],
-          borderColor: grayColors[6],
-          borderWidth: 1,
+          backgroundOpacity: 1,
         },
       },
       icon: {

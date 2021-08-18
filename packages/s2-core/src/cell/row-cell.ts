@@ -8,14 +8,15 @@ import { isMobile } from '@/utils/is-mobile';
 import { getAdjustPosition } from '@/utils/text-absorption';
 import { IGroup } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
-import { each, find, get } from 'lodash';
+import { each, find, get, isEmpty } from 'lodash';
 import {
   CellTypes,
   COLOR_DEFAULT_RESIZER,
   ID_SEPARATOR,
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_ROW_RESIZER,
-} from '../common/constant';
+  InteractionStateName,
+} from '@/common/constant';
 import { Node } from '../index';
 import { getEllipsisText, measureTextWidth } from '../utils/text';
 import { BaseCell } from './base-cell';
@@ -32,11 +33,18 @@ export class RowCell extends BaseCell<Node> {
   private gm: GM;
 
   public update() {
-    const selectedId = this.spreadsheet.store.get('rowColSelectedId');
-    if (selectedId && find(selectedId, (id) => id === this.meta.id)) {
-      this.setActive();
-    } else {
-      this.setInactive();
+    const stateName = this.spreadsheet.interaction.getCurrentStateName();
+    const cells = this.spreadsheet.interaction.getActiveCells();
+
+    if (
+      isEmpty(cells) ||
+      (stateName !== InteractionStateName.HOVER &&
+        stateName !== InteractionStateName.HOVER_FOCUS)
+    ) {
+      return;
+    }
+    if (cells.includes(this)) {
+      this.updateByState(InteractionStateName.HOVER);
     }
   }
 
@@ -62,19 +70,21 @@ export class RowCell extends BaseCell<Node> {
 
   protected initCell() {
     this.cellType = this.getCellType();
-    // 1、draw rect background
+    // draw rect background
     this.drawBackgroundColor();
     this.drawInteractiveBgShape();
-    // 2、draw text
+    // draw text
     this.lastStartDrawX = this.drawCellText();
-    // 3、draw icon
+    // draw icon
     this.drawIconInTree();
-    // 4、draw bottom border
+    // draw bottom border
     this.drawRectBorder();
-    // 5、draw hot-spot rect
+    // draw hot-spot rect
     this.drawHotSpotInLeaf();
-    // 6、draw action icon shapes: trend icon, drill-down icon ...
+    // draw action icon shapes: trend icon, drill-down icon ...
     this.drawActionIcons();
+    // update the interaction state
+    this.update();
   }
 
   protected getCellType() {

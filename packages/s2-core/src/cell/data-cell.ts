@@ -23,7 +23,7 @@ import {
 import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import { getEllipsisText } from '@/utils/text';
 import { IShape, SimpleBBox } from '@antv/g-canvas';
-import { find, first, get, includes, isEmpty, map } from 'lodash';
+import { find, first, get, includes, isEmpty, map, isEqual } from 'lodash';
 import type { SpreadSheet } from 'src/sheet-type';
 
 /**
@@ -99,6 +99,9 @@ export class DataCell extends BaseCell<ViewMeta> {
       this.hideInteractionShape();
       return;
     }
+    if (isEqual(currentHoverCell, this)) {
+      this.updateByState(InteractionStateName.HOVER_FOCUS);
+    }
     const currentColIndex = this.meta.colIndex;
     const currentRowIndex = this.meta.rowIndex;
     // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
@@ -128,6 +131,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       case InteractionStateName.SELECTED:
         this.handleSelect(cells);
         break;
+      case InteractionStateName.HOVER_FOCUS:
       case InteractionStateName.HOVER:
         this.handleHover(cells);
         break;
@@ -243,7 +247,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawConditionShapes();
     this.drawTextShape();
     this.drawBorderShape();
-    // 更新选中状态
+    // update the interaction state
     this.update();
   }
 

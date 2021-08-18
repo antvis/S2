@@ -6,7 +6,7 @@ import {
 import { S2CellType, ViewMeta } from '@/common/interface';
 import { getTooltipData } from '@/utils/tooltip';
 import { Event } from '@antv/g-canvas';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { BaseEvent } from './base-event';
 
 /**
@@ -14,14 +14,15 @@ import { BaseEvent } from './base-event';
  */
 export class HoverEvent extends BaseEvent {
   protected bindEvents() {
-    // this.bindDataCellHover();
-    // this.bindRowCellHover();
-    // this.bindColCellHover();
+    this.bindDataCellHover();
+    this.bindRowCellHover();
+    this.bindColCellHover();
   }
 
   private bindDataCellHover() {
-    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (ev: Event) => {
-      const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
+    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: Event) => {
+      const cell = this.spreadsheet.getCell(event.target) as S2CellType;
+      if (isEmpty(cell)) return;
       const meta = cell.getMeta() as ViewMeta;
       this.interaction.changeState({
         cells: [cell],
@@ -29,62 +30,70 @@ export class HoverEvent extends BaseEvent {
       });
       if (this.interaction.hoverTimer) {
         window.clearTimeout(this.interaction.hoverTimer);
-        this.changeStateToHoverFocus(cell, ev, meta);
+        this.changeStateToHoverFocus(cell, event, meta);
       } else {
-        this.changeStateToHoverFocus(cell, ev, meta);
+        this.changeStateToHoverFocus(cell, event, meta);
       }
     });
   }
 
   private bindRowCellHover() {
-    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (ev: Event) => {
-      const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
-      const meta = cell.getMeta() as ViewMeta;
-      this.interaction.changeState({
-        cells: [cell],
-        stateName: InteractionStateName.HOVER,
-      });
-      this.handleTooltip(ev, meta);
+    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event: Event) => {
+      this.handleHeaderHover(event);
     });
   }
 
   private bindColCellHover() {
-    this.spreadsheet.on(S2Event.COL_CELL_HOVER, (ev: Event) => {
-      const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
-      const meta = cell.getMeta() as ViewMeta;
-      this.interaction.changeState({
-        cells: [cell],
-        stateName: InteractionStateName.HOVER,
-      });
-      this.handleTooltip(ev, meta);
+    this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event: Event) => {
+      this.handleHeaderHover(event);
     });
   }
 
   /**
    * @description change the data cell state from hover to hover focus
    * @param cell
-   * @param ev
+   * @param event
    * @param meta
    */
-  private changeStateToHoverFocus(cell: S2CellType, ev: Event, meta: ViewMeta) {
+  private changeStateToHoverFocus(
+    cell: S2CellType,
+    event: Event,
+    meta: ViewMeta,
+  ) {
     this.interaction.hoverTimer = window.setTimeout(() => {
       this.interaction.changeState({
         cells: [cell],
         stateName: InteractionStateName.HOVER_FOCUS,
       });
-      this.handleTooltip(ev, meta);
+      this.handleTooltip(event, meta);
     }, HOVER_FOCUS_TIME);
   }
 
   /**
+   * @description handle the row or column header hover state
+   * @param event
+   */
+  private handleHeaderHover(event: Event) {
+    const cell = this.spreadsheet.getCell(event.target) as S2CellType;
+    if (isEmpty(cell)) return;
+    const meta = cell.getMeta() as ViewMeta;
+    this.interaction.changeState({
+      cells: [cell],
+      stateName: InteractionStateName.HOVER,
+    });
+    cell.update();
+    this.handleTooltip(event, meta);
+  }
+
+  /**
    * @description handle the the tooltip
-   * @param ev
+   * @param event
    * @param meta
    */
-  private handleTooltip(ev: Event, meta: ViewMeta) {
+  private handleTooltip(event: Event, meta: ViewMeta) {
     const position = {
-      x: ev.clientX,
-      y: ev.clientY,
+      x: event.clientX,
+      y: event.clientY,
     };
     const currentCellMeta = get(meta, 'data.0');
     const isTotals = get(meta, 'isTotals', false);

@@ -1,6 +1,7 @@
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
-import { get, includes, isEmpty } from 'lodash';
+import { ColHeader, RowHeader } from 'src/facet/header';
+import { get, includes, isEmpty, concat } from 'lodash';
 import {
   BrushSelection,
   ColRowMultiSelection,
@@ -24,6 +25,8 @@ import {
   RowTextClick,
   S2CellType,
   SpreadSheet,
+  ColCell,
+  RowCell,
 } from '@/index';
 import { BaseInteraction } from './base';
 import { EventController } from './events/event-controller';
@@ -91,10 +94,6 @@ export class RootInteraction {
     return currentState?.cells || [];
   }
 
-  public hasActiveCells() {
-    return !isEmpty(this.getActiveCells());
-  }
-
   public updateCellStyleByState() {
     const cells = this.getActiveCells();
     cells.forEach((cell) => {
@@ -114,12 +113,6 @@ export class RootInteraction {
     }
   }
 
-  public updatePanelGroupAllDataCellsStyle() {
-    this.getPanelGroupAllDataCells().forEach((cell) => {
-      cell.update();
-    });
-  }
-
   public getPanelGroupAllUnSelectedDataCells() {
     return this.getPanelGroupAllDataCells().filter(
       (cell) => !this.getActiveCells().includes(cell),
@@ -130,6 +123,36 @@ export class RootInteraction {
     const children = this.spreadsheet.panelGroup.getChildren();
     return (
       (children.filter((cell) => cell instanceof DataCell) as DataCell[]) || []
+    );
+  }
+
+  public getAllRowHeaderCells() {
+    const children = this.spreadsheet.foregroundGroup.getChildren();
+    const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
+    const rowCells = rowHeader.cfg.children;
+    return (
+      (rowCells.filter(
+        (cell: S2CellType) => cell instanceof RowCell,
+      ) as RowCell[]) || []
+    );
+  }
+
+  public getAllColHeaderCells() {
+    const children = this.spreadsheet.foregroundGroup.getChildren();
+    const colHeader = children.filter((group) => group instanceof ColHeader)[0];
+    const colCells = colHeader.cfg.children;
+    return (
+      (colCells.filter(
+        (cell: S2CellType) => cell instanceof ColCell,
+      ) as ColCell[]) || []
+    );
+  }
+
+  public getAllCells() {
+    return concat<S2CellType>(
+      this.getPanelGroupAllDataCells(),
+      this.getAllRowHeaderCells(),
+      this.getAllColHeaderCells(),
     );
   }
 
@@ -179,14 +202,12 @@ export class RootInteraction {
     const { cells } = interactionStateInfo;
     if (!isEmpty(cells)) {
       clearState(this.spreadsheet);
-      cells.forEach((cell) => {
-        this.setState(interactionStateInfo);
-      });
-      this.upDatePanelAllCellsStyle();
+      this.setState(interactionStateInfo);
+      this.updatePanelAllCellsStyle();
       this.draw();
     }
   }
-  upDatePanelAllCellsStyle() {
+  updatePanelAllCellsStyle() {
     const cells = this.getPanelGroupAllDataCells();
     cells.forEach((cell: DataCell) => {
       cell.update();

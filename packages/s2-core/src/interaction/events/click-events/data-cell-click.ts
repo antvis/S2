@@ -31,7 +31,8 @@ export class DataCellClick extends BaseEvent {
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta() as ViewMeta;
       if (meta) {
-        // this.interaction.clearStyleIndependent();
+        // 屏蔽hover事件
+        this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
         if (this.interaction.isSelectedCell(cell)) {
           // 点击当前已选cell 则取消当前cell的选中状态
           this.interaction.clearState();

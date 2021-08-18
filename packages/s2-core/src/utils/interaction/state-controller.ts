@@ -1,26 +1,27 @@
 import { InteractionStateInfo } from '@/common/interface';
 import { S2CellType } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
-import { forEach, includes, isEmpty } from 'lodash';
+import { forEach, isEmpty } from 'lodash';
 
 /**
  * @desc clear the interaction state information
  * @param spreadsheet sheet instance
  */
 export const clearState = (spreadsheet: SpreadSheet) => {
-  const allCells = spreadsheet.interaction.getPanelGroupAllDataCells();
+  const allCells = spreadsheet.interaction.getAllCells();
   if (!isEmpty(allCells)) {
     forEach(allCells, (cell: S2CellType) => {
       cell.hideInteractionShape();
     });
-  }
-  spreadsheet.store.set('interactionStateInfo', {});
-  if (spreadsheet.options.selectedCellsSpotlight) {
-    const unSelectedCells =
-      spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
-    unSelectedCells.forEach((cell) => {
-      cell.clearUnselectedState();
-    });
+
+    spreadsheet.store.set('interactionStateInfo', {});
+    if (spreadsheet.options.selectedCellsSpotlight) {
+      const unSelectedCells =
+        spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
+      unSelectedCells.forEach((cell) => {
+        cell.clearUnselectedState();
+      });
+    }
   }
 };
 
