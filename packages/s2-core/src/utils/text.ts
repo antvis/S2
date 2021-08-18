@@ -297,7 +297,7 @@ const getStyle = (
  * @param cell
  */
 export const drawObjectText = (cell) => {
-  const { x, y, height, width } = cell.getLeftAreaBBox();
+  const { x, y, height, width } = cell.getContentAreaBBox();
   const { formattedValue: text } = cell.getData();
   const labelStyle = cell.theme?.view?.bolderText;
   const textStyle = cell.theme?.view?.text;
@@ -362,7 +362,7 @@ export const drawObjectText = (cell) => {
  * @returns 文本左上角起点坐标
  */
 export const drawStringText = (cell) => {
-  const { x, y, height, width } = cell.getLeftAreaBBox();
+  const { x, y, height, width } = cell.getContentAreaBBox();
   const { formattedValue: text } = cell.getData();
   const { isTotals } = cell.meta;
   const textStyle = isTotals
