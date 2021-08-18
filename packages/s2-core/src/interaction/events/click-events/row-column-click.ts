@@ -64,13 +64,13 @@ export class RowColumnClick extends BaseEvent {
   }
 
   private bindColCellClick() {
-    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (ev: Event) => {
+    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
       if (
         this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)
       ) {
         return;
       }
-      const cell = this.spreadsheet.getCell(ev.target);
+      const cell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta() as Node;
       if (meta.x !== undefined) {
         const idx = meta.colIndex;
@@ -97,7 +97,7 @@ export class RowColumnClick extends BaseEvent {
           : [];
 
         if (this.spreadsheet.options.valueInCols) {
-          this.spreadsheet.showTooltipWithInfo(ev, cellInfos);
+          this.spreadsheet.showTooltipWithInfo(event, cellInfos);
         }
 
         this.interaction.updateCellStyleByState();
