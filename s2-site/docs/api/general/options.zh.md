@@ -36,8 +36,6 @@ order: 1
 | layout | [LayoutCallback](#) |  |  |  | 自定义 layout |
 | layoutResult | [LayoutResultCallback](#) |  |  |  | 布局结果自定义 |
 | hierarchy | [HierarchyCallback](#) |  |  |  | 行列结构的自定义 |
-| initTooltip | [TooltipCallback](#) |  |  |  | tooltip弹框自定义 |
-| tooltipComponent | React.ElementType |  |  |  | tooltip弹框自定义 |
 | [key: string] | any |  |  |  | 其他任意的选择配置 |
 
 ###
@@ -173,6 +171,8 @@ object **必选**,_ default：null_ 功能描述： tooltip配置
 | row | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) |  |  |  | 行头配置 |
 | col | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) |  |  |  | 列头配置 |
 | cell | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) |  |  |  | 单元格配置 |
+| renderTooltip | [RenderTooltip](#) |  |  |  | 自定义整个tooltip, 可以继承 BaseTooltip 自己重写一些方法 |
+| tooltipComponent | React.ReactNode |  |  |  | 自定义tooltip弹框组件 |
 
 ## Pagination
 
@@ -409,11 +409,10 @@ HierarchyCallback = (spreadsheet: BaseSpreadSheet, node: Node) =>
 | nodes | [Node[]]() |  |  |  | 需要额外增加的节点 |
 | push | boolean |  |  |  | push 在 node 前(false)或者后(true)增加额外的节点(nodes) |
 
-## TooltipCallback
+## RenderTooltip
 
 ```js
-TooltipCallback = (spreadsheet: BaseSpreadSheet) =>
-  BaseTooltip;
+RenderTooltip = (spreadsheet: BaseSpreadSheet) => BaseTooltip;
 ```
 
 功能描述：行列布局结构自定义回调函数参数：

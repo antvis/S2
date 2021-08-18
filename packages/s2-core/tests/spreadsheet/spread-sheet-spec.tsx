@@ -144,9 +144,9 @@ const getOptions = (): S2Options => {
     },
     tooltip: {
       showTooltip: true,
-    },
-    initTooltip: (spreadsheet) => {
-      return new CustomTooltip(spreadsheet);
+      renderTooltip: (spreadsheet) => {
+        return new CustomTooltip(spreadsheet);
+      },
     },
     showTrend: true,
     selectedCellsSpotlight: true,

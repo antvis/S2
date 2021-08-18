@@ -151,7 +151,9 @@ export class SpreadSheet extends EE {
   }
 
   private getTooltip(): BaseTooltip {
-    return this.options?.initTooltip?.(this) || new BaseTooltip(this);
+    return (
+      this.options?.tooltip?.renderTooltip?.(this) || new BaseTooltip(this)
+    );
   }
 
   public showTooltip(showOptions: TooltipShowOptions) {

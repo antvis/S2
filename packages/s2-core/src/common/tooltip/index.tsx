@@ -9,15 +9,15 @@ import {
   TooltipHeadInfo as TooltipHeadInfoType,
 } from '@/common/interface';
 import { isEmpty } from 'lodash';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { SpreadSheet } from 'src/sheet-type';
 import {
   getOptions,
   getPosition,
   manageContainerStyle,
   shouldIgnore,
-} from '../../utils/tooltip';
+} from '@/utils/tooltip';
 import { Aggregation } from '../interface';
 import TooltipDetail from './components/detail';
 import Divider from './components/divider';
