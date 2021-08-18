@@ -6,6 +6,7 @@ import {
   CellMapping,
   Condition,
   Conditions,
+  Formatter,
   IconCfg,
   IconCondition,
   S2CellType,
@@ -72,11 +73,11 @@ export class DataCell extends BaseCell<ViewMeta> {
     switch (currentCellType) {
       // 列多选
       case CellTypes.COL_CELL:
-        this.changeRowColSelectState('colIndex', cells);
+        this.changeRowColSelectState('colIndex');
         break;
       // 行多选
       case CellTypes.ROW_CELL:
-        this.changeRowColSelectState('rowIndex', cells);
+        this.changeRowColSelectState('rowIndex');
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
@@ -138,7 +139,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   public getData(): { value: DataItem; formattedValue: DataItem } {
     const rowField = this.meta.rowId;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowField);
-    let formatter;
+    let formatter: Formatter;
     if (rowMeta) {
       // format by row field
       formatter = this.spreadsheet.dataSet.getFieldFormatter(rowField);
@@ -521,12 +522,10 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @description change the state style for column selection or row selection
    * @param index colIndex / rowIndex
    */
-  private changeRowColSelectState(
-    index: 'colIndex' | 'rowIndex',
-    cells: S2CellType[],
-  ) {
+  private changeRowColSelectState(index: 'colIndex' | 'rowIndex') {
     const currentIndex = get(this.meta, index);
-    const selectedIndexes = map(cells, (cell) => get(cell?.getMeta(), index));
+    const nodes = this.spreadsheet.interaction.getState()?.nodes;
+    const selectedIndexes = map(nodes, (node) => get(node, index));
     if (includes(selectedIndexes, currentIndex)) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.selectedCellsSpotlight) {

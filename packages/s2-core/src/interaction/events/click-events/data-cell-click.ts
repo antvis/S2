@@ -38,7 +38,10 @@ export class DataCellClick extends BaseEvent {
           this.spreadsheet.hideTooltip();
         } else {
           this.interaction.clearState();
-          this.interaction.changeState([cell], InteractionStateName.SELECTED);
+          this.interaction.changeState({
+            cells: [cell],
+            stateName: InteractionStateName.SELECTED,
+          });
           this.showTooltip(event, meta);
         }
       }

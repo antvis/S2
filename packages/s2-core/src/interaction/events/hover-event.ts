@@ -23,7 +23,10 @@ export class HoverEvent extends BaseEvent {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (ev: Event) => {
       const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
       const meta = cell.getMeta() as ViewMeta;
-      this.interaction.changeState([cell], InteractionStateName.HOVER);
+      this.interaction.changeState({
+        cells: [cell],
+        stateName: InteractionStateName.HOVER,
+      });
       if (this.interaction.hoverTimer) {
         window.clearTimeout(this.interaction.hoverTimer);
         this.changeStateToHoverFocus(cell, ev, meta);
@@ -37,7 +40,10 @@ export class HoverEvent extends BaseEvent {
     this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (ev: Event) => {
       const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
       const meta = cell.getMeta() as ViewMeta;
-      this.interaction.changeState([cell], InteractionStateName.HOVER);
+      this.interaction.changeState({
+        cells: [cell],
+        stateName: InteractionStateName.HOVER,
+      });
       this.handleTooltip(ev, meta);
     });
   }
@@ -46,7 +52,10 @@ export class HoverEvent extends BaseEvent {
     this.spreadsheet.on(S2Event.COL_CELL_HOVER, (ev: Event) => {
       const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
       const meta = cell.getMeta() as ViewMeta;
-      this.interaction.changeState([cell], InteractionStateName.HOVER);
+      this.interaction.changeState({
+        cells: [cell],
+        stateName: InteractionStateName.HOVER,
+      });
       this.handleTooltip(ev, meta);
     });
   }
@@ -59,7 +68,10 @@ export class HoverEvent extends BaseEvent {
    */
   private changeStateToHoverFocus(cell: S2CellType, ev: Event, meta: ViewMeta) {
     this.interaction.hoverTimer = window.setTimeout(() => {
-      this.interaction.changeState([cell], InteractionStateName.HOVER_FOCUS);
+      this.interaction.changeState({
+        cells: [cell],
+        stateName: InteractionStateName.HOVER_FOCUS,
+      });
       this.handleTooltip(ev, meta);
     }, HOVER_FOCUS_TIME);
   }

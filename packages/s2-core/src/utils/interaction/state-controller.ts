@@ -1,4 +1,4 @@
-import { InteractionStateName } from '@/common/constant';
+import { InteractionStateInfo } from '@/common/interface';
 import { S2CellType } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { forEach, includes, isEmpty } from 'lodash';
@@ -30,20 +30,14 @@ export const clearState = (spreadsheet: SpreadSheet) => {
  * @param spreadsheet sheet instance
  */
 export const setState = (
-  cell: S2CellType,
-  stateName: InteractionStateName,
+  interactionStateInfo: InteractionStateInfo,
   spreadsheet: SpreadSheet,
 ) => {
+  const stateName = interactionStateInfo?.stateName;
   if (!spreadsheet.interaction.isEqualStateName(stateName)) {
     // There can only be one state in the table. When the stateName is inconsistent with the state in the stateInfo, the previously stored state should be cleared.
     clearState(spreadsheet);
     spreadsheet.hideTooltip();
-    const stateStore = {
-      stateName,
-      cells: [cell],
-    };
-    spreadsheet.store.set('interactionStateInfo', stateStore);
-  } else if (!includes(spreadsheet.interaction.getActiveCells(), cell)) {
-    spreadsheet.interaction.addActiveCells([cell]);
+    spreadsheet.store.set('interactionStateInfo', interactionStateInfo);
   }
 };

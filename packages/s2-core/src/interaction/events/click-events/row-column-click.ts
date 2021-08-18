@@ -2,7 +2,7 @@ import { DefaultInterceptEventType, S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { assign, each, map, pick } from 'lodash';
 import { S2CellType, ViewMeta } from '../../../common/interface';
-import { Node } from '../../../index';
+import { Node } from '@/index';
 import { getTooltipData } from '../../../utils/tooltip';
 import { BaseEvent } from '../base-event';
 // TODO: tooltip的菜单栏配置（在点击行头或列头的时候tooltip的样式）
@@ -27,20 +27,23 @@ export class RowColumnClick extends BaseEvent {
       if (idx === -1) {
         // 多列
         const leafNodes = Node.getAllLeavesOfNode(meta);
-        console.log(leafNodes);
         const selectedCells: S2CellType[] = [];
         each(leafNodes, (node: Node) => {
           if (node.belongsCell) {
             selectedCells.push(node.belongsCell);
           }
         });
-        this.interaction.changeState(
-          selectedCells,
-          InteractionStateName.SELECTED,
-        );
+        this.interaction.changeState({
+          cells: selectedCells,
+          nodes: leafNodes,
+          stateName: InteractionStateName.SELECTED,
+        });
       } else {
         // 单列
-        this.interaction.changeState([cell], InteractionStateName.SELECTED);
+        this.interaction.changeState({
+          cells: [cell],
+          stateName: InteractionStateName.SELECTED,
+        });
       }
 
       const cellInfos = this.interaction.isSelectedState()

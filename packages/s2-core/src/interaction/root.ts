@@ -54,8 +54,8 @@ export class RootInteraction {
     this.registerEvents();
   }
 
-  public setState(cell: S2CellType, stateName: InteractionStateName) {
-    setState(cell, stateName, this.spreadsheet);
+  public setState(interactionStateInfo: InteractionStateInfo) {
+    setState(interactionStateInfo, this.spreadsheet);
   }
 
   public getState() {
@@ -93,10 +93,6 @@ export class RootInteraction {
 
   public hasActiveCells() {
     return !isEmpty(this.getActiveCells());
-  }
-
-  public addActiveCells(cells: S2CellType[] = []) {
-    this.getActiveCells().push(...cells);
   }
 
   public updateCellStyleByState() {
@@ -179,11 +175,12 @@ export class RootInteraction {
     this.draw();
   }
 
-  public changeState(cells: S2CellType[], stateName: InteractionStateName) {
+  public changeState(interactionStateInfo: InteractionStateInfo) {
+    const { cells } = interactionStateInfo;
     if (!isEmpty(cells)) {
       clearState(this.spreadsheet);
       cells.forEach((cell) => {
-        this.setState(cell, stateName);
+        this.setState(interactionStateInfo);
       });
       this.upDatePanelAllCellsStyle();
       this.draw();

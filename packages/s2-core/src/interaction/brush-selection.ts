@@ -205,16 +205,19 @@ export class BrushSelection extends BaseInteraction {
   // 刷选过程中高亮的cell
   private getHighlightCells(region: S2CellBrushRange) {
     const selectedCells = this.getCellsInRegion(region);
-    this.interaction.changeState(
-      selectedCells,
-      InteractionStateName.PREPARE_SELECT,
-    );
+    this.interaction.changeState({
+      cells: selectedCells,
+      stateName: InteractionStateName.PREPARE_SELECT,
+    });
   }
 
   // 最终刷选的cell
   private getSelectedCells(region: S2CellBrushRange) {
     const selectedCells = this.getCellsInRegion(region);
-    this.interaction.changeState(selectedCells, InteractionStateName.SELECTED);
+    this.interaction.changeState({
+      cells: selectedCells,
+      stateName: InteractionStateName.SELECTED,
+    });
   }
 
   private createRegionShape() {
