@@ -12,7 +12,6 @@ import {
   RowActionIcons,
   Style,
   Tooltip,
-  TooltipCallback,
   Totals,
 } from '@/common/interface/basic';
 import {
@@ -44,7 +43,7 @@ export interface S2Options {
   readonly conditions?: Conditions;
   // total config
   readonly totals?: Totals;
-  // s2 tooltip configs
+  // tooltip configs
   readonly tooltip?: Tooltip;
   // record which row/col field need extra link info
   readonly linkFieldIds?: string[];
@@ -78,10 +77,6 @@ export interface S2Options {
   readonly frame?: FrameCallback;
   // custom corner header
   readonly cornerHeader?: CornerHeaderCallback;
-  // custom tooltips
-  readonly initTooltip?: TooltipCallback;
-  // replace the whole default tooltip component
-  readonly tooltipComponent?: JSX.Element;
   // custom data set
   readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
   // the collection of row id and column id of cells which to be merged
@@ -109,7 +104,7 @@ export interface S2Options {
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
 
   // extra options if needed
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const defaultStyle = {

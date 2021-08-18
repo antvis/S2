@@ -33,7 +33,7 @@ const getSpreadSheet = (
   return new SpreadSheet(dom, dataCfg, options);
 };
 
-const baseDataCfg = {
+const baseDataCfg: S2DataConfig = {
   fields: {
     // rows has value
     rows: ['area', 'province', 'city'],
@@ -44,27 +44,27 @@ const baseDataCfg = {
     {
       field: 'profit-tongbi',
       name: '利润同比',
-      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
     },
     {
       field: 'profit-huanbi',
       name: '利润环比',
-      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
     },
     {
       field: 'count-tongbi',
       name: '个数同比',
-      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
     },
     {
       field: 'count-huanbi',
       name: '个数环比',
-      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
     },
     {
       field: 'sale_amt',
       name: '销售额',
-      formatter: (v) => v,
+      formatter: (v: number) => v,
     },
     {
       field: 'count',
@@ -134,8 +134,10 @@ const baseOptions = {
       { colIndex: 3, rowIndex: 7 },
     ],
   ],
-  initTooltip: (spreadsheet) => {
-    return new CustomTooltip(spreadsheet);
+  tooltip: {
+    renderTooltip: (spreadsheet) => {
+      return new CustomTooltip(spreadsheet);
+    },
   },
 } as S2Options;
 

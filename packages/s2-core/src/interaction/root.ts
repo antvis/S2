@@ -13,7 +13,7 @@ import {
   DataCell,
   DataCellClick,
   DefaultInterceptEvent,
-  EventNames,
+  InteractionEvent,
   HoverEvent,
   InteractionNames,
   InteractionStateInfo,
@@ -197,27 +197,27 @@ export class RootInteraction {
   protected registerEvents() {
     this.events.clear();
     this.events.set(
-      EventNames.DATA_CELL_CLICK_EVENT,
+      InteractionEvent.DATA_CELL_CLICK_EVENT,
       new DataCellClick(this.spreadsheet, this),
     );
     this.events.set(
-      EventNames.CORNER_TEXT_CLICK_EVENT,
+      InteractionEvent.CORNER_TEXT_CLICK_EVENT,
       new CornerTextClick(this.spreadsheet, this),
     );
     this.events.set(
-      EventNames.ROW_COLUMN_CLICK_EVENT,
+      InteractionEvent.ROW_COLUMN_CLICK_EVENT,
       new RowColumnClick(this.spreadsheet, this),
     );
     this.events.set(
-      EventNames.ROW_TEXT_CLICK_EVENT,
+      InteractionEvent.ROW_TEXT_CLICK_EVENT,
       new RowTextClick(this.spreadsheet, this),
     );
     this.events.set(
-      EventNames.MERGED_CELLS_CLICK_EVENT,
+      InteractionEvent.MERGED_CELLS_CLICK_EVENT,
       new MergedCellsClick(this.spreadsheet, this),
     );
     this.events.set(
-      EventNames.HOVER_EVENT,
+      InteractionEvent.HOVER_EVENT,
       new HoverEvent(this.spreadsheet, this),
     );
   }

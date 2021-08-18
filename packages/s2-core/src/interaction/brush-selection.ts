@@ -6,12 +6,7 @@ import { Event, IShape, Point } from '@antv/g-canvas';
 import { each, find, isEmpty, isEqual, get } from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
-import {
-  TooltipData,
-  TooltipOptions,
-  TooltipPosition,
-} from '../common/interface';
-import { getTooltipData } from '../utils/tooltip';
+import { TooltipData } from '../common/interface';
 import { BaseInteraction } from './base';
 
 function getBrushRegion(p1: Point, p2: Point): S2CellBrushRange {
@@ -124,24 +119,6 @@ export class BrushSelection extends BaseInteraction {
     return !!find(cellInfos, (i) => isEqual(i, info));
   }
 
-  private handleTooltip(ev: Event, cellInfos: TooltipData[]) {
-    const position: TooltipPosition = {
-      x: ev.clientX,
-      y: ev.clientY,
-    };
-
-    const options: TooltipOptions = {
-      enterable: true,
-    };
-
-    const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
-    this.spreadsheet.showTooltip({
-      position,
-      data: tooltipData,
-      options,
-    });
-  }
-
   private getCellsInRegion(region: S2CellBrushRange) {
     const containerMat = this.spreadsheet.panelGroup.attr('matrix');
     const containerX = containerMat[6];
@@ -163,9 +140,9 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (ev: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (event: Event) => {
       if (this.phase === 2) {
-        const oe = ev.originalEvent as any;
+        const oe = event.originalEvent as any;
         this.endPoint = { x: oe.layerX, y: oe.layerY };
         const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
         this.getSelectedCells(brushRegion);
@@ -196,7 +173,7 @@ export class BrushSelection extends BaseInteraction {
             }
           });
         }
-        this.handleTooltip(ev, cellInfos);
+        this.spreadsheet.showTooltipWithInfo(event, cellInfos);
       }
       this.phase = 0;
     });

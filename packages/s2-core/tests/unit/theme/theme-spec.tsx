@@ -32,7 +32,7 @@ const getDataCfg = () => {
   return dataCfg;
 };
 
-const getOptions = () => {
+const getOptions = (): S2Options => {
   return {
     debug: true,
     width: 800,
@@ -64,9 +64,9 @@ const getOptions = () => {
     },
     tooltip: {
       showTooltip: true,
-    },
-    initTooltip: (spreadsheet) => {
-      return new CustomTooltip(spreadsheet);
+      renderTooltip: (spreadsheet) => {
+        return new CustomTooltip(spreadsheet);
+      },
     },
   };
 };

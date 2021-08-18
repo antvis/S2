@@ -4,10 +4,9 @@ import {
   S2Event,
   SHIFT_KEY,
 } from '@/common/constant';
-import { S2CellType } from '@/common/interface';
+import { S2CellType, TooltipData } from '@/common/interface';
 import { Event } from '@antv/g-canvas';
 import { each, find, isEmpty, isEqual } from 'lodash';
-import { getTooltipData } from '../utils/tooltip';
 import { BaseInteraction } from './base';
 
 export class DataCellMultiSelection extends BaseInteraction {
@@ -37,24 +36,26 @@ export class DataCellMultiSelection extends BaseInteraction {
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (ev: Event) => {
-      ev.stopPropagation();
-      const cell = this.spreadsheet.getCell(ev.target) as S2CellType;
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
+      event.stopPropagation();
+      const cell = this.spreadsheet.getCell(event.target) as S2CellType;
       const meta = cell.getMeta();
       if (this.isMultiSelection && meta) {
         const currentState = this.interaction.getState();
         const stateName = currentState?.stateName;
         const cells = currentState?.cells;
-        this.interaction.clearStyleIndependent();
         // 屏蔽hover和click
         this.interaction.interceptEvent.add(DefaultInterceptEventType.CLICK);
         this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
         // 先把之前的tooltip隐藏
         this.spreadsheet.hideTooltip();
-        this.interaction.setState(cell, InteractionStateName.SELECTED);
+        this.interaction.changeState({
+          cells: [cell],
+          stateName: InteractionStateName.SELECTED,
+        });
         this.interaction.updateCellStyleByState();
 
-        const cellInfos = [];
+        const cellInfos: TooltipData[] = [];
         if (stateName === InteractionStateName.SELECTED) {
           each(cells, (stateCell) => {
             const valueInCols = this.spreadsheet.options.valueInCols;
@@ -76,27 +77,8 @@ export class DataCellMultiSelection extends BaseInteraction {
             }
           });
         }
-        this.handleTooltip(ev, cellInfos);
+        this.spreadsheet.showTooltipWithInfo(event, cellInfos);
       }
     });
-  }
-
-  private handleTooltip(ev, cellInfos) {
-    const position = {
-      x: ev.clientX,
-      y: ev.clientY,
-    };
-
-    const options = {
-      enterable: true,
-    };
-
-    const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
-    const showOptions = {
-      position,
-      data: tooltipData,
-      options,
-    };
-    this.spreadsheet.showTooltip(showOptions);
   }
 }

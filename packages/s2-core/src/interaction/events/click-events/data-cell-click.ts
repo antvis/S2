@@ -1,16 +1,17 @@
 import { DefaultInterceptEventType, S2Event } from '@/common/constant';
-import { InteractionStateName } from '@/common/constant/interaction';
+import {
+  InteractionEvent,
+  InteractionStateName,
+  INTERACTION_TREND,
+} from '@/common/constant/interaction';
 import {
   S2CellType,
   TooltipOperatorOptions,
-  TooltipOptions,
-  TooltipPosition,
   ViewMeta,
 } from '@/common/interface';
-import { getTooltipData } from '@/utils/tooltip';
 import { LineChartOutlined } from '@ant-design/icons';
 import { Event } from '@antv/g-canvas';
-import { get, noop } from 'lodash';
+import { noop } from 'lodash';
 import { DataCell } from '../../../cell/data-cell';
 import { BaseEvent } from '../base-event';
 
@@ -48,65 +49,54 @@ export class DataCellClick extends BaseEvent {
     });
   }
 
-  private showTooltip(event: Event, meta: ViewMeta) {
-    const currentCellMeta: Record<string, unknown> = get(meta, 'data');
-    const isTotals = get(meta, 'isTotals', false);
-    if (isTotals) {
-      return;
-    }
-
+  private getTooltipOperator(meta: ViewMeta): TooltipOperatorOptions {
     const cellOperator: TooltipOperatorOptions =
       this.spreadsheet.options?.cellOperator;
 
-    let operator: TooltipOperatorOptions = this.spreadsheet.options?.showTrend
+    if (cellOperator) {
+      return cellOperator;
+    }
+
+    const defaultOperator: TooltipOperatorOptions = {
+      onClick: noop,
+      menus: [],
+    };
+
+    const operator: TooltipOperatorOptions = this.spreadsheet.options?.showTrend
       ? {
           onClick: (params) => {
-            if (params === 'showTrend') {
-              // 展示趋势点击
-              this.spreadsheet.emit('spread-trend-click', meta);
-              // 隐藏tooltip
+            if (params === INTERACTION_TREND.ID) {
+              this.spreadsheet.emit(InteractionEvent.TREND_ICON_CLICK, meta);
               this.spreadsheet.hideTooltip();
             }
           },
           menus: [
             {
-              id: 'showTrend',
-              text: '趋势',
+              id: INTERACTION_TREND.ID,
+              text: INTERACTION_TREND.NAME,
               icon: LineChartOutlined,
             },
           ],
         }
-      : {
-          onClick: noop,
-          menus: [],
-        };
+      : defaultOperator;
 
-    if (cellOperator) {
-      operator = cellOperator;
+    return operator;
+  }
+
+  private showTooltip(event: Event, meta: ViewMeta) {
+    const currentCellMeta = meta?.data;
+    const isTotals = meta?.isTotals || false;
+    if (isTotals) {
+      return;
     }
+    const cellInfos = [currentCellMeta];
+    const operator = this.getTooltipOperator(meta);
 
-    const position: TooltipPosition = {
-      x: event.clientX,
-      y: event.clientY,
-    };
-
-    const options: TooltipOptions = {
+    this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       isTotals,
       operator,
       enterable: true,
       hideSummary: true,
-    };
-
-    const tooltipData = getTooltipData(
-      this.spreadsheet,
-      [currentCellMeta],
-      options,
-    );
-
-    this.spreadsheet.showTooltip({
-      position,
-      data: tooltipData,
-      options,
     });
   }
 }

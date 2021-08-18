@@ -1,9 +1,9 @@
 import { DefaultInterceptEventType, S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { assign, each, map, pick } from 'lodash';
-import { S2CellType, ViewMeta } from '../../../common/interface';
+import { S2CellType, TooltipData } from '@/common/interface';
 import { Node } from '@/index';
-import { getTooltipData } from '../../../utils/tooltip';
+import { Event } from '@antv/g-canvas';
 import { BaseEvent } from '../base-event';
 // TODO: tooltip的菜单栏配置（在点击行头或列头的时候tooltip的样式）
 
@@ -14,11 +14,11 @@ export class RowColumnClick extends BaseEvent {
     this.bindResetSheetStyle();
   }
 
-  private handleRowColClick(ev: Event) {
+  private handleRowColClick(event: Event) {
     if (this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)) {
       return;
     }
-    const cell = this.spreadsheet.getCell(ev.target);
+    const cell = this.spreadsheet.getCell(event.target);
     const meta = cell.getMeta() as Node;
     if (meta.x !== undefined) {
       const idx = meta.colIndex;
@@ -51,23 +51,23 @@ export class RowColumnClick extends BaseEvent {
         : [];
 
       if (this.spreadsheet.options.valueInCols) {
-        this.handleTooltip(ev, meta, cellInfos);
+        this.spreadsheet.showTooltipWithInfo(event, cellInfos);
       }
     }
   }
   private bindRowCellClick() {
-    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (ev: Event) => {
-      this.handleRowColClick(ev);
+    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
+      this.handleRowColClick(event);
     });
   }
 
   private bindColCellClick() {
-    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (ev: Event) => {
-      this.handleRowColClick(ev);
+    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
+      this.handleRowColClick(event);
     });
   }
 
-  private mergeCellInfo(cells: S2CellType[]): ViewMeta[] {
+  private mergeCellInfo(cells: S2CellType[]): TooltipData[] {
     return map(cells, (stateCell) => {
       const stateCellMeta = stateCell.getMeta();
       return assign(
@@ -76,27 +76,6 @@ export class RowColumnClick extends BaseEvent {
         pick(stateCellMeta, ['colIndex', 'rowIndex']),
       );
     });
-  }
-
-  private handleTooltip(ev, meta, cellInfos) {
-    const position = {
-      x: ev.clientX,
-      y: ev.clientY,
-    };
-
-    const options = {
-      // operator: this.getSortOperator(showSortOperations),
-      enterable: true,
-    };
-
-    const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
-
-    const showOptions = {
-      position,
-      data: tooltipData,
-      options,
-    };
-    this.spreadsheet.showTooltip(showOptions);
   }
 
   private bindResetSheetStyle() {

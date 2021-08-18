@@ -68,7 +68,7 @@ export const isHoverDataInSelectedData = (
   selectedData: DataItem[],
   hoverData: DataItem,
 ): boolean => {
-  return some(selectedData, (dataItem: DataItem): boolean =>
+  return some(selectedData, (dataItem: DataItem) =>
     isEqual(dataItem, hoverData),
   );
 };
@@ -411,10 +411,9 @@ export const getTooltipData = (
     // 如果summaries中有相同name的向，则合并为同一项；
     summaries = mergeSummaries(summaries);
   } else {
-    // 如果隐藏总计小计说明是datacell点击，只展示单个cell的详细信息
+    // 如果隐藏总计小计说明是 data cell 点击，只展示单个 cell 的详细信息
     headInfo = getHeadInfo(spreadsheet, cellInfos[0] as Data);
     details = getDetailList(spreadsheet, cellInfos[0] as Data, options);
-    console.log('details,', details);
   }
   const { interpretation, infos, tips } = cellInfos[0] || {};
   return { summaries, interpretation, infos, tips, headInfo, details };
@@ -424,7 +423,7 @@ export const getRightAndValueField = (
   spreadsheet: SpreadSheet,
   options: TooltipOptions,
 ): { rightField: string; valueField: string } => {
-  const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
+  const rowFields = spreadsheet?.dataSet?.fields?.rows || [];
   const rowQuery = options?.rowQuery || {};
   const rightField = getRightFieldInQuery(rowQuery, rowFields);
   const valueField = get(rowQuery, rightField, '');
