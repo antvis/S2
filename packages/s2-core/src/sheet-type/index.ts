@@ -140,7 +140,7 @@ export class SpreadSheet extends EE {
   }
 
   private initTooltip() {
-    this.tooltip = this.getTooltip();
+    this.tooltip = this.renderTooltip();
     if (!(this.tooltip instanceof BaseTooltip)) {
       console.warn(
         `[Custom Tooltip]: ${(
@@ -150,7 +150,7 @@ export class SpreadSheet extends EE {
     }
   }
 
-  private getTooltip(): BaseTooltip {
+  private renderTooltip(): BaseTooltip {
     return (
       this.options?.tooltip?.renderTooltip?.(this) || new BaseTooltip(this)
     );
@@ -167,8 +167,10 @@ export class SpreadSheet extends EE {
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
+    if (!this.isShowTooltip) {
+      return;
+    }
     const tooltipData = getTooltipData(this, data, options);
-
     this.showTooltip({
       data: tooltipData,
       position: {
