@@ -32,6 +32,9 @@ export abstract class BaseCell<T> extends Group {
   // render interactive background,
   protected interactiveBgShape: IShape;
 
+  // brush-select prepareSelect border
+  protected activeBorderShape: IShape;
+
   // 需要根据state改变样式的shape集合
   // 需要这个属性的原因是在state clear时知道具体哪些shape要hide。不然只能手动改，比较麻烦
   protected stateShapes: IShape[] = [];

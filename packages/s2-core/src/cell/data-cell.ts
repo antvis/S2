@@ -23,7 +23,7 @@ import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import { getEllipsisText } from '@/utils/text';
 import { IShape, SimpleBBox } from '@antv/g-canvas';
 import { find, first, get, includes, isEmpty, map } from 'lodash';
-import type { SpreadSheet } from 'src/sheet-type';
+import { ViewMetaIndex } from './../common/interface/basic';
 
 /**
  * DataCell for panelGroup area
@@ -38,7 +38,10 @@ import type { SpreadSheet } from 'src/sheet-type';
  * 3、left rect area is interval(in left) and text(in right)
  */
 export class DataCell extends BaseCell<ViewMeta> {
-  // 3、condition shapes
+  // cell configs conditions(Determine how to render this cell)
+  protected conditions: Conditions;
+
+  // condition shapes
   // background color by bg condition
   protected conditionBgShape: IShape;
 
@@ -48,30 +51,18 @@ export class DataCell extends BaseCell<ViewMeta> {
   // interval condition shape
   protected intervalShape: IShape;
 
-  // 4、render main text
-  protected textShape: IShape;
-
-  // 5、brush-select prepareSelect border
-  protected activeBorderShape: IShape;
-
-  // cell configs conditions(Determine how to render this cell)
-  protected conditions: Conditions;
-
-  constructor(meta: ViewMeta, spreadsheet: SpreadSheet) {
-    super(meta, spreadsheet);
+  public get cellType() {
+    return CellTypes.DATA_CELL;
   }
 
   protected handleSelect(cells: S2CellType[]) {
     // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
     // 二者操作一致，function合并
     const currentCellType = cells?.[0]?.cellType;
-    if (currentCellType === CellTypes.COL_CELL) {
-      this.changeCellStyleByState('colIndex', InteractionStateName.SELECTED);
-      return;
-    }
-    if (currentCellType === CellTypes.ROW_CELL) {
-      this.changeCellStyleByState('rowIndex', InteractionStateName.SELECTED);
-    }
+    this.changeCellStyleByState(
+      currentCellType === CellTypes.COL_CELL ? 'colIndex' : 'rowIndex',
+      InteractionStateName.SELECTED,
+    );
   }
 
   protected handleHover(cells: S2CellType[]) {
@@ -214,7 +205,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.initCell();
   }
 
-  public setCellsSpotlight() {
+  protected setCellsSpotlight() {
     if (
       this.spreadsheet.options.selectedCellsSpotlight &&
       this.spreadsheet.interaction.isSelectedState() &&
@@ -234,10 +225,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     // 更新选中状态
     this.update();
     this.setCellsSpotlight();
-  }
-
-  public get cellType() {
-    return CellTypes.DATA_CELL;
   }
 
   // 根据state要改变样式的shape
@@ -509,7 +496,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   // dataCell根据state 改变当前样式，
   private changeCellStyleByState(
-    index: 'colIndex' | 'rowIndex',
+    index: ViewMetaIndex,
     stateName: InteractionStateName,
   ) {
     const cells = this.spreadsheet.interaction.getActiveCells();
