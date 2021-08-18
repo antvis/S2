@@ -145,7 +145,7 @@ export class SpreadSheet extends EE {
       console.warn(
         `[Custom Tooltip]: ${(
           this.tooltip as unknown
-        )?.constructor?.toString()} should be extends from ${BaseTooltip.name}`,
+        )?.constructor?.toString()} should be extends from BaseTooltip`,
       );
     }
   }

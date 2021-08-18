@@ -1,3 +1,5 @@
+import { i18n } from '@/common/i18n';
+
 export enum InteractionNames {
   BRUSH_SELECTION_INTERACTION = 'spreadsheet:brush-selection',
   COL_ROW_RESIZE_INTERACTION = 'spreadsheet:row-col-resize',
@@ -51,5 +53,5 @@ export const INTERACTION_STATE_INFO_KEY = 'interactionStateInfo';
 
 export const INTERACTION_TREND = {
   ID: '__INTERACTION_TREND_ID__',
-  NAME: '趋势',
+  NAME: i18n('趋势'),
 };

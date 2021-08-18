@@ -16,5 +16,6 @@ export const EN_US = {
   请输入关键字搜索: 'Please enter a keyword search',
   搜索: 'Search',
   恢复: 'Recover',
+  趋势: 'Trend',
   '已选 {} 项': 'selected {} item',
 };
