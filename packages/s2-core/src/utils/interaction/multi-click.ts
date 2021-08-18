@@ -8,6 +8,7 @@ import { Event } from '@antv/g-canvas';
 import { mergeCellInfo } from '../tooltip';
 
 export const handleRowColClick = (event: Event, spreadsheet: SpreadSheet) => {
+  const currentState = spreadsheet.interaction.getState();
   const cell = spreadsheet.getCell(event.target);
   const meta = cell.getMeta() as Node;
   if (meta.x !== undefined) {
@@ -22,7 +23,6 @@ export const handleRowColClick = (event: Event, spreadsheet: SpreadSheet) => {
     });
 
     // 兼容行列多选
-    const currentState = spreadsheet.interaction.getState();
     selectedCells = isEmpty(currentState?.cells)
       ? selectedCells
       : concat(currentState?.cells, selectedCells);
