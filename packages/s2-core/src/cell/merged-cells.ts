@@ -1,6 +1,6 @@
 import { SpreadSheet } from '@/sheet-type';
 import { getPolygonPoints } from '@/utils/interaction/merge-cells';
-import { IShape, SimpleBBox } from '@antv/g-canvas';
+import { SimpleBBox } from '@antv/g-canvas';
 import { isEmpty, isObject } from 'lodash';
 import { S2CellType } from 'src/common/interface/interaction';
 import { renderPolygon } from 'src/utils/g-renders';
@@ -15,8 +15,6 @@ import { BaseCell } from './base-cell';
  */
 export class MergedCells extends BaseCell<ViewMeta> {
   public cells: S2CellType[];
-
-  protected textShape: IShape;
 
   public constructor(
     meta: ViewMeta,

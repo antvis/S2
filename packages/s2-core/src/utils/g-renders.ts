@@ -20,13 +20,13 @@ export function renderPolygon(group: Group, attrs: ShapeAttrs): IShape {
 }
 
 export function renderText(
+  group: Group,
   shapes: IShape[],
   x: number,
   y: number,
   text: string,
   textStyle: TextTheme,
-  group: Group,
-  extraStyle?: any,
+  extraStyle?: ShapeAttrs,
 ): IShape {
   if (!isEmpty(shapes) && group) {
     forEach(shapes, (shape: IShape) => {
@@ -45,24 +45,15 @@ export function renderText(
 }
 
 export function renderLine(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  stroke: string,
-  lineWidth: number,
   group: Group,
-  opacity?: number,
+  coordinate: { x1: number; y1: number; x2: number; y2: number },
+  lineStyle: Pick<ShapeAttrs, 'stroke' | 'lineWidth' | 'opacity'>,
 ): IShape {
   return group?.addShape?.('line', {
+    zIndex: 100,
     attrs: {
-      x1,
-      y1,
-      x2,
-      y2,
-      stroke,
-      opacity,
-      lineWidth,
+      ...coordinate,
+      ...lineStyle,
     },
   });
 }

@@ -107,12 +107,12 @@ export class CornerCell extends HeaderCell {
     // first line
     this.textShapes.push(
       renderText(
+        this,
         [this.textShapes[0]],
         textX,
         textY,
         firstLine,
         textStyle,
-        this,
         extraInfo,
       ),
     );
@@ -121,12 +121,12 @@ export class CornerCell extends HeaderCell {
     if (!isEmpty(secondLine)) {
       this.textShapes.push(
         renderText(
+          this,
           [this.textShapes[1]],
           textX,
           position.y + y + cellHeight * 0.65,
           secondLine,
           textStyle,
-          this,
           extraInfo,
         ),
       );

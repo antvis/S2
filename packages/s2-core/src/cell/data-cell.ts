@@ -291,12 +291,12 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     const position = this.getTextPosition();
     this.textShape = renderText(
+      this,
       [this.textShape],
       position.x,
       position.y,
       ellipsisText,
       { ...textStyle, fill: textFill },
-      this,
     );
   }
 
@@ -523,26 +523,34 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // horizontal border
     renderLine(
-      x,
-      y,
-      x + width,
-      y,
-      cell.horizontalBorderColor,
-      cell.horizontalBorderWidth,
       this,
-      cell.horizontalBorderColorOpacity,
+      {
+        x1: x,
+        y1: y,
+        x2: x + width,
+        y2: y,
+      },
+      {
+        stroke: cell.horizontalBorderColor,
+        lineWidth: cell.horizontalBorderWidth,
+        opacity: cell.horizontalBorderColorOpacity,
+      },
     );
 
     // vertical border
     renderLine(
-      x + width,
-      y,
-      x + width,
-      y + height,
-      cell.verticalBorderColor,
-      cell.verticalBorderWidth,
       this,
-      cell.horizontalBorderColorOpacity,
+      {
+        x1: x + width,
+        y1: y,
+        x2: x + width,
+        y2: y + height,
+      },
+      {
+        stroke: cell.verticalBorderColor,
+        lineWidth: cell.verticalBorderWidth,
+        opacity: cell.horizontalBorderColorOpacity,
+      },
     );
   }
 }

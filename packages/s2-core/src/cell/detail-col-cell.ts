@@ -51,6 +51,7 @@ export class DetailColCell extends ColCell {
     );
 
     this.textShape = renderText(
+      this,
       [this.textShape],
       textX,
       textY,
@@ -59,7 +60,6 @@ export class DetailColCell extends ColCell {
         textAlign,
         ...textStyle,
       },
-      this,
       { cursor: 'pointer' },
     );
 

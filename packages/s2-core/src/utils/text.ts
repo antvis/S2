@@ -308,6 +308,7 @@ export const drawObjectText = (cell) => {
   const realWidth = width / (text?.values[0].length + 1);
   const realHeight = height / (text?.values.length + 1);
   renderText(
+    cell,
     cell.textShape,
     calX(x, padding),
     y + realHeight / 2,
@@ -318,7 +319,6 @@ export const drawObjectText = (cell) => {
     ),
     labelStyle,
     textFill,
-    cell,
   );
 
   const { values: textValues } = text;
@@ -344,13 +344,13 @@ export const drawObjectText = (cell) => {
       curX = calX(x, padding, totalWidth);
       totalWidth += curWidth;
       curTextShape = renderText(
+        cell,
         cell.textShape,
         curX,
         curY,
         getEllipsisText(`${curText}`, curWidth, curStyle),
         curStyle,
         curStyle?.fill,
-        cell,
       );
     }
   }
@@ -372,6 +372,7 @@ export const drawStringText = (cell) => {
   const padding = cell.theme.dataCell.cell.padding;
 
   cell.textShape = renderText(
+    cell,
     cell.textShape,
     x + width - padding.right,
     y + height / 2,
@@ -382,7 +383,6 @@ export const drawStringText = (cell) => {
     ),
     textStyle,
     textFill,
-    cell,
   );
 };
 

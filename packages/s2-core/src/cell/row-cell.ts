@@ -2,7 +2,12 @@ import { GuiIcon } from '@/common/icons';
 import { HIT_AREA } from '@/facet/header/base';
 import { ResizeInfo } from '@/facet/header/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
-import { renderRect, renderText, updateFillOpacity } from '@/utils/g-renders';
+import {
+  renderLine,
+  renderRect,
+  renderText,
+  updateFillOpacity,
+} from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { isMobile } from '@/utils/is-mobile';
 import { getAdjustPosition } from '@/utils/text-absorption';
@@ -176,17 +181,20 @@ export class RowCell extends HeaderCell {
     const { x, y } = this.meta;
     // 1、bottom border
     const textIndent = this.getTextIndent();
-    this.addShape('line', {
-      attrs: {
+    renderLine(
+      this,
+      {
         x1: x + textIndent,
         y1: y,
         x2: position.x + width + viewportWidth + scrollX,
         y2: y,
-        stroke: this.theme.rowCell.cell.horizontalBorderColor,
-        opacity: this.theme.rowCell.cell.horizontalBorderOpacity,
-        lineWidth: this.theme.rowCell.cell.horizontalBorderWidth,
       },
-    });
+      {
+        stroke: this.theme.rowCell.cell.horizontalBorderColor,
+        lineWidth: this.theme.rowCell.cell.horizontalBorderWidth,
+        opacity: this.theme.rowCell.cell.horizontalBorderOpacity,
+      },
+    );
   }
 
   protected isTreeType() {
@@ -268,12 +276,12 @@ export class RowCell extends HeaderCell {
     );
 
     this.textShape = renderText(
+      this,
       [this.textShape],
       textX,
       textY,
       text,
       textStyle,
-      this,
       { cursor: 'pointer' },
     );
 
@@ -283,16 +291,16 @@ export class RowCell extends HeaderCell {
       // 配置了链接跳转
       if (!isMobile(device)) {
         const textBBox = this.textShape.getBBox();
-        this.addShape('line', {
-          attrs: {
+        renderLine(
+          this,
+          {
             x1: textBBox.bl.x,
             y1: textBBox.bl.y + 1,
             x2: textBBox.br.x,
             y2: textBBox.br.y + 1,
-            stroke: textStyle.fill,
-            lineWidth: 1,
           },
-        });
+          { stroke: textStyle.fill, lineWidth: 1 },
+        );
         this.textShape.attr({
           appendInfo: {
             isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别

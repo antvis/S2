@@ -9,6 +9,7 @@ import { HIT_AREA } from '@/facet/header/base';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
+  renderLine,
   renderRect,
   renderText,
   updateFillOpacity,
@@ -193,6 +194,7 @@ export class ColCell extends HeaderCell {
     //   }
     // }
     this.textShape = renderText(
+      this,
       [this.textShape],
       textX,
       textY,
@@ -201,7 +203,6 @@ export class ColCell extends HeaderCell {
         textAlign,
         ...textStyle,
       },
-      this,
       { cursor: 'pointer' },
     );
   }
@@ -327,16 +328,20 @@ export class ColCell extends HeaderCell {
     if (!this.meta.isLeaf) {
       const { height, viewportHeight } = this.headerConfig;
       const { x, y, width: cellWidth, height: cellHeight } = this.meta;
-      this.addShape('line', {
-        attrs: {
+
+      renderLine(
+        this,
+        {
           x1: x + cellWidth,
           y1: y + cellHeight,
           x2: x + cellWidth,
-          y2: y + height + viewportHeight, // 高度有多，通过 clip 裁剪掉
+          y2: y + height + viewportHeight,
+        },
+        {
           stroke: this.theme.colCell.cell.horizontalBorderColor,
           lineWidth: 1,
         },
-      });
+      );
     }
   }
 }
