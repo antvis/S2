@@ -50,15 +50,18 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           bottom: 12,
           left: 8,
         },
-        // -------------- hover -------------------
-        hover: {
-          backgroundColor: brandColors[5],
-        },
-        // -------------- selected -------------------
-        selected: {
-          backgroundColor: brandColors[5],
-          borderColor: grayColors[6],
-          borderWidth: 1,
+        /* ---------- interaction state ----------- */
+        interactionState: {
+          // -------------- hover -------------------
+          hover: {
+            backgroundColor: brandColors[5],
+          },
+          // -------------- selected -------------------
+          selected: {
+            backgroundColor: brandColors[5],
+            borderColor: grayColors[6],
+            borderWidth: 1,
+          },
         },
       },
       icon: {
@@ -108,15 +111,18 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           bottom: 12,
           left: 8,
         },
-        // -------------- hover -------------------
-        hover: {
-          backgroundColor: brandColors[2],
-        },
-        // -------------- selected -------------------
-        selected: {
-          backgroundColor: brandColors[2],
-          borderColor: grayColors[6],
-          borderWidth: 1,
+        /* ---------- interaction state ----------- */
+        interactionState: {
+          // -------------- hover -------------------
+          hover: {
+            backgroundColor: brandColors[2],
+          },
+          // -------------- selected -------------------
+          selected: {
+            backgroundColor: brandColors[2],
+            borderColor: grayColors[6],
+            borderWidth: 1,
+          },
         },
       },
       icon: {
@@ -166,15 +172,18 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           bottom: 12,
           left: 8,
         },
-        // -------------- hover -------------------
-        hover: {
-          backgroundColor: brandColors[5],
-        },
-        // -------------- selected -------------------
-        selected: {
-          backgroundColor: brandColors[5],
-          borderColor: grayColors[6],
-          borderWidth: 1,
+        /* ---------- interaction state ----------- */
+        interactionState: {
+          // -------------- hover -------------------
+          hover: {
+            backgroundColor: brandColors[5],
+          },
+          // -------------- selected -------------------
+          selected: {
+            backgroundColor: brandColors[5],
+            borderColor: grayColors[6],
+            borderWidth: 1,
+          },
         },
       },
       icon: {
@@ -227,29 +236,32 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           bottom: 12,
           left: 8,
         },
-        // -------------- hover -------------------
-        hover: {
-          backgroundColor: brandColors[2],
-        },
-        // -------------- keep hover -------------------
-        hoverFocus: {
-          backgroundColor: brandColors[2],
-          borderColor: grayColors[6],
-          borderWidth: 1,
-        },
-        // -------------- selected -------------------
-        selected: {
-          backgroundColor: brandColors[2],
-          borderColor: grayColors[6],
-          borderWidth: 1,
-        },
-        // -------------- prepare select --------------
-        prepareSelect: {
-          borderColor: brandColors[3],
-        },
-        // -------------- out of spotlight --------------
-        outOfTheSpotlight: {
-          opacity: 0.3,
+        /* ---------- interaction state ----------- */
+        interactionState: {
+          // -------------- hover -------------------
+          hover: {
+            backgroundColor: brandColors[2],
+          },
+          // -------------- keep hover -------------------
+          hoverFocus: {
+            backgroundColor: brandColors[2],
+            borderColor: grayColors[6],
+            borderWidth: 1,
+          },
+          // -------------- selected -------------------
+          selected: {
+            backgroundColor: brandColors[2],
+            borderColor: grayColors[6],
+            borderWidth: 1,
+          },
+          // -------------- prepare select --------------
+          prepareSelect: {
+            borderColor: brandColors[3],
+          },
+          // -------------- out of spotlight --------------
+          outOfTheSpotlight: {
+            opacity: 0.3,
+          },
         },
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,

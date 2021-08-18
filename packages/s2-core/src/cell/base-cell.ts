@@ -84,7 +84,10 @@ export abstract class BaseCell<T> extends Group {
 
   // 根据当前state来更新cell的样式
   public updateByState(stateName: InteractionStateName) {
-    const stateStyles = get(this.theme, `${this.cellType}.cell.${stateName}`);
+    const stateStyles = get(
+      this.theme,
+      `${this.cellType}.cell.interactionState.${stateName}`,
+    );
     each(stateStyles, (style, styleKey) => {
       const currentShape = findKey(SHAPE_ATTRS_MAP, (attrs) =>
         includes(attrs, styleKey),

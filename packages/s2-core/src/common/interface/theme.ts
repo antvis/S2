@@ -1,3 +1,5 @@
+import { InteractionStateName } from '../constant';
+
 // 文本内容的水平对齐方式, 默认 left
 export type TextAlign = 'left' | 'center' | 'right';
 
@@ -29,6 +31,10 @@ export interface InteractionStateTheme {
   borderWidth?: number;
   opacity?: string | number;
 }
+
+export type InteractionState = {
+  [K in InteractionStateName]?: InteractionStateTheme;
+};
 
 export type Margin = Padding;
 
@@ -63,18 +69,9 @@ export interface CellTheme {
   verticalBorderWidth?: number;
   /* 单元格内边距 */
   padding: Padding;
-  /* hover 单元格状态 */
-  hover?: InteractionStateTheme;
-  /* hover 焦点单元格 */
-  hoverFocus?: InteractionStateTheme;
-  /* 选中态 */
-  selected?: InteractionStateTheme;
-  /* 预选中态 */
-  prepareSelect?: InteractionStateTheme;
+  interactionState?: InteractionState;
   /* 单元格内条件格式-迷你条形图高度 */
   miniBarChartHeight?: number;
-  /* 聚光灯之外的单元格 */
-  outOfTheSpotlight?: InteractionStateTheme;
   /* 额外属性字段 */
   [key: string]: any;
 }

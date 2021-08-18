@@ -35,7 +35,7 @@ export class ColCell extends HeaderCell {
     updateShapeAttr(
       this.stateShapes.get('interactiveBgShape'),
       'fill',
-      this.theme.colCell.cell.selectedBackgroundColor,
+      this.theme.colCell.cell.interactionState.selected.backgroundColor,
     );
   }
 
