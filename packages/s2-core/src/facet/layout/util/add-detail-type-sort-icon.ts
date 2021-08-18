@@ -7,20 +7,15 @@ import { SpreadSheet } from '../../..';
 // 排序按钮的宽度
 export const SORT_ICON_SIZE = 8;
 
-// 明细表排序icon
-export function addDetailTypeSortIcon(
-  parent: Group,
-  spreadsheet: SpreadSheet,
-  textX,
-  textY,
-  key,
-) {
+export const getIconType = (key: string, spreadsheet: SpreadSheet) => {
   /*
   currentSortKey 存储的点击的某个field对应的升序还是降序
   currentSortKey = {
    [field]: up/down
   }
    */
+  let upSelected = false;
+  let downSelected = false;
   const currentSortKey = spreadsheet.store.get('currentSortKey', {});
   let upIconType = 'SortUp';
   let downIconType = 'SortDown';
@@ -29,44 +24,84 @@ export function addDetailTypeSortIcon(
     if (_.get(currentSortKey, key) === 'up') {
       // 点击过此维度的up
       upIconType = 'SortUpSelected';
+      upSelected = true;
     } else {
       // 点击过此维度的down
       downIconType = 'SortDownSelected';
+      downSelected = true;
     }
   }
 
+  return {
+    upIconType,
+    downIconType,
+    upSelected,
+    downSelected,
+  };
+};
+
+export const renderDetailTypeSortIcon = (
+  parent: Group,
+  spreadsheet: SpreadSheet,
+  textX: number,
+  textY,
+  key,
+) => {
+  const iconType = getIconType(key, spreadsheet);
   const upIcon = new GuiIcon({
-    type: upIconType,
+    type: iconType.upIconType,
     x: textX,
     y: textY - DEFAULT_PADDING * 2,
     width: SORT_ICON_SIZE,
     height: SORT_ICON_SIZE,
+    selected: false,
   });
+
   const downIcon = new GuiIcon({
-    type: downIconType,
+    type: iconType.downIconType,
     x: textX,
     y: textY - DEFAULT_PADDING / 2,
     width: SORT_ICON_SIZE,
     height: SORT_ICON_SIZE,
+    selected: false,
   });
+
   upIcon.on('click', () => {
-    spreadsheet.store.set('currentSortKey', {
-      [key]: 'up',
-    });
+    const selected = upIcon.get('selected');
+    let currentSortKey = {};
+    if (!selected) {
+      currentSortKey = {
+        [key]: 'up',
+      };
+    }
+    spreadsheet.store.set('currentSortKey', currentSortKey);
+    upIcon.set('selected', !selected);
     spreadsheet.emit(KEY_LIST_SORT, {
       sortFieldId: key,
-      sortMethod: 'ASC',
+      sortMethod: selected ? '' : 'ASC',
     });
   });
   downIcon.on('click', () => {
-    spreadsheet.store.set('currentSortKey', {
-      [key]: 'down',
-    });
+    const selected = downIcon.get('selected');
+    let currentSortKey = {};
+    if (!selected) {
+      currentSortKey = {
+        [key]: 'down',
+      };
+    }
+    spreadsheet.store.set('currentSortKey', currentSortKey);
+    downIcon.set('selected', !selected);
     spreadsheet.emit(KEY_LIST_SORT, {
       sortFieldId: key,
-      sortMethod: 'DESC',
+      sortMethod: selected ? '' : 'DESC',
     });
   });
+
   parent.add(upIcon);
   parent.add(downIcon);
-}
+
+  return {
+    upIcon,
+    downIcon,
+  };
+};

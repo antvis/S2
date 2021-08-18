@@ -1,4 +1,4 @@
-import { BaseCell, DataCell, DetailRowCell } from '@/cell';
+import { BaseCell, DataCell, DetailRowCell, TableDataCell } from '@/cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -460,12 +460,11 @@ export class SpreadSheet extends EE {
     const { style, dataCell } = this.options;
     // 默认单元格实现
     const defaultCell = (facet: ViewMeta) => {
-      if (
-        this.isTableMode() &&
-        this.options.showSeriesNumber &&
-        facet.colIndex === 0
-      ) {
-        return new DetailRowCell(facet, this);
+      if (this.isTableMode()) {
+        if (this.options.showSeriesNumber && facet.colIndex === 0) {
+          return new DetailRowCell(facet, this);
+        }
+        return new TableDataCell(facet, this);
       }
       return new DataCell(facet, this);
     };

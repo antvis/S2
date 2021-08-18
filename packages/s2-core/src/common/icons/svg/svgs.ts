@@ -134,15 +134,14 @@ export const SortDown = `<svg t="1565940955886" class="icon" viewBox="0 0 1024 1
 </svg>
 `;
 
-export const SortUpSelected = `<svg t="1565940955886" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-     p-id="17472" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
-  <defs>
-    <style type="text/css"></style>
-  </defs>
-  <path
-    fill-opacity="0.45"
-    d="M948 392.992l-403.008 488.99200001Q532 896 512.992 896t-32-14.016L76 392.992q-18.016-20.992-7.008-46.016T108 321.98400001L916 321.98400001q28 0 39.008 24.99199999T948 392.992z"
-    p-id="17473" data-spm-anchor-id="a313x.7781069.0.i2" class="selected"></path>
+export const SortUpSelected = `<svg t="1565940979768" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+p-id="17620" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+<defs>
+<style type="text/css"></style>
+</defs>
+<path
+d="M76 631.008l403.008-488.99200001Q492 128 511.008 128t32 14.016L948 631.008q18.016 20.992 7.008 46.016T916 702.01599999L108 702.01599999q-28 0-39.008-24.99199999T76 631.008z"
+p-id="17621"></path>
 </svg>
 `;
 

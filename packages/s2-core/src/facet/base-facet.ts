@@ -162,9 +162,9 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    (
-      this.spreadsheet.container.get('el') as HTMLCanvasElement
-    ).addEventListener('wheel', this.onWheel);
+    (this.spreadsheet.container.get(
+      'el',
+    ) as HTMLCanvasElement).addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
@@ -175,13 +175,13 @@ export abstract class BaseFacet {
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
-      this.onWheel({
+      this.onWheel(({
         ...originEvent,
         deltaX,
         deltaY,
         layerX: x / 3,
         layerY: y / 3,
-      } as unknown as S2WheelEvent);
+      } as unknown) as S2WheelEvent);
     });
   };
 
@@ -753,8 +753,9 @@ export abstract class BaseFacet {
     // 如果已经滚动在顶部或底部, 则无需触发滚动事件, 减少单元格重绘
     // TODO: 这里需要迁移 spreadsheet 的逻辑
     if (
-      this.isScrollToTop(optimizedDeltaY) ||
-      this.isScrollToBottom(optimizedDeltaY)
+      optimizedDeltaY > 0 &&
+      (this.isScrollToTop(optimizedDeltaY) ||
+        this.isScrollToBottom(optimizedDeltaY))
     ) {
       return;
     }
@@ -999,8 +1000,7 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
@@ -1054,8 +1054,7 @@ export abstract class BaseFacet {
         // When both a row header and a panel scroll bar exist, show viewport shadow
         showViewPortRightShadow:
           !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
         spreadsheet: this.cfg.spreadsheet,
       };
