@@ -3,6 +3,7 @@ import {
   DefaultInterceptEventType,
   OriginEventType,
   S2Event,
+  COPY_KEY,
 } from '@/common/constant';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
@@ -86,7 +87,7 @@ export class EventController {
         // windows and macos copy
         if (
           this.spreadsheet.options.enableCopy &&
-          keyEqualTo(event.key, 'c') &&
+          keyEqualTo(event.key, COPY_KEY) &&
           (event.metaKey || event.ctrlKey)
         ) {
           this.spreadsheet.emit(

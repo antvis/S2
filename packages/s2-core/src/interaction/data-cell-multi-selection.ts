@@ -6,7 +6,7 @@ import {
 } from '@/common/constant';
 import { S2CellType, TooltipData } from '@/common/interface';
 import { Event } from '@antv/g-canvas';
-import { each, find, isEmpty, isEqual } from 'lodash';
+import { each, find, isEmpty, isEqual, concat } from 'lodash';
 import { BaseInteraction } from './base';
 
 export class DataCellMultiSelection extends BaseInteraction {
@@ -19,16 +19,19 @@ export class DataCellMultiSelection extends BaseInteraction {
   }
 
   private bindKeyboardDown() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_DOWN, (ev: KeyboardEvent) => {
-      if (ev.key === SHIFT_KEY) {
-        this.isMultiSelection = true;
-      }
-    });
+    this.spreadsheet.on(
+      S2Event.GLOBAL_KEYBOARD_DOWN,
+      (event: KeyboardEvent) => {
+        if (event.key === SHIFT_KEY) {
+          this.isMultiSelection = true;
+        }
+      },
+    );
   }
 
   private bindKeyboardUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (ev: KeyboardEvent) => {
-      if (ev.key === SHIFT_KEY) {
+    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
+      if (event.key === SHIFT_KEY) {
         this.isMultiSelection = false;
         this.interaction.interceptEvent.delete(DefaultInterceptEventType.CLICK);
       }
@@ -43,14 +46,16 @@ export class DataCellMultiSelection extends BaseInteraction {
       if (this.isMultiSelection && meta) {
         const currentState = this.interaction.getState();
         const stateName = currentState?.stateName;
-        const cells = currentState?.cells;
+        const cells = isEmpty(currentState?.cells)
+          ? currentState?.cells
+          : concat(currentState?.cells, cell);
         // 屏蔽hover和click
         this.interaction.interceptEvent.add(DefaultInterceptEventType.CLICK);
         this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
         // 先把之前的tooltip隐藏
         this.spreadsheet.hideTooltip();
         this.interaction.changeState({
-          cells: [cell],
+          cells: cells,
           stateName: InteractionStateName.SELECTED,
         });
         this.interaction.updateCellStyleByState();
