@@ -1,4 +1,5 @@
 import { CustomTreeItem } from '@/common/interface';
+import { S2PartialOptions } from 'src/common/interface/s2Options';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
   Hierarchy,
@@ -151,6 +152,10 @@ export interface Tooltip {
   readonly row?: Tooltip;
   readonly col?: Tooltip;
   readonly cell?: Tooltip;
+  // custom tooltips
+  readonly renderTooltip?: RenderTooltip;
+  // replace the whole default tooltip component
+  readonly tooltipComponent?: JSX.Element;
 }
 
 export interface Sort {
@@ -245,10 +250,7 @@ export type CellCallback = (
   ...restOptions
 ) => S2CellType;
 
-export type TooltipCallback = (
-  spreadsheet: SpreadSheet,
-  ...restOptions
-) => BaseTooltip;
+export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
 // TODO 类型定义清楚！！
@@ -332,10 +334,7 @@ export type MappingDataItemCallback = (
 /**
  * Spreadsheet facet config
  */
-export interface SpreadSheetFacetCfg
-  extends Fields,
-    Omit<S2Options, 'dataSet'>,
-    Style {
+export interface SpreadSheetFacetCfg extends Fields, S2PartialOptions, Style {
   // spreadsheet interface
   spreadsheet: SpreadSheet;
   // data set of spreadsheet

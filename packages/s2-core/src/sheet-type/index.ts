@@ -22,6 +22,8 @@ import {
   SpreadSheetFacetCfg,
   SpreadsheetMountContainer,
   ThemeCfg,
+  TooltipData,
+  TooltipOptions,
   TooltipShowOptions,
   Total,
   Totals,
@@ -36,7 +38,7 @@ import { BaseTooltip } from '@/tooltip';
 import { updateConditionsByValues } from '@/utils/condition';
 import { isMobile } from '@/utils/is-mobile';
 import EE from '@antv/event-emitter';
-import { Canvas, CanvasCfg, Event, IGroup } from '@antv/g-canvas';
+import { Canvas, Event, IGroup } from '@antv/g-canvas';
 import { ext } from '@antv/matrix-util';
 import {
   clone,
@@ -51,8 +53,7 @@ import {
 } from 'lodash';
 import { Store } from '../common/store';
 import { RootInteraction } from '../interaction/root';
-
-const matrixTransform = ext.transform;
+import { getTooltipData } from '../utils/tooltip';
 
 export class SpreadSheet extends EE {
   public static DEBUG_ON = false;
@@ -113,27 +114,87 @@ export class SpreadSheet extends EE {
     options: S2Options,
   ) {
     super();
-    this.dom = isString(dom)
-      ? document.getElementById(dom)
-      : (dom as HTMLElement);
+    this.dom = this.getMountContainer(dom);
     this.dataCfg = safetyDataConfig(dataCfg);
     this.options = safetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
-    this.tooltip = this.getTooltip(options?.initTooltip);
 
-    DebuggerUtil.getInstance().setDebug(options?.debug);
+    this.initTooltip();
     this.initGroups(this.dom, this.options);
     this.bindEvents();
     this.initInteraction();
+
+    DebuggerUtil.getInstance().setDebug(options?.debug);
   }
 
-  initInteraction() {
+  get isShowTooltip() {
+    return this.options?.tooltip?.showTooltip;
+  }
+
+  private getMountContainer(dom: SpreadsheetMountContainer) {
+    return isString(dom) ? document.getElementById(dom) : (dom as HTMLElement);
+  }
+
+  private initInteraction() {
     this.interaction = new RootInteraction(this);
   }
 
-  getTooltip = (initTooltip: S2Options['initTooltip']): BaseTooltip => {
-    return initTooltip?.(this) || new BaseTooltip(this);
-  };
+  private initTooltip() {
+    this.tooltip = this.renderTooltip();
+    if (!(this.tooltip instanceof BaseTooltip)) {
+      console.warn(
+        `[Custom Tooltip]: ${(
+          this.tooltip as unknown
+        )?.constructor?.toString()} should be extends from BaseTooltip`,
+      );
+    }
+  }
+
+  private renderTooltip(): BaseTooltip {
+    return (
+      this.options?.tooltip?.renderTooltip?.(this) || new BaseTooltip(this)
+    );
+  }
+
+  public showTooltip(showOptions: TooltipShowOptions) {
+    if (this.isShowTooltip) {
+      this.tooltip.show?.(showOptions);
+    }
+  }
+
+  public showTooltipWithInfo(
+    event: Event,
+    data: TooltipData[],
+    options?: TooltipOptions,
+  ) {
+    if (!this.isShowTooltip) {
+      return;
+    }
+    const tooltipData = getTooltipData(this, data, options);
+    this.showTooltip({
+      data: tooltipData,
+      position: {
+        x: event.clientX,
+        y: event.clientY,
+      },
+      options: {
+        enterable: true,
+        ...options,
+      },
+    });
+  }
+
+  public hideTooltip() {
+    if (this.isShowTooltip) {
+      this.tooltip.hide?.();
+    }
+  }
+
+  public destroyTooltip() {
+    if (this.isShowTooltip) {
+      this.tooltip.destroy?.();
+    }
+  }
 
   getDataSet = (options: S2Options): BaseDataSet => {
     const { mode, dataSet, hierarchyType } = options;
@@ -164,7 +225,7 @@ export class SpreadSheet extends EE {
    * Priority: group sort > advanced sort
    * @param dataCfg
    */
-  public setDataCfg(dataCfg: S2DataConfig): void {
+  public setDataCfg(dataCfg: S2DataConfig) {
     const newDataCfg = clone(dataCfg);
     const lastSortParam = this.store.get('sortParam');
     const { sortParams } = newDataCfg;
@@ -172,14 +233,12 @@ export class SpreadSheet extends EE {
     this.dataCfg = newDataCfg;
   }
 
-  public setOptions(options: S2Options): void {
-    if (this.tooltip) {
-      this.tooltip.hide();
-    }
+  public setOptions(options: S2Options) {
+    this.hideTooltip();
     this.options = merge(this.options, options);
   }
 
-  public render(reloadData = true, callback?: () => void): void {
+  public render(reloadData = true, callback?: () => void) {
     if (reloadData) {
       this.dataSet.setDataCfg(this.dataCfg);
     }
@@ -189,9 +248,9 @@ export class SpreadSheet extends EE {
     }
   }
 
-  public destroy(): void {
+  public destroy() {
     this.facet.destroy();
-    this.tooltip.destroy();
+    this.destroyTooltip();
     this.removeDevicePixelRatioListener();
     this.removeDeviceZoomListener();
   }
@@ -202,7 +261,7 @@ export class SpreadSheet extends EE {
    * @param type string
    * @param theme
    */
-  public setThemeCfg(themeCfg: ThemeCfg): void {
+  public setThemeCfg(themeCfg: ThemeCfg) {
     const theme = themeCfg?.theme || {};
     this.theme = merge({}, getTheme(themeCfg), theme);
     this.updateDefaultConditions();
@@ -353,16 +412,6 @@ export class SpreadSheet extends EE {
     return this.dataSet.fields.valueInCols;
   }
 
-  public showTooltip(showOptions: TooltipShowOptions) {
-    if (get(this, 'options.tooltip.showTooltip')) {
-      this.tooltip.show(showOptions);
-    }
-  }
-
-  public hideTooltip() {
-    this.tooltip.hide();
-  }
-
   public getTooltipDataItemMappingCallback() {
     return get(this, 'options.mappingDisplayDataItem');
   }
@@ -426,15 +475,14 @@ export class SpreadSheet extends EE {
    */
   protected initGroups(dom: HTMLElement, options: S2Options): void {
     const { width, height } = options;
-    const canvasCfg: CanvasCfg = {
+
+    // base canvas group
+    this.container = new Canvas({
       container: dom,
       width,
       height,
       localRefresh: false,
-    };
-
-    // base canvas group
-    this.container = new Canvas(canvasCfg);
+    });
 
     // the main three layer groups
     this.backgroundGroup = this.container.addGroup({
@@ -585,6 +633,8 @@ export class SpreadSheet extends EE {
 
   // 由于行头和列头的选择的模式并不是把一整行或者一整列的cell都setState
   private renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
+    const matrixTransform = ext.transform;
+
     const { width, height } = this.options;
     const newWidth = Math.floor(width * ratio);
     const newHeight = Math.floor(height * ratio);

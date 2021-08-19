@@ -206,7 +206,7 @@ export abstract class BaseFacet {
       false,
     );
     return showSeriesNumber
-      ? get(this.cfg, 'spreadsheet.theme.rowCell.seriesNumberWidth')
+      ? (get(this.cfg, 'spreadsheet.theme.rowCell.seriesNumberWidth') as number)
       : 0;
   }
 
@@ -423,7 +423,9 @@ export abstract class BaseFacet {
     const box = this.getCanvasHW();
     let width = box.width - br.x;
     let height =
-      box.height - br.y - get(this.cfg, 'spreadsheet.theme.scrollBar.size');
+      box.height -
+      br.y -
+      (get(this.cfg, 'spreadsheet.theme.scrollBar.size') as number);
 
     const realWidth = this.getRealWidth();
     const realHeight = this.getRealHeight();
