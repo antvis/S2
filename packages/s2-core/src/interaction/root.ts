@@ -1,6 +1,6 @@
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
-import { get, includes, isEmpty } from 'lodash';
+import { chunk, first, get, includes, isEmpty, sample } from 'lodash';
 import {
   BrushSelection,
   ColRowMultiSelection,
@@ -161,6 +161,15 @@ export class RootInteraction {
   public getPanelGroupAllDataCells(): DataCell[] {
     const children = this.spreadsheet.panelGroup.getChildren();
     return children.filter((cell) => cell instanceof DataCell) as DataCell[];
+  }
+
+  public getPanelGroupAllDataCellsChunk(): DataCell[][] {
+    const dataCells = this.getPanelGroupAllDataCells();
+    const sampleCell = sample(dataCells);
+    const ratio = Math.ceil(
+      this.spreadsheet.facet.getRealWidth() / sampleCell.getBBox().width,
+    );
+    return chunk(dataCells, ratio);
   }
 
   /**

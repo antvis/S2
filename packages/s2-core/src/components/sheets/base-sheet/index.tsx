@@ -12,7 +12,7 @@ import {
   LayoutRow,
   ListSortParams,
   TargetLayoutNode,
-  SpreadsheetConstructor,
+  S2Constructor,
 } from 'src/common/interface';
 import { DrillDown } from '../../drill-down';
 import { Header } from '../../header';
@@ -70,11 +70,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   );
 
   const getSpreadSheet = (): SpreadSheet => {
-    const params: SpreadsheetConstructor = [
-      container.current,
-      dataCfg,
-      options,
-    ];
+    const params: S2Constructor = [container.current, dataCfg, options];
     // TODO: 改个名字 spreadsheet => customSpreadsheet 之类的?
     if (spreadsheet) {
       return spreadsheet(...params);

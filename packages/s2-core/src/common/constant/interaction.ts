@@ -55,3 +55,9 @@ export const INTERACTION_TREND = {
   ID: '__INTERACTION_TREND_ID__',
   NAME: i18n('趋势'),
 };
+
+export enum InteractionBrushStage {
+  NORMAL,
+  CLICK,
+  DRAG,
+}

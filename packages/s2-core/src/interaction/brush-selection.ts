@@ -1,61 +1,36 @@
 import { DefaultInterceptEventType, S2Event } from '@/common/constant';
-import { InteractionStateName } from '@/common/constant/interaction';
-import { S2CellBrushRange } from '@/common/interface';
+import {
+  InteractionBrushStage,
+  InteractionStateName,
+} from '@/common/constant/interaction';
+import {
+  BrushPoint,
+  BrushRange,
+  OriginalEvent,
+  ViewMeta,
+} from '@/common/interface';
 import { Event, IShape, Point } from '@antv/g-canvas';
-import { each, find, isEmpty, isEqual } from 'lodash';
+import { get, isEmpty, isEqual, sample, throttle } from 'lodash';
 import { DataCell } from '../cell';
-import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
+import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '../common/constant';
 import { TooltipData } from '../common/interface';
 import { BaseInteraction } from './base';
-
-function getBrushRegion(p1, p2): S2CellBrushRange {
-  const leftX = Math.min(p1.x, p2.x);
-  const rightX = Math.max(p1.x, p2.x);
-  const topY = Math.min(p1.y, p2.y);
-  const bottomY = Math.max(p1.y, p2.y);
-  const width = rightX - leftX;
-  const height = bottomY - topY;
-
-  return { leftX, rightX, topY, bottomY, width, height };
-}
-
-function isInRegion(cellRegion, brushRegion) {
-  const cellCenterX = (cellRegion.leftX + cellRegion.rightX) / 2;
-  const cellCenterY = (cellRegion.topY + cellRegion.bottomY) / 2;
-  const regionCenterX = (brushRegion.leftX + brushRegion.rightX) / 2;
-  const regionCenterY = (brushRegion.topY + brushRegion.bottomY) / 2;
-  const lx = Math.abs(cellCenterX - regionCenterX);
-  const ly = Math.abs(cellCenterY - regionCenterY);
-  const sax = Math.abs(cellRegion.leftX - cellRegion.rightX);
-  const sbx = Math.abs(brushRegion.leftX - brushRegion.rightX);
-  const say = Math.abs(cellRegion.topY - cellRegion.bottomY);
-  const sby = Math.abs(brushRegion.topY - brushRegion.bottomY);
-  return lx <= (sax + sbx) / 2 && ly <= (say + sby) / 2;
-}
 
 /**
  * Panel area's brush selection interaction
  */
 export class BrushSelection extends BaseInteraction {
-  public threshold: number;
+  public dataCells: DataCell[] = [];
 
-  public cells: DataCell[];
+  public prepareSelectMaskShape: IShape;
 
-  // 从mousedown开始到mouseup canvas层面的选择框
-  public regionShape: IShape;
+  private startBrushPoint: BrushPoint;
 
-  private previousPoint: Point;
+  private endBrushPoint: BrushPoint;
 
-  private endPoint: Point;
+  private brushRangeDataCells: DataCell[] = [];
 
-  /**
-   * 0: 初始态
-   * 1: 触发mousedown
-   * 2: 触发mousedown + 触发mousemove
-   * https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-eventgroupings-mouseevents-h3
-   * 目前没有太大影响，但实现上做成避免和click的行为定义冲突
-   */
-  private phase: 0 | 1 | 2;
+  private brushStage: InteractionBrushStage = InteractionBrushStage.NORMAL;
 
   protected bindEvents() {
     this.bindMouseDown();
@@ -63,156 +38,230 @@ export class BrushSelection extends BaseInteraction {
     this.bindMouseUp();
   }
 
-  private bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
-      const oe = ev.originalEvent as any;
-      this.previousPoint = { x: oe.layerX, y: oe.layerY };
-      this.cells = this.interaction.getPanelGroupAllDataCells();
-      if (!this.regionShape) {
-        this.regionShape = this.createRegionShape();
-      } else {
-        this.regionShape.attr({
-          x: this.previousPoint.x,
-          y: this.previousPoint.y,
+  private initPrepareSelectMaskShape(point: Point) {
+    if (this.prepareSelectMaskShape) {
+      return;
+    }
+    this.prepareSelectMaskShape = this.spreadsheet.foregroundGroup.addShape(
+      'rect',
+      {
+        attrs: {
           width: 0,
           height: 0,
+          x: point.x,
+          y: point.y,
+          // TODO: 主题 需要合并 @缨缨 的代码
+          fill: '#1890FF',
           opacity: 0.3,
-        });
-      }
-      this.draw();
-      this.phase = 1;
+          zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
+        },
+        capture: false,
+      },
+    );
+    this.prepareSelectMaskShape.hide();
+  }
+
+  private bindMouseDown() {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
+      this.brushStage = InteractionBrushStage.CLICK;
+
+      const originalEvent = ev.originalEvent as unknown as OriginalEvent;
+      const point: Point = { x: originalEvent.layerX, y: originalEvent.layerY };
+
+      this.initPrepareSelectMaskShape(point);
+      this.dataCells = this.interaction.getPanelGroupAllDataCells();
+      this.startBrushPoint = this.getBrushPoint(point);
     });
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (ev: Event) => {
-      if (this.phase) {
-        // 屏蔽hover事件
-        this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
-        ev.preventDefault();
-        this.phase = 2;
-        const oe = ev.originalEvent as any;
-        const currentPoint = { x: oe.layerX, y: oe.layerY };
-        // 更新brushRegion
-        const brushRegion = getBrushRegion(this.previousPoint, currentPoint);
-        this.regionShape.attr({
-          x: brushRegion.leftX,
-          y: brushRegion.topY,
-          width: brushRegion.width,
-          height: brushRegion.height,
-        });
-
-        this.interaction.clearStyleIndependent();
-        this.getHighlightCells(brushRegion);
-        this.draw();
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (event: Event) => {
+      if (this.brushStage === InteractionBrushStage.NORMAL) {
+        return;
       }
+
+      this.brushStage = InteractionBrushStage.DRAG;
+
+      event.preventDefault();
+      this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
+      const originalEvent = event.originalEvent as unknown as OriginalEvent;
+      const currentPoint: Point = {
+        x: originalEvent.layerX,
+        y: originalEvent.layerY,
+      };
+      this.endBrushPoint = this.getBrushPoint(currentPoint);
+      this.interaction.clearStyleIndependent();
+      this.updatePrepareSelectMask();
+      this.showPrepareSelectedCells();
+      this.draw();
     });
   }
 
-  // 刷选过程中的预选择外框
-  protected showPrepareBrushSelectBorder(cells: DataCell[]) {
-    if (cells.length) {
+  private bindMouseUp() {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (event: Event) => {
+      if (this.brushStage === InteractionBrushStage.DRAG) {
+        this.hidePrepareSelectMaskShape();
+        this.updateSelectedCells();
+
+        if (this.interaction.isSelectedState()) {
+          this.interaction.showSelectedCellsSpotlight();
+        }
+        this.spreadsheet.showTooltipWithInfo(
+          event,
+          this.getBrushRangeCellsInfos(),
+        );
+      }
+      this.brushStage = InteractionBrushStage.NORMAL;
+    });
+  }
+
+  private getBrushRangeCellsInfos(): TooltipData[] {
+    const cellInfos: TooltipData[] = [];
+    if (!this.interaction.isSelectedState()) {
+      return [];
+    }
+    this.interaction.getActiveCells().forEach((cell) => {
+      const valueInCols = this.spreadsheet.options.valueInCols;
+      const meta = cell.getMeta();
+      const query = get(meta, [valueInCols ? 'colQuery' : 'rowQuery']);
+      if (isEmpty(meta) || isEmpty(query)) {
+        return;
+      }
+      const currentCellInfo: TooltipData = {
+        ...query,
+        colIndex: valueInCols ? meta.colIndex : null,
+        rowIndex: !valueInCols ? meta.rowIndex : null,
+      };
+
+      const isEqualCellInfo = cellInfos.find((cellInfo) =>
+        isEqual(currentCellInfo, cellInfo),
+      );
+      if (!isEqualCellInfo) {
+        cellInfos.push(currentCellInfo);
+      }
+    });
+    return cellInfos;
+  }
+
+  private updatePrepareSelectMask() {
+    const brushRange = this.getBrushRange();
+    this.prepareSelectMaskShape.show();
+    this.prepareSelectMaskShape.attr({
+      x: brushRange.start.x,
+      y: brushRange.start.y,
+      width: brushRange.width,
+      height: brushRange.height,
+    });
+  }
+
+  private hidePrepareSelectMaskShape() {
+    this.prepareSelectMaskShape.hide();
+  }
+
+  // 刷选过程中的预选择外框  // TODO: 这块已经没了 需要合并 @缨缨 的代码
+  protected showPrepareBrushSelectBorder(cells: DataCell[] = []) {
+    if (!isEmpty(cells)) {
       this.interaction.clearState();
-      cells.forEach((cell: DataCell) => {
+      cells.forEach((cell) => {
         this.interaction.setState(cell, InteractionStateName.PREPARE_SELECT);
       });
       this.interaction.updateCellStyleByState();
     }
   }
 
-  private isInCellInfos(cellInfos: TooltipData[], info: TooltipData): boolean {
-    return !!find(cellInfos, (i) => isEqual(i, info));
-  }
-
-  private getCellsInRegion(region: S2CellBrushRange) {
-    const containerMat = this.spreadsheet.panelGroup.attr('matrix');
+  private getBrushPoint(point: Point): BrushPoint {
+    const containerMat = this.spreadsheet.panelGroup.getMatrix();
     const containerX = containerMat[6];
     const containerY = containerMat[7];
-    const selectedCells: DataCell[] = [];
-    this.cells.forEach((cell) => {
-      const bbox = cell.getBBox();
-      const leftX = containerX + bbox.minX;
-      const rightX = containerX + bbox.maxX;
-      const topY = containerY + bbox.minY;
-      const bottomY = containerY + bbox.maxY;
-      const cellRegion = { leftX, rightX, topY, bottomY };
-      const inRegion = isInRegion(cellRegion, region);
-      if (inRegion && cell.getMeta().data) {
-        selectedCells.push(cell);
-      }
-    });
-    return selectedCells;
+    const sampleDataCellBBox = sample(this.dataCells)?.getBBox();
+
+    const colIndex = Math.floor(
+      Math.abs(point.x - containerX) / sampleDataCellBBox?.width,
+    );
+    const rowIndex = Math.floor(
+      Math.abs(point.y - containerY) / sampleDataCellBBox?.height,
+    );
+
+    return {
+      ...point,
+      rowIndex,
+      colIndex,
+    };
   }
 
-  private bindMouseUp() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (event: Event) => {
-      if (this.phase === 2) {
-        const oe = event.originalEvent as any;
-        this.endPoint = { x: oe.layerX, y: oe.layerY };
-        const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
-        this.getSelectedCells(brushRegion);
-        // 透明度为0会导致 hover 无法响应
-        this.regionShape.attr({
-          opacity: 0,
-        });
-        this.draw();
+  // 四个刷选方向: 左 => 右, 右 => 左, 上 => 下, 下 => 上, 将最终结果进行重新排序, 获取真实的 row, col index
+  private getBrushRange(): BrushRange {
+    const maxRowIndex = Math.max(
+      this.startBrushPoint.rowIndex,
+      this.endBrushPoint.rowIndex,
+    );
+    const minRowIndex = Math.min(
+      this.startBrushPoint.rowIndex,
+      this.endBrushPoint.rowIndex,
+    );
+    const maxColIndex = Math.max(
+      this.startBrushPoint.colIndex,
+      this.endBrushPoint.colIndex,
+    );
+    const minColIndex = Math.min(
+      this.startBrushPoint.colIndex,
+      this.endBrushPoint.colIndex,
+    );
+    const minX = Math.min(this.startBrushPoint.x, this.endBrushPoint.x);
+    const maxX = Math.max(this.startBrushPoint.x, this.endBrushPoint.x);
+    const minY = Math.min(this.startBrushPoint.y, this.endBrushPoint.y);
+    const maxY = Math.max(this.startBrushPoint.y, this.endBrushPoint.y);
 
-        const cells = this.interaction.getActiveCells();
-        const cellInfos: TooltipData[] = [];
-        if (this.interaction.isSelectedState()) {
-          each(cells, (cell) => {
-            const valueInCols = this.spreadsheet.options.valueInCols;
-            const meta = cell.getMeta();
-            if (!isEmpty(meta)) {
-              const query = meta[valueInCols ? 'colQuery' : 'rowQuery'];
-              if (query) {
-                const cellInfo: TooltipData = {
-                  ...query,
-                  colIndex: valueInCols ? meta.colIndex : null,
-                  rowIndex: !valueInCols ? meta.rowIndex : null,
-                };
+    return {
+      start: {
+        rowIndex: minRowIndex,
+        colIndex: minColIndex,
+        x: minX,
+        y: minY,
+      },
+      end: {
+        rowIndex: maxRowIndex,
+        colIndex: maxColIndex,
+        x: maxX,
+        y: maxY,
+      },
+      width: maxX - minX,
+      height: maxY - minY,
+    };
+  }
 
-                if (!this.isInCellInfos(cellInfos, cellInfo)) {
-                  cellInfos.push(cellInfo);
-                }
-              }
-            }
-          });
-          this.interaction.showSelectedCellsSpotlight();
-        }
-        this.spreadsheet.showTooltipWithInfo(event, cellInfos);
-      }
-      this.phase = 0;
+  private isInBrushRange(meta: ViewMeta) {
+    const { start, end } = this.getBrushRange();
+    const { rowIndex, colIndex } = meta;
+    return (
+      rowIndex >= start.rowIndex &&
+      rowIndex <= end.rowIndex &&
+      colIndex >= start.colIndex &&
+      colIndex <= end.colIndex
+    );
+  }
+
+  // 获取对角线的两个坐标, 得到对应矩阵并且有数据的单元格
+  private getBrushRangeDataCells(): DataCell[] {
+    return this.dataCells.filter((cell) => {
+      const meta = cell.getMeta();
+      return meta?.data && this.isInBrushRange(meta);
     });
   }
 
   // 刷选过程中高亮的cell
-  private getHighlightCells(region: S2CellBrushRange) {
-    const selectedCells = this.getCellsInRegion(region);
-    this.showPrepareBrushSelectBorder(selectedCells);
-  }
+  private showPrepareSelectedCells = throttle(() => {
+    const brushRangeDataCells = this.getBrushRangeDataCells();
+    this.brushRangeDataCells = brushRangeDataCells;
+    this.showPrepareBrushSelectBorder(brushRangeDataCells);
+  }, 100);
 
   // 最终刷选的cell
-  private getSelectedCells(region: S2CellBrushRange) {
-    const selectedCells = this.getCellsInRegion(region);
+  private updateSelectedCells() {
+    const selectedCells = this.brushRangeDataCells;
     selectedCells.forEach((cell) => {
       this.interaction.setState(cell, InteractionStateName.SELECTED);
     });
     this.interaction.updateCellStyleByState();
-  }
-
-  private createRegionShape() {
-    return this.spreadsheet.foregroundGroup.addShape('rect', {
-      attrs: {
-        width: 0,
-        height: 0,
-        x: this.previousPoint.x,
-        y: this.previousPoint.y,
-        fill: '#1890FF',
-        opacity: 0.3,
-        zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX,
-      },
-      capture: false,
-    });
   }
 }
