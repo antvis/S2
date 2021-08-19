@@ -10,11 +10,7 @@ import {
   ViewMeta,
 } from '@/common/interface';
 import { Event, IShape, Point } from '@antv/g-canvas';
-<<<<<<< HEAD
 import { get, isEmpty, isEqual, sample, throttle } from 'lodash';
-=======
-import { each, find, isEmpty, isEqual, get } from 'lodash';
->>>>>>> data-process
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '../common/constant';
 import { TooltipData } from '../common/interface';
@@ -51,18 +47,21 @@ export class BrushSelection extends BaseInteraction {
       return;
     }
     const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
-    this.prepareSelectMaskShape= this.spreadsheet.foregroundGroup.addShape('rect', {
-      attrs: {
-        width: 0,
-        height: 0,
-        x: point.x,
-        y: point.y,
-        fill: prepareSelectMaskTheme?.backgroundColor,
-        fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
-        zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
+    this.prepareSelectMaskShape = this.spreadsheet.foregroundGroup.addShape(
+      'rect',
+      {
+        attrs: {
+          width: 0,
+          height: 0,
+          x: point.x,
+          y: point.y,
+          fill: prepareSelectMaskTheme?.backgroundColor,
+          fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
+          zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
+        },
+        capture: false,
       },
-      capture: false,
-    });
+    );
     this.prepareSelectMaskShape.hide();
   }
 
