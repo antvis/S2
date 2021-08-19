@@ -100,6 +100,8 @@ export class BrushSelection extends BaseInteraction {
   private bindMouseUp() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (event: Event) => {
       if (this.brushStage === InteractionBrushStage.DRAG) {
+        this.brushStage = InteractionBrushStage.NORMAL;
+
         this.hidePrepareSelectMaskShape();
         this.updateSelectedCells();
 
@@ -111,7 +113,6 @@ export class BrushSelection extends BaseInteraction {
           this.getBrushRangeCellsInfos(),
         );
       }
-      this.brushStage = InteractionBrushStage.NORMAL;
     });
   }
 
