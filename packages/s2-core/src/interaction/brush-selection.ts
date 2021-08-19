@@ -93,7 +93,6 @@ export class BrushSelection extends BaseInteraction {
       this.interaction.clearStyleIndependent();
       this.updatePrepareSelectMask();
       this.showPrepareSelectedCells();
-      this.draw();
     });
   }
 
@@ -192,19 +191,19 @@ export class BrushSelection extends BaseInteraction {
 
   // 四个刷选方向: 左 => 右, 右 => 左, 上 => 下, 下 => 上, 将最终结果进行重新排序, 获取真实的 row, col index
   private getBrushRange(): BrushRange {
-    const maxRowIndex = Math.max(
-      this.startBrushPoint.rowIndex,
-      this.endBrushPoint.rowIndex,
-    );
     const minRowIndex = Math.min(
       this.startBrushPoint.rowIndex,
       this.endBrushPoint.rowIndex,
     );
-    const maxColIndex = Math.max(
+    const maxRowIndex = Math.max(
+      this.startBrushPoint.rowIndex,
+      this.endBrushPoint.rowIndex,
+    );
+    const minColIndex = Math.min(
       this.startBrushPoint.colIndex,
       this.endBrushPoint.colIndex,
     );
-    const minColIndex = Math.min(
+    const maxColIndex = Math.max(
       this.startBrushPoint.colIndex,
       this.endBrushPoint.colIndex,
     );
