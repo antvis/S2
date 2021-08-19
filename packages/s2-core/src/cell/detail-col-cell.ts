@@ -3,20 +3,10 @@ import { get } from 'lodash';
 import { Node } from '@/index';
 import { SpreadSheet } from '../sheet-type';
 import { getEllipsisText, getTextPosition } from '../utils/text';
-import { EXTRA_FIELD, KEY_LIST_SORT } from '../common/constant';
-import {
-  renderDetailTypeSortIcon,
-  getIconType,
-} from '../facet/layout/util/add-detail-type-sort-icon';
-import { GuiIcon } from '@/common/icons';
+import { EXTRA_FIELD } from '../common/constant';
+import { renderDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
 
 export class DetailColCell extends ColCell {
-  private upIcon: GuiIcon;
-
-  private downIcon: GuiIcon;
-
-  private onSort: () => void;
-
   public constructor(
     meta: Node,
     spreadsheet: SpreadSheet,
@@ -80,37 +70,13 @@ export class DetailColCell extends ColCell {
       },
     });
 
-    const icons = renderDetailTypeSortIcon(
+    renderDetailTypeSortIcon(
       this,
       spreadsheet,
       x + cellWidth - iconSize,
       textY,
       key,
     );
-
-    this.upIcon = icons.upIcon;
-    this.downIcon = icons.downIcon;
-
-    this.onSort = () => {
-      console.log('onSort');
-      const { spreadsheet } = this.headerConfig;
-      const { key } = this.meta;
-
-      const iconTypes = getIconType(key, spreadsheet);
-      console.log(key, iconTypes);
-      this.upIcon.set('type', iconTypes.upIconType);
-      this.downIcon.set('type', iconTypes.downIconType);
-      this.upIcon.render();
-      this.downIcon.render();
-    };
-
-    spreadsheet.on(KEY_LIST_SORT, this.onSort);
-  }
-
-  public destroy() {
-    const { spreadsheet } = this.headerConfig;
-    super.destroy();
-    spreadsheet.off(KEY_LIST_SORT, this.onSort);
   }
 
   protected getColHotSpotKey(): string {

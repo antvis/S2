@@ -80,6 +80,7 @@ export const renderDetailTypeSortIcon = (
       sortFieldId: key,
       sortMethod: selected ? '' : 'ASC',
     });
+    spreadsheet.render(false);
   });
   downIcon.on('click', () => {
     const selected = downIcon.get('selected');
@@ -95,6 +96,7 @@ export const renderDetailTypeSortIcon = (
       sortFieldId: key,
       sortMethod: selected ? '' : 'DESC',
     });
+    spreadsheet.render(false);
   });
 
   parent.add(upIcon);

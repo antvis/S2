@@ -96,7 +96,7 @@ describe('buildTableHierarchy', () => {
       hierarchy,
     });
 
-    expect(JSON.stringify(rootNode)).toMatchSnapshot();
-    expect(JSON.stringify(hierarchy)).toMatchSnapshot();
+    expect(rootNode).toMatchSnapshot();
+    expect(hierarchy).toMatchSnapshot();
   });
 });
