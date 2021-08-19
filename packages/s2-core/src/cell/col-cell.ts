@@ -26,15 +26,15 @@ export class ColCell extends BaseCell<Node> {
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
     const cells = this.spreadsheet.interaction.getActiveCells();
-
+    const currentCell = _.first(cells);
     if (
-      _.isEmpty(cells) ||
+      !currentCell ||
       (stateName !== InteractionStateName.HOVER &&
         stateName !== InteractionStateName.HOVER_FOCUS)
     ) {
       return;
     }
-    if (cells.includes(this)) {
+    if (currentCell?.cellType === CellTypes.DATA_CELL || cells.includes(this)) {
       this.updateByState(InteractionStateName.HOVER);
     }
   }

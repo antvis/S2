@@ -1,3 +1,4 @@
+import { ColCell, RowCell } from '@/cell';
 import { S2Event } from '@/common/constant';
 import {
   HOVER_FOCUS_TIME,
@@ -5,8 +6,9 @@ import {
 } from '@/common/constant/interaction';
 import { S2CellType, ViewMeta } from '@/common/interface';
 import { getTooltipData } from '@/utils/tooltip';
+import { getActiveHoverRowColCells } from '@/utils/interaction/hover-event';
 import { Event } from '@antv/g-canvas';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, forEach } from 'lodash';
 import { BaseEvent } from './base-event';
 
 /**
@@ -19,6 +21,27 @@ export class HoverEvent extends BaseEvent {
     this.bindColCellHover();
   }
 
+  private updateRowColCells(meta: ViewMeta) {
+    const { rowId, colId } = meta;
+    // update colHeader cells
+    const allColHeaderCells = getActiveHoverRowColCells(
+      colId,
+      this.interaction.getAllColHeaderCells(),
+    );
+    forEach(allColHeaderCells, (cell: ColCell) => {
+      cell.update();
+    });
+
+    // update rowHeader cells
+    const allRowHeaderCells = getActiveHoverRowColCells(
+      rowId,
+      this.interaction.getAllRowHeaderCells(),
+    );
+    forEach(allRowHeaderCells, (cell: RowCell) => {
+      cell.update();
+    });
+  }
+
   private bindDataCellHover() {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: Event) => {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
@@ -28,6 +51,8 @@ export class HoverEvent extends BaseEvent {
         cells: [cell],
         stateName: InteractionStateName.HOVER,
       });
+      // highlight all the row and column cells which the cell belongs to
+      this.updateRowColCells(meta);
       if (this.interaction.hoverTimer) {
         window.clearTimeout(this.interaction.hoverTimer);
         this.changeStateToHoverFocus(cell, event, meta);

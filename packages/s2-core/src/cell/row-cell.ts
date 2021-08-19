@@ -8,7 +8,7 @@ import { isMobile } from '@/utils/is-mobile';
 import { getAdjustPosition } from '@/utils/text-absorption';
 import { IGroup } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
-import { each, find, get, isEmpty } from 'lodash';
+import { each, first, get, isEmpty } from 'lodash';
 import {
   CellTypes,
   COLOR_DEFAULT_RESIZER,
@@ -35,15 +35,16 @@ export class RowCell extends BaseCell<Node> {
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
     const cells = this.spreadsheet.interaction.getActiveCells();
+    const currentCell = first(cells);
 
     if (
-      isEmpty(cells) ||
+      !currentCell ||
       (stateName !== InteractionStateName.HOVER &&
         stateName !== InteractionStateName.HOVER_FOCUS)
     ) {
       return;
     }
-    if (cells.includes(this)) {
+    if (currentCell?.cellType === CellTypes.DATA_CELL || cells.includes(this)) {
       this.updateByState(InteractionStateName.HOVER);
     }
   }
