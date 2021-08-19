@@ -3,6 +3,7 @@ import { BaseInteraction } from '@/interaction/base';
 import { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName } from '../constant';
 import { ViewMeta } from './basic';
+import { Node } from '@/index';
 
 export type S2CellType<T extends Record<string, unknown> = ViewMeta> =
   | DataCell
@@ -12,8 +13,12 @@ export type S2CellType<T extends Record<string, unknown> = ViewMeta> =
   | BaseCell<T>;
 
 export interface InteractionStateInfo {
+  // current state name
   stateName?: InteractionStateName;
+  // all the active cells rendered by the canvas
   cells?: S2CellType[];
+  // all the active nodes, including rendered and unrendered cells
+  nodes?: Node[];
 }
 
 export type InteractionConstructor = new (

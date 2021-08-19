@@ -30,8 +30,4 @@ export class BaseEvent {
       console.error(`Please make sure ${target} has addEventListener function`);
     }
   }
-
-  protected draw() {
-    this.spreadsheet.container.draw();
-  }
 }

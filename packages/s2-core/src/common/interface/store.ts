@@ -4,19 +4,6 @@ import { PartDrillDownInfo } from '../../components/sheets/interface';
 import { S2DataConfig } from './s2DataConfig';
 import { BBox } from '@antv/g-canvas';
 
-export interface Selected {
-  type:
-    | 'cell'
-    | 'row'
-    | 'brush'
-    | 'col'
-    | 'column'
-    | 'row&col'
-    | 'column-multiple';
-  // [ 10, 5 ], [ [ 2, 5 ], [ 4, 8 ] ];
-  indexes: [number | number[], number | number[]];
-}
-
 export interface ReachedBorderId {
   rowId?: string;
   colId?: string;
@@ -50,8 +37,6 @@ export interface StoreKey {
   drillItemsNum: number;
   // interaction state
   interactionStateInfo: InteractionStateInfo;
-  // row, column, brush, cell selected
-  selected: Selected;
   drillDownFieldInLevel: PartDrillDownInfo[];
   originalDataCfg: S2DataConfig;
   drillDownMeta: any;

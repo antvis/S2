@@ -10,7 +10,11 @@ import {
   ViewMeta,
 } from '@/common/interface';
 import { Event, IShape, Point } from '@antv/g-canvas';
+<<<<<<< HEAD
 import { get, isEmpty, isEqual, sample, throttle } from 'lodash';
+=======
+import { each, find, isEmpty, isEqual, get } from 'lodash';
+>>>>>>> data-process
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '../common/constant';
 import { TooltipData } from '../common/interface';
@@ -38,26 +42,27 @@ export class BrushSelection extends BaseInteraction {
     this.bindMouseUp();
   }
 
+  private getPrepareSelectMaskTheme() {
+    return this.spreadsheet.theme.prepareSelectMask;
+  }
+
   private initPrepareSelectMaskShape(point: Point) {
     if (this.prepareSelectMaskShape) {
       return;
     }
-    this.prepareSelectMaskShape = this.spreadsheet.foregroundGroup.addShape(
-      'rect',
-      {
-        attrs: {
-          width: 0,
-          height: 0,
-          x: point.x,
-          y: point.y,
-          // TODO: 主题 需要合并 @缨缨 的代码
-          fill: '#1890FF',
-          opacity: 0.3,
-          zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
-        },
-        capture: false,
+    const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
+    this.prepareSelectMaskShape= this.spreadsheet.foregroundGroup.addShape('rect', {
+      attrs: {
+        width: 0,
+        height: 0,
+        x: point.x,
+        y: point.y,
+        fill: prepareSelectMaskTheme?.backgroundColor,
+        fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
+        zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
       },
-    );
+      capture: false,
+    });
     this.prepareSelectMaskShape.hide();
   }
 
@@ -104,9 +109,6 @@ export class BrushSelection extends BaseInteraction {
         this.hidePrepareSelectMaskShape();
         this.updateSelectedCells();
 
-        if (this.interaction.isSelectedState()) {
-          this.interaction.showSelectedCellsSpotlight();
-        }
         this.spreadsheet.showTooltipWithInfo(
           event,
           this.getBrushRangeCellsInfos(),
@@ -156,17 +158,6 @@ export class BrushSelection extends BaseInteraction {
 
   private hidePrepareSelectMaskShape() {
     this.prepareSelectMaskShape.hide();
-  }
-
-  // 刷选过程中的预选择外框  // TODO: 这块已经没了 需要合并 @缨缨 的代码
-  protected showPrepareBrushSelectBorder(cells: DataCell[] = []) {
-    if (!isEmpty(cells)) {
-      this.interaction.clearState();
-      cells.forEach((cell) => {
-        this.interaction.setState(cell, InteractionStateName.PREPARE_SELECT);
-      });
-      this.interaction.updateCellStyleByState();
-    }
   }
 
   private getBrushPoint(point: Point): BrushPoint {
@@ -252,16 +243,18 @@ export class BrushSelection extends BaseInteraction {
   // 刷选过程中高亮的cell
   private showPrepareSelectedCells = throttle(() => {
     const brushRangeDataCells = this.getBrushRangeDataCells();
+    this.interaction.changeState({
+      cells: brushRangeDataCells,
+      stateName: InteractionStateName.PREPARE_SELECT,
+    });
     this.brushRangeDataCells = brushRangeDataCells;
-    this.showPrepareBrushSelectBorder(brushRangeDataCells);
   }, 100);
 
   // 最终刷选的cell
   private updateSelectedCells() {
-    const selectedCells = this.brushRangeDataCells;
-    selectedCells.forEach((cell) => {
-      this.interaction.setState(cell, InteractionStateName.SELECTED);
+    this.interaction.changeState({
+      cells: this.brushRangeDataCells,
+      stateName: InteractionStateName.SELECTED,
     });
-    this.interaction.updateCellStyleByState();
   }
 }
