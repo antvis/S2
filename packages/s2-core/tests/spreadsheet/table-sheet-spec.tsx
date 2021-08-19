@@ -6,7 +6,6 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
-  S2Event,
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
 import ReactDOM from 'react-dom';
