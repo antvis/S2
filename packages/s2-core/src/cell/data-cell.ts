@@ -93,26 +93,31 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected handleHover(cells: S2CellType[]) {
-    // 如果当前是hover，要绘制出十字交叉的行列样式
     const currentHoverCell = first(cells) as S2CellType;
     if (currentHoverCell.cellType !== CellTypes.DATA_CELL) {
       this.hideInteractionShape();
       return;
     }
+
+    if (this.spreadsheet.options.hoverHighlight) {
+      // 如果当前是hover，要绘制出十字交叉的行列样式
+
+      const currentColIndex = this.meta.colIndex;
+      const currentRowIndex = this.meta.rowIndex;
+      // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
+      if (
+        currentColIndex === currentHoverCell?.getMeta().colIndex ||
+        currentRowIndex === currentHoverCell?.getMeta().rowIndex
+      ) {
+        this.updateByState(InteractionStateName.HOVER);
+      } else {
+        // 当视图内的 cell 行列 index 与 hover 的 cell 不一致，隐藏其他样式
+        this.hideInteractionShape();
+      }
+    }
+
     if (isEqual(currentHoverCell, this)) {
       this.updateByState(InteractionStateName.HOVER_FOCUS);
-    }
-    const currentColIndex = this.meta.colIndex;
-    const currentRowIndex = this.meta.rowIndex;
-    // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
-    if (
-      currentColIndex === currentHoverCell?.getMeta().colIndex ||
-      currentRowIndex === currentHoverCell?.getMeta().rowIndex
-    ) {
-      this.updateByState(InteractionStateName.HOVER);
-    } else {
-      // 当视图内的 cell 行列 index 与 hover 的 cell 不一致，隐藏其他样式
-      this.hideInteractionShape();
     }
   }
 

@@ -51,13 +51,16 @@ export class HoverEvent extends BaseEvent {
         cells: [cell],
         stateName: InteractionStateName.HOVER,
       });
-      // highlight all the row and column cells which the cell belongs to
-      this.updateRowColCells(meta);
-      if (this.interaction.hoverTimer) {
-        window.clearTimeout(this.interaction.hoverTimer);
-        this.changeStateToHoverFocus(cell, event, meta);
-      } else {
-        this.changeStateToHoverFocus(cell, event, meta);
+
+      if (this.spreadsheet.options.hoverHighlight) {
+        // highlight all the row and column cells which the cell belongs to
+        this.updateRowColCells(meta);
+        if (this.interaction.hoverTimer) {
+          window.clearTimeout(this.interaction.hoverTimer);
+          this.changeStateToHoverFocus(cell, event, meta);
+        } else {
+          this.changeStateToHoverFocus(cell, event, meta);
+        }
       }
     });
   }
