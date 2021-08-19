@@ -162,9 +162,9 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    (
-      this.spreadsheet.container.get('el') as HTMLCanvasElement
-    ).addEventListener('wheel', this.onWheel);
+    (this.spreadsheet.container.get(
+      'el',
+    ) as HTMLCanvasElement).addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
@@ -175,13 +175,13 @@ export abstract class BaseFacet {
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
-      this.onWheel({
+      this.onWheel(({
         ...originEvent,
         deltaX,
         deltaY,
         layerX: x / 3,
         layerY: y / 3,
-      } as unknown as S2WheelEvent);
+      } as unknown) as S2WheelEvent);
     });
   };
 
@@ -206,7 +206,7 @@ export abstract class BaseFacet {
       false,
     );
     return showSeriesNumber
-      ? get(this.cfg, 'spreadsheet.theme.rowCell.seriesNumberWidth')
+      ? (get(this.cfg, 'spreadsheet.theme.rowCell.seriesNumberWidth') as number)
       : 0;
   }
 
@@ -423,7 +423,9 @@ export abstract class BaseFacet {
     const box = this.getCanvasHW();
     let width = box.width - br.x;
     let height =
-      box.height - br.y - get(this.cfg, 'spreadsheet.theme.scrollBar.size');
+      box.height -
+      br.y -
+      (get(this.cfg, 'spreadsheet.theme.scrollBar.size') as number);
 
     const realWidth = this.getRealWidth();
     const realHeight = this.getRealHeight();
@@ -999,8 +1001,7 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
@@ -1054,8 +1055,7 @@ export abstract class BaseFacet {
         // When both a row header and a panel scroll bar exist, show viewport shadow
         showViewPortRightShadow:
           !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
         spreadsheet: this.cfg.spreadsheet,
       };

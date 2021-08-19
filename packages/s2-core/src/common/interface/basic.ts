@@ -1,4 +1,5 @@
 import { CustomTreeItem } from '@/common/interface';
+import { S2PartialOptions } from 'src/common/interface/s2Options';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
   Hierarchy,
@@ -333,10 +334,7 @@ export type MappingDataItemCallback = (
 /**
  * Spreadsheet facet config
  */
-export interface SpreadSheetFacetCfg
-  extends Fields,
-    Omit<S2Options, 'dataSet'>,
-    Style {
+export interface SpreadSheetFacetCfg extends Fields, S2PartialOptions, Style {
   // spreadsheet interface
   spreadsheet: SpreadSheet;
   // data set of spreadsheet

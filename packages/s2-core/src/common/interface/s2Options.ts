@@ -24,9 +24,10 @@ import { merge } from 'lodash';
 import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
 import { BaseDataSet } from 'src/data-set';
 import { SpreadSheet } from 'src/sheet-type';
+import { Node } from 'src/facet/layout/node';
 import { FilterDataItemCallback } from './basic';
 
-export interface S2Options {
+export interface S2PartialOptions {
   // canvas's width
   readonly width: number;
   // canvas's height
@@ -63,6 +64,7 @@ export interface S2Options {
   readonly rowActionIcons?: RowActionIcons;
   // extra styles
   readonly style?: Partial<Style>;
+  readonly hierarchyCollapse?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -77,8 +79,7 @@ export interface S2Options {
   readonly frame?: FrameCallback;
   // custom corner header
   readonly cornerHeader?: CornerHeaderCallback;
-  // custom data set
-  readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
+
   // the collection of row id and column id of cells which to be merged
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // enable Command + C to copy spread data
@@ -103,9 +104,21 @@ export interface S2Options {
   selectedCellsSpotlight?: boolean;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
 
+  /** ***********CUSTOM LAYOUT HOOKS**************** */
+  otterLayout?: (
+    spreadsheet: SpreadSheet,
+    rowNode: Node,
+    colNode: Node,
+  ) => void;
+  /** ***********CUSTOM LAYOUT HOOKS**************** */
   // extra options if needed
   [key: string]: unknown;
 }
+
+export type S2Options = S2PartialOptions & {
+  // custom data set
+  readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
+};
 
 export const defaultStyle = {
   treeRowsWidth: TREE_ROW_DEFAULT_WIDTH,

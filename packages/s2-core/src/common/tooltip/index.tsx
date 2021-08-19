@@ -75,7 +75,12 @@ export class BaseTooltip {
     });
 
     this.unMountComponent(container);
-    const customDom = element || this.spreadsheet?.options?.tooltipComponent;
+    const customDom =
+      element ||
+      (this.spreadsheet?.options?.tooltipComponent as React.DOMElement<
+        React.DOMAttributes<Element>,
+        Element
+      >);
     this.customComponent = customDom
       ? ReactDOM.render(customDom, container)
       : ReactDOM.render(this.renderContent(data, options), container);

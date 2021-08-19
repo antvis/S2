@@ -24,7 +24,7 @@ const getSpreadSheet = (
   options: S2Options,
 ) => {
   sheet = new SpreadSheet(dom, dataCfg, options);
-  window.sheet = sheet;
+  (window as any).sheet = sheet;
   return sheet;
 };
 
