@@ -121,20 +121,16 @@ export class RootInteraction {
 
   public getPanelGroupAllDataCells(): DataCell[] {
     const children = this.spreadsheet.panelGroup.getChildren();
-    return (
-      (children.filter((cell) => cell instanceof DataCell) as DataCell[]) || []
-    );
+    return children.filter((cell) => cell instanceof DataCell) as DataCell[];
   }
 
   public getAllRowHeaderCells() {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
     const rowCells = rowHeader.cfg.children;
-    return (
-      (rowCells.filter(
-        (cell: S2CellType) => cell instanceof RowCell,
-      ) as RowCell[]) || []
-    );
+    return rowCells.filter(
+      (cell: S2CellType) => cell instanceof RowCell,
+    ) as RowCell[];
   }
 
   public getAllColHeaderCells() {

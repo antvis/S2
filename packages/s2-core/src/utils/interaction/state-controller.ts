@@ -1,3 +1,4 @@
+import { INTERACTION_STATE_INFO_KEY } from '@/common/constant';
 import { InteractionStateInfo } from '@/common/interface';
 import { S2CellType } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
@@ -14,7 +15,7 @@ export const clearState = (spreadsheet: SpreadSheet) => {
       cell.hideInteractionShape();
     });
 
-    spreadsheet.store.set('interactionStateInfo', {});
+    spreadsheet.interaction.resetState();
     if (spreadsheet.options.selectedCellsSpotlight) {
       const unSelectedCells =
         spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
@@ -39,6 +40,6 @@ export const setState = (
     // There can only be one state in the table. When the stateName is inconsistent with the state in the stateInfo, the previously stored state should be cleared.
     clearState(spreadsheet);
     spreadsheet.hideTooltip();
-    spreadsheet.store.set('interactionStateInfo', interactionStateInfo);
+    spreadsheet.store.set(INTERACTION_STATE_INFO_KEY, interactionStateInfo);
   }
 };

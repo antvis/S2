@@ -1,7 +1,6 @@
 import { DefaultInterceptEventType, S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { S2CellBrushRange } from '@/common/interface';
-import { updateShapeAttr } from '@/utils/g-renders';
 import { Event, IShape, Point } from '@antv/g-canvas';
 import { each, find, isEmpty, isEqual, get } from 'lodash';
 import { DataCell } from '../cell';
@@ -68,7 +67,7 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private getPrepareSelectMaskTheme() {
-    return get(this.spreadsheet, 'theme.prepareSelectMask');
+    return this.spreadsheet.theme.prepareSelectMask;
   }
 
   private bindMouseDown() {
