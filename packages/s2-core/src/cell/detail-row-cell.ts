@@ -33,7 +33,5 @@ export class DetailRowCell extends DataCell {
       textStyle,
       this,
     );
-
-    return this.textShape;
   }
 }

@@ -10,8 +10,6 @@ const STYLE_PLACEHOLDER = '<svg';
 const ImageCache: Record<string, HTMLImageElement> = {};
 
 interface GuiIconCfg {
-  type: string;
-  selected?: boolean;
   readonly x: number;
   readonly y: number;
   readonly width: number;
@@ -93,7 +91,7 @@ export class GuiIcon extends Group {
   /**
    * 渲染
    */
-  public render(): void {
+  private render(): void {
     const {
       x,
       y,
@@ -104,7 +102,6 @@ export class GuiIcon extends Group {
       textAlign,
       textBaseline,
     } = this.cfg;
-    this.clear();
     const image = new Shape.Image({
       attrs: {
         x,

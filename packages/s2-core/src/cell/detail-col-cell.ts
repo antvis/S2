@@ -7,14 +7,6 @@ import { EXTRA_FIELD } from '../common/constant';
 import { renderDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
 
 export class DetailColCell extends ColCell {
-  public constructor(
-    meta: Node,
-    spreadsheet: SpreadSheet,
-    ...restOptions: unknown[]
-  ) {
-    super(meta, spreadsheet, ...restOptions);
-  }
-
   protected drawCellText() {
     const { spreadsheet } = this.headerConfig;
     const {
