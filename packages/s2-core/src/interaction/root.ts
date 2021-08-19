@@ -1,6 +1,7 @@
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
-import { get, includes, isEmpty } from 'lodash';
+import { ColHeader, RowHeader } from 'src/facet/header';
+import { get, includes, isEmpty, concat } from 'lodash';
 import {
   BrushSelection,
   ColRowMultiSelection,
@@ -24,6 +25,8 @@ import {
   RowTextClick,
   S2CellType,
   SpreadSheet,
+  ColCell,
+  RowCell,
 } from '@/index';
 import { BaseInteraction } from './base';
 import { EventController } from './events/event-controller';
@@ -54,8 +57,8 @@ export class RootInteraction {
     this.registerEvents();
   }
 
-  public setState(cell: S2CellType, stateName: InteractionStateName) {
-    setState(cell, stateName, this.spreadsheet);
+  public setState(interactionStateInfo: InteractionStateInfo) {
+    setState(interactionStateInfo, this.spreadsheet);
   }
 
   public getState() {
@@ -91,42 +94,6 @@ export class RootInteraction {
     return currentState?.cells || [];
   }
 
-  public hasActiveCells() {
-    return !isEmpty(this.getActiveCells());
-  }
-
-  public addActiveCells(cells: S2CellType[] = []) {
-    this.getActiveCells().push(...cells);
-  }
-
-  public showSelectedCellsSpotlight() {
-    if (!this.spreadsheet.options.selectedCellsSpotlight) {
-      return;
-    }
-    this.getActiveCells().forEach((cell) => {
-      cell.resetOpacity();
-    });
-    this.getPanelGroupAllUnSelectedDataCells().forEach((cell) => {
-      cell.setBgColorOpacity();
-    });
-  }
-
-  public hideSelectedCellsSpotlight() {
-    if (!this.spreadsheet.options.selectedCellsSpotlight) {
-      return;
-    }
-    this.getPanelGroupAllUnSelectedDataCells().forEach((cell) => {
-      cell.resetOpacity();
-    });
-  }
-
-  public toggleSelectedCellsSpotlight(visible: boolean) {
-    if (visible) {
-      return this.showSelectedCellsSpotlight();
-    }
-    this.hideSelectedCellsSpotlight();
-  }
-
   public updateCellStyleByState() {
     const cells = this.getActiveCells();
     cells.forEach((cell) => {
@@ -141,15 +108,9 @@ export class RootInteraction {
       currentState?.stateName === InteractionStateName.HOVER
     ) {
       this.getPanelGroupAllDataCells().forEach((cell) => {
-        cell.hideShapeUnderState();
+        cell.hideInteractionShape();
       });
     }
-  }
-
-  public updatePanelGroupAllDataCellsStyle() {
-    this.getPanelGroupAllDataCells().forEach((cell) => {
-      cell.update();
-    });
   }
 
   public getPanelGroupAllUnSelectedDataCells() {
@@ -161,6 +122,34 @@ export class RootInteraction {
   public getPanelGroupAllDataCells(): DataCell[] {
     const children = this.spreadsheet.panelGroup.getChildren();
     return children.filter((cell) => cell instanceof DataCell) as DataCell[];
+  }
+
+  public getAllRowHeaderCells() {
+    const children = this.spreadsheet.foregroundGroup.getChildren();
+    const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
+    const rowCells = rowHeader.cfg.children;
+    return rowCells.filter(
+      (cell: S2CellType) => cell instanceof RowCell,
+    ) as RowCell[];
+  }
+
+  public getAllColHeaderCells() {
+    const children = this.spreadsheet.foregroundGroup.getChildren();
+    const colHeader = children.filter((group) => group instanceof ColHeader)[0];
+    const colCells = colHeader.cfg.children;
+    return (
+      (colCells.filter(
+        (cell: S2CellType) => cell instanceof ColCell,
+      ) as ColCell[]) || []
+    );
+  }
+
+  public getAllCells() {
+    return concat<S2CellType>(
+      this.getPanelGroupAllDataCells(),
+      this.getAllRowHeaderCells(),
+      this.getAllColHeaderCells(),
+    );
   }
 
   /**
@@ -196,8 +185,29 @@ export class RootInteraction {
     this.eventController = new EventController(this.spreadsheet, this);
   }
 
+  public draw() {
+    this.spreadsheet.container.draw();
+  }
+
   public clearState() {
     clearState(this.spreadsheet);
+    this.draw();
+  }
+
+  public changeState(interactionStateInfo: InteractionStateInfo) {
+    const { cells } = interactionStateInfo;
+    if (!isEmpty(cells)) {
+      clearState(this.spreadsheet);
+      this.setState(interactionStateInfo);
+      this.updatePanelAllCellsStyle();
+      this.draw();
+    }
+  }
+  updatePanelAllCellsStyle() {
+    const cells = this.getPanelGroupAllDataCells();
+    cells.forEach((cell: DataCell) => {
+      cell.update();
+    });
   }
 
   // 注册事件

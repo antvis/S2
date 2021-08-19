@@ -150,6 +150,7 @@ const getOptions = (): S2Options => {
     },
     showTrend: true,
     selectedCellsSpotlight: true,
+    hoverHighlight: true,
   };
 };
 
@@ -247,6 +248,14 @@ function MainLayout(props) {
           defaultChecked={options.selectedCellsSpotlight}
           onChange={(checked) => {
             updateOptions({ selectedCellsSpotlight: checked });
+          }}
+        />
+        <Switch
+          checkedChildren="hover十字器开"
+          unCheckedChildren="hover十字器关"
+          defaultChecked={options.hoverHighlight}
+          onChange={(checked) => {
+            updateOptions({ hoverHighlight: checked });
           }}
         />
         <Checkbox onChange={onCheckChanged4} defaultChecked={freezeRowHeader}>

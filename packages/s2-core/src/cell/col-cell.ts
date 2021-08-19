@@ -3,14 +3,15 @@ import {
   CellTypes,
   COLOR_DEFAULT_RESIZER,
   KEY_GROUP_COL_RESIZER,
+  InteractionStateName,
 } from '@/common/constant';
 import { GuiIcon } from '@/common/icons';
-import { TextAlign } from '@/common/interface/theme';
+import { TextAlign } from '@/common/interface';
 import { HIT_AREA } from '@/facet/header/base';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { ResizeInfo } from '@/facet/header/interface';
 import { Node } from '@/index';
-import { renderRect, updateShapeAttr } from '@/utils/g-renders';
+import { renderRect } from '@/utils/g-renders';
 import {
   getEllipsisText,
   getTextPosition,
@@ -21,63 +22,47 @@ import _ from 'lodash';
 
 export class ColCell extends BaseCell<Node> {
   protected headerConfig: ColHeaderConfig;
-  // protected bottomBorderHotSpot: Set<string>;
-  // TODO type define
 
   public update() {
-    const selectedId = this.spreadsheet.store.get('rowColSelectedId');
-    if (selectedId && _.find(selectedId, (id) => id === this.meta.id)) {
-      this.setActive();
-    } else {
-      this.setInactive();
+    const stateName = this.spreadsheet.interaction.getCurrentStateName();
+    const cells = this.spreadsheet.interaction.getActiveCells();
+    const currentCell = _.first(cells);
+    if (
+      !currentCell ||
+      (stateName !== InteractionStateName.HOVER &&
+        stateName !== InteractionStateName.HOVER_FOCUS)
+    ) {
+      return;
+    }
+    if (currentCell?.cellType === CellTypes.DATA_CELL || cells.includes(this)) {
+      this.updateByState(InteractionStateName.HOVER);
     }
   }
 
-  public setActive() {
-    updateShapeAttr(
-      this.interactiveBgShape,
-      'fill',
-      this.theme.colCell.cell.selectedBackgroundColor,
-    );
-  }
-
-  public setInactive() {
-    updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
-  }
-
-  protected handleRestOptions(...options) {
+  protected handleRestOptions(...options: ColHeaderConfig[]) {
     this.headerConfig = options[0];
   }
 
   protected initCell() {
     this.cellType = this.getCellType();
-    // 1、draw rect background
+    // draw rect background
     this.drawRectBackground();
-    // 2、interactive background shape
+    // interactive background shape
     this.drawInteractiveBgShape();
-    // 2、draw text
+    // draw text
     this.drawCellText();
-    // 3、draw sort icons
+    // draw sort icons
     this.drawSortIcon();
-    // 4、draw right border
+    // draw right border
     this.drawRightBorder();
-    // 5、draw hot-spot rect
+    // draw hot-spot rect
     this.drawHotSpot();
-
-    this.updateSelected();
+    // update the interaction state
+    this.update();
   }
 
   protected getCellType() {
     return CellTypes.COL_CELL;
-  }
-
-  private updateSelected() {
-    const selectedId = this.spreadsheet.store.get('rowColSelectedId');
-    if (selectedId && _.find(selectedId, (id) => id === this.meta.id)) {
-      this.setActive();
-    } else {
-      this.setInactive();
-    }
   }
 
   protected getColHotSpotKey() {

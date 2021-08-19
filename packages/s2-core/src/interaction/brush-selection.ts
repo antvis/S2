@@ -2,13 +2,13 @@ import { DefaultInterceptEventType, S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { S2CellBrushRange } from '@/common/interface';
 import { Event, IShape, Point } from '@antv/g-canvas';
-import { each, find, isEmpty, isEqual } from 'lodash';
+import { each, find, isEmpty, isEqual, get } from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
 import { TooltipData } from '../common/interface';
 import { BaseInteraction } from './base';
 
-function getBrushRegion(p1, p2): S2CellBrushRange {
+function getBrushRegion(p1: Point, p2: Point): S2CellBrushRange {
   const leftX = Math.min(p1.x, p2.x);
   const rightX = Math.max(p1.x, p2.x);
   const topY = Math.min(p1.y, p2.y);
@@ -19,7 +19,10 @@ function getBrushRegion(p1, p2): S2CellBrushRange {
   return { leftX, rightX, topY, bottomY, width, height };
 }
 
-function isInRegion(cellRegion, brushRegion) {
+function isInRegion(
+  cellRegion: S2CellBrushRange,
+  brushRegion: S2CellBrushRange,
+) {
   const cellCenterX = (cellRegion.leftX + cellRegion.rightX) / 2;
   const cellCenterY = (cellRegion.topY + cellRegion.bottomY) / 2;
   const regionCenterX = (brushRegion.leftX + brushRegion.rightX) / 2;
@@ -63,6 +66,10 @@ export class BrushSelection extends BaseInteraction {
     this.bindMouseUp();
   }
 
+  private getPrepareSelectMaskTheme() {
+    return this.spreadsheet.theme.prepareSelectMask;
+  }
+
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
       const oe = ev.originalEvent as any;
@@ -76,10 +83,8 @@ export class BrushSelection extends BaseInteraction {
           y: this.previousPoint.y,
           width: 0,
           height: 0,
-          opacity: 0.3,
         });
       }
-      this.draw();
       this.phase = 1;
     });
   }
@@ -100,24 +105,13 @@ export class BrushSelection extends BaseInteraction {
           y: brushRegion.topY,
           width: brushRegion.width,
           height: brushRegion.height,
+          fillOpacity: this.getPrepareSelectMaskTheme()?.backgroundOpacity,
         });
 
         this.interaction.clearStyleIndependent();
         this.getHighlightCells(brushRegion);
-        this.draw();
       }
     });
-  }
-
-  // 刷选过程中的预选择外框
-  protected showPrepareBrushSelectBorder(cells: DataCell[]) {
-    if (cells.length) {
-      this.interaction.clearState();
-      cells.forEach((cell: DataCell) => {
-        this.interaction.setState(cell, InteractionStateName.PREPARE_SELECT);
-      });
-      this.interaction.updateCellStyleByState();
-    }
   }
 
   private isInCellInfos(cellInfos: TooltipData[], info: TooltipData): boolean {
@@ -153,9 +147,8 @@ export class BrushSelection extends BaseInteraction {
         this.getSelectedCells(brushRegion);
         // 透明度为0会导致 hover 无法响应
         this.regionShape.attr({
-          opacity: 0,
+          fillOpacity: 0,
         });
-        this.draw();
 
         const cells = this.interaction.getActiveCells();
         const cellInfos: TooltipData[] = [];
@@ -178,7 +171,6 @@ export class BrushSelection extends BaseInteraction {
               }
             }
           });
-          this.interaction.showSelectedCellsSpotlight();
         }
         this.spreadsheet.showTooltipWithInfo(event, cellInfos);
       }
@@ -189,27 +181,31 @@ export class BrushSelection extends BaseInteraction {
   // 刷选过程中高亮的cell
   private getHighlightCells(region: S2CellBrushRange) {
     const selectedCells = this.getCellsInRegion(region);
-    this.showPrepareBrushSelectBorder(selectedCells);
+    this.interaction.changeState({
+      cells: selectedCells,
+      stateName: InteractionStateName.PREPARE_SELECT,
+    });
   }
 
   // 最终刷选的cell
   private getSelectedCells(region: S2CellBrushRange) {
     const selectedCells = this.getCellsInRegion(region);
-    selectedCells.forEach((cell) => {
-      this.interaction.setState(cell, InteractionStateName.SELECTED);
+    this.interaction.changeState({
+      cells: selectedCells,
+      stateName: InteractionStateName.SELECTED,
     });
-    this.interaction.updateCellStyleByState();
   }
 
   private createRegionShape() {
+    const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
     return this.spreadsheet.foregroundGroup.addShape('rect', {
       attrs: {
         width: 0,
         height: 0,
         x: this.previousPoint.x,
         y: this.previousPoint.y,
-        fill: '#1890FF',
-        opacity: 0.3,
+        fill: prepareSelectMaskTheme?.backgroundColor,
+        fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
         zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX,
       },
       capture: false,

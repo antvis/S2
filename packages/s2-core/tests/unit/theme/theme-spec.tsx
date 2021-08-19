@@ -35,14 +35,13 @@ const getDataCfg = () => {
 const getOptions = (): S2Options => {
   return {
     debug: true,
-    width: 800,
+    width: 1000,
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: true,
     mode: 'pivot',
-    useDefaultConditionValues: ['price'],
     conditions: {
       text: [],
       interval: [],
