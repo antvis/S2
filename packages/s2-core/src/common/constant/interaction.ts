@@ -63,7 +63,7 @@ export const INTERACTION_TREND = {
 };
 
 export enum InteractionBrushStage {
-  NORMAL,
   CLICK,
-  DRAG,
+  UN_DRAGGED,
+  DRAGGED,
 }

@@ -30,7 +30,7 @@ export class BrushSelection extends BaseInteraction {
 
   private brushRangeDataCells: DataCell[] = [];
 
-  private brushStage: InteractionBrushStage = InteractionBrushStage.NORMAL;
+  private brushStage: InteractionBrushStage = InteractionBrushStage.UN_DRAGGED;
 
   protected bindEvents() {
     this.bindMouseDown();
@@ -80,11 +80,11 @@ export class BrushSelection extends BaseInteraction {
 
   private bindMouseMove() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (event: Event) => {
-      if (this.brushStage === InteractionBrushStage.NORMAL) {
+      if (this.brushStage === InteractionBrushStage.UN_DRAGGED) {
         return;
       }
 
-      this.brushStage = InteractionBrushStage.DRAG;
+      this.brushStage = InteractionBrushStage.DRAGGED;
 
       event.preventDefault();
       this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
@@ -102,8 +102,8 @@ export class BrushSelection extends BaseInteraction {
 
   private bindMouseUp() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (event: Event) => {
-      if (this.brushStage === InteractionBrushStage.DRAG) {
-        this.brushStage = InteractionBrushStage.NORMAL;
+      if (this.brushStage === InteractionBrushStage.DRAGGED) {
+        this.brushStage = InteractionBrushStage.UN_DRAGGED;
 
         this.hidePrepareSelectMaskShape();
         this.updateSelectedCells();
