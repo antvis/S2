@@ -10,6 +10,7 @@ import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 import { Canvas, Event as CanvasEvent, LooseObject } from '@antv/g-canvas';
 import { each, get, includes } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
+import { BaseCell } from '../../cell';
 
 interface EventListener {
   target: EventTarget;
@@ -104,13 +105,13 @@ export class EventController {
     }
   }
 
-  private resetSheetStyle(ev: Event) {
+  private resetSheetStyle(event: Event) {
     // TODO tooltip 隐藏判断
     if (
-      ev.target !== this.spreadsheet.container.get('el') &&
-      !includes((<HTMLElement>ev.target)?.className, 'eva-facet') &&
-      !includes((<HTMLElement>ev.target)?.className, 'ant-menu') &&
-      !includes((<HTMLElement>ev.target)?.className, 'ant-input')
+      event.target !== this.spreadsheet.container.get('el') &&
+      !includes((<HTMLElement>event.target)?.className, 'eva-facet') &&
+      !includes((<HTMLElement>event.target)?.className, 'ant-menu') &&
+      !includes((<HTMLElement>event.target)?.className, 'ant-input')
     ) {
       this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
       this.interaction.clearState();

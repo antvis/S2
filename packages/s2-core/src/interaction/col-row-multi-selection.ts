@@ -1,7 +1,7 @@
 import {
   DefaultInterceptEventType,
+  InteractionKeyboardKey,
   S2Event,
-  SHIFT_KEY,
 } from '@/common/constant';
 import { Event } from '@antv/g-canvas';
 import { handleRowColClick } from '@/utils/interaction/multi-click';
@@ -17,16 +17,19 @@ export class ColRowMultiSelection extends BaseInteraction {
   }
 
   private bindKeyboardDown() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_DOWN, (ev: KeyboardEvent) => {
-      if (ev.key === SHIFT_KEY) {
-        this.isMultiSelection = true;
-      }
-    });
+    this.spreadsheet.on(
+      S2Event.GLOBAL_KEYBOARD_DOWN,
+      (event: KeyboardEvent) => {
+        if (event.key === InteractionKeyboardKey.SHIFT) {
+          this.isMultiSelection = true;
+        }
+      },
+    );
   }
 
   private bindKeyboardUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (ev: KeyboardEvent) => {
-      if (ev.key === SHIFT_KEY) {
+    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
+      if (event.key === InteractionKeyboardKey.SHIFT) {
         this.isMultiSelection = false;
         this.interaction.interceptEvent.delete(DefaultInterceptEventType.CLICK);
       }
