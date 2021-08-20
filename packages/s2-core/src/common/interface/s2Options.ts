@@ -100,8 +100,10 @@ export interface S2PartialOptions {
   filterDisplayDataItem?: FilterDataItemCallback;
   // determine data mapping when shows in tooltip
   mappingDisplayDataItem?: MappingDataItemCallback;
-  // Focus selected cell, like the spotlight
+  // focus selected cell, like the spotlight
   selectedCellsSpotlight?: boolean;
+  // highlight all row header cells and column header cells to which the hovered cell belongs
+  hoverHighlight?: boolean;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
 
   /** ***********CUSTOM LAYOUT HOOKS**************** */
@@ -167,7 +169,8 @@ export const defaultOptions = {
   customHeaderCells: null,
   rowActionIcons: null,
   style: defaultStyle,
-  selectedCellsSpotlight: false,
+  selectedCellsSpotlight: true,
+  hoverHighlight: true,
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>

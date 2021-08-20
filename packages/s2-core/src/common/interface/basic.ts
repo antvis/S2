@@ -16,6 +16,7 @@ import { BaseTooltip } from '../tooltip';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { S2CellType } from './interaction';
 import { IconTheme } from './theme';
+import { Event } from '@antv/g-canvas';
 
 export type Formatter = (v: unknown) => string;
 
@@ -425,10 +426,11 @@ export interface CellBoxCfg {
   // 单元格 padding 值
   padding?: Padding;
 }
-export type SpreadsheetMountContainer = string | HTMLElement;
+export type S2MountContainer = string | HTMLElement;
 
-export type SpreadsheetConstructor = [
-  SpreadsheetMountContainer,
-  S2DataConfig,
-  S2Options,
-];
+export type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];
+
+export interface OriginalEvent extends Event {
+  layerX: number;
+  layerY: number;
+}

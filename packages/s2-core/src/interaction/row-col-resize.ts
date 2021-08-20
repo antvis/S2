@@ -102,7 +102,6 @@ export class RowColResize extends BaseInteraction {
           cellEndBorder.attr('cursor', `${info.type}-resize`);
           const header = this.getHeaderGroup();
           this.resizeGroup.move(header.get('x'), header.get('y'));
-          this.draw();
         }
       }
     });
@@ -125,8 +124,9 @@ export class RowColResize extends BaseInteraction {
         const children = this.resizeGroup.getChildren();
         if (children) {
           const info = this.getResizeInfo();
-          const startPoint: ['M', number, number] =
-            children[0]?.attr('path')[0];
+          const startPoint: ['M', number, number] = children[0]?.attr(
+            'path',
+          )[0];
           const endPoint: ['M', number, number] = children[1]?.attr('path')[0];
 
           let resizeEventType: ResizeEventType;
@@ -240,7 +240,6 @@ export class RowColResize extends BaseInteraction {
           });
         }
         cellEndBorder.attr('path', [start, end]);
-        this.draw();
       }
     }
   };

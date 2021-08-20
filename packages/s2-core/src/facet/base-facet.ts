@@ -417,8 +417,8 @@ export abstract class BaseFacet {
   calculatePanelBBox = () => {
     const corner = this.cornerBBox;
     const br = {
-      x: corner.maxX,
-      y: corner.maxY,
+      x: Math.floor(corner.maxX),
+      y: Math.floor(corner.maxY),
     };
     const box = this.getCanvasHW();
     let width = box.width - br.x;
@@ -430,8 +430,8 @@ export abstract class BaseFacet {
     const realWidth = this.getRealWidth();
     const realHeight = this.getRealHeight();
 
-    width = Math.min(width, realWidth);
-    height = Math.min(height, realHeight);
+    width = Math.floor(Math.min(width, realWidth));
+    height = Math.floor(Math.min(height, realHeight));
 
     this.panelBBox = {
       x: br.x,
@@ -443,8 +443,6 @@ export abstract class BaseFacet {
       minX: br.x,
       minY: br.y,
     } as BBox;
-
-    this.spreadsheet.store.set('panelBBox', this.panelBBox);
   };
 
   getRealWidth = (): number => {

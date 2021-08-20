@@ -24,12 +24,15 @@ import {
   some,
   sumBy,
   uniq,
+  assign,
+  pick,
 } from 'lodash';
 import {
   Aggregation,
   Data,
   DataItem,
   ListItem,
+  S2CellType,
   SpreadSheet,
   TooltipData,
   TooltipHeadInfo,
@@ -183,9 +186,12 @@ export const getFieldList = (
     concat([], fields),
     (field) => field !== EXTRA_FIELD && hoverData[field],
   );
-  const fieldList = map(currFields, (field: string): ListItem => {
-    return getListItem(spreadsheet, hoverData, field);
-  });
+  const fieldList = map(
+    currFields,
+    (field: string): ListItem => {
+      return getListItem(spreadsheet, hoverData, field);
+    },
+  );
   return fieldList;
 };
 
@@ -376,20 +382,20 @@ export const getSummaryProps = (
 
 const mergeSummaries = (summaries) => {
   const result = [];
-  each(summaries, (summary) => {
-    const summaryInResultIndex = findIndex(
-      result,
-      (i) => i?.name === summary?.name,
-    );
-    if (summaryInResultIndex > -1) {
-      result[summaryInResultIndex].value += summary.value;
-      result[summaryInResultIndex].selectedData = result[
-        summaryInResultIndex
-      ].selectedData.concat(summary.selectedData);
-    } else {
-      result.push(summary);
-    }
-  });
+  // each(summaries, (summary) => {
+  //   const summaryInResultIndex = findIndex(
+  //     result,
+  //     (i) => i?.name === summary?.name,
+  //   );
+  //   if (summaryInResultIndex > -1) {
+  //     result[summaryInResultIndex].value += summary.value;
+  //     result[summaryInResultIndex].selectedData = result[
+  //       summaryInResultIndex
+  //     ].selectedData.concat(summary.selectedData);
+  //   } else {
+  //     result.push(summary);
+  //   }
+  // });
   return result;
 };
 
@@ -429,4 +435,15 @@ export const getRightAndValueField = (
   const valueField = get(rowQuery, rightField, '');
 
   return { rightField, valueField };
+};
+
+export const mergeCellInfo = (cells: S2CellType[]): TooltipData[] => {
+  return map(cells, (stateCell) => {
+    const stateCellMeta = stateCell.getMeta();
+    return assign(
+      {},
+      stateCellMeta.query || {},
+      pick(stateCellMeta, ['colIndex', 'rowIndex']),
+    );
+  });
 };

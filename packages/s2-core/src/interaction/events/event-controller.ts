@@ -3,6 +3,7 @@ import {
   DefaultInterceptEventType,
   OriginEventType,
   S2Event,
+  COPY_KEY,
 } from '@/common/constant';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
@@ -86,7 +87,7 @@ export class EventController {
         // windows and macos copy
         if (
           this.spreadsheet.options.enableCopy &&
-          keyEqualTo(event.key, 'c') &&
+          keyEqualTo(event.key, COPY_KEY) &&
           (event.metaKey || event.ctrlKey)
         ) {
           this.spreadsheet.emit(
@@ -116,13 +117,11 @@ export class EventController {
       !includes((<HTMLElement>ev.target)?.className, 'ant-menu') &&
       !includes((<HTMLElement>ev.target)?.className, 'ant-input')
     ) {
-      this.interaction.hideSelectedCellsSpotlight();
       this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
       this.interaction.clearState();
       this.spreadsheet.hideTooltip();
       // 屏蔽的事件都重新打开
       this.interaction.interceptEvent.clear();
-      this.draw();
     }
   }
 
