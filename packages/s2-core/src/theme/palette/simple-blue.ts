@@ -8,6 +8,7 @@ export const paletteSimpleBlue = {
     '#E0E9FE',
     '#CCDBFD',
     '#2C60D3',
+    '#0000ee',
   ],
 
   // ----------neutral colors ----------
@@ -25,6 +26,5 @@ export const paletteSimpleBlue = {
   semanticColors: {
     red: '#FF4D4F',
     green: '#29A294',
-    blue: '#0000ee',
   },
 };

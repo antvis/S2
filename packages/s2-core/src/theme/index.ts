@@ -78,7 +78,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: 'normal',
         fill: grayColors[6],
-        linkTextFill: semanticColors.blue,
+        linkTextFill: brandColors[7],
         opacity: 1,
         textAlign: 'right',
       },
