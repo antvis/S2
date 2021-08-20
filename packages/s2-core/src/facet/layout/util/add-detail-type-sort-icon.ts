@@ -14,6 +14,8 @@ export const getIconType = (key: string, spreadsheet: SpreadSheet) => {
    [field]: up/down
   }
    */
+  let upSelected = false;
+  let downSelected = false;
   const currentSortKey = spreadsheet.store.get('currentSortKey', {});
   let upIconType = 'SortUp';
   let downIconType = 'SortDown';
@@ -21,9 +23,11 @@ export const getIconType = (key: string, spreadsheet: SpreadSheet) => {
     // 有配置,当前点击的过的key(某个维度)
     if (_.get(currentSortKey, key) === 'up') {
       // 点击过此维度的up
+      upSelected = true;
       upIconType = 'SortUpSelected';
     } else {
       // 点击过此维度的down
+      downSelected = true;
       downIconType = 'SortDownSelected';
     }
   }
@@ -31,6 +35,8 @@ export const getIconType = (key: string, spreadsheet: SpreadSheet) => {
   return {
     upIconType,
     downIconType,
+    upSelected,
+    downSelected,
   };
 };
 
@@ -43,6 +49,7 @@ export const renderIcon = (
   key: string,
   sortKeyVal: string,
   sortType: string,
+  selected: boolean,
 ) => {
   const icon = new GuiIcon({
     type,
@@ -53,7 +60,6 @@ export const renderIcon = (
   });
 
   icon.on('click', () => {
-    const selected = icon.get('selected');
     let currentSortKey = {};
     if (!selected) {
       currentSortKey = {
@@ -61,7 +67,6 @@ export const renderIcon = (
       };
     }
     spreadsheet.store.set('currentSortKey', currentSortKey);
-    icon.set('selected', !selected);
     spreadsheet.emit(KEY_LIST_SORT, {
       sortFieldId: key,
       sortMethod: selected ? '' : sortType,
@@ -80,7 +85,6 @@ export const renderDetailTypeSortIcon = (
   key,
 ) => {
   const iconType = getIconType(key, spreadsheet);
-
   renderIcon(
     parent,
     spreadsheet,
@@ -90,6 +94,7 @@ export const renderDetailTypeSortIcon = (
     key,
     'up',
     'ASC',
+    iconType.upSelected,
   );
   renderIcon(
     parent,
@@ -100,5 +105,6 @@ export const renderDetailTypeSortIcon = (
     key,
     'down',
     'DESC',
+    iconType.downSelected,
   );
 };

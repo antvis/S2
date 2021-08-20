@@ -16,7 +16,6 @@ interface GuiIconCfg {
   readonly width: number;
   readonly height: number;
   readonly fill?: string;
-  selected?: boolean;
 }
 
 /**
