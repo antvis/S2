@@ -44,6 +44,7 @@ export class BrushSelection extends BaseInteraction {
 
   private initPrepareSelectMaskShape(point: Point) {
     if (this.prepareSelectMaskShape) {
+      this.hidePrepareSelectMaskShape();
       return;
     }
     const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
@@ -101,10 +102,9 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (event: Event) => {
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event: Event) => {
+      event.preventDefault();
       if (this.brushStage === InteractionBrushStage.DRAGGED) {
-        this.brushStage = InteractionBrushStage.UN_DRAGGED;
-
         this.hidePrepareSelectMaskShape();
         this.updateSelectedCells();
 
@@ -113,7 +113,11 @@ export class BrushSelection extends BaseInteraction {
           this.getBrushRangeCellsInfos(),
         );
       }
+      this.brushStage = InteractionBrushStage.UN_DRAGGED;
     });
+    // this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, () => {
+    //   this.brushStage = InteractionBrushStage.UN_DRAGGED;
+    // });
   }
 
   private getBrushRangeCellsInfos(): TooltipData[] {
@@ -240,20 +244,22 @@ export class BrushSelection extends BaseInteraction {
   }
 
   // 刷选过程中高亮的cell
-  private showPrepareSelectedCells = throttle(() => {
+  private showPrepareSelectedCells = () => {
     const brushRangeDataCells = this.getBrushRangeDataCells();
     this.interaction.changeState({
       cells: brushRangeDataCells,
       stateName: InteractionStateName.PREPARE_SELECT,
     });
     this.brushRangeDataCells = brushRangeDataCells;
-  }, 100);
+  };
 
   // 最终刷选的cell
   private updateSelectedCells() {
-    this.interaction.changeState({
-      cells: this.brushRangeDataCells,
-      stateName: InteractionStateName.SELECTED,
+    setTimeout(() => {
+      this.interaction.changeState({
+        cells: this.brushRangeDataCells,
+        stateName: InteractionStateName.SELECTED,
+      });
     });
   }
 }

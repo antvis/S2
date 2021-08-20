@@ -1,15 +1,15 @@
 import {
   CellTypes,
   DefaultInterceptEventType,
+  InteractionKeyboardKey,
   OriginEventType,
   S2Event,
-  COPY_KEY,
 } from '@/common/constant';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
-import { Canvas, Event, IElement, LooseObject } from '@antv/g-canvas';
+import { Canvas, Event as CanvasEvent, LooseObject } from '@antv/g-canvas';
 import { each, get, includes } from 'lodash';
-import { RootInteraction } from '../root';
+import { RootInteraction } from '@/interaction/root';
 
 interface EventListener {
   target: EventTarget;
@@ -18,9 +18,8 @@ interface EventListener {
 }
 
 interface EventHandler {
-  target: IElement;
   type: string;
-  handler: (ev: Event) => void;
+  handler: (event: CanvasEvent) => void;
 }
 
 export class EventController {
@@ -32,11 +31,11 @@ export class EventController {
   // 保存hover的元素
   private hoverTarget: LooseObject;
 
-  private eventHandlers: EventHandler[] = [];
+  private canvasEventHandlers: EventHandler[] = [];
 
-  private eventListeners: EventListener[] = [];
+  private domEventListeners: EventListener[] = [];
 
-  interaction: RootInteraction;
+  public interaction: RootInteraction;
 
   constructor(spreadsheet: SpreadSheet, interaction: RootInteraction) {
     this.spreadsheet = spreadsheet;
@@ -44,72 +43,68 @@ export class EventController {
     this.bindEvents();
   }
 
-  protected triggerGroup(): Canvas {
+  private get canvasContainer(): Canvas {
     return this.spreadsheet.container;
   }
 
-  /**
-   * All event name in the progress
-   * start -> process -> end
-   */
-  protected getStarEvent(): string {
-    return 'mousedown';
-  }
+  private bindEvents() {
+    this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
+    this.addCanvasEvent(OriginEventType.MOUSE_MOVE, this.onCanvasMousemove);
+    this.addCanvasEvent(OriginEventType.MOUSE_UP, this.onCanvasMouseup);
 
-  protected getProcessEvent(): string {
-    return 'mousemove';
-  }
-
-  protected getEndEvent(): string {
-    return 'mouseup';
-  }
-
-  protected bindEvents() {
-    // 绑定 g 的事件
-    this.addEvent(
-      this.triggerGroup(),
-      this.getStarEvent(),
-      this.start.bind(this),
+    this.addDomEventListener(
+      document,
+      OriginEventType.CLICK,
+      (event: MouseEvent) => {
+        this.resetSheetStyle(event);
+      },
     );
-    this.addEvent(
-      this.triggerGroup(),
-      this.getProcessEvent(),
-      this.process.bind(this),
-    );
-    this.addEvent(this.triggerGroup(), this.getEndEvent(), this.end.bind(this));
-
-    // 绑定原生事件
-    this.addEventListener(
+    this.addDomEventListener(
       window,
       OriginEventType.KEY_DOWN,
       (event: KeyboardEvent) => {
+        this.onKeyboardCopy(event);
+        this.onKeyboardEsc(event);
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_DOWN, event);
-        // windows and macos copy
-        if (
-          this.spreadsheet.options.enableCopy &&
-          keyEqualTo(event.key, COPY_KEY) &&
-          (event.metaKey || event.ctrlKey)
-        ) {
-          this.spreadsheet.emit(
-            S2Event.GLOBAL_COPIED,
-            getSelectedData(this.spreadsheet),
-          );
-        }
       },
     );
-    this.addEventListener(
+    this.addDomEventListener(
       window,
       OriginEventType.KEY_UP,
       (event: KeyboardEvent) => {
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_UP, event);
       },
     );
-    this.addEventListener(document, 'click', (event: MouseEvent) => {
-      this.resetSheetStyle(event);
-    });
+    this.addDomEventListener(
+      window,
+      OriginEventType.MOUSE_UP,
+      (event: KeyboardEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_UP, event);
+      },
+    );
   }
 
-  protected resetSheetStyle(ev: MouseEvent) {
+  private onKeyboardCopy(event: KeyboardEvent) {
+    // windows and macos copy
+    if (
+      this.spreadsheet.options.enableCopy &&
+      keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
+      (event.metaKey || event.ctrlKey)
+    ) {
+      this.spreadsheet.emit(
+        S2Event.GLOBAL_COPIED,
+        getSelectedData(this.spreadsheet),
+      );
+    }
+  }
+
+  private onKeyboardEsc(event: KeyboardEvent) {
+    if (keyEqualTo(event.key, InteractionKeyboardKey.ESC)) {
+      this.resetSheetStyle(event);
+    }
+  }
+
+  private resetSheetStyle(ev: Event) {
     // TODO tooltip 隐藏判断
     if (
       ev.target !== this.spreadsheet.container.get('el') &&
@@ -126,216 +121,192 @@ export class EventController {
   }
 
   // TODO: 需要再考虑一下应该是触发后再屏蔽？还是拦截后再触发，从我的实际重构来看，无法预料到用户的下一步操作，只能全都emit，然后再按照实际的操作把不对应的interaction屏蔽掉。
-  protected start(ev: Event) {
-    this.target = ev.target;
+  private onCanvasMousedown = (event: CanvasEvent) => {
+    this.target = event.target;
     // 任何点击都该取消hover的后续keep态
     if (this.interaction.hoverTimer) {
       clearTimeout(this.interaction.hoverTimer);
     }
-    const appendInfo = get(ev.target, 'attrs.appendInfo');
-    if (appendInfo && appendInfo.isResizer) {
-      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, ev);
-    } else {
-      const cellType = this.spreadsheet.getCellType(ev.target);
+    const appendInfo = get(event.target, 'attrs.appendInfo');
+    if (appendInfo?.isResizer) {
+      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, event);
+      return;
+    }
+
+    const cellType = this.spreadsheet.getCellType(event.target);
+    switch (cellType) {
+      case CellTypes.DATA_CELL:
+        this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_DOWN, event);
+        break;
+      case CellTypes.ROW_CELL:
+        this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_DOWN, event);
+        break;
+      case CellTypes.COL_CELL:
+        this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_DOWN, event);
+        break;
+      case CellTypes.CORNER_CELL:
+        this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_DOWN, event);
+        break;
+      case CellTypes.MERGED_CELLS:
+        this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_DOWN, event);
+        break;
+      default:
+        break;
+    }
+  };
+
+  private onCanvasMousemove = (event: CanvasEvent) => {
+    const appendInfo = get(event.target, 'attrs.appendInfo');
+    if (appendInfo?.isResizer) {
+      // row-col-resize
+      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, event);
+      return;
+    }
+
+    const cell = this.spreadsheet.getCell(event.target);
+    const cellType = this.spreadsheet.getCellType(event.target);
+    if (cell) {
       switch (cellType) {
         case CellTypes.DATA_CELL:
-          this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_DOWN, ev);
+          this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_MOVE, event);
           break;
         case CellTypes.ROW_CELL:
-          this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_DOWN, ev);
+          this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_MOVE, event);
           break;
         case CellTypes.COL_CELL:
-          this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_DOWN, ev);
+          this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_MOVE, event);
           break;
         case CellTypes.CORNER_CELL:
-          this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_DOWN, ev);
+          this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_MOVE, event);
           break;
         case CellTypes.MERGED_CELLS:
-          this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_DOWN, ev);
+          this.spreadsheet.emit(S2Event.MERGED_ELLS_MOUSE_MOVE, event);
+          break;
+        default:
+          break;
+      }
+
+      // 如果hover的cell改变了，并且当前不需要屏蔽 hover
+      if (
+        this.hoverTarget !== event.target &&
+        !this.interaction.interceptEvent.has(DefaultInterceptEventType.HOVER)
+      ) {
+        switch (cellType) {
+          case CellTypes.DATA_CELL:
+            this.spreadsheet.emit(S2Event.DATA_CELL_HOVER, event);
+            break;
+          case CellTypes.ROW_CELL:
+            this.spreadsheet.emit(S2Event.ROW_CELL_HOVER, event);
+            break;
+          case CellTypes.COL_CELL:
+            this.spreadsheet.emit(S2Event.COL_CELL_HOVER, event);
+            break;
+          case CellTypes.CORNER_CELL:
+            this.spreadsheet.emit(S2Event.CORNER_CELL_HOVER, event);
+            break;
+          case CellTypes.MERGED_CELLS:
+            this.spreadsheet.emit(S2Event.MERGED_CELLS_HOVER, event);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  };
+
+  private onCanvasMouseup = (event: CanvasEvent) => {
+    const appendInfo = get(event.target, 'attrs.appendInfo');
+    if (appendInfo && appendInfo.isResizer) {
+      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_UP, event);
+      return;
+    }
+    const cell = this.spreadsheet.getCell(event.target);
+    if (cell) {
+      const cellType = cell?.cellType;
+      // target相同，说明是一个cell内的click事件
+      if (this.target === event.target) {
+        switch (cellType) {
+          case CellTypes.DATA_CELL:
+            this.spreadsheet.emit(S2Event.DATA_CELL_CLICK, event);
+            break;
+          case CellTypes.ROW_CELL:
+            this.spreadsheet.emit(S2Event.ROW_CELL_CLICK, event);
+            break;
+          case CellTypes.COL_CELL:
+            this.spreadsheet.emit(S2Event.COL_CELL_CLICK, event);
+            break;
+          case CellTypes.CORNER_CELL:
+            this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, event);
+            break;
+          case CellTypes.MERGED_CELLS:
+            this.spreadsheet.emit(S2Event.MERGED_CELLS_CLICK, event);
+            break;
+          default:
+            break;
+        }
+      }
+
+      // 通用的mouseup事件
+      switch (cellType) {
+        case CellTypes.DATA_CELL:
+          this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_UP, event);
+          break;
+        case CellTypes.ROW_CELL:
+          this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_UP, event);
+          break;
+        case CellTypes.COL_CELL:
+          this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_UP, event);
+          break;
+        case CellTypes.CORNER_CELL:
+          this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_UP, event);
+          break;
+        case CellTypes.MERGED_CELLS:
+          this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_UP, event);
           break;
         default:
           break;
       }
     }
-  }
-
-  protected process(ev: Event) {
-    const appendInfo = get(ev.target, 'attrs.appendInfo');
-    if (appendInfo && appendInfo.isResizer) {
-      // row-col-resize
-      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, ev);
-    } else {
-      const cell = this.spreadsheet.getCell(ev.target);
-      const cellType = this.spreadsheet.getCellType(ev.target);
-      if (cell) {
-        switch (cellType) {
-          case CellTypes.DATA_CELL:
-            this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_MOVE, ev);
-            break;
-          case CellTypes.ROW_CELL:
-            this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_MOVE, ev);
-            break;
-          case CellTypes.COL_CELL:
-            this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_MOVE, ev);
-            break;
-          case CellTypes.CORNER_CELL:
-            this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_MOVE, ev);
-            break;
-          case CellTypes.MERGED_CELLS:
-            this.spreadsheet.emit(S2Event.MERGED_ELLS_MOUSE_MOVE, ev);
-            break;
-          default:
-            break;
-        }
-
-        // 如果hover的cell改变了，并且当前不需要屏蔽 hover
-        if (
-          this.hoverTarget !== ev.target &&
-          !this.interaction.interceptEvent.has(DefaultInterceptEventType.HOVER)
-        ) {
-          switch (cellType) {
-            case CellTypes.DATA_CELL:
-              this.spreadsheet.emit(S2Event.DATA_CELL_HOVER, ev);
-              break;
-            case CellTypes.ROW_CELL:
-              this.spreadsheet.emit(S2Event.ROW_CELL_HOVER, ev);
-              break;
-            case CellTypes.COL_CELL:
-              this.spreadsheet.emit(S2Event.COL_CELL_HOVER, ev);
-              break;
-            case CellTypes.CORNER_CELL:
-              this.spreadsheet.emit(S2Event.CORNER_CELL_HOVER, ev);
-              break;
-            case CellTypes.MERGED_CELLS:
-              this.spreadsheet.emit(S2Event.MERGED_CELLS_HOVER, ev);
-              break;
-            default:
-              break;
-          }
-        }
-      }
-    }
-  }
-
-  protected end(ev: Event) {
-    const appendInfo = get(ev.target, 'attrs.appendInfo');
-    if (appendInfo && appendInfo.isResizer) {
-      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_UP, ev);
-    } else {
-      const cell = this.spreadsheet.getCell(ev.target);
-      if (cell) {
-        const cellType = cell?.cellType;
-        // target相同，说明是一个cell内的click事件
-        if (this.target === ev.target) {
-          switch (cellType) {
-            case CellTypes.DATA_CELL:
-              this.spreadsheet.emit(S2Event.DATA_CELL_CLICK, ev);
-              break;
-            case CellTypes.ROW_CELL:
-              this.spreadsheet.emit(S2Event.ROW_CELL_CLICK, ev);
-              break;
-            case CellTypes.COL_CELL:
-              this.spreadsheet.emit(S2Event.COL_CELL_CLICK, ev);
-              break;
-            case CellTypes.CORNER_CELL:
-              this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, ev);
-              break;
-            case CellTypes.MERGED_CELLS:
-              this.spreadsheet.emit(S2Event.MERGED_CELLS_CLICK, ev);
-              break;
-            default:
-              break;
-          }
-        }
-
-        // 通用的mouseup事件
-        switch (cellType) {
-          case CellTypes.DATA_CELL:
-            this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_UP, ev);
-            break;
-          case CellTypes.ROW_CELL:
-            this.spreadsheet.emit(S2Event.ROW_CELL_MOUSE_UP, ev);
-            break;
-          case CellTypes.COL_CELL:
-            this.spreadsheet.emit(S2Event.COL_CELL_MOUSE_UP, ev);
-            break;
-          case CellTypes.CORNER_CELL:
-            this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_UP, ev);
-            break;
-          case CellTypes.MERGED_CELLS:
-            this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_UP, ev);
-            break;
-          default:
-            break;
-        }
-      }
-    }
-  }
-
-  protected draw() {
-    this.spreadsheet.container.draw();
-  }
+  };
 
   public destroy() {
     this.unbindEvents();
   }
 
-  // 解绑事件
-  protected unbindEvents() {
-    this.clearEvents();
+  private unbindEvents() {
+    this.clearAllEvents();
   }
 
-  /**
-   * Add emit listeners for better release control
-   * @param target
-   * @param eventType
-   * @param handler
-   */
-  protected addEvent(
-    target: IElement,
+  private addCanvasEvent(
     eventType: string,
-    handler: (ev: Event) => void,
+    handler: (ev: CanvasEvent) => void,
   ) {
-    target.on(eventType, handler);
-    this.eventHandlers.push({ target, type: eventType, handler });
+    this.canvasContainer.on(eventType, handler);
+    this.canvasEventHandlers.push({ type: eventType, handler });
   }
 
-  /**
-   * 用于绑定原生事件
-   * @param target
-   * @param type
-   * @param handler
-   */
-  protected addEventListener(
+  private addDomEventListener(
     target: EventTarget,
     type: string,
     handler: EventListenerOrEventListenerObject,
   ) {
     if (target.addEventListener) {
       target.addEventListener(type, handler);
-      this.eventListeners.push({ target, type, handler });
+      this.domEventListeners.push({ target, type, handler });
     } else {
       console.error(`Please make sure ${target} has addEventListener function`);
     }
   }
 
-  /**
-   * Auto clear all emit and event listeners, don't need clear by hand
-   * @private
-   */
-  private clearEvents() {
-    // clear Emit listener
-    const eventHandlers = this.eventHandlers;
-    each(eventHandlers, (eh) => {
-      eh.target.off(eh.type, eh.handler);
+  private clearAllEvents() {
+    each(this.canvasEventHandlers, (eh) => {
+      this.canvasContainer.off(eh.type, eh.handler);
     });
-    this.eventHandlers.length = 0;
+    this.canvasEventHandlers.length = 0;
 
-    // clear Event listener
-    const eventListeners = this.eventListeners;
-    each(eventListeners, (eh) => {
+    each(this.domEventListeners, (eh) => {
       eh.target.removeEventListener(eh.type, eh.handler);
     });
-    this.eventListeners.length = 0;
+    this.domEventListeners.length = 0;
   }
 }
