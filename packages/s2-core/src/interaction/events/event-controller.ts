@@ -48,6 +48,8 @@ export class EventController {
   }
 
   private bindEvents() {
+    this.clearAllEvents();
+
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
     this.addCanvasEvent(OriginEventType.MOUSE_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_UP, this.onCanvasMouseup);

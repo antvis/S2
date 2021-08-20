@@ -42,7 +42,7 @@ export class BrushSelection extends BaseInteraction {
     return this.spreadsheet.theme.prepareSelectMask;
   }
 
-  private initPrepareSelectMaskShape(point: Point) {
+  private initPrepareSelectMaskShape() {
     if (this.prepareSelectMaskShape) {
       this.hidePrepareSelectMaskShape();
       return;
@@ -51,11 +51,12 @@ export class BrushSelection extends BaseInteraction {
     this.prepareSelectMaskShape = this.spreadsheet.foregroundGroup.addShape(
       'rect',
       {
+        visible: false,
         attrs: {
           width: 0,
           height: 0,
-          x: point.x,
-          y: point.y,
+          x: 0,
+          y: 0,
           fill: prepareSelectMaskTheme?.backgroundColor,
           fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
           zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
@@ -63,17 +64,16 @@ export class BrushSelection extends BaseInteraction {
         capture: false,
       },
     );
-    this.prepareSelectMaskShape.hide();
   }
 
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
       this.brushStage = InteractionBrushStage.CLICK;
+      this.initPrepareSelectMaskShape();
 
       const originalEvent = ev.originalEvent as unknown as OriginalEvent;
       const point: Point = { x: originalEvent.layerX, y: originalEvent.layerY };
 
-      this.initPrepareSelectMaskShape(point);
       this.dataCells = this.interaction.getPanelGroupAllDataCells();
       this.startBrushPoint = this.getBrushPoint(point);
     });
@@ -147,13 +147,13 @@ export class BrushSelection extends BaseInteraction {
 
   private updatePrepareSelectMask() {
     const brushRange = this.getBrushRange();
-    this.prepareSelectMaskShape.show();
     this.prepareSelectMaskShape.attr({
       x: brushRange.start.x,
       y: brushRange.start.y,
       width: brushRange.width,
       height: brushRange.height,
     });
+    this.prepareSelectMaskShape.show();
   }
 
   private hidePrepareSelectMaskShape() {
