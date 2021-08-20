@@ -41,4 +41,4 @@ export interface S2CellBrushRange {
   height?: number;
 }
 
-export type StateShapeLayer = 'interactiveBgShape' | 'activeBorderShape';
+export type StateShapeLayer = 'interactiveBgShape' | 'interactiveBorderShape';

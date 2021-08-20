@@ -399,7 +399,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     const margin = 1;
     const { x, y, height, width } = this.meta;
     this.stateShapes.set(
-      'activeBorderShape',
+      'interactiveBorderShape',
       renderRect(this, {
         x: x + margin,
         y: y + margin,
