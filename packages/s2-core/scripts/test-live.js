@@ -19,6 +19,7 @@ async function main() {
       type: 'list',
       message: '请选择测试文件',
       name: 'path',
+      loop: false,
       choices: paths,
       default: () => defaultFilename,
     },
