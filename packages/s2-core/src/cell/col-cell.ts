@@ -4,17 +4,11 @@ import {
   KEY_GROUP_COL_RESIZER,
 } from '@/common/constant';
 import { GuiIcon } from '@/common/icons';
-import { TextAlign } from '@/common/interface/theme';
+import { TextAlign } from '@/common/interface';
 import { HIT_AREA } from '@/facet/header/base';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { ResizeInfo } from '@/facet/header/interface';
-import {
-  renderLine,
-  renderRect,
-  renderText,
-  updateFillOpacity,
-  updateShapeAttr,
-} from '@/utils/g-renders';
+import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import {
   getEllipsisText,
   getTextPosition,
@@ -31,30 +25,18 @@ export class ColCell extends HeaderCell {
     return CellTypes.COL_CELL;
   }
 
-  public setActive() {
-    updateShapeAttr(
-      this.stateShapes.get('interactiveBgShape'),
-      'fill',
-      this.theme.colCell.cell.interactionState.selected.backgroundColor,
-    );
-  }
-
-  public setInactive() {
-    updateFillOpacity(this.stateShapes.get('interactiveBgShape'), 0);
-  }
-
   protected initCell() {
     // 1、draw rect background
     this.drawRectBackground();
-    // 2、interactive background shape
+    // interactive background shape
     this.drawInteractiveBgShape();
-    // 2、draw text
+    // draw text
     this.drawCellText();
-    // 3、draw sort icons
+    // draw sort icons
     this.drawSortIcon();
-    // 4、draw right border
+    // draw right border
     this.drawRightBorder();
-    // 5、draw hot-spot rect
+    // draw hot-spot rect
     this.drawHotSpot();
     this.update();
   }

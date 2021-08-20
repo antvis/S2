@@ -17,10 +17,10 @@ import { BaseEvent } from '../base-event';
 
 export class DataCellClick extends BaseEvent {
   protected bindEvents() {
-    this.onDataCellClick();
+    this.bindDataCellClick();
   }
 
-  private onDataCellClick() {
+  private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
       if (
@@ -31,30 +31,21 @@ export class DataCellClick extends BaseEvent {
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta() as ViewMeta;
       if (meta) {
-        // selected通过state来接管，不需要再在 this.spreadsheet.store 中操作
-        this.interaction.clearStyleIndependent();
-
-        const isSelectedCell = this.interaction.isSelectedCell(cell);
-        if (isSelectedCell) {
+        // 屏蔽hover事件
+        this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
+        if (this.interaction.isSelectedCell(cell)) {
           // 点击当前已选cell 则取消当前cell的选中状态
-          // 这里的clearState虽然在if和else里都有，但是不要抽出来，因为需要先判断在清空
-          // 且else中需要先清空之前选择的cell，然后再赋值新的
           this.interaction.clearState();
           this.interaction.interceptEvent.clear();
           this.spreadsheet.hideTooltip();
         } else {
           this.interaction.clearState();
-          this.interaction.setState(
-            cell as S2CellType,
-            InteractionStateName.SELECTED,
-          );
-          this.interaction.updateCellStyleByState();
-          this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
+          this.interaction.changeState({
+            cells: [cell],
+            stateName: InteractionStateName.SELECTED,
+          });
           this.showTooltip(event, meta);
         }
-
-        this.interaction.toggleSelectedCellsSpotlight(isSelectedCell);
-        this.draw();
       }
     });
   }

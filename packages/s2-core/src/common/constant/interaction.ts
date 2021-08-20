@@ -1,4 +1,3 @@
-import { StateShapeLayer } from './../interface/interaction';
 import { i18n } from '@/common/i18n';
 
 export enum InteractionNames {
@@ -20,6 +19,7 @@ export enum InteractionEvent {
 
 export enum InteractionStateName {
   SELECTED = 'selected',
+  UNSELECTED = 'unselected',
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
   PREPARE_SELECT = 'prepareSelect',
@@ -28,6 +28,7 @@ export enum InteractionStateName {
 
 export enum CellTypes {
   DATA_CELL = 'dataCell',
+  HEADER_CELL = 'headerCell',
   ROW_CELL = 'rowCell',
   COL_CELL = 'colCell',
   CORNER_CELL = 'cornerCell',
@@ -37,18 +38,23 @@ export enum CellTypes {
 export const HOVER_FOCUS_TIME = 800;
 
 export const SHIFT_KEY = 'Shift';
+export const COPY_KEY = 'c';
 
 // 主题配置和canvas属性的映射
 export const SHAPE_STYLE_MAP = {
   backgroundColor: 'fill',
-  opacity: 'fillOpacity',
+  backgroundOpacity: 'fillOpacity',
+  textOpacity: 'fillOpacity',
+  borderOpacity: 'strokeOpacity',
   borderColor: 'stroke',
 };
 
 // 设置属性的时候实际对应改变的shape映射
-export const SHAPE_ATTRS_MAP: { [K in StateShapeLayer]: string[] } = {
-  interactiveBgShape: ['backgroundColor', 'opacity'],
-  activeBorderShape: ['borderColor', 'backgroundColor'],
+export const SHAPE_ATTRS_MAP = {
+  interactiveBgShape: ['backgroundColor', 'backgroundOpacity'],
+  interactiveBorderShape: ['borderColor', 'borderOpacity'],
+  backgroundShape: ['backgroundOpacity'],
+  textShape: ['textOpacity'],
 };
 
 export const INTERACTION_STATE_INFO_KEY = 'interactionStateInfo';

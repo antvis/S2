@@ -7,7 +7,7 @@ export const SERIES_NUMBER_FIELD = '$$series_number$$';
 
 // frontgroundGroup 上的 children 层叠顺序
 export const FRONT_GROUND_GROUP_CONTAINER_ZINDEX = 0; // 约定这个 z-index 为 0 的 container 作为基准
-export const FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX = -1;
+export const FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX = 2;
 
 // panelGroup 上的 children 层叠顺序
 export const PANEL_GROUP_CELL_GROUP_ZINDEX = 0;

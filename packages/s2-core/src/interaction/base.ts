@@ -13,11 +13,4 @@ export abstract class BaseInteraction {
   }
 
   protected bindEvents() {}
-
-  /**
-   * Re-Draw the canvas by hand
-   */
-  protected draw() {
-    this.spreadsheet.container.draw();
-  }
 }

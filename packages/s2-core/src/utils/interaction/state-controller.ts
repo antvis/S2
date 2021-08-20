@@ -1,20 +1,29 @@
-import { InteractionStateName } from '@/common/constant';
+import { INTERACTION_STATE_INFO_KEY } from '@/common/constant';
+import { InteractionStateInfo } from '@/common/interface';
 import { S2CellType } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
-import { forEach, includes } from 'lodash';
+import { forEach, isEmpty } from 'lodash';
 
 /**
  * @desc clear the interaction state information
  * @param spreadsheet sheet instance
  */
 export const clearState = (spreadsheet: SpreadSheet) => {
-  if (spreadsheet.interaction.hasActiveCells()) {
-    const cells = spreadsheet.interaction.getActiveCells();
-    forEach(cells, (cell) => {
-      cell.hideShapeUnderState();
+  const allCells = spreadsheet.interaction.getAllCells();
+  if (!isEmpty(allCells)) {
+    forEach(allCells, (cell: S2CellType) => {
+      cell.hideInteractionShape();
     });
+
+    spreadsheet.interaction.resetState();
+    if (spreadsheet.options.selectedCellsSpotlight) {
+      const unSelectedCells =
+        spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
+      unSelectedCells.forEach((cell) => {
+        cell.clearUnselectedState();
+      });
+    }
   }
-  spreadsheet.interaction.resetState();
 };
 
 /**
@@ -23,20 +32,14 @@ export const clearState = (spreadsheet: SpreadSheet) => {
  * @param spreadsheet sheet instance
  */
 export const setState = (
-  cell: S2CellType,
-  stateName: InteractionStateName,
+  interactionStateInfo: InteractionStateInfo,
   spreadsheet: SpreadSheet,
 ) => {
+  const stateName = interactionStateInfo?.stateName;
   if (!spreadsheet.interaction.isEqualStateName(stateName)) {
     // There can only be one state in the table. When the stateName is inconsistent with the state in the stateInfo, the previously stored state should be cleared.
     clearState(spreadsheet);
     spreadsheet.hideTooltip();
-    const stateStore = {
-      stateName,
-      cells: [cell],
-    };
-    spreadsheet.store.set('interactionStateInfo', stateStore);
-  } else if (!includes(spreadsheet.interaction.getActiveCells(), cell)) {
-    spreadsheet.interaction.addActiveCells([cell]);
+    spreadsheet.store.set(INTERACTION_STATE_INFO_KEY, interactionStateInfo);
   }
 };

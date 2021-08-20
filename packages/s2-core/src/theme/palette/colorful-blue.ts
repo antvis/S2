@@ -7,6 +7,7 @@ export const paletteColorfulBlue = {
     '#CCDBFD',
     '#3471F9',
     '#2C60D3',
+    '#2C60D3',
   ],
 
   // ----------neutral colors ----------

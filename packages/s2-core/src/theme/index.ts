@@ -52,19 +52,6 @@ export const getTheme = (
           bottom: 12,
           left: 8,
         },
-        /* ---------- interaction state ----------- */
-        interactionState: {
-          // -------------- hover -------------------
-          hover: {
-            backgroundColor: brandColors[5],
-          },
-          // -------------- selected -------------------
-          selected: {
-            backgroundColor: brandColors[5],
-            borderColor: grayColors[6],
-            borderWidth: 1,
-          },
-        },
       },
       icon: {
         fill: brandColors[0],
@@ -119,12 +106,7 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: brandColors[2],
-          },
-          // -------------- selected -------------------
-          selected: {
-            backgroundColor: brandColors[2],
-            borderColor: grayColors[6],
-            borderWidth: 1,
+            backgroundOpacity: 1,
           },
         },
       },
@@ -180,12 +162,7 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: brandColors[5],
-          },
-          // -------------- selected -------------------
-          selected: {
-            backgroundColor: brandColors[5],
-            borderColor: grayColors[6],
-            borderWidth: 1,
+            backgroundOpacity: 1,
           },
         },
       },
@@ -244,28 +221,37 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
           },
           // -------------- keep hover -------------------
           hoverFocus: {
             backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
             borderColor: grayColors[6],
-            borderWidth: 1,
+            borderOpacity: 1,
           },
           // -------------- selected -------------------
           selected: {
             backgroundColor: brandColors[2],
-            borderColor: grayColors[6],
-            borderWidth: 1,
+            backgroundOpacity: 1,
+          },
+          // -------------- unselected -------------------
+          // TODO: 条件格式的icon和mini chart也需要置灰
+          unselected: {
+            backgroundOpacity: 0.3,
+            textOpacity: 0.3,
           },
           // -------------- prepare select --------------
           prepareSelect: {
-            borderColor: brandColors[3],
+            borderColor: grayColors[6],
+            borderOpacity: 1,
           },
           // -------------- out of spotlight --------------
           outOfTheSpotlight: {
             opacity: 0.3,
           },
         },
+
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
       },
@@ -304,5 +290,10 @@ export const getTheme = (
         right: 'rgba(0,0,0,0)',
       },
     },
-  };
+    // ------------- prepareSelectMask -----------------
+    prepareSelectMask: {
+      backgroundColor: brandColors[6],
+      backgroundOpacity: 0.3,
+    },
+  } as SpreadSheetTheme;
 };

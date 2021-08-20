@@ -1,7 +1,7 @@
 import { BaseHeaderConfig } from '@/facet/header/base';
-import { find } from 'lodash';
+import { first } from 'lodash';
 import { BaseCell } from 'src/cell';
-import { Node, SpreadSheet } from '../index';
+import { CellTypes, InteractionStateName, Node, SpreadSheet } from '../index';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
@@ -19,21 +19,18 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   public update() {
-    const selectedId = this.spreadsheet.store.get('rowColSelectedId');
-    if (selectedId && find(selectedId, (id) => id === this.meta.id)) {
-      this.setActive();
-    } else {
-      this.setInactive();
+    const stateName = this.spreadsheet.interaction.getCurrentStateName();
+    const cells = this.spreadsheet.interaction.getActiveCells();
+    const currentCell = first(cells);
+    if (
+      !currentCell ||
+      (stateName !== InteractionStateName.HOVER &&
+        stateName !== InteractionStateName.HOVER_FOCUS)
+    ) {
+      return;
+    }
+    if (currentCell?.cellType === CellTypes.DATA_CELL || cells.includes(this)) {
+      this.updateByState(InteractionStateName.HOVER);
     }
   }
-
-  /**
-   * @description set active style, should be implemented by subtype
-   */
-  public setActive() {}
-
-  /**
-   * @description set inactive style, should be implemented by subtype
-   */
-  public setInactive() {}
 }

@@ -4,15 +4,11 @@ import {
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
-import { InteractionStateTheme, SpreadSheetTheme } from '@/common/interface';
+import { SpreadSheetTheme } from '@/common/interface';
 import { Group, IShape } from '@antv/g-canvas';
-import { each, findKey, get, includes, toNumber } from 'lodash';
+import { each, findKey, get, includes } from 'lodash';
 import { SpreadSheet } from '../sheet-type';
-import {
-  updateFillOpacity,
-  updateShapeAttr,
-  updateStrokeOpacity,
-} from '../utils/g-renders';
+import { updateShapeAttr } from '../utils/g-renders';
 import { StateShapeLayer } from './../common/interface/interaction';
 
 export abstract class BaseCell<T> extends Group {
@@ -102,31 +98,20 @@ export abstract class BaseCell<T> extends Group {
         SHAPE_STYLE_MAP[styleKey],
         style,
       );
-      this.showShapeUnderState(currentShape);
     });
   }
 
-  private showShapeUnderState(currentShape: StateShapeLayer) {
-    updateFillOpacity(this.stateShapes.get(currentShape), 1);
-    updateStrokeOpacity(this.stateShapes.get(currentShape), 1);
-  }
-
-  public hideShapeUnderState() {
+  public hideInteractionShape() {
     this.stateShapes.forEach((shape: IShape) => {
-      updateFillOpacity(shape, 0);
-      updateStrokeOpacity(shape, 0);
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0);
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent');
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0);
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderColor, 'transparent');
     });
   }
 
-  public resetOpacity() {
-    this.setBgColorOpacity(1);
-  }
-
-  public setBgColorOpacity(
-    opacity: InteractionStateTheme['opacity'] = this.theme.dataCell?.cell
-      ?.outOfTheSpotlight?.opacity,
-  ) {
-    updateFillOpacity(this.backgroundShape, toNumber(opacity));
-    updateFillOpacity(this.textShape, toNumber(opacity));
+  public clearUnselectedState() {
+    updateShapeAttr(this.backgroundShape, SHAPE_STYLE_MAP.backgroundOpacity, 1);
+    updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.textOpacity, 1);
   }
 }

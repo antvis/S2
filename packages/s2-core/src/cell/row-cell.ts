@@ -1,26 +1,21 @@
-import { GuiIcon } from '@/common/icons';
-import { HIT_AREA } from '@/facet/header/base';
-import { ResizeInfo } from '@/facet/header/interface';
-import { RowHeaderConfig } from '@/facet/header/row';
-import {
-  renderLine,
-  renderRect,
-  renderText,
-  updateFillOpacity,
-} from '@/utils/g-renders';
-import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
-import { isMobile } from '@/utils/is-mobile';
-import { getAdjustPosition } from '@/utils/text-absorption';
-import { IGroup } from '@antv/g-canvas';
-import { GM } from '@antv/g-gesture';
-import { each, get } from 'lodash';
 import {
   CellTypes,
   COLOR_DEFAULT_RESIZER,
   ID_SEPARATOR,
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_ROW_RESIZER,
-} from '../common/constant';
+} from '@/common/constant';
+import { GuiIcon } from '@/common/icons';
+import { HIT_AREA } from '@/facet/header/base';
+import { ResizeInfo } from '@/facet/header/interface';
+import { RowHeaderConfig } from '@/facet/header/row';
+import { renderLine, renderRect, renderText } from '@/utils/g-renders';
+import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
+import { isMobile } from '@/utils/is-mobile';
+import { getAdjustPosition } from '@/utils/text-absorption';
+import { IGroup } from '@antv/g-canvas';
+import { GM } from '@antv/g-gesture';
+import { get } from 'lodash';
 import { getEllipsisText, measureTextWidth } from '../utils/text';
 import { HeaderCell } from './header-cell';
 export class RowCell extends HeaderCell {
@@ -39,16 +34,6 @@ export class RowCell extends HeaderCell {
     return CellTypes.ROW_CELL;
   }
 
-  public setActive() {
-    updateFillOpacity(this.stateShapes.get('interactiveBgShape'), 1);
-    each(this.actionIcons, (icon) => icon.set('visible', true));
-  }
-
-  public setInactive() {
-    updateFillOpacity(this.stateShapes.get('interactiveBgShape'), 0);
-    // each(this.actionIcons, (icon) => icon.set('visible', false));
-  }
-
   public destroy(): void {
     super.destroy();
     this.gm?.destroy();
@@ -58,16 +43,18 @@ export class RowCell extends HeaderCell {
     // 1、draw rect background
     this.drawBackgroundColor();
     this.drawInteractiveBgShape();
-    // 2、draw text
+    // draw text
     this.lastStartDrawX = this.drawCellText();
-    // 3、draw icon
+    // draw icon
     this.drawIconInTree();
-    // 4、draw bottom border
+    // draw bottom border
     this.drawRectBorder();
-    // 5、draw hot-spot rect
+    // draw hot-spot rect
     this.drawHotSpotInLeaf();
-    // 6、draw action icon shapes: trend icon, drill-down icon ...
+    // draw action icon shapes: trend icon, drill-down icon ...
     this.drawActionIcons();
+    // update the interaction state
+    this.update();
   }
 
   protected drawBackgroundColor() {
