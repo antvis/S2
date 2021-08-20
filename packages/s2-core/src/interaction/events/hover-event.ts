@@ -23,23 +23,27 @@ export class HoverEvent extends BaseEvent {
 
   private updateRowColCells(meta: ViewMeta) {
     const { rowId, colId } = meta;
-    // update colHeader cells
-    const allColHeaderCells = getActiveHoverRowColCells(
-      colId,
-      this.interaction.getAllColHeaderCells(),
-    );
-    forEach(allColHeaderCells, (cell: ColCell) => {
-      cell.update();
-    });
+    if (colId) {
+      // update colHeader cells
+      const allColHeaderCells = getActiveHoverRowColCells(
+        colId,
+        this.interaction.getAllColHeaderCells(),
+      );
+      forEach(allColHeaderCells, (cell: ColCell) => {
+        cell.update();
+      });
+    }
 
-    // update rowHeader cells
-    const allRowHeaderCells = getActiveHoverRowColCells(
-      rowId,
-      this.interaction.getAllRowHeaderCells(),
-    );
-    forEach(allRowHeaderCells, (cell: RowCell) => {
-      cell.update();
-    });
+    if (rowId) {
+      // update rowHeader cells
+      const allRowHeaderCells = getActiveHoverRowColCells(
+        rowId,
+        this.interaction.getAllRowHeaderCells(),
+      );
+      forEach(allRowHeaderCells, (cell: RowCell) => {
+        cell.update();
+      });
+    }
   }
 
   private bindDataCellHover() {
