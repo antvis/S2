@@ -115,9 +115,6 @@ export class BrushSelection extends BaseInteraction {
       }
       this.brushStage = InteractionBrushStage.UN_DRAGGED;
     });
-    // this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, () => {
-    //   this.brushStage = InteractionBrushStage.UN_DRAGGED;
-    // });
   }
 
   private getBrushRangeCellsInfos(): TooltipData[] {
