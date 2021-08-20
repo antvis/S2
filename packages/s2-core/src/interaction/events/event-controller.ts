@@ -10,7 +10,6 @@ import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 import { Canvas, Event as CanvasEvent, LooseObject } from '@antv/g-canvas';
 import { each, get, includes } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
-import { BaseCell } from '../../cell';
 
 interface EventListener {
   target: EventTarget;
