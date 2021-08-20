@@ -116,8 +116,8 @@ export class ColCell extends HeaderCell {
     let textAlign: TextAlign;
     if (isLeaf) {
       // 最后一个层级的维值，与 dataCell 对齐方式保持一致
-      textAlign = get(this, 'theme.dataCell.text.textAlign');
-      const textBaseline = get(this, 'theme.dataCell.text.textBaseline');
+      textAlign = this.theme.dataCell.text.textAlign;
+      const textBaseline = this.theme.dataCell.text.textBaseline;
       textStyle.textBaseline = textBaseline;
       const cellBoxCfg = {
         x,

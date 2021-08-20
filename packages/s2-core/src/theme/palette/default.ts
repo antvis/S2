@@ -24,5 +24,6 @@ export const paletteDefault = {
   semanticColors: {
     red: '#FF4D4F',
     green: '#29A294',
+    blue: '#0000ee',
   },
 };

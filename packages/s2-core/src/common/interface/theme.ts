@@ -5,6 +5,7 @@ export type TextAlign = 'left' | 'center' | 'right';
 
 // 绘制文本时的基线, 对应垂直方向对齐方式 默认 bottom
 export type TextBaseline = 'top' | 'middle' | 'bottom';
+
 export interface Palette {
   /* brand colors */
   brandColors: string[];
@@ -14,6 +15,7 @@ export interface Palette {
   semanticColors: {
     red?: string;
     green?: string;
+    blue?: string;
     /* 额外颜色字段 */
     [key: string]: string;
   };
@@ -43,6 +45,7 @@ export interface TextTheme {
   fontSize?: number;
   fontWeight?: string;
   fill?: string;
+  linkTextFill?: string;
   opacity?: number;
   textAlign?: TextAlign;
   textBaseline?: TextBaseline;

@@ -20,7 +20,6 @@ import {
   ID_SEPARATOR,
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_ROW_RESIZER,
-  LINK_TEXT_COLOR_IN_HEADER,
 } from '../common/constant';
 import { getEllipsisText, measureTextWidth } from '../utils/text';
 import { HeaderCell } from './header-cell';
@@ -309,7 +308,7 @@ export class RowCell extends HeaderCell {
         });
       } else {
         this.textShape.attr({
-          fill: LINK_TEXT_COLOR_IN_HEADER,
+          fill: textTheme.linkTextFill,
           appendInfo: {
             isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
             cellData: this.meta,

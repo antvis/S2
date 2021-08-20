@@ -7,7 +7,9 @@ import { getPalette } from '../utils/theme';
  * @describe generate the theme according to the type
  * @param  name
  */
-export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
+export const getTheme = (
+  themeCfg: Omit<ThemeCfg, 'theme'>,
+): SpreadSheetTheme => {
   const themePalette: Palette =
     themeCfg?.palette || getPalette(themeCfg?.name, themeCfg?.hueInvert);
   const { brandColors, grayColors, semanticColors } = themePalette;
@@ -89,6 +91,7 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
         fontSize: 12,
         fontWeight: 'normal',
         fill: grayColors[6],
+        linkTextFill: semanticColors.blue,
         opacity: 1,
         textAlign: 'right',
       },

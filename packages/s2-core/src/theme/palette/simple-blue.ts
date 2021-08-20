@@ -24,5 +24,6 @@ export const paletteSimpleBlue = {
   semanticColors: {
     red: '#FF4D4F',
     green: '#29A294',
+    blue: '#0000ee',
   },
 };
