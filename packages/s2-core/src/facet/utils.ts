@@ -1,4 +1,4 @@
-import { SimpleBBox, Group, IGroup } from '@antv/g-canvas';
+import { SimpleBBox, IGroup } from '@antv/g-canvas';
 import { findIndex, isNil } from 'lodash';
 
 import { ViewCellHeights } from './layout/interface';
@@ -81,9 +81,23 @@ export const translateGroup = (
   scrollY: number,
 ) => {
   const matrix = group.getMatrix();
-  // eslint-disable-next-line no-bitwise
   const preX = matrix?.[6] ?? 0;
-  // eslint-disable-next-line no-bitwise
   const preY = matrix?.[7] ?? 0;
   group.translate(scrollX - preX, scrollY - preY);
+};
+
+export const translateGroupX = (group: IGroup, scrollX: number) => {
+  if (scrollX !== 0) {
+    const matrix = group.getMatrix();
+    const preX = matrix?.[6] ?? 0;
+    group.translate(scrollX - preX, 0);
+  }
+};
+
+export const translateGroupY = (group: IGroup, scrollY: number) => {
+  if (scrollY !== 0) {
+    const matrix = group.getMatrix();
+    const preY = matrix?.[7] ?? 0;
+    group.translate(0, scrollY - preY);
+  }
 };

@@ -1,4 +1,4 @@
-import { diffIndexes, Indexes } from '@/utils/indexes';
+import { Indexes, PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
 import { updateMergedCells } from '@/utils/interaction/merge-cells';
 import type { BBox, IGroup, Point } from '@antv/g-canvas';
 import type { GestureEvent } from '@antv/g-gesture';
@@ -8,7 +8,6 @@ import * as d3Timer from 'd3-timer';
 import {
   debounce,
   each,
-  filter,
   find,
   get,
   isNil,
@@ -16,7 +15,6 @@ import {
   last,
   reduce,
 } from 'lodash';
-import { BaseCell } from 'src/cell';
 import {
   KEY_AFTER_HEADER_LAYOUT,
   KEY_CELL_SCROLL,
@@ -30,6 +28,7 @@ import {
 } from 'src/common/constant';
 import type { CellScrollPosition } from 'src/common/interface/events';
 import type { S2WheelEvent, ScrollOffset } from 'src/common/interface/scroll';
+import { getAllPanelDataCell } from 'src/utils/getAllPanelDataCell';
 import {
   ColHeader,
   CornerHeader,
@@ -59,6 +58,8 @@ import {
   calculateInViewIndexes,
   optimizeScrollXY,
   translateGroup,
+  translateGroupX,
+  translateGroupY,
 } from './utils';
 
 // TODO: 这里的主题不应该用 default 吧, 代码里面都是写死的 defaultDataConfig
@@ -148,7 +149,7 @@ export abstract class BaseFacet {
     }
   };
 
-  protected preCellIndexes: Indexes;
+  protected preCellIndexes: PanelIndexes;
 
   public constructor(cfg: SpreadSheetFacetCfg) {
     this.cfg = cfg;
@@ -162,9 +163,9 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    (
-      this.spreadsheet.container.get('el') as HTMLCanvasElement
-    ).addEventListener('wheel', this.onWheel);
+    (this.spreadsheet.container.get(
+      'el',
+    ) as HTMLCanvasElement).addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
@@ -175,13 +176,13 @@ export abstract class BaseFacet {
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
-      this.onWheel({
+      this.onWheel(({
         ...originEvent,
         deltaX,
         deltaY,
         layerX: x / 3,
         layerY: y / 3,
-      } as unknown as S2WheelEvent);
+      } as unknown) as S2WheelEvent);
     });
   };
 
@@ -340,8 +341,15 @@ export abstract class BaseFacet {
    * @param scrollY
    * @protected
    */
-  calculateXYIndexes = (scrollX: number, scrollY: number): Indexes => {
-    return calculateInViewIndexes(
+  calculateXYIndexes = (scrollX: number, scrollY: number): PanelIndexes => {
+    const {
+      frozenColCount,
+      frozenRowCount,
+      frozenTrailingColCount,
+      frozenTrailingRowCount,
+    } = this.spreadsheet.options;
+
+    const indexes = calculateInViewIndexes(
       scrollX,
       scrollY,
       this.viewCellWidths,
@@ -349,6 +357,33 @@ export abstract class BaseFacet {
       this.panelBBox,
       this.getRealScrollX(this.cornerBBox.width),
     );
+
+    const centerIndexes: Indexes = [...indexes];
+
+    if (centerIndexes[2] < frozenRowCount) {
+      centerIndexes[2] = frozenRowCount;
+    }
+    if (centerIndexes[0] < frozenColCount) {
+      centerIndexes[0] = frozenColCount;
+    }
+
+    const frozenRowIndexes: Indexes = [...indexes];
+    frozenRowIndexes[0] = frozenColCount;
+    frozenRowIndexes[2] = 0;
+    frozenRowIndexes[3] = frozenRowCount - 1;
+
+    const frozenColIndexes: Indexes = [...indexes];
+    frozenColIndexes[0] = 0;
+    frozenColIndexes[1] = frozenColCount - 1;
+    frozenColIndexes[2] = centerIndexes[2];
+
+    return {
+      center: centerIndexes,
+      frozenRow: frozenRowIndexes,
+      frozenCol: frozenColIndexes,
+      frozenTrailingCol: [] as any,
+      frozenTrailingRow: [] as any,
+    };
   };
 
   getRealScrollX = (scrollX: number, hRowScroll = 0) => {
@@ -806,9 +841,38 @@ export abstract class BaseFacet {
     scrollX: number,
     scrollY: number,
     hRowScroll: number,
+    delay: boolean,
   ) => {
+    const { frozenRowCount } = this.spreadsheet.options;
+    if (!delay) {
+      translateGroup(
+        this.spreadsheet.frozenRowGroup,
+        this.cornerBBox.width - scrollX,
+        this.cornerBBox.height - scrollY,
+      );
+      translateGroup(
+        this.spreadsheet.frozenColGroup,
+        this.cornerBBox.width - scrollX,
+        this.cornerBBox.height - scrollY,
+      );
+      translateGroup(
+        this.spreadsheet.frozenTopLeftGroup,
+        this.cornerBBox.width - scrollX,
+        this.cornerBBox.height - scrollY,
+      );
+    } else {
+      translateGroupX(
+        this.spreadsheet.frozenRowGroup,
+        this.cornerBBox.width - scrollX,
+      );
+      translateGroupY(
+        this.spreadsheet.frozenColGroup,
+        this.cornerBBox.height - scrollY,
+      );
+    }
+
     translateGroup(
-      this.panelGroup,
+      this.spreadsheet.panelScrollGroup,
       this.cornerBBox.width - scrollX,
       this.cornerBBox.height - scrollY,
     );
@@ -839,11 +903,11 @@ export abstract class BaseFacet {
         : undefined,
       KEY_GROUP_COL_RESIZER,
     );
-    this.panelGroup.setClip({
+    this.spreadsheet.panelScrollGroup.setClip({
       type: 'rect',
       attrs: {
         x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
-        y: scrollY,
+        y: scrollY + this.getTotalHeightForRange(0, frozenRowCount - 1),
         width:
           this.panelBBox.width +
           (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
@@ -852,14 +916,25 @@ export abstract class BaseFacet {
     });
   };
 
+  getTotalHeightForRange = (start: number, end: number) => {
+    if (end < 0) return 0;
+    let totalHeight = 0;
+    for (let index = start; index < end + 1; index++) {
+      const height = this.viewCellHeights.getCellHeight(index);
+      totalHeight += height;
+    }
+    return totalHeight;
+  };
+
   realCellRender = (scrollX: number, scrollY: number) => {
+    const { frozenRowCount, frozenColCount } = this.spreadsheet.options;
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
     // DebuggerUtil.getInstance().logger(
     //   'renderIndex:',
     //   this.preCellIndexes,
     //   indexes,
     // );
-    const { add, remove } = diffIndexes(this.preCellIndexes, indexes);
+    const { add, remove } = diffPanelIndexes(this.preCellIndexes, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
       // add new cell in panelCell
@@ -869,13 +944,18 @@ export abstract class BaseFacet {
           const cell = this.cfg.dataCell(viewMeta);
           // mark cell for removing
           cell.set('name', `${i}-${j}`);
-          this.panelGroup.add(cell);
+          if (j <= frozenRowCount - 1 && i <= frozenColCount - 1) {
+            this.spreadsheet.frozenTopLeftGroup.add(cell);
+          } else if (j <= frozenRowCount - 1) {
+            this.spreadsheet.frozenRowGroup.add(cell);
+          } else if (i <= frozenColCount - 1) {
+            this.spreadsheet.frozenColGroup.add(cell);
+          } else {
+            this.spreadsheet.panelScrollGroup.add(cell);
+          }
         }
       });
-      const allCells = filter(
-        this.panelGroup.getChildren(),
-        (child) => child instanceof BaseCell,
-      );
+      const allCells = getAllPanelDataCell(this.panelGroup.getChildren());
       // remove cell from panelCell
       each(remove, ([i, j]) => {
         const findOne = find(
@@ -884,6 +964,12 @@ export abstract class BaseFacet {
         );
         findOne?.remove(true);
       });
+      console.log(
+        this.spreadsheet.frozenRowGroup.getChildren().length,
+        this.spreadsheet.frozenColGroup.getChildren().length,
+        this.spreadsheet.panelScrollGroup.getChildren().length,
+        this.spreadsheet.frozenTopLeftGroup.getChildren().length,
+      );
       updateMergedCells(this.spreadsheet);
       // DebuggerUtil.getInstance().logger(
       //   `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
@@ -997,8 +1083,7 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
@@ -1052,8 +1137,7 @@ export abstract class BaseFacet {
         // When both a row header and a panel scroll bar exist, show viewport shadow
         showViewPortRightShadow:
           !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
         spreadsheet: this.cfg.spreadsheet,
       };
@@ -1071,12 +1155,16 @@ export abstract class BaseFacet {
   protected dynamicRenderCell(delay = true) {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
     const scrollY = sy + this.getPaginationScrollY();
+    // console.time('render');
     if (delay) {
       this.debounceRenderCell(scrollX, scrollY);
     } else {
       this.realCellRender(scrollX, scrollY);
     }
-    this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
+    // console.timeEnd('render');
+    // console.time('translate');
+    this.translateRelatedGroups(scrollX, scrollY, hRowScrollX, delay);
+    // console.timeEnd('translate');
 
     const cellScrollData: CellScrollPosition = { scrollX, scrollY };
     this.spreadsheet.emit(KEY_CELL_SCROLL, cellScrollData);

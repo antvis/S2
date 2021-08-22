@@ -63,6 +63,11 @@ export interface S2Options {
   readonly rowActionIcons?: RowActionIcons;
   // extra styles
   readonly style?: Partial<Style>;
+  // frozen row & cols
+  readonly frozenRowCount?: number;
+  readonly frozenColCount?: number;
+  readonly frozenTrailingRowCount?: number;
+  readonly frozenTrailingColCount?: number;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -158,6 +163,10 @@ export const defaultOptions = {
   style: defaultStyle,
   selectedCellsSpotlight: true,
   hoverHighlight: true,
+  frozenRowCount: 0,
+  frozenColCount: 0,
+  frozenTrailingRowCount: 0,
+  frozenTrailingColCount: 0,
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>

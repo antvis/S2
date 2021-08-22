@@ -6,6 +6,15 @@ import {
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
   KEY_GROUP_PANEL_GROUND,
+  KEY_GROUP_PANEL_SCROLL,
+  KEY_GROUP_PANEL_FROZEN_ROW,
+  KEY_GROUP_PANEL_FROZEN_COL,
+  KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
+  KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
+  KEY_GROUP_PANEL_FROZEN_TOP_LEFT,
+  KEY_GROUP_PANEL_FROZEN_TOP_RIGHT,
+  KEY_GROUP_PANEL_FROZEN_BOTTOM_LEFT,
+  KEY_GROUP_PANEL_FROZEN_BOTTOM_RIGHT,
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
 } from '@/common/constant';
@@ -99,6 +108,24 @@ export class SpreadSheet extends EE {
 
   public maskGroup: IGroup;
 
+  public panelScrollGroup: IGroup;
+
+  public frozenRowGroup: IGroup;
+
+  public frozenColGroup: IGroup;
+
+  public frozenTrailingRowGroup: IGroup;
+
+  public frozenTrailingColGroup: IGroup;
+
+  public frozenTopLeftGroup: IGroup;
+
+  public frozenTopRightGroup: IGroup;
+
+  public frozenBottomLeftGroup: IGroup;
+
+  public frozenBottomRightGroup: IGroup;
+
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
 
@@ -143,9 +170,8 @@ export class SpreadSheet extends EE {
     this.tooltip = this.renderTooltip();
     if (!(this.tooltip instanceof BaseTooltip)) {
       console.warn(
-        `[Custom Tooltip]: ${(
-          this.tooltip as unknown
-        )?.constructor?.toString()} should be extends from BaseTooltip`,
+        `[Custom Tooltip]: ${(this
+          .tooltip as unknown)?.constructor?.toString()} should be extends from BaseTooltip`,
       );
     }
   }
@@ -495,6 +521,42 @@ export class SpreadSheet extends EE {
     });
     this.foregroundGroup = this.container.addGroup({
       name: KEY_GROUP_FORE_GROUND,
+      zIndex: 3,
+    });
+    this.panelScrollGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_SCROLL,
+      zIndex: 1,
+    });
+    this.frozenRowGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_ROW,
+      zIndex: 2,
+    });
+    this.frozenColGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_COL,
+      zIndex: 2,
+    });
+    this.frozenTrailingRowGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
+      zIndex: 2,
+    });
+    this.frozenTrailingColGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
+      zIndex: 2,
+    });
+    this.frozenBottomLeftGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_BOTTOM_LEFT,
+      zIndex: 2,
+    });
+    this.frozenBottomRightGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_BOTTOM_RIGHT,
+      zIndex: 2,
+    });
+    this.frozenTopLeftGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_TOP_LEFT,
+      zIndex: 2,
+    });
+    this.frozenTopRightGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_TOP_RIGHT,
       zIndex: 2,
     });
   }

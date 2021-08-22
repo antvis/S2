@@ -33,9 +33,9 @@ export class BrushSelection extends BaseInteraction {
   private brushStage: InteractionBrushStage = InteractionBrushStage.UN_DRAGGED;
 
   protected bindEvents() {
-    this.bindMouseDown();
-    this.bindMouseMove();
-    this.bindMouseUp();
+    // this.bindMouseDown();
+    // this.bindMouseMove();
+    // this.bindMouseUp();
   }
 
   private getPrepareSelectMaskTheme() {
@@ -69,7 +69,7 @@ export class BrushSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
       this.brushStage = InteractionBrushStage.CLICK;
 
-      const originalEvent = ev.originalEvent as unknown as OriginalEvent;
+      const originalEvent = (ev.originalEvent as unknown) as OriginalEvent;
       const point: Point = { x: originalEvent.layerX, y: originalEvent.layerY };
 
       this.initPrepareSelectMaskShape(point);
@@ -88,7 +88,7 @@ export class BrushSelection extends BaseInteraction {
 
       event.preventDefault();
       this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
-      const originalEvent = event.originalEvent as unknown as OriginalEvent;
+      const originalEvent = (event.originalEvent as unknown) as OriginalEvent;
       const currentPoint: Point = {
         x: originalEvent.layerX,
         y: originalEvent.layerY,
