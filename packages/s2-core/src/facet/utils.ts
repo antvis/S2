@@ -87,17 +87,13 @@ export const translateGroup = (
 };
 
 export const translateGroupX = (group: IGroup, scrollX: number) => {
-  if (scrollX !== 0) {
-    const matrix = group.getMatrix();
-    const preX = matrix?.[6] ?? 0;
-    group.translate(scrollX - preX, 0);
-  }
+  const matrix = group.getMatrix();
+  const preX = matrix?.[6] ?? 0;
+  group.translate(scrollX - preX, 0);
 };
 
 export const translateGroupY = (group: IGroup, scrollY: number) => {
-  if (scrollY !== 0) {
-    const matrix = group.getMatrix();
-    const preY = matrix?.[7] ?? 0;
-    group.translate(0, scrollY - preY);
-  }
+  const matrix = group.getMatrix();
+  const preY = matrix?.[7] ?? 0;
+  group.translate(0, scrollY - preY);
 };

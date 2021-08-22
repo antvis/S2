@@ -1,5 +1,6 @@
 import { each, isEmpty } from 'lodash';
-import { SERIES_NUMBER_FIELD } from 'src/common/constant';
+import { IGroup } from '@antv/g-base';
+import { SERIES_NUMBER_FIELD, KEY_GROUP_COL_FROZEN } from 'src/common/constant';
 import { Formatter, S2CellType, SortParam } from '../../common/interface';
 import { ColCell, DetailColCell, CornerCell } from '../../cell';
 import { Node } from '../..';
@@ -20,9 +21,28 @@ export interface ColHeaderConfig extends BaseHeaderConfig {
  * Column Header for SpreadSheet
  */
 export class ColHeader extends BaseHeader<ColHeaderConfig> {
+  protected frozenColGroup: IGroup;
+
+  protected scrollGroup: IGroup;
+
   // TODO type define
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
+    const { frozenColCount } = this.headerConfig.spreadsheet?.options;
+
+    this.scrollGroup = this.addGroup({
+      name: 'scrollsfwe',
+      zIndex: 1,
+    });
+
+    if (frozenColCount && !this.frozenColGroup) {
+      this.frozenColGroup = this.addGroup({
+        name: KEY_GROUP_COL_FROZEN,
+        zIndex: 2,
+      });
+    }
+
+    this.sort();
   }
 
   /**
@@ -41,7 +61,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected clip(): void {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
-    this.setClip({
+    this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
         x: spreadsheet.freezeRowHeader() ? scrollX : 0,
@@ -52,13 +72,32 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     });
   }
 
-  protected layout() {
-    const { data, spreadsheet, cornerWidth, width, scrollX } =
-      this.headerConfig;
+  public clear() {
+    this.frozenColGroup?.clear();
+    this.scrollGroup.clear();
+  }
 
+  protected layout() {
+    const {
+      data,
+      spreadsheet,
+      cornerWidth,
+      width,
+      scrollX,
+    } = this.headerConfig;
+    const { frozenColCount } = spreadsheet?.options;
+
+    // if (frozenColCount && !this.frozenColGroup) {
+    //   this.frozenColGroup = this.addGroup({
+    //     name: KEY_GROUP_COL_FROZEN,
+    //   });
+    // }
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
     const colCellInRect = (item: Node): boolean => {
+      if (item.colIndex < frozenColCount) {
+        return true;
+      }
       return (
         width + scrollX > item.x &&
         scrollX - (spreadsheet.freezeRowHeader() ? 0 : cornerWidth) <
@@ -83,7 +122,15 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
           }
         }
         item.belongsCell = cell;
-        this.add(cell);
+        console.log(node.colIndex);
+        if (
+          node.colIndex < frozenColCount &&
+          !this.headerConfig.spreadsheet.isPivotMode()
+        ) {
+          this.frozenColGroup.add(cell);
+        } else {
+          this.scrollGroup.add(cell);
+        }
       }
     });
 
@@ -101,6 +148,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected offset() {
     const { position, scrollX } = this.headerConfig;
     // 暂时不考虑移动y
-    translateGroup(this, position.x - scrollX, 0);
+    translateGroup(this.scrollGroup, position.x - scrollX, 0);
   }
 }

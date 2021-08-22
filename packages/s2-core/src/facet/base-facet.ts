@@ -5,6 +5,7 @@ import type { GestureEvent } from '@antv/g-gesture';
 import { Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import * as d3Timer from 'd3-timer';
+import { Group } from '@antv/g-canvas';
 import {
   debounce,
   each,
@@ -197,6 +198,8 @@ export abstract class BaseFacet {
   public render() {
     this.renderHeaders();
     this.renderScrollBars();
+    this.renderFrozenPanelCornerGroup();
+    this.initFrozenGroupPosition();
     this.dynamicRenderCell(false);
   }
 
@@ -256,6 +259,7 @@ export abstract class BaseFacet {
   public destroy() {
     this.unbindEvents();
     this.clearAllGroup();
+    this.preCellIndexes = null;
   }
 
   setScrollOffset = (scrollOffset: ScrollOffset) => {
@@ -312,7 +316,7 @@ export abstract class BaseFacet {
       type: 'rect',
       attrs: {
         x: 0,
-        y: 0,
+        y: this.cornerBBox.height,
         width,
         height,
       },
@@ -500,7 +504,12 @@ export abstract class BaseFacet {
   clearAllGroup = () => {
     const children = this.panelGroup.cfg.children;
     for (let i = children.length - 1; i >= 0; i--) {
-      children[i].remove();
+      const child = children[i];
+      if (child instanceof Group) {
+        child.set('children', []);
+      } else {
+        children[i].remove();
+      }
     }
     this.foregroundGroup.set('children', []);
     this.backgroundGroup.set('children', []);
@@ -841,35 +850,17 @@ export abstract class BaseFacet {
     scrollX: number,
     scrollY: number,
     hRowScroll: number,
-    delay: boolean,
   ) => {
     const { frozenRowCount } = this.spreadsheet.options;
-    if (!delay) {
-      translateGroup(
-        this.spreadsheet.frozenRowGroup,
-        this.cornerBBox.width - scrollX,
-        this.cornerBBox.height - scrollY,
-      );
-      translateGroup(
-        this.spreadsheet.frozenColGroup,
-        this.cornerBBox.width - scrollX,
-        this.cornerBBox.height - scrollY,
-      );
-      translateGroup(
-        this.spreadsheet.frozenTopLeftGroup,
-        this.cornerBBox.width - scrollX,
-        this.cornerBBox.height - scrollY,
-      );
-    } else {
-      translateGroupX(
-        this.spreadsheet.frozenRowGroup,
-        this.cornerBBox.width - scrollX,
-      );
-      translateGroupY(
-        this.spreadsheet.frozenColGroup,
-        this.cornerBBox.height - scrollY,
-      );
-    }
+
+    translateGroupX(
+      this.spreadsheet.frozenRowGroup,
+      this.cornerBBox.width - scrollX,
+    );
+    translateGroupY(
+      this.spreadsheet.frozenColGroup,
+      this.cornerBBox.height - scrollY,
+    );
 
     translateGroup(
       this.spreadsheet.panelScrollGroup,
@@ -926,6 +917,38 @@ export abstract class BaseFacet {
     return totalHeight;
   };
 
+  protected initFrozenGroupPosition = () => {
+    translateGroup(
+      this.spreadsheet.frozenRowGroup,
+      this.cornerBBox.width,
+      this.cornerBBox.height,
+    );
+    translateGroup(
+      this.spreadsheet.frozenColGroup,
+      this.cornerBBox.width,
+      this.cornerBBox.height,
+    );
+    translateGroup(
+      this.spreadsheet.frozenTopLeftGroup,
+      this.cornerBBox.width,
+      this.cornerBBox.height,
+    );
+  };
+
+  protected renderFrozenPanelCornerGroup = () => {
+    const { frozenRowCount, frozenColCount } = this.spreadsheet.options;
+
+    for (let i = 0; i < frozenColCount; i++) {
+      for (let j = 0; j < frozenRowCount; j++) {
+        const viewMeta = this.layoutResult.getCellMeta(j, i);
+        if (viewMeta) {
+          const cell = this.cfg.dataCell(viewMeta);
+          this.spreadsheet.frozenTopLeftGroup.add(cell);
+        }
+      }
+    }
+  };
+
   realCellRender = (scrollX: number, scrollY: number) => {
     const { frozenRowCount, frozenColCount } = this.spreadsheet.options;
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
@@ -944,9 +967,7 @@ export abstract class BaseFacet {
           const cell = this.cfg.dataCell(viewMeta);
           // mark cell for removing
           cell.set('name', `${i}-${j}`);
-          if (j <= frozenRowCount - 1 && i <= frozenColCount - 1) {
-            this.spreadsheet.frozenTopLeftGroup.add(cell);
-          } else if (j <= frozenRowCount - 1) {
+          if (j <= frozenRowCount - 1) {
             this.spreadsheet.frozenRowGroup.add(cell);
           } else if (i <= frozenColCount - 1) {
             this.spreadsheet.frozenColGroup.add(cell);
@@ -964,12 +985,6 @@ export abstract class BaseFacet {
         );
         findOne?.remove(true);
       });
-      console.log(
-        this.spreadsheet.frozenRowGroup.getChildren().length,
-        this.spreadsheet.frozenColGroup.getChildren().length,
-        this.spreadsheet.panelScrollGroup.getChildren().length,
-        this.spreadsheet.frozenTopLeftGroup.getChildren().length,
-      );
       updateMergedCells(this.spreadsheet);
       // DebuggerUtil.getInstance().logger(
       //   `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
@@ -1155,16 +1170,14 @@ export abstract class BaseFacet {
   protected dynamicRenderCell(delay = true) {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
     const scrollY = sy + this.getPaginationScrollY();
-    // console.time('render');
+
     if (delay) {
       this.debounceRenderCell(scrollX, scrollY);
     } else {
       this.realCellRender(scrollX, scrollY);
     }
-    // console.timeEnd('render');
-    // console.time('translate');
-    this.translateRelatedGroups(scrollX, scrollY, hRowScrollX, delay);
-    // console.timeEnd('translate');
+
+    this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
 
     const cellScrollData: CellScrollPosition = { scrollX, scrollY };
     this.spreadsheet.emit(KEY_CELL_SCROLL, cellScrollData);

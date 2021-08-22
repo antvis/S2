@@ -31,6 +31,7 @@ export const KEY_GROUP_ROW_INDEX_RESIZER = 'rowIndexResizerGroup';
 export const KEY_GROUP_CORNER_RESIZER = 'cornerResizerGroup';
 export const KEY_GROUP_COL_RESIZER = 'colResizerGroup';
 export const KEY_GROUP_MASK_GROUP = 'maskGroup';
+export const KEY_GROUP_COL_FROZEN = 'colFrozenGroup';
 
 // key of series number node in corner header
 export const KEY_SERIES_NUMBER_NODE = 'series-number-node';
