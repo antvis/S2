@@ -98,7 +98,7 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    // Use GLOBAL_MOUSE_UP for support The mouse slides off the table
+    // The constant 'GLOBAL_MOUSE_UP' is used to monitor the event of the mouse moving off the table.
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event: Event) => {
       event.preventDefault();
 

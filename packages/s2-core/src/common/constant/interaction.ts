@@ -9,6 +9,7 @@ export enum InteractionNames {
 
 export enum InteractionEvent {
   DATA_CELL_CLICK_EVENT = 'spreadsheet:data-cell-click',
+
   MERGED_CELLS_CLICK_EVENT = 'spreadsheet:merged-cells-click',
   CORNER_TEXT_CLICK_EVENT = 'spreadsheet:corner-cell-text-click',
   ROW_COLUMN_CLICK_EVENT = 'spreadsheet:row-column-click',
@@ -60,9 +61,9 @@ export const INTERACTION_TREND = {
 };
 
 export enum InteractionBrushSelectionStage {
-  CLICK = 'CLICK',
-  UN_DRAGGED = 'UN_DRAGGED',
-  DRAGGED = 'DRAGGED',
+  CLICK = 'click',
+  UN_DRAGGED = 'un_dragged',
+  DRAGGED = 'dragged',
 }
 
 export enum InteractionKeyboardKey {

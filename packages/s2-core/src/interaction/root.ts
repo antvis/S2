@@ -13,7 +13,7 @@ import {
   CornerTextClick,
   DataCell,
   DataCellClick,
-  DefaultInterceptEvent,
+  InterceptEvent,
   InteractionEvent,
   HoverEvent,
   InteractionNames,
@@ -37,7 +37,7 @@ export class RootInteraction {
   public interactions = new Map<string, BaseInteraction>();
 
   // 用来标记需要拦截的事件，interaction和本身的hover等事件可能会有冲突，有冲突时在此屏蔽
-  public interceptEvent = new Set<DefaultInterceptEvent>();
+  public interceptEvent = new Set<InterceptEvent>();
 
   public events = new Map<string, BaseEvent>();
 
