@@ -1,5 +1,5 @@
 import { Fields, Meta, SortParams } from '@/common/interface/index';
-import { merge, isEmpty } from 'lodash';
+import { isEmpty, merge } from 'lodash';
 
 /** use for tabularSheet
  *  eg. { label: '余额女',
@@ -18,7 +18,9 @@ export interface MultiData {
   values: (string | number)[][];
 }
 
-export type DataItem = string | number | MultiData;
+export type SimpleDataItem = string | number;
+
+export type DataItem = SimpleDataItem | MultiData;
 
 export type Data = Record<string, DataItem>;
 

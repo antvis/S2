@@ -93,6 +93,8 @@ const getOptions = (): S2Options => {
     tooltip: {
       showTooltip: true,
     },
+    selectedCellsSpotlight: true,
+    hoverHighlight: true,
     mappingDisplayDataItem(field, data) {
       return {
         price: 12,
@@ -186,7 +188,6 @@ function MainLayout(props) {
           <Radio value={'normal'}>默认</Radio>
           <Radio value={'bottom'}>下方</Radio>
           <Radio value={'combine'}>合并</Radio>
-          <Radio value={'separate'}>独立右侧</Radio>
         </Radio.Group>
       </div>
       <SheetComponent
