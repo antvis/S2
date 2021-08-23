@@ -1,15 +1,20 @@
 import {
   CellTypes,
-  DefaultInterceptEventType,
+  InterceptEventType,
   InteractionKeyboardKey,
   OriginEventType,
   S2Event,
+  ANT_DESIGN_PRE_CLASS,
 } from '@/common/constant';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 import { Canvas, Event as CanvasEvent, LooseObject } from '@antv/g-canvas';
 import { each, get, includes } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
+import {
+  TOOLTIP_CLASS_PRE,
+  TOOLTIP_OPERATION_CLASS_PRE,
+} from '@/common/tooltip/constant';
 
 interface EventListener {
   target: EventTarget;
@@ -107,19 +112,30 @@ export class EventController {
   }
 
   private resetSheetStyle(event: Event) {
-    // TODO tooltip 隐藏判断
-    if (
-      event.target !== this.spreadsheet.container.get('el') &&
-      !includes((<HTMLElement>event.target)?.className, 'eva-facet') &&
-      !includes((<HTMLElement>event.target)?.className, 'ant-menu') &&
-      !includes((<HTMLElement>event.target)?.className, 'ant-input')
-    ) {
-      this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
-      this.interaction.clearState();
-      this.spreadsheet.hideTooltip();
-      // 屏蔽的事件都重新打开
-      this.interaction.interceptEvent.clear();
+    // 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
+    // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
+    if (this.spreadsheet.store.get('isMouseUpFromBrushSelectionEnd')) {
+      this.spreadsheet.store.set('isMouseUpFromBrushSelectionEnd', false);
+      return;
     }
+
+    if (
+      this.spreadsheet.container.get('el').contains(event.target) ||
+      [
+        ANT_DESIGN_PRE_CLASS,
+        TOOLTIP_OPERATION_CLASS_PRE,
+        TOOLTIP_CLASS_PRE,
+      ].some((className) =>
+        includes((<HTMLElement>event.target)?.className, className),
+      )
+    ) {
+      return;
+    }
+
+    this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
+    this.interaction.clearState();
+    this.spreadsheet.hideTooltip();
+    this.interaction.interceptEvent.clear();
   }
 
   // TODO: 需要再考虑一下应该是触发后再屏蔽？还是拦截后再触发，从我的实际重构来看，无法预料到用户的下一步操作，只能全都emit，然后再按照实际的操作把不对应的interaction屏蔽掉。
@@ -160,7 +176,6 @@ export class EventController {
   private onCanvasMousemove = (event: CanvasEvent) => {
     const appendInfo = get(event.target, 'attrs.appendInfo');
     if (appendInfo?.isResizer) {
-      // row-col-resize
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, event);
       return;
     }
@@ -191,7 +206,7 @@ export class EventController {
       // 如果hover的cell改变了，并且当前不需要屏蔽 hover
       if (
         this.hoverTarget !== event.target &&
-        !this.interaction.interceptEvent.has(DefaultInterceptEventType.HOVER)
+        !this.interaction.interceptEvent.has(InterceptEventType.HOVER)
       ) {
         switch (cellType) {
           case CellTypes.DATA_CELL:

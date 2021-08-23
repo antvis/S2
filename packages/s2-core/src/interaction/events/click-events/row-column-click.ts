@@ -1,4 +1,4 @@
-import { S2Event, DefaultInterceptEventType } from '@/common/constant';
+import { S2Event, InterceptEventType } from '@/common/constant';
 import { BaseEvent } from '../base-event';
 import { handleRowColClick } from '@/utils/interaction/multi-click';
 import { Event } from '@antv/g-canvas';
@@ -12,9 +12,7 @@ export class RowColumnClick extends BaseEvent {
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
-      if (
-        this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)
-      ) {
+      if (this.interaction.interceptEvent.has(InterceptEventType.CLICK)) {
         return;
       }
       handleRowColClick(event, this.spreadsheet);
@@ -22,7 +20,7 @@ export class RowColumnClick extends BaseEvent {
   }
 
   private bindColCellClick() {
-    if (this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)) {
+    if (this.interaction.interceptEvent.has(InterceptEventType.CLICK)) {
       return;
     }
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {

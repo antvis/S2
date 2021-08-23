@@ -197,7 +197,7 @@ export class RootInteraction {
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { cells } = interactionStateInfo;
     if (!isEmpty(cells)) {
-      clearState(this.spreadsheet);
+      this.clearState();
       this.setState(interactionStateInfo);
       this.updatePanelAllCellsStyle();
       this.draw();

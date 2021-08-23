@@ -59,10 +59,10 @@ export const INTERACTION_TREND = {
   NAME: i18n('趋势'),
 };
 
-export enum InteractionBrushStage {
-  CLICK,
-  UN_DRAGGED,
-  DRAGGED,
+export enum InteractionBrushSelectionStage {
+  CLICK = 'CLICK',
+  UN_DRAGGED = 'UN_DRAGGED',
+  DRAGGED = 'DRAGGED',
 }
 
 export enum InteractionKeyboardKey {
