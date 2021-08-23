@@ -1,3 +1,4 @@
+import { InteractionStateName } from '@/common/constant';
 import { GuiIcon } from '@/common/icons';
 import {
   CellBoxCfg,
@@ -20,7 +21,12 @@ import {
   getTextAndIconArea,
   getTextPosition,
 } from '@/utils/data-cell';
-import { renderIcon, renderRect, renderText } from '@/utils/g-renders';
+import {
+  renderIcon,
+  renderRect,
+  renderText,
+  updateShapeAttr,
+} from '@/utils/g-renders';
 import { getEllipsisText } from '@/utils/text';
 import { Group, IShape, SimpleBBox } from '@antv/g-canvas';
 import { find, get, isEmpty } from 'lodash';
@@ -348,5 +354,35 @@ export class CellCondition extends Group {
         );
       }
     }
+  }
+
+  /**
+   * @description only need handle with unselected state
+   * @param {InteractionStateName} stateName
+   * @returns {*}
+   */
+  updateConditionsByState(stateName: InteractionStateName) {
+    if (stateName !== InteractionStateName.UNSELECTED) {
+      return;
+    }
+
+    const stateStyles = get(
+      this.theme,
+      `dataCell.cell.interactionState.${stateName}`,
+    );
+
+    this.conditionShapes.forEach((shape) => {
+      updateShapeAttr(
+        shape as IShape,
+        'opacity',
+        get(stateStyles, 'opacity', 1),
+      );
+    });
+  }
+
+  clearUnselectedState() {
+    this.conditionShapes.forEach((shape) => {
+      updateShapeAttr(shape as IShape, 'opacity', 1);
+    });
   }
 }

@@ -1,14 +1,14 @@
 import {
   CellTypes,
   InteractionStateName,
-  SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
 import { SpreadSheetTheme } from '@/common/interface';
 import { Group, IShape } from '@antv/g-canvas';
-import { each, findKey, get, includes } from 'lodash';
+import { each, get, includes, isEmpty, keys, pickBy } from 'lodash';
 import { SpreadSheet } from '../sheet-type';
 import { updateShapeAttr } from '../utils/g-renders';
+import { SHAPE_ATTRS_MAP } from './../common/constant/interaction';
 import { StateShapeLayer } from './../common/interface/interaction';
 
 export abstract class BaseCell<T> extends Group {
@@ -85,19 +85,18 @@ export abstract class BaseCell<T> extends Group {
       `${this.cellType}.cell.interactionState.${stateName}`,
     );
     each(stateStyles, (style, styleKey) => {
-      const currentShape = findKey(SHAPE_ATTRS_MAP, (attrs) =>
-        includes(attrs, styleKey),
-      ) as StateShapeLayer | undefined;
-
-      if (!currentShape || !this.stateShapes.has(currentShape)) {
+      const targetShapeNames = keys(
+        pickBy(SHAPE_ATTRS_MAP, (attrs) => includes(attrs, styleKey)),
+      );
+      if (isEmpty(targetShapeNames)) {
         return;
       }
-
-      updateShapeAttr(
-        this.stateShapes.get(currentShape),
-        SHAPE_STYLE_MAP[styleKey],
-        style,
-      );
+      targetShapeNames.forEach((shapeName: StateShapeLayer) => {
+        const shape = this.stateShapes.has(shapeName)
+          ? this.stateShapes.get(shapeName)
+          : this[shapeName];
+        updateShapeAttr(shape, SHAPE_STYLE_MAP[styleKey], style);
+      });
     });
   }
 

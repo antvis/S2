@@ -86,8 +86,26 @@ const getOptions = (): S2Options => {
     useDefaultConditionValues: ['ac', 'rc'],
     conditions: {
       text: [],
-      interval: [],
-      background: [],
+      interval: [
+        {
+          field: 'price',
+          mapping() {
+            return {
+              fill: 'yellow',
+              maxValue: 3000,
+              minValue: 0,
+            };
+          },
+        },
+      ],
+      background: [
+        {
+          field: 'price',
+          mapping() {
+            return { fill: 'rgb(218, 251, 225)' };
+          },
+        },
+      ],
       icon: [],
     },
     tooltip: {

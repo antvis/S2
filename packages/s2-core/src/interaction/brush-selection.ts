@@ -10,7 +10,7 @@ import {
   ViewMeta,
 } from '@/common/interface';
 import { Event, IShape, Point } from '@antv/g-canvas';
-import { get, isEmpty, isEqual, sample, throttle } from 'lodash';
+import { get, isEmpty, isEqual, sample } from 'lodash';
 import { DataCell } from '../cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '../common/constant';
 import { TooltipData } from '../common/interface';

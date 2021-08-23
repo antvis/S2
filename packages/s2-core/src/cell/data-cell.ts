@@ -18,7 +18,7 @@ import { first, get, includes, isEmpty, isEqual, map } from 'lodash';
  * 3、left rect area is interval(in left) and text(in right)
  */
 export class DataCell extends BaseCell<ViewMeta> {
-  protected conditionGroup: CellCondition;
+  protected cellCondition: CellCondition;
 
   public get cellType() {
     return CellTypes.DATA_CELL;
@@ -114,29 +114,23 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected initCell() {
     this.drawBackgroundShape();
-    this.drawStateShapes();
-    this.drawBorderShape();
+    this.drawInteractiveBgShape();
     this.drawConditionsShapes();
-    // update the interaction state
+    this.drawInteractiveBorderShape();
+    this.drawBorderShape();
     this.update();
   }
 
   protected drawConditionsShapes() {
     const { spreadsheet, meta, theme } = this;
     const { conditions } = this.spreadsheet.options;
-    this.conditionGroup = new CellCondition(
+    this.cellCondition = new CellCondition(
       spreadsheet,
       meta,
       theme,
       conditions,
     );
-    this.add(this.conditionGroup);
-  }
-
-  // 根据state要改变样式的shape
-  protected drawStateShapes() {
-    this.drawInteractiveBgShape();
-    this.drawInteractiveBorderShape();
+    this.add(this.cellCondition);
   }
 
   public getBackgroundColor(): string {
@@ -263,5 +257,15 @@ export class DataCell extends BaseCell<ViewMeta> {
         opacity: cell.horizontalBorderColorOpacity,
       },
     );
+  }
+
+  public updateByState(stateName: InteractionStateName) {
+    super.updateByState(stateName);
+    this.cellCondition.updateConditionsByState(stateName);
+  }
+
+  public clearUnselectedState() {
+    super.clearUnselectedState();
+    this.cellCondition.clearUnselectedState();
   }
 }
