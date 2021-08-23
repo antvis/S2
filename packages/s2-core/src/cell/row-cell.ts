@@ -19,7 +19,6 @@ import { get } from 'lodash';
 import { getEllipsisText, measureTextWidth } from '../utils/text';
 import { HeaderCell } from './header-cell';
 
-console.log(HeaderCell);
 export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;
 
@@ -55,8 +54,6 @@ export class RowCell extends HeaderCell {
     this.drawHotSpotInLeaf();
     // draw action icon shapes: trend icon, drill-down icon ...
     this.drawActionIcons();
-    // update the interaction state
-    this.update();
   }
 
   protected drawBackgroundColor() {
