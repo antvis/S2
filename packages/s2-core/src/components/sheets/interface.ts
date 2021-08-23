@@ -7,7 +7,7 @@ import {
   LayoutRow,
   ListSortParams,
   TargetLayoutNode,
-  SpreadsheetConstructor,
+  S2Constructor,
 } from 'src/common/interface';
 import { DrillDownProps } from 'src/components/drill-down';
 import { HeaderCfgProps } from 'src/components/header';
@@ -43,7 +43,7 @@ export interface PartDrillDown {
 }
 
 export interface BaseSheetProps {
-  spreadsheet?: (...args: SpreadsheetConstructor) => SpreadSheet;
+  spreadsheet?: (...args: S2Constructor) => SpreadSheet;
   dataCfg: S2DataConfig;
   options: S2Options;
   isLoading?: boolean;

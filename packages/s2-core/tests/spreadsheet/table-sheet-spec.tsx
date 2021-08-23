@@ -27,13 +27,23 @@ const getDataCfg = () => {
   return {
     fields: {
       columns: [
-        'area',
-        'province',
+        'order_id',
+        'order_date',
+        'ship_date',
+        'express_type',
+        'customer_name',
+        'customer_type',
         'city',
+        'province',
+        'counter',
+        'area',
         'type',
         'sub_type',
-        'profit',
+        'product_name',
+        'sale_amt',
         'count',
+        'discount',
+        'profit',
       ],
     },
     meta: [

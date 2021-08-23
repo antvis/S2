@@ -1,4 +1,4 @@
-import { BaseCell, DataCell, DetailDataCell } from '@/cell';
+import { BaseCell, DataCell, DetailDataCell, TableDataCell } from '@/cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -16,11 +16,11 @@ import {
   Pagination,
   S2CellType,
   S2DataConfig,
+  S2MountContainer,
   S2Options,
   safetyDataConfig,
   safetyOptions,
   SpreadSheetFacetCfg,
-  SpreadsheetMountContainer,
   ThemeCfg,
   TooltipData,
   TooltipOptions,
@@ -59,7 +59,7 @@ export class SpreadSheet extends EE {
   public static DEBUG_ON = false;
 
   // dom id
-  public dom: SpreadsheetMountContainer;
+  public dom: S2MountContainer;
 
   // theme config
   public theme: SpreadSheetTheme;
@@ -109,7 +109,7 @@ export class SpreadSheet extends EE {
   public interaction: RootInteraction;
 
   public constructor(
-    dom: SpreadsheetMountContainer,
+    dom: S2MountContainer,
     dataCfg: S2DataConfig,
     options: S2Options,
   ) {
@@ -131,7 +131,7 @@ export class SpreadSheet extends EE {
     return this.options?.tooltip?.showTooltip;
   }
 
-  private getMountContainer(dom: SpreadsheetMountContainer) {
+  private getMountContainer(dom: S2MountContainer) {
     return isString(dom) ? document.getElementById(dom) : (dom as HTMLElement);
   }
 
@@ -508,12 +508,11 @@ export class SpreadSheet extends EE {
     const { style, dataCell } = this.options;
     // 默认单元格实现
     const defaultCell = (facet: ViewMeta) => {
-      if (
-        this.isTableMode() &&
-        this.options.showSeriesNumber &&
-        facet.colIndex === 0
-      ) {
-        return new DetailDataCell(facet, this);
+      if (this.isTableMode()) {
+        if (this.options.showSeriesNumber && facet.colIndex === 0) {
+          return new DetailDataCell(facet, this);
+        }
+        return new TableDataCell(facet, this);
       }
       return new DataCell(facet, this);
     };
@@ -569,7 +568,7 @@ export class SpreadSheet extends EE {
       });
     });
     // 收起、展开按钮
-    this.on(KEY_TREE_ROWS_COLLAPSE_ALL, (isCollapse) => {
+    this.on(KEY_TREE_ROWS_COLLAPSE_ALL, (isCollapse: boolean) => {
       const options = {
         ...this.options,
         hierarchyCollapse: !isCollapse,

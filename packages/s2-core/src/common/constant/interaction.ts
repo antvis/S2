@@ -37,9 +37,6 @@ export enum CellTypes {
 
 export const HOVER_FOCUS_TIME = 800;
 
-export const SHIFT_KEY = 'Shift';
-export const COPY_KEY = 'c';
-
 // 主题配置和canvas属性的映射
 export const SHAPE_STYLE_MAP = {
   backgroundColor: 'fill',
@@ -63,3 +60,15 @@ export const INTERACTION_TREND = {
   ID: '__INTERACTION_TREND_ID__',
   NAME: i18n('趋势'),
 };
+
+export enum InteractionBrushStage {
+  CLICK,
+  UN_DRAGGED,
+  DRAGGED,
+}
+
+export enum InteractionKeyboardKey {
+  SHIFT = 'Shift',
+  COPY = 'c',
+  ESC = 'Escape',
+}

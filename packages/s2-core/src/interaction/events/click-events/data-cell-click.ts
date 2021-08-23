@@ -29,7 +29,7 @@ export class DataCellClick extends BaseEvent {
         return;
       }
       const cell: DataCell = this.spreadsheet.getCell(event.target);
-      const meta = cell.getMeta() as ViewMeta;
+      const meta = cell.getMeta();
       if (meta) {
         // 屏蔽hover事件
         this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);

@@ -1,5 +1,5 @@
 import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
-import { CellBoxCfg, TooltipPosition } from '@/common/interface';
+import { CellBoxCfg, TooltipPosition, CellCfg } from '@/common/interface';
 import { S2Options, SpreadSheetTheme } from '@/index';
 import { renderText } from '@/utils/g-renders';
 import { IShape } from '@antv/g-canvas';
@@ -268,7 +268,7 @@ const getStyle = (
   options: S2Options,
   theme: SpreadSheetTheme,
 ) => {
-  const cellCfg = get(options, 'style.cellCfg', {});
+  const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
   const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
   const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
   const isMinor = rowIndex === minorMeasureIndex;

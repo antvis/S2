@@ -32,13 +32,18 @@ export interface CustomInteraction {
   interaction: InteractionConstructor;
 }
 
-export interface S2CellBrushRange {
-  leftX: number;
-  topY: number;
-  rightX: number;
-  bottomY: number;
-  width?: number;
-  height?: number;
+export interface BrushPoint {
+  rowIndex: number;
+  colIndex: number;
+  x: number;
+  y: number;
+}
+
+export interface BrushRange {
+  start: BrushPoint;
+  end: BrushPoint;
+  width: number;
+  height: number;
 }
 
 export type StateShapeLayer = 'interactiveBgShape' | 'interactiveBorderShape';

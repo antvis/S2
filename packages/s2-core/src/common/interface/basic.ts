@@ -1,4 +1,5 @@
 import { CustomTreeItem } from '@/common/interface';
+import { S2PartialOptions } from 'src/common/interface/s2Options';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
   Hierarchy,
@@ -15,6 +16,7 @@ import { BaseTooltip } from '../tooltip';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { IconTheme } from './theme';
+import { Event } from '@antv/g-canvas';
 
 export type Formatter = (v: unknown) => string;
 
@@ -333,10 +335,7 @@ export type MappingDataItemCallback = (
 /**
  * Spreadsheet facet config
  */
-export interface SpreadSheetFacetCfg
-  extends Fields,
-    Omit<S2Options, 'dataSet'>,
-    Style {
+export interface SpreadSheetFacetCfg extends Fields, S2PartialOptions, Style {
   // spreadsheet interface
   spreadsheet: SpreadSheet;
   // data set of spreadsheet
@@ -430,10 +429,11 @@ export interface CellBoxCfg {
   // 单元格 padding 值
   padding?: Padding;
 }
-export type SpreadsheetMountContainer = string | HTMLElement;
+export type S2MountContainer = string | HTMLElement;
 
-export type SpreadsheetConstructor = [
-  SpreadsheetMountContainer,
-  S2DataConfig,
-  S2Options,
-];
+export type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];
+
+export interface OriginalEvent extends Event {
+  layerX: number;
+  layerY: number;
+}

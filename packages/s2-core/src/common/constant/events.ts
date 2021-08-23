@@ -64,6 +64,7 @@ export enum S2Event {
   GLOBAL_KEYBOARD_DOWN = 'global:keyboard-down',
   GLOBAL_KEYBOARD_UP = 'global:keyboard-up',
   GLOBAL_COPIED = 'global:copied',
+  GLOBAL_MOUSE_UP = 'global:mouse-up',
 
   GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT = 'global:clear-interaction-style-effect',
 }
@@ -74,6 +75,7 @@ export enum OriginEventType {
   MOUSE_UP = 'mouseup',
   KEY_DOWN = 'keydown',
   KEY_UP = 'keyup',
+  CLICK = 'click',
 }
 
 export enum DefaultInterceptEventType {
