@@ -1,5 +1,4 @@
 import { CustomTreeItem } from '@/common/interface';
-import { S2PartialOptions } from 'src/common/interface/s2Options';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
   Hierarchy,
@@ -9,14 +8,14 @@ import {
   TextAlign,
   TextBaseline,
 } from '@/index';
+import { Event } from '@antv/g-canvas';
+import { S2PartialOptions } from 'src/common/interface/s2Options';
 import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { Padding } from '../interface/theme';
 import { BaseTooltip } from '../tooltip';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
-import { IconTheme } from './theme';
-import { Event } from '@antv/g-canvas';
 
 export type Formatter = (v: unknown) => string;
 
@@ -72,45 +71,6 @@ export interface Fields {
   values?: string[];
   // measure values in cols as new col, only works in 'pivot' mode
   valueInCols?: boolean;
-}
-
-type MappingFunction = (
-  fieldValue: number,
-  data: Record<string, any>,
-) => CellMapping;
-
-export interface CellMapping {
-  // only used in icon condition
-  icon?: string;
-  // interval, background, text fill color
-  fill: string;
-  // only used in interval condition
-  isCompare?: boolean;
-  minValue?: number;
-  maxValue?: number;
-}
-
-/**
- * One field can hold a condition
- */
-export interface Condition {
-  readonly field: string;
-  readonly mapping: MappingFunction;
-}
-
-type IconPosition = 'left' | 'right';
-export interface IconCondition extends Condition {
-  readonly iconPosition?: IconPosition; // right by default
-}
-
-export type IconCfg = Pick<IconTheme, 'size' | 'margin'> &
-  Pick<IconCondition, 'iconPosition'>;
-
-export interface Conditions {
-  readonly text?: Condition[];
-  readonly background?: Condition[];
-  readonly interval?: Condition[];
-  readonly icon?: IconCondition[];
 }
 
 export interface Total {
