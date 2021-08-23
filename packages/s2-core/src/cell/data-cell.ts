@@ -58,7 +58,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected handlePrepareSelect(cells: S2CellType[]) {
-    if (includes(cells, this)) {
+    if (ifIncludeCell(cells, this.getMeta())) {
       this.updateByState(InteractionStateName.PREPARE_SELECT);
     }
   }
