@@ -396,8 +396,7 @@ function MainLayout() {
   const onDataCellMouseUp = (value) => {
     console.log(value);
     sheet = value?.viewMeta?.spreadsheet;
-    const curSelectedState = sheet.getCurrentState();
-    const { cells } = curSelectedState;
+    const cells = sheet.interaction.getActiveCells();
     mergedCellsInfo = [];
     forEach(cells, (cell) => {
       mergedCellsInfo.push({

@@ -20,6 +20,7 @@ import {
   getIconPosition,
   getTextAndIconArea,
   getTextPosition,
+  ifIncludeCell,
 } from '@/utils/data-cell';
 import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import { getEllipsisText } from '@/utils/text';
@@ -57,7 +58,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected handlePrepareSelect(cells: S2CellType[]) {
-    if (includes(cells, this)) {
+    if (ifIncludeCell(cells, this.getMeta())) {
       this.updateByState(InteractionStateName.PREPARE_SELECT);
     }
   }
@@ -75,7 +76,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
-        if (includes(cells, this)) {
+        if (ifIncludeCell(cells, this.getMeta())) {
           this.updateByState(InteractionStateName.SELECTED);
         } else if (this.spreadsheet.options.selectedCellsSpotlight) {
           this.updateByState(InteractionStateName.UNSELECTED);
