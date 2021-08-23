@@ -124,9 +124,8 @@ export class RowColResize extends BaseInteraction {
         const children = this.resizeGroup.getChildren();
         if (children) {
           const info = this.getResizeInfo();
-          const startPoint: ['M', number, number] = children[0]?.attr(
-            'path',
-          )[0];
+          const startPoint: ['M', number, number] =
+            children[0]?.attr('path')[0];
           const endPoint: ['M', number, number] = children[1]?.attr('path')[0];
 
           let resizeEventType: ResizeEventType;

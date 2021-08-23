@@ -23,10 +23,12 @@ export enum InteractionStateName {
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
   PREPARE_SELECT = 'prepareSelect',
+  OUT_OF_SPOTLIGHT = 'outOfTheSpotlight',
 }
 
 export enum CellTypes {
   DATA_CELL = 'dataCell',
+  HEADER_CELL = 'headerCell',
   ROW_CELL = 'rowCell',
   COL_CELL = 'colCell',
   CORNER_CELL = 'cornerCell',

@@ -1,4 +1,4 @@
-import { BaseCell, DataCell, DetailRowCell, TableDataCell } from '@/cell';
+import { BaseCell, DataCell, DetailDataCell, TableDataCell } from '@/cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -16,11 +16,11 @@ import {
   Pagination,
   S2CellType,
   S2DataConfig,
+  S2MountContainer,
   S2Options,
   safetyDataConfig,
   safetyOptions,
   SpreadSheetFacetCfg,
-  S2MountContainer,
   ThemeCfg,
   TooltipData,
   TooltipOptions,
@@ -143,8 +143,9 @@ export class SpreadSheet extends EE {
     this.tooltip = this.renderTooltip();
     if (!(this.tooltip instanceof BaseTooltip)) {
       console.warn(
-        `[Custom Tooltip]: ${(this
-          .tooltip as unknown)?.constructor?.toString()} should be extends from BaseTooltip`,
+        `[Custom Tooltip]: ${(
+          this.tooltip as unknown
+        )?.constructor?.toString()} should be extends from BaseTooltip`,
       );
     }
   }
@@ -509,7 +510,7 @@ export class SpreadSheet extends EE {
     const defaultCell = (facet: ViewMeta) => {
       if (this.isTableMode()) {
         if (this.options.showSeriesNumber && facet.colIndex === 0) {
-          return new DetailRowCell(facet, this);
+          return new DetailDataCell(facet, this);
         }
         return new TableDataCell(facet, this);
       }

@@ -51,8 +51,8 @@ export class DataCellClick extends BaseEvent {
   }
 
   private getTooltipOperator(meta: ViewMeta): TooltipOperatorOptions {
-    const cellOperator: TooltipOperatorOptions = this.spreadsheet.options
-      ?.cellOperator;
+    const cellOperator: TooltipOperatorOptions =
+      this.spreadsheet.options?.cellOperator;
 
     if (cellOperator) {
       return cellOperator;

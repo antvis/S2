@@ -17,6 +17,7 @@ async function main() {
       type: 'rawlist',
       message: '📢 请选择测试文件 (输入序号可快速选择)',
       name: 'path',
+      loop: false,
       choices: paths,
       default: () => defaultSelectedIndex,
     },

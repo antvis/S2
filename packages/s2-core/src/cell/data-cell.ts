@@ -11,6 +11,7 @@ import {
   IconCondition,
   S2CellType,
   ViewMeta,
+  ViewMetaIndex,
 } from '@/common/interface';
 import { DataItem } from '@/common/interface/s2DataConfig';
 import { getIconLayoutPosition } from '@/utils/condition';
@@ -23,8 +24,7 @@ import {
 import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import { getEllipsisText } from '@/utils/text';
 import { IShape, SimpleBBox } from '@antv/g-canvas';
-import { find, first, get, includes, isEmpty, map, isEqual } from 'lodash';
-import type { SpreadSheet } from 'src/sheet-type';
+import { find, first, get, includes, isEmpty, isEqual, map } from 'lodash';
 
 /**
  * DataCell for panelGroup area
@@ -39,7 +39,10 @@ import type { SpreadSheet } from 'src/sheet-type';
  * 3、left rect area is interval(in left) and text(in right)
  */
 export class DataCell extends BaseCell<ViewMeta> {
-  // 3、condition shapes
+  // cell configs conditions(Determine how to render this cell)
+  protected conditions: Conditions;
+
+  // condition shapes
   // background color by bg condition
   protected conditionBgShape: IShape;
 
@@ -49,17 +52,8 @@ export class DataCell extends BaseCell<ViewMeta> {
   // interval condition shape
   protected intervalShape: IShape;
 
-  // 4、render main text
-  protected textShape: IShape;
-
-  // 5、brush-select prepareSelect border
-  protected interactiveBorderShape: IShape;
-
-  // cell configs conditions(Determine how to render this cell)
-  protected conditions: Conditions;
-
-  constructor(meta: ViewMeta, spreadsheet: SpreadSheet) {
-    super(meta, spreadsheet);
+  public get cellType() {
+    return CellTypes.DATA_CELL;
   }
 
   protected handlePrepareSelect(cells: S2CellType[]) {
@@ -165,10 +159,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     };
   }
 
-  public getInteractiveBgShape() {
-    return this.interactiveBgShape;
-  }
-
   /**
    * @description get cell text style
    * @protected
@@ -245,7 +235,6 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected initCell() {
-    this.cellType = this.getCellType();
     this.conditions = this.spreadsheet.options?.conditions;
     this.drawBackgroundShape();
     this.drawStateShapes();
@@ -254,10 +243,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawBorderShape();
     // update the interaction state
     this.update();
-  }
-
-  protected getCellType() {
-    return CellTypes.DATA_CELL;
   }
 
   // 根据state要改变样式的shape
@@ -294,7 +279,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): CellMapping {
-    const value = (this.meta.fieldValue as unknown) as number;
+    const value = this.meta.fieldValue as unknown as number;
     return condition?.mapping(value, get(this.meta.data, [0]));
   }
 
@@ -328,12 +313,12 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     const position = this.getTextPosition();
     this.textShape = renderText(
+      this,
       [this.textShape],
       position.x,
       position.y,
       ellipsisText,
       { ...textStyle, fill: textFill },
-      this,
     );
   }
 
@@ -413,15 +398,17 @@ export class DataCell extends BaseCell<ViewMeta> {
     // 往内缩一个像素，避免和外边框重叠
     const margin = 1;
     const { x, y, height, width } = this.meta;
-    this.interactiveBorderShape = renderRect(this, {
-      x: x + margin,
-      y: y + margin,
-      width: width - margin * 2,
-      height: height - margin * 2,
-      fill: 'transparent',
-      stroke: 'transparent',
-    });
-    this.stateShapes.push(this.interactiveBorderShape);
+    this.stateShapes.set(
+      'interactiveBorderShape',
+      renderRect(this, {
+        x: x + margin,
+        y: y + margin,
+        width: width - margin * 2,
+        height: height - margin * 2,
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
+    );
   }
 
   /**
@@ -429,15 +416,17 @@ export class DataCell extends BaseCell<ViewMeta> {
    */
   protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
-    this.interactiveBgShape = renderRect(this, {
-      x,
-      y,
-      width,
-      height,
-      fill: 'transparent',
-      stroke: 'transparent',
-    });
-    this.stateShapes.push(this.interactiveBgShape);
+    this.stateShapes.set(
+      'interactiveBgShape',
+      renderRect(this, {
+        x,
+        y,
+        width,
+        height,
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
+    );
   }
 
   /**
@@ -527,11 +516,8 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  /**
-   * @description change the state style for column selection or row selection
-   * @param index colIndex / rowIndex
-   */
-  private changeRowColSelectState(index: 'colIndex' | 'rowIndex') {
+  // dataCell根据state 改变当前样式，
+  private changeRowColSelectState(index: ViewMetaIndex) {
     const currentIndex = get(this.meta, index);
     const nodes = this.spreadsheet.interaction.getState()?.nodes;
     const selectedIndexes = map(nodes, (node) => get(node, index));
@@ -554,26 +540,34 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     // horizontal border
     renderLine(
-      x,
-      y,
-      x + width,
-      y,
-      cell.horizontalBorderColor,
-      cell.horizontalBorderWidth,
       this,
-      cell.horizontalBorderColorOpacity,
+      {
+        x1: x,
+        y1: y,
+        x2: x + width,
+        y2: y,
+      },
+      {
+        stroke: cell.horizontalBorderColor,
+        lineWidth: cell.horizontalBorderWidth,
+        opacity: cell.horizontalBorderColorOpacity,
+      },
     );
 
     // vertical border
     renderLine(
-      x + width,
-      y,
-      x + width,
-      y + height,
-      cell.verticalBorderColor,
-      cell.verticalBorderWidth,
       this,
-      cell.horizontalBorderColorOpacity,
+      {
+        x1: x + width,
+        y1: y,
+        x2: x + width,
+        y2: y + height,
+      },
+      {
+        stroke: cell.verticalBorderColor,
+        lineWidth: cell.verticalBorderWidth,
+        opacity: cell.horizontalBorderColorOpacity,
+      },
     );
   }
 }

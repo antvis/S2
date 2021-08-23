@@ -4,16 +4,14 @@ import {
   SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
-import { InteractionStateTheme, SpreadSheetTheme } from '@/common/interface';
+import { SpreadSheetTheme } from '@/common/interface';
 import { Group, IShape } from '@antv/g-canvas';
 import { each, findKey, get, includes } from 'lodash';
 import { SpreadSheet } from '../sheet-type';
 import { updateShapeAttr } from '../utils/g-renders';
+import { StateShapeLayer } from './../common/interface/interaction';
 
 export abstract class BaseCell<T> extends Group {
-  // used to determine the cell type
-  public cellType: CellTypes;
-
   // cell's data meta info
   protected meta: T;
 
@@ -23,19 +21,14 @@ export abstract class BaseCell<T> extends Group {
   // spreadsheet's theme
   protected theme: SpreadSheetTheme;
 
-  // background control by icon condition
+  // background control shape
   protected backgroundShape: IShape;
 
+  // text control shape
   protected textShape: IShape;
 
-  // render interactive background,
-  protected interactiveBgShape: IShape;
-
-  // 需要根据state改变样式的shape集合
-  // 需要这个属性的原因是在state clear时知道具体哪些shape要hide。不然只能手动改，比较麻烦
-  protected stateShapes: IShape[] = [];
-
-  // protected actionIcons: GuiIcon[];
+  // interactive control shapes, unify read and manipulate operations
+  protected stateShapes = new Map<StateShapeLayer, IShape>();
 
   public constructor(
     meta: T,
@@ -50,11 +43,6 @@ export abstract class BaseCell<T> extends Group {
     this.initCell();
   }
 
-  /**
-   * Update cell's selected state
-   */
-  public abstract update(): void;
-
   public getMeta(): T {
     return this.meta;
   }
@@ -67,9 +55,14 @@ export abstract class BaseCell<T> extends Group {
    * in case there are more params to be handled
    * @param options any type's rest params
    */
-  protected handleRestOptions(...options: any) {
+  protected handleRestOptions(...options: unknown[]) {
     // default do nothing
   }
+
+  /**
+   * Return the type of the cell
+   */
+  public abstract get cellType(): CellTypes;
 
   /**
    * Determine how to render this cell area
@@ -77,21 +70,34 @@ export abstract class BaseCell<T> extends Group {
   protected abstract initCell(): void;
 
   /**
-   * Return the type of the cell
+   * Update cell's selected state
    */
-  protected abstract getCellType(): CellTypes;
+  public abstract update(): void;
+
+  /* -------------------------------------------------------------------------- */
+  /*                common functions that will be used in subtype               */
+  /* -------------------------------------------------------------------------- */
 
   // 根据当前state来更新cell的样式
   public updateByState(stateName: InteractionStateName) {
-    const stateStyles = get(this.theme, `${this.cellType}.cell.${stateName}`);
+    const stateStyles = get(
+      this.theme,
+      `${this.cellType}.cell.interactionState.${stateName}`,
+    );
     each(stateStyles, (style, styleKey) => {
-      if (styleKey) {
-        const currentShape = findKey(SHAPE_ATTRS_MAP, (attrs) =>
-          includes(attrs, styleKey),
-        );
-        if (!currentShape) return;
-        updateShapeAttr(this[currentShape], SHAPE_STYLE_MAP[styleKey], style);
+      const currentShape = findKey(SHAPE_ATTRS_MAP, (attrs) =>
+        includes(attrs, styleKey),
+      ) as StateShapeLayer | undefined;
+
+      if (!currentShape || !this.stateShapes.has(currentShape)) {
+        return;
       }
+
+      updateShapeAttr(
+        this.stateShapes.get(currentShape),
+        SHAPE_STYLE_MAP[styleKey],
+        style,
+      );
     });
   }
 
