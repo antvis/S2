@@ -203,6 +203,7 @@ export class RootInteraction {
       this.draw();
     }
   }
+
   updatePanelAllCellsStyle() {
     const cells = this.getPanelGroupAllDataCells();
     cells.forEach((cell: DataCell) => {

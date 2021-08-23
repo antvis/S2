@@ -1,8 +1,8 @@
 import {
   DefaultInterceptEventType,
+  InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
-  SHIFT_KEY,
 } from '@/common/constant';
 import { S2CellType, TooltipData } from '@/common/interface';
 import { Event } from '@antv/g-canvas';
@@ -22,7 +22,7 @@ export class DataCellMultiSelection extends BaseInteraction {
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
-        if (event.key === SHIFT_KEY) {
+        if (event.key === InteractionKeyboardKey.SHIFT) {
           this.isMultiSelection = true;
         }
       },
@@ -31,7 +31,7 @@ export class DataCellMultiSelection extends BaseInteraction {
 
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
-      if (event.key === SHIFT_KEY) {
+      if (event.key === InteractionKeyboardKey.SHIFT) {
         this.isMultiSelection = false;
         this.interaction.interceptEvent.delete(DefaultInterceptEventType.CLICK);
       }

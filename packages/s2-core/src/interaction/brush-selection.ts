@@ -42,19 +42,21 @@ export class BrushSelection extends BaseInteraction {
     return this.spreadsheet.theme.prepareSelectMask;
   }
 
-  private initPrepareSelectMaskShape(point: Point) {
+  private initPrepareSelectMaskShape() {
     if (this.prepareSelectMaskShape) {
+      this.hidePrepareSelectMaskShape();
       return;
     }
     const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
     this.prepareSelectMaskShape = this.spreadsheet.foregroundGroup.addShape(
       'rect',
       {
+        visible: false,
         attrs: {
           width: 0,
           height: 0,
-          x: point.x,
-          y: point.y,
+          x: 0,
+          y: 0,
           fill: prepareSelectMaskTheme?.backgroundColor,
           fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
           zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
@@ -62,17 +64,16 @@ export class BrushSelection extends BaseInteraction {
         capture: false,
       },
     );
-    this.prepareSelectMaskShape.hide();
   }
 
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
       this.brushStage = InteractionBrushStage.CLICK;
+      this.initPrepareSelectMaskShape();
 
       const originalEvent = ev.originalEvent as unknown as OriginalEvent;
       const point: Point = { x: originalEvent.layerX, y: originalEvent.layerY };
 
-      this.initPrepareSelectMaskShape(point);
       this.dataCells = this.interaction.getPanelGroupAllDataCells();
       this.startBrushPoint = this.getBrushPoint(point);
     });
@@ -101,10 +102,9 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (event: Event) => {
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event: Event) => {
+      event.preventDefault();
       if (this.brushStage === InteractionBrushStage.DRAGGED) {
-        this.brushStage = InteractionBrushStage.UN_DRAGGED;
-
         this.hidePrepareSelectMaskShape();
         this.updateSelectedCells();
 
@@ -113,6 +113,7 @@ export class BrushSelection extends BaseInteraction {
           this.getBrushRangeCellsInfos(),
         );
       }
+      this.brushStage = InteractionBrushStage.UN_DRAGGED;
     });
   }
 
@@ -146,13 +147,13 @@ export class BrushSelection extends BaseInteraction {
 
   private updatePrepareSelectMask() {
     const brushRange = this.getBrushRange();
-    this.prepareSelectMaskShape.show();
     this.prepareSelectMaskShape.attr({
       x: brushRange.start.x,
       y: brushRange.start.y,
       width: brushRange.width,
       height: brushRange.height,
     });
+    this.prepareSelectMaskShape.show();
   }
 
   private hidePrepareSelectMaskShape() {
@@ -240,20 +241,22 @@ export class BrushSelection extends BaseInteraction {
   }
 
   // 刷选过程中高亮的cell
-  private showPrepareSelectedCells = throttle(() => {
+  private showPrepareSelectedCells = () => {
     const brushRangeDataCells = this.getBrushRangeDataCells();
     this.interaction.changeState({
       cells: brushRangeDataCells,
       stateName: InteractionStateName.PREPARE_SELECT,
     });
     this.brushRangeDataCells = brushRangeDataCells;
-  }, 100);
+  };
 
   // 最终刷选的cell
   private updateSelectedCells() {
-    this.interaction.changeState({
-      cells: this.brushRangeDataCells,
-      stateName: InteractionStateName.SELECTED,
+    setTimeout(() => {
+      this.interaction.changeState({
+        cells: this.brushRangeDataCells,
+        stateName: InteractionStateName.SELECTED,
+      });
     });
   }
 }
