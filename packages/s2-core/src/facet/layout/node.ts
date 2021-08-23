@@ -294,6 +294,6 @@ export class Node {
   }
 
   public toJSON() {
-    return _.omit(this, ['hierarchy', 'parent', 'spreadsheet']);
+    return _.omit(this, ['config', 'hierarchy', 'parent', 'spreadsheet']);
   }
 }

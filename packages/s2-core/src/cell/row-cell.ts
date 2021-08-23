@@ -1,26 +1,26 @@
-import { GuiIcon } from '@/common/icons';
-import { HIT_AREA } from '@/facet/header/base';
-import { ResizeInfo } from '@/facet/header/interface';
-import { RowHeaderConfig } from '@/facet/header/row';
-import { renderRect, updateShapeAttr } from '@/utils/g-renders';
-import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
-import { isMobile } from '@/utils/is-mobile';
-import { getAdjustPosition } from '@/utils/text-absorption';
-import { IGroup } from '@antv/g-canvas';
-import { GM } from '@antv/g-gesture';
-import { each, first, get, isEmpty } from 'lodash';
 import {
   CellTypes,
   COLOR_DEFAULT_RESIZER,
   ID_SEPARATOR,
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_ROW_RESIZER,
-  InteractionStateName,
 } from '@/common/constant';
-import { Node } from '../index';
+import { GuiIcon } from '@/common/icons';
+import { HIT_AREA } from '@/facet/header/base';
+import { ResizeInfo } from '@/facet/header/interface';
+import { RowHeaderConfig } from '@/facet/header/row';
+import { renderLine, renderRect, renderText } from '@/utils/g-renders';
+import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
+import { isMobile } from '@/utils/is-mobile';
+import { getAdjustPosition } from '@/utils/text-absorption';
+import { IGroup } from '@antv/g-canvas';
+import { GM } from '@antv/g-gesture';
+import { get } from 'lodash';
 import { getEllipsisText, measureTextWidth } from '../utils/text';
-import { BaseCell } from './base-cell';
-export class RowCell extends BaseCell<Node> {
+import { HeaderCell } from './header-cell';
+
+console.log(HeaderCell);
+export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;
 
   // 绘制完其他后，需要额外绘制的起始x坐标
@@ -32,31 +32,8 @@ export class RowCell extends BaseCell<Node> {
   // mobile event
   private gm: GM;
 
-  public update() {
-    const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    const cells = this.spreadsheet.interaction.getActiveCells();
-    const currentCell = first(cells);
-
-    if (
-      !currentCell ||
-      (stateName !== InteractionStateName.HOVER &&
-        stateName !== InteractionStateName.HOVER_FOCUS)
-    ) {
-      return;
-    }
-    if (currentCell?.cellType === CellTypes.DATA_CELL || cells.includes(this)) {
-      this.updateByState(InteractionStateName.HOVER);
-    }
-  }
-
-  public setActive() {
-    updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 1);
-    each(this.actionIcons, (icon) => icon.set('visible', true));
-  }
-
-  public setInactive() {
-    updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
-    // each(this.actionIcons, (icon) => icon.set('visible', false));
+  public get cellType() {
+    return CellTypes.ROW_CELL;
   }
 
   public destroy(): void {
@@ -64,14 +41,8 @@ export class RowCell extends BaseCell<Node> {
     this.gm?.destroy();
   }
 
-  // TODO: options能不能不要固定顺序？headerConfig必须是 0下的吗？
-  protected handleRestOptions(...options: RowHeaderConfig[]) {
-    this.headerConfig = options[0];
-  }
-
   protected initCell() {
-    this.cellType = this.getCellType();
-    // draw rect background
+    // 1、draw rect background
     this.drawBackgroundColor();
     this.drawInteractiveBgShape();
     // draw text
@@ -88,16 +59,12 @@ export class RowCell extends BaseCell<Node> {
     this.update();
   }
 
-  protected getCellType() {
-    return CellTypes.ROW_CELL;
-  }
-
   protected drawBackgroundColor() {
     const { rowCell: rowHeaderStyle } = this.spreadsheet.theme;
     const bgColor = rowHeaderStyle.cell.backgroundColor;
     const { x, y, height, width } = this.meta;
 
-    renderRect(this, {
+    this.backgroundShape = renderRect(this, {
       x,
       y,
       width,
@@ -111,15 +78,17 @@ export class RowCell extends BaseCell<Node> {
   // 交互使用的背景色
   protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
-    this.interactiveBgShape = renderRect(this, {
-      x,
-      y,
-      width,
-      height,
-      fill: 'transparent',
-      stroke: 'transparent',
-    });
-    this.stateShapes.push(this.interactiveBgShape);
+    this.stateShapes.set(
+      'interactiveBgShape',
+      renderRect(this, {
+        x,
+        y,
+        width,
+        height,
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
+    );
   }
 
   protected drawIconInTree() {
@@ -200,17 +169,20 @@ export class RowCell extends BaseCell<Node> {
     const { x, y } = this.meta;
     // 1、bottom border
     const textIndent = this.getTextIndent();
-    this.addShape('line', {
-      attrs: {
+    renderLine(
+      this,
+      {
         x1: x + textIndent,
         y1: y,
         x2: position.x + width + viewportWidth + scrollX,
         y2: y,
-        stroke: this.theme.rowCell.cell.horizontalBorderColor,
-        opacity: this.theme.rowCell.cell.horizontalBorderOpacity,
-        lineWidth: this.theme.rowCell.cell.horizontalBorderWidth,
       },
-    });
+      {
+        stroke: this.theme.rowCell.cell.horizontalBorderColor,
+        lineWidth: this.theme.rowCell.cell.horizontalBorderWidth,
+        opacity: this.theme.rowCell.cell.horizontalBorderOpacity,
+      },
+    );
   }
 
   protected isTreeType() {
@@ -291,40 +263,41 @@ export class RowCell extends BaseCell<Node> {
       textTheme.fontSize,
     );
 
-    const textShape = this.addShape('text', {
-      attrs: {
-        x: textX,
-        y: textY,
-        text,
-        ...textStyle,
-        cursor: 'pointer',
-      },
-    });
+    this.textShape = renderText(
+      this,
+      [this.textShape],
+      textX,
+      textY,
+      text,
+      textStyle,
+      { cursor: 'pointer' },
+    );
+
     // handle link nodes
     if (linkFieldIds.includes(this.meta.key)) {
       const device = get(this.headerConfig, 'spreadsheet.options.style.device');
       // 配置了链接跳转
       if (!isMobile(device)) {
-        const textBBox = textShape.getBBox();
-        this.addShape('line', {
-          attrs: {
+        const textBBox = this.textShape.getBBox();
+        renderLine(
+          this,
+          {
             x1: textBBox.bl.x,
             y1: textBBox.bl.y + 1,
             x2: textBBox.br.x,
             y2: textBBox.br.y + 1,
-            stroke: textStyle.fill,
-            lineWidth: 1,
           },
-        });
-        textShape.attr({
+          { stroke: textStyle.fill, lineWidth: 1 },
+        );
+        this.textShape.attr({
           appendInfo: {
             isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
             cellData: this.meta,
           },
         });
       } else {
-        textShape.attr({
-          fill: '#0000ee',
+        this.textShape.attr({
+          fill: textTheme.linkTextFill,
           appendInfo: {
             isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
             cellData: this.meta,
@@ -381,8 +354,12 @@ export class RowCell extends BaseCell<Node> {
   protected drawActionIcons() {
     const rowActionIcons = this.spreadsheet.options.rowActionIcons;
     if (!rowActionIcons) return;
-    const { iconTypes, display, action, customDisplayByRowName } =
-      rowActionIcons;
+    const {
+      iconTypes,
+      display,
+      action,
+      customDisplayByRowName,
+    } = rowActionIcons;
     if (customDisplayByRowName) {
       const { rowNames, mode } = customDisplayByRowName;
       const rowIds = rowNames.map((rowName) => `root${ID_SEPARATOR}${rowName}`);

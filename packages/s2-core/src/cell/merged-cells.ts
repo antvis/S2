@@ -1,5 +1,6 @@
+import { SpreadSheet } from '@/sheet-type';
 import { getPolygonPoints } from '@/utils/interaction/merge-cells';
-import { IShape, SimpleBBox } from '@antv/g-canvas';
+import { SimpleBBox } from '@antv/g-canvas';
 import { isEmpty, isObject } from 'lodash';
 import { S2CellType } from 'src/common/interface/interaction';
 import { renderPolygon } from 'src/utils/g-renders';
@@ -15,7 +16,21 @@ import { BaseCell } from './base-cell';
 export class MergedCells extends BaseCell<ViewMeta> {
   public cells: S2CellType[];
 
-  protected textShape: IShape;
+  public constructor(
+    meta: ViewMeta,
+    spreadsheet: SpreadSheet,
+    cells: S2CellType[],
+  ) {
+    super(meta, spreadsheet, cells);
+  }
+
+  handleRestOptions(...[cells]: [S2CellType[]]) {
+    this.cells = cells;
+  }
+
+  public get cellType() {
+    return CellTypes.MERGED_CELLS;
+  }
 
   public update() {}
 
@@ -39,12 +54,7 @@ export class MergedCells extends BaseCell<ViewMeta> {
     };
   }
 
-  handleRestOptions(...options: S2CellType[][]) {
-    this.cells = options[0];
-  }
-
   protected initCell() {
-    this.cellType = this.getCellType();
     // TODO：1、条件格式支持； 2、交互态扩展； 3、合并后的单元格文字布局及文字内容（目前参考Excel合并后只保留第一个单元格子的数据）
     this.drawBackgroundShape();
     // this.drawStateShapes();
@@ -52,15 +62,11 @@ export class MergedCells extends BaseCell<ViewMeta> {
     // this.update();
   }
 
-  protected getCellType() {
-    return CellTypes.MERGED_CELLS;
-  }
-
   /**
    * Get left rest area size by icon condition
    * @protected
    */
-  protected getLeftAreaBBox(): SimpleBBox {
+  protected getContentAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
     return {
       x,

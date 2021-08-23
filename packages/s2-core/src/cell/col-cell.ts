@@ -1,51 +1,32 @@
-import { BaseCell } from '@/cell/base-cell';
 import {
   CellTypes,
   COLOR_DEFAULT_RESIZER,
   KEY_GROUP_COL_RESIZER,
-  InteractionStateName,
 } from '@/common/constant';
 import { GuiIcon } from '@/common/icons';
 import { TextAlign } from '@/common/interface';
 import { HIT_AREA } from '@/facet/header/base';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { ResizeInfo } from '@/facet/header/interface';
-import { Node } from '@/index';
-import { renderRect } from '@/utils/g-renders';
+import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import {
   getEllipsisText,
   getTextPosition,
   measureTextWidth,
 } from '@/utils/text';
 import { IGroup } from '@antv/g-canvas';
-import _ from 'lodash';
+import { get, isEqual } from 'lodash';
+import { HeaderCell } from './header-cell';
 
-export class ColCell extends BaseCell<Node> {
+export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;
 
-  public update() {
-    const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    const cells = this.spreadsheet.interaction.getActiveCells();
-    const currentCell = _.first(cells);
-    if (
-      !currentCell ||
-      (stateName !== InteractionStateName.HOVER &&
-        stateName !== InteractionStateName.HOVER_FOCUS)
-    ) {
-      return;
-    }
-    if (currentCell?.cellType === CellTypes.DATA_CELL || cells.includes(this)) {
-      this.updateByState(InteractionStateName.HOVER);
-    }
-  }
-
-  protected handleRestOptions(...options: ColHeaderConfig[]) {
-    this.headerConfig = options[0];
+  public get cellType() {
+    return CellTypes.COL_CELL;
   }
 
   protected initCell() {
-    this.cellType = this.getCellType();
-    // draw rect background
+    // 1、draw rect background
     this.drawRectBackground();
     // interactive background shape
     this.drawInteractiveBgShape();
@@ -57,12 +38,7 @@ export class ColCell extends BaseCell<Node> {
     this.drawRightBorder();
     // draw hot-spot rect
     this.drawHotSpot();
-    // update the interaction state
     this.update();
-  }
-
-  protected getCellType() {
-    return CellTypes.COL_CELL;
   }
 
   protected getColHotSpotKey() {
@@ -82,8 +58,12 @@ export class ColCell extends BaseCell<Node> {
   }
 
   protected drawCellText() {
-    const { offset, width, scrollContainsRowHeader, cornerWidth } =
-      this.headerConfig;
+    const {
+      offset,
+      width,
+      scrollContainsRowHeader,
+      cornerWidth,
+    } = this.headerConfig;
     const {
       label,
       x,
@@ -110,7 +90,7 @@ export class ColCell extends BaseCell<Node> {
       ? iconCfg.size + iconCfg.margin.right
       : 0;
     const textStyle = isLeaf && !isTotals ? textCfg : bolderTextCfg;
-    const padding = _.get(this, 'theme.colCell.cell.padding');
+    const padding = get(this, 'theme.colCell.cell.padding');
     const text = getEllipsisText(
       content,
       cellWidth - sortIconPadding - padding?.left - padding?.right,
@@ -122,8 +102,8 @@ export class ColCell extends BaseCell<Node> {
     let textAlign: TextAlign;
     if (isLeaf) {
       // 最后一个层级的维值，与 dataCell 对齐方式保持一致
-      textAlign = _.get(this, 'theme.dataCell.text.textAlign');
-      const textBaseline = _.get(this, 'theme.dataCell.text.textBaseline');
+      textAlign = this.theme.dataCell.text.textAlign;
+      const textBaseline = this.theme.dataCell.text.textBaseline;
       textStyle.textBaseline = textBaseline;
       const cellBoxCfg = {
         x,
@@ -179,7 +159,7 @@ export class ColCell extends BaseCell<Node> {
     }
     // const derivedValue = this.spreadsheet.getDerivedValue(value);
     // if (
-    //   !_.isEqual(
+    //   !isEqual(
     //     derivedValue.derivedValueField,
     //     derivedValue.displayDerivedValueField,
     //   ) &&
@@ -193,44 +173,48 @@ export class ColCell extends BaseCell<Node> {
     //   if (
     //     key === EXTRA_FIELD &&
     //     this.spreadsheet.isDerivedValue(value) &&
-    //     _.last(derivedValue.displayDerivedValueField) === value
+    //     last(derivedValue.displayDerivedValueField) === value
     //   ) {
     //     // 度量列，找到 value值
     //     text += '...';
     //   }
     // }
-    this.addShape('text', {
-      attrs: {
-        x: textX,
-        y: textY,
-        text,
+    this.textShape = renderText(
+      this,
+      [this.textShape],
+      textX,
+      textY,
+      text,
+      {
         textAlign,
         ...textStyle,
-        cursor: 'pointer',
       },
-    });
+      { cursor: 'pointer' },
+    );
   }
 
   // 交互使用的背景色
   protected drawInteractiveBgShape() {
     const { x, y, height, width } = this.meta;
-    this.interactiveBgShape = renderRect(this, {
-      x,
-      y,
-      width,
-      height,
-      fill: 'transparent',
-      stroke: 'transparent',
-    });
-    this.stateShapes.push(this.interactiveBgShape);
+    this.stateShapes.set(
+      'interactiveBgShape',
+      renderRect(this, {
+        x,
+        y,
+        width,
+        height,
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
+    );
   }
 
   private showSortIcon() {
     const { sortParam } = this.headerConfig;
     const query = this.meta.query;
     return (
-      _.isEqual(_.get(sortParam, 'query'), query) &&
-      _.get(sortParam, 'type') !== 'none'
+      isEqual(get(sortParam, 'query'), query) &&
+      get(sortParam, 'type') !== 'none'
     );
   }
 
@@ -241,7 +225,7 @@ export class ColCell extends BaseCell<Node> {
       const { sortParam } = this.headerConfig;
       const { x, y, width: cellWidth, height: cellHeight } = this.meta;
       const iconShape = new GuiIcon({
-        type: _.get(sortParam, 'type', 'none'),
+        type: get(sortParam, 'type', 'none'),
         x: x + cellWidth - icon.size - icon.margin.right,
         y: y + (cellHeight - icon.size) / 2,
         width: icon.size,
@@ -330,16 +314,20 @@ export class ColCell extends BaseCell<Node> {
     if (!this.meta.isLeaf) {
       const { height, viewportHeight } = this.headerConfig;
       const { x, y, width: cellWidth, height: cellHeight } = this.meta;
-      this.addShape('line', {
-        attrs: {
+
+      renderLine(
+        this,
+        {
           x1: x + cellWidth,
           y1: y + cellHeight,
           x2: x + cellWidth,
-          y2: y + height + viewportHeight, // 高度有多，通过 clip 裁剪掉
+          y2: y + height + viewportHeight,
+        },
+        {
           stroke: this.theme.colCell.cell.horizontalBorderColor,
           lineWidth: 1,
         },
-      });
+      );
     }
   }
 }

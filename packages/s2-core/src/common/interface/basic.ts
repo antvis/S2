@@ -1,4 +1,5 @@
 import { CustomTreeItem } from '@/common/interface';
+import { S2PartialOptions } from 'src/common/interface/s2Options';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
   Hierarchy,
@@ -12,8 +13,8 @@ import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { Padding } from '../interface/theme';
 import { BaseTooltip } from '../tooltip';
-import { DataItem, S2DataConfig } from './s2DataConfig';
 import { S2CellType } from './interaction';
+import { DataItem, S2DataConfig } from './s2DataConfig';
 import { IconTheme } from './theme';
 import { Event } from '@antv/g-canvas';
 
@@ -334,10 +335,7 @@ export type MappingDataItemCallback = (
 /**
  * Spreadsheet facet config
  */
-export interface SpreadSheetFacetCfg
-  extends Fields,
-    Omit<S2Options, 'dataSet'>,
-    Style {
+export interface SpreadSheetFacetCfg extends Fields, S2PartialOptions, Style {
   // spreadsheet interface
   spreadsheet: SpreadSheet;
   // data set of spreadsheet
@@ -377,6 +375,9 @@ export interface ViewMeta {
   colId?: string;
   [key: string]: any;
 }
+
+export type ViewMetaIndex = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;
+
 export type GetCellMeta = (rowIndex: number, colIndex: number) => ViewMeta;
 
 export interface LayoutResult {

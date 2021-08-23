@@ -1,12 +1,14 @@
 import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
+import { HeaderCell } from '@/cell/header-cell';
+import { Node } from '@/index';
 import { BaseInteraction } from '@/interaction/base';
 import { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName } from '../constant';
 import { ViewMeta } from './basic';
-import { Node } from '@/index';
 
 export type S2CellType<T extends Record<string, unknown> = ViewMeta> =
   | DataCell
+  | HeaderCell
   | ColCell
   | CornerCell
   | RowCell
@@ -43,3 +45,5 @@ export interface BrushRange {
   width: number;
   height: number;
 }
+
+export type StateShapeLayer = 'interactiveBgShape' | 'interactiveBorderShape';

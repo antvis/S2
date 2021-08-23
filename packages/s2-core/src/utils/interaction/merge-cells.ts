@@ -1,15 +1,15 @@
 import {
-  find,
-  isEqual,
-  forEach,
-  isEmpty,
   filter,
-  merge,
+  find,
+  forEach,
   isArray,
+  isEmpty,
+  isEqual,
+  merge,
 } from 'lodash';
-import { S2CellType } from 'src/common/interface/interaction';
-import { MergedCellInfo } from 'src/common/interface/index';
 import { MergedCells } from 'src/cell/merged-cells';
+import { MergedCellInfo } from 'src/common/interface/index';
+import { S2CellType } from 'src/common/interface/interaction';
 import { SpreadSheet } from 'src/sheet-type';
 
 /**

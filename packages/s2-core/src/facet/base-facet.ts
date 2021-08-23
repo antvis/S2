@@ -210,7 +210,7 @@ export abstract class BaseFacet {
       false,
     );
     return showSeriesNumber
-      ? get(this.cfg, 'spreadsheet.theme.rowCell.seriesNumberWidth')
+      ? (get(this.cfg, 'spreadsheet.theme.rowCell.seriesNumberWidth') as number)
       : 0;
   }
 
@@ -462,7 +462,9 @@ export abstract class BaseFacet {
     const box = this.getCanvasHW();
     let width = box.width - br.x;
     let height =
-      box.height - br.y - get(this.cfg, 'spreadsheet.theme.scrollBar.size');
+      box.height -
+      br.y -
+      (get(this.cfg, 'spreadsheet.theme.scrollBar.size') as number);
 
     const realWidth = this.getRealWidth();
     const realHeight = this.getRealHeight();
@@ -795,8 +797,9 @@ export abstract class BaseFacet {
     // 如果已经滚动在顶部或底部, 则无需触发滚动事件, 减少单元格重绘
     // TODO: 这里需要迁移 spreadsheet 的逻辑
     if (
-      this.isScrollToTop(optimizedDeltaY) ||
-      this.isScrollToBottom(optimizedDeltaY)
+      optimizedDeltaY > 0 &&
+      (this.isScrollToTop(optimizedDeltaY) ||
+        this.isScrollToBottom(optimizedDeltaY))
     ) {
       return;
     }

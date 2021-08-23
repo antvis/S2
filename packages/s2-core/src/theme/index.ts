@@ -7,7 +7,9 @@ import { getPalette } from '../utils/theme';
  * @describe generate the theme according to the type
  * @param  name
  */
-export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
+export const getTheme = (
+  themeCfg: Omit<ThemeCfg, 'theme'>,
+): SpreadSheetTheme => {
   const themePalette: Palette =
     themeCfg?.palette || getPalette(themeCfg?.name, themeCfg?.hueInvert);
   const { brandColors, grayColors, semanticColors } = themePalette;
@@ -76,6 +78,7 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
         fontSize: 12,
         fontWeight: 'normal',
         fill: grayColors[6],
+        linkTextFill: brandColors[7],
         opacity: 1,
         textAlign: 'right',
       },
@@ -98,10 +101,13 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           bottom: 12,
           left: 8,
         },
-        // -------------- hover -------------------
-        hover: {
-          backgroundColor: brandColors[2],
-          backgroundOpacity: 1,
+        /* ---------- interaction state ----------- */
+        interactionState: {
+          // -------------- hover -------------------
+          hover: {
+            backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
+          },
         },
       },
       icon: {
@@ -151,10 +157,13 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           bottom: 12,
           left: 8,
         },
-        // -------------- hover -------------------
-        hover: {
-          backgroundColor: brandColors[5],
-          backgroundOpacity: 1,
+        /* ---------- interaction state ----------- */
+        interactionState: {
+          // -------------- hover -------------------
+          hover: {
+            backgroundColor: brandColors[5],
+            backgroundOpacity: 1,
+          },
         },
       },
       icon: {
@@ -207,38 +216,42 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           bottom: 12,
           left: 8,
         },
-        // -------------- hover -------------------
-        hover: {
-          backgroundColor: brandColors[2],
-          backgroundOpacity: 1,
+        /* ---------- interaction state ----------- */
+        interactionState: {
+          // -------------- hover -------------------
+          hover: {
+            backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- keep hover -------------------
+          hoverFocus: {
+            backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
+            borderColor: grayColors[6],
+            borderOpacity: 1,
+          },
+          // -------------- selected -------------------
+          selected: {
+            backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- unselected -------------------
+          // TODO: 条件格式的icon和mini chart也需要置灰
+          unselected: {
+            backgroundOpacity: 0.3,
+            textOpacity: 0.3,
+          },
+          // -------------- prepare select --------------
+          prepareSelect: {
+            borderColor: grayColors[6],
+            borderOpacity: 1,
+          },
+          // -------------- out of spotlight --------------
+          outOfTheSpotlight: {
+            opacity: 0.3,
+          },
         },
-        // -------------- keep hover -------------------
-        hoverFocus: {
-          backgroundColor: brandColors[2],
-          backgroundOpacity: 1,
-          borderColor: grayColors[6],
-          borderOpacity: 1,
-        },
-        // -------------- selected -------------------
-        selected: {
-          backgroundColor: brandColors[2],
-          backgroundOpacity: 1,
-        },
-        // -------------- unselected -------------------
-        // TODO: 条件格式的icon和mini chart也需要置灰
-        unselected: {
-          backgroundOpacity: 0.3,
-          textOpacity: 0.3,
-        },
-        // -------------- prepare select --------------
-        prepareSelect: {
-          borderColor: grayColors[6],
-          borderOpacity: 1,
-        },
-        // -------------- out of spotlight --------------
-        outOfTheSpotlight: {
-          opacity: 0.3,
-        },
+
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
       },

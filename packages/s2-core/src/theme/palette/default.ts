@@ -8,6 +8,7 @@ export const paletteDefault = {
     '#ffffff',
     '#D9EAFF',
     '#2C60D3',
+    '#0000ee',
   ],
 
   // ----------neutral colors ----------

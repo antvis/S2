@@ -111,7 +111,7 @@ function MainLayout({ dataCfg, dimensionData, options, theme }) {
       <div style={{ margin: '10px' }}>
         <DimensionSwitchPopover data={dimension} onSubmit={onSubmit} />
       </div>
-      <SheetComponent dataCfg={data} options={options} theme={theme} />
+      <SheetComponent dataCfg={data} options={options} themeCfg={theme} />
     </div>
   );
 }

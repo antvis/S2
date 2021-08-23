@@ -1,59 +1,49 @@
-import _ from 'lodash';
-import { getEllipsisText, getTextPosition } from '../utils/text';
-import { isIPhoneX } from '../utils/is-mobile';
-import { IShape } from '@antv/g-canvas';
-import { renderText } from '../utils/g-renders';
+import { renderRect } from '@/utils/g-renders';
+import { IGroup, IShape, ShapeAttrs } from '@antv/g-canvas';
+import { get, isEmpty, isEqual } from 'lodash';
+import { GuiIcon } from '..';
 import {
+  CellTypes,
+  COLOR_DEFAULT_RESIZER,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZER,
-  COLOR_DEFAULT_RESIZER,
   KEY_TREE_ROWS_COLLAPSE_ALL,
-  CellTypes,
 } from '../common/constant';
 import { HIT_AREA } from '../facet/header/base';
 import { CornerHeaderConfig } from '../facet/header/corner';
 import { ResizeInfo } from '../facet/header/interface';
-import { GuiIcon, Node } from '..';
-import { BaseCell } from './base-cell';
-import { IGroup } from '@antv/g-canvas';
-export class CornerCell extends BaseCell<Node> {
+import { renderText } from '../utils/g-renders';
+import { isIPhoneX } from '../utils/is-mobile';
+import { getEllipsisText, getTextPosition } from '../utils/text';
+import { HeaderCell } from './header-cell';
+export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
 
-  protected textShapes: IShape[];
+  protected textShapes: IShape[] = [];
 
-  protected handleRestOptions(...options) {
-    if (options.length === 0) {
-      throw new Error(
-        'CornerCell render need headerConfig&hotConfig in CornerHeader!!!',
-      );
-    }
-    this.headerConfig = options[0];
+  public get cellType() {
+    return CellTypes.CORNER_CELL;
   }
 
   public update() {}
 
   protected initCell() {
-    this.cellType = this.getCellType();
     this.textShapes = [];
     this.drawCellRect();
     this.drawCellText();
     this.drawHotpot();
   }
 
-  protected getCellType() {
-    return CellTypes.CORNER_CELL;
-  }
-
   protected drawCellText() {
     const { position } = this.headerConfig;
     const { label, x, y, width: cellWidth, height: cellHeight } = this.meta;
 
-    if (_.isEqual(label, EXTRA_FIELD)) {
+    if (isEqual(label, EXTRA_FIELD)) {
       // don't render extra node
       return;
     }
 
-    const cornerTheme = _.get(this.theme, 'cornerCell');
+    const cornerTheme = get(this.theme, 'cornerCell');
     const textStyle = { ...cornerTheme?.bolderText };
     const iconStyle = cornerTheme?.icon;
     const cellPadding = cornerTheme?.cell?.padding;
@@ -66,7 +56,7 @@ export class CornerCell extends BaseCell<Node> {
     }
 
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
-    const extraPadding = this.ifNeedIcon()
+    const extraPadding = this.shouldShowIcon()
       ? iconStyle?.size + iconStyle?.margin?.left + iconStyle?.margin?.right
       : 0;
 
@@ -113,39 +103,37 @@ export class CornerCell extends BaseCell<Node> {
     });
 
     const textY =
-      position.y +
-      y +
-      (_.isEmpty(secondLine) ? cellHeight / 2 : cellHeight / 4);
+      position.y + y + (isEmpty(secondLine) ? cellHeight / 2 : cellHeight / 4);
     // first line
     this.textShapes.push(
       renderText(
+        this,
         [this.textShapes[0]],
         textX,
         textY,
         firstLine,
         textStyle,
-        this,
         extraInfo,
       ),
     );
 
     // second line
-    if (!_.isEmpty(secondLine)) {
+    if (!isEmpty(secondLine)) {
       this.textShapes.push(
         renderText(
+          this,
           [this.textShapes[1]],
           textX,
           position.y + y + cellHeight * 0.65,
           secondLine,
           textStyle,
-          this,
           extraInfo,
         ),
       );
     }
 
     // 如果为树状模式，角头第一个单元格前需要绘制收起展开的icon
-    if (this.ifNeedIcon()) {
+    if (this.shouldShowIcon()) {
       this.drawIcon();
     }
   }
@@ -155,10 +143,14 @@ export class CornerCell extends BaseCell<Node> {
    */
   private drawIcon() {
     // 只有交叉表才有icon
-    const { hierarchyCollapse, height, spreadsheet, position } =
-      this.headerConfig;
-    const iconStyle = _.get(this.theme, 'cornerCell.icon');
-    const textStyle = _.get(this.theme, 'cornerCell.text');
+    const {
+      hierarchyCollapse,
+      height,
+      spreadsheet,
+      position,
+    } = this.headerConfig;
+    const iconStyle = get(this.theme, 'cornerCell.icon');
+    const textStyle = get(this.theme, 'cornerCell.text');
     const colHeight = spreadsheet.options.style.colCfg.height;
     const icon = new GuiIcon({
       type: hierarchyCollapse ? 'plus' : 'MinusSquare',
@@ -184,7 +176,7 @@ export class CornerCell extends BaseCell<Node> {
   private drawCellRect() {
     const { position } = this.headerConfig;
     const { x, y, width: cellWidth, height: cellHeight } = this.meta;
-    const attrs: any = {
+    const attrs: ShapeAttrs = {
       x: position.x + x,
       y: position.y + y,
       width: cellWidth,
@@ -196,9 +188,7 @@ export class CornerCell extends BaseCell<Node> {
       attrs.stroke = this.theme.cornerCell.cell.horizontalBorderColor;
     }
 
-    this.addShape('rect', {
-      attrs,
-    });
+    this.backgroundShape = renderRect(this, attrs);
   }
 
   private drawHotpot() {
@@ -234,7 +224,7 @@ export class CornerCell extends BaseCell<Node> {
     });
   }
 
-  private ifNeedIcon() {
+  private shouldShowIcon() {
     // 批量折叠或者展开的icon，只存在树状结构的第一个cell前
     return (
       this.headerConfig.spreadsheet.isHierarchyTreeType() &&

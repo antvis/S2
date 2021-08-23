@@ -1,5 +1,5 @@
 import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
-import { CellBoxCfg, TooltipPosition } from '@/common/interface';
+import { CellBoxCfg, TooltipPosition, CellCfg } from '@/common/interface';
 import { S2Options, SpreadSheetTheme } from '@/index';
 import { renderText } from '@/utils/g-renders';
 import { IShape } from '@antv/g-canvas';
@@ -23,8 +23,13 @@ const ctx = canvas.getContext('2d');
  */
 export const measureTextWidth = memoize(
   (text: number | string = '', font: unknown): number => {
-    const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
-      font as CSSStyleDeclaration;
+    const {
+      fontSize,
+      fontFamily,
+      fontWeight,
+      fontStyle,
+      fontVariant,
+    } = font as CSSStyleDeclaration;
     ctx.font = [
       fontStyle,
       fontVariant,
@@ -268,7 +273,7 @@ const getStyle = (
   options: S2Options,
   theme: SpreadSheetTheme,
 ) => {
-  const cellCfg = get(options, 'style.cellCfg', {});
+  const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
   const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
   const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
   const isMinor = rowIndex === minorMeasureIndex;
@@ -297,7 +302,7 @@ const getStyle = (
  * @param cell
  */
 export const drawObjectText = (cell) => {
-  const { x, y, height, width } = cell.getLeftAreaBBox();
+  const { x, y, height, width } = cell.getContentAreaBBox();
   const { formattedValue: text } = cell.getData();
   const labelStyle = cell.theme?.view?.bolderText;
   const textStyle = cell.theme?.view?.text;
@@ -308,6 +313,7 @@ export const drawObjectText = (cell) => {
   const realWidth = width / (text?.values[0].length + 1);
   const realHeight = height / (text?.values.length + 1);
   renderText(
+    cell,
     cell.textShape,
     calX(x, padding),
     y + realHeight / 2,
@@ -318,7 +324,6 @@ export const drawObjectText = (cell) => {
     ),
     labelStyle,
     textFill,
-    cell,
   );
 
   const { values: textValues } = text;
@@ -344,13 +349,13 @@ export const drawObjectText = (cell) => {
       curX = calX(x, padding, totalWidth);
       totalWidth += curWidth;
       curTextShape = renderText(
+        cell,
         cell.textShape,
         curX,
         curY,
         getEllipsisText(`${curText}`, curWidth, curStyle),
         curStyle,
         curStyle?.fill,
-        cell,
       );
     }
   }
@@ -362,7 +367,7 @@ export const drawObjectText = (cell) => {
  * @returns 文本左上角起点坐标
  */
 export const drawStringText = (cell) => {
-  const { x, y, height, width } = cell.getLeftAreaBBox();
+  const { x, y, height, width } = cell.getContentAreaBBox();
   const { formattedValue: text } = cell.getData();
   const { isTotals } = cell.meta;
   const textStyle = isTotals
@@ -372,6 +377,7 @@ export const drawStringText = (cell) => {
   const padding = cell.theme.dataCell.cell.padding;
 
   cell.textShape = renderText(
+    cell,
     cell.textShape,
     x + width - padding.right,
     y + height / 2,
@@ -382,7 +388,6 @@ export const drawStringText = (cell) => {
     ),
     textStyle,
     textFill,
-    cell,
   );
 };
 

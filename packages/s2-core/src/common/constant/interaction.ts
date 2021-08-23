@@ -23,10 +23,12 @@ export enum InteractionStateName {
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
   PREPARE_SELECT = 'prepareSelect',
+  OUT_OF_SPOTLIGHT = 'outOfTheSpotlight',
 }
 
 export enum CellTypes {
   DATA_CELL = 'dataCell',
+  HEADER_CELL = 'headerCell',
   ROW_CELL = 'rowCell',
   COL_CELL = 'colCell',
   CORNER_CELL = 'cornerCell',
@@ -34,9 +36,6 @@ export enum CellTypes {
 }
 
 export const HOVER_FOCUS_TIME = 800;
-
-export const SHIFT_KEY = 'Shift';
-export const COPY_KEY = 'c';
 
 // 主题配置和canvas属性的映射
 export const SHAPE_STYLE_MAP = {
@@ -66,4 +65,10 @@ export enum InteractionBrushStage {
   CLICK,
   UN_DRAGGED,
   DRAGGED,
+}
+
+export enum InteractionKeyboardKey {
+  SHIFT = 'Shift',
+  COPY = 'c',
+  ESC = 'Escape',
 }
