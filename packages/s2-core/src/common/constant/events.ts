@@ -1,3 +1,4 @@
+import { BrushPoint } from './../interface/interaction';
 export { InteractionEvent } from './interaction';
 
 // event keys
@@ -81,8 +82,10 @@ export enum OriginEventType {
 export enum InterceptEventType {
   HOVER = 'hover',
   CLICK = 'click',
+  BRUSH_SELECTION = 'brushSelection',
 }
 
 export type InterceptEvent =
   | InterceptEventType.HOVER
-  | InterceptEventType.CLICK;
+  | InterceptEventType.CLICK
+  | InterceptEventType.BRUSH_SELECTION;

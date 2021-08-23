@@ -115,8 +115,9 @@ export class EventController {
   private resetSheetStyle(event: Event) {
     // 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
-    if (this.spreadsheet.store.get('isMouseUpFromBrushSelectionEnd')) {
-      this.spreadsheet.store.set('isMouseUpFromBrushSelectionEnd', false);
+    const { interceptEvent } = this.spreadsheet.interaction;
+    if (interceptEvent.has(InterceptEventType.BRUSH_SELECTION)) {
+      interceptEvent.delete(InterceptEventType.BRUSH_SELECTION);
       return;
     }
 

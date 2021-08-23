@@ -110,7 +110,9 @@ export class BrushSelection extends BaseInteraction {
           event,
           this.getBrushRangeCellsInfos(),
         );
-        this.spreadsheet.store.set('isMouseUpFromBrushSelectionEnd', true);
+        this.spreadsheet.interaction.interceptEvent.add(
+          InterceptEventType.BRUSH_SELECTION,
+        );
       }
       this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
     });

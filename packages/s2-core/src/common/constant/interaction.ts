@@ -62,7 +62,7 @@ export const INTERACTION_TREND = {
 
 export enum InteractionBrushSelectionStage {
   CLICK = 'click',
-  UN_DRAGGED = 'un_dragged',
+  UN_DRAGGED = 'unDragged',
   DRAGGED = 'dragged',
 }
 
