@@ -38,7 +38,6 @@ export class ColCell extends HeaderCell {
     this.drawRightBorder();
     // draw hot-spot rect
     this.drawHotSpot();
-    this.update();
   }
 
   protected getColHotSpotKey() {

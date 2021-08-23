@@ -39,6 +39,7 @@ export class HoverEvent extends BaseEvent {
       const allRowHeaderCells = getActiveHoverRowColCells(
         rowId,
         this.interaction.getAllRowHeaderCells(),
+        this.spreadsheet.isHierarchyTreeType(),
       );
       forEach(allRowHeaderCells, (cell: RowCell) => {
         cell.update();
