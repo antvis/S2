@@ -15,25 +15,37 @@ import { useEffect } from 'react';
 
 const data = getMockData('../data/tableau-supermarket.csv');
 
-const getSpreadSheet =
-  (ref) =>
-  (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
-    const s2 = new SpreadSheet(dom, dataCfg, options);
-    ref.current = s2;
-    return s2;
-  };
+const getSpreadSheet = (ref) => (
+  dom: string | HTMLElement,
+  dataCfg: S2DataConfig,
+  options: S2Options,
+) => {
+  const s2 = new SpreadSheet(dom, dataCfg, options);
+  ref.current = s2;
+  return s2;
+};
 
 const getDataCfg = () => {
   return {
     fields: {
       columns: [
-        'area',
-        'province',
+        'order_id',
+        'order_date',
+        'ship_date',
+        'express_type',
+        'customer_name',
+        'customer_type',
         'city',
+        'province',
+        'counter',
+        'area',
         'type',
         'sub_type',
-        'profit',
+        'product_name',
+        'sale_amt',
         'count',
+        'discount',
+        'profit',
       ],
     },
     meta: [

@@ -294,7 +294,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): CellMapping {
-    const value = this.meta.fieldValue as unknown as number;
+    const value = (this.meta.fieldValue as unknown) as number;
     return condition?.mapping(value, get(this.meta.data, [0]));
   }
 

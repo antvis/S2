@@ -1,8 +1,10 @@
 import { ColCell } from '@/cell/col-cell';
 import { get } from 'lodash';
+import { Node } from '@/index';
+import { SpreadSheet } from '../sheet-type';
 import { getEllipsisText, getTextPosition } from '../utils/text';
 import { EXTRA_FIELD } from '../common/constant';
-import { addDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
+import { renderDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
 
 export class DetailColCell extends ColCell {
   protected drawCellText() {
@@ -60,7 +62,7 @@ export class DetailColCell extends ColCell {
       },
     });
 
-    addDetailTypeSortIcon(
+    renderDetailTypeSortIcon(
       this,
       spreadsheet,
       x + cellWidth - iconSize,

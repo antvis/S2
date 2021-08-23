@@ -71,7 +71,7 @@ export class BrushSelection extends BaseInteraction {
       this.brushStage = InteractionBrushStage.CLICK;
       this.initPrepareSelectMaskShape();
 
-      const originalEvent = ev.originalEvent as unknown as OriginalEvent;
+      const originalEvent = (ev.originalEvent as unknown) as OriginalEvent;
       const point: Point = { x: originalEvent.layerX, y: originalEvent.layerY };
 
       this.dataCells = this.interaction.getPanelGroupAllDataCells();
@@ -89,7 +89,7 @@ export class BrushSelection extends BaseInteraction {
 
       event.preventDefault();
       this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
-      const originalEvent = event.originalEvent as unknown as OriginalEvent;
+      const originalEvent = (event.originalEvent as unknown) as OriginalEvent;
       const currentPoint: Point = {
         x: originalEvent.layerX,
         y: originalEvent.layerY,
