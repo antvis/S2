@@ -15,6 +15,7 @@ import {
   TOOLTIP_CLASS_PRE,
   TOOLTIP_OPERATION_CLASS_PRE,
 } from '@/common/tooltip/constant';
+import { ResizeInfo } from '@/facet/header/interface';
 
 interface EventListener {
   target: EventTarget;
@@ -138,6 +139,11 @@ export class EventController {
     this.interaction.interceptEvent.clear();
   }
 
+  private isResizer(event: CanvasEvent) {
+    const appendInfo = get(event.target, 'attrs.appendInfo') as ResizeInfo;
+    return appendInfo?.isResizer;
+  }
+
   // TODO: 需要再考虑一下应该是触发后再屏蔽？还是拦截后再触发，从我的实际重构来看，无法预料到用户的下一步操作，只能全都emit，然后再按照实际的操作把不对应的interaction屏蔽掉。
   private onCanvasMousedown = (event: CanvasEvent) => {
     this.target = event.target;
@@ -145,8 +151,7 @@ export class EventController {
     if (this.interaction.hoverTimer) {
       clearTimeout(this.interaction.hoverTimer);
     }
-    const appendInfo = get(event.target, 'attrs.appendInfo');
-    if (appendInfo?.isResizer) {
+    if (this.isResizer(event)) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, event);
       return;
     }
@@ -174,8 +179,7 @@ export class EventController {
   };
 
   private onCanvasMousemove = (event: CanvasEvent) => {
-    const appendInfo = get(event.target, 'attrs.appendInfo');
-    if (appendInfo?.isResizer) {
+    if (this.isResizer(event)) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, event);
       return;
     }
@@ -232,8 +236,7 @@ export class EventController {
   };
 
   private onCanvasMouseup = (event: CanvasEvent) => {
-    const appendInfo = get(event.target, 'attrs.appendInfo');
-    if (appendInfo && appendInfo.isResizer) {
+    if (this.isResizer(event)) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_UP, event);
       return;
     }
