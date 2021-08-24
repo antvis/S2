@@ -4,17 +4,12 @@ import {
   InteractionKeyboardKey,
   OriginEventType,
   S2Event,
-  ANT_DESIGN_PRE_CLASS,
 } from '@/common/constant';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 import { Canvas, Event as CanvasEvent, LooseObject } from '@antv/g-canvas';
-import { each, get, includes } from 'lodash';
+import { each, get } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
-import {
-  TOOLTIP_CLASS_PRE,
-  TOOLTIP_OPERATION_CLASS_PRE,
-} from '@/common/tooltip/constant';
 import { ResizeInfo } from '@/facet/header/interface';
 
 interface EventListener {
