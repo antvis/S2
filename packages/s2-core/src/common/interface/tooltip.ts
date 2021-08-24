@@ -74,7 +74,7 @@ export type TooltipInterpretationOptions = {
 };
 
 export type InfosProps = {
-  infos: string;
+  infos: React.ReactNode;
 };
 
 export type TooltipShowOptions = {

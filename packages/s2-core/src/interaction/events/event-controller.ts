@@ -122,14 +122,8 @@ export class EventController {
     }
 
     if (
-      this.spreadsheet.container.get('el').contains(event.target) ||
-      [
-        ANT_DESIGN_PRE_CLASS,
-        TOOLTIP_OPERATION_CLASS_PRE,
-        TOOLTIP_CLASS_PRE,
-      ].some((className) =>
-        includes((<HTMLElement>event.target)?.className, className),
-      )
+      this.isMouseOnTheTooltip(event) ||
+      this.isMouseOnTheCanvasContainer(event)
     ) {
       return;
     }
@@ -138,6 +132,26 @@ export class EventController {
     this.interaction.clearState();
     this.spreadsheet.hideTooltip();
     this.interaction.interceptEvent.clear();
+  }
+
+  private isMouseOnTheCanvasContainer(event: Event) {
+    return this.spreadsheet.container.get('el').contains(event.target);
+  }
+
+  private isMouseOnTheTooltip(event: Event) {
+    const { x, y, width, height } =
+      this.spreadsheet.tooltip.container?.getBoundingClientRect();
+
+    if (event instanceof MouseEvent) {
+      return (
+        event.clientX >= x &&
+        event.clientX <= x + width &&
+        event.clientY >= y &&
+        event.clientY <= y + height
+      );
+    }
+
+    return false;
   }
 
   private isResizer(event: CanvasEvent) {

@@ -1,4 +1,3 @@
-import { BrushPoint } from './../interface/interaction';
 export { InteractionEvent } from './interaction';
 
 // event keys

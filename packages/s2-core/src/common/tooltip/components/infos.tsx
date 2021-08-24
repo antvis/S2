@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { InfosProps } from '@/common/interface';
 import { TOOLTIP_CLASS_PRE } from '../constant';
 
