@@ -1,14 +1,21 @@
 import * as React from 'react';
+import { get } from 'lodash';
 import { BaseTooltip } from '../../../src/tooltip';
 import Infos from '../../../src/common/tooltip/components/infos';
-import { Aggregation, SpreadSheet } from '../../../src';
+import NameTips from '../../../src/common/tooltip/components/simple-tips';
 
 export class CustomTooltip extends BaseTooltip {
-  constructor(plot: SpreadSheet, aggregation?: Aggregation) {
-    super(plot, aggregation);
+  protected renderInfos() {
+    return <Infos infos="按住Cmd/Ctrl或框选，查看多个数据点" />;
   }
 
-  protected renderInfos(infos: string) {
-    return <Infos infos={`重写info测试 ${infos}`} />;
+  protected renderNameTips(nameTip) {
+    const extra = get(this, 'spreadsheet.dataCfg.fields.extra') || [];
+    const { tips, name } =
+      extra.find((item) => item.value === nameTip.name) || {};
+    if(tips || name) {
+      return <NameTips tips={tips} name={name || nameTip.name} />;
+    }
+    return super.renderNameTips(nameTip);
   }
 }

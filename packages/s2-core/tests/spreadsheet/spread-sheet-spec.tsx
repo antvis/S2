@@ -52,6 +52,13 @@ const getDataCfg = () => {
           displayDerivedValueField: ['count-tongbi'],
         },
       ],
+      extra: [
+        {
+          field: 'type',
+          value: '办公用品',
+          tips: '说明：这是办公用品的说明'
+        },
+      ],
     },
     meta: [
       {
@@ -96,16 +103,6 @@ const getDataCfg = () => {
       },
     ],
     data,
-    sortParams: [
-      {
-        sortFieldId: 'area',
-        sortMethod: 'ASC',
-      },
-      {
-        sortFieldId: 'province',
-        sortMethod: 'DESC',
-      },
-    ],
   };
 };
 
