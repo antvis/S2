@@ -41,7 +41,6 @@ export interface StoreKey {
   originalDataCfg: S2DataConfig;
   drillDownMeta: any;
   panelBBox: BBox;
-  isMouseUpFromBrushSelectionEnd: boolean;
 
   [key: string]: unknown;
 }
