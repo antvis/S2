@@ -39,7 +39,7 @@ const getOptions = (): S2Options => {
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
-    showSeriesNumber: false,
+    showSeriesNumber: true,
     freezeRowHeader: true,
     mode: 'pivot',
     conditions: {

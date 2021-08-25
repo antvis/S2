@@ -124,7 +124,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         x2: position.x + width,
         y2: y,
         stroke:
-          this.headerConfig.spreadsheet.theme.cornerCell.cell
+          this.headerConfig.spreadsheet.theme.rowCell.cell
             .horizontalBorderColor,
         lineWidth: 1,
       },
