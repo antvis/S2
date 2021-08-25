@@ -92,6 +92,8 @@ const getOptions = (): S2Options => {
     },
     frozenRowCount: 2,
     frozenColCount: 1,
+    frozenTrailingColCount: 1,
+    frozenTrailingRowCount: 1,
     tooltip: {
       showTooltip: false,
       renderTooltip: (spreadsheet) => {

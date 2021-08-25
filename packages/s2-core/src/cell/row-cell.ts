@@ -18,8 +18,6 @@ import { GM } from '@antv/g-gesture';
 import { get } from 'lodash';
 import { getEllipsisText, measureTextWidth } from '../utils/text';
 import { HeaderCell } from './header-cell';
-
-console.log(HeaderCell);
 export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;
 

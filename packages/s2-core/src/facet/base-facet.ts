@@ -353,6 +353,9 @@ export abstract class BaseFacet {
       frozenTrailingRowCount,
     } = this.spreadsheet.options;
 
+    const dataLength = this.viewCellHeights.getTotalLength();
+    const colLength = this.layoutResult.colLeafNodes.length;
+
     const indexes = calculateInViewIndexes(
       scrollX,
       scrollY,
@@ -364,11 +367,25 @@ export abstract class BaseFacet {
 
     const centerIndexes: Indexes = [...indexes];
 
+    if (centerIndexes[0] < frozenColCount) {
+      centerIndexes[0] = frozenColCount;
+    }
+
+    if (
+      frozenTrailingColCount > 0 &&
+      centerIndexes[1] >= colLength - frozenTrailingColCount
+    ) {
+      centerIndexes[1] = colLength - frozenTrailingColCount - 1;
+    }
+
     if (centerIndexes[2] < frozenRowCount) {
       centerIndexes[2] = frozenRowCount;
     }
-    if (centerIndexes[0] < frozenColCount) {
-      centerIndexes[0] = frozenColCount;
+    if (
+      frozenTrailingRowCount > 0 &&
+      centerIndexes[3] >= dataLength - frozenTrailingRowCount
+    ) {
+      centerIndexes[3] = dataLength - frozenTrailingRowCount - 1;
     }
 
     const frozenRowIndexes: Indexes = [...indexes];
@@ -380,13 +397,26 @@ export abstract class BaseFacet {
     frozenColIndexes[0] = 0;
     frozenColIndexes[1] = frozenColCount - 1;
     frozenColIndexes[2] = centerIndexes[2];
+    frozenColIndexes[3] = centerIndexes[3];
+
+    const frozenTrailingRowIndexes: Indexes = [...indexes];
+    frozenTrailingRowIndexes[0] = centerIndexes[0];
+    frozenTrailingRowIndexes[1] = centerIndexes[1];
+    frozenTrailingRowIndexes[2] = dataLength - frozenTrailingRowCount;
+    frozenTrailingRowIndexes[3] = dataLength - 1;
+
+    const frozenTrailingColIndexes: Indexes = [...indexes];
+    frozenTrailingColIndexes[0] = colLength - frozenTrailingColCount;
+    frozenTrailingColIndexes[1] = colLength - 1;
+    frozenTrailingColIndexes[2] = centerIndexes[2];
+    frozenTrailingColIndexes[3] = centerIndexes[3];
 
     return {
       center: centerIndexes,
       frozenRow: frozenRowIndexes,
       frozenCol: frozenColIndexes,
-      frozenTrailingCol: [] as any,
-      frozenTrailingRow: [] as any,
+      frozenTrailingCol: frozenTrailingColIndexes,
+      frozenTrailingRow: frozenTrailingRowIndexes,
     };
   };
 
@@ -860,8 +890,16 @@ export abstract class BaseFacet {
       this.spreadsheet.frozenRowGroup,
       this.cornerBBox.width - scrollX,
     );
+    translateGroupX(
+      this.spreadsheet.frozenTrailingRowGroup,
+      this.cornerBBox.width - scrollX,
+    );
     translateGroupY(
       this.spreadsheet.frozenColGroup,
+      this.cornerBBox.height - scrollY,
+    );
+    translateGroupY(
+      this.spreadsheet.frozenTrailingColGroup,
       this.cornerBBox.height - scrollY,
     );
 
@@ -932,14 +970,31 @@ export abstract class BaseFacet {
       this.cornerBBox.height,
     );
     translateGroup(
+      this.spreadsheet.frozenTrailingColGroup,
+      this.cornerBBox.width,
+      this.cornerBBox.height,
+    );
+    translateGroup(
       this.spreadsheet.frozenTopLeftGroup,
+      this.cornerBBox.width,
+      this.cornerBBox.height,
+    );
+    translateGroup(
+      this.spreadsheet.frozenTopRightGroup,
       this.cornerBBox.width,
       this.cornerBBox.height,
     );
   };
 
   protected renderFrozenPanelCornerGroup = () => {
-    const { frozenRowCount, frozenColCount } = this.spreadsheet.options;
+    const {
+      frozenRowCount,
+      frozenColCount,
+      frozenTrailingRowCount,
+      frozenTrailingColCount,
+    } = this.spreadsheet.options;
+    const dataLength = this.viewCellHeights.getTotalLength();
+    const colLength = this.layoutResult.colLeafNodes.length;
 
     for (let i = 0; i < frozenColCount; i++) {
       for (let j = 0; j < frozenRowCount; j++) {
@@ -949,17 +1004,58 @@ export abstract class BaseFacet {
           this.spreadsheet.frozenTopLeftGroup.add(cell);
         }
       }
+
+      if (frozenTrailingRowCount > 0) {
+        for (let j = 0; j < frozenTrailingRowCount; j++) {
+          const index = dataLength - 1 - j;
+          const viewMeta = this.layoutResult.getCellMeta(index, i);
+          if (viewMeta) {
+            const cell = this.cfg.dataCell(viewMeta);
+            this.spreadsheet.frozenBottomLeftGroup.add(cell);
+          }
+        }
+      }
+    }
+
+    for (let i = 0; i < frozenTrailingColCount; i++) {
+      const colIndex = colLength - 1 - i;
+      for (let j = 0; j < frozenRowCount; j++) {
+        const viewMeta = this.layoutResult.getCellMeta(j, colIndex);
+        if (viewMeta) {
+          const cell = this.cfg.dataCell(viewMeta);
+          this.spreadsheet.frozenTopRightGroup.add(cell);
+        }
+      }
+
+      if (frozenTrailingRowCount > 0) {
+        for (let j = 0; j < frozenTrailingRowCount; j++) {
+          const index = dataLength - 1 - j;
+          const viewMeta = this.layoutResult.getCellMeta(index, colIndex);
+          if (viewMeta) {
+            const cell = this.cfg.dataCell(viewMeta);
+            this.spreadsheet.frozenBottomRightGroup.add(cell);
+          }
+        }
+      }
     }
   };
 
   realCellRender = (scrollX: number, scrollY: number) => {
-    const { frozenRowCount, frozenColCount } = this.spreadsheet.options;
+    const {
+      frozenRowCount,
+      frozenColCount,
+      frozenTrailingRowCount,
+      frozenTrailingColCount,
+    } = this.spreadsheet.options;
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
+    const dataLength = this.viewCellHeights.getTotalLength();
+    const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
     // DebuggerUtil.getInstance().logger(
     //   'renderIndex:',
     //   this.preCellIndexes,
     //   indexes,
     // );
+
     const { add, remove } = diffPanelIndexes(this.preCellIndexes, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
@@ -972,8 +1068,18 @@ export abstract class BaseFacet {
           cell.set('name', `${i}-${j}`);
           if (j <= frozenRowCount - 1) {
             this.spreadsheet.frozenRowGroup.add(cell);
+          } else if (
+            frozenTrailingRowCount > 0 &&
+            j >= dataLength - frozenTrailingRowCount
+          ) {
+            this.spreadsheet.frozenTrailingRowGroup.add(cell);
           } else if (i <= frozenColCount - 1) {
             this.spreadsheet.frozenColGroup.add(cell);
+          } else if (
+            frozenTrailingColCount > 0 &&
+            i >= colLength - frozenTrailingColCount
+          ) {
+            this.spreadsheet.frozenTrailingColGroup.add(cell);
           } else {
             this.spreadsheet.panelScrollGroup.add(cell);
           }

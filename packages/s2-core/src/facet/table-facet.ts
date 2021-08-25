@@ -11,18 +11,28 @@ import { DebuggerUtil } from 'src/common/debug';
 
 export class TableFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
-    const { dataSet, spreadsheet, cellCfg } = this.cfg;
+    const {
+      dataSet,
+      spreadsheet,
+      cellCfg,
+      frozenTrailingColCount,
+      frozenTrailingRowCount,
+    } = this.cfg;
 
-    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: true,
-        facetCfg: this.cfg,
-      });
-    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: false,
-        facetCfg: this.cfg,
-      });
+    const {
+      leafNodes: rowLeafNodes,
+      hierarchy: rowsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: true,
+      facetCfg: this.cfg,
+    });
+    const {
+      leafNodes: colLeafNodes,
+      hierarchy: colsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: false,
+      facetCfg: this.cfg,
+    });
 
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -39,6 +49,34 @@ export class TableFacet extends BaseFacet {
 
       let data;
 
+      const { height: canvasHeight, width: canvasWidth } = this.getCanvasHW();
+      const dataLength = dataSet.getMultiData({}).length;
+      const colLength = colLeafNodes.length;
+
+      let x = col.x;
+      let y = cellHeight * rowIndex;
+
+      if (
+        frozenTrailingRowCount > 0 &&
+        rowIndex >= dataLength - frozenTrailingRowCount
+      ) {
+        y = canvasHeight - (dataLength - rowIndex) * cellHeight;
+      }
+
+      if (
+        frozenTrailingColCount > 0 &&
+        colIndex >= colLength - frozenTrailingColCount
+      ) {
+        x =
+          canvasWidth -
+          colLeafNodes.reduceRight((prev, item, idx) => {
+            if (idx >= colLength - frozenTrailingColCount) {
+              return prev + item.width;
+            }
+            return prev;
+          }, 0);
+      }
+
       if (showSeriesNumber && col.field === SERIES_NUMBER_FIELD) {
         data = rowIndex + 1;
       } else {
@@ -52,8 +90,8 @@ export class TableFacet extends BaseFacet {
 
       return {
         spreadsheet,
-        x: col.x,
-        y: cellHeight * rowIndex,
+        x,
+        y,
         width: col.width,
         height: cellHeight,
         data: [

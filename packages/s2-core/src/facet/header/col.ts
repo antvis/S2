@@ -61,12 +61,24 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected clip(): void {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
+
+    const { frozenColCount } = spreadsheet.options;
+    const colLeafNodes = spreadsheet.facet.layoutResult.colLeafNodes;
+
+    let frozenColWidth = 0;
+    for (let i = 0; i < frozenColCount; i++) {
+      frozenColWidth += colLeafNodes[i].width;
+    }
+
     this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
-        x: spreadsheet.freezeRowHeader() ? scrollX : 0,
+        x: (spreadsheet.freezeRowHeader() ? scrollX : 0) + frozenColWidth,
         y: 0,
-        width: width + (spreadsheet.freezeRowHeader() ? 0 : scrollX),
+        width:
+          width +
+          (spreadsheet.freezeRowHeader() ? 0 : scrollX) -
+          frozenColWidth,
         height,
       },
     });
@@ -87,11 +99,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     } = this.headerConfig;
     const { frozenColCount } = spreadsheet?.options;
 
-    // if (frozenColCount && !this.frozenColGroup) {
-    //   this.frozenColGroup = this.addGroup({
-    //     name: KEY_GROUP_COL_FROZEN,
-    //   });
-    // }
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
     const colCellInRect = (item: Node): boolean => {
@@ -122,7 +129,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
           }
         }
         item.belongsCell = cell;
-        console.log(node.colIndex);
         if (
           node.colIndex < frozenColCount &&
           !this.headerConfig.spreadsheet.isPivotMode()
@@ -133,16 +139,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
         }
       }
     });
-
-    // this.addShape('rect', {
-    //   attrs: {
-    //     x: scrollX,
-    //     y: 0,
-    //     width,
-    //     height,
-    //     fill: '#0ff'
-    //   }
-    // });
   }
 
   protected offset() {
