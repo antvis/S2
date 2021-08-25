@@ -63,8 +63,8 @@ const updateCondition = (
   rawCondition: Condition[] = [],
   updatedCondition: Condition[] = [],
 ) => {
-  const result: Condition[] = updatedCondition;
-  rawCondition.forEach((condition) => {
+  const result: Condition[] = [...rawCondition];
+  updatedCondition.forEach((condition) => {
     if (!result.find((i) => i.field === condition.field)) {
       result.push(condition);
     }
@@ -87,7 +87,6 @@ export const updateConditionsByValues = (
   if (isEmpty(values)) {
     return conditions;
   }
-
   const { textCondition, iconCondition } = generateIndicateCondition(
     values,
     iconTheme,
