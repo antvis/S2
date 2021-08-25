@@ -10,10 +10,10 @@ import {
   ViewMeta,
 } from '@/common/interface';
 import { Event, IShape, Point } from '@antv/g-canvas';
-import { get, isEmpty, isEqual, sample } from 'lodash';
-import { DataCell } from '../cell';
-import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '../common/constant';
-import { TooltipData } from '../common/interface';
+import { get, isEmpty, isEqual } from 'lodash';
+import { DataCell } from '@/cell';
+import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
+import { TooltipData } from '@/common/interface';
 import { BaseInteraction } from './base';
 
 /**
@@ -171,17 +171,8 @@ export class BrushSelection extends BaseInteraction {
       x: originalEvent.layerX,
       y: originalEvent.layerY,
     };
-    const containerMat = this.spreadsheet.panelGroup.getMatrix();
-    const containerX = containerMat[6];
-    const containerY = containerMat[7];
-    const sampleDataCellBBox = sample(this.dataCells)?.getBBox();
-
-    const colIndex = Math.floor(
-      Math.abs(point.x - containerX) / sampleDataCellBBox?.width,
-    );
-    const rowIndex = Math.floor(
-      Math.abs(point.y - containerY) / sampleDataCellBBox?.height,
-    );
+    const cell = this.spreadsheet.getCell(event.target);
+    const { colIndex, rowIndex } = cell.getMeta();
 
     return {
       ...point,
@@ -262,6 +253,7 @@ export class BrushSelection extends BaseInteraction {
 
   // 最终刷选的cell
   private updateSelectedCells() {
+    console.log(this.brushRangeDataCells);
     this.interaction.changeState({
       cells: this.brushRangeDataCells,
       stateName: InteractionStateName.SELECTED,
