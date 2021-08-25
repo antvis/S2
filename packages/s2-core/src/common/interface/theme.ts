@@ -41,7 +41,12 @@ export type InteractionState = {
 
 export type Margin = Padding;
 
-export interface TextTheme {
+export interface TextAlignCfg {
+  textAlign?: TextAlign;
+  textBaseline?: TextBaseline;
+}
+
+export interface TextTheme extends TextAlignCfg {
   fontFamily?: string;
   fontSize?: number;
   fontWeight?: string;

@@ -7,7 +7,7 @@ import {
 } from '@/common/interface';
 import { isEmpty, isNumber } from 'lodash';
 
-export const getIconLayoutPosition = (condition: IconCondition) => {
+export const getIconPositionCfg = (condition: IconCondition) => {
   return condition?.position ?? 'right';
 };
 

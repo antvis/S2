@@ -1,7 +1,6 @@
 import { InteractionStateName } from '@/common/constant';
 import { GuiIcon } from '@/common/icons';
 import {
-  CellBoxCfg,
   Condition,
   ConditionLayer,
   Conditions,
@@ -14,13 +13,8 @@ import {
 } from '@/common/interface';
 import { DataItem } from '@/common/interface/s2DataConfig';
 import { SpreadSheet } from '@/sheet-type';
-import { getIconLayoutPosition } from '@/utils/condition';
-import {
-  getContentArea,
-  getIconPosition,
-  getTextAndIconArea,
-  getTextPosition,
-} from '@/utils/data-cell';
+import { getContentArea } from '@/utils/cell';
+import { getIconPositionCfg } from '@/utils/condition';
 import {
   renderIcon,
   renderRect,
@@ -30,6 +24,8 @@ import {
 import { getEllipsisText } from '@/utils/text';
 import { Group, IShape, SimpleBBox } from '@antv/g-canvas';
 import { find, get, isEmpty } from 'lodash';
+import { measureTextWidth } from 'src/utils/text';
+import { getMaxTextWidth, getPosition } from './../utils/cell';
 
 /**
  * Cell Condition for panelGroup area
@@ -48,6 +44,8 @@ export class CellCondition extends Group {
   // all condition shapes, including bg, interval, icon, text
   protected conditionShapes = new Map<ConditionLayer, IShape | GuiIcon>();
 
+  protected actualTextWidth = 0;
+
   constructor(
     protected spreadsheet: SpreadSheet,
     protected meta: ViewMeta,
@@ -65,8 +63,8 @@ export class CellCondition extends Group {
   initConditions() {
     this.drawBgShape();
     this.drawIntervalShape();
-    this.drawIconShape();
     this.drawTextShape();
+    this.drawIconShape();
   }
 
   protected getData(): { value: DataItem; formattedValue: DataItem } {
@@ -118,35 +116,7 @@ export class CellCondition extends Group {
     return textStyle;
   }
 
-  /**
-   * Get content area size that contains icon and text
-   * @protected
-   */
-  protected getContentAreaBBox(): SimpleBBox {
-    const { x, y, height, width } = this.meta;
-    const { padding } = this.theme.dataCell.cell;
-    const textStyle = this.getTextStyle();
-
-    const cfg: CellBoxCfg = {
-      x,
-      y,
-      height,
-      width,
-      textAlign: textStyle.textAlign,
-      textBaseline: textStyle.textBaseline,
-      padding,
-    };
-
-    return getContentArea(cfg);
-  }
-
-  /**
-   * @description get text or icon bbox
-   * @param {('text' | 'icon')} [type='text']
-   */
-  protected getBBoxByAreaType(type: 'text' | 'icon' = 'text') {
-    const bbox = this.getContentAreaBBox();
-
+  protected getIconCfg() {
     const { size, margin } = this.theme.dataCell.icon;
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,
@@ -155,32 +125,39 @@ export class CellCondition extends Group {
     const iconCfg: IconCfg = iconCondition && {
       size,
       margin,
-      position: getIconLayoutPosition(iconCondition),
+      position: getIconPositionCfg(iconCondition),
     };
-
-    return getTextAndIconArea(bbox, iconCfg)[type];
+    return iconCfg;
   }
 
-  protected getTextPosition() {
-    const textStyle = this.getTextStyle();
-    return getTextPosition(this.getBBoxByAreaType(), textStyle);
+  /**
+   * Get content area size that contains icon and text
+   * @protected
+   */
+  protected getContentAreaBBox(): SimpleBBox {
+    const { padding } = this.theme.dataCell.cell;
+    return getContentArea(this.meta, padding);
   }
 
-  protected getIconPosition() {
-    const { size } = this.theme.dataCell.icon;
+  protected getPosition() {
     const textStyle = this.getTextStyle();
-    return getIconPosition(
-      this.getBBoxByAreaType('icon'),
-      size,
-      textStyle.textBaseline,
+    const iconCfg = this.getIconCfg();
+    const position = getPosition(
+      this.getContentAreaBBox(),
+      this.actualTextWidth,
+      textStyle,
+      iconCfg,
     );
+    return position;
   }
 
   /**
    * Render cell main text and derived text
    */
   protected drawTextShape() {
-    const { width } = this.getBBoxByAreaType();
+    const { width } = this.getContentAreaBBox();
+    const maxTextWidth = getMaxTextWidth(width, this.getIconCfg());
+
     // 其他常态数据下的cell
     //  the size of text condition is equal with valueFields size
     const textCondition = this.findFieldCondition(this.conditions?.text);
@@ -194,9 +171,15 @@ export class CellCondition extends Group {
       textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
     }
 
-    const ellipsisText = getEllipsisText(`${text || '-'}`, width, textStyle);
+    const ellipsisText = getEllipsisText(
+      `${text || '-'}`,
+      maxTextWidth,
+      textStyle,
+    );
 
-    const position = this.getTextPosition();
+    this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
+
+    const position = this.getPosition().text;
     this.conditionShapes.set(
       'text',
       renderText(
@@ -252,7 +235,7 @@ export class CellCondition extends Group {
     );
     if (iconCondition && iconCondition.mapping) {
       const attrs = this.mappingValue(iconCondition);
-      const position = this.getIconPosition();
+      const position = this.getPosition().icon;
       const { formattedValue } = this.getData();
       const { size } = this.theme.dataCell.icon;
       // icon only show when icon not empty and value not null(empty)
