@@ -43,27 +43,23 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private initPrepareSelectMaskShape() {
-    if (this.prepareSelectMaskShape) {
-      this.hidePrepareSelectMaskShape();
-      return;
-    }
+    const { foregroundGroup } = this.spreadsheet;
+    foregroundGroup.removeChild(this.prepareSelectMaskShape);
+
     const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
-    this.prepareSelectMaskShape = this.spreadsheet.foregroundGroup.addShape(
-      'rect',
-      {
-        visible: false,
-        attrs: {
-          width: 0,
-          height: 0,
-          x: 0,
-          y: 0,
-          fill: prepareSelectMaskTheme?.backgroundColor,
-          fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
-          zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
-        },
-        capture: false,
+    this.prepareSelectMaskShape = foregroundGroup.addShape('rect', {
+      visible: false,
+      attrs: {
+        width: 0,
+        height: 0,
+        x: 0,
+        y: 0,
+        fill: prepareSelectMaskTheme?.backgroundColor,
+        fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
+        zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
       },
-    );
+      capture: false,
+    });
   }
 
   private setBrushSelectionStage(stage: InteractionBrushSelectionStage) {

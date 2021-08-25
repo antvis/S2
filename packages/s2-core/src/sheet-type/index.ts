@@ -536,7 +536,6 @@ export class SpreadSheet extends EE {
     } else {
       this.facet = new TableFacet(facetCfg);
     }
-    // render facet
     this.facet.render();
   };
 
