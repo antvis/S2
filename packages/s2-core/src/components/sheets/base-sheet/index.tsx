@@ -31,8 +31,10 @@ import { BaseSheetProps } from '../interface';
 import { Event as GEvent } from '@antv/g-canvas';
 
 import './index.less';
-
-const PRE_CLASS = 's2-pagination';
+import {
+  PRE_CLASS,
+  PRE_CLASS_PAGINATION,
+} from '../../../common/constant/classnames';
 
 export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
@@ -286,7 +288,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     const showQuickJumper = total / pageSize > 5;
 
     return (
-      <div className={PRE_CLASS}>
+      <div className={PRE_CLASS_PAGINATION}>
         <Pagination
           current={current}
           total={total}
@@ -298,7 +300,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
           onChange={(page) => setCurrent(page)}
         />
         <span
-          className={`${PRE_CLASS}-count`}
+          className={`${PRE_CLASS_PAGINATION}-count`}
           title={`${i18n('共计')}${total}${i18n('条')}`}
         >
           {i18n('共计')}
@@ -419,7 +421,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && <Header {...header} sheet={ownSpreadsheet} />}
-        <div ref={container} />
+        <div ref={container} className={`${PRE_CLASS}-container`} />
         {renderPagination()}
       </Spin>
     </StrictMode>

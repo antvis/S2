@@ -1,7 +1,6 @@
 import { isMobile } from '@/utils/is-mobile';
-import { ext } from '@antv/matrix-util';
 import { debounce } from 'lodash';
-import { SpreadSheet } from '../sheet-type';
+import { SpreadSheet } from '@/sheet-type';
 
 export class HdAdapter {
   private viewport = window as typeof window & { visualViewport: Element };
@@ -79,8 +78,6 @@ export class HdAdapter {
   };
 
   private renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
-    const matrixTransform = ext.transform;
-
     const {
       container,
       options: { width, height },
@@ -88,11 +85,8 @@ export class HdAdapter {
     const newWidth = Math.floor(width * ratio);
     const newHeight = Math.floor(height * ratio);
 
-    container.resetMatrix();
     container.set('pixelRatio', ratio);
     container.changeSize(newWidth, newHeight);
-
-    matrixTransform(container.getMatrix(), [['scale', ratio, ratio]]);
 
     this.spreadsheet.render(false);
   };
