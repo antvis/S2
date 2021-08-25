@@ -1,4 +1,5 @@
-// debug info
+/* eslint-disable no-console */
+
 export const DEBUG_TRANSFORM_DATA = 'Transform Data';
 export const DEBUG_HEADER_LAYOUT = 'Header Layout';
 export const DEBUG_VIEW_RENDER = 'Data Cell Render';
@@ -35,7 +36,7 @@ export class DebuggerUtil {
     }
   };
 
-  public logger = (info: string, ...params) => {
+  public logger = (info: string, ...params: unknown[]) => {
     if (this.debug) {
       console.log(info, ...params);
     }

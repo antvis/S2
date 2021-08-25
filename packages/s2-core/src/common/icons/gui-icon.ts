@@ -119,7 +119,7 @@ export class GuiIcon extends Group {
           this.addShape('image', image);
         })
         .catch((err: Event) => {
-          // 失败，打印 warn，方便调试
+          // eslint-disable-next-line no-console
           console.warn(`GuiIcon ${type} load error`, err);
         });
     }

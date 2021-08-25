@@ -24,12 +24,10 @@ const DimensionSwitch: FC<DimensionSwitchProps> = ({
     defaultDisabled: getDimensionsByPredicate(data, (i) => i.disabled),
   }));
 
-  const [checkedTypeObj, setCheckedTypeObj] = useState<OperatedType>(
-    defaultChecked,
-  );
-  const [disabledTypeObj, setDisabledTypeObj] = useState<OperatedType>(
-    defaultDisabled,
-  );
+  const [checkedTypeObj, setCheckedTypeObj] =
+    useState<OperatedType>(defaultChecked);
+  const [disabledTypeObj, setDisabledTypeObj] =
+    useState<OperatedType>(defaultDisabled);
 
   const onSelect = (type: string, idList: string[], checked: boolean) => {
     const oldCheckedList = get(checkedTypeObj, type, []);

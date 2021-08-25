@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Checkbox, Radio, Space, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { merge } from 'lodash';

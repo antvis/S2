@@ -324,6 +324,7 @@ export class EventController {
       target.addEventListener(type, handler);
       this.domEventListeners.push({ target, type, handler });
     } else {
+      // eslint-disable-next-line no-console
       console.error(`Please make sure ${target} has addEventListener function`);
     }
   }
