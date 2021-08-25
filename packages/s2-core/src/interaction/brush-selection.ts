@@ -253,7 +253,6 @@ export class BrushSelection extends BaseInteraction {
 
   // 最终刷选的cell
   private updateSelectedCells() {
-    console.log(this.brushRangeDataCells);
     this.interaction.changeState({
       cells: this.brushRangeDataCells,
       stateName: InteractionStateName.SELECTED,
