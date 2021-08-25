@@ -1,4 +1,4 @@
-import { BaseCell, DataCell, DetailDataCell, TableDataCell } from '@/cell';
+import { BaseCell, DataCell, TableRowCell, TableDataCell } from '@/cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -144,9 +144,8 @@ export class SpreadSheet extends EE {
     if (!(this.tooltip instanceof BaseTooltip)) {
       // eslint-disable-next-line no-console
       console.warn(
-        `[Custom Tooltip]: ${(
-          this.tooltip as unknown
-        )?.constructor?.toString()} should be extends from BaseTooltip`,
+        `[Custom Tooltip]: ${(this
+          .tooltip as unknown)?.constructor?.toString()} should be extends from BaseTooltip`,
       );
     }
   }
@@ -264,7 +263,7 @@ export class SpreadSheet extends EE {
    */
   public setThemeCfg(themeCfg: ThemeCfg) {
     const theme = themeCfg?.theme || {};
-    this.theme = merge({}, getTheme(themeCfg), theme);
+    this.theme = merge({}, getTheme({ ...themeCfg, spreadsheet: this }), theme);
     this.updateDefaultConditions();
   }
 
@@ -511,7 +510,7 @@ export class SpreadSheet extends EE {
     const defaultCell = (facet: ViewMeta) => {
       if (this.isTableMode()) {
         if (this.options.showSeriesNumber && facet.colIndex === 0) {
-          return new DetailDataCell(facet, this);
+          return new TableRowCell(facet, this);
         }
         return new TableDataCell(facet, this);
       }
