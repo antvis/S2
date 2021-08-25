@@ -1,7 +1,7 @@
-import { SpreadSheet } from '../../sheet-type';
+import { SpreadSheet } from '@/sheet-type';
 import { head, last, isEmpty, get, clone, trim, max } from 'lodash';
-import { ViewMeta } from '../..';
-import { ID_SEPARATOR, EMPTY_PLACEHOLDER } from '../../common/constant';
+import { ViewMeta } from '@/index';
+import { ID_SEPARATOR, EMPTY_PLACEHOLDER } from '@/common/constant';
 import { getCsvString } from './export-worker';
 
 export const copyToClipboard = (str: string) => {
@@ -14,6 +14,7 @@ export const copyToClipboard = (str: string) => {
     document.body.removeChild(el);
     return success;
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e);
     return false;
   }
@@ -32,6 +33,7 @@ export const download = (str: string, fileName: string) => {
     link.click();
     URL.revokeObjectURL(link.href);
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e);
   }
 };
@@ -144,12 +146,8 @@ export const copyData = (
   split: string,
   isFormat?: boolean,
 ): string => {
-  const {
-    rowsHierarchy,
-    rowLeafNodes,
-    colLeafNodes,
-    getCellMeta,
-  } = sheetInstance?.facet?.layoutResult;
+  const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
+    sheetInstance?.facet?.layoutResult;
   const { valueInCols } = sheetInstance.options;
   const rows = clone(rowsHierarchy?.rows);
 

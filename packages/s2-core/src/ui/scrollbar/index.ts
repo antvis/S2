@@ -398,18 +398,16 @@ export class ScrollBar extends Group {
     this.clearEvents();
   };
 
-  private onTrackMouseOver = (e: MouseEvent) => {
+  private onTrackMouseOver = () => {
     const { thumbColor } = this.theme.hover;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();
-    console.info(e);
   };
 
-  private onTrackMouseOut = (e: MouseEvent) => {
+  private onTrackMouseOut = () => {
     const { thumbColor } = this.theme.default;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();
-    console.info(e);
   };
 
   // 判断滑块位置是否超出滑道区域
