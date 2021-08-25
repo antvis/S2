@@ -38,13 +38,13 @@ export class BaseTooltip {
 
   public aggregation: Aggregation = 'SUM'; // the type of aggregation, 'SUM' by default
 
-  protected container: HTMLElement; // the base container element
+  public container: HTMLElement; // the base container element
 
   private customComponent: React.Component | Element | void; // react component
 
   private enterable = false; // mark if can enter into tooltips
 
-  protected position: TooltipPosition = { x: 0, y: 0 }; // tooltips position info
+  public position: TooltipPosition = { x: 0, y: 0 }; // tooltips position info
 
   constructor(spreadsheet: SpreadSheet, aggregation?: Aggregation) {
     this.spreadsheet = spreadsheet;
@@ -67,7 +67,6 @@ export class BaseTooltip {
       return;
     }
     this.enterable = enterable;
-    this.position = position;
 
     manageContainerStyle(container, {
       pointerEvents: enterable ? 'all' : 'none',
@@ -86,6 +85,11 @@ export class BaseTooltip {
       : ReactDOM.render(this.renderContent(data, options), container);
     const { x, y } = getPosition(position, this.container);
 
+    this.position = {
+      x,
+      y,
+    };
+
     manageContainerStyle(container, { left: `${x}px`, top: `${y}px` });
   }
 
@@ -96,14 +100,19 @@ export class BaseTooltip {
     const container = this.getContainer();
     manageContainerStyle(container, { pointerEvents: 'none', display: 'none' });
     this.enterable = false;
-    this.position = { x: 0, y: 0 };
+    this.resetPosition();
     this.unMountComponent(container);
   }
 
   public destroy() {
     if (this.container) {
+      this.resetPosition();
       document.body.removeChild(this.container);
     }
+  }
+
+  private resetPosition() {
+    this.position = { x: 0, y: 0 };
   }
 
   protected renderContent(data?: TooltipData, options?: TooltipOptions) {
