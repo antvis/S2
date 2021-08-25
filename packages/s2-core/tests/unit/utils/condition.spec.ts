@@ -25,7 +25,7 @@ describe('Condition Test', () => {
       expect(
         getIconLayoutPosition({
           field: 'value',
-          iconPosition: 'left',
+          position: 'left',
           mapping: () => ({ fill: 'red' }),
         }),
       ).toEqual('left');
@@ -76,7 +76,7 @@ describe('Condition Test', () => {
             icon: [
               {
                 field: 'value',
-                iconPosition: 'right',
+                position: 'right',
                 mapping: () => ({ fill: 'red' }),
               },
             ],

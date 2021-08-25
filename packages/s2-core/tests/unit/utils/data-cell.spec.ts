@@ -65,7 +65,7 @@ describe('Text and Icon area Test', () => {
   test('should return text when icon position is right', () => {
     expect(
       getTextAndIconArea(bbox, {
-        iconPosition: 'right',
+        position: 'right',
         size: 10,
         margin: {
           left: 4,
@@ -90,7 +90,7 @@ describe('Text and Icon area Test', () => {
   test('should return text when icon position is left', () => {
     expect(
       getTextAndIconArea(bbox, {
-        iconPosition: 'left',
+        position: 'left',
         size: 10,
         margin: {
           left: 4,

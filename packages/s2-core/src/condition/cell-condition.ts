@@ -155,7 +155,7 @@ export class CellCondition extends Group {
     const iconCfg: IconCfg = iconCondition && {
       size,
       margin,
-      iconPosition: getIconLayoutPosition(iconCondition),
+      position: getIconLayoutPosition(iconCondition),
     };
 
     return getTextAndIconArea(bbox, iconCfg)[type];

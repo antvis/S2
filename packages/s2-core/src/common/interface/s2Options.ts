@@ -39,7 +39,7 @@ export interface S2PartialOptions {
   // row header hierarchy type only work in pivot mode
   readonly hierarchyType?: 'grid' | 'tree' | 'customTree';
   // 兜底以前的衍生指标概念
-  readonly useDefaultConditionValues?: string[];
+  readonly indicateConditionValues?: string[];
   // conditions config
   readonly conditions?: Conditions;
   // total config

@@ -12,6 +12,7 @@ import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import { Data } from './../common/interface/s2DataConfig';
 import { TextBaseline } from './../common/interface/theme';
 
+// remove it
 export const getContentArea = (cellBoxCfg: CellBoxCfg) => {
   const { x, y, width, height, padding } = cellBoxCfg;
 
@@ -39,19 +40,15 @@ export const getTextAndIconArea = (
 
   const iconWidthWithMargin =
     iconCfg.size +
-    (iconCfg.iconPosition === 'right'
-      ? iconCfg.margin.left
-      : iconCfg.margin.right);
+    (iconCfg.position === 'right' ? iconCfg.margin.left : iconCfg.margin.right);
 
   const textWidth = content.width - iconWidthWithMargin;
 
   const textX =
-    iconCfg.iconPosition === 'right'
-      ? content.x
-      : content.x + iconWidthWithMargin;
+    iconCfg.position === 'right' ? content.x : content.x + iconWidthWithMargin;
 
   const iconX =
-    iconCfg.iconPosition === 'right'
+    iconCfg.position === 'right'
       ? content.x + textWidth + iconCfg.margin.left
       : content.x;
 
