@@ -44,7 +44,7 @@ export type Margin = Padding;
 export interface TextTheme {
   fontFamily?: string;
   fontSize?: number;
-  fontWeight?: string;
+  fontWeight?: number | 'normal' | 'bold' | 'bolder' | 'lighter';
   fill?: string;
   linkTextFill?: string;
   opacity?: number;
