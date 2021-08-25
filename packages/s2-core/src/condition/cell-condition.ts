@@ -116,6 +116,10 @@ export class CellCondition extends Group {
     return textStyle;
   }
 
+  protected getCellStyle() {
+    return this.theme.dataCell.cell;
+  }
+
   protected getIconCfg() {
     const { size, margin } = this.theme.dataCell.icon;
     const iconCondition: IconCondition = this.findFieldCondition(
@@ -323,7 +327,7 @@ export class CellCondition extends Group {
         // eslint-disable-next-line no-multi-assign
         stroke = fill = attrs.fill;
 
-        const barChartHeight = this.theme.dataCell.cell.miniBarChartHeight;
+        const barChartHeight = this.getCellStyle().miniBarChartHeight;
         this.conditionShapes.set(
           'interval',
           renderRect(this, {

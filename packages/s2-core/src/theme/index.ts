@@ -2,17 +2,19 @@ import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
 import { Palette, SpreadSheetTheme, ThemeCfg } from '../common/interface';
 import { isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
+import { SpreadSheet } from '../sheet-type';
 
 /**
  * @describe generate the theme according to the type
  * @param  name
  */
 export const getTheme = (
-  themeCfg: Omit<ThemeCfg, 'theme'>,
+  themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
 ): SpreadSheetTheme => {
   const themePalette: Palette =
     themeCfg?.palette || getPalette(themeCfg?.name, themeCfg?.hueInvert);
   const { brandColors, grayColors, semanticColors } = themePalette;
+  const isTable = themeCfg?.spreadsheet?.isTableMode();
 
   return {
     // ------------- Headers -------------------
@@ -35,7 +37,7 @@ export const getTheme = (
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[4],
+        backgroundColor: brandColors[3],
         backgroundColorOpacity: 1,
         // ----------- border color --------------
         horizontalBorderColor: grayColors[2],
@@ -78,9 +80,9 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: 'normal',
         fill: grayColors[6],
-        linkTextFill: brandColors[7],
+        linkTextFill: brandColors[6],
         opacity: 1,
-        textAlign: 'right',
+        textAlign: isTable ? 'center' : 'right', // default align center for row cell in table mode
       },
       cell: {
         // ----------- background color -----------
@@ -140,7 +142,7 @@ export const getTheme = (
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[4],
+        backgroundColor: brandColors[3],
         backgroundColorOpacity: 1,
         // ----------- border color --------------
         horizontalBorderColor: grayColors[2],
@@ -161,7 +163,7 @@ export const getTheme = (
         interactionState: {
           // -------------- hover -------------------
           hover: {
-            backgroundColor: brandColors[5],
+            backgroundColor: brandColors[4],
             backgroundOpacity: 1,
           },
         },
@@ -289,7 +291,7 @@ export const getTheme = (
     },
     // ------------- prepareSelectMask -----------------
     prepareSelectMask: {
-      backgroundColor: brandColors[6],
+      backgroundColor: brandColors[5],
       backgroundOpacity: 0.3,
     },
   } as SpreadSheetTheme;

@@ -4,7 +4,6 @@ export const paletteDefault = {
     '#000000',
     '#F0F7FF',
     '#D9EAFF',
-    '#B0D1FF',
     '#ffffff',
     '#D9EAFF',
     '#2C60D3',
