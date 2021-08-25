@@ -240,15 +240,12 @@ export const getTheme = (
           unselected: {
             backgroundOpacity: 0.3,
             textOpacity: 0.3,
+            opacity: 0.3,
           },
           // -------------- prepare select --------------
           prepareSelect: {
             borderColor: grayColors[6],
             borderOpacity: 1,
-          },
-          // -------------- out of spotlight --------------
-          outOfTheSpotlight: {
-            opacity: 0.3,
           },
         },
 
