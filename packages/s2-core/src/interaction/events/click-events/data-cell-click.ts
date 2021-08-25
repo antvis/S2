@@ -5,13 +5,12 @@ import {
   INTERACTION_TREND,
 } from '@/common/constant/interaction';
 import {
-  S2CellType,
   TooltipOperatorOptions,
   ViewMeta,
 } from '@/common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 import { Event } from '@antv/g-canvas';
-import { noop } from 'lodash';
+import { noop, get } from 'lodash';
 import { DataCell } from '../../../cell/data-cell';
 import { BaseEvent } from '../base-event';
 
@@ -90,7 +89,12 @@ export class DataCellClick extends BaseEvent {
     if (isTotals) {
       return;
     }
-    const cellInfos = [currentCellMeta];
+    const cellInfos = [
+      currentCellMeta || {
+        ...get(meta, 'rowQuery'),
+        ...get(meta, 'colQuery'),
+      },
+    ];
     const operator = this.getTooltipOperator(meta);
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {

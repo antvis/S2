@@ -115,7 +115,7 @@ export class HoverEvent extends BaseEvent {
       stateName: InteractionStateName.HOVER,
     });
     cell.update();
-    this.handleTooltip(event, meta);
+    this.handleTooltip(event, meta, true);
   }
 
   /**
@@ -123,31 +123,37 @@ export class HoverEvent extends BaseEvent {
    * @param event
    * @param meta
    */
-  private handleTooltip(event: Event, meta: ViewMeta) {
+  private handleTooltip(event: Event, meta: ViewMeta, isHeader?: boolean) {
     const position = {
       x: event.clientX,
       y: event.clientY,
     };
-    const currentCellMeta = get(meta, 'data.0');
+    const currentCellMeta = get(meta, 'data');
     const isTotals = get(meta, 'isTotals', false);
-    if (isTotals) {
-      return;
-    }
-
     const options = {
       isTotals,
       enterable: true,
       hideSummary: true,
+      showSingleTips: isHeader,
     };
-
-    const tooltipData = getTooltipData(
-      this.spreadsheet,
-      [currentCellMeta],
+    const cellInfos = isHeader
+      ? [{ ...get(meta, 'query'), value: get(meta, 'value') }]
+      : [
+          currentCellMeta || {
+            ...get(meta, 'rowQuery'),
+            ...get(meta, 'colQuery'),
+          },
+        ];
+    const tooltipData = getTooltipData({
+      spreadsheet: this.spreadsheet,
+      cellInfos,
+      isHeader,
       options,
-    );
+    });
     const showOptions = {
       position,
       data: tooltipData,
+      cellInfos,
       options,
     };
     this.spreadsheet.showTooltip(showOptions);
