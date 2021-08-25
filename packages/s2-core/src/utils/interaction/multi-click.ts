@@ -11,6 +11,15 @@ export const handleRowColClick = (event: Event, spreadsheet: SpreadSheet) => {
   const currentState = spreadsheet.interaction.getState();
   const cell = spreadsheet.getCell(event.target);
   const meta = cell.getMeta() as Node;
+
+  if (spreadsheet.interaction.isSelectedCell(cell)) {
+    // 点击当前已选cell 则取消当前cell的选中状态
+    spreadsheet.interaction.clearState();
+    spreadsheet.interaction.interceptEvent.clear();
+    spreadsheet.hideTooltip();
+    return;
+  }
+  
   if (meta.x !== undefined) {
     spreadsheet.interaction.clearState();
     spreadsheet.interaction.interceptEvent.add(InterceptEventType.HOVER);
