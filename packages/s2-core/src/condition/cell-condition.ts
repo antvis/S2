@@ -25,7 +25,7 @@ import { getEllipsisText } from '@/utils/text';
 import { Group, IShape, SimpleBBox } from '@antv/g-canvas';
 import { find, get, isEmpty } from 'lodash';
 import { measureTextWidth } from 'src/utils/text';
-import { getMaxTextWidth, getPosition } from './../utils/cell';
+import { getMaxTextWidth, getTextAndIconPosition } from './../utils/cell';
 
 /**
  * Cell Condition for panelGroup area
@@ -142,7 +142,7 @@ export class CellCondition extends Group {
   protected getPosition() {
     const textStyle = this.getTextStyle();
     const iconCfg = this.getIconCfg();
-    const position = getPosition(
+    const position = getTextAndIconPosition(
       this.getContentAreaBBox(),
       this.actualTextWidth,
       textStyle,

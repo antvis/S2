@@ -58,7 +58,7 @@ export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconCfg) => {
   );
 };
 
-export const getPosition = (
+export const getTextAndIconPosition = (
   contentBox: SimpleBBox,
   textWidth: number,
   textCfg: TextAlignCfg,
