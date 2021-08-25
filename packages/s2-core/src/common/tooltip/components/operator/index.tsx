@@ -1,7 +1,7 @@
 import { IMenu, TooltipOperatorOptions } from '@/common/interface';
 import { Menu } from 'antd';
-import { map, size } from 'lodash';
-import * as React from 'react';
+import { isEmpty, map, size } from 'lodash';
+import React from 'react';
 import { getIcon, HtmlIcon } from '../../../icons';
 import { DEFAULT_ICON_PROPS, TOOLTIP_CLASS_PRE } from '../../constant';
 import './index.less';
@@ -88,7 +88,7 @@ const Operator = (props: TooltipOperatorOptions) => {
   };
 
   return (
-    size(menus) !== 0 && (
+    !isEmpty(menus) && (
       <div className={`${TOOLTIP_CLASS_PRE}-operator`}>{renderMenus()}</div>
     )
   );

@@ -86,13 +86,33 @@ const getOptions = (): S2Options => {
     useDefaultConditionValues: ['ac', 'rc'],
     conditions: {
       text: [],
-      interval: [],
-      background: [],
+      interval: [
+        {
+          field: 'price',
+          mapping() {
+            return {
+              fill: 'yellow',
+              maxValue: 3000,
+              minValue: 0,
+            };
+          },
+        },
+      ],
+      background: [
+        {
+          field: 'price',
+          mapping() {
+            return { fill: 'rgb(218, 251, 225)' };
+          },
+        },
+      ],
       icon: [],
     },
     tooltip: {
       showTooltip: true,
     },
+    selectedCellsSpotlight: true,
+    hoverHighlight: true,
     mappingDisplayDataItem(field, data) {
       return {
         price: 12,
@@ -186,7 +206,6 @@ function MainLayout(props) {
           <Radio value={'normal'}>默认</Radio>
           <Radio value={'bottom'}>下方</Radio>
           <Radio value={'combine'}>合并</Radio>
-          <Radio value={'separate'}>独立右侧</Radio>
         </Radio.Group>
       </div>
       <SheetComponent

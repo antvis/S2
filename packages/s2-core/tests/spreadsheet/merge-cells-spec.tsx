@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { forEach } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import { mergeCells } from '../../src/utils/interaction/merge-cells';

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {

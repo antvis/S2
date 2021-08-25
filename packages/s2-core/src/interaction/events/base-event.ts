@@ -8,8 +8,6 @@ export class BaseEvent {
 
   protected interaction: RootInteraction;
 
-  private eventListeners: any[] = [];
-
   constructor(spreadsheet: SpreadSheet, interaction: RootInteraction) {
     this.spreadsheet = spreadsheet;
     this.interaction = interaction;
@@ -17,17 +15,4 @@ export class BaseEvent {
   }
 
   protected bindEvents() {}
-
-  protected addEventListener(
-    target: EventTarget,
-    type: keyof HTMLElementEventMap,
-    handler: EventListenerOrEventListenerObject,
-  ) {
-    if (target.addEventListener) {
-      target.addEventListener(type, handler);
-      this.eventListeners.push({ target, type, handler });
-    } else {
-      console.error(`Please make sure ${target} has addEventListener function`);
-    }
-  }
 }

@@ -1,6 +1,6 @@
 import {
   CellTypes,
-  DefaultInterceptEventType,
+  InterceptEventType,
   InteractionKeyboardKey,
   OriginEventType,
   S2Event,
@@ -8,8 +8,9 @@ import {
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 import { Canvas, Event as CanvasEvent, LooseObject } from '@antv/g-canvas';
-import { each, get, includes } from 'lodash';
+import { each, get } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
+import { ResizeInfo } from '@/facet/header/interface';
 
 interface EventListener {
   target: EventTarget;
@@ -107,19 +108,50 @@ export class EventController {
   }
 
   private resetSheetStyle(event: Event) {
-    // TODO tooltip 隐藏判断
-    if (
-      event.target !== this.spreadsheet.container.get('el') &&
-      !includes((<HTMLElement>event.target)?.className, 'eva-facet') &&
-      !includes((<HTMLElement>event.target)?.className, 'ant-menu') &&
-      !includes((<HTMLElement>event.target)?.className, 'ant-input')
-    ) {
-      this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
-      this.interaction.clearState();
-      this.spreadsheet.hideTooltip();
-      // 屏蔽的事件都重新打开
-      this.interaction.interceptEvent.clear();
+    // 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
+    // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
+    const { interceptEvent } = this.spreadsheet.interaction;
+    if (interceptEvent.has(InterceptEventType.BRUSH_SELECTION)) {
+      interceptEvent.delete(InterceptEventType.BRUSH_SELECTION);
+      return;
     }
+
+    if (
+      this.isMouseOnTheTooltip(event) ||
+      this.isMouseOnTheCanvasContainer(event)
+    ) {
+      return;
+    }
+
+    this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
+    this.interaction.clearState();
+    this.spreadsheet.hideTooltip();
+    this.interaction.interceptEvent.clear();
+  }
+
+  private isMouseOnTheCanvasContainer(event: Event) {
+    return this.spreadsheet.container.get('el').contains(event.target);
+  }
+
+  private isMouseOnTheTooltip(event: Event) {
+    const { x, y, width, height } =
+      this.spreadsheet.tooltip.container?.getBoundingClientRect();
+
+    if (event instanceof MouseEvent) {
+      return (
+        event.clientX >= x &&
+        event.clientX <= x + width &&
+        event.clientY >= y &&
+        event.clientY <= y + height
+      );
+    }
+
+    return false;
+  }
+
+  private isResizer(event: CanvasEvent) {
+    const appendInfo = get(event.target, 'attrs.appendInfo') as ResizeInfo;
+    return appendInfo?.isResizer;
   }
 
   // TODO: 需要再考虑一下应该是触发后再屏蔽？还是拦截后再触发，从我的实际重构来看，无法预料到用户的下一步操作，只能全都emit，然后再按照实际的操作把不对应的interaction屏蔽掉。
@@ -129,8 +161,7 @@ export class EventController {
     if (this.interaction.hoverTimer) {
       clearTimeout(this.interaction.hoverTimer);
     }
-    const appendInfo = get(event.target, 'attrs.appendInfo');
-    if (appendInfo?.isResizer) {
+    if (this.isResizer(event)) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, event);
       return;
     }
@@ -158,9 +189,7 @@ export class EventController {
   };
 
   private onCanvasMousemove = (event: CanvasEvent) => {
-    const appendInfo = get(event.target, 'attrs.appendInfo');
-    if (appendInfo?.isResizer) {
-      // row-col-resize
+    if (this.isResizer(event)) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, event);
       return;
     }
@@ -191,7 +220,7 @@ export class EventController {
       // 如果hover的cell改变了，并且当前不需要屏蔽 hover
       if (
         this.hoverTarget !== event.target &&
-        !this.interaction.interceptEvent.has(DefaultInterceptEventType.HOVER)
+        !this.interaction.interceptEvent.has(InterceptEventType.HOVER)
       ) {
         switch (cellType) {
           case CellTypes.DATA_CELL:
@@ -217,8 +246,7 @@ export class EventController {
   };
 
   private onCanvasMouseup = (event: CanvasEvent) => {
-    const appendInfo = get(event.target, 'attrs.appendInfo');
-    if (appendInfo && appendInfo.isResizer) {
+    if (this.isResizer(event)) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_UP, event);
       return;
     }
@@ -296,6 +324,7 @@ export class EventController {
       target.addEventListener(type, handler);
       this.domEventListeners.push({ target, type, handler });
     } else {
+      // eslint-disable-next-line no-console
       console.error(`Please make sure ${target} has addEventListener function`);
     }
   }

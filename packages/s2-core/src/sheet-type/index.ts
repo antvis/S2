@@ -142,6 +142,7 @@ export class SpreadSheet extends EE {
   private initTooltip() {
     this.tooltip = this.renderTooltip();
     if (!(this.tooltip instanceof BaseTooltip)) {
+      // eslint-disable-next-line no-console
       console.warn(
         `[Custom Tooltip]: ${(
           this.tooltip as unknown
@@ -541,7 +542,6 @@ export class SpreadSheet extends EE {
     } else {
       this.facet = new TableFacet(facetCfg);
     }
-    // render facet
     this.facet.render();
   };
 

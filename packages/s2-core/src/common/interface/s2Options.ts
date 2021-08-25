@@ -1,6 +1,5 @@
 import {
   CellCallback,
-  Conditions,
   CornerHeaderCallback,
   CustomHeaderCells,
   DataCellCallback,
@@ -26,6 +25,7 @@ import { BaseDataSet } from 'src/data-set';
 import { SpreadSheet } from 'src/sheet-type';
 import { Node } from 'src/facet/layout/node';
 import { FilterDataItemCallback } from './basic';
+import { Conditions } from './condition';
 
 export interface S2PartialOptions {
   // canvas's width

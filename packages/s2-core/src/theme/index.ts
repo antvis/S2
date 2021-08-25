@@ -35,7 +35,7 @@ export const getTheme = (
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[4],
+        backgroundColor: brandColors[3],
         backgroundColorOpacity: 1,
         // ----------- border color --------------
         horizontalBorderColor: grayColors[2],
@@ -78,7 +78,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: 'normal',
         fill: grayColors[6],
-        linkTextFill: brandColors[7],
+        linkTextFill: brandColors[6],
         opacity: 1,
         textAlign: 'right',
       },
@@ -140,7 +140,7 @@ export const getTheme = (
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[4],
+        backgroundColor: brandColors[3],
         backgroundColorOpacity: 1,
         // ----------- border color --------------
         horizontalBorderColor: grayColors[2],
@@ -161,7 +161,7 @@ export const getTheme = (
         interactionState: {
           // -------------- hover -------------------
           hover: {
-            backgroundColor: brandColors[5],
+            backgroundColor: brandColors[4],
             backgroundOpacity: 1,
           },
         },
@@ -240,15 +240,12 @@ export const getTheme = (
           unselected: {
             backgroundOpacity: 0.3,
             textOpacity: 0.3,
+            opacity: 0.3,
           },
           // -------------- prepare select --------------
           prepareSelect: {
             borderColor: grayColors[6],
             borderOpacity: 1,
-          },
-          // -------------- out of spotlight --------------
-          outOfTheSpotlight: {
-            opacity: 0.3,
           },
         },
 
@@ -292,7 +289,7 @@ export const getTheme = (
     },
     // ------------- prepareSelectMask -----------------
     prepareSelectMask: {
-      backgroundColor: brandColors[6],
+      backgroundColor: brandColors[5],
       backgroundOpacity: 0.3,
     },
   } as SpreadSheetTheme;

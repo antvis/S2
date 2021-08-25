@@ -9,6 +9,7 @@ export enum InteractionNames {
 
 export enum InteractionEvent {
   DATA_CELL_CLICK_EVENT = 'spreadsheet:data-cell-click',
+
   MERGED_CELLS_CLICK_EVENT = 'spreadsheet:merged-cells-click',
   CORNER_TEXT_CLICK_EVENT = 'spreadsheet:corner-cell-text-click',
   ROW_COLUMN_CLICK_EVENT = 'spreadsheet:row-column-click',
@@ -23,7 +24,6 @@ export enum InteractionStateName {
   HOVER = 'hover',
   HOVER_FOCUS = 'hoverFocus',
   PREPARE_SELECT = 'prepareSelect',
-  OUT_OF_SPOTLIGHT = 'outOfTheSpotlight',
 }
 
 export enum CellTypes {
@@ -39,19 +39,19 @@ export const HOVER_FOCUS_TIME = 800;
 
 // 主题配置和canvas属性的映射
 export const SHAPE_STYLE_MAP = {
-  backgroundColor: 'fill',
-  backgroundOpacity: 'fillOpacity',
   textOpacity: 'fillOpacity',
+  backgroundOpacity: 'fillOpacity',
+  backgroundColor: 'fill',
   borderOpacity: 'strokeOpacity',
   borderColor: 'stroke',
 };
 
 // 设置属性的时候实际对应改变的shape映射
 export const SHAPE_ATTRS_MAP = {
+  textShape: ['textOpacity'],
+  backgroundShape: ['backgroundOpacity'],
   interactiveBgShape: ['backgroundColor', 'backgroundOpacity'],
   interactiveBorderShape: ['borderColor', 'borderOpacity'],
-  backgroundShape: ['backgroundOpacity'],
-  textShape: ['textOpacity'],
 };
 
 export const INTERACTION_STATE_INFO_KEY = 'interactionStateInfo';
@@ -61,10 +61,10 @@ export const INTERACTION_TREND = {
   NAME: i18n('趋势'),
 };
 
-export enum InteractionBrushStage {
-  CLICK,
-  UN_DRAGGED,
-  DRAGGED,
+export enum InteractionBrushSelectionStage {
+  CLICK = 'click',
+  UN_DRAGGED = 'unDragged',
+  DRAGGED = 'dragged',
 }
 
 export enum InteractionKeyboardKey {

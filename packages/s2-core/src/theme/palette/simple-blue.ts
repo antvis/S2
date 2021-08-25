@@ -4,7 +4,6 @@ export const paletteSimpleBlue = {
     '#000000',
     '#F4F7FE',
     '#E0E9FE',
-    '#CCDBFD',
     '#E0E9FE',
     '#CCDBFD',
     '#2C60D3',
