@@ -26,13 +26,13 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     spreadsheet: SpreadSheet,
     cornerWidth: number,
   ): SeriesNumberHeader {
-    const { width, height, maxY } = viewportBBox;
+    const { width, height } = viewportBBox;
     const seriesNodes: Node[] = [];
     const isHierarchyTreeType = spreadsheet.isHierarchyTreeType();
     leafNodes.forEach((node: Node): void => {
       // 1、is spreadsheet and node is not total(grand or sub)
       // 2、is listSheet
-      if ((!isHierarchyTreeType && !node.isTotals) || isHierarchyTreeType) {
+      if ( !node.isTotals || isHierarchyTreeType) {
         const sNode = new Node({
           id: '',
           key: '',
