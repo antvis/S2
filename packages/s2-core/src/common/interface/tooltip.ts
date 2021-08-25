@@ -48,8 +48,9 @@ export interface TooltipSummaryOptions {
   readonly selectedData: TooltipDataItem[];
 }
 
-export interface TooltipTipsOptions {
-  readonly tips: string;
+export interface TooltipNameTipsOptions {
+  readonly name?: string;
+  readonly tips?: string;
 }
 
 export interface TooltipOperationOptions {
@@ -80,6 +81,7 @@ export type InfosProps = {
 export type TooltipShowOptions = {
   position: TooltipPosition;
   data?: TooltipData;
+  cellInfos?: TooltipDataItem[];
   options?: TooltipOptions;
   element?: React.ReactElement;
 };
@@ -88,6 +90,7 @@ export type TooltipData = {
   summaries?: TooltipSummaryOptions[];
   details?: ListItem[];
   headInfo?: TooltipHeadInfo;
+  name?: string;
   tips?: string;
   infos?: string;
   interpretation?: TooltipInterpretationOptions;
@@ -97,3 +100,21 @@ export type TooltipHeadInfo = {
   rows: ListItem[];
   cols: ListItem[];
 };
+
+export type DataParam = {
+  spreadsheet: SpreadSheet;
+  options?: TooltipOptions;
+  isHeader?: boolean; // 是否是行头/列头
+  getShowValue?: (
+    selectedData: TooltipDataItem[],
+    valueField: string,
+  ) => string | number; // 自定义value
+};
+
+export interface SummaryParam extends DataParam {
+  cellInfo: TooltipDataItem;
+}
+
+export interface TooltipDataParam extends DataParam {
+  cellInfos: TooltipDataItem[];
+}

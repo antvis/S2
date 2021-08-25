@@ -6,6 +6,7 @@ import {
   TooltipPosition,
   TooltipShowOptions,
   TooltipSummaryOptions,
+  TooltipNameTipsOptions,
   TooltipHeadInfo as TooltipHeadInfoType,
 } from '@/common/interface';
 import { isEmpty } from 'lodash';
@@ -18,7 +19,6 @@ import {
   manageContainerStyle,
   shouldIgnore,
 } from '@/utils/tooltip';
-import { Aggregation } from '../interface';
 import TooltipDetail from './components/detail';
 import Divider from './components/divider';
 import TooltipHeadInfo from './components/head-info';
@@ -36,9 +36,9 @@ import './index.less';
 export class BaseTooltip {
   public spreadsheet: SpreadSheet; // the type of Spreadsheet
 
-  public aggregation: Aggregation = 'SUM'; // the type of aggregation, 'SUM' by default
-
   protected container: HTMLElement; // the base container element
+
+  protected options: TooltipShowOptions;
 
   private customComponent: React.Component | Element | void; // react component
 
@@ -46,9 +46,8 @@ export class BaseTooltip {
 
   protected position: TooltipPosition = { x: 0, y: 0 }; // tooltips position info
 
-  constructor(spreadsheet: SpreadSheet, aggregation?: Aggregation) {
+  constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
-    this.aggregation = aggregation || 'SUM';
   }
 
   /**
@@ -66,6 +65,7 @@ export class BaseTooltip {
     if (this.enterable && shouldIgnore(enterable, position, this.position)) {
       return;
     }
+    this.options = showOptions;
     this.enterable = enterable;
     this.position = position;
 
@@ -108,16 +108,15 @@ export class BaseTooltip {
 
   protected renderContent(data?: TooltipData, options?: TooltipOptions) {
     const option = getOptions(options);
-    const { operator, showSingleTips } = option;
-    const { summaries, headInfo, details, interpretation, infos, tips } =
+    const { operator } = option;
+    const { summaries, headInfo, details, interpretation, infos, tips, name } =
       data || {};
+    const nameTip = { name, tips };
 
-    if (showSingleTips) {
-      return this.renderSimpleTips(tips);
-    }
     return (
       <div>
         {this.renderOperation(operator)}
+        {this.renderNameTips(nameTip)}
         {this.renderSummary(summaries)}
         {this.renderInterpretation(interpretation)}
         {this.renderHeadInfo(headInfo)}
@@ -139,8 +138,9 @@ export class BaseTooltip {
     );
   }
 
-  protected renderSimpleTips(tips: string) {
-    return tips && <SimpleTips tips={tips} />;
+  protected renderNameTips(nameTip: TooltipNameTipsOptions) {
+    const { name, tips } = nameTip || {};
+    return <SimpleTips name={name} tips={tips} />;
   }
 
   protected renderSummary(summaries: TooltipSummaryOptions[]) {
