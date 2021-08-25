@@ -1,3 +1,4 @@
+import {isEqual} from 'lodash';
 import {
   CellBoxCfg,
   FilterDataItemCallback,
@@ -7,10 +8,11 @@ import {
   TextTheme,
   ViewMeta,
 } from '@/common/interface';
+
 import { SimpleBBox } from '@antv/g-canvas';
-import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
-import { Data } from './../common/interface/s2DataConfig';
-import { TextBaseline } from './../common/interface/theme';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { Data } from '@/common/interface/s2DataConfig';
+import { TextBaseline } from '@/common/interface/theme';
 
 export const getContentArea = (cellBoxCfg: CellBoxCfg) => {
   const { x, y, width, height, padding } = cellBoxCfg;
@@ -153,6 +155,6 @@ export const handleDataItem = (
 export const ifIncludeCell = (cells: S2CellType[], meta: ViewMeta) => {
   return cells.some((cell) => {
     const cellMeta = cell.getMeta();
-    return cellMeta.colId === meta.colId && cellMeta.rowId === meta.rowId;
+    return isEqual(cellMeta, meta) ;
   });
 };
