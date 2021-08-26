@@ -76,11 +76,13 @@ export enum OriginEventType {
   CLICK = 'click',
 }
 
-export enum DefaultInterceptEventType {
+export enum InterceptEventType {
   HOVER = 'hover',
   CLICK = 'click',
+  BRUSH_SELECTION = 'brushSelection',
 }
 
-export type DefaultInterceptEvent =
-  | DefaultInterceptEventType.HOVER
-  | DefaultInterceptEventType.CLICK;
+export type InterceptEvent =
+  | InterceptEventType.HOVER
+  | InterceptEventType.CLICK
+  | InterceptEventType.BRUSH_SELECTION;

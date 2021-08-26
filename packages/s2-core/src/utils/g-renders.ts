@@ -2,6 +2,7 @@
  * Utils to render all g supported shape
  * https://github.com/antvis/g
  */
+import { GuiIcon, GuiIconCfg } from '@/common/icons/gui-icon';
 import { TextTheme } from '@/common/interface/theme';
 import { Group, IShape, ShapeAttrs } from '@antv/g-canvas';
 import { forEach, isEmpty, set } from 'lodash';
@@ -74,4 +75,10 @@ export function updateFillOpacity(shape: IShape, opacity: number) {
 
 export function updateStrokeOpacity(shape: IShape, opacity: number) {
   updateShapeAttr(shape, 'strokeOpacity', opacity);
+}
+
+export function renderIcon(group: Group, iconCfg: GuiIconCfg) {
+  const iconShape = new GuiIcon(iconCfg);
+  group?.add(iconShape);
+  return iconShape;
 }

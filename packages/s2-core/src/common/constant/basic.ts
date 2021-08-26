@@ -5,7 +5,7 @@ export const TOTAL_VALUE = '$$total$$';
 export const SERIES_NUMBER_FIELD = '$$series_number$$';
 // export const COLUMN_FIELD_KEY = '$$column_key$$';
 
-// frontgroundGroup 上的 children 层叠顺序
+// foregroundGroup 上的 children 层叠顺序
 export const FRONT_GROUND_GROUP_CONTAINER_Z_INDEX = 0; // 约定这个 z-index 为 0 的 container 作为基准
 export const FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX = 2;
 

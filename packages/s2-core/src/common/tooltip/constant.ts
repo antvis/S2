@@ -1,5 +1,7 @@
 export const TOOLTIP_CLASS_PRE = 'ss-tooltip';
 
+export const TOOLTIP_OPERATION_CLASS_PRE = 'ss-tooltip-operation';
+
 export const DEFAULT_ICON_PROPS = {
   width: 14,
   height: 14,

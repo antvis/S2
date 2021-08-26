@@ -4,7 +4,6 @@ export const paletteColorfulBlue = {
     '#FFFFFF',
     '#F4F7FE',
     '#DDE7FD',
-    '#CCDBFD',
     '#3471F9',
     '#2C60D3',
     '#2C60D3',

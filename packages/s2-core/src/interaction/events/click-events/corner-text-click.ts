@@ -1,4 +1,4 @@
-import { DefaultInterceptEventType, S2Event } from '@/common/constant';
+import { InterceptEventType, S2Event } from '@/common/constant';
 import { getCellPadding } from '@/facet/header/util';
 import { isMobile } from '@/utils/is-mobile';
 import { measureTextWidth } from '@/utils/text';
@@ -16,9 +16,7 @@ export class CornerTextClick extends BaseEvent {
 
   private bindCornerClick() {
     this.spreadsheet.on(S2Event.CORNER_CELL_CLICK, (ev: Event) => {
-      if (
-        this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)
-      ) {
+      if (this.interaction.interceptEvent.has(InterceptEventType.CLICK)) {
         return;
       }
       const cornerExpand = this.spreadsheet.store.get('cornerExpand') || {};

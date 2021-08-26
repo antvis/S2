@@ -174,6 +174,7 @@ export abstract class BaseFacet {
     this.mobileWheel = new Wheel(this.spreadsheet.container);
 
     this.mobileWheel.on('wheel', (ev: GestureEvent) => {
+      this.spreadsheet.hideTooltip();
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
@@ -823,6 +824,8 @@ export abstract class BaseFacet {
   onWheel = (event: S2WheelEvent) => {
     const { deltaX, deltaY, layerX, layerY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(deltaX, deltaY);
+
+    this.spreadsheet.hideTooltip();
 
     // 如果已经滚动在顶部或底部, 则无需触发滚动事件, 减少单元格重绘
     // TODO: 这里需要迁移 spreadsheet 的逻辑

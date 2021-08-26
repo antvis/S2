@@ -13,7 +13,7 @@ import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { isMobile } from '@/utils/is-mobile';
 import { getAdjustPosition } from '@/utils/text-absorption';
-import { IGroup } from '@antv/g-canvas';
+import { IGroup, Event } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { get } from 'lodash';
 import { getEllipsisText, measureTextWidth } from '../utils/text';
@@ -53,8 +53,6 @@ export class RowCell extends HeaderCell {
     this.drawHotSpotInLeaf();
     // draw action icon shapes: trend icon, drill-down icon ...
     this.drawActionIcons();
-    // update the interaction state
-    this.update();
   }
 
   protected drawBackgroundColor() {

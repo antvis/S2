@@ -103,6 +103,7 @@ export class TableFacet extends BaseFacet {
         colIndex,
         isTotals: false,
         colId: col.id,
+        rowId: String(rowIndex),
         valueField: col.id,
         fieldValue: data,
       } as ViewMeta;

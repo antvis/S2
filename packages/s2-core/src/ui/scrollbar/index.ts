@@ -309,20 +309,21 @@ export class ScrollBar extends Group {
     this.thumbShape.on('mouseout', this.onTrackMouseOut);
   };
 
-  private onStartEvent =
-    (isMobile: boolean) => (e: MouseEvent | TouchEvent) => {
-      e.preventDefault();
+  private onStartEvent = (isMobile: boolean) => (
+    e: MouseEvent | TouchEvent,
+  ) => {
+    e.preventDefault();
 
-      this.isMobile = isMobile;
+    this.isMobile = isMobile;
 
-      const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
-      const { clientX, clientY } = event;
+    const event: MouseEvent = this.isMobile ? get(e, 'touches.0', e) : e;
+    const { clientX, clientY } = event;
 
-      // 将开始的点记录下来
-      this.startPos = this.isHorizontal ? clientX : clientY;
+    // 将开始的点记录下来
+    this.startPos = this.isHorizontal ? clientX : clientY;
 
-      this.bindLaterEvent();
-    };
+    this.bindLaterEvent();
+  };
 
   private bindLaterEvent = () => {
     const canvas = this.get('canvas');
@@ -398,18 +399,16 @@ export class ScrollBar extends Group {
     this.clearEvents();
   };
 
-  private onTrackMouseOver = (e: MouseEvent) => {
+  private onTrackMouseOver = () => {
     const { thumbColor } = this.theme.hover;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();
-    console.info(e);
   };
 
-  private onTrackMouseOut = (e: MouseEvent) => {
+  private onTrackMouseOut = () => {
     const { thumbColor } = this.theme.default;
     this.thumbShape.attr('stroke', thumbColor);
     this.get('canvas').draw();
-    console.info(e);
   };
 
   // 判断滑块位置是否超出滑道区域

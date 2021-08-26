@@ -1,5 +1,5 @@
 import {
-  DefaultInterceptEventType,
+  InterceptEventType,
   InteractionKeyboardKey,
   S2Event,
 } from '@/common/constant';
@@ -31,7 +31,7 @@ export class ColRowMultiSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
         this.isMultiSelection = false;
-        this.interaction.interceptEvent.delete(DefaultInterceptEventType.CLICK);
+        this.interaction.interceptEvent.delete(InterceptEventType.CLICK);
       }
     });
   }
