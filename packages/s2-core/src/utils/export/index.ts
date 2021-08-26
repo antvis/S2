@@ -1,4 +1,14 @@
-import { head, last, isEmpty, get, clone, trim, max, isObject, forEach } from 'lodash';
+import {
+  head,
+  last,
+  isEmpty,
+  get,
+  clone,
+  trim,
+  max,
+  isObject,
+  forEach,
+} from 'lodash';
 import { BaseSpreadSheet } from '../../sheet-type';
 import { ViewMeta } from '../..';
 import { ID_SEPARATOR, EMPTY_PLACEHOLDER } from '../../common/constant';
@@ -38,7 +48,7 @@ export const download = (str: string, fileName: string) => {
   }
 };
 
-/* 
+/*
  * Process the multi-measure
  * use the ' ' to divide different measures in the same line
  * use the '$' to divide different lines
@@ -47,14 +57,13 @@ const processObjectValue = (data: MultiData) => {
   // TODO 如何去业务化
   const tempCell = data?.label ? [data?.label] : [];
   const values = data?.values;
-  if(!isEmpty(values)) {
+  if (!isEmpty(values)) {
     forEach(values, (value) => {
       tempCell.push(value.join(' '));
     });
   }
   return tempCell.join('$');
-}
-
+};
 
 /* Process the data in detail mode. */
 const processValueInDetail = (
@@ -101,7 +110,7 @@ const processValueInCol = (
   }
   const { fieldValue, valueField } = viewMeta;
 
-  if(isObject(fieldValue)) {
+  if (isObject(fieldValue)) {
     return processObjectValue(fieldValue);
   }
 
@@ -168,12 +177,8 @@ export const copyData = (
   split: string,
   isFormat?: boolean,
 ): string => {
-  const {
-    rowsHierarchy,
-    rowLeafNodes,
-    colLeafNodes,
-    getViewMeta,
-  } = sheetInstance?.facet?.layoutResult;
+  const { rowsHierarchy, rowLeafNodes, colLeafNodes, getViewMeta } =
+    sheetInstance?.facet?.layoutResult;
   const { valueInCols } = sheetInstance.options;
   const rows = clone(rowsHierarchy?.rows);
 
@@ -255,10 +260,10 @@ export const copyData = (
 
       for (const colNode of colLeafNodes) {
         if (valueInCols) {
-          const viewMeta = getViewMeta(rowNode.cellIndex, colNode.cellIndex);
+          const viewMeta = getViewMeta(rowNode.rowIndex, colNode.colIndex);
           tempLine.push(processValueInCol(viewMeta, sheetInstance, isFormat));
         } else {
-          const viewMeta = getViewMeta(rowNode.cellIndex, colNode.cellIndex);
+          const viewMeta = getViewMeta(rowNode.rowIndex, colNode.colIndex);
           tempLine.push(processValueInRow(viewMeta, sheetInstance, isFormat));
         }
       }
