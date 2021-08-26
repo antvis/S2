@@ -1,1 +1,1 @@
-export const PRE_CLASS = 's2';
+export const S2_PREFIX_CLS = 'antv-s2';

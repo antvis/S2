@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { TOOLTIP_CLASS_PRE } from '../constant';
+import { TOOLTIP_PREFIX_CLS } from '../constant';
 
 const Divider = () => {
-  return <div className={`${TOOLTIP_CLASS_PRE}-divider`} />;
+  return <div className={`${TOOLTIP_PREFIX_CLS}-divider`} />;
 };
 
 export default Divider;

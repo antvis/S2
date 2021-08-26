@@ -7,7 +7,7 @@ import { Dropdown, Menu } from 'antd';
 import { find, get, isEqual } from 'lodash';
 import React from 'react';
 import { HtmlIcon } from '../../icons';
-import { TOOLTIP_OPERATION_CLASS_PRE } from '../constant';
+import { TOOLTIP_OPERATION_PREFIX_CLS } from '../constant';
 
 interface OrderOption {
   sortMethod: 'ASC' | 'DESC';
@@ -107,7 +107,7 @@ export class TooltipOperation extends React.PureComponent<
 
   render(): JSX.Element {
     return (
-      <div className={TOOLTIP_OPERATION_CLASS_PRE}>
+      <div className={TOOLTIP_OPERATION_PREFIX_CLS}>
         {/* <span className="operation-button">仅显示</span> */}
         {/* <span className="operation-button">排除</span> */}
         {this.getSortSelection()}

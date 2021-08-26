@@ -29,7 +29,7 @@ import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { BaseSheetProps } from '@/components/sheets/interface';
 import { Event as GEvent } from '@antv/g-canvas';
-import { PRE_CLASS } from '@/common/constant/classnames';
+import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 
 import './index.less';
 
@@ -283,7 +283,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     const pageSize = get(paginationCfg, 'pageSize', Infinity);
     // only show the pagination when the pageSize > 5
     const showQuickJumper = total / pageSize > 5;
-    const preCls = `${PRE_CLASS}-pagination`;
+    const preCls = `${S2_PREFIX_CLS}-pagination`;
 
     return (
       <div className={preCls}>
@@ -419,7 +419,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && <Header {...header} sheet={ownSpreadsheet} />}
-        <div ref={container} className={`${PRE_CLASS}-container`} />
+        <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
         {renderPagination()}
       </Spin>
     </StrictMode>

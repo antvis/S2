@@ -142,12 +142,12 @@ const getOptions = (): S2Options => {
       },
       device: 'pc',
     },
-    // tooltip: {
-    //   showTooltip: true,
-    //   renderTooltip: (spreadsheet) => {
-    //     return new CustomTooltip(spreadsheet);
-    //   },
-    // },
+    tooltip: {
+      showTooltip: true,
+      renderTooltip: (spreadsheet) => {
+        return new CustomTooltip(spreadsheet);
+      },
+    },
     showTrend: true,
     selectedCellsSpotlight: true,
     hoverHighlight: true,
