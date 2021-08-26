@@ -33,9 +33,9 @@ export class BrushSelection extends BaseInteraction {
   private brushStage: InteractionBrushStage = InteractionBrushStage.UN_DRAGGED;
 
   protected bindEvents() {
-    // this.bindMouseDown();
-    // this.bindMouseMove();
-    // this.bindMouseUp();
+    this.bindMouseDown();
+    this.bindMouseMove();
+    this.bindMouseUp();
   }
 
   private getPrepareSelectMaskTheme() {
