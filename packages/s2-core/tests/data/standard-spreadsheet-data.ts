@@ -1,5 +1,6 @@
 /**
  * Standard SpreadSheet Data.
+ * 注意：不能随意改动！会影响单测结果！
  */
 
 export default [
