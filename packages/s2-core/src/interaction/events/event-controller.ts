@@ -147,6 +147,10 @@ export class EventController {
   }
 
   private isMouseOnTheTooltip(event: Event) {
+    if (!this.spreadsheet.options?.tooltip?.showTooltip) {
+      return false;
+    }
+
     const { x, y, width, height } =
       this.spreadsheet.tooltip.container?.getBoundingClientRect();
 
