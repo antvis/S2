@@ -36,11 +36,8 @@ export class EventController {
 
   private domEventListeners: EventListener[] = [];
 
-  public interaction: RootInteraction;
-
-  constructor(spreadsheet: SpreadSheet, interaction: RootInteraction) {
+  constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
-    this.interaction = interaction;
     this.bindEvents();
   }
 
@@ -124,9 +121,9 @@ export class EventController {
     }
 
     this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
-    this.interaction.clearState();
+    this.spreadsheet.interaction.clearState();
     this.spreadsheet.hideTooltip();
-    this.interaction.interceptEvent.clear();
+    this.spreadsheet.interaction.interceptEvent.clear();
   }
 
   private isMouseOnTheCanvasContainer(event: Event) {
@@ -175,8 +172,8 @@ export class EventController {
   private onCanvasMousedown = (event: CanvasEvent) => {
     this.target = event.target;
     // 任何点击都该取消hover的后续keep态
-    if (this.interaction.hoverTimer) {
-      clearTimeout(this.interaction.hoverTimer);
+    if (this.spreadsheet.interaction.hoverTimer) {
+      clearTimeout(this.spreadsheet.interaction.hoverTimer);
     }
     if (this.isResizer(event)) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, event);
@@ -237,7 +234,9 @@ export class EventController {
       // 如果hover的cell改变了，并且当前不需要屏蔽 hover
       if (
         this.hoverTarget !== event.target &&
-        !this.interaction.interceptEvent.has(InterceptEventType.HOVER)
+        !this.spreadsheet.interaction.interceptEvent.has(
+          InterceptEventType.HOVER,
+        )
       ) {
         switch (cellType) {
           case CellTypes.DATA_CELL:

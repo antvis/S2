@@ -186,7 +186,7 @@ export class RootInteraction {
   }
 
   private registerEventController() {
-    this.eventController = new EventController(this.spreadsheet, this);
+    this.eventController = new EventController(this.spreadsheet);
   }
 
   public draw() {
