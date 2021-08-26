@@ -6,8 +6,8 @@ import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
 import { find, get, isEqual } from 'lodash';
 import React from 'react';
-import { HtmlIcon } from '../../icons';
-import { TOOLTIP_OPERATION_PREFIX_CLS } from '../constant';
+import { HtmlIcon } from '@/common/icons';
+import { TOOLTIP_OPERATION_PREFIX_CLS } from '@/common/tooltip/constant';
 
 interface OrderOption {
   sortMethod: 'ASC' | 'DESC';

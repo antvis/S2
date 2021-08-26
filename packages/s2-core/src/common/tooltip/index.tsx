@@ -7,6 +7,7 @@ import {
   TooltipShowOptions,
   TooltipSummaryOptions,
   TooltipHeadInfo as TooltipHeadInfoType,
+  Aggregation,
 } from '@/common/interface';
 import { isEmpty } from 'lodash';
 import React from 'react';
@@ -18,7 +19,6 @@ import {
   manageContainerStyle,
   shouldIgnore,
 } from '@/utils/tooltip';
-import { Aggregation } from '../interface';
 import TooltipDetail from './components/detail';
 import Divider from './components/divider';
 import TooltipHeadInfo from './components/head-info';
