@@ -152,7 +152,7 @@ export const handleDataItem = (
  * @param cells active cells
  * @param meta the meta information of current cell
  */
-export const ifIncludeCell = (cells: S2CellType[], meta: ViewMeta) => {
+export const isIncludeCell = (cells: S2CellType[], meta: ViewMeta) => {
   return cells.some((cell) => {
     const cellMeta = cell.getMeta();
     return isEqual(cellMeta, meta) ;

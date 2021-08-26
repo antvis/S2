@@ -30,7 +30,7 @@ export class HoverEvent extends BaseEvent {
         this.interaction.getAllColHeaderCells(),
       );
       forEach(allColHeaderCells, (cell: ColCell) => {
-        cell.update();
+        cell.updateByState(InteractionStateName.HOVER);
       });
     }
 
@@ -42,7 +42,7 @@ export class HoverEvent extends BaseEvent {
         this.spreadsheet.isHierarchyTreeType(),
       );
       forEach(allRowHeaderCells, (cell: RowCell) => {
-        cell.update();
+        cell.updateByState(InteractionStateName.HOVER);
       });
     }
   }
@@ -59,7 +59,7 @@ export class HoverEvent extends BaseEvent {
 
       if (this.spreadsheet.options.hoverHighlight) {
         // highlight all the row and column cells which the cell belongs to
-        this.updateRowColCells(meta);
+       this.updateRowColCells(meta);
         if (this.interaction.hoverTimer) {
           window.clearTimeout(this.interaction.hoverTimer);
           this.changeStateToHoverFocus(cell, event, meta);

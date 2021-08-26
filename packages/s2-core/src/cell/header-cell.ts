@@ -1,13 +1,15 @@
-import { BaseHeaderConfig } from '@/facet/header/base';
 import { first } from 'lodash';
-import { BaseCell } from 'src/cell';
-import { CellTypes, InteractionStateName, Node, SpreadSheet } from '../index';
+import { isIncludeCell } from '@/utils/data-cell';
+import { S2CellType, ViewMeta } from '@/common/interface';
+import { BaseHeaderConfig } from '@/facet/header/base';
+import { BaseCell } from '@/cell';
+import { CellTypes, InteractionStateName, SpreadSheet } from '../index';
 
-export abstract class HeaderCell extends BaseCell<Node> {
+export abstract class HeaderCell extends BaseCell<ViewMeta> {
   protected headerConfig: BaseHeaderConfig;
 
   constructor(
-    meta: Node,
+    meta: ViewMeta,
     spreadsheet: SpreadSheet,
     headerConfig: BaseHeaderConfig,
   ) {
@@ -18,19 +20,40 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.headerConfig = headerConfig;
   }
 
+  private  handleHover(currentCell: S2CellType, cells: S2CellType[]) {
+    if (isIncludeCell(cells, this?.meta)) {
+      this.updateByState(InteractionStateName.HOVER);
+    }
+  }
+
+  private  handleSelect(cells: S2CellType[]) {
+    if (isIncludeCell(cells, this?.meta)) {
+      this.updateByState(InteractionStateName.SELECTED);
+    }
+  }
+
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
     const cells = this.spreadsheet.interaction.getActiveCells();
     const currentCell = first(cells);
     if (
-      !currentCell ||
-      (stateName !== InteractionStateName.HOVER &&
-        stateName !== InteractionStateName.HOVER_FOCUS)
+      !currentCell 
     ) {
       return;
     }
-    if (currentCell?.cellType === CellTypes.DATA_CELL || cells.includes(this)) {
-      this.updateByState(InteractionStateName.HOVER);
+    
+    switch (stateName) {
+      case InteractionStateName.SELECTED:
+        this.handleSelect(cells);
+        break;
+      case InteractionStateName.HOVER_FOCUS:
+      case InteractionStateName.HOVER:
+        this.handleHover(currentCell, cells);
+        break;
+      default:
+        break;
     }
+ 
+   
   }
 }
