@@ -9,7 +9,6 @@ import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 import { Canvas, Event as CanvasEvent, LooseObject } from '@antv/g-canvas';
 import { each, get } from 'lodash';
-import { RootInteraction } from '@/interaction/root';
 import { ResizeInfo } from '@/facet/header/interface';
 
 interface EventListener {
