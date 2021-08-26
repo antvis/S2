@@ -22,8 +22,8 @@ import {
 import { merge } from 'lodash';
 import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
 import { BaseDataSet } from 'src/data-set';
-import { SpreadSheet } from 'src/sheet-type';
 import { Node } from 'src/facet/layout/node';
+import { SpreadSheet } from 'src/sheet-type';
 import { FilterDataItemCallback } from './basic';
 import { Conditions } from './condition';
 

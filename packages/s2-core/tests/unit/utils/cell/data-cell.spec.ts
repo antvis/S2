@@ -1,10 +1,10 @@
-import { handleDataItem } from '@/utils/data-cell';
-import { EXTRA_FIELD, VALUE_FIELD } from './../../../src/common/constant/basic';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant/basic';
 import {
   FilterDataItemCallback,
   MappingDataItemCallback,
-} from './../../../src/common/interface/basic';
-import { Data, MultiData } from './../../../src/common/interface/s2DataConfig';
+} from '@/common/interface/basic';
+import { Data, MultiData } from '@/common/interface/s2DataConfig';
+import { handleDataItem } from '@/utils/cell/data-cell';
 
 describe('Display Data Item Callback Test', () => {
   test('should return origin data value when there is no callback', () => {

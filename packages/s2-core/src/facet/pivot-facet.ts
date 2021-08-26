@@ -2,7 +2,7 @@ import {
   layoutCoordinate,
   layoutDataPosition,
 } from '@/facet/layout/layout-hooks';
-import { handleDataItem } from '@/utils/data-cell';
+import { handleDataItem } from '@/utils/cell/data-cell';
 import {
   findIndex,
   get,

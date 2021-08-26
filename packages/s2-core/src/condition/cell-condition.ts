@@ -13,7 +13,7 @@ import {
 } from '@/common/interface';
 import { DataItem } from '@/common/interface/s2DataConfig';
 import { SpreadSheet } from '@/sheet-type';
-import { getContentArea } from '@/utils/cell';
+import { getContentArea } from '@/utils/cell/cell';
 import { getIconPositionCfg } from '@/utils/condition';
 import {
   renderIcon,
@@ -25,7 +25,7 @@ import { getEllipsisText } from '@/utils/text';
 import { Group, IShape, SimpleBBox } from '@antv/g-canvas';
 import { find, get, isEmpty } from 'lodash';
 import { measureTextWidth } from 'src/utils/text';
-import { getMaxTextWidth, getTextAndIconPosition } from './../utils/cell';
+import { getMaxTextWidth, getTextAndIconPosition } from '../utils/cell/cell';
 
 /**
  * Cell Condition for panelGroup area

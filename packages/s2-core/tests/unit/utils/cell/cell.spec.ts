@@ -2,7 +2,7 @@ import {
   getContentArea,
   getMaxTextWidth,
   getTextAndIconPosition,
-} from '@/utils/cell';
+} from '@/utils/cell/cell';
 import { SimpleBBox } from '@antv/g-canvas';
 
 describe('Cell Content Test', () => {

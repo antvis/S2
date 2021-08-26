@@ -46,7 +46,7 @@ import {
   POSITION_Y_OFFSET,
 } from '../common/tooltip/constant';
 import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
-import { handleDataItem } from './data-cell';
+import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 
 /**

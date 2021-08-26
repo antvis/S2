@@ -2,7 +2,7 @@ import { BaseCell } from '@/cell/base-cell';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { S2CellType, ViewMeta, ViewMetaIndex } from '@/common/interface';
 import { CellCondition } from '@/condition/cell-condition';
-import { ifIncludeCell } from '@/utils/data-cell';
+import { ifIncludeCell } from '@/utils/cell/data-cell';
 import { renderLine, renderRect } from '@/utils/g-renders';
 import { first, get, includes, isEmpty, isEqual, map } from 'lodash';
 
