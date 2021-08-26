@@ -316,7 +316,7 @@ export class EventController {
     }
   };
 
-  public destroy() {
+  public clear() {
     this.unbindEvents();
   }
 
