@@ -416,7 +416,7 @@ export const getTooltipData = (params: TooltipDataParam) => {
         getShowValue,
       }),
     );
-    // 如果summaries中有相同name的向，则合并为同一项；
+    // 如果summaries中有相同name的项，则合并为同一项；
     summaries = mergeSummaries(summaries);
   } else if (isHeader) {
     // 行列头hover
