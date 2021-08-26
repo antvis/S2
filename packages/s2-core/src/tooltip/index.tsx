@@ -1,3 +1,3 @@
-import { BaseTooltip } from '../common/tooltip';
+import { BaseTooltip } from '@/common/tooltip';
 
 export { BaseTooltip };
