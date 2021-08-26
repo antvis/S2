@@ -44,7 +44,7 @@ const getDataCfg = () => {
         {
           field: 'type',
           value: '办公用品',
-          tips: '说明：这是办公用品的说明'
+          tips: '说明：这是办公用品的说明',
         },
       ],
     },
@@ -204,6 +204,17 @@ function MainLayout(props) {
         <Checkbox onChange={onCheckChanged3} defaultChecked={freezeRowHeader}>
           冻结行头
         </Checkbox>
+        <Switch
+          checkedChildren="tooltip打开"
+          unCheckedChildren="tooltip关闭"
+          defaultChecked={options.tooltip.showTooltip}
+          onChange={(checked) => {
+            console.log(checked);
+            updateOptions({
+              tooltip: { ...options.tooltip, showTooltip: checked },
+            });
+          }}
+        />
       </Space>
       <SheetComponent
         dataCfg={dataCfg}
