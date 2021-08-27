@@ -13,7 +13,7 @@ import { renderLine, renderRect, renderText } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { isMobile } from '@/utils/is-mobile';
 import { getAdjustPosition } from '@/utils/text-absorption';
-import { IGroup } from '@antv/g-canvas';
+import { IGroup, Event } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { get } from 'lodash';
 import { getEllipsisText, measureTextWidth } from '../utils/text';
@@ -352,8 +352,12 @@ export class RowCell extends HeaderCell {
   protected drawActionIcons() {
     const rowActionIcons = this.spreadsheet.options.rowActionIcons;
     if (!rowActionIcons) return;
-    const { iconTypes, display, action, customDisplayByRowName } =
-      rowActionIcons;
+    const {
+      iconTypes,
+      display,
+      action,
+      customDisplayByRowName,
+    } = rowActionIcons;
     if (customDisplayByRowName) {
       const { rowNames, mode } = customDisplayByRowName;
       const rowIds = rowNames.map((rowName) => `root${ID_SEPARATOR}${rowName}`);

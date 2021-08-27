@@ -3,7 +3,7 @@ import { Menu } from 'antd';
 import { isEmpty, map, size } from 'lodash';
 import React from 'react';
 import { getIcon, HtmlIcon } from '../../../icons';
-import { DEFAULT_ICON_PROPS, TOOLTIP_CLASS_PRE } from '../../constant';
+import { DEFAULT_ICON_PROPS, TOOLTIP_PREFIX_CLS } from '../../constant';
 import './index.less';
 
 /**
@@ -26,7 +26,7 @@ const Operator = (props: TooltipOperatorOptions) => {
     if (getIcon(icon)) {
       return (
         <HtmlIcon
-          className={`${TOOLTIP_CLASS_PRE}-operator-icon`}
+          className={`${TOOLTIP_PREFIX_CLS}-operator-icon`}
           type={icon}
           {...DEFAULT_ICON_PROPS}
         />
@@ -35,7 +35,7 @@ const Operator = (props: TooltipOperatorOptions) => {
 
     const Component = icon;
     return (
-      icon && <Component className={`${TOOLTIP_CLASS_PRE}-operator-icon`} />
+      icon && <Component className={`${TOOLTIP_PREFIX_CLS}-operator-icon`} />
     );
   };
 
@@ -54,7 +54,7 @@ const Operator = (props: TooltipOperatorOptions) => {
         <Menu.SubMenu
           title={subMenuTitle}
           key={id}
-          popupClassName={`${TOOLTIP_CLASS_PRE}-operator-submenu-popup`}
+          popupClassName={`${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`}
         >
           {map(children, (m: IMenu) => renderMenu(m))}
         </Menu.SubMenu>
@@ -72,8 +72,8 @@ const Operator = (props: TooltipOperatorOptions) => {
   const renderMenus = () => {
     return (
       <Menu
-        className={`${TOOLTIP_CLASS_PRE}-operator-menus`}
-        id={`${TOOLTIP_CLASS_PRE}-operator-menus`}
+        className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
+        id={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
         onClick={onMenuClick}
         mode="horizontal"
       >
@@ -84,7 +84,7 @@ const Operator = (props: TooltipOperatorOptions) => {
 
   return (
     !isEmpty(menus) && (
-      <div className={`${TOOLTIP_CLASS_PRE}-operator`}>{renderMenus()}</div>
+      <div className={`${TOOLTIP_PREFIX_CLS}-operator`}>{renderMenus()}</div>
     )
   );
 };

@@ -2,17 +2,19 @@ import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
 import { Palette, SpreadSheetTheme, ThemeCfg } from '../common/interface';
 import { isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
+import { SpreadSheet } from '../sheet-type';
 
 /**
  * @describe generate the theme according to the type
  * @param  name
  */
 export const getTheme = (
-  themeCfg: Omit<ThemeCfg, 'theme'>,
+  themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
 ): SpreadSheetTheme => {
   const themePalette: Palette =
     themeCfg?.palette || getPalette(themeCfg?.name, themeCfg?.hueInvert);
   const { brandColors, grayColors, semanticColors } = themePalette;
+  const isTable = themeCfg?.spreadsheet?.isTableMode();
 
   return {
     // ------------- Headers -------------------
@@ -80,7 +82,7 @@ export const getTheme = (
         fill: grayColors[6],
         linkTextFill: brandColors[6],
         opacity: 1,
-        textAlign: 'right',
+        textAlign: isTable ? 'center' : 'right', // default align center for row cell in table mode
       },
       cell: {
         // ----------- background color -----------
