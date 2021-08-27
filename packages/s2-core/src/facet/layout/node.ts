@@ -156,6 +156,10 @@ export class Node {
    */
   public static getAllChildrenNode(node: Node): Node[] {
     const all: Node[] = [];
+    if (node.isLeaf) {
+      all.push(node);
+      return all;
+    }
     // current root node children
     const nodes = node.children.slice(0);
     let current = nodes.shift();

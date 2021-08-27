@@ -108,6 +108,11 @@ export const getTheme = (
             backgroundColor: brandColors[2],
             backgroundOpacity: 1,
           },
+          // -------------- selected -------------------
+          selected: {
+            backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
+          },
         },
       },
       icon: {
@@ -162,6 +167,11 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: brandColors[4],
+            backgroundOpacity: 1,
+          },
+          // -------------- selected -------------------
+          selected: {
+            backgroundColor: brandColors[2],
             backgroundOpacity: 1,
           },
         },

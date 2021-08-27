@@ -7,7 +7,6 @@ export class RowColumnClick extends BaseEvent {
   protected bindEvents() {
     this.bindColCellClick();
     this.bindRowCellClick();
-    this.bindResetSheetStyle();
   }
 
   private bindRowCellClick() {
@@ -15,7 +14,11 @@ export class RowColumnClick extends BaseEvent {
       if (this.interaction.interceptEvent.has(InterceptEventType.CLICK)) {
         return;
       }
-      handleRowColClick(event, this.spreadsheet);
+      handleRowColClick(
+        event,
+        this.spreadsheet,
+        this.spreadsheet.isHierarchyTreeType(),
+      );
     });
   }
 
@@ -25,13 +28,6 @@ export class RowColumnClick extends BaseEvent {
     }
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
       handleRowColClick(event, this.spreadsheet);
-    });
-  }
-
-  // TODO 这个东西存在这里的必要性？
-  private bindResetSheetStyle() {
-    this.spreadsheet.on(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT, () => {
-      this.interaction.clearStyleIndependent();
     });
   }
 }

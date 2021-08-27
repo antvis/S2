@@ -10,6 +10,7 @@ import { forEach, isEmpty } from 'lodash';
  */
 export const clearState = (spreadsheet: SpreadSheet) => {
   const allCells = spreadsheet.interaction.getAllCells();
+  // TODO 太粗暴了……需要优雅一些
   if (!isEmpty(allCells)) {
     forEach(allCells, (cell: S2CellType) => {
       cell.hideInteractionShape();

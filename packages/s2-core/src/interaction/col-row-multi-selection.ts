@@ -38,16 +38,28 @@ export class ColRowMultiSelection extends BaseInteraction {
 
   private bindColCellClick() {
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
+      event.stopPropagation();
       if (this.isMultiSelection) {
-        handleRowColClick(event, this.spreadsheet);
+        handleRowColClick(
+          event,
+          this.spreadsheet,
+          false,
+          this.isMultiSelection,
+        );
       }
     });
   }
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
+      event.stopPropagation();
       if (this.isMultiSelection) {
-        handleRowColClick(event, this.spreadsheet);
+        handleRowColClick(
+          event,
+          this.spreadsheet,
+          false,
+          this.isMultiSelection,
+        );
       }
     });
   }

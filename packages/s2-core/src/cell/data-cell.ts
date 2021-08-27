@@ -2,7 +2,7 @@ import { BaseCell } from '@/cell/base-cell';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { S2CellType, ViewMeta, ViewMetaIndex } from '@/common/interface';
 import { CellCondition } from '@/condition/cell-condition';
-import { ifIncludeCell } from '@/utils/data-cell';
+import { isIncludeCell } from '@/utils/data-cell';
 import { renderLine, renderRect } from '@/utils/g-renders';
 import { first, get, includes, isEmpty, isEqual, map } from 'lodash';
 
@@ -26,7 +26,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected handlePrepareSelect(cells: S2CellType[]) {
-    if (ifIncludeCell(cells, this.getMeta())) {
+    if (isIncludeCell(cells, this.getMeta())) {
       this.updateByState(InteractionStateName.PREPARE_SELECT);
     }
   }
@@ -44,7 +44,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
-        if (ifIncludeCell(cells, this.getMeta())) {
+        if (isIncludeCell(cells, this.getMeta())) {
           this.updateByState(InteractionStateName.SELECTED);
         } else if (this.spreadsheet.options.selectedCellsSpotlight) {
           this.updateByState(InteractionStateName.UNSELECTED);
