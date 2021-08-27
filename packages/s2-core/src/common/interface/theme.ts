@@ -1,3 +1,4 @@
+import { CellTypes } from '@/common/constant/interaction';
 import { InteractionStateName } from '../constant';
 
 // 文本内容的水平对齐方式, 默认 left
@@ -150,15 +151,11 @@ export interface DefaultCellTheme {
   seriesNumberWidth?: number;
 }
 
-export interface SpreadSheetTheme {
-  /* 角头样式 */
-  cornerCell?: DefaultCellTheme;
-  /* 行头样式 */
-  rowCell?: DefaultCellTheme;
-  /* 列头样式 */
-  colCell?: DefaultCellTheme;
-  /* 交叉单于格样式 */
-  dataCell?: DefaultCellTheme;
+type CellThemes = {
+  [K in CellTypes]?: DefaultCellTheme;
+};
+
+export interface SpreadSheetTheme extends CellThemes {
   /* 滚动条样式 */
   scrollBar?: ScrollBarTheme;
   /* 分割线样式 */

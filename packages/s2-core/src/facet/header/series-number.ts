@@ -1,13 +1,13 @@
+import { Node } from '@/facet/layout/node';
+import { SpreadSheet } from '@/sheet-type/index';
+import { renderRect } from '@/utils/g-renders';
+import { measureTextWidth } from '@/utils/text';
+import { getAdjustPosition } from '@/utils/text-absorption';
+import { BBox, IGroup, IShape } from '@antv/g-canvas';
+import { each } from 'lodash';
+import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { getCellPadding } from './util';
-import { translateGroup } from '../utils';
-import { each } from 'lodash';
-import { BBox, IGroup, IShape } from '@antv/g-canvas';
-import { SpreadSheet } from '@/sheet-type/index';
-import { measureTextWidth } from '@/utils/text';
-import { renderRect } from '@/utils/g-renders';
-import { getAdjustPosition } from '@/utils/text-absorption';
-import { Node } from '@/facet/layout/node';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;

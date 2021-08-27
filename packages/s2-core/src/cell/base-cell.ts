@@ -1,17 +1,24 @@
 import {
   CellTypes,
   InteractionStateName,
+  SHAPE_ATTRS_MAP,
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
-import { SpreadSheetTheme } from '@/common/interface';
-import { Group, IShape } from '@antv/g-canvas';
+import {
+  FormatResult,
+  SpreadSheetTheme,
+  StateShapeLayer,
+  TextTheme,
+} from '@/common/interface';
+import { SpreadSheet } from '@/sheet-type';
+import { getContentArea } from '@/utils/cell/cell';
+import { renderText, updateShapeAttr } from '@/utils/g-renders';
+import { getEllipsisText } from '@/utils/text';
+import { Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
 import { each, get, includes, isEmpty, keys, pickBy } from 'lodash';
-import { SpreadSheet } from '../sheet-type';
-import { updateShapeAttr } from '../utils/g-renders';
-import { SHAPE_ATTRS_MAP } from './../common/constant/interaction';
-import { StateShapeLayer } from './../common/interface/interaction';
+import { measureTextWidth } from 'src/utils/text';
 
-export abstract class BaseCell<T> extends Group {
+export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
   protected meta: T;
 
@@ -26,6 +33,9 @@ export abstract class BaseCell<T> extends Group {
 
   // text control shape
   protected textShape: IShape;
+
+  // actual text width after be ellipsis
+  protected actualTextWidth = 0;
 
   // interactive control shapes, unify read and manipulate operations
   protected stateShapes = new Map<StateShapeLayer, IShape>();
@@ -59,6 +69,10 @@ export abstract class BaseCell<T> extends Group {
     // default do nothing
   }
 
+  /* -------------------------------------------------------------------------- */
+  /*           abstract functions that must be implemented by subtype           */
+  /* -------------------------------------------------------------------------- */
+
   /**
    * Return the type of the cell
    */
@@ -74,9 +88,54 @@ export abstract class BaseCell<T> extends Group {
    */
   public abstract update(): void;
 
+  protected abstract getTextStyle(): TextTheme;
+
+  protected abstract getFormattedFieldValue(): FormatResult;
+
+  protected abstract getMaxTextWidth(): number;
+
+  protected abstract getTextPosition(): Point;
+
   /* -------------------------------------------------------------------------- */
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
+
+  protected getStyle() {
+    return this.theme[this.cellType];
+  }
+
+  protected getCellArea() {
+    const { x, y, height, width } = this.meta;
+    return { x, y, height, width };
+  }
+
+  // get content area that exclude padding
+  protected getContentArea() {
+    const { padding } = this.theme.dataCell.cell;
+    return getContentArea(this.getCellArea(), padding);
+  }
+
+  protected drawTextShape() {
+    const { formattedValue } = this.getFormattedFieldValue();
+    const maxTextWidth = this.getMaxTextWidth();
+    const textStyle = this.getTextStyle();
+    const ellipsisText = getEllipsisText(
+      `${formattedValue ?? '-'}`,
+      maxTextWidth,
+      textStyle,
+    );
+
+    this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
+    const position = this.getTextPosition();
+    this.textShape = renderText(
+      this,
+      [this.textShape],
+      position.x,
+      position.y,
+      ellipsisText,
+      textStyle,
+    );
+  }
 
   // 根据当前state来更新cell的样式
   public updateByState(stateName: InteractionStateName) {

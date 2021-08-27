@@ -1,6 +1,12 @@
-import { IconCfg, Padding, TextAlignCfg } from '@/common/interface';
+import {
+  IconCfg,
+  Padding,
+  TextAlignCfg,
+  TextBaseline,
+} from '@/common/interface';
 import { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
+import { AreaRange } from './../../common/interface/scroll';
 
 /**
  * -----------------------------
@@ -32,7 +38,6 @@ export const getContentArea = (bbox: SimpleBBox, padding: Padding) => {
  *    x轴：
  *       1. text 和 icon 同为 left 或者 right 时，icon bbox 只需要简单放置在 left 或者 right 即可
  *       2. 其他的情况，需要根据实际 text width 确定 icon bbox 开始位置
- *
  */
 
 const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg => {
@@ -58,21 +63,38 @@ export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconCfg) => {
   );
 };
 
-export const getTextAndIconPosition = (
+export const getVerticalPosition = (
+  { y, height }: SimpleBBox,
+  textBaseline: TextBaseline,
+  size = 0,
+) => {
+  let p = 0;
+  switch (textBaseline) {
+    case 'top':
+      p = y;
+      break;
+    case 'middle':
+      p = y + height / 2 - size / 2;
+      break;
+    default:
+      p = y + height - size;
+      break;
+  }
+  return p;
+};
+
+export const getTextAndFollowingIconPosition = (
   contentBox: SimpleBBox,
-  textWidth: number,
   textCfg: TextAlignCfg,
+  textWidth = 0,
   iconCfg?: IconCfg,
 ) => {
-  const { x, y, width, height } = contentBox;
+  const { x, width } = contentBox;
   const { textAlign, textBaseline } = textCfg;
   const { size, margin, position: iconPosition } = normalizeIconCfg(iconCfg);
 
   let textX: number;
-  let textY: number;
-
   let iconX: number;
-  let iconY: number;
 
   switch (textAlign) {
     case 'left':
@@ -103,23 +125,45 @@ export const getTextAndIconPosition = (
       break;
   }
 
-  switch (textBaseline) {
-    case 'top':
-      textY = y;
-      iconY = y;
-      break;
-    case 'middle':
-      textY = y + height / 2;
-      iconY = y + height / 2 - size / 2;
-      break;
-    default:
-      textY = y + height;
-      iconY = y + height - size;
-      break;
-  }
+  const textY = getVerticalPosition(contentBox, textBaseline, 0);
+  const iconY = getVerticalPosition(contentBox, textBaseline, size);
 
   return {
     text: { x: textX, y: textY },
     icon: { x: iconX, y: iconY },
   };
+};
+
+export const getTextPosition = (
+  contentBox: SimpleBBox,
+  textCfg: TextAlignCfg,
+) => getTextAndFollowingIconPosition(contentBox, textCfg).text;
+
+export const getTextPositionWhenHorizontalScrolling = (
+  viewport: AreaRange,
+  content: AreaRange,
+  textWidth: number,
+) => {
+  const contentEnd = content.start + content.width;
+  const viewportEnd = viewport.start + viewport.width;
+
+  let position: number;
+  if (content.start <= viewport.start && contentEnd >= viewportEnd) {
+    position = viewport.start + viewport.width / 2;
+  } else if (content.start <= viewport.start) {
+    const restWidth = content.width - (viewport.start - content.start);
+    position =
+      restWidth < textWidth
+        ? contentEnd - textWidth / 2
+        : contentEnd - restWidth / 2;
+  } else if (contentEnd >= viewportEnd) {
+    const restWidth = content.width - (contentEnd - viewportEnd);
+    position =
+      restWidth < textWidth
+        ? content.start + textWidth / 2
+        : content.start + restWidth / 2;
+  } else {
+    position = content.start + content.width / 2;
+  }
+  return position;
 };

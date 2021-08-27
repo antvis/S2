@@ -39,5 +39,3 @@ export interface Conditions {
 
 export type IconCfg = Pick<IconTheme, 'size' | 'margin'> &
   Pick<IconCondition, 'position'>;
-
-export type ConditionLayer = keyof Conditions;

@@ -1,3 +1,4 @@
+import { GuiIcon } from '@/common/icons';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { first } from 'lodash';
 import { BaseCell } from 'src/cell';
@@ -5,6 +6,10 @@ import { CellTypes, InteractionStateName, Node, SpreadSheet } from '../index';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
+
+  protected treeIcon: GuiIcon | undefined;
+
+  protected actionIcons: GuiIcon[];
 
   constructor(
     meta: Node,
@@ -16,6 +21,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
     this.headerConfig = headerConfig;
+  }
+
+  protected initCell() {
+    this.actionIcons = [];
   }
 
   public update() {
