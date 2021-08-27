@@ -10,8 +10,8 @@ import { mergeCellInfo } from '../tooltip';
 export const handleRowColClick = (
   event: Event,
   spreadsheet: SpreadSheet,
-  isTreeRowClick?: boolean,
-  isMultiSelection?: boolean,
+  isTreeRowClick: boolean,
+  isMultiSelection: boolean,
 ) => {
   const lastState = spreadsheet.interaction.getState();
   const cell = spreadsheet.getCell(event.target);

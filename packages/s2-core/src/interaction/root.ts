@@ -2,12 +2,7 @@ import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
 import { ColHeader, RowHeader } from 'src/facet/header';
 import { get, includes, isEmpty, concat } from 'lodash';
-import {
-  BrushSelection,
-  ColRowMultiSelection,
-  DataCellMultiSelection,
-  RowColResize,
-} from './';
+import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import {
   BaseEvent,
   CornerTextClick,
@@ -173,10 +168,6 @@ export class RootInteraction {
       this.interactions.set(
         InteractionNames.DATA_CELL_MULTI_SELECTION_INTERACTION,
         new DataCellMultiSelection(this.spreadsheet, this),
-      );
-      this.interactions.set(
-        InteractionNames.COL_ROW_MULTI_SELECTION_INTERACTION,
-        new ColRowMultiSelection(this.spreadsheet, this),
       );
     }
   }
