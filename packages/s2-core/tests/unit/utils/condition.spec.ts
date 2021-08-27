@@ -56,7 +56,7 @@ describe('Condition Test', () => {
         icon: [
           {
             field: 'value',
-            iconPosition: 'left',
+            position: 'left',
             mapping: expect.any(Function),
           },
         ],

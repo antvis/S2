@@ -242,18 +242,22 @@ describe('spreadsheet multiple values cell spec', () => {
   test('should generate default conditions', () => {
     const { icon, text } = sheet.options.conditions;
 
-    expect(icon).toHaveLength(2);
+    expect(icon).toHaveLength(3);
     expect(text).toHaveLength(2);
 
     expect(icon).toEqual([
       {
+        field: 'price',
+        mapping: expect.any(Function),
+      },
+      {
         field: 'ac',
-        iconPosition: 'left',
+        position: 'left',
         mapping: expect.any(Function),
       },
       {
         field: 'rc',
-        iconPosition: 'left',
+        position: 'left',
         mapping: expect.any(Function),
       },
     ]);
