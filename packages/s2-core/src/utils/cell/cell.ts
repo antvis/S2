@@ -83,6 +83,7 @@ export const getVerticalPosition = (
   return p;
 };
 
+// 获取text及其跟随icon的位置坐标
 export const getTextAndFollowingIconPosition = (
   contentBox: SimpleBBox,
   textCfg: TextAlignCfg,
@@ -139,6 +140,7 @@ export const getTextPosition = (
   textCfg: TextAlignCfg,
 ) => getTextAndFollowingIconPosition(contentBox, textCfg).text;
 
+// 获取在列头水平滚动时，text坐标，使其始终在可视区域的格子中处于居中位置
 export const getTextPositionWhenHorizontalScrolling = (
   viewport: AreaRange,
   content: AreaRange,

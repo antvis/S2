@@ -119,6 +119,7 @@ export class ColCell extends HeaderCell {
       return getTextPosition(textBox, textStyle);
     }
 
+    // 将viewport坐标映射到 col header的坐标体系中，简化计算逻辑
     const viewport: AreaRange = {
       start: offset - (scrollContainsRowHeader ? cornerWidth : 0),
       width: width + (scrollContainsRowHeader ? cornerWidth : 0),
