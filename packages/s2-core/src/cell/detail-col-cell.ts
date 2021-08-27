@@ -6,7 +6,7 @@ import { renderDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-s
 import { getEllipsisText, getTextPosition } from '../utils/text';
 
 export class DetailColCell extends ColCell {
-  protected drawCellText() {
+  protected drawTextShape() {
     const { spreadsheet } = this.headerConfig;
     const {
       label,

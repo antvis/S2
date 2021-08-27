@@ -70,6 +70,9 @@ const getDataCfg = (): S2DataConfig => {
     ],
     data: multipleDataWithNormal,
     standardData: false,
+    sortParams: [
+      // { sortFieldId: 'price', sortMethod: 'DESC' }
+    ],
   };
 };
 
@@ -106,19 +109,28 @@ const getOptions = (): S2Options => {
           },
         },
       ],
-      icon: [],
+      icon: [
+        {
+          field: 'price',
+          mapping() {
+            return { fill: 'black', icon: 'Trend' };
+          },
+        },
+      ],
     },
-    tooltip: {
-      showTooltip: true,
+    rowActionIcons: {
+      iconTypes: ['SortDown', 'SortUp'],
+      display: {
+        level: 0,
+        operator: '>=',
+      },
+      action(type, node) {},
     },
+
     selectedCellsSpotlight: true,
     hoverHighlight: true,
-    mappingDisplayDataItem(field, data) {
-      return {
-        price: 12,
-        'price-ac': 0.2,
-        'price-rc': -0.3,
-      };
+    tooltip: {
+      showTooltip: true,
     },
     style: {
       colCfg: {
@@ -144,6 +156,7 @@ function MainLayout(props) {
 
   const onValueInColsChange = (checked) => {
     setValueInCols(checked);
+
     setDataCfg(
       merge({}, dataCfg, {
         fields: {
