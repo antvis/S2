@@ -19,6 +19,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
    * @param spreadsheet
    * @param cornerWidth
    */
+
   public static getSeriesNumberHeader(
     viewportBBox: BBox,
     seriesNumberWidth: number,
@@ -32,7 +33,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     leafNodes.forEach((node: Node): void => {
       // 1、is spreadsheet and node is not total(grand or sub)
       // 2、is listSheet
-      if ( !node.isTotals || isHierarchyTreeType) {
+      if (!node.isTotals || isHierarchyTreeType) {
         const sNode = new Node({
           id: '',
           key: '',

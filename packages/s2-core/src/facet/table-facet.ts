@@ -1,5 +1,9 @@
 import { LayoutResult, ViewMeta } from 'src/common/interface';
-import { SERIES_NUMBER_FIELD } from 'src/common/constant';
+import {
+  KEY_LIST_SORT,
+  S2Event,
+  SERIES_NUMBER_FIELD,
+} from 'src/common/constant';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
@@ -8,25 +12,42 @@ import { get, maxBy } from 'lodash';
 import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 import { DebuggerUtil } from 'src/common/debug';
+import { quickSort } from '@/utils/sort-action';
 
 export class TableFacet extends BaseFacet {
+  public constructor(props) {
+    super(props);
+    const s2 = this.spreadsheet;
+    s2.on(KEY_LIST_SORT, ({ sortKey, sortMethod }) => {
+      const sortInfo = {
+        sortKey,
+        sortMethod,
+        compareFunc: undefined,
+      };
+      s2.emit(S2Event.RANGE_SORTING, sortInfo);
+
+      s2.dataCfg.data = quickSort(s2.dataSet.originData, sortInfo);
+    });
+  }
+
+  public destroy() {
+    super.destroy();
+    this.spreadsheet.off(KEY_LIST_SORT);
+  }
+
   protected doLayout(): LayoutResult {
     const { dataSet, spreadsheet, cellCfg } = this.cfg;
 
-    const {
-      leafNodes: rowLeafNodes,
-      hierarchy: rowsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: true,
-      facetCfg: this.cfg,
-    });
-    const {
-      leafNodes: colLeafNodes,
-      hierarchy: colsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: false,
-      facetCfg: this.cfg,
-    });
+    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: true,
+        facetCfg: this.cfg,
+      });
+    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: false,
+        facetCfg: this.cfg,
+      });
 
     this.calculateNodesCoordinate(
       rowLeafNodes,

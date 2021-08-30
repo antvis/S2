@@ -1,6 +1,6 @@
-import { SortMethod } from 'src/common/interface';
+import { Data, DataItem, SortMethod } from 'src/common/interface';
 import { DataType, SortActionParams } from 'src/data-set/interface';
-import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
+import { EXTRA_FIELD, SortMethodType, TOTAL_VALUE } from '@/common/constant';
 import { keys, has, uniq } from 'lodash';
 import { sortByItems } from '@/utils/data-set-operate';
 
@@ -126,4 +126,41 @@ export const handleSortAction = (params: SortActionParams): string[] => {
     originValues,
     measureValues,
   });
+};
+
+// table-fact quick sort
+const compareFunction = (
+  a: DataItem,
+  b: DataItem,
+  sortMethod: SortMethod = 'ASC',
+) => (sortMethod === 'ASC' ? a < b : a > b);
+
+export const quickSort = (
+  originalData: Data[],
+  sortInfo: {
+    sortKey: string;
+    sortMethod: SortMethod;
+    compareFunc;
+  },
+) => {
+  const {
+    sortKey,
+    sortMethod = SortMethodType.ASC,
+    compareFunc = compareFunction,
+  } = sortInfo;
+  if (originalData.length <= 1) return originalData;
+  const pivotIndex = Math.floor(originalData.length / 2);
+  const list = [...originalData];
+  const pivot = list.splice(pivotIndex, 1)[0];
+  const [left, right] = [[], []];
+  for (let i = 0; i < list.length; i++) {
+    const item = list[i];
+    if (compareFunc(item[sortKey], pivot[sortKey], sortMethod)) {
+      left.push(item);
+    } else {
+      right.push(item);
+    }
+  }
+
+  return [...quickSort(left, sortInfo), pivot, ...quickSort(right, sortInfo)];
 };

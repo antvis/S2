@@ -6,6 +6,7 @@ import {
   S2Event,
   S2Options,
   SheetComponent,
+  SortMethodType,
   SpreadSheet,
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
@@ -108,8 +109,31 @@ function MainLayout(props) {
       console.log(data);
     };
     s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
+    s2Ref.current.on(S2Event.RANGE_SORTING, (info) => {
+      const canConvertToNumber = data.every((item) => {
+        const v = item[info.sortKey];
+        if (typeof v === 'string' && !Number.isNaN(Number(v))) {
+          return true;
+        }
+        return false;
+      });
+
+      // sort string-type number
+      function customCompare(obj1, obj2) {
+        const [v1, v2] = [Number(obj1), Number(obj2)];
+        const ascending = info.sortMethod === SortMethodType.ASC;
+        if (v1 < v2) {
+          return !!ascending;
+        }
+        return !ascending;
+      }
+      if (canConvertToNumber) {
+        info.compareFunc = customCompare;
+      }
+    });
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED, logData);
+      s2Ref.current.off(S2Event.RANGE_SORTING);
     };
   }, []);
 

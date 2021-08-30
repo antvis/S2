@@ -3,6 +3,7 @@ import { Node } from '@/facet/layout/node';
 import { PartDrillDownInfo } from '../../components/sheets/interface';
 import { S2DataConfig } from './s2DataConfig';
 import { BBox } from '@antv/g-canvas';
+import { SortMethodType } from '../constant';
 
 export interface ReachedBorderId {
   rowId?: string;
@@ -24,7 +25,7 @@ export interface StoreKey {
   // corner text expand info
   cornerExpand: Record<string, number>;
   // list-sheet's field sort type(up or down)
-  currentSortKey: Record<string, 'up' | 'down'>;
+  currentSortKey: Record<string, SortMethodType>;
   // last reached border node id
   lastReachedBorderId: ReachedBorderId;
   // 行。列选中单元的id

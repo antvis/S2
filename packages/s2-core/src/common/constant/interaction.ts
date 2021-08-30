@@ -72,3 +72,8 @@ export enum InteractionKeyboardKey {
   COPY = 'c',
   ESC = 'Escape',
 }
+
+export enum SortMethodType {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}

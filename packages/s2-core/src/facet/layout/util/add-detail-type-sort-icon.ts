@@ -1,8 +1,12 @@
 import { Group } from '@antv/g-canvas';
 import * as _ from 'lodash';
 import { GuiIcon } from '../../../common/icons';
-import { DEFAULT_PADDING, KEY_LIST_SORT } from '../../../common/constant';
-import { SpreadSheet } from '../../..';
+import {
+  DEFAULT_PADDING,
+  KEY_LIST_SORT,
+  SortMethodType,
+} from '../../../common/constant';
+import { SortMethod, SpreadSheet } from '../../..';
 
 // 排序按钮的宽度
 export const SORT_ICON_SIZE = 8;
@@ -11,7 +15,7 @@ export const getIconType = (key: string, spreadsheet: SpreadSheet) => {
   /*
   currentSortKey 存储的点击的某个field对应的升序还是降序
   currentSortKey = {
-   [field]: up/down
+   [field]: SortMethodType
   }
    */
   let upSelected = false;
@@ -21,7 +25,7 @@ export const getIconType = (key: string, spreadsheet: SpreadSheet) => {
   let downIconType = 'SortDown';
   if (currentSortKey && _.has(currentSortKey, key)) {
     // 有配置,当前点击的过的key(某个维度)
-    if (_.get(currentSortKey, key) === 'up') {
+    if (_.get(currentSortKey, key) === SortMethodType.ASC) {
       // 点击过此维度的up
       upSelected = true;
       upIconType = 'SortUpSelected';
@@ -47,8 +51,7 @@ export const renderIcon = (
   y: number,
   type: string,
   key: string,
-  sortKeyVal: string,
-  sortType: string,
+  sortType: SortMethodType,
   selected: boolean,
 ) => {
   const icon = new GuiIcon({
@@ -63,15 +66,17 @@ export const renderIcon = (
     let currentSortKey = {};
     if (!selected) {
       currentSortKey = {
-        [key]: sortKeyVal,
+        [key]: sortType,
       };
     }
+    const sortMethod = sortType as SortMethod;
+    // Do nothing when sortType is not changed.
+    if (spreadsheet.store.get('currentSortKey')?.[key] === sortType) {
+      return;
+    }
     spreadsheet.store.set('currentSortKey', currentSortKey);
-    spreadsheet.emit(KEY_LIST_SORT, {
-      sortFieldId: key,
-      sortMethod: selected ? '' : sortType,
-    });
-    spreadsheet.render(false);
+    spreadsheet.emit(KEY_LIST_SORT, { sortKey: key, sortMethod });
+    spreadsheet.render(true);
   });
 
   parent.add(icon);
@@ -92,8 +97,7 @@ export const renderDetailTypeSortIcon = (
     textY - DEFAULT_PADDING * 2,
     iconType.upIconType,
     key,
-    'up',
-    'ASC',
+    SortMethodType.ASC,
     iconType.upSelected,
   );
   renderIcon(
@@ -103,8 +107,7 @@ export const renderDetailTypeSortIcon = (
     textY - DEFAULT_PADDING / 2,
     iconType.downIconType,
     key,
-    'down',
-    'DESC',
+    SortMethodType.DESC,
     iconType.downSelected,
   );
 };
