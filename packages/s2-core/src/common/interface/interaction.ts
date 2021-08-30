@@ -20,8 +20,8 @@ export interface InteractionStateInfo {
   // all the active cells
   cells?: S2CellType[];
   // all the cells changed the state style
-  activeCells?: S2CellType[];
-  // all the active nodes, including rendered and unrendered cells
+  changedCells?: S2CellType[];
+  // all the active nodes, including rendered and not rendered cells
   nodes?: Node[];
 }
 

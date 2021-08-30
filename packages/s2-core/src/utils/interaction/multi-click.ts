@@ -26,7 +26,6 @@ export const handleRowColClick = (
   }
 
   if (meta.x !== undefined) {
-    spreadsheet.interaction.clearState();
     spreadsheet.interaction.interceptEvent.add(InterceptEventType.HOVER);
     // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
     let leafNodes = isTreeRowClick
@@ -36,7 +35,7 @@ export const handleRowColClick = (
 
     if (
       isMultiSelection &&
-      lastState.stateName !== InteractionStateName.SELECTED
+      lastState.stateName === InteractionStateName.SELECTED
     ) {
       selectedCells = isEmpty(lastState?.cells)
         ? selectedCells

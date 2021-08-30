@@ -32,7 +32,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
   public update() {
     const stateInfo = this.spreadsheet.interaction.getState();
     const cells = this.spreadsheet.interaction.getActiveCells();
-    console.log(stateInfo);
 
     if (!first(cells)) return;
 
