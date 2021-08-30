@@ -7,12 +7,15 @@ import {
 import { S2CellType, TooltipData } from '@/common/interface';
 import { Event } from '@antv/g-canvas';
 import { each, find, isEmpty, isEqual, concat } from 'lodash';
-import { BaseInteraction } from './base';
+import { BaseEvent, BaseEventImplement } from './events';
 
-export class DataCellMultiSelection extends BaseInteraction {
+export class DataCellMultiSelection
+  extends BaseEvent
+  implements BaseEventImplement
+{
   private isMultiSelection = false;
 
-  protected bindEvents() {
+  public bindEvents() {
     this.bindKeyboardDown();
     this.bindDataCellClick();
     this.bindKeyboardUp();

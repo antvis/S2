@@ -3,13 +3,13 @@ import {
   InterceptEventType,
   InteractionKeyboardKey,
 } from '@/common/constant';
-import { BaseEvent } from '../base-event';
+import { BaseEvent, BaseEventImplement } from '../base-event';
 import { handleRowColClick } from '@/utils/interaction/multi-click';
 import { Event } from '@antv/g-canvas';
 
-export class RowColumnClick extends BaseEvent {
+export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private isMultiSelection = false;
-  protected bindEvents() {
+  public bindEvents() {
     this.bindKeyboardDown();
     this.bindKeyboardUp();
     this.bindColCellClick();

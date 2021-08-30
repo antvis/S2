@@ -2,7 +2,7 @@ import { Event } from '@antv/g-canvas';
 import { get, isEmpty, find, head } from 'lodash';
 import { KEY_JUMP_HREF } from '../../../common/constant';
 import { S2Event, InterceptEventType } from '@/common/constant';
-import { BaseEvent } from '../base-event';
+import { BaseEvent, BaseEventImplement } from '../base-event';
 import { Data } from '../../../common/interface/s2DataConfig';
 import { CellAppendInfo } from '../../../common/interface';
 import { Node } from '../../../facet/layout/node';
@@ -10,8 +10,8 @@ import { Node } from '../../../facet/layout/node';
 /**
  * Row header click navigation interaction
  */
-export class RowTextClick extends BaseEvent {
-  protected bindEvents() {
+export class RowTextClick extends BaseEvent implements BaseEventImplement {
+  public bindEvents() {
     this.bindRowCellClick();
   }
 
