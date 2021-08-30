@@ -1,6 +1,11 @@
 import { each, isEmpty } from 'lodash';
 import { IGroup } from '@antv/g-base';
-import { SERIES_NUMBER_FIELD, KEY_GROUP_COL_FROZEN } from 'src/common/constant';
+import {
+  SERIES_NUMBER_FIELD,
+  KEY_GROUP_COL_FROZEN,
+  KEY_GROUP_COL_SCROLL,
+  KEY_GROUP_COL_FROZEN_TRAILING,
+} from 'src/common/constant';
 import { Formatter, S2CellType, SortParam } from '../../common/interface';
 import { ColCell, DetailColCell, CornerCell } from '../../cell';
 import { Node } from '../..';
@@ -23,21 +28,33 @@ export interface ColHeaderConfig extends BaseHeaderConfig {
 export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected frozenColGroup: IGroup;
 
+  protected frozenTrailingColGroup: IGroup;
+
   protected scrollGroup: IGroup;
 
   // TODO type define
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
-    const { frozenColCount } = this.headerConfig.spreadsheet?.options;
+    const {
+      frozenColCount,
+      frozenTrailingColCount,
+    } = this.headerConfig.spreadsheet?.options;
 
     this.scrollGroup = this.addGroup({
-      name: 'scrollsfwe',
+      name: KEY_GROUP_COL_SCROLL,
       zIndex: 1,
     });
 
-    if (frozenColCount && !this.frozenColGroup) {
+    if (frozenColCount) {
       this.frozenColGroup = this.addGroup({
         name: KEY_GROUP_COL_FROZEN,
+        zIndex: 2,
+      });
+    }
+
+    if (frozenTrailingColCount) {
+      this.frozenTrailingColGroup = this.addGroup({
+        name: KEY_GROUP_COL_FROZEN_TRAILING,
         zIndex: 2,
       });
     }
@@ -85,6 +102,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   public clear() {
+    this.frozenTrailingColGroup?.clear();
     this.frozenColGroup?.clear();
     this.scrollGroup.clear();
   }
@@ -97,12 +115,17 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       width,
       scrollX,
     } = this.headerConfig;
-    const { frozenColCount } = spreadsheet?.options;
+    const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
 
+    const colLength = spreadsheet?.facet.layoutResult.colLeafNodes.length;
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
     const colCellInRect = (item: Node): boolean => {
-      if (item.colIndex < frozenColCount) {
+      if (
+        (frozenColCount > 0 && item.colIndex < frozenColCount) ||
+        (frozenTrailingColCount > 0 &&
+          item.colIndex >= colLength - frozenTrailingColCount)
+      ) {
         return true;
       }
       return (
@@ -129,14 +152,21 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
           }
         }
         item.belongsCell = cell;
-        if (
-          node.colIndex < frozenColCount &&
-          !this.headerConfig.spreadsheet.isPivotMode()
-        ) {
-          this.frozenColGroup.add(cell);
-        } else {
-          this.scrollGroup.add(cell);
+
+        if (this.headerConfig.spreadsheet.isTableMode()) {
+          if (node.colIndex < frozenColCount) {
+            this.frozenColGroup.add(cell);
+            return;
+          }
+          if (
+            frozenTrailingColCount > 0 &&
+            node.colIndex >= colLength - frozenTrailingColCount
+          ) {
+            this.frozenTrailingColGroup.add(cell);
+            return;
+          }
         }
+        this.scrollGroup.add(cell);
       }
     });
   }

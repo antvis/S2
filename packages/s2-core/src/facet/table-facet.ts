@@ -49,7 +49,7 @@ export class TableFacet extends BaseFacet {
 
       let data;
 
-      const { height: canvasHeight, width: canvasWidth } = this.getCanvasHW();
+      const { width: canvasWidth } = this.getCanvasHW();
       const dataLength = dataSet.getMultiData({}).length;
       const colLength = colLeafNodes.length;
 
@@ -60,7 +60,7 @@ export class TableFacet extends BaseFacet {
         frozenTrailingRowCount > 0 &&
         rowIndex >= dataLength - frozenTrailingRowCount
       ) {
-        y = canvasHeight - (dataLength - rowIndex) * cellHeight;
+        y = this.panelBBox.maxY - (dataLength - rowIndex) * cellHeight;
       }
 
       if (
@@ -164,12 +164,15 @@ export class TableFacet extends BaseFacet {
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
+    const { frozenTrailingColCount } = this.spreadsheet?.options;
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
     for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
       levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
     }
+
+    const nodes = [];
 
     for (let i = 0; i < allNodes.length; i++) {
       const currentNode = allNodes[i];
@@ -182,7 +185,36 @@ export class TableFacet extends BaseFacet {
       currentNode.y = 0;
 
       currentNode.height = this.getColNodeHeight(currentNode);
-      layoutCoordinate(this.cfg, null, currentNode);
+
+      nodes.push(currentNode);
+
+      if (frozenTrailingColCount === 0) {
+        layoutCoordinate(this.cfg, null, currentNode);
+      }
+    }
+
+    preLeafNode = Node.blankNode();
+
+    const canvasW = this.getCanvasHW().width;
+
+    if (frozenTrailingColCount > 0) {
+      for (let i = 1; i <= allNodes.length; i++) {
+        const currentNode = allNodes[allNodes.length - i];
+
+        if (
+          currentNode.colIndex >=
+          colLeafNodes.length - frozenTrailingColCount
+        ) {
+          if (currentNode.colIndex === allNodes.length - 1) {
+            currentNode.x = canvasW - currentNode.width;
+          } else {
+            currentNode.x = preLeafNode.x - currentNode.width;
+          }
+          preLeafNode = currentNode;
+        }
+
+        layoutCoordinate(this.cfg, null, currentNode);
+      }
     }
   }
 

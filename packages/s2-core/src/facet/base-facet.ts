@@ -4,6 +4,7 @@ import type { BBox, IGroup, Point } from '@antv/g-canvas';
 import type { GestureEvent } from '@antv/g-gesture';
 import { Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
+import { renderLine } from '@/utils/g-renders';
 import * as d3Timer from 'd3-timer';
 import { Group } from '@antv/g-canvas';
 import {
@@ -201,6 +202,7 @@ export abstract class BaseFacet {
     this.renderScrollBars();
     this.renderFrozenPanelCornerGroup();
     this.initFrozenGroupPosition();
+    this.renderFrozenGroupSplitLine();
     this.dynamicRenderCell(false);
   }
 
@@ -978,15 +980,125 @@ export abstract class BaseFacet {
       this.cornerBBox.height,
     );
     translateGroup(
-      this.spreadsheet.frozenTopLeftGroup,
+      this.spreadsheet.frozenTopGroup,
       this.cornerBBox.width,
       this.cornerBBox.height,
     );
-    translateGroup(
-      this.spreadsheet.frozenTopRightGroup,
-      this.cornerBBox.width,
-      this.cornerBBox.height,
-    );
+  };
+
+  protected renderFrozenGroupSplitLine = () => {
+    const {
+      frozenRowCount,
+      frozenColCount,
+      frozenTrailingColCount,
+      frozenTrailingRowCount,
+    } = this.spreadsheet.options;
+    const colLeafNodes = this.layoutResult.colLeafNodes;
+    const dataLength = this.spreadsheet.dataSet.getMultiData({}).length;
+    // todo
+    if (frozenColCount > 0) {
+      const x = colLeafNodes.reduce((prev, item, idx) => {
+        if (idx < frozenColCount) {
+          return prev + item.width;
+        }
+        return prev;
+      }, 0);
+
+      // console.log(this.panelBBox)
+
+      // this.spreadsheet.frozenColGroup.setClip({
+      //   type: 'rect',
+      //   attrs: {
+      //     x: 0,
+      //     y: this.cornerBBox.height,
+      //     width: x,
+      //     height: this.panelBBox.maxY,
+      //   },
+      // })
+
+      renderLine(
+        this.foregroundGroup as Group,
+        {
+          x1: x,
+          x2: x,
+          y1: this.cornerBBox.height,
+          y2: this.panelBBox.maxY,
+        },
+        {
+          lineWidth: 1,
+          stroke: 'red',
+        },
+      );
+    }
+
+    if (frozenRowCount > 0) {
+      renderLine(
+        this.foregroundGroup as Group,
+        {
+          x1: 0,
+          x2: this.panelBBox.width,
+          y1:
+            this.cornerBBox.height +
+            this.getTotalHeightForRange(0, frozenRowCount - 1),
+          y2:
+            this.cornerBBox.height +
+            this.getTotalHeightForRange(0, frozenRowCount - 1),
+        },
+        {
+          lineWidth: 1,
+          stroke: 'red',
+        },
+      );
+    }
+
+    if (frozenTrailingColCount > 0) {
+      const width = colLeafNodes.reduceRight((prev, item, idx) => {
+        if (idx >= colLeafNodes.length - frozenTrailingColCount) {
+          return prev + item.width;
+        }
+        return prev;
+      }, 0);
+
+      renderLine(
+        this.foregroundGroup as Group,
+        {
+          x1: this.panelBBox.width - width,
+          x2: this.panelBBox.width - width,
+          y1: this.cornerBBox.height,
+          y2: this.panelBBox.maxY,
+        },
+        {
+          lineWidth: 1,
+          stroke: 'red',
+        },
+      );
+    }
+
+    if (frozenTrailingRowCount > 0) {
+      renderLine(
+        this.foregroundGroup as Group,
+        {
+          x1: 0,
+          x2: this.panelBBox.width,
+          y1:
+            this.panelBBox.maxY -
+            this.getTotalHeightForRange(
+              dataLength - frozenTrailingRowCount,
+              dataLength - 1,
+            ),
+          y2:
+            this.panelBBox.maxY -
+            this.getTotalHeightForRange(
+              dataLength - frozenTrailingRowCount,
+              dataLength - 1,
+            ),
+        },
+        {
+          lineWidth: 1,
+          stroke: 'red',
+        },
+      );
+    }
   };
 
   protected renderFrozenPanelCornerGroup = () => {
@@ -996,26 +1108,19 @@ export abstract class BaseFacet {
       frozenTrailingRowCount,
       frozenTrailingColCount,
     } = this.spreadsheet.options;
+    const { frozenTopGroup, frozenBottomGroup } = this.spreadsheet;
     const dataLength = this.viewCellHeights.getTotalLength();
     const colLength = this.layoutResult.colLeafNodes.length;
 
     for (let i = 0; i < frozenColCount; i++) {
       for (let j = 0; j < frozenRowCount; j++) {
-        const viewMeta = this.layoutResult.getCellMeta(j, i);
-        if (viewMeta) {
-          const cell = this.cfg.dataCell(viewMeta);
-          this.spreadsheet.frozenTopLeftGroup.add(cell);
-        }
+        this.addFrozenCell(i, j, frozenTopGroup);
       }
 
       if (frozenTrailingRowCount > 0) {
         for (let j = 0; j < frozenTrailingRowCount; j++) {
           const index = dataLength - 1 - j;
-          const viewMeta = this.layoutResult.getCellMeta(index, i);
-          if (viewMeta) {
-            const cell = this.cfg.dataCell(viewMeta);
-            this.spreadsheet.frozenBottomLeftGroup.add(cell);
-          }
+          this.addFrozenCell(i, index, frozenBottomGroup);
         }
       }
     }
@@ -1023,23 +1128,23 @@ export abstract class BaseFacet {
     for (let i = 0; i < frozenTrailingColCount; i++) {
       const colIndex = colLength - 1 - i;
       for (let j = 0; j < frozenRowCount; j++) {
-        const viewMeta = this.layoutResult.getCellMeta(j, colIndex);
-        if (viewMeta) {
-          const cell = this.cfg.dataCell(viewMeta);
-          this.spreadsheet.frozenTopRightGroup.add(cell);
-        }
+        this.addFrozenCell(colIndex, j, frozenTopGroup);
       }
 
       if (frozenTrailingRowCount > 0) {
         for (let j = 0; j < frozenTrailingRowCount; j++) {
           const index = dataLength - 1 - j;
-          const viewMeta = this.layoutResult.getCellMeta(index, colIndex);
-          if (viewMeta) {
-            const cell = this.cfg.dataCell(viewMeta);
-            this.spreadsheet.frozenBottomRightGroup.add(cell);
-          }
+          this.addFrozenCell(colIndex, index, frozenBottomGroup);
         }
       }
+    }
+  };
+
+  addFrozenCell = (colIndex: number, rowIndex: number, group: IGroup) => {
+    const viewMeta = this.layoutResult.getCellMeta(rowIndex, colIndex);
+    if (viewMeta) {
+      const cell = this.cfg.dataCell(viewMeta);
+      group.add(cell);
     }
   };
 

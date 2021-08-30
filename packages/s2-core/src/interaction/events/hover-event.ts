@@ -16,9 +16,9 @@ import { BaseEvent } from './base-event';
  */
 export class HoverEvent extends BaseEvent {
   protected bindEvents() {
-    // this.bindDataCellHover();
-    // this.bindRowCellHover();
-    // this.bindColCellHover();
+    this.bindDataCellHover();
+    this.bindRowCellHover();
+    this.bindColCellHover();
   }
 
   private updateRowColCells(meta: ViewMeta) {

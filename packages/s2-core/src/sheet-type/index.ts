@@ -11,10 +11,8 @@ import {
   KEY_GROUP_PANEL_FROZEN_COL,
   KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
-  KEY_GROUP_PANEL_FROZEN_TOP_LEFT,
-  KEY_GROUP_PANEL_FROZEN_TOP_RIGHT,
-  KEY_GROUP_PANEL_FROZEN_BOTTOM_LEFT,
-  KEY_GROUP_PANEL_FROZEN_BOTTOM_RIGHT,
+  KEY_GROUP_PANEL_FROZEN_TOP,
+  KEY_GROUP_PANEL_FROZEN_BOTTOM,
   KEY_TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
 } from '@/common/constant';
@@ -118,13 +116,9 @@ export class SpreadSheet extends EE {
 
   public frozenTrailingColGroup: IGroup;
 
-  public frozenTopLeftGroup: IGroup;
+  public frozenTopGroup: IGroup;
 
-  public frozenTopRightGroup: IGroup;
-
-  public frozenBottomLeftGroup: IGroup;
-
-  public frozenBottomRightGroup: IGroup;
+  public frozenBottomGroup: IGroup;
 
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
@@ -524,6 +518,10 @@ export class SpreadSheet extends EE {
       name: KEY_GROUP_FORE_GROUND,
       zIndex: 3,
     });
+    this.initPanelGroupChildren();
+  }
+
+  protected initPanelGroupChildren(): void {
     this.panelScrollGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_SCROLL,
       zIndex: 1,
@@ -544,20 +542,12 @@ export class SpreadSheet extends EE {
       name: KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
       zIndex: 2,
     });
-    this.frozenBottomLeftGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_PANEL_FROZEN_BOTTOM_LEFT,
+    this.frozenTopGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_TOP,
       zIndex: 2,
     });
-    this.frozenBottomRightGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_PANEL_FROZEN_BOTTOM_RIGHT,
-      zIndex: 2,
-    });
-    this.frozenTopLeftGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_PANEL_FROZEN_TOP_LEFT,
-      zIndex: 2,
-    });
-    this.frozenTopRightGroup = this.panelGroup.addGroup({
-      name: KEY_GROUP_PANEL_FROZEN_TOP_RIGHT,
+    this.frozenBottomGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_BOTTOM,
       zIndex: 2,
     });
   }

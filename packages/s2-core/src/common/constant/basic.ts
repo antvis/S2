@@ -22,16 +22,16 @@ export const KEY_GROUP_PANEL_FROZEN_ROW = 'frozenRowGroup';
 export const KEY_GROUP_PANEL_FROZEN_COL = 'frozenColGroup';
 export const KEY_GROUP_PANEL_FROZEN_TRAILING_ROW = 'frozenTrailingRowGroup';
 export const KEY_GROUP_PANEL_FROZEN_TRAILING_COL = 'frozenTrailingColGroup';
-export const KEY_GROUP_PANEL_FROZEN_TOP_LEFT = 'frozenTopLeftGroup';
-export const KEY_GROUP_PANEL_FROZEN_TOP_RIGHT = 'frozenTopRightGroup';
-export const KEY_GROUP_PANEL_FROZEN_BOTTOM_LEFT = 'frozenBottomLeftGroup';
-export const KEY_GROUP_PANEL_FROZEN_BOTTOM_RIGHT = 'frozenBottomRightGroup';
+export const KEY_GROUP_PANEL_FROZEN_TOP = 'frozenTopGroup';
+export const KEY_GROUP_PANEL_FROZEN_BOTTOM = 'frozenBottomGroup';
 export const KEY_GROUP_ROW_RESIZER = 'rowResizerGroup';
 export const KEY_GROUP_ROW_INDEX_RESIZER = 'rowIndexResizerGroup';
 export const KEY_GROUP_CORNER_RESIZER = 'cornerResizerGroup';
 export const KEY_GROUP_COL_RESIZER = 'colResizerGroup';
 export const KEY_GROUP_MASK_GROUP = 'maskGroup';
+export const KEY_GROUP_COL_SCROLL = 'colScrollGroup';
 export const KEY_GROUP_COL_FROZEN = 'colFrozenGroup';
+export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
 
 // key of series number node in corner header
 export const KEY_SERIES_NUMBER_NODE = 'series-number-node';
