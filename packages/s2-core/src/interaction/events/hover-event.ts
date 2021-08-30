@@ -8,13 +8,13 @@ import { S2CellType, ViewMeta, TooltipOptions } from '@/common/interface';
 import { getActiveHoverRowColCells } from '@/utils/interaction/hover-event';
 import { Event } from '@antv/g-canvas';
 import { isEmpty, forEach } from 'lodash';
-import { BaseEvent } from './base-event';
+import { BaseEvent, BaseEventImplement } from './base-event';
 
 /**
  * @description Hover event for data cells, row cells and col cells
  */
-export class HoverEvent extends BaseEvent {
-  protected bindEvents() {
+export class HoverEvent extends BaseEvent implements BaseEventImplement {
+  public bindEvents() {
     this.bindDataCellHover();
     this.bindRowCellHover();
     this.bindColCellHover();

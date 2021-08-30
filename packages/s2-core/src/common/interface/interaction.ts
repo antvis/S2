@@ -1,7 +1,7 @@
 import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
 import { HeaderCell } from '@/cell/header-cell';
 import { Node } from '@/index';
-import { BaseInteraction } from '@/interaction/base';
+import { BaseEvent } from '@/interaction/events';
 import { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName } from '../constant';
 import { ViewMeta } from './basic';
@@ -25,7 +25,7 @@ export interface InteractionStateInfo {
 
 export type InteractionConstructor = new (
   spreadsheet: SpreadSheet,
-) => BaseInteraction;
+) => BaseEvent;
 
 export interface CustomInteraction {
   key: string;

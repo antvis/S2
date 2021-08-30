@@ -9,10 +9,10 @@ import { LineChartOutlined } from '@ant-design/icons';
 import { Event } from '@antv/g-canvas';
 import { noop, get } from 'lodash';
 import { DataCell } from '../../../cell/data-cell';
-import { BaseEvent } from '../base-event';
+import { BaseEvent, BaseEventImplement } from '../base-event';
 
-export class DataCellClick extends BaseEvent {
-  protected bindEvents() {
+export class DataCellClick extends BaseEvent implements BaseEventImplement {
+  public bindEvents() {
     this.bindDataCellClick();
   }
 
