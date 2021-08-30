@@ -62,10 +62,10 @@ export const getDataSumByField = (
 /** whether the data of hover is selected */
 export const isHoverDataInSelectedData = (
   selectedData: TooltipDataItem[],
-  hoverData: TooltipDataItem,
+  activeData: TooltipDataItem,
 ): boolean => {
   return some(selectedData, (dataItem: TooltipDataItem): boolean =>
-    isEqual(dataItem, hoverData),
+    isEqual(dataItem, activeData),
   );
 };
 
@@ -173,14 +173,14 @@ export const getListItem = (
 export const getFieldList = (
   spreadsheet: SpreadSheet,
   fields: string[],
-  hoverData: TooltipDataItem,
+  activeData: TooltipDataItem,
 ): ListItem[] => {
   const currFields = filter(
     concat([], fields),
-    (field) => field !== EXTRA_FIELD && hoverData[field],
+    (field) => field !== EXTRA_FIELD && activeData[field],
   );
   const fieldList = map(currFields, (field: string): ListItem => {
-    return getListItem(spreadsheet, hoverData, field);
+    return getListItem(spreadsheet, activeData, field);
   });
   return fieldList;
 };
@@ -188,21 +188,21 @@ export const getFieldList = (
 /**
  * 获取选中格行/列头信息
  * @param spreadsheet
- * @param hoverData
+ * @param activeData
  */
 export const getHeadInfo = (
   spreadsheet: SpreadSheet,
-  hoverData: TooltipDataItem,
+  activeData: TooltipDataItem,
   options?: TooltipOptions,
 ): TooltipHeadInfo => {
   const { isTotals } = options || {};
   let colList = [];
   let rowList = [];
-  if (hoverData) {
-    const colFields = get(spreadsheet?.dataSet?.fields, 'columns', []);
-    const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
-    colList = getFieldList(spreadsheet, colFields, hoverData);
-    rowList = getFieldList(spreadsheet, rowFields, hoverData);
+  if (activeData) {
+    const colFields = spreadsheet?.dataSet?.fields?.columns;
+    const rowFields = spreadsheet?.dataSet?.fields?.rows;
+    colList = getFieldList(spreadsheet, colFields, activeData);
+    rowList = getFieldList(spreadsheet, rowFields, activeData);
   }
 
   // 此时是总计-总计
@@ -216,23 +216,23 @@ export const getHeadInfo = (
 /**
  * 获取数据明细
  * @param spreadsheet
- * @param hoverData
+ * @param activeData
  * @param options
  */
 export const getDetailList = (
   spreadsheet,
-  hoverData: TooltipDataItem,
+  activeData: TooltipDataItem,
   options: TooltipOptions,
 ): ListItem[] => {
-  if (hoverData) {
+  if (activeData) {
     const { isTotals } = options;
-    const field = hoverData[EXTRA_FIELD];
-    const value = hoverData[field];
+    const field = activeData[EXTRA_FIELD];
+    const value = activeData[field];
     let valItem = [];
     if (isTotals) {
       // total/subtotal
       valItem.push(
-        getListItem(spreadsheet, hoverData, field, get(hoverData, VALUE_FIELD)),
+        getListItem(spreadsheet, activeData, field, get(activeData, VALUE_FIELD)),
       );
     } else {
       // if (spreadsheet?.isValueInCols()) {
@@ -246,7 +246,7 @@ export const getDetailList = (
         spreadsheet.getTooltipDataItemMappingCallback()
       ) {
         const mappedResult = handleDataItem(
-          hoverData,
+          activeData,
           spreadsheet.getTooltipDataItemMappingCallback(),
         ) as Record<string, string | number>;
 
@@ -254,7 +254,7 @@ export const getDetailList = (
           valItem.push(getListItem(spreadsheet, mappedResult, key));
         });
       } else {
-        valItem.push(getListItem(spreadsheet, hoverData, field));
+        valItem.push(getListItem(spreadsheet, activeData, field));
       }
       // }
     }
@@ -330,7 +330,7 @@ export const getSelectedData = (
     );
     forEach(selectedCellIndexes, ([i, j]) => {
       const viewMeta = layoutResult.getCellMeta(i, j);
-      const data = get(viewMeta, 'data');
+      const data = viewMeta?.data;
       if (!isNil(data)) {
         selectedData.push(data);
       }
