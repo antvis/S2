@@ -422,7 +422,8 @@ export const getTooltipData = (params: TooltipDataParam) => {
     summaries = mergeSummaries(summaries);
   } else if (options.showSingleTips) {
     // 行列头hover
-    firstCellInfo.name = firstCellInfo.value || '';
+    const metaName = find(spreadsheet?.dataCfg?.meta, item=> item?.field === firstCellInfo.value)?.name;
+    firstCellInfo.name = metaName || firstCellInfo.value || '';
   } else {
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
     details = getDetailList(spreadsheet, firstCellInfo, options);
