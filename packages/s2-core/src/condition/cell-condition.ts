@@ -94,7 +94,7 @@ export class CellCondition extends Group {
    * @param condition
    */
   protected mappingValue(condition: Condition): MappingResult {
-    const value = this.meta.fieldValue as unknown as number;
+    const value = (this.meta.fieldValue as unknown) as number;
     return condition?.mapping(value, get(this.meta.data, [0]));
   }
 
@@ -119,12 +119,20 @@ export class CellCondition extends Group {
   }
 
   /**
+   * @description get cell style
+   * @protected
+   */
+  protected getCellStyle() {
+    return this.theme.dataCell.cell;
+  }
+
+  /**
    * Get content area size that contains icon and text
    * @protected
    */
   protected getContentAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
-    const { padding } = this.theme.dataCell.cell;
+    const { padding } = this.getCellStyle();
     const textStyle = this.getTextStyle();
 
     const cfg: CellBoxCfg = {
@@ -340,7 +348,7 @@ export class CellCondition extends Group {
         // eslint-disable-next-line no-multi-assign
         stroke = fill = attrs.fill;
 
-        const barChartHeight = this.theme.dataCell.cell.miniBarChartHeight;
+        const barChartHeight = this.getCellStyle().miniBarChartHeight;
         this.conditionShapes.set(
           'interval',
           renderRect(this, {

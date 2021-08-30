@@ -65,6 +65,11 @@ export interface S2PartialOptions {
   // extra styles
   readonly style?: Partial<Style>;
   readonly hierarchyCollapse?: boolean;
+  // focus selected cell, like the spotlight
+  readonly selectedCellsSpotlight?: boolean;
+  // highlight all row header cells and column header cells to which the hovered cell belongs
+  readonly hoverHighlight?: boolean;
+  readonly hdAdapter?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -100,10 +105,6 @@ export interface S2PartialOptions {
   filterDisplayDataItem?: FilterDataItemCallback;
   // determine data mapping when shows in tooltip
   mappingDisplayDataItem?: MappingDataItemCallback;
-  // focus selected cell, like the spotlight
-  selectedCellsSpotlight?: boolean;
-  // highlight all row header cells and column header cells to which the hovered cell belongs
-  hoverHighlight?: boolean;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
 
   /** ***********CUSTOM LAYOUT HOOKS**************** */
@@ -122,7 +123,7 @@ export type S2Options = S2PartialOptions & {
   readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
 };
 
-export const defaultStyle = {
+export const defaultStyle: Style = {
   treeRowsWidth: TREE_ROW_DEFAULT_WIDTH,
   collapsedRows: {},
   collapsedCols: {},
@@ -150,9 +151,9 @@ export const defaultStyle = {
     maxSampleIndex: 1,
   },
   device: 'pc',
-} as Style;
+};
 
-export const defaultOptions = {
+export const defaultOptions: S2Options = {
   width: 600,
   height: 480,
   mode: 'pivot',
@@ -171,7 +172,8 @@ export const defaultOptions = {
   style: defaultStyle,
   selectedCellsSpotlight: true,
   hoverHighlight: true,
-} as S2Options;
+  hdAdapter: true,
+};
 
 export const safetyOptions = (options: S2Options) =>
   merge({}, defaultOptions, options);

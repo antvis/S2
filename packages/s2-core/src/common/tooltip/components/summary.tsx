@@ -1,7 +1,7 @@
 import { TooltipSummaryOptions } from '@/common/interface';
 import * as React from 'react';
-import { i18n } from '../../i18n';
-import { TOOLTIP_CLASS_PRE } from '../constant';
+import { i18n } from '@/common/i18n';
+import { TOOLTIP_PREFIX_CLS } from '@/common/tooltip/constant';
 
 const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
   const { summaries = [] } = props;
@@ -12,8 +12,8 @@ const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
     }, 0);
 
     return (
-      <div className={`${TOOLTIP_CLASS_PRE}-summary-item`}>
-        <span className={`${TOOLTIP_CLASS_PRE}-bold`}>
+      <div className={`${TOOLTIP_PREFIX_CLS}-summary-item`}>
+        <span className={`${TOOLTIP_PREFIX_CLS}-bold`}>
           {selectedCount} {i18n('项')}
         </span>{' '}
         {i18n('已选择')}
@@ -28,13 +28,13 @@ const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
       return (
         <div
           key={`${name}-${value}`}
-          className={`${TOOLTIP_CLASS_PRE}-summary-item`}
+          className={`${TOOLTIP_PREFIX_CLS}-summary-item`}
         >
-          <span className={`${TOOLTIP_CLASS_PRE}-summary-key`}>
+          <span className={`${TOOLTIP_PREFIX_CLS}-summary-key`}>
             {name}（{i18n('总和')})
           </span>
           <span
-            className={`${TOOLTIP_CLASS_PRE}-summary-val ${TOOLTIP_CLASS_PRE}-bold`}
+            className={`${TOOLTIP_PREFIX_CLS}-summary-val ${TOOLTIP_PREFIX_CLS}-bold`}
           >
             {value}
           </span>
@@ -44,7 +44,7 @@ const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
   };
 
   return (
-    <div className={`${TOOLTIP_CLASS_PRE}-summary`}>
+    <div className={`${TOOLTIP_PREFIX_CLS}-summary`}>
       {renderSelected()}
       {renderSummary()}
     </div>

@@ -57,6 +57,12 @@ export class RootInteraction {
     this.registerEvents();
   }
 
+  public destroy() {
+    this.events.clear();
+    this.eventController.clear();
+    this.resetState();
+  }
+
   public setState(interactionStateInfo: InteractionStateInfo) {
     setState(interactionStateInfo, this.spreadsheet);
   }
@@ -127,7 +133,7 @@ export class RootInteraction {
   public getAllRowHeaderCells() {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
-    const rowCells = rowHeader.cfg.children;
+    const rowCells = rowHeader?.cfg?.children || [];
     return rowCells.filter(
       (cell: S2CellType) => cell instanceof RowCell,
     ) as RowCell[];
@@ -136,12 +142,10 @@ export class RootInteraction {
   public getAllColHeaderCells() {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const colHeader = children.filter((group) => group instanceof ColHeader)[0];
-    const colCells = colHeader.cfg.children;
-    return (
-      (colCells.filter(
-        (cell: S2CellType) => cell instanceof ColCell,
-      ) as ColCell[]) || []
-    );
+    const colCells = colHeader?.cfg?.children || [];
+    return colCells.filter(
+      (cell: S2CellType) => cell instanceof ColCell,
+    ) as ColCell[];
   }
 
   public getAllCells() {
@@ -182,7 +186,7 @@ export class RootInteraction {
   }
 
   private registerEventController() {
-    this.eventController = new EventController(this.spreadsheet, this);
+    this.eventController = new EventController(this.spreadsheet);
   }
 
   public draw() {
@@ -211,7 +215,6 @@ export class RootInteraction {
     });
   }
 
-  // 注册事件
   protected registerEvents() {
     this.events.clear();
     this.events.set(

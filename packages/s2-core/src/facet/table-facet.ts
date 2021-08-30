@@ -13,16 +13,20 @@ export class TableFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     const { dataSet, spreadsheet, cellCfg } = this.cfg;
 
-    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: true,
-        facetCfg: this.cfg,
-      });
-    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: false,
-        facetCfg: this.cfg,
-      });
+    const {
+      leafNodes: rowLeafNodes,
+      hierarchy: rowsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: true,
+      facetCfg: this.cfg,
+    });
+    const {
+      leafNodes: colLeafNodes,
+      hierarchy: colsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: false,
+      facetCfg: this.cfg,
+    });
 
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -65,6 +69,7 @@ export class TableFacet extends BaseFacet {
         colIndex,
         isTotals: false,
         colId: col.id,
+        rowId: String(rowIndex),
         valueField: col.id,
         fieldValue: data,
       } as ViewMeta;

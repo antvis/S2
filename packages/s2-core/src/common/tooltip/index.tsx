@@ -8,6 +8,7 @@ import {
   TooltipSummaryOptions,
   TooltipNameTipsOptions,
   TooltipHeadInfo as TooltipHeadInfoType,
+  Aggregation,
 } from '@/common/interface';
 import { isEmpty } from 'lodash';
 import React from 'react';
@@ -27,7 +28,7 @@ import Interpretation from './components/interpretation';
 import TooltipOperator from './components/operator';
 import SimpleTips from './components/simple-tips';
 import TooltipSummary from './components/summary';
-import { TOOLTIP_CLASS_PRE } from './constant';
+import { TOOLTIP_PREFIX_CLS } from './constant';
 import './index.less';
 
 /**
@@ -192,7 +193,7 @@ export class BaseTooltip {
       this.container = container;
     }
     // change class every time!
-    this.container.className = `${TOOLTIP_CLASS_PRE}-container`;
+    this.container.className = `${TOOLTIP_PREFIX_CLS}-container`;
     return this.container;
   }
 

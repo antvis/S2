@@ -1,11 +1,11 @@
 import { DataCell } from 'src/cell/data-cell';
-import { TableDataCellCondition } from '../condition/table-data-celll-condition';
+import { TableRowCellCondition } from '../condition/table-row-cell-condition';
 
-export class TableDataCell extends DataCell {
+export class TableRowCell extends DataCell {
   protected drawConditionsShapes() {
     const { spreadsheet, meta, theme } = this;
     const { conditions } = this.spreadsheet.options;
-    this.cellCondition = new TableDataCellCondition(
+    this.cellCondition = new TableRowCellCondition(
       spreadsheet,
       meta,
       theme,
