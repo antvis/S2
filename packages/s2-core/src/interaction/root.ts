@@ -28,13 +28,12 @@ import {
   ColCell,
   RowCell,
 } from '@/index';
-import { BaseInteraction } from './base';
 import { EventController } from './events/event-controller';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
 
-  public interactions = new Map<string, BaseInteraction>();
+  public interactions = new Map<string, BaseEvent>();
 
   // 用来标记需要拦截的事件，interaction和本身的hover等事件可能会有冲突，有冲突时在此屏蔽
   public interceptEvent = new Set<InterceptEvent>();
@@ -208,7 +207,7 @@ export class RootInteraction {
     }
   }
 
-  updatePanelAllCellsStyle() {
+  public updatePanelAllCellsStyle() {
     const cells = this.getPanelGroupAllDataCells();
     cells.forEach((cell: DataCell) => {
       cell.update();

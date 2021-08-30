@@ -8,13 +8,13 @@ import { Group, IGroup } from '@antv/g-canvas';
 import { clone, get, isNil, merge, throttle } from 'lodash';
 import { SpreadSheet } from 'src/sheet-type';
 import { ResizeInfo } from '../facet/header/interface';
-import { BaseInteraction } from './base';
+import { BaseEvent, BaseEventImplement } from './events';
 import { RootInteraction } from './root';
 
 /**
  * Resize row&col width/height interaction
  */
-export class RowColResize extends BaseInteraction {
+export class RowColResize extends BaseEvent implements BaseEventImplement {
   private hotsPot: IGroup;
 
   private resizeGroup: IGroup;
@@ -28,7 +28,7 @@ export class RowColResize extends BaseInteraction {
     this.container = this.spreadsheet.foregroundGroup;
   }
 
-  protected bindEvents() {
+  public bindEvents() {
     this.bindMouseDown();
     this.bindMouseMove();
     this.bindMouseUp();
