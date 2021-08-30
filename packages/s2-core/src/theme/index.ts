@@ -173,7 +173,7 @@ export const getTheme = (
           },
           // -------------- selected -------------------
           selected: {
-            backgroundColor: brandColors[2],
+            backgroundColor: brandColors[4],
             backgroundOpacity: 1,
           },
         },

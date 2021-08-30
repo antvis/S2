@@ -26,7 +26,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected handlePrepareSelect(cells: S2CellType[]) {
-    if (isIncludeCell(cells, this.getMeta())) {
+    if (isIncludeCell(cells, this)) {
       this.updateByState(InteractionStateName.PREPARE_SELECT);
     }
   }
@@ -44,7 +44,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
-        if (isIncludeCell(cells, this.getMeta())) {
+        if (isIncludeCell(cells, this)) {
           this.updateByState(InteractionStateName.SELECTED);
         } else if (this.spreadsheet.options.selectedCellsSpotlight) {
           this.updateByState(InteractionStateName.UNSELECTED);

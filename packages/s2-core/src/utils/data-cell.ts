@@ -1,4 +1,4 @@
-import {isEqual} from 'lodash';
+import { isEqual } from 'lodash';
 import {
   CellBoxCfg,
   FilterDataItemCallback,
@@ -152,9 +152,10 @@ export const handleDataItem = (
  * @param cells active cells
  * @param meta the meta information of current cell
  */
-export const isIncludeCell = (cells: S2CellType[], meta: ViewMeta) => {
+export const isIncludeCell = (cells: S2CellType[], currentCell: S2CellType) => {
+  const meta = currentCell.getMeta();
   return cells.some((cell) => {
     const cellMeta = cell.getMeta();
-    return isEqual(cellMeta, meta) ;
+    return isEqual(cellMeta, meta);
   });
 };
