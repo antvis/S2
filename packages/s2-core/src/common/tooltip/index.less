@@ -1,21 +1,26 @@
-.ss-tooltip-container {
-  position: fixed;
-  min-width: 200px;
-  max-width: 640px;
-  z-index: 1024;
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.96);
-  border-radius: 2px;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
-  font-family: 'Roboto', 'PingFang SC', 'Chinese Quote', '-apple-system',
-    'BlinkMacSystemFont', 'Segoe UI', 'Hiragino Sans GB', 'Microsoft YaHei',
-    'Helvetica Neue', Helvetica, Arial, sans-serif;
+@tooltip-prefix-cls: antv-s2-tooltip;
+
+.@{tooltip-prefix-cls} {
+  &-container {
+    position: fixed;
+    min-width: 200px;
+    max-width: 640px;
+    z-index: 1024;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 2px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+    font-family: 'Roboto', 'PingFang SC', 'Chinese Quote', '-apple-system',
+      'BlinkMacSystemFont', 'Segoe UI', 'Hiragino Sans GB', 'Microsoft YaHei',
+      'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
 
   &.trans-2-middle {
     transform: translateX(-90px) translateY(-160%);
     pointer-events: none;
   }
-  .ss-tooltip-tips {
+
+  &-tips {
     padding: 4px 12px;
     line-height: 20px;
     font-size: 12px;
@@ -39,7 +44,7 @@
     }
   }
 
-  .ss-tooltip-infos {
+  &-infos {
     padding: 4px 12px;
     line-height: 20px;
     font-size: 12px;
@@ -54,36 +59,40 @@
     background: rgba(249, 249, 249, 0.96);
   }
 
-  .ss-tooltip-summary {
+  &-summary {
     text-align: left;
     line-height: 20px;
     font-size: 12px;
     color: rgba(0, 0, 0, 0.65);
     overflow: hidden;
     padding: 12px 12px 4px;
-    .ss-tooltip-summary-val {
+
+    .@{tooltip-prefix-cls}-summary-val {
       float: right;
     }
   }
 
-  .ss-tooltip-interpretation {
+  &-interpretation {
     font-size: 12px;
     color: rgba(0, 0, 0, 0.65);
     overflow: hidden;
     padding: 12px 12px 4px;
-    .ss-tooltip-interpretation-head {
+
+    .@{tooltip-prefix-cls}-interpretation-head {
       margin-bottom: 12px;
-      .ss-tooltip-interpretation-icon {
+
+      .@{tooltip-prefix-cls}-interpretation-icon {
         width: 14px;
         height: 14px;
       }
-      .ss-tooltip-interpretation-name {
+
+      .@{tooltip-prefix-cls}-interpretation-name {
         color: #000000;
       }
     }
   }
 
-  .ss-tooltip-head-info-list {
+  &-head-info-list {
     font-family: PingFangSC-Regular;
     font-size: 12px;
     color: #a2a2a2;
@@ -93,33 +102,37 @@
     line-height: 20px;
   }
 
-  .ss-tooltip-bold {
+  &-bold {
     font-weight: bold;
   }
-  .ss-tooltip-highlight {
+  &-highlight {
     color: rgba(0, 0, 0, 0.85);
   }
 
-  .ss-tooltip-divider {
+  &-divider {
     border-top: 1px solid #e9e9e9;
   }
-  .ss-tooltip-detail-list {
+
+  &-detail-list {
     padding: 2px 12px 8px;
-    .ss-tooltip-detail-item {
+
+    .@{tooltip-prefix-cls}-detail-item {
       font-size: 12px;
       color: rgba(0, 0, 0, 0.65);
       overflow: hidden;
       margin: 4px 0;
-      .ss-tooltip-detail-item-key {
+
+      &-key {
         margin-right: 20px;
       }
-      .ss-tooltip-detail-item-val {
+
+      &-val {
         float: right;
       }
     }
   }
 
-  .ss-tooltip-rich-text {
+  &-rich-text {
     padding: 2px 0px 8px;
     color: #666;
     font-size: 12px;

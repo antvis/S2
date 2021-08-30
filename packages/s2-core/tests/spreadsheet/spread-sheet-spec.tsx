@@ -125,8 +125,8 @@ const getOptions = (): S2Options => {
 function MainLayout(props) {
   const [options, setOptions] = React.useState<S2Options>(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
+  const [render, setRender] = React.useState(true);
   const [valueInCols, setValueInCols] = React.useState(true);
-  const [derivedValueMul, setDerivedValueMul] = React.useState(false);
   const [showPagination, setShowPagination] = React.useState(false);
   const [freezeRowHeader, setFreezeRowHeader] = React.useState(
     props.options.freezeRowHeader,
@@ -164,6 +164,10 @@ function MainLayout(props) {
   const onCheckChanged3 = (e: CheckboxChangeEvent) => {
     updateOptions({ freezeRowHeader: e.target.checked });
     setFreezeRowHeader(e.target.checked);
+  };
+
+  const onToggleRender = () => {
+    setRender(!render);
   };
 
   return (
@@ -207,13 +211,18 @@ function MainLayout(props) {
         <Checkbox onChange={onCheckChanged3} defaultChecked={freezeRowHeader}>
           冻结行头
         </Checkbox>
+        <Checkbox onChange={onToggleRender} defaultChecked={false}>
+          卸载组件 (测试事件监听解绑)
+        </Checkbox>
       </Space>
-      <SheetComponent
-        dataCfg={dataCfg}
-        adaptive={false}
-        options={options as S2Options}
-        spreadsheet={getSpreadSheet}
-      />
+      {render && (
+        <SheetComponent
+          dataCfg={dataCfg}
+          adaptive={false}
+          options={options as S2Options}
+          spreadsheet={getSpreadSheet}
+        />
+      )}
     </div>
   );
 }

@@ -1,10 +1,10 @@
 import { S2Event, InterceptEventType } from '@/common/constant';
-import { BaseEvent } from '../base-event';
+import { BaseEvent, BaseEventImplement } from '../base-event';
 import { handleRowColClick } from '@/utils/interaction/multi-click';
 import { Event } from '@antv/g-canvas';
 
-export class RowColumnClick extends BaseEvent {
-  protected bindEvents() {
+export class RowColumnClick extends BaseEvent implements BaseEventImplement {
+  public bindEvents() {
     this.bindColCellClick();
     this.bindRowCellClick();
     this.bindResetSheetStyle();

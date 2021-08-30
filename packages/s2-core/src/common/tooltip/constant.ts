@@ -1,6 +1,8 @@
-export const TOOLTIP_CLASS_PRE = 'ss-tooltip';
+import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 
-export const TOOLTIP_OPERATION_CLASS_PRE = 'ss-tooltip-operation';
+export const TOOLTIP_PREFIX_CLS = `${S2_PREFIX_CLS}-tooltip`;
+
+export const TOOLTIP_OPERATION_PREFIX_CLS = `${TOOLTIP_PREFIX_CLS}-operation`;
 
 export const DEFAULT_ICON_PROPS = {
   width: 14,

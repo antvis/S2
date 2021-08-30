@@ -29,13 +29,12 @@ import {
   ColCell,
   RowCell,
 } from '@/index';
-import { BaseInteraction } from './base';
 import { EventController } from './events/event-controller';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
 
-  public interactions = new Map<string, BaseInteraction>();
+  public interactions = new Map<string, BaseEvent>();
 
   // 用来标记需要拦截的事件，interaction和本身的hover等事件可能会有冲突，有冲突时在此屏蔽
   public interceptEvent = new Set<InterceptEvent>();
@@ -56,6 +55,12 @@ export class RootInteraction {
     // 注意这俩的顺序，不要反过来，因为interaction中会屏蔽event，但是event不会屏蔽interaction
     this.registerInteractions();
     this.registerEvents();
+  }
+
+  public destroy() {
+    this.events.clear();
+    this.eventController.clear();
+    this.resetState();
   }
 
   public setState(interactionStateInfo: InteractionStateInfo) {
@@ -127,7 +132,7 @@ export class RootInteraction {
   public getAllRowHeaderCells() {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
-    const rowCells = rowHeader.cfg.children;
+    const rowCells = rowHeader?.cfg?.children || [];
     return rowCells.filter(
       (cell: S2CellType) => cell instanceof RowCell,
     ) as RowCell[];
@@ -136,12 +141,10 @@ export class RootInteraction {
   public getAllColHeaderCells() {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const colHeader = children.filter((group) => group instanceof ColHeader)[0];
-    const colCells = colHeader.cfg.children;
-    return (
-      (colCells.filter(
-        (cell: S2CellType) => cell instanceof ColCell,
-      ) as ColCell[]) || []
-    );
+    const colCells = colHeader?.cfg?.children || [];
+    return colCells.filter(
+      (cell: S2CellType) => cell instanceof ColCell,
+    ) as ColCell[];
   }
 
   public getAllCells() {
@@ -182,7 +185,7 @@ export class RootInteraction {
   }
 
   private registerEventController() {
-    this.eventController = new EventController(this.spreadsheet, this);
+    this.eventController = new EventController(this.spreadsheet);
   }
 
   public draw() {
@@ -204,14 +207,13 @@ export class RootInteraction {
     }
   }
 
-  updatePanelAllCellsStyle() {
+  public updatePanelAllCellsStyle() {
     const cells = this.getPanelGroupAllDataCells();
     cells.forEach((cell: DataCell) => {
       cell.update();
     });
   }
 
-  // 注册事件
   protected registerEvents() {
     this.events.clear();
     this.events.set(
