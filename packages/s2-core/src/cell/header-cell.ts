@@ -15,13 +15,13 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   private handleHover(cells: S2CellType[]) {
     if (isIncludeCell(cells, this)) {
-      this.updateByState(InteractionStateName.HOVER);
+      this.updateByState(InteractionStateName.HOVER, this);
     }
   }
 
   private handleSelect(cells: S2CellType[]) {
     if (isIncludeCell(cells, this)) {
-      this.updateByState(InteractionStateName.SELECTED);
+      this.updateByState(InteractionStateName.SELECTED, this);
     }
   }
 

@@ -1,7 +1,7 @@
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
 import { ColHeader, RowHeader } from 'src/facet/header';
-import { get, includes, isEmpty, concat } from 'lodash';
+import { get, includes, isEmpty, concat, merge, isEqual, filter } from 'lodash';
 import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import {
   BaseEvent,
@@ -25,6 +25,7 @@ import {
 } from '@/index';
 import { BaseInteraction } from './base';
 import { EventController } from './events/event-controller';
+import { BaseCell } from '@/cell';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -69,6 +70,21 @@ export class RootInteraction {
     );
   }
 
+  public setChangedCells(cell: S2CellType) {
+    const changedCells = this.getChangedCells().concat([cell]);
+    const interactionInfo = merge(
+      this.getState(),
+      { changedCells: changedCells },
+      {},
+    );
+    this.setState(interactionInfo);
+  }
+
+  public getChangedCells() {
+    const currentState = this.getState();
+    return currentState?.changedCells || [];
+  }
+
   public resetState() {
     this.spreadsheet.store.set(INTERACTION_STATE_INFO_KEY, this.defaultState);
   }
@@ -98,7 +114,7 @@ export class RootInteraction {
   public updateCellStyleByState() {
     const cells = this.getActiveCells();
     cells.forEach((cell) => {
-      cell.updateByState(this.getCurrentStateName());
+      cell.updateByState(this.getCurrentStateName(), cell);
     });
   }
 
@@ -170,7 +186,7 @@ export class RootInteraction {
         new RowColResize(this.spreadsheet, this),
       );
       this.interactions.set(
-        InteractionNames.DATA_CELL_MULTI_SELECTION_INTERACTION,
+        InteractionNames.COL_ROW_MULTI_SELECTION_INTERACTION,
         new DataCellMultiSelection(this.spreadsheet, this),
       );
     }

@@ -261,7 +261,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public updateByState(stateName: InteractionStateName) {
-    super.updateByState(stateName);
+    super.updateByState(stateName, this);
     this.cellCondition.updateConditionsByState(stateName);
   }
 

@@ -17,8 +17,10 @@ export type S2CellType<T extends Record<string, unknown> = ViewMeta> =
 export interface InteractionStateInfo {
   // current state name
   stateName?: InteractionStateName;
-  // all the active cells rendered by the canvas
+  // all the active cells
   cells?: S2CellType[];
+  // all the cells changed the state style
+  activeCells?: S2CellType[];
   // all the active nodes, including rendered and unrendered cells
   nodes?: Node[];
 }
