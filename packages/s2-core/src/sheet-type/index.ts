@@ -167,7 +167,6 @@ export class SpreadSheet extends EE {
     event: Event,
     data: TooltipData[],
     options?: TooltipOptions,
-    isHeader?: boolean,
   ) {
     if (!this.isShowTooltip) {
       return;
@@ -175,7 +174,6 @@ export class SpreadSheet extends EE {
     const tooltipData = getTooltipData({
       spreadsheet: this,
       cellInfos: data,
-      isHeader,
       options,
     });
     this.showTooltip({

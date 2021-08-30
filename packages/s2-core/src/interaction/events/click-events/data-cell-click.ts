@@ -4,10 +4,7 @@ import {
   InteractionStateName,
   INTERACTION_TREND,
 } from '@/common/constant/interaction';
-import {
-  TooltipOperatorOptions,
-  ViewMeta,
-} from '@/common/interface';
+import { TooltipOperatorOptions, ViewMeta } from '@/common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 import { Event } from '@antv/g-canvas';
 import { noop, get } from 'lodash';
@@ -84,14 +81,8 @@ export class DataCellClick extends BaseEvent {
   private showTooltip(event: Event, meta: ViewMeta) {
     const currentCellMeta = meta?.data;
     const isTotals = meta?.isTotals || false;
-    if (isTotals) {
-      return;
-    }
     const cellInfos = [
-      currentCellMeta || {
-        ...get(meta, 'rowQuery'),
-        ...get(meta, 'colQuery'),
-      },
+      currentCellMeta || { ...meta.rowQuery, ...meta.colQuery },
     ];
     const operator = this.getTooltipOperator(meta);
 

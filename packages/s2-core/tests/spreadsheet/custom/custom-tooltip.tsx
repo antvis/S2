@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { BaseTooltip } from '../../../src/tooltip';
-import Infos from '../../../src/common/tooltip/components/infos';
-import NameTips from '../../../src/common/tooltip/components/simple-tips';
+import Infos from '@/common/tooltip/components/infos';
+import NameTips from '@/common/tooltip/components/simple-tips';
 
 export class CustomTooltip extends BaseTooltip {
   protected renderInfos() {

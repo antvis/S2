@@ -40,7 +40,9 @@ export const handleRowColClick = (event: Event, spreadsheet: SpreadSheet) => {
       : [];
 
     if (spreadsheet.options.valueInCols) {
-      spreadsheet.showTooltipWithInfo(event, cellInfos, [], true);
+      spreadsheet.showTooltipWithInfo(event, cellInfos, {
+        showSingleTips: true,
+      });
     }
   }
 };

@@ -209,7 +209,6 @@ function MainLayout(props) {
           unCheckedChildren="tooltip关闭"
           defaultChecked={options.tooltip.showTooltip}
           onChange={(checked) => {
-            console.log(checked);
             updateOptions({
               tooltip: { ...options.tooltip, showTooltip: checked },
             });

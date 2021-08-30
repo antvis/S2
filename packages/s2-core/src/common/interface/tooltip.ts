@@ -4,27 +4,27 @@ import { SortParam } from '../interface';
 export type TooltipDataItem = Record<string, any>;
 
 export interface IMenu {
-  readonly id: string;
-  readonly icon?: any;
-  readonly text?: string;
-  readonly children?: IMenu[]; // subMenu
+  id: string;
+  icon?: any;
+  text?: string;
+  children?: IMenu[]; // subMenu
 }
 
 export interface TooltipOperatorOptions {
-  readonly onClick: (...params: unknown[]) => void;
-  readonly menus: IMenu[];
+  onClick: (...params: unknown[]) => void;
+  menus: IMenu[];
 }
 
 export interface TooltipPosition {
-  readonly x: number;
-  readonly y: number;
-  readonly tipHeight?: number;
+  x: number;
+  y: number;
+  tipHeight?: number;
 }
 
 export type ListItem = {
   name: string;
   value: string | number;
-  icon?: string;
+  icon?: string;ß
 };
 
 export interface SortQuery {
@@ -43,14 +43,14 @@ export interface TooltipOptions {
 }
 
 export interface TooltipSummaryOptions {
-  readonly name: string;
-  readonly value: number | string;
-  readonly selectedData: TooltipDataItem[];
+  name: string;
+  value: number | string;
+  selectedData: TooltipDataItem[];
 }
 
 export interface TooltipNameTipsOptions {
-  readonly name?: string;
-  readonly tips?: string;
+  name?: string;
+  tips?: string;
 }
 
 export interface TooltipOperationOptions {

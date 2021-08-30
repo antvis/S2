@@ -23,12 +23,15 @@ const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
 
   const renderSummary = () => {
     return summaries?.map((item) => {
-      const { name, value } = item || {};
+      const { name = i18n('所选项'), value } = item || {};
 
       return (
-        <div key={`${name}-${value}`} className={`${TOOLTIP_CLASS_PRE}-summary-item`}>
+        <div
+          key={`${name}-${value}`}
+          className={`${TOOLTIP_CLASS_PRE}-summary-item`}
+        >
           <span className={`${TOOLTIP_CLASS_PRE}-summary-key`}>
-            {name || i18n('所选项')}（{i18n('总和')})
+            {name}（{i18n('总和')})
           </span>
           <span
             className={`${TOOLTIP_CLASS_PRE}-summary-val ${TOOLTIP_CLASS_PRE}-bold`}

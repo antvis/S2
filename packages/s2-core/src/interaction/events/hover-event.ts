@@ -5,10 +5,9 @@ import {
   InteractionStateName,
 } from '@/common/constant/interaction';
 import { S2CellType, ViewMeta } from '@/common/interface';
-import { getTooltipData } from '@/utils/tooltip';
 import { getActiveHoverRowColCells } from '@/utils/interaction/hover-event';
 import { Event } from '@antv/g-canvas';
-import { get, isEmpty, forEach } from 'lodash';
+import { isEmpty, forEach } from 'lodash';
 import { BaseEvent } from './base-event';
 
 /**
@@ -98,7 +97,13 @@ export class HoverEvent extends BaseEvent {
         cells: [cell],
         stateName: InteractionStateName.HOVER_FOCUS,
       });
-      this.handleTooltip(event, meta);
+      const options = {
+        isTotals: meta.isTotals,
+        enterable: true,
+        hideSummary: true,
+      };
+      const data = this.getCellInfo(meta);
+      this.spreadsheet.showTooltipWithInfo(event, data, options);
     }, HOVER_FOCUS_TIME);
   }
 
@@ -115,47 +120,24 @@ export class HoverEvent extends BaseEvent {
       stateName: InteractionStateName.HOVER,
     });
     cell.update();
-    this.handleTooltip(event, meta, true);
-  }
-
-  /**
-   * @description handle the the tooltip
-   * @param event
-   * @param meta
-   */
-  private handleTooltip(event: Event, meta: ViewMeta, isHeader?: boolean) {
-    const position = {
-      x: event.clientX,
-      y: event.clientY,
-    };
-    const currentCellMeta = get(meta, 'data');
-    const isTotals = get(meta, 'isTotals', false);
     const options = {
-      isTotals,
+      isTotals: meta.isTotals,
       enterable: true,
       hideSummary: true,
-      showSingleTips: isHeader,
+      showSingleTips: true,
     };
-    const cellInfos = isHeader
-      ? [{ ...get(meta, 'query'), value: get(meta, 'value') }]
-      : [
-          currentCellMeta || {
-            ...get(meta, 'rowQuery'),
-            ...get(meta, 'colQuery'),
-          },
-        ];
-    const tooltipData = getTooltipData({
-      spreadsheet: this.spreadsheet,
-      cellInfos,
-      isHeader,
-      options,
-    });
-    const showOptions = {
-      position,
-      data: tooltipData,
-      cellInfos,
-      options,
-    };
-    this.spreadsheet.showTooltip(showOptions);
+    const data = this.getCellInfo(meta, true);
+    this.spreadsheet.showTooltipWithInfo(event, data, options);
+  }
+
+  private getCellInfo(meta: ViewMeta, showSingleTips?: boolean) {
+    const { data, query, value, rowQuery, colQuery } = meta || {};
+    const currentCellMeta = data;
+
+    const cellInfos = showSingleTips
+      ? [{ ...query, value }]
+      : [currentCellMeta || { ...rowQuery, ...colQuery }];
+
+    return cellInfos;
   }
 }

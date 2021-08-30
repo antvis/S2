@@ -314,14 +314,14 @@ export const getSelectedCellIndexes = (
 export const getSelectedData = (
   spreadsheet: SpreadSheet,
   cellInfo: TooltipDataItem,
-  isHeader?: boolean,
+  showSingleTips?: boolean,
 ): TooltipDataItem[] => {
   const layoutResult = spreadsheet?.facet?.layoutResult;
   let selectedData = [];
   const currentState = spreadsheet.interaction.getState();
   const cells = currentState?.cells;
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
-  if (isHeader) {
+  if (showSingleTips) {
     // 行头列头单选多选
     const selectedCellIndexes = getSelectedCellIndexes(
       spreadsheet,
@@ -354,10 +354,13 @@ export const getSelectedData = (
 export const getSummaryProps = (
   params: SummaryParam,
 ): TooltipSummaryOptions => {
-  const { spreadsheet, cellInfo, isHeader, getShowValue, options } = params;
+  const { spreadsheet, cellInfo, getShowValue, options = {} } = params;
   // 拿到选择的所有data-cell的数据
-  const selectedData = getSelectedData(spreadsheet, cellInfo, isHeader);
-  // const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
+  const selectedData = getSelectedData(
+    spreadsheet,
+    cellInfo,
+    options.showSingleTips,
+  );
   const currentField = cellInfo[EXTRA_FIELD];
   const currentFormatter = getFieldFormatter(spreadsheet, currentField);
   const name = getSummaryName(spreadsheet, currentField, options?.isTotals);
@@ -399,7 +402,7 @@ const mergeSummaries = (summaries) => {
 };
 
 export const getTooltipData = (params: TooltipDataParam) => {
-  const { spreadsheet, cellInfos, isHeader, options, getShowValue } = params;
+  const { spreadsheet, cellInfos, options = {}, getShowValue } = params;
   let summaries = null;
   let headInfo = null;
   let details = null;
@@ -411,18 +414,16 @@ export const getTooltipData = (params: TooltipDataParam) => {
       getSummaryProps({
         spreadsheet,
         cellInfo,
-        isHeader,
         options,
         getShowValue,
       }),
     );
     // 如果summaries中有相同name的项，则合并为同一项；
     summaries = mergeSummaries(summaries);
-  } else if (isHeader) {
+  } else if (options.showSingleTips) {
     // 行列头hover
     firstCellInfo.name = firstCellInfo.value || '';
   } else {
-    // 如果隐藏总计小计说明是datacell点击，只展示单个cell的详细信息
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
     details = getDetailList(spreadsheet, firstCellInfo, options);
   }
