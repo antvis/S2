@@ -4,7 +4,7 @@ import {
   HOVER_FOCUS_TIME,
   InteractionStateName,
 } from '@/common/constant/interaction';
-import { S2CellType, ViewMeta } from '@/common/interface';
+import { S2CellType, ViewMeta, TooltipOptions } from '@/common/interface';
 import { getActiveHoverRowColCells } from '@/utils/interaction/hover-event';
 import { Event } from '@antv/g-canvas';
 import { isEmpty, forEach } from 'lodash';
@@ -97,7 +97,7 @@ export class HoverEvent extends BaseEvent {
         cells: [cell],
         stateName: InteractionStateName.HOVER_FOCUS,
       });
-      const options = {
+      const options: TooltipOptions = {
         isTotals: meta.isTotals,
         enterable: true,
         hideSummary: true,
@@ -120,7 +120,7 @@ export class HoverEvent extends BaseEvent {
       stateName: InteractionStateName.HOVER,
     });
     cell.update();
-    const options = {
+    const options: TooltipOptions = {
       isTotals: meta.isTotals,
       enterable: true,
       hideSummary: true,

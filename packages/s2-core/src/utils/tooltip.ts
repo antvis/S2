@@ -2,7 +2,7 @@
  * 获取tooltip中需要显示的数据项
  */
 
-import { CellTypes, EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { CellTypes, EXTRA_FIELD, VALUE_FIELD, PRECISION } from '@/common/constant';
 import {
   compact,
   concat,
@@ -37,11 +37,11 @@ import {
   TooltipPosition,
   TooltipSummaryOptions,
 } from '..';
-import { i18n } from '../common/i18n';
+import { i18n } from '@/common/i18n';
 import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
-} from '../common/tooltip/constant';
+} from '@/common/tooltip/constant';
 import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
 import { handleDataItem } from './data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
@@ -369,7 +369,7 @@ export const getSummaryProps = (
     value = getShowValue(selectedData, VALUE_FIELD);
   }
   const dataSum = getDataSumByField(selectedData, VALUE_FIELD);
-  value = parseFloat(dataSum.toPrecision(12)); // solve accuracy problems
+  value = parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems
   if (currentFormatter) {
     value = currentFormatter(dataSum);
   }

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { get } from 'lodash';
-import { BaseTooltip } from '../../../src/tooltip';
+import { BaseTooltip } from '@/tooltip';
 import Infos from '@/common/tooltip/components/infos';
 import NameTips from '@/common/tooltip/components/simple-tips';
 
