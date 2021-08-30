@@ -33,11 +33,7 @@ export const handleRowColClick = (
       ? Node.getAllLeavesOfNode(meta)
       : Node.getAllChildrenNode(meta);
     let selectedCells: S2CellType[] = [cell];
-    each(leafNodes, (node: Node) => {
-      if (node.belongsCell) {
-        selectedCells.push(node.belongsCell);
-      }
-    });
+
     if (
       isMultiSelection &&
       lastState.stateName !== InteractionStateName.SELECTED
@@ -61,6 +57,14 @@ export const handleRowColClick = (
     // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
     selectedCells.map((cell) => {
       cell.update();
+    });
+    leafNodes.map((node) => {
+      if (node?.belongsCell) {
+        node.belongsCell.updateByState(
+          InteractionStateName.SELECTED,
+          node.belongsCell,
+        );
+      }
     });
 
     const cellInfos = spreadsheet.interaction.isSelectedState()

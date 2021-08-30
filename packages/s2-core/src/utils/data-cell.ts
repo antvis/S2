@@ -150,7 +150,7 @@ export const handleDataItem = (
 /**
  * @description  Determine if the current cell belongs to Cells
  * @param cells active cells
- * @param meta the meta information of current cell
+ * @param currentCell current activated cell
  */
 export const isIncludeCell = (cells: S2CellType[], currentCell: S2CellType) => {
   const meta = currentCell.getMeta();

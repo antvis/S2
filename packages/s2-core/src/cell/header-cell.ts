@@ -1,4 +1,4 @@
-import { first } from 'lodash';
+import { first, map, get, includes } from 'lodash';
 import { isIncludeCell } from '@/utils/data-cell';
 import { S2CellType } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
@@ -19,23 +19,26 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
-  private handleSelect(cells: S2CellType[]) {
+  private handleSelect(cells: S2CellType[], nodes: Node[]) {
     if (isIncludeCell(cells, this)) {
+      this.updateByState(InteractionStateName.SELECTED, this);
+    }
+    const selectedNodeIds = map(nodes, (node) => get(node, 'id'));
+    if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED, this);
     }
   }
 
   public update() {
-    const stateName = this.spreadsheet.interaction.getCurrentStateName();
+    const stateInfo = this.spreadsheet.interaction.getState();
     const cells = this.spreadsheet.interaction.getActiveCells();
-    const currentCell = first(cells);
-    if (!currentCell) {
-      return;
-    }
+    console.log(stateInfo);
 
-    switch (stateName) {
+    if (!first(cells)) return;
+
+    switch (stateInfo?.stateName) {
       case InteractionStateName.SELECTED:
-        this.handleSelect(cells);
+        this.handleSelect(cells, stateInfo?.nodes);
         break;
       case InteractionStateName.HOVER_FOCUS:
       case InteractionStateName.HOVER:
