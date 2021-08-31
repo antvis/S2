@@ -7,7 +7,7 @@ import {
   KEY_GROUP_COL_FROZEN_TRAILING,
 } from 'src/common/constant';
 import { Formatter, S2CellType, SortParam } from '../../common/interface';
-import { ColCell, DetailColCell, CornerCell } from '../../cell';
+import { ColCell, TableColCell, TableCornerCell } from '../../cell';
 import { Node } from '../..';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
@@ -146,9 +146,9 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
           if (spreadsheet.isPivotMode()) {
             cell = new ColCell(item, spreadsheet, this.headerConfig);
           } else if (item.field === SERIES_NUMBER_FIELD) {
-            cell = new CornerCell(item, spreadsheet, this.headerConfig);
+            cell = new TableCornerCell(item, spreadsheet, this.headerConfig);
           } else {
-            cell = new DetailColCell(item, spreadsheet, this.headerConfig);
+            cell = new TableColCell(item, spreadsheet, this.headerConfig);
           }
         }
         item.belongsCell = cell;

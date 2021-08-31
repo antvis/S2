@@ -184,10 +184,6 @@ export class CornerCell extends HeaderCell {
       opacity: this.theme.cornerCell.cell.backgroundColorOpacity,
     };
 
-    if (this.spreadsheet.isTableMode()) {
-      attrs.stroke = this.theme.cornerCell.cell.horizontalBorderColor;
-    }
-
     this.backgroundShape = renderRect(this, attrs);
   }
 
