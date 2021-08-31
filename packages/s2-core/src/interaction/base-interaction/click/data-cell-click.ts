@@ -1,9 +1,9 @@
-import { S2Event } from '@/common/constant';
 import {
-  InteractionNames,
-  InteractionStateName,
+  S2Event,
+  InterceptType,
   INTERACTION_TREND,
-} from '@/common/constant/interaction';
+  InteractionStateName,
+} from '@/common/constant';
 import { TooltipOperatorOptions, ViewMeta } from '@/common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 import { Event } from '@antv/g-canvas';
@@ -19,14 +19,14 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
-      if (this.interaction.intercept.has(InteractionStateName.CLICK)) {
+      if (this.interaction.intercept.has(InterceptType.CLICK)) {
         return;
       }
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
       if (meta) {
         // 屏蔽hover事件
-        this.interaction.intercept.add(InteractionStateName.HOVER);
+        this.interaction.intercept.add(InterceptType.HOVER);
         if (this.interaction.isSelectedCell(cell)) {
           // 点击当前已选cell 则取消当前cell的选中状态
           this.interaction.clearState();
@@ -61,7 +61,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       ? {
           onClick: (params) => {
             if (params === INTERACTION_TREND.ID) {
-              this.spreadsheet.emit(InteractionNames.TREND_ICON_CLICK, meta);
+              this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, meta);
               this.spreadsheet.hideTooltip();
             }
           },

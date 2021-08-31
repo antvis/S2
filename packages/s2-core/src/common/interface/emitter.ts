@@ -1,9 +1,4 @@
-import {
-  InteractionNames,
-  ResizeEvent,
-  S2Event,
-  SortMethodType,
-} from '@/common/constant';
+import { ResizeEvent, S2Event, SortMethodType } from '@/common/constant';
 
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { CellScrollPosition, Data, LayoutResult, Style, ViewMeta } from '.';
@@ -95,7 +90,7 @@ export interface EmitterType {
   [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (data: Node) => void;
   [S2Event.ROW_CELL_TEXT_CLICK]: (data: { key: string; record: Data }) => void;
 
-  [InteractionNames.TREND_ICON_CLICK]: (data: ViewMeta) => void;
+  [S2Event.DATA_CELL_TREND_ICON_CLICK]: (data: ViewMeta) => void;
 
   [ResizeEvent.ROW_W]: ResizeHandler;
   [ResizeEvent.ROW_H]: ResizeHandler;
