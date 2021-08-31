@@ -17,11 +17,11 @@ import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect } from '@/utils/g-renders';
 import { IGroup, Point } from '@antv/g-canvas';
 import { get, isEqual } from 'lodash';
-import { AreaRange } from './../common/interface/scroll';
+import { AreaRange } from '@/common/interface/scroll';
 import {
   getTextPositionWhenHorizontalScrolling,
   getVerticalPosition,
-} from './../utils/cell/cell';
+} from '@/utils/cell/cell';
 import { HeaderCell } from './header-cell';
 
 export class ColCell extends HeaderCell {
@@ -40,7 +40,7 @@ export class ColCell extends HeaderCell {
     // draw text
     this.drawTextShape();
     // draw sort icons
-    this.drawSortIcon();
+    this.drawActionIcons();
     // draw right border
     this.drawRightBorder();
     // draw hot-spot rect
@@ -100,7 +100,7 @@ export class ColCell extends HeaderCell {
 
   protected getMaxTextWidth(): number {
     const { width } = this.getContentArea();
-    return width - this.getSortIconWidth();
+    return width - this.getActionIconsWidth();
   }
 
   protected getTextPosition(): Point {
@@ -113,7 +113,7 @@ export class ColCell extends HeaderCell {
 
     const textBox = {
       ...contentBox,
-      width: contentBox.width - this.getSortIconWidth(),
+      width: contentBox.width - this.getActionIconsWidth(),
     };
     if (isLeaf) {
       return getTextPosition(textBox, textStyle);
@@ -144,12 +144,12 @@ export class ColCell extends HeaderCell {
     );
   }
 
-  private getSortIconWidth() {
+  private getActionIconsWidth() {
     const { icon } = this.getStyle();
     return this.showSortIcon() ? icon.size + icon.margin.left : 0;
   }
 
-  protected getSortIconPosition(): Point {
+  protected getActionIconPosition(): Point {
     const { textBaseline } = this.getTextStyle();
     const { size } = this.getStyle().icon;
     const { x, width } = this.getContentArea();
@@ -165,11 +165,11 @@ export class ColCell extends HeaderCell {
   }
 
   // 绘制排序icon
-  private drawSortIcon() {
+  private drawActionIcons() {
     const { icon } = this.getStyle();
     if (this.showSortIcon()) {
       const { sortParam } = this.headerConfig;
-      const position = this.getSortIconPosition();
+      const position = this.getActionIconPosition();
       const sortIcon = new GuiIcon({
         type: get(sortParam, 'type', 'none'),
         ...position,
