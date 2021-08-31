@@ -39,7 +39,7 @@ export class ColCell extends HeaderCell {
     this.drawInteractiveBgShape();
     // draw text
     this.drawTextShape();
-    // draw sort icons
+    // draw action icons
     this.drawActionIcons();
     // draw right border
     this.drawRightBorder();
