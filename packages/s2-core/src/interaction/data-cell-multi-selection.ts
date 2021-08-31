@@ -1,5 +1,5 @@
 import {
-  InterceptEventType,
+  InterceptInteractionType,
   InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
@@ -36,7 +36,7 @@ export class DataCellMultiSelection
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
         this.isMultiSelection = false;
-        this.interaction.interceptEvent.delete(InterceptEventType.CLICK);
+        this.interaction.interceptInteraction.delete(InterceptInteractionType.CLICK);
       }
     });
   }
@@ -53,8 +53,8 @@ export class DataCellMultiSelection
           ? currentState?.cells
           : concat(currentState?.cells, cell);
         // 屏蔽hover和click
-        this.interaction.interceptEvent.add(InterceptEventType.CLICK);
-        this.interaction.interceptEvent.add(InterceptEventType.HOVER);
+        this.interaction.interceptInteraction.add(InterceptInteractionType.CLICK);
+        this.interaction.interceptInteraction.add(InterceptInteractionType.HOVER);
         // 先把之前的tooltip隐藏
         this.spreadsheet.hideTooltip();
         this.interaction.changeState({

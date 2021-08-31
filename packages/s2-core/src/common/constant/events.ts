@@ -1,6 +1,4 @@
-export { InteractionEvent } from './interaction';
-
-// event keys
+// TODO 待整理
 export const KEY_LIST_SORT = 'spreadsheet:list-sort';
 export const KEY_COLLAPSE_TREE_ROWS = 'spreadsheet:collapsed-tree-rows';
 export const KEY_JUMP_HREF = 'spreadsheet:jump-href';
@@ -81,13 +79,13 @@ export enum OriginEventType {
   CLICK = 'click',
 }
 
-export enum InterceptEventType {
+export enum InterceptInteractionType {
   HOVER = 'hover',
   CLICK = 'click',
   BRUSH_SELECTION = 'brushSelection',
 }
 
-export type InterceptEvent =
-  | InterceptEventType.HOVER
-  | InterceptEventType.CLICK
-  | InterceptEventType.BRUSH_SELECTION;
+export type InterceptInteraction =
+  | InterceptInteractionType.HOVER
+  | InterceptInteractionType.CLICK
+  | InterceptInteractionType.BRUSH_SELECTION;

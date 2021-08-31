@@ -1,19 +1,16 @@
 import { i18n } from '@/common/i18n';
 
 export enum InteractionNames {
-  BRUSH_SELECTION_INTERACTION = 'spreadsheet:brush-selection',
-  COL_ROW_RESIZE_INTERACTION = 'spreadsheet:row-col-resize',
-  COL_ROW_MULTI_SELECTION_INTERACTION = 'spreadsheet:col-row-multi-selection',
-}
-
-export enum InteractionEvent {
-  DATA_CELL_CLICK_EVENT = 'spreadsheet:data-cell-click',
-  MERGED_CELLS_CLICK_EVENT = 'spreadsheet:merged-cells-click',
-  CORNER_TEXT_CLICK_EVENT = 'spreadsheet:corner-cell-text-click',
-  ROW_COLUMN_CLICK_EVENT = 'spreadsheet:row-column-click',
-  ROW_TEXT_CLICK_EVENT = 'spreadsheet:row-text-click',
-  HOVER_EVENT = 'spreadsheet:hover',
-  TREND_ICON_CLICK = 'spreadsheet:trend-icon-click',
+  DATA_CELL_CLICK = 'spreadsheet:data-cell-click',
+  MERGED_CELLS_CLICK = 'spreadsheet:merged-cells-click',
+  CORNER_TEXT_CLICK = 'spreadsheet:corner-cell-text-click',
+  ROW_COLUMN_CLICK = 'spreadsheet:row-column-click',
+  ROW_TEXT_CLICK = 'spreadsheet:row-text-click',
+  HOVER = 'spreadsheet:hover',
+  TREND_ICON = 'spreadsheet:trend-icon-click',
+  BRUSH_SELECTION = 'spreadsheet:brush-selection',
+  COL_ROW_RESIZE = 'spreadsheet:row-col-resize',
+  COL_ROW_MULTI_SELECTION = 'spreadsheet:col-row-multi-selection',
 }
 
 export enum InteractionStateName {

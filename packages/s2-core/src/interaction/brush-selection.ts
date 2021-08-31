@@ -1,4 +1,4 @@
-import { InterceptEventType, S2Event } from '@/common/constant';
+import { InterceptInteractionType, S2Event } from '@/common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
@@ -86,7 +86,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      this.interaction.interceptEvent.add(InterceptEventType.HOVER);
+      this.interaction.interceptInteraction.add(InterceptInteractionType.HOVER);
       this.endBrushPoint = this.getBrushPoint(event);
       this.interaction.clearStyleIndependent();
       this.updatePrepareSelectMask();
@@ -107,8 +107,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
           event,
           this.getBrushRangeCellsInfos(),
         );
-        this.spreadsheet.interaction.interceptEvent.add(
-          InterceptEventType.BRUSH_SELECTION,
+        this.spreadsheet.interaction.interceptInteraction.add(
+          InterceptInteractionType.BRUSH_SELECTION,
         );
       }
       this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
