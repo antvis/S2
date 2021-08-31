@@ -247,17 +247,17 @@ export const getDetailList = (
           get(activeData, VALUE_FIELD),
         ),
       );
-    }
-    // if (spreadsheet?.isValueInCols()) {
-    // the value hangs at the head of the column, match the displayed fields according to the metric itself
-    // 1、multiple derivative indicators
-    // 2、only one column scene
-    // 3、the clicked cell belongs to the derived index column
-    // tooltip need to show all derivative indicators
-    if (
+    } else if (
       isMultiDataItem(value) &&
       spreadsheet.getTooltipDataItemMappingCallback()
     ) {
+      // if (spreadsheet?.isValueInCols()) {
+      // the value hangs at the head of the column, match the displayed fields according to the metric itself
+      // 1、multiple derivative indicators
+      // 2、only one column scene
+      // 3、the clicked cell belongs to the derived index column
+      // tooltip need to show all derivative indicators
+
       const mappedResult = handleDataItem(
         activeData,
         spreadsheet.getTooltipDataItemMappingCallback(),
