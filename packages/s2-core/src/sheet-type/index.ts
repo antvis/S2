@@ -173,7 +173,11 @@ export class SpreadSheet extends EE {
     if (!this.isShowTooltip) {
       return;
     }
-    const tooltipData = getTooltipData(this, data, options);
+    const tooltipData = getTooltipData({
+      spreadsheet: this,
+      cellInfos: data,
+      options,
+    });
     this.showTooltip({
       data: tooltipData,
       position: {

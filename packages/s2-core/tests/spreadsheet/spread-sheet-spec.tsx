@@ -40,6 +40,13 @@ const getDataCfg = () => {
       rows: ['area', 'province', 'city'],
       columns: ['type', 'sub_type'],
       values: ['profit', 'count'],
+      extra: [
+        {
+          field: 'type',
+          value: '办公用品',
+          tips: '说明：这是办公用品的说明',
+        },
+      ],
     },
     meta: [
       {
@@ -64,16 +71,6 @@ const getDataCfg = () => {
       },
     ],
     data,
-    sortParams: [
-      {
-        sortFieldId: 'area',
-        sortMethod: 'ASC',
-      },
-      {
-        sortFieldId: 'province',
-        sortMethod: 'DESC',
-      },
-    ],
   };
 };
 
@@ -211,9 +208,16 @@ function MainLayout(props) {
         <Checkbox onChange={onCheckChanged3} defaultChecked={freezeRowHeader}>
           冻结行头
         </Checkbox>
-        <Checkbox onChange={onToggleRender} defaultChecked={false}>
-          卸载组件 (测试事件监听解绑)
-        </Checkbox>
+        <Switch
+          checkedChildren="tooltip打开"
+          unCheckedChildren="tooltip关闭"
+          defaultChecked={options.tooltip.showTooltip}
+          onChange={(checked) => {
+            updateOptions({
+              tooltip: { ...options.tooltip, showTooltip: checked },
+            });
+          }}
+        />
       </Space>
       {render && (
         <SheetComponent
