@@ -6,6 +6,7 @@ import {
 } from '@/common/constant';
 import {
   FormatResult,
+  S2CellType,
   SpreadSheetTheme,
   StateShapeLayer,
   TextTheme,
