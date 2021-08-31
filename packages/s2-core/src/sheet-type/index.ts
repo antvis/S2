@@ -52,6 +52,7 @@ import { Store } from '@/common/store';
 import { HdAdapter } from '@/hd-adapter';
 import { RootInteraction } from '@/interaction/root';
 import { getTooltipData } from '@/utils/tooltip';
+import { EmitterType } from '@/common/interface/emitter';
 
 export class SpreadSheet extends EE {
   // dom id
@@ -101,6 +102,20 @@ export class SpreadSheet extends EE {
   public interaction: RootInteraction;
 
   public hdAdapter: HdAdapter;
+
+  private untypedOn = this.on;
+
+  private untypedEmit = this.emit;
+
+  public on = <K extends keyof EmitterType>(
+    event: K,
+    listener: EmitterType[K],
+  ): this => this.untypedOn(event, listener);
+
+  public emit = <K extends keyof EmitterType>(
+    event: K,
+    ...args: Parameters<EmitterType[K]>
+  ): boolean => this.untypedEmit(event, ...args);
 
   public constructor(
     dom: S2MountContainer,

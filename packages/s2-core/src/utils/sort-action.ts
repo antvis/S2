@@ -1,6 +1,6 @@
-import { SortMethod } from 'src/common/interface';
+import { Data, DataItem, SortMethod } from 'src/common/interface';
 import { DataType, SortActionParams } from 'src/data-set/interface';
-import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
+import { EXTRA_FIELD, SortMethodType, TOTAL_VALUE } from '@/common/constant';
 import { keys, has, uniq } from 'lodash';
 import { sortByItems } from '@/utils/data-set-operate';
 
