@@ -1,4 +1,4 @@
-import { BaseCell, DataCell, DetailRowCell, TableDataCell } from '@/cell';
+import { BaseCell, DataCell, TableRowCell, TableDataCell } from '@/cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -16,11 +16,11 @@ import {
   Pagination,
   S2CellType,
   S2DataConfig,
+  S2MountContainer,
   S2Options,
   safetyDataConfig,
   safetyOptions,
   SpreadSheetFacetCfg,
-  S2MountContainer,
   ThemeCfg,
   TooltipData,
   TooltipOptions,
@@ -36,13 +36,10 @@ import { Node, SpreadSheetTheme } from '@/index';
 import { getTheme } from '@/theme';
 import { BaseTooltip } from '@/tooltip';
 import { updateConditionsByValues } from '@/utils/condition';
-import { isMobile } from '@/utils/is-mobile';
 import EE from '@antv/event-emitter';
-import { Canvas, Event, IGroup } from '@antv/g-canvas';
-import { ext } from '@antv/matrix-util';
+import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import {
   clone,
-  debounce,
   get,
   includes,
   isEmpty,
@@ -51,13 +48,13 @@ import {
   merge,
   set,
 } from 'lodash';
-import { Store } from '../common/store';
-import { RootInteraction } from '../interaction/root';
-import { getTooltipData } from '../utils/tooltip';
+import { Store } from '@/common/store';
+import { HdAdapter } from '@/hd-adapter';
+import { RootInteraction } from '@/interaction/root';
+import { getTooltipData } from '@/utils/tooltip';
+import { EmitterType } from '@/common/interface/emitter';
 
 export class SpreadSheet extends EE {
-  public static DEBUG_ON = false;
-
   // dom id
   public dom: S2MountContainer;
 
@@ -102,11 +99,23 @@ export class SpreadSheet extends EE {
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
 
-  public devicePixelRatioMedia: MediaQueryList;
-
-  public viewport = window as typeof window & { visualViewport: Element };
-
   public interaction: RootInteraction;
+
+  public hdAdapter: HdAdapter;
+
+  private untypedOn = this.on;
+
+  private untypedEmit = this.emit;
+
+  public on = <K extends keyof EmitterType>(
+    event: K,
+    listener: EmitterType[K],
+  ): this => this.untypedOn(event, listener);
+
+  public emit = <K extends keyof EmitterType>(
+    event: K,
+    ...args: Parameters<EmitterType[K]>
+  ): boolean => this.untypedEmit(event, ...args);
 
   public constructor(
     dom: S2MountContainer,
@@ -124,6 +133,7 @@ export class SpreadSheet extends EE {
     this.bindEvents();
     this.initInteraction();
     this.initTheme();
+    this.initHdAdapter();
 
     DebuggerUtil.getInstance().setDebug(options?.debug);
   }
@@ -134,11 +144,20 @@ export class SpreadSheet extends EE {
 
   private initTheme() {
     // When calling spreadsheet directly, there is no theme and initialization is required
-    this.setThemeCfg({ name: 'default' });
+    this.setThemeCfg({ 
+      name: 'default'
+    });
   }
 
   private getMountContainer(dom: S2MountContainer) {
     return isString(dom) ? document.getElementById(dom) : (dom as HTMLElement);
+  }
+
+  private initHdAdapter() {
+    if (this.options.hdAdapter) {
+      this.hdAdapter = new HdAdapter(this);
+      this.hdAdapter.init();
+    }
   }
 
   private initInteraction() {
@@ -148,9 +167,11 @@ export class SpreadSheet extends EE {
   private initTooltip() {
     this.tooltip = this.renderTooltip();
     if (!(this.tooltip instanceof BaseTooltip)) {
+      // eslint-disable-next-line no-console
       console.warn(
-        `[Custom Tooltip]: ${(this
-          .tooltip as unknown)?.constructor?.toString()} should be extends from BaseTooltip`,
+        `[Custom Tooltip]: ${(
+          this.tooltip as unknown
+        )?.constructor?.toString()} should be extends from BaseTooltip`,
       );
     }
   }
@@ -168,14 +189,18 @@ export class SpreadSheet extends EE {
   }
 
   public showTooltipWithInfo(
-    event: Event,
+    event: CanvasEvent | MouseEvent,
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
     if (!this.isShowTooltip) {
       return;
     }
-    const tooltipData = getTooltipData(this, data, options);
+    const tooltipData = getTooltipData({
+      spreadsheet: this,
+      cellInfos: data,
+      options,
+    });
     this.showTooltip({
       data: tooltipData,
       position: {
@@ -255,9 +280,9 @@ export class SpreadSheet extends EE {
 
   public destroy() {
     this.facet.destroy();
+    this.hdAdapter?.destroy();
+    this.interaction.destroy();
     this.destroyTooltip();
-    this.removeDevicePixelRatioListener();
-    this.removeDeviceZoomListener();
   }
 
   /**
@@ -268,18 +293,18 @@ export class SpreadSheet extends EE {
    */
   public setThemeCfg(themeCfg: ThemeCfg) {
     const theme = themeCfg?.theme || {};
-    this.theme = merge({}, getTheme(themeCfg), theme);
+    this.theme = merge({}, getTheme({ ...themeCfg, spreadsheet: this }), theme);
     this.updateDefaultConditions();
   }
 
   private updateDefaultConditions() {
-    if (isEmpty(this.options.useDefaultConditionValues)) {
+    if (isEmpty(this.options.indicateConditionValues)) {
       return;
     }
-    const { conditions, useDefaultConditionValues } = this.options;
+    const { conditions, indicateConditionValues } = this.options;
     const updatedConditions = updateConditionsByValues(
       conditions,
-      useDefaultConditionValues,
+      indicateConditionValues,
       this.theme.dataCell.icon,
     );
     this.setOptions({ conditions: updatedConditions } as S2Options);
@@ -423,7 +448,7 @@ export class SpreadSheet extends EE {
 
   // 获取当前cell实例
   public getCell<T extends S2CellType = S2CellType>(
-    target: Event['target'],
+    target: CanvasEvent['target'],
   ): T {
     let parent = target;
     // 一直索引到g顶层的canvas来检查是否在指定的cell中
@@ -438,7 +463,7 @@ export class SpreadSheet extends EE {
   }
 
   // 获取当前cell类型
-  public getCellType(target: Event['target']) {
+  public getCellType(target: CanvasEvent['target']) {
     const cell = this.getCell(target);
     return cell?.cellType;
   }
@@ -515,7 +540,7 @@ export class SpreadSheet extends EE {
     const defaultCell = (facet: ViewMeta) => {
       if (this.isTableMode()) {
         if (this.options.showSeriesNumber && facet.colIndex === 0) {
-          return new DetailRowCell(facet, this);
+          return new TableRowCell(facet, this);
         }
         return new TableDataCell(facet, this);
       }
@@ -540,7 +565,6 @@ export class SpreadSheet extends EE {
     } else {
       this.facet = new TableFacet(facetCfg);
     }
-    // render facet
     this.facet.render();
   };
 
@@ -583,83 +607,5 @@ export class SpreadSheet extends EE {
       this.setOptions(options);
       this.render(false);
     });
-
-    this.initDevicePixelRatioListener();
-    this.initDeviceZoomListener();
   }
-
-  private initDevicePixelRatioListener() {
-    this.devicePixelRatioMedia = window.matchMedia(
-      `(resolution: ${window.devicePixelRatio}dppx)`,
-    );
-    if (this.devicePixelRatioMedia?.addEventListener) {
-      this.devicePixelRatioMedia.addEventListener(
-        'change',
-        this.renderByDevicePixelRatioChanged,
-      );
-    } else {
-      this.devicePixelRatioMedia.addListener(
-        this.renderByDevicePixelRatioChanged,
-      );
-    }
-  }
-
-  private removeDevicePixelRatioListener() {
-    if (this.devicePixelRatioMedia?.removeEventListener) {
-      this.devicePixelRatioMedia.removeEventListener(
-        'change',
-        this.renderByDevicePixelRatioChanged,
-      );
-    } else {
-      this.devicePixelRatioMedia.removeListener(
-        this.renderByDevicePixelRatioChanged,
-      );
-    }
-  }
-
-  private initDeviceZoomListener() {
-    // VisualViewport support browser zoom & mac touch tablet
-    this.viewport?.visualViewport?.addEventListener(
-      'resize',
-      this.renderByZoomScale,
-    );
-  }
-
-  private removeDeviceZoomListener() {
-    this.viewport?.visualViewport?.removeEventListener(
-      'resize',
-      this.renderByZoomScale,
-    );
-  }
-
-  private renderByDevicePixelRatioChanged = () => {
-    this.renderByDevicePixelRatio();
-  };
-
-  // 由于行头和列头的选择的模式并不是把一整行或者一整列的cell都setState
-  private renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
-    const matrixTransform = ext.transform;
-
-    const { width, height } = this.options;
-    const newWidth = Math.floor(width * ratio);
-    const newHeight = Math.floor(height * ratio);
-
-    this.container.resetMatrix();
-    this.container.set('pixelRatio', ratio);
-    this.container.changeSize(newWidth, newHeight);
-
-    matrixTransform(this.container.getMatrix(), [['scale', ratio, ratio]]);
-
-    this.render(false);
-  };
-
-  private renderByZoomScale = debounce((e) => {
-    if (isMobile()) {
-      return;
-    }
-    const ratio = Math.max(e.target.scale, window.devicePixelRatio);
-    if (ratio > 1) {
-      this.renderByDevicePixelRatio(ratio);
-    }
-  }, 350);
 }

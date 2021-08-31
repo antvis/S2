@@ -70,6 +70,9 @@ const getDataCfg = (): S2DataConfig => {
     ],
     data: multipleDataWithNormal,
     standardData: false,
+    sortParams: [
+      // { sortFieldId: 'price', sortMethod: 'DESC' }
+    ],
   };
 };
 
@@ -83,22 +86,51 @@ const getOptions = (): S2Options => {
     showSeriesNumber: false,
     freezeRowHeader: false,
     mode: 'pivot',
-    useDefaultConditionValues: ['ac', 'rc'],
+    indicateConditionValues: ['ac', 'rc'],
     conditions: {
       text: [],
-      interval: [],
-      background: [],
-      icon: [],
+      interval: [
+        {
+          field: 'price',
+          mapping() {
+            return {
+              fill: 'yellow',
+              maxValue: 3000,
+              minValue: 0,
+            };
+          },
+        },
+      ],
+      background: [
+        {
+          field: 'price',
+          mapping() {
+            return { fill: 'rgb(218, 251, 225)' };
+          },
+        },
+      ],
+      icon: [
+        {
+          field: 'price',
+          mapping() {
+            return { fill: 'black', icon: 'Trend' };
+          },
+        },
+      ],
     },
+    rowActionIcons: {
+      iconTypes: ['SortDown', 'SortUp'],
+      display: {
+        level: 0,
+        operator: '>=',
+      },
+      action(type, node) {},
+    },
+
+    selectedCellsSpotlight: true,
+    hoverHighlight: true,
     tooltip: {
       showTooltip: true,
-    },
-    mappingDisplayDataItem(field, data) {
-      return {
-        price: 12,
-        'price-ac': 0.2,
-        'price-rc': -0.3,
-      };
     },
     style: {
       colCfg: {
@@ -124,6 +156,7 @@ function MainLayout(props) {
 
   const onValueInColsChange = (checked) => {
     setValueInCols(checked);
+
     setDataCfg(
       merge({}, dataCfg, {
         fields: {
@@ -186,7 +219,6 @@ function MainLayout(props) {
           <Radio value={'normal'}>默认</Radio>
           <Radio value={'bottom'}>下方</Radio>
           <Radio value={'combine'}>合并</Radio>
-          <Radio value={'separate'}>独立右侧</Radio>
         </Radio.Group>
       </div>
       <SheetComponent
@@ -210,18 +242,22 @@ describe('spreadsheet multiple values cell spec', () => {
   test('should generate default conditions', () => {
     const { icon, text } = sheet.options.conditions;
 
-    expect(icon).toHaveLength(2);
+    expect(icon).toHaveLength(3);
     expect(text).toHaveLength(2);
 
     expect(icon).toEqual([
       {
+        field: 'price',
+        mapping: expect.any(Function),
+      },
+      {
         field: 'ac',
-        iconPosition: 'left',
+        position: 'left',
         mapping: expect.any(Function),
       },
       {
         field: 'rc',
-        iconPosition: 'left',
+        position: 'left',
         mapping: expect.any(Function),
       },
     ]);

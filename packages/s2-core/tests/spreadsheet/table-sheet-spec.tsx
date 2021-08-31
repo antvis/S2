@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import {
@@ -5,6 +6,7 @@ import {
   S2Event,
   S2Options,
   SheetComponent,
+  SortMethodType,
   SpreadSheet,
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
@@ -15,15 +17,13 @@ import { useEffect } from 'react';
 
 const data = getMockData('../data/tableau-supermarket.csv');
 
-const getSpreadSheet = (ref) => (
-  dom: string | HTMLElement,
-  dataCfg: S2DataConfig,
-  options: S2Options,
-) => {
-  const s2 = new SpreadSheet(dom, dataCfg, options);
-  ref.current = s2;
-  return s2;
-};
+const getSpreadSheet =
+  (ref) =>
+  (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
+    const s2 = new SpreadSheet(dom, dataCfg, options);
+    ref.current = s2;
+    return s2;
+  };
 
 const getDataCfg = () => {
   return {
@@ -108,9 +108,25 @@ function MainLayout(props) {
     const logData = (data) => {
       console.log(data);
     };
+    // sort string-type number
     s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
+    s2Ref.current.on(S2Event.RANGE_SORTING, (info) => {
+      const canConvertToNumber = data.every((item) => {
+        const v = item[info.sortKey];
+        return typeof v === 'string' && !Number.isNaN(Number(v));
+      });
+
+      if (canConvertToNumber) {
+        info.compareFunc = (obj) => Number(obj[info.sortKey]);
+      }
+    });
+    s2Ref.current.on(S2Event.RANGE_SORTED, (data) => {
+      console.log('data,', data);
+    });
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED, logData);
+      s2Ref.current.off(S2Event.RANGE_SORTING);
+      s2Ref.current.off(S2Event.RANGE_SORTED);
     };
   }, []);
 

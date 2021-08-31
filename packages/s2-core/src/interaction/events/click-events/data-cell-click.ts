@@ -1,38 +1,32 @@
-import { DefaultInterceptEventType, S2Event } from '@/common/constant';
+import { InterceptEventType, S2Event } from '@/common/constant';
 import {
   InteractionEvent,
   InteractionStateName,
   INTERACTION_TREND,
 } from '@/common/constant/interaction';
-import {
-  S2CellType,
-  TooltipOperatorOptions,
-  ViewMeta,
-} from '@/common/interface';
+import { TooltipOperatorOptions, ViewMeta } from '@/common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 import { Event } from '@antv/g-canvas';
-import { noop } from 'lodash';
+import { noop, get } from 'lodash';
 import { DataCell } from '../../../cell/data-cell';
-import { BaseEvent } from '../base-event';
+import { BaseEvent, BaseEventImplement } from '../base-event';
 
-export class DataCellClick extends BaseEvent {
-  protected bindEvents() {
+export class DataCellClick extends BaseEvent implements BaseEventImplement {
+  public bindEvents() {
     this.bindDataCellClick();
   }
 
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
-      if (
-        this.interaction.interceptEvent.has(DefaultInterceptEventType.CLICK)
-      ) {
+      if (this.interaction.interceptEvent.has(InterceptEventType.CLICK)) {
         return;
       }
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
       if (meta) {
         // 屏蔽hover事件
-        this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
+        this.interaction.interceptEvent.add(InterceptEventType.HOVER);
         if (this.interaction.isSelectedCell(cell)) {
           // 点击当前已选cell 则取消当前cell的选中状态
           this.interaction.clearState();
@@ -51,8 +45,8 @@ export class DataCellClick extends BaseEvent {
   }
 
   private getTooltipOperator(meta: ViewMeta): TooltipOperatorOptions {
-    const cellOperator: TooltipOperatorOptions = this.spreadsheet.options
-      ?.cellOperator;
+    const cellOperator = this.spreadsheet.options
+      ?.cellOperator as TooltipOperatorOptions;
 
     if (cellOperator) {
       return cellOperator;
@@ -87,10 +81,9 @@ export class DataCellClick extends BaseEvent {
   private showTooltip(event: Event, meta: ViewMeta) {
     const currentCellMeta = meta?.data;
     const isTotals = meta?.isTotals || false;
-    if (isTotals) {
-      return;
-    }
-    const cellInfos = [currentCellMeta];
+    const cellInfos = [
+      currentCellMeta || { ...meta.rowQuery, ...meta.colQuery },
+    ];
     const operator = this.getTooltipOperator(meta);
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {

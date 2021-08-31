@@ -1,8 +1,12 @@
+import { CellTypes } from '@/common/constant/interaction';
+import { InteractionStateName } from '../constant';
+
 // 文本内容的水平对齐方式, 默认 left
 export type TextAlign = 'left' | 'center' | 'right';
 
 // 绘制文本时的基线, 对应垂直方向对齐方式 默认 bottom
 export type TextBaseline = 'top' | 'middle' | 'bottom';
+
 export interface Palette {
   /* brand colors */
   brandColors: string[];
@@ -12,6 +16,7 @@ export interface Palette {
   semanticColors: {
     red?: string;
     green?: string;
+    blue?: string;
     /* 额外颜色字段 */
     [key: string]: string;
   };
@@ -31,13 +36,23 @@ export interface InteractionStateTheme {
   opacity?: string | number;
 }
 
+export type InteractionState = {
+  [K in InteractionStateName]?: InteractionStateTheme;
+};
+
 export type Margin = Padding;
 
-export interface TextTheme {
+export interface TextAlignCfg {
+  textAlign?: TextAlign;
+  textBaseline?: TextBaseline;
+}
+
+export interface TextTheme extends TextAlignCfg {
   fontFamily?: string;
   fontSize?: number;
-  fontWeight?: string;
+  fontWeight?: number | 'normal' | 'bold' | 'bolder' | 'lighter';
   fill?: string;
+  linkTextFill?: string;
   opacity?: number;
   textAlign?: TextAlign;
   textBaseline?: TextBaseline;
@@ -64,18 +79,9 @@ export interface CellTheme {
   verticalBorderWidth?: number;
   /* 单元格内边距 */
   padding: Padding;
-  /* hover 单元格状态 */
-  hover?: InteractionStateTheme;
-  /* hover 焦点单元格 */
-  hoverFocus?: InteractionStateTheme;
-  /* 选中态 */
-  selected?: InteractionStateTheme;
-  /* 预选中态 */
-  prepareSelect?: InteractionStateTheme;
+  interactionState?: InteractionState;
   /* 单元格内条件格式-迷你条形图高度 */
   miniBarChartHeight?: number;
-  /* 聚光灯之外的单元格 */
-  outOfTheSpotlight?: InteractionStateTheme;
   /* 额外属性字段 */
   [key: string]: any;
 }
@@ -145,15 +151,11 @@ export interface DefaultCellTheme {
   seriesNumberWidth?: number;
 }
 
-export interface SpreadSheetTheme {
-  /* 角头样式 */
-  cornerCell?: DefaultCellTheme;
-  /* 行头样式 */
-  rowCell?: DefaultCellTheme;
-  /* 列头样式 */
-  colCell?: DefaultCellTheme;
-  /* 交叉单于格样式 */
-  dataCell?: DefaultCellTheme;
+type CellThemes = {
+  [K in CellTypes]?: DefaultCellTheme;
+};
+
+export interface SpreadSheetTheme extends CellThemes {
   /* 滚动条样式 */
   scrollBar?: ScrollBarTheme;
   /* 分割线样式 */

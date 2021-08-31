@@ -1,7 +1,7 @@
 import { TooltipInterpretationOptions } from '@/common/interface';
 import * as React from 'react';
-import { getIcon, HtmlIcon } from '../../icons';
-import { TOOLTIP_CLASS_PRE } from '../constant';
+import { getIcon, HtmlIcon } from '@/common/icons';
+import { TOOLTIP_PREFIX_CLS } from '@/common/tooltip/constant';
 
 const Interpretation = (props: TooltipInterpretationOptions) => {
   const { name, icon, text, render } = props;
@@ -10,7 +10,7 @@ const Interpretation = (props: TooltipInterpretationOptions) => {
     if (getIcon(icon)) {
       return (
         <HtmlIcon
-          className={`${TOOLTIP_CLASS_PRE}-interpretation-icon`}
+          className={`${TOOLTIP_PREFIX_CLS}-interpretation-icon`}
           type={icon}
         />
       );
@@ -23,7 +23,7 @@ const Interpretation = (props: TooltipInterpretationOptions) => {
   const renderName = () => {
     return (
       name && (
-        <span className={`${TOOLTIP_CLASS_PRE}-interpretation-name`}>
+        <span className={`${TOOLTIP_PREFIX_CLS}-interpretation-name`}>
           {name}
         </span>
       )
@@ -41,8 +41,8 @@ const Interpretation = (props: TooltipInterpretationOptions) => {
   };
 
   return (
-    <div className={`${TOOLTIP_CLASS_PRE}-interpretation`}>
-      <div className={`${TOOLTIP_CLASS_PRE}-interpretation-head`}>
+    <div className={`${TOOLTIP_PREFIX_CLS}-interpretation`}>
+      <div className={`${TOOLTIP_PREFIX_CLS}-interpretation-head`}>
         {renderIcon()}
         {renderName()}
       </div>

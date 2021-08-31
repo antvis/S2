@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Checkbox, Radio, Space, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { merge } from 'lodash';
@@ -39,7 +40,7 @@ const getOptions = (): S2Options => {
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
-    showSeriesNumber: false,
+    showSeriesNumber: true,
     freezeRowHeader: true,
     mode: 'pivot',
     conditions: {

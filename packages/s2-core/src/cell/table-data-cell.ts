@@ -1,20 +1,22 @@
+import { isMobile } from '@/utils/is-mobile';
 import { get } from 'lodash';
 import { DataCell } from 'src/cell/data-cell';
-import { isMobile } from '../utils/is-mobile';
 
 export class TableDataCell extends DataCell {
   protected drawTextShape() {
     super.drawTextShape();
-    const textStyle = this.theme.dataCell.text;
+
+    const textStyle = this.getTextStyle();
 
     const linkFieldIds = get(this.spreadsheet, 'options.linkFieldIds');
 
+    const textShape = this.textShape;
     // handle link nodes
-    if (linkFieldIds.includes(this.meta.key) && this.textShape) {
+    if (linkFieldIds.includes(this.meta.key) && textShape) {
       const device = get(this.spreadsheet, 'options.style.device');
       // 配置了链接跳转
       if (!isMobile(device)) {
-        const textBBox = this.textShape.getBBox();
+        const textBBox = textShape.getBBox();
         this.addShape('line', {
           attrs: {
             x1: textBBox.bl.x,
@@ -25,14 +27,14 @@ export class TableDataCell extends DataCell {
             lineWidth: 1,
           },
         });
-        this.textShape.attr({
+        textShape.attr({
           appendInfo: {
             isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
             cellData: this.meta,
           },
         });
       } else {
-        this.textShape.attr({
+        textShape.attr({
           fill: '#0000ee',
           appendInfo: {
             isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别

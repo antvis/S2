@@ -1,11 +1,8 @@
-// TODO: tooltip util 有点case by case
-import {
-  CellTypes,
-  EXTRA_FIELD,
-  InteractionStateName,
-  TOTAL_VALUE,
-  VALUE_FIELD,
-} from '@/common/constant';
+/**
+ * 获取tooltip中需要显示的数据项
+ */
+
+import { CellTypes, EXTRA_FIELD, VALUE_FIELD, PRECISION } from '@/common/constant';
 import {
   compact,
   concat,
@@ -19,60 +16,56 @@ import {
   isNil,
   isNumber,
   map,
-  noop,
-  size,
-  some,
+  isEmpty,
   sumBy,
-  uniq,
+  some,
   assign,
   pick,
+  uniq,
+  noop,
 } from 'lodash';
 import {
-  Aggregation,
-  Data,
-  DataItem,
+  TooltipDataItem,
+  TooltipDataParam,
+  TooltipOptions,
+  SummaryParam,
   ListItem,
   S2CellType,
   SpreadSheet,
   TooltipData,
   TooltipHeadInfo,
-  TooltipOptions,
   TooltipPosition,
   TooltipSummaryOptions,
 } from '..';
-import { i18n } from '../common/i18n';
+import { i18n } from '@/common/i18n';
 import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
-} from '../common/tooltip/constant';
+} from '@/common/tooltip/constant';
 import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
-import { handleDataItem } from './data-cell';
+import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 
 /**
- * calculate aggregate value
+ * calculate sum value
  */
-export const getAggregationValue = (
-  data: DataItem[],
+export const getDataSumByField = (
+  data: TooltipDataItem[],
   field: string,
-  aggregation: Aggregation,
 ): number => {
-  if (aggregation === 'SUM') {
-    return sumBy(data, (datum) => {
-      const v = get(datum, field, 0);
-      return isNil(v) ? 0 : Number.parseFloat(v);
-    });
-  }
-  return 0;
+  return sumBy(data, (datum) => {
+    const v = get(datum, field, 0);
+    return Number.isNaN(Number(v)) ? 0 : Number.parseFloat(v);
+  });
 };
 
 /** whether the data of hover is selected */
 export const isHoverDataInSelectedData = (
-  selectedData: DataItem[],
-  hoverData: DataItem,
+  selectedData: TooltipDataItem[],
+  activeData: TooltipDataItem,
 ): boolean => {
-  return some(selectedData, (dataItem: DataItem) =>
-    isEqual(dataItem, hoverData),
+  return some(selectedData, (dataItem: TooltipDataItem): boolean =>
+    isEqual(dataItem, activeData),
   );
 };
 
@@ -162,7 +155,7 @@ export const getFieldFormatter = (spreadsheet: SpreadSheet, field: string) => {
 
 export const getListItem = (
   spreadsheet: SpreadSheet,
-  data: Data,
+  data: TooltipDataItem,
   field: string,
   valueField?: string,
 ): ListItem => {
@@ -180,78 +173,90 @@ export const getListItem = (
 export const getFieldList = (
   spreadsheet: SpreadSheet,
   fields: string[],
-  hoverData: Data,
+  activeData: TooltipDataItem,
 ): ListItem[] => {
   const currFields = filter(
     concat([], fields),
-    (field) => field !== EXTRA_FIELD && hoverData[field],
+    (field) => field !== EXTRA_FIELD && activeData[field],
   );
-  const fieldList = map(
-    currFields,
-    (field: string): ListItem => {
-      return getListItem(spreadsheet, hoverData, field);
-    },
-  );
+  const fieldList = map(currFields, (field: string): ListItem => {
+    return getListItem(spreadsheet, activeData, field);
+  });
   return fieldList;
 };
 
+/**
+ * 获取选中格行/列头信息
+ * @param spreadsheet
+ * @param activeData
+ */
 export const getHeadInfo = (
   spreadsheet: SpreadSheet,
-  hoverData: Data,
+  activeData: TooltipDataItem,
+  options?: TooltipOptions,
 ): TooltipHeadInfo => {
-  if (hoverData) {
-    const colFields = get(spreadsheet?.dataSet?.fields, 'columns', []);
-    const rowFields = get(spreadsheet?.dataSet?.fields, 'rows', []);
-    const colList = getFieldList(spreadsheet, colFields, hoverData);
-    const rowList = getFieldList(spreadsheet, rowFields, hoverData);
-
-    return { cols: colList, rows: rowList };
+  const { isTotals } = options || {};
+  let colList = [];
+  let rowList = [];
+  if (activeData) {
+    const colFields = spreadsheet?.dataSet?.fields?.columns;
+    const rowFields = spreadsheet?.dataSet?.fields?.rows;
+    colList = getFieldList(spreadsheet, colFields, activeData);
+    rowList = getFieldList(spreadsheet, rowFields, activeData);
   }
 
-  return { cols: [], rows: [] };
+  // 此时是总计-总计
+  if (isEmpty(colList) && isEmpty(rowList) && isTotals) {
+    colList = [{ value: i18n('总计') }];
+  }
+
+  return { cols: colList, rows: rowList };
 };
 
+/**
+ * 获取数据明细
+ * @param spreadsheet
+ * @param activeData
+ * @param options
+ */
 export const getDetailList = (
-  spreadsheet: SpreadSheet,
-  hoverData: Data,
+  spreadsheet,
+  activeData: TooltipDataItem,
   options: TooltipOptions,
 ): ListItem[] => {
-  if (hoverData) {
+  if (activeData) {
     const { isTotals } = options;
-
-    const valItem = [];
+    const field = activeData[EXTRA_FIELD];
+    const value = activeData[field];
+    let valItem = [];
     if (isTotals) {
       // total/subtotal
       valItem.push(
-        getListItem(
-          spreadsheet,
-          hoverData,
-          TOTAL_VALUE,
-          get(hoverData, VALUE_FIELD) as string,
-        ),
+        getListItem(spreadsheet, activeData, field, get(activeData, VALUE_FIELD)),
       );
     } else {
-      const field = hoverData[EXTRA_FIELD] as string;
-      const value = hoverData[field];
-      // filter empty
-      if (value) {
-        // multiple data should be mapped firstly
-        if (
-          isMultiDataItem(value) &&
-          spreadsheet.getTooltipDataItemMappingCallback()
-        ) {
-          const mappedResult = handleDataItem(
-            hoverData,
-            spreadsheet.getTooltipDataItemMappingCallback(),
-          ) as Record<string, string | number>;
+      // if (spreadsheet?.isValueInCols()) {
+      // the value hangs at the head of the column, match the displayed fields according to the metric itself
+      // 1、multiple derivative indicators
+      // 2、only one column scene
+      // 3、the clicked cell belongs to the derived index column
+      // tooltip need to show all derivative indicators
+      if (
+        isMultiDataItem(value) &&
+        spreadsheet.getTooltipDataItemMappingCallback()
+      ) {
+        const mappedResult = handleDataItem(
+          activeData,
+          spreadsheet.getTooltipDataItemMappingCallback(),
+        ) as Record<string, string | number>;
 
-          forEach(mappedResult, (_, key) => {
-            valItem.push(getListItem(spreadsheet, mappedResult, key));
-          });
-        } else {
-          valItem.push(getListItem(spreadsheet, hoverData, field));
-        }
+        forEach(mappedResult, (_, key) => {
+          valItem.push(getListItem(spreadsheet, mappedResult, key));
+        });
+      } else {
+        valItem.push(getListItem(spreadsheet, activeData, field));
       }
+      // }
     }
 
     return compact(valItem);
@@ -260,11 +265,10 @@ export const getDetailList = (
 
 export const getSummaryName = (
   spreadsheet: SpreadSheet,
-  valueFields,
   currentField,
-  cellInfo,
+  isTotals,
 ): string => {
-  if (get(cellInfo, 'isGrandTotals')) {
+  if (isTotals) {
     return i18n('总计');
   }
 
@@ -272,7 +276,7 @@ export const getSummaryName = (
 };
 
 export const getSelectedValueFields = (
-  selectedData: DataItem[],
+  selectedData: TooltipDataItem[],
   field: string,
 ): string[] => {
   return uniq(selectedData.map((d) => get(d, field)));
@@ -309,15 +313,15 @@ export const getSelectedCellIndexes = (
 
 export const getSelectedData = (
   spreadsheet: SpreadSheet,
-  cellInfo: DataItem,
-): DataItem[] => {
+  cellInfo: TooltipDataItem,
+  showSingleTips?: boolean,
+): TooltipDataItem[] => {
   const layoutResult = spreadsheet?.facet?.layoutResult;
   let selectedData = [];
   const currentState = spreadsheet.interaction.getState();
-  const stateName = currentState?.stateName;
   const cells = currentState?.cells;
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
-  if (stateName === InteractionStateName.SELECTED) {
+  if (showSingleTips) {
     // 行头列头单选多选
     const selectedCellIndexes = getSelectedCellIndexes(
       spreadsheet,
@@ -326,7 +330,7 @@ export const getSelectedData = (
     );
     forEach(selectedCellIndexes, ([i, j]) => {
       const viewMeta = layoutResult.getCellMeta(i, j);
-      const data = get(viewMeta, 'data[0]');
+      const data = viewMeta?.data;
       if (!isNil(data)) {
         selectedData.push(data);
       }
@@ -341,88 +345,91 @@ export const getSelectedData = (
     );
 
     selectedData = map(cellsWithCellIndex, (cell) =>
-      get(cell.getMeta(), 'data[0]'),
+      get(cell.getMeta(), 'data'),
     );
   }
   return selectedData;
 };
 
 export const getSummaryProps = (
-  spreadsheet: SpreadSheet,
-  cellInfo: DataItem,
-  options: TooltipOptions,
-  aggregation: Aggregation = 'SUM',
+  params: SummaryParam,
 ): TooltipSummaryOptions => {
-  // 拿到列内所有data-cell的数据
-  const selectedData = getSelectedData(spreadsheet, cellInfo);
-  const valueFields = getSelectedValueFields(selectedData, EXTRA_FIELD);
-  if (size(valueFields) > 0) {
-    const currentField = cellInfo[EXTRA_FIELD];
-    const currentFormatter = getFieldFormatter(spreadsheet, currentField);
-    const name = getSummaryName(
-      spreadsheet,
-      valueFields,
-      currentField,
-      cellInfo,
-    );
-    let aggregationValue = getAggregationValue(
-      selectedData,
-      VALUE_FIELD,
-      aggregation,
-    );
-    aggregationValue = parseFloat(aggregationValue.toPrecision(12)); // solve accuracy problems
-    const value = currentFormatter(aggregationValue);
-    return {
-      selectedData: selectedData as any,
-      name,
-      value,
-    };
+  const { spreadsheet, cellInfo, getShowValue, options = {} } = params;
+  // 拿到选择的所有data-cell的数据
+  const selectedData = getSelectedData(
+    spreadsheet,
+    cellInfo,
+    options.showSingleTips,
+  );
+  const currentField = cellInfo[EXTRA_FIELD];
+  const currentFormatter = getFieldFormatter(spreadsheet, currentField);
+  const name = getSummaryName(spreadsheet, currentField, options?.isTotals);
+  let value: number | string;
+  if (getShowValue) {
+    value = getShowValue(selectedData, VALUE_FIELD);
   }
+  const dataSum = getDataSumByField(selectedData, VALUE_FIELD);
+  value = parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems
+  if (currentFormatter) {
+    value = currentFormatter(dataSum);
+  }
+  return {
+    selectedData: selectedData as any,
+    name: name,
+    value,
+  };
 };
 
 const mergeSummaries = (summaries) => {
   const result = [];
-  // each(summaries, (summary) => {
-  //   const summaryInResultIndex = findIndex(
-  //     result,
-  //     (i) => i?.name === summary?.name,
-  //   );
-  //   if (summaryInResultIndex > -1) {
-  //     result[summaryInResultIndex].value += summary.value;
-  //     result[summaryInResultIndex].selectedData = result[
-  //       summaryInResultIndex
-  //     ].selectedData.concat(summary.selectedData);
-  //   } else {
-  //     result.push(summary);
-  //   }
-  // });
+  each(summaries, (summary) => {
+    if (summary) {
+      const summaryInResultIndex = findIndex(
+        result,
+        (i) => i?.name === summary?.name,
+      );
+      if (summaryInResultIndex > -1) {
+        result[summaryInResultIndex].value += summary.value;
+        result[summaryInResultIndex].selectedData = result[
+          summaryInResultIndex
+        ]?.selectedData?.concat(summary?.selectedData || []);
+      } else {
+        result.push(summary);
+      }
+    }
+  });
   return result;
 };
 
-// TODO: tooltip 很多cellInfos类型不正确，需要整体重新梳理
-export const getTooltipData = (
-  spreadsheet: SpreadSheet,
-  cellInfos?: TooltipData[],
-  options?: TooltipOptions,
-  aggregation?: Aggregation,
-): TooltipData => {
+export const getTooltipData = (params: TooltipDataParam) => {
+  const { spreadsheet, cellInfos, options = {}, getShowValue } = params;
   let summaries = null;
   let headInfo = null;
   let details = null;
+  const firstCellInfo = get(cellInfos, '0') || {};
+  // TODO：tabular类型数据需要补充兼容
   if (!options?.hideSummary) {
-    // 计算总计小计
+    // 计算多项的sum（默认为sum，可自定义）
     summaries = map(cellInfos, (cellInfo) =>
-      getSummaryProps(spreadsheet, cellInfo as any, options, aggregation),
+      getSummaryProps({
+        spreadsheet,
+        cellInfo,
+        options,
+        getShowValue,
+      }),
     );
-    // 如果summaries中有相同name的向，则合并为同一项；
+    // 如果summaries中有相同name的项，则合并为同一项；
     summaries = mergeSummaries(summaries);
+  } else if (options.showSingleTips) {
+    // 行列头hover
+    const metaName = find(spreadsheet?.dataCfg?.meta, item=> item?.field === firstCellInfo.value)?.name;
+    firstCellInfo.name = metaName || firstCellInfo.value || '';
   } else {
-    // 如果隐藏总计小计说明是 data cell 点击，只展示单个 cell 的详细信息
-    headInfo = getHeadInfo(spreadsheet, cellInfos[0] as Data);
-    details = getDetailList(spreadsheet, cellInfos[0] as Data, options);
+    headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
+    details = getDetailList(spreadsheet, firstCellInfo, options);
   }
-  const { interpretation, infos, tips } = cellInfos[0] || {};
-  return { summaries, interpretation, infos, tips, headInfo, details };
+  const { interpretation, infos, tips, name } = firstCellInfo || {};
+  return { summaries, interpretation, infos, tips, name, headInfo, details };
 };
 
 export const getRightAndValueField = (

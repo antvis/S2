@@ -162,9 +162,9 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    (this.spreadsheet.container.get(
-      'el',
-    ) as HTMLCanvasElement).addEventListener('wheel', this.onWheel);
+    (
+      this.spreadsheet.container.get('el') as HTMLCanvasElement
+    ).addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
@@ -172,16 +172,17 @@ export abstract class BaseFacet {
     this.mobileWheel = new Wheel(this.spreadsheet.container);
 
     this.mobileWheel.on('wheel', (ev: GestureEvent) => {
+      this.spreadsheet.hideTooltip();
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
-      this.onWheel(({
+      this.onWheel({
         ...originEvent,
         deltaX,
         deltaY,
         layerX: x / 3,
         layerY: y / 3,
-      } as unknown) as S2WheelEvent);
+      } as unknown as S2WheelEvent);
     });
   };
 
@@ -194,9 +195,23 @@ export abstract class BaseFacet {
    * Start render, call from outside
    */
   public render() {
+    this.adjustScrollOffset();
     this.renderHeaders();
     this.renderScrollBars();
     this.dynamicRenderCell(false);
+  }
+
+  /**
+   * 在每次render, 校验scroll offset是否在合法范围中
+   * 比如在滚动条已经滚动到100%的状态的前提下：（ maxAvailableScrollOffsetX = colsHierarchy.width - viewportBBox.width ）
+   *     此时changeSize，sheet从 small width 变为 big width
+   *     导致后者 viewport 区域更大，其结果就是后者的 maxAvailableScrollOffsetX 更小
+   *     此时就需要重置 scrollOffsetX，否则就会导致滚动过多，出现空白区域
+   */
+  protected adjustScrollOffset() {
+    const { scrollX, scrollY } = this.getScrollOffset();
+    const { x: newX, y: newY } = this.adjustXAndY(scrollX, scrollY);
+    this.setScrollOffset({ scrollX: newX, scrollY: newY });
   }
 
   public getSeriesNumberWidth(): number {
@@ -750,6 +765,8 @@ export abstract class BaseFacet {
     const { deltaX, deltaY, layerX, layerY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(deltaX, deltaY);
 
+    this.spreadsheet.hideTooltip();
+
     // 如果已经滚动在顶部或底部, 则无需触发滚动事件, 减少单元格重绘
     // TODO: 这里需要迁移 spreadsheet 的逻辑
     if (
@@ -1000,7 +1017,8 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
         offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
@@ -1054,7 +1072,8 @@ export abstract class BaseFacet {
         // When both a row header and a panel scroll bar exist, show viewport shadow
         showViewPortRightShadow:
           !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
-        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
         spreadsheet: this.cfg.spreadsheet,
       };

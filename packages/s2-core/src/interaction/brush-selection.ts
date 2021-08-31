@@ -1,6 +1,6 @@
-import { DefaultInterceptEventType, S2Event } from '@/common/constant';
+import { InterceptEventType, S2Event } from '@/common/constant';
 import {
-  InteractionBrushStage,
+  InteractionBrushSelectionStage,
   InteractionStateName,
 } from '@/common/constant/interaction';
 import {
@@ -9,17 +9,18 @@ import {
   OriginalEvent,
   ViewMeta,
 } from '@/common/interface';
-import { Event, IShape, Point } from '@antv/g-canvas';
-import { get, isEmpty, isEqual, sample, throttle } from 'lodash';
-import { DataCell } from '../cell';
-import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '../common/constant';
-import { TooltipData } from '../common/interface';
-import { BaseInteraction } from './base';
+import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
+import { get, isEmpty, isEqual } from 'lodash';
+import { DataCell } from '@/cell';
+import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
+import { TooltipData } from '@/common/interface';
+import { BaseEvent } from './events';
+import { BaseEventImplement } from './events/base-event';
 
 /**
  * Panel area's brush selection interaction
  */
-export class BrushSelection extends BaseInteraction {
+export class BrushSelection extends BaseEvent implements BaseEventImplement {
   public dataCells: DataCell[] = [];
 
   public prepareSelectMaskShape: IShape;
@@ -30,9 +31,9 @@ export class BrushSelection extends BaseInteraction {
 
   private brushRangeDataCells: DataCell[] = [];
 
-  private brushStage: InteractionBrushStage = InteractionBrushStage.UN_DRAGGED;
+  private brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
 
-  protected bindEvents() {
+  public bindEvents() {
     this.bindMouseDown();
     this.bindMouseMove();
     this.bindMouseUp();
@@ -43,58 +44,50 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private initPrepareSelectMaskShape() {
-    if (this.prepareSelectMaskShape) {
-      this.hidePrepareSelectMaskShape();
-      return;
-    }
+    const { foregroundGroup } = this.spreadsheet;
+    foregroundGroup.removeChild(this.prepareSelectMaskShape);
+
     const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
-    this.prepareSelectMaskShape = this.spreadsheet.foregroundGroup.addShape(
-      'rect',
-      {
-        visible: false,
-        attrs: {
-          width: 0,
-          height: 0,
-          x: 0,
-          y: 0,
-          fill: prepareSelectMaskTheme?.backgroundColor,
-          fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
-          zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
-        },
-        capture: false,
+    this.prepareSelectMaskShape = foregroundGroup.addShape('rect', {
+      visible: false,
+      attrs: {
+        width: 0,
+        height: 0,
+        x: 0,
+        y: 0,
+        fill: prepareSelectMaskTheme?.backgroundColor,
+        fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
+        zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
       },
-    );
+      capture: false,
+    });
+  }
+
+  private setBrushSelectionStage(stage: InteractionBrushSelectionStage) {
+    this.brushSelectionStage = stage;
   }
 
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (ev: Event) => {
-      this.brushStage = InteractionBrushStage.CLICK;
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
+      event.preventDefault();
+      this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
       this.initPrepareSelectMaskShape();
-
-      const originalEvent = (ev.originalEvent as unknown) as OriginalEvent;
-      const point: Point = { x: originalEvent.layerX, y: originalEvent.layerY };
-
-      this.dataCells = this.interaction.getPanelGroupAllDataCells();
-      this.startBrushPoint = this.getBrushPoint(point);
+      this.setDataCells();
+      this.startBrushPoint = this.getBrushPoint(event);
     });
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (event: Event) => {
-      if (this.brushStage === InteractionBrushStage.UN_DRAGGED) {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (event: CanvasEvent) => {
+      if (
+        this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
+      ) {
         return;
       }
 
-      this.brushStage = InteractionBrushStage.DRAGGED;
-
-      event.preventDefault();
-      this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
-      const originalEvent = (event.originalEvent as unknown) as OriginalEvent;
-      const currentPoint: Point = {
-        x: originalEvent.layerX,
-        y: originalEvent.layerY,
-      };
-      this.endBrushPoint = this.getBrushPoint(currentPoint);
+      this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
+      this.interaction.interceptEvent.add(InterceptEventType.HOVER);
+      this.endBrushPoint = this.getBrushPoint(event);
       this.interaction.clearStyleIndependent();
       this.updatePrepareSelectMask();
       this.showPrepareSelectedCells();
@@ -102,9 +95,11 @@ export class BrushSelection extends BaseInteraction {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event: Event) => {
+    // The constant 'GLOBAL_MOUSE_UP' is used to monitor the event of the mouse moving off the table.
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       event.preventDefault();
-      if (this.brushStage === InteractionBrushStage.DRAGGED) {
+
+      if (this.brushSelectionStage === InteractionBrushSelectionStage.DRAGGED) {
         this.hidePrepareSelectMaskShape();
         this.updateSelectedCells();
 
@@ -112,9 +107,16 @@ export class BrushSelection extends BaseInteraction {
           event,
           this.getBrushRangeCellsInfos(),
         );
+        this.spreadsheet.interaction.interceptEvent.add(
+          InterceptEventType.BRUSH_SELECTION,
+        );
       }
-      this.brushStage = InteractionBrushStage.UN_DRAGGED;
+      this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
     });
+  }
+
+  private setDataCells() {
+    this.dataCells = this.interaction.getPanelGroupAllDataCells();
   }
 
   private getBrushRangeCellsInfos(): TooltipData[] {
@@ -160,18 +162,14 @@ export class BrushSelection extends BaseInteraction {
     this.prepareSelectMaskShape.hide();
   }
 
-  private getBrushPoint(point: Point): BrushPoint {
-    const containerMat = this.spreadsheet.panelGroup.getMatrix();
-    const containerX = containerMat[6];
-    const containerY = containerMat[7];
-    const sampleDataCellBBox = sample(this.dataCells)?.getBBox();
-
-    const colIndex = Math.floor(
-      Math.abs(point.x - containerX) / sampleDataCellBBox?.width,
-    );
-    const rowIndex = Math.floor(
-      Math.abs(point.y - containerY) / sampleDataCellBBox?.height,
-    );
+  private getBrushPoint(event: CanvasEvent): BrushPoint {
+    const originalEvent = event.originalEvent as unknown as OriginalEvent;
+    const point: Point = {
+      x: originalEvent.layerX,
+      y: originalEvent.layerY,
+    };
+    const cell = this.spreadsheet.getCell(event.target);
+    const { colIndex, rowIndex } = cell.getMeta();
 
     return {
       ...point,
@@ -252,11 +250,9 @@ export class BrushSelection extends BaseInteraction {
 
   // 最终刷选的cell
   private updateSelectedCells() {
-    setTimeout(() => {
-      this.interaction.changeState({
-        cells: this.brushRangeDataCells,
-        stateName: InteractionStateName.SELECTED,
-      });
+    this.interaction.changeState({
+      cells: this.brushRangeDataCells,
+      stateName: InteractionStateName.SELECTED,
     });
   }
 }

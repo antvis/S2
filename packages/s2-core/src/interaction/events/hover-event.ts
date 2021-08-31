@@ -4,18 +4,17 @@ import {
   HOVER_FOCUS_TIME,
   InteractionStateName,
 } from '@/common/constant/interaction';
-import { S2CellType, ViewMeta } from '@/common/interface';
-import { getTooltipData } from '@/utils/tooltip';
+import { S2CellType, ViewMeta, TooltipOptions } from '@/common/interface';
 import { getActiveHoverRowColCells } from '@/utils/interaction/hover-event';
 import { Event } from '@antv/g-canvas';
-import { get, isEmpty, forEach } from 'lodash';
-import { BaseEvent } from './base-event';
+import { isEmpty, forEach } from 'lodash';
+import { BaseEvent, BaseEventImplement } from './base-event';
 
 /**
  * @description Hover event for data cells, row cells and col cells
  */
-export class HoverEvent extends BaseEvent {
-  protected bindEvents() {
+export class HoverEvent extends BaseEvent implements BaseEventImplement {
+  public bindEvents() {
     this.bindDataCellHover();
     this.bindRowCellHover();
     this.bindColCellHover();
@@ -30,7 +29,7 @@ export class HoverEvent extends BaseEvent {
         this.interaction.getAllColHeaderCells(),
       );
       forEach(allColHeaderCells, (cell: ColCell) => {
-        cell.update();
+        cell.updateByState(InteractionStateName.HOVER, cell);
       });
     }
 
@@ -39,9 +38,10 @@ export class HoverEvent extends BaseEvent {
       const allRowHeaderCells = getActiveHoverRowColCells(
         rowId,
         this.interaction.getAllRowHeaderCells(),
+        this.spreadsheet.isHierarchyTreeType(),
       );
       forEach(allRowHeaderCells, (cell: RowCell) => {
-        cell.update();
+        cell.updateByState(InteractionStateName.HOVER, cell);
       });
     }
   }
@@ -97,7 +97,13 @@ export class HoverEvent extends BaseEvent {
         cells: [cell],
         stateName: InteractionStateName.HOVER_FOCUS,
       });
-      this.handleTooltip(event, meta);
+      const options: TooltipOptions = {
+        isTotals: meta.isTotals,
+        enterable: true,
+        hideSummary: true,
+      };
+      const data = this.getCellInfo(meta);
+      this.spreadsheet.showTooltipWithInfo(event, data, options);
     }, HOVER_FOCUS_TIME);
   }
 
@@ -114,41 +120,27 @@ export class HoverEvent extends BaseEvent {
       stateName: InteractionStateName.HOVER,
     });
     cell.update();
-    this.handleTooltip(event, meta);
-  }
-
-  /**
-   * @description handle the the tooltip
-   * @param event
-   * @param meta
-   */
-  private handleTooltip(event: Event, meta: ViewMeta) {
-    const position = {
-      x: event.clientX,
-      y: event.clientY,
-    };
-    const currentCellMeta = get(meta, 'data.0');
-    const isTotals = get(meta, 'isTotals', false);
-    if (isTotals) {
-      return;
-    }
-
-    const options = {
-      isTotals,
+    const options: TooltipOptions = {
+      isTotals: meta.isTotals,
       enterable: true,
       hideSummary: true,
+      showSingleTips: true,
     };
+    const data = this.getCellInfo(meta, true);
+    this.spreadsheet.showTooltipWithInfo(event, data, options);
+  }
 
-    const tooltipData = getTooltipData(
-      this.spreadsheet,
-      [currentCellMeta],
-      options,
-    );
-    const showOptions = {
-      position,
-      data: tooltipData,
-      options,
-    };
-    this.spreadsheet.showTooltip(showOptions);
+  private getCellInfo(
+    meta: ViewMeta = {} as ViewMeta,
+    showSingleTips?: boolean,
+  ) {
+    const { data, query, value, rowQuery, colQuery } = meta;
+    const currentCellMeta = data;
+
+    const cellInfos = showSingleTips
+      ? [{ ...query, value }]
+      : [currentCellMeta || { ...rowQuery, ...colQuery }];
+
+    return cellInfos;
   }
 }

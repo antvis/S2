@@ -7,8 +7,8 @@ import {
 } from '@/common/interface';
 import { isEmpty, isNumber } from 'lodash';
 
-export const getIconLayoutPosition = (condition: IconCondition) => {
-  return condition?.iconPosition ?? 'right';
+export const getIconPositionCfg = (condition: IconCondition) => {
+  return condition?.position ?? 'right';
 };
 
 export const isPositive = (value: number | string): boolean => {
@@ -21,7 +21,7 @@ export const isPositive = (value: number | string): boolean => {
 /**
  * generate default conditions, including icon condition and text condition
  */
-const generateDefaultCondition = (
+const generateIndicateCondition = (
   values: string[] = [],
   iconTheme: IconTheme,
 ) => {
@@ -31,7 +31,7 @@ const generateDefaultCondition = (
   values.forEach((value) => {
     iconCondition.push({
       field: value,
-      iconPosition: 'left',
+      position: 'left',
       mapping(fieldValue: string | number) {
         const positive = isPositive(fieldValue);
         return {
@@ -63,8 +63,8 @@ const updateCondition = (
   rawCondition: Condition[] = [],
   updatedCondition: Condition[] = [],
 ) => {
-  const result: Condition[] = updatedCondition;
-  rawCondition.forEach((condition) => {
+  const result: Condition[] = [...rawCondition];
+  updatedCondition.forEach((condition) => {
     if (!result.find((i) => i.field === condition.field)) {
       result.push(condition);
     }
@@ -73,9 +73,9 @@ const updateCondition = (
 };
 
 /**
- * handle useDefaultConditionValues in options cfg, map them into default conditions
+ * handle indicateConditionValues in options cfg, map them into default conditions
  * @param conditions conditions in options cfg
- * @param values represent useDefaultConditionValues in options cfg
+ * @param values represent indicateConditionValues in options cfg
  * @param iconTheme semantic color that icon will use
  * @returns merged options
  */
@@ -87,8 +87,7 @@ export const updateConditionsByValues = (
   if (isEmpty(values)) {
     return conditions;
   }
-
-  const { textCondition, iconCondition } = generateDefaultCondition(
+  const { textCondition, iconCondition } = generateIndicateCondition(
     values,
     iconTheme,
   );

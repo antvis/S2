@@ -1,6 +1,5 @@
 import {
   CellCallback,
-  Conditions,
   CornerHeaderCallback,
   CustomHeaderCells,
   DataCellCallback,
@@ -23,9 +22,10 @@ import {
 import { merge } from 'lodash';
 import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
 import { BaseDataSet } from 'src/data-set';
-import { SpreadSheet } from 'src/sheet-type';
 import { Node } from 'src/facet/layout/node';
+import { SpreadSheet } from 'src/sheet-type';
 import { FilterDataItemCallback } from './basic';
+import { Conditions } from './condition';
 
 export interface S2PartialOptions {
   // canvas's width
@@ -39,7 +39,7 @@ export interface S2PartialOptions {
   // row header hierarchy type only work in pivot mode
   readonly hierarchyType?: 'grid' | 'tree' | 'customTree';
   // 兜底以前的衍生指标概念
-  readonly useDefaultConditionValues?: string[];
+  readonly indicateConditionValues?: string[];
   // conditions config
   readonly conditions?: Conditions;
   // total config
@@ -65,6 +65,11 @@ export interface S2PartialOptions {
   // extra styles
   readonly style?: Partial<Style>;
   readonly hierarchyCollapse?: boolean;
+  // focus selected cell, like the spotlight
+  readonly selectedCellsSpotlight?: boolean;
+  // highlight all row header cells and column header cells to which the hovered cell belongs
+  readonly hoverHighlight?: boolean;
+  readonly hdAdapter?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -100,10 +105,6 @@ export interface S2PartialOptions {
   filterDisplayDataItem?: FilterDataItemCallback;
   // determine data mapping when shows in tooltip
   mappingDisplayDataItem?: MappingDataItemCallback;
-  // focus selected cell, like the spotlight
-  selectedCellsSpotlight?: boolean;
-  // highlight all row header cells and column header cells to which the hovered cell belongs
-  hoverHighlight?: boolean;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
 
   /** ***********CUSTOM LAYOUT HOOKS**************** */
@@ -122,7 +123,7 @@ export type S2Options = S2PartialOptions & {
   readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
 };
 
-export const defaultStyle = {
+export const defaultStyle: Style = {
   treeRowsWidth: TREE_ROW_DEFAULT_WIDTH,
   collapsedRows: {},
   collapsedCols: {},
@@ -150,9 +151,9 @@ export const defaultStyle = {
     maxSampleIndex: 1,
   },
   device: 'pc',
-} as Style;
+};
 
-export const defaultOptions = {
+export const defaultOptions: S2Options = {
   width: 600,
   height: 480,
   mode: 'pivot',
@@ -171,7 +172,8 @@ export const defaultOptions = {
   style: defaultStyle,
   selectedCellsSpotlight: true,
   hoverHighlight: true,
-} as S2Options;
+  hdAdapter: true,
+};
 
 export const safetyOptions = (options: S2Options) =>
   merge({}, defaultOptions, options);

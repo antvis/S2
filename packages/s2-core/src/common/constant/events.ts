@@ -57,6 +57,9 @@ export enum S2Event {
   CORNER_CELL_MOUSE_MOVE = 'corner-cell:mouse-move',
   MERGED_ELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
 
+  RANGE_SORTING = 'range:sorting',
+  RANGE_SORTED = 'range:sorted',
+
   GLOBAL_RESIZE_MOUSE_DOWN = 'global:resize:mouse-down',
   GLOBAL_RESIZE_MOUSE_MOVE = 'global:resize:mouse-move',
   GLOBAL_RESIZE_MOUSE_UP = 'global:resize-mouse-up',
@@ -78,11 +81,13 @@ export enum OriginEventType {
   CLICK = 'click',
 }
 
-export enum DefaultInterceptEventType {
+export enum InterceptEventType {
   HOVER = 'hover',
   CLICK = 'click',
+  BRUSH_SELECTION = 'brushSelection',
 }
 
-export type DefaultInterceptEvent =
-  | DefaultInterceptEventType.HOVER
-  | DefaultInterceptEventType.CLICK;
+export type InterceptEvent =
+  | InterceptEventType.HOVER
+  | InterceptEventType.CLICK
+  | InterceptEventType.BRUSH_SELECTION;

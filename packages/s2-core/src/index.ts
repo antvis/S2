@@ -3,7 +3,7 @@ export { registerIcon } from './common/icons';
 export { setEVALocale } from './common/i18n';
 export { Node } from './facet/layout/node';
 export { Hierarchy } from './facet/layout/hierarchy';
-export { BaseInteraction } from './interaction/base';
+export { BaseEvent, BaseEventImplement } from './interaction/events';
 export { GuiIcon } from './common/icons/gui-icon';
 export {
   SheetComponent,

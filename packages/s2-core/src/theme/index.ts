@@ -2,15 +2,19 @@ import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
 import { Palette, SpreadSheetTheme, ThemeCfg } from '../common/interface';
 import { isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
+import { SpreadSheet } from '../sheet-type';
 
 /**
  * @describe generate the theme according to the type
  * @param  name
  */
-export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
+export const getTheme = (
+  themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
+): SpreadSheetTheme => {
   const themePalette: Palette =
     themeCfg?.palette || getPalette(themeCfg?.name, themeCfg?.hueInvert);
   const { brandColors, grayColors, semanticColors } = themePalette;
+  const isTable = themeCfg?.spreadsheet?.isTableMode();
 
   return {
     // ------------- Headers -------------------
@@ -33,7 +37,7 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[4],
+        backgroundColor: brandColors[3],
         backgroundColorOpacity: 1,
         // ----------- border color --------------
         horizontalBorderColor: grayColors[2],
@@ -76,8 +80,9 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
         fontSize: 12,
         fontWeight: 'normal',
         fill: grayColors[6],
+        linkTextFill: brandColors[6],
         opacity: 1,
-        textAlign: 'right',
+        textAlign: isTable ? 'center' : 'right', // default align center for row cell in table mode
       },
       cell: {
         // ----------- background color -----------
@@ -98,10 +103,18 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           bottom: 12,
           left: 8,
         },
-        // -------------- hover -------------------
-        hover: {
-          backgroundColor: brandColors[2],
-          backgroundOpacity: 1,
+        /* ---------- interaction state ----------- */
+        interactionState: {
+          // -------------- hover -------------------
+          hover: {
+            backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- selected -------------------
+          selected: {
+            backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
+          },
         },
       },
       icon: {
@@ -134,7 +147,7 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[4],
+        backgroundColor: brandColors[3],
         backgroundColorOpacity: 1,
         // ----------- border color --------------
         horizontalBorderColor: grayColors[2],
@@ -151,10 +164,18 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           bottom: 12,
           left: 8,
         },
-        // -------------- hover -------------------
-        hover: {
-          backgroundColor: brandColors[5],
-          backgroundOpacity: 1,
+        /* ---------- interaction state ----------- */
+        interactionState: {
+          // -------------- hover -------------------
+          hover: {
+            backgroundColor: brandColors[4],
+            backgroundOpacity: 1,
+          },
+          // -------------- selected -------------------
+          selected: {
+            backgroundColor: brandColors[4],
+            backgroundOpacity: 1,
+          },
         },
       },
       icon: {
@@ -207,38 +228,39 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
           bottom: 12,
           left: 8,
         },
-        // -------------- hover -------------------
-        hover: {
-          backgroundColor: brandColors[2],
-          backgroundOpacity: 1,
+        /* ---------- interaction state ----------- */
+        interactionState: {
+          // -------------- hover -------------------
+          hover: {
+            backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- keep hover -------------------
+          hoverFocus: {
+            backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
+            borderColor: grayColors[6],
+            borderOpacity: 1,
+          },
+          // -------------- selected -------------------
+          selected: {
+            backgroundColor: brandColors[2],
+            backgroundOpacity: 1,
+          },
+          // -------------- unselected -------------------
+          // TODO: 条件格式的icon和mini chart也需要置灰
+          unselected: {
+            backgroundOpacity: 0.3,
+            textOpacity: 0.3,
+            opacity: 0.3,
+          },
+          // -------------- prepare select --------------
+          prepareSelect: {
+            borderColor: grayColors[6],
+            borderOpacity: 1,
+          },
         },
-        // -------------- keep hover -------------------
-        hoverFocus: {
-          backgroundColor: brandColors[2],
-          backgroundOpacity: 1,
-          borderColor: grayColors[6],
-          borderOpacity: 1,
-        },
-        // -------------- selected -------------------
-        selected: {
-          backgroundColor: brandColors[2],
-          backgroundOpacity: 1,
-        },
-        // -------------- unselected -------------------
-        // TODO: 条件格式的icon和mini chart也需要置灰
-        unselected: {
-          backgroundOpacity: 0.3,
-          textOpacity: 0.3,
-        },
-        // -------------- prepare select --------------
-        prepareSelect: {
-          borderColor: grayColors[6],
-          borderOpacity: 1,
-        },
-        // -------------- out of spotlight --------------
-        outOfTheSpotlight: {
-          opacity: 0.3,
-        },
+
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
       },
@@ -279,7 +301,7 @@ export const getTheme = (themeCfg: ThemeCfg): SpreadSheetTheme => {
     },
     // ------------- prepareSelectMask -----------------
     prepareSelectMask: {
-      backgroundColor: brandColors[6],
+      backgroundColor: brandColors[5],
       backgroundOpacity: 0.3,
     },
   } as SpreadSheetTheme;

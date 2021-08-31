@@ -1,5 +1,5 @@
 import {
-  DefaultInterceptEventType,
+  InterceptEventType,
   InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
@@ -7,12 +7,15 @@ import {
 import { S2CellType, TooltipData } from '@/common/interface';
 import { Event } from '@antv/g-canvas';
 import { each, find, isEmpty, isEqual, concat } from 'lodash';
-import { BaseInteraction } from './base';
+import { BaseEvent, BaseEventImplement } from './events';
 
-export class DataCellMultiSelection extends BaseInteraction {
+export class DataCellMultiSelection
+  extends BaseEvent
+  implements BaseEventImplement
+{
   private isMultiSelection = false;
 
-  protected bindEvents() {
+  public bindEvents() {
     this.bindKeyboardDown();
     this.bindDataCellClick();
     this.bindKeyboardUp();
@@ -33,7 +36,7 @@ export class DataCellMultiSelection extends BaseInteraction {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
         this.isMultiSelection = false;
-        this.interaction.interceptEvent.delete(DefaultInterceptEventType.CLICK);
+        this.interaction.interceptEvent.delete(InterceptEventType.CLICK);
       }
     });
   }
@@ -50,8 +53,8 @@ export class DataCellMultiSelection extends BaseInteraction {
           ? currentState?.cells
           : concat(currentState?.cells, cell);
         // 屏蔽hover和click
-        this.interaction.interceptEvent.add(DefaultInterceptEventType.CLICK);
-        this.interaction.interceptEvent.add(DefaultInterceptEventType.HOVER);
+        this.interaction.interceptEvent.add(InterceptEventType.CLICK);
+        this.interaction.interceptEvent.add(InterceptEventType.HOVER);
         // 先把之前的tooltip隐藏
         this.spreadsheet.hideTooltip();
         this.interaction.changeState({

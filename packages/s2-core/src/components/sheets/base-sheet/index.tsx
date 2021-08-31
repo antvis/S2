@@ -14,8 +14,8 @@ import {
   TargetLayoutNode,
   S2Constructor,
 } from 'src/common/interface';
-import { DrillDown } from '../../drill-down';
-import { Header } from '../../header';
+import { DrillDown } from '@/components/drill-down';
+import { Header } from '@/components/header';
 import { HandleDrillDownIcon, HandleDrillDown, SpreadSheet } from 'src/index';
 import {
   KEY_AFTER_HEADER_LAYOUT,
@@ -27,12 +27,11 @@ import {
 } from 'src/common/constant/events';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
-import { BaseSheetProps } from '../interface';
+import { BaseSheetProps } from '@/components/sheets/interface';
 import { Event as GEvent } from '@antv/g-canvas';
+import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 
 import './index.less';
-
-const PRE_CLASS = 's2-pagination';
 
 export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
@@ -284,9 +283,10 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     const pageSize = get(paginationCfg, 'pageSize', Infinity);
     // only show the pagination when the pageSize > 5
     const showQuickJumper = total / pageSize > 5;
+    const preCls = `${S2_PREFIX_CLS}-pagination`;
 
     return (
-      <div className={PRE_CLASS}>
+      <div className={preCls}>
         <Pagination
           current={current}
           total={total}
@@ -298,7 +298,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
           onChange={(page) => setCurrent(page)}
         />
         <span
-          className={`${PRE_CLASS}-count`}
+          className={`${preCls}-count`}
           title={`${i18n('共计')}${total}${i18n('条')}`}
         >
           {i18n('共计')}
@@ -419,7 +419,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && <Header {...header} sheet={ownSpreadsheet} />}
-        <div ref={container} />
+        <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
         {renderPagination()}
       </Spin>
     </StrictMode>

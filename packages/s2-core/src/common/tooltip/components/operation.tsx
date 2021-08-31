@@ -6,14 +6,15 @@ import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
 import { find, get, isEqual } from 'lodash';
 import React from 'react';
-import { HtmlIcon } from '../../icons';
+import { HtmlIcon } from '@/common/icons';
+import { TOOLTIP_OPERATION_PREFIX_CLS } from '@/common/tooltip/constant';
 
-const CONTAINER_CLASS = 'eva-facet-tooltip-operation';
 interface OrderOption {
   sortMethod: 'ASC' | 'DESC';
   type: 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
   name: string;
 }
+
 const ORDER_OPTIONS: OrderOption[] = [
   { sortMethod: 'ASC', type: 'groupAsc', name: '组内升序' },
   { sortMethod: 'DESC', type: 'groupDesc', name: '组内降序' },
@@ -106,7 +107,7 @@ export class TooltipOperation extends React.PureComponent<
 
   render(): JSX.Element {
     return (
-      <div className={CONTAINER_CLASS}>
+      <div className={TOOLTIP_OPERATION_PREFIX_CLS}>
         {/* <span className="operation-button">仅显示</span> */}
         {/* <span className="operation-button">排除</span> */}
         {this.getSortSelection()}

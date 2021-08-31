@@ -4,17 +4,18 @@ import {
   ResizeEventType,
   S2Event,
 } from '@/common/constant';
-import { Group, IGroup } from '@antv/g-canvas';
+import { Group, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import { clone, get, isNil, merge, throttle } from 'lodash';
 import { SpreadSheet } from 'src/sheet-type';
+import { Style } from '@/common/interface';
 import { ResizeInfo } from '../facet/header/interface';
-import { BaseInteraction } from './base';
+import { BaseEvent, BaseEventImplement } from './events';
 import { RootInteraction } from './root';
 
 /**
  * Resize row&col width/height interaction
  */
-export class RowColResize extends BaseInteraction {
+export class RowColResize extends BaseEvent implements BaseEventImplement {
   private hotsPot: IGroup;
 
   private resizeGroup: IGroup;
@@ -28,15 +29,16 @@ export class RowColResize extends BaseInteraction {
     this.container = this.spreadsheet.foregroundGroup;
   }
 
-  protected bindEvents() {
+  public bindEvents() {
     this.bindMouseDown();
     this.bindMouseMove();
     this.bindMouseUp();
   }
 
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, (ev) => {
-      const shape: IGroup = ev.target;
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, (event) => {
+      const shape = event.target as IGroup;
+      const originalEvent = event.originalEvent as MouseEvent;
       const info: ResizeInfo = shape.attr('appendInfo');
       if (get(info, 'isResizer')) {
         this.hotsPot = shape;
@@ -87,7 +89,7 @@ export class RowColResize extends BaseInteraction {
               ['M', offsetX + width, offsetY],
               ['L', offsetX + width, canvasHeight],
             ]);
-            this.startPos.offsetX = ev.originalEvent.offsetX;
+            this.startPos.offsetX = originalEvent.offsetX;
           } else {
             cellStartBorder.attr('path', [
               ['M', offsetX, offsetY],
@@ -97,7 +99,7 @@ export class RowColResize extends BaseInteraction {
               ['M', offsetX, offsetY + height],
               ['L', canvasWidth, offsetY + height],
             ]);
-            this.startPos.offsetY = ev.originalEvent.offsetY;
+            this.startPos.offsetY = originalEvent.offsetY;
           }
           cellEndBorder.attr('cursor', `${info.type}-resize`);
           const header = this.getHeaderGroup();
@@ -108,12 +110,12 @@ export class RowColResize extends BaseInteraction {
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, (ev) => {
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, (event) => {
       throttle(
         this.resizeMouseMove,
         33, // 30fps
         {},
-      )(ev);
+      )(event);
     });
   }
 
@@ -124,20 +126,19 @@ export class RowColResize extends BaseInteraction {
         const children = this.resizeGroup.getChildren();
         if (children) {
           const info = this.getResizeInfo();
-          const startPoint: ['M', number, number] = children[0]?.attr(
-            'path',
-          )[0];
+          const startPoint: ['M', number, number] =
+            children[0]?.attr('path')[0];
           const endPoint: ['M', number, number] = children[1]?.attr('path')[0];
 
           let resizeEventType: ResizeEventType;
-          let config: any;
+          let style: Style;
           // todo，如何优化这段代码？
           if (info.type === 'col') {
             // eslint-disable-next-line default-case
             switch (info.affect) {
               case 'field':
                 resizeEventType = ResizeEventType.ROW_W;
-                config = {
+                style = {
                   rowCfg: {
                     widthByField: {
                       [info.id]: endPoint[1] - startPoint[1],
@@ -147,7 +148,7 @@ export class RowColResize extends BaseInteraction {
                 break;
               case 'tree':
                 resizeEventType = ResizeEventType.TREE_W;
-                config = {
+                style = {
                   rowCfg: {
                     treeRowsWidth: endPoint[1] - startPoint[1],
                   },
@@ -155,7 +156,7 @@ export class RowColResize extends BaseInteraction {
                 break;
               case 'cell':
                 resizeEventType = ResizeEventType.COL_W;
-                config = {
+                style = {
                   colCfg: {
                     widthByFieldValue: {
                       [info.caption]: endPoint[1] - startPoint[1],
@@ -169,7 +170,7 @@ export class RowColResize extends BaseInteraction {
             switch (info.affect) {
               case 'field':
                 resizeEventType = ResizeEventType.COL_H;
-                config = {
+                style = {
                   colCfg: {
                     heightByField: {
                       [info.id]: endPoint[2] - startPoint[2],
@@ -180,7 +181,7 @@ export class RowColResize extends BaseInteraction {
               case 'cell':
               case 'tree':
                 resizeEventType = ResizeEventType.ROW_H;
-                config = {
+                style = {
                   cellCfg: {
                     height: endPoint[2] - startPoint[2],
                   },
@@ -188,20 +189,21 @@ export class RowColResize extends BaseInteraction {
                 break;
             }
           }
-          this.spreadsheet.emit(resizeEventType, config);
+          this.spreadsheet.emit(resizeEventType, style);
           this.spreadsheet.setOptions(
-            merge({}, this.spreadsheet.options, { style: config }),
+            merge({}, this.spreadsheet.options, { style }),
           );
-          this.renderSS();
+          this.render();
         }
       }
     });
   }
 
-  private resizeMouseMove = (ev: any) => {
+  private resizeMouseMove = (event: CanvasEvent) => {
     // is dragging
-    if (this.resizeGroup && this.resizeGroup.get('visible')) {
-      ev.preventDefault();
+    if (this.resizeGroup?.get('visible')) {
+      event.preventDefault();
+      const originalEvent = event.originalEvent as MouseEvent;
       const info = this.getResizeInfo();
       const children = this.resizeGroup.get('children');
       if (children) {
@@ -212,13 +214,13 @@ export class RowColResize extends BaseInteraction {
 
         if (info.type === 'col') {
           // 横向移动
-          let offset = ev.originalEvent.offsetX - this.startPos.offsetX;
+          let offset = originalEvent.offsetX - this.startPos.offsetX;
           if (start[1] + offset - info.offsetX < MIN_CELL_WIDTH) {
             // 禁止拖到最小宽度
             this.startPos.offsetX = info.offsetX + MIN_CELL_WIDTH;
             offset = info.offsetX + MIN_CELL_WIDTH - start[1];
           } else {
-            this.startPos.offsetX = ev.originalEvent.offsetX;
+            this.startPos.offsetX = originalEvent.offsetX;
           }
           start[1] += offset;
           end[1] += offset;
@@ -226,12 +228,12 @@ export class RowColResize extends BaseInteraction {
             x: this.hotsPot.attr('x') + offset,
           });
         } else {
-          let offset = ev.originalEvent.offsetY - this.startPos.offsetY;
+          let offset = originalEvent.offsetY - this.startPos.offsetY;
           if (start[2] + offset - info.offsetY < MIN_CELL_HEIGHT) {
             this.startPos.offsetY = info.offsetY + MIN_CELL_HEIGHT;
             offset = info.offsetY + MIN_CELL_HEIGHT - start[2];
           } else {
-            this.startPos.offsetY = ev.originalEvent.offsetY;
+            this.startPos.offsetY = originalEvent.offsetY;
           }
           start[2] += offset;
           end[2] += offset;
@@ -245,14 +247,14 @@ export class RowColResize extends BaseInteraction {
   };
 
   private getResizeInfo(): ResizeInfo {
-    return this.hotsPot && this.hotsPot.attr('appendInfo');
+    return this.hotsPot?.attr('appendInfo');
   }
 
   private getHeaderGroup(): Group {
-    return this.hotsPot && this.hotsPot.get('parent').get('parent');
+    return this.hotsPot?.get('parent').get('parent');
   }
 
-  private renderSS() {
+  private render() {
     this.startPos = {};
     this.hotsPot = null;
     this.resizeGroup = null;

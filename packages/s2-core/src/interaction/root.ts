@@ -1,19 +1,14 @@
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
 import { ColHeader, RowHeader } from 'src/facet/header';
-import { get, includes, isEmpty, concat } from 'lodash';
-import {
-  BrushSelection,
-  ColRowMultiSelection,
-  DataCellMultiSelection,
-  RowColResize,
-} from './';
+import { get, includes, isEmpty, concat, merge, isEqual, filter } from 'lodash';
+import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import {
   BaseEvent,
   CornerTextClick,
   DataCell,
   DataCellClick,
-  DefaultInterceptEvent,
+  InterceptEvent,
   InteractionEvent,
   HoverEvent,
   InteractionNames,
@@ -28,16 +23,16 @@ import {
   ColCell,
   RowCell,
 } from '@/index';
-import { BaseInteraction } from './base';
 import { EventController } from './events/event-controller';
+import { BaseCell } from '@/cell';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
 
-  public interactions = new Map<string, BaseInteraction>();
+  public interactions = new Map<string, BaseEvent>();
 
   // 用来标记需要拦截的事件，interaction和本身的hover等事件可能会有冲突，有冲突时在此屏蔽
-  public interceptEvent = new Set<DefaultInterceptEvent>();
+  public interceptEvent = new Set<InterceptEvent>();
 
   public events = new Map<string, BaseEvent>();
 
@@ -57,6 +52,12 @@ export class RootInteraction {
     this.registerEvents();
   }
 
+  public destroy() {
+    this.events.clear();
+    this.eventController.clear();
+    this.resetState();
+  }
+
   public setState(interactionStateInfo: InteractionStateInfo) {
     setState(interactionStateInfo, this.spreadsheet);
   }
@@ -66,6 +67,21 @@ export class RootInteraction {
       this.spreadsheet.store.get(INTERACTION_STATE_INFO_KEY) ||
       this.defaultState
     );
+  }
+
+  public setInteractedCells(cell: S2CellType) {
+    const interactedCells = this.getInteractedCells().concat([cell]);
+    const interactionInfo = merge(
+      this.getState(),
+      { interactedCells: interactedCells },
+      {},
+    );
+    this.setState(interactionInfo);
+  }
+
+  public getInteractedCells() {
+    const currentState = this.getState();
+    return currentState?.interactedCells || [];
   }
 
   public resetState() {
@@ -97,7 +113,7 @@ export class RootInteraction {
   public updateCellStyleByState() {
     const cells = this.getActiveCells();
     cells.forEach((cell) => {
-      cell.updateByState(this.getCurrentStateName());
+      cell.updateByState(this.getCurrentStateName(), cell);
     });
   }
 
@@ -127,7 +143,7 @@ export class RootInteraction {
   public getAllRowHeaderCells() {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
-    const rowCells = rowHeader.cfg.children;
+    const rowCells = rowHeader?.cfg?.children || [];
     return rowCells.filter(
       (cell: S2CellType) => cell instanceof RowCell,
     ) as RowCell[];
@@ -136,12 +152,10 @@ export class RootInteraction {
   public getAllColHeaderCells() {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const colHeader = children.filter((group) => group instanceof ColHeader)[0];
-    const colCells = colHeader.cfg.children;
-    return (
-      (colCells.filter(
-        (cell: S2CellType) => cell instanceof ColCell,
-      ) as ColCell[]) || []
-    );
+    const colCells = colHeader?.cfg?.children || [];
+    return colCells.filter(
+      (cell: S2CellType) => cell instanceof ColCell,
+    ) as ColCell[];
   }
 
   public getAllCells() {
@@ -171,18 +185,14 @@ export class RootInteraction {
         new RowColResize(this.spreadsheet, this),
       );
       this.interactions.set(
-        InteractionNames.DATA_CELL_MULTI_SELECTION_INTERACTION,
-        new DataCellMultiSelection(this.spreadsheet, this),
-      );
-      this.interactions.set(
         InteractionNames.COL_ROW_MULTI_SELECTION_INTERACTION,
-        new ColRowMultiSelection(this.spreadsheet, this),
+        new DataCellMultiSelection(this.spreadsheet, this),
       );
     }
   }
 
   private registerEventController() {
-    this.eventController = new EventController(this.spreadsheet, this);
+    this.eventController = new EventController(this.spreadsheet);
   }
 
   public draw() {
@@ -197,21 +207,20 @@ export class RootInteraction {
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { cells } = interactionStateInfo;
     if (!isEmpty(cells)) {
-      clearState(this.spreadsheet);
+      this.clearState();
       this.setState(interactionStateInfo);
       this.updatePanelAllCellsStyle();
       this.draw();
     }
   }
 
-  updatePanelAllCellsStyle() {
+  public updatePanelAllCellsStyle() {
     const cells = this.getPanelGroupAllDataCells();
     cells.forEach((cell: DataCell) => {
       cell.update();
     });
   }
 
-  // 注册事件
   protected registerEvents() {
     this.events.clear();
     this.events.set(

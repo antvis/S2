@@ -40,72 +40,37 @@ const getDataCfg = () => {
       rows: ['area', 'province', 'city'],
       columns: ['type', 'sub_type'],
       values: ['profit', 'count'],
-      derivedValues: [
+      extra: [
         {
-          valueField: 'profit',
-          derivedValueField: ['profit-tongbi', 'profit-huanbi'],
-          displayDerivedValueField: ['profit-tongbi'],
-        },
-        {
-          valueField: 'count',
-          derivedValueField: ['count-tongbi', 'count-huanbi'],
-          displayDerivedValueField: ['count-tongbi'],
+          field: 'type',
+          value: '办公用品',
+          tips: '说明：这是办公用品的说明',
         },
       ],
     },
     meta: [
       {
-        field: 'profit-tongbi',
-        name: '利润同比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'profit-huanbi',
-        name: '利润环比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'count-tongbi',
-        name: '个数同比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'count-huanbi',
-        name: '个数环比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'sale_amt',
-        name: '销售额',
-        formatter: (v) => v,
-      },
-      {
         field: 'count',
         name: '销售个数',
-        formatter: (v) => v,
-      },
-      {
-        field: 'discount',
-        name: '折扣',
-        formatter: (v) => v,
       },
       {
         field: 'profit',
         name: '利润',
-        formatter: (v) => v,
+      },
+      {
+        field: 'area',
+        name: '地区',
+      },
+      {
+        field: 'province',
+        name: '省份',
+      },
+      {
+        field: 'city',
+        name: '城市',
       },
     ],
     data,
-    sortParams: [
-      {
-        sortFieldId: 'area',
-        sortMethod: 'ASC',
-      },
-      {
-        sortFieldId: 'province',
-        sortMethod: 'DESC',
-      },
-    ],
   };
 };
 
@@ -116,7 +81,7 @@ const getOptions = (): S2Options => {
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
-    showSeriesNumber: false,
+    showSeriesNumber: true,
     freezeRowHeader: false,
     mode: 'pivot',
     valueInCols: true,
@@ -157,8 +122,8 @@ const getOptions = (): S2Options => {
 function MainLayout(props) {
   const [options, setOptions] = React.useState<S2Options>(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
+  const [render, setRender] = React.useState(true);
   const [valueInCols, setValueInCols] = React.useState(true);
-  const [derivedValueMul, setDerivedValueMul] = React.useState(false);
   const [showPagination, setShowPagination] = React.useState(false);
   const [freezeRowHeader, setFreezeRowHeader] = React.useState(
     props.options.freezeRowHeader,
@@ -178,22 +143,6 @@ function MainLayout(props) {
   };
 
   const onCheckChanged2 = (checked: boolean) => {
-    setDerivedValueMul(checked);
-    const next = merge({}, dataCfg, {
-      fields: {
-        derivedValues: dataCfg.fields.derivedValues.map((dv) => {
-          const dvn = clone(dv);
-          dvn.displayDerivedValueField = checked
-            ? dv.derivedValueField
-            : [dv.derivedValueField[0]];
-          return dvn;
-        }),
-      },
-    });
-    setDataCfg(next);
-  };
-
-  const onCheckChanged3 = (checked: boolean) => {
     setShowPagination(checked);
     if (checked) {
       setOptions(
@@ -209,9 +158,13 @@ function MainLayout(props) {
     }
   };
 
-  const onCheckChanged4 = (e: CheckboxChangeEvent) => {
+  const onCheckChanged3 = (e: CheckboxChangeEvent) => {
     updateOptions({ freezeRowHeader: e.target.checked });
     setFreezeRowHeader(e.target.checked);
+  };
+
+  const onToggleRender = () => {
+    setRender(!render);
   };
 
   return (
@@ -231,16 +184,10 @@ function MainLayout(props) {
           onChange={onCheckChanged1}
         />
         <Switch
-          checkedChildren="多列"
-          unCheckedChildren="单列"
-          defaultChecked={derivedValueMul}
-          onChange={onCheckChanged2}
-        />
-        <Switch
           checkedChildren="分页"
           unCheckedChildren="不分页"
           defaultChecked={showPagination}
-          onChange={onCheckChanged3}
+          onChange={onCheckChanged2}
         />
         <Switch
           checkedChildren="选中聚光灯开"
@@ -258,16 +205,28 @@ function MainLayout(props) {
             updateOptions({ hoverHighlight: checked });
           }}
         />
-        <Checkbox onChange={onCheckChanged4} defaultChecked={freezeRowHeader}>
+        <Checkbox onChange={onCheckChanged3} defaultChecked={freezeRowHeader}>
           冻结行头
         </Checkbox>
+        <Switch
+          checkedChildren="tooltip打开"
+          unCheckedChildren="tooltip关闭"
+          defaultChecked={options.tooltip.showTooltip}
+          onChange={(checked) => {
+            updateOptions({
+              tooltip: { ...options.tooltip, showTooltip: checked },
+            });
+          }}
+        />
       </Space>
-      <SheetComponent
-        dataCfg={dataCfg}
-        adaptive={false}
-        options={options as S2Options}
-        spreadsheet={getSpreadSheet}
-      />
+      {render && (
+        <SheetComponent
+          dataCfg={dataCfg}
+          adaptive={false}
+          options={options as S2Options}
+          spreadsheet={getSpreadSheet}
+        />
+      )}
     </div>
   );
 }
