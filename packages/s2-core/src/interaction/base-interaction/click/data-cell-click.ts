@@ -8,8 +8,8 @@ import { TooltipOperatorOptions, ViewMeta } from '@/common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 import { Event } from '@antv/g-canvas';
 import { noop } from 'lodash';
-import { DataCell } from '../../../cell/data-cell';
-import { BaseEvent, BaseEventImplement } from '../../base-event';
+import { DataCell } from '@/cell/data-cell';
+import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -19,14 +19,20 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
-      if (this.interaction.interceptInteraction.has(InterceptInteractionType.CLICK)) {
+      if (
+        this.interaction.interceptInteraction.has(
+          InterceptInteractionType.CLICK,
+        )
+      ) {
         return;
       }
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
       if (meta) {
         // 屏蔽hover事件
-        this.interaction.interceptInteraction.add(InterceptInteractionType.HOVER);
+        this.interaction.interceptInteraction.add(
+          InterceptInteractionType.HOVER,
+        );
         if (this.interaction.isSelectedCell(cell)) {
           // 点击当前已选cell 则取消当前cell的选中状态
           this.interaction.clearState();

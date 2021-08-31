@@ -211,9 +211,10 @@ export class RootInteraction {
     const customInteractions = this.spreadsheet.options?.customInteractions;
     if (!isEmpty(customInteractions)) {
       forEach(customInteractions, (customInteraction: CustomInteraction) => {
+        const CustomInteraction = customInteraction.interaction;
         this.interactions.set(
           customInteraction.key,
-          new customInteraction.interaction(this.spreadsheet, this),
+          new CustomInteraction(this.spreadsheet, this),
         );
       });
     }
