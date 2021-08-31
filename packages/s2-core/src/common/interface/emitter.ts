@@ -1,5 +1,5 @@
 import {
-  InteractionEvent,
+  InteractionNames,
   ResizeEvent,
   S2Event,
   SortMethodType,
@@ -95,7 +95,7 @@ export interface EmitterType {
   [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (data: Node) => void;
   [S2Event.ROW_CELL_TEXT_CLICK]: (data: { key: string; record: Data }) => void;
 
-  [InteractionEvent.TREND_ICON_CLICK]: (data: ViewMeta) => void;
+  [InteractionNames.TREND_ICON_CLICK]: (data: ViewMeta) => void;
 
   [ResizeEvent.ROW_W]: ResizeHandler;
   [ResizeEvent.ROW_H]: ResizeHandler;

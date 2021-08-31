@@ -1,4 +1,4 @@
-import { BaseEvent } from '@/interaction/events';
+import { BaseEvent } from '@/interaction/base-interaction';
 import { S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { S2CellType } from '@/common/interface';

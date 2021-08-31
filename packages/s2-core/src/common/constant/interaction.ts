@@ -1,15 +1,23 @@
 import { i18n } from '@/common/i18n';
 
 export enum InteractionNames {
-  BRUSH_SELECTION_INTERACTION = 'spreadsheet:brush-selection',
-  COL_ROW_RESIZE_INTERACTION = 'spreadsheet:row-col-resize',
-  COL_ROW_MULTI_SELECTION_INTERACTION = 'spreadsheet:col-row-multi-selection',
+  DATA_CELL_CLICK = 'interaction:data-cell-click',
+  MERGED_CELLS_CLICK = 'interaction:merged-cells-click',
+  CORNER_TEXT_CLICK = 'interaction:corner-cell-text-click',
+  ROW_COLUMN_CLICK = 'interaction:row-column-click',
+  ROW_TEXT_CLICK = 'interaction:row-text-click',
+  HOVER = 'interaction:hover',
+  BRUSH_SELECTION = 'interaction:brush-selection',
+  COL_ROW_RESIZE = 'interaction:row-col-resize',
+  COL_ROW_MULTI_SELECTION = 'interaction:col-row-multi-selection',
+  TREND_ICON_CLICK = 'interaction:trend-icon-click',
 }
 
 export enum InteractionStateName {
   SELECTED = 'selected',
   UNSELECTED = 'unselected',
   HOVER = 'hover',
+  CLICK = 'click',
   HOVER_FOCUS = 'hoverFocus',
   PREPARE_SELECT = 'prepareSelect',
 }

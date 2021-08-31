@@ -1,10 +1,10 @@
 import { Event } from '@antv/g-canvas';
 import { get, isEmpty, find, head } from 'lodash';
-import { S2Event, InterceptEventType } from '@/common/constant';
-import { BaseEvent, BaseEventImplement } from '../base-event';
-import { Data } from '@/common/interface/s2DataConfig';
-import { CellAppendInfo } from '@/common/interface';
-import { Node } from '@/facet/layout/node';
+import { S2Event, InteractionStateName } from '@/common/constant';
+import { BaseEvent, BaseEventImplement } from '../../base-event';
+import { Data } from '../../../common/interface/s2DataConfig';
+import { CellAppendInfo } from '../../../common/interface';
+import { Node } from '../../../facet/layout/node';
 
 /**
  * Row header click navigation interaction
@@ -17,9 +17,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (ev: Event) => {
       if (
-        this.spreadsheet.interaction.interceptEvent.has(
-          InterceptEventType.CLICK,
-        )
+        this.spreadsheet.interaction.intercept.has(InteractionStateName.CLICK)
       ) {
         return;
       }

@@ -1,4 +1,4 @@
-import { InterceptEventType, S2Event } from '@/common/constant';
+import { InterceptType, S2Event } from '@/common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
@@ -14,8 +14,8 @@ import { get, isEmpty, isEqual } from 'lodash';
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
 import { TooltipData } from '@/common/interface';
-import { BaseEvent } from './events';
-import { BaseEventImplement } from './events/base-event';
+import { BaseEvent } from './base-interaction';
+import { BaseEventImplement } from './base-event';
 
 /**
  * Panel area's brush selection interaction
@@ -86,7 +86,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      this.interaction.interceptEvent.add(InterceptEventType.HOVER);
+      this.interaction.intercept.add(InterceptType.HOVER);
       this.endBrushPoint = this.getBrushPoint(event);
       this.interaction.clearStyleIndependent();
       this.updatePrepareSelectMask();
@@ -107,8 +107,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
           event,
           this.getBrushRangeCellsInfos(),
         );
-        this.spreadsheet.interaction.interceptEvent.add(
-          InterceptEventType.BRUSH_SELECTION,
+        this.spreadsheet.interaction.intercept.add(
+          InterceptType.BRUSH_SELECTION,
         );
       }
       this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
