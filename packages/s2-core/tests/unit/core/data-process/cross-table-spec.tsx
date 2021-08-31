@@ -2,17 +2,17 @@
  * 交叉表核心数据流程（保证基本数据正确）
  **/
 import { flattenDeep, get, size, uniq } from 'lodash';
-import { SpreadSheet } from 'src/sheet-type';
-import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
-import { PivotDataSet } from 'src/data-set/pivot-data-set';
-import STANDARD_SPREADSHEET_DATA from '../../../data/standard-spreadsheet-data';
+import { SpreadSheet } from '@/sheet-type';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { PivotDataSet } from '@/data-set/pivot-data-set';
+import STANDARD_SPREADSHEET_DATA from '../../../data/standard-spreadsheet-data.json';
 import { getContainer } from '../../../util/helpers';
 
 describe('Cross Table Core Data Process', () => {
   const options = { width: 1200, height: 800 };
   const dataCfg = {
     fields: { rows: ['province', 'city'], columns: ['category', 'subCategory'], values: ['price'] },
-    data: STANDARD_SPREADSHEET_DATA,
+    data: STANDARD_SPREADSHEET_DATA.data,
   };
   const ss = new SpreadSheet(getContainer(), dataCfg, options);
   ss.render();
@@ -30,7 +30,7 @@ describe('Cross Table Core Data Process', () => {
 
     test('should get correct indexes data', () => {
       const indexesData = ds.indexesData;
-      expect(flattenDeep(indexesData)).toHaveLength(STANDARD_SPREADSHEET_DATA.length);
+      expect(flattenDeep(indexesData)).toHaveLength(STANDARD_SPREADSHEET_DATA.data.length);
       expect(get(indexesData, '0.0.0.0.0')).toEqual({ province: '浙江省', city: '杭州市', category: '家具', subCategory: '桌子', price: 254, [VALUE_FIELD]: 254, [EXTRA_FIELD]: 'price' }); // 左上角
       expect(get(indexesData, '0.0.1.1.0')).toEqual({ province: '浙江省', city: '杭州市', category: '办公用品', subCategory: '纸张', price: 514, [VALUE_FIELD]: 514, [EXTRA_FIELD]: 'price' }); // 右上角
       expect(get(indexesData, '1.3.0.0.0')).toEqual({ province: '四川省', city: '乐山市', category: '家具', subCategory: '桌子', price: 326, [VALUE_FIELD]: 326, [EXTRA_FIELD]: 'price' }); // 左下角
