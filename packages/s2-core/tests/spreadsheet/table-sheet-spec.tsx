@@ -108,6 +108,15 @@ function MainLayout(props) {
     const logData = (data) => {
       console.log(data);
     };
+    // sort string-type number
+    function customCompare(obj1, obj2, sortMethod) {
+      const [v1, v2] = [Number(obj1), Number(obj2)];
+      const ascending = sortMethod === SortMethodType.ASC;
+      if (v1 < v2) {
+        return !!ascending;
+      }
+      return !ascending;
+    }
     s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
     s2Ref.current.on(S2Event.RANGE_SORTING, (info) => {
       const canConvertToNumber = data.every((item) => {
@@ -118,22 +127,17 @@ function MainLayout(props) {
         return false;
       });
 
-      // sort string-type number
-      function customCompare(obj1, obj2) {
-        const [v1, v2] = [Number(obj1), Number(obj2)];
-        const ascending = info.sortMethod === SortMethodType.ASC;
-        if (v1 < v2) {
-          return !!ascending;
-        }
-        return !ascending;
-      }
       if (canConvertToNumber) {
         info.compareFunc = customCompare;
       }
     });
+    s2Ref.current.on(S2Event.RANGE_SORTED, (data) => {
+      console.log('data,', data);
+    });
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED, logData);
       s2Ref.current.off(S2Event.RANGE_SORTING);
+      s2Ref.current.off(S2Event.RANGE_SORTED);
     };
   }, []);
 

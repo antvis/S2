@@ -1,14 +1,24 @@
 import {
+  InteractionEvent,
   KEY_AFTER_COLLAPSE_ROWS,
+  KEY_AFTER_HEADER_LAYOUT,
+  KEY_CELL_SCROLL,
   KEY_COLLAPSE_ROWS,
   KEY_COLLAPSE_TREE_ROWS,
+  KEY_COL_NODE_BORDER_REACHED,
+  KEY_JUMP_HREF,
   KEY_LIST_SORT,
+  KEY_PAGINATION,
+  KEY_ROW_NODE_BORDER_REACHED,
   KEY_TREE_ROWS_COLLAPSE_ALL,
+  ResizeEventType,
   S2Event,
   SortMethodType,
 } from '../constant';
 
 import { Event as CanvasEvent } from '@antv/g-canvas';
+import { CellScrollPosition, Data, LayoutResult, ViewMeta } from '.';
+import { Node } from 'src/facet/layout/node';
 
 type CollapsedRowsType = {
   collapsedRows: Record<string, boolean> & {
@@ -17,13 +27,14 @@ type CollapsedRowsType = {
 };
 
 export interface EmitterType {
-  [S2Event.GLOBAL_COPIED]: (data) => void;
+  [S2Event.GLOBAL_COPIED]: (data: string) => void;
 
   [S2Event.RANGE_SORTING]: (info: {
     sortKey: string;
     sortMethod: SortMethodType;
-    compareFunc: (a, b) => boolean;
+    compareFunc: (a, b, sortMethod: SortMethodType) => boolean;
   }) => void;
+  [S2Event.RANGE_SORTED]: (data: Data[]) => void;
 
   [S2Event.GLOBAL_KEYBOARD_DOWN]: (event: KeyboardEvent) => void;
 
@@ -63,15 +74,34 @@ export interface EmitterType {
 
   [S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT]: null;
 
-  [KEY_LIST_SORT]: ({ sortKey: string, sortMethod: SortMethodType }) => void;
+  [KEY_LIST_SORT]: (data: {
+    sortKey: string;
+    sortMethod: SortMethodType;
+  }) => void;
 
-  [KEY_COLLAPSE_TREE_ROWS]: ({
-    id: string,
-    isCollapsed: boolean,
-    node: Node,
+  [KEY_COLLAPSE_TREE_ROWS]: (data: {
+    id: string;
+    isCollapsed: boolean;
+    node: Node;
   }) => void;
 
   [KEY_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
   [KEY_AFTER_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
   [KEY_TREE_ROWS_COLLAPSE_ALL]: (hierarchyCollapse: boolean) => void;
+  [KEY_PAGINATION]: (data: {
+    pageSize: number;
+    pageCount: number;
+    total: number;
+    current: number;
+  }) => void;
+  [KEY_AFTER_HEADER_LAYOUT]: (data: LayoutResult) => void;
+  [KEY_CELL_SCROLL]: (data: CellScrollPosition) => void;
+  [KEY_COL_NODE_BORDER_REACHED]: (data: Node) => void;
+  [KEY_ROW_NODE_BORDER_REACHED]: (data: Node) => void;
+  [KEY_JUMP_HREF]: (data: { key: string; record: Data }) => void;
+
+  [InteractionEvent.TREND_ICON_CLICK]: (data: ViewMeta) => void;
+
+  [ResizeEventType.ROW_H]: (config: { cellCfg: { height: number } }) => void;
+  [ResizeEventType.COL_H]: (config: { cellCfg: { height: number } }) => void;
 }

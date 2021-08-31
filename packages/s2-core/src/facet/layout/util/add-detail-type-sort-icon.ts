@@ -69,14 +69,12 @@ export const renderIcon = (
         [key]: sortType,
       };
     }
-    const sortMethod = sortType as SortMethod;
     // Do nothing when sortType is not changed.
     if (spreadsheet.store.get('currentSortKey')?.[key] === sortType) {
       return;
     }
     spreadsheet.store.set('currentSortKey', currentSortKey);
-    spreadsheet.emit(KEY_LIST_SORT, { sortKey: key, sortMethod });
-    spreadsheet.render(true);
+    spreadsheet.emit(KEY_LIST_SORT, { sortKey: key, sortMethod: sortType });
   });
 
   parent.add(icon);

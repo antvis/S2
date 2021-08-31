@@ -27,6 +27,8 @@ export class TableFacet extends BaseFacet {
       s2.emit(S2Event.RANGE_SORTING, sortInfo);
 
       s2.dataCfg.data = quickSort(s2.dataSet.originData, sortInfo);
+      s2.render(true);
+      s2.emit(S2Event.RANGE_SORTED, s2.dataCfg.data);
     });
   }
 
