@@ -8,7 +8,7 @@ const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
 
   const renderSelected = () => {
     const selectedCount = summaries?.reduce((pre, next) => {
-      return pre + next?.selectedData?.length;
+      return pre + (next?.selectedData?.length || 0);
     }, 0);
 
     return (
@@ -23,12 +23,15 @@ const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
 
   const renderSummary = () => {
     return summaries?.map((item) => {
-      const { name, value } = item || {};
+      const { name = i18n('所选项'), value } = item || {};
 
       return (
-        <div key={name} className={`${TOOLTIP_PREFIX_CLS}-summary-item`}>
+        <div
+          key={`${name}-${value}`}
+          className={`${TOOLTIP_PREFIX_CLS}-summary-item`}
+        >
           <span className={`${TOOLTIP_PREFIX_CLS}-summary-key`}>
-            {name}（{i18n('总和')}
+            {name}（{i18n('总和')})
           </span>
           <span
             className={`${TOOLTIP_PREFIX_CLS}-summary-val ${TOOLTIP_PREFIX_CLS}-bold`}

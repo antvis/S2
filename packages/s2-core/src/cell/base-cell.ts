@@ -9,7 +9,7 @@ import { each, get, includes, isEmpty, keys, pickBy } from 'lodash';
 import { SpreadSheet } from '../sheet-type';
 import { updateShapeAttr } from '../utils/g-renders';
 import { SHAPE_ATTRS_MAP } from './../common/constant/interaction';
-import { StateShapeLayer } from './../common/interface/interaction';
+import { S2CellType, StateShapeLayer } from './../common/interface/interaction';
 
 export abstract class BaseCell<T> extends Group {
   // cell's data meta info
@@ -79,7 +79,8 @@ export abstract class BaseCell<T> extends Group {
   /* -------------------------------------------------------------------------- */
 
   // 根据当前state来更新cell的样式
-  public updateByState(stateName: InteractionStateName) {
+  public updateByState(stateName: InteractionStateName, cell: S2CellType) {
+    this.spreadsheet.interaction.setInteractedCells(cell);
     const stateStyles = get(
       this.theme,
       `${this.cellType}.cell.interactionState.${stateName}`,

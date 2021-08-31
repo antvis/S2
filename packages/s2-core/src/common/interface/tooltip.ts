@@ -4,27 +4,28 @@ import { SortParam } from '../interface';
 export type TooltipDataItem = Record<string, any>;
 
 export interface IMenu {
-  readonly id: string;
-  readonly icon?: any;
-  readonly text?: string;
-  readonly children?: IMenu[]; // subMenu
+  id: string;
+  icon?: any;
+  text?: string;
+  children?: IMenu[]; // subMenu
 }
 
 export interface TooltipOperatorOptions {
-  readonly onClick: (...params: unknown[]) => void;
-  readonly menus: IMenu[];
+  onClick: (...params: unknown[]) => void;
+  menus: IMenu[];
 }
 
 export interface TooltipPosition {
-  readonly x: number;
-  readonly y: number;
-  readonly tipHeight?: number;
+  x: number;
+  y: number;
+  tipHeight?: number;
 }
 
 export type ListItem = {
   name: string;
   value: string | number;
   icon?: string;
+  ß;
 };
 
 export interface SortQuery {
@@ -43,13 +44,14 @@ export interface TooltipOptions {
 }
 
 export interface TooltipSummaryOptions {
-  readonly name: string;
-  readonly value: number | string;
-  readonly selectedData: TooltipDataItem[];
+  name: string;
+  value: number | string;
+  selectedData: TooltipDataItem[];
 }
 
-export interface TooltipTipsOptions {
-  readonly tips: string;
+export interface TooltipNameTipsOptions {
+  name?: string;
+  tips?: string;
 }
 
 export interface TooltipOperationOptions {
@@ -80,6 +82,7 @@ export type InfosProps = {
 export type TooltipShowOptions = {
   position: TooltipPosition;
   data?: TooltipData;
+  cellInfos?: TooltipDataItem[];
   options?: TooltipOptions;
   element?: React.ReactElement;
 };
@@ -88,6 +91,7 @@ export type TooltipData = {
   summaries?: TooltipSummaryOptions[];
   details?: ListItem[];
   headInfo?: TooltipHeadInfo;
+  name?: string;
   tips?: string;
   infos?: string;
   interpretation?: TooltipInterpretationOptions;
@@ -97,3 +101,21 @@ export type TooltipHeadInfo = {
   rows: ListItem[];
   cols: ListItem[];
 };
+
+export type DataParam = {
+  spreadsheet: SpreadSheet;
+  options?: TooltipOptions;
+  isHeader?: boolean; // 是否是行头/列头
+  getShowValue?: (
+    selectedData: TooltipDataItem[],
+    valueField: string,
+  ) => string | number; // 自定义value
+};
+
+export interface SummaryParam extends DataParam {
+  cellInfo: TooltipDataItem;
+}
+
+export interface TooltipDataParam extends DataParam {
+  cellInfos: TooltipDataItem[];
+}

@@ -48,3 +48,6 @@ export const PADDING_LEFT = 3;
 
 export const MIN_CELL_WIDTH = 28;
 export const MIN_CELL_HEIGHT = 16;
+
+// data precision
+export const PRECISION = 16;

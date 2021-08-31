@@ -20,6 +20,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
    * @param spreadsheet
    * @param cornerWidth
    */
+
   public static getSeriesNumberHeader(
     viewportBBox: BBox,
     seriesNumberWidth: number,

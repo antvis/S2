@@ -35,7 +35,12 @@ const Operator = (props: TooltipOperatorOptions) => {
 
     const Component = icon;
     return (
-      icon && <Component className={`${TOOLTIP_PREFIX_CLS}-operator-icon`} />
+      icon && (
+        <Component
+          className={`${TOOLTIP_PREFIX_CLS}-operator-icon`}
+          {...DEFAULT_ICON_PROPS}
+        />
+      )
     );
   };
 
@@ -45,8 +50,8 @@ const Operator = (props: TooltipOperatorOptions) => {
     if (size(children)) {
       const subMenuTitle = (
         <span>
-          {text}
           {renderIcon(icon)}
+          {text}
         </span>
       );
 
@@ -63,8 +68,8 @@ const Operator = (props: TooltipOperatorOptions) => {
 
     return (
       <Menu.Item key={id}>
-        {text}
         {renderIcon(icon)}
+        {text}
       </Menu.Item>
     );
   };

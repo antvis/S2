@@ -44,7 +44,7 @@ import { getTheme } from '@/theme';
 import { BaseTooltip } from '@/tooltip';
 import { updateConditionsByValues } from '@/utils/condition';
 import EE from '@antv/event-emitter';
-import { Canvas, Event, IGroup } from '@antv/g-canvas';
+import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import {
   clone,
   get,
@@ -59,6 +59,7 @@ import { Store } from '@/common/store';
 import { HdAdapter } from '@/hd-adapter';
 import { RootInteraction } from '@/interaction/root';
 import { getTooltipData } from '@/utils/tooltip';
+import { EmitterType } from '@/common/interface/emitter';
 
 export class SpreadSheet extends EE {
   // dom id
@@ -123,6 +124,20 @@ export class SpreadSheet extends EE {
 
   public hdAdapter: HdAdapter;
 
+  private untypedOn = this.on;
+
+  private untypedEmit = this.emit;
+
+  public on = <K extends keyof EmitterType>(
+    event: K,
+    listener: EmitterType[K],
+  ): this => this.untypedOn(event, listener);
+
+  public emit = <K extends keyof EmitterType>(
+    event: K,
+    ...args: Parameters<EmitterType[K]>
+  ): boolean => this.untypedEmit(event, ...args);
+
   public constructor(
     dom: S2MountContainer,
     dataCfg: S2DataConfig,
@@ -186,14 +201,18 @@ export class SpreadSheet extends EE {
   }
 
   public showTooltipWithInfo(
-    event: Event,
+    event: CanvasEvent | MouseEvent,
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
     if (!this.isShowTooltip) {
       return;
     }
-    const tooltipData = getTooltipData(this, data, options);
+    const tooltipData = getTooltipData({
+      spreadsheet: this,
+      cellInfos: data,
+      options,
+    });
     this.showTooltip({
       data: tooltipData,
       position: {
@@ -441,7 +460,7 @@ export class SpreadSheet extends EE {
 
   // 获取当前cell实例
   public getCell<T extends S2CellType = S2CellType>(
-    target: Event['target'],
+    target: CanvasEvent['target'],
   ): T {
     let parent = target;
     // 一直索引到g顶层的canvas来检查是否在指定的cell中
@@ -456,7 +475,7 @@ export class SpreadSheet extends EE {
   }
 
   // 获取当前cell类型
-  public getCellType(target: Event['target']) {
+  public getCellType(target: CanvasEvent['target']) {
     const cell = this.getCell(target);
     return cell?.cellType;
   }

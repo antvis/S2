@@ -18,4 +18,5 @@ export const EN_US = {
   恢复: 'Recover',
   趋势: 'Trend',
   '已选 {} 项': 'selected {} item',
+  所选项: 'selected items',
 };

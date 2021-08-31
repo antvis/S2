@@ -55,6 +55,9 @@ export enum S2Event {
   CORNER_CELL_MOUSE_MOVE = 'corner-cell:mouse-move',
   MERGED_ELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
 
+  RANGE_SORTING = 'range:sorting',
+  RANGE_SORTED = 'range:sorted',
+
   GLOBAL_RESIZE_MOUSE_DOWN = 'global:resize:mouse-down',
   GLOBAL_RESIZE_MOUSE_MOVE = 'global:resize:mouse-move',
   GLOBAL_RESIZE_MOUSE_UP = 'global:resize-mouse-up',

@@ -7,7 +7,7 @@ import {
 import { TooltipOperatorOptions, ViewMeta } from '@/common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 import { Event } from '@antv/g-canvas';
-import { noop } from 'lodash';
+import { noop, get } from 'lodash';
 import { DataCell } from '../../../cell/data-cell';
 import { BaseEvent, BaseEventImplement } from '../base-event';
 
@@ -81,10 +81,9 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   private showTooltip(event: Event, meta: ViewMeta) {
     const currentCellMeta = meta?.data;
     const isTotals = meta?.isTotals || false;
-    if (isTotals) {
-      return;
-    }
-    const cellInfos = [currentCellMeta];
+    const cellInfos = [
+      currentCellMeta || { ...meta.rowQuery, ...meta.colQuery },
+    ];
     const operator = this.getTooltipOperator(meta);
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {

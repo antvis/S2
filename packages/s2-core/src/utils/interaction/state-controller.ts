@@ -9,9 +9,9 @@ import { forEach, isEmpty } from 'lodash';
  * @param spreadsheet sheet instance
  */
 export const clearState = (spreadsheet: SpreadSheet) => {
-  const allCells = spreadsheet.interaction.getAllCells();
-  if (!isEmpty(allCells)) {
-    forEach(allCells, (cell: S2CellType) => {
+  const allInteractedCells = spreadsheet.interaction.getInteractedCells();
+  if (!isEmpty(allInteractedCells)) {
+    forEach(allInteractedCells, (cell: S2CellType) => {
       cell.hideInteractionShape();
     });
 
@@ -19,7 +19,7 @@ export const clearState = (spreadsheet: SpreadSheet) => {
     if (spreadsheet.options.selectedCellsSpotlight) {
       const unSelectedCells =
         spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
-      unSelectedCells.forEach((cell) => {
+      forEach(unSelectedCells, (cell) => {
         cell.clearUnselectedState();
       });
     }

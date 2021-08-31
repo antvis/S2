@@ -20,11 +20,10 @@
     pointer-events: none;
   }
 
-  &-tips {
-    padding: 4px 12px;
-    line-height: 20px;
+  &-tips, &-name {
+    padding: 12px 12px 4px 12px;
+    line-height: 16px;
     font-size: 12px;
-    color: #666666;
     letter-spacing: -0.2px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -32,23 +31,34 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow-wrap: break-word;
+    text-align: left;
+    font-family: PingFangSC-Regular;
+    opacity: 0.85;
+    color: #000000;
     &:after {
       position: absolute;
       left: 50%;
       bottom: -12px;
       content: '';
       transform: translateX(-3px);
-
       width: 0;
       height: 0;
     }
+  }
+
+  &-tips {
+    padding: 4px 12px;
+    opacity: 0.45;
+    color: #000000;
   }
 
   &-infos {
     padding: 4px 12px;
     line-height: 20px;
     font-size: 12px;
-    color: #666666;
+    opacity: 0.45;
+    font-family: PingFangSC-Regular;
+    color: #000000;
     letter-spacing: -0.2px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -57,6 +67,8 @@
     -webkit-box-orient: vertical;
     overflow-wrap: break-word;
     background: rgba(249, 249, 249, 0.96);
+    border-radius: 0 0 2px 2px;
+    background-color: #F9F9F9;
   }
 
   &-summary {

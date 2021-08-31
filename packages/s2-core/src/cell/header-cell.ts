@@ -1,36 +1,50 @@
+import { first, map, includes } from 'lodash';
+import { includeCell } from '@/utils/data-cell';
+import { S2CellType } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
-import { first } from 'lodash';
-import { BaseCell } from 'src/cell';
-import { CellTypes, InteractionStateName, Node, SpreadSheet } from '../index';
+import { Node } from '@/facet/layout/node';
+import { BaseCell } from '@/cell';
+import { InteractionStateName } from '../index';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
-
-  constructor(
-    meta: Node,
-    spreadsheet: SpreadSheet,
-    headerConfig: BaseHeaderConfig,
-  ) {
-    super(meta, spreadsheet, headerConfig);
-  }
 
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
     this.headerConfig = headerConfig;
   }
 
-  public update() {
-    const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    const cells = this.spreadsheet.interaction.getActiveCells();
-    const currentCell = first(cells);
-    if (
-      !currentCell ||
-      (stateName !== InteractionStateName.HOVER &&
-        stateName !== InteractionStateName.HOVER_FOCUS)
-    ) {
-      return;
+  private handleHover(cells: S2CellType[]) {
+    if (includeCell(cells, this)) {
+      this.updateByState(InteractionStateName.HOVER, this);
     }
-    if (currentCell?.cellType === CellTypes.DATA_CELL || cells.includes(this)) {
-      this.updateByState(InteractionStateName.HOVER);
+  }
+
+  private handleSelect(cells: S2CellType[], nodes: Node[]) {
+    if (includeCell(cells, this)) {
+      this.updateByState(InteractionStateName.SELECTED, this);
+    }
+    const selectedNodeIds = map(nodes, 'id');
+    if (includes(selectedNodeIds, this.meta.id)) {
+      this.updateByState(InteractionStateName.SELECTED, this);
+    }
+  }
+
+  public update() {
+    const stateInfo = this.spreadsheet.interaction.getState();
+    const cells = this.spreadsheet.interaction.getActiveCells();
+
+    if (!first(cells)) return;
+
+    switch (stateInfo?.stateName) {
+      case InteractionStateName.SELECTED:
+        this.handleSelect(cells, stateInfo?.nodes);
+        break;
+      case InteractionStateName.HOVER_FOCUS:
+      case InteractionStateName.HOVER:
+        this.handleHover(cells);
+        break;
+      default:
+        break;
     }
   }
 }

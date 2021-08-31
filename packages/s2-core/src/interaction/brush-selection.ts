@@ -9,7 +9,7 @@ import {
   OriginalEvent,
   ViewMeta,
 } from '@/common/interface';
-import { Event, IShape, Point } from '@antv/g-canvas';
+import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
 import { get, isEmpty, isEqual } from 'lodash';
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
@@ -68,7 +68,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
       event.preventDefault();
       this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
       this.initPrepareSelectMaskShape();
@@ -78,7 +78,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (event: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (event: CanvasEvent) => {
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
@@ -96,7 +96,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private bindMouseUp() {
     // The constant 'GLOBAL_MOUSE_UP' is used to monitor the event of the mouse moving off the table.
-    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event: Event) => {
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       event.preventDefault();
 
       if (this.brushSelectionStage === InteractionBrushSelectionStage.DRAGGED) {
@@ -162,7 +162,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.prepareSelectMaskShape.hide();
   }
 
-  private getBrushPoint(event: Event): BrushPoint {
+  private getBrushPoint(event: CanvasEvent): BrushPoint {
     const originalEvent = (event.originalEvent as unknown) as OriginalEvent;
     const point: Point = {
       x: originalEvent.layerX,
