@@ -1,13 +1,13 @@
 import { InterceptInteractionType, S2Event } from '@/common/constant';
 import {
-  InteractionEvent,
+  InteractionNames,
   InteractionStateName,
   INTERACTION_TREND,
 } from '@/common/constant/interaction';
 import { TooltipOperatorOptions, ViewMeta } from '@/common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 import { Event } from '@antv/g-canvas';
-import { noop, get } from 'lodash';
+import { noop } from 'lodash';
 import { DataCell } from '../../../cell/data-cell';
 import { BaseEvent, BaseEventImplement } from '../../base-event';
 
@@ -61,7 +61,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       ? {
           onClick: (params) => {
             if (params === INTERACTION_TREND.ID) {
-              this.spreadsheet.emit(InteractionEvent.TREND_ICON_CLICK, meta);
+              this.spreadsheet.emit(InteractionNames.TREND_ICON_CLICK, meta);
               this.spreadsheet.hideTooltip();
             }
           },

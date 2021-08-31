@@ -11,6 +11,7 @@ export enum InteractionNames {
   BRUSH_SELECTION = 'spreadsheet:brush-selection',
   COL_ROW_RESIZE = 'spreadsheet:row-col-resize',
   COL_ROW_MULTI_SELECTION = 'spreadsheet:col-row-multi-selection',
+  TREND_ICON_CLICK = 'spreadsheet:trend-icon-click'
 }
 
 export enum InteractionStateName {
@@ -72,3 +73,14 @@ export enum SortMethodType {
   ASC = 'ASC',
   DESC = 'DESC',
 }
+
+export enum InterceptInteractionType {
+  HOVER = 'hover',
+  CLICK = 'click',
+  BRUSH_SELECTION = 'brushSelection',
+}
+
+export type InterceptInteraction =
+  | InterceptInteractionType.HOVER
+  | InterceptInteractionType.CLICK
+  | InterceptInteractionType.BRUSH_SELECTION;
