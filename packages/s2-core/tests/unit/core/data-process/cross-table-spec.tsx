@@ -1,7 +1,7 @@
 /** 
  * 交叉表核心数据流程（保证基本数据正确）
  **/
-import { flattenDeep, get } from 'lodash';
+import { flattenDeep, get, size, uniq } from 'lodash';
 import { SpreadSheet } from 'src/sheet-type';
 import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import { PivotDataSet } from 'src/data-set/pivot-data-set';
@@ -9,7 +9,7 @@ import STANDARD_SPREADSHEET_DATA from '../../../data/standard-spreadsheet-data';
 import { getContainer } from '../../../util/helpers';
 
 describe('Cross Table Core Data Process', () => {
-  const options = { width: 800, height: 600 };
+  const options = { width: 1200, height: 800 };
   const dataCfg = {
     fields: { rows: ['province', 'city'], columns: ['category', 'subCategory'], values: ['price'] },
     data: STANDARD_SPREADSHEET_DATA,
@@ -91,11 +91,87 @@ describe('Cross Table Core Data Process', () => {
   });
 
   describe('3、Calculate row & col coordinates', () => {
-    test('1', () => {});
+    const { width, style } = ss.options;
+    const { fields } = ss.dataCfg;
+    const { rowsHierarchy, colsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } = ss.facet.layoutResult;
+    const { cellCfg, rowCfg, colCfg } = get(ss, 'facet.cfg');
+    test('should calc correct row & cell width', () => {
+      
+      expect(cellCfg.width).toEqual(Math.max(style.cellCfg.width, width / (size(fields.rows) + size(colLeafNodes))));
+      expect(rowCfg.width).toEqual(Math.max(style.cellCfg.width, width / (size(fields.rows) + size(colLeafNodes))));
+    });
+    test('should calc correct row node size and coordinate', () => {
+      // all sample width.
+      expect(rowsHierarchy.sampleNodesForAllLevels[0]?.width).toEqual(rowCfg.width)
+      expect(rowsHierarchy.sampleNodesForAllLevels[1]?.width).toEqual(rowCfg.width)
+      // all width
+      expect(uniq(rowsHierarchy.getNodes().map(node => node.width))).toEqual([rowCfg.width])
+      // leaf node
+      rowLeafNodes.map((node, index) => {
+        expect(node.height).toEqual(cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom);
+        expect(node.y).toEqual(node.height * index);
+        expect(node.x).toEqual(rowCfg.width);
+      });
+      // level = 0
+      const provinceNodes = rowsHierarchy.getNodes(0);
+      provinceNodes.map(node => {
+        expect(node.height).toEqual(node.children.map(value => value.height).reduce((sum, current) => sum + current));
+        expect(node.y).toEqual(node.children[0].y);
+      });
+    });
+
+    test('should calc correct col node size and coordinate', () => {
+      // sample height
+      expect(colsHierarchy.sampleNodesForAllLevels[0]?.height).toEqual(colCfg.height)
+      expect(colsHierarchy.sampleNodesForAllLevels[1]?.height).toEqual(colCfg.height)
+      expect(colsHierarchy.sampleNodesForAllLevels[2]?.height).toEqual(colCfg.height)
+      // all height
+      expect(uniq(colsHierarchy.getNodes().map(node => node.height))).toEqual([colCfg.height])
+      // leaf node
+      colLeafNodes.map((node, index) => {
+        expect(node.width).toEqual(cellCfg.width);
+        expect(node.x).toEqual(node.width * index);
+        expect(node.y).toEqual(node.level * colCfg.height);
+      });
+      // level = 0;
+      const categoryNodes = colsHierarchy.getNodes(0);
+      categoryNodes.map(node => {
+        expect(node.width).toEqual(node.children.map(value => value.width).reduce((sum, current) => sum + current));
+        expect(node.x).toEqual(node.children[0].x);
+      });
+      // level = 1;
+      const category1Nodes = colsHierarchy.getNodes(1);
+      category1Nodes.map(node => {
+        expect(node.width).toEqual(node.children.map(value => value.width).reduce((sum, current) => sum + current));
+        expect(node.x).toEqual(node.children[0].x);
+      });
+    });
   });
 
-  describe('4、Calculate overlapped data cell info', () => {
-    test('1', () => {});
+  describe('4、Calculate data cell info', () => {
+    const { getCellMeta } = ss.facet.layoutResult;
+    test('should get correct data value', () => {
+      // 左上角
+      expect(getCellMeta(0, 0).data[VALUE_FIELD]).toBe(254);
+      expect(getCellMeta(1, 0).data[VALUE_FIELD]).toBe(156);
+      expect(getCellMeta(0, 1).data[VALUE_FIELD]).toBe(554);
+      expect(getCellMeta(1, 1).data[VALUE_FIELD]).toBe(956);
+      // 右下角
+      expect(getCellMeta(7, 3).data[VALUE_FIELD]).toBe(116);
+      expect(getCellMeta(7, 2).data[VALUE_FIELD]).toBe(396);
+      expect(getCellMeta(6, 3).data[VALUE_FIELD]).toBe(293);
+      expect(getCellMeta(6, 2).data[VALUE_FIELD]).toBe(253);
+      // 右上角
+      expect(getCellMeta(0, 3).data[VALUE_FIELD]).toBe(514);
+      expect(getCellMeta(0, 2).data[VALUE_FIELD]).toBe(854);
+      expect(getCellMeta(1, 3).data[VALUE_FIELD]).toBe(956);
+      expect(getCellMeta(1, 2).data[VALUE_FIELD]).toBe(126);
+      // 左下角
+      expect(getCellMeta(7, 0).data[VALUE_FIELD]).toBe(326);
+      expect(getCellMeta(7, 1).data[VALUE_FIELD]).toBe(126);
+      expect(getCellMeta(6, 0).data[VALUE_FIELD]).toBe(273);
+      expect(getCellMeta(6, 1).data[VALUE_FIELD]).toBe(273);
+    });
   });
   
 });
