@@ -1,4 +1,4 @@
-import { InteractionStateName } from '@/common/constant/interaction';
+import { InteractionStateName, InterceptType } from '@/common/constant';
 import { concat, isEmpty } from 'lodash';
 import { S2CellType, MultiClickProps } from '@/common/interface';
 import { Node } from '@/index';
@@ -19,7 +19,7 @@ export const handleRowColClick = (props: MultiClickProps) => {
   }
 
   if (meta.x !== undefined) {
-    spreadsheet.interaction.intercept.add(InteractionStateName.HOVER);
+    spreadsheet.interaction.intercept.add(InterceptType.HOVER);
     // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
     let leafNodes = isTreeRowClick
       ? Node.getAllLeavesOfNode(meta)
