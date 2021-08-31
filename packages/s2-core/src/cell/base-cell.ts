@@ -13,10 +13,9 @@ import {
 import { SpreadSheet } from '@/sheet-type';
 import { getContentArea } from '@/utils/cell/cell';
 import { renderText, updateShapeAttr } from '@/utils/g-renders';
-import { getEllipsisText } from '@/utils/text';
+import { getEllipsisText, measureTextWidth } from '@/utils/text';
 import { Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
 import { each, get, includes, isEmpty, keys, pickBy } from 'lodash';
-import { measureTextWidth } from 'src/utils/text';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
@@ -138,7 +137,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   // 根据当前state来更新cell的样式
-  public updateByState(stateName: InteractionStateName) {
+  public updateByState(stateName: InteractionStateName, cell: S2CellType) {
+    this.spreadsheet.interaction.setInteractedCells(cell);
     const stateStyles = get(
       this.theme,
       `${this.cellType}.cell.interactionState.${stateName}`,

@@ -58,7 +58,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected handlePrepareSelect(cells: S2CellType[]) {
-    if (includeCell(cells, this.getMeta())) {
+    if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.PREPARE_SELECT);
     }
   }
@@ -76,7 +76,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
-        if (includeCell(cells, this.getMeta())) {
+        if (includeCell(cells, this)) {
           this.updateByState(InteractionStateName.SELECTED);
         } else if (this.spreadsheet.options.selectedCellsSpotlight) {
           this.updateByState(InteractionStateName.UNSELECTED);
@@ -491,7 +491,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public updateByState(stateName: InteractionStateName) {
-    super.updateByState(stateName);
+    super.updateByState(stateName, this);
 
     if (stateName === InteractionStateName.UNSELECTED) {
       const stateStyles = get(

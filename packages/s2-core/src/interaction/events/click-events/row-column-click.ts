@@ -1,37 +1,69 @@
-import { S2Event, InterceptEventType } from '@/common/constant';
+import {
+  S2Event,
+  InterceptEventType,
+  InteractionKeyboardKey,
+} from '@/common/constant';
 import { BaseEvent, BaseEventImplement } from '../base-event';
 import { handleRowColClick } from '@/utils/interaction/multi-click';
 import { Event } from '@antv/g-canvas';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
+  private isMultiSelection = false;
+
   public bindEvents() {
+    this.bindKeyboardDown();
+    this.bindKeyboardUp();
     this.bindColCellClick();
     this.bindRowCellClick();
-    this.bindResetSheetStyle();
+  }
+
+  private bindKeyboardDown() {
+    this.spreadsheet.on(
+      S2Event.GLOBAL_KEYBOARD_DOWN,
+      (event: KeyboardEvent) => {
+        if (event.key === InteractionKeyboardKey.SHIFT) {
+          this.isMultiSelection = true;
+        }
+      },
+    );
+  }
+
+  private bindKeyboardUp() {
+    this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
+      if (event.key === InteractionKeyboardKey.SHIFT) {
+        this.isMultiSelection = false;
+        this.interaction.interceptEvent.delete(InterceptEventType.CLICK);
+      }
+    });
   }
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
+      event.stopPropagation();
       if (this.interaction.interceptEvent.has(InterceptEventType.CLICK)) {
         return;
       }
-      handleRowColClick(event, this.spreadsheet);
+      handleRowColClick({
+        event: event,
+        spreadsheet: this.spreadsheet,
+        isTreeRowClick: this.spreadsheet.isHierarchyTreeType(),
+        isMultiSelection: this.isMultiSelection,
+      });
     });
   }
 
   private bindColCellClick() {
-    if (this.interaction.interceptEvent.has(InterceptEventType.CLICK)) {
-      return;
-    }
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
-      handleRowColClick(event, this.spreadsheet);
-    });
-  }
-
-  // TODO 这个东西存在这里的必要性？
-  private bindResetSheetStyle() {
-    this.spreadsheet.on(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT, () => {
-      this.interaction.clearStyleIndependent();
+      event.stopPropagation();
+      if (this.interaction.interceptEvent.has(InterceptEventType.CLICK)) {
+        return;
+      }
+      handleRowColClick({
+        event: event,
+        spreadsheet: this.spreadsheet,
+        isTreeRowClick: false,
+        isMultiSelection: this.isMultiSelection,
+      });
     });
   }
 }

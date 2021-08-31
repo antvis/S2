@@ -51,6 +51,9 @@ export class RowCell extends HeaderCell {
     this.drawRectBorder();
     // draw hot-spot rect
     this.drawHotSpotInLeaf();
+    // draw action icon shapes: trend icon, drill-down icon ...
+    this.drawActionIcons();
+    this.update();
   }
 
   protected drawBackgroundShape() {
@@ -397,7 +400,7 @@ export class RowCell extends HeaderCell {
   }
 
   updateByState(stateName: InteractionStateName) {
-    super.updateByState(stateName);
+    super.updateByState(stateName, this);
     each(this.actionIcons, (icon) =>
       icon.set('visible', stateName === InteractionStateName.HOVER),
     );

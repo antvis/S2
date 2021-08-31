@@ -1,6 +1,7 @@
 import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
 import { HeaderCell } from '@/cell/header-cell';
 import { Node } from '@/index';
+import { Event } from '@antv/g-canvas';
 import { BaseEvent } from '@/interaction/events';
 import { SpreadSheet } from '@/sheet-type';
 import { SimpleBBox } from '@antv/g-canvas';
@@ -18,9 +19,11 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
 export interface InteractionStateInfo {
   // current state name
   stateName?: InteractionStateName;
-  // all the active cells rendered by the canvas
+  // all the active cells
   cells?: S2CellType[];
-  // all the active nodes, including rendered and unrendered cells
+  // all the cells changed the state style
+  interactedCells?: S2CellType[];
+  // all the active nodes, including rendered and not rendered cells
   nodes?: Node[];
 }
 
@@ -48,3 +51,10 @@ export interface BrushRange {
 }
 
 export type StateShapeLayer = 'interactiveBgShape' | 'interactiveBorderShape';
+
+export interface MultiClickProps {
+  event: Event;
+  spreadsheet: SpreadSheet;
+  isTreeRowClick: boolean;
+  isMultiSelection: boolean;
+}

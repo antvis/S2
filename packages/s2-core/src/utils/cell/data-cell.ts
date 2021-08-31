@@ -5,6 +5,7 @@ import {
   ViewMeta,
 } from '@/common/interface';
 import { Data } from '@/common/interface/s2DataConfig';
+import { isEqual } from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 
 export const handleDataItem = (
@@ -19,11 +20,12 @@ export const handleDataItem = (
 /**
  * @description  Determine if the current cell belongs to Cells
  * @param cells active cells
- * @param meta the meta information of current cell
+ * @param currentCell current activated cell
  */
-export const includeCell = (cells: S2CellType[], meta: ViewMeta) => {
+export const includeCell = (cells: S2CellType[], currentCell: S2CellType) => {
+  const meta = currentCell.getMeta();
   return cells.some((cell) => {
     const cellMeta = cell.getMeta();
-    return cellMeta.colId === meta.colId && cellMeta.rowId === meta.rowId;
+    return isEqual(cellMeta, meta);
   });
 };
