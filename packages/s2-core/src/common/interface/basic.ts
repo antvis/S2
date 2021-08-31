@@ -18,6 +18,10 @@ import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 
 export type Formatter = (v: unknown) => string;
+export interface FormatResult {
+  formattedValue: string;
+  value: DataItem;
+}
 
 export type Aggregation = 'SUM' | 'AVG' | 'MIN' | 'MAX';
 export type SortMethod = 'ASC' | 'DESC';

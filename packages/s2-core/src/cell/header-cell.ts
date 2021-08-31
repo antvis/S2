@@ -1,5 +1,6 @@
+import { GuiIcon } from '@/common/icons';
 import { first, map, includes } from 'lodash';
-import { includeCell } from '@/utils/data-cell';
+import { includeCell } from '@/utils/cell/data-cell';
 import { S2CellType } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
@@ -9,8 +10,16 @@ import { InteractionStateName } from '../index';
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
 
+  protected treeIcon: GuiIcon | undefined;
+
+  protected actionIcons: GuiIcon[];
+
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
     this.headerConfig = headerConfig;
+  }
+
+  protected initCell() {
+    this.actionIcons = [];
   }
 
   private handleHover(cells: S2CellType[]) {
