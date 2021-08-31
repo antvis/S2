@@ -5,11 +5,15 @@ import {
 } from '@/common/constant';
 import { Event } from '@antv/g-canvas';
 import { handleRowColClick } from '@/utils/interaction/multi-click';
-import { BaseInteraction } from './base';
-export class ColRowMultiSelection extends BaseInteraction {
+import { BaseEvent, BaseEventImplement } from './events';
+
+export class ColRowMultiSelection
+  extends BaseEvent
+  implements BaseEventImplement
+{
   private isMultiSelection = false;
 
-  protected bindEvents() {
+  public bindEvents() {
     this.bindKeyboardDown();
     this.bindKeyboardUp();
     this.bindColCellClick();

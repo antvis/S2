@@ -14,12 +14,13 @@ import { get, isEmpty, isEqual } from 'lodash';
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
 import { TooltipData } from '@/common/interface';
-import { BaseInteraction } from './base';
+import { BaseEvent } from './events';
+import { BaseEventImplement } from './events/base-event';
 
 /**
  * Panel area's brush selection interaction
  */
-export class BrushSelection extends BaseInteraction {
+export class BrushSelection extends BaseEvent implements BaseEventImplement {
   public dataCells: DataCell[] = [];
 
   public prepareSelectMaskShape: IShape;
@@ -32,7 +33,7 @@ export class BrushSelection extends BaseInteraction {
 
   private brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
 
-  protected bindEvents() {
+  public bindEvents() {
     this.bindMouseDown();
     this.bindMouseMove();
     this.bindMouseUp();

@@ -40,6 +40,13 @@ const getDataCfg = () => {
       rows: ['area', 'province', 'city'],
       columns: ['type', 'sub_type'],
       values: ['profit', 'count'],
+      extra: [
+        {
+          field: 'type',
+          value: '办公用品',
+          tips: '说明：这是办公用品的说明',
+        },
+      ],
     },
     meta: [
       {
@@ -64,16 +71,6 @@ const getDataCfg = () => {
       },
     ],
     data,
-    sortParams: [
-      {
-        sortFieldId: 'area',
-        sortMethod: 'ASC',
-      },
-      {
-        sortFieldId: 'province',
-        sortMethod: 'DESC',
-      },
-    ],
   };
 };
 
@@ -125,8 +122,8 @@ const getOptions = (): S2Options => {
 function MainLayout(props) {
   const [options, setOptions] = React.useState<S2Options>(props.options);
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
+  const [render, setRender] = React.useState(true);
   const [valueInCols, setValueInCols] = React.useState(true);
-  const [derivedValueMul, setDerivedValueMul] = React.useState(false);
   const [showPagination, setShowPagination] = React.useState(false);
   const [freezeRowHeader, setFreezeRowHeader] = React.useState(
     props.options.freezeRowHeader,
@@ -164,6 +161,10 @@ function MainLayout(props) {
   const onCheckChanged3 = (e: CheckboxChangeEvent) => {
     updateOptions({ freezeRowHeader: e.target.checked });
     setFreezeRowHeader(e.target.checked);
+  };
+
+  const onToggleRender = () => {
+    setRender(!render);
   };
 
   return (
@@ -207,13 +208,25 @@ function MainLayout(props) {
         <Checkbox onChange={onCheckChanged3} defaultChecked={freezeRowHeader}>
           冻结行头
         </Checkbox>
+        <Switch
+          checkedChildren="tooltip打开"
+          unCheckedChildren="tooltip关闭"
+          defaultChecked={options.tooltip.showTooltip}
+          onChange={(checked) => {
+            updateOptions({
+              tooltip: { ...options.tooltip, showTooltip: checked },
+            });
+          }}
+        />
       </Space>
-      <SheetComponent
-        dataCfg={dataCfg}
-        adaptive={false}
-        options={options as S2Options}
-        spreadsheet={getSpreadSheet}
-      />
+      {render && (
+        <SheetComponent
+          dataCfg={dataCfg}
+          adaptive={false}
+          options={options as S2Options}
+          spreadsheet={getSpreadSheet}
+        />
+      )}
     </div>
   );
 }

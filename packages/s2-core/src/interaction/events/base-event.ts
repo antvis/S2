@@ -3,6 +3,10 @@ import { RootInteraction } from '../root';
 
 export type EventConstructor = new (spreadsheet: SpreadSheet) => BaseEvent;
 
+export interface BaseEventImplement {
+  bindEvents: () => void;
+}
+
 export class BaseEvent {
   protected spreadsheet: SpreadSheet;
 
@@ -14,5 +18,5 @@ export class BaseEvent {
     this.bindEvents();
   }
 
-  protected bindEvents() {}
+  public bindEvents() {}
 }
