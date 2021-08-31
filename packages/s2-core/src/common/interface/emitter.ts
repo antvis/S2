@@ -19,6 +19,7 @@ import {
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { CellScrollPosition, Data, LayoutResult, ViewMeta } from '.';
 import { Node } from 'src/facet/layout/node';
+import { DataItem } from '@/.';
 
 type CollapsedRowsType = {
   collapsedRows: Record<string, boolean> & {
@@ -32,7 +33,7 @@ export interface EmitterType {
   [S2Event.RANGE_SORTING]: (info: {
     sortKey: string;
     sortMethod: SortMethodType;
-    compareFunc: (a, b, sortMethod: SortMethodType) => boolean;
+    compareFunc: (Data) => DataItem;
   }) => void;
   [S2Event.RANGE_SORTED]: (data: Data[]) => void;
 

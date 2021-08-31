@@ -8,11 +8,10 @@ import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Node } from 'src/facet/layout/node';
-import { get, maxBy } from 'lodash';
+import { get, maxBy, orderBy } from 'lodash';
 import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 import { DebuggerUtil } from 'src/common/debug';
-import { quickSort } from '@/utils/sort-action';
 
 export class TableFacet extends BaseFacet {
   public constructor(props) {
@@ -26,7 +25,11 @@ export class TableFacet extends BaseFacet {
       };
       s2.emit(S2Event.RANGE_SORTING, sortInfo);
 
-      s2.dataCfg.data = quickSort(s2.dataSet.originData, sortInfo);
+      s2.dataCfg.data = orderBy(
+        s2.dataSet.originData,
+        [sortInfo.compareFunc || sortKey],
+        [sortMethod.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
+      );
       s2.render(true);
       s2.emit(S2Event.RANGE_SORTED, s2.dataCfg.data);
     });

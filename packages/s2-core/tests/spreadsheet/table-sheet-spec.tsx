@@ -109,26 +109,15 @@ function MainLayout(props) {
       console.log(data);
     };
     // sort string-type number
-    function customCompare(obj1, obj2, sortMethod) {
-      const [v1, v2] = [Number(obj1), Number(obj2)];
-      const ascending = sortMethod === SortMethodType.ASC;
-      if (v1 < v2) {
-        return !!ascending;
-      }
-      return !ascending;
-    }
     s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
     s2Ref.current.on(S2Event.RANGE_SORTING, (info) => {
       const canConvertToNumber = data.every((item) => {
         const v = item[info.sortKey];
-        if (typeof v === 'string' && !Number.isNaN(Number(v))) {
-          return true;
-        }
-        return false;
+        return typeof v === 'string' && !Number.isNaN(Number(v));
       });
 
       if (canConvertToNumber) {
-        info.compareFunc = customCompare;
+        info.compareFunc = (obj) => Number(obj[info.sortKey]);
       }
     });
     s2Ref.current.on(S2Event.RANGE_SORTED, (data) => {
