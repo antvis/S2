@@ -162,9 +162,9 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    (
-      this.spreadsheet.container.get('el') as HTMLCanvasElement
-    ).addEventListener('wheel', this.onWheel);
+    (this.spreadsheet.container.get(
+      'el',
+    ) as HTMLCanvasElement).addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
@@ -176,13 +176,13 @@ export abstract class BaseFacet {
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
-      this.onWheel({
+      this.onWheel(({
         ...originEvent,
         deltaX,
         deltaY,
         layerX: x / 3,
         layerY: y / 3,
-      } as unknown as S2WheelEvent);
+      } as unknown) as S2WheelEvent);
     });
   };
 
@@ -548,9 +548,11 @@ export abstract class BaseFacet {
         newX = this.layoutResult.colsHierarchy.width - this.panelBBox.width;
       }
     }
+
+    const totalHeight = this.viewCellHeights.getTotalHeight();
     if (y !== undefined) {
-      if (y + this.panelBBox.height >= this.layoutResult.rowsHierarchy.height) {
-        newY = this.layoutResult.rowsHierarchy.height - this.panelBBox.height;
+      if (y + this.panelBBox.height >= totalHeight) {
+        newY = totalHeight - this.panelBBox.height;
       }
     }
     return {
@@ -880,7 +882,6 @@ export abstract class BaseFacet {
     //   indexes,
     // );
     const { add, remove } = diffIndexes(this.preCellIndexes, indexes);
-
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
       // add new cell in panelCell
       each(add, ([i, j]) => {
@@ -1017,8 +1018,7 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
@@ -1072,8 +1072,7 @@ export abstract class BaseFacet {
         // When both a row header and a panel scroll bar exist, show viewport shadow
         showViewPortRightShadow:
           !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
         spreadsheet: this.cfg.spreadsheet,
       };
