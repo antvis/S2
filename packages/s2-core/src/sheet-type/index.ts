@@ -103,19 +103,19 @@ export class SpreadSheet extends EE {
 
   public hdAdapter: HdAdapter;
 
-  private _untypedOn = this.on;
+  private untypedOn = this.on;
 
-  private _untypedEmit = this.emit;
+  private untypedEmit = this.emit;
 
   public on = <K extends keyof EmitterType>(
     event: K,
     listener: EmitterType[K],
-  ): this => this._untypedOn(event, listener);
+  ): this => this.untypedOn(event, listener);
 
   public emit = <K extends keyof EmitterType>(
     event: K,
     ...args: Parameters<EmitterType[K]>
-  ): boolean => this._untypedEmit(event, ...args);
+  ): boolean => this.untypedEmit(event, ...args);
 
   public constructor(
     dom: S2MountContainer,

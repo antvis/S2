@@ -1,12 +1,12 @@
 import { Group } from '@antv/g-canvas';
-import * as _ from 'lodash';
-import { GuiIcon } from '../../../common/icons';
+import { has, get } from 'lodash';
+import { GuiIcon } from '@/common/icons';
 import {
   DEFAULT_PADDING,
   KEY_LIST_SORT,
   SortMethodType,
-} from '../../../common/constant';
-import { SortMethod, SpreadSheet } from '../../..';
+} from '@/common/constant';
+import { SpreadSheet } from '@/.';
 
 // 排序按钮的宽度
 export const SORT_ICON_SIZE = 8;
@@ -23,9 +23,9 @@ export const getIconType = (key: string, spreadsheet: SpreadSheet) => {
   const currentSortKey = spreadsheet.store.get('currentSortKey', {});
   let upIconType = 'SortUp';
   let downIconType = 'SortDown';
-  if (currentSortKey && _.has(currentSortKey, key)) {
+  if (currentSortKey && has(currentSortKey, key)) {
     // 有配置,当前点击的过的key(某个维度)
-    if (_.get(currentSortKey, key) === SortMethodType.ASC) {
+    if (get(currentSortKey, key) === SortMethodType.ASC) {
       // 点击过此维度的up
       upSelected = true;
       upIconType = 'SortUpSelected';
