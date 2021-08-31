@@ -1,4 +1,4 @@
-import { InterceptInteractionType, S2Event } from '@/common/constant';
+import { InterceptType, S2Event } from '@/common/constant';
 import {
   InteractionNames,
   InteractionStateName,
@@ -19,24 +19,18 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
-      if (
-        this.interaction.interceptInteraction.has(
-          InterceptInteractionType.CLICK,
-        )
-      ) {
+      if (this.interaction.intercept.has(InterceptType.CLICK)) {
         return;
       }
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
       if (meta) {
         // 屏蔽hover事件
-        this.interaction.interceptInteraction.add(
-          InterceptInteractionType.HOVER,
-        );
+        this.interaction.intercept.add(InterceptType.HOVER);
         if (this.interaction.isSelectedCell(cell)) {
           // 点击当前已选cell 则取消当前cell的选中状态
           this.interaction.clearState();
-          this.interaction.interceptInteraction.clear();
+          this.interaction.intercept.clear();
           this.spreadsheet.hideTooltip();
         } else {
           this.interaction.clearState();

@@ -1,4 +1,4 @@
-import { InterceptInteractionType } from '@/common/constant';
+import { InterceptType } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { concat, isEmpty } from 'lodash';
 import { S2CellType, MultiClickProps } from '@/common/interface';
@@ -14,13 +14,13 @@ export const handleRowColClick = (props: MultiClickProps) => {
   if (spreadsheet.interaction.isSelectedCell(cell)) {
     // 点击当前已选cell 则取消当前cell的选中状态
     spreadsheet.interaction.clearState();
-    spreadsheet.interaction.interceptInteraction.clear();
+    spreadsheet.interaction.intercept.clear();
     spreadsheet.hideTooltip();
     return;
   }
 
   if (meta.x !== undefined) {
-    spreadsheet.interaction.interceptInteraction.add(InterceptInteractionType.HOVER);
+    spreadsheet.interaction.intercept.add(InterceptType.HOVER);
     // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
     let leafNodes = isTreeRowClick
       ? Node.getAllLeavesOfNode(meta)

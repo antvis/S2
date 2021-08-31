@@ -8,7 +8,7 @@ import {
   CornerTextClick,
   DataCell,
   DataCellClick,
-  InterceptInteraction,
+  Intercept,
   HoverEvent,
   InteractionNames,
   InteractionStateInfo,
@@ -31,7 +31,7 @@ export class RootInteraction {
   public interactions = new Map<string, BaseEvent>();
 
   // 用来标记需要拦截的交互，interaction和本身的hover等事件可能会有冲突，有冲突时在此屏蔽
-  public interceptInteraction = new Set<InterceptInteraction>();
+  public intercept = new Set<Intercept>();
 
   // hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
   // 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。

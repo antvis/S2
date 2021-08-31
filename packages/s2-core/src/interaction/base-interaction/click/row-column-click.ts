@@ -1,6 +1,6 @@
 import {
   S2Event,
-  InterceptInteractionType,
+  InterceptType,
   InteractionKeyboardKey,
 } from '@/common/constant';
 import { BaseEvent, BaseEventImplement } from '../../base-event';
@@ -32,7 +32,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
         this.isMultiSelection = false;
-        this.interaction.interceptInteraction.delete(InterceptInteractionType.CLICK);
+        this.interaction.intercept.delete(InterceptType.CLICK);
       }
     });
   }
@@ -40,7 +40,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
-      if (this.interaction.interceptInteraction.has(InterceptInteractionType.CLICK)) {
+      if (this.interaction.intercept.has(InterceptType.CLICK)) {
         return;
       }
       handleRowColClick({
@@ -55,7 +55,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private bindColCellClick() {
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
-      if (this.interaction.interceptInteraction.has(InterceptInteractionType.CLICK)) {
+      if (this.interaction.intercept.has(InterceptType.CLICK)) {
         return;
       }
       handleRowColClick({
