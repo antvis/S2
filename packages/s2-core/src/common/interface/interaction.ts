@@ -1,6 +1,7 @@
 import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
 import { HeaderCell } from '@/cell/header-cell';
 import { Node } from '@/index';
+import { Event } from '@antv/g-canvas';
 import { BaseEvent } from '@/interaction/events';
 import { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName } from '../constant';
@@ -20,7 +21,7 @@ export interface InteractionStateInfo {
   // all the active cells
   cells?: S2CellType[];
   // all the cells changed the state style
-  changedCells?: S2CellType[];
+  interactedCells?: S2CellType[];
   // all the active nodes, including rendered and not rendered cells
   nodes?: Node[];
 }
@@ -49,3 +50,10 @@ export interface BrushRange {
 }
 
 export type StateShapeLayer = 'interactiveBgShape' | 'interactiveBorderShape';
+
+export interface MultiClickProps {
+  event: Event,
+  spreadsheet: SpreadSheet,
+  isTreeRowClick: boolean,
+  isMultiSelection: boolean,
+}

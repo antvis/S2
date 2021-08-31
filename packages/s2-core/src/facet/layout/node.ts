@@ -157,8 +157,7 @@ export class Node {
   public static getAllChildrenNode(node: Node): Node[] {
     const all: Node[] = [];
     if (node.isLeaf) {
-      all.push(node);
-      return all;
+      return [node];
     }
     // current root node children
     const nodes = node.children.slice(0);

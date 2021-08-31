@@ -152,7 +152,7 @@ export const handleDataItem = (
  * @param cells active cells
  * @param currentCell current activated cell
  */
-export const isIncludeCell = (cells: S2CellType[], currentCell: S2CellType) => {
+export const includeCell = (cells: S2CellType[], currentCell: S2CellType) => {
   const meta = currentCell.getMeta();
   return cells.some((cell) => {
     const cellMeta = cell.getMeta();

@@ -1,5 +1,5 @@
-import { first, map, get, includes } from 'lodash';
-import { isIncludeCell } from '@/utils/data-cell';
+import { first, map, includes } from 'lodash';
+import { includeCell } from '@/utils/data-cell';
 import { S2CellType } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
@@ -14,16 +14,16 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   private handleHover(cells: S2CellType[]) {
-    if (isIncludeCell(cells, this)) {
+    if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.HOVER, this);
     }
   }
 
   private handleSelect(cells: S2CellType[], nodes: Node[]) {
-    if (isIncludeCell(cells, this)) {
+    if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.SELECTED, this);
     }
-    const selectedNodeIds = map(nodes, (node) => get(node, 'id'));
+    const selectedNodeIds = map(nodes, 'id');
     if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED, this);
     }

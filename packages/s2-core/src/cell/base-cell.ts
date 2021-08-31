@@ -80,7 +80,7 @@ export abstract class BaseCell<T> extends Group {
 
   // 根据当前state来更新cell的样式
   public updateByState(stateName: InteractionStateName, cell: S2CellType) {
-    this.spreadsheet.interaction.setChangedCells(cell);
+    this.spreadsheet.interaction.setInteractedCells(cell);
     const stateStyles = get(
       this.theme,
       `${this.cellType}.cell.interactionState.${stateName}`,

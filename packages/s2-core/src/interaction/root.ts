@@ -69,19 +69,19 @@ export class RootInteraction {
     );
   }
 
-  public setChangedCells(cell: S2CellType) {
-    const changedCells = this.getChangedCells().concat([cell]);
+  public setInteractedCells(cell: S2CellType) {
+    const interactedCells = this.getInteractedCells().concat([cell]);
     const interactionInfo = merge(
       this.getState(),
-      { changedCells: changedCells },
+      { interactedCells: interactedCells },
       {},
     );
     this.setState(interactionInfo);
   }
 
-  public getChangedCells() {
+  public getInteractedCells() {
     const currentState = this.getState();
-    return currentState?.changedCells || [];
+    return currentState?.interactedCells || [];
   }
 
   public resetState() {

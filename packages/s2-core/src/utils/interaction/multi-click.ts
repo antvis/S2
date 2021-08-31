@@ -1,18 +1,12 @@
-import { SpreadSheet } from '@/sheet-type';
 import { InterceptEventType } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
-import { each, concat, isEmpty } from 'lodash';
-import { S2CellType } from '@/common/interface';
+import { concat, isEmpty } from 'lodash';
+import { S2CellType, MultiClickProps } from '@/common/interface';
 import { Node } from '@/index';
-import { Event } from '@antv/g-canvas';
 import { mergeCellInfo } from '../tooltip';
+export const handleRowColClick = (props: MultiClickProps) => {
+  const {event, spreadsheet, isTreeRowClick, isMultiSelection} = props;
 
-export const handleRowColClick = (
-  event: Event,
-  spreadsheet: SpreadSheet,
-  isTreeRowClick: boolean,
-  isMultiSelection: boolean,
-) => {
   const lastState = spreadsheet.interaction.getState();
   const cell = spreadsheet.getCell(event.target);
   const meta = cell.getMeta() as Node;
@@ -58,12 +52,10 @@ export const handleRowColClick = (
       cell.update();
     });
     leafNodes.map((node) => {
-      if (node?.belongsCell) {
-        node.belongsCell.updateByState(
-          InteractionStateName.SELECTED,
-          node.belongsCell,
-        );
-      }
+      node?.belongsCell?.updateByState(
+        InteractionStateName.SELECTED,
+        node.belongsCell,
+      );
     });
 
     const cellInfos = spreadsheet.interaction.isSelectedState()

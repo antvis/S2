@@ -9,9 +9,9 @@ import { forEach, isEmpty } from 'lodash';
  * @param spreadsheet sheet instance
  */
 export const clearState = (spreadsheet: SpreadSheet) => {
-  const allChangedCells = spreadsheet.interaction.getChangedCells();
-  if (!isEmpty(allChangedCells)) {
-    forEach(allChangedCells, (cell: S2CellType) => {
+  const allInteractedCells = spreadsheet.interaction.getInteractedCells();
+  if (!isEmpty(allInteractedCells)) {
+    forEach(allInteractedCells, (cell: S2CellType) => {
       cell.hideInteractionShape();
     });
 
