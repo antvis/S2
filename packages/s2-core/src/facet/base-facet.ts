@@ -55,6 +55,7 @@ import type {
   LayoutResult,
   OffsetConfig,
   SpreadSheetFacetCfg,
+  SplitLine,
 } from '../common/interface';
 import {
   calculateInViewIndexes,
@@ -391,28 +392,21 @@ export abstract class BaseFacet {
       centerIndexes[3] = dataLength - frozenTrailingRowCount - 1;
     }
 
-    const frozenRowIndexes: Indexes = [...indexes];
-    frozenRowIndexes[0] = frozenColCount;
+    const frozenRowIndexes: Indexes = [...centerIndexes];
     frozenRowIndexes[2] = 0;
     frozenRowIndexes[3] = frozenRowCount - 1;
 
-    const frozenColIndexes: Indexes = [...indexes];
+    const frozenColIndexes: Indexes = [...centerIndexes];
     frozenColIndexes[0] = 0;
     frozenColIndexes[1] = frozenColCount - 1;
-    frozenColIndexes[2] = centerIndexes[2];
-    frozenColIndexes[3] = centerIndexes[3];
 
-    const frozenTrailingRowIndexes: Indexes = [...indexes];
-    frozenTrailingRowIndexes[0] = centerIndexes[0];
-    frozenTrailingRowIndexes[1] = centerIndexes[1];
+    const frozenTrailingRowIndexes: Indexes = [...centerIndexes];
     frozenTrailingRowIndexes[2] = dataLength - frozenTrailingRowCount;
     frozenTrailingRowIndexes[3] = dataLength - 1;
 
-    const frozenTrailingColIndexes: Indexes = [...indexes];
+    const frozenTrailingColIndexes: Indexes = [...centerIndexes];
     frozenTrailingColIndexes[0] = colLength - frozenTrailingColCount;
     frozenTrailingColIndexes[1] = colLength - 1;
-    frozenTrailingColIndexes[2] = centerIndexes[2];
-    frozenTrailingColIndexes[3] = centerIndexes[3];
 
     return {
       center: centerIndexes,
@@ -954,7 +948,7 @@ export abstract class BaseFacet {
   };
 
   getTotalHeightForRange = (start: number, end: number) => {
-    if (end < 0) return 0;
+    if (start < 0 || end < 0) return 0;
     let totalHeight = 0;
     for (let index = start; index < end + 1; index++) {
       const height = this.viewCellHeights.getCellHeight(index);
@@ -995,7 +989,21 @@ export abstract class BaseFacet {
     } = this.spreadsheet.options;
     const colLeafNodes = this.layoutResult.colLeafNodes;
     const dataLength = this.spreadsheet.dataSet.getMultiData({}).length;
-    // todo
+
+    const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
+
+    const verticalBorderStyle = {
+      lineWidth: style?.verticalBorderWidth,
+      stroke: style?.verticalBorderColor,
+      opacity: style?.verticalBorderColorOpacity,
+    };
+
+    const horizontalBorderStyle = {
+      lineWidth: style?.horizontalBorderWidth,
+      stroke: style?.horizontalBorderColor,
+      opacity: style?.horizontalBorderColorOpacity,
+    };
+
     if (frozenColCount > 0) {
       const x = colLeafNodes.reduce((prev, item, idx) => {
         if (idx < frozenColCount) {
@@ -1003,18 +1011,6 @@ export abstract class BaseFacet {
         }
         return prev;
       }, 0);
-
-      // console.log(this.panelBBox)
-
-      // this.spreadsheet.frozenColGroup.setClip({
-      //   type: 'rect',
-      //   attrs: {
-      //     x: 0,
-      //     y: this.cornerBBox.height,
-      //     width: x,
-      //     height: this.panelBBox.maxY,
-      //   },
-      // })
 
       renderLine(
         this.foregroundGroup as Group,
@@ -1025,28 +1021,25 @@ export abstract class BaseFacet {
           y2: this.panelBBox.maxY,
         },
         {
-          lineWidth: 1,
-          stroke: 'red',
+          ...verticalBorderStyle,
         },
       );
     }
 
     if (frozenRowCount > 0) {
+      const y =
+        this.cornerBBox.height +
+        this.getTotalHeightForRange(0, frozenRowCount - 1);
       renderLine(
         this.foregroundGroup as Group,
         {
           x1: 0,
           x2: this.panelBBox.width,
-          y1:
-            this.cornerBBox.height +
-            this.getTotalHeightForRange(0, frozenRowCount - 1),
-          y2:
-            this.cornerBBox.height +
-            this.getTotalHeightForRange(0, frozenRowCount - 1),
+          y1: y,
+          y2: y,
         },
         {
-          lineWidth: 1,
-          stroke: 'red',
+          ...horizontalBorderStyle,
         },
       );
     }
@@ -1059,43 +1052,39 @@ export abstract class BaseFacet {
         return prev;
       }, 0);
 
+      const x = this.panelBBox.width - width;
+
       renderLine(
         this.foregroundGroup as Group,
         {
-          x1: this.panelBBox.width - width,
-          x2: this.panelBBox.width - width,
+          x1: x,
+          x2: x,
           y1: this.cornerBBox.height,
           y2: this.panelBBox.maxY,
         },
         {
-          lineWidth: 1,
-          stroke: 'red',
+          ...verticalBorderStyle,
         },
       );
     }
 
     if (frozenTrailingRowCount > 0) {
+      const y =
+        this.panelBBox.maxY -
+        this.getTotalHeightForRange(
+          dataLength - frozenTrailingRowCount,
+          dataLength - 1,
+        );
       renderLine(
         this.foregroundGroup as Group,
         {
           x1: 0,
           x2: this.panelBBox.width,
-          y1:
-            this.panelBBox.maxY -
-            this.getTotalHeightForRange(
-              dataLength - frozenTrailingRowCount,
-              dataLength - 1,
-            ),
-          y2:
-            this.panelBBox.maxY -
-            this.getTotalHeightForRange(
-              dataLength - frozenTrailingRowCount,
-              dataLength - 1,
-            ),
+          y1: y,
+          y2: y,
         },
         {
-          lineWidth: 1,
-          stroke: 'red',
+          ...horizontalBorderStyle,
         },
       );
     }
