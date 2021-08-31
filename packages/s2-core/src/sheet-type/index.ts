@@ -37,7 +37,7 @@ import { getTheme } from '@/theme';
 import { BaseTooltip } from '@/tooltip';
 import { updateConditionsByValues } from '@/utils/condition';
 import EE from '@antv/event-emitter';
-import { Canvas, Event, IGroup } from '@antv/g-canvas';
+import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import {
   clone,
   get,
@@ -181,7 +181,7 @@ export class SpreadSheet extends EE {
   }
 
   public showTooltipWithInfo(
-    event: Event,
+    event: CanvasEvent | MouseEvent,
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
@@ -440,7 +440,7 @@ export class SpreadSheet extends EE {
 
   // 获取当前cell实例
   public getCell<T extends S2CellType = S2CellType>(
-    target: Event['target'],
+    target: CanvasEvent['target'],
   ): T {
     let parent = target;
     // 一直索引到g顶层的canvas来检查是否在指定的cell中
@@ -455,7 +455,7 @@ export class SpreadSheet extends EE {
   }
 
   // 获取当前cell类型
-  public getCellType(target: Event['target']) {
+  public getCellType(target: CanvasEvent['target']) {
     const cell = this.getCell(target);
     return cell?.cellType;
   }

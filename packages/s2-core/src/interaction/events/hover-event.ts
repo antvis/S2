@@ -130,8 +130,11 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.showTooltipWithInfo(event, data, options);
   }
 
-  private getCellInfo(meta: ViewMeta, showSingleTips?: boolean) {
-    const { data, query, value, rowQuery, colQuery } = meta || {};
+  private getCellInfo(
+    meta: ViewMeta = {} as ViewMeta,
+    showSingleTips?: boolean,
+  ) {
+    const { data, query, value, rowQuery, colQuery } = meta;
     const currentCellMeta = data;
 
     const cellInfos = showSingleTips
