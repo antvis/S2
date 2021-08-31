@@ -4,10 +4,11 @@ import { Node } from '@/index';
 import { Event } from '@antv/g-canvas';
 import { BaseEvent } from '@/interaction/events';
 import { SpreadSheet } from '@/sheet-type';
+import { SimpleBBox } from '@antv/g-canvas';
 import { InteractionStateName } from '../constant';
 import { ViewMeta } from './basic';
 
-export type S2CellType<T extends Record<string, unknown> = ViewMeta> =
+export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
   | HeaderCell
   | ColCell

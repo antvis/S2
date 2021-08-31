@@ -22,8 +22,8 @@ import {
 import { merge } from 'lodash';
 import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
 import { BaseDataSet } from 'src/data-set';
-import { SpreadSheet } from 'src/sheet-type';
 import { Node } from 'src/facet/layout/node';
+import { SpreadSheet } from 'src/sheet-type';
 import { FilterDataItemCallback } from './basic';
 import { Conditions } from './condition';
 
@@ -39,7 +39,7 @@ export interface S2PartialOptions {
   // row header hierarchy type only work in pivot mode
   readonly hierarchyType?: 'grid' | 'tree' | 'customTree';
   // 兜底以前的衍生指标概念
-  readonly useDefaultConditionValues?: string[];
+  readonly indicateConditionValues?: string[];
   // conditions config
   readonly conditions?: Conditions;
   // total config

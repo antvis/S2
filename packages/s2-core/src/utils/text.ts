@@ -1,5 +1,5 @@
 import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
-import { CellBoxCfg, TooltipPosition, CellCfg } from '@/common/interface';
+import { CellBoxCfg, CellCfg, TooltipPosition } from '@/common/interface';
 import { S2Options, SpreadSheetTheme } from '@/index';
 import { renderText } from '@/utils/g-renders';
 import { IShape } from '@antv/g-canvas';
@@ -171,7 +171,7 @@ export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
  * @param priority optional 优先显示的文本
  */
 export const getEllipsisText = (
-  text: string,
+  text = '-',
   maxWidth: number,
   fontParam?: unknown,
   priorityParam?: string[],
@@ -302,8 +302,8 @@ const getStyle = (
  * @param cell
  */
 export const drawObjectText = (cell) => {
-  const { x, y, height, width } = cell.getContentAreaBBox();
-  const { formattedValue: text } = cell.getData();
+  const { x, y, height, width } = cell.getContentArea();
+  const { formattedValue: text } = cell.getFormattedFieldValue();
   const labelStyle = cell.theme?.view?.bolderText;
   const textStyle = cell.theme?.view?.text;
   const textFill = textStyle?.fill;
@@ -367,8 +367,8 @@ export const drawObjectText = (cell) => {
  * @returns 文本左上角起点坐标
  */
 export const drawStringText = (cell) => {
-  const { x, y, height, width } = cell.getContentAreaBBox();
-  const { formattedValue: text } = cell.getData();
+  const { x, y, height, width } = cell.getContentArea();
+  const { formattedValue: text } = cell.getFormattedFieldValue();
   const { isTotals } = cell.meta;
   const textStyle = isTotals
     ? cell.theme.dataCell.bolderText

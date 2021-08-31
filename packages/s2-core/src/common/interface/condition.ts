@@ -27,7 +27,7 @@ export interface Condition {
 type IconPosition = 'left' | 'right';
 
 export interface IconCondition extends Condition {
-  readonly iconPosition?: IconPosition; // right by default
+  readonly position?: IconPosition; // right by default
 }
 
 export interface Conditions {
@@ -38,6 +38,4 @@ export interface Conditions {
 }
 
 export type IconCfg = Pick<IconTheme, 'size' | 'margin'> &
-  Pick<IconCondition, 'iconPosition'>;
-
-export type ConditionLayer = keyof Conditions;
+  Pick<IconCondition, 'position'>;

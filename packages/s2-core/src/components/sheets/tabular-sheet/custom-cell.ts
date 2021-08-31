@@ -1,6 +1,6 @@
+import { DataCell } from '@/cell/data-cell';
 import { drawObjectText, drawStringText } from '@/utils/text';
 import { isObject } from 'lodash';
-import { DataCell } from '@/cell/data-cell';
 
 /**
  * Cell for panelGroup area
@@ -17,7 +17,7 @@ export class CustomCell extends DataCell {
 
   // TODO 条件格式
   protected drawTextShape() {
-    const { formattedValue: text } = this.getData();
+    const { formattedValue: text } = this.getFormattedFieldValue();
     if (isObject(text)) {
       drawObjectText(this);
     } else {

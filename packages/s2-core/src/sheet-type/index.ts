@@ -310,13 +310,13 @@ export class SpreadSheet extends EE {
   }
 
   private updateDefaultConditions() {
-    if (isEmpty(this.options.useDefaultConditionValues)) {
+    if (isEmpty(this.options.indicateConditionValues)) {
       return;
     }
-    const { conditions, useDefaultConditionValues } = this.options;
+    const { conditions, indicateConditionValues } = this.options;
     const updatedConditions = updateConditionsByValues(
       conditions,
-      useDefaultConditionValues,
+      indicateConditionValues,
       this.theme.dataCell.icon,
     );
     this.setOptions({ conditions: updatedConditions } as S2Options);

@@ -70,6 +70,9 @@ const getDataCfg = (): S2DataConfig => {
     ],
     data: multipleDataWithNormal,
     standardData: false,
+    sortParams: [
+      // { sortFieldId: 'price', sortMethod: 'DESC' }
+    ],
   };
 };
 
@@ -83,7 +86,7 @@ const getOptions = (): S2Options => {
     showSeriesNumber: false,
     freezeRowHeader: false,
     mode: 'pivot',
-    useDefaultConditionValues: ['ac', 'rc'],
+    indicateConditionValues: ['ac', 'rc'],
     conditions: {
       text: [],
       interval: [
@@ -106,19 +109,28 @@ const getOptions = (): S2Options => {
           },
         },
       ],
-      icon: [],
+      icon: [
+        {
+          field: 'price',
+          mapping() {
+            return { fill: 'black', icon: 'Trend' };
+          },
+        },
+      ],
     },
-    tooltip: {
-      showTooltip: true,
+    rowActionIcons: {
+      iconTypes: ['SortDown', 'SortUp'],
+      display: {
+        level: 0,
+        operator: '>=',
+      },
+      action(type, node) {},
     },
+
     selectedCellsSpotlight: true,
     hoverHighlight: true,
-    mappingDisplayDataItem(field, data) {
-      return {
-        price: 12,
-        'price-ac': 0.2,
-        'price-rc': -0.3,
-      };
+    tooltip: {
+      showTooltip: true,
     },
     style: {
       colCfg: {
@@ -144,6 +156,7 @@ function MainLayout(props) {
 
   const onValueInColsChange = (checked) => {
     setValueInCols(checked);
+
     setDataCfg(
       merge({}, dataCfg, {
         fields: {
@@ -229,18 +242,22 @@ describe('spreadsheet multiple values cell spec', () => {
   test('should generate default conditions', () => {
     const { icon, text } = sheet.options.conditions;
 
-    expect(icon).toHaveLength(2);
+    expect(icon).toHaveLength(3);
     expect(text).toHaveLength(2);
 
     expect(icon).toEqual([
       {
+        field: 'price',
+        mapping: expect.any(Function),
+      },
+      {
         field: 'ac',
-        iconPosition: 'left',
+        position: 'left',
         mapping: expect.any(Function),
       },
       {
         field: 'rc',
-        iconPosition: 'left',
+        position: 'left',
         mapping: expect.any(Function),
       },
     ]);

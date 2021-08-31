@@ -2,7 +2,7 @@ import {
   layoutCoordinate,
   layoutDataPosition,
 } from '@/facet/layout/layout-hooks';
-import { handleDataItem } from '@/utils/data-cell';
+import { handleDataItem } from '@/utils/cell/data-cell';
 import {
   findIndex,
   get,
@@ -31,16 +31,20 @@ import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 export class PivotFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     // 1、layout all nodes in rowHeader and colHeader
-    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: true,
-        facetCfg: this.cfg,
-      });
-    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: false,
-        facetCfg: this.cfg,
-      });
+    const {
+      leafNodes: rowLeafNodes,
+      hierarchy: rowsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: true,
+      facetCfg: this.cfg,
+    });
+    const {
+      leafNodes: colLeafNodes,
+      hierarchy: colsHierarchy,
+    } = buildHeaderHierarchy({
+      isRowHeader: false,
+      facetCfg: this.cfg,
+    });
     // 2、calculate all related nodes coordinate
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -248,8 +252,13 @@ export class PivotFacet extends BaseFacet {
   }
 
   private calculateColLeafNodesWidth(col: Node): number {
-    const { cellCfg, colCfg, dataSet, spreadsheet, filterDisplayDataItem } =
-      this.cfg;
+    const {
+      cellCfg,
+      colCfg,
+      dataSet,
+      spreadsheet,
+      filterDisplayDataItem,
+    } = this.cfg;
     // 0e48088b-8bb3-48ac-ae8e-8ab08af46a7b:[DAY]:[RC]:[VALUE] 这样的id get 直接获取不到
     // current.width =  get(colCfg, `widthByFieldValue.${current.value}`, current.width);
     const userDragWidth = get(

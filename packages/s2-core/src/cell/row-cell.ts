@@ -5,29 +5,23 @@ import {
   KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_ROW_RESIZER,
 } from '@/common/constant';
+import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
+import { FormatResult, TextTheme } from '@/common/interface';
 import { HIT_AREA } from '@/facet/header/base';
 import { ResizeInfo } from '@/facet/header/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
-import { renderLine, renderRect, renderText } from '@/utils/g-renders';
+import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { isMobile } from '@/utils/is-mobile';
 import { getAdjustPosition } from '@/utils/text-absorption';
-import { IGroup, Event } from '@antv/g-canvas';
+import { Event, IGroup, Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
-import { get } from 'lodash';
-import { getEllipsisText, measureTextWidth } from '../utils/text';
+import { each, forEach, get } from 'lodash';
 import { HeaderCell } from './header-cell';
 export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;
 
-  // 绘制完其他后，需要额外绘制的起始x坐标
-  protected lastStartDrawX: number;
-
-  protected actionIcons: GuiIcon[];
-
-  // TODO type define
-  // mobile event
   private gm: GM;
 
   public get cellType() {
@@ -40,13 +34,18 @@ export class RowCell extends HeaderCell {
   }
 
   protected initCell() {
+    super.initCell();
     // 1、draw rect background
-    this.drawBackgroundColor();
+    this.drawBackgroundShape();
     this.drawInteractiveBgShape();
-    // draw text
-    this.lastStartDrawX = this.drawCellText();
+
     // draw icon
-    this.drawIconInTree();
+    this.drawTreeIcon();
+    // draw text
+    this.drawTextShape();
+    // draw action icon shapes: trend icon, drill-down icon ...
+    this.drawActionIcons();
+
     // draw bottom border
     this.drawRectBorder();
     // draw hot-spot rect
@@ -56,73 +55,60 @@ export class RowCell extends HeaderCell {
     this.update();
   }
 
-  protected drawBackgroundColor() {
-    const { rowCell: rowHeaderStyle } = this.spreadsheet.theme;
-    const bgColor = rowHeaderStyle.cell.backgroundColor;
-    const { x, y, height, width } = this.meta;
+  protected drawBackgroundShape() {
+    const { backgroundColor, backgroundColorOpacity } = this.getStyle().cell;
 
     this.backgroundShape = renderRect(this, {
-      x,
-      y,
-      width,
-      height,
-      fill: bgColor,
+      ...this.getCellArea(),
+      fill: backgroundColor,
       stroke: 'transparent',
-      opacity: rowHeaderStyle.cell.backgroundColorOpacity,
+      opacity: backgroundColorOpacity,
     });
   }
 
   // 交互使用的背景色
   protected drawInteractiveBgShape() {
-    const { x, y, height, width } = this.meta;
     this.stateShapes.set(
       'interactiveBgShape',
       renderRect(this, {
-        x,
-        y,
-        width,
-        height,
+        ...this.getCellArea(),
         fill: 'transparent',
         stroke: 'transparent',
       }),
     );
   }
 
-  protected drawIconInTree() {
-    if (this.isTreeType() && !this.meta.isLeaf) {
-      const { offset, height } = this.headerConfig;
-      const {
-        x,
-        y,
-        height: cellHeight,
-        isCollapsed,
-        id,
-        hierarchy,
-        level,
-      } = this.meta;
-      const {
-        text: textCfg,
-        icon: iconCfg,
-        cell: cellCfg,
-      } = this.theme.rowCell;
-      const textIndent = this.getTextIndent();
-      const textY = getAdjustPosition(
-        y,
-        cellHeight,
-        offset,
-        height,
-        textCfg.fontSize,
-      );
-      const iconX = x + textIndent;
-      const iconY = textY + (textCfg.fontSize - iconCfg.size) / 2;
-      const icon = new GuiIcon({
-        type: isCollapsed ? 'plus' : 'MinusSquare',
+  private showTreeIcon() {
+    return this.spreadsheet.isHierarchyTreeType() && !this.meta.isLeaf;
+  }
+
+  // draw tree icon
+  protected drawTreeIcon() {
+    if (!this.showTreeIcon()) {
+      return;
+    }
+
+    const { isCollapsed, id, hierarchy } = this.meta;
+    const { x } = this.getContentArea();
+    const { fill } = this.getTextStyle();
+    const { size } = this.getStyle().icon;
+
+    const contentIndent = this.getContentIndent();
+
+    const iconX = x + contentIndent;
+    const iconY = this.getIconYPosition();
+
+    this.treeIcon = renderTreeIcon(
+      this,
+      {
         x: iconX,
         y: iconY,
-        width: iconCfg.size,
-        height: iconCfg.size,
-      });
-      icon.on('click', () => {
+        width: size,
+        height: size,
+      },
+      fill,
+      isCollapsed,
+      () => {
         // 折叠行头时因scrollY没变，导致底层出现空白
         if (!isCollapsed) {
           const oldScrollY = this.spreadsheet.store.get('scrollY');
@@ -145,71 +131,20 @@ export class RowCell extends HeaderCell {
           isCollapsed: !isCollapsed,
           node: this.meta,
         });
-      });
-      // in mobile, we use this cell
-      this.gm = new GM(this, {
-        gestures: ['Tap'],
-      });
-      this.gm.on('tap', () => {
-        this.spreadsheet.emit(KEY_COLLAPSE_TREE_ROWS, {
-          id,
-          isCollapsed: !isCollapsed,
-          node: this.meta,
-        });
-      });
-      this.add(icon);
-    }
-  }
-
-  protected drawRectBorder() {
-    const { position, width, viewportWidth, scrollX } = this.headerConfig;
-    const { x, y } = this.meta;
-    // 1、bottom border
-    const textIndent = this.getTextIndent();
-    renderLine(
-      this,
-      {
-        x1: x + textIndent,
-        y1: y,
-        x2: position.x + width + viewportWidth + scrollX,
-        y2: y,
-      },
-      {
-        stroke: this.theme.rowCell.cell.horizontalBorderColor,
-        lineWidth: this.theme.rowCell.cell.horizontalBorderWidth,
-        opacity: this.theme.rowCell.cell.horizontalBorderOpacity,
       },
     );
-  }
 
-  protected isTreeType() {
-    return this.spreadsheet.isHierarchyTreeType();
-  }
-
-  protected getTextIndent() {
-    if (!this.isTreeType()) {
-      return 0;
-    }
-    const cellPadding = get(this.theme, 'rowCell.cell.padding');
-    const baseIndent = cellPadding.left;
-    const iconTheme = get(this.theme, 'rowCell.icon');
-    const iconWidth =
-      iconTheme.size + iconTheme.margin.left + iconTheme.margin.right;
-    let parent = this.meta.parent;
-    let multiplier = baseIndent;
-    while (parent) {
-      if (parent.height !== 0) {
-        multiplier += baseIndent + iconWidth;
-      }
-      parent = parent.parent;
-    }
-    return multiplier;
-  }
-
-  protected getRowTextStyle(isTotals: boolean, isLeaf: boolean) {
-    return isLeaf && !isTotals
-      ? this.theme.rowCell.text
-      : this.theme.rowCell.bolderText;
+    // in mobile, we use this cell
+    this.gm = new GM(this, {
+      gestures: ['Tap'],
+    });
+    this.gm.on('tap', () => {
+      this.spreadsheet.emit(KEY_COLLAPSE_TREE_ROWS, {
+        id,
+        isCollapsed: !isCollapsed,
+        node: this.meta,
+      });
+    });
   }
 
   protected getFormattedValue(value: string): string {
@@ -223,52 +158,12 @@ export class RowCell extends HeaderCell {
     return content;
   }
 
-  protected drawCellText() {
-    const { offset, height, linkFieldIds = [] } = this.headerConfig;
-    const {
-      label,
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      isLeaf,
-      isTotals,
-    } = this.meta;
-    const { text: textTheme, icon: iconTheme } = this.theme.rowCell;
-    const isTreeType = this.isTreeType();
-    // grid & is totals content is empty
-    const content = this.getFormattedValue(label);
-    const iconWidth =
-      iconTheme.size + iconTheme.margin.left + iconTheme.margin.right;
+  // draw text
+  protected drawTextShape() {
+    const { linkFieldIds = [] } = this.headerConfig;
+    const { fill, linkTextFill } = this.getTextStyle();
 
-    const textStyle = { ...this.getRowTextStyle(isTotals, isLeaf) };
-    textStyle.textAlign = 'left';
-    textStyle.textBaseline = 'top';
-    const cellPadding = get(this.theme, 'rowCell.cell.padding');
-    const totalPadding = cellPadding?.left + cellPadding?.right;
-    const textIndent = !isTreeType
-      ? this.getTextIndent() + cellPadding?.left
-      : this.getTextIndent() + iconWidth;
-    const maxWidth = cellWidth - textIndent - totalPadding;
-    const text = getEllipsisText(content, maxWidth, textStyle);
-    const textX = x + textIndent;
-    const textY = getAdjustPosition(
-      y,
-      cellHeight,
-      offset,
-      height,
-      textTheme.fontSize,
-    );
-
-    this.textShape = renderText(
-      this,
-      [this.textShape],
-      textX,
-      textY,
-      text,
-      textStyle,
-      { cursor: 'pointer' },
-    );
+    super.drawTextShape();
 
     // handle link nodes
     if (linkFieldIds.includes(this.meta.key)) {
@@ -284,7 +179,7 @@ export class RowCell extends HeaderCell {
             x2: textBBox.br.x,
             y2: textBBox.br.y + 1,
           },
-          { stroke: textStyle.fill, lineWidth: 1 },
+          { stroke: fill, lineWidth: 1 },
         );
         this.textShape.attr({
           appendInfo: {
@@ -294,7 +189,7 @@ export class RowCell extends HeaderCell {
         });
       } else {
         this.textShape.attr({
-          fill: textTheme.linkTextFill,
+          fill: linkTextFill,
           appendInfo: {
             isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
             cellData: this.meta,
@@ -302,11 +197,37 @@ export class RowCell extends HeaderCell {
         });
       }
     }
-    return textX + measureTextWidth(text, textStyle);
+  }
+
+  protected drawRectBorder() {
+    const { position, width, viewportWidth, scrollX } = this.headerConfig;
+    const {
+      horizontalBorderColor,
+      horizontalBorderWidth,
+      horizontalBorderOpacity,
+    } = this.getStyle().cell;
+    const { x, y } = this.getCellArea();
+    // 1、bottom border
+    const contentIndent = this.getContentIndent();
+    renderLine(
+      this,
+      {
+        x1: x + contentIndent,
+        y1: y,
+        x2: position.x + width + viewportWidth + scrollX,
+        y2: y,
+      },
+      {
+        stroke: horizontalBorderColor,
+        lineWidth: horizontalBorderWidth,
+        opacity: horizontalBorderOpacity,
+      },
+    );
   }
 
   protected drawHotSpotInLeaf() {
     if (this.meta.isLeaf) {
+      const { x, y, width, height } = this.getCellArea();
       // 热区公用一个group
       const prevResizer = this.spreadsheet.foregroundGroup.findById(
         KEY_GROUP_ROW_RESIZER,
@@ -315,20 +236,14 @@ export class RowCell extends HeaderCell {
         this.spreadsheet.foregroundGroup.addGroup({
           id: KEY_GROUP_ROW_RESIZER,
         })) as IGroup;
-      const { offset, position } = this.headerConfig;
-      const {
-        label,
-        x,
-        y,
-        width: cellWidth,
-        height: cellHeight,
-        parent,
-      } = this.meta;
+
+      const { offset, position, seriesNumberWidth } = this.headerConfig;
+      const { label, parent } = this.meta;
       resizer.addShape('rect', {
         attrs: {
-          x: position.x + x,
-          y: position.y - offset + y + cellHeight - HIT_AREA / 2,
-          width: cellWidth,
+          x: position.x + x + seriesNumberWidth,
+          y: position.y + y - offset + height - HIT_AREA / 2,
+          width,
           fill: COLOR_DEFAULT_RESIZER,
           height: HIT_AREA,
           cursor: 'row-resize',
@@ -338,10 +253,10 @@ export class RowCell extends HeaderCell {
             type: 'row',
             affect: 'cell',
             caption: parent.isTotals ? '' : label,
-            offsetX: position.x + x,
-            offsetY: position.y - offset + y,
-            width: cellWidth,
-            height: cellHeight,
+            offsetX: position.x + x + seriesNumberWidth,
+            offsetY: position.y + y - offset,
+            width,
+            height,
           } as ResizeInfo,
         },
       });
@@ -350,6 +265,7 @@ export class RowCell extends HeaderCell {
 
   protected drawActionIcons() {
     const rowActionIcons = this.spreadsheet.options.rowActionIcons;
+
     if (!rowActionIcons) return;
     const {
       iconTypes,
@@ -391,28 +307,110 @@ export class RowCell extends HeaderCell {
       this.spreadsheet.isHierarchyTreeType() &&
       this.spreadsheet.isPivotMode()
     ) {
-      const { x, y, height, width } = this.meta;
-      const { cell, text } = this.theme.rowCell;
+      const { x, width } = this.getContentArea();
+      const { size } = this.getStyle().icon;
+
       for (let i = 0; i < iconTypes.length; i++) {
-        const iconRight =
-          (text.fontSize + cell.padding?.left) * (iconTypes.length - i);
+        const iconRight = size * (iconTypes.length - i);
         const icon = new GuiIcon({
           type: iconTypes[i],
           x: x + width - iconRight,
-          y: y + (height - text.fontSize) / 2,
-          width: text.fontSize,
-          height: text.fontSize,
+          y: this.getIconYPosition(),
+          width: size,
+          height: size,
         });
         icon.set('visible', false);
         icon.on('click', (e: Event) => {
           action(iconTypes[i], this.meta, e);
         });
-        this.add(icon);
-        if (!this.actionIcons) {
-          this.actionIcons = [];
-        }
+
         this.actionIcons.push(icon);
+        this.add(icon);
       }
     }
+  }
+
+  protected getContentIndent() {
+    if (!this.spreadsheet.isHierarchyTreeType()) {
+      return 0;
+    }
+    const { icon } = this.getStyle();
+    const iconWidth = icon.size + icon.margin.right;
+
+    let parent = this.meta.parent;
+    let multiplier = 0;
+    while (parent) {
+      if (parent.height !== 0) {
+        multiplier += iconWidth;
+      }
+      parent = parent.parent;
+    }
+
+    return multiplier;
+  }
+
+  protected getTextIndent() {
+    const { size, margin } = this.getStyle().icon;
+    const contentIndent = this.getContentIndent();
+    const treeIconWidth = this.showTreeIcon() ? size + margin.right : 0;
+    return contentIndent + treeIconWidth;
+  }
+
+  protected getTextStyle(): TextTheme {
+    const { isLeaf, isTotals } = this.meta;
+    const { text, bolderText } = this.getStyle();
+    const style = isLeaf && !isTotals ? text : bolderText;
+    return { ...style, textAlign: 'left', textBaseline: 'top' };
+  }
+
+  protected getFormattedFieldValue(): FormatResult {
+    const { label } = this.meta;
+    let content = label;
+    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
+      this.meta.field,
+    );
+    if (formatter) {
+      content = formatter(label);
+    }
+    return {
+      formattedValue: content,
+      value: label,
+    };
+  }
+
+  protected getMaxTextWidth(): number {
+    const { width } = this.getContentArea();
+    return width - this.getTextIndent();
+  }
+
+  protected getTextPosition(): Point {
+    const { x, y, height: contentHeight } = this.getContentArea();
+    const { offset, height } = this.headerConfig;
+
+    const { fontSize } = this.getTextStyle();
+    const textIndent = this.getTextIndent();
+    const textY = getAdjustPosition(y, contentHeight, offset, height, fontSize);
+    const textX = x + textIndent;
+
+    return { x: textX, y: textY };
+  }
+
+  private getIconYPosition() {
+    const textY = this.getTextPosition().y;
+    const { size } = this.getStyle().icon;
+    const { fontSize } = this.getTextStyle();
+    return textY + (fontSize - size) / 2;
+  }
+
+  updateByState(stateName: InteractionStateName) {
+    super.updateByState(stateName, this);
+    each(this.actionIcons, (icon) =>
+      icon.set('visible', stateName === InteractionStateName.HOVER),
+    );
+  }
+
+  public hideInteractionShape() {
+    super.hideInteractionShape();
+    forEach(this.actionIcons, (icon) => icon.set('visible', false));
   }
 }

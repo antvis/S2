@@ -10,7 +10,7 @@ export class TableColCell extends ColCell {
     return get(this, 'theme.colCell');
   }
 
-  protected drawCellText() {
+  protected drawTextShape() {
     const { spreadsheet } = this.headerConfig;
     const {
       label,

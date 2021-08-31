@@ -42,6 +42,7 @@ export const SHAPE_STYLE_MAP = {
   backgroundColor: 'fill',
   borderOpacity: 'strokeOpacity',
   borderColor: 'stroke',
+  opacity: 'opacity',
 };
 
 // 设置属性的时候实际对应改变的shape映射

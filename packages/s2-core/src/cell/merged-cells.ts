@@ -1,12 +1,12 @@
 import { SpreadSheet } from '@/sheet-type';
 import { getPolygonPoints } from '@/utils/interaction/merge-cells';
-import { SimpleBBox } from '@antv/g-canvas';
+import { Point, SimpleBBox } from '@antv/g-canvas';
 import { isEmpty, isObject } from 'lodash';
 import { S2CellType } from 'src/common/interface/interaction';
 import { renderPolygon } from 'src/utils/g-renders';
 import { drawObjectText, drawStringText } from 'src/utils/text';
 import { CellTypes } from '../common/constant';
-import { ViewMeta } from '../common/interface';
+import { FormatResult, TextTheme, ViewMeta } from '../common/interface';
 import { DataItem } from '../common/interface/s2DataConfig';
 import { BaseCell } from './base-cell';
 
@@ -34,7 +34,7 @@ export class MergedCells extends BaseCell<ViewMeta> {
 
   public update() {}
 
-  public getData(): { value: DataItem; formattedValue: DataItem } {
+  protected getFormattedFieldValue(): FormatResult {
     const rowField = this.meta.rowId;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowField);
     let formatter;
@@ -52,6 +52,18 @@ export class MergedCells extends BaseCell<ViewMeta> {
       value: this.meta.fieldValue as DataItem,
       formattedValue,
     };
+  }
+
+  protected getMaxTextWidth(): number {
+    return 0;
+  }
+
+  protected getTextPosition(): Point {
+    return { x: 0, y: 0 };
+  }
+
+  protected getTextStyle(): TextTheme {
+    return {};
   }
 
   protected initCell() {
@@ -95,7 +107,7 @@ export class MergedCells extends BaseCell<ViewMeta> {
    */
   protected drawTextShape() {
     if (isEmpty(this.meta)) return;
-    const { formattedValue: text } = this.getData();
+    const { formattedValue: text } = this.getFormattedFieldValue();
     if (isObject(text)) {
       drawObjectText(this);
     } else {
