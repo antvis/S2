@@ -324,7 +324,7 @@ export class PivotFacet extends BaseFacet {
       }
     }
 
-    // 2、calculate node's height（leaf nodes）, width(all nodes), y coordinate
+    // 2、calculate node's height & y（leaf nodes）, x-coordinate & width(all nodes), height & y (not-leaf), 
     let preLeafNode = Node.blankNode();
     const allNodes = rowsHierarchy.getNodes();
     for (let i = 0; i < allNodes.length; i++) {
@@ -452,7 +452,7 @@ export class PivotFacet extends BaseFacet {
         colWidth = this.getColWidthAdaptGrid(colLeafNodes);
       }
     } else {
-      // compat cell width
+      // compact cell width
       colWidth = -1;
     }
     // row width use rowCfg.width as width

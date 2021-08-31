@@ -132,6 +132,7 @@ export class SpreadSheet extends EE {
     this.initGroups(this.dom, this.options);
     this.bindEvents();
     this.initInteraction();
+    this.initTheme();
     this.initHdAdapter();
 
     DebuggerUtil.getInstance().setDebug(options?.debug);
@@ -139,6 +140,13 @@ export class SpreadSheet extends EE {
 
   get isShowTooltip() {
     return this.options?.tooltip?.showTooltip;
+  }
+
+  private initTheme() {
+    // When calling spreadsheet directly, there is no theme and initialization is required
+    this.setThemeCfg({ 
+      name: 'default'
+    });
   }
 
   private getMountContainer(dom: S2MountContainer) {
