@@ -14,8 +14,8 @@ import { get, isEmpty, isEqual } from 'lodash';
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
 import { TooltipData } from '@/common/interface';
-import { BaseEvent } from './events';
-import { BaseEventImplement } from './events/base-event';
+import { BaseEvent } from './base-interaction';
+import { BaseEventImplement } from './base-event';
 
 /**
  * Panel area's brush selection interaction

@@ -2,7 +2,7 @@ import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
 import { HeaderCell } from '@/cell/header-cell';
 import { Node } from '@/index';
 import { Event } from '@antv/g-canvas';
-import { BaseEvent } from '@/interaction/events';
+import { BaseEvent, EventConstructor } from '@/interaction/base-event';
 import { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName } from '../constant';
 import { ViewMeta } from './basic';
@@ -32,7 +32,7 @@ export type InteractionConstructor = new (
 
 export interface CustomInteraction {
   key: string;
-  interaction: InteractionConstructor;
+  interaction: EventConstructor;
 }
 
 export interface BrushPoint {

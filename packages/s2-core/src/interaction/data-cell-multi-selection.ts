@@ -7,7 +7,7 @@ import {
 import { S2CellType, TooltipData } from '@/common/interface';
 import { Event } from '@antv/g-canvas';
 import { each, find, isEmpty, isEqual, concat } from 'lodash';
-import { BaseEvent, BaseEventImplement } from './events';
+import { BaseEvent, BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection
   extends BaseEvent

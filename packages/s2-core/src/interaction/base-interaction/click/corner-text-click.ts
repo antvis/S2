@@ -4,7 +4,7 @@ import { isMobile } from '@/utils/is-mobile';
 import { measureTextWidth } from '@/utils/text';
 import { Event } from '@antv/g-canvas';
 import { get } from 'lodash';
-import { BaseEvent, BaseEventImplement } from '../base-event';
+import { BaseEvent, BaseEventImplement } from '../../base-event';
 
 /**
  * Click corner header text to full expand(remove 「...」)

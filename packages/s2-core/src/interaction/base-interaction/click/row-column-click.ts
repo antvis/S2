@@ -3,7 +3,7 @@ import {
   InterceptEventType,
   InteractionKeyboardKey,
 } from '@/common/constant';
-import { BaseEvent, BaseEventImplement } from '../base-event';
+import { BaseEvent, BaseEventImplement } from '../../base-event';
 import { handleRowColClick } from '@/utils/interaction/multi-click';
 import { Event } from '@antv/g-canvas';
 

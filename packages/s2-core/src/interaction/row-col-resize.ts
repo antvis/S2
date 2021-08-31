@@ -9,7 +9,7 @@ import { clone, get, isNil, merge, throttle } from 'lodash';
 import { SpreadSheet } from 'src/sheet-type';
 import { Style } from '@/common/interface';
 import { ResizeInfo } from '../facet/header/interface';
-import { BaseEvent, BaseEventImplement } from './events';
+import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { RootInteraction } from './root';
 
 /**
