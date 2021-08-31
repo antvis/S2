@@ -7,7 +7,7 @@ import {
   COLOR_DEFAULT_RESIZER,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZER,
-  S2Event.TREE_ROWS_COLLAPSE_ALL,
+  S2Event,
 } from '../common/constant';
 import { HIT_AREA } from '../facet/header/base';
 import { CornerHeaderConfig } from '../facet/header/corner';
@@ -143,7 +143,7 @@ export class CornerCell extends HeaderCell {
       () => {
         this.headerConfig.spreadsheet.store.set('scrollY', 0);
         this.headerConfig.spreadsheet.emit(
-          KEY_TREE_ROWS_COLLAPSE_ALL,
+          S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
           hierarchyCollapse,
         );
       },
@@ -162,7 +162,7 @@ export class CornerCell extends HeaderCell {
       attrs.stroke = horizontalBorderColor;
     }
 
-    thisTREE_ROWS_COLLAPSE_ALLect(this, attrs);
+    this.backgroundShape = renderRect(this, attrs);
   }
 
   private drawHotpot() {

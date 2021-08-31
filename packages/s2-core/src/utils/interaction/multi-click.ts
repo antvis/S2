@@ -1,5 +1,4 @@
-import { InterceptEvent } from '@/common/constant';
-import { InterceptEventme } from '@/common/constant/interaction';
+import { InteractionStateName, InterceptEventType } from '@/common/constant';
 import { concat, isEmpty } from 'lodash';
 import { S2CellType, MultiClickProps } from '@/common/interface';
 import { Node } from '@/index';
@@ -14,7 +13,6 @@ export const handleRowColClick = (props: MultiClickProps) => {
   if (spreadsheet.interaction.isSelectedCell(cell)) {
     // 点击当前已选cell 则取消当前cell的选中状态
     spreadsheet.interaction.clearState();
-    InterceptEvent;
     spreadsheet.interaction.interceptEvent.clear();
     spreadsheet.hideTooltip();
     return;
@@ -49,8 +47,8 @@ export const handleRowColClick = (props: MultiClickProps) => {
     });
 
     // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-    selectedCells.forEach((cell) => {
-      cell.update();
+    selectedCells.forEach((selectedCell) => {
+      selectedCell.update();
     });
     leafNodes.forEach((node) => {
       node?.belongsCell?.updateByState(
