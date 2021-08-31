@@ -104,34 +104,56 @@ function MainLayout(props) {
   const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
   const s2Ref = React.useRef<SpreadSheet>(null);
 
+  const onClickFilter = () => {
+    const list = ['2015/1/5', '2015/1/18', '2015/1/21', '2015/1/21'];
+    s2Ref.current.emit(S2Event.RANGE_FILTER, 'order_date', list);
+  };
+
+  const onClickFilterReset = () => {
+    const list = data.map((e) => e.order_date);
+    s2Ref.current.emit(S2Event.RANGE_FILTER, 'order_date', list);
+  };
+
   useEffect(() => {
     const logData = (data) => {
       console.log(data);
     };
     // sort string-type number
-    s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
-    s2Ref.current.on(S2Event.RANGE_SORTING, (info) => {
-      const canConvertToNumber = data.every((item) => {
-        const v = item[info.sortKey];
-        return typeof v === 'string' && !Number.isNaN(Number(v));
-      });
+    s2Ref.current
+      .on(S2Event.GLOBAL_COPIED, logData)
+      .on(S2Event.RANGE_SORTING, (info) => {
+        const canConvertToNumber = data.every((item) => {
+          const v = item[info.sortKey];
+          return typeof v === 'string' && !Number.isNaN(Number(v));
+        });
 
-      if (canConvertToNumber) {
-        info.compareFunc = (obj) => Number(obj[info.sortKey]);
-      }
-    });
-    s2Ref.current.on(S2Event.RANGE_SORTED, (data) => {
-      console.log('data,', data);
-    });
+        if (canConvertToNumber) {
+          info.compareFunc = (obj) => Number(obj[info.sortKey]);
+        }
+      })
+      .on(S2Event.RANGE_SORTED, (data) => {
+        console.log('data,', data);
+      })
+      .on(S2Event.RANGE_FILTERING, (filterList, allList) => {
+        console.log('filterList, allList', filterList, allList);
+      })
+      .on(S2Event.RANGE_FILTERED, (allList, data) => {
+        console.log('allList, data', allList, data);
+      });
     return () => {
-      s2Ref.current.off(S2Event.GLOBAL_COPIED, logData);
-      s2Ref.current.off(S2Event.RANGE_SORTING);
-      s2Ref.current.off(S2Event.RANGE_SORTED);
+      s2Ref.current
+        .off(S2Event.GLOBAL_COPIED, logData)
+        .off(S2Event.RANGE_SORTING)
+        .off(S2Event.RANGE_SORTED)
+        .off(S2Event.RANGE_FILTERING)
+        .off(S2Event.RANGE_FILTERED);
     };
   }, []);
 
   return (
     <div>
+      <div onClick={onClickFilter}>filter order_date</div>
+      <div onClick={onClickFilterReset}>filter reset</div>
       <div style={{ display: 'inline-block' }}></div>
       <SheetComponent
         dataCfg={dataCfg}

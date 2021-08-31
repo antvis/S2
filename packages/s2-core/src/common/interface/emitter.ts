@@ -7,7 +7,6 @@ import {
   KEY_COLLAPSE_TREE_ROWS,
   KEY_COL_NODE_BORDER_REACHED,
   KEY_JUMP_HREF,
-  KEY_LIST_SORT,
   KEY_PAGINATION,
   KEY_ROW_NODE_BORDER_REACHED,
   KEY_TREE_ROWS_COLLAPSE_ALL,
@@ -27,6 +26,12 @@ type CollapsedRowsType = {
   };
 };
 
+type SortParams = {
+  sortKey: string;
+  sortMethod: SortMethodType;
+  compareFunc?: (data: Data) => DataItem;
+};
+
 type CanvasEventHandler = (event: CanvasEvent) => void;
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
@@ -38,12 +43,16 @@ type ResizeHandler = (style: Style) => void;
 export interface EmitterType {
   [S2Event.GLOBAL_COPIED]: (data: string) => void;
 
-  [S2Event.RANGE_SORTING]: (info: {
-    sortKey: string;
-    sortMethod: SortMethodType;
-    compareFunc: (data: Data) => DataItem;
-  }) => void;
+  [S2Event.RANGE_SORT]: (info: SortParams) => void;
+  [S2Event.RANGE_SORTING]: (info: SortParams) => void;
   [S2Event.RANGE_SORTED]: (rangeData: Data[]) => void;
+
+  [S2Event.RANGE_FILTER]: (key: string, filterList: DataItem[]) => void;
+  [S2Event.RANGE_FILTERING]: (
+    filterList: DataItem[],
+    allList: DataItem[],
+  ) => void;
+  [S2Event.RANGE_FILTERED]: (allList: DataItem[], data: Data[]) => void;
 
   [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
   [S2Event.GLOBAL_KEYBOARD_UP]: KeyboardEventHandler;
@@ -81,11 +90,6 @@ export interface EmitterType {
   [S2Event.MERGED_CELLS_MOUSE_UP]: CanvasEventHandler;
 
   [S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT]: () => void;
-
-  [KEY_LIST_SORT]: (data: {
-    sortKey: string;
-    sortMethod: SortMethodType;
-  }) => void;
 
   [KEY_COLLAPSE_TREE_ROWS]: (data: {
     id: string;

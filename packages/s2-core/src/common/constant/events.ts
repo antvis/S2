@@ -1,5 +1,6 @@
-// TODO 待整理
-export const KEY_LIST_SORT = 'spreadsheet:list-sort';
+export { InteractionEvent } from './interaction';
+
+// event keys
 export const KEY_COLLAPSE_TREE_ROWS = 'spreadsheet:collapsed-tree-rows';
 export const KEY_JUMP_HREF = 'spreadsheet:jump-href';
 export const KEY_AFTER_HEADER_LAYOUT = 'spreadsheet:after-header-layout';
@@ -55,8 +56,12 @@ export enum S2Event {
   CORNER_CELL_MOUSE_MOVE = 'corner-cell:mouse-move',
   MERGED_ELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
 
+  RANGE_SORT = 'range:sort',
   RANGE_SORTING = 'range:sorting',
   RANGE_SORTED = 'range:sorted',
+  RANGE_FILTER = 'range:filter',
+  RANGE_FILTERING = 'range:filtering',
+  RANGE_FILTERED = 'range:filtered',
 
   GLOBAL_RESIZE_MOUSE_DOWN = 'global:resize:mouse-down',
   GLOBAL_RESIZE_MOUSE_MOVE = 'global:resize:mouse-move',

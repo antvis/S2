@@ -22,7 +22,6 @@ import {
   KEY_COL_NODE_BORDER_REACHED,
   KEY_ROW_NODE_BORDER_REACHED,
   KEY_CELL_SCROLL,
-  KEY_LIST_SORT,
   KEY_PAGINATION,
 } from 'src/common/constant/events';
 import { S2Event } from '@/common/constant';
@@ -119,6 +118,9 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       [S2Event.COL_CELL_CLICK]: (ev: GEvent) => {
         onColCellClick?.(getBaseCellData(ev));
       },
+      [S2Event.RANGE_SORT]: (value: ListSortParams) => {
+        onListSort?.(value);
+      },
       [KEY_ROW_NODE_BORDER_REACHED]: (targetRow: TargetLayoutNode) => {
         onRowCellScroll?.(targetRow);
       },
@@ -127,9 +129,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       },
       [KEY_CELL_SCROLL]: (value: CellScrollPosition) => {
         onCellScroll?.(value);
-      },
-      [KEY_LIST_SORT]: (value: ListSortParams) => {
-        onListSort?.(value);
       },
     };
 
@@ -145,7 +144,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       KEY_ROW_NODE_BORDER_REACHED,
       KEY_COL_NODE_BORDER_REACHED,
       KEY_CELL_SCROLL,
-      KEY_LIST_SORT,
+      S2Event.RANGE_SORT,
       S2Event.MERGED_CELLS_CLICK,
       S2Event.ROW_CELL_CLICK,
       S2Event.COL_CELL_CLICK,

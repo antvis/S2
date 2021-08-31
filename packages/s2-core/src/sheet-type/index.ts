@@ -12,6 +12,7 @@ import {
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
 import {
+  Data,
   OffsetConfig,
   Pagination,
   S2CellType,
@@ -63,6 +64,8 @@ export class SpreadSheet extends EE {
 
   // store some temporary data
   public store = new Store();
+
+  public originalData: Data[];
 
   // the original data config
   public dataCfg: S2DataConfig;
@@ -124,6 +127,7 @@ export class SpreadSheet extends EE {
   ) {
     super();
     this.dom = this.getMountContainer(dom);
+    this.originalData = dataCfg.data;
     this.dataCfg = safetyDataConfig(dataCfg);
     this.options = safetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
@@ -144,8 +148,8 @@ export class SpreadSheet extends EE {
 
   private initTheme() {
     // When calling spreadsheet directly, there is no theme and initialization is required
-    this.setThemeCfg({ 
-      name: 'default'
+    this.setThemeCfg({
+      name: 'default',
     });
   }
 
