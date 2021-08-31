@@ -9,7 +9,7 @@ import { Event } from '@antv/g-canvas';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private isMultiSelection = false;
-  
+
   public bindEvents() {
     this.bindKeyboardDown();
     this.bindKeyboardUp();
@@ -47,9 +47,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
         event: event,
         spreadsheet: this.spreadsheet,
         isTreeRowClick: this.spreadsheet.isHierarchyTreeType(),
-        isMultiSelection: this.isMultiSelection
-      }
-      );
+        isMultiSelection: this.isMultiSelection,
+      });
     });
   }
 
@@ -62,8 +61,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       handleRowColClick({
         event: event,
         spreadsheet: this.spreadsheet,
-        isTreeRowClick:false,
-        isMultiSelection: this.isMultiSelection
+        isTreeRowClick: false,
+        isMultiSelection: this.isMultiSelection,
       });
     });
   }

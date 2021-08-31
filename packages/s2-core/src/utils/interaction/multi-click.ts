@@ -5,7 +5,7 @@ import { S2CellType, MultiClickProps } from '@/common/interface';
 import { Node } from '@/index';
 import { mergeCellInfo } from '../tooltip';
 export const handleRowColClick = (props: MultiClickProps) => {
-  const {event, spreadsheet, isTreeRowClick, isMultiSelection} = props;
+  const { event, spreadsheet, isTreeRowClick, isMultiSelection } = props;
 
   const lastState = spreadsheet.interaction.getState();
   const cell = spreadsheet.getCell(event.target);
@@ -48,10 +48,10 @@ export const handleRowColClick = (props: MultiClickProps) => {
     });
 
     // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-    selectedCells.map((cell) => {
+    selectedCells.forEach((cell) => {
       cell.update();
     });
-    leafNodes.map((node) => {
+    leafNodes.forEach((node) => {
       node?.belongsCell?.updateByState(
         InteractionStateName.SELECTED,
         node.belongsCell,

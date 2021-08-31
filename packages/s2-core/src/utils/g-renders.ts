@@ -4,7 +4,7 @@
  */
 import { GuiIcon, GuiIconCfg } from '@/common/icons/gui-icon';
 import { TextTheme } from '@/common/interface/theme';
-import { Group, IShape, ShapeAttrs } from '@antv/g-canvas';
+import { Group, IShape, ShapeAttrs, SimpleBBox } from '@antv/g-canvas';
 import { forEach, isEmpty, set } from 'lodash';
 
 export function renderRect(group: Group, attrs: ShapeAttrs): IShape {
@@ -81,4 +81,21 @@ export function renderIcon(group: Group, iconCfg: GuiIconCfg) {
   const iconShape = new GuiIcon(iconCfg);
   group?.add(iconShape);
   return iconShape;
+}
+
+export function renderTreeIcon(
+  group: Group,
+  area: SimpleBBox,
+  fill: string,
+  isCollapse: boolean,
+  onClick: () => void,
+) {
+  const icon = new GuiIcon({
+    type: isCollapse ? 'plus' : 'MinusSquare',
+    ...area,
+    fill,
+  });
+  icon.on('click', onClick);
+  group?.add(icon);
+  return icon;
 }

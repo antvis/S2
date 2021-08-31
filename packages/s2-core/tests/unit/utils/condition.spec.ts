@@ -1,6 +1,6 @@
 import { IconTheme } from '@/common/interface/theme';
 import {
-  getIconLayoutPosition,
+  getIconPositionCfg,
   isPositive,
   updateConditionsByValues,
 } from '@/utils/condition';
@@ -14,7 +14,7 @@ describe('Condition Test', () => {
   describe('getIconLayoutPosition Test', () => {
     test('should return right by default', () => {
       expect(
-        getIconLayoutPosition({
+        getIconPositionCfg({
           field: 'value',
           mapping: () => ({ fill: 'red' }),
         }),
@@ -23,9 +23,9 @@ describe('Condition Test', () => {
 
     test(`should return left when it's left`, () => {
       expect(
-        getIconLayoutPosition({
+        getIconPositionCfg({
           field: 'value',
-          iconPosition: 'left',
+          position: 'left',
           mapping: () => ({ fill: 'red' }),
         }),
       ).toEqual('left');
@@ -56,7 +56,7 @@ describe('Condition Test', () => {
         icon: [
           {
             field: 'value',
-            iconPosition: 'left',
+            position: 'left',
             mapping: expect.any(Function),
           },
         ],
@@ -76,7 +76,7 @@ describe('Condition Test', () => {
             icon: [
               {
                 field: 'value',
-                iconPosition: 'right',
+                position: 'right',
                 mapping: () => ({ fill: 'red' }),
               },
             ],
@@ -90,7 +90,7 @@ describe('Condition Test', () => {
         icon: [
           {
             field: 'value',
-            iconPosition: 'left',
+            position: 'right',
             mapping: expect.any(Function),
           },
         ],

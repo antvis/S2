@@ -25,4 +25,7 @@ export class CustomHover extends BaseEvent {
   }
 }
 
-export const CustomInteraction = (spreadsheet: SpreadSheet, interaction: RootInteraction) =>  new CustomHover(spreadsheet, interaction) ;
+export const CustomInteraction = (
+  spreadsheet: SpreadSheet,
+  interaction: RootInteraction,
+) => new CustomHover(spreadsheet, interaction);
