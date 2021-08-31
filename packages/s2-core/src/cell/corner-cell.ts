@@ -7,7 +7,7 @@ import {
   COLOR_DEFAULT_RESIZER,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZER,
-  KEY_TREE_ROWS_COLLAPSE_ALL,
+  S2Event.TREE_ROWS_COLLAPSE_ALL,
 } from '../common/constant';
 import { HIT_AREA } from '../facet/header/base';
 import { CornerHeaderConfig } from '../facet/header/corner';
@@ -162,7 +162,7 @@ export class CornerCell extends HeaderCell {
       attrs.stroke = horizontalBorderColor;
     }
 
-    this.backgroundShape = renderRect(this, attrs);
+    thisTREE_ROWS_COLLAPSE_ALLect(this, attrs);
   }
 
   private drawHotpot() {

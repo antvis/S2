@@ -119,7 +119,6 @@ export class EventController {
       return;
     }
 
-    this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
     this.spreadsheet.interaction.clearState();
     this.spreadsheet.hideTooltip();
     this.spreadsheet.interaction.interceptEvent.clear();

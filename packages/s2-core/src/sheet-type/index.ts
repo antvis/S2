@@ -1,12 +1,12 @@
 import { BaseCell, DataCell, TableRowCell, TableDataCell } from '@/cell';
 import {
-  KEY_AFTER_COLLAPSE_ROWS,
-  KEY_COLLAPSE_ROWS,
-  KEY_COLLAPSE_TREE_ROWS,
+  S2Event.AFTER_COLLAPSE_ROWS,
+  S2Event.COLLAPSE_ROWS,
+  S2Event.COLLAPSE_TREE_ROWS,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
   KEY_GROUP_PANEL_GROUND,
-  KEY_TREE_ROWS_COLLAPSE_ALL,
+  S2Event.TREE_ROWS_COLLAPSE_ALL,
   KEY_UPDATE_PROPS,
 } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
@@ -561,11 +561,11 @@ export class SpreadSheet extends EE {
   };
 
   protected bindEvents() {
-    this.off(KEY_COLLAPSE_TREE_ROWS);
+    this.off(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS);
     this.off(KEY_UPDATE_PROPS);
-    this.off(KEY_TREE_ROWS_COLLAPSE_ALL);
+    this.off(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL);
     // collapse rows in tree mode of SpreadSheet
-    this.on(KEY_COLLAPSE_TREE_ROWS, (data) => {
+    this.on(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, (data) => {
       const { id, isCollapsed } = data;
       const style = this.options.style;
       const options = merge({}, this.options, {
@@ -577,19 +577,19 @@ export class SpreadSheet extends EE {
         },
       });
       // post to x-report to store state
-      this.emit(KEY_COLLAPSE_ROWS, {
+      this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
         collapsedRows: options.style.collapsedRows,
       });
       this.setOptions(options);
 
       this.render(false, () => {
-        this.emit(KEY_AFTER_COLLAPSE_ROWS, {
+        this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
           collapsedRows: options.style.collapsedRows,
         });
       });
     });
     // 收起、展开按钮
-    this.on(KEY_TREE_ROWS_COLLAPSE_ALL, (isCollapse: boolean) => {
+    this.on(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, (isCollapse: boolean) => {
       const options = {
         ...this.options,
         hierarchyCollapse: !isCollapse,

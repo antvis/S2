@@ -18,13 +18,11 @@ import {
 } from 'lodash';
 import { BaseCell } from 'src/cell';
 import {
-  KEY_AFTER_HEADER_LAYOUT,
-  KEY_CELL_SCROLL,
+  S2Event,
   KEY_GROUP_COL_RESIZER,
   KEY_GROUP_CORNER_RESIZER,
   KEY_GROUP_ROW_INDEX_RESIZER,
   KEY_GROUP_ROW_RESIZER,
-  KEY_PAGINATION,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
 } from 'src/common/constant';
@@ -299,7 +297,7 @@ export abstract class BaseFacet {
 
       const pageCount = Math.floor((total - 1) / pageSize) + 1;
 
-      this.cfg.spreadsheet.emit(KEY_PAGINATION, {
+      this.cfg.spreadsheet.emit(S2Event.LAYOUT_PAGINATION, {
         pageSize,
         pageCount,
         total,
@@ -925,7 +923,10 @@ export abstract class BaseFacet {
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
       this.layoutResult = this.doLayout();
-      this.spreadsheet.emit(KEY_AFTER_HEADER_LAYOUT, this.layoutResult);
+      this.spreadsheet.emit(
+        S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
+        this.layoutResult,
+      );
     });
 
     // all cell's width&height
@@ -1099,7 +1100,7 @@ export abstract class BaseFacet {
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
 
     const cellScrollData: CellScrollPosition = { scrollX, scrollY };
-    this.spreadsheet.emit(KEY_CELL_SCROLL, cellScrollData);
+    this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, cellScrollData);
   }
 
   protected abstract doLayout(): LayoutResult;

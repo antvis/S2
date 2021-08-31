@@ -1,11 +1,10 @@
 import { Event } from '@antv/g-canvas';
 import { get, isEmpty, find, head } from 'lodash';
-import { KEY_JUMP_HREF } from '../../../common/constant';
 import { S2Event, InterceptEventType } from '@/common/constant';
 import { BaseEvent, BaseEventImplement } from '../base-event';
-import { Data } from '../../../common/interface/s2DataConfig';
-import { CellAppendInfo } from '../../../common/interface';
-import { Node } from '../../../facet/layout/node';
+import { Data } from '@/common/interface/s2DataConfig';
+import { CellAppendInfo } from '@/common/interface';
+import { Node } from '@/facet/layout/node';
 
 /**
  * Row header click navigation interaction
@@ -35,7 +34,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
         const key = cellData.key;
         const rowData = this.getRowData(cellData);
 
-        this.spreadsheet.emit(KEY_JUMP_HREF, {
+        this.spreadsheet.emit(S2Event.ROW_CELL_TEXT_CLICK, {
           key,
           record: rowData,
         });

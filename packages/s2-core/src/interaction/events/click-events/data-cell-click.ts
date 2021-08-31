@@ -1,9 +1,9 @@
 import { InterceptEventType, S2Event } from '@/common/constant';
 import {
-  InteractionEvent,
   InteractionStateName,
   INTERACTION_TREND,
 } from '@/common/constant/interaction';
+import { InteractionEvent } from '@/common/constant/events/interaction';
 import { TooltipOperatorOptions, ViewMeta } from '@/common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
 import { Event } from '@antv/g-canvas';

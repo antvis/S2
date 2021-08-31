@@ -1,5 +1,5 @@
-import { InterceptEventType } from '@/common/constant';
-import { InteractionStateName } from '@/common/constant/interaction';
+import { InterceptEvent } from '@/common/constant';
+import { InterceptEventme } from '@/common/constant/interaction';
 import { concat, isEmpty } from 'lodash';
 import { S2CellType, MultiClickProps } from '@/common/interface';
 import { Node } from '@/index';
@@ -14,6 +14,7 @@ export const handleRowColClick = (props: MultiClickProps) => {
   if (spreadsheet.interaction.isSelectedCell(cell)) {
     // 点击当前已选cell 则取消当前cell的选中状态
     spreadsheet.interaction.clearState();
+    InterceptEvent;
     spreadsheet.interaction.interceptEvent.clear();
     spreadsheet.hideTooltip();
     return;
