@@ -54,6 +54,7 @@ export class RowCell extends HeaderCell {
     this.drawHotSpotInLeaf();
     // draw action icon shapes: trend icon, drill-down icon ...
     this.drawActionIcons();
+    this.update();
   }
 
   protected drawBackgroundColor() {

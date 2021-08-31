@@ -29,7 +29,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         this.interaction.getAllColHeaderCells(),
       );
       forEach(allColHeaderCells, (cell: ColCell) => {
-        cell.update();
+        cell.updateByState(InteractionStateName.HOVER, cell);
       });
     }
 
@@ -41,7 +41,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         this.spreadsheet.isHierarchyTreeType(),
       );
       forEach(allRowHeaderCells, (cell: RowCell) => {
-        cell.update();
+        cell.updateByState(InteractionStateName.HOVER, cell);
       });
     }
   }
