@@ -14,11 +14,11 @@ import {
   ResizeEventType,
   S2Event,
   SortMethodType,
-} from '../constant';
+} from '@/common/constant';
 
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { CellScrollPosition, Data, LayoutResult, ViewMeta } from '.';
-import { Node } from 'src/facet/layout/node';
+import { CellScrollPosition, Data, LayoutResult, Style, ViewMeta } from '.';
+import { Node } from '@/facet/layout/node';
 import { DataItem } from '@/.';
 
 type CollapsedRowsType = {
@@ -27,53 +27,60 @@ type CollapsedRowsType = {
   };
 };
 
+type CanvasEventHandler = (event: CanvasEvent) => void;
+
+type KeyboardEventHandler = (event: KeyboardEvent) => void;
+
+type EventHandler = (event: MouseEvent) => void;
+
+type ResizeHandler = (style: Style) => void;
+
 export interface EmitterType {
   [S2Event.GLOBAL_COPIED]: (data: string) => void;
 
   [S2Event.RANGE_SORTING]: (info: {
     sortKey: string;
     sortMethod: SortMethodType;
-    compareFunc: (Data) => DataItem;
+    compareFunc: (data: Data) => DataItem;
   }) => void;
-  [S2Event.RANGE_SORTED]: (data: Data[]) => void;
+  [S2Event.RANGE_SORTED]: (rangeData: Data[]) => void;
 
-  [S2Event.GLOBAL_KEYBOARD_DOWN]: (event: KeyboardEvent) => void;
+  [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
+  [S2Event.GLOBAL_KEYBOARD_UP]: KeyboardEventHandler;
+  [S2Event.GLOBAL_MOUSE_UP]: EventHandler;
+  [S2Event.GLOBAL_RESIZE_MOUSE_DOWN]: CanvasEventHandler;
+  [S2Event.GLOBAL_RESIZE_MOUSE_UP]: CanvasEventHandler;
+  [S2Event.GLOBAL_RESIZE_MOUSE_MOVE]: CanvasEventHandler;
 
-  [S2Event.GLOBAL_KEYBOARD_UP]: (event: KeyboardEvent) => void;
-  [S2Event.GLOBAL_MOUSE_UP]: (event: KeyboardEvent) => void;
+  [S2Event.DATA_CELL_MOUSE_DOWN]: CanvasEventHandler;
+  [S2Event.ROW_CELL_MOUSE_DOWN]: CanvasEventHandler;
+  [S2Event.COL_CELL_MOUSE_DOWN]: CanvasEventHandler;
+  [S2Event.CORNER_CELL_MOUSE_DOWN]: CanvasEventHandler;
+  [S2Event.MERGED_CELLS_MOUSE_DOWN]: CanvasEventHandler;
 
-  [S2Event.GLOBAL_RESIZE_MOUSE_DOWN]: (event: CanvasEvent) => void;
-  [S2Event.DATA_CELL_MOUSE_DOWN]: (event: CanvasEvent) => void;
-  [S2Event.ROW_CELL_MOUSE_DOWN]: (event: CanvasEvent) => void;
-  [S2Event.COL_CELL_MOUSE_DOWN]: (event: CanvasEvent) => void;
-  [S2Event.CORNER_CELL_MOUSE_DOWN]: (event: CanvasEvent) => void;
-  [S2Event.MERGED_CELLS_MOUSE_DOWN]: (event: CanvasEvent) => void;
+  [S2Event.DATA_CELL_MOUSE_MOVE]: CanvasEventHandler;
+  [S2Event.ROW_CELL_MOUSE_MOVE]: CanvasEventHandler;
+  [S2Event.COL_CELL_MOUSE_MOVE]: CanvasEventHandler;
+  [S2Event.CORNER_CELL_MOUSE_MOVE]: CanvasEventHandler;
+  [S2Event.MERGED_ELLS_MOUSE_MOVE]: CanvasEventHandler;
 
-  [S2Event.GLOBAL_RESIZE_MOUSE_MOVE]: (event: CanvasEvent) => void;
-  [S2Event.DATA_CELL_MOUSE_MOVE]: (event: CanvasEvent) => void;
-  [S2Event.ROW_CELL_MOUSE_MOVE]: (event: CanvasEvent) => void;
-  [S2Event.COL_CELL_MOUSE_MOVE]: (event: CanvasEvent) => void;
-  [S2Event.CORNER_CELL_MOUSE_MOVE]: (event: CanvasEvent) => void;
-  [S2Event.MERGED_ELLS_MOUSE_MOVE]: (event: CanvasEvent) => void;
+  [S2Event.DATA_CELL_HOVER]: CanvasEventHandler;
+  [S2Event.ROW_CELL_HOVER]: CanvasEventHandler;
+  [S2Event.COL_CELL_HOVER]: CanvasEventHandler;
+  [S2Event.CORNER_CELL_HOVER]: CanvasEventHandler;
+  [S2Event.MERGED_CELLS_HOVER]: CanvasEventHandler;
+  [S2Event.DATA_CELL_CLICK]: CanvasEventHandler;
+  [S2Event.ROW_CELL_CLICK]: CanvasEventHandler;
+  [S2Event.COL_CELL_CLICK]: CanvasEventHandler;
+  [S2Event.CORNER_CELL_CLICK]: CanvasEventHandler;
+  [S2Event.MERGED_CELLS_CLICK]: CanvasEventHandler;
+  [S2Event.DATA_CELL_MOUSE_UP]: CanvasEventHandler;
+  [S2Event.ROW_CELL_MOUSE_UP]: CanvasEventHandler;
+  [S2Event.COL_CELL_MOUSE_UP]: CanvasEventHandler;
+  [S2Event.CORNER_CELL_MOUSE_UP]: CanvasEventHandler;
+  [S2Event.MERGED_CELLS_MOUSE_UP]: CanvasEventHandler;
 
-  [S2Event.DATA_CELL_HOVER]: (event: CanvasEvent) => void;
-  [S2Event.ROW_CELL_HOVER]: (event: CanvasEvent) => void;
-  [S2Event.COL_CELL_HOVER]: (event: CanvasEvent) => void;
-  [S2Event.CORNER_CELL_HOVER]: (event: CanvasEvent) => void;
-  [S2Event.MERGED_CELLS_HOVER]: (event: CanvasEvent) => void;
-  [S2Event.GLOBAL_RESIZE_MOUSE_UP]: (event: CanvasEvent) => void;
-  [S2Event.DATA_CELL_CLICK]: (event: CanvasEvent) => void;
-  [S2Event.ROW_CELL_CLICK]: (event: CanvasEvent) => void;
-  [S2Event.COL_CELL_CLICK]: (event: CanvasEvent) => void;
-  [S2Event.CORNER_CELL_CLICK]: (event: CanvasEvent) => void;
-  [S2Event.MERGED_CELLS_CLICK]: (event: CanvasEvent) => void;
-  [S2Event.DATA_CELL_MOUSE_UP]: (event: CanvasEvent) => void;
-  [S2Event.ROW_CELL_MOUSE_UP]: (event: CanvasEvent) => void;
-  [S2Event.COL_CELL_MOUSE_UP]: (event: CanvasEvent) => void;
-  [S2Event.CORNER_CELL_MOUSE_UP]: (event: CanvasEvent) => void;
-  [S2Event.MERGED_CELLS_MOUSE_UP]: (event: CanvasEvent) => void;
-
-  [S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT]: null;
+  [S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT]: () => void;
 
   [KEY_LIST_SORT]: (data: {
     sortKey: string;
@@ -103,6 +110,9 @@ export interface EmitterType {
 
   [InteractionEvent.TREND_ICON_CLICK]: (data: ViewMeta) => void;
 
-  [ResizeEventType.ROW_H]: (config: { cellCfg: { height: number } }) => void;
-  [ResizeEventType.COL_H]: (config: { cellCfg: { height: number } }) => void;
+  [ResizeEventType.ROW_W]: ResizeHandler;
+  [ResizeEventType.ROW_H]: ResizeHandler;
+  [ResizeEventType.COL_W]: ResizeHandler;
+  [ResizeEventType.COL_H]: ResizeHandler;
+  [ResizeEventType.TREE_W]: ResizeHandler;
 }

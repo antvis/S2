@@ -77,7 +77,7 @@ export class EventController {
     this.addDomEventListener(
       window,
       OriginEventType.MOUSE_UP,
-      (event: KeyboardEvent) => {
+      (event: MouseEvent) => {
         this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_UP, event);
       },
     );
