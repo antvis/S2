@@ -1,10 +1,10 @@
-import { InterceptEventType, S2Event } from '@/common/constant';
+import { InterceptType, S2Event } from '@/common/constant';
 import { getCellPadding } from '@/facet/header/util';
 import { isMobile } from '@/utils/is-mobile';
 import { measureTextWidth } from '@/utils/text';
 import { Event } from '@antv/g-canvas';
 import { get } from 'lodash';
-import { BaseEvent, BaseEventImplement } from '../base-event';
+import { BaseEvent, BaseEventImplement } from '../../base-event';
 
 /**
  * Click corner header text to full expand(remove 「...」)
@@ -16,7 +16,7 @@ export class CornerTextClick extends BaseEvent implements BaseEventImplement {
 
   private bindCornerClick() {
     this.spreadsheet.on(S2Event.CORNER_CELL_CLICK, (ev: Event) => {
-      if (this.interaction.interceptEvent.has(InterceptEventType.CLICK)) {
+      if (this.interaction.intercept.has(InterceptType.CLICK)) {
         return;
       }
       const cornerExpand = this.spreadsheet.store.get('cornerExpand') || {};

@@ -1,5 +1,5 @@
 import {
-  InteractionEvent,
+  InteractionNames,
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_AFTER_HEADER_LAYOUT,
   KEY_CELL_SCROLL,
@@ -108,7 +108,7 @@ export interface EmitterType {
   [KEY_ROW_NODE_BORDER_REACHED]: (data: Node) => void;
   [KEY_JUMP_HREF]: (data: { key: string; record: Data }) => void;
 
-  [InteractionEvent.TREND_ICON_CLICK]: (data: ViewMeta) => void;
+  [InteractionNames.TREND_ICON_CLICK]: (data: ViewMeta) => void;
 
   [ResizeEventType.ROW_W]: ResizeHandler;
   [ResizeEventType.ROW_H]: ResizeHandler;

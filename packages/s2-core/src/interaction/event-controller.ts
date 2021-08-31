@@ -1,6 +1,6 @@
 import {
   CellTypes,
-  InterceptEventType,
+  InterceptType,
   InteractionKeyboardKey,
   OriginEventType,
   S2Event,
@@ -106,9 +106,9 @@ export class EventController {
   private resetSheetStyle(event: Event) {
     // 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
-    const { interceptEvent } = this.spreadsheet.interaction;
-    if (interceptEvent.has(InterceptEventType.BRUSH_SELECTION)) {
-      interceptEvent.delete(InterceptEventType.BRUSH_SELECTION);
+    const { intercept } = this.spreadsheet.interaction;
+    if (intercept.has(InterceptType.BRUSH_SELECTION)) {
+      intercept.delete(InterceptType.BRUSH_SELECTION);
       return;
     }
 
@@ -122,7 +122,7 @@ export class EventController {
     this.spreadsheet.emit(S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT);
     this.spreadsheet.interaction.clearState();
     this.spreadsheet.hideTooltip();
-    this.spreadsheet.interaction.interceptEvent.clear();
+    this.spreadsheet.interaction.intercept.clear();
   }
 
   private isMouseOnTheCanvasContainer(event: Event) {
@@ -233,9 +233,7 @@ export class EventController {
       // 如果hover的cell改变了，并且当前不需要屏蔽 hover
       if (
         this.hoverTarget !== event.target &&
-        !this.spreadsheet.interaction.interceptEvent.has(
-          InterceptEventType.HOVER,
-        )
+        !this.spreadsheet.interaction.intercept.has(InterceptType.HOVER)
       ) {
         switch (cellType) {
           case CellTypes.DATA_CELL:

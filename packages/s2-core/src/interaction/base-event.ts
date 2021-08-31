@@ -1,7 +1,7 @@
 import { SpreadSheet } from 'src/sheet-type';
-import { RootInteraction } from '../root';
+import { RootInteraction } from './root';
 
-export type EventConstructor = new (spreadsheet: SpreadSheet) => BaseEvent;
+export type EventConstructor = new (spreadsheet: SpreadSheet, interaction: RootInteraction) => BaseEvent;
 
 export interface BaseEventImplement {
   bindEvents: () => void;
