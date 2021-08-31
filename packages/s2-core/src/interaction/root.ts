@@ -2,6 +2,7 @@ import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
 import { ColHeader, RowHeader } from 'src/facet/header';
 import { get, includes, isEmpty, concat, merge, isEqual, filter } from 'lodash';
+import { getAllPanelDataCell } from 'src/utils/getAllPanelDataCell';
 import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import {
   BaseEvent,
