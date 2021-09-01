@@ -1,5 +1,5 @@
 import { LayoutResult, ViewMeta } from 'src/common/interface';
-import { S2Event.LIST_SORT, S2Event, SERIES_NUMBER_FIELD } from 'src/common/constant';
+import { S2Event, SERIES_NUMBER_FIELD } from 'src/common/constant';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
@@ -13,7 +13,7 @@ export class TableFacet extends BaseFacet {
   public constructor(props) {
     super(props);
     const s2 = this.spreadsheet;
-    s2.on(S2Event.LIST_SORT, ({ sortKey, sortMethod }) => {
+    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
       const sortInfo = {
         sortKey,
         sortMethod,
@@ -33,17 +33,13 @@ export class TableFacet extends BaseFacet {
 
   public destroy() {
     super.destroy();
-    this.spreadsheet.off(S2Event.LIST_SORT);
+    this.spreadsheet.off(S2Event.RANGE_SORT);
   }
 
   protected doLayout(): LayoutResult {
     const { dataSet, spreadsheet, cellCfg } = this.cfg;
 
-    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: true,
-        facetCfg: this.cfg,
-      });
+    const rowsHierarchy = new Hierarchy();
     const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
       buildHeaderHierarchy({
         isRowHeader: false,
@@ -51,8 +47,6 @@ export class TableFacet extends BaseFacet {
       });
 
     this.calculateNodesCoordinate(
-      rowLeafNodes,
-      rowsHierarchy,
       colLeafNodes,
       colsHierarchy,
     );
@@ -102,7 +96,7 @@ export class TableFacet extends BaseFacet {
       colsHierarchy,
       rowNodes: rowsHierarchy.getNodes(),
       rowsHierarchy,
-      rowLeafNodes,
+      rowLeafNodes: rowsHierarchy.getLeaves(),
       colLeafNodes,
       getCellMeta,
       spreadsheet,
@@ -112,8 +106,6 @@ export class TableFacet extends BaseFacet {
   }
 
   private calculateNodesCoordinate(
-    rowLeafNodes: Node[],
-    rowsHierarchy: Hierarchy,
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {

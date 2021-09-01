@@ -1,8 +1,8 @@
 import React from 'react';
 import { get } from 'lodash';
-import { BaseTooltip } from '@/tooltip';
-import Infos from '@/common/tooltip/components/infos';
-import NameTips from '@/common/tooltip/components/simple-tips';
+import { BaseTooltip } from '@/ui/tooltip';
+import Infos from '@/ui/tooltip/components/infos';
+import NameTips from '@/ui/tooltip/components/simple-tips';
 
 export class CustomTooltip extends BaseTooltip {
   protected renderInfos() {
@@ -13,7 +13,7 @@ export class CustomTooltip extends BaseTooltip {
     const extra = get(this, 'spreadsheet.dataCfg.fields.extra') || [];
     const { tips, name } =
       extra.find((item) => item.value === nameTip.name) || {};
-    if(tips || name) {
+    if (tips || name) {
       return <NameTips tips={tips} name={name || nameTip.name} />;
     }
     return super.renderNameTips(nameTip);
