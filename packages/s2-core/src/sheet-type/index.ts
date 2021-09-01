@@ -61,8 +61,6 @@ export class SpreadSheet extends EE {
   // store some temporary data
   public store = new Store();
 
-  public originalData: Data[];
-
   // the original data config
   public dataCfg: S2DataConfig;
 
@@ -123,10 +121,10 @@ export class SpreadSheet extends EE {
   ) {
     super();
     this.dom = this.getMountContainer(dom);
-    this.originalData = dataCfg.data;
     this.dataCfg = safetyDataConfig(dataCfg);
     this.options = safetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
+    this.store.set('originData', dataCfg.data);
 
     this.initTooltip();
     this.initGroups(this.dom, this.options);

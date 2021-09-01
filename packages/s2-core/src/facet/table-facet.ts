@@ -31,11 +31,10 @@ export class TableFacet extends BaseFacet {
     });
 
     s2.on(S2Event.RANGE_FILTER, (key, filterList) => {
-      const allList = s2.originalData.map((e) => e[key]);
+      const data = s2.store.get('originData');
+      const allList = data.map((e) => e[key]);
       s2.emit(S2Event.RANGE_FILTERING, filterList, allList);
-      s2.dataCfg.data = s2.originalData.filter((e) =>
-        filterList.includes(e[key]),
-      );
+      s2.dataCfg.data = data.filter((e) => filterList.includes(e[key]));
       s2.render(true);
       s2.emit(S2Event.RANGE_FILTERED, allList, s2.dataCfg.data);
     });

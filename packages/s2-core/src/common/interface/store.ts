@@ -1,7 +1,7 @@
 import { SortParam, InteractionStateInfo } from '../interface';
 import { Node } from '@/facet/layout/node';
-import { PartDrillDownInfo } from '../../components/sheets/interface';
-import { S2DataConfig } from './s2DataConfig';
+import { PartDrillDownInfo } from '@/components/sheets/interface';
+import { Data, S2DataConfig } from './s2DataConfig';
 import { BBox } from '@antv/g-canvas';
 import { SortMethodType } from '../constant';
 
@@ -42,6 +42,7 @@ export interface StoreKey {
   originalDataCfg: S2DataConfig;
   drillDownMeta: any;
   panelBBox: BBox;
+  originData: Data[];
 
   [key: string]: unknown;
 }
