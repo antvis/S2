@@ -333,7 +333,7 @@ export class DataCell extends BaseCell<ViewMeta> {
   public getBackgroundColor() {
     const crossBackgroundColor = this.getStyle().cell.crossBackgroundColor;
 
-    let backgroundColor = this.theme.dataCell.cell.backgroundColor;
+    let backgroundColor = this.getStyle().cell.backgroundColor;
     let strokeColor = 'transparent';
     if (
       this.spreadsheet.isPivotMode() &&
@@ -361,8 +361,10 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Draw cell background
    */
   protected drawBackgroundShape() {
-    const { backgroundColor: fill, strokeColor: stroke } =
-      this.getBackgroundColor();
+    const {
+      backgroundColor: fill,
+      strokeColor: stroke,
+    } = this.getBackgroundColor();
 
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
@@ -479,7 +481,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): MappingResult {
-    const value = this.meta.fieldValue as unknown as number;
+    const value = (this.meta.fieldValue as unknown) as number;
     return condition?.mapping(value, this.meta.data);
   }
 
@@ -497,7 +499,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         stateStyles.backgroundOpacity,
       );
       updateShapeAttr(
-        this.conditionIconShape as unknown as IShape,
+        (this.conditionIconShape as unknown) as IShape,
         SHAPE_STYLE_MAP.opacity,
         stateStyles.opacity,
       );
@@ -512,7 +514,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       1,
     );
     updateShapeAttr(
-      this.conditionIconShape as unknown as IShape,
+      (this.conditionIconShape as unknown) as IShape,
       SHAPE_STYLE_MAP.opacity,
       1,
     );

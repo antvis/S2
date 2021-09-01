@@ -1,19 +1,15 @@
 import { i18n } from '@/common/i18n';
 
-export enum InteractionNames {
-  BRUSH_SELECTION_INTERACTION = 'spreadsheet:brush-selection',
-  COL_ROW_RESIZE_INTERACTION = 'spreadsheet:row-col-resize',
-  COL_ROW_MULTI_SELECTION_INTERACTION = 'spreadsheet:col-row-multi-selection',
-}
-
-export enum InteractionEvent {
-  DATA_CELL_CLICK_EVENT = 'spreadsheet:data-cell-click',
-  MERGED_CELLS_CLICK_EVENT = 'spreadsheet:merged-cells-click',
-  CORNER_TEXT_CLICK_EVENT = 'spreadsheet:corner-cell-text-click',
-  ROW_COLUMN_CLICK_EVENT = 'spreadsheet:row-column-click',
-  ROW_TEXT_CLICK_EVENT = 'spreadsheet:row-text-click',
-  HOVER_EVENT = 'spreadsheet:hover',
-  TREND_ICON_CLICK = 'spreadsheet:trend-icon-click',
+export enum InteractionName {
+  DATA_CELL_CLICK = 'dataCellClick',
+  MERGED_CELLS_CLICK = 'mergedCellsClick',
+  CORNER_TEXT_CLICK = 'cornerCellTextClick',
+  ROW_COLUMN_CLICK = 'rowColumnClick',
+  ROW_TEXT_CLICK = 'rowTextClick',
+  HOVER = 'hover',
+  BRUSH_SELECTION = 'brushSelection',
+  COL_ROW_RESIZE = 'rowColResize',
+  COL_ROW_MULTI_SELECTION = 'colRowMultiSelection',
 }
 
 export enum InteractionStateName {
@@ -76,3 +72,14 @@ export enum SortMethodType {
   ASC = 'ASC',
   DESC = 'DESC',
 }
+
+export enum InterceptType {
+  HOVER = 'hover',
+  CLICK = 'click',
+  BRUSH_SELECTION = 'brushSelection',
+}
+
+export type Intercept =
+  | InterceptType.HOVER
+  | InterceptType.CLICK
+  | InterceptType.BRUSH_SELECTION;

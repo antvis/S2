@@ -1,15 +1,15 @@
 import {
   MIN_CELL_HEIGHT,
   MIN_CELL_WIDTH,
-  ResizeEventType,
+  ResizeEvent,
   S2Event,
 } from '@/common/constant';
 import { Group, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
-import { clone, get, isNil, merge, throttle } from 'lodash';
+import { clone, get, isNil, throttle } from 'lodash';
 import { SpreadSheet } from 'src/sheet-type';
-import { Style } from '@/common/interface';
+import { S2Options, Style } from '@/common/interface';
 import { ResizeInfo } from '../facet/header/interface';
-import { BaseEvent, BaseEventImplement } from './events';
+import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { RootInteraction } from './root';
 
 /**
@@ -130,14 +130,14 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             children[0]?.attr('path')[0];
           const endPoint: ['M', number, number] = children[1]?.attr('path')[0];
 
-          let resizeEventType: ResizeEventType;
+          let resizeEventType: ResizeEvent;
           let style: Style;
           // todo，如何优化这段代码？
           if (info.type === 'col') {
             // eslint-disable-next-line default-case
             switch (info.affect) {
               case 'field':
-                resizeEventType = ResizeEventType.ROW_W;
+                resizeEventType = ResizeEvent.ROW_W;
                 style = {
                   rowCfg: {
                     widthByField: {
@@ -147,7 +147,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
                 };
                 break;
               case 'tree':
-                resizeEventType = ResizeEventType.TREE_W;
+                resizeEventType = ResizeEvent.TREE_W;
                 style = {
                   rowCfg: {
                     treeRowsWidth: endPoint[1] - startPoint[1],
@@ -155,7 +155,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
                 };
                 break;
               case 'cell':
-                resizeEventType = ResizeEventType.COL_W;
+                resizeEventType = ResizeEvent.COL_W;
                 style = {
                   colCfg: {
                     widthByFieldValue: {
@@ -169,7 +169,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             // eslint-disable-next-line default-case
             switch (info.affect) {
               case 'field':
-                resizeEventType = ResizeEventType.COL_H;
+                resizeEventType = ResizeEvent.COL_H;
                 style = {
                   colCfg: {
                     heightByField: {
@@ -180,7 +180,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
                 break;
               case 'cell':
               case 'tree':
-                resizeEventType = ResizeEventType.ROW_H;
+                resizeEventType = ResizeEvent.ROW_H;
                 style = {
                   cellCfg: {
                     height: endPoint[2] - startPoint[2],
@@ -190,9 +190,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             }
           }
           this.spreadsheet.emit(resizeEventType, style);
-          this.spreadsheet.setOptions(
-            merge({}, this.spreadsheet.options, { style }),
-          );
+          this.spreadsheet.setOptions({ style } as S2Options);
           this.render();
         }
       }
