@@ -6,14 +6,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import {
-  auto,
   S2DataConfig,
   S2Options,
   SheetComponent,
   SpreadSheet,
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
-import { CustomHover } from './custom/custom-interaction';
 import { CustomTooltip } from './custom/custom-tooltip';
 
 let data = getMockData('../data/tableau-supermarket.csv');
@@ -92,12 +90,6 @@ const getOptions = (): S2Options => {
       background: [],
       icon: [],
     },
-    customInteractions: [
-      {
-        key: 'spreadsheet:custom-hover',
-        interaction: CustomHover,
-      },
-    ],
     style: {
       treeRowsWidth: 100,
       collapsedRows: {},

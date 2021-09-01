@@ -1,25 +1,14 @@
 import {
   TooltipOperationOptions,
   TooltipOperationState,
+  OrderOption,
 } from '@/common/interface';
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
 import { find, get, isEqual } from 'lodash';
 import React from 'react';
 import { HtmlIcon } from '@/common/icons';
-import { TOOLTIP_OPERATION_PREFIX_CLS } from '@/common/tooltip/constant';
-
-interface OrderOption {
-  sortMethod: 'ASC' | 'DESC';
-  type: 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
-  name: string;
-}
-
-const ORDER_OPTIONS: OrderOption[] = [
-  { sortMethod: 'ASC', type: 'groupAsc', name: '组内升序' },
-  { sortMethod: 'DESC', type: 'groupDesc', name: '组内降序' },
-  { sortMethod: null, type: 'none', name: '不排序' },
-];
+import { TOOLTIP_OPERATION_PREFIX_CLS, ORDER_OPTIONS } from '@/common/constant';
 
 export class TooltipOperation extends React.PureComponent<
   TooltipOperationOptions,

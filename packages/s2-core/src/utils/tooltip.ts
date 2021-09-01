@@ -2,7 +2,12 @@
  * 获取tooltip中需要显示的数据项
  */
 
-import { CellTypes, EXTRA_FIELD, VALUE_FIELD, PRECISION } from '@/common/constant';
+import {
+  CellTypes,
+  EXTRA_FIELD,
+  VALUE_FIELD,
+  PRECISION,
+} from '@/common/constant';
 import {
   compact,
   concat,
@@ -41,7 +46,7 @@ import { i18n } from '@/common/i18n';
 import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
-} from '@/common/tooltip/constant';
+} from '@/common/constant/tooltip';
 import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
@@ -232,7 +237,12 @@ export const getDetailList = (
     if (isTotals) {
       // total/subtotal
       valItem.push(
-        getListItem(spreadsheet, activeData, field, get(activeData, VALUE_FIELD)),
+        getListItem(
+          spreadsheet,
+          activeData,
+          field,
+          get(activeData, VALUE_FIELD),
+        ),
       );
     } else {
       // if (spreadsheet?.isValueInCols()) {
@@ -422,7 +432,10 @@ export const getTooltipData = (params: TooltipDataParam) => {
     summaries = mergeSummaries(summaries);
   } else if (options.showSingleTips) {
     // 行列头hover
-    const metaName = find(spreadsheet?.dataCfg?.meta, item=> item?.field === firstCellInfo.value)?.name;
+    const metaName = find(
+      spreadsheet?.dataCfg?.meta,
+      (item) => item?.field === firstCellInfo.value,
+    )?.name;
     firstCellInfo.name = metaName || firstCellInfo.value || '';
   } else {
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
