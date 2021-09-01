@@ -1,5 +1,4 @@
-import { InterceptType } from '@/common/constant';
-import { InteractionStateName } from '@/common/constant/interaction';
+import { InteractionStateName, InterceptType } from '@/common/constant';
 import { concat, isEmpty } from 'lodash';
 import { S2CellType, MultiClickProps } from '@/common/interface';
 import { Node } from '@/index';
@@ -48,8 +47,8 @@ export const handleRowColClick = (props: MultiClickProps) => {
     });
 
     // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-    selectedCells.forEach((cell) => {
-      cell.update();
+    selectedCells.forEach((selectedCell) => {
+      selectedCell.update();
     });
     leafNodes.forEach((node) => {
       node?.belongsCell?.updateByState(
