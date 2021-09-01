@@ -39,11 +39,7 @@ export class TableFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     const { dataSet, spreadsheet, cellCfg } = this.cfg;
 
-    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: true,
-        facetCfg: this.cfg,
-      });
+    const rowsHierarchy = new Hierarchy();
     const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
       buildHeaderHierarchy({
         isRowHeader: false,
@@ -51,8 +47,6 @@ export class TableFacet extends BaseFacet {
       });
 
     this.calculateNodesCoordinate(
-      rowLeafNodes,
-      rowsHierarchy,
       colLeafNodes,
       colsHierarchy,
     );
@@ -102,7 +96,7 @@ export class TableFacet extends BaseFacet {
       colsHierarchy,
       rowNodes: rowsHierarchy.getNodes(),
       rowsHierarchy,
-      rowLeafNodes,
+      rowLeafNodes: rowsHierarchy.getLeaves(),
       colLeafNodes,
       getCellMeta,
       spreadsheet,
@@ -112,8 +106,6 @@ export class TableFacet extends BaseFacet {
   }
 
   private calculateNodesCoordinate(
-    rowLeafNodes: Node[],
-    rowsHierarchy: Hierarchy,
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
