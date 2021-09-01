@@ -32,7 +32,7 @@ import {
 } from '@/utils/g-renders';
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
-import { find, first, get, includes, isEmpty, isEqual, map } from 'lodash';
+import { find, first, get, includes, isEmpty, isEqual, map, min } from 'lodash';
 import { parseNumberWithPrecision } from './../utils/formatter';
 
 /**
@@ -263,17 +263,18 @@ export class DataCell extends BaseCell<ViewMeta> {
    * 0_________________min_________x_______________max
    * |<-------------r------------->|
    *
-   * @param min in current field values
+   * @param minValue in current field values
    * @param max in current field values
    */
   protected getIntervalScale(
-    min = 0,
-    max = 0,
+    minValue = 0,
+    maxValue = 0,
   ): (currentValue: number) => number {
-    const realMin = min >= 0 ? 0 : min;
-    const distance = max - realMin || 1;
+    const realMin = minValue >= 0 ? 0 : minValue;
+    const distance = maxValue - realMin || 1;
     return (currentValue: number) => {
-      return (currentValue - realMin) / distance;
+      // max percentage shouldn't be greater than 100%
+      return min([(currentValue - realMin) / distance, 1]);
     };
   }
 
@@ -311,6 +312,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       stroke = fill = attrs.fill;
 
       const barChartHeight = this.getStyle().cell.miniBarChartHeight;
+
       this.conditionIntervalShape = renderRect(this, {
         x: x + width * zero,
         y: y + height / 2 - barChartHeight / 2,
