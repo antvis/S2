@@ -1,8 +1,12 @@
-import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
+import { FONT_FAMILY } from '../common/constant';
 import { Palette, SpreadSheetTheme, ThemeCfg } from '../common/interface';
+import { SpreadSheet } from '../sheet-type';
 import { isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
-import { SpreadSheet } from '../sheet-type';
+import {
+  MINI_BAR_CHART_FILL_COLOR,
+  MINI_BAR_CHART_HEIGHT,
+} from './../common/constant/condition';
 
 /**
  * @describe generate the theme according to the type
@@ -263,6 +267,7 @@ export const getTheme = (
 
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
+        miniBarChartFillColor: MINI_BAR_CHART_FILL_COLOR,
       },
       icon: {
         fill: brandColors[0],

@@ -266,17 +266,16 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param minValue in current field values
    * @param max in current field values
    */
-  protected getIntervalScale(
-    minValue = 0,
-    maxValue = 0,
-  ): (currentValue: number) => number {
+  getIntervalScale = (minValue = 0, maxValue = 0) => {
+    minValue = parseNumberWithPrecision(minValue);
+    maxValue = parseNumberWithPrecision(maxValue);
+
     const realMin = minValue >= 0 ? 0 : minValue;
     const distance = maxValue - realMin || 1;
-    return (currentValue: number) => {
+    return (current: number) =>
       // max percentage shouldn't be greater than 100%
-      return min([(currentValue - realMin) / distance, 1]);
-    };
-  }
+      min([(current - realMin) / distance, 1]);
+  };
 
   /**
    * Draw interval condition shape
@@ -291,8 +290,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
 
     if (intervalCondition && intervalCondition.mapping && formattedValue) {
-      let fill = '#75C0F8';
-      let stroke = '#75C0F8';
       const attrs = this.mappingValue(intervalCondition);
       if (!attrs) {
         return;
@@ -308,10 +305,10 @@ export class DataCell extends BaseCell<ViewMeta> {
       );
       const current = scale(fieldValue); // 当前数据点
 
-      // eslint-disable-next-line no-multi-assign
-      stroke = fill = attrs.fill;
-
       const barChartHeight = this.getStyle().cell.miniBarChartHeight;
+      const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
+      const stroke = attrs.fill ?? barChartFillColor;
+      const fill = attrs.fill ?? barChartFillColor;
 
       this.conditionIntervalShape = renderRect(this, {
         x: x + width * zero,

@@ -82,6 +82,8 @@ export interface CellTheme {
   interactionState?: InteractionState;
   /* 单元格内条件格式-迷你条形图高度 */
   miniBarChartHeight?: number;
+  /* 单元格内条件格式-迷你条形图默认填充颜色 */
+  miniBarChartFillColor?: string;
   /* 额外属性字段 */
   [key: string]: any;
 }

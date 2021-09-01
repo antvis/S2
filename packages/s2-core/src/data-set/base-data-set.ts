@@ -1,4 +1,7 @@
-import * as conditionStateController from '@/utils/condition/state-controller';
+import {
+  getValueRangeState,
+  setValueRangeState,
+} from '@/utils/condition/state-controller';
 import {
   compact,
   find,
@@ -20,7 +23,6 @@ import {
   SortParams,
 } from '../common/interface';
 import { ValueRange } from './../common/interface/condition';
-import { parseNumberWithPrecision } from './../utils/formatter';
 
 export abstract class BaseDataSet {
   // 字段域信息
@@ -84,24 +86,21 @@ export abstract class BaseDataSet {
   }
 
   public getValueRangeByField(field: string): ValueRange {
-    const cacheRange = conditionStateController.getState(
-      this.spreadsheet,
-      field,
-    );
+    const cacheRange = getValueRangeState(this.spreadsheet, field);
     if (cacheRange) {
       return cacheRange;
     }
     const fieldValues = compact(
       map(this.originData, (item) => {
         const value = item[field];
-        return isNil(value) ? null : parseNumberWithPrecision(value);
+        return isNil(value) ? null : Number.parseFloat(value);
       }),
     );
     const range = {
       maxValue: max(fieldValues),
       minValue: min(fieldValues),
     };
-    conditionStateController.setState(this.spreadsheet, {
+    setValueRangeState(this.spreadsheet, {
       [field]: range,
     });
     return range;

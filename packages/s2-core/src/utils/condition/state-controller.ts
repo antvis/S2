@@ -8,7 +8,7 @@ import { SpreadSheet } from '@/sheet-type';
 /**
  * @desc clear all value ranges
  */
-export const clearState = (spreadsheet: SpreadSheet) => {
+export const clearValueRangeState = (spreadsheet: SpreadSheet) => {
   spreadsheet.store.set(VALUE_RANGES_KEY, DEFAULT_VALUE_RANGES);
 };
 
@@ -17,7 +17,7 @@ export const clearState = (spreadsheet: SpreadSheet) => {
  * @param spreadsheet sheet instance
  * @param updatedRanges updated value ranges
  */
-export const setState = (
+export const setValueRangeState = (
   spreadsheet: SpreadSheet,
   updatedRanges: ValueRanges,
 ) => {
@@ -33,7 +33,10 @@ export const setState = (
  * @param spreadsheet sheet instance
  * @param valueField target field
  */
-export const getState = (spreadsheet: SpreadSheet, valueField: string) => {
+export const getValueRangeState = (
+  spreadsheet: SpreadSheet,
+  valueField: string,
+) => {
   const valueRanges = spreadsheet.store.get(
     VALUE_RANGES_KEY,
     DEFAULT_VALUE_RANGES,

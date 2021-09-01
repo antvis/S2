@@ -14,7 +14,7 @@ export const FONT_FAMILY =
   'Roboto, PingFangSC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
 export const ICON_SIZE = 14;
 export const TEXT_INDENT = 12;
-export const MINI_BAR_CHART_HEIGHT = 12;
+
 // icon radius
 export const ICON_RADIUS = 6;
 // cell default padding

@@ -40,7 +40,7 @@ import { RootInteraction } from '@/interaction/root';
 import { getTheme } from '@/theme';
 import { BaseTooltip } from '@/tooltip';
 import { updateConditionsByValues } from '@/utils/condition/generate-condition';
-import * as conditionStateController from '@/utils/condition/state-controller';
+import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { getTooltipData } from '@/utils/tooltip';
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
@@ -255,7 +255,7 @@ export class SpreadSheet extends EE {
     newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
     this.dataCfg = newDataCfg;
     // clear value ranger after each updated data cfg
-    conditionStateController.clearState(this);
+    clearValueRangeState(this);
   }
 
   public setOptions(options: S2Options) {
