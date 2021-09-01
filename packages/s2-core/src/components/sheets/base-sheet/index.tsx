@@ -17,19 +17,12 @@ import {
 import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
 import { HandleDrillDownIcon, HandleDrillDown, SpreadSheet } from 'src/index';
-import {
-  KEY_AFTER_HEADER_LAYOUT,
-  KEY_COL_NODE_BORDER_REACHED,
-  KEY_ROW_NODE_BORDER_REACHED,
-  KEY_CELL_SCROLL,
-  KEY_LIST_SORT,
-  KEY_PAGINATION,
-} from 'src/common/constant/events';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { BaseSheetProps } from '@/components/sheets/interface';
 import { Event as GEvent } from '@antv/g-canvas';
 import { S2_PREFIX_CLS } from '@/common/constant/classnames';
+import { EmitterType } from '@/common/interface/emitter';
 
 import './index.less';
 
@@ -79,7 +72,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
 
   const bindEvent = () => {
     baseSpreadsheet.current.on(
-      KEY_AFTER_HEADER_LAYOUT,
+      S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
       (layoutResult: LayoutResult) => {
         if (rowLevel && colLevel) {
           // TODO: 这里为啥返回 {level: '', id: '', label: ''} 这样的结构
@@ -104,7 +97,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       string,
       (...args: unknown[]) => unknown
     > = {
-      [KEY_PAGINATION]: (data: PaginationCfg) => {
+      [S2Event.LAYOUT_PAGINATION]: (data: PaginationCfg) => {
         setTotal(data?.total);
       },
       [S2Event.DATA_CELL_MOUSE_UP]: (ev: GEvent) => {
@@ -119,33 +112,37 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       [S2Event.COL_CELL_CLICK]: (ev: GEvent) => {
         onColCellClick?.(getBaseCellData(ev));
       },
-      [KEY_ROW_NODE_BORDER_REACHED]: (targetRow: TargetLayoutNode) => {
+      [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
+        targetRow: TargetLayoutNode,
+      ) => {
         onRowCellScroll?.(targetRow);
       },
-      [KEY_COL_NODE_BORDER_REACHED]: (targetCol: TargetLayoutNode) => {
+      [S2Event.LAYOUT_COL_NODE_BORDER_REACHED]: (
+        targetCol: TargetLayoutNode,
+      ) => {
         onColCellScroll?.(targetCol);
       },
-      [KEY_CELL_SCROLL]: (value: CellScrollPosition) => {
+      [S2Event.LAYOUT_CELL_SCROLL]: (value: CellScrollPosition) => {
         onCellScroll?.(value);
       },
-      [KEY_LIST_SORT]: (value: ListSortParams) => {
+      [S2Event.LIST_SORT]: (value: ListSortParams) => {
         onListSort?.(value);
       },
     };
 
-    forIn(EVENT_LISTENER_CONFIG, (handler, event) => {
+    forIn(EVENT_LISTENER_CONFIG, (handler, event: keyof EmitterType) => {
       baseSpreadsheet.current.on(event, handler);
     });
   };
 
   const unBindEvent = () => {
     [
-      KEY_AFTER_HEADER_LAYOUT,
-      KEY_PAGINATION,
-      KEY_ROW_NODE_BORDER_REACHED,
-      KEY_COL_NODE_BORDER_REACHED,
-      KEY_CELL_SCROLL,
-      KEY_LIST_SORT,
+      S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
+      S2Event.LAYOUT_PAGINATION,
+      S2Event.LAYOUT_ROW_NODE_BORDER_REACHED,
+      S2Event.LAYOUT_COL_NODE_BORDER_REACHED,
+      S2Event.LAYOUT_CELL_SCROLL,
+      S2Event.LIST_SORT,
       S2Event.MERGED_CELLS_CLICK,
       S2Event.ROW_CELL_CLICK,
       S2Event.COL_CELL_CLICK,

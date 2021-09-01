@@ -83,7 +83,7 @@ const getOptions = (): S2Options => {
     height: 600,
     hierarchyType: 'tree',
     hierarchyCollapse: false,
-    showSeriesNumber: false,
+    showSeriesNumber: true,
     freezeRowHeader: false,
     mode: 'pivot',
     indicateConditionValues: ['ac', 'rc'],
