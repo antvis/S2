@@ -13,7 +13,7 @@ export class TableFacet extends BaseFacet {
   public constructor(props) {
     super(props);
     const s2 = this.spreadsheet;
-    s2.on(S2Event.LIST_SORT, ({ sortKey, sortMethod }) => {
+    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
       const sortInfo = {
         sortKey,
         sortMethod,
@@ -33,7 +33,7 @@ export class TableFacet extends BaseFacet {
 
   public destroy() {
     super.destroy();
-    this.spreadsheet.off(S2Event.LIST_SORT);
+    this.spreadsheet.off(S2Event.RANGE_SORT);
   }
 
   protected doLayout(): LayoutResult {
@@ -55,8 +55,6 @@ export class TableFacet extends BaseFacet {
     });
 
     this.calculateNodesCoordinate(
-      rowLeafNodes,
-      rowsHierarchy,
       colLeafNodes,
       colsHierarchy,
     );
@@ -106,7 +104,7 @@ export class TableFacet extends BaseFacet {
       colsHierarchy,
       rowNodes: rowsHierarchy.getNodes(),
       rowsHierarchy,
-      rowLeafNodes,
+      rowLeafNodes: rowsHierarchy.getLeaves(),
       colLeafNodes,
       getCellMeta,
       spreadsheet,
@@ -116,8 +114,6 @@ export class TableFacet extends BaseFacet {
   }
 
   private calculateNodesCoordinate(
-    rowLeafNodes: Node[],
-    rowsHierarchy: Hierarchy,
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {

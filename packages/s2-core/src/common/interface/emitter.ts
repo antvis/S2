@@ -11,6 +11,12 @@ type CollapsedRowsType = {
   };
 };
 
+type SortParams = {
+  sortKey: string;
+  sortMethod: SortMethodType;
+  compareFunc?: (data: Data) => DataItem;
+};
+
 type CanvasEventHandler = (event: CanvasEvent) => void;
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
@@ -22,11 +28,8 @@ type ResizeHandler = (style: Style) => void;
 export interface EmitterType {
   [S2Event.GLOBAL_COPIED]: (data: string) => void;
 
-  [S2Event.RANGE_SORTING]: (info: {
-    sortKey: string;
-    sortMethod: SortMethodType;
-    compareFunc: (data: Data) => DataItem;
-  }) => void;
+  [S2Event.RANGE_SORT]: (info: SortParams) => void;
+  [S2Event.RANGE_SORTING]: (info: SortParams) => void;
   [S2Event.RANGE_SORTED]: (rangeData: Data[]) => void;
 
   [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
@@ -63,11 +66,6 @@ export interface EmitterType {
   [S2Event.COL_CELL_MOUSE_UP]: CanvasEventHandler;
   [S2Event.CORNER_CELL_MOUSE_UP]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_MOUSE_UP]: CanvasEventHandler;
-
-  [S2Event.LIST_SORT]: (data: {
-    sortKey: string;
-    sortMethod: SortMethodType;
-  }) => void;
 
   [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (data: {
     id: string;

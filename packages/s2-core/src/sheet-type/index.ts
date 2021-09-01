@@ -30,7 +30,7 @@ import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
 import { BaseFacet, PivotFacet, TableFacet } from '@/facet';
 import { Node, SpreadSheetTheme } from '@/index';
 import { getTheme } from '@/theme';
-import { BaseTooltip } from '@/tooltip';
+import { BaseTooltip } from '@/ui/tooltip';
 import { updateConditionsByValues } from '@/utils/condition';
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
@@ -45,7 +45,7 @@ import {
   set,
 } from 'lodash';
 import { Store } from '@/common/store';
-import { HdAdapter } from '@/hd-adapter';
+import { HdAdapter } from '@/ui/hd-adapter';
 import { RootInteraction } from '@/interaction/root';
 import { getTooltipData } from '@/utils/tooltip';
 import { EmitterType } from '@/common/interface/emitter';
@@ -140,8 +140,8 @@ export class SpreadSheet extends EE {
 
   private initTheme() {
     // When calling spreadsheet directly, there is no theme and initialization is required
-    this.setThemeCfg({ 
-      name: 'default'
+    this.setThemeCfg({
+      name: 'default',
     });
   }
 

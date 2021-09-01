@@ -1,15 +1,15 @@
 import {
   CellTypes,
-  InterceptType,
   InteractionKeyboardKey,
+  InterceptType,
   OriginEventType,
   S2Event,
 } from '@/common/constant';
+import { ResizeInfo } from '@/facet/header/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 import { Canvas, Event as CanvasEvent, LooseObject } from '@antv/g-canvas';
 import { each, get } from 'lodash';
-import { ResizeInfo } from '@/facet/header/interface';
 
 interface EventListener {
   target: EventTarget;
@@ -119,9 +119,7 @@ export class EventController {
       return;
     }
 
-    this.spreadsheet.interaction.clearState();
-    this.spreadsheet.hideTooltip();
-    this.spreadsheet.interaction.intercept.clear();
+    this.spreadsheet.interaction.reset();
   }
 
   private isMouseOnTheCanvasContainer(event: Event) {
