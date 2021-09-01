@@ -1,9 +1,10 @@
-import { SortParam, InteractionStateInfo } from '../interface';
 import { Node } from '@/facet/layout/node';
-import { PartDrillDownInfo } from '../../components/sheets/interface';
-import { S2DataConfig } from './s2DataConfig';
 import { BBox } from '@antv/g-canvas';
+import { PartDrillDownInfo } from '../../components/sheets/interface';
 import { SortMethodType } from '../constant';
+import { InteractionStateInfo, SortParam } from '../interface';
+import { ValueRanges } from './condition';
+import { S2DataConfig } from './s2DataConfig';
 
 export interface ReachedBorderId {
   rowId?: string;
@@ -42,6 +43,9 @@ export interface StoreKey {
   originalDataCfg: S2DataConfig;
   drillDownMeta: any;
   panelBBox: BBox;
+
+  // interval condition
+  valueRanges: ValueRanges;
 
   [key: string]: unknown;
 }

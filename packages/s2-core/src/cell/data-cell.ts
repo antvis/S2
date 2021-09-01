@@ -23,7 +23,7 @@ import {
   getTextAndFollowingIconPosition,
 } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
-import { getIconPositionCfg } from '@/utils/condition';
+import { getIconPositionCfg } from '@/utils/condition/generate-condition';
 import {
   renderIcon,
   renderLine,
@@ -33,6 +33,7 @@ import {
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
 import { find, first, get, includes, isEmpty, isEqual, map } from 'lodash';
+import { parseNumberWithPrecision } from './../utils/formatter';
 
 /**
  * DataCell for panelGroup area
@@ -266,11 +267,11 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param max in current field values
    */
   protected getIntervalScale(
-    min: number,
-    max: number,
+    min = 0,
+    max = 0,
   ): (currentValue: number) => number {
     const realMin = min >= 0 ? 0 : min;
-    const distance = max - realMin;
+    const distance = max - realMin || 1;
     return (currentValue: number) => {
       return (currentValue - realMin) / distance;
     };
@@ -281,7 +282,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @private
    */
   protected drawConditionIntervalShape() {
-    const { x, y, height, width } = this.getContentArea();
+    const { x, y, height, width } = this.getCellArea();
     const { formattedValue } = this.getFormattedFieldValue();
 
     const intervalCondition = this.findFieldCondition(
@@ -292,48 +293,32 @@ export class DataCell extends BaseCell<ViewMeta> {
       let fill = '#75C0F8';
       let stroke = '#75C0F8';
       const attrs = this.mappingValue(intervalCondition);
-      if (attrs) {
-        // interval shape exist
-        // if (attrs.isCompare) {
-        // value in range(compare) condition
-        const scale = this.getIntervalScale(
-          attrs.minValue || 0,
-          attrs.maxValue,
-        );
-        const zero = scale(0); // 零点
-        const fieldValue = this.meta.fieldValue as number;
-        const current = scale(fieldValue); // 当前数据点
-
-        // } else {
-        // the other conditions， keep old logic
-        // TODO this logic need be changed!!!
-        // const summaryField = this.meta.valueField;
-        // const pivot = this.spreadsheet.dataSet.pivot;
-        // if (pivot) {
-        //   const MIN = summaryField
-        //     ? pivot.getTotals(summaryField, {}, 'MIN')
-        //     : 0;
-        //   const MAX = summaryField
-        //     ? pivot.getTotals(summaryField, {}, 'MAX')
-        //     : 0;
-        //   scale = this.getIntervalScale(MIN, MAX);
-        //   zero = scale(0); // 零点
-        //   current = scale(this.meta.fieldValue); // 当前数据点
-        // }
-        // }
-        // eslint-disable-next-line no-multi-assign
-        stroke = fill = attrs.fill;
-
-        const barChartHeight = this.getStyle().cell.miniBarChartHeight;
-        this.conditionIntervalShape = renderRect(this, {
-          x: x + width * zero,
-          y: y + height / 2 - barChartHeight / 2,
-          width: width * (current - zero),
-          height: barChartHeight,
-          fill,
-          stroke,
-        });
+      if (!attrs) {
+        return;
       }
+      const { minValue, maxValue } = attrs.isCompare
+        ? attrs
+        : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
+
+      const scale = this.getIntervalScale(minValue, maxValue);
+      const zero = scale(0); // 零点
+      const fieldValue = parseNumberWithPrecision(
+        this.meta.fieldValue as number,
+      );
+      const current = scale(fieldValue); // 当前数据点
+
+      // eslint-disable-next-line no-multi-assign
+      stroke = fill = attrs.fill;
+
+      const barChartHeight = this.getStyle().cell.miniBarChartHeight;
+      this.conditionIntervalShape = renderRect(this, {
+        x: x + width * zero,
+        y: y + height / 2 - barChartHeight / 2,
+        width: width * (current - zero),
+        height: barChartHeight,
+        fill,
+        stroke,
+      });
     }
   }
 

@@ -1,4 +1,17 @@
-import { memoize, find, get, identity } from 'lodash';
+import * as conditionStateController from '@/utils/condition/state-controller';
+import {
+  compact,
+  find,
+  get,
+  identity,
+  isNil,
+  map,
+  max,
+  memoize,
+  min,
+} from 'lodash';
+import { CellDataParams, DataType } from 'src/data-set/interface';
+import { SpreadSheet } from 'src/sheet-type';
 import {
   Fields,
   Formatter,
@@ -6,8 +19,8 @@ import {
   S2DataConfig,
   SortParams,
 } from '../common/interface';
-import { DataType, CellDataParams } from 'src/data-set/interface';
-import { SpreadSheet } from 'src/sheet-type';
+import { ValueRange } from './../common/interface/condition';
+import { parseNumberWithPrecision } from './../utils/formatter';
 
 export abstract class BaseDataSet {
   // 字段域信息
@@ -68,6 +81,30 @@ export abstract class BaseDataSet {
     this.totalData = totalData;
     this.sortParams = sortParams;
     this.indexesData = [];
+  }
+
+  public getValueRangeByField(field: string): ValueRange {
+    const cacheRange = conditionStateController.getState(
+      this.spreadsheet,
+      field,
+    );
+    if (cacheRange) {
+      return cacheRange;
+    }
+    const fieldValues = compact(
+      map(this.originData, (item) => {
+        const value = item[field];
+        return isNil(value) ? null : parseNumberWithPrecision(value);
+      }),
+    );
+    const range = {
+      maxValue: max(fieldValues),
+      minValue: min(fieldValues),
+    };
+    conditionStateController.setState(this.spreadsheet, {
+      [field]: range,
+    });
+    return range;
   }
 
   /** ******************NEED IMPLEMENT BY USER CASE************************ */

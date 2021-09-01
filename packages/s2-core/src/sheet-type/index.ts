@@ -1,4 +1,4 @@
-import { BaseCell, DataCell, TableRowCell, TableDataCell } from '@/cell';
+import { BaseCell, DataCell, TableDataCell, TableRowCell } from '@/cell';
 import {
   KEY_AFTER_COLLAPSE_ROWS,
   KEY_COLLAPSE_ROWS,
@@ -29,13 +29,19 @@ import {
   Totals,
   ViewMeta,
 } from '@/common/interface';
+import { EmitterType } from '@/common/interface/emitter';
+import { Store } from '@/common/store';
 import { BaseDataSet, PivotDataSet, TableDataSet } from '@/data-set';
 import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
 import { BaseFacet, PivotFacet, TableFacet } from '@/facet';
+import { HdAdapter } from '@/hd-adapter';
 import { Node, SpreadSheetTheme } from '@/index';
+import { RootInteraction } from '@/interaction/root';
 import { getTheme } from '@/theme';
 import { BaseTooltip } from '@/tooltip';
-import { updateConditionsByValues } from '@/utils/condition';
+import { updateConditionsByValues } from '@/utils/condition/generate-condition';
+import * as conditionStateController from '@/utils/condition/state-controller';
+import { getTooltipData } from '@/utils/tooltip';
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import {
@@ -48,11 +54,6 @@ import {
   merge,
   set,
 } from 'lodash';
-import { Store } from '@/common/store';
-import { HdAdapter } from '@/hd-adapter';
-import { RootInteraction } from '@/interaction/root';
-import { getTooltipData } from '@/utils/tooltip';
-import { EmitterType } from '@/common/interface/emitter';
 
 export class SpreadSheet extends EE {
   // dom id
@@ -253,6 +254,8 @@ export class SpreadSheet extends EE {
     const { sortParams } = newDataCfg;
     newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
     this.dataCfg = newDataCfg;
+    // clear value ranger after each updated data cfg
+    conditionStateController.clearState(this);
   }
 
   public setOptions(options: S2Options) {
