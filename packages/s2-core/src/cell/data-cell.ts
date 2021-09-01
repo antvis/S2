@@ -373,9 +373,6 @@ export class DataCell extends BaseCell<ViewMeta> {
       strokeColor: stroke,
     } = this.getBackgroundColor();
 
-    if (this.cellType === CellTypes.ROW_CELL) {
-      console.log(fill);
-    }
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
       fill,
