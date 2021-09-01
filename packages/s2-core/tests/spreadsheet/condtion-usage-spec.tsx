@@ -1,7 +1,7 @@
 import { InputNumber, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { merge } from 'lodash';
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import {
@@ -13,7 +13,9 @@ import {
 import { getContainer, getMockData } from '../util/helpers';
 
 const data = getMockData('../data/company-sales-record-2.csv');
-const color = 'red';
+
+const intervalColor = 'red';
+const bgColor = '#29A294';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -28,19 +30,12 @@ const getDataCfg = () => {
     fields: {
       rows: ['area', 'province', 'city'],
       columns: ['type', 'sub_type'],
-      values: ['price'],
-      extra: [
-        {
-          field: 'type',
-          value: '办公用品',
-          tips: '说明：这是办公用品的说明',
-        },
-      ],
+      values: ['price', 'cost'],
     },
     meta: [
       {
-        field: 'count',
-        name: '销售个数',
+        field: 'cost',
+        name: '成本',
       },
       {
         field: 'price',
@@ -60,6 +55,7 @@ const getDataCfg = () => {
       },
     ],
     data,
+    standardData: false,
   };
 };
 
@@ -75,19 +71,40 @@ const getOptions = (): S2Options => {
     mode: 'pivot',
     valueInCols: true,
     conditions: {
-      text: [],
+      text: [
+        {
+          field: 'price',
+          mapping() {
+            return { fill: 'blue' };
+          },
+        },
+      ],
       interval: [
         {
           field: 'price',
           mapping() {
             return {
-              fill: color,
+              fill: intervalColor,
             };
           },
         },
       ],
-      background: [],
-      icon: [],
+      background: [
+        {
+          field: 'cost',
+          mapping() {
+            return { fill: bgColor };
+          },
+        },
+      ],
+      icon: [
+        {
+          field: 'cost',
+          mapping() {
+            return { fill: 'black', icon: 'CellUp' };
+          },
+        },
+      ],
     },
     style: {
       treeRowsWidth: 100,
@@ -114,14 +131,17 @@ const getOptions = (): S2Options => {
 };
 
 function MainLayout(props) {
-  const [options, setOptions] = React.useState(props.options);
-  const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
+  const [options, setOptions] = useState(props.options);
+  const [dataCfg, setDataCfg] = useState(props.dataCfg);
 
-  const [mode, setMode] = React.useState('grid');
-  const [valueInCols, setValueInCols] = React.useState(true);
+  const [mode, setMode] = useState('grid');
+  const [valueInCols, setValueInCols] = useState(true);
 
-  const [isCompare, setCompare] = React.useState(false);
-  const [values, setValues] = React.useState({ min: 0, max: 1000 });
+  const [isCompare, setCompare] = useState(false);
+  const [values, setValues] = useState({ min: 0, max: 1000 });
+
+  const [enableBg, setEnableBg] = useState(false);
+  const [bgThreshold, setBgThreshold] = useState(0);
 
   const onValueInColsChange = (checked) => {
     setValueInCols(checked);
@@ -155,12 +175,12 @@ function MainLayout(props) {
               mapping() {
                 return checked
                   ? {
-                      fill: color,
+                      fill: intervalColor,
                       isCompare: true,
                       minValue: values.min,
                       maxValue: values.max,
                     }
-                  : { fill: color };
+                  : { fill: intervalColor };
               },
             },
           ],
@@ -168,6 +188,7 @@ function MainLayout(props) {
       }),
     );
   };
+
   const onRangeChange = (updated: { min: number; max: number }) => {
     setOptions(
       merge({}, options, {
@@ -177,11 +198,50 @@ function MainLayout(props) {
               field: 'price',
               mapping() {
                 return {
-                  fill: color,
+                  fill: intervalColor,
                   isCompare: true,
                   minValue: updated.min,
                   maxValue: updated.max,
                 };
+              },
+            },
+          ],
+        },
+      }),
+    );
+  };
+  const onBgChange = (checked) => {
+    setEnableBg(checked);
+    setOptions(
+      merge({}, options, {
+        conditions: {
+          background: [
+            {
+              field: 'cost',
+              mapping(value: number) {
+                return checked && value >= bgThreshold && { fill: bgColor };
+              },
+            },
+          ],
+        },
+      }),
+    );
+  };
+
+  const onThresholdChange = (threshold: number) => {
+    setBgThreshold(threshold);
+    setOptions(
+      merge({}, options, {
+        conditions: {
+          background: [
+            {
+              field: 'cost',
+              mapping(value: number) {
+                return (
+                  value >= threshold && {
+                    fill: bgColor,
+                  }
+                );
               },
             },
           ],
@@ -208,8 +268,8 @@ function MainLayout(props) {
           style={{ marginRight: 10 }}
         />
       </div>
-      <div style={{ display: 'inline-block', marginBottom: 20 }}>
-        自定义区间：
+      <div style={{ display: 'block', marginBottom: 20 }}>
+        开启颜色条自定义区间：
         <Switch
           checkedChildren="是"
           unCheckedChildren="否"
@@ -236,6 +296,22 @@ function MainLayout(props) {
             setValues(updated);
             onRangeChange(updated);
           }}
+        />
+      </div>
+      <div style={{ display: 'block', marginBottom: 20 }}>
+        开启背景色条自定义区间：
+        <Switch
+          checkedChildren="是"
+          unCheckedChildren="否"
+          defaultChecked={enableBg}
+          onChange={onBgChange}
+          style={{ marginRight: 10 }}
+        />
+        阈值：{' '}
+        <InputNumber
+          disabled={!enableBg}
+          value={bgThreshold}
+          onChange={onThresholdChange}
         />
       </div>
       <SheetComponent
