@@ -1,7 +1,7 @@
 export enum ResizeEvent {
-  ROW_W = 'spreadsheet:change-row-header-width',
-  COL_W = 'spreadsheet:change-column-header-width',
-  ROW_H = 'spreadsheet:change-row-header-height',
-  COL_H = 'spreadsheet:change-column-header-height',
-  TREE_W = 'spreadsheet:change-tree-width',
+  ROW_W = 'resize:change-row-header-width',
+  COL_W = 'resize:change-column-header-width',
+  ROW_H = 'resize:change-row-header-height',
+  COL_H = 'resize:change-column-header-height',
+  TREE_W = 'resize:change-tree-width',
 }
