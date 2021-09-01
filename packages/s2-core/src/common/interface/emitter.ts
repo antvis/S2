@@ -1,19 +1,4 @@
-import {
-  InteractionNames,
-  KEY_AFTER_COLLAPSE_ROWS,
-  KEY_AFTER_HEADER_LAYOUT,
-  KEY_CELL_SCROLL,
-  KEY_COLLAPSE_ROWS,
-  KEY_COLLAPSE_TREE_ROWS,
-  KEY_COL_NODE_BORDER_REACHED,
-  KEY_JUMP_HREF,
-  KEY_PAGINATION,
-  KEY_ROW_NODE_BORDER_REACHED,
-  KEY_TREE_ROWS_COLLAPSE_ALL,
-  ResizeEventType,
-  S2Event,
-  SortMethodType,
-} from '@/common/constant';
+import { ResizeEvent, S2Event, SortMethodType } from '@/common/constant';
 
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { CellScrollPosition, Data, LayoutResult, Style, ViewMeta } from '.';
@@ -89,34 +74,32 @@ export interface EmitterType {
   [S2Event.CORNER_CELL_MOUSE_UP]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_MOUSE_UP]: CanvasEventHandler;
 
-  [S2Event.GLOBAL_CLEAR_INTERACTION_STYLE_EFFECT]: () => void;
-
-  [KEY_COLLAPSE_TREE_ROWS]: (data: {
+  [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (data: {
     id: string;
     isCollapsed: boolean;
     node: Node;
   }) => void;
 
-  [KEY_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
-  [KEY_AFTER_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
-  [KEY_TREE_ROWS_COLLAPSE_ALL]: (hierarchyCollapse: boolean) => void;
-  [KEY_PAGINATION]: (data: {
+  [S2Event.LAYOUT_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
+  [S2Event.LAYOUT_AFTER_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
+  [S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL]: (hierarchyCollapse: boolean) => void;
+  [S2Event.LAYOUT_PAGINATION]: (data: {
     pageSize: number;
     pageCount: number;
     total: number;
     current: number;
   }) => void;
-  [KEY_AFTER_HEADER_LAYOUT]: (data: LayoutResult) => void;
-  [KEY_CELL_SCROLL]: (data: CellScrollPosition) => void;
-  [KEY_COL_NODE_BORDER_REACHED]: (data: Node) => void;
-  [KEY_ROW_NODE_BORDER_REACHED]: (data: Node) => void;
-  [KEY_JUMP_HREF]: (data: { key: string; record: Data }) => void;
+  [S2Event.LAYOUT_AFTER_HEADER_LAYOUT]: (data: LayoutResult) => void;
+  [S2Event.LAYOUT_CELL_SCROLL]: (data: CellScrollPosition) => void;
+  [S2Event.LAYOUT_COL_NODE_BORDER_REACHED]: (data: Node) => void;
+  [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (data: Node) => void;
+  [S2Event.ROW_CELL_TEXT_CLICK]: (data: { key: string; record: Data }) => void;
 
-  [InteractionNames.TREND_ICON_CLICK]: (data: ViewMeta) => void;
+  [S2Event.DATA_CELL_TREND_ICON_CLICK]: (data: ViewMeta) => void;
 
-  [ResizeEventType.ROW_W]: ResizeHandler;
-  [ResizeEventType.ROW_H]: ResizeHandler;
-  [ResizeEventType.COL_W]: ResizeHandler;
-  [ResizeEventType.COL_H]: ResizeHandler;
-  [ResizeEventType.TREE_W]: ResizeHandler;
+  [ResizeEvent.ROW_W]: ResizeHandler;
+  [ResizeEvent.ROW_H]: ResizeHandler;
+  [ResizeEvent.COL_W]: ResizeHandler;
+  [ResizeEvent.COL_H]: ResizeHandler;
+  [ResizeEvent.TREE_W]: ResizeHandler;
 }

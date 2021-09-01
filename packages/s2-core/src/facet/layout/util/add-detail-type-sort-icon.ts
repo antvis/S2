@@ -1,7 +1,7 @@
 import { Group } from '@antv/g-canvas';
 import { has, get } from 'lodash';
 import { GuiIcon } from '@/common/icons';
-import { DEFAULT_PADDING, S2Event, SortMethodType } from '@/common/constant';
+import { S2Event, DEFAULT_PADDING, SortMethodType } from '@/common/constant';
 import { SpreadSheet } from '@/.';
 
 // 排序按钮的宽度

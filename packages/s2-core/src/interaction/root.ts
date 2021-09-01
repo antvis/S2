@@ -1,7 +1,7 @@
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
 import { ColHeader, RowHeader } from 'src/facet/header';
-import { get, includes, isEmpty, concat, merge, forEach } from 'lodash';
+import { includes, isEmpty, concat, merge, forEach } from 'lodash';
 import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import {
   BaseEvent,
@@ -10,7 +10,7 @@ import {
   DataCellClick,
   Intercept,
   HoverEvent,
-  InteractionNames,
+  InteractionName,
   InteractionStateInfo,
   InteractionStateName,
   INTERACTION_STATE_INFO_KEY,
@@ -169,41 +169,41 @@ export class RootInteraction {
     this.interactions.clear();
 
     this.interactions.set(
-      InteractionNames.DATA_CELL_CLICK,
+      InteractionName.DATA_CELL_CLICK,
       new DataCellClick(this.spreadsheet, this),
     );
     this.interactions.set(
-      InteractionNames.CORNER_TEXT_CLICK,
+      InteractionName.CORNER_TEXT_CLICK,
       new CornerTextClick(this.spreadsheet, this),
     );
     this.interactions.set(
-      InteractionNames.ROW_COLUMN_CLICK,
+      InteractionName.ROW_COLUMN_CLICK,
       new RowColumnClick(this.spreadsheet, this),
     );
     this.interactions.set(
-      InteractionNames.ROW_TEXT_CLICK,
+      InteractionName.ROW_TEXT_CLICK,
       new RowTextClick(this.spreadsheet, this),
     );
     this.interactions.set(
-      InteractionNames.MERGED_CELLS_CLICK,
+      InteractionName.MERGED_CELLS_CLICK,
       new MergedCellsClick(this.spreadsheet, this),
     );
     this.interactions.set(
-      InteractionNames.HOVER,
+      InteractionName.HOVER,
       new HoverEvent(this.spreadsheet, this),
     );
 
     if (!isMobile()) {
       this.interactions.set(
-        InteractionNames.BRUSH_SELECTION,
+        InteractionName.BRUSH_SELECTION,
         new BrushSelection(this.spreadsheet, this),
       );
       this.interactions.set(
-        InteractionNames.COL_ROW_RESIZE,
+        InteractionName.COL_ROW_RESIZE,
         new RowColResize(this.spreadsheet, this),
       );
       this.interactions.set(
-        InteractionNames.COL_ROW_MULTI_SELECTION,
+        InteractionName.COL_ROW_MULTI_SELECTION,
         new DataCellMultiSelection(this.spreadsheet, this),
       );
     }
@@ -211,10 +211,10 @@ export class RootInteraction {
     const customInteractions = this.spreadsheet.options?.customInteractions;
     if (!isEmpty(customInteractions)) {
       forEach(customInteractions, (customInteraction: CustomInteraction) => {
-        const CustomInteraction = customInteraction.interaction;
+        const CustomInteractionClass = customInteraction.interaction;
         this.interactions.set(
           customInteraction.key,
-          new CustomInteraction(this.spreadsheet, this),
+          new CustomInteractionClass(this.spreadsheet, this),
         );
       });
     }
