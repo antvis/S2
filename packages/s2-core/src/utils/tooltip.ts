@@ -47,7 +47,7 @@ import { i18n } from '@/common/i18n';
 import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
-} from '@/common/tooltip/constant';
+} from '@/common/constant/tooltip';
 import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
@@ -226,7 +226,7 @@ export const getHeadInfo = (
  * @param options
  */
 export const getDetailList = (
-  spreadsheet,
+  spreadsheet: SpreadSheet,
   activeData: TooltipDataItem,
   options: TooltipOptions,
 ): ListItem[] => {
@@ -234,7 +234,7 @@ export const getDetailList = (
     const { isTotals } = options;
     const field = activeData[EXTRA_FIELD];
     const value = activeData[field];
-    let valItem = [];
+    const valItem = [];
     if (isTotals) {
       // total/subtotal
       valItem.push(
@@ -437,4 +437,36 @@ export const mergeCellInfo = (cells: S2CellType[]): TooltipData[] => {
       pick(stateCellMeta, ['colIndex', 'rowIndex']),
     );
   });
+};
+
+// TODO: 待确定 是否可以复用 mergeCellInfo
+
+export const getActiveCellsTooltipData = (
+  spreadsheet: SpreadSheet,
+): TooltipData[] => {
+  const cellInfos: TooltipData[] = [];
+  if (!spreadsheet.interaction.isSelectedState()) {
+    return [];
+  }
+  spreadsheet.interaction.getActiveCells().forEach((cell) => {
+    const valueInCols = spreadsheet.options.valueInCols;
+    const meta = cell.getMeta();
+    const query = get(meta, valueInCols ? 'colQuery' : 'rowQuery');
+    if (isEmpty(meta) || isEmpty(query)) {
+      return;
+    }
+    const currentCellInfo: TooltipData = {
+      ...query,
+      colIndex: valueInCols ? meta.colIndex : null,
+      rowIndex: !valueInCols ? meta.rowIndex : null,
+    };
+
+    const isEqualCellInfo = cellInfos.find((cellInfo) =>
+      isEqual(currentCellInfo, cellInfo),
+    );
+    if (!isEqualCellInfo) {
+      cellInfos.push(currentCellInfo);
+    }
+  });
+  return cellInfos;
 };

@@ -4,9 +4,13 @@ import {
   INTERACTION_TREND,
   InteractionStateName,
 } from '@/common/constant';
-import { TooltipOperatorOptions, ViewMeta } from '@/common/interface';
+import {
+  TooltipData,
+  TooltipOperatorOptions,
+  ViewMeta,
+} from '@/common/interface';
 import { LineChartOutlined } from '@ant-design/icons';
-import { Event } from '@antv/g-canvas';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import { noop } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
@@ -17,30 +21,30 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindDataCellClick() {
-    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
       if (this.interaction.intercept.has(InterceptType.CLICK)) {
         return;
       }
+
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
-      if (meta) {
-        // 屏蔽hover事件
-        this.interaction.intercept.add(InterceptType.HOVER);
-        if (this.interaction.isSelectedCell(cell)) {
-          // 点击当前已选cell 则取消当前cell的选中状态
-          this.interaction.clearState();
-          this.interaction.intercept.clear();
-          this.spreadsheet.hideTooltip();
-        } else {
-          this.interaction.clearState();
-          this.interaction.changeState({
-            cells: [cell],
-            stateName: InteractionStateName.SELECTED,
-          });
-          this.showTooltip(event, meta);
-        }
+
+      if (!meta) {
+        return;
       }
+
+      this.interaction.intercept.add(InterceptType.HOVER);
+      if (this.interaction.isSelectedCell(cell)) {
+        this.interaction.reset();
+        return;
+      }
+      this.interaction.clearState();
+      this.interaction.changeState({
+        cells: [cell],
+        stateName: InteractionStateName.SELECTED,
+      });
+      this.showTooltip(event, meta);
     });
   }
 
@@ -78,10 +82,10 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     return operator;
   }
 
-  private showTooltip(event: Event, meta: ViewMeta) {
+  private showTooltip(event: CanvasEvent, meta: ViewMeta) {
     const currentCellMeta = meta?.data;
     const isTotals = meta?.isTotals || false;
-    const cellInfos = [
+    const cellInfos: TooltipData[] = [
       currentCellMeta || { ...meta.rowQuery, ...meta.colQuery },
     ];
     const operator = this.getTooltipOperator(meta);

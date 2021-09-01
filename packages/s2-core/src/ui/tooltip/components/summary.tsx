@@ -1,7 +1,7 @@
 import { TooltipSummaryOptions } from '@/common/interface';
 import * as React from 'react';
 import { i18n } from '@/common/i18n';
-import { TOOLTIP_PREFIX_CLS } from '@/common/tooltip/constant';
+import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
 const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
   const { summaries = [] } = props;

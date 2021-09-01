@@ -233,14 +233,20 @@ export class RootInteraction {
     this.draw();
   }
 
+  public reset() {
+    this.spreadsheet.interaction.clearState();
+    this.spreadsheet.hideTooltip();
+    this.spreadsheet.interaction.intercept.clear();
+  }
+
   public changeState(interactionStateInfo: InteractionStateInfo) {
-    const { cells } = interactionStateInfo;
-    if (!isEmpty(cells)) {
-      this.clearState();
-      this.setState(interactionStateInfo);
-      this.updatePanelAllCellsStyle();
-      this.draw();
+    if (isEmpty(interactionStateInfo.cells)) {
+      return;
     }
+    this.clearState();
+    this.setState(interactionStateInfo);
+    this.updatePanelAllCellsStyle();
+    this.draw();
   }
 
   public updatePanelAllCellsStyle() {

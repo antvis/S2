@@ -118,3 +118,9 @@ export interface SummaryParam extends DataParam {
 export interface TooltipDataParam extends DataParam {
   cellInfos: TooltipDataItem[];
 }
+
+export interface OrderOption {
+  sortMethod: 'ASC' | 'DESC';
+  type: 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
+  name: string;
+}

@@ -1,8 +1,8 @@
 import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
 import { Palette, SpreadSheetTheme, ThemeCfg } from '../common/interface';
+import { SpreadSheet } from '../sheet-type';
 import { isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
-import { SpreadSheet } from '../sheet-type';
 
 /**
  * @describe generate the theme according to the type
@@ -82,6 +82,7 @@ export const getTheme = (
         fill: grayColors[6],
         linkTextFill: brandColors[6],
         opacity: 1,
+        textBaseline: 'middle',
         textAlign: isTable ? 'center' : 'right', // default align center for row cell in table mode
       },
       cell: {
@@ -263,6 +264,7 @@ export const getTheme = (
 
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
+        miniBarChartFillColor: brandColors[7],
       },
       icon: {
         fill: brandColors[0],
@@ -303,6 +305,10 @@ export const getTheme = (
     prepareSelectMask: {
       backgroundColor: brandColors[5],
       backgroundOpacity: 0.3,
+    },
+    background: {
+      color: brandColors[0],
+      opacity: 1,
     },
   } as SpreadSheetTheme;
 };
