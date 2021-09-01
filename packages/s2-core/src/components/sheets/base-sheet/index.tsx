@@ -125,7 +125,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       [S2Event.LAYOUT_CELL_SCROLL]: (value: CellScrollPosition) => {
         onCellScroll?.(value);
       },
-      [S2Event.LIST_SORT]: (value: ListSortParams) => {
+      [S2Event.RANFE_SORT]: (value: ListSortParams) => {
         onListSort?.(value);
       },
     };
@@ -142,7 +142,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       S2Event.LAYOUT_ROW_NODE_BORDER_REACHED,
       S2Event.LAYOUT_COL_NODE_BORDER_REACHED,
       S2Event.LAYOUT_CELL_SCROLL,
-      S2Event.LIST_SORT,
+      S2Event.RANFE_SORT,
       S2Event.MERGED_CELLS_CLICK,
       S2Event.ROW_CELL_CLICK,
       S2Event.COL_CELL_CLICK,

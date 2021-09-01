@@ -38,9 +38,9 @@ export enum S2Event {
   MERGED_CELLS_MOUSE_DOWN = 'merged-cells:mouse-down',
 
   /** ================ Table Sort ================  */
+  RANFE_SORT = 'sort:range-sort',
   RANGE_SORTING = 'sort:range-sorting',
   RANGE_SORTED = 'sort:range-sorted',
-  LIST_SORT = 'sort:list-sort',
 
   /** ================ Table Layout ================  */
   LAYOUT_AFTER_HEADER_LAYOUT = 'layout:after-header-layout',

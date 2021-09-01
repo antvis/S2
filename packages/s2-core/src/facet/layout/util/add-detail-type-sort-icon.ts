@@ -70,7 +70,10 @@ export const renderIcon = (
       return;
     }
     spreadsheet.store.set('currentSortKey', currentSortKey);
-    spreadsheet.emit(S2Event.LIST_SORT, { sortKey: key, sortMethod: sortType });
+    spreadsheet.emit(S2Event.RANFE_SORT, {
+      sortKey: key,
+      sortMethod: sortType,
+    });
   });
 
   parent.add(icon);
