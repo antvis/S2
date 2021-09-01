@@ -22,6 +22,8 @@ export const DEFAULT_PADDING = 4;
 // tree row default width
 export const TREE_ROW_DEFAULT_WIDTH = 120;
 
+export const MINI_BAR_CHART_HEIGHT = 12;
+
 export const STRATEGY_PADDING = 8; // 各种padding 左右和元素边界
 export const STRATEGY_ICON_WIDTH = 10; // 三角icon 宽度
 // color
