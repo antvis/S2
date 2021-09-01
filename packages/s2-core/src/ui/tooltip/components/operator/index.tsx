@@ -2,8 +2,11 @@ import { IMenu, TooltipOperatorOptions } from '@/common/interface';
 import { Menu } from 'antd';
 import { isEmpty, map, size } from 'lodash';
 import React from 'react';
-import { getIcon, HtmlIcon } from '../../../icons';
-import { DEFAULT_ICON_PROPS, TOOLTIP_PREFIX_CLS } from '../../constant';
+import { getIcon, HtmlIcon } from '@/common/icons';
+import {
+  DEFAULT_ICON_PROPS,
+  TOOLTIP_PREFIX_CLS,
+} from '@/common/constant/tooltip';
 import './index.less';
 
 /**

@@ -13,7 +13,7 @@ import { S2PartialOptions } from 'src/common/interface/s2Options';
 import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { Padding } from '../interface/theme';
-import { BaseTooltip } from '../tooltip';
+import { BaseTooltip } from '../../ui/tooltip';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 
