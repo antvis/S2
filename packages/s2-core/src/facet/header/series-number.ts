@@ -5,9 +5,9 @@ import { measureTextWidth } from '@/utils/text';
 import { getAdjustPosition } from '@/utils/text-absorption';
 import { BBox, IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
+import { ViewMeta } from '@/common/interface';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
-import { getCellPadding } from './util';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;
@@ -133,7 +133,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     });
   }
 
-  private addText(group: IGroup, cellData) {
+  private addText(group: IGroup, cellData: ViewMeta) {
     const { offset, height } = this.headerConfig;
     const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
     const {
@@ -145,7 +145,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       isLeaf,
       isTotals,
     } = cellData;
-    const padding = getCellPadding();
+    const padding = { ...rowCellTheme.cell.padding };
     const labelWidth = measureTextWidth(
       label,
       this.headerConfig.spreadsheet.theme.rowCell.text,

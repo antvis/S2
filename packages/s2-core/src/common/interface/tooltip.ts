@@ -24,7 +24,7 @@ export interface TooltipPosition {
 export type ListItem = {
   name: string;
   value: string | number;
-  icon?: string;ß
+  icon?: string;
 };
 
 export interface SortQuery {

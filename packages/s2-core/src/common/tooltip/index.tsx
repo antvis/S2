@@ -37,7 +37,7 @@ import './index.less';
 export class BaseTooltip {
   public spreadsheet: SpreadSheet; // the type of Spreadsheet
 
-  protected container: HTMLElement; // the base container element
+  public container: HTMLElement; // the base container element
 
   protected options: TooltipShowOptions;
 

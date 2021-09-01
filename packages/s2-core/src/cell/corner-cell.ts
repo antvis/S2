@@ -1,4 +1,4 @@
-import { FormatResult, TextTheme } from '@/common/interface';
+import { CellAttrs, FormatResult, TextTheme } from '@/common/interface';
 import { renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { IGroup, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
 import { isEmpty, isEqual } from 'lodash';
@@ -8,15 +8,17 @@ import {
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZER,
   S2Event,
-} from '../common/constant';
-import { HIT_AREA } from '../facet/header/base';
-import { CornerHeaderConfig } from '../facet/header/corner';
-import { ResizeInfo } from '../facet/header/interface';
-import { renderText } from '../utils/g-renders';
-import { isIPhoneX } from '../utils/is-mobile';
-import { getEllipsisText } from '../utils/text';
-import { getTextPosition, getVerticalPosition } from './../utils/cell/cell';
+} from '@/common/constant';
+import { HIT_AREA } from '@/facet/header/base';
+import { CornerHeaderConfig } from '@/facet/header/corner';
+import { ResizeInfo } from '@/facet/header/interface';
+import { renderText } from '@/utils/g-renders';
+import { isIPhoneX } from '@/utils/is-mobile';
+import { getEllipsisText } from '@/utils/text';
+import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
 import { HeaderCell } from './header-cell';
+import { Node } from '@/facet/layout/node';
+
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
 
@@ -68,7 +70,7 @@ export class CornerCell extends HeaderCell {
       secondLine = getEllipsisText(secondLine, maxWidth, textStyle);
     }
 
-    const extraInfo = {
+    const extraInfo: CellAttrs<Node> = {
       appendInfo: {
         // 标记为行头文本，方便做链接跳转直接识别
         isCornerHeaderText: true,

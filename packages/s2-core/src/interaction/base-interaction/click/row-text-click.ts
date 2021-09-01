@@ -15,12 +15,12 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindRowCellClick() {
-    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (ev: Event) => {
+    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
       if (this.spreadsheet.interaction.intercept.has(InterceptType.CLICK)) {
         return;
       }
       const appendInfo = get(
-        ev.target,
+        event.target,
         'attrs.appendInfo',
         {},
       ) as CellAppendInfo;
