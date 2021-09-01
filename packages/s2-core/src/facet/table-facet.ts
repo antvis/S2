@@ -13,7 +13,7 @@ export class TableFacet extends BaseFacet {
   public constructor(props) {
     super(props);
     const s2 = this.spreadsheet;
-    s2.on(S2Event.RANFE_SORT, ({ sortKey, sortMethod }) => {
+    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
       const sortInfo = {
         sortKey,
         sortMethod,
@@ -33,7 +33,7 @@ export class TableFacet extends BaseFacet {
 
   public destroy() {
     super.destroy();
-    this.spreadsheet.off(S2Event.RANFE_SORT);
+    this.spreadsheet.off(S2Event.RANGE_SORT);
   }
 
   protected doLayout(): LayoutResult {

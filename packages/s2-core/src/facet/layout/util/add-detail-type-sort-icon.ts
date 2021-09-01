@@ -70,7 +70,7 @@ export const renderIcon = (
       return;
     }
     spreadsheet.store.set('currentSortKey', currentSortKey);
-    spreadsheet.emit(S2Event.RANFE_SORT, {
+    spreadsheet.emit(S2Event.RANGE_SORT, {
       sortKey: key,
       sortMethod: sortType,
     });

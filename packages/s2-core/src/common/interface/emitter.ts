@@ -28,7 +28,7 @@ type ResizeHandler = (style: Style) => void;
 export interface EmitterType {
   [S2Event.GLOBAL_COPIED]: (data: string) => void;
 
-  [S2Event.RANFE_SORT]: (info: SortParams) => void;
+  [S2Event.RANGE_SORT]: (info: SortParams) => void;
   [S2Event.RANGE_SORTING]: (info: SortParams) => void;
   [S2Event.RANGE_SORTED]: (rangeData: Data[]) => void;
 
