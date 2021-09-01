@@ -1,14 +1,19 @@
 import { IconTheme } from './theme';
 
-export interface MappingResult {
+export interface ValueRange {
+  minValue?: number;
+  maxValue?: number;
+}
+
+export type ValueRanges = Record<string, ValueRange>;
+
+export interface MappingResult extends ValueRange {
   // only used in icon condition
   icon?: string;
   // interval, background, text fill color
   fill: string;
   // only used in interval condition
   isCompare?: boolean;
-  minValue?: number;
-  maxValue?: number;
 }
 
 export type MappingFunction = (

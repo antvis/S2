@@ -1,7 +1,3 @@
-import { CellAttrs, FormatResult, TextTheme } from '@/common/interface';
-import { renderRect, renderTreeIcon } from '@/utils/g-renders';
-import { IGroup, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
-import { isEmpty, isEqual } from 'lodash';
 import {
   CellTypes,
   COLOR_DEFAULT_RESIZER,
@@ -9,15 +5,18 @@ import {
   KEY_GROUP_CORNER_RESIZER,
   S2Event,
 } from '@/common/constant';
+import { CellAttrs, FormatResult, TextTheme } from '@/common/interface';
 import { HIT_AREA } from '@/facet/header/base';
 import { CornerHeaderConfig } from '@/facet/header/corner';
 import { ResizeInfo } from '@/facet/header/interface';
-import { renderText } from '@/utils/g-renders';
+import { Node } from '@/facet/layout/node';
+import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
+import { renderRect, renderText, renderTreeIcon } from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
 import { getEllipsisText } from '@/utils/text';
-import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
+import { IGroup, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import { isEmpty, isEqual } from 'lodash';
 import { HeaderCell } from './header-cell';
-import { Node } from '@/facet/layout/node';
 
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
@@ -46,7 +45,7 @@ export class CornerCell extends HeaderCell {
       return;
     }
 
-    const { x, y, height } = this.getContentArea();
+    const { x, y, height } = this.getCellArea();
 
     const textStyle = this.getTextStyle();
     const { formattedValue } = this.getFormattedFieldValue();

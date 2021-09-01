@@ -8,6 +8,7 @@ export const paletteSimpleBlue = {
     '#CCDBFD',
     '#2C60D3',
     '#0000ee',
+    '#75C0F8',
   ],
 
   // ----------neutral colors ----------

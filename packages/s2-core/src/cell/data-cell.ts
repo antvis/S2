@@ -23,7 +23,7 @@ import {
   getTextAndFollowingIconPosition,
 } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
-import { getIconPositionCfg } from '@/utils/condition';
+import { getIconPositionCfg } from '@/utils/condition/generate-condition';
 import {
   renderIcon,
   renderLine,
@@ -32,7 +32,17 @@ import {
 } from '@/utils/g-renders';
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
-import { find, first, get, includes, isEmpty, isEqual, map } from 'lodash';
+import {
+  clamp,
+  find,
+  first,
+  get,
+  includes,
+  isEmpty,
+  isEqual,
+  map,
+} from 'lodash';
+import { parseNumberWithPrecision } from './../utils/formatter';
 
 /**
  * DataCell for panelGroup area
@@ -262,18 +272,19 @@ export class DataCell extends BaseCell<ViewMeta> {
    * 0_________________min_________x_______________max
    * |<-------------r------------->|
    *
-   * @param min in current field values
+   * @param minValue in current field values
    * @param max in current field values
    */
-  protected getIntervalScale(
-    min: number,
-    max: number,
-  ): (currentValue: number) => number {
-    const realMin = min >= 0 ? 0 : min;
-    const distance = max - realMin;
-    return (currentValue: number) => {
-      return (currentValue - realMin) / distance;
-    };
+  private getIntervalScale(minValue = 0, maxValue = 0) {
+    minValue = parseNumberWithPrecision(minValue);
+    maxValue = parseNumberWithPrecision(maxValue);
+
+    const realMin = minValue >= 0 ? 0 : minValue;
+    const distance = maxValue - realMin || 1;
+    return (current: number) =>
+      // max percentage shouldn't be greater than 100%
+      // min percentage shouldn't be less than 0%
+      clamp((current - realMin) / distance, 0, 1);
   }
 
   /**
@@ -281,7 +292,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @private
    */
   protected drawConditionIntervalShape() {
-    const { x, y, height, width } = this.getContentArea();
+    const { x, y, height, width } = this.getCellArea();
     const { formattedValue } = this.getFormattedFieldValue();
 
     const intervalCondition = this.findFieldCondition(
@@ -289,51 +300,33 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
 
     if (intervalCondition && intervalCondition.mapping && formattedValue) {
-      let fill = '#75C0F8';
-      let stroke = '#75C0F8';
       const attrs = this.mappingValue(intervalCondition);
-      if (attrs) {
-        // interval shape exist
-        // if (attrs.isCompare) {
-        // value in range(compare) condition
-        const scale = this.getIntervalScale(
-          attrs.minValue || 0,
-          attrs.maxValue,
-        );
-        const zero = scale(0); // 零点
-        const fieldValue = this.meta.fieldValue as number;
-        const current = scale(fieldValue); // 当前数据点
-
-        // } else {
-        // the other conditions， keep old logic
-        // TODO this logic need be changed!!!
-        // const summaryField = this.meta.valueField;
-        // const pivot = this.spreadsheet.dataSet.pivot;
-        // if (pivot) {
-        //   const MIN = summaryField
-        //     ? pivot.getTotals(summaryField, {}, 'MIN')
-        //     : 0;
-        //   const MAX = summaryField
-        //     ? pivot.getTotals(summaryField, {}, 'MAX')
-        //     : 0;
-        //   scale = this.getIntervalScale(MIN, MAX);
-        //   zero = scale(0); // 零点
-        //   current = scale(this.meta.fieldValue); // 当前数据点
-        // }
-        // }
-        // eslint-disable-next-line no-multi-assign
-        stroke = fill = attrs.fill;
-
-        const barChartHeight = this.getStyle().cell.miniBarChartHeight;
-        this.conditionIntervalShape = renderRect(this, {
-          x: x + width * zero,
-          y: y + height / 2 - barChartHeight / 2,
-          width: width * (current - zero),
-          height: barChartHeight,
-          fill,
-          stroke,
-        });
+      if (!attrs) {
+        return;
       }
+      const { minValue, maxValue } = attrs.isCompare
+        ? attrs
+        : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
+      const scale = this.getIntervalScale(minValue, maxValue);
+      const zero = scale(0); // 零点
+
+      const fieldValue = parseNumberWithPrecision(
+        this.meta.fieldValue as number,
+      );
+      const current = scale(fieldValue); // 当前数据点
+      const barChartHeight = this.getStyle().cell.miniBarChartHeight;
+      const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
+      const stroke = attrs.fill ?? barChartFillColor;
+      const fill = attrs.fill ?? barChartFillColor;
+
+      this.conditionIntervalShape = renderRect(this, {
+        x: x + width * zero,
+        y: y + height / 2 - barChartHeight / 2,
+        width: width * (current - zero),
+        height: barChartHeight,
+        fill,
+        stroke,
+      });
     }
   }
 
@@ -341,7 +334,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     const crossBackgroundColor = this.getStyle().cell.crossBackgroundColor;
 
     let backgroundColor = this.getStyle().cell.backgroundColor;
-    let strokeColor = 'transparent';
+    const strokeColor = 'transparent';
     if (
       this.spreadsheet.isPivotMode() &&
       crossBackgroundColor &&
@@ -358,7 +351,6 @@ export class DataCell extends BaseCell<ViewMeta> {
       const attrs = this.mappingValue(bgCondition);
       if (attrs) {
         backgroundColor = attrs.fill;
-        strokeColor = attrs.fill;
       }
     }
     return { backgroundColor, strokeColor };
@@ -368,10 +360,8 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Draw cell background
    */
   protected drawBackgroundShape() {
-    const {
-      backgroundColor: fill,
-      strokeColor: stroke,
-    } = this.getBackgroundColor();
+    const { backgroundColor: fill, strokeColor: stroke } =
+      this.getBackgroundColor();
 
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
@@ -488,7 +478,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param condition
    */
   protected mappingValue(condition: Condition): MappingResult {
-    const value = (this.meta.fieldValue as unknown) as number;
+    const value = this.meta.fieldValue as unknown as number;
     return condition?.mapping(value, this.meta.data);
   }
 
@@ -506,7 +496,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         stateStyles.backgroundOpacity,
       );
       updateShapeAttr(
-        (this.conditionIconShape as unknown) as IShape,
+        this.conditionIconShape as unknown as IShape,
         SHAPE_STYLE_MAP.opacity,
         stateStyles.opacity,
       );
@@ -521,7 +511,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       1,
     );
     updateShapeAttr(
-      (this.conditionIconShape as unknown) as IShape,
+      this.conditionIconShape as unknown as IShape,
       SHAPE_STYLE_MAP.opacity,
       1,
     );
