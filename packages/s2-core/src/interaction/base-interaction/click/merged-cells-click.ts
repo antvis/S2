@@ -1,4 +1,4 @@
-import { BaseEvent, BaseEventImplement } from '../base-event';
+import { BaseEvent, BaseEventImplement } from '../../base-event';
 import { S2Event } from '@/common/constant';
 import { Event } from '@antv/g-canvas';
 

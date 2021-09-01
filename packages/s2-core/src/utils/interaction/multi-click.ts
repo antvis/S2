@@ -1,5 +1,4 @@
-import { InterceptEventType } from '@/common/constant';
-import { InteractionStateName } from '@/common/constant/interaction';
+import { InteractionStateName, InterceptType } from '@/common/constant';
 import { concat, isEmpty } from 'lodash';
 import { S2CellType, MultiClickProps } from '@/common/interface';
 import { Node } from '@/index';
@@ -14,13 +13,13 @@ export const handleRowColClick = (props: MultiClickProps) => {
   if (spreadsheet.interaction.isSelectedCell(cell)) {
     // 点击当前已选cell 则取消当前cell的选中状态
     spreadsheet.interaction.clearState();
-    spreadsheet.interaction.interceptEvent.clear();
+    spreadsheet.interaction.intercept.clear();
     spreadsheet.hideTooltip();
     return;
   }
 
   if (meta.x !== undefined) {
-    spreadsheet.interaction.interceptEvent.add(InterceptEventType.HOVER);
+    spreadsheet.interaction.intercept.add(InterceptType.HOVER);
     // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
     let leafNodes = isTreeRowClick
       ? Node.getAllLeavesOfNode(meta)
@@ -48,8 +47,8 @@ export const handleRowColClick = (props: MultiClickProps) => {
     });
 
     // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-    selectedCells.forEach((cell) => {
-      cell.update();
+    selectedCells.forEach((selectedCell) => {
+      selectedCell.update();
     });
     leafNodes.forEach((node) => {
       node?.belongsCell?.updateByState(
