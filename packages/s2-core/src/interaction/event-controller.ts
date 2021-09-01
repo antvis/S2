@@ -119,9 +119,7 @@ export class EventController {
       return;
     }
 
-    this.spreadsheet.interaction.clearState();
-    this.spreadsheet.hideTooltip();
-    this.spreadsheet.interaction.intercept.clear();
+    this.spreadsheet.interaction.reset();
   }
 
   private isMouseOnTheCanvasContainer(event: Event) {

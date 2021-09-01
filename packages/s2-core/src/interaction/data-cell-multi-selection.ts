@@ -4,9 +4,9 @@ import {
   InteractionStateName,
   S2Event,
 } from '@/common/constant';
-import { S2CellType, TooltipData } from '@/common/interface';
 import { Event } from '@antv/g-canvas';
-import { each, find, isEmpty, isEqual, concat } from 'lodash';
+import { isEmpty } from 'lodash';
+import { getActiveCellsTooltipData } from '@/utils/tooltip';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection
@@ -44,48 +44,26 @@ export class DataCellMultiSelection
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
-      const cell = this.spreadsheet.getCell(event.target) as S2CellType;
+      const cell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
+
       if (this.isMultiSelection && meta) {
-        const currentState = this.interaction.getState();
-        const stateName = currentState?.stateName;
-        const cells = isEmpty(currentState?.cells)
-          ? currentState?.cells
-          : concat(currentState?.cells, cell);
-        // 屏蔽hover和click
+        const activeCells = this.interaction.getActiveCells();
+        const cells = isEmpty(activeCells) ? [] : [...activeCells, cell];
+
         this.interaction.intercept.add(InterceptType.CLICK);
         this.interaction.intercept.add(InterceptType.HOVER);
-        // 先把之前的tooltip隐藏
+
         this.spreadsheet.hideTooltip();
         this.interaction.changeState({
           cells: cells,
           stateName: InteractionStateName.SELECTED,
         });
         this.interaction.updateCellStyleByState();
-
-        const cellInfos: TooltipData[] = [];
-        if (stateName === InteractionStateName.SELECTED) {
-          each(cells, (stateCell) => {
-            const valueInCols = this.spreadsheet.options.valueInCols;
-            const stateCellMeta = stateCell.getMeta();
-            if (!isEmpty(stateCellMeta)) {
-              const query =
-                stateCellMeta[valueInCols ? 'colQuery' : 'rowQuery'];
-              if (query) {
-                const cellInfo = {
-                  ...query,
-                  colIndex: valueInCols ? stateCellMeta.colIndex : null,
-                  rowIndex: !valueInCols ? stateCellMeta.rowIndex : null,
-                };
-
-                if (!find(cellInfos, (info) => isEqual(info, cellInfo))) {
-                  cellInfos.push(cellInfo);
-                }
-              }
-            }
-          });
-        }
-        this.spreadsheet.showTooltipWithInfo(event, cellInfos);
+        this.spreadsheet.showTooltipWithInfo(
+          event,
+          getActiveCellsTooltipData(this.spreadsheet),
+        );
       }
     });
   }
