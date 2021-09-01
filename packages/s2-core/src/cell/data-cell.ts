@@ -32,7 +32,16 @@ import {
 } from '@/utils/g-renders';
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
-import { find, first, get, includes, isEmpty, isEqual, map, min } from 'lodash';
+import {
+  clamp,
+  find,
+  first,
+  get,
+  includes,
+  isEmpty,
+  isEqual,
+  map,
+} from 'lodash';
 import { parseNumberWithPrecision } from './../utils/formatter';
 
 /**
@@ -266,7 +275,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param minValue in current field values
    * @param max in current field values
    */
-  getIntervalScale = (minValue = 0, maxValue = 0) => {
+  private getIntervalScale(minValue = 0, maxValue = 0) {
     minValue = parseNumberWithPrecision(minValue);
     maxValue = parseNumberWithPrecision(maxValue);
 
@@ -274,8 +283,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     const distance = maxValue - realMin || 1;
     return (current: number) =>
       // max percentage shouldn't be greater than 100%
-      min([(current - realMin) / distance, 1]);
-  };
+      // min percentage shouldn't be less than 0%
+      clamp((current - realMin) / distance, 0, 1);
+  }
 
   /**
    * Draw interval condition shape
@@ -297,14 +307,13 @@ export class DataCell extends BaseCell<ViewMeta> {
       const { minValue, maxValue } = attrs.isCompare
         ? attrs
         : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
-
       const scale = this.getIntervalScale(minValue, maxValue);
       const zero = scale(0); // 零点
+
       const fieldValue = parseNumberWithPrecision(
         this.meta.fieldValue as number,
       );
       const current = scale(fieldValue); // 当前数据点
-
       const barChartHeight = this.getStyle().cell.miniBarChartHeight;
       const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
       const stroke = attrs.fill ?? barChartFillColor;
