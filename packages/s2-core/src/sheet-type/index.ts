@@ -1,13 +1,9 @@
 import { BaseCell, DataCell, TableRowCell, TableDataCell } from '@/cell';
 import {
-  S2Event.AFTER_COLLAPSE_ROWS,
-  S2Event.COLLAPSE_ROWS,
-  S2Event.COLLAPSE_TREE_ROWS,
+  S2Event,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
   KEY_GROUP_PANEL_GROUND,
-  S2Event.TREE_ROWS_COLLAPSE_ALL,
-  KEY_UPDATE_PROPS,
 } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
@@ -562,7 +558,6 @@ export class SpreadSheet extends EE {
 
   protected bindEvents() {
     this.off(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS);
-    this.off(KEY_UPDATE_PROPS);
     this.off(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL);
     // collapse rows in tree mode of SpreadSheet
     this.on(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, (data) => {
