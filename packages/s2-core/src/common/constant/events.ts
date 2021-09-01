@@ -1,5 +1,3 @@
-export { InteractionEvent } from './interaction';
-
 // event keys
 export const KEY_LIST_SORT = 'spreadsheet:list-sort';
 export const KEY_COLLAPSE_TREE_ROWS = 'spreadsheet:collapsed-tree-rows';

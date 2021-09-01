@@ -198,6 +198,7 @@ export abstract class BaseFacet {
     this.adjustScrollOffset();
     this.renderHeaders();
     this.renderScrollBars();
+    this.renderBackground();
     this.dynamicRenderCell(false);
   }
 
@@ -918,9 +919,9 @@ export abstract class BaseFacet {
    * for now only delay, oppose to immediately
    * @private
    */
-  debounceRenderCell = debounce((scrollX: number, scrollY: number) => {
+  debounceRenderCell = (scrollX: number, scrollY: number) => {
     this.realCellRender(scrollX, scrollY);
-  });
+  };
 
   protected init(): void {
     // layout
@@ -936,6 +937,26 @@ export abstract class BaseFacet {
 
     this.clipPanelGroup();
     this.bindEvents();
+  }
+
+  protected renderBackground() {
+    const { width, height } = this.getCanvasHW();
+    const color = get(this.cfg, 'spreadsheet.theme.background.color') as string;
+    const opacity = get(
+      this.cfg,
+      'spreadsheet.theme.background.opacity',
+    ) as number;
+
+    this.backgroundGroup.addShape('rect', {
+      attrs: {
+        fill: color,
+        opacity,
+        x: 0,
+        y: 0,
+        width,
+        height,
+      },
+    });
   }
 
   /**

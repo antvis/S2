@@ -28,6 +28,11 @@ export interface Padding {
   bottom?: number;
   left?: number;
 }
+
+export interface Background {
+  opacity?: number;
+  color?: string;
+}
 export interface InteractionStateTheme {
   backgroundOpacity?: number;
   backgroundColor?: string;
@@ -162,6 +167,8 @@ export interface SpreadSheetTheme extends CellThemes {
   splitLine?: SplitLine;
   /* 刷选遮罩 */
   prepareSelectMask?: InteractionStateTheme;
+  /* 画布背景底色 */
+  background?: Background;
   /* 额外属性字段 */
   [key: string]: any;
 }
