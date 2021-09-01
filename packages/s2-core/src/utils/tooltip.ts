@@ -301,7 +301,7 @@ export const getSelectedCellIndexes = (
   const { cells = [], nodes = [] } = spreadsheet.interaction.getState() || {};
 
   if (cells?.[0]?.cellType === CellTypes.COL_CELL) {
-    return getRowOrColSelectedIndexes(nodes, rowLeafNodes);
+    return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);
   } else if (cells?.[0]?.cellType === CellTypes.ROW_CELL) {
     return getRowOrColSelectedIndexes(nodes, colLeafNodes);
   }
@@ -313,9 +313,9 @@ const getRowOrColSelectedIndexes = (nodes, leafNodes, isRow = true) => {
   const selectedIndexes = [];
   forEach(leafNodes, (leaf, index) => {
     forEach(nodes, (item) => {
-      if (isRow && item.colIndex !== -1) {
+      if (!isRow && item.colIndex !== -1) {
         selectedIndexes.push([index, item.colIndex]);
-      } else if (!isRow && item.rowIndex !== -1) {
+      } else if (isRow && item.rowIndex !== -1) {
         selectedIndexes.push([item.rowIndex, index]);
       }
     });
@@ -357,7 +357,6 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const summaries = [];
   const summary = {};
   const selectedCellsData = getSelectedCellsData(spreadsheet, options.showSingleTips);  // 拿到选择的所有data-cell的数据
-
   forEach(selectedCellsData, (item) => {
     if (summary[item[EXTRA_FIELD]]) {
       summary[item[EXTRA_FIELD]]?.push(item);
