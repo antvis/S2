@@ -24,7 +24,7 @@ export interface TooltipPosition {
 export type ListItem = {
   name: string;
   value: string | number;
-  icon?: string;ß
+  icon?: string;
 };
 
 export interface SortQuery {
@@ -112,7 +112,7 @@ export type DataParam = {
 };
 
 export interface SummaryParam extends DataParam {
-  cellInfo: TooltipDataItem;
+  cellInfos?: TooltipDataItem[];
 }
 
 export interface TooltipDataParam extends DataParam {
