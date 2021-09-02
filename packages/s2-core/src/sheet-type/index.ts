@@ -343,7 +343,7 @@ export class SpreadSheet extends EE {
   }
 
   public isColAdaptive(): boolean {
-    return this.options?.style?.colCfg?.colWidthType === 'adaptive';
+    return this.options.style.colCfg?.colWidthType === 'adaptive';
   }
 
   /**
@@ -385,7 +385,7 @@ export class SpreadSheet extends EE {
   }
 
   public getRealColumnSize(): number {
-    return size(this.dataCfg?.fields?.columns || []) + 1;
+    return size(this.dataCfg.fields?.columns || []) + 1;
   }
 
   /**
