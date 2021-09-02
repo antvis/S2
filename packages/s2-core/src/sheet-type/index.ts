@@ -25,7 +25,10 @@ import {
   Totals,
   ViewMeta,
 } from '@/common/interface';
-import { EmitterType } from '@/common/interface/emitter';
+import {
+  EmitterType,
+  RowCellCollapseTreeRowsType,
+} from '@/common/interface/emitter';
 import { Store } from '@/common/store';
 import { BaseDataSet, PivotDataSet, TableDataSet } from '@/data-set';
 import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
@@ -40,16 +43,7 @@ import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { getTooltipData } from '@/utils/tooltip';
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
-import {
-  clone,
-  get,
-  includes,
-  isEmpty,
-  isFunction,
-  isString,
-  merge,
-  set,
-} from 'lodash';
+import { clone, get, includes, isEmpty, isString, merge, size } from 'lodash';
 
 export class SpreadSheet extends EE {
   // dom id
@@ -223,18 +217,16 @@ export class SpreadSheet extends EE {
     }
   }
 
-  getDataSet = (options: S2Options): BaseDataSet => {
+  private getDataSet = (options: S2Options): BaseDataSet => {
     const { mode, dataSet, hierarchyType } = options;
     if (dataSet) {
       return dataSet(this);
     }
 
-    let realDataSet;
-    if (hierarchyType === 'customTree') {
-      realDataSet = new CustomTreePivotDataSet(this);
-    } else {
-      realDataSet = new PivotDataSet(this);
-    }
+    const realDataSet =
+      hierarchyType === 'customTree'
+        ? new CustomTreePivotDataSet(this)
+        : new PivotDataSet(this);
 
     return mode === 'table' ? new TableDataSet(this) : realDataSet;
   };
@@ -262,19 +254,16 @@ export class SpreadSheet extends EE {
     clearValueRangeState(this);
   }
 
-  public setOptions(options: S2Options) {
+  public setOptions(options: Partial<S2Options>) {
     this.hideTooltip();
     this.options = merge(this.options, options);
   }
 
-  public render(reloadData = true, callback?: () => void) {
+  public render(reloadData = true) {
     if (reloadData) {
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();
-    if (isFunction(callback)) {
-      callback();
-    }
   }
 
   public destroy() {
@@ -351,9 +340,7 @@ export class SpreadSheet extends EE {
   }
 
   public isColAdaptive(): boolean {
-    return (
-      get(this, 'options.style.colCfg.colWidthType', 'adaptive') === 'adaptive'
-    );
+    return this.options.style.colCfg?.colWidthType === 'adaptive';
   }
 
   /**
@@ -395,7 +382,7 @@ export class SpreadSheet extends EE {
   }
 
   public getRealColumnSize(): number {
-    return get(this, 'dataCfg.fields.columns', []).length + 1;
+    return size(this.dataCfg.fields?.columns || []) + 1;
   }
 
   /**
@@ -442,7 +429,7 @@ export class SpreadSheet extends EE {
   }
 
   public getTooltipDataItemMappingCallback() {
-    return get(this, 'options.mappingDisplayDataItem');
+    return this.options?.mappingDisplayDataItem;
   }
 
   // 获取当前cell实例
@@ -502,7 +489,7 @@ export class SpreadSheet extends EE {
    * @param options
    * @private
    */
-  protected initGroups(dom: HTMLElement, options: S2Options): void {
+  protected initGroups(dom: HTMLElement, options: S2Options) {
     const { width, height } = options;
 
     // base canvas group
@@ -532,7 +519,7 @@ export class SpreadSheet extends EE {
    * 避免每次新增、变更dataSet和options时，生成SpreadSheetFacetCfg
    * 要多出定义匹配的问题，直接按需&部分拆分options/dataSet合并为facetCfg
    */
-  getFacetCfgFromDataSetAndOptions = (): SpreadSheetFacetCfg => {
+  protected getFacetCfgFromDataSetAndOptions = (): SpreadSheetFacetCfg => {
     const { fields, meta } = this.dataSet;
     const { style, dataCell } = this.options;
     // 默认单元格实现
@@ -553,17 +540,16 @@ export class SpreadSheet extends EE {
       spreadsheet: this,
       dataSet: this.dataSet,
       dataCell: dataCell ?? defaultCell,
-    } as SpreadSheetFacetCfg;
+    };
   };
 
-  buildFacet = () => {
-    this.facet?.destroy();
+  protected buildFacet = () => {
     const facetCfg = this.getFacetCfgFromDataSetAndOptions();
-    if (this.isPivotMode()) {
-      this.facet = new PivotFacet(facetCfg);
-    } else {
-      this.facet = new TableFacet(facetCfg);
-    }
+    this.facet?.destroy();
+    this.facet = this.isPivotMode()
+      ? new PivotFacet(facetCfg)
+      : new TableFacet(facetCfg);
+
     this.facet.render();
   };
 
@@ -571,39 +557,45 @@ export class SpreadSheet extends EE {
     this.off(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS);
     this.off(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL);
     // collapse rows in tree mode of SpreadSheet
-    this.on(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, (data) => {
-      const { id, isCollapsed } = data;
-      const style = this.options.style;
-      const options = merge({}, this.options, {
-        style: {
-          ...style,
-          collapsedRows: {
-            [id]: isCollapsed,
-          },
-        },
-      });
-      // post to x-report to store state
-      this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
-        collapsedRows: options.style.collapsedRows,
-      });
-      this.setOptions(options);
-
-      this.render(false, () => {
-        this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
-          collapsedRows: options.style.collapsedRows,
-        });
-      });
-    });
+    this.on(
+      S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
+      this.handleRowCellCollapseTreeRows,
+    );
     // 收起、展开按钮
-    this.on(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, (isCollapse: boolean) => {
-      const options = {
-        ...this.options,
-        hierarchyCollapse: !isCollapse,
-      };
-      // 清空用户操作的缓存
-      set(options, 'style.collapsedRows', {});
-      this.setOptions(options);
-      this.render(false);
+    this.on(
+      S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
+      this.handleTreeRowsCollapseAll,
+    );
+  }
+
+  protected handleRowCellCollapseTreeRows(data: RowCellCollapseTreeRowsType) {
+    const { id, isCollapsed } = data;
+    const options: Partial<S2Options> = {
+      style: {
+        collapsedRows: {
+          [id]: isCollapsed,
+        },
+      },
+    };
+    // post to x-report to store state
+    this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
+      collapsedRows: options.style.collapsedRows,
     });
+    this.setOptions(options);
+    this.render(false);
+    this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
+      collapsedRows: options.style.collapsedRows,
+    });
+  }
+
+  protected handleTreeRowsCollapseAll(isCollapsed: boolean) {
+    const options: Partial<S2Options> = {
+      hierarchyCollapse: !isCollapsed,
+      style: {
+        collapsedRows: {}, // 清空用户操作的缓存
+      },
+    };
+    this.setOptions(options);
+    this.render(false);
   }
 }
