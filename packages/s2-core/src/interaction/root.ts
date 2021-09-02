@@ -245,13 +245,16 @@ export class RootInteraction {
     }
     this.clearState();
     this.setState(interactionStateInfo);
-    this.updatePanelAllCellsStyle();
+    this.updatePanelAllDataCells();
     this.draw();
   }
 
-  public updatePanelAllCellsStyle() {
-    const cells = this.getPanelGroupAllDataCells();
-    cells.forEach((cell: DataCell) => {
+  public updatePanelAllDataCells() {
+    this.updateCells(this.getPanelGroupAllDataCells());
+  }
+
+  public updateCells(cells: S2CellType[] = []) {
+    cells.forEach((cell) => {
       cell.update();
     });
   }

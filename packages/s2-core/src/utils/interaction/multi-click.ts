@@ -1,11 +1,20 @@
 import { InteractionStateName, InterceptType } from '@/common/constant';
 import { concat, isEmpty } from 'lodash';
-import { S2CellType, MultiClickProps } from '@/common/interface';
+import { S2CellType, MultiClickParams } from '@/common/interface';
 import { Node } from '@/index';
 import { mergeCellInfo } from '@/utils/tooltip';
 
-export const handleRowColClick = (props: MultiClickProps) => {
-  const { event, spreadsheet, isTreeRowClick, isMultiSelection } = props;
+export const handleRowColClick = ({
+  event,
+  spreadsheet,
+  isTreeRowClick,
+  isMultiSelection,
+}: MultiClickParams) => {
+  event.stopPropagation();
+
+  if (spreadsheet.interaction.intercept.has(InterceptType.CLICK)) {
+    return;
+  }
 
   const { interaction } = spreadsheet;
   const lastState = interaction.getState();
@@ -21,14 +30,11 @@ export const handleRowColClick = (props: MultiClickProps) => {
     interaction.intercept.add(InterceptType.HOVER);
     // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
     let leafNodes = isTreeRowClick
-      ? Node.getAllLeavesOfNode(meta)
+      ? [meta, ...Node.getAllLeavesOfNode(meta)]
       : Node.getAllChildrenNode(meta);
     let selectedCells: S2CellType[] = [cell];
 
-    if (
-      isMultiSelection &&
-      lastState.stateName === InteractionStateName.SELECTED
-    ) {
+    if (isMultiSelection && interaction.isSelectedState()) {
       selectedCells = isEmpty(lastState?.cells)
         ? selectedCells
         : concat(lastState?.cells, selectedCells);
@@ -46,9 +52,7 @@ export const handleRowColClick = (props: MultiClickProps) => {
     });
 
     // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-    selectedCells.forEach((selectedCell) => {
-      selectedCell.update();
-    });
+    interaction.updateCells(selectedCells);
 
     leafNodes.forEach((node) => {
       node?.belongsCell?.updateByState(

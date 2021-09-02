@@ -323,7 +323,7 @@ export class PivotFacet extends BaseFacet {
       }
     }
 
-    // 2、calculate node's height & y（leaf nodes）, x-coordinate & width(all nodes), height & y (not-leaf), 
+    // 2、calculate node's height & y（leaf nodes）, x-coordinate & width(all nodes), height & y (not-leaf),
     let preLeafNode = Node.blankNode();
     const allNodes = rowsHierarchy.getNodes();
     for (let i = 0; i < allNodes.length; i++) {
@@ -332,7 +332,8 @@ export class PivotFacet extends BaseFacet {
       const isLeaf = isTree || (!isTree && currentNode.isLeaf);
       if (isLeaf) {
         // leaf node
-        currentNode.colIndex = i;
+        currentNode.rowIndex ??= i;
+        currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
         currentNode.height =
           cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;

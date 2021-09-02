@@ -39,12 +39,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
-      event.stopPropagation();
-      if (this.interaction.intercept.has(InterceptType.CLICK)) {
-        return;
-      }
       handleRowColClick({
-        event: event,
+        event,
         spreadsheet: this.spreadsheet,
         isTreeRowClick: this.spreadsheet.isHierarchyTreeType(),
         isMultiSelection: this.isMultiSelection,
@@ -54,12 +50,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
   private bindColCellClick() {
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
-      event.stopPropagation();
-      if (this.interaction.intercept.has(InterceptType.CLICK)) {
-        return;
-      }
       handleRowColClick({
-        event: event,
+        event,
         spreadsheet: this.spreadsheet,
         isTreeRowClick: false,
         isMultiSelection: this.isMultiSelection,

@@ -39,14 +39,6 @@ const getDataCfg = (): S2DataConfig => {
       rows: ['area', 'province', 'city'],
       columns: ['type', 'sub_type'],
       values: ['profit', 'count'],
-      // TODO: 这个 extra 感觉不应该放在 data cfg 里面, 目前看来就是用于自定义 tooltip @蒺藜
-      extra: [
-        {
-          field: 'type',
-          value: '办公用品',
-          tips: '说明：这是办公用品的说明',
-        },
-      ],
       valueInCols: true,
     },
     meta: [
@@ -80,7 +72,7 @@ const getOptions = (): S2Options => {
     debug: true,
     width: 800,
     height: 600,
-    hierarchyType: 'grid',
+    hierarchyType: 'tree',
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: false,
@@ -184,7 +176,7 @@ function MainLayout(props) {
         <Switch
           checkedChildren="树形"
           unCheckedChildren="平铺"
-          defaultChecked={false}
+          defaultChecked={options.hierarchyType === 'tree'}
           onChange={onHierarchyTypeCheckChanged}
         />
         <Switch
