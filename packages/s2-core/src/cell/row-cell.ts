@@ -161,7 +161,7 @@ export class RowCell extends HeaderCell {
 
   // draw text
   protected drawTextShape() {
-    const { linkFieldIds = [] } = this.headerConfig;
+    const linkFieldIds = this.headerConfig?.linkFieldIds || [];
     const { fill, linkTextFill } = this.getTextStyle();
 
     super.drawTextShape();

@@ -133,7 +133,8 @@ export class Node {
       return leaves;
     }
     // current root node children
-    const nodes = node.children.slice(0);
+    const nodes = node.children?.slice(0);
+    if (!nodes) return [];
     let current = nodes.shift();
     while (current) {
       if (current.isLeaf) {
@@ -164,7 +165,8 @@ export class Node {
       return [node];
     }
     // current root node children
-    const nodes = node.children.slice(0);
+    const nodes = node.children?.slice(0);
+    if (!nodes) return [];
     let current = nodes.shift();
     while (current) {
       all.push(current);
