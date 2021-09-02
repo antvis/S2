@@ -72,7 +72,7 @@ const getOptions = (): S2Options => {
     debug: true,
     width: 800,
     height: 600,
-    hierarchyType: 'tree',
+    hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: false,
