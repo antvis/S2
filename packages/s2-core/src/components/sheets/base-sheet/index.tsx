@@ -26,6 +26,8 @@ import { EmitterType } from '@/common/interface/emitter';
 
 import './index.less';
 
+// TODO: 组件层需要完全重构, 各种更新太乱了
+
 export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
     spreadsheet,
@@ -352,7 +354,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   }, [dataCfg]);
 
   useEffect(() => {
-    update(setOptions, false);
+    update(setOptions);
   }, [options]);
 
   useEffect(() => {

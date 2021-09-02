@@ -32,13 +32,14 @@ const getSpreadSheet = (
   return new SpreadSheet(dom, dataCfg, options);
 };
 
-const getDataCfg = () => {
+const getDataCfg = (): S2DataConfig => {
   return {
     fields: {
       // rows has value
       rows: ['area', 'province', 'city'],
       columns: ['type', 'sub_type'],
       values: ['profit', 'count'],
+      // TODO: 这个 extra 感觉不应该放在 data cfg 里面, 目前看来就是用于自定义 tooltip @蒺藜
       extra: [
         {
           field: 'type',
@@ -46,6 +47,7 @@ const getDataCfg = () => {
           tips: '说明：这是办公用品的说明',
         },
       ],
+      valueInCols: true,
     },
     meta: [
       {
@@ -83,7 +85,6 @@ const getOptions = (): S2Options => {
     showSeriesNumber: true,
     freezeRowHeader: false,
     mode: 'pivot',
-    valueInCols: true,
     conditions: {
       text: [],
       interval: [],
@@ -120,7 +121,7 @@ const getOptions = (): S2Options => {
 
 function MainLayout(props) {
   const [options, setOptions] = React.useState<S2Options>(props.options);
-  const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
+  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(props.dataCfg);
   const [render, setRender] = React.useState(true);
   const [valueInCols, setValueInCols] = React.useState(true);
   const [showPagination, setShowPagination] = React.useState(false);
@@ -134,7 +135,7 @@ function MainLayout(props) {
 
   const onValueInColsCheckChanged = (checked: boolean) => {
     setValueInCols(checked);
-    updateOptions({ valueInCols: checked });
+    setDataCfg(merge({}, dataCfg, { fields: { valueInCols: checked } }));
   };
 
   const onHierarchyTypeCheckChanged = (checked: boolean) => {
@@ -170,8 +171,8 @@ function MainLayout(props) {
     <div>
       <Space size="middle" style={{ marginBottom: 20 }}>
         <Switch
-          checkedChildren="挂列头"
-          unCheckedChildren="挂行头"
+          checkedChildren="数值置于列头"
+          unCheckedChildren="数值置于行头"
           defaultChecked={valueInCols}
           onChange={onValueInColsCheckChanged}
           style={{ marginRight: 10 }}
@@ -211,12 +212,6 @@ function MainLayout(props) {
           onChange={onToggleRender}
         />
 
-        <Checkbox
-          onChange={onFreezeRowHeaderCheckChanged}
-          defaultChecked={freezeRowHeader}
-        >
-          冻结行头
-        </Checkbox>
         <Switch
           checkedChildren="tooltip打开"
           unCheckedChildren="tooltip关闭"
@@ -227,6 +222,12 @@ function MainLayout(props) {
             });
           }}
         />
+        <Checkbox
+          onChange={onFreezeRowHeaderCheckChanged}
+          defaultChecked={freezeRowHeader}
+        >
+          冻结行头
+        </Checkbox>
       </Space>
       {render && (
         <SheetComponent

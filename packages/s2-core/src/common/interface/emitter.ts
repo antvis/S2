@@ -17,6 +17,12 @@ type SortParams = {
   compareFunc?: (data: Data) => DataItem;
 };
 
+export type RowCellCollapseTreeRowsType = {
+  id: string;
+  isCollapsed: boolean;
+  node: Node;
+};
+
 type CanvasEventHandler = (event: CanvasEvent) => void;
 
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
@@ -67,11 +73,9 @@ export interface EmitterType {
   [S2Event.CORNER_CELL_MOUSE_UP]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_MOUSE_UP]: CanvasEventHandler;
 
-  [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (data: {
-    id: string;
-    isCollapsed: boolean;
-    node: Node;
-  }) => void;
+  [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (
+    data: RowCellCollapseTreeRowsType,
+  ) => void;
 
   [S2Event.LAYOUT_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
   [S2Event.LAYOUT_AFTER_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
