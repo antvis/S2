@@ -374,7 +374,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
       value = currentFormatter(dataSum);
     }
     summaries.push({
-      selectedData: selected as any,
+      selectedData: selected as unknown,
       name,
       value,
     });
