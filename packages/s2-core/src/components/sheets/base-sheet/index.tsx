@@ -354,7 +354,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   }, [dataCfg]);
 
   useEffect(() => {
-    update(setOptions);
+    update(setOptions, false);
   }, [options]);
 
   useEffect(() => {
