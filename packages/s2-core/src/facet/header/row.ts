@@ -48,8 +48,8 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     this.addShape('rect', {
       attrs: {
         x: 0,
-        y: scrollY,
-        width: scrollX + width,
+        y: 0,
+        width,
         height,
         fill: rowCellTheme.backgroundColor,
         stroke: 'transparent',
@@ -103,6 +103,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       scrollY,
       seriesNumberWidth,
     } = this.headerConfig;
+    console.log(scrollX, seriesNumberWidth);
     this.setClip({
       type: 'rect',
       attrs: {
