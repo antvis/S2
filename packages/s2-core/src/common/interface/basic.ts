@@ -28,13 +28,13 @@ export type Aggregation = 'SUM' | 'AVG' | 'MIN' | 'MAX';
 export type SortMethod = 'ASC' | 'DESC';
 
 export interface Meta {
-  field: string; // 字段 id
-  name?: string; // 字段名称
+  readonly field: string; // 字段 id
+  readonly name?: string; // 字段名称
   // 格式化
   // 数值字段：一般用于格式化数字带戴维
   // 文本字段：一般用于做字段枚举值的别名
-  formatter?: Formatter;
-  aggregation?: Aggregation;
+  readonly formatter?: Formatter;
+  readonly aggregation?: Aggregation;
 }
 
 /**
@@ -105,23 +105,23 @@ export interface Total {
  * 但是内部配置我倾向于仍然按照字段所属维度区，即配置的row，代表的是行维度而不是行小计
  */
 export interface Totals {
-  row?: Partial<Readonly<Total>>;
-  col?: Partial<Readonly<Total>>;
+  readonly row?: Partial<Readonly<Total>>;
+  readonly col?: Partial<Readonly<Total>>;
 }
 
 export interface Tooltip {
-  showTooltip?: boolean;
-  showOperation?: boolean;
-  showSummary?: boolean;
-  showDetail?: boolean;
-  showInfos?: boolean;
-  row?: Tooltip;
-  col?: Tooltip;
-  cell?: Tooltip;
+  readonly showTooltip?: boolean;
+  readonly showOperation?: boolean;
+  readonly showSummary?: boolean;
+  readonly showDetail?: boolean;
+  readonly showInfos?: boolean;
+  readonly row?: Tooltip;
+  readonly col?: Tooltip;
+  readonly cell?: Tooltip;
   // custom tooltips
-  renderTooltip?: RenderTooltip;
+  readonly renderTooltip?: RenderTooltip;
   // replace the whole default tooltip component
-  tooltipComponent?: JSX.Element;
+  readonly tooltipComponent?: JSX.Element;
 }
 
 export interface Sort {
@@ -149,15 +149,15 @@ export type SortParams = SortParam[];
 
 export interface Style {
   // row cell's height in tree mode
-  treeRowsWidth?: number;
+  readonly treeRowsWidth?: number;
   // row header in tree mode collapse some nodes
-  collapsedRows?: Record<string, boolean>;
+  readonly collapsedRows?: Record<string, boolean>;
   // col header collapse nodes
-  collapsedCols?: Record<string, boolean>;
-  cellCfg?: CellCfg;
-  colCfg?: ColCfg;
-  rowCfg?: RowCfg;
-  device?: 'pc' | 'mobile'; // 设备，pc || mobile
+  readonly collapsedCols?: Record<string, boolean>;
+  readonly cellCfg?: CellCfg;
+  readonly colCfg?: ColCfg;
+  readonly rowCfg?: RowCfg;
+  readonly device?: 'pc' | 'mobile'; // 设备，pc || mobile
 }
 
 export type Pagination = {
