@@ -96,7 +96,6 @@ describe('Cross Table Core Data Process', () => {
     const { rowsHierarchy, colsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } = ss.facet.layoutResult;
     const { cellCfg, rowCfg, colCfg } = get(ss, 'facet.cfg');
     test('should calc correct row & cell width', () => {
-      
       expect(cellCfg.width).toEqual(Math.max(style.cellCfg.width, width / (size(fields.rows) + size(colLeafNodes))));
       expect(rowCfg.width).toEqual(Math.max(style.cellCfg.width, width / (size(fields.rows) + size(colLeafNodes))));
     });
