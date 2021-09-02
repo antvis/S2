@@ -490,16 +490,18 @@ export class DataCell extends BaseCell<ViewMeta> {
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
       );
-      updateShapeAttr(
-        this.conditionIntervalShape,
-        SHAPE_STYLE_MAP.backgroundOpacity,
-        stateStyles.backgroundOpacity,
-      );
-      updateShapeAttr(
-        this.conditionIconShape as unknown as IShape,
-        SHAPE_STYLE_MAP.opacity,
-        stateStyles.opacity,
-      );
+      if (stateStyles) {
+        updateShapeAttr(
+          this.conditionIntervalShape,
+          SHAPE_STYLE_MAP.backgroundOpacity,
+          stateStyles.backgroundOpacity,
+        );
+        updateShapeAttr(
+          this.conditionIconShape as unknown as IShape,
+          SHAPE_STYLE_MAP.opacity,
+          stateStyles.opacity,
+        );
+      }
     }
   }
 

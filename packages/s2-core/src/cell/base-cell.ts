@@ -35,6 +35,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // text control shape
   protected textShape: IShape;
 
+  // link text underline shape
+  protected linkFieldShape: IShape;
+
   // actual text width after be ellipsis
   protected actualTextWidth = 0;
 
@@ -154,7 +157,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         fillColor = linkFillColor;
       } else {
         const { minX, maxX, maxY }: BBox = this.textShape.getBBox();
-        renderLine(
+        this.linkFieldShape = renderLine(
           this,
           {
             x1: minX,
@@ -213,5 +216,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   public clearUnselectedState() {
     updateShapeAttr(this.backgroundShape, SHAPE_STYLE_MAP.backgroundOpacity, 1);
     updateShapeAttr(this.textShape, SHAPE_STYLE_MAP.textOpacity, 1);
+    updateShapeAttr(this.linkFieldShape, SHAPE_STYLE_MAP.opacity, 1);
   }
 }

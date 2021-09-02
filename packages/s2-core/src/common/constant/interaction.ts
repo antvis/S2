@@ -44,6 +44,7 @@ export const SHAPE_STYLE_MAP = {
 // 设置属性的时候实际对应改变的shape映射
 export const SHAPE_ATTRS_MAP = {
   textShape: ['textOpacity'],
+  linkFieldShape: ['opacity'],
   backgroundShape: ['backgroundOpacity'],
   interactiveBgShape: ['backgroundColor', 'backgroundOpacity'],
   interactiveBorderShape: ['borderColor', 'borderOpacity'],
