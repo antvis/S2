@@ -20,12 +20,13 @@ import {
   LayoutHierarchy,
 } from '@/common/interface/hooks';
 import { merge } from 'lodash';
-import { TREE_ROW_DEFAULT_WIDTH } from 'src/common/constant';
-import { BaseDataSet } from 'src/data-set';
-import { Node } from 'src/facet/layout/node';
-import { SpreadSheet } from 'src/sheet-type';
+import { TREE_ROW_DEFAULT_WIDTH } from '@/common/constant';
+import { BaseDataSet } from '@/data-set';
+import { SpreadSheet } from '@/sheet-type';
+import { Node } from '@/facet/layout/node';
 import { FilterDataItemCallback } from './basic';
 import { Conditions } from './condition';
+import { CustomInteraction } from './interaction';
 
 export interface S2PartialOptions {
   // canvas's width
@@ -89,11 +90,11 @@ export interface S2PartialOptions {
   readonly frame?: FrameCallback;
   // custom corner header
   readonly cornerHeader?: CornerHeaderCallback;
-
   // the collection of row id and column id of cells which to be merged
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // enable Command + C to copy spread data
   readonly enableCopy?: boolean;
+
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
   // eg: add/delete some nodes in specified position
@@ -118,7 +119,9 @@ export interface S2PartialOptions {
     rowNode: Node,
     colNode: Node,
   ) => void;
-  /** ***********CUSTOM LAYOUT HOOKS**************** */
+  /** ***********CUSTOM INTERACTION HOOKS**************** */
+  // register custom interactions
+  customInteractions?: CustomInteraction[];
   // extra options if needed
   [key: string]: unknown;
 }

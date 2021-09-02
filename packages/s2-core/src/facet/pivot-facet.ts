@@ -16,8 +16,7 @@ import {
 import {
   EXTRA_FIELD,
   ICON_RADIUS,
-  KEY_COL_NODE_BORDER_REACHED,
-  KEY_ROW_NODE_BORDER_REACHED,
+  S2Event,
   VALUE_FIELD,
 } from 'src/common/constant';
 import { DebuggerUtil } from 'src/common/debug';
@@ -158,7 +157,7 @@ export class PivotFacet extends BaseFacet {
           colId: colNode.id,
         }),
       );
-      this.spreadsheet.emit(KEY_COL_NODE_BORDER_REACHED, colNode);
+      this.spreadsheet.emit(S2Event.LAYOUT_COL_NODE_BORDER_REACHED, colNode);
     }
     if (rowNode && reachedBorderId.rowId !== rowNode.id) {
       this.spreadsheet.store.set(
@@ -167,7 +166,7 @@ export class PivotFacet extends BaseFacet {
           rowId: rowNode.id,
         }),
       );
-      this.spreadsheet.emit(KEY_ROW_NODE_BORDER_REACHED, rowNode);
+      this.spreadsheet.emit(S2Event.LAYOUT_ROW_NODE_BORDER_REACHED, rowNode);
     }
   }
 
@@ -271,13 +270,13 @@ export class PivotFacet extends BaseFacet {
       colWidth = userDragWidth;
     } else if (cellCfg.width === -1) {
       // compat
-      const datas = dataSet.getMultiData(
+      const multiData = dataSet.getMultiData(
         col.query,
         col.isTotals || col.isTotalMeasure,
       );
       const colLabel = col.label;
       // will deal with real width calculation in multiple values render pr
-      const allLabels = datas
+      const allLabels = multiData
         .map((data) => `${handleDataItem(data, filterDisplayDataItem)}`)
         ?.slice(0, 50);
       allLabels.push(colLabel);
@@ -333,7 +332,7 @@ export class PivotFacet extends BaseFacet {
       }
     }
 
-    // 2、calculate node's height（leaf nodes）, width(all nodes), y coordinate
+    // 2、calculate node's height & y（leaf nodes）, x-coordinate & width(all nodes), height & y (not-leaf),
     let preLeafNode = Node.blankNode();
     const allNodes = rowsHierarchy.getNodes();
     for (let i = 0; i < allNodes.length; i++) {
@@ -461,7 +460,7 @@ export class PivotFacet extends BaseFacet {
         colWidth = this.getColWidthAdaptGrid(colLeafNodes);
       }
     } else {
-      // compat cell width
+      // compact cell width
       colWidth = -1;
     }
     // row width use rowCfg.width as width

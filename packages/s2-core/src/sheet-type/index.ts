@@ -1,8 +1,5 @@
-import { BaseCell, DataCell, TableRowCell, TableDataCell } from '@/cell';
+import { BaseCell, DataCell, TableDataCell, TableRowCell } from '@/cell';
 import {
-  KEY_AFTER_COLLAPSE_ROWS,
-  KEY_COLLAPSE_ROWS,
-  KEY_COLLAPSE_TREE_ROWS,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
   KEY_GROUP_PANEL_GROUND,
@@ -13,8 +10,7 @@ import {
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
   KEY_GROUP_PANEL_FROZEN_TOP,
   KEY_GROUP_PANEL_FROZEN_BOTTOM,
-  KEY_TREE_ROWS_COLLAPSE_ALL,
-  KEY_UPDATE_PROPS,
+  S2Event,
 } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
@@ -36,13 +32,19 @@ import {
   Totals,
   ViewMeta,
 } from '@/common/interface';
+import { EmitterType } from '@/common/interface/emitter';
+import { Store } from '@/common/store';
 import { BaseDataSet, PivotDataSet, TableDataSet } from '@/data-set';
 import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
 import { BaseFacet, PivotFacet, TableFacet } from '@/facet';
 import { Node, SpreadSheetTheme } from '@/index';
+import { RootInteraction } from '@/interaction/root';
 import { getTheme } from '@/theme';
-import { BaseTooltip } from '@/tooltip';
-import { updateConditionsByValues } from '@/utils/condition';
+import { HdAdapter } from '@/ui/hd-adapter';
+import { BaseTooltip } from '@/ui/tooltip';
+import { updateConditionsByValues } from '@/utils/condition/generate-condition';
+import { clearValueRangeState } from '@/utils/condition/state-controller';
+import { getTooltipData } from '@/utils/tooltip';
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import {
@@ -55,11 +57,6 @@ import {
   merge,
   set,
 } from 'lodash';
-import { Store } from '@/common/store';
-import { HdAdapter } from '@/hd-adapter';
-import { RootInteraction } from '@/interaction/root';
-import { getTooltipData } from '@/utils/tooltip';
-import { EmitterType } from '@/common/interface/emitter';
 
 export class SpreadSheet extends EE {
   // dom id
@@ -153,6 +150,7 @@ export class SpreadSheet extends EE {
     this.initGroups(this.dom, this.options);
     this.bindEvents();
     this.initInteraction();
+    this.initTheme();
     this.initHdAdapter();
 
     DebuggerUtil.getInstance().setDebug(options?.debug);
@@ -160,6 +158,13 @@ export class SpreadSheet extends EE {
 
   get isShowTooltip() {
     return this.options?.tooltip?.showTooltip;
+  }
+
+  private initTheme() {
+    // When calling spreadsheet directly, there is no theme and initialization is required
+    this.setThemeCfg({
+      name: 'default',
+    });
   }
 
   private getMountContainer(dom: S2MountContainer) {
@@ -273,6 +278,8 @@ export class SpreadSheet extends EE {
     const { sortParams } = newDataCfg;
     newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
     this.dataCfg = newDataCfg;
+    // clear value ranger after each updated data cfg
+    clearValueRangeState(this);
   }
 
   public setOptions(options: S2Options) {
@@ -613,11 +620,10 @@ export class SpreadSheet extends EE {
   };
 
   protected bindEvents() {
-    this.off(KEY_COLLAPSE_TREE_ROWS);
-    this.off(KEY_UPDATE_PROPS);
-    this.off(KEY_TREE_ROWS_COLLAPSE_ALL);
+    this.off(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS);
+    this.off(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL);
     // collapse rows in tree mode of SpreadSheet
-    this.on(KEY_COLLAPSE_TREE_ROWS, (data) => {
+    this.on(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, (data) => {
       const { id, isCollapsed } = data;
       const style = this.options.style;
       const options = merge({}, this.options, {
@@ -629,19 +635,19 @@ export class SpreadSheet extends EE {
         },
       });
       // post to x-report to store state
-      this.emit(KEY_COLLAPSE_ROWS, {
+      this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
         collapsedRows: options.style.collapsedRows,
       });
       this.setOptions(options);
 
       this.render(false, () => {
-        this.emit(KEY_AFTER_COLLAPSE_ROWS, {
+        this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
           collapsedRows: options.style.collapsedRows,
         });
       });
     });
     // 收起、展开按钮
-    this.on(KEY_TREE_ROWS_COLLAPSE_ALL, (isCollapse: boolean) => {
+    this.on(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL, (isCollapse: boolean) => {
       const options = {
         ...this.options,
         hierarchyCollapse: !isCollapse,

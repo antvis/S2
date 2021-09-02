@@ -25,6 +25,7 @@ import {
   keys,
   values,
   has,
+  forEach,
 } from 'lodash';
 import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from 'src/common/debug';
 import { Node } from '@/facet/layout/node';
@@ -336,9 +337,9 @@ export class PivotDataSet extends BaseDataSet {
     // 增加，而且双层循环的效率也随着而降低效率
     const multiValueTransform = (originData: Data[]) => {
       const transformedData = [];
-      originData?.forEach((datum) => {
+      forEach(originData, (datum) => {
         if (!isEmpty(values)) {
-          values.forEach((vi) => {
+          forEach(values, (vi) => {
             transformedData.push({
               ...datum,
               [EXTRA_FIELD]: vi,

@@ -114,10 +114,26 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       cornerWidth,
       width,
       scrollX,
+      height,
     } = this.headerConfig;
     const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
-
     const colLength = spreadsheet?.facet.layoutResult.colLeafNodes.length;
+
+    const colCellTheme = this.cfg.spreadsheet.theme.colCell.cell;
+    // draw the background
+
+    this.addShape('rect', {
+      attrs: {
+        x: scrollX,
+        y: 0,
+        width,
+        height,
+        fill: colCellTheme.backgroundColor,
+        stroke: 'transparent',
+        opacity: colCellTheme.backgroundColorOpacity,
+      },
+    });
+
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
     const colCellInRect = (item: Node): boolean => {

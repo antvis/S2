@@ -43,6 +43,19 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       scrollY,
       scrollX,
     } = this.headerConfig;
+    const rowCellTheme = this.cfg.spreadsheet.theme.rowCell.cell;
+    // draw the background
+    this.addShape('rect', {
+      attrs: {
+        x: 0,
+        y: scrollY,
+        width: scrollX + width,
+        height,
+        fill: rowCellTheme.backgroundColor,
+        stroke: 'transparent',
+        opacity: rowCellTheme.backgroundColorOpacity,
+      },
+    });
     const rowCell = spreadsheet?.facet?.cfg?.rowCell;
     // row'cell only show when visible
     const rowCellInRect = (item: Node): boolean => {
@@ -70,16 +83,6 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         this.add(cell);
       }
     });
-
-    // this.addShape('rect', {
-    //   attrs: {
-    //     x: 0,
-    //     y: scrollY,
-    //     width: scrollX + width,
-    //     height,
-    //     fill: '#0ff'
-    //   }
-    // });
   }
 
   protected offset() {

@@ -63,7 +63,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       seriesNumberWidth,
       ss,
     );
-
     return new CornerHeader({
       data: cornerNodes,
       position: { x: cornerBBox.x, y: cornerBBox.y },
@@ -139,7 +138,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         });
         cNode.x = position.x + seriesNumberWidth;
         cNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
-        cNode.width = width;
+        // cNode should subtract series width
+        cNode.width = width - seriesNumberWidth;
         cNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
         cNode.seriesNumberWidth = seriesNumberWidth;
         cNode.isPivotMode = isPivotMode;

@@ -1,9 +1,5 @@
 import { LayoutResult, ViewMeta } from 'src/common/interface';
-import {
-  KEY_LIST_SORT,
-  S2Event,
-  SERIES_NUMBER_FIELD,
-} from 'src/common/constant';
+import { S2Event, SERIES_NUMBER_FIELD } from 'src/common/constant';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
@@ -17,7 +13,7 @@ export class TableFacet extends BaseFacet {
   public constructor(props) {
     super(props);
     const s2 = this.spreadsheet;
-    s2.on(KEY_LIST_SORT, ({ sortKey, sortMethod }) => {
+    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
       const sortInfo = {
         sortKey,
         sortMethod,
@@ -37,7 +33,7 @@ export class TableFacet extends BaseFacet {
 
   public destroy() {
     super.destroy();
-    this.spreadsheet.off(KEY_LIST_SORT);
+    this.spreadsheet.off(S2Event.RANGE_SORT);
   }
 
   protected doLayout(): LayoutResult {
@@ -64,12 +60,7 @@ export class TableFacet extends BaseFacet {
       facetCfg: this.cfg,
     });
 
-    this.calculateNodesCoordinate(
-      rowLeafNodes,
-      rowsHierarchy,
-      colLeafNodes,
-      colsHierarchy,
-    );
+    this.calculateNodesCoordinate(colLeafNodes, colsHierarchy);
 
     const getCellMeta = (rowIndex: number, colIndex: number) => {
       const showSeriesNumber = this.getSeriesNumberWidth() > 0;
@@ -144,7 +135,7 @@ export class TableFacet extends BaseFacet {
       colsHierarchy,
       rowNodes: rowsHierarchy.getNodes(),
       rowsHierarchy,
-      rowLeafNodes,
+      rowLeafNodes: rowsHierarchy.getLeaves(),
       colLeafNodes,
       getCellMeta,
       spreadsheet,
@@ -154,8 +145,6 @@ export class TableFacet extends BaseFacet {
   }
 
   private calculateNodesCoordinate(
-    rowLeafNodes: Node[],
-    rowsHierarchy: Hierarchy,
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {

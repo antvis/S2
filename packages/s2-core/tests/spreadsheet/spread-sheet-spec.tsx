@@ -1,12 +1,11 @@
 import { Checkbox, Space, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import { clone, merge, omit } from 'lodash';
+import { merge, omit } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import {
-  auto,
   S2DataConfig,
   S2Options,
   SheetComponent,
@@ -81,7 +80,7 @@ const getOptions = (): S2Options => {
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
-    showSeriesNumber: true,
+    showSeriesNumber: false,
     freezeRowHeader: false,
     mode: 'pivot',
     valueInCols: true,
@@ -133,16 +132,21 @@ function MainLayout(props) {
     setOptions(merge({}, options, updatedOptions));
   };
 
-  const onCheckChanged = (checked: boolean) => {
-    setValueInCols(checked);
-    updateOptions({ valueInCols: checked });
+  const onValueInColsCheckChanged = (checked: boolean) => {
+    setDataCfg(
+      merge({}, dataCfg, {
+        fields: {
+          valueInCols: checked,
+        },
+      }),
+    );
   };
 
-  const onCheckChanged1 = (checked: boolean) => {
+  const onHierarchyTypeCheckChanged = (checked: boolean) => {
     updateOptions({ hierarchyType: checked ? 'tree' : 'grid' });
   };
 
-  const onCheckChanged2 = (checked: boolean) => {
+  const onPaginationCheckChanged = (checked: boolean) => {
     setShowPagination(checked);
     if (checked) {
       setOptions(
@@ -158,7 +162,7 @@ function MainLayout(props) {
     }
   };
 
-  const onCheckChanged3 = (e: CheckboxChangeEvent) => {
+  const onFreezeRowHeaderCheckChanged = (e: CheckboxChangeEvent) => {
     updateOptions({ freezeRowHeader: e.target.checked });
     setFreezeRowHeader(e.target.checked);
   };
@@ -174,20 +178,20 @@ function MainLayout(props) {
           checkedChildren="挂列头"
           unCheckedChildren="挂行头"
           defaultChecked={valueInCols}
-          onChange={onCheckChanged}
+          onChange={onValueInColsCheckChanged}
           style={{ marginRight: 10 }}
         />
         <Switch
           checkedChildren="树形"
           unCheckedChildren="平铺"
           defaultChecked={false}
-          onChange={onCheckChanged1}
+          onChange={onHierarchyTypeCheckChanged}
         />
         <Switch
           checkedChildren="分页"
           unCheckedChildren="不分页"
           defaultChecked={showPagination}
-          onChange={onCheckChanged2}
+          onChange={onPaginationCheckChanged}
         />
         <Switch
           checkedChildren="选中聚光灯开"
@@ -205,7 +209,17 @@ function MainLayout(props) {
             updateOptions({ hoverHighlight: checked });
           }}
         />
-        <Checkbox onChange={onCheckChanged3} defaultChecked={freezeRowHeader}>
+        <Switch
+          checkedChildren="渲染组件"
+          unCheckedChildren="卸载组件"
+          defaultChecked={render}
+          onChange={onToggleRender}
+        />
+
+        <Checkbox
+          onChange={onFreezeRowHeaderCheckChanged}
+          defaultChecked={freezeRowHeader}
+        >
           冻结行头
         </Checkbox>
         <Switch

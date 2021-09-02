@@ -2,7 +2,7 @@ import {
   CellTypes,
   COLOR_DEFAULT_RESIZER,
   ID_SEPARATOR,
-  KEY_COLLAPSE_TREE_ROWS,
+  S2Event,
   KEY_GROUP_ROW_RESIZER,
 } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
@@ -126,7 +126,7 @@ export class RowCell extends HeaderCell {
             );
           }
         }
-        this.spreadsheet.emit(KEY_COLLAPSE_TREE_ROWS, {
+        this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
           id,
           isCollapsed: !isCollapsed,
           node: this.meta,
@@ -139,7 +139,7 @@ export class RowCell extends HeaderCell {
       gestures: ['Tap'],
     });
     this.gm.on('tap', () => {
-      this.spreadsheet.emit(KEY_COLLAPSE_TREE_ROWS, {
+      this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
         id,
         isCollapsed: !isCollapsed,
         node: this.meta,

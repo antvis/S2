@@ -21,13 +21,28 @@
       "version": 26
     },
     "react": {
-  		"version": "detect"
+      "version": "detect"
     }
   },
   "rules": {
     "react-hooks/exhaustive-deps": "warn",
     "react-hooks/rules-of-hooks": "error",
-    "prettier/prettier": 1,
+    "prettier/prettier": [
+      1,
+      {
+        "endOfLine": "lf",
+        "semi": true,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "all",
+        "printWidth": 80,
+        "proseWrap": "never",
+        "overrides": [
+          { "files": ".eslintrc", "options": { "parser": "json" } },
+          { "files": ".prettierrc", "options": { "parser": "json" } }
+        ]
+      }
+    ],
     "no-restricted-syntax": 0,
     "semi": 0,
     "no-console": 2,

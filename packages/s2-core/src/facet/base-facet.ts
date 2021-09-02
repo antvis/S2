@@ -18,13 +18,11 @@ import {
   reduce,
 } from 'lodash';
 import {
-  KEY_AFTER_HEADER_LAYOUT,
-  KEY_CELL_SCROLL,
+  S2Event,
   KEY_GROUP_COL_RESIZER,
   KEY_GROUP_CORNER_RESIZER,
   KEY_GROUP_ROW_INDEX_RESIZER,
   KEY_GROUP_ROW_RESIZER,
-  KEY_PAGINATION,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
 } from 'src/common/constant';
@@ -205,6 +203,7 @@ export abstract class BaseFacet {
     this.renderFrozenPanelCornerGroup();
     this.initFrozenGroupPosition();
     this.renderFrozenGroupSplitLine();
+    this.renderBackground();
     this.dynamicRenderCell(false);
   }
 
@@ -307,7 +306,7 @@ export abstract class BaseFacet {
 
       const pageCount = Math.floor((total - 1) / pageSize) + 1;
 
-      this.cfg.spreadsheet.emit(KEY_PAGINATION, {
+      this.cfg.spreadsheet.emit(S2Event.LAYOUT_PAGINATION, {
         pageSize,
         pageCount,
         total,
@@ -618,9 +617,11 @@ export abstract class BaseFacet {
         newX = this.layoutResult.colsHierarchy.width - this.panelBBox.width;
       }
     }
+
+    const totalHeight = this.viewCellHeights.getTotalHeight();
     if (y !== undefined) {
-      if (y + this.panelBBox.height >= this.layoutResult.rowsHierarchy.height) {
-        newY = this.layoutResult.rowsHierarchy.height - this.panelBBox.height;
+      if (y + this.panelBBox.height >= totalHeight) {
+        newY = totalHeight - this.panelBBox.height;
       }
     }
     return {
@@ -1218,15 +1219,18 @@ export abstract class BaseFacet {
    * for now only delay, oppose to immediately
    * @private
    */
-  debounceRenderCell = debounce((scrollX: number, scrollY: number) => {
+  debounceRenderCell = (scrollX: number, scrollY: number) => {
     this.realCellRender(scrollX, scrollY);
-  });
+  };
 
   protected init(): void {
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
       this.layoutResult = this.doLayout();
-      this.spreadsheet.emit(KEY_AFTER_HEADER_LAYOUT, this.layoutResult);
+      this.spreadsheet.emit(
+        S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
+        this.layoutResult,
+      );
     });
 
     // all cell's width&height
@@ -1236,6 +1240,26 @@ export abstract class BaseFacet {
 
     this.clipPanelGroup();
     this.bindEvents();
+  }
+
+  protected renderBackground() {
+    const { width, height } = this.getCanvasHW();
+    const color = get(this.cfg, 'spreadsheet.theme.background.color') as string;
+    const opacity = get(
+      this.cfg,
+      'spreadsheet.theme.background.opacity',
+    ) as number;
+
+    this.backgroundGroup.addShape('rect', {
+      attrs: {
+        fill: color,
+        opacity,
+        x: 0,
+        y: 0,
+        width,
+        height,
+      },
+    });
   }
 
   /**
@@ -1400,7 +1424,7 @@ export abstract class BaseFacet {
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
 
     const cellScrollData: CellScrollPosition = { scrollX, scrollY };
-    this.spreadsheet.emit(KEY_CELL_SCROLL, cellScrollData);
+    this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, cellScrollData);
   }
 
   protected abstract doLayout(): LayoutResult;
