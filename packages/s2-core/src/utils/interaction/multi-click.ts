@@ -30,7 +30,9 @@ export const handleRowColClick = ({
     interaction.intercept.add(InterceptType.HOVER);
     // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
     let leafNodes = isTreeRowClick
-      ? [meta, ...Node.getAllLeavesOfNode(meta)]
+      ? [meta, ...Node.getAllLeavesOfNode(meta)].filter(
+          (node) => node.rowIndex === meta.rowIndex,
+        )
       : Node.getAllChildrenNode(meta);
     let selectedCells: S2CellType[] = [cell];
 
@@ -54,12 +56,14 @@ export const handleRowColClick = ({
     // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
     interaction.updateCells(selectedCells);
 
-    leafNodes.forEach((node) => {
-      node?.belongsCell?.updateByState(
-        InteractionStateName.SELECTED,
-        node.belongsCell,
-      );
-    });
+    if (!isTreeRowClick) {
+      leafNodes.forEach((node) => {
+        node?.belongsCell?.updateByState(
+          InteractionStateName.SELECTED,
+          node.belongsCell,
+        );
+      });
+    }
 
     const cellInfos = interaction.isSelectedState()
       ? mergeCellInfo(interaction.getActiveCells())

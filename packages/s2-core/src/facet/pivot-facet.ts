@@ -342,9 +342,7 @@ export class PivotFacet extends BaseFacet {
         rowsHierarchy.height += currentNode.height;
       }
 
-      if (isTree) {
-        currentNode.x = 0;
-      } else if (currentNode.level === 0) {
+      if (isTree || currentNode.level === 0) {
         currentNode.x = 0;
       } else {
         const preLevelSample = rowsHierarchy.sampleNodesForAllLevels.find(
