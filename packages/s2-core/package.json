@@ -42,7 +42,6 @@
     "cpx:svg": "cpx \"src/**/*.svg\" lib; cpx \"src/**/*.svg\" esm",
     "cpx:less": "cpx \"src/**/*.less\" lib; cpx \"src/**/*.less\" esm",
     "test:live": "node ./scripts/test-live",
-    "test:live:sb1": "DEBUG_MODE=1 npx jest tests/unit/core/data-process/list-table-spec.tsx",
     "test": "jest",
     "test:coverage": "npm run test -- --coverage",
     "start": "webpack --config webpack-dev.config.js --mode development --progress",
