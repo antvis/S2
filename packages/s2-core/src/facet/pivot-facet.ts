@@ -191,6 +191,7 @@ export class PivotFacet extends BaseFacet {
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
+    const { spreadsheet } = this.cfg;
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
     for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
@@ -221,6 +222,9 @@ export class PivotFacet extends BaseFacet {
       layoutCoordinate(this.cfg, null, currentNode);
     }
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
+    if (!isEmpty(spreadsheet.options.totals)) {
+      this.adustTotalNodesCoordinate(colsHierarchy);
+    }
   }
 
   /**
@@ -359,7 +363,7 @@ export class PivotFacet extends BaseFacet {
     if (!isTree) {
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
       if (!isEmpty(spreadsheet.options.totals)) {
-        this.adustTotalNodesCoordinate(rowsHierarchy);
+        this.adustTotalNodesCoordinate(rowsHierarchy, true);
       }
     }
   }
@@ -394,10 +398,10 @@ export class PivotFacet extends BaseFacet {
    * @description adust the coordinate of total nodes and their children
    * @param rowLeafNodes
    */
-  private adustTotalNodesCoordinate(rowsHierarchy: Hierarchy) {
-    // forEach(rowsHierarchy.get, (item: Node) => {
-    //   console.log(node);
-    // });
+  private adustTotalNodesCoordinate(
+    rowsHierarchy: Hierarchy,
+    isRowHeader?: boolean,
+  ) {
     const { maxLevel } = rowsHierarchy;
     const grandTotalNode = find(
       rowsHierarchy.getNodes(0),
@@ -407,12 +411,20 @@ export class PivotFacet extends BaseFacet {
     const grandTotalChildren = grandTotalNode.children;
     // 总计节点层级 (有且有两级)
     const totalLevel = isEmpty(grandTotalChildren) ? 0 : 1;
-    // 保持节点右对齐
-    grandTotalNode.x = rowsHierarchy.getNodes(maxLevel - totalLevel)[0].x;
+    if (isRowHeader) {
+      // 保持节点右对齐
+      grandTotalNode.x = rowsHierarchy.getNodes(maxLevel - totalLevel)[0].x;
 
-    forEach(grandTotalChildren, (node: Node) => {
-      node.x = rowsHierarchy.getNodes(maxLevel)[0].x;
-    });
+      forEach(grandTotalChildren, (node: Node) => {
+        node.x = rowsHierarchy.getNodes(maxLevel)[0].x;
+      });
+    } else {
+      grandTotalNode.y = rowsHierarchy.getNodes(maxLevel - totalLevel)[0].y;
+
+      forEach(grandTotalChildren, (node: Node) => {
+        node.y = rowsHierarchy.getNodes(maxLevel)[0].y;
+      });
+    }
   }
 
   private calculateRowLeafNodesWidth(node: Node): number {
