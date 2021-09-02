@@ -259,14 +259,11 @@ export class SpreadSheet extends EE {
     this.options = merge(this.options, options);
   }
 
-  public render(reloadData = true): Promise<void> {
-    return new Promise((resolve) => {
-      if (reloadData) {
-        this.dataSet.setDataCfg(this.dataCfg);
-      }
-      this.buildFacet();
-      resolve();
-    });
+  public render(reloadData = true) {
+    if (reloadData) {
+      this.dataSet.setDataCfg(this.dataCfg);
+    }
+    this.buildFacet();
   }
 
   public destroy() {
@@ -585,10 +582,9 @@ export class SpreadSheet extends EE {
       collapsedRows: options.style.collapsedRows,
     });
     this.setOptions(options);
-    this.render(false).then(() => {
-      this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
-        collapsedRows: options.style.collapsedRows,
-      });
+    this.render(false);
+    this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
+      collapsedRows: options.style.collapsedRows,
     });
   }
 
