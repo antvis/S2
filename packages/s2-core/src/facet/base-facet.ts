@@ -54,6 +54,8 @@ import type {
   OffsetConfig,
   SpreadSheetFacetCfg,
   SplitLine,
+  ViewMeta,
+  S2CellType,
 } from '../common/interface';
 import {
   calculateInViewIndexes,
@@ -1152,16 +1154,49 @@ export abstract class BaseFacet {
     }
   };
 
-  realCellRender = (scrollX: number, scrollY: number) => {
+  addCell = (cell: S2CellType<ViewMeta>) => {
     const {
       frozenRowCount,
       frozenColCount,
       frozenTrailingRowCount,
       frozenTrailingColCount,
     } = this.spreadsheet.options;
-    const indexes = this.calculateXYIndexes(scrollX, scrollY);
+    const {
+      panelScrollGroup,
+      frozenRowGroup,
+      frozenColGroup,
+      frozenTrailingColGroup,
+      frozenTrailingRowGroup,
+    } = this.spreadsheet;
     const dataLength = this.viewCellHeights.getTotalLength();
     const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
+
+    const { colIndex, rowIndex } = cell.getMeta();
+    if (this.spreadsheet.isTableMode()) {
+      if (rowIndex <= frozenRowCount - 1) {
+        frozenRowGroup.add(cell);
+      } else if (
+        frozenTrailingRowCount > 0 &&
+        rowIndex >= dataLength - frozenTrailingRowCount
+      ) {
+        frozenTrailingRowGroup.add(cell);
+      } else if (colIndex <= frozenColCount - 1) {
+        frozenColGroup.add(cell);
+      } else if (
+        frozenTrailingColCount > 0 &&
+        colIndex >= colLength - frozenTrailingColCount
+      ) {
+        frozenTrailingColGroup.add(cell);
+      } else {
+        panelScrollGroup.add(cell);
+      }
+    } else {
+      panelScrollGroup.add(cell);
+    }
+  };
+
+  realCellRender = (scrollX: number, scrollY: number) => {
+    const indexes = this.calculateXYIndexes(scrollX, scrollY);
     // DebuggerUtil.getInstance().logger(
     //   'renderIndex:',
     //   this.preCellIndexes,
@@ -1178,23 +1213,7 @@ export abstract class BaseFacet {
           const cell = this.cfg.dataCell(viewMeta);
           // mark cell for removing
           cell.set('name', `${i}-${j}`);
-          if (j <= frozenRowCount - 1) {
-            this.spreadsheet.frozenRowGroup.add(cell);
-          } else if (
-            frozenTrailingRowCount > 0 &&
-            j >= dataLength - frozenTrailingRowCount
-          ) {
-            this.spreadsheet.frozenTrailingRowGroup.add(cell);
-          } else if (i <= frozenColCount - 1) {
-            this.spreadsheet.frozenColGroup.add(cell);
-          } else if (
-            frozenTrailingColCount > 0 &&
-            i >= colLength - frozenTrailingColCount
-          ) {
-            this.spreadsheet.frozenTrailingColGroup.add(cell);
-          } else {
-            this.spreadsheet.panelScrollGroup.add(cell);
-          }
+          this.addCell(cell);
         }
       });
       const allCells = getAllPanelDataCell(this.panelGroup.getChildren());
