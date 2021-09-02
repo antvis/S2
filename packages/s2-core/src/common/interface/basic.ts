@@ -67,7 +67,7 @@ export interface Extra {
 
 export interface Fields {
   // row fields
-  rows: string[];
+  rows?: string[];
   // custom tree data(only use in row header in pivot mode)
   customTreeItems?: CustomTreeItem[];
   // columns fields

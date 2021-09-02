@@ -82,7 +82,7 @@ const getOptions = (): S2Options => {
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
-    showSeriesNumber: true,
+    showSeriesNumber: false,
     freezeRowHeader: false,
     mode: 'pivot',
     conditions: {
@@ -123,7 +123,6 @@ function MainLayout(props) {
   const [options, setOptions] = React.useState<S2Options>(props.options);
   const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(props.dataCfg);
   const [render, setRender] = React.useState(true);
-  const [valueInCols, setValueInCols] = React.useState(true);
   const [showPagination, setShowPagination] = React.useState(false);
   const [freezeRowHeader, setFreezeRowHeader] = React.useState(
     props.options.freezeRowHeader,
@@ -134,8 +133,13 @@ function MainLayout(props) {
   };
 
   const onValueInColsCheckChanged = (checked: boolean) => {
-    setValueInCols(checked);
-    setDataCfg(merge({}, dataCfg, { fields: { valueInCols: checked } }));
+    setDataCfg(
+      merge({}, dataCfg, {
+        fields: {
+          valueInCols: checked,
+        },
+      }),
+    );
   };
 
   const onHierarchyTypeCheckChanged = (checked: boolean) => {
@@ -173,7 +177,7 @@ function MainLayout(props) {
         <Switch
           checkedChildren="数值置于列头"
           unCheckedChildren="数值置于行头"
-          defaultChecked={valueInCols}
+          defaultChecked
           onChange={onValueInColsCheckChanged}
           style={{ marginRight: 10 }}
         />

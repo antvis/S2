@@ -307,7 +307,7 @@ export const getTheme = (
       backgroundOpacity: 0.3,
     },
     background: {
-      color: brandColors[0],
+      color: grayColors[0],
       opacity: 1,
     },
   } as SpreadSheetTheme;
