@@ -11,10 +11,8 @@ import {
 import {
   compact,
   concat,
-  each,
   filter,
   find,
-  findIndex,
   forEach,
   get,
   isEqual,
@@ -246,7 +244,6 @@ export const getDetailList = (
         ),
       );
     } else {
-      // if (spreadsheet?.isValueInCols()) {
       // the value hangs at the head of the column, match the displayed fields according to the metric itself
       // 1、multiple derivative indicators
       // 2、only one column scene
@@ -267,7 +264,6 @@ export const getDetailList = (
       } else {
         valItem.push(getListItem(spreadsheet, activeData, field));
       }
-      // }
     }
 
     return compact(valItem);
