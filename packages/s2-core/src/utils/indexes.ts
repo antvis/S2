@@ -4,10 +4,10 @@ export type Indexes = [number, number, number, number];
 
 export type PanelIndexes = {
   center: Indexes;
-  frozenRow: Indexes;
-  frozenCol: Indexes;
-  frozenTrailingRow: Indexes;
-  frozenTrailingCol: Indexes;
+  frozenRow?: Indexes;
+  frozenCol?: Indexes;
+  frozenTrailingRow?: Indexes;
+  frozenTrailingCol?: Indexes;
 };
 
 export interface Diff {

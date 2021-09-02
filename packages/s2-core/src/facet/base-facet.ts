@@ -1,10 +1,9 @@
-import { Indexes, PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
+import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
 import { updateMergedCells } from '@/utils/interaction/merge-cells';
 import type { BBox, IGroup, Point } from '@antv/g-canvas';
 import type { GestureEvent } from '@antv/g-gesture';
 import { Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
-import { renderLine } from '@/utils/g-renders';
 import * as d3Timer from 'd3-timer';
 import { Group } from '@antv/g-canvas';
 import {
@@ -53,7 +52,6 @@ import type {
   LayoutResult,
   OffsetConfig,
   SpreadSheetFacetCfg,
-  SplitLine,
   ViewMeta,
   S2CellType,
 } from '../common/interface';
@@ -61,8 +59,6 @@ import {
   calculateInViewIndexes,
   optimizeScrollXY,
   translateGroup,
-  translateGroupX,
-  translateGroupY,
 } from './utils';
 
 // TODO: 这里的主题不应该用 default 吧, 代码里面都是写死的 defaultDataConfig
@@ -202,9 +198,6 @@ export abstract class BaseFacet {
     this.adjustScrollOffset();
     this.renderHeaders();
     this.renderScrollBars();
-    this.renderFrozenPanelCornerGroup();
-    this.initFrozenGroupPosition();
-    this.renderFrozenGroupSplitLine();
     this.renderBackground();
     this.dynamicRenderCell(false);
   }
@@ -364,17 +357,7 @@ export abstract class BaseFacet {
    * @param scrollY
    * @protected
    */
-  calculateXYIndexes = (scrollX: number, scrollY: number): PanelIndexes => {
-    const {
-      frozenColCount,
-      frozenRowCount,
-      frozenTrailingColCount,
-      frozenTrailingRowCount,
-    } = this.spreadsheet.options;
-
-    const dataLength = this.viewCellHeights.getTotalLength();
-    const colLength = this.layoutResult.colLeafNodes.length;
-
+  protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
     const indexes = calculateInViewIndexes(
       scrollX,
       scrollY,
@@ -384,53 +367,10 @@ export abstract class BaseFacet {
       this.getRealScrollX(this.cornerBBox.width),
     );
 
-    const centerIndexes: Indexes = [...indexes];
-
-    if (centerIndexes[0] < frozenColCount) {
-      centerIndexes[0] = frozenColCount;
-    }
-
-    if (
-      frozenTrailingColCount > 0 &&
-      centerIndexes[1] >= colLength - frozenTrailingColCount
-    ) {
-      centerIndexes[1] = colLength - frozenTrailingColCount - 1;
-    }
-
-    if (centerIndexes[2] < frozenRowCount) {
-      centerIndexes[2] = frozenRowCount;
-    }
-    if (
-      frozenTrailingRowCount > 0 &&
-      centerIndexes[3] >= dataLength - frozenTrailingRowCount
-    ) {
-      centerIndexes[3] = dataLength - frozenTrailingRowCount - 1;
-    }
-
-    const frozenRowIndexes: Indexes = [...centerIndexes];
-    frozenRowIndexes[2] = 0;
-    frozenRowIndexes[3] = frozenRowCount - 1;
-
-    const frozenColIndexes: Indexes = [...centerIndexes];
-    frozenColIndexes[0] = 0;
-    frozenColIndexes[1] = frozenColCount - 1;
-
-    const frozenTrailingRowIndexes: Indexes = [...centerIndexes];
-    frozenTrailingRowIndexes[2] = dataLength - frozenTrailingRowCount;
-    frozenTrailingRowIndexes[3] = dataLength - 1;
-
-    const frozenTrailingColIndexes: Indexes = [...centerIndexes];
-    frozenTrailingColIndexes[0] = colLength - frozenTrailingColCount;
-    frozenTrailingColIndexes[1] = colLength - 1;
-
     return {
-      center: centerIndexes,
-      frozenRow: frozenRowIndexes,
-      frozenCol: frozenColIndexes,
-      frozenTrailingCol: frozenTrailingColIndexes,
-      frozenTrailingRow: frozenTrailingRowIndexes,
+      center: indexes,
     };
-  };
+  }
 
   getRealScrollX = (scrollX: number, hRowScroll = 0) => {
     return this.cfg.spreadsheet.isScrollContainsRowHeader()
@@ -893,31 +833,14 @@ export abstract class BaseFacet {
    * @param scrollX
    * @param scrollY
    * @param hRowScroll
-   * @private
+   * @protected
    */
-  translateRelatedGroups = (
+  protected translateRelatedGroups(
     scrollX: number,
     scrollY: number,
     hRowScroll: number,
-  ) => {
+  ) {
     const { frozenRowCount } = this.spreadsheet.options;
-
-    translateGroupX(
-      this.spreadsheet.frozenRowGroup,
-      this.cornerBBox.width - scrollX,
-    );
-    translateGroupX(
-      this.spreadsheet.frozenTrailingRowGroup,
-      this.cornerBBox.width - scrollX,
-    );
-    translateGroupY(
-      this.spreadsheet.frozenColGroup,
-      this.cornerBBox.height - scrollY,
-    );
-    translateGroupY(
-      this.spreadsheet.frozenTrailingColGroup,
-      this.cornerBBox.height - scrollY,
-    );
 
     translateGroup(
       this.spreadsheet.panelScrollGroup,
@@ -951,18 +874,22 @@ export abstract class BaseFacet {
         : undefined,
       KEY_GROUP_COL_RESIZER,
     );
-    this.spreadsheet.panelScrollGroup.setClip({
-      type: 'rect',
-      attrs: {
-        x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
-        y: scrollY + this.getTotalHeightForRange(0, frozenRowCount - 1),
-        width:
-          this.panelBBox.width +
-          (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
-        height: this.panelBBox.height,
-      },
-    });
-  };
+    // this.spreadsheet.panelScrollGroup.setClip({
+    //   type: 'rect',
+    //   attrs: {
+    //     x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
+    //     y:
+    //       scrollY +
+    //       (this.spreadsheet.isTableMode()
+    //         ? this.getTotalHeightForRange(0, frozenRowCount - 1)
+    //         : 0),
+    //     width:
+    //       this.panelBBox.width +
+    //       (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
+    //     height: this.panelBBox.height,
+    //   },
+    // });
+  }
 
   getTotalHeightForRange = (start: number, end: number) => {
     if (start < 0 || end < 0) return 0;
@@ -974,225 +901,10 @@ export abstract class BaseFacet {
     return totalHeight;
   };
 
-  protected initFrozenGroupPosition = () => {
-    translateGroup(
-      this.spreadsheet.frozenRowGroup,
-      this.cornerBBox.width,
-      this.cornerBBox.height,
-    );
-    translateGroup(
-      this.spreadsheet.frozenColGroup,
-      this.cornerBBox.width,
-      this.cornerBBox.height,
-    );
-    translateGroup(
-      this.spreadsheet.frozenTrailingColGroup,
-      this.cornerBBox.width,
-      this.cornerBBox.height,
-    );
-    translateGroup(
-      this.spreadsheet.frozenTopGroup,
-      this.cornerBBox.width,
-      this.cornerBBox.height,
-    );
-  };
-
-  protected renderFrozenGroupSplitLine = () => {
-    const {
-      frozenRowCount,
-      frozenColCount,
-      frozenTrailingColCount,
-      frozenTrailingRowCount,
-    } = this.spreadsheet.options;
-    const colLeafNodes = this.layoutResult.colLeafNodes;
-    const dataLength = this.spreadsheet.dataSet.getMultiData({}).length;
-
-    const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
-
-    const verticalBorderStyle = {
-      lineWidth: style?.verticalBorderWidth,
-      stroke: style?.verticalBorderColor,
-      opacity: style?.verticalBorderColorOpacity,
-    };
-
-    const horizontalBorderStyle = {
-      lineWidth: style?.horizontalBorderWidth,
-      stroke: style?.horizontalBorderColor,
-      opacity: style?.horizontalBorderColorOpacity,
-    };
-
-    if (frozenColCount > 0) {
-      const x = colLeafNodes.reduce((prev, item, idx) => {
-        if (idx < frozenColCount) {
-          return prev + item.width;
-        }
-        return prev;
-      }, 0);
-
-      renderLine(
-        this.foregroundGroup as Group,
-        {
-          x1: x,
-          x2: x,
-          y1: this.cornerBBox.height,
-          y2: this.panelBBox.maxY,
-        },
-        {
-          ...verticalBorderStyle,
-        },
-      );
-    }
-
-    if (frozenRowCount > 0) {
-      const y =
-        this.cornerBBox.height +
-        this.getTotalHeightForRange(0, frozenRowCount - 1);
-      renderLine(
-        this.foregroundGroup as Group,
-        {
-          x1: 0,
-          x2: this.panelBBox.width,
-          y1: y,
-          y2: y,
-        },
-        {
-          ...horizontalBorderStyle,
-        },
-      );
-    }
-
-    if (frozenTrailingColCount > 0) {
-      const width = colLeafNodes.reduceRight((prev, item, idx) => {
-        if (idx >= colLeafNodes.length - frozenTrailingColCount) {
-          return prev + item.width;
-        }
-        return prev;
-      }, 0);
-
-      const x = this.panelBBox.width - width;
-
-      renderLine(
-        this.foregroundGroup as Group,
-        {
-          x1: x,
-          x2: x,
-          y1: this.cornerBBox.height,
-          y2: this.panelBBox.maxY,
-        },
-        {
-          ...verticalBorderStyle,
-        },
-      );
-    }
-
-    if (frozenTrailingRowCount > 0) {
-      const y =
-        this.panelBBox.maxY -
-        this.getTotalHeightForRange(
-          dataLength - frozenTrailingRowCount,
-          dataLength - 1,
-        );
-      renderLine(
-        this.foregroundGroup as Group,
-        {
-          x1: 0,
-          x2: this.panelBBox.width,
-          y1: y,
-          y2: y,
-        },
-        {
-          ...horizontalBorderStyle,
-        },
-      );
-    }
-  };
-
-  protected renderFrozenPanelCornerGroup = () => {
-    const {
-      frozenRowCount,
-      frozenColCount,
-      frozenTrailingRowCount,
-      frozenTrailingColCount,
-    } = this.spreadsheet.options;
-    const { frozenTopGroup, frozenBottomGroup } = this.spreadsheet;
-    const dataLength = this.viewCellHeights.getTotalLength();
-    const colLength = this.layoutResult.colLeafNodes.length;
-
-    for (let i = 0; i < frozenColCount; i++) {
-      for (let j = 0; j < frozenRowCount; j++) {
-        this.addFrozenCell(i, j, frozenTopGroup);
-      }
-
-      if (frozenTrailingRowCount > 0) {
-        for (let j = 0; j < frozenTrailingRowCount; j++) {
-          const index = dataLength - 1 - j;
-          this.addFrozenCell(i, index, frozenBottomGroup);
-        }
-      }
-    }
-
-    for (let i = 0; i < frozenTrailingColCount; i++) {
-      const colIndex = colLength - 1 - i;
-      for (let j = 0; j < frozenRowCount; j++) {
-        this.addFrozenCell(colIndex, j, frozenTopGroup);
-      }
-
-      if (frozenTrailingRowCount > 0) {
-        for (let j = 0; j < frozenTrailingRowCount; j++) {
-          const index = dataLength - 1 - j;
-          this.addFrozenCell(colIndex, index, frozenBottomGroup);
-        }
-      }
-    }
-  };
-
-  addFrozenCell = (colIndex: number, rowIndex: number, group: IGroup) => {
-    const viewMeta = this.layoutResult.getCellMeta(rowIndex, colIndex);
-    if (viewMeta) {
-      const cell = this.cfg.dataCell(viewMeta);
-      group.add(cell);
-    }
-  };
-
   addCell = (cell: S2CellType<ViewMeta>) => {
-    const {
-      frozenRowCount,
-      frozenColCount,
-      frozenTrailingRowCount,
-      frozenTrailingColCount,
-    } = this.spreadsheet.options;
-    const {
-      panelScrollGroup,
-      frozenRowGroup,
-      frozenColGroup,
-      frozenTrailingColGroup,
-      frozenTrailingRowGroup,
-    } = this.spreadsheet;
-    const dataLength = this.viewCellHeights.getTotalLength();
-    const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
+    const { panelScrollGroup } = this.spreadsheet;
 
-    const { colIndex, rowIndex } = cell.getMeta();
-    if (this.spreadsheet.isTableMode()) {
-      if (rowIndex <= frozenRowCount - 1) {
-        frozenRowGroup.add(cell);
-      } else if (
-        frozenTrailingRowCount > 0 &&
-        rowIndex >= dataLength - frozenTrailingRowCount
-      ) {
-        frozenTrailingRowGroup.add(cell);
-      } else if (colIndex <= frozenColCount - 1) {
-        frozenColGroup.add(cell);
-      } else if (
-        frozenTrailingColCount > 0 &&
-        colIndex >= colLength - frozenTrailingColCount
-      ) {
-        frozenTrailingColGroup.add(cell);
-      } else {
-        panelScrollGroup.add(cell);
-      }
-    } else {
-      panelScrollGroup.add(cell);
-    }
+    panelScrollGroup.add(cell);
   };
 
   realCellRender = (scrollX: number, scrollY: number) => {

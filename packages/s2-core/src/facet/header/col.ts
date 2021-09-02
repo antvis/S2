@@ -1,5 +1,5 @@
 import { each, isEmpty } from 'lodash';
-import { IGroup } from '@antv/g-base';
+import { IGroup, IShape } from '@antv/g-base';
 import {
   SERIES_NUMBER_FIELD,
   KEY_GROUP_COL_FROZEN,
@@ -32,6 +32,8 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected scrollGroup: IGroup;
 
+  protected background: IShape;
+
   // TODO type define
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
@@ -42,24 +44,22 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
     this.scrollGroup = this.addGroup({
       name: KEY_GROUP_COL_SCROLL,
-      zIndex: 1,
+      zIndex: 2,
     });
 
     if (frozenColCount) {
       this.frozenColGroup = this.addGroup({
         name: KEY_GROUP_COL_FROZEN,
-        zIndex: 2,
+        zIndex: 3,
       });
     }
 
     if (frozenTrailingColCount) {
       this.frozenTrailingColGroup = this.addGroup({
         name: KEY_GROUP_COL_FROZEN_TRAILING,
-        zIndex: 2,
+        zIndex: 3,
       });
     }
-
-    this.sort();
   }
 
   /**
@@ -105,6 +105,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     this.frozenTrailingColGroup?.clear();
     this.frozenColGroup?.clear();
     this.scrollGroup.clear();
+    this.background?.remove(true);
   }
 
   protected layout() {
@@ -118,21 +119,22 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     } = this.headerConfig;
     const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
     const colLength = spreadsheet?.facet.layoutResult.colLeafNodes.length;
-
     const colCellTheme = this.cfg.spreadsheet.theme.colCell.cell;
     // draw the background
 
-    this.addShape('rect', {
+    this.background = this.addShape('rect', {
       attrs: {
-        x: scrollX,
+        x: 0,
         y: 0,
         width,
         height,
-        fill: colCellTheme.backgroundColor,
+        fill: 'red',
         stroke: 'transparent',
         opacity: colCellTheme.backgroundColorOpacity,
       },
+      zIndex: 1,
     });
+    this.sort();
 
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
