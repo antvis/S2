@@ -112,7 +112,7 @@ export type DataParam = {
 };
 
 export interface SummaryParam extends DataParam {
-  cellInfo: TooltipDataItem;
+  cellInfos?: TooltipDataItem[];
 }
 
 export interface TooltipDataParam extends DataParam {
