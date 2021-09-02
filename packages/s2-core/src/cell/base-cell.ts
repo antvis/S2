@@ -13,9 +13,10 @@ import {
 } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getContentArea } from '@/utils/cell/cell';
-import { renderText, updateShapeAttr } from '@/utils/g-renders';
+import { renderLine, renderText, updateShapeAttr } from '@/utils/g-renders';
+import { isMobile } from '@/utils/is-mobile';
 import { getEllipsisText, measureTextWidth } from '@/utils/text';
-import { Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
+import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
 import { each, get, includes, isEmpty, keys, pickBy } from 'lodash';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
@@ -135,6 +136,46 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       ellipsisText,
       textStyle,
     );
+  }
+
+  protected drawLinkFieldShape(
+    showLinkFieldShape: boolean,
+    linkFillColor: string,
+  ) {
+    const { fill } = this.getTextStyle();
+
+    // handle link nodes
+    if (showLinkFieldShape) {
+      const device = this.spreadsheet.options.style.device;
+      let fillColor;
+
+      // 配置了链接跳转
+      if (isMobile(device)) {
+        fillColor = linkFillColor;
+      } else {
+        const { minX, maxX, maxY }: BBox = this.textShape.getBBox();
+        renderLine(
+          this,
+          {
+            x1: minX,
+            y1: maxY + 1,
+            x2: maxX,
+            y2: maxY + 1,
+          },
+          { stroke: fill, lineWidth: 1 },
+        );
+
+        fillColor = fill;
+      }
+
+      this.textShape.attr({
+        fill: fillColor,
+        appendInfo: {
+          isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
+          cellData: this.meta,
+        },
+      });
+    }
   }
 
   // 根据当前state来更新cell的样式

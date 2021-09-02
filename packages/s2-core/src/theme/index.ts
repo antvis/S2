@@ -71,6 +71,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : '520',
         fill: grayColors[6],
+        linkTextFill: brandColors[6],
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
