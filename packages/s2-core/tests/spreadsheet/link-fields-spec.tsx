@@ -1,7 +1,7 @@
 import { Checkbox, message, Select, Space, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import { find, map, merge } from 'lodash';
+import { find, isArray, map, mergeWith } from 'lodash';
 import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
@@ -54,7 +54,7 @@ const getOptions = (): S2Options => {
     debug: true,
     width: 800,
     height: 600,
-    hierarchyType: 'grid',
+    hierarchyType: 'tree',
     hierarchyCollapse: false,
     showSeriesNumber: true,
     freezeRowHeader: false,
@@ -104,7 +104,13 @@ function MainLayout(props) {
   const sheetRef = useRef<SpreadSheet>();
 
   const updateOptions = (updatedOptions: Partial<S2Options>) => {
-    setOptions(merge({}, options, updatedOptions));
+    setOptions(
+      mergeWith({}, options, updatedOptions, (origin, updated) => {
+        if (isArray(origin) && isArray(updated)) {
+          return updated;
+        }
+      }),
+    );
   };
 
   const onValueInColsCheckChanged = (checked: boolean) => {
