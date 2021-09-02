@@ -1,26 +1,24 @@
-import { InterceptType } from '@/common/constant';
-import { InteractionStateName } from '@/common/constant/interaction';
+import { InteractionStateName, InterceptType } from '@/common/constant';
 import { concat, isEmpty } from 'lodash';
 import { S2CellType, MultiClickProps } from '@/common/interface';
 import { Node } from '@/index';
-import { mergeCellInfo } from '../tooltip';
+import { mergeCellInfo } from '@/utils/tooltip';
+
 export const handleRowColClick = (props: MultiClickProps) => {
   const { event, spreadsheet, isTreeRowClick, isMultiSelection } = props;
 
-  const lastState = spreadsheet.interaction.getState();
+  const { interaction } = spreadsheet;
+  const lastState = interaction.getState();
   const cell = spreadsheet.getCell(event.target);
   const meta = cell.getMeta() as Node;
 
-  if (spreadsheet.interaction.isSelectedCell(cell)) {
-    // 点击当前已选cell 则取消当前cell的选中状态
-    spreadsheet.interaction.clearState();
-    spreadsheet.interaction.intercept.clear();
-    spreadsheet.hideTooltip();
+  if (interaction.isSelectedCell(cell)) {
+    interaction.reset();
     return;
   }
 
   if (meta.x !== undefined) {
-    spreadsheet.interaction.intercept.add(InterceptType.HOVER);
+    interaction.intercept.add(InterceptType.HOVER);
     // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
     let leafNodes = isTreeRowClick
       ? Node.getAllLeavesOfNode(meta)
@@ -41,16 +39,17 @@ export const handleRowColClick = (props: MultiClickProps) => {
 
     // 兼容行列多选
     // Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
-    spreadsheet.interaction.changeState({
+    interaction.changeState({
       cells: selectedCells,
       nodes: leafNodes,
       stateName: InteractionStateName.SELECTED,
     });
 
     // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-    selectedCells.forEach((cell) => {
-      cell.update();
+    selectedCells.forEach((selectedCell) => {
+      selectedCell.update();
     });
+
     leafNodes.forEach((node) => {
       node?.belongsCell?.updateByState(
         InteractionStateName.SELECTED,
@@ -58,8 +57,8 @@ export const handleRowColClick = (props: MultiClickProps) => {
       );
     });
 
-    const cellInfos = spreadsheet.interaction.isSelectedState()
-      ? mergeCellInfo(spreadsheet.interaction.getActiveCells())
+    const cellInfos = interaction.isSelectedState()
+      ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
     if (spreadsheet.options.valueInCols) {

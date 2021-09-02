@@ -1,11 +1,7 @@
 import { Group } from '@antv/g-canvas';
 import { has, get } from 'lodash';
 import { GuiIcon } from '@/common/icons';
-import {
-  DEFAULT_PADDING,
-  KEY_LIST_SORT,
-  SortMethodType,
-} from '@/common/constant';
+import { S2Event, DEFAULT_PADDING, SortMethodType } from '@/common/constant';
 import { SpreadSheet } from '@/.';
 
 // 排序按钮的宽度
@@ -74,7 +70,10 @@ export const renderIcon = (
       return;
     }
     spreadsheet.store.set('currentSortKey', currentSortKey);
-    spreadsheet.emit(KEY_LIST_SORT, { sortKey: key, sortMethod: sortType });
+    spreadsheet.emit(S2Event.RANGE_SORT, {
+      sortKey: key,
+      sortMethod: sortType,
+    });
   });
 
   parent.add(icon);

@@ -8,7 +8,6 @@ import {
   TooltipSummaryOptions,
   TooltipNameTipsOptions,
   TooltipHeadInfo as TooltipHeadInfoType,
-  Aggregation,
 } from '@/common/interface';
 import { isEmpty } from 'lodash';
 import React from 'react';
@@ -20,15 +19,15 @@ import {
   manageContainerStyle,
   shouldIgnore,
 } from '@/utils/tooltip';
-import TooltipDetail from './components/detail';
-import Divider from './components/divider';
-import TooltipHeadInfo from './components/head-info';
-import Infos from './components/infos';
-import Interpretation from './components/interpretation';
-import TooltipOperator from './components/operator';
-import SimpleTips from './components/simple-tips';
-import TooltipSummary from './components/summary';
-import { TOOLTIP_PREFIX_CLS } from './constant';
+import TooltipDetail from '@/ui/tooltip/components/detail';
+import Divider from '@/ui/tooltip/components/divider';
+import TooltipHeadInfo from '@/ui/tooltip/components/head-info';
+import Infos from '@/ui/tooltip/components/infos';
+import Interpretation from '@/ui/tooltip/components/interpretation';
+import TooltipOperator from '@/ui/tooltip/components/operator';
+import SimpleTips from '@/ui/tooltip/components/simple-tips';
+import TooltipSummary from '@/ui/tooltip/components/summary';
+import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 import './index.less';
 
 /**
@@ -37,7 +36,7 @@ import './index.less';
 export class BaseTooltip {
   public spreadsheet: SpreadSheet; // the type of Spreadsheet
 
-  protected container: HTMLElement; // the base container element
+  public container: HTMLElement; // the base container element
 
   protected options: TooltipShowOptions;
 

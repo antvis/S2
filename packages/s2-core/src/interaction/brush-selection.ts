@@ -10,18 +10,17 @@ import {
   ViewMeta,
 } from '@/common/interface';
 import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { get, isEmpty, isEqual } from 'lodash';
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
-import { TooltipData } from '@/common/interface';
 import { BaseEvent } from './base-interaction';
 import { BaseEventImplement } from './base-event';
+import { getActiveCellsTooltipData } from '../utils/tooltip';
 
 /**
  * Panel area's brush selection interaction
  */
 export class BrushSelection extends BaseEvent implements BaseEventImplement {
-  public dataCells: DataCell[] = [];
+  public displayedDataCells: DataCell[] = [];
 
   public prepareSelectMaskShape: IShape;
 
@@ -72,7 +71,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       event.preventDefault();
       this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
       this.initPrepareSelectMaskShape();
-      this.setDataCells();
+      this.setDisplayedDataCells();
       this.startBrushPoint = this.getBrushPoint(event);
     });
   }
@@ -105,7 +104,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
         this.spreadsheet.showTooltipWithInfo(
           event,
-          this.getBrushRangeCellsInfos(),
+          getActiveCellsTooltipData(this.spreadsheet),
         );
         this.spreadsheet.interaction.intercept.add(
           InterceptType.BRUSH_SELECTION,
@@ -115,36 +114,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private setDataCells() {
-    this.dataCells = this.interaction.getPanelGroupAllDataCells();
-  }
-
-  private getBrushRangeCellsInfos(): TooltipData[] {
-    const cellInfos: TooltipData[] = [];
-    if (!this.interaction.isSelectedState()) {
-      return [];
-    }
-    this.interaction.getActiveCells().forEach((cell) => {
-      const valueInCols = this.spreadsheet.options.valueInCols;
-      const meta = cell.getMeta();
-      const query = get(meta, [valueInCols ? 'colQuery' : 'rowQuery']);
-      if (isEmpty(meta) || isEmpty(query)) {
-        return;
-      }
-      const currentCellInfo: TooltipData = {
-        ...query,
-        colIndex: valueInCols ? meta.colIndex : null,
-        rowIndex: !valueInCols ? meta.rowIndex : null,
-      };
-
-      const isEqualCellInfo = cellInfos.find((cellInfo) =>
-        isEqual(currentCellInfo, cellInfo),
-      );
-      if (!isEqualCellInfo) {
-        cellInfos.push(currentCellInfo);
-      }
-    });
-    return cellInfos;
+  private setDisplayedDataCells() {
+    this.displayedDataCells = this.interaction.getPanelGroupAllDataCells();
   }
 
   private updatePrepareSelectMask() {
@@ -232,7 +203,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   // 获取对角线的两个坐标, 得到对应矩阵并且有数据的单元格
   private getBrushRangeDataCells(): DataCell[] {
-    return this.dataCells.filter((cell) => {
+    return this.displayedDataCells.filter((cell) => {
       const meta = cell.getMeta();
       return meta?.data && this.isInBrushRange(meta);
     });

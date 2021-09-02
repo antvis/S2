@@ -6,7 +6,7 @@ import {
 } from '@/common/constant/interaction';
 import { S2CellType, ViewMeta, TooltipOptions } from '@/common/interface';
 import { getActiveHoverRowColCells } from '@/utils/interaction/hover-event';
-import { Event } from '@antv/g-canvas';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import { isEmpty, forEach } from 'lodash';
 import { BaseEvent, BaseEventImplement } from '../base-event';
 
@@ -41,15 +41,18 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         this.spreadsheet.isHierarchyTreeType(),
       );
       forEach(allRowHeaderCells, (cell: RowCell) => {
-        cell.updateByState(InteractionStateName.HOVER, cell);
+        cell.updateByState(InteractionStateName.HOVER);
       });
     }
   }
 
   private bindDataCellHover() {
-    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: Event) => {
+    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
-      if (isEmpty(cell)) return;
+      if (isEmpty(cell)) {
+        return;
+      }
+
       const meta = cell.getMeta() as ViewMeta;
       this.interaction.changeState({
         cells: [cell],
@@ -61,22 +64,20 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         this.updateRowColCells(meta);
         if (this.interaction.hoverTimer) {
           window.clearTimeout(this.interaction.hoverTimer);
-          this.changeStateToHoverFocus(cell, event, meta);
-        } else {
-          this.changeStateToHoverFocus(cell, event, meta);
         }
+        this.changeStateToHoverFocus(cell, event, meta);
       }
     });
   }
 
   private bindRowCellHover() {
-    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event: Event) => {
+    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event: CanvasEvent) => {
       this.handleHeaderHover(event);
     });
   }
 
   private bindColCellHover() {
-    this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event: Event) => {
+    this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event: CanvasEvent) => {
       this.handleHeaderHover(event);
     });
   }
@@ -89,7 +90,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
    */
   private changeStateToHoverFocus(
     cell: S2CellType,
-    event: Event,
+    event: CanvasEvent,
     meta: ViewMeta,
   ) {
     this.interaction.hoverTimer = window.setTimeout(() => {
@@ -111,9 +112,12 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
    * @description handle the row or column header hover state
    * @param event
    */
-  private handleHeaderHover(event: Event) {
+  private handleHeaderHover(event: CanvasEvent) {
     const cell = this.spreadsheet.getCell(event.target) as S2CellType;
-    if (isEmpty(cell)) return;
+    if (isEmpty(cell)) {
+      return;
+    }
+
     const meta = cell.getMeta() as ViewMeta;
     this.interaction.changeState({
       cells: [cell],

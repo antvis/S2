@@ -8,12 +8,12 @@ import {
   TextAlign,
   TextBaseline,
 } from '@/index';
-import { Event } from '@antv/g-canvas';
+import { Event, ShapeAttrs } from '@antv/g-canvas';
 import { S2PartialOptions } from 'src/common/interface/s2Options';
 import { BaseDataSet } from 'src/data-set';
 import { Frame } from 'src/facet/header';
 import { Padding } from '../interface/theme';
-import { BaseTooltip } from '../tooltip';
+import { BaseTooltip } from '../../ui/tooltip';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 
@@ -370,6 +370,12 @@ export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
   isCornerHeaderText?: boolean;
   isRowHeaderText?: boolean;
   cellData?: T;
+}
+
+export interface CellAttrs<T extends Record<string, unknown> = Node>
+  extends ShapeAttrs {
+  text?: string;
+  appendInfo?: CellAppendInfo<T>;
 }
 
 /**

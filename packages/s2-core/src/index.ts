@@ -21,7 +21,7 @@ export * from './common/interface/index';
 export * from './sheet-type';
 export * from './data-set';
 export * from './interaction';
-export * from './tooltip';
+export * from './ui/tooltip';
 export * from './facet/header';
 export * from './common/constant';
 export * from './interaction/row-col-resize';

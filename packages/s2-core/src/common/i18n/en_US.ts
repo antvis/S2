@@ -19,4 +19,7 @@ export const EN_US = {
   趋势: 'Trend',
   '已选 {} 项': 'selected {} item',
   所选项: 'selected items',
+  组内升序: 'Group ASc',
+  组内降序: 'Group DESC',
+  不排序: 'No order',
 };
