@@ -30,65 +30,65 @@ import { CustomInteraction } from './interaction';
 
 export interface S2PartialOptions {
   // canvas's width
-  width: number;
+  readonly width: number;
   // canvas's height
-  height: number;
+  readonly height: number;
   // s2 mode
-  mode?: 'pivot' | 'table';
+  readonly mode?: 'pivot' | 'table';
   // debug info for developer
-  debug?: boolean;
+  readonly debug?: boolean;
   // row header hierarchy type only work in pivot mode
-  hierarchyType?: 'grid' | 'tree' | 'customTree';
+  readonly hierarchyType?: 'grid' | 'tree' | 'customTree';
   // 兜底以前的衍生指标概念
-  indicateConditionValues?: string[];
+  readonly indicateConditionValues?: string[];
   // conditions config
-  conditions?: Conditions;
+  readonly conditions?: Conditions;
   // total config
-  totals?: Totals;
+  readonly totals?: Totals;
   // tooltip configs
-  tooltip?: Tooltip;
+  readonly tooltip?: Tooltip;
   // record which row/col field need extra link info
-  linkFieldIds?: string[];
+  readonly linkFieldIds?: string[];
   // pagination config
-  pagination?: Pagination;
+  readonly pagination?: Pagination;
   // freeze row header
-  freezeRowHeader?: boolean;
+  readonly freezeRowHeader?: boolean;
   // show Series Number
-  showSeriesNumber?: boolean;
+  readonly showSeriesNumber?: boolean;
   // scroll reach node border(which field node belongs to) event config
-  scrollReachNodeField?: NodeField;
+  readonly scrollReachNodeField?: NodeField;
   // hide row, col with fields
-  hideRowColFields?: string[];
+  readonly hideRowColFields?: string[];
   // custom config of showing columns and rows
-  customHeaderCells?: CustomHeaderCells;
+  readonly customHeaderCells?: CustomHeaderCells;
   // row header action icon's config
-  rowActionIcons?: RowActionIcons;
+  readonly rowActionIcons?: RowActionIcons;
   // extra styles
-  style?: Partial<Style>;
-  hierarchyCollapse?: boolean;
+  readonly style?: Partial<Style>;
+  readonly hierarchyCollapse?: boolean;
   // focus selected cell, like the spotlight
-  selectedCellsSpotlight?: boolean;
+  readonly selectedCellsSpotlight?: boolean;
   // highlight all row header cells and column header cells to which the hovered cell belongs
-  hoverHighlight?: boolean;
-  hdAdapter?: boolean;
+  readonly hoverHighlight?: boolean;
+  readonly hdAdapter?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
-  dataCell?: DataCellCallback;
+  readonly dataCell?: DataCellCallback;
   // custom corner cell
-  cornerCell?: CellCallback;
+  readonly cornerCell?: CellCallback;
   // custom row cell
-  rowCell?: CellCallback;
+  readonly rowCell?: CellCallback;
   // custom col cell
-  colCell?: CellCallback;
+  readonly colCell?: CellCallback;
   // custom frame TODO rename this
-  frame?: FrameCallback;
+  readonly frame?: FrameCallback;
   // custom corner header
-  cornerHeader?: CornerHeaderCallback;
+  readonly cornerHeader?: CornerHeaderCallback;
   // the collection of row id and column id of cells which to be merged
-  mergedCellsInfo?: MergedCellInfo[][];
+  readonly mergedCellsInfo?: MergedCellInfo[][];
   // enable Command + C to copy spread data
-  enableCopy?: boolean;
+  readonly enableCopy?: boolean;
 
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
@@ -118,12 +118,12 @@ export interface S2PartialOptions {
   // register custom interactions
   customInteractions?: CustomInteraction[];
   // extra options if needed
-  [key: string]: unknown; // TODO: Options 里面 给 extra 的作用是?
+  [key: string]: unknown;
 }
 
 export type S2Options = S2PartialOptions & {
   // custom data set
-  dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
+  readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
 };
 
 export const defaultStyle: Style = {
