@@ -1,7 +1,6 @@
-import { Group } from '@antv/g-canvas';
 import _ from 'lodash';
-import { SpreadSheet } from '../..';
-import { S2CellType } from '../../common/interface';
+import { SpreadSheet } from '@/index';
+import { S2CellType } from '@/common/interface';
 import { Hierarchy } from './hierarchy';
 
 export interface BaseNodeConfig {
@@ -125,11 +124,10 @@ export class Node {
   public static getAllLeavesOfNode(node: Node): Node[] {
     const leaves: Node[] = [];
     if (node.isLeaf) {
-      leaves.push(node);
-      return leaves;
+      return [node];
     }
     // current root node children
-    const nodes = node.children.slice(0);
+    const nodes = [...node.children];
     let current = nodes.shift();
     while (current) {
       if (current.isLeaf) {
@@ -160,7 +158,7 @@ export class Node {
       return [node];
     }
     // current root node children
-    const nodes = node.children.slice(0);
+    const nodes = [...node.children];
     let current = nodes.shift();
     while (current) {
       all.push(current);

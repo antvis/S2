@@ -1,10 +1,9 @@
-import { Event } from '@antv/g-canvas';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import { get, isEmpty, find, head } from 'lodash';
 import { S2Event, InterceptType } from '@/common/constant';
 import { BaseEvent, BaseEventImplement } from '../../base-event';
-import { Data } from '../../../common/interface/s2DataConfig';
-import { CellAppendInfo } from '../../../common/interface';
-import { Node } from '../../../facet/layout/node';
+import { CellAppendInfo, Data } from '@/common/interface';
+import { Node } from '@/facet/layout/node';
 
 /**
  * Row header click navigation interaction
@@ -15,7 +14,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindRowCellClick() {
-    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: CanvasEvent) => {
       if (this.spreadsheet.interaction.intercept.has(InterceptType.CLICK)) {
         return;
       }
@@ -79,7 +78,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
   };
 
   private getRowIndex = (cellData: Node) => {
-    const isTree = this.spreadsheet?.options?.hierarchyType === 'tree';
+    const isTree = this.spreadsheet.options.hierarchyType === 'tree';
     if (isTree) {
       let child = cellData;
       while (!isEmpty(child.children)) {
