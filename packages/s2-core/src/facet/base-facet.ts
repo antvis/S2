@@ -875,15 +875,12 @@ export abstract class BaseFacet {
         : undefined,
       KEY_GROUP_COL_RESIZER,
     );
+
     this.spreadsheet.panelScrollGroup.setClip({
       type: 'rect',
       attrs: {
         x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
-        y:
-          scrollY +
-          (this.spreadsheet.isTableMode()
-            ? this.getTotalHeightForRange(0, frozenRowCount - 1)
-            : 0),
+        y: scrollY,
         width:
           this.panelBBox.width +
           (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
@@ -891,16 +888,6 @@ export abstract class BaseFacet {
       },
     });
   }
-
-  getTotalHeightForRange = (start: number, end: number) => {
-    if (start < 0 || end < 0) return 0;
-    let totalHeight = 0;
-    for (let index = start; index < end + 1; index++) {
-      const height = this.viewCellHeights.getCellHeight(index);
-      totalHeight += height;
-    }
-    return totalHeight;
-  };
 
   addCell = (cell: S2CellType<ViewMeta>) => {
     const { panelScrollGroup } = this.spreadsheet;

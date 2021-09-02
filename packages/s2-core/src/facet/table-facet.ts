@@ -1,5 +1,5 @@
 import { S2Event, SERIES_NUMBER_FIELD } from 'src/common/constant';
-import { Indexes, PanelIndexes } from 'src/utils/indexes';
+import { PanelIndexes } from 'src/utils/indexes';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
@@ -11,6 +11,7 @@ import { DebuggerUtil } from 'src/common/debug';
 import { renderLine } from 'src/utils/g-renders';
 import { Group } from '@antv/g-canvas';
 import { IGroup } from '@antv/g-base';
+import { FrozenCellGroupMap } from 'src/common/constant/frozen';
 
 import type {
   LayoutResult,
@@ -20,10 +21,12 @@ import type {
 } from '../common/interface';
 import {
   calculateInViewIndexes,
-  optimizeScrollXY,
   translateGroup,
   translateGroupX,
   translateGroupY,
+  getFrozenDataCellType,
+  calculateFrozenCornerCells,
+  splitInViewIndexesWithFrozen,
 } from './utils';
 
 export class TableFacet extends BaseFacet {
@@ -132,11 +135,9 @@ export class TableFacet extends BaseFacet {
         y,
         width: col.width,
         height: cellHeight,
-        data: [
-          {
-            [col.field]: data,
-          },
-        ],
+        data: {
+          [col.field]: data,
+        },
         rowIndex,
         colIndex,
         isTotals: false,
@@ -357,6 +358,16 @@ export class TableFacet extends BaseFacet {
     );
   };
 
+  getTotalHeightForRange = (start: number, end: number) => {
+    if (start < 0 || end < 0) return 0;
+    let totalHeight = 0;
+    for (let index = start; index < end + 1; index++) {
+      const height = this.viewCellHeights.getCellHeight(index);
+      totalHeight += height;
+    }
+    return totalHeight;
+  };
+
   protected renderFrozenGroupSplitLine = () => {
     const {
       frozenRowCount,
@@ -474,36 +485,29 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
       frozenTrailingColCount,
     } = this.spreadsheet.options;
-    const { frozenTopGroup, frozenBottomGroup } = this.spreadsheet;
     const dataLength = this.viewCellHeights.getTotalLength();
     const colLength = this.layoutResult.colLeafNodes.length;
 
-    for (let i = 0; i < frozenColCount; i++) {
-      for (let j = 0; j < frozenRowCount; j++) {
-        this.addFrozenCell(i, j, frozenTopGroup);
-      }
+    const result = calculateFrozenCornerCells(
+      {
+        frozenRowCount,
+        frozenColCount,
+        frozenTrailingRowCount,
+        frozenTrailingColCount,
+      },
+      colLength,
+      dataLength,
+    );
 
-      if (frozenTrailingRowCount > 0) {
-        for (let j = 0; j < frozenTrailingRowCount; j++) {
-          const index = dataLength - 1 - j;
-          this.addFrozenCell(i, index, frozenBottomGroup);
-        }
+    Object.keys(result).forEach((key) => {
+      const cells = result[key];
+      const group = this.spreadsheet[FrozenCellGroupMap[key]];
+      if (group) {
+        cells.forEach((cell) => {
+          this.addFrozenCell(cell.x, cell.y, group);
+        });
       }
-    }
-
-    for (let i = 0; i < frozenTrailingColCount; i++) {
-      const colIndex = colLength - 1 - i;
-      for (let j = 0; j < frozenRowCount; j++) {
-        this.addFrozenCell(colIndex, j, frozenTopGroup);
-      }
-
-      if (frozenTrailingRowCount > 0) {
-        for (let j = 0; j < frozenTrailingRowCount; j++) {
-          const index = dataLength - 1 - j;
-          this.addFrozenCell(colIndex, index, frozenBottomGroup);
-        }
-      }
-    }
+    });
   };
 
   addFrozenCell = (colIndex: number, rowIndex: number, group: IGroup) => {
@@ -521,39 +525,40 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
       frozenTrailingColCount,
     } = this.spreadsheet.options;
-    const {
-      panelScrollGroup,
-      frozenRowGroup,
-      frozenColGroup,
-      frozenTrailingColGroup,
-      frozenTrailingRowGroup,
-    } = this.spreadsheet;
     const dataLength = this.viewCellHeights.getTotalLength();
     const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
 
-    const { colIndex, rowIndex } = cell.getMeta();
-    if (this.spreadsheet.isTableMode()) {
-      if (rowIndex <= frozenRowCount - 1) {
-        frozenRowGroup.add(cell);
-      } else if (
-        frozenTrailingRowCount > 0 &&
-        rowIndex >= dataLength - frozenTrailingRowCount
-      ) {
-        frozenTrailingRowGroup.add(cell);
-      } else if (colIndex <= frozenColCount - 1) {
-        frozenColGroup.add(cell);
-      } else if (
-        frozenTrailingColCount > 0 &&
-        colIndex >= colLength - frozenTrailingColCount
-      ) {
-        frozenTrailingColGroup.add(cell);
-      } else {
-        panelScrollGroup.add(cell);
-      }
-    } else {
-      panelScrollGroup.add(cell);
+    const frozenCellType = getFrozenDataCellType(
+      cell.getMeta(),
+      {
+        frozenRowCount,
+        frozenColCount,
+        frozenTrailingRowCount,
+        frozenTrailingColCount,
+      },
+      colLength,
+      dataLength,
+    );
+
+    const group = FrozenCellGroupMap[frozenCellType];
+    if (group) {
+      (this.spreadsheet[group] as Group).add(cell);
     }
   };
+
+  public init() {
+    super.init();
+    const { width, height } = this.panelBBox;
+    this.spreadsheet.panelGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: 0,
+        y: this.cornerBBox.height,
+        width,
+        height,
+      },
+    });
+  }
 
   public render() {
     super.render();
@@ -585,50 +590,6 @@ export class TableFacet extends BaseFacet {
     );
 
     super.translateRelatedGroups(scrollX, scrollY, hRowScroll);
-
-    // translateGroup(
-    //   this.spreadsheet.panelScrollGroup,
-    //   this.cornerBBox.width - scrollX,
-    //   this.cornerBBox.height - scrollY,
-    // );
-    // this.rowHeader.onScrollXY(
-    //   this.getRealScrollX(scrollX, hRowScroll),
-    //   scrollY,
-    //   KEY_GROUP_ROW_RESIZER,
-    // );
-    // this.rowIndexHeader?.onScrollXY(
-    //   this.getRealScrollX(scrollX, hRowScroll),
-    //   scrollY,
-    //   KEY_GROUP_ROW_INDEX_RESIZER,
-    // );
-    // this.cornerHeader.onCorScroll(
-    //   this.getRealScrollX(scrollX, hRowScroll),
-    //   KEY_GROUP_CORNER_RESIZER,
-    // );
-    // this.centerFrame.onChangeShadowVisibility(
-    //   scrollX,
-    //   this.getRealWidth() - this.panelBBox.width,
-    //   false,
-    // );
-    // this.centerFrame.onBorderScroll(this.getRealScrollX(scrollX));
-    // this.columnHeader.onColScroll(
-    //   scrollX,
-    //   this.cfg.spreadsheet.isScrollContainsRowHeader()
-    //     ? this.cornerBBox.width
-    //     : undefined,
-    //   KEY_GROUP_COL_RESIZER,
-    // );
-    // this.spreadsheet.panelScrollGroup.setClip({
-    //   type: 'rect',
-    //   attrs: {
-    //     x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
-    //     y: scrollY + this.getTotalHeightForRange(0, frozenRowCount - 1),
-    //     width:
-    //       this.panelBBox.width +
-    //       (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
-    //     height: this.panelBBox.height,
-    //   },
-    // });
   }
 
   protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
@@ -651,51 +612,16 @@ export class TableFacet extends BaseFacet {
       this.getRealScrollX(this.cornerBBox.width),
     );
 
-    const centerIndexes: Indexes = [...indexes];
-
-    if (centerIndexes[0] < frozenColCount) {
-      centerIndexes[0] = frozenColCount;
-    }
-
-    if (
-      frozenTrailingColCount > 0 &&
-      centerIndexes[1] >= colLength - frozenTrailingColCount
-    ) {
-      centerIndexes[1] = colLength - frozenTrailingColCount - 1;
-    }
-
-    if (centerIndexes[2] < frozenRowCount) {
-      centerIndexes[2] = frozenRowCount;
-    }
-    if (
-      frozenTrailingRowCount > 0 &&
-      centerIndexes[3] >= dataLength - frozenTrailingRowCount
-    ) {
-      centerIndexes[3] = dataLength - frozenTrailingRowCount - 1;
-    }
-
-    const frozenRowIndexes: Indexes = [...centerIndexes];
-    frozenRowIndexes[2] = 0;
-    frozenRowIndexes[3] = frozenRowCount - 1;
-
-    const frozenColIndexes: Indexes = [...centerIndexes];
-    frozenColIndexes[0] = 0;
-    frozenColIndexes[1] = frozenColCount - 1;
-
-    const frozenTrailingRowIndexes: Indexes = [...centerIndexes];
-    frozenTrailingRowIndexes[2] = dataLength - frozenTrailingRowCount;
-    frozenTrailingRowIndexes[3] = dataLength - 1;
-
-    const frozenTrailingColIndexes: Indexes = [...centerIndexes];
-    frozenTrailingColIndexes[0] = colLength - frozenTrailingColCount;
-    frozenTrailingColIndexes[1] = colLength - 1;
-
-    return {
-      center: centerIndexes,
-      frozenRow: frozenRowIndexes,
-      frozenCol: frozenColIndexes,
-      frozenTrailingCol: frozenTrailingColIndexes,
-      frozenTrailingRow: frozenTrailingRowIndexes,
-    };
+    return splitInViewIndexesWithFrozen(
+      indexes,
+      {
+        frozenColCount,
+        frozenRowCount,
+        frozenTrailingColCount,
+        frozenTrailingRowCount,
+      },
+      colLength,
+      dataLength,
+    );
   }
 }
