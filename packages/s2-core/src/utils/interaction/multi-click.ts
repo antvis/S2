@@ -61,10 +61,8 @@ export const handleRowColClick = (props: MultiClickProps) => {
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
-    if (spreadsheet.options.valueInCols) {
-      spreadsheet.showTooltipWithInfo(event, cellInfos, {
-        showSingleTips: true,
-      });
-    }
+    spreadsheet.showTooltipWithInfo(event, cellInfos, {
+      showSingleTips: true,
+    });
   }
 };
