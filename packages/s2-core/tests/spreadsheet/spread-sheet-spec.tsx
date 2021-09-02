@@ -80,7 +80,7 @@ const getOptions = (): S2Options => {
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
-    showSeriesNumber: true,
+    showSeriesNumber: false,
     freezeRowHeader: false,
     mode: 'pivot',
     valueInCols: true,
@@ -133,8 +133,13 @@ function MainLayout(props) {
   };
 
   const onValueInColsCheckChanged = (checked: boolean) => {
-    setValueInCols(checked);
-    updateOptions({ valueInCols: checked });
+    setDataCfg(
+      merge({}, dataCfg, {
+        fields: {
+          valueInCols: checked,
+        },
+      }),
+    );
   };
 
   const onHierarchyTypeCheckChanged = (checked: boolean) => {
