@@ -89,7 +89,7 @@ const getOptions = (): S2Options => {
       },
       device: 'pc',
     },
-    linkFieldIds: ['order_id'],
+    linkFieldIds: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
       renderTooltip: (spreadsheet) => {
@@ -123,7 +123,7 @@ function MainLayout(props) {
     s2Ref.current.on(S2Event.RANGE_SORTED, logData);
 
     s2Ref.current.on(S2Event.ROW_CELL_TEXT_CLICK, ({ key, record }) => {
-      message.info(`key: ${key}, name: ${record[key]}`);
+      message.info(`key: ${key}, name: ${JSON.stringify(record)}`);
     });
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED, logData);

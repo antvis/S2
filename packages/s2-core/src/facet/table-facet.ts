@@ -1,7 +1,8 @@
+import { ViewMeta } from './../common/interface/basic';
 import { get, maxBy, orderBy } from 'lodash';
 import { S2Event, SERIES_NUMBER_FIELD } from 'src/common/constant';
 import { DebuggerUtil } from 'src/common/debug';
-import { LayoutResult, ViewMeta } from 'src/common/interface';
+import { LayoutResult } from 'src/common/interface';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
@@ -76,11 +77,9 @@ export class TableFacet extends BaseFacet {
         y: cellHeight * rowIndex,
         width: col.width,
         height: cellHeight,
-        data: [
-          {
-            [col.field]: data,
-          },
-        ],
+        data: {
+          [col.field]: data,
+        },
         rowIndex,
         colIndex,
         isTotals: false,

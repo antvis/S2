@@ -160,9 +160,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
     this.drawConditionIntervalShape();
+    this.drawInteractiveBorderShape();
     this.drawTextShape();
     this.drawConditionIconShapes();
-    this.drawInteractiveBorderShape();
     this.drawBorderShape();
     this.update();
   }
