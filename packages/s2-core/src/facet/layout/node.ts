@@ -49,6 +49,8 @@ export class Node {
       level,
       rowIndex,
       isTotals,
+      isGrandTotals,
+      isSubTotals,
       isCollapsed,
       hierarchy,
       isPivotMode,
@@ -80,6 +82,8 @@ export class Node {
     this.inCollapseNode = inCollapseNode;
     this.isTotalMeasure = isTotalMeasure;
     this.isLeaf = isLeaf;
+    this.isGrandTotals = isGrandTotals;
+    this.isSubTotals = isSubTotals;
     // if (parent) {
     //   parent.children.push(this);
     // }

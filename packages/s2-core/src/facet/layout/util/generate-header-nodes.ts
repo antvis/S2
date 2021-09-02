@@ -31,8 +31,13 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     let value;
     let nodeQuery;
     let isLeaf = false;
+    let isGrandTotals = false;
+    let isSubTotals = false;
     let adjustedField = currentField;
     if (isTotals) {
+      const totalClass = fieldValue as TotalClass;
+      isGrandTotals = totalClass.isGrandTotals;
+      isSubTotals = totalClass.isSubTotals;
       value = i18n((fieldValue as TotalClass).label);
       if (addMeasureInTotalQuery) {
         // root[&]四川[&]总计 => {province: '四川', EXTRA_FIELD: 'price'}
@@ -79,6 +84,8 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       field: adjustedField,
       parent: parentNode,
       isTotals,
+      isGrandTotals,
+      isSubTotals,
       isTotalMeasure,
       isCollapsed,
       hierarchy,
