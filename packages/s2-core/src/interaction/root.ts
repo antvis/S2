@@ -245,11 +245,11 @@ export class RootInteraction {
     }
     this.clearState();
     this.setState(interactionStateInfo);
-    this.updatePanelAllDataCells();
+    this.updatePanelGroupAllDataCells();
     this.draw();
   }
 
-  public updatePanelAllDataCells() {
+  public updatePanelGroupAllDataCells() {
     this.updateCells(this.getPanelGroupAllDataCells());
   }
 
