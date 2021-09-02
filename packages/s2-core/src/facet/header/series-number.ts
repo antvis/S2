@@ -109,7 +109,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       x: position.x,
       y: -position.y,
       width,
-      height: height,
+      height,
       fill: rowCellTheme.backgroundColor,
       stroke: 'transparent',
       opacity: rowCellTheme.backgroundColorOpacity,
