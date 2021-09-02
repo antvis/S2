@@ -101,7 +101,12 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       hierarchy,
     );
 
-    if (level > hierarchy.maxLevel) {
+    // omit the the whole column or row of the grandTotal
+    if (
+      level > hierarchy.maxLevel &&
+      !isGrandTotals &&
+      !parentNode.isGrandTotals
+    ) {
       hierarchy.sampleNodesForAllLevels.push(node);
       hierarchy.sampleNodeForLastLevel = node;
       hierarchy.maxLevel = level;

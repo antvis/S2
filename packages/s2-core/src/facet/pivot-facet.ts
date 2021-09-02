@@ -12,6 +12,8 @@ import {
   maxBy,
   merge,
   reduce,
+  forEach,
+  find,
 } from 'lodash';
 import {
   EXTRA_FIELD,
@@ -323,7 +325,7 @@ export class PivotFacet extends BaseFacet {
       }
     }
 
-    // 2、calculate node's height & y（leaf nodes）, x-coordinate & width(all nodes), height & y (not-leaf), 
+    // 2、calculate node's height & y（leaf nodes）, x-coordinate & width(all nodes), height & y (not-leaf),
     let preLeafNode = Node.blankNode();
     const allNodes = rowsHierarchy.getNodes();
     for (let i = 0; i < allNodes.length; i++) {
@@ -356,11 +358,14 @@ export class PivotFacet extends BaseFacet {
     }
     if (!isTree) {
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
+      if (!isEmpty(spreadsheet.options.totals)) {
+        this.adustTotalNodesCoordinate(rowsHierarchy);
+      }
     }
   }
 
   /**
-   * Auto Auto Auto row no-leaf node's height and y coordinate
+   * @description Auto calculate row no-leaf node's height and y coordinate
    * @param rowLeafNodes
    */
   private autoCalculateRowNodeHeightAndY(rowLeafNodes: Node[]) {
@@ -383,6 +388,31 @@ export class PivotFacet extends BaseFacet {
         prevRowParent = parent;
       }
     }
+  }
+
+  /**
+   * @description adust the coordinate of total nodes and their children
+   * @param rowLeafNodes
+   */
+  private adustTotalNodesCoordinate(rowsHierarchy: Hierarchy) {
+    // forEach(rowsHierarchy.get, (item: Node) => {
+    //   console.log(node);
+    // });
+    const { maxLevel } = rowsHierarchy;
+    const grandTotalNode = find(
+      rowsHierarchy.getNodes(0),
+      (node: Node) => node.isGrandTotals,
+    );
+    if (!(grandTotalNode instanceof Node)) return;
+    const grandTotalChildren = grandTotalNode.children;
+    // 总计节点层级 (有且有两级)
+    const totalLevel = isEmpty(grandTotalChildren) ? 0 : 1;
+    // 保持节点右对齐
+    grandTotalNode.x = rowsHierarchy.getNodes(maxLevel - totalLevel)[0].x;
+
+    forEach(grandTotalChildren, (node: Node) => {
+      node.x = rowsHierarchy.getNodes(maxLevel)[0].x;
+    });
   }
 
   private calculateRowLeafNodesWidth(node: Node): number {

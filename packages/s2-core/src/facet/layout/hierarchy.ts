@@ -26,6 +26,7 @@ export class Hierarchy {
   // all nodes in this hierarchy
   private allNodesWithoutRoot: Node[] = [];
 
+  // all nodes in the lastLevel
   private indexNode: Node[] = [];
 
   // get all leaf nodes
