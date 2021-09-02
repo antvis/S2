@@ -48,6 +48,7 @@ export class CornerCell extends HeaderCell {
     const { x, y, height } = this.getCellArea();
 
     const textStyle = this.getTextStyle();
+    const iconStyle = this.getStyle().icon;
     const { formattedValue } = this.getFormattedFieldValue();
 
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
@@ -79,7 +80,7 @@ export class CornerCell extends HeaderCell {
 
     const { x: textX } = getTextPosition(
       {
-        x: x + this.getTreeIconWidth(),
+        x: x + this.getTreeIconWidth() + iconStyle.margin.right,
         y: y,
         width: maxWidth,
         height: height,
@@ -220,7 +221,7 @@ export class CornerCell extends HeaderCell {
       ...cornerTextStyle,
       textAlign: this.spreadsheet.isTableMode()
         ? cornerTextStyle.textAlign
-        : 'left',
+        : 'center',
       textBaseline: 'middle',
     };
   }
