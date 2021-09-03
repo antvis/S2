@@ -6,6 +6,7 @@ import {
   getFieldKeysByDimensionValues,
   getIntersections,
   isEveryUndefined,
+  splitTotal,
 } from '@/utils/data-set-operate';
 import {
   compact,
@@ -65,6 +66,8 @@ export class PivotDataSet extends BaseDataSet {
     this.indexesData = [];
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
+    // total data in raw data scene.
+    this.totalData = [].concat(this.totalData).concat(splitTotal(dataCfg.data, dataCfg.fields));
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
       const { rows, columns } = this.fields;
       this.transformIndexesData(rows, columns, this.originData, this.totalData);
