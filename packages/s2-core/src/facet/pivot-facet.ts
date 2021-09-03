@@ -410,17 +410,24 @@ export class PivotFacet extends BaseFacet {
     if (!(grandTotalNode instanceof Node)) return;
     const grandTotalChildren = grandTotalNode.children;
     // 总计节点层级 (有且有两级)
-    const totalLevel = isEmpty(grandTotalChildren) ? 0 : 1;
+    // const totalLevel = isEmpty(grandTotalChildren) ? 0 : 1;
     if (isRowHeader) {
-      // 保持节点右对齐
-      grandTotalNode.x = rowsHierarchy.getNodes(maxLevel - totalLevel)[0].x;
+      // 填充总计小计单元格宽度
+      grandTotalNode.width = rowsHierarchy.sampleNodesForAllLevels
+        .map((value) => value.width)
+        .reduce((sum, current) => {
+          return sum + current;
+        });
 
       forEach(grandTotalChildren, (node: Node) => {
         node.x = rowsHierarchy.getNodes(maxLevel)[0].x;
       });
     } else {
-      grandTotalNode.y = rowsHierarchy.getNodes(maxLevel - totalLevel)[0].y;
-
+      grandTotalNode.height = rowsHierarchy.sampleNodesForAllLevels
+        .map((value) => value.height)
+        .reduce((sum, current) => {
+          return sum + current;
+        });
       forEach(grandTotalChildren, (node: Node) => {
         node.y = rowsHierarchy.getNodes(maxLevel)[0].y;
       });
