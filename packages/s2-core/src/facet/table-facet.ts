@@ -1,19 +1,20 @@
-import { LayoutResult, ViewMeta } from 'src/common/interface';
-import { S2Event.LIST_SORT, S2Event, SERIES_NUMBER_FIELD } from 'src/common/constant';
+import { ViewMeta } from './../common/interface/basic';
+import { get, maxBy, orderBy } from 'lodash';
+import { S2Event, SERIES_NUMBER_FIELD } from 'src/common/constant';
+import { DebuggerUtil } from 'src/common/debug';
+import { LayoutResult } from 'src/common/interface';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { Node } from 'src/facet/layout/node';
-import { get, maxBy, orderBy } from 'lodash';
 import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
+import { Node } from 'src/facet/layout/node';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
-import { DebuggerUtil } from 'src/common/debug';
 
 export class TableFacet extends BaseFacet {
   public constructor(props) {
     super(props);
     const s2 = this.spreadsheet;
-    s2.on(S2Event.LIST_SORT, ({ sortKey, sortMethod }) => {
+    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
       const sortInfo = {
         sortKey,
         sortMethod,
@@ -33,7 +34,7 @@ export class TableFacet extends BaseFacet {
 
   public destroy() {
     super.destroy();
-    this.spreadsheet.off(S2Event.LIST_SORT);
+    this.spreadsheet.off(S2Event.RANGE_SORT);
   }
 
   protected doLayout(): LayoutResult {
@@ -46,10 +47,7 @@ export class TableFacet extends BaseFacet {
         facetCfg: this.cfg,
       });
 
-    this.calculateNodesCoordinate(
-      colLeafNodes,
-      colsHierarchy,
-    );
+    this.calculateNodesCoordinate(colLeafNodes, colsHierarchy);
 
     const getCellMeta = (rowIndex: number, colIndex: number) => {
       const showSeriesNumber = this.getSeriesNumberWidth() > 0;
@@ -69,24 +67,21 @@ export class TableFacet extends BaseFacet {
           },
         });
       }
-
       return {
         spreadsheet,
         x: col.x,
         y: cellHeight * rowIndex,
         width: col.width,
         height: cellHeight,
-        data: [
-          {
-            [col.field]: data,
-          },
-        ],
+        data: {
+          [col.field]: data,
+        },
         rowIndex,
         colIndex,
         isTotals: false,
         colId: col.id,
         rowId: String(rowIndex),
-        valueField: col.id,
+        valueField: col.field,
         fieldValue: data,
       } as ViewMeta;
     };

@@ -3,7 +3,7 @@ import {
   getIconPositionCfg,
   isPositive,
   updateConditionsByValues,
-} from '@/utils/condition';
+} from '@/utils/condition/generate-condition';
 
 describe('Condition Test', () => {
   const iconTheme: IconTheme = {

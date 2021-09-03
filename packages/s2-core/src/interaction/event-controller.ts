@@ -28,9 +28,6 @@ export class EventController {
   // 保存触发的元素
   private target: LooseObject;
 
-  // 保存hover的元素
-  private hoverTarget: LooseObject;
-
   private canvasEventHandlers: EventHandler[] = [];
 
   private domEventListeners: EventListener[] = [];
@@ -119,9 +116,7 @@ export class EventController {
       return;
     }
 
-    this.spreadsheet.interaction.clearState();
-    this.spreadsheet.hideTooltip();
-    this.spreadsheet.interaction.intercept.clear();
+    this.spreadsheet.interaction.reset();
   }
 
   private isMouseOnTheCanvasContainer(event: Event) {
@@ -229,11 +224,7 @@ export class EventController {
           break;
       }
 
-      // 如果hover的cell改变了，并且当前不需要屏蔽 hover
-      if (
-        this.hoverTarget !== event.target &&
-        !this.spreadsheet.interaction.intercept.has(InterceptType.HOVER)
-      ) {
+      if (!this.spreadsheet.interaction.intercept.has(InterceptType.HOVER)) {
         switch (cellType) {
           case CellTypes.DATA_CELL:
             this.spreadsheet.emit(S2Event.DATA_CELL_HOVER, event);

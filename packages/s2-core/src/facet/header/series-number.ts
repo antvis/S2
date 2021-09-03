@@ -5,9 +5,9 @@ import { measureTextWidth } from '@/utils/text';
 import { getAdjustPosition } from '@/utils/text-absorption';
 import { BBox, IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
+import { Padding, ViewMeta } from '@/common/interface';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
-import { getCellPadding } from './util';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;
@@ -109,7 +109,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       x: position.x,
       y: -position.y,
       width,
-      height: height,
+      height,
       fill: rowCellTheme.backgroundColor,
       stroke: 'transparent',
       opacity: rowCellTheme.backgroundColorOpacity,
@@ -133,7 +133,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     });
   }
 
-  private addText(group: IGroup, cellData) {
+  private addText(group: IGroup, cellData: ViewMeta) {
     const { offset, height } = this.headerConfig;
     const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
     const {
@@ -145,13 +145,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       isLeaf,
       isTotals,
     } = cellData;
-    const padding = getCellPadding();
-    const labelWidth = measureTextWidth(
-      label,
-      this.headerConfig.spreadsheet.theme.rowCell.text,
-    );
-    padding.left = Math.max(Math.abs((cellWidth - labelWidth) / 2), 4);
-    padding.right = padding.left;
+    const padding = this.getTextPadding(label, cellWidth);
     const textStyle =
       isLeaf && !isTotals ? rowCellTheme.text : rowCellTheme.bolderText;
     const textY = getAdjustPosition(
@@ -171,5 +165,16 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         cursor: 'pointer',
       },
     });
+  }
+
+  private getTextPadding(text: string, cellWidth: number): Padding {
+    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
+    const textWidth = measureTextWidth(text, rowCellTheme.text);
+    const padding = Math.max(Math.abs((cellWidth - textWidth) / 2), 4);
+    return {
+      ...rowCellTheme.cell.padding,
+      left: padding,
+      right: padding,
+    };
   }
 }

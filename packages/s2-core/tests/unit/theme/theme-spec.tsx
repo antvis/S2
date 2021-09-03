@@ -62,6 +62,22 @@ const getOptions = (): S2Options => {
       },
       device: 'pc',
     },
+    totals: {
+      row: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['province', 'city'],
+      },
+      col: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['sub_type'],
+      },
+    },
     tooltip: {
       showTooltip: true,
       renderTooltip: (spreadsheet) => {

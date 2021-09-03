@@ -1,35 +1,42 @@
 import { InteractionStateName, InterceptType } from '@/common/constant';
 import { concat, isEmpty } from 'lodash';
-import { S2CellType, MultiClickProps } from '@/common/interface';
+import { S2CellType, MultiClickParams } from '@/common/interface';
 import { Node } from '@/index';
-import { mergeCellInfo } from '../tooltip';
-export const handleRowColClick = (props: MultiClickProps) => {
-  const { event, spreadsheet, isTreeRowClick, isMultiSelection } = props;
+import { mergeCellInfo } from '@/utils/tooltip';
 
-  const lastState = spreadsheet.interaction.getState();
+export const handleRowColClick = ({
+  event,
+  spreadsheet,
+  isTreeRowClick,
+  isMultiSelection,
+}: MultiClickParams) => {
+  event.stopPropagation();
+
+  if (spreadsheet.interaction.intercept.has(InterceptType.CLICK)) {
+    return;
+  }
+
+  const { interaction } = spreadsheet;
+  const lastState = interaction.getState();
   const cell = spreadsheet.getCell(event.target);
   const meta = cell.getMeta() as Node;
 
-  if (spreadsheet.interaction.isSelectedCell(cell)) {
-    // 点击当前已选cell 则取消当前cell的选中状态
-    spreadsheet.interaction.clearState();
-    spreadsheet.interaction.intercept.clear();
-    spreadsheet.hideTooltip();
+  if (interaction.isSelectedCell(cell)) {
+    interaction.reset();
     return;
   }
 
   if (meta.x !== undefined) {
-    spreadsheet.interaction.intercept.add(InterceptType.HOVER);
+    interaction.intercept.add(InterceptType.HOVER);
     // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
     let leafNodes = isTreeRowClick
-      ? Node.getAllLeavesOfNode(meta)
+      ? Node.getAllLeavesOfNode(meta).filter(
+          (node) => node.rowIndex === meta.rowIndex,
+        )
       : Node.getAllChildrenNode(meta);
     let selectedCells: S2CellType[] = [cell];
 
-    if (
-      isMultiSelection &&
-      lastState.stateName === InteractionStateName.SELECTED
-    ) {
+    if (isMultiSelection && interaction.isSelectedState()) {
       selectedCells = isEmpty(lastState?.cells)
         ? selectedCells
         : concat(lastState?.cells, selectedCells);
@@ -40,31 +47,30 @@ export const handleRowColClick = (props: MultiClickProps) => {
 
     // 兼容行列多选
     // Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
-    spreadsheet.interaction.changeState({
+    interaction.changeState({
       cells: selectedCells,
       nodes: leafNodes,
       stateName: InteractionStateName.SELECTED,
     });
 
     // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-    selectedCells.forEach((selectedCell) => {
-      selectedCell.update();
-    });
-    leafNodes.forEach((node) => {
-      node?.belongsCell?.updateByState(
-        InteractionStateName.SELECTED,
-        node.belongsCell,
-      );
-    });
+    interaction.updateCells(selectedCells);
 
-    const cellInfos = spreadsheet.interaction.isSelectedState()
-      ? mergeCellInfo(spreadsheet.interaction.getActiveCells())
-      : [];
-
-    if (spreadsheet.options.valueInCols) {
-      spreadsheet.showTooltipWithInfo(event, cellInfos, {
-        showSingleTips: true,
+    if (!isTreeRowClick) {
+      leafNodes.forEach((node) => {
+        node?.belongsCell?.updateByState(
+          InteractionStateName.SELECTED,
+          node.belongsCell,
+        );
       });
     }
+
+    const cellInfos = interaction.isSelectedState()
+      ? mergeCellInfo(interaction.getActiveCells())
+      : [];
+
+    spreadsheet.showTooltipWithInfo(event, cellInfos, {
+      showSingleTips: true,
+    });
   }
 };

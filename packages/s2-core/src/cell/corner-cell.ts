@@ -1,22 +1,23 @@
-import { FormatResult, TextTheme } from '@/common/interface';
-import { renderRect, renderTreeIcon } from '@/utils/g-renders';
-import { IGroup, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
-import { isEmpty, isEqual } from 'lodash';
 import {
   CellTypes,
   COLOR_DEFAULT_RESIZER,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZER,
   S2Event,
-} from '../common/constant';
-import { HIT_AREA } from '../facet/header/base';
-import { CornerHeaderConfig } from '../facet/header/corner';
-import { ResizeInfo } from '../facet/header/interface';
-import { renderText } from '../utils/g-renders';
-import { isIPhoneX } from '../utils/is-mobile';
-import { getEllipsisText } from '../utils/text';
-import { getTextPosition, getVerticalPosition } from './../utils/cell/cell';
+} from '@/common/constant';
+import { CellAttrs, FormatResult, TextTheme } from '@/common/interface';
+import { HIT_AREA } from '@/facet/header/base';
+import { CornerHeaderConfig } from '@/facet/header/corner';
+import { ResizeInfo } from '@/facet/header/interface';
+import { Node } from '@/facet/layout/node';
+import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
+import { renderRect, renderText, renderTreeIcon } from '@/utils/g-renders';
+import { isIPhoneX } from '@/utils/is-mobile';
+import { getEllipsisText } from '@/utils/text';
+import { IGroup, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import { isEmpty, isEqual } from 'lodash';
 import { HeaderCell } from './header-cell';
+
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
 
@@ -44,9 +45,10 @@ export class CornerCell extends HeaderCell {
       return;
     }
 
-    const { x, y, height } = this.getContentArea();
+    const { x, y, height } = this.getCellArea();
 
     const textStyle = this.getTextStyle();
+    const iconStyle = this.getStyle().icon;
     const { formattedValue } = this.getFormattedFieldValue();
 
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
@@ -68,17 +70,9 @@ export class CornerCell extends HeaderCell {
       secondLine = getEllipsisText(secondLine, maxWidth, textStyle);
     }
 
-    const extraInfo = {
-      appendInfo: {
-        // 标记为行头文本，方便做链接跳转直接识别
-        isCornerHeaderText: true,
-        cellData: this.meta,
-      },
-    };
-
     const { x: textX } = getTextPosition(
       {
-        x: x + this.getTreeIconWidth(),
+        x: x + this.getTreeIconWidth() + iconStyle.margin.right,
         y: y,
         width: maxWidth,
         height: height,
@@ -96,7 +90,6 @@ export class CornerCell extends HeaderCell {
         textY,
         firstLine,
         textStyle,
-        extraInfo,
       ),
     );
 
@@ -110,7 +103,6 @@ export class CornerCell extends HeaderCell {
           y + height * 0.75,
           secondLine,
           textStyle,
-          extraInfo,
         ),
       );
     }
@@ -219,7 +211,7 @@ export class CornerCell extends HeaderCell {
       ...cornerTextStyle,
       textAlign: this.spreadsheet.isTableMode()
         ? cornerTextStyle.textAlign
-        : 'left',
+        : 'center',
       textBaseline: 'middle',
     };
   }
