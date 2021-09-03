@@ -249,9 +249,7 @@ export class PivotFacet extends BaseFacet {
         // parent's width = all children's width
         parent.width = parent.children
           .map((value: Node) => value.width)
-          .reduce((sum, current) => {
-            return sum + current;
-          });
+          .reduce((sum, current) => sum + current);
         prevColParent = parent;
       }
     }
@@ -394,9 +392,7 @@ export class PivotFacet extends BaseFacet {
         // parent's height = all children's height
         parent.height = parent.children
           .map((value) => value.height)
-          .reduce((sum, current) => {
-            return sum + current;
-          });
+          .reduce((sum, current) => sum + current);
         prevRowParent = parent;
       }
     }
@@ -424,9 +420,7 @@ export class PivotFacet extends BaseFacet {
       // 填充行总单元格宽度
       grandTotalNode.width = hierarchy.sampleNodesForAllLevels
         .map((value) => value.width)
-        .reduce((sum, current) => {
-          return sum + current;
-        });
+        .reduce((sum, current) => sum + current);
       // 调整其叶子结点位置
       forEach(grandTotalChildren, (node: Node) => {
         node.x = hierarchy.getNodes(maxLevel)[0].x;
@@ -435,9 +429,7 @@ export class PivotFacet extends BaseFacet {
       // 填充列总单元格宽度
       grandTotalNode.height = hierarchy.sampleNodesForAllLevels
         .map((value) => value.height)
-        .reduce((sum, current) => {
-          return sum + current;
-        });
+        .reduce((sum, current) => sum + current);
       // 调整其叶子结点位置
       forEach(grandTotalChildren, (node: Node) => {
         node.y = hierarchy.getNodes(maxLevel)[0].y;
@@ -465,16 +457,12 @@ export class PivotFacet extends BaseFacet {
           subTotalNode.width = hierarchy.sampleNodesForAllLevels
             .filter((node: Node) => node.level >= subTotalNode.level)
             .map((value) => value.width)
-            .reduce((sum, current) => {
-              return sum + current;
-            });
+            .reduce((sum, current) => sum + current);
         } else {
           subTotalNode.height = hierarchy.sampleNodesForAllLevels
             .filter((node: Node) => node.level >= subTotalNode.level)
             .map((value) => value.height)
-            .reduce((sum, current) => {
-              return sum + current;
-            });
+            .reduce((sum, current) => sum + current);
         }
       }
     });
