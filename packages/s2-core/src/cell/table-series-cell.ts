@@ -1,6 +1,6 @@
-import { DataCell } from 'src/cell/data-cell';
-import { TextTheme } from '@/common/interface';
 import { CellTypes } from '@/common/constant';
+import { TextTheme } from '@/common/interface';
+import { DataCell } from 'src/cell/data-cell';
 
 export class TableRowCell extends DataCell {
   public get cellType() {

@@ -5,7 +5,6 @@ import { includes, isEmpty, concat, merge, forEach } from 'lodash';
 import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import {
   BaseEvent,
-  CornerTextClick,
   DataCell,
   DataCellClick,
   Intercept,
@@ -173,10 +172,6 @@ export class RootInteraction {
       new DataCellClick(this.spreadsheet, this),
     );
     this.interactions.set(
-      InteractionName.CORNER_TEXT_CLICK,
-      new CornerTextClick(this.spreadsheet, this),
-    );
-    this.interactions.set(
       InteractionName.ROW_COLUMN_CLICK,
       new RowColumnClick(this.spreadsheet, this),
     );
@@ -245,13 +240,16 @@ export class RootInteraction {
     }
     this.clearState();
     this.setState(interactionStateInfo);
-    this.updatePanelAllCellsStyle();
+    this.updatePanelGroupAllDataCells();
     this.draw();
   }
 
-  public updatePanelAllCellsStyle() {
-    const cells = this.getPanelGroupAllDataCells();
-    cells.forEach((cell: DataCell) => {
+  public updatePanelGroupAllDataCells() {
+    this.updateCells(this.getPanelGroupAllDataCells());
+  }
+
+  public updateCells(cells: S2CellType[] = []) {
+    cells.forEach((cell) => {
       cell.update();
     });
   }

@@ -16,7 +16,7 @@ import {
   S2CellType,
   TextTheme,
   ViewMeta,
-  ViewMetaIndex,
+  ViewMetaIndexType,
 } from '@/common/interface';
 import {
   getMaxTextWidth,
@@ -32,17 +32,9 @@ import {
 } from '@/utils/g-renders';
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
-import {
-  clamp,
-  find,
-  first,
-  get,
-  includes,
-  isEmpty,
-  isEqual,
-  map,
-} from 'lodash';
-import { parseNumberWithPrecision } from './../utils/formatter';
+import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
+import { parseNumberWithPrecision } from '@/utils/formatter';
+import { Node } from '..';
 
 /**
  * DataCell for panelGroup area
@@ -160,9 +152,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
     this.drawConditionIntervalShape();
+    this.drawInteractiveBorderShape();
     this.drawTextShape();
     this.drawConditionIconShapes();
-    this.drawInteractiveBorderShape();
     this.drawBorderShape();
     this.update();
   }
@@ -405,11 +397,16 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   // dataCell根据state 改变当前样式，
-  private changeRowColSelectState(index: ViewMetaIndex) {
-    const currentIndex = get(this.meta, index);
-    const nodes = this.spreadsheet.interaction.getState()?.nodes;
-    const selectedIndexes = map(nodes, (node) => get(node, index));
-    if (includes(selectedIndexes, currentIndex)) {
+  private changeRowColSelectState(indexType: ViewMetaIndexType) {
+    const currentIndex = get(this.meta, indexType);
+    const { nodes = [], cells = [] } = this.spreadsheet.interaction.getState();
+    const isEqualIndex = [...nodes, ...cells].find((cell) => {
+      if (cell instanceof Node) {
+        return get(cell, indexType) === currentIndex;
+      }
+      return get(cell?.getMeta(), indexType) === currentIndex;
+    });
+    if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.selectedCellsSpotlight) {
       this.updateByState(InteractionStateName.UNSELECTED);
@@ -490,16 +487,18 @@ export class DataCell extends BaseCell<ViewMeta> {
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
       );
-      updateShapeAttr(
-        this.conditionIntervalShape,
-        SHAPE_STYLE_MAP.backgroundOpacity,
-        stateStyles.backgroundOpacity,
-      );
-      updateShapeAttr(
-        this.conditionIconShape as unknown as IShape,
-        SHAPE_STYLE_MAP.opacity,
-        stateStyles.opacity,
-      );
+      if (stateStyles) {
+        updateShapeAttr(
+          this.conditionIntervalShape,
+          SHAPE_STYLE_MAP.backgroundOpacity,
+          stateStyles.backgroundOpacity,
+        );
+        updateShapeAttr(
+          this.conditionIconShape as unknown as IShape,
+          SHAPE_STYLE_MAP.opacity,
+          stateStyles.opacity,
+        );
+      }
     }
   }
 

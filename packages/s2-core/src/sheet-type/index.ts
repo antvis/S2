@@ -43,7 +43,16 @@ import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { getTooltipData } from '@/utils/tooltip';
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
-import { clone, get, includes, isEmpty, isString, merge, size } from 'lodash';
+import {
+  clone,
+  get,
+  includes,
+  isArray,
+  isEmpty,
+  isString,
+  merge,
+  mergeWith,
+} from 'lodash';
 
 export class SpreadSheet extends EE {
   // dom id
@@ -256,7 +265,14 @@ export class SpreadSheet extends EE {
 
   public setOptions(options: Partial<S2Options>) {
     this.hideTooltip();
-    this.options = merge(this.options, options);
+    this.options = mergeWith(this.options, options, (origin, updated) => {
+      // merge 默认行为会把数组类型进行合并，这会导致一个问题：
+      // origin: { linkFieldIds:[1,2,3]} +  updated: { linkFieldIds:[]} => { linkFieldIds:[1,2,3]}
+      // 本意是将linkFieldIds 重置，结果却被合并了
+      if (isArray(origin) && isArray(updated)) {
+        return updated;
+      }
+    });
   }
 
   public render(reloadData = true) {

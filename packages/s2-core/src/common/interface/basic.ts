@@ -341,7 +341,7 @@ export interface ViewMeta {
   [key: string]: any;
 }
 
-export type ViewMetaIndex = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;
+export type ViewMetaIndexType = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;
 
 export type GetCellMeta = (rowIndex: number, colIndex: number) => ViewMeta;
 
@@ -368,7 +368,6 @@ export interface OffsetConfig {
 }
 
 export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
-  isCornerHeaderText?: boolean;
   isRowHeaderText?: boolean;
   cellData?: T;
 }
