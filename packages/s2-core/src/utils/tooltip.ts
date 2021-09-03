@@ -343,7 +343,6 @@ export const getSelectedCellsData = (
   }
   // 其他（刷选，data cell多选）
   const cells = spreadsheet.interaction.getActiveCells();
-  console.log('cells: ', cells);
   return compact(map(cells, (cell) => cell.getMeta()?.data));
 };
 
