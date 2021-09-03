@@ -309,11 +309,12 @@ export const getSelectedCellIndexes = (
 ) => {
   const { rowLeafNodes, colLeafNodes } = layoutResult;
   const { cells = [], nodes = [] } = spreadsheet.interaction.getState() || {};
+  const cellType = cells?.[0]?.cellType;
 
-  if (cells?.[0]?.cellType === CellTypes.COL_CELL) {
+  if (cellType === CellTypes.COL_CELL) {
     return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);
   }
-  if (cells?.[0]?.cellType === CellTypes.ROW_CELL) {
+  if (cellType === CellTypes.ROW_CELL) {
     return getRowOrColSelectedIndexes(nodes, colLeafNodes);
   }
 
