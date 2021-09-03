@@ -2,7 +2,7 @@
   "fields": {
     "rows": ["area", "province", "city"],
     "columns": ["type", "sub_type"],
-    "values": ["price"]
+    "values": ["price", "cost"]
   },
   "meta": [
     {

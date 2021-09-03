@@ -118,23 +118,9 @@ function MainLayout(props: MainLayoutProps) {
   };
 
   const onCheckHierarchyType = (checked) => {
-    setDataCfg(
-      merge({}, dataCfg, {
-        fields: {
-          values: checked,
-        },
-      }),
-    );
-  };
-
-  const onCheckValuesChange = (checked) => {
-    setDataCfg(
-      merge({}, dataCfg, {
-        fields: {
-          values: checked
-            ? mockDataCfg.fields.values[0]
-            : mockDataCfg.fields.values,
-        },
+    setOptions(
+      merge({}, options, {
+        hierarchyType: checked ? 'tree' : 'grid',
       }),
     );
   };
@@ -167,12 +153,6 @@ function MainLayout(props: MainLayoutProps) {
             unCheckedChildren="平铺"
             defaultChecked={false}
             onChange={onCheckHierarchyType}
-          />
-          <Switch
-            checkedChildren="多指标"
-            unCheckedChildren="单指标"
-            defaultChecked={false}
-            onChange={onCheckValuesChange}
           />
           <Checkbox
             onChange={onCheckFreezeRowHeader}
