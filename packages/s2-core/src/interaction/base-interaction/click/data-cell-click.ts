@@ -1,19 +1,20 @@
+import { DataCell } from '@/cell/data-cell';
 import {
-  S2Event,
-  InterceptType,
-  INTERACTION_TREND,
   InteractionStateName,
+  INTERACTION_TREND,
+  InterceptType,
+  S2Event,
 } from '@/common/constant';
 import {
+  CellAppendInfo,
   TooltipData,
   TooltipOperatorOptions,
   ViewMeta,
 } from '@/common/interface';
+import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
 import { LineChartOutlined } from '@ant-design/icons';
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { noop } from 'lodash';
-import { DataCell } from '@/cell/data-cell';
-import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
+import { get, noop } from 'lodash';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -26,6 +27,8 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       if (this.interaction.intercept.has(InterceptType.CLICK)) {
         return;
       }
+
+      this.emitLinkFieldClickEvent(event);
 
       const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
@@ -101,5 +104,22 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       hideSummary: true,
       showSingleTips,
     });
+  }
+
+  private emitLinkFieldClickEvent(event: CanvasEvent) {
+    const appendInfo = get(
+      event.target,
+      'attrs.appendInfo',
+      {},
+    ) as CellAppendInfo<ViewMeta>;
+
+    if (appendInfo.isRowHeaderText) {
+      const { cellData } = appendInfo;
+      const { valueField: key, data: record } = cellData;
+      this.spreadsheet.emit(S2Event.ROW_CELL_TEXT_CLICK, {
+        key,
+        record,
+      });
+    }
   }
 }

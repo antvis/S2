@@ -18,6 +18,7 @@ import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 
 export type Formatter = (v: unknown) => string;
+
 export interface FormatResult {
   formattedValue: string;
   value: DataItem;
@@ -66,7 +67,7 @@ export interface Extra {
 
 export interface Fields {
   // row fields
-  rows: string[];
+  rows?: string[];
   // custom tree data(only use in row header in pivot mode)
   customTreeItems?: CustomTreeItem[];
   // columns fields
@@ -340,7 +341,7 @@ export interface ViewMeta {
   [key: string]: any;
 }
 
-export type ViewMetaIndex = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;
+export type ViewMetaIndexType = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;
 
 export type GetCellMeta = (rowIndex: number, colIndex: number) => ViewMeta;
 
