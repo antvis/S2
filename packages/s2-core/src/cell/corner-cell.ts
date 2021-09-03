@@ -70,14 +70,6 @@ export class CornerCell extends HeaderCell {
       secondLine = getEllipsisText(secondLine, maxWidth, textStyle);
     }
 
-    const extraInfo: CellAttrs<Node> = {
-      appendInfo: {
-        // 标记为行头文本，方便做链接跳转直接识别
-        isCornerHeaderText: true,
-        cellData: this.meta,
-      },
-    };
-
     const { x: textX } = getTextPosition(
       {
         x: x + this.getTreeIconWidth() + iconStyle.margin.right,
@@ -98,7 +90,6 @@ export class CornerCell extends HeaderCell {
         textY,
         firstLine,
         textStyle,
-        extraInfo,
       ),
     );
 
@@ -112,7 +103,6 @@ export class CornerCell extends HeaderCell {
           y + height * 0.75,
           secondLine,
           textStyle,
-          extraInfo,
         ),
       );
     }

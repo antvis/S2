@@ -5,7 +5,6 @@ import { includes, isEmpty, concat, merge, forEach } from 'lodash';
 import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import {
   BaseEvent,
-  CornerTextClick,
   DataCell,
   DataCellClick,
   Intercept,
@@ -171,10 +170,6 @@ export class RootInteraction {
     this.interactions.set(
       InteractionName.DATA_CELL_CLICK,
       new DataCellClick(this.spreadsheet, this),
-    );
-    this.interactions.set(
-      InteractionName.CORNER_TEXT_CLICK,
-      new CornerTextClick(this.spreadsheet, this),
     );
     this.interactions.set(
       InteractionName.ROW_COLUMN_CLICK,

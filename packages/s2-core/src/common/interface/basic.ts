@@ -368,7 +368,6 @@ export interface OffsetConfig {
 }
 
 export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
-  isCornerHeaderText?: boolean;
   isRowHeaderText?: boolean;
   cellData?: T;
 }
