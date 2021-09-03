@@ -5,47 +5,47 @@
 import {
   CellTypes,
   EXTRA_FIELD,
-  VALUE_FIELD,
   PRECISION,
+  VALUE_FIELD,
 } from '@/common/constant';
 import {
+  POSITION_X_OFFSET,
+  POSITION_Y_OFFSET,
+} from '@/common/constant/tooltip';
+import { i18n } from '@/common/i18n';
+import {
+  assign,
   compact,
   concat,
   filter,
   find,
   forEach,
   get,
+  isEmpty,
   isEqual,
   isNil,
   isNumber,
   map,
-  isEmpty,
-  sumBy,
-  some,
-  assign,
-  pick,
-  uniq,
-  noop,
   mapKeys,
+  noop,
+  pick,
+  some,
+  sumBy,
+  uniq,
 } from 'lodash';
 import {
-  TooltipDataItem,
-  TooltipDataParam,
-  TooltipOptions,
-  SummaryParam,
   ListItem,
   S2CellType,
   SpreadSheet,
+  SummaryParam,
   TooltipData,
+  TooltipDataItem,
+  TooltipDataParam,
   TooltipHeadInfo,
+  TooltipOptions,
   TooltipPosition,
   TooltipSummaryOptions,
 } from '..';
-import { i18n } from '@/common/i18n';
-import {
-  POSITION_X_OFFSET,
-  POSITION_Y_OFFSET,
-} from '@/common/constant/tooltip';
 import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
@@ -246,27 +246,26 @@ export const getDetailList = (
           get(activeData, VALUE_FIELD),
         ),
       );
-    } else {
-      // the value hangs at the head of the column, match the displayed fields according to the metric itself
-      // 1、multiple derivative indicators
-      // 2、only one column scene
-      // 3、the clicked cell belongs to the derived index column
-      // tooltip need to show all derivative indicators
-      if (
-        isMultiDataItem(value) &&
-        spreadsheet.getTooltipDataItemMappingCallback()
-      ) {
-        const mappedResult = handleDataItem(
-          activeData,
-          spreadsheet.getTooltipDataItemMappingCallback(),
-        ) as Record<string, string | number>;
+    }
+    // the value hangs at the head of the column, match the displayed fields according to the metric itself
+    // 1、multiple derivative indicators
+    // 2、only one column scene
+    // 3、the clicked cell belongs to the derived index column
+    // tooltip need to show all derivative indicators
+    else if (
+      isMultiDataItem(value) &&
+      spreadsheet.getTooltipDataItemMappingCallback()
+    ) {
+      const mappedResult = handleDataItem(
+        activeData,
+        spreadsheet.getTooltipDataItemMappingCallback(),
+      ) as Record<string, string | number>;
 
-        forEach(mappedResult, (_, key) => {
-          valItem.push(getListItem(spreadsheet, mappedResult, key));
-        });
-      } else {
-        valItem.push(getListItem(spreadsheet, activeData, field));
-      }
+      forEach(mappedResult, (_, key) => {
+        valItem.push(getListItem(spreadsheet, mappedResult, key));
+      });
+    } else {
+      valItem.push(getListItem(spreadsheet, activeData, field));
     }
 
     return compact(valItem);
@@ -292,22 +291,6 @@ export const getSelectedValueFields = (
   return uniq(selectedData.map((d) => get(d, field)));
 };
 
-export const getSelectedCellIndexes = (
-  spreadsheet: SpreadSheet,
-  layoutResult,
-) => {
-  const { rowLeafNodes, colLeafNodes } = layoutResult;
-  const { cells = [], nodes = [] } = spreadsheet.interaction.getState() || {};
-
-  if (cells?.[0]?.cellType === CellTypes.COL_CELL) {
-    return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);
-  } else if (cells?.[0]?.cellType === CellTypes.ROW_CELL) {
-    return getRowOrColSelectedIndexes(nodes, colLeafNodes);
-  }
-
-  return [];
-};
-
 const getRowOrColSelectedIndexes = (nodes, leafNodes, isRow = true) => {
   const selectedIndexes = [];
   forEach(leafNodes, (leaf, index) => {
@@ -321,6 +304,24 @@ const getRowOrColSelectedIndexes = (nodes, leafNodes, isRow = true) => {
   });
 
   return selectedIndexes;
+};
+
+export const getSelectedCellIndexes = (
+  spreadsheet: SpreadSheet,
+  layoutResult,
+) => {
+  const { rowLeafNodes, colLeafNodes } = layoutResult;
+  const { cells = [], nodes = [] } = spreadsheet.interaction.getState() || {};
+  const cellType = cells?.[0]?.cellType;
+
+  if (cellType === CellTypes.COL_CELL) {
+    return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);
+  }
+  if (cellType === CellTypes.ROW_CELL) {
+    return getRowOrColSelectedIndexes(nodes, colLeafNodes);
+  }
+
+  return [];
 };
 
 export const getSelectedCellsData = (

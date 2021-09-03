@@ -1,19 +1,18 @@
 /* eslint-disable no-console */
-import { act } from 'react-dom/test-utils';
+import { message } from 'antd';
 import 'antd/dist/antd.min.css';
+import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
 import {
   S2DataConfig,
   S2Event,
   S2Options,
   SheetComponent,
-  SortMethodType,
   SpreadSheet,
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
 import { CustomTooltip } from './custom/custom-tooltip';
-import { useEffect } from 'react';
 
 const data = getMockData('../data/tableau-supermarket.csv');
 
@@ -82,7 +81,7 @@ const getOptions = (): S2Options => {
     height: 600,
     showSeriesNumber: true,
     mode: 'table',
-    enbleCopy: true,
+    enableCopy: true,
     style: {
       colCfg: {
         colWidthType: 'compact',
@@ -96,6 +95,7 @@ const getOptions = (): S2Options => {
     frozenColCount: 1,
     frozenTrailingColCount: 1,
     frozenTrailingRowCount: 1,
+    linkFieldIds: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: false,
       renderTooltip: (spreadsheet) => {
@@ -126,13 +126,16 @@ function MainLayout(props) {
         info.compareFunc = (obj) => Number(obj[info.sortKey]);
       }
     });
-    s2Ref.current.on(S2Event.RANGE_SORTED, (data) => {
-      console.log('data,', data);
+    s2Ref.current.on(S2Event.RANGE_SORTED, logData);
+
+    s2Ref.current.on(S2Event.ROW_CELL_TEXT_CLICK, ({ key, record }) => {
+      message.info(`key: ${key}, name: ${JSON.stringify(record)}`);
     });
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED, logData);
       s2Ref.current.off(S2Event.RANGE_SORTING);
       s2Ref.current.off(S2Event.RANGE_SORTED);
+      s2Ref.current.off(S2Event.ROW_CELL_TEXT_CLICK);
     };
   }, []);
 

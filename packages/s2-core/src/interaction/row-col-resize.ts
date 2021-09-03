@@ -7,7 +7,7 @@ import {
 import { Group, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import { clone, get, isNil, throttle } from 'lodash';
 import { SpreadSheet } from 'src/sheet-type';
-import { S2Options, Style } from '@/common/interface';
+import { Style } from '@/common/interface';
 import { ResizeInfo } from '../facet/header/interface';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { RootInteraction } from './root';
@@ -191,7 +191,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             }
           }
           this.spreadsheet.emit(resizeEventType, style);
-          this.spreadsheet.setOptions({ style } as S2Options);
+          this.spreadsheet.setOptions({ style });
           this.render();
         }
       }

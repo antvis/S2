@@ -1,6 +1,6 @@
 import { S2DataConfig } from '@/common/interface';
 import { BaseDataSet } from 'src/data-set/base-data-set';
-import { DataType, CellDataParams } from './interface';
+import { CellDataParams, DataType } from './interface';
 
 export class TableDataSet extends BaseDataSet {
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {

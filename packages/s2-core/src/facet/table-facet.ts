@@ -3,15 +3,15 @@ import { PanelIndexes } from 'src/utils/indexes';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { Node } from 'src/facet/layout/node';
-import { get, maxBy, orderBy } from 'lodash';
 import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
+import { Node } from 'src/facet/layout/node';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
 import { DebuggerUtil } from 'src/common/debug';
 import { renderLine } from 'src/utils/g-renders';
 import { Group } from '@antv/g-canvas';
 import { IGroup } from '@antv/g-base';
 import { FrozenCellGroupMap } from 'src/common/constant/frozen';
+import { get, maxBy, orderBy } from 'lodash';
 
 import type {
   LayoutResult,
@@ -128,7 +128,6 @@ export class TableFacet extends BaseFacet {
           },
         });
       }
-
       return {
         spreadsheet,
         x,
@@ -143,7 +142,7 @@ export class TableFacet extends BaseFacet {
         isTotals: false,
         colId: col.id,
         rowId: String(rowIndex),
-        valueField: col.id,
+        valueField: col.field,
         fieldValue: data,
       } as ViewMeta;
     };

@@ -2,8 +2,8 @@ import {
   CellTypes,
   COLOR_DEFAULT_RESIZER,
   ID_SEPARATOR,
-  S2Event,
   KEY_GROUP_ROW_RESIZER,
+  S2Event,
 } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
@@ -13,11 +13,10 @@ import { ResizeInfo } from '@/facet/header/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
-import { isMobile } from '@/utils/is-mobile';
 import { getAdjustPosition } from '@/utils/text-absorption';
 import { Event, IGroup, Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
-import { each, forEach, get } from 'lodash';
+import { each, forEach } from 'lodash';
 import { HeaderCell } from './header-cell';
 export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;
@@ -160,43 +159,18 @@ export class RowCell extends HeaderCell {
 
   // draw text
   protected drawTextShape() {
-    const { linkFieldIds = [] } = this.headerConfig;
-    const { fill, linkTextFill } = this.getTextStyle();
-
     super.drawTextShape();
+    this.drawLinkFieldShape();
+  }
 
-    // handle link nodes
-    if (linkFieldIds.includes(this.meta.key)) {
-      const device = get(this.headerConfig, 'spreadsheet.options.style.device');
-      // 配置了链接跳转
-      if (!isMobile(device)) {
-        const textBBox = this.textShape.getBBox();
-        renderLine(
-          this,
-          {
-            x1: textBBox.bl.x,
-            y1: textBBox.bl.y + 1,
-            x2: textBBox.br.x,
-            y2: textBBox.br.y + 1,
-          },
-          { stroke: fill, lineWidth: 1 },
-        );
-        this.textShape.attr({
-          appendInfo: {
-            isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
-            cellData: this.meta,
-          },
-        });
-      } else {
-        this.textShape.attr({
-          fill: linkTextFill,
-          appendInfo: {
-            isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
-            cellData: this.meta,
-          },
-        });
-      }
-    }
+  protected drawLinkFieldShape() {
+    const { linkFieldIds = [] } = this.headerConfig;
+    const { linkTextFill } = this.getTextStyle();
+
+    super.drawLinkFieldShape(
+      linkFieldIds.includes(this.meta.key),
+      linkTextFill,
+    );
   }
 
   protected drawRectBorder() {
