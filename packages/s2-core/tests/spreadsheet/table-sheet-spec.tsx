@@ -6,13 +6,11 @@ import {
   S2Event,
   S2Options,
   SheetComponent,
-  SortMethodType,
   SpreadSheet,
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { CustomTooltip } from './custom/custom-tooltip';
 import { useEffect } from 'react';
 
 const data = getMockData('../data/tableau-supermarket.csv');
@@ -92,9 +90,6 @@ const getOptions = (): S2Options => {
     },
     tooltip: {
       showTooltip: true,
-      renderTooltip: (spreadsheet) => {
-        return new CustomTooltip(spreadsheet);
-      },
     },
   };
 };

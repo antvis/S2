@@ -8,7 +8,7 @@ const SimpleTips = (props: TooltipNameTipsOptions) => {
   return (
     <>
       {name && <div className={`${TOOLTIP_PREFIX_CLS}-name`}>{name}</div>}
-      {tips && <div className={`${TOOLTIP_PREFIX_CLS}-tips`}>{tips}</div>}
+      {(name || tips) && <div className={`${TOOLTIP_PREFIX_CLS}-tips`}>{tips}</div>}
     </>
   );
 };

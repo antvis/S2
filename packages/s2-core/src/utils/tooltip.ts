@@ -363,7 +363,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
 
   mapKeys(summary, (selected, field) => {
     const currentFormatter = getFieldFormatter(spreadsheet, field);
-    const name = getSummaryName(spreadsheet, field, options?.isTotals);
+    const name = getSummaryName(spreadsheet, field, options?.isTotals) || '';
     let value: number | string;
     if (getShowValue) {
       value = getShowValue(selected, VALUE_FIELD);
@@ -375,7 +375,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     }
     summaries.push({
       selectedData: selected as unknown,
-      name,
+      name: name !== 'undefined' ? name : '',  // 当是table的情况会有name为undefined字符串的时候，为了不打破其他通用写法，在这做此判断
       value,
     });
   });

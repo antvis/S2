@@ -489,7 +489,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       const stateStyles = get(
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
-      );
+      ) || {};
       updateShapeAttr(
         this.conditionIntervalShape,
         SHAPE_STYLE_MAP.backgroundOpacity,

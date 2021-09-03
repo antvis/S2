@@ -23,7 +23,10 @@ const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
 
   const renderSummary = () => {
     return summaries?.map((item) => {
-      const { name = i18n('所选项'), value } = item || {};
+      const { name = '', value } = item || {};
+      if(!name && !value) {
+        return;
+      }
 
       return (
         <div
