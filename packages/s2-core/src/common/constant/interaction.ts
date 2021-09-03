@@ -3,7 +3,6 @@ import { i18n } from '@/common/i18n';
 export enum InteractionName {
   DATA_CELL_CLICK = 'dataCellClick',
   MERGED_CELLS_CLICK = 'mergedCellsClick',
-  CORNER_TEXT_CLICK = 'cornerCellTextClick',
   ROW_COLUMN_CLICK = 'rowColumnClick',
   ROW_TEXT_CLICK = 'rowTextClick',
   HOVER = 'hover',
