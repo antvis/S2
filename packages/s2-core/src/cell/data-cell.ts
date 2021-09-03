@@ -32,16 +32,7 @@ import {
 } from '@/utils/g-renders';
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
-import {
-  clamp,
-  find,
-  first,
-  get,
-  includes,
-  isEmpty,
-  isEqual,
-  map,
-} from 'lodash';
+import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
 import { parseNumberWithPrecision } from './../utils/formatter';
 
 /**
@@ -491,7 +482,8 @@ export class DataCell extends BaseCell<ViewMeta> {
       const stateStyles = get(
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
-      ) || {};
+        {},
+      );
       if (stateStyles) {
         updateShapeAttr(
           this.conditionIntervalShape,
