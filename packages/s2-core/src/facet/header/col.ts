@@ -83,8 +83,10 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const colLeafNodes = spreadsheet.facet.layoutResult.colLeafNodes;
 
     let frozenColWidth = 0;
-    for (let i = 0; i < frozenColCount; i++) {
-      frozenColWidth += colLeafNodes[i].width;
+    if (spreadsheet.isTableMode()) {
+      for (let i = 0; i < frozenColCount; i++) {
+        frozenColWidth += colLeafNodes[i].width;
+      }
     }
 
     this.scrollGroup.setClip({
@@ -128,7 +130,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
         y: 0,
         width,
         height,
-        fill: 'red',
+        fill: colCellTheme.backgroundColor,
         stroke: 'transparent',
         opacity: colCellTheme.backgroundColorOpacity,
       },
