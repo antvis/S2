@@ -48,8 +48,8 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     this.addShape('rect', {
       attrs: {
         x: 0,
-        y: 0,
-        width,
+        y: scrollY,
+        width: scrollX + width,
         height,
         fill: rowCellTheme.backgroundColor,
         stroke: 'transparent',
