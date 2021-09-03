@@ -226,6 +226,10 @@ export class PivotFacet extends BaseFacet {
     if (!isEmpty(spreadsheet.options.totals)) {
       this.adustTotalNodesCoordinate(colsHierarchy);
     }
+    // 当只有一个指标的时候，需要填充小计格子大小
+    if (!this.cfg.dataSet.moreThanOneValue()) {
+      this.adjustSubTotalNodesCoordinate(colsHierarchy);
+    }
   }
 
   /**
@@ -365,6 +369,10 @@ export class PivotFacet extends BaseFacet {
       if (!isEmpty(spreadsheet.options.totals)) {
         this.adustTotalNodesCoordinate(rowsHierarchy, true);
       }
+      // 当只有一个指标的时候，需要填充小计格子大小
+      if (!this.cfg.dataSet.moreThanOneValue()) {
+        this.adjustSubTotalNodesCoordinate(rowsHierarchy, true);
+      }
     }
   }
 
@@ -435,11 +443,6 @@ export class PivotFacet extends BaseFacet {
         node.y = hierarchy.getNodes(maxLevel)[0].y;
       });
     }
-
-    const moreThanOneValue = this.cfg.dataSet.fields.values?.length > 1;
-    // 当只有一个指标的时候，需要填充小计格子大小
-    if (!moreThanOneValue)
-      this.adjustSubTotalNodesCoordinate(hierarchy, isRowHeader);
   }
 
   /**
@@ -449,7 +452,7 @@ export class PivotFacet extends BaseFacet {
    */
   private adjustSubTotalNodesCoordinate(
     hierarchy: Hierarchy,
-    isRowHeader: boolean,
+    isRowHeader?: boolean,
   ) {
     const subTotalNodes = hierarchy
       .getNodes()

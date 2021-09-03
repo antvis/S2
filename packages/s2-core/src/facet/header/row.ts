@@ -44,22 +44,6 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       scrollX,
     } = this.headerConfig;
 
-    if (spreadsheet.isPivotMode) {
-      const rowCellTheme = this.cfg.spreadsheet.theme.rowCell.cell;
-      // draw the background
-      this.addShape('rect', {
-        attrs: {
-          x: 0,
-          y: scrollY,
-          width: scrollX + width,
-          height,
-          fill: rowCellTheme.backgroundColor,
-          stroke: 'transparent',
-          opacity: rowCellTheme.backgroundColorOpacity,
-        },
-      });
-    }
-
     const rowCell = spreadsheet?.facet?.cfg?.rowCell;
     // row'cell only show when visible
     const rowCellInRect = (item: Node): boolean => {

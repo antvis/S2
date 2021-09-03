@@ -53,23 +53,8 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected layout() {
-    const { data, spreadsheet, cornerWidth, width, scrollX, height } =
+    const { data, spreadsheet, cornerWidth, width, scrollX } =
       this.headerConfig;
-    if (spreadsheet.isPivotMode) {
-      const colCellTheme = this.cfg.spreadsheet.theme.colCell.cell;
-      // draw the background
-      this.addShape('rect', {
-        attrs: {
-          x: scrollX,
-          y: 0,
-          width,
-          height,
-          fill: colCellTheme.backgroundColor,
-          stroke: 'transparent',
-          opacity: colCellTheme.backgroundColorOpacity,
-        },
-      });
-    }
 
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
