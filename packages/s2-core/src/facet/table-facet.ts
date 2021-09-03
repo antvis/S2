@@ -1,13 +1,14 @@
-import { LayoutResult, ViewMeta } from 'src/common/interface';
+import { ViewMeta } from './../common/interface/basic';
+import { get, maxBy, orderBy } from 'lodash';
 import { S2Event, SERIES_NUMBER_FIELD } from 'src/common/constant';
+import { DebuggerUtil } from 'src/common/debug';
+import { LayoutResult } from 'src/common/interface';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { Node } from 'src/facet/layout/node';
-import { get, maxBy, orderBy } from 'lodash';
 import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
+import { Node } from 'src/facet/layout/node';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
-import { DebuggerUtil } from 'src/common/debug';
 
 export class TableFacet extends BaseFacet {
   public constructor(props) {
@@ -39,25 +40,18 @@ export class TableFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     const { dataSet, spreadsheet, cellCfg } = this.cfg;
 
-    const {
-      leafNodes: rowLeafNodes,
-      hierarchy: rowsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: true,
-      facetCfg: this.cfg,
-    });
-    const {
-      leafNodes: colLeafNodes,
-      hierarchy: colsHierarchy,
-    } = buildHeaderHierarchy({
-      isRowHeader: false,
-      facetCfg: this.cfg,
-    });
+    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: true,
+        facetCfg: this.cfg,
+      });
+    const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
+      buildHeaderHierarchy({
+        isRowHeader: false,
+        facetCfg: this.cfg,
+      });
 
-    this.calculateNodesCoordinate(
-      colLeafNodes,
-      colsHierarchy,
-    );
+    this.calculateNodesCoordinate(colLeafNodes, colsHierarchy);
 
     const getCellMeta = (rowIndex: number, colIndex: number) => {
       const showSeriesNumber = this.getSeriesNumberWidth() > 0;
@@ -77,24 +71,21 @@ export class TableFacet extends BaseFacet {
           },
         });
       }
-
       return {
         spreadsheet,
         x: col.x,
         y: cellHeight * rowIndex,
         width: col.width,
         height: cellHeight,
-        data: [
-          {
-            [col.field]: data,
-          },
-        ],
+        data: {
+          [col.field]: data,
+        },
         rowIndex,
         colIndex,
         isTotals: false,
         colId: col.id,
         rowId: String(rowIndex),
-        valueField: col.id,
+        valueField: col.field,
         fieldValue: data,
       } as ViewMeta;
     };

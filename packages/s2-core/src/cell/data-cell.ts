@@ -160,9 +160,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
     this.drawConditionIntervalShape();
+    this.drawInteractiveBorderShape();
     this.drawTextShape();
     this.drawConditionIconShapes();
-    this.drawInteractiveBorderShape();
     this.drawBorderShape();
     this.update();
   }
@@ -492,16 +492,18 @@ export class DataCell extends BaseCell<ViewMeta> {
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
       );
-      updateShapeAttr(
-        this.conditionIntervalShape,
-        SHAPE_STYLE_MAP.backgroundOpacity,
-        stateStyles.backgroundOpacity,
-      );
-      updateShapeAttr(
-        this.conditionIconShape as unknown as IShape,
-        SHAPE_STYLE_MAP.opacity,
-        stateStyles.opacity,
-      );
+      if (stateStyles) {
+        updateShapeAttr(
+          this.conditionIntervalShape,
+          SHAPE_STYLE_MAP.backgroundOpacity,
+          stateStyles.backgroundOpacity,
+        );
+        updateShapeAttr(
+          this.conditionIconShape as unknown as IShape,
+          SHAPE_STYLE_MAP.opacity,
+          stateStyles.opacity,
+        );
+      }
     }
   }
 

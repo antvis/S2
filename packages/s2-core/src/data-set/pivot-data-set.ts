@@ -1,43 +1,43 @@
+import { Node } from '@/facet/layout/node';
+import {
+  filterUndefined,
+  flatten as customFlatten,
+  flattenDeep as customFlattenDeep,
+  getFieldKeysByDimensionValues,
+  getIntersections,
+  isEveryUndefined,
+} from '@/utils/data-set-operate';
+import {
+  compact,
+  each,
+  find,
+  flatten,
+  forEach,
+  get,
+  has,
+  includes,
+  isEmpty,
+  isUndefined,
+  keys,
+  map,
+  merge,
+  reduce,
+  set,
+  uniq,
+  values,
+} from 'lodash';
+import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
+import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from 'src/common/debug';
+import { i18n } from 'src/common/i18n';
+import { Data, Meta, S2DataConfig } from 'src/common/interface';
 import { BaseDataSet } from 'src/data-set/base-data-set';
 import {
+  CellDataParams,
   DataPathParams,
   DataType,
   PivotMeta,
-  CellDataParams,
 } from 'src/data-set/interface';
-import { Meta, S2DataConfig, Data } from 'src/common/interface';
-import { i18n } from 'src/common/i18n';
-import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
-import {
-  map,
-  find,
-  isEmpty,
-  each,
-  set,
-  isUndefined,
-  uniq,
-  compact,
-  get,
-  includes,
-  reduce,
-  merge,
-  flatten,
-  keys,
-  values,
-  has,
-  forEach
-} from 'lodash';
-import { DEBUG_TRANSFORM_DATA, DebuggerUtil } from 'src/common/debug';
-import { Node } from '@/facet/layout/node';
 import { handleSortAction } from 'src/utils/sort-action';
-import {
-  getIntersections,
-  filterUndefined,
-  flattenDeep as customFlattenDeep,
-  flatten as customFlatten,
-  isEveryUndefined,
-  getFieldKeysByDimensionValues,
-} from '@/utils/data-set-operate';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -337,9 +337,9 @@ export class PivotDataSet extends BaseDataSet {
     // 增加，而且双层循环的效率也随着而降低效率
     const multiValueTransform = (originData: Data[]) => {
       const transformedData = [];
-      forEach(originData, ((datum) => {
+      forEach(originData, (datum) => {
         if (!isEmpty(values)) {
-          forEach(values, ((vi) => {
+          forEach(values, (vi) => {
             transformedData.push({
               ...datum,
               [EXTRA_FIELD]: vi,
