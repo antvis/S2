@@ -12,7 +12,7 @@ import {
   SpreadSheet,
   ThemeName,
 } from '../../../src';
-import * as dataCfg from '../../data/demo-value-record.json';
+import * as mockDataCfg from '../../data/demo-value-record.json';
 import { CustomTooltip } from '../../spreadsheet/custom/custom-tooltip';
 import { getContainer } from '../../util/helpers';
 
@@ -30,7 +30,7 @@ const getSpreadSheet = (
 };
 
 const getDataCfg = () => {
-  return dataCfg;
+  return mockDataCfg;
 };
 
 const getOptions = (): S2Options => {
@@ -75,7 +75,7 @@ const getOptions = (): S2Options => {
         showSubTotals: true,
         reverseLayout: true,
         reverseSubLayout: true,
-        subTotalsDimensions: ['sub_type'],
+        subTotalsDimensions: ['type', 'sub_type'],
       },
     },
     tooltip: {
@@ -106,7 +106,7 @@ function MainLayout(props: MainLayoutProps) {
     console.log(value);
   };
 
-  const onCheckChanged = (checked) => {
+  const onCheckValueInCols = (checked) => {
     setValueInCols(checked);
     setDataCfg(
       merge({}, dataCfg, {
@@ -117,7 +117,7 @@ function MainLayout(props: MainLayoutProps) {
     );
   };
 
-  const onCheckChanged1 = (checked) => {
+  const onCheckHierarchyType = (checked) => {
     setOptions(
       merge({}, options, {
         hierarchyType: checked ? 'tree' : 'grid',
@@ -125,7 +125,7 @@ function MainLayout(props: MainLayoutProps) {
     );
   };
 
-  const onCheckChanged2 = (e) => {
+  const onCheckFreezeRowHeader = (e) => {
     setOptions(
       merge({}, options, {
         freezeRowHeader: e.target.checked,
@@ -146,15 +146,18 @@ function MainLayout(props: MainLayoutProps) {
             checkedChildren="挂列头"
             unCheckedChildren="挂行头"
             defaultChecked={valueInCols}
-            onChange={onCheckChanged}
+            onChange={onCheckValueInCols}
           />
           <Switch
             checkedChildren="树形"
             unCheckedChildren="平铺"
             defaultChecked={false}
-            onChange={onCheckChanged1}
+            onChange={onCheckHierarchyType}
           />
-          <Checkbox onChange={onCheckChanged2} defaultChecked={freezeRowHeader}>
+          <Checkbox
+            onChange={onCheckFreezeRowHeader}
+            defaultChecked={freezeRowHeader}
+          >
             冻结行头
           </Checkbox>
           <Radio.Group onChange={onRadioChange} defaultValue="default">

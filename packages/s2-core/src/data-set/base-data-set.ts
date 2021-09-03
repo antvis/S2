@@ -152,4 +152,8 @@ export abstract class BaseDataSet {
     isTotals?: boolean,
     isRow?: boolean,
   ): DataType[];
+
+  public moreThanOneValue() {
+    return this.fields.values.length > 1;
+  }
 }

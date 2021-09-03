@@ -6,7 +6,7 @@ import { MergedCells } from './merged-cells';
 import { RowCell } from './row-cell';
 import { DetailColCell } from './detail-col-cell';
 import { TableDataCell } from './table-data-cell';
-import { TableRowCell } from './table-row-cell';
+import { TableRowCell } from './table-series-cell';
 
 export {
   DetailColCell,

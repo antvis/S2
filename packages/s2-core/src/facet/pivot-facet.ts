@@ -12,6 +12,9 @@ import {
   maxBy,
   merge,
   reduce,
+  forEach,
+  find,
+  filter,
 } from 'lodash';
 import {
   EXTRA_FIELD,
@@ -189,6 +192,7 @@ export class PivotFacet extends BaseFacet {
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
+    const { spreadsheet } = this.cfg;
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
     for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
@@ -219,6 +223,13 @@ export class PivotFacet extends BaseFacet {
       layoutCoordinate(this.cfg, null, currentNode);
     }
     this.autoCalculateColNodeWidthAndX(colLeafNodes);
+    if (!isEmpty(spreadsheet.options.totals)) {
+      this.adustTotalNodesCoordinate(colsHierarchy);
+    }
+    // 当只有一个指标的时候，需要填充小计格子大小
+    if (!this.cfg.dataSet.moreThanOneValue()) {
+      this.adjustSubTotalNodesCoordinate(colsHierarchy);
+    }
   }
 
   /**
@@ -238,9 +249,7 @@ export class PivotFacet extends BaseFacet {
         // parent's width = all children's width
         parent.width = parent.children
           .map((value: Node) => value.width)
-          .reduce((sum, current) => {
-            return sum + current;
-          });
+          .reduce((sum, current) => sum + current);
         prevColParent = parent;
       }
     }
@@ -355,11 +364,18 @@ export class PivotFacet extends BaseFacet {
     }
     if (!isTree) {
       this.autoCalculateRowNodeHeightAndY(rowLeafNodes);
+      if (!isEmpty(spreadsheet.options.totals)) {
+        this.adustTotalNodesCoordinate(rowsHierarchy, true);
+      }
+      // 当只有一个指标的时候，需要填充小计格子大小
+      if (!this.cfg.dataSet.moreThanOneValue()) {
+        this.adjustSubTotalNodesCoordinate(rowsHierarchy, true);
+      }
     }
   }
 
   /**
-   * Auto Auto Auto row no-leaf node's height and y coordinate
+   * @description Auto calculate row no-leaf node's height and y coordinate
    * @param rowLeafNodes
    */
   private autoCalculateRowNodeHeightAndY(rowLeafNodes: Node[]) {
@@ -376,12 +392,80 @@ export class PivotFacet extends BaseFacet {
         // parent's height = all children's height
         parent.height = parent.children
           .map((value) => value.height)
-          .reduce((sum, current) => {
-            return sum + current;
-          });
+          .reduce((sum, current) => sum + current);
         prevRowParent = parent;
       }
     }
+  }
+
+  /**
+   * @description adjust the coordinate of total nodes and their children
+   * @param hierarchy Hierarchy
+   * @param isRowHeader boolean
+   */
+  private adustTotalNodesCoordinate(
+    hierarchy: Hierarchy,
+    isRowHeader?: boolean,
+  ) {
+    const { maxLevel } = hierarchy;
+    const grandTotalNode = find(
+      hierarchy.getNodes(0),
+      (node: Node) => node.isGrandTotals,
+    );
+    if (!(grandTotalNode instanceof Node)) return;
+    const grandTotalChildren = grandTotalNode.children;
+    // 总计节点层级 (有且有两级)
+    // const totalLevel = isEmpty(grandTotalChildren) ? 0 : 1;
+    if (isRowHeader) {
+      // 填充行总单元格宽度
+      grandTotalNode.width = hierarchy.sampleNodesForAllLevels
+        .map((value) => value.width)
+        .reduce((sum, current) => sum + current);
+      // 调整其叶子结点位置
+      forEach(grandTotalChildren, (node: Node) => {
+        node.x = hierarchy.getNodes(maxLevel)[0].x;
+      });
+    } else {
+      // 填充列总单元格宽度
+      grandTotalNode.height = hierarchy.sampleNodesForAllLevels
+        .map((value) => value.height)
+        .reduce((sum, current) => sum + current);
+      // 调整其叶子结点位置
+      forEach(grandTotalChildren, (node: Node) => {
+        node.y = hierarchy.getNodes(maxLevel)[0].y;
+      });
+    }
+  }
+
+  /**
+   * @description adust the coordinate of subTotal nodes when there is just one value
+   * @param hierarchy Hierarchy
+   * @param isRowHeader boolean
+   */
+  private adjustSubTotalNodesCoordinate(
+    hierarchy: Hierarchy,
+    isRowHeader?: boolean,
+  ) {
+    const subTotalNodes = hierarchy
+      .getNodes()
+      .filter((node: Node) => node.isSubTotals);
+
+    if (isEmpty(subTotalNodes)) return;
+    forEach(subTotalNodes, (subTotalNode: Node) => {
+      if (isEmpty(subTotalNode.children)) {
+        if (isRowHeader) {
+          subTotalNode.width = hierarchy.sampleNodesForAllLevels
+            .filter((node: Node) => node.level >= subTotalNode.level)
+            .map((value) => value.width)
+            .reduce((sum, current) => sum + current);
+        } else {
+          subTotalNode.height = hierarchy.sampleNodesForAllLevels
+            .filter((node: Node) => node.level >= subTotalNode.level)
+            .map((value) => value.height)
+            .reduce((sum, current) => sum + current);
+        }
+      }
+    });
   }
 
   private calculateRowLeafNodesWidth(node: Node): number {
