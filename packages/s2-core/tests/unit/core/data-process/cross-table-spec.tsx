@@ -290,9 +290,9 @@ describe('Cross Table Core Data Process', () => {
         colCfg.height,
       );
       // all height
-      expect(
-        uniq(colsHierarchy.getNodes().map((node) => node.height)),
-      ).toEqual([colCfg.height]);
+      expect(uniq(colsHierarchy.getNodes().map((node) => node.height))).toEqual(
+        [colCfg.height],
+      );
       // leaf node
       colLeafNodes.forEach((node, index) => {
         expect(node.width).toEqual(cellCfg.width);

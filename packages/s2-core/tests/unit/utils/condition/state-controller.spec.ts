@@ -8,7 +8,7 @@ import {
 
 jest.mock('@/sheet-type');
 
-const MockSpreadSheet = (SpreadSheet as unknown) as jest.Mock<SpreadSheet>;
+const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 
 describe('Condition State Controller Test', () => {
   let mockInstance: SpreadSheet;
