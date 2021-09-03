@@ -26,7 +26,6 @@ import {
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
 } from 'src/common/constant';
-import type { CellScrollPosition } from 'src/common/interface/events';
 import type { S2WheelEvent, ScrollOffset } from 'src/common/interface/scroll';
 import {
   ColHeader,
@@ -160,9 +159,9 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    (this.spreadsheet.container.get(
-      'el',
-    ) as HTMLCanvasElement).addEventListener('wheel', this.onWheel);
+    (
+      this.spreadsheet.container.get('el') as HTMLCanvasElement
+    ).addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
@@ -174,13 +173,13 @@ export abstract class BaseFacet {
       const originEvent = ev.event;
       const { deltaX, deltaY, x, y } = ev;
       // The coordinates of mobile and pc are three times different
-      this.onWheel(({
+      this.onWheel({
         ...originEvent,
         deltaX,
         deltaY,
         layerX: x / 3,
         layerY: y / 3,
-      } as unknown) as S2WheelEvent);
+      } as unknown as S2WheelEvent);
     });
   };
 
@@ -1040,7 +1039,8 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
         offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
@@ -1094,7 +1094,8 @@ export abstract class BaseFacet {
         // When both a row header and a panel scroll bar exist, show viewport shadow
         showViewPortRightShadow:
           !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
-        scrollContainsRowHeader: this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
         spreadsheet: this.cfg.spreadsheet,
       };
@@ -1119,8 +1120,7 @@ export abstract class BaseFacet {
     }
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
 
-    const cellScrollData: CellScrollPosition = { scrollX, scrollY };
-    this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, cellScrollData);
+    this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, { scrollX, scrollY });
   }
 
   protected abstract doLayout(): LayoutResult;
