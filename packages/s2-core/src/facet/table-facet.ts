@@ -1,4 +1,3 @@
-import { ViewMeta } from './../common/interface/basic';
 import { get, maxBy, orderBy } from 'lodash';
 import { S2Event, SERIES_NUMBER_FIELD } from 'src/common/constant';
 import { DebuggerUtil } from 'src/common/debug';
@@ -9,6 +8,7 @@ import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
 import { Node } from 'src/facet/layout/node';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
+import { ViewMeta } from './../common/interface/basic';
 
 export class TableFacet extends BaseFacet {
   public constructor(props) {
@@ -40,11 +40,8 @@ export class TableFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
     const { dataSet, spreadsheet, cellCfg } = this.cfg;
 
-    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: true,
-        facetCfg: this.cfg,
-      });
+    const rowsHierarchy = new Hierarchy();
+
     const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
       buildHeaderHierarchy({
         isRowHeader: false,
