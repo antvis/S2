@@ -36,7 +36,7 @@ export class DataCellMultiSelection
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
         this.isMultiSelection = false;
-        this.interaction.intercept.delete(InterceptType.CLICK);
+        this.interaction.removeIntercepts([InterceptType.CLICK]);
       }
     });
   }
@@ -51,8 +51,10 @@ export class DataCellMultiSelection
         const activeCells = this.interaction.getActiveCells();
         const cells = isEmpty(activeCells) ? [] : [...activeCells, cell];
 
-        this.interaction.intercept.add(InterceptType.CLICK);
-        this.interaction.intercept.add(InterceptType.HOVER);
+        this.interaction.addIntercepts([
+          InterceptType.CLICK,
+          InterceptType.HOVER,
+        ]);
 
         this.spreadsheet.hideTooltip();
         this.interaction.changeState({

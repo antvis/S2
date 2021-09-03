@@ -48,7 +48,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
   private bindDataCellHover() {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
-      const cell = this.spreadsheet.getCell(event.target) as S2CellType;
+      const cell = this.spreadsheet.getCell(event.target);
       if (isEmpty(cell)) {
         return;
       }

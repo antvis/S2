@@ -25,6 +25,8 @@ export interface InteractionStateInfo {
   interactedCells?: S2CellType[];
   // all the active nodes, including rendered and not rendered cells
   nodes?: Node[];
+  // for empty cells, updates are ignored, use `force` to skip ignore
+  force?: boolean;
 }
 
 export type InteractionConstructor = new (

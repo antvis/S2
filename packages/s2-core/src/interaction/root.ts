@@ -23,6 +23,7 @@ import {
 } from '@/index';
 import { CustomInteraction } from '@/common/interface';
 import { EventController } from './event-controller';
+import { InterceptType } from '../common/constant';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -38,7 +39,10 @@ export class RootInteraction {
 
   public eventController: EventController;
 
-  private defaultState: InteractionStateInfo = {};
+  private defaultState: InteractionStateInfo = {
+    cells: [],
+    force: false,
+  };
 
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -235,7 +239,15 @@ export class RootInteraction {
   }
 
   public changeState(interactionStateInfo: InteractionStateInfo) {
-    if (isEmpty(interactionStateInfo.cells)) {
+    const { interaction } = this.spreadsheet;
+    const { cells, force } = interactionStateInfo;
+    if (isEmpty(cells)) {
+      if (force) {
+        interaction.changeState({
+          cells: interaction.getActiveCells(),
+          stateName: InteractionStateName.UNSELECTED,
+        });
+      }
       return;
     }
     this.clearState();
@@ -251,6 +263,24 @@ export class RootInteraction {
   public updateCells(cells: S2CellType[] = []) {
     cells.forEach((cell) => {
       cell.update();
+    });
+  }
+
+  public addIntercepts(interceptTypes: InterceptType[] = []) {
+    interceptTypes.forEach((interceptType) => {
+      this.spreadsheet.interaction.intercept.add(interceptType);
+    });
+  }
+
+  public hasIntercepts(interceptTypes: InterceptType[] = []) {
+    return interceptTypes.some((interceptType) =>
+      this.spreadsheet.interaction.intercept.has(interceptType),
+    );
+  }
+
+  public removeIntercepts(interceptTypes: InterceptType[] = []) {
+    interceptTypes.forEach((interceptType) => {
+      this.spreadsheet.interaction.intercept.delete(interceptType);
     });
   }
 }

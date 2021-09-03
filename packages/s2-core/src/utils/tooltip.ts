@@ -34,6 +34,7 @@ import {
   uniq,
 } from 'lodash';
 import {
+  LayoutResult,
   ListItem,
   S2CellType,
   SpreadSheet,
@@ -305,10 +306,10 @@ const getRowOrColSelectedIndexes = (nodes, leafNodes, isRow = true) => {
 
 export const getSelectedCellIndexes = (
   spreadsheet: SpreadSheet,
-  layoutResult,
+  layoutResult: LayoutResult,
 ) => {
   const { rowLeafNodes, colLeafNodes } = layoutResult;
-  const { cells = [], nodes = [] } = spreadsheet.interaction.getState() || {};
+  const { cells = [], nodes = [] } = spreadsheet.interaction.getState();
   const cellType = cells?.[0]?.cellType;
 
   if (cellType === CellTypes.COL_CELL) {
@@ -325,8 +326,7 @@ export const getSelectedCellsData = (
   spreadsheet: SpreadSheet,
   showSingleTips?: boolean,
 ): TooltipDataItem[] => {
-  const layoutResult = spreadsheet?.facet?.layoutResult;
-  let selectedData = [];
+  const layoutResult = spreadsheet.facet?.layoutResult;
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
   if (showSingleTips) {
     // 行头列头单选多选
@@ -334,19 +334,17 @@ export const getSelectedCellsData = (
       spreadsheet,
       layoutResult,
     );
-    forEach(selectedCellIndexes, ([i, j]) => {
-      const viewMeta = layoutResult.getCellMeta(i, j);
-      const data = viewMeta?.data;
-      if (!isNil(data)) {
-        selectedData.push(data);
-      }
-    });
-  } else {
-    // 其他（刷选，datacell多选）
-    const { cells = [] } = spreadsheet.interaction.getState() || {};
-    selectedData = map(cells, (cell) => cell.getMeta()?.data);
+    return compact(
+      map(selectedCellIndexes, ([i, j]) => {
+        const viewMeta = layoutResult.getCellMeta(i, j);
+        return viewMeta?.data;
+      }),
+    );
   }
-  return selectedData;
+  // 其他（刷选，data cell多选）
+  const cells = spreadsheet.interaction.getActiveCells();
+  console.log('cells: ', cells);
+  return compact(map(cells, (cell) => cell.getMeta()?.data));
 };
 
 export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
