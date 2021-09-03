@@ -153,10 +153,8 @@ export class CornerCell extends HeaderCell {
   }
 
   private drawBackgroundShape() {
-    const {
-      backgroundColorOpacity,
-      horizontalBorderColor,
-    } = this.getStyle().cell;
+    const { backgroundColorOpacity, horizontalBorderColor } =
+      this.getStyle().cell;
     const attrs: ShapeAttrs = {
       ...this.getCellArea(),
       opacity: backgroundColorOpacity,

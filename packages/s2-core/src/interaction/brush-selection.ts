@@ -134,7 +134,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private getBrushPoint(event: CanvasEvent): BrushPoint {
-    const originalEvent = (event.originalEvent as unknown) as OriginalEvent;
+    const originalEvent = event.originalEvent as unknown as OriginalEvent;
     const point: Point = {
       x: originalEvent.layerX,
       y: originalEvent.layerY,

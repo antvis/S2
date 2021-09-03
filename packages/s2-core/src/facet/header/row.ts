@@ -96,14 +96,8 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected clip(): void {
-    const {
-      width,
-      height,
-      scrollX,
-      scrollY,
-      seriesNumberWidth,
-    } = this.headerConfig;
-    console.log(scrollX, seriesNumberWidth);
+    const { width, height, scrollX, scrollY, seriesNumberWidth } =
+      this.headerConfig;
     this.setClip({
       type: 'rect',
       attrs: {

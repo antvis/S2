@@ -190,8 +190,9 @@ export class SpreadSheet extends EE {
     if (!(this.tooltip instanceof BaseTooltip)) {
       // eslint-disable-next-line no-console
       console.warn(
-        `[Custom Tooltip]: ${(this
-          .tooltip as unknown)?.constructor?.toString()} should be extends from BaseTooltip`,
+        `[Custom Tooltip]: ${(
+          this.tooltip as unknown
+        )?.constructor?.toString()} should be extends from BaseTooltip`,
       );
     }
   }

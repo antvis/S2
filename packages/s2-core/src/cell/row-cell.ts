@@ -241,12 +241,8 @@ export class RowCell extends HeaderCell {
     const rowActionIcons = this.spreadsheet.options.rowActionIcons;
 
     if (!rowActionIcons) return;
-    const {
-      iconTypes,
-      display,
-      action,
-      customDisplayByRowName,
-    } = rowActionIcons;
+    const { iconTypes, display, action, customDisplayByRowName } =
+      rowActionIcons;
     if (customDisplayByRowName) {
       const { rowNames, mode } = customDisplayByRowName;
       const rowIds = rowNames.map((rowName) => `root${ID_SEPARATOR}${rowName}`);

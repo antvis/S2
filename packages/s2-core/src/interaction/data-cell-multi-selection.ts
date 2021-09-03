@@ -11,7 +11,8 @@ import { BaseEvent, BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection
   extends BaseEvent
-  implements BaseEventImplement {
+  implements BaseEventImplement
+{
   private isMultiSelection = false;
 
   public bindEvents() {

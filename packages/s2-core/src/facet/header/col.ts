@@ -37,10 +37,8 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   // TODO type define
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
-    const {
-      frozenColCount,
-      frozenTrailingColCount,
-    } = this.headerConfig.spreadsheet?.options;
+    const { frozenColCount, frozenTrailingColCount } =
+      this.headerConfig.spreadsheet?.options;
 
     this.scrollGroup = this.addGroup({
       name: KEY_GROUP_COL_SCROLL,
@@ -111,14 +109,8 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   protected layout() {
-    const {
-      data,
-      spreadsheet,
-      cornerWidth,
-      width,
-      scrollX,
-      height,
-    } = this.headerConfig;
+    const { data, spreadsheet, cornerWidth, width, scrollX, height } =
+      this.headerConfig;
     const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
     const colLength = spreadsheet?.facet.layoutResult.colLeafNodes.length;
     const colCellTheme = this.cfg.spreadsheet.theme.colCell.cell;

@@ -53,11 +53,9 @@ export abstract class BaseDataSet {
   /**
    * 查找字段信息
    */
-  public getFieldMeta = memoize(
-    (field: string): Meta => {
-      return find(this.meta, (m: Meta) => m.field === field);
-    },
-  );
+  public getFieldMeta = memoize((field: string): Meta => {
+    return find(this.meta, (m: Meta) => m.field === field);
+  });
 
   /**
    * 获得字段名称
@@ -77,9 +75,8 @@ export abstract class BaseDataSet {
 
   public setDataCfg(dataCfg: S2DataConfig) {
     this.getFieldMeta.cache.clear();
-    const { fields, meta, data, totalData, sortParams } = this.processDataCfg(
-      dataCfg,
-    );
+    const { fields, meta, data, totalData, sortParams } =
+      this.processDataCfg(dataCfg);
     this.fields = fields;
     this.meta = meta;
     this.originData = data;

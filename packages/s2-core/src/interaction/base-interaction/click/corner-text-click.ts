@@ -39,10 +39,8 @@ export class CornerTextClick extends BaseEvent implements BaseEventImplement {
   }
 
   private getLabelWidth(label: string) {
-    const {
-      text: textTheme,
-      cell: cornerCellTheme,
-    } = this.spreadsheet?.theme?.cornerCell;
+    const { text: textTheme, cell: cornerCellTheme } =
+      this.spreadsheet?.theme?.cornerCell;
     const labelWidth = Math.ceil(measureTextWidth(label, textTheme));
     const { left: leftPadding, right: rightPadding } = cornerCellTheme.padding;
     return labelWidth + leftPadding + rightPadding;

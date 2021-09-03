@@ -106,12 +106,8 @@ export class ColCell extends HeaderCell {
 
   protected getTextPosition(): Point {
     const { isLeaf } = this.meta;
-    const {
-      offset,
-      width,
-      scrollContainsRowHeader,
-      cornerWidth,
-    } = this.headerConfig;
+    const { offset, width, scrollContainsRowHeader, cornerWidth } =
+      this.headerConfig;
 
     const textStyle = this.getTextStyle();
     const contentBox = this.getContentArea();

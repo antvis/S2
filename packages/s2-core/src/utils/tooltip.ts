@@ -183,12 +183,9 @@ export const getFieldList = (
     concat([], fields),
     (field) => field !== EXTRA_FIELD && activeData[field],
   );
-  const fieldList = map(
-    currFields,
-    (field: string): ListItem => {
-      return getListItem(spreadsheet, activeData, field);
-    },
-  );
+  const fieldList = map(currFields, (field: string): ListItem => {
+    return getListItem(spreadsheet, activeData, field);
+  });
   return fieldList;
 };
 
