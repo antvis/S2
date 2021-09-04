@@ -1,4 +1,4 @@
-import { Checkbox, Space, Switch } from 'antd';
+import { Checkbox, Space, Switch, Radio } from 'antd';
 import 'antd/dist/antd.min.css';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { merge, omit } from 'lodash';
@@ -10,7 +10,8 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
-} from '../../src';
+  ThemeName,
+} from '@/index';
 import { getContainer, getMockData } from '../util/helpers';
 import { CustomTooltip } from './custom/custom-tooltip';
 
@@ -83,6 +84,22 @@ const getOptions = (): S2Options => {
       background: [],
       icon: [],
     },
+    totals: {
+      row: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['province', 'city'],
+      },
+      col: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        reverseLayout: true,
+        reverseSubLayout: true,
+        subTotalsDimensions: ['type', 'sub_type'],
+      },
+    },
     style: {
       treeRowsWidth: 100,
       collapsedRows: {},
@@ -116,6 +133,7 @@ function MainLayout(props) {
   const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(props.dataCfg);
   const [render, setRender] = React.useState(true);
   const [showPagination, setShowPagination] = React.useState(false);
+  const [themeName, setThemeName] = React.useState<ThemeName>('default');
   const [freezeRowHeader, setFreezeRowHeader] = React.useState(
     props.options.freezeRowHeader,
   );
@@ -163,9 +181,18 @@ function MainLayout(props) {
     setRender(!render);
   };
 
+  const onRadioChange = (e) => {
+    setThemeName(e.target.value);
+  };
+
   return (
     <div>
       <Space size="middle" style={{ marginBottom: 20 }}>
+        <Radio.Group onChange={onRadioChange} defaultValue="default">
+          <Radio.Button value="default">默认</Radio.Button>
+          <Radio.Button value="simple">简约蓝</Radio.Button>
+          <Radio.Button value="colorful">多彩蓝</Radio.Button>
+        </Radio.Group>
         <Switch
           checkedChildren="数值置于列头"
           unCheckedChildren="数值置于行头"
@@ -176,7 +203,7 @@ function MainLayout(props) {
         <Switch
           checkedChildren="树形"
           unCheckedChildren="平铺"
-          defaultChecked={options.hierarchyType === 'tree'}
+          defaultChecked={options.hierarchyType === 'grid'}
           onChange={onHierarchyTypeCheckChanged}
         />
         <Switch
@@ -218,6 +245,7 @@ function MainLayout(props) {
             });
           }}
         />
+
         <Checkbox
           onChange={onFreezeRowHeaderCheckChanged}
           defaultChecked={freezeRowHeader}
@@ -231,6 +259,7 @@ function MainLayout(props) {
           adaptive={false}
           options={options as S2Options}
           spreadsheet={getSpreadSheet}
+          themeCfg={{ name: themeName }}
         />
       )}
     </div>
