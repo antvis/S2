@@ -290,6 +290,20 @@ export const getTheme = (
         },
       },
     },
+    // resize active area
+    resizeArea: {
+      size: 3,
+      background: brandColors[7],
+      guidLineColor: brandColors[7],
+      backgroundOpacity: 0,
+      /* ---------- interaction state ----------- */
+      interactionState: {
+        hover: {
+          backgroundColor: brandColors[7],
+          backgroundOpacity: 1,
+        },
+      },
+    },
     // ------------- scrollBar -------------------
     scrollBar: {
       trackColor: 'rgba(0,0,0,0)',
@@ -318,6 +332,7 @@ export const getTheme = (
       backgroundColor: brandColors[5],
       backgroundOpacity: 0.3,
     },
+    // ------------- canvas background
     background: {
       color: grayColors[0],
       opacity: 1,
