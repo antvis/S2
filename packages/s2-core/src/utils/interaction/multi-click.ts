@@ -12,11 +12,11 @@ export const handleRowColClick = ({
 }: MultiClickParams) => {
   event.stopPropagation();
 
-  if (spreadsheet.interaction.intercept.has(InterceptType.CLICK)) {
+  const { interaction } = spreadsheet;
+  if (interaction.hasIntercepts([InterceptType.CLICK])) {
     return;
   }
 
-  const { interaction } = spreadsheet;
   const lastState = interaction.getState();
   const cell = spreadsheet.getCell(event.target);
   const meta = cell.getMeta() as Node;
@@ -27,10 +27,10 @@ export const handleRowColClick = ({
   }
 
   if (meta.x !== undefined) {
-    interaction.intercept.add(InterceptType.HOVER);
+    interaction.addIntercepts([InterceptType.HOVER]);
     // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
     let leafNodes = isTreeRowClick
-      ? [meta, ...Node.getAllLeavesOfNode(meta)].filter(
+      ? Node.getAllLeavesOfNode(meta).filter(
           (node) => node.rowIndex === meta.rowIndex,
         )
       : Node.getAllChildrenNode(meta);

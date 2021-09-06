@@ -25,7 +25,6 @@ import {
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
 } from 'src/common/constant';
-import type { CellScrollPosition } from 'src/common/interface/events';
 import type { S2WheelEvent, ScrollOffset } from 'src/common/interface/scroll';
 import { getAllPanelDataCell } from 'src/utils/getAllPanelDataCell';
 import {
@@ -1144,8 +1143,7 @@ export abstract class BaseFacet {
 
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
 
-    const cellScrollData: CellScrollPosition = { scrollX, scrollY };
-    this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, cellScrollData);
+    this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, { scrollX, scrollY });
   }
 
   protected abstract doLayout(): LayoutResult;

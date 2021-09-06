@@ -28,9 +28,6 @@ export class EventController {
   // 保存触发的元素
   private target: LooseObject;
 
-  // 保存hover的元素
-  private hoverTarget: LooseObject;
-
   private canvasEventHandlers: EventHandler[] = [];
 
   private domEventListeners: EventListener[] = [];
@@ -106,9 +103,9 @@ export class EventController {
   private resetSheetStyle(event: Event) {
     // 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
-    const { intercept } = this.spreadsheet.interaction;
-    if (intercept.has(InterceptType.BRUSH_SELECTION)) {
-      intercept.delete(InterceptType.BRUSH_SELECTION);
+    const { interaction } = this.spreadsheet;
+    if (interaction.hasIntercepts([InterceptType.BRUSH_SELECTION])) {
+      interaction.removeIntercepts([InterceptType.BRUSH_SELECTION]);
       return;
     }
 
@@ -119,7 +116,7 @@ export class EventController {
       return;
     }
 
-    this.spreadsheet.interaction.reset();
+    interaction.reset();
   }
 
   private isMouseOnTheCanvasContainer(event: Event) {
@@ -227,10 +224,11 @@ export class EventController {
           break;
       }
 
-      // 如果hover的cell改变了，并且当前不需要屏蔽 hover
       if (
-        this.hoverTarget !== event.target &&
-        !this.spreadsheet.interaction.intercept.has(InterceptType.HOVER)
+        !this.spreadsheet.interaction.hasIntercepts([
+          InterceptType.HOVER,
+          InterceptType.BRUSH_SELECTION,
+        ])
       ) {
         switch (cellType) {
           case CellTypes.DATA_CELL:

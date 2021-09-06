@@ -322,14 +322,14 @@ export class PivotDataSet extends BaseDataSet {
       return get(findOne, 'name', value);
     };
 
-    const newMeta: Meta[] = [
+    const newMeta = [
       ...meta,
       // 虚拟列字段，为文本分类字段
       {
         field: EXTRA_FIELD,
         name: i18n('数值'),
         formatter: (value: string) => valueFormatter(value),
-      },
+      } as Meta,
     ];
 
     // 目前源数据的是按照之前数据的现状（一条数据不是代表一个格子），处理的模板

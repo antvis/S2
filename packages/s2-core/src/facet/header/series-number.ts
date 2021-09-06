@@ -66,9 +66,12 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   public clip(): void {}
 
   public layout() {
-    const { data, offset, height } = this.headerConfig;
-    //  添加矩形背景
-    this.addBackGround();
+    const { data, offset, height, spreadsheet } = this.headerConfig;
+    if (spreadsheet.isPivotMode) {
+      //  添加矩形背景
+      this.addBackGround();
+    }
+
     const borderGroup = this.addGroup();
     each(data, (item: any) => {
       const { y, height: cellHeight, isLeaf } = item;
@@ -98,7 +101,9 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   protected offset() {
     const { scrollY, scrollX, position } = this.headerConfig;
     translateGroup(this, position.x - scrollX, position.y - scrollY);
-    this.backgroundShape.translate(position.x, position.y + scrollY);
+    if (this.backgroundShape) {
+      this.backgroundShape.translate(position.x, position.y + scrollY);
+    }
   }
 
   private addBackGround() {

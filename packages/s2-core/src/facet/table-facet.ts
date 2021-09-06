@@ -65,11 +65,7 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
     } = this.cfg;
 
-    const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
-      buildHeaderHierarchy({
-        isRowHeader: true,
-        facetCfg: this.cfg,
-      });
+    const rowsHierarchy = new Hierarchy();
     const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
       buildHeaderHierarchy({
         isRowHeader: false,

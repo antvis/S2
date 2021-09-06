@@ -32,17 +32,9 @@ import {
 } from '@/utils/g-renders';
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
-import {
-  clamp,
-  find,
-  first,
-  get,
-  includes,
-  isEmpty,
-  isEqual,
-  map,
-} from 'lodash';
-import { parseNumberWithPrecision } from './../utils/formatter';
+import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
+import { parseNumberWithPrecision } from '@/utils/formatter';
+import { Node } from '..';
 
 /**
  * DataCell for panelGroup area
@@ -407,10 +399,13 @@ export class DataCell extends BaseCell<ViewMeta> {
   // dataCell根据state 改变当前样式，
   private changeRowColSelectState(indexType: ViewMetaIndexType) {
     const currentIndex = get(this.meta, indexType);
-    const { nodes = [] } = this.spreadsheet.interaction.getState();
-    const isEqualIndex = nodes.find(
-      (node) => get(node, indexType) === currentIndex,
-    );
+    const { nodes = [], cells = [] } = this.spreadsheet.interaction.getState();
+    const isEqualIndex = [...nodes, ...cells].find((cell) => {
+      if (cell instanceof Node) {
+        return get(cell, indexType) === currentIndex;
+      }
+      return get(cell?.getMeta(), indexType) === currentIndex;
+    });
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.selectedCellsSpotlight) {

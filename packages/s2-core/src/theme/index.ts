@@ -118,6 +118,12 @@ export const getTheme = (
             backgroundColor: brandColors[2],
             backgroundOpacity: 1,
           },
+          // -------------- unselected -------------------
+          unselected: {
+            backgroundOpacity: 0.3,
+            textOpacity: 0.3,
+            opacity: 0.3,
+          },
         },
       },
       icon: {
@@ -178,6 +184,12 @@ export const getTheme = (
           selected: {
             backgroundColor: brandColors[4],
             backgroundOpacity: 1,
+          },
+          // -------------- unselected -------------------
+          unselected: {
+            backgroundOpacity: 0.3,
+            textOpacity: 0.3,
+            opacity: 0.3,
           },
         },
       },
@@ -251,7 +263,6 @@ export const getTheme = (
             backgroundOpacity: 1,
           },
           // -------------- unselected -------------------
-          // TODO: 条件格式的icon和mini chart也需要置灰
           unselected: {
             backgroundOpacity: 0.3,
             textOpacity: 0.3,

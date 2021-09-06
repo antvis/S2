@@ -1,5 +1,5 @@
 import { TableHeaderParams } from 'src/facet/layout/interface';
-import { generateHeaderNodes } from '@/facet/layout/util/generate-row-nodes';
+import { generateHeaderNodes } from '@/facet/layout/util/generate-header-nodes';
 import { SERIES_NUMBER_FIELD } from 'src/common/constant';
 import { i18n } from 'src/common/i18n';
 import { get } from 'lodash';
