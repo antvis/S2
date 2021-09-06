@@ -486,7 +486,6 @@ export class DataCell extends BaseCell<ViewMeta> {
       const stateStyles = get(
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
-        {},
       );
       if (stateStyles) {
         updateShapeAttr(
