@@ -3,18 +3,17 @@ import { BaseDataSet } from '@/data-set';
 import { Group, Point, SimpleBBox } from '@antv/g-canvas';
 import { get, includes, isEmpty, last } from 'lodash';
 import {
-  COLOR_DEFAULT_RESIZER,
-  KEY_GROUP_CORNER_RESIZER,
+  KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_SERIES_NUMBER_NODE,
-} from '../../common/constant';
+} from '@/common/constant';
 import {
   LayoutResult,
   S2Options,
   SpreadSheetFacetCfg,
-} from '../../common/interface';
-import { CornerCell, Hierarchy, Node, SpreadSheet } from '../../index';
+} from '@/common/interface';
+import { CornerCell, Hierarchy, Node, SpreadSheet } from '@/index';
 import { translateGroup } from '../utils';
-import { BaseHeader, BaseHeaderConfig, HIT_AREA } from './base';
+import { BaseHeader, BaseHeaderConfig } from './base';
 import { CornerData, ResizeInfo } from './interface';
 
 export interface CornerHeaderConfig extends BaseHeaderConfig {
@@ -284,27 +283,30 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   private handleHotsSpotArea() {
     const { data, position, width, height, seriesNumberWidth } =
       this.headerConfig;
-    const prevResizer = this.headerConfig.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_CORNER_RESIZER,
-    );
-    const resizer = (prevResizer ||
+    const resizeStyle = this.headerConfig.spreadsheet.theme.resizeArea;
+    const prevResizeArea =
+      this.headerConfig.spreadsheet.foregroundGroup.findById(
+        KEY_GROUP_CORNER_RESIZE_AREA,
+      );
+    const resizeArea = (prevResizeArea ||
       this.headerConfig.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_CORNER_RESIZER,
+        id: KEY_GROUP_CORNER_RESIZE_AREA,
       })) as Group;
     const treeType = this.headerConfig.spreadsheet.isHierarchyTreeType();
     if (!treeType) {
       // do it in corner cell
     } else if (treeType) {
-      resizer.addShape('rect', {
+      resizeArea.addShape('rect', {
         attrs: {
-          x: position.x + width - HIT_AREA / 2,
+          x: position.x + width - resizeStyle.size / 2,
           y: position.y,
-          width: HIT_AREA,
+          width: resizeStyle.size,
           height: this.get('viewportHeight') + height,
-          fill: COLOR_DEFAULT_RESIZER,
+          fill: resizeStyle.background,
+          fillOpacity: resizeStyle.backgroundOpacity,
           cursor: 'col-resize',
           appendInfo: {
-            isResizer: true,
+            isResizeArea: true,
             class: 'resize-trigger',
             type: 'col',
             affect: 'tree',
@@ -317,16 +319,17 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       });
     }
     const cell: CornerData = get(data, '0', {});
-    resizer.addShape('rect', {
+    resizeArea.addShape('rect', {
       attrs: {
         x: position.x,
-        y: position.y + cell.y + cell.height - HIT_AREA / 2,
+        y: position.y + cell.y + cell.height - resizeStyle.size / 2,
         width,
-        height: HIT_AREA,
-        fill: COLOR_DEFAULT_RESIZER,
+        height: resizeStyle.size,
+        fill: resizeStyle.background,
+        fillOpacity: resizeStyle.backgroundOpacity,
         cursor: 'row-resize',
         appendInfo: {
-          isResizer: true,
+          isResizeArea: true,
           class: 'resize-trigger',
           type: 'row',
           affect: 'field',

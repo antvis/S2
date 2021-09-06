@@ -84,6 +84,7 @@ export interface CellTheme {
   verticalBorderWidth?: number;
   /* 单元格内边距 */
   padding: Padding;
+  /* 交互态 */
   interactionState?: InteractionState;
   /* 单元格内条件格式-迷你条形图高度 */
   miniBarChartHeight?: number;
@@ -106,6 +107,19 @@ export interface IconTheme {
   size?: number;
   /* icon 外边距 */
   margin?: Margin;
+}
+
+export interface ResizeArea {
+  /* 热区尺寸 */
+  size?: number;
+  /* 热区背景色 */
+  background?: string;
+  /* 参考线颜色 */
+  guidLineColor?: string;
+  /* 热区背景色透明度 */
+  backgroundOpacity?: number;
+  /* 交互态 */
+  interactionState?: InteractionState;
 }
 
 export interface ScrollBarTheme {
@@ -155,6 +169,7 @@ export interface DefaultCellTheme {
   cell?: CellTheme;
   /* 图标样式 */
   icon?: IconTheme;
+  /* 序号列宽 */
   seriesNumberWidth?: number;
 }
 
@@ -163,6 +178,8 @@ type CellThemes = {
 };
 
 export interface SpreadSheetTheme extends CellThemes {
+  /* 列宽行高调整热区 */
+  resizeArea?: ResizeArea;
   /* 滚动条样式 */
   scrollBar?: ScrollBarTheme;
   /* 分割线样式 */
