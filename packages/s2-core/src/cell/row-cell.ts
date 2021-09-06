@@ -1,3 +1,7 @@
+import { Event, Group, Point } from '@antv/g-canvas';
+import { GM } from '@antv/g-gesture';
+import { each, forEach } from 'lodash';
+import { HeaderCell } from './header-cell';
 import {
   CellTypes,
   ID_SEPARATOR,
@@ -12,10 +16,6 @@ import { RowHeaderConfig } from '@/facet/header/row';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
-import { Event, Group, Point } from '@antv/g-canvas';
-import { GM } from '@antv/g-gesture';
-import { each, forEach } from 'lodash';
-import { HeaderCell } from './header-cell';
 
 export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;
@@ -254,10 +254,11 @@ export class RowCell extends HeaderCell {
       )
         return;
     }
+
     const showIcon = () => {
       const level = this.meta.level;
-      const { level: rowLevel, operator } = display;
-      switch (operator) {
+      const rowLevel = display?.level;
+      switch (display?.operator) {
         case '<':
           return level < rowLevel;
         case '<=':

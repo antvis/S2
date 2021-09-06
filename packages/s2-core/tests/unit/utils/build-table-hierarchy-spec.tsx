@@ -1,5 +1,8 @@
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
+import ReactDOM from 'react-dom';
+import React from 'react';
+import { getContainer, getMockData } from '../../util/helpers';
 import {
   S2DataConfig,
   S2Options,
@@ -7,11 +10,8 @@ import {
   SpreadSheet,
   Node,
   Hierarchy,
-} from '../../../src';
-import { buildTableHierarchy } from '../../../src/facet/layout/build-table-hierarchy';
-import { getContainer, getMockData } from '../../util/helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
+} from '@/index';
+import { buildTableHierarchy } from '@/facet/layout/build-table-hierarchy';
 
 const data = getMockData('../data/tableau-supermarket.csv');
 

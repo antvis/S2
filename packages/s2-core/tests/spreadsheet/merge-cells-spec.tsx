@@ -381,7 +381,7 @@ function MainLayout() {
     </div>
   );
 
-  const mgergedCellsTooltip = <div>合并后的tooltip</div>;
+  const mergedCellsTooltip = <div>合并后的tooltip</div>;
 
   const onDataCellMouseUp = (value) => {
     sheet = value?.viewMeta?.spreadsheet;
@@ -403,7 +403,7 @@ function MainLayout() {
     sheet = value?.target?.cells[0].spreadsheet;
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },
-      element: mgergedCellsTooltip,
+      element: mergedCellsTooltip,
     });
   };
 
