@@ -62,12 +62,14 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         cells: [cell],
         stateName: InteractionStateName.HOVER_FOCUS,
       });
+      const showSingleTips = this.spreadsheet.isTableMode();
       const options: TooltipOptions = {
         isTotals: meta.isTotals,
         enterable: true,
         hideSummary: true,
+        showSingleTips,
       };
-      const data = this.getCellInfo(meta);
+      const data = this.getCellInfo(meta, showSingleTips);
       this.spreadsheet.showTooltipWithInfo(event, data, options);
     }, HOVER_FOCUS_TIME);
   }
@@ -88,13 +90,14 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       stateName: InteractionStateName.HOVER,
     });
     cell.update();
+    const showSingleTips = true;
     const options: TooltipOptions = {
       isTotals: meta.isTotals,
       enterable: true,
       hideSummary: true,
-      showSingleTips: true,
+      showSingleTips,
     };
-    const data = this.getCellInfo(meta, true);
+    const data = this.getCellInfo(meta, showSingleTips);
     this.spreadsheet.showTooltipWithInfo(event, data, options);
   }
 
@@ -102,11 +105,11 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     meta: ViewMeta = {} as ViewMeta,
     showSingleTips?: boolean,
   ) {
-    const { data, query, value, rowQuery, colQuery } = meta;
+    const { data, query, value, fieldValue, rowQuery, colQuery } = meta;
     const currentCellMeta = data;
 
     const cellInfos = showSingleTips
-      ? [{ ...query, value }]
+      ? [{ ...query, value: value || fieldValue }]
       : [currentCellMeta || { ...rowQuery, ...colQuery }];
 
     return cellInfos;

@@ -26,12 +26,12 @@ import {
   isNil,
   isNumber,
   map,
-  mapKeys,
-  noop,
   pick,
   some,
   sumBy,
   uniq,
+  noop,
+  mapKeys,
 } from 'lodash';
 import {
   LayoutResult,
@@ -279,7 +279,8 @@ export const getSummaryName = (
     return i18n('总计');
   }
 
-  return spreadsheet?.dataSet?.getFieldName(currentField);
+  const name = spreadsheet?.dataSet?.getFieldName(currentField);
+  return name && name !== 'undefined' ? name : '';
 };
 
 export const getSelectedValueFields = (
@@ -355,10 +356,10 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     options.showSingleTips,
   ); // 拿到选择的所有data-cell的数据
   forEach(selectedCellsData, (item) => {
-    if (summary[item[EXTRA_FIELD]]) {
-      summary[item[EXTRA_FIELD]]?.push(item);
+    if (summary[item?.[EXTRA_FIELD]]) {
+      summary[item?.[EXTRA_FIELD]]?.push(item);
     } else {
-      summary[item[EXTRA_FIELD]] = [item];
+      summary[item?.[EXTRA_FIELD]] = [item];
     }
   });
 

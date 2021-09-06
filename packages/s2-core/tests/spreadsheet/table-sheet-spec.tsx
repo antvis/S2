@@ -12,7 +12,6 @@ import {
   SpreadSheet,
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
-import { CustomTooltip } from './custom/custom-tooltip';
 
 const data = getMockData('../data/tableau-supermarket.csv');
 
@@ -92,9 +91,6 @@ const getOptions = (): S2Options => {
     linkFieldIds: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
-      renderTooltip: (spreadsheet) => {
-        return new CustomTooltip(spreadsheet);
-      },
     },
   };
 };

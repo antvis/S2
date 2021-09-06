@@ -88,8 +88,12 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   private showTooltip(event: CanvasEvent, meta: ViewMeta) {
     const currentCellMeta = meta?.data;
     const isTotals = meta?.isTotals || false;
+    const showSingleTips = this.spreadsheet.isTableMode();
+    const cellData = showSingleTips
+      ? { ...currentCellMeta, value: meta?.value || meta?.fieldValue }
+      : currentCellMeta;
     const cellInfos: TooltipData[] = [
-      currentCellMeta || { ...meta.rowQuery, ...meta.colQuery },
+      cellData || { ...meta.rowQuery, ...meta.colQuery },
     ];
     const operator = this.getTooltipOperator(meta);
 
@@ -98,6 +102,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       operator,
       enterable: true,
       hideSummary: true,
+      showSingleTips,
     });
   }
 
