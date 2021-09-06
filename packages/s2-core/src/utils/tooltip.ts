@@ -279,7 +279,8 @@ export const getSummaryName = (
     return i18n('总计');
   }
 
-  return spreadsheet?.dataSet?.getFieldName(currentField);
+  const name = spreadsheet?.dataSet?.getFieldName(currentField);
+  return name && name !== 'undefined' ? name : '';
 };
 
 export const getSelectedValueFields = (
@@ -376,7 +377,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     }
     summaries.push({
       selectedData: selected as unknown,
-      name: name && name !== 'undefined' ? name : '', // 当是table的情况会有name为undefined字符串的时候，为了不打破其他通用写法，在这做此判断
+      name,
       value,
     });
   });
