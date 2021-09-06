@@ -46,42 +46,6 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     }
   }
 
-  private bindDataCellHover() {
-    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
-      const cell = this.spreadsheet.getCell(event.target) as S2CellType;
-      if (isEmpty(cell)) {
-        return;
-      }
-
-      const meta = cell.getMeta() as ViewMeta;
-      this.interaction.changeState({
-        cells: [cell],
-        stateName: InteractionStateName.HOVER,
-      });
-
-      if (this.spreadsheet.options.hoverHighlight) {
-        // highlight all the row and column cells which the cell belongs to
-        this.updateRowColCells(meta);
-        if (this.interaction.hoverTimer) {
-          window.clearTimeout(this.interaction.hoverTimer);
-        }
-        this.changeStateToHoverFocus(cell, event, meta);
-      }
-    });
-  }
-
-  private bindRowCellHover() {
-    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event: CanvasEvent) => {
-      this.handleHeaderHover(event);
-    });
-  }
-
-  private bindColCellHover() {
-    this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event: CanvasEvent) => {
-      this.handleHeaderHover(event);
-    });
-  }
-
   /**
    * @description change the data cell state from hover to hover focus
    * @param cell
@@ -149,5 +113,41 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       : [currentCellMeta || { ...rowQuery, ...colQuery }];
 
     return cellInfos;
+  }
+
+  private bindDataCellHover() {
+    this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
+      const cell = this.spreadsheet.getCell(event.target) as S2CellType;
+      if (isEmpty(cell)) {
+        return;
+      }
+
+      const meta = cell.getMeta() as ViewMeta;
+      this.interaction.changeState({
+        cells: [cell],
+        stateName: InteractionStateName.HOVER,
+      });
+
+      if (this.spreadsheet.options.hoverHighlight) {
+        // highlight all the row and column cells which the cell belongs to
+        this.updateRowColCells(meta);
+        if (this.interaction.hoverTimer) {
+          window.clearTimeout(this.interaction.hoverTimer);
+        }
+        this.changeStateToHoverFocus(cell, event, meta);
+      }
+    });
+  }
+
+  private bindRowCellHover() {
+    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event: CanvasEvent) => {
+      this.handleHeaderHover(event);
+    });
+  }
+
+  private bindColCellHover() {
+    this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event: CanvasEvent) => {
+      this.handleHeaderHover(event);
+    });
   }
 }

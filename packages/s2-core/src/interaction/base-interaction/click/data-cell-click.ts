@@ -24,7 +24,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
-      if (this.interaction.intercept.has(InterceptType.CLICK)) {
+      if (this.interaction.hasIntercepts([InterceptType.CLICK])) {
         return;
       }
 
@@ -37,7 +37,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      this.interaction.intercept.add(InterceptType.HOVER);
+      this.interaction.addIntercepts([InterceptType.HOVER]);
       if (this.interaction.isSelectedCell(cell)) {
         this.interaction.reset();
         return;

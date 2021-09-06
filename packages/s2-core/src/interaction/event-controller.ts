@@ -4,12 +4,18 @@ import {
   InterceptType,
   OriginEventType,
   S2Event,
+  SHAPE_STYLE_MAP,
 } from '@/common/constant';
 import { ResizeInfo } from '@/facet/header/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
-import { Canvas, Event as CanvasEvent, LooseObject } from '@antv/g-canvas';
-import { each, get } from 'lodash';
+import {
+  Group,
+  Canvas,
+  Event as CanvasEvent,
+  LooseObject,
+} from '@antv/g-canvas';
+import { each, get, isEmpty } from 'lodash';
 
 interface EventListener {
   target: EventTarget;
@@ -103,9 +109,9 @@ export class EventController {
   private resetSheetStyle(event: Event) {
     // 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
-    const { intercept } = this.spreadsheet.interaction;
-    if (intercept.has(InterceptType.BRUSH_SELECTION)) {
-      intercept.delete(InterceptType.BRUSH_SELECTION);
+    const { interaction } = this.spreadsheet;
+    if (interaction.hasIntercepts([InterceptType.BRUSH_SELECTION])) {
+      interaction.removeIntercepts([InterceptType.BRUSH_SELECTION]);
       return;
     }
 
@@ -116,7 +122,7 @@ export class EventController {
       return;
     }
 
-    this.spreadsheet.interaction.reset();
+    interaction.reset();
   }
 
   private isMouseOnTheCanvasContainer(event: Event) {
@@ -156,19 +162,40 @@ export class EventController {
     return false;
   }
 
-  private isResizer(event: CanvasEvent) {
+  private isResizeArea(event: CanvasEvent) {
     const appendInfo = get(event.target, 'attrs.appendInfo') as ResizeInfo;
-    return appendInfo?.isResizer;
+    return appendInfo?.isResizeArea;
   }
 
-  // TODO: 需要再考虑一下应该是触发后再屏蔽？还是拦截后再触发，从我的实际重构来看，无法预料到用户的下一步操作，只能全都emit，然后再按照实际的操作把不对应的interaction屏蔽掉。
+  private activeResizeArea(event: CanvasEvent) {
+    this.resetResizeArea();
+    const resizeArea = event.target as Group;
+    this.spreadsheet.store.set('activeResizeArea', resizeArea);
+    resizeArea.attr(
+      SHAPE_STYLE_MAP.backgroundOpacity,
+      this.spreadsheet.theme.resizeArea.interactionState.hover
+        .backgroundOpacity,
+    );
+  }
+
+  private resetResizeArea() {
+    const resizeArea = this.spreadsheet.store.get('activeResizeArea');
+    if (!isEmpty(resizeArea)) {
+      resizeArea.attr(
+        SHAPE_STYLE_MAP.backgroundOpacity,
+        this.spreadsheet.theme.resizeArea.backgroundOpacity,
+      );
+    }
+    this.spreadsheet.store.set('activeResizeArea', resizeArea);
+  }
+
   private onCanvasMousedown = (event: CanvasEvent) => {
     this.target = event.target;
     // 任何点击都该取消hover的后续keep态
     if (this.spreadsheet.interaction.hoverTimer) {
       clearTimeout(this.spreadsheet.interaction.hoverTimer);
     }
-    if (this.isResizer(event)) {
+    if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, event);
       return;
     }
@@ -196,9 +223,12 @@ export class EventController {
   };
 
   private onCanvasMousemove = (event: CanvasEvent) => {
-    if (this.isResizer(event)) {
+    if (this.isResizeArea(event)) {
+      this.activeResizeArea(event);
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, event);
       return;
+    } else {
+      this.resetResizeArea();
     }
 
     const cell = this.spreadsheet.getCell(event.target);
@@ -224,7 +254,12 @@ export class EventController {
           break;
       }
 
-      if (!this.spreadsheet.interaction.intercept.has(InterceptType.HOVER)) {
+      if (
+        !this.spreadsheet.interaction.hasIntercepts([
+          InterceptType.HOVER,
+          InterceptType.BRUSH_SELECTION,
+        ])
+      ) {
         switch (cellType) {
           case CellTypes.DATA_CELL:
             this.spreadsheet.emit(S2Event.DATA_CELL_HOVER, event);
@@ -249,7 +284,7 @@ export class EventController {
   };
 
   private onCanvasMouseup = (event: CanvasEvent) => {
-    if (this.isResizer(event)) {
+    if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_UP, event);
       return;
     }

@@ -67,7 +67,12 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       : pivotMeta.get(fieldValue as string);
     let value;
     let nodeQuery = query;
+    let isGrandTotals = false;
+    let isSubTotals = false;
     if (isTotals) {
+      const totalClass = fieldValue as TotalClass;
+      isGrandTotals = totalClass.isGrandTotals;
+      isSubTotals = totalClass.isSubTotals;
       value = i18n((fieldValue as TotalClass).label);
       nodeQuery = query;
     } else {
@@ -89,6 +94,8 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       parent: parentNode,
       field: currentField,
       isTotals,
+      isGrandTotals,
+      isSubTotals,
       isCollapsed: isCollapse,
       hierarchy,
       query: nodeQuery,

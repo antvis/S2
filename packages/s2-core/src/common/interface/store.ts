@@ -1,6 +1,6 @@
 import { Node } from '@/facet/layout/node';
-import { BBox } from '@antv/g-canvas';
-import { PartDrillDownInfo } from '../../components/sheets/interface';
+import { BBox, Group } from '@antv/g-canvas';
+import { PartDrillDownInfo } from '@/components/sheets/interface';
 import { SortMethodType } from '../constant';
 import { InteractionStateInfo, SortParam } from '../interface';
 import { ValueRanges } from './condition';
@@ -43,7 +43,8 @@ export interface StoreKey {
   originalDataCfg: S2DataConfig;
   drillDownMeta: any;
   panelBBox: BBox;
-
+  // resize area group
+  activeResizeArea: Group;
   // interval condition
   valueRanges: ValueRanges;
 

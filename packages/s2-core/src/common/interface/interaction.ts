@@ -7,6 +7,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { SimpleBBox } from '@antv/g-canvas';
 import { InteractionStateName } from '../constant';
 import { ViewMeta } from './basic';
+import { ResizeInfo } from '@/facet/header/interface';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -25,6 +26,8 @@ export interface InteractionStateInfo {
   interactedCells?: S2CellType[];
   // all the active nodes, including rendered and not rendered cells
   nodes?: Node[];
+  // for empty cells, updates are ignored, use `force` to skip ignore
+  force?: boolean;
 }
 
 export type InteractionConstructor = new (

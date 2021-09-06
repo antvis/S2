@@ -117,6 +117,12 @@ export const getTheme = (
             backgroundColor: brandColors[2],
             backgroundOpacity: 1,
           },
+          // -------------- unselected -------------------
+          unselected: {
+            backgroundOpacity: 0.3,
+            textOpacity: 0.3,
+            opacity: 0.3,
+          },
         },
       },
       icon: {
@@ -177,6 +183,12 @@ export const getTheme = (
           selected: {
             backgroundColor: brandColors[4],
             backgroundOpacity: 1,
+          },
+          // -------------- unselected -------------------
+          unselected: {
+            backgroundOpacity: 0.3,
+            textOpacity: 0.3,
+            opacity: 0.3,
           },
         },
       },
@@ -250,7 +262,6 @@ export const getTheme = (
             backgroundOpacity: 1,
           },
           // -------------- unselected -------------------
-          // TODO: 条件格式的icon和mini chart也需要置灰
           unselected: {
             backgroundOpacity: 0.3,
             textOpacity: 0.3,
@@ -276,6 +287,20 @@ export const getTheme = (
         margin: {
           right: 4,
           left: 4,
+        },
+      },
+    },
+    // resize active area
+    resizeArea: {
+      size: 3,
+      background: brandColors[7],
+      guidLineColor: brandColors[7],
+      backgroundOpacity: 0,
+      /* ---------- interaction state ----------- */
+      interactionState: {
+        hover: {
+          backgroundColor: brandColors[7],
+          backgroundOpacity: 1,
         },
       },
     },
@@ -307,6 +332,7 @@ export const getTheme = (
       backgroundColor: brandColors[5],
       backgroundOpacity: 0.3,
     },
+    // ------------- canvas background
     background: {
       color: grayColors[0],
       opacity: 1,

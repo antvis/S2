@@ -33,7 +33,7 @@
       "city": "白山",
       "type": "办公用品",
       "sub_type": "纸张",
-
+      "cost": "3",
       "price": "8"
     },
     {
@@ -423,5 +423,22 @@
       "cost": "2",
       "price": "34"
     }
-  ]
+  ],
+  "totalData": [
+    {
+     "cost": "2",
+      "price": "34"
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "cost": "2",
+      "price": "34"
+    },
+    {
+      "type": "办公用品",
+      "cost": "2",
+      "price": "34"
+    }
+]
 }

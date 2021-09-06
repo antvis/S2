@@ -72,7 +72,7 @@ export class DetailColCell extends ColCell {
     );
   }
 
-  protected getColHotSpotKey(): string {
+  protected getColResizeAreaKey(): string {
     return EXTRA_FIELD;
   }
 }
