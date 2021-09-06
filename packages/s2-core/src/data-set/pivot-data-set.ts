@@ -67,7 +67,7 @@ export class PivotDataSet extends BaseDataSet {
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
     // total data in raw data scene.
-    this.totalData = [].concat(this.totalData).concat(splitTotal(dataCfg.data, dataCfg.fields));
+    this.totalData = [].concat(splitTotal(dataCfg.data, dataCfg.fields)).concat(this.totalData);
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
       const { rows, columns } = this.fields;
       this.transformIndexesData(rows, columns, this.originData, this.totalData);
