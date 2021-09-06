@@ -17,10 +17,10 @@ export const PANEL_GROUP_HOVER_BOX_GROUP_Z_INDEX = 1;
 export const KEY_GROUP_BACK_GROUND = 'backGroundGroup';
 export const KEY_GROUP_FORE_GROUND = 'foreGroundGroup';
 export const KEY_GROUP_PANEL_GROUND = 'panelGroup';
-export const KEY_GROUP_ROW_RESIZER = 'rowResizerGroup';
-export const KEY_GROUP_ROW_INDEX_RESIZER = 'rowIndexResizerGroup';
-export const KEY_GROUP_CORNER_RESIZER = 'cornerResizerGroup';
-export const KEY_GROUP_COL_RESIZER = 'colResizerGroup';
+export const KEY_GROUP_ROW_RESIZE_AREA = 'rowResizeAreaGroup';
+export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
+export const KEY_GROUP_CORNER_RESIZE_AREA = 'cornerResizeAreaGroup';
+export const KEY_GROUP_COL_RESIZE_AREA = 'colResizeAreaGroup';
 export const KEY_GROUP_MASK_GROUP = 'maskGroup';
 
 // key of series number node in corner header

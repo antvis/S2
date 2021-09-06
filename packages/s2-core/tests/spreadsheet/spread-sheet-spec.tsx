@@ -73,7 +73,7 @@ const getOptions = (): S2Options => {
     debug: true,
     width: 800,
     height: 600,
-    hierarchyType: 'tree',
+    hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: false,
@@ -83,22 +83,6 @@ const getOptions = (): S2Options => {
       interval: [],
       background: [],
       icon: [],
-    },
-    totals: {
-      row: {
-        showGrandTotals: true,
-        showSubTotals: true,
-        reverseLayout: true,
-        reverseSubLayout: true,
-        subTotalsDimensions: ['province', 'city'],
-      },
-      col: {
-        showGrandTotals: true,
-        showSubTotals: true,
-        reverseLayout: true,
-        reverseSubLayout: true,
-        subTotalsDimensions: ['type', 'sub_type'],
-      },
     },
     style: {
       treeRowsWidth: 100,

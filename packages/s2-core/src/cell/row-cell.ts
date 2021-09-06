@@ -1,14 +1,12 @@
 import {
   CellTypes,
-  COLOR_DEFAULT_RESIZER,
   ID_SEPARATOR,
-  KEY_GROUP_ROW_RESIZER,
+  KEY_GROUP_ROW_RESIZE_AREA,
   S2Event,
 } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
-import { FormatResult, TextTheme } from '@/common/interface';
-import { HIT_AREA } from '@/facet/header/base';
+import { FormatResult, SpreadSheetTheme, TextTheme } from '@/common/interface';
 import { ResizeInfo } from '@/facet/header/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
@@ -49,7 +47,7 @@ export class RowCell extends HeaderCell {
     // draw bottom border
     this.drawRectBorder();
     // draw hot-spot rect
-    this.drawHotSpotInLeaf();
+    this.drawResizeAreaInLeaf();
     // draw action icon shapes: trend icon, drill-down icon ...
     this.drawActionIcons();
     this.update();
@@ -200,30 +198,32 @@ export class RowCell extends HeaderCell {
     );
   }
 
-  protected drawHotSpotInLeaf() {
+  protected drawResizeAreaInLeaf() {
     if (this.meta.isLeaf) {
       const { x, y, width, height } = this.getCellArea();
+      const resizeStyle = this.getStyle('resizeArea');
       // 热区公用一个group
-      const prevResizer = this.spreadsheet.foregroundGroup.findById(
-        KEY_GROUP_ROW_RESIZER,
+      const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+        KEY_GROUP_ROW_RESIZE_AREA,
       );
-      const resizer = (prevResizer ||
+      const resizeArea = (prevResizeArea ||
         this.spreadsheet.foregroundGroup.addGroup({
-          id: KEY_GROUP_ROW_RESIZER,
+          id: KEY_GROUP_ROW_RESIZE_AREA,
         })) as IGroup;
 
       const { offset, position, seriesNumberWidth } = this.headerConfig;
       const { label, parent } = this.meta;
-      resizer.addShape('rect', {
+      resizeArea.addShape('rect', {
         attrs: {
           x: position.x + x + seriesNumberWidth,
-          y: position.y + y - offset + height - HIT_AREA / 2,
+          y: position.y + y - offset + height - resizeStyle.size / 2,
           width,
-          fill: COLOR_DEFAULT_RESIZER,
-          height: HIT_AREA,
+          height: resizeStyle.size,
+          fill: resizeStyle.background,
+          fillOpacity: resizeStyle.backgroundOpacity,
           cursor: 'row-resize',
           appendInfo: {
-            isResizer: true,
+            isResizeArea: true,
             class: 'resize-trigger',
             type: 'row',
             affect: 'cell',

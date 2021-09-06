@@ -7,6 +7,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { SimpleBBox } from '@antv/g-canvas';
 import { InteractionStateName } from '../constant';
 import { ViewMeta } from './basic';
+import { ResizeInfo } from '@/facet/header/interface';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell

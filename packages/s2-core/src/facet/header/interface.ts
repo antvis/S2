@@ -64,7 +64,7 @@ export interface Cfg {
 }
 
 export interface ResizeInfo {
-  isResizeController: boolean;
+  isResizeArea: boolean;
   class: 'resize-trigger';
   /**
    * col是改变列配置，即改变宽度

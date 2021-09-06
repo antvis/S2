@@ -6,7 +6,6 @@ import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '../index';
-
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
 
