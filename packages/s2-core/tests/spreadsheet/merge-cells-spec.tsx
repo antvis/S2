@@ -1,7 +1,11 @@
-/* eslint-disable no-console */
+import ReactDOM from 'react-dom';
+import React from 'react';
+import { Switch, Button } from 'antd';
 import { forEach } from 'lodash';
 import { act } from 'react-dom/test-utils';
-import { mergeCells } from '../../src/utils/interaction/merge-cells';
+import { getContainer, getMockData } from '../util/helpers';
+import { CustomTooltip } from './custom/custom-tooltip';
+import { mergeCells } from '@/utils/interaction/merge-cells';
 import 'antd/dist/antd.min.css';
 import {
   auto,
@@ -9,12 +13,7 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
-} from '../../src';
-import { getContainer, getMockData } from '../util/helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
-import { Switch, Button } from 'antd';
-import { CustomTooltip } from './custom/custom-tooltip';
+} from '@/index';
 
 let data = getMockData('../data/tableau-supermarket.csv');
 
@@ -97,7 +96,7 @@ const baseDataCfg: S2DataConfig = {
 } as S2DataConfig;
 
 const baseOptions = {
-  debug: true,
+  debug: false,
   width: 800,
   height: 600,
   hierarchyType: 'grid',
@@ -367,16 +366,6 @@ function MainLayout() {
     getDataCfg('base'),
   );
 
-  const onRowCellClick = (value) => {
-    console.log(value);
-  };
-  const onColCellClick = (value) => {
-    console.log(value);
-  };
-  const onDataCellClick = (value) => {
-    console.log(value);
-  };
-
   let sheet;
   let mergedCellsInfo = [];
 
@@ -395,7 +384,6 @@ function MainLayout() {
   const mgergedCellsTooltip = <div>合并后的tooltip</div>;
 
   const onDataCellMouseUp = (value) => {
-    console.log(value);
     sheet = value?.viewMeta?.spreadsheet;
     const cells = sheet.interaction.getActiveCells();
     mergedCellsInfo = [];
@@ -412,7 +400,6 @@ function MainLayout() {
   };
 
   const onMergedCellsClick = (value) => {
-    console.log(value);
     sheet = value?.target?.cells[0].spreadsheet;
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },
@@ -445,9 +432,6 @@ function MainLayout() {
         options={options}
         spreadsheet={getSpreadSheet}
         onDataCellMouseUp={onDataCellMouseUp}
-        onRowCellClick={onRowCellClick}
-        onColCellClick={onColCellClick}
-        onDataCellClick={onDataCellClick}
         onMergedCellsClick={onMergedCellsClick}
       />
     </div>

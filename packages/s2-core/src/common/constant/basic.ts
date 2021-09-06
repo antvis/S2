@@ -30,10 +30,6 @@ export const KEY_GROUP_PANEL_FROZEN_TRAILING_ROW = 'frozenTrailingRowGroup';
 export const KEY_GROUP_PANEL_FROZEN_TRAILING_COL = 'frozenTrailingColGroup';
 export const KEY_GROUP_PANEL_FROZEN_TOP = 'frozenTopGroup';
 export const KEY_GROUP_PANEL_FROZEN_BOTTOM = 'frozenBottomGroup';
-export const KEY_GROUP_ROW_RESIZER = 'rowResizerGroup';
-export const KEY_GROUP_ROW_INDEX_RESIZER = 'rowIndexResizerGroup';
-export const KEY_GROUP_CORNER_RESIZER = 'cornerResizerGroup';
-export const KEY_GROUP_COL_RESIZER = 'colResizerGroup';
 export const KEY_GROUP_ROW_RESIZE_AREA = 'rowResizeAreaGroup';
 export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
 export const KEY_GROUP_CORNER_RESIZE_AREA = 'cornerResizeAreaGroup';
@@ -63,3 +59,5 @@ export const MIN_CELL_HEIGHT = 16;
 
 // data precision
 export const PRECISION = 16;
+
+export const ROOT_BEGINNING_REGEX = /^root\[&\]*/;

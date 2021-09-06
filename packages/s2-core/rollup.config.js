@@ -34,7 +34,7 @@ const plugins = [
     typescript: ttypescript,
   }),
   less({
-    output: outDir + '/index.css',
+    output: outDir + '/s2.css',
   }),
 ];
 
@@ -72,6 +72,7 @@ if (format === 'umd') {
   output.dir = outDir;
 }
 
+// eslint-disable-next-line import/no-default-export
 export default {
   input: 'src/index.ts',
   output,
