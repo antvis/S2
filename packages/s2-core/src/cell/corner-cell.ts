@@ -1,20 +1,17 @@
 import {
   CellTypes,
-  COLOR_DEFAULT_RESIZER,
   EXTRA_FIELD,
-  KEY_GROUP_CORNER_RESIZER,
+  KEY_GROUP_CORNER_RESIZE_AREA,
   S2Event,
 } from '@/common/constant';
-import { CellAttrs, FormatResult, TextTheme } from '@/common/interface';
-import { HIT_AREA } from '@/facet/header/base';
+import { FormatResult, TextTheme } from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
 import { ResizeInfo } from '@/facet/header/interface';
-import { Node } from '@/facet/layout/node';
 import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
 import { renderRect, renderText, renderTreeIcon } from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
 import { getEllipsisText } from '@/utils/text';
-import { IGroup, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import { Group, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
 import { isEmpty, isEqual } from 'lodash';
 import { HeaderCell } from './header-cell';
 
@@ -34,7 +31,7 @@ export class CornerCell extends HeaderCell {
     this.drawBackgroundShape();
     this.drawTreeIcon();
     this.drawCellText();
-    this.drawHotpot();
+    this.drawResizeArea();
   }
 
   protected drawCellText() {
@@ -153,26 +150,28 @@ export class CornerCell extends HeaderCell {
     this.backgroundShape = renderRect(this, attrs);
   }
 
-  private drawHotpot() {
-    const prevResizer = this.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_CORNER_RESIZER,
+  private drawResizeArea() {
+    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+      KEY_GROUP_CORNER_RESIZE_AREA,
     );
-    const resizer = (prevResizer ||
+    const resizeStyle = this.getStyle('resizeArea');
+    const resizeArea = (prevResizeArea ||
       this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_CORNER_RESIZER,
-      })) as IGroup;
+        id: KEY_GROUP_CORNER_RESIZE_AREA,
+      })) as Group;
     const { position } = this.headerConfig;
     const { x, y, width: cellWidth, height: cellHeight, field } = this.meta;
-    resizer.addShape('rect', {
+    resizeArea.addShape('rect', {
       attrs: {
-        x: position.x + x + cellWidth - HIT_AREA / 2,
+        x: position.x + x + cellWidth - resizeStyle.size / 2,
         y: position.y + y,
-        width: HIT_AREA,
+        width: resizeStyle.size,
         height: cellHeight,
-        fill: COLOR_DEFAULT_RESIZER,
+        fill: resizeStyle.background,
+        fillOpacity: resizeStyle.backgroundOpacity,
         cursor: 'col-resize',
         appendInfo: {
-          isResizer: true,
+          isResizeArea: true,
           class: 'resize-trigger',
           type: 'col',
           id: field,

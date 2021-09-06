@@ -4,12 +4,18 @@ import {
   InterceptType,
   OriginEventType,
   S2Event,
+  SHAPE_STYLE_MAP,
 } from '@/common/constant';
 import { ResizeInfo } from '@/facet/header/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
-import { Canvas, Event as CanvasEvent, LooseObject } from '@antv/g-canvas';
-import { each, get } from 'lodash';
+import {
+  Group,
+  Canvas,
+  Event as CanvasEvent,
+  LooseObject,
+} from '@antv/g-canvas';
+import { each, get, isEmpty } from 'lodash';
 
 interface EventListener {
   target: EventTarget;
@@ -156,19 +162,40 @@ export class EventController {
     return false;
   }
 
-  private isResizer(event: CanvasEvent) {
+  private isResizeArea(event: CanvasEvent) {
     const appendInfo = get(event.target, 'attrs.appendInfo') as ResizeInfo;
-    return appendInfo?.isResizer;
+    return appendInfo?.isResizeArea;
   }
 
-  // TODO: 需要再考虑一下应该是触发后再屏蔽？还是拦截后再触发，从我的实际重构来看，无法预料到用户的下一步操作，只能全都emit，然后再按照实际的操作把不对应的interaction屏蔽掉。
+  private activeResizeArea(event: CanvasEvent) {
+    this.resetResizeArea();
+    const resizeArea = event.target as Group;
+    this.spreadsheet.store.set('activeResizeArea', resizeArea);
+    resizeArea.attr(
+      SHAPE_STYLE_MAP.backgroundOpacity,
+      this.spreadsheet.theme.resizeArea.interactionState.hover
+        .backgroundOpacity,
+    );
+  }
+
+  private resetResizeArea() {
+    const resizeArea = this.spreadsheet.store.get('activeResizeArea');
+    if (!isEmpty(resizeArea)) {
+      resizeArea.attr(
+        SHAPE_STYLE_MAP.backgroundOpacity,
+        this.spreadsheet.theme.resizeArea.backgroundOpacity,
+      );
+    }
+    this.spreadsheet.store.set('activeResizeArea', resizeArea);
+  }
+
   private onCanvasMousedown = (event: CanvasEvent) => {
     this.target = event.target;
     // 任何点击都该取消hover的后续keep态
     if (this.spreadsheet.interaction.hoverTimer) {
       clearTimeout(this.spreadsheet.interaction.hoverTimer);
     }
-    if (this.isResizer(event)) {
+    if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, event);
       return;
     }
@@ -196,10 +223,12 @@ export class EventController {
   };
 
   private onCanvasMousemove = (event: CanvasEvent) => {
-    if (this.isResizer(event)) {
+    if (this.isResizeArea(event)) {
+      this.activeResizeArea(event);
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, event);
       return;
     }
+    this.resetResizeArea();
 
     const cell = this.spreadsheet.getCell(event.target);
     const cellType = this.spreadsheet.getCellType(event.target);
@@ -254,7 +283,7 @@ export class EventController {
   };
 
   private onCanvasMouseup = (event: CanvasEvent) => {
-    if (this.isResizer(event)) {
+    if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_UP, event);
       return;
     }

@@ -1,7 +1,5 @@
 import { Group, Point } from '@antv/g-canvas';
-import { Node, SpreadSheet } from '../../index';
-
-export const HIT_AREA = 10;
+import { Node, SpreadSheet } from '@/index';
 
 /**
  * Base header config interface
@@ -37,9 +35,6 @@ export interface BaseHeaderConfig {
  * use {@see headerConfig} instead
  */
 export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
-  // header cell resize rect group
-  public resizer: Group;
-
   // protected offset: number;
   protected headerConfig: T;
 
@@ -52,7 +47,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    * 清空热区，为重绘做准备，防止热区重复渲染
    * @param type 当前重绘的header类型
    */
-  protected clearResizerGroup(type: string) {
+  protected clearResizeAreaGroup(type: string) {
     const foregroundGroup = this.get('parent');
     const resizerGroup = foregroundGroup?.findById(type);
     resizerGroup?.remove();
@@ -61,7 +56,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   // start render header
   public render(type: string): void {
     // clear resize group
-    this.clearResizerGroup(type);
+    this.clearResizeAreaGroup(type);
     // clear self first
     this.clear();
     // draw by new data
@@ -93,16 +88,6 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   public onRowScrollX(rowScrollX: number, type: string): void {
     this.headerConfig.scrollX = rowScrollX;
     this.render(type);
-  }
-
-  public addHotspot(config: any[]) {
-    const resizer: Group = this.get('parent').addGroup();
-    resizer.set('name', 'resizer');
-    // eslint-disable-next-line no-restricted-syntax
-    for (const o of config) {
-      resizer.addShape('rect', o);
-    }
-    this.resizer = resizer;
   }
 
   // header all cells layout

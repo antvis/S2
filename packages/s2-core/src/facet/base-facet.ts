@@ -18,10 +18,10 @@ import {
 } from 'lodash';
 import {
   S2Event,
-  KEY_GROUP_COL_RESIZER,
-  KEY_GROUP_CORNER_RESIZER,
-  KEY_GROUP_ROW_INDEX_RESIZER,
-  KEY_GROUP_ROW_RESIZER,
+  KEY_GROUP_COL_RESIZE_AREA,
+  KEY_GROUP_CORNER_RESIZE_AREA,
+  KEY_GROUP_ROW_INDEX_RESIZE_AREA,
+  KEY_GROUP_ROW_RESIZE_AREA,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
 } from 'src/common/constant';
@@ -594,17 +594,20 @@ export abstract class BaseFacet {
         const hRowScrollX =
           (thumbOffset / this.hRowScrollBar.trackLen) * this.cornerWidth;
         this.setScrollOffset({ hRowScrollX });
-        this.rowHeader.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZER);
+        this.rowHeader.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
         this.rowIndexHeader?.onRowScrollX(
           hRowScrollX,
-          KEY_GROUP_ROW_INDEX_RESIZER,
+          KEY_GROUP_ROW_INDEX_RESIZE_AREA,
         );
         this.centerFrame.onChangeShadowVisibility(
           hRowScrollX,
           this.cornerWidth - this.cornerBBox.width - this.scrollBarSize * 2,
           true,
         );
-        this.cornerHeader.onRowScrollX(hRowScrollX, KEY_GROUP_CORNER_RESIZER);
+        this.cornerHeader.onRowScrollX(
+          hRowScrollX,
+          KEY_GROUP_CORNER_RESIZE_AREA,
+        );
       });
       this.foregroundGroup.add(this.hRowScrollBar);
     }
@@ -848,16 +851,16 @@ export abstract class BaseFacet {
     this.rowHeader.onScrollXY(
       this.getRealScrollX(scrollX, hRowScroll),
       scrollY,
-      KEY_GROUP_ROW_RESIZER,
+      KEY_GROUP_ROW_RESIZE_AREA,
     );
     this.rowIndexHeader?.onScrollXY(
       this.getRealScrollX(scrollX, hRowScroll),
       scrollY,
-      KEY_GROUP_ROW_INDEX_RESIZER,
+      KEY_GROUP_ROW_INDEX_RESIZE_AREA,
     );
     this.cornerHeader.onCorScroll(
       this.getRealScrollX(scrollX, hRowScroll),
-      KEY_GROUP_CORNER_RESIZER,
+      KEY_GROUP_CORNER_RESIZE_AREA,
     );
     this.centerFrame.onChangeShadowVisibility(
       scrollX,
@@ -870,7 +873,7 @@ export abstract class BaseFacet {
       this.cfg.spreadsheet.isScrollContainsRowHeader()
         ? this.cornerBBox.width
         : undefined,
-      KEY_GROUP_COL_RESIZER,
+      KEY_GROUP_COL_RESIZE_AREA,
     );
 
     this.spreadsheet.panelScrollGroup.setClip({

@@ -34,6 +34,10 @@ export const KEY_GROUP_ROW_RESIZER = 'rowResizerGroup';
 export const KEY_GROUP_ROW_INDEX_RESIZER = 'rowIndexResizerGroup';
 export const KEY_GROUP_CORNER_RESIZER = 'cornerResizerGroup';
 export const KEY_GROUP_COL_RESIZER = 'colResizerGroup';
+export const KEY_GROUP_ROW_RESIZE_AREA = 'rowResizeAreaGroup';
+export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
+export const KEY_GROUP_CORNER_RESIZE_AREA = 'cornerResizeAreaGroup';
+export const KEY_GROUP_COL_RESIZE_AREA = 'colResizeAreaGroup';
 export const KEY_GROUP_MASK_GROUP = 'maskGroup';
 export const KEY_GROUP_COL_SCROLL = 'colScrollGroup';
 export const KEY_GROUP_COL_FROZEN = 'colFrozenGroup';
@@ -41,6 +45,8 @@ export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
 
 // key of series number node in corner header
 export const KEY_SERIES_NUMBER_NODE = 'series-number-node';
+
+export const HORIZONTAL_RESIZE_AREA_KEY_PRE = 'horizontal-resize-area-';
 
 export const KEY_COL_REAL_WIDTH_INFO = 'col-real-width-info';
 
