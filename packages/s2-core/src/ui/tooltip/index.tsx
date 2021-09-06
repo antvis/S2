@@ -153,7 +153,12 @@ export class BaseTooltip {
   }
 
   protected renderSummary(summaries: TooltipSummaryOptions[]) {
-    return !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
+    const count = this.spreadsheet.interaction.getActiveCellsCount();
+    return (
+      !isEmpty(summaries) && (
+        <TooltipSummary summaries={summaries} count={count} />
+      )
+    );
   }
 
   protected renderHeadInfo(headInfo: TooltipHeadInfoType) {

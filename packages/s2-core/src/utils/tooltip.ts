@@ -437,8 +437,6 @@ export const mergeCellInfo = (cells: S2CellType[]): TooltipData[] => {
   });
 };
 
-// TODO: 待确定 是否可以复用 mergeCellInfo
-
 export const getActiveCellsTooltipData = (
   spreadsheet: SpreadSheet,
 ): TooltipData[] => {
