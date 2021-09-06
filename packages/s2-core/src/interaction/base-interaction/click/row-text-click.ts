@@ -15,7 +15,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: CanvasEvent) => {
-      if (this.spreadsheet.interaction.intercept.has(InterceptType.CLICK)) {
+      if (this.spreadsheet.interaction.hasIntercepts([InterceptType.CLICK])) {
         return;
       }
       const appendInfo = get(
