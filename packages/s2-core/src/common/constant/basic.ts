@@ -5,12 +5,18 @@ export const TOTAL_VALUE = '$$total$$';
 export const SERIES_NUMBER_FIELD = '$$series_number$$';
 // export const COLUMN_FIELD_KEY = '$$column_key$$';
 
+export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
+
 // foregroundGroup 上的 children 层叠顺序
-export const FRONT_GROUND_GROUP_CONTAINER_Z_INDEX = 0; // 约定这个 z-index 为 0 的 container 作为基准
-export const FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX = 2;
+export const FRONT_GROUND_GROUP_CONTAINER_Z_INDEX = 3; // 约定这个 z-index 为 0 的 container 作为基准
+export const FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX = 3;
+export const FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX = 4;
+export const FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX = 5;
 
 // panelGroup 上的 children 层叠顺序
-export const PANEL_GROUP_CELL_GROUP_Z_INDEX = 0;
+export const PANEL_GROUP_GROUP_CONTAINER_Z_INDEX = 1;
+export const PANEL_GROUP_SCROLL_GROUP_Z_INDEX = 1;
+export const PANEL_GROUP_FROZEN_GROUP_Z_INDEX = 2;
 export const PANEL_GROUP_HOVER_BOX_GROUP_Z_INDEX = 1;
 
 // group's key

@@ -840,8 +840,6 @@ export abstract class BaseFacet {
     scrollY: number,
     hRowScroll: number,
   ) {
-    const { frozenRowCount } = this.spreadsheet.options;
-
     translateGroup(
       this.spreadsheet.panelScrollGroup,
       this.cornerBBox.width - scrollX,

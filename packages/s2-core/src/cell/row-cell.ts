@@ -18,6 +18,7 @@ import { Event, IGroup, Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { each, forEach } from 'lodash';
 import { HeaderCell } from './header-cell';
+
 export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;
 

@@ -1,11 +1,11 @@
 export enum FrozenCellType {
-  ROW = 'ROW',
-  COL = 'COL',
-  TRAILING_ROW = 'TRAILING_ROW',
-  TRAILING_COL = 'TRAILING_COL',
-  SCROLL = 'SCROLL',
-  TOP = 'TOP',
-  BOTTOM = 'BOTTOM',
+  ROW = 'row',
+  COL = 'col',
+  TRAILING_ROW = 'trailingRow',
+  TRAILING_COL = 'trailingCol',
+  SCROLL = 'scroll',
+  TOP = 'top',
+  BOTTOM = 'bottom',
 }
 
 export const FrozenCellGroupMap = {

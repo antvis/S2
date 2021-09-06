@@ -103,6 +103,21 @@ export const translateGroupY = (group: IGroup, scrollY: number) => {
   group.translate(0, scrollY - preY);
 };
 
+/**
+ * frozen                     frozenTrailing
+ * ColCount                   ColCount
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * |     |     forzenRow     |          |  frozenRowCount
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * | fro |                   | fro      |
+ * | zen |      panel        | zen      |
+ * | col |      scroll       | trailing |
+ * |     |                   | col      |
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * |     | frozenTrailingRow |          |  frozenTrailingRowCount
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * @description returns which group data cell belongs in frozen mode
+ */
 export const getFrozenDataCellType = (
   meta: {
     colIndex: number;
@@ -141,6 +156,9 @@ export const getFrozenDataCellType = (
   return FrozenCellType.SCROLL;
 };
 
+/**
+ * @description calculate all cells in frozen group's intersection region
+ */
 export const calculateFrozenCornerCells = (
   opts: FrozenOpts,
   colLength: number,
@@ -160,6 +178,7 @@ export const calculateFrozenCornerCells = (
     [FrozenCellType.BOTTOM]: [],
   };
 
+  // frozenColGroup with frozenRowGroup or frozenTrailingRowGroup. Top left and bottom left corner.
   for (let i = 0; i < frozenColCount; i++) {
     for (let j = 0; j < frozenRowCount; j++) {
       result[FrozenCellType.TOP].push({
@@ -179,6 +198,7 @@ export const calculateFrozenCornerCells = (
     }
   }
 
+  // frozenTrailingColGroup with frozenRowGroup or frozenTrailingRowGroup. Top right and bottom right corner.
   for (let i = 0; i < frozenTrailingColCount; i++) {
     const colIndex = colLength - 1 - i;
     for (let j = 0; j < frozenRowCount; j++) {
@@ -202,6 +222,9 @@ export const calculateFrozenCornerCells = (
   return result;
 };
 
+/**
+ * @description split all cells in current panel with five child group
+ */
 export const splitInViewIndexesWithFrozen = (
   indexes: Indexes,
   frozenOpts: FrozenOpts,
@@ -217,6 +240,7 @@ export const splitInViewIndexesWithFrozen = (
 
   const centerIndexes: Indexes = [...indexes];
 
+  // Cut off frozen cells from centerIndexes
   if (centerIndexes[0] < frozenColCount) {
     centerIndexes[0] = frozenColCount;
   }
@@ -231,6 +255,7 @@ export const splitInViewIndexesWithFrozen = (
   if (centerIndexes[2] < frozenRowCount) {
     centerIndexes[2] = frozenRowCount;
   }
+
   if (
     frozenTrailingRowCount > 0 &&
     centerIndexes[3] >= rowLength - frozenTrailingRowCount
@@ -238,6 +263,7 @@ export const splitInViewIndexesWithFrozen = (
     centerIndexes[3] = rowLength - frozenTrailingRowCount - 1;
   }
 
+  // Calculate indexes for four frozen groups
   const frozenRowIndexes: Indexes = [...centerIndexes];
   frozenRowIndexes[2] = 0;
   frozenRowIndexes[3] = frozenRowCount - 1;

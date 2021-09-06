@@ -10,7 +10,12 @@ import {
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
   KEY_GROUP_PANEL_FROZEN_TOP,
   KEY_GROUP_PANEL_FROZEN_BOTTOM,
+  BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
+  PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+  PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+  FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   S2Event,
+  PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
 } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
@@ -540,15 +545,15 @@ export class SpreadSheet extends EE {
     // the main three layer groups
     this.backgroundGroup = this.container.addGroup({
       name: KEY_GROUP_BACK_GROUND,
-      zIndex: 0,
+      zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
     });
     this.panelGroup = this.container.addGroup({
       name: KEY_GROUP_PANEL_GROUND,
-      zIndex: 1,
+      zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
     });
     this.foregroundGroup = this.container.addGroup({
       name: KEY_GROUP_FORE_GROUND,
-      zIndex: 3,
+      zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
     });
     this.initPanelGroupChildren();
   }
@@ -556,31 +561,31 @@ export class SpreadSheet extends EE {
   protected initPanelGroupChildren(): void {
     this.panelScrollGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_SCROLL,
-      zIndex: 1,
+      zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
     });
     this.frozenRowGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_FROZEN_ROW,
-      zIndex: 2,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
     });
     this.frozenColGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_FROZEN_COL,
-      zIndex: 2,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
     });
     this.frozenTrailingRowGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
-      zIndex: 2,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
     });
     this.frozenTrailingColGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
-      zIndex: 2,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
     });
     this.frozenTopGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_FROZEN_TOP,
-      zIndex: 2,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
     });
     this.frozenBottomGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_FROZEN_BOTTOM,
-      zIndex: 2,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
     });
   }
 

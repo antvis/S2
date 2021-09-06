@@ -5,10 +5,12 @@ import {
   KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_SCROLL,
   KEY_GROUP_COL_FROZEN_TRAILING,
+  FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
+  FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
 } from 'src/common/constant';
-import { Formatter, S2CellType, SortParam } from '../../common/interface';
-import { ColCell, TableColCell, TableCornerCell } from '../../cell';
-import { Node } from '../..';
+import { ColCell, TableColCell, TableCornerCell } from 'src/cell';
+import { Formatter, S2CellType, SortParam } from 'src/common/interface';
+import { Node } from 'src/facet/layout/node';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
 
@@ -42,20 +44,20 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
     this.scrollGroup = this.addGroup({
       name: KEY_GROUP_COL_SCROLL,
-      zIndex: 2,
+      zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
     });
 
     if (frozenColCount) {
       this.frozenColGroup = this.addGroup({
         name: KEY_GROUP_COL_FROZEN,
-        zIndex: 3,
+        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
       });
     }
 
     if (frozenTrailingColCount) {
       this.frozenTrailingColGroup = this.addGroup({
         name: KEY_GROUP_COL_FROZEN_TRAILING,
-        zIndex: 3,
+        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
       });
     }
   }
