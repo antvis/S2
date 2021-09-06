@@ -26,6 +26,8 @@ export const KEY_GROUP_MASK_GROUP = 'maskGroup';
 // key of series number node in corner header
 export const KEY_SERIES_NUMBER_NODE = 'series-number-node';
 
+export const HORIZONTAL_RESIZE_AREA_KEY_PRE = 'horizontal-resize-area-';
+
 export const KEY_COL_REAL_WIDTH_INFO = 'col-real-width-info';
 
 export const ID_SEPARATOR = '[&]';

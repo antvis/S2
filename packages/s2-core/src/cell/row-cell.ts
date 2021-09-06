@@ -6,13 +6,13 @@ import {
 } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
-import { FormatResult, SpreadSheetTheme, TextTheme } from '@/common/interface';
+import { FormatResult, TextTheme } from '@/common/interface';
 import { ResizeInfo } from '@/facet/header/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
-import { Event, IGroup, Point } from '@antv/g-canvas';
+import { Event, Group, Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { each, forEach } from 'lodash';
 import { HeaderCell } from './header-cell';
@@ -209,7 +209,7 @@ export class RowCell extends HeaderCell {
       const resizeArea = (prevResizeArea ||
         this.spreadsheet.foregroundGroup.addGroup({
           id: KEY_GROUP_ROW_RESIZE_AREA,
-        })) as IGroup;
+        })) as Group;
 
       const { offset, position, seriesNumberWidth } = this.headerConfig;
       const { label, parent } = this.meta;

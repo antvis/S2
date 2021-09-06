@@ -1,4 +1,8 @@
-import { CellTypes, KEY_GROUP_COL_RESIZE_AREA } from '@/common/constant';
+import {
+  CellTypes,
+  KEY_GROUP_COL_RESIZE_AREA,
+  HORIZONTAL_RESIZE_AREA_KEY_PRE,
+} from '@/common/constant';
 import { GuiIcon } from '@/common/icons';
 import {
   FormatResult,
@@ -10,7 +14,7 @@ import { ColHeaderConfig } from '@/facet/header/col';
 import { ResizeInfo } from '@/facet/header/interface';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect } from '@/utils/g-renders';
-import { IGroup, Point } from '@antv/g-canvas';
+import { Group, Point } from '@antv/g-canvas';
 import { get, isEqual } from 'lodash';
 import { AreaRange } from '@/common/interface/scroll';
 import {
@@ -200,16 +204,19 @@ export class ColCell extends HeaderCell {
     const resizeArea = (prevResizeArea ||
       this.spreadsheet.foregroundGroup.addGroup({
         id: KEY_GROUP_COL_RESIZE_AREA,
-      })) as IGroup;
+      })) as Group;
     const prevHorizontalResizeArea = resizeArea.find((element) => {
-      return element.attrs.name === `horizontal-resizeArea-${this.meta.key}`;
+      return (
+        element.attrs.name ===
+        `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`
+      );
     });
     // 如果已经绘制当前列高调整热区热区，则不再绘制
     if (!prevHorizontalResizeArea) {
       // 列高调整热区
       resizeArea.addShape('rect', {
         attrs: {
-          name: `horizontal-resizeArea-${this.meta.key}`,
+          name: `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`,
           x: position.x,
           y: position.y + y + cellHeight - resizeStyle.size / 2,
           width: viewportWidth,

@@ -1,6 +1,6 @@
 import { i18n } from '@/common/i18n';
 import { BaseDataSet } from '@/data-set';
-import { Group, IGroup, Point, SimpleBBox } from '@antv/g-canvas';
+import { Group, Point, SimpleBBox } from '@antv/g-canvas';
 import { get, includes, isEmpty, last } from 'lodash';
 import {
   KEY_GROUP_CORNER_RESIZE_AREA,
@@ -291,7 +291,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const resizeArea = (prevResizeArea ||
       this.headerConfig.spreadsheet.foregroundGroup.addGroup({
         id: KEY_GROUP_CORNER_RESIZE_AREA,
-      })) as IGroup;
+      })) as Group;
     const treeType = this.headerConfig.spreadsheet.isHierarchyTreeType();
     if (!treeType) {
       // do it in corner cell

@@ -10,7 +10,7 @@ import { ResizeInfo } from '@/facet/header/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 import {
-  IGroup,
+  Group,
   Canvas,
   Event as CanvasEvent,
   LooseObject,
@@ -169,7 +169,7 @@ export class EventController {
 
   private activeResizeArea(event: CanvasEvent) {
     this.resetResizeArea();
-    const resizeArea = event.target;
+    const resizeArea = event.target as Group;
     this.spreadsheet.store.set('activeResizeArea', resizeArea);
     resizeArea.attr(
       SHAPE_STYLE_MAP.backgroundOpacity,
@@ -179,14 +179,14 @@ export class EventController {
   }
 
   private resetResizeArea() {
-    const resizeArea = this.spreadsheet.store.get('activeResizeArea') as IGroup;
+    const resizeArea = this.spreadsheet.store.get('activeResizeArea');
     if (!isEmpty(resizeArea)) {
       resizeArea.attr(
         SHAPE_STYLE_MAP.backgroundOpacity,
         this.spreadsheet.theme.resizeArea.backgroundOpacity,
       );
     }
-    this.spreadsheet.store.set('activeResizeArea', '');
+    this.spreadsheet.store.set('activeResizeArea', resizeArea);
   }
 
   private onCanvasMousedown = (event: CanvasEvent) => {

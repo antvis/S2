@@ -11,7 +11,7 @@ import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
 import { renderRect, renderText, renderTreeIcon } from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
 import { getEllipsisText } from '@/utils/text';
-import { IGroup, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import { Group, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
 import { isEmpty, isEqual } from 'lodash';
 import { HeaderCell } from './header-cell';
 
@@ -162,7 +162,7 @@ export class CornerCell extends HeaderCell {
     const resizeArea = (prevResizeArea ||
       this.spreadsheet.foregroundGroup.addGroup({
         id: KEY_GROUP_CORNER_RESIZE_AREA,
-      })) as IGroup;
+      })) as Group;
     const { position } = this.headerConfig;
     const { x, y, width: cellWidth, height: cellHeight, field } = this.meta;
     resizeArea.addShape('rect', {
