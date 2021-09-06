@@ -1,8 +1,8 @@
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
 import { ColHeader, RowHeader } from 'src/facet/header';
-import { includes, isEmpty, concat, merge, forEach } from 'lodash';
 import { getAllPanelDataCell } from 'src/utils/getAllPanelDataCell';
+import { includes, isEmpty, concat, merge, forEach, size } from 'lodash';
 import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import {
   BaseEvent,
@@ -107,6 +107,10 @@ export class RootInteraction {
   public getActiveCells() {
     const currentState = this.getState();
     return currentState?.cells || [];
+  }
+
+  public getActiveCellsCount() {
+    return size(this.getActiveCells());
   }
 
   public updateCellStyleByState() {

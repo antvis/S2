@@ -162,7 +162,7 @@ export class Node {
       return [node];
     }
     // current root node children
-    const nodes = [...node.children];
+    const nodes = [...(node.children || [])];
     let current = nodes.shift();
     while (current) {
       all.push(current);

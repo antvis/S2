@@ -12,7 +12,6 @@ import {
   SpreadSheet,
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
-import { CustomTooltip } from './custom/custom-tooltip';
 
 const data = getMockData('../data/tableau-supermarket.csv');
 
@@ -95,10 +94,7 @@ const getOptions = (): S2Options => {
     frozenTrailingRowCount: 1,
     linkFieldIds: ['order_id', 'customer_name'],
     tooltip: {
-      showTooltip: false,
-      renderTooltip: (spreadsheet) => {
-        return new CustomTooltip(spreadsheet);
-      },
+      showTooltip: true,
     },
   };
 };
