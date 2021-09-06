@@ -353,7 +353,10 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const { spreadsheet, getShowValue, options = {} } = params;
   const summaries = [];
   const summary = {};
-  const selectedCellsData = getSelectedCellsData(spreadsheet, options.showSingleTips);  // 拿到选择的所有data-cell的数据
+  const selectedCellsData = getSelectedCellsData(
+    spreadsheet,
+    options.showSingleTips,
+  ); // 拿到选择的所有data-cell的数据
   forEach(selectedCellsData, (item) => {
     if (summary[item?.[EXTRA_FIELD]]) {
       summary[item?.[EXTRA_FIELD]]?.push(item);
@@ -364,7 +367,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
 
   mapKeys(summary, (selected, field) => {
     const currentFormatter = getFieldFormatter(spreadsheet, field);
-    const name = getSummaryName(spreadsheet, field, options?.isTotals) || '';
+    const name = getSummaryName(spreadsheet, field, options?.isTotals);
     let value: number | string;
     if (getShowValue) {
       value = getShowValue(selected, VALUE_FIELD);
@@ -376,7 +379,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     }
     summaries.push({
       selectedData: selected as unknown,
-      name: name !== 'undefined' ? name : '',  // 当是table的情况会有name为undefined字符串的时候，为了不打破其他通用写法，在这做此判断
+      name: name && name !== 'undefined' ? name : '', // 当是table的情况会有name为undefined字符串的时候，为了不打破其他通用写法，在这做此判断
       value,
     });
   });
