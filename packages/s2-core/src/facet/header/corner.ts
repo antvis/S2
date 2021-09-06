@@ -326,7 +326,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         width,
         height: resizeStyle.size,
         fill: resizeStyle.background,
-        opacity: resizeStyle.backgroundOpacity,
+        fillOpacity: resizeStyle.backgroundOpacity,
         cursor: 'row-resize',
         appendInfo: {
           isResizeArea: true,

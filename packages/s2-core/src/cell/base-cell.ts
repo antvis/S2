@@ -105,7 +105,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /* -------------------------------------------------------------------------- */
 
   protected getStyle(name?: string) {
-    return name ? this.theme[name] : this.theme[this.cellType];
+    return this.theme[name || this.cellType];
   }
 
   protected getCellArea() {
