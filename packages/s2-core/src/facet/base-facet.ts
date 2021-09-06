@@ -1,14 +1,14 @@
-import { diffIndexes, Indexes } from '@/utils/indexes';
+import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
 import { updateMergedCells } from '@/utils/interaction/merge-cells';
 import type { BBox, IGroup, Point } from '@antv/g-canvas';
 import type { GestureEvent } from '@antv/g-gesture';
 import { Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import * as d3Timer from 'd3-timer';
+import { Group } from '@antv/g-canvas';
 import {
   debounce,
   each,
-  filter,
   find,
   get,
   isNil,
@@ -16,7 +16,6 @@ import {
   last,
   reduce,
 } from 'lodash';
-import { BaseCell } from 'src/cell';
 import {
   S2Event,
   KEY_GROUP_COL_RESIZE_AREA,
@@ -27,6 +26,7 @@ import {
   MIN_SCROLL_BAR_HEIGHT,
 } from 'src/common/constant';
 import type { S2WheelEvent, ScrollOffset } from 'src/common/interface/scroll';
+import { getAllPanelDataCell } from 'src/utils/getAllPanelDataCell';
 import {
   ColHeader,
   CornerHeader,
@@ -50,6 +50,8 @@ import type {
   LayoutResult,
   OffsetConfig,
   SpreadSheetFacetCfg,
+  ViewMeta,
+  S2CellType,
 } from '../common/interface';
 import {
   calculateInViewIndexes,
@@ -116,6 +118,14 @@ export abstract class BaseFacet {
     return this.scrollBarTheme.size;
   }
 
+  protected preCellIndexes: PanelIndexes;
+
+  public constructor(cfg: SpreadSheetFacetCfg) {
+    this.cfg = cfg;
+    this.spreadsheet = cfg.spreadsheet;
+    this.init();
+  }
+
   hideScrollBar = () => {
     this.hRowScrollBar?.hide();
     this.hScrollBar?.hide();
@@ -138,14 +148,6 @@ export abstract class BaseFacet {
     this.hRowScrollBar?.show();
     this.hScrollBar?.show();
   };
-
-  protected preCellIndexes: Indexes;
-
-  public constructor(cfg: SpreadSheetFacetCfg) {
-    this.cfg = cfg;
-    this.spreadsheet = cfg.spreadsheet;
-    this.init();
-  }
 
   onContainerWheel = () => {
     this.onContainerWheelForPc();
@@ -262,6 +264,7 @@ export abstract class BaseFacet {
   public destroy() {
     this.unbindEvents();
     this.clearAllGroup();
+    this.preCellIndexes = null;
   }
 
   setScrollOffset = (scrollOffset: ScrollOffset) => {
@@ -314,11 +317,12 @@ export abstract class BaseFacet {
     this.backgroundGroup = this.spreadsheet.backgroundGroup;
     this.panelGroup = this.spreadsheet.panelGroup;
     const { width, height } = this.panelBBox;
-    this.panelGroup.setClip({
+
+    this.spreadsheet.panelScrollGroup.setClip({
       type: 'rect',
       attrs: {
         x: 0,
-        y: 0,
+        y: this.cornerBBox.height,
         width,
         height,
       },
@@ -347,8 +351,8 @@ export abstract class BaseFacet {
    * @param scrollY
    * @protected
    */
-  calculateXYIndexes = (scrollX: number, scrollY: number): Indexes => {
-    return calculateInViewIndexes(
+  protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+    const indexes = calculateInViewIndexes(
       scrollX,
       scrollY,
       this.viewCellWidths,
@@ -356,7 +360,11 @@ export abstract class BaseFacet {
       this.panelBBox,
       this.getRealScrollX(this.cornerBBox.width),
     );
-  };
+
+    return {
+      center: indexes,
+    };
+  }
 
   getRealScrollX = (scrollX: number, hRowScroll = 0) => {
     return this.cfg.spreadsheet.isScrollContainsRowHeader()
@@ -474,7 +482,12 @@ export abstract class BaseFacet {
   clearAllGroup = () => {
     const children = this.panelGroup.cfg.children;
     for (let i = children.length - 1; i >= 0; i--) {
-      children[i].remove();
+      const child = children[i];
+      if (child instanceof Group) {
+        child.set('children', []);
+      } else {
+        children[i].remove();
+      }
     }
     this.foregroundGroup.set('children', []);
     this.backgroundGroup.set('children', []);
@@ -835,15 +848,15 @@ export abstract class BaseFacet {
    * @param scrollX
    * @param scrollY
    * @param hRowScroll
-   * @private
+   * @protected
    */
-  translateRelatedGroups = (
+  protected translateRelatedGroups(
     scrollX: number,
     scrollY: number,
     hRowScroll: number,
-  ) => {
+  ) {
     translateGroup(
-      this.panelGroup,
+      this.spreadsheet.panelScrollGroup,
       this.cornerBBox.width - scrollX,
       this.cornerBBox.height - scrollY,
     );
@@ -874,7 +887,8 @@ export abstract class BaseFacet {
         : undefined,
       KEY_GROUP_COL_RESIZE_AREA,
     );
-    this.panelGroup.setClip({
+
+    this.spreadsheet.panelScrollGroup.setClip({
       type: 'rect',
       attrs: {
         x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
@@ -885,6 +899,12 @@ export abstract class BaseFacet {
         height: this.panelBBox.height,
       },
     });
+  }
+
+  addCell = (cell: S2CellType<ViewMeta>) => {
+    const { panelScrollGroup } = this.spreadsheet;
+
+    panelScrollGroup.add(cell);
   };
 
   realCellRender = (scrollX: number, scrollY: number) => {
@@ -894,7 +914,9 @@ export abstract class BaseFacet {
     //   this.preCellIndexes,
     //   indexes,
     // );
-    const { add, remove } = diffIndexes(this.preCellIndexes, indexes);
+
+    const { add, remove } = diffPanelIndexes(this.preCellIndexes, indexes);
+
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
       // add new cell in panelCell
       each(add, ([i, j]) => {
@@ -903,13 +925,10 @@ export abstract class BaseFacet {
           const cell = this.cfg.dataCell(viewMeta);
           // mark cell for removing
           cell.set('name', `${i}-${j}`);
-          this.panelGroup.add(cell);
+          this.addCell(cell);
         }
       });
-      const allCells = filter(
-        this.panelGroup.getChildren(),
-        (child) => child instanceof BaseCell,
-      );
+      const allCells = getAllPanelDataCell(this.panelGroup.getChildren());
       // remove cell from panelCell
       each(remove, ([i, j]) => {
         const findOne = find(
@@ -1128,11 +1147,13 @@ export abstract class BaseFacet {
   protected dynamicRenderCell(delay = true) {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
     const scrollY = sy + this.getPaginationScrollY();
+
     if (delay) {
       this.debounceRenderCell(scrollX, scrollY);
     } else {
       this.realCellRender(scrollX, scrollY);
     }
+
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
 
     this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, { scrollX, scrollY });

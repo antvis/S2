@@ -26,6 +26,7 @@ export const getTheme = (
         fill: brandColors[0],
         opacity: 1,
         textAlign: 'center',
+        textBaseline: 'middle',
       },
       text: {
         fontFamily: FONT_FAMILY,

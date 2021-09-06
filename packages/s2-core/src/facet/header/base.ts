@@ -99,6 +99,10 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   // header group clip
   protected abstract clip();
 
+  public clear() {
+    super.clear();
+  }
+
   /**
    * Check whether header cell in viewPort
    * @param gridPos

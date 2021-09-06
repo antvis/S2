@@ -1,6 +1,7 @@
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
 import { ColHeader, RowHeader } from 'src/facet/header';
+import { getAllPanelDataCell } from 'src/utils/getAllPanelDataCell';
 import { includes, isEmpty, concat, merge, forEach, size } from 'lodash';
 import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import {
@@ -138,8 +139,7 @@ export class RootInteraction {
   }
 
   public getPanelGroupAllDataCells(): DataCell[] {
-    const children = this.spreadsheet.panelGroup.getChildren();
-    return children.filter((cell) => cell instanceof DataCell) as DataCell[];
+    return getAllPanelDataCell(this.spreadsheet.panelGroup.get('children'));
   }
 
   public getAllRowHeaderCells() {

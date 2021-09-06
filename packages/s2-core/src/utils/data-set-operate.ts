@@ -1,6 +1,6 @@
 import { filter, isUndefined, keys, get, has, reduce, every } from 'lodash';
 import { Data } from '@/common/interface/s2DataConfig';
-import { Fields  } from '@/common/interface/index';
+import { Fields } from '@/common/interface/index';
 
 /**
  * get intersections between two arrs
@@ -80,9 +80,10 @@ export function splitTotal(rawData: Data[], fields: Fields): Data[] {
   const { rows, columns } = fields;
 
   const isNormalData = (ids: string[], data: Data): boolean => {
-    return every(ids, id => data[id]);
+    return every(ids, (id) => data[id]);
   };
-  return reduce(rawData,
+  return reduce(
+    rawData,
     (result: Data[], data: Data) => {
       if (!isNormalData([].concat(rows).concat(columns), data)) {
         result.push(data);
@@ -90,5 +91,5 @@ export function splitTotal(rawData: Data[], fields: Fields): Data[] {
       return result;
     },
     [],
-  ); 
+  );
 }
