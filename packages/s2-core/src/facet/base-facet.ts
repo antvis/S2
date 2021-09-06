@@ -38,7 +38,6 @@ import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { ViewCellHeights } from 'src/facet/layout/interface';
 import { Node } from 'src/facet/layout/node';
 import { SpreadSheet } from 'src/sheet-type';
-import { getTheme } from 'src/theme';
 import { ScrollBar, ScrollType } from 'src/ui/scrollbar';
 import { isMobile } from 'src/utils/is-mobile';
 import {
@@ -59,10 +58,6 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
-
-// TODO: 这里的主题不应该用 default 吧, 代码里面都是写死的 defaultDataConfig
-
-const THEME = getTheme({ name: 'default' });
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -115,28 +110,26 @@ export abstract class BaseFacet {
 
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
 
-  protected scrollBarSize = getTheme({ name: 'default' }).scrollBar.size;
+  get scrollBarTheme() {
+    return this.spreadsheet.theme.scrollBar;
+  }
 
-  protected scrollBarTheme = {
-    default: {
-      thumbColor: isMobile()
-        ? THEME.scrollBar.mobileThumbColor
-        : THEME.scrollBar.thumbColor,
-      size: isMobile() ? this.scrollBarSize / 2 : this.scrollBarSize,
-    },
-  };
+  get scrollBarSize() {
+    return this.scrollBarTheme.size;
+  }
 
-  protected scrollBarTouchTheme = {
-    default: {
-      thumbColor: THEME.scrollBar.thumbColor,
-      size: isMobile() ? this.scrollBarSize / 2 : this.scrollBarSize,
-    },
-  };
+  protected preCellIndexes: PanelIndexes;
+
+  public constructor(cfg: SpreadSheetFacetCfg) {
+    this.cfg = cfg;
+    this.spreadsheet = cfg.spreadsheet;
+    this.init();
+  }
 
   hideScrollBar = () => {
-    this.hRowScrollBar?.updateTheme(this.scrollBarTheme);
-    this.hScrollBar?.updateTheme(this.scrollBarTheme);
-    this.vScrollBar?.updateTheme(this.scrollBarTheme);
+    this.hRowScrollBar?.hide();
+    this.hScrollBar?.hide();
+    this.vScrollBar?.hide();
   };
 
   delayHideScrollBar = debounce(this.hideScrollBar, 1000);
@@ -147,13 +140,14 @@ export abstract class BaseFacet {
     }
   };
 
-  protected preCellIndexes: PanelIndexes;
+  showVScrollBar = () => {
+    this.vScrollBar?.show();
+  };
 
-  public constructor(cfg: SpreadSheetFacetCfg) {
-    this.cfg = cfg;
-    this.spreadsheet = cfg.spreadsheet;
-    this.init();
-  }
+  showHScrollBar = () => {
+    this.hRowScrollBar?.show();
+    this.hScrollBar?.show();
+  };
 
   onContainerWheel = () => {
     this.onContainerWheelForPc();
@@ -690,29 +684,6 @@ export abstract class BaseFacet {
     }
   };
 
-  shouldPreventWheelEvent = (x: number, y: number) => {
-    const near = (current: number, offset: number): boolean => {
-      // precision
-      return (offset > 0 && current >= 0.99) || (offset < 0 && current <= 0.01);
-    };
-
-    if (x !== 0) {
-      return this.hScrollBar && !near(this.hScrollBar.current(), x);
-    }
-    if (y !== 0) {
-      return this.vScrollBar && !near(this.vScrollBar.current(), y);
-    }
-  };
-
-  showVScrollBar = () => {
-    this.vScrollBar?.updateTheme(this.scrollBarTouchTheme);
-  };
-
-  showHScrollBar = () => {
-    this.hRowScrollBar?.updateTheme(this.scrollBarTouchTheme);
-    this.hScrollBar?.updateTheme(this.scrollBarTouchTheme);
-  };
-
   isScrollOverThePanelArea = ({ layerX, layerY }: Partial<S2WheelEvent>) => {
     return (
       layerX > this.panelBBox.minX &&
@@ -765,16 +736,65 @@ export abstract class BaseFacet {
     this.vScrollBar?.updateThumbOffset(offsetTop);
   };
 
+  isScrollToLeft = (deltaX: number) => {
+    if (!this.hScrollBar) {
+      return true;
+    }
+    return deltaX <= 0 && this.hScrollBar?.thumbOffset <= 0;
+  };
+
+  isScrollToRight = (deltaX: number) => {
+    if (!this.hScrollBar) {
+      return true;
+    }
+    return (
+      deltaX >= 0 &&
+      this.hScrollBar?.thumbOffset + this.hScrollBar?.thumbLen >=
+        this.panelBBox?.width
+    );
+  };
+
   isScrollToTop = (deltaY: number) => {
+    if (!this.vScrollBar) {
+      return true;
+    }
     return deltaY <= 0 && this.vScrollBar?.thumbOffset <= 0;
   };
 
   isScrollToBottom = (deltaY: number) => {
+    if (!this.vScrollBar) {
+      return true;
+    }
     return (
       deltaY >= 0 &&
       this.vScrollBar?.thumbOffset + this.vScrollBar?.thumbLen >=
         this.panelBBox?.height
     );
+  };
+
+  isVerticalScrollInTheViewport = (deltaY: number) => {
+    return !this.isScrollToTop(deltaY) && !this.isScrollToBottom(deltaY);
+  };
+
+  isHorizontalScrollInTheViewport = (deltaX: number) => {
+    return !this.isScrollToLeft(deltaX) && !this.isScrollToRight(deltaX);
+  };
+
+  /**
+    在当前表格滚动分两种情况:
+    1. 当前表格无滚动条: 无需阻止外部容器滚动
+    2. 当前表格有滚动条:
+      - 未滚动到顶部或底部: 当前表格滚动, 阻止外部容器滚动
+      - 滚动到顶部或底部: 恢复外部容器滚动
+  */
+  isScrollInTheViewport = (deltaX: number, deltaY: number) => {
+    if (deltaY !== 0) {
+      return this.isVerticalScrollInTheViewport(deltaY);
+    }
+    if (deltaX !== 0) {
+      return this.isHorizontalScrollInTheViewport(deltaX);
+    }
+    return false;
   };
 
   onWheel = (event: S2WheelEvent) => {
@@ -783,19 +803,11 @@ export abstract class BaseFacet {
 
     this.spreadsheet.hideTooltip();
 
-    // 如果已经滚动在顶部或底部, 则无需触发滚动事件, 减少单元格重绘
-    // TODO: 这里需要迁移 spreadsheet 的逻辑
-    if (
-      optimizedDeltaY > 0 &&
-      (this.isScrollToTop(optimizedDeltaY) ||
-        this.isScrollToBottom(optimizedDeltaY))
-    ) {
+    if (!this.isScrollInTheViewport(optimizedDeltaX, optimizedDeltaY)) {
       return;
     }
 
-    if (this.shouldPreventWheelEvent(optimizedDeltaX, optimizedDeltaY)) {
-      event.preventDefault?.();
-    }
+    event.preventDefault?.();
 
     cancelAnimationFrame(this.scrollFrameId);
 

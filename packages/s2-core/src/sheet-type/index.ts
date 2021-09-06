@@ -64,6 +64,7 @@ import {
   isString,
   merge,
   mergeWith,
+  size,
 } from 'lodash';
 
 export class SpreadSheet extends EE {

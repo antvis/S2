@@ -1,8 +1,8 @@
 import type { IElement, IGroup, IShape, ShapeAttrs } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
-import { clamp, each, get, merge } from 'lodash';
-import type { PointObject, ScrollBarCfg, ScrollBarTheme } from './interface';
-import { DEFAULT_THEME } from './style';
+import { clamp, each, get } from 'lodash';
+import { ScrollBarTheme } from '@/common/interface/theme';
+import type { PointObject, ScrollBarCfg } from './interface';
 
 export enum ScrollType {
   ScrollChange = 'scroll-change',
@@ -79,7 +79,7 @@ export class ScrollBar extends Group {
     this.thumbLen = thumbLen;
     this.position = position;
     this.minThumbLen = minThumbLen;
-    this.theme = merge({}, DEFAULT_THEME, theme);
+    this.theme = theme;
 
     this.initScrollBar();
   }
@@ -183,15 +183,7 @@ export class ScrollBar extends Group {
     });
   };
 
-  public updateTheme = (theme: ScrollBarTheme) => {
-    this.theme = merge({}, DEFAULT_THEME, theme);
-    this.thumbShape.attr('stroke', this.theme.default.thumbColor);
-    this.thumbShape.attr('lineWidth', this.theme.default.size);
-    this.thumbShape.attr('lineCap', this.theme.default.lineCap);
-    this.get('canvas')?.draw();
-  };
-
-  addEventListener = (
+  protected addEventListener = (
     target: EventTarget,
     eventType: keyof HTMLElementEventMap,
     callback: EventListenerOrEventListenerObject,
@@ -234,7 +226,7 @@ export class ScrollBar extends Group {
 
   // 创建滑道的 shape
   private createTrackShape = (group: IGroup): IShape => {
-    const { lineCap = 'round', trackColor, size } = this.theme.default;
+    const { lineCap = 'round', trackColor, size } = this.theme;
 
     const baseAttrs: ShapeAttrs = {
       lineWidth: size,
@@ -266,7 +258,7 @@ export class ScrollBar extends Group {
 
   // 创建滑块的 shape
   private createThumbShape = (group: IGroup): IShape => {
-    const { size, lineCap, thumbColor } = this.theme.default;
+    const { size, lineCap = 'round', thumbColor } = this.theme;
     const baseAttrs: ShapeAttrs = {
       lineWidth: size,
       stroke: thumbColor,
@@ -390,24 +382,20 @@ export class ScrollBar extends Group {
     this.updateThumbOffset(this.thumbOffset + diff);
   };
 
-  // 滑块鼠标松开事件回调
   private onMouseUp = (e: MouseEvent) => {
     this.emit(ScrollType.ScrollEnd, {});
-    // 松开鼠标时，清除所有事件
     e.preventDefault();
     this.clearEvents();
   };
 
   private onTrackMouseOver = () => {
-    const { thumbColor } = this.theme.hover;
-    this.thumbShape.attr('stroke', thumbColor);
-    this.get('canvas').draw();
+    const { thumbHoverColor } = this.theme;
+    this.thumbShape.attr('stroke', thumbHoverColor);
   };
 
   private onTrackMouseOut = () => {
-    const { thumbColor } = this.theme.default;
+    const { thumbColor } = this.theme;
     this.thumbShape.attr('stroke', thumbColor);
-    this.get('canvas').draw();
   };
 
   // 判断滑块位置是否超出滑道区域
