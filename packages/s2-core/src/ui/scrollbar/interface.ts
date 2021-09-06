@@ -1,3 +1,5 @@
+import { ScrollBarTheme } from '@/common/interface/theme';
+
 export interface ScrollBarCfg {
   // 布局 横向(horizontal) | 纵向(vertical)
   readonly isHorizontal?: boolean;
@@ -19,16 +21,4 @@ export interface ScrollBarCfg {
 export interface PointObject {
   x: number;
   y: number;
-}
-
-export interface ScrollBarStyle {
-  trackColor: string;
-  thumbColor: string;
-  size: number;
-  lineCap: 'round' | 'butt' | 'square';
-}
-
-export interface ScrollBarTheme {
-  default?: Partial<Readonly<ScrollBarStyle>>;
-  hover?: Partial<Readonly<ScrollBarStyle>>;
 }

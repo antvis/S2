@@ -1,4 +1,5 @@
 import { CellTypes } from '@/common/constant/interaction';
+import { ShapeAttrs } from '@antv/g-canvas';
 import { InteractionStateName } from '../constant';
 
 // 文本内容的水平对齐方式, 默认 left
@@ -133,6 +134,7 @@ export interface ScrollBarTheme {
   size?: number;
   /* 滚动条 hover 态尺寸 */
   hoverSize?: number;
+  lineCap: ShapeAttrs['lineCap'];
 }
 
 export interface SplitLine {
