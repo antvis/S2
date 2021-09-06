@@ -227,9 +227,8 @@ export class EventController {
       this.activeResizeArea(event);
       this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, event);
       return;
-    } else {
-      this.resetResizeArea();
     }
+    this.resetResizeArea();
 
     const cell = this.spreadsheet.getCell(event.target);
     const cellType = this.spreadsheet.getCellType(event.target);

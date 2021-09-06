@@ -103,10 +103,10 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
         this.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
         this.hidePrepareSelectMaskShape();
         this.updateSelectedCells();
-        const tooltipData = getActiveCellsTooltipData(this.spreadsheet);
-        if (!isEmpty(tooltipData)) {
-          this.spreadsheet.showTooltipWithInfo(event, tooltipData);
-        }
+        this.spreadsheet.showTooltipWithInfo(
+          event,
+          getActiveCellsTooltipData(this.spreadsheet),
+        );
       }
       this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
     });
@@ -203,7 +203,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private getBrushRangeDataCells(): DataCell[] {
     return this.displayedDataCells.filter((cell) => {
       const meta = cell.getMeta();
-      return meta?.data && this.isInBrushRange(meta);
+      return this.isInBrushRange(meta);
     });
   }
 
