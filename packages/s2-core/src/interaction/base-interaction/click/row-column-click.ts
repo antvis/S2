@@ -32,7 +32,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
         this.isMultiSelection = false;
-        this.interaction.intercept.delete(InterceptType.CLICK);
+        this.interaction.removeIntercepts([InterceptType.CLICK]);
       }
     });
   }
