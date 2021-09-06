@@ -147,10 +147,6 @@ export class CornerCell extends HeaderCell {
       opacity: backgroundColorOpacity,
     };
 
-    if (this.spreadsheet.isTableMode()) {
-      attrs.stroke = horizontalBorderColor;
-    }
-
     this.backgroundShape = renderRect(this, attrs);
   }
 

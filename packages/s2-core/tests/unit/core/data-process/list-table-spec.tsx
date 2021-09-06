@@ -1,4 +1,4 @@
-/** 
+/**
  * 明细表核心数据流程
  * 差别：
  * - 明细表不需要计算二维数组数据
@@ -13,7 +13,9 @@ import { getContainer } from '../../../util/helpers';
 describe('List Table Core Data Process', () => {
   const options = { width: 600, height: 400, mode: 'table' };
   const dataCfg = {
-    fields: { columns: ['province', 'city', 'category', 'subCategory', 'price'] },
+    fields: {
+      columns: ['province', 'city', 'category', 'subCategory', 'price'],
+    },
     data: STANDARD_SPREADSHEET_DATA.data,
   };
   const ss = new SpreadSheet(getContainer(), dataCfg, options);
@@ -28,10 +30,16 @@ describe('List Table Core Data Process', () => {
       expect(colsHierarchy.getIndexNodes()).toHaveLength(5);
       expect(colsHierarchy.getLeaves()).toHaveLength(5);
       // 层级正确
-      expect(colsHierarchy.getNodes().map(node => node.label)).toEqual(['province', 'city', 'category', 'subCategory', 'price']);
+      expect(colsHierarchy.getNodes().map((node) => node.label)).toEqual([
+        'province',
+        'city',
+        'category',
+        'subCategory',
+        'price',
+      ]);
       // 父子关系正确
       const nodes = colsHierarchy.getNodes();
-      nodes.map(node => {
+      nodes.forEach((node) => {
         expect(node.children).toEqual([]);
         expect(node.parent.id).toEqual('root');
       });
@@ -44,17 +52,23 @@ describe('List Table Core Data Process', () => {
     const { cellCfg, rowCfg, colCfg } = get(ss, 'facet.cfg');
 
     test('should calc correct cell width', () => {
-      expect(cellCfg.width).toEqual(Math.max(style.cellCfg.width, width / colLeafNodes.length));
-      expect(rowCfg.width).toEqual(Math.max(style.cellCfg.width, width / colLeafNodes.length));
+      expect(cellCfg.width).toEqual(
+        Math.max(style.cellCfg.width, width / colLeafNodes.length),
+      );
+      expect(rowCfg.width).toEqual(
+        Math.max(style.cellCfg.width, width / colLeafNodes.length),
+      );
     });
 
     test('should calc correct col node size and coordinate', () => {
       // sample height
-      expect(colsHierarchy.sampleNodesForAllLevels[0]?.height).toEqual(colCfg.height)
+      expect(colsHierarchy.sampleNodesForAllLevels[0]?.height).toEqual(
+        colCfg.height,
+      );
 
       const nodes = colsHierarchy.getNodes();
       // node width
-      nodes.map((node, index) => {
+      nodes.forEach((node, index) => {
         expect(node.x).toEqual(node.width * index);
         expect(node.width).toEqual(cellCfg.width);
         expect(node.y).toEqual(0);
@@ -80,5 +94,4 @@ describe('List Table Core Data Process', () => {
       expect(getCellMeta(2, 4).data).toEqual([{ price: 273 }]);
     });
   });
-  
 });

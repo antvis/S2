@@ -1,14 +1,33 @@
-import { ViewMeta } from './../common/interface/basic';
-import { get, maxBy, orderBy } from 'lodash';
 import { S2Event, SERIES_NUMBER_FIELD } from 'src/common/constant';
-import { DebuggerUtil } from 'src/common/debug';
-import { LayoutResult } from 'src/common/interface';
+import { PanelIndexes } from 'src/utils/indexes';
 import { BaseFacet } from 'src/facet/index';
 import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
 import { Node } from 'src/facet/layout/node';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
+import { DebuggerUtil } from 'src/common/debug';
+import { renderLine } from 'src/utils/g-renders';
+import { Group } from '@antv/g-canvas';
+import { IGroup } from '@antv/g-base';
+import { FrozenCellGroupMap } from 'src/common/constant/frozen';
+import { get, maxBy, orderBy } from 'lodash';
+
+import type {
+  LayoutResult,
+  SplitLine,
+  ViewMeta,
+  S2CellType,
+} from '../common/interface';
+import {
+  calculateInViewIndexes,
+  translateGroup,
+  translateGroupX,
+  translateGroupY,
+  getFrozenDataCellType,
+  calculateFrozenCornerCells,
+  splitInViewIndexesWithFrozen,
+} from './utils';
 
 export class TableFacet extends BaseFacet {
   public constructor(props) {
@@ -38,7 +57,13 @@ export class TableFacet extends BaseFacet {
   }
 
   protected doLayout(): LayoutResult {
-    const { dataSet, spreadsheet, cellCfg } = this.cfg;
+    const {
+      dataSet,
+      spreadsheet,
+      cellCfg,
+      frozenTrailingColCount,
+      frozenTrailingRowCount,
+    } = this.cfg;
 
     const rowsHierarchy = new Hierarchy();
     const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
@@ -57,6 +82,34 @@ export class TableFacet extends BaseFacet {
 
       let data;
 
+      const width = this.panelBBox.maxX;
+      const dataLength = dataSet.getMultiData({}).length;
+      const colLength = colLeafNodes.length;
+
+      let x = col.x;
+      let y = cellHeight * rowIndex;
+
+      if (
+        frozenTrailingRowCount > 0 &&
+        rowIndex >= dataLength - frozenTrailingRowCount
+      ) {
+        y = this.panelBBox.maxY - (dataLength - rowIndex) * cellHeight;
+      }
+
+      if (
+        frozenTrailingColCount > 0 &&
+        colIndex >= colLength - frozenTrailingColCount
+      ) {
+        x =
+          width -
+          colLeafNodes.reduceRight((prev, item, idx) => {
+            if (idx >= colLength - frozenTrailingColCount) {
+              return prev + item.width;
+            }
+            return prev;
+          }, 0);
+      }
+
       if (showSeriesNumber && col.field === SERIES_NUMBER_FIELD) {
         data = rowIndex + 1;
       } else {
@@ -69,8 +122,8 @@ export class TableFacet extends BaseFacet {
       }
       return {
         spreadsheet,
-        x: col.x,
-        y: cellHeight * rowIndex,
+        x,
+        y,
         width: col.width,
         height: cellHeight,
         data: {
@@ -139,12 +192,15 @@ export class TableFacet extends BaseFacet {
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
+    const { frozenTrailingColCount } = this.spreadsheet?.options;
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
     for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
       levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
     }
+
+    const nodes = [];
 
     for (let i = 0; i < allNodes.length; i++) {
       const currentNode = allNodes[i];
@@ -157,7 +213,37 @@ export class TableFacet extends BaseFacet {
       currentNode.y = 0;
 
       currentNode.height = this.getColNodeHeight(currentNode);
-      layoutCoordinate(this.cfg, null, currentNode);
+
+      nodes.push(currentNode);
+
+      if (frozenTrailingColCount === 0) {
+        layoutCoordinate(this.cfg, null, currentNode);
+      }
+    }
+
+    preLeafNode = Node.blankNode();
+
+    let canvasW = this.getCanvasHW().width;
+    canvasW = canvasW >= colsHierarchy.width ? colsHierarchy.width : canvasW;
+
+    if (frozenTrailingColCount > 0) {
+      for (let i = 1; i <= allNodes.length; i++) {
+        const currentNode = allNodes[allNodes.length - i];
+
+        if (
+          currentNode.colIndex >=
+          colLeafNodes.length - frozenTrailingColCount
+        ) {
+          if (currentNode.colIndex === allNodes.length - 1) {
+            currentNode.x = canvasW - currentNode.width;
+          } else {
+            currentNode.x = preLeafNode.x - currentNode.width;
+          }
+          preLeafNode = currentNode;
+        }
+
+        layoutCoordinate(this.cfg, null, currentNode);
+      }
     }
   }
 
@@ -238,5 +324,295 @@ export class TableFacet extends BaseFacet {
         };
       },
     };
+  }
+
+  protected initFrozenGroupPosition = () => {
+    translateGroup(
+      this.spreadsheet.frozenRowGroup,
+      this.cornerBBox.width,
+      this.cornerBBox.height,
+    );
+    translateGroup(
+      this.spreadsheet.frozenColGroup,
+      this.cornerBBox.width,
+      this.cornerBBox.height,
+    );
+    translateGroup(
+      this.spreadsheet.frozenTrailingColGroup,
+      this.cornerBBox.width,
+      this.cornerBBox.height,
+    );
+    translateGroup(
+      this.spreadsheet.frozenTopGroup,
+      this.cornerBBox.width,
+      this.cornerBBox.height,
+    );
+  };
+
+  getTotalHeightForRange = (start: number, end: number) => {
+    if (start < 0 || end < 0) return 0;
+    let totalHeight = 0;
+    for (let index = start; index < end + 1; index++) {
+      const height = this.viewCellHeights.getCellHeight(index);
+      totalHeight += height;
+    }
+    return totalHeight;
+  };
+
+  protected renderFrozenGroupSplitLine = () => {
+    const {
+      frozenRowCount,
+      frozenColCount,
+      frozenTrailingColCount,
+      frozenTrailingRowCount,
+    } = this.spreadsheet.options;
+    const colLeafNodes = this.layoutResult.colLeafNodes;
+    const dataLength = this.spreadsheet.dataSet.getMultiData({}).length;
+
+    const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
+
+    const verticalBorderStyle = {
+      lineWidth: style?.verticalBorderWidth,
+      stroke: style?.verticalBorderColor,
+      opacity: style?.verticalBorderColorOpacity,
+    };
+
+    const horizontalBorderStyle = {
+      lineWidth: style?.horizontalBorderWidth,
+      stroke: style?.horizontalBorderColor,
+      opacity: style?.horizontalBorderColorOpacity,
+    };
+
+    if (frozenColCount > 0) {
+      const x = colLeafNodes.reduce((prev, item, idx) => {
+        if (idx < frozenColCount) {
+          return prev + item.width;
+        }
+        return prev;
+      }, 0);
+
+      renderLine(
+        this.foregroundGroup as Group,
+        {
+          x1: x,
+          x2: x,
+          y1: this.cornerBBox.height,
+          y2: this.panelBBox.maxY,
+        },
+        {
+          ...verticalBorderStyle,
+        },
+      );
+    }
+
+    if (frozenRowCount > 0) {
+      const y =
+        this.cornerBBox.height +
+        this.getTotalHeightForRange(0, frozenRowCount - 1);
+      renderLine(
+        this.foregroundGroup as Group,
+        {
+          x1: 0,
+          x2: this.panelBBox.width,
+          y1: y,
+          y2: y,
+        },
+        {
+          ...horizontalBorderStyle,
+        },
+      );
+    }
+
+    if (frozenTrailingColCount > 0) {
+      const width = colLeafNodes.reduceRight((prev, item, idx) => {
+        if (idx >= colLeafNodes.length - frozenTrailingColCount) {
+          return prev + item.width;
+        }
+        return prev;
+      }, 0);
+
+      const x = this.panelBBox.width - width;
+
+      renderLine(
+        this.foregroundGroup as Group,
+        {
+          x1: x,
+          x2: x,
+          y1: this.cornerBBox.height,
+          y2: this.panelBBox.maxY,
+        },
+        {
+          ...verticalBorderStyle,
+        },
+      );
+    }
+
+    if (frozenTrailingRowCount > 0) {
+      const y =
+        this.panelBBox.maxY -
+        this.getTotalHeightForRange(
+          dataLength - frozenTrailingRowCount,
+          dataLength - 1,
+        );
+      renderLine(
+        this.foregroundGroup as Group,
+        {
+          x1: 0,
+          x2: this.panelBBox.width,
+          y1: y,
+          y2: y,
+        },
+        {
+          ...horizontalBorderStyle,
+        },
+      );
+    }
+  };
+
+  protected renderFrozenPanelCornerGroup = () => {
+    const {
+      frozenRowCount,
+      frozenColCount,
+      frozenTrailingRowCount,
+      frozenTrailingColCount,
+    } = this.spreadsheet.options;
+    const dataLength = this.viewCellHeights.getTotalLength();
+    const colLength = this.layoutResult.colLeafNodes.length;
+
+    const result = calculateFrozenCornerCells(
+      {
+        frozenRowCount,
+        frozenColCount,
+        frozenTrailingRowCount,
+        frozenTrailingColCount,
+      },
+      colLength,
+      dataLength,
+    );
+
+    Object.keys(result).forEach((key) => {
+      const cells = result[key];
+      const group = this.spreadsheet[FrozenCellGroupMap[key]];
+      if (group) {
+        cells.forEach((cell) => {
+          this.addFrozenCell(cell.x, cell.y, group);
+        });
+      }
+    });
+  };
+
+  addFrozenCell = (colIndex: number, rowIndex: number, group: IGroup) => {
+    const viewMeta = this.layoutResult.getCellMeta(rowIndex, colIndex);
+    if (viewMeta) {
+      const cell = this.cfg.dataCell(viewMeta);
+      group.add(cell);
+    }
+  };
+
+  addCell = (cell: S2CellType<ViewMeta>) => {
+    const {
+      frozenRowCount,
+      frozenColCount,
+      frozenTrailingRowCount,
+      frozenTrailingColCount,
+    } = this.spreadsheet.options;
+    const dataLength = this.viewCellHeights.getTotalLength();
+    const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
+
+    const frozenCellType = getFrozenDataCellType(
+      cell.getMeta(),
+      {
+        frozenRowCount,
+        frozenColCount,
+        frozenTrailingRowCount,
+        frozenTrailingColCount,
+      },
+      colLength,
+      dataLength,
+    );
+
+    const group = FrozenCellGroupMap[frozenCellType];
+    if (group) {
+      (this.spreadsheet[group] as Group).add(cell);
+    }
+  };
+
+  public init() {
+    super.init();
+    const { width, height } = this.panelBBox;
+    this.spreadsheet.panelGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: 0,
+        y: this.cornerBBox.height,
+        width,
+        height,
+      },
+    });
+  }
+
+  public render() {
+    super.render();
+    this.renderFrozenPanelCornerGroup();
+    this.initFrozenGroupPosition();
+    this.renderFrozenGroupSplitLine();
+  }
+
+  protected translateRelatedGroups(
+    scrollX: number,
+    scrollY: number,
+    hRowScroll: number,
+  ) {
+    translateGroupX(
+      this.spreadsheet.frozenRowGroup,
+      this.cornerBBox.width - scrollX,
+    );
+    translateGroupX(
+      this.spreadsheet.frozenTrailingRowGroup,
+      this.cornerBBox.width - scrollX,
+    );
+    translateGroupY(
+      this.spreadsheet.frozenColGroup,
+      this.cornerBBox.height - scrollY,
+    );
+    translateGroupY(
+      this.spreadsheet.frozenTrailingColGroup,
+      this.cornerBBox.height - scrollY,
+    );
+
+    super.translateRelatedGroups(scrollX, scrollY, hRowScroll);
+  }
+
+  protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+    const {
+      frozenColCount,
+      frozenRowCount,
+      frozenTrailingColCount,
+      frozenTrailingRowCount,
+    } = this.spreadsheet.options;
+
+    const dataLength = this.viewCellHeights.getTotalLength();
+    const colLength = this.layoutResult.colLeafNodes.length;
+
+    const indexes = calculateInViewIndexes(
+      scrollX,
+      scrollY,
+      this.viewCellWidths,
+      this.viewCellHeights,
+      this.panelBBox,
+      this.getRealScrollX(this.cornerBBox.width),
+    );
+
+    return splitInViewIndexesWithFrozen(
+      indexes,
+      {
+        frozenColCount,
+        frozenRowCount,
+        frozenTrailingColCount,
+        frozenTrailingRowCount,
+      },
+      colLength,
+      dataLength,
+    );
   }
 }

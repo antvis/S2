@@ -88,6 +88,10 @@ const getOptions = (): S2Options => {
       },
       device: 'pc',
     },
+    frozenRowCount: 2,
+    frozenColCount: 1,
+    frozenTrailingColCount: 1,
+    frozenTrailingRowCount: 1,
     linkFieldIds: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,

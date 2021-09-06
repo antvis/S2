@@ -5,7 +5,11 @@ import { EXTRA_FIELD } from '../common/constant';
 import { renderDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '../utils/text';
 
-export class DetailColCell extends ColCell {
+export class TableColCell extends ColCell {
+  protected getStyle() {
+    return get(this, 'theme.colCell');
+  }
+
   protected drawTextShape() {
     const { spreadsheet } = this.headerConfig;
     const {
@@ -18,9 +22,10 @@ export class DetailColCell extends ColCell {
     } = this.meta;
     const content = label;
 
-    const textStyle = get(this, 'theme.colCell.bolderText');
-    const padding = get(this, 'theme.colCell.cell.padding');
-    const iconSize = get(this, 'theme.colCell.icon.size');
+    const style = this.getStyle();
+    const textStyle = get(style, 'bolderText');
+    const padding = get(style, 'cell.padding');
+    const iconSize = get(style, 'icon.size');
     const rightPadding = padding?.right + iconSize;
     const leftPadding = padding?.left;
 

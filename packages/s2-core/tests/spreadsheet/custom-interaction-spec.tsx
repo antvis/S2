@@ -8,7 +8,7 @@ import React from 'react';
 import { Switch } from 'antd';
 import { CustomHover } from './custom/custom-interaction';
 
-let data = getMockData('../data/tableau-supermarket.csv');
+const data = getMockData('../data/tableau-supermarket.csv');
 
 const getDataCfg = () => {
   return {
