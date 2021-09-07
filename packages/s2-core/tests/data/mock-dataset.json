@@ -1,0 +1,961 @@
+{
+  "describe": "标准交叉表数据。注意：不能随意改动！会影响单测结果！",
+  "meta": [
+    {
+      "field": "cost",
+      "name": "成本"
+    },
+    {
+      "field": "price",
+      "name": "价格"
+    },
+    {
+      "field": "cost/price",
+      "name": "成本率"
+    },
+    {
+      "field": "area",
+      "name": "地区"
+    },
+    {
+      "field": "province",
+      "name": "省份"
+    },
+    {
+      "field": "city",
+      "name": "城市"
+    },
+    {
+      "field": "type",
+      "name": "类别"
+    },
+    {
+      "field": "sub_type",
+      "name": "子类别"
+    }
+  ],
+  "data": [
+    {
+      "area": "东北",
+      "province": "吉林",
+      "city": "白山",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 8.18,
+      "price": 22.84,
+      "cost/price": 0.358143608
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "抚顺",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": 4,
+      "price": 7.59,
+      "cost/price": 0.527009223
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "本溪",
+      "type": "办公用品",
+      "sub_type": "夹子及其配件",
+      "cost": 2.99,
+      "price": 43.41,
+      "cost/price": 0.068878139
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "盘锦",
+      "type": "办公用品",
+      "sub_type": "笔、美术用品",
+      "cost": 4.08,
+      "price": 25.98,
+      "cost/price": 0.15704388
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "营口",
+      "type": "办公用品",
+      "sub_type": "夹子及其配件",
+      "cost": 12.62,
+      "price": 31.74,
+      "cost/price": 0.397605545
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "营口",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 4.69,
+      "price": 15.43,
+      "cost/price": 0.607906675
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "营口",
+      "type": "技术产品",
+      "sub_type": "电脑配件",
+      "cost": 19.99,
+      "price": 99.99,
+      "cost/price": 0.199919992
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "营口",
+      "type": "技术产品",
+      "sub_type": "电话通信产品",
+      "cost": 1.745,
+      "price": 211.98,
+      "cost/price": 0.016463817
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "辽阳",
+      "type": "办公用品",
+      "sub_type": "夹子及其配件",
+      "cost": 5.41,
+      "price": 4.24,
+      "cost/price": 1.275943396
+    },
+    {
+      "area": "东北",
+      "province": "黑龙江",
+      "city": "七台河",
+      "type": "办公用品",
+      "sub_type": "夹子及其配件",
+      "cost": 2.99,
+      "price": 43.41,
+      "cost/price": 0.068878139
+    },
+    {
+      "area": "东北",
+      "province": "黑龙江",
+      "city": "哈尔滨",
+      "type": "家具产品",
+      "sub_type": "桌子",
+      "cost": 54.12,
+      "price": 296.18,
+      "cost/price": 0.18272672
+    },
+    {
+      "area": "东北",
+      "province": "黑龙江",
+      "city": "齐齐哈尔",
+      "type": "技术产品",
+      "sub_type": "办公机器",
+      "cost": 7.11,
+      "price": 120.97,
+      "cost/price": 0.058774903
+    },
+    {
+      "area": "华东",
+      "province": "Jiangsu",
+      "city": "无锡",
+      "type": "技术产品",
+      "sub_type": "办公机器",
+      "cost": 19.99,
+      "price": 99.99,
+      "cost/price": 0.199919992
+    },
+    {
+      "area": "华东",
+      "province": "上海",
+      "city": "上海",
+      "type": "办公用品",
+      "sub_type": "橡皮筋",
+      "cost": 0.7,
+      "price": 1.48,
+      "cost/price": 0.472972973
+    },
+    {
+      "area": "华东",
+      "province": "上海",
+      "city": "上海",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": 10.84,
+      "price": 62.18,
+      "cost/price": 0.174332583
+    },
+    {
+      "area": "华东",
+      "province": "安徽",
+      "city": "宣城",
+      "type": "办公用品",
+      "sub_type": "橡皮筋",
+      "cost": 0.7,
+      "price": 1.48,
+      "cost/price": 0.472972973
+    },
+    {
+      "area": "华东",
+      "province": "安徽",
+      "city": "蚌埠",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 13.88,
+      "price": 55.98,
+      "cost/price": 0.247945695
+    },
+    {
+      "area": "华东",
+      "province": "安徽",
+      "city": "蚌埠",
+      "type": "家具产品",
+      "sub_type": "桌子",
+      "cost": 46.59,
+      "price": 44.43,
+      "cost/price": 1.0486158
+    },
+    {
+      "area": "华东",
+      "province": "安徽",
+      "city": "铜陵",
+      "type": "技术产品",
+      "sub_type": "办公机器",
+      "cost": 10.17,
+      "price": 51.98,
+      "cost/price": 0.195652174
+    },
+    {
+      "area": "华东",
+      "province": "安徽",
+      "city": "铜陵",
+      "type": "技术产品",
+      "sub_type": "电话通信产品",
+      "cost": 7.69,
+      "price": 125.99,
+      "cost/price": 0.06103659
+    },
+    {
+      "area": "华东",
+      "province": "山东",
+      "city": "泰安",
+      "type": "办公用品",
+      "sub_type": "容器，箱子",
+      "cost": 7.69,
+      "price": 14.98,
+      "cost/price": 0.513351135
+    },
+    {
+      "area": "华东",
+      "province": "江西",
+      "city": "上饶",
+      "type": "技术产品",
+      "sub_type": "办公机器",
+      "cost": 24.49,
+      "price": 6783.02,
+      "cost/price": 0.003610486
+    },
+    {
+      "area": "华东",
+      "province": "浙江",
+      "city": "台州",
+      "type": "办公用品",
+      "sub_type": "夹子及其配件",
+      "cost": 5.363333333,
+      "price": 37.44,
+      "cost/price": 0.429754274
+    },
+    {
+      "area": "华东",
+      "province": "浙江",
+      "city": "台州",
+      "type": "家具产品",
+      "sub_type": "书架",
+      "cost": 32.18,
+      "price": 137.48,
+      "cost/price": 0.23407041
+    },
+    {
+      "area": "华东",
+      "province": "浙江",
+      "city": "湖州",
+      "type": "办公用品",
+      "sub_type": "橡皮筋",
+      "cost": 1.58,
+      "price": 2.98,
+      "cost/price": 0.530201342
+    },
+    {
+      "area": "华东",
+      "province": "浙江",
+      "city": "湖州",
+      "type": "技术产品",
+      "sub_type": "电脑配件",
+      "cost": 10.01,
+      "price": 106.96,
+      "cost/price": 0.187172775
+    },
+    {
+      "area": "华东",
+      "province": "浙江",
+      "city": "湖州",
+      "type": "技术产品",
+      "sub_type": "电话通信产品",
+      "cost": 4.81,
+      "price": 20.99,
+      "cost/price": 0.229156741
+    },
+    {
+      "area": "华东",
+      "province": "浙江",
+      "city": "舟山",
+      "type": "技术产品",
+      "sub_type": "电脑配件",
+      "cost": 4,
+      "price": 73.98,
+      "cost/price": 0.054068667
+    },
+    {
+      "area": "华东",
+      "province": "福建",
+      "city": "泉州",
+      "type": "办公用品",
+      "sub_type": "信封",
+      "cost": 1.39,
+      "price": 15.57,
+      "cost/price": 0.089274245
+    },
+    {
+      "area": "华北",
+      "province": "内蒙古",
+      "city": "包头",
+      "type": "办公用品",
+      "sub_type": "标签",
+      "cost": 0.99,
+      "price": 3.08,
+      "cost/price": 0.321428571
+    },
+    {
+      "area": "华北",
+      "province": "北京",
+      "city": "北京",
+      "type": "办公用品",
+      "sub_type": "夹子及其配件",
+      "cost": 5.04,
+      "price": 4.13,
+      "cost/price": 1.220338983
+    },
+    {
+      "area": "华北",
+      "province": "北京",
+      "city": "北京",
+      "type": "办公用品",
+      "sub_type": "笔、美术用品",
+      "cost": 8.99,
+      "price": 21.38,
+      "cost/price": 0.420486436
+    },
+    {
+      "area": "华北",
+      "province": "天津",
+      "city": "天津",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": 7.83,
+      "price": 33.97,
+      "cost/price": 0.460994996
+    },
+    {
+      "area": "华北",
+      "province": "天津",
+      "city": "天津",
+      "type": "家具产品",
+      "sub_type": "椅子",
+      "cost": 64.73,
+      "price": 300.98,
+      "cost/price": 0.215064124
+    },
+    {
+      "area": "华北",
+      "province": "山西",
+      "city": "大同",
+      "type": "家具产品",
+      "sub_type": "桌子",
+      "cost": 54.12,
+      "price": 296.18,
+      "cost/price": 0.18272672
+    },
+    {
+      "area": "华北",
+      "province": "山西",
+      "city": "大同",
+      "type": "技术产品",
+      "sub_type": "电脑配件",
+      "cost": 2.83,
+      "price": 8.12,
+      "cost/price": 0.348522167
+    },
+    {
+      "area": "华北",
+      "province": "山西",
+      "city": "晋城",
+      "type": "办公用品",
+      "sub_type": "橡皮筋",
+      "cost": 0.7,
+      "price": 1.26,
+      "cost/price": 0.555555556
+    },
+    {
+      "area": "华北",
+      "province": "山西",
+      "city": "朔州",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 5.17,
+      "price": 4.28,
+      "cost/price": 1.207943925
+    },
+    {
+      "area": "华北",
+      "province": "河北",
+      "city": "保定",
+      "type": "家具产品",
+      "sub_type": "书架",
+      "cost": 55.96,
+      "price": 200.98,
+      "cost/price": 0.278435665
+    },
+    {
+      "area": "华南",
+      "province": "广东",
+      "city": "佛山",
+      "type": "技术产品",
+      "sub_type": "电话通信产品",
+      "cost": 8.99,
+      "price": 125.99,
+      "cost/price": 0.071354869
+    },
+    {
+      "area": "华南",
+      "province": "广东",
+      "city": "广州",
+      "type": "办公用品",
+      "sub_type": "容器，箱子",
+      "cost": 9.69,
+      "price": 6.98,
+      "cost/price": 1.388252149
+    },
+    {
+      "area": "华南",
+      "province": "广东",
+      "city": "惠州",
+      "type": "技术产品",
+      "sub_type": "电脑配件",
+      "cost": 19.99,
+      "price": 99.99,
+      "cost/price": 0.199919992
+    },
+    {
+      "area": "华南",
+      "province": "广东",
+      "city": "揭阳",
+      "type": "家具产品",
+      "sub_type": "书架",
+      "cost": 60.2,
+      "price": 240.98,
+      "cost/price": 0.249813263
+    },
+    {
+      "area": "华南",
+      "province": "广东",
+      "city": "揭阳",
+      "type": "技术产品",
+      "sub_type": "电话通信产品",
+      "cost": 8.08,
+      "price": 125.99,
+      "cost/price": 0.064132074
+    },
+    {
+      "area": "华南",
+      "province": "广东",
+      "city": "汕尾",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 6.6,
+      "price": 6.48,
+      "cost/price": 1.018518519
+    },
+    {
+      "area": "华南",
+      "province": "广东",
+      "city": "汕尾",
+      "type": "技术产品",
+      "sub_type": "电脑配件",
+      "cost": 6.5,
+      "price": 15.98,
+      "cost/price": 0.406758448
+    },
+    {
+      "area": "华南",
+      "province": "广东",
+      "city": "江门",
+      "type": "办公用品",
+      "sub_type": "信封",
+      "cost": 8.29,
+      "price": 8.74,
+      "cost/price": 0.948512586
+    },
+    {
+      "area": "华南",
+      "province": "广东",
+      "city": "深圳",
+      "type": "办公用品",
+      "sub_type": "夹子及其配件",
+      "cost": 2.99,
+      "price": 10.91,
+      "cost/price": 0.274060495
+    },
+    {
+      "area": "华南",
+      "province": "广东",
+      "city": "潮州",
+      "type": "办公用品",
+      "sub_type": "夹子及其配件",
+      "cost": 6.19,
+      "price": 8.6,
+      "cost/price": 0.719767442
+    },
+    {
+      "area": "华南",
+      "province": "广东",
+      "city": "阳江",
+      "type": "办公用品",
+      "sub_type": "家用电器",
+      "cost": 60,
+      "price": 68.81,
+      "cost/price": 0.871966284
+    },
+    {
+      "area": "华南",
+      "province": "广西",
+      "city": "北海",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 5.09,
+      "price": 12.28,
+      "cost/price": 0.414495114
+    },
+    {
+      "area": "华南",
+      "province": "广西",
+      "city": "北海",
+      "type": "家具产品",
+      "sub_type": "书架",
+      "cost": 26.22,
+      "price": 100.98,
+      "cost/price": 0.259655377
+    },
+    {
+      "area": "华南",
+      "province": "广西",
+      "city": "北海",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": 18.45,
+      "price": 51.65,
+      "cost/price": 0.357212004
+    },
+    {
+      "area": "华南",
+      "province": "广西",
+      "city": "南宁",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 4.86,
+      "price": 55.98,
+      "cost/price": 0.08681672
+    },
+    {
+      "area": "华南",
+      "province": "广西",
+      "city": "南宁",
+      "type": "技术产品",
+      "sub_type": "电脑配件",
+      "cost": 1.99,
+      "price": 115.79,
+      "cost/price": 0.017186286
+    },
+    {
+      "area": "华南",
+      "province": "广西",
+      "city": "梧州",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 1.34,
+      "price": 6.45,
+      "cost/price": 0.207751938
+    },
+    {
+      "area": "华南",
+      "province": "广西",
+      "city": "百色",
+      "type": "技术产品",
+      "sub_type": "电脑配件",
+      "cost": 4.93,
+      "price": 4.89,
+      "cost/price": 1.008179959
+    },
+    {
+      "area": "华南",
+      "province": "广西",
+      "city": "贺州",
+      "type": "办公用品",
+      "sub_type": "橡皮筋",
+      "cost": 0.7,
+      "price": 1.48,
+      "cost/price": 0.472972973
+    },
+    {
+      "area": "华南",
+      "province": "广西",
+      "city": "钦州",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 1.3,
+      "price": 4,
+      "cost/price": 0.325
+    },
+    {
+      "area": "华南",
+      "province": "河南",
+      "city": "安阳",
+      "type": "办公用品",
+      "sub_type": "家用电器",
+      "cost": 3.5,
+      "price": 70.97,
+      "cost/price": 0.049316613
+    },
+    {
+      "area": "华南",
+      "province": "河南",
+      "city": "安阳",
+      "type": "技术产品",
+      "sub_type": "电话通信产品",
+      "cost": 5.99,
+      "price": 205.99,
+      "cost/price": 0.029079082
+    },
+    {
+      "area": "华南",
+      "province": "海南",
+      "city": "三亚",
+      "type": "家具产品",
+      "sub_type": "书架",
+      "cost": 57.38,
+      "price": 100.98,
+      "cost/price": 0.568231333
+    },
+    {
+      "area": "华南",
+      "province": "海南",
+      "city": "三亚",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": 3.92,
+      "price": 30.93,
+      "cost/price": 0.126737795
+    },
+    {
+      "area": "华南",
+      "province": "海南",
+      "city": "三亚",
+      "type": "家具产品",
+      "sub_type": "桌子",
+      "cost": 69,
+      "price": 154.13,
+      "cost/price": 0.447674041
+    },
+    {
+      "area": "华南",
+      "province": "海南",
+      "city": "三沙",
+      "type": "办公用品",
+      "sub_type": "夹子及其配件",
+      "cost": 19.99,
+      "price": 367.99,
+      "cost/price": 0.054322128
+    },
+    {
+      "area": "华南",
+      "province": "海南",
+      "city": "三沙",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 16.92,
+      "price": 22.84,
+      "cost/price": 0.740805604
+    },
+    {
+      "area": "华南",
+      "province": "海南",
+      "city": "三沙",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": 5.3,
+      "price": 14.2,
+      "cost/price": 0.373239437
+    },
+    {
+      "area": "华南",
+      "province": "海南",
+      "city": "海口",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 5.35,
+      "price": 5.98,
+      "cost/price": 0.894648829
+    },
+    {
+      "area": "华南",
+      "province": "湖北",
+      "city": "十堰",
+      "type": "家具产品",
+      "sub_type": "椅子",
+      "cost": 23.76,
+      "price": 200.98,
+      "cost/price": 0.118220718
+    },
+    {
+      "area": "华南",
+      "province": "湖北",
+      "city": "十堰",
+      "type": "技术产品",
+      "sub_type": "电脑配件",
+      "cost": 4,
+      "price": 17.98,
+      "cost/price": 0.22246941
+    },
+    {
+      "area": "华南",
+      "province": "湖北",
+      "city": "襄阳",
+      "type": "办公用品",
+      "sub_type": "橡皮筋",
+      "cost": 0.7,
+      "price": 1.48,
+      "cost/price": 0.472972973
+    },
+    {
+      "area": "华南",
+      "province": "湖北",
+      "city": "襄阳",
+      "type": "技术产品",
+      "sub_type": "电脑配件",
+      "cost": 3.61,
+      "price": 47.98,
+      "cost/price": 0.075239683
+    },
+    {
+      "area": "华南",
+      "province": "湖南",
+      "city": "湘潭",
+      "type": "办公用品",
+      "sub_type": "容器，箱子",
+      "cost": 19.99,
+      "price": 193.17,
+      "cost/price": 0.103483978
+    },
+    {
+      "area": "华南",
+      "province": "湖南",
+      "city": "长沙",
+      "type": "家具产品",
+      "sub_type": "桌子",
+      "cost": 29.21,
+      "price": 179.29,
+      "cost/price": 0.162920408
+    },
+    {
+      "area": "西北",
+      "province": "宁夏",
+      "city": "银川",
+      "type": "办公用品",
+      "sub_type": "家用电器",
+      "cost": 5.13,
+      "price": 3.95,
+      "cost/price": 1.298734177
+    },
+    {
+      "area": "西北",
+      "province": "甘肃",
+      "city": "金昌",
+      "type": "办公用品",
+      "sub_type": "笔、美术用品",
+      "cost": 13.89,
+      "price": 36.55,
+      "cost/price": 0.38002736
+    },
+    {
+      "area": "西北",
+      "province": "陕西",
+      "city": "咸阳",
+      "type": "技术产品",
+      "sub_type": "办公机器",
+      "cost": 15.59,
+      "price": 200.97,
+      "cost/price": 0.077573767
+    },
+    {
+      "area": "西北",
+      "province": "陕西",
+      "city": "渭南",
+      "type": "办公用品",
+      "sub_type": "笔、美术用品",
+      "cost": 0.7,
+      "price": 1.76,
+      "cost/price": 0.397727273
+    },
+    {
+      "area": "西南",
+      "province": "云南",
+      "city": "临沧",
+      "type": "办公用品",
+      "sub_type": "笔、美术用品",
+      "cost": 2.27,
+      "price": 5.85,
+      "cost/price": 0.388034188
+    },
+    {
+      "area": "西南",
+      "province": "云南",
+      "city": "曲靖",
+      "type": "办公用品",
+      "sub_type": "信封",
+      "cost": 1.39,
+      "price": 7.64,
+      "cost/price": 0.181937173
+    },
+    {
+      "area": "西南",
+      "province": "四川",
+      "city": "南充",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 5.96,
+      "price": 7.35,
+      "cost/price": 0.810884354
+    },
+    {
+      "area": "西南",
+      "province": "贵州",
+      "city": "贵阳",
+      "type": "技术产品",
+      "sub_type": "办公机器",
+      "cost": 29.7,
+      "price": 2550.14,
+      "cost/price": 0.011646419
+    },
+    {
+      "area": "西南",
+      "province": "重庆",
+      "city": "重庆",
+      "type": "技术产品",
+      "sub_type": "办公机器",
+      "cost": 48.26,
+      "price": 400.97,
+      "cost/price": 0.120358132
+    }
+  ],
+  "totalData": [
+    {
+      "price": 100,
+      "cost": 0
+    },
+    {
+      "area": "东北",
+      "cost": 14,
+      "price": 24
+    },
+    {
+      "area": "东北",
+      "type": "办公用品",
+      "cost": 23,
+      "price": 27
+    },
+    {
+      "area": "东北",
+      "type": "办公用品",
+      "sub_type": "笔",
+      "cost": 26,
+      "price": 39
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "cost": 30,
+      "price": 40
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "cost": 31,
+      "price": 39
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "city": "白山",
+      "cost": 10,
+      "price": 20
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "city": "丹东",
+      "cost": 12,
+      "price": 21
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "type": "办公用品",
+      "sub_type": "笔",
+      "cost": 11,
+      "price": 12
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": 10,
+      "price": 13
+    },
+    {
+      "type": "办公用品",
+      "cost": 22,
+      "price": 34
+    },
+    {
+      "type": "家具产品",
+      "cost": 55,
+      "price": 66
+    },
+    {
+      "area": "东北",
+      "type": "办公用品",
+      "province": "辽宁",
+      "city": "抚顺",
+      "cost": 1,
+      "price": 3
+    },
+    {
+      "area": "东北",
+      "type": "办公用品",
+      "province": "辽宁",
+      "city": "朝阳",
+      "cost": 33,
+      "price": 22
+    }
+  ]
+}
