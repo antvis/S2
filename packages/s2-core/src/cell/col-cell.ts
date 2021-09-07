@@ -1,3 +1,6 @@
+import { Group, Point } from '@antv/g-canvas';
+import { get, isEqual } from 'lodash';
+import { HeaderCell } from './header-cell';
 import {
   CellTypes,
   KEY_GROUP_COL_RESIZE_AREA,
@@ -14,14 +17,11 @@ import { ColHeaderConfig } from '@/facet/header/col';
 import { ResizeInfo } from '@/facet/header/interface';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect } from '@/utils/g-renders';
-import { Group, Point } from '@antv/g-canvas';
-import { get, isEqual } from 'lodash';
 import { AreaRange } from '@/common/interface/scroll';
 import {
   getTextPositionWhenHorizontalScrolling,
   getVerticalPosition,
 } from '@/utils/cell/cell';
-import { HeaderCell } from './header-cell';
 
 export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;

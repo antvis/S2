@@ -14,13 +14,13 @@ import {
   TargetLayoutNode,
   S2Constructor,
 } from 'src/common/interface';
+import { HandleDrillDownIcon, HandleDrillDown, SpreadSheet } from 'src/index';
+import { Event as GEvent } from '@antv/g-canvas';
 import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
-import { HandleDrillDownIcon, HandleDrillDown, SpreadSheet } from 'src/index';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { BaseSheetProps } from '@/components/sheets/interface';
-import { Event as GEvent } from '@antv/g-canvas';
 import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 import { EmitterType } from '@/common/interface/emitter';
 

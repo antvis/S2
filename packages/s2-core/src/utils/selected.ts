@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Selected } from '../common/store';
+import { Selected } from '@/common/interface';
 
 const inRange = (idx: number, start: number, end: number) => {
   return idx >= start && idx <= end;

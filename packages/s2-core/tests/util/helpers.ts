@@ -1,6 +1,6 @@
-import { dsvFormat } from 'd3-dsv';
 import * as fs from 'fs';
 import * as path from 'path';
+import { dsvFormat } from 'd3-dsv';
 
 export const parseCSV = (csv, header?) => {
   const DELIMITER = ',';

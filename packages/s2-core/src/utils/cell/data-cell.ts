@@ -1,3 +1,5 @@
+import { isEqual } from 'lodash';
+import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import {
   FilterDataItemCallback,
   MappingDataItemCallback,
@@ -5,8 +7,6 @@ import {
   ViewMeta,
 } from '@/common/interface';
 import { Data } from '@/common/interface/s2DataConfig';
-import { isEqual } from 'lodash';
-import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 
 export const handleDataItem = (
   data: Data,

@@ -1,8 +1,8 @@
 import type { IElement, IGroup, IShape, ShapeAttrs } from '@antv/g-canvas';
 import { Group } from '@antv/g-canvas';
 import { clamp, each, get } from 'lodash';
-import { ScrollBarTheme } from '@/common/interface/theme';
 import type { PointObject, ScrollBarCfg } from './interface';
+import { ScrollBarTheme } from '@/common/interface/theme';
 
 export enum ScrollType {
   ScrollChange = 'scroll-change',

@@ -1,5 +1,3 @@
-import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
-import { updateMergedCells } from '@/utils/interaction/merge-cells';
 import type { BBox, IGroup, Point } from '@antv/g-canvas';
 import type { GestureEvent } from '@antv/g-gesture';
 import { Wheel } from '@antv/g-gesture';
@@ -58,6 +56,8 @@ import {
   optimizeScrollXY,
   translateGroup,
 } from './utils';
+import { updateMergedCells } from '@/utils/interaction/merge-cells';
+import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
 
 export abstract class BaseFacet {
   // spreadsheet instance

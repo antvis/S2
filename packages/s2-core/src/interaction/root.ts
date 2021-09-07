@@ -1,9 +1,10 @@
-import { clearState, setState } from '@/utils/interaction/state-controller';
-import { isMobile } from '@/utils/is-mobile';
 import { ColHeader, RowHeader } from 'src/facet/header';
 import { getAllPanelDataCell } from 'src/utils/getAllPanelDataCell';
 import { includes, isEmpty, concat, merge, forEach, size } from 'lodash';
+import { EventController } from './event-controller';
 import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
+import { clearState, setState } from '@/utils/interaction/state-controller';
+import { isMobile } from '@/utils/is-mobile';
 import {
   BaseEvent,
   DataCell,
@@ -23,8 +24,7 @@ import {
   RowCell,
 } from '@/index';
 import { CustomInteraction } from '@/common/interface';
-import { EventController } from './event-controller';
-import { InterceptType } from '../common/constant';
+import { InterceptType } from '@/common/constant';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -58,7 +58,7 @@ export class RootInteraction {
   }
 
   public setState(interactionStateInfo: InteractionStateInfo) {
-    setState(interactionStateInfo, this.spreadsheet);
+    setState(this.spreadsheet, interactionStateInfo);
   }
 
   public getState() {

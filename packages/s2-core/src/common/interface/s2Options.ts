@@ -1,3 +1,7 @@
+import { merge } from 'lodash';
+import { CustomInteraction } from './interaction';
+import { Conditions } from './condition';
+import { FilterDataItemCallback } from './basic';
 import {
   CellCallback,
   CornerHeaderCallback,
@@ -19,14 +23,10 @@ import {
   LayoutDataPosition,
   LayoutHierarchy,
 } from '@/common/interface/hooks';
-import { merge } from 'lodash';
 import { TREE_ROW_DEFAULT_WIDTH } from '@/common/constant';
 import { BaseDataSet } from '@/data-set';
 import { SpreadSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
-import { FilterDataItemCallback } from './basic';
-import { Conditions } from './condition';
-import { CustomInteraction } from './interaction';
 
 export interface S2PartialOptions {
   // canvas's width

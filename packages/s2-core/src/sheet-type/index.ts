@@ -1,3 +1,16 @@
+import EE from '@antv/event-emitter';
+import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
+import {
+  clone,
+  get,
+  includes,
+  isArray,
+  isEmpty,
+  isString,
+  merge,
+  mergeWith,
+  size,
+} from 'lodash';
 import { BaseCell, DataCell, TableDataCell, TableRowCell } from '@/cell';
 import {
   KEY_GROUP_BACK_GROUND,
@@ -53,19 +66,6 @@ import { BaseTooltip } from '@/ui/tooltip';
 import { updateConditionsByValues } from '@/utils/condition/generate-condition';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { getTooltipData } from '@/utils/tooltip';
-import EE from '@antv/event-emitter';
-import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
-import {
-  clone,
-  get,
-  includes,
-  isArray,
-  isEmpty,
-  isString,
-  merge,
-  mergeWith,
-  size,
-} from 'lodash';
 
 export class SpreadSheet extends EE {
   // dom id

@@ -11,12 +11,6 @@ import {
 } from 'lodash';
 import { merge } from 'lodash';
 import { Spin } from 'antd';
-import { Header } from '../../header';
-import { S2Event } from '@/common/constant';
-import { getBaseCellData } from '@/utils/interaction/formatter';
-import { TabularDataCell } from './tabular-data-cell';
-import { TabularTheme } from './tabular-theme';
-import { BaseSheetProps } from '../interface';
 import { Event } from '@antv/g-canvas';
 import {
   safetyDataConfig,
@@ -24,6 +18,12 @@ import {
   S2Options,
 } from 'src/common/interface';
 import { SpreadSheet } from 'src/sheet-type';
+import { Header } from '../../header';
+import { BaseSheetProps } from '../interface';
+import { TabularDataCell } from './tabular-data-cell';
+import { TabularTheme } from './tabular-theme';
+import { S2Event } from '@/common/constant';
+import { getBaseCellData } from '@/utils/interaction/formatter';
 
 export const TabularSheet = (props: BaseSheetProps) => {
   const {

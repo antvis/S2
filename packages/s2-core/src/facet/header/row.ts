@@ -1,10 +1,10 @@
 import { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell';
-import { Node } from '@/facet/layout/node';
-import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
 import { S2CellType, S2Options, ViewMeta } from '../../common/interface';
+import { BaseHeader, BaseHeaderConfig } from './base';
+import { Node } from '@/facet/layout/node';
 
 export interface RowHeaderConfig extends BaseHeaderConfig {
   // type of hierarchy

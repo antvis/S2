@@ -1,5 +1,5 @@
-import { InteractionStateName, InterceptType } from '@/common/constant';
 import { concat, isEmpty } from 'lodash';
+import { InteractionStateName, InterceptType } from '@/common/constant';
 import { S2CellType, MultiClickParams } from '@/common/interface';
 import { Node } from '@/index';
 import { mergeCellInfo } from '@/utils/tooltip';

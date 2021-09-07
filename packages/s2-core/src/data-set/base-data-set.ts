@@ -1,8 +1,4 @@
 import {
-  getValueRangeState,
-  setValueRangeState,
-} from '@/utils/condition/state-controller';
-import {
   compact,
   find,
   get,
@@ -23,6 +19,10 @@ import {
   SortParams,
 } from '../common/interface';
 import { ValueRange } from './../common/interface/condition';
+import {
+  getValueRangeState,
+  setValueRangeState,
+} from '@/utils/condition/state-controller';
 
 export abstract class BaseDataSet {
   // 字段域信息

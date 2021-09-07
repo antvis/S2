@@ -3,6 +3,7 @@ import { InteractionStateName } from '@/common/constant/interaction';
 import { SpreadSheet } from '@/sheet-type';
 import { Store } from '@/common/store';
 import { setState, clearState } from '@/utils/interaction/state-controller';
+import { InteractionStateInfo } from '@/index';
 
 jest.mock('@/sheet-type');
 jest.mock('@/cell/row-cell');
@@ -13,6 +14,7 @@ const MockRowCell = RowCell as unknown as jest.Mock<RowCell>;
 describe('State Test', () => {
   let mockInstance: SpreadSheet;
   let mockRowCellInstance: RowCell;
+  let cellState: InteractionStateInfo;
 
   beforeEach(() => {
     MockSpreadSheet.mockClear();
@@ -21,61 +23,47 @@ describe('State Test', () => {
     mockInstance = new MockSpreadSheet();
     mockInstance.store = new Store();
     mockRowCellInstance = new MockRowCell();
-  });
-  test('should set select status correctly', () => {
-    setState(mockRowCellInstance, InteractionStateName.SELECTED, mockInstance);
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({
+    cellState = {
       stateName: InteractionStateName.SELECTED,
       cells: [mockRowCellInstance],
-    });
+    };
+  });
+  test('should set select status correctly', () => {
+    setState(mockInstance, cellState);
+    expect(mockInstance.interaction.getState()).toEqual(cellState);
   });
 
   test("should push row cell in current interaction state when state doesn't include it", () => {
-    setState(mockRowCellInstance, InteractionStateName.SELECTED, mockInstance);
+    setState(mockInstance, cellState);
 
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({
-      stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCellInstance],
-    });
+    expect(mockInstance.interaction.getState()).toEqual(cellState);
 
     const other = new MockRowCell();
-    setState(other, InteractionStateName.SELECTED, mockInstance);
+    setState(mockInstance, cellState);
 
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({
+    expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
       cells: [mockRowCellInstance, other],
     });
   });
 
   test('should do nothing when state includes it', () => {
-    setState(mockRowCellInstance, InteractionStateName.SELECTED, mockInstance);
+    setState(mockInstance, cellState);
 
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({
-      stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCellInstance],
-    });
+    expect(mockInstance.interaction.getState()).toEqual(cellState);
 
-    mockInstance.interaction.setState(
-      mockRowCellInstance,
-      InteractionStateName.SELECTED,
-    );
+    mockInstance.interaction.setState(cellState);
 
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({
-      stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCellInstance],
-    });
+    expect(mockInstance.interaction.getState()).toEqual(cellState);
   });
 
   test('should clear existed state when call clearState function', () => {
-    setState(mockRowCellInstance, InteractionStateName.SELECTED, mockInstance);
+    setState(mockInstance, cellState);
 
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({
-      stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCellInstance],
-    });
+    expect(mockInstance.interaction.getState()).toEqual(cellState);
 
     clearState(mockInstance);
 
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({});
+    expect(mockInstance.interaction.getState()).toEqual({});
   });
 });

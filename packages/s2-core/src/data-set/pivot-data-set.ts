@@ -1,13 +1,3 @@
-import { Node } from '@/facet/layout/node';
-import {
-  filterUndefined,
-  flatten as customFlatten,
-  flattenDeep as customFlattenDeep,
-  getFieldKeysByDimensionValues,
-  getIntersections,
-  isEveryUndefined,
-  splitTotal,
-} from '@/utils/data-set-operate';
 import {
   compact,
   each,
@@ -39,6 +29,16 @@ import {
   PivotMeta,
 } from 'src/data-set/interface';
 import { handleSortAction } from 'src/utils/sort-action';
+import {
+  filterUndefined,
+  flatten as customFlatten,
+  flattenDeep as customFlattenDeep,
+  getFieldKeysByDimensionValues,
+  getIntersections,
+  isEveryUndefined,
+  splitTotal,
+} from '@/utils/data-set-operate';
+import { Node } from '@/facet/layout/node';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure

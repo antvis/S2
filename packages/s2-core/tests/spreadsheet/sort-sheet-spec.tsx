@@ -1,6 +1,10 @@
 import { merge } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
+import ReactDOM from 'react-dom';
+import React from 'react';
+import { Switch } from 'antd';
+import { getContainer } from '../util/helpers';
 import {
   S2DataConfig,
   S2Options,
@@ -8,12 +12,8 @@ import {
   SpreadSheet,
   TOTAL_VALUE,
 } from '../../src';
-import { getContainer } from '../util/helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
-import { Switch } from 'antd';
-import { CustomTooltip } from './custom/custom-tooltip';
 import { originData, totalData } from '../data/data-sort';
+import { CustomTooltip } from './custom/custom-tooltip';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,

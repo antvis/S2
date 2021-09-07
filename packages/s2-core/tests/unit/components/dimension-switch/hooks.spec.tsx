@@ -1,10 +1,10 @@
 import React from 'react';
+import { renderHook, act } from '@testing-library/react-hooks';
 import {
   useVisible,
   useCustomChild,
   useHide,
 } from '@/components/dimension-switch/hooks';
-import { renderHook, act } from '@testing-library/react-hooks';
 import { DimensionType } from '@/components/dimension-switch/dimension';
 
 describe('Dimension Switch Hook Test', () => {

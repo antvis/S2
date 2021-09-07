@@ -1,5 +1,5 @@
-import { TooltipSummaryOptions } from '@/common/interface';
 import React from 'react';
+import { TooltipSummaryOptions } from '@/common/interface';
 import { i18n } from '@/common/i18n';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 

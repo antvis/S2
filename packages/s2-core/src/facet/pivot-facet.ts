@@ -1,9 +1,4 @@
 import {
-  layoutCoordinate,
-  layoutDataPosition,
-} from '@/facet/layout/layout-hooks';
-import { handleDataItem } from '@/utils/cell/data-cell';
-import {
   findIndex,
   get,
   includes,
@@ -29,6 +24,11 @@ import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { Node } from 'src/facet/layout/node';
 import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
+import { handleDataItem } from '@/utils/cell/data-cell';
+import {
+  layoutCoordinate,
+  layoutDataPosition,
+} from '@/facet/layout/layout-hooks';
 
 export class PivotFacet extends BaseFacet {
   protected doLayout(): LayoutResult {

@@ -1,13 +1,13 @@
+import { BBox, IGroup, IShape } from '@antv/g-canvas';
+import { each } from 'lodash';
+import { translateGroup } from '../utils';
+import { BaseHeader, BaseHeaderConfig } from './base';
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type/index';
 import { renderRect } from '@/utils/g-renders';
 import { measureTextWidth } from '@/utils/text';
 import { getAdjustPosition } from '@/utils/text-absorption';
-import { BBox, IGroup, IShape } from '@antv/g-canvas';
-import { each } from 'lodash';
 import { Padding, ViewMeta } from '@/common/interface';
-import { translateGroup } from '../utils';
-import { BaseHeader, BaseHeaderConfig } from './base';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;

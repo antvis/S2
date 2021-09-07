@@ -1,12 +1,12 @@
+import { SimpleBBox } from '@antv/g-canvas';
+import { merge } from 'lodash';
+import { AreaRange } from './../../common/interface/scroll';
 import {
   IconCfg,
   Padding,
   TextAlignCfg,
   TextBaseline,
 } from '@/common/interface';
-import { SimpleBBox } from '@antv/g-canvas';
-import { merge } from 'lodash';
-import { AreaRange } from './../../common/interface/scroll';
 
 /**
  * -----------------------------

@@ -1,7 +1,7 @@
+import { Palette } from '../interface';
 import { paletteColorfulBlue } from '@/theme/palette/colorful-blue';
 import { paletteDefault } from '@/theme/palette/default';
 import { paletteSimpleBlue } from '@/theme/palette/simple-blue';
-import { Palette } from '../interface';
 
 // Map of the theme
 export const PALETTE_MAP: Record<string, Palette> = {

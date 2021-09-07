@@ -1,9 +1,9 @@
-import { ColCell } from '@/cell/col-cell';
-import { renderText } from '@/utils/g-renders';
 import { get } from 'lodash';
 import { EXTRA_FIELD } from '../common/constant';
 import { renderDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '../utils/text';
+import { renderText } from '@/utils/g-renders';
+import { ColCell } from '@/cell/col-cell';
 
 export class TableColCell extends ColCell {
   protected getStyle() {

@@ -1,11 +1,11 @@
 import { merge } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
-import { SheetComponent } from '../../src';
-import { getContainer, getMockData } from '../util/helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch } from 'antd';
+import { getContainer, getMockData } from '../util/helpers';
+import { SheetComponent } from '../../src';
 import { CustomHover } from './custom/custom-interaction';
 
 const data = getMockData('../data/tableau-supermarket.csv');

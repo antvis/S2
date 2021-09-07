@@ -1,7 +1,7 @@
-import { i18n } from '@/common/i18n';
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Input, Tooltip } from 'antd';
 import React, { FC, useEffect, useRef, useState } from 'react';
+import { i18n } from '@/common/i18n';
 import './index.less';
 
 export interface DimensionItem {

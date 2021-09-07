@@ -1,12 +1,12 @@
 /**
  * 交叉表核心数据流程（保证基本数据正确）
  * */
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
-import { PivotDataSet } from '@/data-set/pivot-data-set';
-import { SpreadSheet } from '@/sheet-type';
 import { flattenDeep, get, size, uniq } from 'lodash';
 import STANDARD_SPREADSHEET_DATA from '../../../data/standard-spreadsheet-data.json';
 import { getContainer } from '../../../util/helpers';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { PivotDataSet } from '@/data-set/pivot-data-set';
+import { SpreadSheet } from '@/sheet-type';
 
 describe('Cross Table Core Data Process', () => {
   const options = { width: 1200, height: 800 };
