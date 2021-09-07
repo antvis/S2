@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isEmpty } from 'lodash';
 
 export type Indexes = [number, number, number, number];
 
@@ -57,8 +57,8 @@ export const diffIndexes = (
   const remove = [];
 
   // source 为空
-  if (_.isEmpty(sourceIndexes)) {
-    if (_.isEmpty(targetIndexes)) {
+  if (isEmpty(sourceIndexes)) {
+    if (isEmpty(targetIndexes)) {
       // 都为空
       return { add, remove };
     }
@@ -67,7 +67,7 @@ export const diffIndexes = (
   }
 
   // source 不为空，target 为空
-  if (_.isEmpty(targetIndexes)) {
+  if (isEmpty(targetIndexes)) {
     return { add, remove: allIndexes(sourceIndexes) };
   }
 

@@ -1,9 +1,11 @@
 import { Group } from '@antv/g-canvas';
-import _ from 'lodash';
-import { translateGroup } from '../utils';
+import { translateGroup } from '@/facet/utils';
+import { FrameConfig } from '@/common/interface';
 
 export class Frame extends Group {
-  constructor(cfg: any) {
+  cfg: FrameConfig;
+
+  constructor(cfg: FrameConfig) {
     super(cfg);
     this.render();
   }
@@ -57,7 +59,7 @@ export class Frame extends Group {
       return;
     }
     const { width, height, viewportHeight, position, spreadsheet } = cfg;
-    const splitLine = _.get(spreadsheet, 'theme.splitLine');
+    const splitLine = spreadsheet.theme?.splitLine;
     const x = position.x + width;
     const y1 = position.y;
     const y2 = position.y + height + viewportHeight;
@@ -69,7 +71,7 @@ export class Frame extends Group {
         y2,
         stroke: splitLine.verticalBorderColor,
         lineWidth: splitLine.verticalBorderWidth,
-        opacity: splitLine.verticalBorderOpacity,
+        opacity: splitLine.verticalBorderColorOpacity,
       },
     });
   }
@@ -85,7 +87,7 @@ export class Frame extends Group {
       scrollContainsRowHeader,
       spreadsheet,
     } = cfg;
-    const splitLine = _.get(spreadsheet, 'theme.splitLine');
+    const splitLine = spreadsheet.theme?.splitLine;
     const x1 = position.x;
     const x2 =
       x1 + width + viewportWidth + (scrollContainsRowHeader ? scrollX : 0);
@@ -98,7 +100,7 @@ export class Frame extends Group {
         y2: y,
         stroke: splitLine.horizontalBorderColor,
         lineWidth: splitLine.horizontalBorderWidth,
-        opacity: splitLine.horizontalBorderOpacity,
+        opacity: splitLine.horizontalBorderColorOpacity,
       },
     });
   }
@@ -115,7 +117,7 @@ export class Frame extends Group {
       scrollX,
       spreadsheet,
     } = cfg;
-    const splitLine = _.get(spreadsheet, 'theme.splitLine');
+    const splitLine = spreadsheet.theme?.splitLine;
     if (splitLine.showRightShadow || showViewPortRightShadow) {
       const x =
         position.x +
@@ -146,7 +148,7 @@ export class Frame extends Group {
       spreadsheet,
       showViewPortRightShadow,
     } = cfg;
-    const splitLine = _.get(spreadsheet, 'theme.splitLine');
+    const splitLine = spreadsheet.theme?.splitLine;
     if (
       splitLine.showRightShadow &&
       showViewPortRightShadow &&

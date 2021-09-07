@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isBoolean, merge } from 'lodash';
 import { HeaderNodesParams } from '@/facet/layout/interface';
 import { TotalClass } from '@/facet/layout/total-class';
 import { TotalMeasure } from '@/facet/layout/total-measure';
@@ -41,7 +41,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       value = i18n((fieldValue as TotalClass).label);
       if (addMeasureInTotalQuery) {
         // root[&]四川[&]总计 => {province: '四川', EXTRA_FIELD: 'price'}
-        nodeQuery = _.merge({}, query, {
+        nodeQuery = merge({}, query, {
           [EXTRA_FIELD]: spreadsheet?.dataSet?.fields.values[0],
         });
         isLeaf = true;
@@ -55,24 +55,24 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     } else if (isTotalMeasure) {
       value = i18n((fieldValue as TotalMeasure).label);
       // root[&]四川[&]总计[&]price => {province: '四川',EXTRA_FIELD: 'price' }
-      nodeQuery = _.merge({}, query, { [EXTRA_FIELD]: value });
+      nodeQuery = merge({}, query, { [EXTRA_FIELD]: value });
       adjustedField = EXTRA_FIELD;
       isLeaf = true;
     } else if (spreadsheet.isTableMode()) {
       value = fieldValue;
       adjustedField = fields[index];
-      nodeQuery = _.merge({}, query, { [adjustedField]: value });
+      nodeQuery = merge({}, query, { [adjustedField]: value });
       isLeaf = true;
     } else {
       value = fieldValue;
       // root[&]四川[&]成都 => {province: '四川', city: '成都' }
-      nodeQuery = _.merge({}, query, { [currentField]: value });
+      nodeQuery = merge({}, query, { [currentField]: value });
       const extraSize = hideMeasure ? 2 : 1;
       isLeaf = level === fields.length - extraSize;
     }
     const uniqueId = generateId(parentNode.id, value, spreadsheet);
     // TODO need merge with collapsedRows
-    const isCollapsed = _.isBoolean(collapsedCols[uniqueId])
+    const isCollapsed = isBoolean(collapsedCols[uniqueId])
       ? collapsedCols[uniqueId]
       : false;
     // create new header nodes

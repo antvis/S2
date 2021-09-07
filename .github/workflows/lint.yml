@@ -37,8 +37,11 @@ jobs:
       - name: Lint scripts
         run: npm run lint
 
-      - name: Lint core bundle size
-        run: npm run bundlesize
-
       - name: Lint type
         run: npm run core:tsc
+
+      - name: Build
+        run: npm run core:build
+
+      - name: Lint core bundle size
+        run: npm run core:bundlesize
