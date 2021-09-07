@@ -1,11 +1,11 @@
+import { Event } from '@antv/g-canvas';
+import { BaseEvent, BaseEventImplement } from '../../base-event';
 import {
   S2Event,
   InterceptType,
   InteractionKeyboardKey,
 } from '@/common/constant';
-import { BaseEvent, BaseEventImplement } from '../../base-event';
 import { handleRowColClick } from '@/utils/interaction/multi-click';
-import { Event } from '@antv/g-canvas';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private isMultiSelection = false;

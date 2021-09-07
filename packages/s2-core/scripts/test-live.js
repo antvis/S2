@@ -1,5 +1,5 @@
-const { prompt } = require('inquirer');
 const { execSync } = require('child_process');
+const { prompt } = require('inquirer');
 const glob = require('glob');
 const ora = require('ora');
 

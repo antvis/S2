@@ -1,7 +1,6 @@
-import { ResizeEvent, S2Event, SortMethodType } from '@/common/constant';
-
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { CellScrollPosition, Data, LayoutResult, Style, ViewMeta } from '.';
+import { ResizeEvent, S2Event, SortMethodType } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 import { DataItem } from '@/.';
 

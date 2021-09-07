@@ -1,7 +1,5 @@
 import React, { cloneElement, FC } from 'react';
 import { Modal, Popover, Button } from 'antd';
-import { DimensionType } from './dimension';
-import DimensionSwitch from './switch';
 import {
   DownOutlined,
   EditOutlined,
@@ -9,8 +7,10 @@ import {
   UpOutlined,
   CloseOutlined,
 } from '@ant-design/icons';
-import { useCustomChild, useVisible, useHide } from './hooks';
 import cx from 'classnames';
+import { DimensionType } from './dimension';
+import DimensionSwitch from './switch';
+import { useCustomChild, useVisible, useHide } from './hooks';
 import { i18n } from '@/common/i18n';
 import './index.less';
 

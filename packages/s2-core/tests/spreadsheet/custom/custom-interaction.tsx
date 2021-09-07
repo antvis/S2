@@ -1,9 +1,9 @@
+import { Event } from '@antv/g-canvas';
+import { isEmpty } from 'lodash';
 import { BaseEvent } from '@/interaction/base-interaction';
 import { S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { S2CellType } from '@/common/interface';
-import { Event } from '@antv/g-canvas';
-import { isEmpty } from 'lodash';
 import { SpreadSheet } from '@/sheet-type';
 import { RootInteraction } from '@/interaction/root';
 
@@ -20,7 +20,7 @@ export class CustomHover extends BaseEvent {
         cells: [cell],
         stateName: InteractionStateName.HOVER,
       });
-      cell.updateByState(InteractionStateName.UNSELECTED);
+      cell.updateByState(InteractionStateName.UNSELECTED, cell);
     });
   }
 }

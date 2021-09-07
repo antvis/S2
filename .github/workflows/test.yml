@@ -1,4 +1,4 @@
-name: Lint
+name: Test
 
 on: [push]
 
@@ -34,11 +34,5 @@ jobs:
       - name: Install dependencies
         run: npm run bootstrap:ci
 
-      - name: Lint scripts
-        run: npm run lint
-
-      - name: Lint core bundle size
-        run: npm run bundlesize
-
-      - name: Lint type
-        run: npm run core:tsc
+      - name: Test
+        run: npm run core:test

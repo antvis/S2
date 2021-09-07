@@ -1,20 +1,21 @@
-import { i18n } from '@/common/i18n';
-import { BaseDataSet } from '@/data-set';
 import { Group, Point, SimpleBBox } from '@antv/g-canvas';
 import { get, includes, isEmpty, last } from 'lodash';
+import { translateGroup } from '../utils';
+import { CornerData, ResizeInfo } from './interface';
+import { BaseHeader, BaseHeaderConfig } from './base';
+import { i18n } from '@/common/i18n';
+import { BaseDataSet } from '@/data-set';
 import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_SERIES_NUMBER_NODE,
 } from '@/common/constant';
 import {
   LayoutResult,
+  S2CellType,
   S2Options,
   SpreadSheetFacetCfg,
 } from '@/common/interface';
 import { CornerCell, Hierarchy, Node, SpreadSheet } from '@/index';
-import { translateGroup } from '../utils';
-import { BaseHeader, BaseHeaderConfig } from './base';
-import { CornerData, ResizeInfo } from './interface';
 
 export interface CornerHeaderConfig extends BaseHeaderConfig {
   // header's hierarchy type
@@ -218,7 +219,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const cornerHeader = spreadsheet?.facet?.cfg?.cornerHeader;
     const cornerCell = spreadsheet?.facet?.cfg?.cornerCell;
     if (cornerHeader) {
-      cornerHeader(this, spreadsheet, this.headerConfig);
+      cornerHeader(
+        this as unknown as S2CellType,
+        spreadsheet,
+        this.headerConfig,
+      );
       return;
     }
     // 背景

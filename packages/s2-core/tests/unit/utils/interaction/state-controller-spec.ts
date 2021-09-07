@@ -10,6 +10,7 @@ jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
 
 const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
+
 describe('State Test', () => {
   const mockRowCell = {
     type: CellTypes.ROW_CELL,
@@ -27,30 +28,25 @@ describe('State Test', () => {
     mockInstance.store = new Store();
     mockInstance.interaction = new RootInteraction(mockInstance);
   });
+
   test('should set select status correctly', () => {
-    setState(
-      {
-        stateName: InteractionStateName.SELECTED,
-        cells: [mockRowCell],
-      },
-      mockInstance,
-    );
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({
+    setState(mockInstance, {
+      stateName: InteractionStateName.SELECTED,
+      cells: [mockRowCell],
+    });
+    expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
       cells: [mockRowCell],
     });
   });
 
   test('should do nothing when state name is the same', () => {
-    setState(
-      {
-        stateName: InteractionStateName.SELECTED,
-        cells: [mockRowCell],
-      },
-      mockInstance,
-    );
+    setState(mockInstance, {
+      stateName: InteractionStateName.SELECTED,
+      cells: [mockRowCell],
+    });
 
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({
+    expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
       cells: [mockRowCell],
     });
@@ -60,29 +56,26 @@ describe('State Test', () => {
       cells: [],
     });
 
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({
+    expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
       cells: [mockRowCell],
     });
   });
 
   test('should clear existed state when call clearState function', () => {
-    setState(
-      {
-        stateName: InteractionStateName.SELECTED,
-        interactedCells: [mockRowCell],
-      },
-      mockInstance,
-    );
+    setState(mockInstance, {
+      stateName: InteractionStateName.SELECTED,
+      interactedCells: [mockRowCell],
+    });
 
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({
+    expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
       interactedCells: [mockRowCell],
     });
 
     clearState(mockInstance);
 
-    expect(mockInstance.store.get('interactionStateInfo')).toEqual({
+    expect(mockInstance.interaction.getState()).toEqual({
       cells: [],
       force: false,
     });

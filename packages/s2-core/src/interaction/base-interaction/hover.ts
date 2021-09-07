@@ -1,3 +1,6 @@
+import { Event as CanvasEvent } from '@antv/g-canvas';
+import { isEmpty, forEach } from 'lodash';
+import { BaseEvent, BaseEventImplement } from '../base-event';
 import { ColCell, RowCell } from '@/cell';
 import { S2Event } from '@/common/constant';
 import {
@@ -6,9 +9,6 @@ import {
 } from '@/common/constant/interaction';
 import { S2CellType, ViewMeta, TooltipOptions } from '@/common/interface';
 import { getActiveHoverRowColCells } from '@/utils/interaction/hover-event';
-import { Event as CanvasEvent } from '@antv/g-canvas';
-import { isEmpty, forEach } from 'lodash';
-import { BaseEvent, BaseEventImplement } from '../base-event';
 
 /**
  * @description Hover event for data cells, row cells and col cells

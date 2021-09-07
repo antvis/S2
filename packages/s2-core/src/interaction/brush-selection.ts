@@ -1,3 +1,7 @@
+import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
+import { isEmpty } from 'lodash';
+import { BaseEventImplement } from './base-event';
+import { BaseEvent } from './base-interaction';
 import { InterceptType, S2Event } from '@/common/constant';
 import {
   InteractionBrushSelectionStage,
@@ -9,13 +13,9 @@ import {
   OriginalEvent,
   ViewMeta,
 } from '@/common/interface';
-import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
-import { BaseEvent } from './base-interaction';
-import { BaseEventImplement } from './base-event';
 import { getActiveCellsTooltipData } from '@/utils/tooltip';
-import { isEmpty } from 'lodash';
 
 /**
  * Panel area's brush selection interaction

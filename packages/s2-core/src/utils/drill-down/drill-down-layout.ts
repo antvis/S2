@@ -1,5 +1,5 @@
-import { LayoutCallback } from '../../common/interface';
 import { size } from 'lodash';
+import { LayoutCallback } from '../../common/interface';
 
 export const DrillDownLayout: LayoutCallback = (
   spreadsheet,

@@ -1,3 +1,6 @@
+import { LineChartOutlined } from '@ant-design/icons';
+import { Event as CanvasEvent } from '@antv/g-canvas';
+import { get, noop } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
 import {
   InteractionStateName,
@@ -12,9 +15,6 @@ import {
   ViewMeta,
 } from '@/common/interface';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
-import { LineChartOutlined } from '@ant-design/icons';
-import { Event as CanvasEvent } from '@antv/g-canvas';
-import { get, noop } from 'lodash';
 
 export class DataCellClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {

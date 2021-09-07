@@ -1,5 +1,5 @@
-import { TooltipInterpretationOptions } from '@/common/interface';
 import * as React from 'react';
+import { TooltipInterpretationOptions } from '@/common/interface';
 import { getIcon, HtmlIcon } from '@/common/icons';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 

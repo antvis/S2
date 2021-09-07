@@ -1,4 +1,11 @@
 import {
+  Group,
+  Canvas,
+  Event as CanvasEvent,
+  LooseObject,
+} from '@antv/g-canvas';
+import { each, get, isEmpty } from 'lodash';
+import {
   CellTypes,
   InteractionKeyboardKey,
   InterceptType,
@@ -9,13 +16,6 @@ import {
 import { ResizeInfo } from '@/facet/header/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
-import {
-  Group,
-  Canvas,
-  Event as CanvasEvent,
-  LooseObject,
-} from '@antv/g-canvas';
-import { each, get, isEmpty } from 'lodash';
 
 interface EventListener {
   target: EventTarget;

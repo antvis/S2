@@ -1,7 +1,7 @@
+import _ from 'lodash';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { CellDataParams, DataType } from '@/data-set/interface';
 import { S2DataConfig } from '@/common/interface';
-import _ from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 
 export class CustomTreePivotDataSet extends PivotDataSet {

@@ -11,8 +11,8 @@ import {
 import { ColCell, TableColCell, TableCornerCell } from 'src/cell';
 import { Formatter, S2CellType, SortParam } from 'src/common/interface';
 import { Node } from 'src/facet/layout/node';
-import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
+import { BaseHeader, BaseHeaderConfig } from './base';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
   // format field value

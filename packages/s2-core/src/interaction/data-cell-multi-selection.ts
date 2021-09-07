@@ -1,13 +1,13 @@
+import { Event } from '@antv/g-canvas';
+import { isEmpty } from 'lodash';
+import { BaseEvent, BaseEventImplement } from './base-interaction';
+import { getActiveCellsTooltipData } from '@/utils/tooltip';
 import {
   InterceptType,
   InteractionKeyboardKey,
   InteractionStateName,
   S2Event,
 } from '@/common/constant';
-import { Event } from '@antv/g-canvas';
-import { isEmpty } from 'lodash';
-import { getActiveCellsTooltipData } from '@/utils/tooltip';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
 
 export class DataCellMultiSelection
   extends BaseEvent

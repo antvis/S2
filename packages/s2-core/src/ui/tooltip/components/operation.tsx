@@ -1,12 +1,12 @@
+import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, Menu } from 'antd';
+import { find, get, isEqual } from 'lodash';
+import React from 'react';
 import {
   TooltipOperationOptions,
   TooltipOperationState,
   OrderOption,
 } from '@/common/interface';
-import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Menu } from 'antd';
-import { find, get, isEqual } from 'lodash';
-import React from 'react';
 import { HtmlIcon } from '@/common/icons';
 import { TOOLTIP_OPERATION_PREFIX_CLS, ORDER_OPTIONS } from '@/common/constant';
 

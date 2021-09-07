@@ -1,6 +1,6 @@
+import { Event } from '@antv/g-canvas';
 import { BaseEvent, BaseEventImplement } from '../../base-event';
 import { S2Event } from '@/common/constant';
-import { Event } from '@antv/g-canvas';
 
 export class MergedCellsClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {

@@ -1,11 +1,11 @@
-import { GuiIcon } from '@/common/icons';
 import { first, map, includes } from 'lodash';
+import { InteractionStateName } from '../index';
+import { GuiIcon } from '@/common/icons';
 import { includeCell } from '@/utils/cell/data-cell';
 import { S2CellType } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { BaseCell } from '@/cell/base-cell';
-import { InteractionStateName } from '../index';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;

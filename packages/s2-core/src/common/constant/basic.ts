@@ -46,6 +46,7 @@ export const HORIZONTAL_RESIZE_AREA_KEY_PRE = 'horizontal-resize-area-';
 
 export const KEY_COL_REAL_WIDTH_INFO = 'col-real-width-info';
 
+export const ROOT_ID = 'root';
 export const ID_SEPARATOR = '[&]';
 export const EMPTY_PLACEHOLDER = '-';
 

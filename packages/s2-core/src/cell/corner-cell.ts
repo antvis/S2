@@ -1,3 +1,6 @@
+import { Group, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import { isEmpty, isEqual } from 'lodash';
+import { HeaderCell } from './header-cell';
 import {
   CellTypes,
   EXTRA_FIELD,
@@ -11,9 +14,6 @@ import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
 import { renderRect, renderText, renderTreeIcon } from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
 import { getEllipsisText } from '@/utils/text';
-import { Group, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
-import { isEmpty, isEqual } from 'lodash';
-import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;

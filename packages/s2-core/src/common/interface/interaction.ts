@@ -1,13 +1,12 @@
-import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
-import { HeaderCell } from '@/cell/header-cell';
-import { Node } from '@/index';
 import { Event } from '@antv/g-canvas';
-import { BaseEvent, EventConstructor } from '@/interaction/base-event';
-import { SpreadSheet } from '@/sheet-type';
 import { SimpleBBox } from '@antv/g-canvas';
 import { InteractionStateName } from '../constant';
 import { ViewMeta } from './basic';
-import { ResizeInfo } from '@/facet/header/interface';
+import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
+import { HeaderCell } from '@/cell/header-cell';
+import { Node } from '@/index';
+import { BaseEvent, EventConstructor } from '@/interaction/base-event';
+import { SpreadSheet } from '@/sheet-type';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell

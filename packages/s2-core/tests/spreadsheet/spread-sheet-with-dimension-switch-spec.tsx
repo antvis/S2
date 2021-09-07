@@ -1,13 +1,13 @@
 import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React, { useState } from 'react';
-import { getContainer, getMockData } from '../util/helpers';
 import { act } from 'react-dom/test-utils';
 
 import { DimensionSwitchPopover } from 'src/components/dimension-switch';
 import { DimensionType } from 'src/components/dimension-switch/dimension';
-import { SheetComponent } from '@/components';
 import { clone } from 'lodash';
+import { getContainer, getMockData } from '../util/helpers';
+import { SheetComponent } from '@/components';
 
 const mockData = getMockData('../data/tableau-supermarket.csv');
 

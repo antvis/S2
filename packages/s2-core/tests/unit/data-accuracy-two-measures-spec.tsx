@@ -1,5 +1,7 @@
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
+import ReactDOM from 'react-dom';
+import React from 'react';
 import {
   auto,
   EXTRA_FIELD,
@@ -9,8 +11,6 @@ import {
   SpreadSheet,
 } from '../../src';
 import { getContainer } from '../util/helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
 import {
   data6,
   data7,

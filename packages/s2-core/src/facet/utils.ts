@@ -6,8 +6,8 @@ import {
   FrozenCellIndex,
 } from 'src/common/constant/frozen';
 
-import { ViewCellHeights } from './layout/interface';
 import { Indexes } from '../utils/indexes';
+import { ViewCellHeights } from './layout/interface';
 
 /**
  * 计算偏移 scrollX、scrollY 的时候，在视窗中的节点索引

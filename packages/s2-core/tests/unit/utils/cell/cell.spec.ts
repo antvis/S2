@@ -1,3 +1,4 @@
+import { SimpleBBox } from '@antv/g-canvas';
 import { AreaRange } from '@/common/interface/scroll';
 import {
   getContentArea,
@@ -5,7 +6,6 @@ import {
   getTextAndFollowingIconPosition,
   getTextPositionWhenHorizontalScrolling,
 } from '@/utils/cell/cell';
-import { SimpleBBox } from '@antv/g-canvas';
 
 describe('Cell Content Test', () => {
   test('should return content area', () => {

@@ -3,17 +3,6 @@
  */
 
 import {
-  CellTypes,
-  EXTRA_FIELD,
-  PRECISION,
-  VALUE_FIELD,
-} from '@/common/constant';
-import {
-  POSITION_X_OFFSET,
-  POSITION_Y_OFFSET,
-} from '@/common/constant/tooltip';
-import { i18n } from '@/common/i18n';
-import {
   assign,
   compact,
   concat,
@@ -50,6 +39,17 @@ import {
 import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
+import { i18n } from '@/common/i18n';
+import {
+  POSITION_X_OFFSET,
+  POSITION_Y_OFFSET,
+} from '@/common/constant/tooltip';
+import {
+  CellTypes,
+  EXTRA_FIELD,
+  PRECISION,
+  VALUE_FIELD,
+} from '@/common/constant';
 
 /**
  * calculate sum value

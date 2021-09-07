@@ -2,10 +2,10 @@
  * Utils to render all g supported shape
  * https://github.com/antvis/g
  */
-import { GuiIcon, GuiIconCfg } from '@/common/icons/gui-icon';
-import { TextTheme } from '@/common/interface/theme';
 import { Group, IShape, ShapeAttrs, SimpleBBox } from '@antv/g-canvas';
 import { forEach, isEmpty, set } from 'lodash';
+import { GuiIcon, GuiIconCfg } from '@/common/icons/gui-icon';
+import { TextTheme } from '@/common/interface/theme';
 
 export function renderRect(group: Group, attrs: ShapeAttrs): IShape {
   return group?.addShape?.('rect', {

@@ -1,5 +1,7 @@
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
+import ReactDOM from 'react-dom';
+import React from 'react';
 import {
   GetCellMeta,
   Node,
@@ -11,8 +13,6 @@ import {
   ViewMeta,
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
 import { LayoutHierarchyReturnType } from '@/common/interface/hooks';
 import { generateId } from '@/facet/layout/util/generate-id';
 const data = getMockData('../data/tableau-supermarket.csv');

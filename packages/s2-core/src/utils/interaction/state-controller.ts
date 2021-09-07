@@ -1,7 +1,7 @@
+import { forEach, isEmpty } from 'lodash';
 import { INTERACTION_STATE_INFO_KEY } from '@/common/constant';
 import { InteractionStateInfo, S2CellType } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
-import { forEach, isEmpty } from 'lodash';
 
 /**
  * @desc clear the interaction state information
@@ -31,8 +31,8 @@ export const clearState = (spreadsheet: SpreadSheet) => {
  * @param spreadsheet sheet instance
  */
 export const setState = (
-  interactionStateInfo: InteractionStateInfo,
   spreadsheet: SpreadSheet,
+  interactionStateInfo: InteractionStateInfo,
 ) => {
   const stateName = interactionStateInfo?.stateName;
   if (!spreadsheet.interaction.isEqualStateName(stateName)) {

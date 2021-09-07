@@ -6,12 +6,12 @@
  */
 import { get } from 'lodash';
 import { SpreadSheet } from 'src/sheet-type';
-import { VALUE_FIELD } from '@/common/constant';
 import STANDARD_SPREADSHEET_DATA from '../../../data/standard-spreadsheet-data.json';
 import { getContainer } from '../../../util/helpers';
+import { S2Options } from '@/index';
 
 describe('List Table Core Data Process', () => {
-  const options = { width: 600, height: 400, mode: 'table' };
+  const options: S2Options = { width: 600, height: 400, mode: 'table' };
   const dataCfg = {
     fields: {
       columns: ['province', 'city', 'category', 'subCategory', 'price'],

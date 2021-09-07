@@ -1,6 +1,10 @@
 import { merge, clone, omit } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
+import ReactDOM from 'react-dom';
+import React from 'react';
+import { Switch, Checkbox } from 'antd';
+import { getContainer, getMockData } from '../util/helpers';
 import {
   auto,
   S2DataConfig,
@@ -8,10 +12,6 @@ import {
   SheetComponent,
   SpreadSheet,
 } from '../../src';
-import { getContainer, getMockData } from '../util/helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
-import { Switch, Checkbox } from 'antd';
 import { CustomTooltip } from './custom/custom-tooltip';
 
 // const data = [

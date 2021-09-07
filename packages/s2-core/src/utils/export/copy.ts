@@ -1,6 +1,6 @@
+import { copyToClipboard } from '.';
 import { S2CellType } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
-import { copyToClipboard } from '.';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {

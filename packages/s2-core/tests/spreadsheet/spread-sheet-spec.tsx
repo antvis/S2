@@ -5,6 +5,8 @@ import { merge, omit } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import { getContainer, getMockData } from '../util/helpers';
+import { CustomTooltip } from './custom/custom-tooltip';
 import {
   S2DataConfig,
   S2Options,
@@ -12,8 +14,6 @@ import {
   SpreadSheet,
   ThemeName,
 } from '@/index';
-import { getContainer, getMockData } from '../util/helpers';
-import { CustomTooltip } from './custom/custom-tooltip';
 
 let data = getMockData('../data/tableau-supermarket.csv');
 

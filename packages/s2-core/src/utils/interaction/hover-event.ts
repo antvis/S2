@@ -1,6 +1,6 @@
+import { filter } from 'lodash';
 import { ID_SEPARATOR } from '@/common/constant';
 import { ColCell, RowCell } from '@/cell';
-import { filter } from 'lodash';
 
 const generateId = (parentId: string, childrenId: string) => {
   return `${parentId}${ID_SEPARATOR}${childrenId}`;

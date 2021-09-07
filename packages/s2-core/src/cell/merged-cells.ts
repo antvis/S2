@@ -1,5 +1,3 @@
-import { SpreadSheet } from '@/sheet-type';
-import { getPolygonPoints } from '@/utils/interaction/merge-cells';
 import { Point, SimpleBBox } from '@antv/g-canvas';
 import { isEmpty, isObject } from 'lodash';
 import { S2CellType } from 'src/common/interface/interaction';
@@ -9,6 +7,8 @@ import { CellTypes } from '../common/constant';
 import { FormatResult, TextTheme, ViewMeta } from '../common/interface';
 import { DataItem } from '../common/interface/s2DataConfig';
 import { BaseCell } from './base-cell';
+import { getPolygonPoints } from '@/utils/interaction/merge-cells';
+import { SpreadSheet } from '@/sheet-type';
 
 /**
  * Cell for panelGroup area

@@ -1,7 +1,7 @@
+import { merge, set } from 'lodash';
 import { S2Options } from '@/common/interface';
 import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
 import { SpreadSheet } from '@/sheet-type';
-import { merge, set } from 'lodash';
 
 import { Node } from '@/facet/layout/node';
 import { PivotDataSet } from '@/data-set';

@@ -1,16 +1,6 @@
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
-import {
-  auto,
-  ID_SEPARATOR,
-  PartDrillDown,
-  S2DataConfig,
-  S2Options,
-  SheetComponent,
-} from '@/index';
-import { getContainer } from '../util/helpers';
 import ReactDOM from 'react-dom';
-import { PartDrillDownInfo } from '@/components';
 import React, { useState } from 'react';
 import { Switch, Button, Layout } from 'antd';
 const { Header, Sider, Content } = Layout;
@@ -22,6 +12,16 @@ import {
   drillDownData4,
   originData,
 } from '../data/data-drill-down';
+import { getContainer } from '../util/helpers';
+import {
+  auto,
+  ID_SEPARATOR,
+  PartDrillDown,
+  S2DataConfig,
+  S2Options,
+  SheetComponent,
+} from '@/index';
+import { PartDrillDownInfo } from '@/components';
 
 const getDataCfg = () => {
   return {

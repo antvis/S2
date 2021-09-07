@@ -1,17 +1,17 @@
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
+import ReactDOM from 'react-dom';
+import React from 'react';
+import { getContainer } from '../util/helpers';
 import {
   S2DataConfig,
   S2Options,
   SheetComponent,
   SpreadSheet,
 } from '../../src';
-import { getContainer } from '../util/helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
-import { transformCustomTreeItems } from '@/facet/layout/util/transform-custom-tree-items';
 import { customTreeItems } from '../data/custom-tree-items';
 import { dataCustomTrees } from '../data/data-custom-trees';
+import { transformCustomTreeItems } from '@/facet/layout/util/transform-custom-tree-items';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,

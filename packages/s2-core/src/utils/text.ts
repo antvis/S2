@@ -1,7 +1,3 @@
-import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
-import { CellBoxCfg, CellCfg, TooltipPosition } from '@/common/interface';
-import { S2Options, SpreadSheetTheme } from '@/index';
-import { renderText } from '@/utils/g-renders';
 import { IShape } from '@antv/g-canvas';
 import {
   clone,
@@ -14,6 +10,10 @@ import {
   toString,
   values,
 } from 'lodash';
+import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
+import { CellBoxCfg, CellCfg, TooltipPosition } from '@/common/interface';
+import { S2Options, SpreadSheetTheme } from '@/index';
+import { renderText } from '@/utils/g-renders';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');

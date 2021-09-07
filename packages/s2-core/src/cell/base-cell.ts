@@ -1,3 +1,5 @@
+import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
+import { each, get, includes, isEmpty, keys, pickBy } from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
@@ -16,8 +18,6 @@ import { getContentArea } from '@/utils/cell/cell';
 import { renderLine, renderText, updateShapeAttr } from '@/utils/g-renders';
 import { isMobile } from '@/utils/is-mobile';
 import { getEllipsisText, measureTextWidth } from '@/utils/text';
-import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import { each, get, includes, isEmpty, keys, pickBy } from 'lodash';
 
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info

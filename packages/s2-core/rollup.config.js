@@ -65,7 +65,6 @@ if (format === 'umd') {
     '@antv/g-gesture',
     '@antv/g-canvas',
     '@antv/event-emitter',
-    '@antv/matrix-util',
     'd3-timer',
     'classnames',
   );

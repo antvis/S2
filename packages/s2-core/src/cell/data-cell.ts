@@ -1,3 +1,7 @@
+import { Point } from '@antv/g-base';
+import { IShape } from '@antv/g-canvas';
+import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
+import { Node } from '..';
 import { BaseCell } from '@/cell/base-cell';
 import {
   CellTypes,
@@ -30,11 +34,7 @@ import {
   renderRect,
   updateShapeAttr,
 } from '@/utils/g-renders';
-import { Point } from '@antv/g-base';
-import { IShape } from '@antv/g-canvas';
-import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
 import { parseNumberWithPrecision } from '@/utils/formatter';
-import { Node } from '..';
 
 /**
  * DataCell for panelGroup area
