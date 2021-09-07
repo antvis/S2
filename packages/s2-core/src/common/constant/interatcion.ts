@@ -24,12 +24,4 @@ export enum SelectedStateName {
   ROW_SELECTED = 'rowSelected',
 }
 
-export enum CellTypes {
-  DATACELL = 'dataCell',
-  ROWCELL = 'rowCell',
-  COLCELL = 'colCell',
-  CORNERCELL = 'cornerCell',
-  MERGEDCELLS = 'mergedCells',
-}
-
 export const KEEP_HOVER_TIME = 800;
