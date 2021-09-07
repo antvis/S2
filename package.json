@@ -44,8 +44,6 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
-    "@types/jest": "^26.0.24",
-    "@types/lodash": "^4.14.171",
     "@types/node": "^16.3.0",
     "@types/react": "17.0.14",
     "@types/react-dom": "17.0.9",
@@ -70,9 +68,6 @@
     "prettier": "2.3.2",
     "pretty-quick": "^3.1.1",
     "rimraf": "^3.0.2",
-    "ts-jest": "^27.0.3",
-    "ts-loader": "^9.2.3",
-    "ts-node": "^10.0.0",
     "typescript": "^4.4.2"
   },
   "license": "MIT"
