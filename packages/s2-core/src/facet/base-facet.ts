@@ -39,10 +39,15 @@ import { SpreadSheet } from 'src/sheet-type';
 import { ScrollBar, ScrollType } from 'src/ui/scrollbar';
 import { isMobile } from 'src/utils/is-mobile';
 import {
+  calculateInViewIndexes,
+  optimizeScrollXY,
+  translateGroup,
+} from './utils';
+import {
   DebuggerUtil,
   DEBUG_HEADER_LAYOUT,
   DEBUG_VIEW_RENDER,
-} from '../common/debug';
+} from '@/common/debug';
 import type {
   Formatter,
   LayoutResult,
@@ -50,12 +55,8 @@ import type {
   SpreadSheetFacetCfg,
   ViewMeta,
   S2CellType,
-} from '../common/interface';
-import {
-  calculateInViewIndexes,
-  optimizeScrollXY,
-  translateGroup,
-} from './utils';
+  FrameConfig,
+} from '@/common/interface';
 import { updateMergedCells } from '@/utils/interaction/merge-cells';
 import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
 
@@ -1115,7 +1116,7 @@ export abstract class BaseFacet {
       const cornerWidth = this.cornerBBox.width;
       const cornerHeight = this.cornerBBox.height;
       const frame = this.cfg?.frame;
-      const frameCfg = {
+      const frameCfg: FrameConfig = {
         position: {
           x: this.cornerBBox.x,
           y: this.cornerBBox.y,

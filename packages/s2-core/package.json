@@ -62,6 +62,7 @@
     "tslib": "^2.3.1"
   },
   "devDependencies": {
+    "@rollup/plugin-alias": "^3.1.5",
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@rollup/plugin-typescript": "^8.2.1",
@@ -86,6 +87,7 @@
     "less": "^4.1.1",
     "less-loader": "^10.0.1",
     "lint-staged": "^11.0.0",
+    "lodash-es": "^4.17.21",
     "npm-run-all": "^4.1.5",
     "ora": "^5.4.1",
     "prettier": "2.3.2",

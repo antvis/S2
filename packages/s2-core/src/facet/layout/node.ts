@@ -1,7 +1,7 @@
-import _ from 'lodash';
+import { omit, isEqual } from 'lodash';
+import { Hierarchy } from './hierarchy';
 import { SpreadSheet } from '@/index';
 import { S2CellType } from '@/common/interface';
-import { Hierarchy } from './hierarchy';
 
 export interface BaseNodeConfig {
   id: string;
@@ -193,7 +193,7 @@ export class Node {
       tempBranch.unshift(current);
       let pa = current.parent;
       while (pa) {
-        if (!_.isEqual(pa, parent)) {
+        if (!isEqual(pa, parent)) {
           tempBranch.unshift(pa);
         } else {
           break;
@@ -299,6 +299,6 @@ export class Node {
   }
 
   public toJSON() {
-    return _.omit(this, ['config', 'hierarchy', 'parent', 'spreadsheet']);
+    return omit(this, ['config', 'hierarchy', 'parent', 'spreadsheet']);
   }
 }

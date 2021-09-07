@@ -4,6 +4,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
 import ttypescript from 'ttypescript';
+import alias from '@rollup/plugin-alias';
 
 const format = process.env.FORMAT;
 
@@ -14,10 +15,11 @@ const OUT_DIR_NAME_MAP = {
 };
 
 const outDir = OUT_DIR_NAME_MAP[format];
+const isEsmFormat = format === 'es';
 
 const output = {
   format: format,
-  preserveModules: format === 'es',
+  preserveModules: isEsmFormat,
   exports: 'named',
   name: 'S2',
   sourcemap: true,
@@ -25,6 +27,9 @@ const output = {
 };
 
 const plugins = [
+  alias({
+    entries: [{ find: 'lodash', replacement: 'lodash-es' }],
+  }),
   commonjs(),
   resolve(),
   typescript({
@@ -62,6 +67,7 @@ if (format === 'umd') {
   external.push(
     'd3-interpolate',
     'lodash',
+    'lodash-es',
     '@antv/g-gesture',
     '@antv/g-canvas',
     '@antv/event-emitter',
