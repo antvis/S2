@@ -194,4 +194,8 @@ describe('spreadsheet normal spec', () => {
       getContainer(),
     );
   });
+  test('should pass test', () => {
+    // just for placeholder when run test:live
+    expect(1).toBe(1);
+  });
 });

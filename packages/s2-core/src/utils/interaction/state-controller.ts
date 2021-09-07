@@ -1,7 +1,5 @@
-import { IGroup } from '@antv/g-canvas';
-import { INTERACTION_STATE_INFO_KEY, SHAPE_STYLE_MAP } from '@/common/constant';
-import { InteractionStateInfo } from '@/common/interface';
-import { S2CellType } from '@/common/interface';
+import { INTERACTION_STATE_INFO_KEY } from '@/common/constant';
+import { InteractionStateInfo, S2CellType } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { forEach, isEmpty } from 'lodash';
 

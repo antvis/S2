@@ -17,12 +17,14 @@ const data = getMockData('../data/company-sales-record-2.csv');
 const intervalColor = 'red';
 const bgColor = '#29A294';
 
+let sheetInstance: SpreadSheet;
 const getSpreadSheet = (
   dom: string | HTMLElement,
   dataCfg: S2DataConfig,
   options: S2Options,
 ) => {
-  return new SpreadSheet(dom, dataCfg, options);
+  sheetInstance = new SpreadSheet(dom, dataCfg, options);
+  return sheetInstance;
 };
 
 const getDataCfg = () => {
@@ -330,5 +332,12 @@ describe('spreadsheet multiple values cell spec', () => {
       <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
       getContainer(),
     );
+  });
+
+  test('should get correct condition count', () => {
+    expect(sheetInstance.options.conditions.text).toHaveLength(1);
+    expect(sheetInstance.options.conditions.interval).toHaveLength(1);
+    expect(sheetInstance.options.conditions.background).toHaveLength(1);
+    expect(sheetInstance.options.conditions.icon).toHaveLength(1);
   });
 });
