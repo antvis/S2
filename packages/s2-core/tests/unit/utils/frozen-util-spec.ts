@@ -96,7 +96,7 @@ describe('Frozen util test', () => {
       expect(
         calculateFrozenCornerCells(frozenOpts, colLength, rowLength),
       ).toStrictEqual({
-        BOTTOM: [
+        bottom: [
           {
             x: 0,
             y: 999,
@@ -106,7 +106,7 @@ describe('Frozen util test', () => {
             y: 999,
           },
         ],
-        TOP: [
+        top: [
           {
             x: 0,
             y: 0,
