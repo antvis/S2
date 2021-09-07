@@ -81,17 +81,17 @@ describe('List Table Core Data Process', () => {
     const { getCellMeta } = ss.facet.layoutResult;
     test('should get correct data value', () => {
       // 第一行
-      expect(getCellMeta(0, 0).data).toEqual([{ province: '浙江省' }]);
-      expect(getCellMeta(0, 1).data).toEqual([{ city: '杭州市' }]);
-      expect(getCellMeta(0, 2).data).toEqual([{ category: '家具' }]);
-      expect(getCellMeta(0, 3).data).toEqual([{ subCategory: '桌子' }]);
-      expect(getCellMeta(0, 4).data).toEqual([{ price: 254 }]);
+      expect(getCellMeta(0, 0).data).toEqual({ province: '浙江省' });
+      expect(getCellMeta(0, 1).data).toEqual({ city: '杭州市' });
+      expect(getCellMeta(0, 2).data).toEqual({ category: '家具' });
+      expect(getCellMeta(0, 3).data).toEqual({ subCategory: '桌子' });
+      expect(getCellMeta(0, 4).data).toEqual({ price: 254 });
       // 第三行
-      expect(getCellMeta(2, 0).data).toEqual([{ province: '浙江省' }]);
-      expect(getCellMeta(2, 1).data).toEqual([{ city: '宁波市' }]);
-      expect(getCellMeta(2, 2).data).toEqual([{ category: '家具' }]);
-      expect(getCellMeta(2, 3).data).toEqual([{ subCategory: '桌子' }]);
-      expect(getCellMeta(2, 4).data).toEqual([{ price: 273 }]);
+      expect(getCellMeta(2, 0).data).toEqual({ province: '浙江省' });
+      expect(getCellMeta(2, 1).data).toEqual({ city: '宁波市' });
+      expect(getCellMeta(2, 2).data).toEqual({ category: '家具' });
+      expect(getCellMeta(2, 3).data).toEqual({ subCategory: '桌子' });
+      expect(getCellMeta(2, 4).data).toEqual({ price: 273 });
     });
   });
 });
