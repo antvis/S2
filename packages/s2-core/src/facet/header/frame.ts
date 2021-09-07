@@ -100,7 +100,7 @@ export class Frame extends Group {
         y2: y,
         stroke: splitLine.horizontalBorderColor,
         lineWidth: splitLine.horizontalBorderWidth,
-        opacity: splitLine.verticalBorderColorOpacity,
+        opacity: splitLine.horizontalBorderColorOpacity,
       },
     });
   }
