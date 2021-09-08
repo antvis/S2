@@ -72,21 +72,12 @@ const s2DataConfig = {
       name: '城市',
     },
     {
-<<<<<<< HEAD
-      field: '商品类型',
-      name: '价格',
-    },
-    {
-      field: 'cost',
-      name: '成本',
-=======
       field: 'type',
       name: '商品类型',
     },
     {
       field: 'price',
       name: '价格',
->>>>>>> 9a2697d6e28c40ff576570456b7199aedfd37282
     },
   ],
   data: [
@@ -150,10 +141,7 @@ const s2options = {
   height: 600,
   hierarchyType: 'grid',
   mode: 'pivot',
-<<<<<<< HEAD
-=======
   valueInCols: true,
->>>>>>> 9a2697d6e28c40ff576570456b7199aedfd37282
 }
 ```
 
@@ -164,22 +152,6 @@ const s2options = {
 ```
 
 ```ts
-<<<<<<< HEAD
-import { SheetComponent } from '@antv/s2';
-
-const container = document.getElementById('container');
-
-ReactDOM.render(
-  <SheetComponent dataCfg={s2DataConfig} options={s2options}/>,
-  container,
-);
-```
-
-
-## Author
-
-👤 [**@AntV**](https://github.com/antvis)
-=======
 import { SpreadSheet } from '@antv/s2';
 
 const container = document.getElementById('container');
@@ -197,7 +169,6 @@ s2.render()
 ## Author
 
 👤 [**@AntV**](https://github.com/orgs/antvis/people)
->>>>>>> 9a2697d6e28c40ff576570456b7199aedfd37282
 
 
 ## 🤝  Contributing
