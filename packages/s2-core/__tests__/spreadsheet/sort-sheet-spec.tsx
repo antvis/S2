@@ -1,58 +1,13 @@
-import { merge } from 'lodash';
-import { act } from 'react-dom/test-utils';
-import 'antd/dist/antd.min.css';
-import ReactDOM from 'react-dom';
 import React from 'react';
-import { Switch } from 'antd';
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
+import { S2DataConfig, TOTAL_VALUE } from '../../src';
+import { totalData } from '../data/data-sort';
 import { getContainer } from '../util/helpers';
-import {
-  S2DataConfig,
-  S2Options,
-  SheetComponent,
-  SpreadSheet,
-  TOTAL_VALUE,
-} from '../../src';
-import { originData, totalData } from '../data/data-sort';
+import { SheetEntry } from '../util/sheet-entry';
 import { CustomTooltip } from './custom/custom-tooltip';
 
-const getSpreadSheet = (
-  dom: string | HTMLElement,
-  dataCfg: S2DataConfig,
-  options: S2Options,
-) => {
-  return new SpreadSheet(dom, dataCfg, options);
-};
-
-const mockDataCfg = {
-  fields: {
-    rows: ['area', 'province', 'city'],
-    columns: ['type', 'sub_type'],
-    values: ['cost', 'price'],
-    valueInCols: true,
-  },
-  meta: [
-    {
-      field: 'price',
-      name: '价格',
-    },
-    {
-      field: 'city',
-      name: '城市',
-    },
-    {
-      field: 'area',
-      name: '区域',
-    },
-    {
-      field: 'province',
-      name: '省份',
-    },
-    {
-      field: 'cost',
-      name: '成本',
-    },
-  ],
-  data: originData,
+const dataCfg: Partial<S2DataConfig> = {
   totalData,
   sortParams: [
     // use sortMethod to sort
@@ -202,112 +157,33 @@ const mockDataCfg = {
   ],
 };
 
-const getOptions = (): S2Options => {
-  return {
-    debug: true,
-    width: 800,
-    height: 600,
-    hierarchyType: 'grid',
-    hierarchyCollapse: false,
-    showSeriesNumber: true,
-    freezeRowHeader: false,
-    mode: 'pivot',
-    conditions: {
-      text: [],
-      interval: [],
-      background: [],
-      icon: [],
+const options = {
+  tooltip: {
+    showTooltip: false,
+    renderTooltip: (spreadsheet) => {
+      return new CustomTooltip(spreadsheet);
     },
-    style: {
-      treeRowsWidth: 100,
-      collapsedRows: {},
-      colCfg: {
-        // width: 80,
-        widthByFieldValue: {},
-        heightByField: {},
-        colWidthType: 'compact',
-      },
-      cellCfg: {
-        width: 80,
-        height: 32,
-      },
-      device: 'pc',
+  },
+  totals: {
+    row: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['area', 'province'],
     },
-    tooltip: {
-      showTooltip: false,
-      renderTooltip: (spreadsheet) => {
-        return new CustomTooltip(spreadsheet);
-      },
+    col: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['type'],
     },
-    totals: {
-      row: {
-        showGrandTotals: true,
-        showSubTotals: true,
-        reverseLayout: true,
-        reverseSubLayout: true,
-        subTotalsDimensions: ['area', 'province'],
-      },
-      col: {
-        showGrandTotals: true,
-        showSubTotals: true,
-        reverseLayout: true,
-        reverseSubLayout: true,
-        subTotalsDimensions: ['type'],
-      },
-    },
-  };
+  },
 };
 
-function MainLayout(props) {
-  const [options, setOptions] = React.useState(props.options);
-  const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
-  const [valueInCols, setValueInCols] = React.useState(true);
-
-  const onCheckChanged = (checked) => {
-    setValueInCols(checked);
-    setDataCfg(
-      merge({}, dataCfg, {
-        fields: {
-          valueInCols: checked,
-        },
-      }),
-    );
-  };
-
-  const onCheckChanged1 = (checked) => {
-    setOptions(
-      merge({}, options, {
-        hierarchyType: checked ? 'tree' : 'grid',
-      }),
-    );
-  };
-
-  return (
-    <div>
-      <div style={{ display: 'inline-block' }}>
-        <Switch
-          checkedChildren="挂列头"
-          unCheckedChildren="挂行头"
-          defaultChecked={valueInCols}
-          onChange={onCheckChanged}
-          style={{ marginRight: 10 }}
-        />
-        <Switch
-          checkedChildren="树形"
-          unCheckedChildren="平铺"
-          defaultChecked={false}
-          onChange={onCheckChanged1}
-          style={{ marginRight: 10 }}
-        />
-      </div>
-      <SheetComponent
-        dataCfg={dataCfg}
-        adaptive={false}
-        options={options}
-        spreadsheet={getSpreadSheet}
-      />
-    </div>
-  );
+function MainLayout() {
+  return <SheetEntry dataCfg={dataCfg} options={options} />;
 }
 
 describe('spreadsheet normal spec', () => {
@@ -316,9 +192,6 @@ describe('spreadsheet normal spec', () => {
   });
 
   act(() => {
-    ReactDOM.render(
-      <MainLayout dataCfg={mockDataCfg} options={getOptions()} />,
-      getContainer(),
-    );
+    ReactDOM.render(<MainLayout />, getContainer());
   });
 });

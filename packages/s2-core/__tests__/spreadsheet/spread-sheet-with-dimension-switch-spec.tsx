@@ -1,74 +1,30 @@
-import 'antd/dist/antd.min.css';
-import ReactDOM from 'react-dom';
+import { DimensionSwitchPopover } from '@/components/dimension-switch';
+import { DimensionType } from '@/components/dimension-switch/dimension';
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import { getContainer } from '../util/helpers';
+import { SheetEntry } from '../util/sheet-entry';
 
-import { DimensionSwitchPopover } from 'src/components/dimension-switch';
-import { DimensionType } from 'src/components/dimension-switch/dimension';
-import { clone } from 'lodash';
-import { getContainer, getMockData } from '../util/helpers';
-import { SheetComponent } from '@/components';
-
-const mockData = getMockData('../data/tableau-supermarket.csv');
-
-const getDataCfg = () => {
-  return {
-    fields: {
-      rows: ['area', 'province', 'city'],
-      columns: ['type', 'sub_type'],
-      values: ['profit', 'count', 'sale_amt', 'discount'],
-      valueInCols: true,
-    },
-    meta: [
-      {
-        field: 'sale_amt',
-        name: '销售额',
-        formatter: (v) => v,
-      },
-      {
-        field: 'count',
-        name: '销售个数',
-        formatter: (v) => v,
-      },
-      {
-        field: 'discount',
-        name: '折扣',
-        formatter: (v) => v,
-      },
-      {
-        field: 'profit',
-        name: '利润',
-        formatter: (v) => v,
-      },
-    ],
-    data: mockData,
-  };
-};
-
-const getDimestionData = (): DimensionType[] => {
+const getDimensionData = (): DimensionType[] => {
   return [
     {
       type: 'value',
       displayName: '指标',
       items: [
         {
-          id: 'profit',
-          displayName: '利润',
+          id: 'cost',
+          displayName: '成本',
           checked: true,
         },
         {
-          id: 'count',
-          displayName: '销售个数',
+          id: 'price',
+          displayName: '价格',
           checked: true,
         },
         {
-          id: 'discount',
-          displayName: '折扣',
-          checked: true,
-        },
-        {
-          id: 'sale_amt',
-          displayName: '销售额',
+          id: 'cost/price',
+          displayName: '成本率',
           checked: true,
         },
       ],
@@ -76,34 +32,16 @@ const getDimestionData = (): DimensionType[] => {
   ];
 };
 
-const getOptions = () => {
-  return {
-    width: 800,
-    height: 600,
-    hierarchyType: 'grid',
-    hierarchyCollapse: false,
-    showSeriesNumber: true,
-    freezeRowHeader: false,
-    mode: 'pivot',
-  };
-};
-
-const getTheme = () => {
-  return {};
-};
-
-function MainLayout({ dataCfg, dimensionData, options, theme }) {
-  const [data, setData] = useState(dataCfg);
-  const [dimension, setDimension] = useState(dimensionData);
+function MainLayout() {
+  const [values, setValues] = useState(['cost', 'price', 'cost/price']);
+  const [dimension, setDimension] = useState(getDimensionData());
 
   const onSubmit = (result: DimensionType[]) => {
     const checkedValues = result[0].items
       .filter((i) => i.checked)
       .map((i) => i.id);
 
-    const newData = clone(data);
-    newData.fields.values = checkedValues;
-    setData(newData);
+    setValues(checkedValues);
     setDimension(result);
   };
   return (
@@ -111,7 +49,14 @@ function MainLayout({ dataCfg, dimensionData, options, theme }) {
       <div style={{ margin: '10px' }}>
         <DimensionSwitchPopover data={dimension} onSubmit={onSubmit} />
       </div>
-      <SheetComponent dataCfg={data} options={options} themeCfg={theme} />
+      <SheetEntry
+        dataCfg={{
+          fields: {
+            values: values,
+          },
+        }}
+        options={{}}
+      />
     </div>
   );
 }
@@ -122,14 +67,6 @@ describe('Dimension Switch Test', () => {
   });
 
   act(() => {
-    ReactDOM.render(
-      <MainLayout
-        dataCfg={getDataCfg()}
-        dimensionData={getDimestionData()}
-        options={getOptions()}
-        theme={getTheme()}
-      />,
-      getContainer(),
-    );
+    ReactDOM.render(<MainLayout />, getContainer());
   });
 });

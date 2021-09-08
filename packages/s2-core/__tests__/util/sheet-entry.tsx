@@ -1,6 +1,6 @@
 import { Checkbox, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
-import { merge } from 'lodash';
+import { isArray, merge, mergeWith } from 'lodash';
 import React, {
   forwardRef,
   MutableRefObject,
@@ -15,19 +15,25 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
+  ThemeCfg,
 } from '../../src';
 import { data, meta } from '../data/mock-dataset.json';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
-  merge(
+  mergeWith(
     {},
     defaultOptions,
     { debug: true, width: 800, height: 600 },
     ...options,
+    (origin, updated) => {
+      if (isArray(origin) && isArray(updated)) {
+        return updated;
+      }
+    },
   );
 
 export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
-  merge(
+  mergeWith(
     {},
     defaultDataConfig,
     {
@@ -40,12 +46,18 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
       data,
     },
     ...dataCfg,
+    (origin, updated) => {
+      if (isArray(origin) && isArray(updated)) {
+        return updated;
+      }
+    },
   );
 
 interface SheetEntryProps {
   header?: ReactNode;
   options: Partial<S2Options>;
   dataCfg: Partial<S2DataConfig>;
+  themeCfg?: ThemeCfg;
 }
 
 // eslint-disable-next-line react/display-name
@@ -133,6 +145,7 @@ export const SheetEntry = forwardRef(
               ref.current = instance;
             }
           }}
+          themeCfg={props.themeCfg}
         />
       </div>
     );
