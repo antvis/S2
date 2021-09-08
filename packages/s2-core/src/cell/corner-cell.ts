@@ -1,6 +1,3 @@
-import { Group, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
-import { isEmpty, isEqual } from 'lodash';
-import { HeaderCell } from './header-cell';
 import {
   CellTypes,
   EXTRA_FIELD,
@@ -14,6 +11,9 @@ import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
 import { renderRect, renderText, renderTreeIcon } from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
 import { getEllipsisText } from '@/utils/text';
+import { Group, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import { isEmpty, isEqual } from 'lodash';
+import { HeaderCell } from './header-cell';
 
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
@@ -45,7 +45,6 @@ export class CornerCell extends HeaderCell {
     const { x, y, height } = this.getCellArea();
 
     const textStyle = this.getTextStyle();
-    const iconStyle = this.getStyle().icon;
     const { formattedValue } = this.getFormattedFieldValue();
 
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
@@ -69,14 +68,13 @@ export class CornerCell extends HeaderCell {
 
     const { x: textX } = getTextPosition(
       {
-        x: x + this.getTreeIconWidth() + iconStyle.margin.right,
+        x: x + this.getTreeIconWidth(),
         y: y,
         width: maxWidth,
         height: height,
       },
       textStyle,
     );
-
     const textY = y + (isEmpty(secondLine) ? height / 2 : height / 4);
     // first line
     this.textShapes.push(
@@ -216,7 +214,7 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getContentArea();
+    const { width } = this.getCellArea();
     return width - this.getTreeIconWidth();
   }
 

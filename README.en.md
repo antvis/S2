@@ -11,8 +11,20 @@ Data-driven multi-dimensional analysis table.
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg">
   </a>
-  <a href="#" target="_blank">
+  <a href="https://codecov.io/gh/@antv/s2" target="_blank">
+    <img src="https://codecov.io/gh/@antv/s2/branch/master/graph/badge.svg" />
+  </a>
+  <a href="https://david-dm.org/@antv/s2" target="_blank">
+    <img src="https://david-dm.org/@antv/s2/status.svg"/>
+  </a>
+  <a href="#" target="_blank" target="_blank">
+    <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square"/>
+  </a>
+  <a href="#" target="_blank" target="_blank">
     <img alt="License: MIT@AntV" src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" />
+  </a>
+  <a href="https://github.com/antvis/S2/actions" target="_blank">
+    <img src="https://github.com/antvis/S2/workflows/CI/badge.svg" />
   </a>
 </p>
 
@@ -60,12 +72,21 @@ const s2DataConfig = {
       name: '城市',
     },
     {
+<<<<<<< HEAD
       field: '商品类型',
       name: '价格',
     },
     {
       field: 'cost',
       name: '成本',
+=======
+      field: 'type',
+      name: '商品类型',
+    },
+    {
+      field: 'price',
+      name: '价格',
+>>>>>>> 9a2697d6e28c40ff576570456b7199aedfd37282
     },
   ],
   data: [
@@ -129,6 +150,10 @@ const s2options = {
   height: 600,
   hierarchyType: 'grid',
   mode: 'pivot',
+<<<<<<< HEAD
+=======
+  valueInCols: true,
+>>>>>>> 9a2697d6e28c40ff576570456b7199aedfd37282
 }
 ```
 
@@ -139,6 +164,7 @@ const s2options = {
 ```
 
 ```ts
+<<<<<<< HEAD
 import { SheetComponent } from '@antv/s2';
 
 const container = document.getElementById('container');
@@ -153,6 +179,25 @@ ReactDOM.render(
 ## Author
 
 👤 [**@AntV**](https://github.com/antvis)
+=======
+import { SpreadSheet } from '@antv/s2';
+
+const container = document.getElementById('container');
+
+const s2 = new SpreadSheet(container, s2DataCfg, s2options)
+
+s2.render()
+```
+
+### 4. Result
+
+![result](https://gw.alipayobjects.com/zos/antfincdn/rPTyWU7Ibr/4c7260b6-dd7b-43e7-bbdd-f27f33ed0faa.png)
+
+
+## Author
+
+👤 [**@AntV**](https://github.com/orgs/antvis/people)
+>>>>>>> 9a2697d6e28c40ff576570456b7199aedfd37282
 
 
 ## 🤝  Contributing

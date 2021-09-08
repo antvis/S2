@@ -1,9 +1,18 @@
+import { Node } from '@/facet/layout/node';
+import {
+  filterUndefined,
+  flatten as customFlatten,
+  flattenDeep as customFlattenDeep,
+  getFieldKeysByDimensionValues,
+  getIntersections,
+  isEveryUndefined,
+  splitTotal
+} from '@/utils/data-set-operate';
 import {
   compact,
   each,
   find,
   flatten,
-  forEach,
   get,
   has,
   includes,
@@ -15,7 +24,7 @@ import {
   reduce,
   set,
   uniq,
-  values,
+  values
 } from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from 'src/common/debug';
@@ -26,19 +35,9 @@ import {
   CellDataParams,
   DataPathParams,
   DataType,
-  PivotMeta,
+  PivotMeta
 } from 'src/data-set/interface';
 import { handleSortAction } from 'src/utils/sort-action';
-import {
-  filterUndefined,
-  flatten as customFlatten,
-  flattenDeep as customFlattenDeep,
-  getFieldKeysByDimensionValues,
-  getIntersections,
-  isEveryUndefined,
-  splitTotal,
-} from '@/utils/data-set-operate';
-import { Node } from '@/facet/layout/node';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -340,19 +339,20 @@ export class PivotDataSet extends BaseDataSet {
     // 目前源数据的是按照之前数据的现状（一条数据不是代表一个格子），处理的模板
     // 按values平铺展开data, 添加extraKey，冗余数据的量随着values增加而
     // 增加，而且双层循环的效率也随着而降低效率
-    const multiValueTransform = (originData: Data[]) => {
+    const multiValueTransform = (originData: Data[] = []) => {
       const transformedData = [];
-      forEach(originData, (datum) => {
-        if (!isEmpty(values)) {
-          forEach(values, (vi) => {
+      const isValuesEmpty = isEmpty(values);
+      originData.forEach((datum) => {
+        if (isValuesEmpty) {
+          transformedData.push(datum);
+        } else {
+          values.forEach((vi) => {
             transformedData.push({
               ...datum,
               [EXTRA_FIELD]: vi,
               [VALUE_FIELD]: datum[vi],
             });
           });
-        } else {
-          transformedData.push(datum);
         }
       });
       return transformedData;

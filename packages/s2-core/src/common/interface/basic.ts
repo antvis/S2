@@ -9,6 +9,7 @@ import { DataItem, S2DataConfig } from './s2DataConfig';
 import { CustomTreeItem } from '@/common/interface';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
+  FrameConfig,
   Hierarchy,
   Node,
   S2Options,
@@ -219,17 +220,21 @@ export type CellCallback = (
 export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
-// TODO 类型定义清楚！！
-export type FrameCallback = (cfg: any) => Frame;
+
+export type FrameCallback = (cfg: FrameConfig) => Frame;
+
 export type CornerHeaderCallback = (
   parent: S2CellType,
   spreadsheet: SpreadSheet,
   ...restOptions
 ) => void;
+
 // 透出默认的布局结果，返回新的结果
 export type LayoutResultCallback = (layoutResult: LayoutResult) => LayoutResult;
+
 // 行列结构的自定义
 export type HierarchyResult = { nodes: Node[]; push: boolean };
+
 export type HierarchyCallback = (
   spreadsheet: SpreadSheet,
   node: Node,

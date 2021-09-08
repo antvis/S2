@@ -1,32 +1,33 @@
-import { Group } from '@antv/g-canvas';
-import { includes, isEmpty, concat, merge, forEach, size } from 'lodash';
-import { EventController } from './event-controller';
-import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
-import { ColHeader, RowHeader } from '@/facet/header';
-import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
-
-import { clearState, setState } from '@/utils/interaction/state-controller';
-import { isMobile } from '@/utils/is-mobile';
+import { ColCell, DataCell, RowCell } from '@/cell';
 import {
-  BaseEvent,
-  DataCell,
-  DataCellClick,
-  Intercept,
-  HoverEvent,
+  CellTypes,
   InteractionName,
-  InteractionStateInfo,
   InteractionStateName,
   INTERACTION_STATE_INFO_KEY,
+  Intercept,
+  InterceptType,
+} from '@/common/constant';
+import {
+  CustomInteraction,
+  InteractionStateInfo,
+  S2CellType,
+} from '@/common/interface';
+import { ColHeader, RowHeader } from '@/facet/header';
+import { BaseEvent } from '@/interaction/base-event';
+import { SpreadSheet } from '@/sheet-type';
+import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
+import { clearState, setState } from '@/utils/interaction/state-controller';
+import { isMobile } from '@/utils/is-mobile';
+import { concat, forEach, includes, isEmpty, merge, size } from 'lodash';
+import { HoverEvent } from '..';
+import {
+  DataCellClick,
   MergedCellsClick,
   RowColumnClick,
   RowTextClick,
-  S2CellType,
-  SpreadSheet,
-  ColCell,
-  RowCell,
-} from '@/index';
-import { CustomInteraction } from '@/common/interface';
-import { CellTypes, InterceptType } from '@/common/constant';
+} from './base-interaction/click';
+import { EventController } from './event-controller';
+import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -148,7 +149,9 @@ export class RootInteraction {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
     let currentNode = rowHeader?.cfg?.children;
-
+    if (isEmpty(currentNode)) {
+      return [];
+    }
     while (!currentNode[0]?.cellType) {
       currentNode = currentNode[0]?.cfg?.children;
     }
@@ -163,12 +166,14 @@ export class RootInteraction {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const colHeader = children.filter((group) => group instanceof ColHeader)[0];
     let currentNode = colHeader?.cfg?.children;
-
+    if (isEmpty(currentNode)) {
+      return [];
+    }
     while (!currentNode[0]?.cellType) {
       currentNode = currentNode[0]?.cfg?.children;
     }
 
-    const colCells = currentNode || [];
+    const colCells = currentNode;
     return colCells.filter(
       (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
     ) as ColCell[];
