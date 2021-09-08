@@ -99,7 +99,7 @@ export const assembleOptions = (...options: Partial<S2Options>[]) =>
   mergeWith(
     {},
     defaultOptions,
-    { debug: true, width: 800, height: 600 },
+    { debug: true, width: 800, height: 600, hdAdapter: false },
     ...options,
     (origin, updated) => {
       if (isArray(origin) && isArray(updated)) {
@@ -189,7 +189,7 @@ export const SheetEntry = forwardRef(
           />
           冻结行头：
           <Checkbox
-            value={freezeRowHeader}
+            checked={freezeRowHeader}
             onChange={(e) => {
               onFreezeRowHeaderChange(e.target.checked);
             }}

@@ -1,31 +1,33 @@
-import { includes, isEmpty, concat, merge, forEach, size } from 'lodash';
-import { EventController } from './event-controller';
-import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
-import { ColHeader, RowHeader } from '@/facet/header';
-import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
-
-import { clearState, setState } from '@/utils/interaction/state-controller';
-import { isMobile } from '@/utils/is-mobile';
+import { ColCell, DataCell, RowCell } from '@/cell';
 import {
-  BaseEvent,
-  DataCell,
-  DataCellClick,
-  Intercept,
-  HoverEvent,
+  CellTypes,
   InteractionName,
-  InteractionStateInfo,
   InteractionStateName,
   INTERACTION_STATE_INFO_KEY,
+  Intercept,
+  InterceptType,
+} from '@/common/constant';
+import {
+  CustomInteraction,
+  InteractionStateInfo,
+  S2CellType,
+} from '@/common/interface';
+import { ColHeader, RowHeader } from '@/facet/header';
+import { BaseEvent } from '@/interaction/base-event';
+import { SpreadSheet } from '@/sheet-type';
+import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
+import { clearState, setState } from '@/utils/interaction/state-controller';
+import { isMobile } from '@/utils/is-mobile';
+import { concat, forEach, includes, isEmpty, merge, size } from 'lodash';
+import { HoverEvent } from '..';
+import {
+  DataCellClick,
   MergedCellsClick,
   RowColumnClick,
   RowTextClick,
-  S2CellType,
-  SpreadSheet,
-  ColCell,
-  RowCell,
-} from '@/index';
-import { CustomInteraction } from '@/common/interface';
-import { CellTypes, InterceptType } from '@/common/constant';
+} from './base-interaction/click';
+import { EventController } from './event-controller';
+import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;

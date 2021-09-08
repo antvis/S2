@@ -1,18 +1,3 @@
-import { act } from 'react-dom/test-utils';
-import 'antd/dist/antd.min.css';
-import ReactDOM from 'react-dom';
-import React from 'react';
-import { getContainer } from '../util/helpers';
-import {
-  data6,
-  data7,
-  data9,
-  data10,
-  totalData6,
-  totalData8,
-  totalData9,
-  totalData10,
-} from '../data/data-accuracy';
 import {
   auto,
   EXTRA_FIELD,
@@ -21,6 +6,21 @@ import {
   SheetComponent,
   SpreadSheet,
 } from '@/index';
+import 'antd/dist/antd.min.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
+import {
+  data10,
+  data6,
+  data7,
+  data9,
+  totalData10,
+  totalData6,
+  totalData8,
+  totalData9,
+} from '../data/data-accuracy';
+import { getContainer } from '../util/helpers';
 
 let spreadsheet1: SpreadSheet;
 const setSpreadSheet = (
