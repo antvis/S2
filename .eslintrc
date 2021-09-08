@@ -6,7 +6,7 @@
     "plugin:react/recommended",
     "plugin:import/typescript",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "env": {
     "es6": true,
@@ -15,22 +15,39 @@
     "jest": true
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["prettier", "@typescript-eslint", "import"],
+  "plugins": ["prettier", "@typescript-eslint", "import", "react-hooks"],
   "settings": {
     "jest": {
       "version": 26
     },
     "react": {
-  		"version": "detect"
+      "version": "detect"
     }
   },
   "rules": {
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "prettier/prettier": [
+      1,
+      {
+        "endOfLine": "lf",
+        "semi": true,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "all",
+        "printWidth": 80,
+        "proseWrap": "never",
+        "overrides": [
+          { "files": ".eslintrc", "options": { "parser": "json" } },
+          { "files": ".prettierrc", "options": { "parser": "json" } }
+        ]
+      }
+    ],
     "import/order": 2,
     "import/no-default-export": 1,
-    "prettier/prettier": 2,
     "no-restricted-syntax": 0,
     "semi": 0,
-    "no-console": 0,
+    "no-console": 2,
     "no-multi-spaces": 0,
     "consistent-return": 0,
     "import/no-extraneous-dependencies": 0,

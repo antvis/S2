@@ -8,7 +8,7 @@ const STYLE_PLACEHOLDER = '<svg';
 // Image 缓存
 const ImageCache: Record<string, HTMLImageElement> = {};
 
-interface GuiIconCfg {
+export interface GuiIconCfg {
   readonly type: string;
   readonly x: number;
   readonly y: number;
@@ -92,13 +92,16 @@ export class GuiIcon extends Group {
    * 渲染
    */
   private render(): void {
-    const { x, y, width, height, type, fill } = this.cfg;
+    const { x, y, width, height, type, fill, textAlign, textBaseline } =
+      this.cfg;
     const image = new Shape.Image({
       attrs: {
         x,
         y,
         width,
         height,
+        textAlign,
+        textBaseline,
       },
     });
 
@@ -116,7 +119,7 @@ export class GuiIcon extends Group {
           this.addShape('image', image);
         })
         .catch((err: Event) => {
-          // 失败，打印 warn，方便调试
+          // eslint-disable-next-line no-console
           console.warn(`GuiIcon ${type} load error`, err);
         });
     }

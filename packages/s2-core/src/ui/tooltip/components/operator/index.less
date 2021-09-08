@@ -1,0 +1,77 @@
+@tooltip-prefix-cls: antv-s2-tooltip-operator;
+
+.@{tooltip-prefix-cls} {
+    color: rgba(0, 0, 0, 0.65);
+  
+    &-menus {
+      font-size: 12px;
+      line-height: 32px;
+      background: #f9f9f9;
+      padding: 0 12px;
+      color: rgba(0,0,0,0.65);
+      border: 0;
+  
+      .ant-menu-item {
+        margin: 0;
+        padding: 0 6px;
+        border-bottom: none;
+      }
+      .ant-menu-item:first-child {
+        padding: 0;
+      }
+  
+      .ant-menu-submenu {
+        border-bottom: none;
+        margin: 0;
+  
+        .ant-menu-submenu-title {
+          padding: 0 6px;
+          color: rgba(0, 0, 0, 0.65);
+  
+          &:hover {
+            color: rgba(0, 0, 0, 0.65);
+          }
+        }
+      }
+    }
+    #@{tooltip-prefix-cls}-menus {
+      .ant-menu-item-selected,
+      .ant-menu-item-active,
+      .ant-menu-submenu-selected,
+      .ant-menu-submenu-active,
+      .ant-menu-submenu-open {
+        border-bottom: none;
+        color: rgba(0, 0, 0, 0.85);
+      }
+    }
+}
+
+.ant-menu-submenu,
+.ant-menu-submenu-popup,
+.ant-menu,
+.ant-menu-light,
+.@{tooltip-prefix-cls}-submenu-popup {
+  .ant-menu,
+  .ant-menu-sub,
+  .ant-menu-vertical {
+    .ant-menu-item {
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 12px;
+      line-height: 32px;
+      height: 32px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  .ant-menu {
+    margin-top: -6px;
+  }
+  .ant-menu-sub {
+    min-width: 100px;
+  }
+}
+
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item,.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu{
+  margin: 0;
+  padding: 0;
+}

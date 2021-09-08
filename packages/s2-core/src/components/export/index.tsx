@@ -1,9 +1,9 @@
 import React from 'react';
 import { Menu, Dropdown, message } from 'antd';
-import classNames from 'classnames';
+import cx from 'classnames';
+import { SpreadSheet } from 'src/sheet-type';
 import { DotIcon } from '../icons/index';
 import { copyData, copyToClipboard, download } from '../../utils/export';
-import { BaseSpreadSheet } from '../../sheet-type';
 
 export interface DataSet {
   icon?: React.ReactNode;
@@ -27,7 +27,7 @@ export interface ExportCfgProps {
   fileName?: string;
 }
 export interface ExportProps extends ExportCfgProps {
-  sheet: BaseSpreadSheet;
+  sheet: SpreadSheet;
 }
 
 export const Export: React.FC<ExportProps> = ({
@@ -85,7 +85,7 @@ export const Export: React.FC<ExportProps> = ({
     <Dropdown
       overlay={menu}
       trigger={['click']}
-      className={classNames(PRECLASS, className)}
+      className={cx(PRECLASS, className)}
       {...restProps}
     >
       <a

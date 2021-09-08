@@ -1,5 +1,5 @@
+import { SpreadSheet } from 'src/sheet-type';
 import { Formatter, SortParam } from '../../common/interface';
-import { BaseSpreadSheet } from '../..';
 import { Hierarchy } from '../layout/hierarchy';
 
 export interface CornerData {
@@ -60,11 +60,11 @@ export interface Cfg {
   // 是否配置了rowHeader滚动条包含
   scrollContainsRowHeader?: boolean;
 
-  spreadsheet?: BaseSpreadSheet;
+  spreadsheet?: SpreadSheet;
 }
 
 export interface ResizeInfo {
-  isResizer: boolean;
+  isResizeArea: boolean;
   class: 'resize-trigger';
   /**
    * col是改变列配置，即改变宽度

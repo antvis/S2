@@ -1,188 +1,175 @@
-import { getEllipsisText } from '../utils/text';
-import _ from 'lodash';
-import { isIphoneX } from '../utils/is-mobile';
 import {
-  DEFAULT_PADDING,
+  CellTypes,
   EXTRA_FIELD,
-  ICON_RADIUS,
-  KEY_SERIES_NUMBER_NODE,
-  KEY_GROUP_CORNER_RESIZER,
-  COLOR_DEFAULT_RESIZER,
-} from '../common/constant';
-import { HIT_AREA } from '../facet/header/base';
-import { CornerHeaderConfig } from '../facet/header/corner';
-import { ResizeInfo } from '../facet/header/interface';
-import { Node } from '..';
-import { BaseCell } from './base-cell';
-import { renderLine } from '../utils/g-renders';
-import { IGroup } from '@antv/g-canvas';
-export class CornerCell extends BaseCell<Node> {
+  KEY_GROUP_CORNER_RESIZE_AREA,
+  S2Event,
+} from '@/common/constant';
+import { FormatResult, TextTheme } from '@/common/interface';
+import { CornerHeaderConfig } from '@/facet/header/corner';
+import { ResizeInfo } from '@/facet/header/interface';
+import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
+import { renderRect, renderText, renderTreeIcon } from '@/utils/g-renders';
+import { isIPhoneX } from '@/utils/is-mobile';
+import { getEllipsisText } from '@/utils/text';
+import { Group, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import { isEmpty, isEqual } from 'lodash';
+import { HeaderCell } from './header-cell';
+
+export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
 
-  protected handleRestOptions(...options) {
-    if (options.length === 0) {
-      throw new Error(
-        'CornerCell render need headerConfig&hotConfig in CornerHeader!!!',
-      );
-    }
-    this.headerConfig = options[0];
+  protected textShapes: IShape[] = [];
+
+  public get cellType() {
+    return CellTypes.CORNER_CELL;
   }
 
   public update() {}
 
   protected initCell() {
-    this.drawCellRect();
+    this.textShapes = [];
+    this.drawBackgroundShape();
+    this.drawTreeIcon();
     this.drawCellText();
-    this.drawHotspot();
+    this.drawResizeArea();
   }
 
   protected drawCellText() {
-    const { position } = this.headerConfig;
-    const {
-      label,
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      key,
-      seriesNumberWidth,
-    } = this.meta;
-    if (_.isEqual(label, EXTRA_FIELD)) {
-      // dont render extra node
+    const { label } = this.meta;
+
+    if (isEqual(label, EXTRA_FIELD)) {
+      // don't render extra node
       return;
     }
-    const extraPadding = this.spreadsheet.isHierarchyTreeType()
-      ? ICON_RADIUS * 2 + DEFAULT_PADDING
-      : 0;
-    const textStyle = _.get(
-      this.headerConfig,
-      'spreadsheet.theme.header.bolderText',
-    );
-    const seriesNumberW = seriesNumberWidth || 0;
-    const text = getEllipsisText(
-      label,
-      cellWidth - seriesNumberW - extraPadding,
-      textStyle,
-    );
+
+    const { x, y, height } = this.getCellArea();
+
+    const textStyle = this.getTextStyle();
+    const { formattedValue } = this.getFormattedFieldValue();
+
+    // 当为树状结构下需要计算文本前收起展开的icon占的位置
+
+    const maxWidth = this.getMaxTextWidth();
+    const text = getEllipsisText(formattedValue, maxWidth, textStyle);
     const ellipseIndex = text.indexOf('...');
+
     let firstLine = text;
     let secondLine = '';
 
     // 存在文字的省略号 & 展示为tree结构
     if (ellipseIndex !== -1 && this.spreadsheet.isHierarchyTreeType()) {
       // 剪裁到 ... 最有点的后1个像素位置
-      const lastIndex = ellipseIndex + (isIphoneX() ? 1 : 0);
-      firstLine = label.substr(0, lastIndex);
-      secondLine = label.slice(lastIndex);
+      const lastIndex = ellipseIndex + (isIPhoneX() ? 1 : 0);
+      firstLine = formattedValue.substr(0, lastIndex);
+      secondLine = formattedValue.slice(lastIndex);
       // 第二行重新计算...逻辑
-      secondLine = getEllipsisText(
-        secondLine,
-        cellWidth - seriesNumberW - extraPadding,
-        textStyle,
-      );
+      secondLine = getEllipsisText(secondLine, maxWidth, textStyle);
     }
 
-    let textX = position.x + x + extraPadding + cellWidth / 2;
-    /* corner text align scene
-  - center:
-  1、is spreadsheet but not tree mode
-  2、is listSheet and node is series number
-  - left(but contains cell padding):  --- default
-  1、is spreadsheet and tree mode
-  - left(no cell padding)
-  1、is listSheet but node is not series number
-   */
-    let textAlign = 'center';
-    if (
-      !this.spreadsheet.isHierarchyTreeType() ||
-      key === KEY_SERIES_NUMBER_NODE
-    ) {
-      textAlign = 'center';
-    } else if (this.spreadsheet.isHierarchyTreeType()) {
-      textX = position.x + x + extraPadding;
-      textAlign = 'start';
-    }
-    const textY =
-      position.y +
-      y +
-      (_.isEmpty(secondLine) ? cellHeight / 2 : cellHeight / 4);
-    // first line
-    this.addShape('text', {
-      attrs: {
-        x: textX,
-        y: textY,
-        text: firstLine,
-        textAlign,
-        ...textStyle,
-        appendInfo: {
-          isCornerHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
-          cellData: this.meta,
-        },
+    const { x: textX } = getTextPosition(
+      {
+        x: x + this.getTreeIconWidth(),
+        y: y,
+        width: maxWidth,
+        height: height,
       },
-    });
-    // second line
-    if (!_.isEmpty(secondLine)) {
-      this.addShape('text', {
-        attrs: {
-          x: textX,
-          y: position.y + y + cellHeight * 0.65,
-          text: secondLine,
-          ...textStyle,
-          appendInfo: {
-            isCornerHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
-            cellData: this.meta,
-          },
-        },
-      });
-    }
-  }
-
-  private drawCellRect() {
-    const { position } = this.headerConfig;
-    const { x, y, width: cellWidth, height: cellHeight, label } = this.meta;
-    this.addShape('rect', {
-      attrs: {
-        x: position.x + x,
-        y: position.y + y,
-        width: cellWidth,
-        height: cellHeight,
-        stroke: 'transparent',
-      },
-    });
-
-    if (!this.spreadsheet.isValueInCols() && _.isEqual(label, EXTRA_FIELD)) {
-      renderLine(
-        x,
-        y,
-        x,
-        y + cellHeight,
-        this.theme.header.cell.borderColor[0],
-        this.theme.header.cell.borderWidth[0],
-        this,
-      );
-    }
-  }
-
-  private drawHotspot() {
-    const prevResizer = this.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_CORNER_RESIZER,
+      textStyle,
     );
-    const resizer = (prevResizer ||
+    const textY = y + (isEmpty(secondLine) ? height / 2 : height / 4);
+    // first line
+    this.textShapes.push(
+      renderText(
+        this,
+        [this.textShapes[0]],
+        textX,
+        textY,
+        firstLine,
+        textStyle,
+      ),
+    );
+
+    // second line
+    if (!isEmpty(secondLine)) {
+      this.textShapes.push(
+        renderText(
+          this,
+          [this.textShapes[1]],
+          textX,
+          y + height * 0.75,
+          secondLine,
+          textStyle,
+        ),
+      );
+    }
+  }
+
+  /**
+   * 绘制折叠展开的icon
+   */
+  private drawTreeIcon() {
+    if (!this.showTreeIcon()) {
+      return;
+    }
+    // 只有交叉表才有icon
+    const { hierarchyCollapse } = this.headerConfig;
+
+    const { size } = this.getStyle().icon;
+    const { textBaseline, fill } = this.getTextStyle();
+    const area = this.getContentArea();
+
+    this.treeIcon = renderTreeIcon(
+      this,
+      {
+        x: area.x,
+        y: getVerticalPosition(area, textBaseline, size),
+        width: size,
+        height: size,
+      },
+      fill,
+      hierarchyCollapse,
+      () => {
+        this.headerConfig.spreadsheet.store.set('scrollY', 0);
+        this.headerConfig.spreadsheet.emit(
+          S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
+          hierarchyCollapse,
+        );
+      },
+    );
+  }
+
+  private drawBackgroundShape() {
+    const { backgroundColorOpacity, horizontalBorderColor } =
+      this.getStyle().cell;
+    const attrs: ShapeAttrs = {
+      ...this.getCellArea(),
+      opacity: backgroundColorOpacity,
+    };
+
+    this.backgroundShape = renderRect(this, attrs);
+  }
+
+  private drawResizeArea() {
+    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+      KEY_GROUP_CORNER_RESIZE_AREA,
+    );
+    const resizeStyle = this.getStyle('resizeArea');
+    const resizeArea = (prevResizeArea ||
       this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_CORNER_RESIZER,
-      })) as IGroup;
+        id: KEY_GROUP_CORNER_RESIZE_AREA,
+      })) as Group;
     const { position } = this.headerConfig;
     const { x, y, width: cellWidth, height: cellHeight, field } = this.meta;
-    resizer.addShape('rect', {
+    resizeArea.addShape('rect', {
       attrs: {
-        x: position.x + x + cellWidth - HIT_AREA / 2,
+        x: position.x + x + cellWidth - resizeStyle.size / 2,
         y: position.y + y,
-        width: HIT_AREA,
+        width: resizeStyle.size,
         height: cellHeight,
-        fill: COLOR_DEFAULT_RESIZER,
+        fill: resizeStyle.background,
+        fillOpacity: resizeStyle.backgroundOpacity,
         cursor: 'col-resize',
         appendInfo: {
-          isResizer: true,
+          isResizeArea: true,
           class: 'resize-trigger',
           type: 'col',
           id: field,
@@ -194,5 +181,47 @@ export class CornerCell extends BaseCell<Node> {
         } as ResizeInfo,
       },
     });
+  }
+
+  private showTreeIcon() {
+    // 批量折叠或者展开的icon，只存在树状结构的第一个cell前
+    return (
+      this.headerConfig.spreadsheet.isHierarchyTreeType() &&
+      this.headerConfig.spreadsheet.isPivotMode() &&
+      this.meta?.x === 0
+    );
+  }
+
+  private getTreeIconWidth() {
+    const { size, margin } = this.getStyle().icon;
+    return this.showTreeIcon() ? size + margin.right : 0;
+  }
+
+  protected getTextStyle(): TextTheme {
+    const cornerTextStyle = this.getStyle().bolderText;
+
+    return {
+      ...cornerTextStyle,
+      textAlign: this.spreadsheet.isTableMode()
+        ? cornerTextStyle.textAlign
+        : 'center',
+      textBaseline: 'middle',
+    };
+  }
+
+  protected getFormattedFieldValue(): FormatResult {
+    return { formattedValue: this.meta.label, value: this.meta.label };
+  }
+
+  protected getMaxTextWidth(): number {
+    const { width } = this.getCellArea();
+    return width - this.getTreeIconWidth();
+  }
+
+  protected getTextPosition(): Point {
+    return {
+      x: 0,
+      y: 0,
+    };
   }
 }

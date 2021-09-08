@@ -1,9 +1,19 @@
-import { memoize, isString, values, isArray, toString, isNumber } from 'lodash';
-import { renderText } from '@/utils/g-renders';
-import { get, merge, clone } from 'lodash';
-import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
 import { IShape } from '@antv/g-canvas';
+import {
+  clone,
+  get,
+  isArray,
+  isNumber,
+  isString,
+  memoize,
+  merge,
+  toString,
+  values,
+} from 'lodash';
+import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
+import { CellBoxCfg, CellCfg, TooltipPosition } from '@/common/interface';
 import { S2Options, SpreadSheetTheme } from '@/index';
+import { renderText } from '@/utils/g-renders';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -156,7 +166,7 @@ export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
  * @param priority optional 优先显示的文本
  */
 export const getEllipsisText = (
-  text: string,
+  text = '-',
   maxWidth: number,
   fontParam?: unknown,
   priorityParam?: string[],
@@ -258,7 +268,7 @@ const getStyle = (
   options: S2Options,
   theme: SpreadSheetTheme,
 ) => {
-  const cellCfg = get(options, 'style.cellCfg', {});
+  const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
   const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
   const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
   const isMinor = rowIndex === minorMeasureIndex;
@@ -269,10 +279,10 @@ const getStyle = (
   const derivedMeasureText = theme?.view?.derivedMeasureText;
   const upFill = isMinor
     ? derivedMeasureText?.minorUp
-    : derivedMeasureText?.mainUp || '#F46649';
+    : derivedMeasureText?.mainUp || theme.dataCell.icon.upIconColor;
   const downFill = isMinor
     ? derivedMeasureText?.minorDown
-    : derivedMeasureText?.mainDown || '2AA491';
+    : derivedMeasureText?.mainDown || theme.dataCell.icon.downIconColor;
   if (isDerivedMeasure) {
     const isUp = getDerivedDataState(value);
     return merge(style, {
@@ -287,8 +297,8 @@ const getStyle = (
  * @param cell
  */
 export const drawObjectText = (cell) => {
-  const { x, y, height, width } = cell.getLeftAreaBBox();
-  const { formattedValue: text } = cell.getData();
+  const { x, y, height, width } = cell.getContentArea();
+  const { formattedValue: text } = cell.getFormattedFieldValue();
   const labelStyle = cell.theme?.view?.bolderText;
   const textStyle = cell.theme?.view?.text;
   const textFill = textStyle?.fill;
@@ -298,6 +308,7 @@ export const drawObjectText = (cell) => {
   const realWidth = width / (text?.values[0].length + 1);
   const realHeight = height / (text?.values.length + 1);
   renderText(
+    cell,
     cell.textShape,
     calX(x, padding),
     y + realHeight / 2,
@@ -308,7 +319,6 @@ export const drawObjectText = (cell) => {
     ),
     labelStyle,
     textFill,
-    cell,
   );
 
   const { values: textValues } = text;
@@ -334,13 +344,13 @@ export const drawObjectText = (cell) => {
       curX = calX(x, padding, totalWidth);
       totalWidth += curWidth;
       curTextShape = renderText(
+        cell,
         cell.textShape,
         curX,
         curY,
         getEllipsisText(`${curText}`, curWidth, curStyle),
         curStyle,
         curStyle?.fill,
-        cell,
       );
     }
   }
@@ -349,28 +359,78 @@ export const drawObjectText = (cell) => {
 /**
  * @desc draw text shape of string
  * @param cell
+ * @returns 文本左上角起点坐标
  */
 export const drawStringText = (cell) => {
-  const { x, y, height, width } = cell.getLeftAreaBBox();
-  const { formattedValue: text } = cell.getData();
+  const { x, y, height, width } = cell.getContentArea();
+  const { formattedValue: text } = cell.getFormattedFieldValue();
   const { isTotals } = cell.meta;
   const textStyle = isTotals
-    ? cell.theme.view.bolderText
-    : cell.theme.view.text;
+    ? cell.theme.dataCell.bolderText
+    : cell.theme.dataCell.text;
   const textFill = textStyle?.fill;
-  const padding = cell.theme.view.cell.padding;
+  const padding = cell.theme.dataCell.cell.padding;
 
   cell.textShape = renderText(
+    cell,
     cell.textShape,
-    x + width - padding[PADDING_RIGHT],
+    x + width - padding.right,
     y + height / 2,
     getEllipsisText(
       `${text || '-'}`,
-      width - padding[PADDING_LEFT] - padding[PADDING_RIGHT],
+      width - padding.left - padding.right,
       textStyle,
     ),
     textStyle,
     textFill,
-    cell,
   );
+};
+
+/**
+ * @desc 根据单元格起点和配置（宽、高、水平对齐、垂直对齐）获取文字定位点坐标信息
+ * ************************************************
+ *     +-------------------------------------+
+ *     |                  |                  |
+ *     |            paddingTop               |
+ *     |                  |                  |
+ *     |  paddingLeft  |Text|  paddingRight  |
+ *     |                  |                  |
+ *     |            paddingBottom            |
+ *     |                  |                  |
+ *     +-------------------------------------+
+ * ************************************************
+ * @param cellBoxCfg
+ */
+export const getTextPosition = (cellBoxCfg: CellBoxCfg): TooltipPosition => {
+  const { x, y, width, height, textAlign, textBaseline, padding } = cellBoxCfg;
+  let textX: number;
+  let textY: number;
+  switch (textAlign) {
+    case 'right':
+      textX = x + width - padding?.right;
+      break;
+    case 'center':
+      textX = x + padding?.left + (width - padding?.left - padding?.right) / 2;
+      break;
+    default:
+      textX = x + padding?.left;
+      break;
+  }
+
+  switch (textBaseline) {
+    case 'top':
+      textY = y + padding?.top;
+      break;
+    case 'middle':
+      textY = y + height / 2;
+      break;
+    default:
+      textY = y + height - padding?.bottom;
+      break;
+  }
+
+  return {
+    x: textX,
+    y: textY,
+  };
 };

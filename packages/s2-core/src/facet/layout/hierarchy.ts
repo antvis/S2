@@ -1,12 +1,5 @@
 // hierarchy to layout headers
-import _ from 'lodash';
-import { generateNodeName } from './../../utils/name-generator';
 import { Node } from './node';
-
-export interface MaxMinLabel {
-  minLabel: string;
-  maxLabel: string;
-}
 
 /**
  * Row and Column hierarchy to handle all contained nodes
@@ -33,21 +26,12 @@ export class Hierarchy {
   // all nodes in this hierarchy
   private allNodesWithoutRoot: Node[] = [];
 
+  // all nodes in the lastLevel
   private indexNode: Node[] = [];
 
-  private maxLabelInLevel: Map<number, string> = new Map<number, string>();
-
-  private minLabelInLevel: Map<number, string> = new Map<number, string>();
-
   // get all leaf nodes
-  public getLeafs(): Node[] {
+  public getLeaves(): Node[] {
     return this.allNodesWithoutRoot.filter((value) => value.isLeaf);
-  }
-
-  public getNotNullLeafs(): Node[] {
-    return this.allNodesWithoutRoot.filter(
-      (value) => value.isLeaf && value.id !== generateNodeName('undefined'),
-    );
   }
 
   /**
@@ -74,9 +58,14 @@ export class Hierarchy {
   /**
    * Add new node
    * @param value
+   * @param insetIndex
    */
-  public pushNode(value: Node) {
-    this.allNodesWithoutRoot.push(value);
+  public pushNode(value: Node, insetIndex = -1) {
+    if (insetIndex === -1) {
+      this.allNodesWithoutRoot.push(value);
+    } else {
+      this.allNodesWithoutRoot.splice(insetIndex, 0, value);
+    }
   }
 
   public pushIndexNode(value: Node) {
@@ -85,37 +74,5 @@ export class Hierarchy {
 
   public getIndexNodes(): Node[] {
     return this.indexNode;
-  }
-
-  /**
-   * get max/min label in specific level
-   * @param level
-   */
-  public getMinMaxLabelInLevel(level = 0): MaxMinLabel {
-    // the top 50 nodes in level
-    const allNodesInLevel = this.getNodes(level).slice(0, 50);
-    let maxLabel;
-    let minLabel;
-    if (this.maxLabelInLevel.get(level) === undefined) {
-      maxLabel = _.maxBy(allNodesInLevel, (value) =>
-        _.get(value, 'label.length'),
-      ).label;
-      this.maxLabelInLevel.set(level, maxLabel);
-    } else {
-      maxLabel = this.maxLabelInLevel.get(level);
-    }
-
-    if (this.minLabelInLevel.get(level) === undefined) {
-      minLabel = _.minBy(allNodesInLevel, (value) =>
-        _.get(value, 'label.length'),
-      ).label;
-      this.minLabelInLevel.set(level, minLabel);
-    } else {
-      minLabel = this.minLabelInLevel.get(level);
-    }
-    return {
-      minLabel,
-      maxLabel,
-    } as MaxMinLabel;
   }
 }

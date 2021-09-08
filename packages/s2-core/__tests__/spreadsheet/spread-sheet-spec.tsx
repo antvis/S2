@@ -1,267 +1,95 @@
-import { merge, clone, omit } from 'lodash';
-import { act } from 'react-dom/test-utils';
-import 'antd/dist/antd.min.css';
-import {
-  auto,
-  S2DataConfig,
-  S2Options,
-  SheetComponent,
-  SpreadSheet,
-} from '../../src';
-import { getContainer, getMockData } from './helpers';
-import ReactDOM from 'react-dom';
+import { ThemeName } from '@/index';
+import { Radio, Space, Switch } from 'antd';
 import React from 'react';
-import { Switch, Checkbox } from 'antd';
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
+import { getContainer } from '../util/helpers';
+import { SheetEntry } from '../util/sheet-entry';
 import { CustomTooltip } from './custom/custom-tooltip';
 
-let data = getMockData('../datasets/tableau-supermarket.csv');
+function MainLayout() {
+  const [render, setRender] = React.useState(true);
 
-data = data.map((row) => {
-  row['profit-tongbi'] = 0.2233;
-  row['profit-huanbi'] = -0.4411;
-  row['count-tongbi'] = 0.1234;
-  row['count-huanbi'] = -0.4321;
-  return row;
-});
+  const [spotLight, setSpotLight] = React.useState(true);
+  const [hoverHighlight, setHoverHighlight] = React.useState(true);
+  const [showPagination, setShowPagination] = React.useState(false);
+  const [showTooltip, setShowTooltip] = React.useState(true);
 
-const getSpreadSheet = (
-  dom: string | HTMLElement,
-  dataCfg: S2DataConfig,
-  options: S2Options,
-) => {
-  return new SpreadSheet(dom, dataCfg, options);
-};
+  const [themeName, setThemeName] = React.useState<ThemeName>('default');
 
-const getDataCfg = () => {
-  return {
-    fields: {
-      // rows has value
-      rows: ['area', 'province', 'city'],
-      columns: ['type', 'sub_type'],
-      values: ['profit', 'count'],
-      derivedValues: [
-        {
-          valueField: 'profit',
-          derivedValueField: ['profit-tongbi', 'profit-huanbi'],
-          displayDerivedValueField: ['profit-tongbi'],
-        },
-        {
-          valueField: 'count',
-          derivedValueField: ['count-tongbi', 'count-huanbi'],
-          displayDerivedValueField: ['count-tongbi'],
-        },
-      ],
-    },
-    meta: [
-      {
-        field: 'profit-tongbi',
-        name: '利润同比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'profit-huanbi',
-        name: '利润环比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'count-tongbi',
-        name: '个数同比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'count-huanbi',
-        name: '个数环比',
-        formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
-      },
-      {
-        field: 'sale_amt',
-        name: '销售额',
-        formatter: (v) => v,
-      },
-      {
-        field: 'count',
-        name: '销售个数',
-        formatter: (v) => v,
-      },
-      {
-        field: 'discount',
-        name: '折扣',
-        formatter: (v) => v,
-      },
-      {
-        field: 'profit',
-        name: '利润',
-        formatter: (v) => v,
-      },
-    ],
-    data,
-    sortParams: [
-      {
-        sortFieldId: 'area',
-        sortMethod: 'ASC',
-      },
-      {
-        sortFieldId: 'province',
-        sortMethod: 'DESC',
-      },
-    ],
+  const onToggleRender = () => {
+    setRender(!render);
   };
-};
 
-const getOptions = () => {
-  return {
-    debug: true,
-    width: 800,
-    height: 600,
-    hierarchyType: 'grid',
-    hierarchyCollapse: false,
-    showSeriesNumber: true,
-    freezeRowHeader: false,
-    mode: 'pivot',
-    valueInCols: true,
-    conditions: {
-      text: [],
-      interval: [],
-      background: [],
-      icon: [],
-    },
-    style: {
-      treeRowsWidth: 100,
-      collapsedRows: {},
-      colCfg: {
-        widthByFieldValue: {},
-        heightByField: {},
-        colWidthType: 'compact',
-      },
-      cellCfg: {
-        height: 32,
-      },
-      device: 'pc',
+  const onRadioChange = (e) => {
+    setThemeName(e.target.value);
+  };
+  const mergedOptions = {
+    pagination: showPagination && {
+      pageSize: 20,
+      current: 1,
     },
     tooltip: {
-      showTooltip: true,
-    },
-    initTooltip: (spreadsheet) => {
-      return new CustomTooltip(spreadsheet);
-    },
-  };
-};
-
-const getTheme = () => {
-  return {};
-};
-
-function MainLayout(props) {
-  const [options, setOptions] = React.useState(props.options);
-  const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
-  const [valueInCols, setValueInCols] = React.useState(true);
-  const [derivedValueMul, setDerivedValueMul] = React.useState(false);
-  const [showPagination, setShowPagination] = React.useState(false);
-  const [freezeRowHeader, setFreezeRowHeader] = React.useState(
-    props.options.freezeRowHeader,
-  );
-
-  const onCheckChanged = (checked) => {
-    setValueInCols(checked);
-    setOptions(
-      merge({}, options, {
-        valueInCols: checked,
-      }),
-    );
-  };
-
-  const onCheckChanged1 = (checked) => {
-    setOptions(
-      merge({}, options, {
-        hierarchyType: checked ? 'tree' : 'grid',
-      }),
-    );
-  };
-
-  const onCheckChanged2 = (checked) => {
-    setDerivedValueMul(checked);
-    const next = merge({}, dataCfg, {
-      fields: {
-        derivedValues: dataCfg.fields.derivedValues.map((dv) => {
-          const dvn = clone(dv);
-          dvn.displayDerivedValueField = checked
-            ? dv.derivedValueField
-            : [dv.derivedValueField[0]];
-          return dvn;
-        }),
+      showTooltip: showTooltip,
+      renderTooltip: (spreadsheet) => {
+        return new CustomTooltip(spreadsheet);
       },
-    });
-    setDataCfg(next);
+    },
+    selectedCellsSpotlight: spotLight,
+    hoverHighlight: hoverHighlight,
   };
-
-  const onCheckChanged3 = (checked) => {
-    setShowPagination(checked);
-    if (checked) {
-      setOptions(
-        merge({}, options, {
-          pagination: {
-            pageSize: 20,
-            current: 1,
-          },
-        }),
-      );
-    } else {
-      setOptions(omit(options, ['pagination']));
-    }
-  };
-
-  const onCheckChanged4 = (e) => {
-    setOptions(
-      merge({}, options, {
-        freezeRowHeader: e.target.checked,
-      }),
-    );
-    setFreezeRowHeader(e.target.checked);
-  };
-
   return (
     <div>
-      <div style={{ display: 'inline-block' }}>
+      <Space size="middle" style={{ marginBottom: 20 }}>
         <Switch
-          checkedChildren="挂列头"
-          unCheckedChildren="挂行头"
-          defaultChecked={valueInCols}
-          onChange={onCheckChanged}
-          style={{ marginRight: 10 }}
+          checkedChildren="渲染组件"
+          unCheckedChildren="卸载组件"
+          defaultChecked={render}
+          onChange={onToggleRender}
         />
-        <Switch
-          checkedChildren="树形"
-          unCheckedChildren="平铺"
-          defaultChecked={false}
-          onChange={onCheckChanged1}
-          style={{ marginRight: 10 }}
-        />
-        <Switch
-          checkedChildren="多列"
-          unCheckedChildren="单列"
-          style={{ marginRight: 10 }}
-          defaultChecked={derivedValueMul}
-          onChange={onCheckChanged2}
-        />
-        <Switch
-          checkedChildren="分页"
-          unCheckedChildren="不分页"
-          style={{ marginLeft: 10 }}
-          defaultChecked={showPagination}
-          onChange={onCheckChanged3}
-        />
+      </Space>
+      {render && (
+        <SheetEntry
+          dataCfg={{}}
+          options={mergedOptions}
+          themeCfg={{ name: themeName }}
+          header={
+            <Space size="middle" style={{ marginBottom: 20 }}>
+              <Radio.Group onChange={onRadioChange} defaultValue="default">
+                <Radio.Button value="default">默认</Radio.Button>
+                <Radio.Button value="simple">简约蓝</Radio.Button>
+                <Radio.Button value="colorful">多彩蓝</Radio.Button>
+              </Radio.Group>
 
-        <Checkbox onChange={onCheckChanged4} defaultChecked={freezeRowHeader}>
-          冻结行头
-        </Checkbox>
-      </div>
-      <SheetComponent
-        dataCfg={dataCfg}
-        adaptive={false}
-        options={options}
-        theme={props.theme}
-        spreadsheet={getSpreadSheet}
-      />
+              <Switch
+                checkedChildren="分页"
+                unCheckedChildren="不分页"
+                checked={showPagination}
+                onChange={setShowPagination}
+              />
+              <Switch
+                checkedChildren="选中聚光灯开"
+                unCheckedChildren="选中聚光灯关"
+                checked={spotLight}
+                onChange={setSpotLight}
+              />
+              <Switch
+                checkedChildren="hover十字器开"
+                unCheckedChildren="hover十字器关"
+                checked={hoverHighlight}
+                onChange={setHoverHighlight}
+              />
+
+              <Switch
+                checkedChildren="tooltip打开"
+                unCheckedChildren="tooltip关闭"
+                checked={showTooltip}
+                onChange={setShowTooltip}
+              />
+            </Space>
+          }
+        />
+      )}
     </div>
   );
 }
@@ -272,13 +100,6 @@ describe('spreadsheet normal spec', () => {
   });
 
   act(() => {
-    ReactDOM.render(
-      <MainLayout
-        dataCfg={getDataCfg()}
-        options={getOptions()}
-        theme={getTheme()}
-      />,
-      getContainer(),
-    );
+    ReactDOM.render(<MainLayout />, getContainer());
   });
 });

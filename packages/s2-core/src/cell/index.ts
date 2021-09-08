@@ -4,22 +4,20 @@ import { CornerCell } from './corner-cell';
 import { DataCell } from './data-cell';
 import { MergedCells } from './merged-cells';
 import { RowCell } from './row-cell';
-import { DerivedCell } from './derived-cell';
-import { DetailRowCell } from './detail-row-cell';
-import { DetailCornerCell } from './detail-corner-cell';
-import { DetailColCell } from './detail-col-cell';
-import { DataDerivedCell } from './data-derived-cell';
+import { TableColCell } from './table-col-cell';
+import { TableCornerCell } from './table-corner-cell';
+import { TableDataCell } from './table-data-cell';
+import { TableRowCell } from './table-series-cell';
 
 export {
-  DataDerivedCell,
-  DetailColCell,
-  DetailCornerCell,
-  DetailRowCell,
-  DerivedCell,
+  TableCornerCell,
+  TableColCell,
+  TableRowCell,
   RowCell,
   ColCell,
   DataCell,
   MergedCells,
   CornerCell,
   BaseCell,
+  TableDataCell,
 };

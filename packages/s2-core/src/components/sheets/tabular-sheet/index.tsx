@@ -11,16 +11,19 @@ import {
 } from 'lodash';
 import { merge } from 'lodash';
 import { Spin } from 'antd';
+import { Event } from '@antv/g-canvas';
+import {
+  safetyDataConfig,
+  safetyOptions,
+  S2Options,
+} from 'src/common/interface';
+import { SpreadSheet } from 'src/sheet-type';
 import { Header } from '../../header';
-import { S2Event } from '@/interaction/events/types';
-import { getBaseCellData } from '@/utils/interactions/formatter';
+import { BaseSheetProps } from '../interface';
 import { TabularDataCell } from './tabular-data-cell';
 import { TabularTheme } from './tabular-theme';
-import BaseSpreadsheet from '@/sheet-type/base-spread-sheet';
-import SpreadSheet from '@/sheet-type/spread-sheet';
-import { BaseSheetProps } from '../interface';
-import { Event } from '@antv/g-canvas';
-import { safetyDataConfig, safetyOptions, S2Options } from '@/common/interface';
+import { S2Event } from '@/common/constant';
+import { getBaseCellData } from '@/utils/interaction/formatter';
 
 export const TabularSheet = (props: BaseSheetProps) => {
   const {
@@ -30,7 +33,9 @@ export const TabularSheet = (props: BaseSheetProps) => {
     options,
     adaptive = true,
     header,
-    theme = TabularTheme,
+    themeCfg = {
+      theme: TabularTheme,
+    },
     isLoading,
     onRowCellClick,
     onColCellClick,
@@ -39,8 +44,8 @@ export const TabularSheet = (props: BaseSheetProps) => {
     getSpreadsheet,
   } = props;
   let container: HTMLDivElement;
-  let baseSpreadsheet: BaseSpreadsheet;
-  const [ownSpreadsheet, setOwnSpreadsheet] = useState<BaseSpreadsheet>();
+  let baseSpreadsheet: SpreadSheet;
+  const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
   const [resizeTimeStamp, setResizeTimeStamp] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -84,7 +89,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     );
   };
 
-  const setOptions = (sheetInstance?: BaseSpreadsheet) => {
+  const setOptions = (sheetInstance?: SpreadSheet) => {
     const newOptions = buildOptions();
     const curSheet = sheetInstance || ownSpreadsheet;
     curSheet.setOptions(newOptions);
@@ -103,7 +108,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     setLoading(false);
   };
 
-  const getSpreadSheet = (): BaseSpreadsheet => {
+  const getSpreadSheet = (): SpreadSheet => {
     if (spreadsheet) {
       return spreadsheet(container, dataCfg, buildOptions());
     }
@@ -111,23 +116,23 @@ export const TabularSheet = (props: BaseSheetProps) => {
   };
 
   const bindEvent = () => {
-    baseSpreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (ev: Event) => {
       if (isFunction(onDataCellMouseUp)) {
         onDataCellMouseUp(getBaseCellData(ev));
       }
     });
-    baseSpreadsheet.on(S2Event.ROWCELL_CLICK, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.ROW_CELL_CLICK, (ev: Event) => {
       if (isFunction(onRowCellClick)) {
         onRowCellClick(getBaseCellData(ev));
       }
     });
-    baseSpreadsheet.on(S2Event.COLCELL_CLICK, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.COL_CELL_CLICK, (ev: Event) => {
       if (isFunction(onColCellClick)) {
         onColCellClick(getBaseCellData(ev));
       }
     });
 
-    baseSpreadsheet.on(S2Event.MERGEDCELLS_CLICK, (ev: Event) => {
+    baseSpreadsheet.on(S2Event.MERGED_CELLS_CLICK, (ev: Event) => {
       if (isFunction(onMergedCellsClick)) {
         onMergedCellsClick(getBaseCellData(ev));
       }
@@ -135,10 +140,10 @@ export const TabularSheet = (props: BaseSheetProps) => {
   };
 
   const unBindEvent = () => {
-    baseSpreadsheet.off(S2Event.MERGEDCELLS_CLICK);
-    baseSpreadsheet.off(S2Event.ROWCELL_CLICK);
-    baseSpreadsheet.off(S2Event.COLCELL_CLICK);
-    baseSpreadsheet.off(S2Event.DATACELL_MOUSEUP);
+    baseSpreadsheet.off(S2Event.MERGED_CELLS_CLICK);
+    baseSpreadsheet.off(S2Event.ROW_CELL_CLICK);
+    baseSpreadsheet.off(S2Event.COL_CELL_CLICK);
+    baseSpreadsheet.off(S2Event.DATA_CELL_MOUSE_UP);
   };
 
   const buildSpreadSheet = () => {
@@ -148,7 +153,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
       const newDataCfg = safetyDataConfig(dataCfg);
       baseSpreadsheet.setDataCfg(newDataCfg);
       setOptions(baseSpreadsheet);
-      baseSpreadsheet.setTheme(theme);
+      baseSpreadsheet.setThemeCfg(themeCfg);
       baseSpreadsheet.render();
       setLoading(false);
       setOwnSpreadsheet(baseSpreadsheet);
@@ -195,9 +200,9 @@ export const TabularSheet = (props: BaseSheetProps) => {
 
   useEffect(() => {
     update(() => {
-      ownSpreadsheet.setTheme(theme);
+      ownSpreadsheet.setThemeCfg(themeCfg);
     });
-  }, [JSON.stringify(theme)]);
+  }, [JSON.stringify(themeCfg)]);
 
   useEffect(() => {
     if (!ownSpreadsheet) return;

@@ -1,33 +1,29 @@
-import { SimpleBBox, Group, Point } from '@antv/g-canvas';
-import { get, last, includes, isEmpty } from 'lodash';
-import { GuiIcon } from '../../common/icons';
-import { i18n } from '../../common/i18n';
-import { DetailCornerCell } from '../../cell';
-import {
-  ICON_RADIUS,
-  KEY_SERIES_NUMBER_NODE,
-  KEY_GROUP_CORNER_RESIZER,
-  COLOR_DEFAULT_RESIZER,
-} from '../../common/constant';
-import { BaseDataSet } from '../../data-set';
-import { KEY_TREE_ROWS_COLLAPSE_ALL } from '@/common/constant';
-import { Node } from '@/facet/layout/node';
-import { Hierarchy } from '@/facet/layout/hierarchy';
-import BaseSpreadSheet from '@/sheet-type/base-spread-sheet';
-import { CornerCell } from '@/cell/corner-cell';
-import { LayoutResult, SpreadsheetFacetCfg } from '../../common/interface';
-import { BaseHeader, BaseHeaderConfig, HIT_AREA } from './base';
-import { CornerData, ResizeInfo } from './interface';
-import { BaseParams } from '../../data-set/base-data-set';
+import { Group, Point, SimpleBBox } from '@antv/g-canvas';
+import { get, includes, isEmpty, last } from 'lodash';
 import { translateGroup } from '../utils';
+import { CornerData, ResizeInfo } from './interface';
+import { BaseHeader, BaseHeaderConfig } from './base';
+import { i18n } from '@/common/i18n';
+import { BaseDataSet } from '@/data-set';
+import {
+  KEY_GROUP_CORNER_RESIZE_AREA,
+  KEY_SERIES_NUMBER_NODE,
+} from '@/common/constant';
+import {
+  LayoutResult,
+  S2CellType,
+  S2Options,
+  SpreadSheetFacetCfg,
+} from '@/common/interface';
+import { CornerCell, Hierarchy, Node, SpreadSheet } from '@/index';
 
 export interface CornerHeaderConfig extends BaseHeaderConfig {
   // header's hierarchy type
-  hierarchyType: 'grid' | 'tree';
+  hierarchyType: S2Options['hierarchyType'];
   // the hierarchy collapse or not
   hierarchyCollapse: boolean;
   // column fields
-  cols: string[];
+  columns: string[];
   // series number width
   seriesNumberWidth: number;
 }
@@ -49,9 +45,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     viewportBBox: SimpleBBox,
     cornerBBox: SimpleBBox,
     seriesNumberWidth: number,
-    cfg: SpreadsheetFacetCfg,
+    cfg: SpreadSheetFacetCfg,
     layoutResult: LayoutResult,
-    ss: BaseSpreadSheet,
+    ss: SpreadSheet,
   ) {
     const { width, height } = viewportBBox;
     const cornerWidth = cornerBBox.width;
@@ -67,7 +63,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       seriesNumberWidth,
       ss,
     );
-
     return new CornerHeader({
       data: cornerNodes,
       position: { x: cornerBBox.x, y: cornerBBox.y },
@@ -78,7 +73,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       offset: 0,
       hierarchyType: cfg.hierarchyType, // 是否为树状布局
       hierarchyCollapse: cfg.hierarchyCollapse,
-      cols: cfg.cols,
+      columns: cfg.columns,
       seriesNumberWidth,
       spreadsheet: ss,
     });
@@ -91,9 +86,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     rows: string[],
     rowsHierarchy: Hierarchy,
     colsHierarchy: Hierarchy,
-    dataSet: BaseDataSet<BaseParams>,
+    dataSet: BaseDataSet,
     seriesNumberWidth: number,
-    ss: BaseSpreadSheet,
+    ss: SpreadSheet,
   ): Node[] {
     const cornerNodes: Node[] = [];
 
@@ -143,7 +138,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         });
         cNode.x = position.x + seriesNumberWidth;
         cNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
-        cNode.width = width;
+        // cNode should subtract series width
+        cNode.width = width - seriesNumberWidth;
         cNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
         cNode.seriesNumberWidth = seriesNumberWidth;
         cNode.isPivotMode = isPivotMode;
@@ -223,12 +219,15 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const cornerHeader = spreadsheet?.facet?.cfg?.cornerHeader;
     const cornerCell = spreadsheet?.facet?.cfg?.cornerCell;
     if (cornerHeader) {
-      cornerHeader(this, spreadsheet, this.headerConfig);
+      cornerHeader(
+        this as unknown as S2CellType,
+        spreadsheet,
+        this.headerConfig,
+      );
       return;
     }
     // 背景
     this.addBgRect();
-    this.addIcon();
     data.forEach((item: Node) => {
       let cell: Group;
       if (cornerCell) {
@@ -240,19 +239,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       }
 
       if (isEmpty(cell)) {
-        if (spreadsheet.isPivotMode()) {
-          cell = new CornerCell(
-            item,
-            this.headerConfig.spreadsheet,
-            this.headerConfig,
-          );
-        } else {
-          cell = new DetailCornerCell(
-            item,
-            this.headerConfig.spreadsheet,
-            this.headerConfig,
-          );
-        }
+        cell = new CornerCell(
+          item,
+          this.headerConfig.spreadsheet,
+          this.headerConfig,
+        );
       }
       this.add(cell);
     });
@@ -288,73 +279,39 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         height,
         fill: get(
           this.headerConfig,
-          'spreadsheet.theme.header.cell.cornerBackgroundColor',
+          'spreadsheet.theme.cornerCell.cell.backgroundColor',
         ),
-        stroke: 'transparent',
       },
     });
-  }
-
-  /**
-   * 批量折叠或者展开，只有在树状结构有
-   */
-  protected addIcon() {
-    if (
-      this.headerConfig.spreadsheet.isHierarchyTreeType() &&
-      this.headerConfig.spreadsheet.isPivotMode()
-    ) {
-      // 只有交叉表才有icon
-      const { hierarchyCollapse, position, height, spreadsheet } =
-        this.headerConfig;
-      const colHeight = spreadsheet.options.style.colCfg.height;
-      const icon = new GuiIcon({
-        type: hierarchyCollapse ? 'plus' : 'MinusSquare',
-        x: position.x,
-        y: height - colHeight / 2 - ICON_RADIUS,
-        width: ICON_RADIUS * 2,
-        height: ICON_RADIUS * 2,
-      });
-      icon.on('click', () => {
-        this.headerConfig.spreadsheet.store.set('scrollY', 0);
-        this.headerConfig.spreadsheet.emit(
-          KEY_TREE_ROWS_COLLAPSE_ALL,
-          hierarchyCollapse,
-        );
-      });
-      // this.gm = new GM(icon, {
-      //   gestures: ['Tap'],
-      // });
-      // this.gm.on('tap', () => {
-      //   spreadsheet.emit('spreadsheet:collapsedRows', { id, isCollapsed: !isCollapsed });
-      // });
-      this.add(icon);
-    }
   }
 
   private handleHotsSpotArea() {
     const { data, position, width, height, seriesNumberWidth } =
       this.headerConfig;
-    const prevResizer = this.headerConfig.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_CORNER_RESIZER,
-    );
-    const resizer = (prevResizer ||
+    const resizeStyle = this.headerConfig.spreadsheet.theme.resizeArea;
+    const prevResizeArea =
+      this.headerConfig.spreadsheet.foregroundGroup.findById(
+        KEY_GROUP_CORNER_RESIZE_AREA,
+      );
+    const resizeArea = (prevResizeArea ||
       this.headerConfig.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_CORNER_RESIZER,
+        id: KEY_GROUP_CORNER_RESIZE_AREA,
       })) as Group;
     const treeType = this.headerConfig.spreadsheet.isHierarchyTreeType();
     if (!treeType) {
       // do it in corner cell
     } else if (treeType) {
-      resizer.addShape('rect', {
+      resizeArea.addShape('rect', {
         attrs: {
-          x: position.x + width - HIT_AREA / 2,
+          x: position.x + width - resizeStyle.size / 2,
           y: position.y,
-          width: HIT_AREA,
+          width: resizeStyle.size,
           height: this.get('viewportHeight') + height,
-          fill: COLOR_DEFAULT_RESIZER,
+          fill: resizeStyle.background,
+          fillOpacity: resizeStyle.backgroundOpacity,
           cursor: 'col-resize',
           appendInfo: {
-            isResizer: true,
+            isResizeArea: true,
             class: 'resize-trigger',
             type: 'col',
             affect: 'tree',
@@ -367,20 +324,21 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       });
     }
     const cell: CornerData = get(data, '0', {});
-    resizer.addShape('rect', {
+    resizeArea.addShape('rect', {
       attrs: {
         x: position.x,
-        y: position.y + cell.y + cell.height - HIT_AREA / 2,
+        y: position.y + cell.y + cell.height - resizeStyle.size / 2,
         width,
-        height: HIT_AREA,
-        fill: COLOR_DEFAULT_RESIZER,
+        height: resizeStyle.size,
+        fill: resizeStyle.background,
+        fillOpacity: resizeStyle.backgroundOpacity,
         cursor: 'row-resize',
         appendInfo: {
-          isResizer: true,
+          isResizeArea: true,
           class: 'resize-trigger',
           type: 'row',
           affect: 'field',
-          id: last(this.get('cols')),
+          id: last(this.get('columns')),
           offsetX: position.x,
           offsetY: position.y + cell.y,
           width: cell.width,

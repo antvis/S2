@@ -1,5 +1,6 @@
+import { isNaN, toNumber } from 'lodash';
 import { Lang } from '../common/i18n';
-import { isNaN } from 'lodash';
+import { PRECISION } from '@/common/constant';
 
 const FORMATTERS = {
   en_US: ['KMBTP'.split(''), [1e3, 1e3, 1e3, 1e3, 1e3]],
@@ -55,4 +56,10 @@ export const auto = (
 
   // 加上最后的单位
   return loop === 0 ? output : `${output} ${texts[loop - 1]}`;
+};
+
+// 简单处理小数精度误差，保持和Spreadsheet统一逻辑
+// 技术细节：https://juejin.im/post/5ce373d651882532e409ea96
+export const parseNumberWithPrecision = (value: number | string) => {
+  return Number.parseFloat((toNumber(value) || 0).toPrecision(PRECISION));
 };

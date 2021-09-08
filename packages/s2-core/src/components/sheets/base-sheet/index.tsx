@@ -1,47 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { isEmpty, debounce, isFunction, get, merge } from 'lodash';
+import React, { useEffect, useState, useRef, StrictMode, memo } from 'react';
+import { isEmpty, debounce, isFunction, get, merge, forIn } from 'lodash';
 import { Spin, Pagination } from 'antd';
-import { i18n } from '@/common/i18n';
+import { i18n } from 'src/common/i18n';
 import {
-  S2DataConfig,
   safetyDataConfig,
   safetyOptions,
   Pagination as PaginationCfg,
-} from '@/common/interface';
-import { DrillDown } from '../../drill-down';
-import { Header } from '../../header';
-import {
-  ClearDrillDownInfo,
-  HandleConfigWhenDrillDown,
-  HandleOptions,
-  HandleDrillDown,
-} from '@/utils/drill-down/helper';
-import {
-  KEY_AFTER_HEADER_LAYOUT,
-  KEY_COL_NODE_BORDER_REACHED,
-  KEY_ROW_NODE_BORDER_REACHED,
-  KEY_CELL_SCROLL,
-  KEY_LIST_SORT,
-  KEY_PAGINATION,
-} from '@/common/constant';
-import { S2Event } from '@/interaction/events/types';
-import { getBaseCellData } from '@/utils/interactions/formatter';
-import BaseSpreadsheet from '@/sheet-type/base-spread-sheet';
-import SpreadSheet from '@/sheet-type/spread-sheet';
-import { resetDrillDownCfg } from '@/utils/drill-down/helper';
-import { BaseSheetProps } from '../interface';
+  LayoutResult,
+  CellScrollPosition,
+  LayoutCol,
+  LayoutRow,
+  ListSortParams,
+  TargetLayoutNode,
+  S2Constructor,
+} from 'src/common/interface';
+import { HandleDrillDownIcon, HandleDrillDown, SpreadSheet } from 'src/index';
 import { Event as GEvent } from '@antv/g-canvas';
+import { DrillDown } from '@/components/drill-down';
+import { Header } from '@/components/header';
+import { S2Event } from '@/common/constant';
+import { getBaseCellData } from '@/utils/interaction/formatter';
+import { BaseSheetProps } from '@/components/sheets/interface';
+import { S2_PREFIX_CLS } from '@/common/constant/classnames';
+import { EmitterType } from '@/common/interface/emitter';
 
 import './index.less';
 
-export const BaseSheet = (props: BaseSheetProps) => {
+export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
     spreadsheet,
     dataCfg,
     options,
     adaptive = true,
     header,
-    theme,
+    themeCfg,
     rowLevel,
     colLevel,
     isLoading,
@@ -57,10 +49,10 @@ export const BaseSheet = (props: BaseSheetProps) => {
     getSpreadsheet,
     partDrillDown,
   } = props;
-  let container: HTMLDivElement;
-  const PRECLASS = 's2-pagination';
-  let baseSpreadsheet: BaseSpreadsheet;
-  const [ownSpreadsheet, setOwnSpreadsheet] = useState<BaseSpreadsheet>();
+  const container = useRef<HTMLDivElement>();
+  const baseSpreadsheet = useRef<SpreadSheet>();
+
+  const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
   const [drillFields, setDrillFields] = useState<string[]>([]);
   const [resizeTimeStamp, setResizeTimeStamp] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -69,102 +61,112 @@ export const BaseSheet = (props: BaseSheetProps) => {
     options?.pagination?.current || 1,
   );
 
-  const getSpreadSheet = (): BaseSpreadsheet => {
+  const getSpreadSheet = (): SpreadSheet => {
+    const params: S2Constructor = [container.current, dataCfg, options];
+    // TODO: 改个名字 spreadsheet => customSpreadsheet 之类的?
     if (spreadsheet) {
-      return spreadsheet(container, dataCfg, options);
+      return spreadsheet(...params);
     }
-    return new SpreadSheet(container, dataCfg, options);
+    return new SpreadSheet(...params);
   };
 
   const bindEvent = () => {
-    baseSpreadsheet.on(KEY_AFTER_HEADER_LAYOUT, (layoutResult) => {
-      if (rowLevel && colLevel) {
-        const rowNodes = layoutResult.rowsHierarchy
-          .getNodesLessThanLevel(rowLevel)
-          .map((value) => {
-            return [value.level, value.id, value.label];
-          });
-        const colNodes = layoutResult.colsHierarchy
-          .getNodesLessThanLevel(colLevel)
-          .map((value) => {
-            return [value.level, value.id, value.label];
-          });
-        if (isFunction(onRowColLayout)) onRowColLayout(rowNodes, colNodes);
-      }
-    });
+    baseSpreadsheet.current.on(
+      S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
+      (layoutResult: LayoutResult) => {
+        if (rowLevel && colLevel) {
+          // TODO: 这里为啥返回 {level: '', id: '', label: ''} 这样的结构
+          const rows: LayoutRow[] = layoutResult.rowsHierarchy
+            .getNodesLessThanLevel(rowLevel)
+            .map((value) => {
+              return [value.level, value.id, value.label];
+            });
 
-    baseSpreadsheet.on(KEY_PAGINATION, (data: PaginationCfg) => {
-      setTotal(data?.total);
-    });
+          const cols: LayoutCol[] = layoutResult.colsHierarchy
+            .getNodesLessThanLevel(colLevel)
+            .map((value) => {
+              return [value.level, value.id, value.label];
+            });
 
-    baseSpreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev: GEvent) => {
-      if (isFunction(onDataCellMouseUp)) {
-        onDataCellMouseUp(getBaseCellData(ev));
-      }
-    });
+          onRowColLayout?.(rows, cols);
+        }
+      },
+    );
 
-    baseSpreadsheet.on(S2Event.MERGEDCELLS_CLICK, (ev: GEvent) => {
-      if (isFunction(onMergedCellsClick)) {
-        onMergedCellsClick(getBaseCellData(ev));
-      }
-    });
+    const EVENT_LISTENER_CONFIG: Record<
+      string,
+      (...args: unknown[]) => unknown
+    > = {
+      [S2Event.LAYOUT_PAGINATION]: (data: PaginationCfg) => {
+        setTotal(data?.total);
+      },
+      [S2Event.DATA_CELL_MOUSE_UP]: (ev: GEvent) => {
+        onDataCellMouseUp?.(getBaseCellData(ev));
+      },
+      [S2Event.MERGED_CELLS_CLICK]: (ev: GEvent) => {
+        onMergedCellsClick?.(getBaseCellData(ev));
+      },
+      [S2Event.ROW_CELL_CLICK]: (ev: GEvent) => {
+        onRowCellClick?.(getBaseCellData(ev));
+      },
+      [S2Event.COL_CELL_CLICK]: (ev: GEvent) => {
+        onColCellClick?.(getBaseCellData(ev));
+      },
+      [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
+        targetRow: TargetLayoutNode,
+      ) => {
+        onRowCellScroll?.(targetRow);
+      },
+      [S2Event.LAYOUT_COL_NODE_BORDER_REACHED]: (
+        targetCol: TargetLayoutNode,
+      ) => {
+        onColCellScroll?.(targetCol);
+      },
+      [S2Event.LAYOUT_CELL_SCROLL]: (value: CellScrollPosition) => {
+        onCellScroll?.(value);
+      },
+      [S2Event.RANGE_SORT]: (value: ListSortParams) => {
+        onListSort?.(value);
+      },
+    };
 
-    baseSpreadsheet.on(S2Event.ROWCELL_CLICK, (ev: GEvent) => {
-      if (isFunction(onRowCellClick)) {
-        onRowCellClick(getBaseCellData(ev));
-      }
-    });
-    baseSpreadsheet.on(S2Event.COLCELL_CLICK, (ev: GEvent) => {
-      if (isFunction(onColCellClick)) {
-        onColCellClick(getBaseCellData(ev));
-      }
-    });
-
-    baseSpreadsheet.on(KEY_ROW_NODE_BORDER_REACHED, (value) => {
-      if (isFunction(onRowCellScroll)) onRowCellScroll(value);
-    });
-
-    baseSpreadsheet.on(KEY_COL_NODE_BORDER_REACHED, (value) => {
-      if (isFunction(onColCellScroll)) onColCellScroll(value);
-    });
-
-    baseSpreadsheet.on(KEY_CELL_SCROLL, (value) => {
-      if (isFunction(onCellScroll)) onCellScroll(value);
-    });
-
-    baseSpreadsheet.on(KEY_LIST_SORT, (value) => {
-      if (isFunction(onListSort)) onListSort(value);
+    forIn(EVENT_LISTENER_CONFIG, (handler, event: keyof EmitterType) => {
+      baseSpreadsheet.current.on(event, handler);
     });
   };
 
   const unBindEvent = () => {
-    baseSpreadsheet.off(KEY_AFTER_HEADER_LAYOUT);
-    baseSpreadsheet.off(KEY_PAGINATION);
-    baseSpreadsheet.off(KEY_ROW_NODE_BORDER_REACHED);
-    baseSpreadsheet.off(KEY_COL_NODE_BORDER_REACHED);
-    baseSpreadsheet.off(KEY_CELL_SCROLL);
-    baseSpreadsheet.off(KEY_LIST_SORT);
-    baseSpreadsheet.off(S2Event.MERGEDCELLS_CLICK);
-    baseSpreadsheet.off(S2Event.ROWCELL_CLICK);
-    baseSpreadsheet.off(S2Event.COLCELL_CLICK);
-    baseSpreadsheet.off(S2Event.DATACELL_MOUSEUP);
+    [
+      S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
+      S2Event.LAYOUT_PAGINATION,
+      S2Event.LAYOUT_ROW_NODE_BORDER_REACHED,
+      S2Event.LAYOUT_COL_NODE_BORDER_REACHED,
+      S2Event.LAYOUT_CELL_SCROLL,
+      S2Event.RANGE_SORT,
+      S2Event.MERGED_CELLS_CLICK,
+      S2Event.ROW_CELL_CLICK,
+      S2Event.COL_CELL_CLICK,
+      S2Event.DATA_CELL_MOUSE_UP,
+    ].forEach((eventName) => {
+      baseSpreadsheet.current.off(eventName);
+    });
   };
 
   const iconClickCallback = (
     event: MouseEvent,
-    sheetInstance: BaseSpreadsheet,
-    cashDrillFields: string[],
-    disabledFields: string[],
+    sheetInstance: SpreadSheet,
+    cacheDrillFields?: string[],
+    disabledFields?: string[],
   ) => {
     const element = (
       <DrillDown
         {...partDrillDown.drillConfig}
         setDrillFields={setDrillFields}
-        drillFields={cashDrillFields}
+        drillFields={cacheDrillFields}
         disabledFields={disabledFields}
       />
     );
-    sheetInstance.tooltip.show({
+    sheetInstance.showTooltip({
       position: {
         x: event.clientX,
         y: event.clientY,
@@ -232,40 +234,25 @@ export const BaseSheet = (props: BaseSheetProps) => {
   //   }
   // };
 
-  const preHandleDataCfg = (config: S2DataConfig) => {
-    if (partDrillDown) {
-      resetDrillDownCfg(ownSpreadsheet);
-    }
-    return config;
-  };
-
   const setOptions = (
-    sheetInstance?: BaseSpreadsheet,
+    sheetInstance?: SpreadSheet,
     sheetProps?: BaseSheetProps,
   ) => {
     const curSheet = sheetInstance || ownSpreadsheet;
     const curProps = sheetProps || props;
     curSheet.setOptions(
-      safetyOptions(HandleOptions(curProps, curSheet, iconClickCallback)),
+      safetyOptions(HandleDrillDownIcon(curProps, curSheet, iconClickCallback)),
     );
   };
 
   const setDataCfg = () => {
-    const newDataCfg = preHandleDataCfg(dataCfg);
-    ownSpreadsheet.setDataCfg(newDataCfg);
-    ownSpreadsheet.store.set('originalDataCfg', newDataCfg);
+    ownSpreadsheet.setDataCfg(dataCfg);
   };
 
-  const update = (reset?: () => void) => {
+  const update = (reset?: () => void, reloadData = true) => {
     if (!ownSpreadsheet) return;
-
     if (isFunction(reset)) reset();
-
-    if (!isEmpty(props.dataCfg)) {
-      HandleConfigWhenDrillDown(props, ownSpreadsheet);
-    }
-
-    ownSpreadsheet.render();
+    ownSpreadsheet.render(reloadData);
     setLoading(false);
   };
 
@@ -276,7 +263,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
   const clearDrillDownInfo = (rowId?: string) => {
     if (!ownSpreadsheet) return;
     setLoading(true);
-    ClearDrillDownInfo(ownSpreadsheet, rowId);
+    ownSpreadsheet.clearDrillDownData(rowId);
     update();
   };
 
@@ -291,11 +278,12 @@ export const BaseSheet = (props: BaseSheetProps) => {
       return null;
     }
     const pageSize = get(paginationCfg, 'pageSize', Infinity);
-    // only show the pagenation when the pageSize > 5
+    // only show the pagination when the pageSize > 5
     const showQuickJumper = total / pageSize > 5;
+    const preCls = `${S2_PREFIX_CLS}-pagination`;
 
     return (
-      <div className={PRECLASS}>
+      <div className={preCls}>
         <Pagination
           current={current}
           total={total}
@@ -307,7 +295,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
           onChange={(page) => setCurrent(page)}
         />
         <span
-          className={`${PRECLASS}-count`}
+          className={`${preCls}-count`}
           title={`${i18n('共计')}${total}${i18n('条')}`}
         >
           {i18n('共计')}
@@ -319,18 +307,19 @@ export const BaseSheet = (props: BaseSheetProps) => {
   };
 
   const buildSpreadSheet = () => {
-    if (!baseSpreadsheet) {
-      baseSpreadsheet = getSpreadSheet();
-      bindEvent();
-      baseSpreadsheet.setDataCfg(safetyDataConfig(dataCfg));
-      baseSpreadsheet.store.set('originalDataCfg', dataCfg);
-      setOptions(baseSpreadsheet, props);
-      baseSpreadsheet.setTheme(theme);
-      baseSpreadsheet.render();
-      setLoading(false);
-      setOwnSpreadsheet(baseSpreadsheet);
-      if (getSpreadsheet) getSpreadsheet(baseSpreadsheet);
+    if (baseSpreadsheet.current) {
+      return;
     }
+    baseSpreadsheet.current = getSpreadSheet();
+    bindEvent();
+    baseSpreadsheet.current.setDataCfg(safetyDataConfig(dataCfg));
+    baseSpreadsheet.current.store.set('originalDataCfg', dataCfg);
+    setOptions(baseSpreadsheet.current, props);
+    baseSpreadsheet.current.setThemeCfg(themeCfg);
+    baseSpreadsheet.current.render();
+    setLoading(false);
+    setOwnSpreadsheet(baseSpreadsheet.current);
+    getSpreadsheet?.(baseSpreadsheet.current);
   };
 
   useEffect(() => {
@@ -339,15 +328,15 @@ export const BaseSheet = (props: BaseSheetProps) => {
     if (adaptive) window.addEventListener('resize', debounceResize);
     return () => {
       unBindEvent();
-      baseSpreadsheet.destroy();
+      baseSpreadsheet.current.destroy();
       if (adaptive) window.removeEventListener('resize', debounceResize);
     };
   }, []);
 
   useEffect(() => {
-    if (!container || !ownSpreadsheet) return;
+    if (!container.current || !ownSpreadsheet) return;
 
-    const style = getComputedStyle(container);
+    const style = getComputedStyle(container.current);
 
     const box = {
       width: parseInt(style.getPropertyValue('width').replace('px', ''), 10),
@@ -363,14 +352,14 @@ export const BaseSheet = (props: BaseSheetProps) => {
   }, [dataCfg]);
 
   useEffect(() => {
-    update(setOptions);
+    update(setOptions, false);
   }, [options]);
 
   useEffect(() => {
     update(() => {
-      ownSpreadsheet.setTheme(theme);
+      ownSpreadsheet.setThemeCfg(themeCfg);
     });
-  }, [theme]);
+  }, [JSON.stringify(themeCfg)]);
 
   useEffect(() => {
     if (!ownSpreadsheet) return;
@@ -379,7 +368,7 @@ export const BaseSheet = (props: BaseSheetProps) => {
 
   useEffect(() => {
     if (!ownSpreadsheet) return;
-    ownSpreadsheet.tooltip.hide();
+    ownSpreadsheet.hideTooltip();
     if (isEmpty(drillFields)) {
       clearDrillDownInfo(ownSpreadsheet.store.get('drillDownMeta')?.id);
     } else {
@@ -406,9 +395,6 @@ export const BaseSheet = (props: BaseSheetProps) => {
 
   useEffect(() => {
     if (!partDrillDown || !ownSpreadsheet) return;
-    if (isEmpty(partDrillDown?.drillConfig?.dataSet)) {
-      resetDrillDownCfg(ownSpreadsheet);
-    }
     update(setOptions);
   }, [partDrillDown?.drillConfig?.dataSet]);
 
@@ -427,14 +413,12 @@ export const BaseSheet = (props: BaseSheetProps) => {
   }, [current]);
 
   return (
-    <Spin spinning={isLoading === undefined ? loading : isLoading}>
-      {header && <Header {...header} sheet={ownSpreadsheet} />}
-      <div
-        ref={(e: HTMLDivElement) => {
-          container = e;
-        }}
-      />
-      {renderPagination()}
-    </Spin>
+    <StrictMode>
+      <Spin spinning={isLoading === undefined ? loading : isLoading}>
+        {header && <Header {...header} sheet={ownSpreadsheet} />}
+        <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
+        {renderPagination()}
+      </Spin>
+    </StrictMode>
   );
-};
+});

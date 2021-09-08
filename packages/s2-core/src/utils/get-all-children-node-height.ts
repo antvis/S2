@@ -6,7 +6,7 @@ import { Node } from '@/facet/layout/node';
  */
 export const getAllChildrenNodeHeight = (node: Node) => {
   let nodeAllCellHeight = 0;
-  const nodes = Node.getAllChildrenNode(node);
+  const nodes = node.children;
   nodes?.forEach((item) => {
     nodeAllCellHeight += item.height || 0;
   });

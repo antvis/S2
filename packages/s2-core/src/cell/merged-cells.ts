@@ -1,12 +1,14 @@
-import { renderPolygon } from '../utils/g-renders';
-import { getPolygonPoints } from '../utils/interactions/merge-cells';
-import { drawObjectText, drawStringText } from '../utils/text';
-import { SimpleBBox, IShape } from '@antv/g-canvas';
-import { BaseCell } from './base-cell';
+import { Point, SimpleBBox } from '@antv/g-canvas';
 import { isEmpty, isObject } from 'lodash';
-import { DataItem } from '../common/interface/S2DataConfig';
-import { S2CellType } from '../common/interface/interaction';
-import { ViewMeta } from '../common/interface';
+import { S2CellType } from 'src/common/interface/interaction';
+import { renderPolygon } from 'src/utils/g-renders';
+import { drawObjectText, drawStringText } from 'src/utils/text';
+import { CellTypes } from '../common/constant';
+import { FormatResult, TextTheme, ViewMeta } from '../common/interface';
+import { DataItem } from '../common/interface/s2DataConfig';
+import { BaseCell } from './base-cell';
+import { getPolygonPoints } from '@/utils/interaction/merge-cells';
+import { SpreadSheet } from '@/sheet-type';
 
 /**
  * Cell for panelGroup area
@@ -14,19 +16,25 @@ import { ViewMeta } from '../common/interface';
 export class MergedCells extends BaseCell<ViewMeta> {
   public cells: S2CellType[];
 
-  protected textShape: IShape;
+  public constructor(
+    meta: ViewMeta,
+    spreadsheet: SpreadSheet,
+    cells: S2CellType[],
+  ) {
+    super(meta, spreadsheet, cells);
+  }
 
-  protected initCell() {
-    // TODO：1、条件格式支持； 2、交互态扩展； 3、合并后的单元格文字布局及文字内容（目前参考Excel合并后只保留第一个单元格子的数据）
-    this.drawBackgroundShape();
-    // this.drawStateShapes();
-    this.drawTextShape();
-    // this.update();
+  handleRestOptions(...[cells]: [S2CellType[]]) {
+    this.cells = cells;
+  }
+
+  public get cellType() {
+    return CellTypes.MERGED_CELLS;
   }
 
   public update() {}
 
-  public getData(): { value: DataItem; formattedValue: DataItem } {
+  protected getFormattedFieldValue(): FormatResult {
     const rowField = this.meta.rowId;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowField);
     let formatter;
@@ -46,11 +54,31 @@ export class MergedCells extends BaseCell<ViewMeta> {
     };
   }
 
+  protected getMaxTextWidth(): number {
+    return 0;
+  }
+
+  protected getTextPosition(): Point {
+    return { x: 0, y: 0 };
+  }
+
+  protected getTextStyle(): TextTheme {
+    return {};
+  }
+
+  protected initCell() {
+    // TODO：1、条件格式支持； 2、交互态扩展； 3、合并后的单元格文字布局及文字内容（目前参考Excel合并后只保留第一个单元格子的数据）
+    this.drawBackgroundShape();
+    // this.drawStateShapes();
+    this.drawTextShape();
+    // this.update();
+  }
+
   /**
    * Get left rest area size by icon condition
    * @protected
    */
-  protected getLeftAreaBBox(): SimpleBBox {
+  protected getContentAreaBBox(): SimpleBBox {
     const { x, y, height, width } = this.meta;
     return {
       x,
@@ -65,18 +93,13 @@ export class MergedCells extends BaseCell<ViewMeta> {
    */
   protected drawBackgroundShape() {
     const allPoints = getPolygonPoints(this.cells);
-    const cellTheme = this.theme.view.cell;
-    this.backgroundShape = renderPolygon(
-      allPoints,
-      cellTheme.borderColor[0],
-      cellTheme.backgroundColor,
-      cellTheme.borderWidth[0],
-      this,
-    );
-  }
-
-  handleRestOptions(...options: S2CellType[][]) {
-    this.cells = options[0];
+    const cellTheme = this.theme.dataCell.cell;
+    this.backgroundShape = renderPolygon(this, {
+      points: allPoints,
+      stroke: cellTheme.horizontalBorderColor,
+      fill: cellTheme.backgroundColor,
+      lineHeight: cellTheme.horizontalBorderWidth,
+    });
   }
 
   /**
@@ -84,7 +107,7 @@ export class MergedCells extends BaseCell<ViewMeta> {
    */
   protected drawTextShape() {
     if (isEmpty(this.meta)) return;
-    const { formattedValue: text } = this.getData();
+    const { formattedValue: text } = this.getFormattedFieldValue();
     if (isObject(text)) {
       drawObjectText(this);
     } else {

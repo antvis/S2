@@ -1,22 +1,40 @@
-import { getEllipsisText } from '../utils/text';
-import { SimpleBBox, IShape } from '@antv/g-canvas';
-import { map, find, get, isEmpty, first, includes } from 'lodash';
-import BaseSpreadsheet from '../sheet-type/base-spread-sheet';
-import { GuiIcon } from '../common/icons';
-import { CellMapping, Condition, Conditions } from '../common/interface';
-import { DataItem } from '../common/interface/S2DataConfig';
-import { renderLine, renderRect, renderText } from '../utils/g-renders';
-import { getDerivedDataState } from '../utils/text';
-import { VALUE_FIELD } from '../common/constant';
-import { ViewMeta } from '../common/interface';
-import { BaseCell } from './base-cell';
-import { DerivedCell } from './derived-cell';
-import { SelectedStateName } from '@/common/constant/interatcion';
-
-// default icon size
-const ICON_SIZE = 10;
-// default icon padding
-const ICON_PADDING = 2;
+import { Point } from '@antv/g-base';
+import { IShape } from '@antv/g-canvas';
+import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
+import { Node } from '..';
+import { BaseCell } from '@/cell/base-cell';
+import {
+  CellTypes,
+  InteractionStateName,
+  SHAPE_STYLE_MAP,
+} from '@/common/constant/interaction';
+import { GuiIcon } from '@/common/icons';
+import {
+  Condition,
+  Conditions,
+  FormatResult,
+  Formatter,
+  IconCfg,
+  IconCondition,
+  MappingResult,
+  S2CellType,
+  TextTheme,
+  ViewMeta,
+  ViewMetaIndexType,
+} from '@/common/interface';
+import {
+  getMaxTextWidth,
+  getTextAndFollowingIconPosition,
+} from '@/utils/cell/cell';
+import { includeCell } from '@/utils/cell/data-cell';
+import { getIconPositionCfg } from '@/utils/condition/generate-condition';
+import {
+  renderIcon,
+  renderLine,
+  renderRect,
+  updateShapeAttr,
+} from '@/utils/g-renders';
+import { parseNumberWithPrecision } from '@/utils/formatter';
 
 /**
  * DataCell for panelGroup area
@@ -31,82 +49,151 @@ const ICON_PADDING = 2;
  * 3、left rect area is interval(in left) and text(in right)
  */
 export class DataCell extends BaseCell<ViewMeta> {
-  // 3、condition shapes
-  // background color by bg condition
-  protected conditionBgShape: IShape;
-
-  // icon condition shape
-  protected iconShape: GuiIcon;
-
-  // interval condition shape
-  protected intervalShape: IShape;
-
-  // 4、render main text
-  protected textShape: IShape;
-
-  // 5、brush-select prepareSelect border
-  protected activeBorderShape: IShape;
-
-  // cell config's conditions(Determine how to render this cell)
   protected conditions: Conditions;
 
-  constructor(meta: ViewMeta, spreadsheet: BaseSpreadsheet) {
-    super(meta, spreadsheet);
+  protected conditionIntervalShape: IShape;
+
+  protected conditionIconShape: GuiIcon;
+
+  public get cellType() {
+    return CellTypes.DATA_CELL;
   }
 
-  // dataCell根据state 改变当前样式，
-  private changeCellStyleByState(needGetIndexKey, changeStyleStateName) {
-    const { cells } = this.spreadsheet.getCurrentState();
-    const currentIndex = this.meta[needGetIndexKey];
-    const selectedIndexes = map(
-      cells,
-      (cell) => cell?.getMeta()[needGetIndexKey],
-    );
-    if (includes(selectedIndexes, currentIndex)) {
-      this.updateByState(changeStyleStateName);
-    } else {
-      this.hideShapeUnderState();
+  protected handlePrepareSelect(cells: S2CellType[]) {
+    if (includeCell(cells, this)) {
+      this.updateByState(InteractionStateName.PREPARE_SELECT);
+    }
+  }
+
+  protected handleSelect(cells: S2CellType[]) {
+    const currentCellType = cells?.[0]?.cellType;
+    switch (currentCellType) {
+      // 列多选
+      case CellTypes.COL_CELL:
+        this.changeRowColSelectState('colIndex');
+        break;
+      // 行多选
+      case CellTypes.ROW_CELL:
+        this.changeRowColSelectState('rowIndex');
+        break;
+      // 单元格单选/多选
+      case CellTypes.DATA_CELL:
+        if (includeCell(cells, this)) {
+          this.updateByState(InteractionStateName.SELECTED);
+        } else if (this.spreadsheet.options.selectedCellsSpotlight) {
+          this.updateByState(InteractionStateName.UNSELECTED);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  protected handleHover(cells: S2CellType[]) {
+    const currentHoverCell = first(cells) as S2CellType;
+    if (currentHoverCell.cellType !== CellTypes.DATA_CELL) {
+      this.hideInteractionShape();
+      return;
+    }
+
+    if (this.spreadsheet.options.hoverHighlight) {
+      // 如果当前是hover，要绘制出十字交叉的行列样式
+
+      const currentColIndex = this.meta.colIndex;
+      const currentRowIndex = this.meta.rowIndex;
+      // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
+      if (
+        currentColIndex === currentHoverCell?.getMeta().colIndex ||
+        currentRowIndex === currentHoverCell?.getMeta().rowIndex
+      ) {
+        this.updateByState(InteractionStateName.HOVER);
+      } else {
+        // 当视图内的 cell 行列 index 与 hover 的 cell 不一致，隐藏其他样式
+        this.hideInteractionShape();
+      }
+    }
+
+    if (isEqual(currentHoverCell, this)) {
+      this.updateByState(InteractionStateName.HOVER_FOCUS);
     }
   }
 
   public update() {
-    const state = this.spreadsheet.getCurrentState();
-    const { stateName, cells } = state;
-    if (cells.length) {
-      // 如果当前选择点击选择了行头或者列头，那么与行头列头在一个colIndex或rowIndex的data-cell应该置为selected-state
-      // 二者操作一致，function合并
-      if (stateName === SelectedStateName.COL_SELECTED) {
-        this.changeCellStyleByState('colIndex', SelectedStateName.SELECTED);
-      } else if (stateName === SelectedStateName.ROW_SELECTED) {
-        this.changeCellStyleByState('rowIndex', SelectedStateName.SELECTED);
-      } else if (stateName === SelectedStateName.HOVER && !isEmpty(cells)) {
-        // 如果当前是hover，要绘制出十字交叉的行列样式
-        const currentHoverCell = first(cells);
-        const currentColIndex = this.meta.colIndex;
-        const currentRowIndex = this.meta.rowIndex;
-        // 当视图内的cell行列index与hover的cell一致，且不是当前hover的cell时，绘制hover的十字样式
-        if (
-          (currentColIndex === currentHoverCell?.getMeta().colIndex ||
-            currentRowIndex === currentHoverCell?.getMeta().rowIndex) &&
-          this !== currentHoverCell
-        ) {
-          this.updateByState(SelectedStateName.HOVER_LINKAGE);
-        } else if (this !== currentHoverCell) {
-          // 当视图内的cell行列index与hover的cell 不一致，且不是当前hover的cell时，隐藏其他样式
-          this.hideShapeUnderState();
-        }
-      }
+    const stateName = this.spreadsheet.interaction.getCurrentStateName();
+    const cells = this.spreadsheet.interaction.getActiveCells();
+
+    if (isEmpty(cells) || !stateName) {
+      return;
+    }
+
+    switch (stateName) {
+      case InteractionStateName.PREPARE_SELECT:
+        this.handlePrepareSelect(cells);
+        break;
+      case InteractionStateName.SELECTED:
+        this.handleSelect(cells);
+        break;
+      case InteractionStateName.HOVER_FOCUS:
+      case InteractionStateName.HOVER:
+        this.handleHover(cells);
+        break;
+      default:
+        break;
     }
   }
 
-  public getInteractiveBgShape() {
-    return this.interactiveBgShape;
+  public setMeta(viewMeta: ViewMeta) {
+    super.setMeta(viewMeta);
+    this.initCell();
   }
 
-  public getData(): { value: DataItem; formattedValue: DataItem } {
+  protected initCell() {
+    this.conditions = this.spreadsheet.options.conditions;
+    this.drawBackgroundShape();
+    this.drawInteractiveBgShape();
+    this.drawConditionIntervalShape();
+    this.drawInteractiveBorderShape();
+    this.drawTextShape();
+    this.drawConditionIconShapes();
+    this.drawBorderShape();
+    this.update();
+  }
+
+  protected getTextStyle(): TextTheme {
+    const { isTotals } = this.meta;
+    const textStyle = isTotals
+      ? this.theme.dataCell.bolderText
+      : this.theme.dataCell.text;
+
+    // get text condition's fill result
+    let fill = textStyle.fill;
+    const textCondition = this.findFieldCondition(this.conditions?.text);
+    if (textCondition?.mapping) {
+      fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
+    }
+
+    return { ...textStyle, fill };
+  }
+
+  protected getIconStyle(): IconCfg | undefined {
+    const { size, margin } = this.theme.dataCell.icon;
+    const iconCondition: IconCondition = this.findFieldCondition(
+      this.conditions?.icon,
+    );
+
+    const iconCfg: IconCfg = iconCondition &&
+      iconCondition.mapping && {
+        size,
+        margin,
+        position: getIconPositionCfg(iconCondition),
+      };
+    return iconCfg;
+  }
+
+  protected getFormattedFieldValue(): FormatResult {
     const rowField = this.meta.rowId;
     const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowField);
-    let formatter;
+    let formatter: Formatter;
     if (rowMeta) {
       // format by row field
       formatter = this.spreadsheet.dataSet.getFieldFormatter(rowField);
@@ -118,31 +205,54 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
     const formattedValue = formatter(this.meta.fieldValue);
     return {
-      value: this.meta.fieldValue as DataItem,
+      value: this.meta.fieldValue,
       formattedValue,
     };
   }
 
-  public setMeta(viewMeta: ViewMeta) {
-    super.setMeta(viewMeta);
-    this.initCell();
+  protected getMaxTextWidth(): number {
+    const { width } = this.getContentArea();
+    return getMaxTextWidth(width, this.getIconStyle());
   }
 
-  protected initCell() {
-    this.conditions = this.spreadsheet.options?.conditions;
-    this.drawBackgroundShape();
-    this.drawStateShapes();
-    this.drawConditionShapes();
-    this.drawTextShape();
-    this.drawBorderShape();
-    // 更新选中状态
-    this.update();
+  private getTextAndIconPosition() {
+    const textStyle = this.getTextStyle();
+    const iconCfg = this.getIconStyle();
+    return getTextAndFollowingIconPosition(
+      this.getContentArea(),
+      textStyle,
+      this.actualTextWidth,
+      iconCfg,
+    );
   }
 
-  // 根据state要改变样式的shape
-  protected drawStateShapes() {
-    this.drawInteractiveBgShape();
-    this.drawActiveBorderShape();
+  protected getTextPosition(): Point {
+    return this.getTextAndIconPosition().text;
+  }
+
+  protected getIconPosition() {
+    return this.getTextAndIconPosition().icon;
+  }
+
+  protected drawConditionIconShapes() {
+    const iconCondition: IconCondition = this.findFieldCondition(
+      this.conditions?.icon,
+    );
+    if (iconCondition && iconCondition.mapping) {
+      const attrs = this.mappingValue(iconCondition);
+      const position = this.getIconPosition();
+      const { formattedValue } = this.getFormattedFieldValue();
+      const { size } = this.theme.dataCell.icon;
+      if (!isEmpty(attrs?.icon) && formattedValue) {
+        this.conditionIconShape = renderIcon(this, {
+          ...position,
+          type: attrs.icon,
+          width: size,
+          height: size,
+          fill: attrs.fill,
+        });
+      }
+    }
   }
 
   /**
@@ -154,34 +264,202 @@ export class DataCell extends BaseCell<ViewMeta> {
    * 0_________________min_________x_______________max
    * |<-------------r------------->|
    *
-   * @param min in current field values
+   * @param minValue in current field values
    * @param max in current field values
    */
-  protected getIntervalScale(
-    min: number,
-    max: number,
-  ): (currentValue: number) => number {
-    const realMin = min >= 0 ? 0 : min;
-    const distance = max - realMin;
-    return (currentValue: number) => {
-      return (currentValue - realMin) / distance;
-    };
+  private getIntervalScale(minValue = 0, maxValue = 0) {
+    minValue = parseNumberWithPrecision(minValue);
+    maxValue = parseNumberWithPrecision(maxValue);
+
+    const realMin = minValue >= 0 ? 0 : minValue;
+    const distance = maxValue - realMin || 1;
+    return (current: number) =>
+      // max percentage shouldn't be greater than 100%
+      // min percentage shouldn't be less than 0%
+      clamp((current - realMin) / distance, 0, 1);
   }
 
   /**
-   * Get left rest area size by icon condition
-   * @protected
+   * Draw interval condition shape
+   * @private
    */
-  protected getLeftAreaBBox(): SimpleBBox {
-    const { x, y, height, width } = this.meta;
-    const iconCondition = this.findFieldCondition(this.conditions?.icon);
-    const isIconExist = iconCondition && iconCondition.mapping;
-    return {
-      x,
-      y,
-      width: width - (isIconExist ? ICON_SIZE + ICON_PADDING * 2 : 0),
-      height,
-    };
+  protected drawConditionIntervalShape() {
+    const { x, y, height, width } = this.getCellArea();
+    const { formattedValue } = this.getFormattedFieldValue();
+
+    const intervalCondition = this.findFieldCondition(
+      this.conditions?.interval,
+    );
+
+    if (intervalCondition && intervalCondition.mapping && formattedValue) {
+      const attrs = this.mappingValue(intervalCondition);
+      if (!attrs) {
+        return;
+      }
+      const { minValue, maxValue } = attrs.isCompare
+        ? attrs
+        : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
+      const scale = this.getIntervalScale(minValue, maxValue);
+      const zero = scale(0); // 零点
+
+      const fieldValue = parseNumberWithPrecision(
+        this.meta.fieldValue as number,
+      );
+      const current = scale(fieldValue); // 当前数据点
+      const barChartHeight = this.getStyle().cell.miniBarChartHeight;
+      const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
+      const stroke = attrs.fill ?? barChartFillColor;
+      const fill = attrs.fill ?? barChartFillColor;
+
+      this.conditionIntervalShape = renderRect(this, {
+        x: x + width * zero,
+        y: y + height / 2 - barChartHeight / 2,
+        width: width * (current - zero),
+        height: barChartHeight,
+        fill,
+        stroke,
+      });
+    }
+  }
+
+  public getBackgroundColor() {
+    const crossBackgroundColor = this.getStyle().cell.crossBackgroundColor;
+
+    let backgroundColor = this.getStyle().cell.backgroundColor;
+    const strokeColor = 'transparent';
+    if (
+      this.spreadsheet.isPivotMode() &&
+      crossBackgroundColor &&
+      this.meta.rowIndex % 2 === 0
+    ) {
+      // 隔行颜色的配置
+      // 偶数行展示灰色背景，因为index是从0开始的
+      backgroundColor = crossBackgroundColor;
+    }
+
+    // get background condition fill color
+    const bgCondition = this.findFieldCondition(this.conditions?.background);
+    if (bgCondition && bgCondition.mapping) {
+      const attrs = this.mappingValue(bgCondition);
+      if (attrs) {
+        backgroundColor = attrs.fill;
+      }
+    }
+    return { backgroundColor, strokeColor };
+  }
+
+  /**
+   * Draw cell background
+   */
+  protected drawBackgroundShape() {
+    const { backgroundColor: fill, strokeColor: stroke } =
+      this.getBackgroundColor();
+
+    this.backgroundShape = renderRect(this, {
+      ...this.getCellArea(),
+      fill,
+      stroke,
+    });
+  }
+
+  /**
+   * 绘制hover悬停，刷选的外框
+   */
+  protected drawInteractiveBorderShape() {
+    // 往内缩一个像素，避免和外边框重叠
+    const margin = 1;
+    const { x, y, height, width } = this.getCellArea();
+    this.stateShapes.set(
+      'interactiveBorderShape',
+      renderRect(this, {
+        x: x + margin,
+        y: y + margin,
+        width: width - margin * 2,
+        height: height - margin * 2,
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
+    );
+  }
+
+  /**
+   * Draw interactive color
+   */
+  protected drawInteractiveBgShape() {
+    this.stateShapes.set(
+      'interactiveBgShape',
+      renderRect(this, {
+        ...this.getCellArea(),
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
+    );
+  }
+
+  // dataCell根据state 改变当前样式，
+  private changeRowColSelectState(indexType: ViewMetaIndexType) {
+    const currentIndex = get(this.meta, indexType);
+    const { nodes = [], cells = [] } = this.spreadsheet.interaction.getState();
+    const isEqualIndex = [...nodes, ...cells].find((cell) => {
+      if (cell instanceof Node) {
+        return get(cell, indexType) === currentIndex;
+      }
+      return get(cell?.getMeta(), indexType) === currentIndex;
+    });
+    if (isEqualIndex) {
+      this.updateByState(InteractionStateName.SELECTED);
+    } else if (this.spreadsheet.options.selectedCellsSpotlight) {
+      this.updateByState(InteractionStateName.UNSELECTED);
+    } else {
+      this.hideInteractionShape();
+    }
+  }
+
+  /**
+   * Render cell border controlled by verticalBorder & horizontalBorder
+   * @private
+   */
+  protected drawBorderShape() {
+    const { x, y, height, width } = this.getCellArea();
+    const {
+      horizontalBorderColor,
+      horizontalBorderWidth,
+      horizontalBorderColorOpacity,
+      verticalBorderColor,
+      verticalBorderWidth,
+    } = this.getStyle().cell;
+
+    // horizontal border
+    renderLine(
+      this,
+      {
+        x1: x,
+        y1: y,
+        x2: x + width,
+        y2: y,
+      },
+      {
+        stroke: horizontalBorderColor,
+        lineWidth: horizontalBorderWidth,
+        opacity: horizontalBorderColorOpacity,
+      },
+    );
+
+    // vertical border
+    renderLine(
+      this,
+      {
+        x1: x + width,
+        y1: y,
+        x2: x + width,
+        y2: y + height,
+      },
+      {
+        stroke: verticalBorderColor,
+        lineWidth: verticalBorderWidth,
+        opacity: horizontalBorderColorOpacity,
+      },
+    );
   }
 
   /**
@@ -196,291 +474,45 @@ export class DataCell extends BaseCell<ViewMeta> {
    * Mapping value to get condition related attrs
    * @param condition
    */
-  protected mappingValue(condition: Condition): CellMapping {
+  protected mappingValue(condition: Condition): MappingResult {
     const value = this.meta.fieldValue as unknown as number;
-    return condition?.mapping(value, get(this.meta.data, [0]));
+    return condition?.mapping(value, this.meta.data);
   }
 
-  /**
-   * Draw cell background
-   */
-  protected drawBackgroundShape() {
-    const { x, y, height, width } = this.meta;
+  public updateByState(stateName: InteractionStateName) {
+    super.updateByState(stateName, this);
 
-    let bgColor = this.theme.view.cell.backgroundColor;
-    const stroke = 'transparent';
-
-    const crossColor = this.theme.view.cell.crossColor;
-    // 隔行颜色的配置
-    if (this.spreadsheet.isPivotMode() && crossColor) {
-      if (this.meta.rowIndexHeightExist % 2 === 0) {
-        // 偶数行展示灰色背景，因为index是从0开始的
-        bgColor = crossColor;
-      }
-    }
-    this.backgroundShape = renderRect(
-      x,
-      y,
-      width,
-      height,
-      bgColor,
-      stroke,
-      this,
-    );
-  }
-
-  /**
-   * Draw background condition shape
-   */
-  protected drawConditionBgShape() {
-    const { x, y, height, width } = this.meta;
-    let fill = 'rgba(255, 255, 255, 0)';
-    let stroke = 'transparent';
-    // 如果存在这个字段的 background 条件格式配置
-    const bgCondition = this.findFieldCondition(this.conditions?.background);
-    if (bgCondition && bgCondition.mapping) {
-      const attrs = this.mappingValue(bgCondition);
-      if (attrs) {
-        // eslint-disable-next-line no-multi-assign
-        stroke = fill = attrs.fill;
-        this.conditionBgShape = renderRect(
-          x,
-          y,
-          width,
-          height,
-          fill,
-          stroke,
-          this,
-        );
-      }
-    }
-  }
-
-  /**
-   * Draw condition's shapes
-   * icon, interval, background
-   */
-  protected drawConditionShapes() {
-    this.drawConditionBgShape();
-    this.drawIconShape();
-    this.drawIntervalShape();
-  }
-
-  /**
-   * 绘制hover悬停，刷选的外框
-   */
-  protected drawActiveBorderShape() {
-    // 往内缩一个像素，避免和外边框重叠
-    const margin = 1;
-    const { x, y, height, width } = this.meta;
-    this.activeBorderShape = renderRect(
-      x + margin,
-      y + margin,
-      width - margin * 2,
-      height - margin * 2,
-      'transparent',
-      'transparent',
-      this,
-    );
-    this.stateShapes.push(this.activeBorderShape);
-  }
-
-  /**
-   * Draw interactive color
-   */
-  protected drawInteractiveBgShape() {
-    const { x, y, height, width } = this.meta;
-    this.interactiveBgShape = renderRect(
-      x,
-      y,
-      width,
-      height,
-      'transparent',
-      'transparent',
-      this,
-    );
-    this.stateShapes.push(this.interactiveBgShape);
-  }
-
-  /**
-   * Draw icon condition shape
-   * @private
-   */
-  protected drawIconShape() {
-    const { x, y, height, width } = this.meta;
-    const iconCondition = this.findFieldCondition(this.conditions?.icon);
-    if (iconCondition && iconCondition.mapping) {
-      const attrs = this.mappingValue(iconCondition);
-      const { formattedValue } = this.getData();
-      // icon only show when icon not empty and value not null(empty)
-      if (!isEmpty(attrs?.icon) && formattedValue) {
-        this.iconShape = new GuiIcon({
-          type: attrs.icon,
-          x: x + width - ICON_PADDING - ICON_SIZE,
-          y: y + height / 2 - ICON_SIZE / 2,
-          width: ICON_SIZE,
-          height: ICON_SIZE,
-          fill: attrs.fill,
-        });
-        this.add(this.iconShape);
-      }
-    }
-  }
-
-  /**
-   * Draw interval condition shape
-   * @private
-   */
-  protected drawIntervalShape() {
-    const { x, y, height, width } = this.getLeftAreaBBox();
-
-    const intervalCondition = this.findFieldCondition(
-      this.conditions?.interval,
-    );
-    const { formattedValue } = this.getData();
-    if (intervalCondition && intervalCondition.mapping && formattedValue) {
-      let fill = '#75C0F8';
-      let stroke = '#75C0F8';
-      const attrs = this.mappingValue(intervalCondition);
-      if (attrs) {
-        // interval shape exist
-        let scale;
-        let zero;
-        let current;
-        if (attrs.isCompare) {
-          // value in range(compare) condition
-          scale = this.getIntervalScale(attrs.minValue || 0, attrs.maxValue);
-          zero = scale(0); // 零点
-          current = scale(this.meta.fieldValue); // 当前数据点
-        } else {
-          // the other conditions， keep old logic
-          // TODO this logic need be changed!!!
-          const summaryField = this.meta.valueField;
-          const pivot = this.spreadsheet.dataSet.pivot;
-          if (pivot) {
-            const MIN = summaryField
-              ? pivot.getTotals(summaryField, {}, 'MIN')
-              : 0;
-            const MAX = summaryField
-              ? pivot.getTotals(summaryField, {}, 'MAX')
-              : 0;
-            scale = this.getIntervalScale(MIN, MAX);
-            zero = scale(0); // 零点
-            current = scale(this.meta.fieldValue); // 当前数据点
-          }
-        }
-        // eslint-disable-next-line no-multi-assign
-        stroke = fill = attrs.fill;
-
-        const bgHeight = this.theme.view.cell.intervalBgHeight;
-        this.intervalShape = renderRect(
-          x + width * zero,
-          y + height / 2 - bgHeight / 2,
-          width * (current - zero),
-          bgHeight,
-          fill,
-          stroke,
-          this,
-        );
-      }
-    }
-  }
-
-  protected getDerivedData(derivedValue: string, isTotals = false) {
-    const data = this.meta.data;
-    if (data) {
-      let value;
-      if (isTotals) {
-        value = get(data, [0, VALUE_FIELD]);
-      } else {
-        value = get(data, [0, derivedValue]);
-      }
-      const up = getDerivedDataState(value);
-      const formatter =
-        this.spreadsheet.dataSet.getFieldFormatter(derivedValue);
-      return {
-        value: formatter ? formatter(value) : value,
-        up,
-      };
-    }
-    return {
-      value: '',
-      up: false,
-    };
-  }
-
-  /**
-   * Render cell main text and derived text
-   */
-  protected drawTextShape() {
-    const { x, y, height, width } = this.getLeftAreaBBox();
-    const { valueField: originField, isTotals } = this.meta;
-
-    if (this.spreadsheet.isDerivedValue(originField)) {
-      const data = this.getDerivedData(originField, isTotals);
-      // 衍生指标的cell, 需要单独的处理
-      this.add(
-        new DerivedCell({
-          x,
-          y,
-          height,
-          width,
-          up: data.up,
-          text: data.value,
-          spreadsheet: this.spreadsheet,
-        }),
+    if (stateName === InteractionStateName.UNSELECTED) {
+      const stateStyles = get(
+        this.theme,
+        `${this.cellType}.cell.interactionState.${stateName}`,
       );
-      return;
+      if (stateStyles) {
+        updateShapeAttr(
+          this.conditionIntervalShape,
+          SHAPE_STYLE_MAP.backgroundOpacity,
+          stateStyles.backgroundOpacity,
+        );
+        updateShapeAttr(
+          this.conditionIconShape as unknown as IShape,
+          SHAPE_STYLE_MAP.opacity,
+          stateStyles.opacity,
+        );
+      }
     }
-    // 其他常态数据下的cell
-    //  the size of text condition is equal with valueFields size
-    const textCondition = this.findFieldCondition(this.conditions?.text);
-
-    const { formattedValue: text } = this.getData();
-    const textStyle = isTotals
-      ? this.theme.view.bolderText
-      : this.theme.view.text;
-    let textFill = textStyle.fill;
-    if (textCondition?.mapping) {
-      textFill = this.mappingValue(textCondition)?.fill || textStyle.fill;
-    }
-    const padding = this.theme.view.cell.padding;
-    this.textShape = renderText(
-      this.textShape,
-      x + width - padding[1],
-      y + height / 2,
-      getEllipsisText(
-        `${text || '-'}`,
-        width - padding[3] - padding[1],
-        textStyle,
-      ),
-      textStyle,
-      textFill,
-      this,
-    );
   }
 
-  /**
-   * Render cell border controlled by verticalBorder & horizontalBorder
-   * @private
-   */
-  protected drawBorderShape() {
-    const { x, y, height, width } = this.meta;
-    const borderColor = this.theme.view.cell.borderColor;
-    const borderWidth = this.theme.view.cell.borderWidth;
-
-    // horizontal border
-    renderLine(x, y, x + width, y, borderColor[0], borderWidth[0], this);
-
-    // vertical border
-    renderLine(
-      x + width,
-      y,
-      x + width,
-      y + height,
-      borderColor[1],
-      borderWidth[1],
-      this,
+  public clearUnselectedState() {
+    super.clearUnselectedState();
+    updateShapeAttr(
+      this.conditionIntervalShape,
+      SHAPE_STYLE_MAP.backgroundOpacity,
+      1,
+    );
+    updateShapeAttr(
+      this.conditionIconShape as unknown as IShape,
+      SHAPE_STYLE_MAP.opacity,
+      1,
     );
   }
 }

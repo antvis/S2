@@ -1,16 +1,17 @@
-import { SimpleBBox, IGroup } from '@antv/g-canvas';
-import { each, get } from 'lodash';
-import { measureTextWidth } from '@/utils/text';
-import { getAdjustPosition } from '../../utils/text-absorption';
-import BaseSpreadSheet from '@/sheet-type/base-spread-sheet';
-import { Node } from '@/facet/layout/node';
-import { BaseHeader, BaseHeaderConfig } from './base';
-import { getCellPadding } from './util';
+import { BBox, IGroup, IShape } from '@antv/g-canvas';
+import { each } from 'lodash';
 import { translateGroup } from '../utils';
-
-const FONT_SIZE = 12;
+import { BaseHeader, BaseHeaderConfig } from './base';
+import { Node } from '@/facet/layout/node';
+import { SpreadSheet } from '@/sheet-type/index';
+import { renderRect } from '@/utils/g-renders';
+import { measureTextWidth } from '@/utils/text';
+import { getAdjustPosition } from '@/utils/text-absorption';
+import { Padding, ViewMeta } from '@/common/interface';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
+  private backgroundShape: IShape;
+
   /**
    * Get seriesNumber header by config
    * @param viewportBBox
@@ -19,20 +20,21 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
    * @param spreadsheet
    * @param cornerWidth
    */
+
   public static getSeriesNumberHeader(
-    viewportBBox: SimpleBBox,
+    viewportBBox: BBox,
     seriesNumberWidth: number,
     leafNodes: Node[],
-    spreadsheet: BaseSpreadSheet,
+    spreadsheet: SpreadSheet,
     cornerWidth: number,
   ): SeriesNumberHeader {
     const { width, height } = viewportBBox;
     const seriesNodes: Node[] = [];
-    const isPivotMode = spreadsheet.isPivotMode();
+    const isHierarchyTreeType = spreadsheet.isHierarchyTreeType();
     leafNodes.forEach((node: Node): void => {
       // 1、is spreadsheet and node is not total(grand or sub)
       // 2、is listSheet
-      if ((isPivotMode && !node.isTotals) || !isPivotMode) {
+      if (!node.isTotals || isHierarchyTreeType) {
         const sNode = new Node({
           id: '',
           key: '',
@@ -61,43 +63,15 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     super(cfg);
   }
 
-  public clip(): void {
-    const { width, height, scrollX, scrollY } = this.headerConfig;
-    this.setClip({
-      type: 'rect',
-      attrs: {
-        x: scrollX,
-        y: scrollY,
-        width: width - scrollX,
-        height: height + scrollY,
-      },
-    });
-  }
+  public clip(): void {}
 
   public layout() {
-    const { data, offset, height } = this.headerConfig;
-    each(data, (item: any) => {
-      const { y, height: cellHeight } = item;
-      const isHeaderCellInViewport = this.isHeaderCellInViewport(
-        y,
-        cellHeight,
-        offset,
-        height,
-      );
-      if (isHeaderCellInViewport) {
-        // 按需渲染：视窗内的才渲染
+    const { data, offset, height, spreadsheet } = this.headerConfig;
+    if (spreadsheet.isPivotMode) {
+      //  添加矩形背景
+      this.addBackGround();
+    }
 
-        const group = this.addGroup();
-        // 添加矩形背景
-        this.addRect(group, item);
-
-        // 添加文本
-        this.addText(group, item);
-
-        // group.attr({ appendInfo: item });
-        this.add(group);
-      }
-    });
     const borderGroup = this.addGroup();
     each(data, (item: any) => {
       const { y, height: cellHeight, isLeaf } = item;
@@ -108,44 +82,42 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         height,
       );
       if (isHeaderCellInViewport) {
+        // 按需渲染：视窗内的才渲染
+        const group = this.addGroup();
+
+        // 添加文本
+        this.addText(group, item);
+
+        this.add(group);
+
         // 添加边框
         if (!isLeaf) {
           this.addBottomBorder(borderGroup, item);
         }
       }
     });
-
-    // this.addShape('rect', {
-    //   attrs: {
-    //     x: 0,
-    //     y: 0,
-    //     width,
-    //     height: height + scrollY,
-    //     fill: '#f0f'
-    //   }
-    // });
   }
 
   protected offset() {
     const { scrollY, scrollX, position } = this.headerConfig;
     translateGroup(this, position.x - scrollX, position.y - scrollY);
+    if (this.backgroundShape) {
+      this.backgroundShape.translate(position.x, position.y + scrollY);
+    }
   }
 
-  private addRect(group: IGroup, cellData) {
-    const { x, y, width, height } = cellData;
-    group.addShape('rect', {
-      attrs: {
-        fill: get(
-          this.headerConfig,
-          'spreadsheet.theme.header.cell.backgroundColor',
-        ),
-        stroke: 'transparent',
-        x,
-        y,
-        width,
-        height,
-        cursor: 'pointer',
-      },
+  private addBackGround() {
+    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
+    const { position, width, height } = this.headerConfig;
+
+    this.backgroundShape = renderRect(this, {
+      x: position.x,
+      y: -position.y,
+      width,
+      height,
+      fill: rowCellTheme.backgroundColor,
+      stroke: 'transparent',
+      opacity: rowCellTheme.backgroundColorOpacity,
     });
   }
 
@@ -158,14 +130,17 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         y1: y,
         x2: position.x + width,
         y2: y,
-        stroke: this.headerConfig.spreadsheet.theme.header.cell.borderColor[0],
+        stroke:
+          this.headerConfig.spreadsheet.theme.rowCell.cell
+            .horizontalBorderColor,
         lineWidth: 1,
       },
     });
   }
 
-  private addText(group: IGroup, cellData) {
+  private addText(group: IGroup, cellData: ViewMeta) {
     const { offset, height } = this.headerConfig;
+    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
     const {
       label,
       x,
@@ -175,32 +150,36 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       isLeaf,
       isTotals,
     } = cellData;
-    const padding = getCellPadding();
-    const labelWidth = measureTextWidth(
-      label,
-      get(this.headerConfig, 'spreadsheet.theme.header.text'),
-    );
-    padding.left = Math.max(Math.abs((cellWidth - labelWidth) / 2), 4);
-    padding.right = padding.left;
+    const padding = this.getTextPadding(label, cellWidth);
     const textStyle =
-      isLeaf && !isTotals
-        ? get(this.headerConfig, 'spreadsheet.theme.header.text')
-        : get(this.headerConfig, 'spreadsheet.theme.header.bolderText');
+      isLeaf && !isTotals ? rowCellTheme.text : rowCellTheme.bolderText;
     const textY = getAdjustPosition(
       y + padding.top,
       cellHeight - padding.top - padding.bottom,
       offset,
       height,
-      FONT_SIZE,
+      textStyle.fontSize,
     );
+
     group.addShape('text', {
       attrs: {
         x: x + padding.left,
-        y: textY + FONT_SIZE / 2,
+        y: textY + textStyle.fontSize / 2,
         text: label,
         ...textStyle,
         cursor: 'pointer',
       },
     });
+  }
+
+  private getTextPadding(text: string, cellWidth: number): Padding {
+    const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
+    const textWidth = measureTextWidth(text, rowCellTheme.text);
+    const padding = Math.max(Math.abs((cellWidth - textWidth) / 2), 4);
+    return {
+      ...rowCellTheme.cell.padding,
+      left: padding,
+      right: padding,
+    };
   }
 }

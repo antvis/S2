@@ -1,15 +1,6 @@
 import { BaseDataSet } from './base-data-set';
-import { SpreadDataSet } from './spread-data-set';
-import { DetailDataSet } from './detail-data-set';
-import { DetailPivot } from './detail-pivot';
-import { StrategyDataSet } from './strategy-data-set';
-import { Pivot } from './pivot';
+import { PivotDataSet } from './pivot-data-set';
+import { TableDataSet } from './table-data-set';
+import { CustomTreePivotDataSet } from './custom-tree-pivot-data-set';
 
-export {
-  BaseDataSet,
-  SpreadDataSet,
-  DetailDataSet,
-  StrategyDataSet,
-  DetailPivot,
-  Pivot,
-};
+export { BaseDataSet, PivotDataSet, TableDataSet, CustomTreePivotDataSet };

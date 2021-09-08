@@ -1,248 +1,192 @@
-import { getEllipsisText, measureTextWidth } from '../utils/text';
-import _ from 'lodash';
-import { GuiIcon } from '../common/icons';
-import { renderRect, updateShapeAttr } from '../utils/g-renders';
-import { HIT_AREA } from '../facet/header/base';
-import { ColHeaderConfig } from '../facet/header/col';
-import { ResizeInfo } from '../facet/header/interface';
-import { Node } from '../index';
-import { getHeaderHierarchyQuery } from '../facet/layout/util';
-import { BaseCell } from './base-cell';
-import { IGroup } from '@antv/g-canvas';
+import { Group, Point } from '@antv/g-canvas';
+import { get, isEqual } from 'lodash';
+import { HeaderCell } from './header-cell';
 import {
-  EXTRA_FIELD,
-  KEY_GROUP_COL_RESIZER,
-  COLOR_DEFAULT_RESIZER,
-} from '../common/constant';
+  CellTypes,
+  KEY_GROUP_COL_RESIZE_AREA,
+  HORIZONTAL_RESIZE_AREA_KEY_PRE,
+} from '@/common/constant';
+import { GuiIcon } from '@/common/icons';
+import {
+  FormatResult,
+  TextAlign,
+  TextBaseline,
+  TextTheme,
+} from '@/common/interface';
+import { ColHeaderConfig } from '@/facet/header/col';
+import { ResizeInfo } from '@/facet/header/interface';
+import { getTextPosition } from '@/utils/cell/cell';
+import { renderLine, renderRect } from '@/utils/g-renders';
+import { AreaRange } from '@/common/interface/scroll';
+import {
+  getTextPositionWhenHorizontalScrolling,
+  getVerticalPosition,
+} from '@/utils/cell/cell';
 
-const SORT_ICON_SIZE = 14;
-const SORT_ICON_MARGIN_RIGHT = 4;
-export class ColCell extends BaseCell<Node> {
+export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;
-  // protected bottomBorderHotSpot: Set<string>;
-  // TODO type define
 
-  public update() {
-    const selectedId = this.spreadsheet.store.get('rowColSelectedId');
-    if (selectedId && _.find(selectedId, (id) => id === this.meta.id)) {
-      this.setActive();
-    } else {
-      this.setInactive();
-    }
-  }
-
-  public setActive() {
-    updateShapeAttr(
-      this.interactiveBgShape,
-      'fillOpacity',
-      this.theme.header.cell.interactiveFillOpacity[1],
-    );
-  }
-
-  public setInactive() {
-    updateShapeAttr(this.interactiveBgShape, 'fillOpacity', 0);
-  }
-
-  protected handleRestOptions(...options) {
-    this.headerConfig = options[0];
+  public get cellType() {
+    return CellTypes.COL_CELL;
   }
 
   protected initCell() {
-    // when height == 0,draw nothing
-    if (this.meta.isHide()) {
-      return;
-    }
+    super.initCell();
     // 1、draw rect background
-    this.drawRectBackground();
-    // 2、interactive background shape
+    this.drawBackgroundShape();
+    // interactive background shape
     this.drawInteractiveBgShape();
-    // 2、draw text
-    this.drawCellText();
-    // 3、draw sort icons
-    this.drawSortIcon();
-    // 4、draw right border
+    // draw text
+    this.drawTextShape();
+    // draw action icons
+    this.drawActionIcons();
+    // draw right border
     this.drawRightBorder();
-    // 5、draw hot-spot rect
-    this.drawHotSpot();
-
-    this.updateSelected();
+    // draw resize ares
+    this.drawResizeArea();
+    this.update();
   }
 
-  private updateSelected() {
-    const selectedId = this.spreadsheet.store.get('rowColSelectedId');
-    if (selectedId && _.find(selectedId, (id) => id === this.meta.id)) {
-      this.setActive();
-    } else {
-      this.setInactive();
-    }
-  }
-
-  protected getColHotSpotKey() {
-    return this.meta.key;
-  }
-
-  protected drawRectBackground() {
-    const { x, y, width: cellWidth, height: cellHeight } = this.meta;
-    this.backgroundShape = renderRect(
-      x,
-      y,
-      cellWidth,
-      cellHeight,
-      this.theme.header.cell.colBackgroundColor,
-      this.theme.header.cell.borderColor[0],
-      this,
-    );
-  }
-
-  protected drawCellText() {
-    const { offset, width, scrollContainsRowHeader, cornerWidth } =
-      this.headerConfig;
-    const {
-      label,
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      parent,
-      isLeaf,
-      isTotals,
-      key,
-      value,
-    } = this.meta;
-
-    // 格式化枚举值
-    const f = this.headerConfig.formatter(key);
-    const content = f(parent.isTotals ? '' : label);
-
-    const sortIconPadding = this.showSortIcon()
-      ? SORT_ICON_SIZE + SORT_ICON_MARGIN_RIGHT
-      : 0;
-    const textStyle =
-      isLeaf && !isTotals
-        ? this.spreadsheet.theme.header.text
-        : this.spreadsheet.theme.header.bolderText;
-    let text = getEllipsisText(content, cellWidth - sortIconPadding, textStyle);
-    const textWidth = measureTextWidth(text, textStyle);
-    let textX;
-    let textAlign;
-    if (isLeaf) {
-      // 最后一个层级的维值，固定居右(但是排除决策模式的场景)
-      textX = x + cellWidth - sortIconPadding - SORT_ICON_MARGIN_RIGHT;
-      textAlign = 'end';
-    } else {
-      textAlign = 'center';
-      // scroll keep in center
-      const cellLeft = x - offset;
-      const cellRight = cellLeft + cellWidth;
-      const viewportLeft = !scrollContainsRowHeader ? 0 : -cornerWidth;
-      const viewportWidth = !scrollContainsRowHeader
-        ? width
-        : width + cornerWidth;
-      const viewportRight = viewportLeft + viewportWidth;
-      const extraW = !scrollContainsRowHeader ? 0 : cornerWidth;
-
-      if (cellLeft < viewportLeft && cellRight > viewportRight) {
-        // cell width bigger than viewport length
-        textX = offset - extraW + viewportWidth / 2;
-      } else if (cellLeft < viewportLeft) {
-        // left out
-        const restWidth = cellWidth - (viewportLeft - cellLeft);
-        if (restWidth < textWidth) {
-          textX = offset + restWidth;
-          textAlign = 'end';
-        } else {
-          textX = offset - extraW + restWidth / 2;
-        }
-      } else if (cellRight > viewportRight) {
-        // right out
-        const restWidth = cellWidth - (cellRight - viewportRight);
-        if (restWidth < textWidth) {
-          textX = x;
-          textAlign = 'start';
-        } else {
-          textX = x + restWidth / 2;
-        }
-      } else {
-        // all in center
-        textX = x + cellWidth / 2;
-      }
-    }
-    const derivedValue = this.spreadsheet.getDerivedValue(value);
-    if (
-      !_.isEqual(
-        derivedValue.derivedValueField,
-        derivedValue.displayDerivedValueField,
-      ) &&
-      derivedValue.derivedValueField.length > 1
-    ) {
-      // 1、非决策模式下
-      // 2、衍生值部分显示
-      // 3、存在多个衍生值（ > 1 ） 首先自己必须是衍生指标
-      // 4、改列属于衍生值列，且是最后一个优先显示的衍生指标
-      // 满足上述四个条件，需要...在字段后面，表示还有省略的衍生值
-      if (
-        key === EXTRA_FIELD &&
-        this.spreadsheet.isDerivedValue(value) &&
-        _.last(derivedValue.displayDerivedValueField) === value
-      ) {
-        // 度量列，找到 value值
-        text += '...';
-      }
-    }
-    this.addShape('text', {
-      attrs: {
-        x: textX,
-        y: y + cellHeight / 2,
-        text,
-        textAlign,
-        ...textStyle,
-        cursor: 'pointer',
-      },
+  protected drawBackgroundShape() {
+    const { backgroundColor, horizontalBorderColor } = this.getStyle().cell;
+    this.backgroundShape = renderRect(this, {
+      ...this.getCellArea(),
+      fill: backgroundColor,
+      stroke: horizontalBorderColor,
     });
   }
 
   // 交互使用的背景色
   protected drawInteractiveBgShape() {
-    const { x, y, height, width } = this.meta;
-    this.interactiveBgShape = renderRect(
-      x,
-      y,
-      width,
-      height,
-      'transparent',
-      'transparent',
-      this,
+    this.stateShapes.set(
+      'interactiveBgShape',
+      renderRect(this, {
+        ...this.getCellArea(),
+        fill: 'transparent',
+        stroke: 'transparent',
+      }),
     );
-    this.stateShapes.push(this.interactiveBgShape);
+  }
+
+  protected getTextStyle(): TextTheme {
+    const { isLeaf, isTotals } = this.meta;
+    const { text, bolderText } = this.getStyle();
+    const textStyle = isLeaf && !isTotals ? text : bolderText;
+
+    let textAlign: TextAlign;
+    let textBaseline: TextBaseline;
+
+    if (isLeaf) {
+      // 最后一个层级的维值，与 dataCell 对齐方式保持一致
+      textAlign = this.theme.dataCell.text.textAlign;
+      textBaseline = this.theme.dataCell.text.textBaseline;
+    } else {
+      textAlign = 'center';
+      textBaseline = 'middle';
+    }
+    return { ...textStyle, textAlign, textBaseline };
+  }
+
+  protected getFormattedFieldValue(): FormatResult {
+    const { label, key } = this.meta;
+    // 格式化枚举值
+    const f = this.headerConfig.formatter(key);
+    const content = f(label);
+    return {
+      formattedValue: content,
+      value: label,
+    };
+  }
+
+  protected getMaxTextWidth(): number {
+    const { width } = this.getContentArea();
+    return width - this.getActionIconsWidth();
+  }
+
+  protected getTextPosition(): Point {
+    const { isLeaf } = this.meta;
+    const { offset, width, scrollContainsRowHeader, cornerWidth } =
+      this.headerConfig;
+
+    const textStyle = this.getTextStyle();
+    const contentBox = this.getContentArea();
+
+    const textBox = {
+      ...contentBox,
+      width: contentBox.width - this.getActionIconsWidth(),
+    };
+    if (isLeaf) {
+      return getTextPosition(textBox, textStyle);
+    }
+
+    // 将viewport坐标映射到 col header的坐标体系中，简化计算逻辑
+    const viewport: AreaRange = {
+      start: offset - (scrollContainsRowHeader ? cornerWidth : 0),
+      width: width + (scrollContainsRowHeader ? cornerWidth : 0),
+    };
+
+    const textX = getTextPositionWhenHorizontalScrolling(
+      viewport,
+      { start: contentBox.x, width: contentBox.width },
+      this.actualTextWidth,
+    );
+
+    const textY = contentBox.y + contentBox.height / 2;
+    return { x: textX, y: textY };
   }
 
   private showSortIcon() {
     const { sortParam } = this.headerConfig;
-    const query = getHeaderHierarchyQuery(this.meta);
+    const query = this.meta.query;
     return (
-      _.isEqual(_.get(sortParam, 'query'), query) &&
-      _.get(sortParam, 'type') !== 'none'
+      isEqual(get(sortParam, 'query'), query) &&
+      get(sortParam, 'type') !== 'none'
     );
   }
 
+  private getActionIconsWidth() {
+    const { icon } = this.getStyle();
+    return this.showSortIcon() ? icon.size + icon.margin.left : 0;
+  }
+
+  protected getActionIconPosition(): Point {
+    const { textBaseline } = this.getTextStyle();
+    const { size } = this.getStyle().icon;
+    const { x, width } = this.getContentArea();
+
+    const iconX = x + width - size;
+    const iconY = getVerticalPosition(
+      this.getContentArea(),
+      textBaseline,
+      size,
+    );
+
+    return { x: iconX, y: iconY };
+  }
+
   // 绘制排序icon
-  private drawSortIcon() {
+  private drawActionIcons() {
+    const { icon } = this.getStyle();
     if (this.showSortIcon()) {
       const { sortParam } = this.headerConfig;
-      const { x, y, width: cellWidth, height: cellHeight } = this.meta;
-      const icon = new GuiIcon({
-        type: _.get(sortParam, 'type', 'none'),
-        x: x + cellWidth - SORT_ICON_SIZE - SORT_ICON_MARGIN_RIGHT,
-        y: y + (cellHeight - SORT_ICON_SIZE) / 2,
-        width: SORT_ICON_SIZE,
-        height: SORT_ICON_SIZE,
+      const position = this.getActionIconPosition();
+      const sortIcon = new GuiIcon({
+        type: get(sortParam, 'type', 'none'),
+        ...position,
+        width: icon.size,
+        height: icon.size,
       });
-      this.add(icon);
+      this.add(sortIcon);
+      this.actionIcons.push(sortIcon);
     }
   }
 
+  protected getColResizeAreaKey() {
+    return this.meta.key;
+  }
+
   // 绘制热区
-  private drawHotSpot() {
+  private drawResizeArea() {
     const { offset, position, viewportWidth } = this.headerConfig;
     const {
       label,
@@ -252,34 +196,39 @@ export class ColCell extends BaseCell<Node> {
       height: cellHeight,
       parent,
     } = this.meta;
+    const resizeStyle = this.getStyle('resizeArea');
     // 热区公用一个group
-    const prevResizer = this.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_COL_RESIZER,
+    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+      KEY_GROUP_COL_RESIZE_AREA,
     );
-    const resizer = (prevResizer ||
+    const resizeArea = (prevResizeArea ||
       this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_COL_RESIZER,
-      })) as IGroup;
-    const prevHorizontalResizer = resizer.find((element) => {
-      return element.attrs.name === `horizontal-resizer-${this.meta.key}`;
+        id: KEY_GROUP_COL_RESIZE_AREA,
+      })) as Group;
+    const prevHorizontalResizeArea = resizeArea.find((element) => {
+      return (
+        element.attrs.name ===
+        `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`
+      );
     });
     // 如果已经绘制当前列高调整热区热区，则不再绘制
-    if (!prevHorizontalResizer) {
+    if (!prevHorizontalResizeArea) {
       // 列高调整热区
-      resizer.addShape('rect', {
+      resizeArea.addShape('rect', {
         attrs: {
-          name: `horizontal-resizer-${this.meta.key}`,
+          name: `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`,
           x: position.x,
-          y: position.y + y + cellHeight - HIT_AREA / 2,
+          y: position.y + y + cellHeight - resizeStyle.size / 2,
           width: viewportWidth,
-          fill: COLOR_DEFAULT_RESIZER,
-          height: HIT_AREA,
+          height: resizeStyle.size,
+          fill: resizeStyle.background,
+          fillOpacity: resizeStyle.backgroundOpacity,
           cursor: 'row-resize',
           appendInfo: {
-            isResizer: true,
+            isResizeArea: true,
             class: 'resize-trigger',
             type: 'row',
-            id: this.getColHotSpotKey(),
+            id: this.getColResizeAreaKey(),
             affect: 'field',
             offsetX: position.x,
             offsetY: position.y + y,
@@ -292,16 +241,17 @@ export class ColCell extends BaseCell<Node> {
     if (this.meta.isLeaf) {
       // 列宽调整热区
       // 基准线是根据container坐标来的，因此把热区画在container
-      resizer.addShape('rect', {
+      resizeArea.addShape('rect', {
         attrs: {
-          x: position.x - offset + x + cellWidth - HIT_AREA / 2,
+          x: position.x - offset + x + cellWidth - resizeStyle.size / 2,
           y: position.y + y,
-          width: HIT_AREA,
-          fill: COLOR_DEFAULT_RESIZER,
+          width: resizeStyle.size,
           height: cellHeight,
+          fill: resizeStyle.background,
+          fillOpacity: resizeStyle.backgroundOpacity,
           cursor: 'col-resize',
           appendInfo: {
-            isResizer: true,
+            isResizeArea: true,
             class: 'resize-trigger',
             type: 'col',
             affect: 'cell',
@@ -320,16 +270,20 @@ export class ColCell extends BaseCell<Node> {
     if (!this.meta.isLeaf) {
       const { height, viewportHeight } = this.headerConfig;
       const { x, y, width: cellWidth, height: cellHeight } = this.meta;
-      this.addShape('line', {
-        attrs: {
+
+      renderLine(
+        this,
+        {
           x1: x + cellWidth,
           y1: y + cellHeight,
           x2: x + cellWidth,
-          y2: y + height + viewportHeight, // 高度有多，通过 clip 裁剪掉
-          stroke: this.theme.header.cell.borderColor[0],
+          y2: y + height + viewportHeight,
+        },
+        {
+          stroke: this.theme.colCell.cell.horizontalBorderColor,
           lineWidth: 1,
         },
-      });
+      );
     }
   }
 }

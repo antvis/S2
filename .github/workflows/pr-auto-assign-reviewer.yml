@@ -14,4 +14,4 @@ jobs:
           actions: 'add-assignees'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
-          assignees: 'xingwanying,yangzhanmei,brucetoo,wjgogogo,zxc0328'
+          assignees: 'xingwanying,qubaomingg,yangzhanmei,YardWill,lijinke666,wjgogogo,zxc0328'

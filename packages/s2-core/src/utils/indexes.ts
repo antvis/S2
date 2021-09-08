@@ -1,6 +1,14 @@
-import _ from 'lodash';
+import { isEmpty } from 'lodash';
 
 export type Indexes = [number, number, number, number];
+
+export type PanelIndexes = {
+  center: Indexes;
+  frozenRow?: Indexes;
+  frozenCol?: Indexes;
+  frozenTrailingRow?: Indexes;
+  frozenTrailingCol?: Indexes;
+};
 
 export interface Diff {
   add: [number, number][];
@@ -49,8 +57,8 @@ export const diffIndexes = (
   const remove = [];
 
   // source 为空
-  if (_.isEmpty(sourceIndexes)) {
-    if (_.isEmpty(targetIndexes)) {
+  if (isEmpty(sourceIndexes)) {
+    if (isEmpty(targetIndexes)) {
       // 都为空
       return { add, remove };
     }
@@ -59,7 +67,7 @@ export const diffIndexes = (
   }
 
   // source 不为空，target 为空
-  if (_.isEmpty(targetIndexes)) {
+  if (isEmpty(targetIndexes)) {
     return { add, remove: allIndexes(sourceIndexes) };
   }
 
@@ -87,5 +95,30 @@ export const diffIndexes = (
   return {
     add,
     remove,
+  };
+};
+
+/**
+ * 计算 Panel 下所有子 Group的 Indexes Diff
+ */
+export const diffPanelIndexes = (
+  sourceIndexes: PanelIndexes,
+  targetIndexes: PanelIndexes,
+): Diff => {
+  const allAdd = [];
+  const allRemove = [];
+
+  Object.keys(targetIndexes).forEach((key) => {
+    const { add, remove } = diffIndexes(
+      sourceIndexes?.[key] || [],
+      targetIndexes[key],
+    );
+    allAdd.push(...add);
+    allRemove.push(...remove);
+  });
+
+  return {
+    add: allAdd,
+    remove: allRemove,
   };
 };

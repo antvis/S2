@@ -1,0 +1,31 @@
+{
+  "globals": {
+    "ts-jest": {
+      "diagnostics": {
+        "warnOnly": true
+      }
+    }
+  },
+  "runner": "jest-electron/runner",
+  "testEnvironment": "jest-electron/environment",
+  "setupFilesAfterEnv": ["jest-extended"],
+  "preset": "ts-jest",
+  "clearMocks": true,
+  "collectCoverage": false,
+  "collectCoverageFrom": [
+    "src/**/*.{ts,js}",
+    "!**/node_modules/**",
+    "!**/vendor/**"
+  ],
+  "coverageReporters": ["text-summary", "html"],
+  "transformIgnorePatterns": [],
+  "testRegex": "/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js)?$",
+  "transform": {
+    "\\.(less|css)$": "jest-less-loader",
+    "\\.svg$": "jest-raw-loader"
+  },
+  "moduleNameMapper": {
+    "^@/(.*)": "<rootDir>/src/$1",
+    "^src/(.*)": "<rootDir>/src/$1"
+  }
+}

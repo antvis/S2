@@ -1,72 +1,110 @@
 import { Group } from '@antv/g-canvas';
-import _ from 'lodash';
-import { GuiIcon } from '../../../common/icons';
-import { DEFAULT_PADDING, KEY_LIST_SORT } from '../../../common/constant';
-import { BaseSpreadSheet } from '../../..';
+import { has, get } from 'lodash';
+import { GuiIcon } from '@/common/icons';
+import { S2Event, DEFAULT_PADDING, SortMethodType } from '@/common/constant';
+import { SpreadSheet } from '@/.';
 
 // 排序按钮的宽度
 export const SORT_ICON_SIZE = 8;
 
-// 明细表排序icon
-export function addDetailTypeSortIcon(
-  parent: Group,
-  spreadsheet: BaseSpreadSheet,
-  textX,
-  textY,
-  key,
-) {
+export const getIconType = (key: string, spreadsheet: SpreadSheet) => {
   /*
   currentSortKey 存储的点击的某个field对应的升序还是降序
   currentSortKey = {
-   [field]: up/down
+   [field]: SortMethodType
   }
    */
+  let upSelected = false;
+  let downSelected = false;
   const currentSortKey = spreadsheet.store.get('currentSortKey', {});
   let upIconType = 'SortUp';
   let downIconType = 'SortDown';
-  if (currentSortKey && _.has(currentSortKey, key)) {
+  if (currentSortKey && has(currentSortKey, key)) {
     // 有配置,当前点击的过的key(某个维度)
-    if (_.get(currentSortKey, key) === 'up') {
+    if (get(currentSortKey, key) === SortMethodType.ASC) {
       // 点击过此维度的up
+      upSelected = true;
       upIconType = 'SortUpSelected';
     } else {
       // 点击过此维度的down
+      downSelected = true;
       downIconType = 'SortDownSelected';
     }
   }
 
-  const upIcon = new GuiIcon({
-    type: upIconType,
-    x: textX,
-    y: textY - DEFAULT_PADDING * 2,
+  return {
+    upIconType,
+    downIconType,
+    upSelected,
+    downSelected,
+  };
+};
+
+export const renderIcon = (
+  parent: Group,
+  spreadsheet: SpreadSheet,
+  x: number,
+  y: number,
+  type: string,
+  key: string,
+  sortType: SortMethodType,
+  selected: boolean,
+) => {
+  const icon = new GuiIcon({
+    type,
+    x,
+    y,
     width: SORT_ICON_SIZE,
     height: SORT_ICON_SIZE,
   });
-  const downIcon = new GuiIcon({
-    type: downIconType,
-    x: textX,
-    y: textY - DEFAULT_PADDING / 2,
-    width: SORT_ICON_SIZE,
-    height: SORT_ICON_SIZE,
-  });
-  upIcon.on('click', () => {
-    spreadsheet.store.set('currentSortKey', {
-      [key]: 'up',
-    });
-    spreadsheet.emit(KEY_LIST_SORT, {
-      sortFieldId: key,
-      sortMethod: 'ASC',
-    });
-  });
-  downIcon.on('click', () => {
-    spreadsheet.store.set('currentSortKey', {
-      [key]: 'down',
-    });
-    spreadsheet.emit(KEY_LIST_SORT, {
-      sortFieldId: key,
-      sortMethod: 'DESC',
+
+  icon.on('click', () => {
+    let currentSortKey = {};
+    if (!selected) {
+      currentSortKey = {
+        [key]: sortType,
+      };
+    }
+    // Do nothing when sortType is not changed.
+    if (spreadsheet.store.get('currentSortKey')?.[key] === sortType) {
+      return;
+    }
+    spreadsheet.store.set('currentSortKey', currentSortKey);
+    spreadsheet.emit(S2Event.RANGE_SORT, {
+      sortKey: key,
+      sortMethod: sortType,
     });
   });
-  parent.add(upIcon);
-  parent.add(downIcon);
-}
+
+  parent.add(icon);
+};
+
+export const renderDetailTypeSortIcon = (
+  parent: Group,
+  spreadsheet: SpreadSheet,
+  textX: number,
+  textY,
+  key,
+) => {
+  const iconType = getIconType(key, spreadsheet);
+  renderIcon(
+    parent,
+    spreadsheet,
+    textX,
+    textY - DEFAULT_PADDING * 2,
+    iconType.upIconType,
+    key,
+    SortMethodType.ASC,
+    iconType.upSelected,
+  );
+  renderIcon(
+    parent,
+    spreadsheet,
+    textX,
+    textY - DEFAULT_PADDING / 2,
+    iconType.downIconType,
+    key,
+    SortMethodType.DESC,
+    iconType.downSelected,
+  );
+};

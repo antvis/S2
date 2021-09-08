@@ -1,238 +1,237 @@
-import { Event, Point, IShape } from '@antv/g-canvas';
-import { each, find, isEqual, isEmpty } from 'lodash';
-import { DataCell } from '../cell';
-import { FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX } from '../common/constant';
-import { S2Event, DefaultInterceptEventType } from './events/types';
-import { BaseInteraction } from './base';
-import { SelectedStateName } from '../common/constant/interatcion';
-import { getTooltipData } from '../utils/tooltip';
-
-function getBrushRegion(p1, p2) {
-  const leftX = Math.min(p1.x, p2.x);
-  const rightX = Math.max(p1.x, p2.x);
-  const topY = Math.min(p1.y, p2.y);
-  const bottomY = Math.max(p1.y, p2.y);
-  const width = rightX - leftX;
-  const height = bottomY - topY;
-
-  return { leftX, rightX, topY, bottomY, width, height };
-}
-
-function isInRegion(cellRegion, brushRegion) {
-  const cellCenterX = (cellRegion.leftX + cellRegion.rightX) / 2;
-  const cellCenterY = (cellRegion.topY + cellRegion.bottomY) / 2;
-  const regionCenterX = (brushRegion.leftX + brushRegion.rightX) / 2;
-  const regionCenterY = (brushRegion.topY + brushRegion.bottomY) / 2;
-  const lx = Math.abs(cellCenterX - regionCenterX);
-  const ly = Math.abs(cellCenterY - regionCenterY);
-  const sax = Math.abs(cellRegion.leftX - cellRegion.rightX);
-  const sbx = Math.abs(brushRegion.leftX - brushRegion.rightX);
-  const say = Math.abs(cellRegion.topY - cellRegion.bottomY);
-  const sby = Math.abs(brushRegion.topY - brushRegion.bottomY);
-  return lx <= (sax + sbx) / 2 && ly <= (say + sby) / 2;
-}
+import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
+import { isEmpty } from 'lodash';
+import { BaseEventImplement } from './base-event';
+import { BaseEvent } from './base-interaction';
+import { InterceptType, S2Event } from '@/common/constant';
+import {
+  InteractionBrushSelectionStage,
+  InteractionStateName,
+} from '@/common/constant/interaction';
+import {
+  BrushPoint,
+  BrushRange,
+  OriginalEvent,
+  ViewMeta,
+} from '@/common/interface';
+import { DataCell } from '@/cell';
+import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
+import { getActiveCellsTooltipData } from '@/utils/tooltip';
 
 /**
  * Panel area's brush selection interaction
  */
-export class BrushSelection extends BaseInteraction {
-  public threshold: number;
+export class BrushSelection extends BaseEvent implements BaseEventImplement {
+  public displayedDataCells: DataCell[] = [];
 
-  public cells: DataCell[];
+  public prepareSelectMaskShape: IShape;
 
-  // 从mousedown开始到mouseup canvas层面的选择框
-  public regionShape: IShape;
+  public startBrushPoint: BrushPoint;
 
-  private previousPoint: Point;
+  public endBrushPoint: BrushPoint;
 
-  private endPoint: Point;
+  public brushRangeDataCells: DataCell[] = [];
 
-  /**
-   * 0: 初始态
-   * 1: 触发mousedown
-   * 2: 触发mousedown + 触发mousemove
-   * https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-eventgroupings-mouseevents-h3
-   * 目前没有太大影响，但实现上做成避免和click的行为定义冲突
-   */
-  private phase: 0 | 1 | 2;
+  public brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
 
-  protected bindEvents() {
+  public bindEvents() {
     this.bindMouseDown();
     this.bindMouseMove();
     this.bindMouseUp();
   }
 
+  private getPrepareSelectMaskTheme() {
+    return this.spreadsheet.theme?.prepareSelectMask;
+  }
+
+  private initPrepareSelectMaskShape() {
+    const { foregroundGroup } = this.spreadsheet;
+    foregroundGroup.removeChild(this.prepareSelectMaskShape);
+
+    const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
+    this.prepareSelectMaskShape = foregroundGroup.addShape('rect', {
+      visible: false,
+      attrs: {
+        width: 0,
+        height: 0,
+        x: 0,
+        y: 0,
+        fill: prepareSelectMaskTheme?.backgroundColor,
+        fillOpacity: prepareSelectMaskTheme?.backgroundOpacity,
+        zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX,
+      },
+      capture: false,
+    });
+  }
+
+  private setBrushSelectionStage(stage: InteractionBrushSelectionStage) {
+    this.brushSelectionStage = stage;
+  }
+
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEDOWN, (ev: Event) => {
-      const oe = ev.originalEvent as any;
-      this.previousPoint = { x: oe.layerX, y: oe.layerY };
-      this.cells = this.spreadsheet.getPanelAllCells();
-      if (!this.regionShape) {
-        this.regionShape = this.createRegionShape();
-      } else {
-        this.regionShape.attr({
-          x: this.previousPoint.x,
-          y: this.previousPoint.y,
-          width: 0,
-          height: 0,
-          opacity: 0.3,
-        });
-      }
-      this.draw();
-      this.phase = 1;
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
+      event.preventDefault();
+      this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
+      this.initPrepareSelectMaskShape();
+      this.setDisplayedDataCells();
+      this.startBrushPoint = this.getBrushPoint(event);
     });
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEMOVE, (ev) => {
-      if (this.phase) {
-        // 屏蔽hover事件
-        this.spreadsheet.interceptEvent.add(DefaultInterceptEventType.HOVER);
-        ev.preventDefault();
-        this.phase = 2;
-        const oe = ev.originalEvent as any;
-        const currentPoint = { x: oe.layerX, y: oe.layerY };
-        // 更新brushRegion
-        const brushRegion = getBrushRegion(this.previousPoint, currentPoint);
-        this.regionShape.attr({
-          x: brushRegion.leftX,
-          y: brushRegion.topY,
-          width: brushRegion.width,
-          height: brushRegion.height,
-        });
+    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (event: CanvasEvent) => {
+      event.preventDefault();
 
-        this.spreadsheet.clearStyleIndependent();
-        this.getHighlightCells(brushRegion);
-        this.draw();
+      if (
+        this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
+      ) {
+        return;
       }
+
+      this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
+      this.interaction.addIntercepts([InterceptType.HOVER]);
+      this.endBrushPoint = this.getBrushPoint(event);
+      this.interaction.clearStyleIndependent();
+      this.updatePrepareSelectMask();
+      this.showPrepareSelectedCells();
     });
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.DATACELL_MOUSEUP, (ev) => {
-      if (this.phase === 2) {
-        const oe = ev.originalEvent as any;
-        this.endPoint = { x: oe.layerX, y: oe.layerY };
-        const brushRegion = getBrushRegion(this.previousPoint, this.endPoint);
-        this.getSelectedCells(brushRegion);
-        // 透明度为0会导致 hover 无法响应
-        this.regionShape.attr({
-          opacity: 0,
-        });
-        this.draw();
-        const currentState = this.spreadsheet.getCurrentState();
-        const { stateName, cells } = currentState;
-        const cellInfos = [];
-        if (stateName === SelectedStateName.SELECTED) {
-          each(cells, (cell) => {
-            const valueInCols = this.spreadsheet.options.valueInCols;
-            const meta = cell.getMeta();
-            if (!isEmpty(meta)) {
-              const query = meta[valueInCols ? 'colQuery' : 'rowQuery'];
-              if (query) {
-                const cellInfo = {
-                  ...query,
-                  colIndex: valueInCols ? meta.colIndex : null,
-                  rowIndex: !valueInCols ? meta.rowIndex : null,
-                };
+    // The constant 'GLOBAL_MOUSE_UP' is used to monitor the event of the mouse moving off the table.
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
+      event.preventDefault();
 
-                if (!this.isInCellInfos(cellInfos, cellInfo)) {
-                  cellInfos.push(cellInfo);
-                }
-              }
-            }
-          });
-        }
-        this.handleTooltip(ev, cellInfos);
+      if (this.brushSelectionStage === InteractionBrushSelectionStage.DRAGGED) {
+        this.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
+        this.hidePrepareSelectMaskShape();
+        this.updateSelectedCells();
+        this.spreadsheet.showTooltipWithInfo(
+          event,
+          getActiveCellsTooltipData(this.spreadsheet),
+        );
       }
-      this.phase = 0;
+      this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
     });
   }
 
-  private isInCellInfos(cellInfos, info): boolean {
-    return !!find(cellInfos, (i) => isEqual(i, info));
+  private setDisplayedDataCells() {
+    this.displayedDataCells = this.interaction.getPanelGroupAllDataCells();
   }
 
-  private handleTooltip(ev, cellInfos) {
-    if (!this.spreadsheet.options?.tooltip?.showTooltip) {
-      return;
-    }
-    const position = {
-      x: ev.clientX,
-      y: ev.clientY,
-    };
-
-    const options = {
-      enterable: true,
-    };
-
-    const tooltipData = getTooltipData(this.spreadsheet, cellInfos, options);
-    const showOptions = {
-      position,
-      data: tooltipData,
-      options,
-    };
-    this.spreadsheet.showTooltip(showOptions);
-  }
-
-  private getCellsInRegion(region) {
-    const containerMat = this.spreadsheet.panelGroup.attr('matrix');
-    const containerX = containerMat[6];
-    const containerY = containerMat[7];
-    const selectedCells: DataCell[] = [];
-    this.cells.forEach((cell) => {
-      const bbox = cell.getBBox();
-      const leftX = containerX + bbox.minX;
-      const rightX = containerX + bbox.maxX;
-      const topY = containerY + bbox.minY;
-      const bottomY = containerY + bbox.maxY;
-      const cellRegion = { leftX, rightX, topY, bottomY };
-      const inRegion = isInRegion(cellRegion, region);
-      if (inRegion && cell.getMeta().data) {
-        selectedCells.push(cell);
-      }
+  private updatePrepareSelectMask() {
+    const brushRange = this.getBrushRange();
+    this.prepareSelectMaskShape.attr({
+      x: brushRange.start.x,
+      y: brushRange.start.y,
+      width: brushRange.width,
+      height: brushRange.height,
     });
-    return selectedCells;
+    this.prepareSelectMaskShape.show();
   }
 
-  // 最终刷选的cell
-  private getSelectedCells(region) {
-    const selectedCells = this.getCellsInRegion(region);
-    selectedCells.forEach((cell) => {
-      this.spreadsheet.setState(cell, SelectedStateName.SELECTED);
+  private hidePrepareSelectMaskShape() {
+    this.prepareSelectMaskShape.hide();
+  }
+
+  private getBrushPoint(event: CanvasEvent): BrushPoint {
+    const originalEvent = event.originalEvent as unknown as OriginalEvent;
+    const point: Point = {
+      x: originalEvent.layerX,
+      y: originalEvent.layerY,
+    };
+    const cell = this.spreadsheet.getCell(event.target);
+    const { colIndex, rowIndex } = cell.getMeta();
+
+    return {
+      ...point,
+      rowIndex,
+      colIndex,
+    };
+  }
+
+  // 四个刷选方向: 左 => 右, 右 => 左, 上 => 下, 下 => 上, 将最终结果进行重新排序, 获取真实的 row, col index
+  private getBrushRange(): BrushRange {
+    const minRowIndex = Math.min(
+      this.startBrushPoint.rowIndex,
+      this.endBrushPoint.rowIndex,
+    );
+    const maxRowIndex = Math.max(
+      this.startBrushPoint.rowIndex,
+      this.endBrushPoint.rowIndex,
+    );
+    const minColIndex = Math.min(
+      this.startBrushPoint.colIndex,
+      this.endBrushPoint.colIndex,
+    );
+    const maxColIndex = Math.max(
+      this.startBrushPoint.colIndex,
+      this.endBrushPoint.colIndex,
+    );
+    const minX = Math.min(this.startBrushPoint.x, this.endBrushPoint.x);
+    const maxX = Math.max(this.startBrushPoint.x, this.endBrushPoint.x);
+    const minY = Math.min(this.startBrushPoint.y, this.endBrushPoint.y);
+    const maxY = Math.max(this.startBrushPoint.y, this.endBrushPoint.y);
+
+    return {
+      start: {
+        rowIndex: minRowIndex,
+        colIndex: minColIndex,
+        x: minX,
+        y: minY,
+      },
+      end: {
+        rowIndex: maxRowIndex,
+        colIndex: maxColIndex,
+        x: maxX,
+        y: maxY,
+      },
+      width: maxX - minX,
+      height: maxY - minY,
+    };
+  }
+
+  private isInBrushRange(meta: ViewMeta) {
+    const { start, end } = this.getBrushRange();
+    const { rowIndex, colIndex } = meta;
+    return (
+      rowIndex >= start.rowIndex &&
+      rowIndex <= end.rowIndex &&
+      colIndex >= start.colIndex &&
+      colIndex <= end.colIndex
+    );
+  }
+
+  // 获取对角线的两个坐标, 得到对应矩阵并且有数据的单元格
+  private getBrushRangeDataCells(): DataCell[] {
+    return this.displayedDataCells.filter((cell) => {
+      const meta = cell.getMeta();
+      return this.isInBrushRange(meta);
     });
-    this.spreadsheet.updateCellStyleByState();
   }
 
   // 刷选过程中高亮的cell
-  private getHighlightCells(region) {
-    const selectedCells = this.getCellsInRegion(region);
-    this.showPrepareBrushSelectBorder(selectedCells);
-  }
-
-  // 刷选过程中的预选择外框
-  protected showPrepareBrushSelectBorder(cells: DataCell[]) {
-    if (cells.length) {
-      this.spreadsheet.clearState();
-      cells.forEach((cell: DataCell) => {
-        this.spreadsheet.setState(cell, SelectedStateName.PREPARE_SELECT);
-      });
-      this.spreadsheet.updateCellStyleByState();
-    }
-  }
-
-  private createRegionShape() {
-    return this.spreadsheet.foregroundGroup.addShape('rect', {
-      attrs: {
-        width: 0,
-        height: 0,
-        x: this.previousPoint.x,
-        y: this.previousPoint.y,
-        fill: '#1890FF',
-        opacity: 0.3,
-        zIndex: FRONT_GROUND_GROUP_BRUSH_SELECTION_ZINDEX,
-      },
-      capture: false,
+  private showPrepareSelectedCells = () => {
+    const brushRangeDataCells = this.getBrushRangeDataCells();
+    this.interaction.changeState({
+      cells: brushRangeDataCells,
+      stateName: InteractionStateName.PREPARE_SELECT,
+      // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
+      // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
+      // 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
+      force: true,
     });
+    this.brushRangeDataCells = brushRangeDataCells;
+  };
+
+  // 最终刷选的cell
+  private updateSelectedCells() {
+    this.interaction.changeState({
+      cells: this.brushRangeDataCells,
+      stateName: InteractionStateName.SELECTED,
+    });
+    // 未刷选到有效格子, 允许 hover
+    if (isEmpty(this.brushRangeDataCells)) {
+      this.interaction.removeIntercepts([InterceptType.HOVER]);
+    }
   }
 }

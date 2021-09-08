@@ -1,6 +1,11 @@
+import ReactDOM from 'react-dom';
+import React from 'react';
+import { Switch, Button } from 'antd';
 import { forEach } from 'lodash';
 import { act } from 'react-dom/test-utils';
-import { mergeCells } from '../../src/utils/interactions/merge-cells';
+import { getContainer, getMockData } from '../util/helpers';
+import { CustomTooltip } from './custom/custom-tooltip';
+import { mergeCells } from '@/utils/interaction/merge-cells';
 import 'antd/dist/antd.min.css';
 import {
   auto,
@@ -8,14 +13,9 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
-} from '../../src';
-import { getContainer, getMockData } from './helpers';
-import ReactDOM from 'react-dom';
-import React from 'react';
-import { Switch, Button } from 'antd';
-import { CustomTooltip } from './custom/custom-tooltip';
+} from '@/index';
 
-let data = getMockData('../datasets/tableau-supermarket.csv');
+let data = getMockData('../data/tableau-supermarket.csv');
 
 data = data.map((row) => {
   row['profit-tongbi'] = 0.2233;
@@ -33,7 +33,7 @@ const getSpreadSheet = (
   return new SpreadSheet(dom, dataCfg, options);
 };
 
-const baseDataCfg = {
+const baseDataCfg: S2DataConfig = {
   fields: {
     // rows has value
     rows: ['area', 'province', 'city'],
@@ -44,27 +44,27 @@ const baseDataCfg = {
     {
       field: 'profit-tongbi',
       name: '利润同比',
-      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
     },
     {
       field: 'profit-huanbi',
       name: '利润环比',
-      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
     },
     {
       field: 'count-tongbi',
       name: '个数同比',
-      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
     },
     {
       field: 'count-huanbi',
       name: '个数环比',
-      formatter: (v) => (!v ? '' : `${auto(v) + '%'}`),
+      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
     },
     {
       field: 'sale_amt',
       name: '销售额',
-      formatter: (v) => v,
+      formatter: (v: number) => v,
     },
     {
       field: 'count',
@@ -134,8 +134,10 @@ const baseOptions = {
       { colIndex: 3, rowIndex: 7 },
     ],
   ],
-  initTooltip: (spreadsheet) => {
-    return new CustomTooltip(spreadsheet);
+  tooltip: {
+    renderTooltip: (spreadsheet) => {
+      return new CustomTooltip(spreadsheet);
+    },
   },
 } as S2Options;
 
@@ -364,16 +366,6 @@ function MainLayout() {
     getDataCfg('base'),
   );
 
-  const onRowCellClick = (value) => {
-    console.log(value);
-  };
-  const onColCellClick = (value) => {
-    console.log(value);
-  };
-  const onDataCellClick = (value) => {
-    console.log(value);
-  };
-
   let sheet;
   let mergedCellsInfo = [];
 
@@ -389,13 +381,11 @@ function MainLayout() {
     </div>
   );
 
-  const mgergedCellsTooltip = <div>合并后的tooltip</div>;
+  const mergedCellsTooltip = <div>合并后的tooltip</div>;
 
   const onDataCellMouseUp = (value) => {
-    console.log(value);
     sheet = value?.viewMeta?.spreadsheet;
-    const curSelectedState = sheet.getCurrentState();
-    const { cells } = curSelectedState;
+    const cells = sheet.interaction.getActiveCells();
     mergedCellsInfo = [];
     forEach(cells, (cell) => {
       mergedCellsInfo.push({
@@ -410,11 +400,10 @@ function MainLayout() {
   };
 
   const onMergedCellsClick = (value) => {
-    console.log(value);
     sheet = value?.target?.cells[0].spreadsheet;
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },
-      element: mgergedCellsTooltip,
+      element: mergedCellsTooltip,
     });
   };
 
@@ -443,9 +432,6 @@ function MainLayout() {
         options={options}
         spreadsheet={getSpreadSheet}
         onDataCellMouseUp={onDataCellMouseUp}
-        onRowCellClick={onRowCellClick}
-        onColCellClick={onColCellClick}
-        onDataCellClick={onDataCellClick}
         onMergedCellsClick={onMergedCellsClick}
       />
     </div>

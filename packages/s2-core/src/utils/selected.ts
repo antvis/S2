@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import { Selected } from '../common/store';
+import { isFunction, isNumber, isObject } from 'lodash';
+import { Selected } from '@/common/interface';
 
 const inRange = (idx: number, start: number, end: number) => {
   return idx >= start && idx <= end;
@@ -21,22 +21,22 @@ export const isSelected = (
   j: number,
   selected: Selected,
 ): boolean => {
-  if (_.isFunction(selected)) {
+  if (isFunction(selected)) {
     return selected(i, j);
   }
 
-  if (_.isObject(selected)) {
+  if (isObject(selected)) {
     const { type, indexes } = selected;
     const [ii, jj] = indexes;
 
     if (type === 'row') {
-      return _.isNumber(ii) ? ii === i : inRange(i, ii[0], ii[1]);
+      return isNumber(ii) ? ii === i : inRange(i, ii[0], ii[1]);
     }
     if (type === 'column') {
-      return _.isNumber(jj) ? jj === j : inRange(j, jj[0], jj[1]);
+      return isNumber(jj) ? jj === j : inRange(j, jj[0], jj[1]);
     }
     if (type === 'column-multiple') {
-      return _.isNumber(jj) ? jj === j : inMultiple(j, jj);
+      return isNumber(jj) ? jj === j : inMultiple(j, jj);
     }
     if (type === 'cell') {
       return ii === i && jj === j;

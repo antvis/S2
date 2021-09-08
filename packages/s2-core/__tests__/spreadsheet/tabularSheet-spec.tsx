@@ -1,14 +1,9 @@
 import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
-import {
-  S2DataConfig,
-  S2Options,
-  SheetComponent,
-  SpreadSheet,
-} from '../../src';
-import { getContainer } from './helpers';
 import ReactDOM from 'react-dom';
 import React from 'react';
+import { getContainer } from '../util/helpers';
+import { S2DataConfig, S2Options, SheetComponent, SpreadSheet } from '@/index';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
@@ -223,7 +218,7 @@ describe('spreadsheet tabular spec', () => {
         adaptive={false}
         options={options}
         spreadsheet={getSpreadSheet}
-        header={{exportCfg: {open: true}}}
+        header={{ exportCfg: { open: true } }}
       />,
       getContainer(),
     );

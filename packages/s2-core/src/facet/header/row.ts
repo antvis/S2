@@ -1,15 +1,14 @@
-import { Group } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell';
-import { DetailRowCell } from '../../cell/detail-row-cell';
-import { Node } from '@/facet/layout/node';
-import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
+import { S2CellType, S2Options, ViewMeta } from '../../common/interface';
+import { BaseHeader, BaseHeaderConfig } from './base';
+import { Node } from '@/facet/layout/node';
 
 export interface RowHeaderConfig extends BaseHeaderConfig {
   // type of hierarchy
-  hierarchyType: 'tree' | 'grid';
+  hierarchyType: S2Options['hierarchyType'];
   // field ids that click to navigate
   linkFieldIds: string[];
   // series number group's width, will be 0 when not exists
@@ -44,6 +43,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       scrollY,
       scrollX,
     } = this.headerConfig;
+
     const rowCell = spreadsheet?.facet?.cfg?.rowCell;
     // row'cell only show when visible
     const rowCellInRect = (item: Node): boolean => {
@@ -56,7 +56,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     };
     each(data, (item: Node) => {
       if (rowCellInRect(item) && item.height !== 0) {
-        let cell: Group;
+        let cell: S2CellType;
         // 首先由外部控制UI展示
         if (rowCell) {
           cell = rowCell(item, spreadsheet, this.headerConfig);
@@ -65,24 +65,12 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         if (isEmpty(cell)) {
           if (spreadsheet.isPivotMode()) {
             cell = new RowCell(item, spreadsheet, this.headerConfig);
-          } else {
-            cell = new DetailRowCell(item, spreadsheet, this.headerConfig);
           }
         }
         item.belongsCell = cell;
         this.add(cell);
       }
     });
-
-    // this.addShape('rect', {
-    //   attrs: {
-    //     x: 0,
-    //     y: scrollY,
-    //     width: scrollX + width,
-    //     height,
-    //     fill: '#0ff'
-    //   }
-    // });
   }
 
   protected offset() {

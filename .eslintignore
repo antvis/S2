@@ -5,5 +5,4 @@ packgaes/s2-core/esm
 packgaes/s2-core/dist/node_modules
 node_modules
 .cache
-
-
+package.json

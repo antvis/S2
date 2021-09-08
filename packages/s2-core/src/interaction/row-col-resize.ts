@@ -1,26 +1,24 @@
-import { Group, IGroup } from '@antv/g-canvas';
-import { throttle, clone, merge, isNil, get } from 'lodash';
-import BaseSpreadSheet from '../sheet-type/base-spread-sheet';
+import { Group, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
+import { clone, get, isNil, throttle } from 'lodash';
+import { SpreadSheet } from 'src/sheet-type';
 import { ResizeInfo } from '../facet/header/interface';
-import { BaseInteraction } from './base';
-import { S2Event } from './events/types';
-
-const MIN_CELL_WIDTH = 28;
-const MIN_CELL_HEIGHT = 16;
-
-export enum EventType {
-  ROW_W = 'spreadsheet:change-row-header-width',
-  COL_W = 'spreadsheet:change-column-header-width',
-  ROW_H = 'spreadsheet:change-row-header-height',
-  COL_H = 'spreadsheet:change-column-header-height',
-  TREE_W = 'spreadsheet:change-tree-width',
-}
+import { BaseEvent, BaseEventImplement } from './base-interaction';
+import { RootInteraction } from './root';
+import { Style } from '@/common/interface';
+import {
+  MIN_CELL_HEIGHT,
+  MIN_CELL_WIDTH,
+  ResizeEvent,
+  S2Event,
+  SHAPE_STYLE_MAP,
+} from '@/common/constant';
+import { updateShapeAttr } from '@/utils/g-renders';
 
 /**
  * Resize row&col width/height interaction
  */
-export class RowColResize extends BaseInteraction {
-  private hotsPot: IGroup;
+export class RowColResize extends BaseEvent implements BaseEventImplement {
+  private ResizeArea: IGroup;
 
   private resizeGroup: IGroup;
 
@@ -28,31 +26,32 @@ export class RowColResize extends BaseInteraction {
 
   private startPos: { offsetX?: number; offsetY?: number } = {};
 
-  constructor(spreadsheet: BaseSpreadSheet) {
-    super(spreadsheet);
+  constructor(spreadsheet: SpreadSheet, interaction: RootInteraction) {
+    super(spreadsheet, interaction);
     this.container = this.spreadsheet.foregroundGroup;
   }
 
-  protected bindEvents() {
+  public bindEvents() {
     this.bindMouseDown();
     this.bindMouseMove();
     this.bindMouseUp();
   }
 
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSEDOWN, (ev) => {
-      const shape: IGroup = ev.target;
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, (event) => {
+      const shape = event.target as IGroup;
+      const originalEvent = event.originalEvent as MouseEvent;
       const info: ResizeInfo = shape.attr('appendInfo');
-      if (get(info, 'isResizer')) {
-        this.hotsPot = shape;
+      if (get(info, 'isResizeArea')) {
+        this.ResizeArea = shape;
         // 激活区域
         if (isNil(this.resizeGroup)) {
           this.resizeGroup = this.container.addGroup();
           const attrs = {
             path: '',
             lineDash: [3, 3],
-            stroke: 'rgba(0,0,0,.8)',
-            strokeWidth: 2,
+            stroke: this.spreadsheet.theme.resizeArea.guidLineColor,
+            strokeWidth: this.spreadsheet.theme.resizeArea.size,
           };
           this.resizeGroup.addShape('path', { attrs });
           this.resizeGroup.addShape('path', { attrs });
@@ -61,7 +60,7 @@ export class RowColResize extends BaseInteraction {
           this.resizeGroup.addShape('rect', {
             attrs: {
               appendInfo: {
-                isResizer: true,
+                isResizeArea: true,
               },
               x: 0,
               y: 0,
@@ -92,7 +91,7 @@ export class RowColResize extends BaseInteraction {
               ['M', offsetX + width, offsetY],
               ['L', offsetX + width, canvasHeight],
             ]);
-            this.startPos.offsetX = ev.originalEvent.offsetX;
+            this.startPos.offsetX = originalEvent.offsetX;
           } else {
             cellStartBorder.attr('path', [
               ['M', offsetX, offsetY],
@@ -102,29 +101,28 @@ export class RowColResize extends BaseInteraction {
               ['M', offsetX, offsetY + height],
               ['L', canvasWidth, offsetY + height],
             ]);
-            this.startPos.offsetY = ev.originalEvent.offsetY;
+            this.startPos.offsetY = originalEvent.offsetY;
           }
           cellEndBorder.attr('cursor', `${info.type}-resize`);
           const header = this.getHeaderGroup();
           this.resizeGroup.move(header.get('x'), header.get('y'));
-          this.draw();
         }
       }
     });
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSEMOVE, (ev) => {
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, (event) => {
       throttle(
         this.resizeMouseMove,
         33, // 30fps
         {},
-      )(ev);
+      )(event);
     });
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSEUP, () => {
+    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_UP, () => {
       if (this.resizeGroup) {
         this.resizeGroup.set('visible', false);
         const children = this.resizeGroup.getChildren();
@@ -134,15 +132,15 @@ export class RowColResize extends BaseInteraction {
             children[0]?.attr('path')[0];
           const endPoint: ['M', number, number] = children[1]?.attr('path')[0];
 
-          let eventType: EventType;
-          let config: any;
+          let resizeEventType: ResizeEvent;
+          let style: Style;
           // todo，如何优化这段代码？
           if (info.type === 'col') {
             // eslint-disable-next-line default-case
             switch (info.affect) {
               case 'field':
-                eventType = EventType.ROW_W;
-                config = {
+                resizeEventType = ResizeEvent.ROW_W;
+                style = {
                   rowCfg: {
                     widthByField: {
                       [info.id]: endPoint[1] - startPoint[1],
@@ -151,16 +149,16 @@ export class RowColResize extends BaseInteraction {
                 };
                 break;
               case 'tree':
-                eventType = EventType.TREE_W;
-                config = {
+                resizeEventType = ResizeEvent.TREE_W;
+                style = {
                   rowCfg: {
                     treeRowsWidth: endPoint[1] - startPoint[1],
                   },
                 };
                 break;
               case 'cell':
-                eventType = EventType.COL_W;
-                config = {
+                resizeEventType = ResizeEvent.COL_W;
+                style = {
                   colCfg: {
                     widthByFieldValue: {
                       [info.caption]: endPoint[1] - startPoint[1],
@@ -173,8 +171,8 @@ export class RowColResize extends BaseInteraction {
             // eslint-disable-next-line default-case
             switch (info.affect) {
               case 'field':
-                eventType = EventType.COL_H;
-                config = {
+                resizeEventType = ResizeEvent.COL_H;
+                style = {
                   colCfg: {
                     heightByField: {
                       [info.id]: endPoint[2] - startPoint[2],
@@ -184,8 +182,8 @@ export class RowColResize extends BaseInteraction {
                 break;
               case 'cell':
               case 'tree':
-                eventType = EventType.ROW_H;
-                config = {
+                resizeEventType = ResizeEvent.ROW_H;
+                style = {
                   cellCfg: {
                     height: endPoint[2] - startPoint[2],
                   },
@@ -193,38 +191,19 @@ export class RowColResize extends BaseInteraction {
                 break;
             }
           }
-          this.spreadsheet.emit(eventType, config);
-          this.spreadsheet.setOptions(
-            merge({}, this.spreadsheet.options, { style: config }),
-          );
-          this.renderSS();
+          this.spreadsheet.emit(resizeEventType, style);
+          this.spreadsheet.setOptions({ style });
+          this.render();
         }
       }
     });
   }
 
-  // 获取列拖拽的最小宽度
-  private getMinCellWidth = () => {
-    let adaptiveColWidth: number;
-    // 列等宽平铺模式下，需要限定拖拽最小宽度为等宽值
-    if (
-      this.spreadsheet.isColAdaptive() &&
-      !this.spreadsheet.isHierarchyTreeType()
-    ) {
-      adaptiveColWidth = this.spreadsheet.store.get(
-        'adaptiveColWidth',
-      ) as number;
-    }
-    const cellWidth = adaptiveColWidth || MIN_CELL_WIDTH;
-    return cellWidth;
-  };
-
-  private resizeMouseMove = (ev: any) => {
+  private resizeMouseMove = (event: CanvasEvent) => {
     // is dragging
-    if (this.resizeGroup && this.resizeGroup.get('visible')) {
-      ev.preventDefault();
-
-      const minCellWidth = this.getMinCellWidth();
+    if (this.resizeGroup?.get('visible')) {
+      event.preventDefault();
+      const originalEvent = event.originalEvent as MouseEvent;
       const info = this.getResizeInfo();
       const children = this.resizeGroup.get('children');
       if (children) {
@@ -235,50 +214,57 @@ export class RowColResize extends BaseInteraction {
 
         if (info.type === 'col') {
           // 横向移动
-          let offset = ev.originalEvent.offsetX - this.startPos.offsetX;
-          if (start[1] + offset - info.offsetX < minCellWidth) {
+          let offset = originalEvent.offsetX - this.startPos.offsetX;
+          if (start[1] + offset - info.offsetX < MIN_CELL_WIDTH) {
             // 禁止拖到最小宽度
-            this.startPos.offsetX = info.offsetX + minCellWidth;
-            offset = info.offsetX + minCellWidth - start[1];
+            this.startPos.offsetX = info.offsetX + MIN_CELL_WIDTH;
+            offset = info.offsetX + MIN_CELL_WIDTH - start[1];
           } else {
-            this.startPos.offsetX = ev.originalEvent.offsetX;
+            this.startPos.offsetX = originalEvent.offsetX;
           }
           start[1] += offset;
           end[1] += offset;
-          this.hotsPot.attr({
-            x: this.hotsPot.attr('x') + offset,
+          this.ResizeArea.attr({
+            x: this.ResizeArea.attr('x') + offset,
           });
         } else {
-          let offset = ev.originalEvent.offsetY - this.startPos.offsetY;
+          let offset = originalEvent.offsetY - this.startPos.offsetY;
           if (start[2] + offset - info.offsetY < MIN_CELL_HEIGHT) {
             this.startPos.offsetY = info.offsetY + MIN_CELL_HEIGHT;
             offset = info.offsetY + MIN_CELL_HEIGHT - start[2];
           } else {
-            this.startPos.offsetY = ev.originalEvent.offsetY;
+            this.startPos.offsetY = originalEvent.offsetY;
           }
           start[2] += offset;
           end[2] += offset;
-          this.hotsPot.attr({
-            y: this.hotsPot.attr('y') + offset,
+          this.ResizeArea.attr({
+            y: this.ResizeArea.attr('y') + offset,
           });
         }
         cellEndBorder.attr('path', [start, end]);
-        this.draw();
       }
+    } else {
+      // is hovering
+      const resizeArea = event.target;
+      resizeArea.attr(
+        SHAPE_STYLE_MAP.backgroundOpacity,
+        this.spreadsheet.theme.resizeArea.interactionState.hover
+          .backgroundOpacity,
+      );
     }
   };
 
   private getResizeInfo(): ResizeInfo {
-    return this.hotsPot && this.hotsPot.attr('appendInfo');
+    return this.ResizeArea?.attr('appendInfo');
   }
 
   private getHeaderGroup(): Group {
-    return this.hotsPot && this.hotsPot.get('parent').get('parent');
+    return this.ResizeArea?.get('parent').get('parent');
   }
 
-  private renderSS() {
+  private render() {
     this.startPos = {};
-    this.hotsPot = null;
+    this.ResizeArea = null;
     this.resizeGroup = null;
     this.spreadsheet.render(false);
   }

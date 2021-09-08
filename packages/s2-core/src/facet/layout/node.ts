@@ -1,8 +1,7 @@
-import { Group } from '@antv/g-canvas';
-import _ from 'lodash';
-import BaseSpreadSheet from '@/sheet-type/base-spread-sheet';
-import { ROOT_ID } from './../../common/constant/index';
+import { omit, isEqual } from 'lodash';
 import { Hierarchy } from './hierarchy';
+import { SpreadSheet } from '@/index';
+import { S2CellType } from '@/common/interface';
 
 export interface BaseNodeConfig {
   id: string;
@@ -20,11 +19,11 @@ export interface BaseNodeConfig {
   isPivotMode?: boolean;
   seriesNumberWidth?: number;
   field?: string;
-  spreadsheet?: BaseSpreadSheet;
+  spreadsheet?: SpreadSheet;
   query?: Record<string, any>;
-  belongsCell?: Group;
+  belongsCell?: S2CellType;
   inCollapseNode?: boolean;
-  rowIndexHeightExist?: number;
+  isLeaf?: boolean;
   [key: string]: any;
 }
 
@@ -32,20 +31,84 @@ export interface BaseNodeConfig {
  * Node for cornerHeader, colHeader, rowHeader
  */
 export class Node {
-  public static blankNode(): Node {
-    return new Node({
-      id: '',
-      key: '',
-      value: '',
-    });
+  // node represent total measure
+  public isTotalMeasure: boolean;
+
+  public config: BaseNodeConfig;
+
+  constructor(cfg: BaseNodeConfig) {
+    const {
+      id,
+      key,
+      value,
+      label,
+      parent,
+      level,
+      rowIndex,
+      isTotals,
+      isGrandTotals,
+      isSubTotals,
+      isCollapsed,
+      hierarchy,
+      isPivotMode,
+      seriesNumberWidth,
+      field,
+      spreadsheet,
+      query,
+      belongsCell,
+      inCollapseNode,
+      isTotalMeasure,
+      isLeaf,
+    } = cfg;
+    this.id = id;
+    this.key = key;
+    this.value = value;
+    this.label = label || value;
+    this.parent = parent;
+    this.level = level;
+    this.rowIndex = rowIndex;
+    this.isTotals = isTotals;
+    this.isCollapsed = isCollapsed;
+    this.hierarchy = hierarchy;
+    this.isPivotMode = isPivotMode;
+    this.seriesNumberWidth = seriesNumberWidth;
+    this.field = field;
+    this.spreadsheet = spreadsheet;
+    this.query = query;
+    this.belongsCell = belongsCell;
+    this.inCollapseNode = inCollapseNode;
+    this.isTotalMeasure = isTotalMeasure;
+    this.isLeaf = isLeaf;
+    this.isGrandTotals = isGrandTotals;
+    this.isSubTotals = isSubTotals;
+    // if (parent) {
+    //   parent.children.push(this);
+    // }
+    // 这里存在一个问题，由于目前所有内置成员变量都是public, 可以直接通过实例.属性 来更新
+    // 属性值，导致更新后有些无法同步到config中，后续再处理下
+    this.config = Object.getOwnPropertyNames(this).reduce((result, name) => {
+      return { ...result, [name]: this[name] };
+    }, {}) as BaseNodeConfig;
   }
 
-  public static rootNode(): Node {
-    return new Node({
-      id: ROOT_ID,
-      key: '',
-      value: '',
-    });
+  /**
+   * Get node's field path
+   * eg: node.id = root[&]东北[&]黑龙江
+   * => [area, province]
+   * @param node
+   */
+  public static getFieldPath(node: Node): string[] {
+    if (node && !node.isTotals) {
+      // total nodes don't need rows from node self
+      let parent = node.parent;
+      const fieldPath = [node.field];
+      while (parent && parent.id !== 'root') {
+        fieldPath.push(parent.field);
+        parent = parent.parent;
+      }
+      return fieldPath.reverse();
+    }
+    return [];
   }
 
   /**
@@ -63,11 +126,10 @@ export class Node {
   public static getAllLeavesOfNode(node: Node): Node[] {
     const leaves: Node[] = [];
     if (node.isLeaf) {
-      leaves.push(node);
-      return leaves;
+      return [node];
     }
     // current root node children
-    const nodes = node.children.slice(0);
+    const nodes = [...node.children];
     let current = nodes.shift();
     while (current) {
       if (current.isLeaf) {
@@ -94,8 +156,11 @@ export class Node {
    */
   public static getAllChildrenNode(node: Node): Node[] {
     const all: Node[] = [];
+    if (node.isLeaf) {
+      return [node];
+    }
     // current root node children
-    const nodes = node.children.slice(0);
+    const nodes = [...(node.children || [])];
     let current = nodes.shift();
     while (current) {
       all.push(current);
@@ -126,7 +191,7 @@ export class Node {
       tempBranch.unshift(current);
       let pa = current.parent;
       while (pa) {
-        if (!_.isEqual(pa, parent)) {
+        if (!isEqual(pa, parent)) {
           tempBranch.unshift(pa);
         } else {
           break;
@@ -182,11 +247,13 @@ export class Node {
   // node is grand total or subtotal(not normal node)
   public isTotals: boolean;
 
-  // node represent grand total
-  public isGrandTotals: boolean;
-
-  // node represent sub total
-  public isSubTotals: boolean;
+  public static blankNode(): Node {
+    return new Node({
+      id: '',
+      key: '',
+      value: '',
+    });
+  }
 
   // node is collapsed
   public isCollapsed: boolean;
@@ -210,77 +277,26 @@ export class Node {
   public field: string;
 
   // spreadsheet instance
-  public spreadsheet: BaseSpreadSheet;
+  public spreadsheet: SpreadSheet;
 
   // node self's query condition(represent where node stay)
   public query?: Record<string, any>;
 
-  public belongsCell?: Group;
+  public belongsCell?: S2CellType;
 
   public inCollapseNode?: boolean;
 
-  // 高度存在的时候(不为0)的行索引，用于决策模式下的隔行颜色区分
-  public rowIndexHeightExist?: number;
-
   [key: string]: any;
 
-  constructor(cfg: BaseNodeConfig) {
-    const {
-      id,
-      key,
-      value,
-      label,
-      parent,
-      level,
-      rowIndex,
-      isTotals,
-      isSubTotals,
-      isGrandTotals,
-      isCollapsed,
-      hierarchy,
-      isPivotMode,
-      seriesNumberWidth,
-      field,
-      spreadsheet,
-      query,
-      belongsCell,
-      inCollapseNode,
-      rowIndexHeightExist,
-    } = cfg;
-    this.id = id;
-    this.key = key;
-    this.value = value;
-    this.label = label || value;
-    this.parent = parent;
-    this.level = level;
-    this.rowIndex = rowIndex;
-    this.isTotals = isTotals;
-    this.isGrandTotals = isGrandTotals;
-    this.isSubTotals = isSubTotals;
-    this.isCollapsed = isCollapsed;
-    this.hierarchy = hierarchy;
-    this.isPivotMode = isPivotMode;
-    this.seriesNumberWidth = seriesNumberWidth;
-    this.field = field;
-    this.spreadsheet = spreadsheet;
-    this.query = query;
-    this.belongsCell = belongsCell;
-    this.inCollapseNode = inCollapseNode;
-    this.rowIndexHeightExist = rowIndexHeightExist;
-    if (parent) {
-      parent.children.push(this);
-    }
+  public static rootNode(): Node {
+    return new Node({
+      id: 'root',
+      key: '',
+      value: '',
+    });
   }
 
-  public hideRowNode() {
-    this.height = 0;
-  }
-
-  public hideColNode() {
-    this.width = 0;
-  }
-
-  public isHide() {
-    return this.height === 0 || this.width === 0;
+  public toJSON() {
+    return omit(this, ['config', 'hierarchy', 'parent', 'spreadsheet']);
   }
 }
