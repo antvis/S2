@@ -1,4 +1,3 @@
-import { Group } from '@antv/g-canvas';
 import { includes, isEmpty, concat, merge, forEach, size } from 'lodash';
 import { EventController } from './event-controller';
 import { BrushSelection, DataCellMultiSelection, RowColResize } from './';

@@ -25,13 +25,13 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   public prepareSelectMaskShape: IShape;
 
-  private startBrushPoint: BrushPoint;
+  public startBrushPoint: BrushPoint;
 
-  private endBrushPoint: BrushPoint;
+  public endBrushPoint: BrushPoint;
 
-  private brushRangeDataCells: DataCell[] = [];
+  public brushRangeDataCells: DataCell[] = [];
 
-  private brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
+  public brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
 
   public bindEvents() {
     this.bindMouseDown();
@@ -40,7 +40,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private getPrepareSelectMaskTheme() {
-    return this.spreadsheet.theme.prepareSelectMask;
+    return this.spreadsheet.theme?.prepareSelectMask;
   }
 
   private initPrepareSelectMaskShape() {
@@ -79,6 +79,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private bindMouseMove() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (event: CanvasEvent) => {
+      event.preventDefault();
+
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
