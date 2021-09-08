@@ -8,7 +8,7 @@ async function main() {
   const paths = glob.sync(`!(node_modules)/**/*-spec.ts?(x)`);
 
   const defaultSelectedIndex = paths.findIndex(
-    (p) => p === 'tests/spreadsheet/spread-sheet-spec.tsx',
+    (p) => p === '__tests__/spreadsheet/spread-sheet-spec.tsx',
   );
   spinner.stop();
 

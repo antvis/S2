@@ -151,6 +151,7 @@ export class SpreadSheet extends EE {
   ) {
     super();
     this.dom = this.getMountContainer(dom);
+    if (!this.dom) return;
     this.dataCfg = safetyDataConfig(dataCfg);
     this.options = safetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
@@ -534,7 +535,6 @@ export class SpreadSheet extends EE {
    */
   protected initGroups(dom: HTMLElement, options: S2Options) {
     const { width, height } = options;
-
     // base canvas group
     this.container = new Canvas({
       container: dom,

@@ -27,7 +27,7 @@ export const sortAction = (
         if (Number(a) && Number(b)) {
           return (Number(a) - Number(b)) * sort;
         }
-        if (specialValues?.includes(a.toString())) {
+        if (specialValues?.includes(a?.toString())) {
           return -sort;
         }
         if (Number(a) && specialValues?.includes(b.toString())) {

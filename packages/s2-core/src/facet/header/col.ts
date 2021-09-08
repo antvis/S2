@@ -36,7 +36,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected background: IShape;
 
-  // TODO type define
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
     const { frozenColCount, frozenTrailingColCount } =

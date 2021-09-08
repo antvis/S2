@@ -5,7 +5,7 @@ import { BaseEvent } from '@/interaction/base-event';
 const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 
 describe('Base Interaction Event Test', () => {
-  test('should get interaction and spreadsheet instance and call bind func', () => {
+  test('should get interaction and spreadsheet instance and call the bind function', () => {
     const bindEventsImpl = jest.fn();
     class MyInteraction extends BaseEvent {
       bindEvents() {
