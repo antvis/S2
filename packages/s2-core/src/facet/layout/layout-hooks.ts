@@ -1,7 +1,7 @@
 import { Node } from 'src/facet/layout/node';
 import { LayoutResult, SpreadSheetFacetCfg } from 'src/common/interface';
 import { Hierarchy } from 'src/facet/layout/hierarchy';
-import _ from 'lodash';
+import { each, isBoolean, isEmpty } from 'lodash';
 
 /**
  * re-arrange field values by custom arrange hooks
@@ -57,22 +57,22 @@ export const layoutHierarchy = (
       currentNode,
     );
     if (layoutHierarchy) {
-      const deleteNode = !_.isBoolean(layoutHierarchy?.delete)
+      const deleteNode = !isBoolean(layoutHierarchy?.delete)
         ? false
         : layoutHierarchy?.delete;
       expandCurrentNode = !deleteNode;
-      const { push, unshift } = layoutHierarchy;
+      const { push: pushNodes, unshift: unshiftNodes } = layoutHierarchy;
       let currentIndex = parentNode.children.length;
       let hierarchyIndex = hierarchy.getNodes().length;
-      if (_.size(unshift) > 0) {
-        _.each(unshift, (v) => {
+      if (!isEmpty(unshiftNodes)) {
+        each(unshiftNodes, (v) => {
           addNode(v);
         });
         currentIndex = parentNode.children.length;
         hierarchyIndex = hierarchy.getNodes().length;
       }
-      if (_.size(push) > 0) {
-        _.each(push, (v) => {
+      if (!isEmpty(pushNodes)) {
+        each(pushNodes, (v) => {
           addNode(v);
         });
       }

@@ -7,3 +7,4 @@ export * from './s2Options';
 export * from './store';
 export * from './theme';
 export * from './tooltip';
+export * from './frame';

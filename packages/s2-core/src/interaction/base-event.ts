@@ -11,9 +11,9 @@ export interface BaseEventImplement {
 }
 
 export abstract class BaseEvent {
-  protected spreadsheet: SpreadSheet;
+  public spreadsheet: SpreadSheet;
 
-  protected interaction: RootInteraction;
+  public interaction: RootInteraction;
 
   constructor(spreadsheet: SpreadSheet, interaction: RootInteraction) {
     this.spreadsheet = spreadsheet;

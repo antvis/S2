@@ -19,7 +19,7 @@
   ],
   "coverageReporters": ["text-summary", "html"],
   "transformIgnorePatterns": [],
-  "testRegex": "/tests/.*(-|\\.)spec\\.(tsx|ts|js)?$",
+  "testRegex": "/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js)?$",
   "transform": {
     "\\.(less|css)$": "jest-less-loader",
     "\\.svg$": "jest-raw-loader"

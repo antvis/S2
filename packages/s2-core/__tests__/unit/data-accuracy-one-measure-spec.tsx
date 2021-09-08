@@ -2,14 +2,6 @@ import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import {
-  auto,
-  EXTRA_FIELD,
-  S2DataConfig,
-  S2Options,
-  SheetComponent,
-  SpreadSheet,
-} from '../../src';
 import { getContainer } from '../util/helpers';
 import {
   data1,
@@ -23,6 +15,14 @@ import {
   totalData5,
   totalData6,
 } from '../data/data-accuracy';
+import {
+  auto,
+  EXTRA_FIELD,
+  S2DataConfig,
+  S2Options,
+  SheetComponent,
+  SpreadSheet,
+} from '@/index';
 
 let spreadsheet1: SpreadSheet;
 const setSpreadSheet = (
@@ -248,8 +248,8 @@ describe('data accuracy one measure spec', () => {
   });
   spreadsheet1.setDataCfg(getDataCfg(1));
   test('Totals + Details + Single Measure', () => {
-    expect(data1.length).toBe(9);
-    expect(spreadsheet1.dataSet.originData.length).toBe(9);
+    expect(data1.length).toBe(4);
+    expect(spreadsheet1.dataSet.originData.length).toBe(4);
     expect(spreadsheet1.dataSet.fields.valueInCols).toBe(true);
     expect(spreadsheet1.dataSet.fields.columns.includes(EXTRA_FIELD)).toBe(
       true,

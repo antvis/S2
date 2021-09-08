@@ -348,7 +348,7 @@ export class EventController {
     eventType: string,
     handler: (ev: CanvasEvent) => void,
   ) {
-    this.canvasContainer.on(eventType, handler);
+    this.canvasContainer?.on(eventType, handler);
     this.canvasEventHandlers.push({ type: eventType, handler });
   }
 
