@@ -357,7 +357,7 @@ export class PivotFacet extends BaseFacet {
         const preLevelSample = rowsHierarchy.sampleNodesForAllLevels.find(
           (n) => n.level === currentNode.level - 1,
         );
-        currentNode.x = preLevelSample.x + preLevelSample.width;
+        currentNode.x = preLevelSample?.x + preLevelSample?.width;
       }
       currentNode.width = this.calculateRowLeafNodesWidth(currentNode);
       layoutCoordinate(this.cfg, currentNode, null);

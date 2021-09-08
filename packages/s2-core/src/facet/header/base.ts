@@ -28,8 +28,6 @@ export interface BaseHeaderConfig {
 }
 
 /**
- * Create By Bruce Too
- * On 2019-09-24
  * New Base Header for all headers(cornerHeader, rowHeader, colHeader)
  * NOTE: Do not use this.cfg(which lays in group) to get header config,
  * use {@see headerConfig} instead

@@ -1,8 +1,10 @@
-import { ColHeader, RowHeader } from 'src/facet/header';
-import { getAllPanelDataCell } from 'src/utils/getAllPanelDataCell';
+import { Group } from '@antv/g-canvas';
 import { includes, isEmpty, concat, merge, forEach, size } from 'lodash';
 import { EventController } from './event-controller';
 import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
+import { ColHeader, RowHeader } from '@/facet/header';
+import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
+
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
 import {
@@ -24,7 +26,7 @@ import {
   RowCell,
 } from '@/index';
 import { CustomInteraction } from '@/common/interface';
-import { InterceptType } from '@/common/constant';
+import { CellTypes, InterceptType } from '@/common/constant';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -145,18 +147,30 @@ export class RootInteraction {
   public getAllRowHeaderCells() {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
-    const rowCells = rowHeader?.cfg?.children || [];
+    let currentNode = rowHeader?.cfg?.children;
+
+    while (!currentNode[0]?.cellType) {
+      currentNode = currentNode[0]?.cfg?.children;
+    }
+
+    const rowCells = currentNode || [];
     return rowCells.filter(
-      (cell: S2CellType) => cell instanceof RowCell,
+      (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
     ) as RowCell[];
   }
 
   public getAllColHeaderCells() {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const colHeader = children.filter((group) => group instanceof ColHeader)[0];
-    const colCells = colHeader?.cfg?.children || [];
+    let currentNode = colHeader?.cfg?.children;
+
+    while (!currentNode[0]?.cellType) {
+      currentNode = currentNode[0]?.cfg?.children;
+    }
+
+    const colCells = currentNode || [];
     return colCells.filter(
-      (cell: S2CellType) => cell instanceof ColCell,
+      (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
     ) as ColCell[];
   }
 

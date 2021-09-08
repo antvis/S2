@@ -2,13 +2,8 @@ import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import {
-  S2DataConfig,
-  S2Options,
-  SheetComponent,
-  SpreadSheet,
-} from '../../src';
 import { getContainer } from '../util/helpers';
+import { S2DataConfig, S2Options, SheetComponent, SpreadSheet } from '@/index';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
