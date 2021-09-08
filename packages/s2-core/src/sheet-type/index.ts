@@ -167,7 +167,7 @@ export class SpreadSheet extends EE {
   }
 
   get isShowTooltip() {
-    return this.options?.tooltip?.showTooltip;
+    return this.options?.tooltip?.showTooltip ?? true;
   }
 
   private initTheme() {

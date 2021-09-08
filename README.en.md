@@ -1,11 +1,11 @@
-<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en.md)
-
+<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18">  [简体中文](./README.md) ｜
+English
 
 <h1 align="center">@antv/s2</h1>
 
 <div align="center">
 
-数据驱动的多维分析表格。
+Data-driven multi-dimensional analysis table.
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
@@ -18,28 +18,30 @@
 
 </div>
 
-S2是一种多维交叉分析表格领域的解决方案，完全基于数据驱动的方式，弥补了行业中此领域的空缺。通过提供底层能力库，基础组件，
-业务场景组件以及自由扩展的能力，让开发者基于自身场景自由选择，既能开箱即用，又能自由发挥。
+S2 is a solution in multi-dimensional cross-analysis tables, which provides data-driven analysis table components and analysis components.
+ It fills up the vacancy in this field in the industry. By providing the core library, essential components,
+demo components and free expansion capabilities allow developers to choose freely based on their real cases, which can be used out of the box and can be used freely.
+
 
 
 <!-- ### 🏠 [Homepage](https://s2.antv.vision) -->
 
-## ✨ 特性
-1. 多维交叉分析： 告别单一分析维度，全面拥抱任意维度的自由组合分析。
-2. 高性能：能支持全量百万数据下的不到8s的渲染，也能通过局部下钻来实现秒级渲染。
-3. 高扩展性：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据hook流等）。
-4. 开箱即用：提供不同分析场景下开箱即用的react表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景的表渲染。
-5. 高交互：支持丰富的交互形式（单选、圈选、行选、列选、冻结行头、宽高拖拽，自定义交互等）
+## ✨ Features
+1. Multi-dimensional cross-analysis: Say goodbye to a single analysis dimension and fully embrace the free combination analysis of any dimension.
+2. High performance: It can support rendering in less than 8s under the total amount of millions of data and achieve second-level rendering through partial drilling.
+3. High scalability: Support any custom extensions (including but not limited to layout, style, interaction, data hook flow, etc.).
+4. Out of the box: Provide out-of-the-box react table components and supporting analysis components in different analysis scenarios. You only need a simple configuration to realize the table rendering of complex scenes quickly.
+5. High interaction: support rich interaction forms (single selection, circle selection, row selection, column selection, freeze line header, width and height dragging, custom interaction, etc.)
 
-##  📦 安装
+##  📦 Installation
 
 ```bash
 $ npm install @antv/s2
 ```
 
-## 🔨 使用
+## 🔨 Getting Started
 
-### 1. 数据准备
+### 1. Data Preparation
 
 ```ts
 const s2DataConfig = {
@@ -119,7 +121,7 @@ const s2DataConfig = {
 };
 ```
 
-### 2. 配置项准备
+### 2.  Options Preparation
 
 ```ts
 const s2options = {
@@ -130,7 +132,7 @@ const s2options = {
 }
 ```
 
-### 3. 渲染
+### 3. Component Rendering
 
 ```html
 <div id="container"></div>
@@ -153,7 +155,10 @@ ReactDOM.render(
 👤 [**@AntV**](https://github.com/antvis)
 
 
-## 🤝 参与贡献
+## 🤝  Contributing
+Contributions, issues and feature requests are welcome.
+Feel free to check [issues](https://github.com/antvis/S2/issues) page if you want to contribute.
+
 
 ```bash
 $ git clone git@github.com:antvis/S2.git
