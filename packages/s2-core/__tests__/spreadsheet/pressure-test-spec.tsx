@@ -1,10 +1,7 @@
-import { merge, clone, omit } from 'lodash';
-import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
-import ReactDOM from 'react-dom';
 import React from 'react';
-import { Switch, Checkbox } from 'antd';
-import { getContainer, getMockData } from '../util/helpers';
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
 import {
   auto,
   S2DataConfig,
@@ -12,24 +9,12 @@ import {
   SheetComponent,
   SpreadSheet,
 } from '../../src';
-import { CustomTooltip } from './custom/custom-tooltip';
+import { getContainer } from '../util/helpers';
 
 const data = [];
 
 // 100W 条数据
-// for (let i = 0; i < 1000; i++) {
-//   for (let j = 0; j < 1000; j++) {
-//     data.push({
-//       price: i,
-//       province: '四川省',
-//       city: `成都市 ${i}`,
-//       category: `家具 ${j}`,
-//     })
-//   }
-// }
-
-// 10W 条数据
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 1000; i++) {
   for (let j = 0; j < 1000; j++) {
     data.push({
       price: i,
