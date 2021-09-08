@@ -1,20 +1,17 @@
 import {
   CellTypes,
-  COLOR_DEFAULT_RESIZER,
   EXTRA_FIELD,
-  KEY_GROUP_CORNER_RESIZER,
+  KEY_GROUP_CORNER_RESIZE_AREA,
   S2Event,
 } from '@/common/constant';
-import { CellAttrs, FormatResult, TextTheme } from '@/common/interface';
-import { HIT_AREA } from '@/facet/header/base';
+import { FormatResult, TextTheme } from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
 import { ResizeInfo } from '@/facet/header/interface';
-import { Node } from '@/facet/layout/node';
 import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
 import { renderRect, renderText, renderTreeIcon } from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
 import { getEllipsisText } from '@/utils/text';
-import { IGroup, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import { Group, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
 import { isEmpty, isEqual } from 'lodash';
 import { HeaderCell } from './header-cell';
 
@@ -34,7 +31,7 @@ export class CornerCell extends HeaderCell {
     this.drawBackgroundShape();
     this.drawTreeIcon();
     this.drawCellText();
-    this.drawHotpot();
+    this.drawResizeArea();
   }
 
   protected drawCellText() {
@@ -48,7 +45,6 @@ export class CornerCell extends HeaderCell {
     const { x, y, height } = this.getCellArea();
 
     const textStyle = this.getTextStyle();
-    const iconStyle = this.getStyle().icon;
     const { formattedValue } = this.getFormattedFieldValue();
 
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
@@ -70,24 +66,15 @@ export class CornerCell extends HeaderCell {
       secondLine = getEllipsisText(secondLine, maxWidth, textStyle);
     }
 
-    const extraInfo: CellAttrs<Node> = {
-      appendInfo: {
-        // 标记为行头文本，方便做链接跳转直接识别
-        isCornerHeaderText: true,
-        cellData: this.meta,
-      },
-    };
-
     const { x: textX } = getTextPosition(
       {
-        x: x + this.getTreeIconWidth() + iconStyle.margin.right,
+        x: x + this.getTreeIconWidth(),
         y: y,
         width: maxWidth,
         height: height,
       },
       textStyle,
     );
-
     const textY = y + (isEmpty(secondLine) ? height / 2 : height / 4);
     // first line
     this.textShapes.push(
@@ -98,7 +85,6 @@ export class CornerCell extends HeaderCell {
         textY,
         firstLine,
         textStyle,
-        extraInfo,
       ),
     );
 
@@ -112,7 +98,6 @@ export class CornerCell extends HeaderCell {
           y + height * 0.75,
           secondLine,
           textStyle,
-          extraInfo,
         ),
       );
     }
@@ -160,33 +145,31 @@ export class CornerCell extends HeaderCell {
       opacity: backgroundColorOpacity,
     };
 
-    if (this.spreadsheet.isTableMode()) {
-      attrs.stroke = horizontalBorderColor;
-    }
-
     this.backgroundShape = renderRect(this, attrs);
   }
 
-  private drawHotpot() {
-    const prevResizer = this.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_CORNER_RESIZER,
+  private drawResizeArea() {
+    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+      KEY_GROUP_CORNER_RESIZE_AREA,
     );
-    const resizer = (prevResizer ||
+    const resizeStyle = this.getStyle('resizeArea');
+    const resizeArea = (prevResizeArea ||
       this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_CORNER_RESIZER,
-      })) as IGroup;
+        id: KEY_GROUP_CORNER_RESIZE_AREA,
+      })) as Group;
     const { position } = this.headerConfig;
     const { x, y, width: cellWidth, height: cellHeight, field } = this.meta;
-    resizer.addShape('rect', {
+    resizeArea.addShape('rect', {
       attrs: {
-        x: position.x + x + cellWidth - HIT_AREA / 2,
+        x: position.x + x + cellWidth - resizeStyle.size / 2,
         y: position.y + y,
-        width: HIT_AREA,
+        width: resizeStyle.size,
         height: cellHeight,
-        fill: COLOR_DEFAULT_RESIZER,
+        fill: resizeStyle.background,
+        fillOpacity: resizeStyle.backgroundOpacity,
         cursor: 'col-resize',
         appendInfo: {
-          isResizer: true,
+          isResizeArea: true,
           class: 'resize-trigger',
           type: 'col',
           id: field,
@@ -231,7 +214,7 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getContentArea();
+    const { width } = this.getCellArea();
     return width - this.getTreeIconWidth();
   }
 

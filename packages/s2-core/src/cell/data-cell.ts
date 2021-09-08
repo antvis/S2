@@ -1,3 +1,7 @@
+import { Point } from '@antv/g-base';
+import { IShape } from '@antv/g-canvas';
+import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
+import { Node } from '..';
 import { BaseCell } from '@/cell/base-cell';
 import {
   CellTypes,
@@ -30,19 +34,7 @@ import {
   renderRect,
   updateShapeAttr,
 } from '@/utils/g-renders';
-import { Point } from '@antv/g-base';
-import { IShape } from '@antv/g-canvas';
-import {
-  clamp,
-  find,
-  first,
-  get,
-  includes,
-  isEmpty,
-  isEqual,
-  map,
-} from 'lodash';
-import { parseNumberWithPrecision } from './../utils/formatter';
+import { parseNumberWithPrecision } from '@/utils/formatter';
 
 /**
  * DataCell for panelGroup area
@@ -160,9 +152,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     this.drawBackgroundShape();
     this.drawInteractiveBgShape();
     this.drawConditionIntervalShape();
+    this.drawInteractiveBorderShape();
     this.drawTextShape();
     this.drawConditionIconShapes();
-    this.drawInteractiveBorderShape();
     this.drawBorderShape();
     this.update();
   }
@@ -407,10 +399,13 @@ export class DataCell extends BaseCell<ViewMeta> {
   // dataCell根据state 改变当前样式，
   private changeRowColSelectState(indexType: ViewMetaIndexType) {
     const currentIndex = get(this.meta, indexType);
-    const { nodes = [] } = this.spreadsheet.interaction.getState();
-    const isEqualIndex = nodes.find(
-      (node) => get(node, indexType) === currentIndex,
-    );
+    const { nodes = [], cells = [] } = this.spreadsheet.interaction.getState();
+    const isEqualIndex = [...nodes, ...cells].find((cell) => {
+      if (cell instanceof Node) {
+        return get(cell, indexType) === currentIndex;
+      }
+      return get(cell?.getMeta(), indexType) === currentIndex;
+    });
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.selectedCellsSpotlight) {
@@ -492,16 +487,18 @@ export class DataCell extends BaseCell<ViewMeta> {
         this.theme,
         `${this.cellType}.cell.interactionState.${stateName}`,
       );
-      updateShapeAttr(
-        this.conditionIntervalShape,
-        SHAPE_STYLE_MAP.backgroundOpacity,
-        stateStyles.backgroundOpacity,
-      );
-      updateShapeAttr(
-        this.conditionIconShape as unknown as IShape,
-        SHAPE_STYLE_MAP.opacity,
-        stateStyles.opacity,
-      );
+      if (stateStyles) {
+        updateShapeAttr(
+          this.conditionIntervalShape,
+          SHAPE_STYLE_MAP.backgroundOpacity,
+          stateStyles.backgroundOpacity,
+        );
+        updateShapeAttr(
+          this.conditionIconShape as unknown as IShape,
+          SHAPE_STYLE_MAP.opacity,
+          stateStyles.opacity,
+        );
+      }
     }
   }
 

@@ -1,10 +1,10 @@
 import { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell';
-import { Node } from '@/facet/layout/node';
-import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroup } from '../utils';
 import { S2CellType, S2Options, ViewMeta } from '../../common/interface';
+import { BaseHeader, BaseHeaderConfig } from './base';
+import { Node } from '@/facet/layout/node';
 
 export interface RowHeaderConfig extends BaseHeaderConfig {
   // type of hierarchy
@@ -43,19 +43,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       scrollY,
       scrollX,
     } = this.headerConfig;
-    const rowCellTheme = this.cfg.spreadsheet.theme.rowCell.cell;
-    // draw the background
-    this.addShape('rect', {
-      attrs: {
-        x: 0,
-        y: scrollY,
-        width: scrollX + width,
-        height,
-        fill: rowCellTheme.backgroundColor,
-        stroke: 'transparent',
-        opacity: rowCellTheme.backgroundColorOpacity,
-      },
-    });
+
     const rowCell = spreadsheet?.facet?.cfg?.rowCell;
     // row'cell only show when visible
     const rowCellInRect = (item: Node): boolean => {

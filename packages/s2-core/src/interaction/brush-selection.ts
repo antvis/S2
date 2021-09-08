@@ -1,3 +1,7 @@
+import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
+import { isEmpty } from 'lodash';
+import { BaseEventImplement } from './base-event';
+import { BaseEvent } from './base-interaction';
 import { InterceptType, S2Event } from '@/common/constant';
 import {
   InteractionBrushSelectionStage,
@@ -9,12 +13,9 @@ import {
   OriginalEvent,
   ViewMeta,
 } from '@/common/interface';
-import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
-import { BaseEvent } from './base-interaction';
-import { BaseEventImplement } from './base-event';
-import { getActiveCellsTooltipData } from '../utils/tooltip';
+import { getActiveCellsTooltipData } from '@/utils/tooltip';
 
 /**
  * Panel area's brush selection interaction
@@ -85,7 +86,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       }
 
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      this.interaction.intercept.add(InterceptType.HOVER);
+      this.interaction.addIntercepts([InterceptType.HOVER]);
       this.endBrushPoint = this.getBrushPoint(event);
       this.interaction.clearStyleIndependent();
       this.updatePrepareSelectMask();
@@ -99,15 +100,12 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       event.preventDefault();
 
       if (this.brushSelectionStage === InteractionBrushSelectionStage.DRAGGED) {
+        this.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
         this.hidePrepareSelectMaskShape();
         this.updateSelectedCells();
-
         this.spreadsheet.showTooltipWithInfo(
           event,
           getActiveCellsTooltipData(this.spreadsheet),
-        );
-        this.spreadsheet.interaction.intercept.add(
-          InterceptType.BRUSH_SELECTION,
         );
       }
       this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
@@ -205,7 +203,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private getBrushRangeDataCells(): DataCell[] {
     return this.displayedDataCells.filter((cell) => {
       const meta = cell.getMeta();
-      return meta?.data && this.isInBrushRange(meta);
+      return this.isInBrushRange(meta);
     });
   }
 
@@ -215,6 +213,10 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.interaction.changeState({
       cells: brushRangeDataCells,
       stateName: InteractionStateName.PREPARE_SELECT,
+      // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
+      // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
+      // 如果是无效刷选(全部都是没数据的格子), brushRangeDataCells = [], 更新时会跳过, 需要强制重置 hover 高亮
+      force: true,
     });
     this.brushRangeDataCells = brushRangeDataCells;
   };
@@ -225,5 +227,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       cells: this.brushRangeDataCells,
       stateName: InteractionStateName.SELECTED,
     });
+    // 未刷选到有效格子, 允许 hover
+    if (isEmpty(this.brushRangeDataCells)) {
+      this.interaction.removeIntercepts([InterceptType.HOVER]);
+    }
   }
 }

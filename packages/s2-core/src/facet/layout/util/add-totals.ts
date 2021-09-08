@@ -1,7 +1,7 @@
+import { size } from 'lodash';
 import { TotalParams } from '@/facet/layout/interface';
 import { TotalClass } from '@/facet/layout/total-class';
 import { EXTRA_FIELD } from '@/common/constant';
-import { size } from 'lodash';
 
 export const addTotals = (params: TotalParams) => {
   const { isFirstField, currentField, fieldValues, spreadsheet, lastField } =

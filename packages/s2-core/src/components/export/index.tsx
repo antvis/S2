@@ -1,9 +1,9 @@
 import React from 'react';
 import { Menu, Dropdown, message } from 'antd';
 import cx from 'classnames';
+import { SpreadSheet } from 'src/sheet-type';
 import { DotIcon } from '../icons/index';
 import { copyData, copyToClipboard, download } from '../../utils/export';
-import { SpreadSheet } from 'src/sheet-type';
 
 export interface DataSet {
   icon?: React.ReactNode;

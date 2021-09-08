@@ -1,10 +1,23 @@
-import { Node } from '@/facet/layout/node';
-import { BBox } from '@antv/g-canvas';
-import { PartDrillDownInfo } from '../../components/sheets/interface';
+import { BBox, Group } from '@antv/g-canvas';
 import { SortMethodType } from '../constant';
 import { InteractionStateInfo, SortParam } from '../interface';
 import { ValueRanges } from './condition';
 import { S2DataConfig } from './s2DataConfig';
+import { Node } from '@/facet/layout/node';
+import { PartDrillDownInfo } from '@/components/sheets/interface';
+
+export interface Selected {
+  type:
+    | 'cell'
+    | 'row'
+    | 'brush'
+    | 'col'
+    | 'column'
+    | 'row&col'
+    | 'column-multiple';
+  // [ 10, 5 ], [ [ 2, 5 ], [ 4, 8 ] ];
+  indexes: [number | number[], number | number[]];
+}
 
 export interface ReachedBorderId {
   rowId?: string;
@@ -43,7 +56,8 @@ export interface StoreKey {
   originalDataCfg: S2DataConfig;
   drillDownMeta: any;
   panelBBox: BBox;
-
+  // resize area group
+  activeResizeArea: Group;
   // interval condition
   valueRanges: ValueRanges;
 

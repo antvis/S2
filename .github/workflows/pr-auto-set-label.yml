@@ -1,0 +1,63 @@
+name: PR Auto Set Label
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  set-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set fix label
+        if: startsWith(github.event.pull_request.title, 'fix')
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'set-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          labels: 'pr(fix)'
+
+      - name: Set chore label
+        if: startsWith(github.event.pull_request.title, 'chore')
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'set-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          labels: 'pr(chore)'
+
+      - name: Set feat label
+        if: startsWith(github.event.pull_request.title, 'feat')
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'set-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          labels: 'pr(feature)'
+
+      - name: Set refactor label
+        if: startsWith(github.event.pull_request.title, 'refactor')
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'set-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          labels: 'pr(refactor)'
+
+      - name: Set test label
+        if: startsWith(github.event.pull_request.title, 'test')
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'set-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          labels: 'pr(test)'
+
+      - name: Set docs label
+        if: startsWith(github.event.pull_request.title, 'docs')
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'set-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          labels: 'pr(documentation)'

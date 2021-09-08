@@ -1,7 +1,7 @@
-import { IMenu, TooltipOperatorOptions } from '@/common/interface';
 import { Menu } from 'antd';
 import { isEmpty, map, size } from 'lodash';
 import React from 'react';
+import { IMenu, TooltipOperatorOptions } from '@/common/interface';
 import { getIcon, HtmlIcon } from '@/common/icons';
 import {
   DEFAULT_ICON_PROPS,

@@ -1,8 +1,23 @@
-import { SpreadSheet } from '@/sheet-type';
-import { head, last, isEmpty, get, clone, trim, max } from 'lodash';
-import { ViewMeta } from '@/index';
-import { ID_SEPARATOR, EMPTY_PLACEHOLDER } from '@/common/constant';
+import {
+  head,
+  last,
+  isEmpty,
+  get,
+  clone,
+  trim,
+  max,
+  isObject,
+  forEach,
+} from 'lodash';
 import { getCsvString } from './export-worker';
+import { SpreadSheet } from '@/sheet-type';
+import { ViewMeta } from '@/index';
+import {
+  ID_SEPARATOR,
+  EMPTY_PLACEHOLDER,
+  ROOT_BEGINNING_REGEX,
+} from '@/common/constant';
+import { MultiData } from '@/common/interface/S2DataConfig';
 
 export const copyToClipboard = (str: string) => {
   try {
@@ -38,6 +53,23 @@ export const download = (str: string, fileName: string) => {
   }
 };
 
+/*
+ * Process the multi-measure
+ * use the ' ' to divide different measures in the same line
+ * use the '$' to divide different lines
+ */
+const processObjectValue = (data: MultiData) => {
+  // TODO 如何去业务化
+  const tempCell = data?.label ? [data?.label] : [];
+  const values = data?.values;
+  if (!isEmpty(values)) {
+    forEach(values, (value) => {
+      tempCell.push(value.join(' '));
+    });
+  }
+  return tempCell.join('$');
+};
+
 /* Process the data in detail mode. */
 const processValueInDetail = (
   sheetInstance: SpreadSheet,
@@ -50,22 +82,22 @@ const processValueInDetail = (
   for (const record of data) {
     const tempLine = [];
     let tempRows = [];
-    let tempValus = [];
+    let tempValues = [];
     if (!isFormat) {
       tempRows = rows.map((v: string) => getCsvString(record[v]));
-      tempValus = values.map((v: string) => getCsvString(record[v]));
+      tempValues = values.map((v: string) => getCsvString(record[v]));
     } else {
       tempRows = rows.map((v: string) => {
         const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
         return getCsvString(mainFormatter(record[v]));
       });
-      tempValus = values.map((v: string) => {
+      tempValues = values.map((v: string) => {
         const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
         return getCsvString(mainFormatter(record[v]));
       });
     }
 
-    tempLine.push(tempRows.concat(tempValus).join(split));
+    tempLine.push(tempRows.concat(tempValues).join(split));
     res.push(tempLine);
   }
   return res;
@@ -82,6 +114,11 @@ const processValueInCol = (
     return '';
   }
   const { fieldValue, valueField } = viewMeta;
+
+  if (isObject(fieldValue)) {
+    return processObjectValue(fieldValue);
+  }
+
   if (!isFormat) {
     return `${fieldValue}`;
   }
@@ -215,7 +252,7 @@ export const copyData = (
     for (const rowNode of caredRowLeafNodes) {
       // Removing the space at the beginning of the line of the label.
       rowNode.label = trim(rowNode?.label);
-      const id = rowNode.id.replace(/^root\[&\]*/, '');
+      const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
       const tempLine = id.split(ID_SEPARATOR);
       const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));
       tempLine[tempLine.length - 1] = lastLabel;
@@ -229,10 +266,10 @@ export const copyData = (
 
       for (const colNode of colLeafNodes) {
         if (valueInCols) {
-          const viewMeta = getCellMeta(rowNode.cellIndex, colNode.cellIndex);
+          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
           tempLine.push(processValueInCol(viewMeta, sheetInstance, isFormat));
         } else {
-          const viewMeta = getCellMeta(rowNode.cellIndex, colNode.cellIndex);
+          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
           tempLine.push(processValueInRow(viewMeta, sheetInstance, isFormat));
         }
       }

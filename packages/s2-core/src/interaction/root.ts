@@ -1,11 +1,14 @@
+import { Group } from '@antv/g-canvas';
+import { includes, isEmpty, concat, merge, forEach, size } from 'lodash';
+import { EventController } from './event-controller';
+import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
+import { ColHeader, RowHeader } from '@/facet/header';
+import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
+
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
-import { ColHeader, RowHeader } from 'src/facet/header';
-import { includes, isEmpty, concat, merge, forEach } from 'lodash';
-import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import {
   BaseEvent,
-  CornerTextClick,
   DataCell,
   DataCellClick,
   Intercept,
@@ -23,7 +26,7 @@ import {
   RowCell,
 } from '@/index';
 import { CustomInteraction } from '@/common/interface';
-import { EventController } from './event-controller';
+import { CellTypes, InterceptType } from '@/common/constant';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -39,7 +42,10 @@ export class RootInteraction {
 
   public eventController: EventController;
 
-  private defaultState: InteractionStateInfo = {};
+  private defaultState: InteractionStateInfo = {
+    cells: [],
+    force: false,
+  };
 
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -54,7 +60,7 @@ export class RootInteraction {
   }
 
   public setState(interactionStateInfo: InteractionStateInfo) {
-    setState(interactionStateInfo, this.spreadsheet);
+    setState(this.spreadsheet, interactionStateInfo);
   }
 
   public getState() {
@@ -105,6 +111,10 @@ export class RootInteraction {
     return currentState?.cells || [];
   }
 
+  public getActiveCellsCount() {
+    return size(this.getActiveCells());
+  }
+
   public updateCellStyleByState() {
     const cells = this.getActiveCells();
     cells.forEach((cell) => {
@@ -131,25 +141,36 @@ export class RootInteraction {
   }
 
   public getPanelGroupAllDataCells(): DataCell[] {
-    const children = this.spreadsheet.panelGroup.getChildren();
-    return children.filter((cell) => cell instanceof DataCell) as DataCell[];
+    return getAllPanelDataCell(this.spreadsheet.panelGroup.get('children'));
   }
 
   public getAllRowHeaderCells() {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
-    const rowCells = rowHeader?.cfg?.children || [];
+    let currentNode = rowHeader?.cfg?.children;
+
+    while (!currentNode[0]?.cellType) {
+      currentNode = currentNode[0]?.cfg?.children;
+    }
+
+    const rowCells = currentNode || [];
     return rowCells.filter(
-      (cell: S2CellType) => cell instanceof RowCell,
+      (cell: S2CellType) => cell.cellType === CellTypes.ROW_CELL,
     ) as RowCell[];
   }
 
   public getAllColHeaderCells() {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const colHeader = children.filter((group) => group instanceof ColHeader)[0];
-    const colCells = colHeader?.cfg?.children || [];
+    let currentNode = colHeader?.cfg?.children;
+
+    while (!currentNode[0]?.cellType) {
+      currentNode = currentNode[0]?.cfg?.children;
+    }
+
+    const colCells = currentNode || [];
     return colCells.filter(
-      (cell: S2CellType) => cell instanceof ColCell,
+      (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
     ) as ColCell[];
   }
 
@@ -171,10 +192,6 @@ export class RootInteraction {
     this.interactions.set(
       InteractionName.DATA_CELL_CLICK,
       new DataCellClick(this.spreadsheet, this),
-    );
-    this.interactions.set(
-      InteractionName.CORNER_TEXT_CLICK,
-      new CornerTextClick(this.spreadsheet, this),
     );
     this.interactions.set(
       InteractionName.ROW_COLUMN_CLICK,
@@ -240,7 +257,15 @@ export class RootInteraction {
   }
 
   public changeState(interactionStateInfo: InteractionStateInfo) {
-    if (isEmpty(interactionStateInfo.cells)) {
+    const { interaction } = this.spreadsheet;
+    const { cells, force } = interactionStateInfo;
+    if (isEmpty(cells)) {
+      if (force) {
+        interaction.changeState({
+          cells: interaction.getActiveCells(),
+          stateName: InteractionStateName.UNSELECTED,
+        });
+      }
       return;
     }
     this.clearState();
@@ -256,6 +281,24 @@ export class RootInteraction {
   public updateCells(cells: S2CellType[] = []) {
     cells.forEach((cell) => {
       cell.update();
+    });
+  }
+
+  public addIntercepts(interceptTypes: InterceptType[] = []) {
+    interceptTypes.forEach((interceptType) => {
+      this.spreadsheet.interaction.intercept.add(interceptType);
+    });
+  }
+
+  public hasIntercepts(interceptTypes: InterceptType[] = []) {
+    return interceptTypes.some((interceptType) =>
+      this.spreadsheet.interaction.intercept.has(interceptType),
+    );
+  }
+
+  public removeIntercepts(interceptTypes: InterceptType[] = []) {
+    interceptTypes.forEach((interceptType) => {
+      this.spreadsheet.interaction.intercept.delete(interceptType);
     });
   }
 }

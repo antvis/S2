@@ -1,9 +1,34 @@
+import EE from '@antv/event-emitter';
+import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
+import {
+  clone,
+  get,
+  includes,
+  isArray,
+  isEmpty,
+  isString,
+  merge,
+  mergeWith,
+  size,
+} from 'lodash';
 import { BaseCell, DataCell, TableDataCell, TableRowCell } from '@/cell';
 import {
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
   KEY_GROUP_PANEL_GROUND,
+  KEY_GROUP_PANEL_SCROLL,
+  KEY_GROUP_PANEL_FROZEN_ROW,
+  KEY_GROUP_PANEL_FROZEN_COL,
+  KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
+  KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
+  KEY_GROUP_PANEL_FROZEN_TOP,
+  KEY_GROUP_PANEL_FROZEN_BOTTOM,
+  BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
+  PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+  PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+  FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   S2Event,
+  PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
 } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
@@ -41,9 +66,6 @@ import { BaseTooltip } from '@/ui/tooltip';
 import { updateConditionsByValues } from '@/utils/condition/generate-condition';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { getTooltipData } from '@/utils/tooltip';
-import EE from '@antv/event-emitter';
-import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
-import { clone, get, includes, isEmpty, isString, merge, size } from 'lodash';
 
 export class SpreadSheet extends EE {
   // dom id
@@ -87,6 +109,20 @@ export class SpreadSheet extends EE {
 
   public maskGroup: IGroup;
 
+  public panelScrollGroup: IGroup;
+
+  public frozenRowGroup: IGroup;
+
+  public frozenColGroup: IGroup;
+
+  public frozenTrailingRowGroup: IGroup;
+
+  public frozenTrailingColGroup: IGroup;
+
+  public frozenTopGroup: IGroup;
+
+  public frozenBottomGroup: IGroup;
+
   // contains rowHeader,cornerHeader,colHeader, scroll bars
   public foregroundGroup: IGroup;
 
@@ -115,6 +151,7 @@ export class SpreadSheet extends EE {
   ) {
     super();
     this.dom = this.getMountContainer(dom);
+    if (!this.dom) return;
     this.dataCfg = safetyDataConfig(dataCfg);
     this.options = safetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
@@ -130,7 +167,7 @@ export class SpreadSheet extends EE {
   }
 
   get isShowTooltip() {
-    return this.options?.tooltip?.showTooltip;
+    return this.options?.tooltip?.showTooltip ?? true;
   }
 
   private initTheme() {
@@ -256,7 +293,14 @@ export class SpreadSheet extends EE {
 
   public setOptions(options: Partial<S2Options>) {
     this.hideTooltip();
-    this.options = merge(this.options, options);
+    this.options = mergeWith(this.options, options, (origin, updated) => {
+      // merge 默认行为会把数组类型进行合并，这会导致一个问题：
+      // origin: { linkFieldIds:[1,2,3]} +  updated: { linkFieldIds:[]} => { linkFieldIds:[1,2,3]}
+      // 本意是将linkFieldIds 重置，结果却被合并了
+      if (isArray(origin) && isArray(updated)) {
+        return updated;
+      }
+    });
   }
 
   public render(reloadData = true) {
@@ -491,7 +535,6 @@ export class SpreadSheet extends EE {
    */
   protected initGroups(dom: HTMLElement, options: S2Options) {
     const { width, height } = options;
-
     // base canvas group
     this.container = new Canvas({
       container: dom,
@@ -503,15 +546,47 @@ export class SpreadSheet extends EE {
     // the main three layer groups
     this.backgroundGroup = this.container.addGroup({
       name: KEY_GROUP_BACK_GROUND,
-      zIndex: 0,
+      zIndex: BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
     });
     this.panelGroup = this.container.addGroup({
       name: KEY_GROUP_PANEL_GROUND,
-      zIndex: 1,
+      zIndex: PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
     });
     this.foregroundGroup = this.container.addGroup({
       name: KEY_GROUP_FORE_GROUND,
-      zIndex: 2,
+      zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
+    });
+    this.initPanelGroupChildren();
+  }
+
+  protected initPanelGroupChildren(): void {
+    this.panelScrollGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_SCROLL,
+      zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+    });
+    this.frozenRowGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_ROW,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+    });
+    this.frozenColGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_COL,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+    });
+    this.frozenTrailingRowGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+    });
+    this.frozenTrailingColGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+    });
+    this.frozenTopGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_TOP,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+    });
+    this.frozenBottomGroup = this.panelGroup.addGroup({
+      name: KEY_GROUP_PANEL_FROZEN_BOTTOM,
+      zIndex: PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
     });
   }
 

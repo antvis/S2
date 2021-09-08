@@ -1,7 +1,7 @@
-import _ from 'lodash';
+import { omit, isEqual } from 'lodash';
+import { Hierarchy } from './hierarchy';
 import { SpreadSheet } from '@/index';
 import { S2CellType } from '@/common/interface';
-import { Hierarchy } from './hierarchy';
 
 export interface BaseNodeConfig {
   id: string;
@@ -28,8 +28,6 @@ export interface BaseNodeConfig {
 }
 
 /**
- * Create By Bruce Too
- * On 2019-09-26
  * Node for cornerHeader, colHeader, rowHeader
  */
 export class Node {
@@ -48,6 +46,8 @@ export class Node {
       level,
       rowIndex,
       isTotals,
+      isGrandTotals,
+      isSubTotals,
       isCollapsed,
       hierarchy,
       isPivotMode,
@@ -79,6 +79,8 @@ export class Node {
     this.inCollapseNode = inCollapseNode;
     this.isTotalMeasure = isTotalMeasure;
     this.isLeaf = isLeaf;
+    this.isGrandTotals = isGrandTotals;
+    this.isSubTotals = isSubTotals;
     // if (parent) {
     //   parent.children.push(this);
     // }
@@ -158,7 +160,7 @@ export class Node {
       return [node];
     }
     // current root node children
-    const nodes = [...node.children];
+    const nodes = [...(node.children || [])];
     let current = nodes.shift();
     while (current) {
       all.push(current);
@@ -189,7 +191,7 @@ export class Node {
       tempBranch.unshift(current);
       let pa = current.parent;
       while (pa) {
-        if (!_.isEqual(pa, parent)) {
+        if (!isEqual(pa, parent)) {
           tempBranch.unshift(pa);
         } else {
           break;
@@ -295,6 +297,6 @@ export class Node {
   }
 
   public toJSON() {
-    return _.omit(this, ['config', 'hierarchy', 'parent', 'spreadsheet']);
+    return omit(this, ['config', 'hierarchy', 'parent', 'spreadsheet']);
   }
 }

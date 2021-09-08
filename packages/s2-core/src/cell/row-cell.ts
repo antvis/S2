@@ -1,23 +1,21 @@
 import {
   CellTypes,
-  COLOR_DEFAULT_RESIZER,
   ID_SEPARATOR,
+  KEY_GROUP_ROW_RESIZE_AREA,
   S2Event,
-  KEY_GROUP_ROW_RESIZER,
 } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
 import { FormatResult, TextTheme } from '@/common/interface';
-import { HIT_AREA } from '@/facet/header/base';
 import { ResizeInfo } from '@/facet/header/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
+import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
-import { isMobile } from '@/utils/is-mobile';
 import { getAdjustPosition } from '@/utils/text-absorption';
-import { Event, IGroup, Point } from '@antv/g-canvas';
+import { Event, Group, Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
-import { each, forEach, get } from 'lodash';
+import { each, forEach } from 'lodash';
 import { HeaderCell } from './header-cell';
 
 export class RowCell extends HeaderCell {
@@ -50,7 +48,7 @@ export class RowCell extends HeaderCell {
     // draw bottom border
     this.drawRectBorder();
     // draw hot-spot rect
-    this.drawHotSpotInLeaf();
+    this.drawResizeAreaInLeaf();
     // draw action icon shapes: trend icon, drill-down icon ...
     this.drawActionIcons();
     this.update();
@@ -161,43 +159,18 @@ export class RowCell extends HeaderCell {
 
   // draw text
   protected drawTextShape() {
-    const { linkFieldIds = [] } = this.headerConfig;
-    const { fill, linkTextFill } = this.getTextStyle();
-
     super.drawTextShape();
+    this.drawLinkFieldShape();
+  }
 
-    // handle link nodes
-    if (linkFieldIds.includes(this.meta.key)) {
-      const device = get(this.headerConfig, 'spreadsheet.options.style.device');
-      // 配置了链接跳转
-      if (!isMobile(device)) {
-        const textBBox = this.textShape.getBBox();
-        renderLine(
-          this,
-          {
-            x1: textBBox.bl.x,
-            y1: textBBox.bl.y + 1,
-            x2: textBBox.br.x,
-            y2: textBBox.br.y + 1,
-          },
-          { stroke: fill, lineWidth: 1 },
-        );
-        this.textShape.attr({
-          appendInfo: {
-            isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
-            cellData: this.meta,
-          },
-        });
-      } else {
-        this.textShape.attr({
-          fill: linkTextFill,
-          appendInfo: {
-            isRowHeaderText: true, // 标记为行头文本，方便做链接跳转直接识别
-            cellData: this.meta,
-          },
-        });
-      }
-    }
+  protected drawLinkFieldShape() {
+    const { linkFieldIds = [] } = this.headerConfig;
+    const { linkTextFill } = this.getTextStyle();
+
+    super.drawLinkFieldShape(
+      linkFieldIds.includes(this.meta.key),
+      linkTextFill,
+    );
   }
 
   protected drawRectBorder() {
@@ -226,30 +199,32 @@ export class RowCell extends HeaderCell {
     );
   }
 
-  protected drawHotSpotInLeaf() {
+  protected drawResizeAreaInLeaf() {
     if (this.meta.isLeaf) {
       const { x, y, width, height } = this.getCellArea();
+      const resizeStyle = this.getStyle('resizeArea');
       // 热区公用一个group
-      const prevResizer = this.spreadsheet.foregroundGroup.findById(
-        KEY_GROUP_ROW_RESIZER,
+      const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+        KEY_GROUP_ROW_RESIZE_AREA,
       );
-      const resizer = (prevResizer ||
+      const resizeArea = (prevResizeArea ||
         this.spreadsheet.foregroundGroup.addGroup({
-          id: KEY_GROUP_ROW_RESIZER,
-        })) as IGroup;
+          id: KEY_GROUP_ROW_RESIZE_AREA,
+        })) as Group;
 
       const { offset, position, seriesNumberWidth } = this.headerConfig;
       const { label, parent } = this.meta;
-      resizer.addShape('rect', {
+      resizeArea.addShape('rect', {
         attrs: {
           x: position.x + x + seriesNumberWidth,
-          y: position.y + y - offset + height - HIT_AREA / 2,
+          y: position.y + y - offset + height - resizeStyle.size / 2,
           width,
-          fill: COLOR_DEFAULT_RESIZER,
-          height: HIT_AREA,
+          height: resizeStyle.size,
+          fill: resizeStyle.background,
+          fillOpacity: resizeStyle.backgroundOpacity,
           cursor: 'row-resize',
           appendInfo: {
-            isResizer: true,
+            isResizeArea: true,
             class: 'resize-trigger',
             type: 'row',
             affect: 'cell',
@@ -280,10 +255,11 @@ export class RowCell extends HeaderCell {
       )
         return;
     }
+
     const showIcon = () => {
       const level = this.meta.level;
-      const { level: rowLevel, operator } = display;
-      switch (operator) {
+      const rowLevel = display?.level;
+      switch (display?.operator) {
         case '<':
           return level < rowLevel;
         case '<=':
@@ -357,7 +333,12 @@ export class RowCell extends HeaderCell {
     const { isLeaf, isTotals } = this.meta;
     const { text, bolderText } = this.getStyle();
     const style = isLeaf && !isTotals ? text : bolderText;
-    return { ...style, textAlign: 'left', textBaseline: 'top' };
+
+    return {
+      ...style,
+      textAlign: this.spreadsheet.isHierarchyTreeType() ? 'left' : 'center',
+      textBaseline: 'top',
+    };
   }
 
   protected getFormattedFieldValue(): FormatResult {
@@ -381,14 +362,15 @@ export class RowCell extends HeaderCell {
   }
 
   protected getTextPosition(): Point {
-    const { x, y, height: contentHeight } = this.getContentArea();
+    const { y, height: contentHeight } = this.getContentArea();
     const { offset, height } = this.headerConfig;
 
     const { fontSize } = this.getTextStyle();
     const textIndent = this.getTextIndent();
     const textY = getAdjustPosition(y, contentHeight, offset, height, fontSize);
-    const textX = x + textIndent;
-
+    const textX =
+      getTextPosition(this.getContentArea(), this.getTextStyle()).x +
+      textIndent;
     return { x: textX, y: textY };
   }
 

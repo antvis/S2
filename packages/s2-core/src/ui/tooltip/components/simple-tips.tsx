@@ -1,5 +1,5 @@
-import { TooltipNameTipsOptions } from '@/common/interface';
 import * as React from 'react';
+import { TooltipNameTipsOptions } from '@/common/interface';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
 const SimpleTips = (props: TooltipNameTipsOptions) => {
@@ -8,7 +8,9 @@ const SimpleTips = (props: TooltipNameTipsOptions) => {
   return (
     <>
       {name && <div className={`${TOOLTIP_PREFIX_CLS}-name`}>{name}</div>}
-      {tips && <div className={`${TOOLTIP_PREFIX_CLS}-tips`}>{tips}</div>}
+      {(name || tips) && (
+        <div className={`${TOOLTIP_PREFIX_CLS}-tips`}>{tips}</div>
+      )}
     </>
   );
 };

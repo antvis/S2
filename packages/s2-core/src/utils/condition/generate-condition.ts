@@ -1,3 +1,4 @@
+import { isEmpty, isNumber } from 'lodash';
 import { DOWN_ICON, UP_ICON } from '@/common/constant';
 import {
   Condition,
@@ -5,7 +6,6 @@ import {
   IconCondition,
   IconTheme,
 } from '@/common/interface';
-import { isEmpty, isNumber } from 'lodash';
 
 export const getIconPositionCfg = (condition: IconCondition) => {
   return condition?.position ?? 'right';

@@ -1,6 +1,6 @@
+import { SpreadSheet } from 'src/sheet-type';
 import { Formatter, SortParam } from '../../common/interface';
 import { Hierarchy } from '../layout/hierarchy';
-import { SpreadSheet } from 'src/sheet-type';
 
 export interface CornerData {
   x: number;
@@ -64,7 +64,7 @@ export interface Cfg {
 }
 
 export interface ResizeInfo {
-  isResizer: boolean;
+  isResizeArea: boolean;
   class: 'resize-trigger';
   /**
    * col是改变列配置，即改变宽度

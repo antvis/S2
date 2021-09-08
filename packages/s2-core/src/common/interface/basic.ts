@@ -1,3 +1,11 @@
+import { Event, ShapeAttrs } from '@antv/g-canvas';
+import { S2PartialOptions } from 'src/common/interface/s2Options';
+import { BaseDataSet } from 'src/data-set';
+import { Frame } from 'src/facet/header';
+import { Padding } from '../interface/theme';
+import { BaseTooltip } from '../../ui/tooltip';
+import { S2CellType } from './interaction';
+import { DataItem, S2DataConfig } from './s2DataConfig';
 import { CustomTreeItem } from '@/common/interface';
 import { ResizeInfo } from '@/facet/header/interface';
 import {
@@ -8,14 +16,6 @@ import {
   TextAlign,
   TextBaseline,
 } from '@/index';
-import { Event, ShapeAttrs } from '@antv/g-canvas';
-import { S2PartialOptions } from 'src/common/interface/s2Options';
-import { BaseDataSet } from 'src/data-set';
-import { Frame } from 'src/facet/header';
-import { Padding } from '../interface/theme';
-import { BaseTooltip } from '../../ui/tooltip';
-import { S2CellType } from './interaction';
-import { DataItem, S2DataConfig } from './s2DataConfig';
 
 export type Formatter = (v: unknown) => string;
 
@@ -240,6 +240,8 @@ export interface CellCfg {
   height?: number;
   padding?: Padding;
   lineHeight?: number;
+  firstDerivedMeasureRowIndex?: number;
+  minorMeasureRowIndex?: number;
 }
 
 export interface RowCfg {
@@ -368,7 +370,6 @@ export interface OffsetConfig {
 }
 
 export interface CellAppendInfo<T = Node> extends Partial<ResizeInfo> {
-  isCornerHeaderText?: boolean;
   isRowHeaderText?: boolean;
   cellData?: T;
 }

@@ -1,20 +1,21 @@
+import React from 'react';
 import { TooltipSummaryOptions } from '@/common/interface';
-import * as React from 'react';
 import { i18n } from '@/common/i18n';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
-const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
-  const { summaries = [] } = props;
+interface SummaryProps {
+  summaries: TooltipSummaryOptions[];
+  count: number;
+}
+
+const Summary: React.FC<SummaryProps> = React.memo((props) => {
+  const { summaries = [], count = 0 } = props;
 
   const renderSelected = () => {
-    const selectedCount = summaries?.reduce((pre, next) => {
-      return pre + (next?.selectedData?.length || 0);
-    }, 0);
-
     return (
       <div className={`${TOOLTIP_PREFIX_CLS}-summary-item`}>
         <span className={`${TOOLTIP_PREFIX_CLS}-bold`}>
-          {selectedCount} {i18n('项')}
+          {count} {i18n('项')}
         </span>{' '}
         {i18n('已选择')}
       </div>
@@ -23,7 +24,10 @@ const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
 
   const renderSummary = () => {
     return summaries?.map((item) => {
-      const { name = i18n('所选项'), value } = item || {};
+      const { name = '', value } = item || {};
+      if (!name && !value) {
+        return;
+      }
 
       return (
         <div
@@ -49,6 +53,6 @@ const Summary = (props: { summaries: TooltipSummaryOptions[] }) => {
       {renderSummary()}
     </div>
   );
-};
+});
 
 export default Summary;

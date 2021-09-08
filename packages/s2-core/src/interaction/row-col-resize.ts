@@ -1,22 +1,24 @@
+import { Group, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
+import { clone, get, isNil, throttle } from 'lodash';
+import { SpreadSheet } from 'src/sheet-type';
+import { ResizeInfo } from '../facet/header/interface';
+import { BaseEvent, BaseEventImplement } from './base-interaction';
+import { RootInteraction } from './root';
+import { Style } from '@/common/interface';
 import {
   MIN_CELL_HEIGHT,
   MIN_CELL_WIDTH,
   ResizeEvent,
   S2Event,
+  SHAPE_STYLE_MAP,
 } from '@/common/constant';
-import { Group, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
-import { clone, get, isNil, throttle } from 'lodash';
-import { SpreadSheet } from 'src/sheet-type';
-import { Style } from '@/common/interface';
-import { ResizeInfo } from '../facet/header/interface';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
-import { RootInteraction } from './root';
+import { updateShapeAttr } from '@/utils/g-renders';
 
 /**
  * Resize row&col width/height interaction
  */
 export class RowColResize extends BaseEvent implements BaseEventImplement {
-  private hotsPot: IGroup;
+  private ResizeArea: IGroup;
 
   private resizeGroup: IGroup;
 
@@ -40,16 +42,16 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
       const shape = event.target as IGroup;
       const originalEvent = event.originalEvent as MouseEvent;
       const info: ResizeInfo = shape.attr('appendInfo');
-      if (get(info, 'isResizer')) {
-        this.hotsPot = shape;
+      if (get(info, 'isResizeArea')) {
+        this.ResizeArea = shape;
         // 激活区域
         if (isNil(this.resizeGroup)) {
           this.resizeGroup = this.container.addGroup();
           const attrs = {
             path: '',
             lineDash: [3, 3],
-            stroke: 'rgba(0,0,0,.8)',
-            strokeWidth: 2,
+            stroke: this.spreadsheet.theme.resizeArea.guidLineColor,
+            strokeWidth: this.spreadsheet.theme.resizeArea.size,
           };
           this.resizeGroup.addShape('path', { attrs });
           this.resizeGroup.addShape('path', { attrs });
@@ -58,7 +60,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
           this.resizeGroup.addShape('rect', {
             attrs: {
               appendInfo: {
-                isResizer: true,
+                isResizeArea: true,
               },
               x: 0,
               y: 0,
@@ -222,8 +224,8 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
           }
           start[1] += offset;
           end[1] += offset;
-          this.hotsPot.attr({
-            x: this.hotsPot.attr('x') + offset,
+          this.ResizeArea.attr({
+            x: this.ResizeArea.attr('x') + offset,
           });
         } else {
           let offset = originalEvent.offsetY - this.startPos.offsetY;
@@ -235,26 +237,34 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
           }
           start[2] += offset;
           end[2] += offset;
-          this.hotsPot.attr({
-            y: this.hotsPot.attr('y') + offset,
+          this.ResizeArea.attr({
+            y: this.ResizeArea.attr('y') + offset,
           });
         }
         cellEndBorder.attr('path', [start, end]);
       }
+    } else {
+      // is hovering
+      const resizeArea = event.target;
+      resizeArea.attr(
+        SHAPE_STYLE_MAP.backgroundOpacity,
+        this.spreadsheet.theme.resizeArea.interactionState.hover
+          .backgroundOpacity,
+      );
     }
   };
 
   private getResizeInfo(): ResizeInfo {
-    return this.hotsPot?.attr('appendInfo');
+    return this.ResizeArea?.attr('appendInfo');
   }
 
   private getHeaderGroup(): Group {
-    return this.hotsPot?.get('parent').get('parent');
+    return this.ResizeArea?.get('parent').get('parent');
   }
 
   private render() {
     this.startPos = {};
-    this.hotsPot = null;
+    this.ResizeArea = null;
     this.resizeGroup = null;
     this.spreadsheet.render(false);
   }

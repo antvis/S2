@@ -111,7 +111,7 @@ const getCellsByInfo = (
   let cellsMeta;
   forEach(cellsInfos, (cellInfo: MergedCellInfo) => {
     const findCell = find(allCells, (cell: S2CellType) => {
-      const meta = cell?.getMeta();
+      const meta = cell?.getMeta?.();
       if (
         meta?.colIndex === cellInfo?.colIndex &&
         meta?.rowIndex === cellInfo?.rowIndex

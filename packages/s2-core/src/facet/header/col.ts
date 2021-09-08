@@ -1,10 +1,18 @@
 import { each, isEmpty } from 'lodash';
-import { SERIES_NUMBER_FIELD } from 'src/common/constant';
-import { Formatter, S2CellType, SortParam } from '../../common/interface';
-import { ColCell, DetailColCell, CornerCell } from '../../cell';
-import { Node } from '../..';
-import { BaseHeader, BaseHeaderConfig } from './base';
+import { IGroup, IShape } from '@antv/g-base';
+import {
+  SERIES_NUMBER_FIELD,
+  KEY_GROUP_COL_FROZEN,
+  KEY_GROUP_COL_SCROLL,
+  KEY_GROUP_COL_FROZEN_TRAILING,
+  FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
+  FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+} from 'src/common/constant';
+import { ColCell, TableColCell, TableCornerCell } from 'src/cell';
+import { Formatter, S2CellType, SortParam } from 'src/common/interface';
+import { Node } from 'src/facet/layout/node';
 import { translateGroup } from '../utils';
+import { BaseHeader, BaseHeaderConfig } from './base';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
   // format field value
@@ -20,9 +28,37 @@ export interface ColHeaderConfig extends BaseHeaderConfig {
  * Column Header for SpreadSheet
  */
 export class ColHeader extends BaseHeader<ColHeaderConfig> {
-  // TODO type define
+  protected frozenColGroup: IGroup;
+
+  protected frozenTrailingColGroup: IGroup;
+
+  protected scrollGroup: IGroup;
+
+  protected background: IShape;
+
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
+    const { frozenColCount, frozenTrailingColCount } =
+      this.headerConfig.spreadsheet?.options;
+
+    this.scrollGroup = this.addGroup({
+      name: KEY_GROUP_COL_SCROLL,
+      zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
+    });
+
+    if (frozenColCount) {
+      this.frozenColGroup = this.addGroup({
+        name: KEY_GROUP_COL_FROZEN,
+        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+      });
+    }
+
+    if (frozenTrailingColCount) {
+      this.frozenTrailingColGroup = this.addGroup({
+        name: KEY_GROUP_COL_FROZEN_TRAILING,
+        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+      });
+    }
   }
 
   /**
@@ -41,39 +77,54 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected clip(): void {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
-    this.setClip({
+
+    const { frozenColCount } = spreadsheet.options;
+    const colLeafNodes = spreadsheet.facet.layoutResult.colLeafNodes;
+
+    let frozenColWidth = 0;
+    if (spreadsheet.isTableMode()) {
+      for (let i = 0; i < frozenColCount; i++) {
+        frozenColWidth += colLeafNodes[i].width;
+      }
+    }
+
+    this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
-        x: spreadsheet.freezeRowHeader() ? scrollX : 0,
+        x: (spreadsheet.freezeRowHeader() ? scrollX : 0) + frozenColWidth,
         y: 0,
-        width: width + (spreadsheet.freezeRowHeader() ? 0 : scrollX),
+        width:
+          width +
+          (spreadsheet.freezeRowHeader() ? 0 : scrollX) -
+          frozenColWidth,
         height,
       },
     });
   }
 
+  public clear() {
+    this.frozenTrailingColGroup?.clear();
+    this.frozenColGroup?.clear();
+    this.scrollGroup.clear();
+    this.background?.remove(true);
+  }
+
   protected layout() {
-    const { data, spreadsheet, cornerWidth, width, scrollX, height } =
+    const { data, spreadsheet, cornerWidth, width, scrollX } =
       this.headerConfig;
-
-    const colCellTheme = this.cfg.spreadsheet.theme.colCell.cell;
-    // draw the background
-
-    this.addShape('rect', {
-      attrs: {
-        x: scrollX,
-        y: 0,
-        width,
-        height,
-        fill: colCellTheme.backgroundColor,
-        stroke: 'transparent',
-        opacity: colCellTheme.backgroundColorOpacity,
-      },
-    });
+    const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
+    const colLength = spreadsheet?.facet.layoutResult.colLeafNodes.length;
 
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
     const colCellInRect = (item: Node): boolean => {
+      if (
+        (frozenColCount > 0 && item.colIndex < frozenColCount) ||
+        (frozenTrailingColCount > 0 &&
+          item.colIndex >= colLength - frozenTrailingColCount)
+      ) {
+        return true;
+      }
       return (
         width + scrollX > item.x &&
         scrollX - (spreadsheet.freezeRowHeader() ? 0 : cornerWidth) <
@@ -92,13 +143,27 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
           if (spreadsheet.isPivotMode()) {
             cell = new ColCell(item, spreadsheet, this.headerConfig);
           } else if (item.field === SERIES_NUMBER_FIELD) {
-            cell = new CornerCell(item, spreadsheet, this.headerConfig);
+            cell = new TableCornerCell(item, spreadsheet, this.headerConfig);
           } else {
-            cell = new DetailColCell(item, spreadsheet, this.headerConfig);
+            cell = new TableColCell(item, spreadsheet, this.headerConfig);
           }
         }
         item.belongsCell = cell;
-        this.add(cell);
+
+        if (this.headerConfig.spreadsheet.isTableMode()) {
+          if (node.colIndex < frozenColCount) {
+            this.frozenColGroup.add(cell);
+            return;
+          }
+          if (
+            frozenTrailingColCount > 0 &&
+            node.colIndex >= colLength - frozenTrailingColCount
+          ) {
+            this.frozenTrailingColGroup.add(cell);
+            return;
+          }
+        }
+        this.scrollGroup.add(cell);
       }
     });
   }
@@ -106,6 +171,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected offset() {
     const { position, scrollX } = this.headerConfig;
     // 暂时不考虑移动y
-    translateGroup(this, position.x - scrollX, 0);
+    translateGroup(this.scrollGroup, position.x - scrollX, 0);
   }
 }

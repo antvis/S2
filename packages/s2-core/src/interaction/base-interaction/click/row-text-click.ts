@@ -1,7 +1,7 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { get, isEmpty, find, head } from 'lodash';
-import { S2Event, InterceptType } from '@/common/constant';
 import { BaseEvent, BaseEventImplement } from '../../base-event';
+import { S2Event, InterceptType } from '@/common/constant';
 import { CellAppendInfo, Data } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 
@@ -15,7 +15,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
 
   private bindRowCellClick() {
     this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: CanvasEvent) => {
-      if (this.spreadsheet.interaction.intercept.has(InterceptType.CLICK)) {
+      if (this.spreadsheet.interaction.hasIntercepts([InterceptType.CLICK])) {
         return;
       }
       const appendInfo = get(

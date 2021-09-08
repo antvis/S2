@@ -1,11 +1,11 @@
+import { Event } from '@antv/g-canvas';
+import { BaseEvent, BaseEventImplement } from '../../base-event';
 import {
   S2Event,
   InterceptType,
   InteractionKeyboardKey,
 } from '@/common/constant';
-import { BaseEvent, BaseEventImplement } from '../../base-event';
 import { handleRowColClick } from '@/utils/interaction/multi-click';
-import { Event } from '@antv/g-canvas';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private isMultiSelection = false;
@@ -32,7 +32,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
         this.isMultiSelection = false;
-        this.interaction.intercept.delete(InterceptType.CLICK);
+        this.interaction.removeIntercepts([InterceptType.CLICK]);
       }
     });
   }

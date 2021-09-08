@@ -3,52 +3,53 @@
  */
 
 import {
-  CellTypes,
-  EXTRA_FIELD,
-  VALUE_FIELD,
-  PRECISION,
-} from '@/common/constant';
-import {
+  assign,
   compact,
   concat,
   filter,
   find,
   forEach,
   get,
+  isEmpty,
   isEqual,
   isNil,
   isNumber,
   map,
-  isEmpty,
-  sumBy,
-  some,
-  assign,
   pick,
+  some,
+  sumBy,
   uniq,
   noop,
   mapKeys,
 } from 'lodash';
 import {
-  TooltipDataItem,
-  TooltipDataParam,
-  TooltipOptions,
-  SummaryParam,
+  LayoutResult,
   ListItem,
   S2CellType,
   SpreadSheet,
+  SummaryParam,
   TooltipData,
+  TooltipDataItem,
+  TooltipDataParam,
   TooltipHeadInfo,
+  TooltipOptions,
   TooltipPosition,
   TooltipSummaryOptions,
 } from '..';
+import { handleDataItem } from './cell/data-cell';
+import { isMultiDataItem } from './data-item-type-checker';
+import { getRightFieldInQuery } from '@/facet/layout/util/get-right-field-in-query';
 import { i18n } from '@/common/i18n';
 import {
   POSITION_X_OFFSET,
   POSITION_Y_OFFSET,
 } from '@/common/constant/tooltip';
-import getRightFieldInQuery from '../facet/layout/util/get-right-field-in-query';
-import { handleDataItem } from './cell/data-cell';
-import { isMultiDataItem } from './data-item-type-checker';
+import {
+  CellTypes,
+  EXTRA_FIELD,
+  PRECISION,
+  VALUE_FIELD,
+} from '@/common/constant';
 
 /**
  * calculate sum value
@@ -243,27 +244,26 @@ export const getDetailList = (
           get(activeData, VALUE_FIELD),
         ),
       );
-    } else {
-      // the value hangs at the head of the column, match the displayed fields according to the metric itself
-      // 1、multiple derivative indicators
-      // 2、only one column scene
-      // 3、the clicked cell belongs to the derived index column
-      // tooltip need to show all derivative indicators
-      if (
-        isMultiDataItem(value) &&
-        spreadsheet.getTooltipDataItemMappingCallback()
-      ) {
-        const mappedResult = handleDataItem(
-          activeData,
-          spreadsheet.getTooltipDataItemMappingCallback(),
-        ) as Record<string, string | number>;
+    }
+    // the value hangs at the head of the column, match the displayed fields according to the metric itself
+    // 1、multiple derivative indicators
+    // 2、only one column scene
+    // 3、the clicked cell belongs to the derived index column
+    // tooltip need to show all derivative indicators
+    else if (
+      isMultiDataItem(value) &&
+      spreadsheet.getTooltipDataItemMappingCallback()
+    ) {
+      const mappedResult = handleDataItem(
+        activeData,
+        spreadsheet.getTooltipDataItemMappingCallback(),
+      ) as Record<string, string | number>;
 
-        forEach(mappedResult, (_, key) => {
-          valItem.push(getListItem(spreadsheet, mappedResult, key));
-        });
-      } else {
-        valItem.push(getListItem(spreadsheet, activeData, field));
-      }
+      forEach(mappedResult, (_, key) => {
+        valItem.push(getListItem(spreadsheet, mappedResult, key));
+      });
+    } else {
+      valItem.push(getListItem(spreadsheet, activeData, field));
     }
 
     return compact(valItem);
@@ -279,7 +279,8 @@ export const getSummaryName = (
     return i18n('总计');
   }
 
-  return spreadsheet?.dataSet?.getFieldName(currentField);
+  const name = spreadsheet?.dataSet?.getFieldName(currentField);
+  return name && name !== 'undefined' ? name : '';
 };
 
 export const getSelectedValueFields = (
@@ -287,22 +288,6 @@ export const getSelectedValueFields = (
   field: string,
 ): string[] => {
   return uniq(selectedData.map((d) => get(d, field)));
-};
-
-export const getSelectedCellIndexes = (
-  spreadsheet: SpreadSheet,
-  layoutResult,
-) => {
-  const { rowLeafNodes, colLeafNodes } = layoutResult;
-  const { cells = [], nodes = [] } = spreadsheet.interaction.getState() || {};
-
-  if (cells?.[0]?.cellType === CellTypes.COL_CELL) {
-    return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);
-  } else if (cells?.[0]?.cellType === CellTypes.ROW_CELL) {
-    return getRowOrColSelectedIndexes(nodes, colLeafNodes);
-  }
-
-  return [];
 };
 
 const getRowOrColSelectedIndexes = (nodes, leafNodes, isRow = true) => {
@@ -320,12 +305,29 @@ const getRowOrColSelectedIndexes = (nodes, leafNodes, isRow = true) => {
   return selectedIndexes;
 };
 
+export const getSelectedCellIndexes = (
+  spreadsheet: SpreadSheet,
+  layoutResult: LayoutResult,
+) => {
+  const { rowLeafNodes, colLeafNodes } = layoutResult;
+  const { cells = [], nodes = [] } = spreadsheet.interaction.getState();
+  const cellType = cells?.[0]?.cellType;
+
+  if (cellType === CellTypes.COL_CELL) {
+    return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);
+  }
+  if (cellType === CellTypes.ROW_CELL) {
+    return getRowOrColSelectedIndexes(nodes, colLeafNodes);
+  }
+
+  return [];
+};
+
 export const getSelectedCellsData = (
   spreadsheet: SpreadSheet,
   showSingleTips?: boolean,
 ): TooltipDataItem[] => {
-  const layoutResult = spreadsheet?.facet?.layoutResult;
-  let selectedData = [];
+  const layoutResult = spreadsheet.facet?.layoutResult;
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
   if (showSingleTips) {
     // 行头列头单选多选
@@ -333,31 +335,31 @@ export const getSelectedCellsData = (
       spreadsheet,
       layoutResult,
     );
-    forEach(selectedCellIndexes, ([i, j]) => {
-      const viewMeta = layoutResult.getCellMeta(i, j);
-      const data = viewMeta?.data;
-      if (!isNil(data)) {
-        selectedData.push(data);
-      }
-    });
-  } else {
-    // 其他（刷选，datacell多选）
-    const { cells = [] } = spreadsheet.interaction.getState() || {};
-    selectedData = map(cells, (cell) => cell.getMeta()?.data);
+    return compact(
+      map(selectedCellIndexes, ([i, j]) => {
+        const viewMeta = layoutResult.getCellMeta(i, j);
+        return viewMeta?.data;
+      }),
+    );
   }
-  return selectedData;
+  // 其他（刷选，data cell多选）
+  const cells = spreadsheet.interaction.getActiveCells();
+  return compact(map(cells, (cell) => cell.getMeta()?.data));
 };
 
 export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const { spreadsheet, getShowValue, options = {} } = params;
   const summaries = [];
   const summary = {};
-  const selectedCellsData = getSelectedCellsData(spreadsheet, options.showSingleTips);  // 拿到选择的所有data-cell的数据
+  const selectedCellsData = getSelectedCellsData(
+    spreadsheet,
+    options.showSingleTips,
+  ); // 拿到选择的所有data-cell的数据
   forEach(selectedCellsData, (item) => {
-    if (summary[item[EXTRA_FIELD]]) {
-      summary[item[EXTRA_FIELD]]?.push(item);
+    if (summary[item?.[EXTRA_FIELD]]) {
+      summary[item?.[EXTRA_FIELD]]?.push(item);
     } else {
-      summary[item[EXTRA_FIELD]] = [item];
+      summary[item?.[EXTRA_FIELD]] = [item];
     }
   });
 
@@ -434,8 +436,6 @@ export const mergeCellInfo = (cells: S2CellType[]): TooltipData[] => {
     );
   });
 };
-
-// TODO: 待确定 是否可以复用 mergeCellInfo
 
 export const getActiveCellsTooltipData = (
   spreadsheet: SpreadSheet,

@@ -1,5 +1,5 @@
-import { ListItem, TooltipDetailProps } from '@/common/interface';
 import React from 'react';
+import { ListItem, TooltipDetailProps } from '@/common/interface';
 import { HtmlIcon } from '@/common/icons';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 

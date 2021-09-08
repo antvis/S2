@@ -1,3 +1,7 @@
+import { isEmpty } from 'lodash';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { SpreadSheet } from 'src/sheet-type';
 import {
   ListItem,
   TooltipData,
@@ -9,10 +13,6 @@ import {
   TooltipNameTipsOptions,
   TooltipHeadInfo as TooltipHeadInfoType,
 } from '@/common/interface';
-import { isEmpty } from 'lodash';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { SpreadSheet } from 'src/sheet-type';
 import {
   getOptions,
   getPosition,
@@ -153,7 +153,12 @@ export class BaseTooltip {
   }
 
   protected renderSummary(summaries: TooltipSummaryOptions[]) {
-    return !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
+    const count = this.spreadsheet.interaction.getActiveCellsCount();
+    return (
+      !isEmpty(summaries) && (
+        <TooltipSummary summaries={summaries} count={count} />
+      )
+    );
   }
 
   protected renderHeadInfo(headInfo: TooltipHeadInfoType) {

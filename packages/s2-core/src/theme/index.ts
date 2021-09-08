@@ -1,7 +1,7 @@
 import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
 import { Palette, SpreadSheetTheme, ThemeCfg } from '../common/interface';
 import { SpreadSheet } from '../sheet-type';
-import { isWindows } from '../utils/is-mobile';
+import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
 
 /**
@@ -26,6 +26,7 @@ export const getTheme = (
         fill: brandColors[0],
         opacity: 1,
         textAlign: 'center',
+        textBaseline: 'middle',
       },
       text: {
         fontFamily: FONT_FAMILY,
@@ -71,6 +72,7 @@ export const getTheme = (
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : '520',
         fill: grayColors[6],
+        linkTextFill: brandColors[6],
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
@@ -115,6 +117,12 @@ export const getTheme = (
           selected: {
             backgroundColor: brandColors[2],
             backgroundOpacity: 1,
+          },
+          // -------------- unselected -------------------
+          unselected: {
+            backgroundOpacity: 0.3,
+            textOpacity: 0.3,
+            opacity: 0.3,
           },
         },
       },
@@ -176,6 +184,12 @@ export const getTheme = (
           selected: {
             backgroundColor: brandColors[4],
             backgroundOpacity: 1,
+          },
+          // -------------- unselected -------------------
+          unselected: {
+            backgroundOpacity: 0.3,
+            textOpacity: 0.3,
+            opacity: 0.3,
           },
         },
       },
@@ -249,7 +263,6 @@ export const getTheme = (
             backgroundOpacity: 1,
           },
           // -------------- unselected -------------------
-          // TODO: 条件格式的icon和mini chart也需要置灰
           unselected: {
             backgroundOpacity: 0.3,
             textOpacity: 0.3,
@@ -278,13 +291,28 @@ export const getTheme = (
         },
       },
     },
+    // resize active area
+    resizeArea: {
+      size: 3,
+      background: brandColors[7],
+      guidLineColor: brandColors[7],
+      backgroundOpacity: 0,
+      /* ---------- interaction state ----------- */
+      interactionState: {
+        hover: {
+          backgroundColor: brandColors[7],
+          backgroundOpacity: 1,
+        },
+      },
+    },
     // ------------- scrollBar -------------------
     scrollBar: {
       trackColor: 'rgba(0,0,0,0)',
-      thumbHoverColor: 'rgba(0,0,0,0.2)',
+      thumbHoverColor: 'rgba(0,0,0,0.4)',
       thumbColor: 'rgba(0,0,0,0.15)',
-      size: 6,
+      size: isMobile() ? 3 : 6,
       hoverSize: 16,
+      lineCap: 'round',
     },
     // ------------- split line -----------------
     splitLine: {
@@ -306,6 +334,7 @@ export const getTheme = (
       backgroundColor: brandColors[5],
       backgroundOpacity: 0.3,
     },
+    // ------------- canvas background
     background: {
       color: grayColors[0],
       opacity: 1,

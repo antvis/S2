@@ -1,7 +1,7 @@
 import { Data, DataItem, SortMethod } from 'src/common/interface';
 import { DataType, SortActionParams } from 'src/data-set/interface';
-import { EXTRA_FIELD, SortMethodType, TOTAL_VALUE } from '@/common/constant';
 import { keys, has, uniq } from 'lodash';
+import { EXTRA_FIELD, SortMethodType, TOTAL_VALUE } from '@/common/constant';
 import { sortByItems } from '@/utils/data-set-operate';
 
 /**
@@ -27,7 +27,7 @@ export const sortAction = (
         if (Number(a) && Number(b)) {
           return (Number(a) - Number(b)) * sort;
         }
-        if (specialValues?.includes(a.toString())) {
+        if (specialValues?.includes(a?.toString())) {
           return -sort;
         }
         if (Number(a) && specialValues?.includes(b.toString())) {

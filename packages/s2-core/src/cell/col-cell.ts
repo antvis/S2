@@ -1,7 +1,10 @@
+import { Group, Point } from '@antv/g-canvas';
+import { get, isEqual } from 'lodash';
+import { HeaderCell } from './header-cell';
 import {
   CellTypes,
-  COLOR_DEFAULT_RESIZER,
-  KEY_GROUP_COL_RESIZER,
+  KEY_GROUP_COL_RESIZE_AREA,
+  HORIZONTAL_RESIZE_AREA_KEY_PRE,
 } from '@/common/constant';
 import { GuiIcon } from '@/common/icons';
 import {
@@ -10,19 +13,15 @@ import {
   TextBaseline,
   TextTheme,
 } from '@/common/interface';
-import { HIT_AREA } from '@/facet/header/base';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { ResizeInfo } from '@/facet/header/interface';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect } from '@/utils/g-renders';
-import { IGroup, Point } from '@antv/g-canvas';
-import { get, isEqual } from 'lodash';
 import { AreaRange } from '@/common/interface/scroll';
 import {
   getTextPositionWhenHorizontalScrolling,
   getVerticalPosition,
 } from '@/utils/cell/cell';
-import { HeaderCell } from './header-cell';
 
 export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;
@@ -43,8 +42,8 @@ export class ColCell extends HeaderCell {
     this.drawActionIcons();
     // draw right border
     this.drawRightBorder();
-    // draw hot-spot rect
-    this.drawHotSpot();
+    // draw resize ares
+    this.drawResizeArea();
     this.update();
   }
 
@@ -182,12 +181,12 @@ export class ColCell extends HeaderCell {
     }
   }
 
-  protected getColHotSpotKey() {
+  protected getColResizeAreaKey() {
     return this.meta.key;
   }
 
   // 绘制热区
-  private drawHotSpot() {
+  private drawResizeArea() {
     const { offset, position, viewportWidth } = this.headerConfig;
     const {
       label,
@@ -197,34 +196,39 @@ export class ColCell extends HeaderCell {
       height: cellHeight,
       parent,
     } = this.meta;
+    const resizeStyle = this.getStyle('resizeArea');
     // 热区公用一个group
-    const prevResizer = this.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_COL_RESIZER,
+    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+      KEY_GROUP_COL_RESIZE_AREA,
     );
-    const resizer = (prevResizer ||
+    const resizeArea = (prevResizeArea ||
       this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_COL_RESIZER,
-      })) as IGroup;
-    const prevHorizontalResizer = resizer.find((element) => {
-      return element.attrs.name === `horizontal-resizer-${this.meta.key}`;
+        id: KEY_GROUP_COL_RESIZE_AREA,
+      })) as Group;
+    const prevHorizontalResizeArea = resizeArea.find((element) => {
+      return (
+        element.attrs.name ===
+        `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`
+      );
     });
     // 如果已经绘制当前列高调整热区热区，则不再绘制
-    if (!prevHorizontalResizer) {
+    if (!prevHorizontalResizeArea) {
       // 列高调整热区
-      resizer.addShape('rect', {
+      resizeArea.addShape('rect', {
         attrs: {
-          name: `horizontal-resizer-${this.meta.key}`,
+          name: `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`,
           x: position.x,
-          y: position.y + y + cellHeight - HIT_AREA / 2,
+          y: position.y + y + cellHeight - resizeStyle.size / 2,
           width: viewportWidth,
-          fill: COLOR_DEFAULT_RESIZER,
-          height: HIT_AREA,
+          height: resizeStyle.size,
+          fill: resizeStyle.background,
+          fillOpacity: resizeStyle.backgroundOpacity,
           cursor: 'row-resize',
           appendInfo: {
-            isResizer: true,
+            isResizeArea: true,
             class: 'resize-trigger',
             type: 'row',
-            id: this.getColHotSpotKey(),
+            id: this.getColResizeAreaKey(),
             affect: 'field',
             offsetX: position.x,
             offsetY: position.y + y,
@@ -237,16 +241,17 @@ export class ColCell extends HeaderCell {
     if (this.meta.isLeaf) {
       // 列宽调整热区
       // 基准线是根据container坐标来的，因此把热区画在container
-      resizer.addShape('rect', {
+      resizeArea.addShape('rect', {
         attrs: {
-          x: position.x - offset + x + cellWidth - HIT_AREA / 2,
+          x: position.x - offset + x + cellWidth - resizeStyle.size / 2,
           y: position.y + y,
-          width: HIT_AREA,
-          fill: COLOR_DEFAULT_RESIZER,
+          width: resizeStyle.size,
           height: cellHeight,
+          fill: resizeStyle.background,
+          fillOpacity: resizeStyle.backgroundOpacity,
           cursor: 'col-resize',
           appendInfo: {
-            isResizer: true,
+            isResizeArea: true,
             class: 'resize-trigger',
             type: 'col',
             affect: 'cell',

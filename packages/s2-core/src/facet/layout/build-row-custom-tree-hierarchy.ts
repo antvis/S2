@@ -1,5 +1,5 @@
-import { CustomTreeHeaderParams } from '@/facet/layout/interface';
 import { isEmpty, isUndefined, isBoolean } from 'lodash';
+import { CustomTreeHeaderParams } from '@/facet/layout/interface';
 import { Node } from '@/facet/layout/node';
 import { EXTRA_FIELD } from '@/common/constant';
 import { generateId } from '@/facet/layout/util/generate-id';

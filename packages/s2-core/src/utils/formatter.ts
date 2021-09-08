@@ -1,6 +1,6 @@
-import { PRECISION } from '@/common/constant';
 import { isNaN, toNumber } from 'lodash';
 import { Lang } from '../common/i18n';
+import { PRECISION } from '@/common/constant';
 
 const FORMATTERS = {
   en_US: ['KMBTP'.split(''), [1e3, 1e3, 1e3, 1e3, 1e3]],

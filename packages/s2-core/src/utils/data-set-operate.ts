@@ -1,5 +1,7 @@
-import { filter, isUndefined, keys, get, has, every } from 'lodash';
+import { filter, isUndefined, keys, get, has, reduce, every } from 'lodash';
 import { Data } from '@/common/interface/s2DataConfig';
+import { Fields } from '@/common/interface/index';
+
 /**
  * get intersections between two arrs
  *
@@ -71,7 +73,8 @@ export const sortByItems = (arr1: string[], arr2: string[]) => {
   return arr1?.filter((item) => !arr2?.includes(item))?.concat(arr2);
 };
 
-/**
+
+/*
  * 判断是普通单元格数据还是总计或小计
  * @param ids  
  * @param data 
@@ -80,3 +83,21 @@ export const sortByItems = (arr1: string[], arr2: string[]) => {
 export const isTotalData = (ids: string[], data: Data): boolean => {
   return !every(ids, (id) => data[id]);
 };
+
+/**
+ * split total data from origin list data.
+ */
+export function splitTotal(rawData: Data[], fields: Fields): Data[] {
+  const { rows, columns } = fields;
+
+  return reduce(
+    rawData,
+    (result: Data[], data: Data) => {
+      if (isTotalData([].concat(rows).concat(columns), data)) {
+        result.push(data);
+      }
+      return result;
+    },
+    [],
+  );
+}
