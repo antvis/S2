@@ -18,7 +18,7 @@ describe('Pivot Sort Test', () => {
   });
 
   const getColTest = (msg) => {
-    test(`should get correct col data ${msg || ''} `, () => {
+    test(`should get correct col ${msg || ''}`, () => {
       expect(dataSet?.getDimensionValues('type')).toEqual([
         '家具产品',
         '办公用品',
@@ -35,7 +35,7 @@ describe('Pivot Sort Test', () => {
   };
 
   const getRowTest = (msg) => {
-    test(`should get correct row data ${msg || ''} `, () => {
+    test(`should get correct row ${msg || ''}`, () => {
       expect(dataSet?.getDimensionValues('area')).toEqual(['中南', '东北']);
 
       expect(dataSet?.getDimensionValues('province', { area: '东北' })).toEqual(
@@ -52,7 +52,7 @@ describe('Pivot Sort Test', () => {
   };
 
   const getValueWhenInColTest = (msg) => {
-    test(`should get correct value data ${msg} and value in the col`, () => {
+    test(`should get correct values ${msg} and value in col`, () => {
       expect(
         dataSet?.getDimensionValues('$$extra$$', {
           sub_type: '办公装饰品',
@@ -63,7 +63,7 @@ describe('Pivot Sort Test', () => {
   };
 
   const getValueWhenInRowTest = (msg) => {
-    test(`should get correct value data ${msg} and value in the row`, () => {
+    test(`should get correct values ${msg} and value in row`, () => {
       expect(
         dataSet?.getDimensionValues('$$extra$$', {
           area: '中南',
@@ -87,7 +87,7 @@ describe('Pivot Sort Test', () => {
   };
 
   const getTestListWhenInColByMeasure = (msg) => {
-    test(`should get correct dimension values ${msg} and value in the col`, () => {
+    test(`should get correct col data ${msg} and value in col`, () => {
       expect(dataSet?.getDimensionValues('type')).toEqual([
         '办公用品',
         '家具产品',
@@ -106,7 +106,7 @@ describe('Pivot Sort Test', () => {
   };
 
   const getTestListWhenInRowByMeasure = (msg) => {
-    test(`should get correct dimension values ${msg} and value in the row`, () => {
+    test(`should get correct row data ${msg} and value in row`, () => {
       expect(dataSet?.getDimensionValues('type')).toEqual([
         '办公用品',
         '家具产品',
@@ -140,31 +140,7 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
-      const msg = 'when dimension sort by method';
-      if (valueInCols) {
-        getTestListWhenInCol(msg);
-      } else {
-        getTestListWhenInRow(msg);
-      }
-    });
-
-    describe('Test For Dimension Sort By Method', () => {
-      beforeEach(() => {
-        dataCfg = {
-          ...dataCfg,
-          sortParams: [
-            { sortFieldId: 'type', sortMethod: 'DESC' },
-            { sortFieldId: 'sub_type', sortMethod: 'ASC' },
-            { sortFieldId: 'area', sortMethod: 'DESC' },
-            { sortFieldId: 'province', sortMethod: 'DESC' },
-            { sortFieldId: 'city', sortMethod: 'ASC' },
-            { sortFieldId: '$$extra$$', sortMethod: 'ASC' },
-          ],
-        };
-        dataSet.setDataCfg(dataCfg);
-      });
-
-      const msg = 'when dimension sort by method';
+      const msg = 'when sort by method';
       if (valueInCols) {
         getTestListWhenInCol(msg);
       } else {
@@ -192,7 +168,7 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
-      const msg = 'when dimension sort by list';
+      const msg = 'when sort by list';
       if (valueInCols) {
         getTestListWhenInCol(msg);
       } else {
@@ -235,7 +211,7 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
-      const msg = 'when dimension sort by list and have query';
+      const msg = 'when sort by list and have query';
       if (valueInCols) {
         getTestListWhenInCol(msg);
       } else {
@@ -300,7 +276,7 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
-      const msg = 'when dimension sort by measure';
+      const msg = 'when sort by measure';
       if (valueInCols) {
         getTestListWhenInColByMeasure(msg);
       } else {
@@ -329,7 +305,7 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
-      test('should get correct row city data when dimension sort by measure if lack data', () => {
+      test('should get correct row city when sort by measure if lack data', () => {
         expect(
           dataSet?.getDimensionValues('city', {
             area: '中南',
@@ -400,7 +376,7 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
-      const msg = 'when dimension sort by measure which is TOTAL_VALUE';
+      const msg = 'when sort by measure which is $$total$$';
       if (valueInCols) {
         getColTest(msg);
         getRowTest(msg);
@@ -446,7 +422,7 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
-      const msg = 'when dimension sort by sortFunc';
+      const msg = 'when sort by sortFunc';
       if (valueInCols) {
         getTestListWhenInColByMeasure(msg);
       } else {
@@ -485,7 +461,7 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
-      const msg = 'when dimension sort by measure and sortFunc';
+      const msg = 'when sort by measure and sortFunc';
       if (valueInCols) {
         getTestListWhenInColByMeasure(msg);
       } else {
@@ -543,7 +519,7 @@ describe('Pivot Sort Test', () => {
       dataSet.setDataCfg(dataCfg);
     });
 
-    test('should get correct row data when row is tree hierarchy', () => {
+    test('should get correct row when row is tree hierarchy', () => {
       const data1 = filterUndefined(
         getIntersections(
           [...(dataSet as PivotDataSet)?.sortedDimensionValues?.get('area')],
