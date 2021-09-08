@@ -70,12 +70,12 @@ const s2DataConfig = {
       name: '城市',
     },
     {
-      field: '商品类型',
-      name: '价格',
+      field: 'type',
+      name: '商品类型',
     },
     {
-      field: 'cost',
-      name: '成本',
+      field: 'price',
+      name: '价格',
     },
   ],
   data: [
@@ -159,10 +159,14 @@ const s2 = new SpreadSheet(container, s2DataCfg, s2options)
 s2.render()
 ```
 
+### 4. 结果
+
+![result](https://gw.alipayobjects.com/zos/antfincdn/rPTyWU7Ibr/4c7260b6-dd7b-43e7-bbdd-f27f33ed0faa.png)
+
 
 ## Author
 
-👤 [**@AntV**](https://github.com/antvis)
+👤 [**@AntV**](https://github.com/orgs/antvis/people)
 
 
 ## 🤝 参与贡献
