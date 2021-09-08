@@ -1,4 +1,5 @@
-import { filter, isUndefined, keys, get, has } from 'lodash';
+import { filter, isUndefined, keys, get, has, every } from 'lodash';
+import { Data } from '@/common/interface/s2DataConfig';
 /**
  * get intersections between two arrs
  *
@@ -25,7 +26,7 @@ export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
 
 export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
   let result = [];
-  if (Array.isArray(data) || data?.includes('undefined')) {
+  if (Array.isArray(data)) {
     keys(data)?.forEach((item) => {
       const current = get(data, item);
       if (keys(current)?.includes('undefined')) {
@@ -68,4 +69,14 @@ export const getFieldKeysByDimensionValues = (
  */
 export const sortByItems = (arr1: string[], arr2: string[]) => {
   return arr1?.filter((item) => !arr2?.includes(item))?.concat(arr2);
+};
+
+/**
+ * 判断是普通单元格数据还是总计或小计
+ * @param ids  
+ * @param data 
+ * @returns 
+ */
+export const isTotalData = (ids: string[], data: Data): boolean => {
+  return !every(ids, (id) => data[id]);
 };

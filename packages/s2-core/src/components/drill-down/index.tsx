@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
+import { i18n } from '@/common/i18n';
 import cx from 'classnames';
 import zhCN from 'antd/lib/locale/zh_CN';
 import {
@@ -34,9 +35,9 @@ export interface DrillDownProps {
 
 export const DrillDown: React.FC<DrillDownProps> = ({
   className,
-  titleText = '选择下钻维度',
-  clearButtonText = '恢复默认',
-  searchText = '搜索字段',
+  titleText = i18n('选择下钻维度'),
+  clearButtonText = i18n('恢复默认'),
+  searchText = i18n('搜索字段'),
   drillFields,
   dataSet,
   disabledFields,

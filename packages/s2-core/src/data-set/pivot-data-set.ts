@@ -37,6 +37,7 @@ import {
   flatten as customFlatten,
   isEveryUndefined,
   getFieldKeysByDimensionValues,
+  isTotalData,
 } from '@/utils/data-set-operate';
 
 export class PivotDataSet extends BaseDataSet {
@@ -386,12 +387,12 @@ export class PivotDataSet extends BaseDataSet {
 
   public getDimensionValues(field: string, query?: DataType): string[] {
     const { rows, columns } = this.fields;
-    let meta: PivotMeta;
+    let meta: PivotMeta = new Map();
     let dimensions: string[];
     if (includes(rows, field)) {
       meta = this.rowPivotMeta;
       dimensions = rows;
-    } else {
+    } else if (includes(columns, field)) {
       meta = this.colPivotMeta;
       dimensions = columns;
     }
@@ -408,11 +409,7 @@ export class PivotDataSet extends BaseDataSet {
           }
         }
       }
-      if (sortedMeta?.length > 0) {
-        return filterUndefined(getIntersections(sortedMeta, [...meta.keys()]));
-      }
-
-      return filterUndefined([...meta.keys()]);
+      return filterUndefined(getIntersections(sortedMeta, [...meta.keys()]));
     }
 
     if (this.sortedDimensionValues.has(field)) {
@@ -435,7 +432,6 @@ export class PivotDataSet extends BaseDataSet {
 
   public getCellData(params: CellDataParams): DataType {
     const { query, rowNode, isTotals = false } = params || {};
-
     const { columns, rows: originRows } = this.fields;
     let rows = originRows;
     if (!isTotals) {
@@ -446,7 +442,7 @@ export class PivotDataSet extends BaseDataSet {
     const path = this.getDataPath({
       rowDimensionValues,
       colDimensionValues,
-      careUndefined: isTotals,
+      careUndefined: isTotals || isTotalData([].concat(originRows).concat(columns), query),
     });
     const data = get(this.indexesData, path);
 

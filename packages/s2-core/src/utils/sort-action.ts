@@ -74,7 +74,7 @@ export const sortByMethod = (params: SortActionParams): string[] => {
     measureValues,
     sortMethod,
     sortByMeasure === TOTAL_VALUE ? query[EXTRA_FIELD] : sortByMeasure,
-  )?.map((item) => item[sortFieldId]);
+  )?.map((item) => item[sortFieldId] || item);
   return mergeDataWhenASC(result, originValues, sortMethod === 'ASC');
 };
 
