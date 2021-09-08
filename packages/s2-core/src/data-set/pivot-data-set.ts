@@ -344,6 +344,8 @@ export class PivotDataSet extends BaseDataSet {
       const isValuesEmpty = isEmpty(values);
       originData.forEach((datum) => {
         if (isValuesEmpty) {
+          transformedData.push(datum);
+        } else {
           values.forEach((vi) => {
             transformedData.push({
               ...datum,
@@ -351,8 +353,6 @@ export class PivotDataSet extends BaseDataSet {
               [VALUE_FIELD]: datum[vi],
             });
           });
-        } else {
-          transformedData.push(datum);
         }
       });
       return transformedData;
