@@ -148,7 +148,7 @@ export class RootInteraction {
     const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
     let currentNode = rowHeader?.cfg?.children;
 
-    while (!currentNode[0]?.cellType) {
+    while (!currentNode?.[0]?.cellType) {
       currentNode = currentNode[0]?.cfg?.children;
     }
 
@@ -163,7 +163,7 @@ export class RootInteraction {
     const colHeader = children.filter((group) => group instanceof ColHeader)[0];
     let currentNode = colHeader?.cfg?.children;
 
-    while (!currentNode[0]?.cellType) {
+    while (!currentNode?.[0]?.cellType) {
       currentNode = currentNode[0]?.cfg?.children;
     }
 
