@@ -1,7 +1,7 @@
 import { S2DataConfig } from 'src/common/interface';
 import { SpreadSheet } from 'src/sheet-type';
 import { PivotDataSet } from 'src/data-set/pivot-data-set';
-import { dataCfg as mockDataCfg, totalData } from '../../data/data-sort';
+import SORT_DATA from '../../data/data-sort.json';
 import { getIntersections, filterUndefined } from '@/utils/data-set-operate';
 
 jest.mock('src/sheet-type');
@@ -17,8 +17,8 @@ describe('Pivot Sort Test', () => {
     dataSet = new PivotDataSet(new MockSpreadSheet());
   });
 
-  const getColTest = () => {
-    test('returns the correct col data', () => {
+  const getColTest = (msg) => {
+    test(`should get correct col data ${msg || ''} `, () => {
       expect(dataSet?.getDimensionValues('type')).toEqual([
         '家具产品',
         '办公用品',
@@ -34,8 +34,8 @@ describe('Pivot Sort Test', () => {
     });
   };
 
-  const getRowTest = () => {
-    test('returns the correct row data', () => {
+  const getRowTest = (msg) => {
+    test(`should get correct row data ${msg || ''} `, () => {
       expect(dataSet?.getDimensionValues('area')).toEqual(['中南', '东北']);
 
       expect(dataSet?.getDimensionValues('province', { area: '东北' })).toEqual(
@@ -51,8 +51,8 @@ describe('Pivot Sort Test', () => {
     });
   };
 
-  const getValueWhenInColTest = () => {
-    test('returns the correct value data when value in the colum', () => {
+  const getValueWhenInColTest = (msg) => {
+    test(`should get correct value data ${msg} and value in the col`, () => {
       expect(
         dataSet?.getDimensionValues('$$extra$$', {
           sub_type: '办公装饰品',
@@ -62,8 +62,8 @@ describe('Pivot Sort Test', () => {
     });
   };
 
-  const getValueWhenInRowTest = () => {
-    test('returns the correct value data when value in the row', () => {
+  const getValueWhenInRowTest = (msg) => {
+    test(`should get correct value data ${msg} and value in the row`, () => {
       expect(
         dataSet?.getDimensionValues('$$extra$$', {
           area: '中南',
@@ -74,25 +74,24 @@ describe('Pivot Sort Test', () => {
     });
   };
 
-  const getTestListWhenInCol = () => {
-    getColTest();
-    getRowTest();
-    getValueWhenInColTest();
+  const getTestListWhenInCol = (msg) => {
+    getColTest(msg);
+    getRowTest(msg);
+    getValueWhenInColTest(msg);
   };
 
-  const getTestListWhenInRow = () => {
-    getColTest();
-    getRowTest();
-    getValueWhenInRowTest();
+  const getTestListWhenInRow = (msg) => {
+    getColTest(msg);
+    getRowTest(msg);
+    getValueWhenInRowTest(msg);
   };
 
-  const getTestListWhenInColByMeasure = () => {
-    test('returns the dimension values  when measure in the column', () => {
-      // TODO 检查排序
-      // expect(dataSet?.getDimensionValues('type')).toEqual([
-      //   '办公用品',
-      //   '家具产品',
-      // ]);
+  const getTestListWhenInColByMeasure = (msg) => {
+    test(`should get correct dimension values ${msg} and value in the col`, () => {
+      expect(dataSet?.getDimensionValues('type')).toEqual([
+        '办公用品',
+        '家具产品',
+      ]);
 
       expect(
         dataSet?.getDimensionValues('sub_type', { type: '家具产品' }),
@@ -103,15 +102,15 @@ describe('Pivot Sort Test', () => {
       ).toEqual(['笔', '纸张']);
     });
 
-    getValueWhenInColTest();
+    getValueWhenInColTest(msg);
   };
 
-  const getTestListWhenInRowByMeasure = () => {
-    test('returns the correct dimension values when measure in the row', () => {
-      // expect(dataSet?.getDimensionValues('type')).toEqual([
-      //   '办公用品',
-      //   '家具产品',
-      // ]);
+  const getTestListWhenInRowByMeasure = (msg) => {
+    test(`should get correct dimension values ${msg} and value in the row`, () => {
+      expect(dataSet?.getDimensionValues('type')).toEqual([
+        '办公用品',
+        '家具产品',
+      ]);
 
       expect(
         dataSet?.getDimensionValues('sub_type', { type: '家具产品' }),
@@ -122,7 +121,7 @@ describe('Pivot Sort Test', () => {
       ).toEqual(['笔', '纸张']);
     });
 
-    getValueWhenInRowTest();
+    getValueWhenInRowTest(msg);
   };
 
   const getDimensionSortTest = (valueInCols: boolean) => {
@@ -141,10 +140,35 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
+      const msg = 'when dimension sort by method';
       if (valueInCols) {
-        getTestListWhenInCol();
+        getTestListWhenInCol(msg);
       } else {
-        getTestListWhenInRow();
+        getTestListWhenInRow(msg);
+      }
+    });
+
+    describe('Test For Dimension Sort By Method', () => {
+      beforeEach(() => {
+        dataCfg = {
+          ...dataCfg,
+          sortParams: [
+            { sortFieldId: 'type', sortMethod: 'DESC' },
+            { sortFieldId: 'sub_type', sortMethod: 'ASC' },
+            { sortFieldId: 'area', sortMethod: 'DESC' },
+            { sortFieldId: 'province', sortMethod: 'DESC' },
+            { sortFieldId: 'city', sortMethod: 'ASC' },
+            { sortFieldId: '$$extra$$', sortMethod: 'ASC' },
+          ],
+        };
+        dataSet.setDataCfg(dataCfg);
+      });
+
+      const msg = 'when dimension sort by method';
+      if (valueInCols) {
+        getTestListWhenInCol(msg);
+      } else {
+        getTestListWhenInRow(msg);
       }
     });
 
@@ -168,10 +192,11 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
+      const msg = 'when dimension sort by list';
       if (valueInCols) {
-        getTestListWhenInCol();
+        getTestListWhenInCol(msg);
       } else {
-        getTestListWhenInRow();
+        getTestListWhenInRow(msg);
       }
     });
 
@@ -210,11 +235,11 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
-
+      const msg = 'when dimension sort by list and have query';
       if (valueInCols) {
-        getTestListWhenInCol();
+        getTestListWhenInCol(msg);
       } else {
-        getTestListWhenInRow();
+        getTestListWhenInRow(msg);
       }
     });
 
@@ -275,10 +300,11 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
+      const msg = 'when dimension sort by measure';
       if (valueInCols) {
-        getTestListWhenInColByMeasure();
+        getTestListWhenInColByMeasure(msg);
       } else {
-        getTestListWhenInRowByMeasure();
+        getTestListWhenInRowByMeasure(msg);
       }
     });
 
@@ -303,7 +329,7 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
-      test('should get correct row city data', () => {
+      test('should get correct row city data when dimension sort by measure if lack data', () => {
         expect(
           dataSet?.getDimensionValues('city', {
             area: '中南',
@@ -370,13 +396,15 @@ describe('Pivot Sort Test', () => {
               },
             },
           ],
-          totalData,
+          totalData: SORT_DATA.totalData,
         };
         dataSet.setDataCfg(dataCfg);
       });
-
-      getColTest();
-      getRowTest();
+      const msg = 'when dimension sort by measure which is TOTAL_VALUE';
+      if (valueInCols) {
+        getColTest(msg);
+        getRowTest(msg);
+      }
     });
 
     describe('Test For Dimension Sort By SortFunc', () => {
@@ -392,7 +420,7 @@ describe('Pivot Sort Test', () => {
           sortParams: [
             {
               sortFieldId: 'type',
-              sortFunc: (params) => sortFunc(params, false),
+              sortFunc: (params) => sortFunc(params),
             },
             {
               sortFieldId: 'sub_type',
@@ -418,10 +446,11 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
+      const msg = 'when dimension sort by sortFunc';
       if (valueInCols) {
-        getTestListWhenInColByMeasure();
+        getTestListWhenInColByMeasure(msg);
       } else {
-        getTestListWhenInRowByMeasure();
+        getTestListWhenInRowByMeasure(msg);
       }
     });
 
@@ -456,11 +485,11 @@ describe('Pivot Sort Test', () => {
         };
         dataSet.setDataCfg(dataCfg);
       });
-
+      const msg = 'when dimension sort by measure and sortFunc';
       if (valueInCols) {
-        getTestListWhenInColByMeasure();
+        getTestListWhenInColByMeasure(msg);
       } else {
-        getTestListWhenInRowByMeasure();
+        getTestListWhenInRowByMeasure(msg);
       }
     });
   };
@@ -468,9 +497,11 @@ describe('Pivot Sort Test', () => {
   describe('Test For Value In Cols And Row Gird Hierarchy', () => {
     beforeEach(() => {
       dataCfg = {
-        ...mockDataCfg,
+        data: SORT_DATA.originData,
+        meta: SORT_DATA.meta,
+        totalData: SORT_DATA.totalData,
         fields: {
-          ...mockDataCfg?.fields,
+          ...SORT_DATA.fields,
           valueInCols: true,
         },
       };
@@ -483,9 +514,11 @@ describe('Pivot Sort Test', () => {
   describe('Test For Value In Rows And Row Gird Hierarchy', () => {
     beforeEach(() => {
       dataCfg = {
-        ...mockDataCfg,
+        data: SORT_DATA.originData,
+        meta: SORT_DATA.meta,
+        totalData: SORT_DATA.totalData,
         fields: {
-          ...mockDataCfg?.fields,
+          ...SORT_DATA.fields,
           valueInCols: false,
         },
       };
@@ -510,7 +543,7 @@ describe('Pivot Sort Test', () => {
       dataSet.setDataCfg(dataCfg);
     });
 
-    test('returns the correct row data', () => {
+    test('should get correct row data when row is tree hierarchy', () => {
       const data1 = filterUndefined(
         getIntersections(
           [...(dataSet as PivotDataSet)?.sortedDimensionValues?.get('area')],

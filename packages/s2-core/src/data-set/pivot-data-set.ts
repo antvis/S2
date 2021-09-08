@@ -225,7 +225,7 @@ export class PivotDataSet extends BaseDataSet {
       });
       this.sortedDimensionValues.set(
         sortFieldId,
-        new Set([...result, ...originValues]),
+        new Set([...result, ...originValues]), // 控制顺序的，所以result在前
       );
     });
   };
