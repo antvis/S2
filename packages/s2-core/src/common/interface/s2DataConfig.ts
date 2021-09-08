@@ -1,5 +1,5 @@
-import { isEmpty, merge } from 'lodash';
 import { Fields, Meta, SortParams } from '@/common/interface/index';
+import { isEmpty, merge } from 'lodash';
 
 /** use for tabularSheet
  *  eg. { label: '余额女',
@@ -62,7 +62,7 @@ export const defaultDataConfig = {
   },
   meta: [],
   sortParams: [],
-  standardData: true,
+  standardData: false,
 } as S2DataConfig;
 
 export const safetyDataConfig = (dataConfig: S2DataConfig) => {
