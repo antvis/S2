@@ -5,32 +5,21 @@ import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import { S2DataConfig } from 'src/common/interface';
 import { SpreadSheet } from 'src/sheet-type';
 import { PivotDataSet } from 'src/data-set/pivot-data-set';
-import STANDARD_SPREADSHEET_DATA from '../../data/standard-spreadsheet-data.json';
 import { get } from 'lodash';
+import { DATA_CFG } from '../../data/standard-config';
 
 jest.mock('src/sheet-type');
 jest.mock('src/facet/layout/node');
 const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
 
-const FIELDS = {
-  rows: ['province', 'city'],
-  columns: ['category', 'subCategory'],
-  values: ['price'],
-  valueInCols: true,
-};
-
 describe('Pivot Dataset Test', () => {
   let dataSet: PivotDataSet;
-  let dataCfg: S2DataConfig;
+  let dataCfg: S2DataConfig = DATA_CFG;
 
   beforeEach(() => {
     MockSpreadSheet.mockClear();
     dataSet = new PivotDataSet(new MockSpreadSheet());
 
-    dataCfg = {
-      fields: FIELDS,
-      data: STANDARD_SPREADSHEET_DATA.data,
-    };
     dataSet.setDataCfg(dataCfg);
   });
 

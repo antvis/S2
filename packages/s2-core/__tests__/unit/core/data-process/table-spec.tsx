@@ -6,17 +6,20 @@
  */
 import { get } from 'lodash';
 import { SpreadSheet } from 'src/sheet-type';
-import STANDARD_SPREADSHEET_DATA from '../../../data/standard-spreadsheet-data.json';
+import { DATA_CFG, OPTION } from '../../../data/standard-config';
 import { getContainer } from '../../../util/helpers';
 import { S2Options } from '@/index';
 
 describe('List Table Core Data Process', () => {
-  const options: S2Options = { width: 600, height: 400, mode: 'table' };
+  const options: S2Options = {
+    ...OPTION,
+    mode: 'table'
+  }
   const dataCfg = {
+    ...DATA_CFG,
     fields: {
       columns: ['province', 'city', 'category', 'subCategory', 'price'],
     },
-    data: STANDARD_SPREADSHEET_DATA.data,
   };
   const ss = new SpreadSheet(getContainer(), dataCfg, options);
   ss.render();
