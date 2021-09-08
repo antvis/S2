@@ -141,6 +141,7 @@ const s2options = {
   height: 600,
   hierarchyType: 'grid',
   mode: 'pivot',
+  valueInCols: true,
 }
 ```
 
