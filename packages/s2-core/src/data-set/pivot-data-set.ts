@@ -6,7 +6,8 @@ import {
   getFieldKeysByDimensionValues,
   getIntersections,
   isEveryUndefined,
-  splitTotal
+  splitTotal,
+  isTotalData
 } from '@/utils/data-set-operate';
 import {
   compact,
