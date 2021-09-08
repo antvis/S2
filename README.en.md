@@ -161,7 +161,7 @@ const s2 = new SpreadSheet(container, s2DataCfg, s2options)
 s2.render()
 ```
 
-### 4. 结果
+### 4. Result
 
 ![result](https://gw.alipayobjects.com/zos/antfincdn/rPTyWU7Ibr/4c7260b6-dd7b-43e7-bbdd-f27f33ed0faa.png)
 
