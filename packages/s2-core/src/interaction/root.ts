@@ -147,7 +147,9 @@ export class RootInteraction {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
     let currentNode = rowHeader?.cfg?.children;
-
+    if (isEmpty(currentNode)) {
+      return [];
+    }
     while (!currentNode[0]?.cellType) {
       currentNode = currentNode[0]?.cfg?.children;
     }
@@ -162,12 +164,14 @@ export class RootInteraction {
     const children = this.spreadsheet.foregroundGroup.getChildren();
     const colHeader = children.filter((group) => group instanceof ColHeader)[0];
     let currentNode = colHeader?.cfg?.children;
-
+    if (isEmpty(currentNode)) {
+      return [];
+    }
     while (!currentNode[0]?.cellType) {
       currentNode = currentNode[0]?.cfg?.children;
     }
 
-    const colCells = currentNode || [];
+    const colCells = currentNode;
     return colCells.filter(
       (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
     ) as ColCell[];
