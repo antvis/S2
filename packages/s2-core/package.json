@@ -33,7 +33,7 @@
   ],
   "scripts": {
     "clean": "rimraf lib esm dist",
-    "build": "run-s clean lib bundlesize",
+    "build": "run-s clean lib",
     "lib": "run-p rollup:*",
     "rollup:es": "FORMAT=es rollup -c rollup.config.js",
     "rollup:cjs": "FORMAT=cjs rollup -c rollup.config.js",

@@ -11,8 +11,20 @@ Data-driven multi-dimensional analysis table.
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg">
   </a>
-  <a href="#" target="_blank">
+  <a href="https://codecov.io/gh/@antv/s2" target="_blank">
+    <img src="https://codecov.io/gh/@antv/s2/branch/master/graph/badge.svg" />
+  </a>
+  <a href="https://david-dm.org/@antv/s2" target="_blank">
+    <img src="https://david-dm.org/@antv/s2/status.svg"/>
+  </a>
+  <a href="#" target="_blank" target="_blank">
+    <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square"/>
+  </a>
+  <a href="#" target="_blank" target="_blank">
     <img alt="License: MIT@AntV" src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" />
+  </a>
+  <a href="https://github.com/antvis/S2/actions" target="_blank">
+    <img src="https://github.com/antvis/S2/workflows/CI/badge.svg" />
   </a>
 </p>
 
@@ -139,14 +151,13 @@ const s2options = {
 ```
 
 ```ts
-import { SheetComponent } from '@antv/s2';
+import { SpreadSheet } from '@antv/s2';
 
 const container = document.getElementById('container');
 
-ReactDOM.render(
-  <SheetComponent dataCfg={s2DataConfig} options={s2options}/>,
-  container,
-);
+const s2 = new SpreadSheet(container, s2DataCfg, s2options)
+
+s2.render()
 ```
 
 
