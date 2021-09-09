@@ -138,7 +138,7 @@ import { SpreadSheet } from '@antv/s2';
 
 const container = document.getElementById('container');
 
-const s2 = new SpreadSheet(container, s2DataCfg, s2options)
+const s2 = new SpreadSheet(container, s2DataConfig, s2options)
 
 s2.render()
 ```
