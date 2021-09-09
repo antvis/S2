@@ -69,7 +69,6 @@ const getDataCfg = (): S2DataConfig => {
       },
     ],
     data: multipleDataWithNormal,
-    standardData: false,
     sortParams: [
       // { sortFieldId: 'price', sortMethod: 'DESC' }
     ],
