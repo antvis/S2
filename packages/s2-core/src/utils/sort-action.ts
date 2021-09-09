@@ -1,6 +1,6 @@
 import { SortMethod } from 'src/common/interface';
 import { DataType, SortActionParams } from 'src/data-set/interface';
-import { keys, has, uniq } from 'lodash';
+import { keys, has, uniq, isPlainObject } from 'lodash';
 import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
 import { sortByItems } from '@/utils/data-set-operate';
 
@@ -74,7 +74,7 @@ export const sortByMethod = (params: SortActionParams): string[] => {
     measureValues,
     sortMethod,
     sortByMeasure === TOTAL_VALUE ? query[EXTRA_FIELD] : sortByMeasure,
-  )?.map((item) => typeof item === 'object' ? item?.[sortFieldId] : item);
+  )?.map((item) => isPlainObject(item) ? item?.[sortFieldId] : item);
 
   return mergeDataWhenASC(result, originValues, sortMethod === 'ASC');
 };
