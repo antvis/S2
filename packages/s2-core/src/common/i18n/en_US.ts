@@ -19,7 +19,10 @@ export const EN_US = {
   趋势: 'Trend',
   '已选 {} 项': 'selected {} item',
   所选项: 'selected items',
-  组内升序: 'Group ASc',
+  组内升序: 'Group ASC',
   组内降序: 'Group DESC',
   不排序: 'No order',
+  选择下钻维度: 'Select drill down dimension',
+  恢复默认: 'Restore default',
+  搜索字段: 'Search field'
 };
