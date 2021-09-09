@@ -4,7 +4,6 @@
 
 import {
   assign,
-  compact,
   concat,
   filter,
   find,
@@ -21,6 +20,7 @@ import {
   uniq,
   noop,
   mapKeys,
+  every,
 } from 'lodash';
 import {
   LayoutResult,
@@ -51,6 +51,10 @@ import {
   VALUE_FIELD,
 } from '@/common/constant';
 
+const isNotNumber = (v) => {
+  return Number.isNaN(Number(v));
+};
+
 /**
  * calculate sum value
  */
@@ -60,7 +64,7 @@ export const getDataSumByField = (
 ): number => {
   return sumBy(data, (datum) => {
     const v = get(datum, field, 0);
-    return Number.isNaN(Number(v)) ? 0 : Number.parseFloat(v);
+    return isNotNumber(v) ? 0 : Number.parseFloat(v);
   });
 };
 
@@ -111,6 +115,10 @@ export const getOptions = (options?: TooltipOptions) => {
     enterable: true,
     ...options,
   } as TooltipOptions;
+};
+
+export const getMergedQuery = (meta) => {
+  return { ...meta?.colQuery, ...meta?.rowQuery };
 };
 
 export const shouldIgnore = (
@@ -266,7 +274,7 @@ export const getDetailList = (
       valItem.push(getListItem(spreadsheet, activeData, field));
     }
 
-    return compact(valItem);
+    return valItem;
   }
 };
 
@@ -335,16 +343,17 @@ export const getSelectedCellsData = (
       spreadsheet,
       layoutResult,
     );
-    return compact(
-      map(selectedCellIndexes, ([i, j]) => {
-        const viewMeta = layoutResult.getCellMeta(i, j);
-        return viewMeta?.data;
-      }),
-    );
+    return map(selectedCellIndexes, ([i, j]) => {
+      const viewMeta = layoutResult.getCellMeta(i, j);
+      return viewMeta?.data || getMergedQuery(viewMeta);
+    });
   }
   // 其他（刷选，data cell多选）
   const cells = spreadsheet.interaction.getActiveCells();
-  return compact(map(cells, (cell) => cell.getMeta()?.data));
+  return map(
+    cells,
+    (cell) => cell.getMeta()?.data || getMergedQuery(cell.getMeta()),
+  );
 };
 
 export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
@@ -370,10 +379,14 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     if (getShowValue) {
       value = getShowValue(selected, VALUE_FIELD);
     }
-    const dataSum = getDataSumByField(selected, VALUE_FIELD);
-    value = parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems
-    if (currentFormatter) {
-      value = currentFormatter(dataSum);
+    if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) { // 如果选中的单元格都无数据，则显示"-"
+      value = '-';
+    } else {
+      const dataSum = getDataSumByField(selected, VALUE_FIELD);
+      value = parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems
+      if (currentFormatter) {
+        value = currentFormatter(dataSum);
+      }
     }
     summaries.push({
       selectedData: selected as unknown,
@@ -447,7 +460,7 @@ export const getActiveCellsTooltipData = (
   spreadsheet.interaction.getActiveCells().forEach((cell) => {
     const valueInCols = spreadsheet.options.valueInCols;
     const meta = cell.getMeta();
-    const query = get(meta, valueInCols ? 'colQuery' : 'rowQuery');
+    const query = getMergedQuery(meta);
     if (isEmpty(meta) || isEmpty(query)) {
       return;
     }

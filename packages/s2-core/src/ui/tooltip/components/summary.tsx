@@ -1,17 +1,18 @@
 import React from 'react';
+import { size } from 'lodash';
 import { TooltipSummaryOptions } from '@/common/interface';
 import { i18n } from '@/common/i18n';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
 interface SummaryProps {
   summaries: TooltipSummaryOptions[];
-  count: number;
 }
 
 const Summary: React.FC<SummaryProps> = React.memo((props) => {
-  const { summaries = [], count = 0 } = props;
+  const { summaries = [] } = props;
 
   const renderSelected = () => {
+    const count = summaries?.reduce((pre, next) => pre + size(next?.selectedData), 0);
     return (
       <div className={`${TOOLTIP_PREFIX_CLS}-summary-item`}>
         <span className={`${TOOLTIP_PREFIX_CLS}-bold`}>
