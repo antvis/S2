@@ -314,7 +314,6 @@ export class PivotDataSet extends BaseDataSet {
       fields,
       sortParams = [],
       totalData,
-      standardData,
     } = dataCfg;
     const { columns, rows, values, valueInCols } = fields;
 
@@ -336,28 +335,6 @@ export class PivotDataSet extends BaseDataSet {
       } as Meta,
     ];
 
-    // 目前源数据的是按照之前数据的现状（一条数据不是代表一个格子），处理的模板
-    // 按values平铺展开data, 添加extraKey，冗余数据的量随着values增加而
-    // 增加，而且双层循环的效率也随着而降低效率
-    const multiValueTransform = (originData: Data[] = []) => {
-      const transformedData = [];
-      const isValuesEmpty = isEmpty(values);
-      originData.forEach((datum) => {
-        if (isValuesEmpty) {
-          transformedData.push(datum);
-        } else {
-          values.forEach((vi) => {
-            transformedData.push({
-              ...datum,
-              [EXTRA_FIELD]: vi,
-              [VALUE_FIELD]: datum[vi],
-            });
-          });
-        }
-      });
-      return transformedData;
-    };
-
     // 标准的数据中，一条数据代表一个格子；不存在一条数据中多个value的情况
     const standardTransform = (originData: Data[]) => {
       return originData.map((datum) => {
@@ -370,9 +347,8 @@ export class PivotDataSet extends BaseDataSet {
       });
     };
 
-    const transformer = standardData ? standardTransform : multiValueTransform;
-    const newData = transformer(data);
-    const newTotalData = transformer(totalData);
+    const newData = standardTransform(data);
+    const newTotalData = standardTransform(totalData);
 
     // 返回新的结构
     return {
