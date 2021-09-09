@@ -44,6 +44,7 @@
     "test:live": "node ./scripts/test-live",
     "test": "jest",
     "test:coverage": "npm run test -- --coverage",
+    "ci:coverage": "npm run test:coverage && codecov",
     "start": "webpack --config webpack-dev.config.js --mode development --progress",
     "tsc": "tsc --noEmit",
     "bundlesize": "bundlesize"
@@ -74,6 +75,7 @@
     "@types/react-dom": "17.0.9",
     "@zerollup/ts-transform-paths": "^1.7.18",
     "bundlesize": "^0.18.1",
+    "codecov": "^3.8.3",
     "cpx": "^1.5.0",
     "css-loader": "^5.2.6",
     "d3-dsv": "^1.1.1",

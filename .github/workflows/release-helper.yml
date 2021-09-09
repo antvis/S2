@@ -1,0 +1,20 @@
+name: 🔔 Release Helper
+
+on:
+  create
+
+jobs:
+  release-helper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: make release
+        if: github.event.ref_type == 'tag'
+        uses: actions-cool/release-helper@v1.5.0
+        with:
+          triger: 'tag'
+          changelogs: 'CHANGELOG.md'
+          branch: 'master'
+          dingding-token: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          dingding-msg: 'CHANGELOG.md'
+          prettier: true
+          prerelease-filter: '-, a, b, A, B'

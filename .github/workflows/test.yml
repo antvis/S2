@@ -1,4 +1,4 @@
-name: Test
+name: 🔧 Test
 
 on: [push]
 
@@ -36,3 +36,6 @@ jobs:
 
       - name: Test
         run: npm run core:test
+
+      - name: Test coverage
+        run: npm run core-test:ci

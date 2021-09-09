@@ -1,4 +1,4 @@
-name: PR Auto Set Label
+name: 👨‍💻👩‍💻 PR Auto Assign Reviewer
 
 on:
   pull_request:
