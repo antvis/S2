@@ -1,10 +1,10 @@
 import typescript from 'rollup-plugin-typescript2';
-import less from 'rollup-plugin-less';
+import postcss from 'rollup-plugin-postcss';
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
-import ttypescript from 'ttypescript';
 import alias from '@rollup/plugin-alias';
+import ttypescript from 'ttypescript';
 
 const format = process.env.FORMAT;
 
@@ -36,21 +36,24 @@ const plugins = [
     outDir: outDir,
     abortOnError: true,
     tsconfig: 'tsconfig.json',
+    tsconfigOverride: {
+      exclude: ['__tests__'],
+    },
     typescript: ttypescript,
   }),
-  less({
-    output: outDir + '/s2.css',
+  postcss({
+    minimize: true,
+    use: {
+      sass: null,
+      stylus: null,
+      less: { javascriptEnabled: true },
+    },
+    extract: true,
+    output: outDir + '/s2.min.css',
   }),
 ];
 
-const external = [
-  'moment',
-  'react',
-  'react-dom',
-  'antd/lib/locale/zh_CN',
-  '@ant-design/icons',
-  'antd',
-];
+const external = ['moment', 'react', 'react-dom', '@ant-design/icons', 'antd'];
 
 if (format === 'umd') {
   output.file = 'dist/s2.min.js';
@@ -60,7 +63,6 @@ if (format === 'umd') {
     react: 'React',
     'react-dom': 'ReactDOM',
     antd: 'antd',
-    'antd/lib/locale/zh_CN': 'antd.locales.zh_CN',
     '@ant-design/icons': 'icons',
   };
 } else {

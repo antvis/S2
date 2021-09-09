@@ -151,7 +151,6 @@ export class SpreadSheet extends EE {
   ) {
     super();
     this.dom = this.getMountContainer(dom);
-    if (!this.dom) return;
     this.dataCfg = safetyDataConfig(dataCfg);
     this.options = safetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
@@ -178,7 +177,15 @@ export class SpreadSheet extends EE {
   }
 
   private getMountContainer(dom: S2MountContainer) {
-    return isString(dom) ? document.getElementById(dom) : (dom as HTMLElement);
+    const mountContainer = isString(dom)
+      ? document.getElementById(dom)
+      : (dom as HTMLElement);
+
+    if (!mountContainer) {
+      throw new Error('Target mount container is not a DOM element');
+    }
+
+    return mountContainer;
   }
 
   private initHdAdapter() {
