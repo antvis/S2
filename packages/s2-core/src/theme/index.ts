@@ -50,9 +50,9 @@ export const getTheme = (
         verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
-          top: 12,
+          top: 10,
           right: 8,
-          bottom: 12,
+          bottom: 10,
           left: 8,
         },
       },
@@ -101,9 +101,9 @@ export const getTheme = (
         verticalBorderWidth: 0,
         // -------------- layout -----------------
         padding: {
-          top: 12,
+          top: 6,
           right: 8,
-          bottom: 12,
+          bottom: 6,
           left: 8,
         },
         /* ---------- interaction state ----------- */
@@ -168,9 +168,9 @@ export const getTheme = (
         verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
-          top: 12,
+          top: 10,
           right: 8,
-          bottom: 12,
+          bottom: 10,
           left: 8,
         },
         /* ---------- interaction state ----------- */
@@ -238,9 +238,9 @@ export const getTheme = (
         verticalBorderWidth: 0,
         // -------------- layout -----------------
         padding: {
-          top: 12,
+          top: 6,
           right: 8,
-          bottom: 12,
+          bottom: 6,
           left: 8,
         },
         /* ---------- interaction state ----------- */

@@ -30,9 +30,9 @@ Data-driven multi-dimensional analysis table.
 
 </div>
 
-S2 is a solution in multi-dimensional cross-analysis tables, which provides data-driven analysis table components and analysis components.
- It fills up the vacancy in this field in the industry. By providing the core library, essential components,
-demo components and free expansion capabilities allow developers to choose freely based on their real cases, which can be used out of the box and can be used freely.
+S2 is a solution in multi-dimensional cross-analysis tables, which provides data-driven analysis table components.
+ It supplements multi-dimensional analysis tables in the industry. By providing the core library, essential components,
+demo components and expansion capabilities, it allows developers to use it quickly and freely.
 
 
 
@@ -52,8 +52,9 @@ $ npm install @antv/s2
 ```
 
 ## 🔨 Getting Started
-
 ### 1. Data Preparation
+<details>
+  <summary> s2DataConfig</summary>
 
 ```ts
 const s2DataConfig = {
@@ -62,24 +63,6 @@ const s2DataConfig = {
     columns: ['type'],
     values: ['price'],
   },
-  meta: [
-    {
-      field: 'province',
-      name: '省份',
-    },
-    {
-      field: 'city',
-      name: '城市',
-    },
-    {
-      field: 'type',
-      name: '商品类型',
-    },
-    {
-      field: 'price',
-      name: '价格',
-    },
-  ],
   data: [
      {
       province: '浙江',
@@ -133,15 +116,15 @@ const s2DataConfig = {
 };
 ```
 
+</details>
+
+
 ### 2.  Options Preparation
 
 ```ts
 const s2options = {
   width: 800,
   height: 600,
-  hierarchyType: 'grid',
-  mode: 'pivot',
-  valueInCols: true,
 }
 ```
 
@@ -163,7 +146,7 @@ s2.render()
 
 ### 4. Result
 
-![result](https://gw.alipayobjects.com/zos/antfincdn/rPTyWU7Ibr/4c7260b6-dd7b-43e7-bbdd-f27f33ed0faa.png)
+![result](https://gw.alipayobjects.com/zos/antfincdn/vCukbtVNvl/616f7ef1-e626-4225-99f8-dc8f6ca630dd.png)
 
 
 ## Author
@@ -189,3 +172,4 @@ $ npm run core:start
 ## 📄 License
 
 MIT@[AntV](https://github.com/antvis).
+

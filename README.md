@@ -41,7 +41,7 @@ S2是一种多维交叉分析表格领域的解决方案，完全基于数据驱
 2. 高性能：能支持全量百万数据下的不到8s的渲染，也能通过局部下钻来实现秒级渲染。
 3. 高扩展性：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据hook流等）。
 4. 开箱即用：提供不同分析场景下开箱即用的react表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景的表渲染。
-5. 高交互：支持丰富的交互形式（单选、圈选、行选、列选、冻结行头、宽高拖拽，自定义交互等）
+5. 可交互：支持丰富的交互形式（单选、圈选、行选、列选、冻结行头、宽高拖拽，自定义交互等）
 
 ##  📦 安装
 
@@ -53,6 +53,9 @@ $ npm install @antv/s2
 
 ### 1. 数据准备
 
+<details>
+  <summary> s2DataConfig</summary>
+
 ```ts
 const s2DataConfig = {
   fields: {
@@ -60,24 +63,6 @@ const s2DataConfig = {
     columns: ['type'],
     values: ['price'],
   },
-  meta: [
-    {
-      field: 'province',
-      name: '省份',
-    },
-    {
-      field: 'city',
-      name: '城市',
-    },
-    {
-      field: 'type',
-      name: '商品类型',
-    },
-    {
-      field: 'price',
-      name: '价格',
-    },
-  ],
   data: [
      {
       province: '浙江',
@@ -131,15 +116,14 @@ const s2DataConfig = {
 };
 ```
 
+</details>
+
 ### 2. 配置项准备
 
 ```ts
 const s2options = {
   width: 800,
   height: 600,
-  hierarchyType: 'grid',
-  mode: 'pivot',
-  valueInCols: true,
 }
 ```
 
@@ -161,7 +145,7 @@ s2.render()
 
 ### 4. 结果
 
-![result](https://gw.alipayobjects.com/zos/antfincdn/rPTyWU7Ibr/4c7260b6-dd7b-43e7-bbdd-f27f33ed0faa.png)
+![result](https://gw.alipayobjects.com/zos/antfincdn/vCukbtVNvl/616f7ef1-e626-4225-99f8-dc8f6ca630dd.png)
 
 
 ## Author
