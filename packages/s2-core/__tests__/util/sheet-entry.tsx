@@ -1,3 +1,12 @@
+import {
+  defaultDataConfig,
+  defaultOptions,
+  S2DataConfig,
+  S2Options,
+  SheetComponent,
+  SpreadSheet,
+  ThemeCfg,
+} from '@/index';
 import { Checkbox, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { isArray, merge, mergeWith } from 'lodash';
@@ -9,15 +18,6 @@ import React, {
   useState,
 } from 'react';
 import { data, meta } from '../data/mock-dataset.json';
-import {
-  defaultDataConfig,
-  defaultOptions,
-  S2DataConfig,
-  S2Options,
-  SheetComponent,
-  SpreadSheet,
-  ThemeCfg,
-} from '@/index';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
   mergeWith(
@@ -140,6 +140,7 @@ export const SheetEntry = forwardRef(
         <SheetComponent
           dataCfg={dataCfg}
           options={options}
+          adaptive={false}
           getSpreadsheet={(instance) => {
             if (ref) {
               ref.current = instance;
