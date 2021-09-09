@@ -367,6 +367,7 @@ export const getSelectedCellsData = (
   // 列头选择和行头选择没有存所有selected的cell，因此要遍历index对比，而selected则不需要
   if (showSingleTips) {
     // 行头列头单选多选
+    // TODO：行头是树形时，state里没有nodes了，得重新兼容下
     const selectedCellIndexes = getSelectedCellIndexes(
       spreadsheet,
       layoutResult,
