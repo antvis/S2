@@ -59,8 +59,7 @@
     "@antv/g-gesture": "^1.0.0",
     "antd": "^4.16.13",
     "classnames": "^2.3.1",
-    "lodash": "^4.17.21",
-    "tslib": "^2.3.1"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.5",
@@ -99,14 +98,15 @@
     "react-dom": "^16.14.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.56.3",
-    "rollup-plugin-less": "^1.1.3",
+    "rollup-plugin-postcss": "^4.0.1",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "style-loader": "^3.0.0",
     "ts-jest": "^26.5.6",
     "tsconfig-paths": "^3.10.1",
     "ttypescript": "^1.5.12",
-    "typescript": "^4.4.2"
+    "typescript": "^4.4.2",
+    "tslib": "^2.3.1"
   },
   "license": "MIT",
   "sideEffects": [
@@ -119,7 +119,7 @@
       "maxSize": "120 kB"
     },
     {
-      "path": "./dist/s2.css",
+      "path": "./dist/s2.min.css",
       "maxSize": "5 kB"
     }
   ]
