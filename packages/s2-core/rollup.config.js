@@ -53,13 +53,12 @@ const plugins = [
   }),
 ];
 
-const external = ['moment', 'react', 'react-dom', '@ant-design/icons', 'antd'];
+const external = ['react', 'react-dom', '@ant-design/icons', 'antd'];
 
 if (format === 'umd') {
   output.file = 'dist/s2.min.js';
   plugins.push(terser());
   output.globals = {
-    moment: 'moment',
     react: 'React',
     'react-dom': 'ReactDOM',
     antd: 'antd',
