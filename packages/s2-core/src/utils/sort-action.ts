@@ -1,6 +1,6 @@
 import { SortMethod } from 'src/common/interface';
 import { DataType, SortActionParams } from 'src/data-set/interface';
-import { keys, has, uniq, isPlainObject } from 'lodash';
+import { keys, has, uniq, isPlainObject, map } from 'lodash';
 import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
 import { sortByItems } from '@/utils/data-set-operate';
 
@@ -70,11 +70,14 @@ export const sortByCustom = (params: SortActionParams): string[] => {
 export const sortByMethod = (params: SortActionParams): string[] => {
   const { sortParam, measureValues, originValues } = params;
   const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam;
-  const result = sortAction(
-    measureValues,
-    sortMethod,
-    sortByMeasure === TOTAL_VALUE ? query[EXTRA_FIELD] : sortByMeasure,
-  )?.map((item) => isPlainObject(item) ? item?.[sortFieldId] : item);
+  const result = map(
+    sortAction(
+      measureValues,
+      sortMethod,
+      sortByMeasure === TOTAL_VALUE ? query[EXTRA_FIELD] : sortByMeasure,
+    ),
+    (item) => (isPlainObject(item) ? item?.[sortFieldId] : item),
+  );
 
   return mergeDataWhenASC(result, originValues, sortMethod === 'ASC');
 };
