@@ -74,7 +74,6 @@ export class PivotDataSet extends BaseDataSet {
       const { rows, columns } = this.fields;
       this.transformIndexesData(rows, columns, this.originData, this.totalData);
     });
-
     this.handleDimensionValuesSort();
   }
 

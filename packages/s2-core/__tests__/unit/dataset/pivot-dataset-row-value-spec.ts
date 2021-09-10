@@ -3,7 +3,7 @@
  */
  describe('Table Mode Test When Value In Row', () => {
  
-  describe('test 1', () => {
+  describe('seize a seat', () => {
     test('should get 1', () => {
       expect(1).toBe(1);
     });

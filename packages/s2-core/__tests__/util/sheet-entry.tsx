@@ -17,7 +17,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { data, meta } from '../data/mock-dataset.json';
+import { data, meta, totalData } from '../data/mock-dataset.json';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
   mergeWith(
@@ -38,12 +38,14 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
     defaultDataConfig,
     {
       fields: {
-        rows: ['area', 'province', 'city'],
+        rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
-        values: ['price', 'cost'],
+        values: ['price'],
+        valueInCols: true,
       },
       meta,
       data,
+      totalData,
     },
     ...dataCfg,
     (origin, updated) => {

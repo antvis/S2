@@ -37,6 +37,22 @@ function MainLayout() {
     },
     selectedCellsSpotlight: spotLight,
     hoverHighlight: hoverHighlight,
+    totals: {
+      row: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        subTotalsDimensions: ['province'],
+        reverseLayout: true,
+        reverseSubLayout: true,
+      },
+      col: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        subTotalsDimensions: ['type'],
+        reverseLayout: true,
+        reverseSubLayout: true,
+      }
+    }
   };
   return (
     <div>

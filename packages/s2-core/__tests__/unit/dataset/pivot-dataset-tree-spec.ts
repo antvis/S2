@@ -3,7 +3,7 @@
  */
  describe('Pivot & Tree Mode Test', () => {
  
-  describe('test 1', () => {
+  describe('seize a seat', () => {
     test('should get 1', () => {
       expect(1).toBe(1);
     });

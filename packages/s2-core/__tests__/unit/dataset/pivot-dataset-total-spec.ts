@@ -5,14 +5,14 @@
  import { S2DataConfig } from 'src/common/interface';
  import { SpreadSheet } from 'src/sheet-type';
  import { PivotDataSet } from 'src/data-set/pivot-data-set';
- import { DATA_TOTAL_CFG } from '../../data/standard-config';
+ import { assembleDataCfg } from '../../util/sheet-entry';
  import { get } from 'lodash';
  
  jest.mock('src/sheet-type');
  jest.mock('src/facet/layout/node');
  const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
  
- describe('Pivot Dataset Test', () => {
+ describe('Pivot Dataset Total Test', () => {
    let dataSet: PivotDataSet;
    let dataCfg: S2DataConfig;
  
@@ -20,7 +20,9 @@
      MockSpreadSheet.mockClear();
      dataSet = new PivotDataSet(new MockSpreadSheet());
  
-     dataCfg = DATA_TOTAL_CFG;
+     dataCfg = assembleDataCfg({
+       meta: [],
+     });
      dataSet.setDataCfg(dataCfg);
    });
  
@@ -63,39 +65,39 @@
        expect(get(indexesData, '0.0.undefined.undefined.0')).toEqual({
          province: '浙江省',
          city: '杭州市',
-         price: 1454,
+         price: 28,
          [EXTRA_FIELD]: 'price',
-         [VALUE_FIELD]: 1454,
+         [VALUE_FIELD]: 28,
        });
        expect(get(indexesData, '0.0.1.undefined.0')).toEqual({
          province: '浙江省',
          city: '杭州市',
-         category: '办公用品',
-         price: 254,
+         type: '办公用品',
+         price: 22,
          [EXTRA_FIELD]: 'price',
-         [VALUE_FIELD]: 254,
+         [VALUE_FIELD]: 22,
        });
        expect(get(indexesData, '1.undefined.1.undefined.0')).toEqual({
         province: '四川省',
-        category: '办公用品',
-        price: 254,
+        type: '办公用品',
+        price: 228,
         [EXTRA_FIELD]: 'price',
-        [VALUE_FIELD]: 254,
+        [VALUE_FIELD]: 228,
       });
        expect(get(indexesData, 'undefined.undefined.undefined.undefined.0')).toEqual({
-         price: 2454,
+         price: 528,
          [EXTRA_FIELD]: 'price',
-         [VALUE_FIELD]: 2454,
+         [VALUE_FIELD]: 528,
        });
      });
  
      test('should get correct sorted dimension value', () => {
        const sortedDimensionValues = dataSet.sortedDimensionValues;
-       expect([...sortedDimensionValues.keys()]).toEqual(['province', 'city', 'category', 'subCategory', EXTRA_FIELD]);
+       expect([...sortedDimensionValues.keys()]).toEqual(['province', 'city', 'type', 'sub_type', EXTRA_FIELD]);
        expect([...sortedDimensionValues.get('province')]).toEqual(['浙江省', '四川省', undefined]);
        expect([...sortedDimensionValues.get('city')]).toEqual(['杭州市', '绍兴市', '宁波市', '舟山市', '成都市', '绵阳市', '南充市', '乐山市', undefined ]);
-       expect([...sortedDimensionValues.get('category')]).toEqual(['家具', '办公用品', undefined]);
-       expect([...sortedDimensionValues.get('subCategory')]).toEqual(['桌子', '沙发', '笔', '纸张', undefined]);
+       expect([...sortedDimensionValues.get('type')]).toEqual(['家具', '办公用品', undefined]);
+       expect([...sortedDimensionValues.get('sub_type')]).toEqual(['桌子', '沙发', '笔', '纸张', undefined]);
        expect([...sortedDimensionValues.get(EXTRA_FIELD)]).toEqual(['price']);
      });
    });
@@ -105,33 +107,33 @@
        expect(dataSet.getCellData({ 
          query: {
           province: '浙江省',
-          category: '家具',
-          subCategory: '桌子',
+          type: '家具',
+          sub_type: '桌子',
           [EXTRA_FIELD]: 'price'
          }
        })).toEqual(expect.objectContaining({
-         [VALUE_FIELD]: 1254
+         [VALUE_FIELD]: 10
        }));
  
        expect(dataSet.getCellData({ 
          query: {
-          category: '家具',
-          subCategory: '桌子',
+          type: '家具',
+          sub_type: '桌子',
           [EXTRA_FIELD]: 'price'
          }
        })).toEqual(expect.objectContaining({
-         [VALUE_FIELD]: 2254
+         [VALUE_FIELD]: 84
        }));
 
        expect(dataSet.getCellData({ 
         query: {
           province: '浙江省',
           city: '杭州市',
-          category: '家具',
+          type: '家具',
           [EXTRA_FIELD]: 'price'
         }
        })).toEqual(expect.objectContaining({
-        [VALUE_FIELD]: 254
+        [VALUE_FIELD]: 6
        }));
 
        expect(dataSet.getCellData({ 
@@ -141,16 +143,16 @@
           [EXTRA_FIELD]: 'price'
         }
        })).toEqual(expect.objectContaining({
-        [VALUE_FIELD]: 1454
+        [VALUE_FIELD]: 28
        }));
 
        expect(dataSet.getCellData({ 
         query: {
-         category: '家具',
+         type: '家具',
          [EXTRA_FIELD]: 'price'
         }
        })).toEqual(expect.objectContaining({
-          [VALUE_FIELD]: 2254
+          [VALUE_FIELD]: 200
        }));
 
        expect(dataSet.getCellData({ 
@@ -158,7 +160,7 @@
          [EXTRA_FIELD]: 'price'
         }
        })).toEqual(expect.objectContaining({
-          [VALUE_FIELD]: 2454
+          [VALUE_FIELD]: 528
        }));
      });
  
@@ -166,30 +168,30 @@
        const specialQuery = {
          province: '浙江省',
          city: '杭州市',
-         category: '家具',
-         subCategory: '桌子',
+         type: '家具',
+         sub_type: '桌子',
          [EXTRA_FIELD]: 'price'
        };
        expect(dataSet.getMultiData(specialQuery)).toHaveLength(1);
        expect(dataSet.getMultiData(specialQuery)[0]).toEqual(expect.objectContaining({
-         [VALUE_FIELD]: 254
+         [VALUE_FIELD]: 1
        }));
 
        expect(dataSet.getMultiData({
          province: '浙江省',
-         category: '家具',
-         subCategory: '桌子',
+         type: '家具',
+         sub_type: '桌子',
          [EXTRA_FIELD]: 'price'
        })).toHaveLength(5);
  
        expect(dataSet.getMultiData({
-         category: '家具',
-         subCategory: '桌子',
+         type: '家具',
+         sub_type: '桌子',
          [EXTRA_FIELD]: 'price'
        })).toHaveLength(11);
  
        expect(dataSet.getMultiData({
-         category: '家具',
+         type: '家具',
          [EXTRA_FIELD]: 'price'
        })).toHaveLength(33);
  
@@ -202,15 +204,15 @@
        // without query
        expect(dataSet.getDimensionValues('province')).toEqual(['浙江省', '四川省']);
        expect(dataSet.getDimensionValues('city')).toEqual(['杭州市', '绍兴市', '宁波市', '舟山市', '成都市', '绵阳市', '南充市', '乐山市']);
-       expect(dataSet.getDimensionValues('category')).toEqual(['家具', '办公用品']);
-       expect(dataSet.getDimensionValues('subCategory')).toEqual(['桌子', '沙发', '笔', '纸张']);
+       expect(dataSet.getDimensionValues('type')).toEqual(['家具', '办公用品']);
+       expect(dataSet.getDimensionValues('sub_type')).toEqual(['桌子', '沙发', '笔', '纸张']);
        expect(dataSet.getDimensionValues(EXTRA_FIELD)).toEqual(['price']);
        expect(dataSet.getDimensionValues('empty')).toEqual([]);
  
        // with query
        expect(dataSet.getDimensionValues('city', { 'province': '四川省'})).toEqual(['成都市', '绵阳市', '南充市', '乐山市']);
-       expect(dataSet.getDimensionValues('subCategory', { 'category': '家具'})).toEqual(['桌子', '沙发']);
-       expect(dataSet.getDimensionValues('subCategory', { 'category': 'empty'})).toEqual([]);
+       expect(dataSet.getDimensionValues('sub_type', { 'type': '家具'})).toEqual(['桌子', '沙发']);
+       expect(dataSet.getDimensionValues('sub_type', { 'type': 'empty'})).toEqual([]);
      });
    });
  });
