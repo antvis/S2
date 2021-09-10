@@ -17,7 +17,7 @@ export const filterUndefined = (values: string[]) => {
 export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
   keys(data)?.reduce((pre, next) => {
     const item = get(data, next);
-    if (Array.isArray(item) || has(item, undefined)) {
+    if (Array.isArray(item)) {
       pre = pre.concat(flattenDeep(item));
     } else {
       pre?.push(item);
@@ -28,7 +28,7 @@ export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
 
 export const flatten = (data: Record<any, any>[] | Record<any, any>) => {
   let result = [];
-  if (Array.isArray(data) || data?.includes('undefined')) {
+  if (Array.isArray(data)) {
     keys(data)?.forEach((item) => {
       const current = get(data, item);
       if (keys(current)?.includes('undefined')) {
@@ -74,18 +74,25 @@ export const sortByItems = (arr1: string[], arr2: string[]) => {
 };
 
 /**
+ * 判断是普通单元格数据还是总计或小计
+ * @param ids
+ * @param data
+ * @returns
+*/
+export const isTotalData = (ids: string[], data: Data): boolean => {
+  return !every(ids, (id) => data[id]);
+};
+
+/**
  * split total data from origin list data.
  */
 export function splitTotal(rawData: Data[], fields: Fields): Data[] {
   const { rows, columns } = fields;
 
-  const isNormalData = (ids: string[], data: Data): boolean => {
-    return every(ids, (id) => data[id]);
-  };
   return reduce(
     rawData,
     (result: Data[], data: Data) => {
-      if (!isNormalData([].concat(rows).concat(columns), data)) {
+      if (isTotalData([].concat(rows).concat(columns), data)) {
         result.push(data);
       }
       return result;
