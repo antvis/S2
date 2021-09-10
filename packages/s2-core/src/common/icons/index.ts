@@ -9,9 +9,10 @@ for (const key in SvgMap) {
     registerIcon(key, SvgMap[key]);
   }
 }
+
 registerIcon(
   'MinusSquare',
-  'https://gw.alipayobjects.com/zos/bmw-prod/6385010c-e6b0-4790-b690-02a502433eb3.svg',
+  'https://gw.alipayobjects.com/zos/antfincdn/tQBTj62bI/6385010c-e6b0-4790-b690-02a502433eb3.svg',
 );
-// data-cell.ts 默认导出这个目录中对应的 API
+
 export { GuiIcon, HtmlIcon, registerIcon, getIcon };
