@@ -12,6 +12,7 @@
 - [ ] Refactoring
 - [ ] Change the UI
 - [ ] Improve performance.
+- [ ] Type optimization
 
 🐛 Bug fix
 
