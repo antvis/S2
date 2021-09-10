@@ -12,8 +12,7 @@
     "spreadsheet"
   ],
   "scripts": {
-    "bootstrap": "yarn",
-    "bootstrap:ci":"lerna bootstrap",
+    "bootstrap":"lerna bootstrap",
     "clean": "lerna clean -y && rimraf node_modules",
     "core:start": "lerna run test:live",
     "build": "lerna run build --include-dependencies --stream",
