@@ -2,13 +2,25 @@
 
 <!-- Add completed items in this PR, and change [ ] to [x]. -->
 
+✨Feature
+
 - [ ] New feature
-- [ ] Bug fix issue #0
-- [ ] docs / demos update
-- [ ] Test case
-- [ ] Refactoring
+
+🎨 Enhance
+
 - [ ] Code style optimization
-- [ ] Performance Optimization
+- [ ] Refactoring
+- [ ] Change the UI
+- [ ] Improve performance.
+
+🐛 Bug fix
+
+- [ ] Bug fix issue #0
+
+🔧 Chore
+
+- [ ] Test case
+- [ ] Docs / demos update
 - [ ] Other
 
 ### 📝 Description
