@@ -1,7 +1,7 @@
 <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18">  [简体中文](./README.md) ｜
 English
 
-<h1 align="center">@antv/s2</h1>
+<h1 align="center">S2</h1>
 
 <div align="center">
 
@@ -10,6 +10,9 @@ Data-driven multi-dimensional analysis table.
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg">
+  </a>
+  <a href="https://github.com/antvis/S2/actions" target="_blank">
+    <img src="https://github.com/antvis/S2/workflows/CI/badge.svg" />
   </a>
   <a href="https://codecov.io/gh/@antv/s2" target="_blank">
     <img src="https://codecov.io/gh/@antv/s2/branch/master/graph/badge.svg" />
@@ -23,22 +26,18 @@ Data-driven multi-dimensional analysis table.
   <a href="#" target="_blank" target="_blank">
     <img alt="License: MIT@AntV" src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" />
   </a>
-  <a href="https://github.com/antvis/S2/actions" target="_blank">
-    <img src="https://github.com/antvis/S2/workflows/CI/badge.svg" />
-  </a>
 </p>
 
 </div>
 
-S2 is a solution in multi-dimensional cross-analysis tables, which provides data-driven analysis table components and analysis components.
- It fills up the vacancy in this field in the industry. By providing the core library, essential components,
-demo components and free expansion capabilities allow developers to choose freely based on their real cases, which can be used out of the box and can be used freely.
+S2 is a solution in multi-dimensional cross-analysis tables, which provides data-driven analysis table components and analysis components. It fills up the vacancy in this field in the industry. By providing the core library, essential components, demo components and free expansion capabilities allow developers to choose freely based on their real cases, which can be used out of the box and can be used freely.
 
 
 
 <!-- ### 🏠 [Homepage](https://s2.antv.vision) -->
 
 ## ✨ Features
+
 1. Multi-dimensional cross-analysis: Say goodbye to a single analysis dimension and fully embrace the free combination analysis of any dimension.
 2. High performance: It can support rendering in less than 8s under the total amount of millions of data and achieve second-level rendering through partial drilling.
 3. High scalability: Support any custom extensions (including but not limited to layout, style, interaction, data hook flow, etc.).
@@ -161,7 +160,7 @@ const s2 = new SpreadSheet(container, s2DataCfg, s2options)
 s2.render()
 ```
 
-### 4. 结果
+### 4. Preview
 
 ![result](https://gw.alipayobjects.com/zos/antfincdn/rPTyWU7Ibr/4c7260b6-dd7b-43e7-bbdd-f27f33ed0faa.png)
 
@@ -172,6 +171,7 @@ s2.render()
 
 
 ## 🤝  Contributing
+
 Contributions, issues and feature requests are welcome.
 Feel free to check [issues](https://github.com/antvis/S2/issues) page if you want to contribute.
 
