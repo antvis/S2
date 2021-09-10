@@ -3,7 +3,7 @@
 <!-- Add completed items in this PR, and change [ ] to [x]. -->
 
 - [ ] New feature
-- [ ] Bug fix
+- [ ] Bug fix issue #0
 - [ ] docs / demos update
 - [ ] Test case
 - [ ] Refactoring
@@ -14,6 +14,9 @@
 ### 📝 Description
 
 ### 🖼️ Screenshot
+|  Before  |  After  |
+|----|----|
+|  ❌  |  ✅  |
 
 ### 🔗 Related issue link
 
