@@ -2,7 +2,7 @@
 
 <!-- Add completed items in this PR, and change [ ] to [x]. -->
 
-✨Feature
+✨ Feature
 
 - [ ] New feature
 
@@ -21,11 +21,13 @@
 
 - [ ] Test case
 - [ ] Docs / demos update
+- [ ] CI / workflow
 - [ ] Other
 
 ### 📝 Description
 
 ### 🖼️ Screenshot
+
 |  Before  |  After  |
 |----|----|
 |  ❌  |  ✅  |
