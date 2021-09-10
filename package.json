@@ -3,7 +3,7 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "s2-site/*"
+    "s2-site"
   ],
   "keywords": [
     "antv",
@@ -12,7 +12,8 @@
     "spreadsheet"
   ],
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "yarn",
+    "bootstrap:ci":"lerna bootstrap",
     "clean": "lerna clean -y && rimraf node_modules",
     "core:start": "lerna run test:live",
     "build": "lerna run build --include-dependencies --stream",

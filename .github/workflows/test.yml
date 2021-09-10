@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: yarn bootstrap
+        run: yarn bootstrap:ci
 
       - name: Test
         run: yarn test
