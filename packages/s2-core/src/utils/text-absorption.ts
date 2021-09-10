@@ -7,7 +7,6 @@
  * @param textWidth
  * @returns 文本定位坐标 x 或者 y
  *
- * 效果预览：https://gw-office.alipayobjects.com/basement_prod/5dfcb9ae-c660-42fc-871f-f09fc1291487.gif
  * 画布元素：视窗矩形、矩形、文本，其中文本放置在矩形中
  * 矩形从右进入视窗时，交互流程为：
  *  1. 文本开始显示，文本贴左边

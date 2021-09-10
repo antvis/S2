@@ -153,10 +153,9 @@ export class BaseTooltip {
   }
 
   protected renderSummary(summaries: TooltipSummaryOptions[]) {
-    const count = this.spreadsheet.interaction.getActiveCellsCount();
     return (
       !isEmpty(summaries) && (
-        <TooltipSummary summaries={summaries} count={count} />
+        <TooltipSummary summaries={summaries} />
       )
     );
   }

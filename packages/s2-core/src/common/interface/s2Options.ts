@@ -165,6 +165,7 @@ export const defaultOptions: S2Options = {
   width: 600,
   height: 480,
   mode: 'pivot',
+  valueInCols: true,
   debug: false,
   hierarchyType: 'grid',
   conditions: {},

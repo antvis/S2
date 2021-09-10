@@ -6,7 +6,8 @@ import {
   getFieldKeysByDimensionValues,
   getIntersections,
   isEveryUndefined,
-  splitTotal
+  splitTotal,
+  isTotalData
 } from '@/utils/data-set-operate';
 import {
   compact,
@@ -224,7 +225,7 @@ export class PivotDataSet extends BaseDataSet {
       });
       this.sortedDimensionValues.set(
         sortFieldId,
-        new Set([...result, ...originValues]),
+        new Set([...result, ...originValues]), // 这里是控制顺序的，优先result
       );
     });
   };
@@ -314,7 +315,6 @@ export class PivotDataSet extends BaseDataSet {
       fields,
       sortParams = [],
       totalData,
-      standardData,
     } = dataCfg;
     const { columns, rows, values, valueInCols } = fields;
 
@@ -336,28 +336,6 @@ export class PivotDataSet extends BaseDataSet {
       } as Meta,
     ];
 
-    // 目前源数据的是按照之前数据的现状（一条数据不是代表一个格子），处理的模板
-    // 按values平铺展开data, 添加extraKey，冗余数据的量随着values增加而
-    // 增加，而且双层循环的效率也随着而降低效率
-    const multiValueTransform = (originData: Data[] = []) => {
-      const transformedData = [];
-      const isValuesEmpty = isEmpty(values);
-      originData.forEach((datum) => {
-        if (isValuesEmpty) {
-          transformedData.push(datum);
-        } else {
-          values.forEach((vi) => {
-            transformedData.push({
-              ...datum,
-              [EXTRA_FIELD]: vi,
-              [VALUE_FIELD]: datum[vi],
-            });
-          });
-        }
-      });
-      return transformedData;
-    };
-
     // 标准的数据中，一条数据代表一个格子；不存在一条数据中多个value的情况
     const standardTransform = (originData: Data[]) => {
       return originData.map((datum) => {
@@ -370,9 +348,8 @@ export class PivotDataSet extends BaseDataSet {
       });
     };
 
-    const transformer = standardData ? standardTransform : multiValueTransform;
-    const newData = transformer(data);
-    const newTotalData = transformer(totalData);
+    const newData = standardTransform(data);
+    const newTotalData = standardTransform(totalData);
 
     // 返回新的结构
     return {
@@ -391,12 +368,12 @@ export class PivotDataSet extends BaseDataSet {
 
   public getDimensionValues(field: string, query?: DataType): string[] {
     const { rows, columns } = this.fields;
-    let meta: PivotMeta;
+    let meta: PivotMeta = new Map();
     let dimensions: string[];
     if (includes(rows, field)) {
       meta = this.rowPivotMeta;
       dimensions = rows;
-    } else {
+    } else if (includes(columns, field)) {
       meta = this.colPivotMeta;
       dimensions = columns;
     }
@@ -413,11 +390,7 @@ export class PivotDataSet extends BaseDataSet {
           }
         }
       }
-      if (sortedMeta?.length > 0) {
-        return filterUndefined(getIntersections(sortedMeta, [...meta.keys()]));
-      }
-
-      return filterUndefined([...meta.keys()]);
+      return filterUndefined(getIntersections(sortedMeta, [...meta.keys()]));
     }
 
     if (this.sortedDimensionValues.has(field)) {
@@ -451,7 +424,7 @@ export class PivotDataSet extends BaseDataSet {
     const path = this.getDataPath({
       rowDimensionValues,
       colDimensionValues,
-      careUndefined: isTotals,
+      careUndefined: isTotals || isTotalData([].concat(originRows).concat(columns), query),
     });
     const data = get(this.indexesData, path);
 

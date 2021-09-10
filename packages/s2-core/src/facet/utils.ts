@@ -26,7 +26,6 @@ export const calculateInViewIndexes = (
   viewport: SimpleBBox,
   rowRemainWidth?: number,
 ): Indexes => {
-  // 算法逻辑：https://yuque.antfin-inc.com/eva-engine/specs/virtualized-scroll
   // 1. 计算 x min、max
   let xMin = findIndex(
     widths,

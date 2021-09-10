@@ -1,3 +1,13 @@
+import { concat, forEach, includes, isEmpty, merge, size } from 'lodash';
+import { HoverEvent } from '..';
+import {
+  DataCellClick,
+  MergedCellsClick,
+  RowColumnClick,
+  RowTextClick,
+} from './base-interaction/click';
+import { EventController } from './event-controller';
+import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import { ColCell, DataCell, RowCell } from '@/cell';
 import {
   CellTypes,
@@ -18,16 +28,6 @@ import { SpreadSheet } from '@/sheet-type';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
-import { concat, forEach, includes, isEmpty, merge, size } from 'lodash';
-import { HoverEvent } from '..';
-import {
-  DataCellClick,
-  MergedCellsClick,
-  RowColumnClick,
-  RowTextClick,
-} from './base-interaction/click';
-import { EventController } from './event-controller';
-import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;

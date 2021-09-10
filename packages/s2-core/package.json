@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "0.1.0-alpha.16",
+  "version": "0.1.3",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/s2.min.js",
@@ -44,7 +44,7 @@
     "test:live": "node ./scripts/test-live",
     "test": "jest",
     "test:coverage": "npm run test -- --coverage",
-    "start": "webpack --config webpack-dev.config.js --mode development --progress",
+    "ci:coverage": "npm run test:coverage && codecov",
     "tsc": "tsc --noEmit",
     "bundlesize": "bundlesize"
   },
@@ -58,8 +58,7 @@
     "@antv/g-gesture": "^1.0.0",
     "antd": "^4.16.13",
     "classnames": "^2.3.1",
-    "lodash": "^4.17.21",
-    "tslib": "^2.3.1"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.5",
@@ -74,6 +73,7 @@
     "@types/react-dom": "17.0.9",
     "@zerollup/ts-transform-paths": "^1.7.18",
     "bundlesize": "^0.18.1",
+    "codecov": "^3.8.3",
     "cpx": "^1.5.0",
     "css-loader": "^5.2.6",
     "d3-dsv": "^1.1.1",
@@ -84,7 +84,6 @@
     "jest-less-loader": "^0.1.1",
     "jest-raw-loader": "^1.0.1",
     "jest-url-loader": "^0.1.0",
-    "lerna-changelog": "^1.0.1",
     "less": "^4.1.1",
     "less-loader": "^10.0.1",
     "lint-staged": "^11.0.0",
@@ -97,12 +96,13 @@
     "react-dom": "^16.14.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.56.3",
-    "rollup-plugin-less": "^1.1.3",
+    "rollup-plugin-postcss": "^4.0.1",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "style-loader": "^3.0.0",
     "ts-jest": "^26.5.6",
     "tsconfig-paths": "^3.10.1",
+    "tslib": "^2.3.1",
     "ttypescript": "^1.5.12",
     "typescript": "^4.4.2"
   },
@@ -117,7 +117,7 @@
       "maxSize": "120 kB"
     },
     {
-      "path": "./dist/s2.css",
+      "path": "./dist/s2.min.css",
       "maxSize": "5 kB"
     }
   ]
