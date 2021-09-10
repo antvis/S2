@@ -17,6 +17,7 @@
     }
   },
   "changelog": {
+    "repo": "antv/S2",
     "labels": {
       "pr(fix)": ":bug: Bug Fix",
       "pr(chore)": ":turtle: Chore",
@@ -28,7 +29,9 @@
       "pr(enhancement)": ":rocket: Enhancement",
       "pr(refactor)": ":100: Refactoring",
       "pr(test)": ":white_check_mark: Test Case"
-    }
+    },
+    "ignoreCommitters": "[pr(chore)]",
+    "cacheDir": ".changelog"
   },
   "packages": [
     "packages/s2-core"
