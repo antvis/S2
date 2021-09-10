@@ -127,20 +127,11 @@ spreadsheet.render();
 ### 本地开发
 
 ```shell
-Mac
-# 安装依赖
-$ tnpm install
+$ git clone git@github.com:antvis/S2.git
 
-# 运行测试用来，时时调试
-$ tnpm run test-live
+$ cd s2
 
-Windows
-# 安装依赖
-$ tnpm install
-# 跨平台环境
-$ tnpm install cross-env
+$ yarn bootstrap
 
-# 运行测试用来
-$ tnpm run test-live
-在test-live script 前加上 cross-env
+$ yarn core:start
 ```

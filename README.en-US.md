@@ -52,6 +52,7 @@ demo components and expansion capabilities, it allows developers to use it quick
 
 ```bash
 $ npm install @antv/s2
+# yarn add @antv/s2
 ```
 
 ## 🔨 Getting Started
@@ -169,9 +170,9 @@ $ git clone git@github.com:antvis/S2.git
 
 $ cd s2
 
-$ npm run bootstrap
+$ yarn bootstrap
 
-$ npm run core:start
+$ yarn core:start
 ```
 
 ## 📄 License

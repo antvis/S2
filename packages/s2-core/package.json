@@ -33,20 +33,19 @@
   ],
   "scripts": {
     "clean": "rimraf lib esm dist",
-    "build": "run-s clean lib",
-    "lib": "run-p rollup:*",
-    "rollup:es": "FORMAT=es rollup -c rollup.config.js",
-    "rollup:cjs": "FORMAT=cjs rollup -c rollup.config.js",
-    "rollup:umd": "FORMAT=umd rollup -c rollup.config.js",
+    "build": "run-s clean build:* bundle:size",
+    "build:es": "FORMAT=es rollup -c rollup.config.js",
+    "build:cjs": "FORMAT=cjs rollup -c rollup.config.js",
+    "build:umd": "FORMAT=umd rollup -c rollup.config.js",
     "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
     "cpx:svg": "cpx \"src/**/*.svg\" lib; cpx \"src/**/*.svg\" esm",
     "cpx:less": "cpx \"src/**/*.less\" lib; cpx \"src/**/*.less\" esm",
     "test:live": "node ./scripts/test-live",
     "test": "jest",
-    "test:coverage": "npm run test -- --coverage",
-    "ci:coverage": "npm run test:coverage && codecov",
+    "test:coverage": "yarn test --coverage",
+    "test:ci-coverage": "yarn test:coverage && codecov",
     "tsc": "tsc --noEmit",
-    "bundlesize": "bundlesize"
+    "bundle:size": "bundlesize"
   },
   "peerDependencies": {
     "react": "^16.14.0",
