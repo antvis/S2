@@ -1,4 +1,4 @@
-### 🤔 PR type
+### 🤔 PR includes
 
 <!-- Add completed items in this PR, and change [ ] to [x]. -->
 
@@ -19,4 +19,3 @@
 |  ❌  |  ✅  |
 
 ### 🔗 Related issue link
-
