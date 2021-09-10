@@ -4,7 +4,7 @@
 
 - [ ] New feature
 - [ ] Bug fix issue #0
-- [ ] docs / demos update
+- [ ] Docs / demos update
 - [ ] Test case
 - [ ] Refactoring
 - [ ] Code style optimization
