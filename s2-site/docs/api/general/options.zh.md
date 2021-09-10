@@ -11,7 +11,7 @@ order: 1
 | hierarchyCollapse | string |  | boolean | false | 在树状结构模式下行头是否默认展开。 |
 | conditions | [Conditions](#) | ✓ |  |  | 条件模式配置 |
 | totals | [Totals](#) | ✓ |  |  | 小计总结配置 |
-| tooltip | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) | ✓ |  |  |  tooltip总配置 |
+| tooltip | [Tooltip](#) | ✓ |  |  |  tooltip总配置 |
 | linkFieldIds | string[] |  |  | [] | 外链跳转 |
 | pagination | [Pagination](#) | ✓ |  |  | 分页配置 |
 | freezeRowHeader | boolean | ✓ |  | false | 冻结行头 |
@@ -137,8 +137,8 @@ object **必选**,_ default：null_ 功能描述： 小计总计配置
 
 | 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| row | [Total](https://bigfish.antfin-inc.com/api#total) |  |  | {} | 列总计 |
-| col | [Total](https://bigfish.antfin-inc.com/api#total) |  |  | {} | 行总计 |
+| row | [Total](#) |  |  | {} | 列总计 |
+| col | [Total](#) |  |  | {} | 行总计 |
 
 ### Total
 
@@ -168,9 +168,9 @@ object **必选**,_ default：null_ 功能描述： tooltip配置
 | showSummary | boolean |  |  | false | 是否展示统计信息 |
 | showDetail | boolean |  |  | false | 是否展示轴（表头行列）字段 |
 | showInfos | boolean |  |  | false | 是否展示快捷操作提示 |
-| row | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) |  |  |  | 行头配置 |
-| col | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) |  |  |  | 列头配置 |
-| cell | [Tooltip](https://bigfish.antfin-inc.com/api#Tooltip) |  |  |  | 单元格配置 |
+| row | [Tooltip](#) |  |  |  | 行头配置 |
+| col | [Tooltip](#) |  |  |  | 列头配置 |
+| cell | [Tooltip](#) |  |  |  | 单元格配置 |
 | renderTooltip | [RenderTooltip](#) |  |  |  | 自定义整个tooltip, 可以继承 BaseTooltip 自己重写一些方法 |
 | tooltipComponent | React.ReactNode |  |  |  | 自定义tooltip弹框组件 |
 
@@ -195,10 +195,10 @@ object **必选**,_ default：null_ 功能描述：样式设置
 | collapsedRows | object: |
 | {string, boolean} |  |  |  | 树状模式行的折叠、收起状态 |
 | collapsedCols | object:{string, boolean} |  |  |  | 树状模式列的折叠、收起状态 |
-| cellCfg | [CellCfg](https://bigfish.antfin-inc.com/api#cellcfg) | ✓ |  |  | 单元格配置 |
+| cellCfg | [CellCfg](#) | ✓ |  |  | 单元格配置 |
 | viewCfg | [ViewCfg](#) | ✓ |  |  | 单元格 padding 配置 |
-| colCfg | [ColCfg](https://bigfish.antfin-inc.com/api#colcfg) | ✓ |  |  | 列样式配置 |
-| rowCfg | [RowCfg](https://bigfish.antfin-inc.com/api#rowcfg) | ✓ |  |  | 行样式配置 |
+| colCfg | [ColCfg](#) | ✓ |  |  | 列样式配置 |
+| rowCfg | [RowCfg](#) | ✓ |  |  | 行样式配置 |
 | device | string |  | 'pc' | 'mobile' | 'pc' | 设备类型 |
 | plotSize | [PlotSize](#) |  |  |  |  |
 
@@ -234,9 +234,9 @@ object **必选**,_ default：null_ 功能描述：行样式配置
 | treeRowsWidth | number |  |  |  | 树状模式行单元格宽度 |
 | collapsedRows | object |  |  | {} | 树状模式行的折叠、收起状态 |
 | collapsedCols | object |  |  | {} | 树状模式列的折叠、收起状态 |
-| cellCfg | [CellCfg](https://bigfish.antfin-inc.com/api#cellcfg) |  |  | {} | 单元格配置 |
-| colCfg | [ColCfg](https://bigfish.antfin-inc.com/api#colcfg) |  |  | {} | 列样式配置 |
-| rowCfg | [RowCfg](https://bigfish.antfin-inc.com/api#rowcfg) |  |  | {} | 行样式配置 |
+| cellCfg | [CellCfg](#) |  |  | {} | 单元格配置 |
+| colCfg | [ColCfg](#) |  |  | {} | 列样式配置 |
+| rowCfg | [RowCfg](#) |  |  | {} | 行样式配置 |
 | device | pc &#124; mobile |  |  | {} | 设备类型 |
 
 ###
@@ -250,9 +250,9 @@ object **必选**,_ default：null_ 功能描述：行样式配置
 | treeRowsWidth | number |  |  |  | 树状模式行单元格宽度 |
 | collapsedRows | object |  |  | {} | 树状模式行的折叠、收起状态 |
 | collapsedCols | object |  |  | {} | 树状模式列的折叠、收起状态 |
-| cellCfg | [CellCfg](https://bigfish.antfin-inc.com/api#cellcfg) |  |  | {} | 单元格配置 |
-| colCfg | [ColCfg](https://bigfish.antfin-inc.com/api#colcfg) |  |  | {} | 列样式配置 |
-| rowCfg | [RowCfg](https://bigfish.antfin-inc.com/api#rowcfg) |  |  | {} | 行样式配置 |
+| cellCfg | [CellCfg](#) |  |  | {} | 单元格配置 |
+| colCfg | [ColCfg](#) |  |  | {} | 列样式配置 |
+| rowCfg | [RowCfg](#) |  |  | {} | 行样式配置 |
 | device | pc &#124; mobile |  |  | {} | 设备类型 |
 
 ## keepOnlyNodesIds
@@ -319,9 +319,9 @@ CellCallback = (node: Node, spreadsheet: BaseSpreadSheet, ...restOptions) =>
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| node | [Node]() |
+| node | [Node](#) |
 | ✓ |  |  | 当前渲染的 node 节点 |
-| spreadsheet | [BaseSpreadSheet]() | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| spreadsheet | [BaseSpreadSheet](#) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
 | restOptions |  |  |  |  | 不定参数，传递额外的信息 |
 
 ## CornerHeaderCallback
@@ -336,9 +336,9 @@ CornerHeaderCallback = (parent: Group, spreadsheet: BaseSpreadSheet, ...restOpti
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| parent | [Group]() |
+| parent | [Group](#) |
 | ✓ |  |  | 父类的 group 元素 |
-| spreadsheet | [BaseSpreadSheet]() | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| spreadsheet | [BaseSpreadSheet](#) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
 | restOptions |  |  |  |  | 不定参数，传递额外的信息 |
 
 ##
