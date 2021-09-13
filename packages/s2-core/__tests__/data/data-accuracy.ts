@@ -1,8 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2021/5/25
- */
-
 /** *****single measures***** */
 // contains all data(grandTotal, subTotal, detail data)
 export const data1 = [

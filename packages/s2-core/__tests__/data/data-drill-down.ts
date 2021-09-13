@@ -1,7 +1,3 @@
-/**
- * Create By Bruce Too
- * On 2021/6/15
- */
 export const originData = [
   {
     price: 1,
