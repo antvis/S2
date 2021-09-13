@@ -1,4 +1,4 @@
-import { Menu } from 'antd';
+import { Menu, Dropdown } from 'antd';
 import { isEmpty, map, size } from 'lodash';
 import React from 'react';
 import { IMenu, TooltipOperatorOptions } from '@/common/interface';
@@ -17,12 +17,11 @@ import './index.less';
  */
 
 export const TooltipOperator = (props: TooltipOperatorOptions) => {
-  const { menus, onClick } = props;
+  const { menus, onClick, onlyMenu } = props;
 
   const onMenuClick = (e) => {
-    const { key, domEvent } = e;
-
-    onClick(key, domEvent);
+    const { key } = e;
+    onClick(key, e);
   };
 
   const renderIcon = (icon) => {
@@ -47,47 +46,67 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
     );
   };
 
+  const renderTitle = (text: string, icon) => {
+    return (
+      <span>
+        {renderIcon(icon)}
+        {text}
+      </span>
+    );
+  };
+
   const renderMenu = (menu: IMenu) => {
     const { id, icon, text, children } = menu;
 
     if (size(children)) {
-      const subMenuTitle = (
-        <span>
-          {renderIcon(icon)}
-          {text}
-        </span>
-      );
-
       return (
         <Menu.SubMenu
-          title={subMenuTitle}
+          title={renderTitle(text, icon)}
           key={id}
           popupClassName={`${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`}
         >
-          {map(children, (m: IMenu) => renderMenu(m))}
+          {map(children, (menu) => renderMenu(menu))}
         </Menu.SubMenu>
       );
     }
 
     return (
-      <Menu.Item key={id}>
-        {renderIcon(icon)}
-        {text}
+      <Menu.Item title={text} key={id}>
+        {renderTitle(text, icon)}
       </Menu.Item>
     );
   };
 
   const renderMenus = () => {
-    return (
-      <Menu
-        className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
-        id={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
-        onClick={onMenuClick}
-        mode="horizontal"
-      >
-        {map(menus, (menu: IMenu) => renderMenu(menu))}
-      </Menu>
-    );
+    if (onlyMenu) {
+      return (
+        <Menu
+          className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
+          onClick={onMenuClick}
+        >
+          {map(menus, (menu: IMenu) => renderMenu(menu))}
+        </Menu>
+      );
+    }
+    return map(menus, (menu: IMenu) => {
+      const { id, icon, text, children } = menu;
+
+      const menuRender = size(children) ? (
+        <Menu
+          className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
+          key={id}
+          onClick={onMenuClick}
+        >
+          {map(children, (menu: IMenu) => renderMenu(menu))}
+        </Menu>
+      ) : (
+        <></>
+      );
+
+      return (
+        <Dropdown overlay={menuRender}>{renderTitle(text, icon)}</Dropdown>
+      );
+    });
   };
 
   return (
