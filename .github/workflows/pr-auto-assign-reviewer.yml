@@ -2,7 +2,7 @@ name: 👨‍💻👩‍💻 PR Auto Assign Reviewer
 
 on:
   pull_request:
-    types: [opened, edited]
+    types: [opened]
 
 jobs:
   add-reviewer:
@@ -14,4 +14,4 @@ jobs:
           actions: 'add-assignees'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
-          assignees: 'xingwanying,qubaomingg,yangzhanmei,YardWill,lijinke666,wjgogogo,zxc0328'
+          assignees: ${{ github.event.pull_request.user.login }}
