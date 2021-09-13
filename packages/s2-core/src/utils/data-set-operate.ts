@@ -78,7 +78,7 @@ export const sortByItems = (arr1: string[], arr2: string[]) => {
  * @param ids
  * @param data
  * @returns
-*/
+ */
 export const isTotalData = (ids: string[], data: Data): boolean => {
   return !every(ids, (id) => data[id]);
 };
