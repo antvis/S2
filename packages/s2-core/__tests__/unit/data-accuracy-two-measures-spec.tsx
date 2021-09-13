@@ -1,12 +1,3 @@
-import {
-  auto,
-  EXTRA_FIELD,
-  S2DataConfig,
-  S2Options,
-  SheetComponent,
-  SpreadSheet,
-} from '@/index';
-import 'antd/dist/antd.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
@@ -21,6 +12,15 @@ import {
   totalData9,
 } from '../data/data-accuracy';
 import { getContainer } from '../util/helpers';
+import {
+  auto,
+  EXTRA_FIELD,
+  S2DataConfig,
+  S2Options,
+  SheetComponent,
+  SpreadSheet,
+} from '@/index';
+import 'antd/dist/antd.min.css';
 
 let spreadsheet1: SpreadSheet;
 const setSpreadSheet = (

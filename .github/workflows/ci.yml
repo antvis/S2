@@ -1,4 +1,4 @@
-name: 🔧 Test
+name: 🔧 CI
 
 on: [push]
 
@@ -32,6 +32,12 @@ jobs:
 
       - name: Install dependencies
         run: yarn
+
+      - name: Lint scripts, type and style
+        run: yarn lint
+
+      - name: Build
+        run: yarn build
 
       - name: Test
         run: yarn test
