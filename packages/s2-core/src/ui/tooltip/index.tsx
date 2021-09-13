@@ -19,14 +19,14 @@ import {
   manageContainerStyle,
   shouldIgnore,
 } from '@/utils/tooltip';
-import TooltipDetail from '@/ui/tooltip/components/detail';
-import Divider from '@/ui/tooltip/components/divider';
-import TooltipHeadInfo from '@/ui/tooltip/components/head-info';
-import Infos from '@/ui/tooltip/components/infos';
-import Interpretation from '@/ui/tooltip/components/interpretation';
-import TooltipOperator from '@/ui/tooltip/components/operator';
-import SimpleTips from '@/ui/tooltip/components/simple-tips';
-import TooltipSummary from '@/ui/tooltip/components/summary';
+import { TooltipDetail } from '@/ui/tooltip/components/detail';
+import { Divider } from '@/ui/tooltip/components/divider';
+import { TooltipHead } from '@/ui/tooltip/components/head-info';
+import { Infos } from '@/ui/tooltip/components/infos';
+import { Interpretation } from '@/ui/tooltip/components/interpretation';
+import { TooltipOperator } from '@/ui/tooltip/components/operator';
+import { SimpleTips } from '@/ui/tooltip/components/simple-tips';
+import { TooltipSummary } from '@/ui/tooltip/components/summary';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 import './index.less';
 
@@ -163,7 +163,7 @@ export class BaseTooltip {
       (!isEmpty(cols) || !isEmpty(rows)) && (
         <>
           {this.renderDivider()}
-          <TooltipHeadInfo cols={cols} rows={rows} />
+          <TooltipHead cols={cols} rows={rows} />
         </>
       )
     );

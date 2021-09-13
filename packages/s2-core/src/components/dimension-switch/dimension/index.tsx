@@ -22,7 +22,7 @@ interface DimensionProps extends DimensionType {
   onSelect: (type: string, idList: string[], checked: boolean) => void;
 }
 
-const Dimension: FC<DimensionProps> = ({
+export const Dimension: FC<DimensionProps> = ({
   type,
   displayName,
   items,
@@ -215,5 +215,3 @@ const DimensionItem: FC<DimensionItemProps> = ({
     </div>
   );
 };
-
-export default Dimension;
