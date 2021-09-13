@@ -16,18 +16,7 @@ import {
   uniq,
   values,
 } from 'lodash';
-import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
-import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from 'src/common/debug';
-import { i18n } from 'src/common/i18n';
-import { Data, Meta, S2DataConfig } from 'src/common/interface';
-import { BaseDataSet } from 'src/data-set/base-data-set';
-import {
-  CellDataParams,
-  DataPathParams,
-  DataType,
-  PivotMeta,
-} from 'src/data-set/interface';
-import { handleSortAction } from 'src/utils/sort-action';
+import { Node } from '@/facet/layout/node';
 import {
   filterUndefined,
   flatten as customFlatten,
@@ -38,7 +27,18 @@ import {
   splitTotal,
   isTotalData,
 } from '@/utils/data-set-operate';
-import { Node } from '@/facet/layout/node';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '@/common/debug';
+import { i18n } from '@/common/i18n';
+import { Data, Meta, S2DataConfig } from '@/common/interface';
+import { BaseDataSet } from '@/data-set/base-data-set';
+import {
+  CellDataParams,
+  DataPathParams,
+  DataType,
+  PivotMeta,
+} from '@/data-set/interface';
+import { handleSortAction } from '@/utils/sort-action';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure

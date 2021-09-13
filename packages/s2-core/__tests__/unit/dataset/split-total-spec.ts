@@ -1,9 +1,9 @@
 /**
  * split-total function test
  */
-import { splitTotal } from 'src/index';
 import { every } from 'lodash';
 import STANDARD_SPREADSHEET_DATA from '../../data/standard-spreadsheet-data.json';
+import { splitTotal } from '@/index';
 
 describe('DataSet splitTotal function test', () => {
   test('should return all total data.', () => {

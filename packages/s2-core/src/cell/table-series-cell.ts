@@ -1,4 +1,4 @@
-import { DataCell } from 'src/cell/data-cell';
+import { DataCell } from '@/cell/data-cell';
 import { CellTypes } from '@/common/constant';
 import { TextTheme } from '@/common/interface';
 

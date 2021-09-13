@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef, StrictMode, memo } from 'react';
 import { isEmpty, debounce, isFunction, get, merge, forIn } from 'lodash';
 import { Spin, Pagination } from 'antd';
-import { i18n } from 'src/common/i18n';
+import { Event as GEvent } from '@antv/g-canvas';
+import { i18n } from '@/common/i18n';
 import {
   safetyDataConfig,
   safetyOptions,
@@ -13,9 +14,8 @@ import {
   ListSortParams,
   TargetLayoutNode,
   S2Constructor,
-} from 'src/common/interface';
-import { HandleDrillDownIcon, HandleDrillDown, SpreadSheet } from 'src/index';
-import { Event as GEvent } from '@antv/g-canvas';
+} from '@/common/interface';
+import { HandleDrillDownIcon, HandleDrillDown, SpreadSheet } from '@/index';
 import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
 import { S2Event } from '@/common/constant';

@@ -1,15 +1,15 @@
 /**
  * pivot mode base data-set test.
  */
-import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
-import { S2DataConfig } from 'src/common/interface';
-import { SpreadSheet } from 'src/sheet-type';
-import { PivotDataSet } from 'src/data-set/pivot-data-set';
 import { get } from 'lodash';
 import { DATA_TOTAL_CFG } from '../../data/standard-config';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { S2DataConfig } from '@/common/interface';
+import { SpreadSheet } from '@/sheet-type';
+import { PivotDataSet } from '@/data-set/pivot-data-set';
 
-jest.mock('src/sheet-type');
-jest.mock('src/facet/layout/node');
+jest.mock('@/sheet-type');
+jest.mock('@/facet/layout/node');
 const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
 
 describe('Pivot Dataset Test', () => {

@@ -9,8 +9,6 @@ import {
   memoize,
   min,
 } from 'lodash';
-import { CellDataParams, DataType } from 'src/data-set/interface';
-import { SpreadSheet } from 'src/sheet-type';
 import {
   Fields,
   Formatter,
@@ -19,6 +17,8 @@ import {
   SortParams,
 } from '../common/interface';
 import { ValueRange } from './../common/interface/condition';
+import { CellDataParams, DataType } from '@/data-set/interface';
+import { SpreadSheet } from '@/sheet-type';
 import {
   getValueRangeState,
   setValueRangeState,

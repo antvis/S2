@@ -3,7 +3,7 @@ import SEO from '@antv/gatsby-theme-antv/site/components/Seo';
 
 import { useTranslation } from 'react-i18next';
 
-const Playground = () => {
+export const Playground = () => {
   const { t, i18n } = useTranslation();
 
   return (
@@ -15,5 +15,3 @@ const Playground = () => {
     </>
   );
 };
-
-export default Playground;

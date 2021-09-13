@@ -1,12 +1,9 @@
-import {
-  BuildHeaderParams,
-  BuildHeaderResult,
-} from 'src/facet/layout/interface';
-import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { Node } from 'src/facet/layout/node';
-import { buildRowTreeHierarchy } from 'src/facet/layout/build-row-tree-hierarchy';
-import { buildGridHierarchy } from 'src/facet/layout/build-gird-hierarchy';
-import { buildTableHierarchy } from 'src/facet/layout/build-table-hierarchy';
+import { BuildHeaderParams, BuildHeaderResult } from '@/facet/layout/interface';
+import { Hierarchy } from '@/facet/layout/hierarchy';
+import { Node } from '@/facet/layout/node';
+import { buildRowTreeHierarchy } from '@/facet/layout/build-row-tree-hierarchy';
+import { buildGridHierarchy } from '@/facet/layout/build-gird-hierarchy';
+import { buildTableHierarchy } from '@/facet/layout/build-table-hierarchy';
 import { PivotDataSet } from '@/data-set';
 import { buildRowCustomTreeHierarchy } from '@/facet/layout/build-row-custom-tree-hierarchy';
 import { SpreadSheet } from '@/sheet-type';

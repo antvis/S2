@@ -9,21 +9,20 @@ import {
   reduce,
   forEach,
   find,
-  filter,
 } from 'lodash';
 import {
   EXTRA_FIELD,
   ICON_RADIUS,
   S2Event,
   VALUE_FIELD,
-} from 'src/common/constant';
-import { DebuggerUtil } from 'src/common/debug';
-import { LayoutResult, ViewMeta } from 'src/common/interface';
-import { BaseFacet } from 'src/facet/index';
-import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
-import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { Node } from 'src/facet/layout/node';
-import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
+} from '@/common/constant';
+import { DebuggerUtil } from '@/common/debug';
+import { LayoutResult, ViewMeta } from '@/common/interface';
+import { BaseFacet } from '@/facet/index';
+import { buildHeaderHierarchy } from '@/facet/layout/build-header-hierarchy';
+import { Hierarchy } from '@/facet/layout/hierarchy';
+import { Node } from '@/facet/layout/node';
+import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
 import { handleDataItem } from '@/utils/cell/data-cell';
 import {
   layoutCoordinate,

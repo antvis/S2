@@ -1,14 +1,10 @@
 import React from 'react';
 import { size, reduce } from 'lodash';
-import { TooltipSummaryOptions } from '@/common/interface';
+import { SummaryProps } from '@/common/interface';
 import { i18n } from '@/common/i18n';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
-interface SummaryProps {
-  summaries: TooltipSummaryOptions[];
-}
-
-const Summary: React.FC<SummaryProps> = React.memo((props) => {
+export const TooltipSummary: React.FC<SummaryProps> = React.memo((props) => {
   const { summaries = [] } = props;
 
   const renderSelected = () => {
@@ -59,5 +55,3 @@ const Summary: React.FC<SummaryProps> = React.memo((props) => {
     </div>
   );
 });
-
-export default Summary;
