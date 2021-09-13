@@ -21,6 +21,4 @@ jobs:
         with:
           actions: 'add-assignees'
           token: ${{ secrets.GITHUB_TOKEN }}
-          emoji: '+1, -1, heart'
           reviewers: 'xingwanying,qubaomingg,yangzhanmei,YardWill,lijinke666,wjgogogo,zxc0328'
-          close: true
