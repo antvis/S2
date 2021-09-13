@@ -1,0 +1,19 @@
+name: Need Reproduce
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  create-comment:
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'Need Reproduce'
+    steps:
+      - name: Create comment
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，请提供一个可以在线访问的链接, 或者使用[codesandbox](https://codesandbox.io/s/29zle) 并详细说明复现步骤, 7天内未回复issue自动关闭。
