@@ -1,5 +1,5 @@
-import { SpreadSheet } from 'src/sheet-type';
 import { RootInteraction } from './root';
+import { SpreadSheet } from '@/sheet-type';
 
 export type EventConstructor = new (
   spreadsheet: SpreadSheet,

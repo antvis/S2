@@ -3,12 +3,14 @@
     display: grid;
     grid-gap: 16px;
   }
+
   &-footer {
     position: relative;
     display: flex;
     justify-content: flex-end;
     margin-top: 8px;
     padding-top: 8px;
+
     &::before {
       position: absolute;
       top: 0;
@@ -19,12 +21,15 @@
       content: '';
     }
   }
+
   button {
     padding: 0 8px;
   }
+
   button + button {
     margin-left: 8px;
   }
+
   .ant-btn-background-ghost {
     background-color: white !important;
     border: none;

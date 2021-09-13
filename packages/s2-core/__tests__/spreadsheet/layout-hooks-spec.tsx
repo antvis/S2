@@ -14,7 +14,7 @@ import {
 } from '../../src';
 import { getContainer, getMockData } from '../util/helpers';
 import { LayoutHierarchyReturnType } from '@/common/interface/hooks';
-import { generateId } from '@/facet/layout/util/generate-id';
+import { generateId } from '@/utils/layout/generate-id';
 const data = getMockData('../data/tableau-supermarket.csv');
 
 let innerSS: SpreadSheet;

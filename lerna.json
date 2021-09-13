@@ -1,6 +1,6 @@
 {
-  "version": "0.1.3",
-  "npmClient": "npm",
+  "version": "independent",
+  "npmClient": "yarn",
   "useWorkspaces": true,
   "command": {
     "publish": {
@@ -8,7 +8,7 @@
         "*.md",
         "**/_tests_/**"
       ],
-      "message": "chore(release): :bookmark: publish %s"
+      "message": "chore(release): :bookmark: publish new version"
     },
     "bootstrap": {
       "npmClientArgs": [

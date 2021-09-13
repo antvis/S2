@@ -1,10 +1,10 @@
-import { S2Options } from '@/common/interface';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
 import { SheetEntry } from '../util/sheet-entry';
 import { CustomHover } from './custom/custom-interaction';
+import { S2Options } from '@/common/interface';
 
 const options: Partial<S2Options> = {
   customInteractions: [

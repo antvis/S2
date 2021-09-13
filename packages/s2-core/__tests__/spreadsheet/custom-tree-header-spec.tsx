@@ -11,7 +11,7 @@ import {
 } from '../../src';
 import { customTreeItems } from '../data/custom-tree-items';
 import { dataCustomTrees } from '../data/data-custom-trees';
-import { transformCustomTreeItems } from '@/facet/layout/util/transform-custom-tree-items';
+import { transformCustomTreeItems } from '@/utils/layout/transform-custom-tree-items';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,

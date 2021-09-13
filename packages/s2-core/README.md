@@ -162,9 +162,9 @@ $ git clone git@github.com:antvis/S2.git
 
 $ cd s2
 
-$ npm run bootstrap
+$ yarn bootstrap
 
-$ npm run core:start
+$ yarn core:start
 ```
 
 ## 📄 License

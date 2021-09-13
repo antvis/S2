@@ -1,10 +1,9 @@
 import { isEqual } from 'lodash';
-import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import {
   FilterDataItemCallback,
   MappingDataItemCallback,
   S2CellType,
-  ViewMeta,
 } from '@/common/interface';
 import { Data } from '@/common/interface/s2DataConfig';
 

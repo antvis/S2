@@ -2,7 +2,7 @@
 
 <!-- Add completed items in this PR, and change [ ] to [x]. -->
 
-✨Feature
+✨ Feature
 
 - [ ] New feature
 
@@ -12,6 +12,7 @@
 - [ ] Refactoring
 - [ ] Change the UI
 - [ ] Improve performance.
+- [ ] Type optimization
 
 🐛 Bug fix
 
@@ -21,11 +22,13 @@
 
 - [ ] Test case
 - [ ] Docs / demos update
+- [ ] CI / workflow
 - [ ] Other
 
 ### 📝 Description
 
 ### 🖼️ Screenshot
+
 |  Before  |  After  |
 |----|----|
 |  ❌  |  ✅  |

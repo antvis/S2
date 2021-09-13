@@ -1,6 +1,6 @@
-import { SpreadSheet } from 'src/sheet-type';
 import { Formatter, SortParam } from '../../common/interface';
 import { Hierarchy } from '../layout/hierarchy';
+import { SpreadSheet } from '@/sheet-type';
 
 export interface CornerData {
   x: number;

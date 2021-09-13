@@ -1,5 +1,5 @@
-import { BaseDataSet } from 'src/data-set/base-data-set';
 import { CellDataParams, DataType } from './interface';
+import { BaseDataSet } from '@/data-set/base-data-set';
 import { S2DataConfig } from '@/common/interface';
 
 export class TableDataSet extends BaseDataSet {

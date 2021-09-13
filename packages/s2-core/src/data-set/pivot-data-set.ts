@@ -1,14 +1,3 @@
-import { Node } from '@/facet/layout/node';
-import {
-  filterUndefined,
-  flatten as customFlatten,
-  flattenDeep as customFlattenDeep,
-  getFieldKeysByDimensionValues,
-  getIntersections,
-  isEveryUndefined,
-  splitTotal,
-  isTotalData
-} from '@/utils/data-set-operate';
 import {
   compact,
   each,
@@ -25,20 +14,31 @@ import {
   reduce,
   set,
   uniq,
-  values
+  values,
 } from 'lodash';
-import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
-import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from 'src/common/debug';
-import { i18n } from 'src/common/i18n';
-import { Data, Meta, S2DataConfig } from 'src/common/interface';
-import { BaseDataSet } from 'src/data-set/base-data-set';
+import { Node } from '@/facet/layout/node';
+import {
+  filterUndefined,
+  flatten as customFlatten,
+  flattenDeep as customFlattenDeep,
+  getFieldKeysByDimensionValues,
+  getIntersections,
+  isEveryUndefined,
+  splitTotal,
+  isTotalData,
+} from '@/utils/data-set-operate';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '@/common/debug';
+import { i18n } from '@/common/i18n';
+import { Data, Meta, S2DataConfig } from '@/common/interface';
+import { BaseDataSet } from '@/data-set/base-data-set';
 import {
   CellDataParams,
   DataPathParams,
   DataType,
-  PivotMeta
-} from 'src/data-set/interface';
-import { handleSortAction } from 'src/utils/sort-action';
+  PivotMeta,
+} from '@/data-set/interface';
+import { handleSortAction } from '@/utils/sort-action';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -309,13 +309,7 @@ export class PivotDataSet extends BaseDataSet {
   };
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
-    const {
-      data,
-      meta = [],
-      fields,
-      sortParams = [],
-      totalData,
-    } = dataCfg;
+    const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
     const { columns, rows, values, valueInCols } = fields;
 
     const newColumns = valueInCols ? uniq([...columns, EXTRA_FIELD]) : columns;
@@ -424,7 +418,8 @@ export class PivotDataSet extends BaseDataSet {
     const path = this.getDataPath({
       rowDimensionValues,
       colDimensionValues,
-      careUndefined: isTotals || isTotalData([].concat(originRows).concat(columns), query),
+      careUndefined:
+        isTotals || isTotalData([].concat(originRows).concat(columns), query),
     });
     const data = get(this.indexesData, path);
 

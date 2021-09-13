@@ -19,11 +19,11 @@
     "url": "https://github.com/antvis/s2/issues"
   },
   "scripts": {
-    "start": "npm run site:develop",
+    "start": "yarn site:develop",
     "site:develop": "gatsby develop --open -H 0.0.0.0",
-    "site:build": "npm run site:clean && gatsby build --prefix-paths",
+    "site:build": "yarn site:clean && gatsby build --prefix-paths",
     "site:clean": "gatsby clean",
-    "site:deploy": "npm run site:build && gh-pages -d public"
+    "site:deploy": "yarn site:build && gh-pages -d public"
   },
   "dependencies": {
     "@antv/gatsby-theme-antv": "^1.1.8",

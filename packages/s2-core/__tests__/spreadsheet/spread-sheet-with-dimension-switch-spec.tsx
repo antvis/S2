@@ -1,10 +1,10 @@
-import { DimensionSwitchPopover } from '@/components/dimension-switch';
-import { DimensionType } from '@/components/dimension-switch/dimension';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
 import { SheetEntry } from '../util/sheet-entry';
+import { DimensionType } from '@/components/dimension-switch/dimension';
+import { DimensionSwitchPopover } from '@/components/dimension-switch';
 
 const getDimensionData = (): DimensionType[] => {
   return [
