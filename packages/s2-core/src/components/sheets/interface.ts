@@ -8,11 +8,10 @@ import {
   ListSortParams,
   TargetLayoutNode,
   S2Constructor,
-} from 'src/common/interface';
-import { DrillDownProps } from 'src/components/drill-down';
-import { HeaderCfgProps } from 'src/components/header';
-import { Node, SpreadSheet, ThemeCfg } from 'src/index';
-import { Event } from '@antv/g-canvas';
+} from '@/common/interface';
+import { DrillDownProps } from '@/components/drill-down';
+import { HeaderCfgProps } from '@/components/header';
+import { Node, SpreadSheet, ThemeCfg } from '@/index';
 
 export interface PartDrillDownInfo {
   // The data of drill down

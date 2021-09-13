@@ -1,4 +1,4 @@
-import { Data } from 'src/common/interface';
+import { Data } from '@/common/interface';
 
 export const multipleDataWithNormal: Data[] = [
   {

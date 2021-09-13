@@ -1,7 +1,7 @@
-import { Node } from 'src/facet/layout/node';
-import { LayoutResult, SpreadSheetFacetCfg } from 'src/common/interface';
-import { Hierarchy } from 'src/facet/layout/hierarchy';
 import { each, isBoolean, isEmpty } from 'lodash';
+import { Node } from '@/facet/layout/node';
+import { LayoutResult, SpreadSheetFacetCfg } from '@/common/interface';
+import { Hierarchy } from '@/facet/layout/hierarchy';
 
 /**
  * re-arrange field values by custom arrange hooks

@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SpreadSheet } from 'src/sheet-type';
+import { SpreadSheet } from '@/sheet-type';
 import {
   ListItem,
   TooltipData,
@@ -153,11 +153,7 @@ export class BaseTooltip {
   }
 
   protected renderSummary(summaries: TooltipSummaryOptions[]) {
-    return (
-      !isEmpty(summaries) && (
-        <TooltipSummary summaries={summaries} />
-      )
-    );
+    return !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
   }
 
   protected renderHeadInfo(headInfo: TooltipHeadInfoType) {

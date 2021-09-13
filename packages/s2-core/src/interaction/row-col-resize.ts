@@ -1,9 +1,9 @@
 import { Group, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import { clone, get, isNil, throttle } from 'lodash';
-import { SpreadSheet } from 'src/sheet-type';
 import { ResizeInfo } from '../facet/header/interface';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { RootInteraction } from './root';
+import { SpreadSheet } from '@/sheet-type';
 import { Style } from '@/common/interface';
 import {
   MIN_CELL_HEIGHT,
@@ -12,7 +12,6 @@ import {
   S2Event,
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
-import { updateShapeAttr } from '@/utils/g-renders';
 
 /**
  * Resize row&col width/height interaction

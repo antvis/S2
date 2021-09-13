@@ -1,6 +1,6 @@
-import { Node } from '../../facet/layout/node';
+import { Node } from '@/facet/layout/node';
 
-export default function getDimsCondition(parent: Node, force?) {
+export default function getDimsCondition(parent: Node, force?: boolean) {
   const cond = {};
   let p = parent;
   while (p && p.key) {

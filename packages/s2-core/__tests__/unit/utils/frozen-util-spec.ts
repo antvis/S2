@@ -2,8 +2,8 @@ import {
   getFrozenDataCellType,
   calculateFrozenCornerCells,
   splitInViewIndexesWithFrozen,
-} from 'src/facet/utils';
-import { FrozenCellType } from 'src/common/constant/frozen';
+} from '@/facet/utils';
+import { FrozenCellType } from '@/common/constant/frozen';
 import { Indexes } from '@/utils/indexes';
 
 describe('Frozen util test', () => {
