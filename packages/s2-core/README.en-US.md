@@ -7,7 +7,7 @@ English
 
 Data-driven multi-dimensional analysis table.
 
-🚧 Coming soon ... [Roadmap for S2](https://github.com/antvis/S2/discussions)
+🚧 Coming soon ... [Roadmap for S2](https://github.com/antvis/S2/discussions/258)
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
