@@ -7,7 +7,7 @@
 
 数据驱动的多维分析表格。
 
-🚧 激情建设中...详见[Roadmap for S2](https://github.com/antvis/S2/discussions)
+🚧 激情建设中...详见[Roadmap for S2](https://github.com/antvis/S2/discussions/258)
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
