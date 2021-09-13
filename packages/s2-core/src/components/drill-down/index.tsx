@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
 import cx from 'classnames';
 import zhCN from 'antd/lib/locale/zh_CN';
-import { i18n } from '@/common/i18n';
 import { isEmpty } from 'lodash';
 import {
   CalendarIcon,
@@ -10,6 +9,7 @@ import {
   SearchIcon,
   TextIcon,
 } from '../icons/index';
+import { i18n } from '@/common/i18n';
 
 import './index.less';
 

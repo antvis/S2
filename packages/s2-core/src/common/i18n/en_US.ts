@@ -24,5 +24,5 @@ export const EN_US = {
   不排序: 'No order',
   选择下钻维度: 'Select drill down dimension',
   恢复默认: 'Restore default',
-  搜索字段: 'Search field'
+  搜索字段: 'Search field',
 };

@@ -1,14 +1,3 @@
-import { Node } from '@/facet/layout/node';
-import {
-  filterUndefined,
-  flatten as customFlatten,
-  flattenDeep as customFlattenDeep,
-  getFieldKeysByDimensionValues,
-  getIntersections,
-  isEveryUndefined,
-  splitTotal,
-  isTotalData
-} from '@/utils/data-set-operate';
 import {
   compact,
   each,
@@ -25,7 +14,7 @@ import {
   reduce,
   set,
   uniq,
-  values
+  values,
 } from 'lodash';
 import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from 'src/common/debug';
@@ -36,9 +25,20 @@ import {
   CellDataParams,
   DataPathParams,
   DataType,
-  PivotMeta
+  PivotMeta,
 } from 'src/data-set/interface';
 import { handleSortAction } from 'src/utils/sort-action';
+import {
+  filterUndefined,
+  flatten as customFlatten,
+  flattenDeep as customFlattenDeep,
+  getFieldKeysByDimensionValues,
+  getIntersections,
+  isEveryUndefined,
+  splitTotal,
+  isTotalData,
+} from '@/utils/data-set-operate';
+import { Node } from '@/facet/layout/node';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -309,13 +309,7 @@ export class PivotDataSet extends BaseDataSet {
   };
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
-    const {
-      data,
-      meta = [],
-      fields,
-      sortParams = [],
-      totalData,
-    } = dataCfg;
+    const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
     const { columns, rows, values, valueInCols } = fields;
 
     const newColumns = valueInCols ? uniq([...columns, EXTRA_FIELD]) : columns;
@@ -424,7 +418,8 @@ export class PivotDataSet extends BaseDataSet {
     const path = this.getDataPath({
       rowDimensionValues,
       colDimensionValues,
-      careUndefined: isTotals || isTotalData([].concat(originRows).concat(columns), query),
+      careUndefined:
+        isTotals || isTotalData([].concat(originRows).concat(columns), query),
     });
     const data = get(this.indexesData, path);
 

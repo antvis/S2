@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: yarn bootstrap
 
-      - name: Lint scripts and type
+      - name: Lint scripts type and style
         run: yarn lint
 
       - name: Build

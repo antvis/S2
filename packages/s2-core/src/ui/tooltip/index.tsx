@@ -153,11 +153,7 @@ export class BaseTooltip {
   }
 
   protected renderSummary(summaries: TooltipSummaryOptions[]) {
-    return (
-      !isEmpty(summaries) && (
-        <TooltipSummary summaries={summaries} />
-      )
-    );
+    return !isEmpty(summaries) && <TooltipSummary summaries={summaries} />;
   }
 
   protected renderHeadInfo(headInfo: TooltipHeadInfoType) {
