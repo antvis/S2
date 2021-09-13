@@ -24,6 +24,7 @@
     "bundle:size": "lerna run bundle:size --stream",
     "site:bootstrap": "cd ./s2-site && yarn",
     "site:start": "cd ./s2-site && yarn start",
+    "site:clean": "cd  ./s2-site && rimraf node_modules",
     "lint": "yarn tsc && yarn lint:script && yarn lint:style",
     "lint:script": "eslint . --ext '.js,.jsx,.ts,.tsx'",
     "lint:style": "stylelint packages/**/*.less --syntax less",
