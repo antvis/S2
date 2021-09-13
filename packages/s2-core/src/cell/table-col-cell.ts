@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 import { EXTRA_FIELD } from '../common/constant';
-import { renderDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
+import { renderDetailTypeSortIcon } from '../utils/layout/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '../utils/text';
 import { renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';

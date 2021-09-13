@@ -1,5 +1,5 @@
 import { customTreeItems } from '../../data/custom-tree-items';
-import { transformCustomTreeItems } from '@/facet/layout/util/transform-custom-tree-items';
+import { transformCustomTreeItems } from '@/utils/layout/transform-custom-tree-items';
 
 describe('Transform custom tree test', () => {
   test('transform result', () => {

@@ -38,7 +38,7 @@ import {
 } from '..';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
-import { getRightFieldInQuery } from '@/facet/layout/util/get-right-field-in-query';
+import { getRightFieldInQuery } from '@/utils/layout/get-right-field-in-query';
 import { i18n } from '@/common/i18n';
 import {
   POSITION_X_OFFSET,
@@ -74,7 +74,7 @@ function accAdd(arg1: number, arg2: number) {
   const number1 = r2 > r1 ? `${pre1}${next1}${suffix}` : `${pre1}${next1}`;
   const number2 = r1 > r2 ? `${pre2}${next2}${suffix}` : `${pre2}${next2}`;
 
-  return (Number.parseInt(number1) + Number.parseInt(number2)) / m;
+  return (Number.parseInt(number1, 10) + Number.parseInt(number2, 10)) / m;
 }
 
 /**
