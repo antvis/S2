@@ -12,6 +12,9 @@ jobs:
           surge_token: ${{ secrets.SURGE_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           build: |
+            cd ./s2-site
             yarn
-            yarn site:build
-          dist: s2-site/public
+            yarn build
+          dist: public
+      - name: Get the preview_url
+        run: echo "url => ${{ steps.preview_step.outputs.preview_url }}"
