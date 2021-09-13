@@ -162,7 +162,7 @@ $ git clone git@github.com:antvis/S2.git
 
 $ cd s2
 
-$ yarn bootstrap
+$ yarn
 
 $ yarn core:start
 ```
