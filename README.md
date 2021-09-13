@@ -14,7 +14,7 @@
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg">
   </a>
    <a href="https://github.com/antvis/S2/actions" target="_blank">
-    <img src="https://github.com/antvis/S2/workflows/CI/badge.svg" />
+    <img src="https://github.com/antvis/S2/actions/workflows/ci.yml/badge.svg" />
   </a>
   <a href="https://codecov.io/gh/@antv/s2" target="_blank">
     <img src="https://codecov.io/gh/@antv/s2/branch/master/graph/badge.svg" />
