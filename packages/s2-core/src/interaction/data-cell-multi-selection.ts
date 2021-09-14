@@ -1,6 +1,4 @@
 import { Event } from '@antv/g-canvas';
-import { isEmpty } from 'lodash';
-import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { getActiveCellsTooltipData } from '@/utils/tooltip';
 import {
   InterceptType,
@@ -8,6 +6,13 @@ import {
   InteractionStateName,
   S2Event,
 } from '@/common/constant';
+
+import { BaseEvent, BaseEventImplement } from './base-interaction';
+
+const ACTIVATE_KEYS: string[] = [
+  InteractionKeyboardKey.SHIFT,
+  InteractionKeyboardKey.META,
+];
 
 export class DataCellMultiSelection
   extends BaseEvent
@@ -25,8 +30,9 @@ export class DataCellMultiSelection
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
-        if (event.key === InteractionKeyboardKey.SHIFT) {
+        if (ACTIVATE_KEYS.includes(event.key)) {
           this.isMultiSelection = true;
+          this.interaction.addIntercepts([InterceptType.CLICK]);
         }
       },
     );
@@ -34,7 +40,7 @@ export class DataCellMultiSelection
 
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
-      if (event.key === InteractionKeyboardKey.SHIFT) {
+      if (ACTIVATE_KEYS.includes(event.key)) {
         this.isMultiSelection = false;
         this.interaction.removeIntercepts([InterceptType.CLICK]);
       }
@@ -48,8 +54,25 @@ export class DataCellMultiSelection
       const meta = cell.getMeta();
 
       if (this.isMultiSelection && meta) {
-        const activeCells = this.interaction.getActiveCells();
-        const cells = isEmpty(activeCells) ? [] : [...activeCells, cell];
+        let activeCells = this.interaction.getActiveCells();
+        let cells = [];
+        if (
+          this.interaction.getCurrentStateName() !==
+          InteractionStateName.SELECTED
+        ) {
+          activeCells = [];
+        }
+        if (activeCells.includes(cell)) {
+          cells = activeCells.filter((item) => item !== cell);
+        } else {
+          cells = [...activeCells, cell];
+        }
+
+        if (cells.length === 0) {
+          this.interaction.clearState();
+          this.spreadsheet.hideTooltip();
+          return;
+        }
 
         this.interaction.addIntercepts([
           InterceptType.CLICK,
