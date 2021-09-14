@@ -843,6 +843,20 @@ export abstract class BaseFacet {
     });
   };
 
+  protected clip(scrollX: number, scrollY: number) {
+    this.spreadsheet.panelScrollGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
+        y: scrollY,
+        width:
+          this.panelBBox.width +
+          (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
+        height: this.panelBBox.height,
+      },
+    });
+  }
+
   /**
    * Translate panelGroup, rowHeader, cornerHeader, columnHeader ect
    * according to new scroll offset
@@ -888,18 +902,6 @@ export abstract class BaseFacet {
         : undefined,
       KEY_GROUP_COL_RESIZE_AREA,
     );
-
-    this.spreadsheet.panelScrollGroup.setClip({
-      type: 'rect',
-      attrs: {
-        x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
-        y: scrollY,
-        width:
-          this.panelBBox.width +
-          (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
-        height: this.panelBBox.height,
-      },
-    });
   }
 
   addCell = (cell: S2CellType<ViewMeta>) => {
@@ -1156,6 +1158,7 @@ export abstract class BaseFacet {
     }
 
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
+    this.clip(scrollX, scrollY);
 
     this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, { scrollX, scrollY });
   }

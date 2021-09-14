@@ -96,11 +96,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     // check if show series number node
     if (seriesNumberWidth) {
       // 1、spreadsheet must have at least one node in last level
-      // 2、listSheet don't have other conditions
-      if (
-        (isPivotMode && colsHierarchy?.sampleNodeForLastLevel) ||
-        !isPivotMode
-      ) {
+      if (isPivotMode && colsHierarchy?.sampleNodeForLastLevel) {
         const sNode: Node = new Node({
           key: KEY_SERIES_NUMBER_NODE, // mark series node
           id: '',
@@ -163,24 +159,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           cNode.y = colsHierarchy.sampleNodeForLastLevel.y;
           cNode.width = rowNode.width;
           cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
-          cNode.field = field;
-          cNode.isPivotMode = isPivotMode;
-          cNode.spreadsheet = ss;
-          cornerNodes.push(cNode);
-        });
-      } else {
-        // detail type
-        rowsHierarchy.sampleNodesForAllLevels.forEach((rowNode) => {
-          const field = rows[rowNode.level];
-          const cNode: Node = new Node({
-            key: field,
-            id: '',
-            value: dataSet.getFieldName(field),
-          });
-          cNode.x = rowNode.x + seriesNumberWidth;
-          cNode.y = position.y;
-          cNode.width = rowNode.width;
-          cNode.height = height;
           cNode.field = field;
           cNode.isPivotMode = isPivotMode;
           cNode.spreadsheet = ss;

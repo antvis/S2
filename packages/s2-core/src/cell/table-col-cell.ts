@@ -1,13 +1,54 @@
 import { get } from 'lodash';
-import { EXTRA_FIELD } from '../common/constant';
-import { renderDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
-import { getEllipsisText, getTextPosition } from '../utils/text';
+import { Group } from '@antv/g-canvas';
 import { renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
+import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
+
+import { renderDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
+import { getEllipsisText, getTextPosition } from '../utils/text';
 
 export class TableColCell extends ColCell {
-  protected getStyle() {
-    return get(this, 'theme.colCell');
+  protected isFrozenCol() {
+    const { frozenColCount, frozenTrailingColCount } = this.spreadsheet.options;
+    const { colIndex } = this.meta;
+    const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
+
+    return (
+      (frozenColCount > 0 && colIndex < frozenColCount) ||
+      (frozenTrailingColCount > 0 &&
+        colIndex >= colLeafNodes.length - frozenTrailingColCount)
+    );
+  }
+
+  protected getColResizeArea() {
+    const isFrozenCol = this.isFrozenCol();
+
+    if (!isFrozenCol) {
+      return super.getColResizeArea();
+    }
+    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+      KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+    );
+    return (prevResizeArea ||
+      this.spreadsheet.foregroundGroup.addGroup({
+        id: KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+      })) as Group;
+  }
+
+  protected getColResizeAreaOffset() {
+    const { offset, position } = this.headerConfig;
+    const { x, y } = this.meta;
+
+    let finalOffset = offset;
+    // 如果当前列被冻结，不对 resizer 做 offset 处理
+    if (this.isFrozenCol()) {
+      finalOffset = 0;
+    }
+
+    return {
+      x: position.x - finalOffset + x,
+      y: position.y + y,
+    };
   }
 
   protected drawTextShape() {
@@ -75,9 +116,5 @@ export class TableColCell extends ColCell {
       textY,
       key,
     );
-  }
-
-  protected getColResizeAreaKey(): string {
-    return EXTRA_FIELD;
   }
 }
