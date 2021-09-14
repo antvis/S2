@@ -16,9 +16,7 @@
    <a href="https://github.com/antvis/S2/actions" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/ci.yml/badge.svg" alt="ci status"/>
   </a>
-  <a href="https://codecov.io/gh/antvis/S2" target="_blank">
-    <img src="https://codecov.io/gh/antvis/S2/branch/master/graph/badge.svg" alt="coverage"/>
-  </a>
+  <a href='https://coveralls.io/github/antvis/S2?branch=master'><img src='https://coveralls.io/repos/github/antvis/S2/badge.svg?branch=master' alt='Coverage Status' /></a>
   <a href="https://david-dm.org/antvis/s2" target="_blank">
     <img src="https://status.david-dm.org/gh/antvis/S2.svg" alt="dependencies"/>
   </a>
