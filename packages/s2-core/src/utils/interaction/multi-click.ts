@@ -1,7 +1,7 @@
 import { concat, isEmpty } from 'lodash';
 import { InteractionStateName, InterceptType } from '@/common/constant';
-import { S2CellType, MultiClickParams } from '@/common/interface';
-import { Node } from '@/index';
+import { MultiClickParams, S2CellType } from '@/common/interface';
+import { Node } from '@/facet/layout/node';
 import { mergeCellInfo } from '@/utils/tooltip';
 
 export const handleRowColClick = ({

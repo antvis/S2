@@ -1,7 +1,7 @@
 name: 🏷 PR Auto Set Label
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, edited]
 
 jobs:
@@ -61,3 +61,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           labels: 'pr(documentation)'
+
+      - name: Set weekly label
+        if: startsWith(github.event.pull_request.head.ref, 'weekly')
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'set-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          labels: '🗓 weekly'

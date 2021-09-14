@@ -1,11 +1,11 @@
 import { concat, forEach, includes, isEmpty, merge, size } from 'lodash';
-import { HoverEvent } from '..';
 import {
   DataCellClick,
   MergedCellsClick,
   RowColumnClick,
   RowTextClick,
 } from './base-interaction/click';
+import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
 import { ColCell, DataCell, RowCell } from '@/cell';

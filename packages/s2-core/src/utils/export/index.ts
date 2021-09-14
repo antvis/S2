@@ -17,7 +17,7 @@ import {
   EMPTY_PLACEHOLDER,
   ROOT_BEGINNING_REGEX,
 } from '@/common/constant';
-import { MultiData } from '@/common/interface/S2DataConfig';
+import { MultiData } from '@/common/interface';
 
 export const copyToClipboard = (str: string) => {
   try {
