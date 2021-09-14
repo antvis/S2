@@ -1,4 +1,4 @@
-name: 🔧 CI
+name: CI
 
 on: [push]
 
@@ -42,9 +42,12 @@ jobs:
 
       - name: Bundle size
         run: yarn bundle:size
+        env:
+          BUNDLESIZE_GITHUB_TOKEN: ${{ secrets.BUNDLESIZE_GITHUB_TOKEN }}
 
       - name: Test
-        run: yarn test
-
-      - name: Test coverage
-        run: yarn test:coverage
+        run: |
+          yarn test
+          yarn test:ci-coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
