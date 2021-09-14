@@ -60,7 +60,7 @@ const external = ['react', 'react-dom', '@ant-design/icons', 'antd'];
 
 if (format === 'umd') {
   output.file = 'dist/s2.min.js';
-  // plugins.push(terser());
+  plugins.push(terser());
   output.globals = {
     react: 'React',
     'react-dom': 'ReactDOM',
