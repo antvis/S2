@@ -29,5 +29,6 @@
     "^tests/(.*)": "<rootDir>/__tests__/$1",
     "^src/(.*)": "<rootDir>/src/$1"
   },
+  "maxWorkers": 16,
   "testTimeout": 30000
 }

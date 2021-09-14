@@ -12,55 +12,49 @@ jobs:
         if: startsWith(github.event.pull_request.title, 'fix')
         uses: actions-cool/issues-helper@main
         with:
-          actions: 'set-labels'
+          actions: 'create-label'
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(fix)'
+          label-name: 'pr(fix)'
 
       - name: Set chore label
         if: startsWith(github.event.pull_request.title, 'chore')
         uses: actions-cool/issues-helper@main
         with:
-          actions: 'set-labels'
+          actions: 'create-label'
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(chore)'
+          label-name: 'pr(chore)'
 
       - name: Set feat label
         if: startsWith(github.event.pull_request.title, 'feat')
         uses: actions-cool/issues-helper@main
         with:
-          actions: 'set-labels'
+          actions: 'create-label'
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(feature)'
+          label-name: 'pr(feature)'
 
       - name: Set refactor label
         if: startsWith(github.event.pull_request.title, 'refactor')
         uses: actions-cool/issues-helper@main
         with:
-          actions: 'set-labels'
+          actions: 'create-label'
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(refactor)'
+          label-name: 'pr(refactor)'
 
       - name: Set test label
         if: startsWith(github.event.pull_request.title, 'test')
         uses: actions-cool/issues-helper@main
         with:
-          actions: 'set-labels'
+          actions: 'create-label'
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(test)'
+          label-name: 'pr(test)'
 
       - name: Set docs label
         if: startsWith(github.event.pull_request.title, 'docs')
         uses: actions-cool/issues-helper@main
         with:
-          actions: 'set-labels'
+          actions: 'create-label'
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(documentation)'
+          label-name: 'pr(documentation)'
 
       - name: Set refactor label
         if: startsWith(github.event.pull_request.title, 'refactor')
@@ -75,7 +69,6 @@ jobs:
         if: contains(github.event.pull_request.head.ref, 'weekly')
         uses: actions-cool/issues-helper@main
         with:
-          actions: 'set-labels'
+          actions: 'create-label'
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: '🗓 weekly'
+          label-name: '🗓 weekly'
