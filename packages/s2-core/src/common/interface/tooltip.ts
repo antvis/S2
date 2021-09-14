@@ -13,6 +13,7 @@ export interface IMenu {
 export interface TooltipOperatorOptions {
   onClick: (...params: unknown[]) => void;
   menus: IMenu[];
+  [key: string]: any;
 }
 
 export interface TooltipPosition {

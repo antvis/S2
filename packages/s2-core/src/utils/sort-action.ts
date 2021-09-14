@@ -1,6 +1,6 @@
-import { keys, has, uniq, isPlainObject, map } from 'lodash';
-import { SortMethod } from '@/common/interface';
+import { SortMethod, SortParam } from '@/common/interface';
 import { DataType, SortActionParams } from '@/data-set/interface';
+import { keys, has, uniq, isPlainObject, map } from 'lodash';
 import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
 import { sortByItems } from '@/utils/data-set-operate';
 
@@ -130,4 +130,20 @@ export const handleSortAction = (params: SortActionParams): string[] => {
     originValues,
     measureValues,
   });
+};
+
+export const getSortTypeIcon = (
+  sortParam: SortParam,
+  isValueCell?: boolean,
+) => {
+  if (sortParam?.sortMethod) {
+    if (['ASC', 'asc']?.includes(sortParam?.sortMethod)) {
+      return 'groupAsc';
+    } else if (['DESC', 'desc']?.includes(sortParam?.sortMethod)) {
+      return 'groupDesc';
+    }
+  }
+  if(isValueCell) {
+    return 'SortDown';
+  }
 };
