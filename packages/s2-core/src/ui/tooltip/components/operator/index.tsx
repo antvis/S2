@@ -17,7 +17,7 @@ import './index.less';
  */
 
 const Operator = (props: TooltipOperatorOptions) => {
-  const { menus, onClick } = props;
+  const { menus, onClick, onlyMenu } = props;
 
   const onMenuClick = (e) => {
     const { key } = e;
@@ -59,13 +59,15 @@ const Operator = (props: TooltipOperatorOptions) => {
     const { id, icon, text, children } = menu;
 
     if (size(children)) {
-      return <Menu.SubMenu
-        title={renderTitle(text, icon)}
-        key={id}
-        popupClassName={`${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`}
-      >
-        {map(children, (menu) => renderMenu(menu))}
-      </Menu.SubMenu>;
+      return (
+        <Menu.SubMenu
+          title={renderTitle(text, icon)}
+          key={id}
+          popupClassName={`${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`}
+        >
+          {map(children, (menu) => renderMenu(menu))}
+        </Menu.SubMenu>
+      );
     }
 
     return (
@@ -76,6 +78,16 @@ const Operator = (props: TooltipOperatorOptions) => {
   };
 
   const renderMenus = () => {
+    if (onlyMenu) {
+      return (
+        <Menu
+          className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
+          onClick={onMenuClick}
+        >
+          {map(menus, (menu: IMenu) => renderMenu(menu))}
+        </Menu>
+      );
+    }
     return map(menus, (menu: IMenu) => {
       const { id, icon, text, children } = menu;
 
@@ -84,11 +96,12 @@ const Operator = (props: TooltipOperatorOptions) => {
           className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
           key={id}
           onClick={onMenuClick}
-          mode="horizontal"
         >
           {map(children, (menu: IMenu) => renderMenu(menu))}
         </Menu>
-      ) : <></>;
+      ) : (
+        <></>
+      );
 
       return (
         <Dropdown overlay={menuRender}>{renderTitle(text, icon)}</Dropdown>
