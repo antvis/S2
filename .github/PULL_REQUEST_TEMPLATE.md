@@ -28,8 +28,6 @@
 ### 📝 Description
 
 ### 🖼️ Screenshot
-
-### 🖼️ Screenshot
 |  Before  |  After  |
 |----|----|
 |  ❌  |  ✅  |
