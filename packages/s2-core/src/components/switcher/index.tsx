@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import {} from 'react-beautiful-dnd';
 import { SwitcherIcon } from '../icons';
 import { SwitcherContent, SwitcherProps } from './content/content';
+import './index.less';
 
 export const Switcher: FC<SwitcherProps> = (props) => {
   return (
@@ -13,7 +14,11 @@ export const Switcher: FC<SwitcherProps> = (props) => {
       content={<SwitcherContent {...props} />}
       onVisibleChange={(visible) => {}}
     >
-      <Button size="small" icon={<SwitcherIcon />}>
+      <Button
+        className={'switcher-button'}
+        size="small"
+        icon={<SwitcherIcon />}
+      >
         行列切换
       </Button>
     </Popover>
