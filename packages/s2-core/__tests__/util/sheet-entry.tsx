@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { Checkbox, Switch } from 'antd';
 import { isArray, merge, mergeWith } from 'lodash';
-import { data, meta } from '../data/mock-dataset.json';
+import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
   defaultDataConfig,
   defaultOptions,
@@ -38,12 +38,14 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
     defaultDataConfig,
     {
       fields: {
-        rows: ['area', 'province', 'city'],
+        rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
-        values: ['price', 'cost'],
+        values: ['price'],
+        valueInCols: true,
       },
       meta,
       data,
+      totalData,
     },
     ...dataCfg,
     (origin, updated) => {
