@@ -1,12 +1,10 @@
 /**
  * table mode data-set test.
  */
- import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
  import { S2DataConfig } from 'src/common/interface';
  import { SpreadSheet } from 'src/sheet-type';
  import { TableDataSet } from 'src/data-set/table-data-set';
- import { get } from 'lodash';
- import { assembleDataCfg } from '../../util/sheet-entry';
+ import { assembleDataCfg } from 'tests/util/sheet-entry';
  
  jest.mock('src/sheet-type');
  jest.mock('src/facet/layout/node');
@@ -65,3 +63,4 @@
      });
    });
  });
+ 

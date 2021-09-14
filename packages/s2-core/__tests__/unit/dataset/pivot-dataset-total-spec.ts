@@ -5,7 +5,7 @@
  import { S2DataConfig } from 'src/common/interface';
  import { SpreadSheet } from 'src/sheet-type';
  import { PivotDataSet } from 'src/data-set/pivot-data-set';
- import { assembleDataCfg } from '../../util/sheet-entry';
+ import { assembleDataCfg } from 'tests/util/sheet-entry';
  import { get } from 'lodash';
  
  jest.mock('src/sheet-type');
@@ -111,19 +111,19 @@
           sub_type: '桌子',
           [EXTRA_FIELD]: 'price'
          }
-       })).toEqual(expect.objectContaining({
-         [VALUE_FIELD]: 10
-       }));
- 
+       })).toContainEntries([
+        [VALUE_FIELD, 10],
+      ]);
+       
        expect(dataSet.getCellData({ 
          query: {
           type: '家具',
           sub_type: '桌子',
           [EXTRA_FIELD]: 'price'
          }
-       })).toEqual(expect.objectContaining({
-         [VALUE_FIELD]: 84
-       }));
+       })).toContainEntries([
+        [VALUE_FIELD, 84],
+      ]);
 
        expect(dataSet.getCellData({ 
         query: {
@@ -132,9 +132,9 @@
           type: '家具',
           [EXTRA_FIELD]: 'price'
         }
-       })).toEqual(expect.objectContaining({
-        [VALUE_FIELD]: 6
-       }));
+       })).toContainEntries([
+        [VALUE_FIELD, 6],
+      ]);
 
        expect(dataSet.getCellData({ 
         query: {
@@ -142,26 +142,26 @@
           city: '杭州市',
           [EXTRA_FIELD]: 'price'
         }
-       })).toEqual(expect.objectContaining({
-        [VALUE_FIELD]: 28
-       }));
+       })).toContainEntries([
+        [VALUE_FIELD, 28],
+      ]);
 
        expect(dataSet.getCellData({ 
         query: {
          type: '家具',
          [EXTRA_FIELD]: 'price'
         }
-       })).toEqual(expect.objectContaining({
-          [VALUE_FIELD]: 200
-       }));
+       })).toContainEntries([
+        [VALUE_FIELD, 200],
+      ]);
 
        expect(dataSet.getCellData({ 
         query: {
          [EXTRA_FIELD]: 'price'
         }
-       })).toEqual(expect.objectContaining({
-          [VALUE_FIELD]: 528
-       }));
+       })).toContainEntries([
+        [VALUE_FIELD, 528],
+      ]);
      });
  
      test('getMultiData function', () => {
@@ -173,9 +173,9 @@
          [EXTRA_FIELD]: 'price'
        };
        expect(dataSet.getMultiData(specialQuery)).toHaveLength(1);
-       expect(dataSet.getMultiData(specialQuery)[0]).toEqual(expect.objectContaining({
-         [VALUE_FIELD]: 1
-       }));
+       expect(dataSet.getMultiData(specialQuery)[0]).toContainEntries([
+        [VALUE_FIELD, 1],
+      ]);
 
        expect(dataSet.getMultiData({
          province: '浙江省',
@@ -216,3 +216,4 @@
      });
    });
  });
+ 

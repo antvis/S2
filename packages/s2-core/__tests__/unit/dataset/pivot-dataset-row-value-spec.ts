@@ -6,7 +6,7 @@
  import { SpreadSheet } from 'src/sheet-type';
  import { PivotDataSet } from 'src/data-set/pivot-data-set';
  import { get } from 'lodash';
- import { assembleDataCfg } from '../../util/sheet-entry';
+ import { assembleDataCfg } from 'tests/util/sheet-entry';
  
  jest.mock('src/sheet-type');
  jest.mock('src/facet/layout/node');
@@ -38,7 +38,10 @@
      });
    
      test('should get correct meta data', () => {
-       expect(dataSet.meta[0]).toEqual(expect.objectContaining({ field: EXTRA_FIELD, name: '数值'}));
+       expect(dataSet.meta[0]).toContainEntries([
+        ['field', EXTRA_FIELD],
+        ['name', '数值'],
+      ]);
      });
  
      test('should get correct row pivot meta', () => {
@@ -128,9 +131,9 @@
            sub_type: '桌子',
            [EXTRA_FIELD]: 'price'
          }
-       })).toEqual(expect.objectContaining({
-         [VALUE_FIELD]: 1
-       }));
+       })).toContainEntries([
+        [VALUE_FIELD, 1],
+      ]);
  
        expect(dataSet.getCellData({ 
          query: {
@@ -140,9 +143,9 @@
            sub_type: '纸张',
            [EXTRA_FIELD]: 'price'
          }
-       })).toEqual(expect.objectContaining({
-         [VALUE_FIELD]: 32
-       }));
+       })).toContainEntries([
+        [VALUE_FIELD, 32],
+      ]);
      });
  
      test('getMultiData function', () => {
@@ -154,9 +157,9 @@
          [EXTRA_FIELD]: 'price'
        };
        expect(dataSet.getMultiData(specialQuery)).toHaveLength(1);
-       expect(dataSet.getMultiData(specialQuery)[0]).toEqual(expect.objectContaining({
-         [VALUE_FIELD]: 1
-       }));
+       expect(dataSet.getMultiData(specialQuery)[0]).toContainEntries([
+        [VALUE_FIELD, 1],
+      ]);
  
        expect(dataSet.getMultiData({
          province: '浙江省',
@@ -235,3 +238,4 @@
      });
    });
  });
+ 
