@@ -40,14 +40,14 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Test
+        run: |
+          yarn test:ci-coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Bundle size
         run: yarn bundle:size
         env:
           BUNDLESIZE_GITHUB_TOKEN: ${{ secrets.BUNDLESIZE_GITHUB_TOKEN }}
 
-      - name: Test
-        run: |
-          yarn test
-          yarn test:ci-coverage
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
