@@ -1,18 +1,6 @@
-import { S2Event, SERIES_NUMBER_FIELD } from 'src/common/constant';
-import { PanelIndexes } from 'src/utils/indexes';
-import { BaseFacet } from 'src/facet/index';
-import { buildHeaderHierarchy } from 'src/facet/layout/build-header-hierarchy';
-import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { layoutCoordinate } from 'src/facet/layout/layout-hooks';
-import { Node } from 'src/facet/layout/node';
-import { measureTextWidth, measureTextWidthRoughly } from 'src/utils/text';
-import { DebuggerUtil } from 'src/common/debug';
-import { renderLine } from 'src/utils/g-renders';
 import { Group } from '@antv/g-canvas';
 import { IGroup } from '@antv/g-base';
-import { FrozenCellGroupMap } from 'src/common/constant/frozen';
 import { get, maxBy, orderBy } from 'lodash';
-
 import type {
   LayoutResult,
   SplitLine,
@@ -28,6 +16,17 @@ import {
   calculateFrozenCornerCells,
   splitInViewIndexesWithFrozen,
 } from './utils';
+import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
+import { PanelIndexes } from '@/utils/indexes';
+import { BaseFacet } from '@/facet/index';
+import { buildHeaderHierarchy } from '@/facet/layout/build-header-hierarchy';
+import { Hierarchy } from '@/facet/layout/hierarchy';
+import { layoutCoordinate } from '@/facet/layout/layout-hooks';
+import { Node } from '@/facet/layout/node';
+import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
+import { DebuggerUtil } from '@/common/debug';
+import { renderLine } from '@/utils/g-renders';
+import { FrozenCellGroupMap } from '@/common/constant/frozen';
 
 export class TableFacet extends BaseFacet {
   public constructor(props) {

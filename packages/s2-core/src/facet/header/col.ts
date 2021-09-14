@@ -1,5 +1,7 @@
 import { each, isEmpty } from 'lodash';
 import { IGroup, IShape } from '@antv/g-base';
+import { translateGroup } from '../utils';
+import { BaseHeader, BaseHeaderConfig } from './base';
 import {
   KEY_GROUP_COL_RESIZE_AREA,
   SERIES_NUMBER_FIELD,
@@ -8,12 +10,10 @@ import {
   KEY_GROUP_COL_FROZEN_TRAILING,
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
-} from 'src/common/constant';
-import { ColCell, TableColCell, TableCornerCell } from 'src/cell';
-import { Formatter, S2CellType, SortParam } from 'src/common/interface';
-import { Node } from 'src/facet/layout/node';
-import { translateGroup } from '../utils';
-import { BaseHeader, BaseHeaderConfig } from './base';
+} from '@/common/constant';
+import { ColCell, TableColCell, TableCornerCell } from '@/cell';
+import { Formatter, S2CellType, SortParam } from '@/common/interface';
+import { Node } from '@/facet/layout/node';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
   // format field value

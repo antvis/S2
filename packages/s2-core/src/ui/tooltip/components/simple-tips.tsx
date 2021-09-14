@@ -2,7 +2,7 @@ import * as React from 'react';
 import { TooltipNameTipsOptions } from '@/common/interface';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
-const SimpleTips = (props: TooltipNameTipsOptions) => {
+export const SimpleTips = (props: TooltipNameTipsOptions) => {
   const { tips = '', name = '' } = props;
 
   return (
@@ -14,5 +14,3 @@ const SimpleTips = (props: TooltipNameTipsOptions) => {
     </>
   );
 };
-
-export default SimpleTips;

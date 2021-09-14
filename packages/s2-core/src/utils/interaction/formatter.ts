@@ -1,6 +1,6 @@
 import { Event } from '@antv/g-canvas';
-import { Node } from 'src/facet/layout/node';
-import { TargetCellInfo } from 'src/common/interface';
+import { Node } from '@/facet/layout/node';
+import { TargetCellInfo } from '@/common/interface';
 
 /* formate the base Event data */
 export const getBaseCellData = (ev: Event): TargetCellInfo => {

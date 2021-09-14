@@ -4,9 +4,6 @@ import { GuiIcon } from '@/common/icons';
 import { S2Event, DEFAULT_PADDING, SortMethodType } from '@/common/constant';
 import { SpreadSheet } from '@/.';
 
-// 排序按钮的宽度
-export const SORT_ICON_SIZE = 8;
-
 export const getIconType = (key: string, spreadsheet: SpreadSheet) => {
   /*
   currentSortKey 存储的点击的某个field对应的升序还是降序
@@ -50,12 +47,13 @@ export const renderIcon = (
   sortType: SortMethodType,
   selected: boolean,
 ) => {
+  const iconSiz = spreadsheet.theme.colCell.icon.size;
   const icon = new GuiIcon({
     type,
     x,
     y,
-    width: SORT_ICON_SIZE,
-    height: SORT_ICON_SIZE,
+    width: iconSiz,
+    height: iconSiz,
   });
 
   icon.on('click', () => {

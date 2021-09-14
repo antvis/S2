@@ -4,7 +4,7 @@ import { renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 
-import { renderDetailTypeSortIcon } from '../facet/layout/util/add-detail-type-sort-icon';
+import { renderDetailTypeSortIcon } from '../utils/layout/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '../utils/text';
 
 export class TableColCell extends ColCell {

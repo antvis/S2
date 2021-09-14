@@ -5,10 +5,10 @@
  * - 明细表不需要生成 Row Hierarchy（但为了流程一致会生成空结构）
  */
 import { get } from 'lodash';
-import { SpreadSheet } from 'src/sheet-type';
 import STANDARD_SPREADSHEET_DATA from '../../../data/standard-spreadsheet-data.json';
 import { getContainer } from '../../../util/helpers';
 import { S2Options } from '@/index';
+import { SpreadSheet } from '@/sheet-type';
 
 describe('List Table Core Data Process', () => {
   const options: S2Options = { width: 600, height: 400, mode: 'table' };

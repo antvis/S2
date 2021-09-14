@@ -1,3 +1,7 @@
+import { Event, Group, Point } from '@antv/g-canvas';
+import { GM } from '@antv/g-gesture';
+import { each, forEach } from 'lodash';
+import { HeaderCell } from './header-cell';
 import {
   CellTypes,
   ID_SEPARATOR,
@@ -13,10 +17,6 @@ import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
-import { Event, Group, Point } from '@antv/g-canvas';
-import { GM } from '@antv/g-gesture';
-import { each, forEach } from 'lodash';
-import { HeaderCell } from './header-cell';
 
 export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;

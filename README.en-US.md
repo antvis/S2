@@ -7,7 +7,7 @@ English
 
 Data-driven multi-dimensional analysis table.
 
-🚧 Coming soon ... [Roadmap for S2](https://github.com/antvis/S2/discussions)
+🚧 Coming soon ... [Roadmap for S2](https://github.com/antvis/S2/discussions/258)
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
@@ -52,6 +52,7 @@ demo components and expansion capabilities, it allows developers to use it quick
 
 ```bash
 $ npm install @antv/s2
+# yarn add @antv/s2
 ```
 
 ## 🔨 Getting Started
@@ -169,9 +170,9 @@ $ git clone git@github.com:antvis/S2.git
 
 $ cd s2
 
-$ npm run bootstrap
+$ yarn
 
-$ npm run core:start
+$ yarn core:start
 ```
 
 ## 📄 License

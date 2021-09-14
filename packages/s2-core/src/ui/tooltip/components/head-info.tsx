@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ListItem, TooltipHeadInfo } from '@/common/interface';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
-const TooltipHeadInfo = (props: TooltipHeadInfo) => {
+export const TooltipHead = (props: TooltipHeadInfo) => {
   const { rows = [], cols = [] } = props;
 
   return (
@@ -13,5 +13,3 @@ const TooltipHeadInfo = (props: TooltipHeadInfo) => {
     </div>
   );
 };
-
-export default TooltipHeadInfo;

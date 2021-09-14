@@ -16,7 +16,7 @@ import './index.less';
  *    delay 300ms show
  */
 
-const Operator = (props: TooltipOperatorOptions) => {
+export const TooltipOperator = (props: TooltipOperatorOptions) => {
   const { menus, onClick } = props;
 
   const onMenuClick = (e) => {
@@ -96,5 +96,3 @@ const Operator = (props: TooltipOperatorOptions) => {
     )
   );
 };
-
-export default Operator;

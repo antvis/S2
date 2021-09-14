@@ -1,9 +1,9 @@
 import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { layoutArrange } from '@/facet/layout/layout-hooks';
-import getDimsCondition from '@/facet/layout/util/get-dims-condition-by-node';
-import { addTotals } from '@/facet/layout/util/add-totals';
-import { generateHeaderNodes } from '@/facet/layout/util/generate-header-nodes';
+import getDimsCondition from '@/utils/layout/get-dims-condition-by-node';
+import { addTotals } from '@/utils/layout/add-totals';
+import { generateHeaderNodes } from '@/utils/layout/generate-header-nodes';
 import { EXTRA_FIELD } from '@/common/constant';
 import { SpreadSheetFacetCfg } from '@/common/interface';
 

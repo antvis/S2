@@ -1,5 +1,5 @@
-import { getTextPosition } from '../../../src/utils/text';
-import { CellBoxCfg } from '../../../src/common/interface';
+import { getTextPosition } from '@/utils/text';
+import { CellBoxCfg } from '@/common/interface';
 
 describe('Test utils function', () => {
   describe('getTextPosition', () => {

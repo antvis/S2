@@ -1,13 +1,13 @@
 import { SimpleBBox, IGroup } from '@antv/g-canvas';
 import { findIndex, isNil } from 'lodash';
+
+import { Indexes } from '../utils/indexes';
+import { ViewCellHeights } from './layout/interface';
 import {
   FrozenCellType,
   FrozenOpts,
   FrozenCellIndex,
-} from 'src/common/constant/frozen';
-
-import { Indexes } from '../utils/indexes';
-import { ViewCellHeights } from './layout/interface';
+} from '@/common/constant/frozen';
 
 /**
  * 计算偏移 scrollX、scrollY 的时候，在视窗中的节点索引

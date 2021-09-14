@@ -1,7 +1,7 @@
 import React, { useState, FC } from 'react';
 import { Button } from 'antd';
 import { get, isEqual, reduce } from 'lodash';
-import Dimension, { DimensionType } from '../dimension';
+import { Dimension, DimensionType } from '../dimension';
 import { getDimensionsByPredicate, OperatedType } from '../util';
 import { i18n } from '@/common/i18n';
 import './index.less';
@@ -13,7 +13,7 @@ export interface DimensionSwitchProps {
   onSubmit: (result: DimensionType[]) => void;
 }
 
-const DimensionSwitch: FC<DimensionSwitchProps> = ({
+export const DimensionSwitch: FC<DimensionSwitchProps> = ({
   data,
   keepSearching,
   onUpdateDisableItems,
@@ -107,5 +107,3 @@ const DimensionSwitch: FC<DimensionSwitchProps> = ({
     </div>
   );
 };
-
-export default DimensionSwitch;

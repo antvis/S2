@@ -1,4 +1,3 @@
-import { ThemeName } from '@/index';
 import { Radio, Space, Switch } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -6,6 +5,7 @@ import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
 import { SheetEntry } from '../util/sheet-entry';
 import { CustomTooltip } from './custom/custom-tooltip';
+import { ThemeName } from '@/index';
 
 function MainLayout() {
   const [render, setRender] = React.useState(true);

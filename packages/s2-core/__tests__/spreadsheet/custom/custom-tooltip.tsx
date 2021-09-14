@@ -1,7 +1,7 @@
 import React from 'react';
 import { BaseTooltip } from '@/ui/tooltip';
-import Infos from '@/ui/tooltip/components/infos';
-import NameTips from '@/ui/tooltip/components/simple-tips';
+import { Infos } from '@/ui/tooltip/components/infos';
+import { SimpleTips } from '@/ui/tooltip/components/simple-tips';
 
 const extra = [
   {
@@ -19,7 +19,7 @@ export class CustomTooltip extends BaseTooltip {
   protected renderNameTips(nameTip) {
     const { tips } = extra.find((item) => item.value === nameTip.name) || {};
     if (tips) {
-      return <NameTips tips={tips} name={nameTip.name} />;
+      return <SimpleTips tips={tips} name={nameTip.name} />;
     }
     return super.renderNameTips(nameTip);
   }

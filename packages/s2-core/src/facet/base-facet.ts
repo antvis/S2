@@ -15,6 +15,11 @@ import {
   reduce,
 } from 'lodash';
 import {
+  calculateInViewIndexes,
+  optimizeScrollXY,
+  translateGroup,
+} from './utils';
+import {
   S2Event,
   KEY_GROUP_COL_RESIZE_AREA,
   KEY_GROUP_CORNER_RESIZE_AREA,
@@ -22,27 +27,22 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
-} from 'src/common/constant';
-import type { S2WheelEvent, ScrollOffset } from 'src/common/interface/scroll';
-import { getAllPanelDataCell } from 'src/utils/getAllPanelDataCell';
+} from '@/common/constant';
+import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
+import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
 import {
   ColHeader,
   CornerHeader,
   Frame,
   RowHeader,
   SeriesNumberHeader,
-} from 'src/facet/header';
-import { Hierarchy } from 'src/facet/layout/hierarchy';
-import { ViewCellHeights } from 'src/facet/layout/interface';
-import { Node } from 'src/facet/layout/node';
-import { SpreadSheet } from 'src/sheet-type';
-import { ScrollBar, ScrollType } from 'src/ui/scrollbar';
-import { isMobile } from 'src/utils/is-mobile';
-import {
-  calculateInViewIndexes,
-  optimizeScrollXY,
-  translateGroup,
-} from './utils';
+} from '@/facet/header';
+import { Hierarchy } from '@/facet/layout/hierarchy';
+import { ViewCellHeights } from '@/facet/layout/interface';
+import { Node } from '@/facet/layout/node';
+import { SpreadSheet } from '@/sheet-type';
+import { ScrollBar, ScrollType } from '@/ui/scrollbar';
+import { isMobile } from '@/utils/is-mobile';
 import {
   DebuggerUtil,
   DEBUG_HEADER_LAYOUT,

@@ -1,10 +1,10 @@
-import { FieldValue, TreeHeaderParams } from 'src/facet/layout/interface';
-import { layoutArrange, layoutHierarchy } from 'src/facet/layout/layout-hooks';
-import { TotalClass } from 'src/facet/layout/total-class';
-import { i18n } from 'src/common/i18n';
-import { generateId } from 'src/facet/layout/util/generate-id';
-import { Node } from 'src/facet/layout/node';
 import { isEmpty, merge, isBoolean } from 'lodash';
+import { FieldValue, TreeHeaderParams } from '@/facet/layout/interface';
+import { layoutArrange, layoutHierarchy } from '@/facet/layout/layout-hooks';
+import { TotalClass } from '@/facet/layout/total-class';
+import { i18n } from '@/common/i18n';
+import { Node } from '@/facet/layout/node';
+import { generateId } from '@/utils/layout/generate-id';
 import { SpreadSheet } from '@/sheet-type';
 import { getIntersections, filterUndefined } from '@/utils/data-set-operate';
 import { PivotDataSet } from '@/data-set';
