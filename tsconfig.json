@@ -16,7 +16,6 @@
     },
     "outDir": "lib",
     "importHelpers": true,
-
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "lib": [
