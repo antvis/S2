@@ -1,4 +1,4 @@
-name: 🔧 Test
+name: 🔧 CI
 
 on: [push]
 
@@ -8,7 +8,8 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        # node-version: [12.x, 14.x, 16.x]
+        node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -32,6 +33,15 @@ jobs:
 
       - name: Install dependencies
         run: yarn
+
+      - name: Lint scripts, type and style
+        run: yarn lint
+
+      - name: Build
+        run: yarn build
+
+      - name: Bundle size
+        run: yarn bundle:size
 
       - name: Test
         run: yarn test
