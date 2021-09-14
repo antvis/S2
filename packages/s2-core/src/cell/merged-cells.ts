@@ -1,14 +1,14 @@
 import { Point, SimpleBBox } from '@antv/g-canvas';
 import { isEmpty, isObject } from 'lodash';
-import { S2CellType } from 'src/common/interface/interaction';
-import { renderPolygon } from 'src/utils/g-renders';
-import { drawObjectText, drawStringText } from 'src/utils/text';
 import { CellTypes } from '../common/constant';
 import { FormatResult, TextTheme, ViewMeta } from '../common/interface';
 import { DataItem } from '../common/interface/s2DataConfig';
 import { BaseCell } from './base-cell';
 import { getPolygonPoints } from '@/utils/interaction/merge-cells';
 import { SpreadSheet } from '@/sheet-type';
+import { S2CellType } from '@/common/interface/interaction';
+import { renderPolygon } from '@/utils/g-renders';
+import { drawObjectText, drawStringText } from '@/utils/text';
 
 /**
  * Cell for panelGroup area

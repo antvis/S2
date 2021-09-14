@@ -1,13 +1,13 @@
 import { Event, ShapeAttrs } from '@antv/g-canvas';
-import { S2PartialOptions } from 'src/common/interface/s2Options';
-import { BaseDataSet } from 'src/data-set';
-import { Frame } from 'src/facet/header';
 import { Padding } from '../interface/theme';
 import { BaseTooltip } from '../../ui/tooltip';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { CustomTreeItem } from '@/common/interface';
 import { ResizeInfo } from '@/facet/header/interface';
+import { S2PartialOptions } from '@/common/interface/s2Options';
+import { BaseDataSet } from '@/data-set';
+import { Frame } from '@/facet/header';
 import {
   FrameConfig,
   Hierarchy,

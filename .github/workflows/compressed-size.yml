@@ -13,4 +13,4 @@ jobs:
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         pattern: "./packages/s2-core/dist/**/*.{js,css}"
-        build-script: "core:build"
+        build-script: "build"

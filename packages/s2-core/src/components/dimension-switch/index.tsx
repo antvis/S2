@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import cx from 'classnames';
 import { DimensionType } from './dimension';
-import DimensionSwitch from './switch';
+import { DimensionSwitch } from './switch';
 import { useCustomChild, useVisible, useHide } from './hooks';
 import { i18n } from '@/common/i18n';
 import './index.less';

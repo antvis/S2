@@ -1,7 +1,7 @@
-const { execSync } = require('child_process');
-const { prompt } = require('inquirer');
-const glob = require('glob');
-const ora = require('ora');
+import { execSync } from 'child_process';
+import ora from 'ora';
+import { default as glob } from 'glob';
+import { default as inquirer } from 'inquirer';
 
 async function main() {
   const spinner = ora('读取测试文件中...').start();
@@ -12,7 +12,7 @@ async function main() {
   );
   spinner.stop();
 
-  const selectedPath = await prompt([
+  const selectedPath = await inquirer.prompt([
     {
       type: 'rawlist',
       message: '📢 请选择测试文件 (输入序号可快速选择)',

@@ -10,7 +10,7 @@ redirect_from:
 **特设功能：**
 
 - ✨ 丰富的交互形式（单选、圈选、行选、列选、隐藏、冻结行头、宽高拖拽，自定义交互等）；
-- 🌈 极致的性能体验，支持 1w 行 x 2w 列 不卡顿，[性能对比](https://yuque.antfin-inc.com/docs/share/f0f9379c-cb33-43a5-b25f-cb6badc5ed9c?#)；
+- 🌈 极致的性能体验，支持 1w 行 x 2w 列 不卡顿，[性能对比]()；
 - 🎨 支持组内排序、高级排序；
 - 📦 支持丰富条件格式（文本、背景色、数据条、图标）；
 - 🛡 支持主题样式配置、树状下钻、明细模式、分页等；
@@ -35,7 +35,7 @@ redirect_from:
 <div id="container"></div>
 ```
 
-> 准备一份数据(csv 或者对象数组) [tableau-supermarket.csv](https://yuque.antfin.com/attachments/lark/0/2020/csv/60482/1605680236717-717d8db6-6a0c-4cae-bcc7-461e747cfe74.csv?_lake_card=%7B%22uid%22%3A%221599480259267-0%22%2C%22src%22%3A%22https%3A%2F%2Fyuque.antfin.com%2Fattachments%2Flark%2F0%2F2020%2Fcsv%2F60482%2F1605680236717-717d8db6-6a0c-4cae-bcc7-461e747cfe74.csv%22%2C%22name%22%3A%22tableau-supermarket.csv%22%2C%22size%22%3A141746%2C%22type%22%3A%22text%2Fcsv%22%2C%22ext%22%3A%22csv%22%2C%22progress%22%3A%7B%22percent%22%3A99%7D%2C%22status%22%3A%22done%22%2C%22percent%22%3A0%2C%22id%22%3A%22Aj2sj%22%2C%22refSrc%22%3A%22https%3A%2F%2Fyuque.antfin.com%2Fattachments%2Flark%2F0%2F2020%2Fcsv%2F60482%2F1599480259521-6b702e95-b60a-4813-9719-8b8e19336d22.csv%22%2C%22card%22%3A%22file%22%7D)
+> 准备一份数据(csv 或者对象数组) [tableau-supermarket.csv]()
 
 #### 组件方式引入
 
@@ -127,20 +127,11 @@ spreadsheet.render();
 ### 本地开发
 
 ```shell
-Mac
-# 安装依赖
-$ tnpm install
+$ git clone git@github.com:antvis/S2.git
 
-# 运行测试用来，时时调试
-$ tnpm run test-live
+$ cd s2
 
-Windows
-# 安装依赖
-$ tnpm install
-# 跨平台环境
-$ tnpm install cross-env
+$ yarn bootstrap
 
-# 运行测试用来
-$ tnpm run test-live
-在test-live script 前加上 cross-env
+$ yarn core:start
 ```

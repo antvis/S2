@@ -1,3 +1,13 @@
+import React, {
+  forwardRef,
+  MutableRefObject,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react';
+import { Checkbox, Switch } from 'antd';
+import { isArray, merge, mergeWith } from 'lodash';
+import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
   defaultDataConfig,
   defaultOptions,
@@ -7,17 +17,7 @@ import {
   SpreadSheet,
   ThemeCfg,
 } from '@/index';
-import { Checkbox, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
-import { isArray, merge, mergeWith } from 'lodash';
-import React, {
-  forwardRef,
-  MutableRefObject,
-  ReactNode,
-  useEffect,
-  useState,
-} from 'react';
-import { data, meta } from '../data/mock-dataset.json';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
   mergeWith(
@@ -38,12 +38,14 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
     defaultDataConfig,
     {
       fields: {
-        rows: ['area', 'province', 'city'],
+        rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
-        values: ['price', 'cost'],
+        values: ['price'],
+        valueInCols: true,
       },
       meta,
       data,
+      totalData,
     },
     ...dataCfg,
     (origin, updated) => {

@@ -3,7 +3,7 @@ import { ListItem, TooltipDetailProps } from '@/common/interface';
 import { HtmlIcon } from '@/common/icons';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
-const TooltipDetail = (props: TooltipDetailProps) => {
+export const TooltipDetail = (props: TooltipDetailProps) => {
   const { list = [] } = props;
 
   return (
@@ -31,5 +31,3 @@ const TooltipDetail = (props: TooltipDetailProps) => {
     </div>
   );
 };
-
-export default TooltipDetail;

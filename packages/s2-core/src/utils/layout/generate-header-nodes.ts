@@ -4,7 +4,7 @@ import { TotalClass } from '@/facet/layout/total-class';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { i18n } from '@/common/i18n';
 import { EXTRA_FIELD } from '@/common/constant';
-import { generateId } from '@/facet/layout/util/generate-id';
+import { generateId } from '@/utils/layout/generate-id';
 import { Node } from '@/facet/layout/node';
 import { layoutHierarchy } from '@/facet/layout/layout-hooks';
 import { buildGridHierarchy } from '@/facet/layout/build-gird-hierarchy';

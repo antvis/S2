@@ -10,6 +10,7 @@ import {
   SearchIcon,
   TextIcon,
 } from '../icons/index';
+import { i18n } from '@/common/i18n';
 
 import './index.less';
 

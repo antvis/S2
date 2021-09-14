@@ -7,6 +7,8 @@
 
 数据驱动的多维分析表格。
 
+🚧 激情建设中...详见[Roadmap for S2](https://github.com/antvis/S2/discussions/258)
+
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg">
@@ -160,9 +162,15 @@ $ git clone git@github.com:antvis/S2.git
 
 $ cd s2
 
+<<<<<<< HEAD
 $ npm run bootstrap
 
 $ npm run core:start
+=======
+$ yarn bootstrap
+
+$ yarn core:start
+>>>>>>> cbff7ff5cb00e10626e34e5ac69db2c4f0f59276
 ```
 
 ## 📄 License

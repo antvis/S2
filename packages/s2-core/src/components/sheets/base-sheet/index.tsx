@@ -1,29 +1,32 @@
-import React, { useEffect, useState, useRef, StrictMode, memo } from 'react';
-import { isEmpty, debounce, isFunction, get, merge, forIn } from 'lodash';
-import { Spin, Pagination } from 'antd';
-import { i18n } from 'src/common/i18n';
+import { Event as GEvent } from '@antv/g-canvas';
+import { Pagination, Spin } from 'antd';
+import { debounce, forIn, get, isEmpty, isFunction, merge } from 'lodash';
+import React, { memo, StrictMode, useEffect, useRef, useState } from 'react';
+import { S2Event } from '@/common/constant';
+import { S2_PREFIX_CLS } from '@/common/constant/classnames';
+import { i18n } from '@/common/i18n';
 import {
-  safetyDataConfig,
-  safetyOptions,
-  Pagination as PaginationCfg,
-  LayoutResult,
   CellScrollPosition,
   LayoutCol,
+  LayoutResult,
   LayoutRow,
   ListSortParams,
-  TargetLayoutNode,
+  Pagination as PaginationCfg,
   S2Constructor,
-} from 'src/common/interface';
-import { HandleDrillDownIcon, HandleDrillDown, SpreadSheet } from 'src/index';
-import { Event as GEvent } from '@antv/g-canvas';
+  safetyDataConfig,
+  safetyOptions,
+  TargetLayoutNode,
+} from '@/common/interface';
+import { EmitterType } from '@/common/interface/emitter';
 import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
-import { S2Event } from '@/common/constant';
-import { getBaseCellData } from '@/utils/interaction/formatter';
 import { BaseSheetProps } from '@/components/sheets/interface';
-import { S2_PREFIX_CLS } from '@/common/constant/classnames';
-import { EmitterType } from '@/common/interface/emitter';
-
+import { SpreadSheet } from '@/sheet-type';
+import {
+  HandleDrillDown,
+  HandleDrillDownIcon,
+} from '@/utils/drill-down/helper';
+import { getBaseCellData } from '@/utils/interaction/formatter';
 import './index.less';
 
 export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {

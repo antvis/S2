@@ -1,15 +1,15 @@
-import { first, map, includes, find, isEqual, get, last } from 'lodash';
-import { InteractionStateName } from '../index';
+import { first, includes, map, find, isEqual, get, last } from 'lodash';
+import { BaseCell } from '@/cell/base-cell';
+import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
-import { includeCell } from '@/utils/cell/data-cell';
 import { S2CellType } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
-import { BaseCell } from '@/cell/base-cell';
 import { EXTRA_FIELD, InterceptType, ORDER_OPTIONS } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { TooltipOperatorOptions } from '@/common/interface';
 import { SortMethod } from '@/index';
+import { includeCell } from '@/utils/cell/data-cell';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;

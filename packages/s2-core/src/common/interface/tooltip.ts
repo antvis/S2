@@ -112,6 +112,10 @@ export type DataParam = {
   ) => string | number; // 自定义value
 };
 
+export interface SummaryProps {
+  summaries: TooltipSummaryOptions[];
+}
+
 export interface SummaryParam extends DataParam {
   cellInfos?: TooltipDataItem[];
 }
