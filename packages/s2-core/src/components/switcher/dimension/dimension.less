@@ -1,0 +1,33 @@
+@prefix: s2-switcher-dimension;
+
+.@{prefix} {
+  width: 185px;
+
+  &.long-dimension {
+    grid-row: span 2;
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+
+    span {
+      margin-left: 8px;
+    }
+  }
+
+  &-items {
+    height: calc(100% - 22px);
+    min-height: 120px;
+    max-height: 160px;
+    padding: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    overflow-y: auto;
+  }
+
+  &-long-items {
+    max-height: 366px;
+  }
+}

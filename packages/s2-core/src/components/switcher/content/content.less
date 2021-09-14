@@ -1,0 +1,34 @@
+@prefix: s2-switcher-content;
+@large-span: 16px;
+
+@dimension-color: #d9eeff;
+@value-color: #d3f4e5;
+@value-unchecked-color: #effbf6;
+
+.@{prefix} {
+  header,
+  main {
+    margin-bottom: @large-span;
+  }
+
+  main {
+    display: grid;
+    grid-gap: @large-span;
+    grid-auto-flow: column;
+  }
+
+  .three-dimensions {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .two-dimensions {
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .one-dimension {
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+  }
+}
