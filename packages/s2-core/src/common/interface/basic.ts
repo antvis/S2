@@ -135,6 +135,8 @@ export interface Sort {
   sortByMeasure?: string;
   /** 筛选条件，缩小排序范围 */
   query?: Record<string, any>;
+  /** 组内排序用来显示icon */
+  type?: string;
 }
 
 export interface SortFuncParam extends Sort {

@@ -17,8 +17,6 @@ import { BaseHeader, BaseHeaderConfig } from './base';
 export interface ColHeaderConfig extends BaseHeaderConfig {
   // format field value
   formatter: (field: string) => Formatter;
-  // col leaf node sort params
-  sortParam: SortParam;
   // corner width used when scroll {@link ColHeader#onColScroll}
   cornerWidth?: number;
   scrollContainsRowHeader?: boolean;
