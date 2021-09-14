@@ -36,7 +36,7 @@
     "start": "yarn test:live",
     "clean": "rimraf lib esm dist",
     "build": "run-s clean build:*",
-    "build:es": "FORMAT=es rollup -c rollup.config.js",
+    "build:esm": "FORMAT=esm rollup -c rollup.config.js",
     "build:cjs": "FORMAT=cjs rollup -c rollup.config.js",
     "build:umd": "FORMAT=umd rollup -c rollup.config.js",
     "bundle:size": "bundlesize",

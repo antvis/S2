@@ -56,8 +56,16 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           label-name: 'pr(documentation)'
 
+      - name: Set refactor label
+        if: startsWith(github.event.pull_request.title, 'refactor')
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-label'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          label-name: 'pr(refactor)'
+
       - name: Set weekly label
-        if: startsWith(github.event.pull_request.head.ref, 'weekly')
+        if: contains(github.event.pull_request.head.ref, 'weekly')
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-label'
