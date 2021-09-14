@@ -42,7 +42,6 @@ jobs:
 
       - name: Test
         run: |
-          yarn test
           yarn test:coverage
         env:
           CI: true
@@ -51,3 +50,4 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          base-path: 'packages/s2-core'
