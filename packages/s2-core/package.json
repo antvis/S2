@@ -42,7 +42,7 @@
     "bundle:size": "bundlesize",
     "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
     "test:live": "node ./scripts/test-live.mjs",
-    "test": "jest -w 16",
+    "test": "jest",
     "test:coverage": "yarn test --coverage",
     "tsc": "tsc --noEmit"
   },

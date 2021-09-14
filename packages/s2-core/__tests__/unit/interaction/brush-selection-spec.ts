@@ -18,8 +18,6 @@ jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 jest.mock('@/utils/tooltip');
 
-const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
-
 const MockRootInteraction =
   RootInteraction as unknown as jest.Mock<RootInteraction>;
 
@@ -75,8 +73,12 @@ describe('Interaction Brush Selection Tests', () => {
   beforeEach(() => {
     MockRootInteraction.mockClear();
 
+    mockSpreadSheetInstance = new SpreadSheet(
+      document.createElement('div'),
+      null,
+      null,
+    );
     mockRootInteraction = new MockRootInteraction(mockSpreadSheetInstance);
-    mockSpreadSheetInstance = new MockSpreadSheet();
     mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
     mockSpreadSheetInstance.foregroundGroup = new Group('');
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
