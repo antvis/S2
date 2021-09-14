@@ -15,14 +15,13 @@ jobs:
 
       - name: build
         run: |
-          cd ./s2-site
-          yarn --frozen-lockfile
-          yarn run build
+          yarn run site:bootstrap
+          yarn run site:build
       - name: upload dist artifact
         uses: actions/upload-artifact@v2
         with:
           name: dist
-          path: public/
+          path: s2-site/public/
           retention-days: 5
 
       - name: Save PR number
