@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     strategy:
       matrix:
@@ -40,14 +40,14 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Bundle size
-        run: yarn bundle:size
-        env:
-          BUNDLESIZE_GITHUB_TOKEN: ${{ secrets.BUNDLESIZE_GITHUB_TOKEN }}
-
       - name: Test
         run: |
           yarn test
-          yarn test:ci-coverage
+          yarn test:coverage
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CI: true
+
+      - name: Upload test coverage
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

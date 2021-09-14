@@ -21,3 +21,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           reviewers: 'xingwanying,qubaomingg,yangzhanmei,YardWill,lijinke666,wjgogogo,zxc0328'
+          excludeReviewers: ${{ github.event.pull_request.user.login }}
