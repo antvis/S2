@@ -15,7 +15,7 @@ export const sortAction = (
   sortMethod?: SortMethod,
   key?: string,
 ) => {
-  const sort = sortMethod === 'ASC' ? 1 : -1;
+  const sort = ['ASC', 'asc']?.includes(sortMethod) ? 1 : -1;
   const specialValues = ['-', undefined];
   return list?.sort(
     (pre: string | number | DataType, next: string | number | DataType) => {
