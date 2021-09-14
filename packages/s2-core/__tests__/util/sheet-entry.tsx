@@ -96,11 +96,11 @@ export const SheetEntry = forwardRef(
       );
     };
 
-    const onFreezeRowHeaderChange = (checked) => {
-      setFreezeRowHeader(checked);
+    const onFreezeRowHeaderChange = (e) => {
+      setFreezeRowHeader(e.target.checked);
       setOptions(
         merge({}, options, {
-          freezeRowHeader: checked,
+          freezeRowHeader: e.target.checked,
         }),
       );
     };
@@ -132,10 +132,8 @@ export const SheetEntry = forwardRef(
           />
           冻结行头：
           <Checkbox
-            value={freezeRowHeader}
-            onChange={(e) => {
-              onFreezeRowHeaderChange(e.target.checked);
-            }}
+            checked={freezeRowHeader}
+            onChange={onFreezeRowHeaderChange}
           />
         </div>
         <div style={{ marginBottom: 20 }}>{props.header}</div>
