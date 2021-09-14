@@ -2,8 +2,7 @@
   "name": "@antv/s2",
   "private": true,
   "workspaces": [
-    "packages/*",
-    "s2-site"
+    "packages/*"
   ],
   "keywords": [
     "antv",
@@ -22,12 +21,12 @@
     "test:coverage": "lerna run test:coverage --stream",
     "test:ci-coverage": "lerna run test:ci-coverage --stream",
     "tsc": "lerna run tsc --stream",
-    "site:bootstrap": "yarn workspace @antv/s2-site install --frozen-lockfile",
-    "site:start": "yarn workspace @antv/s2-site start",
-    "site:build": "yarn workspace @antv/s2-site build",
-    "site:clean": "yarn workspace @antv/s2-site clean",
-    "site:deploy": "yarn workspace @antv/s2-site deploy",
-    "site:clear": "yarn workspace @antv/s2-site rimraf node_modules",
+    "site:bootstrap": "cd ./s2-site && yarn --frozen-lockfile",
+    "site:start": "cd ./s2-site && yarn start",
+    "site:build": "cd ./s2-site && yarn build",
+    "site:clean": "cd ./s2-site && yarn clean",
+    "site:deploy": "cd ./s2-site && yarn deploy",
+    "site:clear": "cd ./s2-site && yarn rimraf node_modules",
     "lint": "yarn tsc && yarn lint:script && yarn lint:style",
     "lint:script": "eslint . --ext '.js,.jsx,.ts,.tsx'",
     "lint:style": "stylelint packages/**/*.less --syntax less",

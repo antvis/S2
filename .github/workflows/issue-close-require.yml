@@ -16,7 +16,7 @@ jobs:
           labels: '🤔 Need Reproduce'
           inactive-day: 7
           body: |
-            由于该 issue 被标记为需要复现，却 7 天未收到回应。现关闭 issue，若有任何问题，可评论回复。
+            由于该 issue 被标记为需要复现，却 7 天未收到回应。现关闭 issue，若有任何问题，可评论回复。（Cause this issue was labeled as ‘need reproduce’ but received no replay in 7 days, it was going to be closed now. If you have any questions, feel free to comment.）
 
       - name: Needs more info
         uses: actions-cool/issues-helper@main
@@ -25,4 +25,4 @@ jobs:
           labels: '👀 need more info'
           inactive-day: 7
           body: |
-            由于该 issue 被标记为需要更多信息，却 7 天未收到回应。现关闭 issue，若有任何问题，可评论回复。
+            由于该 issue 被标记为需要复现，却 7 天未收到回应。现关闭 issue，若有任何问题，可评论回复。（Cause this issue was labeled as ‘need reproduce’ but received no replay in 7 days, it was going to be closed now. If you have any questions, feel free to comment.）
