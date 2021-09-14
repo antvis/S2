@@ -1,8 +1,8 @@
 name: 👨‍💻👩‍💻 PR Auto Assign Reviewer
 
 on:
-  pull_request:
-    types: [opened, edited]
+  pull_request_target:
+    types: [opened]
 
 jobs:
   add-reviewer:
@@ -19,6 +19,5 @@ jobs:
       - name: Add reviewers
         uses: actions-cool/pr-welcome@main
         with:
-          actions: 'add-assignees'
           token: ${{ secrets.GITHUB_TOKEN }}
           reviewers: 'xingwanying,qubaomingg,yangzhanmei,YardWill,lijinke666,wjgogogo,zxc0328'
