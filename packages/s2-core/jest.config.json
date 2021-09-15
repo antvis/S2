@@ -17,7 +17,7 @@
     "!**/node_modules/**",
     "!**/vendor/**"
   ],
-  "coverageReporters": ["text-summary", "html"],
+  "coverageReporters": ["text-summary", "html", "lcov"],
   "transformIgnorePatterns": [],
   "testRegex": "/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js)?$",
   "transform": {
@@ -29,6 +29,5 @@
     "^tests/(.*)": "<rootDir>/__tests__/$1",
     "^src/(.*)": "<rootDir>/src/$1"
   },
-  "maxWorkers": 16,
   "testTimeout": 30000
 }

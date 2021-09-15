@@ -20,5 +20,6 @@ jobs:
         uses: actions-cool/pr-welcome@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          emoji: '+1'
           reviewers: 'xingwanying,qubaomingg,yangzhanmei,YardWill,lijinke666,wjgogogo,zxc0328'
           excludeReviewers: ${{ github.event.pull_request.user.login }}
