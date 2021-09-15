@@ -1,0 +1,56 @@
+@prefix: s2-switcher-item;
+
+@dimension-color: #d9eeff;
+@measure-color: #d3f4e5;
+@derived-measure-color: #effbf6;
+
+@large-span: 12px;
+@normal-span: 4px;
+
+.@{prefix} {
+  height: 24px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+
+  & + & {
+    margin-top: @normal-span;
+  }
+
+  &.dimension-item {
+    padding: 0 @large-span;
+    background-color: @dimension-color;
+  }
+
+  &.measure-item {
+    padding: 0 @normal-span;
+    background-color: @measure-color;
+
+    &:not(:last-child) {
+      border-radius: 3px 3px 0 0;
+    }
+
+    .ant-checkbox {
+      margin-right: @normal-span;
+    }
+  }
+}
+
+.measure-items {
+  & + & {
+    margin-top: @normal-span;
+  }
+
+  .derived-measures {
+    .measure-item {
+      padding: 0 @large-span;
+      background-color: @derived-measure-color;
+      margin-top: 0;
+      border-radius: 0;
+
+      &:last-child {
+        border-radius: 0 0 3px 3px;
+      }
+    }
+  }
+}

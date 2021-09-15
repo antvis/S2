@@ -1,21 +1,17 @@
 import cx from 'classnames';
 import React, { FC } from 'react';
 import { FieldType, SWITCHER_CONFIG } from '../constant';
-import './dimension.less';
-
-export interface DimensionItem {
-  id: string;
-  displayName: string;
-}
-
-export interface MeasureItem extends DimensionItem {
-  checked?: boolean;
-  derivedValues?: MeasureItem[];
-}
+import {
+  DimensionItem,
+  DimensionItemType,
+  MeasureItem,
+  MeasureItemType,
+} from '../item';
+import './index.less';
 
 interface DimensionProps {
   fieldType: FieldType;
-  data: DimensionItem[] | MeasureItem[];
+  data: DimensionItemType[] | MeasureItemType[];
   crossRows?: boolean;
 }
 
@@ -25,6 +21,7 @@ export const Dimension: FC<DimensionProps> = ({
   crossRows,
 }) => {
   const { text, icon: Icon } = SWITCHER_CONFIG[fieldType];
+  const ItemComp = fieldType === FieldType.Value ? MeasureItem : DimensionItem;
   return (
     <div
       className={cx('s2-switcher-dimension', { 'long-dimension': crossRows })}
@@ -38,8 +35,8 @@ export const Dimension: FC<DimensionProps> = ({
           's2-switcher-dimension-long-items': crossRows,
         })}
       >
-        {data.map((i) => (
-          <div key={i.id}>{i.displayName}</div>
+        {data.map((item: DimensionItemType | MeasureItemType) => (
+          <ItemComp key={item.id} {...item} />
         ))}
       </div>
     </div>

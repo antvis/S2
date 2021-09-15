@@ -2,7 +2,7 @@ import { Button, Popover } from 'antd';
 import React, { FC } from 'react';
 import {} from 'react-beautiful-dnd';
 import { SwitcherIcon } from '../icons';
-import { SwitcherContent, SwitcherProps } from './content/content';
+import { SwitcherContent, SwitcherProps } from './content';
 import './index.less';
 
 export const Switcher: FC<SwitcherProps> = (props) => {
@@ -23,10 +23,4 @@ export const Switcher: FC<SwitcherProps> = (props) => {
       </Button>
     </Popover>
   );
-};
-
-Switcher.defaultProps = {
-  rows: [],
-  cols: [],
-  values: [],
 };

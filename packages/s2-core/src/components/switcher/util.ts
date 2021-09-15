@@ -1,10 +1,10 @@
 import { isEmpty } from 'lodash';
-import { DimensionItem, MeasureItem } from './dimension/dimension';
+import { DimensionItemType, MeasureItemType } from './dimension';
 
 export const getNonEmptyFieldCount = (
-  rows: DimensionItem[] = [],
-  cols: DimensionItem[] = [],
-  values: MeasureItem[] = [],
+  rows: DimensionItemType[] = [],
+  cols: DimensionItemType[] = [],
+  values: MeasureItemType[] = [],
 ) => {
   return [rows, cols, values].reduce(
     (sum, value) => sum + (isEmpty(value) ? 0 : 1),

@@ -2,18 +2,18 @@ import { Button } from 'antd';
 import { isEmpty } from 'lodash';
 import React, { FC } from 'react';
 import { FieldType } from '../constant';
-import { Dimension, DimensionItem, MeasureItem } from '../dimension/dimension';
+import { Dimension, DimensionItemType, MeasureItemType } from '../dimension';
 import {
   getMainLayoutClassName,
   getNonEmptyFieldCount,
   showDimensionCrossRows,
 } from '../util';
-import './content.less';
+import './index.less';
 
 export interface SwitcherProps {
-  rows?: DimensionItem[];
-  cols?: DimensionItem[];
-  values?: MeasureItem[];
+  rows?: DimensionItemType[];
+  cols?: DimensionItemType[];
+  values?: MeasureItemType[];
   onSubmit?: () => void;
 }
 

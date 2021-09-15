@@ -1,5 +1,7 @@
 @prefix: s2-switcher-dimension;
 
+@normal-span: 8px;
+
 .@{prefix} {
   width: 185px;
 
@@ -10,10 +12,10 @@
   &-header {
     display: flex;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: @normal-span;
 
     span {
-      margin-left: 8px;
+      margin-left: @normal-span;
     }
   }
 
@@ -21,7 +23,7 @@
     height: calc(100% - 22px);
     min-height: 120px;
     max-height: 160px;
-    padding: 8px;
+    padding: @normal-span;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 3px;
     overflow-y: auto;
