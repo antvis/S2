@@ -26,7 +26,7 @@ export interface BaseHeaderConfig {
   // spreadsheet entrance instance
   spreadsheet: SpreadSheet;
   // leaf node sort params
-  sortParam: SortParam;
+  sortParam?: SortParam;
 }
 
 /**
