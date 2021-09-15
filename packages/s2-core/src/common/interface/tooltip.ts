@@ -5,7 +5,7 @@ export type TooltipDataItem = Record<string, any>;
 
 export interface IMenu {
   id: string;
-  icon?: any;
+  icon?: unknown;
   text?: string;
   children?: IMenu[]; // subMenu
 }
@@ -13,7 +13,7 @@ export interface IMenu {
 export interface TooltipOperatorOptions {
   onClick: (...params: unknown[]) => void;
   menus: IMenu[];
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface TooltipPosition {
@@ -40,7 +40,7 @@ export interface TooltipOptions {
   // totals or not
   isTotals?: boolean;
   showSingleTips?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface TooltipSummaryOptions {
@@ -70,7 +70,7 @@ export type TooltipDetailProps = {
 
 export type TooltipInterpretationOptions = {
   name: string;
-  icon?: any;
+  icon?: unknown;
   text?: string;
   render?: React.ElementType;
 };

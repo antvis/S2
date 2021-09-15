@@ -8,7 +8,7 @@ import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
 import { EXTRA_FIELD, InterceptType, ORDER_OPTIONS } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
-import { TooltipOperatorOptions } from '@/common/interface';
+import { TooltipOperatorOptions, SortParam } from '@/common/interface';
 import { SortMethod } from '@/index';
 
 export abstract class HeaderCell extends BaseCell<Node> {
@@ -21,9 +21,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
     this.headerConfig = headerConfig;
     const { value, query } = this.meta;
-    const sortParams = this?.spreadsheet?.dataCfg?.sortParams;
+    const sortParams = this.spreadsheet.dataCfg.sortParams;
     const isValueCell = this.isValueCell(); // 是否是数值节点
-    const sortParam = find(sortParams?.reverse(), (item) =>
+    const sortParam: SortParam = find(sortParams.reverse(), (item) =>
       isValueCell
         ? item?.sortByMeasure === value && isEqual(get(item, 'query'), query)
         : isEqual(get(item, 'query'), query),
@@ -46,11 +46,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected handleGroupSort(event, meta) {
     event.stopPropagation();
-    this.spreadsheet?.interaction.addIntercepts([InterceptType.HOVER]);
+    this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
     const operator: TooltipOperatorOptions = {
       onClick: (method: SortMethod) => {
-        const { rows, columns } = this.spreadsheet?.dataCfg?.fields;
-        const sortFieldId = this.spreadsheet?.isValueInCols()
+        const { rows, columns } = this.spreadsheet.dataCfg.fields;
+        const sortFieldId = this.spreadsheet.isValueInCols()
           ? last(rows)
           : last(columns);
         const { query, value } = meta;
@@ -60,12 +60,12 @@ export abstract class HeaderCell extends BaseCell<Node> {
           sortByMeasure: value,
           query,
         };
-        const oldSorParams = this.spreadsheet?.dataCfg?.sortParams?.filter(
+        const prevSortParams = this.spreadsheet.dataCfg.sortParams.filter(
           (item) => item?.sortFieldId !== sortFieldId,
         );
         this.spreadsheet.setDataCfg({
           ...this.spreadsheet.dataCfg,
-          sortParams: [...oldSorParams, sortParam],
+          sortParams: [...prevSortParams, sortParam],
         });
         this.spreadsheet.render();
       },
