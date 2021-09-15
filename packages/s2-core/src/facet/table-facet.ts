@@ -291,19 +291,29 @@ export class TableFacet extends BaseFacet {
     return colWidth;
   }
 
-  protected getViewCellHeights() {
-    const { dataSet, cellCfg } = this.cfg;
+  protected getCellHeight() {
+    const { cellCfg } = this.cfg;
 
-    const cellHeight =
-      cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
+    return cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
+  }
+
+  protected getViewCellHeights() {
+    const { dataSet } = this.cfg;
+
+    const cellHeight = this.getCellHeight();
 
     return {
       getTotalHeight: () => {
         return cellHeight * dataSet.originData.length;
       },
 
-      getCellHeight: () => {
-        return cellHeight;
+      getCellOffsetY: (offset: number) => {
+        if (offset === 0) return 0;
+        let totalOffset = 0;
+        for (let index = 0; index < offset; index++) {
+          totalOffset += cellHeight;
+        }
+        return totalOffset;
       },
 
       getTotalLength: () => {
@@ -348,11 +358,11 @@ export class TableFacet extends BaseFacet {
     );
   };
 
-  getTotalHeightForRange = (start: number, end: number) => {
+  protected getTotalHeightForRange = (start: number, end: number) => {
     if (start < 0 || end < 0) return 0;
     let totalHeight = 0;
     for (let index = start; index < end + 1; index++) {
-      const height = this.viewCellHeights.getCellHeight(index);
+      const height = this.getCellHeight();
       totalHeight += height;
     }
     return totalHeight;

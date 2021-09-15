@@ -610,7 +610,7 @@ export class PivotFacet extends BaseFacet {
         return last(heights);
       },
 
-      getCellHeight: (index: number) => {
+      getCellOffsetY: (index: number) => {
         return heights[index];
       },
 
