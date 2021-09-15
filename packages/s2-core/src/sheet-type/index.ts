@@ -293,7 +293,7 @@ export class SpreadSheet extends EE {
     const lastSortParam = this.store.get('sortParam');
     const { sortParams } = newDataCfg;
     newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
-    this.dataCfg = newDataCfg;
+    this.dataCfg = safetyDataConfig(newDataCfg);
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }

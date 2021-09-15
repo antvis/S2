@@ -154,6 +154,6 @@ export abstract class BaseDataSet {
   ): DataType[];
 
   public moreThanOneValue() {
-    return this.fields.values?.length > 1;
+    return this.fields.values.length > 1;
   }
 }
