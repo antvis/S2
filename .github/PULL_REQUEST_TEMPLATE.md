@@ -1,4 +1,4 @@
-### 🤔 PR includes
+### 👀 PR includes
 
 <!-- Add completed items in this PR, and change [ ] to [x]. -->
 
@@ -14,7 +14,7 @@
 - [ ] Improve performance.
 - [ ] Type optimization
 
-🐛 Bug fix
+🐛 Bugfix
 
 - [ ] Bug fix issue #0
 

@@ -50,12 +50,10 @@ const getDataCfg = () => {
       {
         field: 'count',
         name: '销售个数',
-        formatter: (v) => v,
       },
       {
         field: 'profit',
         name: '利润',
-        formatter: (v) => v,
       },
     ],
     data,
