@@ -53,7 +53,6 @@ import { RootInteraction } from '@/interaction/root';
 import { getTheme } from '@/theme';
 import { HdAdapter } from '@/ui/hd-adapter';
 import { BaseTooltip } from '@/ui/tooltip';
-import { updateConditionsByValues } from '@/utils/condition/generate-condition';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
 import { getTooltipData } from '@/utils/tooltip';
@@ -292,7 +291,6 @@ export class SpreadSheet extends EE {
   public setOptions(options: Partial<S2Options>) {
     this.hideTooltip();
     this.options = customMerge(this.options, options);
-    this.updateIndicateConditions();
   }
 
   public render(reloadData = true) {
@@ -318,17 +316,6 @@ export class SpreadSheet extends EE {
   public setThemeCfg(themeCfg: ThemeCfg) {
     const theme = themeCfg?.theme || {};
     this.theme = merge({}, getTheme({ ...themeCfg, spreadsheet: this }), theme);
-    this.updateIndicateConditions();
-  }
-
-  private updateIndicateConditions() {
-    const { conditions, indicateConditionValues } = this.options;
-    const updatedConditions = updateConditionsByValues(
-      conditions,
-      indicateConditionValues,
-      this.theme.dataCell.icon,
-    );
-    this.options = customMerge(this.options, { conditions: updatedConditions });
   }
 
   /**
