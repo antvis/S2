@@ -71,7 +71,7 @@
   "limit-size": [
     {
       "path": "./dist/s2.min.js",
-      "limit": "240 kB",
+      "limit": "120 kB",
       "gzip": true
     },
     {

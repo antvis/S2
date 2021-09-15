@@ -1,4 +1,4 @@
-name: Size limit
+name: 📦 Size limit
 on:
   pull_request:
     branches:
