@@ -5,7 +5,7 @@
   },
   "demos": [
     {
-      "filename": "grid.js",
+      "filename": "grid.ts",
       "title": {
         "zh": "平铺模式",
         "en": "Grid mode"

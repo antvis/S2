@@ -7,8 +7,8 @@ order: 0
 
 ### S2DataConfig
 
-`markdown:docs/general/dataCfg.zh.md`
+`markdown:docs/api/general/dataCfg.zh.md`
 
 ### S2Options
 
-`markdown:docs/general/options.zh.md`
+`markdown:docs/api/general/options.zh.md`
