@@ -4,11 +4,14 @@ import { Switch } from 'antd';
 import { act } from 'react-dom/test-utils';
 import { S2DataConfig } from '../../src';
 import { getContainer } from '../util/helpers';
-import { SheetEntry, assembleOptions, assembleDataCfg } from '../util/sheet-entry';
+import {
+  SheetEntry,
+  assembleOptions,
+  assembleDataCfg,
+} from '../util/sheet-entry';
 
 const dataCfg: Partial<S2DataConfig> = {
-  ...assembleDataCfg({
-  }),
+  ...assembleDataCfg({}),
 };
 
 function MainLayout() {
