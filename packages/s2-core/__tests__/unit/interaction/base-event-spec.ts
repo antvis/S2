@@ -2,6 +2,8 @@ import { RootInteraction } from '@/interaction/root';
 import { SpreadSheet } from '@/index';
 import { BaseEvent } from '@/interaction/base-event';
 
+jest.mock('@/index');
+
 const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 
 describe('Base Interaction Event Test', () => {

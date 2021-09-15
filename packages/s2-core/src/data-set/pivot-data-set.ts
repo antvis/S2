@@ -363,7 +363,7 @@ export class PivotDataSet extends BaseDataSet {
   public getDimensionValues(field: string, query?: DataType): string[] {
     const { rows, columns } = this.fields;
     let meta: PivotMeta = new Map();
-    let dimensions: string[];
+    let dimensions: string[] = [];
     if (includes(rows, field)) {
       meta = this.rowPivotMeta;
       dimensions = rows;
