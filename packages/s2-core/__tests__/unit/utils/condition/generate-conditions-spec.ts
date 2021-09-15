@@ -1,3 +1,4 @@
+import { INDICATE_CONDITION_SYMBOL } from '@/common/constant/condition';
 import { IconTheme } from '@/common/interface/theme';
 import {
   getIconPositionCfg,
@@ -45,16 +46,22 @@ describe('Condition Test', () => {
   });
 
   describe('updateConditionsByValues Test', () => {
-    test(`should return origin conditions when there is not values`, () => {
-      expect(updateConditionsByValues({}, [], iconTheme)).toEqual({});
+    test('should return default conditions when there is not values', () => {
+      expect(updateConditionsByValues({}, [], iconTheme)).toEqual({
+        background: [],
+        icon: [],
+        interval: [],
+        text: [],
+      });
     });
 
-    test(`should return expected conditions when there is value without conflict`, () => {
+    test('should return expected conditions when there is value without conflict', () => {
       expect(updateConditionsByValues({}, ['value'], iconTheme)).toEqual({
-        background: undefined,
-        interval: undefined,
+        background: [],
+        interval: [],
         icon: [
           {
+            type: INDICATE_CONDITION_SYMBOL,
             field: 'value',
             position: 'left',
             mapping: expect.any(Function),
@@ -62,6 +69,7 @@ describe('Condition Test', () => {
         ],
         text: [
           {
+            type: INDICATE_CONDITION_SYMBOL,
             field: 'value',
             mapping: expect.any(Function),
           },
@@ -69,7 +77,7 @@ describe('Condition Test', () => {
       });
     });
 
-    test(`should return expected conditions when there is value with conflict`, () => {
+    test('should return expected conditions when there is value with conflict', () => {
       expect(
         updateConditionsByValues(
           {
@@ -85,8 +93,8 @@ describe('Condition Test', () => {
           iconTheme,
         ),
       ).toEqual({
-        background: undefined,
-        interval: undefined,
+        background: [],
+        interval: [],
         icon: [
           {
             field: 'value',
@@ -96,7 +104,45 @@ describe('Condition Test', () => {
         ],
         text: [
           {
+            type: INDICATE_CONDITION_SYMBOL,
             field: 'value',
+            mapping: expect.any(Function),
+          },
+        ],
+      });
+    });
+
+    test('should remove generated conditions before update new conditions', () => {
+      expect(
+        updateConditionsByValues(
+          {
+            icon: [
+              {
+                type: INDICATE_CONDITION_SYMBOL,
+                field: 'value',
+                position: 'right',
+                mapping: () => ({ fill: 'red' }),
+              },
+            ],
+          },
+          ['price'],
+          iconTheme,
+        ),
+      ).toEqual({
+        background: [],
+        interval: [],
+        icon: [
+          {
+            type: INDICATE_CONDITION_SYMBOL,
+            field: 'price',
+            position: 'left',
+            mapping: expect.any(Function),
+          },
+        ],
+        text: [
+          {
+            type: INDICATE_CONDITION_SYMBOL,
+            field: 'price',
             mapping: expect.any(Function),
           },
         ],

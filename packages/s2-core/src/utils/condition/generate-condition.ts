@@ -1,5 +1,6 @@
-import { isEmpty, isNumber } from 'lodash';
+import { isNumber } from 'lodash';
 import { DOWN_ICON, UP_ICON } from '@/common/constant';
+import { INDICATE_CONDITION_SYMBOL } from '@/common/constant/condition';
 import {
   Condition,
   Conditions,
@@ -30,6 +31,7 @@ const generateIndicateCondition = (
 
   values.forEach((value) => {
     iconCondition.push({
+      type: INDICATE_CONDITION_SYMBOL,
       field: value,
       position: 'left',
       mapping(fieldValue: string | number) {
@@ -41,6 +43,7 @@ const generateIndicateCondition = (
       },
     });
     textCondition.push({
+      type: INDICATE_CONDITION_SYMBOL,
       field: value,
       mapping(fieldValue: string | number) {
         const positive = isPositive(fieldValue);
@@ -63,7 +66,10 @@ const updateCondition = (
   rawCondition: Condition[] = [],
   updatedCondition: Condition[] = [],
 ) => {
-  const result: Condition[] = [...rawCondition];
+  // omit all generated indicate conditions
+  const result: Condition[] = rawCondition.filter(
+    (condition) => condition.type !== INDICATE_CONDITION_SYMBOL,
+  );
   updatedCondition.forEach((condition) => {
     if (!result.find((i) => i.field === condition.field)) {
       result.push(condition);
@@ -84,9 +90,6 @@ export const updateConditionsByValues = (
   values: string[] = [],
   iconTheme: IconTheme,
 ) => {
-  if (isEmpty(values)) {
-    return conditions;
-  }
   const { textCondition, iconCondition } = generateIndicateCondition(
     values,
     iconTheme,
@@ -95,8 +98,8 @@ export const updateConditionsByValues = (
   const updatedConditions: Conditions = {
     text: updateCondition(conditions.text, textCondition),
     icon: updateCondition(conditions.icon, iconCondition),
-    interval: conditions.interval,
-    background: conditions.background,
+    interval: conditions.interval ?? [],
+    background: conditions.background ?? [],
   };
   return updatedConditions;
 };
