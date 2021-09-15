@@ -1,21 +1,24 @@
 import { Group, Point, SimpleBBox } from '@antv/g-canvas';
 import { get, includes, isEmpty, last } from 'lodash';
 import { translateGroup } from '../utils';
-import { CornerData, ResizeInfo } from './interface';
 import { BaseHeader, BaseHeaderConfig } from './base';
-import { i18n } from '@/common/i18n';
-import { BaseDataSet } from '@/data-set';
+import { CornerData, ResizeInfo } from './interface';
+import { CornerCell } from '@/cell/corner-cell';
 import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_SERIES_NUMBER_NODE,
 } from '@/common/constant';
+import { i18n } from '@/common/i18n';
 import {
   LayoutResult,
   S2CellType,
   S2Options,
   SpreadSheetFacetCfg,
 } from '@/common/interface';
-import { CornerCell, Hierarchy, Node, SpreadSheet } from '@/index';
+import { BaseDataSet } from '@/data-set';
+import { Hierarchy } from '@/facet/layout/hierarchy';
+import { Node } from '@/facet/layout/node';
+import { SpreadSheet } from '@/sheet-type';
 
 export interface CornerHeaderConfig extends BaseHeaderConfig {
   // header's hierarchy type
