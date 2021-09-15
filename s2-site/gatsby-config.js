@@ -9,17 +9,20 @@ module.exports = {
       },
     },
   ],
+  // 站点配置
   siteMetadata: {
     title: 'S2',
     description: 'Ant effective spreadsheet render core lib homepage',
     siteUrl: homepage,
     githubUrl: repository.url,
-    showLanguageSwitcher: false,
+    showLanguageSwitcher: true,
     showChartResize: false,
-    showAPI: false,
-    versions: {
-      [version]: 'https://s2.antv.vision',
-    },
+    showAPIDoc: true,
+    galleryMenuCloseAll: true,
+    showWxQrcode: true,
+    wxQrcode:
+      'https://gw.alipayobjects.com/zos/antfincdn/ZKlx96dsfs/qrcode_for_gh_f52d8b6aa591_258.jpg',
+    // 一级导航
     navs: [
       {
         slug: 'docs/manual',
@@ -36,13 +39,14 @@ module.exports = {
         },
       },
       {
-        slug: 'playground',
+        slug: 'examples',
         title: {
-          zh: '工作薄',
-          en: 'Playground',
+          zh: '图表示例',
+          en: 'Examples',
         },
       },
     ],
+    // 文档配置
     docs: [
       {
         slug: 'api/general',
@@ -61,6 +65,47 @@ module.exports = {
         order: 2,
       },
     ],
-    redirects: [],
+    // demo配置
+    examples: [
+      {
+        slug: 'case',
+        icon: 'gallery',
+        title: {
+          zh: '场景案例',
+          en: 'Show Case',
+        },
+      },
+      {
+        slug: 'sheets',
+        icon: 'table',
+        title: {
+          zh: '基础表',
+          en: 'Sheets',
+        },
+      },
+    ],
+    // 编辑器配置
+    playground: {
+      container: '<div id="container" />',
+      playgroundDidMount: 'console.log("playgroundDidMount");',
+      playgroundWillUnmount: 'console.log("playgroundWillUnmount");',
+      devDependencies: {
+        typescript: 'latest',
+      },
+      htmlCodeTemplate: `<!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="UTF-8">
+            <title>{{title}}</title>
+          </head>
+          <body>
+            <div id="container" />
+            <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+            <script>
+        {{code}}
+            </script>
+          </body>
+        </html>`,
+    },
   },
 };

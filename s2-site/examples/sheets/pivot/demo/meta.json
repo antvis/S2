@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "透视表",
+    "en": "Pivot"
+  },
+  "demos": [
+    {
+      "filename": "grid.js",
+      "title": {
+        "zh": "平铺模式",
+        "en": "Grid mode"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/MUx9q1EKRl/e7630178-4a08-4ad8-9c16-79ace7c4e76f.png"
+    },
+    {
+      "filename": "tree.ts",
+      "title": {
+        "zh": "树状模式",
+        "en": "Tree mode"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/MUx9q1EKRl/e7630178-4a08-4ad8-9c16-79ace7c4e76f.png"
+    }
+  ]
+}
