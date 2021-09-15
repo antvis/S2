@@ -1,12 +1,9 @@
 import { Menu, Dropdown } from 'antd';
 import { isEmpty, map, size } from 'lodash';
 import React from 'react';
+import { Icon } from '../icon';
 import { IMenu, TooltipOperatorOptions } from '@/common/interface';
-import { getIcon, HtmlIcon } from '@/common/icons';
-import {
-  DEFAULT_ICON_PROPS,
-  TOOLTIP_PREFIX_CLS,
-} from '@/common/constant/tooltip';
+import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 import './index.less';
 
 /**
@@ -24,32 +21,10 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
     onClick(key, e);
   };
 
-  const renderIcon = (icon) => {
-    if (getIcon(icon)) {
-      return (
-        <HtmlIcon
-          className={`${TOOLTIP_PREFIX_CLS}-operator-icon`}
-          type={icon}
-          {...DEFAULT_ICON_PROPS}
-        />
-      );
-    }
-
-    const Component = icon;
-    return (
-      icon && (
-        <Component
-          className={`${TOOLTIP_PREFIX_CLS}-operator-icon`}
-          {...DEFAULT_ICON_PROPS}
-        />
-      )
-    );
-  };
-
   const renderTitle = (text: string, icon) => {
     return (
       <span>
-        {renderIcon(icon)}
+        <Icon icon={icon} className={`${TOOLTIP_PREFIX_CLS}-operator-icon`} />
         {text}
       </span>
     );
