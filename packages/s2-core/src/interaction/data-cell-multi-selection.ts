@@ -1,4 +1,6 @@
 import { Event } from '@antv/g-canvas';
+import { isEmpty } from 'lodash';
+import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { getActiveCellsTooltipData } from '@/utils/tooltip';
 import {
   InterceptType,
@@ -6,10 +8,9 @@ import {
   InteractionStateName,
   S2Event,
 } from '@/common/constant';
+import { S2CellType, ViewMeta } from '@/common/interface';
 
-import { BaseEvent, BaseEventImplement } from './base-interaction';
-
-const ACTIVATE_KEYS: string[] = [
+const ACTIVATE_KEYS = [
   InteractionKeyboardKey.SHIFT,
   InteractionKeyboardKey.META,
 ];
@@ -30,7 +31,7 @@ export class DataCellMultiSelection
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
-        if (ACTIVATE_KEYS.includes(event.key)) {
+        if (ACTIVATE_KEYS.includes(event.key as InteractionKeyboardKey)) {
           this.isMultiSelection = true;
           this.interaction.addIntercepts([InterceptType.CLICK]);
         }
@@ -40,11 +41,28 @@ export class DataCellMultiSelection
 
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
-      if (ACTIVATE_KEYS.includes(event.key)) {
+      if (ACTIVATE_KEYS.includes(event.key as InteractionKeyboardKey)) {
         this.isMultiSelection = false;
         this.interaction.removeIntercepts([InterceptType.CLICK]);
       }
     });
+  }
+
+  private getActiveCells(cell: S2CellType<ViewMeta>) {
+    let activeCells = this.interaction.getActiveCells();
+    let cells = [];
+    if (
+      this.interaction.getCurrentStateName() !== InteractionStateName.SELECTED
+    ) {
+      activeCells = [];
+    }
+    if (activeCells.includes(cell)) {
+      cells = activeCells.filter((item) => item !== cell);
+    } else {
+      cells = [...activeCells, cell];
+    }
+
+    return cells;
   }
 
   private bindDataCellClick() {
@@ -54,21 +72,9 @@ export class DataCellMultiSelection
       const meta = cell.getMeta();
 
       if (this.isMultiSelection && meta) {
-        let activeCells = this.interaction.getActiveCells();
-        let cells = [];
-        if (
-          this.interaction.getCurrentStateName() !==
-          InteractionStateName.SELECTED
-        ) {
-          activeCells = [];
-        }
-        if (activeCells.includes(cell)) {
-          cells = activeCells.filter((item) => item !== cell);
-        } else {
-          cells = [...activeCells, cell];
-        }
+        const cells = this.getActiveCells(cell);
 
-        if (cells.length === 0) {
+        if (isEmpty(cells)) {
           this.interaction.clearState();
           this.spreadsheet.hideTooltip();
           return;
