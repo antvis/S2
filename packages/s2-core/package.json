@@ -39,10 +39,10 @@
     "build:esm": "FORMAT=esm rollup -c rollup.config.js",
     "build:cjs": "FORMAT=cjs rollup -c rollup.config.js",
     "build:umd": "FORMAT=umd rollup -c rollup.config.js",
-    "bundle:size": "bundlesize",
+    "build:size-limit": "limit-size",
     "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
     "test:live": "node ./scripts/test-live.mjs",
-    "test": "jest -w 16",
+    "test": "jest",
     "test:coverage": "yarn test --coverage",
     "tsc": "tsc --noEmit"
   },
