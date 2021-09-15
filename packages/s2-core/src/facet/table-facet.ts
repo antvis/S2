@@ -1,6 +1,6 @@
 import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
-import { get, maxBy, orderBy } from 'lodash';
+import { get, maxBy, orderBy, forEach } from 'lodash';
 import type {
   LayoutResult,
   S2CellType,
@@ -197,7 +197,7 @@ export class TableFacet extends BaseFacet {
 
     let maxColHeight = 0;
 
-    allNodes.forEach((node) => {
+    forEach(allNodes, (node) => {
       const height = this.getColNodeHeight(node);
       if (height > maxColHeight) {
         maxColHeight = height;
@@ -563,6 +563,7 @@ export class TableFacet extends BaseFacet {
     super.render();
   }
 
+  // 对 panelScrollGroup 以及四个方向的 frozenGroup 做 Clip，避免有透明度时冻结分组和滚动分组展示重叠
   protected clip(scrollX: number, scrollY: number) {
     const {
       frozenRowGroup,
@@ -579,7 +580,6 @@ export class TableFacet extends BaseFacet {
       this.panelBBox.width -
       frozenColGroupWidth -
       frozenTrailingColGroup.getBBox().width;
-
     const panelScrollGroupHeight =
       this.panelBBox.height -
       frozenRowGroupHeight -

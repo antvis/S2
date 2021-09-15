@@ -1,11 +1,10 @@
 import { get } from 'lodash';
 import { Group } from '@antv/g-canvas';
+import { renderDetailTypeSortIcon } from '../utils/layout/add-detail-type-sort-icon';
+import { getEllipsisText, getTextPosition } from '../utils/text';
 import { renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
-
-import { renderDetailTypeSortIcon } from '../utils/layout/add-detail-type-sort-icon';
-import { getEllipsisText, getTextPosition } from '../utils/text';
 
 export class TableColCell extends ColCell {
   protected isFrozenCol() {
@@ -13,11 +12,12 @@ export class TableColCell extends ColCell {
     const { colIndex } = this.meta;
     const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
 
-    return (
-      (frozenColCount > 0 && colIndex < frozenColCount) ||
-      (frozenTrailingColCount > 0 &&
-        colIndex >= colLeafNodes.length - frozenTrailingColCount)
-    );
+    const isFrozenCol = frozenColCount > 0 && colIndex < frozenColCount;
+    const isFrozenTrailingCol =
+      frozenTrailingColCount > 0 &&
+      colIndex >= colLeafNodes.length - frozenTrailingColCount;
+
+    return isFrozenCol || isFrozenTrailingCol;
   }
 
   protected getColResizeArea() {
