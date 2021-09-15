@@ -40,7 +40,7 @@ export interface TooltipOptions {
   // totals or not
   isTotals?: boolean;
   showSingleTips?: boolean;
-  [key: string]: unknown;
+  [key: string]: any;
 }
 
 export interface TooltipSummaryOptions {

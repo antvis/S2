@@ -143,7 +143,8 @@ export const getSortTypeIcon = (
   if (sortParam?.sortMethod) {
     if (isAscSort(sortParam?.sortMethod)) {
       return 'groupAsc';
-    } else if (isDescSort(sortParam?.sortMethod)) {
+    }
+    if (isDescSort(sortParam?.sortMethod)) {
       return 'groupDesc';
     }
   }
