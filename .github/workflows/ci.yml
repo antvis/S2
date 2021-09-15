@@ -50,4 +50,4 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          base-path: './packages/s2-core'
+          path-to-lcov: './packages/s2-core/coverage/lcov.info'

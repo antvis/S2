@@ -39,7 +39,7 @@
     "build:esm": "FORMAT=esm rollup -c rollup.config.js",
     "build:cjs": "FORMAT=cjs rollup -c rollup.config.js",
     "build:umd": "FORMAT=umd rollup -c rollup.config.js",
-    "bundle:size": "bundlesize",
+    "build:size-limit": "limit-size",
     "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
     "test:live": "node ./scripts/test-live.mjs",
     "test": "jest",
@@ -68,14 +68,16 @@
     "*.css",
     "dist/*"
   ],
-  "bundlesize": [
+  "limit-size": [
     {
       "path": "./dist/s2.min.js",
-      "maxSize": "120 kB"
+      "limit": "240 kB",
+      "gzip": true
     },
     {
       "path": "./dist/s2.min.css",
-      "maxSize": "5 kB"
+      "limit": "5 kB",
+      "gzip": true
     }
   ]
 }
