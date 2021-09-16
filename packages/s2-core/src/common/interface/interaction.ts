@@ -1,4 +1,3 @@
-import { Event } from '@antv/g-canvas';
 import { SimpleBBox } from '@antv/g-canvas';
 import { InteractionStateName } from '../constant';
 import { ViewMeta } from './basic';
