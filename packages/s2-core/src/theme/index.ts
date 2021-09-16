@@ -192,6 +192,15 @@ export const getTheme = (
             opacity: 0.3,
           },
         },
+        /* ---------- expand icon ----------- */
+        expandIcon: {
+          tipsLine: {
+            borderColor: '#000000',
+            borderWidth: 1,
+            borderOpacity: 0.45,
+          },
+          size: 24,
+        },
       },
       icon: {
         fill: brandColors[0],

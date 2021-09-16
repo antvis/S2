@@ -65,7 +65,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     };
 
     const { trend } = INTERACTION_OPERATOR;
-    const operator: TooltipOperatorOptions = this.spreadsheet.options?.showTrend
+    const operator: TooltipOperatorOptions = this.spreadsheet.options.showTrend
       ? {
           onClick: (id) => {
             if (id === trend.id) {

@@ -89,8 +89,9 @@ export class TableColCell extends ColCell {
   }
 
   private hasHiddenColumnCell() {
-    const { hideColumnFields = [] } = this.spreadsheet.options;
-    if (isEmpty(hideColumnFields)) {
+    const { hideColumnFields = [], enableHideColumnFields } =
+      this.spreadsheet.options;
+    if (isEmpty(hideColumnFields) || !enableHideColumnFields) {
       return false;
     }
     const hiddenColumnDetail = this.spreadsheet.store.get(
@@ -98,21 +99,27 @@ export class TableColCell extends ColCell {
       [],
     );
     return !!hiddenColumnDetail.find(
-      ({ displaySiblingNode }) => displaySiblingNode.field === this.meta.field,
+      ({ displaySiblingNode }) => displaySiblingNode?.field === this.meta.field,
     );
+  }
+
+  private getExpandIconTheme() {
+    const cellTheme = this.getStyle();
+    return cellTheme.cell.expandIcon;
   }
 
   private addExpandColumnTipsLine() {
     const { x, y, height } = this.meta;
+    const { tipsLine } = this.getExpandIconTheme();
     this.addShape('line', {
       attrs: {
         x1: x,
         y1: y,
         x2: x,
         y2: y + height,
-        stroke: '#000000',
-        lineWidth: 1,
-        strokeOpacity: 0.45,
+        stroke: tipsLine.borderColor,
+        lineWidth: tipsLine.borderWidth,
+        strokeOpacity: tipsLine.borderOpacity,
       },
     });
   }
@@ -123,9 +130,8 @@ export class TableColCell extends ColCell {
     }
 
     this.addExpandColumnTipsLine();
-
+    const { size } = this.getExpandIconTheme();
     const { x, y, height } = this.meta;
-    const size = 24;
     const icon = new GuiIcon({
       type: 'ExpandColIcon',
       x: x - size / 2,
@@ -135,7 +141,7 @@ export class TableColCell extends ColCell {
       cursor: 'pointer',
     });
     icon.on('click', this.handleExpandIconClick(this.meta));
-    this.spreadsheet.foregroundGroup.add(icon);
+    this.add(icon);
   }
 
   private handleExpandIconClick(node: Node) {

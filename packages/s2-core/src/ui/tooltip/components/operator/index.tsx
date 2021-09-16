@@ -7,7 +7,6 @@ import {
   TooltipOperatorMenu,
   TooltipOperatorOptions,
 } from '@/common/interface';
-import { getIcon, HtmlIcon } from '@/common/icons';
 import './index.less';
 
 /**
@@ -25,7 +24,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
     onClick(key, e);
   };
 
-  const renderTitle = (text: string, icon) => {
+  const renderTitle = (text: string, icon: React.ReactNode) => {
     return (
       <span>
         <Icon icon={icon} className={`${TOOLTIP_PREFIX_CLS}-operator-icon`} />
@@ -44,7 +43,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
           key={id}
           popupClassName={`${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`}
         >
-          {map(children, (menu) => renderMenu(menu))}
+          {map(children, (subMenu) => renderMenu(subMenu))}
         </Menu.SubMenu>
       );
     }
@@ -76,7 +75,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
           key={id}
           onClick={onMenuClick}
         >
-          {map(children, (menu: TooltipOperatorMenu) => renderMenu(menu))}
+          {map(children, (subMenu: TooltipOperatorMenu) => renderMenu(subMenu))}
         </Menu>
       ) : (
         <></>

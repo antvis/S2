@@ -73,6 +73,11 @@ export interface S2PartialOptions {
   readonly hoverHighlight?: boolean;
   readonly hdAdapter?: boolean;
   readonly hideColumnFields?: string[];
+  readonly enableHideColumnFields?: boolean;
+  // the collection of row id and column id of cells which to be merged
+  readonly mergedCellsInfo?: MergedCellInfo[][];
+  // enable Command + C to copy spread data
+  readonly enableCopy?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -87,10 +92,6 @@ export interface S2PartialOptions {
   readonly frame?: FrameCallback;
   // custom corner header
   readonly cornerHeader?: CornerHeaderCallback;
-  // the collection of row id and column id of cells which to be merged
-  readonly mergedCellsInfo?: MergedCellInfo[][];
-  // enable Command + C to copy spread data
-  readonly enableCopy?: boolean;
 
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
@@ -183,6 +184,7 @@ export const defaultOptions: S2Options = {
   frozenTrailingRowCount: 0,
   frozenTrailingColCount: 0,
   hdAdapter: true,
+  enableHideColumnFields: true,
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>

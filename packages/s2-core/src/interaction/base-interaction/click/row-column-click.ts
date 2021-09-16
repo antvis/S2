@@ -1,4 +1,4 @@
-import { Event } from '@antv/g-canvas';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import { concat, isEmpty } from 'lodash';
 import { EyeOutlined } from '@ant-design/icons';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
@@ -44,18 +44,18 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindRowCellClick() {
-    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: CanvasEvent) => {
       this.handleRowColClick(event, this.spreadsheet.isHierarchyTreeType());
     });
   }
 
   private bindColCellClick() {
-    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
+    this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: CanvasEvent) => {
       this.handleRowColClick(event);
     });
   }
 
-  private handleRowColClick = (event: Event, isTreeRowClick = false) => {
+  private handleRowColClick = (event: CanvasEvent, isTreeRowClick = false) => {
     event.stopPropagation();
 
     const { interaction } = this.spreadsheet;
@@ -115,27 +115,28 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     }
   };
 
-  private showTooltip(event: Event) {
-    const { interaction } = this.spreadsheet;
+  private showTooltip(event: CanvasEvent) {
+    const { interaction, options } = this.spreadsheet;
     const cellInfos = interaction.isSelectedState()
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
     const { hideColumn } = INTERACTION_OPERATOR;
-    const operator: TooltipOperatorOptions = this.spreadsheet.isTableMode() && {
-      onClick: (id) => {
-        if (id === hideColumn.id) {
-          this.hideSelectedColumns();
-        }
-      },
-      menus: [
-        {
-          id: hideColumn.id,
-          text: hideColumn.text,
-          icon: EyeOutlined,
+    const operator: TooltipOperatorOptions = this.spreadsheet.isTableMode() &&
+      options.enableHideColumnFields && {
+        onClick: (id) => {
+          if (id === hideColumn.id) {
+            this.hideSelectedColumns();
+          }
         },
-      ],
-    };
+        menus: [
+          {
+            id: hideColumn.id,
+            text: hideColumn.text,
+            icon: EyeOutlined,
+          },
+        ],
+      };
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       showSingleTips: true,
