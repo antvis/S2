@@ -16,13 +16,14 @@ yarn site:start
 ## 文档编写
 
 * API文档参考示例： `s2-site/docs/api/general/dataCfg.zh.md`
-
+* 新增加的文档需要到 `s2-site/gatsby-config.js` 增加 docs 的对应配置
 * 公共部分都放在common目录，方便引用。 
 * 教程文档可以适当插入live demo，参考 `s2-site/docs/manual/getting-started.zh.md`
 * 英文版都先简单引用一份中文文档即可
 ## Demo调试
 
 * 参考示例: `s2-site/examples/sheets/pivot`
+* 新增加的 demo 需要到 `s2-site/gatsby-config.js` 增加 exapmle 的对应配置
 * 目录说明：
 
   ```bash

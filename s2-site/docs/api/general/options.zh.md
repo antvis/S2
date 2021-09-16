@@ -1,9 +1,11 @@
 ---
 title: Options
 order: 1
+redirect_from:
+  - /zh/docs/api
 ---
 
-交叉表所有配置项相关
+## 交叉表所有配置项相关
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | :-- | :-- | :-: | :-- | :-- | :-- | --- |
@@ -38,9 +40,8 @@ order: 1
 | hierarchy | [HierarchyCallback](#) |  |  |  | 行列结构的自定义 |
 | [key: string] | any |  |  |  | 其他任意的选择配置 |
 
-###
 
-## Conditions
+### Conditions
 
 object **必选**,_ default：null_ 功能描述： 配置条件格式。分为文本(text)，背景(background)，柱状图(interval)，图标(icon)。
 
@@ -51,7 +52,7 @@ object **必选**,_ default：null_ 功能描述： 配置条件格式。分为�
 | interval   | Condition[]      |      |      | {}     | 数据条条件 |
 | icon       | Condition[]      |      |      | {}     | 图标条件   |
 
-### Condition
+#### Condition
 
 object **必选**,_ default：null_ 功能描述： 配置条件格式。分为文本(text)，背景(background)，柱状图(interval)，图标(icon)。
 
@@ -131,7 +132,7 @@ SpreadSheetOptionsBuilder.Builder().conditions({
 });
 ```
 
-## Totals
+### Totals
 
 object **必选**,_ default：null_ 功能描述： 小计总计配置
 
@@ -157,7 +158,7 @@ object **必选**,_ default：null_ 功能描述： 小计总计算配置
 | label | string |  |  |  | 总计别名 |
 | subLabel | string |  |  |  | 小计别名 |
 
-## Tooltip
+### Tooltip
 
 object **必选**,_ default：null_ 功能描述： tooltip配置
 
@@ -174,7 +175,7 @@ object **必选**,_ default：null_ 功能描述： tooltip配置
 | renderTooltip | [RenderTooltip](#) |  |  |  | 自定义整个tooltip, 可以继承 BaseTooltip 自己重写一些方法 |
 | tooltipComponent | React.ReactNode |  |  |  | 自定义tooltip弹框组件 |
 
-## Pagination
+### Pagination
 
 boolean ｜ object **必选**,_ default：null_ 功能描述： 分页配置
 
@@ -185,7 +186,7 @@ boolean ｜ object **必选**,_ default：null_ 功能描述： 分页配置
 | total     | number |      |      |        | 数据总条数          |
 | pageCount | number |      |      |        | 总页数              |
 
-## Style
+### Style
 
 object **必选**,_ default：null_ 功能描述：样式设置
 
@@ -201,8 +202,6 @@ object **必选**,_ default：null_ 功能描述：样式设置
 | rowCfg | [RowCfg](#) | ✓ |  |  | 行样式配置 |
 | device | string |  | 'pc' | 'mobile' | 'pc' | 设备类型 |
 | plotSize | [PlotSize](#) |  |  |  |  |
-
-###
 
 ### CellCfg
 
@@ -238,9 +237,6 @@ object **必选**,_ default：null_ 功能描述：行样式配置
 | colCfg | [ColCfg](#) |  |  | {} | 列样式配置 |
 | rowCfg | [RowCfg](#) |  |  | {} | 行样式配置 |
 | device | pc &#124; mobile |  |  | {} | 设备类型 |
-
-###
-
 ### PlotSize
 
 object **必选**,_ default：null_ 功能描述：行样式配置
@@ -255,7 +251,7 @@ object **必选**,_ default：null_ 功能描述：行样式配置
 | rowCfg | [RowCfg](#) |  |  | {} | 行样式配置 |
 | device | pc &#124; mobile |  |  | {} | 设备类型 |
 
-## keepOnlyNodesIds
+### keepOnlyNodesIds
 
 object 可选,_ default：{}_ 功能描述：仅显示的节点
 
@@ -264,7 +260,7 @@ object 可选,_ default：{}_ 功能描述：仅显示的节点
 | rowIds | string[] |      |      |        | 行 Id    |
 | colIds | string[] |      |      |        | 列 Id    |
 
-## NodeField
+### NodeField
 
 object 可选,_ default：{}_ 功能描述：滚动监听的节点度量
 
@@ -273,9 +269,7 @@ object 可选,_ default：{}_ 功能描述：滚动监听的节点度量
 | rowField | string[] |  |  |  | 行头中需要监听滚动吸顶的度量 id |
 | colField | string[] |  |  |  | 列头中需要监听滚动吸「左」的度量 id |
 
-##
-
-## DataCellCallback
+### DataCellCallback
 
 ```js
 DataCellCallback = (viewMeta: ViewMeta) => Group;
@@ -308,7 +302,7 @@ object 必选,_ default：{}_ 功能描述：单元个数据和位置等信息
 
 keepOnlyNodesIds keepOnlyNodesIds
 
-## CellCallback
+### CellCallback
 
 ```js
 CellCallback = (node: Node, spreadsheet: BaseSpreadSheet, ...restOptions) =>
@@ -324,7 +318,7 @@ CellCallback = (node: Node, spreadsheet: BaseSpreadSheet, ...restOptions) =>
 | spreadsheet | [BaseSpreadSheet](#) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
 | restOptions |  |  |  |  | 不定参数，传递额外的信息 |
 
-## CornerHeaderCallback
+### CornerHeaderCallback
 
 ```js
 CornerHeaderCallback = (parent: Group, spreadsheet: BaseSpreadSheet, ...restOptions) => void;
@@ -341,9 +335,7 @@ CornerHeaderCallback = (parent: Group, spreadsheet: BaseSpreadSheet, ...restOpti
 | spreadsheet | [BaseSpreadSheet](#) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
 | restOptions |  |  |  |  | 不定参数，传递额外的信息 |
 
-##
-
-## FrameCallback
+### FrameCallback
 
 ```js
 FrameCallback = (cfg: object) => Frame;
@@ -351,7 +343,7 @@ FrameCallback = (cfg: object) => Frame;
 
 功能描述：框架自定义回调函数返回： Frame（返回一个绘制好的布局）参数：group 绘制所需属性
 
-## LayoutCallback
+### LayoutCallback
 
 ```js
 LayoutCallback = (spreadsheet: BaseSpreadSheet, rowNode: Node, colNode: Node) => void;
@@ -365,7 +357,7 @@ LayoutCallback = (spreadsheet: BaseSpreadSheet, rowNode: Node, colNode: Node) =>
 | rowNode | [Node]() | ✓ |  |  | 行节点，可能为 null |
 | colNode | [Node]() | ✓ |  |  | 列节点，可能为 null |
 
-## LayoutResultCallback
+### LayoutResultCallback
 
 ```js
 LayoutResultCallback = (layoutResult: LayoutResult) => LayoutResult;
@@ -386,7 +378,7 @@ LayoutResultCallback = (layoutResult: LayoutResult) => LayoutResult;
 
 | getViewMeta | Function： (rowIndex: number, colIndex: number) => ViewMeta | ✓ | | | 获取交叉出[x,y]对应坐标的信息 | | spreadsheet | [BaseSpreadSheet]() | ✓ | | | 表类实例，可以访问任意的配置信息 |
 
-## HierarchyCallback
+### HierarchyCallback
 
 ```js
 HierarchyCallback = (spreadsheet: BaseSpreadSheet, node: Node) =>
@@ -409,7 +401,7 @@ HierarchyCallback = (spreadsheet: BaseSpreadSheet, node: Node) =>
 | nodes | [Node[]]() |  |  |  | 需要额外增加的节点 |
 | push | boolean |  |  |  | push 在 node 前(false)或者后(true)增加额外的节点(nodes) |
 
-## RenderTooltip
+### RenderTooltip
 
 ```js
 RenderTooltip = (spreadsheet: BaseSpreadSheet) => BaseTooltip;

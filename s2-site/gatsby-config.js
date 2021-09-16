@@ -76,11 +76,11 @@ module.exports = {
         },
       },
       {
-        slug: 'sheets',
+        slug: 'basic',
         icon: 'table',
         title: {
-          zh: '基础表',
-          en: 'Sheets',
+          zh: '表形态',
+          en: 'Basic Sheets',
         },
       },
     ],

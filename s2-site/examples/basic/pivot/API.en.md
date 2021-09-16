@@ -2,13 +2,10 @@
 title: API
 order: 0
 ---
-
-## DataCfg
-
-### S2DataConfig
+# S2DataConfig
 
 `markdown:docs/api/general/dataCfg.en.md`
 
-### S2Options
+# S2Options
 
 `markdown:docs/api/general/options.en.md`
