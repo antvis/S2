@@ -19,11 +19,11 @@
     "url": "https://github.com/antvis/s2/issues"
   },
   "scripts": {
-    "start": "yarn site:develop",
-    "site:develop": "gatsby develop --open -H 0.0.0.0",
-    "site:build": "yarn site:clean && gatsby build --prefix-paths",
-    "site:clean": "gatsby clean",
-    "site:deploy": "yarn site:build && gh-pages -d public"
+    "start": "yarn develop",
+    "develop": "gatsby develop --open -H 0.0.0.0",
+    "build": "yarn clean && gatsby build --prefix-paths",
+    "clean": "gatsby clean",
+    "deploy": "yarn build && gh-pages -d public"
   },
   "resolutions": {
     "monaco-editor-webpack-plugin": "2.0.0",

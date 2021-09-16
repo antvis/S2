@@ -1,5 +1,7 @@
 import {
+  find,
   findIndex,
+  forEach,
   get,
   includes,
   isEmpty,
@@ -7,9 +9,8 @@ import {
   maxBy,
   merge,
   reduce,
-  forEach,
-  find,
 } from 'lodash';
+import { BaseFacet } from 'src/facet/base-facet';
 import {
   EXTRA_FIELD,
   ICON_RADIUS,
@@ -18,16 +19,15 @@ import {
 } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { LayoutResult, ViewMeta } from '@/common/interface';
-import { BaseFacet } from '@/facet/index';
 import { buildHeaderHierarchy } from '@/facet/layout/build-header-hierarchy';
 import { Hierarchy } from '@/facet/layout/hierarchy';
-import { Node } from '@/facet/layout/node';
-import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
-import { handleDataItem } from '@/utils/cell/data-cell';
 import {
   layoutCoordinate,
   layoutDataPosition,
 } from '@/facet/layout/layout-hooks';
+import { Node } from '@/facet/layout/node';
+import { handleDataItem } from '@/utils/cell/data-cell';
+import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
 
 export class PivotFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
@@ -610,7 +610,7 @@ export class PivotFacet extends BaseFacet {
         return last(heights);
       },
 
-      getCellHeight: (index: number) => {
+      getCellOffsetY: (index: number) => {
         return heights[index];
       },
 

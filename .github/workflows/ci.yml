@@ -1,14 +1,15 @@
-name: 🔧 Test
+name: CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        # node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -33,8 +34,20 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Test
-        run: yarn test
+      - name: Lint scripts, type and style
+        run: yarn lint
 
-      - name: Test coverage
-        run: yarn test:coverage
+      - name: Build
+        run: yarn build
+
+      - name: Test
+        run: |
+          yarn test:coverage
+        env:
+          CI: true
+
+      - name: Upload test coverage
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: './packages/s2-core/coverage/lcov.info'

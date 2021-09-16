@@ -1,7 +1,7 @@
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
 import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
-import { Node } from '..';
+import { Node } from '@/facet/layout/node';
 import { BaseCell } from '@/cell/base-cell';
 import {
   CellTypes,
