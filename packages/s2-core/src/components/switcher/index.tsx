@@ -1,11 +1,12 @@
 import { Button, Popover } from 'antd';
 import React, { FC, useRef } from 'react';
 import { SwitcherIcon } from '../icons';
-import { Result, State, SwitcherContent, SwitcherContentRef } from './content';
+import { SwitcherContent, SwitcherContentRef } from './content';
 import './index.less';
+import { SwitchResult, SwitchState } from './interface';
 
-export interface SwitcherProps extends State {
-  onSubmit?: (result: Result) => void;
+export interface SwitcherProps extends SwitchState {
+  onSubmit?: (result: SwitchResult) => void;
 }
 
 export const Switcher: FC<SwitcherProps> = ({ onSubmit, ...state }) => {

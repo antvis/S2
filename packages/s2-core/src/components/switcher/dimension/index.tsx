@@ -1,31 +1,22 @@
 import cx from 'classnames';
 import React, { FC, ReactNode } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { DroppableType, FieldType, SWITCHER_CONFIG } from '../constant';
-import { DimensionItem, Item } from '../item';
+import { DroppableType, SWITCHER_CONFIG } from '../constant';
+import { Item } from '../interface';
+import { DimensionCommonProps, DimensionItem } from '../item';
 import './index.less';
 
-interface DimensionProps {
-  fieldType: FieldType;
-  droppableType: DroppableType;
+interface DimensionProps extends DimensionCommonProps {
   data: Item[];
-
+  droppableType: DroppableType;
   crossRows?: boolean;
   option?: ReactNode;
-  expandDerivedValues?: boolean;
-  draggingItemId?: string;
-  onVisibleItemChange?: (
-    checked: boolean,
-    fieldType: FieldType,
-    id: string,
-    derivedId?: string,
-  ) => void;
 }
 
 export const Dimension: FC<DimensionProps> = ({
+  data,
   fieldType,
   droppableType,
-  data,
   crossRows,
   option,
   ...rest

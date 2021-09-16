@@ -1,23 +1,15 @@
+import cx from 'classnames';
 import { isEmpty } from 'lodash';
 import React, { FC } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import cx from 'classnames';
 import { FieldType } from '../constant';
-import './index.less';
+import { Item } from '../interface';
 import { isMeasureType } from '../util';
+import './index.less';
 import { SingleItem } from './single-item';
 
-export interface Item {
-  id: string;
-  displayName: string;
-  checked?: boolean;
-  derivedValues?: Item[];
-}
-
-export interface DimensionItemProps extends Item {
+export interface DimensionCommonProps {
   fieldType: FieldType;
-
-  index: number;
   expandDerivedValues?: boolean;
   draggingItemId?: string;
 
@@ -29,14 +21,19 @@ export interface DimensionItemProps extends Item {
   ) => void;
 }
 
+export type DimensionItemProps = Item &
+  DimensionCommonProps & {
+    index: number;
+  };
+
 export const DimensionItem: FC<DimensionItemProps> = ({
   fieldType,
   id,
   displayName,
-  derivedValues,
   checked,
-  index,
+  derivedValues,
   expandDerivedValues,
+  index,
   draggingItemId,
   onVisibleItemChange,
 }) => {

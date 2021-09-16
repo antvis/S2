@@ -1,22 +1,21 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
-import cx from 'classnames';
 import { Checkbox, Tooltip } from 'antd';
-import { DimensionItemProps, Item } from '.';
+import cx from 'classnames';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { Item } from '../interface';
+import { DimensionCommonProps } from '.';
 
-type SingleItemProps = Pick<
-  DimensionItemProps,
-  'fieldType' | 'onVisibleItemChange'
-> &
-  Omit<Item, 'derivedValues'> & {
+type SingleItemProps = Omit<Item, 'derivedValues'> &
+  Pick<DimensionCommonProps, 'fieldType' | 'onVisibleItemChange'> & {
     derivedId?: string;
     className: string;
   };
+
 export const SingleItem: FC<SingleItemProps> = ({
-  id,
-  derivedId,
-  displayName,
   fieldType,
+  id,
+  displayName,
   checked,
+  derivedId,
   className,
   onVisibleItemChange,
 }) => {

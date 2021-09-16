@@ -1,54 +1,36 @@
+import { ReloadOutlined } from '@ant-design/icons';
 import { Button, Checkbox } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import { filter, flatten, isEmpty, map } from 'lodash';
+import { isEmpty } from 'lodash';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
-import { ReloadOutlined } from '@ant-design/icons';
 import {
   BeforeCapture,
   DragDropContext,
-  DragStart,
-  Droppable,
   DropResult,
 } from 'react-beautiful-dnd';
-import classNames from 'classnames';
 import { DroppableType, FieldType } from '../constant';
 import { Dimension } from '../dimension';
-import { Item } from '../item';
+import { SwitchResult, SwitchState } from '../interface';
 import {
+  checkItem,
+  generateSwitchResult,
   getMainLayoutClassName,
   getNonEmptyFieldCount,
-  isMeasureType,
+  moveItem,
   showDimensionCrossRows,
 } from '../util';
 import './index.less';
 
-export interface State {
-  [FieldType.Rows]?: Item[];
-  [FieldType.Cols]?: Item[];
-  [FieldType.Values]?: Item[];
-}
-
-export interface Result {
-  [FieldType.Rows]: string[];
-  [FieldType.Cols]: string[];
-  [FieldType.Values]: string[];
-  hiddenValues: string[];
-}
-
 export interface SwitcherContentRef {
-  getResult: () => Result;
+  getResult: () => SwitchResult;
 }
 
-export const SwitcherContent = forwardRef((props: State, ref) => {
-  const [state, setState] = useState<State>(props);
+export const SwitcherContent = forwardRef((props: SwitchState, ref) => {
+  const [state, setState] = useState<SwitchState>(props);
   const [expandDerivedValues, setExpandDerivedValues] = useState(true);
   const [draggingItemId, setDraggingItemId] = useState<string>();
 
-  const nonEmptyCount = getNonEmptyFieldCount(
-    state.rows,
-    state.cols,
-    state.values,
-  );
+  const nonEmptyCount = getNonEmptyFieldCount(props);
 
   const onUpdateExpandDerivedValues = (event: CheckboxChangeEvent) => {
     setExpandDerivedValues(event.target.checked);
@@ -56,11 +38,12 @@ export const SwitcherContent = forwardRef((props: State, ref) => {
 
   const onBeforeDragStart = (initial: BeforeCapture) => {
     setDraggingItemId(initial.draggableId);
-
-    // setExpandDerivedValues(false);
   };
-  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+
+  const onDragEnd = ({ destination, source }: DropResult) => {
+    // reset dragging item id
     setDraggingItemId(null);
+
     // cancelled or drop to where can't drop
     if (!destination) {
       return;
@@ -72,28 +55,16 @@ export const SwitcherContent = forwardRef((props: State, ref) => {
     ) {
       return;
     }
-    if (destination.droppableId === source.droppableId) {
-      const updateState = [...state[destination.droppableId]];
-      const targetField = updateState.find((item) => item.id === draggableId);
 
-      updateState.splice(source.index, 1);
-      updateState.splice(destination.index, 0, targetField);
-      setState({ ...state, [destination.droppableId]: updateState });
-    } else {
-      const sourceData = [...state[source.droppableId]];
-      const targetField = sourceData.find((item) => item.id === draggableId);
-
-      const destinationData = [...state[destination.droppableId]];
-
-      sourceData.splice(source.index, 1);
-      destinationData.splice(destination.index, 0, targetField);
-      setState({
-        ...state,
-        [source.droppableId]: sourceData,
-        [destination.droppableId]: destinationData,
-      });
-    }
+    const updatedState = moveItem(
+      state[source.droppableId],
+      state[destination.droppableId],
+      source,
+      destination,
+    );
+    setState({ ...state, ...updatedState });
   };
+
   const onReset = () => {
     setState(props);
   };
@@ -102,27 +73,7 @@ export const SwitcherContent = forwardRef((props: State, ref) => {
     ref,
     () => ({
       getResult() {
-        const rows = map(state[FieldType.Rows], 'id');
-        const cols = map(state[FieldType.Cols], 'id');
-
-        const values = flatten(
-          map(state[FieldType.Values], (item) => {
-            const derivedValues = map(item.derivedValues, 'id');
-            return [item.id, ...derivedValues];
-          }),
-        );
-
-        const hiddenValues = flatten(
-          map(filter(state[FieldType.Values], ['checked', true]), (item) => {
-            const derivedValues = map(
-              filter(item.derivedValues, ['checked', true]),
-              'id',
-            );
-            return [item.id, ...derivedValues];
-          }),
-        );
-
-        return { rows, cols, values, hiddenValues };
+        return generateSwitchResult(state);
       },
     }),
     [state],
@@ -133,29 +84,10 @@ export const SwitcherContent = forwardRef((props: State, ref) => {
     id: string,
     derivedId?: string,
   ) => {
-    const targetField: Item = {
-      ...state[fieldType].find((item) => item.id === id),
-    };
-    if (derivedId) {
-      targetField.derivedValues = map(targetField.derivedValues, (item) => ({
-        ...item,
-        checked: item.id === derivedId ? checked : item.checked,
-      }));
-    } else {
-      targetField.checked = checked;
-      targetField.derivedValues = map(targetField.derivedValues, (item) => ({
-        ...item,
-        checked: checked,
-      }));
-    }
-
-    const updateState = state[fieldType].map((item) =>
-      item.id === targetField.id ? targetField : item,
-    );
-
+    const updatedState = checkItem(state[fieldType], checked, id, derivedId);
     setState({
       ...state,
-      [fieldType]: updateState,
+      [fieldType]: updatedState,
     });
   };
 
@@ -164,29 +96,25 @@ export const SwitcherContent = forwardRef((props: State, ref) => {
       <div className="s2-switcher-content">
         <header>行列切换</header>
         <main className={getMainLayoutClassName(nonEmptyCount)}>
-          {isEmpty(props.rows) || (
-            <Dimension
-              droppableType={DroppableType.Dimension}
-              fieldType={FieldType.Rows}
-              data={state.rows}
-              crossRows={showDimensionCrossRows(nonEmptyCount)}
-            />
+          {[FieldType.Rows, FieldType.Cols].map(
+            (type) =>
+              isEmpty(props[type]) || (
+                <Dimension
+                  droppableType={DroppableType.Dimension}
+                  fieldType={type}
+                  data={state[type]}
+                  crossRows={showDimensionCrossRows(nonEmptyCount)}
+                />
+              ),
           )}
-          {isEmpty(props.cols) || (
-            <Dimension
-              droppableType={DroppableType.Dimension}
-              fieldType={FieldType.Cols}
-              data={state.cols}
-              crossRows={showDimensionCrossRows(nonEmptyCount)}
-            />
-          )}
+
           {isEmpty(props.values) || (
             <Dimension
+              crossRows={true}
               droppableType={DroppableType.Measure}
               fieldType={FieldType.Values}
-              draggingItemId={draggingItemId}
               data={state.values}
-              crossRows={true}
+              draggingItemId={draggingItemId}
               expandDerivedValues={expandDerivedValues}
               onVisibleItemChange={onVisibleItemChange}
               option={
