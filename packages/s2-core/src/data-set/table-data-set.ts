@@ -18,7 +18,8 @@ export class TableDataSet extends BaseDataSet {
   }
 
   handleDimensionValuesSort = () => {
-    const { frozenRowCount, frozenTrailingRowCount } = this.spreadsheet.options;
+    const { frozenRowCount, frozenTrailingRowCount } =
+      this.spreadsheet.options || {};
     const { sortedDimensionValues } = this;
     each(this.sortParams, (item) => {
       const { sortFieldId, sortBy, sortMethod } = item;
