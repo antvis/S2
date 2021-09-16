@@ -146,17 +146,21 @@ export class SpreadSheet extends EE {
     this.dataSet = this.getDataSet(this.options);
 
     this.initTooltip();
-    this.initGroups(this.dom, this.options);
+    this.initGroups();
     this.bindEvents();
     this.initInteraction();
     this.initTheme();
     this.initHdAdapter();
 
-    DebuggerUtil.getInstance().setDebug(options?.debug);
+    this.setDebug();
   }
 
   get isShowTooltip() {
     return this.options?.tooltip?.showTooltip ?? true;
+  }
+
+  private setDebug() {
+    DebuggerUtil.getInstance().setDebug(this.options.debug);
   }
 
   private initTheme() {
@@ -202,9 +206,7 @@ export class SpreadSheet extends EE {
   }
 
   private renderTooltip(): BaseTooltip {
-    return (
-      this.options?.tooltip?.renderTooltip?.(this) || new BaseTooltip(this)
-    );
+    return this.options.tooltip?.renderTooltip?.(this) || new BaseTooltip(this);
   }
 
   public showTooltip(showOptions: TooltipShowOptions) {
@@ -418,6 +420,10 @@ export class SpreadSheet extends EE {
     );
   }
 
+  public getInitColumnNodes(): Node[] {
+    return this.store.get('initColumnNodes') as Node[];
+  }
+
   /**
    * Update scroll's offset, the value can be undefined,
    * indicate not update current value
@@ -505,15 +511,12 @@ export class SpreadSheet extends EE {
    * 2. backgroundGroup
    * 3. panelGroup -- main facet group belongs to
    * 4. foregroundGroup
-   * @param dom
-   * @param options
-   * @private
    */
-  protected initGroups(dom: HTMLElement, options: S2Options) {
-    const { width, height } = options;
+  protected initGroups() {
+    const { width, height } = this.options;
     // base canvas group
     this.container = new Canvas({
-      container: dom,
+      container: this.dom,
       width,
       height,
       localRefresh: false,

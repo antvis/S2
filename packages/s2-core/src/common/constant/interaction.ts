@@ -1,3 +1,4 @@
+import { TooltipOperatorMenu } from '@/common/interface/tooltip';
 import { i18n } from '@/common/i18n';
 
 export enum InteractionName {
@@ -51,9 +52,18 @@ export const SHAPE_ATTRS_MAP = {
 
 export const INTERACTION_STATE_INFO_KEY = 'interactionStateInfo';
 
-export const INTERACTION_TREND = {
-  ID: '__INTERACTION_TREND_ID__',
-  NAME: i18n('趋势'),
+export const INTERACTION_OPERATOR: Record<
+  'trend' | 'hideColumn',
+  TooltipOperatorMenu
+> = {
+  trend: {
+    id: '__INTERACTION_TREND_ID__',
+    text: i18n('趋势'),
+  },
+  hideColumn: {
+    id: '__INTERACTION_HIDE_COL__',
+    text: i18n('隐藏'),
+  },
 };
 
 export enum InteractionBrushSelectionStage {
