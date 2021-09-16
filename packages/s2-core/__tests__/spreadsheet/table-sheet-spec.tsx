@@ -23,6 +23,12 @@ const getSpreadSheet =
     return s2;
   };
 
+const canConvertToNumber = (sortKey) =>
+  data.every((item) => {
+    const v = item[sortKey];
+    return typeof v === 'string' && !Number.isNaN(Number(v));
+  });
+
 const getDataCfg = () => {
   return {
     fields: {
@@ -59,12 +65,16 @@ const getDataCfg = () => {
     data,
     sortParams: [
       {
-        sortFieldId: 'area',
-        sortMethod: 'ASC',
+        sortFieldId: 'count',
+        sortBy: (obj) =>
+          canConvertToNumber('count') ? Number(obj.count) : obj.count,
+        sortMethod: 'DESC',
       },
       {
-        sortFieldId: 'province',
-        sortMethod: 'DESC',
+        sortFieldId: 'profit',
+        sortBy: (obj) =>
+          canConvertToNumber('profit') ? Number(obj.profit) : obj.profit,
+        sortMethod: 'ASC',
       },
     ],
   };
@@ -106,27 +116,12 @@ function MainLayout(props) {
     const logData = (data) => {
       console.log(data);
     };
-    // sort string-type number
     s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
-    s2Ref.current.on(S2Event.RANGE_SORTING, (info) => {
-      const canConvertToNumber = data.every((item) => {
-        const v = item[info.sortKey];
-        return typeof v === 'string' && !Number.isNaN(Number(v));
-      });
-
-      if (canConvertToNumber) {
-        info.compareFunc = (obj) => Number(obj[info.sortKey]);
-      }
-    });
-    s2Ref.current.on(S2Event.RANGE_SORTED, logData);
-
     s2Ref.current.on(S2Event.ROW_CELL_TEXT_CLICK, ({ key, record }) => {
       message.info(`key: ${key}, name: ${JSON.stringify(record)}`);
     });
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED, logData);
-      s2Ref.current.off(S2Event.RANGE_SORTING);
-      s2Ref.current.off(S2Event.RANGE_SORTED);
       s2Ref.current.off(S2Event.ROW_CELL_TEXT_CLICK);
     };
   }, []);
