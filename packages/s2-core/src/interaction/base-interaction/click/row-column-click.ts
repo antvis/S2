@@ -143,6 +143,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       hideSummary: true,
       operator,
     });
+    this.spreadsheet.interaction.reset();
+    this.spreadsheet.render(false);
   }
 
   /**
