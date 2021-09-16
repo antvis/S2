@@ -53,10 +53,3 @@ export interface BrushRange {
 }
 
 export type StateShapeLayer = 'interactiveBgShape' | 'interactiveBorderShape';
-
-export interface MultiClickParams {
-  event: Event;
-  spreadsheet: SpreadSheet;
-  isTreeRowClick: boolean;
-  isMultiSelection: boolean;
-}

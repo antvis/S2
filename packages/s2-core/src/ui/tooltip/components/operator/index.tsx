@@ -1,7 +1,10 @@
 import { Menu } from 'antd';
 import { isEmpty, map, size } from 'lodash';
 import React from 'react';
-import { IMenu, TooltipOperatorOptions } from '@/common/interface';
+import {
+  TooltipOperatorMenu,
+  TooltipOperatorOptions,
+} from '@/common/interface';
 import { getIcon, HtmlIcon } from '@/common/icons';
 import {
   DEFAULT_ICON_PROPS,
@@ -47,7 +50,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
     );
   };
 
-  const renderMenu = (menu: IMenu) => {
+  const renderMenu = (menu: TooltipOperatorMenu) => {
     const { id, icon, text, children } = menu;
 
     if (size(children)) {
@@ -64,7 +67,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
           key={id}
           popupClassName={`${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`}
         >
-          {map(children, (m: IMenu) => renderMenu(m))}
+          {map(children, (m: TooltipOperatorMenu) => renderMenu(m))}
         </Menu.SubMenu>
       );
     }
@@ -85,7 +88,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
         onClick={onMenuClick}
         mode="horizontal"
       >
-        {map(menus, (menu: IMenu) => renderMenu(menu))}
+        {map(menus, (menu: TooltipOperatorMenu) => renderMenu(menu))}
       </Menu>
     );
   };

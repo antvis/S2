@@ -1,20 +1,15 @@
 /**
  * @Description: 请严格要求 svg 的 viewBox，若设计产出的 svg 不是此规格，请叫其修改为 '0 0 1024 1024'
  */
-import { Group, Shape } from '@antv/g-canvas';
+import { Group, Shape, ShapeAttrs } from '@antv/g-canvas';
 import { getIcon } from './factory';
 
 const STYLE_PLACEHOLDER = '<svg';
 // Image 缓存
 const ImageCache: Record<string, HTMLImageElement> = {};
 
-export interface GuiIconCfg {
+export interface GuiIconCfg extends ShapeAttrs {
   readonly type: string;
-  readonly x: number;
-  readonly y: number;
-  readonly width: number;
-  readonly height: number;
-  readonly fill?: string;
 }
 
 /**
@@ -80,29 +75,16 @@ export class GuiIcon extends Group {
   }
 
   hasSupportSuffix = (image: string) => {
-    return (
-      image?.endsWith('.png') ||
-      image?.endsWith('.jpg') ||
-      image?.endsWith('.gif') ||
-      image?.endsWith('.svg')
+    return ['.png', '.jpg', '.gif', '.svg'].some((suffix) =>
+      image?.endsWith(suffix),
     );
   };
 
-  /**
-   * 渲染
-   */
-  private render(): void {
-    const { x, y, width, height, type, fill, textAlign, textBaseline } =
-      this.cfg;
+  private render() {
+    const { type, fill } = this.cfg;
+
     const image = new Shape.Image({
-      attrs: {
-        x,
-        y,
-        width,
-        height,
-        textAlign,
-        textBaseline,
-      },
+      attrs: this.cfg,
     });
 
     const cacheKey = `${type}-${fill}`;
@@ -114,7 +96,6 @@ export class GuiIcon extends Group {
     } else {
       this.getImage(type, cacheKey, fill)
         .then((value: HTMLImageElement) => {
-          // 成功，设置到 GImage 中
           image.attr('img', value);
           this.addShape('image', image);
         })

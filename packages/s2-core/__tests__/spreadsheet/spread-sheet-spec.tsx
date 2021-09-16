@@ -37,6 +37,7 @@ function MainLayout() {
     },
     selectedCellsSpotlight: spotLight,
     hoverHighlight: hoverHighlight,
+    showTrend: true,
   };
   return (
     <div>

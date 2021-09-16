@@ -25,7 +25,7 @@ order: 1
 | registerDefaultInteractions | boolean | ✓ |  |  | 注册默认交互 |
 | scrollReachNodeField | [NodeField](#) | ✓ |  | {rowField: '', colField: ''} |
 | 滚动监听的节点度量 |
-| hideRowColFields | string[] | ✓ |  | [] | 隐藏行、列 |
+| hideColumnFields | string[] | ✓ |  | [] | 隐藏列 |
 | valueInCols | boolean |  |  | false | 存在衍生指标时单列和多列的切换 |
 | dataCell | [DataCellCallback](#) |  |  |  | 自定义单元格 cell |
 | cornerCell | [CellCallback](#) |  |  |  | 自定义 cornerCell |
