@@ -1,4 +1,4 @@
-const { version, repository, homepage } = require('./package.json');
+const { repository, homepage } = require('./package.json');
 
 module.exports = {
   plugins: [
