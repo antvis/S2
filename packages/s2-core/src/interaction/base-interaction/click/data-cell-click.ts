@@ -4,7 +4,7 @@ import { get, noop } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
 import {
   InteractionStateName,
-  INTERACTION_TREND,
+  INTERACTION_OPERATOR,
   InterceptType,
   S2Event,
 } from '@/common/constant';
@@ -64,18 +64,19 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       menus: [],
     };
 
+    const { trend } = INTERACTION_OPERATOR;
     const operator: TooltipOperatorOptions = this.spreadsheet.options?.showTrend
       ? {
-          onClick: (params) => {
-            if (params === INTERACTION_TREND.ID) {
+          onClick: (id) => {
+            if (id === trend.id) {
               this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, meta);
               this.spreadsheet.hideTooltip();
             }
           },
           menus: [
             {
-              id: INTERACTION_TREND.ID,
-              text: INTERACTION_TREND.NAME,
+              id: trend.id,
+              text: trend.text,
               icon: LineChartOutlined,
             },
           ],

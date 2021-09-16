@@ -2,8 +2,12 @@ import { Menu, Dropdown } from 'antd';
 import { isEmpty, map, size } from 'lodash';
 import React from 'react';
 import { Icon } from '../icon';
-import { IMenu, TooltipOperatorOptions } from '@/common/interface';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
+import {
+  TooltipOperatorMenu,
+  TooltipOperatorOptions,
+} from '@/common/interface';
+import { getIcon, HtmlIcon } from '@/common/icons';
 import './index.less';
 
 /**
@@ -30,7 +34,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
     );
   };
 
-  const renderMenu = (menu: IMenu) => {
+  const renderMenu = (menu: TooltipOperatorMenu) => {
     const { id, icon, text, children } = menu;
 
     if (size(children)) {
@@ -59,11 +63,11 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
           className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
           onClick={onMenuClick}
         >
-          {map(menus, (menu: IMenu) => renderMenu(menu))}
+          {map(menus, (menu: TooltipOperatorMenu) => renderMenu(menu))}
         </Menu>
       );
     }
-    return map(menus, (menu: IMenu) => {
+    return map(menus, (menu: TooltipOperatorMenu) => {
       const { id, icon, text, children } = menu;
 
       const menuRender = size(children) ? (
@@ -72,7 +76,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
           key={id}
           onClick={onMenuClick}
         >
-          {map(children, (menu: IMenu) => renderMenu(menu))}
+          {map(children, (menu: TooltipOperatorMenu) => renderMenu(menu))}
         </Menu>
       ) : (
         <></>

@@ -3,16 +3,16 @@ import { SortParam } from '../interface';
 
 export type TooltipDataItem = Record<string, any>;
 
-export interface IMenu {
+export interface TooltipOperatorMenu {
   id: string;
   icon?: React.ReactNode;
   text?: string;
-  children?: IMenu[]; // subMenu
+  children?: TooltipOperatorMenu[]; // subMenu
 }
 
 export interface TooltipOperatorOptions {
   onClick: (...params: unknown[]) => void;
-  menus: IMenu[];
+  menus: TooltipOperatorMenu[];
   [key: string]: unknown;
 }
 

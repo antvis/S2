@@ -55,8 +55,6 @@ export interface S2PartialOptions {
   readonly showSeriesNumber?: boolean;
   // scroll reach node border(which field node belongs to) event config
   readonly scrollReachNodeField?: NodeField;
-  // hide row, col with fields
-  readonly hideRowColFields?: string[];
   // custom config of showing columns and rows
   readonly customHeaderCells?: CustomHeaderCells;
   // row header action icon's config
@@ -74,6 +72,7 @@ export interface S2PartialOptions {
   // highlight all row header cells and column header cells to which the hovered cell belongs
   readonly hoverHighlight?: boolean;
   readonly hdAdapter?: boolean;
+  readonly hideColumnFields?: string[];
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -173,7 +172,7 @@ export const defaultOptions: S2Options = {
   freezeRowHeader: true,
   showSeriesNumber: false,
   scrollReachNodeField: {},
-  hideRowColFields: [],
+  hideColumnFields: [],
   customHeaderCells: null,
   rowActionIcons: null,
   style: defaultStyle,
