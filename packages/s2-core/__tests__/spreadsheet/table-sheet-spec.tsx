@@ -104,6 +104,7 @@ const getOptions = (): S2Options => {
     tooltip: {
       showTooltip: true,
     },
+    enableHideColumnFields: true,
   };
 };
 
