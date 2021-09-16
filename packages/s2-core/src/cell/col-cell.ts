@@ -176,6 +176,10 @@ export class ColCell extends HeaderCell {
         width: icon.size,
         height: icon.size,
       });
+      // TODO：和row-cell统一icon之后需更改
+      sortIcon.on('click', (event) => {
+        this.handleGroupSort(event, this.meta);
+      });
       this.add(sortIcon);
       this.actionIcons.push(sortIcon);
     }
