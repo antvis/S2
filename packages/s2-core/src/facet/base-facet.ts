@@ -257,7 +257,7 @@ export abstract class BaseFacet {
       const { current, pageSize } = pagination;
       const heights = this.viewCellHeights;
       const offset = Math.max((current - 1) * pageSize, 0);
-      return heights.getCellHeight(offset);
+      return heights.getCellOffsetY(offset);
     }
     return 0;
   }
@@ -290,8 +290,7 @@ export abstract class BaseFacet {
     const { pagination } = this.cfg;
     if (pagination) {
       const { current, pageSize } = pagination;
-      const rowLeafNodes = this.layoutResult.rowLeafNodes;
-      const total = rowLeafNodes.length;
+      const total = this.viewCellHeights.getTotalLength();
 
       const pageCount = Math.floor((total - 1) / pageSize) + 1;
 
@@ -474,8 +473,7 @@ export abstract class BaseFacet {
 
       const start = Math.max((current - 1) * pageSize, 0);
       const end = Math.min(current * pageSize, heights.getTotalLength() - 1);
-
-      return heights.getCellHeight(end) - heights.getCellHeight(start);
+      return heights.getCellOffsetY(end) - heights.getCellOffsetY(start);
     }
     return heights.getTotalHeight();
   };

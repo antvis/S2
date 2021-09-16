@@ -2,23 +2,21 @@
  * 交叉表核心数据流程（保证基本数据正确）
  * */
 import { flattenDeep, get, size, uniq } from 'lodash';
-import STANDARD_SPREADSHEET_DATA from '../../../data/standard-spreadsheet-data.json';
-import { getContainer } from '../../../util/helpers';
+import { assembleDataCfg, assembleOptions } from 'tests/util/sheet-entry';
+import { getContainer } from 'tests/util/helpers';
+import { data } from 'tests/data/mock-dataset.json';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { SpreadSheet } from '@/sheet-type';
 
-describe('Cross Table Core Data Process', () => {
-  const options = { width: 1200, height: 800 };
-  const dataCfg = {
-    fields: {
-      rows: ['province', 'city'],
-      columns: ['category', 'subCategory'],
-      values: ['price'],
-    },
-    data: STANDARD_SPREADSHEET_DATA.data,
-  };
-  const ss = new SpreadSheet(getContainer(), dataCfg, options);
+describe('Pivot Table Core Data Process', () => {
+  const ss = new SpreadSheet(
+    getContainer(),
+    assembleDataCfg({
+      totalData: [],
+    }),
+    assembleOptions({}),
+  );
   ss.render();
 
   describe('1、Transform indexes data', () => {
@@ -44,52 +42,50 @@ describe('Cross Table Core Data Process', () => {
 
     test('should get correct indexes data', () => {
       const indexesData = ds.indexesData;
-      expect(flattenDeep(indexesData)).toHaveLength(
-        STANDARD_SPREADSHEET_DATA.data.length,
-      );
+      expect(flattenDeep(indexesData)).toHaveLength(data.length);
       expect(get(indexesData, '0.0.0.0.0')).toEqual({
         province: '浙江省',
         city: '杭州市',
-        category: '家具',
-        subCategory: '桌子',
-        price: 254,
-        [VALUE_FIELD]: 254,
+        type: '家具',
+        sub_type: '桌子',
+        price: 1,
+        [VALUE_FIELD]: 1,
         [EXTRA_FIELD]: 'price',
       }); // 左上角
       expect(get(indexesData, '0.0.1.1.0')).toEqual({
         province: '浙江省',
         city: '杭州市',
-        category: '办公用品',
-        subCategory: '纸张',
-        price: 514,
-        [VALUE_FIELD]: 514,
+        type: '办公用品',
+        sub_type: '纸张',
+        price: 13,
+        [VALUE_FIELD]: 13,
         [EXTRA_FIELD]: 'price',
       }); // 右上角
       expect(get(indexesData, '1.3.0.0.0')).toEqual({
         province: '四川省',
         city: '乐山市',
-        category: '家具',
-        subCategory: '桌子',
-        price: 326,
-        [VALUE_FIELD]: 326,
+        type: '家具',
+        sub_type: '桌子',
+        price: 20,
+        [VALUE_FIELD]: 20,
         [EXTRA_FIELD]: 'price',
       }); // 左下角
       expect(get(indexesData, '1.3.1.1.0')).toEqual({
         province: '四川省',
         city: '乐山市',
-        category: '办公用品',
-        subCategory: '纸张',
-        price: 116,
-        [VALUE_FIELD]: 116,
+        type: '办公用品',
+        sub_type: '纸张',
+        price: 32,
+        [VALUE_FIELD]: 32,
         [EXTRA_FIELD]: 'price',
       }); // 右下角
       expect(get(indexesData, '0.3.1.0.0')).toEqual({
         province: '浙江省',
         city: '舟山市',
-        category: '办公用品',
-        subCategory: '笔',
-        price: 396,
-        [VALUE_FIELD]: 396,
+        type: '办公用品',
+        sub_type: '笔',
+        price: 12,
+        [VALUE_FIELD]: 12,
         [EXTRA_FIELD]: 'price',
       }); // 中间
     });
@@ -300,8 +296,8 @@ describe('Cross Table Core Data Process', () => {
         expect(node.y).toEqual(node.level * colCfg.height);
       });
       // level = 0;
-      const categoryNodes = colsHierarchy.getNodes(0);
-      categoryNodes.forEach((node) => {
+      const typeNodes = colsHierarchy.getNodes(0);
+      typeNodes.forEach((node) => {
         expect(node.width).toEqual(
           node.children
             .map((value) => value.width)
@@ -310,8 +306,8 @@ describe('Cross Table Core Data Process', () => {
         expect(node.x).toEqual(node.children[0].x);
       });
       // level = 1;
-      const category1Nodes = colsHierarchy.getNodes(1);
-      category1Nodes.forEach((node) => {
+      const type1Nodes = colsHierarchy.getNodes(1);
+      type1Nodes.forEach((node) => {
         expect(node.width).toEqual(
           node.children
             .map((value) => value.width)
@@ -326,25 +322,25 @@ describe('Cross Table Core Data Process', () => {
     const { getCellMeta } = ss.facet.layoutResult;
     test('should get correct data value', () => {
       // 左上角
-      expect(getCellMeta(0, 0).data[VALUE_FIELD]).toBe(254);
-      expect(getCellMeta(1, 0).data[VALUE_FIELD]).toBe(156);
-      expect(getCellMeta(0, 1).data[VALUE_FIELD]).toBe(554);
-      expect(getCellMeta(1, 1).data[VALUE_FIELD]).toBe(956);
+      expect(getCellMeta(0, 0).data[VALUE_FIELD]).toBe(1);
+      expect(getCellMeta(1, 0).data[VALUE_FIELD]).toBe(2);
+      expect(getCellMeta(0, 1).data[VALUE_FIELD]).toBe(5);
+      expect(getCellMeta(1, 1).data[VALUE_FIELD]).toBe(6);
       // 右下角
-      expect(getCellMeta(7, 3).data[VALUE_FIELD]).toBe(116);
-      expect(getCellMeta(7, 2).data[VALUE_FIELD]).toBe(396);
-      expect(getCellMeta(6, 3).data[VALUE_FIELD]).toBe(293);
-      expect(getCellMeta(6, 2).data[VALUE_FIELD]).toBe(253);
+      expect(getCellMeta(7, 3).data[VALUE_FIELD]).toBe(32);
+      expect(getCellMeta(7, 2).data[VALUE_FIELD]).toBe(28);
+      expect(getCellMeta(6, 3).data[VALUE_FIELD]).toBe(31);
+      expect(getCellMeta(6, 2).data[VALUE_FIELD]).toBe(27);
       // 右上角
-      expect(getCellMeta(0, 3).data[VALUE_FIELD]).toBe(514);
-      expect(getCellMeta(0, 2).data[VALUE_FIELD]).toBe(854);
-      expect(getCellMeta(1, 3).data[VALUE_FIELD]).toBe(956);
-      expect(getCellMeta(1, 2).data[VALUE_FIELD]).toBe(126);
+      expect(getCellMeta(0, 3).data[VALUE_FIELD]).toBe(13);
+      expect(getCellMeta(0, 2).data[VALUE_FIELD]).toBe(9);
+      expect(getCellMeta(1, 3).data[VALUE_FIELD]).toBe(14);
+      expect(getCellMeta(1, 2).data[VALUE_FIELD]).toBe(10);
       // 左下角
-      expect(getCellMeta(7, 0).data[VALUE_FIELD]).toBe(326);
-      expect(getCellMeta(7, 1).data[VALUE_FIELD]).toBe(126);
-      expect(getCellMeta(6, 0).data[VALUE_FIELD]).toBe(273);
-      expect(getCellMeta(6, 1).data[VALUE_FIELD]).toBe(273);
+      expect(getCellMeta(7, 0).data[VALUE_FIELD]).toBe(20);
+      expect(getCellMeta(7, 1).data[VALUE_FIELD]).toBe(24);
+      expect(getCellMeta(6, 0).data[VALUE_FIELD]).toBe(19);
+      expect(getCellMeta(6, 1).data[VALUE_FIELD]).toBe(23);
     });
   });
 });
