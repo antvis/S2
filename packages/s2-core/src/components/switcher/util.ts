@@ -1,11 +1,12 @@
 import { isEmpty } from 'lodash';
-import { FieldType } from './constant';
-import { DimensionItemType, MeasureItemType } from './dimension';
+import { DraggableLocation } from 'react-beautiful-dnd';
+import { FieldType, MAX_DIMENSION_COUNT } from './constant';
+import { Item } from './item';
 
 export const getNonEmptyFieldCount = (
-  rows: DimensionItemType[] = [],
-  cols: DimensionItemType[] = [],
-  values: MeasureItemType[] = [],
+  rows: Item[] = [],
+  cols: Item[] = [],
+  values: Item[] = [],
 ) => {
   return [rows, cols, values].reduce(
     (sum, value) => sum + (isEmpty(value) ? 0 : 1),
@@ -25,7 +26,7 @@ export const getMainLayoutClassName = (nonEmptyCount: number) => {
 };
 
 export const showDimensionCrossRows = (nonEmptyCount: number) =>
-  nonEmptyCount < 3;
+  nonEmptyCount < MAX_DIMENSION_COUNT;
 
 export const isMeasureType = (fieldType: FieldType) =>
   fieldType === FieldType.Values;

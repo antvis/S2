@@ -3,9 +3,15 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { filter, flatten, isEmpty, map } from 'lodash';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { ReloadOutlined } from '@ant-design/icons';
-import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
+import {
+  BeforeCapture,
+  DragDropContext,
+  DragStart,
+  Droppable,
+  DropResult,
+} from 'react-beautiful-dnd';
 import classNames from 'classnames';
-import { FieldType } from '../constant';
+import { DroppableType, FieldType } from '../constant';
 import { Dimension } from '../dimension';
 import { Item } from '../item';
 import {
@@ -36,6 +42,7 @@ export interface SwitcherContentRef {
 export const SwitcherContent = forwardRef((props: State, ref) => {
   const [state, setState] = useState<State>(props);
   const [expandDerivedValues, setExpandDerivedValues] = useState(true);
+  const [draggingItemId, setDraggingItemId] = useState<string>();
 
   const nonEmptyCount = getNonEmptyFieldCount(
     state.rows,
@@ -47,12 +54,13 @@ export const SwitcherContent = forwardRef((props: State, ref) => {
     setExpandDerivedValues(event.target.checked);
   };
 
-  const onDragStart = (initial: DragStart) => {
-    if (isMeasureType(initial.type as FieldType)) {
-      setExpandDerivedValues(false);
-    }
+  const onBeforeDragStart = (initial: BeforeCapture) => {
+    setDraggingItemId(initial.draggableId);
+
+    // setExpandDerivedValues(false);
   };
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+    setDraggingItemId(null);
     // cancelled or drop to where can't drop
     if (!destination) {
       return;
@@ -64,13 +72,27 @@ export const SwitcherContent = forwardRef((props: State, ref) => {
     ) {
       return;
     }
-    const updateState = [...state[destination.droppableId]];
-    const targetField = updateState.find((item) => item.id === draggableId);
+    if (destination.droppableId === source.droppableId) {
+      const updateState = [...state[destination.droppableId]];
+      const targetField = updateState.find((item) => item.id === draggableId);
 
-    updateState.splice(source.index, 1);
-    updateState.splice(destination.index, 0, targetField);
+      updateState.splice(source.index, 1);
+      updateState.splice(destination.index, 0, targetField);
+      setState({ ...state, [destination.droppableId]: updateState });
+    } else {
+      const sourceData = [...state[source.droppableId]];
+      const targetField = sourceData.find((item) => item.id === draggableId);
 
-    setState({ ...state, [destination.droppableId]: updateState });
+      const destinationData = [...state[destination.droppableId]];
+
+      sourceData.splice(source.index, 1);
+      destinationData.splice(destination.index, 0, targetField);
+      setState({
+        ...state,
+        [source.droppableId]: sourceData,
+        [destination.droppableId]: destinationData,
+      });
+    }
   };
   const onReset = () => {
     setState(props);
@@ -138,27 +160,31 @@ export const SwitcherContent = forwardRef((props: State, ref) => {
   };
 
   return (
-    <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+    <DragDropContext onBeforeCapture={onBeforeDragStart} onDragEnd={onDragEnd}>
       <div className="s2-switcher-content">
         <header>行列切换</header>
         <main className={getMainLayoutClassName(nonEmptyCount)}>
-          {isEmpty(state.rows) || (
+          {isEmpty(props.rows) || (
             <Dimension
+              droppableType={DroppableType.Dimension}
               fieldType={FieldType.Rows}
               data={state.rows}
               crossRows={showDimensionCrossRows(nonEmptyCount)}
             />
           )}
-          {isEmpty(state.cols) || (
+          {isEmpty(props.cols) || (
             <Dimension
+              droppableType={DroppableType.Dimension}
               fieldType={FieldType.Cols}
               data={state.cols}
               crossRows={showDimensionCrossRows(nonEmptyCount)}
             />
           )}
-          {isEmpty(state.values) || (
+          {isEmpty(props.values) || (
             <Dimension
+              droppableType={DroppableType.Measure}
               fieldType={FieldType.Values}
+              draggingItemId={draggingItemId}
               data={state.values}
               crossRows={true}
               expandDerivedValues={expandDerivedValues}

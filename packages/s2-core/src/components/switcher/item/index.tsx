@@ -1,8 +1,8 @@
 import { isEmpty } from 'lodash';
 import React, { FC } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+import cx from 'classnames';
 import { FieldType } from '../constant';
-
 import './index.less';
 import { isMeasureType } from '../util';
 import { SingleItem } from './single-item';
@@ -16,8 +16,11 @@ export interface Item {
 
 export interface DimensionItemProps extends Item {
   fieldType: FieldType;
+
   index: number;
-  expandDerivedValues: boolean;
+  expandDerivedValues?: boolean;
+  draggingItemId?: string;
+
   onVisibleItemChange?: (
     checked: boolean,
     fieldType: FieldType,
@@ -34,18 +37,21 @@ export const DimensionItem: FC<DimensionItemProps> = ({
   checked,
   index,
   expandDerivedValues,
+  draggingItemId,
   onVisibleItemChange,
 }) => {
   const isMeasure = isMeasureType(fieldType);
 
   return (
     <Draggable draggableId={id} index={index}>
-      {(provided) => (
+      {(provided, snapshot) => (
         <div
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={isMeasure ? 'measure-list' : 'dimension-list'}
+          className={cx(isMeasure ? 'measure-list' : 'dimension-list', {
+            'list-dragging': snapshot.isDragging,
+          })}
         >
           <SingleItem
             fieldType={fieldType}
@@ -53,11 +59,17 @@ export const DimensionItem: FC<DimensionItemProps> = ({
             displayName={displayName}
             checked={checked}
             onVisibleItemChange={onVisibleItemChange}
-            className={isMeasure ? 'measure-item' : 'dimension-item'}
+            className={cx(isMeasure ? 'measure-item' : 'dimension-item', {
+              'measure-collapse': !expandDerivedValues,
+            })}
           />
 
-          {isMeasure && !isEmpty(derivedValues) && expandDerivedValues && (
-            <div className="derived-measures">
+          {isMeasure && !isEmpty(derivedValues) && draggingItemId !== id && (
+            <div
+              className={cx('derived-measures', {
+                'measures-hidden': !expandDerivedValues,
+              })}
+            >
               {derivedValues.map((item) => (
                 <SingleItem
                   key={item.id}

@@ -1,16 +1,19 @@
 import cx from 'classnames';
 import React, { FC, ReactNode } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { FieldType, SWITCHER_CONFIG } from '../constant';
+import { DroppableType, FieldType, SWITCHER_CONFIG } from '../constant';
 import { DimensionItem, Item } from '../item';
 import './index.less';
 
 interface DimensionProps {
   fieldType: FieldType;
+  droppableType: DroppableType;
   data: Item[];
+
   crossRows?: boolean;
   option?: ReactNode;
   expandDerivedValues?: boolean;
+  draggingItemId?: string;
   onVisibleItemChange?: (
     checked: boolean,
     fieldType: FieldType,
@@ -21,11 +24,11 @@ interface DimensionProps {
 
 export const Dimension: FC<DimensionProps> = ({
   fieldType,
+  droppableType,
   data,
-  expandDerivedValues,
-  onVisibleItemChange,
   crossRows,
   option,
+  ...rest
 }) => {
   const { text, icon: Icon } = SWITCHER_CONFIG[fieldType];
   return (
@@ -41,7 +44,7 @@ export const Dimension: FC<DimensionProps> = ({
         {option}
       </div>
 
-      <Droppable droppableId={fieldType} type={fieldType}>
+      <Droppable droppableId={fieldType} type={droppableType}>
         {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
@@ -56,9 +59,8 @@ export const Dimension: FC<DimensionProps> = ({
                 key={item.id}
                 index={index}
                 fieldType={fieldType}
-                expandDerivedValues={expandDerivedValues}
-                onVisibleItemChange={onVisibleItemChange}
                 {...item}
+                {...rest}
               />
             ))}
             {provided.placeholder}

@@ -1,16 +1,25 @@
 @prefix: s2-switcher-content;
 @large-span: 16px;
 
+@large-font-size: 14px;
+@normal-font-size: 12px;
+
 .@{prefix} {
   header,
   main {
     margin-bottom: @large-span;
   }
 
+  header {
+    font-size: @large-font-size;
+    font-weight: bold;
+  }
+
   main {
     display: grid;
     grid-gap: @large-span;
     grid-auto-flow: column;
+    font-size: @normal-font-size;
   }
 
   .three-dimensions {
@@ -36,6 +45,7 @@
 
   .s2-switcher-reset-button {
     color: #3572f9;
+    font-size: @large-font-size;
     padding: 0;
   }
 }

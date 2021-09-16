@@ -6,6 +6,11 @@ export enum FieldType {
   Values = 'values',
 }
 
+export enum DroppableType {
+  Dimension = 'dimension',
+  Measure = 'measure',
+}
+
 export const SWITCHER_CONFIG = {
   [FieldType.Rows]: {
     text: '行头',
@@ -20,3 +25,5 @@ export const SWITCHER_CONFIG = {
     icon: ValueIcon,
   },
 } as const;
+
+export const MAX_DIMENSION_COUNT = 3;

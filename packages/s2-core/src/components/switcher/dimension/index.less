@@ -1,9 +1,14 @@
 @prefix: s2-switcher-dimension;
 
 @normal-span: 8px;
+@font-size: 12px;
+
+@gray-color: rgba(0, 0, 0, 0.15);
+@highlight-gray-color: rgba(0, 0, 0, 0.25);
 
 .@{prefix} {
   width: 185px;
+  background-color: transparent;
 
   &.long-dimension {
     grid-row: span 2;
@@ -15,8 +20,13 @@
     margin-bottom: @normal-span;
     justify-content: space-between;
 
-    .title span {
-      margin-left: @normal-span;
+    .title {
+      span {
+        margin-left: @normal-span;
+      }
+
+      display: inline-flex;
+      align-items: center;
     }
   }
 
@@ -25,7 +35,7 @@
     min-height: 120px;
     max-height: 160px;
     padding: @normal-span;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid @gray-color;
     border-radius: 3px;
     overflow-y: auto;
 
@@ -36,10 +46,10 @@
 
     &::-webkit-scrollbar-thumb {
       border-radius: 5px;
-      background-color: rgba(0, 0, 0, 0.15);
+      background-color: @gray-color;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.25);
+        background-color: @highlight-gray-color;
       }
     }
 
@@ -49,6 +59,6 @@
   }
 
   &-long-items {
-    max-height: 366px;
+    max-height: 358px;
   }
 }
