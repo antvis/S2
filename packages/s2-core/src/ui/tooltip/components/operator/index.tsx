@@ -24,7 +24,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
     onClick(key, e);
   };
 
-  const renderTitle = (text: string, icon) => {
+  const renderTitle = (text: string, icon: React.ReactNode) => {
     return (
       <span>
         <Icon icon={icon} className={`${TOOLTIP_PREFIX_CLS}-operator-icon`} />
@@ -62,7 +62,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
           className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
           onClick={onMenuClick}
         >
-          {map(menus, (menu: TooltipOperatorMenu) => renderMenu(menu))}
+          {map(menus, (subMenu: TooltipOperatorMenu) => renderMenu(subMenu))}
         </Menu>
       );
     }
@@ -75,7 +75,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
           key={id}
           onClick={onMenuClick}
         >
-          {map(children, (menu: TooltipOperatorMenu) => renderMenu(menu))}
+          {map(children, (subMenu: TooltipOperatorMenu) => renderMenu(subMenu))}
         </Menu>
       ) : (
         <></>
