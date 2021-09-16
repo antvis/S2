@@ -1,6 +1,6 @@
 import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
-import { get, maxBy, orderBy } from 'lodash';
+import { get, maxBy, set } from 'lodash';
 import type {
   LayoutResult,
   S2CellType,
@@ -25,6 +25,8 @@ import { Hierarchy } from '@/facet/layout/hierarchy';
 import { layoutCoordinate } from '@/facet/layout/layout-hooks';
 import { Node } from '@/facet/layout/node';
 import { renderLine } from '@/utils/g-renders';
+import { TableDataSet } from '@/data-set';
+import { getSortParam } from '@/utils/layout/add-detail-type-sort-icon';
 import { PanelIndexes } from '@/utils/indexes';
 import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
 
@@ -33,20 +35,20 @@ export class TableFacet extends BaseFacet {
     super(props);
     const s2 = this.spreadsheet;
     s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
-      const sortInfo = {
-        sortKey,
-        sortMethod,
-        compareFunc: undefined,
-      };
-      s2.emit(S2Event.RANGE_SORTING, sortInfo);
-
-      s2.dataCfg.data = orderBy(
-        s2.dataSet.originData,
-        [sortInfo.compareFunc || sortKey],
-        [sortMethod.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
-      );
+      const sortParam = getSortParam(sortKey, s2);
+      set(s2.dataCfg, 'sortParams', [
+        {
+          sortFieldId: sortKey,
+          sortMethod,
+          sortBy: sortParam?.sortBy,
+        },
+      ]);
+      s2.setDataCfg(s2.dataCfg);
       s2.render(true);
-      s2.emit(S2Event.RANGE_SORTED, s2.dataCfg.data);
+      s2.emit(
+        S2Event.RANGE_SORTED,
+        (s2.dataSet as TableDataSet).sortedDimensionValues,
+      );
     });
   }
 
