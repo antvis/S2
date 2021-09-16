@@ -1,34 +1,24 @@
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
-import {
-  clone,
-  get,
-  includes,
-  isArray,
-  isEmpty,
-  isString,
-  merge,
-  mergeWith,
-  size,
-} from 'lodash';
+import { clone, get, includes, isString, merge, size } from 'lodash';
 import { BaseCell, DataCell, TableDataCell, TableRowCell } from '@/cell';
 import {
+  BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
+  FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
-  KEY_GROUP_PANEL_GROUND,
-  KEY_GROUP_PANEL_SCROLL,
-  KEY_GROUP_PANEL_FROZEN_ROW,
+  KEY_GROUP_PANEL_FROZEN_BOTTOM,
   KEY_GROUP_PANEL_FROZEN_COL,
+  KEY_GROUP_PANEL_FROZEN_ROW,
+  KEY_GROUP_PANEL_FROZEN_TOP,
   KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
-  KEY_GROUP_PANEL_FROZEN_TOP,
-  KEY_GROUP_PANEL_FROZEN_BOTTOM,
-  BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
+  KEY_GROUP_PANEL_GROUND,
+  KEY_GROUP_PANEL_SCROLL,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-  PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
-  FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
-  S2Event,
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
+  PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+  S2Event,
 } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
@@ -63,8 +53,8 @@ import { RootInteraction } from '@/interaction/root';
 import { getTheme } from '@/theme';
 import { HdAdapter } from '@/ui/hd-adapter';
 import { BaseTooltip } from '@/ui/tooltip';
-import { updateConditionsByValues } from '@/utils/condition/generate-condition';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
+import { customMerge } from '@/utils/merge';
 import { getTooltipData } from '@/utils/tooltip';
 
 export class SpreadSheet extends EE {
@@ -300,14 +290,7 @@ export class SpreadSheet extends EE {
 
   public setOptions(options: Partial<S2Options>) {
     this.hideTooltip();
-    this.options = mergeWith(this.options, options, (origin, updated) => {
-      // merge 默认行为会把数组类型进行合并，这会导致一个问题：
-      // origin: { linkFieldIds:[1,2,3]} +  updated: { linkFieldIds:[]} => { linkFieldIds:[1,2,3]}
-      // 本意是将linkFieldIds 重置，结果却被合并了
-      if (isArray(origin) && isArray(updated)) {
-        return updated;
-      }
-    });
+    this.options = customMerge(this.options, options);
   }
 
   public render(reloadData = true) {
@@ -333,20 +316,6 @@ export class SpreadSheet extends EE {
   public setThemeCfg(themeCfg: ThemeCfg) {
     const theme = themeCfg?.theme || {};
     this.theme = merge({}, getTheme({ ...themeCfg, spreadsheet: this }), theme);
-    this.updateDefaultConditions();
-  }
-
-  private updateDefaultConditions() {
-    if (isEmpty(this.options.indicateConditionValues)) {
-      return;
-    }
-    const { conditions, indicateConditionValues } = this.options;
-    const updatedConditions = updateConditionsByValues(
-      conditions,
-      indicateConditionValues,
-      this.theme.dataCell.icon,
-    );
-    this.setOptions({ conditions: updatedConditions } as S2Options);
   }
 
   /**
