@@ -332,7 +332,7 @@ export class PivotDataSet extends BaseDataSet {
 
     // 标准的数据中，一条数据代表一个格子；不存在一条数据中多个value的情况
     const standardTransform = (originData: Data[]) => {
-      return originData.map((datum) => {
+      return map(originData, (datum) => {
         const valueKey = find(keys(datum), (k) => includes(values, k));
         return {
           ...datum,
@@ -363,7 +363,7 @@ export class PivotDataSet extends BaseDataSet {
   public getDimensionValues(field: string, query?: DataType): string[] {
     const { rows, columns } = this.fields;
     let meta: PivotMeta = new Map();
-    let dimensions: string[];
+    let dimensions: string[] = [];
     if (includes(rows, field)) {
       meta = this.rowPivotMeta;
       dimensions = rows;

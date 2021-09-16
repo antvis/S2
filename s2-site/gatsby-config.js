@@ -35,13 +35,6 @@ module.exports = {
           en: 'API',
         },
       },
-      {
-        slug: 'playground',
-        title: {
-          zh: '工作薄',
-          en: 'Playground',
-        },
-      },
     ],
     docs: [
       {

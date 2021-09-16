@@ -5,20 +5,21 @@
  * - 明细表不需要生成 Row Hierarchy（但为了流程一致会生成空结构）
  */
 import { get } from 'lodash';
-import STANDARD_SPREADSHEET_DATA from '../../../data/standard-spreadsheet-data.json';
-import { getContainer } from '../../../util/helpers';
-import { S2Options } from '@/index';
-import { SpreadSheet } from '@/sheet-type';
+import { SpreadSheet } from 'src/sheet-type';
+import { assembleDataCfg, assembleOptions } from 'tests/util/sheet-entry';
+import { getContainer } from 'tests/util/helpers';
 
 describe('List Table Core Data Process', () => {
-  const options: S2Options = { width: 600, height: 400, mode: 'table' };
-  const dataCfg = {
-    fields: {
-      columns: ['province', 'city', 'category', 'subCategory', 'price'],
-    },
-    data: STANDARD_SPREADSHEET_DATA.data,
-  };
-  const ss = new SpreadSheet(getContainer(), dataCfg, options);
+  const ss = new SpreadSheet(
+    getContainer(),
+    assembleDataCfg({
+      meta: [],
+      fields: {
+        columns: ['province', 'city', 'type', 'sub_type', 'price'],
+      },
+    }),
+    assembleOptions({ mode: 'table' }),
+  );
   ss.render();
 
   describe('1、Generate Col Hierarchy', () => {
@@ -33,8 +34,8 @@ describe('List Table Core Data Process', () => {
       expect(colsHierarchy.getNodes().map((node) => node.label)).toEqual([
         'province',
         'city',
-        'category',
-        'subCategory',
+        'type',
+        'sub_type',
         'price',
       ]);
       // 父子关系正确
@@ -83,15 +84,15 @@ describe('List Table Core Data Process', () => {
       // 第一行
       expect(getCellMeta(0, 0).data).toEqual({ province: '浙江省' });
       expect(getCellMeta(0, 1).data).toEqual({ city: '杭州市' });
-      expect(getCellMeta(0, 2).data).toEqual({ category: '家具' });
-      expect(getCellMeta(0, 3).data).toEqual({ subCategory: '桌子' });
-      expect(getCellMeta(0, 4).data).toEqual({ price: 254 });
+      expect(getCellMeta(0, 2).data).toEqual({ type: '家具' });
+      expect(getCellMeta(0, 3).data).toEqual({ sub_type: '桌子' });
+      expect(getCellMeta(0, 4).data).toEqual({ price: 1 });
       // 第三行
       expect(getCellMeta(2, 0).data).toEqual({ province: '浙江省' });
       expect(getCellMeta(2, 1).data).toEqual({ city: '宁波市' });
-      expect(getCellMeta(2, 2).data).toEqual({ category: '家具' });
-      expect(getCellMeta(2, 3).data).toEqual({ subCategory: '桌子' });
-      expect(getCellMeta(2, 4).data).toEqual({ price: 273 });
+      expect(getCellMeta(2, 2).data).toEqual({ type: '家具' });
+      expect(getCellMeta(2, 3).data).toEqual({ sub_type: '桌子' });
+      expect(getCellMeta(2, 4).data).toEqual({ price: 3 });
     });
   });
 });
