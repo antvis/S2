@@ -19,6 +19,7 @@ import {
   moveItem,
   showDimensionCrossRows,
 } from '../util';
+import { i18n } from '@/common/i18n';
 import './index.less';
 
 export interface SwitcherContentRef {
@@ -94,7 +95,7 @@ export const SwitcherContent = forwardRef((props: SwitchState, ref) => {
   return (
     <DragDropContext onBeforeCapture={onBeforeDragStart} onDragEnd={onDragEnd}>
       <div className="s2-switcher-content">
-        <header>行列切换</header>
+        <header>{i18n('行列切换')}</header>
         <main className={getMainLayoutClassName(nonEmptyCount)}>
           {[FieldType.Rows, FieldType.Cols].map(
             (type) =>
@@ -123,7 +124,7 @@ export const SwitcherContent = forwardRef((props: SwitchState, ref) => {
                     checked={expandDerivedValues}
                     onChange={onUpdateExpandDerivedValues}
                   />
-                  <span className="description">展开同环比</span>
+                  <span className="description">{i18n('展开同环比')}</span>
                 </div>
               }
             />
@@ -136,7 +137,7 @@ export const SwitcherContent = forwardRef((props: SwitchState, ref) => {
             className={'s2-switcher-reset-button'}
             onClick={onReset}
           >
-            恢复默认
+            {i18n('恢复默认')}
           </Button>
         </footer>
       </div>

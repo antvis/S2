@@ -4,6 +4,7 @@ import { SwitcherIcon } from '../icons';
 import { SwitcherContent, SwitcherContentRef } from './content';
 import './index.less';
 import { SwitchResult, SwitchState } from './interface';
+import { i18n } from '@/common/i18n';
 
 export interface SwitcherProps extends SwitchState {
   onSubmit?: (result: SwitchResult) => void;
@@ -28,7 +29,7 @@ export const Switcher: FC<SwitcherProps> = ({ onSubmit, ...state }) => {
         size="small"
         icon={<SwitcherIcon />}
       >
-        行列切换
+        {i18n('行列切换')}
       </Button>
     </Popover>
   );

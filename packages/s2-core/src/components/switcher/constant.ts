@@ -1,4 +1,5 @@
 import { ColIcon, RowIcon, ValueIcon } from '../icons/index';
+import { i18n } from '@/common/i18n';
 
 export enum FieldType {
   Rows = 'rows',
@@ -13,15 +14,15 @@ export enum DroppableType {
 
 export const SWITCHER_CONFIG = {
   [FieldType.Rows]: {
-    text: '行头',
+    text: i18n('行头'),
     icon: RowIcon,
   },
   [FieldType.Cols]: {
-    text: '列头',
+    text: i18n('列头'),
     icon: ColIcon,
   },
   [FieldType.Values]: {
-    text: '值',
+    text: i18n('值'),
     icon: ValueIcon,
   },
 } as const;
