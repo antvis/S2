@@ -23,6 +23,3 @@ export const DEFAULT_PADDING = 4;
 export const TREE_ROW_DEFAULT_WIDTH = 120;
 
 export const MINI_BAR_CHART_HEIGHT = 12;
-// default condition's icon
-export const UP_ICON = 'CellUp';
-export const DOWN_ICON = 'CellDown';

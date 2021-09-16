@@ -117,11 +117,14 @@ export class BaseTooltip {
 
   protected renderContent(data?: TooltipData, options?: TooltipOptions) {
     const option = getOptions(options);
-    const { operator } = option;
+    const { operator, onlyMenu } = option;
     const { summaries, headInfo, details, interpretation, infos, tips, name } =
       data || {};
     const nameTip = { name, tips };
 
+    if (onlyMenu) {
+      return this.renderOperation(operator, onlyMenu);
+    }
     return (
       <div>
         {this.renderOperation(operator)}
@@ -139,10 +142,17 @@ export class BaseTooltip {
     return <Divider />;
   }
 
-  protected renderOperation(operator: TooltipOperatorOptions) {
+  protected renderOperation(
+    operator: TooltipOperatorOptions,
+    onlyMenu?: boolean,
+  ) {
     return (
       operator && (
-        <TooltipOperator onClick={operator.onClick} menus={operator.menus} />
+        <TooltipOperator
+          onClick={operator.onClick}
+          menus={operator.menus}
+          onlyMenu={onlyMenu}
+        />
       )
     );
   }

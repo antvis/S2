@@ -1,24 +1,10 @@
 import * as React from 'react';
+import { Icon } from './icon';
 import { TooltipInterpretationOptions } from '@/common/interface';
-import { getIcon, HtmlIcon } from '@/common/icons';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
 export const Interpretation = (props: TooltipInterpretationOptions) => {
   const { name, icon, text, render } = props;
-
-  const renderIcon = () => {
-    if (getIcon(icon)) {
-      return (
-        <HtmlIcon
-          className={`${TOOLTIP_PREFIX_CLS}-interpretation-icon`}
-          type={icon}
-        />
-      );
-    }
-    const Component = icon;
-
-    return icon && <Component />;
-  };
 
   const renderName = () => {
     return (
@@ -43,7 +29,10 @@ export const Interpretation = (props: TooltipInterpretationOptions) => {
   return (
     <div className={`${TOOLTIP_PREFIX_CLS}-interpretation`}>
       <div className={`${TOOLTIP_PREFIX_CLS}-interpretation-head`}>
-        {renderIcon()}
+        <Icon
+          icon={icon}
+          className={`${TOOLTIP_PREFIX_CLS}-interpretation-icon`}
+        />
         {renderName()}
       </div>
       {renderText()}

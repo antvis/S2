@@ -1,6 +1,6 @@
 import React from 'react';
+import { Icon } from './icon';
 import { ListItem, TooltipDetailProps } from '@/common/interface';
-import { HtmlIcon } from '@/common/icons';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
 export const TooltipDetail = (props: TooltipDetailProps) => {
@@ -22,8 +22,7 @@ export const TooltipDetail = (props: TooltipDetailProps) => {
             <span
               className={`${TOOLTIP_PREFIX_CLS}-detail-item-val ${TOOLTIP_PREFIX_CLS}-highlight`}
             >
-              {icon ? <HtmlIcon type={icon} width={8} height={7} /> : null}{' '}
-              {value}
+              {icon ? <Icon icon={icon} width={8} height={7} /> : null} {value}
             </span>
           </div>
         );
