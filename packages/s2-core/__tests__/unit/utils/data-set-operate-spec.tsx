@@ -44,7 +44,7 @@ describe('Data Set Operate Test', () => {
     });
 
     it('test custom flattenDeep', () => {
-      expect(keys(customFlattenDeep(data))).toBeArrayOfSize(12);
+      expect(keys(customFlattenDeep(data))).toBeArrayOfSize(11);
     });
 
     it('test custom flatten', () => {

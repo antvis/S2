@@ -85,7 +85,6 @@ const getOptions = (): S2Options => {
     showSeriesNumber: true,
     freezeRowHeader: false,
     mode: 'pivot',
-    indicateConditionValues: ['ac', 'rc'],
     conditions: {
       text: [],
       interval: [
@@ -241,35 +240,16 @@ describe('spreadsheet multiple values cell spec', () => {
   test('should generate default conditions', () => {
     const { icon, text } = sheet.options.conditions;
 
-    expect(icon).toHaveLength(3);
-    expect(text).toHaveLength(2);
+    expect(icon).toHaveLength(1);
+    expect(text).toHaveLength(0);
 
     expect(icon).toEqual([
       {
         field: 'price',
         mapping: expect.any(Function),
       },
-      {
-        field: 'ac',
-        position: 'left',
-        mapping: expect.any(Function),
-      },
-      {
-        field: 'rc',
-        position: 'left',
-        mapping: expect.any(Function),
-      },
     ]);
 
-    expect(text).toEqual([
-      {
-        field: 'ac',
-        mapping: expect.any(Function),
-      },
-      {
-        field: 'rc',
-        mapping: expect.any(Function),
-      },
-    ]);
+    expect(text).toEqual([]);
   });
 });

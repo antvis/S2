@@ -7,3 +7,4 @@ esm
 lib
 dist
 .idea
+*.d.ts

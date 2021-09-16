@@ -1,5 +1,4 @@
 import { BBox, Group } from '@antv/g-canvas';
-import { SortMethodType } from '../constant';
 import { InteractionStateInfo, SortParam } from '../interface';
 import { ValueRanges } from './condition';
 import { S2DataConfig } from './s2DataConfig';
@@ -38,8 +37,6 @@ export interface StoreKey {
   sortParam: SortParam;
   // corner text expand info
   cornerExpand: Record<string, number>;
-  // list-sheet's field sort type(up or down)
-  currentSortKey: Record<string, SortMethodType>;
   // last reached border node id
   lastReachedBorderId: ReachedBorderId;
   // 行。列选中单元的id
