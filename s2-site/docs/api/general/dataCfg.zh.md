@@ -7,9 +7,7 @@ redirect_from:
 
 数据映射，description
 
-## 所有属性
-
-### Data
+## Data
 
 array object **必选**, _default：null_ 功能描述： 设置表的数据源数据源为对象集合，例如：
 
@@ -33,7 +31,7 @@ const data = [{
 }]
 ```
 
-### Meta
+## Meta
 
 array object **必选**,_ default：null_ 功能描述： 全局化配置表数元信息，以度量为单位进行配置。在 meta 上的配置将同时影响所有组件的文本信息。
 
@@ -48,7 +46,7 @@ array object **必选**,_ default：null_ 功能描述： 全局化配置表数�
 数值度量：一般用于格式化数字   文本度量：一般用于做字段枚举值的别名 | | formula | string | | | 度量公式 | | aggregation | string | 可选 | 'SUM' | 'AVG' | 'MIN' | 'MAX' | 聚合方式 |
 
 
-### Fields
+## Fields
 
 object **必选**,_ default：null_ 功能描述： 配置表格的维度域，即对应行列维度
 
@@ -61,7 +59,7 @@ object **必选**,_ default：null_ 功能描述： 配置表格的维度域，�
 | derivedValues | [DerivedValue[]](#) | 可选 |  | 衍生指标 |
 
 
-### sortParams
+## sortParams
 
 array SortParam **可选**,_ default：null_ 功能描述： 配置表格的度量的排序 **sortparam** \*\*
 
@@ -75,6 +73,6 @@ array SortParam **可选**,_ default：null_ 功能描述： 配置表格的度�
 | query | object | 可选 |  | 筛选条件，缩小排序范围 如 ：`{city:'白山'}` |
 | type | string |   可选 | ？？取值？ | 组内排序方式 |
 
-### 额外属性
+## 额外属性
 
 array object **可选**,_ default：null_ 功能描述： 额外的由外部传入的属性对象合集。

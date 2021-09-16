@@ -77,7 +77,7 @@ module.exports = {
       },
       {
         slug: 'basic',
-        icon: 'table',
+        icon: 'facet',
         title: {
           zh: '表形态',
           en: 'Basic Sheets',

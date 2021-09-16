@@ -41,4 +41,4 @@ yarn site:start
   
   ```
 * 热更新没有特别灵敏，如果没有时时更新请手动重刷或重启服务
-* 遇到 `gatsby` 相关报错请先重启服务或执行 `yarn site:clean`
+* 遇到 `gatsby` 相关报错请先重启服务或执行 `yarn site:clean`, 或者删掉 `.cache` 目录
