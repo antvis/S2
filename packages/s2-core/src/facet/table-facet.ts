@@ -1,6 +1,6 @@
 import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
-import { get, maxBy, orderBy } from 'lodash';
+import { get, maxBy, set } from 'lodash';
 import type {
   LayoutResult,
   S2CellType,
@@ -25,6 +25,8 @@ import { Hierarchy } from '@/facet/layout/hierarchy';
 import { layoutCoordinate } from '@/facet/layout/layout-hooks';
 import { Node } from '@/facet/layout/node';
 import { renderLine } from '@/utils/g-renders';
+import { TableDataSet } from '@/data-set';
+import { getSortParam } from '@/utils/layout/add-detail-type-sort-icon';
 import { PanelIndexes } from '@/utils/indexes';
 import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
 
@@ -33,20 +35,20 @@ export class TableFacet extends BaseFacet {
     super(props);
     const s2 = this.spreadsheet;
     s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
-      const sortInfo = {
-        sortKey,
-        sortMethod,
-        compareFunc: undefined,
-      };
-      s2.emit(S2Event.RANGE_SORTING, sortInfo);
-
-      s2.dataCfg.data = orderBy(
-        s2.dataSet.originData,
-        [sortInfo.compareFunc || sortKey],
-        [sortMethod.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
-      );
+      const sortParam = getSortParam(sortKey, s2);
+      set(s2.dataCfg, 'sortParams', [
+        {
+          sortFieldId: sortKey,
+          sortMethod,
+          sortBy: sortParam?.sortBy,
+        },
+      ]);
+      s2.setDataCfg(s2.dataCfg);
       s2.render(true);
-      s2.emit(S2Event.RANGE_SORTED, s2.dataCfg.data);
+      s2.emit(
+        S2Event.RANGE_SORTED,
+        (s2.dataSet as TableDataSet).sortedDimensionValues,
+      );
     });
   }
 
@@ -298,19 +300,29 @@ export class TableFacet extends BaseFacet {
     return colWidth;
   }
 
-  protected getViewCellHeights() {
-    const { dataSet, cellCfg } = this.cfg;
+  protected getCellHeight() {
+    const { cellCfg } = this.cfg;
 
-    const cellHeight =
-      cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
+    return cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
+  }
+
+  protected getViewCellHeights() {
+    const { dataSet } = this.cfg;
+
+    const cellHeight = this.getCellHeight();
 
     return {
       getTotalHeight: () => {
         return cellHeight * dataSet.originData.length;
       },
 
-      getCellHeight: () => {
-        return cellHeight;
+      getCellOffsetY: (offset: number) => {
+        if (offset === 0) return 0;
+        let totalOffset = 0;
+        for (let index = 0; index < offset; index++) {
+          totalOffset += cellHeight;
+        }
+        return totalOffset;
       },
 
       getTotalLength: () => {
@@ -355,11 +367,11 @@ export class TableFacet extends BaseFacet {
     );
   };
 
-  getTotalHeightForRange = (start: number, end: number) => {
+  protected getTotalHeightForRange = (start: number, end: number) => {
     if (start < 0 || end < 0) return 0;
     let totalHeight = 0;
     for (let index = start; index < end + 1; index++) {
-      const height = this.viewCellHeights.getCellHeight(index);
+      const height = this.getCellHeight();
       totalHeight += height;
     }
     return totalHeight;
