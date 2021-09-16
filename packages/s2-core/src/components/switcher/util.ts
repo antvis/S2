@@ -1,4 +1,5 @@
 import { isEmpty } from 'lodash';
+import { FieldType } from './constant';
 import { DimensionItemType, MeasureItemType } from './dimension';
 
 export const getNonEmptyFieldCount = (
@@ -25,3 +26,6 @@ export const getMainLayoutClassName = (nonEmptyCount: number) => {
 
 export const showDimensionCrossRows = (nonEmptyCount: number) =>
   nonEmptyCount < 3;
+
+export const isMeasureType = (fieldType: FieldType) =>
+  fieldType === FieldType.Values;

@@ -1,18 +1,26 @@
 import { Button, Popover } from 'antd';
-import React, { FC } from 'react';
-import {} from 'react-beautiful-dnd';
+import React, { FC, useRef } from 'react';
 import { SwitcherIcon } from '../icons';
-import { SwitcherContent, SwitcherProps } from './content';
+import { Result, State, SwitcherContent, SwitcherContentRef } from './content';
 import './index.less';
 
-export const Switcher: FC<SwitcherProps> = (props) => {
+export interface SwitcherProps extends State {
+  onSubmit?: (result: Result) => void;
+}
+
+export const Switcher: FC<SwitcherProps> = ({ onSubmit, ...state }) => {
+  const ref = useRef<SwitcherContentRef>();
   return (
     <Popover
       overlayClassName="s2-switcher"
       placement="bottomLeft"
       trigger="click"
-      content={<SwitcherContent {...props} />}
-      onVisibleChange={(visible) => {}}
+      content={<SwitcherContent {...state} ref={ref} />}
+      onVisibleChange={(visible) => {
+        if (!visible) {
+          onSubmit?.(ref.current.getResult());
+        }
+      }}
     >
       <Button
         className={'switcher-button'}

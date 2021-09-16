@@ -1,21 +1,21 @@
 import { ColIcon, RowIcon, ValueIcon } from '../icons/index';
 
 export enum FieldType {
-  Row = 'row',
-  Col = 'col',
-  Value = 'value',
+  Rows = 'rows',
+  Cols = 'cols',
+  Values = 'values',
 }
 
 export const SWITCHER_CONFIG = {
-  [FieldType.Row]: {
+  [FieldType.Rows]: {
     text: '行头',
     icon: RowIcon,
   },
-  [FieldType.Col]: {
+  [FieldType.Cols]: {
     text: '列头',
     icon: ColIcon,
   },
-  [FieldType.Value]: {
+  [FieldType.Values]: {
     text: '值',
     icon: ValueIcon,
   },

@@ -13,8 +13,10 @@
   display: flex;
   align-items: center;
 
-  & + & {
-    margin-top: @normal-span;
+  &-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &.dimension-item {
@@ -26,6 +28,10 @@
     padding: 0 @normal-span;
     background-color: @measure-color;
 
+    &.unchecked {
+      color: rgba(0, 0, 0, 0.25);
+    }
+
     &:not(:last-child) {
       border-radius: 3px 3px 0 0;
     }
@@ -36,7 +42,8 @@
   }
 }
 
-.measure-items {
+.dimension-list,
+.measure-list {
   & + & {
     margin-top: @normal-span;
   }
@@ -52,5 +59,11 @@
         border-radius: 0 0 3px 3px;
       }
     }
+  }
+}
+
+.s2-switcher-tooltip {
+  .ant-tooltip-inner {
+    max-width: 180px;
   }
 }

@@ -13,8 +13,9 @@
     display: flex;
     align-items: center;
     margin-bottom: @normal-span;
+    justify-content: space-between;
 
-    span {
+    .title span {
       margin-left: @normal-span;
     }
   }
@@ -27,6 +28,24 @@
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 3px;
     overflow-y: auto;
+
+    &-highlight {
+      border: 1px solid #6b9cff;
+      box-shadow: 0 0 2px 1px rgba(46, 91, 217, 0.2);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.15);
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.25);
+      }
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
   }
 
   &-long-items {
