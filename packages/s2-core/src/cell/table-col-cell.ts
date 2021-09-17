@@ -1,5 +1,4 @@
 import { isEmpty } from 'lodash';
-import { Event as CanvasEvent } from '@antv/g-canvas';
 import { EXTRA_FIELD, S2Event } from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '@/utils/text';
@@ -7,7 +6,6 @@ import { renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
 import { CellBoxCfg } from '@/common/interface';
 import { GuiIcon } from '@/common/icons';
-import { Node } from '@/facet/layout/node';
 
 export class TableColCell extends ColCell {
   protected getStyle() {
@@ -29,10 +27,11 @@ export class TableColCell extends ColCell {
     const style = this.getStyle();
     const textStyle = style.bolderText;
     const { textAlign, textBaseline } = textStyle;
-    const padding = style.cell?.padding;
-    const iconSize = style.icon?.size;
-    const rightPadding = padding?.right + iconSize;
-    const leftPadding = padding?.left;
+    const padding = style.cell.padding;
+    const { size: iconSize, margin: iconMargin } = style.icon;
+    const iconMarginRight = iconMargin.right;
+    const rightPadding = padding.right + iconSize;
+    const leftPadding = padding.left;
 
     const cellBoxCfg: CellBoxCfg = {
       x,
@@ -73,7 +72,7 @@ export class TableColCell extends ColCell {
     renderDetailTypeSortIcon(
       this,
       spreadsheet,
-      x + cellWidth - iconSize,
+      x + cellWidth - iconSize - iconMarginRight,
       textY,
       key,
     );

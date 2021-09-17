@@ -34,6 +34,7 @@ export const KEY_GROUP_ROW_RESIZE_AREA = 'rowResizeAreaGroup';
 export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
 export const KEY_GROUP_CORNER_RESIZE_AREA = 'cornerResizeAreaGroup';
 export const KEY_GROUP_COL_RESIZE_AREA = 'colResizeAreaGroup';
+export const KEY_GROUP_FROZEN_COL_RESIZE_AREA = 'colFrozenResizeAreaGroup';
 export const KEY_GROUP_MASK_GROUP = 'maskGroup';
 export const KEY_GROUP_COL_SCROLL = 'colScrollGroup';
 export const KEY_GROUP_COL_FROZEN = 'colFrozenGroup';

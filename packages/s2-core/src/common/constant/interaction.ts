@@ -76,6 +76,7 @@ export enum InteractionKeyboardKey {
   SHIFT = 'Shift',
   COPY = 'c',
   ESC = 'Escape',
+  META = 'Meta',
 }
 
 export enum SortMethodType {
@@ -87,9 +88,11 @@ export enum InterceptType {
   HOVER = 'hover',
   CLICK = 'click',
   BRUSH_SELECTION = 'brushSelection',
+  MULTI_SELECTION = 'multiSelection',
 }
 
 export type Intercept =
   | InterceptType.HOVER
   | InterceptType.CLICK
-  | InterceptType.BRUSH_SELECTION;
+  | InterceptType.BRUSH_SELECTION
+  | InterceptType.MULTI_SELECTION;

@@ -56,10 +56,11 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
   );
 
 interface SheetEntryProps {
-  header?: ReactNode;
   options: Partial<S2Options>;
   dataCfg: Partial<S2DataConfig>;
+  forceUpdate?: boolean; // 是否强制替换 options 和 dataCfg
   themeCfg?: ThemeCfg;
+  header?: ReactNode;
 }
 
 // eslint-disable-next-line react/display-name
@@ -68,13 +69,15 @@ export const SheetEntry = forwardRef(
     const [mode, setMode] = useState('grid');
     const [valueInCols, setValueInCols] = useState(true);
     const [freezeRowHeader, setFreezeRowHeader] = useState(true);
+    const initOptions = props.forceUpdate
+      ? props.options
+      : assembleOptions(props.options);
 
-    const [options, setOptions] = useState(() =>
-      assembleOptions(props.options),
-    );
-    const [dataCfg, setDataCfg] = useState(() =>
-      assembleDataCfg(props.dataCfg),
-    );
+    const initDataCfg = props.forceUpdate
+      ? props.dataCfg
+      : assembleOptions(props.dataCfg);
+    const [options, setOptions] = useState(() => initOptions);
+    const [dataCfg, setDataCfg] = useState(() => initDataCfg);
 
     const onValueInColsChange = (checked) => {
       setValueInCols(checked);
@@ -106,11 +109,19 @@ export const SheetEntry = forwardRef(
     };
 
     useEffect(() => {
-      setOptions(assembleOptions(options, props.options));
+      if (props.forceUpdate) {
+        setOptions(props.options);
+      } else {
+        setOptions(assembleOptions(options, props.options));
+      }
     }, [props.options]);
 
     useEffect(() => {
-      setDataCfg(assembleDataCfg(dataCfg, props.dataCfg));
+      if (props.forceUpdate) {
+        setDataCfg(props.dataCfg);
+      } else {
+        setDataCfg(assembleDataCfg(dataCfg, props.dataCfg));
+      }
     }, [props.dataCfg]);
 
     return (

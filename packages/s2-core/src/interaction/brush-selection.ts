@@ -70,6 +70,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
       event.preventDefault();
+      if (this.interaction.hasIntercepts([InterceptType.CLICK])) {
+        return;
+      }
       this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
       this.initPrepareSelectMaskShape();
       this.setDisplayedDataCells();

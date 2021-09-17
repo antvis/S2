@@ -1,6 +1,6 @@
 import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
-import { get, maxBy, set } from 'lodash';
+import { get, maxBy, set, forEach } from 'lodash';
 import type {
   LayoutResult,
   S2CellType,
@@ -203,10 +203,17 @@ export class TableFacet extends BaseFacet {
     const { frozenTrailingColCount } = this.spreadsheet?.options;
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
-    for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
-      levelSample.height = this.getColNodeHeight(levelSample);
-      colsHierarchy.height += levelSample.height;
-    }
+
+    let maxColHeight = 0;
+
+    forEach(allNodes, (node) => {
+      const height = this.getColNodeHeight(node);
+      if (height > maxColHeight) {
+        maxColHeight = height;
+      }
+    });
+
+    colsHierarchy.height = maxColHeight;
 
     const nodes = [];
 
@@ -220,7 +227,7 @@ export class TableFacet extends BaseFacet {
       preLeafNode = currentNode;
       currentNode.y = 0;
 
-      currentNode.height = this.getColNodeHeight(currentNode);
+      currentNode.height = maxColHeight;
 
       nodes.push(currentNode);
 
@@ -257,7 +264,6 @@ export class TableFacet extends BaseFacet {
 
   private calculateColLeafNodesWidth(col: Node): number {
     const { cellCfg, colCfg, dataSet, spreadsheet } = this.cfg;
-
     const userDragWidth = get(
       get(colCfg, 'widthByFieldValue'),
       `${col.value}`,
@@ -570,10 +576,83 @@ export class TableFacet extends BaseFacet {
   }
 
   public render() {
-    super.render();
     this.renderFrozenPanelCornerGroup();
     this.initFrozenGroupPosition();
     this.renderFrozenGroupSplitLine();
+    super.render();
+  }
+
+  // 对 panelScrollGroup 以及四个方向的 frozenGroup 做 Clip，避免有透明度时冻结分组和滚动分组展示重叠
+  protected clip(scrollX: number, scrollY: number) {
+    const {
+      frozenRowGroup,
+      frozenColGroup,
+      frozenTrailingColGroup,
+      frozenTrailingRowGroup,
+      panelScrollGroup,
+    } = this.spreadsheet;
+    const frozenColGroupWidth = frozenColGroup.getBBox().width;
+    const frozenRowGroupHeight = frozenRowGroup.getBBox().height;
+    const frozenTrailingRowGroupHeight =
+      frozenTrailingRowGroup.getBBox().height;
+    const panelScrollGroupWidth =
+      this.panelBBox.width -
+      frozenColGroupWidth -
+      frozenTrailingColGroup.getBBox().width;
+    const panelScrollGroupHeight =
+      this.panelBBox.height -
+      frozenRowGroupHeight -
+      frozenTrailingRowGroupHeight;
+
+    panelScrollGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: scrollX + frozenColGroupWidth,
+        y: scrollY + frozenRowGroupHeight,
+        width: panelScrollGroupWidth,
+        height: panelScrollGroupHeight,
+      },
+    });
+
+    frozenRowGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: scrollX + frozenColGroupWidth,
+        y: 0,
+        width: panelScrollGroupWidth,
+        height: frozenRowGroupHeight,
+      },
+    });
+
+    frozenTrailingRowGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: scrollX + frozenColGroupWidth,
+        y: frozenTrailingRowGroup.getBBox().minY,
+        width: panelScrollGroupWidth,
+        height: frozenTrailingRowGroupHeight,
+      },
+    });
+
+    frozenColGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: 0,
+        y: scrollY + frozenRowGroupHeight,
+        width: frozenColGroupWidth,
+        height: panelScrollGroupHeight,
+      },
+    });
+
+    frozenTrailingColGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: frozenTrailingColGroup.getBBox().minX,
+        y: scrollY + frozenRowGroupHeight,
+        width: frozenColGroupWidth,
+        height: panelScrollGroupHeight,
+      },
+    });
   }
 
   protected translateRelatedGroups(
