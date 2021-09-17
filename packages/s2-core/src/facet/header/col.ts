@@ -12,7 +12,7 @@ import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
 } from '@/common/constant';
 import { ColCell, TableColCell, TableCornerCell } from '@/cell';
-import { Formatter, S2CellType, SortParam } from '@/common/interface';
+import { Formatter, S2CellType } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {

@@ -56,9 +56,11 @@
     "@antv/g-gesture": "^1.0.0",
     "antd": "^4.16.13",
     "classnames": "^2.3.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "react-beautiful-dnd": "^13.1.0"
   },
   "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.1.2",
     "d3-dsv": "^1.1.1",
     "inquirer": "^8.1.2",
     "react": "^16.14.0",
