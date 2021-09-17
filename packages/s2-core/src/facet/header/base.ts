@@ -1,5 +1,5 @@
 import { Group, Point } from '@antv/g-canvas';
-import { Node, SpreadSheet } from '@/index';
+import { Node, SpreadSheet, SortParam } from '@/index';
 
 /**
  * Base header config interface
@@ -25,6 +25,8 @@ export interface BaseHeaderConfig {
   data: Node[];
   // spreadsheet entrance instance
   spreadsheet: SpreadSheet;
+  // leaf node sort params
+  sortParam?: SortParam;
 }
 
 /**

@@ -27,7 +27,7 @@ import {
   getTextAndFollowingIconPosition,
 } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
-import { getIconPositionCfg } from '@/utils/condition/generate-condition';
+import { getIconPositionCfg } from '@/utils/condition/condition';
 import {
   renderIcon,
   renderLine,

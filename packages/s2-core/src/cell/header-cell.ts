@@ -1,4 +1,4 @@
-import { first, includes, map } from 'lodash';
+import { first, map, includes, find, isEqual, get, last } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
@@ -6,6 +6,10 @@ import { S2CellType } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
+import { EXTRA_FIELD, InterceptType, ORDER_OPTIONS } from '@/common/constant';
+import { getSortTypeIcon } from '@/utils/sort-action';
+import { TooltipOperatorOptions, SortParam } from '@/common/interface';
+import { SortMethod } from '@/index';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
@@ -16,10 +20,62 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
     this.headerConfig = headerConfig;
+    const { value, query } = this.meta;
+    const sortParams = this.spreadsheet.dataCfg.sortParams;
+    const isValueCell = this.isValueCell(); // 是否是数值节点
+    const sortParam: SortParam = find(sortParams.reverse(), (item) =>
+      isValueCell
+        ? item?.sortByMeasure === value && isEqual(get(item, 'query'), query)
+        : isEqual(get(item, 'query'), query),
+    );
+    const type = getSortTypeIcon(sortParam, isValueCell);
+    this.headerConfig.sortParam = {
+      ...this.headerConfig.sortParam,
+      ...(sortParam || { query }),
+      type,
+    };
   }
 
   protected initCell() {
     this.actionIcons = [];
+  }
+
+  protected isValueCell() {
+    return this.meta.key === EXTRA_FIELD;
+  }
+
+  protected handleGroupSort(event, meta) {
+    event.stopPropagation();
+    this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
+    const operator: TooltipOperatorOptions = {
+      onClick: (method: SortMethod) => {
+        const { rows, columns } = this.spreadsheet.dataCfg.fields;
+        const sortFieldId = this.spreadsheet.isValueInCols()
+          ? last(rows)
+          : last(columns);
+        const { query, value } = meta;
+        const sortParam = {
+          sortFieldId,
+          sortMethod: method,
+          sortByMeasure: value,
+          query,
+        };
+        const prevSortParams = this.spreadsheet.dataCfg.sortParams.filter(
+          (item) => item?.sortFieldId !== sortFieldId,
+        );
+        this.spreadsheet.setDataCfg({
+          ...this.spreadsheet.dataCfg,
+          sortParams: [...prevSortParams, sortParam],
+        });
+        this.spreadsheet.render();
+      },
+      menus: ORDER_OPTIONS,
+    };
+
+    this.spreadsheet.showTooltipWithInfo(event, [], {
+      operator,
+      onlyMenu: true,
+    });
   }
 
   private handleHover(cells: S2CellType[]) {
