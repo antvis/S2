@@ -114,8 +114,8 @@ function MainLayout(props) {
   const s2Ref = React.useRef<SpreadSheet>(null);
 
   useEffect(() => {
-    const logData = (data) => {
-      console.log(data);
+    const logData = (...data: unknown[]) => {
+      console.log(...data);
     };
     s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
     s2Ref.current.on(S2Event.ROW_CELL_TEXT_CLICK, ({ key, record }) => {

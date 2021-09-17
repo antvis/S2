@@ -107,7 +107,10 @@ export interface EmitterType {
   [S2Event.LAYOUT_COL_NODE_BORDER_REACHED]: (data: Node) => void;
   [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (data: Node) => void;
   [S2Event.LAYOUT_TABLE_COL_EXPANDED]: (node: Node) => void;
-  [S2Event.LAYOUT_TABLE_COL_HIDE]: (data: HiddenColumnsInfo) => void;
+  [S2Event.LAYOUT_TABLE_COL_HIDE]: (
+    currentHiddenColumnsInfo: HiddenColumnsInfo,
+    hiddenColumnsDetail: HiddenColumnsInfo[],
+  ) => void;
 
   /** ================ Resize ================  */
   [ResizeEvent.ROW_W]: ResizeHandler;

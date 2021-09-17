@@ -40,7 +40,8 @@ export interface TooltipOptions {
   // totals or not
   isTotals?: boolean;
   showSingleTips?: boolean;
-  [key: string]: any;
+  onlyMenu?: boolean;
+  rowQuery?: Record<string, unknown>;
 }
 
 export interface TooltipSummaryOptions {

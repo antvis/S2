@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, last } from 'lodash';
 import { EXTRA_FIELD, S2Event } from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '@/utils/text';
@@ -84,7 +84,7 @@ export class TableColCell extends ColCell {
 
   protected initCell() {
     super.initCell();
-    this.addExpandColumnIcon();
+    this.addExpandColumnIconAndTipsLine();
   }
 
   private hasHiddenColumnCell() {
@@ -109,13 +109,15 @@ export class TableColCell extends ColCell {
   }
 
   private addExpandColumnTipsLine() {
-    const { x, y, height } = this.meta;
+    const { x, y, width, height } = this.meta;
     const { tipsLine } = this.getExpandIconTheme();
+    const lineX = this.isLastColumn() ? x + width - tipsLine.borderWidth : x;
+
     this.addShape('line', {
       attrs: {
-        x1: x,
+        x1: lineX,
         y1: y,
-        x2: x,
+        x2: lineX,
         y2: y + height,
         stroke: tipsLine.borderColor,
         lineWidth: tipsLine.borderWidth,
@@ -124,25 +126,47 @@ export class TableColCell extends ColCell {
     });
   }
 
-  private addExpandColumnIcon() {
+  private addExpandColumnIconAndTipsLine() {
     if (!this.hasHiddenColumnCell()) {
       return;
     }
-
     this.addExpandColumnTipsLine();
-    const { size } = this.getExpandIconTheme();
-    const { x, y, height } = this.meta;
+    this.addExpandColumnIcon();
+  }
+
+  private addExpandColumnIcon() {
+    const iconConfig = this.getExpandColumnIconConfig();
     const icon = new GuiIcon({
+      ...iconConfig,
       type: 'ExpandColIcon',
-      x: x - size / 2,
-      y: y + height / 2 - size / 4,
-      width: size,
-      height: size / 2,
       cursor: 'pointer',
     });
     icon.on('click', () => {
       this.spreadsheet.emit(S2Event.LAYOUT_TABLE_COL_EXPANDED, this.meta);
     });
     this.add(icon);
+  }
+
+  // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
+  private getExpandColumnIconConfig() {
+    const { size } = this.getExpandIconTheme();
+    const { x, y, width, height } = this.meta;
+
+    const baseIconX = x - size / 2;
+    const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;
+    const iconY = y + height / 2 - size / 4;
+
+    return {
+      x: iconX,
+      y: iconY,
+      width: size,
+      height: size / 2,
+    };
+  }
+
+  private isLastColumn() {
+    const { field } = this.meta;
+    const columns = this.spreadsheet.getColumnNodes();
+    return last(columns).field === field;
   }
 }

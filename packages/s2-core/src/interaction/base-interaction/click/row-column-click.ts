@@ -1,5 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { concat, difference, isEmpty } from 'lodash';
+import { concat, difference, isEmpty, isNil } from 'lodash';
 import { EyeOutlined } from '@ant-design/icons';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
 import {
@@ -9,7 +9,11 @@ import {
   INTERACTION_OPERATOR,
   InterceptType,
 } from '@/common/constant';
-import { S2CellType, TooltipOperatorOptions } from '@/common/interface';
+import {
+  HiddenColumnsInfo,
+  S2CellType,
+  TooltipOperatorOptions,
+} from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 import { mergeCellInfo } from '@/utils/tooltip';
 
@@ -73,7 +77,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       return;
     }
 
-    if (meta.x) {
+    if (!isNil(meta.x)) {
       interaction.addIntercepts([InterceptType.HOVER]);
       // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
       let leafNodes = isTreeRowClick
@@ -141,6 +145,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       showSingleTips: true,
+      onlyMenu: true,
       hideSummary: true,
       operator,
     });
@@ -150,10 +155,9 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     if (!this.spreadsheet.options.enableHideColumnFields) {
       return;
     }
-    this.spreadsheet.on(
-      S2Event.LAYOUT_TABLE_COL_EXPANDED,
-      this.handleExpandIconClick,
-    );
+    this.spreadsheet.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, (node) => {
+      this.handleExpandIconClick(node);
+    });
   }
 
   /**
@@ -186,19 +190,22 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       [],
     );
 
-    const currentHiddenColumnDetail = {
+    const currentHiddenColumnsInfo: HiddenColumnsInfo = {
       hideColumnNodes: this.getHiddenColumnNodes(selectedColumnFields),
       displaySiblingNode,
     };
 
+    const hiddenColumnsDetail: HiddenColumnsInfo[] = [
+      ...lastHiddenColumnDetail,
+      currentHiddenColumnsInfo,
+    ];
+
     this.spreadsheet.emit(
       S2Event.LAYOUT_TABLE_COL_HIDE,
-      currentHiddenColumnDetail,
+      currentHiddenColumnsInfo,
+      hiddenColumnsDetail,
     );
-    this.spreadsheet.store.set('hiddenColumnsDetail', [
-      ...lastHiddenColumnDetail,
-      currentHiddenColumnDetail,
-    ]);
+    this.spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
     this.spreadsheet.setOptions({
       hideColumnFields,
     });
@@ -206,14 +213,22 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.render(false);
   }
 
-  // 获取当前隐藏列(兼容多选) 所对应为未隐藏的兄弟节点
+  // 获取当前隐藏列(兼容多选) 所对应为未隐藏的兄弟节点, 如果是尾节点被隐藏, 则返回他的前一个兄弟节点
+  // [ 1, 2, 3, -, -, -, (7 √), 8, 9 ]
+  // [ 1, 2, 3, (4 √), - ]
   private getHiddenColumnDisplaySiblingNode(hideColumnFields: string[]): Node {
     const columnNodes = this.spreadsheet.getInitColumnNodes();
     const hiddenColumnIndexes = this.getHiddenColumnNodes(hideColumnFields).map(
       ({ colIndex }) => colIndex,
     );
     const lastColumnIndex = Math.max(...hiddenColumnIndexes);
-    return columnNodes.find((node) => node.colIndex === lastColumnIndex + 1);
+    const nextSiblingNode = columnNodes.find(
+      (node) => node.colIndex === lastColumnIndex + 1,
+    );
+    const prevSiblingNode = columnNodes.find(
+      (node) => node.colIndex === lastColumnIndex - 1,
+    );
+    return nextSiblingNode ?? prevSiblingNode;
   }
 
   // 获取需要隐藏的 filed 转成对应的 Node
