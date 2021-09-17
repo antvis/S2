@@ -20,7 +20,7 @@
   <a href="https://david-dm.org/antvis/s2" target="_blank">
     <img src="https://status.david-dm.org/gh/antvis/S2.svg" alt="dependencies"/>
   </a>
-  <a href="https://david-dm.org/antvis/S2?type=dev" title="devDependencies status"><img src="https://david-dm.org/lijinke666/react-music-player/dev-status.svg" alt="devDependencies"/></a>
+  <a href="https://david-dm.org/antvis/S2?type=dev" title="devDependencies status"><img src="https://david-dm.org/antvis/S2/dev-status.svg" alt="devDependencies"/></a>
   <a href="#" target="_blank" target="_blank">
     <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square" alt="bundle size"/>
   </a>

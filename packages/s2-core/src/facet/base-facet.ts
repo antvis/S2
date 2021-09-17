@@ -824,12 +824,14 @@ export abstract class BaseFacet {
         this.updateHScrollBarThumbOffsetWhenOverThePanel({
           layerX,
           layerY,
+          deltaX,
           deltaY: optimizedDeltaX,
         });
 
         this.updateHRowScrollBarThumbOffsetWhenOverTheCorner({
           layerX,
           layerY,
+          deltaX,
           deltaY: optimizedDeltaX,
         });
       } else if (this.hScrollBar) {

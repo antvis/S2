@@ -5,7 +5,7 @@ export type TooltipDataItem = Record<string, any>;
 
 export interface IMenu {
   id: string;
-  icon?: any;
+  icon?: React.ReactNode;
   text?: string;
   children?: IMenu[]; // subMenu
 }
@@ -13,6 +13,7 @@ export interface IMenu {
 export interface TooltipOperatorOptions {
   onClick: (...params: unknown[]) => void;
   menus: IMenu[];
+  [key: string]: unknown;
 }
 
 export interface TooltipPosition {
@@ -24,7 +25,7 @@ export interface TooltipPosition {
 export type ListItem = {
   name: string;
   value: string | number;
-  icon?: string;
+  icon?: React.ReactNode;
 };
 
 export interface SortQuery {
@@ -69,7 +70,7 @@ export type TooltipDetailProps = {
 
 export type TooltipInterpretationOptions = {
   name: string;
-  icon?: any;
+  icon?: React.ReactNode;
   text?: string;
   render?: React.ElementType;
 };
@@ -109,6 +110,11 @@ export type DataParam = {
     selectedData: TooltipDataItem[],
     valueField: string,
   ) => string | number; // 自定义value
+};
+
+export type IconProps = {
+  icon: React.ReactNode;
+  [key: string]: unknown;
 };
 
 export interface SummaryProps {
