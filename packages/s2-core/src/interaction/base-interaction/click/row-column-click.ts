@@ -167,7 +167,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
    *    用于点击展开按钮后还原, 区别于 options.hideColumnFields, 这里需要分段存储, 比如现在有两个隐藏的列
    *    [1,2, (3隐藏), 4, 5, (6隐藏), 7]
    *    展开按钮在 4, 7, 点击任意按钮, 应该只展开所对应的那组 : 4 => [3], 7 => [6]
-   * 2. [displaySiblingNode]: 当前这一组的列隐藏后, 需要将展开按钮显示到对应的兄弟节点
+   * 2. [displayNextSiblingNode]: 当前这一组的列隐藏后, 需要将展开按钮显示到对应的兄弟节点
    * 这样不用每次 render 的时候实时计算, 渲染列头单元格 直接取数据即可, 性能较好
    */
   private hideSelectedColumns() {
@@ -182,7 +182,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       ...options.hideColumnFields,
     ];
 
-    const displaySiblingNode =
+    const displayNextSiblingNode =
       this.getHiddenColumnDisplaySiblingNode(hideColumnFields);
 
     const lastHiddenColumnDetail = this.spreadsheet.store.get(
@@ -192,7 +192,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
     const currentHiddenColumnsInfo: HiddenColumnsInfo = {
       hideColumnNodes: this.getHiddenColumnNodes(selectedColumnFields),
-      displaySiblingNode,
+      displayNextSiblingNode,
     };
 
     const hiddenColumnsDetail: HiddenColumnsInfo[] = [
@@ -245,7 +245,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       'hiddenColumnsDetail',
     );
     const { hideColumnNodes } = hiddenColumnsDetail.find(
-      ({ displaySiblingNode }) => displaySiblingNode.field === node.field,
+      ({ displayNextSiblingNode }) =>
+        displayNextSiblingNode.field === node.field,
     );
     const willDisplayColumnFields = hideColumnNodes.map(({ field }) => field);
     this.spreadsheet.setOptions({
@@ -257,7 +258,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.store.set(
       'hiddenColumnsDetail',
       hiddenColumnsDetail.filter(
-        ({ displaySiblingNode }) => displaySiblingNode.field !== node.field,
+        ({ displayNextSiblingNode }) =>
+          displayNextSiblingNode.field !== node.field,
       ),
     );
     this.spreadsheet.interaction.reset();

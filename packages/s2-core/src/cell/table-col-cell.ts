@@ -99,7 +99,8 @@ export class TableColCell extends ColCell {
       [],
     );
     return !!hiddenColumnsDetail.find(
-      ({ displaySiblingNode }) => displaySiblingNode?.field === this.meta.field,
+      ({ displayNextSiblingNode }) =>
+        displayNextSiblingNode?.field === this.meta.field,
     );
   }
 
