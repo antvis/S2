@@ -7,9 +7,9 @@ import { DimensionCommonProps } from '.';
 
 const CLASS_NAME_PREFIX = 'item';
 
-type SingleItemProps = Omit<SwitcherItem, 'derivedValues'> &
+type SingleItemProps = Omit<SwitcherItem, 'children'> &
   Pick<DimensionCommonProps, 'fieldType' | 'onVisibleItemChange'> & {
-    derivedId?: string;
+    parentId?: string;
     className: string;
   };
 
@@ -18,7 +18,7 @@ export const SingleItem: FC<SingleItemProps> = ({
   id,
   displayName,
   checked,
-  derivedId,
+  parentId,
   className,
   onVisibleItemChange,
 }) => {
@@ -41,7 +41,7 @@ export const SingleItem: FC<SingleItemProps> = ({
         <Checkbox
           checked={checked}
           onChange={(e) =>
-            onVisibleItemChange?.(e.target.checked, fieldType, id, derivedId)
+            onVisibleItemChange?.(e.target.checked, fieldType, id, parentId)
           }
         />
       )}

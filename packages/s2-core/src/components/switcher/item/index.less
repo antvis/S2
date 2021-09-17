@@ -2,7 +2,7 @@
 
 @dimension-color: #d9eeff;
 @measure-color: #d3f4e5;
-@derived-measure-color: #effbf6;
+@child-measure-color: #effbf6;
 
 @large-span: 12px;
 @normal-span: 4px;
@@ -61,14 +61,14 @@
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
   }
 
-  .derived-measures {
+  .child-measures {
     transition: max-height 0.2s, opacity 0.4s;
     overflow: hidden;
     max-height: 1000px;
 
     .measure-item {
       padding: 0 @large-span;
-      background-color: @derived-measure-color;
+      background-color: @child-measure-color;
       margin-top: 0;
       border-radius: 0;
 

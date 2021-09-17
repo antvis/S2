@@ -68,18 +68,21 @@ export const checkItem = (
   source: SwitcherItem[],
   checked: boolean,
   id: string,
-  derivedId?: string,
+  parentId?: string,
 ): SwitcherItem[] => {
-  const target: SwitcherItem = { ...source.find((item) => item.id === id) };
+  const target: SwitcherItem = {
+    ...source.find((item) => item.id === (parentId ?? id)),
+  };
 
-  if (derivedId) {
-    target.derivedValues = map(target.derivedValues, (item) => ({
+  // 有 parentId 时，说明是第二层次项的改变
+  if (parentId) {
+    target.children = map(target.children, (item) => ({
       ...item,
-      checked: item.id === derivedId ? checked : item.checked,
+      checked: item.id === id ? checked : item.checked,
     }));
   } else {
     target.checked = checked;
-    target.derivedValues = map(target.derivedValues, (item) => ({
+    target.children = map(target.children, (item) => ({
       ...item,
       checked: checked,
     }));
@@ -96,22 +99,21 @@ export const generateSwitchResult = (state: SwitchState): SwitchResult => {
   // flatten all values and derived values
   const values = flatten(
     map(state[FieldType.Values], (item) => {
-      const derivedValues = map(item.derivedValues, 'id');
-      return [item.id, ...derivedValues];
+      const children = map(item.children, 'id');
+      return [item.id, ...children];
     }),
   );
 
-  const filterHiddenValues = (item: SwitcherItem) =>
-    isNil(item.checked) || item.checked;
+  const filterHiddenValues = (item: SwitcherItem) => item.checked === false;
 
   //  get all hidden values
   const hiddenValues = flatten(
     map(filter(state[FieldType.Values], filterHiddenValues), (item) => {
-      const hiddenDerivedValues = map(
-        filter(item.derivedValues, filterHiddenValues),
+      const hiddenChildren = map(
+        filter(item.children, filterHiddenValues),
         'id',
       );
-      return [item.id, ...hiddenDerivedValues];
+      return [item.id, ...hiddenChildren];
     }),
   );
 

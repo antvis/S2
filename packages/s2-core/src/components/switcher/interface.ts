@@ -4,7 +4,7 @@ export interface SwitcherItem {
   id: string;
   displayName?: string;
   checked?: boolean;
-  derivedValues?: SwitcherItem[];
+  children?: Omit<SwitcherItem, 'children'>[];
 }
 
 export interface SwitchState {
