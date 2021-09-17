@@ -189,26 +189,38 @@ export class ColCell extends HeaderCell {
     return this.meta.key;
   }
 
+  protected getColResizeAreaOffset() {
+    const { offset, position } = this.headerConfig;
+    const { x, y } = this.meta;
+
+    return {
+      x: position.x - offset + x,
+      y: position.y + y,
+    };
+  }
+
+  protected getColResizeArea() {
+    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+      KEY_GROUP_COL_RESIZE_AREA,
+    );
+    return (prevResizeArea ||
+      this.spreadsheet.foregroundGroup.addGroup({
+        id: KEY_GROUP_COL_RESIZE_AREA,
+      })) as Group;
+  }
+
   // 绘制热区
   private drawResizeArea() {
-    const { offset, position, viewportWidth } = this.headerConfig;
+    const { position, viewportWidth } = this.headerConfig;
     const {
       label,
-      x,
       y,
       width: cellWidth,
       height: cellHeight,
       parent,
     } = this.meta;
     const resizeStyle = this.getStyle('resizeArea');
-    // 热区公用一个group
-    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_COL_RESIZE_AREA,
-    );
-    const resizeArea = (prevResizeArea ||
-      this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_COL_RESIZE_AREA,
-      })) as Group;
+    const resizeArea = this.getColResizeArea();
     const prevHorizontalResizeArea = resizeArea.find((element) => {
       return (
         element.attrs.name ===
@@ -243,12 +255,13 @@ export class ColCell extends HeaderCell {
       });
     }
     if (this.meta.isLeaf) {
+      const resizerOffset = this.getColResizeAreaOffset();
       // 列宽调整热区
       // 基准线是根据container坐标来的，因此把热区画在container
       resizeArea.addShape('rect', {
         attrs: {
-          x: position.x - offset + x + cellWidth - resizeStyle.size / 2,
-          y: position.y + y,
+          x: resizerOffset.x + cellWidth - resizeStyle.size / 2,
+          y: resizerOffset.y,
           width: resizeStyle.size,
           height: cellHeight,
           fill: resizeStyle.background,
@@ -260,8 +273,8 @@ export class ColCell extends HeaderCell {
             type: 'col',
             affect: 'cell',
             caption: parent.isTotals ? '' : label,
-            offsetX: position.x - offset + x,
-            offsetY: position.y + y,
+            offsetX: resizerOffset.x,
+            offsetY: resizerOffset.y,
             width: cellWidth,
             height: cellHeight,
           } as ResizeInfo,
