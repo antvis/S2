@@ -421,7 +421,7 @@ export class SpreadSheet extends EE {
   }
 
   public getInitColumnNodes(): Node[] {
-    return this.store.get('initColumnNodes') as Node[];
+    return this.store.get('initColumnNodes', []);
   }
 
   /**

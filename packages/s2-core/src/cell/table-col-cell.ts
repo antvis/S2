@@ -1,15 +1,56 @@
-import { isEmpty, last } from 'lodash';
-import { EXTRA_FIELD, S2Event } from '@/common/constant';
+import { get, isEmpty, last } from 'lodash';
+import { Group } from '@antv/g-canvas';
+import { S2Event } from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '@/utils/text';
 import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
 import { CellBoxCfg } from '@/common/interface';
-import { GuiIcon } from '@/common/icons';
+import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 
 export class TableColCell extends ColCell {
-  protected getStyle() {
-    return this.theme.colCell;
+  protected isFrozenCol() {
+    const { frozenColCount, frozenTrailingColCount } = this.spreadsheet.options;
+    const { colIndex } = this.meta;
+    const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
+
+    const isFrozenCol = frozenColCount > 0 && colIndex < frozenColCount;
+    const isFrozenTrailingCol =
+      frozenTrailingColCount > 0 &&
+      colIndex >= colLeafNodes.length - frozenTrailingColCount;
+
+    return isFrozenCol || isFrozenTrailingCol;
+  }
+
+  protected getColResizeArea() {
+    const isFrozenCol = this.isFrozenCol();
+
+    if (!isFrozenCol) {
+      return super.getColResizeArea();
+    }
+    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+      KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+    );
+    return (prevResizeArea ||
+      this.spreadsheet.foregroundGroup.addGroup({
+        id: KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+      })) as Group;
+  }
+
+  protected getColResizeAreaOffset() {
+    const { offset, position } = this.headerConfig;
+    const { x, y } = this.meta;
+
+    let finalOffset = offset;
+    // 如果当前列被冻结，不对 resizer 做 offset 处理
+    if (this.isFrozenCol()) {
+      finalOffset = 0;
+    }
+
+    return {
+      x: position.x - finalOffset + x,
+      y: position.y + y,
+    };
   }
 
   protected drawTextShape() {
@@ -25,13 +66,15 @@ export class TableColCell extends ColCell {
     const content = label;
 
     const style = this.getStyle();
-    const textStyle = style.bolderText;
-    const { textAlign, textBaseline } = textStyle;
-    const padding = style.cell.padding;
-    const { size: iconSize, margin: iconMargin } = style.icon;
-    const iconMarginRight = iconMargin.right;
-    const rightPadding = padding.right + iconSize;
-    const leftPadding = padding.left;
+    const textStyle = get(style, 'bolderText');
+    const padding = get(style, 'cell.padding');
+    const iconSize = get(style, 'icon.size');
+    const iconMarginRight = get(style, 'icon.margin.right');
+    const rightPadding = padding?.right + iconSize;
+    const leftPadding = padding?.left;
+
+    const textAlign = get(textStyle, 'textAlign');
+    const textBaseline = get(textStyle, 'textBaseline');
 
     const cellBoxCfg: CellBoxCfg = {
       x,
@@ -76,10 +119,6 @@ export class TableColCell extends ColCell {
       textY,
       key,
     );
-  }
-
-  protected getColResizeAreaKey(): string {
-    return EXTRA_FIELD;
   }
 
   protected initCell() {
