@@ -22,7 +22,10 @@
     "data": [
       {
         "month": "2021-09",
-        "price": 12,
+        "price": 12
+      },
+      {
+        "month": "2021-09",
         "number": 2
       }
     ]
@@ -43,8 +46,8 @@
         "name": "种类"
       },
       {
-        "field": "sum",
-        "name": "单位成本"
+        "field": "price",
+        "name": "价格"
       }
     ],
     "data": [
