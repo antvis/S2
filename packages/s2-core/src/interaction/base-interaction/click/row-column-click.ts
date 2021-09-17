@@ -1,5 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { concat, isEmpty } from 'lodash';
+import { concat, difference, isEmpty } from 'lodash';
 import { EyeOutlined } from '@ant-design/icons';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
 import {
@@ -21,6 +21,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.bindKeyboardUp();
     this.bindColCellClick();
     this.bindRowCellClick();
+    this.bindTableColExpand();
   }
 
   private bindKeyboardDown() {
@@ -145,6 +146,16 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
+  private bindTableColExpand() {
+    if (!this.spreadsheet.options.enableHideColumnFields) {
+      return;
+    }
+    this.spreadsheet.on(
+      S2Event.LAYOUT_TABLE_COL_EXPANDED,
+      this.handleExpandIconClick,
+    );
+  }
+
   /**
    * 隐藏选中的列
    * 每次点击存储两个信息
@@ -170,16 +181,23 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     const displaySiblingNode =
       this.getHiddenColumnDisplaySiblingNode(hideColumnFields);
 
-    const lastHiddenColumnConfig = this.spreadsheet.store.get(
-      'hiddenColumnDetail',
+    const lastHiddenColumnDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
       [],
     );
-    this.spreadsheet.store.set('hiddenColumnDetail', [
-      ...lastHiddenColumnConfig,
-      {
-        hideColumnFields: selectedColumnFields,
-        displaySiblingNode,
-      },
+
+    const currentHiddenColumnDetail = {
+      hideColumnNodes: this.getHiddenColumnNodes(selectedColumnFields),
+      displaySiblingNode,
+    };
+
+    this.spreadsheet.emit(
+      S2Event.LAYOUT_TABLE_COL_HIDE,
+      currentHiddenColumnDetail,
+    );
+    this.spreadsheet.store.set('hiddenColumnsDetail', [
+      ...lastHiddenColumnDetail,
+      currentHiddenColumnDetail,
     ]);
     this.spreadsheet.setOptions({
       hideColumnFields,
@@ -204,5 +222,30 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     return hideColumnFields.map((filed) =>
       columnNodes.find((node) => node.field === filed),
     );
+  }
+
+  private handleExpandIconClick(node: Node) {
+    const { hideColumnFields: lastHideColumnFields } = this.spreadsheet.options;
+    const hiddenColumnsDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
+    );
+    const { hideColumnNodes } = hiddenColumnsDetail.find(
+      ({ displaySiblingNode }) => displaySiblingNode.field === node.field,
+    );
+    const willDisplayColumnFields = hideColumnNodes.map(({ field }) => field);
+    this.spreadsheet.setOptions({
+      hideColumnFields: difference(
+        lastHideColumnFields,
+        willDisplayColumnFields,
+      ),
+    });
+    this.spreadsheet.store.set(
+      'hiddenColumnsDetail',
+      hiddenColumnsDetail.filter(
+        ({ displaySiblingNode }) => displaySiblingNode.field !== node.field,
+      ),
+    );
+    this.spreadsheet.interaction.reset();
+    this.spreadsheet.render(false);
   }
 }

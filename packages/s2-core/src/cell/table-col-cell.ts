@@ -1,6 +1,6 @@
-import { difference, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { EXTRA_FIELD } from '@/common/constant';
+import { EXTRA_FIELD, S2Event } from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '@/utils/text';
 import { renderText } from '@/utils/g-renders';
@@ -91,14 +91,15 @@ export class TableColCell extends ColCell {
   private hasHiddenColumnCell() {
     const { hideColumnFields = [], enableHideColumnFields } =
       this.spreadsheet.options;
+
     if (isEmpty(hideColumnFields) || !enableHideColumnFields) {
       return false;
     }
-    const hiddenColumnDetail = this.spreadsheet.store.get(
-      'hiddenColumnDetail',
+    const hiddenColumnsDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
       [],
     );
-    return !!hiddenColumnDetail.find(
+    return !!hiddenColumnsDetail.find(
       ({ displaySiblingNode }) => displaySiblingNode?.field === this.meta.field,
     );
   }
@@ -140,32 +141,9 @@ export class TableColCell extends ColCell {
       height: size / 2,
       cursor: 'pointer',
     });
-    icon.on('click', this.handleExpandIconClick(this.meta));
+    icon.on('click', () => {
+      this.spreadsheet.emit(S2Event.LAYOUT_TABLE_COL_EXPANDED, this.meta);
+    });
     this.add(icon);
-  }
-
-  private handleExpandIconClick(node: Node) {
-    return (e: CanvasEvent) => {
-      e.stopPropagation();
-
-      const { hideColumnFields: lastHideColumnFields } =
-        this.spreadsheet.options;
-      const hiddenColumnDetail =
-        this.spreadsheet.store.get('hiddenColumnDetail');
-      const { hideColumnFields } = hiddenColumnDetail.find(
-        ({ displaySiblingNode }) => displaySiblingNode.field === node.field,
-      );
-      this.spreadsheet.setOptions({
-        hideColumnFields: difference(lastHideColumnFields, hideColumnFields),
-      });
-      this.spreadsheet.store.set(
-        'hiddenColumnDetail',
-        hiddenColumnDetail.filter(
-          ({ displaySiblingNode }) => displaySiblingNode.field !== node.field,
-        ),
-      );
-      this.spreadsheet.interaction.reset();
-      this.spreadsheet.render(false);
-    };
   }
 }

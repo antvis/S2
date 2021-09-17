@@ -6,8 +6,13 @@
   ],
   "keywords": [
     "antv",
+    "S2",
     "s2",
+    "@antv/S2",
+    "@antv/S2-react",
     "pivot table",
+    "table",
+    "sheet",
     "spreadsheet"
   ],
   "scripts": {

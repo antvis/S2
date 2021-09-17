@@ -121,9 +121,13 @@ function MainLayout(props) {
     s2Ref.current.on(S2Event.ROW_CELL_TEXT_CLICK, ({ key, record }) => {
       message.info(`key: ${key}, name: ${JSON.stringify(record)}`);
     });
+    s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, logData);
+    s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_HIDE, logData);
     return () => {
-      s2Ref.current.off(S2Event.GLOBAL_COPIED, logData);
+      s2Ref.current.off(S2Event.GLOBAL_COPIED);
       s2Ref.current.off(S2Event.ROW_CELL_TEXT_CLICK);
+      s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_EXPANDED);
+      s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_HIDE);
     };
   }, []);
 
