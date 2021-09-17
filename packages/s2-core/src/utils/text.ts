@@ -1,4 +1,3 @@
-import { IShape } from '@antv/g-canvas';
 import {
   clone,
   get,
