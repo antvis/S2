@@ -11,7 +11,7 @@ import {
 } from 'react-beautiful-dnd';
 import { DroppableType, FieldType } from '../constant';
 import { Dimension } from '../dimension';
-import { SwitchResult, SwitchState } from '../interface';
+import { SwitcherResult, SwitcherState } from '../interface';
 import {
   checkItem,
   generateSwitchResult,
@@ -26,10 +26,10 @@ import './index.less';
 
 const CLASS_NAME_PREFIX = 'content';
 export interface SwitcherContentRef {
-  getResult: () => SwitchResult;
+  getResult: () => SwitcherResult;
 }
 
-export interface SwitcherContentProps extends SwitchState {
+export interface SwitcherContentProps extends SwitcherState {
   expandBtnText?: string;
   resetBtnText?: string;
 }
@@ -39,7 +39,7 @@ export const SwitcherContent = forwardRef(
     { expandBtnText, resetBtnText, ...defaultState }: SwitcherContentProps,
     ref,
   ) => {
-    const [state, setState] = useState<SwitchState>(defaultState);
+    const [state, setState] = useState<SwitcherState>(defaultState);
     const [expand, setExpand] = useState(true);
     const [draggingItemId, setDraggingItemId] = useState<string>();
 

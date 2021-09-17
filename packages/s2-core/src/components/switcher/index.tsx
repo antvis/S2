@@ -7,12 +7,12 @@ import {
   SwitcherContentRef,
 } from './content';
 import './index.less';
-import { SwitchResult } from './interface';
+import { SwitcherResult } from './interface';
 import { getSwitcherClassName } from './util';
 import { i18n } from '@/common/i18n';
 
 export interface SwitcherProps extends SwitcherContentProps {
-  onSubmit?: (result: SwitchResult) => void;
+  onSubmit?: (result: SwitcherResult) => void;
 }
 
 export const Switcher: FC<SwitcherProps> = ({ onSubmit, ...props }) => {
