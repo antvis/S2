@@ -238,7 +238,7 @@ export abstract class SpreadSheet extends EE {
 
   protected abstract buildFacet(): void;
 
-  protected abstract clearDrillDownData(owNodeId?: string): void;
+  public abstract clearDrillDownData(owNodeId?: string): void;
 
   public showTooltip(showOptions: TooltipShowOptions) {
     if (this.isShowTooltip) {

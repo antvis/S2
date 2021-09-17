@@ -13,6 +13,11 @@ import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
 import { Node, SpreadSheet, ThemeCfg } from '@/index';
 
+export type SheetType = 'pivot' | 'table' | 'tabular';
+export interface SpreadsheetProps extends BaseSheetProps {
+  sheetType?: SheetType;
+}
+
 export interface PartDrillDownInfo {
   // The data of drill down
   drillData: Record<string, string | number>[];

@@ -13,7 +13,6 @@ import {
   SpreadSheet,
   TableSheet,
 } from '@/index';
-
 const data = getMockData('../data/tableau-supermarket.csv');
 
 const getSpreadSheet =
@@ -133,6 +132,7 @@ function MainLayout(props) {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
+        sheetType={'table'}
         spreadsheet={getSpreadSheet(s2Ref)}
       />
     </div>
