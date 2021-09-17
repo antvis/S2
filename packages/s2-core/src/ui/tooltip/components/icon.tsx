@@ -11,6 +11,6 @@ export const Icon = (props: IconProps) => {
 
     return <HtmlIcon type={type} {...DEFAULT_ICON_PROPS} {...styles} />;
   }
-
-  return <>{icon || ''}</>;
+  const Component = icon as React.ComponentClass;
+  return icon && <Component {...DEFAULT_ICON_PROPS} {...styles} />;
 };
