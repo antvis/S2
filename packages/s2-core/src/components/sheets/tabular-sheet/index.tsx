@@ -19,7 +19,7 @@ import { TabularTheme } from './tabular-theme';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { safetyDataConfig, safetyOptions, S2Options } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import { SpreadSheet, PivotSheet } from '@/sheet-type';
 
 export const TabularSheet = (props: BaseSheetProps) => {
   const {
@@ -108,7 +108,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     if (spreadsheet) {
       return spreadsheet(container, dataCfg, buildOptions());
     }
-    return new SpreadSheet(container, dataCfg, buildOptions());
+    return new PivotSheet(container, dataCfg, buildOptions());
   };
 
   const bindEvent = () => {

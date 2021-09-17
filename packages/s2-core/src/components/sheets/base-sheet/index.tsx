@@ -21,7 +21,7 @@ import { EmitterType } from '@/common/interface/emitter';
 import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
-import { SpreadSheet } from '@/sheet-type';
+import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import {
   HandleDrillDown,
   HandleDrillDownIcon,
@@ -66,11 +66,11 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
 
   const getSpreadSheet = (): SpreadSheet => {
     const params: S2Constructor = [container.current, dataCfg, options];
-    // TODO: 改个名字 spreadsheet => customSpreadsheet 之类的?
+
     if (spreadsheet) {
       return spreadsheet(...params);
     }
-    return new SpreadSheet(...params);
+    return new PivotSheet(...params);
   };
 
   const bindEvent = () => {

@@ -5,12 +5,12 @@
  * - 明细表不需要生成 Row Hierarchy（但为了流程一致会生成空结构）
  */
 import { get } from 'lodash';
-import { SpreadSheet } from 'src/sheet-type';
+import { PivotSheet } from 'src/sheet-type';
 import { assembleDataCfg, assembleOptions } from '../../util/sheet-entry';
 import { getContainer } from '../../util/helpers';
 
 describe('List Table Core Data Process', () => {
-  const ss = new SpreadSheet(
+  const ss = new PivotSheet(
     getContainer(),
     assembleDataCfg({
       meta: [],

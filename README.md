@@ -134,12 +134,12 @@ const s2options = {
 ```
 
 ```ts
-import { SpreadSheet } from '@antv/s2';
+import { PivotSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css'
 
 const container = document.getElementById('container');
 
-const s2 = new SpreadSheet(container, s2DataConfig, s2options)
+const s2 = new PivotSheet(container, s2DataConfig, s2options)
 
 s2.render()
 ```

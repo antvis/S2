@@ -9,6 +9,7 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
+  PivotSheet,
 } from '../../src';
 import {
   multipleDataWithBottom,
@@ -23,7 +24,7 @@ const getSpreadSheet = (
   dataCfg: S2DataConfig,
   options: S2Options,
 ) => {
-  sheet = new SpreadSheet(dom, dataCfg, options);
+  sheet = new PivotSheet(dom, dataCfg, options);
   (window as any).sheet = sheet;
   return sheet;
 };

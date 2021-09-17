@@ -7,10 +7,10 @@ import { getContainer } from '../../util/helpers';
 import { data } from '../../data/mock-dataset.json';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
-import { SpreadSheet } from '@/sheet-type';
+import { PivotSheet } from '@/sheet-type';
 
 describe('Pivot Table Core Data Process', () => {
-  const ss = new SpreadSheet(
+  const ss = new PivotSheet(
     getContainer(),
     assembleDataCfg({
       totalData: [],

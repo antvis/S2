@@ -18,6 +18,7 @@ import {
 import {
   auto,
   EXTRA_FIELD,
+  PivotSheet,
   S2DataConfig,
   S2Options,
   SheetComponent,
@@ -31,7 +32,7 @@ const setSpreadSheet = (
   options: S2Options,
   index: number,
 ) => {
-  const ss = new SpreadSheet(dom, dataCfg, options);
+  const ss = new PivotSheet(dom, dataCfg, options);
   if (index === 1) {
     spreadsheet1 = ss;
   }
