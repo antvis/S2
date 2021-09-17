@@ -2,7 +2,7 @@ import { GM } from '@antv/g-gesture';
 import { each, isEmpty } from 'lodash';
 import { RowCell } from '../../cell';
 import { translateGroup } from '../utils';
-import { S2CellType, S2Options, ViewMeta } from '../../common/interface';
+import { S2CellType, S2Options } from '../../common/interface';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { Node } from '@/facet/layout/node';
 
