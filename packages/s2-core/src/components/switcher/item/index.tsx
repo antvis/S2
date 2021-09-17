@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { FieldType } from '../constant';
 import { Item } from '../interface';
-import { isMeasureType } from '../util';
+import { getSwitcherClassName, isMeasureType } from '../util';
 import './index.less';
 import { SingleItem } from './single-item';
 
@@ -46,9 +46,12 @@ export const DimensionItem: FC<DimensionItemProps> = ({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={cx(isMeasure ? 'measure-list' : 'dimension-list', {
-            'list-dragging': snapshot.isDragging,
-          })}
+          className={cx(
+            getSwitcherClassName(isMeasure ? 'measure-list' : 'dimension-list'),
+            {
+              'list-dragging': snapshot.isDragging,
+            },
+          )}
         >
           <SingleItem
             fieldType={fieldType}

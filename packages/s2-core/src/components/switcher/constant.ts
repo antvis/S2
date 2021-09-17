@@ -1,6 +1,8 @@
 import { ColIcon, RowIcon, ValueIcon } from '../icons/index';
 import { i18n } from '@/common/i18n';
 
+export const SWITCHER_PREFIX_CLS = 'switcher';
+
 export enum FieldType {
   Rows = 'rows',
   Cols = 'cols',

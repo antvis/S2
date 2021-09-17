@@ -2,6 +2,7 @@ import { ReloadOutlined } from '@ant-design/icons';
 import { Button, Checkbox } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { isEmpty } from 'lodash';
+import cx from 'classnames';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import {
   BeforeCapture,
@@ -16,12 +17,14 @@ import {
   generateSwitchResult,
   getMainLayoutClassName,
   getNonEmptyFieldCount,
+  getSwitcherClassName,
   moveItem,
   showDimensionCrossRows,
 } from '../util';
 import { i18n } from '@/common/i18n';
 import './index.less';
 
+const CLASS_NAME_PREFIX = 'content';
 export interface SwitcherContentRef {
   getResult: () => SwitchResult;
 }
@@ -79,6 +82,7 @@ export const SwitcherContent = forwardRef((props: SwitchState, ref) => {
     }),
     [state],
   );
+
   const onVisibleItemChange = (
     checked: boolean,
     fieldType: FieldType,
@@ -94,9 +98,16 @@ export const SwitcherContent = forwardRef((props: SwitchState, ref) => {
 
   return (
     <DragDropContext onBeforeCapture={onBeforeDragStart} onDragEnd={onDragEnd}>
-      <div className="s2-switcher-content">
-        <header>{i18n('行列切换')}</header>
-        <main className={getMainLayoutClassName(nonEmptyCount)}>
+      <div className={getSwitcherClassName(CLASS_NAME_PREFIX)}>
+        <header className={getSwitcherClassName(CLASS_NAME_PREFIX, 'header')}>
+          {i18n('行列切换')}
+        </header>
+        <main
+          className={cx(
+            getSwitcherClassName(CLASS_NAME_PREFIX, 'main'),
+            getMainLayoutClassName(nonEmptyCount),
+          )}
+        >
           {[FieldType.Rows, FieldType.Cols].map(
             (type) =>
               isEmpty(props[type]) || (
@@ -119,7 +130,12 @@ export const SwitcherContent = forwardRef((props: SwitchState, ref) => {
               expandDerivedValues={expandDerivedValues}
               onVisibleItemChange={onVisibleItemChange}
               option={
-                <div className="s2-switcher-option">
+                <div
+                  className={getSwitcherClassName(
+                    CLASS_NAME_PREFIX,
+                    'dimension-option',
+                  )}
+                >
                   <Checkbox
                     checked={expandDerivedValues}
                     onChange={onUpdateExpandDerivedValues}
@@ -134,7 +150,7 @@ export const SwitcherContent = forwardRef((props: SwitchState, ref) => {
           <Button
             type={'text'}
             icon={<ReloadOutlined />}
-            className={'s2-switcher-reset-button'}
+            className={getSwitcherClassName(CLASS_NAME_PREFIX, 'reset-button')}
             onClick={onReset}
           >
             {i18n('恢复默认')}

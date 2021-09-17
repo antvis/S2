@@ -2,7 +2,10 @@ import { Checkbox, Tooltip } from 'antd';
 import cx from 'classnames';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Item } from '../interface';
+import { getSwitcherClassName } from '../util';
 import { DimensionCommonProps } from '.';
+
+const CLASS_NAME_PREFIX = 'item';
 
 type SingleItemProps = Omit<Item, 'derivedValues'> &
   Pick<DimensionCommonProps, 'fieldType' | 'onVisibleItemChange'> & {
@@ -28,7 +31,11 @@ export const SingleItem: FC<SingleItemProps> = ({
   }, []);
 
   return (
-    <div className={cx('s2-switcher-item', className, { unchecked: !checked })}>
+    <div
+      className={cx(getSwitcherClassName(CLASS_NAME_PREFIX), className, {
+        unchecked: !checked,
+      })}
+    >
       {onVisibleItemChange && (
         <Checkbox
           checked={checked}
@@ -41,14 +48,20 @@ export const SingleItem: FC<SingleItemProps> = ({
         <Tooltip
           title={displayName}
           placement="bottomRight"
-          overlayClassName={'s2-switcher-tooltip'}
+          overlayClassName={getSwitcherClassName('tooltip')}
         >
-          <div className="s2-switcher-item-text" ref={ref}>
+          <div
+            className={getSwitcherClassName(CLASS_NAME_PREFIX, 'text')}
+            ref={ref}
+          >
             {displayName}
           </div>
         </Tooltip>
       ) : (
-        <div className="s2-switcher-item-text" ref={ref}>
+        <div
+          className={getSwitcherClassName(CLASS_NAME_PREFIX, 'text')}
+          ref={ref}
+        >
           {displayName}
         </div>
       )}

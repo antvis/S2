@@ -1,7 +1,15 @@
 import { filter, flatten, isEmpty, map } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
-import { FieldType, MAX_DIMENSION_COUNT } from './constant';
+import {
+  FieldType,
+  MAX_DIMENSION_COUNT,
+  SWITCHER_PREFIX_CLS,
+} from './constant';
 import { Item, SwitchResult, SwitchState } from './interface';
+import { getClassNameWithPrefix } from '@/utils/get-classnames';
+
+export const getSwitcherClassName = (...classNames: string[]) =>
+  getClassNameWithPrefix(SWITCHER_PREFIX_CLS, ...classNames);
 
 export const getNonEmptyFieldCount = (state: SwitchState) => {
   return [
@@ -14,11 +22,11 @@ export const getNonEmptyFieldCount = (state: SwitchState) => {
 export const getMainLayoutClassName = (nonEmptyCount: number) => {
   switch (nonEmptyCount) {
     case 1:
-      return 'one-dimension';
+      return getSwitcherClassName('content', 'one-dimension');
     case 2:
-      return 'two-dimensions';
+      return getSwitcherClassName('content', 'two-dimensions');
     default:
-      return 'three-dimensions';
+      return getSwitcherClassName('content', 'three-dimensions');
   }
 };
 

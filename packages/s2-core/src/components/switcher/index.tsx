@@ -4,6 +4,7 @@ import { SwitcherIcon } from '../icons';
 import { SwitcherContent, SwitcherContentRef } from './content';
 import './index.less';
 import { SwitchResult, SwitchState } from './interface';
+import { getSwitcherClassName } from './util';
 import { i18n } from '@/common/i18n';
 
 export interface SwitcherProps extends SwitchState {
@@ -14,7 +15,7 @@ export const Switcher: FC<SwitcherProps> = ({ onSubmit, ...state }) => {
   const ref = useRef<SwitcherContentRef>();
   return (
     <Popover
-      overlayClassName="s2-switcher"
+      overlayClassName={getSwitcherClassName()}
       placement="bottomLeft"
       trigger="click"
       content={<SwitcherContent {...state} ref={ref} />}
@@ -25,7 +26,7 @@ export const Switcher: FC<SwitcherProps> = ({ onSubmit, ...state }) => {
       }}
     >
       <Button
-        className={'switcher-button'}
+        className={getSwitcherClassName('entry-button')}
         size="small"
         icon={<SwitcherIcon />}
       >

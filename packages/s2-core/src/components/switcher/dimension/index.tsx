@@ -4,8 +4,10 @@ import { Droppable } from 'react-beautiful-dnd';
 import { DroppableType, SWITCHER_CONFIG } from '../constant';
 import { Item } from '../interface';
 import { DimensionCommonProps, DimensionItem } from '../item';
+import { getSwitcherClassName } from '../util';
 import './index.less';
 
+const CLASS_NAME_PREFIX = 'dimension';
 interface DimensionProps extends DimensionCommonProps {
   data: Item[];
   droppableType: DroppableType;
@@ -24,11 +26,11 @@ export const Dimension: FC<DimensionProps> = ({
   const { text, icon: Icon } = SWITCHER_CONFIG[fieldType];
   return (
     <div
-      className={cx('s2-switcher-dimension', {
+      className={cx(getSwitcherClassName(CLASS_NAME_PREFIX), {
         'long-dimension': crossRows,
       })}
     >
-      <div className="s2-switcher-dimension-header">
+      <div className={getSwitcherClassName(CLASS_NAME_PREFIX, 'header')}>
         <div className="title">
           <Icon /> <span>{text}</span>
         </div>
@@ -40,9 +42,11 @@ export const Dimension: FC<DimensionProps> = ({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={cx('s2-switcher-dimension-items', {
-              's2-switcher-dimension-items-highlight': snapshot.isDraggingOver,
-              's2-switcher-dimension-long-items': crossRows,
+            className={cx(getSwitcherClassName(CLASS_NAME_PREFIX, 'items'), {
+              [getSwitcherClassName(CLASS_NAME_PREFIX, 'items-highlight')]:
+                snapshot.isDraggingOver,
+              [getSwitcherClassName(CLASS_NAME_PREFIX, 'long-items')]:
+                crossRows,
             })}
           >
             {data.map((item: Item, index: number) => (
