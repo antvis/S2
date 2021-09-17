@@ -1,11 +1,11 @@
-import { filter, flatten, isEmpty, map } from 'lodash';
+import { filter, flatten, isEmpty, isNil, map } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
 import {
   FieldType,
   MAX_DIMENSION_COUNT,
   SWITCHER_PREFIX_CLS,
 } from './constant';
-import { Item, SwitchResult, SwitchState } from './interface';
+import { SwitcherItem, SwitchResult, SwitchState } from './interface';
 import { getClassNameWithPrefix } from '@/utils/get-classnames';
 
 export const getSwitcherClassName = (...classNames: string[]) =>
@@ -37,8 +37,8 @@ export const isMeasureType = (fieldType: FieldType) =>
   fieldType === FieldType.Values;
 
 export const moveItem = (
-  source: Item[],
-  destination: Item[],
+  source: SwitcherItem[],
+  destination: SwitcherItem[],
   droppableSource: DraggableLocation,
   droppableDestination: DraggableLocation,
 ): SwitchState => {
@@ -65,12 +65,12 @@ export const moveItem = (
 };
 
 export const checkItem = (
-  source: Item[],
+  source: SwitcherItem[],
   checked: boolean,
   id: string,
   derivedId?: string,
-): Item[] => {
-  const target: Item = { ...source.find((item) => item.id === id) };
+): SwitcherItem[] => {
+  const target: SwitcherItem = { ...source.find((item) => item.id === id) };
 
   if (derivedId) {
     target.derivedValues = map(target.derivedValues, (item) => ({
@@ -100,11 +100,15 @@ export const generateSwitchResult = (state: SwitchState): SwitchResult => {
       return [item.id, ...derivedValues];
     }),
   );
+
+  const filterHiddenValues = (item: SwitcherItem) =>
+    isNil(item.checked) || item.checked;
+
   //  get all hidden values
   const hiddenValues = flatten(
-    map(filter(state[FieldType.Values], ['checked', true]), (item) => {
+    map(filter(state[FieldType.Values], filterHiddenValues), (item) => {
       const hiddenDerivedValues = map(
-        filter(item.derivedValues, ['checked', true]),
+        filter(item.derivedValues, filterHiddenValues),
         'id',
       );
       return [item.id, ...hiddenDerivedValues];

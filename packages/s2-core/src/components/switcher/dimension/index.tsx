@@ -2,14 +2,14 @@ import cx from 'classnames';
 import React, { FC, ReactNode } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import { DroppableType, SWITCHER_CONFIG } from '../constant';
-import { Item } from '../interface';
+import { SwitcherItem } from '../interface';
 import { DimensionCommonProps, DimensionItem } from '../item';
 import { getSwitcherClassName } from '../util';
 import './index.less';
 
 const CLASS_NAME_PREFIX = 'dimension';
 interface DimensionProps extends DimensionCommonProps {
-  data: Item[];
+  data: SwitcherItem[];
   droppableType: DroppableType;
   crossRows?: boolean;
   option?: ReactNode;
@@ -49,7 +49,7 @@ export const Dimension: FC<DimensionProps> = ({
                 crossRows,
             })}
           >
-            {data.map((item: Item, index: number) => (
+            {data.map((item: SwitcherItem, index: number) => (
               <DimensionItem
                 key={item.id}
                 index={index}
