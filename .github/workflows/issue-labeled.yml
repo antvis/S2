@@ -16,8 +16,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，请提供一个可以在线访问的链接, 或者使用[codesandbox](https://codesandbox.io/s/29zle) 并详细说明复现步骤, 7天内未回复issue自动关闭。（ Hello, @${{ github.event.issue.user.login }}, please provide an accessible link or use[codesandbox](https://codesandbox.io/s/29zle) to describe the step. It will be closed if we receive no replay in 7 days.
-            ）
+            你好 @${{ github.event.issue.user.login }}，请提供一个可以在线访问的链接, 或者使用[codesandbox](https://codesandbox.io/s/29zle) 并详细说明复现步骤, 7天内未回复issue自动关闭。
+
+            Hello, @${{ github.event.issue.user.login }}, please provide an accessible link or use[codesandbox](https://codesandbox.io/s/29zle) to describe the step. It will be closed if we receive no replay in 7 days.
 
       - name: Need more info
         if: github.event.label.name == '👀 need more info'
@@ -27,7 +28,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，你所提供的信息不足于我们排查问题, 请完善 issue 描述, 提供 gif, 截图等方式, 详细说明复现步骤, 感谢配合, 谢谢!(Hello, @${{ github.event.issue.user.login }}, the information you provided is not enough for us to trace the problem. Please complete the issue description, provide gifs, screenshots, etc. and explain the reproduction steps in detail. Thank you so much for being so cooperative!)
+            你好 @${{ github.event.issue.user.login }}，你所提供的信息不足于我们排查问题, 请完善 issue 描述, 提供 gif, 截图等方式, 详细说明复现步骤, 感谢配合, 谢谢!
+
+            Hello, @${{ github.event.issue.user.login }}, the information you provided is not enough for us to trace the problem. Please complete the issue description, provide gifs, screenshots, etc. and explain the reproduction steps in detail. Thank you so much for being so cooperative!
 
       - name: Invalid
         if: github.event.label.name == '⛔ invalid'
@@ -37,7 +40,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，请按照 issue 模板填写相关信息, 方便大家高效沟通。(Hello @${{ github.event.issue.user.login }}, please fill in the relevant information according to the issue template, so that everyone can communicate efficiently. Thank you so much!)
+            你好 @${{ github.event.issue.user.login }}，请按照 issue 模板填写相关信息, 方便大家高效沟通。
+
+            Hello @${{ github.event.issue.user.login }}, please fill in the relevant information according to the issue template, so that everyone can communicate efficiently. Thank you so much!
 
       - name: Enhancement
         if: github.event.label.name == '⚡ enhancement'
@@ -47,7 +52,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，感谢你的建议, 我们会及时评估和排期, 谢谢!(Hello, @${{ github.event.issue.user.login }}, thanks for your advice. We will evaluate and schedule in time. Thank you!)
+            你好 @${{ github.event.issue.user.login }}，感谢你的建议, 我们会及时评估和排期, 谢谢!
+
+            Hello, @${{ github.event.issue.user.login }}, thanks for your advice. We will evaluate and schedule in time. Thank you!
 
       - name: Usage
         if: github.event.label.name == '🙀 usage' || github.event.label.name == '❔question'
@@ -57,4 +64,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
           body: |
-            你好 @${{ github.event.issue.user.login }}，Issue 板块是用于 bug 反馈与需求讨论的地方。你可以试着在 [antv s2 discussions](https://github.com/antvis/S2/discussions) 新开一个 discussion，选择 `🙏Q&A` 类别进行提问, 我们会及时进行解答, 感谢你的理解。(Hello, @${{ github.event.issue.user.login }}.The Issue section is used for bug feedback and requirement discussion. You can try to open a new discussion in [antv s2 discussions](https://github.com/antvis/S2/discussions), choose the `🙏Q&A` category to ask questions, we will answer in time. Thank you so much for being so understanding)
+            你好 @${{ github.event.issue.user.login }}，Issue 板块是用于 bug 反馈与需求讨论的地方。你可以试着在 [antv s2 discussions](https://github.com/antvis/S2/discussions) 新开一个 discussion，选择 `🙏Q&A` 类别进行提问, 我们会及时进行解答, 感谢你的理解。
+
+            Hello, @${{ github.event.issue.user.login }}. The Issue section is used for bug feedback and requirement discussion. You can try to open a new discussion in [antv s2 discussions](https://github.com/antvis/S2/discussions), choose the `🙏Q&A` category to ask questions, we will answer in time. Thank you so much for being so understanding.
