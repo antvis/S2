@@ -13,7 +13,6 @@
   height: 24px;
   border-radius: @border-radius;
   display: flex;
-  align-items: baseline;
 
   &-text {
     overflow: hidden;
@@ -24,11 +23,13 @@
   &.dimension-item {
     padding: 0 @large-span;
     background-color: @dimension-color;
+    align-items: center;
   }
 
   &.measure-item {
     padding: 0 @normal-span;
     background-color: @measure-color;
+    align-items: baseline;
 
     &.measure-collapse {
       transition: border-radius 0s 0.2s;
