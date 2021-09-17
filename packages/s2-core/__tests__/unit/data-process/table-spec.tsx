@@ -6,8 +6,8 @@
  */
 import { get } from 'lodash';
 import { SpreadSheet } from 'src/sheet-type';
-import { assembleDataCfg, assembleOptions } from 'tests/util/sheet-entry';
-import { getContainer } from 'tests/util/helpers';
+import { assembleDataCfg, assembleOptions } from '../../util/sheet-entry';
+import { getContainer } from '../../util/helpers';
 
 describe('List Table Core Data Process', () => {
   const ss = new SpreadSheet(

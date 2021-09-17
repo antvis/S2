@@ -172,7 +172,7 @@ export class SpreadSheet extends EE {
   private initTheme() {
     // When calling spreadsheet directly, there is no theme and initialization is required
     this.setThemeCfg({
-      name: 'simple',
+      name: 'default',
     });
   }
 
