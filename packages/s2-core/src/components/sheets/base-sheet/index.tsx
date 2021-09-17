@@ -249,7 +249,9 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   };
 
   const setDataCfg = () => {
-    ownSpreadsheet.setDataCfg(dataCfg);
+    // reset the options since it could be changed by layout
+    setOptions();
+    ownSpreadsheet.setDataCfg(safetyDataConfig(dataCfg));
   };
 
   const update = (reset?: () => void, reloadData = true) => {
