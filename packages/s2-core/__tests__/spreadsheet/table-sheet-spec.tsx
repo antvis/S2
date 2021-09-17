@@ -79,7 +79,7 @@ function MainLayout() {
         sortMethod: 'ASC',
       },
     ],
-  };
+  } as unknown as S2DataConfig;
 
   const options = {
     width: 800,
@@ -109,7 +109,7 @@ function MainLayout() {
     tooltip: {
       showTooltip: true,
     },
-  };
+  } as S2Options;
 
   const s2Ref = React.useRef<SpreadSheet>(null);
 
