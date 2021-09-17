@@ -1,4 +1,4 @@
-import { filter, flatten, isEmpty, map } from 'lodash';
+import { filter, flatten, isEmpty, isNil, map } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
 import {
   FieldType,
@@ -100,11 +100,15 @@ export const generateSwitchResult = (state: SwitchState): SwitchResult => {
       return [item.id, ...derivedValues];
     }),
   );
+
+  const filterHiddenValues = (item: Item) =>
+    isNil(item.checked) || item.checked;
+
   //  get all hidden values
   const hiddenValues = flatten(
-    map(filter(state[FieldType.Values], ['checked', true]), (item) => {
+    map(filter(state[FieldType.Values], filterHiddenValues), (item) => {
       const hiddenDerivedValues = map(
-        filter(item.derivedValues, ['checked', true]),
+        filter(item.derivedValues, filterHiddenValues),
         'id',
       );
       return [item.id, ...hiddenDerivedValues];

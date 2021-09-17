@@ -91,7 +91,6 @@ export const DimensionItem: FC<DimensionItemProps> = ({
 };
 
 DimensionItem.defaultProps = {
-  checked: false,
   derivedValues: [],
   expandDerivedValues: false,
 };

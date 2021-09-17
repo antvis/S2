@@ -68,3 +68,7 @@ export const SingleItem: FC<SingleItemProps> = ({
     </div>
   );
 };
+
+SingleItem.defaultProps = {
+  checked: true,
+};
