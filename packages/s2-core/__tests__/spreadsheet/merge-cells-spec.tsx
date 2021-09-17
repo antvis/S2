@@ -103,7 +103,6 @@ const baseOptions = {
   hierarchyCollapse: false,
   showSeriesNumber: true,
   freezeRowHeader: false,
-  mode: 'pivot',
   valueInCols: true,
   conditions: {
     text: [],

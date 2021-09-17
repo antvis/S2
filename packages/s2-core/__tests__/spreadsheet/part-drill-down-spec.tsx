@@ -52,7 +52,6 @@ const getOptions = () => {
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: false,
-    mode: 'pivot',
     style: {
       treeRowsWidth: 100,
       collapsedRows: {},

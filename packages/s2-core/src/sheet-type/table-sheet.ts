@@ -1,65 +1,20 @@
-import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
-import { clone, get, includes, isString, merge, size } from 'lodash';
 import { SpreadSheet } from './spread-sheet';
-import { BaseCell, DataCell, TableDataCell, TableRowCell } from '@/cell';
+import { TableDataCell, TableRowCell } from '@/cell';
 import {
-  BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
-  FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
-  KEY_GROUP_BACK_GROUND,
-  KEY_GROUP_FORE_GROUND,
   KEY_GROUP_PANEL_FROZEN_BOTTOM,
   KEY_GROUP_PANEL_FROZEN_COL,
   KEY_GROUP_PANEL_FROZEN_ROW,
   KEY_GROUP_PANEL_FROZEN_TOP,
   KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
-  KEY_GROUP_PANEL_GROUND,
-  KEY_GROUP_PANEL_SCROLL,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-  PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
-  PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
-  S2Event,
 } from '@/common/constant';
-import { DebuggerUtil } from '@/common/debug';
-import { i18n } from '@/common/i18n';
-import {
-  OffsetConfig,
-  Pagination,
-  S2CellType,
-  S2DataConfig,
-  S2MountContainer,
-  S2Options,
-  safetyDataConfig,
-  safetyOptions,
-  SpreadSheetFacetCfg,
-  ThemeCfg,
-  TooltipData,
-  TooltipOptions,
-  TooltipShowOptions,
-  Total,
-  Totals,
-  ViewMeta,
-} from '@/common/interface';
-import {
-  EmitterType,
-  RowCellCollapseTreeRowsType,
-} from '@/common/interface/emitter';
-import { Store } from '@/common/store';
-import { BaseDataSet, PivotDataSet, TableDataSet } from '@/data-set';
-import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
-import { BaseFacet, PivotFacet, TableFacet } from '@/facet';
-import { Node, SpreadSheetTheme } from '@/index';
-import { RootInteraction } from '@/interaction/root';
-import { getTheme } from '@/theme';
-import { HdAdapter } from '@/ui/hd-adapter';
-import { BaseTooltip } from '@/ui/tooltip';
-import { clearValueRangeState } from '@/utils/condition/state-controller';
-import { customMerge } from '@/utils/merge';
-import { getTooltipData } from '@/utils/tooltip';
-
+import { S2Options, SpreadSheetFacetCfg, ViewMeta } from '@/common/interface';
+import { TableDataSet } from '@/data-set';
+import { TableFacet } from '@/facet';
 export class TableSheet extends SpreadSheet {
   public getDataSet(options: S2Options) {
-    const { dataSet, hierarchyType } = options;
+    const { dataSet } = options;
     if (dataSet) {
       return dataSet(this);
     }
@@ -103,12 +58,16 @@ export class TableSheet extends SpreadSheet {
     return false;
   }
 
+  public clearDrillDownData(): void {}
+
   /**
    * Check if the value is in the columns
    */
   public isValueInCols(): boolean {
     return false;
   }
+
+  protected bindEvents() {}
 
   protected initPanelGroupChildren(): void {
     super.initPanelGroupChildren();

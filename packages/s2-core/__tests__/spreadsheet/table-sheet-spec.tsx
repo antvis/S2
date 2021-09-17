@@ -11,7 +11,7 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
-  PivotSheet,
+  TableSheet,
 } from '@/index';
 
 const data = getMockData('../data/tableau-supermarket.csv');
@@ -19,7 +19,7 @@ const data = getMockData('../data/tableau-supermarket.csv');
 const getSpreadSheet =
   (ref) =>
   (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
-    const s2 = new PivotSheet(dom, dataCfg, options);
+    const s2 = new TableSheet(dom, dataCfg, options);
     ref.current = s2;
     return s2;
   };
@@ -86,7 +86,6 @@ const getOptions = (): S2Options => {
     width: 800,
     height: 600,
     showSeriesNumber: true,
-    mode: 'table',
     enableCopy: true,
     style: {
       colCfg: {

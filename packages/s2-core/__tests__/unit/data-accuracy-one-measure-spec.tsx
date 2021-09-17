@@ -18,11 +18,11 @@ import {
 import {
   auto,
   EXTRA_FIELD,
-  PivotSheet,
   S2DataConfig,
   S2Options,
   SheetComponent,
   SpreadSheet,
+  PivotSheet,
 } from '@/index';
 
 let spreadsheet1: SpreadSheet;
@@ -111,7 +111,6 @@ const getOptions = () => {
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: false,
-    mode: 'pivot',
     totals: {
       row: {
         showGrandTotals: true,

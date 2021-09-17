@@ -47,7 +47,6 @@ const getOptions = () => {
     hierarchyType: 'customTree',
     hierarchyCollapse: false,
     freezeRowHeader: false,
-    mode: 'pivot',
     style: {
       treeRowsWidth: 120,
       collapsedRows: {},

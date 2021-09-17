@@ -85,7 +85,6 @@ const getOptions = (): S2Options => {
     hierarchyCollapse: false,
     showSeriesNumber: true,
     freezeRowHeader: false,
-    mode: 'pivot',
     conditions: {
       text: [],
       interval: [

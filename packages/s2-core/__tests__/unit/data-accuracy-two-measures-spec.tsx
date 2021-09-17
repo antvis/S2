@@ -105,7 +105,6 @@ const getOptions = () => {
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: false,
-    mode: 'pivot',
     totals: {
       row: {
         showGrandTotals: true,

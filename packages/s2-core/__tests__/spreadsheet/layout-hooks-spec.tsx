@@ -161,7 +161,6 @@ const getOptions = () => {
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     freezeRowHeader: true,
-    mode: 'pivot',
     style: {
       treeRowsWidth: 120,
       collapsedRows: {},
