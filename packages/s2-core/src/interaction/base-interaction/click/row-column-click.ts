@@ -152,7 +152,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindTableColExpand() {
-    if (!this.spreadsheet.options.enableHideColumnFields) {
+    if (!this.spreadsheet.options?.enableHideColumnFields) {
       return;
     }
     this.spreadsheet.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, (node) => {

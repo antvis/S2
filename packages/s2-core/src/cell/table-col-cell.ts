@@ -2,7 +2,7 @@ import { isEmpty, last } from 'lodash';
 import { EXTRA_FIELD, S2Event } from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '@/utils/text';
-import { renderText } from '@/utils/g-renders';
+import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
 import { CellBoxCfg } from '@/common/interface';
 import { GuiIcon } from '@/common/icons';
@@ -113,17 +113,20 @@ export class TableColCell extends ColCell {
     const { tipsLine } = this.getExpandIconTheme();
     const lineX = this.isLastColumn() ? x + width - tipsLine.borderWidth : x;
 
-    this.addShape('line', {
-      attrs: {
+    renderLine(
+      this,
+      {
         x1: lineX,
         y1: y,
         x2: lineX,
         y2: y + height,
+      },
+      {
         stroke: tipsLine.borderColor,
         lineWidth: tipsLine.borderWidth,
         strokeOpacity: tipsLine.borderOpacity,
       },
-    });
+    );
   }
 
   private addExpandColumnIconAndTipsLine() {
@@ -136,7 +139,7 @@ export class TableColCell extends ColCell {
 
   private addExpandColumnIcon() {
     const iconConfig = this.getExpandColumnIconConfig();
-    const icon = new GuiIcon({
+    const icon = renderIcon(this, {
       ...iconConfig,
       type: 'ExpandColIcon',
       cursor: 'pointer',
@@ -144,13 +147,12 @@ export class TableColCell extends ColCell {
     icon.on('click', () => {
       this.spreadsheet.emit(S2Event.LAYOUT_TABLE_COL_EXPANDED, this.meta);
     });
-    this.add(icon);
   }
 
   // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
   private getExpandColumnIconConfig() {
     const { size } = this.getExpandIconTheme();
-    const { x, y, width, height } = this.meta;
+    const { x, y, width, height } = this.getCellArea();
 
     const baseIconX = x - size / 2;
     const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;
