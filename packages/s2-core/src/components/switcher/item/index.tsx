@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 import React, { FC } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { FieldType } from '../constant';
-import { Item } from '../interface';
+import { SwitcherItem } from '../interface';
 import { getSwitcherClassName, isMeasureType } from '../util';
 import './index.less';
 import { SingleItem } from './single-item';
@@ -21,7 +21,7 @@ export interface DimensionCommonProps {
   ) => void;
 }
 
-export type DimensionItemProps = Item &
+export type DimensionItemProps = SwitcherItem &
   DimensionCommonProps & {
     index: number;
   };

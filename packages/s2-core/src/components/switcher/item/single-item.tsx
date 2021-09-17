@@ -1,13 +1,13 @@
 import { Checkbox, Tooltip } from 'antd';
 import cx from 'classnames';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Item } from '../interface';
+import { SwitcherItem } from '../interface';
 import { getSwitcherClassName } from '../util';
 import { DimensionCommonProps } from '.';
 
 const CLASS_NAME_PREFIX = 'item';
 
-type SingleItemProps = Omit<Item, 'derivedValues'> &
+type SingleItemProps = Omit<SwitcherItem, 'derivedValues'> &
   Pick<DimensionCommonProps, 'fieldType' | 'onVisibleItemChange'> & {
     derivedId?: string;
     className: string;
@@ -30,6 +30,7 @@ export const SingleItem: FC<SingleItemProps> = ({
     setEllipsis(ref.current.offsetWidth < ref.current.scrollWidth);
   }, []);
 
+  const realDisplayName = displayName ?? id;
   return (
     <div
       className={cx(getSwitcherClassName(CLASS_NAME_PREFIX), className, {
@@ -46,7 +47,7 @@ export const SingleItem: FC<SingleItemProps> = ({
       )}
       {ellipsis ? (
         <Tooltip
-          title={displayName}
+          title={realDisplayName}
           placement="bottomRight"
           overlayClassName={getSwitcherClassName('tooltip')}
         >
@@ -54,7 +55,7 @@ export const SingleItem: FC<SingleItemProps> = ({
             className={getSwitcherClassName(CLASS_NAME_PREFIX, 'text')}
             ref={ref}
           >
-            {displayName}
+            {realDisplayName}
           </div>
         </Tooltip>
       ) : (
@@ -62,7 +63,7 @@ export const SingleItem: FC<SingleItemProps> = ({
           className={getSwitcherClassName(CLASS_NAME_PREFIX, 'text')}
           ref={ref}
         >
-          {displayName}
+          {realDisplayName}
         </div>
       )}
     </div>

@@ -5,7 +5,7 @@ import {
   MAX_DIMENSION_COUNT,
   SWITCHER_PREFIX_CLS,
 } from './constant';
-import { Item, SwitchResult, SwitchState } from './interface';
+import { SwitcherItem, SwitchResult, SwitchState } from './interface';
 import { getClassNameWithPrefix } from '@/utils/get-classnames';
 
 export const getSwitcherClassName = (...classNames: string[]) =>
@@ -37,8 +37,8 @@ export const isMeasureType = (fieldType: FieldType) =>
   fieldType === FieldType.Values;
 
 export const moveItem = (
-  source: Item[],
-  destination: Item[],
+  source: SwitcherItem[],
+  destination: SwitcherItem[],
   droppableSource: DraggableLocation,
   droppableDestination: DraggableLocation,
 ): SwitchState => {
@@ -65,12 +65,12 @@ export const moveItem = (
 };
 
 export const checkItem = (
-  source: Item[],
+  source: SwitcherItem[],
   checked: boolean,
   id: string,
   derivedId?: string,
-): Item[] => {
-  const target: Item = { ...source.find((item) => item.id === id) };
+): SwitcherItem[] => {
+  const target: SwitcherItem = { ...source.find((item) => item.id === id) };
 
   if (derivedId) {
     target.derivedValues = map(target.derivedValues, (item) => ({
@@ -101,7 +101,7 @@ export const generateSwitchResult = (state: SwitchState): SwitchResult => {
     }),
   );
 
-  const filterHiddenValues = (item: Item) =>
+  const filterHiddenValues = (item: SwitcherItem) =>
     isNil(item.checked) || item.checked;
 
   //  get all hidden values
