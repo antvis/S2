@@ -44,7 +44,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       }
       this.interaction.clearState();
       this.interaction.changeState({
-        cells: [cell],
+        cellIds: [cell.cfg.name],
         stateName: InteractionStateName.SELECTED,
       });
       this.showTooltip(event, meta);

@@ -59,13 +59,14 @@ export class DataCell extends BaseCell<ViewMeta> {
     return CellTypes.DATA_CELL;
   }
 
-  protected handlePrepareSelect(cells: S2CellType[]) {
-    if (includeCell(cells, this)) {
+  protected handlePrepareSelect(cellIds: string[]) {
+    if (includeCell(cellIds, this)) {
       this.updateByState(InteractionStateName.PREPARE_SELECT);
     }
   }
 
-  protected handleSelect(cells: S2CellType[]) {
+  protected handleSelect(cellIds: string[]) {
+    const cells = this.spreadsheet.interaction.getActiveCells(cellIds);
     const currentCellType = cells?.[0]?.cellType;
     switch (currentCellType) {
       // 列多选
@@ -78,7 +79,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
-        if (includeCell(cells, this)) {
+        if (includeCell(cellIds, this)) {
           this.updateByState(InteractionStateName.SELECTED);
         } else if (this.spreadsheet.options.selectedCellsSpotlight) {
           this.updateByState(InteractionStateName.UNSELECTED);
@@ -89,7 +90,8 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  protected handleHover(cells: S2CellType[]) {
+  protected handleHover(cellIds: string[]) {
+    const cells = this.spreadsheet.interaction.getActiveCells(cellIds);
     const currentHoverCell = first(cells) as S2CellType;
     if (currentHoverCell.cellType !== CellTypes.DATA_CELL) {
       this.hideInteractionShape();
@@ -120,22 +122,22 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    const cells = this.spreadsheet.interaction.getActiveCells();
+    const cellIds = this.spreadsheet.interaction.getActiveCellIds();
 
-    if (isEmpty(cells) || !stateName) {
+    if (isEmpty(cellIds) || !stateName) {
       return;
     }
 
     switch (stateName) {
       case InteractionStateName.PREPARE_SELECT:
-        this.handlePrepareSelect(cells);
+        this.handlePrepareSelect(cellIds);
         break;
       case InteractionStateName.SELECTED:
-        this.handleSelect(cells);
+        this.handleSelect(cellIds);
         break;
       case InteractionStateName.HOVER_FOCUS:
       case InteractionStateName.HOVER:
-        this.handleHover(cells);
+        this.handleHover(cellIds);
         break;
       default:
         break;
@@ -398,8 +400,10 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   // dataCell根据state 改变当前样式，
   private changeRowColSelectState(indexType: ViewMetaIndexType) {
+    const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
-    const { nodes = [], cells = [] } = this.spreadsheet.interaction.getState();
+    const { nodes = [], cellIds = [] } = interaction.getState();
+    const cells = interaction.getActiveCells(cellIds);
     const isEqualIndex = [...nodes, ...cells].find((cell) => {
       if (cell instanceof Node) {
         return get(cell, indexType) === currentIndex;

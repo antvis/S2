@@ -34,12 +34,12 @@ export const handleRowColClick = ({
           (node) => node.rowIndex === meta.rowIndex,
         )
       : Node.getAllChildrenNode(meta);
-    let selectedCells: S2CellType[] = [cell];
+    let selectedCellIds: string[] = [cell.getMeta().id];
 
     if (isMultiSelection && interaction.isSelectedState()) {
-      selectedCells = isEmpty(lastState?.cells)
-        ? selectedCells
-        : concat(lastState?.cells, selectedCells);
+      selectedCellIds = isEmpty(lastState?.cellIds)
+        ? selectedCellIds
+        : concat(lastState?.cellIds, selectedCellIds);
       leafNodes = isEmpty(lastState?.nodes)
         ? leafNodes
         : concat(lastState?.nodes, leafNodes);
@@ -48,13 +48,13 @@ export const handleRowColClick = ({
     // 兼容行列多选
     // Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
     interaction.changeState({
-      cells: selectedCells,
+      cellIds: selectedCellIds,
       nodes: leafNodes,
       stateName: InteractionStateName.SELECTED,
     });
 
     // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-    interaction.updateCells(selectedCells);
+    interaction.updateCells(interaction.getActiveCells(selectedCellIds));
 
     if (!isTreeRowClick) {
       leafNodes.forEach((node) => {

@@ -21,10 +21,9 @@ export const handleDataItem = (
  * @param cells active cells
  * @param currentCell current activated cell
  */
-export const includeCell = (cells: S2CellType[], currentCell: S2CellType) => {
-  const meta = currentCell.getMeta();
-  return cells.some((cell) => {
-    const cellMeta = cell.getMeta();
-    return isEqual(cellMeta, meta);
+export const includeCell = (cellIds: string[], currentCell: S2CellType) => {
+  const currentId = currentCell.getMeta().id;
+  return cellIds.some((id) => {
+    return isEqual(currentId, id);
   });
 };

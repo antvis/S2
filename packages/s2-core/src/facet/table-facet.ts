@@ -137,6 +137,7 @@ export class TableFacet extends BaseFacet {
         rowId: String(rowIndex),
         valueField: col.field,
         fieldValue: data,
+        id: `${rowIndex}-${col.id}`,
       } as ViewMeta;
     };
 

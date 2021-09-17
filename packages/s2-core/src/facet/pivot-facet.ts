@@ -110,6 +110,7 @@ export class PivotFacet extends BaseFacet {
         colQuery,
         rowId: row.id,
         colId: col.id,
+        id: `${row.id}-${col.id}`,
       } as ViewMeta;
     };
 

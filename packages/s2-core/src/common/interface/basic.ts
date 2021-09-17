@@ -320,6 +320,8 @@ export interface SpreadSheetFacetCfg extends Fields, S2PartialOptions, Style {
 
 export interface ViewMeta {
   spreadsheet: SpreadSheet;
+  // cell's unique id
+  id: string;
   // cell's coordination-x
   x: number;
   // cell's coordination-y

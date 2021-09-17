@@ -44,7 +44,7 @@ export class RootInteraction {
   public eventController: EventController;
 
   private defaultState: InteractionStateInfo = {
-    cells: [],
+    cellIds: [],
     force: false,
   };
 
@@ -103,23 +103,34 @@ export class RootInteraction {
     return currentState?.stateName === InteractionStateName.SELECTED;
   }
 
-  public isSelectedCell(cell: S2CellType) {
-    return this.isSelectedState() && includes(this.getActiveCells(), cell);
+  private isActiveCell(cell: S2CellType) {
+    return this.getActiveCellIds().find((id) => cell.getMeta().id === id);
   }
 
-  public getActiveCells() {
+  public isSelectedCell(cell: S2CellType) {
+    return this.isSelectedState() && this.isActiveCell(cell);
+  }
+
+  public getActiveCellIds() {
     const currentState = this.getState();
-    return currentState?.cells || [];
+    return currentState?.cellIds || [];
+  }
+
+  public getActiveCells(ids?: string[]) {
+    const cellIds = ids || this.getActiveCellIds();
+    const allCells = this.getPanelGroupAllDataCells();
+
+    return allCells.filter((item) => cellIds.includes(item.getMeta().id));
   }
 
   public getActiveCellsCount() {
-    return size(this.getActiveCells());
+    return size(this.getActiveCellIds());
   }
 
   public updateCellStyleByState() {
-    const cells = this.getActiveCells();
+    const cells = this.getActiveCells(this.getActiveCellIds());
     cells.forEach((cell) => {
-      cell.updateByState(this.getCurrentStateName(), cell);
+      cell.updateByState(this.getCurrentStateName());
     });
   }
 
@@ -137,7 +148,7 @@ export class RootInteraction {
 
   public getPanelGroupAllUnSelectedDataCells() {
     return this.getPanelGroupAllDataCells().filter(
-      (cell) => !this.getActiveCells().includes(cell),
+      (cell) => !this.isActiveCell(cell),
     );
   }
 
@@ -263,11 +274,11 @@ export class RootInteraction {
 
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { interaction } = this.spreadsheet;
-    const { cells, force } = interactionStateInfo;
-    if (isEmpty(cells)) {
+    const { cellIds, force } = interactionStateInfo;
+    if (isEmpty(cellIds)) {
       if (force) {
         interaction.changeState({
-          cells: interaction.getActiveCells(),
+          cellIds: interaction.getActiveCellIds(),
           stateName: InteractionStateName.UNSELECTED,
         });
       }

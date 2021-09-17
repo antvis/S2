@@ -49,6 +49,7 @@ export class DataCellMultiSelection
   }
 
   private getActiveCells(cell: S2CellType<ViewMeta>) {
+    const id = cell.getMeta().id;
     let activeCells = this.interaction.getActiveCells();
     let cells = [];
     if (
@@ -56,8 +57,8 @@ export class DataCellMultiSelection
     ) {
       activeCells = [];
     }
-    if (activeCells.includes(cell)) {
-      cells = activeCells.filter((item) => item !== cell);
+    if (activeCells.includes(id)) {
+      cells = activeCells.filter((item) => item !== id);
     } else {
       cells = [...activeCells, cell];
     }
@@ -87,10 +88,9 @@ export class DataCellMultiSelection
 
         this.spreadsheet.hideTooltip();
         this.interaction.changeState({
-          cells: cells,
+          cellIds: cells.map((item) => item.meta.id),
           stateName: InteractionStateName.SELECTED,
         });
-        this.interaction.updateCellStyleByState();
         this.spreadsheet.showTooltipWithInfo(
           event,
           getActiveCellsTooltipData(this.spreadsheet),

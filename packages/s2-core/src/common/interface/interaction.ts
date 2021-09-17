@@ -19,8 +19,10 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
 export interface InteractionStateInfo {
   // current state name
   stateName?: InteractionStateName;
+  // all the active cell ids
+  cellIds?: string[];
   // all the active cells
-  cells?: S2CellType[];
+  // cells?: S2CellType[];
   // all the cells changed the state style
   interactedCells?: S2CellType[];
   // all the active nodes, including rendered and not rendered cells
