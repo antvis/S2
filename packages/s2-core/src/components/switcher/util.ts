@@ -103,7 +103,8 @@ const generateHiddenValues = (list: SwitcherItem[]) => {
     );
 
   const flattedItems = getFlattenedItems(list);
-  let prevHiddenIdx: number = null;
+  // 上一个需要隐藏项的序号
+  let prevHiddenIdx: number = Number.NEGATIVE_INFINITY;
   return reduce(
     flattedItems,
     (result, item, idx) => {

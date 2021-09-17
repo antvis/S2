@@ -29,7 +29,7 @@ export type DimensionItemProps = DimensionCommonProps & {
 
 export const DimensionItem: FC<DimensionItemProps> = ({
   fieldType,
-  item: { id, displayName, checked, children = [] },
+  item: { id, displayName, checked = true, children = [] },
   expandChildren,
   index,
   draggingItemId,
@@ -74,6 +74,7 @@ export const DimensionItem: FC<DimensionItemProps> = ({
                   id={item.id}
                   fieldType={fieldType}
                   displayName={item.displayName}
+                  disabled={!checked}
                   checked={item.checked}
                   parentId={id}
                   onVisibleItemChange={onVisibleItemChange}

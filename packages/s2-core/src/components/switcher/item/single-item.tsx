@@ -11,6 +11,7 @@ type SingleItemProps = Omit<SwitcherItem, 'children'> &
   Pick<DimensionCommonProps, 'fieldType' | 'onVisibleItemChange'> & {
     parentId?: string;
     className: string;
+    disabled?: boolean;
   };
 
 export const SingleItem: FC<SingleItemProps> = ({
@@ -20,6 +21,7 @@ export const SingleItem: FC<SingleItemProps> = ({
   checked,
   parentId,
   className,
+  disabled,
   onVisibleItemChange,
 }) => {
   const ref = useRef<HTMLDivElement>();
@@ -39,6 +41,7 @@ export const SingleItem: FC<SingleItemProps> = ({
     >
       {onVisibleItemChange && (
         <Checkbox
+          disabled={disabled}
           checked={checked}
           onChange={(e) =>
             onVisibleItemChange?.(e.target.checked, fieldType, id, parentId)
@@ -72,4 +75,5 @@ export const SingleItem: FC<SingleItemProps> = ({
 
 SingleItem.defaultProps = {
   checked: true,
+  disabled: false,
 };

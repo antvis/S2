@@ -22,6 +22,7 @@ export const Switcher: FC<SwitcherProps> = ({ onSubmit, ...props }) => {
       overlayClassName={getSwitcherClassName()}
       placement="bottomLeft"
       trigger="click"
+      destroyTooltipOnHide={true}
       content={<SwitcherContent {...props} ref={ref} />}
       onVisibleChange={(visible) => {
         if (!visible) {
