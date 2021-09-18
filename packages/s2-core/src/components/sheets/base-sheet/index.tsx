@@ -228,7 +228,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (isEmpty(paginationCfg)) {
       return null;
     }
-    const pageSize = get(paginationCfg, 'pageSize', Infinity);
     // only show the pagination when the pageSize > 5
     const showQuickJumper = total / pageSize > 5;
     const preCls = `${S2_PREFIX_CLS}-pagination`;
@@ -236,7 +235,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     return (
       <div className={preCls}>
         <Pagination
-          current={current}
+          defaultCurrent={current}
           total={total}
           pageSize={pageSize}
           // TODO 外部定义的pageSize和内部PageSize改变的优先级处理

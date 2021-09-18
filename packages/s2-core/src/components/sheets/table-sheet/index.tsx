@@ -51,6 +51,9 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const [current, setCurrent] = useState<number>(
     options?.pagination?.current || 1,
   );
+  const [pageSize, setPageSize] = useState<number>(
+    options?.pagination?.pageSize || 10,
+  );
 
   const getSpreadSheet = (): SpreadSheet => {
     const params: S2Constructor = [container.current, dataCfg, options];
@@ -149,7 +152,6 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (isEmpty(paginationCfg)) {
       return null;
     }
-    const pageSize = get(paginationCfg, 'pageSize', Infinity);
     // only show the pagination when the pageSize > 5
     const showQuickJumper = total / pageSize > 5;
     const preCls = `${S2_PREFIX_CLS}-pagination`;
@@ -157,11 +159,15 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     return (
       <div className={preCls}>
         <Pagination
-          current={current}
+          defaultCurrent={current}
           total={total}
           pageSize={pageSize}
           // TODO 外部定义的pageSize和内部PageSize改变的优先级处理
-          showSizeChanger={false}
+          showSizeChanger
+          onShowSizeChange={(current, size) => {
+            setCurrent(1);
+            setPageSize(size);
+          }}
           size={'small'}
           showQuickJumper={showQuickJumper}
           onChange={(page) => setCurrent(page)}
@@ -248,6 +254,18 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     setOptions(newOptions);
     update();
   }, [current]);
+
+  useEffect(() => {
+    if (!ownSpreadsheet || isEmpty(options?.pagination)) return;
+    const newOptions = merge({}, options, {
+      pagination: {
+        pageSize: pageSize,
+      },
+    });
+
+    setOptions(newOptions);
+    update();
+  }, [pageSize]);
 
   return (
     <StrictMode>
