@@ -3,14 +3,11 @@ import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { getContainer } from '../util/helpers';
-import {
-  S2DataConfig,
-  S2Options,
-  SheetComponent,
-  SpreadSheet,
-} from '../../src';
 import { customTreeItems } from '../data/custom-tree-items';
 import { dataCustomTrees } from '../data/data-custom-trees';
+import { PivotSheet } from '@/sheet-type';
+import { S2DataConfig, S2Options } from '@/common/interface';
+import { SheetComponent } from '@/components';
 import { transformCustomTreeItems } from '@/utils/layout/transform-custom-tree-items';
 
 const getSpreadSheet = (
@@ -18,7 +15,7 @@ const getSpreadSheet = (
   dataCfg: S2DataConfig,
   options: S2Options,
 ) => {
-  return new SpreadSheet(dom, dataCfg, options);
+  return new PivotSheet(dom, dataCfg, options);
 };
 
 const getDataCfg = () => {
@@ -50,7 +47,6 @@ const getOptions = () => {
     hierarchyType: 'customTree',
     hierarchyCollapse: false,
     freezeRowHeader: false,
-    mode: 'pivot',
     style: {
       treeRowsWidth: 120,
       collapsedRows: {},

@@ -2,6 +2,7 @@ import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React from 'react';
+import { getContainer, getMockData } from '../util/helpers';
 import {
   GetCellMeta,
   Node,
@@ -9,10 +10,10 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
+  PivotSheet,
   SpreadSheetFacetCfg,
   ViewMeta,
-} from '../../src';
-import { getContainer, getMockData } from '../util/helpers';
+} from '@/index';
 import { LayoutHierarchyReturnType } from '@/common/interface/hooks';
 import { generateId } from '@/utils/layout/generate-id';
 const data = getMockData('../data/tableau-supermarket.csv');
@@ -23,7 +24,7 @@ const getSpreadSheet = (
   dataCfg: S2DataConfig,
   options: S2Options,
 ) => {
-  innerSS = new SpreadSheet(dom, dataCfg, options);
+  innerSS = new PivotSheet(dom, dataCfg, options);
   return innerSS;
 };
 
@@ -160,7 +161,6 @@ const getOptions = () => {
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     freezeRowHeader: true,
-    mode: 'pivot',
     style: {
       treeRowsWidth: 120,
       collapsedRows: {},

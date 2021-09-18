@@ -3,12 +3,12 @@
  */
 import { assembleDataCfg } from '../../util/sheet-entry';
 import { S2DataConfig } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import { TableSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
 
 jest.mock('src/sheet-type');
 jest.mock('src/facet/layout/node');
-const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
+const MockTableSheet = TableSheet as any as jest.Mock<TableSheet>;
 
 describe('Table Mode Dataset Test', () => {
   let dataSet: TableDataSet;
@@ -20,8 +20,8 @@ describe('Table Mode Dataset Test', () => {
     },
   };
   beforeEach(() => {
-    MockSpreadSheet.mockClear();
-    dataSet = new TableDataSet(new MockSpreadSheet());
+    MockTableSheet.mockClear();
+    dataSet = new TableDataSet(new MockTableSheet());
 
     dataSet.setDataCfg(dataCfg);
   });

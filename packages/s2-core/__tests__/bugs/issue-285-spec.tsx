@@ -30,7 +30,7 @@ function MainLayout() {
         dataCfg={dataCfg}
         options={{}}
         themeCfg={{ name: 'default' }}
-        forceUpdate={true}
+        forceUpdateDataCfg={true}
         header={
           <Switch
             checkedChildren="有列头"

@@ -33,8 +33,6 @@ export interface S2PartialOptions {
   readonly width: number;
   // canvas's height
   readonly height: number;
-  // s2 mode
-  readonly mode?: 'pivot' | 'table';
   // debug info for developer
   readonly debug?: boolean;
   // row header hierarchy type only work in pivot mode
@@ -162,7 +160,6 @@ export const defaultStyle: Style = {
 export const defaultOptions: S2Options = {
   width: 600,
   height: 480,
-  mode: 'pivot',
   debug: false,
   hierarchyType: 'grid',
   conditions: {},

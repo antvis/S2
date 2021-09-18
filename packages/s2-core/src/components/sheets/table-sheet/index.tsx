@@ -1,3 +1,4 @@
+// TODO 所有表组件抽取公共hook
 import { Event as GEvent } from '@antv/g-canvas';
 import { Pagination, Spin } from 'antd';
 import { debounce, forIn, get, isEmpty, isFunction, merge } from 'lodash';
@@ -7,9 +8,6 @@ import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 import { i18n } from '@/common/i18n';
 import {
   CellScrollPosition,
-  LayoutCol,
-  LayoutResult,
-  LayoutRow,
   ListSortParams,
   Pagination as PaginationCfg,
   S2Constructor,
@@ -19,30 +17,21 @@ import {
   TargetLayoutNode,
 } from '@/common/interface';
 import { EmitterType } from '@/common/interface/emitter';
-import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
-import { SpreadSheet, PivotSheet } from '@/sheet-type';
-import {
-  HandleDrillDown,
-  HandleDrillDownIcon,
-} from '@/utils/drill-down/helper';
+import { SpreadSheet, TableSheet as BaseTableSheet } from '@/sheet-type';
 import { getBaseCellData } from '@/utils/interaction/formatter';
-import './index.less';
 
-export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
+export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
     spreadsheet,
     dataCfg,
     options,
-    adaptive = false,
+    adaptive = true,
     header,
     themeCfg,
-    rowLevel,
-    colLevel,
     isLoading,
     onListSort,
-    onRowColLayout,
     onRowCellScroll,
     onColCellScroll,
     onCellScroll,
@@ -51,14 +40,11 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     onMergedCellsClick,
     onDataCellMouseUp,
     getSpreadsheet,
-    partDrillDown,
-    showDefaultPagination = true,
   } = props;
   const container = useRef<HTMLDivElement>();
   const baseSpreadsheet = useRef<SpreadSheet>();
 
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
-  const [drillFields, setDrillFields] = useState<string[]>([]);
   const [resizeTimeStamp, setResizeTimeStamp] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [total, setTotal] = useState<number>();
@@ -75,32 +61,10 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (spreadsheet) {
       return spreadsheet(...params);
     }
-    return new PivotSheet(...params);
+    return new BaseTableSheet(...params);
   };
 
   const bindEvent = () => {
-    baseSpreadsheet.current.on(
-      S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
-      (layoutResult: LayoutResult) => {
-        if (rowLevel && colLevel) {
-          // TODO: 这里为啥返回 {level: '', id: '', label: ''} 这样的结构
-          const rows: LayoutRow[] = layoutResult.rowsHierarchy
-            .getNodesLessThanLevel(rowLevel)
-            .map((value) => {
-              return [value.level, value.id, value.label];
-            });
-
-          const cols: LayoutCol[] = layoutResult.colsHierarchy
-            .getNodesLessThanLevel(colLevel)
-            .map((value) => {
-              return [value.level, value.id, value.label];
-            });
-
-          onRowColLayout?.(rows, cols);
-        }
-      },
-    );
-
     const EVENT_LISTENER_CONFIG: Record<
       string,
       (...args: unknown[]) => unknown
@@ -160,38 +124,9 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     });
   };
 
-  const iconClickCallback = (
-    event: MouseEvent,
-    sheetInstance: SpreadSheet,
-    cacheDrillFields?: string[],
-    disabledFields?: string[],
-  ) => {
-    const element = (
-      <DrillDown
-        {...partDrillDown.drillConfig}
-        setDrillFields={setDrillFields}
-        drillFields={cacheDrillFields}
-        disabledFields={disabledFields}
-      />
-    );
-    sheetInstance.showTooltip({
-      position: {
-        x: event.clientX,
-        y: event.clientY,
-      },
-      element,
-    });
-  };
-
-  const setOptions = (
-    sheetInstance?: SpreadSheet,
-    sheetProps?: BaseSheetProps,
-  ) => {
-    const curSheet = sheetInstance || ownSpreadsheet;
-    const curProps = sheetProps || props;
-    curSheet.setOptions(
-      safetyOptions(HandleDrillDownIcon(curProps, curSheet, iconClickCallback)),
-    );
+  const setOptions = (newOptions?: S2Options) => {
+    const curOptions = newOptions || options;
+    ownSpreadsheet.setOptions(safetyOptions(curOptions));
   };
 
   const setDataCfg = () => {
@@ -205,17 +140,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (isFunction(reset)) reset();
     ownSpreadsheet.render(reloadData);
     setLoading(false);
-  };
-
-  /**
-   * 清空下钻信息
-   * @param rowId 不传表示全部清空
-   */
-  const clearDrillDownInfo = (rowId?: string) => {
-    if (!ownSpreadsheet) return;
-    setLoading(true);
-    ownSpreadsheet.clearDrillDownData(rowId);
-    update();
   };
 
   const debounceResize = debounce((e: Event) => {
@@ -239,7 +163,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
           total={total}
           pageSize={pageSize}
           // TODO 外部定义的pageSize和内部PageSize改变的优先级处理
-          showSizeChanger={true}
+          showSizeChanger
           onShowSizeChange={(current, size) => {
             setCurrent(1);
             setPageSize(size);
@@ -267,8 +191,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     baseSpreadsheet.current = getSpreadSheet();
     bindEvent();
     baseSpreadsheet.current.setDataCfg(safetyDataConfig(dataCfg));
-    baseSpreadsheet.current.store.set('originalDataCfg', dataCfg);
-    setOptions(baseSpreadsheet.current, props);
+    baseSpreadsheet.current.setOptions(safetyOptions(options));
     baseSpreadsheet.current.setThemeCfg(themeCfg);
     baseSpreadsheet.current.render();
     setLoading(false);
@@ -321,48 +244,14 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   }, [spreadsheet]);
 
   useEffect(() => {
-    if (!ownSpreadsheet) return;
-    ownSpreadsheet.hideTooltip();
-    if (isEmpty(drillFields)) {
-      clearDrillDownInfo(ownSpreadsheet.store.get('drillDownMeta')?.id);
-    } else {
-      setLoading(true);
-      HandleDrillDown({
-        rows: dataCfg.fields.rows,
-        drillFields: drillFields,
-        fetchData: partDrillDown.fetchData,
-        drillItemsNum: partDrillDown?.drillItemsNum,
-        spreadsheet: ownSpreadsheet,
-      });
-    }
-  }, [drillFields]);
-
-  useEffect(() => {
-    if (isEmpty(partDrillDown?.clearDrillDown)) return;
-    clearDrillDownInfo(partDrillDown?.clearDrillDown?.rowId);
-  }, [partDrillDown?.clearDrillDown]);
-
-  useEffect(() => {
-    if (!partDrillDown?.drillItemsNum) return;
-    clearDrillDownInfo();
-  }, [partDrillDown?.drillItemsNum]);
-
-  useEffect(() => {
-    if (!partDrillDown || !ownSpreadsheet) return;
-    update(setOptions);
-  }, [partDrillDown?.drillConfig?.dataSet]);
-
-  useEffect(() => {
     if (!ownSpreadsheet || isEmpty(options?.pagination)) return;
     const newOptions = merge({}, options, {
       pagination: {
         current: current,
       },
     });
-    const newProps = merge({}, props, {
-      options: newOptions,
-    });
-    setOptions(ownSpreadsheet, newProps);
+
+    setOptions(newOptions);
     update();
   }, [current]);
 
@@ -373,10 +262,8 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
         pageSize: pageSize,
       },
     });
-    const newProps = merge({}, props, {
-      options: newOptions,
-    });
-    setOptions(ownSpreadsheet, newProps);
+
+    setOptions(newOptions);
     update();
   }, [pageSize]);
 
@@ -385,7 +272,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && <Header {...header} sheet={ownSpreadsheet} />}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
-        {showDefaultPagination && renderPagination()}
+        {renderPagination()}
       </Spin>
     </StrictMode>
   );

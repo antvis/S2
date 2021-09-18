@@ -4,21 +4,21 @@ import 'antd/dist/antd.min.css';
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import { getContainer, getMockData } from '../util/helpers';
 import {
   S2DataConfig,
   S2Event,
   S2Options,
   SheetComponent,
   SpreadSheet,
-} from '../../src';
-import { getContainer, getMockData } from '../util/helpers';
-
+  TableSheet,
+} from '@/index';
 const data = getMockData('../data/tableau-supermarket.csv');
 
 const getSpreadSheet =
   (ref) =>
   (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
-    const s2 = new SpreadSheet(dom, dataCfg, options);
+    const s2 = new TableSheet(dom, dataCfg, options);
     ref.current = s2;
     return s2;
   };
@@ -85,7 +85,6 @@ function MainLayout() {
     width: 800,
     height: 600,
     showSeriesNumber: true,
-    mode: 'table',
     enableCopy: true,
     style: {
       colCfg: {
@@ -141,6 +140,7 @@ function MainLayout() {
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
+        sheetType={'table'}
         spreadsheet={getSpreadSheet(s2Ref)}
       />
     </div>

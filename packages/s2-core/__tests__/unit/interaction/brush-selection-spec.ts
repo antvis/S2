@@ -8,6 +8,7 @@ import {
   InteractionBrushSelectionStage,
   InterceptType,
   OriginalEvent,
+  PivotSheet,
   S2CellType,
   S2Event,
   SpreadSheet,
@@ -73,7 +74,7 @@ describe('Interaction Brush Selection Tests', () => {
   beforeEach(() => {
     MockRootInteraction.mockClear();
 
-    mockSpreadSheetInstance = new SpreadSheet(
+    mockSpreadSheetInstance = new PivotSheet(
       document.createElement('div'),
       null,
       null,
