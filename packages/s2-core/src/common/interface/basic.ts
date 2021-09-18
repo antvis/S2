@@ -74,7 +74,7 @@ export interface Fields {
   columns?: string[];
   // value fields
   values?: string[];
-  // measure values in cols as new col, only works in 'pivot' mode
+  // measure values in cols as new col, only works for PivotSheet
   valueInCols?: boolean;
 }
 
