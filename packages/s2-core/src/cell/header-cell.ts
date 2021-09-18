@@ -101,7 +101,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const cells = interaction.getSelectedCells();
     const hoverdCells = interaction.getHoveredCells();
 
-    if (!first(cells)) return;
+    if (!first(cells) && !first(hoverdCells)) return;
 
     switch (stateInfo?.stateName) {
       case InteractionStateName.SELECTED:

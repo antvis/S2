@@ -1,4 +1,5 @@
 import { LineChartOutlined } from '@ant-design/icons';
+import { getSelectedCellMeta } from 'src/utils/interaction/select-event';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { get, noop } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
@@ -43,16 +44,9 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
       this.interaction.clearState();
-      const { id, colIndex, rowIndex } = meta;
+
       this.interaction.changeState({
-        selectedCells: [
-          {
-            id,
-            colIndex,
-            rowIndex,
-            type: cell.cellType,
-          },
-        ],
+        selectedCells: [getSelectedCellMeta(cell)],
         stateName: InteractionStateName.SELECTED,
       });
       this.showTooltip(event, meta);

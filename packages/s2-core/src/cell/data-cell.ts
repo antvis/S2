@@ -1,7 +1,6 @@
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
 import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
-import { Node } from '@/facet/layout/node';
 import { BaseCell } from '@/cell/base-cell';
 import {
   CellTypes,
@@ -124,7 +123,6 @@ export class DataCell extends BaseCell<ViewMeta> {
     const cells = this.spreadsheet.interaction.getSelectedCells();
     const hoverdCells = this.spreadsheet.interaction.getHoveredCells();
 
-    // console.log(hoverdCells, cells, stateName)
     if ((isEmpty(hoverdCells) && isEmpty(cells)) || !stateName) {
       return;
     }
@@ -404,12 +402,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
     const { nodes = [], selectedCells = [] } = interaction.getState();
-    const isEqualIndex = [...nodes, ...selectedCells].find((cell) => {
-      if (cell instanceof Node) {
-        return get(cell, indexType) === currentIndex;
-      }
-      return get(cell, indexType) === currentIndex;
-    });
+    const isEqualIndex = [...nodes, ...selectedCells].find(
+      (cell) => get(cell, indexType) === currentIndex,
+    );
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.selectedCellsSpotlight) {

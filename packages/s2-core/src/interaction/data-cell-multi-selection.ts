@@ -1,5 +1,6 @@
 import { Event } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
+import { getSelectedCellMeta } from 'src/utils/interaction/select-event';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { getActiveCellsTooltipData } from '@/utils/tooltip';
 import {
@@ -60,7 +61,7 @@ export class DataCellMultiSelection
     if (selectedCells.find((meta) => meta.id === id)) {
       cells = selectedCells.filter((item) => item.id !== id);
     } else {
-      cells = [...selectedCells, this.interaction.getSelectedCellMeta(cell)];
+      cells = [...selectedCells, getSelectedCellMeta(cell)];
     }
 
     return cells;
@@ -85,7 +86,7 @@ export class DataCellMultiSelection
           InterceptType.CLICK,
           InterceptType.HOVER,
         ]);
-
+        this.getSelectedCells(cell);
         this.spreadsheet.hideTooltip();
         this.interaction.changeState({
           selectedCells,

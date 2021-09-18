@@ -1,5 +1,6 @@
 import { Event } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
+import { getSelectedCellMeta } from 'src/utils/interaction/select-event';
 import { BaseEvent } from '@/interaction/base-interaction';
 import { S2Event } from '@/common/constant';
 import { InteractionStateName } from '@/common/constant/interaction';
@@ -17,7 +18,7 @@ export class CustomHover extends BaseEvent {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
       if (isEmpty(cell)) return;
       this.interaction.changeState({
-        selectedCells: [this.interaction.getSelectedCellMeta(cell)],
+        selectedCells: [getSelectedCellMeta(cell)],
         stateName: InteractionStateName.HOVER,
       });
       cell.updateByState(InteractionStateName.UNSELECTED, cell);

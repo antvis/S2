@@ -319,15 +319,4 @@ export class RootInteraction {
       this.spreadsheet.interaction.intercept.delete(interceptType);
     });
   }
-
-  public getSelectedCellMeta(cell: S2CellType) {
-    const meta = cell.getMeta();
-    const { id, colIndex, rowIndex } = meta;
-    return {
-      id,
-      colIndex,
-      rowIndex,
-      type: cell.cellType,
-    };
-  }
 }

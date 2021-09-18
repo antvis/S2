@@ -1,6 +1,7 @@
 import { concat, isEmpty } from 'lodash';
+import { getSelectedCellMeta } from 'src/utils/interaction/select-event';
 import { InteractionStateName, InterceptType } from '@/common/constant';
-import { MultiClickParams, S2CellType } from '@/common/interface';
+import { MultiClickParams } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 import { mergeCellInfo } from '@/utils/tooltip';
 
@@ -34,7 +35,7 @@ export const handleRowColClick = ({
           (node) => node.rowIndex === meta.rowIndex,
         )
       : Node.getAllChildrenNode(meta);
-    let selectedCells = [interaction.getSelectedCellMeta(cell)];
+    let selectedCells = [getSelectedCellMeta(cell)];
 
     if (isMultiSelection && interaction.isSelectedState()) {
       selectedCells = isEmpty(lastState?.selectedCells)

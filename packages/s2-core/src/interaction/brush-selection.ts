@@ -1,4 +1,5 @@
 import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
+import { getSelectedCellMeta } from 'src/utils/interaction/select-event';
 import { isEmpty } from 'lodash';
 import { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
@@ -217,7 +218,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     const brushRangeDataCells = this.getBrushRangeDataCells();
     this.interaction.changeState({
       selectedCells: brushRangeDataCells.map((item) =>
-        this.interaction.getSelectedCellMeta(item),
+        getSelectedCellMeta(item),
       ),
       stateName: InteractionStateName.PREPARE_SELECT,
       // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
@@ -232,7 +233,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private updateSelectedCells() {
     this.interaction.changeState({
       selectedCells: this.brushRangeDataCells.map((item) =>
-        this.interaction.getSelectedCellMeta(item),
+        getSelectedCellMeta(item),
       ),
       stateName: InteractionStateName.SELECTED,
     });
