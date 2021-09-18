@@ -4,7 +4,7 @@
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/s2.min.js",
-  "types": "esm/src/index.d.ts",
+  "types": "esm/index.d.ts",
   "description": "effective spreadsheet render core lib",
   "license": "MIT",
   "homepage": "https://s2.antv.vision",
