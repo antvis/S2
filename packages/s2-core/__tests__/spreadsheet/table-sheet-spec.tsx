@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
-import { message, Space } from 'antd';
+import { Checkbox, message, Space, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
-import { find } from 'lodash';
+import { find, merge } from 'lodash';
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer, getMockData } from '../util/helpers';
+import { SheetEntry } from '../util/sheet-entry';
 import {
   S2DataConfig,
   S2Event,
@@ -110,15 +111,17 @@ const getOptions = (): S2Options => {
     linkFieldIds: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
+      operation: {
+        hiddenColumns: true,
+      },
     },
-    enableHiddenColumns: true,
-    hiddenColumnFields: ['order_date'],
+    // hiddenColumnFields: ['order_date'],
   };
 };
 
 function MainLayout(props) {
-  const [options, setOptions] = React.useState(props.options);
-  const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
+  const [options, setOptions] = React.useState<S2Options>(props.options);
+  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(props.dataCfg);
   const s2Ref = React.useRef<SpreadSheet>(null);
 
   useEffect(() => {
@@ -159,6 +162,23 @@ function MainLayout(props) {
             ...props.options,
             hiddenColumnFields,
           });
+        }}
+      />
+      <Switch
+        checkedChildren="开启隐藏列"
+        unCheckedChildren="关闭隐藏列"
+        defaultChecked={options.tooltip.operation.hiddenColumns}
+        onChange={(value) => {
+          console.log('value: ', value);
+          setOptions(
+            merge({}, props.options, {
+              tooltip: {
+                operation: {
+                  hiddenColumns: value,
+                },
+              },
+            }),
+          );
         }}
       />
       <SheetComponent

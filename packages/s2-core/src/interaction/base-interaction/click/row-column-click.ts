@@ -118,14 +118,17 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   };
 
   private showTooltip(event: CanvasEvent) {
-    const { interaction, options } = this.spreadsheet;
+    const {
+      interaction,
+      options: { tooltip },
+    } = this.spreadsheet;
     const cellInfos = interaction.isSelectedState()
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
     const { hideColumn } = INTERACTION_OPERATOR;
     const operator: TooltipOperatorOptions = this.spreadsheet.isTableMode() &&
-      options.enableHiddenColumns && {
+      tooltip.operation.hiddenColumns && {
         onClick: (id) => {
           if (id === hideColumn.id) {
             this.hideSelectedColumns();
@@ -149,9 +152,6 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindTableColExpand() {
-    if (!this.spreadsheet.options?.enableHiddenColumns) {
-      return;
-    }
     this.spreadsheet.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, (node) => {
       this.handleExpandIconClick(node);
     });

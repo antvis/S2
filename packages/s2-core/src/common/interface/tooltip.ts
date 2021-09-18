@@ -1,5 +1,6 @@
-import { SpreadSheet } from '../../sheet-type';
-import { SortParam } from '../interface';
+import { SpreadSheet } from '@/sheet-type';
+import { SortParam } from '@/common/interface';
+import { BaseTooltip } from '@/ui/tooltip';
 
 export type TooltipDataItem = Record<string, any>;
 
@@ -135,3 +136,25 @@ export interface OrderOption {
   type: 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
   name: string;
 }
+
+export interface Tooltip {
+  readonly showTooltip?: boolean;
+  readonly row?: Tooltip;
+  readonly col?: Tooltip;
+  readonly cell?: Tooltip;
+  // custom tooltips
+  readonly renderTooltip?: RenderTooltip;
+  // replace the whole default tooltip component
+  readonly tooltipComponent?: JSX.Element;
+  // Tooltip operation
+  readonly operation?: TooltipOperation;
+}
+
+export interface TooltipOperation {
+  // 隐藏列 (明细表有效)
+  hiddenColumns?: boolean;
+  // 趋势图
+  trend?: boolean;
+}
+
+export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;

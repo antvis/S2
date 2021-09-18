@@ -2,6 +2,7 @@ import { merge } from 'lodash';
 import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
 import { FilterDataItemCallback } from './basic';
+import { Tooltip } from './tooltip';
 import {
   CellCallback,
   CornerHeaderCallback,
@@ -14,7 +15,6 @@ import {
   Pagination,
   RowActionIcons,
   Style,
-  Tooltip,
   Totals,
 } from '@/common/interface/basic';
 import {
@@ -73,8 +73,6 @@ export interface S2PartialOptions {
   readonly hoverHighlight?: boolean;
   readonly hdAdapter?: boolean;
   readonly hiddenColumnFields?: string[];
-  // TODO: 操作相关的 可以收拢到 operator option里面, 比如 隐藏列, 复制, 等...
-  readonly enableHiddenColumns?: boolean;
   // the collection of row id and column id of cells which to be merged
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // enable Command + C to copy spread data
@@ -168,7 +166,12 @@ export const defaultOptions: S2Options = {
   hierarchyType: 'grid',
   conditions: {},
   totals: {},
-  tooltip: {},
+  tooltip: {
+    operation: {
+      hiddenColumns: true,
+      trend: false,
+    },
+  },
   linkFieldIds: [],
   freezeRowHeader: true,
   showSeriesNumber: false,
@@ -184,7 +187,6 @@ export const defaultOptions: S2Options = {
   frozenTrailingRowCount: 0,
   frozenTrailingColCount: 0,
   hdAdapter: true,
-  enableHiddenColumns: true,
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>

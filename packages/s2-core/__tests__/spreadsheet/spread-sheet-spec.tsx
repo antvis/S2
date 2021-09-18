@@ -5,7 +5,7 @@ import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
 import { SheetEntry } from '../util/sheet-entry';
 import { CustomTooltip } from './custom/custom-tooltip';
-import { ThemeName } from '@/index';
+import { S2Options, ThemeName } from '@/index';
 
 function MainLayout() {
   const [render, setRender] = React.useState(true);
@@ -24,7 +24,7 @@ function MainLayout() {
   const onRadioChange = (e) => {
     setThemeName(e.target.value);
   };
-  const mergedOptions = {
+  const mergedOptions: Partial<S2Options> = {
     pagination: showPagination && {
       pageSize: 20,
       current: 1,
@@ -34,10 +34,12 @@ function MainLayout() {
       renderTooltip: (spreadsheet) => {
         return new CustomTooltip(spreadsheet);
       },
+      operation: {
+        trend: true,
+      },
     },
     selectedCellsSpotlight: spotLight,
     hoverHighlight: hoverHighlight,
-    showTrend: true,
   };
   return (
     <div>
