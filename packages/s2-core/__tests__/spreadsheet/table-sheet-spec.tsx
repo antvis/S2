@@ -1,17 +1,17 @@
 /* eslint-disable no-console */
-import { Checkbox, message, Space, Switch } from 'antd';
+import { message, Space, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
-import { find, merge } from 'lodash';
+import { find } from 'lodash';
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer, getMockData } from '../util/helpers';
-import { SheetEntry } from '../util/sheet-entry';
 import {
   S2DataConfig,
   S2Event,
   S2Options,
   SheetComponent,
+  SortMethod,
   SpreadSheet,
 } from '@/index';
 import { Switcher } from '@/components/switcher';
@@ -20,14 +20,14 @@ import { SwitcherItem } from '@/components/switcher/interface';
 const data = getMockData('../data/tableau-supermarket.csv');
 
 const getSpreadSheet =
-  (ref) =>
+  (ref: React.MutableRefObject<SpreadSheet>) =>
   (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
     const s2 = new SpreadSheet(dom, dataCfg, options);
     ref.current = s2;
     return s2;
   };
 
-const canConvertToNumber = (sortKey) =>
+const canConvertToNumber = (sortKey: string) =>
   data.every((item) => {
     const v = item[sortKey];
     return typeof v === 'string' && !Number.isNaN(Number(v));
@@ -51,7 +51,7 @@ const columns = [
   'count',
   'discount',
   'profit',
-];
+] as const;
 
 const meta = [
   {
@@ -64,8 +64,15 @@ const meta = [
   },
 ];
 
-const getDataCfg = () => {
-  return {
+function MainLayout() {
+  const [showPagination, setShowPagination] = React.useState(false);
+  const [hiddenColumnsOperator, setHiddenColumnsOperator] =
+    React.useState(true);
+  const [hiddenColumnFields, setHiddenColumnFields] = React.useState<string[]>([
+    'order_date',
+  ]);
+
+  const dataCfg: S2DataConfig = {
     fields: {
       columns,
     },
@@ -85,11 +92,9 @@ const getDataCfg = () => {
         sortMethod: 'ASC',
       },
     ],
-  };
-};
+  } as unknown as S2DataConfig;
 
-const getOptions = (): S2Options => {
-  return {
+  const options: S2Options = {
     width: 800,
     height: 600,
     showSeriesNumber: true,
@@ -104,6 +109,10 @@ const getOptions = (): S2Options => {
       },
       device: 'pc',
     },
+    pagination: showPagination && {
+      pageSize: 10,
+      current: 1,
+    },
     frozenRowCount: 2,
     frozenColCount: 1,
     frozenTrailingColCount: 1,
@@ -112,16 +121,12 @@ const getOptions = (): S2Options => {
     tooltip: {
       showTooltip: true,
       operation: {
-        hiddenColumns: true,
+        hiddenColumns: hiddenColumnsOperator,
       },
     },
-    // hiddenColumnFields: ['order_date'],
-  };
-};
+    hiddenColumnFields,
+  } as S2Options;
 
-function MainLayout(props) {
-  const [options, setOptions] = React.useState<S2Options>(props.options);
-  const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(props.dataCfg);
   const s2Ref = React.useRef<SpreadSheet>(null);
 
   useEffect(() => {
@@ -152,35 +157,30 @@ function MainLayout(props) {
 
   return (
     <Space direction="vertical">
-      <Switcher
-        values={switcherValues}
-        onSubmit={(result) => {
-          // eslint-disable-next-line no-console
-          console.log('result: ', result);
-          const { hiddenValues: hiddenColumnFields } = result;
-          setOptions({
-            ...props.options,
-            hiddenColumnFields,
-          });
-        }}
-      />
-      <Switch
-        checkedChildren="开启隐藏列"
-        unCheckedChildren="关闭隐藏列"
-        defaultChecked={options.tooltip.operation.hiddenColumns}
-        onChange={(value) => {
-          console.log('value: ', value);
-          setOptions(
-            merge({}, props.options, {
-              tooltip: {
-                operation: {
-                  hiddenColumns: value,
-                },
-              },
-            }),
-          );
-        }}
-      />
+      <Space>
+        {' '}
+        <Switcher
+          values={switcherValues}
+          onSubmit={(result) => {
+            console.log('result: ', result);
+            const { hiddenValues } = result;
+            setHiddenColumnFields(hiddenValues);
+          }}
+        />
+        <Switch
+          checkedChildren="开启隐藏列"
+          unCheckedChildren="关闭隐藏列"
+          defaultChecked={options.tooltip.operation.hiddenColumns}
+          onChange={setHiddenColumnsOperator}
+        />
+        <Switch
+          checkedChildren="分页"
+          unCheckedChildren="不分页"
+          checked={showPagination}
+          onChange={setShowPagination}
+        />
+      </Space>
+
       <SheetComponent
         dataCfg={dataCfg}
         adaptive={false}
@@ -197,9 +197,6 @@ describe('table sheet normal spec', () => {
   });
 
   act(() => {
-    ReactDOM.render(
-      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
-      getContainer(),
-    );
+    ReactDOM.render(<MainLayout />, getContainer());
   });
 });

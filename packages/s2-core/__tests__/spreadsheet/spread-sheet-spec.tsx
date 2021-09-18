@@ -26,7 +26,7 @@ function MainLayout() {
   };
   const mergedOptions: Partial<S2Options> = {
     pagination: showPagination && {
-      pageSize: 20,
+      pageSize: 5,
       current: 1,
     },
     tooltip: {
