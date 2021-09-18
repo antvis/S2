@@ -73,12 +73,10 @@ export class RootInteraction {
 
   public setInteractedCells(cell: S2CellType) {
     const interactedCells = this.getInteractedCells().concat([cell]);
-    const interactionInfo = merge(
-      this.getState(),
-      { interactedCells: interactedCells },
-      {},
-    );
-    this.setState(interactionInfo);
+    const state = this.getState();
+    state.interactedCells = interactedCells;
+
+    this.setState(state);
   }
 
   public getInteractedCells() {
