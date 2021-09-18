@@ -1,6 +1,6 @@
 import { Event } from '@antv/g-canvas';
 import { SimpleBBox } from '@antv/g-canvas';
-import { InteractionStateName } from '../constant';
+import { InteractionStateName, CellTypes } from '../constant';
 import { ViewMeta } from './basic';
 import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
 import { HeaderCell } from '@/cell/header-cell';
@@ -16,13 +16,20 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | RowCell
   | BaseCell<T>;
 
+export interface SelectedCellMeta {
+  id: string;
+  colIndex: number;
+  rowIndex: number;
+  type: CellTypes;
+}
+
 export interface InteractionStateInfo {
   // current state name
   stateName?: InteractionStateName;
-  // all the active cell ids
-  cellIds?: string[];
-  // all the active cells
-  // cells?: S2CellType[];
+  // all the selected cell ids
+  selectedCells?: SelectedCellMeta[];
+  // all the hovered cells
+  hoveredCells?: S2CellType[];
   // all the cells changed the state style
   interactedCells?: S2CellType[];
   // all the active nodes, including rendered and not rendered cells

@@ -30,35 +30,66 @@ describe('State Test', () => {
   });
 
   test('should set select status correctly', () => {
+    const { id, colIndex, rowIndex } = mockRowCell.getMeta();
+    const meta = {
+      id,
+      colIndex,
+      rowIndex,
+      type: mockRowCell.cellType,
+    };
+
     setState(mockInstance, {
       stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCell],
+      selectedCells: [
+        {
+          ...meta,
+        },
+      ],
     });
     expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCell],
+      cellIds: [
+        {
+          ...meta,
+        },
+      ],
     });
   });
 
   test('should do nothing when state name is the same', () => {
+    const { id, colIndex, rowIndex } = mockRowCell.getMeta();
+    const meta = {
+      id,
+      colIndex,
+      rowIndex,
+      type: mockRowCell.cellType,
+    };
     setState(mockInstance, {
       stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCell],
+      selectedCells: [],
     });
 
     expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCell],
+      selectedCells: [
+        {
+          ...meta,
+        },
+      ],
     });
 
     mockInstance.interaction.setState({
       stateName: InteractionStateName.SELECTED,
-      cells: [],
+      selectedCells: [],
     });
 
     expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCell],
+      selectedCells: [
+        {
+          ...meta,
+        },
+      ],
     });
   });
 

@@ -4,6 +4,7 @@ import {
   FilterDataItemCallback,
   MappingDataItemCallback,
   S2CellType,
+  SelectedCellMeta,
 } from '@/common/interface';
 import { Data } from '@/common/interface/s2DataConfig';
 
@@ -21,9 +22,12 @@ export const handleDataItem = (
  * @param cells active cells
  * @param currentCell current activated cell
  */
-export const includeCell = (cellIds: string[], currentCell: S2CellType) => {
+export const includeCell = (
+  cells: SelectedCellMeta[],
+  currentCell: S2CellType,
+) => {
   const currentId = currentCell.getMeta().id;
-  return cellIds.some((id) => {
-    return isEqual(currentId, id);
+  return cells.some((cell) => {
+    return isEqual(cell.id, currentId);
   });
 };

@@ -44,7 +44,7 @@ export class RootInteraction {
   public eventController: EventController;
 
   private defaultState: InteractionStateInfo = {
-    cellIds: [],
+    selectedCells: [],
     force: false,
   };
 
@@ -104,34 +104,29 @@ export class RootInteraction {
   }
 
   private isActiveCell(cell: S2CellType) {
-    return this.getActiveCellIds().find((id) => cell.getMeta().id === id);
+    return this.getSelectedCells().find(
+      (meta) => cell.getMeta().id === meta.id,
+    );
   }
 
   public isSelectedCell(cell: S2CellType) {
     return this.isSelectedState() && this.isActiveCell(cell);
   }
 
-  public getActiveCellIds() {
+  // 获取所有被选择的 Cells 的元信息列表，包括不在视口内的格子
+  public getSelectedCells() {
     const currentState = this.getState();
-    return currentState?.cellIds || [];
+    return currentState?.selectedCells || [];
   }
 
-  public getActiveCells(ids?: string[]) {
-    const cellIds = ids || this.getActiveCellIds();
-    const allCells = this.getPanelGroupAllDataCells();
-
-    return allCells.filter((item) => cellIds.includes(item.getMeta().id));
+  // 获取选择态、并且在视口内的 Cells 实例列表
+  public getActiveCells() {
+    const ids = this.getSelectedCells().map((item) => item.id);
+    return this.getAllCells().filter((cell) => ids.includes(cell.getMeta().id));
   }
 
-  public getActiveCellsCount() {
-    return size(this.getActiveCellIds());
-  }
-
-  public updateCellStyleByState() {
-    const cells = this.getActiveCells(this.getActiveCellIds());
-    cells.forEach((cell) => {
-      cell.updateByState(this.getCurrentStateName());
-    });
+  public getHoveredCells() {
+    return this.getState().hoveredCells;
   }
 
   public clearStyleIndependent() {
@@ -188,6 +183,13 @@ export class RootInteraction {
     return colCells.filter(
       (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
     ) as ColCell[];
+  }
+
+  public getRowColActiveCells(ids: string[]) {
+    return concat<S2CellType>(
+      this.getAllRowHeaderCells(),
+      this.getAllColHeaderCells(),
+    ).filter((item) => ids.includes(item.getMeta().id));
   }
 
   public getAllCells() {
@@ -274,11 +276,11 @@ export class RootInteraction {
 
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { interaction } = this.spreadsheet;
-    const { cellIds, force } = interactionStateInfo;
-    if (isEmpty(cellIds)) {
+    const { selectedCells, force, hoveredCells } = interactionStateInfo;
+    if (isEmpty(selectedCells) && isEmpty(hoveredCells)) {
       if (force) {
         interaction.changeState({
-          cellIds: interaction.getActiveCellIds(),
+          selectedCells: [],
           stateName: InteractionStateName.UNSELECTED,
         });
       }
@@ -316,5 +318,16 @@ export class RootInteraction {
     interceptTypes.forEach((interceptType) => {
       this.spreadsheet.interaction.intercept.delete(interceptType);
     });
+  }
+
+  public getSelectedCellMeta(cell: S2CellType) {
+    const meta = cell.getMeta();
+    const { id, colIndex, rowIndex } = meta;
+    return {
+      id,
+      colIndex,
+      rowIndex,
+      type: cell.cellType,
+    };
   }
 }

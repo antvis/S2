@@ -50,6 +50,7 @@ import {
   PRECISION,
   VALUE_FIELD,
 } from '@/common/constant';
+import { SelectedCellMeta } from '@/common/interface';
 
 const isNotNumber = (v) => {
   return Number.isNaN(Number(v));
@@ -347,8 +348,9 @@ export const getSelectedCellIndexes = (
   layoutResult: LayoutResult,
 ) => {
   const { rowLeafNodes, colLeafNodes } = layoutResult;
-  const { cells = [], nodes = [] } = spreadsheet.interaction.getState();
-  const cellType = cells?.[0]?.cellType;
+  const { nodes = [] } = spreadsheet.interaction.getState();
+  const cells = spreadsheet.interaction.getSelectedCells();
+  const cellType = cells?.[0]?.type;
 
   if (cellType === CellTypes.COL_CELL) {
     return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);

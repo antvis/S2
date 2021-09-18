@@ -216,7 +216,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private showPrepareSelectedCells = () => {
     const brushRangeDataCells = this.getBrushRangeDataCells();
     this.interaction.changeState({
-      cellIds: brushRangeDataCells.map((item) => item.getMeta().id),
+      selectedCells: brushRangeDataCells.map((item) =>
+        this.interaction.getSelectedCellMeta(item),
+      ),
       stateName: InteractionStateName.PREPARE_SELECT,
       // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
       // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
@@ -229,7 +231,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   // 最终刷选的cell
   private updateSelectedCells() {
     this.interaction.changeState({
-      cellIds: this.brushRangeDataCells.map((item) => item.getMeta().id),
+      selectedCells: this.brushRangeDataCells.map((item) =>
+        this.interaction.getSelectedCellMeta(item),
+      ),
       stateName: InteractionStateName.SELECTED,
     });
     // 未刷选到有效格子, 允许 hover

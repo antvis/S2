@@ -43,8 +43,16 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
       this.interaction.clearState();
+      const { id, colIndex, rowIndex } = meta;
       this.interaction.changeState({
-        cellIds: [cell.cfg.name],
+        selectedCells: [
+          {
+            id,
+            colIndex,
+            rowIndex,
+            type: cell.cellType,
+          },
+        ],
         stateName: InteractionStateName.SELECTED,
       });
       this.showTooltip(event, meta);

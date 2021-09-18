@@ -1,8 +1,9 @@
 import { first, map, includes, find, isEqual, get, last } from 'lodash';
+import { getSelectedCellMeta } from 'src/utils/interaction/select-event';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
-import { S2CellType } from '@/common/interface';
+import { SelectedCellMeta } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
@@ -78,13 +79,13 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
   }
 
-  private handleHover(cells: S2CellType[]) {
+  private handleHover(cells: SelectedCellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.HOVER, this);
     }
   }
 
-  private handleSelect(cells: S2CellType[], nodes: Node[]) {
+  private handleSelect(cells: SelectedCellMeta[], nodes: Node[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.SELECTED, this);
     }
@@ -95,8 +96,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   public update() {
-    const stateInfo = this.spreadsheet.interaction.getState();
-    const cells = this.spreadsheet.interaction.getActiveCells();
+    const { interaction } = this.spreadsheet;
+    const stateInfo = interaction.getState();
+    const cells = interaction.getSelectedCells();
+    const hoverdCells = interaction.getHoveredCells();
 
     if (!first(cells)) return;
 
@@ -106,7 +109,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         break;
       case InteractionStateName.HOVER_FOCUS:
       case InteractionStateName.HOVER:
-        this.handleHover(cells);
+        this.handleHover(hoverdCells.map((item) => getSelectedCellMeta(item)));
         break;
       default:
         break;

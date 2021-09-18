@@ -59,7 +59,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   ) {
     this.interaction.hoverTimer = window.setTimeout(() => {
       this.interaction.changeState({
-        cells: [cell],
+        hoveredCells: [cell],
         stateName: InteractionStateName.HOVER_FOCUS,
       });
       const showSingleTips = this.spreadsheet.isTableMode();
@@ -86,7 +86,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
     const meta = cell.getMeta() as ViewMeta;
     this.interaction.changeState({
-      cells: [cell],
+      hoveredCells: [cell],
       stateName: InteractionStateName.HOVER,
     });
     cell.update();
@@ -124,7 +124,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
       const meta = cell.getMeta() as ViewMeta;
       this.interaction.changeState({
-        cells: [cell],
+        hoveredCells: [cell],
         stateName: InteractionStateName.HOVER,
       });
 

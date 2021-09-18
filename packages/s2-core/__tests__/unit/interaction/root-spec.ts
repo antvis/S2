@@ -1,4 +1,5 @@
 import { Canvas, Group } from '@antv/g-canvas';
+import { getSelectedCellMeta } from 'src/utils/interaction/select-event';
 import { RootInteraction } from '@/interaction/root';
 import {
   CellTypes,
@@ -56,11 +57,11 @@ describe('RootInteraction Tests', () => {
 
   test('should set interaction state correct', () => {
     rootInteraction.setState({
-      cells: [mockCell],
+      selectedCells: [getSelectedCellMeta(mockCell)],
       stateName: InteractionStateName.SELECTED,
     });
     expect(rootInteraction.getState()).toEqual({
-      cells: [mockCell],
+      selectedCells: [getSelectedCellMeta(mockCell)],
       stateName: InteractionStateName.SELECTED,
     });
   });
@@ -80,7 +81,7 @@ describe('RootInteraction Tests', () => {
     test('should update cell style when update interaction state', () => {
       const cells = [mockCell, mockCell, mockCell];
       rootInteraction.changeState({
-        cells: cells,
+        selectedCells: cells.map((item) => getSelectedCellMeta(item)),
         stateName: InteractionStateName.SELECTED,
       });
       expect(mockSpreadSheetInstance.container.draw).toHaveBeenCalled();
@@ -91,11 +92,11 @@ describe('RootInteraction Tests', () => {
 
     test('should unselect cell when force update empty cells', () => {
       rootInteraction.changeState({
-        cells: [mockCell],
+        selectedCells: [getSelectedCellMeta(mockCell)],
         stateName: InteractionStateName.SELECTED,
       });
       rootInteraction.changeState({
-        cells: [],
+        selectedCells: [],
         stateName: InteractionStateName.SELECTED,
         force: true,
       });
@@ -106,7 +107,7 @@ describe('RootInteraction Tests', () => {
 
     test('should skip draw container when active cells is empty', () => {
       rootInteraction.changeState({
-        cells: [],
+        selectedCells: [],
         stateName: InteractionStateName.SELECTED,
       });
       expect(mockSpreadSheetInstance.container.draw).not.toHaveBeenCalled();
@@ -114,7 +115,7 @@ describe('RootInteraction Tests', () => {
 
     test('should draw container when active cells is empty and enable force update', () => {
       rootInteraction.changeState({
-        cells: [],
+        selectedCells: [],
         stateName: InteractionStateName.SELECTED,
         force: true,
       });
@@ -125,7 +126,7 @@ describe('RootInteraction Tests', () => {
   describe('RootInteraction Calc Utils Tests', () => {
     beforeEach(() => {
       rootInteraction.setState({
-        cells: [mockCell],
+        selectedCells: [getSelectedCellMeta(mockCell)],
         stateName: InteractionStateName.SELECTED,
       });
     });
@@ -139,9 +140,9 @@ describe('RootInteraction Tests', () => {
     });
 
     test('should get current active cells count', () => {
-      expect(rootInteraction.getActiveCellsCount()).toStrictEqual(1);
+      expect(rootInteraction.getSelectedCells().length).toStrictEqual(1);
       rootInteraction.resetState();
-      expect(rootInteraction.getActiveCellsCount()).toStrictEqual(0);
+      expect(rootInteraction.getSelectedCells().length).toStrictEqual(0);
     });
 
     test('should get current active cells', () => {

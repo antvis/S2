@@ -48,19 +48,19 @@ export class DataCellMultiSelection
     });
   }
 
-  private getActiveCells(cell: S2CellType<ViewMeta>) {
+  private getSelectedCells(cell: S2CellType<ViewMeta>) {
     const id = cell.getMeta().id;
-    let activeCells = this.interaction.getActiveCells();
+    let selectedCells = this.interaction.getSelectedCells();
     let cells = [];
     if (
       this.interaction.getCurrentStateName() !== InteractionStateName.SELECTED
     ) {
-      activeCells = [];
+      selectedCells = [];
     }
-    if (activeCells.includes(id)) {
-      cells = activeCells.filter((item) => item !== id);
+    if (selectedCells.find((meta) => meta.id === id)) {
+      cells = selectedCells.filter((item) => item.id !== id);
     } else {
-      cells = [...activeCells, cell];
+      cells = [...selectedCells, this.interaction.getSelectedCellMeta(cell)];
     }
 
     return cells;
@@ -73,9 +73,9 @@ export class DataCellMultiSelection
       const meta = cell.getMeta();
 
       if (this.isMultiSelection && meta) {
-        const cells = this.getActiveCells(cell);
+        const selectedCells = this.getSelectedCells(cell);
 
-        if (isEmpty(cells)) {
+        if (isEmpty(selectedCells)) {
           this.interaction.clearState();
           this.spreadsheet.hideTooltip();
           return;
@@ -88,7 +88,7 @@ export class DataCellMultiSelection
 
         this.spreadsheet.hideTooltip();
         this.interaction.changeState({
-          cellIds: cells.map((item) => item.meta.id),
+          selectedCells,
           stateName: InteractionStateName.SELECTED,
         });
         this.spreadsheet.showTooltipWithInfo(

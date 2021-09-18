@@ -17,7 +17,7 @@ export class CustomHover extends BaseEvent {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
       if (isEmpty(cell)) return;
       this.interaction.changeState({
-        cells: [cell],
+        selectedCells: [this.interaction.getSelectedCellMeta(cell)],
         stateName: InteractionStateName.HOVER,
       });
       cell.updateByState(InteractionStateName.UNSELECTED, cell);

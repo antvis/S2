@@ -18,6 +18,7 @@ import {
   IconCondition,
   MappingResult,
   S2CellType,
+  SelectedCellMeta,
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
@@ -59,15 +60,14 @@ export class DataCell extends BaseCell<ViewMeta> {
     return CellTypes.DATA_CELL;
   }
 
-  protected handlePrepareSelect(cellIds: string[]) {
-    if (includeCell(cellIds, this)) {
+  protected handlePrepareSelect(cells: SelectedCellMeta[]) {
+    if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.PREPARE_SELECT);
     }
   }
 
-  protected handleSelect(cellIds: string[]) {
-    const cells = this.spreadsheet.interaction.getActiveCells(cellIds);
-    const currentCellType = cells?.[0]?.cellType;
+  protected handleSelect(cells: SelectedCellMeta[]) {
+    const currentCellType = cells?.[0]?.type;
     switch (currentCellType) {
       // 列多选
       case CellTypes.COL_CELL:
@@ -79,7 +79,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         break;
       // 单元格单选/多选
       case CellTypes.DATA_CELL:
-        if (includeCell(cellIds, this)) {
+        if (includeCell(cells, this)) {
           this.updateByState(InteractionStateName.SELECTED);
         } else if (this.spreadsheet.options.selectedCellsSpotlight) {
           this.updateByState(InteractionStateName.UNSELECTED);
@@ -90,8 +90,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  protected handleHover(cellIds: string[]) {
-    const cells = this.spreadsheet.interaction.getActiveCells(cellIds);
+  protected handleHover(cells: S2CellType[]) {
     const currentHoverCell = first(cells) as S2CellType;
     if (currentHoverCell.cellType !== CellTypes.DATA_CELL) {
       this.hideInteractionShape();
@@ -122,22 +121,24 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    const cellIds = this.spreadsheet.interaction.getActiveCellIds();
+    const cells = this.spreadsheet.interaction.getSelectedCells();
+    const hoverdCells = this.spreadsheet.interaction.getHoveredCells();
 
-    if (isEmpty(cellIds) || !stateName) {
+    // console.log(hoverdCells, cells, stateName)
+    if ((isEmpty(hoverdCells) && isEmpty(cells)) || !stateName) {
       return;
     }
 
     switch (stateName) {
       case InteractionStateName.PREPARE_SELECT:
-        this.handlePrepareSelect(cellIds);
+        this.handlePrepareSelect(cells);
         break;
       case InteractionStateName.SELECTED:
-        this.handleSelect(cellIds);
+        this.handleSelect(cells);
         break;
       case InteractionStateName.HOVER_FOCUS:
       case InteractionStateName.HOVER:
-        this.handleHover(cellIds);
+        this.handleHover(hoverdCells);
         break;
       default:
         break;
@@ -402,13 +403,12 @@ export class DataCell extends BaseCell<ViewMeta> {
   private changeRowColSelectState(indexType: ViewMetaIndexType) {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
-    const { nodes = [], cellIds = [] } = interaction.getState();
-    const cells = interaction.getActiveCells(cellIds);
-    const isEqualIndex = [...nodes, ...cells].find((cell) => {
+    const { nodes = [], selectedCells = [] } = interaction.getState();
+    const isEqualIndex = [...nodes, ...selectedCells].find((cell) => {
       if (cell instanceof Node) {
         return get(cell, indexType) === currentIndex;
       }
-      return get(cell?.getMeta(), indexType) === currentIndex;
+      return get(cell, indexType) === currentIndex;
     });
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
