@@ -26,7 +26,7 @@ function MainLayout() {
   };
   const mergedOptions = {
     pagination: showPagination && {
-      pageSize: 20,
+      pageSize: 5,
       current: 1,
     },
     tooltip: {
