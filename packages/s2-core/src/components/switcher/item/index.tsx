@@ -1,4 +1,3 @@
-import Item from 'antd/lib/list/Item';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
 import React, { FC } from 'react';
@@ -6,8 +5,8 @@ import { Draggable } from 'react-beautiful-dnd';
 import { FieldType } from '../constant';
 import { SwitcherItem } from '../interface';
 import { getSwitcherClassName, isMeasureType } from '../util';
-import './index.less';
 import { SingleItem } from './single-item';
+import './index.less';
 
 export interface DimensionCommonProps {
   fieldType: FieldType;

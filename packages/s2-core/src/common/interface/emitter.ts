@@ -111,6 +111,8 @@ export interface EmitterType {
     currentHiddenColumnsInfo: HiddenColumnsInfo,
     hiddenColumnsDetail: HiddenColumnsInfo[],
   ) => void;
+  [S2Event.LAYOUT_BEFORE_RENDER]: () => void;
+  [S2Event.LAYOUT_AFTER_RENDER]: () => void;
 
   /** ================ Resize ================  */
   [ResizeEvent.ROW_W]: ResizeHandler;

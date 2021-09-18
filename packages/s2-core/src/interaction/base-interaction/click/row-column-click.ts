@@ -1,6 +1,7 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { concat, difference, isEmpty, isNil } from 'lodash';
 import { EyeOutlined } from '@ant-design/icons';
+import { hideColumns } from '@/utils/hide-columns';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
 import {
   S2Event,
@@ -9,11 +10,7 @@ import {
   INTERACTION_OPERATOR,
   InterceptType,
 } from '@/common/constant';
-import {
-  HiddenColumnsInfo,
-  S2CellType,
-  TooltipOperatorOptions,
-} from '@/common/interface';
+import { S2CellType, TooltipOperatorOptions } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 import { mergeCellInfo } from '@/utils/tooltip';
 
@@ -128,7 +125,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
     const { hideColumn } = INTERACTION_OPERATOR;
     const operator: TooltipOperatorOptions = this.spreadsheet.isTableMode() &&
-      options.enableHideColumnFields && {
+      options.enableHiddenColumns && {
         onClick: (id) => {
           if (id === hideColumn.id) {
             this.hideSelectedColumns();
@@ -152,7 +149,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   }
 
   private bindTableColExpand() {
-    if (!this.spreadsheet.options?.enableHideColumnFields) {
+    if (!this.spreadsheet.options?.enableHiddenColumns) {
       return;
     }
     this.spreadsheet.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, (node) => {
@@ -163,84 +160,24 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   /**
    * 隐藏选中的列
    * 每次点击存储两个信息
-   * 1. [hideColumnFields]: 当前选中 (单/多选) 的 field, 对应 dataCfg 里面的 column
-   *    用于点击展开按钮后还原, 区别于 options.hideColumnFields, 这里需要分段存储, 比如现在有两个隐藏的列
+   * 1. [hiddenColumnFields]: 当前选中 (单/多选) 的 field, 对应 dataCfg 里面的 column
+   *    用于点击展开按钮后还原, 区别于 options.hiddenColumnFields, 这里需要分段存储, 比如现在有两个隐藏的列
    *    [1,2, (3隐藏), 4, 5, (6隐藏), 7]
    *    展开按钮在 4, 7, 点击任意按钮, 应该只展开所对应的那组 : 4 => [3], 7 => [6]
    * 2. [displayNextSiblingNode]: 当前这一组的列隐藏后, 需要将展开按钮显示到对应的兄弟节点
-   * 这样不用每次 render 的时候实时计算, 渲染列头单元格 直接取数据即可, 性能较好
+   * 这样不用每次 render 的时候实时计算, 渲染列头单元格 直接取数据即可
    */
   private hideSelectedColumns() {
-    const { interaction, options } = this.spreadsheet;
-    const selectedCells = interaction.getActiveCells();
-    const selectedColumnFields = selectedCells.map(
-      (cell) => cell.getMeta().field,
-    );
+    const selectedColumnFields: string[] = this.spreadsheet.interaction
+      .getActiveCells()
+      .map((cell) => cell.getMeta().field);
 
-    const hideColumnFields: string[] = [
-      ...selectedColumnFields,
-      ...options.hideColumnFields,
-    ];
-
-    const displayNextSiblingNode =
-      this.getHiddenColumnDisplaySiblingNode(hideColumnFields);
-
-    const lastHiddenColumnDetail = this.spreadsheet.store.get(
-      'hiddenColumnsDetail',
-      [],
-    );
-
-    const currentHiddenColumnsInfo: HiddenColumnsInfo = {
-      hideColumnNodes: this.getHiddenColumnNodes(selectedColumnFields),
-      displayNextSiblingNode,
-    };
-
-    const hiddenColumnsDetail: HiddenColumnsInfo[] = [
-      ...lastHiddenColumnDetail,
-      currentHiddenColumnsInfo,
-    ];
-
-    this.spreadsheet.emit(
-      S2Event.LAYOUT_TABLE_COL_HIDE,
-      currentHiddenColumnsInfo,
-      hiddenColumnsDetail,
-    );
-    this.spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
-    this.spreadsheet.setOptions({
-      hideColumnFields,
-    });
-    this.spreadsheet.interaction.reset();
-    this.spreadsheet.render(false);
-  }
-
-  // 获取当前隐藏列(兼容多选) 所对应为未隐藏的兄弟节点, 如果是尾节点被隐藏, 则返回他的前一个兄弟节点
-  // [ 1, 2, 3, -, -, -, (7 √), 8, 9 ]
-  // [ 1, 2, 3, (4 √), - ]
-  private getHiddenColumnDisplaySiblingNode(hideColumnFields: string[]): Node {
-    const columnNodes = this.spreadsheet.getInitColumnNodes();
-    const hiddenColumnIndexes = this.getHiddenColumnNodes(hideColumnFields).map(
-      ({ colIndex }) => colIndex,
-    );
-    const lastColumnIndex = Math.max(...hiddenColumnIndexes);
-    const nextSiblingNode = columnNodes.find(
-      (node) => node.colIndex === lastColumnIndex + 1,
-    );
-    const prevSiblingNode = columnNodes.find(
-      (node) => node.colIndex === lastColumnIndex - 1,
-    );
-    return nextSiblingNode ?? prevSiblingNode;
-  }
-
-  // 获取需要隐藏的 filed 转成对应的 Node
-  private getHiddenColumnNodes(hideColumnFields: string[]): Node[] {
-    const columnNodes = this.spreadsheet.getInitColumnNodes();
-    return hideColumnFields.map((filed) =>
-      columnNodes.find((node) => node.field === filed),
-    );
+    hideColumns(this.spreadsheet, selectedColumnFields);
   }
 
   private handleExpandIconClick(node: Node) {
-    const { hideColumnFields: lastHideColumnFields } = this.spreadsheet.options;
+    const { hiddenColumnFields: lastHideColumnFields } =
+      this.spreadsheet.options;
     const hiddenColumnsDetail = this.spreadsheet.store.get(
       'hiddenColumnsDetail',
     );
@@ -250,7 +187,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     );
     const willDisplayColumnFields = hideColumnNodes.map(({ field }) => field);
     this.spreadsheet.setOptions({
-      hideColumnFields: difference(
+      hiddenColumnFields: difference(
         lastHideColumnFields,
         willDisplayColumnFields,
       ),

@@ -417,6 +417,11 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     update();
   }, [current]);
 
+  useEffect(() => {
+    ownSpreadsheet?.setOptions({ hiddenColumnFields: [] });
+    ownSpreadsheet?.hideColumns(options.hiddenColumnFields);
+  }, [ownSpreadsheet, options.hiddenColumnFields]);
+
   return (
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>

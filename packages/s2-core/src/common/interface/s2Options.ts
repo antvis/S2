@@ -72,8 +72,9 @@ export interface S2PartialOptions {
   // highlight all row header cells and column header cells to which the hovered cell belongs
   readonly hoverHighlight?: boolean;
   readonly hdAdapter?: boolean;
-  readonly hideColumnFields?: string[];
-  readonly enableHideColumnFields?: boolean;
+  readonly hiddenColumnFields?: string[];
+  // TODO: 操作相关的 可以收拢到 operator option里面, 比如 隐藏列, 复制, 等...
+  readonly enableHiddenColumns?: boolean;
   // the collection of row id and column id of cells which to be merged
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // enable Command + C to copy spread data
@@ -172,7 +173,7 @@ export const defaultOptions: S2Options = {
   freezeRowHeader: true,
   showSeriesNumber: false,
   scrollReachNodeField: {},
-  hideColumnFields: [],
+  hiddenColumnFields: [],
   customHeaderCells: null,
   rowActionIcons: null,
   style: defaultStyle,
@@ -183,7 +184,7 @@ export const defaultOptions: S2Options = {
   frozenTrailingRowCount: 0,
   frozenTrailingColCount: 0,
   hdAdapter: true,
-  enableHideColumnFields: true,
+  enableHiddenColumns: true,
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>

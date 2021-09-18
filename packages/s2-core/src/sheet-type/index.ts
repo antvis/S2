@@ -1,6 +1,7 @@
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import { clone, get, includes, isString, merge, size } from 'lodash';
+import { getHiddenColumnsThunkGroup, hideColumns } from '../utils/hide-columns';
 import { BaseCell, DataCell, TableDataCell, TableRowCell } from '@/cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
@@ -48,7 +49,7 @@ import { Store } from '@/common/store';
 import { BaseDataSet, PivotDataSet, TableDataSet } from '@/data-set';
 import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
 import { BaseFacet, PivotFacet, TableFacet } from '@/facet';
-import { Node, SpreadSheetTheme } from '@/index';
+import { HiddenColumnsInfo, Node, SpreadSheetTheme } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 import { getTheme } from '@/theme';
 import { HdAdapter } from '@/ui/hd-adapter';
@@ -296,10 +297,12 @@ export class SpreadSheet extends EE {
   }
 
   public render(reloadData = true) {
+    this.emit(S2Event.LAYOUT_BEFORE_RENDER);
     if (reloadData) {
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();
+    this.emit(S2Event.LAYOUT_AFTER_RENDER);
   }
 
   public destroy() {
@@ -651,5 +654,16 @@ export class SpreadSheet extends EE {
     };
     this.setOptions(options);
     this.render(false);
+  }
+
+  public hideColumns(hiddenColumnFields: string[] = []) {
+    this.store.set('hiddenColumnsDetail', []);
+    const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
+      this.dataCfg.fields.columns,
+      hiddenColumnFields,
+    );
+    hiddenColumnsGroup.forEach((fields) => {
+      hideColumns(this, fields);
+    });
   }
 }

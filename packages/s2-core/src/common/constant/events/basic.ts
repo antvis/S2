@@ -53,6 +53,8 @@ export enum S2Event {
   LAYOUT_TREE_ROWS_COLLAPSE_ALL = 'layout:toggle-collapse-all',
   LAYOUT_TABLE_COL_EXPANDED = 'layout:table-col-expanded',
   LAYOUT_TABLE_COL_HIDE = 'layout:table-col-hide',
+  LAYOUT_AFTER_RENDER = 'layout:after-render',
+  LAYOUT_BEFORE_RENDER = 'layout:before-render',
 
   /** ================ Global Resize ================  */
   GLOBAL_RESIZE_MOUSE_DOWN = 'global:resize:mouse-down',

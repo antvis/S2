@@ -1,4 +1,4 @@
-import { filter, flatten, isEmpty, isNil, last, map, reduce } from 'lodash';
+import { filter, flatten, isEmpty, map } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
 import {
   FieldType,
@@ -84,45 +84,11 @@ export const checkItem = (
     target.checked = checked;
     target.children = map(target.children, (item) => ({
       ...item,
-      checked: checked,
+      checked,
     }));
   }
 
   return source.map((item) => (item.id === target.id ? target : item));
-};
-
-const generateHiddenValues = (list: SwitcherItem[]) => {
-  const getFlattenedItems = (
-    items: SwitcherItem[] = [],
-  ): Pick<SwitcherItem, 'id' | 'checked'>[] =>
-    flatten(
-      map(items, (item) => [
-        { id: item.id, checked: item.checked },
-        ...getFlattenedItems(item.children),
-      ]),
-    );
-
-  const flattedItems = getFlattenedItems(list);
-  // 上一个需要隐藏项的序号
-  let prevHiddenIdx: number = Number.NEGATIVE_INFINITY;
-  return reduce(
-    flattedItems,
-    (result, item, idx) => {
-      if (isNil(item.checked) || item.checked) {
-        return result;
-      }
-      if (idx === prevHiddenIdx + 1) {
-        const lastGroup = last(result);
-        lastGroup.push(item.id);
-      } else {
-        const group = [item.id];
-        result.push(group);
-      }
-      prevHiddenIdx = idx;
-      return result;
-    },
-    [],
-  );
 };
 
 export const generateSwitchResult = (state: SwitcherState): SwitcherResult => {
@@ -138,8 +104,18 @@ export const generateSwitchResult = (state: SwitcherState): SwitcherResult => {
     }),
   );
 
+  const filterHiddenValues = (item: SwitcherItem) => item.checked === false;
+
   //  get all hidden values
-  const hiddenValues = generateHiddenValues(state[FieldType.Values]);
+  const hiddenValues = flatten(
+    map(filter(state[FieldType.Values], filterHiddenValues), (item) => {
+      const hiddenChildren = map(
+        filter(item.children, filterHiddenValues),
+        'id',
+      );
+      return [item.id, ...hiddenChildren];
+    }),
+  );
 
   return { rows, cols, values, hiddenValues };
 };

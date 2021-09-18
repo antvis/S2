@@ -11,6 +11,7 @@ const mockRows: SwitcherItem[] = [
   { id: 'province', displayName: '省' },
   { id: 'city', displayName: '城市' },
 ];
+
 const mockCols: SwitcherItem[] = [
   { id: 'county1', displayName: '一县' },
   { id: 'county2', displayName: '二县' },
@@ -18,12 +19,13 @@ const mockCols: SwitcherItem[] = [
   { id: 'county4', displayName: '四县' },
   { id: 'county5', displayName: '五县' },
 ];
+
 const mockValues: SwitcherItem[] = [
   {
     id: 'price',
     displayName: '价格',
     checked: true,
-    derivedValues: [
+    children: [
       { id: 'price-rc', displayName: '环比' },
       { id: 'price-ac', displayName: '同比' },
     ],
@@ -31,7 +33,7 @@ const mockValues: SwitcherItem[] = [
   {
     id: 'cost',
     displayName: '成本',
-    derivedValues: [
+    children: [
       { id: 'cost-rc', displayName: '环比' },
       { id: 'cost-ac', displayName: '同比' },
     ],
@@ -54,7 +56,7 @@ function MainLayout() {
             // eslint-disable-next-line no-console
             console.log('result: ', result);
           }}
-        ></Switcher>
+        />
       </div>
       <SheetEntry
         dataCfg={{

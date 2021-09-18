@@ -17,5 +17,5 @@ export interface SwitcherResult {
   [FieldType.Rows]: string[];
   [FieldType.Cols]: string[];
   [FieldType.Values]: string[];
-  hiddenValues: string[][];
+  hiddenValues: string[];
 }

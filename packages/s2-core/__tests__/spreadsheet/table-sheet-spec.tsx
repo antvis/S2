@@ -1,17 +1,20 @@
 /* eslint-disable no-console */
-import { message } from 'antd';
+import { message, Space } from 'antd';
 import 'antd/dist/antd.min.css';
+import { find } from 'lodash';
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import { getContainer, getMockData } from '../util/helpers';
 import {
   S2DataConfig,
   S2Event,
   S2Options,
   SheetComponent,
   SpreadSheet,
-} from '../../src';
-import { getContainer, getMockData } from '../util/helpers';
+} from '@/index';
+import { Switcher } from '@/components/switcher';
+import { SwitcherItem } from '@/components/switcher/interface';
 
 const data = getMockData('../data/tableau-supermarket.csv');
 
@@ -29,39 +32,43 @@ const canConvertToNumber = (sortKey) =>
     return typeof v === 'string' && !Number.isNaN(Number(v));
   });
 
+const columns = [
+  'order_id',
+  'order_date',
+  'ship_date',
+  'express_type',
+  'customer_name',
+  'customer_type',
+  'city',
+  'province',
+  'counter',
+  'area',
+  'type',
+  'sub_type',
+  'product_name',
+  'sale_amt',
+  'count',
+  'discount',
+  'profit',
+];
+
+const meta = [
+  {
+    field: 'count',
+    name: '销售个数',
+  },
+  {
+    field: 'profit',
+    name: '利润',
+  },
+];
+
 const getDataCfg = () => {
   return {
     fields: {
-      columns: [
-        'order_id',
-        'order_date',
-        'ship_date',
-        'express_type',
-        'customer_name',
-        'customer_type',
-        'city',
-        'province',
-        'counter',
-        'area',
-        'type',
-        'sub_type',
-        'product_name',
-        'sale_amt',
-        'count',
-        'discount',
-        'profit',
-      ],
+      columns,
     },
-    meta: [
-      {
-        field: 'count',
-        name: '销售个数',
-      },
-      {
-        field: 'profit',
-        name: '利润',
-      },
-    ],
+    meta,
     data,
     sortParams: [
       {
@@ -104,7 +111,8 @@ const getOptions = (): S2Options => {
     tooltip: {
       showTooltip: true,
     },
-    enableHideColumnFields: true,
+    enableHiddenColumns: true,
+    hiddenColumnFields: ['order_date'],
   };
 };
 
@@ -131,16 +139,35 @@ function MainLayout(props) {
     };
   }, []);
 
+  const switcherValues: SwitcherItem[] = columns.map((field) => {
+    return {
+      id: field,
+      displayName: find(meta, { field })?.name,
+      checked: true,
+    };
+  });
+
   return (
-    <div>
-      <div style={{ display: 'inline-block' }}></div>
+    <Space direction="vertical">
+      <Switcher
+        values={switcherValues}
+        onSubmit={(result) => {
+          // eslint-disable-next-line no-console
+          console.log('result: ', result);
+          const { hiddenValues: hiddenColumnFields } = result;
+          setOptions({
+            ...props.options,
+            hiddenColumnFields,
+          });
+        }}
+      />
       <SheetComponent
         dataCfg={dataCfg}
         adaptive={false}
         options={options}
         spreadsheet={getSpreadSheet(s2Ref)}
       />
-    </div>
+    </Space>
   );
 }
 

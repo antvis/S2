@@ -58,8 +58,9 @@ export class TableFacet extends BaseFacet {
   }
 
   private saveInitColumnNodes(columnNodes: Node[]) {
-    if (!this.spreadsheet.store.get('initColumnNodes')) {
-      this.spreadsheet.store.set('initColumnNodes', columnNodes);
+    const { store } = this.spreadsheet;
+    if (!store.get('initColumnNodes')) {
+      store.set('initColumnNodes', columnNodes);
     }
   }
 

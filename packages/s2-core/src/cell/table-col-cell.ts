@@ -127,10 +127,10 @@ export class TableColCell extends ColCell {
   }
 
   private hasHiddenColumnCell() {
-    const { hideColumnFields = [], enableHideColumnFields } =
+    const { hiddenColumnFields = [], enableHiddenColumns } =
       this.spreadsheet.options;
 
-    if (isEmpty(hideColumnFields) || !enableHideColumnFields) {
+    if (isEmpty(hiddenColumnFields) || !enableHiddenColumns) {
       return false;
     }
     const hiddenColumnsDetail = this.spreadsheet.store.get(
