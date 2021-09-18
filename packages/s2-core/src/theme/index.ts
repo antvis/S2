@@ -194,11 +194,6 @@ export const getTheme = (
         },
         /* ---------- expand icon ----------- */
         expandIcon: {
-          tipsLine: {
-            borderColor: '#000000',
-            borderWidth: 1,
-            borderOpacity: 0.45,
-          },
           size: 24,
         },
       },

@@ -5,7 +5,7 @@ import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-ic
 import { getEllipsisText, getTextPosition } from '@/utils/text';
 import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
-import { CellBoxCfg } from '@/common/interface';
+import { CellBoxCfg, CellTheme } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 
 export class TableColCell extends ColCell {
@@ -123,7 +123,7 @@ export class TableColCell extends ColCell {
 
   protected initCell() {
     super.initCell();
-    this.addExpandColumnIconAndTipsLine();
+    this.addExpandColumnIconShapes();
   }
 
   private hasHiddenColumnCell() {
@@ -145,15 +145,20 @@ export class TableColCell extends ColCell {
     );
   }
 
-  private getExpandIconTheme() {
+  private getExpandIconTheme(): CellTheme {
     const cellTheme = this.getStyle();
     return cellTheme.cell.expandIcon;
   }
 
-  private addExpandColumnTipsLine() {
+  private addExpandColumnSplitLine() {
     const { x, y, width, height } = this.meta;
-    const { tipsLine } = this.getExpandIconTheme();
-    const lineX = this.isLastColumn() ? x + width - tipsLine.borderWidth : x;
+    const {
+      horizontalBorderColor,
+      horizontalBorderWidth,
+      horizontalBorderColorOpacity,
+      shadowColors,
+    } = this.theme.splitLine;
+    const lineX = this.isLastColumn() ? x + width - horizontalBorderWidth : x;
 
     renderLine(
       this,
@@ -164,18 +169,18 @@ export class TableColCell extends ColCell {
         y2: y + height,
       },
       {
-        stroke: tipsLine.borderColor,
-        lineWidth: tipsLine.borderWidth,
-        strokeOpacity: tipsLine.borderOpacity,
+        stroke: horizontalBorderColor,
+        lineWidth: horizontalBorderWidth,
+        strokeOpacity: horizontalBorderColorOpacity,
       },
     );
   }
 
-  private addExpandColumnIconAndTipsLine() {
+  private addExpandColumnIconShapes() {
     if (!this.hasHiddenColumnCell()) {
       return;
     }
-    this.addExpandColumnTipsLine();
+    this.addExpandColumnSplitLine();
     this.addExpandColumnIcon();
   }
 

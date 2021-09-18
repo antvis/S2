@@ -92,7 +92,7 @@ export interface CellTheme {
   /* 单元格内条件格式-迷你条形图默认填充颜色 */
   miniBarChartFillColor?: string;
   expandIcon?: {
-    tipsLine?: {
+    splitLine?: {
       borderColor?: string;
       borderWidth?: number;
       borderOpacity?: number;
