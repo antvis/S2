@@ -1,0 +1,28 @@
+{
+  "fields": {
+    "rows": ["month"],
+    "columns": ["type"],
+    "values": ["price"]
+  },
+  "meta": [
+    {
+      "field": "month",
+      "name": "订单日期"
+    },
+    {
+      "field": "type",
+      "name": "种类"
+    },
+    {
+      "field": "price",
+      "name": "价格"
+    }
+  ],
+  "data": [
+    {
+      "month": "2021-09",
+      "price": 12,
+      "type": "纸"
+    }
+  ]
+}

@@ -33,7 +33,7 @@ import {
 } from '@/common/interface';
 import { EmitterType } from '@/common/interface/emitter';
 import { Store } from '@/common/store';
-import { BaseDataSet, PivotDataSet } from '@/data-set';
+import { BaseDataSet } from '@/data-set';
 
 import { BaseFacet } from '@/facet';
 import { Node, SpreadSheetTheme } from '@/index';

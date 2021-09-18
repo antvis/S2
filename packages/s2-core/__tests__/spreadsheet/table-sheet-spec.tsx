@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { message } from 'antd';
+import { message, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
@@ -29,8 +29,10 @@ const canConvertToNumber = (sortKey) =>
     return typeof v === 'string' && !Number.isNaN(Number(v));
   });
 
-const getDataCfg = () => {
-  return {
+function MainLayout() {
+  const [showPagination, setShowPagination] = React.useState(false);
+
+  const dataCfg = {
     fields: {
       columns: [
         'order_id',
@@ -77,11 +79,9 @@ const getDataCfg = () => {
         sortMethod: 'ASC',
       },
     ],
-  };
-};
+  } as unknown as S2DataConfig;
 
-const getOptions = (): S2Options => {
-  return {
+  const options = {
     width: 800,
     height: 600,
     showSeriesNumber: true,
@@ -95,20 +95,21 @@ const getOptions = (): S2Options => {
       },
       device: 'pc',
     },
+    pagination: showPagination && {
+      pageSize: 10,
+      current: 1,
+    },
     frozenRowCount: 2,
     frozenColCount: 1,
     frozenTrailingColCount: 1,
     frozenTrailingRowCount: 1,
+
     linkFieldIds: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
     },
-  };
-};
+  } as S2Options;
 
-function MainLayout(props) {
-  const [options, setOptions] = React.useState(props.options);
-  const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
   const s2Ref = React.useRef<SpreadSheet>(null);
 
   useEffect(() => {
@@ -127,7 +128,14 @@ function MainLayout(props) {
 
   return (
     <div>
-      <div style={{ display: 'inline-block' }}></div>
+      <div style={{ display: 'inline-block' }}>
+        <Switch
+          checkedChildren="分页"
+          unCheckedChildren="不分页"
+          checked={showPagination}
+          onChange={setShowPagination}
+        />
+      </div>
       <SheetComponent
         dataCfg={dataCfg}
         adaptive={false}
@@ -145,9 +153,6 @@ describe('table sheet normal spec', () => {
   });
 
   act(() => {
-    ReactDOM.render(
-      <MainLayout dataCfg={getDataCfg()} options={getOptions()} />,
-      getContainer(),
-    );
+    ReactDOM.render(<MainLayout />, getContainer());
   });
 });

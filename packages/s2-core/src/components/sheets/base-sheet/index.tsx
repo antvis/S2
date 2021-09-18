@@ -13,6 +13,7 @@ import {
   ListSortParams,
   Pagination as PaginationCfg,
   S2Constructor,
+  S2Options,
   safetyDataConfig,
   safetyOptions,
   TargetLayoutNode,
@@ -34,7 +35,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     spreadsheet,
     dataCfg,
     options,
-    adaptive = true,
+    adaptive = false,
     header,
     themeCfg,
     rowLevel,
@@ -51,6 +52,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     onDataCellMouseUp,
     getSpreadsheet,
     partDrillDown,
+    showDefaultPagination = true,
   } = props;
   const container = useRef<HTMLDivElement>();
   const baseSpreadsheet = useRef<SpreadSheet>();
@@ -62,6 +64,9 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const [total, setTotal] = useState<number>();
   const [current, setCurrent] = useState<number>(
     options?.pagination?.current || 1,
+  );
+  const [pageSize, setPageSize] = useState<number>(
+    options?.pagination?.pageSize || 10,
   );
 
   const getSpreadSheet = (): SpreadSheet => {
@@ -235,7 +240,11 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
           total={total}
           pageSize={pageSize}
           // TODO 外部定义的pageSize和内部PageSize改变的优先级处理
-          showSizeChanger={false}
+          showSizeChanger={true}
+          onShowSizeChange={(current, size) => {
+            setCurrent(1);
+            setPageSize(size);
+          }}
           size={'small'}
           showQuickJumper={showQuickJumper}
           onChange={(page) => setCurrent(page)}
@@ -358,12 +367,26 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     update();
   }, [current]);
 
+  useEffect(() => {
+    if (!ownSpreadsheet || isEmpty(options?.pagination)) return;
+    const newOptions = merge({}, options, {
+      pagination: {
+        pageSize: pageSize,
+      },
+    });
+    const newProps = merge({}, props, {
+      options: newOptions,
+    });
+    setOptions(ownSpreadsheet, newProps);
+    update();
+  }, [pageSize]);
+
   return (
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && <Header {...header} sheet={ownSpreadsheet} />}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
-        {renderPagination()}
+        {showDefaultPagination && renderPagination()}
       </Spin>
     </StrictMode>
   );
