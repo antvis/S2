@@ -23,6 +23,13 @@ export interface ReachedBorderId {
   colId?: string;
 }
 
+export interface HiddenColumnsInfo {
+  // 当前显示的兄弟节点之前所隐藏的节点
+  hideColumnNodes: Node[];
+  // 当前隐藏列所对应展示展开按钮的兄弟节点
+  displayNextSiblingNode: Node;
+}
+
 /**
  * All stored keys need type define here
  */
@@ -57,6 +64,13 @@ export interface StoreKey {
   activeResizeArea: Group;
   // interval condition
   valueRanges: ValueRanges;
+  // 初次渲染时的列头节点
+  initColumnNodes: Node[];
+  /**
+   * 隐藏列详情
+   *  | a, b, [c,d 隐藏] [icon e ] , [f 隐藏], [icon g]   |
+   */
+  hiddenColumnsDetail: HiddenColumnsInfo[];
 
   [key: string]: unknown;
 }

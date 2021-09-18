@@ -7,7 +7,11 @@ import { SelectedCellMeta } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
-import { EXTRA_FIELD, InterceptType, ORDER_OPTIONS } from '@/common/constant';
+import {
+  EXTRA_FIELD,
+  InterceptType,
+  TOOLTIP_OPERATOR_MENUS,
+} from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { TooltipOperatorOptions, SortParam } from '@/common/interface';
 import { SortMethod } from '@/index';
@@ -49,15 +53,15 @@ export abstract class HeaderCell extends BaseCell<Node> {
     event.stopPropagation();
     this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
     const operator: TooltipOperatorOptions = {
-      onClick: (method: SortMethod) => {
+      onClick: ({ key }) => {
         const { rows, columns } = this.spreadsheet.dataCfg.fields;
         const sortFieldId = this.spreadsheet.isValueInCols()
           ? last(rows)
           : last(columns);
         const { query, value } = meta;
-        const sortParam = {
+        const sortParam: SortParam = {
           sortFieldId,
-          sortMethod: method,
+          sortMethod: key as SortParam['sortMethod'],
           sortByMeasure: value,
           query,
         };
@@ -70,7 +74,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         });
         this.spreadsheet.render();
       },
-      menus: ORDER_OPTIONS,
+      menus: TOOLTIP_OPERATOR_MENUS.Sort,
     };
 
     this.spreadsheet.showTooltipWithInfo(event, [], {

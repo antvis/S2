@@ -110,9 +110,14 @@ export class Frame extends Group {
       height,
       viewportHeight,
       position,
+      isPivotMode,
       spreadsheet,
       showViewPortRightShadow,
     } = cfg;
+
+    if (!isPivotMode) {
+      return;
+    }
     const splitLine = spreadsheet.theme?.splitLine;
     if (
       splitLine.showRightShadow &&

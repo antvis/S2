@@ -1,19 +1,19 @@
 import { FieldType } from './constant';
 
-export interface Item {
+export interface SwitcherItem {
   id: string;
-  displayName: string;
+  displayName?: string;
   checked?: boolean;
-  derivedValues?: Item[];
+  children?: Omit<SwitcherItem, 'children'>[];
 }
 
-export interface SwitchState {
-  [FieldType.Rows]?: Item[];
-  [FieldType.Cols]?: Item[];
-  [FieldType.Values]?: Item[];
+export interface SwitcherState {
+  [FieldType.Rows]?: SwitcherItem[];
+  [FieldType.Cols]?: SwitcherItem[];
+  [FieldType.Values]?: SwitcherItem[];
 }
 
-export interface SwitchResult {
+export interface SwitcherResult {
   [FieldType.Rows]: string[];
   [FieldType.Cols]: string[];
   [FieldType.Values]: string[];

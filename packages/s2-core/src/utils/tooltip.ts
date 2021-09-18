@@ -467,7 +467,7 @@ export const getRightAndValueField = (
   const rowFields = spreadsheet?.dataSet?.fields?.rows || [];
   const rowQuery = options?.rowQuery || {};
   const rightField = getRightFieldInQuery(rowQuery, rowFields);
-  const valueField = get(rowQuery, rightField, '');
+  const valueField = get(rowQuery, rightField, '') as string;
 
   return { rightField, valueField };
 };

@@ -192,6 +192,10 @@ export const getTheme = (
             opacity: 0.3,
           },
         },
+        /* ---------- expand icon ----------- */
+        expandIcon: {
+          size: 24,
+        },
       },
       icon: {
         fill: brandColors[0],

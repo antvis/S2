@@ -1,4 +1,3 @@
-import { Event } from '@antv/g-canvas';
 import { SimpleBBox } from '@antv/g-canvas';
 import { InteractionStateName, CellTypes } from '../constant';
 import { ViewMeta } from './basic';
@@ -62,10 +61,3 @@ export interface BrushRange {
 }
 
 export type StateShapeLayer = 'interactiveBgShape' | 'interactiveBorderShape';
-
-export interface MultiClickParams {
-  event: Event;
-  spreadsheet: SpreadSheet;
-  isTreeRowClick: boolean;
-  isMultiSelection: boolean;
-}
