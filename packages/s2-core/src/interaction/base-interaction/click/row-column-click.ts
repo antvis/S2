@@ -1,4 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
+import { getSelectedCellMeta } from 'src/utils/interaction/select-event';
 import { concat, difference, isEmpty, isNil } from 'lodash';
 import { hideColumns } from '@/utils/hide-columns';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
@@ -9,7 +10,7 @@ import {
   TOOLTIP_OPERATOR_MENUS,
   InterceptType,
 } from '@/common/constant';
-import { S2CellType, TooltipOperatorOptions } from '@/common/interface';
+import { TooltipOperatorOptions } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 import { mergeCellInfo } from '@/utils/tooltip';
 
@@ -81,12 +82,12 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
             (node) => node.rowIndex === meta.rowIndex,
           )
         : Node.getAllChildrenNode(meta);
-      let selectedCells: S2CellType[] = [cell];
+      let selectedCells = [getSelectedCellMeta(cell)];
 
       if (this.isMultiSelection && interaction.isSelectedState()) {
-        selectedCells = isEmpty(lastState?.cells)
+        selectedCells = isEmpty(lastState?.selectedCells)
           ? selectedCells
-          : concat(lastState?.cells, selectedCells);
+          : concat(lastState?.selectedCells, selectedCells);
         leafNodes = isEmpty(lastState?.nodes)
           ? leafNodes
           : concat(lastState?.nodes, leafNodes);
@@ -95,13 +96,16 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       // 兼容行列多选
       // Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
       interaction.changeState({
-        cells: selectedCells,
+        selectedCells,
         nodes: leafNodes,
         stateName: InteractionStateName.SELECTED,
       });
 
+      const selectedCellIds = selectedCells.map((meta) => meta.id);
       // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-      interaction.updateCells(selectedCells);
+      interaction.updateCells(
+        interaction.getRowColActiveCells(selectedCellIds),
+      );
 
       if (!isTreeRowClick) {
         leafNodes.forEach((node) => {
