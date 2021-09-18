@@ -3,36 +3,33 @@ import { isEmpty } from 'lodash';
 import React, { FC } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { FieldType } from '../constant';
-import { Item } from '../interface';
+import { SwitcherItem } from '../interface';
 import { getSwitcherClassName, isMeasureType } from '../util';
-import './index.less';
 import { SingleItem } from './single-item';
+import './index.less';
 
 export interface DimensionCommonProps {
   fieldType: FieldType;
-  expandDerivedValues?: boolean;
+  expandChildren?: boolean;
   draggingItemId?: string;
 
   onVisibleItemChange?: (
     checked: boolean,
     fieldType: FieldType,
     id: string,
-    derivedId?: string,
+    parentId?: string,
   ) => void;
 }
 
-export type DimensionItemProps = Item &
-  DimensionCommonProps & {
-    index: number;
-  };
+export type DimensionItemProps = DimensionCommonProps & {
+  index: number;
+  item: SwitcherItem;
+};
 
 export const DimensionItem: FC<DimensionItemProps> = ({
   fieldType,
-  id,
-  displayName,
-  checked,
-  derivedValues,
-  expandDerivedValues,
+  item: { id, displayName, checked = true, children = [] },
+  expandChildren,
   index,
   draggingItemId,
   onVisibleItemChange,
@@ -60,24 +57,25 @@ export const DimensionItem: FC<DimensionItemProps> = ({
             checked={checked}
             onVisibleItemChange={onVisibleItemChange}
             className={cx(isMeasure ? 'measure-item' : 'dimension-item', {
-              'measure-collapse': !expandDerivedValues,
+              'measure-collapse': !expandChildren,
             })}
           />
 
-          {isMeasure && !isEmpty(derivedValues) && draggingItemId !== id && (
+          {isMeasure && !isEmpty(children) && draggingItemId !== id && (
             <div
-              className={cx('derived-measures', {
-                'measures-hidden': !expandDerivedValues,
+              className={cx('child-measures', {
+                'measures-hidden': !expandChildren,
               })}
             >
-              {derivedValues.map((item) => (
+              {children.map((item) => (
                 <SingleItem
                   key={item.id}
+                  id={item.id}
                   fieldType={fieldType}
-                  id={id}
                   displayName={item.displayName}
-                  derivedId={item.id}
+                  disabled={!checked}
                   checked={item.checked}
+                  parentId={id}
                   onVisibleItemChange={onVisibleItemChange}
                   className="measure-item"
                 />
@@ -91,7 +89,5 @@ export const DimensionItem: FC<DimensionItemProps> = ({
 };
 
 DimensionItem.defaultProps = {
-  checked: false,
-  derivedValues: [],
-  expandDerivedValues: false,
+  expandChildren: false,
 };

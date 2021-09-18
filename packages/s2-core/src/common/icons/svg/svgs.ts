@@ -20,8 +20,8 @@ export const CellUp = `<?xml version="1.0" encoding="UTF-8"?>
     </g>
 </svg> `;
 
-export const GlobalAsc = `<svg t="1557124621626" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" 
-  xmlns="http://www.w3.org/2000/svg" p-id="17452" 
+export const GlobalAsc = `<svg t="1557124621626" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" p-id="17452"
   xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
   <defs>
     <style type="text/css"></style>
@@ -29,8 +29,8 @@ export const GlobalAsc = `<svg t="1557124621626" class="icon" style="" viewBox="
   <path d="M182.272 167.04a8 8 0 0 0-12.544 0L57.728 309.056A8 8 0 0 0 64 321.984h76.032v530.048c0 4.352 3.584 7.936 7.936 7.936h56.064a8 8 0 0 0 7.936-7.936V321.92H288a8 8 0 0 0 6.272-12.992l-112-141.888z m209.728 626.944h176c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8h-176A8 8 0 0 1 384 857.984v-56c0-4.416 3.584-8 8-8z m0-424h368c4.416 0 8 3.648 8 8v56a8 8 0 0 1-8 8h-368A8 8 0 0 1 384 433.984v-56c0-4.352 3.584-8 8-8z m528-139.968h-528A8 8 0 0 1 384 222.016v-56c0-4.416 3.584-8 8-8h528c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8z m-256 424h-272A8 8 0 0 1 384 646.016v-56c0-4.416 3.584-8 8-8h272c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8z" p-id="17453"></path>
 </svg>`;
 
-export const GlobalDesc = `<svg t="1557124685600" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" 
-  xmlns="http://www.w3.org/2000/svg" p-id="17561" 
+export const GlobalDesc = `<svg t="1557124685600" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" p-id="17561"
   xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
   <defs>
     <style type="text/css"></style>
@@ -38,8 +38,8 @@ export const GlobalDesc = `<svg t="1557124685600" class="icon" style="" viewBox=
   <path d="M182.272 856.96a8 8 0 0 1-12.544 0l-112-141.952A8 8 0 0 1 64 702.08h76.032V172.032c0-4.416 3.584-8 7.936-8h56.064c4.352 0 7.936 3.584 7.936 8v529.984H288c6.72 0 10.496 7.808 6.272 12.992l-112 141.888z m209.728-626.944h176A8 8 0 0 0 576 222.016v-56a8 8 0 0 0-8-8h-176A8 8 0 0 0 384 166.016v56c0 4.416 3.584 8 8 8z m0 424h368a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8h-368A8 8 0 0 0 384 590.016v56c0 4.416 3.584 8 8 8z m528 139.968h-528a8 8 0 0 0-8 8v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z m-256-424h-272A8 8 0 0 0 384 377.984v56c0 4.416 3.584 8 8 8h272a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z" p-id="17562"></path>
 </svg>`;
 
-export const GroupAsc = `<svg t="1557124695786" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" 
-  xmlns="http://www.w3.org/2000/svg" p-id="17670" 
+export const GroupAsc = `<svg t="1557124695786" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" p-id="17670"
   xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
   <defs>
     <style type="text/css"></style>
@@ -47,8 +47,8 @@ export const GroupAsc = `<svg t="1557124695786" class="icon" style="" viewBox="0
   <path d="M182.272 167.04a8 8 0 0 0-12.544 0L57.728 309.056A8 8 0 0 0 64 321.984h76.032v530.048c0 4.352 3.584 7.936 7.936 7.936h56.064a8 8 0 0 0 7.936-7.936V321.92H288a8 8 0 0 0 6.272-12.992l-112-141.888z m209.728 62.976h304A8 8 0 0 0 704 222.016v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 166.016v56c0 4.416 3.584 8 8 8z m0 424h304a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8h-304A8 8 0 0 0 384 590.016v56c0 4.416 3.584 8 8 8z m528 139.968h-528a8 8 0 0 0-8 8v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z m0-424h-528A8 8 0 0 0 384 377.984v56c0 4.416 3.584 8 8 8h528a8 8 0 0 0 8-8v-56a8 8 0 0 0-8-8z" p-id="17671"></path>
 </svg>`;
 
-export const GroupDesc = `<svg t="1557124710652" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" 
-  xmlns="http://www.w3.org/2000/svg" p-id="17779" 
+export const GroupDesc = `<svg t="1557124710652" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" p-id="17779"
   xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
   <defs>
     <style type="text/css"></style>
@@ -58,7 +58,7 @@ export const GroupDesc = `<svg t="1557124710652" class="icon" style="" viewBox="
 
 export const InfoCircle = `<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1590389330617" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="19656" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M512 64c-247.4 0-448 200.6-448 448s200.6 448 448 448 448-200.6 448-448-200.6-448-448-448z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z" fill="" p-id="19657"></path><path d="M464 336c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48-48 21.5-48 48zM536 448h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-272c0-4.4-3.6-8-8-8z" fill="" p-id="19658"></path></svg>`;
 
-export const HideSpreadIcon = `<?xml version="1.0" encoding="UTF-8"?>
+export const ExpandColIcon = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="23px" height="12px" viewBox="0 0 23 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>编组 8备份 3</title>
     <g id="----隐藏列标注！" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

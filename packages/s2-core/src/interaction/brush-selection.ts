@@ -83,7 +83,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private bindMouseMove() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (event: CanvasEvent) => {
       event.preventDefault();
-      
+
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {

@@ -6,7 +6,7 @@ import { getContainer } from '../util/helpers';
 import { SheetEntry, assembleDataCfg } from '../util/sheet-entry';
 // import * as tableData from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
-import { ThemeName, SheetType } from '@/index';
+import { S2Options, SheetType, ThemeName } from '@/index';
 
 const tableDataFields = {
   fields: {
@@ -33,7 +33,7 @@ function MainLayout() {
   const onRadioChange = (e) => {
     setThemeName(e.target.value);
   };
-  const mergedOptions = {
+  const mergedOptions: Partial<S2Options> = {
     pagination: showPagination && {
       pageSize: 5,
       current: 1,
@@ -42,6 +42,9 @@ function MainLayout() {
       showTooltip: showTooltip,
       renderTooltip: (spreadsheet) => {
         return new CustomTooltip(spreadsheet);
+      },
+      operation: {
+        trend: true,
       },
     },
     selectedCellsSpotlight: spotLight,

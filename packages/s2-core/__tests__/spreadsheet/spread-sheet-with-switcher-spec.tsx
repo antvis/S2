@@ -4,26 +4,28 @@ import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
 import { SheetEntry } from '../util/sheet-entry';
 import { Switcher } from '@/components/switcher';
-import { Item } from '@/components/switcher/interface';
+import { SwitcherItem } from '@/components/switcher/interface';
 
-const mockRows: Item[] = [
+const mockRows: SwitcherItem[] = [
   { id: 'area', displayName: '区域' },
   { id: 'province', displayName: '省' },
   { id: 'city', displayName: '城市' },
 ];
-const mockCols: Item[] = [
+
+const mockCols: SwitcherItem[] = [
   { id: 'county1', displayName: '一县' },
   { id: 'county2', displayName: '二县' },
   { id: 'county3', displayName: '三县' },
   { id: 'county4', displayName: '四县' },
   { id: 'county5', displayName: '五县' },
 ];
-const mockValues: Item[] = [
+
+const mockValues: SwitcherItem[] = [
   {
     id: 'price',
     displayName: '价格',
     checked: true,
-    derivedValues: [
+    children: [
       { id: 'price-rc', displayName: '环比' },
       { id: 'price-ac', displayName: '同比' },
     ],
@@ -31,7 +33,7 @@ const mockValues: Item[] = [
   {
     id: 'cost',
     displayName: '成本',
-    derivedValues: [
+    children: [
       { id: 'cost-rc', displayName: '环比' },
       { id: 'cost-ac', displayName: '同比' },
     ],
@@ -54,7 +56,7 @@ function MainLayout() {
             // eslint-disable-next-line no-console
             console.log('result: ', result);
           }}
-        ></Switcher>
+        />
       </div>
       <SheetEntry
         dataCfg={{

@@ -1,6 +1,7 @@
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import { clone, get, includes, isString, merge, size } from 'lodash';
+import { getHiddenColumnsThunkGroup, hideColumns } from '@/utils/hide-columns';
 import { BaseCell } from '@/cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
@@ -11,6 +12,7 @@ import {
   KEY_GROUP_PANEL_SCROLL,
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+  S2Event,
 } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
@@ -134,17 +136,21 @@ export abstract class SpreadSheet extends EE {
     this.dataSet = this.getDataSet(this.options);
 
     this.initTooltip();
-    this.initGroups(this.dom, this.options);
+    this.initGroups();
     this.bindEvents();
     this.initInteraction();
     this.initTheme();
     this.initHdAdapter();
 
-    DebuggerUtil.getInstance().setDebug(options?.debug);
+    this.setDebug();
   }
 
   get isShowTooltip() {
     return this.options?.tooltip?.showTooltip ?? true;
+  }
+
+  private setDebug() {
+    DebuggerUtil.getInstance().setDebug(this.options.debug);
   }
 
   private initTheme() {
@@ -190,9 +196,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private renderTooltip(): BaseTooltip {
-    return (
-      this.options?.tooltip?.renderTooltip?.(this) || new BaseTooltip(this)
-    );
+    return this.options.tooltip?.renderTooltip?.(this) || new BaseTooltip(this);
   }
 
   protected abstract bindEvents();
@@ -306,10 +310,12 @@ export abstract class SpreadSheet extends EE {
   }
 
   public render(reloadData = true) {
+    this.emit(S2Event.LAYOUT_BEFORE_RENDER);
     if (reloadData) {
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();
+    this.emit(S2Event.LAYOUT_AFTER_RENDER);
   }
 
   public destroy() {
@@ -479,11 +485,11 @@ export abstract class SpreadSheet extends EE {
    * @param options
    * @private
    */
-  protected initGroups(dom: HTMLElement, options: S2Options) {
-    const { width, height } = options;
+  protected initGroups() {
+    const { width, height } = this.options;
     // base canvas group
     this.container = new Canvas({
-      container: dom,
+      container: this.dom,
       width,
       height,
       localRefresh: false,
@@ -509,6 +515,21 @@ export abstract class SpreadSheet extends EE {
     this.panelScrollGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_SCROLL,
       zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
+    });
+  }
+
+  public getInitColumnNodes(): Node[] {
+    return this.store.get('initColumnNodes', []);
+  }
+
+  public hideColumns(hiddenColumnFields: string[] = []) {
+    this.store.set('hiddenColumnsDetail', []);
+    const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
+      this.dataCfg.fields.columns,
+      hiddenColumnFields,
+    );
+    hiddenColumnsGroup.forEach((fields) => {
+      hideColumns(this, fields);
     });
   }
 }

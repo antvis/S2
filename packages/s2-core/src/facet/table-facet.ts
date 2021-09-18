@@ -57,6 +57,13 @@ export class TableFacet extends BaseFacet {
     this.spreadsheet.off(S2Event.RANGE_SORT);
   }
 
+  private saveInitColumnNodes(columnNodes: Node[]) {
+    const { store } = this.spreadsheet;
+    if (!store.get('initColumnNodes')) {
+      store.set('initColumnNodes', columnNodes);
+    }
+  }
+
   protected doLayout(): LayoutResult {
     const {
       dataSet,
@@ -73,6 +80,7 @@ export class TableFacet extends BaseFacet {
         facetCfg: this.cfg,
       });
 
+    this.saveInitColumnNodes(colLeafNodes);
     this.calculateNodesCoordinate(colLeafNodes, colsHierarchy);
 
     const getCellMeta = (rowIndex: number, colIndex: number) => {

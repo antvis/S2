@@ -27,7 +27,7 @@ redirect_from:
 | registerDefaultInteractions | boolean | ✓ |  |  | 注册默认交互 |
 | scrollReachNodeField | [NodeField](#) | ✓ |  | {rowField: '', colField: ''} |
 | 滚动监听的节点度量 |
-| hideRowColFields | string[] | ✓ |  | [] | 隐藏行、列 |
+| hiddenColumnFields | string[] | ✓ |  | [] | 隐藏列 (明细表有效) |
 | valueInCols | boolean |  |  | false | 存在衍生指标时单列和多列的切换 |
 | dataCell | [DataCellCallback](#) |  |  |  | 自定义单元格 cell |
 | cornerCell | [CellCallback](#) |  |  |  | 自定义 cornerCell |
@@ -165,15 +165,21 @@ object **必选**,_ default：null_ 功能描述： tooltip配置
 | 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
 | showTooltip | boolean |  |  | false | 是否展示tooltip |
-| showOperation | boolean |  |  | false | 是否展示操作栏 |
-| showSummary | boolean |  |  | false | 是否展示统计信息 |
-| showDetail | boolean |  |  | false | 是否展示轴（表头行列）字段 |
-| showInfos | boolean |  |  | false | 是否展示快捷操作提示 |
+| operation | [TooltipOperation](#TooltipOperation) |  |  | false | tooltip 操作配置项 |
 | row | [Tooltip](#) |  |  |  | 行头配置 |
 | col | [Tooltip](#) |  |  |  | 列头配置 |
 | cell | [Tooltip](#) |  |  |  | 单元格配置 |
 | renderTooltip | [RenderTooltip](#) |  |  |  | 自定义整个tooltip, 可以继承 BaseTooltip 自己重写一些方法 |
 | tooltipComponent | React.ReactNode |  |  |  | 自定义tooltip弹框组件 |
+
+## TooltipOperation
+
+object **必选**,_ default：null_ 功能描述： tooltip操作配置项
+
+| 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| hiddenColumns | boolean |  |  | true | 是否开启隐藏列 (明细表有效) |
+| trend | boolean |  |  | false | 是否显示趋势图icon |
 
 ## Pagination
 

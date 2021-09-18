@@ -1,9 +1,11 @@
-import { get } from 'lodash';
+import { get, isEmpty, last } from 'lodash';
 import { Group } from '@antv/g-canvas';
-import { renderDetailTypeSortIcon } from '../utils/layout/add-detail-type-sort-icon';
-import { getEllipsisText, getTextPosition } from '../utils/text';
-import { renderText } from '@/utils/g-renders';
+import { S2Event } from '@/common/constant';
+import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
+import { getEllipsisText, getTextPosition } from '@/utils/text';
+import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
+import { CellBoxCfg, CellTheme } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 
 export class TableColCell extends ColCell {
@@ -67,14 +69,14 @@ export class TableColCell extends ColCell {
     const textStyle = get(style, 'bolderText');
     const padding = get(style, 'cell.padding');
     const iconSize = get(style, 'icon.size');
-    const iconMargin = get(style, 'icon.margin.right');
+    const iconMarginRight = get(style, 'icon.margin.right');
     const rightPadding = padding?.right + iconSize;
     const leftPadding = padding?.left;
 
     const textAlign = get(textStyle, 'textAlign');
     const textBaseline = get(textStyle, 'textBaseline');
 
-    const cellBoxCfg = {
+    const cellBoxCfg: CellBoxCfg = {
       x,
       y,
       width: cellWidth,
@@ -113,9 +115,107 @@ export class TableColCell extends ColCell {
     renderDetailTypeSortIcon(
       this,
       spreadsheet,
-      x + cellWidth - iconSize - iconMargin,
+      x + cellWidth - iconSize - iconMarginRight,
       textY,
       key,
     );
+  }
+
+  protected initCell() {
+    super.initCell();
+    this.addExpandColumnIconShapes();
+  }
+
+  private hasHiddenColumnCell() {
+    const {
+      hiddenColumnFields = [],
+      tooltip: { operation },
+    } = this.spreadsheet.options;
+
+    if (isEmpty(hiddenColumnFields) || !operation.hiddenColumns) {
+      return false;
+    }
+    const hiddenColumnsDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
+      [],
+    );
+    return !!hiddenColumnsDetail.find(
+      ({ displayNextSiblingNode }) =>
+        displayNextSiblingNode?.field === this.meta.field,
+    );
+  }
+
+  private getExpandIconTheme(): CellTheme {
+    const cellTheme = this.getStyle();
+    return cellTheme.cell.expandIcon;
+  }
+
+  private addExpandColumnSplitLine() {
+    const { x, y, width, height } = this.meta;
+    const {
+      horizontalBorderColor,
+      horizontalBorderWidth,
+      horizontalBorderColorOpacity,
+      shadowColors,
+    } = this.theme.splitLine;
+    const lineX = this.isLastColumn() ? x + width - horizontalBorderWidth : x;
+
+    renderLine(
+      this,
+      {
+        x1: lineX,
+        y1: y,
+        x2: lineX,
+        y2: y + height,
+      },
+      {
+        stroke: horizontalBorderColor,
+        lineWidth: horizontalBorderWidth,
+        strokeOpacity: horizontalBorderColorOpacity,
+      },
+    );
+  }
+
+  private addExpandColumnIconShapes() {
+    if (!this.hasHiddenColumnCell()) {
+      return;
+    }
+    this.addExpandColumnSplitLine();
+    this.addExpandColumnIcon();
+  }
+
+  private addExpandColumnIcon() {
+    const iconConfig = this.getExpandColumnIconConfig();
+    const icon = renderIcon(this, {
+      ...iconConfig,
+      type: 'ExpandColIcon',
+      cursor: 'pointer',
+    });
+    icon.on('click', () => {
+      this.spreadsheet.emit(S2Event.LAYOUT_TABLE_COL_EXPANDED, this.meta);
+    });
+  }
+
+  // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
+  private getExpandColumnIconConfig() {
+    const { size } = this.getExpandIconTheme();
+    const { x, y, width, height } = this.getCellArea();
+
+    const baseIconX = x - size / 2;
+    const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;
+    const iconY = y + height / 2 - size / 4;
+
+    return {
+      x: iconX,
+      y: iconY,
+      width: size,
+      height: size / 2,
+    };
+  }
+
+  private isLastColumn() {
+    const { field } = this.meta;
+    const columns = this.spreadsheet.getColumnNodes();
+    return last(columns).field === field;
   }
 }

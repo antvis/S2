@@ -1,6 +1,5 @@
 import { Event, ShapeAttrs } from '@antv/g-canvas';
 import { Padding } from '../interface/theme';
-import { BaseTooltip } from '../../ui/tooltip';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { CustomTreeItem } from '@/common/interface';
@@ -110,21 +109,6 @@ export interface Totals {
   readonly col?: Partial<Readonly<Total>>;
 }
 
-export interface Tooltip {
-  readonly showTooltip?: boolean;
-  readonly showOperation?: boolean;
-  readonly showSummary?: boolean;
-  readonly showDetail?: boolean;
-  readonly showInfos?: boolean;
-  readonly row?: Tooltip;
-  readonly col?: Tooltip;
-  readonly cell?: Tooltip;
-  // custom tooltips
-  readonly renderTooltip?: RenderTooltip;
-  // replace the whole default tooltip component
-  readonly tooltipComponent?: JSX.Element;
-}
-
 export interface Sort {
   /** 字段id，业务中一般是displayId */
   sortFieldId: string;
@@ -218,8 +202,6 @@ export type CellCallback = (
   spreadsheet: SpreadSheet,
   ...restOptions
 ) => S2CellType;
-
-export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
 

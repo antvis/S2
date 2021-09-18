@@ -5,13 +5,13 @@ import {
   MAX_DIMENSION_COUNT,
   SWITCHER_PREFIX_CLS,
 } from './constant';
-import { Item, SwitchResult, SwitchState } from './interface';
+import { SwitcherItem, SwitcherResult, SwitcherState } from './interface';
 import { getClassNameWithPrefix } from '@/utils/get-classnames';
 
 export const getSwitcherClassName = (...classNames: string[]) =>
   getClassNameWithPrefix(SWITCHER_PREFIX_CLS, ...classNames);
 
-export const getNonEmptyFieldCount = (state: SwitchState) => {
+export const getNonEmptyFieldCount = (state: SwitcherState) => {
   return [
     state[FieldType.Rows],
     state[FieldType.Cols],
@@ -37,11 +37,11 @@ export const isMeasureType = (fieldType: FieldType) =>
   fieldType === FieldType.Values;
 
 export const moveItem = (
-  source: Item[],
-  destination: Item[],
+  source: SwitcherItem[],
+  destination: SwitcherItem[],
   droppableSource: DraggableLocation,
   droppableDestination: DraggableLocation,
-): SwitchState => {
+): SwitcherState => {
   // change order in same column
   if (droppableDestination.droppableId === droppableSource.droppableId) {
     const updatingDestination = [...destination];
@@ -65,30 +65,33 @@ export const moveItem = (
 };
 
 export const checkItem = (
-  source: Item[],
+  source: SwitcherItem[],
   checked: boolean,
   id: string,
-  derivedId?: string,
-): Item[] => {
-  const target: Item = { ...source.find((item) => item.id === id) };
+  parentId?: string,
+): SwitcherItem[] => {
+  const target: SwitcherItem = {
+    ...source.find((item) => item.id === (parentId ?? id)),
+  };
 
-  if (derivedId) {
-    target.derivedValues = map(target.derivedValues, (item) => ({
+  // 有 parentId 时，说明是第二层次项的改变
+  if (parentId) {
+    target.children = map(target.children, (item) => ({
       ...item,
-      checked: item.id === derivedId ? checked : item.checked,
+      checked: item.id === id ? checked : item.checked,
     }));
   } else {
     target.checked = checked;
-    target.derivedValues = map(target.derivedValues, (item) => ({
+    target.children = map(target.children, (item) => ({
       ...item,
-      checked: checked,
+      checked,
     }));
   }
 
   return source.map((item) => (item.id === target.id ? target : item));
 };
 
-export const generateSwitchResult = (state: SwitchState): SwitchResult => {
+export const generateSwitchResult = (state: SwitcherState): SwitcherResult => {
   // rows and cols can't be hidden
   const rows = map(state[FieldType.Rows], 'id');
   const cols = map(state[FieldType.Cols], 'id');
@@ -96,18 +99,21 @@ export const generateSwitchResult = (state: SwitchState): SwitchResult => {
   // flatten all values and derived values
   const values = flatten(
     map(state[FieldType.Values], (item) => {
-      const derivedValues = map(item.derivedValues, 'id');
-      return [item.id, ...derivedValues];
+      const children = map(item.children, 'id');
+      return [item.id, ...children];
     }),
   );
+
+  const filterHiddenValues = (item: SwitcherItem) => item.checked === false;
+
   //  get all hidden values
   const hiddenValues = flatten(
-    map(filter(state[FieldType.Values], ['checked', true]), (item) => {
-      const hiddenDerivedValues = map(
-        filter(item.derivedValues, ['checked', true]),
+    map(filter(state[FieldType.Values], filterHiddenValues), (item) => {
+      const hiddenChildren = map(
+        filter(item.children, filterHiddenValues),
         'id',
       );
-      return [item.id, ...hiddenDerivedValues];
+      return [item.id, ...hiddenChildren];
     }),
   );
 

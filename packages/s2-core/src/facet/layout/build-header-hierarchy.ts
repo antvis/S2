@@ -158,6 +158,7 @@ export const buildHeaderHierarchy = (
       ? hierarchy.getNodes()
       : hierarchy.getLeaves();
   };
+
   return {
     hierarchy,
     leafNodes: getLeafNodes(),
