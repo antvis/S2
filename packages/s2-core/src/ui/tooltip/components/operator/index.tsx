@@ -19,11 +19,6 @@ import './index.less';
 export const TooltipOperator = (props: TooltipOperatorOptions) => {
   const { menus, onClick, onlyMenu } = props;
 
-  const onMenuClick = (e) => {
-    const { key } = e;
-    onClick(key, e);
-  };
-
   const renderTitle = (text: string, icon: React.ReactNode) => {
     return (
       <span>
@@ -60,7 +55,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
       return (
         <Menu
           className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
-          onClick={onMenuClick}
+          onClick={onClick}
         >
           {map(menus, (subMenu: TooltipOperatorMenu) => renderMenu(subMenu))}
         </Menu>
@@ -73,7 +68,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
         <Menu
           className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
           key={id}
-          onClick={onMenuClick}
+          onClick={onClick}
         >
           {map(children, (subMenu: TooltipOperatorMenu) => renderMenu(subMenu))}
         </Menu>

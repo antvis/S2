@@ -1,13 +1,12 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { concat, difference, isEmpty, isNil } from 'lodash';
-import { EyeOutlined } from '@ant-design/icons';
 import { hideColumns } from '@/utils/hide-columns';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
 import {
   S2Event,
   InteractionKeyboardKey,
   InteractionStateName,
-  INTERACTION_OPERATOR,
+  TOOLTIP_OPERATOR_MENUS,
   InterceptType,
 } from '@/common/constant';
 import { S2CellType, TooltipOperatorOptions } from '@/common/interface';
@@ -126,21 +125,12 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
-    const { hideColumn } = INTERACTION_OPERATOR;
     const operator: TooltipOperatorOptions = this.spreadsheet.isTableMode() &&
       tooltip.operation.hiddenColumns && {
-        onClick: (id) => {
-          if (id === hideColumn.id) {
-            this.hideSelectedColumns();
-          }
+        onClick: () => {
+          this.hideSelectedColumns();
         },
-        menus: [
-          {
-            id: hideColumn.id,
-            text: hideColumn.text,
-            icon: EyeOutlined,
-          },
-        ],
+        menus: TOOLTIP_OPERATOR_MENUS.HiddenColumns,
       };
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {

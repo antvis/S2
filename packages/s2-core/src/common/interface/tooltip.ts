@@ -1,3 +1,4 @@
+import { MenuProps } from 'antd';
 import { SpreadSheet } from '@/sheet-type';
 import { SortParam } from '@/common/interface';
 import { BaseTooltip } from '@/ui/tooltip';
@@ -12,7 +13,7 @@ export interface TooltipOperatorMenu {
 }
 
 export interface TooltipOperatorOptions {
-  onClick: (...params: unknown[]) => void;
+  onClick: MenuProps['onClick'];
   menus: TooltipOperatorMenu[];
   [key: string]: unknown;
 }
@@ -155,6 +156,8 @@ export interface TooltipOperation {
   hiddenColumns?: boolean;
   // 趋势图
   trend?: boolean;
+  // 组内排序
+  sort?: boolean;
 }
 
 export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;

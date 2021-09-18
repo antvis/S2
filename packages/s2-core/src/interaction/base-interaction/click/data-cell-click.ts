@@ -1,10 +1,9 @@
-import { LineChartOutlined } from '@ant-design/icons';
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { get, noop } from 'lodash';
+import { get } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
 import {
   InteractionStateName,
-  INTERACTION_OPERATOR,
+  TOOLTIP_OPERATOR_MENUS,
   InterceptType,
   S2Event,
 } from '@/common/constant';
@@ -59,30 +58,14 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       return cellOperator;
     }
 
-    const defaultOperator: TooltipOperatorOptions = {
-      onClick: noop,
-      menus: [],
-    };
-
-    const { trend } = INTERACTION_OPERATOR;
     const operator: TooltipOperatorOptions = this.spreadsheet.options.tooltip
-      .operation.trend
-      ? {
-          onClick: (id) => {
-            if (id === trend.id) {
-              this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, meta);
-              this.spreadsheet.hideTooltip();
-            }
-          },
-          menus: [
-            {
-              id: trend.id,
-              text: trend.text,
-              icon: LineChartOutlined,
-            },
-          ],
-        }
-      : defaultOperator;
+      .operation.trend && {
+      onClick: () => {
+        this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, meta);
+        this.spreadsheet.hideTooltip();
+      },
+      menus: TOOLTIP_OPERATOR_MENUS.Trend,
+    };
 
     return operator;
   }
