@@ -54,7 +54,7 @@ export const Dimension: FC<DimensionProps> = ({
                 key={item.id}
                 index={index}
                 fieldType={fieldType}
-                {...item}
+                item={item}
                 {...rest}
               />
             ))}

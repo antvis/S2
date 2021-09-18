@@ -1,17 +1,17 @@
-import { filter, flatten, isEmpty, isNil, map } from 'lodash';
+import { filter, flatten, isEmpty, isNil, last, map, reduce } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
 import {
   FieldType,
   MAX_DIMENSION_COUNT,
   SWITCHER_PREFIX_CLS,
 } from './constant';
-import { SwitcherItem, SwitchResult, SwitchState } from './interface';
+import { SwitcherItem, SwitcherResult, SwitcherState } from './interface';
 import { getClassNameWithPrefix } from '@/utils/get-classnames';
 
 export const getSwitcherClassName = (...classNames: string[]) =>
   getClassNameWithPrefix(SWITCHER_PREFIX_CLS, ...classNames);
 
-export const getNonEmptyFieldCount = (state: SwitchState) => {
+export const getNonEmptyFieldCount = (state: SwitcherState) => {
   return [
     state[FieldType.Rows],
     state[FieldType.Cols],
@@ -41,7 +41,7 @@ export const moveItem = (
   destination: SwitcherItem[],
   droppableSource: DraggableLocation,
   droppableDestination: DraggableLocation,
-): SwitchState => {
+): SwitcherState => {
   // change order in same column
   if (droppableDestination.droppableId === droppableSource.droppableId) {
     const updatingDestination = [...destination];
@@ -68,18 +68,21 @@ export const checkItem = (
   source: SwitcherItem[],
   checked: boolean,
   id: string,
-  derivedId?: string,
+  parentId?: string,
 ): SwitcherItem[] => {
-  const target: SwitcherItem = { ...source.find((item) => item.id === id) };
+  const target: SwitcherItem = {
+    ...source.find((item) => item.id === (parentId ?? id)),
+  };
 
-  if (derivedId) {
-    target.derivedValues = map(target.derivedValues, (item) => ({
+  // 有 parentId 时，说明是第二层次项的改变
+  if (parentId) {
+    target.children = map(target.children, (item) => ({
       ...item,
-      checked: item.id === derivedId ? checked : item.checked,
+      checked: item.id === id ? checked : item.checked,
     }));
   } else {
     target.checked = checked;
-    target.derivedValues = map(target.derivedValues, (item) => ({
+    target.children = map(target.children, (item) => ({
       ...item,
       checked: checked,
     }));
@@ -88,7 +91,41 @@ export const checkItem = (
   return source.map((item) => (item.id === target.id ? target : item));
 };
 
-export const generateSwitchResult = (state: SwitchState): SwitchResult => {
+const generateHiddenValues = (list: SwitcherItem[]) => {
+  const getFlattenedItems = (
+    items: SwitcherItem[] = [],
+  ): Pick<SwitcherItem, 'id' | 'checked'>[] =>
+    flatten(
+      map(items, (item) => [
+        { id: item.id, checked: item.checked },
+        ...getFlattenedItems(item.children),
+      ]),
+    );
+
+  const flattedItems = getFlattenedItems(list);
+  // 上一个需要隐藏项的序号
+  let prevHiddenIdx: number = Number.NEGATIVE_INFINITY;
+  return reduce(
+    flattedItems,
+    (result, item, idx) => {
+      if (isNil(item.checked) || item.checked) {
+        return result;
+      }
+      if (idx === prevHiddenIdx + 1) {
+        const lastGroup = last(result);
+        lastGroup.push(item.id);
+      } else {
+        const group = [item.id];
+        result.push(group);
+      }
+      prevHiddenIdx = idx;
+      return result;
+    },
+    [],
+  );
+};
+
+export const generateSwitchResult = (state: SwitcherState): SwitcherResult => {
   // rows and cols can't be hidden
   const rows = map(state[FieldType.Rows], 'id');
   const cols = map(state[FieldType.Cols], 'id');
@@ -96,24 +133,13 @@ export const generateSwitchResult = (state: SwitchState): SwitchResult => {
   // flatten all values and derived values
   const values = flatten(
     map(state[FieldType.Values], (item) => {
-      const derivedValues = map(item.derivedValues, 'id');
-      return [item.id, ...derivedValues];
+      const children = map(item.children, 'id');
+      return [item.id, ...children];
     }),
   );
-
-  const filterHiddenValues = (item: SwitcherItem) =>
-    isNil(item.checked) || item.checked;
 
   //  get all hidden values
-  const hiddenValues = flatten(
-    map(filter(state[FieldType.Values], filterHiddenValues), (item) => {
-      const hiddenDerivedValues = map(
-        filter(item.derivedValues, filterHiddenValues),
-        'id',
-      );
-      return [item.id, ...hiddenDerivedValues];
-    }),
-  );
+  const hiddenValues = generateHiddenValues(state[FieldType.Values]);
 
   return { rows, cols, values, hiddenValues };
 };
