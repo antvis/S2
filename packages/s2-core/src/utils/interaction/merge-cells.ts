@@ -228,3 +228,19 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
     }
   });
 };
+
+export const isMergeCell = (
+  rowIndex: number,
+  colIndex: number,
+  mergedCellInfo: MergedCellInfo[][],
+) => {
+  for (let index = 0; index < mergedCellInfo.length; index++) {
+    const cellsInfo = mergedCellInfo[index];
+    const flag = cellsInfo.find(
+      (info) => info.colIndex === colIndex && info.rowIndex === rowIndex,
+    );
+    if (flag) {
+      return flag;
+    }
+  }
+};

@@ -21,6 +21,7 @@ import {
   CustomInteraction,
   InteractionStateInfo,
   S2CellType,
+  SelectedCellMeta,
 } from '@/common/interface';
 import { ColHeader, RowHeader } from '@/facet/header';
 import { BaseEvent } from '@/interaction/base-event';
@@ -115,6 +116,13 @@ export class RootInteraction {
   public getSelectedCells() {
     const currentState = this.getState();
     return currentState?.selectedCells || [];
+  }
+
+  public setSelectedCells(selectedCells: SelectedCellMeta[]) {
+    this.changeState({
+      selectedCells,
+      stateName: InteractionStateName.SELECTED,
+    });
   }
 
   // 获取选择态、并且在视口内的 Cells 实例列表
@@ -274,8 +282,10 @@ export class RootInteraction {
 
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { interaction } = this.spreadsheet;
-    const { selectedCells, force, hoveredCells } = interactionStateInfo;
-    if (isEmpty(selectedCells) && isEmpty(hoveredCells)) {
+    const { selectedCells, force, hoveredCells, stateName } =
+      interactionStateInfo;
+
+    if (isEmpty(selectedCells) && stateName === InteractionStateName.SELECTED) {
       if (force) {
         interaction.changeState({
           selectedCells: [],
@@ -284,6 +294,7 @@ export class RootInteraction {
       }
       return;
     }
+
     this.clearState();
     this.setState(interactionStateInfo);
     this.updatePanelGroupAllDataCells();

@@ -492,6 +492,8 @@ export abstract class BaseFacet {
     this.backgroundGroup.set('children', []);
   };
 
+  public abstract scrollToCell: (rowIndex: number, colIndex: number) => void;
+
   scrollWithAnimation = (offsetConfig: OffsetConfig) => {
     const { x: newX, y: newY } = this.adjustXAndY(
       offsetConfig.offsetX.value,

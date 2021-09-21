@@ -15,6 +15,7 @@ import {
   translateGroup,
   translateGroupX,
   translateGroupY,
+  isFrozenCell,
 } from './utils';
 import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
 import { FrozenCellGroupMap } from '@/common/constant/frozen';
@@ -319,7 +320,7 @@ export class TableFacet extends BaseFacet {
       },
 
       getCellOffsetY: (offset: number) => {
-        if (offset === 0) return 0;
+        if (offset <= 0) return 0;
         let totalOffset = 0;
         for (let index = 0; index < offset; index++) {
           totalOffset += cellHeight;
@@ -635,4 +636,52 @@ export class TableFacet extends BaseFacet {
       dataLength,
     );
   }
+
+  public scrollToCell = (rowIndex: number, colIndex: number) => {
+    const {
+      frozenRowCount,
+      frozenTrailingRowCount,
+      frozenColCount,
+      frozenTrailingColCount,
+    } = this.spreadsheet.options;
+
+    // 冻结的格子永远在视图范围内，不用滚动
+    if (
+      isFrozenCell(
+        colIndex,
+        rowIndex,
+        {
+          frozenRowCount,
+          frozenTrailingRowCount,
+          frozenColCount,
+          frozenTrailingColCount,
+        },
+        this.layoutResult.colLeafNodes.length,
+        this.viewCellHeights.getTotalLength(),
+      )
+    ) {
+      return;
+    }
+
+    let offsetX = 0;
+    let offsetY = 0;
+
+    offsetY = this.viewCellHeights.getCellOffsetY(rowIndex - 1);
+    offsetX = this.layoutResult.colLeafNodes.find(
+      (item) => item.colIndex === colIndex,
+    )?.x;
+
+    if (frozenRowCount > 0) {
+      offsetY -= this.getTotalHeightForRange(0, frozenRowCount - 1);
+    }
+
+    this.scrollWithAnimation({
+      offsetX: {
+        value: offsetX,
+      },
+      offsetY: {
+        value: offsetY,
+      },
+    });
+  };
 }

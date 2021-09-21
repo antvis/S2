@@ -648,4 +648,23 @@ export class PivotFacet extends BaseFacet {
       },
     };
   }
+
+  public scrollToCell = (rowIndex: number, colIndex: number) => {
+    let offsetX = 0;
+    let offsetY = 0;
+
+    offsetY = this.viewCellHeights.getCellOffsetY(rowIndex - 1);
+    offsetX = this.layoutResult.colLeafNodes.find(
+      (item) => item.colIndex === colIndex,
+    )?.x;
+
+    this.scrollWithAnimation({
+      offsetX: {
+        value: offsetX,
+      },
+      offsetY: {
+        value: offsetY,
+      },
+    });
+  };
 }

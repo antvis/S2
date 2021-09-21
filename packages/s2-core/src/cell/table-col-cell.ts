@@ -1,4 +1,5 @@
 import { get, isEmpty, last } from 'lodash';
+import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
 import { Group } from '@antv/g-canvas';
 import { S2Event } from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
@@ -9,23 +10,21 @@ import { CellBoxCfg, CellTheme } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 
 export class TableColCell extends ColCell {
-  protected isFrozenCol() {
+  protected isFrozenCell() {
     const { frozenColCount, frozenTrailingColCount } = this.spreadsheet.options;
     const { colIndex } = this.meta;
     const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
 
-    const isFrozenCol = frozenColCount > 0 && colIndex < frozenColCount;
-    const isFrozenTrailingCol =
-      frozenTrailingColCount > 0 &&
-      colIndex >= colLeafNodes.length - frozenTrailingColCount;
-
-    return isFrozenCol || isFrozenTrailingCol;
+    return (
+      isFrozenCol(colIndex, frozenColCount) ||
+      isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLeafNodes.length)
+    );
   }
 
   protected getColResizeArea() {
-    const isFrozenCol = this.isFrozenCol();
+    const isFrozenCell = this.isFrozenCell();
 
-    if (!isFrozenCol) {
+    if (!isFrozenCell) {
       return super.getColResizeArea();
     }
     const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
@@ -43,7 +42,7 @@ export class TableColCell extends ColCell {
 
     let finalOffset = offset;
     // 如果当前列被冻结，不对 resizer 做 offset 处理
-    if (this.isFrozenCol()) {
+    if (this.isFrozenCell()) {
       finalOffset = 0;
     }
 

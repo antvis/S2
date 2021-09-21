@@ -1,10 +1,12 @@
 import EE from '@antv/event-emitter';
+import { isMergeCell } from 'src/utils/interaction/merge-cells';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import { clone, get, includes, isString, merge, size } from 'lodash';
 import { getHiddenColumnsThunkGroup, hideColumns } from '@/utils/hide-columns';
 import { BaseCell } from '@/cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
+  CellTypes,
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
@@ -25,6 +27,7 @@ import {
   S2Options,
   safetyDataConfig,
   safetyOptions,
+  SelectedCellMeta,
   SpreadSheetFacetCfg,
   ThemeCfg,
   TooltipData,
@@ -248,6 +251,21 @@ export abstract class SpreadSheet extends EE {
     if (this.isShowTooltip) {
       this.tooltip.show?.(showOptions);
     }
+  }
+
+  public setSelectedCells(cells: SelectedCellMeta[]) {
+    this.interaction.setSelectedCells(cells);
+  }
+
+  public focusCell(rowIndex: number, colIndex: number) {
+    const cellType = isMergeCell(
+      rowIndex,
+      colIndex,
+      this.options.mergedCellsInfo,
+    )
+      ? CellTypes.MERGED_CELLS
+      : CellTypes.DATA_CELL;
+    this.facet.scrollToCell(rowIndex, colIndex);
   }
 
   public showTooltipWithInfo(

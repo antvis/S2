@@ -77,7 +77,7 @@ describe('State Test', () => {
     clearState(mockInstance);
 
     expect(mockInstance.interaction.getState()).toEqual({
-      cells: [],
+      selectedCells: [],
       force: false,
     });
   });

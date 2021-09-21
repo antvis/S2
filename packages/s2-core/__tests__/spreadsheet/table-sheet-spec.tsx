@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { message, Space, Switch } from 'antd';
+import { message, Space, Switch, Button } from 'antd';
 import 'antd/dist/antd.min.css';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
@@ -112,10 +112,10 @@ function MainLayout() {
       pageSize: 10,
       current: 1,
     },
-    frozenRowCount: 2,
-    frozenColCount: 1,
-    frozenTrailingColCount: 1,
-    frozenTrailingRowCount: 1,
+    // frozenRowCount: 2,
+    // frozenColCount: 1,
+    // frozenTrailingColCount: 1,
+    // frozenTrailingRowCount: 1,
     linkFieldIds: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
@@ -157,7 +157,6 @@ function MainLayout() {
   return (
     <Space direction="vertical">
       <Space>
-        {' '}
         <Switcher
           values={switcherValues}
           onSubmit={(result) => {
@@ -178,6 +177,13 @@ function MainLayout() {
           checked={showPagination}
           onChange={setShowPagination}
         />
+        <Button
+          onClick={() => {
+            s2Ref.current.focusCell(500, 16);
+          }}
+        >
+          Focus
+        </Button>
       </Space>
 
       <SheetComponent
