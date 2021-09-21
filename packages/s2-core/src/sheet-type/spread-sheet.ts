@@ -253,21 +253,6 @@ export abstract class SpreadSheet extends EE {
     }
   }
 
-  public setSelectedCells(cells: SelectedCellMeta[]) {
-    this.interaction.setSelectedCells(cells);
-  }
-
-  public focusCell(rowIndex: number, colIndex: number) {
-    const cellType = isMergeCell(
-      rowIndex,
-      colIndex,
-      this.options.mergedCellsInfo,
-    )
-      ? CellTypes.MERGED_CELLS
-      : CellTypes.DATA_CELL;
-    this.facet.scrollToCell(rowIndex, colIndex);
-  }
-
   public showTooltipWithInfo(
     event: CanvasEvent | MouseEvent,
     data: TooltipData[],
