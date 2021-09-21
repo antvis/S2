@@ -237,12 +237,9 @@ export class CornerCell extends HeaderCell {
 
   protected getTextStyle(): TextTheme {
     const cornerTextStyle = this.getStyle().bolderText;
-
     return {
       ...cornerTextStyle,
-      textAlign: this.spreadsheet.isTableMode()
-        ? cornerTextStyle.textAlign
-        : 'center',
+      textAlign: this.spreadsheet.isHierarchyTreeType() ? 'left' : 'center',
       textBaseline: 'middle',
     };
   }
