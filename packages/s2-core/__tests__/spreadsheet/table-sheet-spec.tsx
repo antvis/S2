@@ -177,13 +177,6 @@ function MainLayout() {
           checked={showPagination}
           onChange={setShowPagination}
         />
-        <Button
-          onClick={() => {
-            s2Ref.current.focusCell(500, 16);
-          }}
-        >
-          Focus
-        </Button>
       </Space>
 
       <SheetComponent
