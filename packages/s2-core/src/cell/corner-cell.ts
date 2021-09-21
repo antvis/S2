@@ -116,7 +116,7 @@ export class CornerCell extends HeaderCell {
    * 绘制折叠展开的icon
    */
   private drawTreeIcon() {
-    if (!this.showTreeIcon()) {
+    if (!this.showTreeIcon() || this.meta.cornerType !== 'row') {
       return;
     }
     // 只有交叉表才有icon
