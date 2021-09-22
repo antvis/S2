@@ -35,9 +35,14 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     onRowCellScroll,
     onColCellScroll,
     onCellScroll,
+    onDataCellClick,
+    onDataCellDoubleClick,
     onRowCellClick,
     onColCellClick,
     onMergedCellsClick,
+    onRowCellDoubleClick,
+    onColCellDoubleClick,
+    onMergedCellsDoubleClick,
     onDataCellMouseUp,
     getSpreadsheet,
   } = props;
@@ -83,6 +88,21 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
       },
       [S2Event.COL_CELL_CLICK]: (ev: GEvent) => {
         onColCellClick?.(getBaseCellData(ev));
+      },
+      [S2Event.DATA_CELL_CLICK]: (ev: GEvent) => {
+        onDataCellClick?.(getBaseCellData(ev));
+      },
+      [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (ev: GEvent) => {
+        onMergedCellsDoubleClick?.(getBaseCellData(ev));
+      },
+      [S2Event.ROW_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
+        onRowCellDoubleClick?.(getBaseCellData(ev));
+      },
+      [S2Event.COL_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
+        onColCellDoubleClick?.(getBaseCellData(ev));
+      },
+      [S2Event.DATA_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
+        onDataCellDoubleClick?.(getBaseCellData(ev));
       },
       [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
         targetRow: TargetLayoutNode,

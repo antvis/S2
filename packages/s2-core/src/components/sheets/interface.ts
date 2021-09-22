@@ -64,10 +64,14 @@ export interface BaseSheetProps {
   onColCellScroll?: (reachedCol: TargetLayoutNode) => void;
   onCellScroll?: (position: CellScrollPosition) => void;
   onRowCellClick?: (data: TargetCellInfo) => void;
+  onRowCellDoubleClick?: (data: TargetCellInfo) => void;
   onColCellClick?: (data: TargetCellInfo) => void;
+  onColCellDoubleClick?: (data: TargetCellInfo) => void;
   onCornerCellClick?: (data: TargetCellInfo) => void;
   onDataCellClick?: (data: TargetCellInfo) => void;
+  onDataCellDoubleClick?: (data: TargetCellInfo) => void;
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
   onMergedCellsClick?: (data: TargetCellInfo) => void;
+  onMergedCellsDoubleClick?: (data: TargetCellInfo) => void;
   getSpreadsheet?: (spreadsheet: SpreadSheet) => void;
 }
