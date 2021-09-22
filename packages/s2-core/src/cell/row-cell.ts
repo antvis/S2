@@ -286,7 +286,7 @@ export class RowCell extends HeaderCell {
       for (let i = 0; i < iconTypes.length; i++) {
         const iconRight = size * (iconTypes.length - i);
         const icon = new GuiIcon({
-          type: iconTypes[i],
+          name: iconTypes[i],
           x: x + width - iconRight,
           y: this.getIconYPosition(),
           width: size,

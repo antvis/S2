@@ -215,23 +215,8 @@ export class DataCell extends BaseCell<ViewMeta> {
     return getMaxTextWidth(width, this.getIconStyle());
   }
 
-  private getTextAndIconPosition() {
-    const textStyle = this.getTextStyle();
-    const iconCfg = this.getIconStyle();
-    return getTextAndFollowingIconPosition(
-      this.getContentArea(),
-      textStyle,
-      this.actualTextWidth,
-      iconCfg,
-    );
-  }
-
   protected getTextPosition(): Point {
     return this.getTextAndIconPosition().text;
-  }
-
-  protected getIconPosition() {
-    return this.getTextAndIconPosition().icon;
   }
 
   protected drawConditionIconShapes() {
@@ -246,7 +231,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (!isEmpty(attrs?.icon) && formattedValue) {
         this.conditionIconShape = renderIcon(this, {
           ...position,
-          type: attrs.icon,
+          name: attrs.icon,
           width: size,
           height: size,
           fill: attrs.fill,

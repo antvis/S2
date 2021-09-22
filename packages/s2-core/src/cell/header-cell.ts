@@ -32,6 +32,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         ? item?.sortByMeasure === value && isEqual(get(item, 'query'), query)
         : isEqual(get(item, 'query'), query),
     );
+
     const type = getSortTypeIcon(sortParam, isValueCell);
     this.headerConfig.sortParam = {
       ...this.headerConfig.sortParam,
@@ -42,6 +43,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected initCell() {
     this.actionIcons = [];
+    // this.initActionsIcons();
   }
 
   protected isValueCell() {

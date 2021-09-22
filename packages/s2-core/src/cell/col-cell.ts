@@ -171,7 +171,7 @@ export class ColCell extends HeaderCell {
       const { sortParam } = this.headerConfig;
       const position = this.getActionIconPosition();
       const sortIcon = new GuiIcon({
-        type: get(sortParam, 'type', 'none'),
+        name: get(sortParam, 'type', 'none'),
         ...position,
         width: icon.size,
         height: icon.size,

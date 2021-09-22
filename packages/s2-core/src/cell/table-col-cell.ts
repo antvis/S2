@@ -188,7 +188,7 @@ export class TableColCell extends ColCell {
     const iconConfig = this.getExpandColumnIconConfig();
     const icon = renderIcon(this, {
       ...iconConfig,
-      type: 'ExpandColIcon',
+      name: 'ExpandColIcon',
       cursor: 'pointer',
     });
     icon.on('click', () => {
