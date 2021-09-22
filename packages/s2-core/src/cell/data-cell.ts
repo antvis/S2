@@ -22,10 +22,7 @@ import {
   ViewMeta,
   ViewMetaIndexType,
 } from '@/common/interface';
-import {
-  getMaxTextWidth,
-  getTextAndFollowingIconPosition,
-} from '@/utils/cell/cell';
+import { getMaxTextWidth } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
 import { getIconPositionCfg } from '@/utils/condition/condition';
 import {
@@ -175,7 +172,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return { ...textStyle, fill };
   }
 
-  protected getIconStyle(): IconCfg | undefined {
+  public getIconStyle(): IconCfg | undefined {
     const { size, margin } = this.theme.dataCell.icon;
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,
