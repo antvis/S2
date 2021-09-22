@@ -165,7 +165,7 @@ export class ColCell extends HeaderCell {
   }
 
   // 绘制排序icon
-  private drawActionIcons() {
+  protected drawActionIcons() {
     const { icon } = this.getStyle();
     if (this.showSortIcon()) {
       const { sortParam } = this.headerConfig;

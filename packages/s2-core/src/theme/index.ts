@@ -62,7 +62,7 @@ export const getTheme = (
         size: 12,
         margin: {
           right: 10,
-          left: 0,
+          left: 4,
         },
       },
     },
@@ -132,7 +132,7 @@ export const getTheme = (
         size: 12,
         margin: {
           right: 4,
-          left: 0,
+          left: 4,
         },
       },
       seriesNumberWidth: 80,
@@ -203,7 +203,7 @@ export const getTheme = (
         size: 8,
         margin: {
           right: 4,
-          left: 0,
+          left: 4,
         },
       },
     },

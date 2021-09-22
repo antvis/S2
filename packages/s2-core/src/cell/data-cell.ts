@@ -172,7 +172,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return { ...textStyle, fill };
   }
 
-  public getIconStyle(): IconCfg | undefined {
+  protected getIconStyle(): IconCfg | undefined {
     const { size, margin } = this.theme.dataCell.icon;
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,

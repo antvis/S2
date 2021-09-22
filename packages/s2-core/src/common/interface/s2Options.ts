@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
-import { FilterDataItemCallback } from './basic';
+import { FilterDataItemCallback, HeaderActionIcon } from './basic';
 import { Tooltip } from './tooltip';
 import {
   CellCallback,
@@ -13,7 +13,6 @@ import {
   MergedCellInfo,
   NodeField,
   Pagination,
-  RowActionIcons,
   Style,
   Totals,
 } from '@/common/interface/basic';
@@ -55,8 +54,8 @@ export interface S2PartialOptions {
   readonly scrollReachNodeField?: NodeField;
   // custom config of showing columns and rows
   readonly customHeaderCells?: CustomHeaderCells;
-  // row header action icon's config
-  readonly rowActionIcons?: RowActionIcons;
+  // header cells including ColCell, RowCell, CornerCell action icon's config
+  readonly headerActionIcons?: HeaderActionIcon[];
   // extra styles
   readonly style?: Partial<Style>;
   // frozen row & cols
@@ -176,7 +175,7 @@ export const defaultOptions: S2Options = {
   scrollReachNodeField: {},
   hiddenColumnFields: [],
   customHeaderCells: null,
-  rowActionIcons: null,
+  headerActionIcons: null,
   style: defaultStyle,
   selectedCellsSpotlight: true,
   hoverHighlight: true,

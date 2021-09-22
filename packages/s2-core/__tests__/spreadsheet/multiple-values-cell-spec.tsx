@@ -116,15 +116,17 @@ const getOptions = (): S2Options => {
         },
       ],
     },
-    rowActionIcons: {
-      iconTypes: ['SortDown', 'SortUp'],
-      display: {
-        level: 0,
-        operator: '>=',
+    headerActionIcons: [
+      {
+        iconNames: ['SortDown', 'SortUp'],
+        belongCell: 'colCell',
+        display: {
+          level: 0,
+          operator: '>=',
+        },
+        action(name, node) {},
       },
-      action(type, node) {},
-    },
-
+    ],
     selectedCellsSpotlight: true,
     hoverHighlight: true,
     tooltip: {

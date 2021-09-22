@@ -1,4 +1,4 @@
-import { merge, set } from 'lodash';
+import { get, merge, set } from 'lodash';
 import { S2Options } from '@/common/interface';
 import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
 import { SpreadSheet } from '@/sheet-type';
@@ -24,21 +24,36 @@ export const HandleDrillDownIcon = (
   callback: (event: MouseEvent, sheetInstance: SpreadSheet) => void,
 ): S2Options => {
   if (props?.partDrillDown) {
-    const { customDisplayByRowName } = props.partDrillDown;
+    const { customDisplayByLabelName } = props.partDrillDown;
+    let iconLevel = spreadsheet.store.get('drillDownActionIconLevel', -1);
+    if (iconLevel < 0) {
+      // 如果没有缓存，直接默认用叶子节点的层级
+      iconLevel = get(props, 'dataCfg.fields.rows.length', 1) - 1;
+      // 缓存配置之初的icon层级
+      spreadsheet.store.set('drillDownActionIconLevel', iconLevel);
+    }
     return merge({}, props.options, {
-      rowActionIcons: {
-        iconTypes: ['DrillDownIcon'],
-        customDisplayByRowName,
-        action: (iconType: string, meta: Node, event: MouseEvent) => {
-          if (iconType === 'DrillDownIcon') {
-            spreadsheet.store.set('drillDownNode', meta);
-            callback(event, spreadsheet);
-          }
+      headerActionIcons: [
+        {
+          belongCell: 'rowCell',
+          iconNames: ['DrillDownIcon'],
+          customDisplayByLabelName,
+          defaultHide: true,
+          display: {
+            level: iconLevel,
+            operator: '>=',
+          },
+          action: (iconName: string, meta: Node, event: MouseEvent) => {
+            if (iconName === 'DrillDownIcon') {
+              spreadsheet.store.set('drillDownNode', meta);
+              callback(event, spreadsheet);
+            }
+          },
         },
-      },
+      ],
     });
   }
-  set(props.options, 'rowActionIcons', null);
+  set(props.options, 'headerActionIcons', null);
   return props.options;
 };
 
