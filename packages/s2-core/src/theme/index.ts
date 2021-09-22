@@ -61,7 +61,7 @@ export const getTheme = (
         radius: 4,
         size: 12,
         margin: {
-          right: 4,
+          right: 10,
           left: 0,
         },
       },
