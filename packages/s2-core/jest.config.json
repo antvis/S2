@@ -16,7 +16,8 @@
     "src/**/*.{ts,js}",
     "!**/node_modules/**",
     "!**/vendor/**",
-    "!**/interface/**"
+    "!**/interface/**",
+    "!**/interface.ts"
   ],
   "coverageReporters": ["text-summary", "html", "lcov"],
   "transformIgnorePatterns": [],
