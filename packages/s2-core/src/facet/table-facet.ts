@@ -402,6 +402,11 @@ export class TableFacet extends BaseFacet {
       opacity: style?.horizontalBorderColorOpacity,
     };
 
+    const shadowAttrs = {
+      shadowColor: style?.horizontalBorderColor,
+      shadowBlur: 7,
+    };
+
     if (frozenColCount > 0) {
       const x = colLeafNodes.reduce((prev, item, idx) => {
         if (idx < frozenColCount) {
@@ -419,7 +424,9 @@ export class TableFacet extends BaseFacet {
           y2: this.panelBBox.maxY,
         },
         {
+          shadowOffsetX: 4,
           ...verticalBorderStyle,
+          ...shadowAttrs,
         },
       );
     }
@@ -437,7 +444,9 @@ export class TableFacet extends BaseFacet {
           y2: y,
         },
         {
+          shadowOffsetY: 4,
           ...horizontalBorderStyle,
+          ...shadowAttrs,
         },
       );
     }
@@ -461,7 +470,9 @@ export class TableFacet extends BaseFacet {
           y2: this.panelBBox.maxY,
         },
         {
+          shadowOffsetX: -4,
           ...verticalBorderStyle,
+          ...shadowAttrs,
         },
       );
     }
@@ -482,7 +493,9 @@ export class TableFacet extends BaseFacet {
           y2: y,
         },
         {
+          shadowOffsetY: -4,
           ...horizontalBorderStyle,
+          ...shadowAttrs,
         },
       );
     }
