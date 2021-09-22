@@ -1,4 +1,4 @@
-import { concat, forEach, includes, isEmpty, merge, size } from 'lodash';
+import { concat, forEach, isEmpty } from 'lodash';
 import {
   DataCellClick,
   MergedCellsClick,
@@ -18,10 +18,10 @@ import {
   InterceptType,
 } from '@/common/constant';
 import {
+  CellMeta,
   CustomInteraction,
   InteractionStateInfo,
   S2CellType,
-  SelectedCellMeta,
 } from '@/common/interface';
 import { ColHeader, RowHeader } from '@/facet/header';
 import { BaseEvent } from '@/interaction/base-event';
@@ -45,7 +45,7 @@ export class RootInteraction {
   public eventController: EventController;
 
   private defaultState: InteractionStateInfo = {
-    selectedCells: [],
+    cells: [],
     force: false,
   };
 
@@ -103,36 +103,30 @@ export class RootInteraction {
   }
 
   private isActiveCell(cell: S2CellType) {
-    return this.getSelectedCells().find(
-      (meta) => cell.getMeta().id === meta.id,
-    );
+    return this.getCells().find((meta) => cell.getMeta().id === meta.id);
   }
 
   public isSelectedCell(cell: S2CellType) {
     return this.isSelectedState() && this.isActiveCell(cell);
   }
 
-  // 获取所有被选择的 Cells 的元信息列表，包括不在视口内的格子
-  public getSelectedCells() {
+  // 获取当前 interaction 记录的 Cells 元信息列表，包括不在视口内的格子
+  public getCells() {
     const currentState = this.getState();
-    return currentState?.selectedCells || [];
+    return currentState?.cells || [];
   }
 
-  public setSelectedCells(selectedCells: SelectedCellMeta[]) {
+  public setCells(cells: CellMeta[]) {
     this.changeState({
-      selectedCells,
+      cells,
       stateName: InteractionStateName.SELECTED,
     });
   }
 
-  // 获取选择态、并且在视口内的 Cells 实例列表
+  // 获取 cells 中在视口内部分的实例列表
   public getActiveCells() {
-    const ids = this.getSelectedCells().map((item) => item.id);
+    const ids = this.getCells().map((item) => item.id);
     return this.getAllCells().filter((cell) => ids.includes(cell.getMeta().id));
-  }
-
-  public getHoveredCells() {
-    return this.getState().hoveredCells;
   }
 
   public clearStyleIndependent() {
@@ -282,13 +276,12 @@ export class RootInteraction {
 
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { interaction } = this.spreadsheet;
-    const { selectedCells, force, hoveredCells, stateName } =
-      interactionStateInfo;
+    const { cells, force, stateName } = interactionStateInfo;
 
-    if (isEmpty(selectedCells) && stateName === InteractionStateName.SELECTED) {
+    if (isEmpty(cells) && stateName === InteractionStateName.SELECTED) {
       if (force) {
         interaction.changeState({
-          selectedCells: [],
+          cells: [],
           stateName: InteractionStateName.UNSELECTED,
         });
       }

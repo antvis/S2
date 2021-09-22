@@ -15,7 +15,7 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | RowCell
   | BaseCell<T>;
 
-export interface SelectedCellMeta {
+export interface CellMeta {
   id: string;
   colIndex: number;
   rowIndex: number;
@@ -25,10 +25,8 @@ export interface SelectedCellMeta {
 export interface InteractionStateInfo {
   // current state name
   stateName?: InteractionStateName;
-  // all the selected cell ids
-  selectedCells?: SelectedCellMeta[];
-  // all the hovered cells
-  hoveredCells?: S2CellType[];
+  // all the active cells for this interaction (save meta data for recording offscreen cells)
+  cells?: CellMeta[];
   // all the cells changed the state style
   interactedCells?: S2CellType[];
   // all the active nodes, including rendered and not rendered cells

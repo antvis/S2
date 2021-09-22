@@ -1,5 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { getSelectedCellMeta } from 'src/utils/interaction/select-event';
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { concat, difference, isEmpty, isNil } from 'lodash';
 import { hideColumns } from '@/utils/hide-columns';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
@@ -82,12 +82,12 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
             (node) => node.rowIndex === meta.rowIndex,
           )
         : Node.getAllChildrenNode(meta);
-      let selectedCells = [getSelectedCellMeta(cell)];
+      let selectedCells = [getCellMeta(cell)];
 
       if (this.isMultiSelection && interaction.isSelectedState()) {
-        selectedCells = isEmpty(lastState?.selectedCells)
+        selectedCells = isEmpty(lastState?.cells)
           ? selectedCells
-          : concat(lastState?.selectedCells, selectedCells);
+          : concat(lastState?.cells, selectedCells);
         leafNodes = isEmpty(lastState?.nodes)
           ? leafNodes
           : concat(lastState?.nodes, leafNodes);
@@ -96,7 +96,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       // 兼容行列多选
       // Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
       interaction.changeState({
-        selectedCells,
+        cells: selectedCells,
         nodes: leafNodes,
         stateName: InteractionStateName.SELECTED,
       });

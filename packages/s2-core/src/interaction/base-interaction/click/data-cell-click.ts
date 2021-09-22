@@ -1,4 +1,4 @@
-import { getSelectedCellMeta } from 'src/utils/interaction/select-event';
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
@@ -45,7 +45,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       this.interaction.clearState();
 
       this.interaction.changeState({
-        selectedCells: [getSelectedCellMeta(cell)],
+        cells: [getCellMeta(cell)],
         stateName: InteractionStateName.SELECTED,
       });
       this.showTooltip(event, meta);

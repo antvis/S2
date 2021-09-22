@@ -17,7 +17,7 @@ import {
   IconCondition,
   MappingResult,
   S2CellType,
-  SelectedCellMeta,
+  CellMeta,
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
@@ -59,13 +59,13 @@ export class DataCell extends BaseCell<ViewMeta> {
     return CellTypes.DATA_CELL;
   }
 
-  protected handlePrepareSelect(cells: SelectedCellMeta[]) {
+  protected handlePrepareSelect(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.PREPARE_SELECT);
     }
   }
 
-  protected handleSelect(cells: SelectedCellMeta[]) {
+  protected handleSelect(cells: CellMeta[]) {
     const currentCellType = cells?.[0]?.type;
     switch (currentCellType) {
       // 列多选
@@ -89,9 +89,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  protected handleHover(cells: S2CellType[]) {
-    const currentHoverCell = first(cells) as S2CellType;
-    if (currentHoverCell.cellType !== CellTypes.DATA_CELL) {
+  protected handleHover(cells: CellMeta[]) {
+    const currentHoverCell = first(cells) as CellMeta;
+    if (currentHoverCell.type !== CellTypes.DATA_CELL) {
       this.hideInteractionShape();
       return;
     }
@@ -103,8 +103,8 @@ export class DataCell extends BaseCell<ViewMeta> {
       const currentRowIndex = this.meta.rowIndex;
       // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
       if (
-        currentColIndex === currentHoverCell?.getMeta().colIndex ||
-        currentRowIndex === currentHoverCell?.getMeta().rowIndex
+        currentColIndex === currentHoverCell?.colIndex ||
+        currentRowIndex === currentHoverCell?.rowIndex
       ) {
         this.updateByState(InteractionStateName.HOVER);
       } else {
@@ -120,10 +120,9 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    const cells = this.spreadsheet.interaction.getSelectedCells();
-    const hoverdCells = this.spreadsheet.interaction.getHoveredCells();
+    const cells = this.spreadsheet.interaction.getCells();
 
-    if ((isEmpty(hoverdCells) && isEmpty(cells)) || !stateName) {
+    if (isEmpty(cells) || !stateName) {
       return;
     }
 
@@ -136,7 +135,7 @@ export class DataCell extends BaseCell<ViewMeta> {
         break;
       case InteractionStateName.HOVER_FOCUS:
       case InteractionStateName.HOVER:
-        this.handleHover(hoverdCells);
+        this.handleHover(cells);
         break;
       default:
         break;
@@ -401,8 +400,8 @@ export class DataCell extends BaseCell<ViewMeta> {
   private changeRowColSelectState(indexType: ViewMetaIndexType) {
     const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
-    const { nodes = [], selectedCells = [] } = interaction.getState();
-    const isEqualIndex = [...nodes, ...selectedCells].find(
+    const { nodes = [], cells = [] } = interaction.getState();
+    const isEqualIndex = [...nodes, ...cells].find(
       (cell) => get(cell, indexType) === currentIndex,
     );
     if (isEqualIndex) {
