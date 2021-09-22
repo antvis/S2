@@ -634,4 +634,77 @@ export class TableFacet extends BaseFacet {
       dataLength,
     );
   }
+
+  // 对 panelScrollGroup 以及四个方向的 frozenGroup 做 Clip，避免有透明度时冻结分组和滚动分组展示重叠
+  protected clip(scrollX: number, scrollY: number) {
+    const {
+      frozenRowGroup,
+      frozenColGroup,
+      frozenTrailingColGroup,
+      frozenTrailingRowGroup,
+      panelScrollGroup,
+    } = this.spreadsheet;
+    const frozenColGroupWidth = frozenColGroup.getBBox().width;
+    const frozenRowGroupHeight = frozenRowGroup.getBBox().height;
+    const frozenTrailingRowGroupHeight =
+      frozenTrailingRowGroup.getBBox().height;
+    const panelScrollGroupWidth =
+      this.panelBBox.width -
+      frozenColGroupWidth -
+      frozenTrailingColGroup.getBBox().width;
+    const panelScrollGroupHeight =
+      this.panelBBox.height -
+      frozenRowGroupHeight -
+      frozenTrailingRowGroupHeight;
+
+    panelScrollGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: scrollX + frozenColGroupWidth,
+        y: scrollY + frozenRowGroupHeight,
+        width: panelScrollGroupWidth,
+        height: panelScrollGroupHeight,
+      },
+    });
+
+    frozenRowGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: scrollX + frozenColGroupWidth,
+        y: 0,
+        width: panelScrollGroupWidth,
+        height: frozenRowGroupHeight,
+      },
+    });
+
+    frozenTrailingRowGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: scrollX + frozenColGroupWidth,
+        y: frozenTrailingRowGroup.getBBox().minY,
+        width: panelScrollGroupWidth,
+        height: frozenTrailingRowGroupHeight,
+      },
+    });
+
+    frozenColGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: 0,
+        y: scrollY + frozenRowGroupHeight,
+        width: frozenColGroupWidth,
+        height: panelScrollGroupHeight,
+      },
+    });
+
+    frozenTrailingColGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: frozenTrailingColGroup.getBBox().minX,
+        y: scrollY + frozenRowGroupHeight,
+        width: frozenColGroupWidth,
+        height: panelScrollGroupHeight,
+      },
+    });
+  }
 }
