@@ -25,6 +25,7 @@
     "release": "yarn build && lerna publish",
     "test": "lerna run test --stream",
     "test:coverage": "lerna run test:coverage --stream",
+    "test:watch": "lerna run test:watch --stream",
     "tsc": "lerna run tsc --stream",
     "site:bootstrap": "cd ./s2-site && yarn --frozen-lockfile",
     "site:start": "cd ./s2-site && yarn start",
