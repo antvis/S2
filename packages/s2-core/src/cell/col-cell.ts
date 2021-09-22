@@ -1,5 +1,5 @@
 import { Group, Point } from '@antv/g-canvas';
-import { get, isEqual } from 'lodash';
+import { get, isEmpty, isEqual } from 'lodash';
 import { HeaderCell } from './header-cell';
 import {
   CellTypes,
@@ -38,7 +38,9 @@ export class ColCell extends HeaderCell {
     this.drawInteractiveBgShape();
     // draw text
     this.drawTextShape();
-    // draw action icons
+    // draw sort icons
+    this.drawSortIcons();
+    // draw custom action icons
     this.drawActionIcons();
     // draw right border
     this.drawRightBorder();
@@ -136,17 +138,32 @@ export class ColCell extends HeaderCell {
   }
 
   private showSortIcon() {
-    const { sortParam } = this.headerConfig;
-    const query = this.meta.query;
-    return (
-      isEqual(get(sortParam, 'query'), query) &&
-      get(sortParam, 'type') !== 'none'
-    );
+    if (isEmpty(this.spreadsheet.options.headerActionIcons)) {
+      const { sortParam } = this.headerConfig;
+      const query = this.meta.query;
+      return (
+        isEqual(get(sortParam, 'query'), query) &&
+        get(sortParam, 'type') !== 'none'
+      );
+    }
+    return false;
   }
 
-  private getActionIconsWidth() {
-    const { icon } = this.getStyle();
-    return this.showSortIcon() ? icon.size + icon.margin.left : 0;
+  protected getActionIconsWidth() {
+    if (this.showSortIcon) {
+      const { icon } = this.getStyle();
+      return this.showSortIcon() ? icon.size + icon.margin.left : 0;
+    }
+
+    if (this.showActionIcons()) {
+      const iconNames = this.getActionIconCfg()?.iconNames;
+      const { size, margin } = this.getStyle().icon;
+      return (
+        size * iconNames.length +
+        margin.left +
+        margin.right * (iconNames.length - 1)
+      );
+    }
   }
 
   protected getActionIconPosition(): Point {
@@ -165,7 +182,7 @@ export class ColCell extends HeaderCell {
   }
 
   // 绘制排序icon
-  protected drawActionIcons() {
+  protected drawSortIcons() {
     const { icon } = this.getStyle();
     if (this.showSortIcon()) {
       const { sortParam } = this.headerConfig;
@@ -178,7 +195,7 @@ export class ColCell extends HeaderCell {
       });
       // TODO：和row-cell统一icon之后需更改
       sortIcon.on('click', (event) => {
-        this.handleGroupSort(event, this.meta);
+        this.spreadsheet.handleGroupSort(event, this.meta);
       });
       this.add(sortIcon);
       this.actionIcons.push(sortIcon);

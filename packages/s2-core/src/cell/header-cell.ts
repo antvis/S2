@@ -19,15 +19,10 @@ import { S2CellType, HeaderActionIcon } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
-import {
-  EXTRA_FIELD,
-  ID_SEPARATOR,
-  InterceptType,
-  S2Event,
-  TOOLTIP_OPERATOR_MENUS,
-} from '@/common/constant';
+import { EXTRA_FIELD, ID_SEPARATOR, S2Event } from '@/common/constant';
+import { EXTRA_FIELD, ID_SEPARATOR, S2Event } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
-import { TooltipOperatorOptions, SortParam } from '@/common/interface';
+import { SortParam } from '@/common/interface';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
@@ -68,13 +63,13 @@ export abstract class HeaderCell extends BaseCell<Node> {
     )[0];
   }
 
-  protected getIconPosition() {
-    const textCfg = this.textShape.cfg.attrs;
-    return {
-      x: textCfg.x + this.actualTextWidth + this.getStyle().icon.margin.left,
-      y: textCfg.y,
-    };
-  }
+  // protected getIconPosition() {
+  //   const textCfg = this.textShape.cfg.attrs;
+  //   return {
+  //     x: textCfg.x + this.actualTextWidth + this.getStyle().icon.margin.left,
+  //     y: textCfg.y,
+  //   };
+  // }
 
   protected showActionIcons() {
     const actionIcons = this.getActionIconCfg();
@@ -162,40 +157,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected isValueCell() {
     return this.meta.key === EXTRA_FIELD;
-  }
-
-  protected handleGroupSort(event, meta) {
-    event.stopPropagation();
-    this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
-    const operator: TooltipOperatorOptions = {
-      onClick: ({ key }) => {
-        const { rows, columns } = this.spreadsheet.dataCfg.fields;
-        const sortFieldId = this.spreadsheet.isValueInCols()
-          ? last(rows)
-          : last(columns);
-        const { query, value } = meta;
-        const sortParam: SortParam = {
-          sortFieldId,
-          sortMethod: key as SortParam['sortMethod'],
-          sortByMeasure: value,
-          query,
-        };
-        const prevSortParams = this.spreadsheet.dataCfg.sortParams.filter(
-          (item) => item?.sortFieldId !== sortFieldId,
-        );
-        this.spreadsheet.setDataCfg({
-          ...this.spreadsheet.dataCfg,
-          sortParams: [...prevSortParams, sortParam],
-        });
-        this.spreadsheet.render();
-      },
-      menus: TOOLTIP_OPERATOR_MENUS.Sort,
-    };
-
-    this.spreadsheet.showTooltipWithInfo(event, [], {
-      operator,
-      onlyMenu: true,
-    });
   }
 
   private handleHover(cells: S2CellType[]) {

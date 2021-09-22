@@ -200,7 +200,7 @@ export const getTheme = (
       icon: {
         fill: brandColors[0],
         radius: 4,
-        size: 8,
+        size: 12,
         margin: {
           right: 4,
           left: 4,

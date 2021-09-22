@@ -124,7 +124,7 @@ const getOptions = (): S2Options => {
           level: 0,
           operator: '>=',
         },
-        action(name, node) {},
+        action() {},
       },
     ],
     selectedCellsSpotlight: true,

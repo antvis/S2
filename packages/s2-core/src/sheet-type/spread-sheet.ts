@@ -54,7 +54,7 @@ import { BaseTooltip } from '@/ui/tooltip';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
 import { getTooltipData } from '@/utils/tooltip';
-import { getIcon, registerIcon } from '@/common/icons/factory';
+import { registerIcon } from '@/common/icons/factory';
 
 export abstract class SpreadSheet extends EE {
   // dom id
@@ -553,4 +553,6 @@ export abstract class SpreadSheet extends EE {
       hideColumns(this, fields);
     });
   }
+
+  public handleGroupSort(event: MouseEvent, meta: T) {}
 }
