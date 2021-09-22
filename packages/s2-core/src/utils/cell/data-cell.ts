@@ -28,3 +28,7 @@ export const includeCell = (cells: CellMeta[], currentCell: S2CellType) => {
     return isEqual(cell.id, currentId);
   });
 };
+
+export const getDataCellId = (rowIndex: string, colIndex: string) => {
+  return `${rowIndex}-${colIndex}}`;
+};

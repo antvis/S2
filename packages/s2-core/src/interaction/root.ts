@@ -116,13 +116,6 @@ export class RootInteraction {
     return currentState?.cells || [];
   }
 
-  public setCells(cells: CellMeta[]) {
-    this.changeState({
-      cells,
-      stateName: InteractionStateName.SELECTED,
-    });
-  }
-
   // 获取 cells 中在视口内部分的实例列表
   public getActiveCells() {
     const ids = this.getCells().map((item) => item.id);

@@ -10,6 +10,7 @@ import {
   merge,
   reduce,
 } from 'lodash';
+import { getDataCellId } from 'src/utils/cell/data-cell';
 import { BaseFacet } from 'src/facet/base-facet';
 import {
   EXTRA_FIELD,
@@ -110,7 +111,7 @@ export class PivotFacet extends BaseFacet {
         colQuery,
         rowId: row.id,
         colId: col.id,
-        id: `${row.id}-${col.id}`,
+        id: getDataCellId(row.id, col.id),
       } as ViewMeta;
     };
 

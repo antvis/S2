@@ -1,5 +1,6 @@
 import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
+import { getDataCellId } from 'src/utils/cell/data-cell';
 import { get, maxBy, set } from 'lodash';
 import type {
   LayoutResult,
@@ -15,7 +16,6 @@ import {
   translateGroup,
   translateGroupX,
   translateGroupY,
-  isFrozenCell,
 } from './utils';
 import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
 import { FrozenCellGroupMap } from '@/common/constant/frozen';
@@ -146,7 +146,7 @@ export class TableFacet extends BaseFacet {
         rowId: String(rowIndex),
         valueField: col.field,
         fieldValue: data,
-        id: `${rowIndex}-${col.id}`,
+        id: getDataCellId(String(rowIndex), col.id),
       } as ViewMeta;
     };
 
