@@ -75,4 +75,7 @@ export enum S2Event {
 
   /** ================ Global Mouse ================  */
   GLOBAL_MOUSE_UP = 'global:mouse-up',
+
+  /** ================ Global Context Menu ================  */
+  GLOBAL_CONTEXT_MENU = 'global:context-menu',
 }

@@ -46,6 +46,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_RESIZE_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.GLOBAL_RESIZE_MOUSE_UP]: CanvasEventHandler;
   [S2Event.GLOBAL_RESIZE_MOUSE_MOVE]: CanvasEventHandler;
+  [S2Event.GLOBAL_CONTEXT_MENU]: CanvasEventHandler;
 
   /** ================ Sort ================  */
   [S2Event.RANGE_SORT]: (info: SortParams) => void;

@@ -187,6 +187,7 @@ function MainLayout() {
         sheetType={'table'}
         spreadsheet={getSpreadSheet(s2Ref)}
         onDataCellDoubleClick={logData}
+        onContextMenu={logData}
       />
     </Space>
   );

@@ -54,6 +54,7 @@ export class EventController {
     this.addCanvasEvent(OriginEventType.MOUSE_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_UP, this.onCanvasMouseup);
     this.addCanvasEvent(OriginEventType.DOUBLE_CLICK, this.onCanvasDoubleClick);
+    this.addCanvasEvent(OriginEventType.CONTEXT_MENU, this.onCanvasContextMenu);
 
     this.addDomEventListener(
       document,
@@ -368,6 +369,15 @@ export class EventController {
         }
       }
     }
+  };
+
+  private onCanvasContextMenu = (event: CanvasEvent) => {
+    const spreadsheet = this.spreadsheet;
+    if (this.isResizeArea(event)) {
+      spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_UP, event);
+      return;
+    }
+    spreadsheet.emit(S2Event.GLOBAL_CONTEXT_MENU, event);
   };
 
   public clear() {

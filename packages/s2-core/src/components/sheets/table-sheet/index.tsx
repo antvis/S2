@@ -44,6 +44,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     onColCellDoubleClick,
     onMergedCellsDoubleClick,
     onDataCellMouseUp,
+    onContextMenu,
     getSpreadsheet,
   } = props;
   const container = useRef<HTMLDivElement>();
@@ -103,6 +104,9 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
       },
       [S2Event.DATA_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
         onDataCellDoubleClick?.(getBaseCellData(ev));
+      },
+      [S2Event.GLOBAL_CONTEXT_MENU]: (ev: GEvent) => {
+        onContextMenu?.(getBaseCellData(ev));
       },
       [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
         targetRow: TargetLayoutNode,
