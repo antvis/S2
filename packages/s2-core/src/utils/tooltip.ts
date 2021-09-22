@@ -452,12 +452,17 @@ export const getTooltipData = (params: TooltipDataParam) => {
       getShowValue,
     });
   } else if (options.showSingleTips) {
-    // 行列头hover
+    // 行列头hover & 明细表所有hover
     const metaName = find(
       spreadsheet?.dataCfg?.meta,
       (item) => item?.field === firstCellInfo.value,
     )?.name;
-    firstCellInfo.name = metaName || firstCellInfo.value || '';
+    const currentFormatter = getFieldFormatter(
+      spreadsheet,
+      firstCellInfo?.valueField,
+    );
+    firstCellInfo.name =
+      metaName || currentFormatter(firstCellInfo.value) || '';
   } else {
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
     details = getDetailList(spreadsheet, firstCellInfo, options);
