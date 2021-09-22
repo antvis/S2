@@ -33,7 +33,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   public brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
 
-  private brushValidMoveDistance = 5;
+  private brushSelectionMinimumMoveDistance = 5;
 
   public bindEvents() {
     this.bindMouseDown();
@@ -124,11 +124,11 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       return false;
     }
     const { start, end } = this.getBrushRange();
-    const isValidMoveRange =
-      end.x - start.x > this.brushValidMoveDistance ||
-      end.y - start.y > this.brushValidMoveDistance;
+    const isMovedEnoughDistance =
+      end.x - start.x > this.brushSelectionMinimumMoveDistance ||
+      end.y - start.y > this.brushSelectionMinimumMoveDistance;
 
-    return isValidMoveRange;
+    return isMovedEnoughDistance;
   }
 
   private setDisplayedDataCells() {
