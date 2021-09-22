@@ -2,6 +2,7 @@
  * @Description: 请严格要求 svg 的 viewBox，若设计产出的 svg 不是此规格，请叫其修改为 '0 0 1024 1024'
  */
 import { Group, Shape, ShapeAttrs } from '@antv/g-canvas';
+import { omit, clone } from 'lodash';
 import { getIcon } from './factory';
 
 const STYLE_PLACEHOLDER = '<svg';
@@ -82,9 +83,9 @@ export class GuiIcon extends Group {
 
   private render() {
     const { type, fill } = this.cfg;
-
+    const attrs = clone(this.cfg);
     const image = new Shape.Image({
-      attrs: this.cfg,
+      attrs: omit(attrs, 'fill'),
     });
 
     const cacheKey = `${type}-${fill}`;

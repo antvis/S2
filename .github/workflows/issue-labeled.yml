@@ -56,6 +56,18 @@ jobs:
 
             Hello, @${{ github.event.issue.user.login }}, thanks for your advice. We will evaluate and schedule in time. Thank you!
 
+      - name: Bug
+        if: github.event.label.name == '🐛 bug'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，很抱歉给你带来了不好的体验, 我们会尽快排查问题并修复, 请关注后续发布日志.
+
+            Hello, @${{ github.event.issue.user.login }}, We are very sorry for the bad experience. We will troubleshoot and fix the problem as soon as possible. Please pay attention to the subsequent change logs.
+
       - name: Usage
         if: github.event.label.name == '🙀 usage' || github.event.label.name == '❔question'
         uses: actions-cool/issues-helper@main

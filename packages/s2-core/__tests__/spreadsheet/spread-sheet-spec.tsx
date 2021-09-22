@@ -22,6 +22,7 @@ function MainLayout() {
   const [spotLight, setSpotLight] = React.useState(true);
   const [isPivotSheet, setIsPivotSheet] = React.useState(true);
   const [hoverHighlight, setHoverHighlight] = React.useState(true);
+  const [showSeriesNumber, setShowSeriesNumber] = React.useState(false);
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTooltip, setShowTooltip] = React.useState(true);
   const [themeName, setThemeName] = React.useState<ThemeName>('default');
@@ -47,6 +48,7 @@ function MainLayout() {
         trend: true,
       },
     },
+    showSeriesNumber: showSeriesNumber,
     selectedCellsSpotlight: spotLight,
     hoverHighlight: hoverHighlight,
   };
@@ -86,6 +88,13 @@ function MainLayout() {
                 <Radio.Button value="simple">简约蓝</Radio.Button>
                 <Radio.Button value="colorful">多彩蓝</Radio.Button>
               </Radio.Group>
+
+              <Switch
+                checkedChildren="显示序号"
+                unCheckedChildren="不显示序号"
+                checked={showSeriesNumber}
+                onChange={setShowSeriesNumber}
+              />
 
               <Switch
                 checkedChildren="分页"

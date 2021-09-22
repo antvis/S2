@@ -1,14 +1,14 @@
-name: CI
+name: test
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
+    # jest-electron 需要 macos 环境, 但是 免费用户 并发有限制, 容易排队
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     strategy:
       matrix:
-        # node-version: [12.x, 14.x, 16.x]
         node-version: [12.x]
 
     steps:
@@ -34,20 +34,21 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Lint scripts, type and style
-        run: yarn lint
-
-      - name: Build
-        run: yarn build
-
       - name: Test
         run: |
-          yarn test:coverage
+          yarn test:ci-coverage
         env:
           CI: true
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Upload test coverage
-        uses: coverallsapp/github-action@master
+      - name: Workflow failed alert
+        if: ${{ failure() }}
+        uses: actions-cool/maintain-one-comment@main
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: './packages/s2-core/coverage/lcov.info'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            你好, @${{ github.event.pull_request.user.login }} CI 执行失败, 请点击 [Details] 按钮查看, 并根据日志修复
+            Hello, @${{ github.event.pull_request.user.login }} CI run failed, please click the [Details] button try to fixed it.
+            <!-- Created by actions-cool/maintain-one-comment -->
+          emojis: 'eyes'
+          body-include: '<!-- Created by actions-cool/maintain-one-comment -->'

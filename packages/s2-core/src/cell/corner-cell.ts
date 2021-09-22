@@ -11,7 +11,12 @@ import { FormatResult, TextTheme } from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
 import { ResizeInfo } from '@/facet/header/interface';
 import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
-import { renderRect, renderText, renderTreeIcon } from '@/utils/g-renders';
+import {
+  renderLine,
+  renderRect,
+  renderText,
+  renderTreeIcon,
+} from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
 import { getEllipsisText } from '@/utils/text';
 
@@ -19,6 +24,9 @@ export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
 
   protected textShapes: IShape[] = [];
+
+  /* 角头 label 类型 */
+  public cornerType: 'col' | 'row';
 
   public get cellType() {
     return CellTypes.CORNER_CELL;
@@ -31,6 +39,7 @@ export class CornerCell extends HeaderCell {
     this.drawBackgroundShape();
     this.drawTreeIcon();
     this.drawCellText();
+    this.drawBorderShape();
     this.drawResizeArea();
   }
 
@@ -107,7 +116,7 @@ export class CornerCell extends HeaderCell {
    * 绘制折叠展开的icon
    */
   private drawTreeIcon() {
-    if (!this.showTreeIcon()) {
+    if (!this.showTreeIcon() || this.meta.cornerType !== 'row') {
       return;
     }
     // 只有交叉表才有icon
@@ -138,14 +147,43 @@ export class CornerCell extends HeaderCell {
   }
 
   private drawBackgroundShape() {
-    const { backgroundColorOpacity, horizontalBorderColor } =
-      this.getStyle().cell;
+    const { backgroundColorOpacity } = this.getStyle().cell;
     const attrs: ShapeAttrs = {
       ...this.getCellArea(),
       opacity: backgroundColorOpacity,
     };
 
     this.backgroundShape = renderRect(this, attrs);
+  }
+
+  /**
+   * Render cell horizontalBorder border
+   * @private
+   */
+  protected drawBorderShape() {
+    if (this.meta.cornerType !== 'row') return;
+    const { x, y, width } = this.getCellArea();
+    const {
+      horizontalBorderColor,
+      horizontalBorderWidth,
+      horizontalBorderColorOpacity,
+    } = this.getStyle().cell;
+
+    // horizontal border
+    renderLine(
+      this,
+      {
+        x1: x,
+        y1: y,
+        x2: x + width,
+        y2: y,
+      },
+      {
+        stroke: horizontalBorderColor,
+        lineWidth: horizontalBorderWidth,
+        opacity: horizontalBorderColorOpacity,
+      },
+    );
   }
 
   private drawResizeArea() {
@@ -199,12 +237,9 @@ export class CornerCell extends HeaderCell {
 
   protected getTextStyle(): TextTheme {
     const cornerTextStyle = this.getStyle().bolderText;
-
     return {
       ...cornerTextStyle,
-      textAlign: this.spreadsheet.isTableMode()
-        ? cornerTextStyle.textAlign
-        : 'center',
+      textAlign: this.spreadsheet.isHierarchyTreeType() ? 'left' : 'center',
       textBaseline: 'middle',
     };
   }
