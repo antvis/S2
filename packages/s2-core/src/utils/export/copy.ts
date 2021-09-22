@@ -48,8 +48,49 @@ export const getTwoDimData = (cells: S2CellType[]) => {
 };
 
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
-  const cells = spreadsheet.interaction.getActiveCells();
-  const data = processCopyData(getTwoDimData(cells));
+  const interaction = spreadsheet.interaction;
+  const cells = interaction.getActiveCells();
+
+  let data;
+  const selectedCols = cells.filter((e) => e.cellType === 'colCell');
+  const selectedRows = cells.filter((e) => e.cellType === 'rowCell');
+
+  if (false) {
+    // 等待全选标记
+    const selectedFiled = spreadsheet.dataCfg.fields.columns;
+    data = spreadsheet.dataCfg.data.reduce((pre, cur) => {
+      return (
+        pre +
+        '\n' +
+        selectedFiled.reduce((prev, curr) => prev + '\t' + cur[curr], '')
+      );
+    }, '');
+  } else if (selectedCols.length) {
+    // col selected
+    const selectedFiled = selectedCols.map((e) => e.getMeta().field);
+
+    data = spreadsheet.dataCfg.data.reduce((pre, cur) => {
+      return (
+        pre +
+        '\n' +
+        selectedFiled.reduce((prev, curr) => prev + '\t' + cur[curr], '')
+      );
+    }, '');
+  } else if (selectedRows.length) {
+    // row selected
+    const selectedIndex = selectedRows.map((e) => e.getMeta().rowIndex);
+    data = spreadsheet.dataCfg.data
+      .filter((e, i) => selectedIndex.includes(i))
+      .map((e) =>
+        Object.keys(e)
+          .map((key) => e[key])
+          .join('\t'),
+      )
+      .join('\n');
+  } else {
+    // normal selected
+    data = processCopyData(getTwoDimData(cells));
+  }
   if (data) {
     copyToClipboard(data);
   }
