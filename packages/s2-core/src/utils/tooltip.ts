@@ -88,8 +88,9 @@ export const getDataSumByField = (
     data,
     (pre, next) => {
       const fieldValue = get(next, field, 0);
-      const v = isNotNumber(fieldValue) ? 0 : Number.parseFloat(fieldValue);
-
+      const v = isNotNumber(fieldValue)
+        ? 0
+        : Number.parseFloat(fieldValue) || Number(fieldValue);
       return accAdd(pre, v);
     },
     0,
@@ -390,6 +391,11 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const { spreadsheet, getShowValue, options = {} } = params;
   const summaries = [];
   const summary = {};
+  const isTableMode = spreadsheet.isTableMode();
+  if (isTableMode && options?.showSingleTips) {
+    const selectedCellsData = spreadsheet.dataSet.getMultiData({});
+    return [{ selectedData: selectedCellsData, name: '', value: '' }];
+  }
   const selectedCellsData = getSelectedCellsData(
     spreadsheet,
     options.showSingleTips,
@@ -409,7 +415,9 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     if (getShowValue) {
       value = getShowValue(selected, VALUE_FIELD);
     }
-    if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
+    if (isTableMode) {
+      value = '';
+    } else if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
       // 如果选中的单元格都无数据，则显示"-"
       value = '-';
     } else {
