@@ -288,7 +288,7 @@ export class RowCell extends HeaderCell {
 
   protected getMaxTextWidth(): number {
     const { width } = this.getContentArea();
-    return width - this.getTextIndent();
+    return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
   protected getTextPosition(): Point {

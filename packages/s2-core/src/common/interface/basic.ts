@@ -166,7 +166,7 @@ export interface NodeField {
   colField?: string[];
 }
 
-export interface CustomIconSVG {
+export interface CustomSVGIcon {
   // icon 类型名
   name: string;
   // 1、base 64
@@ -182,8 +182,6 @@ export interface HeaderActionIcon {
   belongCell: Omit<CellTypes, 'dataCell'>;
   // 是否默认隐藏， true 为 hover后显示, false 为一直显示
   defaultHide?: boolean;
-  // 自定义 icon
-  iconSVG?: CustomIconSVG[];
 
   // 需要展示的层级(行头/列头) 如果没有改配置则默认全部打开
   display?: {

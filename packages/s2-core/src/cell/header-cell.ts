@@ -60,11 +60,12 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected getActionIconCfg() {
+    // 每种 header cell 类型只取第一个配置
     return filter(
       this.spreadsheet.options.headerActionIcons,
       (headerActionIcon: HeaderActionIcon) =>
         headerActionIcon?.belongCell === this.cellType,
-    );
+    )[0];
   }
 
   protected getIconPosition() {
@@ -75,18 +76,50 @@ export abstract class HeaderCell extends BaseCell<Node> {
     };
   }
 
+  protected showActionIcons() {
+    const actionIcons = this.getActionIconCfg();
+
+    if (!actionIcons) return false;
+    const { iconNames, display } = actionIcons;
+    if (isEmpty(iconNames)) return false;
+    // 没有展示条件参数默认全展示
+    if (!display) return true;
+    const level = this.meta.level;
+    const labelLevel = display?.level;
+    switch (display?.operator) {
+      case '<':
+        return level < labelLevel;
+      case '<=':
+        return level <= labelLevel;
+      case '=':
+        return level === labelLevel;
+      case '>':
+        return level > labelLevel;
+      case '>=':
+        return level >= labelLevel;
+      default:
+        break;
+    }
+  }
+
+  protected getActionIconsWidth() {
+    if (this.showActionIcons()) {
+      const iconNames = this.getActionIconCfg()?.iconNames;
+      const { size, margin } = this.getStyle().icon;
+      return (
+        size * iconNames.length +
+        margin.left +
+        margin.right * (iconNames.length - 1)
+      );
+    }
+  }
+
   protected drawActionIcons() {
-    // 每种 header cell 类型只取第一个配置
-    const actionIcons = this.getActionIconCfg()[0];
+    const actionIcons = this.getActionIconCfg();
 
     if (!actionIcons) return;
-    const {
-      iconNames,
-      display,
-      action,
-      customDisplayByLabelName,
-      defaultHide,
-    } = actionIcons;
+    const { iconNames, action, customDisplayByLabelName, defaultHide } =
+      actionIcons;
     if (customDisplayByLabelName) {
       const { labelNames, mode } = customDisplayByLabelName;
       const ids = labelNames.map(
@@ -100,27 +133,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         return;
     }
 
-    const showIcon = () => {
-      if (!display) return true;
-      const level = this.meta.level;
-      const rowLevel = display?.level;
-      switch (display?.operator) {
-        case '<':
-          return level < rowLevel;
-        case '<=':
-          return level <= rowLevel;
-        case '=':
-          return level === rowLevel;
-        case '>':
-          return level > rowLevel;
-        case '>=':
-          return level >= rowLevel;
-        default:
-          break;
-      }
-    };
-
-    if (!isEmpty(iconNames) && showIcon()) {
+    if (this.showActionIcons()) {
       const position = this.getIconPosition();
       const { size } = this.getStyle().icon;
 
@@ -133,9 +146,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
           height: size,
         });
         icon.set('visible', !defaultHide);
-        // icon.on('hover', (event: Event) => {
-        //   this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
-        // });
+        icon.on('mouseover', (event: Event) => {
+          this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
+        });
         icon.on('click', (event: Event) => {
           this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
           action(iconNames[i], this.meta, event);
@@ -204,7 +217,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   public toggleActionIcon(visible: boolean) {
-    if (this.getActionIconCfg()[0]?.defaultHide) {
+    if (this.getActionIconCfg()?.defaultHide) {
       forEach(this.actionIcons, (icon) => icon.set('visible', visible));
     }
   }
@@ -234,11 +247,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   public hideInteractionShape() {
     super.hideInteractionShape();
-    if (
-      this.spreadsheet.interaction.getCurrentStateName() ===
-      InteractionStateName.HOVER
-    ) {
-      each(this.actionIcons, (icon) => icon.set('visible', false));
-    }
+    // each(this.actionIcons, (icon) => icon.set('visible', false));
   }
 }

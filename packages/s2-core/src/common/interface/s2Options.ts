@@ -1,7 +1,11 @@
 import { merge } from 'lodash';
 import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
-import { FilterDataItemCallback, HeaderActionIcon } from './basic';
+import {
+  FilterDataItemCallback,
+  HeaderActionIcon,
+  CustomSVGIcon,
+} from './basic';
 import { Tooltip } from './tooltip';
 import {
   CellCallback,
@@ -56,6 +60,8 @@ export interface S2PartialOptions {
   readonly customHeaderCells?: CustomHeaderCells;
   // header cells including ColCell, RowCell, CornerCell action icon's config
   readonly headerActionIcons?: HeaderActionIcon[];
+  // register custom svg icons
+  readonly customSVGIcons?: CustomSVGIcon[];
   // extra styles
   readonly style?: Partial<Style>;
   // frozen row & cols
@@ -174,6 +180,7 @@ export const defaultOptions: S2Options = {
   showSeriesNumber: false,
   scrollReachNodeField: {},
   hiddenColumnFields: [],
+  customSVGIcons: null,
   customHeaderCells: null,
   headerActionIcons: null,
   style: defaultStyle,
