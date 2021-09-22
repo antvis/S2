@@ -15,7 +15,8 @@
   "collectCoverageFrom": [
     "src/**/*.{ts,js}",
     "!**/node_modules/**",
-    "!**/vendor/**"
+    "!**/vendor/**",
+    "!**/interface/**"
   ],
   "coverageReporters": ["text-summary", "html", "lcov"],
   "transformIgnorePatterns": [],
