@@ -122,7 +122,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   // 绘制排序icon
   protected drawSortIcons() {
-    const { icon } = this.getStyle();
+    const { icon, text } = this.getStyle();
     if (this.showSortIcon()) {
       const { sortParam } = this.headerConfig;
       const position = this.getIconPosition();
@@ -131,6 +131,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         ...position,
         width: icon.size,
         height: icon.size,
+        fill: text.fill,
       });
       sortIcon.on('click', (event) => {
         this.spreadsheet.handleGroupSort(event, this.meta);
@@ -148,12 +149,14 @@ export abstract class HeaderCell extends BaseCell<Node> {
     action: (prop: HeaderActionIconProps) => void,
     defaultHide?: boolean,
   ) {
+    const { text } = this.getStyle();
     const icon = new GuiIcon({
       name: iconName,
       x,
       y,
       width: size,
       height: size,
+      fill: text.fill,
     });
     icon.set('visible', !defaultHide);
     icon.on('mouseover', (event: Event) => {
