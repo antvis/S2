@@ -38,13 +38,11 @@ jobs:
         run: |
           yarn test:coverage
 
-      - name: Test coverage
+      - name: Upload test coverage
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
-        env:
-          CI: true
 
       - name: Workflow failed alert
         if: ${{ failure() }}
