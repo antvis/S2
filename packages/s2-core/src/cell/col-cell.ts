@@ -1,12 +1,10 @@
 import { Group, Point } from '@antv/g-canvas';
-import { get, isEmpty, isEqual } from 'lodash';
 import { HeaderCell } from './header-cell';
 import {
   CellTypes,
   KEY_GROUP_COL_RESIZE_AREA,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
 } from '@/common/constant';
-import { GuiIcon } from '@/common/icons';
 import {
   FormatResult,
   TextAlign,
@@ -38,9 +36,7 @@ export class ColCell extends HeaderCell {
     this.drawInteractiveBgShape();
     // draw text
     this.drawTextShape();
-    // draw sort icons
-    this.drawSortIcons();
-    // draw custom action icons
+    // draw action icons
     this.drawActionIcons();
     // draw right border
     this.drawRightBorder();
@@ -135,71 +131,6 @@ export class ColCell extends HeaderCell {
 
     const textY = contentBox.y + contentBox.height / 2;
     return { x: textX, y: textY };
-  }
-
-  private showSortIcon() {
-    if (isEmpty(this.spreadsheet.options.headerActionIcons)) {
-      const { sortParam } = this.headerConfig;
-      const query = this.meta.query;
-      return (
-        isEqual(get(sortParam, 'query'), query) &&
-        get(sortParam, 'type') !== 'none'
-      );
-    }
-    return false;
-  }
-
-  protected getActionIconsWidth() {
-    if (this.showSortIcon) {
-      const { icon } = this.getStyle();
-      return this.showSortIcon() ? icon.size + icon.margin.left : 0;
-    }
-
-    if (this.showActionIcons()) {
-      const iconNames = this.getActionIconCfg()?.iconNames;
-      const { size, margin } = this.getStyle().icon;
-      return (
-        size * iconNames.length +
-        margin.left +
-        margin.right * (iconNames.length - 1)
-      );
-    }
-  }
-
-  protected getActionIconPosition(): Point {
-    const { textBaseline } = this.getTextStyle();
-    const { size } = this.getStyle().icon;
-    const { x, width } = this.getContentArea();
-
-    const iconX = x + width - size;
-    const iconY = getVerticalPosition(
-      this.getContentArea(),
-      textBaseline,
-      size,
-    );
-
-    return { x: iconX, y: iconY };
-  }
-
-  // 绘制排序icon
-  protected drawSortIcons() {
-    const { icon } = this.getStyle();
-    if (this.showSortIcon()) {
-      const { sortParam } = this.headerConfig;
-      const position = this.getActionIconPosition();
-      const sortIcon = new GuiIcon({
-        name: get(sortParam, 'type', 'none'),
-        ...position,
-        width: icon.size,
-        height: icon.size,
-      });
-      // TODO：和row-cell统一icon之后需更改
-      sortIcon.on('click', (event) => {
-        this.spreadsheet.handleGroupSort(event, this.meta);
-      });
-      this.add(sortIcon);
-      this.actionIcons.push(sortIcon);
-    }
   }
 
   protected getColResizeAreaKey() {

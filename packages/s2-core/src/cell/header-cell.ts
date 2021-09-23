@@ -6,20 +6,22 @@ import {
   find,
   isEqual,
   get,
-  last,
   isEmpty,
   forEach,
   filter,
-  each,
+  replace,
 } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
-import { S2CellType, HeaderActionIcon } from '@/common/interface';
+import {
+  S2CellType,
+  HeaderActionIcon,
+  HeaderActionIconProps,
+} from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
-import { EXTRA_FIELD, ID_SEPARATOR, S2Event } from '@/common/constant';
 import { EXTRA_FIELD, ID_SEPARATOR, S2Event } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { SortParam } from '@/common/interface';
@@ -59,17 +61,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
     return filter(
       this.spreadsheet.options.headerActionIcons,
       (headerActionIcon: HeaderActionIcon) =>
-        headerActionIcon?.belongCell === this.cellType,
+        headerActionIcon?.belongsCell === this.cellType,
     )[0];
   }
-
-  // protected getIconPosition() {
-  //   const textCfg = this.textShape.cfg.attrs;
-  //   return {
-  //     x: textCfg.x + this.actualTextWidth + this.getStyle().icon.margin.left,
-  //     y: textCfg.y,
-  //   };
-  // }
 
   protected showActionIcons() {
     const actionIcons = this.getActionIconCfg();
@@ -97,7 +91,24 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
+  private showSortIcon() {
+    if (isEmpty(this.spreadsheet.options.headerActionIcons)) {
+      const { sortParam } = this.headerConfig;
+      const query = this.meta.query;
+      return (
+        isEqual(get(sortParam, 'query'), query) &&
+        get(sortParam, 'type') !== 'none'
+      );
+    }
+    return false;
+  }
+
   protected getActionIconsWidth() {
+    if (this.showSortIcon()) {
+      const { icon } = this.getStyle();
+      return this.showSortIcon() ? icon.size + icon.margin.left : 0;
+    }
+
     if (this.showActionIcons()) {
       const iconNames = this.getActionIconCfg()?.iconNames;
       const { size, margin } = this.getStyle().icon;
@@ -109,7 +120,60 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
+  // 绘制排序icon
+  protected drawSortIcons() {
+    const { icon } = this.getStyle();
+    if (this.showSortIcon()) {
+      const { sortParam } = this.headerConfig;
+      const position = this.getIconPosition();
+      const sortIcon = new GuiIcon({
+        name: get(sortParam, 'type', 'none'),
+        ...position,
+        width: icon.size,
+        height: icon.size,
+      });
+      sortIcon.on('click', (event) => {
+        this.spreadsheet.handleGroupSort(event, this.meta);
+      });
+      this.add(sortIcon);
+      this.actionIcons.push(sortIcon);
+    }
+  }
+
+  protected addActionIcon(
+    iconName: string,
+    x: number,
+    y: number,
+    size: number,
+    action: (prop: HeaderActionIconProps) => void,
+    defaultHide?: boolean,
+  ) {
+    const icon = new GuiIcon({
+      name: iconName,
+      x,
+      y,
+      width: size,
+      height: size,
+    });
+    icon.set('visible', !defaultHide);
+    icon.on('mouseover', (event: Event) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
+    });
+    icon.on('click', (event: Event) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+      action({
+        iconName: iconName,
+        meta: this.meta,
+        event: event,
+      });
+    });
+
+    this.actionIcons.push(icon);
+    this.add(icon);
+  }
+
   protected drawActionIcons() {
+    this.drawSortIcons();
     const actionIcons = this.getActionIconCfg();
 
     if (!actionIcons) return;
@@ -130,27 +194,17 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     if (this.showActionIcons()) {
       const position = this.getIconPosition();
-      const { size } = this.getStyle().icon;
-
+      const { size, margin } = this.getStyle().icon;
       for (let i = 0; i < iconNames.length; i++) {
-        const icon = new GuiIcon({
-          name: iconNames[i],
-          x: position.x,
-          y: position.y,
-          width: size,
-          height: size,
-        });
-        icon.set('visible', !defaultHide);
-        icon.on('mouseover', (event: Event) => {
-          this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
-        });
-        icon.on('click', (event: Event) => {
-          this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-          action(iconNames[i], this.meta, event);
-        });
-
-        this.actionIcons.push(icon);
-        this.add(icon);
+        const x = position.x + i * size + i * margin.left;
+        this.addActionIcon(
+          iconNames[i],
+          x,
+          position.y,
+          size,
+          action,
+          defaultHide,
+        );
       }
     }
   }

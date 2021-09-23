@@ -1,8 +1,8 @@
 import { get, merge, set } from 'lodash';
-import { S2Options } from '@/common/interface';
+import { Event } from '@antv/g-canvas';
+import { S2Options, HeaderActionIconProps } from '@/common/interface';
 import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
 import { SpreadSheet } from '@/sheet-type';
-
 import { Node } from '@/facet/layout/node';
 import { PivotDataSet } from '@/data-set';
 
@@ -21,7 +21,7 @@ export interface DrillDownParams {
 export const HandleDrillDownIcon = (
   props: SpreadsheetProps,
   spreadsheet: SpreadSheet,
-  callback: (event: MouseEvent, sheetInstance: SpreadSheet) => void,
+  callback: (event: Event, sheetInstance: SpreadSheet) => void,
 ): S2Options => {
   if (props?.partDrillDown) {
     const { customDisplayByLabelName } = props.partDrillDown;
@@ -35,7 +35,7 @@ export const HandleDrillDownIcon = (
     return merge({}, props.options, {
       headerActionIcons: [
         {
-          belongCell: 'rowCell',
+          belongsCell: 'rowCell',
           iconNames: ['DrillDownIcon'],
           customDisplayByLabelName,
           defaultHide: true,
@@ -43,7 +43,8 @@ export const HandleDrillDownIcon = (
             level: iconLevel,
             operator: '>=',
           },
-          action: (iconName: string, meta: Node, event: MouseEvent) => {
+          action: (actionIconProps: HeaderActionIconProps) => {
+            const { iconName, meta, event } = actionIconProps;
             if (iconName === 'DrillDownIcon') {
               spreadsheet.store.set('drillDownNode', meta);
               callback(event, spreadsheet);

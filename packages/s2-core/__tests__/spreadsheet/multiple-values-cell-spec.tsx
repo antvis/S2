@@ -119,7 +119,7 @@ const getOptions = (): S2Options => {
     headerActionIcons: [
       {
         iconNames: ['SortDown', 'SortUp'],
-        belongCell: 'colCell',
+        belongsCell: 'colCell',
         display: {
           level: 0,
           operator: '>=',

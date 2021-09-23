@@ -54,7 +54,7 @@ import { BaseTooltip } from '@/ui/tooltip';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
 import { getTooltipData } from '@/utils/tooltip';
-import { registerIcon } from '@/common/icons/factory';
+import { registerIcon, getIcon } from '@/common/icons/factory';
 
 export abstract class SpreadSheet extends EE {
   // dom id
@@ -302,7 +302,7 @@ export abstract class SpreadSheet extends EE {
     if (isEmpty(customSVGIcons)) return;
 
     forEach(customSVGIcons, (customSVGIcon: CustomSVGIcon) => {
-      if (isEmpty(customSVGIcon.name)) {
+      if (isEmpty(getIcon(customSVGIcon.name))) {
         registerIcon(customSVGIcon.name, customSVGIcon.svg);
       }
     });

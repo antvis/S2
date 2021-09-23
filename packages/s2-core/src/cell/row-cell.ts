@@ -286,6 +286,18 @@ export class RowCell extends HeaderCell {
     };
   }
 
+  protected getIconPosition() {
+    const textCfg = this.textShape.cfg.attrs;
+    return {
+      x:
+        textCfg.x +
+        this.actualTextWidth +
+        this.getTextIndent() +
+        this.getStyle().icon.margin.left,
+      y: textCfg.y,
+    };
+  }
+
   protected getMaxTextWidth(): number {
     const { width } = this.getContentArea();
     return width - this.getTextIndent() - this.getActionIconsWidth();

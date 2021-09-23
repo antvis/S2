@@ -34,7 +34,8 @@ export const getTheme = (
         fontWeight: 'normal',
         fill: brandColors[0],
         opacity: 1,
-        textAlign: 'left',
+        textAlign: 'center',
+        textBaseline: 'middle',
       },
       cell: {
         // ----------- background color -----------
@@ -153,6 +154,8 @@ export const getTheme = (
         fontWeight: 'normal',
         fill: brandColors[0],
         opacity: 1,
+        textAlign: 'center',
+        textBaseline: 'middle',
       },
       cell: {
         // ----------- background color -----------

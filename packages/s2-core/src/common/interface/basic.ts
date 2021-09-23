@@ -174,12 +174,19 @@ export interface CustomSVGIcon {
   // 3、线上支持的图片地址 TODO  🤔 是否存在安全问题
   svg: string;
 }
+
+export interface HeaderActionIconProps {
+  iconName: string;
+  meta: Node;
+  event: Event;
+}
+
 export interface HeaderActionIcon {
   // 已注册的 icon 类型或自定义的 icon 类型名
   iconNames: string[];
 
   // 所属的 cell 类型
-  belongCell: Omit<CellTypes, 'dataCell'>;
+  belongsCell: Omit<CellTypes, 'dataCell'>;
   // 是否默认隐藏， true 为 hover后显示, false 为一直显示
   defaultHide?: boolean;
 
@@ -195,8 +202,8 @@ export interface HeaderActionIcon {
     // 指定行头名称是否展示icon
     mode: 'pick' | 'omit';
   };
-  // 具体的动作
-  action: (iconName: string, meta: Node, event: Event) => void;
+  // 点击后的执行函数
+  action: (headerActionIconProps: HeaderActionIconProps) => void;
 }
 
 // Hook 渲染和布局相关的函数类型定义
