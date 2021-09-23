@@ -643,6 +643,7 @@ export class TableFacet extends BaseFacet {
 
   // 对 panelScrollGroup 以及四个方向的 frozenGroup 做 Clip，避免有透明度时冻结分组和滚动分组展示重叠
   protected clip(scrollX: number, scrollY: number) {
+    const paginationScrollY = this.getPaginationScrollY();
     const {
       frozenRowGroup,
       frozenColGroup,
@@ -677,7 +678,7 @@ export class TableFacet extends BaseFacet {
       type: 'rect',
       attrs: {
         x: scrollX + frozenColGroupWidth,
-        y: 0,
+        y: paginationScrollY,
         width: panelScrollGroupWidth,
         height: frozenRowGroupHeight,
       },

@@ -71,7 +71,31 @@ describe('Frozen util test', () => {
 
       expect(trailingRowType).toBe(FrozenCellType.TRAILING_ROW);
 
-      const scrollType = getFrozenDataCellType(
+      const scrollTypeNearTopLeft = getFrozenDataCellType(
+        {
+          rowIndex: 2,
+          colIndex: 2,
+        },
+        frozenOpts,
+        colLength,
+        cellRange,
+      );
+
+      expect(scrollTypeNearTopLeft).toBe(FrozenCellType.SCROLL);
+
+      const scrollTypeNearTopRight = getFrozenDataCellType(
+        {
+          rowIndex: 2,
+          colIndex: 7,
+        },
+        frozenOpts,
+        colLength,
+        cellRange,
+      );
+
+      expect(scrollTypeNearTopRight).toBe(FrozenCellType.SCROLL);
+
+      const scrollTypeNearBottomRight = getFrozenDataCellType(
         {
           rowIndex: 497,
           colIndex: 7,
@@ -81,7 +105,19 @@ describe('Frozen util test', () => {
         cellRange,
       );
 
-      expect(scrollType).toBe(FrozenCellType.SCROLL);
+      expect(scrollTypeNearBottomRight).toBe(FrozenCellType.SCROLL);
+
+      const scrollTypeNearBottomLeft = getFrozenDataCellType(
+        {
+          rowIndex: 497,
+          colIndex: 2,
+        },
+        frozenOpts,
+        colLength,
+        cellRange,
+      );
+
+      expect(scrollTypeNearBottomLeft).toBe(FrozenCellType.SCROLL);
     });
   });
 
