@@ -1,4 +1,4 @@
-import { last, uniq } from 'lodash';
+import { isEqual, last, uniq } from 'lodash';
 import { HiddenColumnsInfo } from '@/common/interface/store';
 import { SpreadSheet } from '@/sheet-type';
 import { S2Event } from '@/common/constant';
@@ -27,17 +27,18 @@ export const getHiddenColumnDisplaySiblingNode = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
 ): Node => {
-  const columnNodes = spreadsheet.getInitColumnNodes();
+  const initColumnNodes = spreadsheet.getInitColumnNodes();
   const hiddenColumnIndexes = getHiddenColumnNodes(
     spreadsheet,
     hiddenColumnFields,
   ).map((node) => node?.colIndex);
-  const lastColumnIndex = Math.max(...hiddenColumnIndexes);
-  const nextSiblingNode = columnNodes.find(
-    (node) => node.colIndex === lastColumnIndex + 1,
+  const lastHiddenColumnIndex = Math.max(...hiddenColumnIndexes);
+  const firstHiddenColumnIndex = Math.min(...hiddenColumnIndexes);
+  const nextSiblingNode = initColumnNodes.find(
+    (node) => node.colIndex === lastHiddenColumnIndex + 1,
   );
-  const prevSiblingNode = columnNodes.find(
-    (node) => node.colIndex === lastColumnIndex - 1,
+  const prevSiblingNode = initColumnNodes.find(
+    (node) => node.colIndex === firstHiddenColumnIndex - 1,
   );
   return nextSiblingNode ?? prevSiblingNode;
 };
@@ -78,18 +79,22 @@ export const getHiddenColumnsThunkGroup = (
  */
 export const hideColumns = (
   spreadsheet: SpreadSheet,
-  selectedColumns: string[] = [],
+  selectedColumnFields: string[] = [],
 ) => {
+  const { hiddenColumnFields: lastHiddenColumnFields } = spreadsheet.options;
+  if (isEqual(selectedColumnFields, lastHiddenColumnFields)) {
+    return;
+  }
   const hiddenColumnFields: string[] = uniq([
-    ...selectedColumns,
-    ...spreadsheet.options.hiddenColumnFields,
+    ...selectedColumnFields,
+    ...lastHiddenColumnFields,
   ]);
   spreadsheet.setOptions({
     hiddenColumnFields,
   });
-  const displayNextSiblingNode = getHiddenColumnDisplaySiblingNode(
+  const displaySiblingNode = getHiddenColumnDisplaySiblingNode(
     spreadsheet,
-    hiddenColumnFields,
+    selectedColumnFields,
   );
 
   const lastHiddenColumnDetail = spreadsheet.store.get(
@@ -98,8 +103,8 @@ export const hideColumns = (
   );
 
   const currentHiddenColumnsInfo: HiddenColumnsInfo = {
-    hideColumnNodes: getHiddenColumnNodes(spreadsheet, selectedColumns),
-    displayNextSiblingNode,
+    hideColumnNodes: getHiddenColumnNodes(spreadsheet, selectedColumnFields),
+    displaySiblingNode,
   };
 
   const hiddenColumnsDetail: HiddenColumnsInfo[] = [
