@@ -61,6 +61,7 @@ const meta = [
   {
     field: 'profit',
     name: '利润',
+    formatter: (v) => `${v}元`,
   },
 ];
 

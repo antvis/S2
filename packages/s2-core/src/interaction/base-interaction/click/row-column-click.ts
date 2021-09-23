@@ -139,8 +139,6 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       showSingleTips: true,
-      onlyMenu: true,
-      hideSummary: true,
       operator,
     });
   }

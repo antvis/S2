@@ -34,6 +34,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   public brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
 
+  private brushSelectionMinimumMoveDistance = 5;
+
   public bindEvents() {
     this.bindMouseDown();
     this.bindMouseMove();
@@ -105,17 +107,29 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       event.preventDefault();
 
-      if (this.brushSelectionStage === InteractionBrushSelectionStage.DRAGGED) {
+      if (this.isValidBrushSelection()) {
         this.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
-        this.hidePrepareSelectMaskShape();
         this.updateSelectedCells();
         this.spreadsheet.showTooltipWithInfo(
           event,
           getActiveCellsTooltipData(this.spreadsheet),
         );
       }
+      this.hidePrepareSelectMaskShape();
       this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
     });
+  }
+
+  private isValidBrushSelection() {
+    if (this.brushSelectionStage !== InteractionBrushSelectionStage.DRAGGED) {
+      return false;
+    }
+    const { start, end } = this.getBrushRange();
+    const isMovedEnoughDistance =
+      end.x - start.x > this.brushSelectionMinimumMoveDistance ||
+      end.y - start.y > this.brushSelectionMinimumMoveDistance;
+
+    return isMovedEnoughDistance;
   }
 
   private setDisplayedDataCells() {
@@ -133,7 +147,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.prepareSelectMaskShape.show();
   }
 
-  private hidePrepareSelectMaskShape() {
+  public hidePrepareSelectMaskShape() {
     this.prepareSelectMaskShape.hide();
   }
 
