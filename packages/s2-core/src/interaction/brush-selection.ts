@@ -147,7 +147,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   public hidePrepareSelectMaskShape() {
-    this.prepareSelectMaskShape.hide();
+    this.prepareSelectMaskShape?.hide();
   }
 
   private getBrushPoint(event: CanvasEvent): BrushPoint {
