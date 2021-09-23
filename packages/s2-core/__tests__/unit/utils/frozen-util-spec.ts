@@ -12,7 +12,10 @@ describe('Frozen util test', () => {
 
     it('should return correct data cell type', () => {
       const colLength = 10;
-      const rowLength = 500;
+      const cellRange = {
+        start: 0,
+        end: 499,
+      };
       const frozenOpts = {
         frozenColCount: 2,
         frozenRowCount: 2,
@@ -27,7 +30,7 @@ describe('Frozen util test', () => {
         },
         frozenOpts,
         colLength,
-        rowLength,
+        cellRange,
       );
 
       expect(colType).toBe(FrozenCellType.COL);
@@ -39,7 +42,7 @@ describe('Frozen util test', () => {
         },
         frozenOpts,
         colLength,
-        rowLength,
+        cellRange,
       );
 
       expect(rowType).toBe(FrozenCellType.ROW);
@@ -51,7 +54,7 @@ describe('Frozen util test', () => {
         },
         frozenOpts,
         colLength,
-        rowLength,
+        cellRange,
       );
 
       expect(trailingColType).toBe(FrozenCellType.TRAILING_COL);
@@ -63,7 +66,7 @@ describe('Frozen util test', () => {
         },
         frozenOpts,
         colLength,
-        rowLength,
+        cellRange,
       );
 
       expect(trailingRowType).toBe(FrozenCellType.TRAILING_ROW);
@@ -75,7 +78,7 @@ describe('Frozen util test', () => {
         },
         frozenOpts,
         colLength,
-        rowLength,
+        cellRange,
       );
 
       expect(scrollType).toBe(FrozenCellType.SCROLL);
@@ -91,10 +94,13 @@ describe('Frozen util test', () => {
         frozenTrailingRowCount: 1,
       };
       const colLength = 4;
-      const rowLength = 1000;
+      const cellRange = {
+        start: 0,
+        end: 999,
+      };
 
       expect(
-        calculateFrozenCornerCells(frozenOpts, colLength, rowLength),
+        calculateFrozenCornerCells(frozenOpts, colLength, cellRange),
       ).toStrictEqual({
         bottom: [
           {
@@ -132,7 +138,10 @@ describe('Frozen util test', () => {
     it('should return splitted frozen indexes group', () => {
       const indexes: Indexes = [0, 3, 0, 11];
       const colLength = 4;
-      const rowLength = 1000;
+      const cellRange = {
+        start: 0,
+        end: 999,
+      };
       const frozenOpts = {
         frozenColCount: 1,
         frozenRowCount: 2,
@@ -144,7 +153,7 @@ describe('Frozen util test', () => {
         indexes,
         frozenOpts,
         colLength,
-        rowLength,
+        cellRange,
       );
 
       expect(result).toStrictEqual({
