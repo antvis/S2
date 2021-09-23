@@ -191,17 +191,8 @@ export interface HeaderActionIcon {
   defaultHide?: boolean;
 
   // 需要展示的层级(行头/列头) 如果没有改配置则默认全部打开
-  display?: {
-    level: number; // 层级
-    operator: '>' | '=' | '<' | '>=' | '<='; // 层级关系
-  };
-  // 根据 label 名自定义展示
-  customDisplayByLabelName?: {
-    // Row or column headers, using the ID_SEPARATOR('[&]') to join two labels when there are hierarchical relations between them.
-    labelNames: string[];
-    // 指定行头名称是否展示icon
-    mode: 'pick' | 'omit';
-  };
+  displayCondition?: (mete: Node) => void;
+
   // 点击后的执行函数
   action: (headerActionIconProps: HeaderActionIconProps) => void;
 }

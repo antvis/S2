@@ -39,9 +39,8 @@ export const HandleDrillDownIcon = (
           iconNames: ['DrillDownIcon'],
           customDisplayByLabelName,
           defaultHide: true,
-          display: {
-            level: iconLevel,
-            operator: '>=',
+          displayCondition: (meta: Node) => {
+            return iconLevel >= meta.level;
           },
           action: (actionIconProps: HeaderActionIconProps) => {
             const { iconName, meta, event } = actionIconProps;

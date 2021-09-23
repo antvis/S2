@@ -23,7 +23,6 @@ import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
 import { EXTRA_FIELD, S2Event } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
-import { generateId } from '@/utils/layout/generate-id';
 import { SortParam } from '@/common/interface';
 
 export abstract class HeaderCell extends BaseCell<Node> {
@@ -69,26 +68,11 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const actionIcons = this.getActionIconCfg();
 
     if (!actionIcons) return false;
-    const { iconNames, display } = actionIcons;
+    const { iconNames, displayCondition } = actionIcons;
     if (isEmpty(iconNames)) return false;
     // 没有展示条件参数默认全展示
-    if (!display) return true;
-    const level = this.meta.level;
-    const labelLevel = display?.level;
-    switch (display?.operator) {
-      case '<':
-        return level < labelLevel;
-      case '<=':
-        return level <= labelLevel;
-      case '=':
-        return level === labelLevel;
-      case '>':
-        return level > labelLevel;
-      case '>=':
-        return level >= labelLevel;
-      default:
-        break;
-    }
+    if (!displayCondition) return true;
+    return displayCondition(this.meta);
   }
 
   private showSortIcon() {
@@ -180,18 +164,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const actionIcons = this.getActionIconCfg();
 
     if (!actionIcons) return;
-    const { iconNames, action, customDisplayByLabelName, defaultHide } =
-      actionIcons;
-    if (customDisplayByLabelName) {
-      const { labelNames, mode } = customDisplayByLabelName;
-      const ids = labelNames.map((labelName) => generateId(`root`, labelName));
-
-      if (
-        (mode === 'omit' && ids.includes(this.meta.id)) ||
-        (mode === 'pick' && !ids.includes(this.meta.id))
-      )
-        return;
-    }
+    const { iconNames, action, defaultHide } = actionIcons;
 
     if (this.showActionIcons()) {
       const position = this.getIconPosition();
