@@ -45,7 +45,6 @@
     "test": "jest",
     "test:coverage": "yarn test --coverage",
     "test:watch": "yarn test --watch",
-    "test:ci-coverage": "codecov",
     "tsc": "tsc --noEmit"
   },
   "peerDependencies": {
