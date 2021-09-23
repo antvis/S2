@@ -22,10 +22,7 @@ import {
   ViewMeta,
   ViewMetaIndexType,
 } from '@/common/interface';
-import {
-  getMaxTextWidth,
-  getTextAndFollowingIconPosition,
-} from '@/utils/cell/cell';
+import { getMaxTextWidth } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
 import { getIconPositionCfg } from '@/utils/condition/condition';
 import {
@@ -175,7 +172,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return { ...textStyle, fill };
   }
 
-  protected getIconStyle(): IconCfg | undefined {
+  public getIconStyle(): IconCfg | undefined {
     const { size, margin } = this.theme.dataCell.icon;
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,
@@ -215,23 +212,8 @@ export class DataCell extends BaseCell<ViewMeta> {
     return getMaxTextWidth(width, this.getIconStyle());
   }
 
-  private getTextAndIconPosition() {
-    const textStyle = this.getTextStyle();
-    const iconCfg = this.getIconStyle();
-    return getTextAndFollowingIconPosition(
-      this.getContentArea(),
-      textStyle,
-      this.actualTextWidth,
-      iconCfg,
-    );
-  }
-
   protected getTextPosition(): Point {
     return this.getTextAndIconPosition().text;
-  }
-
-  protected getIconPosition() {
-    return this.getTextAndIconPosition().icon;
   }
 
   protected drawConditionIconShapes() {
@@ -246,7 +228,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (!isEmpty(attrs?.icon) && formattedValue) {
         this.conditionIconShape = renderIcon(this, {
           ...position,
-          type: attrs.icon,
+          name: attrs.icon,
           width: size,
           height: size,
           fill: attrs.fill,

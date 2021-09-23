@@ -110,13 +110,15 @@ export class TableColCell extends ColCell {
       { cursor: 'pointer' },
     );
 
-    renderDetailTypeSortIcon(
-      this,
-      spreadsheet,
-      x + cellWidth - iconSize - iconMarginRight,
-      textY,
-      key,
-    );
+    if (!spreadsheet.options.headerActionIcons) {
+      renderDetailTypeSortIcon(
+        this,
+        spreadsheet,
+        x + cellWidth - iconSize - iconMarginRight,
+        textY,
+        key,
+      );
+    }
   }
 
   protected initCell() {
@@ -184,7 +186,7 @@ export class TableColCell extends ColCell {
     const iconConfig = this.getExpandColumnIconConfig();
     const icon = renderIcon(this, {
       ...iconConfig,
-      type: 'ExpandColIcon',
+      name: 'ExpandColIcon',
       cursor: 'pointer',
     });
     icon.on('click', () => {

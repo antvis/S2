@@ -13,7 +13,6 @@ import {
   ListSortParams,
   Pagination as PaginationCfg,
   S2Constructor,
-  S2Options,
   safetyDataConfig,
   safetyOptions,
   TargetLayoutNode,
@@ -173,7 +172,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   };
 
   const iconClickCallback = (
-    event: MouseEvent,
+    event: GEvent,
     sheetInstance: SpreadSheet,
     cacheDrillFields?: string[],
     disabledFields?: string[],
@@ -201,9 +200,14 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   ) => {
     const curSheet = sheetInstance || ownSpreadsheet;
     const curProps = sheetProps || props;
-    curSheet.setOptions(
-      safetyOptions(HandleDrillDownIcon(curProps, curSheet, iconClickCallback)),
-    );
+    let curOptions = options;
+
+    // 处理下钻参数
+    if (partDrillDown) {
+      curOptions = HandleDrillDownIcon(curProps, curSheet, iconClickCallback);
+    }
+
+    curSheet.setOptions(safetyOptions(curOptions));
   };
 
   const setDataCfg = () => {

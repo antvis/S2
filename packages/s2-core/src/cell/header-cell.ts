@@ -1,18 +1,30 @@
-import { first, map, includes, find, isEqual, get, last } from 'lodash';
+import { Event } from '@antv/g-canvas';
+import {
+  first,
+  map,
+  includes,
+  find,
+  isEqual,
+  get,
+  isEmpty,
+  forEach,
+  filter,
+} from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
-import { CellMeta } from '@/common/interface';
+import {
+  S2CellType,
+  HeaderActionIcon,
+  HeaderActionIconProps,
+  CellMeta,
+} from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
-import {
-  EXTRA_FIELD,
-  InterceptType,
-  TOOLTIP_OPERATOR_MENUS,
-} from '@/common/constant';
+import { EXTRA_FIELD, S2Event } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
-import { TooltipOperatorOptions, SortParam } from '@/common/interface';
+import { SortParam } from '@/common/interface';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;
@@ -31,6 +43,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         ? item?.sortByMeasure === value && isEqual(get(item, 'query'), query)
         : isEqual(get(item, 'query'), query),
     );
+
     const type = getSortTypeIcon(sortParam, isValueCell);
     this.headerConfig.sortParam = {
       ...this.headerConfig.sortParam,
@@ -43,57 +56,158 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.actionIcons = [];
   }
 
+  protected getActionIconCfg() {
+    // 每种 header cell 类型只取第一个配置
+    return filter(
+      this.spreadsheet.options.headerActionIcons,
+      (headerActionIcon: HeaderActionIcon) =>
+        headerActionIcon?.belongsCell === this.cellType,
+    )[0];
+  }
+
+  protected showActionIcons() {
+    const actionIcons = this.getActionIconCfg();
+
+    if (!actionIcons) return false;
+    const { iconNames, displayCondition } = actionIcons;
+    if (isEmpty(iconNames)) return false;
+    // 没有展示条件参数默认全展示
+    if (!displayCondition) return true;
+    return displayCondition(this.meta);
+  }
+
+  private showSortIcon() {
+    if (isEmpty(this.spreadsheet.options.headerActionIcons)) {
+      const { sortParam } = this.headerConfig;
+      const query = this.meta.query;
+      return (
+        isEqual(get(sortParam, 'query'), query) &&
+        get(sortParam, 'type') !== 'none'
+      );
+    }
+    return false;
+  }
+
+  protected getActionIconsWidth() {
+    if (this.showSortIcon()) {
+      const { icon } = this.getStyle();
+      return this.showSortIcon() ? icon.size + icon.margin.left : 0;
+    }
+
+    if (this.showActionIcons()) {
+      const iconNames = this.getActionIconCfg()?.iconNames;
+      const { size, margin } = this.getStyle().icon;
+      return (
+        size * iconNames.length +
+        margin.left +
+        margin.right * (iconNames.length - 1)
+      );
+    }
+  }
+
+  // 绘制排序icon
+  protected drawSortIcons() {
+    const { icon, text } = this.getStyle();
+    if (this.showSortIcon()) {
+      const { sortParam } = this.headerConfig;
+      const position = this.getIconPosition();
+      const sortIcon = new GuiIcon({
+        name: get(sortParam, 'type', 'none'),
+        ...position,
+        width: icon.size,
+        height: icon.size,
+        fill: text.fill,
+      });
+      sortIcon.on('click', (event) => {
+        this.spreadsheet.handleGroupSort(event, this.meta);
+      });
+      this.add(sortIcon);
+      this.actionIcons.push(sortIcon);
+    }
+  }
+
+  protected addActionIcon(
+    iconName: string,
+    x: number,
+    y: number,
+    size: number,
+    action: (prop: HeaderActionIconProps) => void,
+    defaultHide?: boolean,
+  ) {
+    const { text } = this.getStyle();
+    const icon = new GuiIcon({
+      name: iconName,
+      x,
+      y,
+      width: size,
+      height: size,
+      fill: text.fill,
+    });
+    icon.set('visible', !defaultHide);
+    icon.on('mouseover', (event: Event) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
+    });
+    icon.on('click', (event: Event) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+      action({
+        iconName: iconName,
+        meta: this.meta,
+        event: event,
+      });
+    });
+
+    this.actionIcons.push(icon);
+    this.add(icon);
+  }
+
+  protected drawActionIcons() {
+    this.drawSortIcons();
+    const actionIcons = this.getActionIconCfg();
+
+    if (!actionIcons) return;
+    const { iconNames, action, defaultHide } = actionIcons;
+
+    if (this.showActionIcons()) {
+      const position = this.getIconPosition();
+      const { size, margin } = this.getStyle().icon;
+      for (let i = 0; i < iconNames.length; i++) {
+        const x = position.x + i * size + i * margin.left;
+        this.addActionIcon(
+          iconNames[i],
+          x,
+          position.y,
+          size,
+          action,
+          defaultHide,
+        );
+      }
+    }
+  }
+
   protected isValueCell() {
     return this.meta.key === EXTRA_FIELD;
   }
 
-  protected handleGroupSort(event, meta) {
-    event.stopPropagation();
-    this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
-    const operator: TooltipOperatorOptions = {
-      onClick: ({ key }) => {
-        const { rows, columns } = this.spreadsheet.dataCfg.fields;
-        const sortFieldId = this.spreadsheet.isValueInCols()
-          ? last(rows)
-          : last(columns);
-        const { query, value } = meta;
-        const sortParam: SortParam = {
-          sortFieldId,
-          sortMethod: key as SortParam['sortMethod'],
-          sortByMeasure: value,
-          query,
-        };
-        const prevSortParams = this.spreadsheet.dataCfg.sortParams.filter(
-          (item) => item?.sortFieldId !== sortFieldId,
-        );
-        this.spreadsheet.setDataCfg({
-          ...this.spreadsheet.dataCfg,
-          sortParams: [...prevSortParams, sortParam],
-        });
-        this.spreadsheet.render();
-      },
-      menus: TOOLTIP_OPERATOR_MENUS.Sort,
-    };
-
-    this.spreadsheet.showTooltipWithInfo(event, [], {
-      operator,
-      onlyMenu: true,
-    });
-  }
-
   private handleHover(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
-      this.updateByState(InteractionStateName.HOVER, this);
+      this.updateByState(InteractionStateName.HOVER);
+      this.toggleActionIcon(true);
     }
   }
 
   private handleSelect(cells: CellMeta[], nodes: Node[]) {
     if (includeCell(cells, this)) {
-      this.updateByState(InteractionStateName.SELECTED, this);
+      this.updateByState(InteractionStateName.SELECTED);
     }
     const selectedNodeIds = map(nodes, 'id');
     if (includes(selectedNodeIds, this.meta.id)) {
-      this.updateByState(InteractionStateName.SELECTED, this);
+      this.updateByState(InteractionStateName.SELECTED);
+    }
+  }
+
+  public toggleActionIcon(visible: boolean) {
+    if (this.getActionIconCfg()?.defaultHide) {
+      forEach(this.actionIcons, (icon) => icon.set('visible', visible));
     }
   }
 
@@ -115,5 +229,13 @@ export abstract class HeaderCell extends BaseCell<Node> {
       default:
         break;
     }
+  }
+
+  updateByState(stateName: InteractionStateName) {
+    super.updateByState(stateName, this);
+  }
+
+  public hideInteractionShape() {
+    super.hideInteractionShape();
   }
 }

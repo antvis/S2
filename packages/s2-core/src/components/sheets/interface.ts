@@ -35,10 +35,10 @@ export interface PartDrillDown {
   // The numbers of drill down result
   drillItemsNum?: number;
   // Decide the drill down icon show in which levels according to the row header labels.
-  customDisplayByRowName?: {
+  customDisplayByLabelName?: {
     // The names of row header labels.
     // Using the ID_SEPARATOR('[&]') to join two labels when there are hierarchical relations between them.
-    rowNames: string[];
+    labelNames: string[];
     // omit(default): the all levels included in rowNames would hide the drill down icon.
     // pick: only show the drill down icon on the levels those included in rowNames.
     mode: 'pick' | 'omit';

@@ -8,6 +8,7 @@ import { S2PartialOptions } from '@/common/interface/s2Options';
 import { BaseDataSet } from '@/data-set';
 import { Frame } from '@/facet/header';
 import {
+  CellTypes,
   FrameConfig,
   Hierarchy,
   Node,
@@ -159,22 +160,35 @@ export interface NodeField {
   colField?: string[];
 }
 
-export interface RowActionIcons {
-  iconTypes: string[];
-  // 需要展示的层级(行头)
-  display: {
-    level: number; // 层级
-    operator: '>' | '=' | '<' | '>=' | '<='; // 层级关系
-  };
-  // 根据行头名自定义展示
-  customDisplayByRowName?: {
-    // Row headers, using the ID_SEPARATOR('[&]') to join two labels when there are hierarchical relations between them.
-    rowNames: string[];
-    // 指定行头名称是否展示icon
-    mode: 'pick' | 'omit';
-  };
-  // 具体的动作
-  action: (iconType: string, meta: Node, event: Event) => void;
+export interface CustomSVGIcon {
+  // icon 类型名
+  name: string;
+  // 1、base 64
+  // 2、svg本地文件（兼容老方式，可以改颜色）
+  // 3、线上支持的图片地址 TODO  🤔 是否存在安全问题
+  svg: string;
+}
+
+export interface HeaderActionIconProps {
+  iconName: string;
+  meta: Node;
+  event: Event;
+}
+
+export interface HeaderActionIcon {
+  // 已注册的 icon 类型或自定义的 icon 类型名
+  iconNames: string[];
+
+  // 所属的 cell 类型
+  belongsCell: Omit<CellTypes, 'dataCell'>;
+  // 是否默认隐藏， true 为 hover后显示, false 为一直显示
+  defaultHide?: boolean;
+
+  // 需要展示的层级(行头/列头) 如果没有改配置则默认全部打开
+  displayCondition?: (mete: Node) => void;
+
+  // 点击后的执行函数
+  action: (headerActionIconProps: HeaderActionIconProps) => void;
 }
 
 // Hook 渲染和布局相关的函数类型定义
