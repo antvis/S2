@@ -29,7 +29,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         this.interaction.getAllColHeaderCells(),
       );
       forEach(allColHeaderCells, (cell: ColCell) => {
-        cell.updateByState(InteractionStateName.HOVER, cell);
+        cell.updateByState(InteractionStateName.HOVER);
       });
     }
 

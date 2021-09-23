@@ -9,7 +9,6 @@ import {
   isEmpty,
   forEach,
   filter,
-  replace,
 } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '@/common/constant/interaction';

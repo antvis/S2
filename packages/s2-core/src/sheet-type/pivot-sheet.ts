@@ -13,6 +13,7 @@ import {
   TooltipOperatorOptions,
   ViewMeta,
 } from '@/common/interface';
+import { Node } from '@/facet/layout/node';
 import { RowCellCollapseTreeRowsType } from '@/common/interface/emitter';
 import { PivotDataSet } from '@/data-set';
 import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';

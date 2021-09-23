@@ -554,5 +554,5 @@ export abstract class SpreadSheet extends EE {
     });
   }
 
-  public handleGroupSort(event: MouseEvent, meta: T) {}
+  public handleGroupSort(event: MouseEvent, meta: Node) {}
 }
