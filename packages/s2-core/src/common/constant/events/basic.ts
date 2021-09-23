@@ -3,6 +3,7 @@ export enum S2Event {
   ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
   ROW_CELL_TEXT_CLICK = 'row-cell:text-click',
   ROW_CELL_CLICK = 'row-cell:click',
+  ROW_CELL_DOUBLE_CLICK = 'row-cell:double-click',
   ROW_CELL_HOVER = 'row-cell:hover',
   ROW_CELL_MOUSE_DOWN = 'row-cell:mouse-down',
   ROW_CELL_MOUSE_UP = 'row-cell:mouse-up',
@@ -11,6 +12,7 @@ export enum S2Event {
   /** ================ Col Cell ================  */
   COL_CELL_HOVER = 'col-cell:hover',
   COL_CELL_CLICK = 'col-cell:click',
+  COL_CELL_DOUBLE_CLICK = 'col-cell:double-click',
   COL_CELL_MOUSE_DOWN = 'col-cell:mouse-down',
   COL_CELL_MOUSE_UP = 'col-cell:mouse-up',
   COL_CELL_MOUSE_MOVE = 'col-cell:mouse-move',
@@ -18,6 +20,7 @@ export enum S2Event {
   /** ================ Data Cell ================  */
   DATA_CELL_HOVER = 'data-cell:hover',
   DATA_CELL_CLICK = 'data-cell:click',
+  DATA_CELL_DOUBLE_CLICK = 'data-cell:double-click',
   DATA_CELL_MOUSE_UP = 'data-cell:mouse-up',
   DATA_CELL_MOUSE_DOWN = 'data-cell:mouse-down',
   DATA_CELL_MOUSE_MOVE = 'data-cell:mouse-move',
@@ -25,6 +28,7 @@ export enum S2Event {
 
   /** ================ Corner Cell ================  */
   CORNER_CELL_CLICK = 'corner-cell:click',
+  CORNER_CELL_DOUBLE_CLICK = 'corner-cell:double-click',
   CORNER_CELL_MOUSE_UP = 'corner-cell:mouse-up',
   CORNER_CELL_MOUSE_MOVE = 'corner-cell:mouse-move',
   CORNER_CELL_HOVER = 'corner-cell:hover',
@@ -35,6 +39,7 @@ export enum S2Event {
   MERGED_ELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
   MERGED_CELLS_HOVER = 'merged-cells:hover',
   MERGED_CELLS_CLICK = 'merged-cells:click',
+  MERGED_CELLS_DOUBLE_CLICK = 'merged-cells:double-click',
   MERGED_CELLS_MOUSE_DOWN = 'merged-cells:mouse-down',
 
   /** ================ Table Sort ================  */
@@ -70,4 +75,7 @@ export enum S2Event {
 
   /** ================ Global Mouse ================  */
   GLOBAL_MOUSE_UP = 'global:mouse-up',
+
+  /** ================ Global Context Menu ================  */
+  GLOBAL_CONTEXT_MENU = 'global:context-menu',
 }

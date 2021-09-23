@@ -5,4 +5,6 @@ export enum OriginEventType {
   KEY_DOWN = 'keydown',
   KEY_UP = 'keyup',
   CLICK = 'click',
+  DOUBLE_CLICK = 'dblclick',
+  CONTEXT_MENU = 'contextmenu',
 }
