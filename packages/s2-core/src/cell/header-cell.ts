@@ -21,8 +21,9 @@ import {
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
-import { EXTRA_FIELD, ID_SEPARATOR, S2Event } from '@/common/constant';
+import { EXTRA_FIELD, S2Event } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
+import { generateId } from '@/utils/layout/generate-id';
 import { SortParam } from '@/common/interface';
 
 export abstract class HeaderCell extends BaseCell<Node> {
@@ -183,9 +184,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       actionIcons;
     if (customDisplayByLabelName) {
       const { labelNames, mode } = customDisplayByLabelName;
-      const ids = labelNames.map(
-        (labelName) => `root${ID_SEPARATOR}${labelName}`,
-      );
+      const ids = labelNames.map((labelName) => generateId(`root`, labelName));
 
       if (
         (mode === 'omit' && ids.includes(this.meta.id)) ||
@@ -264,6 +263,5 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   public hideInteractionShape() {
     super.hideInteractionShape();
-    // each(this.actionIcons, (icon) => icon.set('visible', false));
   }
 }

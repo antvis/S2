@@ -12,9 +12,10 @@ import { SpreadSheet } from '@/sheet-type';
 export const generateId = (
   parentId: string,
   value: string,
-  spreadsheet: SpreadSheet,
+  spreadsheet?: SpreadSheet,
 ): string => {
   const id = `${parentId}${ID_SEPARATOR}${value}`;
+  if (!spreadsheet) return id;
   const customHeaders = get(spreadsheet, 'options.customHeaderCells');
   const mode = customHeaders?.mode;
   const cellLabels = customHeaders?.cellLabels;
