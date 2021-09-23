@@ -40,6 +40,12 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Bundle size
+        run: yarn bundle:size
+        env:
+          CI: true
+          BUNDLESIZE_GITHUB_TOKEN: ${{ secrets.BUNDLESIZE_GITHUB_TOKEN }}
+
       - name: Workflow failed alert
         if: ${{ failure() }}
         uses: actions-cool/maintain-one-comment@main

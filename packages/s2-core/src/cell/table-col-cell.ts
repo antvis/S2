@@ -63,7 +63,6 @@ export class TableColCell extends ColCell {
       height: cellHeight,
       key,
     } = this.meta;
-    const content = label;
 
     const style = this.getStyle();
     const textStyle = get(style, 'bolderText');
@@ -94,7 +93,7 @@ export class TableColCell extends ColCell {
     const textY = position.y;
 
     const text = getEllipsisText(
-      content,
+      label,
       cellWidth - leftPadding - rightPadding,
       textStyle,
     );
@@ -142,8 +141,7 @@ export class TableColCell extends ColCell {
       [],
     );
     return !!hiddenColumnsDetail.find(
-      ({ displayNextSiblingNode }) =>
-        displayNextSiblingNode?.field === this.meta.field,
+      ({ displaySiblingNode }) => displaySiblingNode?.field === this.meta.field,
     );
   }
 
@@ -158,7 +156,6 @@ export class TableColCell extends ColCell {
       horizontalBorderColor,
       horizontalBorderWidth,
       horizontalBorderColorOpacity,
-      shadowColors,
     } = this.theme.splitLine;
     const lineX = this.isLastColumn() ? x + width - horizontalBorderWidth : x;
 
@@ -217,7 +214,10 @@ export class TableColCell extends ColCell {
 
   private isLastColumn() {
     const { field } = this.meta;
-    const columns = this.spreadsheet.getColumnNodes();
-    return last(columns).field === field;
+    const columnNodes = this.spreadsheet.getColumnNodes();
+    const initColumnNodes = this.spreadsheet.getInitColumnNodes();
+    return (
+      last(columnNodes).field === field && last(initColumnNodes).field !== field
+    );
   }
 }

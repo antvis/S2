@@ -1,5 +1,5 @@
 import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { isEmpty } from 'lodash';
+import { isEmpty, startsWith } from 'lodash';
 import { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
 import { InterceptType, S2Event } from '@/common/constant';
@@ -32,6 +32,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   public brushRangeDataCells: DataCell[] = [];
 
   public brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
+
+  private brushSelectionMinimumMoveDistance = 5;
 
   public bindEvents() {
     this.bindMouseDown();
@@ -104,17 +106,29 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       event.preventDefault();
 
-      if (this.brushSelectionStage === InteractionBrushSelectionStage.DRAGGED) {
+      if (this.isValidBrushSelection()) {
         this.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
-        this.hidePrepareSelectMaskShape();
         this.updateSelectedCells();
         this.spreadsheet.showTooltipWithInfo(
           event,
           getActiveCellsTooltipData(this.spreadsheet),
         );
       }
+      this.hidePrepareSelectMaskShape();
       this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
     });
+  }
+
+  private isValidBrushSelection() {
+    if (this.brushSelectionStage !== InteractionBrushSelectionStage.DRAGGED) {
+      return false;
+    }
+    const { start, end } = this.getBrushRange();
+    const isMovedEnoughDistance =
+      end.x - start.x > this.brushSelectionMinimumMoveDistance ||
+      end.y - start.y > this.brushSelectionMinimumMoveDistance;
+
+    return isMovedEnoughDistance;
   }
 
   private setDisplayedDataCells() {
@@ -132,8 +146,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.prepareSelectMaskShape.show();
   }
 
-  private hidePrepareSelectMaskShape() {
-    this.prepareSelectMaskShape.hide();
+  public hidePrepareSelectMaskShape() {
+    this.prepareSelectMaskShape?.hide();
   }
 
   private getBrushPoint(event: CanvasEvent): BrushPoint {

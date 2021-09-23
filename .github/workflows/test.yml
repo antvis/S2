@@ -36,15 +36,10 @@ jobs:
 
       - name: Test
         run: |
-          yarn test:coverage
+          yarn test:ci-coverage
         env:
           CI: true
-
-      - name: Upload test coverage
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: './packages/s2-core/coverage/lcov.info'
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Workflow failed alert
         if: ${{ failure() }}

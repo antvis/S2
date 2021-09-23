@@ -44,6 +44,8 @@
     "test:live": "node ./scripts/test-live.mjs",
     "test": "jest",
     "test:coverage": "yarn test --coverage",
+    "test:watch": "yarn test --watch",
+    "test:ci-coverage": "codecov",
     "tsc": "tsc --noEmit"
   },
   "peerDependencies": {
@@ -70,16 +72,14 @@
     "*.css",
     "dist/*"
   ],
-  "limit-size": [
+  "bundlesize": [
     {
       "path": "./dist/s2.min.js",
-      "limit": "120 kB",
-      "gzip": true
+      "maxSize": "120 kB"
     },
     {
       "path": "./dist/s2.min.css",
-      "limit": "5 kB",
-      "gzip": true
+      "maxSize": "5 kB"
     }
   ]
 }
