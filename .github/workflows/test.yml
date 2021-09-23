@@ -3,7 +3,7 @@ name: test
 on: [push]
 
 jobs:
-  build:
+  test:
     # jest-electron 需要 macos 环境, 但是 免费用户 并发有限制, 容易排队
     runs-on: macos-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
@@ -37,9 +37,14 @@ jobs:
       - name: Test
         run: |
           yarn test:ci-coverage
+
+      - name: Test coverage
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
         env:
           CI: true
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Workflow failed alert
         if: ${{ failure() }}

@@ -26,7 +26,6 @@
     "test": "lerna run test --stream",
     "test:coverage": "lerna run test:coverage --stream",
     "test:watch": "lerna run test:watch --stream",
-    "test:ci-coverage": "lerna run test:ci-coverage --stream",
     "tsc": "lerna run tsc --stream",
     "site:bootstrap": "cd ./s2-site && yarn --frozen-lockfile",
     "site:start": "cd ./s2-site && yarn start",
@@ -40,6 +39,7 @@
     "lint:fix": "yarn lint:fix-script && yarn lint:fix-style",
     "lint:fix-script": "yarn lint:script --fix",
     "lint:fix-style": "yarn lint:style --fix",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r -l",
     "prepare": "husky install"
   },
   "commitlint": {
@@ -75,7 +75,7 @@
     "@typescript-eslint/parser": "^4.31.1",
     "@zerollup/ts-transform-paths": "^1.7.18",
     "bundlesize": "^0.18.1",
-    "codecov": "^3.8.3",
+    "conventional-changelog-cli": "^2.1.1",
     "cpx": "^1.5.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
