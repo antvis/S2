@@ -13,7 +13,6 @@ import {
 } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { TooltipOperatorOptions, SortParam } from '@/common/interface';
-import { SortMethod } from '@/index';
 
 export abstract class HeaderCell extends BaseCell<Node> {
   protected headerConfig: BaseHeaderConfig;

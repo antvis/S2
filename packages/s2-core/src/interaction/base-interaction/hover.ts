@@ -105,11 +105,26 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     meta: ViewMeta = {} as ViewMeta,
     showSingleTips?: boolean,
   ) {
-    const { data, query, value, fieldValue, rowQuery, colQuery } = meta;
+    const {
+      data,
+      query,
+      value,
+      field,
+      fieldValue,
+      valueField,
+      rowQuery,
+      colQuery,
+    } = meta;
     const currentCellMeta = data;
 
     const cellInfos = showSingleTips
-      ? [{ ...query, value: value || fieldValue }]
+      ? [
+          {
+            ...query,
+            value: value || fieldValue,
+            valueField: field || valueField,
+          },
+        ]
       : [currentCellMeta || { ...rowQuery, ...colQuery }];
 
     return cellInfos;
