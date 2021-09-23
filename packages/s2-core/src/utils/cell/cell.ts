@@ -112,10 +112,7 @@ export const getTextAndFollowingIconPosition = (
         startX +
         textWidth / 2 +
         (iconPosition === 'left' ? size + margin.right : 0);
-      iconX =
-        startX +
-        (iconPosition === 'left' ? 0 : textWidth + margin.left) +
-        textWidth;
+      iconX = startX + (iconPosition === 'left' ? 0 : textWidth + margin.left);
       break;
     }
 
