@@ -224,6 +224,11 @@ function MainLayout() {
         <Button onClick={handleModal} size="small" style={{ fontSize: 12 }}>
           高级排序
         </Button>
+        <span
+          style={{ fontSize: 12, color: 'rgb(247, 106, 36)', marginLeft: 10 }}
+        >
+          组内排序优先级高于高级排序
+        </span>
       </div>
       <Modal
         title="高级排序"
@@ -254,7 +259,7 @@ function MainLayout() {
             </div>
           </Sider>
           <Content className="content-layout">
-            <div className="title">按以下规则进行排序</div>
+            <div className="title">按以下规则进行排序(优先级由低到高)</div>
             <Form form={form} name="form" className="custom-form">
               {ruleList?.map((item) => {
                 return (
