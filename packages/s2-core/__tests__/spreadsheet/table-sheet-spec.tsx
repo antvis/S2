@@ -109,7 +109,7 @@ function MainLayout() {
       device: 'pc',
     },
     pagination: showPagination && {
-      pageSize: 10,
+      pageSize: 50,
       current: 1,
     },
     frozenRowCount: 2,
@@ -157,7 +157,6 @@ function MainLayout() {
   return (
     <Space direction="vertical">
       <Space>
-        {' '}
         <Switcher
           values={switcherValues}
           onSubmit={(result) => {

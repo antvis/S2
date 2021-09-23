@@ -464,16 +464,33 @@ export abstract class BaseFacet {
     return last(this.viewCellWidths);
   };
 
+  getCellRange() {
+    const { pagination } = this.cfg;
+    const heights = this.viewCellHeights;
+    let start = 0;
+    let end = heights.getTotalLength() - 1;
+
+    if (this.spreadsheet.options.pagination) {
+      const { current, pageSize } = pagination;
+
+      start = Math.max((current - 1) * pageSize, 0);
+      end = Math.min(current * pageSize - 1, heights.getTotalLength() - 1);
+    }
+
+    return {
+      start,
+      end,
+    };
+  }
+
   getRealHeight = (): number => {
     const { pagination } = this.cfg;
     const heights = this.viewCellHeights;
 
     if (pagination) {
-      const { current, pageSize } = pagination;
+      const { start, end } = this.getCellRange();
 
-      const start = Math.max((current - 1) * pageSize, 0);
-      const end = Math.min(current * pageSize, heights.getTotalLength() - 1);
-      return heights.getCellOffsetY(end) - heights.getCellOffsetY(start);
+      return heights.getCellOffsetY(end + 1) - heights.getCellOffsetY(start);
     }
     return heights.getTotalHeight();
   };

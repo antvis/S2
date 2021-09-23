@@ -89,10 +89,11 @@ export class TableFacet extends BaseFacet {
       const cellHeight =
         cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
 
+      const cellRange = this.getCellRange();
+
       let data;
 
       const width = this.panelBBox.maxX;
-      const dataLength = dataSet.getMultiData({}).length;
       const colLength = colLeafNodes.length;
 
       let x = col.x;
@@ -100,9 +101,9 @@ export class TableFacet extends BaseFacet {
 
       if (
         frozenTrailingRowCount > 0 &&
-        rowIndex >= dataLength - frozenTrailingRowCount
+        rowIndex >= cellRange.end + 1 - frozenTrailingRowCount
       ) {
-        y = this.panelBBox.maxY - (dataLength - rowIndex) * cellHeight;
+        y = this.panelBBox.maxY - (cellRange.end + 1 - rowIndex) * cellHeight;
       }
 
       if (
@@ -346,25 +347,26 @@ export class TableFacet extends BaseFacet {
   }
 
   protected initFrozenGroupPosition = () => {
+    const scrollY = this.getPaginationScrollY();
     translateGroup(
       this.spreadsheet.frozenRowGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
     translateGroup(
       this.spreadsheet.frozenColGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
     translateGroup(
       this.spreadsheet.frozenTrailingColGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
     translateGroup(
       this.spreadsheet.frozenTopGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
   };
 
@@ -495,8 +497,9 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
       frozenTrailingColCount,
     } = this.spreadsheet.options;
-    const dataLength = this.viewCellHeights.getTotalLength();
+
     const colLength = this.layoutResult.colLeafNodes.length;
+    const cellRange = this.getCellRange();
 
     const result = calculateFrozenCornerCells(
       {
@@ -506,7 +509,7 @@ export class TableFacet extends BaseFacet {
         frozenTrailingColCount,
       },
       colLength,
-      dataLength,
+      cellRange,
     );
 
     Object.keys(result).forEach((key) => {
@@ -535,8 +538,8 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
       frozenTrailingColCount,
     } = this.spreadsheet.options;
-    const dataLength = this.viewCellHeights.getTotalLength();
     const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
+    const cellRange = this.getCellRange();
 
     const frozenCellType = getFrozenDataCellType(
       cell.getMeta(),
@@ -547,7 +550,7 @@ export class TableFacet extends BaseFacet {
         frozenTrailingColCount,
       },
       colLength,
-      dataLength,
+      cellRange,
     );
 
     const group = FrozenCellGroupMap[frozenCellType];
@@ -610,7 +613,6 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
     } = this.spreadsheet.options;
 
-    const dataLength = this.viewCellHeights.getTotalLength();
     const colLength = this.layoutResult.colLeafNodes.length;
 
     const indexes = calculateInViewIndexes(
@@ -622,6 +624,8 @@ export class TableFacet extends BaseFacet {
       this.getRealScrollX(this.cornerBBox.width),
     );
 
+    const cellRange = this.getCellRange();
+
     return splitInViewIndexesWithFrozen(
       indexes,
       {
@@ -631,7 +635,7 @@ export class TableFacet extends BaseFacet {
         frozenTrailingRowCount,
       },
       colLength,
-      dataLength,
+      cellRange,
     );
   }
 }

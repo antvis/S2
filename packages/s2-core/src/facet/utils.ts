@@ -124,7 +124,10 @@ export const getFrozenDataCellType = (
   },
   frozenOpts: FrozenOpts,
   colLength: number,
-  rowLength: number,
+  cellRange: {
+    start: number;
+    end: number;
+  },
 ) => {
   const {
     frozenColCount,
@@ -134,12 +137,12 @@ export const getFrozenDataCellType = (
   } = frozenOpts;
   const { colIndex, rowIndex } = meta;
 
-  if (rowIndex <= frozenRowCount - 1) {
+  if (rowIndex <= cellRange.start + frozenRowCount - 1) {
     return FrozenCellType.ROW;
   }
   if (
     frozenTrailingRowCount > 0 &&
-    rowIndex >= rowLength - frozenTrailingRowCount
+    rowIndex >= cellRange.end + 1 - frozenTrailingRowCount
   ) {
     return FrozenCellType.TRAILING_ROW;
   }
@@ -161,7 +164,10 @@ export const getFrozenDataCellType = (
 export const calculateFrozenCornerCells = (
   opts: FrozenOpts,
   colLength: number,
-  rowLength: number,
+  cellRange: {
+    start: number;
+    end: number;
+  },
 ) => {
   const {
     frozenColCount,
@@ -179,7 +185,7 @@ export const calculateFrozenCornerCells = (
 
   // frozenColGroup with frozenRowGroup or frozenTrailingRowGroup. Top left and bottom left corner.
   for (let i = 0; i < frozenColCount; i++) {
-    for (let j = 0; j < frozenRowCount; j++) {
+    for (let j = cellRange.start; j < cellRange.start + frozenRowCount; j++) {
       result[FrozenCellType.TOP].push({
         x: i,
         y: j,
@@ -188,7 +194,7 @@ export const calculateFrozenCornerCells = (
 
     if (frozenTrailingRowCount > 0) {
       for (let j = 0; j < frozenTrailingRowCount; j++) {
-        const index = rowLength - 1 - j;
+        const index = cellRange.end - j;
         result[FrozenCellType.BOTTOM].push({
           x: i,
           y: index,
@@ -200,7 +206,7 @@ export const calculateFrozenCornerCells = (
   // frozenTrailingColGroup with frozenRowGroup or frozenTrailingRowGroup. Top right and bottom right corner.
   for (let i = 0; i < frozenTrailingColCount; i++) {
     const colIndex = colLength - 1 - i;
-    for (let j = 0; j < frozenRowCount; j++) {
+    for (let j = cellRange.start; j < cellRange.start + frozenRowCount; j++) {
       result[FrozenCellType.TOP].push({
         x: colIndex,
         y: j,
@@ -209,7 +215,7 @@ export const calculateFrozenCornerCells = (
 
     if (frozenTrailingRowCount > 0) {
       for (let j = 0; j < frozenTrailingRowCount; j++) {
-        const index = rowLength - 1 - j;
+        const index = cellRange.end - j;
         result[FrozenCellType.BOTTOM].push({
           x: colIndex,
           y: index,
@@ -228,7 +234,10 @@ export const splitInViewIndexesWithFrozen = (
   indexes: Indexes,
   frozenOpts: FrozenOpts,
   colLength: number,
-  rowLength: number,
+  cellRange: {
+    start: number;
+    end: number;
+  },
 ) => {
   const {
     frozenColCount,
@@ -251,29 +260,29 @@ export const splitInViewIndexesWithFrozen = (
     centerIndexes[1] = colLength - frozenTrailingColCount - 1;
   }
 
-  if (centerIndexes[2] < frozenRowCount) {
-    centerIndexes[2] = frozenRowCount;
+  if (centerIndexes[2] < cellRange.start + frozenRowCount) {
+    centerIndexes[2] = cellRange.start + frozenRowCount;
   }
 
   if (
     frozenTrailingRowCount > 0 &&
-    centerIndexes[3] >= rowLength - frozenTrailingRowCount
+    centerIndexes[3] >= cellRange.end + 1 - frozenTrailingRowCount
   ) {
-    centerIndexes[3] = rowLength - frozenTrailingRowCount - 1;
+    centerIndexes[3] = cellRange.end + 1 - frozenTrailingRowCount;
   }
 
   // Calculate indexes for four frozen groups
   const frozenRowIndexes: Indexes = [...centerIndexes];
-  frozenRowIndexes[2] = 0;
-  frozenRowIndexes[3] = frozenRowCount - 1;
+  frozenRowIndexes[2] = cellRange.start;
+  frozenRowIndexes[3] = cellRange.start + frozenRowCount - 1;
 
   const frozenColIndexes: Indexes = [...centerIndexes];
   frozenColIndexes[0] = 0;
   frozenColIndexes[1] = frozenColCount - 1;
 
   const frozenTrailingRowIndexes: Indexes = [...centerIndexes];
-  frozenTrailingRowIndexes[2] = rowLength - frozenTrailingRowCount;
-  frozenTrailingRowIndexes[3] = rowLength - 1;
+  frozenTrailingRowIndexes[2] = cellRange.end + 1 - frozenTrailingRowCount;
+  frozenTrailingRowIndexes[3] = cellRange.end;
 
   const frozenTrailingColIndexes: Indexes = [...centerIndexes];
   frozenTrailingColIndexes[0] = colLength - frozenTrailingColCount;
