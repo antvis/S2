@@ -1,0 +1,31 @@
+{
+  "fields": {
+    "rows": ["month"],
+    "columns": [],
+    "values": ["price", "number"]
+  },
+  "meta": [
+    {
+      "field": "month",
+      "name": "订单日期"
+    },
+    {
+      "field": "number",
+      "name": "数量"
+    },
+    {
+      "field": "price",
+      "name": "价格"
+    }
+  ],
+  "data": [
+    {
+      "month": "2021-09",
+      "price": 12
+    },
+    {
+      "month": "2021-09",
+      "number": 2
+    }
+  ]
+}

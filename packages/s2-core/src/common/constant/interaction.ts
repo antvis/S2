@@ -1,5 +1,3 @@
-import { i18n } from '@/common/i18n';
-
 export enum InteractionName {
   DATA_CELL_CLICK = 'dataCellClick',
   MERGED_CELLS_CLICK = 'mergedCellsClick',
@@ -51,11 +49,6 @@ export const SHAPE_ATTRS_MAP = {
 
 export const INTERACTION_STATE_INFO_KEY = 'interactionStateInfo';
 
-export const INTERACTION_TREND = {
-  ID: '__INTERACTION_TREND_ID__',
-  NAME: i18n('趋势'),
-};
-
 export enum InteractionBrushSelectionStage {
   CLICK = 'click',
   UN_DRAGGED = 'unDragged',
@@ -66,6 +59,7 @@ export enum InteractionKeyboardKey {
   SHIFT = 'Shift',
   COPY = 'c',
   ESC = 'Escape',
+  META = 'Meta',
 }
 
 export enum SortMethodType {
@@ -77,9 +71,11 @@ export enum InterceptType {
   HOVER = 'hover',
   CLICK = 'click',
   BRUSH_SELECTION = 'brushSelection',
+  MULTI_SELECTION = 'multiSelection',
 }
 
 export type Intercept =
   | InterceptType.HOVER
   | InterceptType.CLICK
-  | InterceptType.BRUSH_SELECTION;
+  | InterceptType.BRUSH_SELECTION
+  | InterceptType.MULTI_SELECTION;

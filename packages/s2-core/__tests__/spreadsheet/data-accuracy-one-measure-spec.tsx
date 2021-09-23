@@ -22,6 +22,7 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
+  PivotSheet,
 } from '@/index';
 
 let spreadsheet1: SpreadSheet;
@@ -31,7 +32,7 @@ const setSpreadSheet = (
   options: S2Options,
   index: number,
 ) => {
-  const ss = new SpreadSheet(dom, dataCfg, options);
+  const ss = new PivotSheet(dom, dataCfg, options);
   if (index === 1) {
     spreadsheet1 = ss;
   }
@@ -110,7 +111,6 @@ const getOptions = () => {
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: false,
-    mode: 'pivot',
     totals: {
       row: {
         showGrandTotals: true,

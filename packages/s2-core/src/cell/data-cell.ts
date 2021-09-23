@@ -1,7 +1,6 @@
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
 import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
-import { Node } from '@/facet/layout/node';
 import { BaseCell } from '@/cell/base-cell';
 import {
   CellTypes,
@@ -18,6 +17,7 @@ import {
   IconCondition,
   MappingResult,
   S2CellType,
+  CellMeta,
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
@@ -59,14 +59,14 @@ export class DataCell extends BaseCell<ViewMeta> {
     return CellTypes.DATA_CELL;
   }
 
-  protected handlePrepareSelect(cells: S2CellType[]) {
+  protected handlePrepareSelect(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.PREPARE_SELECT);
     }
   }
 
-  protected handleSelect(cells: S2CellType[]) {
-    const currentCellType = cells?.[0]?.cellType;
+  protected handleSelect(cells: CellMeta[]) {
+    const currentCellType = cells?.[0]?.type;
     switch (currentCellType) {
       // 列多选
       case CellTypes.COL_CELL:
@@ -89,9 +89,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  protected handleHover(cells: S2CellType[]) {
-    const currentHoverCell = first(cells) as S2CellType;
-    if (currentHoverCell.cellType !== CellTypes.DATA_CELL) {
+  protected handleHover(cells: CellMeta[]) {
+    const currentHoverCell = first(cells) as CellMeta;
+    if (currentHoverCell.type !== CellTypes.DATA_CELL) {
       this.hideInteractionShape();
       return;
     }
@@ -103,8 +103,8 @@ export class DataCell extends BaseCell<ViewMeta> {
       const currentRowIndex = this.meta.rowIndex;
       // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
       if (
-        currentColIndex === currentHoverCell?.getMeta().colIndex ||
-        currentRowIndex === currentHoverCell?.getMeta().rowIndex
+        currentColIndex === currentHoverCell?.colIndex ||
+        currentRowIndex === currentHoverCell?.rowIndex
       ) {
         this.updateByState(InteractionStateName.HOVER);
       } else {
@@ -120,7 +120,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    const cells = this.spreadsheet.interaction.getActiveCells();
+    const cells = this.spreadsheet.interaction.getCells();
 
     if (isEmpty(cells) || !stateName) {
       return;
@@ -398,14 +398,12 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   // dataCell根据state 改变当前样式，
   private changeRowColSelectState(indexType: ViewMetaIndexType) {
+    const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
-    const { nodes = [], cells = [] } = this.spreadsheet.interaction.getState();
-    const isEqualIndex = [...nodes, ...cells].find((cell) => {
-      if (cell instanceof Node) {
-        return get(cell, indexType) === currentIndex;
-      }
-      return get(cell?.getMeta(), indexType) === currentIndex;
-    });
+    const { nodes = [], cells = [] } = interaction.getState();
+    const isEqualIndex = [...nodes, ...cells].find(
+      (cell) => get(cell, indexType) === currentIndex,
+    );
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.selectedCellsSpotlight) {

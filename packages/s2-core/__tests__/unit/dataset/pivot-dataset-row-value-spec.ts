@@ -1,16 +1,16 @@
 /**
  * pivot mode data-set test when value in row.
  */
-import { EXTRA_FIELD, VALUE_FIELD } from 'src/common/constant';
-import { S2DataConfig } from 'src/common/interface';
-import { SpreadSheet } from 'src/sheet-type';
-import { PivotDataSet } from 'src/data-set/pivot-data-set';
 import { get } from 'lodash';
-import { assembleDataCfg } from 'tests/util/sheet-entry';
+import { assembleDataCfg } from '../../util/sheet-entry';
+import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { S2DataConfig } from '@/common/interface';
+import { PivotSheet } from '@/sheet-type';
+import { PivotDataSet } from '@/data-set/pivot-data-set';
 
 jest.mock('src/sheet-type');
 jest.mock('src/facet/layout/node');
-const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
+const MockPivotSheet = PivotSheet as any as jest.Mock<PivotSheet>;
 
 describe('Pivot Mode Test When Value In Row', () => {
   let dataSet: PivotDataSet;
@@ -24,8 +24,8 @@ describe('Pivot Mode Test When Value In Row', () => {
   });
 
   beforeEach(() => {
-    MockSpreadSheet.mockClear();
-    dataSet = new PivotDataSet(new MockSpreadSheet());
+    MockPivotSheet.mockClear();
+    dataSet = new PivotDataSet(new MockPivotSheet());
 
     dataSet.setDataCfg(dataCfg);
   });

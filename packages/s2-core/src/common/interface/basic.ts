@@ -1,6 +1,5 @@
 import { Event, ShapeAttrs } from '@antv/g-canvas';
 import { Padding } from '../interface/theme';
-import { BaseTooltip } from '../../ui/tooltip';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { CustomTreeItem } from '@/common/interface';
@@ -25,7 +24,6 @@ export interface FormatResult {
   value: DataItem;
 }
 
-export type Aggregation = 'SUM' | 'AVG' | 'MIN' | 'MAX';
 export type SortMethod = 'ASC' | 'DESC';
 
 export interface Meta {
@@ -35,7 +33,6 @@ export interface Meta {
   // 数值字段：一般用于格式化数字带戴维
   // 文本字段：一般用于做字段枚举值的别名
   readonly formatter?: Formatter;
-  readonly aggregation?: Aggregation;
 }
 
 /**
@@ -75,7 +72,7 @@ export interface Fields {
   columns?: string[];
   // value fields
   values?: string[];
-  // measure values in cols as new col, only works in 'pivot' mode
+  // measure values in cols as new col, only works for PivotSheet
   valueInCols?: boolean;
 }
 
@@ -84,10 +81,6 @@ export interface Total {
   showGrandTotals: boolean;
   /** 是否显示小计 */
   showSubTotals: boolean;
-  /** 聚合方式 */
-  aggregation: Aggregation;
-  /** 小计聚合方式 */
-  aggregationSub: Aggregation;
   /** 小计的汇总维度 */
   subTotalsDimensions: string[];
   /** 布局位置，默认是下或右 */
@@ -108,21 +101,6 @@ export interface Total {
 export interface Totals {
   readonly row?: Partial<Readonly<Total>>;
   readonly col?: Partial<Readonly<Total>>;
-}
-
-export interface Tooltip {
-  readonly showTooltip?: boolean;
-  readonly showOperation?: boolean;
-  readonly showSummary?: boolean;
-  readonly showDetail?: boolean;
-  readonly showInfos?: boolean;
-  readonly row?: Tooltip;
-  readonly col?: Tooltip;
-  readonly cell?: Tooltip;
-  // custom tooltips
-  readonly renderTooltip?: RenderTooltip;
-  // replace the whole default tooltip component
-  readonly tooltipComponent?: JSX.Element;
 }
 
 export interface Sort {
@@ -218,8 +196,6 @@ export type CellCallback = (
   spreadsheet: SpreadSheet,
   ...restOptions
 ) => S2CellType;
-
-export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
 
@@ -320,6 +296,8 @@ export interface SpreadSheetFacetCfg extends Fields, S2PartialOptions, Style {
 
 export interface ViewMeta {
   spreadsheet: SpreadSheet;
+  // cell's unique id
+  id: string;
   // cell's coordination-x
   x: number;
   // cell's coordination-y

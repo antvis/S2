@@ -2,15 +2,15 @@
  * 交叉表核心数据流程（保证基本数据正确）
  * */
 import { flattenDeep, get, size, uniq } from 'lodash';
-import { assembleDataCfg, assembleOptions } from 'tests/util/sheet-entry';
-import { getContainer } from 'tests/util/helpers';
-import { data } from 'tests/data/mock-dataset.json';
+import { assembleDataCfg, assembleOptions } from '../../util/sheet-entry';
+import { getContainer } from '../../util/helpers';
+import { data } from '../../data/mock-dataset.json';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
-import { SpreadSheet } from '@/sheet-type';
+import { PivotSheet } from '@/sheet-type';
 
 describe('Pivot Table Core Data Process', () => {
-  const ss = new SpreadSheet(
+  const ss = new PivotSheet(
     getContainer(),
     assembleDataCfg({
       totalData: [],

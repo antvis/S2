@@ -1,4 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { isEmpty, forEach } from 'lodash';
 import { BaseEvent, BaseEventImplement } from '../base-event';
 import { ColCell, RowCell } from '@/cell';
@@ -59,7 +60,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   ) {
     this.interaction.hoverTimer = window.setTimeout(() => {
       this.interaction.changeState({
-        cells: [cell],
+        cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER_FOCUS,
       });
       const showSingleTips = this.spreadsheet.isTableMode();
@@ -86,7 +87,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
     const meta = cell.getMeta() as ViewMeta;
     this.interaction.changeState({
-      cells: [cell],
+      cells: [getCellMeta(cell)],
       stateName: InteractionStateName.HOVER,
     });
     cell.update();
@@ -105,11 +106,26 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     meta: ViewMeta = {} as ViewMeta,
     showSingleTips?: boolean,
   ) {
-    const { data, query, value, fieldValue, rowQuery, colQuery } = meta;
+    const {
+      data,
+      query,
+      value,
+      field,
+      fieldValue,
+      valueField,
+      rowQuery,
+      colQuery,
+    } = meta;
     const currentCellMeta = data;
 
     const cellInfos = showSingleTips
-      ? [{ ...query, value: value || fieldValue }]
+      ? [
+          {
+            ...query,
+            value: value || fieldValue,
+            valueField: field || valueField,
+          },
+        ]
       : [currentCellMeta || { ...rowQuery, ...colQuery }];
 
     return cellInfos;
@@ -124,7 +140,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
       const meta = cell.getMeta() as ViewMeta;
       this.interaction.changeState({
-        cells: [cell],
+        cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER,
       });
 

@@ -3,14 +3,14 @@ import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { getContainer } from '../util/helpers';
-import { S2DataConfig, S2Options, SheetComponent, SpreadSheet } from '@/index';
+import { S2DataConfig, S2Options, SheetComponent, PivotSheet } from '@/index';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,
   dataCfg: S2DataConfig,
   options: S2Options,
 ) => {
-  return new SpreadSheet(dom, dataCfg, options);
+  return new PivotSheet(dom, dataCfg, options);
 };
 
 const mockData = {

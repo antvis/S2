@@ -12,7 +12,8 @@ import {
   S2DataConfig,
   S2Options,
   SheetComponent,
-  SpreadSheet,
+  PivotSheet,
+  SheetType,
 } from '@/index';
 
 let data = getMockData('../data/tableau-supermarket.csv');
@@ -30,7 +31,7 @@ const getSpreadSheet = (
   dataCfg: S2DataConfig,
   options: S2Options,
 ) => {
-  return new SpreadSheet(dom, dataCfg, options);
+  return new PivotSheet(dom, dataCfg, options);
 };
 
 const baseDataCfg: S2DataConfig = {
@@ -103,7 +104,6 @@ const baseOptions = {
   hierarchyCollapse: false,
   showSeriesNumber: true,
   freezeRowHeader: false,
-  mode: 'pivot',
   valueInCols: true,
   conditions: {
     text: [],
@@ -339,31 +339,31 @@ const tabularOptions = {
   ],
 } as S2Options;
 
-const getDataCfg = (sheetType: 'base' | 'tabular') => {
+const getDataCfg = (sheetType: SheetType) => {
   switch (sheetType) {
     case 'tabular':
       return tabularDataCfg;
-    case 'base':
+    case 'pivot':
     default:
       return baseDataCfg;
   }
 };
 
-const getOptions = (sheetType: 'base' | 'tabular') => {
+const getOptions = (sheetType: SheetType) => {
   switch (sheetType) {
     case 'tabular':
       return tabularOptions;
-    case 'base':
+    case 'pivot':
     default:
       return baseOptions;
   }
 };
 
 function MainLayout() {
-  const [sheetType, setSheetType] = React.useState<'base' | 'tabular'>('base');
-  const [options, setOptions] = React.useState<S2Options>(getOptions('base'));
+  const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
+  const [options, setOptions] = React.useState<S2Options>(getOptions('pivot'));
   const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(
-    getDataCfg('base'),
+    getDataCfg('pivot'),
   );
 
   let sheet;
@@ -408,7 +408,7 @@ function MainLayout() {
   };
 
   const onCheckChanged = (checked) => {
-    const type = checked ? 'base' : 'tabular';
+    const type = checked ? 'pivot' : 'tabular';
     setSheetType(type);
     setDataCfg(getDataCfg(type));
     setOptions(getOptions(type));

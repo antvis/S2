@@ -1,4 +1,5 @@
 import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { isEmpty } from 'lodash';
 import { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
@@ -32,6 +33,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   public brushRangeDataCells: DataCell[] = [];
 
   public brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
+
+  private brushSelectionMinimumMoveDistance = 5;
 
   public bindEvents() {
     this.bindMouseDown();
@@ -70,6 +73,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
       event.preventDefault();
+      if (this.interaction.hasIntercepts([InterceptType.CLICK])) {
+        return;
+      }
       this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
       this.initPrepareSelectMaskShape();
       this.setDisplayedDataCells();
@@ -101,17 +107,29 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       event.preventDefault();
 
-      if (this.brushSelectionStage === InteractionBrushSelectionStage.DRAGGED) {
+      if (this.isValidBrushSelection()) {
         this.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
-        this.hidePrepareSelectMaskShape();
         this.updateSelectedCells();
         this.spreadsheet.showTooltipWithInfo(
           event,
           getActiveCellsTooltipData(this.spreadsheet),
         );
       }
+      this.hidePrepareSelectMaskShape();
       this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
     });
+  }
+
+  private isValidBrushSelection() {
+    if (this.brushSelectionStage !== InteractionBrushSelectionStage.DRAGGED) {
+      return false;
+    }
+    const { start, end } = this.getBrushRange();
+    const isMovedEnoughDistance =
+      end.x - start.x > this.brushSelectionMinimumMoveDistance ||
+      end.y - start.y > this.brushSelectionMinimumMoveDistance;
+
+    return isMovedEnoughDistance;
   }
 
   private setDisplayedDataCells() {
@@ -129,8 +147,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.prepareSelectMaskShape.show();
   }
 
-  private hidePrepareSelectMaskShape() {
-    this.prepareSelectMaskShape.hide();
+  public hidePrepareSelectMaskShape() {
+    this.prepareSelectMaskShape?.hide();
   }
 
   private getBrushPoint(event: CanvasEvent): BrushPoint {
@@ -213,7 +231,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private showPrepareSelectedCells = () => {
     const brushRangeDataCells = this.getBrushRangeDataCells();
     this.interaction.changeState({
-      cells: brushRangeDataCells,
+      cells: brushRangeDataCells.map((item) => getCellMeta(item)),
       stateName: InteractionStateName.PREPARE_SELECT,
       // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
       // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
@@ -226,7 +244,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   // 最终刷选的cell
   private updateSelectedCells() {
     this.interaction.changeState({
-      cells: this.brushRangeDataCells,
+      cells: this.brushRangeDataCells.map((item) => getCellMeta(item)),
       stateName: InteractionStateName.SELECTED,
     });
     // 未刷选到有效格子, 允许 hover

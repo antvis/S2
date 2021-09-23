@@ -8,6 +8,7 @@
   padding: 0 12px;
   border: 0;
   cursor: pointer;
+
   .ant-dropdown-trigger {
     padding: 0 6px 0 0;
   }
@@ -19,14 +20,18 @@
     color: rgba(0, 0, 0, 0.65);
     border: 0;
     margin: 0 -12px;
+
     .ant-menu-item {
       height: 30px;
     }
+
     .ant-menu-item:not(:last-child) {
       margin: 0;
     }
-    .ant-menu-submenu>.ant-menu-submenu-title {
+
+    .ant-menu-submenu > .ant-menu-submenu-title {
       height: 30px;
+
       .ant-menu-submenu-arrow {
         color: rgba(0, 0, 0, 0.65);
       }
@@ -44,6 +49,7 @@
       border: 0;
       margin: 0;
     }
+
     .ant-dropdown-menu-submenu,
     .ant-dropdown-menu-submenu-vertical,
     .ant-menu-submenu,
@@ -54,18 +60,32 @@
         line-height: 32px;
         color: rgba(0, 0, 0, 0.65);
         margin: 0;
-        .ant-dropdown-menu-title-content,.ant-menu-title-content {
+
+        .ant-dropdown-menu-title-content,
+        .ant-menu-title-content {
           margin-right: 12px;
         }
       }
     }
   }
+
   &-submenu-popup {
-    .ant-dropdown-menu-item,.ant-menu-item {
+    .ant-dropdown-menu-item,
+    .ant-menu-item {
       font-size: 12px;
       line-height: 32px;
       padding: 0 12px;
       color: rgba(0, 0, 0, 0.65);
+    }
+
+    .ant-menu-vertical .ant-menu-item {
+      margin: 0;
+      height: 30px;
+      line-height: 32px;
+    }
+
+    .ant-menu-vertical .ant-menu-item:not(:last-child) {
+      margin: 0;
     }
   }
 }

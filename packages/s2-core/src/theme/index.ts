@@ -61,7 +61,7 @@ export const getTheme = (
         radius: 4,
         size: 12,
         margin: {
-          right: 4,
+          right: 10,
           left: 0,
         },
       },
@@ -191,6 +191,10 @@ export const getTheme = (
             textOpacity: 0.3,
             opacity: 0.3,
           },
+        },
+        /* ---------- expand icon ----------- */
+        expandIcon: {
+          size: 24,
         },
       },
       icon: {

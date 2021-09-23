@@ -1,10 +1,10 @@
-import { LineChartOutlined } from '@ant-design/icons';
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { get, noop } from 'lodash';
+import { get } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
 import {
   InteractionStateName,
-  INTERACTION_TREND,
+  TOOLTIP_OPERATOR_MENUS,
   InterceptType,
   S2Event,
 } from '@/common/constant';
@@ -43,8 +43,9 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
       this.interaction.clearState();
+
       this.interaction.changeState({
-        cells: [cell],
+        cells: [getCellMeta(cell)],
         stateName: InteractionStateName.SELECTED,
       });
       this.showTooltip(event, meta);
@@ -59,38 +60,35 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       return cellOperator;
     }
 
-    const defaultOperator: TooltipOperatorOptions = {
-      onClick: noop,
-      menus: [],
+    const operator: TooltipOperatorOptions = this.spreadsheet.options.tooltip
+      .operation.trend && {
+      onClick: () => {
+        this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, meta);
+        this.spreadsheet.hideTooltip();
+      },
+      menus: TOOLTIP_OPERATOR_MENUS.Trend,
     };
-
-    const operator: TooltipOperatorOptions = this.spreadsheet.options?.showTrend
-      ? {
-          onClick: (params) => {
-            if (params === INTERACTION_TREND.ID) {
-              this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, meta);
-              this.spreadsheet.hideTooltip();
-            }
-          },
-          menus: [
-            {
-              id: INTERACTION_TREND.ID,
-              text: INTERACTION_TREND.NAME,
-              icon: LineChartOutlined,
-            },
-          ],
-        }
-      : defaultOperator;
 
     return operator;
   }
 
   private showTooltip(event: CanvasEvent, meta: ViewMeta) {
-    const currentCellMeta = meta?.data;
-    const isTotals = meta?.isTotals || false;
+    const {
+      data,
+      isTotals = false,
+      value,
+      fieldValue,
+      field,
+      valueField,
+    } = meta;
+    const currentCellMeta = data;
     const showSingleTips = this.spreadsheet.isTableMode();
     const cellData = showSingleTips
-      ? { ...currentCellMeta, value: meta?.value || meta?.fieldValue }
+      ? {
+          ...currentCellMeta,
+          value: value || fieldValue,
+          valueField: field || valueField,
+        }
       : currentCellMeta;
     const cellInfos: TooltipData[] = [
       cellData || { ...meta.rowQuery, ...meta.colQuery },

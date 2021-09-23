@@ -123,7 +123,7 @@ export class BaseTooltip {
     const nameTip = { name, tips };
 
     if (onlyMenu) {
-      return this.renderOperation(operator, onlyMenu);
+      return this.renderOperation(operator, true);
     }
     return (
       <div>
