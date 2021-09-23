@@ -5,18 +5,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import {
-  S2DataConfig,
-  S2Options,
-  SheetComponent,
-  SpreadSheet,
-  PivotSheet,
-} from '../../src';
-import {
   multipleDataWithBottom,
   multipleDataWithCombine,
   multipleDataWithNormal,
 } from '../data/multiple-values-cell-mock-data';
 import { getContainer } from '../util/helpers';
+import {
+  S2DataConfig,
+  S2Options,
+  SheetComponent,
+  SpreadSheet,
+  PivotSheet,
+  Node,
+} from '@/index';
 
 let sheet: SpreadSheet;
 const getSpreadSheet = (
@@ -120,10 +121,7 @@ const getOptions = (): S2Options => {
       {
         iconNames: ['SortDown', 'SortUp'],
         belongsCell: 'colCell',
-        display: {
-          level: 0,
-          operator: '>=',
-        },
+        display: (meta: Node) => meta.level >= 0,
         action() {},
       },
     ],
