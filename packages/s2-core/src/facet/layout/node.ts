@@ -1,5 +1,6 @@
 import { omit, isEqual } from 'lodash';
 import { Hierarchy } from './hierarchy';
+import { ROOT_ID } from '@/common/constant/basic';
 import { SpreadSheet } from '@/index';
 import { S2CellType } from '@/common/interface';
 
@@ -102,7 +103,7 @@ export class Node {
       // total nodes don't need rows from node self
       let parent = node.parent;
       const fieldPath = [node.field];
-      while (parent && parent.id !== 'root') {
+      while (parent && parent.id !== ROOT_ID) {
         fieldPath.push(parent.field);
         parent = parent.parent;
       }
