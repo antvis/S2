@@ -24,7 +24,7 @@ redirect_from:
 ### 安装
 
 ```typescript
-
+$ yarn add @antv/s2
 ```
 
 ### 快速上手
@@ -35,15 +35,15 @@ redirect_from:
 <div id="container"></div>
 ```
 
-> 准备一份数据(csv 或者对象数组) [tableau-supermarket.csv]()
+> 准备一份数据 (csv 或者对象数组） [tableau-supermarket.csv]()
 
 #### 组件方式引入
 
 ```typescript
-import { dsvFormat } from 'd3-dsv'; // 格式化csv格式数据为对象数组
+import { dsvFormat } from 'd3-dsv'; // 格式化 csv 格式数据为对象数组
 
 // 1、获取原始数据
-const data = dsvFormat(',').parse(文件数据流)
+const data = dsvFormat(',').parse（文件数据流）
 // 2、数据相关配置
 const dataCfg = {
    fields: {
@@ -73,7 +73,6 @@ const options = {
   hierarchyType: 'grid',
   showSeriesNumber: true,
   mode: 'pivot',
-  valueInCols: true,
   style: {
     treeRowsWidth: 100,
       collapsedRows: {},
@@ -103,12 +102,11 @@ ReactDOM.render(
       />,
        ’#container‘);
 
-
 ```
 
 #### 库方式引入
 
-与[组件引入方式](#UWOYd)只有第四、五步不同
+与 [组件引入方式](#UWOYd) 只有第四、五步不同
 
 ```typescript
 import { SpreadSheet } from '';
