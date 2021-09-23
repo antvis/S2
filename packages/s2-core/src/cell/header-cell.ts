@@ -2,7 +2,7 @@ import { first, map, includes, find, isEqual, get, last } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
-import { S2CellType } from '@/common/interface';
+import { CellMeta } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
@@ -81,13 +81,13 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
   }
 
-  private handleHover(cells: S2CellType[]) {
+  private handleHover(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.HOVER, this);
     }
   }
 
-  private handleSelect(cells: S2CellType[], nodes: Node[]) {
+  private handleSelect(cells: CellMeta[], nodes: Node[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.SELECTED, this);
     }
@@ -98,8 +98,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   public update() {
-    const stateInfo = this.spreadsheet.interaction.getState();
-    const cells = this.spreadsheet.interaction.getActiveCells();
+    const { interaction } = this.spreadsheet;
+    const stateInfo = interaction.getState();
+    const cells = interaction.getCells();
 
     if (!first(cells)) return;
 

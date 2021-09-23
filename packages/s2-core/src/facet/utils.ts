@@ -221,6 +221,51 @@ export const calculateFrozenCornerCells = (
   return result;
 };
 
+export const isFrozenTrailingCol = (
+  colIndex: number,
+  frozenCount: number,
+  colLength: number,
+) => {
+  return frozenCount > 0 && colIndex >= colLength - frozenCount;
+};
+
+export const isFrozenCol = (colIndex: number, frozenCount: number) => {
+  return frozenCount > 0 && colIndex < frozenCount;
+};
+
+export const isFrozenTrailingRow = (
+  rowIndex: number,
+  frozenCount: number,
+  rowLength: number,
+) => {
+  return frozenCount > 0 && rowIndex >= rowLength - frozenCount;
+};
+
+export const isFrozenRow = (rowIndex: number, frozenCount: number) => {
+  return frozenCount > 0 && rowIndex < frozenCount;
+};
+
+export const isFrozenCell = (
+  colIndex: number,
+  rowIndex: number,
+  frozenOpts: FrozenOpts,
+  colLength: number,
+  rowLength: number,
+) => {
+  const {
+    frozenColCount,
+    frozenRowCount,
+    frozenTrailingColCount,
+    frozenTrailingRowCount,
+  } = frozenOpts;
+  return (
+    isFrozenCol(colIndex, frozenColCount) ||
+    isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength) ||
+    isFrozenRow(rowIndex, frozenRowCount) ||
+    isFrozenTrailingRow(rowIndex, frozenTrailingRowCount, rowLength)
+  );
+};
+
 /**
  * @description split all cells in current panel with five child group
  */
@@ -240,24 +285,22 @@ export const splitInViewIndexesWithFrozen = (
   const centerIndexes: Indexes = [...indexes];
 
   // Cut off frozen cells from centerIndexes
-  if (centerIndexes[0] < frozenColCount) {
+  if (isFrozenCol(centerIndexes[0], frozenColCount)) {
     centerIndexes[0] = frozenColCount;
   }
 
   if (
-    frozenTrailingColCount > 0 &&
-    centerIndexes[1] >= colLength - frozenTrailingColCount
+    isFrozenTrailingCol(centerIndexes[1], frozenTrailingColCount, colLength)
   ) {
     centerIndexes[1] = colLength - frozenTrailingColCount - 1;
   }
 
-  if (centerIndexes[2] < frozenRowCount) {
+  if (isFrozenRow(centerIndexes[2], frozenRowCount)) {
     centerIndexes[2] = frozenRowCount;
   }
 
   if (
-    frozenTrailingRowCount > 0 &&
-    centerIndexes[3] >= rowLength - frozenTrailingRowCount
+    isFrozenTrailingRow(centerIndexes[3], frozenTrailingRowCount, rowLength)
   ) {
     centerIndexes[3] = rowLength - frozenTrailingRowCount - 1;
   }

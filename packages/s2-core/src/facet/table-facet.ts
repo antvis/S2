@@ -1,5 +1,6 @@
 import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
+import { getDataCellId } from 'src/utils/cell/data-cell';
 import { get, maxBy, set } from 'lodash';
 import type {
   LayoutResult,
@@ -145,6 +146,7 @@ export class TableFacet extends BaseFacet {
         rowId: String(rowIndex),
         valueField: col.field,
         fieldValue: data,
+        id: getDataCellId(String(rowIndex), col.id),
       } as ViewMeta;
     };
 
@@ -318,7 +320,7 @@ export class TableFacet extends BaseFacet {
       },
 
       getCellOffsetY: (offset: number) => {
-        if (offset === 0) return 0;
+        if (offset <= 0) return 0;
         let totalOffset = 0;
         for (let index = 0; index < offset; index++) {
           totalOffset += cellHeight;

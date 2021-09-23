@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { message, Space, Switch } from 'antd';
+import { message, Space, Switch, Button } from 'antd';
 import 'antd/dist/antd.min.css';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
@@ -158,7 +158,6 @@ function MainLayout() {
   return (
     <Space direction="vertical">
       <Space>
-        {' '}
         <Switcher
           values={switcherValues}
           onSubmit={(result) => {

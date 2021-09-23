@@ -1,4 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { concat, difference, isEmpty, isNil } from 'lodash';
 import { hideColumns } from '@/utils/hide-columns';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
@@ -9,7 +10,7 @@ import {
   TOOLTIP_OPERATOR_MENUS,
   InterceptType,
 } from '@/common/constant';
-import { S2CellType, TooltipOperatorOptions } from '@/common/interface';
+import { TooltipOperatorOptions } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 import { mergeCellInfo } from '@/utils/tooltip';
 
@@ -81,7 +82,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
             (node) => node.rowIndex === meta.rowIndex,
           )
         : Node.getAllChildrenNode(meta);
-      let selectedCells: S2CellType[] = [cell];
+      let selectedCells = [getCellMeta(cell)];
 
       if (this.isMultiSelection && interaction.isSelectedState()) {
         selectedCells = isEmpty(lastState?.cells)
@@ -100,8 +101,11 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
         stateName: InteractionStateName.SELECTED,
       });
 
+      const selectedCellIds = selectedCells.map((meta) => meta.id);
       // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-      interaction.updateCells(selectedCells);
+      interaction.updateCells(
+        interaction.getRowColActiveCells(selectedCellIds),
+      );
 
       if (!isTreeRowClick) {
         leafNodes.forEach((node) => {

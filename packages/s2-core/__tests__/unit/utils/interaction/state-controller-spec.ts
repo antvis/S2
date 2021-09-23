@@ -1,3 +1,4 @@
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { RowCell } from '@/cell/row-cell';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { S2Options } from '@/common/interface';
@@ -16,6 +17,14 @@ describe('State Test', () => {
     type: CellTypes.ROW_CELL,
     hideInteractionShape: jest.fn(),
     clearUnselectedState: jest.fn(),
+    cellType: CellTypes.ROW_CELL,
+    getMeta: () => {
+      return {
+        colIndex: 0,
+        rowIndex: 0,
+        id: `root[&]price`,
+      };
+    },
   } as unknown as RowCell;
 
   let mockInstance: SpreadSheet;
@@ -32,23 +41,23 @@ describe('State Test', () => {
   test('should set select status correctly', () => {
     setState(mockInstance, {
       stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCell],
+      cells: [getCellMeta(mockRowCell)],
     });
     expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCell],
+      cells: [getCellMeta(mockRowCell)],
     });
   });
 
   test('should do nothing when state name is the same', () => {
     setState(mockInstance, {
       stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCell],
+      cells: [getCellMeta(mockRowCell)],
     });
 
     expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCell],
+      cells: [getCellMeta(mockRowCell)],
     });
 
     mockInstance.interaction.setState({
@@ -58,7 +67,7 @@ describe('State Test', () => {
 
     expect(mockInstance.interaction.getState()).toEqual({
       stateName: InteractionStateName.SELECTED,
-      cells: [mockRowCell],
+      cells: [getCellMeta(mockRowCell)],
     });
   });
 
