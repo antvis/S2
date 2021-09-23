@@ -44,7 +44,7 @@
     "test:live": "node ./scripts/test-live.mjs",
     "test": "jest",
     "test:coverage": "yarn test --coverage",
-    "test:ci-coverage": "codecov",
+    "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit"
   },
   "peerDependencies": {

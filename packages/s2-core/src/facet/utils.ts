@@ -9,6 +9,34 @@ import {
   FrozenCellIndex,
 } from '@/common/constant/frozen';
 
+export const isFrozenCol = (colIndex: number, frozenCount: number) => {
+  return frozenCount > 0 && colIndex < frozenCount;
+};
+
+export const isFrozenTrailingCol = (
+  colIndex: number,
+  frozenCount: number,
+  colLength: number,
+) => {
+  return frozenCount > 0 && colIndex >= colLength - frozenCount;
+};
+
+export const isFrozenRow = (
+  rowIndex: number,
+  minRowIndex: number,
+  frozenCount: number,
+) => {
+  return frozenCount > 0 && rowIndex < minRowIndex + frozenCount;
+};
+
+export const isFrozenTrailingRow = (
+  rowIndex: number,
+  maxRowIndex: number,
+  frozenCount: number,
+) => {
+  return frozenCount > 0 && rowIndex >= maxRowIndex + 1 - frozenCount;
+};
+
 /**
  * 计算偏移 scrollX、scrollY 的时候，在视窗中的节点索引
  * @param scrollX
@@ -136,23 +164,19 @@ export const getFrozenDataCellType = (
     frozenTrailingRowCount,
   } = frozenOpts;
   const { colIndex, rowIndex } = meta;
-
-  if (rowIndex <= cellRange.start + frozenRowCount - 1) {
+  if (isFrozenRow(rowIndex, cellRange.start, frozenRowCount)) {
     return FrozenCellType.ROW;
   }
-  if (
-    frozenTrailingRowCount > 0 &&
-    rowIndex >= cellRange.end + 1 - frozenTrailingRowCount
-  ) {
+
+  if (isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)) {
     return FrozenCellType.TRAILING_ROW;
   }
-  if (colIndex <= frozenColCount - 1) {
+
+  if (isFrozenCol(colIndex, frozenColCount)) {
     return FrozenCellType.COL;
   }
-  if (
-    frozenTrailingColCount > 0 &&
-    colIndex >= colLength - frozenTrailingColCount
-  ) {
+
+  if (isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)) {
     return FrozenCellType.TRAILING_COL;
   }
   return FrozenCellType.SCROLL;
@@ -227,6 +251,30 @@ export const calculateFrozenCornerCells = (
   return result;
 };
 
+export const isFrozenCell = (
+  colIndex: number,
+  rowIndex: number,
+  frozenOpts: FrozenOpts,
+  colLength: number,
+  cellRange: {
+    start: number;
+    end: number;
+  },
+) => {
+  const {
+    frozenColCount,
+    frozenRowCount,
+    frozenTrailingColCount,
+    frozenTrailingRowCount,
+  } = frozenOpts;
+  return (
+    isFrozenCol(colIndex, frozenColCount) ||
+    isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength) ||
+    isFrozenRow(rowIndex, cellRange.start, frozenRowCount) ||
+    isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
+  );
+};
+
 /**
  * @description split all cells in current panel with five child group
  */
@@ -249,26 +297,24 @@ export const splitInViewIndexesWithFrozen = (
   const centerIndexes: Indexes = [...indexes];
 
   // Cut off frozen cells from centerIndexes
-  if (centerIndexes[0] < frozenColCount) {
+  if (isFrozenCol(centerIndexes[0], frozenColCount)) {
     centerIndexes[0] = frozenColCount;
   }
 
   if (
-    frozenTrailingColCount > 0 &&
-    centerIndexes[1] >= colLength - frozenTrailingColCount
+    isFrozenTrailingCol(centerIndexes[1], frozenTrailingColCount, colLength)
   ) {
     centerIndexes[1] = colLength - frozenTrailingColCount - 1;
   }
 
-  if (centerIndexes[2] < cellRange.start + frozenRowCount) {
+  if (isFrozenRow(centerIndexes[2], cellRange.start, frozenRowCount)) {
     centerIndexes[2] = cellRange.start + frozenRowCount;
   }
 
   if (
-    frozenTrailingRowCount > 0 &&
-    centerIndexes[3] >= cellRange.end + 1 - frozenTrailingRowCount
+    isFrozenTrailingRow(centerIndexes[3], cellRange.end, frozenTrailingRowCount)
   ) {
-    centerIndexes[3] = cellRange.end + 1 - frozenTrailingRowCount;
+    centerIndexes[3] = cellRange.end - frozenTrailingRowCount;
   }
 
   // Calculate indexes for four frozen groups

@@ -1,3 +1,4 @@
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
@@ -42,8 +43,9 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
       this.interaction.clearState();
+
       this.interaction.changeState({
-        cells: [cell],
+        cells: [getCellMeta(cell)],
         stateName: InteractionStateName.SELECTED,
       });
       this.showTooltip(event, meta);
@@ -71,11 +73,22 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   }
 
   private showTooltip(event: CanvasEvent, meta: ViewMeta) {
-    const currentCellMeta = meta?.data;
-    const isTotals = meta?.isTotals || false;
+    const {
+      data,
+      isTotals = false,
+      value,
+      fieldValue,
+      field,
+      valueField,
+    } = meta;
+    const currentCellMeta = data;
     const showSingleTips = this.spreadsheet.isTableMode();
     const cellData = showSingleTips
-      ? { ...currentCellMeta, value: meta?.value || meta?.fieldValue }
+      ? {
+          ...currentCellMeta,
+          value: value || fieldValue,
+          valueField: field || valueField,
+        }
       : currentCellMeta;
     const cellInfos: TooltipData[] = [
       cellData || { ...meta.rowQuery, ...meta.colQuery },

@@ -149,8 +149,6 @@ object **必选**,_ default：null_ 功能描述： 小计总计算配置
 | --- | --- | :-: | --- | --- | --- |
 | showGrandTotals | boolean | ✓ |  | false | 是否显示总计 |
 | showSubTotals | boolean | ✓ |  | false | 是否显示小计 |
-| aggregation |  | ✓ | 'SUM' &#124; 'AVG' &#124; 'MIN' &#124; 'MAX' |  | 总计聚合方式 |
-| aggregationSub |  | ✓ | 'SUM' &#124; 'AVG' &#124; 'MIN' &#124; 'MAX |  | 小计聚合方式 |
 | subTotalsDimensions | string[] | ✓ |  | [] | 小计的汇总维度 |
 | reverseLayout | boolean | ✓ |  | false | 总计布局位置,默认下或右 |
 |  |

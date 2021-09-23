@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { message, Space, Switch } from 'antd';
+import { message, Space, Switch, Button } from 'antd';
 import 'antd/dist/antd.min.css';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
@@ -61,6 +61,7 @@ const meta = [
   {
     field: 'profit',
     name: '利润',
+    formatter: (v) => `${v}元`,
   },
 ];
 
@@ -128,10 +129,11 @@ function MainLayout() {
 
   const s2Ref = React.useRef<SpreadSheet>(null);
 
+  const logData = (...d: unknown[]) => {
+    console.log(...d);
+  };
+
   useEffect(() => {
-    const logData = (...data: unknown[]) => {
-      console.log(...data);
-    };
     s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
     s2Ref.current.on(S2Event.ROW_CELL_TEXT_CLICK, ({ key, record }) => {
       message.info(`key: ${key}, name: ${JSON.stringify(record)}`);
@@ -185,6 +187,8 @@ function MainLayout() {
         options={options}
         sheetType={'table'}
         spreadsheet={getSpreadSheet(s2Ref)}
+        onDataCellDoubleClick={logData}
+        onContextMenu={logData}
       />
     </Space>
   );

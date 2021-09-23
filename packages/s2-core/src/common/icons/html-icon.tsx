@@ -5,7 +5,7 @@ import { getIcon } from './factory';
 import './html-icon.less';
 
 interface Props {
-  type: string; // 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
+  name: string; // 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
   style?: any;
   width?: number;
   height?: number;
@@ -13,8 +13,8 @@ interface Props {
 }
 export class HtmlIcon extends React.PureComponent<Props> {
   render() {
-    const { style = {}, width, height, className, type } = this.props;
-    const svgIcon = () => getIcon(type);
+    const { style = {}, width, height, className, name } = this.props;
+    const svgIcon = () => getIcon(name);
     // fix: Uncaught TypeError: Cannot assign to read only property 'width' of object '#<Object>'
     const newStyle = { ...style };
 

@@ -1,5 +1,5 @@
 import { Group, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty, isEqual, max } from 'lodash';
 import { HeaderCell } from './header-cell';
 import {
   CellTypes,
@@ -18,7 +18,7 @@ import {
   renderTreeIcon,
 } from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
-import { getEllipsisText } from '@/utils/text';
+import { getEllipsisText, measureTextWidth } from '@/utils/text';
 
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
@@ -35,10 +35,12 @@ export class CornerCell extends HeaderCell {
   public update() {}
 
   protected initCell() {
+    super.initCell();
     this.textShapes = [];
     this.drawBackgroundShape();
     this.drawTreeIcon();
     this.drawCellText();
+    this.drawActionIcons();
     this.drawBorderShape();
     this.drawResizeArea();
   }
@@ -110,6 +112,11 @@ export class CornerCell extends HeaderCell {
         ),
       );
     }
+
+    this.actualTextWidth = max([
+      measureTextWidth(firstLine, textStyle),
+      measureTextWidth(secondLine, textStyle),
+    ]);
   }
 
   /**
@@ -230,6 +237,20 @@ export class CornerCell extends HeaderCell {
     );
   }
 
+  protected getIconPosition(): Point {
+    const textCfg = this.textShapes?.[0]?.cfg.attrs;
+    const { textBaseline } = this.getTextStyle();
+    const { size, margin } = this.getStyle().icon;
+    const iconX = textCfg?.x + this.actualTextWidth + margin.left;
+    const iconY = getVerticalPosition(
+      this.getContentArea(),
+      textBaseline,
+      size,
+    );
+
+    return { x: iconX, y: iconY };
+  }
+
   private getTreeIconWidth() {
     const { size, margin } = this.getStyle().icon;
     return this.showTreeIcon() ? size + margin.right : 0;
@@ -250,7 +271,7 @@ export class CornerCell extends HeaderCell {
 
   protected getMaxTextWidth(): number {
     const { width } = this.getCellArea();
-    return width - this.getTreeIconWidth();
+    return width - this.getTreeIconWidth() - this.getActionIconsWidth();
   }
 
   protected getTextPosition(): Point {

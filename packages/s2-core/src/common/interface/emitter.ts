@@ -39,6 +39,8 @@ type ResizeHandler = (style: Style) => void;
 
 export interface EmitterType {
   /** ================ Global ================  */
+  [S2Event.GLOBAL_ACTION_ICON_CLICK]: CanvasEventHandler;
+  [S2Event.GLOBAL_ACTION_ICON_HOVER]: CanvasEventHandler;
   [S2Event.GLOBAL_COPIED]: (data: string) => void;
   [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
   [S2Event.GLOBAL_KEYBOARD_UP]: KeyboardEventHandler;
@@ -46,6 +48,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_RESIZE_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.GLOBAL_RESIZE_MOUSE_UP]: CanvasEventHandler;
   [S2Event.GLOBAL_RESIZE_MOUSE_MOVE]: CanvasEventHandler;
+  [S2Event.GLOBAL_CONTEXT_MENU]: CanvasEventHandler;
 
   /** ================ Sort ================  */
   [S2Event.RANGE_SORT]: (info: SortParams) => void;
@@ -58,6 +61,7 @@ export interface EmitterType {
   [S2Event.DATA_CELL_MOUSE_MOVE]: CanvasEventHandler;
   [S2Event.DATA_CELL_HOVER]: CanvasEventHandler;
   [S2Event.DATA_CELL_CLICK]: CanvasEventHandler;
+  [S2Event.DATA_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.DATA_CELL_TREND_ICON_CLICK]: (data: ViewMeta) => void;
 
   /** ================ Row Cell ================  */
@@ -65,6 +69,7 @@ export interface EmitterType {
   [S2Event.ROW_CELL_MOUSE_MOVE]: CanvasEventHandler;
   [S2Event.ROW_CELL_HOVER]: CanvasEventHandler;
   [S2Event.ROW_CELL_CLICK]: CanvasEventHandler;
+  [S2Event.ROW_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.ROW_CELL_MOUSE_UP]: CanvasEventHandler;
   [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (
     data: RowCellCollapseTreeRowsType,
@@ -76,6 +81,7 @@ export interface EmitterType {
   [S2Event.COL_CELL_MOUSE_MOVE]: CanvasEventHandler;
   [S2Event.COL_CELL_HOVER]: CanvasEventHandler;
   [S2Event.COL_CELL_CLICK]: CanvasEventHandler;
+  [S2Event.COL_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.COL_CELL_MOUSE_UP]: CanvasEventHandler;
 
   /** ================ Corner Cell ================  */
@@ -83,6 +89,7 @@ export interface EmitterType {
   [S2Event.CORNER_CELL_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.CORNER_CELL_HOVER]: CanvasEventHandler;
   [S2Event.CORNER_CELL_CLICK]: CanvasEventHandler;
+  [S2Event.CORNER_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.CORNER_CELL_MOUSE_UP]: CanvasEventHandler;
 
   /** ================ Merged Cell ================  */
@@ -91,6 +98,7 @@ export interface EmitterType {
   [S2Event.MERGED_CELLS_HOVER]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_MOUSE_UP]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_CLICK]: CanvasEventHandler;
+  [S2Event.MERGED_CELLS_DOUBLE_CLICK]: CanvasEventHandler;
 
   /** ================ Layout ================  */
   [S2Event.LAYOUT_COLLAPSE_ROWS]: (data: CollapsedRowsType) => void;
