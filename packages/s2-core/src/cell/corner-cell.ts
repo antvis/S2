@@ -238,10 +238,10 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getIconPosition(): Point {
-    const textCfg = this.textShapes[0].cfg.attrs;
+    const textCfg = this.textShapes?.[0]?.cfg.attrs;
     const { textBaseline } = this.getTextStyle();
     const { size, margin } = this.getStyle().icon;
-    const iconX = textCfg.x + this.actualTextWidth + margin.left;
+    const iconX = textCfg?.x + this.actualTextWidth + margin.left;
     const iconY = getVerticalPosition(
       this.getContentArea(),
       textBaseline,
