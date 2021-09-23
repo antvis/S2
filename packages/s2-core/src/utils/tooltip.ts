@@ -348,8 +348,9 @@ export const getSelectedCellIndexes = (
   layoutResult: LayoutResult,
 ) => {
   const { rowLeafNodes, colLeafNodes } = layoutResult;
-  const { cells = [], nodes = [] } = spreadsheet.interaction.getState();
-  const cellType = cells?.[0]?.cellType;
+  const { nodes = [] } = spreadsheet.interaction.getState();
+  const cells = spreadsheet.interaction.getCells();
+  const cellType = cells?.[0]?.type;
 
   if (cellType === CellTypes.COL_CELL) {
     return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);

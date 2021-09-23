@@ -17,6 +17,7 @@ import {
   S2CellType,
   HeaderActionIcon,
   HeaderActionIconProps,
+  CellMeta,
 } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
@@ -187,15 +188,14 @@ export abstract class HeaderCell extends BaseCell<Node> {
     return this.meta.key === EXTRA_FIELD;
   }
 
-  private handleHover(cells: S2CellType[]) {
-    this.toggleActionIcon(false);
+  private handleHover(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.HOVER);
       this.toggleActionIcon(true);
     }
   }
 
-  private handleSelect(cells: S2CellType[], nodes: Node[]) {
+  private handleSelect(cells: CellMeta[], nodes: Node[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
@@ -212,8 +212,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   public update() {
-    const stateInfo = this.spreadsheet.interaction.getState();
-    const cells = this.spreadsheet.interaction.getActiveCells();
+    const { interaction } = this.spreadsheet;
+    const stateInfo = interaction.getState();
+    const cells = interaction.getCells();
 
     if (!first(cells)) return;
 

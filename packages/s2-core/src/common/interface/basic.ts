@@ -25,7 +25,6 @@ export interface FormatResult {
   value: DataItem;
 }
 
-export type Aggregation = 'SUM' | 'AVG' | 'MIN' | 'MAX';
 export type SortMethod = 'ASC' | 'DESC';
 
 export interface Meta {
@@ -35,7 +34,6 @@ export interface Meta {
   // 数值字段：一般用于格式化数字带戴维
   // 文本字段：一般用于做字段枚举值的别名
   readonly formatter?: Formatter;
-  readonly aggregation?: Aggregation;
 }
 
 /**
@@ -84,10 +82,6 @@ export interface Total {
   showGrandTotals: boolean;
   /** 是否显示小计 */
   showSubTotals: boolean;
-  /** 聚合方式 */
-  aggregation: Aggregation;
-  /** 小计聚合方式 */
-  aggregationSub: Aggregation;
   /** 小计的汇总维度 */
   subTotalsDimensions: string[];
   /** 布局位置，默认是下或右 */
@@ -316,6 +310,8 @@ export interface SpreadSheetFacetCfg extends Fields, S2PartialOptions, Style {
 
 export interface ViewMeta {
   spreadsheet: SpreadSheet;
+  // cell's unique id
+  id: string;
   // cell's coordination-x
   x: number;
   // cell's coordination-y
