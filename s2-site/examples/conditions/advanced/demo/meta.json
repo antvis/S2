@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "高级字段标记",
+    "en": "Advanced conditions"
+  },
+  "demos": [
+    {
+      "filename": "multi-background.ts",
+      "title": {
+        "zh": "色块图",
+        "en": "Color block diagram"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/jOC9w1SvW/0d2e0cd2-8ff0-42f1-a405-359ae42888c2.png"
+    },
+    {
+      "filename": "gradient-interval.ts",
+      "title": {
+        "zh": "渐变柱状图",
+        "en": "Interval gradient"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/8ineqV7Vv/89afb1fc-16ea-47da-88ca-b185bdb727be.png"
+    }
+  ]
+}

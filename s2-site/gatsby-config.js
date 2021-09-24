@@ -88,7 +88,7 @@ module.exports = {
         icon: 'facet',
         title: {
           zh: '字段标记',
-          en: 'conditions',
+          en: 'Conditions',
         },
       },
     ],
