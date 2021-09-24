@@ -124,3 +124,15 @@ export const hideColumns = (
   spreadsheet.interaction.reset();
   spreadsheet.render(false);
 };
+
+export const isLastColumnAfterHidden = (
+  spreadsheet: SpreadSheet,
+  columnField: string,
+) => {
+  const columnNodes = spreadsheet.getColumnNodes();
+  const initColumnNodes = spreadsheet.getInitColumnNodes();
+  return (
+    last(columnNodes).field === columnField &&
+    last(initColumnNodes).field !== columnField
+  );
+};
