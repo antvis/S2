@@ -8,6 +8,7 @@ import {
   FrozenOpts,
   FrozenCellIndex,
 } from '@/common/constant/frozen';
+import { Pagination } from '@/common/interface';
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) => {
   return frozenCount > 0 && colIndex < frozenCount;
@@ -340,5 +341,26 @@ export const splitInViewIndexesWithFrozen = (
     frozenCol: frozenColIndexes,
     frozenTrailingCol: frozenTrailingColIndexes,
     frozenTrailingRow: frozenTrailingRowIndexes,
+  };
+};
+
+export const getCellRange = (
+  viewCellHeights: ViewCellHeights,
+  pagination?: Pagination,
+) => {
+  const heights = viewCellHeights;
+  let start = 0;
+  let end = heights.getTotalLength() - 1;
+
+  if (pagination) {
+    const { current, pageSize } = pagination;
+
+    start = Math.max((current - 1) * pageSize, 0);
+    end = Math.min(current * pageSize - 1, heights.getTotalLength() - 1);
+  }
+
+  return {
+    start,
+    end,
   };
 };
