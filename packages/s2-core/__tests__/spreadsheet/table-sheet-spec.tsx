@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { message, Space, Switch, Button } from 'antd';
+import { message, Space, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
@@ -140,6 +140,7 @@ function MainLayout() {
     });
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, logData);
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_HIDE, logData);
+    s2Ref.current.on(S2Event.GLOBAL_SELECTED, logData);
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED);
       s2Ref.current.off(S2Event.ROW_CELL_TEXT_CLICK);

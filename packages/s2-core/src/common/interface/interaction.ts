@@ -4,8 +4,9 @@ import { ViewMeta } from './basic';
 import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
 import { HeaderCell } from '@/cell/header-cell';
 import { Node } from '@/index';
-import { BaseEvent, EventConstructor } from '@/interaction/base-event';
+import { BaseEvent } from '@/interaction/base-event';
 import { SpreadSheet } from '@/sheet-type';
+import { RootInteraction } from '@/interaction/root';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -37,11 +38,12 @@ export interface InteractionStateInfo {
 
 export type InteractionConstructor = new (
   spreadsheet: SpreadSheet,
+  interaction: RootInteraction,
 ) => BaseEvent;
 
 export interface CustomInteraction {
   key: string;
-  interaction: EventConstructor;
+  interaction: InteractionConstructor;
 }
 
 export interface BrushPoint {

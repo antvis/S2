@@ -140,7 +140,7 @@ export class TableColCell extends ColCell {
       [],
     );
     return !!hiddenColumnsDetail.find(
-      ({ displaySiblingNode }) => displaySiblingNode?.field === this.meta.field,
+      (column) => column?.displaySiblingNode?.field === this.meta?.field,
     );
   }
 

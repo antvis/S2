@@ -25,6 +25,7 @@ export enum S2Event {
   DATA_CELL_MOUSE_DOWN = 'data-cell:mouse-down',
   DATA_CELL_MOUSE_MOVE = 'data-cell:mouse-move',
   DATA_CELL_TREND_ICON_CLICK = 'data-cell:trend-icon-click',
+  DATE_CELL_BRUSH_SELECTION = 'date-cell:brush-selection',
 
   /** ================ Corner Cell ================  */
   CORNER_CELL_CLICK = 'corner-cell:click',
@@ -61,24 +62,24 @@ export enum S2Event {
   LAYOUT_AFTER_RENDER = 'layout:after-render',
   LAYOUT_BEFORE_RENDER = 'layout:before-render',
 
-  /** ================ Global Resize ================  */
+  /** ================ Global ================  */
   GLOBAL_RESIZE_MOUSE_DOWN = 'global:resize:mouse-down',
   GLOBAL_RESIZE_MOUSE_MOVE = 'global:resize:mouse-move',
   GLOBAL_RESIZE_MOUSE_UP = 'global:resize-mouse-up',
 
-  /** ================ Global Keyboard ================  */
   GLOBAL_KEYBOARD_DOWN = 'global:keyboard-down',
   GLOBAL_KEYBOARD_UP = 'global:keyboard-up',
 
-  /** ================ Global Keyboard ================  */
   GLOBAL_COPIED = 'global:copied',
 
-  /** ================ Global Mouse ================  */
   GLOBAL_MOUSE_UP = 'global:mouse-up',
 
-  /** ================ Global Action Icon ================  */
   GLOBAL_ACTION_ICON_CLICK = 'global:action-icon-click',
   GLOBAL_ACTION_ICON_HOVER = 'global:action-icon-hover',
-  /** ================ Global Context Menu ================  */
+
   GLOBAL_CONTEXT_MENU = 'global:context-menu',
+
+  GLOBAL_SELECTED = 'global:selected',
+  GLOBAL_HOVER = 'global:hover',
+  GLOBAL_RESET = 'global:reset',
 }

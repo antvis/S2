@@ -83,6 +83,14 @@ module.exports = {
           en: 'Basic Sheets',
         },
       },
+      {
+        slug: 'interaction',
+        icon: 'facet',
+        title: {
+          zh: '交互',
+          en: 'Interaction',
+        },
+      },
     ],
     // 编辑器配置
     playground: {

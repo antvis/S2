@@ -5,11 +5,13 @@ import {
   DataItem,
   HiddenColumnsInfo,
   LayoutResult,
+  S2CellType,
   Style,
   ViewMeta,
 } from '.';
 import { ResizeEvent, S2Event, SortMethodType } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
+import { DataCell } from '@/cell/data-cell';
 
 type CollapsedRowsType = {
   collapsedRows: Record<string, boolean> & {
@@ -30,12 +32,11 @@ export type RowCellCollapseTreeRowsType = {
 };
 
 type CanvasEventHandler = (event: CanvasEvent) => void;
-
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
-
-type EventHandler = (event: MouseEvent) => void;
-
+type MouseEventHandler = (event: MouseEvent) => void;
+type EventHandler = (event: Event) => void;
 type ResizeHandler = (style: Style) => void;
+type SelectedHandler = (cells: S2CellType[]) => void;
 
 export interface EmitterType {
   /** ================ Global ================  */
@@ -44,11 +45,14 @@ export interface EmitterType {
   [S2Event.GLOBAL_COPIED]: (data: string) => void;
   [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
   [S2Event.GLOBAL_KEYBOARD_UP]: KeyboardEventHandler;
-  [S2Event.GLOBAL_MOUSE_UP]: EventHandler;
+  [S2Event.GLOBAL_MOUSE_UP]: MouseEventHandler;
   [S2Event.GLOBAL_RESIZE_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.GLOBAL_RESIZE_MOUSE_UP]: CanvasEventHandler;
   [S2Event.GLOBAL_RESIZE_MOUSE_MOVE]: CanvasEventHandler;
   [S2Event.GLOBAL_CONTEXT_MENU]: CanvasEventHandler;
+  [S2Event.GLOBAL_RESET]: EventHandler;
+  [S2Event.GLOBAL_HOVER]: CanvasEventHandler;
+  [S2Event.GLOBAL_SELECTED]: SelectedHandler;
 
   /** ================ Sort ================  */
   [S2Event.RANGE_SORT]: (info: SortParams) => void;
@@ -63,6 +67,7 @@ export interface EmitterType {
   [S2Event.DATA_CELL_CLICK]: CanvasEventHandler;
   [S2Event.DATA_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.DATA_CELL_TREND_ICON_CLICK]: (data: ViewMeta) => void;
+  [S2Event.DATE_CELL_BRUSH_SELECTION]: (cells: DataCell[]) => void;
 
   /** ================ Row Cell ================  */
   [S2Event.ROW_CELL_MOUSE_DOWN]: CanvasEventHandler;

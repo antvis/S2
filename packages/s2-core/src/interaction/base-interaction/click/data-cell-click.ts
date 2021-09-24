@@ -42,12 +42,13 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         this.interaction.reset();
         return;
       }
-      this.interaction.clearState();
 
+      this.interaction.clearState();
       this.interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.SELECTED,
       });
+      this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);
     });
   }

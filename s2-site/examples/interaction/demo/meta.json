@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "交互",
+    "en": "Interaction"
+  },
+  "demos": [
+    {
+      "filename": "basic.ts",
+      "title": {
+        "zh": "基础交互",
+        "en": "Basic interaction"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+    },
+    {
+      "filename": "custom.ts",
+      "title": {
+        "zh": "自定义交互 - 双击列隐藏",
+        "en": "Custom interaction"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/PNFrjWu%261/8b9de9d4-b4be-48dd-abdb-40f98371592e.png"
+    }
+  ]
+}

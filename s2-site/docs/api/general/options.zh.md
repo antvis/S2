@@ -131,6 +131,9 @@ SpreadSheetOptionsBuilder.Builder().conditions({
   ],
 });
 ```
+## CustomInteractions
+
+`markdown:docs/api/general/custom-interactions.zh.md`
 
 ## Totals
 
