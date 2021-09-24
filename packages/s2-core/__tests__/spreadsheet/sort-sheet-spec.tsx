@@ -189,7 +189,7 @@ function MainLayout() {
             uphandler(value);
           }}
         >
-          <HtmlIcon type="groupAsc" width={14} height={14} />
+          <HtmlIcon name="groupAsc" width={14} height={14} />
         </span>
         <span
           className="split-icon"
@@ -197,7 +197,7 @@ function MainLayout() {
             downHandler(value);
           }}
         >
-          <HtmlIcon type="groupDesc" width={14} height={14} />
+          <HtmlIcon name="groupDesc" width={14} height={14} />
         </span>
         <span
           className="split-icon"
@@ -205,7 +205,7 @@ function MainLayout() {
             toTopHandler(value);
           }}
         >
-          <HtmlIcon type="globalAsc" width={14} height={14} />
+          <HtmlIcon name="globalAsc" width={14} height={14} />
         </span>
       </li>
     );
