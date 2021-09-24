@@ -174,16 +174,16 @@ export class RowCell extends HeaderCell {
       horizontalBorderWidth,
       horizontalBorderOpacity,
     } = this.getStyle().cell;
-    const { x, y } = this.getCellArea();
+    const { x, y, height } = this.getCellArea();
     // 1、bottom border
     const contentIndent = this.getContentIndent();
     renderLine(
       this,
       {
         x1: x + contentIndent,
-        y1: y,
+        y1: y + height,
         x2: position.x + width + viewportWidth + scrollX,
-        y2: y,
+        y2: y + height,
       },
       {
         stroke: horizontalBorderColor,
