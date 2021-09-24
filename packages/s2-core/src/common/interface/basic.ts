@@ -185,7 +185,7 @@ export interface HeaderActionIcon {
   defaultHide?: boolean;
 
   // 需要展示的层级(行头/列头) 如果没有改配置则默认全部打开
-  displayCondition?: (mete: Node) => void;
+  displayCondition?: (mete: Node) => boolean;
 
   // 点击后的执行函数
   action: (headerActionIconProps: HeaderActionIconProps) => void;

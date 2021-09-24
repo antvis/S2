@@ -30,11 +30,11 @@ const setSpreadSheet = (
   options: S2Options,
   index: number,
 ) => {
-  const ss = new PivotSheet(dom, dataCfg, options);
+  const s2 = new PivotSheet(dom, dataCfg, options);
   if (index === 1) {
-    spreadsheet1 = ss;
+    spreadsheet1 = s2;
   }
-  return ss;
+  return s2;
 };
 
 const getData = (index: number, isTotal?: boolean) => {
