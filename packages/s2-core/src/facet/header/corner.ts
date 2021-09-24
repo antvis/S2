@@ -42,7 +42,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
    * @param seriesNumberWidth
    * @param cfg
    * @param layoutResult
-   * @param ss spreadsheet
+   * @param s2 spreadsheet
    */
   public static getCornerHeader(
     viewportBBox: SimpleBBox,
@@ -50,7 +50,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     seriesNumberWidth: number,
     cfg: SpreadSheetFacetCfg,
     layoutResult: LayoutResult,
-    ss: SpreadSheet,
+    s2: SpreadSheet,
   ) {
     const { width, height } = viewportBBox;
     const cornerWidth = cornerBBox.width;
@@ -65,7 +65,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       layoutResult.colsHierarchy,
       cfg.dataSet,
       seriesNumberWidth,
-      ss,
+      s2,
     );
     return new CornerHeader({
       data: cornerNodes,
@@ -79,7 +79,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       hierarchyCollapse: cfg.hierarchyCollapse,
       columns: cfg.columns,
       seriesNumberWidth,
-      spreadsheet: ss,
+      spreadsheet: s2,
     });
   }
 
@@ -93,14 +93,14 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     colsHierarchy: Hierarchy,
     dataSet: BaseDataSet,
     seriesNumberWidth: number,
-    ss: SpreadSheet,
+    s2: SpreadSheet,
   ): Node[] {
     const cornerNodes: Node[] = [];
 
     // 列头 label 横坐标偏移量：与行头 label 最右对齐
     let columOffsetX = 0;
 
-    const isPivotMode = ss.isPivotMode();
+    const isPivotMode = s2.isPivotMode();
     // check if show series number node
     if (seriesNumberWidth) {
       // 1、spreadsheet must have at least one node in last level
@@ -127,9 +127,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     }
 
     // spreadsheet type tree mode
-    if (isPivotMode && ss.isHierarchyTreeType()) {
+    if (isPivotMode && s2.isHierarchyTreeType()) {
       if (get(colsHierarchy, 'sampleNodeForLastLevel', undefined)) {
-        const drillDownFieldInLevel = ss.store.get('drillDownFieldInLevel', []);
+        const drillDownFieldInLevel = s2.store.get('drillDownFieldInLevel', []);
         const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
 
         const cNode: Node = new Node({
@@ -149,7 +149,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
         cNode.seriesNumberWidth = seriesNumberWidth;
         cNode.isPivotMode = isPivotMode;
-        cNode.spreadsheet = ss;
+        cNode.spreadsheet = s2;
         cNode.cornerType = 'row';
         cornerNodes.push(cNode);
       }
@@ -176,7 +176,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           cNode.field = field;
           cNode.isPivotMode = isPivotMode;
           cNode.cornerType = 'row';
-          cNode.spreadsheet = ss;
+          cNode.spreadsheet = s2;
           cornerNodes.push(cNode);
         });
       }
@@ -197,7 +197,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cNode.field = field;
         cNode.isPivotMode = isPivotMode;
         cNode.cornerType = 'col';
-        cNode.spreadsheet = ss;
+        cNode.spreadsheet = s2;
         cornerNodes.push(cNode);
       }
     });
