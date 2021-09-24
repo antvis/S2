@@ -16,6 +16,8 @@ import {
   translateGroup,
   translateGroupX,
   translateGroupY,
+  isFrozenTrailingCol,
+  isFrozenTrailingRow,
 } from './utils';
 import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
 import { FrozenCellGroupMap } from '@/common/constant/frozen';
@@ -101,16 +103,12 @@ export class TableFacet extends BaseFacet {
       let y = cellHeight * rowIndex;
 
       if (
-        frozenTrailingRowCount > 0 &&
-        rowIndex >= cellRange.end + 1 - frozenTrailingRowCount
+        isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
       ) {
         y = this.panelBBox.maxY - (cellRange.end + 1 - rowIndex) * cellHeight;
       }
 
-      if (
-        frozenTrailingColCount > 0 &&
-        colIndex >= colLength - frozenTrailingColCount
-      ) {
+      if (isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)) {
         x =
           width -
           colLeafNodes.reduceRight((prev, item, idx) => {
