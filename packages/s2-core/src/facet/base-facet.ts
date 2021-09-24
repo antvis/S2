@@ -27,6 +27,7 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
+  InteractionStateName,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
@@ -183,6 +184,7 @@ export abstract class BaseFacet {
   bindEvents = () => {
     this.onContainerWheel();
     this.emitPaginationEvent();
+    this.onSelectAll();
   };
 
   /**
@@ -301,6 +303,14 @@ export abstract class BaseFacet {
         current,
       });
     }
+  };
+
+  onSelectAll = () => {
+    this.spreadsheet.on(S2Event.GLOBAL_SELECT_ALL, () => {
+      this.spreadsheet.interaction.changeState({
+        stateName: InteractionStateName.ALL_SELECTED,
+      });
+    });
   };
 
   unbindEvents = () => {
@@ -929,6 +939,7 @@ export abstract class BaseFacet {
           // mark cell for removing
           cell.set('name', `${i}-${j}`);
           this.addCell(cell);
+          cell.update();
         }
       });
       const allCells = getAllPanelDataCell(this.panelGroup.getChildren());

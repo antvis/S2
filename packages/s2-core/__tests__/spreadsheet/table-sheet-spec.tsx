@@ -179,6 +179,13 @@ function MainLayout() {
           checked={showPagination}
           onChange={setShowPagination}
         />
+        <Button
+          onClick={() => {
+            s2Ref.current.emit(S2Event.GLOBAL_SELECT_ALL);
+          }}
+        >
+          全选
+        </Button>
       </Space>
 
       <SheetComponent

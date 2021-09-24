@@ -16,7 +16,6 @@ import {
   IconCfg,
   IconCondition,
   MappingResult,
-  S2CellType,
   CellMeta,
   TextTheme,
   ViewMeta,
@@ -118,7 +117,10 @@ export class DataCell extends BaseCell<ViewMeta> {
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
     const cells = this.spreadsheet.interaction.getCells();
-
+    if (stateName === InteractionStateName.ALL_SELECTED) {
+      this.updateByState(InteractionStateName.SELECTED);
+      return;
+    }
     if (isEmpty(cells) || !stateName) {
       return;
     }
@@ -414,9 +416,9 @@ export class DataCell extends BaseCell<ViewMeta> {
       this,
       {
         x1: x,
-        y1: y,
+        y1: y + height,
         x2: x + width,
-        y2: y,
+        y2: y + height,
       },
       {
         stroke: horizontalBorderColor,
