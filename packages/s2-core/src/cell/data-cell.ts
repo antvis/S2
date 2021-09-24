@@ -16,7 +16,6 @@ import {
   IconCfg,
   IconCondition,
   MappingResult,
-  S2CellType,
   CellMeta,
   TextTheme,
   ViewMeta,
@@ -414,9 +413,9 @@ export class DataCell extends BaseCell<ViewMeta> {
       this,
       {
         x1: x,
-        y1: y,
+        y1: y + height,
         x2: x + width,
-        y2: y,
+        y2: y + height,
       },
       {
         stroke: horizontalBorderColor,

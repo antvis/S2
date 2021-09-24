@@ -149,6 +149,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
         cNode.seriesNumberWidth = seriesNumberWidth;
         cNode.isPivotMode = isPivotMode;
+        cNode.spreadsheet = ss;
         cNode.cornerType = 'row';
         cornerNodes.push(cNode);
       }
