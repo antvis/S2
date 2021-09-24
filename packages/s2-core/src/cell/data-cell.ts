@@ -299,13 +299,18 @@ export class DataCell extends BaseCell<ViewMeta> {
       const { minValue, maxValue } = attrs.isCompare
         ? attrs
         : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
-      const scale = this.getIntervalScale(minValue, maxValue);
-      const zero = scale(0); // 零点
-
       const fieldValue = parseNumberWithPrecision(
         this.meta.fieldValue as number,
       );
+      // 对于超出设定范围的值不予显示
+      if (fieldValue < minValue || fieldValue > maxValue) {
+        return;
+      }
+
+      const scale = this.getIntervalScale(minValue, maxValue);
+      const zero = scale(0); // 零点
       const current = scale(fieldValue); // 当前数据点
+
       const barChartHeight = this.getStyle().cell.miniBarChartHeight;
       const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
       const fill = attrs.fill ?? barChartFillColor;
