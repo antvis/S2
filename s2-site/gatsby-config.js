@@ -83,6 +83,14 @@ module.exports = {
           en: 'Basic Sheets',
         },
       },
+      {
+        slug: 'conditions',
+        icon: 'facet',
+        title: {
+          zh: '字段标记',
+          en: 'conditions',
+        },
+      },
     ],
     // 编辑器配置
     playground: {

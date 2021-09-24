@@ -1,0 +1,40 @@
+{
+  "title": {
+    "zh": "基础字段标记",
+    "en": "Basic conditions"
+  },
+  "demos": [
+    {
+      "filename": "text.ts",
+      "title": {
+        "zh": "文本字段标记",
+        "en": "Text condition"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/JU0LqTodB/1ccaa2a3-a807-41d8-99b0-798618f72ead.png"
+    },
+    {
+      "filename": "background.ts",
+      "title": {
+        "zh": "背景字段标记",
+        "en": "Background condition"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/goIeHzWkN/88068162-1e58-414b-97fa-963734f6492c.png"
+    },
+    {
+      "filename": "icon.ts",
+      "title": {
+        "zh": "图标字段标记",
+        "en": "Icon condition"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/gdmWDwcuB/4f33f5d4-a5e1-4ce3-85f5-6276fcb0a440.png"
+    },
+    {
+      "filename": "interval.ts",
+      "title": {
+        "zh": "柱状图字段标记",
+        "en": "Interval condition"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Zek%24kvTJ1/8dd0031f-1351-4bd2-93a6-207a8332bc30.png"
+    }
+  ]
+}
