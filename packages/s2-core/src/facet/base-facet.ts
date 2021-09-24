@@ -16,6 +16,7 @@ import {
 } from 'lodash';
 import {
   calculateInViewIndexes,
+  getCellRange,
   optimizeScrollXY,
   translateGroup,
 } from './utils';
@@ -466,21 +467,7 @@ export abstract class BaseFacet {
 
   getCellRange() {
     const { pagination } = this.cfg;
-    const heights = this.viewCellHeights;
-    let start = 0;
-    let end = heights.getTotalLength() - 1;
-
-    if (this.spreadsheet.options.pagination) {
-      const { current, pageSize } = pagination;
-
-      start = Math.max((current - 1) * pageSize, 0);
-      end = Math.min(current * pageSize - 1, heights.getTotalLength() - 1);
-    }
-
-    return {
-      start,
-      end,
-    };
+    return getCellRange(this.viewCellHeights, pagination);
   }
 
   getRealHeight = (): number => {

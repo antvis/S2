@@ -2,11 +2,39 @@ import {
   getFrozenDataCellType,
   calculateFrozenCornerCells,
   splitInViewIndexesWithFrozen,
+  getCellRange,
 } from '@/facet/utils';
 import { FrozenCellType } from '@/common/constant/frozen';
 import { Indexes } from '@/utils/indexes';
+import { ViewCellHeights } from '@/facet/layout/interface';
 
 describe('Frozen util test', () => {
+  describe('getCellRange', () => {
+    const pagination = {
+      current: 1,
+      pageSize: 50,
+    };
+    const viewCellHeights = {
+      getTotalLength: () => 1000,
+    };
+
+    it('should return correct range', () => {
+      expect(getCellRange(viewCellHeights as ViewCellHeights)).toStrictEqual({
+        start: 0,
+        end: 999,
+      });
+    });
+
+    it('should return correct range when pagination is on', () => {
+      expect(
+        getCellRange(viewCellHeights as ViewCellHeights, pagination),
+      ).toStrictEqual({
+        start: 0,
+        end: 49,
+      });
+    });
+  });
+
   describe('getFrozenDataCellType', () => {
     beforeEach(() => {});
 
