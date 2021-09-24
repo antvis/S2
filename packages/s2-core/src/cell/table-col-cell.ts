@@ -1,6 +1,7 @@
-import { get, isEmpty, last } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
 import { Group } from '@antv/g-canvas';
+import { isLastColumnAfterHidden } from '@/utils/hide-columns';
 import { S2Event } from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '@/utils/text';
@@ -212,11 +213,6 @@ export class TableColCell extends ColCell {
   }
 
   private isLastColumn() {
-    const { field } = this.meta;
-    const columnNodes = this.spreadsheet.getColumnNodes();
-    const initColumnNodes = this.spreadsheet.getInitColumnNodes();
-    return (
-      last(columnNodes).field === field && last(initColumnNodes).field !== field
-    );
+    return isLastColumnAfterHidden(this.spreadsheet, this.meta.field);
   }
 }
