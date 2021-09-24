@@ -11,7 +11,7 @@ redirect_from:
 | :-- | :-- | :-: | :-- | :-- | :-- | --- |
 | hierarchyType | string |  | 'grid' | 'tree'; | grid | 行头的展示方式，grid：平铺网格结构， tree： 树状结构。 |
 | hierarchyCollapse | string |  | boolean | false | 在树状结构模式下行头是否默认展开。 |
-| conditions | [Conditions](#) | ✓ |  |  | 条件模式配置 |
+| conditions | [Conditions](#conditions) | ✓ |  |  | 条件模式配置 |
 | totals | [Totals](#) | ✓ |  |  | 小计总结配置 |
 | tooltip | [Tooltip](#) | ✓ |  |  |  tooltip 总配置 |
 | linkFieldIds | string[] |  |  | [] | 外链跳转 |

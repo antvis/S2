@@ -45,7 +45,6 @@ array object **必选**,_ default：null_ 功能描述： 全局化配置表数�
 
 数值度量：一般用于格式化数字   文本度量：一般用于做字段枚举值的别名 | | formula | string | | | 度量公式 | | aggregation | string | 可选 | 'SUM' | 'AVG' | 'MIN' | 'MAX' | 聚合方式 |
 
-
 ## Fields
 
 object **必选**,_ default：null_ 功能描述： 配置表格的维度域，即对应行列维度
@@ -57,7 +56,6 @@ object **必选**,_ default：null_ 功能描述： 配置表格的维度域，�
 | values | string[] | [StrategyValue](#) | 可选 |
 | 度量列表（最终会被转换成一个 column 字段） |
 | derivedValues | [DerivedValue[]](#) | 可选 |  | 衍生指标 |
-
 
 ## sortParams
 
