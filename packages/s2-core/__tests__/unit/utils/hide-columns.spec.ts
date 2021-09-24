@@ -39,8 +39,6 @@ describe('hide-columns test', () => {
     );
     mockSpreadSheetInstance.getInitColumnNodes = () =>
       initColumnNodes as Node[];
-    mockSpreadSheetInstance.getInitColumnNodes = () =>
-      initColumnNodes as Node[];
     mockSpreadSheetInstance.render = jest.fn();
     mockSpreadSheetInstance.interaction = {
       reset: jest.fn(),
@@ -110,7 +108,7 @@ describe('hide-columns test', () => {
   });
 
   test.each(initColumnNodes)(
-    'should calculate is last column correct if field is $s',
+    'should calculate is last column correct if field is $field',
     ({ field }) => {
       expect(isLastColumnAfterHidden(sheet, field)).toBeFalsy();
     },
