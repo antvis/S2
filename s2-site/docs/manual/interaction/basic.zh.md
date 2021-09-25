@@ -1,26 +1,25 @@
 ---
-title: 交互
-order: 2
+title: 基础交互
+order: 1
 redirect_from:
-  - /zh/docs/manual
+  - /zh/docs/manual/interaction
 ---
 
-## 1. 基础交互
-
-### 交互种类
+## 交互种类
 
 表格的交互主要通过键盘和鼠标
 
 - 鼠标点击 (click)
 - 鼠标悬停 (hover)
 - 键盘按下/弹起 (keydown / keyup)
+- ...
 
-通过这些事件，排列组合，来实现常用的交互
+通过这些事件，排列组合，来实现常用的交互,
 以 `刷选` 为例，它由三个事件组成
 
-- mousedown => mousemove => mouseup
+- `mousedown` => `mousemove` => `mouseup`
 
-### 内置交互
+## 内置交互
 
 | 名称 | 事件名 | 描述 |
 | :-- | :-- | :-- |
@@ -31,15 +30,19 @@ redirect_from:
 | 刷选   | `S2Event.GLOBAL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量 |
 | 悬停   | `S2Event.GLOBAL_HOVER` | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](#十字高亮） （对应行/列), 可设置 `hoverHighlight: false` 关闭 |
 | 复制   | `S2Event.GLOBAL_COPIED`| 复制选中的单元格数据 |
+| 隐藏列头   | `S2Event.LAYOUT_TABLE_COL_EXPANDED` `S2Event.LAYOUT_TABLE_COL_HIDE`| 隐藏/展开 列头 (明细表有效) |
 | 取消选中  | `S2Event.GLOBAL_RESET` | 再次点击，点击空白处，或按下 `Esc` 取消选中的单元格 |
 
-### 交互事件
+## 交互事件
 
-- `global`: 全局或图表事件
-- `cell`: 单元格级别的事件，细分到每种单元格类型
+- `global:xx`: 全局图表事件
+- `layout:xx`: 布局改变事件
+- `cell:xx`:  单元格级别的事件，整个表格分为不同的单元格类型, 你可以对特定的单元格进行实践监听, 实现自定义需求
+
+[所有事件](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts)
 
 <details>
-<summary>详情</summary>
+<summary>点击查看交互事件</summary>
 
 ```ts
 export enum S2Event {
@@ -69,6 +72,7 @@ export enum S2Event {
   DATA_CELL_MOUSE_DOWN = 'data-cell:mouse-down',
   DATA_CELL_MOUSE_MOVE = 'data-cell:mouse-move',
   DATA_CELL_TREND_ICON_CLICK = 'data-cell:trend-icon-click',
+  DATE_CELL_BRUSH_SELECTION = 'date-cell:brush-selection',
 
   /** ================ Corner Cell ================  */
   CORNER_CELL_CLICK = 'corner-cell:click',
@@ -86,23 +90,27 @@ export enum S2Event {
   MERGED_CELLS_DOUBLE_CLICK = 'merged-cells:double-click',
   MERGED_CELLS_MOUSE_DOWN = 'merged-cells:mouse-down',
 
-  /** ================ Global Resize ================  */
+ /** ================ Global ================  */
   GLOBAL_RESIZE_MOUSE_DOWN = 'global:resize:mouse-down',
   GLOBAL_RESIZE_MOUSE_MOVE = 'global:resize:mouse-move',
   GLOBAL_RESIZE_MOUSE_UP = 'global:resize-mouse-up',
-
-  /** ================ Global Keyboard ================  */
   GLOBAL_KEYBOARD_DOWN = 'global:keyboard-down',
   GLOBAL_KEYBOARD_UP = 'global:keyboard-up',
-
-  /** ================ Global Keyboard ================  */
   GLOBAL_COPIED = 'global:copied',
-
-  /** ================ Global Mouse ================  */
   GLOBAL_MOUSE_UP = 'global:mouse-up',
+  GLOBAL_ACTION_ICON_CLICK = 'global:action-icon-click',
+  GLOBAL_ACTION_ICON_HOVER = 'global:action-icon-hover',
+  GLOBAL_CONTEXT_MENU = 'global:context-menu',
+  GLOBAL_SELECTED = 'global:selected',
+  GLOBAL_HOVER = 'global:hover',
+  GLOBAL_RESET = 'global:reset',
+
+  // 其他非交互事件
+  ...
 }
 
 ```
+
 </details>
 
 可以根据实际需要，监听所需事件，实现自定义业务
@@ -111,18 +119,27 @@ export enum S2Event {
 import { PivotSheet, S2Event } from '@antv/s2';
 const s2 = new PivotSheet(container, s2DataConfig, s2options);
 
-s2.on(S2Event.COL_CELL_HOVER, () => {
+s2.on(S2Event.GLOBAL_BRUSH_SELECTION, (cells) => {
+  console.log('刷选的单元格:', cells)
   ...
 })
 
-s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, () => {
+s2.on(S2Event.COL_CELL_HOVER, (event) => {
+  ...
+})
+
+s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, (event) => {
   ...
 })
 ```
 
+## 交互默认样式
+
+> 如何修改默认样式? 请查看 《主题》 了解
+
 ### 选中聚光灯
 
-![selectedCellsSpotlight](https://gw.alipayobjects.com/zos/antfincdn/Z0nENy85%26/929f6638-a19f-4a6c-9ad8-a9a6ef2269c3.png)
+![preview](https://gw.alipayobjects.com/zos/antfincdn/Z0nENy85%26/929f6638-a19f-4a6c-9ad8-a9a6ef2269c3.png)
 
 默认情况下，我们会在选中单元格后，置灰未选中的单元格，强调需要关注的数据，可以自行关闭：
 
@@ -136,78 +153,38 @@ const s2options = {
 
 默认情况下，我们会在鼠标悬停时，高亮对应的行列头，更直观的查看数据，可以自行关闭：
 
-![hoverHighlight](https://gw.alipayobjects.com/zos/antfincdn/1oWitPZ7j/802123cc-6ee6-41c7-9310-049348a016ca.png)
+![preview](https://gw.alipayobjects.com/zos/antfincdn/1oWitPZ7j/802123cc-6ee6-41c7-9310-049348a016ca.png)
 
 ```ts
 const s2options = {
-  hoverHighlight: false,
+  hoverHighlight: false
 };
 ```
 
-## 2. 自定义交互
+### 刷选
 
-内置交互，如果未能覆盖到你的使用场景，你可以使用 `S2Event` 里面提供的交互事件，任意排列组合，自定义交互
+刷选过程中, 会提示预选中的单元格, 并且显示半透明的刷选蒙层
 
-### 2.1 自定义交互类
+![preview](https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png)
 
-```ts
-import { PivotSheet, BaseEvent, S2Event } from '@antv/s2';
+### 隐藏列头 (明细表有效)
 
-// 继承 BaseEvent, 可以拿到 this.spreadsheet 和 this.interaction
-class HiddenInteraction extends BaseEvent {
-  bindEvents() {
-    this.spreadsheet.on(S2Event.COL_CELL_DOUBLE_CLICK, (event) => {
-      const cell = this.spreadsheet.getCell(event.target);
-      const meta = cell.getMeta();
-      console.log('自定义交互-双击列头隐藏', meta);
-      this.spreadsheet.hideColumns([meta.field]);
-    });
-    // 禁止弹出右键菜单
-    this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, (event) => {
-      event.preventDefault();
-      console.log('右键', event);
-    });
-  }
-}
+列头隐藏后, 会在紧邻的兄弟单元格显示一个展示按钮, 和一个隐藏提示线, 鼠标单击即可展开
 
-class ContextMenuInteraction extends BaseEvent {
-  bindEvents() {
-    // 禁止弹出右键菜单
-    this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, (event) => {
-      event.preventDefault();
-      console.log('右键', event);
-    });
-  }
-}
+![preview](https://gw.alipayobjects.com/zos/antfincdn/PNFrjWu%261/8b9de9d4-b4be-48dd-abdb-40f98371592e.png)
 
-```
+## 重置交互
 
-### 2.2 注册自定义交互
+支持重置交互的情况:
+
+- 点击非表格空白处
+- 按下 `Esc` 键
+- 选中单元格后再次点击
+
+对应事件: `GLOBAL_RESET`
 
 ```ts
-  const s2options = {
-    width: 600,
-    height: 300,
-    tooltip: {
-      showTooltip: true
-    },
-    customInteractions: [
-      {
-        // 交互的唯一标识，需要保证和已有交互不冲突
-        key: 'MyInteraction',
-        interaction: MyInteraction,
-      },
-      {
-        key: 'ContextMenuInteraction',
-        interaction: ContextMenuInteraction,
-      },
-    ],
-  };
-  const s2 = new PivotSheet(container, s2DataConfig, s2options);
-
-  s2.render();
+s2.on(S2Event.GLOBAL_RESET,() => {
+  console.log('重置')
+})
 ```
-
-### 2.3 效果
-
-![](https://gw.alipayobjects.com/zos/antfincdn/niXiAVu74/5f9adba7-923c-431f-aa37-95f2d892da8c.png)

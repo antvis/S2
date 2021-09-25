@@ -64,6 +64,14 @@ module.exports = {
         },
         order: 2,
       },
+      {
+        slug: 'manual/interaction',
+        title: {
+          zh: '交互',
+          en: 'Interaction',
+        },
+        order: 3,
+      },
     ],
     // demo配置
     examples: [

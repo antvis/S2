@@ -4,7 +4,6 @@ import '@antv/s2/dist/s2.min.css';
 function addEvents(s2) {
   [
     S2Event.GLOBAL_COPIED,
-    S2Event.GLOBAL_KEYBOARD_DOWN,
     S2Event.DATA_CELL_CLICK,
     S2Event.DATA_CELL_DOUBLE_CLICK,
   ].forEach((name) => {
