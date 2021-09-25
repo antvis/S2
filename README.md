@@ -13,14 +13,16 @@
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg" alt="version">
   </a>
-   <a href="https://github.com/antvis/S2/actions" target="_blank">
-    <img src="https://github.com/antvis/S2/actions/workflows/ci.yml/badge.svg" alt="ci status"/>
+   <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
+    <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
   </a>
-  <a href='https://coveralls.io/github/antvis/S2?branch=master'><img src='https://coveralls.io/repos/github/antvis/S2/badge.svg?branch=master' alt='Coverage Status' /></a>
+  <a href="https://codecov.io/gh/antvis/S2" target="_blank">
+    <img src="https://codecov.io/gh/antvis/S2/branch/master/graph/badge.svg" alt="Coverage"/>
+  </a>
   <a href="https://david-dm.org/antvis/s2" target="_blank">
     <img src="https://status.david-dm.org/gh/antvis/S2.svg" alt="dependencies"/>
   </a>
-  <a href="https://david-dm.org/antvis/S2?type=dev" title="devDependencies status"><img src="https://david-dm.org/lijinke666/react-music-player/dev-status.svg" alt="devDependencies"/></a>
+  <a href="https://david-dm.org/antvis/S2?type=dev" title="devDependencies status"><img src="https://david-dm.org/antvis/S2/dev-status.svg" alt="devDependencies"/></a>
   <a href="#" target="_blank" target="_blank">
     <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square" alt="bundle size"/>
   </a>
@@ -134,12 +136,12 @@ const s2options = {
 ```
 
 ```ts
-import { SpreadSheet } from '@antv/s2';
+import { PivotSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css'
 
 const container = document.getElementById('container');
 
-const s2 = new SpreadSheet(container, s2DataConfig, s2options)
+const s2 = new PivotSheet(container, s2DataConfig, s2options)
 
 s2.render()
 ```

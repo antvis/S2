@@ -3,6 +3,7 @@ import { IGroup, IShape } from '@antv/g-base';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import {
+  KEY_GROUP_COL_RESIZE_AREA,
   SERIES_NUMBER_FIELD,
   KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_SCROLL,
@@ -11,14 +12,12 @@ import {
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
 } from '@/common/constant';
 import { ColCell, TableColCell, TableCornerCell } from '@/cell';
-import { Formatter, S2CellType, SortParam } from '@/common/interface';
+import { Formatter, S2CellType } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
   // format field value
   formatter: (field: string) => Formatter;
-  // col leaf node sort params
-  sortParam: SortParam;
   // corner width used when scroll {@link ColHeader#onColScroll}
   cornerWidth?: number;
   scrollContainsRowHeader?: boolean;
@@ -78,13 +77,19 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected clip(): void {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
 
-    const { frozenColCount } = spreadsheet.options;
+    const { frozenColCount, frozenTrailingColCount } = spreadsheet.options;
     const colLeafNodes = spreadsheet.facet.layoutResult.colLeafNodes;
 
     let frozenColWidth = 0;
+    let frozenTrailingColWidth = 0;
     if (spreadsheet.isTableMode()) {
       for (let i = 0; i < frozenColCount; i++) {
         frozenColWidth += colLeafNodes[i].width;
+      }
+
+      for (let i = 0; i < frozenTrailingColCount; i++) {
+        frozenTrailingColWidth +=
+          colLeafNodes[colLeafNodes.length - 1 - i].width;
       }
     }
 
@@ -96,10 +101,33 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
         width:
           width +
           (spreadsheet.freezeRowHeader() ? 0 : scrollX) -
-          frozenColWidth,
+          frozenColWidth -
+          frozenTrailingColWidth,
         height,
       },
     });
+
+    const prevResizeArea = spreadsheet.foregroundGroup.findById(
+      KEY_GROUP_COL_RESIZE_AREA,
+    );
+    const resizeAreaSize = spreadsheet.theme.resizeArea?.size ?? 0;
+
+    if (prevResizeArea) {
+      prevResizeArea.setClip({
+        type: 'rect',
+        attrs: {
+          x: 0 + frozenColWidth,
+          y: 0,
+          width:
+            width +
+            (spreadsheet.freezeRowHeader() ? 0 : scrollX) -
+            frozenColWidth -
+            frozenTrailingColWidth +
+            resizeAreaSize,
+          height,
+        },
+      });
+    }
   }
 
   public clear() {

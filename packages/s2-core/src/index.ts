@@ -5,12 +5,8 @@ export { Node } from './facet/layout/node';
 export { Hierarchy } from './facet/layout/hierarchy';
 export { BaseEvent, BaseEventImplement } from './interaction/base-interaction';
 export { GuiIcon } from './common/icons/gui-icon';
-export {
-  SheetComponent,
-  SpreadsheetProps,
-  PartDrillDown,
-} from './components/index';
 export { DrillDown, DrillDownProps } from './components/drill-down';
+export * from './components/index';
 export * from './utils';
 export * from './cell';
 export * from './common/interface/index';

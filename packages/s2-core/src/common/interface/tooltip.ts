@@ -1,18 +1,21 @@
-import { SpreadSheet } from '../../sheet-type';
-import { SortParam } from '../interface';
+import { MenuProps } from 'antd';
+import { SpreadSheet } from '@/sheet-type';
+import { SortParam } from '@/common/interface';
+import { BaseTooltip } from '@/ui/tooltip';
 
 export type TooltipDataItem = Record<string, any>;
 
-export interface IMenu {
+export interface TooltipOperatorMenu {
   id: string;
-  icon?: any;
+  icon?: React.ReactNode;
   text?: string;
-  children?: IMenu[]; // subMenu
+  children?: TooltipOperatorMenu[]; // subMenu
 }
 
 export interface TooltipOperatorOptions {
-  onClick: (...params: unknown[]) => void;
-  menus: IMenu[];
+  onClick: MenuProps['onClick'];
+  menus: TooltipOperatorMenu[];
+  [key: string]: unknown;
 }
 
 export interface TooltipPosition {
@@ -24,7 +27,7 @@ export interface TooltipPosition {
 export type ListItem = {
   name: string;
   value: string | number;
-  icon?: string;
+  icon?: React.ReactNode;
 };
 
 export interface SortQuery {
@@ -39,7 +42,8 @@ export interface TooltipOptions {
   // totals or not
   isTotals?: boolean;
   showSingleTips?: boolean;
-  [key: string]: any;
+  onlyMenu?: boolean;
+  rowQuery?: Record<string, unknown>;
 }
 
 export interface TooltipSummaryOptions {
@@ -69,7 +73,7 @@ export type TooltipDetailProps = {
 
 export type TooltipInterpretationOptions = {
   name: string;
-  icon?: any;
+  icon?: React.ReactNode;
   text?: string;
   render?: React.ElementType;
 };
@@ -111,6 +115,11 @@ export type DataParam = {
   ) => string | number; // 自定义value
 };
 
+export type IconProps = {
+  icon: React.ReactNode;
+  [key: string]: unknown;
+};
+
 export interface SummaryProps {
   summaries: TooltipSummaryOptions[];
 }
@@ -128,3 +137,27 @@ export interface OrderOption {
   type: 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
   name: string;
 }
+
+export interface Tooltip {
+  readonly showTooltip?: boolean;
+  readonly row?: Tooltip;
+  readonly col?: Tooltip;
+  readonly cell?: Tooltip;
+  // custom tooltips
+  readonly renderTooltip?: RenderTooltip;
+  // replace the whole default tooltip component
+  readonly tooltipComponent?: JSX.Element;
+  // Tooltip operation
+  readonly operation?: TooltipOperation;
+}
+
+export interface TooltipOperation {
+  // 隐藏列 (明细表有效)
+  hiddenColumns?: boolean;
+  // 趋势图
+  trend?: boolean;
+  // 组内排序
+  sort?: boolean;
+}
+
+export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;

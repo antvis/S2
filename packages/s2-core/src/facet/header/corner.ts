@@ -1,5 +1,5 @@
 import { Group, Point, SimpleBBox } from '@antv/g-canvas';
-import { get, includes, isEmpty, last } from 'lodash';
+import { get, includes, isEmpty, last, max } from 'lodash';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { CornerData, ResizeInfo } from './interface';
@@ -42,7 +42,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
    * @param seriesNumberWidth
    * @param cfg
    * @param layoutResult
-   * @param ss spreadsheet
+   * @param s2 spreadsheet
    */
   public static getCornerHeader(
     viewportBBox: SimpleBBox,
@@ -50,7 +50,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     seriesNumberWidth: number,
     cfg: SpreadSheetFacetCfg,
     layoutResult: LayoutResult,
-    ss: SpreadSheet,
+    s2: SpreadSheet,
   ) {
     const { width, height } = viewportBBox;
     const cornerWidth = cornerBBox.width;
@@ -60,11 +60,12 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       cornerWidth,
       cornerHeight,
       cfg.rows,
+      cfg.columns,
       layoutResult.rowsHierarchy,
       layoutResult.colsHierarchy,
       cfg.dataSet,
       seriesNumberWidth,
-      ss,
+      s2,
     );
     return new CornerHeader({
       data: cornerNodes,
@@ -78,7 +79,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       hierarchyCollapse: cfg.hierarchyCollapse,
       columns: cfg.columns,
       seriesNumberWidth,
-      spreadsheet: ss,
+      spreadsheet: s2,
     });
   }
 
@@ -87,23 +88,23 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     width: number,
     height: number,
     rows: string[],
+    columns: string[],
     rowsHierarchy: Hierarchy,
     colsHierarchy: Hierarchy,
     dataSet: BaseDataSet,
     seriesNumberWidth: number,
-    ss: SpreadSheet,
+    s2: SpreadSheet,
   ): Node[] {
     const cornerNodes: Node[] = [];
 
-    const isPivotMode = ss.isPivotMode();
+    // 列头 label 横坐标偏移量：与行头 label 最右对齐
+    let columOffsetX = 0;
+
+    const isPivotMode = s2.isPivotMode();
     // check if show series number node
     if (seriesNumberWidth) {
       // 1、spreadsheet must have at least one node in last level
-      // 2、listSheet don't have other conditions
-      if (
-        (isPivotMode && colsHierarchy?.sampleNodeForLastLevel) ||
-        !isPivotMode
-      ) {
+      if (isPivotMode && colsHierarchy?.sampleNodeForLastLevel) {
         const sNode: Node = new Node({
           key: KEY_SERIES_NUMBER_NODE, // mark series node
           id: '',
@@ -120,14 +121,15 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           ? colsHierarchy?.sampleNodeForLastLevel?.height
           : height;
         sNode.isPivotMode = isPivotMode;
+        sNode.cornerType = 'row';
         cornerNodes.push(sNode);
       }
     }
 
     // spreadsheet type tree mode
-    if (isPivotMode && ss.isHierarchyTreeType()) {
+    if (isPivotMode && s2.isHierarchyTreeType()) {
       if (get(colsHierarchy, 'sampleNodeForLastLevel', undefined)) {
-        const drillDownFieldInLevel = ss.store.get('drillDownFieldInLevel', []);
+        const drillDownFieldInLevel = s2.store.get('drillDownFieldInLevel', []);
         const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
 
         const cNode: Node = new Node({
@@ -140,12 +142,15 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
             .join('/'),
         });
         cNode.x = position.x + seriesNumberWidth;
+        columOffsetX = max([cNode.x, columOffsetX]);
         cNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
         // cNode should subtract series width
         cNode.width = width - seriesNumberWidth;
         cNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
         cNode.seriesNumberWidth = seriesNumberWidth;
         cNode.isPivotMode = isPivotMode;
+        cNode.spreadsheet = s2;
+        cNode.cornerType = 'row';
         cornerNodes.push(cNode);
       }
     } else {
@@ -162,36 +167,40 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
             id: '',
             value: dataSet.getFieldName(field),
           });
+
           cNode.x = rowNode.x + seriesNumberWidth;
+          columOffsetX = max([cNode.x, columOffsetX]);
           cNode.y = colsHierarchy.sampleNodeForLastLevel.y;
           cNode.width = rowNode.width;
           cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
           cNode.field = field;
           cNode.isPivotMode = isPivotMode;
-          cNode.spreadsheet = ss;
-          cornerNodes.push(cNode);
-        });
-      } else {
-        // detail type
-        rowsHierarchy.sampleNodesForAllLevels.forEach((rowNode) => {
-          const field = rows[rowNode.level];
-          const cNode: Node = new Node({
-            key: field,
-            id: '',
-            value: dataSet.getFieldName(field),
-          });
-          cNode.x = rowNode.x + seriesNumberWidth;
-          cNode.y = position.y;
-          cNode.width = rowNode.width;
-          cNode.height = height;
-          cNode.field = field;
-          cNode.isPivotMode = isPivotMode;
-          cNode.spreadsheet = ss;
+          cNode.cornerType = 'row';
+          cNode.spreadsheet = s2;
           cornerNodes.push(cNode);
         });
       }
     }
-
+    colsHierarchy.sampleNodesForAllLevels.forEach((colNode) => {
+      // 列头最后一个层级的位置为行头 label 标识，需要过滤
+      if (colNode.level !== colsHierarchy.maxLevel) {
+        const field = columns[colNode.level];
+        const cNode: Node = new Node({
+          key: field,
+          id: '',
+          value: dataSet.getFieldName(field),
+        });
+        cNode.x = columOffsetX;
+        cNode.y = colNode.y;
+        cNode.width = colsHierarchy.sampleNodeForLastLevel.width;
+        cNode.height = colNode.height;
+        cNode.field = field;
+        cNode.isPivotMode = isPivotMode;
+        cNode.cornerType = 'col';
+        cNode.spreadsheet = s2;
+        cornerNodes.push(cNode);
+      }
+    });
     return cornerNodes;
   }
 

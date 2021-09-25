@@ -3,19 +3,41 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
-import { SheetEntry } from '../util/sheet-entry';
+import { SheetEntry, assembleDataCfg } from '../util/sheet-entry';
+// import * as tableData from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
-import { ThemeName } from '@/index';
+import {
+  HeaderActionIconProps,
+  S2Options,
+  SheetType,
+  ThemeName,
+} from '@/index';
+
+const tableDataFields = {
+  fields: {
+    columns: ['province', 'city', 'type', 'sub_type', 'price'],
+    valueInCols: true,
+  },
+};
 
 function MainLayout() {
+  const [dataCfg, setDataCfg] = React.useState(assembleDataCfg({}));
   const [render, setRender] = React.useState(true);
-
+  const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
   const [spotLight, setSpotLight] = React.useState(true);
+  const [isPivotSheet, setIsPivotSheet] = React.useState(true);
   const [hoverHighlight, setHoverHighlight] = React.useState(true);
+  const [showSeriesNumber, setShowSeriesNumber] = React.useState(false);
   const [showPagination, setShowPagination] = React.useState(false);
-  const [showTooltip, setShowTooltip] = React.useState(true);
-
+  const [showDefaultActionIcons, setShowDefaultActionIcons] =
+    React.useState(true);
   const [themeName, setThemeName] = React.useState<ThemeName>('default');
+
+  const cornerTooltip = <div>cornerHeader</div>;
+
+  const rowTooltip = <div>rowHeader</div>;
+
+  const colTooltip = <div>colHeader</div>;
 
   const onToggleRender = () => {
     setRender(!render);
@@ -24,20 +46,82 @@ function MainLayout() {
   const onRadioChange = (e) => {
     setThemeName(e.target.value);
   };
-  const mergedOptions = {
+  const mergedOptions: Partial<S2Options> = {
     pagination: showPagination && {
-      pageSize: 20,
+      pageSize: 5,
       current: 1,
     },
     tooltip: {
-      showTooltip: showTooltip,
+      showTooltip: true,
       renderTooltip: (spreadsheet) => {
         return new CustomTooltip(spreadsheet);
       },
+      operation: {
+        trend: true,
+      },
     },
+    showSeriesNumber: showSeriesNumber,
     selectedCellsSpotlight: spotLight,
     hoverHighlight: hoverHighlight,
+    customSVGIcons: !showDefaultActionIcons && [
+      {
+        name: 'Filter',
+        svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+      },
+      {
+        name: 'FilterAsc',
+        svg: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
+      },
+    ],
+    headerActionIcons: !showDefaultActionIcons && [
+      {
+        iconNames: ['Filter'],
+        belongsCell: 'colCell',
+        action: (props: HeaderActionIconProps) => {
+          const { meta, event } = props;
+          meta.spreadsheet.tooltip.show({
+            position: { x: event.clientX, y: event.clientY },
+            element: colTooltip,
+          });
+        },
+      },
+      {
+        iconNames: ['FilterAsc'],
+        belongsCell: 'cornerCell',
+        action: (props: HeaderActionIconProps) => {
+          const { meta, event } = props;
+          meta.spreadsheet.tooltip.show({
+            position: { x: event.clientX, y: event.clientY },
+            element: cornerTooltip,
+          });
+        },
+      },
+      {
+        iconNames: ['SortDown', 'Filter'],
+        belongsCell: 'rowCell',
+        action: (props: HeaderActionIconProps) => {
+          const { meta, event } = props;
+          meta.spreadsheet.tooltip.show({
+            position: { x: event.clientX, y: event.clientY },
+            element: rowTooltip,
+          });
+        },
+      },
+    ],
   };
+
+  const onSheetTypeChange = (checked) => {
+    setIsPivotSheet(checked);
+    // 透视表
+    if (checked) {
+      setSheetType('pivot');
+      setDataCfg(assembleDataCfg({}));
+    } else {
+      setSheetType('table');
+      setDataCfg(assembleDataCfg(tableDataFields));
+    }
+  };
+
   return (
     <div>
       <Space size="middle" style={{ marginBottom: 20 }}>
@@ -50,9 +134,10 @@ function MainLayout() {
       </Space>
       {render && (
         <SheetEntry
-          dataCfg={{}}
+          dataCfg={dataCfg}
           options={mergedOptions}
           themeCfg={{ name: themeName }}
+          sheetType={sheetType}
           header={
             <Space size="middle" style={{ marginBottom: 20 }}>
               <Radio.Group onChange={onRadioChange} defaultValue="default">
@@ -60,6 +145,13 @@ function MainLayout() {
                 <Radio.Button value="simple">简约蓝</Radio.Button>
                 <Radio.Button value="colorful">多彩蓝</Radio.Button>
               </Radio.Group>
+
+              <Switch
+                checkedChildren="显示序号"
+                unCheckedChildren="不显示序号"
+                checked={showSeriesNumber}
+                onChange={setShowSeriesNumber}
+              />
 
               <Switch
                 checkedChildren="分页"
@@ -81,10 +173,16 @@ function MainLayout() {
               />
 
               <Switch
-                checkedChildren="tooltip打开"
-                unCheckedChildren="tooltip关闭"
-                checked={showTooltip}
-                onChange={setShowTooltip}
+                checkedChildren="默认actionIcons"
+                unCheckedChildren="自定义actionIcons"
+                checked={showDefaultActionIcons}
+                onChange={setShowDefaultActionIcons}
+              />
+              <Switch
+                checkedChildren="透视表"
+                unCheckedChildren="明细表"
+                checked={isPivotSheet}
+                onChange={onSheetTypeChange}
               />
             </Space>
           }

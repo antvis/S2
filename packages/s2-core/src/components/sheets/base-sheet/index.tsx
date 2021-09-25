@@ -21,7 +21,7 @@ import { EmitterType } from '@/common/interface/emitter';
 import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
-import { SpreadSheet } from '@/sheet-type';
+import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import {
   HandleDrillDown,
   HandleDrillDownIcon,
@@ -34,7 +34,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     spreadsheet,
     dataCfg,
     options,
-    adaptive = true,
+    adaptive = false,
     header,
     themeCfg,
     rowLevel,
@@ -48,9 +48,13 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     onRowCellClick,
     onColCellClick,
     onMergedCellsClick,
+    onRowCellDoubleClick,
+    onColCellDoubleClick,
+    onMergedCellsDoubleClick,
     onDataCellMouseUp,
     getSpreadsheet,
     partDrillDown,
+    showDefaultPagination = true,
   } = props;
   const container = useRef<HTMLDivElement>();
   const baseSpreadsheet = useRef<SpreadSheet>();
@@ -63,14 +67,17 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const [current, setCurrent] = useState<number>(
     options?.pagination?.current || 1,
   );
+  const [pageSize, setPageSize] = useState<number>(
+    options?.pagination?.pageSize || 10,
+  );
 
   const getSpreadSheet = (): SpreadSheet => {
     const params: S2Constructor = [container.current, dataCfg, options];
-    // TODO: 改个名字 spreadsheet => customSpreadsheet 之类的?
+
     if (spreadsheet) {
       return spreadsheet(...params);
     }
-    return new SpreadSheet(...params);
+    return new PivotSheet(...params);
   };
 
   const bindEvent = () => {
@@ -115,6 +122,15 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       [S2Event.COL_CELL_CLICK]: (ev: GEvent) => {
         onColCellClick?.(getBaseCellData(ev));
       },
+      [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (ev: GEvent) => {
+        onMergedCellsDoubleClick?.(getBaseCellData(ev));
+      },
+      [S2Event.ROW_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
+        onRowCellDoubleClick?.(getBaseCellData(ev));
+      },
+      [S2Event.COL_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
+        onColCellDoubleClick?.(getBaseCellData(ev));
+      },
       [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
         targetRow: TargetLayoutNode,
       ) => {
@@ -156,7 +172,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   };
 
   const iconClickCallback = (
-    event: MouseEvent,
+    event: GEvent,
     sheetInstance: SpreadSheet,
     cacheDrillFields?: string[],
     disabledFields?: string[],
@@ -178,78 +194,26 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     });
   };
 
-  // TODO 使用到的时候根据情况增加配置项
-  // const updateScrollOffset = (nodeKey: string, isRow = true) => {
-  //   let item;
-  //   if (isRow) {
-  //     item = baseSpreadsheet
-  //       .getRowNodes()
-  //       .find((value) => value.id === nodeKey);
-  //     if (item) {
-  //       baseSpreadsheet.updateScrollOffset({
-  //         offsetY: {
-  //           value: item.y,
-  //         },
-  //       });
-  //     }
-  //   } else {
-  //     item = baseSpreadsheet
-  //       .getColumnNodes()
-  //       .find((value) => value.id === nodeKey);
-  //     if (item) {
-  //       baseSpreadsheet.updateScrollOffset({
-  //         offsetX: {
-  //           value: item.x,
-  //         },
-  //       });
-  //     }
-  //   }
-  // };
-
-  // TODO 使用到的时候根据情况增加配置项
-  // const selectColCell = (nodeKey: string) => {
-  //   const rowCell = baseSpreadsheet
-  //     .getColumnNodes()
-  //     .find((value) => value.id === nodeKey);
-  //   if (rowCell) {
-  //     if (rowCell.belongsCell) {
-  //       // @ts-ignore
-  //       const meta = rowCell.belongsCell.getMeta();
-  //       const idx = meta.cellIndex;
-  //       if (rowCell.belongsCell instanceof ColCell) {
-  //         if (idx === -1) {
-  //           const arr = map(Node.getAllLeavesOfNode(meta), 'cellIndex');
-  //           baseSpreadsheet.store.set('selected', {
-  //             type: 'column',
-  //             indexes: [-1, [min(arr), max(arr)]],
-  //           });
-  //         } else {
-  //           baseSpreadsheet.store.set('selected', {
-  //             type: 'column',
-  //             indexes: [-1, idx],
-  //           });
-  //         }
-  //         baseSpreadsheet.getPanelAllCells().forEach((value) => {
-  //           value.update();
-  //         });
-  //       }
-  //     }
-  //   }
-  // };
-
   const setOptions = (
     sheetInstance?: SpreadSheet,
     sheetProps?: BaseSheetProps,
   ) => {
     const curSheet = sheetInstance || ownSpreadsheet;
     const curProps = sheetProps || props;
-    curSheet.setOptions(
-      safetyOptions(HandleDrillDownIcon(curProps, curSheet, iconClickCallback)),
-    );
+    let curOptions = options;
+
+    // 处理下钻参数
+    if (partDrillDown) {
+      curOptions = HandleDrillDownIcon(curProps, curSheet, iconClickCallback);
+    }
+
+    curSheet.setOptions(safetyOptions(curOptions));
   };
 
   const setDataCfg = () => {
-    ownSpreadsheet.setDataCfg(dataCfg);
+    // reset the options since it could be changed by layout
+    setOptions();
+    ownSpreadsheet.setDataCfg(safetyDataConfig(dataCfg));
   };
 
   const update = (reset?: () => void, reloadData = true) => {
@@ -280,7 +244,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (isEmpty(paginationCfg)) {
       return null;
     }
-    const pageSize = get(paginationCfg, 'pageSize', Infinity);
     // only show the pagination when the pageSize > 5
     const showQuickJumper = total / pageSize > 5;
     const preCls = `${S2_PREFIX_CLS}-pagination`;
@@ -288,11 +251,15 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     return (
       <div className={preCls}>
         <Pagination
-          current={current}
+          defaultCurrent={current}
           total={total}
           pageSize={pageSize}
           // TODO 外部定义的pageSize和内部PageSize改变的优先级处理
-          showSizeChanger={false}
+          showSizeChanger={true}
+          onShowSizeChange={(current, size) => {
+            setCurrent(1);
+            setPageSize(size);
+          }}
           size={'small'}
           showQuickJumper={showQuickJumper}
           onChange={(page) => setCurrent(page)}
@@ -415,12 +382,31 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     update();
   }, [current]);
 
+  useEffect(() => {
+    if (!ownSpreadsheet || isEmpty(options?.pagination)) return;
+    const newOptions = merge({}, options, {
+      pagination: {
+        pageSize: pageSize,
+      },
+    });
+    const newProps = merge({}, props, {
+      options: newOptions,
+    });
+    setOptions(ownSpreadsheet, newProps);
+    update();
+  }, [pageSize]);
+
+  useEffect(() => {
+    ownSpreadsheet?.setOptions({ hiddenColumnFields: [] });
+    ownSpreadsheet?.hideColumns(options.hiddenColumnFields);
+  }, [ownSpreadsheet, options.hiddenColumnFields]);
+
   return (
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && <Header {...header} sheet={ownSpreadsheet} />}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
-        {renderPagination()}
+        {showDefaultPagination && renderPagination()}
       </Spin>
     </StrictMode>
   );

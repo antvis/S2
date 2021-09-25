@@ -56,7 +56,7 @@ const plugins = [
   }),
 ];
 
-const external = ['react', 'react-dom', '@ant-design/icons', 'antd'];
+const external = ['react', 'react-dom', '@ant-design/icons', /antd/];
 
 if (format === 'umd') {
   output.file = 'dist/s2.min.js';

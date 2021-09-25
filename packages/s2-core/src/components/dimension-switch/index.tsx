@@ -35,7 +35,7 @@ export const DimensionSwitchModal: FC<
   const child = useCustomChild(
     <Button
       size="small"
-      className={'ss-dimension-switch-icon-button'}
+      className={'s2-dimension-switch-icon-button'}
       icon={<EditOutlined />}
     />,
     children,
@@ -58,7 +58,7 @@ export const DimensionSwitchModal: FC<
         onCancel={() => hide()}
         destroyOnClose={true}
         width="fit-content"
-        wrapClassName={cx('ss-dimension-switch-overlay', overlayClassName)}
+        wrapClassName={cx('s2-dimension-switch-overlay', overlayClassName)}
         afterClose={onModalVisibilityChange}
       >
         <DimensionSwitch
@@ -96,11 +96,11 @@ export const DimensionSwitchPopover: FC<DimensionSwitchMultipleProps> = ({
       trigger="click"
       visible={visible}
       title={
-        <div className={'ss-dimension-switch-popover-title'}>
+        <div className={'s2-dimension-switch-popover-title'}>
           {i18n('选择分析信息')}{' '}
           <Button
             size="small"
-            className={'ss-dimension-switch-icon-button'}
+            className={'s2-dimension-switch-icon-button'}
             icon={<CloseOutlined />}
             onClick={hide}
           />
@@ -113,7 +113,7 @@ export const DimensionSwitchPopover: FC<DimensionSwitchMultipleProps> = ({
           onUpdateDisableItems={onUpdateDisableItems}
         />
       }
-      overlayClassName={cx('ss-dimension-switch-overlay', overlayClassName)}
+      overlayClassName={cx('s2-dimension-switch-overlay', overlayClassName)}
       destroyTooltipOnHide={true}
     >
       {cloneElement(child, { onClick: toggle })}
@@ -159,12 +159,12 @@ export const DimensionSwitchDropdown: FC<DimensionSwitchDropdownProps> = ({
       }
       destroyTooltipOnHide={true}
       overlayClassName={cx(
-        'ss-dimension-switch-overlay',
-        'ss-dropdown-overlay',
+        's2-dimension-switch-overlay',
+        's2-dropdown-overlay',
         overlayClassName,
       )}
     >
-      <div className={'ss-dropdown'} onClick={toggle}>
+      <div className={'s2-dropdown'} onClick={toggle}>
         <span className={'label'}>{dimension.displayName}</span>
         <span className={'content'}>{selectContent}</span>
         {visible ? <UpOutlined /> : <DownOutlined />}

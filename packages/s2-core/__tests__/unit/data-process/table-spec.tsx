@@ -5,12 +5,12 @@
  * - 明细表不需要生成 Row Hierarchy（但为了流程一致会生成空结构）
  */
 import { get } from 'lodash';
-import { SpreadSheet } from 'src/sheet-type';
-import { assembleDataCfg, assembleOptions } from 'tests/util/sheet-entry';
-import { getContainer } from 'tests/util/helpers';
+import { TableSheet } from 'src/sheet-type';
+import { assembleDataCfg, assembleOptions } from '../../util/sheet-entry';
+import { getContainer } from '../../util/helpers';
 
 describe('List Table Core Data Process', () => {
-  const ss = new SpreadSheet(
+  const s2 = new TableSheet(
     getContainer(),
     assembleDataCfg({
       meta: [],
@@ -18,12 +18,12 @@ describe('List Table Core Data Process', () => {
         columns: ['province', 'city', 'type', 'sub_type', 'price'],
       },
     }),
-    assembleOptions({ mode: 'table' }),
+    assembleOptions({}),
   );
-  ss.render();
+  s2.render();
 
   describe('1、Generate Col Hierarchy', () => {
-    const layoutResult = ss.facet.layoutResult;
+    const layoutResult = s2.facet.layoutResult;
     const { colsHierarchy } = layoutResult;
 
     test('should get correct col hierarchy structure', () => {
@@ -48,9 +48,9 @@ describe('List Table Core Data Process', () => {
   });
 
   describe('2、Calculate Col Coordinates', () => {
-    const { width, style } = ss.options;
-    const { colLeafNodes, colsHierarchy } = ss.facet.layoutResult;
-    const { cellCfg, rowCfg, colCfg } = get(ss, 'facet.cfg');
+    const { width, style } = s2.options;
+    const { colLeafNodes, colsHierarchy } = s2.facet.layoutResult;
+    const { cellCfg, rowCfg, colCfg } = get(s2, 'facet.cfg');
 
     test('should calc correct cell width', () => {
       expect(cellCfg.width).toEqual(
@@ -79,7 +79,7 @@ describe('List Table Core Data Process', () => {
   });
 
   describe('3、Calculate overlapped data cell info', () => {
-    const { getCellMeta } = ss.facet.layoutResult;
+    const { getCellMeta } = s2.facet.layoutResult;
     test('should get correct data value', () => {
       // 第一行
       expect(getCellMeta(0, 0).data).toEqual({ province: '浙江省' });

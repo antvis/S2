@@ -1,15 +1,11 @@
-import { Event, Group, Point } from '@antv/g-canvas';
+import { Group, Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
-import { each, forEach } from 'lodash';
 import { HeaderCell } from './header-cell';
 import {
   CellTypes,
-  ID_SEPARATOR,
   KEY_GROUP_ROW_RESIZE_AREA,
   S2Event,
 } from '@/common/constant';
-import { InteractionStateName } from '@/common/constant/interaction';
-import { GuiIcon } from '@/common/icons';
 import { FormatResult, TextTheme } from '@/common/interface';
 import { ResizeInfo } from '@/facet/header/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
@@ -42,8 +38,6 @@ export class RowCell extends HeaderCell {
     this.drawTreeIcon();
     // draw text
     this.drawTextShape();
-    // draw action icon shapes: trend icon, drill-down icon ...
-    this.drawActionIcons();
 
     // draw bottom border
     this.drawRectBorder();
@@ -180,16 +174,16 @@ export class RowCell extends HeaderCell {
       horizontalBorderWidth,
       horizontalBorderOpacity,
     } = this.getStyle().cell;
-    const { x, y } = this.getCellArea();
+    const { x, y, height } = this.getCellArea();
     // 1、bottom border
     const contentIndent = this.getContentIndent();
     renderLine(
       this,
       {
         x1: x + contentIndent,
-        y1: y,
+        y1: y + height,
         x2: position.x + width + viewportWidth + scrollX,
-        y2: y,
+        y2: y + height,
       },
       {
         stroke: horizontalBorderColor,
@@ -236,70 +230,6 @@ export class RowCell extends HeaderCell {
           } as ResizeInfo,
         },
       });
-    }
-  }
-
-  protected drawActionIcons() {
-    const rowActionIcons = this.spreadsheet.options.rowActionIcons;
-
-    if (!rowActionIcons) return;
-    const { iconTypes, display, action, customDisplayByRowName } =
-      rowActionIcons;
-    if (customDisplayByRowName) {
-      const { rowNames, mode } = customDisplayByRowName;
-      const rowIds = rowNames.map((rowName) => `root${ID_SEPARATOR}${rowName}`);
-
-      if (
-        (mode === 'omit' && rowIds.includes(this.meta.id)) ||
-        (mode === 'pick' && !rowIds.includes(this.meta.id))
-      )
-        return;
-    }
-
-    const showIcon = () => {
-      const level = this.meta.level;
-      const rowLevel = display?.level;
-      switch (display?.operator) {
-        case '<':
-          return level < rowLevel;
-        case '<=':
-          return level <= rowLevel;
-        case '=':
-          return level === rowLevel;
-        case '>':
-          return level > rowLevel;
-        case '>=':
-          return level >= rowLevel;
-        default:
-          break;
-      }
-    };
-
-    if (
-      showIcon() &&
-      this.spreadsheet.isHierarchyTreeType() &&
-      this.spreadsheet.isPivotMode()
-    ) {
-      const { x, width } = this.getContentArea();
-      const { size } = this.getStyle().icon;
-
-      for (let i = 0; i < iconTypes.length; i++) {
-        const iconRight = size * (iconTypes.length - i);
-        const icon = new GuiIcon({
-          type: iconTypes[i],
-          x: x + width - iconRight,
-          y: this.getIconYPosition(),
-          width: size,
-          height: size,
-        });
-        icon.set('visible', false);
-        icon.on('click', (e: Event) => {
-          action(iconTypes[i], this.meta, e);
-        });
-
-        this.actionIcons.push(icon);
-        this.add(icon);
-      }
     }
   }
 
@@ -356,9 +286,17 @@ export class RowCell extends HeaderCell {
     };
   }
 
+  protected getIconPosition() {
+    const textCfg = this.textShape.cfg.attrs;
+    return {
+      x: textCfg.x + this.actualTextWidth + this.getStyle().icon.margin.left,
+      y: textCfg.y,
+    };
+  }
+
   protected getMaxTextWidth(): number {
     const { width } = this.getContentArea();
-    return width - this.getTextIndent();
+    return width - this.getTextIndent() - this.getActionIconsWidth();
   }
 
   protected getTextPosition(): Point {
@@ -379,17 +317,5 @@ export class RowCell extends HeaderCell {
     const { size } = this.getStyle().icon;
     const { fontSize } = this.getTextStyle();
     return textY + (fontSize - size) / 2;
-  }
-
-  updateByState(stateName: InteractionStateName) {
-    super.updateByState(stateName, this);
-    each(this.actionIcons, (icon) =>
-      icon.set('visible', stateName === InteractionStateName.HOVER),
-    );
-  }
-
-  public hideInteractionShape() {
-    super.hideInteractionShape();
-    forEach(this.actionIcons, (icon) => icon.set('visible', false));
   }
 }

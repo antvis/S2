@@ -2,6 +2,8 @@
 *node_modules/
 .vscode
 .history
+*.log
+*.zip
 
 # Mac files
 .DS_Store

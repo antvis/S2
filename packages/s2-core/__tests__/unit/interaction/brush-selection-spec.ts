@@ -8,6 +8,7 @@ import {
   InteractionBrushSelectionStage,
   InterceptType,
   OriginalEvent,
+  PivotSheet,
   S2CellType,
   S2Event,
   SpreadSheet,
@@ -73,7 +74,7 @@ describe('Interaction Brush Selection Tests', () => {
   beforeEach(() => {
     MockRootInteraction.mockClear();
 
-    mockSpreadSheetInstance = new SpreadSheet(
+    mockSpreadSheetInstance = new PivotSheet(
       document.createElement('div'),
       null,
       null,
@@ -90,6 +91,7 @@ describe('Interaction Brush Selection Tests', () => {
     );
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;
+    brushSelectionInstance.hidePrepareSelectMaskShape = jest.fn();
   });
 
   test('should register events', () => {
@@ -135,6 +137,32 @@ describe('Interaction Brush Selection Tests', () => {
   });
 
   test('should skip brush selection if mouse not dragged', () => {
+    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
+      layerX: 10,
+      layerY: 20,
+    });
+    emitEvent(S2Event.DATA_CELL_MOUSE_MOVE, {
+      layerX: 12,
+      layerY: 22,
+    });
+    emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+
+    expect(brushSelectionInstance.brushSelectionStage).toEqual(
+      InteractionBrushSelectionStage.UN_DRAGGED,
+    );
+    expect(
+      brushSelectionInstance.interaction.hasIntercepts([
+        InterceptType.BRUSH_SELECTION,
+      ]),
+    ).toBeFalsy();
+
+    // 如果刷选距离过短, 则走单选的逻辑, 需要隐藏刷选提示框
+    expect(
+      brushSelectionInstance.hidePrepareSelectMaskShape,
+    ).toHaveBeenCalled();
+  });
+
+  test('should skip brush selection if mouse move less than valid distance', () => {
     emitEvent(S2Event.DATA_CELL_MOUSE_MOVE, {});
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(

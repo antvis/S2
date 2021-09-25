@@ -7,7 +7,7 @@ import {
   S2DataConfig,
   S2Options,
   SheetComponent,
-  SpreadSheet,
+  PivotSheet,
 } from '../../src';
 import { getContainer } from '../util/helpers';
 
@@ -29,7 +29,7 @@ const getSpreadSheet = (
   dataCfg: S2DataConfig,
   options: S2Options,
 ) => {
-  return new SpreadSheet(dom, dataCfg, options);
+  return new PivotSheet(dom, dataCfg, options);
 };
 
 const getDataCfg = () => {
@@ -61,7 +61,6 @@ const getOptions = () => {
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: false,
-    mode: 'pivot',
     totals: {
       row: {
         showGrandTotals: true,

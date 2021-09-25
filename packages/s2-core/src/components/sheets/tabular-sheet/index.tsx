@@ -19,7 +19,7 @@ import { TabularTheme } from './tabular-theme';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { safetyDataConfig, safetyOptions, S2Options } from '@/common/interface';
-import { SpreadSheet } from '@/sheet-type';
+import { SpreadSheet, PivotSheet } from '@/sheet-type';
 
 export const TabularSheet = (props: BaseSheetProps) => {
   const {
@@ -36,6 +36,9 @@ export const TabularSheet = (props: BaseSheetProps) => {
     onRowCellClick,
     onColCellClick,
     onMergedCellsClick,
+    onRowCellDoubleClick,
+    onColCellDoubleClick,
+    onMergedCellsDoubleClick,
     onDataCellMouseUp,
     getSpreadsheet,
   } = props;
@@ -108,7 +111,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     if (spreadsheet) {
       return spreadsheet(container, dataCfg, buildOptions());
     }
-    return new SpreadSheet(container, dataCfg, buildOptions());
+    return new PivotSheet(container, dataCfg, buildOptions());
   };
 
   const bindEvent = () => {
@@ -131,6 +134,22 @@ export const TabularSheet = (props: BaseSheetProps) => {
     baseSpreadsheet.on(S2Event.MERGED_CELLS_CLICK, (ev: Event) => {
       if (isFunction(onMergedCellsClick)) {
         onMergedCellsClick(getBaseCellData(ev));
+      }
+    });
+    baseSpreadsheet.on(S2Event.ROW_CELL_DOUBLE_CLICK, (ev: Event) => {
+      if (isFunction(onRowCellClick)) {
+        onRowCellDoubleClick(getBaseCellData(ev));
+      }
+    });
+    baseSpreadsheet.on(S2Event.COL_CELL_DOUBLE_CLICK, (ev: Event) => {
+      if (isFunction(onColCellClick)) {
+        onColCellDoubleClick(getBaseCellData(ev));
+      }
+    });
+
+    baseSpreadsheet.on(S2Event.MERGED_CELLS_DOUBLE_CLICK, (ev: Event) => {
+      if (isFunction(onMergedCellsClick)) {
+        onMergedCellsDoubleClick(getBaseCellData(ev));
       }
     });
   };

@@ -16,6 +16,7 @@ import {
   SheetComponent,
   SpreadSheet,
   ThemeCfg,
+  SheetType,
 } from '@/index';
 import 'antd/dist/antd.min.css';
 
@@ -56,10 +57,12 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
   );
 
 interface SheetEntryProps {
-  header?: ReactNode;
   options: Partial<S2Options>;
   dataCfg: Partial<S2DataConfig>;
+  forceUpdateDataCfg?: boolean; // 是否强制替换 dataCfg
   themeCfg?: ThemeCfg;
+  header?: ReactNode;
+  sheetType?: SheetType;
 }
 
 // eslint-disable-next-line react/display-name
@@ -68,13 +71,13 @@ export const SheetEntry = forwardRef(
     const [mode, setMode] = useState('grid');
     const [valueInCols, setValueInCols] = useState(true);
     const [freezeRowHeader, setFreezeRowHeader] = useState(true);
+    const initOptions = assembleOptions(props.options);
 
-    const [options, setOptions] = useState(() =>
-      assembleOptions(props.options),
-    );
-    const [dataCfg, setDataCfg] = useState(() =>
-      assembleDataCfg(props.dataCfg),
-    );
+    const initDataCfg = props.forceUpdateDataCfg
+      ? props.dataCfg
+      : assembleOptions(props.dataCfg);
+    const [options, setOptions] = useState(() => initOptions);
+    const [dataCfg, setDataCfg] = useState(() => initDataCfg);
 
     const onValueInColsChange = (checked) => {
       setValueInCols(checked);
@@ -110,7 +113,11 @@ export const SheetEntry = forwardRef(
     }, [props.options]);
 
     useEffect(() => {
-      setDataCfg(assembleDataCfg(dataCfg, props.dataCfg));
+      if (props.forceUpdateDataCfg) {
+        setDataCfg(props.dataCfg);
+      } else {
+        setDataCfg(assembleDataCfg(dataCfg, props.dataCfg));
+      }
     }, [props.dataCfg]);
 
     return (
@@ -140,6 +147,7 @@ export const SheetEntry = forwardRef(
         <SheetComponent
           dataCfg={dataCfg}
           options={options}
+          sheetType={props.sheetType}
           adaptive={false}
           getSpreadsheet={(instance) => {
             if (ref) {
