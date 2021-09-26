@@ -17,11 +17,11 @@ fetch('./data/basic.json')
     const s2options = {
       width: 800,
       height: 600,
-      linkFieldIds: ['city'],
+      linkFields: ['city'],
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2options);
 
-    s2.on(S2Event.ROW_CELL_TEXT_CLICK, (data) => {
+    s2.on(S2Event.CELL_TEXT_CLICK, (data) => {
       console.log(data);
       const { key, record } = data;
       const a = document.createElement('a');

@@ -54,6 +54,6 @@ const s2Options = {
 }
 ```
 
-[preview](https://gw.alipayobjects.com/zos/antfincdn/TLJEeN7iG/388c8320-ab7a-4601-b8d6-77d186516fb2.png)
+![preview](https://gw.alipayobjects.com/zos/antfincdn/TLJEeN7iG/388c8320-ab7a-4601-b8d6-77d186516fb2.png)
 
 还可以集成分析组件, 通过改变配置的方式, 实现动态隐藏列头, 具体请查看 [分析组件](#)

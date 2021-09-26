@@ -158,13 +158,10 @@ export class RowCell extends HeaderCell {
   }
 
   protected drawLinkFieldShape() {
-    const { linkFieldIds = [] } = this.headerConfig;
+    const { linkFields = [] } = this.headerConfig;
     const { linkTextFill } = this.getTextStyle();
 
-    super.drawLinkFieldShape(
-      linkFieldIds.includes(this.meta.key),
-      linkTextFill,
-    );
+    super.drawLinkFieldShape(linkFields.includes(this.meta.key), linkTextFill);
   }
 
   protected drawRectBorder() {

@@ -29,7 +29,7 @@ export class RowTextClick extends BaseEvent implements BaseEventImplement {
         const key = cellData.key;
         const rowData = this.getRowData(cellData);
 
-        this.spreadsheet.emit(S2Event.ROW_CELL_TEXT_CLICK, {
+        this.spreadsheet.emit(S2Event.CELL_TEXT_CLICK, {
           key,
           record: rowData,
         });

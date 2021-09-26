@@ -59,6 +59,9 @@ export interface EmitterType {
   [S2Event.RANGE_SORTING]: (info: SortParams) => void;
   [S2Event.RANGE_SORTED]: (rangeData: Data[]) => void;
 
+  /** ================ Cell ================  */
+  [S2Event.CELL_TEXT_CLICK]: (data: { key: string; record: Data }) => void;
+
   /** ================ Date Cell ================  */
   [S2Event.DATA_CELL_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.DATA_CELL_MOUSE_UP]: CanvasEventHandler;
@@ -79,7 +82,6 @@ export interface EmitterType {
   [S2Event.ROW_CELL_COLLAPSE_TREE_ROWS]: (
     data: RowCellCollapseTreeRowsType,
   ) => void;
-  [S2Event.ROW_CELL_TEXT_CLICK]: (data: { key: string; record: Data }) => void;
 
   /** ================ Col Cell ================  */
   [S2Event.COL_CELL_MOUSE_DOWN]: CanvasEventHandler;

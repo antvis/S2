@@ -5,7 +5,7 @@ redirect_from:
   - /zh/docs/manual/interaction
 ---
 
-如果内置交互未能覆盖到你的使用场景, 不用担心, 你可以使用 [`S2Event`](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts) 里面提供的交互事件，任意排列组合，自定义交互, 这里以一个具体的例子来说明: **实现双击明细表列头进行隐藏**
+如果内置交互未能覆盖实际的使用场景, 不用担心。你可以使用 [`S2Event`](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts) 所提供的交互事件，进行任意排列组合，自定义交互。这里以**明细表双击隐藏列头**的例子说明。
 
 ## 1. 自定义交互类
 

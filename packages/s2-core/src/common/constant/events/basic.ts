@@ -1,7 +1,9 @@
 export enum S2Event {
+  /** ================ Cell ================  */
+  CELL_TEXT_CLICK = 'cell:text-click',
+
   /** ================ Row Cell ================  */
   ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
-  ROW_CELL_TEXT_CLICK = 'row-cell:text-click',
   ROW_CELL_CLICK = 'row-cell:click',
   ROW_CELL_DOUBLE_CLICK = 'row-cell:double-click',
   ROW_CELL_HOVER = 'row-cell:hover',

@@ -23,7 +23,7 @@
     {
       "filename": "pivot-link-jump.ts",
       "title": {
-        "zh": "文本链接跳转 - 透视表",
+        "zh": "链接跳转 - 透视表",
         "en": "Link jump"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/F6RSff0pe/de0c574d-ddb1-4096-9416-13eec503ebf7.png"
@@ -31,7 +31,7 @@
     {
       "filename": "table-link-jump.ts",
       "title": {
-        "zh": "文本链接跳转 - 明细表",
+        "zh": "链接跳转 - 明细表",
         "en": "Link jump"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/DxQLZPeda/32a0cae6-0f1d-4e00-a274-4b0896467b02.png"
