@@ -37,12 +37,12 @@ describe('Interaction Brush Selection Tests', () => {
   };
 
   const startBrushDataCell = {
-    type: CellTypes.DATA_CELL,
+    cellType: CellTypes.DATA_CELL,
     getMeta: () => startBrushDataCellMeta,
   } as unknown as S2CellType;
 
   const endBrushDataCell = {
-    type: CellTypes.DATA_CELL,
+    cellType: CellTypes.DATA_CELL,
     getMeta: () => endBrushDataCellMeta,
   } as unknown as S2CellType;
 
@@ -176,7 +176,16 @@ describe('Interaction Brush Selection Tests', () => {
   });
 
   test('should get brush selection range cells', () => {
+    const selectedFn = jest.fn();
+    const brushSelectionFn = jest.fn();
+
     mockSpreadSheetInstance.getCell = jest.fn(() => endBrushDataCell) as any;
+
+    mockSpreadSheetInstance.on(S2Event.GLOBAL_SELECTED, selectedFn);
+    mockSpreadSheetInstance.on(
+      S2Event.DATE_CELL_BRUSH_SELECTION,
+      brushSelectionFn,
+    );
 
     // ================== mouse down ==================
     emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, { layerX: 10, layerY: 20 });
@@ -202,10 +211,13 @@ describe('Interaction Brush Selection Tests', () => {
 
     // ================== mouse up ==================
     emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
+    // hide prepare mask
     expect(
       brushSelectionInstance.prepareSelectMaskShape.attr('visible'),
     ).toBeFalsy();
+    // show tooltip
     expect(mockSpreadSheetInstance.showTooltipWithInfo).toHaveBeenCalled();
+    // reset brush stage
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.UN_DRAGGED,
     );
@@ -218,5 +230,8 @@ describe('Interaction Brush Selection Tests', () => {
       expect(colIndex).toBeLessThanOrEqual(endBrushDataCellMeta.colIndex);
       expect(colIndex).toBeGreaterThanOrEqual(startBrushDataCellMeta.colIndex);
     });
+    // emit event
+    expect(selectedFn).toHaveBeenCalledTimes(1);
+    expect(brushSelectionFn).toHaveBeenCalledTimes(1);
   });
 });

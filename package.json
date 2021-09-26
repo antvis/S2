@@ -19,7 +19,7 @@
     "bootstrap": "lerna bootstrap",
     "clean": "lerna clean -y && rimraf node_modules",
     "clean:lock-file": "rm -rf yarn.lock",
-    "core:start": "yarn workspace @antv/s2 test:live",
+    "core:start": "yarn workspace @antv/s2 start",
     "build": "lerna run build --include-dependencies --stream",
     "bundle:size": "lerna run bundle:size --stream",
     "release": "yarn build && lerna publish",
