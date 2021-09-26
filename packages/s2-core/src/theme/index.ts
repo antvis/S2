@@ -34,7 +34,8 @@ export const getTheme = (
         fontWeight: 'normal',
         fill: brandColors[0],
         opacity: 1,
-        textAlign: 'left',
+        textAlign: 'center',
+        textBaseline: 'middle',
       },
       cell: {
         // ----------- background color -----------
@@ -61,8 +62,8 @@ export const getTheme = (
         radius: 4,
         size: 12,
         margin: {
-          right: 4,
-          left: 0,
+          right: 10,
+          left: 4,
         },
       },
     },
@@ -132,7 +133,7 @@ export const getTheme = (
         size: 12,
         margin: {
           right: 4,
-          left: 0,
+          left: 4,
         },
       },
       seriesNumberWidth: 80,
@@ -153,6 +154,8 @@ export const getTheme = (
         fontWeight: 'normal',
         fill: brandColors[0],
         opacity: 1,
+        textAlign: 'center',
+        textBaseline: 'middle',
       },
       cell: {
         // ----------- background color -----------
@@ -200,10 +203,10 @@ export const getTheme = (
       icon: {
         fill: brandColors[0],
         radius: 4,
-        size: 8,
+        size: 12,
         margin: {
           right: 4,
-          left: 0,
+          left: 4,
         },
       },
     },

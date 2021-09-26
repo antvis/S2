@@ -1,5 +1,5 @@
 ---
-title: Basic piovt table
+title: Basic pivot table
 order: 1
 ---
 

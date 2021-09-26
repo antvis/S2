@@ -30,7 +30,7 @@ export const getMainLayoutClassName = (nonEmptyCount: number) => {
   }
 };
 
-export const showDimensionCrossRows = (nonEmptyCount: number) =>
+export const shouldDimensionCrossRows = (nonEmptyCount: number) =>
   nonEmptyCount < MAX_DIMENSION_COUNT;
 
 export const isMeasureType = (fieldType: FieldType) =>
@@ -74,7 +74,7 @@ export const checkItem = (
     ...source.find((item) => item.id === (parentId ?? id)),
   };
 
-  // 有 parentId 时，说明是第二层次项的改变
+  // 有 parentId 时，说明是第二层级的改变
   if (parentId) {
     target.children = map(target.children, (item) => ({
       ...item,
@@ -92,29 +92,29 @@ export const checkItem = (
 };
 
 export const generateSwitchResult = (state: SwitcherState): SwitcherResult => {
+  const mapIds = (items: SwitcherItem[]) => map(items, 'id');
   // rows and cols can't be hidden
-  const rows = map(state[FieldType.Rows], 'id');
-  const cols = map(state[FieldType.Cols], 'id');
+  const rows = mapIds(state[FieldType.Rows]);
+  const cols = mapIds(state[FieldType.Cols]);
 
   // flatten all values and derived values
-  const values = flatten(
-    map(state[FieldType.Values], (item) => {
-      const children = map(item.children, 'id');
-      return [item.id, ...children];
-    }),
-  );
+  const flattenValues = (items: SwitcherItem[]) =>
+    flatten(
+      map(items, (item) => {
+        return [
+          { id: item.id, checked: item.checked },
+          ...flattenValues(item.children),
+        ];
+      }),
+    );
 
-  const filterHiddenValues = (item: SwitcherItem) => item.checked === false;
+  const flattedValues = flattenValues(state[FieldType.Values]);
+
+  const values = mapIds(flattedValues);
 
   //  get all hidden values
-  const hiddenValues = flatten(
-    map(filter(state[FieldType.Values], filterHiddenValues), (item) => {
-      const hiddenChildren = map(
-        filter(item.children, filterHiddenValues),
-        'id',
-      );
-      return [item.id, ...hiddenChildren];
-    }),
+  const hiddenValues = mapIds(
+    filter(flattedValues, (item: SwitcherItem) => item.checked === false),
   );
 
   return { rows, cols, values, hiddenValues };

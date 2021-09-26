@@ -14,7 +14,7 @@ redirect_from:
 | conditions | [Conditions](#) | ✓ |  |  | 条件模式配置 |
 | totals | [Totals](#) | ✓ |  |  | 小计总结配置 |
 | tooltip | [Tooltip](#) | ✓ |  |  |  tooltip总配置 |
-| linkFieldIds | string[] |  |  | [] | 外链跳转 |
+| linkFields | string[] |  |  | [] | 外链跳转 |
 | pagination | [Pagination](#) | ✓ |  |  | 分页配置 |
 | freezeRowHeader | boolean | ✓ |  | false | 冻结行头 |
 | pivot | pivot/table |  |  |  | pivot = 交叉表, table = 普通 table |
@@ -149,8 +149,6 @@ object **必选**,_ default：null_ 功能描述： 小计总计算配置
 | --- | --- | :-: | --- | --- | --- |
 | showGrandTotals | boolean | ✓ |  | false | 是否显示总计 |
 | showSubTotals | boolean | ✓ |  | false | 是否显示小计 |
-| aggregation |  | ✓ | 'SUM' &#124; 'AVG' &#124; 'MIN' &#124; 'MAX' |  | 总计聚合方式 |
-| aggregationSub |  | ✓ | 'SUM' &#124; 'AVG' &#124; 'MIN' &#124; 'MAX |  | 小计聚合方式 |
 | subTotalsDimensions | string[] | ✓ |  | [] | 小计的汇总维度 |
 | reverseLayout | boolean | ✓ |  | false | 总计布局位置,默认下或右 |
 |  |

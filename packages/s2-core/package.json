@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "0.1.7",
+  "version": "0.1.10",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/s2.min.js",
@@ -44,6 +44,7 @@
     "test:live": "node ./scripts/test-live.mjs",
     "test": "jest",
     "test:coverage": "yarn test --coverage",
+    "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit"
   },
   "peerDependencies": {
@@ -70,16 +71,14 @@
     "*.css",
     "dist/*"
   ],
-  "limit-size": [
+  "bundlesize": [
     {
       "path": "./dist/s2.min.js",
-      "limit": "120 kB",
-      "gzip": true
+      "maxSize": "120 kB"
     },
     {
       "path": "./dist/s2.min.css",
-      "limit": "5 kB",
-      "gzip": true
+      "maxSize": "5 kB"
     }
   ]
 }

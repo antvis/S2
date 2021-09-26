@@ -63,7 +63,6 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
     }
     return map(menus, (menu: TooltipOperatorMenu) => {
       const { id, icon, text, children } = menu;
-
       const menuRender = size(children) ? (
         <Menu
           className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
@@ -77,7 +76,9 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
       );
 
       return (
-        <Dropdown overlay={menuRender}>{renderTitle(text, icon)}</Dropdown>
+        <Dropdown overlay={menuRender} {...(!size(children) && { onClick })}>
+          {renderTitle(text, icon)}
+        </Dropdown>
       );
     });
   };
