@@ -100,6 +100,7 @@ function MainLayout() {
     height: 600,
     showSeriesNumber: true,
     enableCopy: true,
+    hoverHighlight: false,
     style: {
       colCfg: {
         colWidthType: 'compact',
@@ -140,6 +141,14 @@ function MainLayout() {
     });
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, logData);
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_HIDE, logData);
+    s2Ref.current.on(S2Event.GLOBAL_KEYBOARD_DOWN, (e) => {
+      console.log(e.key, e.metaKey);
+      if (e.key === 'a' && e.metaKey) {
+        e.preventDefault();
+        s2Ref.current.emit(S2Event.GLOBAL_SELECT_ALL);
+      }
+    });
+
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED);
       s2Ref.current.off(S2Event.ROW_CELL_TEXT_CLICK);
@@ -179,13 +188,6 @@ function MainLayout() {
           checked={showPagination}
           onChange={setShowPagination}
         />
-        <Button
-          onClick={() => {
-            s2Ref.current.emit(S2Event.GLOBAL_SELECT_ALL);
-          }}
-        >
-          全选
-        </Button>
       </Space>
 
       <SheetComponent
