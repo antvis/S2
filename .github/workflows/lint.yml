@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Lint scripts, type and style
+      - name: Lint scripts, type, style and docs
         run: yarn lint
 
       - name: Build
