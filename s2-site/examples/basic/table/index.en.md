@@ -1,5 +1,5 @@
 ---
-title: 基础明细表格
+title: Basic Detail Table
 order: 1
 ---
 
