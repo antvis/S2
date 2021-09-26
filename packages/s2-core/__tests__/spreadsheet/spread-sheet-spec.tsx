@@ -12,6 +12,7 @@ import {
   SheetType,
   ThemeName,
   Node,
+  TargetCellInfo,
 } from '@/index';
 
 const tableDataFields = {
@@ -34,13 +35,17 @@ function MainLayout() {
     React.useState(true);
   const [themeName, setThemeName] = React.useState<ThemeName>('default');
 
-  const cornerTooltip = <div>cornerHeader</div>;
+  const CornerTooltip = <div>cornerTooltip</div>;
 
-  const rowTooltip = <div>rowHeader</div>;
+  const RowTooltip = <div>rowTooltip</div>;
 
-  const colTooltip = <div>colHeader</div>;
+  const ColTooltip = <div>colTooltip</div>;
 
-  const colCellClickTooltip = <div>colHeaderClick</div>;
+  const ColCellClickTooltip = (
+    <div>
+      <h1>Tooltip</h1>
+    </div>
+  );
 
   const onToggleRender = () => {
     setRender(!render);
@@ -86,7 +91,7 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            element: colTooltip,
+            element: ColTooltip,
           });
         },
       },
@@ -99,7 +104,7 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            element: colTooltip,
+            element: ColTooltip,
           });
         },
       },
@@ -110,7 +115,7 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            element: cornerTooltip,
+            element: CornerTooltip,
           });
         },
       },
@@ -121,7 +126,7 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            element: rowTooltip,
+            element: RowTooltip,
           });
         },
       },
@@ -140,12 +145,11 @@ function MainLayout() {
     }
   };
 
-  const onColCellClick = (value) => {
-    const sheet = value.viewMeta.spreadsheet;
-    if (!sheet) return;
-    sheet.tooltip.show({
+  const onColCellClick = (value: TargetCellInfo) => {
+    const sheet = value?.viewMeta?.spreadsheet;
+    sheet?.showTooltip({
       position: { x: value.event.clientX, y: value.event.clientY },
-      element: colCellClickTooltip,
+      element: ColCellClickTooltip,
     });
   };
 

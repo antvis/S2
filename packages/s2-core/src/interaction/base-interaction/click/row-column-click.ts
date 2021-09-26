@@ -177,7 +177,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       'hiddenColumnsDetail',
     );
     const { hideColumnNodes } = hiddenColumnsDetail.find(
-      ({ displaySiblingNode }) => displaySiblingNode.field === node.field,
+      ({ displaySiblingNode }) => displaySiblingNode?.field === node.field,
     );
     const willDisplayColumnFields = hideColumnNodes.map(({ field }) => field);
     this.spreadsheet.setOptions({
@@ -189,7 +189,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.store.set(
       'hiddenColumnsDetail',
       hiddenColumnsDetail.filter(
-        ({ displaySiblingNode }) => displaySiblingNode.field !== node.field,
+        ({ displaySiblingNode }) => displaySiblingNode?.field !== node.field,
       ),
     );
     this.spreadsheet.interaction.reset();

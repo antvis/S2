@@ -237,10 +237,6 @@ export class EventController {
       this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
     });
 
-    this.spreadsheet.on(S2Event.GLOBAL_ACTION_ICON_HOVER, () => {
-      // this.spreadsheet.interaction.addIntercepts([InterceptType.CLICK]);
-    });
-
     const cell = this.spreadsheet.getCell(event.target);
     const cellType = this.spreadsheet.getCellType(event.target);
     if (cell) {
