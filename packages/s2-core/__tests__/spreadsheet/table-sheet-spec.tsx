@@ -142,7 +142,6 @@ function MainLayout() {
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, logData);
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_HIDE, logData);
     s2Ref.current.on(S2Event.GLOBAL_KEYBOARD_DOWN, (e) => {
-      console.log(e.key, e.metaKey);
       if (e.key === 'a' && e.metaKey) {
         e.preventDefault();
         s2Ref.current.emit(S2Event.GLOBAL_SELECT_ALL);
