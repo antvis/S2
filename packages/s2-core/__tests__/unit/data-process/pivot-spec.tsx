@@ -10,17 +10,17 @@ import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { PivotSheet } from '@/sheet-type';
 
 describe('Pivot Table Core Data Process', () => {
-  const ss = new PivotSheet(
+  const s2 = new PivotSheet(
     getContainer(),
     assembleDataCfg({
       totalData: [],
     }),
     assembleOptions({}),
   );
-  ss.render();
+  s2.render();
 
   describe('1、Transform indexes data', () => {
-    const ds = ss.dataSet as PivotDataSet;
+    const ds = s2.dataSet as PivotDataSet;
     test('should get correct pivot meta', () => {
       const rowPivotMeta = ds.rowPivotMeta;
       const colPivotMeta = ds.colPivotMeta;
@@ -92,7 +92,7 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   describe('2、Generate hierarchy', () => {
-    const layoutResult = ss.facet.layoutResult;
+    const layoutResult = s2.facet.layoutResult;
     const { rowsHierarchy, colsHierarchy } = layoutResult;
 
     test('should get correct row hierarchy structure', () => {
@@ -218,16 +218,16 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   describe('3、Calculate row & col coordinates', () => {
-    const { width, style } = ss.options;
-    const { fields } = ss.dataCfg;
+    const { width, style } = s2.options;
+    const { fields } = s2.dataCfg;
     const {
       rowsHierarchy,
       colsHierarchy,
       rowLeafNodes,
       colLeafNodes,
       getCellMeta,
-    } = ss.facet.layoutResult;
-    const { cellCfg, rowCfg, colCfg } = get(ss, 'facet.cfg');
+    } = s2.facet.layoutResult;
+    const { cellCfg, rowCfg, colCfg } = get(s2, 'facet.cfg');
     test('should calc correct row & cell width', () => {
       expect(cellCfg.width).toEqual(
         Math.max(
@@ -319,7 +319,7 @@ describe('Pivot Table Core Data Process', () => {
   });
 
   describe('4、Calculate data cell info', () => {
-    const { getCellMeta } = ss.facet.layoutResult;
+    const { getCellMeta } = s2.facet.layoutResult;
     test('should get correct data value', () => {
       // 左上角
       expect(getCellMeta(0, 0).data[VALUE_FIELD]).toBe(1);

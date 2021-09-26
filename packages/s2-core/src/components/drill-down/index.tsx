@@ -45,7 +45,7 @@ export const DrillDown: React.FC<DrillDownProps> = ({
   setDrillFields,
   ...restProps
 }) => {
-  const PRE_CLASS = 'ss-drill-down';
+  const PRE_CLASS = 's2-drill-down';
   const DRILL_DOWN_ICON_MAP = {
     text: <TextIcon />,
     location: <LocationIcon />,
