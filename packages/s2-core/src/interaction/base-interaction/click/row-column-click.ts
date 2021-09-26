@@ -101,7 +101,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
         stateName: InteractionStateName.SELECTED,
       });
 
-      const selectedCellIds = selectedCells.map((meta) => meta.id);
+      const selectedCellIds = selectedCells.map(({ id }) => id);
       // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
       interaction.updateCells(
         interaction.getRowColActiveCells(selectedCellIds),
@@ -115,7 +115,10 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
           );
         });
       }
-
+      this.spreadsheet.emit(
+        S2Event.GLOBAL_SELECTED,
+        this.interaction.getActiveCells(),
+      );
       this.showTooltip(event);
     }
   };

@@ -10,7 +10,7 @@ export interface RowHeaderConfig extends BaseHeaderConfig {
   // type of hierarchy
   hierarchyType: S2Options['hierarchyType'];
   // field ids that click to navigate
-  linkFieldIds: string[];
+  linkFields: string[];
   // series number group's width, will be 0 when not exists
   seriesNumberWidth: number;
 }

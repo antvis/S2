@@ -247,6 +247,11 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       cells: this.brushRangeDataCells.map((item) => getCellMeta(item)),
       stateName: InteractionStateName.SELECTED,
     });
+    this.spreadsheet.emit(
+      S2Event.DATE_CELL_BRUSH_SELECTION,
+      this.brushRangeDataCells,
+    );
+    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeDataCells);
     // 未刷选到有效格子, 允许 hover
     if (isEmpty(this.brushRangeDataCells)) {
       this.interaction.removeIntercepts([InterceptType.HOVER]);

@@ -124,13 +124,14 @@ export class EventController {
       return;
     }
 
+    this.spreadsheet.emit(S2Event.GLOBAL_RESET, event);
     interaction.reset();
   }
 
   private isMouseOnTheCanvasContainer(event: Event) {
     if (event instanceof MouseEvent) {
       const canvas = this.spreadsheet.container.get('el') as HTMLCanvasElement;
-      const { x, y } = canvas.getBoundingClientRect();
+      const { x, y } = canvas.getBoundingClientRect() || {};
       // 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
       // 比如实际 400 * 300 => hd (800 * 600)
       // 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
@@ -150,7 +151,7 @@ export class EventController {
     }
 
     const { x, y, width, height } =
-      this.spreadsheet.tooltip.container?.getBoundingClientRect();
+      this.spreadsheet.tooltip.container?.getBoundingClientRect() || {};
 
     if (event instanceof MouseEvent) {
       return (
@@ -198,7 +199,7 @@ export class EventController {
       clearTimeout(this.spreadsheet.interaction.hoverTimer);
     }
     if (this.isResizeArea(event)) {
-      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, event);
+      this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, event);
       return;
     }
 
@@ -227,7 +228,7 @@ export class EventController {
   private onCanvasMousemove = (event: CanvasEvent) => {
     if (this.isResizeArea(event)) {
       this.activeResizeArea(event);
-      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, event);
+      this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, event);
       return;
     }
     this.resetResizeArea();
@@ -269,6 +270,7 @@ export class EventController {
           InterceptType.BRUSH_SELECTION,
         ])
       ) {
+        this.spreadsheet.emit(S2Event.GLOBAL_HOVER, event);
         switch (cellType) {
           case CellTypes.DATA_CELL:
             this.spreadsheet.emit(S2Event.DATA_CELL_HOVER, event);
@@ -294,7 +296,7 @@ export class EventController {
 
   private onCanvasMouseup = (event: CanvasEvent) => {
     if (this.isResizeArea(event)) {
-      this.spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_UP, event);
+      this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
       return;
     }
     const cell = this.spreadsheet.getCell(event.target);
@@ -349,7 +351,7 @@ export class EventController {
   private onCanvasDoubleClick = (event: CanvasEvent) => {
     const spreadsheet = this.spreadsheet;
     if (this.isResizeArea(event)) {
-      spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_UP, event);
+      spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
       return;
     }
     const cell = spreadsheet.getCell(event.target);
@@ -382,7 +384,7 @@ export class EventController {
   private onCanvasContextMenu = (event: CanvasEvent) => {
     const spreadsheet = this.spreadsheet;
     if (this.isResizeArea(event)) {
-      spreadsheet.emit(S2Event.GLOBAL_RESIZE_MOUSE_UP, event);
+      spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
       return;
     }
     spreadsheet.emit(S2Event.GLOBAL_CONTEXT_MENU, event);

@@ -14,7 +14,7 @@ redirect_from:
 | conditions | [Conditions](#) | ✓ |  |  | 条件模式配置 |
 | totals | [Totals](#) | ✓ |  |  | 小计总结配置 |
 | tooltip | [Tooltip](#) | ✓ |  |  |  tooltip总配置 |
-| linkFieldIds | string[] |  |  | [] | 外链跳转 |
+| linkFields | string[] |  |  | [] | 外链跳转 |
 | pagination | [Pagination](#) | ✓ |  |  | 分页配置 |
 | freezeRowHeader | boolean | ✓ |  | false | 冻结行头 |
 | pivot | pivot/table |  |  |  | pivot = 交叉表, table = 普通 table |
