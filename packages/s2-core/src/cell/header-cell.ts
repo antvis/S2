@@ -55,13 +55,20 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected showActionIcons(actionIconCfg: HeaderActionIcon) {
-    if (!actionIconCfg) return false;
+    if (!actionIconCfg) {
+      return false;
+    }
     const { iconNames, displayCondition, belongsCell } = actionIconCfg;
-    if (isEmpty(iconNames)) return false;
-    if (belongsCell !== this.cellType) return false;
-    if (!displayCondition)
+    if (isEmpty(iconNames)) {
+      return false;
+    }
+    if (belongsCell !== this.cellType) {
+      return false;
+    }
+    if (!displayCondition) {
       // 没有展示条件参数默认全展示
       return true;
+    }
     return displayCondition(this.meta);
   }
 
@@ -166,17 +173,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
     const position = this.getIconPosition();
     const { size, margin } = this.getStyle().icon;
-    for (let i = 0; i < iconNames.length; i++) {
-      const x = position.x + i * size + i * margin.left;
-      this.addActionIcon(
-        iconNames[i],
-        x,
-        position.y,
-        size,
-        action,
-        defaultHide,
-      );
-    }
+    forEach(iconNames, (iconName, key) => {
+      const x = position.x + key * size + key * margin.left;
+      this.addActionIcon(iconName, x, position.y, size, action, defaultHide);
+    });
   }
 
   protected isValueCell() {
