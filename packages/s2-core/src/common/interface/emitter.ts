@@ -60,7 +60,10 @@ export interface EmitterType {
   [S2Event.RANGE_SORTED]: (rangeData: Data[]) => void;
 
   /** ================ Cell ================  */
-  [S2Event.CELL_TEXT_CLICK]: (data: { key: string; record: Data }) => void;
+  [S2Event.GLOBAL_LINK_FIELD_JUMP]: (data: {
+    key: string;
+    record: Data;
+  }) => void;
 
   /** ================ Date Cell ================  */
   [S2Event.DATA_CELL_MOUSE_DOWN]: CanvasEventHandler;

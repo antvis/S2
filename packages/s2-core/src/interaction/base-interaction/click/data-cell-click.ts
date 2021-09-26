@@ -115,7 +115,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     if (appendInfo.isRowHeaderText) {
       const { cellData } = appendInfo;
       const { valueField: key, data: record } = cellData;
-      this.spreadsheet.emit(S2Event.CELL_TEXT_CLICK, {
+      this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
         key,
         record,
       });

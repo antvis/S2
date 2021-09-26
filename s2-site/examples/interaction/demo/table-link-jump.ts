@@ -19,7 +19,7 @@ fetch('./data/basic.json')
     };
     const s2 = new TableSheet(container, s2DataConfig, s2options);
 
-    s2.on(S2Event.CELL_TEXT_CLICK, (data) => {
+    s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
       console.log(data);
       const { key, record } = data;
       const a = document.createElement('a');

@@ -1,7 +1,4 @@
 export enum S2Event {
-  /** ================ Cell ================  */
-  CELL_TEXT_CLICK = 'cell:text-click',
-
   /** ================ Row Cell ================  */
   ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
   ROW_CELL_CLICK = 'row-cell:click',
@@ -27,7 +24,7 @@ export enum S2Event {
   DATA_CELL_MOUSE_DOWN = 'data-cell:mouse-down',
   DATA_CELL_MOUSE_MOVE = 'data-cell:mouse-move',
   DATA_CELL_TREND_ICON_CLICK = 'data-cell:trend-icon-click',
-  DATE_CELL_BRUSH_SELECTION = 'date-cell:brush-selection',
+  DATE_CELL_BRUSH_SELECTION = 'data-cell:brush-selection',
 
   /** ================ Corner Cell ================  */
   CORNER_CELL_CLICK = 'corner-cell:click',
@@ -84,4 +81,5 @@ export enum S2Event {
   GLOBAL_SELECTED = 'global:selected',
   GLOBAL_HOVER = 'global:hover',
   GLOBAL_RESET = 'global:reset',
+  GLOBAL_LINK_FIELD_JUMP = 'global:link-field-jump',
 }

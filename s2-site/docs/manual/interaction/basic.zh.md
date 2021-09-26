@@ -1,8 +1,6 @@
 ---
 title: 基础交互
 order: 1
-redirect_from:
-  - /zh/docs/manual/interaction
 ---
 
 ## 交互种类
@@ -29,8 +27,9 @@ redirect_from:
 | 行/列头手动调整宽高  | `-` |  鼠标悬浮在行/列头单元格边缘，出现指示条和光标，按住鼠标左键拖动，调整宽高  |
 | 刷选   | `S2Event.GLOBAL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量 |
 | 悬停   | `S2Event.GLOBAL_HOVER` | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](#十字高亮） （对应行/列), 可设置 `hoverHighlight: false` 关闭 |
-| 复制   | `S2Event.GLOBAL_COPIED`| 复制选中的单元格数据 |
-| 隐藏列头   | `S2Event.LAYOUT_TABLE_COL_EXPANDED` `S2Event.LAYOUT_TABLE_COL_HIDE`| 隐藏/展开 列头 (明细表有效) |
+| 复制   | `S2Event.GLOBAL_COPIED` | 复制选中的单元格数据 |
+| 隐藏列头   | `S2Event.LAYOUT_TABLE_COL_EXPANDED` `S2Event.LAYOUT_TABLE_COL_HIDE` | 隐藏/展开 列头 (明细表有效) |
+| 链接跳转   | `S2Event.GLOBAL_LINK_FIELD_JUMP` | 行头/列头 链接跳转 |
 | 取消选中  | `S2Event.GLOBAL_RESET` | 再次点击，点击空白处，或按下 `Esc` 取消选中的单元格 |
 
 ## 交互事件
@@ -44,72 +43,71 @@ redirect_from:
 <details>
 <summary>点击查看交互事件</summary>
 
-```ts
-export enum S2Event {
-  /** ================ Row Cell ================  */
-  ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
-  ROW_CELL_TEXT_CLICK = 'row-cell:text-click',
-  ROW_CELL_CLICK = 'row-cell:click',
-  ROW_CELL_DOUBLE_CLICK = 'row-cell:double-click',
-  ROW_CELL_HOVER = 'row-cell:hover',
-  ROW_CELL_MOUSE_DOWN = 'row-cell:mouse-down',
-  ROW_CELL_MOUSE_UP = 'row-cell:mouse-up',
-  ROW_CELL_MOUSE_MOVE = 'row-cell:mouse-move',
+### 行头
 
-  /** ================ Col Cell ================  */
-  COL_CELL_HOVER = 'col-cell:hover',
-  COL_CELL_CLICK = 'col-cell:click',
-  COL_CELL_DOUBLE_CLICK = 'col-cell:double-click',
-  COL_CELL_MOUSE_DOWN = 'col-cell:mouse-down',
-  COL_CELL_MOUSE_UP = 'col-cell:mouse-up',
-  COL_CELL_MOUSE_MOVE = 'col-cell:mouse-move',
+| 名称 | 事件名 | 描述 |
+| :-- | :-- | :-- |
+| 展开树状结构   | `S2Event.ROW_CELL_COLLAPSE_TREE_ROWS` | 树状结构下, 行头单元格展开  |
+| 点击   | `S2Event.ROW_CELL_CLICK` |  行头单元格点击  |
+| 双击   | `S2Event.ROW_CELL_DOUBLE_CLICK` |  行头单元格双击  |
+| 悬停   | `S2Event.ROW_CELL_HOVER` |  行头单元格悬停  |
+| 鼠标按下   | `S2Event.ROW_CELL_MOUSE_DOWN` |  行头单元格鼠标按下  |
+| 鼠标移动   | `S2Event.ROW_CELL_MOUSE_MOVE` |  行头单元格鼠标移动  |
+| 鼠标松开   | `S2Event.ROW_CELL_MOUSE_UP` |  行头单元格鼠标松开  |
 
-  /** ================ Data Cell ================  */
-  DATA_CELL_HOVER = 'data-cell:hover',
-  DATA_CELL_CLICK = 'data-cell:click',
-  DATA_CELL_DOUBLE_CLICK = 'data-cell:double-click',
-  DATA_CELL_MOUSE_UP = 'data-cell:mouse-up',
-  DATA_CELL_MOUSE_DOWN = 'data-cell:mouse-down',
-  DATA_CELL_MOUSE_MOVE = 'data-cell:mouse-move',
-  DATA_CELL_TREND_ICON_CLICK = 'data-cell:trend-icon-click',
-  DATE_CELL_BRUSH_SELECTION = 'date-cell:brush-selection',
+### 列头
 
-  /** ================ Corner Cell ================  */
-  CORNER_CELL_CLICK = 'corner-cell:click',
-  CORNER_CELL_DOUBLE_CLICK = 'corner-cell:double-click',
-  CORNER_CELL_MOUSE_UP = 'corner-cell:mouse-up',
-  CORNER_CELL_MOUSE_MOVE = 'corner-cell:mouse-move',
-  CORNER_CELL_HOVER = 'corner-cell:hover',
-  CORNER_CELL_MOUSE_DOWN = 'corner-cell:mouse-down',
+| 名称 | 事件名 | 描述 |
+| :-- | :-- | :-- |
+| 点击   | `S2Event.COL_CELL_CLICK` |  列头单元格点击  |
+| 双击   | `S2Event.COL_CELL_DOUBLE_CLICK` |  列头单元格双击  |
+| 悬停   | `S2Event.COL_CELL_HOVER` |  列头单元格悬停  |
+| 鼠标按下   | `S2Event.COL_CELL_MOUSE_DOWN` |  列头单元格鼠标按下  |
+| 鼠标移动   | `S2Event.COL_CELL_MOUSE_MOVE` |  列头单元格鼠标移动  |
+| 鼠标松开   | `S2Event.COL_CELL_MOUSE_UP` |  列头单元格鼠标松开  |
 
-  /** ================ Merged Cell ================  */
-  MERGED_CELLS_MOUSE_UP = 'merged-cells:mouse-up',
-  MERGED_ELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
-  MERGED_CELLS_HOVER = 'merged-cells:hover',
-  MERGED_CELLS_CLICK = 'merged-cells:click',
-  MERGED_CELLS_DOUBLE_CLICK = 'merged-cells:double-click',
-  MERGED_CELLS_MOUSE_DOWN = 'merged-cells:mouse-down',
+### 数值单元格
 
- /** ================ Global ================  */
-  GLOBAL_RESIZE_MOUSE_DOWN = 'global:resize:mouse-down',
-  GLOBAL_RESIZE_MOUSE_MOVE = 'global:resize:mouse-move',
-  GLOBAL_RESIZE_MOUSE_UP = 'global:resize-mouse-up',
-  GLOBAL_KEYBOARD_DOWN = 'global:keyboard-down',
-  GLOBAL_KEYBOARD_UP = 'global:keyboard-up',
-  GLOBAL_COPIED = 'global:copied',
-  GLOBAL_MOUSE_UP = 'global:mouse-up',
-  GLOBAL_ACTION_ICON_CLICK = 'global:action-icon-click',
-  GLOBAL_ACTION_ICON_HOVER = 'global:action-icon-hover',
-  GLOBAL_CONTEXT_MENU = 'global:context-menu',
-  GLOBAL_SELECTED = 'global:selected',
-  GLOBAL_HOVER = 'global:hover',
-  GLOBAL_RESET = 'global:reset',
+| 名称 | 事件名 | 描述 |
+| :-- | :-- | :-- |
+| 点击   | `S2Event.DATA_CELL_CLICK` |  数值单元格点击  |
+| 双击   | `S2Event.DATA_CELL_DOUBLE_CLICK` |  数值单元格双击  |
+| 悬停   | `S2Event.DATA_CELL_HOVER` |  数值单元格悬停  |
+| 鼠标按下   | `S2Event.DATA_CELL_MOUSE_DOWN` |  数值单元格鼠标按下  |
+| 鼠标移动   | `S2Event.DATA_CELL_MOUSE_MOVE` |  数值单元格鼠标移动  |
+| 鼠标松开   | `S2Event.DATA_CELL_MOUSE_UP` |  数值单元格鼠标松开  |
+| 趋势icon点击   | `S2Event.DATA_CELL_TREND_ICON_CLICK` |  数值单元格 tooltip 里面的趋势 icon 点击   |
+| 刷选   | `S2Event.DATE_CELL_BRUSH_SELECTION` |  数值单元格刷选  |
 
-  // 其他非交互事件
-  ...
-}
+### 角头
 
-```
+| 名称 | 事件名 | 描述 |
+| :-- | :-- | :-- |
+| 点击   | `S2Event.CORNER_CELL_CLICK` |  角头单元格点击  |
+| 双击   | `S2Event.CORNER_CELL_DOUBLE_CLICK` |  角头单元格双击  |
+| 悬停   | `S2Event.CORNER_CELL_HOVER` |  角头单元格悬停  |
+| 鼠标按下   | `S2Event.CORNER_CELL_MOUSE_DOWN` |  角头单元格鼠标按下  |
+| 鼠标移动   | `S2Event.CORNER_CELL_MOUSE_MOVE` |  角头单元格鼠标移动  |
+| 鼠标松开   | `S2Event.CORNER_CELL_MOUSE_UP` |  角头单元格鼠标松开  |
+
+### 全局
+
+| 名称 | 事件名 | 描述 |
+| :-- | :-- | :-- |
+| 调整单元格大小时鼠标按下  | `S2Event.GLOBAL_RESIZE_MOUSE_DOWN` |  调整单元格大小鼠标按下, 目前仅 行/列 头有效  |
+| 调整单元格大小时鼠标移动  | `S2Event.GLOBAL_RESIZE_MOUSE_MOVE` |  调整单元格大小鼠标移动, 目前仅 行/列 头有效  |
+| 调整单元格大小时鼠标松开  | `S2Event.GLOBAL_RESIZE_MOUSE_UP` |  调整单元格大小鼠标松开, 目前仅 行/列 头有效  |
+| 键盘按下   | `S2Event.GLOBAL_KEYBOARD_DOWN` |  键盘按下  |
+| 键盘松开   | `S2Event.GLOBAL_KEYBOARD_UP` |  键盘松开  |
+| 复制   | `S2Event.GLOBAL_COPIED` |  对选中的单元格复制  |
+| 鼠标松开   | `S2Event.GLOBAL_MOUSE_UP` |  鼠标松开  |
+| 右键   | `S2Event.GLOBAL_CONTEXT_MENU` |  图表区域按下右键  |
+| 选中   | `S2Event.GLOBAL_SELECTED` |  选中单元格时, 如: 刷选, 多选, 单选  |
+| 悬停   | `S2Event.GLOBAL_HOVER` |  鼠标悬停在单元格  |
+| 重置   | `S2Event.GLOBAL_RESET` |  点击空白处, 按下 Esc, 键等重置交互样式时  |
+| 链接跳转   | `S2Event.GLOBAL_LINK_FIELD_JUMP` |  点击行列头被编辑为链接字段的文本时  |
+| icon 点击   | `S2Event.GLOBAL_ACTION_ICON_CLICK` |  单元格右侧的操作icon 点击时, 比如: 排序图标  |
+| icon 悬停   | `S2Event.GLOBAL_ACTION_ICON_HOVER` |  单元格右侧的操作icon 悬停时, 比如: 排序图标  |
 
 </details>
 

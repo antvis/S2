@@ -135,7 +135,7 @@ function MainLayout() {
 
   useEffect(() => {
     s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
-    s2Ref.current.on(S2Event.CELL_TEXT_CLICK, ({ key, record }) => {
+    s2Ref.current.on(S2Event.GLOBAL_LINK_FIELD_JUMP, ({ key, record }) => {
       message.info(`key: ${key}, name: ${JSON.stringify(record)}`);
     });
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, logData);
@@ -143,7 +143,7 @@ function MainLayout() {
     s2Ref.current.on(S2Event.GLOBAL_SELECTED, logData);
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED);
-      s2Ref.current.off(S2Event.CELL_TEXT_CLICK);
+      s2Ref.current.off(S2Event.GLOBAL_LINK_FIELD_JUMP);
       s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_EXPANDED);
       s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_HIDE);
     };

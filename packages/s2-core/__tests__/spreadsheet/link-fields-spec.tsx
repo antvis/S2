@@ -15,7 +15,7 @@ function MainLayout() {
   };
 
   useEffect(() => {
-    sheetRef.current.on(S2Event.CELL_TEXT_CLICK, ({ key, record }) => {
+    sheetRef.current.on(S2Event.GLOBAL_LINK_FIELD_JUMP, ({ key, record }) => {
       message.info(`key: ${key}, name: ${record[key]}`);
     });
   }, []);

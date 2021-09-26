@@ -1,8 +1,6 @@
 ---
 title: 链接跳转
 order: 4
-redirect_from:
-  - /zh/docs/manual/interaction
 ---
 
 将单元格文本标记为含有下划线的链接样式, 实现链接跳转 🔗, 对于透视表和明细表, 有细微的区别
@@ -25,10 +23,10 @@ const s2options = {
 };
 ```
 
-使用 `S2Event.CELL_TEXT_CLICK` 监听链接点击
+使用 `S2Event.GLOBAL_LINK_FIELD_JUMP` 监听链接点击
 
 ```ts
-s2.on(S2Event.CELL_TEXT_CLICK, (data) => {
+s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
   const { key, record } = data;
   ...
 });
@@ -56,7 +54,7 @@ const s2options = {
 
 const s2 = new PivotSheet(container, s2DataConfig, s2options);
 
-s2.on(S2Event.CELL_TEXT_CLICK, (data) => {
+s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
   const { key, record } = data;
   const value = record[key]
   // 拼装自己的跳转地址
@@ -89,7 +87,7 @@ const s2options = {
 
 const s2 = new TableSheet(container, s2DataConfig, s2options);
 
-s2.on(S2Event.CELL_TEXT_CLICK, (data) => {
+s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
   const { key, record } = data;
   const value = record[key]
   // 拼装自己的跳转地址
