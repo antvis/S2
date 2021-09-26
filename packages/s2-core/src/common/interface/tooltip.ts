@@ -158,6 +158,8 @@ export interface TooltipOperation {
   trend?: boolean;
   // 组内排序
   sort?: boolean;
+  // 筛选
+  filter?: boolean;
 }
 
 export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;

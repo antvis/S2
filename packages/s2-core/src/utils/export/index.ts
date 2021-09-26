@@ -76,7 +76,7 @@ const processValueInDetail = (
   split: string,
   isFormat?: boolean,
 ): string[] => {
-  const { originData: data } = sheetInstance.dataSet;
+  const data = sheetInstance.dataSet.getDisplayDataSet();
   const { rows, values } = sheetInstance.dataCfg?.fields;
   const res = [];
   for (const record of data) {

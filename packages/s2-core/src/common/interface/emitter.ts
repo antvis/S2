@@ -3,6 +3,7 @@ import {
   CellScrollPosition,
   Data,
   DataItem,
+  FilterParam,
   HiddenColumnsInfo,
   LayoutResult,
   Style,
@@ -51,6 +52,11 @@ export interface EmitterType {
   [S2Event.RANGE_SORT]: (info: SortParams) => void;
   [S2Event.RANGE_SORTING]: (info: SortParams) => void;
   [S2Event.RANGE_SORTED]: (rangeData: Data[]) => void;
+
+  /** ================ Filter ================  */
+  [S2Event.RANGE_FILTER]: (info: FilterParam) => void;
+  [S2Event.RANGE_FILTERING]: (info: FilterParam) => void;
+  [S2Event.RANGE_FILTERED]: (info: FilterParam) => void;
 
   /** ================ Date Cell ================  */
   [S2Event.DATA_CELL_MOUSE_DOWN]: CanvasEventHandler;

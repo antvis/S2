@@ -11,6 +11,7 @@ import {
 } from 'lodash';
 import {
   Fields,
+  FilterParam,
   Formatter,
   Meta,
   S2DataConfig,
@@ -43,12 +44,16 @@ export abstract class BaseDataSet {
   // 高级排序, 组内排序
   public sortParams: SortParams;
 
+  public filterParams: FilterParam[];
+
   // 交叉表入口对象实例
   protected spreadsheet: SpreadSheet;
 
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
   }
+
+  protected displayData: DataType[];
 
   /**
    * 查找字段信息
@@ -75,14 +80,20 @@ export abstract class BaseDataSet {
 
   public setDataCfg(dataCfg: S2DataConfig) {
     this.getFieldMeta.cache.clear();
-    const { fields, meta, data, totalData, sortParams } =
+    const { fields, meta, data, totalData, sortParams, filterParams } =
       this.processDataCfg(dataCfg);
     this.fields = fields;
     this.meta = meta;
     this.originData = data;
     this.totalData = totalData;
     this.sortParams = sortParams;
+    this.filterParams = filterParams;
+    this.displayData = this.originData;
     this.indexesData = [];
+  }
+
+  public getDisplayDataSet() {
+    return this.displayData;
   }
 
   public getValueRangeByField(field: string): ValueRange {

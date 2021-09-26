@@ -132,6 +132,11 @@ export interface SortParam extends Sort {
   sortFunc?: (v: SortFuncParam) => Array<string>;
 }
 
+export interface FilterParam {
+  filterKey: string;
+  filteredValues: any[];
+}
+
 export type SortParams = SortParam[];
 
 export interface Style {

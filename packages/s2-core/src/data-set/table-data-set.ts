@@ -4,8 +4,8 @@ import { BaseDataSet } from '@/data-set/base-data-set';
 import { S2DataConfig } from '@/common/interface';
 
 export class TableDataSet extends BaseDataSet {
-  // sorted dimension values
-  public sortedDimensionValues: DataType[];
+  // data that goes into canvas (aka sorted & filtered)
+  protected displayData: DataType[];
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     return dataCfg;
@@ -13,29 +13,51 @@ export class TableDataSet extends BaseDataSet {
 
   public setDataCfg(dataCfg: S2DataConfig) {
     super.setDataCfg(dataCfg);
-    this.sortedDimensionValues = this.originData;
     this.handleDimensionValuesSort();
+    this.handleDimensionValueFilter();
   }
 
+  protected getStartRows() {
+    const { frozenRowCount } = this.spreadsheet.options || {};
+    const { displayData } = this;
+    return displayData.slice(0, frozenRowCount);
+  }
+
+  protected getEndRows() {
+    const { frozenTrailingRowCount } = this.spreadsheet.options || {};
+    const { displayData } = this;
+    return displayData.slice(-frozenTrailingRowCount);
+  }
+
+  handleDimensionValueFilter = () => {
+    const { displayData } = this;
+    each(this.filterParams, ({ filterKey, filteredValues }) => {
+      this.displayData = [
+        ...this.getStartRows(),
+
+        ...displayData.filter(
+          (row) => row[filterKey] && !filteredValues.includes(row[filterKey]),
+        ),
+        ...this.getEndRows(),
+      ];
+    });
+  };
+
   handleDimensionValuesSort = () => {
-    const { frozenRowCount, frozenTrailingRowCount } =
-      this.spreadsheet.options || {};
-    const { sortedDimensionValues } = this;
+    const { displayData } = this;
     each(this.sortParams, (item) => {
       const { sortFieldId, sortBy, sortMethod } = item;
       // 万物排序的前提
       if (!sortFieldId) return;
       // For frozen options
-      const startRow = sortedDimensionValues.slice(0, frozenRowCount);
-      const endRow = sortedDimensionValues.slice(-frozenTrailingRowCount);
-      this.sortedDimensionValues = [
-        ...startRow,
+      this.displayData = [
+        ...this.getStartRows(),
         ...orderBy(
-          sortedDimensionValues,
+          displayData,
           [sortBy || sortFieldId],
           [sortMethod.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
         ),
-        ...endRow,
+        ...this.getEndRows(),
       ];
     });
   };
@@ -45,10 +67,10 @@ export class TableDataSet extends BaseDataSet {
   }
 
   public getCellData({ query }: CellDataParams): DataType {
-    return this.sortedDimensionValues[query.rowIndex][query.col];
+    return this.displayData[query.rowIndex][query.col];
   }
 
   public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
-    return this.originData;
+    return this.displayData;
   }
 }

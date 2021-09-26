@@ -50,6 +50,17 @@ export class TableFacet extends BaseFacet {
         (s2.dataSet as TableDataSet).sortedDimensionValues,
       );
     });
+
+    s2.on(S2Event.RANGE_FILTER, (params) => {
+      // check whether filter condition already exists on column, if so, replace it.
+      const oldConfig = s2.dataCfg.filterParams || [];
+
+      oldConfig.push(params);
+      set(s2.dataCfg, 'filterParams', oldConfig);
+
+      s2.render(true);
+      s2.emit(S2Event.RANGE_FILTERED, params);
+    });
   }
 
   public destroy() {
@@ -268,7 +279,7 @@ export class TableFacet extends BaseFacet {
     if (userDragWidth) {
       colWidth = userDragWidth;
     } else if (cellCfg.width === -1) {
-      const datas = dataSet.originData;
+      const datas = dataSet.getDisplayDataSet();
       const colLabel = col.label;
 
       const allLabels = datas.map((data) => `${data[col.key]}`)?.slice(0, 50);
@@ -314,7 +325,7 @@ export class TableFacet extends BaseFacet {
 
     return {
       getTotalHeight: () => {
-        return cellHeight * dataSet.originData.length;
+        return cellHeight * dataSet.getDisplayDataSet().length;
       },
 
       getCellOffsetY: (offset: number) => {
@@ -327,7 +338,7 @@ export class TableFacet extends BaseFacet {
       },
 
       getTotalLength: () => {
-        return dataSet.originData.length;
+        return dataSet.getDisplayDataSet().length;
       },
 
       getIndexRange: (minHeight: number, maxHeight: number) => {
