@@ -40,6 +40,8 @@ function MainLayout() {
 
   const colTooltip = <div>colHeader</div>;
 
+  const colCellClickTooltip = <div>colHeaderClick</div>;
+
   const onToggleRender = () => {
     setRender(!render);
   };
@@ -138,6 +140,15 @@ function MainLayout() {
     }
   };
 
+  const onColCellClick = (value) => {
+    const sheet = value.viewMeta.spreadsheet;
+    if (!sheet) return;
+    sheet.tooltip.show({
+      position: { x: value.event.clientX, y: value.event.clientY },
+      element: colCellClickTooltip,
+    });
+  };
+
   return (
     <div>
       <Space size="middle" style={{ marginBottom: 20 }}>
@@ -154,6 +165,7 @@ function MainLayout() {
           options={mergedOptions}
           themeCfg={{ name: themeName }}
           sheetType={sheetType}
+          onColCellClick={onColCellClick}
           header={
             <Space size="middle" style={{ marginBottom: 20 }}>
               <Radio.Group onChange={onRadioChange} defaultValue="default">
