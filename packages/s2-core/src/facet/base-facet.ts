@@ -939,7 +939,6 @@ export abstract class BaseFacet {
           // mark cell for removing
           cell.set('name', `${i}-${j}`);
           this.addCell(cell);
-          cell.update();
         }
       });
       const allCells = getAllPanelDataCell(this.panelGroup.getChildren());
