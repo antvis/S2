@@ -16,6 +16,7 @@ import {
 } from 'lodash';
 import {
   calculateInViewIndexes,
+  getCellRange,
   optimizeScrollXY,
   translateGroup,
 } from './utils';
@@ -464,16 +465,19 @@ export abstract class BaseFacet {
     return last(this.viewCellWidths);
   };
 
+  getCellRange() {
+    const { pagination } = this.cfg;
+    return getCellRange(this.viewCellHeights, pagination);
+  }
+
   getRealHeight = (): number => {
     const { pagination } = this.cfg;
     const heights = this.viewCellHeights;
 
     if (pagination) {
-      const { current, pageSize } = pagination;
+      const { start, end } = this.getCellRange();
 
-      const start = Math.max((current - 1) * pageSize, 0);
-      const end = Math.min(current * pageSize, heights.getTotalLength() - 1);
-      return heights.getCellOffsetY(end) - heights.getCellOffsetY(start);
+      return heights.getCellOffsetY(end + 1) - heights.getCellOffsetY(start);
     }
     return heights.getTotalHeight();
   };

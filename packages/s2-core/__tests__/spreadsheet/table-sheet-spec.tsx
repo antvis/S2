@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { message, Space, Switch, Button } from 'antd';
+import { message, Space, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
@@ -17,12 +17,14 @@ import {
 import { Switcher } from '@/components/switcher';
 import { SwitcherItem } from '@/components/switcher/interface';
 
+let s2: TableSheet;
+
 const data = getMockData('../data/tableau-supermarket.csv');
 
 const getSpreadSheet =
   (ref: React.MutableRefObject<SpreadSheet>) =>
   (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
-    const s2 = new TableSheet(dom, dataCfg, options);
+    s2 = new TableSheet(dom, dataCfg, options);
     ref.current = s2;
     return s2;
   };
@@ -65,7 +67,7 @@ const meta = [
   },
 ];
 
-function MainLayout() {
+function MainLayout({ callback }) {
   const [showPagination, setShowPagination] = React.useState(false);
   const [hiddenColumnsOperator, setHiddenColumnsOperator] =
     React.useState(true);
@@ -110,7 +112,7 @@ function MainLayout() {
       device: 'pc',
     },
     pagination: showPagination && {
-      pageSize: 10,
+      pageSize: 50,
       current: 1,
     },
     frozenRowCount: 2,
@@ -156,6 +158,12 @@ function MainLayout() {
     };
   });
 
+  useEffect(() => {
+    callback({
+      setShowPagination,
+    });
+  }, []);
+
   return (
     <Space direction="vertical">
       <Space>
@@ -195,11 +203,35 @@ function MainLayout() {
 }
 
 describe('table sheet normal spec', () => {
-  test('placeholder', () => {
-    expect(1).toBe(1);
+  let cbs;
+  act(() => {
+    ReactDOM.render(
+      <MainLayout
+        callback={(params) => {
+          cbs = params;
+        }}
+      />,
+      getContainer(),
+    );
   });
 
-  act(() => {
-    ReactDOM.render(<MainLayout />, getContainer());
+  test('getCellRange', () => {
+    expect(s2.facet.getCellRange()).toStrictEqual({
+      start: 0,
+      end: 999,
+    });
+
+    act(() => {
+      cbs.setShowPagination(true);
+    });
+
+    expect(s2.facet.getCellRange()).toStrictEqual({
+      start: 0,
+      end: 49,
+    });
+
+    act(() => {
+      cbs.setShowPagination(false);
+    });
   });
 });
