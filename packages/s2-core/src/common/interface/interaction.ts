@@ -1,11 +1,12 @@
 import { SimpleBBox } from '@antv/g-canvas';
-import { InteractionStateName } from '../constant';
+import { InteractionStateName, CellTypes } from '../constant';
 import { ViewMeta } from './basic';
 import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
 import { HeaderCell } from '@/cell/header-cell';
 import { Node } from '@/index';
-import { BaseEvent, EventConstructor } from '@/interaction/base-event';
+import { BaseEvent } from '@/interaction/base-event';
 import { SpreadSheet } from '@/sheet-type';
+import { RootInteraction } from '@/interaction/root';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell
@@ -15,11 +16,18 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | RowCell
   | BaseCell<T>;
 
+export interface CellMeta {
+  id: string;
+  colIndex: number;
+  rowIndex: number;
+  type: CellTypes;
+}
+
 export interface InteractionStateInfo {
   // current state name
   stateName?: InteractionStateName;
-  // all the active cells
-  cells?: S2CellType[];
+  // all the active cells for this interaction (save meta data for recording offscreen cells)
+  cells?: CellMeta[];
   // all the cells changed the state style
   interactedCells?: S2CellType[];
   // all the active nodes, including rendered and not rendered cells
@@ -30,11 +38,12 @@ export interface InteractionStateInfo {
 
 export type InteractionConstructor = new (
   spreadsheet: SpreadSheet,
+  interaction: RootInteraction,
 ) => BaseEvent;
 
 export interface CustomInteraction {
   key: string;
-  interaction: EventConstructor;
+  interaction: InteractionConstructor;
 }
 
 export interface BrushPoint {

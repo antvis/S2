@@ -19,7 +19,7 @@ import {
   getNonEmptyFieldCount,
   getSwitcherClassName,
   moveItem,
-  showDimensionCrossRows,
+  shouldDimensionCrossRows,
 } from '../util';
 import { i18n } from '@/common/i18n';
 import './index.less';
@@ -127,7 +127,7 @@ export const SwitcherContent = forwardRef(
                     droppableType={DroppableType.Dimension}
                     fieldType={type}
                     data={state[type]}
-                    crossRows={showDimensionCrossRows(nonEmptyCount)}
+                    crossRows={shouldDimensionCrossRows(nonEmptyCount)}
                   />
                 ),
             )}

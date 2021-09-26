@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "0.1.7",
+  "version": "0.1.10",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/s2.min.js",
@@ -44,7 +44,7 @@
     "test:live": "node ./scripts/test-live.mjs",
     "test": "jest",
     "test:coverage": "yarn test --coverage",
-    "test:ci-coverage": "codecov",
+    "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit"
   },
   "peerDependencies": {

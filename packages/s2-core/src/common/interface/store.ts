@@ -27,7 +27,7 @@ export interface HiddenColumnsInfo {
   // 当前显示的兄弟节点之前所隐藏的节点
   hideColumnNodes: Node[];
   // 当前隐藏列所对应展示展开按钮的兄弟节点
-  displayNextSiblingNode: Node;
+  displaySiblingNode: Node;
 }
 
 /**

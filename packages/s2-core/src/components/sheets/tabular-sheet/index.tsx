@@ -36,6 +36,9 @@ export const TabularSheet = (props: BaseSheetProps) => {
     onRowCellClick,
     onColCellClick,
     onMergedCellsClick,
+    onRowCellDoubleClick,
+    onColCellDoubleClick,
+    onMergedCellsDoubleClick,
     onDataCellMouseUp,
     getSpreadsheet,
   } = props;
@@ -131,6 +134,22 @@ export const TabularSheet = (props: BaseSheetProps) => {
     baseSpreadsheet.on(S2Event.MERGED_CELLS_CLICK, (ev: Event) => {
       if (isFunction(onMergedCellsClick)) {
         onMergedCellsClick(getBaseCellData(ev));
+      }
+    });
+    baseSpreadsheet.on(S2Event.ROW_CELL_DOUBLE_CLICK, (ev: Event) => {
+      if (isFunction(onRowCellClick)) {
+        onRowCellDoubleClick(getBaseCellData(ev));
+      }
+    });
+    baseSpreadsheet.on(S2Event.COL_CELL_DOUBLE_CLICK, (ev: Event) => {
+      if (isFunction(onColCellClick)) {
+        onColCellDoubleClick(getBaseCellData(ev));
+      }
+    });
+
+    baseSpreadsheet.on(S2Event.MERGED_CELLS_DOUBLE_CLICK, (ev: Event) => {
+      if (isFunction(onMergedCellsClick)) {
+        onMergedCellsDoubleClick(getBaseCellData(ev));
       }
     });
   };

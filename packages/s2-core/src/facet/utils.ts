@@ -8,6 +8,35 @@ import {
   FrozenOpts,
   FrozenCellIndex,
 } from '@/common/constant/frozen';
+import { Pagination } from '@/common/interface';
+
+export const isFrozenCol = (colIndex: number, frozenCount: number) => {
+  return frozenCount > 0 && colIndex < frozenCount;
+};
+
+export const isFrozenTrailingCol = (
+  colIndex: number,
+  frozenCount: number,
+  colLength: number,
+) => {
+  return frozenCount > 0 && colIndex >= colLength - frozenCount;
+};
+
+export const isFrozenRow = (
+  rowIndex: number,
+  minRowIndex: number,
+  frozenCount: number,
+) => {
+  return frozenCount > 0 && rowIndex < minRowIndex + frozenCount;
+};
+
+export const isFrozenTrailingRow = (
+  rowIndex: number,
+  maxRowIndex: number,
+  frozenCount: number,
+) => {
+  return frozenCount > 0 && rowIndex >= maxRowIndex + 1 - frozenCount;
+};
 
 /**
  * 计算偏移 scrollX、scrollY 的时候，在视窗中的节点索引
@@ -124,7 +153,10 @@ export const getFrozenDataCellType = (
   },
   frozenOpts: FrozenOpts,
   colLength: number,
-  rowLength: number,
+  cellRange: {
+    start: number;
+    end: number;
+  },
 ) => {
   const {
     frozenColCount,
@@ -133,23 +165,19 @@ export const getFrozenDataCellType = (
     frozenTrailingRowCount,
   } = frozenOpts;
   const { colIndex, rowIndex } = meta;
-
-  if (rowIndex <= frozenRowCount - 1) {
+  if (isFrozenRow(rowIndex, cellRange.start, frozenRowCount)) {
     return FrozenCellType.ROW;
   }
-  if (
-    frozenTrailingRowCount > 0 &&
-    rowIndex >= rowLength - frozenTrailingRowCount
-  ) {
+
+  if (isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)) {
     return FrozenCellType.TRAILING_ROW;
   }
-  if (colIndex <= frozenColCount - 1) {
+
+  if (isFrozenCol(colIndex, frozenColCount)) {
     return FrozenCellType.COL;
   }
-  if (
-    frozenTrailingColCount > 0 &&
-    colIndex >= colLength - frozenTrailingColCount
-  ) {
+
+  if (isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)) {
     return FrozenCellType.TRAILING_COL;
   }
   return FrozenCellType.SCROLL;
@@ -161,7 +189,10 @@ export const getFrozenDataCellType = (
 export const calculateFrozenCornerCells = (
   opts: FrozenOpts,
   colLength: number,
-  rowLength: number,
+  cellRange: {
+    start: number;
+    end: number;
+  },
 ) => {
   const {
     frozenColCount,
@@ -179,7 +210,7 @@ export const calculateFrozenCornerCells = (
 
   // frozenColGroup with frozenRowGroup or frozenTrailingRowGroup. Top left and bottom left corner.
   for (let i = 0; i < frozenColCount; i++) {
-    for (let j = 0; j < frozenRowCount; j++) {
+    for (let j = cellRange.start; j < cellRange.start + frozenRowCount; j++) {
       result[FrozenCellType.TOP].push({
         x: i,
         y: j,
@@ -188,7 +219,7 @@ export const calculateFrozenCornerCells = (
 
     if (frozenTrailingRowCount > 0) {
       for (let j = 0; j < frozenTrailingRowCount; j++) {
-        const index = rowLength - 1 - j;
+        const index = cellRange.end - j;
         result[FrozenCellType.BOTTOM].push({
           x: i,
           y: index,
@@ -200,7 +231,7 @@ export const calculateFrozenCornerCells = (
   // frozenTrailingColGroup with frozenRowGroup or frozenTrailingRowGroup. Top right and bottom right corner.
   for (let i = 0; i < frozenTrailingColCount; i++) {
     const colIndex = colLength - 1 - i;
-    for (let j = 0; j < frozenRowCount; j++) {
+    for (let j = cellRange.start; j < cellRange.start + frozenRowCount; j++) {
       result[FrozenCellType.TOP].push({
         x: colIndex,
         y: j,
@@ -209,7 +240,7 @@ export const calculateFrozenCornerCells = (
 
     if (frozenTrailingRowCount > 0) {
       for (let j = 0; j < frozenTrailingRowCount; j++) {
-        const index = rowLength - 1 - j;
+        const index = cellRange.end - j;
         result[FrozenCellType.BOTTOM].push({
           x: colIndex,
           y: index,
@@ -221,6 +252,30 @@ export const calculateFrozenCornerCells = (
   return result;
 };
 
+export const isFrozenCell = (
+  colIndex: number,
+  rowIndex: number,
+  frozenOpts: FrozenOpts,
+  colLength: number,
+  cellRange: {
+    start: number;
+    end: number;
+  },
+) => {
+  const {
+    frozenColCount,
+    frozenRowCount,
+    frozenTrailingColCount,
+    frozenTrailingRowCount,
+  } = frozenOpts;
+  return (
+    isFrozenCol(colIndex, frozenColCount) ||
+    isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength) ||
+    isFrozenRow(rowIndex, cellRange.start, frozenRowCount) ||
+    isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
+  );
+};
+
 /**
  * @description split all cells in current panel with five child group
  */
@@ -228,7 +283,10 @@ export const splitInViewIndexesWithFrozen = (
   indexes: Indexes,
   frozenOpts: FrozenOpts,
   colLength: number,
-  rowLength: number,
+  cellRange: {
+    start: number;
+    end: number;
+  },
 ) => {
   const {
     frozenColCount,
@@ -240,40 +298,38 @@ export const splitInViewIndexesWithFrozen = (
   const centerIndexes: Indexes = [...indexes];
 
   // Cut off frozen cells from centerIndexes
-  if (centerIndexes[0] < frozenColCount) {
+  if (isFrozenCol(centerIndexes[0], frozenColCount)) {
     centerIndexes[0] = frozenColCount;
   }
 
   if (
-    frozenTrailingColCount > 0 &&
-    centerIndexes[1] >= colLength - frozenTrailingColCount
+    isFrozenTrailingCol(centerIndexes[1], frozenTrailingColCount, colLength)
   ) {
     centerIndexes[1] = colLength - frozenTrailingColCount - 1;
   }
 
-  if (centerIndexes[2] < frozenRowCount) {
-    centerIndexes[2] = frozenRowCount;
+  if (isFrozenRow(centerIndexes[2], cellRange.start, frozenRowCount)) {
+    centerIndexes[2] = cellRange.start + frozenRowCount;
   }
 
   if (
-    frozenTrailingRowCount > 0 &&
-    centerIndexes[3] >= rowLength - frozenTrailingRowCount
+    isFrozenTrailingRow(centerIndexes[3], cellRange.end, frozenTrailingRowCount)
   ) {
-    centerIndexes[3] = rowLength - frozenTrailingRowCount - 1;
+    centerIndexes[3] = cellRange.end - frozenTrailingRowCount;
   }
 
   // Calculate indexes for four frozen groups
   const frozenRowIndexes: Indexes = [...centerIndexes];
-  frozenRowIndexes[2] = 0;
-  frozenRowIndexes[3] = frozenRowCount - 1;
+  frozenRowIndexes[2] = cellRange.start;
+  frozenRowIndexes[3] = cellRange.start + frozenRowCount - 1;
 
   const frozenColIndexes: Indexes = [...centerIndexes];
   frozenColIndexes[0] = 0;
   frozenColIndexes[1] = frozenColCount - 1;
 
   const frozenTrailingRowIndexes: Indexes = [...centerIndexes];
-  frozenTrailingRowIndexes[2] = rowLength - frozenTrailingRowCount;
-  frozenTrailingRowIndexes[3] = rowLength - 1;
+  frozenTrailingRowIndexes[2] = cellRange.end + 1 - frozenTrailingRowCount;
+  frozenTrailingRowIndexes[3] = cellRange.end;
 
   const frozenTrailingColIndexes: Indexes = [...centerIndexes];
   frozenTrailingColIndexes[0] = colLength - frozenTrailingColCount;
@@ -285,5 +341,26 @@ export const splitInViewIndexesWithFrozen = (
     frozenCol: frozenColIndexes,
     frozenTrailingCol: frozenTrailingColIndexes,
     frozenTrailingRow: frozenTrailingRowIndexes,
+  };
+};
+
+export const getCellRange = (
+  viewCellHeights: ViewCellHeights,
+  pagination?: Pagination,
+) => {
+  const heights = viewCellHeights;
+  let start = 0;
+  let end = heights.getTotalLength() - 1;
+
+  if (pagination) {
+    const { current, pageSize } = pagination;
+
+    start = Math.max((current - 1) * pageSize, 0);
+    end = Math.min(current * pageSize - 1, heights.getTotalLength() - 1);
+  }
+
+  return {
+    start,
+    end,
   };
 };
