@@ -7,7 +7,7 @@ order: 2
 ## 简介
 交叉表由五部分组成，分别是行头、列头、角头、单元格(data-cell)、框架(frame)，如下图所示：
 
-![](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*nzcERYjsPZoAAAAAAAAAAAAAARQnAQ)
+![s2](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*nzcERYjsPZoAAAAAAAAAAAAAARQnAQ)
 
 (需替换)
 
