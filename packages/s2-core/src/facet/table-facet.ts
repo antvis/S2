@@ -47,7 +47,7 @@ export class TableFacet extends BaseFacet {
       s2.render(true);
       s2.emit(
         S2Event.RANGE_SORTED,
-        (s2.dataSet as TableDataSet).sortedDimensionValues,
+        (s2.dataSet as TableDataSet).getDisplayDataSet(),
       );
     });
 
