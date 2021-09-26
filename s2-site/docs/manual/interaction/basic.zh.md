@@ -30,7 +30,7 @@ order: 1
 | 复制   | `S2Event.GLOBAL_COPIED` | 复制选中的单元格数据 |
 | 隐藏列头   | `S2Event.LAYOUT_TABLE_COL_EXPANDED` `S2Event.LAYOUT_TABLE_COL_HIDE` | 隐藏/展开 列头 （明细表有效） |
 | 链接跳转   | `S2Event.GLOBAL_LINK_FIELD_JUMP` | 行头/列头 链接跳转 |
-| 取消选中  | `S2Event.GLOBAL_RESET` | 再次点击，点击空白处，或按下 `Esc` 取消选中的单元格 |
+| 重置  | `S2Event.GLOBAL_RESET` | 再次点击，点击空白处，或按下 `Esc` 取消选中的单元格 |
 
 ## 交互事件
 
