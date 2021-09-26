@@ -28,7 +28,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
   for (const [index, fieldValue] of fieldValues.entries()) {
     const isTotals = fieldValue instanceof TotalClass;
     const isTotalMeasure = fieldValue instanceof TotalMeasure;
-    let value;
+    let value: string;
     let nodeQuery;
     let isLeaf = false;
     let isGrandTotals = false;
@@ -71,6 +71,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       isLeaf = level === fields.length - extraSize;
     }
     const uniqueId = generateId(parentNode.id, value, spreadsheet);
+    if (!uniqueId) return;
     // TODO need merge with collapsedRows
     const isCollapsed = isBoolean(collapsedCols[uniqueId])
       ? collapsedCols[uniqueId]

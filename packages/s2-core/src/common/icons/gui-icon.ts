@@ -1,20 +1,16 @@
 /**
  * @Description: 请严格要求 svg 的 viewBox，若设计产出的 svg 不是此规格，请叫其修改为 '0 0 1024 1024'
  */
-import { Group, Shape } from '@antv/g-canvas';
+import { Group, Shape, ShapeAttrs } from '@antv/g-canvas';
+import { omit, clone } from 'lodash';
 import { getIcon } from './factory';
 
 const STYLE_PLACEHOLDER = '<svg';
 // Image 缓存
 const ImageCache: Record<string, HTMLImageElement> = {};
 
-export interface GuiIconCfg {
-  readonly type: string;
-  readonly x: number;
-  readonly y: number;
-  readonly width: number;
-  readonly height: number;
-  readonly fill?: string;
+export interface GuiIconCfg extends ShapeAttrs {
+  readonly name: string;
 }
 
 /**
@@ -32,7 +28,7 @@ export class GuiIcon extends Group {
   // 获取 Image 实例，使用缓存，以避免滚动时因重复的 new Image() 耗时导致的闪烁问题
   /* 异步获取 image 实例 */
   private getImage(
-    type: string,
+    name: string,
     cacheKey: string,
     fill?: string,
   ): Promise<HTMLImageElement> {
@@ -47,7 +43,7 @@ export class GuiIcon extends Group {
       img.onerror = (e) => {
         reject(e);
       };
-      let svg = getIcon(type);
+      let svg = getIcon(name);
 
       // 兼容三种情况
       // 1、base 64
@@ -80,47 +76,33 @@ export class GuiIcon extends Group {
   }
 
   hasSupportSuffix = (image: string) => {
-    return (
-      image?.endsWith('.png') ||
-      image?.endsWith('.jpg') ||
-      image?.endsWith('.gif') ||
-      image?.endsWith('.svg')
+    return ['.png', '.jpg', '.gif', '.svg'].some((suffix) =>
+      image?.endsWith(suffix),
     );
   };
 
-  /**
-   * 渲染
-   */
-  private render(): void {
-    const { x, y, width, height, type, fill, textAlign, textBaseline } =
-      this.cfg;
+  private render() {
+    const { name, fill } = this.cfg;
+    const attrs = clone(this.cfg);
     const image = new Shape.Image({
-      attrs: {
-        x,
-        y,
-        width,
-        height,
-        textAlign,
-        textBaseline,
-      },
+      attrs: omit(attrs, 'fill'),
     });
 
-    const cacheKey = `${type}-${fill}`;
+    const cacheKey = `${name}-${fill}`;
     const img = ImageCache[cacheKey];
     if (img) {
       // already in cache
       image.attr('img', img);
       this.addShape('image', image);
     } else {
-      this.getImage(type, cacheKey, fill)
+      this.getImage(name, cacheKey, fill)
         .then((value: HTMLImageElement) => {
-          // 成功，设置到 GImage 中
           image.attr('img', value);
           this.addShape('image', image);
         })
         .catch((err: Event) => {
           // eslint-disable-next-line no-console
-          console.warn(`GuiIcon ${type} load error`, err);
+          console.warn(`GuiIcon ${name} load error`, err);
         });
     }
     this.image = image;

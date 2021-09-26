@@ -13,6 +13,11 @@ import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
 import { Node, SpreadSheet, ThemeCfg } from '@/index';
 
+export type SheetType = 'pivot' | 'table' | 'tabular';
+export interface SpreadsheetProps extends BaseSheetProps {
+  sheetType?: SheetType;
+}
+
 export interface PartDrillDownInfo {
   // The data of drill down
   drillData: Record<string, string | number>[];
@@ -30,10 +35,10 @@ export interface PartDrillDown {
   // The numbers of drill down result
   drillItemsNum?: number;
   // Decide the drill down icon show in which levels according to the row header labels.
-  customDisplayByRowName?: {
+  customDisplayByLabelName?: {
     // The names of row header labels.
     // Using the ID_SEPARATOR('[&]') to join two labels when there are hierarchical relations between them.
-    rowNames: string[];
+    labelNames: string[];
     // omit(default): the all levels included in rowNames would hide the drill down icon.
     // pick: only show the drill down icon on the levels those included in rowNames.
     mode: 'pick' | 'omit';
@@ -48,6 +53,7 @@ export interface BaseSheetProps {
   isLoading?: boolean;
   partDrillDown?: PartDrillDown;
   adaptive?: boolean;
+  showDefaultPagination?: boolean;
   themeCfg?: ThemeCfg;
   header?: HeaderCfgProps;
   rowLevel?: number;
@@ -58,10 +64,15 @@ export interface BaseSheetProps {
   onColCellScroll?: (reachedCol: TargetLayoutNode) => void;
   onCellScroll?: (position: CellScrollPosition) => void;
   onRowCellClick?: (data: TargetCellInfo) => void;
+  onRowCellDoubleClick?: (data: TargetCellInfo) => void;
   onColCellClick?: (data: TargetCellInfo) => void;
+  onColCellDoubleClick?: (data: TargetCellInfo) => void;
   onCornerCellClick?: (data: TargetCellInfo) => void;
   onDataCellClick?: (data: TargetCellInfo) => void;
+  onDataCellDoubleClick?: (data: TargetCellInfo) => void;
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
   onMergedCellsClick?: (data: TargetCellInfo) => void;
+  onMergedCellsDoubleClick?: (data: TargetCellInfo) => void;
+  onContextMenu?: (data: TargetCellInfo) => void;
   getSpreadsheet?: (spreadsheet: SpreadSheet) => void;
 }

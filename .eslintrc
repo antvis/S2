@@ -44,7 +44,7 @@
       }
     ],
     "import/order": 2,
-    "import/no-default-export": 1,
+    "import/no-default-export": 2,
     "no-restricted-syntax": 0,
     "semi": 0,
     "no-console": 2,
@@ -64,10 +64,10 @@
         "allowForLoopAfterthoughts": true
       }
     ],
-    "class-methods-use-this": 0, // 不强制使用 this, 因为子类可能复写方法
-    "no-param-reassign": 0, // 允许参数更改值
-    "@typescript-eslint/no-empty-function": 0, // 允许空方法,(默认实现)
-    "@typescript-eslint/explicit-module-boundary-types": 0, // 允许无返回  值
+    "class-methods-use-this": 0,
+    "no-param-reassign": 0,
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
     "import/no-named-default": 0,
     "react/jsx-filename-extension": [
       1,

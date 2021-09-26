@@ -1,58 +1,70 @@
-import { Group } from '@antv/g-canvas';
 import { IGroup } from '@antv/g-base';
-import { get, maxBy, orderBy } from 'lodash';
+import { Group } from '@antv/g-canvas';
+import { getDataCellId } from 'src/utils/cell/data-cell';
+import { get, maxBy, set } from 'lodash';
 import type {
   LayoutResult,
+  S2CellType,
   SplitLine,
   ViewMeta,
-  S2CellType,
 } from '../common/interface';
 import {
+  calculateFrozenCornerCells,
   calculateInViewIndexes,
+  getFrozenDataCellType,
+  splitInViewIndexesWithFrozen,
   translateGroup,
   translateGroupX,
   translateGroupY,
-  getFrozenDataCellType,
-  calculateFrozenCornerCells,
-  splitInViewIndexesWithFrozen,
+  isFrozenTrailingCol,
+  isFrozenTrailingRow,
 } from './utils';
 import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
-import { PanelIndexes } from '@/utils/indexes';
-import { BaseFacet } from '@/facet/index';
+import { FrozenCellGroupMap } from '@/common/constant/frozen';
+import { DebuggerUtil } from '@/common/debug';
+import { BaseFacet } from '@/facet/base-facet';
 import { buildHeaderHierarchy } from '@/facet/layout/build-header-hierarchy';
 import { Hierarchy } from '@/facet/layout/hierarchy';
 import { layoutCoordinate } from '@/facet/layout/layout-hooks';
 import { Node } from '@/facet/layout/node';
-import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
-import { DebuggerUtil } from '@/common/debug';
 import { renderLine } from '@/utils/g-renders';
-import { FrozenCellGroupMap } from '@/common/constant/frozen';
+import { TableDataSet } from '@/data-set';
+import { getSortParam } from '@/utils/layout/add-detail-type-sort-icon';
+import { PanelIndexes } from '@/utils/indexes';
+import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
 
 export class TableFacet extends BaseFacet {
   public constructor(props) {
     super(props);
     const s2 = this.spreadsheet;
     s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
-      const sortInfo = {
-        sortKey,
-        sortMethod,
-        compareFunc: undefined,
-      };
-      s2.emit(S2Event.RANGE_SORTING, sortInfo);
-
-      s2.dataCfg.data = orderBy(
-        s2.dataSet.originData,
-        [sortInfo.compareFunc || sortKey],
-        [sortMethod.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
-      );
+      const sortParam = getSortParam(sortKey, s2);
+      set(s2.dataCfg, 'sortParams', [
+        {
+          sortFieldId: sortKey,
+          sortMethod,
+          sortBy: sortParam?.sortBy,
+        },
+      ]);
+      s2.setDataCfg(s2.dataCfg);
       s2.render(true);
-      s2.emit(S2Event.RANGE_SORTED, s2.dataCfg.data);
+      s2.emit(
+        S2Event.RANGE_SORTED,
+        (s2.dataSet as TableDataSet).sortedDimensionValues,
+      );
     });
   }
 
   public destroy() {
     super.destroy();
     this.spreadsheet.off(S2Event.RANGE_SORT);
+  }
+
+  private saveInitColumnNodes(columnNodes: Node[]) {
+    const { store } = this.spreadsheet;
+    if (!store.get('initColumnNodes')) {
+      store.set('initColumnNodes', columnNodes);
+    }
   }
 
   protected doLayout(): LayoutResult {
@@ -71,6 +83,7 @@ export class TableFacet extends BaseFacet {
         facetCfg: this.cfg,
       });
 
+    this.saveInitColumnNodes(colLeafNodes);
     this.calculateNodesCoordinate(colLeafNodes, colsHierarchy);
 
     const getCellMeta = (rowIndex: number, colIndex: number) => {
@@ -79,26 +92,23 @@ export class TableFacet extends BaseFacet {
       const cellHeight =
         cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
 
+      const cellRange = this.getCellRange();
+
       let data;
 
       const width = this.panelBBox.maxX;
-      const dataLength = dataSet.getMultiData({}).length;
       const colLength = colLeafNodes.length;
 
       let x = col.x;
       let y = cellHeight * rowIndex;
 
       if (
-        frozenTrailingRowCount > 0 &&
-        rowIndex >= dataLength - frozenTrailingRowCount
+        isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
       ) {
-        y = this.panelBBox.maxY - (dataLength - rowIndex) * cellHeight;
+        y = this.panelBBox.maxY - (cellRange.end + 1 - rowIndex) * cellHeight;
       }
 
-      if (
-        frozenTrailingColCount > 0 &&
-        colIndex >= colLength - frozenTrailingColCount
-      ) {
+      if (isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)) {
         x =
           width -
           colLeafNodes.reduceRight((prev, item, idx) => {
@@ -135,6 +145,7 @@ export class TableFacet extends BaseFacet {
         rowId: String(rowIndex),
         valueField: col.field,
         fieldValue: data,
+        id: getDataCellId(String(rowIndex), col.id),
       } as ViewMeta;
     };
 
@@ -292,19 +303,29 @@ export class TableFacet extends BaseFacet {
     return colWidth;
   }
 
-  protected getViewCellHeights() {
-    const { dataSet, cellCfg } = this.cfg;
+  protected getCellHeight() {
+    const { cellCfg } = this.cfg;
 
-    const cellHeight =
-      cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
+    return cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
+  }
+
+  protected getViewCellHeights() {
+    const { dataSet } = this.cfg;
+
+    const cellHeight = this.getCellHeight();
 
     return {
       getTotalHeight: () => {
         return cellHeight * dataSet.originData.length;
       },
 
-      getCellHeight: () => {
-        return cellHeight;
+      getCellOffsetY: (offset: number) => {
+        if (offset <= 0) return 0;
+        let totalOffset = 0;
+        for (let index = 0; index < offset; index++) {
+          totalOffset += cellHeight;
+        }
+        return totalOffset;
       },
 
       getTotalLength: () => {
@@ -327,33 +348,34 @@ export class TableFacet extends BaseFacet {
   }
 
   protected initFrozenGroupPosition = () => {
+    const scrollY = this.getPaginationScrollY();
     translateGroup(
       this.spreadsheet.frozenRowGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
     translateGroup(
       this.spreadsheet.frozenColGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
     translateGroup(
       this.spreadsheet.frozenTrailingColGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
     translateGroup(
       this.spreadsheet.frozenTopGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
   };
 
-  getTotalHeightForRange = (start: number, end: number) => {
+  protected getTotalHeightForRange = (start: number, end: number) => {
     if (start < 0 || end < 0) return 0;
     let totalHeight = 0;
     for (let index = start; index < end + 1; index++) {
-      const height = this.viewCellHeights.getCellHeight(index);
+      const height = this.getCellHeight();
       totalHeight += height;
     }
     return totalHeight;
@@ -476,8 +498,9 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
       frozenTrailingColCount,
     } = this.spreadsheet.options;
-    const dataLength = this.viewCellHeights.getTotalLength();
+
     const colLength = this.layoutResult.colLeafNodes.length;
+    const cellRange = this.getCellRange();
 
     const result = calculateFrozenCornerCells(
       {
@@ -487,7 +510,7 @@ export class TableFacet extends BaseFacet {
         frozenTrailingColCount,
       },
       colLength,
-      dataLength,
+      cellRange,
     );
 
     Object.keys(result).forEach((key) => {
@@ -516,8 +539,8 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
       frozenTrailingColCount,
     } = this.spreadsheet.options;
-    const dataLength = this.viewCellHeights.getTotalLength();
     const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
+    const cellRange = this.getCellRange();
 
     const frozenCellType = getFrozenDataCellType(
       cell.getMeta(),
@@ -528,7 +551,7 @@ export class TableFacet extends BaseFacet {
         frozenTrailingColCount,
       },
       colLength,
-      dataLength,
+      cellRange,
     );
 
     const group = FrozenCellGroupMap[frozenCellType];
@@ -591,7 +614,6 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
     } = this.spreadsheet.options;
 
-    const dataLength = this.viewCellHeights.getTotalLength();
     const colLength = this.layoutResult.colLeafNodes.length;
 
     const indexes = calculateInViewIndexes(
@@ -603,6 +625,8 @@ export class TableFacet extends BaseFacet {
       this.getRealScrollX(this.cornerBBox.width),
     );
 
+    const cellRange = this.getCellRange();
+
     return splitInViewIndexesWithFrozen(
       indexes,
       {
@@ -612,7 +636,81 @@ export class TableFacet extends BaseFacet {
         frozenTrailingRowCount,
       },
       colLength,
-      dataLength,
+      cellRange,
     );
+  }
+
+  // 对 panelScrollGroup 以及四个方向的 frozenGroup 做 Clip，避免有透明度时冻结分组和滚动分组展示重叠
+  protected clip(scrollX: number, scrollY: number) {
+    const paginationScrollY = this.getPaginationScrollY();
+    const {
+      frozenRowGroup,
+      frozenColGroup,
+      frozenTrailingColGroup,
+      frozenTrailingRowGroup,
+      panelScrollGroup,
+    } = this.spreadsheet;
+    const frozenColGroupWidth = frozenColGroup.getBBox().width;
+    const frozenRowGroupHeight = frozenRowGroup.getBBox().height;
+    const frozenTrailingRowGroupHeight =
+      frozenTrailingRowGroup.getBBox().height;
+    const panelScrollGroupWidth =
+      this.panelBBox.width -
+      frozenColGroupWidth -
+      frozenTrailingColGroup.getBBox().width;
+    const panelScrollGroupHeight =
+      this.panelBBox.height -
+      frozenRowGroupHeight -
+      frozenTrailingRowGroupHeight;
+
+    panelScrollGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: scrollX + frozenColGroupWidth,
+        y: scrollY + frozenRowGroupHeight,
+        width: panelScrollGroupWidth,
+        height: panelScrollGroupHeight,
+      },
+    });
+
+    frozenRowGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: scrollX + frozenColGroupWidth,
+        y: paginationScrollY,
+        width: panelScrollGroupWidth,
+        height: frozenRowGroupHeight,
+      },
+    });
+
+    frozenTrailingRowGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: scrollX + frozenColGroupWidth,
+        y: frozenTrailingRowGroup.getBBox().minY,
+        width: panelScrollGroupWidth,
+        height: frozenTrailingRowGroupHeight,
+      },
+    });
+
+    frozenColGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: 0,
+        y: scrollY + frozenRowGroupHeight,
+        width: frozenColGroupWidth,
+        height: panelScrollGroupHeight,
+      },
+    });
+
+    frozenTrailingColGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: frozenTrailingColGroup.getBBox().minX,
+        y: scrollY + frozenRowGroupHeight,
+        width: frozenColGroupWidth,
+        height: panelScrollGroupHeight,
+      },
+    });
   }
 }

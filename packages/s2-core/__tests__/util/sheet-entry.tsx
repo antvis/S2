@@ -1,3 +1,13 @@
+import React, {
+  forwardRef,
+  MutableRefObject,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react';
+import { Checkbox, Switch } from 'antd';
+import { isArray, merge, mergeWith } from 'lodash';
+import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
   defaultDataConfig,
   defaultOptions,
@@ -6,18 +16,10 @@ import {
   SheetComponent,
   SpreadSheet,
   ThemeCfg,
+  SheetType,
+  TargetCellInfo,
 } from '@/index';
-import { Checkbox, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
-import { isArray, merge, mergeWith } from 'lodash';
-import React, {
-  forwardRef,
-  MutableRefObject,
-  ReactNode,
-  useEffect,
-  useState,
-} from 'react';
-import { data, meta, totalData } from '../data/mock-dataset.json';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
   mergeWith(
@@ -56,10 +58,13 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
   );
 
 interface SheetEntryProps {
-  header?: ReactNode;
   options: Partial<S2Options>;
   dataCfg: Partial<S2DataConfig>;
+  forceUpdateDataCfg?: boolean; // 是否强制替换 dataCfg
   themeCfg?: ThemeCfg;
+  header?: ReactNode;
+  sheetType?: SheetType;
+  onColCellClick?: (data: TargetCellInfo) => void;
 }
 
 // eslint-disable-next-line react/display-name
@@ -68,13 +73,13 @@ export const SheetEntry = forwardRef(
     const [mode, setMode] = useState('grid');
     const [valueInCols, setValueInCols] = useState(true);
     const [freezeRowHeader, setFreezeRowHeader] = useState(true);
+    const initOptions = assembleOptions(props.options);
 
-    const [options, setOptions] = useState(() =>
-      assembleOptions(props.options),
-    );
-    const [dataCfg, setDataCfg] = useState(() =>
-      assembleDataCfg(props.dataCfg),
-    );
+    const initDataCfg = props.forceUpdateDataCfg
+      ? props.dataCfg
+      : assembleOptions(props.dataCfg);
+    const [options, setOptions] = useState(() => initOptions);
+    const [dataCfg, setDataCfg] = useState(() => initDataCfg);
 
     const onValueInColsChange = (checked) => {
       setValueInCols(checked);
@@ -96,11 +101,11 @@ export const SheetEntry = forwardRef(
       );
     };
 
-    const onFreezeRowHeaderChange = (checked) => {
-      setFreezeRowHeader(checked);
+    const onFreezeRowHeaderChange = (e) => {
+      setFreezeRowHeader(e.target.checked);
       setOptions(
         merge({}, options, {
-          freezeRowHeader: checked,
+          freezeRowHeader: e.target.checked,
         }),
       );
     };
@@ -110,7 +115,11 @@ export const SheetEntry = forwardRef(
     }, [props.options]);
 
     useEffect(() => {
-      setDataCfg(assembleDataCfg(dataCfg, props.dataCfg));
+      if (props.forceUpdateDataCfg) {
+        setDataCfg(props.dataCfg);
+      } else {
+        setDataCfg(assembleDataCfg(dataCfg, props.dataCfg));
+      }
     }, [props.dataCfg]);
 
     return (
@@ -132,16 +141,15 @@ export const SheetEntry = forwardRef(
           />
           冻结行头：
           <Checkbox
-            value={freezeRowHeader}
-            onChange={(e) => {
-              onFreezeRowHeaderChange(e.target.checked);
-            }}
+            checked={freezeRowHeader}
+            onChange={onFreezeRowHeaderChange}
           />
         </div>
         <div style={{ marginBottom: 20 }}>{props.header}</div>
         <SheetComponent
           dataCfg={dataCfg}
           options={options}
+          sheetType={props.sheetType}
           adaptive={false}
           getSpreadsheet={(instance) => {
             if (ref) {
@@ -149,6 +157,7 @@ export const SheetEntry = forwardRef(
             }
           }}
           themeCfg={props.themeCfg}
+          onColCellClick={props.onColCellClick}
         />
       </div>
     );

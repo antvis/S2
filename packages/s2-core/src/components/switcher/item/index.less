@@ -1,0 +1,92 @@
+@prefix: antv-s2-switcher;
+
+@dimension-color: #d9eeff;
+@measure-color: #d3f4e5;
+@child-measure-color: #effbf6;
+
+@large-span: 12px;
+@normal-span: 4px;
+
+@border-radius: 3px;
+
+.@{prefix}-item {
+  height: 24px;
+  border-radius: @border-radius;
+  display: flex;
+
+  &-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &.dimension-item {
+    padding: 0 @large-span;
+    background-color: @dimension-color;
+    align-items: center;
+  }
+
+  &.measure-item {
+    padding: 0 @normal-span;
+    background-color: @measure-color;
+    align-items: baseline;
+
+    &.measure-collapse {
+      transition: border-radius 0s 0.2s;
+      border-radius: @border-radius !important;
+    }
+
+    &.unchecked {
+      color: rgba(0, 0, 0, 0.25);
+    }
+
+    &:not(:last-child) {
+      border-radius: @border-radius @border-radius 0 0;
+    }
+
+    .ant-checkbox {
+      margin-right: @normal-span;
+    }
+  }
+}
+
+.@{prefix}-dimension-list,
+.@{prefix}-measure-list {
+  border-radius: @border-radius;
+
+  & + & {
+    margin-top: @normal-span;
+  }
+
+  &.list-dragging {
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+  }
+
+  .child-measures {
+    transition: max-height 0.2s, opacity 0.4s;
+    overflow: hidden;
+    max-height: 1000px;
+
+    .measure-item {
+      padding: 0 @large-span;
+      background-color: @child-measure-color;
+      margin-top: 0;
+      border-radius: 0;
+
+      &:last-child {
+        border-radius: 0 0 @border-radius @border-radius;
+      }
+    }
+
+    &.measures-hidden {
+      max-height: 0;
+      opacity: 0;
+    }
+  }
+}
+
+.@{prefix}-tooltip {
+  .ant-tooltip-inner {
+    max-width: 180px;
+  }
+}

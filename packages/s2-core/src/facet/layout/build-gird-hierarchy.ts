@@ -1,7 +1,7 @@
 import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { layoutArrange } from '@/facet/layout/layout-hooks';
-import getDimsCondition from '@/utils/layout/get-dims-condition-by-node';
+import { getDimsCondition } from '@/utils/layout/get-dims-condition-by-node';
 import { addTotals } from '@/utils/layout/add-totals';
 import { generateHeaderNodes } from '@/utils/layout/generate-header-nodes';
 import { EXTRA_FIELD } from '@/common/constant';

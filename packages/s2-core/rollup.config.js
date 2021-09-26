@@ -9,13 +9,13 @@ import ttypescript from 'ttypescript';
 const format = process.env.FORMAT;
 
 const OUT_DIR_NAME_MAP = {
-  es: 'esm',
+  esm: 'esm',
   cjs: 'lib',
   umd: 'dist',
 };
 
 const outDir = OUT_DIR_NAME_MAP[format];
-const isEsmFormat = format === 'es';
+const isEsmFormat = format === 'esm';
 
 const output = {
   format: format,
@@ -38,6 +38,9 @@ const plugins = [
     tsconfig: 'tsconfig.json',
     tsconfigOverride: {
       exclude: ['__tests__'],
+      compilerOptions: {
+        declaration: isEsmFormat,
+      },
     },
     typescript: ttypescript,
   }),
@@ -53,7 +56,7 @@ const plugins = [
   }),
 ];
 
-const external = ['react', 'react-dom', '@ant-design/icons', 'antd'];
+const external = ['react', 'react-dom', '@ant-design/icons', /antd/];
 
 if (format === 'umd') {
   output.file = 'dist/s2.min.js';

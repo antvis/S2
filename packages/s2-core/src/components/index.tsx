@@ -1,16 +1,16 @@
 import React from 'react';
 import { BaseSheet } from './sheets/base-sheet';
 import { TabularSheet } from './sheets/tabular-sheet';
-import { BaseSheetProps } from './sheets/interface';
+import { TableSheet } from './sheets/table-sheet';
+import { SpreadsheetProps } from './sheets/interface';
 
+export { SpreadsheetProps, SheetType } from './sheets/interface';
 export { PartDrillDown, PartDrillDownInfo } from './sheets/interface';
-export interface SpreadsheetProps extends BaseSheetProps {
-  sheetType?: 'base' | 'tabular';
-}
-
 export const SheetComponent = (props: SpreadsheetProps) => {
   const { sheetType } = props;
   switch (sheetType) {
+    case 'table':
+      return <TableSheet {...props} />;
     case 'tabular':
       return <TabularSheet {...props} />;
     default:

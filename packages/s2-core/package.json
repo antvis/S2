@@ -1,10 +1,10 @@
 {
   "name": "@antv/s2",
-  "version": "0.1.4",
+  "version": "0.1.10",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/s2.min.js",
-  "types": "esm/src/index.d.ts",
+  "types": "esm/index.d.ts",
   "description": "effective spreadsheet render core lib",
   "license": "MIT",
   "homepage": "https://s2.antv.vision",
@@ -36,15 +36,15 @@
     "start": "yarn test:live",
     "clean": "rimraf lib esm dist",
     "build": "run-s clean build:*",
-    "build:es": "FORMAT=es rollup -c rollup.config.js",
+    "build:esm": "FORMAT=esm rollup -c rollup.config.js",
     "build:cjs": "FORMAT=cjs rollup -c rollup.config.js",
     "build:umd": "FORMAT=umd rollup -c rollup.config.js",
-    "build:size": "bundlesize",
+    "bundle:size": "bundlesize",
     "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
     "test:live": "node ./scripts/test-live.mjs",
     "test": "jest",
     "test:coverage": "yarn test --coverage",
-    "test:ci-coverage": "yarn test:coverage && codecov",
+    "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit"
   },
   "peerDependencies": {
@@ -57,9 +57,11 @@
     "@antv/g-gesture": "^1.0.0",
     "antd": "^4.16.13",
     "classnames": "^2.3.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "react-beautiful-dnd": "^13.1.0"
   },
   "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.1.2",
     "d3-dsv": "^1.1.1",
     "inquirer": "^8.1.2",
     "react": "^16.14.0",

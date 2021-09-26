@@ -5,17 +5,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import {
-  S2DataConfig,
-  S2Options,
-  SheetComponent,
-  SpreadSheet,
-} from '../../src';
-import {
   multipleDataWithBottom,
   multipleDataWithCombine,
   multipleDataWithNormal,
 } from '../data/multiple-values-cell-mock-data';
 import { getContainer } from '../util/helpers';
+import {
+  S2DataConfig,
+  S2Options,
+  SheetComponent,
+  SpreadSheet,
+  PivotSheet,
+  Node,
+} from '@/index';
 
 let sheet: SpreadSheet;
 const getSpreadSheet = (
@@ -23,7 +25,7 @@ const getSpreadSheet = (
   dataCfg: S2DataConfig,
   options: S2Options,
 ) => {
-  sheet = new SpreadSheet(dom, dataCfg, options);
+  sheet = new PivotSheet(dom, dataCfg, options);
   (window as any).sheet = sheet;
   return sheet;
 };
@@ -84,8 +86,6 @@ const getOptions = (): S2Options => {
     hierarchyCollapse: false,
     showSeriesNumber: true,
     freezeRowHeader: false,
-    mode: 'pivot',
-    indicateConditionValues: ['ac', 'rc'],
     conditions: {
       text: [],
       interval: [
@@ -117,15 +117,14 @@ const getOptions = (): S2Options => {
         },
       ],
     },
-    rowActionIcons: {
-      iconTypes: ['SortDown', 'SortUp'],
-      display: {
-        level: 0,
-        operator: '>=',
+    headerActionIcons: [
+      {
+        iconNames: ['SortDown', 'SortUp'],
+        belongsCell: 'colCell',
+        display: (meta: Node) => meta.level >= 0,
+        action() {},
       },
-      action(type, node) {},
-    },
-
+    ],
     selectedCellsSpotlight: true,
     hoverHighlight: true,
     tooltip: {
@@ -241,35 +240,16 @@ describe('spreadsheet multiple values cell spec', () => {
   test('should generate default conditions', () => {
     const { icon, text } = sheet.options.conditions;
 
-    expect(icon).toHaveLength(3);
-    expect(text).toHaveLength(2);
+    expect(icon).toHaveLength(1);
+    expect(text).toHaveLength(0);
 
     expect(icon).toEqual([
       {
         field: 'price',
         mapping: expect.any(Function),
       },
-      {
-        field: 'ac',
-        position: 'left',
-        mapping: expect.any(Function),
-      },
-      {
-        field: 'rc',
-        position: 'left',
-        mapping: expect.any(Function),
-      },
     ]);
 
-    expect(text).toEqual([
-      {
-        field: 'ac',
-        mapping: expect.any(Function),
-      },
-      {
-        field: 'rc',
-        mapping: expect.any(Function),
-      },
-    ]);
+    expect(text).toEqual([]);
   });
 });

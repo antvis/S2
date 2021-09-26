@@ -1,9 +1,11 @@
 ---
 title: Options
 order: 1
+redirect_from:
+  - /zh/docs/api
 ---
 
-交叉表所有配置项相关
+## 交叉表所有配置项相关
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | :-- | :-- | :-: | :-- | :-- | :-- | --- |
@@ -12,7 +14,7 @@ order: 1
 | conditions | [Conditions](#) | ✓ |  |  | 条件模式配置 |
 | totals | [Totals](#) | ✓ |  |  | 小计总结配置 |
 | tooltip | [Tooltip](#) | ✓ |  |  |  tooltip总配置 |
-| linkFieldIds | string[] |  |  | [] | 外链跳转 |
+| linkFields | string[] |  |  | [] | 外链跳转 |
 | pagination | [Pagination](#) | ✓ |  |  | 分页配置 |
 | freezeRowHeader | boolean | ✓ |  | false | 冻结行头 |
 | pivot | pivot/table |  |  |  | pivot = 交叉表, table = 普通 table |
@@ -25,7 +27,7 @@ order: 1
 | registerDefaultInteractions | boolean | ✓ |  |  | 注册默认交互 |
 | scrollReachNodeField | [NodeField](#) | ✓ |  | {rowField: '', colField: ''} |
 | 滚动监听的节点度量 |
-| hideRowColFields | string[] | ✓ |  | [] | 隐藏行、列 |
+| hiddenColumnFields | string[] | ✓ |  | [] | 隐藏列 (明细表有效) |
 | valueInCols | boolean |  |  | false | 存在衍生指标时单列和多列的切换 |
 | dataCell | [DataCellCallback](#) |  |  |  | 自定义单元格 cell |
 | cornerCell | [CellCallback](#) |  |  |  | 自定义 cornerCell |
@@ -38,7 +40,6 @@ order: 1
 | hierarchy | [HierarchyCallback](#) |  |  |  | 行列结构的自定义 |
 | [key: string] | any |  |  |  | 其他任意的选择配置 |
 
-###
 
 ## Conditions
 
@@ -51,7 +52,7 @@ object **必选**,_ default：null_ 功能描述： 配置条件格式。分为�
 | interval   | Condition[]      |      |      | {}     | 数据条条件 |
 | icon       | Condition[]      |      |      | {}     | 图标条件   |
 
-### Condition
+## Condition
 
 object **必选**,_ default：null_ 功能描述： 配置条件格式。分为文本(text)，背景(background)，柱状图(interval)，图标(icon)。
 
@@ -140,7 +141,7 @@ object **必选**,_ default：null_ 功能描述： 小计总计配置
 | row | [Total](#) |  |  | {} | 列总计 |
 | col | [Total](#) |  |  | {} | 行总计 |
 
-### Total
+## Total
 
 object **必选**,_ default：null_ 功能描述： 小计总计算配置
 
@@ -148,8 +149,6 @@ object **必选**,_ default：null_ 功能描述： 小计总计算配置
 | --- | --- | :-: | --- | --- | --- |
 | showGrandTotals | boolean | ✓ |  | false | 是否显示总计 |
 | showSubTotals | boolean | ✓ |  | false | 是否显示小计 |
-| aggregation |  | ✓ | 'SUM' &#124; 'AVG' &#124; 'MIN' &#124; 'MAX' |  | 总计聚合方式 |
-| aggregationSub |  | ✓ | 'SUM' &#124; 'AVG' &#124; 'MIN' &#124; 'MAX |  | 小计聚合方式 |
 | subTotalsDimensions | string[] | ✓ |  | [] | 小计的汇总维度 |
 | reverseLayout | boolean | ✓ |  | false | 总计布局位置,默认下或右 |
 |  |
@@ -164,15 +163,21 @@ object **必选**,_ default：null_ 功能描述： tooltip配置
 | 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
 | showTooltip | boolean |  |  | false | 是否展示tooltip |
-| showOperation | boolean |  |  | false | 是否展示操作栏 |
-| showSummary | boolean |  |  | false | 是否展示统计信息 |
-| showDetail | boolean |  |  | false | 是否展示轴（表头行列）字段 |
-| showInfos | boolean |  |  | false | 是否展示快捷操作提示 |
+| operation | [TooltipOperation](#TooltipOperation) |  |  | false | tooltip 操作配置项 |
 | row | [Tooltip](#) |  |  |  | 行头配置 |
 | col | [Tooltip](#) |  |  |  | 列头配置 |
 | cell | [Tooltip](#) |  |  |  | 单元格配置 |
 | renderTooltip | [RenderTooltip](#) |  |  |  | 自定义整个tooltip, 可以继承 BaseTooltip 自己重写一些方法 |
 | tooltipComponent | React.ReactNode |  |  |  | 自定义tooltip弹框组件 |
+
+## TooltipOperation
+
+object **必选**,_ default：null_ 功能描述： tooltip操作配置项
+
+| 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| hiddenColumns | boolean |  |  | true | 是否开启隐藏列 (明细表有效) |
+| trend | boolean |  |  | false | 是否显示趋势图icon |
 
 ## Pagination
 
@@ -202,9 +207,7 @@ object **必选**,_ default：null_ 功能描述：样式设置
 | device | string |  | 'pc' | 'mobile' | 'pc' | 设备类型 |
 | plotSize | [PlotSize](#) |  |  |  |  |
 
-###
-
-### CellCfg
+## CellCfg
 
 object **必选**,_ default：null_ 功能描述：单元格配置
 
@@ -214,7 +217,7 @@ object **必选**,_ default：null_ 功能描述：单元格配置
 | height  | number |      |      |        | 单元格高度   |
 | padding | number |      |      |        | 单元格内边距 |
 
-### ColCfg
+## ColCfg
 
 object **必选**,_ default：null_ 功能描述： 列样式配置
 
@@ -225,7 +228,7 @@ object **必选**,_ default：null_ 功能描述： 列样式配置
 | colWidthType | 'adaptive' &#124; 'compact' |  |  |  | 列类型，紧凑或者自适应 |
 | heightByField | number |  |  |  | 根据度量值设置高度（拖拽或者预设宽度场景） |
 
-### RowCfg
+## RowCfg
 
 object **必选**,_ default：null_ 功能描述：行样式配置
 
@@ -238,10 +241,7 @@ object **必选**,_ default：null_ 功能描述：行样式配置
 | colCfg | [ColCfg](#) |  |  | {} | 列样式配置 |
 | rowCfg | [RowCfg](#) |  |  | {} | 行样式配置 |
 | device | pc &#124; mobile |  |  | {} | 设备类型 |
-
-###
-
-### PlotSize
+## PlotSize
 
 object **必选**,_ default：null_ 功能描述：行样式配置
 
@@ -273,8 +273,6 @@ object 可选,_ default：{}_ 功能描述：滚动监听的节点度量
 | rowField | string[] |  |  |  | 行头中需要监听滚动吸顶的度量 id |
 | colField | string[] |  |  |  | 列头中需要监听滚动吸「左」的度量 id |
 
-##
-
 ## DataCellCallback
 
 ```js
@@ -283,7 +281,7 @@ DataCellCallback = (viewMeta: ViewMeta) => Group;
 
 功能描述：交叉单元格自定义回调函数返回：Group （返回一个绘制好的布局）参数：[ViewMeta](#)
 
-### ViewMeta
+## ViewMeta
 
 object 必选,_ default：{}_ 功能描述：单元个数据和位置等信息
 
@@ -341,8 +339,6 @@ CornerHeaderCallback = (parent: Group, spreadsheet: BaseSpreadSheet, ...restOpti
 | spreadsheet | [BaseSpreadSheet](#) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
 | restOptions |  |  |  |  | 不定参数，传递额外的信息 |
 
-##
-
 ## FrameCallback
 
 ```js
@@ -373,7 +369,7 @@ LayoutResultCallback = (layoutResult: LayoutResult) => LayoutResult;
 
 功能描述：布局结果回调函数参数：[LayoutResult](#) 返回：[LayoutResult](#)
 
-### LayoutResult
+## LayoutResult
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -402,7 +398,7 @@ HierarchyCallback = (spreadsheet: BaseSpreadSheet, node: Node) =>
 
 返回：[HierarchyResult](#)
 
-### HierarchyResult
+## HierarchyResult
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |

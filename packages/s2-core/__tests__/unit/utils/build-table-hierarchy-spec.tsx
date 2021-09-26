@@ -8,6 +8,7 @@ import {
   S2Options,
   SheetComponent,
   SpreadSheet,
+  PivotSheet,
   Node,
   Hierarchy,
 } from '@/index';
@@ -22,7 +23,7 @@ const getSpreadSheet = (
   dataCfg: S2DataConfig,
   options: S2Options,
 ) => {
-  spreadsheetIns = new SpreadSheet(dom, dataCfg, options);
+  spreadsheetIns = new PivotSheet(dom, dataCfg, options);
   return spreadsheetIns;
 };
 

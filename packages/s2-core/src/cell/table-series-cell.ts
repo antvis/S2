@@ -4,7 +4,7 @@ import { TextTheme } from '@/common/interface';
 
 export class TableRowCell extends DataCell {
   public get cellType() {
-    return CellTypes.DATA_CELL;
+    return CellTypes.ROW_CELL;
   }
 
   protected getTextStyle(): TextTheme {

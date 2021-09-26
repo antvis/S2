@@ -1,8 +1,12 @@
-import { keys, has, uniq, isPlainObject, map } from 'lodash';
-import { SortMethod } from '@/common/interface';
+import { keys, has, uniq, isPlainObject, map, toUpper } from 'lodash';
+import { SortMethod, SortParam } from '@/common/interface';
 import { DataType, SortActionParams } from '@/data-set/interface';
 import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
 import { sortByItems } from '@/utils/data-set-operate';
+
+export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
+
+export const isDescSort = (sortMethod) => toUpper(sortMethod) === 'DESC';
 
 /**
  * 执行排序
@@ -15,7 +19,7 @@ export const sortAction = (
   sortMethod?: SortMethod,
   key?: string,
 ) => {
-  const sort = sortMethod === 'ASC' ? 1 : -1;
+  const sort = isAscSort(sortMethod) ? 1 : -1;
   const specialValues = ['-', undefined];
   return list?.sort(
     (pre: string | number | DataType, next: string | number | DataType) => {
@@ -130,4 +134,21 @@ export const handleSortAction = (params: SortActionParams): string[] => {
     originValues,
     measureValues,
   });
+};
+
+export const getSortTypeIcon = (
+  sortParam: SortParam,
+  isValueCell?: boolean,
+) => {
+  if (sortParam?.sortMethod) {
+    if (isAscSort(sortParam?.sortMethod)) {
+      return 'groupAsc';
+    }
+    if (isDescSort(sortParam?.sortMethod)) {
+      return 'groupDesc';
+    }
+  }
+  if (isValueCell) {
+    return 'SortDown';
+  }
 };

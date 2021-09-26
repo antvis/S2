@@ -1,7 +1,12 @@
 import { merge } from 'lodash';
 import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
-import { FilterDataItemCallback } from './basic';
+import {
+  FilterDataItemCallback,
+  HeaderActionIcon,
+  CustomSVGIcon,
+} from './basic';
+import { Tooltip } from './tooltip';
 import {
   CellCallback,
   CornerHeaderCallback,
@@ -12,9 +17,7 @@ import {
   MergedCellInfo,
   NodeField,
   Pagination,
-  RowActionIcons,
   Style,
-  Tooltip,
   Totals,
 } from '@/common/interface/basic';
 import {
@@ -33,14 +36,10 @@ export interface S2PartialOptions {
   readonly width: number;
   // canvas's height
   readonly height: number;
-  // s2 mode
-  readonly mode?: 'pivot' | 'table';
   // debug info for developer
   readonly debug?: boolean;
   // row header hierarchy type only work in pivot mode
   readonly hierarchyType?: 'grid' | 'tree' | 'customTree';
-  // 兜底以前的衍生指标概念
-  readonly indicateConditionValues?: string[];
   // conditions config
   readonly conditions?: Conditions;
   // total config
@@ -48,7 +47,7 @@ export interface S2PartialOptions {
   // tooltip configs
   readonly tooltip?: Tooltip;
   // record which row/col field need extra link info
-  readonly linkFieldIds?: string[];
+  readonly linkFields?: string[];
   // pagination config
   readonly pagination?: Pagination;
   // freeze row header
@@ -57,12 +56,12 @@ export interface S2PartialOptions {
   readonly showSeriesNumber?: boolean;
   // scroll reach node border(which field node belongs to) event config
   readonly scrollReachNodeField?: NodeField;
-  // hide row, col with fields
-  readonly hideRowColFields?: string[];
   // custom config of showing columns and rows
   readonly customHeaderCells?: CustomHeaderCells;
-  // row header action icon's config
-  readonly rowActionIcons?: RowActionIcons;
+  // header cells including ColCell, RowCell, CornerCell action icon's config
+  readonly headerActionIcons?: HeaderActionIcon[];
+  // register custom svg icons
+  readonly customSVGIcons?: CustomSVGIcon[];
   // extra styles
   readonly style?: Partial<Style>;
   // frozen row & cols
@@ -76,6 +75,11 @@ export interface S2PartialOptions {
   // highlight all row header cells and column header cells to which the hovered cell belongs
   readonly hoverHighlight?: boolean;
   readonly hdAdapter?: boolean;
+  readonly hiddenColumnFields?: string[];
+  // the collection of row id and column id of cells which to be merged
+  readonly mergedCellsInfo?: MergedCellInfo[][];
+  // enable Command + C to copy spread data
+  readonly enableCopy?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -90,10 +94,6 @@ export interface S2PartialOptions {
   readonly frame?: FrameCallback;
   // custom corner header
   readonly cornerHeader?: CornerHeaderCallback;
-  // the collection of row id and column id of cells which to be merged
-  readonly mergedCellsInfo?: MergedCellInfo[][];
-  // enable Command + C to copy spread data
-  readonly enableCopy?: boolean;
 
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
   // determine what does row/column tree hierarchy look like
@@ -164,20 +164,25 @@ export const defaultStyle: Style = {
 export const defaultOptions: S2Options = {
   width: 600,
   height: 480,
-  mode: 'pivot',
-  valueInCols: true,
   debug: false,
   hierarchyType: 'grid',
   conditions: {},
   totals: {},
-  tooltip: {},
-  linkFieldIds: [],
+  tooltip: {
+    operation: {
+      hiddenColumns: true,
+      trend: false,
+      sort: true,
+    },
+  },
+  linkFields: [],
   freezeRowHeader: true,
   showSeriesNumber: false,
   scrollReachNodeField: {},
-  hideRowColFields: [],
+  hiddenColumnFields: [],
+  customSVGIcons: null,
   customHeaderCells: null,
-  rowActionIcons: null,
+  headerActionIcons: null,
   style: defaultStyle,
   selectedCellsSpotlight: true,
   hoverHighlight: true,

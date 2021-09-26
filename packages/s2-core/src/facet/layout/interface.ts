@@ -68,7 +68,7 @@ export interface TableHeaderParams {
 }
 
 export interface ViewCellHeights {
-  getCellHeight: (index: number) => number;
+  getCellOffsetY: (index: number) => number;
 
   getTotalHeight: () => number;
 

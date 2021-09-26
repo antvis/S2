@@ -15,8 +15,6 @@ export class Frame extends Group {
     this.addCornerBottomBorder();
     // corner右边的竖线条
     this.addCornerRightBorder();
-    // viewport/panel右边的渐变框
-    this.addViewPortRightShadowIfNeeded();
     // 一级纵向分割线右侧的shadow
     this.addSplitLineRightShadow();
   }
@@ -105,39 +103,6 @@ export class Frame extends Group {
     });
   }
 
-  private addViewPortRightShadowIfNeeded() {
-    const cfg = this.cfg;
-    const {
-      width,
-      height,
-      viewportWidth,
-      viewportHeight,
-      position,
-      showViewPortRightShadow,
-      scrollX,
-      spreadsheet,
-    } = cfg;
-    const splitLine = spreadsheet.theme?.splitLine;
-    if (splitLine.showRightShadow || showViewPortRightShadow) {
-      const x =
-        position.x +
-        width +
-        viewportWidth -
-        splitLine.shadowWidth +
-        (scrollX || 0);
-      const y = position.y + height;
-      this.addShape('rect', {
-        attrs: {
-          x,
-          y,
-          width: splitLine.shadowWidth,
-          height: viewportHeight,
-          fill: `l (0) 0:${splitLine.shadowColors?.right} 1:${splitLine.shadowColors?.left}`,
-        },
-      });
-    }
-  }
-
   private addSplitLineRightShadow() {
     const cfg = this.cfg;
     const {
@@ -145,9 +110,14 @@ export class Frame extends Group {
       height,
       viewportHeight,
       position,
+      isPivotMode,
       spreadsheet,
       showViewPortRightShadow,
     } = cfg;
+
+    if (!isPivotMode) {
+      return;
+    }
     const splitLine = spreadsheet.theme?.splitLine;
     if (
       splitLine.showRightShadow &&

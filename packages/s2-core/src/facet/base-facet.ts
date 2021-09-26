@@ -16,6 +16,7 @@ import {
 } from 'lodash';
 import {
   calculateInViewIndexes,
+  getCellRange,
   optimizeScrollXY,
   translateGroup,
 } from './utils';
@@ -257,7 +258,7 @@ export abstract class BaseFacet {
       const { current, pageSize } = pagination;
       const heights = this.viewCellHeights;
       const offset = Math.max((current - 1) * pageSize, 0);
-      return heights.getCellHeight(offset);
+      return heights.getCellOffsetY(offset);
     }
     return 0;
   }
@@ -290,8 +291,7 @@ export abstract class BaseFacet {
     const { pagination } = this.cfg;
     if (pagination) {
       const { current, pageSize } = pagination;
-      const rowLeafNodes = this.layoutResult.rowLeafNodes;
-      const total = rowLeafNodes.length;
+      const total = this.viewCellHeights.getTotalLength();
 
       const pageCount = Math.floor((total - 1) / pageSize) + 1;
 
@@ -465,17 +465,19 @@ export abstract class BaseFacet {
     return last(this.viewCellWidths);
   };
 
+  getCellRange() {
+    const { pagination } = this.cfg;
+    return getCellRange(this.viewCellHeights, pagination);
+  }
+
   getRealHeight = (): number => {
     const { pagination } = this.cfg;
     const heights = this.viewCellHeights;
 
     if (pagination) {
-      const { current, pageSize } = pagination;
+      const { start, end } = this.getCellRange();
 
-      const start = Math.max((current - 1) * pageSize, 0);
-      const end = Math.min(current * pageSize, heights.getTotalLength() - 1);
-
-      return heights.getCellHeight(end) - heights.getCellHeight(start);
+      return heights.getCellOffsetY(end + 1) - heights.getCellOffsetY(start);
     }
     return heights.getTotalHeight();
   };
@@ -826,12 +828,14 @@ export abstract class BaseFacet {
         this.updateHScrollBarThumbOffsetWhenOverThePanel({
           layerX,
           layerY,
+          deltaX,
           deltaY: optimizedDeltaX,
         });
 
         this.updateHRowScrollBarThumbOffsetWhenOverTheCorner({
           layerX,
           layerY,
+          deltaX,
           deltaY: optimizedDeltaX,
         });
       } else if (this.hScrollBar) {
@@ -842,6 +846,20 @@ export abstract class BaseFacet {
       this.delayHideScrollbarOnMobile();
     });
   };
+
+  protected clip(scrollX: number, scrollY: number) {
+    this.spreadsheet.panelScrollGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
+        y: scrollY,
+        width:
+          this.panelBBox.width +
+          (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
+        height: this.panelBBox.height,
+      },
+    });
+  }
 
   /**
    * Translate panelGroup, rowHeader, cornerHeader, columnHeader ect
@@ -888,18 +906,6 @@ export abstract class BaseFacet {
         : undefined,
       KEY_GROUP_COL_RESIZE_AREA,
     );
-
-    this.spreadsheet.panelScrollGroup.setClip({
-      type: 'rect',
-      attrs: {
-        x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
-        y: scrollY,
-        width:
-          this.panelBBox.width +
-          (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
-        height: this.panelBBox.height,
-      },
-    });
   }
 
   addCell = (cell: S2CellType<ViewMeta>) => {
@@ -1056,7 +1062,7 @@ export abstract class BaseFacet {
         data: this.layoutResult.rowNodes,
         offset: 0,
         hierarchyType: this.cfg.hierarchyType,
-        linkFieldIds: get(this.cfg.spreadsheet, 'options.linkFieldIds'),
+        linkFields: get(this.cfg.spreadsheet, 'options.linkFields'),
         seriesNumberWidth,
         spreadsheet: this.spreadsheet,
       });
@@ -1156,6 +1162,7 @@ export abstract class BaseFacet {
     }
 
     this.translateRelatedGroups(scrollX, scrollY, hRowScrollX);
+    this.clip(scrollX, scrollY);
 
     this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, { scrollX, scrollY });
   }

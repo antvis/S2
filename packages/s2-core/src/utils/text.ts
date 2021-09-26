@@ -1,4 +1,3 @@
-import { IShape } from '@antv/g-canvas';
 import {
   clone,
   get,
@@ -330,7 +329,6 @@ export const drawObjectText = (cell) => {
   let curY: number = y + realHeight / 2;
   let curWidth: number;
   let totalWidth = 0;
-  let curTextShape: IShape;
   for (let i = 0; i < textValues.length; i += 1) {
     curY = y + realHeight / 2 + realHeight * (i + 1); // 加上label的高度
     totalWidth = 0;
@@ -346,7 +344,7 @@ export const drawObjectText = (cell) => {
       curWidth = j === 0 ? realWidth * 2 : realWidth;
       curX = calX(x, padding, totalWidth);
       totalWidth += curWidth;
-      curTextShape = renderText(
+      renderText(
         cell,
         cell.textShape,
         curX,

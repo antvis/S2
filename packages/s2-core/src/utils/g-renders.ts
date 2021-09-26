@@ -48,7 +48,7 @@ export function renderText(
 export function renderLine(
   group: Group,
   coordinate: { x1: number; y1: number; x2: number; y2: number },
-  lineStyle: Pick<ShapeAttrs, 'stroke' | 'lineWidth' | 'opacity'>,
+  lineStyle: ShapeAttrs,
 ): IShape {
   return group?.addShape?.('line', {
     zIndex: 100,
@@ -91,7 +91,7 @@ export function renderTreeIcon(
   onClick: () => void,
 ) {
   const icon = new GuiIcon({
-    type: isCollapse ? 'plus' : 'MinusSquare',
+    name: isCollapse ? 'plus' : 'MinusSquare',
     ...area,
     fill,
   });

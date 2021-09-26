@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import React from 'react';
+import React, { isValidElement } from 'react';
 import ReactDOM from 'react-dom';
 import { SpreadSheet } from '@/sheet-type';
 import {
@@ -40,7 +40,7 @@ export class BaseTooltip {
 
   protected options: TooltipShowOptions;
 
-  private customComponent: React.Component | Element | void; // react component
+  private renderElement: React.Component | Element | void; // react component
 
   private enterable = false; // mark if can enter into tooltips
 
@@ -62,7 +62,14 @@ export class BaseTooltip {
     const { enterable } = getOptions(options);
     const container = this.getContainer();
 
-    if (this.enterable && shouldIgnore(enterable, position, this.position)) {
+    const CustomComponent =
+      element || this.spreadsheet.options.tooltip?.tooltipComponent;
+
+    if (
+      !isValidElement(CustomComponent) &&
+      this.enterable &&
+      shouldIgnore(enterable, position, this.position)
+    ) {
       return;
     }
     this.options = showOptions;
@@ -74,15 +81,11 @@ export class BaseTooltip {
     });
 
     this.unMountComponent(container);
-    const customDom =
-      element ||
-      (this.spreadsheet?.options?.tooltipComponent as React.DOMElement<
-        React.DOMAttributes<Element>,
-        Element
-      >);
-    this.customComponent = customDom
-      ? ReactDOM.render(customDom, container)
+
+    this.renderElement = CustomComponent
+      ? ReactDOM.render(CustomComponent, container)
       : ReactDOM.render(this.renderContent(data, options), container);
+
     const { x, y } = getPosition(position, this.container);
 
     this.position = {
@@ -117,13 +120,16 @@ export class BaseTooltip {
 
   protected renderContent(data?: TooltipData, options?: TooltipOptions) {
     const option = getOptions(options);
-    const { operator } = option;
+    const { operator, onlyMenu } = option;
     const { summaries, headInfo, details, interpretation, infos, tips, name } =
       data || {};
     const nameTip = { name, tips };
 
+    if (onlyMenu) {
+      return this.renderOperation(operator, true);
+    }
     return (
-      <div>
+      <>
         {this.renderOperation(operator)}
         {this.renderNameTips(nameTip)}
         {this.renderSummary(summaries)}
@@ -131,7 +137,7 @@ export class BaseTooltip {
         {this.renderHeadInfo(headInfo)}
         {this.renderDetail(details)}
         {this.renderInfos(infos)}
-      </div>
+      </>
     );
   }
 
@@ -139,10 +145,17 @@ export class BaseTooltip {
     return <Divider />;
   }
 
-  protected renderOperation(operator: TooltipOperatorOptions) {
+  protected renderOperation(
+    operator: TooltipOperatorOptions,
+    onlyMenu?: boolean,
+  ) {
     return (
       operator && (
-        <TooltipOperator onClick={operator.onClick} menus={operator.menus} />
+        <TooltipOperator
+          onClick={operator.onClick}
+          menus={operator.menus}
+          onlyMenu={onlyMenu}
+        />
       )
     );
   }
@@ -186,7 +199,6 @@ export class BaseTooltip {
    */
   protected getContainer(): HTMLElement {
     if (!this.container) {
-      // create a new div as container
       const container = document.createElement('div');
       document.body.appendChild(container);
       this.container = container;
@@ -197,7 +209,7 @@ export class BaseTooltip {
   }
 
   protected unMountComponent(container?: HTMLElement) {
-    if (this.customComponent) {
+    if (this.renderElement) {
       ReactDOM.unmountComponentAtNode(container);
     }
   }
