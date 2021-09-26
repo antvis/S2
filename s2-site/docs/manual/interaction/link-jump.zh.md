@@ -3,7 +3,7 @@ title: 链接跳转
 order: 4
 ---
 
-将单元格文本标记为含有下划线的链接样式, 实现链接跳转 🔗, 对于透视表和明细表, 有细微的区别
+将单元格文本标记为含有下划线的链接样式，实现链接跳转 🔗, 对于透视表和明细表，有细微的区别
 
 ## 标记链接字段
 
@@ -34,7 +34,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 
 ## 透视表
 
-支持将行头 `rows` 标记为链接样式, `columns` 和 `values` 无效
+支持将行头 `rows` 标记为链接样式，`columns` 和 `values` 无效
 
 ```ts
 const s2DataConfig = {
@@ -50,7 +50,6 @@ const s2options = {
   height: 600,
   linkFields: ['province', 'city'],
 };
-
 
 const s2 = new PivotSheet(container, s2DataConfig, s2options);
 
@@ -83,7 +82,6 @@ const s2options = {
   height: 600,
   linkFieldIds: ['type', 'price', 'province'],
 };
-
 
 const s2 = new TableSheet(container, s2DataConfig, s2options);
 
