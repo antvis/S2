@@ -29,7 +29,7 @@
     "tsc": "lerna run tsc --stream",
     "site:bootstrap": "cd ./s2-site && yarn --frozen-lockfile",
     "site:start": "cd ./s2-site && yarn start",
-    "site:build": "cd ./s2-site && NODE_OPTIONS='--max-old-space-size=4096' yarn site:build",
+    "site:build": "cd ./s2-site && NODE_OPTIONS='--max-old-space-size=4096' yarn build",
     "site:clean": "cd ./s2-site && yarn clean",
     "site:deploy": "cd ./s2-site && yarn deploy",
     "site:clear": "cd ./s2-site && yarn rimraf node_modules",
