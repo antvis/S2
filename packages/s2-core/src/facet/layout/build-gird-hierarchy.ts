@@ -49,6 +49,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
   } else {
     // field(dimension)'s all values
     query = getDimsCondition(parentNode, true);
+
     const dimValues = dataSet.getDimensionValues(currentField, query);
     const arrangedValues = layoutArrange(
       dimValues,
@@ -56,7 +57,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       parentNode,
       currentField,
     );
-    fieldValues.push(...arrangedValues);
+    fieldValues.push(...arrangedValues || []);
     // hide measure in columns
     hideMeasureColumn(fieldValues, currentField, facetCfg);
     // add totals if needed
