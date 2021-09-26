@@ -8,13 +8,11 @@ import {
   get,
   isEmpty,
   forEach,
-  filter,
 } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
 import {
-  S2CellType,
   HeaderActionIcon,
   HeaderActionIconProps,
   CellMeta,
@@ -56,24 +54,23 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.actionIcons = [];
   }
 
-  protected getActionIconCfg() {
-    // 每种 header cell 类型只取第一个配置
-    return filter(
-      this.spreadsheet.options.headerActionIcons,
-      (headerActionIcon: HeaderActionIcon) =>
-        headerActionIcon?.belongsCell === this.cellType,
-    )[0];
+  protected showActionIcons(actionIconCfg: HeaderActionIcon) {
+    if (!actionIconCfg) return false;
+    const { iconNames, displayCondition, belongsCell } = actionIconCfg;
+    if (isEmpty(iconNames)) return false;
+    if (belongsCell !== this.cellType) return false;
+    if (!displayCondition)
+      // 没有展示条件参数默认全展示
+      return true;
+    return displayCondition(this.meta);
   }
 
-  protected showActionIcons() {
-    const actionIcons = this.getActionIconCfg();
-
-    if (!actionIcons) return false;
-    const { iconNames, displayCondition } = actionIcons;
-    if (isEmpty(iconNames)) return false;
-    // 没有展示条件参数默认全展示
-    if (!displayCondition) return true;
-    return displayCondition(this.meta);
+  protected getActionIconCfg() {
+    return find(
+      this.spreadsheet.options.headerActionIcons,
+      (headerActionIcon: HeaderActionIcon) =>
+        this.showActionIcons(headerActionIcon),
+    );
   }
 
   private showSortIcon() {
@@ -93,9 +90,9 @@ export abstract class HeaderCell extends BaseCell<Node> {
       const { icon } = this.getStyle();
       return this.showSortIcon() ? icon.size + icon.margin.left : 0;
     }
-
-    if (this.showActionIcons()) {
-      const iconNames = this.getActionIconCfg()?.iconNames;
+    const actionIconCfg = this.getActionIconCfg();
+    if (actionIconCfg) {
+      const iconNames = actionIconCfg.iconNames;
       const { size, margin } = this.getStyle().icon;
       return (
         size * iconNames.length +
@@ -162,25 +159,23 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected drawActionIcons() {
     this.drawSortIcons();
-    const actionIcons = this.getActionIconCfg();
+    const actionIconCfg = this.getActionIconCfg();
 
-    if (!actionIcons) return;
-    const { iconNames, action, defaultHide } = actionIcons;
+    if (!actionIconCfg) return;
+    const { iconNames, action, defaultHide } = actionIconCfg;
 
-    if (this.showActionIcons()) {
-      const position = this.getIconPosition();
-      const { size, margin } = this.getStyle().icon;
-      for (let i = 0; i < iconNames.length; i++) {
-        const x = position.x + i * size + i * margin.left;
-        this.addActionIcon(
-          iconNames[i],
-          x,
-          position.y,
-          size,
-          action,
-          defaultHide,
-        );
-      }
+    const position = this.getIconPosition();
+    const { size, margin } = this.getStyle().icon;
+    for (let i = 0; i < iconNames.length; i++) {
+      const x = position.x + i * size + i * margin.left;
+      this.addActionIcon(
+        iconNames[i],
+        x,
+        position.y,
+        size,
+        action,
+        defaultHide,
+      );
     }
   }
 

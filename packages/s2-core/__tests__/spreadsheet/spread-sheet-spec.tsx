@@ -11,6 +11,7 @@ import {
   S2Options,
   SheetType,
   ThemeName,
+  Node,
 } from '@/index';
 
 const tableDataFields = {
@@ -77,6 +78,21 @@ function MainLayout() {
       {
         iconNames: ['Filter'],
         belongsCell: 'colCell',
+        displayCondition: (meta: Node) =>
+          meta.id !== 'root[&]家具[&]桌子[&]price',
+        action: (props: HeaderActionIconProps) => {
+          const { meta, event } = props;
+          meta.spreadsheet.tooltip.show({
+            position: { x: event.clientX, y: event.clientY },
+            element: colTooltip,
+          });
+        },
+      },
+      {
+        iconNames: ['SortDown'],
+        belongsCell: 'colCell',
+        displayCondition: (meta: Node) =>
+          meta.id === 'root[&]家具[&]桌子[&]price',
         action: (props: HeaderActionIconProps) => {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
