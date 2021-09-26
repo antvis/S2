@@ -9,7 +9,8 @@ import {
   Style,
   ViewMeta,
 } from '.';
-import { ResizeEvent, S2Event, SortMethodType } from '@/common/constant';
+import { ResizeInfo } from '@/facet/header/interface';
+import { S2Event, SortMethodType } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell/data-cell';
 
@@ -35,7 +36,7 @@ type CanvasEventHandler = (event: CanvasEvent) => void;
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
 type MouseEventHandler = (event: MouseEvent) => void;
 type EventHandler = (event: Event) => void;
-type ResizeHandler = (style: Style) => void;
+type ResizeHandler = (data: { info: ResizeInfo; style: Style }) => void;
 type SelectedHandler = (cells: S2CellType[]) => void;
 
 export interface EmitterType {
@@ -46,9 +47,9 @@ export interface EmitterType {
   [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
   [S2Event.GLOBAL_KEYBOARD_UP]: KeyboardEventHandler;
   [S2Event.GLOBAL_MOUSE_UP]: MouseEventHandler;
-  [S2Event.GLOBAL_RESIZE_MOUSE_DOWN]: CanvasEventHandler;
-  [S2Event.GLOBAL_RESIZE_MOUSE_UP]: CanvasEventHandler;
-  [S2Event.GLOBAL_RESIZE_MOUSE_MOVE]: CanvasEventHandler;
+  [S2Event.LAYOUT_RESIZE_MOUSE_DOWN]: CanvasEventHandler;
+  [S2Event.LAYOUT_RESIZE_MOUSE_UP]: CanvasEventHandler;
+  [S2Event.LAYOUT_RESIZE_MOUSE_MOVE]: CanvasEventHandler;
   [S2Event.GLOBAL_CONTEXT_MENU]: CanvasEventHandler;
   [S2Event.GLOBAL_RESET]: EventHandler;
   [S2Event.GLOBAL_HOVER]: CanvasEventHandler;
@@ -132,10 +133,11 @@ export interface EmitterType {
   [S2Event.LAYOUT_BEFORE_RENDER]: () => void;
   [S2Event.LAYOUT_AFTER_RENDER]: () => void;
 
-  /** ================ Resize ================  */
-  [ResizeEvent.ROW_W]: ResizeHandler;
-  [ResizeEvent.ROW_H]: ResizeHandler;
-  [ResizeEvent.COL_W]: ResizeHandler;
-  [ResizeEvent.COL_H]: ResizeHandler;
-  [ResizeEvent.TREE_W]: ResizeHandler;
+  /** ================ Layout Resize ================  */
+  [S2Event.LAYOUT_RESIZE]: ResizeHandler;
+  [S2Event.LAYOUT_RESIZE_ROW_WIDTH]: ResizeHandler;
+  [S2Event.LAYOUT_RESIZE_ROW_HEIGHT]: ResizeHandler;
+  [S2Event.LAYOUT_RESIZE_COL_WIDTH]: ResizeHandler;
+  [S2Event.LAYOUT_RESIZE_COL_HEIGHT]: ResizeHandler;
+  [S2Event.LAYOUT_RESIZE_TREE_WIDTH]: ResizeHandler;
 }

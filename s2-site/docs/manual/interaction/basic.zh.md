@@ -24,7 +24,7 @@ order: 1
 | 单选   | `S2Event.GLOBAL_SELECTED` |  单击单元格，弹出 tooltip, 展示对应单元格的信息，再次单击取消选中   |
 | 多选   | `S2Event.GLOBAL_SELECTED` |  单选单元格后，按住 `Shift` 键，继续单选   |
 | 行/列头快捷多选   | `S2Event.GLOBAL_SELECTED` |  单击行/列头，选中对应行/列头所有单元格 （含不在可视范围内的）, 再次单击取消选中   |
-| 行/列头手动调整宽高  | `-` |  鼠标悬浮在行/列头单元格边缘，出现指示条和光标，按住鼠标左键拖动，调整宽高  |
+| 行/列头手动调整宽高  | `S2Event.LAYOUT_RESIZE` |  鼠标悬浮在行/列头单元格边缘，出现指示条和光标，按住鼠标左键拖动，调整宽高  |
 | 刷选   | `S2Event.GLOBAL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量 |
 | 悬停   | `S2Event.GLOBAL_HOVER` | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](#十字高亮） （对应行/列), 可设置 `hoverHighlight: false` 关闭 |
 | 复制   | `S2Event.GLOBAL_COPIED` | 复制选中的单元格数据 |
@@ -90,13 +90,26 @@ order: 1
 | 鼠标移动   | `S2Event.CORNER_CELL_MOUSE_MOVE` |  角头单元格鼠标移动  |
 | 鼠标松开   | `S2Event.CORNER_CELL_MOUSE_UP` |  角头单元格鼠标松开  |
 
+### 布局
+
+| 名称 | 事件名 | 描述 |
+| :-- | :-- | :-- |
+| 单元格调整   | `S2Event.LAYOUT_RESIZE` |  单元格宽高发生改变  |
+| 调整单元格大小时鼠标按下  | `S2Event.LAYOUT_RESIZE_MOUSE_DOWN` |  调整单元格大小鼠标按下，目前仅 行/列 头有效  |
+| 调整单元格大小时鼠标移动  | `S2Event.LAYOUT_RESIZE_MOUSE_MOVE` |  调整单元格大小鼠标移动，目前仅 行/列 头有效  |
+| 调整单元格大小时鼠标松开  | `S2Event.LAYOUT_RESIZE_MOUSE_UP` |  调整单元格大小鼠标松开，目前仅 行/列 头有效  |
+| 行头宽度改变  | `S2Event.LAYOUT_RESIZE_ROW_WIDTH` |   |
+| 行头高度改变  | `S2Event.LAYOUT_RESIZE_ROW_HEIGHT` |   |
+| 列头宽度改变  | `S2Event.LAYOUT_RESIZE_COL_WIDTH` |   |
+| 行头宽度改变  | `S2Event.LAYOUT_RESIZE_COL_HEIGHT` |   |
+| 树状结构宽度改变  | `S2Event.LAYOUT_RESIZE_TREE_WIDTH` |  树状模式下, 单元格宽度发生改变时触发 |
+| 列头展开  | `S2Event.LAYOUT_TABLE_COL_EXPANDED` |  列头展开时触犯, 明细表有效  |
+| 列头隐藏  | `S2Event.LAYOUT_TABLE_COL_HIDE` |  列头隐藏时触发, 明细表有效  |
+
 ### 全局
 
 | 名称 | 事件名 | 描述 |
 | :-- | :-- | :-- |
-| 调整单元格大小时鼠标按下  | `S2Event.GLOBAL_RESIZE_MOUSE_DOWN` |  调整单元格大小鼠标按下，目前仅 行/列 头有效  |
-| 调整单元格大小时鼠标移动  | `S2Event.GLOBAL_RESIZE_MOUSE_MOVE` |  调整单元格大小鼠标移动，目前仅 行/列 头有效  |
-| 调整单元格大小时鼠标松开  | `S2Event.GLOBAL_RESIZE_MOUSE_UP` |  调整单元格大小鼠标松开，目前仅 行/列 头有效  |
 | 键盘按下   | `S2Event.GLOBAL_KEYBOARD_DOWN` |  键盘按下  |
 | 键盘松开   | `S2Event.GLOBAL_KEYBOARD_UP` |  键盘松开  |
 | 复制   | `S2Event.GLOBAL_COPIED` |  对选中的单元格复制  |
@@ -108,6 +121,7 @@ order: 1
 | 链接跳转   | `S2Event.GLOBAL_LINK_FIELD_JUMP` |  点击行列头被编辑为链接字段的文本时  |
 | icon 点击   | `S2Event.GLOBAL_ACTION_ICON_CLICK` |  单元格右侧的操作 icon 点击时，比如：排序图标  |
 | icon 悬停   | `S2Event.GLOBAL_ACTION_ICON_HOVER` |  单元格右侧的操作 icon 悬停时，比如：排序图标  |
+
 
 </details>
 

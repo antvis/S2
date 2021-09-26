@@ -61,23 +61,25 @@ export enum S2Event {
   LAYOUT_AFTER_RENDER = 'layout:after-render',
   LAYOUT_BEFORE_RENDER = 'layout:before-render',
 
-  /** ================ Global ================  */
-  GLOBAL_RESIZE_MOUSE_DOWN = 'global:resize:mouse-down',
-  GLOBAL_RESIZE_MOUSE_MOVE = 'global:resize:mouse-move',
-  GLOBAL_RESIZE_MOUSE_UP = 'global:resize-mouse-up',
+  /** ================ Table Layout Resize ================  */
+  LAYOUT_RESIZE = 'layout:resize',
+  LAYOUT_RESIZE_ROW_WIDTH = 'layout:resize-row-width',
+  LAYOUT_RESIZE_ROW_HEIGHT = 'layout:resize-row-height',
+  LAYOUT_RESIZE_COL_WIDTH = 'layout:resize-column-width',
+  LAYOUT_RESIZE_COL_HEIGHT = 'layout:resize-column-height',
+  LAYOUT_RESIZE_TREE_WIDTH = 'layout:resize-tree-width',
+  LAYOUT_RESIZE_MOUSE_DOWN = 'layout:resize:mouse-down',
+  LAYOUT_RESIZE_MOUSE_MOVE = 'layout:resize:mouse-move',
+  LAYOUT_RESIZE_MOUSE_UP = 'layout:resize-mouse-up',
 
+  /** ================ Global ================  */
   GLOBAL_KEYBOARD_DOWN = 'global:keyboard-down',
   GLOBAL_KEYBOARD_UP = 'global:keyboard-up',
-
   GLOBAL_COPIED = 'global:copied',
-
   GLOBAL_MOUSE_UP = 'global:mouse-up',
-
   GLOBAL_ACTION_ICON_CLICK = 'global:action-icon-click',
   GLOBAL_ACTION_ICON_HOVER = 'global:action-icon-hover',
-
   GLOBAL_CONTEXT_MENU = 'global:context-menu',
-
   GLOBAL_SELECTED = 'global:selected',
   GLOBAL_HOVER = 'global:hover',
   GLOBAL_RESET = 'global:reset',
