@@ -1,5 +1,5 @@
 ---
-title: DataCfg
+title: S2DataConfig
 order: 0
 redirect_from:
   - /zh/docs/api
