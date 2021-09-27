@@ -560,9 +560,10 @@ export class PivotFacet extends BaseFacet {
       .map((key: string): string => dataSet.getFieldName(key))
       .join('/');
     const textStyle = this.spreadsheet.theme.rowCell.bolderText;
+    const iconStyle = this.spreadsheet.theme.rowCell.icon;
     const maxLabelWidth =
       measureTextWidth(treeHeaderLabel, textStyle) +
-      cellCfg.size +
+      iconStyle.size +
       cellCfg.padding?.left +
       cellCfg.padding?.right;
     const width = Math.max(treeRowsWidth, maxLabelWidth);
