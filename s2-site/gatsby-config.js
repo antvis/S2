@@ -80,6 +80,14 @@ module.exports = {
         },
         order: 4,
       },
+      {
+        slug: 'manual/total',
+        title: {
+          zh: '小计总计',
+          en: 'Total',
+        },
+        order: 4,
+      },
     ],
     // demo配置
     examples: [
@@ -113,6 +121,14 @@ module.exports = {
         title: {
           zh: '交互',
           en: 'Interaction',
+        },
+      },
+      {
+        slug: 'total',
+        icon: 'facet',
+        title: {
+          zh: '小计总计',
+          en: 'Total',
         },
       },
     ],
