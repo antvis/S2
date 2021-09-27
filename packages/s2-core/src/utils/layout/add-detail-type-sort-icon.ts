@@ -7,24 +7,24 @@ export const getSortParam = (key: string, spreadsheet: SpreadSheet) => {
   return spreadsheet.dataCfg.sortParams?.find((e) => e.sortFieldId === key);
 };
 
-export const getIconType = (key: string, spreadsheet: SpreadSheet) => {
+export const getIcon = (key: string, spreadsheet: SpreadSheet) => {
   const sortParam = getSortParam(key, spreadsheet);
-  let upIconType = 'SortUp';
-  let downIconType = 'SortDown';
+  let upIcon = 'SortUp';
+  let downIcon = 'SortDown';
   if (sortParam?.sortMethod) {
     // 有配置,当前点击的过的key(某个维度)
     if (sortParam.sortMethod === SortMethodType.ASC) {
       // 点击过此维度的up
-      upIconType = 'SortUpSelected';
+      upIcon = 'SortUpSelected';
     } else {
       // 点击过此维度的down
-      downIconType = 'SortDownSelected';
+      downIcon = 'SortDownSelected';
     }
   }
 
   return {
-    upIconType,
-    downIconType,
+    upIcon,
+    downIcon,
   };
 };
 
@@ -33,13 +33,13 @@ export const renderIcon = (
   spreadsheet: SpreadSheet,
   x: number,
   y: number,
-  type: string,
+  name: string,
   key: string,
   sortType: SortMethodType,
 ) => {
   const iconSiz = spreadsheet.theme.colCell.icon.size;
   const icon = new GuiIcon({
-    type,
+    name,
     x,
     y,
     width: iconSiz,
@@ -68,13 +68,13 @@ export const renderDetailTypeSortIcon = (
   textY,
   key,
 ) => {
-  const iconType = getIconType(key, spreadsheet);
+  const icons = getIcon(key, spreadsheet);
   renderIcon(
     parent,
     spreadsheet,
     textX,
     textY - DEFAULT_PADDING * 2,
-    iconType.upIconType,
+    icons.upIcon,
     key,
     SortMethodType.ASC,
   );
@@ -83,7 +83,7 @@ export const renderDetailTypeSortIcon = (
     spreadsheet,
     textX,
     textY - DEFAULT_PADDING / 2,
-    iconType.downIconType,
+    icons.downIcon,
     key,
     SortMethodType.DESC,
   );

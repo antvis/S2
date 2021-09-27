@@ -1,5 +1,6 @@
 import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
-import { isEmpty, startsWith } from 'lodash';
+import { getCellMeta } from 'src/utils/interaction/select-event';
+import { isEmpty } from 'lodash';
 import { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
 import { InterceptType, S2Event } from '@/common/constant';
@@ -147,7 +148,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   public hidePrepareSelectMaskShape() {
-    this.prepareSelectMaskShape.hide();
+    this.prepareSelectMaskShape?.hide();
   }
 
   private getBrushPoint(event: CanvasEvent): BrushPoint {
@@ -230,7 +231,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private showPrepareSelectedCells = () => {
     const brushRangeDataCells = this.getBrushRangeDataCells();
     this.interaction.changeState({
-      cells: brushRangeDataCells,
+      cells: brushRangeDataCells.map((item) => getCellMeta(item)),
       stateName: InteractionStateName.PREPARE_SELECT,
       // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
       // 如果是有效刷选, 更新时会重新渲染, hover 高亮的格子 会正常重置
@@ -243,9 +244,14 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   // 最终刷选的cell
   private updateSelectedCells() {
     this.interaction.changeState({
-      cells: this.brushRangeDataCells,
+      cells: this.brushRangeDataCells.map((item) => getCellMeta(item)),
       stateName: InteractionStateName.SELECTED,
     });
+    this.spreadsheet.emit(
+      S2Event.DATE_CELL_BRUSH_SELECTION,
+      this.brushRangeDataCells,
+    );
+    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeDataCells);
     // 未刷选到有效格子, 允许 hover
     if (isEmpty(this.brushRangeDataCells)) {
       this.interaction.removeIntercepts([InterceptType.HOVER]);

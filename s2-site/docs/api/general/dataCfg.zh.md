@@ -40,10 +40,7 @@ array object **必选**,_ default：null_ 功能描述： 全局化配置表数�
 | field              | string   | 必选     |        | 度量 id  |
 | name               | string   | 必选     |        | 度量名称 |
 | type               | string   | 可选     | 'rate' | 'value'  | 衍生值类型比率和比值 |
-| formatter          | Function |
-| (v: any) => string | 可选     |          | 格式化 |
-
-数值度量：一般用于格式化数字   文本度量：一般用于做字段枚举值的别名 | | formula | string | | | 度量公式 | | aggregation | string | 可选 | 'SUM' | 'AVG' | 'MIN' | 'MAX' | 聚合方式 |
+| formatter          | (v: any) => string |  可选   |          | 格式化<br/>数值度量：一般用于格式化数字<br/>文本度量：一般用于做字段枚举值的别名
 
 ## Fields
 

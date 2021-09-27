@@ -11,9 +11,9 @@ export const Icon = (props: IconProps) => {
   }
 
   if (getIcon(icon as string)) {
-    const type = icon as string;
+    const name = icon as string;
 
-    return <HtmlIcon type={type} {...DEFAULT_ICON_PROPS} {...attrs} />;
+    return <HtmlIcon name={name} {...DEFAULT_ICON_PROPS} {...attrs} />;
   }
   const Component = icon as React.ComponentClass;
   return <Component {...DEFAULT_ICON_PROPS} {...attrs} />;

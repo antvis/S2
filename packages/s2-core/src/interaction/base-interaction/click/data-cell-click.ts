@@ -1,3 +1,4 @@
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { get } from 'lodash';
 import { DataCell } from '@/cell/data-cell';
@@ -41,11 +42,13 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         this.interaction.reset();
         return;
       }
+
       this.interaction.clearState();
       this.interaction.changeState({
-        cells: [cell],
+        cells: [getCellMeta(cell)],
         stateName: InteractionStateName.SELECTED,
       });
+      this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, [cell]);
       this.showTooltip(event, meta);
     });
   }
@@ -112,7 +115,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     if (appendInfo.isRowHeaderText) {
       const { cellData } = appendInfo;
       const { valueField: key, data: record } = cellData;
-      this.spreadsheet.emit(S2Event.ROW_CELL_TEXT_CLICK, {
+      this.spreadsheet.emit(S2Event.GLOBAL_LINK_FIELD_JUMP, {
         key,
         record,
       });

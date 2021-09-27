@@ -64,6 +64,14 @@ module.exports = {
         },
         order: 2,
       },
+      {
+        slug: 'manual/interaction',
+        title: {
+          zh: '交互',
+          en: 'Interaction',
+        },
+        order: 3,
+      },
     ],
     // demo配置
     examples: [
@@ -88,7 +96,14 @@ module.exports = {
         icon: 'facet',
         title: {
           zh: '字段标记',
-          en: 'Conditions',
+          en: 'Conditions'}
+      },
+      {
+        slug: 'interaction',
+        icon: 'facet',
+        title: {
+          zh: '交互',
+          en: 'Interaction',
         },
       },
     ],

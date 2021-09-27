@@ -1,4 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { concat, difference, isEmpty, isNil } from 'lodash';
 import { hideColumns } from '@/utils/hide-columns';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
@@ -9,7 +10,7 @@ import {
   TOOLTIP_OPERATOR_MENUS,
   InterceptType,
 } from '@/common/constant';
-import { S2CellType, TooltipOperatorOptions } from '@/common/interface';
+import { TooltipOperatorOptions } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 import { mergeCellInfo } from '@/utils/tooltip';
 
@@ -81,7 +82,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
             (node) => node.rowIndex === meta.rowIndex,
           )
         : Node.getAllChildrenNode(meta);
-      let selectedCells: S2CellType[] = [cell];
+      let selectedCells = [getCellMeta(cell)];
 
       if (this.isMultiSelection && interaction.isSelectedState()) {
         selectedCells = isEmpty(lastState?.cells)
@@ -100,8 +101,11 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
         stateName: InteractionStateName.SELECTED,
       });
 
+      const selectedCellIds = selectedCells.map(({ id }) => id);
       // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-      interaction.updateCells(selectedCells);
+      interaction.updateCells(
+        interaction.getRowColActiveCells(selectedCellIds),
+      );
 
       if (!isTreeRowClick) {
         leafNodes.forEach((node) => {
@@ -111,7 +115,10 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
           );
         });
       }
-
+      this.spreadsheet.emit(
+        S2Event.GLOBAL_SELECTED,
+        this.interaction.getActiveCells(),
+      );
       this.showTooltip(event);
     }
   };
@@ -152,7 +159,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
    *    用于点击展开按钮后还原, 区别于 options.hiddenColumnFields, 这里需要分段存储, 比如现在有两个隐藏的列
    *    [1,2, (3隐藏), 4, 5, (6隐藏), 7]
    *    展开按钮在 4, 7, 点击任意按钮, 应该只展开所对应的那组 : 4 => [3], 7 => [6]
-   * 2. [displayNextSiblingNode]: 当前这一组的列隐藏后, 需要将展开按钮显示到对应的兄弟节点
+   * 2. [displaySiblingNode]: 当前这一组的列隐藏后, 需要将展开按钮显示到对应的兄弟节点
    * 这样不用每次 render 的时候实时计算, 渲染列头单元格 直接取数据即可
    */
   private hideSelectedColumns() {
@@ -170,8 +177,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       'hiddenColumnsDetail',
     );
     const { hideColumnNodes } = hiddenColumnsDetail.find(
-      ({ displayNextSiblingNode }) =>
-        displayNextSiblingNode.field === node.field,
+      ({ displaySiblingNode }) => displaySiblingNode?.field === node.field,
     );
     const willDisplayColumnFields = hideColumnNodes.map(({ field }) => field);
     this.spreadsheet.setOptions({
@@ -183,8 +189,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.store.set(
       'hiddenColumnsDetail',
       hiddenColumnsDetail.filter(
-        ({ displayNextSiblingNode }) =>
-          displayNextSiblingNode.field !== node.field,
+        ({ displaySiblingNode }) => displaySiblingNode?.field !== node.field,
       ),
     );
     this.spreadsheet.interaction.reset();

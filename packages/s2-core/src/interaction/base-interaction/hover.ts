@@ -1,4 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { isEmpty, forEach } from 'lodash';
 import { BaseEvent, BaseEventImplement } from '../base-event';
 import { ColCell, RowCell } from '@/cell';
@@ -29,7 +30,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         this.interaction.getAllColHeaderCells(),
       );
       forEach(allColHeaderCells, (cell: ColCell) => {
-        cell.updateByState(InteractionStateName.HOVER, cell);
+        cell.updateByState(InteractionStateName.HOVER);
       });
     }
 
@@ -59,7 +60,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
   ) {
     this.interaction.hoverTimer = window.setTimeout(() => {
       this.interaction.changeState({
-        cells: [cell],
+        cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER_FOCUS,
       });
       const showSingleTips = this.spreadsheet.isTableMode();
@@ -86,7 +87,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
     const meta = cell.getMeta() as ViewMeta;
     this.interaction.changeState({
-      cells: [cell],
+      cells: [getCellMeta(cell)],
       stateName: InteractionStateName.HOVER,
     });
     cell.update();
@@ -139,7 +140,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
 
       const meta = cell.getMeta() as ViewMeta;
       this.interaction.changeState({
-        cells: [cell],
+        cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER,
       });
 

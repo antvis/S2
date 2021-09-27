@@ -13,7 +13,6 @@ import {
   ListSortParams,
   Pagination as PaginationCfg,
   S2Constructor,
-  S2Options,
   safetyDataConfig,
   safetyOptions,
   TargetLayoutNode,
@@ -49,6 +48,9 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     onRowCellClick,
     onColCellClick,
     onMergedCellsClick,
+    onRowCellDoubleClick,
+    onColCellDoubleClick,
+    onMergedCellsDoubleClick,
     onDataCellMouseUp,
     getSpreadsheet,
     partDrillDown,
@@ -120,6 +122,15 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       [S2Event.COL_CELL_CLICK]: (ev: GEvent) => {
         onColCellClick?.(getBaseCellData(ev));
       },
+      [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (ev: GEvent) => {
+        onMergedCellsDoubleClick?.(getBaseCellData(ev));
+      },
+      [S2Event.ROW_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
+        onRowCellDoubleClick?.(getBaseCellData(ev));
+      },
+      [S2Event.COL_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
+        onColCellDoubleClick?.(getBaseCellData(ev));
+      },
       [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
         targetRow: TargetLayoutNode,
       ) => {
@@ -161,7 +172,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   };
 
   const iconClickCallback = (
-    event: MouseEvent,
+    event: GEvent,
     sheetInstance: SpreadSheet,
     cacheDrillFields?: string[],
     disabledFields?: string[],
@@ -189,9 +200,14 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   ) => {
     const curSheet = sheetInstance || ownSpreadsheet;
     const curProps = sheetProps || props;
-    curSheet.setOptions(
-      safetyOptions(HandleDrillDownIcon(curProps, curSheet, iconClickCallback)),
-    );
+    let curOptions = options;
+
+    // 处理下钻参数
+    if (partDrillDown) {
+      curOptions = HandleDrillDownIcon(curProps, curSheet, iconClickCallback);
+    }
+
+    curSheet.setOptions(safetyOptions(curOptions));
   };
 
   const setDataCfg = () => {

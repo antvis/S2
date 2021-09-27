@@ -14,7 +14,10 @@ import {
   TextTheme,
 } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
-import { getContentArea } from '@/utils/cell/cell';
+import {
+  getContentArea,
+  getTextAndFollowingIconPosition,
+} from '@/utils/cell/cell';
 import { renderLine, renderText, updateShapeAttr } from '@/utils/g-renders';
 import { isMobile } from '@/utils/is-mobile';
 import { getEllipsisText, measureTextWidth } from '@/utils/text';
@@ -63,6 +66,21 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   public setMeta(viewMeta: T) {
     this.meta = viewMeta;
+  }
+
+  public getIconStyle() {
+    return this.theme[this.cellType].icon;
+  }
+
+  public getTextAndIconPosition() {
+    const textStyle = this.getTextStyle();
+    const iconCfg = this.getIconStyle();
+    return getTextAndFollowingIconPosition(
+      this.getContentArea(),
+      textStyle,
+      this.actualTextWidth,
+      iconCfg,
+    );
   }
 
   /**
@@ -117,6 +135,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected getContentArea() {
     const { padding } = this.theme.dataCell.cell;
     return getContentArea(this.getCellArea(), padding);
+  }
+
+  protected getIconPosition() {
+    return this.getTextAndIconPosition().icon;
   }
 
   protected drawTextShape() {
