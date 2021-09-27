@@ -1,3 +1,8 @@
 {
-  "default": true
+  "default": true,
+  "no-inline-html": false,
+  "line-length": {
+    "line_length": 200
+  },
+  "no-empty-links": false
 }

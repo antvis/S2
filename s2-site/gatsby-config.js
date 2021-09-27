@@ -65,12 +65,20 @@ module.exports = {
         order: 2,
       },
       {
+        slug: 'manual/basic',
+        title: {
+          zh: '基础教程',
+          en: 'Basic tutorial',
+        },
+        order: 3,
+      },
+      {
         slug: 'manual/interaction',
         title: {
           zh: '交互',
           en: 'Interaction',
         },
-        order: 3,
+        order: 4,
       },
     ],
     // demo配置
@@ -96,7 +104,8 @@ module.exports = {
         icon: 'facet',
         title: {
           zh: '字段标记',
-          en: 'Conditions'}
+          en: 'Conditions',
+        },
       },
       {
         slug: 'interaction',

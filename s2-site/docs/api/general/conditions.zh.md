@@ -1,8 +1,6 @@
 ---
 title: 字段标记
 order: 2
-redirect_from:
-  - /zh/docs/api
 ---
 
 ## Conditions
@@ -46,7 +44,7 @@ type MappingFunction = (
   isCompare?: boolean;
   minValue?: number;
   maxValue?: number;
-} | null // 返回值为空时，表示当前字段不显示字段标记样式
+} | null| undefined // 返回值为空时，表示当前字段不显示字段标记样式
 
 ```
 
@@ -95,11 +93,8 @@ const options = {
 | 参数     | 类型     | 必选 | 取值   | 默认值  | 功能描述     |
 | -------- | -------- | ---- | ------ | ------- | ------------ |
 | field    | `string`   | ✓    |        |         | 字段 ID       |
-| position | `string`   |      | `left` &#124; `right`   | `right` | icon 相较于文字的位置      |
+| position | `string`   |      | `left` &#124; `right`   | `right` | icon 相较于文字的位置 |
 | mapping  | `function` | ✓    |        |         | 作用映射函数​ |
-
-#### mapping
-定义与 Condition mapping 类型相同
 
 **icon condition 用法示例：**
 

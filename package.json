@@ -36,7 +36,7 @@
     "lint": "yarn tsc && yarn lint:script && yarn lint:style && yarn lint:docs",
     "lint:script": "eslint . --ext '.js,.jsx,.ts,.tsx'",
     "lint:style": "stylelint packages/**/*.less --syntax less",
-    "lint:docs": "markdownlint **/*.md ",
+    "lint:docs": "markdownlint '**/*.md'",
     "lint:fix": "yarn lint:fix-script && yarn lint:fix-style",
     "lint:fix-script": "yarn lint:script --fix",
     "lint:fix-style": "yarn lint:style --fix",
