@@ -13,8 +13,7 @@ order: 1
 
 # 使用
 
-
-### React 组件方式
+## React 组件方式
 
 ```typescript
 import React from "react";
@@ -104,7 +103,7 @@ ReactDOM.render(
 
 ```
 
-### TableSheet 类方式
+## TableSheet 类方式
 
 如果不打算依赖 React，可以在上面第三部之后直接调用：
 
@@ -115,12 +114,11 @@ sheet.render()
 
 # 特性
 
-
-### 序号
+## 序号
 
 在 S2 Options 中传入 `showSeriesNumber` 即可展示内置的序号。
- 
-### 行列冻结
+
+## 行列冻结
 
 行列冻结让特定行列在滚动时保持固定，从而一直保持在视口范围内，提供信息的对照和参考。
 
@@ -138,10 +136,3 @@ sheet.render()
 效果如图：
 
 ![frozen](https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*UZwHR7MHGJYAAAAAAAAAAAAAARQnAQ)
-
-
-
-
-
-
-
