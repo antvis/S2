@@ -4,5 +4,7 @@
   "line-length": {
     "line_length": 200
   },
+  "single-h1": false,
+  "first-line-h1": false,
   "no-empty-links": false
 }

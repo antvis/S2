@@ -21,10 +21,10 @@ redirect_from:
 - ✂️ 提供整个声明周期流程各个节点 Hook 的能力
 - ⛓ 提供不同级别的核心类的抽象定制能力
 
-### 安装
+## 安装
 
 ```typescript
-$ yarn add @antv/s2
+yarn add @antv/s2
 ```
 
 ### 快速上手
@@ -125,11 +125,11 @@ spreadsheet.render();
 ### 本地开发
 
 ```shell
-$ git clone git@github.com:antvis/S2.git
+git clone git@github.com:antvis/S2.git
 
-$ cd s2
+cd s2
 
-$ yarn bootstrap
+yarn bootstrap
 
-$ yarn core:start
+yarn core:start
 ```

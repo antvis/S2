@@ -44,7 +44,7 @@ redirect_from:
 
 ## Totals
 
-object **必选**,_ default：null_ 功能描述： 小计总计配置
+object **必选**,_default：null_ 功能描述： 小计总计配置
 
 | 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -53,7 +53,7 @@ object **必选**,_ default：null_ 功能描述： 小计总计配置
 
 ## Total
 
-object **必选**,_ default：null_ 功能描述： 小计总计算配置
+object **必选**,_default：null_ 功能描述： 小计总计算配置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -68,7 +68,7 @@ object **必选**,_ default：null_ 功能描述： 小计总计算配置
 
 ## Tooltip
 
-object **必选**,_ default：null_ 功能描述： tooltip 配置
+object **必选**,_default：null_ 功能描述： tooltip 配置
 
 | 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -82,7 +82,7 @@ object **必选**,_ default：null_ 功能描述： tooltip 配置
 
 ## TooltipOperation
 
-object **必选**,_ default：null_ 功能描述： tooltip 操作配置项
+object **必选**,_default：null_ 功能描述： tooltip 操作配置项
 
 | 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -91,7 +91,7 @@ object **必选**,_ default：null_ 功能描述： tooltip 操作配置项
 
 ## Pagination
 
-boolean ｜ object **必选**,_ default：null_ 功能描述： 分页配置
+boolean ｜ object **必选**,_default：null_ 功能描述： 分页配置
 
 | 参数      | 类型   | 必选 | 取值 | 默认值 | 功能描述            |
 | --------- | ------ | :--: | ---- | ------ | ------------------- |
@@ -102,7 +102,7 @@ boolean ｜ object **必选**,_ default：null_ 功能描述： 分页配置
 
 ## Style
 
-object **必选**,_ default：null_ 功能描述：样式设置
+object **必选**,_default：null_ 功能描述：样式设置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- | --- |
@@ -119,7 +119,7 @@ object **必选**,_ default：null_ 功能描述：样式设置
 
 ## CellCfg
 
-object **必选**,_ default：null_ 功能描述：单元格配置
+object **必选**,_default：null_ 功能描述：单元格配置
 
 | 参数    | 类型   | 必选 | 取值 | 默认值 | 功能描述     |
 | ------- | ------ | ---- | ---- | ------ | ------------ |
@@ -129,7 +129,7 @@ object **必选**,_ default：null_ 功能描述：单元格配置
 
 ## ColCfg
 
-object **必选**,_ default：null_ 功能描述： 列样式配置
+object **必选**,_default：null_ 功能描述： 列样式配置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -140,7 +140,7 @@ object **必选**,_ default：null_ 功能描述： 列样式配置
 
 ## RowCfg
 
-object **必选**,_ default：null_ 功能描述：行样式配置
+object **必选**,_default：null_ 功能描述：行样式配置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -151,9 +151,10 @@ object **必选**,_ default：null_ 功能描述：行样式配置
 | colCfg | [ColCfg](#) |  |  | {} | 列样式配置 |
 | rowCfg | [RowCfg](#) |  |  | {} | 行样式配置 |
 | device | pc &#124; mobile |  |  | {} | 设备类型 |
+
 ## PlotSize
 
-object **必选**,_ default：null_ 功能描述：行样式配置
+object **必选**,_default：null_ 功能描述：行样式配置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -167,7 +168,7 @@ object **必选**,_ default：null_ 功能描述：行样式配置
 
 ## keepOnlyNodesIds
 
-object 可选，_ default：{}_ 功能描述：仅显示的节点
+object 可选，_default：{}_ 功能描述：仅显示的节点
 
 | 参数   | 类型     | 必选 | 取值 | 默认值 | 功能描述 |
 | ------ | -------- | :--: | ---- | ------ | -------- |
@@ -176,7 +177,7 @@ object 可选，_ default：{}_ 功能描述：仅显示的节点
 
 ## NodeField
 
-object 可选，_ default：{}_ 功能描述：滚动监听的节点度量
+object 可选，_default：{}_ 功能描述：滚动监听的节点度量
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -193,7 +194,7 @@ DataCellCallback = (viewMeta: ViewMeta) => Group;
 
 ## ViewMeta
 
-object 必选，_ default：{}_ 功能描述：单元个数据和位置等信息
+object 必选，_default：{}_ 功能描述：单元个数据和位置等信息
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
