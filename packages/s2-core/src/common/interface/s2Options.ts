@@ -169,6 +169,7 @@ export const defaultOptions: S2Options = {
   conditions: {},
   totals: {},
   tooltip: {
+    showTooltip: true,
     operation: {
       hiddenColumns: true,
       trend: false,

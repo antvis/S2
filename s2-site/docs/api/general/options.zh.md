@@ -72,7 +72,7 @@ object **必选**,_default：null_ 功能描述： tooltip 配置
 
 | 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| showTooltip | boolean |  |  | false | 是否展示 tooltip |
+| showTooltip | boolean |  |  | true | 是否展示 tooltip |
 | operation | [TooltipOperation](#TooltipOperation) |  |  | false | tooltip 操作配置项 |
 | row | [Tooltip](#) |  |  |  | 行头配置 |
 | col | [Tooltip](#) |  |  |  | 列头配置 |

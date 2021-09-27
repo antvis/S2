@@ -61,7 +61,6 @@ function MainLayout() {
       current: 1,
     },
     tooltip: {
-      showTooltip: true,
       renderTooltip: (spreadsheet) => {
         return new CustomTooltip(spreadsheet);
       },
