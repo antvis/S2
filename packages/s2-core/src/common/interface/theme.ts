@@ -169,6 +169,8 @@ export interface SplitLine {
     /* 线性变化右侧颜色 */
     right: string;
   };
+  /** 阴影模糊 */
+  shadowBlur?: number;
 }
 export interface DefaultCellTheme {
   /* 粗体文本样式 */

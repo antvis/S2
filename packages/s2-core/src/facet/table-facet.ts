@@ -405,8 +405,8 @@ export class TableFacet extends BaseFacet {
     };
 
     const shadowAttrs = {
-      fill: `l (0) 0:${style.shadowColors?.left} 1:${style.shadowColors?.right}`,
-      shadowBlur: 7,
+      shadowColor: style?.shadowColors.left,
+      shadowBlur: style.shadowBlur,
     };
 
     if (frozenColCount > 0) {
