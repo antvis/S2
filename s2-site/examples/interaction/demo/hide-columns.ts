@@ -1,4 +1,4 @@
-import { S2Event, TableSheet } from '@antv/s2';
+import { TableSheet, S2Event } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
@@ -17,19 +17,25 @@ fetch(
     const s2options = {
       width: 800,
       height: 600,
-      linkFields: ['type', 'price', 'province'],
+      hiddenColumnFields: ['price'],
+      tooltip: {
+        showTooltip: true,
+        operation: {
+          hiddenColumns: true,
+        },
+      },
     };
     const s2 = new TableSheet(container, s2DataConfig, s2options);
 
-    s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
-      console.log(data);
-      const { key, record } = data;
-      const a = document.createElement('a');
-      a.target = '_blank';
-      a.href = `https://s2.antv.vision/${key}=${record[key]}`;
-      a.click();
-      a.remove();
+    s2.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, (cell) => {
+      console.log('列头展开', cell);
     });
+    s2.on(
+      S2Event.LAYOUT_TABLE_COL_HIDE,
+      (currentHiddenColumnsInfo, hiddenColumnsDetail) => {
+        console.log('列头隐藏', currentHiddenColumnsInfo, hiddenColumnsDetail);
+      },
+    );
 
     s2.render();
   });
