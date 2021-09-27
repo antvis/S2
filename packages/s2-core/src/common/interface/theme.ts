@@ -9,15 +9,12 @@ export type TextAlign = 'left' | 'center' | 'right';
 export type TextBaseline = 'top' | 'middle' | 'bottom';
 
 export interface Palette {
-  /* brand colors */
-  brandColors: string[];
-  /* neutral colors */
-  grayColors: string[];
-  /* semantic colors */
+  /* 基础色值 */
+  basicColors: string[];
+  /* 语义色值 */
   semanticColors: {
     red?: string;
     green?: string;
-    blue?: string;
     /* 额外颜色字段 */
     [key: string]: string;
   };
