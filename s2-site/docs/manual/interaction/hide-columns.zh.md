@@ -5,6 +5,8 @@ order: 3
 
 对于明细表来说，当你想降低不重要信息干扰时，可以隐藏列头，方便你更直观的查看数据，有两种方式隐藏列头
 
+<playground path='interaction/demo/hide-columns.ts' rid='container' height='400'></playground>
+
 ## 手动隐藏 - 通过点击
 
 点击列头，弹出 tooltip, 点击 `隐藏` 按钮即可
