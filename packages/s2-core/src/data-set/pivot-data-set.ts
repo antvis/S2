@@ -196,8 +196,8 @@ export class PivotDataSet extends BaseDataSet {
       if (!this.sortedDimensionValues.has(dimension)) {
         this.sortedDimensionValues.set(dimension, new Set());
       }
-      const values = this.sortedDimensionValues.get(dimension);
-      values.add(record[dimension]);
+      const sortedDimensionValues = this.sortedDimensionValues.get(dimension);
+      sortedDimensionValues.add(record[dimension]);
 
       return dimensionValue;
     });

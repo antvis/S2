@@ -15,7 +15,7 @@ order: 2
 | palette | [Palette](#palette) | | <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/default.ts" target="_blank" >paletteDefault</a>|<a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/default.ts" target="_blank" >paletteDefault</a><br> <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/simple-blue.ts" target="_blank" >paletteSimpleBlue</a> <br>  <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful-blue.ts" target="_blank" >paletteColorfulBlue</a> | 色板 schema |
 | name | string | | `default`|  `default` <br>  `simple` <br> `colorful` | 色板 schema |
 
-### Palette 
+### Palette
 
 <description> **optional**  _object_ </description>
 
@@ -25,7 +25,8 @@ order: 2
 | :--- | :--- | :---: | :--- | :---| :--- |
 | basicColors | string[] | | | | 基础色板 |
 | semanticColors | [key: string] | | | | 用于表示实际业务语义的颜色。例如内置颜色 “红跌绿涨” |
-### S2Theme 
+
+### S2Theme
 
 <description> **optional**  _object_ </description>
 
@@ -44,7 +45,6 @@ order: 2
 | background | [Background](#background) | | | | 刷选遮罩样式  |
 | [key: string] | unknown | | | | 额外属性字段，用于用户自定义主题时传参  |
 
-
 #### DefaultCellTheme
 
 <description> **optional**  _object_ </description>
@@ -58,7 +58,6 @@ order: 2
 | cell | [CellTheme](#texttheme) | | | | 单元格样式 |
 | icon | [IconTheme](#texttheme) | | | | 图标样式 |
 | seriesNumberWidth | number | | 80 | | 序号列宽 |
-
 
 #### ResizeArea
 
@@ -74,7 +73,6 @@ order: 2
 | guidLineColor | string | | | | 参考线颜色 |
 | interactionState | [InteractionState](#interactionstate) | | | | 热区交互态样式 |
 
-
 #### ScrollBarTheme
 
 <description> **optional**  _object_ </description>
@@ -89,7 +87,6 @@ order: 2
 | size | number | | Mobile: 3 <br> PC: 6 | | 滚动条尺寸 |
 | hoverSize | number | | 16 | | 滚动条 Hover 态尺寸 |
 | lineCap | string | | `round` | `butt` <br> `round` <br> `square` | 指定如何绘制每一条线段末端 |
-
 
 #### SplitLine
 
@@ -109,7 +106,6 @@ order: 2
 | shadowWidth | number | | 10 | | 阴影宽度 |
 | shadowColors | {left: string, right: string} | | {left: 'rgba(0,0,0,0.1),' right: 'rgba(0,0,0,0)'} | | `left` : 线性变化左侧颜色  <br> `right` : 线性变化右侧颜色 |
 
-
 #### TextTheme
 
 <description> **optional**  _object_ </description>
@@ -127,7 +123,6 @@ order: 2
 | linkTextFill | string | | | | 链接文本颜色 |
 | linkTextFill | string | | | | 链接文本颜色 |
 | opacity | number | | 1 | | 字体透明度 |
-
 
 #### CellTheme
 
@@ -151,7 +146,6 @@ order: 2
 | miniBarChartHeight | number | | | 12 | 单元格内条件格式-迷你条形图高度 |
 | miniBarChartFillColor | string | | | | 单元格内条件格式-迷你条形图默认填充颜色 |
 
-
 #### IconTheme
 
 <description> **optional**  _object_ </description>
@@ -166,7 +160,6 @@ order: 2
 | size | number | | | | icon 大小 |
 | margin | [Margin](#margin--padding) | | | | 单元格外边距 |
 
-
 #### InteractionStateTheme
 
 <description> **optional**  _object_ </description>
@@ -180,7 +173,6 @@ order: 2
 | borderColor | string | | | | 边线填充色 |
 | borderWidth | number | | | | 边线宽度 |
 | opacity | number | | | | 整体透明度 |
-
 
 #### Margin ｜ Padding
 

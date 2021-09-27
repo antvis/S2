@@ -18,7 +18,6 @@ import {
   InterceptType,
 } from '@/common/constant';
 import {
-  CellMeta,
   CustomInteraction,
   InteractionStateInfo,
   S2CellType,

@@ -554,5 +554,6 @@ export abstract class SpreadSheet extends EE {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public handleGroupSort(event: MouseEvent, meta: Node) {}
 }

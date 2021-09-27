@@ -28,7 +28,7 @@ import {
   totalData,
   meta,
   fields,
-  demissions,
+  demission,
   ruleOptions,
   methodList,
 } from '../data/data-sort.json';
@@ -64,7 +64,7 @@ function MainLayout() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isCustomVisible, setIsCustomVisible] = useState(false);
   const [ruleList, setRuleList] = useState([]);
-  const [demissionList, setDemissionList] = useState(demissions);
+  const [demissionList, setDemissionList] = useState(demission);
   const [splitOrders, setSplitOrders] = useState([]);
   const [currentDemission, setCurrentDemission] = useState<{
     field: string;
@@ -119,7 +119,7 @@ function MainLayout() {
   const handleCustomSort = (demission) => {
     handleCustom();
     setSplitOrders(
-      demissions.find((item) => item.field === demission.field)?.list || [],
+      demission.find((item) => item.field === demission.field)?.list || [],
     );
   };
   const uphandler = (value) => {
@@ -132,7 +132,7 @@ function MainLayout() {
     const res = splitOrders.concat();
     let index = res.indexOf(value);
     res.splice(res.indexOf(value), 1);
-    res.splice(++index, 0, value);
+    res.splice((index += 1), 0, value);
     setSplitOrders(res);
   };
   const toTopHandler = (value) => {
@@ -140,7 +140,7 @@ function MainLayout() {
     let index = res.indexOf(value);
     if (index > 0) {
       res.splice(res.indexOf(value), 1);
-      res.splice(--index, 0, value);
+      res.splice((index -= 1), 0, value);
       setSplitOrders(res);
     }
   };
