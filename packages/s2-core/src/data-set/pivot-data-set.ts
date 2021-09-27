@@ -321,7 +321,8 @@ export class PivotDataSet extends BaseDataSet {
       } else if (isUndefined(current)) {
         hadUndefined = true;
       } else {
-        currentData = currentData?.[current];
+        // 数据结构变了，且不需要这个分支流程
+        // currentData = currentData?.[current];
       }
     }
 
