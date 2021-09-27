@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import React, { isValidElement } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { SpreadSheet } from '@/sheet-type';
 import {
@@ -12,13 +12,9 @@ import {
   TooltipSummaryOptions,
   TooltipNameTipsOptions,
   TooltipHeadInfo as TooltipHeadInfoType,
+  TooltipInterpretationOptions,
 } from '@/common/interface';
-import {
-  getOptions,
-  getPosition,
-  manageContainerStyle,
-  shouldIgnore,
-} from '@/utils/tooltip';
+import { getOptions, getPosition, setContainerStyle } from '@/utils/tooltip';
 import { TooltipDetail } from '@/ui/tooltip/components/detail';
 import { Divider } from '@/ui/tooltip/components/divider';
 import { TooltipHead } from '@/ui/tooltip/components/head-info';
@@ -42,8 +38,6 @@ export class BaseTooltip {
 
   private renderElement: React.Component | Element | void; // react component
 
-  private enterable = false; // mark if can enter into tooltips
-
   public position: TooltipPosition = { x: 0, y: 0 }; // tooltips position info
 
   constructor(spreadsheet: SpreadSheet) {
@@ -65,23 +59,7 @@ export class BaseTooltip {
     const CustomComponent =
       element || this.spreadsheet.options.tooltip?.tooltipComponent;
 
-    if (
-      !isValidElement(CustomComponent) &&
-      this.enterable &&
-      shouldIgnore(enterable, position, this.position)
-    ) {
-      return;
-    }
     this.options = showOptions;
-    this.enterable = enterable;
-
-    manageContainerStyle(container, {
-      pointerEvents: enterable ? 'all' : 'none',
-      display: 'inline-block',
-    });
-
-    this.unMountComponent(container);
-
     this.renderElement = CustomComponent
       ? ReactDOM.render(CustomComponent, container)
       : ReactDOM.render(this.renderContent(data, options), container);
@@ -93,16 +71,17 @@ export class BaseTooltip {
       y,
     };
 
-    manageContainerStyle(container, { left: `${x}px`, top: `${y}px` });
+    setContainerStyle(container, {
+      left: `${x}px`,
+      top: `${y}px`,
+      pointerEvents: enterable ? 'all' : 'none',
+      display: 'block',
+    });
   }
 
-  /**
-   * Hide toolTips
-   */
   public hide() {
     const container = this.getContainer();
-    manageContainerStyle(container, { pointerEvents: 'none', display: 'none' });
-    this.enterable = false;
+    setContainerStyle(container, { pointerEvents: 'none', display: 'none' });
     this.resetPosition();
     this.unMountComponent(container);
   }
@@ -190,7 +169,7 @@ export class BaseTooltip {
     return infos && <Infos infos={infos} />;
   }
 
-  protected renderInterpretation(interpretation) {
+  protected renderInterpretation(interpretation: TooltipInterpretationOptions) {
     return interpretation && <Interpretation {...interpretation} />;
   }
 
@@ -203,7 +182,6 @@ export class BaseTooltip {
       document.body.appendChild(container);
       this.container = container;
     }
-    // change class every time!
     this.container.className = `${TOOLTIP_PREFIX_CLS}-container`;
     return this.container;
   }

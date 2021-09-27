@@ -1,10 +1,9 @@
-import { Radio, Space, Switch } from 'antd';
+import { Radio, Space, Switch, Button, Input } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
 import { SheetEntry, assembleDataCfg } from '../util/sheet-entry';
-// import * as tableData from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
 import {
   HeaderActionIconProps,
@@ -44,6 +43,8 @@ function MainLayout() {
   const ColCellClickTooltip = (
     <div>
       <h1>Tooltip</h1>
+      <Button>button</Button>
+      <Input />
     </div>
   );
 
@@ -146,11 +147,11 @@ function MainLayout() {
   };
 
   const onColCellClick = (value: TargetCellInfo) => {
-    const sheet = value?.viewMeta?.spreadsheet;
-    sheet?.showTooltip({
-      position: { x: value.event.clientX, y: value.event.clientY },
-      element: ColCellClickTooltip,
-    });
+    // const sheet = value?.viewMeta?.spreadsheet;
+    // sheet?.showTooltip({
+    //   position: { x: value.event.clientX, y: value.event.clientY },
+    //   element: ColCellClickTooltip,
+    // });
   };
 
   return (

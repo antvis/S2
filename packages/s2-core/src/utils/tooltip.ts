@@ -22,6 +22,7 @@ import {
   mapKeys,
   every,
 } from 'lodash';
+import React from 'react';
 import {
   LayoutResult,
   ListItem,
@@ -151,33 +152,18 @@ export const getMergedQuery = (meta) => {
   return { ...meta?.colQuery, ...meta?.rowQuery };
 };
 
-export const shouldIgnore = (
-  enterable: boolean,
-  position: TooltipPosition,
-  currPosition: TooltipPosition,
-): boolean => {
-  if (enterable) {
-    if (
-      Math.abs(position.x - currPosition?.x) < 20 &&
-      Math.abs(position.y - currPosition?.y) < 20
-    ) {
-      return true;
-    }
-  }
-  return false;
-};
-
 /**
  * add style to container
  */
-export const manageContainerStyle = (container, styles: any) => {
+export const setContainerStyle = (
+  container: HTMLElement,
+  styles: React.CSSProperties,
+) => {
   if (container && styles) {
     Object.keys(styles)?.forEach((item) => {
       container.style[item] = styles[item];
     });
   }
-
-  return container;
 };
 
 /* formate */
