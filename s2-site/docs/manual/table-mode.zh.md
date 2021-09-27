@@ -11,8 +11,7 @@ order: 1
 
 明细表和交叉表共享基础交互、主题、复制、自定义 Cell 等能力。除此之外，明细表还支持行列冻结等特色功能。在海量明细数据渲染场景下，明细表可以替换基于 DOM 的表格组件，来提升性能和用户体验。
 
-# 使用
-
+## 使用
 
 ### React 组件方式
 
@@ -113,13 +112,12 @@ const sheet = new TableSheet("#container", dataCfg, options)
 sheet.render()
 ```
 
-# 特性
-
+## 特性
 
 ### 序号
 
 在 S2 Options 中传入 `showSeriesNumber` 即可展示内置的序号。
- 
+
 ### 行列冻结
 
 行列冻结让特定行列在滚动时保持固定，从而一直保持在视口范围内，提供信息的对照和参考。
@@ -138,10 +136,3 @@ sheet.render()
 效果如图：
 
 ![frozen](https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*UZwHR7MHGJYAAAAAAAAAAAAAARQnAQ)
-
-
-
-
-
-
-
