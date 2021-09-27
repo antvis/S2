@@ -23,7 +23,7 @@ order: 2
 
 | 参数 | 类型 | 必选 | 默认值 | 取值 | 功能描述 |
 | :--- | :--- | :---: | :--- | :---| :--- |
-| baseColors | string[] | | | | 基础色板 |
+| basicColors | string[] | | | | 基础色板 |
 | semanticColors | [key: string] | | | | 用于表示实际业务语义的颜色。例如内置颜色 “红跌绿涨” |
 ### S2Theme 
 
