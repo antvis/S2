@@ -155,7 +155,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   get isShowTooltip() {
-    return this.options?.tooltip?.showTooltip ?? true;
+    return this.options?.tooltip?.showTooltip;
   }
 
   private setDebug() {
