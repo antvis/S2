@@ -1,9 +1,11 @@
 name: 📦 Compressed Size
 
-on: [pull_request]
+on:
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
-  build:
+  compressed-size:
 
     runs-on: ubuntu-latest
 
@@ -27,3 +29,4 @@ jobs:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         pattern: "./packages/s2-core/dist/**/*.{js,css}"
         build-script: "build"
+        clean-script: "clean:lock-file"
