@@ -405,7 +405,7 @@ export class TableFacet extends BaseFacet {
     };
 
     const shadowAttrs = {
-      shadowColor: style?.horizontalBorderColor,
+       fill: `l (0) 0:${splitLine.shadowColors?.left} 1:${splitLine.shadowColors?.right}`,
       shadowBlur: 7,
     };
 
