@@ -1,0 +1,16 @@
+{
+  "title": {
+    "zh": "明细表",
+    "en": "Table"
+  },
+  "demos": [
+    {
+      "filename": "table.ts",
+      "title": {
+        "zh": "明细表模式",
+        "en": "Table mode"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*rUnvRKlKL0wAAAAAAAAAAAAAARQnAQ"
+    }
+  ]
+}
