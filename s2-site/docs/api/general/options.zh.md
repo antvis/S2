@@ -11,13 +11,13 @@ redirect_from:
 | :-- | :-- | :-: | :-- | :-- | :-- | --- |
 | hierarchyType | string |  | 'grid' | 'tree'; | grid | 行头的展示方式，grid：平铺网格结构， tree： 树状结构。 |
 | hierarchyCollapse | string |  | boolean | false | 在树状结构模式下行头是否默认展开。 |
-| conditions | [Conditions](#) | ✓ |  |  | 条件模式配置 |
+| conditions | [Conditions](#conditions) | ✓ |  |  | 条件模式配置 |
 | totals | [Totals](#) | ✓ |  |  | 小计总结配置 |
-| tooltip | [Tooltip](#) | ✓ |  |  |  tooltip总配置 |
+| tooltip | [Tooltip](#) | ✓ |  |  |  tooltip 总配置 |
 | linkFields | string[] |  |  | [] | 外链跳转 |
 | pagination | [Pagination](#) | ✓ |  |  | 分页配置 |
 | freezeRowHeader | boolean | ✓ |  | false | 冻结行头 |
-| pivot | pivot/table |  |  |  | pivot = 交叉表, table = 普通 table |
+| pivot | pivot/table |  |  |  | pivot = 交叉表，table = 普通 table |
 | width | number | ✓ |  |  | canvas 的宽度 |
 | height | number | ✓ |  |  | canvas 的高度 |
 | style | [Style](#) | ✓ |  |  | 附加样式 |
@@ -27,7 +27,7 @@ redirect_from:
 | registerDefaultInteractions | boolean | ✓ |  |  | 注册默认交互 |
 | scrollReachNodeField | [NodeField](#) | ✓ |  | {rowField: '', colField: ''} |
 | 滚动监听的节点度量 |
-| hiddenColumnFields | string[] | ✓ |  | [] | 隐藏列 (明细表有效) |
+| hiddenColumnFields | string[] | ✓ |  | [] | 隐藏列 （明细表有效） |
 | valueInCols | boolean |  |  | false | 存在衍生指标时单列和多列的切换 |
 | dataCell | [DataCellCallback](#) |  |  |  | 自定义单元格 cell |
 | cornerCell | [CellCallback](#) |  |  |  | 自定义 cornerCell |
@@ -40,101 +40,11 @@ redirect_from:
 | hierarchy | [HierarchyCallback](#) |  |  |  | 行列结构的自定义 |
 | [key: string] | any |  |  |  | 其他任意的选择配置 |
 
-
-## Conditions
-
-object **必选**,_ default：null_ 功能描述： 配置条件格式。分为文本(text)，背景(background)，柱状图(interval)，图标(icon)。
-
-| 参数       | 类型             | 必选 | 取值 | 默认值 | 功能描述   |
-| ---------- | ---------------- | :--: | ---- | ------ | ---------- |
-| text       | [Condition[]](#) |      |      | {}     | 文本条件   |
-| background | Condition[]      |      |      | {}     | 背景条件   |
-| interval   | Condition[]      |      |      | {}     | 数据条条件 |
-| icon       | Condition[]      |      |      | {}     | 图标条件   |
-
-## Condition
-
-object **必选**,_ default：null_ 功能描述： 配置条件格式。分为文本(text)，背景(background)，柱状图(interval)，图标(icon)。
-
-| 参数    | 类型     | 必选 | 取值 | 默认值 | 功能描述     |
-| ------- | -------- | :--: | ---- | ------ | ------------ |
-| field   | string   |  ✓   |      |        | 字段 ID      |
-| mapping | function |  ✓   |      |        | 作用映射函数 |
-|         |
-
-| 参数    | 类型     | 必选 | 取值 | 默认值 | 功能描述     |
-| ------- | -------- | :--: | ---- | ------ | ------------ |
-| field   | string   |  ✓   |      |        | 字段 ID      |
-| mapping | function |  ✓   |      |        | 作用映射函数 |
-|         |
-
-- **mapping 定义：**
-
-```typescript
-type MappingFunction = (
-  fieldValue: number,
-  data: Record<string, any>,
-) => {
-  // 仅图标条件适用
-  icon?: string;
-
-  // 背景 ｜ 文本 ｜ 数据 条件颜色填充, 必选
-  fill: string;
-
-  // 仅数据条件适用, 可选
-  isCompare?: boolean;
-  minValue?: number;
-  maxValue?: number;
-};
-```
-
-- **mapping 用法示例：**
-
-```javascript
-SpreadSheetOptionsBuilder.Builder().conditions({
-  text: [
-    {
-      field: 'province',
-      mapping: () => ({
-        fill: 'rgba(0, 0, 0, .65)',
-      }),
-    },
-  ],
-  interval: [
-    {
-      field: 'sub_type',
-      mapping: () => {
-        return {
-          fill: 'green',
-        };
-      },
-    },
-  ],
-  background: [
-    {
-      field: 'count',
-      mapping: () => ({
-        fill: '#ff00ff',
-      }),
-    },
-  ],
-  icon: [
-    {
-      field: 'profit',
-      mapping: () => {
-        return {
-          icon: 'InfoCircle',
-          fill: 'red',
-        };
-      },
-    },
-  ],
-});
-```
+`markdown:docs/common/conditions.zh.md`
 
 ## Totals
 
-object **必选**,_ default：null_ 功能描述： 小计总计配置
+object **必选**,_default：null_ 功能描述： 小计总计配置
 
 | 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -143,14 +53,14 @@ object **必选**,_ default：null_ 功能描述： 小计总计配置
 
 ## Total
 
-object **必选**,_ default：null_ 功能描述： 小计总计算配置
+object **必选**,_default：null_ 功能描述： 小计总计算配置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
 | showGrandTotals | boolean | ✓ |  | false | 是否显示总计 |
 | showSubTotals | boolean | ✓ |  | false | 是否显示小计 |
 | subTotalsDimensions | string[] | ✓ |  | [] | 小计的汇总维度 |
-| reverseLayout | boolean | ✓ |  | false | 总计布局位置,默认下或右 |
+| reverseLayout | boolean | ✓ |  | false | 总计布局位置，默认下或右 |
 |  |
 | reverseSubLayout | boolean | ✓ |  | false | 小计布局位置，默认下或右 |
 | label | string |  |  |  | 总计别名 |
@@ -158,30 +68,30 @@ object **必选**,_ default：null_ 功能描述： 小计总计算配置
 
 ## Tooltip
 
-object **必选**,_ default：null_ 功能描述： tooltip配置
+object **必选**,_default：null_ 功能描述： tooltip 配置
 
 | 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| showTooltip | boolean |  |  | false | 是否展示tooltip |
+| showTooltip | boolean |  |  | false | 是否展示 tooltip |
 | operation | [TooltipOperation](#TooltipOperation) |  |  | false | tooltip 操作配置项 |
 | row | [Tooltip](#) |  |  |  | 行头配置 |
 | col | [Tooltip](#) |  |  |  | 列头配置 |
 | cell | [Tooltip](#) |  |  |  | 单元格配置 |
-| renderTooltip | [RenderTooltip](#) |  |  |  | 自定义整个tooltip, 可以继承 BaseTooltip 自己重写一些方法 |
-| tooltipComponent | React.ReactNode |  |  |  | 自定义tooltip弹框组件 |
+| renderTooltip | [RenderTooltip](#) |  |  |  | 自定义整个 tooltip, 可以继承 BaseTooltip 自己重写一些方法 |
+| tooltipComponent | React.ReactNode |  |  |  | 自定义 tooltip 弹框组件 |
 
 ## TooltipOperation
 
-object **必选**,_ default：null_ 功能描述： tooltip操作配置项
+object **必选**,_default：null_ 功能描述： tooltip 操作配置项
 
 | 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| hiddenColumns | boolean |  |  | true | 是否开启隐藏列 (明细表有效) |
-| trend | boolean |  |  | false | 是否显示趋势图icon |
+| hiddenColumns | boolean |  |  | true | 是否开启隐藏列 （明细表有效） |
+| trend | boolean |  |  | false | 是否显示趋势图 icon |
 
 ## Pagination
 
-boolean ｜ object **必选**,_ default：null_ 功能描述： 分页配置
+boolean ｜ object **必选**,_default：null_ 功能描述： 分页配置
 
 | 参数      | 类型   | 必选 | 取值 | 默认值 | 功能描述            |
 | --------- | ------ | :--: | ---- | ------ | ------------------- |
@@ -192,7 +102,7 @@ boolean ｜ object **必选**,_ default：null_ 功能描述： 分页配置
 
 ## Style
 
-object **必选**,_ default：null_ 功能描述：样式设置
+object **必选**,_default：null_ 功能描述：样式设置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- | --- |
@@ -209,7 +119,7 @@ object **必选**,_ default：null_ 功能描述：样式设置
 
 ## CellCfg
 
-object **必选**,_ default：null_ 功能描述：单元格配置
+object **必选**,_default：null_ 功能描述：单元格配置
 
 | 参数    | 类型   | 必选 | 取值 | 默认值 | 功能描述     |
 | ------- | ------ | ---- | ---- | ------ | ------------ |
@@ -219,7 +129,7 @@ object **必选**,_ default：null_ 功能描述：单元格配置
 
 ## ColCfg
 
-object **必选**,_ default：null_ 功能描述： 列样式配置
+object **必选**,_default：null_ 功能描述： 列样式配置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -230,7 +140,7 @@ object **必选**,_ default：null_ 功能描述： 列样式配置
 
 ## RowCfg
 
-object **必选**,_ default：null_ 功能描述：行样式配置
+object **必选**,_default：null_ 功能描述：行样式配置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -241,9 +151,10 @@ object **必选**,_ default：null_ 功能描述：行样式配置
 | colCfg | [ColCfg](#) |  |  | {} | 列样式配置 |
 | rowCfg | [RowCfg](#) |  |  | {} | 行样式配置 |
 | device | pc &#124; mobile |  |  | {} | 设备类型 |
+
 ## PlotSize
 
-object **必选**,_ default：null_ 功能描述：行样式配置
+object **必选**,_default：null_ 功能描述：行样式配置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -257,7 +168,7 @@ object **必选**,_ default：null_ 功能描述：行样式配置
 
 ## keepOnlyNodesIds
 
-object 可选,_ default：{}_ 功能描述：仅显示的节点
+object 可选，_default：{}_ 功能描述：仅显示的节点
 
 | 参数   | 类型     | 必选 | 取值 | 默认值 | 功能描述 |
 | ------ | -------- | :--: | ---- | ------ | -------- |
@@ -266,7 +177,7 @@ object 可选,_ default：{}_ 功能描述：仅显示的节点
 
 ## NodeField
 
-object 可选,_ default：{}_ 功能描述：滚动监听的节点度量
+object 可选，_default：{}_ 功能描述：滚动监听的节点度量
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -283,7 +194,7 @@ DataCellCallback = (viewMeta: ViewMeta) => Group;
 
 ## ViewMeta
 
-object 必选,_ default：{}_ 功能描述：单元个数据和位置等信息
+object 必选，_default：{}_ 功能描述：单元个数据和位置等信息
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
@@ -380,7 +291,7 @@ LayoutResultCallback = (layoutResult: LayoutResult) => LayoutResult;
 | rowLeafNodes | [Node[]]() | ✓ |  |  | 行的所有叶子节点，用于笛卡尔交叉 |
 | colLeafNodes | [Node[]]() | ✓ |  |  | 列的所有叶子节点，用于笛卡尔交叉 |
 
-| getViewMeta | Function： (rowIndex: number, colIndex: number) => ViewMeta | ✓ | | | 获取交叉出[x,y]对应坐标的信息 | | spreadsheet | [BaseSpreadSheet]() | ✓ | | | 表类实例，可以访问任意的配置信息 |
+| getViewMeta | Function： (rowIndex: number, colIndex: number) => ViewMeta | ✓ | | | 获取交叉出 [x,y] 对应坐标的信息 | | spreadsheet | [BaseSpreadSheet]() | ✓ | | | 表类实例，可以访问任意的配置信息 |
 
 ## HierarchyCallback
 
@@ -403,7 +314,7 @@ HierarchyCallback = (spreadsheet: BaseSpreadSheet, node: Node) =>
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
 | nodes | [Node[]]() |  |  |  | 需要额外增加的节点 |
-| push | boolean |  |  |  | push 在 node 前(false)或者后(true)增加额外的节点(nodes) |
+| push | boolean |  |  |  | push 在 node 前 (false) 或者后 (true) 增加额外的节点 (nodes) |
 
 ## RenderTooltip
 
