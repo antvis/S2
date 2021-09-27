@@ -1,5 +1,5 @@
 ---
-title: 字段标记
+title: conditions
 order: 4
 ---
-`markdown:docs/manual/conditions/basic.zh.md`
+`markdown:docs/manual/basic/conditions.zh.md`

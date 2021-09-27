@@ -40,7 +40,7 @@ redirect_from:
 | hierarchy | [HierarchyCallback](#) |  |  |  | 行列结构的自定义 |
 | [key: string] | any |  |  |  | 其他任意的选择配置 |
 
-`markdown:docs/api/general/conditions.zh.md`
+`markdown:docs/common/conditions.zh.md`
 
 ## Totals
 
