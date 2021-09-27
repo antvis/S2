@@ -14,6 +14,7 @@ import {
   set,
   uniq,
   values,
+  map,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
