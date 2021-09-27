@@ -36,6 +36,7 @@ fetch(
     const s2options = {
       width: 800,
       height: 600,
+      hoverHighlight: false,
       conditions: {
         interval: [
           {

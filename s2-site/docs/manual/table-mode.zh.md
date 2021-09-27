@@ -103,7 +103,7 @@ ReactDOM.render(
 
 ```
 
-### TableSheet 类方式
+## TableSheet 类方式
 
 如果不打算依赖 React，可以在上面第三部之后直接调用：
 
