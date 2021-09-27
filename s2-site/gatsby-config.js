@@ -106,7 +106,15 @@ module.exports = {
           zh: '交互',
           en: 'Interaction',
         },
-      }
+      },
+      {
+        slug: 'total',
+        icon: 'facet',
+        title: {
+          zh: '小计总计',
+          en: 'Total',
+        },
+      },
     ],
     // 编辑器配置
     playground: {
