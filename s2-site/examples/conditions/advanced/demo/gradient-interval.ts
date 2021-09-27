@@ -43,9 +43,9 @@ fetch('../data/basic.json')
               const minValue = 0;
               const rage = (fieldValue - minValue) / (maxValue - minValue);
 
-              const color = getGradient(rage, '#fff1b8', '#faad14');
+              const color = getGradient(rage, '#95F0FF', '#3A9DBF');
               return {
-                fill: `l(0) 0:#fff1b8 1:${color}`,
+                fill: `l(0) 0:#95F0FF 1:${color}`,
                 isCompare: true,
                 maxValue,
               };

@@ -26,7 +26,7 @@ fetch('../data/basic.json')
               return {
                 // icon 用于指定图标条件格式所使用的 icon 类型
                 icon: 'CellUp',
-                fill: '#29A294',
+                fill: '#30BF78',
               };
             },
           },
@@ -36,7 +36,7 @@ fetch('../data/basic.json')
             mapping(fieldValue, data) {
               return {
                 icon: 'CellDown',
-                fill: '#FF4D4F',
+                fill: '#F4664A',
               };
             },
           },

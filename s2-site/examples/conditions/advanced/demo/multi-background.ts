@@ -34,27 +34,27 @@ fetch('../data/basic.json')
             mapping(fieldValue, data) {
               if (fieldValue <= 2) {
                 return {
-                  fill: '#bae7ff',
+                  fill: '#B8E1FF',
                 };
               } else if (fieldValue <= 5) {
                 return {
-                  fill: '#69c0ff',
+                  fill: '#9AC5FF',
                 };
               } else if (fieldValue <= 10) {
                 return {
-                  fill: '#40a9ff',
+                  fill: '#7DAAFF',
                 };
               } else if (fieldValue <= 15) {
                 return {
-                  fill: '#1890ff',
+                  fill: '#5B8FF9',
                 };
               } else if (fieldValue <= 20) {
                 return {
-                  fill: '#096dd9',
+                  fill: '#3D76DD',
                 };
               }
               return {
-                fill: '#002766',
+                fill: '#085EC0',
               };
             },
           },

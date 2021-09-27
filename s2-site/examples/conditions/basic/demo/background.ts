@@ -25,7 +25,7 @@ fetch('../data/basic.json')
               console.log(fieldValue, data);
               return {
                 // fill 是背景字段下唯一必须的字段，用于指定文本颜色
-                fill: '#29A294',
+                fill: '#CED4DE',
               };
             },
           },

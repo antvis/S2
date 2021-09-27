@@ -24,7 +24,7 @@ fetch('../data/basic.json')
             mapping(fieldValue, data) {
               return {
                 // fill 是文本字段标记下唯一必须的字段，用于指定文本颜色
-                fill: 'blue',
+                fill: '#5B8FF9',
               };
             },
           },

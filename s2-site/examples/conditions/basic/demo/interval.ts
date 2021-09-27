@@ -23,7 +23,7 @@ fetch('../data/basic.json')
             field: 'price',
             mapping(fieldValue, data) {
               return {
-                fill: '#29A294',
+                fill: '#61DDAA',
                 // 自定义柱状图范围
                 isCompare: true,
                 maxValue: 20,
@@ -35,7 +35,7 @@ fetch('../data/basic.json')
             field: 'cost',
             mapping(fieldValue, data) {
               return {
-                fill: '#FF4D4F',
+                fill: '#F6BD16',
               };
             },
           },
