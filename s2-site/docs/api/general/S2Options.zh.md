@@ -1,8 +1,6 @@
 ---
-title: Options
+title: S2Options
 order: 1
-redirect_from:
-  - /zh/docs/api
 ---
 
 ## 交叉表所有配置项相关
