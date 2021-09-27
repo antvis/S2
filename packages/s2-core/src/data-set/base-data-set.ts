@@ -38,7 +38,7 @@ export abstract class BaseDataSet {
   public totalData: DataType[];
 
   // multidimensional array to indexes data
-  public indexesData: DataType[][] | DataType[];
+  public indexesData: DataType[][] | DataType[] | DataType;
 
   // 高级排序, 组内排序
   public sortParams: SortParams;
