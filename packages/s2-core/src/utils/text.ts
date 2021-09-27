@@ -23,7 +23,7 @@ const ctx = canvas.getContext('2d');
 export const measureTextWidth = memoize(
   (text: number | string = '', font: unknown): number => {
     if (!font) {
-      return;
+      return 0;
     }
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
       font as CSSStyleDeclaration;
