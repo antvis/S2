@@ -72,6 +72,14 @@ module.exports = {
         },
         order: 3,
       },
+      {
+        slug: 'manual/total',
+        title: {
+          zh: '小计总计',
+          en: 'Total',
+        },
+        order: 4,
+      },
     ],
     // demo配置
     examples: [
@@ -98,7 +106,7 @@ module.exports = {
           zh: '交互',
           en: 'Interaction',
         },
-      },
+      }
     ],
     // 编辑器配置
     playground: {
