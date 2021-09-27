@@ -1,5 +1,5 @@
 import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
-import { Palette, SpreadSheetTheme, ThemeCfg } from '../common/interface';
+import { Palette, S2Theme, ThemeCfg } from '../common/interface';
 import { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
@@ -10,9 +10,8 @@ import { getPalette } from '../utils/theme';
  */
 export const getTheme = (
   themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
-): SpreadSheetTheme => {
-  const themePalette: Palette =
-    themeCfg?.palette || getPalette(themeCfg?.name, themeCfg?.hueInvert);
+): S2Theme => {
+  const themePalette: Palette = themeCfg?.palette || getPalette(themeCfg?.name);
   const { brandColors, grayColors, semanticColors } = themePalette;
   const isTable = themeCfg?.spreadsheet?.isTableMode();
 
@@ -59,7 +58,6 @@ export const getTheme = (
       },
       icon: {
         fill: brandColors[0],
-        radius: 4,
         size: 12,
         margin: {
           right: 10,
@@ -129,7 +127,6 @@ export const getTheme = (
       },
       icon: {
         fill: brandColors[0],
-        radius: 4,
         size: 12,
         margin: {
           right: 4,
@@ -195,14 +192,9 @@ export const getTheme = (
             opacity: 0.3,
           },
         },
-        /* ---------- expand icon ----------- */
-        expandIcon: {
-          size: 24,
-        },
       },
       icon: {
         fill: brandColors[0],
-        radius: 4,
         size: 12,
         margin: {
           right: 4,
@@ -290,7 +282,6 @@ export const getTheme = (
         fill: brandColors[0],
         downIconColor: semanticColors.red,
         upIconColor: semanticColors.green,
-        radius: 4,
         size: 10,
         margin: {
           right: 4,
@@ -346,5 +337,5 @@ export const getTheme = (
       color: grayColors[0],
       opacity: 1,
     },
-  } as SpreadSheetTheme;
+  } as S2Theme;
 };

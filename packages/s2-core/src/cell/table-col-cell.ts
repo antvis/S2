@@ -7,7 +7,7 @@ import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-ic
 import { getEllipsisText, getTextPosition } from '@/utils/text';
 import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
-import { CellBoxCfg, CellTheme } from '@/common/interface';
+import { CellBoxCfg, DefaultCellTheme, IconTheme } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 
 export class TableColCell extends ColCell {
@@ -145,9 +145,9 @@ export class TableColCell extends ColCell {
     );
   }
 
-  private getExpandIconTheme(): CellTheme {
-    const cellTheme = this.getStyle();
-    return cellTheme.cell.expandIcon;
+  private getExpandIconTheme(): IconTheme {
+    const themeCfg = this.getStyle() as DefaultCellTheme;
+    return themeCfg.icon;
   }
 
   private addExpandColumnSplitLine() {
