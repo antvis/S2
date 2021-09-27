@@ -197,7 +197,7 @@ export interface S2Theme extends CellThemes {
   /* 画布背景底色 */
   background?: Background;
   /* 额外属性字段 */
-  [key: string]: unknown;
+  [key: string]: any;
 }
 
 export type ThemeName = 'default' | 'simple' | 'colorful';
