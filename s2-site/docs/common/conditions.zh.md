@@ -31,7 +31,7 @@ order: 2
 
 ```typescript
 type MappingFunction = (
-  fieldValue: number,
+  fieldValue: number | string | null,
   data: Record<string, any>
 ) => {
   // 仅用于图标字段标记，可选

@@ -1,4 +1,4 @@
-import { PivotSheet } from '@antv/s2';
+import { TableSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
@@ -9,9 +9,7 @@ fetch(
     const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price', 'cost'],
+        columns: ['city', 'type', 'price', 'cost'],
       },
       data,
     };
@@ -20,16 +18,12 @@ fetch(
       width: 800,
       height: 600,
       conditions: {
-        interval: [
+        text: [
           {
             field: 'price',
             mapping(fieldValue, data) {
               return {
-                fill: '#61DDAA',
-                // 自定义柱状图范围
-                isCompare: true,
-                maxValue: 20,
-                minValue: 5,
+                fill: '#30BF78',
               };
             },
           },
@@ -37,14 +31,14 @@ fetch(
             field: 'cost',
             mapping(fieldValue, data) {
               return {
-                fill: '#F6BD16',
+                fill: '#F4664A',
               };
             },
           },
         ],
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new TableSheet(container, s2DataConfig, s2options);
 
     s2.render();
   });

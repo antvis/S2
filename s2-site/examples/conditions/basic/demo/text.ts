@@ -1,7 +1,9 @@
 import { PivotSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
-fetch('../data/basic.json')
+fetch(
+  'https://gw.alipayobjects.com/os/bmw-prod/d5eee4f7-7c09-4162-8651-9f0a16090a7c.json',
+)
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');
