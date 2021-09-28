@@ -33,7 +33,9 @@ class ContextMenuInteraction extends BaseEvent {
   }
 }
 
-fetch('./data/basic.json')
+fetch(
+  'https://gw.alipayobjects.com/os/bmw-prod/94a016a4-6672-41b1-aef3-8f6094cd2c18.json',
+)
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');

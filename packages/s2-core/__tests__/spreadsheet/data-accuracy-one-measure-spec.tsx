@@ -160,7 +160,7 @@ const wrapComponent = (text, component) => {
   );
 };
 
-function MainLayout(props) {
+function MainLayout() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {wrapComponent(

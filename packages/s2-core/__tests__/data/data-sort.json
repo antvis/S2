@@ -193,7 +193,7 @@
       "cost": "32"
     }
   ],
-  "demissions": [
+  "demission": [
     {
       "field": "province",
       "name": "省份",

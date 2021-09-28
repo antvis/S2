@@ -65,12 +65,28 @@ module.exports = {
         order: 2,
       },
       {
+        slug: 'manual/basic',
+        title: {
+          zh: '基础教程',
+          en: 'Basic tutorial',
+        },
+        order: 3,
+      },
+      {
         slug: 'manual/interaction',
         title: {
           zh: '交互',
           en: 'Interaction',
         },
-        order: 3,
+        order: 4,
+      },
+      {
+        slug: 'manual/total',
+        title: {
+          zh: '小计总计',
+          en: 'Total',
+        },
+        order: 4,
       },
     ],
     // demo配置
@@ -92,11 +108,27 @@ module.exports = {
         },
       },
       {
+        slug: 'conditions',
+        icon: 'facet',
+        title: {
+          zh: '字段标记',
+          en: 'Conditions',
+        },
+      },
+      {
         slug: 'interaction',
         icon: 'facet',
         title: {
           zh: '交互',
           en: 'Interaction',
+        },
+      },
+      {
+        slug: 'total',
+        icon: 'facet',
+        title: {
+          zh: '小计总计',
+          en: 'Total',
         },
       },
     ],

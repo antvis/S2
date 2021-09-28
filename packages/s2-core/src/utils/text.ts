@@ -11,7 +11,7 @@ import {
 } from 'lodash';
 import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
 import { CellBoxCfg, CellCfg, TooltipPosition } from '@/common/interface';
-import { S2Options, SpreadSheetTheme } from '@/index';
+import { S2Options, S2Theme } from '@/index';
 import { renderText } from '@/utils/g-renders';
 
 const canvas = document.createElement('canvas');
@@ -268,7 +268,7 @@ const getStyle = (
   colIndex: number,
   value: string | number,
   options: S2Options,
-  theme: SpreadSheetTheme,
+  theme: S2Theme,
 ) => {
   const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
   const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
