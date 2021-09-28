@@ -80,8 +80,6 @@ export enum S2Event {
   GLOBAL_ACTION_ICON_CLICK = 'global:action-icon-click',
   GLOBAL_ACTION_ICON_HOVER = 'global:action-icon-hover',
   GLOBAL_CONTEXT_MENU = 'global:context-menu',
-  /** ================ Global Select All ================  */
-  GLOBAL_SELECT_ALL = 'global:select-all',
   GLOBAL_SELECTED = 'global:selected',
   GLOBAL_HOVER = 'global:hover',
   GLOBAL_RESET = 'global:reset',

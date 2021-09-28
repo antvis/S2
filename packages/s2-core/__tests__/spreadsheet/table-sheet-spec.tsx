@@ -146,7 +146,7 @@ function MainLayout({ callback }) {
     s2Ref.current.on(S2Event.GLOBAL_KEYBOARD_DOWN, (e) => {
       if (e.key === 'a' && e.metaKey) {
         e.preventDefault();
-        s2Ref.current.emit(S2Event.GLOBAL_SELECT_ALL);
+        s2Ref.current.interaction.selectAll();
       }
     });
 

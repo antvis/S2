@@ -44,7 +44,6 @@ export interface EmitterType {
   [S2Event.GLOBAL_ACTION_ICON_CLICK]: CanvasEventHandler;
   [S2Event.GLOBAL_ACTION_ICON_HOVER]: CanvasEventHandler;
   [S2Event.GLOBAL_COPIED]: (data: string) => void;
-  [S2Event.GLOBAL_SELECT_ALL]: () => void;
   [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
   [S2Event.GLOBAL_KEYBOARD_UP]: KeyboardEventHandler;
   [S2Event.GLOBAL_MOUSE_UP]: MouseEventHandler;

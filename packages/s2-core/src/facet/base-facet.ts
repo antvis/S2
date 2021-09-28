@@ -185,7 +185,6 @@ export abstract class BaseFacet {
   bindEvents = () => {
     this.onContainerWheel();
     this.emitPaginationEvent();
-    this.onSelectAll();
   };
 
   /**
@@ -304,14 +303,6 @@ export abstract class BaseFacet {
         current,
       });
     }
-  };
-
-  onSelectAll = () => {
-    this.spreadsheet.on(S2Event.GLOBAL_SELECT_ALL, () => {
-      this.spreadsheet.interaction.changeState({
-        stateName: InteractionStateName.ALL_SELECTED,
-      });
-    });
   };
 
   unbindEvents = () => {
