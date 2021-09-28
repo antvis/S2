@@ -15,8 +15,8 @@ jobs:
 
       - name: build
         run: |
-          yarn run site:bootstrap
-          yarn run site:build
+          yarn site:bootstrap
+          yarn site:build
       - name: upload dist artifact
         uses: actions/upload-artifact@v2
         with:

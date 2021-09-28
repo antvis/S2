@@ -11,6 +11,14 @@
         "en": "Sort mode"
       },
       "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*drQtQbdS-6wAAAAAAAAAAAAAARQnAQ"
+    },
+    {
+      "filename": "table.ts",
+      "title": {
+        "zh": "明细表模式",
+        "en": "Table mode"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*rUnvRKlKL0wAAAAAAAAAAAAAARQnAQ"
     }
   ]
 }

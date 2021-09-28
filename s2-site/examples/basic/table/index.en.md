@@ -1,6 +1,5 @@
 ---
-title: Basic Detail Table
-order: 1
+title: Basic table
+order: 2
 ---
-
 

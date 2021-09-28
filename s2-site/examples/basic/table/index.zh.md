@@ -1,6 +1,6 @@
 ---
-title: 基础明细表格
-order: 1
+title: 基础明细表
+order: 2
 ---
 
 

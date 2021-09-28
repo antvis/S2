@@ -7,11 +7,11 @@ export class TableDataCell extends DataCell {
   }
 
   protected drawLinkFieldShape() {
-    const { linkFieldIds = [] } = this.spreadsheet.options;
+    const { linkFields = [] } = this.spreadsheet.options;
     const linkTextFill = this.theme.rowCell.text.linkTextFill;
 
     super.drawLinkFieldShape(
-      linkFieldIds.includes(this.meta.valueField),
+      linkFields.includes(this.meta.valueField),
       linkTextFill,
     );
   }
