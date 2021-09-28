@@ -1,6 +1,6 @@
 import { ReloadOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { isEmpty } from 'lodash';
+import { isNil } from 'lodash';
 import cx from 'classnames';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import {
@@ -115,7 +115,7 @@ export const SwitcherContent = forwardRef(
           >
             {SWITCHER_FIELDS.map(
               (type) =>
-                isEmpty(defaultState[type]) || (
+                isNil(defaultFields[type]) || (
                   <Dimension
                     {...defaultFields[type]}
                     fieldType={type}
