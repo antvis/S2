@@ -5,122 +5,119 @@ redirect_from:
   - /zh/docs/manual
 ---
 
-# 简介
+## ✨ 特性
 
-**特设功能：**
+1. 多维交叉分析： 告别单一分析维度，全面拥抱任意维度的自由组合分析。
+2. 高性能：能支持全量百万数据下 `<8s` 渲染，也能通过局部下钻来实现秒级渲染。
+3. 高扩展性：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据 hook 流等）。
+4. 开箱即用：提供不同分析场景下开箱即用的 react 表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景的表渲染。
+5. 可交互：支持丰富的交互形式（单选、圈选、行选、列选、冻结行头、宽高拖拽，自定义交互等）
 
-- ✨ 丰富的交互形式（单选、圈选、行选、列选、隐藏、冻结行头、宽高拖拽，自定义交互等）；
-- 🌈 极致的性能体验，支持 1w 行 x 2w 列 不卡顿，[性能对比]()；
-- 🎨 支持组内排序、高级排序；
-- 📦 支持丰富条件格式（文本、背景色、数据条、图标）；
-- 🛡 支持主题样式配置、树状下钻、明细模式、分页等；
-- ⚙️ 支持高度的自定义扩展能力（大部分模块都可自定义）
+## 📦 安装
 
-**高级功能：**
-
-- ✂️ 提供整个声明周期流程各个节点 Hook 的能力
-- ⛓ 提供不同级别的核心类的抽象定制能力
-
-## 安装
-
-```typescript
-yarn add @antv/s2
+```bash
+$ npm install @antv/s2
+# yarn add @antv/s2
 ```
 
-### 快速上手
+## 🔨 使用
 
-首先需要准备一个表挂载的容器 DOM 容器
+### 1. 数据准备
 
-```typescript
+<details>
+  <summary> s2DataConfig</summary>
+
+```ts
+const s2DataConfig = {
+  fields: {
+    rows: ['province', 'city'],
+    columns: ['type'],
+    values: ['price'],
+  },
+  data: [
+     {
+      province: '浙江',
+      city: '杭州',
+      type: '笔',
+      price: '1',
+    },
+    {
+      province: '浙江',
+      city: '杭州',
+      type: '纸张',
+      price: '2',
+    },
+    {
+      province: '浙江',
+      city: '舟山',
+      type: '笔',
+      price: '17',
+    },
+    {
+      province: '浙江',
+      city: '舟山',
+      type: '纸张',
+      price: '0.5',
+    },
+    {
+      province: '吉林',
+      city: '丹东',
+      type: '笔',
+      price: '8',
+    },
+    {
+      province: '吉林',
+      city: '白山',
+      type: '笔',
+      price: '9',
+    },
+    {
+      province: '吉林',
+      city: '丹东',
+      type: ' 纸张',
+      price: '3',
+    },
+    {
+      province: '吉林',
+      city: '白山',
+      type: '纸张',
+      price: '1',
+    },
+  ],
+};
+```
+
+</details>
+
+### 2. 配置项准备
+
+```ts
+const s2options = {
+  width: 800,
+  height: 600,
+}
+```
+
+### 3. 渲染
+
+```html
 <div id="container"></div>
 ```
 
-> 准备一份数据 (csv 或者对象数组） [tableau-supermarket.csv]()
+```ts
+import { PivotSheet } from '@antv/s2';
+import '@antv/s2/dist/s2.min.css'
 
-#### 组件方式引入
+const container = document.getElementById('container');
 
-```typescript
-import { dsvFormat } from 'd3-dsv'; // 格式化 csv 格式数据为对象数组
+const s2 = new PivotSheet(container, s2DataConfig, s2options)
 
-// 1、获取原始数据
-const data = dsvFormat(',').parse（文件数据流）
-// 2、数据相关配置
-const dataCfg = {
-   fields: {
-      rows: ['area', 'province', 'city'],
-      columns: ['type', 'sub_type'],
-      values: ['profit', 'count']
-    },
-    meta: [
-      {
-        field: 'count',
-        name: '销售个数',
-        formatter: (v) => v
-      },
-      {
-        field: 'profit',
-        name: '利润',
-        formatter: (v) => v
-      },
-    ],
-    data,
-}
-
-// 3、渲染参数相关配置
-const options = {
-  width: 800,
-  height: 660,
-  hierarchyType: 'grid',
-  showSeriesNumber: true,
-  mode: 'pivot',
-  style: {
-    treeRowsWidth: 100,
-      collapsedRows: {},
-      colCfg: {
-        widthByFieldValue: {},
-        heightByField: {},
-        colWidthType: 'compact'
-      },
-      cellCfg: {
-        height: 32
-      },
-      device: 'pc'
-  }
-}
-
-// 4、准备底层表实体
-const getSpreadSheet = (dom: string | HTMLElement, dataCfg: DataCfg, options: SpreadsheetOptions) => {
-  return new SpreadSheet(dom, dataCfg, options);
-};
-
-// 5、开始渲染表
-ReactDOM.render(
-<reactComponent
-        dataCfg={dataCfg}
-        options={options}
-        spreadsheet={getSpreadSheet}
-      />,
-       ’#container‘);
-
+s2.render()
 ```
 
-#### 库方式引入
+### 4. 结果
 
-与 [组件引入方式](#UWOYd) 只有第四、五步不同
-
-```typescript
-import { SpreadSheet } from '';
-
-// 4、根据配置创建表实例
-const spreadsheet = new SpreadSheet('container', dataCfg, options);
-
-// 5、开始渲染
-spreadsheet.render();
-```
-
-#### 最终渲染样式
-
-![image.png](https://intranetproxy.alipay.com/skylark/lark/0/2020/png/60482/1599481177077-35d79073-067f-480b-b7bb-205960225eae.png#align=left&display=inline&height=433&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1082&originWidth=1748&size=188209&status=done&style=none&width=699)
+<playground path='basic/pivot/demo/grid.ts' rid='container' height='300'></playground>
 
 ### 本地开发
 
