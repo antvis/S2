@@ -1,4 +1,4 @@
-import { each, orderBy } from 'lodash';
+import { each, orderBy, filter, includes } from 'lodash';
 import { CellDataParams, DataType } from './interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
 import { S2DataConfig } from '@/common/interface';
@@ -34,9 +34,9 @@ export class TableDataSet extends BaseDataSet {
     each(this.filterParams, ({ filterKey, filteredValues }) => {
       this.displayData = [
         ...this.getStartRows(),
-
-        ...displayData.filter(
-          (row) => row[filterKey] && !filteredValues.includes(row[filterKey]),
+        ...filter(
+          displayData,
+          (row) => row[filterKey] && !includes(filteredValues, row[filterKey]),
         ),
         ...this.getEndRows(),
       ];

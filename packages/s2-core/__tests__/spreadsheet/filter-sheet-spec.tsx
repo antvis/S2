@@ -65,7 +65,6 @@ function MainLayout() {
     data,
   } as unknown as S2DataConfig;
 
-  console.log('filter');
   const options: S2Options = {
     width: 800,
     height: 600,
