@@ -131,6 +131,14 @@ module.exports = {
           en: 'Total',
         },
       },
+      {
+        slug: 'analysis',
+        icon: 'facet',
+        title: {
+          zh: '分析组件',
+          en: 'Analyze component',
+        },
+      },
     ],
     // 编辑器配置
     playground: {
