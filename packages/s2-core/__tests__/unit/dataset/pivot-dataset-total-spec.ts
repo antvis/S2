@@ -231,20 +231,20 @@ describe('Pivot Dataset Total Test', () => {
           sub_type: '桌子',
           [EXTRA_FIELD]: 'price',
         }),
-      ).toHaveLength(11);
+      ).toHaveLength(8);
 
       expect(
         dataSet.getMultiData({
           type: '家具',
           [EXTRA_FIELD]: 'price',
         }),
-      ).toHaveLength(33);
+      ).toHaveLength(16);
 
       expect(
         dataSet.getMultiData({
           [EXTRA_FIELD]: 'price',
         }),
-      ).toHaveLength(77);
+      ).toHaveLength(32);
     });
 
     test('getDimensionValues function', () => {
