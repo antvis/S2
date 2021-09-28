@@ -86,8 +86,8 @@ module.exports = {
           zh: '小计总计',
           en: 'Total',
         },
-        order: 4,
-      },
+        order: 5,
+      }
     ],
     // demo配置
     examples: [
