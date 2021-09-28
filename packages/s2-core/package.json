@@ -75,7 +75,7 @@
   "bundlesize": [
     {
       "path": "./dist/s2.min.js",
-      "maxSize": "120 kB"
+      "maxSize": "200 kB"
     },
     {
       "path": "./dist/s2.min.css",
