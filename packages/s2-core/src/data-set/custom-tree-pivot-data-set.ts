@@ -5,13 +5,15 @@ import { S2DataConfig } from '@/common/interface';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import { 
   getDataPath,
+  getQueryDimValues,
 } from '@/utils/dataset/pivot-data-set';
+
 export class CustomTreePivotDataSet extends PivotDataSet {
   getCellData(params: CellDataParams): DataType {
     const { query } = params;
     const { columns, rows } = this.fields;
-    const rowDimensionValues = this.getQueryDimValues(rows, query);
-    const colDimensionValues = this.getQueryDimValues(columns, query);
+    const rowDimensionValues = getQueryDimValues(rows, query);
+    const colDimensionValues = getQueryDimValues(columns, query);
     const path = getDataPath({ 
       rowDimensionValues, 
       colDimensionValues,

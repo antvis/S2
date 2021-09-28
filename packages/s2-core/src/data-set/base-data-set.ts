@@ -53,8 +53,8 @@ export abstract class BaseDataSet {
   /**
    * 查找字段信息
    */
-  public getFieldMeta = memoize((field: string): Meta => {
-    return find(this.meta, (m: Meta) => m.field === field);
+  public getFieldMeta = memoize((field: string, meta: Meta[]): Meta => {
+    return find(this.meta || meta, (m: Meta) => m.field === field);
   });
 
   /**
@@ -62,7 +62,7 @@ export abstract class BaseDataSet {
    * @param field
    */
   public getFieldName(field: string): string {
-    return get(this.getFieldMeta(field), 'name', field);
+    return get(this.getFieldMeta(field, this.meta), 'name', field);
   }
 
   /**
@@ -70,7 +70,7 @@ export abstract class BaseDataSet {
    * @param field
    */
   public getFieldFormatter(field: string): Formatter {
-    return get(this.getFieldMeta(field), 'formatter', identity);
+    return get(this.getFieldMeta(field, this.meta), 'formatter', identity);
   }
 
   public setDataCfg(dataCfg: S2DataConfig) {

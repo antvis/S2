@@ -113,22 +113,22 @@ export const translateGroup = (
   scrollX: number,
   scrollY: number,
 ) => {
-  const matrix = group.getMatrix();
+  const matrix = group?.getMatrix();
   const preX = matrix?.[6] ?? 0;
   const preY = matrix?.[7] ?? 0;
-  group.translate(scrollX - preX, scrollY - preY);
+  group?.translate(scrollX - preX, scrollY - preY);
 };
 
 export const translateGroupX = (group: IGroup, scrollX: number) => {
-  const matrix = group.getMatrix();
+  const matrix = group?.getMatrix();
   const preX = matrix?.[6] ?? 0;
-  group.translate(scrollX - preX, 0);
+  group?.translate(scrollX - preX, 0);
 };
 
 export const translateGroupY = (group: IGroup, scrollY: number) => {
-  const matrix = group.getMatrix();
+  const matrix = group?.getMatrix();
   const preY = matrix?.[7] ?? 0;
-  group.translate(0, scrollY - preY);
+  group?.translate(0, scrollY - preY);
 };
 
 /**
