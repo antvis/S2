@@ -117,7 +117,10 @@ export class DataCell extends BaseCell<ViewMeta> {
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
     const cells = this.spreadsheet.interaction.getCells();
-
+    if (stateName === InteractionStateName.ALL_SELECTED) {
+      this.updateByState(InteractionStateName.SELECTED);
+      return;
+    }
     if (isEmpty(cells) || !stateName) {
       return;
     }

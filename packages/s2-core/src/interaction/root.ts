@@ -192,6 +192,12 @@ export class RootInteraction {
     );
   }
 
+  public selectAll = () => {
+    this.spreadsheet.interaction.changeState({
+      stateName: InteractionStateName.ALL_SELECTED,
+    });
+  };
+
   /**
    * 注册交互（组件按自己的场景写交互，继承此方法注册）
    * @param options
