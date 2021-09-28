@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "小计总计",
+    "en": "Total"
+  },
+  "demos": [
+    {
+      "filename": "basic.ts",
+      "title": {
+        "zh": "单个数值汇总",
+        "en": "Single Value Total"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+    },
+    {
+      "filename": "multiple-values.ts",
+      "title": {
+        "zh": "多个数值汇总",
+        "en": "Multiple Value Total"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+    }
+  ]
+}

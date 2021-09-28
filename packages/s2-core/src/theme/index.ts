@@ -1,5 +1,5 @@
 import { FONT_FAMILY, MINI_BAR_CHART_HEIGHT } from '../common/constant';
-import { Palette, SpreadSheetTheme, ThemeCfg } from '../common/interface';
+import { Palette, S2Theme, ThemeCfg } from '../common/interface';
 import { SpreadSheet } from '../sheet-type';
 import { isMobile, isWindows } from '../utils/is-mobile';
 import { getPalette } from '../utils/theme';
@@ -10,10 +10,9 @@ import { getPalette } from '../utils/theme';
  */
 export const getTheme = (
   themeCfg: Omit<ThemeCfg, 'theme'> & { spreadsheet?: SpreadSheet },
-): SpreadSheetTheme => {
-  const themePalette: Palette =
-    themeCfg?.palette || getPalette(themeCfg?.name, themeCfg?.hueInvert);
-  const { brandColors, grayColors, semanticColors } = themePalette;
+): S2Theme => {
+  const themePalette: Palette = themeCfg?.palette || getPalette(themeCfg?.name);
+  const { basicColors, semanticColors } = themePalette;
   const isTable = themeCfg?.spreadsheet?.isTableMode();
 
   return {
@@ -23,7 +22,7 @@ export const getTheme = (
         fontFamily: FONT_FAMILY,
         fontSize: 14,
         fontWeight: isWindows() ? 'bold' : '520',
-        fill: brandColors[0],
+        fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
@@ -32,19 +31,19 @@ export const getTheme = (
         fontFamily: FONT_FAMILY,
         fontSize: 14,
         fontWeight: 'normal',
-        fill: brandColors[0],
+        fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[3],
+        backgroundColor: basicColors[3],
         backgroundColorOpacity: 1,
         // ----------- border color --------------
-        horizontalBorderColor: grayColors[2],
+        horizontalBorderColor: basicColors[10],
         horizontalBorderColorOpacity: 1,
-        verticalBorderColor: grayColors[2],
+        verticalBorderColor: basicColors[10],
         verticalBorderColorOpacity: 1,
         // ----------- border width --------------
         horizontalBorderWidth: 1,
@@ -58,8 +57,7 @@ export const getTheme = (
         },
       },
       icon: {
-        fill: brandColors[0],
-        radius: 4,
+        fill: basicColors[0],
         size: 12,
         margin: {
           right: 10,
@@ -72,8 +70,8 @@ export const getTheme = (
         fontFamily: FONT_FAMILY,
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : '520',
-        fill: grayColors[6],
-        linkTextFill: brandColors[6],
+        fill: basicColors[14],
+        linkTextFill: basicColors[14],
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
@@ -82,20 +80,20 @@ export const getTheme = (
         fontFamily: FONT_FAMILY,
         fontSize: 12,
         fontWeight: 'normal',
-        fill: grayColors[6],
-        linkTextFill: brandColors[6],
+        fill: basicColors[14],
+        linkTextFill: basicColors[6],
         opacity: 1,
         textBaseline: 'middle',
         textAlign: isTable ? 'center' : 'right', // default align center for row cell in table mode
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[1],
+        backgroundColor: basicColors[1],
         backgroundColorOpacity: 1,
         // ----------- bottom border color --------------
-        horizontalBorderColor: grayColors[1],
+        horizontalBorderColor: basicColors[9],
         horizontalBorderColorOpacity: 1,
-        verticalBorderColor: grayColors[1],
+        verticalBorderColor: basicColors[9],
         verticalBorderColorOpacity: 1,
         // ----------- bottom border width --------------
         horizontalBorderWidth: 1,
@@ -111,12 +109,12 @@ export const getTheme = (
         interactionState: {
           // -------------- hover -------------------
           hover: {
-            backgroundColor: brandColors[2],
+            backgroundColor: basicColors[2],
             backgroundOpacity: 1,
           },
           // -------------- selected -------------------
           selected: {
-            backgroundColor: brandColors[2],
+            backgroundColor: basicColors[2],
             backgroundOpacity: 1,
           },
           // -------------- unselected -------------------
@@ -128,8 +126,7 @@ export const getTheme = (
         },
       },
       icon: {
-        fill: brandColors[0],
-        radius: 4,
+        fill: basicColors[0],
         size: 12,
         margin: {
           right: 4,
@@ -143,7 +140,7 @@ export const getTheme = (
         fontFamily: FONT_FAMILY,
         fontSize: 14,
         fontWeight: isWindows() ? 'bold' : '520',
-        fill: brandColors[0],
+        fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
@@ -152,19 +149,19 @@ export const getTheme = (
         fontFamily: FONT_FAMILY,
         fontSize: 14,
         fontWeight: 'normal',
-        fill: brandColors[0],
+        fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
         textBaseline: 'middle',
       },
       cell: {
         // ----------- background color -----------
-        backgroundColor: brandColors[3],
+        backgroundColor: basicColors[3],
         backgroundColorOpacity: 1,
         // ----------- border color --------------
-        horizontalBorderColor: grayColors[2],
+        horizontalBorderColor: basicColors[10],
         horizontalBorderColorOpacity: 1,
-        verticalBorderColor: grayColors[2],
+        verticalBorderColor: basicColors[10],
         verticalBorderColorOpacity: 1,
         // ----------- border width --------------
         horizontalBorderWidth: 1,
@@ -180,12 +177,12 @@ export const getTheme = (
         interactionState: {
           // -------------- hover -------------------
           hover: {
-            backgroundColor: brandColors[4],
+            backgroundColor: basicColors[4],
             backgroundOpacity: 1,
           },
           // -------------- selected -------------------
           selected: {
-            backgroundColor: brandColors[4],
+            backgroundColor: basicColors[4],
             backgroundOpacity: 1,
           },
           // -------------- unselected -------------------
@@ -195,14 +192,9 @@ export const getTheme = (
             opacity: 0.3,
           },
         },
-        /* ---------- expand icon ----------- */
-        expandIcon: {
-          size: 24,
-        },
       },
       icon: {
-        fill: brandColors[0],
-        radius: 4,
+        fill: basicColors[0],
         size: 12,
         margin: {
           right: 4,
@@ -216,7 +208,7 @@ export const getTheme = (
         fontFamily: FONT_FAMILY,
         fontSize: 12,
         fontWeight: isWindows() ? 'bold' : '520',
-        fill: grayColors[5],
+        fill: basicColors[13],
         opacity: 1,
         textAlign: 'right',
         textBaseline: 'middle',
@@ -225,20 +217,20 @@ export const getTheme = (
         fontFamily: FONT_FAMILY,
         fontSize: 12,
         fontWeight: 'normal',
-        fill: grayColors[5],
+        fill: basicColors[13],
         opacity: 1,
         textAlign: 'right',
         textBaseline: 'middle',
       },
       cell: {
         // ----------- background color -----------
-        crossBackgroundColor: brandColors[1],
-        backgroundColor: grayColors[0],
+        crossBackgroundColor: basicColors[1],
+        backgroundColor: basicColors[8],
         backgroundColorOpacity: 1,
         // ----------- border color --------------
-        horizontalBorderColor: grayColors[1],
+        horizontalBorderColor: basicColors[9],
         horizontalBorderColorOpacity: 1,
-        verticalBorderColor: grayColors[1],
+        verticalBorderColor: basicColors[9],
         verticalBorderColorOpacity: 1,
         // ----------- border width --------------
         horizontalBorderWidth: 1,
@@ -254,19 +246,19 @@ export const getTheme = (
         interactionState: {
           // -------------- hover -------------------
           hover: {
-            backgroundColor: brandColors[2],
+            backgroundColor: basicColors[2],
             backgroundOpacity: 1,
           },
           // -------------- keep hover -------------------
           hoverFocus: {
-            backgroundColor: brandColors[2],
+            backgroundColor: basicColors[2],
             backgroundOpacity: 1,
-            borderColor: grayColors[6],
+            borderColor: basicColors[14],
             borderOpacity: 1,
           },
           // -------------- selected -------------------
           selected: {
-            backgroundColor: brandColors[2],
+            backgroundColor: basicColors[2],
             backgroundOpacity: 1,
           },
           // -------------- unselected -------------------
@@ -277,20 +269,19 @@ export const getTheme = (
           },
           // -------------- prepare select --------------
           prepareSelect: {
-            borderColor: grayColors[6],
+            borderColor: basicColors[14],
             borderOpacity: 1,
           },
         },
 
         // ------------- mini chart ---------------
         miniBarChartHeight: MINI_BAR_CHART_HEIGHT,
-        miniBarChartFillColor: brandColors[7],
+        miniBarChartFillColor: basicColors[7],
       },
       icon: {
-        fill: brandColors[0],
+        fill: basicColors[0],
         downIconColor: semanticColors.red,
         upIconColor: semanticColors.green,
-        radius: 4,
         size: 10,
         margin: {
           right: 4,
@@ -301,13 +292,13 @@ export const getTheme = (
     // resize active area
     resizeArea: {
       size: 3,
-      background: brandColors[7],
-      guidLineColor: brandColors[7],
+      background: basicColors[7],
+      guidLineColor: basicColors[7],
       backgroundOpacity: 0,
       /* ---------- interaction state ----------- */
       interactionState: {
         hover: {
-          backgroundColor: brandColors[7],
+          backgroundColor: basicColors[7],
           backgroundOpacity: 1,
         },
       },
@@ -323,10 +314,10 @@ export const getTheme = (
     },
     // ------------- split line -----------------
     splitLine: {
-      horizontalBorderColor: grayColors[4],
+      horizontalBorderColor: basicColors[12],
       horizontalBorderColorOpacity: 1,
       horizontalBorderWidth: 2,
-      verticalBorderColor: grayColors[3],
+      verticalBorderColor: basicColors[11],
       verticalBorderColorOpacity: 1,
       verticalBorderWidth: 2,
       showRightShadow: true,
@@ -338,13 +329,13 @@ export const getTheme = (
     },
     // ------------- prepareSelectMask -----------------
     prepareSelectMask: {
-      backgroundColor: brandColors[5],
+      backgroundColor: basicColors[5],
       backgroundOpacity: 0.3,
     },
     // ------------- canvas background
     background: {
-      color: grayColors[0],
+      color: basicColors[8],
       opacity: 1,
     },
-  } as SpreadSheetTheme;
+  } as S2Theme;
 };

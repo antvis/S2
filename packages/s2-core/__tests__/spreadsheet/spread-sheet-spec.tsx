@@ -61,7 +61,6 @@ function MainLayout() {
       current: 1,
     },
     tooltip: {
-      showTooltip: true,
       renderTooltip: (spreadsheet) => {
         return new CustomTooltip(spreadsheet);
       },
@@ -147,11 +146,11 @@ function MainLayout() {
   };
 
   const onColCellClick = (value: TargetCellInfo) => {
-    // const sheet = value?.viewMeta?.spreadsheet;
-    // sheet?.showTooltip({
-    //   position: { x: value.event.clientX, y: value.event.clientY },
-    //   element: ColCellClickTooltip,
-    // });
+    const sheet = value?.viewMeta?.spreadsheet;
+    sheet?.showTooltip({
+      position: { x: value.event.clientX, y: value.event.clientY },
+      element: ColCellClickTooltip,
+    });
   };
 
   return (

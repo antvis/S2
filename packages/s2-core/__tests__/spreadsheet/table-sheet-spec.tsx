@@ -167,7 +167,7 @@ function MainLayout({ callback }) {
     callback({
       setShowPagination,
     });
-  }, []);
+  }, [callback]);
 
   return (
     <Space direction="vertical">
