@@ -78,7 +78,15 @@ module.exports = {
           zh: '表形态',
           en: 'Sheet type',
         },
-        order: 0,
+        order: 1,
+      },
+      {
+        slug: 'manual/advanced',
+        title: {
+          zh: '高级教程',
+          en: 'Advanced tutorial',
+        },
+        order: 4,
       },
       {
         slug: 'manual/advanced/interaction',
@@ -129,6 +137,14 @@ module.exports = {
         title: {
           zh: '小计总计',
           en: 'Total',
+        },
+      },
+      {
+        slug: 'theme',
+        icon: 'gallery',
+        title: {
+          zh: '主题',
+          en: 'theme',
         },
       },
     ],
