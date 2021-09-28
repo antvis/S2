@@ -13,9 +13,25 @@ export interface SwitcherState {
   [FieldType.Values]?: SwitcherItem[];
 }
 
+export interface SwitcherField {
+  showExpandCheckbox?: boolean;
+  expandText?: string;
+  showItemCheckbox?: boolean;
+  items: SwitcherItem[];
+}
+
+export interface SwitcherFields {
+  [FieldType.Rows]?: SwitcherField;
+  [FieldType.Cols]?: SwitcherField;
+  [FieldType.Values]?: SwitcherField;
+}
+
+export interface SwitcherResultItem {
+  items: string[];
+  hideItems: string[];
+}
 export interface SwitcherResult {
-  [FieldType.Rows]: string[];
-  [FieldType.Cols]: string[];
-  [FieldType.Values]: string[];
-  hiddenValues: string[];
+  [FieldType.Rows]: SwitcherResultItem;
+  [FieldType.Cols]: SwitcherResultItem;
+  [FieldType.Values]: SwitcherResultItem;
 }

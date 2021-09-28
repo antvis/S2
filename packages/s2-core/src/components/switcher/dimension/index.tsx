@@ -1,28 +1,37 @@
 import cx from 'classnames';
-import React, { FC, ReactNode } from 'react';
+import React, { FC, useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { Checkbox } from 'antd';
 import { DroppableType, SWITCHER_CONFIG } from '../constant';
-import { SwitcherItem } from '../interface';
+import { SwitcherField, SwitcherItem } from '../interface';
 import { DimensionCommonProps, DimensionItem } from '../item';
 import { getSwitcherClassName } from '../util';
+import { i18n } from '@/common/i18n';
 import './index.less';
 
 const CLASS_NAME_PREFIX = 'dimension';
-interface DimensionProps extends DimensionCommonProps {
-  data: SwitcherItem[];
-  droppableType: DroppableType;
-  crossRows?: boolean;
-  option?: ReactNode;
-}
+type DimensionProps = SwitcherField &
+  DimensionCommonProps & {
+    droppableType: DroppableType;
+    crossRows?: boolean;
+  };
 
 export const Dimension: FC<DimensionProps> = ({
-  data,
   fieldType,
-  droppableType,
   crossRows,
-  option,
+  showExpandCheckbox,
+  expandText,
+  items,
+  droppableType,
   ...rest
 }) => {
+  const [expandChildren, setExpandChildren] = useState(false);
+
+  const onUpdateExpand = (event: CheckboxChangeEvent) => {
+    setExpandChildren(event.target.checked);
+  };
+
   const { text, icon: Icon } = SWITCHER_CONFIG[fieldType];
   return (
     <div
@@ -34,7 +43,12 @@ export const Dimension: FC<DimensionProps> = ({
         <div className="title">
           <Icon /> <span>{text}</span>
         </div>
-        {option}
+        {showExpandCheckbox && (
+          <div className={'expand-option'}>
+            <Checkbox checked={expandChildren} onChange={onUpdateExpand} />
+            <span className="description">{expandText}</span>
+          </div>
+        )}
       </div>
 
       <Droppable droppableId={fieldType} type={droppableType}>
@@ -49,12 +63,14 @@ export const Dimension: FC<DimensionProps> = ({
                 crossRows,
             })}
           >
-            {data.map((item: SwitcherItem, index: number) => (
+            {items.map((item: SwitcherItem, index: number) => (
               <DimensionItem
                 key={item.id}
                 index={index}
                 fieldType={fieldType}
                 item={item}
+                expandable={showExpandCheckbox}
+                expandChildren={expandChildren}
                 {...rest}
               />
             ))}
@@ -68,4 +84,8 @@ export const Dimension: FC<DimensionProps> = ({
 
 Dimension.defaultProps = {
   crossRows: false,
+  showExpandCheckbox: false,
+  expandText: i18n('展开同环比'),
+  showItemCheckbox: false,
+  items: [],
 };

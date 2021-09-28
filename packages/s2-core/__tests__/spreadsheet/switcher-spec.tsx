@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
-import { SheetEntry } from '../util/sheet-entry';
 import { Switcher } from '@/components/switcher';
-import { SwitcherItem } from '@/components/switcher/interface';
+import { SwitcherFields, SwitcherItem } from '@/components/switcher/interface';
+import 'antd/dist/antd.min.css';
 
 const mockRows: SwitcherItem[] = [
   { id: 'area', displayName: '区域' },
@@ -43,29 +43,30 @@ const mockValues: SwitcherItem[] = [
 ];
 
 function MainLayout() {
-  const [values, setValues] = useState(['cost', 'price', 'cost/price']);
-
+  const fields: SwitcherFields = {
+    rows: {
+      items: mockRows,
+    },
+    columns: {
+      items: mockCols,
+    },
+    values: {
+      showItemCheckbox: true,
+      showExpandCheckbox: true,
+      items: mockValues,
+    },
+  };
   return (
     <div>
       <div style={{ margin: '10px' }}>
         <Switcher
-          rows={mockRows}
-          cols={mockCols}
-          values={mockValues}
+          {...fields}
           onSubmit={(result) => {
             // eslint-disable-next-line no-console
             console.log('result: ', result);
           }}
         />
       </div>
-      <SheetEntry
-        dataCfg={{
-          fields: {
-            values: values,
-          },
-        }}
-        options={{}}
-      />
     </div>
   );
 }

@@ -15,7 +15,7 @@ import {
   TableSheet,
 } from '@/index';
 import { Switcher } from '@/components/switcher';
-import { SwitcherItem } from '@/components/switcher/interface';
+import { SwitcherFields } from '@/components/switcher/interface';
 
 let s2: TableSheet;
 
@@ -151,14 +151,18 @@ function MainLayout({ callback }) {
     };
   }, []);
 
-  const switcherValues: SwitcherItem[] = columns.map((field) => {
-    return {
-      id: field,
-      displayName: find(meta, { field })?.name,
-      checked: true,
-    };
-  });
-
+  const switcherFields: SwitcherFields = {
+    columns: {
+      showItemCheckbox: true,
+      items: columns.map((field) => {
+        return {
+          id: field,
+          displayName: find(meta, { field })?.name,
+          checked: true,
+        };
+      }),
+    },
+  };
   useEffect(() => {
     callback({
       setShowPagination,
@@ -169,11 +173,11 @@ function MainLayout({ callback }) {
     <Space direction="vertical">
       <Space>
         <Switcher
-          values={switcherValues}
+          {...switcherFields}
           onSubmit={(result) => {
             console.log('result: ', result);
-            const { hiddenValues } = result;
-            setHiddenColumnFields(hiddenValues);
+            const { hideItems } = result.columns;
+            setHiddenColumnFields(hideItems);
           }}
         />
         <Switch

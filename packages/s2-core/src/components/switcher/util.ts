@@ -1,11 +1,17 @@
-import { filter, flatten, isEmpty, map } from 'lodash';
+import { filter, flatten, isEmpty, map, mapValues } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
 import {
   FieldType,
   MAX_DIMENSION_COUNT,
   SWITCHER_PREFIX_CLS,
 } from './constant';
-import { SwitcherItem, SwitcherResult, SwitcherState } from './interface';
+import {
+  SwitcherItem,
+  SwitcherResult,
+  SwitcherState,
+  SwitcherFields,
+  SwitcherResultItem,
+} from './interface';
 import { getClassNameWithPrefix } from '@/utils/get-classnames';
 
 export const getSwitcherClassName = (...classNames: string[]) =>
@@ -30,11 +36,8 @@ export const getMainLayoutClassName = (nonEmptyCount: number) => {
   }
 };
 
-export const shouldDimensionCrossRows = (nonEmptyCount: number) =>
-  nonEmptyCount < MAX_DIMENSION_COUNT;
-
-export const isMeasureType = (fieldType: FieldType) =>
-  fieldType === FieldType.Values;
+export const shouldCrossRows = (nonEmptyCount: number, type: FieldType) =>
+  nonEmptyCount < MAX_DIMENSION_COUNT || type === FieldType.Values;
 
 export const moveItem = (
   source: SwitcherItem[],
@@ -92,30 +95,39 @@ export const checkItem = (
 };
 
 export const generateSwitchResult = (state: SwitcherState): SwitcherResult => {
-  const mapIds = (items: SwitcherItem[]) => map(items, 'id');
-  // rows and cols can't be hidden
-  const rows = mapIds(state[FieldType.Rows]);
-  const cols = mapIds(state[FieldType.Cols]);
+  const generateFieldResult = (items: SwitcherItem[]): SwitcherResultItem => {
+    const mapIds = (list: SwitcherItem[]) => map(list, 'id');
 
-  // flatten all values and derived values
-  const flattenValues = (items: SwitcherItem[]) =>
-    flatten(
-      map(items, (item) => {
-        return [
-          { id: item.id, checked: item.checked },
-          ...flattenValues(item.children),
-        ];
-      }),
+    const flattenValues = (list: SwitcherItem[]) =>
+      flatten(
+        map(list, (item) => {
+          return [
+            { id: item.id, checked: item.checked },
+            ...flattenValues(item.children),
+          ];
+        }),
+      );
+
+    const flattedValues = flattenValues(items);
+
+    const allItems = mapIds(flattedValues);
+
+    //  get all hidden values
+    const hideItems = mapIds(
+      filter(flattedValues, (item: SwitcherItem) => item.checked === false),
     );
+    return {
+      items: allItems,
+      hideItems,
+    };
+  };
 
-  const flattedValues = flattenValues(state[FieldType.Values]);
-
-  const values = mapIds(flattedValues);
-
-  //  get all hidden values
-  const hiddenValues = mapIds(
-    filter(flattedValues, (item: SwitcherItem) => item.checked === false),
-  );
-
-  return { rows, cols, values, hiddenValues };
+  return {
+    [FieldType.Rows]: generateFieldResult(state[FieldType.Rows]),
+    [FieldType.Cols]: generateFieldResult(state[FieldType.Cols]),
+    [FieldType.Values]: generateFieldResult(state[FieldType.Values]),
+  };
 };
+
+export const getSwitcherState = (fields: SwitcherFields): SwitcherState =>
+  mapValues(fields, 'items');
