@@ -216,7 +216,6 @@ describe('Pivot Dataset Total Test', () => {
       expect(dataSet.getMultiData(specialQuery)[0]).toContainEntries([
         [VALUE_FIELD, 1],
       ]);
-
       expect(
         dataSet.getMultiData({
           province: '浙江省',
@@ -224,7 +223,7 @@ describe('Pivot Dataset Total Test', () => {
           sub_type: '桌子',
           [EXTRA_FIELD]: 'price',
         }),
-      ).toHaveLength(5);
+      ).toHaveLength(4);
 
       expect(
         dataSet.getMultiData({

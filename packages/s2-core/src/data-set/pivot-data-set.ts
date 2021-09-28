@@ -15,6 +15,7 @@ import {
   uniq,
   values,
   map,
+  cloneDeep,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -306,7 +307,7 @@ export class PivotDataSet extends BaseDataSet {
 
   getCustomData = (path: number[]) => {
     let hadUndefined = false;
-    let currentData = this.indexesData;
+    let currentData:DataType | DataType[] | DataType[][] = cloneDeep(this.indexesData);
 
     for (let i = 0; i < path.length; i++) {
       const current = path[i];
@@ -321,8 +322,7 @@ export class PivotDataSet extends BaseDataSet {
       } else if (isUndefined(current)) {
         hadUndefined = true;
       } else {
-        // 数据结构变了，且不需要这个分支流程
-        // currentData = currentData?.[current];
+        currentData = currentData?.[current];
       }
     }
 
