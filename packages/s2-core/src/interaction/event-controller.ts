@@ -34,20 +34,20 @@ export class EventController {
   // 保存触发的元素
   private target: LooseObject;
 
-  private canvasEventHandlers: EventHandler[] = [];
+  public canvasEventHandlers: EventHandler[] = [];
 
-  private domEventListeners: EventListener[] = [];
+  public domEventListeners: EventListener[] = [];
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.bindEvents();
   }
 
-  private get canvasContainer(): Canvas {
+  public get canvasContainer(): Canvas {
     return this.spreadsheet.container;
   }
 
-  private bindEvents() {
+  public bindEvents() {
     this.clearAllEvents();
 
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
@@ -412,15 +412,14 @@ export class EventController {
     }
   }
 
-  private clearAllEvents() {
-    each(this.canvasEventHandlers, (eh) => {
-      this.canvasContainer.off(eh.type, eh.handler);
+  public clearAllEvents() {
+    each(this.canvasEventHandlers, ({ type, handler }) => {
+      this.canvasContainer?.off(type, handler);
     });
-    this.canvasEventHandlers.length = 0;
-
-    each(this.domEventListeners, (eh) => {
-      eh.target.removeEventListener(eh.type, eh.handler);
+    each(this.domEventListeners, (event) => {
+      event.target.removeEventListener(event.type, event.handler);
     });
-    this.domEventListeners.length = 0;
+    this.canvasEventHandlers = [];
+    this.domEventListeners = [];
   }
 }
