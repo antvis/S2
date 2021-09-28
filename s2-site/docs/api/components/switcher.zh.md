@@ -23,9 +23,9 @@ order: 2
 | 属性       | 类型            | 必选  | 默认值 | 功能描述   |
 | :---------- | :--------------- |  :---- | :------ | :---------- |
 | items       | `SwitcherItem[]`           |   ✓    | -   | 配置字段对象   |
-| showExpandCheckbox       | `boolean`           |       | `false`   | 是否打开展开子项的 checkbox 用于控制展开和隐藏子项   |
-| expandText | `string`          |      | `展开同环比`  | 展开子项的 checkbox 对应的文字   |
-| showItemCheckbox   | `boolean`           |      | `false`   | 是否打开字段的 checkbox用于控制显隐 |
+| expandable       | `boolean`           |       | `false`   | 是否打开展开子项的 checkbox 用于控制展开和隐藏子项   |
+| expandText | `string`          |      | `展开子项`  | 展开子项的 checkbox 对应的文字   |
+| selectable   | `boolean`           |      | `false`   | 是否打开字段的 checkbox用于控制显隐 |
 
 ## SwitcherItem
 
@@ -54,5 +54,5 @@ order: 2
 
 | 属性       | 类型            | 必选  | 默认值 | 功能描述   |
 | :---------- | :--------------- |  :---- | :------ | :---------- |
-| items       | `string[]`           |       | `[]`  | 全部字段 id 的集合，按拖拽后顺序排序   |
-| hideItems | `string[]`          |      | `[]`   | 所有需要隐藏字段 id 的集合，按拖拽后顺序排序   |
+| items       | `SwitcherItem[]`           |       | `[]`  |  全部字段的被**压平**集合，按拖拽后顺序排序   |
+| hideItems | `SwitcherItem[]`          |      | `[]`   | 所有需要隐藏字段被**压平**的集合，按拖拽后顺序排序   |

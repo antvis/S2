@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { getContainer } from '../util/helpers';
+import { getContainer } from 'tests/util/helpers';
 import { Switcher } from '@/components/switcher';
 import { SwitcherFields, SwitcherItem } from '@/components/switcher/interface';
 import 'antd/dist/antd.min.css';
@@ -51,8 +51,8 @@ function MainLayout() {
       items: mockCols,
     },
     values: {
-      showItemCheckbox: true,
-      showExpandCheckbox: true,
+      selectable: true,
+      expandable: true,
       items: mockValues,
     },
   };

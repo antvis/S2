@@ -8,7 +8,7 @@ import { DimensionCommonProps } from '.';
 const CLASS_NAME_PREFIX = 'item';
 
 type SingleItemProps = Omit<SwitcherItem, 'children'> &
-  Pick<SwitcherField, 'showItemCheckbox'> &
+  Pick<SwitcherField, 'selectable'> &
   DimensionCommonProps & {
     parentId?: string;
     disabled?: boolean;
@@ -19,7 +19,7 @@ export const SingleItem: FC<SingleItemProps> = ({
   fieldType,
   id,
   displayName,
-  showItemCheckbox,
+  selectable,
   checked,
   parentId,
   className,
@@ -41,7 +41,7 @@ export const SingleItem: FC<SingleItemProps> = ({
         unchecked: !checked,
       })}
     >
-      {showItemCheckbox && (
+      {selectable && (
         <Checkbox
           disabled={disabled}
           checked={checked}

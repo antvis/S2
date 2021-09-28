@@ -153,7 +153,7 @@ function MainLayout({ callback }) {
 
   const switcherFields: SwitcherFields = {
     columns: {
-      showItemCheckbox: true,
+      selectable: true,
       items: columns.map((field) => {
         return {
           id: field,
@@ -177,7 +177,7 @@ function MainLayout({ callback }) {
           onSubmit={(result) => {
             console.log('result: ', result);
             const { hideItems } = result.columns;
-            setHiddenColumnFields(hideItems);
+            setHiddenColumnFields(hideItems.map((i) => i.id));
           }}
         />
         <Switch

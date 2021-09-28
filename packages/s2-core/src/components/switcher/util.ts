@@ -96,25 +96,19 @@ export const checkItem = (
 
 export const generateSwitchResult = (state: SwitcherState): SwitcherResult => {
   const generateFieldResult = (items: SwitcherItem[]): SwitcherResultItem => {
-    const mapIds = (list: SwitcherItem[]) => map(list, 'id');
-
     const flattenValues = (list: SwitcherItem[]) =>
       flatten(
-        map(list, (item) => {
-          return [
-            { id: item.id, checked: item.checked },
-            ...flattenValues(item.children),
-          ];
+        map(list, ({ children, ...rest }) => {
+          return [{ ...rest }, ...flattenValues(children)];
         }),
       );
 
-    const flattedValues = flattenValues(items);
-
-    const allItems = mapIds(flattedValues);
+    const allItems = flattenValues(items);
 
     //  get all hidden values
-    const hideItems = mapIds(
-      filter(flattedValues, (item: SwitcherItem) => item.checked === false),
+    const hideItems = filter(
+      allItems,
+      (item: SwitcherItem) => item.checked === false,
     );
     return {
       items: allItems,

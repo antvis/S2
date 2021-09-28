@@ -256,9 +256,39 @@ describe('switcher util test', () => {
     });
     test('should return generate switch result when values have no children', () => {
       expect(generateSwitchResult(state)).toEqual({
-        rows: { items: ['r1', 'r2'], hideItems: [] },
-        columns: { items: ['c1', 'c2'], hideItems: [] },
-        values: { items: ['v1', 'v2'], hideItems: [] },
+        rows: {
+          items: [
+            {
+              id: 'r1',
+            },
+            {
+              id: 'r2',
+            },
+          ],
+          hideItems: [],
+        },
+        columns: {
+          items: [
+            {
+              id: 'c1',
+            },
+            {
+              id: 'c2',
+            },
+          ],
+          hideItems: [],
+        },
+        values: {
+          items: [
+            {
+              id: 'v1',
+            },
+            {
+              id: 'v2',
+            },
+          ],
+          hideItems: [],
+        },
       });
     });
 
@@ -279,10 +309,47 @@ describe('switcher util test', () => {
           id: 'v2',
         },
       ];
+
       expect(generateSwitchResult(state)).toEqual({
-        rows: { items: ['r1', 'r2'], hideItems: [] },
-        columns: { items: ['c1', 'c2'], hideItems: [] },
-        values: { items: ['v1', 'vc1', 'vc2', 'v2'], hideItems: [] },
+        rows: {
+          items: [
+            {
+              id: 'r1',
+            },
+            {
+              id: 'r2',
+            },
+          ],
+          hideItems: [],
+        },
+        columns: {
+          items: [
+            {
+              id: 'c1',
+            },
+            {
+              id: 'c2',
+            },
+          ],
+          hideItems: [],
+        },
+        values: {
+          items: [
+            {
+              id: 'v1',
+            },
+            {
+              id: 'vc1',
+            },
+            {
+              id: 'vc2',
+            },
+            {
+              id: 'v2',
+            },
+          ],
+          hideItems: [],
+        },
       });
     });
 
@@ -312,11 +379,63 @@ describe('switcher util test', () => {
         },
       ];
       expect(generateSwitchResult(state)).toEqual({
-        rows: { items: ['r1', 'r2'], hideItems: [] },
-        columns: { items: ['c1', 'c2'], hideItems: [] },
+        rows: {
+          items: [
+            {
+              id: 'r1',
+            },
+            {
+              id: 'r2',
+            },
+          ],
+          hideItems: [],
+        },
+        columns: {
+          items: [
+            {
+              id: 'c1',
+            },
+            {
+              id: 'c2',
+            },
+          ],
+          hideItems: [],
+        },
         values: {
-          items: ['v1', 'vc1', 'vc2', 'v2', 'vc3'],
-          hideItems: ['vc1', 'v2', 'vc3'],
+          items: [
+            {
+              id: 'v1',
+            },
+            {
+              id: 'vc1',
+              checked: false,
+            },
+            {
+              id: 'vc2',
+            },
+            {
+              id: 'v2',
+              checked: false,
+            },
+            {
+              id: 'vc3',
+              checked: false,
+            },
+          ],
+          hideItems: [
+            {
+              id: 'vc1',
+              checked: false,
+            },
+            {
+              id: 'v2',
+              checked: false,
+            },
+            {
+              id: 'vc3',
+              checked: false,
+            },
+          ],
         },
       });
     });

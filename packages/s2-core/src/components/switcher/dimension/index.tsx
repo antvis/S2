@@ -20,7 +20,7 @@ type DimensionProps = SwitcherField &
 export const Dimension: FC<DimensionProps> = ({
   fieldType,
   crossRows,
-  showExpandCheckbox,
+  expandable,
   expandText,
   items,
   droppableType,
@@ -43,7 +43,7 @@ export const Dimension: FC<DimensionProps> = ({
         <div className="title">
           <Icon /> <span>{text}</span>
         </div>
-        {showExpandCheckbox && (
+        {expandable && (
           <div className={'expand-option'}>
             <Checkbox checked={expandChildren} onChange={onUpdateExpand} />
             <span className="description">{expandText}</span>
@@ -69,7 +69,7 @@ export const Dimension: FC<DimensionProps> = ({
                 index={index}
                 fieldType={fieldType}
                 item={item}
-                expandable={showExpandCheckbox}
+                expandable={expandable}
                 expandChildren={expandChildren}
                 {...rest}
               />
@@ -84,8 +84,8 @@ export const Dimension: FC<DimensionProps> = ({
 
 Dimension.defaultProps = {
   crossRows: false,
-  showExpandCheckbox: false,
-  expandText: i18n('展开同环比'),
-  showItemCheckbox: false,
+  expandable: false,
+  expandText: i18n('展开子项'),
+  selectable: false,
   items: [],
 };

@@ -9,7 +9,7 @@ import { SingleItem } from './single-item';
 import './index.less';
 
 export interface DimensionCommonProps
-  extends Pick<SwitcherField, 'showItemCheckbox'> {
+  extends Pick<SwitcherField, 'selectable' | 'expandable'> {
   fieldType: FieldType;
   draggingItemId?: string;
   onVisibleItemChange: (
@@ -23,9 +23,7 @@ export interface DimensionCommonProps
 export type DimensionItemProps = DimensionCommonProps & {
   index: number;
   item: SwitcherItem;
-  expandable: boolean;
   expandChildren: boolean;
-  showItemCheckbox?: boolean;
 };
 
 export const DimensionItem: FC<DimensionItemProps> = ({
@@ -33,7 +31,7 @@ export const DimensionItem: FC<DimensionItemProps> = ({
   item: { id, displayName, checked = true, children = [] },
   expandable,
   expandChildren,
-  showItemCheckbox,
+  selectable,
   index,
   draggingItemId,
   onVisibleItemChange,
@@ -46,9 +44,7 @@ export const DimensionItem: FC<DimensionItemProps> = ({
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           className={cx(
-            getSwitcherClassName(
-              showItemCheckbox ? 'checkable-list' : 'normal-list',
-            ),
+            getSwitcherClassName(selectable ? 'checkable-list' : 'normal-list'),
             {
               'list-dragging': snapshot.isDragging,
             },
@@ -60,8 +56,8 @@ export const DimensionItem: FC<DimensionItemProps> = ({
             displayName={displayName}
             checked={checked}
             onVisibleItemChange={onVisibleItemChange}
-            showItemCheckbox={showItemCheckbox}
-            className={cx(showItemCheckbox ? 'checkable-item' : 'normal-item', {
+            selectable={selectable}
+            className={cx(selectable ? 'checkable-item' : 'normal-item', {
               'item-collapse': !expandChildren,
             })}
           />
@@ -84,7 +80,7 @@ export const DimensionItem: FC<DimensionItemProps> = ({
                     disabled={!checked}
                     checked={item.checked}
                     parentId={id}
-                    showItemCheckbox={showItemCheckbox}
+                    selectable={selectable}
                     onVisibleItemChange={onVisibleItemChange}
                     className="checkable-item"
                   />

@@ -1,10 +1,12 @@
 import { FieldType } from './constant';
 
+type SwitcherItemWithoutChildren = Omit<SwitcherItem, 'children'>;
+
 export interface SwitcherItem {
   id: string;
   displayName?: string;
   checked?: boolean;
-  children?: Omit<SwitcherItem, 'children'>[];
+  children?: SwitcherItemWithoutChildren[];
 }
 
 export interface SwitcherState {
@@ -14,9 +16,9 @@ export interface SwitcherState {
 }
 
 export interface SwitcherField {
-  showExpandCheckbox?: boolean;
+  expandable?: boolean;
   expandText?: string;
-  showItemCheckbox?: boolean;
+  selectable?: boolean;
   items: SwitcherItem[];
 }
 
@@ -27,8 +29,8 @@ export interface SwitcherFields {
 }
 
 export interface SwitcherResultItem {
-  items: string[];
-  hideItems: string[];
+  items: SwitcherItemWithoutChildren[];
+  hideItems: SwitcherItemWithoutChildren[];
 }
 export interface SwitcherResult {
   [FieldType.Rows]: SwitcherResultItem;
