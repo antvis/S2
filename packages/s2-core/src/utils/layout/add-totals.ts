@@ -17,7 +17,7 @@ export const addTotals = (params: TotalParams) => {
       func = totalsConfig.reverseLayout ? 'unshift' : 'push';
       value = new TotalClass(totalsConfig.label, false, true);
     }
-  } else if (totalsConfig.showSubTotals && size(fieldValues) > 1) {
+  } else if (totalsConfig?.showSubTotals && size(fieldValues) > 1) {
     if (currentField !== EXTRA_FIELD) {
       func = totalsConfig.reverseSubLayout ? 'unshift' : 'push';
       value = new TotalClass(totalsConfig.subLabel, true);

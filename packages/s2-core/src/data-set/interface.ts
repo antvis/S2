@@ -24,6 +24,8 @@ export type DataPathParams = {
   // use in row tree mode to append fields information
   rowFields?: string[];
   colFields?: string[];
+  rowPivotMeta?: PivotMeta;
+  colPivotMeta?: PivotMeta;
 };
 
 export interface CellDataParams {
