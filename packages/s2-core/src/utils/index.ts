@@ -4,3 +4,4 @@ export { measureTextWidth } from './text';
 export * from './drill-down/helper';
 export * from './export/index';
 export * from './interaction/merge-cells';
+export * from './g-renders';
