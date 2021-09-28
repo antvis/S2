@@ -87,7 +87,15 @@ module.exports = {
           en: 'Total',
         },
         order: 5,
-      }
+      },
+      {
+        slug: 'manual/analysis',
+        title: {
+          zh: '分析组件',
+          en: 'Analyze Component',
+        },
+        order: 6,
+      },
     ],
     // demo配置
     examples: [

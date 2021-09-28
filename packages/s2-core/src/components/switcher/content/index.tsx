@@ -40,7 +40,7 @@ export const SwitcherContent = forwardRef(
     const [state, setState] = useState<SwitcherState>(defaultState);
     const [draggingItemId, setDraggingItemId] = useState<string>(null);
 
-    const nonEmptyCount = getNonEmptyFieldCount(defaultState);
+    const nonEmptyCount = getNonEmptyFieldCount(defaultFields);
 
     const onBeforeDragStart = (initial: BeforeCapture) => {
       setDraggingItemId(initial.draggableId);
