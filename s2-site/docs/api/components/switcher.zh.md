@@ -9,16 +9,27 @@ order: 2
 
 | 属性       | 类型            | 必选  | 默认值 | 功能描述   |
 | :---------- | :--------------- |  :---- | :------ | :---------- |
-| rows       | `SwitcherItem[]`           |      | `[]`   | 行头配置描述   |
-| cols | `SwitcherItem[]`          |      | `[]`   | 列头配置描述   |
-| values   | `SwitcherItem[]`           |      | `[]`   | 指标配置描述 |
-| expandBtnText       | `string`       |      | `展开同环比`   | 展开按钮文字   |
-| resetBtnText       | `string`       |      | `恢复默认`   | 重置按钮文字   |
+| rows       | `SwitcherField`           |      | `[]`   | 行头配置描述   |
+| columns | `SwitcherField`          |      | `[]`   | 列头配置描述   |
+| values   | `SwitcherField`           |      | `[]`   | 指标配置描述 |
+| title       | `ReactNode`       |      | 默认按钮   |  打开切换弹窗的触发节点  |
+| resetText       | `string`       |      | `恢复默认`   | 重置按钮文字   |
 | onSubmit       | `(result: SwitcherResult) => void`       |      | -   | 关闭弹窗后，处理行列切换结果的回调函数   |
+
+## SwitcherField
+
+行列头以及指标值得配置描述对象
+
+| 属性       | 类型            | 必选  | 默认值 | 功能描述   |
+| :---------- | :--------------- |  :---- | :------ | :---------- |
+| items       | `SwitcherItem[]`           |   ✓    | -   | 配置字段对象   |
+| showExpandCheckbox       | `boolean`           |       | `false`   | 是否打开展开子项的 checkbox 用于控制展开和隐藏子项   |
+| expandText | `string`          |      | `展开同环比`  | 展开子项的 checkbox 对应的文字   |
+| showItemCheckbox   | `boolean`           |      | `false`   | 是否打开字段的 checkbox用于控制显隐 |
 
 ## SwitcherItem
 
-行列头以及指标值得配置描述对象
+配置字段对象
 
 | 属性       | 类型            | 必选  | 默认值 | 功能描述   |
 | :---------- | :--------------- |  :---- | :------ | :---------- |
@@ -33,7 +44,15 @@ order: 2
 
 | 属性       | 类型            | 必选  | 默认值 | 功能描述   |
 | :---------- | :--------------- |  :---- | :------ | :---------- |
-| rows       | `string[]`           |       | `[]`  | 所有行头字段 id 的集合，按拖拽后顺序排列   |
-| cols | `string[]`          |      | `[]`   | 所有列头字段 id 的集合，按拖拽后顺序排序   |
-| values   | `string[]`           |      | `[]`   | 所有指标字段 id 的集合，按拖拽后顺序排序 |
-| hiddenValues       | `string[]`       |      | `[]`   | 所有需要隐藏字段 id 的集合，按拖拽后顺序排序   |
+| rows       | `SwitcherResultItem[]`           |       | `[]`  | 所有行头字段操作结果   |
+| cols | `SwitcherResultItem[]`          |      | `[]`   | 所有列头字段操作结果   |
+| values   | `SwitcherResultItem[]`           |      | `[]`   | 所有指标字段操作结果 |
+
+## SwitcherResultItem
+
+关闭弹窗后，每个维度结果的描述对象
+
+| 属性       | 类型            | 必选  | 默认值 | 功能描述   |
+| :---------- | :--------------- |  :---- | :------ | :---------- |
+| items       | `string[]`           |       | `[]`  | 全部字段 id 的集合，按拖拽后顺序排序   |
+| hideItems | `string[]`          |      | `[]`   | 所有需要隐藏字段 id 的集合，按拖拽后顺序排序   |
