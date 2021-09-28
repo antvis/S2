@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { message, Space, Switch, Button } from 'antd';
+import { message, Space, Switch } from 'antd';
 import 'antd/dist/antd.min.css';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
@@ -17,12 +17,14 @@ import {
 import { Switcher } from '@/components/switcher';
 import { SwitcherItem } from '@/components/switcher/interface';
 
+let s2: TableSheet;
+
 const data = getMockData('../data/tableau-supermarket.csv');
 
 const getSpreadSheet =
   (ref: React.MutableRefObject<SpreadSheet>) =>
   (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
-    const s2 = new TableSheet(dom, dataCfg, options);
+    s2 = new TableSheet(dom, dataCfg, options);
     ref.current = s2;
     return s2;
   };
@@ -65,7 +67,7 @@ const meta = [
   },
 ];
 
-function MainLayout() {
+function MainLayout({ callback }) {
   const [showPagination, setShowPagination] = React.useState(false);
   const [hiddenColumnsOperator, setHiddenColumnsOperator] =
     React.useState(true);
@@ -111,14 +113,14 @@ function MainLayout() {
       device: 'pc',
     },
     pagination: showPagination && {
-      pageSize: 10,
+      pageSize: 50,
       current: 1,
     },
     frozenRowCount: 2,
     frozenColCount: 1,
     frozenTrailingColCount: 1,
     frozenTrailingRowCount: 1,
-    linkFieldIds: ['order_id', 'customer_name'],
+    linkFields: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
       operation: {
@@ -136,7 +138,7 @@ function MainLayout() {
 
   useEffect(() => {
     s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
-    s2Ref.current.on(S2Event.ROW_CELL_TEXT_CLICK, ({ key, record }) => {
+    s2Ref.current.on(S2Event.GLOBAL_LINK_FIELD_JUMP, ({ key, record }) => {
       message.info(`key: ${key}, name: ${JSON.stringify(record)}`);
     });
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, logData);
@@ -148,9 +150,10 @@ function MainLayout() {
       }
     });
 
+    s2Ref.current.on(S2Event.GLOBAL_SELECTED, logData);
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED);
-      s2Ref.current.off(S2Event.ROW_CELL_TEXT_CLICK);
+      s2Ref.current.off(S2Event.GLOBAL_LINK_FIELD_JUMP);
       s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_EXPANDED);
       s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_HIDE);
     };
@@ -163,6 +166,12 @@ function MainLayout() {
       checked: true,
     };
   });
+
+  useEffect(() => {
+    callback({
+      setShowPagination,
+    });
+  }, []);
 
   return (
     <Space direction="vertical">
@@ -203,11 +212,35 @@ function MainLayout() {
 }
 
 describe('table sheet normal spec', () => {
-  test('placeholder', () => {
-    expect(1).toBe(1);
+  let cbs;
+  act(() => {
+    ReactDOM.render(
+      <MainLayout
+        callback={(params) => {
+          cbs = params;
+        }}
+      />,
+      getContainer(),
+    );
   });
 
-  act(() => {
-    ReactDOM.render(<MainLayout />, getContainer());
+  test('getCellRange', () => {
+    expect(s2.facet.getCellRange()).toStrictEqual({
+      start: 0,
+      end: 999,
+    });
+
+    act(() => {
+      cbs.setShowPagination(true);
+    });
+
+    expect(s2.facet.getCellRange()).toStrictEqual({
+      start: 0,
+      end: 49,
+    });
+
+    act(() => {
+      cbs.setShowPagination(false);
+    });
   });
 });

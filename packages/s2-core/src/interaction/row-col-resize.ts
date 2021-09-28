@@ -1,14 +1,13 @@
 import { Group, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
-import { clone, get, isNil, throttle } from 'lodash';
-import { ResizeInfo } from '../facet/header/interface';
+import { clone, isNil, throttle } from 'lodash';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { RootInteraction } from './root';
+import { ResizeInfo } from '@/facet/header/interface';
 import { SpreadSheet } from '@/sheet-type';
-import { Style } from '@/common/interface';
+import { ResizeEvent, Style } from '@/common/interface';
 import {
   MIN_CELL_HEIGHT,
   MIN_CELL_WIDTH,
-  ResizeEvent,
   S2Event,
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
@@ -37,11 +36,12 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
   }
 
   private bindMouseDown() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_DOWN, (event) => {
+    this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, (event) => {
       const shape = event.target as IGroup;
       const originalEvent = event.originalEvent as MouseEvent;
-      const info: ResizeInfo = shape.attr('appendInfo');
-      if (get(info, 'isResizeArea')) {
+      const resizeInfo: ResizeInfo = shape?.attr('appendInfo');
+
+      if (resizeInfo?.isResizeArea) {
         this.ResizeArea = shape;
         // 激活区域
         if (isNil(this.resizeGroup)) {
@@ -52,7 +52,6 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             stroke: this.spreadsheet.theme.resizeArea.guidLineColor,
             strokeWidth: this.spreadsheet.theme.resizeArea.size,
           };
-          this.resizeGroup.addShape('path', { attrs });
           this.resizeGroup.addShape('path', { attrs });
           // 加这个shape是其实是一层透明的mask遮罩
           // 防止resize过程中触发到别的interaction，因此加了遮罩，触发resize后在遮罩上滚动
@@ -78,10 +77,10 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
            * cellEndBorder 当前resize的响应边，也就是点击的边
            */
           const [cellStartBorder, cellEndBorder] = children;
-          const { offsetX, offsetY, width, height } = info;
+          const { offsetX, offsetY, width, height } = resizeInfo;
           const canvasWidth = this.spreadsheet.facet.getCanvasHW().width;
           const canvasHeight = this.spreadsheet.facet.getCanvasHW().height;
-          if (info.type === 'col') {
+          if (resizeInfo.type === 'col') {
             cellStartBorder.attr('path', [
               ['M', offsetX, offsetY],
               ['L', offsetX, canvasHeight],
@@ -102,7 +101,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             ]);
             this.startPos.offsetY = originalEvent.offsetY;
           }
-          cellEndBorder.attr('cursor', `${info.type}-resize`);
+          cellEndBorder.attr('cursor', `${resizeInfo.type}-resize`);
           const header = this.getHeaderGroup();
           this.resizeGroup.move(header.get('x'), header.get('y'));
         }
@@ -111,7 +110,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
   }
 
   private bindMouseMove() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_MOVE, (event) => {
+    this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, (event) => {
       throttle(
         this.resizeMouseMove,
         33, // 30fps
@@ -121,7 +120,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.GLOBAL_RESIZE_MOUSE_UP, () => {
+    this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_UP, () => {
       if (this.resizeGroup) {
         this.resizeGroup.set('visible', false);
         const children = this.resizeGroup.getChildren();
@@ -138,7 +137,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             // eslint-disable-next-line default-case
             switch (info.affect) {
               case 'field':
-                resizeEventType = ResizeEvent.ROW_W;
+                resizeEventType = S2Event.LAYOUT_RESIZE_ROW_WIDTH;
                 style = {
                   rowCfg: {
                     widthByField: {
@@ -148,7 +147,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
                 };
                 break;
               case 'tree':
-                resizeEventType = ResizeEvent.TREE_W;
+                resizeEventType = S2Event.LAYOUT_RESIZE_TREE_WIDTH;
                 style = {
                   rowCfg: {
                     treeRowsWidth: endPoint[1] - startPoint[1],
@@ -156,7 +155,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
                 };
                 break;
               case 'cell':
-                resizeEventType = ResizeEvent.COL_W;
+                resizeEventType = S2Event.LAYOUT_RESIZE_COL_WIDTH;
                 style = {
                   colCfg: {
                     widthByFieldValue: {
@@ -170,7 +169,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             // eslint-disable-next-line default-case
             switch (info.affect) {
               case 'field':
-                resizeEventType = ResizeEvent.COL_H;
+                resizeEventType = S2Event.LAYOUT_RESIZE_COL_HEIGHT;
                 style = {
                   colCfg: {
                     heightByField: {
@@ -181,7 +180,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
                 break;
               case 'cell':
               case 'tree':
-                resizeEventType = ResizeEvent.ROW_H;
+                resizeEventType = S2Event.LAYOUT_RESIZE_ROW_HEIGHT;
                 style = {
                   cellCfg: {
                     height: endPoint[2] - startPoint[2],
@@ -190,7 +189,12 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
                 break;
             }
           }
-          this.spreadsheet.emit(resizeEventType, style);
+          const resizeDetail = {
+            info,
+            style,
+          };
+          this.spreadsheet.emit(S2Event.LAYOUT_RESIZE, resizeDetail);
+          this.spreadsheet.emit(resizeEventType, resizeDetail);
           this.spreadsheet.setOptions({ style });
           this.render();
         }
