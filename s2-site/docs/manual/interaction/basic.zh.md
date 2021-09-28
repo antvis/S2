@@ -102,9 +102,9 @@ order: 1
 | 行头高度改变  | `S2Event.LAYOUT_RESIZE_ROW_HEIGHT` |   |
 | 列头宽度改变  | `S2Event.LAYOUT_RESIZE_COL_WIDTH` |   |
 | 行头宽度改变  | `S2Event.LAYOUT_RESIZE_COL_HEIGHT` |   |
-| 树状结构宽度改变  | `S2Event.LAYOUT_RESIZE_TREE_WIDTH` |  树状模式下, 单元格宽度发生改变时触发 |
-| 列头展开  | `S2Event.LAYOUT_TABLE_COL_EXPANDED` |  列头展开时触犯, 明细表有效  |
-| 列头隐藏  | `S2Event.LAYOUT_TABLE_COL_HIDE` |  列头隐藏时触发, 明细表有效  |
+| 树状结构宽度改变  | `S2Event.LAYOUT_RESIZE_TREE_WIDTH` |  树状模式下，单元格宽度发生改变时触发 |
+| 列头展开  | `S2Event.LAYOUT_TABLE_COL_EXPANDED` |  列头展开时触犯，明细表有效  |
+| 列头隐藏  | `S2Event.LAYOUT_TABLE_COL_HIDE` |  列头隐藏时触发，明细表有效  |
 
 ### 全局
 
@@ -121,7 +121,6 @@ order: 1
 | 链接跳转   | `S2Event.GLOBAL_LINK_FIELD_JUMP` |  点击行列头被编辑为链接字段的文本时  |
 | icon 点击   | `S2Event.GLOBAL_ACTION_ICON_CLICK` |  单元格右侧的操作 icon 点击时，比如：排序图标  |
 | icon 悬停   | `S2Event.GLOBAL_ACTION_ICON_HOVER` |  单元格右侧的操作 icon 悬停时，比如：排序图标  |
-
 
 </details>
 

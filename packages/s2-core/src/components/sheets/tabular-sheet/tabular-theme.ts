@@ -1,4 +1,4 @@
-import { SpreadSheetTheme } from '@/index';
+import { S2Theme } from '@/index';
 import { isWindows } from '@/utils/is-mobile';
 
 const FONT_FAMILY =
@@ -102,4 +102,4 @@ export const TabularTheme = {
     showCenterRightShadow: false,
     centerRightShadowWidth: 0,
   },
-} as SpreadSheetTheme;
+} as S2Theme;

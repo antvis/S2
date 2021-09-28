@@ -63,7 +63,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 s2.render();
 ```
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/CrLvb9oqq/acd62884-d95d-450e-a77b-ad1b54466e31.png)
+<playground path='interaction/demo/pivot-link-jump.ts' rid='container' height='400'></playground>
 
 ## 明细表
 
@@ -95,4 +95,4 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 s2.render();
 ```
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/QI9bVSdCJ/e9a35590-883e-4ecf-8f66-c4f92c64faa6.png)
+<playground path='interaction/demo/table-link-jump.ts' rid='container' height='400'></playground>

@@ -1,5 +1,5 @@
 ---
-title: DataCfg
+title: S2DataConfig
 order: 0
 redirect_from:
   - /zh/docs/api
@@ -33,7 +33,7 @@ const data = [{
 
 ## Meta
 
-array object **必选**,_ default：null_ 功能描述： 全局化配置表数元信息，以度量为单位进行配置。在 meta 上的配置将同时影响所有组件的文本信息。
+array object **必选**,_default：null_ 功能描述： 全局化配置表数元信息，以度量为单位进行配置。在 meta 上的配置将同时影响所有组件的文本信息。
 
 | 细分配置项名称     | 类型     | 是否可选 | 取值   | 功能描述 |
 | :----------------- | :------- | :------- | :----- | :------- | -------------------- |
@@ -42,10 +42,9 @@ array object **必选**,_ default：null_ 功能描述： 全局化配置表数�
 | type               | string   | 可选     | 'rate' | 'value'  | 衍生值类型比率和比值 |
 | formatter          | (v: any) => string |  可选   |          | 格式化<br/>数值度量：一般用于格式化数字<br/>文本度量：一般用于做字段枚举值的别名
 
-
 ## Fields
 
-object **必选**,_ default：null_ 功能描述： 配置表格的维度域，即对应行列维度
+object **必选**,_default：null_ 功能描述： 配置表格的维度域，即对应行列维度
 
 | 细分配置项名称 | 类型 | 是否可选 | 取值 | 功能描述 |
 | :-- | :-- | :-- | :-- | :-- |
@@ -55,10 +54,9 @@ object **必选**,_ default：null_ 功能描述： 配置表格的维度域，�
 | 度量列表（最终会被转换成一个 column 字段） |
 | derivedValues | [DerivedValue[]](#) | 可选 |  | 衍生指标 |
 
-
 ## sortParams
 
-array SortParam **可选**,_ default：null_ 功能描述： 配置表格的度量的排序 **sortparam** \*\*
+array SortParam **可选**,_default：null_ 功能描述： 配置表格的度量的排序 **sortparam** \*\*
 
 | 细分配置项名称 | 类型 | 是否可选 | 取值 | 功能描述 |
 | :-- | :-- | :-- | :-- | :-- | --- |
@@ -72,4 +70,4 @@ array SortParam **可选**,_ default：null_ 功能描述： 配置表格的度�
 
 ## 额外属性
 
-array object **可选**,_ default：null_ 功能描述： 额外的由外部传入的属性对象合集。
+array object **可选**,_default：null_ 功能描述： 额外的由外部传入的属性对象合集。

@@ -32,13 +32,16 @@
     "site:build": "cd ./s2-site && NODE_OPTIONS='--max-old-space-size=4096' yarn build",
     "site:clean": "cd ./s2-site && yarn clean",
     "site:deploy": "cd ./s2-site && yarn deploy",
+    "site:preview": "cd ./s2-site && yarn preview",
     "site:clear": "cd ./s2-site && yarn rimraf node_modules",
-    "lint": "yarn tsc && yarn lint:script && yarn lint:style",
+    "lint": "yarn tsc && yarn lint:script && yarn lint:style && yarn lint:docs",
     "lint:script": "eslint . --ext '.js,.jsx,.ts,.tsx'",
     "lint:style": "stylelint packages/**/*.less --syntax less",
-    "lint:fix": "yarn lint:fix-script && yarn lint:fix-style",
+    "lint:docs": "markdownlint '**/*.md'",
+    "lint:fix": "yarn lint:fix-script && yarn lint:fix-style && yarn lint:fix-docs",
     "lint:fix-script": "yarn lint:script --fix",
     "lint:fix-style": "yarn lint:style --fix",
+    "lint:fix-docs": "yarn lint:docs --fix",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && yarn workspace @antv/s2 changelog",
     "prepare": "husky install"
   },
@@ -49,6 +52,10 @@
   },
   "lint-staged": {
     "*.{less,md,json}": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "markdownlint --fix",
       "prettier --write"
     ],
     "*.{js,jsx,tsx,ts}": [
@@ -99,6 +106,7 @@
     "less": "^4.1.1",
     "lint-staged": "^11.1.2",
     "lodash-es": "^4.17.21",
+    "markdownlint-cli": "^0.28.1",
     "npm-run-all": "^4.1.5",
     "ora": "^6.0.0",
     "postcss": "^8.3.6",

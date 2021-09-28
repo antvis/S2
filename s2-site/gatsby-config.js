@@ -65,12 +65,28 @@ module.exports = {
         order: 2,
       },
       {
+        slug: 'manual/basic',
+        title: {
+          zh: '基础教程',
+          en: 'Basic tutorial',
+        },
+        order: 3,
+      },
+      {
         slug: 'manual/interaction',
         title: {
           zh: '交互',
           en: 'Interaction',
         },
-        order: 3,
+        order: 4,
+      },
+      {
+        slug: 'manual/total',
+        title: {
+          zh: '小计总计',
+          en: 'Total',
+        },
+        order: 4,
       },
       {
         slug: 'manual/total',
@@ -97,6 +113,14 @@ module.exports = {
         title: {
           zh: '表形态',
           en: 'Basic Sheets',
+        },
+      },
+      {
+        slug: 'conditions',
+        icon: 'facet',
+        title: {
+          zh: '字段标记',
+          en: 'Conditions',
         },
       },
       {
