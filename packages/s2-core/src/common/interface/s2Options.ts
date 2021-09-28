@@ -47,7 +47,7 @@ export interface S2PartialOptions {
   // tooltip configs
   readonly tooltip?: Tooltip;
   // record which row/col field need extra link info
-  readonly linkFieldIds?: string[];
+  readonly linkFields?: string[];
   // pagination config
   readonly pagination?: Pagination;
   // freeze row header
@@ -169,13 +169,14 @@ export const defaultOptions: S2Options = {
   conditions: {},
   totals: {},
   tooltip: {
+    showTooltip: true,
     operation: {
       hiddenColumns: true,
       trend: false,
       sort: true,
     },
   },
-  linkFieldIds: [],
+  linkFields: [],
   freezeRowHeader: true,
   showSeriesNumber: false,
   scrollReachNodeField: {},

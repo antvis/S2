@@ -1,16 +1,17 @@
-import { Radio, Space, Switch } from 'antd';
+import { Radio, Space, Switch, Button, Input } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
 import { SheetEntry, assembleDataCfg } from '../util/sheet-entry';
-// import * as tableData from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
 import {
   HeaderActionIconProps,
   S2Options,
   SheetType,
   ThemeName,
+  Node,
+  TargetCellInfo,
 } from '@/index';
 
 const tableDataFields = {
@@ -33,11 +34,19 @@ function MainLayout() {
     React.useState(true);
   const [themeName, setThemeName] = React.useState<ThemeName>('default');
 
-  const cornerTooltip = <div>cornerHeader</div>;
+  const CornerTooltip = <div>cornerTooltip</div>;
 
-  const rowTooltip = <div>rowHeader</div>;
+  const RowTooltip = <div>rowTooltip</div>;
 
-  const colTooltip = <div>colHeader</div>;
+  const ColTooltip = <div>colTooltip</div>;
+
+  const ColCellClickTooltip = (
+    <div>
+      <h1>Tooltip</h1>
+      <Button>button</Button>
+      <Input />
+    </div>
+  );
 
   const onToggleRender = () => {
     setRender(!render);
@@ -52,7 +61,6 @@ function MainLayout() {
       current: 1,
     },
     tooltip: {
-      showTooltip: true,
       renderTooltip: (spreadsheet) => {
         return new CustomTooltip(spreadsheet);
       },
@@ -77,11 +85,26 @@ function MainLayout() {
       {
         iconNames: ['Filter'],
         belongsCell: 'colCell',
+        displayCondition: (meta: Node) =>
+          meta.id !== 'root[&]家具[&]桌子[&]price',
         action: (props: HeaderActionIconProps) => {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            element: colTooltip,
+            element: ColTooltip,
+          });
+        },
+      },
+      {
+        iconNames: ['SortDown'],
+        belongsCell: 'colCell',
+        displayCondition: (meta: Node) =>
+          meta.id === 'root[&]家具[&]桌子[&]price',
+        action: (props: HeaderActionIconProps) => {
+          const { meta, event } = props;
+          meta.spreadsheet.tooltip.show({
+            position: { x: event.clientX, y: event.clientY },
+            element: ColTooltip,
           });
         },
       },
@@ -92,7 +115,7 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            element: cornerTooltip,
+            element: CornerTooltip,
           });
         },
       },
@@ -103,7 +126,7 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            element: rowTooltip,
+            element: RowTooltip,
           });
         },
       },
@@ -122,6 +145,14 @@ function MainLayout() {
     }
   };
 
+  const onColCellClick = (value: TargetCellInfo) => {
+    const sheet = value?.viewMeta?.spreadsheet;
+    sheet?.showTooltip({
+      position: { x: value.event.clientX, y: value.event.clientY },
+      element: ColCellClickTooltip,
+    });
+  };
+
   return (
     <div>
       <Space size="middle" style={{ marginBottom: 20 }}>
@@ -138,6 +169,7 @@ function MainLayout() {
           options={mergedOptions}
           themeCfg={{ name: themeName }}
           sheetType={sheetType}
+          onColCellClick={onColCellClick}
           header={
             <Space size="middle" style={{ marginBottom: 20 }}>
               <Radio.Group onChange={onRadioChange} defaultValue="default">

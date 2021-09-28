@@ -15,7 +15,7 @@ function MainLayout() {
   };
 
   useEffect(() => {
-    sheetRef.current.on(S2Event.ROW_CELL_TEXT_CLICK, ({ key, record }) => {
+    sheetRef.current.on(S2Event.GLOBAL_LINK_FIELD_JUMP, ({ key, record }) => {
       message.info(`key: ${key}, name: ${record[key]}`);
     });
   }, []);
@@ -23,7 +23,7 @@ function MainLayout() {
   return (
     <SheetEntry
       dataCfg={{}}
-      options={{ linkFieldIds: linkFields }}
+      options={{ linkFields }}
       ref={sheetRef}
       header={
         <Space size="middle" style={{ marginBottom: 20 }}>

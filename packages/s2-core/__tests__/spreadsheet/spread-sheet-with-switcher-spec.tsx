@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
@@ -43,7 +43,7 @@ const mockValues: SwitcherItem[] = [
 ];
 
 function MainLayout() {
-  const [values, setValues] = useState(['cost', 'price', 'cost/price']);
+  const values = ['cost', 'price', 'cost/price'];
 
   return (
     <div>

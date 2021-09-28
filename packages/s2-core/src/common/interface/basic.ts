@@ -12,6 +12,7 @@ import {
   FrameConfig,
   Hierarchy,
   Node,
+  S2Event,
   S2Options,
   SpreadSheet,
   TextAlign,
@@ -408,3 +409,11 @@ export interface OriginalEvent extends Event {
   layerX: number;
   layerY: number;
 }
+
+export type ResizeEvent =
+  | S2Event.LAYOUT_RESIZE
+  | S2Event.LAYOUT_RESIZE_ROW_WIDTH
+  | S2Event.LAYOUT_RESIZE_COL_WIDTH
+  | S2Event.LAYOUT_RESIZE_ROW_HEIGHT
+  | S2Event.LAYOUT_RESIZE_COL_HEIGHT
+  | S2Event.LAYOUT_RESIZE_TREE_WIDTH;

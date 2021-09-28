@@ -7,7 +7,7 @@ import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-ic
 import { getEllipsisText, getTextPosition } from '@/utils/text';
 import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
-import { CellBoxCfg, CellTheme } from '@/common/interface';
+import { CellBoxCfg, DefaultCellTheme, IconTheme } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 
 export class TableColCell extends ColCell {
@@ -141,13 +141,13 @@ export class TableColCell extends ColCell {
       [],
     );
     return !!hiddenColumnsDetail.find(
-      ({ displaySiblingNode }) => displaySiblingNode?.field === this.meta.field,
+      (column) => column?.displaySiblingNode?.field === this.meta?.field,
     );
   }
 
-  private getExpandIconTheme(): CellTheme {
-    const cellTheme = this.getStyle();
-    return cellTheme.cell.expandIcon;
+  private getExpandIconTheme(): IconTheme {
+    const themeCfg = this.getStyle() as DefaultCellTheme;
+    return themeCfg.icon;
   }
 
   private addExpandColumnSplitLine() {
@@ -200,15 +200,15 @@ export class TableColCell extends ColCell {
     const { size } = this.getExpandIconTheme();
     const { x, y, width, height } = this.getCellArea();
 
-    const baseIconX = x - size / 2;
+    const baseIconX = x - size;
     const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;
-    const iconY = y + height / 2 - size / 4;
+    const iconY = y + height / 2 - size / 2;
 
     return {
       x: iconX,
       y: iconY,
-      width: size,
-      height: size / 2,
+      width: size * 2,
+      height: size,
     };
   }
 

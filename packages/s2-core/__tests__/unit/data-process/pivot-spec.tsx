@@ -220,13 +220,8 @@ describe('Pivot Table Core Data Process', () => {
   describe('3、Calculate row & col coordinates', () => {
     const { width, style } = s2.options;
     const { fields } = s2.dataCfg;
-    const {
-      rowsHierarchy,
-      colsHierarchy,
-      rowLeafNodes,
-      colLeafNodes,
-      getCellMeta,
-    } = s2.facet.layoutResult;
+    const { rowsHierarchy, colsHierarchy, rowLeafNodes, colLeafNodes } =
+      s2.facet.layoutResult;
     const { cellCfg, rowCfg, colCfg } = get(s2, 'facet.cfg');
     test('should calc correct row & cell width', () => {
       expect(cellCfg.width).toEqual(
