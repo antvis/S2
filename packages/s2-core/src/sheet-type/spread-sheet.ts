@@ -46,7 +46,7 @@ import { EmitterType } from '@/common/interface/emitter';
 import { Store } from '@/common/store';
 import { BaseDataSet } from '@/data-set';
 import { BaseFacet } from '@/facet';
-import { CustomSVGIcon, Node, SpreadSheetTheme } from '@/index';
+import { CustomSVGIcon, Node, S2Theme } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 import { getTheme } from '@/theme';
 import { HdAdapter } from '@/ui/hd-adapter';
@@ -61,7 +61,7 @@ export abstract class SpreadSheet extends EE {
   public dom: S2MountContainer;
 
   // theme config
-  public theme: SpreadSheetTheme;
+  public theme: S2Theme;
 
   // store some temporary data
   public store = new Store();
@@ -554,5 +554,6 @@ export abstract class SpreadSheet extends EE {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public handleGroupSort(event: MouseEvent, meta: Node) {}
 }

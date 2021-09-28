@@ -16,10 +16,7 @@ import { ResizeInfo } from '@/facet/header/interface';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect } from '@/utils/g-renders';
 import { AreaRange } from '@/common/interface/scroll';
-import {
-  getTextPositionWhenHorizontalScrolling,
-  getVerticalPosition,
-} from '@/utils/cell/cell';
+import { getTextPositionWhenHorizontalScrolling } from '@/utils/cell/cell';
 
 export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;
