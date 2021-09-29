@@ -81,7 +81,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   private showSortIcon() {
-    if (isEmpty(this.spreadsheet.options.headerActionIcons)) {
+    if (this.spreadsheet.options.showDefaultHeaderActionIcon) {
       const { sortParam } = this.headerConfig;
       const query = this.meta.query;
       return (
@@ -107,6 +107,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         margin.right * (iconNames.length - 1)
       );
     }
+    return 0;
   }
 
   // 绘制排序icon

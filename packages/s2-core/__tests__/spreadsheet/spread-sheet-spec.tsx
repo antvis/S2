@@ -81,6 +81,7 @@ function MainLayout() {
         svg: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
       },
     ],
+    showDefaultHeaderActionIcon: showDefaultActionIcons,
     headerActionIcons: !showDefaultActionIcons && [
       {
         iconNames: ['Filter'],
