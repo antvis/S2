@@ -38,6 +38,7 @@ import { handleSortAction } from '@/utils/sort-action';
 import {
   transformIndexesData,
   getDataPath,
+  getQueryDimValues,
 } from '@/utils/dataset/pivot-data-set';
 
 export class PivotDataSet extends BaseDataSet {
@@ -266,18 +267,6 @@ export class PivotDataSet extends BaseDataSet {
     return filterUndefined([...meta.keys()]);
   }
 
-  getQueryDimValues = (dimensions: string[], query: DataType): string[] => {
-    return reduce(
-      dimensions,
-      (res: string[], dimension: string) => {
-        // push undefined when not exist
-        res.push(query[dimension]);
-        return res;
-      },
-      [],
-    );
-  };
-
   public getCellData(params: CellDataParams): DataType {
     const { query, rowNode, isTotals = false } = params || {};
 
@@ -286,8 +275,8 @@ export class PivotDataSet extends BaseDataSet {
     if (!isTotals) {
       rows = Node.getFieldPath(rowNode) ?? originRows;
     }
-    const rowDimensionValues = this.getQueryDimValues(rows, query);
-    const colDimensionValues = this.getQueryDimValues(columns, query);
+    const rowDimensionValues = getQueryDimValues(rows, query);
+    const colDimensionValues = getQueryDimValues(columns, query);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
@@ -336,8 +325,8 @@ export class PivotDataSet extends BaseDataSet {
       return compact(customFlattenDeep(this.indexesData));
     }
     const { rows, columns, values: valueList } = this.fields;
-    const rowDimensionValues = this.getQueryDimValues(rows, query);
-    const colDimensionValues = this.getQueryDimValues(columns, query);
+    const rowDimensionValues = getQueryDimValues(rows, query);
+    const colDimensionValues = getQueryDimValues(columns, query);
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,

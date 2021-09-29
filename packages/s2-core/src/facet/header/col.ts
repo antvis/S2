@@ -78,7 +78,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
 
     const { frozenColCount, frozenTrailingColCount } = spreadsheet.options;
-    const colLeafNodes = spreadsheet.facet.layoutResult.colLeafNodes;
+    const colLeafNodes = spreadsheet.facet?.layoutResult.colLeafNodes;
 
     let frozenColWidth = 0;
     let frozenTrailingColWidth = 0;
@@ -141,7 +141,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const { data, spreadsheet, cornerWidth, width, scrollX } =
       this.headerConfig;
     const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
-    const colLength = spreadsheet?.facet.layoutResult.colLeafNodes.length;
+    const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
 
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
