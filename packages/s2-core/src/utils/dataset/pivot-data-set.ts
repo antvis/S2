@@ -1,9 +1,6 @@
 import { set, map, reduce, isUndefined } from 'lodash';
 import { DataType } from '@/data-set/interface';
-import {
-  DataPathParams,
-  PivotMeta,
-} from '@/data-set/interface';
+import { DataPathParams, PivotMeta } from '@/data-set/interface';
 
 interface Param {
   rows: string[];
@@ -81,7 +78,12 @@ export function getDataPath(params: DataPathParams) {
   // 根据行、列维度值生成对应的 path路径，有两个情况
   // 如果是汇总格子：path = [0,undefined, 0] path中会存在undefined的值（这里在indexesData里面会映射）
   // 如果是明细格子: path = [0,0,0] 全数字，无undefined存在
-  const getPath = (dimensionValues: string[], isRow = true, rowPivotMeta: PivotMeta, colPivotMeta: PivotMeta): number[] => {
+  const getPath = (
+    dimensionValues: string[],
+    isRow = true,
+    rowPivotMeta: PivotMeta,
+    colPivotMeta: PivotMeta,
+  ): number[] => {
     let currentMeta = isRow ? rowPivotMeta : colPivotMeta;
     const fields = isRow ? rowFields : colFields;
     const path = [];
@@ -121,7 +123,12 @@ export function getDataPath(params: DataPathParams) {
   };
 
   const rowPath = getPath(rowDimensionValues, true, rowPivotMeta, colPivotMeta);
-  const colPath = getPath(colDimensionValues, false, rowPivotMeta, colPivotMeta);
+  const colPath = getPath(
+    colDimensionValues,
+    false,
+    rowPivotMeta,
+    colPivotMeta,
+  );
   const result = rowPath.concat(...colPath);
 
   return result;
@@ -147,19 +154,34 @@ export function getQueryDimValues (dimensions: string[], query: DataType): strin
 
 /**
  * 转换原始数据为二维数组数据
- * @param rows 
- * @param columns 
+ * @param rows
+ * @param columns
  * @param originData
  * @param totalData
  */
 export function transformIndexesData(params: Param) {
-  const { rows, columns, originData, totalData, sortedDimensionValues,
-    rowPivotMeta, colPivotMeta } = params;
+  const {
+    rows,
+    columns,
+    originData,
+    totalData,
+    sortedDimensionValues,
+    rowPivotMeta,
+    colPivotMeta,
+  } = params;
   const paths = [];
   const indexesData = [];
   for (const data of [...originData, ...totalData]) {
-    const rowDimensionValues = transformDimensionsValues(data, rows, sortedDimensionValues);
-    const colDimensionValues = transformDimensionsValues(data, columns, sortedDimensionValues);
+    const rowDimensionValues = transformDimensionsValues(
+      data,
+      rows,
+      sortedDimensionValues,
+    );
+    const colDimensionValues = transformDimensionsValues(
+      data,
+      columns,
+      sortedDimensionValues,
+    );
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,

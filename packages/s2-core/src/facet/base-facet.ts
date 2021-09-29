@@ -28,6 +28,7 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
+  InteractionStateName,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
@@ -376,28 +377,34 @@ export abstract class BaseFacet {
   calculateCornerBBox = () => {
     const { rowsHierarchy, colsHierarchy } = this.layoutResult;
 
-    const leftWidth = rowsHierarchy.width + this.getSeriesNumberWidth();
-    const height = colsHierarchy.height;
-
-    this.cornerWidth = leftWidth;
-    let renderWidth = leftWidth;
-    if (!this.cfg.spreadsheet.isScrollContainsRowHeader()) {
-      renderWidth = this.getCornerWidth(leftWidth, colsHierarchy);
-    }
-    if (!this.cfg.spreadsheet.isPivotMode()) {
-      renderWidth = 0;
-    }
+    const originalCornerWidth = Math.floor(
+      rowsHierarchy.width + this.getSeriesNumberWidth(),
+    );
+    const height = Math.floor(colsHierarchy.height);
+    const width = this.getCornerBBoxWidth(originalCornerWidth);
 
     this.cornerBBox = {
       x: 0,
       y: 0,
-      width: renderWidth,
+      width,
       height,
-      maxX: renderWidth,
+      maxX: width,
       maxY: height,
       minX: 0,
       minY: 0,
     };
+    this.cornerWidth = originalCornerWidth;
+  };
+
+  getCornerBBoxWidth = (cornerWidth: number): number => {
+    const { colsHierarchy } = this.layoutResult;
+    if (!this.cfg.spreadsheet.isScrollContainsRowHeader()) {
+      return this.getCornerWidth(cornerWidth, colsHierarchy);
+    }
+    if (!this.cfg.spreadsheet.isPivotMode()) {
+      return 0;
+    }
+    return cornerWidth;
   };
 
   getCornerWidth = (leftWidth: number, colsHierarchy: Hierarchy): number => {
@@ -427,7 +434,7 @@ export abstract class BaseFacet {
       // tree mode
       renderWidth = leftWidth;
     }
-    return renderWidth;
+    return Math.floor(renderWidth);
   };
 
   calculatePanelBBox = () => {
@@ -722,7 +729,9 @@ export abstract class BaseFacet {
   };
 
   updateHScrollBarThumbOffset = (deltaX: number) => {
-    this.hScrollBar.updateThumbOffset(this.hScrollBar.thumbOffset + deltaX / 8);
+    this.hScrollBar?.updateThumbOffset(
+      this.hScrollBar.thumbOffset + deltaX / 8,
+    );
   };
 
   updateHRowScrollBarThumbOffset = (deltaX: number) => {
