@@ -145,8 +145,9 @@ module.exports = {
         title: {
           zh: '主题',
           en: 'theme',
-       },
-       {
+        }
+      },
+      {
         slug: 'analysis',
         icon: 'facet',
         title: {
