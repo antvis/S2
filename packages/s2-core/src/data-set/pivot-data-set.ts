@@ -9,12 +9,13 @@ import {
   isEmpty,
   isUndefined,
   keys,
-  map,
   merge,
   reduce,
   set,
   uniq,
   values,
+  map,
+  cloneDeep,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -32,13 +33,12 @@ import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '@/common/debug';
 import { i18n } from '@/common/i18n';
 import { Data, Meta, S2DataConfig } from '@/common/interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
-import {
-  CellDataParams,
-  DataPathParams,
-  DataType,
-  PivotMeta,
-} from '@/data-set/interface';
+import { CellDataParams, DataType, PivotMeta } from '@/data-set/interface';
 import { handleSortAction } from '@/utils/sort-action';
+import {
+  transformIndexesData,
+  getDataPath,
+} from '@/utils/dataset/pivot-data-set';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -63,7 +63,6 @@ export class PivotDataSet extends BaseDataSet {
   public setDataCfg(dataCfg: S2DataConfig) {
     super.setDataCfg(dataCfg);
     this.sortedDimensionValues = new Map();
-    this.indexesData = [];
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
     // total data in raw data scene.
@@ -72,7 +71,16 @@ export class PivotDataSet extends BaseDataSet {
       .concat(this.totalData);
     DebuggerUtil.getInstance().debugCallback(DEBUG_TRANSFORM_DATA, () => {
       const { rows, columns } = this.fields;
-      this.transformIndexesData(rows, columns, this.originData, this.totalData);
+      const { indexesData } = transformIndexesData({
+        rows,
+        columns,
+        originData: this.originData,
+        totalData: this.totalData,
+        sortedDimensionValues: this.sortedDimensionValues,
+        rowPivotMeta: this.rowPivotMeta,
+        colPivotMeta: this.colPivotMeta,
+      });
+      this.indexesData = indexesData;
     });
 
     this.handleDimensionValuesSort();
@@ -103,11 +111,14 @@ export class PivotDataSet extends BaseDataSet {
       }
     }
     // 2、转换数据
-    const drillDownDataPaths = this.transformIndexesData(
-      [...rows, extraRowField],
+    const { paths: drillDownDataPaths } = transformIndexesData({
+      rows: [...rows, extraRowField],
       columns,
-      drillDownData,
-    );
+      originData: drillDownData,
+      sortedDimensionValues: this.sortedDimensionValues,
+      rowPivotMeta: this.rowPivotMeta,
+      colPivotMeta: this.colPivotMeta,
+    });
     // 3、record data paths by nodeId
     const rowNodeId = rowNode.id;
     const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
@@ -145,65 +156,6 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   /**
-   * Transform origin data to indexed data
-   */
-  transformIndexesData = (
-    rows: string[],
-    columns: string[],
-    originData: DataType[],
-    totalData: DataType[] = [],
-  ): number[][] => {
-    const paths = [];
-    for (const data of [...originData, ...totalData]) {
-      const rowDimensionValues = this.transformDimensionsValues(data, rows);
-      const colDimensionValues = this.transformDimensionsValues(data, columns);
-      const path = this.getDataPath({
-        rowDimensionValues,
-        colDimensionValues,
-        isFirstCreate: true,
-        careUndefined: totalData?.length > 0,
-        rowFields: rows,
-        colFields: columns,
-      });
-      paths.push(path);
-      set(this.indexesData, path, data);
-    }
-
-    return paths;
-  };
-
-  /**
-   * Transform a origin single data to dimension values
-   * {
-   *  price: 16,
-   *  province: '辽宁省',
-   *  city: '芜湖市',
-   *  category: '家具',
-   *  subCategory: '椅子',
-   * }
-   * => dimensions [province, city]
-   * return [辽宁省, 芜湖市]
-   *
-   * @param record
-   * @param dimensions
-   */
-  transformDimensionsValues = (
-    record: DataType,
-    dimensions: string[],
-  ): string[] => {
-    return map(dimensions, (dimension) => {
-      const dimensionValue = record[dimension];
-      if (!this.sortedDimensionValues.has(dimension)) {
-        this.sortedDimensionValues.set(dimension, new Set());
-      }
-      const values = this.sortedDimensionValues.get(dimension);
-      values.add(record[dimension]);
-
-      return dimensionValue;
-    });
-  };
-
-  /**
    * 排序优先级：
    * 1、sortParams里的条件优先级高于原始数据
    * 2、sortParams多个item：按照顺序优先级，排在后面的优先级高
@@ -228,84 +180,6 @@ export class PivotDataSet extends BaseDataSet {
         new Set([...result, ...originValues]), // 这里是控制顺序的，优先result
       );
     });
-  };
-
-  /**
-   * Transform a single data to path
-   * {
-   * $$VALUE$$: 15
-   * $$EXTRA$$: 'price'
-   * "price": 15,
-   * "province": "辽宁省",
-   * "city": "达州市",
-   * "category": "家具",
-   * "subCategory": "椅子"
-   * }
-   * rows: [province, city]
-   * columns: [category, subCategory, $$EXTRA$$]
-   *
-   * =>
-   * rowDimensionValues = [辽宁省, 达州市]
-   * colDimensionValues = [家具, 椅子, price]
-   *
-   * @param params
-   */
-  getDataPath = (params: DataPathParams): number[] => {
-    const {
-      rowDimensionValues,
-      colDimensionValues,
-      careUndefined,
-      isFirstCreate,
-      rowFields,
-      colFields,
-    } = params;
-    // 根据行、列维度值生成对应的 path路径，有两个情况
-    // 如果是汇总格子：path = [0,undefined, 0] path中会存在undefined的值（这里在indexesData里面会映射）
-    // 如果是明细格子: path = [0,0,0] 全数字，无undefined存在
-    const getPath = (dimensionValues: string[], isRow = true): number[] => {
-      let currentMeta = isRow ? this.rowPivotMeta : this.colPivotMeta;
-      const fields = isRow ? rowFields : colFields;
-      const path = [];
-      for (let i = 0; i < dimensionValues.length; i++) {
-        const value = dimensionValues[i];
-        if (!currentMeta.has(value)) {
-          if (isFirstCreate) {
-            currentMeta.set(value, {
-              level: currentMeta.size,
-              children: new Map(),
-            });
-          } else {
-            const meta = currentMeta.get(value);
-            if (meta) {
-              path.push(meta.level);
-            }
-            if (!careUndefined) {
-              break;
-            }
-          }
-        }
-        const meta = currentMeta.get(value);
-        if (isUndefined(value) && careUndefined) {
-          path.push(value);
-        } else {
-          path.push(meta?.level);
-        }
-        if (meta) {
-          if (isFirstCreate) {
-            // mark the child field
-            meta.childField = fields?.[i + 1];
-          }
-          currentMeta = meta?.children;
-        }
-      }
-      return path;
-    };
-
-    const rowPath = getPath(rowDimensionValues);
-    const colPath = getPath(colDimensionValues, false);
-    const result = rowPath.concat(...colPath);
-
-    return result;
   };
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
@@ -371,7 +245,6 @@ export class PivotDataSet extends BaseDataSet {
       meta = this.colPivotMeta;
       dimensions = columns;
     }
-
     if (!isEmpty(query)) {
       let sortedMeta = [];
       for (const dimension of dimensions) {
@@ -415,11 +288,13 @@ export class PivotDataSet extends BaseDataSet {
     }
     const rowDimensionValues = this.getQueryDimValues(rows, query);
     const colDimensionValues = this.getQueryDimValues(columns, query);
-    const path = this.getDataPath({
+    const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
       careUndefined:
         isTotals || isTotalData([].concat(originRows).concat(columns), query),
+      rowPivotMeta: this.rowPivotMeta,
+      colPivotMeta: this.colPivotMeta,
     });
     const data = get(this.indexesData, path);
 
@@ -428,7 +303,9 @@ export class PivotDataSet extends BaseDataSet {
 
   getCustomData = (path: number[]) => {
     let hadUndefined = false;
-    let currentData = this.indexesData;
+    let currentData: DataType | DataType[] | DataType[][] = cloneDeep(
+      this.indexesData,
+    );
 
     for (let i = 0; i < path.length; i++) {
       const current = path[i];
@@ -461,10 +338,12 @@ export class PivotDataSet extends BaseDataSet {
     const { rows, columns, values: valueList } = this.fields;
     const rowDimensionValues = this.getQueryDimValues(rows, query);
     const colDimensionValues = this.getQueryDimValues(columns, query);
-    const path = this.getDataPath({
+    const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
       careUndefined: true,
+      rowPivotMeta: this.rowPivotMeta,
+      colPivotMeta: this.colPivotMeta,
     });
     const currentData = this.getCustomData(path);
     let result = compact(customFlatten(currentData));

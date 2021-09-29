@@ -1,5 +1,6 @@
 import { Event } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { getActiveCellsTooltipData } from '@/utils/tooltip';
 import {
@@ -48,18 +49,19 @@ export class DataCellMultiSelection
     });
   }
 
-  private getActiveCells(cell: S2CellType<ViewMeta>) {
-    let activeCells = this.interaction.getActiveCells();
+  private getSelectedCells(cell: S2CellType<ViewMeta>) {
+    const id = cell.getMeta().id;
+    let selectedCells = this.interaction.getCells();
     let cells = [];
     if (
       this.interaction.getCurrentStateName() !== InteractionStateName.SELECTED
     ) {
-      activeCells = [];
+      selectedCells = [];
     }
-    if (activeCells.includes(cell)) {
-      cells = activeCells.filter((item) => item !== cell);
+    if (selectedCells.find((meta) => meta.id === id)) {
+      cells = selectedCells.filter((item) => item.id !== id);
     } else {
-      cells = [...activeCells, cell];
+      cells = [...selectedCells, getCellMeta(cell)];
     }
 
     return cells;
@@ -72,9 +74,9 @@ export class DataCellMultiSelection
       const meta = cell.getMeta();
 
       if (this.isMultiSelection && meta) {
-        const cells = this.getActiveCells(cell);
+        const selectedCells = this.getSelectedCells(cell);
 
-        if (isEmpty(cells)) {
+        if (isEmpty(selectedCells)) {
           this.interaction.clearState();
           this.spreadsheet.hideTooltip();
           return;
@@ -84,13 +86,12 @@ export class DataCellMultiSelection
           InterceptType.CLICK,
           InterceptType.HOVER,
         ]);
-
+        this.getSelectedCells(cell);
         this.spreadsheet.hideTooltip();
         this.interaction.changeState({
-          cells: cells,
+          cells: selectedCells,
           stateName: InteractionStateName.SELECTED,
         });
-        this.interaction.updateCellStyleByState();
         this.spreadsheet.showTooltipWithInfo(
           event,
           getActiveCellsTooltipData(this.spreadsheet),

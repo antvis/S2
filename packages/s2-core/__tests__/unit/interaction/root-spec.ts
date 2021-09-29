@@ -1,4 +1,5 @@
 import { Canvas, Group } from '@antv/g-canvas';
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import { RootInteraction } from '@/interaction/root';
 import {
   CellTypes,
@@ -21,18 +22,30 @@ describe('RootInteraction Tests', () => {
   let mockSpreadSheetInstance: SpreadSheet;
   let panelGroupAllDataCells: DataCell[];
 
-  const mockCell = {
-    type: CellTypes.DATA_CELL,
-    hideInteractionShape: jest.fn(),
-    clearUnselectedState: jest.fn(),
-    update: jest.fn(),
-  } as unknown as DataCell;
+  let mockCell;
+
+  const getMockCell = (id: number) =>
+    ({
+      type: CellTypes.DATA_CELL,
+      hideInteractionShape: jest.fn(),
+      clearUnselectedState: jest.fn(),
+      update: jest.fn(),
+      cellType: CellTypes.DATA_CELL,
+      getMeta: () => {
+        return {
+          colIndex: id,
+          rowIndex: 1,
+          id: `0-${id}`,
+        };
+      },
+    } as unknown as DataCell);
 
   beforeAll(() => {
     MockSpreadSheet.mockClear();
-    panelGroupAllDataCells = Array.from<DataCell>({ length: 10 }).fill(
-      mockCell,
+    panelGroupAllDataCells = Array.from<DataCell>({ length: 10 }).map(
+      (_, idx) => getMockCell(idx),
     );
+    mockCell = panelGroupAllDataCells[0];
     mockSpreadSheetInstance = new MockSpreadSheet();
     mockSpreadSheetInstance.store = new Store();
     mockSpreadSheetInstance.options = {
@@ -44,6 +57,8 @@ describe('RootInteraction Tests', () => {
     mockSpreadSheetInstance.panelGroup = new Group('');
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
     rootInteraction.getPanelGroupAllDataCells = () => panelGroupAllDataCells;
+    rootInteraction.getAllColHeaderCells = () => [];
+    rootInteraction.getAllRowHeaderCells = () => [];
     mockSpreadSheetInstance.interaction = rootInteraction;
   });
 
@@ -56,12 +71,19 @@ describe('RootInteraction Tests', () => {
 
   test('should set interaction state correct', () => {
     rootInteraction.setState({
-      cells: [mockCell],
+      cells: [getCellMeta(mockCell)],
       stateName: InteractionStateName.SELECTED,
     });
     expect(rootInteraction.getState()).toEqual({
-      cells: [mockCell],
+      cells: [getCellMeta(mockCell)],
       stateName: InteractionStateName.SELECTED,
+    });
+  });
+
+  test('should set all selected interaction state correct', () => {
+    rootInteraction.selectAll();
+    expect(rootInteraction.getState()).toEqual({
+      stateName: InteractionStateName.ALL_SELECTED,
     });
   });
 
@@ -80,7 +102,7 @@ describe('RootInteraction Tests', () => {
     test('should update cell style when update interaction state', () => {
       const cells = [mockCell, mockCell, mockCell];
       rootInteraction.changeState({
-        cells: cells,
+        cells: cells.map((item) => getCellMeta(item)),
         stateName: InteractionStateName.SELECTED,
       });
       expect(mockSpreadSheetInstance.container.draw).toHaveBeenCalled();
@@ -91,7 +113,7 @@ describe('RootInteraction Tests', () => {
 
     test('should unselect cell when force update empty cells', () => {
       rootInteraction.changeState({
-        cells: [mockCell],
+        cells: [getCellMeta(mockCell)],
         stateName: InteractionStateName.SELECTED,
       });
       rootInteraction.changeState({
@@ -125,7 +147,7 @@ describe('RootInteraction Tests', () => {
   describe('RootInteraction Calc Utils Tests', () => {
     beforeEach(() => {
       rootInteraction.setState({
-        cells: [mockCell],
+        cells: [getCellMeta(mockCell)],
         stateName: InteractionStateName.SELECTED,
       });
     });
@@ -139,13 +161,15 @@ describe('RootInteraction Tests', () => {
     });
 
     test('should get current active cells count', () => {
-      expect(rootInteraction.getActiveCellsCount()).toStrictEqual(1);
+      expect(rootInteraction.getCells().length).toStrictEqual(1);
       rootInteraction.resetState();
-      expect(rootInteraction.getActiveCellsCount()).toStrictEqual(0);
+      expect(rootInteraction.getCells().length).toStrictEqual(0);
     });
 
     test('should get current active cells', () => {
-      expect(rootInteraction.getActiveCells()).toEqual([mockCell]);
+      expect(rootInteraction.getActiveCells()).toEqual([
+        panelGroupAllDataCells[0],
+      ]);
       rootInteraction.resetState();
       expect(rootInteraction.getActiveCells()).toEqual([]);
     });
@@ -171,6 +195,14 @@ describe('RootInteraction Tests', () => {
     test('should get target cell is selected status', () => {
       const mockRowCell = {
         type: CellTypes.ROW_CELL,
+        cellType: CellTypes.ROW_CELL,
+        getMeta: () => {
+          return {
+            colIndex: 0,
+            rowIndex: 1,
+            id: '0-1',
+          };
+        },
       } as unknown as RowCell;
       expect(rootInteraction.isSelectedCell(mockCell)).toBeTruthy();
       expect(rootInteraction.isSelectedCell(mockRowCell)).toBeFalsy();

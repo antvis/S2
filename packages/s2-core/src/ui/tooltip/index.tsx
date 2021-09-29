@@ -12,13 +12,9 @@ import {
   TooltipSummaryOptions,
   TooltipNameTipsOptions,
   TooltipHeadInfo as TooltipHeadInfoType,
+  TooltipInterpretationOptions,
 } from '@/common/interface';
-import {
-  getOptions,
-  getPosition,
-  manageContainerStyle,
-  shouldIgnore,
-} from '@/utils/tooltip';
+import { getOptions, getPosition, setContainerStyle } from '@/utils/tooltip';
 import { TooltipDetail } from '@/ui/tooltip/components/detail';
 import { Divider } from '@/ui/tooltip/components/divider';
 import { TooltipHead } from '@/ui/tooltip/components/head-info';
@@ -40,9 +36,7 @@ export class BaseTooltip {
 
   protected options: TooltipShowOptions;
 
-  private customComponent: React.Component | Element | void; // react component
-
-  private enterable = false; // mark if can enter into tooltips
+  private renderElement: React.Component | Element | void; // react component
 
   public position: TooltipPosition = { x: 0, y: 0 }; // tooltips position info
 
@@ -62,27 +56,14 @@ export class BaseTooltip {
     const { enterable } = getOptions(options);
     const container = this.getContainer();
 
-    if (this.enterable && shouldIgnore(enterable, position, this.position)) {
-      return;
-    }
+    const CustomComponent =
+      element || this.spreadsheet.options.tooltip?.tooltipComponent;
+
     this.options = showOptions;
-    this.enterable = enterable;
-
-    manageContainerStyle(container, {
-      pointerEvents: enterable ? 'all' : 'none',
-      display: 'inline-block',
-    });
-
-    this.unMountComponent(container);
-    const customDom =
-      element ||
-      (this.spreadsheet?.options?.tooltipComponent as React.DOMElement<
-        React.DOMAttributes<Element>,
-        Element
-      >);
-    this.customComponent = customDom
-      ? ReactDOM.render(customDom, container)
+    this.renderElement = CustomComponent
+      ? ReactDOM.render(CustomComponent, container)
       : ReactDOM.render(this.renderContent(data, options), container);
+
     const { x, y } = getPosition(position, this.container);
 
     this.position = {
@@ -90,16 +71,17 @@ export class BaseTooltip {
       y,
     };
 
-    manageContainerStyle(container, { left: `${x}px`, top: `${y}px` });
+    setContainerStyle(container, {
+      left: `${x}px`,
+      top: `${y}px`,
+      pointerEvents: enterable ? 'all' : 'none',
+      display: 'block',
+    });
   }
 
-  /**
-   * Hide toolTips
-   */
   public hide() {
     const container = this.getContainer();
-    manageContainerStyle(container, { pointerEvents: 'none', display: 'none' });
-    this.enterable = false;
+    setContainerStyle(container, { pointerEvents: 'none', display: 'none' });
     this.resetPosition();
     this.unMountComponent(container);
   }
@@ -126,7 +108,7 @@ export class BaseTooltip {
       return this.renderOperation(operator, true);
     }
     return (
-      <div>
+      <>
         {this.renderOperation(operator)}
         {this.renderNameTips(nameTip)}
         {this.renderSummary(summaries)}
@@ -134,7 +116,7 @@ export class BaseTooltip {
         {this.renderHeadInfo(headInfo)}
         {this.renderDetail(details)}
         {this.renderInfos(infos)}
-      </div>
+      </>
     );
   }
 
@@ -187,7 +169,7 @@ export class BaseTooltip {
     return infos && <Infos infos={infos} />;
   }
 
-  protected renderInterpretation(interpretation) {
+  protected renderInterpretation(interpretation: TooltipInterpretationOptions) {
     return interpretation && <Interpretation {...interpretation} />;
   }
 
@@ -196,18 +178,16 @@ export class BaseTooltip {
    */
   protected getContainer(): HTMLElement {
     if (!this.container) {
-      // create a new div as container
       const container = document.createElement('div');
       document.body.appendChild(container);
       this.container = container;
     }
-    // change class every time!
     this.container.className = `${TOOLTIP_PREFIX_CLS}-container`;
     return this.container;
   }
 
   protected unMountComponent(container?: HTMLElement) {
-    if (this.customComponent) {
+    if (this.renderElement) {
       ReactDOM.unmountComponentAtNode(container);
     }
   }

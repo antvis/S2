@@ -8,9 +8,11 @@ import { S2PartialOptions } from '@/common/interface/s2Options';
 import { BaseDataSet } from '@/data-set';
 import { Frame } from '@/facet/header';
 import {
+  CellTypes,
   FrameConfig,
   Hierarchy,
   Node,
+  S2Event,
   S2Options,
   SpreadSheet,
   TextAlign,
@@ -24,7 +26,6 @@ export interface FormatResult {
   value: DataItem;
 }
 
-export type Aggregation = 'SUM' | 'AVG' | 'MIN' | 'MAX';
 export type SortMethod = 'ASC' | 'DESC';
 
 export interface Meta {
@@ -34,7 +35,6 @@ export interface Meta {
   // 数值字段：一般用于格式化数字带戴维
   // 文本字段：一般用于做字段枚举值的别名
   readonly formatter?: Formatter;
-  readonly aggregation?: Aggregation;
 }
 
 /**
@@ -83,10 +83,6 @@ export interface Total {
   showGrandTotals: boolean;
   /** 是否显示小计 */
   showSubTotals: boolean;
-  /** 聚合方式 */
-  aggregation: Aggregation;
-  /** 小计聚合方式 */
-  aggregationSub: Aggregation;
   /** 小计的汇总维度 */
   subTotalsDimensions: string[];
   /** 布局位置，默认是下或右 */
@@ -165,22 +161,35 @@ export interface NodeField {
   colField?: string[];
 }
 
-export interface RowActionIcons {
-  iconTypes: string[];
-  // 需要展示的层级(行头)
-  display: {
-    level: number; // 层级
-    operator: '>' | '=' | '<' | '>=' | '<='; // 层级关系
-  };
-  // 根据行头名自定义展示
-  customDisplayByRowName?: {
-    // Row headers, using the ID_SEPARATOR('[&]') to join two labels when there are hierarchical relations between them.
-    rowNames: string[];
-    // 指定行头名称是否展示icon
-    mode: 'pick' | 'omit';
-  };
-  // 具体的动作
-  action: (iconType: string, meta: Node, event: Event) => void;
+export interface CustomSVGIcon {
+  // icon 类型名
+  name: string;
+  // 1、base 64
+  // 2、svg本地文件（兼容老方式，可以改颜色）
+  // 3、线上支持的图片地址 TODO  🤔 是否存在安全问题
+  svg: string;
+}
+
+export interface HeaderActionIconProps {
+  iconName: string;
+  meta: Node;
+  event: Event;
+}
+
+export interface HeaderActionIcon {
+  // 已注册的 icon 类型或自定义的 icon 类型名
+  iconNames: string[];
+
+  // 所属的 cell 类型
+  belongsCell: Omit<CellTypes, 'dataCell'>;
+  // 是否默认隐藏， true 为 hover后显示, false 为一直显示
+  defaultHide?: boolean;
+
+  // 需要展示的层级(行头/列头) 如果没有改配置则默认全部打开
+  displayCondition?: (mete: Node) => boolean;
+
+  // 点击后的执行函数
+  action: (headerActionIconProps: HeaderActionIconProps) => void;
 }
 
 // Hook 渲染和布局相关的函数类型定义
@@ -302,6 +311,8 @@ export interface SpreadSheetFacetCfg extends Fields, S2PartialOptions, Style {
 
 export interface ViewMeta {
   spreadsheet: SpreadSheet;
+  // cell's unique id
+  id: string;
   // cell's coordination-x
   x: number;
   // cell's coordination-y
@@ -398,3 +409,11 @@ export interface OriginalEvent extends Event {
   layerX: number;
   layerY: number;
 }
+
+export type ResizeEvent =
+  | S2Event.LAYOUT_RESIZE
+  | S2Event.LAYOUT_RESIZE_ROW_WIDTH
+  | S2Event.LAYOUT_RESIZE_COL_WIDTH
+  | S2Event.LAYOUT_RESIZE_ROW_HEIGHT
+  | S2Event.LAYOUT_RESIZE_COL_HEIGHT
+  | S2Event.LAYOUT_RESIZE_TREE_WIDTH;

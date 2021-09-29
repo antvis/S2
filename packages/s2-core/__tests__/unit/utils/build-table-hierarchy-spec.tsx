@@ -63,16 +63,13 @@ const getOptions = () => {
 };
 
 function MainLayout(props) {
-  const [options, setOptions] = React.useState(props.options);
-  const [dataCfg, setDataCfg] = React.useState(props.dataCfg);
-
   return (
     <div>
       <div style={{ display: 'inline-block' }}></div>
       <SheetComponent
-        dataCfg={dataCfg}
+        dataCfg={props.dataCfg}
         adaptive={false}
-        options={options}
+        options={props.options}
         spreadsheet={getSpreadSheet}
       />
     </div>

@@ -21,14 +21,15 @@
   "scripts": {
     "start": "yarn develop",
     "develop": "gatsby develop --open -H 0.0.0.0",
-    "build": "yarn clean && gatsby build --prefix-paths",
+    "build": "yarn clean && gatsby build --no-uglify --prefix-paths",
     "clean": "gatsby clean",
+    "preview": "gatsby serve",
     "deploy": "yarn build && gh-pages -d public"
   },
   "resolutions": {
     "monaco-editor-webpack-plugin": "2.0.0",
     "monaco-editor": "0.21.0",
-    "sharp":"0.29.0"
+    "sharp": "0.29.0"
   },
   "dependencies": {
     "@antv/gatsby-theme-antv": "^1.1.8",
@@ -38,6 +39,6 @@
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-i18next": "^11.5.0",
-    "@antv/s2": "^0.1.5"
+    "@antv/s2": "latest"
   }
 }

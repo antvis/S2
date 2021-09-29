@@ -22,6 +22,7 @@ import {
   mapKeys,
   every,
 } from 'lodash';
+import React from 'react';
 import {
   LayoutResult,
   ListItem,
@@ -88,8 +89,9 @@ export const getDataSumByField = (
     data,
     (pre, next) => {
       const fieldValue = get(next, field, 0);
-      const v = isNotNumber(fieldValue) ? 0 : Number.parseFloat(fieldValue);
-
+      const v = isNotNumber(fieldValue)
+        ? 0
+        : Number.parseFloat(fieldValue) || Number(fieldValue);
       return accAdd(pre, v);
     },
     0,
@@ -150,33 +152,18 @@ export const getMergedQuery = (meta) => {
   return { ...meta?.colQuery, ...meta?.rowQuery };
 };
 
-export const shouldIgnore = (
-  enterable: boolean,
-  position: TooltipPosition,
-  currPosition: TooltipPosition,
-): boolean => {
-  if (enterable) {
-    if (
-      Math.abs(position.x - currPosition?.x) < 20 &&
-      Math.abs(position.y - currPosition?.y) < 20
-    ) {
-      return true;
-    }
-  }
-  return false;
-};
-
 /**
  * add style to container
  */
-export const manageContainerStyle = (container, styles: any) => {
+export const setContainerStyle = (
+  container: HTMLElement,
+  styles: React.CSSProperties,
+) => {
   if (container && styles) {
     Object.keys(styles)?.forEach((item) => {
       container.style[item] = styles[item];
     });
   }
-
-  return container;
 };
 
 /* formate */
@@ -347,8 +334,9 @@ export const getSelectedCellIndexes = (
   layoutResult: LayoutResult,
 ) => {
   const { rowLeafNodes, colLeafNodes } = layoutResult;
-  const { cells = [], nodes = [] } = spreadsheet.interaction.getState();
-  const cellType = cells?.[0]?.cellType;
+  const { nodes = [] } = spreadsheet.interaction.getState();
+  const cells = spreadsheet.interaction.getCells();
+  const cellType = cells?.[0]?.type;
 
   if (cellType === CellTypes.COL_CELL) {
     return getRowOrColSelectedIndexes(nodes, rowLeafNodes, false);
@@ -390,6 +378,11 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
   const { spreadsheet, getShowValue, options = {} } = params;
   const summaries = [];
   const summary = {};
+  const isTableMode = spreadsheet.isTableMode();
+  if (isTableMode && options?.showSingleTips) {
+    const selectedCellsData = spreadsheet.dataSet.getMultiData({});
+    return [{ selectedData: selectedCellsData, name: '', value: '' }];
+  }
   const selectedCellsData = getSelectedCellsData(
     spreadsheet,
     options.showSingleTips,
@@ -409,7 +402,9 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
     if (getShowValue) {
       value = getShowValue(selected, VALUE_FIELD);
     }
-    if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
+    if (isTableMode) {
+      value = '';
+    } else if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
       // 如果选中的单元格都无数据，则显示"-"
       value = '-';
     } else {
@@ -444,12 +439,17 @@ export const getTooltipData = (params: TooltipDataParam) => {
       getShowValue,
     });
   } else if (options.showSingleTips) {
-    // 行列头hover
+    // 行列头hover & 明细表所有hover
     const metaName = find(
       spreadsheet?.dataCfg?.meta,
       (item) => item?.field === firstCellInfo.value,
     )?.name;
-    firstCellInfo.name = metaName || firstCellInfo.value || '';
+    const currentFormatter = getFieldFormatter(
+      spreadsheet,
+      firstCellInfo?.valueField,
+    );
+    firstCellInfo.name =
+      metaName || currentFormatter(firstCellInfo.value) || '';
   } else {
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
     details = getDetailList(spreadsheet, firstCellInfo, options);

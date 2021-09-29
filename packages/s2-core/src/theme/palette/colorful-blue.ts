@@ -1,6 +1,6 @@
 export const paletteColorfulBlue = {
-  // --------- brand colors -----------
-  brandColors: [
+  // --------- basic colors -----------
+  basicColors: [
     '#FFFFFF',
     '#F4F7FE',
     '#DDE7FD',
@@ -9,10 +9,6 @@ export const paletteColorfulBlue = {
     '#2C60D3',
     '#0000EE',
     '#326EF4',
-  ],
-
-  // ----------neutral colors ----------
-  grayColors: [
     '#FFFFFF',
     '#E0E9FE',
     '#5286F9',

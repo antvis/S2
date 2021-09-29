@@ -17,7 +17,6 @@ import {
   auto,
   ID_SEPARATOR,
   PartDrillDown,
-  S2DataConfig,
   S2Options,
   SheetComponent,
 } from '@/index';
@@ -75,7 +74,6 @@ const getOptions = () => {
 
 function MainLayout(props) {
   const [options, setOptions] = useState<S2Options>(props.options);
-  const [dataCfg, setDataCfg] = useState<S2DataConfig>(props.dataCfg);
 
   const drillData = {
     drillConfig: {
@@ -101,7 +99,7 @@ function MainLayout(props) {
       mode: 'pick',
     },
     drillItemsNum: 2,
-    fetchData: (meta, drillFields) =>
+    fetchData: (meta) =>
       new Promise<PartDrillDownInfo>((resolve) => {
         // 弹窗 -> 选择 -> 请求数据
         let drillDownData;
@@ -174,7 +172,7 @@ function MainLayout(props) {
           </Header>
           <Content style={{ backgroundColor: '#ffffff' }}>
             <SheetComponent
-              dataCfg={dataCfg}
+              dataCfg={props.dataCfg}
               options={options}
               isLoading={false}
               partDrillDown={partDrillDown}

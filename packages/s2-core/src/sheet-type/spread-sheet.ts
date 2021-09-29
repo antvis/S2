@@ -1,6 +1,15 @@
 import EE from '@antv/event-emitter';
 import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
-import { clone, get, includes, isString, merge, size } from 'lodash';
+import {
+  clone,
+  forEach,
+  get,
+  includes,
+  isEmpty,
+  isString,
+  merge,
+  size,
+} from 'lodash';
 import { getHiddenColumnsThunkGroup, hideColumns } from '@/utils/hide-columns';
 import { BaseCell } from '@/cell';
 import {
@@ -36,9 +45,8 @@ import {
 import { EmitterType } from '@/common/interface/emitter';
 import { Store } from '@/common/store';
 import { BaseDataSet } from '@/data-set';
-
 import { BaseFacet } from '@/facet';
-import { Node, SpreadSheetTheme } from '@/index';
+import { CustomSVGIcon, Node, S2Theme } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 import { getTheme } from '@/theme';
 import { HdAdapter } from '@/ui/hd-adapter';
@@ -46,13 +54,14 @@ import { BaseTooltip } from '@/ui/tooltip';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
 import { getTooltipData } from '@/utils/tooltip';
+import { registerIcon, getIcon } from '@/common/icons/factory';
 
 export abstract class SpreadSheet extends EE {
   // dom id
   public dom: S2MountContainer;
 
   // theme config
-  public theme: SpreadSheetTheme;
+  public theme: S2Theme;
 
   // store some temporary data
   public store = new Store();
@@ -141,12 +150,12 @@ export abstract class SpreadSheet extends EE {
     this.initInteraction();
     this.initTheme();
     this.initHdAdapter();
-
+    this.registerIcons();
     this.setDebug();
   }
 
   get isShowTooltip() {
-    return this.options?.tooltip?.showTooltip ?? true;
+    return this.options?.tooltip?.showTooltip;
   }
 
   private setDebug() {
@@ -288,6 +297,17 @@ export abstract class SpreadSheet extends EE {
     }
   }
 
+  public registerIcons() {
+    const customSVGIcons = this.options.customSVGIcons;
+    if (isEmpty(customSVGIcons)) return;
+
+    forEach(customSVGIcons, (customSVGIcon: CustomSVGIcon) => {
+      if (isEmpty(getIcon(customSVGIcon.name))) {
+        registerIcon(customSVGIcon.name, customSVGIcon.svg);
+      }
+    });
+  }
+
   /**
    * Update data config and keep pre-sort operations
    * Group sort params kept in {@see store} and
@@ -307,6 +327,7 @@ export abstract class SpreadSheet extends EE {
   public setOptions(options: Partial<S2Options>) {
     this.hideTooltip();
     this.options = customMerge(this.options, options);
+    this.registerIcons();
   }
 
   public render(reloadData = true) {
@@ -532,4 +553,7 @@ export abstract class SpreadSheet extends EE {
       hideColumns(this, fields);
     });
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public handleGroupSort(event: MouseEvent, meta: Node) {}
 }

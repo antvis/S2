@@ -1,7 +1,6 @@
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
 import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
-import { Node } from '@/facet/layout/node';
 import { BaseCell } from '@/cell/base-cell';
 import {
   CellTypes,
@@ -17,15 +16,12 @@ import {
   IconCfg,
   IconCondition,
   MappingResult,
-  S2CellType,
+  CellMeta,
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
 } from '@/common/interface';
-import {
-  getMaxTextWidth,
-  getTextAndFollowingIconPosition,
-} from '@/utils/cell/cell';
+import { getMaxTextWidth } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
 import { getIconPositionCfg } from '@/utils/condition/condition';
 import {
@@ -59,14 +55,14 @@ export class DataCell extends BaseCell<ViewMeta> {
     return CellTypes.DATA_CELL;
   }
 
-  protected handlePrepareSelect(cells: S2CellType[]) {
+  protected handlePrepareSelect(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.PREPARE_SELECT);
     }
   }
 
-  protected handleSelect(cells: S2CellType[]) {
-    const currentCellType = cells?.[0]?.cellType;
+  protected handleSelect(cells: CellMeta[]) {
+    const currentCellType = cells?.[0]?.type;
     switch (currentCellType) {
       // 列多选
       case CellTypes.COL_CELL:
@@ -89,9 +85,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     }
   }
 
-  protected handleHover(cells: S2CellType[]) {
-    const currentHoverCell = first(cells) as S2CellType;
-    if (currentHoverCell.cellType !== CellTypes.DATA_CELL) {
+  protected handleHover(cells: CellMeta[]) {
+    const currentHoverCell = first(cells) as CellMeta;
+    if (currentHoverCell.type !== CellTypes.DATA_CELL) {
       this.hideInteractionShape();
       return;
     }
@@ -103,8 +99,8 @@ export class DataCell extends BaseCell<ViewMeta> {
       const currentRowIndex = this.meta.rowIndex;
       // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
       if (
-        currentColIndex === currentHoverCell?.getMeta().colIndex ||
-        currentRowIndex === currentHoverCell?.getMeta().rowIndex
+        currentColIndex === currentHoverCell?.colIndex ||
+        currentRowIndex === currentHoverCell?.rowIndex
       ) {
         this.updateByState(InteractionStateName.HOVER);
       } else {
@@ -120,8 +116,11 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public update() {
     const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    const cells = this.spreadsheet.interaction.getActiveCells();
-
+    const cells = this.spreadsheet.interaction.getCells();
+    if (stateName === InteractionStateName.ALL_SELECTED) {
+      this.updateByState(InteractionStateName.SELECTED);
+      return;
+    }
     if (isEmpty(cells) || !stateName) {
       return;
     }
@@ -175,7 +174,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     return { ...textStyle, fill };
   }
 
-  protected getIconStyle(): IconCfg | undefined {
+  public getIconStyle(): IconCfg | undefined {
     const { size, margin } = this.theme.dataCell.icon;
     const iconCondition: IconCondition = this.findFieldCondition(
       this.conditions?.icon,
@@ -215,23 +214,8 @@ export class DataCell extends BaseCell<ViewMeta> {
     return getMaxTextWidth(width, this.getIconStyle());
   }
 
-  private getTextAndIconPosition() {
-    const textStyle = this.getTextStyle();
-    const iconCfg = this.getIconStyle();
-    return getTextAndFollowingIconPosition(
-      this.getContentArea(),
-      textStyle,
-      this.actualTextWidth,
-      iconCfg,
-    );
-  }
-
   protected getTextPosition(): Point {
     return this.getTextAndIconPosition().text;
-  }
-
-  protected getIconPosition() {
-    return this.getTextAndIconPosition().icon;
   }
 
   protected drawConditionIconShapes() {
@@ -246,7 +230,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (!isEmpty(attrs?.icon) && formattedValue) {
         this.conditionIconShape = renderIcon(this, {
           ...position,
-          type: attrs.icon,
+          name: attrs.icon,
           width: size,
           height: size,
           fill: attrs.fill,
@@ -299,16 +283,20 @@ export class DataCell extends BaseCell<ViewMeta> {
       const { minValue, maxValue } = attrs.isCompare
         ? attrs
         : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
-      const scale = this.getIntervalScale(minValue, maxValue);
-      const zero = scale(0); // 零点
-
       const fieldValue = parseNumberWithPrecision(
         this.meta.fieldValue as number,
       );
+      // 对于超出设定范围的值不予显示
+      if (fieldValue < minValue || fieldValue > maxValue) {
+        return;
+      }
+
+      const scale = this.getIntervalScale(minValue, maxValue);
+      const zero = scale(0); // 零点
       const current = scale(fieldValue); // 当前数据点
+
       const barChartHeight = this.getStyle().cell.miniBarChartHeight;
       const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
-      const stroke = attrs.fill ?? barChartFillColor;
       const fill = attrs.fill ?? barChartFillColor;
 
       this.conditionIntervalShape = renderRect(this, {
@@ -317,7 +305,6 @@ export class DataCell extends BaseCell<ViewMeta> {
         width: width * (current - zero),
         height: barChartHeight,
         fill,
-        stroke,
       });
     }
   }
@@ -398,14 +385,12 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   // dataCell根据state 改变当前样式，
   private changeRowColSelectState(indexType: ViewMetaIndexType) {
+    const { interaction } = this.spreadsheet;
     const currentIndex = get(this.meta, indexType);
-    const { nodes = [], cells = [] } = this.spreadsheet.interaction.getState();
-    const isEqualIndex = [...nodes, ...cells].find((cell) => {
-      if (cell instanceof Node) {
-        return get(cell, indexType) === currentIndex;
-      }
-      return get(cell?.getMeta(), indexType) === currentIndex;
-    });
+    const { nodes = [], cells = [] } = interaction.getState();
+    const isEqualIndex = [...nodes, ...cells].find(
+      (cell) => get(cell, indexType) === currentIndex,
+    );
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
     } else if (this.spreadsheet.options.selectedCellsSpotlight) {
@@ -434,9 +419,9 @@ export class DataCell extends BaseCell<ViewMeta> {
       this,
       {
         x1: x,
-        y1: y,
+        y1: y + height,
         x2: x + width,
-        y2: y,
+        y2: y + height,
       },
       {
         stroke: horizontalBorderColor,
@@ -488,11 +473,13 @@ export class DataCell extends BaseCell<ViewMeta> {
         `${this.cellType}.cell.interactionState.${stateName}`,
       );
       if (stateStyles) {
+        // 对于
         updateShapeAttr(
           this.conditionIntervalShape,
           SHAPE_STYLE_MAP.backgroundOpacity,
           stateStyles.backgroundOpacity,
         );
+
         updateShapeAttr(
           this.conditionIconShape as unknown as IShape,
           SHAPE_STYLE_MAP.opacity,
@@ -504,11 +491,13 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public clearUnselectedState() {
     super.clearUnselectedState();
+
     updateShapeAttr(
       this.conditionIntervalShape,
       SHAPE_STYLE_MAP.backgroundOpacity,
       1,
     );
+
     updateShapeAttr(
       this.conditionIconShape as unknown as IShape,
       SHAPE_STYLE_MAP.opacity,

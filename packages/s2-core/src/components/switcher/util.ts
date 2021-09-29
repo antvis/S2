@@ -1,11 +1,17 @@
-import { filter, flatten, isEmpty, map } from 'lodash';
+import { filter, flatten, isEmpty, map, mapValues } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
 import {
   FieldType,
   MAX_DIMENSION_COUNT,
   SWITCHER_PREFIX_CLS,
 } from './constant';
-import { SwitcherItem, SwitcherResult, SwitcherState } from './interface';
+import {
+  SwitcherItem,
+  SwitcherResult,
+  SwitcherState,
+  SwitcherFields,
+  SwitcherResultItem,
+} from './interface';
 import { getClassNameWithPrefix } from '@/utils/get-classnames';
 
 export const getSwitcherClassName = (...classNames: string[]) =>
@@ -30,11 +36,8 @@ export const getMainLayoutClassName = (nonEmptyCount: number) => {
   }
 };
 
-export const showDimensionCrossRows = (nonEmptyCount: number) =>
-  nonEmptyCount < MAX_DIMENSION_COUNT;
-
-export const isMeasureType = (fieldType: FieldType) =>
-  fieldType === FieldType.Values;
+export const shouldCrossRows = (nonEmptyCount: number, type: FieldType) =>
+  nonEmptyCount < MAX_DIMENSION_COUNT || type === FieldType.Values;
 
 export const moveItem = (
   source: SwitcherItem[],
@@ -74,7 +77,7 @@ export const checkItem = (
     ...source.find((item) => item.id === (parentId ?? id)),
   };
 
-  // 有 parentId 时，说明是第二层次项的改变
+  // 有 parentId 时，说明是第二层级的改变
   if (parentId) {
     target.children = map(target.children, (item) => ({
       ...item,
@@ -92,30 +95,33 @@ export const checkItem = (
 };
 
 export const generateSwitchResult = (state: SwitcherState): SwitcherResult => {
-  // rows and cols can't be hidden
-  const rows = map(state[FieldType.Rows], 'id');
-  const cols = map(state[FieldType.Cols], 'id');
-
-  // flatten all values and derived values
-  const values = flatten(
-    map(state[FieldType.Values], (item) => {
-      const children = map(item.children, 'id');
-      return [item.id, ...children];
-    }),
-  );
-
-  const filterHiddenValues = (item: SwitcherItem) => item.checked === false;
-
-  //  get all hidden values
-  const hiddenValues = flatten(
-    map(filter(state[FieldType.Values], filterHiddenValues), (item) => {
-      const hiddenChildren = map(
-        filter(item.children, filterHiddenValues),
-        'id',
+  const generateFieldResult = (items: SwitcherItem[]): SwitcherResultItem => {
+    const flattenValues = (list: SwitcherItem[]) =>
+      flatten(
+        map(list, ({ children, ...rest }) => {
+          return [{ ...rest }, ...flattenValues(children)];
+        }),
       );
-      return [item.id, ...hiddenChildren];
-    }),
-  );
 
-  return { rows, cols, values, hiddenValues };
+    const allItems = flattenValues(items);
+
+    //  get all hidden values
+    const hideItems = filter(
+      allItems,
+      (item: SwitcherItem) => item.checked === false,
+    );
+    return {
+      items: allItems,
+      hideItems,
+    };
+  };
+
+  return {
+    [FieldType.Rows]: generateFieldResult(state[FieldType.Rows]),
+    [FieldType.Cols]: generateFieldResult(state[FieldType.Cols]),
+    [FieldType.Values]: generateFieldResult(state[FieldType.Values]),
+  };
 };
+
+export const getSwitcherState = (fields: SwitcherFields): SwitcherState =>
+  mapValues(fields, 'items');

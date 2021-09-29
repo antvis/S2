@@ -1,4 +1,4 @@
-import { concat, forEach, includes, isEmpty, merge, size } from 'lodash';
+import { concat, forEach, isEmpty } from 'lodash';
 import {
   DataCellClick,
   MergedCellsClick,
@@ -73,12 +73,10 @@ export class RootInteraction {
 
   public setInteractedCells(cell: S2CellType) {
     const interactedCells = this.getInteractedCells().concat([cell]);
-    const interactionInfo = merge(
-      this.getState(),
-      { interactedCells: interactedCells },
-      {},
-    );
-    this.setState(interactionInfo);
+    const state = this.getState();
+    state.interactedCells = interactedCells;
+
+    this.setState(state);
   }
 
   public getInteractedCells() {
@@ -103,24 +101,24 @@ export class RootInteraction {
     return currentState?.stateName === InteractionStateName.SELECTED;
   }
 
-  public isSelectedCell(cell: S2CellType) {
-    return this.isSelectedState() && includes(this.getActiveCells(), cell);
+  private isActiveCell(cell: S2CellType) {
+    return this.getCells().find((meta) => cell.getMeta().id === meta.id);
   }
 
-  public getActiveCells() {
+  public isSelectedCell(cell: S2CellType) {
+    return this.isSelectedState() && this.isActiveCell(cell);
+  }
+
+  // 获取当前 interaction 记录的 Cells 元信息列表，包括不在视口内的格子
+  public getCells() {
     const currentState = this.getState();
     return currentState?.cells || [];
   }
 
-  public getActiveCellsCount() {
-    return size(this.getActiveCells());
-  }
-
-  public updateCellStyleByState() {
-    const cells = this.getActiveCells();
-    cells.forEach((cell) => {
-      cell.updateByState(this.getCurrentStateName(), cell);
-    });
+  // 获取 cells 中在视口内部分的实例列表
+  public getActiveCells() {
+    const ids = this.getCells().map((item) => item.id);
+    return this.getAllCells().filter((cell) => ids.includes(cell.getMeta().id));
   }
 
   public clearStyleIndependent() {
@@ -137,7 +135,7 @@ export class RootInteraction {
 
   public getPanelGroupAllUnSelectedDataCells() {
     return this.getPanelGroupAllDataCells().filter(
-      (cell) => !this.getActiveCells().includes(cell),
+      (cell) => !this.isActiveCell(cell),
     );
   }
 
@@ -179,6 +177,13 @@ export class RootInteraction {
     ) as ColCell[];
   }
 
+  public getRowColActiveCells(ids: string[]) {
+    return concat<S2CellType>(
+      this.getAllRowHeaderCells(),
+      this.getAllColHeaderCells(),
+    ).filter((item) => ids.includes(item.getMeta().id));
+  }
+
   public getAllCells() {
     return concat<S2CellType>(
       this.getPanelGroupAllDataCells(),
@@ -186,6 +191,12 @@ export class RootInteraction {
       this.getAllColHeaderCells(),
     );
   }
+
+  public selectAll = () => {
+    this.spreadsheet.interaction.changeState({
+      stateName: InteractionStateName.ALL_SELECTED,
+    });
+  };
 
   /**
    * 注册交互（组件按自己的场景写交互，继承此方法注册）
@@ -263,16 +274,18 @@ export class RootInteraction {
 
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { interaction } = this.spreadsheet;
-    const { cells, force } = interactionStateInfo;
-    if (isEmpty(cells)) {
+    const { cells, force, stateName } = interactionStateInfo;
+
+    if (isEmpty(cells) && stateName === InteractionStateName.SELECTED) {
       if (force) {
         interaction.changeState({
-          cells: interaction.getActiveCells(),
+          cells: [],
           stateName: InteractionStateName.UNSELECTED,
         });
       }
       return;
     }
+
     this.clearState();
     this.setState(interactionStateInfo);
     this.updatePanelGroupAllDataCells();

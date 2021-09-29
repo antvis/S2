@@ -15,14 +15,16 @@ import {
   TableSheet,
 } from '@/index';
 import { Switcher } from '@/components/switcher';
-import { SwitcherItem } from '@/components/switcher/interface';
+import { SwitcherFields } from '@/components/switcher/interface';
+
+let s2: TableSheet;
 
 const data = getMockData('../data/tableau-supermarket.csv');
 
 const getSpreadSheet =
   (ref: React.MutableRefObject<SpreadSheet>) =>
   (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
-    const s2 = new TableSheet(dom, dataCfg, options);
+    s2 = new TableSheet(dom, dataCfg, options);
     ref.current = s2;
     return s2;
   };
@@ -61,10 +63,11 @@ const meta = [
   {
     field: 'profit',
     name: '利润',
+    formatter: (v) => `${v}元`,
   },
 ];
 
-function MainLayout() {
+function MainLayout({ callback }) {
   const [showPagination, setShowPagination] = React.useState(false);
   const [hiddenColumnsOperator, setHiddenColumnsOperator] =
     React.useState(true);
@@ -99,6 +102,7 @@ function MainLayout() {
     height: 600,
     showSeriesNumber: true,
     enableCopy: true,
+    hoverHighlight: false,
     style: {
       colCfg: {
         colWidthType: 'compact',
@@ -109,14 +113,14 @@ function MainLayout() {
       device: 'pc',
     },
     pagination: showPagination && {
-      pageSize: 10,
+      pageSize: 50,
       current: 1,
     },
     frozenRowCount: 2,
     frozenColCount: 1,
     frozenTrailingColCount: 1,
     frozenTrailingRowCount: 1,
-    linkFieldIds: ['order_id', 'customer_name'],
+    linkFields: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
       operation: {
@@ -128,42 +132,60 @@ function MainLayout() {
 
   const s2Ref = React.useRef<SpreadSheet>(null);
 
+  const logData = (...d: unknown[]) => {
+    console.log(...d);
+  };
+
   useEffect(() => {
-    const logData = (...data: unknown[]) => {
-      console.log(...data);
-    };
     s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
-    s2Ref.current.on(S2Event.ROW_CELL_TEXT_CLICK, ({ key, record }) => {
+    s2Ref.current.on(S2Event.GLOBAL_LINK_FIELD_JUMP, ({ key, record }) => {
       message.info(`key: ${key}, name: ${JSON.stringify(record)}`);
     });
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, logData);
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_HIDE, logData);
+    s2Ref.current.on(S2Event.GLOBAL_KEYBOARD_DOWN, (e) => {
+      if (e.key === 'a' && e.metaKey) {
+        e.preventDefault();
+        s2Ref.current.interaction.selectAll();
+      }
+    });
+
+    s2Ref.current.on(S2Event.GLOBAL_SELECTED, logData);
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED);
-      s2Ref.current.off(S2Event.ROW_CELL_TEXT_CLICK);
+      s2Ref.current.off(S2Event.GLOBAL_LINK_FIELD_JUMP);
       s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_EXPANDED);
       s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_HIDE);
     };
   }, []);
 
-  const switcherValues: SwitcherItem[] = columns.map((field) => {
-    return {
-      id: field,
-      displayName: find(meta, { field })?.name,
-      checked: true,
-    };
-  });
+  const switcherFields: SwitcherFields = {
+    columns: {
+      selectable: true,
+      items: columns.map((field) => {
+        return {
+          id: field,
+          displayName: find(meta, { field })?.name,
+          checked: true,
+        };
+      }),
+    },
+  };
+  useEffect(() => {
+    callback({
+      setShowPagination,
+    });
+  }, [callback]);
 
   return (
     <Space direction="vertical">
       <Space>
-        {' '}
         <Switcher
-          values={switcherValues}
+          {...switcherFields}
           onSubmit={(result) => {
             console.log('result: ', result);
-            const { hiddenValues } = result;
-            setHiddenColumnFields(hiddenValues);
+            const { hideItems } = result.columns;
+            setHiddenColumnFields(hideItems.map((i) => i.id));
           }}
         />
         <Switch
@@ -186,17 +208,43 @@ function MainLayout() {
         options={options}
         sheetType={'table'}
         spreadsheet={getSpreadSheet(s2Ref)}
+        onDataCellDoubleClick={logData}
+        onContextMenu={logData}
       />
     </Space>
   );
 }
 
 describe('table sheet normal spec', () => {
-  test('placeholder', () => {
-    expect(1).toBe(1);
+  let cbs;
+  act(() => {
+    ReactDOM.render(
+      <MainLayout
+        callback={(params) => {
+          cbs = params;
+        }}
+      />,
+      getContainer(),
+    );
   });
 
-  act(() => {
-    ReactDOM.render(<MainLayout />, getContainer());
+  test('getCellRange', () => {
+    expect(s2.facet.getCellRange()).toStrictEqual({
+      start: 0,
+      end: 999,
+    });
+
+    act(() => {
+      cbs.setShowPagination(true);
+    });
+
+    expect(s2.facet.getCellRange()).toStrictEqual({
+      start: 0,
+      end: 49,
+    });
+
+    act(() => {
+      cbs.setShowPagination(false);
+    });
   });
 });

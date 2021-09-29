@@ -1,23 +1,25 @@
 import { Checkbox, Tooltip } from 'antd';
 import cx from 'classnames';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { SwitcherItem } from '../interface';
+import { SwitcherField, SwitcherItem } from '../interface';
 import { getSwitcherClassName } from '../util';
 import { DimensionCommonProps } from '.';
 
 const CLASS_NAME_PREFIX = 'item';
 
 type SingleItemProps = Omit<SwitcherItem, 'children'> &
-  Pick<DimensionCommonProps, 'fieldType' | 'onVisibleItemChange'> & {
+  Pick<SwitcherField, 'selectable'> &
+  DimensionCommonProps & {
     parentId?: string;
-    className: string;
     disabled?: boolean;
+    className: string;
   };
 
 export const SingleItem: FC<SingleItemProps> = ({
   fieldType,
   id,
   displayName,
+  selectable,
   checked,
   parentId,
   className,
@@ -39,12 +41,12 @@ export const SingleItem: FC<SingleItemProps> = ({
         unchecked: !checked,
       })}
     >
-      {onVisibleItemChange && (
+      {selectable && (
         <Checkbox
           disabled={disabled}
           checked={checked}
           onChange={(e) =>
-            onVisibleItemChange?.(e.target.checked, fieldType, id, parentId)
+            onVisibleItemChange?.(fieldType, e.target.checked, id, parentId)
           }
         />
       )}

@@ -1,5 +1,6 @@
 import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
+import { getDataCellId } from 'src/utils/cell/data-cell';
 import { get, maxBy, set } from 'lodash';
 import type {
   LayoutResult,
@@ -15,6 +16,8 @@ import {
   translateGroup,
   translateGroupX,
   translateGroupY,
+  isFrozenTrailingCol,
+  isFrozenTrailingRow,
 } from './utils';
 import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
 import { FrozenCellGroupMap } from '@/common/constant/frozen';
@@ -89,26 +92,23 @@ export class TableFacet extends BaseFacet {
       const cellHeight =
         cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
 
+      const cellRange = this.getCellRange();
+
       let data;
 
       const width = this.panelBBox.maxX;
-      const dataLength = dataSet.getMultiData({}).length;
       const colLength = colLeafNodes.length;
 
       let x = col.x;
       let y = cellHeight * rowIndex;
 
       if (
-        frozenTrailingRowCount > 0 &&
-        rowIndex >= dataLength - frozenTrailingRowCount
+        isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
       ) {
-        y = this.panelBBox.maxY - (dataLength - rowIndex) * cellHeight;
+        y = this.panelBBox.maxY - (cellRange.end + 1 - rowIndex) * cellHeight;
       }
 
-      if (
-        frozenTrailingColCount > 0 &&
-        colIndex >= colLength - frozenTrailingColCount
-      ) {
+      if (isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)) {
         x =
           width -
           colLeafNodes.reduceRight((prev, item, idx) => {
@@ -145,6 +145,7 @@ export class TableFacet extends BaseFacet {
         rowId: String(rowIndex),
         valueField: col.field,
         fieldValue: data,
+        id: getDataCellId(String(rowIndex), col.id),
       } as ViewMeta;
     };
 
@@ -271,7 +272,8 @@ export class TableFacet extends BaseFacet {
       const datas = dataSet.originData;
       const colLabel = col.label;
 
-      const allLabels = datas.map((data) => `${data[col.key]}`)?.slice(0, 50);
+      const allLabels =
+        datas?.map((data) => `${data[col.key]}`)?.slice(0, 50) || []; // 采样取了前50
       allLabels.push(colLabel);
       const maxLabel = maxBy(allLabels, (label) =>
         measureTextWidthRoughly(label),
@@ -318,7 +320,7 @@ export class TableFacet extends BaseFacet {
       },
 
       getCellOffsetY: (offset: number) => {
-        if (offset === 0) return 0;
+        if (offset <= 0) return 0;
         let totalOffset = 0;
         for (let index = 0; index < offset; index++) {
           totalOffset += cellHeight;
@@ -346,25 +348,26 @@ export class TableFacet extends BaseFacet {
   }
 
   protected initFrozenGroupPosition = () => {
+    const scrollY = this.getPaginationScrollY();
     translateGroup(
       this.spreadsheet.frozenRowGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
     translateGroup(
       this.spreadsheet.frozenColGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
     translateGroup(
       this.spreadsheet.frozenTrailingColGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
     translateGroup(
       this.spreadsheet.frozenTopGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height,
+      this.cornerBBox.height - scrollY,
     );
   };
 
@@ -495,8 +498,9 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
       frozenTrailingColCount,
     } = this.spreadsheet.options;
-    const dataLength = this.viewCellHeights.getTotalLength();
+
     const colLength = this.layoutResult.colLeafNodes.length;
+    const cellRange = this.getCellRange();
 
     const result = calculateFrozenCornerCells(
       {
@@ -506,7 +510,7 @@ export class TableFacet extends BaseFacet {
         frozenTrailingColCount,
       },
       colLength,
-      dataLength,
+      cellRange,
     );
 
     Object.keys(result).forEach((key) => {
@@ -535,8 +539,8 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
       frozenTrailingColCount,
     } = this.spreadsheet.options;
-    const dataLength = this.viewCellHeights.getTotalLength();
     const colLength = this.layoutResult.colsHierarchy.getLeaves().length;
+    const cellRange = this.getCellRange();
 
     const frozenCellType = getFrozenDataCellType(
       cell.getMeta(),
@@ -547,7 +551,7 @@ export class TableFacet extends BaseFacet {
         frozenTrailingColCount,
       },
       colLength,
-      dataLength,
+      cellRange,
     );
 
     const group = FrozenCellGroupMap[frozenCellType];
@@ -610,7 +614,6 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
     } = this.spreadsheet.options;
 
-    const dataLength = this.viewCellHeights.getTotalLength();
     const colLength = this.layoutResult.colLeafNodes.length;
 
     const indexes = calculateInViewIndexes(
@@ -622,6 +625,8 @@ export class TableFacet extends BaseFacet {
       this.getRealScrollX(this.cornerBBox.width),
     );
 
+    const cellRange = this.getCellRange();
+
     return splitInViewIndexesWithFrozen(
       indexes,
       {
@@ -631,12 +636,13 @@ export class TableFacet extends BaseFacet {
         frozenTrailingRowCount,
       },
       colLength,
-      dataLength,
+      cellRange,
     );
   }
 
   // 对 panelScrollGroup 以及四个方向的 frozenGroup 做 Clip，避免有透明度时冻结分组和滚动分组展示重叠
   protected clip(scrollX: number, scrollY: number) {
+    const paginationScrollY = this.getPaginationScrollY();
     const {
       frozenRowGroup,
       frozenColGroup,
@@ -671,7 +677,7 @@ export class TableFacet extends BaseFacet {
       type: 'rect',
       attrs: {
         x: scrollX + frozenColGroupWidth,
-        y: 0,
+        y: paginationScrollY,
         width: panelScrollGroupWidth,
         height: frozenRowGroupHeight,
       },

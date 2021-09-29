@@ -49,7 +49,7 @@ export interface Cfg {
   cols?: string[];
 
   // 点击需要跳转链接的字段
-  linkFieldIds?: string[];
+  linkFields?: string[];
 
   // 有行号时，行号这一列的宽度
   seriesNumberWidth?: number;

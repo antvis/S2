@@ -91,7 +91,7 @@ export function renderTreeIcon(
   onClick: () => void,
 ) {
   const icon = new GuiIcon({
-    type: isCollapse ? 'plus' : 'MinusSquare',
+    name: isCollapse ? 'plus' : 'MinusSquare',
     ...area,
     fill,
   });

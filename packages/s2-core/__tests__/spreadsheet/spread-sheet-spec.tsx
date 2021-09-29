@@ -1,12 +1,18 @@
-import { Radio, Space, Switch } from 'antd';
+import { Radio, Space, Switch, Button, Input } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
 import { SheetEntry, assembleDataCfg } from '../util/sheet-entry';
-// import * as tableData from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
-import { S2Options, SheetType, ThemeName } from '@/index';
+import {
+  HeaderActionIconProps,
+  S2Options,
+  SheetType,
+  ThemeName,
+  Node,
+  TargetCellInfo,
+} from '@/index';
 
 const tableDataFields = {
   fields: {
@@ -24,8 +30,23 @@ function MainLayout() {
   const [hoverHighlight, setHoverHighlight] = React.useState(true);
   const [showSeriesNumber, setShowSeriesNumber] = React.useState(false);
   const [showPagination, setShowPagination] = React.useState(false);
-  const [showTooltip, setShowTooltip] = React.useState(true);
+  const [showDefaultActionIcons, setShowDefaultActionIcons] =
+    React.useState(true);
   const [themeName, setThemeName] = React.useState<ThemeName>('default');
+
+  const CornerTooltip = <div>cornerTooltip</div>;
+
+  const RowTooltip = <div>rowTooltip</div>;
+
+  const ColTooltip = <div>colTooltip</div>;
+
+  const ColCellClickTooltip = (
+    <div>
+      <h1>Tooltip</h1>
+      <Button>button</Button>
+      <Input />
+    </div>
+  );
 
   const onToggleRender = () => {
     setRender(!render);
@@ -40,7 +61,6 @@ function MainLayout() {
       current: 1,
     },
     tooltip: {
-      showTooltip: showTooltip,
       renderTooltip: (spreadsheet) => {
         return new CustomTooltip(spreadsheet);
       },
@@ -51,6 +71,66 @@ function MainLayout() {
     showSeriesNumber: showSeriesNumber,
     selectedCellsSpotlight: spotLight,
     hoverHighlight: hoverHighlight,
+    customSVGIcons: !showDefaultActionIcons && [
+      {
+        name: 'Filter',
+        svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+      },
+      {
+        name: 'FilterAsc',
+        svg: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
+      },
+    ],
+    headerActionIcons: !showDefaultActionIcons && [
+      {
+        iconNames: ['Filter'],
+        belongsCell: 'colCell',
+        displayCondition: (meta: Node) =>
+          meta.id !== 'root[&]家具[&]桌子[&]price',
+        action: (props: HeaderActionIconProps) => {
+          const { meta, event } = props;
+          meta.spreadsheet.tooltip.show({
+            position: { x: event.clientX, y: event.clientY },
+            element: ColTooltip,
+          });
+        },
+      },
+      {
+        iconNames: ['SortDown'],
+        belongsCell: 'colCell',
+        displayCondition: (meta: Node) =>
+          meta.id === 'root[&]家具[&]桌子[&]price',
+        action: (props: HeaderActionIconProps) => {
+          const { meta, event } = props;
+          meta.spreadsheet.tooltip.show({
+            position: { x: event.clientX, y: event.clientY },
+            element: ColTooltip,
+          });
+        },
+      },
+      {
+        iconNames: ['FilterAsc'],
+        belongsCell: 'cornerCell',
+        action: (props: HeaderActionIconProps) => {
+          const { meta, event } = props;
+          meta.spreadsheet.tooltip.show({
+            position: { x: event.clientX, y: event.clientY },
+            element: CornerTooltip,
+          });
+        },
+      },
+      {
+        iconNames: ['SortDown', 'Filter'],
+        belongsCell: 'rowCell',
+        action: (props: HeaderActionIconProps) => {
+          const { meta, event } = props;
+          meta.spreadsheet.tooltip.show({
+            position: { x: event.clientX, y: event.clientY },
+            element: RowTooltip,
+          });
+        },
+      },
+    ],
   };
 
   const onSheetTypeChange = (checked) => {
@@ -63,6 +143,14 @@ function MainLayout() {
       setSheetType('table');
       setDataCfg(assembleDataCfg(tableDataFields));
     }
+  };
+
+  const onColCellClick = (value: TargetCellInfo) => {
+    const sheet = value?.viewMeta?.spreadsheet;
+    sheet?.showTooltip({
+      position: { x: value.event.clientX, y: value.event.clientY },
+      element: ColCellClickTooltip,
+    });
   };
 
   return (
@@ -81,6 +169,7 @@ function MainLayout() {
           options={mergedOptions}
           themeCfg={{ name: themeName }}
           sheetType={sheetType}
+          onColCellClick={onColCellClick}
           header={
             <Space size="middle" style={{ marginBottom: 20 }}>
               <Radio.Group onChange={onRadioChange} defaultValue="default">
@@ -116,10 +205,10 @@ function MainLayout() {
               />
 
               <Switch
-                checkedChildren="tooltip打开"
-                unCheckedChildren="tooltip关闭"
-                checked={showTooltip}
-                onChange={setShowTooltip}
+                checkedChildren="默认actionIcons"
+                unCheckedChildren="自定义actionIcons"
+                checked={showDefaultActionIcons}
+                onChange={setShowDefaultActionIcons}
               />
               <Switch
                 checkedChildren="透视表"

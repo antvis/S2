@@ -9,12 +9,15 @@ import {
 import {
   FormatResult,
   S2CellType,
-  SpreadSheetTheme,
+  S2Theme,
   StateShapeLayer,
   TextTheme,
 } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
-import { getContentArea } from '@/utils/cell/cell';
+import {
+  getContentArea,
+  getTextAndFollowingIconPosition,
+} from '@/utils/cell/cell';
 import { renderLine, renderText, updateShapeAttr } from '@/utils/g-renders';
 import { isMobile } from '@/utils/is-mobile';
 import { getEllipsisText, measureTextWidth } from '@/utils/text';
@@ -27,7 +30,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected spreadsheet: SpreadSheet;
 
   // spreadsheet's theme
-  protected theme: SpreadSheetTheme;
+  protected theme: S2Theme;
 
   // background control shape
   protected backgroundShape: IShape;
@@ -65,10 +68,26 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     this.meta = viewMeta;
   }
 
+  public getIconStyle() {
+    return this.theme[this.cellType].icon;
+  }
+
+  public getTextAndIconPosition() {
+    const textStyle = this.getTextStyle();
+    const iconCfg = this.getIconStyle();
+    return getTextAndFollowingIconPosition(
+      this.getContentArea(),
+      textStyle,
+      this.actualTextWidth,
+      iconCfg,
+    );
+  }
+
   /**
    * in case there are more params to be handled
    * @param options any type's rest params
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected handleRestOptions(...options: unknown[]) {
     // default do nothing
   }
@@ -117,6 +136,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   protected getContentArea() {
     const { padding } = this.theme.dataCell.cell;
     return getContentArea(this.getCellArea(), padding);
+  }
+
+  protected getIconPosition() {
+    return this.getTextAndIconPosition().icon;
   }
 
   protected drawTextShape() {

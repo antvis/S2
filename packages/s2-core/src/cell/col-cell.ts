@@ -1,12 +1,10 @@
 import { Group, Point } from '@antv/g-canvas';
-import { get, isEqual } from 'lodash';
 import { HeaderCell } from './header-cell';
 import {
   CellTypes,
   KEY_GROUP_COL_RESIZE_AREA,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
 } from '@/common/constant';
-import { GuiIcon } from '@/common/icons';
 import {
   FormatResult,
   TextAlign,
@@ -18,10 +16,7 @@ import { ResizeInfo } from '@/facet/header/interface';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect } from '@/utils/g-renders';
 import { AreaRange } from '@/common/interface/scroll';
-import {
-  getTextPositionWhenHorizontalScrolling,
-  getVerticalPosition,
-} from '@/utils/cell/cell';
+import { getTextPositionWhenHorizontalScrolling } from '@/utils/cell/cell';
 
 export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;
@@ -133,56 +128,6 @@ export class ColCell extends HeaderCell {
 
     const textY = contentBox.y + contentBox.height / 2;
     return { x: textX, y: textY };
-  }
-
-  private showSortIcon() {
-    const { sortParam } = this.headerConfig;
-    const query = this.meta.query;
-    return (
-      isEqual(get(sortParam, 'query'), query) &&
-      get(sortParam, 'type') !== 'none'
-    );
-  }
-
-  private getActionIconsWidth() {
-    const { icon } = this.getStyle();
-    return this.showSortIcon() ? icon.size + icon.margin.left : 0;
-  }
-
-  protected getActionIconPosition(): Point {
-    const { textBaseline } = this.getTextStyle();
-    const { size } = this.getStyle().icon;
-    const { x, width } = this.getContentArea();
-
-    const iconX = x + width - size;
-    const iconY = getVerticalPosition(
-      this.getContentArea(),
-      textBaseline,
-      size,
-    );
-
-    return { x: iconX, y: iconY };
-  }
-
-  // 绘制排序icon
-  private drawActionIcons() {
-    const { icon } = this.getStyle();
-    if (this.showSortIcon()) {
-      const { sortParam } = this.headerConfig;
-      const position = this.getActionIconPosition();
-      const sortIcon = new GuiIcon({
-        type: get(sortParam, 'type', 'none'),
-        ...position,
-        width: icon.size,
-        height: icon.size,
-      });
-      // TODO：和row-cell统一icon之后需更改
-      sortIcon.on('click', (event) => {
-        this.handleGroupSort(event, this.meta);
-      });
-      this.add(sortIcon);
-      this.actionIcons.push(sortIcon);
-    }
   }
 
   protected getColResizeAreaKey() {

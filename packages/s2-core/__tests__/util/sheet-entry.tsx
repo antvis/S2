@@ -17,6 +17,7 @@ import {
   SpreadSheet,
   ThemeCfg,
   SheetType,
+  TargetCellInfo,
 } from '@/index';
 import 'antd/dist/antd.min.css';
 
@@ -63,6 +64,7 @@ interface SheetEntryProps {
   themeCfg?: ThemeCfg;
   header?: ReactNode;
   sheetType?: SheetType;
+  onColCellClick?: (data: TargetCellInfo) => void;
 }
 
 // eslint-disable-next-line react/display-name
@@ -155,6 +157,7 @@ export const SheetEntry = forwardRef(
             }
           }}
           themeCfg={props.themeCfg}
+          onColCellClick={props.onColCellClick}
         />
       </div>
     );

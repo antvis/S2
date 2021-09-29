@@ -10,13 +10,9 @@ import {
   merge,
   reduce,
 } from 'lodash';
+import { getDataCellId } from 'src/utils/cell/data-cell';
 import { BaseFacet } from 'src/facet/base-facet';
-import {
-  EXTRA_FIELD,
-  ICON_RADIUS,
-  S2Event,
-  VALUE_FIELD,
-} from '@/common/constant';
+import { EXTRA_FIELD, S2Event, VALUE_FIELD } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { LayoutResult, ViewMeta } from '@/common/interface';
 import { buildHeaderHierarchy } from '@/facet/layout/build-header-hierarchy';
@@ -110,6 +106,7 @@ export class PivotFacet extends BaseFacet {
         colQuery,
         rowId: row.id,
         colId: col.id,
+        id: getDataCellId(row.id, col.id),
       } as ViewMeta;
     };
 
@@ -563,10 +560,10 @@ export class PivotFacet extends BaseFacet {
       .map((key: string): string => dataSet.getFieldName(key))
       .join('/');
     const textStyle = this.spreadsheet.theme.rowCell.bolderText;
-    // TODO icon radius and padding things
+    const iconStyle = this.spreadsheet.theme.rowCell.icon;
     const maxLabelWidth =
       measureTextWidth(treeHeaderLabel, textStyle) +
-      ICON_RADIUS * 2 +
+      iconStyle.size +
       cellCfg.padding?.left +
       cellCfg.padding?.right;
     const width = Math.max(treeRowsWidth, maxLabelWidth);
