@@ -33,13 +33,9 @@ import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '@/common/debug';
 import { i18n } from '@/common/i18n';
 import { Data, Meta, S2DataConfig } from '@/common/interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
-import {
-  CellDataParams,
-  DataType,
-  PivotMeta,
-} from '@/data-set/interface';
+import { CellDataParams, DataType, PivotMeta } from '@/data-set/interface';
 import { handleSortAction } from '@/utils/sort-action';
-import { 
+import {
   transformIndexesData,
   getDataPath,
 } from '@/utils/dataset/pivot-data-set';
@@ -56,7 +52,7 @@ export class PivotDataSet extends BaseDataSet {
 
   // each path items max index
   protected pathIndexMax = [];
-  
+
   /**
    * When data related config changed, we need
    * 1、re-process config
@@ -78,11 +74,11 @@ export class PivotDataSet extends BaseDataSet {
       const { indexesData } = transformIndexesData({
         rows,
         columns,
-        originData: this.originData, 
+        originData: this.originData,
         totalData: this.totalData,
         sortedDimensionValues: this.sortedDimensionValues,
         rowPivotMeta: this.rowPivotMeta,
-        colPivotMeta: this.colPivotMeta
+        colPivotMeta: this.colPivotMeta,
       });
       this.indexesData = indexesData;
     });
@@ -307,7 +303,9 @@ export class PivotDataSet extends BaseDataSet {
 
   getCustomData = (path: number[]) => {
     let hadUndefined = false;
-    let currentData:DataType | DataType[] | DataType[][] = cloneDeep(this.indexesData);
+    let currentData: DataType | DataType[] | DataType[][] = cloneDeep(
+      this.indexesData,
+    );
 
     for (let i = 0; i < path.length; i++) {
       const current = path[i];

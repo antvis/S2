@@ -57,7 +57,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       parentNode,
       currentField,
     );
-    fieldValues.push(...arrangedValues || []);
+    fieldValues.push(...(arrangedValues || []));
     // hide measure in columns
     hideMeasureColumn(fieldValues, currentField, facetCfg);
     // add totals if needed

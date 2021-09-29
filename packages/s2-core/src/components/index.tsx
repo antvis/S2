@@ -17,3 +17,6 @@ export const SheetComponent = (props: SpreadsheetProps) => {
       return <BaseSheet {...props} />;
   }
 };
+
+export { DrillDown, DrillDownProps } from './drill-down';
+export { Switcher, SwitcherProps } from './switcher';
