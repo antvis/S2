@@ -27,7 +27,7 @@
     "test:coverage": "lerna run test:coverage --stream",
     "test:watch": "lerna run test:watch --stream",
     "tsc": "lerna run tsc --stream",
-    "site:bootstrap": "cd ./s2-site && yarn",
+    "site:bootstrap": "cd ./s2-site && yarn --frozen-lockfile",
     "site:start": "cd ./s2-site && yarn start",
     "site:build": "cd ./s2-site && NODE_OPTIONS='--max-old-space-size=4096' yarn build",
     "site:clean": "cd ./s2-site && yarn clean",
