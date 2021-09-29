@@ -132,7 +132,7 @@ function MainLayout({ callback }) {
   const s2Ref = React.useRef<SpreadSheet>(null);
 
   const logData = (...d: unknown[]) => {
-    console.log(...d);
+    console.info(...d);
   };
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { IElement } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
 import { DataCell } from '@/cell/data-cell';
 
-export const getAllPanelDataCell = (children: IElement[]): DataCell[] => {
+export const getAllPanelDataCell = (children: IElement[] = []): DataCell[] => {
   const cells: DataCell[] = [];
   children.forEach((child) => {
     if (child instanceof DataCell) {

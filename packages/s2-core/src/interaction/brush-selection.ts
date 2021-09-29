@@ -48,8 +48,10 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private initPrepareSelectMaskShape() {
     const { foregroundGroup } = this.spreadsheet;
+    if (!foregroundGroup) {
+      return;
+    }
     foregroundGroup.removeChild(this.prepareSelectMaskShape);
-
     const prepareSelectMaskTheme = this.getPrepareSelectMaskTheme();
     this.prepareSelectMaskShape = foregroundGroup.addShape('rect', {
       visible: false,

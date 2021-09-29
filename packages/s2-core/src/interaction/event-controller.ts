@@ -29,7 +29,7 @@ interface EventHandler {
 }
 
 export class EventController {
-  protected spreadsheet: SpreadSheet;
+  public spreadsheet: SpreadSheet;
 
   // 保存触发的元素
   private target: LooseObject;
@@ -137,7 +137,7 @@ export class EventController {
       // 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
       const { width, height } = this.spreadsheet.options;
       return (
-        canvas.contains(event.target as HTMLCanvasElement) &&
+        canvas.contains(event.target as HTMLElement) &&
         event.clientX <= x + width &&
         event.clientY <= y + height
       );
@@ -146,6 +146,10 @@ export class EventController {
   }
 
   private isMouseOnTheTooltip(event: Event) {
+    if (!this.spreadsheet.options.tooltip?.showTooltip) {
+      return false;
+    }
+
     const { x, y, width, height } =
       this.spreadsheet.tooltip?.container?.getBoundingClientRect() || {};
 
@@ -234,8 +238,8 @@ export class EventController {
     });
 
     const cell = this.spreadsheet.getCell(event.target);
-    const cellType = this.spreadsheet.getCellType(event.target);
     if (cell) {
+      const cellType = cell.cellType;
       switch (cellType) {
         case CellTypes.DATA_CELL:
           this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_MOVE, event);
@@ -250,7 +254,7 @@ export class EventController {
           this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_MOVE, event);
           break;
         case CellTypes.MERGED_CELLS:
-          this.spreadsheet.emit(S2Event.MERGED_ELLS_MOUSE_MOVE, event);
+          this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_MOVE, event);
           break;
         default:
           break;
@@ -293,7 +297,7 @@ export class EventController {
     }
     const cell = this.spreadsheet.getCell(event.target);
     if (cell) {
-      const cellType = cell?.cellType;
+      const cellType = cell.cellType;
       // target相同，说明是一个cell内的click事件
       if (this.target === event.target) {
         switch (cellType) {
@@ -348,7 +352,7 @@ export class EventController {
     }
     const cell = spreadsheet.getCell(event.target);
     if (cell) {
-      const cellType = cell?.cellType;
+      const cellType = cell.cellType;
       if (this.target === event.target) {
         switch (cellType) {
           case CellTypes.DATA_CELL:
