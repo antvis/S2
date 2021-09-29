@@ -46,7 +46,7 @@ export class PivotFacet extends BaseFacet {
       colsHierarchy,
     );
     const { dataSet, spreadsheet } = this.cfg;
-    const getCellMeta = (rowIndex: number, colIndex: number): ViewMeta => {
+    const getCellMeta = (rowIndex?: number, colIndex?: number): ViewMeta => {
       const i = rowIndex || 0;
       const j = colIndex || 0;
       const row = rowLeafNodes[i];
@@ -62,7 +62,7 @@ export class PivotFacet extends BaseFacet {
         col.isTotals ||
         col.isTotalMeasure;
       const hideMeasure =
-        spreadsheet.facet.cfg.colCfg.hideMeasureColumn ?? false;
+        get(spreadsheet, 'facet.cfg.colCfg.hideMeasureColumn') ?? false;
       // 如果hide measure query中是没有度量信息的，所以需要自动补上
       // 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
       // 因此默认只会去 第一个度量拼接query
@@ -464,6 +464,11 @@ export class PivotFacet extends BaseFacet {
     });
   }
 
+  /**
+   * 计算行叶子节点宽度
+   * @param node 
+   * @returns 
+   */
   private calculateRowLeafNodesWidth(node: Node): number {
     const { dataSet, rowCfg, cellCfg, spreadsheet } = this.cfg;
     if (spreadsheet.isHierarchyTreeType()) {
@@ -549,6 +554,10 @@ export class PivotFacet extends BaseFacet {
     return Math.max(cellCfg.width, canvasW / size);
   }
 
+  /**
+   * 计算树状结构行头宽度
+   * @returns number
+   */
   private getTreeRowHeaderWidth(): number {
     const { rows, dataSet, rowCfg, cellCfg, treeRowsWidth } = this.cfg;
     // user drag happened

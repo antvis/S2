@@ -345,7 +345,7 @@ export interface ViewMeta {
 
 export type ViewMetaIndexType = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;
 
-export type GetCellMeta = (rowIndex: number, colIndex: number) => ViewMeta;
+export type GetCellMeta = (rowIndex?: number, colIndex?: number) => ViewMeta;
 
 export interface LayoutResult {
   colNodes: Node[];

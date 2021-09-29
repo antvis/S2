@@ -1,4 +1,4 @@
-import { set, map, isUndefined } from 'lodash';
+import { set, map, reduce, isUndefined } from 'lodash';
 import { DataType } from '@/data-set/interface';
 import { DataPathParams, PivotMeta } from '@/data-set/interface';
 
@@ -11,6 +11,39 @@ interface Param {
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
 }
+/**
+ * Transform from origin single data to correct dimension values
+ * data: {
+ *  price: 16,
+ *  province: '辽宁省',
+ *  city: '芜湖市',
+ *  category: '家具',
+ *  subCategory: '椅子',
+ * }
+ * dimensions: [province, city]
+ * return [辽宁省, 芜湖市]
+ *
+ * @param record
+ * @param dimensions
+ */
+ export function transformDimensionsValues(
+  record: DataType,
+  dimensions: string[],
+  sortedDimensionValues: Map<string, Set<string>>
+): string[] {
+  return map(dimensions, (dimension) => {
+    const dimensionValue = record[dimension];
+    if (!sortedDimensionValues.has(dimension)) {
+      sortedDimensionValues.set(dimension, new Set());
+    }
+    const values = sortedDimensionValues.get(dimension);
+    values.add(record[dimension]);
+
+    return dimensionValue;
+  });
+}
+
+
 /**
  * Transform a single data to path
  * {
@@ -102,35 +135,21 @@ export function getDataPath(params: DataPathParams) {
 }
 
 /**
- * Transform from origin single data to correct dimension values
- * data: {
- *  price: 16,
- *  province: '辽宁省',
- *  city: '芜湖市',
- *  category: '家具',
- *  subCategory: '椅子',
- * }
- * dimensions: [province, city]
- * return [辽宁省, 芜湖市]
- *
- * @param record
- * @param dimensions
+ * 获取查询结果中的纬度值
+ * @param dimensions [province, city]
+ * @param query { province: '四川省', city: '成都市', type: '办公用品' }
+ * @returns ['四川省', '成都市']
  */
-export function transformDimensionsValues(
-  record: DataType,
-  dimensions: string[],
-  sortedDimensionValues: Map<string, Set<string>>,
-): string[] {
-  return map(dimensions, (dimension) => {
-    const dimensionValue = record[dimension];
-    if (!sortedDimensionValues.has(dimension)) {
-      sortedDimensionValues.set(dimension, new Set());
-    }
-    const values = sortedDimensionValues.get(dimension);
-    values.add(record[dimension]);
-
-    return dimensionValue;
-  });
+export function getQueryDimValues (dimensions: string[], query: DataType): string[] {
+  return reduce(
+    dimensions,
+    (res: string[], dimension: string) => {
+      // push undefined when not exist
+      res.push(query[dimension]);
+      return res;
+    },
+    [],
+  );
 }
 
 /**
@@ -182,5 +201,6 @@ export function transformIndexesData(params: Param) {
     indexesData,
     rowPivotMeta,
     colPivotMeta,
+    sortedDimensionValues,
   };
 }
