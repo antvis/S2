@@ -66,6 +66,7 @@ fetch(
       );
 
       const onSubmit = (result) => {
+        console.log('result:', result);
         setFields(generateFields(result));
         setSwitcherFields(generateSwitcherFields(result));
       };

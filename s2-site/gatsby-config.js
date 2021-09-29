@@ -97,7 +97,7 @@ module.exports = {
         order: 5,
       },
       {
-        slug: 'manual/analysis',
+        slug: 'manual/basic/analysis',
         title: {
           zh: '分析组件',
           en: 'Analyze Component',
@@ -164,6 +164,10 @@ module.exports = {
         },
       },
     ],
+    mdPlayground: {
+      // markdown 文档中的 playground 若干设置
+      splitPaneMainSize: '75%',
+    },
     // 编辑器配置
     playground: {
       container: '<div id="container" />',
