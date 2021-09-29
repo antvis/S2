@@ -145,6 +145,13 @@ module.exports = {
         title: {
           zh: '主题',
           en: 'theme',
+       },
+       {
+        slug: 'analysis',
+        icon: 'facet',
+        title: {
+          zh: '分析组件',
+          en: 'Analyze component',
         },
       },
     ],

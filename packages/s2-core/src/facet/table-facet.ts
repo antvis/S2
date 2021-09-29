@@ -221,7 +221,6 @@ export class TableFacet extends BaseFacet {
       colsHierarchy.width += currentNode.width;
       preLeafNode = currentNode;
       currentNode.y = 0;
-      
 
       currentNode.height = this.getColNodeHeight(currentNode);
 
@@ -273,7 +272,8 @@ export class TableFacet extends BaseFacet {
       const datas = dataSet.originData;
       const colLabel = col.label;
 
-      const allLabels = datas?.map((data) => `${data[col.key]}`)?.slice(0, 50) || []; // 采样取了前50
+      const allLabels =
+        datas?.map((data) => `${data[col.key]}`)?.slice(0, 50) || []; // 采样取了前50
       allLabels.push(colLabel);
       const maxLabel = maxBy(allLabels, (label) =>
         measureTextWidthRoughly(label),
