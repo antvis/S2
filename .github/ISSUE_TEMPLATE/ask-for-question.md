@@ -2,7 +2,7 @@
 name: 🤔 Ask for question
 about: Look for some help or ask question
 title: '🤔'
-labels: Question
+labels: ❔question
 ---
 
 
@@ -11,4 +11,3 @@ labels: Question
 ### 😊 Expected Behavior
 
 ### 😅 Current Behavior
-

@@ -140,7 +140,7 @@ export class RootInteraction {
   }
 
   public getPanelGroupAllDataCells(): DataCell[] {
-    return getAllPanelDataCell(this.spreadsheet.panelGroup.get('children'));
+    return getAllPanelDataCell(this.spreadsheet.panelGroup?.get('children'));
   }
 
   public getAllRowHeaderCells() {

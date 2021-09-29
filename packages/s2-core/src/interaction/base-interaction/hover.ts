@@ -138,7 +138,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      const meta = cell.getMeta() as ViewMeta;
+      const meta = cell?.getMeta() as ViewMeta;
       this.interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER,

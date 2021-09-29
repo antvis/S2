@@ -67,7 +67,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
     const lastState = interaction.getState();
     const cell = this.spreadsheet.getCell(event.target);
-    const meta = cell.getMeta() as Node;
+    const meta = cell?.getMeta() as Node;
 
     if (interaction.isSelectedCell(cell)) {
       interaction.reset();

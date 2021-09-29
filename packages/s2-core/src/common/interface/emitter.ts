@@ -105,7 +105,7 @@ export interface EmitterType {
 
   /** ================ Merged Cell ================  */
   [S2Event.MERGED_CELLS_MOUSE_DOWN]: CanvasEventHandler;
-  [S2Event.MERGED_ELLS_MOUSE_MOVE]: CanvasEventHandler;
+  [S2Event.MERGED_CELLS_MOUSE_MOVE]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_HOVER]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_MOUSE_UP]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_CLICK]: CanvasEventHandler;
