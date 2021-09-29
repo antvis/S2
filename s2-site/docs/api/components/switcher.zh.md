@@ -3,7 +3,6 @@ title: 维度切换组件
 order: 2
 ---
 
-
 ## Switcher 组件 Props
 
 | 属性       | 类型            | 必选  | 默认值 | 功能描述   |
@@ -24,7 +23,7 @@ order: 2
 | items       | `SwitcherItem[]`           |   ✓    | -   | 配置字段对象   |
 | expandable       | `boolean`           |       | `false`   | 是否打开展开子项的 checkbox 用于控制展开和隐藏子项   |
 | expandText | `string`          |      | `展开子项`  | 展开子项的 checkbox 对应的文字   |
-| selectable   | `boolean`           |      | `false`   | 是否打开字段的 checkbox用于控制显隐 |
+| selectable   | `boolean`           |      | `false`   | 是否打开字段的 checkbox 用于控制显隐 |
 
 ## SwitcherItem
 
