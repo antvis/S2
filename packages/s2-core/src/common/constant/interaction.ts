@@ -10,6 +10,7 @@ export enum InteractionName {
 }
 
 export enum InteractionStateName {
+  ALL_SELECTED = 'allSelected',
   SELECTED = 'selected',
   UNSELECTED = 'unselected',
   HOVER = 'hover',

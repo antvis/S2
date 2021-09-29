@@ -30,5 +30,5 @@ export const EN_US = {
   行头: 'Rows',
   列头: 'Cols',
   值: 'Values',
-  展开同环比: 'Expand DerivedValues',
+  展开子项: 'Expand Children',
 };

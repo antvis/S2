@@ -1,8 +1,8 @@
 @prefix: antv-s2-switcher;
 
-@dimension-color: #d9eeff;
-@measure-color: #d3f4e5;
-@child-measure-color: #effbf6;
+@normal-item-color: #d9eeff;
+@checkable-item-color: #d3f4e5;
+@checkable-child-color: #effbf6;
 
 @large-span: 12px;
 @normal-span: 4px;
@@ -20,18 +20,18 @@
     text-overflow: ellipsis;
   }
 
-  &.dimension-item {
+  &.normal-item {
     padding: 0 @large-span;
-    background-color: @dimension-color;
+    background-color: @normal-item-color;
     align-items: center;
   }
 
-  &.measure-item {
+  &.checkable-item {
     padding: 0 @normal-span;
-    background-color: @measure-color;
+    background-color: @checkable-item-color;
     align-items: baseline;
 
-    &.measure-collapse {
+    &.item-collapse {
       transition: border-radius 0s 0.2s;
       border-radius: @border-radius !important;
     }
@@ -50,8 +50,8 @@
   }
 }
 
-.@{prefix}-dimension-list,
-.@{prefix}-measure-list {
+.@{prefix}-normal-list,
+.@{prefix}-checkable-list {
   border-radius: @border-radius;
 
   & + & {
@@ -62,14 +62,14 @@
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
   }
 
-  .child-measures {
+  .child-items {
     transition: max-height 0.2s, opacity 0.4s;
     overflow: hidden;
     max-height: 1000px;
 
-    .measure-item {
+    .checkable-item {
       padding: 0 @large-span;
-      background-color: @child-measure-color;
+      background-color: @checkable-child-color;
       margin-top: 0;
       border-radius: 0;
 
@@ -78,7 +78,7 @@
       }
     }
 
-    &.measures-hidden {
+    &.item-hidden {
       max-height: 0;
       opacity: 0;
     }
