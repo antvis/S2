@@ -28,6 +28,7 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
+  InteractionStateName,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
@@ -100,15 +101,15 @@ export abstract class BaseFacet {
 
   protected vScrollBar: ScrollBar;
 
-  protected rowHeader: RowHeader;
+  public rowHeader: RowHeader;
 
-  protected columnHeader: ColHeader;
+  public columnHeader: ColHeader;
 
-  protected cornerHeader: CornerHeader;
+  public cornerHeader: CornerHeader;
 
-  protected rowIndexHeader: SeriesNumberHeader;
+  public rowIndexHeader: SeriesNumberHeader;
 
-  protected centerFrame: Frame;
+  public centerFrame: Frame;
 
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
 
@@ -319,7 +320,7 @@ export abstract class BaseFacet {
     this.panelGroup = this.spreadsheet.panelGroup;
     const { width, height } = this.panelBBox;
 
-    this.spreadsheet.panelScrollGroup.setClip({
+    this.spreadsheet.panelScrollGroup?.setClip({
       type: 'rect',
       attrs: {
         x: 0,
@@ -856,7 +857,7 @@ export abstract class BaseFacet {
   };
 
   protected clip(scrollX: number, scrollY: number) {
-    this.spreadsheet.panelScrollGroup.setClip({
+    this.spreadsheet.panelScrollGroup?.setClip({
       type: 'rect',
       attrs: {
         x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
@@ -919,7 +920,7 @@ export abstract class BaseFacet {
   addCell = (cell: S2CellType<ViewMeta>) => {
     const { panelScrollGroup } = this.spreadsheet;
 
-    panelScrollGroup.add(cell);
+    panelScrollGroup?.add(cell);
   };
 
   realCellRender = (scrollX: number, scrollY: number) => {
