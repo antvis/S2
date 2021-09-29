@@ -53,7 +53,7 @@ export abstract class BaseDataSet {
   /**
    * 查找字段信息
    */
-  public getFieldMeta = memoize((field: string, meta: Meta[]): Meta => {
+  public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
     return find(this.meta || meta, (m: Meta) => m.field === field);
   });
 
