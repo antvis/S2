@@ -2,7 +2,9 @@
  * pivot mode pivot test.
  */
  import { Canvas } from '@antv/g-canvas';
+ import { assembleDataCfg, assembleOptions } from 'tests/util/sheet-entry';
  import { size, get, find } from 'lodash';
+ import { getMockPivotMeta } from './util';
  import { SpreadSheet } from '@/sheet-type';
  import { PivotDataSet } from '@/data-set/pivot-data-set';
  import { PivotFacet } from '@/facet/pivot-facet';
@@ -16,8 +18,6 @@
   Frame,
   RowHeader,
 } from '@/facet/header';
- import { assembleDataCfg, assembleOptions } from '../../util/sheet-entry';
- import { getMockPivotMeta } from './util';
 
  const actualPivotDataSet = jest.requireActual('src/data-set/pivot-data-set').PivotDataSet;
  const actualDataSet = jest.requireActual('src/data-set/base-data-set').BaseDataSet;
@@ -71,11 +71,11 @@
  const MockPivotDataSet = PivotDataSet as any as jest.Mock<PivotDataSet>;
 
  describe('Pivot Mode Facet Test', () => {
-   let s2:SpreadSheet = new MockSpreadSheet();
-   let dataSet:PivotDataSet = new MockPivotDataSet(s2);
+   const s2:SpreadSheet = new MockSpreadSheet();
+   const dataSet:PivotDataSet = new MockPivotDataSet(s2);
    s2.dataSet = dataSet;
 
-   let facet:PivotFacet = new PivotFacet({
+   const facet:PivotFacet = new PivotFacet({
      spreadsheet: s2,
      dataSet: dataSet,
      dataCell: (fct) => new DataCell(fct, s2),
@@ -97,7 +97,7 @@
        expect(rowsHierarchy.getNodes()).toHaveLength(10);
        expect(rowsHierarchy.getNodes(0)).toHaveLength(2);
 
-       rowsHierarchy.getLeaves().map((node, index) => {
+       rowsHierarchy.getLeaves().forEach((node, index) => {
         expect(node.width).toBe(width);
         expect(node.height).toBe(cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom);
         expect(node.x).toBe(width * node.level);
@@ -121,7 +121,7 @@
         expect(colsHierarchy.getNodes()).toHaveLength(6);
         expect(colsHierarchy.getNodes(0)).toHaveLength(2);
 
-        colsHierarchy.getLeaves().map((node, index) => {
+        colsHierarchy.getLeaves().forEach((node, index) => {
           expect(node.width).toBe(width);
           expect(node.height).toBe(colCfg.height);
           expect(node.x).toBe(width * index);
@@ -173,7 +173,7 @@
       expect(rowsHierarchy.getNodes()).toHaveLength(10);
       expect(rowsHierarchy.width).toBe(width);
 
-      rowsHierarchy.getNodes().map((node, index) => {
+      rowsHierarchy.getNodes().forEach((node, index) => {
         expect(node.width).toBe(width);
         expect(node.height).toBe(cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom);
         expect(node.x).toBe(0);

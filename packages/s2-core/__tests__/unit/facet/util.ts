@@ -1,7 +1,5 @@
-import { 
-  transformIndexesData,
-} from '@/utils/dataset/pivot-data-set';
-import { assembleDataCfg } from '../../util/sheet-entry';
+import { assembleDataCfg } from 'tests/util/sheet-entry';
+import { transformIndexesData } from '@/utils/dataset/pivot-data-set';
 
 /**
  * 获取 Mock 数据
@@ -20,4 +18,4 @@ export function getMockPivotMeta() {
     rowPivotMeta: rawRowPivotMeta,
     colPivotMeta: rawColPivotMeta,
   });
-};
+}

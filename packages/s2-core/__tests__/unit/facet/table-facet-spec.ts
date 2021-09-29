@@ -2,13 +2,13 @@
  * table mode pivot test.
  */
  import { Canvas } from '@antv/g-canvas';
+ import { assembleDataCfg, assembleOptions } from 'tests/util/sheet-entry';
  import { SpreadSheet } from '@/sheet-type';
  import { TableDataSet } from '@/data-set/table-data-set';
  import { TableFacet } from '@/facet/table-facet';
  import { Store } from '@/common/store';
  import { getTheme } from '@/theme';
  import { defaultStyle } from '@/common/interface/s2Options';
- import { assembleDataCfg, assembleOptions } from '../../util/sheet-entry';
 
  jest.mock('src/sheet-type', () => {
    const container = new Canvas({ width: 100, height: 100, container: document.body});
@@ -58,9 +58,9 @@
  const MockTableDataSet = TableDataSet as any as jest.Mock<TableDataSet>;
 
  describe('Table Mode Facet Test', () => {
-   let ss:SpreadSheet = new MockSpreadSheet();
-   let dataSet:TableDataSet = new MockTableDataSet(ss);
-   let facet:TableFacet = new TableFacet({
+   const ss:SpreadSheet = new MockSpreadSheet();
+   const dataSet:TableDataSet = new MockTableDataSet(ss);
+   const facet:TableFacet = new TableFacet({
      spreadsheet: ss,
      dataSet: dataSet,
      ...assembleDataCfg().fields,
@@ -98,7 +98,7 @@
        );
        expect(colsHierarchy.sampleNodeForLastLevel.height).toEqual(colCfg.height);
 
-       colsHierarchy.getNodes().map((node, index) => {
+       colsHierarchy.getNodes().forEach((node, index) => {
          expect(node.y).toBe(0);
          expect(node.x).toBe(index * cellCfg.width);
          expect(node.width).toBe(cellCfg.width);

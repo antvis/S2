@@ -1,5 +1,5 @@
-import { DataType } from '@/data-set/interface';
 import { set, map, reduce, isUndefined } from 'lodash';
+import { DataType } from '@/data-set/interface';
 import {
   DataPathParams,
   PivotMeta,
@@ -15,44 +15,6 @@ interface Param {
   colPivotMeta?: PivotMeta;
 }
 /**
- * 转换原始数据为二维数组数据
- * @param rows 
- * @param columns 
- * @param originData
- * @param totalData
- */
-export function transformIndexesData(params: Param) {
-  const { rows, columns, originData, totalData, sortedDimensionValues,
-    rowPivotMeta, colPivotMeta } = params;
-  const paths = [];
-  const indexesData = [];
-  for (const data of [...originData, ...totalData]) {
-    const rowDimensionValues = transformDimensionsValues(data, rows, sortedDimensionValues);
-    const colDimensionValues = transformDimensionsValues(data, columns, sortedDimensionValues);
-    const path = getDataPath({
-      rowDimensionValues,
-      colDimensionValues,
-      rowPivotMeta,
-      colPivotMeta,
-      isFirstCreate: true,
-      careUndefined: totalData?.length > 0,
-      rowFields: rows,
-      colFields: columns,
-    });
-    paths.push(path);
-    set(indexesData, path, data);
-  }
-
-  return {
-    paths,
-    indexesData,
-    rowPivotMeta,
-    colPivotMeta,
-    sortedDimensionValues,
-  };
-}
-
-/**
  * Transform from origin single data to correct dimension values
  * data: {
  *  price: 16,
@@ -67,7 +29,7 @@ export function transformIndexesData(params: Param) {
  * @param record
  * @param dimensions
  */
-export function transformDimensionsValues(
+ export function transformDimensionsValues(
   record: DataType,
   dimensions: string[],
   sortedDimensionValues: Map<string, Set<string>>
@@ -181,4 +143,42 @@ export function getQueryDimValues (dimensions: string[], query: DataType): strin
     },
     [],
   );
+}
+
+/**
+ * 转换原始数据为二维数组数据
+ * @param rows 
+ * @param columns 
+ * @param originData
+ * @param totalData
+ */
+export function transformIndexesData(params: Param) {
+  const { rows, columns, originData, totalData, sortedDimensionValues,
+    rowPivotMeta, colPivotMeta } = params;
+  const paths = [];
+  const indexesData = [];
+  for (const data of [...originData, ...totalData]) {
+    const rowDimensionValues = transformDimensionsValues(data, rows, sortedDimensionValues);
+    const colDimensionValues = transformDimensionsValues(data, columns, sortedDimensionValues);
+    const path = getDataPath({
+      rowDimensionValues,
+      colDimensionValues,
+      rowPivotMeta,
+      colPivotMeta,
+      isFirstCreate: true,
+      careUndefined: totalData?.length > 0,
+      rowFields: rows,
+      colFields: columns,
+    });
+    paths.push(path);
+    set(indexesData, path, data);
+  }
+
+  return {
+    paths,
+    indexesData,
+    rowPivotMeta,
+    colPivotMeta,
+    sortedDimensionValues,
+  };
 }
