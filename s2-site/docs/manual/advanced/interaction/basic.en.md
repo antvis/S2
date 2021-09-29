@@ -1,6 +1,6 @@
 ---
 title: Basic Interaction
-order: 1
+order: 0
 ---
 
 `markdown:docs/manual/advanced/interaction/basic.zh.md`

@@ -83,7 +83,7 @@ module.exports = {
       {
         slug: 'manual/advanced',
         title: {
-          zh: '高级教程',
+          zh: '进阶教程',
           en: 'Advanced tutorial',
         },
         order: 4,
