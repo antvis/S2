@@ -1,7 +1,7 @@
 import { copyToClipboard } from '.';
 import { S2CellType, ViewMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
-import { InteractionStateName } from '@/.';
+import { InteractionStateName } from '@/common/constant/interaction';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
