@@ -466,8 +466,8 @@ export class PivotFacet extends BaseFacet {
 
   /**
    * 计算行叶子节点宽度
-   * @param node 
-   * @returns 
+   * @param node
+   * @returns
    */
   private calculateRowLeafNodesWidth(node: Node): number {
     const { dataSet, rowCfg, cellCfg, spreadsheet } = this.cfg;

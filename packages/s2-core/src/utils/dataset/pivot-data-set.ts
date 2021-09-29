@@ -26,10 +26,10 @@ interface Param {
  * @param record
  * @param dimensions
  */
- export function transformDimensionsValues(
+export function transformDimensionsValues(
   record: DataType,
   dimensions: string[],
-  sortedDimensionValues: Map<string, Set<string>>
+  sortedDimensionValues: Map<string, Set<string>>,
 ): string[] {
   return map(dimensions, (dimension) => {
     const dimensionValue = record[dimension];
@@ -42,7 +42,6 @@ interface Param {
     return dimensionValue;
   });
 }
-
 
 /**
  * Transform a single data to path
@@ -140,7 +139,10 @@ export function getDataPath(params: DataPathParams) {
  * @param query { province: '四川省', city: '成都市', type: '办公用品' }
  * @returns ['四川省', '成都市']
  */
-export function getQueryDimValues (dimensions: string[], query: DataType): string[] {
+export function getQueryDimValues(
+  dimensions: string[],
+  query: DataType,
+): string[] {
   return reduce(
     dimensions,
     (res: string[], dimension: string) => {

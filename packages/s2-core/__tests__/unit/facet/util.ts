@@ -12,7 +12,7 @@ export function getMockPivotMeta() {
   return transformIndexesData({
     rows: fields.rows,
     columns: fields.columns,
-    originData: data, 
+    originData: data,
     totalData,
     sortedDimensionValues,
     rowPivotMeta: rawRowPivotMeta,

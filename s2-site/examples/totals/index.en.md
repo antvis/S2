@@ -1,5 +1,4 @@
 ---
-title: API
+title: Totals
 order: 3
 ---
-
