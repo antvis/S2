@@ -81,8 +81,5 @@
       "path": "./dist/s2.min.css",
       "maxSize": "5 kB"
     }
-  ],
-  "resolutions": {
-    "react-is":"^17.0.0"
-  }
+  ]
 }
