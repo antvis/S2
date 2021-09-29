@@ -54,7 +54,7 @@ module.exports = {
           zh: '基础配置项',
           en: 'Common configuration',
         },
-        order: 1,
+        order: 0,
       },
       {
         slug: 'api/components',
@@ -62,7 +62,7 @@ module.exports = {
           zh: '组件',
           en: 'Components',
         },
-        order: 2,
+        order: 1,
       },
       {
         slug: 'manual/basic',
@@ -73,18 +73,26 @@ module.exports = {
         order: 3,
       },
       {
-        slug: 'manual/interaction',
+        slug: 'manual/basic/sheet-type',
         title: {
-          zh: '交互',
-          en: 'Interaction',
+          zh: '表形态',
+          en: 'Sheet type',
+        },
+        order: 1,
+      },
+      {
+        slug: 'manual/advanced',
+        title: {
+          zh: '进阶教程',
+          en: 'Advanced tutorial',
         },
         order: 4,
       },
       {
-        slug: 'manual/total',
+        slug: 'manual/advanced/interaction',
         title: {
-          zh: '小计总计',
-          en: 'Total',
+          zh: '交互',
+          en: 'interaction',
         },
         order: 5,
       },
@@ -137,6 +145,14 @@ module.exports = {
         title: {
           zh: '小计总计',
           en: 'Total',
+        },
+      },
+      {
+        slug: 'theme',
+        icon: 'gallery',
+        title: {
+          zh: '主题',
+          en: 'theme',
         },
       },
       {
