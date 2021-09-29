@@ -28,7 +28,13 @@ const output = {
 
 const plugins = [
   alias({
-    entries: [{ find: 'lodash', replacement: 'lodash-es' }],
+    entries: [
+      { find: 'lodash', replacement: 'lodash-es' },
+      {
+        find: 'react-is',
+        replacement: 'react-is/cjs/react-is.production.min.js',
+      },
+    ],
   }),
   commonjs(),
   resolve(),
