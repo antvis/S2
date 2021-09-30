@@ -20,7 +20,7 @@ describe('List Table Core Data Process', () => {
   );
   s2.render();
 
-  it('copy no data', () => {
+  it('should copy no data', () => {
     s2.interaction.changeState({
       cells: [],
       stateName: InteractionStateName.SELECTED,
@@ -29,10 +29,10 @@ describe('List Table Core Data Process', () => {
     expect(getSelectedData(s2)).toEqual('');
   });
 
-  it('copy normal data', () => {
+  it('should copy normal data', () => {
     const cell = s2.interaction
       .getAllCells()
-      .filter((e) => e.cellType === CellTypes.DATA_CELL)[0];
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -41,10 +41,10 @@ describe('List Table Core Data Process', () => {
     expect(getSelectedData(s2)).toEqual('浙江省\t\n');
   });
 
-  it('copy col data', () => {
+  it('should copy col data', () => {
     const cell = s2.interaction
       .getAllCells()
-      .filter((e) => e.cellType === CellTypes.COL_CELL)[3];
+      .filter(({ cellType }) => cellType === CellTypes.COL_CELL)[3];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -53,10 +53,10 @@ describe('List Table Core Data Process', () => {
     expect(getSelectedData(s2).split('\n').length).toBe(33);
   });
 
-  it('copy row data', () => {
+  it('should copy row data', () => {
     const cell = s2.interaction
       .getAllCells()
-      .filter((e) => e.cellType === CellTypes.ROW_CELL)[3];
+      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[3];
 
     s2.interaction.changeState({
       cells: [getCellMeta(cell)],
@@ -65,7 +65,7 @@ describe('List Table Core Data Process', () => {
     expect(getSelectedData(s2).split('\t').length).toBe(5);
   });
 
-  it('copy all data', () => {
+  it('should copy all data', () => {
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });

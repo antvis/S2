@@ -1,7 +1,7 @@
 import { copyToClipboard } from '.';
 import { S2CellType, ViewMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
-import { InteractionStateName } from '@/common/constant/interaction';
+import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -93,9 +93,13 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
   const interaction = spreadsheet.interaction;
   const cells = interaction.getActiveCells();
 
-  let data;
-  const selectedCols = cells.filter((e) => e.cellType === 'colCell');
-  const selectedRows = cells.filter((e) => e.cellType === 'rowCell');
+  let data: string;
+  const selectedCols = cells.filter(
+    ({ cellType }) => cellType === CellTypes.COL_CELL,
+  );
+  const selectedRows = cells.filter(
+    ({ cellType }) => cellType === CellTypes.ROW_CELL,
+  );
 
   if (interaction.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
     data = processAllSelected(spreadsheet);
