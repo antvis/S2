@@ -257,7 +257,7 @@ s2.render();
 
 ### 渐变柱状图
 
-S2 的底层图形绘制采用渲染引擎 [G](https://g.antv.vision/zh/docs/guide/introduce)，借助其强大的绘制能力，`fill`字段不仅仅可以是颜色属性，也可以使用 [渐变色](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E5%8F%98%E8%89%B2)，[纹理](https://g.antv.vision/zh/docs/api/shape/attrs#%E7%BA%B9%E7%90%86)。
+S2 的底层图形绘制采用渲染引擎 [Antv/G](https://g.antv.vision/zh/docs/guide/introduce)，借助其强大的绘制能力，`fill`字段不仅仅可以是颜色属性，也可以使用 [渐变色](https://g.antv.vision/zh/docs/api/shape/attrs#%E6%B8%90%E5%8F%98%E8%89%B2)，[纹理](https://g.antv.vision/zh/docs/api/shape/attrs#%E7%BA%B9%E7%90%86)。
 
 `price`字段使用渐变色：
 <playground path="conditions/advanced/demo/gradient-interval.ts" rid='gradient'></playground>
