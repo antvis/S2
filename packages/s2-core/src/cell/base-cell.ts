@@ -87,7 +87,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
    * in case there are more params to be handled
    * @param options any type's rest params
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected handleRestOptions(...options: unknown[]) {
     // default do nothing
   }
@@ -147,7 +146,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const maxTextWidth = this.getMaxTextWidth();
     const textStyle = this.getTextStyle();
     const ellipsisText = getEllipsisText(
-      `${formattedValue ?? '-'}`,
+      `${formattedValue}` || '-',
       maxTextWidth,
       textStyle,
     );
