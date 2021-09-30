@@ -1,6 +1,7 @@
 import { Checkbox, Tooltip } from 'antd';
 import cx from 'classnames';
 import React, { FC, useEffect, useRef, useState } from 'react';
+import { DraggableProvided } from 'react-beautiful-dnd';
 import { SwitcherField, SwitcherItem } from '../interface';
 import { getSwitcherClassName } from '../util';
 import { DimensionCommonProps } from '.';
@@ -13,9 +14,11 @@ type SingleItemProps = Omit<SwitcherItem, 'children'> &
     parentId?: string;
     disabled?: boolean;
     className: string;
+    dragHandleProps?: DraggableProvided['dragHandleProps'];
   };
 
 export const SingleItem: FC<SingleItemProps> = ({
+  dragHandleProps,
   fieldType,
   id,
   displayName,
@@ -37,6 +40,7 @@ export const SingleItem: FC<SingleItemProps> = ({
   const realDisplayName = displayName ?? id;
   return (
     <div
+      {...dragHandleProps}
       className={cx(getSwitcherClassName(CLASS_NAME_PREFIX), className, {
         unchecked: !checked,
       })}

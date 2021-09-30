@@ -95,7 +95,15 @@ module.exports = {
           en: 'interaction',
         },
         order: 5,
-      }
+      },
+      {
+        slug: 'manual/basic/analysis',
+        title: {
+          zh: '分析组件',
+          en: 'Analyze Component',
+        },
+        order: 6,
+      },
     ],
     // demo配置
     examples: [
@@ -145,7 +153,7 @@ module.exports = {
         title: {
           zh: '主题',
           en: 'theme',
-        }
+        },
       },
       {
         slug: 'analysis',
@@ -156,6 +164,10 @@ module.exports = {
         },
       },
     ],
+    mdPlayground: {
+      // markdown 文档中的 playground 若干设置
+      splitPaneMainSize: '75%',
+    },
     // 编辑器配置
     playground: {
       container: '<div id="container" />',

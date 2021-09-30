@@ -22,21 +22,17 @@ describe('switcher util test', () => {
     );
   });
   test('should return correct non empty count', () => {
-    const state: SwitcherState = {
-      [FieldType.Rows]: [],
-      [FieldType.Cols]: [],
-      [FieldType.Values]: [],
-    };
-    expect(getNonEmptyFieldCount(state)).toBe(0);
+    const fields: SwitcherFields = {};
+    expect(getNonEmptyFieldCount(fields)).toBe(0);
 
-    state[FieldType.Rows] = [{ id: 'id' }];
-    expect(getNonEmptyFieldCount(state)).toBe(1);
+    fields[FieldType.Rows] = { items: [{ id: 'id' }] };
+    expect(getNonEmptyFieldCount(fields)).toBe(1);
 
-    state[FieldType.Cols] = [{ id: 'id' }];
-    expect(getNonEmptyFieldCount(state)).toBe(2);
+    fields[FieldType.Cols] = { items: [{ id: 'id' }] };
+    expect(getNonEmptyFieldCount(fields)).toBe(2);
 
-    state[FieldType.Values] = [{ id: 'id' }];
-    expect(getNonEmptyFieldCount(state)).toBe(3);
+    fields[FieldType.Values] = { items: [{ id: 'id' }] };
+    expect(getNonEmptyFieldCount(fields)).toBe(3);
   });
 
   test.each([

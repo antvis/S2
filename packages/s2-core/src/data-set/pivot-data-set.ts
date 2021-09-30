@@ -206,6 +206,7 @@ export class PivotDataSet extends BaseDataSet {
     ];
 
     // 标准的数据中，一条数据代表一个格子；不存在一条数据中多个value的情况
+    // 对标准数据的转换效率表示怀疑，以前哦豁说双重for循环导致耗时，现在这种难道不等于是三重循环吗 -> map + find + includes？
     const standardTransform = (originData: Data[]) => {
       return map(originData, (datum) => {
         const valueKey = find(keys(datum), (k) => includes(values, k));
