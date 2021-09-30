@@ -351,6 +351,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
         spreadsheet: ownSpreadsheet,
       });
     }
+    setOptions();
   }, [drillFields]);
 
   useEffect(() => {

@@ -46,6 +46,17 @@ export interface PartDrillDown {
   fetchData: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;
 }
 
+export interface PartDrillDownDataCache {
+  // 执行下钻的行头id
+  rowId: string;
+  // 下钻的行头level
+  drillLevel: number;
+  // 下钻的维度
+  drillField: string;
+  // 下钻的数据
+  drillData: Record<string, string | number>[];
+}
+
 export interface BaseSheetProps {
   spreadsheet?: (...args: S2Constructor) => SpreadSheet;
   dataCfg: S2DataConfig;

@@ -148,7 +148,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
       height: size,
       fill: text.fill,
     });
-    icon.set('visible', !defaultHide);
+    // TODO HOVER 交互，不确定要不要保留，需要跟设计师沟通
+    icon.set('visible', true);
     icon.on('mouseover', (event: Event) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
     });

@@ -1,10 +1,12 @@
-import { get, merge, set } from 'lodash';
+import { get, isEmpty, merge, set } from 'lodash';
 import { Event } from '@antv/g-canvas';
 import { S2Options, HeaderActionIconProps } from '@/common/interface';
 import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
 import { SpreadSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
 import { PivotDataSet } from '@/data-set';
+import { S2Event } from '@/common/constant';
+import { PartDrillDownDataCache } from '@/components/sheets/interface';
 
 export interface DrillDownParams {
   // 行维度id
@@ -18,10 +20,75 @@ export interface DrillDownParams {
   fetchData?: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;
 }
 
+export interface ActionIconParams {
+  // 点击节点信息
+  meta: Node;
+  // 点击icon类型
+  iconName: string;
+  // 点击事件event
+  event: Event;
+  spreadsheet: SpreadSheet;
+  // 下钻维度的列表组件展示
+  callback: (
+    event: Event,
+    spreadsheet: SpreadSheet,
+    cashDrillFields: string[],
+    disabledFields: string[],
+  ) => void;
+}
+
+/**
+ * 获取下钻缓存
+ * @param spreadsheet
+ * @param meta
+ */
+const getDrillDownCash = (spreadsheet: SpreadSheet, meta: Node) => {
+  const drillDownDataCache = spreadsheet.store.get(
+    'drillDownDataCache',
+    [],
+  ) as PartDrillDownDataCache[];
+  const cache = drillDownDataCache.find((dc) => dc.rowId === meta.id);
+  return {
+    drillDownDataCache: drillDownDataCache,
+    drillDownCurrentCash: cache,
+  };
+};
+
+/**
+ * 点击下钻Icon的响应
+ * @param params
+ */
+export const HandleActionIconClick = (params: ActionIconParams) => {
+  const { meta, spreadsheet, event, callback, iconName } = params;
+  if (iconName === 'DrillDownIcon') {
+    spreadsheet.store.set('drillDownMeta', meta);
+    const { drillDownDataCache, drillDownCurrentCash } = getDrillDownCash(
+      spreadsheet,
+      meta,
+    );
+    const cache = drillDownCurrentCash?.drillField
+      ? [drillDownCurrentCash?.drillField]
+      : [];
+    const disabled = [];
+    // 父节点已经下钻过的维度不应该再下钻
+    drillDownDataCache.forEach((val) => {
+      if (meta.id.includes(val.rowId) && meta.id !== val.rowId)
+        disabled.push(val.drillField);
+    });
+    spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+    callback(event, spreadsheet, cache, disabled);
+  }
+};
+
 export const HandleDrillDownIcon = (
   props: SpreadsheetProps,
   spreadsheet: SpreadSheet,
-  callback: (event: Event, sheetInstance: SpreadSheet) => void,
+  callback: (
+    event: Event,
+    spreadsheet: SpreadSheet,
+    cashDownDrillFields: string[],
+    disabledFields: string[],
+  ) => void,
 ): S2Options => {
   if (props?.partDrillDown) {
     const { customDisplayByLabelName } = props.partDrillDown;
@@ -40,13 +107,20 @@ export const HandleDrillDownIcon = (
           customDisplayByLabelName,
           defaultHide: true,
           displayCondition: (meta: Node) => {
-            return iconLevel >= meta.level;
+            return (
+              iconLevel <= meta.level &&
+              spreadsheet.options.hierarchyType === 'tree'
+            );
           },
           action: (actionIconProps: HeaderActionIconProps) => {
-            const { iconName, meta, event } = actionIconProps;
+            const { iconName, meta } = actionIconProps;
             if (iconName === 'DrillDownIcon') {
               spreadsheet.store.set('drillDownNode', meta);
-              callback(event, spreadsheet);
+              HandleActionIconClick({
+                ...actionIconProps,
+                spreadsheet,
+                callback,
+              });
             }
           },
         },
@@ -68,6 +142,21 @@ export const HandleDrillDown = (params: DrillDownParams) => {
       drillData,
       meta,
     );
+
+    if (!isEmpty(drillData)) {
+      // 缓存到表实例中
+      const drillLevel = meta.level + 1;
+      const { drillDownDataCache } = getDrillDownCash(spreadsheet, meta);
+      const newDrillDownData = {
+        rowId: meta.id,
+        drillLevel,
+        drillData,
+        drillField,
+      };
+      drillDownDataCache.push(newDrillDownData);
+      spreadsheet.store.set('drillDownDataCache', drillDownDataCache);
+    }
+
     spreadsheet.render(false);
   });
 };
