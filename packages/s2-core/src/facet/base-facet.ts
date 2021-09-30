@@ -393,7 +393,7 @@ export abstract class BaseFacet {
       minX: 0,
       minY: 0,
     };
-    this.cornerWidth = 0;
+    this.cornerWidth = originalCornerWidth;
   }
 
   getCornerBBoxWidth = (cornerWidth: number): number => {
