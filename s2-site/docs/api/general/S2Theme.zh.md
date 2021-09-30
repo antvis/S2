@@ -116,7 +116,7 @@ order: 2
 | :--- | :--- | :---: | :--- | :---| :--- |
 | textAlign | string | | | `left` <br> `center` <br> `right` | 文本内容的对齐方式 |
 | textBaseline | string | | | `top` <br> `middle` <br> `bottom` | 绘制文本时的基线 |
-| fontFamily | string | | Roboto, PingFangSC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif | | 字体 |
+| fontFamily | string | | Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif | | 字体 |
 | fontSize | number | | | | 字体大小 |
 | fontWeight | number <br> string | | 粗体文本：Mobile：520 <br> PC: `bold` <br> 普通文本：`normal` | number <br> string: `normal` <br> `bold` <br> `bolder` <br> `lighter` | 字体粗细 |
 | fill | string | | | | 字体颜色 |

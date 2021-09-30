@@ -11,7 +11,7 @@ export const PALETTE_MAP: Record<string, Palette> = {
 };
 
 export const FONT_FAMILY =
-  'Roboto, PingFangSC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
+  'Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
 export const ICON_SIZE = 14;
 export const TEXT_INDENT = 12;
 
