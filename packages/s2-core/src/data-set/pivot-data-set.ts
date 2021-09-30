@@ -150,12 +150,12 @@ export class PivotDataSet extends BaseDataSet {
     const store = this.spreadsheet.store;
     const idPathMap = store.get('drillDownIdPathMap');
     if (rowNodeId) {
-      idPathMap
-        .get(rowNodeId)
-        .map((path) => set(this.indexesData, path, undefined));
+      map(idPathMap.get(rowNodeId), (path) =>
+        set(this.indexesData, path, undefined),
+      );
       idPathMap.delete(rowNodeId);
     } else {
-      flatten(Array.from(idPathMap.values()))?.map((path) =>
+      map(flatten(Array.from(idPathMap?.values())), (path) =>
         set(this.indexesData, path, undefined),
       );
       idPathMap.clear();

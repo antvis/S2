@@ -174,9 +174,10 @@ function MainLayout(props) {
         <Sider theme={'light'}>
           <div>
             ① 下钻支持同一层级下钻不同维度，可按如下简单体验效果
-            <div>点击[辽宁省-达州市] 选择下钻维度「country」</div>
-            <div>点击[辽宁省-达州市-县城1] 选择下钻维度「village」</div>
-            <div>点击[四川省-眉山市] 选择下钻维度「village」</div>
+            <div>点击[辽宁省-达州市] 选择下钻维度「县城」</div>
+            <div>点击[辽宁省-达州市-县城1] 选择下钻维度「村」</div>
+            <div>点击[四川省-眉山市] 选择下钻维度「县城」</div>
+            <div>点击[四川省-成都市] 选择下钻维度「村」</div>
           </div>
           <div>② 可清空下钻(部分或者全部)</div>
           <div>③ 可切换行头布局方式(grid-tree)</div>
