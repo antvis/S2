@@ -6,6 +6,7 @@ interface Param {
   rows: string[];
   columns: string[];
   originData: DataType[];
+  indexesData: DataType[][] | DataType[];
   totalData?: DataType[];
   sortedDimensionValues: Map<string, Set<string>>;
   rowPivotMeta?: PivotMeta;
@@ -80,10 +81,10 @@ export function getDataPath(params: DataPathParams) {
   const getPath = (
     dimensionValues: string[],
     isRow = true,
-    rowPivotMeta: PivotMeta,
-    colPivotMeta: PivotMeta,
+    rowMeta: PivotMeta,
+    colMeta: PivotMeta,
   ): number[] => {
-    let currentMeta = isRow ? rowPivotMeta : colPivotMeta;
+    let currentMeta = isRow ? rowMeta : colMeta;
     const fields = isRow ? rowFields : colFields;
     const path = [];
     for (let i = 0; i < dimensionValues.length; i++) {
@@ -165,14 +166,14 @@ export function transformIndexesData(params: Param) {
   const {
     rows,
     columns,
-    originData,
-    totalData,
+    originData = [],
+    indexesData = [],
+    totalData = [],
     sortedDimensionValues,
     rowPivotMeta,
     colPivotMeta,
   } = params;
   const paths = [];
-  const indexesData = [];
   for (const data of [...originData, ...totalData]) {
     const rowDimensionValues = transformDimensionsValues(
       data,

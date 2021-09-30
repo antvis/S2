@@ -9,13 +9,12 @@ import {
   isEmpty,
   isUndefined,
   keys,
-  merge,
-  reduce,
   set,
   uniq,
   values,
   map,
   cloneDeep,
+  merge,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -77,6 +76,7 @@ export class PivotDataSet extends BaseDataSet {
         columns,
         originData: this.originData,
         totalData: this.totalData,
+        indexesData: this.indexesData,
         sortedDimensionValues: this.sortedDimensionValues,
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
@@ -102,24 +102,31 @@ export class PivotDataSet extends BaseDataSet {
     const rows = Node.getFieldPath(rowNode);
     const store = this.spreadsheet.store;
     // 1、通过values在data中注入额外的维度信息
-    const values = this.fields.values;
+
+    const dataValues = this.fields.values;
+
+    // TODO 定value位置
     for (const drillDownDatum of drillDownData) {
-      for (const value of values) {
+      for (const value of dataValues) {
         merge(drillDownDatum, {
           [EXTRA_FIELD]: value,
           [VALUE_FIELD]: drillDownDatum[value],
         });
       }
     }
+
     // 2、转换数据
-    const { paths: drillDownDataPaths } = transformIndexesData({
+    const { paths: drillDownDataPaths, indexesData } = transformIndexesData({
       rows: [...rows, extraRowField],
       columns,
       originData: drillDownData,
+      indexesData: this.indexesData,
       sortedDimensionValues: this.sortedDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
+    this.indexesData = indexesData;
+
     // 3、record data paths by nodeId
     const rowNodeId = rowNode.id;
     const idPathMap = store.get('drillDownIdPathMap') ?? new Map();

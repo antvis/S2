@@ -8,7 +8,7 @@ import { merge } from 'lodash';
 import {
   drillDownData1,
   drillDownData2,
-  // drillDownData3,
+  drillDownData3,
   drillDownData4,
   originData,
 } from '../data/data-drill-down';
@@ -58,7 +58,7 @@ const getOptions = () => {
         widthByFieldValue: {},
         heightByField: {},
         colWidthType: 'adaptive',
-        hideMeasureColumn: true,
+        hideMeasureColumn: false,
       },
       cellCfg: {
         height: 32,
@@ -90,15 +90,6 @@ function MainLayout(props) {
         },
       ],
     },
-    customDisplayByRowName: {
-      rowNames: [
-        `辽宁省${ID_SEPARATOR}达州市`,
-        `辽宁省${ID_SEPARATOR}达州市${ID_SEPARATOR}县城1`,
-        `四川省${ID_SEPARATOR}眉山市`,
-      ],
-      mode: 'pick',
-    },
-    drillItemsNum: 2,
     fetchData: (meta) =>
       new Promise<PartDrillDownInfo>((resolve) => {
         // 弹窗 -> 选择 -> 请求数据
@@ -114,13 +105,13 @@ function MainLayout(props) {
             drillDownData = drillDownData2;
             break;
           case `root${ID_SEPARATOR}四川省${ID_SEPARATOR}眉山市`:
+            field = 'country';
+            drillDownData = drillDownData3;
+            break;
+          case `root${ID_SEPARATOR}四川省${ID_SEPARATOR}成都市`:
             field = 'village';
             drillDownData = drillDownData4;
             break;
-          // case `root${ID_SEPARATOR}四川省${ID_SEPARATOR}眉山市`:
-          //   field = 'country';
-          //   drillDownData = drillDownData3;
-          //   break;
           default:
             break;
         }

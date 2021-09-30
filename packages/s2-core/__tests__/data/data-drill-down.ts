@@ -170,12 +170,12 @@ export const drillDownData3 = [
   },
 ];
 
-// 眉山市下钻 「村 village」
+// 成都下钻 「村 village」
 export const drillDownData4 = [
   {
     price: 1000,
     province: '四川省',
-    city: '眉山市',
+    city: '成都市',
     village: '新光村A',
     category: '家具',
     subCategory: '桌子',
@@ -183,7 +183,7 @@ export const drillDownData4 = [
   {
     price: 1001,
     province: '四川省',
-    city: '眉山市',
+    city: '成都市',
     village: '新光村B',
     category: '家具',
     subCategory: '桌子',
@@ -191,7 +191,7 @@ export const drillDownData4 = [
   {
     price: 1002,
     province: '四川省',
-    city: '眉山市',
+    city: '成都市',
     village: '新光村A',
     category: '家具',
     subCategory: '椅子',
@@ -199,7 +199,7 @@ export const drillDownData4 = [
   {
     price: 1003,
     province: '四川省',
-    city: '眉山市',
+    city: '成都市',
     village: '新光村B',
     category: '家具',
     subCategory: '椅子',
