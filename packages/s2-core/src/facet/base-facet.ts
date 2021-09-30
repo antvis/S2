@@ -374,7 +374,7 @@ export abstract class BaseFacet {
       : hRowScroll;
   };
 
-  calculateCornerBBox = () => {
+  protected calculateCornerBBox() {
     const { rowsHierarchy, colsHierarchy } = this.layoutResult;
 
     const originalCornerWidth = Math.floor(
@@ -393,16 +393,13 @@ export abstract class BaseFacet {
       minX: 0,
       minY: 0,
     };
-    this.cornerWidth = originalCornerWidth;
-  };
+    this.cornerWidth = 0;
+  }
 
   getCornerBBoxWidth = (cornerWidth: number): number => {
     const { colsHierarchy } = this.layoutResult;
     if (!this.cfg.spreadsheet.isScrollContainsRowHeader()) {
       return this.getCornerWidth(cornerWidth, colsHierarchy);
-    }
-    if (!this.cfg.spreadsheet.isPivotMode()) {
-      return 0;
     }
     return cornerWidth;
   };

@@ -55,6 +55,25 @@ export class TableFacet extends BaseFacet {
     });
   }
 
+  protected calculateCornerBBox() {
+    const { colsHierarchy } = this.layoutResult;
+
+    const height = Math.floor(colsHierarchy.height);
+    const width = 0;
+
+    this.cornerBBox = {
+      x: 0,
+      y: 0,
+      width,
+      height,
+      maxX: width,
+      maxY: height,
+      minX: 0,
+      minY: 0,
+    };
+    this.cornerWidth = 0;
+  }
+
   public destroy() {
     super.destroy();
     this.spreadsheet.off(S2Event.RANGE_SORT);
