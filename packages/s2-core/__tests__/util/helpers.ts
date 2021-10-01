@@ -22,3 +22,7 @@ export const getContainer = () => {
   document.body.appendChild(rootContainer);
   return rootContainer;
 };
+
+export const sleep = async (timeout = 0) => {
+  await new Promise((resolve) => setTimeout(resolve, timeout));
+};

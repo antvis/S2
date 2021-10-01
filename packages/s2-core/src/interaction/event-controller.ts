@@ -112,6 +112,7 @@ export class EventController {
     // 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
     const { interaction } = this.spreadsheet;
+
     if (interaction.hasIntercepts([InterceptType.BRUSH_SELECTION])) {
       interaction.removeIntercepts([InterceptType.BRUSH_SELECTION]);
       return;
@@ -146,7 +147,7 @@ export class EventController {
   }
 
   private isMouseOnTheTooltip(event: Event) {
-    if (!this.spreadsheet.options.tooltip?.showTooltip) {
+    if (!this.spreadsheet?.options.tooltip?.showTooltip) {
       return false;
     }
 
