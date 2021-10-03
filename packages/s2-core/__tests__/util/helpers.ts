@@ -1,8 +1,13 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 import { dsvFormat } from 'd3-dsv';
+import EE from '@antv/event-emitter';
+import { Canvas } from '@antv/g-canvas';
+import { RootInteraction } from '../../src/interaction/root';
+import { Store } from '../../src/common/store';
+import { SpreadSheet } from '../../src/sheet-type';
 
-export const parseCSV = (csv, header?) => {
+export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
 
   // add header
@@ -25,4 +30,21 @@ export const getContainer = () => {
 
 export const sleep = async (timeout = 0) => {
   await new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
+export const createFakeSpreadSheet = () => {
+  class FakeSpreadSheet extends EE {}
+
+  const s2 = new FakeSpreadSheet() as SpreadSheet;
+  const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
+  s2.store = new Store();
+  s2.interaction = interaction;
+  s2.container = {
+    draw: jest.fn(),
+  } as unknown as Canvas;
+  s2.render = jest.fn();
+  s2.hideTooltip = jest.fn();
+  s2.showTooltipWithInfo = jest.fn();
+
+  return s2;
 };

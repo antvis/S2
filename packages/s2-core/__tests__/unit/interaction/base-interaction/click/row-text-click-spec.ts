@@ -1,21 +1,16 @@
 import { Event as GEvent } from '@antv/g-canvas';
-import EE from '@antv/event-emitter';
+import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { RowTextClick } from '@/interaction/base-interaction/click';
 import { Data, S2DataConfig, S2Options } from '@/common/interface';
-import { Store } from '@/common/store';
 import { SpreadSheet } from '@/sheet-type';
-import { RootInteraction } from '@/interaction/root';
 import { S2Event } from '@/common/constant';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/base-interaction/click/row-column-click');
 
-class FakeSpreadSheet extends EE {}
-
 describe('Interaction Row Text Click Tests', () => {
   let rowTextClick: RowTextClick;
   let s2: SpreadSheet;
-  let interaction: RootInteraction;
 
   const data: Data[] = [
     {
@@ -31,11 +26,11 @@ describe('Interaction Row Text Click Tests', () => {
   ];
 
   beforeEach(() => {
-    s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
-    s2.store = new Store();
-    interaction = new RootInteraction(s2 as unknown as SpreadSheet);
-    rowTextClick = new RowTextClick(s2 as unknown as SpreadSheet, interaction);
-    s2.interaction = interaction;
+    s2 = createFakeSpreadSheet();
+    rowTextClick = new RowTextClick(
+      s2 as unknown as SpreadSheet,
+      s2.interaction,
+    );
     s2.options = {
       hierarchyType: 'grid',
     } as S2Options;

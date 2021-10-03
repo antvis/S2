@@ -1,22 +1,17 @@
-import { Canvas, Event as GEvent } from '@antv/g-canvas';
-import EE from '@antv/event-emitter';
+import { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
-import { sleep } from './../../../util/helpers';
+import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
 import { S2Options, ViewMeta } from '@/common/interface';
-import { Store } from '@/common/store';
 import { HoverEvent } from '@/interaction/base-interaction/hover';
 import { SpreadSheet } from '@/sheet-type';
-import { RootInteraction } from '@/interaction/root';
 import { InteractionStateName, S2Event } from '@/common/constant';
 
 jest.mock('@/interaction/event-controller');
 
-class FakeSpreadSheet extends EE {}
-
 describe('Interaction Hover Tests', () => {
   let hoverEvent: HoverEvent;
   let s2: SpreadSheet;
-  let interaction: RootInteraction;
+
   const mockCell: Partial<ViewMeta> = {
     id: '1',
     colIndex: 0,
@@ -27,24 +22,16 @@ describe('Interaction Hover Tests', () => {
   const mockCellUpdate = jest.fn();
 
   beforeEach(() => {
-    s2 = new FakeSpreadSheet() as unknown as SpreadSheet;
+    s2 = createFakeSpreadSheet();
     s2.getCell = () =>
       ({
         update: mockCellUpdate,
         getMeta: () => mockCell,
       } as any);
-    s2.store = new Store();
-    interaction = new RootInteraction(s2 as unknown as SpreadSheet);
-    hoverEvent = new HoverEvent(s2 as unknown as SpreadSheet, interaction);
-    s2.interaction = interaction;
-    s2.container = {
-      draw: jest.fn(),
-    } as unknown as Canvas;
+    hoverEvent = new HoverEvent(s2 as unknown as SpreadSheet, s2.interaction);
     s2.options = {
       hoverHighlight: true,
     } as S2Options;
-    s2.hideTooltip = jest.fn();
-    s2.showTooltipWithInfo = jest.fn();
     s2.isTableMode = jest.fn(() => true);
   });
 
@@ -62,14 +49,14 @@ describe('Interaction Hover Tests', () => {
 
   test('should trigger data cell hover', async () => {
     s2.emit(S2Event.DATA_CELL_HOVER, { target: {} } as GEvent);
-    expect(interaction.getState()).toEqual({
+    expect(s2.interaction.getState()).toEqual({
       cells: [mockCellMeta],
       stateName: InteractionStateName.HOVER,
     });
 
     await sleep(1000);
 
-    expect(interaction.getState()).toEqual({
+    expect(s2.interaction.getState()).toEqual({
       cells: [mockCellMeta],
       stateName: InteractionStateName.HOVER_FOCUS,
     });
@@ -78,7 +65,7 @@ describe('Interaction Hover Tests', () => {
 
   test('should trigger row cell hover', async () => {
     s2.emit(S2Event.ROW_CELL_HOVER, { target: {} } as GEvent);
-    expect(interaction.getState()).toEqual({
+    expect(s2.interaction.getState()).toEqual({
       cells: [mockCellMeta],
       stateName: InteractionStateName.HOVER,
     });
@@ -88,7 +75,7 @@ describe('Interaction Hover Tests', () => {
 
   test('should trigger col cell hover', async () => {
     s2.emit(S2Event.COL_CELL_HOVER, { target: {} } as GEvent);
-    expect(interaction.getState()).toEqual({
+    expect(s2.interaction.getState()).toEqual({
       cells: [mockCellMeta],
       stateName: InteractionStateName.HOVER,
     });
