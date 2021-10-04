@@ -1,4 +1,4 @@
-import { Canvas, Event as GEvent } from '@antv/g-canvas';
+import { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { RowColumnClick } from '@/interaction/base-interaction/click';
@@ -9,7 +9,6 @@ import {
   ViewMeta,
 } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
-import { RootInteraction } from '@/interaction/root';
 import { InteractionStateName, S2Event } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 
