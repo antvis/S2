@@ -3,7 +3,7 @@ import { InteractionStateInfo, SortParam } from '../interface';
 import { ValueRanges } from './condition';
 import { S2DataConfig } from './s2DataConfig';
 import { Node } from '@/facet/layout/node';
-import { PartDrillDownInfo } from '@/components/sheets/interface';
+import { PartDrillDownFieldInLevel } from '@/components/sheets/interface';
 
 export interface Selected {
   type:
@@ -56,7 +56,7 @@ export interface StoreKey {
   drillItemsNum: number;
   // interaction state
   interactionStateInfo: InteractionStateInfo;
-  drillDownFieldInLevel: PartDrillDownInfo[];
+  drillDownFieldInLevel: PartDrillDownFieldInLevel[];
   originalDataCfg: S2DataConfig;
   drillDownMeta: any;
   panelBBox: BBox;

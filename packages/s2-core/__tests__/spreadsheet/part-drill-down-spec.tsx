@@ -10,6 +10,7 @@ import {
   drillDownData2,
   drillDownData3,
   drillDownData4,
+  drillDownData5,
   originData,
 } from '../data/data-drill-down';
 import { getContainer } from '../util/helpers';
@@ -33,7 +34,7 @@ const getDataCfg = () => {
     meta: [
       {
         field: 'price',
-        name: '单价',
+        name: '总价',
         formatter: (v) => auto(v),
       },
     ],
@@ -90,7 +91,7 @@ function MainLayout(props) {
         },
       ],
     },
-    drillItemsNum: 1,
+    // drillItemsNum: 1,
     fetchData: (meta, drillFields) =>
       new Promise<PartDrillDownInfo>((resolve) => {
         // 弹窗 -> 选择 -> 请求数据
@@ -112,10 +113,14 @@ function MainLayout(props) {
             field = 'country';
             drillDownData = drillDownData3;
             break;
-          case `root${ID_SEPARATOR}四川省${ID_SEPARATOR}成都市`:
-            if (drillFields[0] !== 'village') return;
-            field = 'village';
-            drillDownData = drillDownData4;
+          case `root${ID_SEPARATOR}四川省${ID_SEPARATOR}成都`:
+            if (drillFields[0] === 'country') {
+              field = 'country';
+              drillDownData = drillDownData4;
+            } else if (drillFields[0] === 'village') {
+              field = 'village';
+              drillDownData = drillDownData5;
+            }
             break;
           default:
             break;
@@ -182,7 +187,8 @@ function MainLayout(props) {
             <div>点击[辽宁省-达州市] 选择下钻维度「县城」</div>
             <div>点击[辽宁省-达州市-县城1] 选择下钻维度「村」</div>
             <div>点击[四川省-眉山市] 选择下钻维度「县城」</div>
-            <div>点击[四川省-成都市] 选择下钻维度「村」</div>
+            <div>点击[四川省-成都] 选择下钻维度 「县城」</div>
+            <div>点击[四川省-成都] 选择下钻维度「村」</div>
           </div>
           <div>② 可清空下钻(部分或者全部)</div>
           <div>③ 可切换行头布局方式(grid-tree)</div>

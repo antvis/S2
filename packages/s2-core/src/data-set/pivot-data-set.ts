@@ -15,6 +15,7 @@ import {
   map,
   cloneDeep,
   merge,
+  filter,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -39,6 +40,10 @@ import {
   getDataPath,
   getQueryDimValues,
 } from '@/utils/dataset/pivot-data-set';
+import {
+  PartDrillDownDataCache,
+  PartDrillDownFieldInLevel,
+} from '@/components/sheets/interface';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -98,25 +103,29 @@ export class PivotDataSet extends BaseDataSet {
     drillDownData: DataType[],
     rowNode: Node,
   ) {
-    const { columns } = this.fields;
+    const { columns, values: dataValues } = this.fields;
     const rows = Node.getFieldPath(rowNode);
     const store = this.spreadsheet.store;
+
     // 1、通过values在data中注入额外的维度信息
-
-    const dataValues = this.fields.values;
-
     // TODO 定value位置
-    for (const drillDownDatum of drillDownData) {
-      for (const value of dataValues) {
-        merge(drillDownDatum, {
-          [EXTRA_FIELD]: value,
-          [VALUE_FIELD]: drillDownDatum[value],
-        });
-      }
-    }
+    drillDownData = map(drillDownData, (datum) => {
+      const valueKey = find(keys(datum), (k) => includes(dataValues, k));
+      return {
+        ...datum,
+        [EXTRA_FIELD]: valueKey,
+        [VALUE_FIELD]: datum[valueKey],
+      };
+    });
 
     // 2、转换数据
-    const { paths: drillDownDataPaths, indexesData } = transformIndexesData({
+    const {
+      paths: drillDownDataPaths,
+      indexesData,
+      rowPivotMeta,
+      colPivotMeta,
+      sortedDimensionValues,
+    } = transformIndexesData({
       rows: [...rows, extraRowField],
       columns,
       originData: drillDownData,
@@ -126,6 +135,9 @@ export class PivotDataSet extends BaseDataSet {
       colPivotMeta: this.colPivotMeta,
     });
     this.indexesData = indexesData;
+    this.rowPivotMeta = rowPivotMeta;
+    this.colPivotMeta = colPivotMeta;
+    this.sortedDimensionValues = sortedDimensionValues;
 
     // 3、record data paths by nodeId
     const rowNodeId = rowNode.id;
@@ -149,17 +161,52 @@ export class PivotDataSet extends BaseDataSet {
   public clearDrillDownData(rowNodeId?: string) {
     const store = this.spreadsheet.store;
     const idPathMap = store.get('drillDownIdPathMap');
+    const drillDownDataCache = store.get(
+      'drillDownDataCache',
+      [],
+    ) as PartDrillDownDataCache[];
+
     if (rowNodeId) {
       map(idPathMap.get(rowNodeId), (path) =>
         set(this.indexesData, path, undefined),
       );
+      // 1. 删除下钻缓存路径
       idPathMap.delete(rowNodeId);
+
+      // 2. 过滤清除的下钻缓存
+      const restDataCache = filter(drillDownDataCache, (cache) =>
+        idPathMap.has(cache?.rowId),
+      );
+      store.set('drillDownDataCache', restDataCache);
+
+      // 3. 过滤清除的下钻层级
+      const restDrillLevels = restDataCache.map((cache) => cache?.drillLevel);
+      const drillDownFieldInLevel = store.get(
+        'drillDownFieldInLevel',
+        [],
+      ) as PartDrillDownFieldInLevel[];
+      const restFieldInLevel = drillDownFieldInLevel.filter((filed) =>
+        includes(restDrillLevels, filed?.drillLevel),
+      );
+
+      store.set('drillDownFieldInLevel', restFieldInLevel);
     } else {
       map(flatten(Array.from(idPathMap?.values())), (path) =>
         set(this.indexesData, path, undefined),
       );
       idPathMap.clear();
+      // 需要对应清空所有下钻后的dataCfg信息
+      // 因此如果缓存有下钻前原始dataCfg，需要清空所有的下钻数据
+      const originalDataCfg = this.spreadsheet.store.get('originalDataCfg');
+      if (!isEmpty(originalDataCfg)) {
+        this.spreadsheet.setDataCfg(originalDataCfg);
+      }
+
+      // 清空所有的下钻信息
+      this.spreadsheet.store.set('drillDownDataCache', []);
+      this.spreadsheet.store.set('drillDownFieldInLevel', []);
     }
+
     store.set('drillDownIdPathMap', idPathMap);
   }
 
@@ -279,8 +326,13 @@ export class PivotDataSet extends BaseDataSet {
 
     const { columns, rows: originRows } = this.fields;
     let rows = originRows;
-    if (!isTotals) {
-      rows = Node.getFieldPath(rowNode) ?? originRows;
+    const isDrillDown = !isEmpty(
+      this.spreadsheet.store.get('drillDownIdPathMap'),
+    );
+
+    // 如果是下钻结点，小计行维度在 originRows 中并不存在
+    if (!isTotals || isDrillDown) {
+      rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
     }
     const rowDimensionValues = getQueryDimValues(rows, query);
     const colDimensionValues = getQueryDimValues(columns, query);

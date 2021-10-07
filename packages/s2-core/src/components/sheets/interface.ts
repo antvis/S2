@@ -46,6 +46,7 @@ export interface PartDrillDown {
   fetchData: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;
 }
 
+// 用于和下钻组件进行交互联动
 export interface PartDrillDownDataCache {
   // 执行下钻的行头id
   rowId: string;
@@ -55,6 +56,13 @@ export interface PartDrillDownDataCache {
   drillField: string;
   // 下钻的数据
   drillData: Record<string, string | number>[];
+}
+
+export interface PartDrillDownFieldInLevel {
+  // 下钻的维度
+  drillField: string;
+  // 下钻的层级
+  drillLevel: number;
 }
 
 export interface BaseSheetProps {

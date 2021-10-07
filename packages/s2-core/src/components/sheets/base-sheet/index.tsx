@@ -216,7 +216,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     ownSpreadsheet.setDataCfg(safetyDataConfig(dataCfg));
   };
 
-  const update = (reset?: () => void, reloadData = true) => {
+  const update = (reset?: () => void, reloadData?: boolean) => {
     if (!ownSpreadsheet) return;
     if (isFunction(reset)) reset();
     ownSpreadsheet.render(reloadData);
@@ -231,7 +231,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (!ownSpreadsheet) return;
     setLoading(true);
     ownSpreadsheet.clearDrillDownData(rowId);
-    update();
   };
 
   const debounceResize = debounce((e: Event) => {
@@ -380,7 +379,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       options: newOptions,
     });
     setOptions(ownSpreadsheet, newProps);
-    update();
+    update(null, false);
   }, [current]);
 
   useEffect(() => {
@@ -394,7 +393,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       options: newOptions,
     });
     setOptions(ownSpreadsheet, newProps);
-    update();
+    update(null, false);
   }, [pageSize]);
 
   useEffect(() => {

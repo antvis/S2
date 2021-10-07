@@ -160,7 +160,11 @@ export function getQueryDimValues(
  * @param rows
  * @param columns
  * @param originData
+ * @param indexesData
  * @param totalData
+ * @param sortedDimensionValues
+ * @param rowPivotMeta
+ * @param colPivotMeta
  */
 export function transformIndexesData(params: Param) {
   const {

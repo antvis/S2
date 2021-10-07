@@ -98,9 +98,9 @@ export class Node {
    * => [area, province]
    * @param node
    */
-  public static getFieldPath(node: Node): string[] {
-    if (node && !node.isTotals) {
-      // total nodes don't need rows from node self
+  public static getFieldPath(node: Node, isDrillDown?: boolean): string[] {
+    if ((node && !node.isTotals) || (node && isDrillDown)) {
+      // total nodes don't need rows from node self except in drill down mode
       let parent = node.parent;
       const fieldPath = [node.field];
       while (parent && parent.id !== ROOT_ID) {

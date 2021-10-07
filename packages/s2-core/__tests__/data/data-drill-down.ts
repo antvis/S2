@@ -1,27 +1,27 @@
 export const originData = [
   {
-    price: 1,
+    price: 100,
     province: '辽宁省',
     city: '达州市',
     category: '家具',
     subCategory: '桌子',
   },
   {
-    price: 2,
+    price: 200,
     province: '辽宁省',
     city: '芜湖市',
     category: '家具',
     subCategory: '桌子',
   },
   {
-    price: 3,
+    price: 300,
     province: '辽宁省',
     city: '达州市',
     category: '家具',
     subCategory: '椅子',
   },
   {
-    price: 4,
+    price: 400,
     province: '辽宁省',
     city: '芜湖市',
     category: '家具',
@@ -29,30 +29,30 @@ export const originData = [
   },
 
   {
-    price: 11,
+    price: 1100,
     province: '四川省',
     city: '眉山市',
     category: '家具',
     subCategory: '桌子',
   },
   {
-    price: 22,
+    price: 2200,
     province: '四川省',
-    city: '成都市',
+    city: '成都',
     category: '家具',
     subCategory: '桌子',
   },
   {
-    price: 33,
+    price: 3300,
     province: '四川省',
     city: '眉山市',
     category: '家具',
     subCategory: '椅子',
   },
   {
-    price: 44,
+    price: 4400,
     province: '四川省',
-    city: '成都市',
+    city: '成都',
     category: '家具',
     subCategory: '椅子',
   },
@@ -61,7 +61,7 @@ export const originData = [
 // 达州市下钻 「县城 country」
 export const drillDownData1 = [
   {
-    price: 111,
+    price: 60,
     province: '辽宁省',
     city: '达州市',
     country: '县城1',
@@ -69,7 +69,7 @@ export const drillDownData1 = [
     subCategory: '桌子',
   },
   {
-    price: 222,
+    price: 150,
     province: '辽宁省',
     city: '达州市',
     country: '县城1',
@@ -77,7 +77,7 @@ export const drillDownData1 = [
     subCategory: '椅子',
   },
   {
-    price: 333,
+    price: 40,
     province: '辽宁省',
     city: '达州市',
     country: '县城2',
@@ -85,7 +85,7 @@ export const drillDownData1 = [
     subCategory: '桌子',
   },
   {
-    price: 444,
+    price: 150,
     province: '辽宁省',
     city: '达州市',
     country: '县城2',
@@ -94,10 +94,10 @@ export const drillDownData1 = [
   },
 ];
 
-// 达州市-县城1 下钻 村 village
+// 达州市-县城1 下钻 「村 village」
 export const drillDownData2 = [
   {
-    price: 1111,
+    price: 20,
     province: '辽宁省',
     city: '达州市',
     country: '县城1',
@@ -106,7 +106,7 @@ export const drillDownData2 = [
     subCategory: '桌子',
   },
   {
-    price: 2222,
+    price: 100,
     province: '辽宁省',
     city: '达州市',
     country: '县城1',
@@ -115,7 +115,7 @@ export const drillDownData2 = [
     subCategory: '椅子',
   },
   {
-    price: 3333,
+    price: 40,
     province: '辽宁省',
     city: '达州市',
     country: '县城1',
@@ -124,7 +124,7 @@ export const drillDownData2 = [
     subCategory: '桌子',
   },
   {
-    price: 4444,
+    price: 50,
     province: '辽宁省',
     city: '达州市',
     country: '县城1',
@@ -134,7 +134,7 @@ export const drillDownData2 = [
   },
 ];
 
-// 眉山市下钻 「县城 country」 -- drill down in same level with drillDownData1
+// 眉山市下钻 「县城 country」
 export const drillDownData3 = [
   {
     price: 1000,
@@ -145,7 +145,7 @@ export const drillDownData3 = [
     subCategory: '桌子',
   },
   {
-    price: 1001,
+    price: 100,
     province: '四川省',
     city: '眉山市',
     country: '县城B',
@@ -153,7 +153,7 @@ export const drillDownData3 = [
     subCategory: '桌子',
   },
   {
-    price: 1002,
+    price: 1500,
     province: '四川省',
     city: '眉山市',
     country: '县城A',
@@ -161,7 +161,7 @@ export const drillDownData3 = [
     subCategory: '椅子',
   },
   {
-    price: 1003,
+    price: 1800,
     province: '四川省',
     city: '眉山市',
     country: '县城B',
@@ -170,36 +170,72 @@ export const drillDownData3 = [
   },
 ];
 
-// 成都下钻 「村 village」
+// 成都下钻 「县城 country」
 export const drillDownData4 = [
+  {
+    price: 2000,
+    province: '四川省',
+    city: '成都',
+    country: '县城A',
+    category: '家具',
+    subCategory: '桌子',
+  },
+  {
+    price: 200,
+    province: '四川省',
+    city: '成都',
+    country: '县城B',
+    category: '家具',
+    subCategory: '桌子',
+  },
+  {
+    price: 400,
+    province: '四川省',
+    city: '成都',
+    country: '县城A',
+    category: '家具',
+    subCategory: '椅子',
+  },
+  {
+    price: 4000,
+    province: '四川省',
+    city: '成都',
+    country: '县城B',
+    category: '家具',
+    subCategory: '椅子',
+  },
+];
+
+// 成都下钻 「村 village」
+export const drillDownData5 = [
   {
     price: 1000,
     province: '四川省',
-    city: '成都市',
+    city: '成都',
     village: '新光村A',
     category: '家具',
     subCategory: '桌子',
   },
   {
-    price: 1001,
+    price: 1200,
     province: '四川省',
-    city: '成都市',
+    city: '成都',
     village: '新光村B',
     category: '家具',
     subCategory: '桌子',
   },
   {
-    price: 1002,
+    price: 1000,
     province: '四川省',
-    city: '成都市',
+    city: '成都',
     village: '新光村A',
     category: '家具',
     subCategory: '椅子',
   },
   {
-    price: 1003,
+    price: 3400,
     province: '四川省',
-    city: '成都市',
+    city: '成都',
     village: '新光村B',
     category: '家具',
     subCategory: '椅子',
