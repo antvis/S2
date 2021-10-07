@@ -91,27 +91,30 @@ export const HandleDrillDownIcon = (
   ) => void,
 ): S2Options => {
   if (props?.partDrillDown) {
-    const { customDisplayByLabelName } = props.partDrillDown;
-    let iconLevel = spreadsheet.store.get('drillDownActionIconLevel', -1);
-    if (iconLevel < 0) {
-      // 如果没有缓存，直接默认用叶子节点的层级
-      iconLevel = get(props, 'dataCfg.fields.rows.length', 1) - 1;
-      // 缓存配置之初的icon层级
-      spreadsheet.store.set('drillDownActionIconLevel', iconLevel);
+    let displayCondition = props.partDrillDown?.displayCondition;
+    if (isEmpty(displayCondition)) {
+      let iconLevel = spreadsheet.store.get('drillDownActionIconLevel', -1);
+      if (iconLevel < 0) {
+        // 如果没有缓存，直接默认用叶子节点的层级
+        iconLevel = get(props, 'dataCfg.fields.rows.length', 1) - 1;
+        // 缓存配置之初的icon层级
+        spreadsheet.store.set('drillDownActionIconLevel', iconLevel);
+      }
+      displayCondition = (meta: Node) => {
+        return (
+          iconLevel <= meta.level &&
+          spreadsheet.options.hierarchyType === 'tree'
+        );
+      };
     }
+
     return merge({}, props.options, {
       headerActionIcons: [
         {
           belongsCell: 'rowCell',
           iconNames: ['DrillDownIcon'],
-          customDisplayByLabelName,
           defaultHide: true,
-          displayCondition: (meta: Node) => {
-            return (
-              iconLevel <= meta.level &&
-              spreadsheet.options.hierarchyType === 'tree'
-            );
-          },
+          displayCondition,
           action: (actionIconProps: HeaderActionIconProps) => {
             const { iconName, meta } = actionIconProps;
             if (iconName === 'DrillDownIcon') {

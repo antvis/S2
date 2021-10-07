@@ -34,16 +34,9 @@ export interface PartDrillDown {
   drillConfig: DrillDownProps;
   // The numbers of drill down result
   drillItemsNum?: number;
-  // Decide the drill down icon show in which levels according to the row header labels.
-  customDisplayByLabelName?: {
-    // The names of row header labels.
-    // Using the ID_SEPARATOR('[&]') to join two labels when there are hierarchical relations between them.
-    labelNames: string[];
-    // omit(default): the all levels included in rowNames would hide the drill down icon.
-    // pick: only show the drill down icon on the levels those included in rowNames.
-    mode: 'pick' | 'omit';
-  };
   fetchData: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;
+  // Decide the drill down icon show conditions.
+  displayCondition?: (meta: Node) => boolean;
 }
 
 // 用于和下钻组件进行交互联动
