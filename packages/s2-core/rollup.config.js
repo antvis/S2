@@ -1,9 +1,10 @@
-import typescript from 'rollup-plugin-typescript2';
-import postcss from 'rollup-plugin-postcss';
-import resolve from '@rollup/plugin-node-resolve';
-import { terser } from 'rollup-plugin-terser';
-import commonjs from '@rollup/plugin-commonjs';
 import alias from '@rollup/plugin-alias';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
+import postcss from 'rollup-plugin-postcss';
+import { terser } from 'rollup-plugin-terser';
+import typescript from 'rollup-plugin-typescript2';
 import ttypescript from 'ttypescript';
 
 const format = process.env.FORMAT;
@@ -28,7 +29,16 @@ const output = {
 
 const plugins = [
   alias({
-    entries: [{ find: 'lodash', replacement: 'lodash-es' }],
+    entries: [
+      { find: 'lodash', replacement: 'lodash-es' },
+      {
+        find: 'react-is',
+        replacement: 'react-is/cjs/react-is.production.min.js',
+      },
+    ],
+  }),
+  replace({
+    'process.env.NODE_ENV': JSON.stringify('production'),
   }),
   commonjs(),
   resolve(),

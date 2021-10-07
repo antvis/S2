@@ -26,7 +26,7 @@ export const Dimension: FC<DimensionProps> = ({
   droppableType,
   ...rest
 }) => {
-  const [expandChildren, setExpandChildren] = useState(false);
+  const [expandChildren, setExpandChildren] = useState(true);
 
   const onUpdateExpand = (event: CheckboxChangeEvent) => {
     setExpandChildren(event.target.checked);

@@ -41,7 +41,6 @@ export const DimensionItem: FC<DimensionItemProps> = ({
       {(provided, snapshot) => (
         <div
           {...provided.draggableProps}
-          {...provided.dragHandleProps}
           ref={provided.innerRef}
           className={cx(
             getSwitcherClassName(selectable ? 'checkable-list' : 'normal-list'),
@@ -51,6 +50,7 @@ export const DimensionItem: FC<DimensionItemProps> = ({
           )}
         >
           <SingleItem
+            dragHandleProps={provided.dragHandleProps}
             fieldType={fieldType}
             id={id}
             displayName={displayName}

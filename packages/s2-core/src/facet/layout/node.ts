@@ -82,14 +82,19 @@ export class Node {
     this.isLeaf = isLeaf;
     this.isGrandTotals = isGrandTotals;
     this.isSubTotals = isSubTotals;
-    // if (parent) {
-    //   parent.children.push(this);
-    // }
-    // 这里存在一个问题，由于目前所有内置成员变量都是public, 可以直接通过实例.属性 来更新
-    // 属性值，导致更新后有些无法同步到config中，后续再处理下
-    this.config = Object.getOwnPropertyNames(this).reduce((result, name) => {
-      return { ...result, [name]: this[name] };
-    }, {}) as BaseNodeConfig;
+    this.config = {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "colIndex": -1,
+      "children": [],
+      "padding": 0,
+      "id": "",
+      "key": "",
+      "value": "",
+      "label": ""
+    };
   }
 
   /**
