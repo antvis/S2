@@ -7,6 +7,7 @@ import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
+import { Store } from '@/common/store';
 
 jest.mock('src/sheet-type');
 jest.mock('src/facet/layout/node');
@@ -25,7 +26,9 @@ describe('Pivot Mode Test When Value In Row', () => {
 
   beforeEach(() => {
     MockPivotSheet.mockClear();
-    dataSet = new PivotDataSet(new MockPivotSheet());
+    const mockSheet = new MockPivotSheet();
+    mockSheet.store = new Store();
+    dataSet = new PivotDataSet(mockSheet);
 
     dataSet.setDataCfg(dataCfg);
   });

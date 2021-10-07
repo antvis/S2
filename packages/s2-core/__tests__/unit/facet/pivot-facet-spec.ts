@@ -76,6 +76,7 @@ const MockPivotDataSet = PivotDataSet as any as jest.Mock<PivotDataSet>;
 
 describe('Pivot Mode Facet Test', () => {
   const s2: SpreadSheet = new MockSpreadSheet();
+  s2.store = new Store();
   const dataSet: PivotDataSet = new MockPivotDataSet(s2);
   s2.dataSet = dataSet;
 
