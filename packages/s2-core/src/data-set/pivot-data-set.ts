@@ -16,6 +16,7 @@ import {
   cloneDeep,
   filter,
   forEach,
+  unset,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -39,6 +40,7 @@ import {
   transformIndexesData,
   getDataPath,
   getQueryDimValues,
+  deleteMetaByPath,
 } from '@/utils/dataset/pivot-data-set';
 import {
   PartDrillDownDataCache,
@@ -122,11 +124,11 @@ export class PivotDataSet extends BaseDataSet {
     const rowNodeId = rowNode.id;
     const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
     if (idPathMap.has(rowNodeId)) {
-      // the current node has a drill-down field, clean it and add new one
+      // the current node has a drill-down field, clean it
       forEach(idPathMap.get(rowNodeId), (path: []) => {
-        set(this.indexesData, path, undefined);
-        set(this.rowPivotMeta, path, undefined);
+        unset(this.indexesData, path);
       });
+      deleteMetaByPath(this.rowPivotMeta, rowNodeId);
     }
 
     // 3、转换数据
@@ -170,19 +172,25 @@ export class PivotDataSet extends BaseDataSet {
     ) as PartDrillDownDataCache[];
 
     if (rowNodeId) {
-      map(idPathMap.get(rowNodeId), (path) =>
-        set(this.indexesData, path, undefined),
-      );
-      // 1. 删除下钻缓存路径
+      // 1. 删除 indexesData 当前下钻层级对应数据
+      const currentIdPathMap = idPathMap.get(rowNodeId);
+      if (currentIdPathMap) {
+        forEach(currentIdPathMap, (path) => {
+          unset(this.indexesData, path);
+        });
+      }
+      // 2. 删除 rowPivotMeta 当前下钻层级对应 meta 信息
+      deleteMetaByPath(this.rowPivotMeta, rowNodeId);
+      // 3. 删除下钻缓存路径
       idPathMap.delete(rowNodeId);
 
-      // 2. 过滤清除的下钻缓存
+      // 4. 过滤清除的下钻缓存
       const restDataCache = filter(drillDownDataCache, (cache) =>
         idPathMap.has(cache?.rowId),
       );
       store.set('drillDownDataCache', restDataCache);
 
-      // 3. 过滤清除的下钻层级
+      // 5. 过滤清除的下钻层级
       const restDrillLevels = restDataCache.map((cache) => cache?.drillLevel);
       const drillDownFieldInLevel = store.get(
         'drillDownFieldInLevel',

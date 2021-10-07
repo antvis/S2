@@ -1,6 +1,7 @@
-import { set, map, reduce, isUndefined } from 'lodash';
+import { set, map, reduce, isUndefined, forEach, last } from 'lodash';
 import { DataType } from '@/data-set/interface';
 import { DataPathParams, PivotMeta } from '@/data-set/interface';
+import { ID_SEPARATOR } from '@/';
 
 interface Param {
   rows: string[];
@@ -210,4 +211,22 @@ export function transformIndexesData(params: Param) {
     colPivotMeta,
     sortedDimensionValues,
   };
+}
+
+export function deleteMetaByPath(meta: PivotMeta, nodeId: string) {
+  if (!meta || !nodeId) return;
+  const paths = nodeId.split(ID_SEPARATOR);
+  const deletePath = last(paths);
+  let currentMeta = meta;
+  forEach(paths, (path) => {
+    const pathMeta = currentMeta.get(path);
+    if (pathMeta) {
+      if (path === deletePath) {
+        pathMeta.children = new Map();
+        pathMeta.childField = undefined;
+      } else {
+        currentMeta = pathMeta.children;
+      }
+    }
+  });
 }
