@@ -14,8 +14,8 @@ import {
   values,
   map,
   cloneDeep,
-  merge,
   filter,
+  forEach,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -104,7 +104,7 @@ export class PivotDataSet extends BaseDataSet {
     rowNode: Node,
   ) {
     const { columns, values: dataValues } = this.fields;
-    const rows = Node.getFieldPath(rowNode);
+    const rows = Node.getFieldPath(rowNode, true);
     const store = this.spreadsheet.store;
 
     // 1、通过values在data中注入额外的维度信息
@@ -118,7 +118,18 @@ export class PivotDataSet extends BaseDataSet {
       };
     });
 
-    // 2、转换数据
+    // 2. 检查该节点是否已经存在下钻维度
+    const rowNodeId = rowNode.id;
+    const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
+    if (idPathMap.has(rowNodeId)) {
+      // the current node has a drill-down field, clean it and add new one
+      forEach(idPathMap.get(rowNodeId), (path: []) => {
+        set(this.indexesData, path, undefined);
+        set(this.rowPivotMeta, path, undefined);
+      });
+    }
+
+    // 3、转换数据
     const {
       paths: drillDownDataPaths,
       indexesData,
@@ -139,15 +150,7 @@ export class PivotDataSet extends BaseDataSet {
     this.colPivotMeta = colPivotMeta;
     this.sortedDimensionValues = sortedDimensionValues;
 
-    // 3、record data paths by nodeId
-    const rowNodeId = rowNode.id;
-    const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
-    if (idPathMap.has(rowNodeId)) {
-      // the current node has a drill-down field, clean it and add new one
-      idPathMap
-        .get(rowNodeId)
-        .map((path) => set(this.indexesData, path, undefined));
-    }
+    // 4、record data paths by nodeId
     // set new drill-down data path
     idPathMap.set(rowNodeId, drillDownDataPaths);
     store.set('drillDownIdPathMap', idPathMap);

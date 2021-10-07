@@ -1,4 +1,4 @@
-import { get, isEmpty, merge, set } from 'lodash';
+import { clone, filter, get, isEmpty, merge, set } from 'lodash';
 import { Event } from '@antv/g-canvas';
 import { S2Options, HeaderActionIconProps } from '@/common/interface';
 import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
@@ -135,6 +135,18 @@ export const HandleDrillDown = (params: DrillDownParams) => {
   const { fetchData, spreadsheet, drillFields, drillItemsNum } = params;
   spreadsheet.store.set('drillItemsNum', drillItemsNum);
   const meta = spreadsheet.store.get('drillDownNode');
+  const { drillDownDataCache, drillDownCurrentCash } = getDrillDownCash(
+    spreadsheet,
+    meta,
+  );
+  let newDrillDownDataCache = clone(drillDownDataCache);
+  // 如果当前节点已有下钻缓存，需要清除
+  if (drillDownCurrentCash) {
+    newDrillDownDataCache = filter(
+      drillDownDataCache,
+      (cache) => cache.rowId !== meta.id,
+    );
+  }
   fetchData(meta, drillFields).then((info) => {
     const { drillData, drillField } = info;
     (spreadsheet.dataSet as PivotDataSet).transformDrillDownData(
@@ -146,15 +158,14 @@ export const HandleDrillDown = (params: DrillDownParams) => {
     if (!isEmpty(drillData)) {
       // 缓存到表实例中
       const drillLevel = meta.level + 1;
-      const { drillDownDataCache } = getDrillDownCash(spreadsheet, meta);
       const newDrillDownData = {
         rowId: meta.id,
         drillLevel,
         drillData,
         drillField,
       };
-      drillDownDataCache.push(newDrillDownData);
-      spreadsheet.store.set('drillDownDataCache', drillDownDataCache);
+      newDrillDownDataCache.push(newDrillDownData);
+      spreadsheet.store.set('drillDownDataCache', newDrillDownDataCache);
     }
 
     spreadsheet.render(false);
