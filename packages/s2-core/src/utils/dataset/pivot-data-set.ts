@@ -213,7 +213,7 @@ export function transformIndexesData(params: Param) {
   };
 }
 
-export function deleteMetaByPath(meta: PivotMeta, nodeId: string) {
+export function deleteMetaById(meta: PivotMeta, nodeId: string) {
   if (!meta || !nodeId) return;
   const paths = nodeId.split(ID_SEPARATOR);
   const deletePath = last(paths);

@@ -40,7 +40,7 @@ import {
   transformIndexesData,
   getDataPath,
   getQueryDimValues,
-  deleteMetaByPath,
+  deleteMetaById,
 } from '@/utils/dataset/pivot-data-set';
 import {
   PartDrillDownDataCache,
@@ -128,7 +128,7 @@ export class PivotDataSet extends BaseDataSet {
       forEach(idPathMap.get(rowNodeId), (path: []) => {
         unset(this.indexesData, path);
       });
-      deleteMetaByPath(this.rowPivotMeta, rowNodeId);
+      deleteMetaById(this.rowPivotMeta, rowNodeId);
     }
 
     // 3、转换数据
@@ -180,7 +180,7 @@ export class PivotDataSet extends BaseDataSet {
         });
       }
       // 2. 删除 rowPivotMeta 当前下钻层级对应 meta 信息
-      deleteMetaByPath(this.rowPivotMeta, rowNodeId);
+      deleteMetaById(this.rowPivotMeta, rowNodeId);
       // 3. 删除下钻缓存路径
       idPathMap.delete(rowNodeId);
 
