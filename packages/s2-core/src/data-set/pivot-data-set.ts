@@ -338,7 +338,7 @@ export class PivotDataSet extends BaseDataSet {
     const { columns, rows: originRows } = this.fields;
     let rows = originRows;
     const isDrillDown = !isEmpty(
-      this.spreadsheet.store.get('drillDownIdPathMap'),
+      get(this, 'spreadsheet?.store.drillDownIdPathMap'),
     );
 
     // 如果是下钻结点，小计行维度在 originRows 中并不存在
