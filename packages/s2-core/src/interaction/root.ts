@@ -109,13 +109,13 @@ export class RootInteraction {
     return this.isSelectedState() && this.isActiveCell(cell);
   }
 
-  // 获取当前 interaction 记录的 Cells 元信息列表，包括不在视口内的格子
+  // 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视区域内的格子
   public getCells() {
     const currentState = this.getState();
     return currentState?.cells || [];
   }
 
-  // 获取 cells 中在视口内部分的实例列表
+  // 获取 cells 中在可视区域内的实例列表
   public getActiveCells() {
     const ids = this.getCells().map((item) => item.id);
     return this.getAllCells().filter((cell) => ids.includes(cell.getMeta().id));

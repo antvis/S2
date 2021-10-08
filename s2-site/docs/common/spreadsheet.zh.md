@@ -45,10 +45,10 @@ order: 7
 | showTooltipWithInfo | `(event: CanvasEvent | MouseEvent, data: TooltipData[], options?: TooltipOptions) => void` |  |  |  | 显示 tooltip, 并且展示一些默认信息 |
 | hideTooltip | `() => void` |  |  |  | 隐藏 tooltip |
 | destroyTooltip | `() => void` |  |  |  | 销毁 tooltip |
-| registerIcons | `() => void` |  |  |  | 注册 自定义 svg 图标 (根据 `options.customSVGIcons`) |
+| registerIcons | `() => void` |  |  |  | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`) |
 | setDataCfg | `(dataCfg: S2DataConfig) => void` |  |  |  | 更新数据配置 |
 | setOptions | `(dataCfg: S2Options) => void` |  |  |  | 更新表格配置 |
-| render | `(reloadData: boolean) => void` |  |  |  | 重新渲染表格, 如果 reloadData = true, 则会重新计算数据 |
+| render | `(reloadData: boolean) => void` |  |  |  | 重新渲染表格，如果 reloadData = true, 则会重新计算数据 |
 | destroy | `() => void` |  |  |  | 销毁表格 |
 | setThemeCfg | `(themeCfg: ThemeCfg) => void` |  |  |  | 更新主题配置 |
 | updatePagination | `(pagination: Pagination) => void` |  |  |  | 更新分页 |
@@ -59,9 +59,9 @@ order: 7
 | getColumnNodes | `(level: number) => Node[]` |  |  |  | 获取列节点 |
 | updateScrollOffset | `(config: OffsetConfig) => void` |  |  |  | 更新滚动偏移 |
 | getCell | `(target: EventTarget) => S2CellType` |  |  |  | 根据 event.target 获取当前 单元格 |
-| getCellType | `(target: EventTarget) => CellTypes` |  |  |  | 根据 event.target 获取当前 单元格 |
+| getCellType | `(target: EventTarget) => CellTypes` |  |  |  | 根据 event.target 获取当前 单元格类型 |
 | getTotalsConfig | `(dimension: string) => Total` |  |  |  | 获取总计小计配置 |
-| getInitColumnNodes | `() => Node[]` |  |  |  | 获取初次渲染的列头信息 (比如: 隐藏列头前) |
+| getInitColumnNodes | `() => Node[]` |  |  |  | 获取初次渲染的列头信息 （比如：隐藏列头前） |
 | hideColumns | `(fields: string[]) => Total` |  |  |  | 隐藏列头 |
 
 ### Store
@@ -80,7 +80,7 @@ this.spreadsheet.store.set('key', value) // 存储
 | hRowScrollX | `number` |  |  |  | 垂直行头滚动偏移 |
 | sortParam | [SortParam](#SortParam) |  |  |  | 列头排序配置 |
 | lastReachedBorderId | `{rowId: string, colId: string}` |  |  |  | ? |
-| drillDownIdPathMap | `Map<string, number[][]>` |  |  |  | 下钻节点id和对应生成的 path寻址路径 |
+| drillDownIdPathMap | `Map<string, number[][]>` |  |  |  | 下钻节点 id 和对应生成的 path 寻址路径 |
 | drillDownNode | `Node` |  |  |  | 当前下钻节点 |
 | drillItemsNum | `number` |  |  |  | 下钻数据的个数控制 |
 | interactionStateInfo | `number` |  |  |  | 当前交互状态信息 |

@@ -126,7 +126,7 @@ object 可选，_default：{}_ 功能描述：滚动监听的节点度量
 DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
 ```
 
-功能描述：自定义数值单元格 参数：[ViewMeta](#viewmeta)
+功能描述：自定义数值单元格
 
 `markdown:docs/common/view-meta.zh.md`
 
@@ -136,13 +136,13 @@ DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
 CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[]) => S2CellType;
 ```
 
-功能描述：自定义单元格 参数：
+功能描述：自定义单元格
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
 | node | [Node](#node) | ✓ |  |  | 当前渲染的 node 节点 |
-| spreadsheet | [SpreadSheet](#SpreadSheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
-| restOptions |  |  |  |  | 不定参数，传递额外的信息 |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| restOptions | `unknown[]` |  |  |  | 不定参数，传递额外的信息 |
 
 ## CornerHeaderCallback
 
@@ -152,13 +152,11 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 
 功能描述：自定义角头
 
-参数：
-
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
 | parent | [S2CellType](#S2CellType) | ✓ |  |  | 父级单元格 |
-| spreadsheet | [SpreadSheet](#SpreadSheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
-| restOptions |  |  |  |  | 不定参数，传递额外的信息 |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| restOptions | `unknown[]` |  |  |  | 不定参数，传递额外的信息 |
 
 ## FrameCallback
 
@@ -166,7 +164,11 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 FrameCallback = (cfg: FrameConfig) => Frame;
 ```
 
-功能描述：自定义框架 参数：
+功能描述：自定义框架
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| cfg | [FrameConfig](#frameconfig) | ✓ |  |  | 当前渲染的 node 节点 |
 
 ## LayoutHierarchy
 
@@ -174,7 +176,12 @@ FrameCallback = (cfg: FrameConfig) => Frame;
 LayoutHierarchy = (spreadsheet: SpreadSheet, node: Node) => LayoutHierarchyReturnType;
 ```
 
-功能描述：自定义层级结构 参数：
+功能描述：自定义层级结构
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| node | [Node](#node) | ✓ |  |  | 当前渲染的 node 节点 |
 
 ```ts
 interface LayoutHierarchyReturnType {
@@ -190,7 +197,14 @@ interface LayoutHierarchyReturnType {
 LayoutArrange = (spreadsheet: SpreadSheet, parent: Node, field: string, fieldValues: string[]) => string[];
 ```
 
-功能描述：自定义顺序 参数：
+功能描述：自定义顺序
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| node | [Node](#node) | ✓ |  |  | 当前渲染的 node 节点 |
+| field | `string` | ✓ |  |  | 当前的字段名 |
+| fieldValues | `string[]` | ✓ |  |  | 当前字段值 |
 
 ## LayoutCoordinate
 
@@ -198,7 +212,13 @@ LayoutArrange = (spreadsheet: SpreadSheet, parent: Node, field: string, fieldVal
 LayoutCoordinate = (spreadsheet: SpreadSheet, rowNode: Node, colNode: Node) => void
 ```
 
-功能描述：自定义坐标 参数：
+功能描述：自定义坐标
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| rowNode | [Node](#node) | ✓ |  |  | 行节点 |
+| colNode | [Node](#node) | ✓ |  |  | 列节点 |
 
 ## LayoutDataPosition
 
@@ -206,7 +226,12 @@ LayoutCoordinate = (spreadsheet: SpreadSheet, rowNode: Node, colNode: Node) => v
 LayoutDataPosition = (spreadsheet: SpreadSheet, getCellData: GetCellMeta) => GetCellMeta
 ```
 
-功能描述：自定义数据 参数：
+功能描述：自定义数据
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| getCellData | [GetCellMeta](#GetCellMeta) | ✓ |  |  | 获取单元格数据和位置等信息|
 
 ```ts
 type GetCellMeta = (rowIndex?: number, colIndex?: number) => ViewMeta;
@@ -218,7 +243,12 @@ type GetCellMeta = (rowIndex?: number, colIndex?: number) => ViewMeta;
 FilterDataItemCallback = (valueField: string, data: DataItem) => DataItem
 ```
 
-功能描述：转换，过滤数据 参数：
+功能描述：转换，过滤数据
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| valueField | `string` | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| data | [DataItem](#DataItem) | ✓ |  |  | 数据格式 |
 
 ## MappingDataItemCallback
 
@@ -226,9 +256,16 @@ FilterDataItemCallback = (valueField: string, data: DataItem) => DataItem
 MappingDataItemCallback = (valueField: string, data: DataItem) => Record<string, string | number> | DataItem;
 ```
 
-功能描述：数据隐射，用于显示在 tooltip 中 参数：
+功能描述：数据隐射，用于显示在 tooltip 中
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| valueField | `string` | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| data | [DataItem](#DataItem) | ✓ |  |  | 数据格式 |
 
 ## DataItem
+
+功能描述：基本数据格式
 
 ```ts
 export interface MultiData {
@@ -247,9 +284,13 @@ export type DataItem = SimpleDataItem | MultiData;
 OtterLayout = (spreadsheet: SpreadSheet, rowNode: Node, colNode: Node) => void;
 ```
 
-功能描述：自定义布局 参数：
+功能描述：自定义布局
 
-`markdown:docs/common/interaction.zh.md`
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| rowNode | [Node](#node) | ✓ |  |  | 行节点 |
+| colNode | [Node](#node) | ✓ |  |  | 列节点 |
 
 ## LayoutResult
 
@@ -262,7 +303,7 @@ OtterLayout = (spreadsheet: SpreadSheet, rowNode: Node, colNode: Node) => void;
 | rowLeafNodes | [Node[]](#node) |  |  |  | 行的所有叶子节点，用于笛卡尔交叉 |
 | colLeafNodes | [Node[]](#node) |  |  |  | 列的所有叶子节点，用于笛卡尔交叉 |
 | getViewMeta | `(rowIndex: number, colIndex: number) => ViewMeta` | | | | 获取交叉出 [x,y] 对应坐标的信息 |
-| spreadsheet | [SpreadSheet](#SpreadSheet) |  | | | 表类实例，可以访问任意的配置信息 |
+| spreadsheet | [SpreadSheet](#spreadsheet) |  | | | 表类实例，可以访问任意的配置信息 |
 
 ## CustomHeaderCells
 
@@ -323,6 +364,8 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 | showViewPortRightShadow | `boolean` |  |  |  | 显示可视区域右阴影 |
 | scrollContainsRowHeader | `boolean` |  |  |  | 滚动时是否包含焊头 |
 | isPivotMode | `boolean` |  |  |  | 是否是透视表 |
-| spreadsheet | [SpreadSheet](#SpreadSheet) |  |  |  | 表格实例 |
+| spreadsheet | [SpreadSheet](#spreadsheet) |  |  |  | 表格实例 |
+
+`markdown:docs/common/interaction.zh.md`
 
 `markdown:docs/common/spreadsheet.zh.md`
