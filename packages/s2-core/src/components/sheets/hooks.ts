@@ -4,7 +4,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { S2Options } from '@/common/interface';
 
 export const useResizeEffect = (
-  container,
+  container: HTMLDivElement,
   s2: SpreadSheet,
   adaptive: boolean,
   options: S2Options,
@@ -14,9 +14,9 @@ export const useResizeEffect = (
     setResizeTimeStamp(e.timeStamp);
   }, 200);
   useEffect(() => {
-    if (!container.current || !s2) return;
+    if (!container || !s2) return;
 
-    const style = getComputedStyle(container.current);
+    const style = getComputedStyle(container);
 
     const box = {
       width: parseInt(style.getPropertyValue('width').replace('px', ''), 10),
