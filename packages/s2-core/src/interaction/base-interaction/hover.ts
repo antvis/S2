@@ -21,7 +21,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     this.bindColCellHover();
   }
 
-  private updateRowColCells(meta: ViewMeta) {
+  public updateRowColCells(meta: ViewMeta) {
     const { rowId, colId } = meta;
     if (colId) {
       // update colHeader cells
@@ -131,7 +131,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     return cellInfos;
   }
 
-  private bindDataCellHover() {
+  public bindDataCellHover() {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
       if (isEmpty(cell)) {
@@ -155,13 +155,13 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private bindRowCellHover() {
+  public bindRowCellHover() {
     this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event: CanvasEvent) => {
       this.handleHeaderHover(event);
     });
   }
 
-  private bindColCellHover() {
+  public bindColCellHover() {
     this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event: CanvasEvent) => {
       this.handleHeaderHover(event);
     });

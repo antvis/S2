@@ -1,6 +1,6 @@
-import { getCellMeta } from 'src/utils/interaction/select-event';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { get } from 'lodash';
+import { getCellMeta } from '@/utils/interaction/select-event';
 import { DataCell } from '@/cell/data-cell';
 import {
   InteractionStateName,
