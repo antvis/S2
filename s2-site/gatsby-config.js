@@ -104,6 +104,14 @@ module.exports = {
         },
         order: 6,
       },
+      {
+        slug: 'manual/contribution',
+        title: {
+          zh: '贡献指南',
+          en: 'Contributing',
+        },
+        order: 7,
+      },
     ],
     // demo配置
     examples: [
