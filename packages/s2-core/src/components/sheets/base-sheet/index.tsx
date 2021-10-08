@@ -169,10 +169,10 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   };
 
   const iconClickCallback = (
-    event: GEvent,
     sheetInstance: SpreadSheet,
     cacheDrillFields?: string[],
     disabledFields?: string[],
+    event?: GEvent,
   ) => {
     const element = (
       <DrillDown

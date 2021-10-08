@@ -76,7 +76,7 @@ export const handleActionIconClick = (params: ActionIconParams) => {
         disabled.push(val.drillField);
     });
     spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-    callback(spreadsheet, cache, disabled);
+    callback(spreadsheet, cache, disabled, event);
   }
 };
 
