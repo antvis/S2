@@ -14,7 +14,7 @@ describe('deleteMetaById test', () => {
 
     deleteMetaById(meta, 'root[&]辽宁省');
     const result = meta.get('辽宁省');
-    expect(result.childField).toEqual(undefined);
-    expect(result.children).toEqual(new Map());
+    expect(result.childField).toBeUndefined();
+    expect(result.children).toBeEmpty();
   });
 });

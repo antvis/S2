@@ -58,7 +58,7 @@ const getDrillDownCash = (spreadsheet: SpreadSheet, meta: Node) => {
  * 点击下钻Icon的响应
  * @param params
  */
-export const HandleActionIconClick = (params: ActionIconParams) => {
+export const handleActionIconClick = (params: ActionIconParams) => {
   const { meta, spreadsheet, event, callback, iconName } = params;
   if (iconName === 'DrillDownIcon') {
     spreadsheet.store.set('drillDownMeta', meta);
@@ -119,7 +119,7 @@ export const HandleDrillDownIcon = (
             const { iconName, meta } = actionIconProps;
             if (iconName === 'DrillDownIcon') {
               spreadsheet.store.set('drillDownNode', meta);
-              HandleActionIconClick({
+              handleActionIconClick({
                 ...actionIconProps,
                 spreadsheet,
                 callback,
