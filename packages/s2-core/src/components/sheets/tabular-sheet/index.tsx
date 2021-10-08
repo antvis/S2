@@ -1,14 +1,6 @@
 // TODO 抽取不同sheet组件的公共方法
 import React, { useEffect, useState } from 'react';
-import {
-  debounce,
-  forEach,
-  isEmpty,
-  isFunction,
-  forIn,
-  isObject,
-  max,
-} from 'lodash';
+import { forEach, isEmpty, isFunction, forIn, isObject, max } from 'lodash';
 import { merge } from 'lodash';
 import { Spin } from 'antd';
 import { Event } from '@antv/g-canvas';
@@ -20,6 +12,7 @@ import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { safetyDataConfig, safetyOptions, S2Options } from '@/common/interface';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
+import { useResizeEffect } from '@/components/sheets/hooks';
 
 export const TabularSheet = (props: BaseSheetProps) => {
   const {
@@ -45,7 +38,6 @@ export const TabularSheet = (props: BaseSheetProps) => {
   let container: HTMLDivElement;
   let baseSpreadsheet: SpreadSheet;
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
-  const [resizeTimeStamp, setResizeTimeStamp] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   // 网格内行高
@@ -176,34 +168,16 @@ export const TabularSheet = (props: BaseSheetProps) => {
     }
   };
 
-  const debounceResize = debounce((e) => {
-    setResizeTimeStamp(e.timeStamp);
-  }, 200);
-
   useEffect(() => {
     buildSpreadSheet();
-    // 监听窗口变化
-    if (adaptive) window.addEventListener('resize', debounceResize);
     return () => {
       unBindEvent();
       baseSpreadsheet.destroy();
-      if (adaptive) window.removeEventListener('resize', debounceResize);
     };
   }, []);
 
-  useEffect(() => {
-    if (!container || !ownSpreadsheet) return;
-
-    const style = getComputedStyle(container);
-
-    const box = {
-      width: parseInt(style.getPropertyValue('width').replace('px', ''), 10),
-      height: parseInt(style.getPropertyValue('height').replace('px', ''), 10),
-    };
-
-    ownSpreadsheet.changeSize(box?.width, box?.height);
-    ownSpreadsheet.render(false);
-  }, [resizeTimeStamp]);
+  // handle box size change and resize
+  useResizeEffect(container, ownSpreadsheet, adaptive, options);
 
   useEffect(() => {
     update(setDataCfg, setOptions);
