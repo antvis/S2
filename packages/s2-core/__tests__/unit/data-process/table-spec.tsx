@@ -15,7 +15,7 @@ describe('List Table Core Data Process', () => {
     assembleDataCfg({
       meta: [],
       fields: {
-        columns: ['province', 'city', 'type', 'sub_type', 'price'],
+        columns: ['province', 'city', 'type', 'sub_type', 'number'],
       },
     }),
     assembleOptions({}),
@@ -36,7 +36,7 @@ describe('List Table Core Data Process', () => {
         'city',
         'type',
         'sub_type',
-        'price',
+        'number',
       ]);
       // 父子关系正确
       const nodes = colsHierarchy.getNodes();
@@ -86,13 +86,13 @@ describe('List Table Core Data Process', () => {
       expect(getCellMeta(0, 1).data).toEqual({ city: '杭州市' });
       expect(getCellMeta(0, 2).data).toEqual({ type: '家具' });
       expect(getCellMeta(0, 3).data).toEqual({ sub_type: '桌子' });
-      expect(getCellMeta(0, 4).data).toEqual({ price: 1 });
+      expect(getCellMeta(0, 4).data).toEqual({ number: 7789 });
       // 第三行
       expect(getCellMeta(2, 0).data).toEqual({ province: '浙江省' });
       expect(getCellMeta(2, 1).data).toEqual({ city: '宁波市' });
       expect(getCellMeta(2, 2).data).toEqual({ type: '家具' });
       expect(getCellMeta(2, 3).data).toEqual({ sub_type: '桌子' });
-      expect(getCellMeta(2, 4).data).toEqual({ price: 3 });
+      expect(getCellMeta(2, 4).data).toEqual({ number: 3877 });
     });
   });
 });

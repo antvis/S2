@@ -11,7 +11,7 @@ describe('List Table Core Data Process', () => {
     assembleDataCfg({
       meta: [],
       fields: {
-        columns: ['province', 'city', 'type', 'sub_type', 'price'],
+        columns: ['province', 'city', 'type', 'sub_type', 'number'],
       },
     }),
     assembleOptions({

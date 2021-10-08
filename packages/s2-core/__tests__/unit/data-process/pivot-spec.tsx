@@ -48,45 +48,45 @@ describe('Pivot Table Core Data Process', () => {
         city: '杭州市',
         type: '家具',
         sub_type: '桌子',
-        price: 1,
-        [VALUE_FIELD]: 1,
-        [EXTRA_FIELD]: 'price',
+        number: 7789,
+        [VALUE_FIELD]: 7789,
+        [EXTRA_FIELD]: 'number',
       }); // 左上角
       expect(get(indexesData, '0.0.1.1.0')).toEqual({
         province: '浙江省',
         city: '杭州市',
         type: '办公用品',
         sub_type: '纸张',
-        price: 13,
-        [VALUE_FIELD]: 13,
-        [EXTRA_FIELD]: 'price',
+        number: 1343,
+        [VALUE_FIELD]: 1343,
+        [EXTRA_FIELD]: 'number',
       }); // 右上角
       expect(get(indexesData, '1.3.0.0.0')).toEqual({
         province: '四川省',
         city: '乐山市',
         type: '家具',
         sub_type: '桌子',
-        price: 20,
-        [VALUE_FIELD]: 20,
-        [EXTRA_FIELD]: 'price',
+        number: 2330,
+        [VALUE_FIELD]: 2330,
+        [EXTRA_FIELD]: 'number',
       }); // 左下角
       expect(get(indexesData, '1.3.1.1.0')).toEqual({
         province: '四川省',
         city: '乐山市',
         type: '办公用品',
         sub_type: '纸张',
-        price: 32,
-        [VALUE_FIELD]: 32,
-        [EXTRA_FIELD]: 'price',
+        number: 352,
+        [VALUE_FIELD]: 352,
+        [EXTRA_FIELD]: 'number',
       }); // 右下角
       expect(get(indexesData, '0.3.1.0.0')).toEqual({
         province: '浙江省',
         city: '舟山市',
         type: '办公用品',
         sub_type: '笔',
-        price: 12,
-        [VALUE_FIELD]: 12,
-        [EXTRA_FIELD]: 'price',
+        number: 5176,
+        [VALUE_FIELD]: 5176,
+        [EXTRA_FIELD]: 'number',
       }); // 中间
     });
   });
@@ -161,26 +161,26 @@ describe('Pivot Table Core Data Process', () => {
     test('should get correct col hierarchy structure', () => {
       // 节点正确
       expect(colsHierarchy.getIndexNodes()).toHaveLength(4);
-      expect(colsHierarchy.getNodes()).toHaveLength(10); // 价格在列头 家具[&]桌子[&]price
+      expect(colsHierarchy.getNodes()).toHaveLength(10); // 价格在列头 家具[&]桌子[&]number
       // 叶子节点正确
       expect(colsHierarchy.getLeaves().map((node) => node.label)).toEqual([
-        'price',
-        'price',
-        'price',
-        'price',
+        'number',
+        'number',
+        'number',
+        'number',
       ]);
       // 层级正确
       expect(colsHierarchy.getNodes().map((node) => node.label)).toEqual([
         '家具',
         '桌子',
-        'price',
+        'number',
         '沙发',
-        'price',
+        'number',
         '办公用品',
         '笔',
-        'price',
+        'number',
         '纸张',
-        'price',
+        'number',
       ]);
       expect(colsHierarchy.getNodes(0).map((node) => node.label)).toEqual([
         '家具',
@@ -193,22 +193,22 @@ describe('Pivot Table Core Data Process', () => {
         '纸张',
       ]);
       expect(colsHierarchy.getNodes(2).map((node) => node.label)).toEqual([
-        'price',
-        'price',
-        'price',
-        'price',
+        'number',
+        'number',
+        'number',
+        'number',
       ]);
       // 父子关系正确
       const leavesNodes = colsHierarchy.getLeaves();
       const firstLeafNode = leavesNodes[0];
-      expect(firstLeafNode.label).toEqual('price');
+      expect(firstLeafNode.label).toEqual('number');
       expect(firstLeafNode.parent.label).toEqual('桌子');
       expect(firstLeafNode.parent.parent?.label).toEqual('家具');
       expect(
         firstLeafNode.parent.parent?.children?.map((node) => node.label),
       ).toEqual(['桌子', '沙发']);
       const lastLeafNode = leavesNodes[leavesNodes.length - 1];
-      expect(lastLeafNode.label).toEqual('price');
+      expect(lastLeafNode.label).toEqual('number');
       expect(lastLeafNode.parent.label).toEqual('纸张');
       expect(lastLeafNode.parent.parent?.label).toEqual('办公用品');
       expect(
@@ -317,25 +317,25 @@ describe('Pivot Table Core Data Process', () => {
     const { getCellMeta } = s2.facet.layoutResult;
     test('should get correct data value', () => {
       // 左上角
-      expect(getCellMeta(0, 0).data[VALUE_FIELD]).toBe(1);
-      expect(getCellMeta(1, 0).data[VALUE_FIELD]).toBe(2);
-      expect(getCellMeta(0, 1).data[VALUE_FIELD]).toBe(5);
-      expect(getCellMeta(1, 1).data[VALUE_FIELD]).toBe(6);
+      expect(getCellMeta(0, 0).data[VALUE_FIELD]).toBe(7789);
+      expect(getCellMeta(1, 0).data[VALUE_FIELD]).toBe(2367);
+      expect(getCellMeta(0, 1).data[VALUE_FIELD]).toBe(5343);
+      expect(getCellMeta(1, 1).data[VALUE_FIELD]).toBe(632);
       // 右下角
-      expect(getCellMeta(7, 3).data[VALUE_FIELD]).toBe(32);
-      expect(getCellMeta(7, 2).data[VALUE_FIELD]).toBe(28);
-      expect(getCellMeta(6, 3).data[VALUE_FIELD]).toBe(31);
-      expect(getCellMeta(6, 2).data[VALUE_FIELD]).toBe(27);
+      expect(getCellMeta(7, 3).data[VALUE_FIELD]).toBe(352);
+      expect(getCellMeta(7, 2).data[VALUE_FIELD]).toBe(15420);
+      expect(getCellMeta(6, 3).data[VALUE_FIELD]).toBe(3551);
+      expect(getCellMeta(6, 2).data[VALUE_FIELD]).toBe(2457);
       // 右上角
-      expect(getCellMeta(0, 3).data[VALUE_FIELD]).toBe(13);
-      expect(getCellMeta(0, 2).data[VALUE_FIELD]).toBe(9);
-      expect(getCellMeta(1, 3).data[VALUE_FIELD]).toBe(14);
-      expect(getCellMeta(1, 2).data[VALUE_FIELD]).toBe(10);
+      expect(getCellMeta(0, 3).data[VALUE_FIELD]).toBe(1343);
+      expect(getCellMeta(0, 2).data[VALUE_FIELD]).toBe(945);
+      expect(getCellMeta(1, 3).data[VALUE_FIELD]).toBe(1354);
+      expect(getCellMeta(1, 2).data[VALUE_FIELD]).toBe(18375);
       // 左下角
-      expect(getCellMeta(7, 0).data[VALUE_FIELD]).toBe(20);
-      expect(getCellMeta(7, 1).data[VALUE_FIELD]).toBe(24);
-      expect(getCellMeta(6, 0).data[VALUE_FIELD]).toBe(19);
-      expect(getCellMeta(6, 1).data[VALUE_FIELD]).toBe(23);
+      expect(getCellMeta(7, 0).data[VALUE_FIELD]).toBe(2330);
+      expect(getCellMeta(7, 1).data[VALUE_FIELD]).toBe(2445);
+      expect(getCellMeta(6, 0).data[VALUE_FIELD]).toBe(1943);
+      expect(getCellMeta(6, 1).data[VALUE_FIELD]).toBe(2333);
     });
   });
 });
