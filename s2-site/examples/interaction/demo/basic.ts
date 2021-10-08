@@ -3,9 +3,9 @@ import '@antv/s2/dist/s2.min.css';
 
 function addEvents(s2) {
   [
-    S2Event.GLOBAL_COPIED,
     S2Event.DATA_CELL_CLICK,
     S2Event.DATA_CELL_DOUBLE_CLICK,
+    S2Event.GLOBAL_SELECTED,
   ].forEach((name) => {
     s2.on(name, (...args) => {
       console.log(name, ...args);
@@ -36,7 +36,6 @@ fetch(
       tooltip: {
         showTooltip: true,
       },
-      enableCopy: true,
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2options);
 

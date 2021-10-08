@@ -100,7 +100,7 @@ module.exports = {
         slug: 'manual/basic/analysis',
         title: {
           zh: '分析组件',
-          en: 'Analyze Component',
+          en: 'Analyze component',
         },
         order: 6,
       },
