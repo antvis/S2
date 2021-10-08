@@ -22,10 +22,7 @@ import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
-import {
-  HandleDrillDown,
-  HandleDrillDownIcon,
-} from '@/utils/drill-down/helper';
+import { HandleDrillDown, HandleDrillDownIcon } from '@/utils/drill-down';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import './index.less';
 

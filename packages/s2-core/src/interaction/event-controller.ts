@@ -233,10 +233,6 @@ export class EventController {
     }
     this.resetResizeArea();
 
-    this.spreadsheet.on(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
-      this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
-    });
-
     const cell = this.spreadsheet.getCell(event.target);
     if (cell) {
       const cellType = cell.cellType;
@@ -295,6 +291,10 @@ export class EventController {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
       return;
     }
+
+    this.spreadsheet.on(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
+      this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
+    });
     const cell = this.spreadsheet.getCell(event.target);
     if (cell) {
       const cellType = cell.cellType;
