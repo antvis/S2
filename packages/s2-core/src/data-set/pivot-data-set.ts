@@ -121,7 +121,7 @@ export class PivotDataSet extends BaseDataSet {
     });
 
     // 2. 检查该节点是否已经存在下钻维度
-    const rowNodeId = rowNode.id;
+    const rowNodeId = rowNode?.id;
     const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
     if (idPathMap.has(rowNodeId)) {
       // the current node has a drill-down field, clean it

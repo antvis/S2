@@ -26,14 +26,14 @@ export interface ActionIconParams {
   // 点击icon类型
   iconName: string;
   // 点击事件event
-  event: Event;
+  event?: Event;
   spreadsheet: SpreadSheet;
   // 下钻维度的列表组件展示
   callback: (
-    event: Event,
     spreadsheet: SpreadSheet,
     cashDrillFields: string[],
     disabledFields: string[],
+    event?: Event,
   ) => void;
 }
 
@@ -42,7 +42,7 @@ export interface ActionIconParams {
  * @param spreadsheet
  * @param meta
  */
-const getDrillDownCash = (spreadsheet: SpreadSheet, meta: Node) => {
+export const getDrillDownCash = (spreadsheet: SpreadSheet, meta: Node) => {
   const drillDownDataCache = spreadsheet.store.get(
     'drillDownDataCache',
     [],
@@ -76,7 +76,7 @@ export const handleActionIconClick = (params: ActionIconParams) => {
         disabled.push(val.drillField);
     });
     spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-    callback(event, spreadsheet, cache, disabled);
+    callback(spreadsheet, cache, disabled);
   }
 };
 
@@ -84,10 +84,10 @@ export const HandleDrillDownIcon = (
   props: SpreadsheetProps,
   spreadsheet: SpreadSheet,
   callback: (
-    event: Event,
     spreadsheet: SpreadSheet,
     cashDownDrillFields: string[],
     disabledFields: string[],
+    event?: Event,
   ) => void,
 ): S2Options => {
   if (props?.partDrillDown) {

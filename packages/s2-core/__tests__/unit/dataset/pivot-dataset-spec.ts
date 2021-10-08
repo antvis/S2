@@ -358,8 +358,8 @@ describe('Pivot Dataset Test', () => {
       dataSet.transformDrillDownData('district', drillDownData, cityNode);
       dataSet.clearDrillDownData('root[&]浙江省[&]杭州市');
       const metaMap = dataSet.rowPivotMeta.get('浙江省').children.get('杭州市');
-      expect(metaMap.childField).toEqual(undefined);
-      expect(metaMap.children).toEqual(new Map());
+      expect(metaMap.childField).toBeUndefined();
+      expect(metaMap.children).toBeEmpty();
     });
   });
 });
