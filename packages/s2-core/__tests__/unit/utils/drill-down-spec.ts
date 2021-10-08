@@ -1,5 +1,6 @@
 import { sleep } from 'tests/util/helpers';
-import { originData, drillDownData1 } from '../../data/data-drill-down';
+import { data as originData } from '../../data/mock-dataset.json';
+import { data as drillDownData } from '../../data/mock-drill-down-dataset.json';
 import { S2Options } from '@/common/interface';
 import { Store } from '@/common/store';
 import { Node } from '@/facet/layout/node';
@@ -22,13 +23,13 @@ describe('Drill Down Test', () => {
     fields: {
       rows: ['province', 'city'],
       columns: ['category', 'subCategory'],
-      values: ['price'],
+      values: ['number'],
       valueInCols: true,
     },
     meta: [
       {
-        field: 'price',
-        name: '总价',
+        field: 'number',
+        name: '数量',
       },
     ],
     data: originData,
@@ -41,14 +42,14 @@ describe('Drill Down Test', () => {
 
   const root = new Node({ id: `root`, key: '', value: '', children: [] });
   const provinceNode = new Node({
-    id: `root[&]辽宁省`,
+    id: `root[&]浙江省`,
     key: '',
     value: '',
     field: 'province',
     parent: root,
   });
   const cityNode = new Node({
-    id: `root[&]辽宁省[&]达州市`,
+    id: `root[&]浙江省[&]杭州市`,
     key: '',
     value: '',
     field: 'city',
@@ -58,7 +59,6 @@ describe('Drill Down Test', () => {
   const fetchData = () =>
     new Promise<PartDrillDownInfo>((resolve) => {
       const field = 'country';
-      const drillDownData = drillDownData1;
       resolve({
         drillField: field,
         drillData: drillDownData,
@@ -69,13 +69,8 @@ describe('Drill Down Test', () => {
     drillConfig: {
       dataSet: [
         {
-          name: '县城',
-          value: 'country',
-          type: 'text',
-        },
-        {
-          name: '村',
-          value: 'village',
+          name: '区域',
+          value: 'district',
           type: 'text',
         },
       ],
@@ -98,7 +93,7 @@ describe('Drill Down Test', () => {
     mockInstance.store.set('drillDownNode', cityNode);
     const drillDownCfg = {
       rows: mockDataCfg.fields.rows,
-      drillFields: ['country'],
+      drillFields: ['district'],
       fetchData,
       spreadsheet: mockInstance,
     };
@@ -130,16 +125,16 @@ describe('Drill Down Test', () => {
     });
     await sleep(1000);
     expect(mockInstance.store.get('drillDownMeta').id).toEqual(
-      'root[&]辽宁省[&]达州市',
+      'root[&]浙江省[&]杭州市',
     );
   });
 
   test('for getDrillDownCash function', async () => {
     const mockDrillDownDataCache = {
-      rowId: 'root[&]辽宁省[&]达州市',
+      rowId: 'root[&]浙江省[&]杭州市',
       drillLevel: 0,
-      drillField: 'country',
-      drillDownData: drillDownData1,
+      drillField: 'district',
+      drillDownData,
     };
     mockInstance.store.set('drillDownDataCache', [mockDrillDownDataCache]);
     const { drillDownDataCache, drillDownCurrentCash } = getDrillDownCash(

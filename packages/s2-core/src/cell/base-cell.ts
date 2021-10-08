@@ -147,7 +147,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const maxTextWidth = this.getMaxTextWidth();
     const textStyle = this.getTextStyle();
     const ellipsisText = getEllipsisText(
-      `${formattedValue}` || '-',
+      formattedValue,
       maxTextWidth,
       textStyle,
     );
