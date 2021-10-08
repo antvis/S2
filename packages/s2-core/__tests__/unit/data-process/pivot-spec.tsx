@@ -84,8 +84,8 @@ describe('Pivot Table Core Data Process', () => {
         city: '舟山市',
         type: '办公用品',
         sub_type: '笔',
-        number: 5176,
-        [VALUE_FIELD]: 5176,
+        number: 1432,
+        [VALUE_FIELD]: 1432,
         [EXTRA_FIELD]: 'number',
       }); // 中间
     });
@@ -323,14 +323,14 @@ describe('Pivot Table Core Data Process', () => {
       expect(getCellMeta(1, 1).data[VALUE_FIELD]).toBe(632);
       // 右下角
       expect(getCellMeta(7, 3).data[VALUE_FIELD]).toBe(352);
-      expect(getCellMeta(7, 2).data[VALUE_FIELD]).toBe(15420);
+      expect(getCellMeta(7, 2).data[VALUE_FIELD]).toBe(2458);
       expect(getCellMeta(6, 3).data[VALUE_FIELD]).toBe(3551);
       expect(getCellMeta(6, 2).data[VALUE_FIELD]).toBe(2457);
       // 右上角
       expect(getCellMeta(0, 3).data[VALUE_FIELD]).toBe(1343);
       expect(getCellMeta(0, 2).data[VALUE_FIELD]).toBe(945);
       expect(getCellMeta(1, 3).data[VALUE_FIELD]).toBe(1354);
-      expect(getCellMeta(1, 2).data[VALUE_FIELD]).toBe(18375);
+      expect(getCellMeta(1, 2).data[VALUE_FIELD]).toBe(1304);
       // 左下角
       expect(getCellMeta(7, 0).data[VALUE_FIELD]).toBe(2330);
       expect(getCellMeta(7, 1).data[VALUE_FIELD]).toBe(2445);
