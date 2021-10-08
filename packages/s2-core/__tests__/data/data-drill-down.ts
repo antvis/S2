@@ -1,3 +1,6 @@
+import { ID_SEPARATOR } from '@/common/constant';
+import { PartDrillDown, PartDrillDownInfo } from '@/components';
+
 export const originData = [
   {
     price: 100,
@@ -241,3 +244,59 @@ export const drillDownData5 = [
     subCategory: '椅子',
   },
 ];
+
+export const drillData = {
+  drillConfig: {
+    dataSet: [
+      {
+        name: '县城',
+        value: 'country',
+        type: 'text',
+      },
+      {
+        name: '村',
+        value: 'village',
+        type: 'text',
+      },
+    ],
+  },
+  // drillItemsNum: 1,
+  fetchData: (meta, drillFields) =>
+    new Promise<PartDrillDownInfo>((resolve) => {
+      // 弹窗 -> 选择 -> 请求数据
+      let drillDownData;
+      let field;
+      switch (meta.id) {
+        case `root${ID_SEPARATOR}辽宁省${ID_SEPARATOR}达州市`:
+          if (drillFields[0] !== 'country') return;
+          field = 'country';
+          drillDownData = drillDownData1;
+          break;
+        case `root${ID_SEPARATOR}辽宁省${ID_SEPARATOR}达州市${ID_SEPARATOR}县城1`:
+          if (drillFields[0] !== 'village') return;
+          field = 'village';
+          drillDownData = drillDownData2;
+          break;
+        case `root${ID_SEPARATOR}四川省${ID_SEPARATOR}眉山市`:
+          if (drillFields[0] !== 'country') return;
+          field = 'country';
+          drillDownData = drillDownData3;
+          break;
+        case `root${ID_SEPARATOR}四川省${ID_SEPARATOR}成都`:
+          if (drillFields[0] === 'country') {
+            field = 'country';
+            drillDownData = drillDownData4;
+          } else if (drillFields[0] === 'village') {
+            field = 'village';
+            drillDownData = drillDownData5;
+          }
+          break;
+        default:
+          break;
+      }
+      resolve({
+        drillField: field,
+        drillData: drillDownData,
+      });
+    }),
+} as PartDrillDown;

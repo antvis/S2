@@ -34,7 +34,7 @@ order: 1
 
 | 参数       | 类型            | 必选 | 取值 | 默认值 | 功能描述   |
 | --- | --- | --- | --- | --- | --- |
-| drillData |  `Record<string, string | number>` | ✓ |  |  | 下钻的数据 |
+| drillData |  <code class="language-text">Record<string, string \| number> </code> | ✓ |  |  | 下钻的数据 |
 | drillField | `string` | ✓ |  |  | 下钻维度 value 值 |
 
 ### DrillDownProps

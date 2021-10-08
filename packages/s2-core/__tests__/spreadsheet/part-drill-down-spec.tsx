@@ -5,23 +5,9 @@ import React, { useState } from 'react';
 import { Switch, Button, Layout } from 'antd';
 const { Header, Sider, Content } = Layout;
 import { merge } from 'lodash';
-import {
-  drillDownData1,
-  drillDownData2,
-  drillDownData3,
-  drillDownData4,
-  drillDownData5,
-  originData,
-} from '../data/data-drill-down';
+import { originData, drillData } from '../data/data-drill-down';
 import { getContainer } from '../util/helpers';
-import {
-  auto,
-  ID_SEPARATOR,
-  PartDrillDown,
-  S2Options,
-  SheetComponent,
-} from '@/index';
-import { PartDrillDownInfo } from '@/components';
+import { auto, PartDrillDown, S2Options, SheetComponent } from '@/index';
 
 const getDataCfg = () => {
   return {
@@ -75,62 +61,6 @@ const getOptions = () => {
 
 function MainLayout(props) {
   const [options, setOptions] = useState<S2Options>(props.options);
-
-  const drillData = {
-    drillConfig: {
-      dataSet: [
-        {
-          name: '县城',
-          value: 'country',
-          type: 'text',
-        },
-        {
-          name: '村',
-          value: 'village',
-          type: 'text',
-        },
-      ],
-    },
-    // drillItemsNum: 1,
-    fetchData: (meta, drillFields) =>
-      new Promise<PartDrillDownInfo>((resolve) => {
-        // 弹窗 -> 选择 -> 请求数据
-        let drillDownData;
-        let field;
-        switch (meta.id) {
-          case `root${ID_SEPARATOR}辽宁省${ID_SEPARATOR}达州市`:
-            if (drillFields[0] !== 'country') return;
-            field = 'country';
-            drillDownData = drillDownData1;
-            break;
-          case `root${ID_SEPARATOR}辽宁省${ID_SEPARATOR}达州市${ID_SEPARATOR}县城1`:
-            if (drillFields[0] !== 'village') return;
-            field = 'village';
-            drillDownData = drillDownData2;
-            break;
-          case `root${ID_SEPARATOR}四川省${ID_SEPARATOR}眉山市`:
-            if (drillFields[0] !== 'country') return;
-            field = 'country';
-            drillDownData = drillDownData3;
-            break;
-          case `root${ID_SEPARATOR}四川省${ID_SEPARATOR}成都`:
-            if (drillFields[0] === 'country') {
-              field = 'country';
-              drillDownData = drillDownData4;
-            } else if (drillFields[0] === 'village') {
-              field = 'village';
-              drillDownData = drillDownData5;
-            }
-            break;
-          default:
-            break;
-        }
-        resolve({
-          drillField: field,
-          drillData: drillDownData,
-        });
-      }),
-  } as PartDrillDown;
 
   const [partDrillDown, setPartDrillDown] = useState<PartDrillDown>(drillData);
   const onHierarchyChange = (checked) => {
@@ -205,7 +135,7 @@ describe('part drill down', () => {
       getContainer(),
     );
   });
-  test('Part DrillDown', () => {
+  test('HandleDrillDown', () => {
     expect(1).toBe(1);
   });
 });

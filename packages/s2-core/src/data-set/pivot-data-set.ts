@@ -125,7 +125,7 @@ export class PivotDataSet extends BaseDataSet {
     const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
     if (idPathMap.has(rowNodeId)) {
       // the current node has a drill-down field, clean it
-      forEach(idPathMap.get(rowNodeId), (path: []) => {
+      forEach(idPathMap.get(rowNodeId), (path: number[]) => {
         unset(this.indexesData, path);
       });
       deleteMetaById(this.rowPivotMeta, rowNodeId);
