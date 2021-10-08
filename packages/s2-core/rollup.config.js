@@ -7,7 +7,9 @@ import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import { visualizer } from 'rollup-plugin-visualizer';
 import ttypescript from 'ttypescript';
+
 const format = process.env.FORMAT;
+const enableAnalysis = process.env.ANALYSIS;
 
 const OUT_DIR_NAME_MAP = {
   esm: 'esm',
@@ -65,8 +67,11 @@ const plugins = [
     extract: true,
     output: outDir + '/s2.min.css',
   }),
-  visualizer({ gzipSize: true }),
 ];
+
+if (enableAnalysis) {
+  plugins.push(visualizer({ gzipSize: true }));
+}
 
 const external = ['react', 'react-dom', '@ant-design/icons', /antd/];
 

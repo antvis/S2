@@ -39,6 +39,7 @@
     "build:esm": "rollup -c rollup.config.js --environment FORMAT:esm ",
     "build:cjs": "rollup -c rollup.config.js --environment FORMAT:cjs",
     "build:umd": "rollup -c rollup.config.js --environment FORMAT:umd",
+    "build:analysis": "rollup -c rollup.config.js --environment FORMAT:esm,ANALYSIS",
     "bundle:size": "bundlesize",
     "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
     "test:live": "node ./scripts/test-live.mjs",
