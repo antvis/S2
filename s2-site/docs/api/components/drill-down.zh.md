@@ -11,9 +11,9 @@ order: 1
 
 | 参数       | 类型            | 必选 | 取值 | 默认值 | 功能描述   |
 | ---------- | --------------- | ---- | ---- | ------ | ---------- |
-| drillConfig | [`DrillDownProps`]('#drilldownprops') | ✓ |  | | 下钻菜单组件配置项 |
+| drillConfig | [DrillDownProps]('#drilldownprops') | ✓ |  | | 下钻菜单组件配置项 |
 | drillItemsNum | `number` | | | -1 | 下钻完成后展示的个数，默认全部展示  |
-| fetchData | [`FetchCallBack`](#fetchcallback) | ✓ | | | 点击下钻后的回调 |
+| fetchData | [FetchCallBack](#fetchcallback) | ✓ | | | 点击下钻后的回调 |
 | clearDrillDown | `{rowId: string;}` | | | | 清除下钻信息，当有指定的rowId 传递时清除对应rowId的下钻信息；如果参数是 空对象 {}，则清空所有的下钻信息 |
 | displayCondition | `(meta: Node) => boolean` | | | | 配置下钻  `icon` 的展示条件， 同 HeaderActionIcon |
 
@@ -45,7 +45,7 @@ order: 1
 
 | 参数       | 类型            | 必选 | 取值 | 默认值 | 功能描述   |
 | ---------- | --------------- | ---- | ---- | ------ | ---------- |
-| dataSet | [`DataSet[]`](#dataset) | ✓ | | | 下钻数据源配置 |
+| dataSet | [DataSet[]](#dataset) | ✓ | | | 下钻数据源配置 |
 | className | `string` | | | | 透传样式名 |
 | titleText | `string` | | | | 下钻完成后展示的个数，默认全部展示  |
 | searchText | `string` | | | | 点击下钻后的回调 |
@@ -66,5 +66,5 @@ order: 1
 | name | `string` | ✓ | | | 展示名字 |
 | value | `string` | ✓ | | | 具体值 |
 | type | `string` |  | `text` <br> `location` <br> `date`  |  | 维度类型, 不同类型对应 icon 不同 |
-| disabled | boolean |  |  |  | 是否允许选择 |
-| icon | React.ReactNode |  |  |  | 列表 item 的 icon |
+| `disabled` | boolean |  |  |  | 是否允许选择 |
+| `icon` | React.ReactNode |  |  |  | 列表 item 的 icon |
