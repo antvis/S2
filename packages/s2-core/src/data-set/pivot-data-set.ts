@@ -202,9 +202,6 @@ export class PivotDataSet extends BaseDataSet {
 
       store.set('drillDownFieldInLevel', restFieldInLevel);
     } else {
-      map(flatten(Array.from(idPathMap?.values())), (path) =>
-        set(this.indexesData, path, undefined),
-      );
       idPathMap.clear();
       // 需要对应清空所有下钻后的dataCfg信息
       // 因此如果缓存有下钻前原始dataCfg，需要清空所有的下钻数据

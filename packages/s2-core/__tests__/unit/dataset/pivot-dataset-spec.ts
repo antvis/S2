@@ -3,15 +3,17 @@
  */
 import { get } from 'lodash';
 import { assembleDataCfg } from '../../util/sheet-entry';
+import { data as drillDownData } from '../../data/mock-drill-down-dataset.json';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';
+import { Node } from '@/facet/layout/node';
 
-jest.mock('src/sheet-type');
-jest.mock('src/facet/layout/node');
-const MockPivotSheet = PivotSheet as any as jest.Mock<PivotSheet>;
+jest.mock('@/sheet-type');
+
+const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 
 describe('Pivot Dataset Test', () => {
   let dataSet: PivotDataSet;
@@ -25,7 +27,6 @@ describe('Pivot Dataset Test', () => {
     const mockSheet = new MockPivotSheet();
     mockSheet.store = new Store();
     dataSet = new PivotDataSet(mockSheet);
-
     dataSet.setDataCfg(dataCfg);
   });
 
@@ -160,6 +161,7 @@ describe('Pivot Dataset Test', () => {
             sub_type: '桌子',
             [EXTRA_FIELD]: 'price',
           },
+          isTotals: true,
         }),
       ).toContainEntries([[VALUE_FIELD, 1]]);
 
@@ -172,6 +174,7 @@ describe('Pivot Dataset Test', () => {
             sub_type: '纸张',
             [EXTRA_FIELD]: 'price',
           },
+          isTotals: true,
         }),
       ).toContainEntries([[VALUE_FIELD, 32]]);
     });
@@ -324,6 +327,39 @@ describe('Pivot Dataset Test', () => {
         '笔',
         '纸张',
       ]);
+    });
+  });
+
+  describe('test for part-drill-down', () => {
+    const root = new Node({ id: `root`, key: '', value: '', children: [] });
+    const provinceNode = new Node({
+      id: `root[&]浙江省`,
+      key: '',
+      value: '',
+      field: 'province',
+      parent: root,
+    });
+    const cityNode = new Node({
+      id: `root[&]浙江省[&]杭州市`,
+      key: '',
+      value: '',
+      field: 'city',
+      parent: provinceNode,
+    });
+
+    test('transformDrillDownData function', () => {
+      dataSet.transformDrillDownData('district', drillDownData, cityNode);
+      const metaMap = dataSet.rowPivotMeta.get('浙江省').children.get('杭州市');
+      expect(metaMap.childField).toEqual('district');
+      expect(metaMap.children.get('西湖区')).not.toBeEmpty();
+    });
+
+    test('clearDrillDownData function', () => {
+      dataSet.transformDrillDownData('district', drillDownData, cityNode);
+      dataSet.clearDrillDownData('root[&]浙江省[&]杭州市');
+      const metaMap = dataSet.rowPivotMeta.get('浙江省').children.get('杭州市');
+      expect(metaMap.childField).toEqual(undefined);
+      expect(metaMap.children).toEqual(new Map());
     });
   });
 });
