@@ -1,7 +1,7 @@
 import { set, map, reduce, isUndefined, forEach, last } from 'lodash';
 import { DataType } from '@/data-set/interface';
 import { DataPathParams, PivotMeta } from '@/data-set/interface';
-import { ID_SEPARATOR } from '@/';
+import { ID_SEPARATOR } from '@/common/constant';
 
 interface Param {
   rows: string[];
