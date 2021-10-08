@@ -26,15 +26,15 @@ export interface PartDrillDownInfo {
 }
 
 export interface PartDrillDown {
-  // Clear the info of drill down
-  clearDrillDown?: {
-    rowId: string;
-  };
   // The configuration of drill down
   drillConfig: DrillDownProps;
   // The numbers of drill down result
   drillItemsNum?: number;
   fetchData: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;
+  // Clear the info of drill down
+  clearDrillDown?: {
+    rowId: string;
+  };
   // Decide the drill down icon show conditions.
   displayCondition?: (meta: Node) => boolean;
 }
