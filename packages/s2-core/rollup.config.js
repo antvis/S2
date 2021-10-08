@@ -5,9 +5,11 @@ import replace from '@rollup/plugin-replace';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
+import { visualizer } from 'rollup-plugin-visualizer';
 import ttypescript from 'ttypescript';
 
 const format = process.env.FORMAT;
+const enableAnalysis = process.env.ANALYSIS;
 
 const OUT_DIR_NAME_MAP = {
   esm: 'esm',
@@ -39,6 +41,7 @@ const plugins = [
   }),
   replace({
     'process.env.NODE_ENV': JSON.stringify('production'),
+    preventAssignment: true,
   }),
   commonjs(),
   resolve(),
@@ -65,6 +68,10 @@ const plugins = [
     output: outDir + '/s2.min.css',
   }),
 ];
+
+if (enableAnalysis) {
+  plugins.push(visualizer({ gzipSize: true }));
+}
 
 const external = ['react', 'react-dom', '@ant-design/icons', /antd/];
 
