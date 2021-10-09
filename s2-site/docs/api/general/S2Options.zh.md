@@ -365,7 +365,3 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 | scrollContainsRowHeader | `boolean` |  |  |  | 滚动时是否包含焊头 |
 | isPivotMode | `boolean` |  |  |  | 是否是透视表 |
 | spreadsheet | [SpreadSheet](#spreadsheet) |  |  |  | 表格实例 |
-
-`markdown:docs/common/interaction.zh.md`
-
-`markdown:docs/common/spreadsheet.zh.md`

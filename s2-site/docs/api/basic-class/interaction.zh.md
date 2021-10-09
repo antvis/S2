@@ -1,11 +1,9 @@
 ---
-title: 交互
-order: 5
+title: Interaction
+order: 2
 ---
 
-## Interaction
-
-功能描述：交互相关方法：
+功能描述：交互类相关属性和方法. [详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/interaction/root.ts)
 
 ```ts
 this.spreadsheet.interaction.xx()
@@ -13,7 +11,7 @@ this.spreadsheet.interaction.xx()
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | :-- | :-- | :-: | :-- | :-- | :-- | --- |
-| spreadsheet | [SpreadSheet](#spreadsheet) |  |  |  | 表格实例 |
+| spreadsheet | [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) |  |  |  | 表格实例 |
 | interactions | `Map<string, BaseEvent>` |  |  |  | 当前已注册的交互 |
 | intercept | `Set<Intercept>` |  |  |  | 当前拦截的交互，防止不同交互之间冲突 |
 | destroy | `() => void` |  |  |  | 卸载所有交互实例，并重置为初始状态 |
@@ -46,9 +44,7 @@ this.spreadsheet.interaction.xx()
 | hasIntercepts | `(interceptTypes: InterceptType[]) => boolean` |  |  |  | 是否有指定拦截的交互 |
 | removeIntercepts | `(interceptTypes: InterceptType[]) => void` |  |  |  | 移除指定交互拦截 |
 
-## options
-
-功能描述：交互相关配置：
+## 交互相关配置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | :-- | :-- | :-: | :-- | :-- | :-- | --- |

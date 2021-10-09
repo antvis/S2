@@ -1,23 +1,20 @@
 ---
 title: SpreadSheet
-order: 7
+order: 1
 ---
 
-## SpreadSheet
-
-功能描述：表格实例。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/sheet-type/spread-sheet.ts)
+功能描述：表格实例相关属性和方法。[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/sheet-type/spread-sheet.ts)
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
 | dom | `string | HTMLElement` |  |  |  | 挂载的容器节点 |
 | theme | [S2Theme](/zh/docs/api/general/S2Theme) |  |  |  | 主题配置 |
-| store | [Store](#store) |  |  |  | 存储的一些信息 |
-| dom | `string | HTMLElement` |  |  |  | 挂载的容器节点 |
+| store | [Store](/zh/docs/api/basic-class/store) |  |  |  | 存储的一些信息 |
 | dataCfg | [S2DataConfig](/zh/docs/api/general/S2DataConfig) |  |  |  | 数据配置 |
 | options | [S2Options](/zh/docs/api/general/S2Options) |  |  |  | 表格配置 |
-| dataSet | [BaseDataSet](#BaseDataSet) |  |  |  | 表格数据集 （字段，数据，排序） |
-| facet | [BaseFacet](#BaseFacet) |  |  |  | 当前可视渲染区域 |
-| tooltip | [BaseTooltip](#BaseTooltip) |  |  |  | tooltip |
+| dataSet | [BaseDataSet](/zh/docs/api/basic-class/base-data-set) |  |  |  | 表格数据集 （字段，数据，排序） |
+| facet | [BaseFacet](/zh/docs/api/basic-class/base-facet) |  |  |  | 当前可视渲染区域 |
+| tooltip | [BaseTooltip](/zh/docs/api/basic-class/base-tooltip) |  |  |  | tooltip |
 | container | [Canvas](https://g.antv.vision/zh/docs/api/canvas) |  |  |  | g-canvas 实例 |
 | backgroundGroup | [Group](https://g.antv.vision/zh/docs/api/group) |  |  |  | 背景颜色区域 group |
 | foregroundGroup |  [Group](https://g.antv.vision/zh/docs/api/group) |  |  |  | 背景颜色区域 group |
@@ -29,7 +26,7 @@ order: 7
 | frozenTrailingColGroup |  [Group](https://g.antv.vision/zh/docs/api/group) |  |  |  | 列头底部冻结区域 group |
 | frozenTopGroup |  [Group](https://g.antv.vision/zh/docs/api/group) |  |  |  | 顶部冻结区域 group |
 | frozenBottomGroup |  [Group](https://g.antv.vision/zh/docs/api/group) |  |  |  | 底部冻结区域 group |
-| interaction |  [Interaction](#interaction) |  |  |  | 交互 |
+| interaction |  [Interaction](/zh/docs/api/basic-class/interaction) |  |  |  | 交互 |
 | hdAdapter | [HdAdapter](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/hd-adapter/index.ts) |  |  |  | 高清适配 |
 | on | `(event: name, listener: () => void) => void` |  |  |  | 事件订阅 |
 | emit | `(event: name, ...args: any[]) => void` |  |  |  | 事件发布 |
@@ -63,36 +60,6 @@ order: 7
 | getTotalsConfig | `(dimension: string) => Total` |  |  |  | 获取总计小计配置 |
 | getInitColumnNodes | `() => Node[]` |  |  |  | 获取初次渲染的列头信息 （比如：隐藏列头前） |
 | hideColumns | `(fields: string[]) => Total` |  |  |  | 隐藏列头 |
-
-### Store
-
-功能描述：存储一些信息
-
-```ts
-this.spreadsheet.store.get('key') // 获取
-this.spreadsheet.store.set('key', value) // 存储
-```
-
-| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
-| --- | --- | :-: | --- | --- | --- |
-| scrollX | `number` |  |  |  | 水平滚动偏移 |
-| scrollX | `number` |  |  |  | 垂直滚动偏移 |
-| hRowScrollX | `number` |  |  |  | 垂直行头滚动偏移 |
-| sortParam | [SortParam](#SortParam) |  |  |  | 列头排序配置 |
-| lastReachedBorderId | `{rowId: string, colId: string}` |  |  |  | ? |
-| drillDownIdPathMap | `Map<string, number[][]>` |  |  |  | 下钻节点 id 和对应生成的 path 寻址路径 |
-| drillDownNode | `Node` |  |  |  | 当前下钻节点 |
-| drillItemsNum | `number` |  |  |  | 下钻数据的个数控制 |
-| interactionStateInfo | `number` |  |  |  | 当前交互状态信息 |
-| drillDownFieldInLevel | `PartDrillDownInfo[]` |  |  |  | 下钻节点层级信息 |
-| originalDataCfg | [S2DataConfig](/zh/docs/api/general/S2DataConfig)|  |  |  | 原始数据配置 |
-| drillDownMeta | `Record<string, any>` |  |  |  | 下钻元数据 |
-| panelBBox | `BBox` |  |  |  | 可视区域包裹盒模型 |
-| activeResizeArea | [Group](https://g.antv.vision/zh/docs/api/group) |  |  |  | 当前调整大小区域 group |
-| valueRanges | `ValueRanges` |  |  |  | ? |
-| initColumnNodes | `Node[]` |  |  |  | 初次渲染时的列头节点 |
-| hiddenColumnsDetail | `HiddenColumnsInfo[]` |  |  |  | 隐藏的列头详情 |
-| [key: string] | `unknown` |  |  |  | 其他任意字段 |
 
 ### S2MountContainer
 
