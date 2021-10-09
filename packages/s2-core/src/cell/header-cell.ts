@@ -81,7 +81,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   private showSortIcon() {
-    if (isEmpty(this.spreadsheet.options.headerActionIcons)) {
+    const headerActionIcons = this.spreadsheet.options.headerActionIcons ?? [];
+    if (isEmpty(headerActionIcons)) {
       const { sortParam } = this.headerConfig;
       const query = this.meta.query;
       return (
@@ -95,7 +96,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected getActionIconsWidth() {
     if (this.showSortIcon()) {
       const { icon } = this.getStyle();
-      return this.showSortIcon() ? icon.size + icon.margin.left : 0;
+      return icon.size + icon.margin.left;
     }
     const actionIconCfg = this.getActionIconCfg();
     if (actionIconCfg) {
@@ -107,6 +108,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         margin.right * (iconNames.length - 1)
       );
     }
+    return 0;
   }
 
   // 绘制排序icon
