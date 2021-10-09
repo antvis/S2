@@ -35,5 +35,3 @@ export const useResizeEffect = (
     };
   }, [adaptive, debounceResize]);
 };
-
-export const a = () => {};
