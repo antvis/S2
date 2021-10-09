@@ -173,7 +173,7 @@ export interface CustomSVGIcon {
 export interface HeaderActionIconProps {
   iconName: string;
   meta: Node;
-  event: Event;
+  event?: Event;
 }
 
 export interface HeaderActionIcon {

@@ -42,7 +42,7 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
       fields: {
         rows: ['province', 'city'],
         columns: ['type', 'sub_type'],
-        values: ['price'],
+        values: ['number'],
         valueInCols: true,
       },
       meta,

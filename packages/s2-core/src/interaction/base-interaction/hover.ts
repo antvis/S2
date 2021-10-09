@@ -1,6 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import { isEmpty, forEach } from 'lodash';
+import { isEmpty, forEach, isEqual } from 'lodash';
 import { BaseEvent, BaseEventImplement } from '../base-event';
 import { ColCell, RowCell } from '@/cell';
 import { S2Event } from '@/common/constant';
@@ -84,7 +84,11 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     if (isEmpty(cell)) {
       return;
     }
-
+    const activeCells = this.interaction.getActiveCells();
+    // 避免在统一单元格内鼠标移动造成的多次渲染
+    if (isEqual(activeCells?.[0], cell)) {
+      return;
+    }
     const meta = cell.getMeta() as ViewMeta;
     this.interaction.changeState({
       cells: [getCellMeta(cell)],

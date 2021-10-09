@@ -22,10 +22,7 @@ import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
-import {
-  HandleDrillDown,
-  HandleDrillDownIcon,
-} from '@/utils/drill-down/helper';
+import { HandleDrillDown, HandleDrillDownIcon } from '@/utils/drill-down';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { useResizeEffect } from '@/components/sheets/hooks';
 import './index.less';
@@ -172,10 +169,10 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   };
 
   const iconClickCallback = (
-    event: GEvent,
     sheetInstance: SpreadSheet,
     cacheDrillFields?: string[],
     disabledFields?: string[],
+    event?: GEvent,
   ) => {
     const element = (
       <DrillDown
@@ -216,7 +213,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     ownSpreadsheet.setDataCfg(safetyDataConfig(dataCfg));
   };
 
-  const update = (reset?: () => void, reloadData = true) => {
+  const update = (reset?: () => void, reloadData?: boolean) => {
     if (!ownSpreadsheet) return;
     if (isFunction(reset)) reset();
     ownSpreadsheet.render(reloadData);
@@ -231,7 +228,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (!ownSpreadsheet) return;
     setLoading(true);
     ownSpreadsheet.clearDrillDownData(rowId);
-    update();
   };
 
   const renderPagination = (): JSX.Element => {
@@ -333,6 +329,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
         spreadsheet: ownSpreadsheet,
       });
     }
+    setOptions();
   }, [drillFields]);
 
   useEffect(() => {
@@ -361,7 +358,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       options: newOptions,
     });
     setOptions(ownSpreadsheet, newProps);
-    update();
+    update(null, false);
   }, [current]);
 
   useEffect(() => {
@@ -375,7 +372,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       options: newOptions,
     });
     setOptions(ownSpreadsheet, newProps);
-    update();
+    update(null, false);
   }, [pageSize]);
 
   useEffect(() => {

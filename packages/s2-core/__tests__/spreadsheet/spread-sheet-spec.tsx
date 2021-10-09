@@ -30,6 +30,7 @@ function MainLayout() {
   const [hoverHighlight, setHoverHighlight] = React.useState(true);
   const [showSeriesNumber, setShowSeriesNumber] = React.useState(false);
   const [showPagination, setShowPagination] = React.useState(false);
+  const [showTotals, setShowTotals] = React.useState(false);
   const [showDefaultActionIcons, setShowDefaultActionIcons] =
     React.useState(true);
   const [themeName, setThemeName] = React.useState<ThemeName>('default');
@@ -68,6 +69,18 @@ function MainLayout() {
         trend: true,
       },
     },
+    totals: showTotals && {
+      row: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        subTotalsDimensions: ['province'],
+      },
+      col: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        subTotalsDimensions: ['type'],
+      },
+    },
     showSeriesNumber: showSeriesNumber,
     selectedCellsSpotlight: spotLight,
     hoverHighlight: hoverHighlight,
@@ -81,6 +94,7 @@ function MainLayout() {
         svg: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
       },
     ],
+    showDefaultHeaderActionIcon: showDefaultActionIcons,
     headerActionIcons: !showDefaultActionIcons && [
       {
         iconNames: ['Filter'],
@@ -184,12 +198,17 @@ function MainLayout() {
                 checked={showSeriesNumber}
                 onChange={setShowSeriesNumber}
               />
-
               <Switch
                 checkedChildren="分页"
                 unCheckedChildren="不分页"
                 checked={showPagination}
                 onChange={setShowPagination}
+              />
+              <Switch
+                checkedChildren="汇总"
+                unCheckedChildren="无汇总"
+                checked={showTotals}
+                onChange={setShowTotals}
               />
               <Switch
                 checkedChildren="选中聚光灯开"
