@@ -1,4 +1,3 @@
-import { RootInteraction } from './root';
 import { SpreadSheet } from '@/sheet-type';
 
 export interface BaseEventImplement {
@@ -8,11 +7,8 @@ export interface BaseEventImplement {
 export abstract class BaseEvent {
   public spreadsheet: SpreadSheet;
 
-  public interaction: RootInteraction;
-
-  constructor(spreadsheet: SpreadSheet, interaction: RootInteraction) {
+  constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
-    this.interaction = interaction;
     this.bindEvents();
   }
 

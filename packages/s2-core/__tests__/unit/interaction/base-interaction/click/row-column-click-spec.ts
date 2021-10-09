@@ -37,10 +37,7 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.interaction.getActiveCells = () => [mockCell] as unknown as S2CellType[];
     s2.interaction.getRowColActiveCells = () =>
       [mockCell] as unknown as S2CellType[];
-    rowColumnClick = new RowColumnClick(
-      s2 as unknown as SpreadSheet,
-      s2.interaction,
-    );
+    rowColumnClick = new RowColumnClick(s2 as unknown as SpreadSheet);
     s2.isHierarchyTreeType = () => false;
     s2.options = {
       hiddenColumnFields: ['a'],

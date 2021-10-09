@@ -38,7 +38,6 @@ export interface InteractionStateInfo {
 
 export type InteractionConstructor = new (
   spreadsheet: SpreadSheet,
-  interaction: RootInteraction,
 ) => BaseEvent;
 
 export interface CustomInteraction {
