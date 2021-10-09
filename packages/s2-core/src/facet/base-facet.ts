@@ -857,11 +857,11 @@ export abstract class BaseFacet {
     this.spreadsheet.panelScrollGroup?.setClip({
       type: 'rect',
       attrs: {
-        x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
+        x: this.cfg.spreadsheet.isFreezeRowHeader() ? scrollX : 0,
         y: scrollY,
         width:
           this.panelBBox.width +
-          (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
+          (this.cfg.spreadsheet.isFreezeRowHeader() ? 0 : scrollX),
         height: this.panelBBox.height,
       },
     });

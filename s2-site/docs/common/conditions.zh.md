@@ -36,10 +36,10 @@ type MappingFunction = (
 ) => {
   // 仅用于图标字段标记，可选
   icon?: string;
-  
+
   // 背景 ｜ 文本 ｜ 柱状图 | 图标 字段标记颜色填充，必选
   fill: string;
- 
+
   // 仅用于柱状图字段标记，可选
   isCompare?: boolean;
   minValue?: number;

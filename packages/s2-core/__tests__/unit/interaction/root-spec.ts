@@ -91,7 +91,7 @@ describe('RootInteraction Tests', () => {
     expect(rootInteraction.getInteractedCells()).toEqual([]);
   });
 
-  test('should set interacted cells', () => {
+  test('should set interacted cell', () => {
     rootInteraction.setInteractedCells(mockCell);
     expect(rootInteraction.getInteractedCells()).toEqual([mockCell]);
     rootInteraction.setInteractedCells(mockCell);

@@ -83,17 +83,17 @@ export class Node {
     this.isGrandTotals = isGrandTotals;
     this.isSubTotals = isSubTotals;
     this.config = {
-      "x": 0,
-      "y": 0,
-      "width": 0,
-      "height": 0,
-      "colIndex": -1,
-      "children": [],
-      "padding": 0,
-      "id": "",
-      "key": "",
-      "value": "",
-      "label": ""
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+      colIndex: -1,
+      children: [],
+      padding: 0,
+      id: '',
+      key: '',
+      value: '',
+      label: '',
     };
   }
 

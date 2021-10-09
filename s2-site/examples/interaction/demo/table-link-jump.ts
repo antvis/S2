@@ -24,9 +24,10 @@ fetch(
     s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
       console.log(data);
       const { key, record } = data;
+      const value = record[key];
       const a = document.createElement('a');
       a.target = '_blank';
-      a.href = `https://s2.antv.vision/${key}=${record[key]}`;
+      a.href = `https://s2.antv.vision/${key}=${value}`;
       a.click();
       a.remove();
     });

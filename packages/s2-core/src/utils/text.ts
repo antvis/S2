@@ -27,13 +27,11 @@ export const measureTextWidth = memoize(
     }
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
       font as CSSStyleDeclaration;
-    ctx.font = [
-      fontStyle,
-      fontVariant,
-      fontWeight,
-      `${fontSize}px`,
-      fontFamily,
-    ].join(' ');
+    // copy G 里面的处理逻辑
+    ctx.font = [fontStyle, fontVariant, fontWeight, `${fontSize}px`, fontFamily]
+      .join(' ')
+      .trim();
+
     return ctx.measureText(`${text}`).width;
   },
   (text: any, font) => [text, ...values(font)].join(''),
