@@ -16,7 +16,7 @@ describe('Table Mode Dataset Test', () => {
     ...assembleDataCfg({}),
     meta: [],
     fields: {
-      columns: ['province', 'city', 'type', 'sub_type', 'price'],
+      columns: ['province', 'city', 'type', 'sub_type', 'number'],
     },
   };
   beforeEach(() => {
@@ -34,7 +34,7 @@ describe('Table Mode Dataset Test', () => {
         'city',
         'type',
         'sub_type',
-        'price',
+        'number',
       ]);
       expect(dataSet.fields.values).toEqual(undefined);
     });
@@ -59,10 +59,10 @@ describe('Table Mode Dataset Test', () => {
         dataSet.getCellData({
           query: {
             rowIndex: 2,
-            col: 'price',
+            col: 'number',
           },
         }),
-      ).toEqual(3);
+      ).toEqual(3877);
 
       expect(
         dataSet.getCellData({

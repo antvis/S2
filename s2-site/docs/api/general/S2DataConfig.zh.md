@@ -19,7 +19,6 @@ const data = [{
     "type": "办公用品",
     "sub_type": "纸张",
     "cost": "2",
-    "price": "8",
 }, {
     "area": "东北",
     "province": "吉林",
@@ -27,7 +26,6 @@ const data = [{
     "type": "办公用品",
     "sub_type": "笔",
     "cost": "3",
-    "price": "9",
 }]
 ```
 

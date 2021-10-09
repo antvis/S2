@@ -2,20 +2,8 @@
   "describe": "标准交叉表数据。注意：不能随意改动！会影响单测结果！",
   "meta": [
     {
-      "field": "cost",
-      "name": "成本"
-    },
-    {
-      "field": "price",
-      "name": "价格"
-    },
-    {
-      "field": "cost/price",
-      "name": "成本率"
-    },
-    {
-      "field": "area",
-      "name": "地区"
+      "field": "number",
+      "name": "数量"
     },
     {
       "field": "province",
@@ -36,224 +24,224 @@
   ],
   "data": [
     {
-      "price": 1,
+      "number": 7789,
       "province": "浙江省",
       "city": "杭州市",
       "type": "家具",
       "sub_type": "桌子"
     },
     {
-      "price": 2,
+      "number": 2367,
       "province": "浙江省",
       "city": "绍兴市",
       "type": "家具",
       "sub_type": "桌子"
     },
     {
-      "price": 3,
+      "number": 3877,
       "province": "浙江省",
       "city": "宁波市",
       "type": "家具",
       "sub_type": "桌子"
     },
     {
-      "price": 4,
+      "number": 4342,
       "province": "浙江省",
       "city": "舟山市",
       "type": "家具",
       "sub_type": "桌子"
     },
     {
-      "price": 5,
+      "number": 5343,
       "province": "浙江省",
       "city": "杭州市",
       "type": "家具",
       "sub_type": "沙发"
     },
     {
-      "price": 6,
+      "number": 632,
       "province": "浙江省",
       "city": "绍兴市",
       "type": "家具",
       "sub_type": "沙发"
     },
     {
-      "price": 7,
+      "number": 7234,
       "province": "浙江省",
       "city": "宁波市",
       "type": "家具",
       "sub_type": "沙发"
     },
     {
-      "price": 8,
+      "number": 834,
       "province": "浙江省",
       "city": "舟山市",
       "type": "家具",
       "sub_type": "沙发"
     },
     {
-      "price": 9,
+      "number": 945,
       "province": "浙江省",
       "city": "杭州市",
       "type": "办公用品",
       "sub_type": "笔"
     },
     {
-      "price": 10,
+      "number": 1304,
       "province": "浙江省",
       "city": "绍兴市",
       "type": "办公用品",
       "sub_type": "笔"
     },
     {
-      "price": 11,
+      "number": 1145,
       "province": "浙江省",
       "city": "宁波市",
       "type": "办公用品",
       "sub_type": "笔"
     },
     {
-      "price": 12,
+      "number": 1432,
       "province": "浙江省",
       "city": "舟山市",
       "type": "办公用品",
       "sub_type": "笔"
     },
     {
-      "price": 13,
+      "number": 1343,
       "province": "浙江省",
       "city": "杭州市",
       "type": "办公用品",
       "sub_type": "纸张"
     },
     {
-      "price": 14,
+      "number": 1354,
       "province": "浙江省",
       "city": "绍兴市",
       "type": "办公用品",
       "sub_type": "纸张"
     },
     {
-      "price": 15,
+      "number": 1523,
       "province": "浙江省",
       "city": "宁波市",
       "type": "办公用品",
       "sub_type": "纸张"
     },
     {
-      "price": 16,
+      "number": 1634,
       "province": "浙江省",
       "city": "舟山市",
       "type": "办公用品",
       "sub_type": "纸张"
     },
     {
-      "price": 17,
+      "number": 1723,
       "province": "四川省",
       "city": "成都市",
       "type": "家具",
       "sub_type": "桌子"
     },
     {
-      "price": 18,
+      "number": 1822,
       "province": "四川省",
       "city": "绵阳市",
       "type": "家具",
       "sub_type": "桌子"
     },
     {
-      "price": 19,
+      "number": 1943,
       "province": "四川省",
       "city": "南充市",
       "type": "家具",
       "sub_type": "桌子"
     },
     {
-      "price": 20,
+      "number": 2330,
       "province": "四川省",
       "city": "乐山市",
       "type": "家具",
       "sub_type": "桌子"
     },
     {
-      "price": 21,
+      "number": 2451,
       "province": "四川省",
       "city": "成都市",
       "type": "家具",
       "sub_type": "沙发"
     },
     {
-      "price": 22,
+      "number": 2244,
       "province": "四川省",
       "city": "绵阳市",
       "type": "家具",
       "sub_type": "沙发"
     },
     {
-      "price": 23,
+      "number": 2333,
       "province": "四川省",
       "city": "南充市",
       "type": "家具",
       "sub_type": "沙发"
     },
     {
-      "price": 24,
+      "number": 2445,
       "province": "四川省",
       "city": "乐山市",
       "type": "家具",
       "sub_type": "沙发"
     },
     {
-      "price": 25,
+      "number": 2335,
       "province": "四川省",
       "city": "成都市",
       "type": "办公用品",
       "sub_type": "笔"
     },
     {
-      "price": 26,
+      "number": 245,
       "province": "四川省",
       "city": "绵阳市",
       "type": "办公用品",
       "sub_type": "笔"
     },
     {
-      "price": 27,
+      "number": 2457,
       "province": "四川省",
       "city": "南充市",
       "type": "办公用品",
       "sub_type": "笔"
     },
     {
-      "price": 28,
+      "number": 2458,
       "province": "四川省",
       "city": "乐山市",
       "type": "办公用品",
       "sub_type": "笔"
     },
     {
-      "price": 29,
+      "number": 4004,
       "province": "四川省",
       "city": "成都市",
       "type": "办公用品",
       "sub_type": "纸张"
     },
     {
-      "price": 30,
+      "number": 3077,
       "province": "四川省",
       "city": "绵阳市",
       "type": "办公用品",
       "sub_type": "纸张"
     },
     {
-      "price": 31,
+      "number": 3551,
       "province": "四川省",
       "city": "南充市",
       "type": "办公用品",
       "sub_type": "纸张"
     },
     {
-      "price": 32,
+      "number": 352,
       "province": "四川省",
       "city": "乐山市",
       "type": "办公用品",
@@ -262,247 +250,247 @@
   ],
   "totalData": [
     {
-      "price": 84,
+      "number": 26193,
       "type": "家具",
       "sub_type": "桌子"
     },
     {
-      "price": 200,
+      "number": 49709,
       "type": "家具"
     },
     {
-      "price": 116,
+      "number": 23516,
       "type": "家具",
       "sub_type": "沙发"
     },
     {
-      "price": 328,
+      "number": 29159,
       "type": "办公用品"
     },
     {
-      "price": 148,
+      "number": 12321,
       "type": "办公用品",
       "sub_type": "笔"
     },
     {
-      "price": 180,
+      "number": 16838,
       "type": "办公用品",
       "sub_type": "纸张"
     },
     {
-      "price": 10,
+      "number": 18375,
       "province": "浙江省",
       "type": "家具",
       "sub_type": "桌子"
     },
     {
-      "price": 26,
+      "number": 14043,
       "province": "浙江省",
       "type": "家具",
       "sub_type": "沙发"
     },
     {
-      "price": 42,
+      "number": 4826,
       "province": "浙江省",
       "type": "办公用品",
       "sub_type": "笔"
     },
     {
-      "price": 58,
+      "number": 5854,
       "province": "浙江省",
       "type": "办公用品",
       "sub_type": "纸张"
     },
     {
-      "price": 74,
+      "number": 7818,
       "province": "四川省",
       "type": "家具",
       "sub_type": "桌子"
     },
     {
-      "price": 90,
+      "number": 9473,
       "province": "四川省",
       "type": "家具",
       "sub_type": "沙发"
     },
     {
-      "price": 106,
+      "number": 7495,
       "province": "四川省",
       "type": "办公用品",
       "sub_type": "笔"
     },
     {
-      "price": 122,
+      "number": 10984,
       "province": "四川省",
       "type": "办公用品",
       "sub_type": "纸张"
     },
     {
-      "price": 6,
+      "number": 13132,
       "province": "浙江省",
       "city": "杭州市",
       "type": "家具"
     },
     {
-      "price": 22,
+      "number": 2288,
       "province": "浙江省",
       "city": "杭州市",
       "type": "办公用品"
     },
     {
-      "price": 28,
+      "number": 15420,
       "province": "浙江省",
       "city": "杭州市"
     },
     {
-      "price": 8,
+      "number": 2999,
       "province": "浙江省",
       "city": "绍兴市",
       "type": "家具"
     },
     {
-      "price": 24,
+      "number": 2658,
       "province": "浙江省",
       "city": "绍兴市",
       "type": "办公用品"
     },
     {
-      "price": 32,
+      "number": 5657,
       "province": "浙江省",
       "city": "绍兴市"
     },
     {
-      "price": 10,
+      "number": 11111,
       "province": "浙江省",
       "city": "宁波市",
       "type": "家具"
     },
     {
-      "price": 26,
+      "number": 2668,
       "province": "浙江省",
       "city": "宁波市",
       "type": "办公用品"
     },
     {
-      "price": 36,
+      "number": 13779,
       "province": "浙江省",
       "city": "宁波市"
     },
     {
-      "price": 12,
+      "number": 5176,
       "province": "浙江省",
       "city": "舟山市",
       "type": "家具"
     },
     {
-      "price": 28,
+      "number": 3066,
       "province": "浙江省",
       "city": "舟山市",
       "type": "办公用品"
     },
     {
-      "price": 40,
+      "number": 8242,
       "province": "浙江省",
       "city": "舟山市"
     },
     {
-      "price": 38,
+      "number": 4174,
       "province": "四川省",
       "city": "成都市",
       "type": "家具"
     },
     {
-      "price": 54,
+      "number": 6339,
       "province": "四川省",
       "city": "成都市",
       "type": "办公用品"
     },
     {
-      "price": 92,
+      "number": 10513,
       "province": "四川省",
       "city": "成都市"
     },
     {
-      "price": 40,
+      "number": 4066,
       "province": "四川省",
       "city": "绵阳市",
       "type": "家具"
     },
     {
-      "price": 56,
+      "number": 3322,
       "province": "四川省",
       "city": "绵阳市",
       "type": "办公用品"
     },
     {
-      "price": 96,
+      "number": 7388,
       "province": "四川省",
       "city": "绵阳市"
     },
     {
-      "price": 42,
+      "number": 4276,
       "province": "四川省",
       "city": "南充市",
       "type": "家具"
     },
     {
-      "price": 58,
+      "number": 6008,
       "province": "四川省",
       "city": "南充市",
       "type": "办公用品"
     },
     {
-      "price": 100,
+      "number": 10284,
       "province": "四川省",
       "city": "南充市"
     },
     {
-      "price": 44,
+      "number": 4775,
       "province": "四川省",
       "city": "乐山市",
       "type": "家具"
     },
     {
-      "price": 60,
+      "number": 2810,
       "province": "四川省",
       "city": "乐山市",
       "type": "办公用品"
     },
     {
-      "price": 104,
+      "number": 7585,
       "province": "四川省",
       "city": "乐山市"
     },
     {
-      "price": 36,
+      "number": 32418,
       "province": "浙江省",
       "type": "家具"
     },
     {
-      "price": 100,
+      "number": 10680,
       "province": "浙江省",
       "type": "办公用品"
     },
     {
-      "price": 136,
+      "number": 43098,
       "province": "浙江省"
     },
     {
-      "price": 164,
+      "number": 17291,
       "province": "四川省",
       "type": "家具"
     },
     {
-      "price": 228,
+      "number": 18479,
       "province": "四川省",
       "type": "办公用品"
     },
     {
-      "price": 392,
+      "number": 35770,
       "province": "四川省"
     },
     {
-      "price": 528
+      "number": 78868
     }
   ]
 }

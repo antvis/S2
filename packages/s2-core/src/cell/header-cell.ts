@@ -10,7 +10,7 @@ import {
   forEach,
 } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
-import { InteractionStateName } from '@/common/constant/interaction';
+import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
 import {
   HeaderActionIcon,
@@ -81,8 +81,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   private showSortIcon() {
-    const headerActionIcons = this.spreadsheet.options.headerActionIcons ?? [];
-    if (isEmpty(headerActionIcons)) {
+    if (this.spreadsheet.options.showDefaultHeaderActionIcon) {
       const { sortParam } = this.headerConfig;
       const query = this.meta.query;
       return (
@@ -149,6 +148,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       height: size,
       fill: text.fill,
     });
+    // 默认隐藏，hover 可见
     icon.set('visible', !defaultHide);
     icon.on('mouseover', (event: Event) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
@@ -188,7 +188,8 @@ export abstract class HeaderCell extends BaseCell<Node> {
   private handleHover(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.HOVER);
-      this.toggleActionIcon(true);
+      // hover 只会有一个 cell
+      this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
     }
   }
 
@@ -202,10 +203,27 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
-  public toggleActionIcon(visible: boolean) {
-    if (this.getActionIconCfg()?.defaultHide) {
-      forEach(this.actionIcons, (icon) => icon.set('visible', visible));
+  public toggleActionIcon(id: string, type: CellTypes) {
+    if (isEmpty(this.actionIcons) || !this.getActionIconCfg()?.defaultHide) {
+      return;
     }
+    let allCells = [];
+    if (type === CellTypes.ROW_CELL) {
+      allCells = this.spreadsheet.interaction.getAllRowHeaderCells();
+    } else if (type === CellTypes.COL_CELL) {
+      allCells = this.spreadsheet.interaction.getAllColHeaderCells();
+    }
+    forEach(allCells, (cell) => {
+      if (cell.getMeta().id === id) {
+        forEach(cell.actionIcons, (icon) => {
+          icon.set('visible', true);
+        });
+      } else {
+        forEach(cell.actionIcons, (icon) => {
+          icon.set('visible', false);
+        });
+      }
+    });
   }
 
   public update() {

@@ -125,8 +125,5 @@
     "ttypescript": "^1.5.12",
     "typescript": "^4.4.3"
   },
-  "license": "MIT",
-  "resolutions": {
-    "electron": "^11.0.0"
-  }
+  "license": "MIT"
 }

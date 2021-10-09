@@ -1,4 +1,4 @@
-import { concat, forEach, isEmpty } from 'lodash';
+import { concat, filter, forEach, isEmpty } from 'lodash';
 import {
   DataCellClick,
   MergedCellsClick,
@@ -140,12 +140,15 @@ export class RootInteraction {
   }
 
   public getPanelGroupAllDataCells(): DataCell[] {
-    return getAllPanelDataCell(this.spreadsheet.panelGroup?.get('children'));
+    return getAllPanelDataCell(this.spreadsheet?.panelGroup?.get('children'));
   }
 
   public getAllRowHeaderCells() {
-    const children = this.spreadsheet.foregroundGroup.getChildren();
-    const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
+    const children = this.spreadsheet?.foregroundGroup?.getChildren();
+    const rowHeader = filter(
+      children,
+      (group) => group instanceof RowHeader,
+    )?.[0];
     let currentNode = rowHeader?.cfg?.children;
     if (isEmpty(currentNode)) {
       return [];
@@ -161,8 +164,11 @@ export class RootInteraction {
   }
 
   public getAllColHeaderCells() {
-    const children = this.spreadsheet.foregroundGroup.getChildren();
-    const colHeader = children.filter((group) => group instanceof ColHeader)[0];
+    const children = this.spreadsheet?.foregroundGroup?.getChildren();
+    const colHeader = filter(
+      children,
+      (group) => group instanceof ColHeader,
+    )[0];
     let currentNode = colHeader?.cfg?.children;
     if (isEmpty(currentNode)) {
       return [];

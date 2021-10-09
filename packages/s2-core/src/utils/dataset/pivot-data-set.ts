@@ -1,11 +1,13 @@
-import { set, map, reduce, isUndefined } from 'lodash';
+import { set, map, reduce, isUndefined, forEach, last } from 'lodash';
 import { DataType } from '@/data-set/interface';
 import { DataPathParams, PivotMeta } from '@/data-set/interface';
+import { ID_SEPARATOR } from '@/common/constant';
 
 interface Param {
   rows: string[];
   columns: string[];
   originData: DataType[];
+  indexesData: DataType[][] | DataType[];
   totalData?: DataType[];
   sortedDimensionValues: Map<string, Set<string>>;
   rowPivotMeta?: PivotMeta;
@@ -80,10 +82,10 @@ export function getDataPath(params: DataPathParams) {
   const getPath = (
     dimensionValues: string[],
     isRow = true,
-    rowPivotMeta: PivotMeta,
-    colPivotMeta: PivotMeta,
+    rowMeta: PivotMeta,
+    colMeta: PivotMeta,
   ): number[] => {
-    let currentMeta = isRow ? rowPivotMeta : colPivotMeta;
+    let currentMeta = isRow ? rowMeta : colMeta;
     const fields = isRow ? rowFields : colFields;
     const path = [];
     for (let i = 0; i < dimensionValues.length; i++) {
@@ -159,20 +161,24 @@ export function getQueryDimValues(
  * @param rows
  * @param columns
  * @param originData
+ * @param indexesData
  * @param totalData
+ * @param sortedDimensionValues
+ * @param rowPivotMeta
+ * @param colPivotMeta
  */
 export function transformIndexesData(params: Param) {
   const {
     rows,
     columns,
-    originData,
-    totalData,
+    originData = [],
+    indexesData = [],
+    totalData = [],
     sortedDimensionValues,
     rowPivotMeta,
     colPivotMeta,
   } = params;
   const paths = [];
-  const indexesData = [];
   for (const data of [...originData, ...totalData]) {
     const rowDimensionValues = transformDimensionsValues(
       data,
@@ -205,4 +211,22 @@ export function transformIndexesData(params: Param) {
     colPivotMeta,
     sortedDimensionValues,
   };
+}
+
+export function deleteMetaById(meta: PivotMeta, nodeId: string) {
+  if (!meta || !nodeId) return;
+  const paths = nodeId.split(ID_SEPARATOR);
+  const deletePath = last(paths);
+  let currentMeta = meta;
+  forEach(paths, (path) => {
+    const pathMeta = currentMeta.get(path);
+    if (pathMeta) {
+      if (path === deletePath) {
+        pathMeta.children = new Map();
+        pathMeta.childField = undefined;
+      } else {
+        currentMeta = pathMeta.children;
+      }
+    }
+  });
 }

@@ -153,10 +153,10 @@ describe('Pivot Mode Facet Test', () => {
     const { getCellMeta } = facet.layoutResult;
 
     test('should get correct cell meta', () => {
-      expect(getCellMeta(0, 1)?.data?.price).toBe(5);
-      expect(getCellMeta(1, 1)?.data?.price).toBe(6);
+      expect(getCellMeta(0, 1)?.data?.number).toBe(5343);
+      expect(getCellMeta(1, 1)?.data?.number).toBe(632);
 
-      expect(getCellMeta(1)?.data?.price).toBe(2);
+      expect(getCellMeta(1)?.data?.number).toBe(2367);
     });
   });
 
@@ -227,7 +227,7 @@ describe('Pivot Mode Facet Test', () => {
       const sampleDataCell = get(panelScrollGroup, 'cfg.children[0]');
       expect(panelScrollGroup.cfg.children).toHaveLength(32);
       expect(panelScrollGroup.cfg.visible).toBeTrue();
-      expect(get(sampleDataCell, 'meta.data.price')).toBe(1);
+      expect(get(sampleDataCell, 'meta.data.number')).toBe(7789);
     });
   });
 });

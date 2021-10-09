@@ -166,12 +166,13 @@ export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
  * @param priority optional 优先显示的文本
  */
 export const getEllipsisText = (
-  text = '-',
+  text: string,
   maxWidth: number,
   fontParam?: unknown,
   priorityParam?: string[],
 ) => {
   let font = {};
+  const finalText = text ?? '-';
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
@@ -179,11 +180,15 @@ export const getEllipsisText = (
     font = fontParam || {};
   }
   if (!priority || !priority.length) {
-    return getEllipsisTextInner(text, maxWidth, font as CSSStyleDeclaration);
+    return getEllipsisTextInner(
+      finalText,
+      maxWidth,
+      font as CSSStyleDeclaration,
+    );
   }
 
   const leftSubTexts = [];
-  let subTexts = [text];
+  let subTexts = [finalText];
   priority.forEach((priorityItem) => {
     subTexts.forEach((tempSubText, index) => {
       // 处理 leftText
@@ -205,7 +210,7 @@ export const getEllipsisText = (
   // original text is split into serval texts by priority
   subTexts = leftSubTexts.concat(subTexts);
 
-  let result = text;
+  let result = finalText;
   const DOT_WIDTH = measureTextWidth('...', font);
   let remainWidth = maxWidth;
   subTexts.forEach((subText) => {
