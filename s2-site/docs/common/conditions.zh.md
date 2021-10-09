@@ -9,12 +9,12 @@ order: 2
 
 <description>功能描述： 配置字段标记。分为文本 (text)，背景 (background)，柱状图 (interval)，图标 (icon)。</description>
 
-| 参数       | 类型            | 必选 | 取值 | 默认值 | 功能描述   |
-| ---------- | --------------- | ---- | ---- | ------ | ---------- |
-| text       | `Condition[]`     |      |      | `undefined`   | 文本字段标记   |
-| background | `Condition[]`    |      |      | `undefined`   | 背景字段标记   |
-| interval   | `Condition[]`     |      |      | `undefined`   | 柱状图字段标记 |
-| icon       | `IconCondition[]` |      |      | `undefined`   | 图标字段标记   |
+| 参数       | 类型            | 必选  | 默认值 | 功能描述   |
+| ---------- | ---------------  | ---- | ------ | ---------- |
+| text       | `Condition[]`     |            | `undefined`   | 文本字段标记   |
+| background | `Condition[]`    |            | `undefined`   | 背景字段标记   |
+| interval   | `Condition[]`     |            | `undefined`   | 柱状图字段标记 |
+| icon       | `IconCondition[]` |            | `undefined`   | 图标字段标记   |
 
 ### Condition
 
@@ -22,10 +22,10 @@ order: 2
 
 <description>功能描述： 配置条件格式。包括文本 (text)，背景 (background)，柱状图 (interval)。</description>
 
-| 参数    | 类型     | 必选 | 取值 | 默认值 | 功能描述     |
-| ------- | -------- | ---- | ---- | ------ | ------------ |
-| field   | `string`   | ✓    |      |        | 字段 ID       |
-| mapping | `function` | ✓    |      |        | 作用映射函数​ |
+| 参数    | 类型     | 必选  | 默认值 | 功能描述     |
+| ------- | -------- |  ---- | ------ | ------------ |
+| field   | `string`   | ✓          |        | 字段 ID       |
+| mapping | `function` | ✓          |        | 作用映射函数​ |
 
 #### mapping
 
@@ -90,11 +90,11 @@ const options = {
 
 <description>功能描述： 配置图标 (icon) 条件格式。</description>
 
-| 参数     | 类型     | 必选 | 取值   | 默认值  | 功能描述     |
-| -------- | -------- | ---- | ------ | ------- | ------------ |
-| field    | `string`   | ✓    |        |         | 字段 ID       |
-| position | `string`   |      | `left` &#124; `right`   | `right` | icon 相较于文字的位置 |
-| mapping  | `function` | ✓    |        |         | 作用映射函数​ |
+| 参数     | 类型     | 必选    | 默认值  | 功能描述     |
+| -------- | -------- | ----  | ------- | ------------ |
+| field    | `string`   | ✓    |                | 字段 ID       |
+| position | `left` \| `right`   |         | `right` | icon 相较于文字的位置 |
+| mapping  | `function` | ✓    |                 | 作用映射函数​ |
 
 **icon condition 用法示例：**
 
