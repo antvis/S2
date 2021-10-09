@@ -95,7 +95,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected getActionIconsWidth() {
     if (this.showSortIcon()) {
       const { icon } = this.getStyle();
-      return this.showSortIcon() ? icon.size + icon.margin.left : 0;
+      return icon.size + icon.margin.left;
     }
     const actionIconCfg = this.getActionIconCfg();
     if (actionIconCfg) {

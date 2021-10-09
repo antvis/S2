@@ -53,7 +53,8 @@ export class CornerCell extends HeaderCell {
       return;
     }
 
-    const { x, y, height } = this.getCellArea();
+    const { x } = this.getContentArea();
+    const { y, height } = this.getCellArea();
 
     const textStyle = this.getTextStyle();
     const { formattedValue } = this.getFormattedFieldValue();
@@ -270,7 +271,7 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getMaxTextWidth(): number {
-    const { width } = this.getCellArea();
+    const { width } = this.getContentArea();
     return width - this.getTreeIconWidth() - this.getActionIconsWidth();
   }
 
