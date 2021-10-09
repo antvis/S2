@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
 import cx from 'classnames';
-import zhCN from 'antd/lib/locale/zh_CN';
 import { isEmpty } from 'lodash';
 import {
   CalendarIcon,
@@ -93,7 +92,7 @@ export const DrillDown: React.FC<DrillDownProps> = ({
   }, [disabledFields]);
 
   return (
-    <ConfigProvider locale={zhCN}>
+    <ConfigProvider>
       <div className={cx(PRE_CLASS, className)} {...restProps}>
         <header className={`${PRE_CLASS}-header`}>
           <div>{titleText}</div>

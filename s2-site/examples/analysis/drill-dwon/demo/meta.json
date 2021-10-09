@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "维度下钻组件",
+    "en": "DrillDown"
+  },
+  "demos": [
+    {
+      "filename": "drill-dwon.tsx",
+      "title": {
+        "zh": "维度下钻组件",
+        "en": "DrillDown component"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/5eyGHQTxkG/400d5a33-cc30-4c4b-a690-d41402e8efc9.png"
+    },
+    {
+      "filename": "drill-dwon-for-pivot.tsx",
+      "title": {
+        "zh": "交叉表维度下钻组件",
+        "en": "DrillDown in pivot sheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*uMKSTYmYLdUAAAAAAAAAAAAAARQnAQ"
+    }
+  ]
+}
