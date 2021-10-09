@@ -28,7 +28,7 @@ describe('Interaction Hover Tests', () => {
         update: mockCellUpdate,
         getMeta: () => mockCell,
       } as any);
-    hoverEvent = new HoverEvent(s2 as unknown as SpreadSheet, s2.interaction);
+    hoverEvent = new HoverEvent(s2 as unknown as SpreadSheet);
     s2.options = {
       hoverHighlight: true,
     } as S2Options;

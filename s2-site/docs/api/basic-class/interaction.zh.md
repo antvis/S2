@@ -67,7 +67,6 @@ this.spreadsheet.interaction.xx()
 ```ts
 export type InteractionConstructor = new (
   spreadsheet: SpreadSheet,
-  interaction: RootInteraction,
 ) => BaseEvent;
 
 ```

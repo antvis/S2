@@ -213,37 +213,37 @@ export class RootInteraction {
 
     this.interactions.set(
       InteractionName.DATA_CELL_CLICK,
-      new DataCellClick(this.spreadsheet, this),
+      new DataCellClick(this.spreadsheet),
     );
     this.interactions.set(
       InteractionName.ROW_COLUMN_CLICK,
-      new RowColumnClick(this.spreadsheet, this),
+      new RowColumnClick(this.spreadsheet),
     );
     this.interactions.set(
       InteractionName.ROW_TEXT_CLICK,
-      new RowTextClick(this.spreadsheet, this),
+      new RowTextClick(this.spreadsheet),
     );
     this.interactions.set(
       InteractionName.MERGED_CELLS_CLICK,
-      new MergedCellsClick(this.spreadsheet, this),
+      new MergedCellsClick(this.spreadsheet),
     );
     this.interactions.set(
       InteractionName.HOVER,
-      new HoverEvent(this.spreadsheet, this),
+      new HoverEvent(this.spreadsheet),
     );
 
     if (!isMobile()) {
       this.interactions.set(
         InteractionName.BRUSH_SELECTION,
-        new BrushSelection(this.spreadsheet, this),
+        new BrushSelection(this.spreadsheet),
       );
       this.interactions.set(
         InteractionName.COL_ROW_RESIZE,
-        new RowColResize(this.spreadsheet, this),
+        new RowColResize(this.spreadsheet),
       );
       this.interactions.set(
         InteractionName.COL_ROW_MULTI_SELECTION,
-        new DataCellMultiSelection(this.spreadsheet, this),
+        new DataCellMultiSelection(this.spreadsheet),
       );
     }
 
@@ -253,7 +253,7 @@ export class RootInteraction {
         const CustomInteractionClass = customInteraction.interaction;
         this.interactions.set(
           customInteraction.key,
-          new CustomInteractionClass(this.spreadsheet, this),
+          new CustomInteractionClass(this.spreadsheet),
         );
       });
     }

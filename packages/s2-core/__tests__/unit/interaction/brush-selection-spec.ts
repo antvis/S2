@@ -85,10 +85,8 @@ describe('Interaction Brush Selection Tests', () => {
     mockSpreadSheetInstance.showTooltipWithInfo = jest.fn();
     mockRootInteraction.getPanelGroupAllDataCells = () =>
       panelGroupAllDataCells;
-    brushSelectionInstance = new BrushSelection(
-      mockSpreadSheetInstance,
-      mockRootInteraction,
-    );
+    mockSpreadSheetInstance.interaction = mockRootInteraction;
+    brushSelectionInstance = new BrushSelection(mockSpreadSheetInstance);
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;
     brushSelectionInstance.hidePrepareSelectMaskShape = jest.fn();
@@ -151,7 +149,7 @@ describe('Interaction Brush Selection Tests', () => {
       InteractionBrushSelectionStage.UN_DRAGGED,
     );
     expect(
-      brushSelectionInstance.interaction.hasIntercepts([
+      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
         InterceptType.BRUSH_SELECTION,
       ]),
     ).toBeFalsy();
@@ -171,7 +169,9 @@ describe('Interaction Brush Selection Tests', () => {
     expect(brushSelectionInstance.endBrushPoint).not.toBeDefined();
     expect(brushSelectionInstance.brushRangeDataCells).toHaveLength(0);
     expect(
-      brushSelectionInstance.interaction.hasIntercepts([InterceptType.HOVER]),
+      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
+        InterceptType.HOVER,
+      ]),
     ).toBeFalsy();
   });
 

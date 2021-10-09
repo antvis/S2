@@ -27,10 +27,7 @@ describe('Interaction Row Text Click Tests', () => {
 
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
-    rowTextClick = new RowTextClick(
-      s2 as unknown as SpreadSheet,
-      s2.interaction,
-    );
+    rowTextClick = new RowTextClick(s2 as unknown as SpreadSheet);
     s2.options = {
       hierarchyType: 'grid',
     } as S2Options;
