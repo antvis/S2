@@ -3,67 +3,57 @@ title: S2Options
 order: 1
 ---
 
-## 交叉表所有配置项相关
-
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | :-- | :-- | :-: | :-- | :-- | :-- | --- |
-| hierarchyType | string |  | 'grid' | 'tree'; | grid | 行头的展示方式，grid：平铺网格结构， tree： 树状结构。 |
-| hierarchyCollapse | string |  | boolean | false | 在树状结构模式下行头是否默认展开。 |
-| conditions | [Conditions](#conditions) | ✓ |  |  | 条件模式配置 |
-| totals | [Totals](#) | ✓ |  |  | 小计总结配置 |
-| tooltip | [Tooltip](#) | ✓ |  |  |  tooltip 总配置 |
-| linkFields | string[] |  |  | [] | 外链跳转 |
-| pagination | [Pagination](#) | ✓ |  |  | 分页配置 |
-| freezeRowHeader | boolean | ✓ |  | false | 冻结行头 |
-| pivot | pivot/table |  |  |  | pivot = 交叉表，table = 普通 table |
-| width | number | ✓ |  |  | canvas 的宽度 |
-| height | number | ✓ |  |  | canvas 的高度 |
-| style | [Style](#) | ✓ |  |  | 附加样式 |
-| showSeriesNumber | boolean | ✓ |  | false | 是否显示序号 |
-| hideNodesIds | string[] | ✓ |  | [] | 隐藏的节点 ID |
-| keepOnlyNodesIds | [KeepOnlyIds](#) | ✓ |  | { rowIds: [], colIds: [] } | 仅显示的节点 |
-| registerDefaultInteractions | boolean | ✓ |  |  | 注册默认交互 |
-| scrollReachNodeField | [NodeField](#) | ✓ |  | {rowField: '', colField: ''} |
-| 滚动监听的节点度量 |
-| hiddenColumnFields | string[] | ✓ |  | [] | 隐藏列 （明细表有效） |
-| valueInCols | boolean |  |  | false | 存在衍生指标时单列和多列的切换 |
-| dataCell | [DataCellCallback](#) |  |  |  | 自定义单元格 cell |
-| cornerCell | [CellCallback](#) |  |  |  | 自定义 cornerCell |
-| rowCell | [CellCallback](#) |  |  |  | 自定义行头 cell |
-| colCell | [CellCallback](#) |  |  |  | 自定义列头 cell |
-| frame | [FrameCallback](#) |  |  |  | 自定义 frame 边框 |
-| cornerHeader | [CornerHeaderCallback](#) |  |  |  | 角头可能需要全部自定义，而不是用交叉表概念的 node 来渲染 |
-| layout | [LayoutCallback](#) |  |  |  | 自定义 layout |
-| layoutResult | [LayoutResultCallback](#) |  |  |  | 布局结果自定义 |
-| hierarchy | [HierarchyCallback](#) |  |  |  | 行列结构的自定义 |
-| [key: string] | any |  |  |  | 其他任意的选择配置 |
+| width | `number` | ✓ |  |  | 表格宽度 |
+| height | `number` | ✓ |  |  | 表格高度 |
+| debug | `boolean` |  |  | `false` | 是否开启调试模式 |
+| hierarchyType | `grid` \| `tree` \| `customTree` |  |  | `grid` | 行头的展示方式，grid：平铺网格结构， tree： 树状结构。 customTree: 自定义树状结构 |
+| conditions | [Conditions](#conditions) |  |  |  | 条件模式配置 |
+| totals | [Totals](#totals) |  |  |  | 小计总计配置 |
+| tooltip | [Tooltip](#tooltip) |  |  |  |  tooltip 总配置 |
+| linkFields | `string[]` |  |  |  | 标记字段为链接样式，用于外链跳转 |
+| pagination | [Pagination](#pagination) |  |  |  | 分页配置 |
+| freezeRowHeader | `boolean` |  |  | `true` | 冻结行头 |
+| showSeriesNumber | `boolean` |  |  | `false` | 是否显示行序号 |
+| scrollReachNodeField | [NodeField](#nodefield) | | |  | 滚动监听的节点度量 |
+| customHeaderCells | [CustomHeaderCells](#customheadercells) |  |  | `false` | 自定义行列头单元格 |
+| headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |  | `false` | 自定义行列头操作图标 |
+| customSVGIcons | [CustomSVGIcon[]](#CustomSVGIcon) |  |  | `false` | 自定义 svg 图标 |
+| style | [Style](#style) |  |  |  | 附加样式 |
+| frozenRowCount | `number` |  |  |  | 冻结行的数量，从顶部开始计数 |
+| frozenColCount | `number` |  |  |  | 冻结列的数量，从左侧开始计数 |
+| frozenTrailingRowCount | `number` |  |  |  | 冻结行数量，从底部开始计数 |
+| frozenTrailingColCount | `number` |  |  |  | 冻结列的数量，从右侧开始计数 |
+| hierarchyCollapse | `boolean` |  |  | `false` | 在树状结构模式下行头是否默认展开。 |
+| selectedCellsSpotlight | `boolean` |  |  | `true` | 是否开启选中高亮聚光灯效果 |
+| hoverHighlight | `boolean` |  |  | `true` | 鼠标悬停时高亮当前单元格，以及所对应的行头，列头 |
+| hdAdapter | `boolean` |  |  | `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题 |
+| hiddenColumnFields | `string[]` |  |  |  | 隐藏列 （明细表有效） |
+| mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |  |  |  | 合并单元格信息 |
+| enableCopy | `boolean` |  |  | `false` | 是否允许复制 |
+| dataCell | [DataCellCallback](#datacellcallback) |  |  |  | 自定义单元格 cell |
+| cornerCell | [CellCallback](#cellcallback) |  |  |  | 自定义 cornerCell |
+| rowCell | [CellCallback](#cellcallback) |  |  |  | 自定义行头 cell |
+| colCell | [CellCallback](#cellcallback) |  |  |  | 自定义列头 cell |
+| frame | [FrameCallback](#framecallback) |  |  |  | 自定义 frame 边框 |
+| cornerHeader | [CornerHeaderCallback](#cornerheadercallback) |  |  |  | 自定义角头 |
+| layoutHierarchy | [LayoutHierarchy](#layouthierarchy) |  |  |  | 自定义层级结构 |
+| layoutArrange | [LayoutArrange](#layoutarrange) |  |  |  | 自定义排列顺序 |
+| layoutCoordinate | [layoutCoordinate](#layoutcoordinate) |  |  |  | 自定义坐标 |
+| layoutDataPosition | [layoutDataPosition](#layoutdataposition) |  |  |  | 自定义数据 |
+| filterDisplayDataItem | [FilterDataItemCallback](#filterdataitemcallback) |  |  |  | 过滤数据 |
+| mappingDisplayDataItem | [MappingDataItemCallback](#mappingdataitemcallback) |  |  |  | 转换数据，用于 tooltip 显示 |
+| otterLayout | [OtterLayout](#OtterLayout) |  |  |  | 自定义 layout |
+| customInteractions | [CustomInteraction[]](#custominteraction) |  |  |  | 自定义交互 |
+| dataSet | [DataSet](#dataset) |  |  |  | 自定义数据集 |
+| [key: string] | `unknown` |  |  |  | 其他任意的选择配置，用于自定义表格 |
 
 `markdown:docs/common/conditions.zh.md`
 
 `markdown:docs/common/totals.zh.md`
 
-## Tooltip
-
-object **必选**,_default：null_ 功能描述： tooltip 配置
-
-| 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
-| --- | --- | :-: | --- | --- | --- |
-| showTooltip | boolean |  |  | true | 是否展示 tooltip |
-| operation | [TooltipOperation](#TooltipOperation) |  |  | false | tooltip 操作配置项 |
-| row | [Tooltip](#) |  |  |  | 行头配置 |
-| col | [Tooltip](#) |  |  |  | 列头配置 |
-| cell | [Tooltip](#) |  |  |  | 单元格配置 |
-| renderTooltip | [RenderTooltip](#) |  |  |  | 自定义整个 tooltip, 可以继承 BaseTooltip 自己重写一些方法 |
-| tooltipComponent | React.ReactNode |  |  |  | 自定义 tooltip 弹框组件 |
-
-## TooltipOperation
-
-object **必选**,_default：null_ 功能描述： tooltip 操作配置项
-
-| 参数 | 类型   | 必选 | 取值 | 默认值 | 功能描述 |
-| --- | --- | :-: | --- | --- | --- |
-| hiddenColumns | boolean |  |  | true | 是否开启隐藏列 （明细表有效） |
-| trend | boolean |  |  | false | 是否显示趋势图 icon |
+`markdown:docs/common/tooltip.zh.md`
 
 ## Pagination
 
@@ -71,10 +61,9 @@ boolean ｜ object **必选**,_default：null_ 功能描述： 分页配置
 
 | 参数      | 类型   | 必选 | 取值 | 默认值 | 功能描述            |
 | --------- | ------ | :--: | ---- | ------ | ------------------- |
-| pageSize  | number |  ✓   |      |        | 每页数量            |
-| current   | number |  ✓   |      | 1      | 当前页（从 1 开始） |
-| total     | number |      |      |        | 数据总条数          |
-| pageCount | number |      |      |        | 总页数              |
+| pageSize  | `number` |  ✓   |      |        | 每页数量            |
+| current   | `number` |     |      | 1      | 当前页（从 1 开始） |
+| total     | `number` |      |      |        | 数据总条数          |
 
 ## Style
 
@@ -82,16 +71,13 @@ object **必选**,_default：null_ 功能描述：样式设置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- | --- |
-| treeRowsWidth | number | ✓ |  |  | 树状模式行单元格宽度 |
-| collapsedRows | object: |
-| {string, boolean} |  |  |  | 树状模式行的折叠、收起状态 |
-| collapsedCols | object:{string, boolean} |  |  |  | 树状模式列的折叠、收起状态 |
-| cellCfg | [CellCfg](#) | ✓ |  |  | 单元格配置 |
-| viewCfg | [ViewCfg](#) | ✓ |  |  | 单元格 padding 配置 |
-| colCfg | [ColCfg](#) | ✓ |  |  | 列样式配置 |
-| rowCfg | [RowCfg](#) | ✓ |  |  | 行样式配置 |
-| device | string |  | 'pc' | 'mobile' | 'pc' | 设备类型 |
-| plotSize | [PlotSize](#) |  |  |  |  |
+| treeRowsWidth | `number` |  |  |  | 树状模式行单元格宽度 |
+| collapsedRows | `Record<string, boolean>` |  |  |  | 树状模式行的折叠、收起状态 |
+| collapsedCols | `Record<string, boolean>`  |  |  |  | 树状模式列的折叠、收起状态 |
+| cellCfg | [CellCfg](#cellcfg) |  |  |  | 单元格配置 |
+| colCfg | [ColCfg](#ColCfg) |  |  |  | 列样式配置 |
+| rowCfg | [RowCfg](#RowCfg) |  |  |  | 行样式配置 |
+| device | `pc` \| `mobile` | | | 'pc' | 设备类型 |
 
 ## CellCfg
 
@@ -99,9 +85,10 @@ object **必选**,_default：null_ 功能描述：单元格配置
 
 | 参数    | 类型   | 必选 | 取值 | 默认值 | 功能描述     |
 | ------- | ------ | ---- | ---- | ------ | ------------ |
-| width   | number |      |      |        | 单元格宽度   |
-| height  | number |      |      |        | 单元格高度   |
-| padding | number |      |      |        | 单元格内边距 |
+| width   | `number` |      |      |        | 单元格宽度   |
+| height  | `number` |      |      |        | 单元格高度   |
+| padding | `number` |      |      |        | 单元格内边距 |
+| lineHeight | `number` |      |      |        | 单元格行高 |
 
 ## ColCfg
 
@@ -109,10 +96,10 @@ object **必选**,_default：null_ 功能描述： 列样式配置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| height | number |  |  |  | 单元格高度（普通状态） |
-| widthByFieldValue | number |  |  |  | 根据度量值设置宽度（拖拽或者预设宽度场景） |
-| colWidthType | 'adaptive' &#124; 'compact' |  |  |  | 列类型，紧凑或者自适应 |
-| heightByField | number |  |  |  | 根据度量值设置高度（拖拽或者预设宽度场景） |
+| height | `number` |  |  |  | 单元格高度（普通状态） |
+| widthByFieldValue | `number` |  |  |  | 根据度量值设置宽度（拖拽或者预设宽度场景） |
+| heightByField | `Record<string, number>` |  |  |  | 根据度量值设置高度（拖拽或者预设宽度场景） |
+| colWidthType | `adaptive` \| `compact` |  |  |  | 列类型，adaptive: 自适应，compact: 紧凑 |
 
 ## RowCfg
 
@@ -120,36 +107,9 @@ object **必选**,_default：null_ 功能描述：行样式配置
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| treeRowsWidth | number |  |  |  | 树状模式行单元格宽度 |
-| collapsedRows | object |  |  | {} | 树状模式行的折叠、收起状态 |
-| collapsedCols | object |  |  | {} | 树状模式列的折叠、收起状态 |
-| cellCfg | [CellCfg](#) |  |  | {} | 单元格配置 |
-| colCfg | [ColCfg](#) |  |  | {} | 列样式配置 |
-| rowCfg | [RowCfg](#) |  |  | {} | 行样式配置 |
-| device | pc &#124; mobile |  |  | {} | 设备类型 |
-
-## PlotSize
-
-object **必选**,_default：null_ 功能描述：行样式配置
-
-| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
-| --- | --- | :-: | --- | --- | --- |
-| treeRowsWidth | number |  |  |  | 树状模式行单元格宽度 |
-| collapsedRows | object |  |  | {} | 树状模式行的折叠、收起状态 |
-| collapsedCols | object |  |  | {} | 树状模式列的折叠、收起状态 |
-| cellCfg | [CellCfg](#) |  |  | {} | 单元格配置 |
-| colCfg | [ColCfg](#) |  |  | {} | 列样式配置 |
-| rowCfg | [RowCfg](#) |  |  | {} | 行样式配置 |
-| device | pc &#124; mobile |  |  | {} | 设备类型 |
-
-## keepOnlyNodesIds
-
-object 可选，_default：{}_ 功能描述：仅显示的节点
-
-| 参数   | 类型     | 必选 | 取值 | 默认值 | 功能描述 |
-| ------ | -------- | :--: | ---- | ------ | -------- |
-| rowIds | string[] |      |      |        | 行 Id    |
-| colIds | string[] |      |      |        | 列 Id    |
+| width | `number` |  |  |  | 单元格宽度 |
+| widthByField | `Record<string, number>` |  |  |  | 根据度量值设置宽度（拖拽或者预设宽度场景） |
+| treeRowsWidth | `adaptive` \| `compact` |  |  |  | 树状结构下行宽 （拖拽场景） |
 
 ## NodeField
 
@@ -157,151 +117,251 @@ object 可选，_default：{}_ 功能描述：滚动监听的节点度量
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| rowField | string[] |  |  |  | 行头中需要监听滚动吸顶的度量 id |
-| colField | string[] |  |  |  | 列头中需要监听滚动吸「左」的度量 id |
+| rowField | `string[]` |  |  |  | 行头中需要监听滚动吸顶的度量 id |
+| colField | `string[]` |  |  |  | 列头中需要监听滚动吸「左」的度量 id |
 
 ## DataCellCallback
 
 ```js
-DataCellCallback = (viewMeta: ViewMeta) => Group;
+DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
 ```
 
-功能描述：交叉单元格自定义回调函数返回：Group （返回一个绘制好的布局）参数：[ViewMeta](#)
+功能描述：自定义数值单元格
 
-## ViewMeta
-
-object 必选，_default：{}_ 功能描述：单元个数据和位置等信息
-
-| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
-| --- | --- | :-: | --- | --- | --- |
-| spreadsheet | [BaseSpreadSheet](#) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
-| x | number | ✓ |  |  | 单元格 x 坐标 |
-| y | number | ✓ |  |  | 单元格 y 坐标 |
-| width | number | ✓ |  |  | 单元格宽度 |
-| height | number | ✓ |  |  | 单元格高度 |
-| data | Array<Record<string, any>> | ✓ |  |  | 单元格原始数据度量 |
-| rowIndex | number | ✓ |  |  | 单元格在行叶子节点中的索引 |
-| colIndex | number | ✓ |  |  | 单元格在列叶子节点中的索引 |
-| valueField | string | ✓ |  |  | 度量 id |
-| fieldValue | string | ✓ |  |  | 度量展示的真实值 |
-| isTotals | boolean |  | true： 总计｜ false： 小计   |  | 是否为总计 |
-| rowQuery | Array<Record<string, any>> |  |  |  | 行查询条件 |
-| colQuery | Array<Record<string, any>> |  |  |  | 列查询条件 |
-| rowId | string |  |  |  | 单元格的行 id |
-| colId | string |  |  |  | 单元格的列 id |
-| [key: string] | any |  |  |  | 其他任意的选择配置 |
-
-keepOnlyNodesIds keepOnlyNodesIds
+`markdown:docs/common/view-meta.zh.md`
 
 ## CellCallback
 
 ```js
-CellCallback = (node: Node, spreadsheet: BaseSpreadSheet, ...restOptions) =>
-  Group;
+CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[]) => S2CellType;
 ```
 
-功能描述：角头单元格 cornerCell 自定义回调函数返回：Group （返回一个绘制好的布局）参数：
+功能描述：自定义单元格
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| node | [Node](#) |
-| ✓ |  |  | 当前渲染的 node 节点 |
-| spreadsheet | [BaseSpreadSheet](#) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
-| restOptions |  |  |  |  | 不定参数，传递额外的信息 |
+| node | [Node](#node) | ✓ |  |  | 当前渲染的 node 节点 |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| restOptions | `unknown[]` |  |  |  | 不定参数，传递额外的信息 |
 
 ## CornerHeaderCallback
 
 ```js
-CornerHeaderCallback = (parent: Group, spreadsheet: BaseSpreadSheet, ...restOptions) => void;
+CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOptions: unknown[]) => void;
 ```
 
-功能描述：角头自定义回调函数
-
-参数：
+功能描述：自定义角头
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| parent | [Group](#) |
-| ✓ |  |  | 父类的 group 元素 |
-| spreadsheet | [BaseSpreadSheet](#) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
-| restOptions |  |  |  |  | 不定参数，传递额外的信息 |
+| parent | [S2CellType](#S2CellType) | ✓ |  |  | 父级单元格 |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| restOptions | `unknown[]` |  |  |  | 不定参数，传递额外的信息 |
 
 ## FrameCallback
 
 ```js
-FrameCallback = (cfg: object) => Frame;
+FrameCallback = (cfg: FrameConfig) => Frame;
 ```
 
-功能描述：框架自定义回调函数返回： Frame（返回一个绘制好的布局）参数：group 绘制所需属性
-
-## LayoutCallback
-
-```js
-LayoutCallback = (spreadsheet: BaseSpreadSheet, rowNode: Node, colNode: Node) => void;
-```
-
-功能描述：布局自定义回调函数，用于控制每一个需要控制的行列节点参数：
+功能描述：自定义框架
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| spreadsheet | [BaseSpreadSheet]() | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
-| rowNode | [Node]() | ✓ |  |  | 行节点，可能为 null |
-| colNode | [Node]() | ✓ |  |  | 列节点，可能为 null |
+| cfg | [FrameConfig](#frameconfig) | ✓ |  |  | 当前渲染的 node 节点 |
 
-## LayoutResultCallback
+## LayoutHierarchy
 
 ```js
-LayoutResultCallback = (layoutResult: LayoutResult) => LayoutResult;
+LayoutHierarchy = (spreadsheet: SpreadSheet, node: Node) => LayoutHierarchyReturnType;
 ```
 
-功能描述：布局结果回调函数参数：[LayoutResult](#) 返回：[LayoutResult](#)
+功能描述：自定义层级结构
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| node | [Node](#node) | ✓ |  |  | 当前渲染的 node 节点 |
+
+```ts
+interface LayoutHierarchyReturnType {
+  push?: Node[];
+  unshift?: Node[];
+  delete?: boolean;
+}
+```
+
+## LayoutArrange
+
+```js
+LayoutArrange = (spreadsheet: SpreadSheet, parent: Node, field: string, fieldValues: string[]) => string[];
+```
+
+功能描述：自定义顺序
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| node | [Node](#node) | ✓ |  |  | 当前渲染的 node 节点 |
+| field | `string` | ✓ |  |  | 当前的字段名 |
+| fieldValues | `string[]` | ✓ |  |  | 当前字段值 |
+
+## LayoutCoordinate
+
+```js
+LayoutCoordinate = (spreadsheet: SpreadSheet, rowNode: Node, colNode: Node) => void
+```
+
+功能描述：自定义坐标
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| rowNode | [Node](#node) | ✓ |  |  | 行节点 |
+| colNode | [Node](#node) | ✓ |  |  | 列节点 |
+
+## LayoutDataPosition
+
+```js
+LayoutDataPosition = (spreadsheet: SpreadSheet, getCellData: GetCellMeta) => GetCellMeta
+```
+
+功能描述：自定义数据
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| getCellData | [GetCellMeta](#GetCellMeta) | ✓ |  |  | 获取单元格数据和位置等信息|
+
+```ts
+type GetCellMeta = (rowIndex?: number, colIndex?: number) => ViewMeta;
+```
+
+## FilterDataItemCallback
+
+```js
+FilterDataItemCallback = (valueField: string, data: DataItem) => DataItem
+```
+
+功能描述：转换，过滤数据
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| valueField | `string` | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| data | [DataItem](#DataItem) | ✓ |  |  | 数据格式 |
+
+## MappingDataItemCallback
+
+```js
+MappingDataItemCallback = (valueField: string, data: DataItem) => Record<string, string | number> | DataItem;
+```
+
+功能描述：数据隐射，用于显示在 tooltip 中
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| valueField | `string` | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| data | [DataItem](#DataItem) | ✓ |  |  | 数据格式 |
+
+## DataItem
+
+功能描述：基本数据格式
+
+```ts
+export interface MultiData {
+  label?: string;
+  values: (string | number)[][];
+}
+
+export type SimpleDataItem = string | number;
+
+export type DataItem = SimpleDataItem | MultiData;
+```
+
+## OtterLayout
+
+```js
+OtterLayout = (spreadsheet: SpreadSheet, rowNode: Node, colNode: Node) => void;
+```
+
+功能描述：自定义布局
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| rowNode | [Node](#node) | ✓ |  |  | 行节点 |
+| colNode | [Node](#node) | ✓ |  |  | 列节点 |
 
 ## LayoutResult
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| colNodes | [Node[]]() | ✓ |  |  | 列的所有节点 |
-| colsHierarchy | [Hierarchy]() | ✓ |  |  | 列的结构信息 |
-| rowNodes | [Node[]]() | ✓ |  |  | 行的所有节点 |
-| rowsHierarchy | [Hierarchy]() | ✓ |  |  | 行的结构信息 |
-| rowLeafNodes | [Node[]]() | ✓ |  |  | 行的所有叶子节点，用于笛卡尔交叉 |
-| colLeafNodes | [Node[]]() | ✓ |  |  | 列的所有叶子节点，用于笛卡尔交叉 |
+| colNodes | [Node[]](#node) |  |  |  | 列的所有节点 |
+| colsHierarchy | [Hierarchy](#hierarchy) |  |  |  | 列的结构信息 |
+| rowNodes | [Node[]](#node) |  |  |  | 行的所有节点 |
+| rowsHierarchy | [Hierarchy](#hierarchy) | ✓ |  |  | 行的结构信息 |
+| rowLeafNodes | [Node[]](#node) |  |  |  | 行的所有叶子节点，用于笛卡尔交叉 |
+| colLeafNodes | [Node[]](#node) |  |  |  | 列的所有叶子节点，用于笛卡尔交叉 |
+| getViewMeta | `(rowIndex: number, colIndex: number) => ViewMeta` | | | | 获取交叉出 [x,y] 对应坐标的信息 |
+| spreadsheet | [SpreadSheet](#spreadsheet) |  | | | 表类实例，可以访问任意的配置信息 |
 
-| getViewMeta | Function： (rowIndex: number, colIndex: number) => ViewMeta | ✓ | | | 获取交叉出 [x,y] 对应坐标的信息 | | spreadsheet | [BaseSpreadSheet]() | ✓ | | | 表类实例，可以访问任意的配置信息 |
+## CustomHeaderCells
 
-## HierarchyCallback
+功能描述：自定义行列头单元格：
 
-```js
-HierarchyCallback = (spreadsheet: BaseSpreadSheet, node: Node) =>
-  HierarchyResult;
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| cellLabels | `string[]` | ✓ |  |  | 自定义单元格标签 |
+| mode | `pick` \| `omit`  | ✓ |  |  | pick: 提取，omit: 去除 |
+
+## HeaderActionIcon
+
+功能描述：自定义行列头操作图标：
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| iconNames | `string[]` | ✓ |  |  | 已注册的 icon 类型或自定义的 icon 类型名 |
+| belongsCell | [Omit<CellTypes, 'dataCell'>]()  | ✓ |  |  | 所属的 cell 类型 |
+| defaultHide | `boolean`  |  |  |  | 是否默认隐藏， true 为 hover 后显示，false 为一直显示 |
+| displayCondition | `(mete: Node) => boolean`  |  |  |  | 需要展示的层级（行头/列头） 如果没有改配置则默认全部打开 |
+| action | `(headerActionIconProps: HeaderActionIconProps) => void`  |  |  |  | 点击后的执行函数 |
+
+## HeaderActionIconProps
+
+```ts
+interface HeaderActionIconProps {
+  iconName: string;
+  meta: Node;
+  event: Event;
+}
 ```
 
-功能描述：行列布局结构自定义回调函数参数：
-
-| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
-| --- | --- | :-: | --- | --- | --- |
-| spreadsheet | [BaseSpreadSheet]() | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
-| node | [Node]() | ✓ |  |  | 当前生成的节点 |
-
-返回：[HierarchyResult](#)
-
-## HierarchyResult
-
-| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
-| --- | --- | :-: | --- | --- | --- |
-| nodes | [Node[]]() |  |  |  | 需要额外增加的节点 |
-| push | boolean |  |  |  | push 在 node 前 (false) 或者后 (true) 增加额外的节点 (nodes) |
-
-## RenderTooltip
+## DataSet
 
 ```js
-RenderTooltip = (spreadsheet: BaseSpreadSheet) => BaseTooltip;
+DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 ```
 
-功能描述：行列布局结构自定义回调函数参数：
+## MergedCellInfo
 
 | 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- | --- |
-| spreadsheet | [BaseSpreadSheet]() | ✓ |  |  | 表类实例，可以访问任意的配置信息 |
+| colIndex | `boolean` |  |  |  | 列索引 |
+| rowIndex | `boolean` |  |  |  | 行索引 |
+| showText | `boolean` |  |  |  | 是否显示文本 |
 
-返回：[BaseTooltip](#)
+## FrameConfig
+
+| 参数 | 类型 | 必选 | 取值 | 默认值 | 功能描述 |
+| --- | --- | :-: | --- | --- | --- |
+| position | `{x: number, y: number}` |  |  |  | 位置 |
+| scrollX | `number` |  |  |  | 横向偏移量 |
+| width | `number` |  |  |  | 宽度 |
+| height | `number` |  |  |  | 高度 |
+| viewportWidth | `number` |  |  |  | 可视区域宽度 |
+| viewportHeight | `number` |  |  |  | 可视区域高度 |
+| showCornerRightShadow | `boolean` |  |  |  | 显示角头右阴影 |
+| showViewPortRightShadow | `boolean` |  |  |  | 显示可视区域右阴影 |
+| scrollContainsRowHeader | `boolean` |  |  |  | 滚动时是否包含焊头 |
+| isPivotMode | `boolean` |  |  |  | 是否是透视表 |
+| spreadsheet | [SpreadSheet](#spreadsheet) |  |  |  | 表格实例 |

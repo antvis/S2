@@ -36,18 +36,14 @@ export interface HiddenColumnsInfo {
 export interface StoreKey {
   // horizontal scroll bar scroll x offset
   scrollX: number;
-  // horizontal scroll bar scroll y offset
+  // vertical scroll bar scroll y offset
   scrollY: number;
   // row header scroll bar scroll x offset
   hRowScrollX: number;
   // column cell click sort params
   sortParam: SortParam;
-  // corner text expand info
-  cornerExpand: Record<string, number>;
   // last reached border node id
   lastReachedBorderId: ReachedBorderId;
-  // 行。列选中单元的id
-  rowColSelectedId: string[];
   // 下钻节点id和对应生成的 path寻址路径
   drillDownIdPathMap: Map<string, number[][]>;
   // 当前下钻节点
@@ -58,7 +54,7 @@ export interface StoreKey {
   interactionStateInfo: InteractionStateInfo;
   drillDownFieldInLevel: PartDrillDownFieldInLevel[];
   originalDataCfg: S2DataConfig;
-  drillDownMeta: any;
+  drillDownMeta: Record<string, any>;
   panelBBox: BBox;
   // resize area group
   activeResizeArea: Group;

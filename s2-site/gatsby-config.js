@@ -57,12 +57,20 @@ module.exports = {
         order: 0,
       },
       {
+        slug: 'api/basic-class',
+        title: {
+          zh: '基础类',
+          en: 'Basic class',
+        },
+        order: 1,
+      },
+      {
         slug: 'api/components',
         title: {
           zh: '组件',
           en: 'Components',
         },
-        order: 1,
+        order: 2,
       },
       {
         slug: 'manual/basic',
@@ -100,7 +108,7 @@ module.exports = {
         slug: 'manual/basic/analysis',
         title: {
           zh: '分析组件',
-          en: 'Analyze Component',
+          en: 'Analyze component',
         },
         order: 6,
       },

@@ -96,11 +96,11 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
-        x: (spreadsheet.freezeRowHeader() ? scrollX : 0) + frozenColWidth,
+        x: (spreadsheet.isFreezeRowHeader() ? scrollX : 0) + frozenColWidth,
         y: 0,
         width:
           width +
-          (spreadsheet.freezeRowHeader() ? 0 : scrollX) -
+          (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
           frozenColWidth -
           frozenTrailingColWidth,
         height,
@@ -120,7 +120,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
           y: 0,
           width:
             width +
-            (spreadsheet.freezeRowHeader() ? 0 : scrollX) -
+            (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
             frozenColWidth -
             frozenTrailingColWidth +
             resizeAreaSize,
@@ -155,7 +155,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       }
       return (
         width + scrollX > item.x &&
-        scrollX - (spreadsheet.freezeRowHeader() ? 0 : cornerWidth) <
+        scrollX - (spreadsheet.isFreezeRowHeader() ? 0 : cornerWidth) <
           item.x + item.width
       );
     };
