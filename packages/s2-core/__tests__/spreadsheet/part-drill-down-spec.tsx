@@ -1,7 +1,7 @@
-import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React, { useState } from 'react';
+import { act } from 'react-dom/test-utils';
 import { Switch, Button, Layout } from 'antd';
 const { Header, Sider, Content } = Layout;
 import { forEach, merge, random } from 'lodash';

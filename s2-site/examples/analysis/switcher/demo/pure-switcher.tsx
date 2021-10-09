@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Switcher } from '@antv/s2';
+import { SearchIcon } from '@antv/s2/esm/common/icons';
 import insertCss from 'insert-css';
 import '@antv/s2/dist/s2.min.css';
 
@@ -25,9 +26,3 @@ ReactDOM.render(
   <Switcher {...switcherFields} onSubmit={onSubmit} />,
   document.getElementById('container'),
 );
-
-insertCss(`
-  .antv-s2-switcher-item.checkable-item {
-    align-items: center;
-  }
-`);
