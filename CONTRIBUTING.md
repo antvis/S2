@@ -1,4 +1,6 @@
 
+<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./CONTRIBUTING.en-US.md)
+
 如果你恰好看到了这篇文章，你一定是希望对这个项目贡献自己的一份力量
 
 ## 欢迎任何形式的贡献
