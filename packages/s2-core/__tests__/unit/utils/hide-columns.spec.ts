@@ -6,8 +6,10 @@ import {
   getHiddenColumnsThunkGroup,
   isLastColumnAfterHidden,
   hideColumns,
+  hideColumnsByThunkGroup,
 } from '@/utils/hide-columns';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { S2Event } from '@/common/constant';
 
 describe('hide-columns test', () => {
   let sheet: SpreadSheet;
@@ -121,7 +123,7 @@ describe('hide-columns test', () => {
     expect(isLastColumnAfterHidden(sheet, '4')).toBeFalsy();
   });
 
-  test('should skip update when hidden column fields not change', () => {
+  test('should skip update if hidden column fields not change', () => {
     hideColumns(mockSpreadSheetInstance, []);
     expect(mockSpreadSheetInstance.render).not.toHaveBeenCalled();
   });
@@ -155,6 +157,33 @@ describe('hide-columns test', () => {
     ]);
   });
 
+  test('should hide columns correctly', () => {
+    const columnsHidden = jest.fn();
+    mockSpreadSheetInstance.on(S2Event.LAYOUT_TABLE_COL_HIDDEN, columnsHidden);
+
+    hideColumns(mockSpreadSheetInstance, ['5']);
+
+    // emit event
+    expect(columnsHidden).toHaveBeenCalledWith(
+      // current hidden column infos
+      {
+        displaySiblingNode: { colIndex: 4, field: '4' },
+        hideColumnNodes: [{ colIndex: 5, field: '5' }],
+      },
+      // hidden columns detail
+      [
+        {
+          displaySiblingNode: { colIndex: 4, field: '4' },
+          hideColumnNodes: [{ colIndex: 5, field: '5' }],
+        },
+      ],
+    );
+    // reset interaction
+    expect(mockSpreadSheetInstance.interaction.reset).toHaveBeenCalledTimes(1);
+    // rerender table
+    expect(mockSpreadSheetInstance.render).toHaveBeenCalledTimes(1);
+  });
+
   test('should hidden multiple columns', () => {
     hideColumns(mockSpreadSheetInstance, ['2', '3']);
 
@@ -167,5 +196,26 @@ describe('hide-columns test', () => {
         ],
       },
     ]);
+  });
+
+  test('should hidden group columns', () => {
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, ['1', '3']);
+
+    expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual([
+      {
+        displaySiblingNode: { field: '2', colIndex: 2 },
+        hideColumnNodes: [{ field: '1', colIndex: 1 }],
+      },
+      {
+        displaySiblingNode: { field: '4', colIndex: 4 },
+        hideColumnNodes: [{ field: '3', colIndex: 3 }],
+      },
+    ]);
+  });
+
+  test('should skip hidden group columns if hidden column fields not change', () => {
+    hideColumnsByThunkGroup(mockSpreadSheetInstance, []);
+
+    expect(mockSpreadSheetInstance.render).not.toHaveBeenCalled();
   });
 });
