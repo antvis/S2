@@ -20,3 +20,4 @@ export const SheetComponent = (props: SpreadsheetProps) => {
 
 export { DrillDown, DrillDownProps } from './drill-down';
 export { Switcher, SwitcherProps } from './switcher';
+export { AdvancedSort, AdvancedSortProps } from './advanced-sort';
