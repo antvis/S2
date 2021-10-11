@@ -1,4 +1,4 @@
-import { filter, flatten, isEmpty, isNil, map, mapValues } from 'lodash';
+import { filter, flatten, isNil, map, mapValues } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
 import {
   FieldType,
