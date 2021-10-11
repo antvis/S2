@@ -97,4 +97,4 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 s2.render();
 ```
 
-<playground path='interaction/demo/table-link-jump.ts' rid='container' height='400'></playground>
+<playground path='interaction/demo/table-link-jump.ts' rid='container2' height='400'></playground>
