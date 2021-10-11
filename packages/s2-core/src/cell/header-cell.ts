@@ -32,7 +32,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   protected actionIcons: GuiIcon[];
 
   protected handleRestOptions(...[headerConfig]: [BaseHeaderConfig]) {
-    this.headerConfig = headerConfig;
+    this.headerConfig = { ...this.headerConfig, ...headerConfig };
     const { value, query } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams;
     const isValueCell = this.isValueCell(); // 是否是数值节点
