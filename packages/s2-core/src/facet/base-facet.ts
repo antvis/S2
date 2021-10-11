@@ -28,7 +28,6 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
-  InteractionStateName,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
