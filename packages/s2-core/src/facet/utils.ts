@@ -96,8 +96,13 @@ export const calculateInViewIndexes = (
  * 优化滚动方向，对于小角度的滚动，固定为一个方向
  * @param x
  * @param y
+ * @param ratio
  */
-export const optimizeScrollXY = (x: number, y: number): [number, number] => {
+export const optimizeScrollXY = (
+  x: number,
+  y: number,
+  ratio: number,
+): [number, number] => {
   const ANGLE = 2; // 调参工程师
   const angle = Math.abs(x / y);
 
@@ -105,7 +110,7 @@ export const optimizeScrollXY = (x: number, y: number): [number, number] => {
   const deltaX = angle <= 1 / ANGLE ? 0 : x;
   const deltaY = angle > ANGLE ? 0 : y;
 
-  return [deltaX, deltaY];
+  return [deltaX * ratio, deltaY * ratio];
 };
 
 export const translateGroup = (

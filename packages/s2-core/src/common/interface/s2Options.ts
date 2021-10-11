@@ -82,6 +82,8 @@ export interface S2PartialOptions {
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // enable Command + C to copy spread data
   readonly enableCopy?: boolean;
+  // the ratio to control scroll speed, default set to 1
+  readonly scrollSpeedRatio?: number;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -195,6 +197,7 @@ export const defaultOptions: S2Options = {
   frozenTrailingRowCount: 0,
   frozenTrailingColCount: 0,
   hdAdapter: true,
+  scrollSpeedRatio: 1,
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>
