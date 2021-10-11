@@ -11,7 +11,7 @@ import {
 } from 'lodash';
 import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
 import { CellBoxCfg, CellCfg, TooltipPosition } from '@/common/interface';
-import { S2Options, SpreadSheetTheme } from '@/index';
+import { S2Options, S2Theme } from '@/index';
 import { renderText } from '@/utils/g-renders';
 
 const canvas = document.createElement('canvas');
@@ -22,15 +22,16 @@ const ctx = canvas.getContext('2d');
  */
 export const measureTextWidth = memoize(
   (text: number | string = '', font: unknown): number => {
+    if (!font) {
+      return 0;
+    }
     const { fontSize, fontFamily, fontWeight, fontStyle, fontVariant } =
       font as CSSStyleDeclaration;
-    ctx.font = [
-      fontStyle,
-      fontVariant,
-      fontWeight,
-      `${fontSize}px`,
-      fontFamily,
-    ].join(' ');
+    // copy G 里面的处理逻辑
+    ctx.font = [fontStyle, fontVariant, fontWeight, `${fontSize}px`, fontFamily]
+      .join(' ')
+      .trim();
+
     return ctx.measureText(`${text}`).width;
   },
   (text: any, font) => [text, ...values(font)].join(''),
@@ -165,12 +166,13 @@ export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
  * @param priority optional 优先显示的文本
  */
 export const getEllipsisText = (
-  text = '-',
+  text: string,
   maxWidth: number,
   fontParam?: unknown,
   priorityParam?: string[],
 ) => {
   let font = {};
+  const finalText = text ?? '-';
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
@@ -178,11 +180,15 @@ export const getEllipsisText = (
     font = fontParam || {};
   }
   if (!priority || !priority.length) {
-    return getEllipsisTextInner(text, maxWidth, font as CSSStyleDeclaration);
+    return getEllipsisTextInner(
+      finalText,
+      maxWidth,
+      font as CSSStyleDeclaration,
+    );
   }
 
   const leftSubTexts = [];
-  let subTexts = [text];
+  let subTexts = [finalText];
   priority.forEach((priorityItem) => {
     subTexts.forEach((tempSubText, index) => {
       // 处理 leftText
@@ -204,7 +210,7 @@ export const getEllipsisText = (
   // original text is split into serval texts by priority
   subTexts = leftSubTexts.concat(subTexts);
 
-  let result = text;
+  let result = finalText;
   const DOT_WIDTH = measureTextWidth('...', font);
   let remainWidth = maxWidth;
   subTexts.forEach((subText) => {
@@ -265,7 +271,7 @@ const getStyle = (
   colIndex: number,
   value: string | number,
   options: S2Options,
-  theme: SpreadSheetTheme,
+  theme: S2Theme,
 ) => {
   const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
   const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;

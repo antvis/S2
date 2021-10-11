@@ -2,7 +2,6 @@
 name: 🐛 Bug report
 about: Let us know something is wrong.
 title: '🐛'
-labels: Bug
 ---
 
 ### 🏷 Version

@@ -36,7 +36,7 @@ export enum S2Event {
 
   /** ================ Merged Cell ================  */
   MERGED_CELLS_MOUSE_UP = 'merged-cells:mouse-up',
-  MERGED_ELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
+  MERGED_CELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
   MERGED_CELLS_HOVER = 'merged-cells:hover',
   MERGED_CELLS_CLICK = 'merged-cells:click',
   MERGED_CELLS_DOUBLE_CLICK = 'merged-cells:double-click',

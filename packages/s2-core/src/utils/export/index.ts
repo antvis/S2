@@ -186,12 +186,10 @@ export const copyData = (
   const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
     sheetInstance?.facet?.layoutResult;
   const { valueInCols } = sheetInstance.options;
-  const rows = clone(rowsHierarchy?.rows);
-
   // Generate the table header.
 
-  const rowsHeader = rows.map((item) =>
-    sheetInstance.dataSet.getFieldName(item),
+  const rowsHeader = rowsHierarchy.sampleNodesForAllLevels.map((item) =>
+    sheetInstance.dataSet.getFieldName(item.key),
   );
 
   const rowLength = rowsHeader.length;

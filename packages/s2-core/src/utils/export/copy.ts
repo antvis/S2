@@ -1,6 +1,7 @@
 import { copyToClipboard } from '.';
-import { S2CellType } from '@/common/interface';
+import { S2CellType, ViewMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
+import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -47,9 +48,69 @@ export const getTwoDimData = (cells: S2CellType[]) => {
   return twoDimDataArray;
 };
 
+const processAllSelected = (spreadsheet: SpreadSheet) => {
+  // 全选复制
+  const selectedFiled = spreadsheet.dataCfg.fields.columns;
+  return spreadsheet.dataCfg.data.reduce((pre, cur) => {
+    return (
+      pre +
+      '\n' +
+      selectedFiled.reduce((prev, curr) => prev + '\t' + cur[curr], '')
+    );
+  }, '');
+};
+
+const processColSelected = (
+  spreadsheet: SpreadSheet,
+  selectedCols: S2CellType<ViewMeta>[],
+) => {
+  const selectedFiled = selectedCols.map((e) => e.getMeta().field);
+  return spreadsheet.dataCfg.data.reduce((pre, cur) => {
+    return (
+      pre +
+      '\n' +
+      selectedFiled.reduce((prev, curr) => prev + '\t' + cur[curr], '')
+    );
+  }, '');
+};
+
+const processRowSelected = (
+  spreadsheet: SpreadSheet,
+  selectedRows: S2CellType<ViewMeta>[],
+) => {
+  const selectedIndex = selectedRows.map((e) => e.getMeta().rowIndex);
+  return spreadsheet.dataCfg.data
+    .filter((e, i) => selectedIndex.includes(i))
+    .map((e) =>
+      Object.keys(e)
+        .map((key) => e[key])
+        .join('\t'),
+    )
+    .join('\n');
+};
+
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
-  const cells = spreadsheet.interaction.getActiveCells();
-  const data = processCopyData(getTwoDimData(cells));
+  const interaction = spreadsheet.interaction;
+  const cells = interaction.getActiveCells();
+
+  let data: string;
+  const selectedCols = cells.filter(
+    ({ cellType }) => cellType === CellTypes.COL_CELL,
+  );
+  const selectedRows = cells.filter(
+    ({ cellType }) => cellType === CellTypes.ROW_CELL,
+  );
+
+  if (interaction.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
+    data = processAllSelected(spreadsheet);
+  } else if (selectedCols.length) {
+    data = processColSelected(spreadsheet, selectedCols);
+  } else if (selectedRows.length) {
+    data = processRowSelected(spreadsheet, selectedRows);
+  } else {
+    // normal selected
+    data = processCopyData(getTwoDimData(cells));
+  }
   if (data) {
     copyToClipboard(data);
   }

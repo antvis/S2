@@ -26,24 +26,36 @@ export interface PartDrillDownInfo {
 }
 
 export interface PartDrillDown {
-  // Clear the info of drill down
-  clearDrillDown?: {
-    rowId: string;
-  };
   // The configuration of drill down
   drillConfig: DrillDownProps;
   // The numbers of drill down result
   drillItemsNum?: number;
-  // Decide the drill down icon show in which levels according to the row header labels.
-  customDisplayByLabelName?: {
-    // The names of row header labels.
-    // Using the ID_SEPARATOR('[&]') to join two labels when there are hierarchical relations between them.
-    labelNames: string[];
-    // omit(default): the all levels included in rowNames would hide the drill down icon.
-    // pick: only show the drill down icon on the levels those included in rowNames.
-    mode: 'pick' | 'omit';
-  };
   fetchData: (meta: Node, drillFields: string[]) => Promise<PartDrillDownInfo>;
+  // Clear the info of drill down
+  clearDrillDown?: {
+    rowId: string;
+  };
+  // Decide the drill down icon show conditions.
+  displayCondition?: (meta: Node) => boolean;
+}
+
+// 用于和下钻组件进行交互联动
+export interface PartDrillDownDataCache {
+  // 执行下钻的行头id
+  rowId: string;
+  // 下钻的行头level
+  drillLevel: number;
+  // 下钻的维度
+  drillField: string;
+  // 下钻的数据
+  drillData: Record<string, string | number>[];
+}
+
+export interface PartDrillDownFieldInLevel {
+  // 下钻的维度
+  drillField: string;
+  // 下钻的层级
+  drillLevel: number;
 }
 
 export interface BaseSheetProps {

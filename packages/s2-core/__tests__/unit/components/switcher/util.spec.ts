@@ -1,15 +1,20 @@
-import { getNonEmptyFieldCount } from './../../../../src/components/switcher/util';
 import { FieldType } from '@/components/switcher/constant';
-import { SwitcherItem, SwitcherState } from '@/components/switcher/interface';
 import {
+  SwitcherItem,
+  SwitcherState,
+  SwitcherFields,
+} from '@/components/switcher/interface';
+import {
+  getNonEmptyFieldCount,
+  getSwitcherState,
   getSwitcherClassName,
   getMainLayoutClassName,
-  shouldDimensionCrossRows,
-  isMeasureType,
+  shouldCrossRows,
   moveItem,
   checkItem,
   generateSwitchResult,
 } from '@/components/switcher/util';
+
 describe('switcher util test', () => {
   test('should return correct class name with prefix', () => {
     expect(getSwitcherClassName('content', 'text')).toEqual(
@@ -17,21 +22,17 @@ describe('switcher util test', () => {
     );
   });
   test('should return correct non empty count', () => {
-    const state: SwitcherState = {
-      [FieldType.Rows]: [],
-      [FieldType.Cols]: [],
-      [FieldType.Values]: [],
-    };
-    expect(getNonEmptyFieldCount(state)).toBe(0);
+    const fields: SwitcherFields = {};
+    expect(getNonEmptyFieldCount(fields)).toBe(0);
 
-    state[FieldType.Rows] = [{ id: 'id' }];
-    expect(getNonEmptyFieldCount(state)).toBe(1);
+    fields[FieldType.Rows] = { items: [{ id: 'id' }] };
+    expect(getNonEmptyFieldCount(fields)).toBe(1);
 
-    state[FieldType.Cols] = [{ id: 'id' }];
-    expect(getNonEmptyFieldCount(state)).toBe(2);
+    fields[FieldType.Cols] = { items: [{ id: 'id' }] };
+    expect(getNonEmptyFieldCount(fields)).toBe(2);
 
-    state[FieldType.Values] = [{ id: 'id' }];
-    expect(getNonEmptyFieldCount(state)).toBe(3);
+    fields[FieldType.Values] = { items: [{ id: 'id' }] };
+    expect(getNonEmptyFieldCount(fields)).toBe(3);
   });
 
   test.each([
@@ -46,21 +47,16 @@ describe('switcher util test', () => {
   );
 
   test('should return true if nonempty count is less than max count', () => {
-    expect(shouldDimensionCrossRows(2)).toBeTrue();
+    expect(shouldCrossRows(2, FieldType.Rows)).toBeTrue();
   });
 
   test('should return true if nonempty count is greater than max count', () => {
-    expect(shouldDimensionCrossRows(3)).toBeFalse();
-    expect(shouldDimensionCrossRows(4)).toBeFalse();
+    expect(shouldCrossRows(3, FieldType.Rows)).toBeFalse();
+    expect(shouldCrossRows(4, FieldType.Rows)).toBeFalse();
   });
 
-  test('should return true if field type is values', () => {
-    expect(isMeasureType(FieldType.Values)).toBeTrue();
-  });
-
-  test('should return false if field type is not values', () => {
-    expect(isMeasureType(FieldType.Rows)).toBeFalse();
-    expect(isMeasureType(FieldType.Cols)).toBeFalse();
+  test('should return true if field type is value', () => {
+    expect(shouldCrossRows(1, FieldType.Values)).toBeTrue();
   });
 
   describe('move item test', () => {
@@ -256,10 +252,39 @@ describe('switcher util test', () => {
     });
     test('should return generate switch result when values have no children', () => {
       expect(generateSwitchResult(state)).toEqual({
-        rows: ['r1', 'r2'],
-        cols: ['c1', 'c2'],
-        values: ['v1', 'v2'],
-        hiddenValues: [],
+        rows: {
+          items: [
+            {
+              id: 'r1',
+            },
+            {
+              id: 'r2',
+            },
+          ],
+          hideItems: [],
+        },
+        columns: {
+          items: [
+            {
+              id: 'c1',
+            },
+            {
+              id: 'c2',
+            },
+          ],
+          hideItems: [],
+        },
+        values: {
+          items: [
+            {
+              id: 'v1',
+            },
+            {
+              id: 'v2',
+            },
+          ],
+          hideItems: [],
+        },
       });
     });
 
@@ -280,11 +305,47 @@ describe('switcher util test', () => {
           id: 'v2',
         },
       ];
+
       expect(generateSwitchResult(state)).toEqual({
-        rows: ['r1', 'r2'],
-        cols: ['c1', 'c2'],
-        values: ['v1', 'vc1', 'vc2', 'v2'],
-        hiddenValues: [],
+        rows: {
+          items: [
+            {
+              id: 'r1',
+            },
+            {
+              id: 'r2',
+            },
+          ],
+          hideItems: [],
+        },
+        columns: {
+          items: [
+            {
+              id: 'c1',
+            },
+            {
+              id: 'c2',
+            },
+          ],
+          hideItems: [],
+        },
+        values: {
+          items: [
+            {
+              id: 'v1',
+            },
+            {
+              id: 'vc1',
+            },
+            {
+              id: 'vc2',
+            },
+            {
+              id: 'v2',
+            },
+          ],
+          hideItems: [],
+        },
       });
     });
 
@@ -314,11 +375,84 @@ describe('switcher util test', () => {
         },
       ];
       expect(generateSwitchResult(state)).toEqual({
-        rows: ['r1', 'r2'],
-        cols: ['c1', 'c2'],
-        values: ['v1', 'vc1', 'vc2', 'v2', 'vc3'],
-        hiddenValues: ['vc1', 'v2', 'vc3'],
+        rows: {
+          items: [
+            {
+              id: 'r1',
+            },
+            {
+              id: 'r2',
+            },
+          ],
+          hideItems: [],
+        },
+        columns: {
+          items: [
+            {
+              id: 'c1',
+            },
+            {
+              id: 'c2',
+            },
+          ],
+          hideItems: [],
+        },
+        values: {
+          items: [
+            {
+              id: 'v1',
+            },
+            {
+              id: 'vc1',
+              checked: false,
+            },
+            {
+              id: 'vc2',
+            },
+            {
+              id: 'v2',
+              checked: false,
+            },
+            {
+              id: 'vc3',
+              checked: false,
+            },
+          ],
+          hideItems: [
+            {
+              id: 'vc1',
+              checked: false,
+            },
+            {
+              id: 'v2',
+              checked: false,
+            },
+            {
+              id: 'vc3',
+              checked: false,
+            },
+          ],
+        },
       });
+    });
+  });
+
+  test('should return switcher state from switcher fields', () => {
+    const fields: SwitcherFields = {
+      rows: {
+        items: [{ id: 'row' }],
+      },
+      columns: {
+        items: [{ id: 'column' }],
+      },
+      values: {
+        items: [{ id: 'value' }],
+      },
+    };
+    expect(getSwitcherState(fields)).toEqual({
+      rows: [{ id: 'row' }],
+      columns: [{ id: 'column' }],
+      values: [{ id: 'value' }],
     });
   });
 });

@@ -15,7 +15,7 @@ import {
   TableSheet,
 } from '@/index';
 import { Switcher } from '@/components/switcher';
-import { SwitcherItem } from '@/components/switcher/interface';
+import { SwitcherFields } from '@/components/switcher/interface';
 
 let s2: TableSheet;
 
@@ -102,6 +102,7 @@ function MainLayout({ callback }) {
     height: 600,
     showSeriesNumber: true,
     enableCopy: true,
+    hoverHighlight: false,
     style: {
       colCfg: {
         colWidthType: 'compact',
@@ -132,7 +133,7 @@ function MainLayout({ callback }) {
   const s2Ref = React.useRef<SpreadSheet>(null);
 
   const logData = (...d: unknown[]) => {
-    console.log(...d);
+    console.info(...d);
   };
 
   useEffect(() => {
@@ -142,6 +143,13 @@ function MainLayout({ callback }) {
     });
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, logData);
     s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_HIDE, logData);
+    s2Ref.current.on(S2Event.GLOBAL_KEYBOARD_DOWN, (e) => {
+      if (e.key === 'a' && e.metaKey) {
+        e.preventDefault();
+        s2Ref.current.interaction.selectAll();
+      }
+    });
+
     s2Ref.current.on(S2Event.GLOBAL_SELECTED, logData);
     return () => {
       s2Ref.current.off(S2Event.GLOBAL_COPIED);
@@ -151,29 +159,33 @@ function MainLayout({ callback }) {
     };
   }, []);
 
-  const switcherValues: SwitcherItem[] = columns.map((field) => {
-    return {
-      id: field,
-      displayName: find(meta, { field })?.name,
-      checked: true,
-    };
-  });
-
+  const switcherFields: SwitcherFields = {
+    columns: {
+      selectable: true,
+      items: columns.map((field) => {
+        return {
+          id: field,
+          displayName: find(meta, { field })?.name,
+          checked: true,
+        };
+      }),
+    },
+  };
   useEffect(() => {
     callback({
       setShowPagination,
     });
-  }, []);
+  }, [callback]);
 
   return (
     <Space direction="vertical">
       <Space>
         <Switcher
-          values={switcherValues}
+          {...switcherFields}
           onSubmit={(result) => {
             console.log('result: ', result);
-            const { hiddenValues } = result;
-            setHiddenColumnFields(hiddenValues);
+            const { hideItems } = result.columns;
+            setHiddenColumnFields(hideItems.map((i) => i.id));
           }}
         />
         <Switch

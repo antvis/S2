@@ -1,0 +1,85 @@
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { SheetComponent, Switcher } from '@antv/s2';
+import insertCss from 'insert-css';
+import '@antv/s2/dist/s2.min.css';
+
+fetch(
+  'https://gw.alipayobjects.com/os/bmw-prod/d5eee4f7-7c09-4162-8651-9f0a16090a7c.json',
+)
+  .then((res) => res.json())
+  .then((data) => {
+    const s2options = {
+      width: 800,
+      height: 600,
+    };
+
+    // 明细表只需要 columns 字段
+    const defaultFields = {
+      columns: ['province', 'city', 'type', 'price', 'cost'],
+    };
+
+    const defaultSwitcherFields = {
+      columns: {
+        selectable: true,
+        items: [
+          { id: 'province' },
+          { id: 'city' },
+          { id: 'type' },
+          { id: 'price' },
+          { id: 'cost' },
+        ],
+      },
+    };
+
+    // 生成 switcher 所需要的 fields 结构
+    function generateSwitcherFields(updatedResult) {
+      return {
+        columns: {
+          selectable: true,
+          items: updatedResult.columns.items,
+        },
+      };
+    }
+
+    // 生成 dataCfg fields 结构
+    function generateFields(updatedResult) {
+      return {
+        columns: updatedResult.columns.items.map((i) => i.id),
+      };
+    }
+
+    const SwitcherDemo = () => {
+      const [fields, setFields] = useState(defaultFields);
+      const [hiddenColumnFields, setHiddenColumnFields] = useState([]);
+      const [switcherFields, setSwitcherFields] = useState(
+        defaultSwitcherFields,
+      );
+
+      const onSubmit = (result) => {
+        setFields(generateFields(result));
+        setSwitcherFields(generateSwitcherFields(result));
+        setHiddenColumnFields(result.columns.hideItems.map((i) => i.id));
+      };
+
+      return (
+        <div>
+          <Switcher {...switcherFields} onSubmit={onSubmit} />
+          <SheetComponent
+            sheetType={'table'}
+            adaptive={false}
+            dataCfg={{ data, fields }}
+            options={{ ...s2options, hiddenColumnFields }}
+          />
+        </div>
+      );
+    };
+
+    ReactDOM.render(<SwitcherDemo />, document.getElementById('container'));
+  });
+
+insertCss(`
+  .antv-s2-switcher-item.checkable-item {
+    align-items: center;
+  }
+`);

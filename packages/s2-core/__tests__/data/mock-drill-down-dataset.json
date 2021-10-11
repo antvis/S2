@@ -1,0 +1,36 @@
+{
+  "data": [
+    {
+      "price": 11,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "家具",
+      "sub_type": "桌子"
+    },
+    {
+      "price": 22,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "家具",
+      "sub_type": "沙发"
+    },
+    {
+      "price": 33,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "办公用品",
+      "sub_type": "笔"
+    },
+    {
+      "price": 44,
+      "province": "浙江省",
+      "city": "杭州市",
+      "district": "西湖区",
+      "type": "办公用品",
+      "sub_type": "纸张"
+    }
+  ]
+}

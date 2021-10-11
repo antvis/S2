@@ -1,10 +1,9 @@
-import { Radio, Space, Switch } from 'antd';
+import { Radio, Space, Switch, Button, Input } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
 import { SheetEntry, assembleDataCfg } from '../util/sheet-entry';
-// import * as tableData from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
 import {
   HeaderActionIconProps,
@@ -31,6 +30,7 @@ function MainLayout() {
   const [hoverHighlight, setHoverHighlight] = React.useState(true);
   const [showSeriesNumber, setShowSeriesNumber] = React.useState(false);
   const [showPagination, setShowPagination] = React.useState(false);
+  const [showTotals, setShowTotals] = React.useState(false);
   const [showDefaultActionIcons, setShowDefaultActionIcons] =
     React.useState(true);
   const [themeName, setThemeName] = React.useState<ThemeName>('default');
@@ -44,6 +44,8 @@ function MainLayout() {
   const ColCellClickTooltip = (
     <div>
       <h1>Tooltip</h1>
+      <Button>button</Button>
+      <Input />
     </div>
   );
 
@@ -60,12 +62,23 @@ function MainLayout() {
       current: 1,
     },
     tooltip: {
-      showTooltip: true,
       renderTooltip: (spreadsheet) => {
         return new CustomTooltip(spreadsheet);
       },
       operation: {
         trend: true,
+      },
+    },
+    totals: showTotals && {
+      row: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        subTotalsDimensions: ['province'],
+      },
+      col: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        subTotalsDimensions: ['type'],
       },
     },
     showSeriesNumber: showSeriesNumber,
@@ -81,6 +94,7 @@ function MainLayout() {
         svg: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
       },
     ],
+    showDefaultHeaderActionIcon: showDefaultActionIcons,
     headerActionIcons: !showDefaultActionIcons && [
       {
         iconNames: ['Filter'],
@@ -184,12 +198,17 @@ function MainLayout() {
                 checked={showSeriesNumber}
                 onChange={setShowSeriesNumber}
               />
-
               <Switch
                 checkedChildren="分页"
                 unCheckedChildren="不分页"
                 checked={showPagination}
                 onChange={setShowPagination}
+              />
+              <Switch
+                checkedChildren="汇总"
+                unCheckedChildren="无汇总"
+                checked={showTotals}
+                onChange={setShowTotals}
               />
               <Switch
                 checkedChildren="选中聚光灯开"

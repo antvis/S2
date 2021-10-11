@@ -1,7 +1,6 @@
 import { ReloadOutlined } from '@ant-design/icons';
-import { Button, Checkbox } from 'antd';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import { isEmpty } from 'lodash';
+import { Button } from 'antd';
+import { isNil } from 'lodash';
 import cx from 'classnames';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import {
@@ -9,17 +8,18 @@ import {
   DragDropContext,
   DropResult,
 } from 'react-beautiful-dnd';
-import { DroppableType, FieldType } from '../constant';
+import { FieldType, SWITCHER_CONFIG, SWITCHER_FIELDS } from '../constant';
 import { Dimension } from '../dimension';
-import { SwitcherResult, SwitcherState } from '../interface';
+import { SwitcherFields, SwitcherResult, SwitcherState } from '../interface';
 import {
   checkItem,
   generateSwitchResult,
   getMainLayoutClassName,
   getNonEmptyFieldCount,
   getSwitcherClassName,
+  getSwitcherState,
   moveItem,
-  shouldDimensionCrossRows,
+  shouldCrossRows,
 } from '../util';
 import { i18n } from '@/common/i18n';
 import './index.less';
@@ -29,25 +29,18 @@ export interface SwitcherContentRef {
   getResult: () => SwitcherResult;
 }
 
-export interface SwitcherContentProps extends SwitcherState {
-  expandBtnText?: string;
-  resetBtnText?: string;
+export interface SwitcherContentProps extends SwitcherFields {
+  resetText?: string;
 }
 
 export const SwitcherContent = forwardRef(
-  (
-    { expandBtnText, resetBtnText, ...defaultState }: SwitcherContentProps,
-    ref,
-  ) => {
+  ({ resetText, ...defaultFields }: SwitcherContentProps, ref) => {
+    const defaultState = getSwitcherState(defaultFields);
+
     const [state, setState] = useState<SwitcherState>(defaultState);
-    const [expand, setExpand] = useState(true);
-    const [draggingItemId, setDraggingItemId] = useState<string>();
+    const [draggingItemId, setDraggingItemId] = useState<string>(null);
 
-    const nonEmptyCount = getNonEmptyFieldCount(defaultState);
-
-    const onUpdateExpand = (event: CheckboxChangeEvent) => {
-      setExpand(event.target.checked);
-    };
+    const nonEmptyCount = getNonEmptyFieldCount(defaultFields);
 
     const onBeforeDragStart = (initial: BeforeCapture) => {
       setDraggingItemId(initial.draggableId);
@@ -93,8 +86,8 @@ export const SwitcherContent = forwardRef(
     );
 
     const onVisibleItemChange = (
-      checked: boolean,
       fieldType: FieldType,
+      checked: boolean,
       id: string,
       parentId?: string,
     ) => {
@@ -120,41 +113,19 @@ export const SwitcherContent = forwardRef(
               getMainLayoutClassName(nonEmptyCount),
             )}
           >
-            {[FieldType.Rows, FieldType.Cols].map(
+            {SWITCHER_FIELDS.map(
               (type) =>
-                isEmpty(defaultState[type]) || (
+                isNil(defaultFields[type]) || (
                   <Dimension
-                    droppableType={DroppableType.Dimension}
+                    {...defaultFields[type]}
                     fieldType={type}
-                    data={state[type]}
-                    crossRows={shouldDimensionCrossRows(nonEmptyCount)}
+                    items={state[type]}
+                    crossRows={shouldCrossRows(nonEmptyCount, type)}
+                    droppableType={SWITCHER_CONFIG[type].droppableType}
+                    draggingItemId={draggingItemId}
+                    onVisibleItemChange={onVisibleItemChange}
                   />
                 ),
-            )}
-
-            {isEmpty(defaultState.values) || (
-              <Dimension
-                crossRows={true}
-                droppableType={DroppableType.Measure}
-                fieldType={FieldType.Values}
-                data={state.values}
-                draggingItemId={draggingItemId}
-                expandChildren={expand}
-                onVisibleItemChange={onVisibleItemChange}
-                option={
-                  <div
-                    className={getSwitcherClassName(
-                      CLASS_NAME_PREFIX,
-                      'dimension-option',
-                    )}
-                  >
-                    <Checkbox checked={expand} onChange={onUpdateExpand} />
-                    <span className="description">
-                      {expandBtnText ?? i18n('展开同环比')}
-                    </span>
-                  </div>
-                }
-              />
             )}
           </main>
           <footer>
@@ -167,7 +138,7 @@ export const SwitcherContent = forwardRef(
               )}
               onClick={onReset}
             >
-              {resetBtnText ?? i18n('恢复默认')}
+              {resetText ?? i18n('恢复默认')}
             </Button>
           </footer>
         </div>
@@ -177,8 +148,7 @@ export const SwitcherContent = forwardRef(
 );
 
 SwitcherContent.displayName = 'SwitcherContent';
+
 SwitcherContent.defaultProps = {
-  rows: [],
-  cols: [],
-  values: [],
+  resetText: i18n('恢复默认'),
 };

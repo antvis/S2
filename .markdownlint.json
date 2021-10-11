@@ -1,0 +1,11 @@
+{
+  "default": true,
+  "no-inline-html": false,
+  "line-length": {
+    "line_length": 200,
+    "tables": false
+  },
+  "single-h1": false,
+  "first-line-h1": false,
+  "no-empty-links": false
+}

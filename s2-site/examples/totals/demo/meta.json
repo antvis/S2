@@ -1,0 +1,32 @@
+{
+  "title": {
+    "zh": "小计总计",
+    "en": "Totals"
+  },
+  "demos": [
+    {
+      "filename": "basic.ts",
+      "title": {
+        "zh": "单度量值",
+        "en": "Single Value Totals"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+    },
+    {
+      "filename": "multiple-values.ts",
+      "title": {
+        "zh": "多度量值",
+        "en": "Multiple Value Totals"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+    },
+    {
+      "filename": "tree.ts",
+      "title": {
+        "zh": "树状模式",
+        "en": "Tree Totals"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+    }
+  ]
+}

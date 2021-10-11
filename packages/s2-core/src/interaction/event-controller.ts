@@ -29,25 +29,25 @@ interface EventHandler {
 }
 
 export class EventController {
-  protected spreadsheet: SpreadSheet;
+  public spreadsheet: SpreadSheet;
 
   // 保存触发的元素
   private target: LooseObject;
 
-  private canvasEventHandlers: EventHandler[] = [];
+  public canvasEventHandlers: EventHandler[] = [];
 
-  private domEventListeners: EventListener[] = [];
+  public domEventListeners: EventListener[] = [];
 
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.bindEvents();
   }
 
-  private get canvasContainer(): Canvas {
+  public get canvasContainer(): Canvas {
     return this.spreadsheet.container;
   }
 
-  private bindEvents() {
+  public bindEvents() {
     this.clearAllEvents();
 
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
@@ -112,6 +112,7 @@ export class EventController {
     // 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
     const { interaction } = this.spreadsheet;
+
     if (interaction.hasIntercepts([InterceptType.BRUSH_SELECTION])) {
       interaction.removeIntercepts([InterceptType.BRUSH_SELECTION]);
       return;
@@ -137,7 +138,7 @@ export class EventController {
       // 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
       const { width, height } = this.spreadsheet.options;
       return (
-        canvas.contains(event.target as HTMLCanvasElement) &&
+        canvas.contains(event.target as HTMLElement) &&
         event.clientX <= x + width &&
         event.clientY <= y + height
       );
@@ -146,12 +147,12 @@ export class EventController {
   }
 
   private isMouseOnTheTooltip(event: Event) {
-    if (!this.spreadsheet.options?.tooltip?.showTooltip) {
+    if (!this.spreadsheet.options.tooltip?.showTooltip) {
       return false;
     }
 
     const { x, y, width, height } =
-      this.spreadsheet.tooltip.container?.getBoundingClientRect() || {};
+      this.spreadsheet.tooltip?.container?.getBoundingClientRect() || {};
 
     if (event instanceof MouseEvent) {
       return (
@@ -233,13 +234,9 @@ export class EventController {
     }
     this.resetResizeArea();
 
-    this.spreadsheet.on(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
-      this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
-    });
-
     const cell = this.spreadsheet.getCell(event.target);
-    const cellType = this.spreadsheet.getCellType(event.target);
     if (cell) {
+      const cellType = cell.cellType;
       switch (cellType) {
         case CellTypes.DATA_CELL:
           this.spreadsheet.emit(S2Event.DATA_CELL_MOUSE_MOVE, event);
@@ -254,7 +251,7 @@ export class EventController {
           this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_MOVE, event);
           break;
         case CellTypes.MERGED_CELLS:
-          this.spreadsheet.emit(S2Event.MERGED_ELLS_MOUSE_MOVE, event);
+          this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_MOVE, event);
           break;
         default:
           break;
@@ -295,9 +292,13 @@ export class EventController {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_UP, event);
       return;
     }
+
+    this.spreadsheet.on(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
+      this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
+    });
     const cell = this.spreadsheet.getCell(event.target);
     if (cell) {
-      const cellType = cell?.cellType;
+      const cellType = cell.cellType;
       // target相同，说明是一个cell内的click事件
       if (this.target === event.target) {
         switch (cellType) {
@@ -352,7 +353,7 @@ export class EventController {
     }
     const cell = spreadsheet.getCell(event.target);
     if (cell) {
-      const cellType = cell?.cellType;
+      const cellType = cell.cellType;
       if (this.target === event.target) {
         switch (cellType) {
           case CellTypes.DATA_CELL:
@@ -416,15 +417,14 @@ export class EventController {
     }
   }
 
-  private clearAllEvents() {
-    each(this.canvasEventHandlers, (eh) => {
-      this.canvasContainer.off(eh.type, eh.handler);
+  public clearAllEvents() {
+    each(this.canvasEventHandlers, ({ type, handler }) => {
+      this.canvasContainer?.off(type, handler);
     });
-    this.canvasEventHandlers.length = 0;
-
-    each(this.domEventListeners, (eh) => {
-      eh.target.removeEventListener(eh.type, eh.handler);
+    each(this.domEventListeners, (event) => {
+      event.target.removeEventListener(event.type, event.handler);
     });
-    this.domEventListeners.length = 0;
+    this.canvasEventHandlers = [];
+    this.domEventListeners = [];
   }
 }

@@ -1,6 +1,6 @@
-import { getCellMeta } from 'src/utils/interaction/select-event';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { get } from 'lodash';
+import { getCellMeta } from '@/utils/interaction/select-event';
 import { DataCell } from '@/cell/data-cell';
 import {
   InteractionStateName,
@@ -24,7 +24,8 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: CanvasEvent) => {
       event.stopPropagation();
-      if (this.interaction.hasIntercepts([InterceptType.CLICK])) {
+      const { interaction } = this.spreadsheet;
+      if (interaction.hasIntercepts([InterceptType.CLICK])) {
         return;
       }
 
@@ -37,14 +38,14 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      this.interaction.addIntercepts([InterceptType.HOVER]);
-      if (this.interaction.isSelectedCell(cell)) {
-        this.interaction.reset();
+      interaction.addIntercepts([InterceptType.HOVER]);
+      if (interaction.isSelectedCell(cell)) {
+        interaction.reset();
         return;
       }
 
-      this.interaction.clearState();
-      this.interaction.changeState({
+      interaction.clearState();
+      interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.SELECTED,
       });

@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import './index.less';
 
-const PRECLASS = 'spreadsheet-icon';
+const ICON_CLS = 'antv-s2-icon';
 
 export const CalendarIcon: FC = () => (
   <svg
-    className={PRECLASS}
+    className={ICON_CLS}
     viewBox="0 0 1024 1024"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@ export const CalendarIcon: FC = () => (
 
 export const TextIcon: FC = () => (
   <svg
-    className={PRECLASS}
+    className={ICON_CLS}
     viewBox="0 0 1024 1024"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +41,7 @@ export const TextIcon: FC = () => (
 
 export const LocationIcon: FC = () => (
   <svg
-    className={PRECLASS}
+    className={ICON_CLS}
     viewBox="0 0 1024 1024"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +59,7 @@ export const LocationIcon: FC = () => (
 
 export const SearchIcon: FC = () => (
   <svg
-    className={PRECLASS}
+    className={ICON_CLS}
     viewBox="0 0 1024 1024"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +90,7 @@ export const DotIcon: FC = () => (
 
 export const SwitcherIcon: FC = () => (
   <svg
-    className={PRECLASS}
+    className={ICON_CLS}
     width="16px"
     height="16px"
     viewBox="0 0 16 16"
@@ -108,7 +108,7 @@ export const SwitcherIcon: FC = () => (
 
 export const RowIcon: FC = () => (
   <svg
-    className={PRECLASS}
+    className={ICON_CLS}
     width="12px"
     height="12px"
     viewBox="0 0 12 12"
@@ -136,7 +136,7 @@ export const RowIcon: FC = () => (
 
 export const ColIcon: FC = () => (
   <svg
-    className={PRECLASS}
+    className={ICON_CLS}
     width="12px"
     height="12px"
     viewBox="0 0 12 12"
@@ -166,7 +166,7 @@ export const ColIcon: FC = () => (
 
 export const ValueIcon: FC = () => (
   <svg
-    className={PRECLASS}
+    className={ICON_CLS}
     width="12px"
     height="12px"
     viewBox="0 0 12 12"

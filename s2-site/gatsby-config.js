@@ -54,6 +54,14 @@ module.exports = {
           zh: '基础配置项',
           en: 'Common configuration',
         },
+        order: 0,
+      },
+      {
+        slug: 'api/basic-class',
+        title: {
+          zh: '基础类',
+          en: 'Basic class',
+        },
         order: 1,
       },
       {
@@ -65,12 +73,52 @@ module.exports = {
         order: 2,
       },
       {
-        slug: 'manual/interaction',
+        slug: 'manual/basic',
         title: {
-          zh: '交互',
-          en: 'Interaction',
+          zh: '基础教程',
+          en: 'Basic tutorial',
         },
         order: 3,
+      },
+      {
+        slug: 'manual/basic/sheet-type',
+        title: {
+          zh: '表形态',
+          en: 'Sheet type',
+        },
+        order: 1,
+      },
+      {
+        slug: 'manual/advanced',
+        title: {
+          zh: '进阶教程',
+          en: 'Advanced tutorial',
+        },
+        order: 4,
+      },
+      {
+        slug: 'manual/advanced/interaction',
+        title: {
+          zh: '交互',
+          en: 'interaction',
+        },
+        order: 5,
+      },
+      {
+        slug: 'manual/basic/analysis',
+        title: {
+          zh: '分析组件',
+          en: 'Analyze component',
+        },
+        order: 6,
+      },
+      {
+        slug: 'manual/contribution',
+        title: {
+          zh: '贡献指南',
+          en: 'Contributing',
+        },
+        order: 7,
       },
     ],
     // demo配置
@@ -92,6 +140,14 @@ module.exports = {
         },
       },
       {
+        slug: 'conditions',
+        icon: 'facet',
+        title: {
+          zh: '字段标记',
+          en: 'Conditions',
+        },
+      },
+      {
         slug: 'interaction',
         icon: 'facet',
         title: {
@@ -99,7 +155,35 @@ module.exports = {
           en: 'Interaction',
         },
       },
+      {
+        slug: 'totals',
+        icon: 'facet',
+        title: {
+          zh: '小计总计',
+          en: 'Totals',
+        },
+      },
+      {
+        slug: 'theme',
+        icon: 'gallery',
+        title: {
+          zh: '主题',
+          en: 'theme',
+        },
+      },
+      {
+        slug: 'analysis',
+        icon: 'facet',
+        title: {
+          zh: '分析组件',
+          en: 'Analyze component',
+        },
+      },
     ],
+    mdPlayground: {
+      // markdown 文档中的 playground 若干设置
+      splitPaneMainSize: '75%',
+    },
     // 编辑器配置
     playground: {
       container: '<div id="container" />',

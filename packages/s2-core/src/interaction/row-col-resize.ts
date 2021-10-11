@@ -1,8 +1,7 @@
 import { Group, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
-import { clone, get, isNil, throttle } from 'lodash';
-import { ResizeInfo } from '../facet/header/interface';
+import { clone, isNil, throttle } from 'lodash';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
-import { RootInteraction } from './root';
+import { ResizeInfo } from '@/facet/header/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { ResizeEvent, Style } from '@/common/interface';
 import {
@@ -24,8 +23,8 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
 
   private startPos: { offsetX?: number; offsetY?: number } = {};
 
-  constructor(spreadsheet: SpreadSheet, interaction: RootInteraction) {
-    super(spreadsheet, interaction);
+  constructor(spreadsheet: SpreadSheet) {
+    super(spreadsheet);
     this.container = this.spreadsheet.foregroundGroup;
   }
 
@@ -39,8 +38,9 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, (event) => {
       const shape = event.target as IGroup;
       const originalEvent = event.originalEvent as MouseEvent;
-      const info: ResizeInfo = shape.attr('appendInfo');
-      if (get(info, 'isResizeArea')) {
+      const resizeInfo: ResizeInfo = shape?.attr('appendInfo');
+
+      if (resizeInfo?.isResizeArea) {
         this.ResizeArea = shape;
         // 激活区域
         if (isNil(this.resizeGroup)) {
@@ -51,7 +51,6 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             stroke: this.spreadsheet.theme.resizeArea.guidLineColor,
             strokeWidth: this.spreadsheet.theme.resizeArea.size,
           };
-          this.resizeGroup.addShape('path', { attrs });
           this.resizeGroup.addShape('path', { attrs });
           // 加这个shape是其实是一层透明的mask遮罩
           // 防止resize过程中触发到别的interaction，因此加了遮罩，触发resize后在遮罩上滚动
@@ -77,10 +76,10 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
            * cellEndBorder 当前resize的响应边，也就是点击的边
            */
           const [cellStartBorder, cellEndBorder] = children;
-          const { offsetX, offsetY, width, height } = info;
+          const { offsetX, offsetY, width, height } = resizeInfo;
           const canvasWidth = this.spreadsheet.facet.getCanvasHW().width;
           const canvasHeight = this.spreadsheet.facet.getCanvasHW().height;
-          if (info.type === 'col') {
+          if (resizeInfo.type === 'col') {
             cellStartBorder.attr('path', [
               ['M', offsetX, offsetY],
               ['L', offsetX, canvasHeight],
@@ -101,7 +100,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             ]);
             this.startPos.offsetY = originalEvent.offsetY;
           }
-          cellEndBorder.attr('cursor', `${info.type}-resize`);
+          cellEndBorder.attr('cursor', `${resizeInfo.type}-resize`);
           const header = this.getHeaderGroup();
           this.resizeGroup.move(header.get('x'), header.get('y'));
         }

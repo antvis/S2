@@ -66,6 +66,25 @@ export class TableFacet extends BaseFacet {
     });
   }
 
+  protected calculateCornerBBox() {
+    const { colsHierarchy } = this.layoutResult;
+
+    const height = Math.floor(colsHierarchy.height);
+    const width = 0;
+
+    this.cornerBBox = {
+      x: 0,
+      y: 0,
+      width,
+      height,
+      maxX: width,
+      maxY: height,
+      minX: 0,
+      minY: 0,
+    };
+    this.cornerWidth = 0;
+  }
+
   public destroy() {
     super.destroy();
     this.spreadsheet.off(S2Event.RANGE_SORT);
@@ -283,7 +302,8 @@ export class TableFacet extends BaseFacet {
       const datas = dataSet.getDisplayDataSet();
       const colLabel = col.label;
 
-      const allLabels = datas.map((data) => `${data[col.key]}`)?.slice(0, 50);
+      const allLabels =
+        datas?.map((data) => `${data[col.key]}`)?.slice(0, 50) || []; // 采样取了前50
       allLabels.push(colLabel);
       const maxLabel = maxBy(allLabels, (label) =>
         measureTextWidthRoughly(label),

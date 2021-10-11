@@ -26,6 +26,9 @@ Data-driven multi-dimensional analysis table.
   <a href="#" target="_blank" target="_blank">
     <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square" alt="bundle size"/>
   </a>
+  <a href="https://github.com/actions-cool/issues-helper" target="_blank">
+    <img src="https://img.shields.io/badge/Issues%20Manage%20By-issues--helper-blueviolet" alt="issues-helper"/>
+  </a>
   <a href="#" target="_blank" target="_blank">
     <img alt="License: MIT@AntV" src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" alt="license"/>
   </a>
@@ -37,8 +40,6 @@ S2 is a solution in multi-dimensional cross-analysis tables, which provides data
  It supplements multi-dimensional analysis tables in the industry. By providing the core library, essential components,
 demo components and expansion capabilities, it allows developers to use it quickly and freely.
 
-
-
 <!-- ### 🏠 [Homepage](https://s2.antv.vision) -->
 
 ## ✨ Features
@@ -46,10 +47,11 @@ demo components and expansion capabilities, it allows developers to use it quick
 1. Multi-dimensional cross-analysis: Say goodbye to a single analysis dimension and fully embrace the free combination analysis of any dimension.
 2. High performance: It can support rendering in less than 8s under the total amount of millions of data and achieve second-level rendering through partial drilling.
 3. High scalability: Support any custom extensions (including but not limited to layout, style, interaction, data hook flow, etc.).
-4. Out of the box: Provide out-of-the-box react table components and supporting analysis components in different analysis scenarios. You only need a simple configuration to realize the table rendering of complex scenes quickly.
+4. Out of the box: Provide out-of-the-box react table components and supporting analysis components in different analysis scenarios. You only need a simple configuration to realize the table rendering
+ of complex scenes quickly.
 5. High interaction: support rich interaction forms (single selection, circle selection, row selection, column selection, freeze line header, width and height dragging, custom interaction, etc.)
 
-##  📦 Installation
+## 📦 Installation
 
 ```bash
 $ npm install @antv/s2
@@ -57,7 +59,9 @@ $ npm install @antv/s2
 ```
 
 ## 🔨 Getting Started
+
 ### 1. Data Preparation
+
 <details>
   <summary> s2DataConfig</summary>
 
@@ -123,7 +127,6 @@ const s2DataConfig = {
 
 </details>
 
-
 ### 2.  Options Preparation
 
 ```ts
@@ -154,29 +157,25 @@ s2.render()
 
 ![result](https://gw.alipayobjects.com/zos/antfincdn/vCukbtVNvl/616f7ef1-e626-4225-99f8-dc8f6ca630dd.png)
 
-
 ## Author
 
 👤 [**@AntV**](https://github.com/orgs/antvis/people)
-
 
 ## 🤝  Contributing
 
 Contributions, issues and feature requests are welcome.
 Feel free to check [issues](https://github.com/antvis/S2/issues) page if you want to contribute.
 
-
 ```bash
-$ git clone git@github.com:antvis/S2.git
+git clone git@github.com:antvis/S2.git
 
-$ cd s2
+cd s2
 
-$ yarn
+yarn
 
-$ yarn core:start
+yarn core:start
 ```
 
 ## 📄 License
 
 MIT@[AntV](https://github.com/antvis).
-

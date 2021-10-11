@@ -3,9 +3,9 @@ import '@antv/s2/dist/s2.min.css';
 
 function addEvents(s2) {
   [
-    S2Event.GLOBAL_COPIED,
     S2Event.DATA_CELL_CLICK,
     S2Event.DATA_CELL_DOUBLE_CLICK,
+    S2Event.GLOBAL_SELECTED,
   ].forEach((name) => {
     s2.on(name, (...args) => {
       console.log(name, ...args);
@@ -13,7 +13,9 @@ function addEvents(s2) {
   });
 }
 
-fetch('./data/basic.json')
+fetch(
+  'https://gw.alipayobjects.com/os/bmw-prod/94a016a4-6672-41b1-aef3-8f6094cd2c18.json',
+)
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');
@@ -34,7 +36,6 @@ fetch('./data/basic.json')
       tooltip: {
         showTooltip: true,
       },
-      enableCopy: true,
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2options);
 

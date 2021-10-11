@@ -8,7 +8,7 @@
         "*.md",
         "**/_tests_/**"
       ],
-      "message": "chore(release): :bookmark: publish new version"
+      "message": "chore(release): :bookmark: publish the new version [ci skip]"
     },
     "bootstrap": {
       "npmClientArgs": [
@@ -17,7 +17,7 @@
     }
   },
   "changelog": {
-    "repo": "antv/S2",
+    "repo": "antvis/S2",
     "labels": {
       "pr(fix)": ":bug: Bug Fix",
       "pr(chore)": ":turtle: Chore",
@@ -30,7 +30,6 @@
       "pr(refactor)": ":100: Refactoring",
       "pr(test)": ":white_check_mark: Test Case"
     },
-    "ignoreCommitters": "[pr(chore)]",
     "cacheDir": ".changelog"
   },
   "packages": [

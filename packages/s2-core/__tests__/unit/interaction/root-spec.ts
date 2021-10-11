@@ -80,11 +80,18 @@ describe('RootInteraction Tests', () => {
     });
   });
 
+  test('should set all selected interaction state correct', () => {
+    rootInteraction.selectAll();
+    expect(rootInteraction.getState()).toEqual({
+      stateName: InteractionStateName.ALL_SELECTED,
+    });
+  });
+
   test('should get default interacted cells', () => {
     expect(rootInteraction.getInteractedCells()).toEqual([]);
   });
 
-  test('should set interacted cells', () => {
+  test('should set interacted cell', () => {
     rootInteraction.setInteractedCells(mockCell);
     expect(rootInteraction.getInteractedCells()).toEqual([mockCell]);
     rootInteraction.setInteractedCells(mockCell);

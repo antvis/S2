@@ -155,8 +155,6 @@ export type Pagination = {
   current: number; // 从 1 开始
   // 数据总条数
   total?: number;
-  // 总页数（ant.d 组件不需要，所以不传了）
-  pageCount?: number;
 };
 
 export interface NodeField {
@@ -178,7 +176,7 @@ export interface CustomSVGIcon {
 export interface HeaderActionIconProps {
   iconName: string;
   meta: Node;
-  event: Event;
+  event?: Event;
 }
 
 export interface HeaderActionIcon {
@@ -214,7 +212,7 @@ export type LayoutCallback = (
 export type CellCallback = (
   node: Node,
   spreadsheet: SpreadSheet,
-  ...restOptions
+  ...restOptions: unknown[]
 ) => S2CellType;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
@@ -224,11 +222,8 @@ export type FrameCallback = (cfg: FrameConfig) => Frame;
 export type CornerHeaderCallback = (
   parent: S2CellType,
   spreadsheet: SpreadSheet,
-  ...restOptions
+  ...restOptions: unknown[]
 ) => void;
-
-// 透出默认的布局结果，返回新的结果
-export type LayoutResultCallback = (layoutResult: LayoutResult) => LayoutResult;
 
 // 行列结构的自定义
 export type HierarchyResult = { nodes: Node[]; push: boolean };
@@ -350,7 +345,7 @@ export interface ViewMeta {
 
 export type ViewMetaIndexType = keyof Pick<ViewMeta, 'colIndex' | 'rowIndex'>;
 
-export type GetCellMeta = (rowIndex: number, colIndex: number) => ViewMeta;
+export type GetCellMeta = (rowIndex?: number, colIndex?: number) => ViewMeta;
 
 export interface LayoutResult {
   colNodes: Node[];

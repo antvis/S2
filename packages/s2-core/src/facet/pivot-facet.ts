@@ -10,14 +10,9 @@ import {
   merge,
   reduce,
 } from 'lodash';
-import { getDataCellId } from 'src/utils/cell/data-cell';
 import { BaseFacet } from 'src/facet/base-facet';
-import {
-  EXTRA_FIELD,
-  ICON_RADIUS,
-  S2Event,
-  VALUE_FIELD,
-} from '@/common/constant';
+import { getDataCellId } from 'src/utils/cell/data-cell';
+import { EXTRA_FIELD, S2Event, VALUE_FIELD } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { LayoutResult, ViewMeta } from '@/common/interface';
 import { buildHeaderHierarchy } from '@/facet/layout/build-header-hierarchy';
@@ -51,7 +46,7 @@ export class PivotFacet extends BaseFacet {
       colsHierarchy,
     );
     const { dataSet, spreadsheet } = this.cfg;
-    const getCellMeta = (rowIndex: number, colIndex: number): ViewMeta => {
+    const getCellMeta = (rowIndex?: number, colIndex?: number): ViewMeta => {
       const i = rowIndex || 0;
       const j = colIndex || 0;
       const row = rowLeafNodes[i];
@@ -67,7 +62,7 @@ export class PivotFacet extends BaseFacet {
         col.isTotals ||
         col.isTotalMeasure;
       const hideMeasure =
-        spreadsheet.facet.cfg.colCfg.hideMeasureColumn ?? false;
+        get(spreadsheet, 'facet.cfg.colCfg.hideMeasureColumn') ?? false;
       // 如果hide measure query中是没有度量信息的，所以需要自动补上
       // 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
       // 因此默认只会去 第一个度量拼接query
@@ -469,6 +464,11 @@ export class PivotFacet extends BaseFacet {
     });
   }
 
+  /**
+   * 计算行叶子节点宽度
+   * @param node
+   * @returns
+   */
   private calculateRowLeafNodesWidth(node: Node): number {
     const { dataSet, rowCfg, cellCfg, spreadsheet } = this.cfg;
     if (spreadsheet.isHierarchyTreeType()) {
@@ -554,6 +554,10 @@ export class PivotFacet extends BaseFacet {
     return Math.max(cellCfg.width, canvasW / size);
   }
 
+  /**
+   * 计算树状结构行头宽度
+   * @returns number
+   */
   private getTreeRowHeaderWidth(): number {
     const { rows, dataSet, rowCfg, cellCfg, treeRowsWidth } = this.cfg;
     // user drag happened
@@ -564,13 +568,17 @@ export class PivotFacet extends BaseFacet {
     const treeHeaderLabel = rows
       .map((key: string): string => dataSet.getFieldName(key))
       .join('/');
-    const textStyle = this.spreadsheet.theme.rowCell.bolderText;
-    // TODO icon radius and padding things
+    const textStyle = this.spreadsheet.theme.cornerCell.bolderText;
+    const iconStyle = this.spreadsheet.theme.cornerCell.icon;
+    // 初始化角头时，保证其在树形模式下不换行，给与两个icon的宽度空余（tree icon 和 action icon），减少复杂的 action icon 判断
     const maxLabelWidth =
       measureTextWidth(treeHeaderLabel, textStyle) +
-      ICON_RADIUS * 2 +
+      iconStyle.size * 2 +
+      iconStyle.margin?.left +
+      iconStyle.margin?.right +
       cellCfg.padding?.left +
       cellCfg.padding?.right;
+
     const width = Math.max(treeRowsWidth, maxLabelWidth);
     // NOTE: mark as user drag to calculate only one time
     rowCfg.treeRowsWidth = width;

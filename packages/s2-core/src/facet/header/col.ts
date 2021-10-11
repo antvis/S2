@@ -78,7 +78,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
 
     const { frozenColCount, frozenTrailingColCount } = spreadsheet.options;
-    const colLeafNodes = spreadsheet.facet.layoutResult.colLeafNodes;
+    const colLeafNodes = spreadsheet.facet?.layoutResult.colLeafNodes;
 
     let frozenColWidth = 0;
     let frozenTrailingColWidth = 0;
@@ -96,11 +96,11 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
-        x: (spreadsheet.freezeRowHeader() ? scrollX : 0) + frozenColWidth,
+        x: (spreadsheet.isFreezeRowHeader() ? scrollX : 0) + frozenColWidth,
         y: 0,
         width:
           width +
-          (spreadsheet.freezeRowHeader() ? 0 : scrollX) -
+          (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
           frozenColWidth -
           frozenTrailingColWidth,
         height,
@@ -120,7 +120,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
           y: 0,
           width:
             width +
-            (spreadsheet.freezeRowHeader() ? 0 : scrollX) -
+            (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
             frozenColWidth -
             frozenTrailingColWidth +
             resizeAreaSize,
@@ -141,7 +141,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const { data, spreadsheet, cornerWidth, width, scrollX } =
       this.headerConfig;
     const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
-    const colLength = spreadsheet?.facet.layoutResult.colLeafNodes.length;
+    const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
 
     const colCell = spreadsheet?.facet?.cfg?.colCell;
     // don't care about scrollY, because there is only freeze col-header exist
@@ -155,7 +155,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       }
       return (
         width + scrollX > item.x &&
-        scrollX - (spreadsheet.freezeRowHeader() ? 0 : cornerWidth) <
+        scrollX - (spreadsheet.isFreezeRowHeader() ? 0 : cornerWidth) <
           item.x + item.width
       );
     };

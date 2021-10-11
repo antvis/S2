@@ -11,12 +11,10 @@ export const PALETTE_MAP: Record<string, Palette> = {
 };
 
 export const FONT_FAMILY =
-  'Roboto, PingFangSC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
+  'Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
 export const ICON_SIZE = 14;
 export const TEXT_INDENT = 12;
 
-// icon radius
-export const ICON_RADIUS = 6;
 // cell default padding
 export const DEFAULT_PADDING = 4;
 // tree row default width

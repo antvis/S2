@@ -115,9 +115,12 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public update() {
-    const stateName = this.spreadsheet.interaction.getCurrentStateName();
-    const cells = this.spreadsheet.interaction.getCells();
-
+    const stateName = this.spreadsheet.interaction?.getCurrentStateName();
+    const cells = this.spreadsheet.interaction?.getCells();
+    if (stateName === InteractionStateName.ALL_SELECTED) {
+      this.updateByState(InteractionStateName.SELECTED);
+      return;
+    }
     if (isEmpty(cells) || !stateName) {
       return;
     }
@@ -280,16 +283,20 @@ export class DataCell extends BaseCell<ViewMeta> {
       const { minValue, maxValue } = attrs.isCompare
         ? attrs
         : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
-      const scale = this.getIntervalScale(minValue, maxValue);
-      const zero = scale(0); // 零点
-
       const fieldValue = parseNumberWithPrecision(
         this.meta.fieldValue as number,
       );
+      // 对于超出设定范围的值不予显示
+      if (fieldValue < minValue || fieldValue > maxValue) {
+        return;
+      }
+
+      const scale = this.getIntervalScale(minValue, maxValue);
+      const zero = scale(0); // 零点
       const current = scale(fieldValue); // 当前数据点
+
       const barChartHeight = this.getStyle().cell.miniBarChartHeight;
       const barChartFillColor = this.getStyle().cell.miniBarChartFillColor;
-      const stroke = attrs.fill ?? barChartFillColor;
       const fill = attrs.fill ?? barChartFillColor;
 
       this.conditionIntervalShape = renderRect(this, {
@@ -298,7 +305,6 @@ export class DataCell extends BaseCell<ViewMeta> {
         width: width * (current - zero),
         height: barChartHeight,
         fill,
-        stroke,
       });
     }
   }
@@ -467,11 +473,13 @@ export class DataCell extends BaseCell<ViewMeta> {
         `${this.cellType}.cell.interactionState.${stateName}`,
       );
       if (stateStyles) {
+        // 对于
         updateShapeAttr(
           this.conditionIntervalShape,
           SHAPE_STYLE_MAP.backgroundOpacity,
           stateStyles.backgroundOpacity,
         );
+
         updateShapeAttr(
           this.conditionIconShape as unknown as IShape,
           SHAPE_STYLE_MAP.opacity,
@@ -483,11 +491,13 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   public clearUnselectedState() {
     super.clearUnselectedState();
+
     updateShapeAttr(
       this.conditionIntervalShape,
       SHAPE_STYLE_MAP.backgroundOpacity,
       1,
     );
+
     updateShapeAttr(
       this.conditionIconShape as unknown as IShape,
       SHAPE_STYLE_MAP.opacity,

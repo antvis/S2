@@ -4,8 +4,8 @@ order: 0
 ---
 # S2DataConfig
 
-`markdown:docs/api/general/dataCfg.zh.md`
+`markdown:docs/api/general/S2DataConfig.en.md`
 
 # S2Options
 
-`markdown:docs/api/general/options.zh.md`
+`markdown:docs/api/general/S2Options.en.md`

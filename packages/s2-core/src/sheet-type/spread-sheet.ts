@@ -46,7 +46,7 @@ import { EmitterType } from '@/common/interface/emitter';
 import { Store } from '@/common/store';
 import { BaseDataSet } from '@/data-set';
 import { BaseFacet } from '@/facet';
-import { CustomSVGIcon, Node, SpreadSheetTheme } from '@/index';
+import { CustomSVGIcon, Node, S2Theme } from '@/index';
 import { RootInteraction } from '@/interaction/root';
 import { getTheme } from '@/theme';
 import { HdAdapter } from '@/ui/hd-adapter';
@@ -61,7 +61,7 @@ export abstract class SpreadSheet extends EE {
   public dom: S2MountContainer;
 
   // theme config
-  public theme: SpreadSheetTheme;
+  public theme: S2Theme;
 
   // store some temporary data
   public store = new Store();
@@ -88,15 +88,11 @@ export abstract class SpreadSheet extends EE {
   // the base container, contains all groups
   public container: Canvas;
 
-  public maskContainer: Canvas;
-
   // the background group, render bgColor...
   public backgroundGroup: IGroup;
 
   // facet cell area group, it contains all cross-tab's cell
   public panelGroup: IGroup;
-
-  public maskGroup: IGroup;
 
   public panelScrollGroup: IGroup;
 
@@ -155,7 +151,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   get isShowTooltip() {
-    return this.options?.tooltip?.showTooltip ?? true;
+    return this.options?.tooltip?.showTooltip;
   }
 
   private setDebug() {
@@ -231,7 +227,7 @@ export abstract class SpreadSheet extends EE {
   /**
    * Scroll Freeze Row Header
    */
-  public abstract freezeRowHeader(): boolean;
+  public abstract isFreezeRowHeader(): boolean;
 
   /**
    * Check if is pivot mode
@@ -251,7 +247,7 @@ export abstract class SpreadSheet extends EE {
 
   protected abstract buildFacet(): void;
 
-  public abstract clearDrillDownData(owNodeId?: string): void;
+  public abstract clearDrillDownData(rowNodeId?: string): void;
 
   public showTooltip(showOptions: TooltipShowOptions) {
     if (this.isShowTooltip) {
@@ -379,7 +375,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   /**
-   * 修改交叉表画布大小，不用重新加载数据
+   * 修改表格画布大小，不用重新加载数据
    * @param width
    * @param height
    */
@@ -400,10 +396,6 @@ export abstract class SpreadSheet extends EE {
     return this.facet.layoutResult.rowNodes.filter(
       (value) => value.level === level,
     );
-  }
-
-  public getRealColumnSize(): number {
-    return size(this.dataCfg.fields?.columns || []) + 1;
   }
 
   /**
@@ -554,5 +546,6 @@ export abstract class SpreadSheet extends EE {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public handleGroupSort(event: MouseEvent, meta: Node) {}
 }

@@ -108,7 +108,7 @@ describe('hide-columns test', () => {
   });
 
   test.each(initColumnNodes)(
-    'should calculate is last column correct if field is $field',
+    'should calculate is last column correct if field is %o',
     ({ field }) => {
       expect(isLastColumnAfterHidden(sheet, field)).toBeFalsy();
     },

@@ -1,4 +1,4 @@
-import { concat, forEach, isEmpty } from 'lodash';
+import { concat, filter, forEach, isEmpty } from 'lodash';
 import {
   DataCellClick,
   MergedCellsClick,
@@ -18,7 +18,6 @@ import {
   InterceptType,
 } from '@/common/constant';
 import {
-  CellMeta,
   CustomInteraction,
   InteractionStateInfo,
   S2CellType,
@@ -110,13 +109,13 @@ export class RootInteraction {
     return this.isSelectedState() && this.isActiveCell(cell);
   }
 
-  // 获取当前 interaction 记录的 Cells 元信息列表，包括不在视口内的格子
+  // 获取当前 interaction 记录的 Cells 元信息列表，包括不在可视区域内的格子
   public getCells() {
     const currentState = this.getState();
     return currentState?.cells || [];
   }
 
-  // 获取 cells 中在视口内部分的实例列表
+  // 获取 cells 中在可视区域内的实例列表
   public getActiveCells() {
     const ids = this.getCells().map((item) => item.id);
     return this.getAllCells().filter((cell) => ids.includes(cell.getMeta().id));
@@ -141,12 +140,15 @@ export class RootInteraction {
   }
 
   public getPanelGroupAllDataCells(): DataCell[] {
-    return getAllPanelDataCell(this.spreadsheet.panelGroup.get('children'));
+    return getAllPanelDataCell(this.spreadsheet?.panelGroup?.get('children'));
   }
 
   public getAllRowHeaderCells() {
-    const children = this.spreadsheet.foregroundGroup.getChildren();
-    const rowHeader = children.filter((group) => group instanceof RowHeader)[0];
+    const children = this.spreadsheet?.foregroundGroup?.getChildren();
+    const rowHeader = filter(
+      children,
+      (group) => group instanceof RowHeader,
+    )?.[0];
     let currentNode = rowHeader?.cfg?.children;
     if (isEmpty(currentNode)) {
       return [];
@@ -162,8 +164,11 @@ export class RootInteraction {
   }
 
   public getAllColHeaderCells() {
-    const children = this.spreadsheet.foregroundGroup.getChildren();
-    const colHeader = children.filter((group) => group instanceof ColHeader)[0];
+    const children = this.spreadsheet?.foregroundGroup?.getChildren();
+    const colHeader = filter(
+      children,
+      (group) => group instanceof ColHeader,
+    )[0];
     let currentNode = colHeader?.cfg?.children;
     if (isEmpty(currentNode)) {
       return [];
@@ -193,6 +198,12 @@ export class RootInteraction {
     );
   }
 
+  public selectAll = () => {
+    this.spreadsheet.interaction.changeState({
+      stateName: InteractionStateName.ALL_SELECTED,
+    });
+  };
+
   /**
    * 注册交互（组件按自己的场景写交互，继承此方法注册）
    * @param options
@@ -202,37 +213,37 @@ export class RootInteraction {
 
     this.interactions.set(
       InteractionName.DATA_CELL_CLICK,
-      new DataCellClick(this.spreadsheet, this),
+      new DataCellClick(this.spreadsheet),
     );
     this.interactions.set(
       InteractionName.ROW_COLUMN_CLICK,
-      new RowColumnClick(this.spreadsheet, this),
+      new RowColumnClick(this.spreadsheet),
     );
     this.interactions.set(
       InteractionName.ROW_TEXT_CLICK,
-      new RowTextClick(this.spreadsheet, this),
+      new RowTextClick(this.spreadsheet),
     );
     this.interactions.set(
       InteractionName.MERGED_CELLS_CLICK,
-      new MergedCellsClick(this.spreadsheet, this),
+      new MergedCellsClick(this.spreadsheet),
     );
     this.interactions.set(
       InteractionName.HOVER,
-      new HoverEvent(this.spreadsheet, this),
+      new HoverEvent(this.spreadsheet),
     );
 
     if (!isMobile()) {
       this.interactions.set(
         InteractionName.BRUSH_SELECTION,
-        new BrushSelection(this.spreadsheet, this),
+        new BrushSelection(this.spreadsheet),
       );
       this.interactions.set(
         InteractionName.COL_ROW_RESIZE,
-        new RowColResize(this.spreadsheet, this),
+        new RowColResize(this.spreadsheet),
       );
       this.interactions.set(
         InteractionName.COL_ROW_MULTI_SELECTION,
-        new DataCellMultiSelection(this.spreadsheet, this),
+        new DataCellMultiSelection(this.spreadsheet),
       );
     }
 
@@ -242,7 +253,7 @@ export class RootInteraction {
         const CustomInteractionClass = customInteraction.interaction;
         this.interactions.set(
           customInteraction.key,
-          new CustomInteractionClass(this.spreadsheet, this),
+          new CustomInteractionClass(this.spreadsheet),
         );
       });
     }

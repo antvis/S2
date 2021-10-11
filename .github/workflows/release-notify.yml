@@ -1,0 +1,16 @@
+name: 🎉  Release Notify
+
+on:
+  release:
+    types: [published, edited]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: visiky/dingtalk-release-notify@main
+        with:
+          DING_TALK_TOKEN: ${{ secrets.DING_TALK_GROUP_TOKEN }}
+          notify_title: '🎉 @antv/s2 发布新版本 {release_tag} 🎉'
+          notify_footer: '> 前往 [**@antv/s2 Releases**]({ release_url }) 查看完整信息.'
+          at_all: false

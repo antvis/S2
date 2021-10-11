@@ -5,7 +5,7 @@ on:
     types: [labeled]
 
 jobs:
-  reply-helper:
+  issue-labeled:
     runs-on: ubuntu-latest
     steps:
       - name: Need Reproduce

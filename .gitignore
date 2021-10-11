@@ -2,6 +2,7 @@
 *node_modules/
 .vscode
 .history
+.changelog
 *.log
 *.zip
 
@@ -12,6 +13,8 @@
 # site
 s2-site/dist
 s2-site/node_modules/
+dist/s2-site.d.ts
+temp/
 
 
 # gatsby files
@@ -23,5 +26,7 @@ packages/s2-core/lib/
 packages/s2-core/esm/
 packages/s2-core/dist/
 packages/s2-core/coverage/
+packages/s2-core/stats.html
+
 
 

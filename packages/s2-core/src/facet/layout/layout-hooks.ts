@@ -52,16 +52,16 @@ export const layoutHierarchy = (
     }
   };
   if (facetCfg.layoutHierarchy) {
-    const layoutHierarchy = facetCfg.layoutHierarchy(
+    const facetLayoutHierarchy = facetCfg.layoutHierarchy(
       facetCfg.spreadsheet,
       currentNode,
     );
-    if (layoutHierarchy) {
-      const deleteNode = !isBoolean(layoutHierarchy?.delete)
+    if (facetLayoutHierarchy) {
+      const deleteNode = !isBoolean(facetLayoutHierarchy?.delete)
         ? false
-        : layoutHierarchy?.delete;
+        : facetLayoutHierarchy?.delete;
       expandCurrentNode = !deleteNode;
-      const { push: pushNodes, unshift: unshiftNodes } = layoutHierarchy;
+      const { push: pushNodes, unshift: unshiftNodes } = facetLayoutHierarchy;
       let currentIndex = parentNode.children.length;
       let hierarchyIndex = hierarchy.getNodes().length;
       if (!isEmpty(unshiftNodes)) {

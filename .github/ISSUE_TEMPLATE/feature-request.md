@@ -2,7 +2,7 @@
 name: 🙏 Feature request
 about: Suggest an idea for this project
 title: '🙏'
-labels: Feature
+labels: 🙏feature request
 ---
 
 
@@ -15,4 +15,3 @@ labels: Feature
 |  name  |  type  | default  | description |
 |----|----|----|----|
 |  -  |  -  |  -  |  -  |
-

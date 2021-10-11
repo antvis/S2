@@ -1,5 +1,5 @@
 import { Button, Popover } from 'antd';
-import React, { FC, useRef } from 'react';
+import React, { FC, useRef, ReactNode } from 'react';
 import { SwitcherIcon } from '../icons';
 import {
   SwitcherContent,
@@ -12,10 +12,11 @@ import { getSwitcherClassName } from './util';
 import { i18n } from '@/common/i18n';
 
 export interface SwitcherProps extends SwitcherContentProps {
+  title?: ReactNode;
   onSubmit?: (result: SwitcherResult) => void;
 }
 
-export const Switcher: FC<SwitcherProps> = ({ onSubmit, ...props }) => {
+export const Switcher: FC<SwitcherProps> = ({ title, onSubmit, ...props }) => {
   const ref = useRef<SwitcherContentRef>();
   return (
     <Popover
@@ -30,13 +31,15 @@ export const Switcher: FC<SwitcherProps> = ({ onSubmit, ...props }) => {
         }
       }}
     >
-      <Button
-        className={getSwitcherClassName('entry-button')}
-        size="small"
-        icon={<SwitcherIcon />}
-      >
-        {i18n('行列切换')}
-      </Button>
+      {title || (
+        <Button
+          className={getSwitcherClassName('entry-button')}
+          size="small"
+          icon={<SwitcherIcon />}
+        >
+          {i18n('行列切换')}
+        </Button>
+      )}
     </Popover>
   );
 };

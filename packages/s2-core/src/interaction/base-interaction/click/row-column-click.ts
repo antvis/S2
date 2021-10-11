@@ -40,7 +40,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
         this.isMultiSelection = false;
-        this.interaction.removeIntercepts([InterceptType.CLICK]);
+        this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
       }
     });
   }
@@ -67,7 +67,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
     const lastState = interaction.getState();
     const cell = this.spreadsheet.getCell(event.target);
-    const meta = cell.getMeta() as Node;
+    const meta = cell?.getMeta() as Node;
 
     if (interaction.isSelectedCell(cell)) {
       interaction.reset();
@@ -117,7 +117,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       }
       this.spreadsheet.emit(
         S2Event.GLOBAL_SELECTED,
-        this.interaction.getActiveCells(),
+        interaction.getActiveCells(),
       );
       this.showTooltip(event);
     }
@@ -181,10 +181,12 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       this.spreadsheet.options;
     const hiddenColumnsDetail = this.spreadsheet.store.get(
       'hiddenColumnsDetail',
+      [],
     );
-    const { hideColumnNodes } = hiddenColumnsDetail.find(
-      ({ displaySiblingNode }) => displaySiblingNode?.field === node.field,
-    );
+    const { hideColumnNodes = [] } =
+      hiddenColumnsDetail.find(
+        ({ displaySiblingNode }) => displaySiblingNode?.field === node.field,
+      ) || {};
     const willDisplayColumnFields = hideColumnNodes.map(({ field }) => field);
     this.spreadsheet.setOptions({
       hiddenColumnFields: difference(

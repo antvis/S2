@@ -1,12 +1,15 @@
-import typescript from 'rollup-plugin-typescript2';
-import postcss from 'rollup-plugin-postcss';
-import resolve from '@rollup/plugin-node-resolve';
-import { terser } from 'rollup-plugin-terser';
-import commonjs from '@rollup/plugin-commonjs';
 import alias from '@rollup/plugin-alias';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
+import postcss from 'rollup-plugin-postcss';
+import { terser } from 'rollup-plugin-terser';
+import typescript from 'rollup-plugin-typescript2';
+import { visualizer } from 'rollup-plugin-visualizer';
 import ttypescript from 'ttypescript';
 
 const format = process.env.FORMAT;
+const enableAnalysis = process.env.ANALYSIS;
 
 const OUT_DIR_NAME_MAP = {
   esm: 'esm',
@@ -28,7 +31,17 @@ const output = {
 
 const plugins = [
   alias({
-    entries: [{ find: 'lodash', replacement: 'lodash-es' }],
+    entries: [
+      { find: 'lodash', replacement: 'lodash-es' },
+      {
+        find: 'react-is',
+        replacement: 'react-is/cjs/react-is.production.min.js',
+      },
+    ],
+  }),
+  replace({
+    'process.env.NODE_ENV': JSON.stringify('production'),
+    preventAssignment: true,
   }),
   commonjs(),
   resolve(),
@@ -55,6 +68,10 @@ const plugins = [
     output: outDir + '/s2.min.css',
   }),
 ];
+
+if (enableAnalysis) {
+  plugins.push(visualizer({ gzipSize: true }));
+}
 
 const external = ['react', 'react-dom', '@ant-design/icons', /antd/];
 
