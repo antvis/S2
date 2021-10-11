@@ -211,11 +211,13 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   const getRuleList = () => {
     return map(sortParams, (item) => {
       const { sortFieldId, sortMethod, sortBy, sortByMeasure } = item;
-      let rule = 'sortMethod';
+      let rule: string;
       if (sortBy) {
         rule = 'sortBy';
-      } else {
+      } else if (sortByMeasure) {
         rule = 'sortByMeasure';
+      } else {
+        rule = 'sortMethod';
       }
       return {
         field: sortFieldId,
