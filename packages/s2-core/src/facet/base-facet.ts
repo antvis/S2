@@ -28,7 +28,6 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
-  InteractionStateName,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
@@ -374,7 +373,7 @@ export abstract class BaseFacet {
       : hRowScroll;
   };
 
-  calculateCornerBBox = () => {
+  protected calculateCornerBBox() {
     const { rowsHierarchy, colsHierarchy } = this.layoutResult;
 
     const originalCornerWidth = Math.floor(
@@ -394,15 +393,12 @@ export abstract class BaseFacet {
       minY: 0,
     };
     this.cornerWidth = originalCornerWidth;
-  };
+  }
 
   getCornerBBoxWidth = (cornerWidth: number): number => {
     const { colsHierarchy } = this.layoutResult;
     if (!this.cfg.spreadsheet.isScrollContainsRowHeader()) {
       return this.getCornerWidth(cornerWidth, colsHierarchy);
-    }
-    if (!this.cfg.spreadsheet.isPivotMode()) {
-      return 0;
     }
     return cornerWidth;
   };
@@ -860,11 +856,11 @@ export abstract class BaseFacet {
     this.spreadsheet.panelScrollGroup?.setClip({
       type: 'rect',
       attrs: {
-        x: this.cfg.spreadsheet.freezeRowHeader() ? scrollX : 0,
+        x: this.cfg.spreadsheet.isFreezeRowHeader() ? scrollX : 0,
         y: scrollY,
         width:
           this.panelBBox.width +
-          (this.cfg.spreadsheet.freezeRowHeader() ? 0 : scrollX),
+          (this.cfg.spreadsheet.isFreezeRowHeader() ? 0 : scrollX),
         height: this.panelBBox.height,
       },
     });

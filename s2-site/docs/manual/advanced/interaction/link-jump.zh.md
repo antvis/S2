@@ -5,6 +5,8 @@ order: 3
 
 将单元格文本标记为含有下划线的链接样式，实现链接跳转 🔗, 对于透视表和明细表，有细微的区别
 
+![preview](https://gw.alipayobjects.com/zos/antfincdn/F6RSff0pe/de0c574d-ddb1-4096-9416-13eec503ebf7.png)
+
 ## 标记链接字段
 
 ```ts
@@ -95,4 +97,4 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 s2.render();
 ```
 
-<playground path='interaction/demo/table-link-jump.ts' rid='container' height='400'></playground>
+<playground path='interaction/demo/table-link-jump.ts' rid='container2' height='400'></playground>

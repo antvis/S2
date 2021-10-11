@@ -60,7 +60,7 @@ export const getTheme = (
         fill: basicColors[0],
         size: 12,
         margin: {
-          right: 10,
+          right: 4,
           left: 4,
         },
       },

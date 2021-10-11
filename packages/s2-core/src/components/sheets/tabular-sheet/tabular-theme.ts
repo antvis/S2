@@ -2,7 +2,7 @@ import { S2Theme } from '@/index';
 import { isWindows } from '@/utils/is-mobile';
 
 const FONT_FAMILY =
-  'Roboto, PingFangSC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
+  'Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
 
 export const FONT_SIZE = 12;
 export const FONT_SIZE_MINOR = 11;

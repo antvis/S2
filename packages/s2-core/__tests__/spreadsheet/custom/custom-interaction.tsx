@@ -17,7 +17,7 @@ export class CustomHover extends BaseEvent {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: Event) => {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
       if (isEmpty(cell)) return;
-      this.interaction.changeState({
+      this.spreadsheet.interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER,
       });
@@ -26,7 +26,5 @@ export class CustomHover extends BaseEvent {
   }
 }
 
-export const CustomInteraction = (
-  spreadsheet: SpreadSheet,
-  interaction: RootInteraction,
-) => new CustomHover(spreadsheet, interaction);
+export const CustomInteraction = (spreadsheet: SpreadSheet) =>
+  new CustomHover(spreadsheet);

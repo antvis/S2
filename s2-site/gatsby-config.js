@@ -57,12 +57,20 @@ module.exports = {
         order: 0,
       },
       {
+        slug: 'api/basic-class',
+        title: {
+          zh: '基础类',
+          en: 'Basic class',
+        },
+        order: 1,
+      },
+      {
         slug: 'api/components',
         title: {
           zh: '组件',
           en: 'Components',
         },
-        order: 1,
+        order: 2,
       },
       {
         slug: 'manual/basic',
@@ -95,6 +103,22 @@ module.exports = {
           en: 'interaction',
         },
         order: 5,
+      },
+      {
+        slug: 'manual/basic/analysis',
+        title: {
+          zh: '分析组件',
+          en: 'Analyze component',
+        },
+        order: 6,
+      },
+      {
+        slug: 'manual/contribution',
+        title: {
+          zh: '贡献指南',
+          en: 'Contributing',
+        },
+        order: 7,
       },
     ],
     // demo配置
@@ -132,11 +156,11 @@ module.exports = {
         },
       },
       {
-        slug: 'total',
+        slug: 'totals',
         icon: 'facet',
         title: {
           zh: '小计总计',
-          en: 'Total',
+          en: 'Totals',
         },
       },
       {
@@ -145,7 +169,7 @@ module.exports = {
         title: {
           zh: '主题',
           en: 'theme',
-        }
+        },
       },
       {
         slug: 'analysis',
@@ -156,6 +180,10 @@ module.exports = {
         },
       },
     ],
+    mdPlayground: {
+      // markdown 文档中的 playground 若干设置
+      splitPaneMainSize: '75%',
+    },
     // 编辑器配置
     playground: {
       container: '<div id="container" />',

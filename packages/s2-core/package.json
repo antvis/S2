@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "0.1.12",
+  "version": "0.1.14",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/s2.min.js",
@@ -36,9 +36,10 @@
     "start": "yarn test:live",
     "clean": "rimraf lib esm dist",
     "build": "run-s clean build:*",
-    "build:esm": "FORMAT=esm rollup -c rollup.config.js",
-    "build:cjs": "FORMAT=cjs rollup -c rollup.config.js",
-    "build:umd": "FORMAT=umd rollup -c rollup.config.js",
+    "build:esm": "rollup -c rollup.config.js --environment FORMAT:esm ",
+    "build:cjs": "rollup -c rollup.config.js --environment FORMAT:cjs",
+    "build:umd": "rollup -c rollup.config.js --environment FORMAT:umd",
+    "build:analysis": "rollup -c rollup.config.js --environment FORMAT:esm,ANALYSIS",
     "bundle:size": "bundlesize",
     "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
     "test:live": "node ./scripts/test-live.mjs",
@@ -46,7 +47,7 @@
     "test:coverage": "yarn test --coverage",
     "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "peerDependencies": {
     "react": "^16.14.0",

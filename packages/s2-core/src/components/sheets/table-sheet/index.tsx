@@ -1,7 +1,7 @@
 // TODO 所有表组件抽取公共hook
 import { Event as GEvent } from '@antv/g-canvas';
 import { Pagination, Spin } from 'antd';
-import { debounce, forIn, get, isEmpty, isFunction, merge } from 'lodash';
+import { forIn, get, isEmpty, isFunction, merge } from 'lodash';
 import React, { memo, StrictMode, useEffect, useRef, useState } from 'react';
 import { S2Event } from '@/common/constant';
 import { S2_PREFIX_CLS } from '@/common/constant/classnames';
@@ -21,6 +21,7 @@ import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
 import { SpreadSheet, TableSheet as BaseTableSheet } from '@/sheet-type';
 import { getBaseCellData } from '@/utils/interaction/formatter';
+import { useResizeEffect } from '@/components/sheets/hooks';
 
 export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
@@ -51,7 +52,6 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const baseSpreadsheet = useRef<SpreadSheet>();
 
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
-  const [resizeTimeStamp, setResizeTimeStamp] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [total, setTotal] = useState<number>();
   const [current, setCurrent] = useState<number>(
@@ -166,10 +166,6 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     setLoading(false);
   };
 
-  const debounceResize = debounce((e: Event) => {
-    setResizeTimeStamp(e.timeStamp);
-  }, 200);
-
   const renderPagination = (): JSX.Element => {
     const paginationCfg = get(options, 'pagination', false);
     // not show the pagination
@@ -225,28 +221,14 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
 
   useEffect(() => {
     buildSpreadSheet();
-    // 监听窗口变化
-    if (adaptive) window.addEventListener('resize', debounceResize);
     return () => {
       unBindEvent();
       baseSpreadsheet.current.destroy();
-      if (adaptive) window.removeEventListener('resize', debounceResize);
     };
   }, []);
 
-  useEffect(() => {
-    if (!container.current || !ownSpreadsheet) return;
-
-    const style = getComputedStyle(container.current);
-
-    const box = {
-      width: parseInt(style.getPropertyValue('width').replace('px', ''), 10),
-      height: parseInt(style.getPropertyValue('height').replace('px', ''), 10),
-    };
-
-    ownSpreadsheet.changeSize(box?.width, box?.height);
-    ownSpreadsheet.render(false);
-  }, [resizeTimeStamp]);
+  // handle box size change and resize
+  useResizeEffect(container.current, ownSpreadsheet, adaptive, options);
 
   useEffect(() => {
     update(setDataCfg);

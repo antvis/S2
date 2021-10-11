@@ -8,7 +8,7 @@
   },
   "runner": "jest-electron/runner",
   "testEnvironment": "jest-electron/environment",
-  "setupFilesAfterEnv": ["jest-extended"],
+  "setupFilesAfterEnv": ["jest-extended", "./__tests__/setup.js"],
   "preset": "ts-jest",
   "clearMocks": true,
   "collectCoverage": false,
@@ -19,14 +19,7 @@
     "!**/interface/**",
     "!**/interface.ts"
   ],
-  "coverageReporters": [
-    "json",
-    "lcov",
-    "text",
-    "text-summary",
-    "clover",
-    "html"
-  ],
+  "coverageReporters": ["json", "lcov", "text", "clover", "html"],
   "transformIgnorePatterns": [],
   "testRegex": "/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js)?$",
   "transform": {

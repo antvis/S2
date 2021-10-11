@@ -1,8 +1,9 @@
-import { filter, flatten, isEmpty, map, mapValues } from 'lodash';
+import { filter, flatten, isNil, map, mapValues } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
 import {
   FieldType,
   MAX_DIMENSION_COUNT,
+  SWITCHER_FIELDS,
   SWITCHER_PREFIX_CLS,
 } from './constant';
 import {
@@ -17,12 +18,11 @@ import { getClassNameWithPrefix } from '@/utils/get-classnames';
 export const getSwitcherClassName = (...classNames: string[]) =>
   getClassNameWithPrefix(SWITCHER_PREFIX_CLS, ...classNames);
 
-export const getNonEmptyFieldCount = (state: SwitcherState) => {
-  return [
-    state[FieldType.Rows],
-    state[FieldType.Cols],
-    state[FieldType.Values],
-  ].reduce((sum, value) => sum + (isEmpty(value) ? 0 : 1), 0);
+export const getNonEmptyFieldCount = (fields: SwitcherFields) => {
+  return SWITCHER_FIELDS.reduce(
+    (sum, field) => sum + (isNil(fields[field]) ? 0 : 1),
+    0,
+  );
 };
 
 export const getMainLayoutClassName = (nonEmptyCount: number) => {

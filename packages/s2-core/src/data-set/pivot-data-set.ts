@@ -2,20 +2,19 @@ import {
   compact,
   each,
   find,
-  flatten,
   get,
   has,
   includes,
   isEmpty,
   isUndefined,
   keys,
-  merge,
-  reduce,
-  set,
   uniq,
   values,
   map,
   cloneDeep,
+  filter,
+  forEach,
+  unset,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -39,7 +38,12 @@ import {
   transformIndexesData,
   getDataPath,
   getQueryDimValues,
+  deleteMetaById,
 } from '@/utils/dataset/pivot-data-set';
+import {
+  PartDrillDownDataCache,
+  PartDrillDownFieldInLevel,
+} from '@/components/sheets/interface';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -77,6 +81,7 @@ export class PivotDataSet extends BaseDataSet {
         columns,
         originData: this.originData,
         totalData: this.totalData,
+        indexesData: this.indexesData,
         sortedDimensionValues: this.sortedDimensionValues,
         rowPivotMeta: this.rowPivotMeta,
         colPivotMeta: this.colPivotMeta,
@@ -98,37 +103,54 @@ export class PivotDataSet extends BaseDataSet {
     drillDownData: DataType[],
     rowNode: Node,
   ) {
-    const { columns } = this.fields;
-    const rows = Node.getFieldPath(rowNode);
+    const { columns, values: dataValues } = this.fields;
+    const rows = Node.getFieldPath(rowNode, true);
     const store = this.spreadsheet.store;
+
     // 1、通过values在data中注入额外的维度信息
-    const values = this.fields.values;
-    for (const drillDownDatum of drillDownData) {
-      for (const value of values) {
-        merge(drillDownDatum, {
-          [EXTRA_FIELD]: value,
-          [VALUE_FIELD]: drillDownDatum[value],
-        });
-      }
+    // TODO 定value位置
+    drillDownData = map(drillDownData, (datum) => {
+      const valueKey = find(keys(datum), (k) => includes(dataValues, k));
+      return {
+        ...datum,
+        [EXTRA_FIELD]: valueKey,
+        [VALUE_FIELD]: datum[valueKey],
+      };
+    });
+
+    // 2. 检查该节点是否已经存在下钻维度
+    const rowNodeId = rowNode?.id;
+    const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
+    if (idPathMap.has(rowNodeId)) {
+      // the current node has a drill-down field, clean it
+      forEach(idPathMap.get(rowNodeId), (path: number[]) => {
+        unset(this.indexesData, path);
+      });
+      deleteMetaById(this.rowPivotMeta, rowNodeId);
     }
-    // 2、转换数据
-    const { paths: drillDownDataPaths } = transformIndexesData({
+
+    // 3、转换数据
+    const {
+      paths: drillDownDataPaths,
+      indexesData,
+      rowPivotMeta,
+      colPivotMeta,
+      sortedDimensionValues,
+    } = transformIndexesData({
       rows: [...rows, extraRowField],
       columns,
       originData: drillDownData,
+      indexesData: this.indexesData,
       sortedDimensionValues: this.sortedDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
-    // 3、record data paths by nodeId
-    const rowNodeId = rowNode.id;
-    const idPathMap = store.get('drillDownIdPathMap') ?? new Map();
-    if (idPathMap.has(rowNodeId)) {
-      // the current node has a drill-down field, clean it and add new one
-      idPathMap
-        .get(rowNodeId)
-        .map((path) => set(this.indexesData, path, undefined));
-    }
+    this.indexesData = indexesData;
+    this.rowPivotMeta = rowPivotMeta;
+    this.colPivotMeta = colPivotMeta;
+    this.sortedDimensionValues = sortedDimensionValues;
+
+    // 4、record data paths by nodeId
     // set new drill-down data path
     idPathMap.set(rowNodeId, drillDownDataPaths);
     store.set('drillDownIdPathMap', idPathMap);
@@ -142,17 +164,55 @@ export class PivotDataSet extends BaseDataSet {
   public clearDrillDownData(rowNodeId?: string) {
     const store = this.spreadsheet.store;
     const idPathMap = store.get('drillDownIdPathMap');
+    const drillDownDataCache = store.get(
+      'drillDownDataCache',
+      [],
+    ) as PartDrillDownDataCache[];
+
     if (rowNodeId) {
-      idPathMap
-        .get(rowNodeId)
-        .map((path) => set(this.indexesData, path, undefined));
+      // 1. 删除 indexesData 当前下钻层级对应数据
+      const currentIdPathMap = idPathMap.get(rowNodeId);
+      if (currentIdPathMap) {
+        forEach(currentIdPathMap, (path) => {
+          unset(this.indexesData, path);
+        });
+      }
+      // 2. 删除 rowPivotMeta 当前下钻层级对应 meta 信息
+      deleteMetaById(this.rowPivotMeta, rowNodeId);
+      // 3. 删除下钻缓存路径
       idPathMap.delete(rowNodeId);
-    } else {
-      flatten(Array.from(idPathMap.values()))?.map((path) =>
-        set(this.indexesData, path, undefined),
+
+      // 4. 过滤清除的下钻缓存
+      const restDataCache = filter(drillDownDataCache, (cache) =>
+        idPathMap.has(cache?.rowId),
       );
+      store.set('drillDownDataCache', restDataCache);
+
+      // 5. 过滤清除的下钻层级
+      const restDrillLevels = restDataCache.map((cache) => cache?.drillLevel);
+      const drillDownFieldInLevel = store.get(
+        'drillDownFieldInLevel',
+        [],
+      ) as PartDrillDownFieldInLevel[];
+      const restFieldInLevel = drillDownFieldInLevel.filter((filed) =>
+        includes(restDrillLevels, filed?.drillLevel),
+      );
+
+      store.set('drillDownFieldInLevel', restFieldInLevel);
+    } else {
       idPathMap.clear();
+      // 需要对应清空所有下钻后的dataCfg信息
+      // 因此如果缓存有下钻前原始dataCfg，需要清空所有的下钻数据
+      const originalDataCfg = this.spreadsheet.store.get('originalDataCfg');
+      if (!isEmpty(originalDataCfg)) {
+        this.spreadsheet.setDataCfg(originalDataCfg);
+      }
+
+      // 清空所有的下钻信息
+      this.spreadsheet.store.set('drillDownDataCache', []);
+      this.spreadsheet.store.set('drillDownFieldInLevel', []);
     }
+
     store.set('drillDownIdPathMap', idPathMap);
   }
 
@@ -206,6 +266,7 @@ export class PivotDataSet extends BaseDataSet {
     ];
 
     // 标准的数据中，一条数据代表一个格子；不存在一条数据中多个value的情况
+    // 对标准数据的转换效率表示怀疑，以前哦豁说双重for循环导致耗时，现在这种难道不等于是三重循环吗 -> map + find + includes？
     const standardTransform = (originData: Data[]) => {
       return map(originData, (datum) => {
         const valueKey = find(keys(datum), (k) => includes(values, k));
@@ -272,8 +333,13 @@ export class PivotDataSet extends BaseDataSet {
 
     const { columns, rows: originRows } = this.fields;
     let rows = originRows;
-    if (!isTotals) {
-      rows = Node.getFieldPath(rowNode) ?? originRows;
+    const isDrillDown = !isEmpty(
+      get(this, 'spreadsheet?.store.drillDownIdPathMap'),
+    );
+
+    // 如果是下钻结点，小计行维度在 originRows 中并不存在
+    if (!isTotals || isDrillDown) {
+      rows = Node.getFieldPath(rowNode, isDrillDown) ?? originRows;
     }
     const rowDimensionValues = getQueryDimValues(rows, query);
     const colDimensionValues = getQueryDimValues(columns, query);

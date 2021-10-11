@@ -58,6 +58,8 @@ export interface S2PartialOptions {
   readonly scrollReachNodeField?: NodeField;
   // custom config of showing columns and rows
   readonly customHeaderCells?: CustomHeaderCells;
+  // if show the default header actionIcons
+  readonly showDefaultHeaderActionIcon?: boolean;
   // header cells including ColCell, RowCell, CornerCell action icon's config
   readonly headerActionIcons?: HeaderActionIcon[];
   // register custom svg icons
@@ -183,6 +185,7 @@ export const defaultOptions: S2Options = {
   hiddenColumnFields: [],
   customSVGIcons: null,
   customHeaderCells: null,
+  showDefaultHeaderActionIcon: true,
   headerActionIcons: null,
   style: defaultStyle,
   selectedCellsSpotlight: true,

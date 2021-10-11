@@ -1,6 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import { isEmpty, forEach } from 'lodash';
+import { isEmpty, forEach, isEqual } from 'lodash';
 import { BaseEvent, BaseEventImplement } from '../base-event';
 import { ColCell, RowCell } from '@/cell';
 import { S2Event } from '@/common/constant';
@@ -21,13 +21,14 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     this.bindColCellHover();
   }
 
-  private updateRowColCells(meta: ViewMeta) {
+  public updateRowColCells(meta: ViewMeta) {
     const { rowId, colId } = meta;
+    const { interaction } = this.spreadsheet;
     if (colId) {
       // update colHeader cells
       const allColHeaderCells = getActiveHoverRowColCells(
         colId,
-        this.interaction.getAllColHeaderCells(),
+        interaction.getAllColHeaderCells(),
       );
       forEach(allColHeaderCells, (cell: ColCell) => {
         cell.updateByState(InteractionStateName.HOVER);
@@ -38,7 +39,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       // update rowHeader cells
       const allRowHeaderCells = getActiveHoverRowColCells(
         rowId,
-        this.interaction.getAllRowHeaderCells(),
+        interaction.getAllRowHeaderCells(),
         this.spreadsheet.isHierarchyTreeType(),
       );
       forEach(allRowHeaderCells, (cell: RowCell) => {
@@ -58,8 +59,9 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     event: CanvasEvent,
     meta: ViewMeta,
   ) {
-    this.interaction.hoverTimer = window.setTimeout(() => {
-      this.interaction.changeState({
+    const { interaction } = this.spreadsheet;
+    interaction.hoverTimer = window.setTimeout(() => {
+      interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER_FOCUS,
       });
@@ -84,9 +86,14 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     if (isEmpty(cell)) {
       return;
     }
-
+    const { interaction } = this.spreadsheet;
+    const activeCells = interaction.getActiveCells();
+    // 避免在统一单元格内鼠标移动造成的多次渲染
+    if (isEqual(activeCells?.[0], cell)) {
+      return;
+    }
     const meta = cell.getMeta() as ViewMeta;
-    this.interaction.changeState({
+    interaction.changeState({
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.HOVER,
     });
@@ -131,15 +138,15 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     return cellInfos;
   }
 
-  private bindDataCellHover() {
+  public bindDataCellHover() {
     this.spreadsheet.on(S2Event.DATA_CELL_HOVER, (event: CanvasEvent) => {
       const cell = this.spreadsheet.getCell(event.target) as S2CellType;
       if (isEmpty(cell)) {
         return;
       }
-
-      const meta = cell.getMeta() as ViewMeta;
-      this.interaction.changeState({
+      const { interaction } = this.spreadsheet;
+      const meta = cell?.getMeta() as ViewMeta;
+      interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER,
       });
@@ -147,21 +154,21 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       if (this.spreadsheet.options.hoverHighlight) {
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
-        if (this.interaction.hoverTimer) {
-          window.clearTimeout(this.interaction.hoverTimer);
+        if (interaction.hoverTimer) {
+          window.clearTimeout(interaction.hoverTimer);
         }
         this.changeStateToHoverFocus(cell, event, meta);
       }
     });
   }
 
-  private bindRowCellHover() {
+  public bindRowCellHover() {
     this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event: CanvasEvent) => {
       this.handleHeaderHover(event);
     });
   }
 
-  private bindColCellHover() {
+  public bindColCellHover() {
     this.spreadsheet.on(S2Event.COL_CELL_HOVER, (event: CanvasEvent) => {
       this.handleHeaderHover(event);
     });
