@@ -68,9 +68,6 @@ function MainLayout() {
               setDataCfg({ ...dataCfg, sortParams });
             },
           },
-          exportCfg: {
-            open: true,
-          },
         }}
       />
     </>
