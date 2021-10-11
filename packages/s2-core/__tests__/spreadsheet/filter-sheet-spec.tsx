@@ -87,7 +87,7 @@ function MainLayout() {
     linkFieldIds: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
-      operations: {
+      operation: {
         filter: true,
       },
     },

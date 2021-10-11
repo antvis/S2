@@ -173,7 +173,6 @@ export const defaultOptions: S2Options = {
       hiddenColumns: true,
       trend: false,
       sort: true,
-      filter: false,
     },
   },
   linkFields: [],

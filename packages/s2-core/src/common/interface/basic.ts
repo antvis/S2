@@ -130,7 +130,7 @@ export interface SortParam extends Sort {
 
 export interface FilterParam {
   filterKey: string;
-  filteredValues: any[];
+  filteredValues: unknown[];
 }
 
 export type SortParams = SortParam[];

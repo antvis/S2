@@ -41,7 +41,6 @@ export const TOOLTIP_OPERATOR_MENUS: Record<
       icon: EyeOutlined,
     },
   ],
-
   Filter: [
     {
       id: 'filter',

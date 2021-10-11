@@ -146,17 +146,6 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       });
     }
 
-    if (tooltip.operation.filter) {
-      operator.menus.push(...TOOLTIP_OPERATOR_MENUS.Filter);
-
-      handlers.push(({ key }) => {
-        this.spreadsheet.emit(S2Event.RANGE_FILTER, {
-          filterKey: 'customer_type',
-          filteredValues: ['消费者'],
-        });
-      });
-    }
-
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       showSingleTips: true,
       operator,
