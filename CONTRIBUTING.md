@@ -16,17 +16,21 @@
 
 ## 提交 Bug
 
-很抱歉又写了一些 bug, 但求友好的提交一个有意义的 bug, 谁也不希望反馈的 bug 是这样：
+很抱歉又写了一些 bug, 对于没一个 bug report 我们都会非常感激。为了提高沟通效率，请尽量多一些细节描述。
+
+### 错误示范
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/j0jUvKwT%26/dd59fe64-7108-4ad7-a544-e19d79eea890.png)
 
-首先选择 [Bug report]
+### 推荐步骤
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/oAnzfiVl2/9d83b3e8-b05c-4475-b736-92c45448546a.png)
+1. 首先选择 [Bug report]
 
-按照 Issue 模板 填写相关的信息，是的，这些步骤稍微一些繁琐，但确实必须的，每个用户使用的场景都不同，系统环境，软件版本，又或是需要一些特定的步骤才能复现 bug, 这个时候说清楚，可以节省大家的时间！
+    ![preview](https://gw.alipayobjects.com/zos/antfincdn/oAnzfiVl2/9d83b3e8-b05c-4475-b736-92c45448546a.png)
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/05O3p5nE5/d0d4b120-e5aa-4b51-918b-8a573f8fb794.png)
+2. 按照 Issue 模板 填写相关的信息，是的，这些步骤稍微一些繁琐，但确实必须的，每个用户使用的场景都不同，系统环境，软件版本，又或是需要一些特定的步骤才能复现 bug, 这个时候说清楚，可以节省大家的时间呢～
+
+    ![preview](https://gw.alipayobjects.com/zos/antfincdn/05O3p5nE5/d0d4b120-e5aa-4b51-918b-8a573f8fb794.png)
 
 ## Pull Request
 
