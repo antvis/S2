@@ -1,5 +1,5 @@
 import { Group, Point, SimpleBBox } from '@antv/g-canvas';
-import { get, includes, isEmpty, last, max } from 'lodash';
+import { get, includes, isEmpty, last, max, min } from 'lodash';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { CornerData, ResizeInfo } from './interface';
@@ -160,7 +160,10 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         isPivotMode &&
         get(colsHierarchy, 'sampleNodeForLastLevel', undefined)
       ) {
+        let nodeWidth = Infinity;
         rowsHierarchy.sampleNodesForAllLevels.forEach((rowNode) => {
+          // 避免因为小计总计格子宽度调整出现的错位
+          nodeWidth = min([rowNode.width, nodeWidth]);
           const field = rows[rowNode.level];
           const cNode: Node = new Node({
             key: field,
@@ -168,10 +171,10 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
             value: dataSet.getFieldName(field),
           });
 
-          cNode.x = rowNode.x + seriesNumberWidth;
+          cNode.x = rowNode.level * nodeWidth + seriesNumberWidth;
           columOffsetX = max([cNode.x, columOffsetX]);
           cNode.y = colsHierarchy.sampleNodeForLastLevel.y;
-          cNode.width = rowNode.width;
+          cNode.width = nodeWidth;
           cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
           cNode.field = field;
           cNode.isPivotMode = isPivotMode;
@@ -181,9 +184,13 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         });
       }
     }
+
+    let nodeHeight = Infinity;
     colsHierarchy.sampleNodesForAllLevels.forEach((colNode) => {
       // 列头最后一个层级的位置为行头 label 标识，需要过滤
-      if (colNode.level !== colsHierarchy.maxLevel) {
+      if (colNode.level < colsHierarchy.maxLevel) {
+        // 避免因为小计总计格子高度调整出现的错位
+        nodeHeight = min([colNode.height, nodeHeight]);
         const field = columns[colNode.level];
         const cNode: Node = new Node({
           key: field,
@@ -191,9 +198,9 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           value: dataSet.getFieldName(field),
         });
         cNode.x = columOffsetX;
-        cNode.y = colNode.y;
+        cNode.y = colNode.level * nodeHeight;
         cNode.width = colsHierarchy.sampleNodeForLastLevel.width;
-        cNode.height = colNode.height;
+        cNode.height = nodeHeight;
         cNode.field = field;
         cNode.isPivotMode = isPivotMode;
         cNode.cornerType = 'col';
