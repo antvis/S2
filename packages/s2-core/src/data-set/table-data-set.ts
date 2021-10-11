@@ -18,25 +18,46 @@ export class TableDataSet extends BaseDataSet {
     this.handleDimensionValueFilter();
   }
 
+  /**
+   * 返回顶部冻结行
+   * @returns
+   */
   protected getStartRows() {
     const { frozenRowCount } = this.spreadsheet.options || {};
     const { displayData } = this;
     return displayData.slice(0, frozenRowCount);
   }
 
+  /**
+   * 返回底部冻结行
+   * @returns
+   */
   protected getEndRows() {
     const { frozenTrailingRowCount } = this.spreadsheet.options || {};
     const { displayData } = this;
     return displayData.slice(-frozenTrailingRowCount);
   }
 
-  handleDimensionValueFilter = () => {
+  /**
+   * 返回可移动的非冻结行
+   * @returns
+   */
+  protected getMovableRows() {
     const { displayData } = this;
+    const { frozenTrailingRowCount, frozenRowCount } =
+      this.spreadsheet.options || {};
+    return displayData.slice(
+      frozenRowCount || 0,
+      -frozenTrailingRowCount || undefined,
+    );
+  }
+
+  handleDimensionValueFilter = () => {
     each(this.filterParams, ({ filterKey, filteredValues }) => {
       this.displayData = [
         ...this.getStartRows(),
         ...filter(
-          displayData,
+          this.getMovableRows(),
           (row) => row[filterKey] && !includes(filteredValues, row[filterKey]),
         ),
         ...this.getEndRows(),
@@ -45,7 +66,6 @@ export class TableDataSet extends BaseDataSet {
   };
 
   handleDimensionValuesSort = () => {
-    const { displayData } = this;
     each(this.sortParams, (item) => {
       const { sortFieldId, sortBy, sortMethod } = item;
       // 万物排序的前提
@@ -54,7 +74,7 @@ export class TableDataSet extends BaseDataSet {
       this.displayData = [
         ...this.getStartRows(),
         ...orderBy(
-          displayData,
+          this.getMovableRows(),
           [sortBy || sortFieldId],
           [sortMethod.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
         ),
