@@ -68,6 +68,7 @@ export const defaultDataConfig = {
   },
   meta: [],
   sortParams: [],
+  filterParams: [],
 } as S2DataConfig;
 
 export const safetyDataConfig = (dataConfig: S2DataConfig) => {
