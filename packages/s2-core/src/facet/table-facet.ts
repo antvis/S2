@@ -55,16 +55,25 @@ export class TableFacet extends BaseFacet {
     });
 
     s2.on(S2Event.RANGE_FILTER, (params) => {
-      // check whether filter condition already exists on column, if so, replace it.
-      const oldConfig = s2.dataCfg.filterParams || [];
+      /** remove filter params on current key if passed an empty filterValues field */
+      const unfilter =
+        !params.filteredValues || params.filteredValues.length === 0;
 
+      const oldConfig = s2.dataCfg.filterParams || [];
+      // check whether filter condition already exists on column, if so, modify it instead.
       const oldIndex = oldConfig.findIndex(
         (item) => item.filterKey === params.filterKey,
       );
 
-      // if filter with same key already exists, replace it
-      if (oldIndex !== -1) oldConfig[oldIndex] = params;
-      else oldConfig.push(params);
+      if (oldIndex !== -1) {
+        if (unfilter) {
+          // remove filter params on current key if passed an empty filterValues field
+          oldConfig.splice(oldIndex);
+        } else {
+          // if filter with same key already exists, replace it
+          oldConfig[oldIndex] = params;
+        }
+      } else oldConfig.push(params);
 
       set(s2.dataCfg, 'filterParams', oldConfig);
 
