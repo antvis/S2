@@ -5,3 +5,4 @@ export * from './interaction';
 export * from './scroll';
 export * from './theme';
 export * from './tooltip';
+export * from './sort';

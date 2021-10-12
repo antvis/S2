@@ -195,7 +195,7 @@ export const getTheme = (
       },
       icon: {
         fill: basicColors[0],
-        size: 12,
+        size: 10,
         margin: {
           right: 4,
           left: 4,

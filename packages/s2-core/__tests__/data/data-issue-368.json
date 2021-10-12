@@ -1,0 +1,46 @@
+{
+  "fields": {
+    "rows": ["row0", "row1", "row2"],
+    "columns": ["col0", "col1", "col2"],
+    "values": ["price", "cost"],
+    "valueInCols": true
+  },
+  "data": [
+    {
+      "row0": "row0",
+      "row1": "row1-0",
+      "row2": "row2-0",
+      "col0": "col0-0",
+      "col1": "col1-0",
+      "col2": "col2-0",
+      "cost": 2
+    },
+    {
+      "row0": "row0",
+      "row1": "row1-1",
+      "row2": "row2-0",
+      "col0": "col0-0",
+      "col1": "col1-0",
+      "col2": "col2-0",
+      "price": 1
+    },
+    {
+      "row0": "row0",
+      "row1": "row1-0",
+      "row2": "row2-0",
+      "col0": "col0-0",
+      "col1": "col1-0",
+      "col2": "col2-0",
+      "cost": 2
+    },
+    {
+      "row0": "row0",
+      "row1": "row1-1",
+      "row2": "row2-0",
+      "col0": "col0-0",
+      "col1": "col1-1",
+      "col2": "col2-0",
+      "price": 1
+    }
+  ]
+}

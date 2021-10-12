@@ -8,8 +8,9 @@ import {
   isEmpty,
   isString,
   merge,
+  once,
 } from 'lodash';
-import { getHiddenColumnsThunkGroup, hideColumns } from '@/utils/hide-columns';
+import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 import { BaseCell } from '@/cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
@@ -330,12 +331,14 @@ export abstract class SpreadSheet extends EE {
     }
     this.buildFacet();
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
+    this.initHiddenColumnsDetail();
   }
 
   public destroy() {
     this.facet.destroy();
     this.hdAdapter?.destroy();
     this.interaction.destroy();
+    this.store.clear();
     this.destroyTooltip();
   }
 
@@ -521,7 +524,7 @@ export abstract class SpreadSheet extends EE {
     this.initPanelGroupChildren();
   }
 
-  protected initPanelGroupChildren(): void {
+  protected initPanelGroupChildren() {
     this.panelScrollGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_SCROLL,
       zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
@@ -533,15 +536,17 @@ export abstract class SpreadSheet extends EE {
   }
 
   public hideColumns(hiddenColumnFields: string[] = []) {
-    this.store.set('hiddenColumnsDetail', []);
-    const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
-      this.dataCfg.fields.columns,
-      hiddenColumnFields,
-    );
-    hiddenColumnsGroup.forEach((fields) => {
-      hideColumns(this, fields);
-    });
+    hideColumnsByThunkGroup(this, hiddenColumnFields);
   }
+
+  // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息
+  private initHiddenColumnsDetail = once(() => {
+    const { hiddenColumnFields } = this.options;
+    if (isEmpty(hiddenColumnFields)) {
+      return;
+    }
+    hideColumnsByThunkGroup(this, hiddenColumnFields, true);
+  });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public handleGroupSort(event: MouseEvent, meta: Node) {}

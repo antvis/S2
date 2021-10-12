@@ -1,4 +1,4 @@
-import { compact, isEqual, last, uniq } from 'lodash';
+import { compact, isEmpty, isEqual, last, uniq } from 'lodash';
 import { HiddenColumnsInfo } from '@/common/interface/store';
 import { SpreadSheet } from '@/sheet-type';
 import { S2Event } from '@/common/constant';
@@ -48,13 +48,16 @@ export const getHiddenColumnDisplaySiblingNode = (
 
 /**
  * @name 获取隐藏列组
- * @description 如果给定的隐藏列不是连续的, 比如原始例是 [1,2,3,4,5,6,7], 隐藏列是 [2,3,6], 那么其实在表格上需要显示两个展开按钮
+ * @description 如果给定的隐藏列不是连续的, 比如原始列是 [1,2,3,4,5,6,7], 隐藏列是 [2,3,6], 那么其实在表格上需要显示两个展开按钮
    [[2,3],[6]]
  */
 export const getHiddenColumnsThunkGroup = (
   columns: string[],
   hiddenColumnFields: string[],
 ): string[][] => {
+  if (isEmpty(hiddenColumnFields)) {
+    return [];
+  }
   // 上一个需要隐藏项的序号
   let prevHiddenIndex = Number.NEGATIVE_INFINITY;
   return columns.reduce((result, field, index) => {
@@ -83,11 +86,18 @@ export const getHiddenColumnsThunkGroup = (
 export const hideColumns = (
   spreadsheet: SpreadSheet,
   selectedColumnFields: string[] = [],
+  forceRender = false,
 ) => {
+  const lastHiddenColumnDetail = spreadsheet.store.get(
+    'hiddenColumnsDetail',
+    [],
+  );
   const { hiddenColumnFields: lastHiddenColumnFields } = spreadsheet.options;
-  if (isEqual(selectedColumnFields, lastHiddenColumnFields)) {
+
+  if (isEqual(selectedColumnFields, lastHiddenColumnFields) && !forceRender) {
     return;
   }
+
   const hiddenColumnFields: string[] = uniq([
     ...selectedColumnFields,
     ...lastHiddenColumnFields,
@@ -98,11 +108,6 @@ export const hideColumns = (
   const displaySiblingNode = getHiddenColumnDisplaySiblingNode(
     spreadsheet,
     selectedColumnFields,
-  );
-
-  const lastHiddenColumnDetail = spreadsheet.store.get(
-    'hiddenColumnsDetail',
-    [],
   );
 
   const currentHiddenColumnsInfo: HiddenColumnsInfo = {
@@ -116,13 +121,32 @@ export const hideColumns = (
   ];
 
   spreadsheet.emit(
-    S2Event.LAYOUT_TABLE_COL_HIDE,
+    S2Event.LAYOUT_TABLE_COL_HIDDEN,
     currentHiddenColumnsInfo,
     hiddenColumnsDetail,
   );
   spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
   spreadsheet.interaction.reset();
   spreadsheet.render(false);
+};
+
+/**
+ * @name 根据分组隐藏指定列
+ * @description 根据配置的隐藏列自动分组, 批量隐藏
+ */
+export const hideColumnsByThunkGroup = (
+  spreadsheet: SpreadSheet,
+  hiddenColumnFields: string[] = [],
+  forceRender = false,
+) => {
+  spreadsheet.store.set('hiddenColumnsDetail', []);
+  const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
+    spreadsheet.dataCfg.fields.columns,
+    hiddenColumnFields,
+  );
+  hiddenColumnsGroup.forEach((fields) => {
+    hideColumns(spreadsheet, fields, forceRender);
+  });
 };
 
 export const isLastColumnAfterHidden = (

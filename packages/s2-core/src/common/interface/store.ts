@@ -67,6 +67,8 @@ export interface StoreKey {
    *  | a, b, [c,d 隐藏] [icon e ] , [f 隐藏], [icon g]   |
    */
   hiddenColumnsDetail: HiddenColumnsInfo[];
+  // 上一次渲染的列头配置
+  lastRenderedColumnFields: string[];
 
   [key: string]: unknown;
 }
