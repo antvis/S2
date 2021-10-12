@@ -15,7 +15,7 @@ import {
 
 const tableDataFields = {
   fields: {
-    columns: ['province', 'city', 'type', 'sub_type', 'price'],
+    columns: ['province', 'city', 'type', 'sub_type', 'number'],
     valueInCols: true,
   },
 };

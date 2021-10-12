@@ -1,4 +1,5 @@
 import React from 'react';
+import debounceRender from 'react-debounce-render';
 import { BaseSheet } from './sheets/base-sheet';
 import { TabularSheet } from './sheets/tabular-sheet';
 import { TableSheet } from './sheets/table-sheet';
@@ -9,7 +10,7 @@ export { PartDrillDown, PartDrillDownInfo } from './sheets/interface';
 export { DrillDown, DrillDownProps } from './drill-down';
 export { Switcher, SwitcherProps } from './switcher';
 
-export const SheetComponent: React.FC<SpreadsheetProps> = (props) => {
+export const SheetComponent = debounceRender((props: SpreadsheetProps) => {
   const { sheetType } = props;
   switch (sheetType) {
     case 'table':
@@ -19,4 +20,4 @@ export const SheetComponent: React.FC<SpreadsheetProps> = (props) => {
     default:
       return <BaseSheet {...props} />;
   }
-};
+}, 100);

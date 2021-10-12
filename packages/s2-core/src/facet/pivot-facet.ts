@@ -416,7 +416,8 @@ export class PivotFacet extends BaseFacet {
       forEach(grandTotalChildren, (node: Node) => {
         node.x = hierarchy.getNodes(maxLevel)[0].x;
       });
-    } else {
+    } else if (maxLevel > 1) {
+      // 只有当列头总层级大于1级时总计格高度才需要填充
       // 填充列总单元格高度
       grandTotalNode.height = hierarchy.sampleNodesForAllLevels
         .map((value) => value.height)
