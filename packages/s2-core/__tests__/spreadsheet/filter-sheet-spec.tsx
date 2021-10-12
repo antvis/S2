@@ -1,10 +1,8 @@
 /* eslint-disable no-console */
-import { Button, Space } from 'antd';
-import 'antd/dist/antd.min.css';
-import { find } from 'lodash';
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import { Button, Space } from 'antd';
 import { getContainer, getMockData } from '../util/helpers';
 import {
   S2DataConfig,
@@ -15,6 +13,7 @@ import {
   TableSheet,
 } from '@/index';
 
+import 'antd/dist/antd.min.css';
 const data = getMockData('../data/tableau-supermarket.csv');
 
 let spreadSheet: SpreadSheet;
@@ -98,20 +97,6 @@ function MainLayout() {
   } as S2Options;
 
   const s2Ref = React.useRef<SpreadSheet>(null);
-
-  useEffect(() => {
-    const logData = (...data: unknown[]) => {
-      console.log(...data);
-    };
-    s2Ref.current.on(S2Event.GLOBAL_COPIED, logData);
-    s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, logData);
-    s2Ref.current.on(S2Event.LAYOUT_TABLE_COL_HIDE, logData);
-    return () => {
-      s2Ref.current.off(S2Event.GLOBAL_COPIED);
-      s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_EXPANDED);
-      s2Ref.current.off(S2Event.LAYOUT_TABLE_COL_HIDE);
-    };
-  }, []);
 
   return (
     <Space direction="vertical">
