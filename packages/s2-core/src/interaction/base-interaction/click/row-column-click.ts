@@ -124,16 +124,17 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   };
 
   private showTooltip(event: CanvasEvent) {
-    const {
-      interaction,
-      options: { tooltip },
-    } = this.spreadsheet;
+    const { interaction } = this.spreadsheet;
     const cellInfos = interaction.isSelectedState()
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
-
+    const { operation, showTooltip } =
+      this.spreadsheet.getTooltipOptions(event);
+    if (!showTooltip) {
+      return;
+    }
     const operator: TooltipOperatorOptions = this.spreadsheet.isTableMode() &&
-      tooltip.operation.hiddenColumns && {
+      operation.hiddenColumns && {
         onClick: () => {
           this.hideSelectedColumns();
         },

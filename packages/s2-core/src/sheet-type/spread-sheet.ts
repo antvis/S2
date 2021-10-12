@@ -8,7 +8,6 @@ import {
   isEmpty,
   isString,
   merge,
-  size,
 } from 'lodash';
 import { getHiddenColumnsThunkGroup, hideColumns } from '@/utils/hide-columns';
 import { BaseCell } from '@/cell';
@@ -53,7 +52,7 @@ import { HdAdapter } from '@/ui/hd-adapter';
 import { BaseTooltip } from '@/ui/tooltip';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
-import { getTooltipData } from '@/utils/tooltip';
+import { getTooltipData, getTooltipOptionsByCellType } from '@/utils/tooltip';
 import { registerIcon, getIcon } from '@/common/icons/factory';
 
 export abstract class SpreadSheet extends EE {
@@ -150,10 +149,6 @@ export abstract class SpreadSheet extends EE {
     this.setDebug();
   }
 
-  get isShowTooltip() {
-    return this.options?.tooltip?.showTooltip;
-  }
-
   private setDebug() {
     DebuggerUtil.getInstance().setDebug(this.options.debug);
   }
@@ -186,6 +181,11 @@ export abstract class SpreadSheet extends EE {
 
   private initInteraction() {
     this.interaction = new RootInteraction(this);
+  }
+
+  public getTooltipOptions(event: CanvasEvent | MouseEvent | Event) {
+    const cellType = this.getCellType(event.target);
+    return getTooltipOptionsByCellType(this.options.tooltip, cellType);
   }
 
   private initTooltip() {
@@ -250,9 +250,7 @@ export abstract class SpreadSheet extends EE {
   public abstract clearDrillDownData(rowNodeId?: string): void;
 
   public showTooltip(showOptions: TooltipShowOptions) {
-    if (this.isShowTooltip) {
-      this.tooltip.show?.(showOptions);
-    }
+    this.tooltip.show?.(showOptions);
   }
 
   public showTooltipWithInfo(
@@ -260,9 +258,11 @@ export abstract class SpreadSheet extends EE {
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
-    if (!this.isShowTooltip) {
+    const { showTooltip, tooltipComponent } = this.getTooltipOptions(event);
+    if (!showTooltip) {
       return;
     }
+
     const tooltipData = getTooltipData({
       spreadsheet: this,
       cellInfos: data,
@@ -278,19 +278,16 @@ export abstract class SpreadSheet extends EE {
         enterable: true,
         ...options,
       },
+      element: tooltipComponent,
     });
   }
 
   public hideTooltip() {
-    if (this.isShowTooltip) {
-      this.tooltip.hide?.();
-    }
+    this.tooltip.hide?.();
   }
 
   public destroyTooltip() {
-    if (this.isShowTooltip) {
-      this.tooltip.destroy?.();
-    }
+    this.tooltip.destroy?.();
   }
 
   public registerIcons() {

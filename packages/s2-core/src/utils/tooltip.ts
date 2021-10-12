@@ -51,6 +51,7 @@ import {
   PRECISION,
   VALUE_FIELD,
 } from '@/common/constant';
+import { Tooltip } from '@/common/interface';
 
 const isNotNumber = (v) => {
   return Number.isNaN(Number(v));
@@ -509,4 +510,26 @@ export const getActiveCellsTooltipData = (
     }
   });
   return cellInfos;
+};
+
+export const getTooltipOptionsByCellType = (
+  tooltip: Tooltip,
+  cellType: CellTypes,
+) => {
+  const getOptionsByCell = (cell) => {
+    return { ...tooltip, ...cell };
+  };
+
+  const { col, row, cell } = tooltip || {};
+  if (col && cellType === CellTypes.COL_CELL) {
+    return getOptionsByCell(col);
+  }
+  if (row && cellType === CellTypes.ROW_CELL) {
+    return getOptionsByCell(row);
+  }
+  if (cell && cellType === CellTypes.DATA_CELL) {
+    return getOptionsByCell(cell);
+  }
+
+  return { ...tooltip };
 };
