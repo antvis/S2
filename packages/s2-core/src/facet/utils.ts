@@ -8,7 +8,7 @@ import {
   FrozenOpts,
   FrozenCellIndex,
 } from '@/common/constant/frozen';
-import { Pagination } from '@/common/interface';
+import { Pagination, ScrollRatio } from '@/common/interface';
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) => {
   return frozenCount > 0 && colIndex < frozenCount;
@@ -101,7 +101,7 @@ export const calculateInViewIndexes = (
 export const optimizeScrollXY = (
   x: number,
   y: number,
-  ratio: number,
+  ratio: ScrollRatio,
 ): [number, number] => {
   const ANGLE = 2; // 调参工程师
   const angle = Math.abs(x / y);
@@ -110,7 +110,7 @@ export const optimizeScrollXY = (
   const deltaX = angle <= 1 / ANGLE ? 0 : x;
   const deltaY = angle > ANGLE ? 0 : y;
 
-  return [deltaX * ratio, deltaY * ratio];
+  return [deltaX * ratio.horizontal, deltaY * ratio.vertical];
 };
 
 export const translateGroup = (

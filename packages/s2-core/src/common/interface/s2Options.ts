@@ -5,6 +5,7 @@ import {
   FilterDataItemCallback,
   HeaderActionIcon,
   CustomSVGIcon,
+  ScrollRatio,
 } from './basic';
 import { Tooltip } from './tooltip';
 import {
@@ -83,7 +84,7 @@ export interface S2PartialOptions {
   // enable Command + C to copy spread data
   readonly enableCopy?: boolean;
   // the ratio to control scroll speed, default set to 1
-  readonly scrollSpeedRatio?: number;
+  readonly scrollSpeedRatio?: ScrollRatio;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -197,7 +198,10 @@ export const defaultOptions: S2Options = {
   frozenTrailingRowCount: 0,
   frozenTrailingColCount: 0,
   hdAdapter: true,
-  scrollSpeedRatio: 1,
+  scrollSpeedRatio: {
+    horizontal: 1,
+    vertical: 1,
+  },
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>
