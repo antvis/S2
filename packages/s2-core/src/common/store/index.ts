@@ -5,21 +5,21 @@ import { StoreKey } from '@/common/interface';
  * All the keys need be declare in {@see StoreKey} first
  */
 export class Store {
-  private store: Partial<StoreKey> = {};
+  private store = new Map<keyof StoreKey, unknown>();
 
-  public set<T extends keyof StoreKey>(key: T, val: StoreKey[T]) {
-    this.store[key] = val;
+  public set<T extends keyof StoreKey>(key: T, value: StoreKey[T]) {
+    this.store.set(key, value);
   }
 
   public get<T extends keyof StoreKey>(
     key: T,
     defaultValue?: StoreKey[T],
   ): StoreKey[T] {
-    const v = this.store[key];
-    return (v as StoreKey[T]) ?? defaultValue;
+    const value = this.store.get(key);
+    return (value as StoreKey[T]) ?? defaultValue;
   }
 
   public clear() {
-    this.store = {};
+    this.store.clear();
   }
 }

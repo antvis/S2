@@ -340,6 +340,7 @@ export abstract class SpreadSheet extends EE {
     this.facet.destroy();
     this.hdAdapter?.destroy();
     this.interaction.destroy();
+    this.store.clear();
     this.destroyTooltip();
   }
 
