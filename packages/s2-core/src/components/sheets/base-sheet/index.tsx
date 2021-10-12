@@ -182,17 +182,19 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
         disabledFields={disabledFields}
       />
     );
-    const { showTooltip } = sheetInstance.getTooltipOptions(event);
-    if (!showTooltip) {
-      return;
+    if (event) {
+      const { showTooltip } = sheetInstance.getTooltipOptions(event);
+      if (!showTooltip) {
+        return;
+      }
+      sheetInstance.showTooltip({
+        position: {
+          x: event.clientX,
+          y: event.clientY,
+        },
+        element,
+      });
     }
-    sheetInstance.showTooltip({
-      position: {
-        x: event.clientX,
-        y: event.clientY,
-      },
-      element,
-    });
   };
 
   const setOptions = (

@@ -452,7 +452,7 @@ export abstract class SpreadSheet extends EE {
         // 在单元格中，返回true
         return parent as T;
       }
-      parent = parent.get('parent');
+      parent = parent.get && parent.get('parent');
     }
     return null;
   }
