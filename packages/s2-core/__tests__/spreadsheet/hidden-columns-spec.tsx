@@ -1,112 +1,14 @@
 /* eslint-disable no-console */
 import { act } from 'react-dom/test-utils';
-import { getContainer } from '../util/helpers';
+import { data } from 'tests/data/mock-dataset.json';
+import { getContainer } from 'tests/util/helpers';
 import { S2Event, TableSheet } from '@/index';
-
-const data = [
-  {
-    province: '浙江',
-    city: '杭州',
-    type: '笔',
-    price: '1',
-  },
-  {
-    province: '浙江',
-    city: '杭州',
-    type: '纸张',
-    price: '2',
-  },
-  {
-    province: '浙江',
-    city: '舟山',
-    type: '笔',
-    price: '17',
-  },
-  {
-    province: '浙江',
-    city: '舟山',
-    type: '纸张',
-    price: '0.5',
-  },
-  {
-    province: '吉林',
-    city: '丹东',
-    type: '笔',
-    price: '8',
-  },
-  {
-    province: '吉林',
-    city: '白山',
-    type: '笔',
-    price: '9',
-  },
-  {
-    province: '吉林',
-    city: '丹东',
-    type: ' 纸张',
-    price: '3',
-  },
-  {
-    province: '吉林',
-    city: '白山',
-    type: '纸张',
-    price: '1',
-  },
-  {
-    province: '浙江',
-    city: '杭州',
-    type: '笔',
-    cost: '0.5',
-  },
-  {
-    province: '浙江',
-    city: '杭州',
-    type: '纸张',
-    cost: '0.2',
-  },
-  {
-    province: '浙江',
-    city: '舟山',
-    type: '笔',
-    cost: '1.7',
-  },
-  {
-    province: '浙江',
-    city: '舟山',
-    type: '纸张',
-    cost: '0.12',
-  },
-  {
-    province: '吉林',
-    city: '丹东',
-    type: '笔',
-    cost: '10',
-  },
-  {
-    province: '吉林',
-    city: '白山',
-    type: '笔',
-    cost: '9',
-  },
-  {
-    province: '吉林',
-    city: '丹东',
-    type: ' 纸张',
-    cost: '3',
-  },
-  {
-    province: '吉林',
-    city: '白山',
-    type: '纸张',
-    cost: '1',
-  },
-];
 
 describe('hidden columns spec', () => {
   act(() => {
     const s2DataConfig = {
       fields: {
-        columns: ['type', 'price', 'province', 'city'],
+        columns: ['province', 'city', 'type', 'sub_type', 'number'],
       },
       data,
     };
@@ -114,9 +16,8 @@ describe('hidden columns spec', () => {
     const s2options = {
       width: 800,
       height: 600,
-      hiddenColumnFields: ['price'],
+      hiddenColumnFields: ['city'],
       tooltip: {
-        showTooltip: true,
         operation: {
           hiddenColumns: true,
         },
