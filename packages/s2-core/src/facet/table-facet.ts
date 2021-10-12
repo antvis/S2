@@ -58,7 +58,14 @@ export class TableFacet extends BaseFacet {
       // check whether filter condition already exists on column, if so, replace it.
       const oldConfig = s2.dataCfg.filterParams || [];
 
-      oldConfig.push(params);
+      const oldIndex = oldConfig.findIndex(
+        (item) => item.filterKey === params.filterKey,
+      );
+
+      // if filter with same key already exists, replace it
+      if (oldIndex !== -1) oldConfig[oldIndex] = params;
+      else oldConfig.push(params);
+
       set(s2.dataCfg, 'filterParams', oldConfig);
 
       s2.render(true);
