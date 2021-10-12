@@ -183,7 +183,7 @@ function MainLayout() {
           options={mergedOptions}
           themeCfg={{ name: themeName }}
           sheetType={sheetType}
-          // onColCellClick={onColCellClick}
+          onColCellClick={onColCellClick}
           header={
             <Space size="middle" style={{ marginBottom: 20 }}>
               <Radio.Group onChange={onRadioChange} defaultValue="default">
