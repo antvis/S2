@@ -7,9 +7,10 @@ export interface CustomSortProps {
   splitOrders: string[];
   setSplitOrders: (param: string[]) => void;
 }
+
 export const CustomSort: React.FC<CustomSortProps> = (props) => {
   const { splitOrders = [], setSplitOrders } = props;
-  const uphandler = (value) => {
+  const upHandler = (value) => {
     const res = splitOrders.concat();
     res.splice(res.indexOf(value), 1);
     res.unshift(value);
@@ -39,7 +40,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
         <span
           className={`${ADVANCED_PRE_CLS}-split-icon`}
           onClick={() => {
-            uphandler(value);
+            upHandler(value);
           }}
         >
           <HtmlIcon name="groupAsc" {...DEFAULT_ICON_PROPS} />

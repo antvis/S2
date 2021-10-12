@@ -50,7 +50,6 @@ export interface RuleValue {
 
 export interface AdvancedSortCfgProps {
   open: boolean;
-  onSortConfirm: (ruleValues: RuleValue[], sortParams: SortParam[]) => void;
   className?: string;
   icon?: React.ReactNode;
   text?: string;
@@ -59,6 +58,7 @@ export interface AdvancedSortCfgProps {
   ruleOptions?: RuleOption[];
   sortParams?: SortParam[];
   onSortOpen?: () => void;
+  onSortConfirm?: (ruleValues: RuleValue[], sortParams: SortParam[]) => void;
 }
 
 export interface AdvancedSortProps extends AdvancedSortCfgProps {
@@ -171,7 +171,9 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
       sortParams.push(current);
     });
 
-    onSortConfirm(ruleValues, sortParams);
+    if (onSortConfirm) {
+      onSortConfirm(ruleValues, sortParams);
+    }
     handleModal();
   };
   const getDemissionList = (list) => {

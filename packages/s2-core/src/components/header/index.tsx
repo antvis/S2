@@ -23,22 +23,23 @@ export const Header: React.FC<HeaderProps> = ({
   className,
   title,
   description,
-  exportCfg = { open: false },
-  advancedSortCfg = { open: false },
+  exportCfg,
+  advancedSortCfg,
   sheet,
   extra = [],
   ...restProps
 }) => {
   const PRECLASS = 'spreadsheet-header';
-  const { open } = exportCfg;
-  let extraDoms = [];
-  if (sheet && advancedSortCfg.open) {
-    const exportNode = <AdvancedSort sheet={sheet} {...advancedSortCfg} />;
-    extraDoms = extra.concat([exportNode]);
+  let extraOperationComponents = [];
+  if (advancedSortCfg.open) {
+    const advancedSortNode = (
+      <AdvancedSort sheet={sheet} {...advancedSortCfg} />
+    );
+    extraOperationComponents = extra.concat([advancedSortNode]);
   }
-  if (sheet && open) {
+  if (exportCfg.open) {
     const exportNode = <Export sheet={sheet} {...exportCfg} />;
-    extraDoms = extraDoms.concat([exportNode]);
+    extraOperationComponents.push(exportNode);
   }
 
   return (
@@ -46,10 +47,15 @@ export const Header: React.FC<HeaderProps> = ({
       className={cx(PRECLASS, className)}
       ghost={false}
       title={title}
-      extra={extraDoms}
+      extra={extraOperationComponents}
       {...restProps}
     >
       {description}
     </PageHeader>
   );
+};
+
+Header.defaultProps = {
+  exportCfg: { open: false },
+  advancedSortCfg: { open: false },
 };
