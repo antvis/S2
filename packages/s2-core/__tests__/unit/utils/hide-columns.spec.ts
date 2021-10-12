@@ -178,6 +178,8 @@ describe('hide-columns test', () => {
         },
       ],
     );
+    // update options
+    expect(mockSpreadSheetInstance.options.hiddenColumnFields).toEqual(['5']);
     // reset interaction
     expect(mockSpreadSheetInstance.interaction.reset).toHaveBeenCalledTimes(1);
     // rerender table

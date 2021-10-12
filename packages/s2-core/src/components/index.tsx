@@ -6,7 +6,10 @@ import { SpreadsheetProps } from './sheets/interface';
 
 export { SpreadsheetProps, SheetType } from './sheets/interface';
 export { PartDrillDown, PartDrillDownInfo } from './sheets/interface';
-export const SheetComponent = (props: SpreadsheetProps) => {
+export { DrillDown, DrillDownProps } from './drill-down';
+export { Switcher, SwitcherProps } from './switcher';
+
+export const SheetComponent: React.FC<SpreadsheetProps> = (props) => {
   const { sheetType } = props;
   switch (sheetType) {
     case 'table':
@@ -17,6 +20,3 @@ export const SheetComponent = (props: SpreadsheetProps) => {
       return <BaseSheet {...props} />;
   }
 };
-
-export { DrillDown, DrillDownProps } from './drill-down';
-export { Switcher, SwitcherProps } from './switcher';
