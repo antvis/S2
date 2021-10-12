@@ -25,7 +25,7 @@ export const assembleOptions = (...options: Partial<S2Options>[]) =>
   mergeWith(
     {},
     defaultOptions,
-    { debug: true, width: 800, height: 600 },
+    { debug: true, width: 1000, height: 600 },
     ...options,
     (origin, updated) => {
       if (isArray(origin) && isArray(updated)) {
