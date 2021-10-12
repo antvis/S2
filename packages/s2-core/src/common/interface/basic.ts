@@ -412,3 +412,8 @@ export type ResizeEvent =
   | S2Event.LAYOUT_RESIZE_ROW_HEIGHT
   | S2Event.LAYOUT_RESIZE_COL_HEIGHT
   | S2Event.LAYOUT_RESIZE_TREE_WIDTH;
+
+export interface ScrollRatio {
+  horizontal?: number;
+  vertical?: number;
+}
