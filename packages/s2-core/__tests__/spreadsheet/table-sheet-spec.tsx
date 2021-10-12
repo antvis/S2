@@ -16,6 +16,7 @@ import {
 } from '@/index';
 import { Switcher } from '@/components/switcher';
 import { SwitcherFields } from '@/components/switcher/interface';
+import { S2WheelEvent } from '@/common/interface/scroll';
 
 let s2: TableSheet;
 
@@ -245,6 +246,12 @@ describe('table sheet normal spec', () => {
 
     act(() => {
       cbs.setShowPagination(false);
+      s2.facet.onWheel({
+        deltaX: 0,
+        deltaY: 0,
+        layerX: 0,
+        layerY: 0,
+      } as S2WheelEvent);
     });
   });
 });
