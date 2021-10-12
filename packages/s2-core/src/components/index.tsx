@@ -11,14 +11,17 @@ export { DrillDown, DrillDownProps } from './drill-down';
 export { Switcher, SwitcherProps } from './switcher';
 export { AdvancedSort, AdvancedSortProps } from './advanced-sort';
 
-export const SheetComponent = debounceRender((props: SpreadsheetProps) => {
-  const { sheetType } = props;
-  switch (sheetType) {
-    case 'table':
-      return <TableSheet {...props} />;
-    case 'tabular':
-      return <TabularSheet {...props} />;
-    default:
-      return <BaseSheet {...props} />;
-  }
-}, 100);
+export const SheetComponent: React.FC<SpreadsheetProps> = debounceRender(
+  (props: SpreadsheetProps) => {
+    const { sheetType } = props;
+    switch (sheetType) {
+      case 'table':
+        return <TableSheet {...props} />;
+      case 'tabular':
+        return <TabularSheet {...props} />;
+      default:
+        return <BaseSheet {...props} />;
+    }
+  },
+  100,
+);
