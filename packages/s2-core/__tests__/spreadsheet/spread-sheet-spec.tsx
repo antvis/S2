@@ -61,6 +61,9 @@ function MainLayout() {
         trend: true,
         hiddenColumns: true,
       },
+      row: {
+        showTooltip: false,
+      },
     },
     totals: showTotals && {
       row: {
