@@ -64,7 +64,7 @@ export class BaseTooltip {
       ? ReactDOM.render(CustomComponent, container)
       : ReactDOM.render(this.renderContent(data, options), container);
 
-    const { x, y } = getPosition(position, this.container);
+    const { x, y } = getPosition(position, container);
 
     this.position = {
       x,
@@ -75,13 +75,16 @@ export class BaseTooltip {
       left: `${x}px`,
       top: `${y}px`,
       pointerEvents: enterable ? 'all' : 'none',
-      display: 'block',
+      visibility: 'visible',
     });
   }
 
   public hide() {
     const container = this.getContainer();
-    setContainerStyle(container, { pointerEvents: 'none', display: 'none' });
+    setContainerStyle(container, {
+      pointerEvents: 'none',
+      visibility: 'hidden',
+    });
     this.resetPosition();
     this.unMountComponent(container);
   }
