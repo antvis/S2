@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { message, Space, Switch } from 'antd';
+import { Button, Space } from 'antd';
 import 'antd/dist/antd.min.css';
 import { find } from 'lodash';
 import React, { useEffect } from 'react';
@@ -17,11 +17,15 @@ import {
 
 const data = getMockData('../data/tableau-supermarket.csv');
 
+let spreadSheet: SpreadSheet;
+
 const getSpreadSheet =
   (ref: React.MutableRefObject<SpreadSheet>) =>
   (dom: string | HTMLElement, dataCfg: S2DataConfig, options: S2Options) => {
     const s2 = new TableSheet(dom, dataCfg, options);
     ref.current = s2;
+    spreadSheet = s2;
+
     return s2;
   };
 
@@ -111,6 +115,27 @@ function MainLayout() {
 
   return (
     <Space direction="vertical">
+      <Button
+        onClick={() => {
+          s2Ref.current.emit(S2Event.RANGE_FILTER, {
+            filterKey: 'customer_type',
+            filteredValues: ['消费者'],
+          });
+        }}
+      >
+        Filter
+      </Button>
+
+      <Button
+        onClick={() => {
+          s2Ref.current.emit(S2Event.RANGE_FILTER, {
+            filterKey: 'customer_type',
+            filteredValues: [],
+          });
+        }}
+      >
+        Reset
+      </Button>
       <SheetComponent
         dataCfg={dataCfg}
         adaptive={false}
@@ -123,11 +148,36 @@ function MainLayout() {
 }
 
 describe('table sheet filter spec', () => {
-  test('placeholder', () => {
-    expect(1).toBe(1);
-  });
-
   act(() => {
     ReactDOM.render(<MainLayout />, getContainer());
+  });
+
+  test('filter customer_type values', () => {
+    spreadSheet.emit(S2Event.RANGE_FILTER, {
+      filterKey: 'customer_type',
+      filteredValues: ['消费者'],
+    });
+
+    expect(spreadSheet.facet.getCellRange()).toStrictEqual({
+      end: 467,
+      start: 0,
+    });
+  });
+
+  test('reset filter params on customer_type', () => {
+    spreadSheet.emit(S2Event.RANGE_FILTER, {
+      filterKey: 'customer_type',
+      filteredValues: ['消费者'],
+    });
+
+    spreadSheet.emit(S2Event.RANGE_FILTER, {
+      filterKey: 'customer_type',
+      filteredValues: [],
+    });
+
+    expect(spreadSheet.facet.getCellRange()).toStrictEqual({
+      end: 999,
+      start: 0,
+    });
   });
 });
