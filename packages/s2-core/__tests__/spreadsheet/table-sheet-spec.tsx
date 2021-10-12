@@ -5,7 +5,7 @@ import { find } from 'lodash';
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { getContainer, getMockData } from '../util/helpers';
+import { getContainer, getMockData, sleep } from '../util/helpers';
 import {
   S2DataConfig,
   S2Event,
@@ -228,7 +228,7 @@ describe('table sheet normal spec', () => {
     );
   });
 
-  test('getCellRange', () => {
+  test('getCellRange', async () => {
     expect(s2.facet.getCellRange()).toStrictEqual({
       start: 0,
       end: 999,
@@ -237,6 +237,9 @@ describe('table sheet normal spec', () => {
     act(() => {
       cbs.setShowPagination(true);
     });
+
+    // wait for debounce render
+    await sleep(200);
 
     expect(s2.facet.getCellRange()).toStrictEqual({
       start: 0,
