@@ -125,8 +125,8 @@ export interface EmitterType {
   [S2Event.LAYOUT_CELL_SCROLL]: (data: CellScrollPosition) => void;
   [S2Event.LAYOUT_COL_NODE_BORDER_REACHED]: (data: Node) => void;
   [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (data: Node) => void;
-  [S2Event.LAYOUT_TABLE_COL_EXPANDED]: (node: Node) => void;
-  [S2Event.LAYOUT_TABLE_COL_HIDE]: (
+  [S2Event.LAYOUT_TABLE_COL_EXPANDED]: (expandedNode: Node) => void;
+  [S2Event.LAYOUT_TABLE_COL_HIDDEN]: (
     currentHiddenColumnsInfo: HiddenColumnsInfo,
     hiddenColumnsDetail: HiddenColumnsInfo[],
   ) => void;

@@ -31,7 +31,7 @@ fetch(
       console.log('列头展开', cell);
     });
     s2.on(
-      S2Event.LAYOUT_TABLE_COL_HIDE,
+      S2Event.LAYOUT_TABLE_COL_HIDDEN,
       (currentHiddenColumnsInfo, hiddenColumnsDetail) => {
         console.log('列头隐藏', currentHiddenColumnsInfo, hiddenColumnsDetail);
       },

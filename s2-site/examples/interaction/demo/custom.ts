@@ -15,7 +15,7 @@ class HiddenInteraction extends BaseEvent {
     });
 
     this.spreadsheet.on(
-      S2Event.LAYOUT_TABLE_COL_HIDE,
+      S2Event.LAYOUT_TABLE_COL_HIDDEN,
       (currentHiddenColumnsInfo, hiddenColumnsDetail) => {
         console.log('列头隐藏:', currentHiddenColumnsInfo, hiddenColumnsDetail);
       },
