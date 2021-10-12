@@ -128,6 +128,14 @@
       "name": "城市"
     },
     {
+      "field": "type",
+      "name": "类别"
+    },
+    {
+      "field": "sub_type",
+      "name": "子类别"
+    },
+    {
       "field": "cost",
       "name": "成本"
     }
@@ -191,58 +199,6 @@
       "type": "家具产品",
       "sub_type": "餐桌",
       "cost": "32"
-    }
-  ],
-  "demission": [
-    {
-      "field": "province",
-      "name": "省份",
-      "list": ["吉林", "辽宁"]
-    },
-    {
-      "field": "city",
-      "name": "城市",
-      "list": ["丹东", "白山", "抚顺", "朝阳"]
-    },
-    {
-      "field": "type",
-      "name": "商品类别",
-      "list": ["办公用品", "家具产品"]
-    },
-    {
-      "field": "sub_type",
-      "name": "商品子类别",
-      "list": ["纸张", "笔", "办公装饰品", "餐桌"]
-    }
-  ],
-  "ruleOptions": [
-    {
-      "label": "首字母排序",
-      "value": "method"
-    },
-    {
-      "label": "手动排序",
-      "value": "sortBy"
-    },
-    {
-      "label": "其他字段",
-      "value": "sortByMeasure",
-      "children": [
-        {
-          "label": "成本",
-          "value": "cost"
-        }
-      ]
-    }
-  ],
-  "methodList": [
-    {
-      "name": "升序",
-      "value": "asc"
-    },
-    {
-      "name": "降序",
-      "value": "desc"
     }
   ]
 }
