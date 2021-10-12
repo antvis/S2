@@ -1,6 +1,6 @@
-import { Canvas } from '@antv/g-canvas';
-import EE from '@antv/event-emitter';
-import { Store } from '@/common/store';
+import { Canvas, BBox } from '@antv/g-canvas';
+import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { EmitterType } from '@/common/interface/emitter';
 import {
   CellTypes,
   InterceptType,
@@ -11,32 +11,12 @@ import { EventController } from '@/interaction/event-controller';
 import { SpreadSheet } from '@/sheet-type';
 import { RootInteraction } from '@/interaction/root';
 import { S2Options } from '@/common/interface';
-import { BaseTooltip } from '@/ui/tooltip';
+import { BaseFacet } from '@/facet';
 
 jest.mock('@/interaction/brush-selection');
 jest.mock('@/interaction/base-interaction/click/row-column-click');
 jest.mock('@/interaction/base-interaction/click/data-cell-click');
 jest.mock('@/interaction/base-interaction/hover');
-
-class FakeSpreadSheet extends EE {
-  tooltip = {
-    container: {} as HTMLElement,
-  } as BaseTooltip;
-
-  container: Canvas;
-
-  interaction: RootInteraction;
-
-  getCellType: () => CellTypes;
-
-  store = new Store();
-
-  getCell = () => {};
-
-  hideTooltip = () => {};
-
-  options: S2Options;
-}
 
 const s2Options: S2Options = {
   width: 200,
@@ -49,11 +29,11 @@ const s2Options: S2Options = {
 
 describe('Interaction Event Controller Tests', () => {
   let eventController: EventController;
-  let spreadsheet: FakeSpreadSheet;
+  let spreadsheet: SpreadSheet;
 
   const expectEvents =
     (eventType: OriginEventType, callback?: () => void) =>
-    (options: { eventNames: string[]; type: CellTypes }) => {
+    (options: { eventNames: (keyof EmitterType)[]; type: CellTypes }) => {
       const { eventNames, type } = options;
       const mockEvent = {
         target: undefined,
@@ -62,10 +42,11 @@ describe('Interaction Event Controller Tests', () => {
         stopPropagation: () => {},
       };
       spreadsheet.getCellType = () => type;
-      spreadsheet.getCell = () => ({
-        cellType: type,
-        getMeta: () => {},
-      });
+      spreadsheet.getCell = () =>
+        ({
+          cellType: type,
+          getMeta: () => {},
+        } as any);
 
       eventNames.forEach((eventName) => {
         const eventHandler = jest.fn();
@@ -79,18 +60,24 @@ describe('Interaction Event Controller Tests', () => {
 
   beforeEach(() => {
     const container = document.createElement('div');
-    spreadsheet = new FakeSpreadSheet();
+    spreadsheet = createFakeSpreadSheet();
     spreadsheet.container = new Canvas({
       ...s2Options,
       container,
     });
+    spreadsheet.facet = {
+      panelBBox: {
+        maxX: s2Options.width,
+        maxY: s2Options.height,
+      } as BBox,
+    } as BaseFacet;
     spreadsheet.interaction = new RootInteraction(
       spreadsheet as unknown as SpreadSheet,
     );
     spreadsheet.interaction.reset = jest.fn();
     spreadsheet.interaction.removeIntercepts = jest.fn();
     spreadsheet.interaction.intercept.clear();
-    spreadsheet.getCell = () => ({});
+    spreadsheet.getCell = () => ({} as any);
     spreadsheet.options = s2Options;
     spreadsheet.tooltip.container.getBoundingClientRect = () =>
       ({
@@ -348,6 +335,27 @@ describe('Interaction Event Controller Tests', () => {
       new MouseEvent('click', {
         clientX: 300,
         clientY: 300,
+      } as MouseEventInit),
+    );
+
+    expect(reset).toHaveBeenCalled();
+    expect(spreadsheet.interaction.reset).toHaveBeenCalled();
+  });
+
+  test('should reset if current mouse inside the canvas container, but outside the panel facet', () => {
+    spreadsheet.facet = {
+      panelBBox: {
+        maxX: 100,
+        maxY: 100,
+      } as BBox,
+    } as BaseFacet;
+    const reset = jest.fn();
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+
+    document.dispatchEvent(
+      new MouseEvent('click', {
+        clientX: 120,
+        clientY: 120,
       } as MouseEventInit),
     );
 

@@ -11,7 +11,6 @@ import {
 import { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName, S2Event } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
-import { RootInteraction } from '@/interaction/root';
 
 jest.mock('@/interaction/event-controller');
 
