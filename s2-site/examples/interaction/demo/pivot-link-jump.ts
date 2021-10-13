@@ -2,7 +2,7 @@ import { S2Event, PivotSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/94a016a4-6672-41b1-aef3-8f6094cd2c18.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/52e8d832-87c1-4657-b958-948b016c480a.json',
 )
   .then((res) => res.json())
   .then((data) => {
