@@ -1,13 +1,4 @@
-import {
-  clone,
-  filter,
-  get,
-  includes,
-  indexOf,
-  isEmpty,
-  merge,
-  set,
-} from 'lodash';
+import { clone, filter, get, isEmpty, set } from 'lodash';
 import { Event } from '@antv/g-canvas';
 import { S2Options, HeaderActionIconProps } from '@/common/interface';
 import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
@@ -116,7 +107,7 @@ export const HandleDrillDownIcon = (
         );
       };
     }
-    if (!props.options.headerActionIcons) {
+    if (!props.options?.headerActionIcons) {
       set(props.options, 'headerActionIcons', []);
     }
     const drillDownActionIcon = {
