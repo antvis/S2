@@ -138,7 +138,7 @@ export interface OrderOption {
   name: string;
 }
 
-export interface TooltipProps {
+export interface BaseTooltipConfig {
   readonly showTooltip?: boolean;
   // replace the whole default tooltip component
   readonly tooltipComponent?: JSX.Element;
@@ -146,10 +146,10 @@ export interface TooltipProps {
   readonly operation?: TooltipOperation;
 }
 
-export interface Tooltip extends TooltipProps {
-  readonly row?: TooltipProps;
-  readonly col?: TooltipProps;
-  readonly cell?: TooltipProps;
+export interface Tooltip extends BaseTooltipConfig {
+  readonly row?: BaseTooltipConfig;
+  readonly col?: BaseTooltipConfig;
+  readonly cell?: BaseTooltipConfig;
   // custom tooltips
   readonly renderTooltip?: RenderTooltip;
 }

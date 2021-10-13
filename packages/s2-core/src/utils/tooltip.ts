@@ -23,6 +23,7 @@ import {
   every,
 } from 'lodash';
 import React from 'react';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import {
   LayoutResult,
   ListItem,
@@ -513,14 +514,14 @@ export const getActiveCellsTooltipData = (
 };
 
 export const getTooltipOptionsByCellType = (
-  tooltip: Tooltip,
+  cellTooltip: Tooltip,
   cellType: CellTypes,
 ) => {
   const getOptionsByCell = (cell) => {
-    return { ...tooltip, ...cell };
+    return { ...cellTooltip, ...cell };
   };
 
-  const { col, row, cell } = tooltip || {};
+  const { col, row, cell } = cellTooltip || {};
   if (col && cellType === CellTypes.COL_CELL) {
     return getOptionsByCell(col);
   }
@@ -531,5 +532,13 @@ export const getTooltipOptionsByCellType = (
     return getOptionsByCell(cell);
   }
 
-  return { ...tooltip };
+  return { ...cellTooltip };
+};
+
+export const getTooltipOptions = (
+  spreadsheet: SpreadSheet,
+  event: CanvasEvent | MouseEvent | Event,
+) => {
+  const cellType = spreadsheet.getCellType(event.target);
+  return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType);
 };

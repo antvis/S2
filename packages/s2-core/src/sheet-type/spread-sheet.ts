@@ -53,7 +53,7 @@ import { HdAdapter } from '@/ui/hd-adapter';
 import { BaseTooltip } from '@/ui/tooltip';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
-import { getTooltipData, getTooltipOptionsByCellType } from '@/utils/tooltip';
+import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
 import { registerIcon, getIcon } from '@/common/icons/factory';
 
 export abstract class SpreadSheet extends EE {
@@ -184,11 +184,6 @@ export abstract class SpreadSheet extends EE {
     this.interaction = new RootInteraction(this);
   }
 
-  public getTooltipOptions(event: CanvasEvent | MouseEvent | Event) {
-    const cellType = this.getCellType(event.target);
-    return getTooltipOptionsByCellType(this.options.tooltip, cellType);
-  }
-
   private initTooltip() {
     this.tooltip = this.renderTooltip();
     if (!(this.tooltip instanceof BaseTooltip)) {
@@ -259,7 +254,7 @@ export abstract class SpreadSheet extends EE {
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
-    const { showTooltip, tooltipComponent } = this.getTooltipOptions(event);
+    const { showTooltip, tooltipComponent } = getTooltipOptions(this, event);
     if (!showTooltip) {
       return;
     }
@@ -452,7 +447,7 @@ export abstract class SpreadSheet extends EE {
         // 在单元格中，返回true
         return parent as T;
       }
-      parent = parent.get && parent.get('parent');
+      parent = parent.get?.('parent');
     }
     return null;
   }
