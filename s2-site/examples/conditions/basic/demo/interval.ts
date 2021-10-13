@@ -13,6 +13,7 @@ fetch(
         columns: ['type'],
         values: ['price', 'cost'],
       },
+
       data,
     };
 
