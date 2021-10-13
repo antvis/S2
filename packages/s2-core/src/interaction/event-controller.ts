@@ -16,6 +16,7 @@ import {
 import { ResizeInfo } from '@/facet/header/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
+import { getTooltipOptions } from '@/utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -156,7 +157,7 @@ export class EventController {
   }
 
   private isMouseOnTheTooltip(event: Event) {
-    if (!this.spreadsheet.options.tooltip?.showTooltip) {
+    if (!getTooltipOptions(this.spreadsheet, event).showTooltip) {
       return false;
     }
 

@@ -12,7 +12,7 @@ import {
 } from '@/common/constant';
 import { TooltipOperatorOptions } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
-import { mergeCellInfo } from '@/utils/tooltip';
+import { mergeCellInfo, getTooltipOptions } from '@/utils/tooltip';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private isMultiSelection = false;
@@ -120,16 +120,19 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   };
 
   private showTooltip(event: CanvasEvent) {
-    const {
-      interaction,
-      options: { tooltip },
-    } = this.spreadsheet;
+    const { operation, showTooltip } = getTooltipOptions(
+      this.spreadsheet,
+      event,
+    );
+    if (!showTooltip) {
+      return;
+    }
+    const { interaction } = this.spreadsheet;
     const cellInfos = interaction.isSelectedState()
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
-
     const operator: TooltipOperatorOptions = this.spreadsheet.isTableMode() &&
-      tooltip.operation.hiddenColumns && {
+      operation.hiddenColumns && {
         onClick: () => {
           this.hideSelectedColumns();
         },

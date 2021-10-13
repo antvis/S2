@@ -62,6 +62,7 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.options = {
       hiddenColumnFields: ['a'],
       tooltip: {
+        showTooltip: true,
         operation: {
           hiddenColumns: false,
         },

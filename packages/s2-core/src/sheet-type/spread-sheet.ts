@@ -53,7 +53,7 @@ import { HdAdapter } from '@/ui/hd-adapter';
 import { BaseTooltip } from '@/ui/tooltip';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
-import { getTooltipData } from '@/utils/tooltip';
+import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
 import { registerIcon, getIcon } from '@/common/icons/factory';
 
 export abstract class SpreadSheet extends EE {
@@ -148,10 +148,6 @@ export abstract class SpreadSheet extends EE {
     this.initHdAdapter();
     this.registerIcons();
     this.setDebug();
-  }
-
-  get isShowTooltip() {
-    return this.options?.tooltip?.showTooltip;
   }
 
   private setDebug() {
@@ -250,9 +246,7 @@ export abstract class SpreadSheet extends EE {
   public abstract clearDrillDownData(rowNodeId?: string): void;
 
   public showTooltip(showOptions: TooltipShowOptions) {
-    if (this.isShowTooltip) {
-      this.tooltip.show?.(showOptions);
-    }
+    this.tooltip.show?.(showOptions);
   }
 
   public showTooltipWithInfo(
@@ -260,9 +254,11 @@ export abstract class SpreadSheet extends EE {
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
-    if (!this.isShowTooltip) {
+    const { showTooltip, tooltipComponent } = getTooltipOptions(this, event);
+    if (!showTooltip) {
       return;
     }
+
     const tooltipData = getTooltipData({
       spreadsheet: this,
       cellInfos: data,
@@ -278,19 +274,16 @@ export abstract class SpreadSheet extends EE {
         enterable: true,
         ...options,
       },
+      element: tooltipComponent,
     });
   }
 
   public hideTooltip() {
-    if (this.isShowTooltip) {
-      this.tooltip.hide?.();
-    }
+    this.tooltip.hide?.();
   }
 
   public destroyTooltip() {
-    if (this.isShowTooltip) {
-      this.tooltip.destroy?.();
-    }
+    this.tooltip.destroy?.();
   }
 
   public registerIcons() {
@@ -454,7 +447,7 @@ export abstract class SpreadSheet extends EE {
         // 在单元格中，返回true
         return parent as T;
       }
-      parent = parent.get('parent');
+      parent = parent.get?.('parent');
     }
     return null;
   }
