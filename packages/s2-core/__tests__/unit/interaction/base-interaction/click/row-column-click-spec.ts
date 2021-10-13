@@ -62,6 +62,7 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.options = {
       hiddenColumnFields: ['a'],
       tooltip: {
+        showTooltip: true,
         operation: {
           hiddenColumns: false,
         },
@@ -84,7 +85,7 @@ describe('Interaction Data Cell Click Tests', () => {
       nodes: [],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(s2.getCellType).toHaveBeenCalled();
+    expect(s2.showTooltipWithInfo).toHaveBeenCalled();
   });
 
   test('should emit cell selected event when cell clicked', () => {
