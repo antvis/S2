@@ -240,7 +240,7 @@ describe('table sheet normal spec', () => {
     });
 
     // wait for debounce render
-    await sleep(500);
+    await sleep(1000);
 
     expect(s2.facet.getCellRange()).toStrictEqual({
       start: 0,
