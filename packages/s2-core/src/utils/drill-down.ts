@@ -1,4 +1,13 @@
-import { clone, filter, get, isEmpty } from 'lodash';
+import {
+  clone,
+  filter,
+  get,
+  includes,
+  indexOf,
+  isEmpty,
+  merge,
+  set,
+} from 'lodash';
 import { Event } from '@antv/g-canvas';
 import { S2Options, HeaderActionIconProps } from '@/common/interface';
 import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
@@ -107,6 +116,9 @@ export const HandleDrillDownIcon = (
         );
       };
     }
+    if (!props.options.headerActionIcons) {
+      set(props.options, 'headerActionIcons', []);
+    }
     const drillDownActionIcon = {
       belongsCell: 'rowCell',
       iconNames: ['DrillDownIcon'],
@@ -124,7 +136,12 @@ export const HandleDrillDownIcon = (
         }
       },
     };
-    props.options.headerActionIcons.push(drillDownActionIcon);
+    if (
+      !JSON.stringify(props.options.headerActionIcons).includes('DrillDownIcon')
+    ) {
+      // 防止切换视图多次 push drillDownActionIcon
+      props.options.headerActionIcons.push(drillDownActionIcon);
+    }
   }
 
   return props.options;
