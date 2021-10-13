@@ -11,6 +11,7 @@ jobs:
       - uses: visiky/dingtalk-release-notify@main
         with:
           DING_TALK_TOKEN: ${{ secrets.DING_TALK_GROUP_TOKEN }}
-          notify_title: '🎉 @antv/s2 发布新版本 {release_tag} 🎉'
+          notify_title: '🎉 新版本发布 {release_tag} 🎉'
+          notify_body: '## { title }<hr /> ![preview](https://gw.alipayobjects.com/zos/antfincdn/5QXnRSiAs/cool-background.svg) <hr /> { body } <hr />'
           notify_footer: '> 前往 [**@antv/s2 Releases**]({ release_url }) 查看完整信息.'
           at_all: false
