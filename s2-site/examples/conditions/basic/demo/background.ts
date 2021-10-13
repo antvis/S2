@@ -2,7 +2,7 @@ import { PivotSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/52e8d832-87c1-4657-b958-948b016c480a.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
 )
   .then((res) => res.json())
   .then((data) => {
@@ -28,7 +28,7 @@ fetch(
               console.log(fieldValue, data);
               return {
                 // fill 是背景字段下唯一必须的字段，用于指定文本颜色
-                fill: '#CED4DE',
+                fill: '#7DAAFF',
               };
             },
           },

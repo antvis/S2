@@ -6,7 +6,7 @@ import '@antv/s2/dist/s2.min.css';
 import { update } from 'lodash';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/cebfd9ec-e68a-4dd4-a137-8b90bf6dfb69.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/a2e9799d-f03a-4847-8756-2976a032b485.json',
 )
   .then((res) => res.json())
   .then((data) => {
