@@ -42,6 +42,7 @@ export const createFakeSpreadSheet = () => {
   s2.container = {
     draw: jest.fn(),
   } as unknown as Canvas;
+  s2.getCellType = jest.fn();
   s2.render = jest.fn();
   s2.hideTooltip = jest.fn();
   s2.showTooltipWithInfo = jest.fn();

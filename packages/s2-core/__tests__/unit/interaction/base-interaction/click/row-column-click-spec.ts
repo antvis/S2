@@ -11,7 +11,6 @@ import {
 import { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName, S2Event } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
-import { RootInteraction } from '@/interaction/root';
 
 jest.mock('@/interaction/event-controller');
 
@@ -85,7 +84,7 @@ describe('Interaction Data Cell Click Tests', () => {
       nodes: [],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+    expect(s2.getCellType).toHaveBeenCalled();
   });
 
   test('should emit cell selected event when cell clicked', () => {
