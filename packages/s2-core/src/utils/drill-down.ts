@@ -1,4 +1,4 @@
-import { clone, filter, get, isEmpty, merge, set } from 'lodash';
+import { clone, filter, get, isEmpty } from 'lodash';
 import { Event } from '@antv/g-canvas';
 import { S2Options, HeaderActionIconProps } from '@/common/interface';
 import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
@@ -107,30 +107,26 @@ export const HandleDrillDownIcon = (
         );
       };
     }
-
-    return merge({}, props.options, {
-      headerActionIcons: [
-        {
-          belongsCell: 'rowCell',
-          iconNames: ['DrillDownIcon'],
-          defaultHide: true,
-          displayCondition,
-          action: (actionIconProps: HeaderActionIconProps) => {
-            const { iconName, meta } = actionIconProps;
-            if (iconName === 'DrillDownIcon') {
-              spreadsheet.store.set('drillDownNode', meta);
-              handleActionIconClick({
-                ...actionIconProps,
-                spreadsheet,
-                callback,
-              });
-            }
-          },
-        },
-      ],
-    });
+    const drillDownActionIcon = {
+      belongsCell: 'rowCell',
+      iconNames: ['DrillDownIcon'],
+      defaultHide: true,
+      displayCondition,
+      action: (actionIconProps: HeaderActionIconProps) => {
+        const { iconName, meta } = actionIconProps;
+        if (iconName === 'DrillDownIcon') {
+          spreadsheet.store.set('drillDownNode', meta);
+          handleActionIconClick({
+            ...actionIconProps,
+            spreadsheet,
+            callback,
+          });
+        }
+      },
+    };
+    props.options.headerActionIcons.push(drillDownActionIcon);
   }
-  set(props.options, 'headerActionIcons', null);
+
   return props.options;
 };
 
