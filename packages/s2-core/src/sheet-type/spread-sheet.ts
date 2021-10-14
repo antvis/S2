@@ -8,9 +8,9 @@ import {
   isEmpty,
   isString,
   merge,
-  size,
+  once,
 } from 'lodash';
-import { getHiddenColumnsThunkGroup, hideColumns } from '@/utils/hide-columns';
+import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 import { BaseCell } from '@/cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
@@ -53,7 +53,7 @@ import { HdAdapter } from '@/ui/hd-adapter';
 import { BaseTooltip } from '@/ui/tooltip';
 import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
-import { getTooltipData } from '@/utils/tooltip';
+import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
 import { registerIcon, getIcon } from '@/common/icons/factory';
 
 export abstract class SpreadSheet extends EE {
@@ -148,10 +148,6 @@ export abstract class SpreadSheet extends EE {
     this.initHdAdapter();
     this.registerIcons();
     this.setDebug();
-  }
-
-  get isShowTooltip() {
-    return this.options?.tooltip?.showTooltip;
   }
 
   private setDebug() {
@@ -250,9 +246,7 @@ export abstract class SpreadSheet extends EE {
   public abstract clearDrillDownData(rowNodeId?: string): void;
 
   public showTooltip(showOptions: TooltipShowOptions) {
-    if (this.isShowTooltip) {
-      this.tooltip.show?.(showOptions);
-    }
+    this.tooltip.show?.(showOptions);
   }
 
   public showTooltipWithInfo(
@@ -260,9 +254,11 @@ export abstract class SpreadSheet extends EE {
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
-    if (!this.isShowTooltip) {
+    const { showTooltip, tooltipComponent } = getTooltipOptions(this, event);
+    if (!showTooltip) {
       return;
     }
+
     const tooltipData = getTooltipData({
       spreadsheet: this,
       cellInfos: data,
@@ -278,19 +274,16 @@ export abstract class SpreadSheet extends EE {
         enterable: true,
         ...options,
       },
+      element: tooltipComponent,
     });
   }
 
   public hideTooltip() {
-    if (this.isShowTooltip) {
-      this.tooltip.hide?.();
-    }
+    this.tooltip.hide?.();
   }
 
   public destroyTooltip() {
-    if (this.isShowTooltip) {
-      this.tooltip.destroy?.();
-    }
+    this.tooltip.destroy?.();
   }
 
   public registerIcons() {
@@ -333,12 +326,14 @@ export abstract class SpreadSheet extends EE {
     }
     this.buildFacet();
     this.emit(S2Event.LAYOUT_AFTER_RENDER);
+    this.initHiddenColumnsDetail();
   }
 
   public destroy() {
     this.facet.destroy();
     this.hdAdapter?.destroy();
     this.interaction.destroy();
+    this.store.clear();
     this.destroyTooltip();
   }
 
@@ -452,7 +447,7 @@ export abstract class SpreadSheet extends EE {
         // 在单元格中，返回true
         return parent as T;
       }
-      parent = parent.get('parent');
+      parent = parent.get?.('parent');
     }
     return null;
   }
@@ -524,7 +519,7 @@ export abstract class SpreadSheet extends EE {
     this.initPanelGroupChildren();
   }
 
-  protected initPanelGroupChildren(): void {
+  protected initPanelGroupChildren() {
     this.panelScrollGroup = this.panelGroup.addGroup({
       name: KEY_GROUP_PANEL_SCROLL,
       zIndex: PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
@@ -536,15 +531,17 @@ export abstract class SpreadSheet extends EE {
   }
 
   public hideColumns(hiddenColumnFields: string[] = []) {
-    this.store.set('hiddenColumnsDetail', []);
-    const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
-      this.dataCfg.fields.columns,
-      hiddenColumnFields,
-    );
-    hiddenColumnsGroup.forEach((fields) => {
-      hideColumns(this, fields);
-    });
+    hideColumnsByThunkGroup(this, hiddenColumnFields);
   }
+
+  // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息
+  private initHiddenColumnsDetail = once(() => {
+    const { hiddenColumnFields } = this.options;
+    if (isEmpty(hiddenColumnFields)) {
+      return;
+    }
+    hideColumnsByThunkGroup(this, hiddenColumnFields, true);
+  });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public handleGroupSort(event: MouseEvent, meta: Node) {}

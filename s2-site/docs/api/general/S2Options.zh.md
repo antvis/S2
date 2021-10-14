@@ -47,6 +47,7 @@ order: 1
 | otterLayout | [OtterLayout](#OtterLayout) |  |  |   自定义 layout |
 | customInteractions | [CustomInteraction[]](#custominteraction) |    |  | 自定义交互 |
 | dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
+| scrollSpeedRatio | [ScrollRatio](#scrollratio)|  |  |  用于控制滚动速率，分水平和垂直两个方向，默认为 1 |
 | [key: string] | `unknown` |  |  |   其他任意的选择配置，用于自定义表格 |
 
 `markdown:docs/common/conditions.zh.md`
@@ -365,3 +366,13 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 | scrollContainsRowHeader | `boolean` |  |  |   滚动时是否包含焊头 |
 | isPivotMode | `boolean` |  |  |   是否是透视表 |
 | spreadsheet | [SpreadSheet](#spreadsheet) |  |    | 表格实例 |
+
+## ScrollRatio
+
+```js
+interface ScrollRatio {
+  horizontal?: number; // 水平滚动速率，默认为 1
+  vertical?: number; // 垂直滚动速率，默认为 1
+}
+
+```

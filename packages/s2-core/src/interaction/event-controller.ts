@@ -16,6 +16,7 @@ import {
 import { ResizeInfo } from '@/facet/header/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
+import { getTooltipOptions } from '@/utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -136,7 +137,7 @@ export class EventController {
       // 这里不能使用 bounding rect 的 width 和 height, 高清适配后 canvas 实际宽高会变
       // 比如实际 400 * 300 => hd (800 * 600)
       // 从视觉来看, 虽然点击了空白处, 但其实还是处于 放大后的 canvas 区域, 所以还需要额外判断一下坐标
-      const { width, height } = this.spreadsheet.options;
+      const { width, height } = this.getContainerRect();
       return (
         canvas.contains(event.target as HTMLElement) &&
         event.clientX <= x + width &&
@@ -146,8 +147,17 @@ export class EventController {
     return false;
   }
 
+  private getContainerRect() {
+    const { maxX, maxY } = this.spreadsheet.facet.panelBBox;
+    const { width, height } = this.spreadsheet.options;
+    return {
+      width: Math.min(width, maxX),
+      height: Math.min(height, maxY),
+    };
+  }
+
   private isMouseOnTheTooltip(event: Event) {
-    if (!this.spreadsheet.options.tooltip?.showTooltip) {
+    if (!getTooltipOptions(this.spreadsheet, event).showTooltip) {
       return false;
     }
 

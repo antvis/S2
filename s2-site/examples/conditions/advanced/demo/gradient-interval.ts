@@ -19,7 +19,7 @@ function getGradient(rate, startColor, endColor) {
 }
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d5eee4f7-7c09-4162-8651-9f0a16090a7c.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
 )
   .then((res) => res.json())
   .then((data) => {

@@ -2,7 +2,7 @@ import { TableSheet, S2Event } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/94a016a4-6672-41b1-aef3-8f6094cd2c18.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
 )
   .then((res) => res.json())
   .then((data) => {
@@ -31,7 +31,7 @@ fetch(
       console.log('列头展开', cell);
     });
     s2.on(
-      S2Event.LAYOUT_TABLE_COL_HIDE,
+      S2Event.LAYOUT_TABLE_COL_HIDDEN,
       (currentHiddenColumnsInfo, hiddenColumnsDetail) => {
         console.log('列头隐藏', currentHiddenColumnsInfo, hiddenColumnsDetail);
       },

@@ -28,7 +28,7 @@ order: 0
 | 刷选   | `S2Event.GLOBAL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量 |
 | 悬停   | `S2Event.GLOBAL_HOVER` | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](#十字高亮） （对应行/列), 可设置 `hoverHighlight: false` 关闭 |
 | 复制   | `S2Event.GLOBAL_COPIED` | 复制选中的单元格数据 |
-| 隐藏列头   | `S2Event.LAYOUT_TABLE_COL_EXPANDED` `S2Event.LAYOUT_TABLE_COL_HIDE` | 隐藏/展开 列头 （明细表有效） |
+| 隐藏列头   | `S2Event.LAYOUT_TABLE_COL_EXPANDED` `S2Event.LAYOUT_TABLE_COL_HIDDEN` | 隐藏/展开 列头 （明细表有效） |
 | 链接跳转   | `S2Event.GLOBAL_LINK_FIELD_JUMP` | 行头/列头 链接跳转 |
 | 重置  | `S2Event.GLOBAL_RESET` | 再次点击，点击空白处，或按下 `Esc` 取消选中的单元格 |
 
@@ -104,7 +104,7 @@ order: 0
 | 行头宽度改变  | `S2Event.LAYOUT_RESIZE_COL_HEIGHT` |   |
 | 树状结构宽度改变  | `S2Event.LAYOUT_RESIZE_TREE_WIDTH` |  树状模式下，单元格宽度发生改变时触发 |
 | 列头展开  | `S2Event.LAYOUT_TABLE_COL_EXPANDED` |  列头展开时触犯，明细表有效  |
-| 列头隐藏  | `S2Event.LAYOUT_TABLE_COL_HIDE` |  列头隐藏时触发，明细表有效  |
+| 列头隐藏  | `S2Event.LAYOUT_TABLE_COL_HIDDEN` |  列头隐藏时触发，明细表有效  |
 
 ### 全局
 

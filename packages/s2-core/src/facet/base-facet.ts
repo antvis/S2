@@ -28,7 +28,6 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
-  InteractionStateName,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
@@ -807,8 +806,13 @@ export abstract class BaseFacet {
   };
 
   onWheel = (event: S2WheelEvent) => {
+    const ratio = this.cfg.scrollSpeedRatio;
     const { deltaX, deltaY, layerX, layerY } = event;
-    const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(deltaX, deltaY);
+    const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
+      deltaX,
+      deltaY,
+      ratio,
+    );
 
     this.spreadsheet.hideTooltip();
 

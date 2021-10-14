@@ -2,24 +2,34 @@ import { execSync } from 'child_process';
 import ora from 'ora';
 import { default as glob } from 'glob';
 import { default as inquirer } from 'inquirer';
+import { default as autoCompletePrompt } from 'inquirer-autocomplete-prompt';
+
+inquirer.registerPrompt('autocomplete', autoCompletePrompt);
 
 async function main() {
   const spinner = ora('读取测试文件中...').start();
   const paths = glob.sync(`!(node_modules)/**/*-spec.ts?(x)`);
 
-  const defaultSelectedIndex = paths.findIndex(
-    (p) => p === '__tests__/spreadsheet/spread-sheet-spec.tsx',
-  );
+  const defaultPath = '__tests__/spreadsheet/spread-sheet-spec.tsx';
   spinner.stop();
 
   const selectedPath = await inquirer.prompt([
     {
-      type: 'rawlist',
-      message: '📢 请选择测试文件 (输入序号可快速选择)',
+      type: 'autocomplete',
+      message:
+        '📢 请选择测试文件 (支持文件名搜索, 直接回车默认 spread-sheet-spec 🔍 )',
+      searchText: 'We are searching the internet for you!',
+      emptyText: '未匹配到测试文件',
       name: 'path',
       loop: true,
-      choices: paths,
-      default: () => defaultSelectedIndex,
+      pageSize: 10,
+      default: defaultPath,
+      source: (_, input) => {
+        return Promise.resolve(
+          input ? paths.filter((path) => path.includes(input)) : paths,
+        );
+      },
+      validate: (val) => (val ? true : '未选择测试文件!'),
     },
   ]);
 

@@ -185,10 +185,10 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2@^0.1.14":
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-0.1.14.tgz#7427a146cd8c1056ffcce9062743679ae49b400b"
-  integrity sha512-F/gXUVbwGesJVaq7aOCgnv3vGopIb3etT4VamVWDnQEKL0jFGeZ2ZFVA18CXTsV4DUCsuL4zjLgWM2qUnpOQ9Q==
+"@antv/s2@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-0.2.0.tgz#45f5ea8a08096f1eeab339a969d4b5ab87b4ef5a"
+  integrity sha512-cgOT5RyECZ0XXH4hd2nXaC2saU9iCWORiterhe8CoDJJ/VWj+4I+Acgzw5V3+T2fCBRDTJAqp3DNQrmY+dG+JA==
   dependencies:
     "@antv/event-emitter" "~0.1.2"
     "@antv/g-canvas" "^0.5.12"
@@ -197,6 +197,7 @@
     classnames "^2.3.1"
     lodash "^4.17.21"
     react-beautiful-dnd "^13.1.0"
+    react-debounce-render "^7.0.0"
 
 "@antv/util@^2.0.9", "@antv/util@~2.0.0":
   version "2.0.17"
@@ -12445,6 +12446,14 @@ react-beautiful-dnd@^13.1.0:
     react-redux "^7.2.0"
     redux "^4.0.4"
     use-memo-one "^1.1.1"
+
+react-debounce-render@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/react-debounce-render/-/react-debounce-render-7.0.0.tgz#4e36df3a867b298ef64b6ab3b8bffb3d46d3055d"
+  integrity sha512-OaI1RhLxchlV2nKukQgbq2CZG5DQoNkHG1O9vMw8fnY4bLCIdKPDy2EL4aQY9cdeXW/NkYkso7O/5ARbs/XI6w==
+  dependencies:
+    hoist-non-react-statics "^3.3.2"
+    lodash.debounce "^4.0.8"
 
 react-dev-utils@^4.2.3:
   version "4.2.3"

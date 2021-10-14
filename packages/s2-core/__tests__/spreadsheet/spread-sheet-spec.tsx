@@ -1,9 +1,9 @@
-import { Radio, Space, Switch, Button, Input } from 'antd';
+import { Radio, Space, Switch, RadioChangeEvent } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { getContainer } from '../util/helpers';
-import { SheetEntry, assembleDataCfg } from '../util/sheet-entry';
+import { getContainer } from 'tests/util/helpers';
+import { SheetEntry, assembleDataCfg } from 'tests/util/sheet-entry';
 import { CustomTooltip } from './custom/custom-tooltip';
 import {
   HeaderActionIconProps,
@@ -11,12 +11,11 @@ import {
   SheetType,
   ThemeName,
   Node,
-  TargetCellInfo,
 } from '@/index';
 
 const tableDataFields = {
   fields: {
-    columns: ['province', 'city', 'type', 'sub_type', 'price'],
+    columns: ['province', 'city', 'type', 'sub_type', 'number'],
     valueInCols: true,
   },
 };
@@ -41,21 +40,14 @@ function MainLayout() {
 
   const ColTooltip = <div>colTooltip</div>;
 
-  const ColCellClickTooltip = (
-    <div>
-      <h1>Tooltip</h1>
-      <Button>button</Button>
-      <Input />
-    </div>
-  );
-
   const onToggleRender = () => {
     setRender(!render);
   };
 
-  const onRadioChange = (e) => {
+  const onRadioChange = (e: RadioChangeEvent) => {
     setThemeName(e.target.value);
   };
+
   const mergedOptions: Partial<S2Options> = {
     pagination: showPagination && {
       pageSize: 5,
@@ -67,6 +59,10 @@ function MainLayout() {
       },
       operation: {
         trend: true,
+        hiddenColumns: true,
+      },
+      row: {
+        showTooltip: false,
       },
     },
     totals: showTotals && {
@@ -147,7 +143,7 @@ function MainLayout() {
     ],
   };
 
-  const onSheetTypeChange = (checked) => {
+  const onSheetTypeChange = (checked: boolean) => {
     setIsPivotSheet(checked);
     // 透视表
     if (checked) {
@@ -157,14 +153,6 @@ function MainLayout() {
       setSheetType('table');
       setDataCfg(assembleDataCfg(tableDataFields));
     }
-  };
-
-  const onColCellClick = (value: TargetCellInfo) => {
-    const sheet = value?.viewMeta?.spreadsheet;
-    sheet?.showTooltip({
-      position: { x: value.event.clientX, y: value.event.clientY },
-      element: ColCellClickTooltip,
-    });
   };
 
   return (
@@ -183,7 +171,6 @@ function MainLayout() {
           options={mergedOptions}
           themeCfg={{ name: themeName }}
           sheetType={sheetType}
-          onColCellClick={onColCellClick}
           header={
             <Space size="middle" style={{ marginBottom: 20 }}>
               <Radio.Group onChange={onRadioChange} defaultValue="default">

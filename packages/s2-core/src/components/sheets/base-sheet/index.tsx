@@ -25,6 +25,7 @@ import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { HandleDrillDown, HandleDrillDownIcon } from '@/utils/drill-down';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { useResizeEffect } from '@/components/sheets/hooks';
+import { getTooltipOptions } from '@/utils/tooltip';
 import './index.less';
 
 export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
@@ -182,13 +183,19 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
         disabledFields={disabledFields}
       />
     );
-    sheetInstance.showTooltip({
-      position: {
-        x: event.clientX,
-        y: event.clientY,
-      },
-      element,
-    });
+    if (event) {
+      const { showTooltip } = getTooltipOptions(sheetInstance, event);
+      if (!showTooltip) {
+        return;
+      }
+      sheetInstance.showTooltip({
+        position: {
+          x: event.clientX,
+          y: event.clientY,
+        },
+        element,
+      });
+    }
   };
 
   const setOptions = (

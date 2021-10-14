@@ -1,7 +1,7 @@
 import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
 import { getDataCellId } from 'src/utils/cell/data-cell';
-import { get, maxBy, set } from 'lodash';
+import { get, maxBy, set, size } from 'lodash';
 import type {
   LayoutResult,
   S2CellType,
@@ -106,10 +106,18 @@ export class TableFacet extends BaseFacet {
     this.spreadsheet.off(S2Event.RANGE_SORT);
   }
 
-  private saveInitColumnNodes(columnNodes: Node[]) {
-    const { store } = this.spreadsheet;
-    if (!store.get('initColumnNodes')) {
+  private saveInitColumnNodes(columnNodes: Node[] = []) {
+    const { store, dataCfg } = this.spreadsheet;
+    const { columns = [] } = dataCfg.fields;
+    const lastRenderedColumnFields = store.get('lastRenderedColumnFields');
+    // 透视表切换为明细表 dataCfg 的 columns 配置改变等场景 需要重新保存初始布局节点
+    const isDifferenceColumns =
+      lastRenderedColumnFields &&
+      size(lastRenderedColumnFields) !== size(columns);
+
+    if (!store.get('initColumnNodes') || isDifferenceColumns) {
       store.set('initColumnNodes', columnNodes);
+      store.set('lastRenderedColumnFields', columns);
     }
   }
 

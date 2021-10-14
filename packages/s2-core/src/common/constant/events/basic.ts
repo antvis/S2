@@ -60,7 +60,7 @@ export enum S2Event {
   LAYOUT_AFTER_COLLAPSE_ROWS = 'layout:after-collapsed-rows',
   LAYOUT_TREE_ROWS_COLLAPSE_ALL = 'layout:toggle-collapse-all',
   LAYOUT_TABLE_COL_EXPANDED = 'layout:table-col-expanded',
-  LAYOUT_TABLE_COL_HIDE = 'layout:table-col-hide',
+  LAYOUT_TABLE_COL_HIDDEN = 'layout:table-col-hidden',
   LAYOUT_AFTER_RENDER = 'layout:after-render',
   LAYOUT_BEFORE_RENDER = 'layout:before-render',
 

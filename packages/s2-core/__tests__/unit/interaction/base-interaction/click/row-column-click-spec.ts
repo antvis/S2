@@ -17,19 +17,31 @@ jest.mock('@/interaction/event-controller');
 describe('Interaction Data Cell Click Tests', () => {
   let rowColumnClick: RowColumnClick;
   let s2: SpreadSheet;
+
+  const mockField = 'fieldA';
+  const defaultHiddenField = '4';
   const mockCellViewMeta: Partial<ViewMeta> = {
     id: '1',
     colIndex: 0,
     rowIndex: 0,
     type: undefined,
     x: 1,
+    field: mockField,
     update() {},
   };
-  const mockCellMeta = omit(mockCellViewMeta, ['update', 'x']);
+  const mockCellMeta = omit(mockCellViewMeta, ['update', 'x', 'field']);
   const mockCell = {
     ...mockCellViewMeta,
     getMeta: () => mockCellViewMeta,
   };
+
+  const initColumnNodes: Partial<Node>[] = [
+    { field: mockField, colIndex: 1 },
+    { field: '2', colIndex: 2 },
+    { field: '3', colIndex: 3 },
+    { field: defaultHiddenField, colIndex: 4 },
+    { field: '5', colIndex: 5 },
+  ];
 
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
@@ -37,11 +49,20 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.interaction.getActiveCells = () => [mockCell] as unknown as S2CellType[];
     s2.interaction.getRowColActiveCells = () =>
       [mockCell] as unknown as S2CellType[];
+    s2.interaction.reset = jest.fn();
     rowColumnClick = new RowColumnClick(s2 as unknown as SpreadSheet);
     s2.isHierarchyTreeType = () => false;
+    s2.dataCfg = {
+      fields: {
+        columns: [mockField],
+      },
+      data: [],
+    };
+    s2.getInitColumnNodes = () => initColumnNodes as Node[];
     s2.options = {
       hiddenColumnFields: ['a'],
       tooltip: {
+        showTooltip: true,
         operation: {
           hiddenColumns: false,
         },
@@ -77,9 +98,9 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(selected).toHaveBeenCalledWith([mockCell]);
   });
 
-  test('should expand columns', () => {
-    const colExpand = jest.fn();
-    s2.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, colExpand);
+  test('should expand columns correctly', () => {
+    const columnsExpand = jest.fn();
+    s2.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, columnsExpand);
 
     const mockNode: Partial<Node> = {
       field: 'a',
@@ -96,7 +117,7 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.emit(S2Event.LAYOUT_TABLE_COL_EXPANDED, mockNode as Node);
 
     // emit hook
-    expect(colExpand).toHaveBeenCalled();
+    expect(columnsExpand).toHaveBeenCalled();
     // omit current expand node
     expect(s2.store.get('hiddenColumnsDetail')).toEqual([]);
     // reset interaction
@@ -110,5 +131,33 @@ describe('Interaction Data Cell Click Tests', () => {
     });
     // rerender
     expect(s2.render).toHaveBeenCalled();
+  });
+
+  test('should hidden columns correctly', () => {
+    const columnsHidden = jest.fn();
+    s2.on(S2Event.LAYOUT_TABLE_COL_HIDDEN, columnsHidden);
+
+    // trigger hidden icon click
+    rowColumnClick.hideSelectedColumns();
+
+    // emit event
+    expect(columnsHidden).toHaveBeenCalledWith(
+      // current hidden column infos
+      {
+        displaySiblingNode: { colIndex: 2, field: '2' },
+        hideColumnNodes: [{ colIndex: 1, field: mockField }],
+      },
+      // hidden columns detail
+      [
+        {
+          displaySiblingNode: { colIndex: 2, field: '2' },
+          hideColumnNodes: [{ colIndex: 1, field: mockField }],
+        },
+      ],
+    );
+    // reset interaction
+    expect(s2.interaction.reset).toHaveBeenCalledTimes(1);
+    // rerender table
+    expect(s2.render).toHaveBeenCalledTimes(1);
   });
 });
