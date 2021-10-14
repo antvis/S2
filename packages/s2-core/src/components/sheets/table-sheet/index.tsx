@@ -1,11 +1,10 @@
 // TODO 所有表组件抽取公共hook
 import { Event as GEvent } from '@antv/g-canvas';
-import { Pagination, Spin } from 'antd';
-import { forIn, get, isEmpty, isFunction, merge } from 'lodash';
+import { Spin } from 'antd';
+import { forIn, isFunction } from 'lodash';
 import React, { memo, StrictMode, useEffect, useRef, useState } from 'react';
 import { S2Event } from '@/common/constant';
 import { S2_PREFIX_CLS } from '@/common/constant/classnames';
-import { i18n } from '@/common/i18n';
 import {
   CellScrollPosition,
   ListSortParams,
@@ -21,7 +20,11 @@ import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
 import { SpreadSheet, TableSheet as BaseTableSheet } from '@/sheet-type';
 import { getBaseCellData } from '@/utils/interaction/formatter';
-import { useResizeEffect } from '@/components/sheets/hooks';
+import {
+  useResizeEffect,
+  usePaginationEffect,
+} from '@/components/sheets/hooks';
+import { S2Pagination } from '@/components/pagination';
 
 export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
@@ -53,7 +56,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
 
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
   const [loading, setLoading] = useState<boolean>(true);
-  const [total, setTotal] = useState<number>();
+  const [total, setTotal] = useState<number>(0);
   const [current, setCurrent] = useState<number>(
     options?.pagination?.current || 1,
   );
@@ -75,9 +78,6 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
       string,
       (...args: unknown[]) => unknown
     > = {
-      [S2Event.LAYOUT_PAGINATION]: (data: PaginationCfg) => {
-        setTotal(data?.total);
-      },
       [S2Event.DATA_CELL_MOUSE_UP]: (ev: GEvent) => {
         onDataCellMouseUp?.(getBaseCellData(ev));
       },
@@ -134,7 +134,6 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const unBindEvent = () => {
     [
       S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
-      S2Event.LAYOUT_PAGINATION,
       S2Event.LAYOUT_ROW_NODE_BORDER_REACHED,
       S2Event.LAYOUT_COL_NODE_BORDER_REACHED,
       S2Event.LAYOUT_CELL_SCROLL,
@@ -163,45 +162,8 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (!ownSpreadsheet) return;
     if (isFunction(reset)) reset();
     ownSpreadsheet.render(reloadData);
+    setTotal(ownSpreadsheet.facet.viewCellHeights.getTotalLength());
     setLoading(false);
-  };
-
-  const renderPagination = (): JSX.Element => {
-    const paginationCfg = get(options, 'pagination', false);
-    // not show the pagination
-    if (isEmpty(paginationCfg)) {
-      return null;
-    }
-    // only show the pagination when the pageSize > 5
-    const showQuickJumper = total / pageSize > 5;
-    const preCls = `${S2_PREFIX_CLS}-pagination`;
-
-    return (
-      <div className={preCls}>
-        <Pagination
-          defaultCurrent={current}
-          total={total}
-          pageSize={pageSize}
-          // TODO 外部定义的pageSize和内部PageSize改变的优先级处理
-          showSizeChanger
-          onShowSizeChange={(current, size) => {
-            setCurrent(1);
-            setPageSize(size);
-          }}
-          size={'small'}
-          showQuickJumper={showQuickJumper}
-          onChange={(page) => setCurrent(page)}
-        />
-        <span
-          className={`${preCls}-count`}
-          title={`${i18n('共计')}${total}${i18n('条')}`}
-        >
-          {i18n('共计')}
-          {total || ' - '}
-          {i18n('条')}
-        </span>
-      </div>
-    );
   };
 
   const buildSpreadSheet = () => {
@@ -230,6 +192,9 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   // handle box size change and resize
   useResizeEffect(container.current, ownSpreadsheet, adaptive, options);
 
+  // handle pagination change
+  usePaginationEffect(ownSpreadsheet, options, current, pageSize);
+
   useEffect(() => {
     update(setDataCfg);
   }, [dataCfg]);
@@ -242,36 +207,12 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     update(() => {
       ownSpreadsheet.setThemeCfg(themeCfg);
     });
-  }, [JSON.stringify(themeCfg)]);
+  }, [ownSpreadsheet, JSON.stringify(themeCfg)]);
 
   useEffect(() => {
     if (!ownSpreadsheet) return;
     buildSpreadSheet();
   }, [spreadsheet]);
-
-  useEffect(() => {
-    if (!ownSpreadsheet || isEmpty(options?.pagination)) return;
-    const newOptions = merge({}, options, {
-      pagination: {
-        current: current,
-      },
-    });
-
-    setOptions(newOptions);
-    update();
-  }, [current]);
-
-  useEffect(() => {
-    if (!ownSpreadsheet || isEmpty(options?.pagination)) return;
-    const newOptions = merge({}, options, {
-      pagination: {
-        pageSize: pageSize,
-      },
-    });
-
-    setOptions(newOptions);
-    update();
-  }, [pageSize]);
 
   useEffect(() => {
     ownSpreadsheet?.setOptions({ hiddenColumnFields: [] });
@@ -283,8 +224,17 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && <Header {...header} sheet={ownSpreadsheet} />}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
-        {renderPagination()}
+        <S2Pagination
+          total={total}
+          pageSize={pageSize}
+          current={current}
+          setCurrent={setCurrent}
+          setPageSize={setPageSize}
+          pagination={options?.pagination}
+        />
       </Spin>
     </StrictMode>
   );
 });
+
+TableSheet.displayName = 'TableSheet';

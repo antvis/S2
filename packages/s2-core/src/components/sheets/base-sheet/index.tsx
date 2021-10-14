@@ -11,7 +11,6 @@ import {
   LayoutResult,
   LayoutRow,
   ListSortParams,
-  Pagination as PaginationCfg,
   S2Constructor,
   safetyDataConfig,
   safetyOptions,
@@ -61,7 +60,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
   const [drillFields, setDrillFields] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [total, setTotal] = useState<number>();
+  const [total, setTotal] = useState<number>(0);
   const [current, setCurrent] = useState<number>(
     options?.pagination?.current || 1,
   );
@@ -105,9 +104,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       string,
       (...args: unknown[]) => unknown
     > = {
-      [S2Event.LAYOUT_PAGINATION]: (data: PaginationCfg) => {
-        setTotal(data?.total);
-      },
       [S2Event.DATA_CELL_MOUSE_UP]: (ev: GEvent) => {
         onDataCellMouseUp?.(getBaseCellData(ev));
       },
@@ -155,7 +151,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const unBindEvent = () => {
     [
       S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
-      S2Event.LAYOUT_PAGINATION,
       S2Event.LAYOUT_ROW_NODE_BORDER_REACHED,
       S2Event.LAYOUT_COL_NODE_BORDER_REACHED,
       S2Event.LAYOUT_CELL_SCROLL,
@@ -224,6 +219,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (!ownSpreadsheet) return;
     if (isFunction(reset)) reset();
     ownSpreadsheet.render(reloadData);
+    setTotal(ownSpreadsheet.facet.viewCellHeights.getTotalLength());
     setLoading(false);
   };
 

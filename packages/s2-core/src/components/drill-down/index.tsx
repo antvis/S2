@@ -29,7 +29,7 @@ export interface DrillDownProps {
   drillFields?: string[];
   disabledFields?: string[];
   getDrillFields?: (drillFields: string[]) => void;
-  setDrillFields?: React.Dispatch<React.SetStateAction<string[]>>;
+  setDrillFields?: (drillFields: string[]) => void;
 }
 
 export const DrillDown: React.FC<DrillDownProps> = ({
