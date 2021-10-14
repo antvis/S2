@@ -1,17 +1,9 @@
 {
   "title": {
-    "zh": "交互",
+    "zh": "高级交互",
     "en": "Interaction"
   },
   "demos": [
-    {
-      "filename": "basic.ts",
-      "title": {
-        "zh": "基础交互",
-        "en": "Basic interaction"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
-    },
     {
       "filename": "custom.ts",
       "title": {
