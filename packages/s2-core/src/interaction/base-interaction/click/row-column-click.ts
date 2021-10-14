@@ -139,7 +139,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       onClick: (params) => handlers.map((handler) => handler(params)),
     };
 
-    if (tooltip.operation.hiddenColumns) {
+    if (tooltip.operation.hiddenColumns && this.spreadsheet.isTableMode()) {
       operator.menus.push(...TOOLTIP_OPERATOR_MENUS.HiddenColumns);
       handlers.push(({ key }) => {
         if (key === 'hiddenColumns') this.hideSelectedColumns();
