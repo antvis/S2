@@ -53,7 +53,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     onDataCellMouseUp,
     getSpreadsheet,
     partDrillDown,
-    showDefaultPagination = true,
+    showPagination = true,
   } = props;
   const container = useRef<HTMLDivElement>();
   const baseSpreadsheet = useRef<SpreadSheet>();
@@ -338,7 +338,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && <Header {...header} sheet={ownSpreadsheet} />}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
-        {showDefaultPagination && (
+        {showPagination && (
           <S2Pagination
             total={total}
             pageSize={pageSize}
