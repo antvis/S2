@@ -8,7 +8,6 @@ import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 import {
   CellScrollPosition,
   ListSortParams,
-  Pagination as PaginationCfg,
   S2Constructor,
   S2Options,
   safetyDataConfig,
@@ -31,7 +30,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     spreadsheet,
     dataCfg,
     options,
-    adaptive = true,
+    adaptive = false,
     header,
     themeCfg,
     isLoading,
@@ -50,6 +49,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     onDataCellMouseUp,
     onContextMenu,
     getSpreadsheet,
+    showDefaultPagination = true,
   } = props;
   const container = useRef<HTMLDivElement>();
   const baseSpreadsheet = useRef<SpreadSheet>();
@@ -224,14 +224,16 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && <Header {...header} sheet={ownSpreadsheet} />}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
-        <S2Pagination
-          total={total}
-          pageSize={pageSize}
-          current={current}
-          setCurrent={setCurrent}
-          setPageSize={setPageSize}
-          pagination={options?.pagination}
-        />
+        {showDefaultPagination && (
+          <S2Pagination
+            total={total}
+            pageSize={pageSize}
+            current={current}
+            setCurrent={setCurrent}
+            setPageSize={setPageSize}
+            pagination={options?.pagination}
+          />
+        )}
       </Spin>
     </StrictMode>
   );
