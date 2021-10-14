@@ -1163,7 +1163,13 @@ export abstract class BaseFacet {
    */
   protected dynamicRenderCell(delay = true) {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
-    const scrollY = sy + this.getPaginationScrollY();
+    let scrollY = sy + this.getPaginationScrollY();
+    const maxScrollY =
+      this.viewCellHeights.getTotalHeight() - this.panelBBox.height;
+
+    if (scrollY > maxScrollY) {
+      scrollY = maxScrollY;
+    }
 
     if (delay) {
       this.debounceRenderCell(scrollX, scrollY);
