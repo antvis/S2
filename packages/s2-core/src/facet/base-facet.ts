@@ -885,7 +885,7 @@ export abstract class BaseFacet {
     hRowScroll: number,
   ) {
     translateGroup(
-      this.spreadsheet.panelScrollGroup,
+      this.spreadsheet.panelGroup,
       this.cornerBBox.width - scrollX,
       this.cornerBBox.height - scrollY,
     );
