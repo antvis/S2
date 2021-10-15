@@ -544,7 +544,7 @@ export abstract class BaseFacet {
     }
     if (newY !== undefined) {
       this.vScrollBar?.onlyUpdateThumbOffset(
-        (scrollY / this.layoutResult.rowsHierarchy.height) *
+        (scrollY / this.viewCellHeights.getTotalHeight()) *
           this.vScrollBar.trackLen,
       );
     }

@@ -49,6 +49,7 @@ export class EventController {
   }
 
   public bindEvents() {
+    const { options } = this.spreadsheet;
     this.clearAllEvents();
 
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
@@ -57,19 +58,24 @@ export class EventController {
     this.addCanvasEvent(OriginEventType.DOUBLE_CLICK, this.onCanvasDoubleClick);
     this.addCanvasEvent(OriginEventType.CONTEXT_MENU, this.onCanvasContextMenu);
 
-    this.addDomEventListener(
-      document,
-      OriginEventType.CLICK,
-      (event: MouseEvent) => {
-        this.resetSheetStyle(event);
-      },
-    );
+    if (options.autoResetSheetStyle) {
+      this.addDomEventListener(
+        document,
+        OriginEventType.CLICK,
+        (event: MouseEvent) => {
+          this.resetSheetStyle(event);
+        },
+      );
+    }
+
     this.addDomEventListener(
       window,
       OriginEventType.KEY_DOWN,
       (event: KeyboardEvent) => {
         this.onKeyboardCopy(event);
-        this.onKeyboardEsc(event);
+        if (options.autoResetSheetStyle) {
+          this.onKeyboardEsc(event);
+        }
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_DOWN, event);
       },
     );
