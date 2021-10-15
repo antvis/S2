@@ -1,6 +1,6 @@
 ---
 title: Custom Header Action Icons
-order: 4
+order: 2
 ---
 
 `markdown:docs/manual/advanced/interaction/custom-header-action-icon.zh.md`
