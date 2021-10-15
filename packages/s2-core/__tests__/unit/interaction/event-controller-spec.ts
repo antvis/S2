@@ -364,6 +364,22 @@ describe('Interaction Event Controller Tests', () => {
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
   });
 
+  test('should reset if press ecs', () => {
+    spreadsheet.facet = {
+      panelBBox: {
+        maxX: 100,
+        maxY: 100,
+      } as BBox,
+    } as BaseFacet;
+    const reset = jest.fn();
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+
+    expect(reset).toHaveBeenCalled();
+    expect(spreadsheet.interaction.reset).toHaveBeenCalled();
+  });
+
   test("should dont't reset if current mouse on the tooltip and outside the canvas container", () => {
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
@@ -427,6 +443,10 @@ describe('Interaction Event Controller Tests', () => {
       } as MouseEventInit),
     );
 
+    expect(reset).not.toHaveBeenCalled();
+    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     expect(reset).not.toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
     spreadsheet.setOptions({
