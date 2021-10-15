@@ -26,7 +26,7 @@ export interface FormatResult {
   value: DataItem;
 }
 
-export type SortMethod = 'ASC' | 'DESC';
+export type SortMethod = 'ASC' | 'DESC' | 'asc' | 'desc';
 
 export interface Meta {
   readonly field: string; // 字段 id
