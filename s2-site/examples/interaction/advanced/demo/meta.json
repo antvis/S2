@@ -5,22 +5,6 @@
   },
   "demos": [
     {
-      "filename": "custom.ts",
-      "title": {
-        "zh": "自定义交互 - 双击列隐藏",
-        "en": "Custom interaction"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/PNFrjWu%261/8b9de9d4-b4be-48dd-abdb-40f98371592e.png"
-    },
-    {
-      "filename": "hide-columns.ts",
-      "title": {
-        "zh": "明细表隐藏列头",
-        "en": "Hide table columns"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/nAU23PQjf/61dc2aab-e1db-4403-8121-81d99029cd15.png"
-    },
-    {
       "filename": "pivot-link-jump.ts",
       "title": {
         "zh": "链接跳转 - 透视表",
@@ -35,6 +19,30 @@
         "en": "Link jump"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/DxQLZPeda/32a0cae6-0f1d-4e00-a274-4b0896467b02.png"
+    },
+    {
+      "filename": "hide-columns.ts",
+      "title": {
+        "zh": "明细表隐藏列头",
+        "en": "Hide table columns"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/nAU23PQjf/61dc2aab-e1db-4403-8121-81d99029cd15.png"
+    },
+    {
+      "filename": "custom.ts",
+      "title": {
+        "zh": "自定义交互 - 双击列隐藏",
+        "en": "Custom interaction"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/PNFrjWu%261/8b9de9d4-b4be-48dd-abdb-40f98371592e.png"
+    },
+    {
+      "filename": "custom-header-action-icon.tsx",
+      "title": {
+        "zh": "自定义行列头操作图标",
+        "en": "Custom header action icons"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%26aAhOS525G/8b2a2d0a-6190-4d82-be77-ee3b2cb2f066.png"
     }
   ]
 }

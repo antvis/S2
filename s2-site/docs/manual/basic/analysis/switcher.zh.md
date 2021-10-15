@@ -141,7 +141,8 @@ const field = {
         </tr>
         </tbody>
   </table>
-  
+```
+
 ### 提交修改
 
 Switcher 组件会在弹窗关闭后触发 `onSubmit` 回调，且此回调会接收一个 [SwitcherResult](/zh/docs/api/components/switcher#switcherresult) 类型的参数，你可以通过该回调拿到排序的结果。
