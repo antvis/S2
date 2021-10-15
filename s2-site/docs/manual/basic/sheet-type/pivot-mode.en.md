@@ -1,6 +1,6 @@
 ---
 title: Pivot Mode
-order: 2
+order: 1
 ---
 
 `markdown:docs/manual/basic/sheet-type/pivot-mode.zh.md`
