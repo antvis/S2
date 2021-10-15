@@ -406,4 +406,31 @@ describe('Interaction Event Controller Tests', () => {
     expect(reset).not.toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
+
+  test('should disable reset if autoResetSheetStyle set to false', () => {
+    spreadsheet.facet = {
+      panelBBox: {
+        maxX: 100,
+        maxY: 100,
+      } as BBox,
+    } as BaseFacet;
+    spreadsheet.setOptions({
+      autoResetSheetStyle: false,
+    });
+    const reset = jest.fn();
+    spreadsheet.on(S2Event.GLOBAL_RESET, reset);
+
+    document.dispatchEvent(
+      new MouseEvent('click', {
+        clientX: 120,
+        clientY: 120,
+      } as MouseEventInit),
+    );
+
+    expect(reset).not.toHaveBeenCalled();
+    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+    spreadsheet.setOptions({
+      autoResetSheetStyle: true,
+    });
+  });
 });

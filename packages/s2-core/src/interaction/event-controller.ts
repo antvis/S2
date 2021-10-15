@@ -58,24 +58,20 @@ export class EventController {
     this.addCanvasEvent(OriginEventType.DOUBLE_CLICK, this.onCanvasDoubleClick);
     this.addCanvasEvent(OriginEventType.CONTEXT_MENU, this.onCanvasContextMenu);
 
-    if (options.autoResetSheetStyle) {
-      this.addDomEventListener(
-        document,
-        OriginEventType.CLICK,
-        (event: MouseEvent) => {
-          this.resetSheetStyle(event);
-        },
-      );
-    }
+    this.addDomEventListener(
+      document,
+      OriginEventType.CLICK,
+      (event: MouseEvent) => {
+        this.resetSheetStyle(event);
+      },
+    );
 
     this.addDomEventListener(
       window,
       OriginEventType.KEY_DOWN,
       (event: KeyboardEvent) => {
         this.onKeyboardCopy(event);
-        if (options.autoResetSheetStyle) {
-          this.onKeyboardEsc(event);
-        }
+        this.onKeyboardEsc(event);
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_DOWN, event);
       },
     );
@@ -116,6 +112,11 @@ export class EventController {
   }
 
   private resetSheetStyle(event: Event) {
+    const { autoResetSheetStyle } = this.spreadsheet.options;
+    if (!autoResetSheetStyle) {
+      return;
+    }
+
     // 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
     const { interaction } = this.spreadsheet;
