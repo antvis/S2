@@ -402,26 +402,28 @@ export class TableFacet extends BaseFacet {
   }
 
   protected initFrozenGroupPosition = () => {
-    const scrollY = this.getPaginationScrollY();
+    const { scrollY, scrollX } = this.getScrollOffset();
+    const paginationScrollY = this.getPaginationScrollY();
+
     translateGroup(
       this.spreadsheet.frozenRowGroup,
-      this.cornerBBox.width,
-      this.cornerBBox.height - scrollY,
+      this.cornerBBox.width - scrollX,
+      this.cornerBBox.height - paginationScrollY,
     );
     translateGroup(
       this.spreadsheet.frozenColGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height - scrollY,
+      this.cornerBBox.height - scrollY - paginationScrollY,
     );
     translateGroup(
       this.spreadsheet.frozenTrailingColGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height - scrollY,
+      this.cornerBBox.height - scrollY - paginationScrollY,
     );
     translateGroup(
       this.spreadsheet.frozenTopGroup,
       this.cornerBBox.width,
-      this.cornerBBox.height - scrollY,
+      this.cornerBBox.height - paginationScrollY,
     );
   };
 

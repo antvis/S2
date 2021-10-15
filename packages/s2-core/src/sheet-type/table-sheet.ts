@@ -124,4 +124,18 @@ export class TableSheet extends SpreadSheet {
     this.facet = new TableFacet(facetCfg);
     this.facet.render();
   }
+
+  protected clearFrozenGroups() {
+    this.frozenRowGroup.set('children', []);
+    this.frozenColGroup.set('children', []);
+    this.frozenTrailingRowGroup.set('children', []);
+    this.frozenTrailingColGroup.set('children', []);
+    this.frozenTopGroup.set('children', []);
+    this.frozenBottomGroup.set('children', []);
+  }
+
+  public destroy() {
+    super.destroy();
+    this.clearFrozenGroups();
+  }
 }
