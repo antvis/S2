@@ -111,7 +111,7 @@ export class TableColCell extends ColCell {
       { cursor: 'pointer' },
     );
 
-    if (!spreadsheet.options.headerActionIcons?.length) {
+    if (!isEmpty(spreadsheet.options.headerActionIcons)) {
       renderDetailTypeSortIcon(
         this,
         spreadsheet,
