@@ -1,13 +1,14 @@
-import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React, { useState } from 'react';
+import { act } from 'react-dom/test-utils';
 import { Switch, Button, Layout } from 'antd';
 const { Header, Sider, Content } = Layout;
 import { forEach, merge, random } from 'lodash';
 import { data as originData, meta } from '../data/mock-dataset.json';
 import { getContainer } from '../util/helpers';
 import {
+  HeaderActionIconProps,
   PartDrillDown,
   PartDrillDownInfo,
   S2Options,
@@ -33,7 +34,7 @@ const getDataCfg = () => {
     sortParams: [],
   };
 };
-
+const ColTooltip = <div>colTooltip</div>;
 const getOptions = () => {
   return {
     debug: true,
@@ -43,6 +44,20 @@ const getOptions = () => {
     hierarchyCollapse: false,
     showSeriesNumber: false,
     freezeRowHeader: false,
+    showDefaultHeaderActionIcon: false,
+    headerActionIcons: [
+      {
+        iconNames: ['SortDownSelected'],
+        belongsCell: 'colCell',
+        action: (props: HeaderActionIconProps) => {
+          const { meta, event } = props;
+          meta.spreadsheet.tooltip.show({
+            position: { x: event.clientX, y: event.clientY },
+            element: ColTooltip,
+          });
+        },
+      },
+    ],
     style: {
       treeRowsWidth: 100,
       collapsedRows: {},

@@ -1,6 +1,6 @@
 ---
 title: 链接跳转
-order: 3
+order: 4
 ---
 
 将单元格文本标记为含有下划线的链接样式，实现链接跳转 🔗, 对于透视表和明细表，有细微的区别
@@ -97,4 +97,4 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 s2.render();
 ```
 
-<playground path='interaction/demo/table-link-jump.ts' rid='container' height='400'></playground>
+<playground path='interaction/demo/table-link-jump.ts' rid='container2' height='400'></playground>

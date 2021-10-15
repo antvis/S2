@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "0.1.14",
+  "version": "0.2.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/s2.min.js",
@@ -60,12 +60,14 @@
     "antd": "^4.16.13",
     "classnames": "^2.3.1",
     "lodash": "^4.17.21",
-    "react-beautiful-dnd": "^13.1.0"
+    "react-beautiful-dnd": "^13.1.0",
+    "react-debounce-render": "^7.0.0"
   },
   "devDependencies": {
     "@types/react-beautiful-dnd": "^13.1.2",
     "d3-dsv": "^1.1.1",
-    "inquirer": "^8.1.2",
+    "inquirer": "^8.2.0",
+    "inquirer-autocomplete-prompt": "^1.4.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
   },

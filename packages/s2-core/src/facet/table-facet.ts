@@ -1,7 +1,7 @@
 import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
 import { getDataCellId } from 'src/utils/cell/data-cell';
-import { get, maxBy, set } from 'lodash';
+import { get, maxBy, set, size } from 'lodash';
 import type {
   LayoutResult,
   S2CellType,
@@ -50,8 +50,35 @@ export class TableFacet extends BaseFacet {
       s2.render(true);
       s2.emit(
         S2Event.RANGE_SORTED,
-        (s2.dataSet as TableDataSet).sortedDimensionValues,
+        (s2.dataSet as TableDataSet).getDisplayDataSet(),
       );
+    });
+
+    s2.on(S2Event.RANGE_FILTER, (params) => {
+      /** remove filter params on current key if passed an empty filterValues field */
+      const unfilter =
+        !params.filteredValues || params.filteredValues.length === 0;
+
+      const oldConfig = s2.dataCfg.filterParams || [];
+      // check whether filter condition already exists on column, if so, modify it instead.
+      const oldIndex = oldConfig.findIndex(
+        (item) => item.filterKey === params.filterKey,
+      );
+
+      if (oldIndex !== -1) {
+        if (unfilter) {
+          // remove filter params on current key if passed an empty filterValues field
+          oldConfig.splice(oldIndex);
+        } else {
+          // if filter with same key already exists, replace it
+          oldConfig[oldIndex] = params;
+        }
+      } else oldConfig.push(params);
+
+      set(s2.dataCfg, 'filterParams', oldConfig);
+
+      s2.render(true);
+      s2.emit(S2Event.RANGE_FILTERED, params);
     });
   }
 
@@ -79,10 +106,18 @@ export class TableFacet extends BaseFacet {
     this.spreadsheet.off(S2Event.RANGE_SORT);
   }
 
-  private saveInitColumnNodes(columnNodes: Node[]) {
-    const { store } = this.spreadsheet;
-    if (!store.get('initColumnNodes')) {
+  private saveInitColumnNodes(columnNodes: Node[] = []) {
+    const { store, dataCfg } = this.spreadsheet;
+    const { columns = [] } = dataCfg.fields;
+    const lastRenderedColumnFields = store.get('lastRenderedColumnFields');
+    // 透视表切换为明细表 dataCfg 的 columns 配置改变等场景 需要重新保存初始布局节点
+    const isDifferenceColumns =
+      lastRenderedColumnFields &&
+      size(lastRenderedColumnFields) !== size(columns);
+
+    if (!store.get('initColumnNodes') || isDifferenceColumns) {
       store.set('initColumnNodes', columnNodes);
+      store.set('lastRenderedColumnFields', columns);
     }
   }
 
@@ -288,7 +323,7 @@ export class TableFacet extends BaseFacet {
     if (userDragWidth) {
       colWidth = userDragWidth;
     } else if (cellCfg.width === -1) {
-      const datas = dataSet.originData;
+      const datas = dataSet.getDisplayDataSet();
       const colLabel = col.label;
 
       const allLabels =
@@ -335,7 +370,7 @@ export class TableFacet extends BaseFacet {
 
     return {
       getTotalHeight: () => {
-        return cellHeight * dataSet.originData.length;
+        return cellHeight * dataSet.getDisplayDataSet().length;
       },
 
       getCellOffsetY: (offset: number) => {
@@ -348,7 +383,7 @@ export class TableFacet extends BaseFacet {
       },
 
       getTotalLength: () => {
-        return dataSet.originData.length;
+        return dataSet.getDisplayDataSet().length;
       },
 
       getIndexRange: (minHeight: number, maxHeight: number) => {

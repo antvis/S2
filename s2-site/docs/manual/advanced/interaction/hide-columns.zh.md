@@ -1,6 +1,6 @@
 ---
 title: 隐藏列头
-order: 2
+order: 3
 ---
 
 对于明细表来说，当你想降低不重要信息干扰时，可以隐藏列头，方便你更直观的查看数据，有两种方式隐藏列头
@@ -54,6 +54,6 @@ const s2Options = {
 }
 ```
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/TLJEeN7iG/388c8320-ab7a-4601-b8d6-77d186516fb2.png)
+还可以集成分析组件，通过改变配置的方式，实现动态隐藏列头，具体请查看 [分析组件](/zh/docs/manual/basic/analysis/switcher/)
 
-还可以集成分析组件，通过改变配置的方式，实现动态隐藏列头，具体请查看 [分析组件](#)
+![preview](https://gw.alipayobjects.com/zos/antfincdn/TLJEeN7iG/388c8320-ab7a-4601-b8d6-77d186516fb2.png)

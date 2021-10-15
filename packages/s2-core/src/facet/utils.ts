@@ -8,7 +8,7 @@ import {
   FrozenOpts,
   FrozenCellIndex,
 } from '@/common/constant/frozen';
-import { Pagination } from '@/common/interface';
+import { Pagination, ScrollRatio } from '@/common/interface';
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) => {
   return frozenCount > 0 && colIndex < frozenCount;
@@ -96,8 +96,13 @@ export const calculateInViewIndexes = (
  * 优化滚动方向，对于小角度的滚动，固定为一个方向
  * @param x
  * @param y
+ * @param ratio
  */
-export const optimizeScrollXY = (x: number, y: number): [number, number] => {
+export const optimizeScrollXY = (
+  x: number,
+  y: number,
+  ratio: ScrollRatio,
+): [number, number] => {
   const ANGLE = 2; // 调参工程师
   const angle = Math.abs(x / y);
 
@@ -105,7 +110,7 @@ export const optimizeScrollXY = (x: number, y: number): [number, number] => {
   const deltaX = angle <= 1 / ANGLE ? 0 : x;
   const deltaY = angle > ANGLE ? 0 : y;
 
-  return [deltaX, deltaY];
+  return [deltaX * ratio.horizontal, deltaY * ratio.vertical];
 };
 
 export const translateGroup = (

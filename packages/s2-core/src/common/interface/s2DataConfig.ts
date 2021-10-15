@@ -1,5 +1,10 @@
 import { isEmpty, merge } from 'lodash';
-import { Fields, Meta, SortParams } from '@/common/interface/index';
+import {
+  Fields,
+  FilterParam,
+  Meta,
+  SortParams,
+} from '@/common/interface/index';
 
 /** use for tabularSheet
  *  eg. { label: '余额女',
@@ -44,6 +49,9 @@ export interface S2DataConfig {
   meta?: Meta[];
   // field sort info
   sortParams?: SortParams;
+  // field filer params
+  filterParams?: FilterParam[];
+
   // extra config
   [key: string]: any;
 }
@@ -60,6 +68,7 @@ export const defaultDataConfig = {
   },
   meta: [],
   sortParams: [],
+  filterParams: [],
 } as S2DataConfig;
 
 export const safetyDataConfig = (dataConfig: S2DataConfig) => {

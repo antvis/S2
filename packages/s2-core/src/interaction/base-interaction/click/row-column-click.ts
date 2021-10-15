@@ -1,7 +1,7 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
 import { concat, difference, isEmpty, isNil } from 'lodash';
-import { hideColumns } from '@/utils/hide-columns';
+import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
 import {
   S2Event,
@@ -12,7 +12,7 @@ import {
 } from '@/common/constant';
 import { TooltipOperatorOptions } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
-import { mergeCellInfo } from '@/utils/tooltip';
+import { mergeCellInfo, getTooltipOptions } from '@/utils/tooltip';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private isMultiSelection = false;
@@ -40,7 +40,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
         this.isMultiSelection = false;
-        this.interaction.removeIntercepts([InterceptType.CLICK]);
+        this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
       }
     });
   }
@@ -61,10 +61,6 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     event.stopPropagation();
 
     const { interaction } = this.spreadsheet;
-    if (interaction.hasIntercepts([InterceptType.CLICK])) {
-      return;
-    }
-
     const lastState = interaction.getState();
     const cell = this.spreadsheet.getCell(event.target);
     const meta = cell?.getMeta() as Node;
@@ -117,28 +113,38 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       }
       this.spreadsheet.emit(
         S2Event.GLOBAL_SELECTED,
-        this.interaction.getActiveCells(),
+        interaction.getActiveCells(),
       );
       this.showTooltip(event);
     }
   };
 
   private showTooltip(event: CanvasEvent) {
-    const {
-      interaction,
-      options: { tooltip },
-    } = this.spreadsheet;
+    const { operation, showTooltip } = getTooltipOptions(
+      this.spreadsheet,
+      event,
+    );
+    if (!showTooltip) {
+      return;
+    }
+    const { interaction } = this.spreadsheet;
     const cellInfos = interaction.isSelectedState()
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
-    const operator: TooltipOperatorOptions = this.spreadsheet.isTableMode() &&
-      tooltip.operation.hiddenColumns && {
-        onClick: () => {
-          this.hideSelectedColumns();
-        },
-        menus: TOOLTIP_OPERATOR_MENUS.HiddenColumns,
-      };
+    const handlers = [];
+
+    const operator: TooltipOperatorOptions = {
+      menus: [],
+      onClick: (params) => handlers.map((handler) => handler(params)),
+    };
+
+    if (operation.hiddenColumns && this.spreadsheet.isTableMode()) {
+      operator.menus.push(...TOOLTIP_OPERATOR_MENUS.HiddenColumns);
+      handlers.push(({ key }) => {
+        if (key === 'hiddenColumns') this.hideSelectedColumns();
+      });
+    }
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       showSingleTips: true,
@@ -162,12 +168,20 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
    * 2. [displaySiblingNode]: 当前这一组的列隐藏后, 需要将展开按钮显示到对应的兄弟节点
    * 这样不用每次 render 的时候实时计算, 渲染列头单元格 直接取数据即可
    */
-  private hideSelectedColumns() {
-    const selectedColumnFields: string[] = this.spreadsheet.interaction
+  public hideSelectedColumns() {
+    const { interaction, options } = this.spreadsheet;
+    const selectedColumnFields: string[] = interaction
       .getActiveCells()
       .map((cell) => cell.getMeta().field);
 
-    hideColumns(this.spreadsheet, selectedColumnFields);
+    const { hiddenColumnFields: defaultHiddenColumnFields } = options;
+    // 当前点击的, 和默认隐藏的
+    const hiddenColumnFields = [
+      ...defaultHiddenColumnFields,
+      ...selectedColumnFields,
+    ];
+    // 兼容多选
+    hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, true);
   }
 
   private handleExpandIconClick(node: Node) {

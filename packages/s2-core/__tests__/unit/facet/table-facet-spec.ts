@@ -50,9 +50,11 @@ jest.mock('src/data-set/table-data-set', () => {
       return {
         ...assembleDataCfg(),
         originData: [],
+        displayData: [],
         moreThanOneValue: jest.fn(),
         getFieldName: jest.fn(),
         getDimensionValues: jest.fn(),
+        getDisplayDataSet: jest.fn(() => []),
       };
     }),
   };

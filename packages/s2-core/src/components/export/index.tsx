@@ -4,6 +4,7 @@ import cx from 'classnames';
 import { DotIcon } from '../icons/index';
 import { copyData, copyToClipboard, download } from '../../utils/export';
 import { SpreadSheet } from '@/sheet-type';
+import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 
 export interface DataSet {
   icon?: React.ReactNode;
@@ -20,7 +21,7 @@ export interface ExportCfgProps {
   icon?: React.ReactNode;
   copyOriginalText?: string;
   copyFormatText?: string;
-  downloadOringinalText?: string;
+  downloadOriginalText?: string;
   downloadFormatText?: string;
   successText?: string;
   errorText?: string;
@@ -35,7 +36,7 @@ export const Export: React.FC<ExportProps> = ({
   icon,
   copyOriginalText = '复制原始数据',
   copyFormatText = '复制格式化数据',
-  downloadOringinalText = '下载原始数据',
+  downloadOriginalText = '下载原始数据',
   downloadFormatText = '下载格式化数据',
   successText = '操作成功',
   errorText = '操作失败',
@@ -43,7 +44,7 @@ export const Export: React.FC<ExportProps> = ({
   fileName = 'sheet',
   ...restProps
 }) => {
-  const PRECLASS = 'spreadsheet-export';
+  const PRE_CLASS = `${S2_PREFIX_CLS}-export`;
 
   const exportData = (isFormat: boolean) => {
     const data = copyData(sheet, '\t', isFormat);
@@ -67,16 +68,16 @@ export const Export: React.FC<ExportProps> = ({
   const menu = (
     <Menu>
       <Menu.Item key="copyOriginal" onClick={() => exportData(false)}>
-        <a href="javasript:void(0)">{copyOriginalText}</a>
+        <a href="`javascript:void(0)`">{copyOriginalText}</a>
       </Menu.Item>
       <Menu.Item key="copyFormat" onClick={() => exportData(true)}>
-        <a href="javasript:void(0)">{copyFormatText}</a>
+        <a href="`javascript:void(0)`">{copyFormatText}</a>
       </Menu.Item>
-      <Menu.Item key="downloadOringinal" onClick={() => downLoadData(false)}>
-        <a href="javasript:void(0)">{downloadOringinalText}</a>
+      <Menu.Item key="downloadOriginal" onClick={() => downLoadData(false)}>
+        <a href="`javascript:void(0)`">{downloadOriginalText}</a>
       </Menu.Item>
       <Menu.Item key="downloadFormat" onClick={() => downLoadData(true)}>
-        <a href="javasript:void(0)">{downloadFormatText}</a>
+        <a href="`javascript:void(0)`">{downloadFormatText}</a>
       </Menu.Item>
     </Menu>
   );
@@ -85,7 +86,7 @@ export const Export: React.FC<ExportProps> = ({
     <Dropdown
       overlay={menu}
       trigger={['click']}
-      className={cx(PRECLASS, className)}
+      className={cx(PRE_CLASS, className)}
       {...restProps}
     >
       <a

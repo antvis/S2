@@ -3,6 +3,7 @@ import {
   CellScrollPosition,
   Data,
   DataItem,
+  FilterParam,
   HiddenColumnsInfo,
   LayoutResult,
   S2CellType,
@@ -38,6 +39,7 @@ type MouseEventHandler = (event: MouseEvent) => void;
 type EventHandler = (event: Event) => void;
 type ResizeHandler = (data: { info: ResizeInfo; style: Style }) => void;
 type SelectedHandler = (cells: S2CellType[]) => void;
+type FilterHandler = (info: FilterParam) => void;
 
 export interface EmitterType {
   /** ================ Global ================  */
@@ -57,8 +59,11 @@ export interface EmitterType {
 
   /** ================ Sort ================  */
   [S2Event.RANGE_SORT]: (info: SortParams) => void;
-  [S2Event.RANGE_SORTING]: (info: SortParams) => void;
   [S2Event.RANGE_SORTED]: (rangeData: Data[]) => void;
+
+  /** ================ Filter ================  */
+  [S2Event.RANGE_FILTER]: FilterHandler;
+  [S2Event.RANGE_FILTERED]: FilterHandler;
 
   /** ================ Cell ================  */
   [S2Event.GLOBAL_LINK_FIELD_JUMP]: (data: {
@@ -125,8 +130,8 @@ export interface EmitterType {
   [S2Event.LAYOUT_CELL_SCROLL]: (data: CellScrollPosition) => void;
   [S2Event.LAYOUT_COL_NODE_BORDER_REACHED]: (data: Node) => void;
   [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (data: Node) => void;
-  [S2Event.LAYOUT_TABLE_COL_EXPANDED]: (node: Node) => void;
-  [S2Event.LAYOUT_TABLE_COL_HIDE]: (
+  [S2Event.LAYOUT_TABLE_COL_EXPANDED]: (expandedNode: Node) => void;
+  [S2Event.LAYOUT_TABLE_COL_HIDDEN]: (
     currentHiddenColumnsInfo: HiddenColumnsInfo,
     hiddenColumnsDetail: HiddenColumnsInfo[],
   ) => void;

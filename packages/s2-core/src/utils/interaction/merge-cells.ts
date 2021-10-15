@@ -138,7 +138,7 @@ const getCellsByInfo = (
 /**
  * draw the background of the merged cell
  * @param sheet the base sheet instance
- * @param curSelectedState
+ * @param cellsInfo
  * @param hideData
  */
 export const mergeCells = (
@@ -147,7 +147,7 @@ export const mergeCells = (
   hideData?: boolean,
 ) => {
   const allCells = filter(
-    sheet.panelGroup.getChildren(),
+    sheet.panelScrollGroup.getChildren(),
     (child) => !(child instanceof MergedCells),
   ) as unknown as S2CellType[];
   const { cells, viewMeta } = getCellsByInfo(cellsInfo, allCells);

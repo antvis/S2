@@ -1,7 +1,6 @@
 import { Group, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import { clone, isNil, throttle } from 'lodash';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
-import { RootInteraction } from './root';
 import { ResizeInfo } from '@/facet/header/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { ResizeEvent, Style } from '@/common/interface';
@@ -24,8 +23,8 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
 
   private startPos: { offsetX?: number; offsetY?: number } = {};
 
-  constructor(spreadsheet: SpreadSheet, interaction: RootInteraction) {
-    super(spreadsheet, interaction);
+  constructor(spreadsheet: SpreadSheet) {
+    super(spreadsheet);
     this.container = this.spreadsheet.foregroundGroup;
   }
 

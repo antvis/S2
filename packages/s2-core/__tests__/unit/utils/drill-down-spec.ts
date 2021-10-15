@@ -86,7 +86,7 @@ describe('Drill Down Test', () => {
     mockInstance.store = new Store();
     mockInstance.dataSet = new PivotDataSet(mockInstance);
     mockInstance.dataSet.setDataCfg(mockDataCfg);
-    mockInstance.setOptions(mockOptions);
+    mockInstance.options = mockOptions;
   });
 
   test('for HandleDrillDown function', async () => {

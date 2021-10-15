@@ -75,7 +75,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
       event.preventDefault();
-      if (this.interaction.hasIntercepts([InterceptType.CLICK])) {
+      if (this.spreadsheet.interaction.hasIntercepts([InterceptType.CLICK])) {
         return;
       }
       this.setBrushSelectionStage(InteractionBrushSelectionStage.CLICK);
@@ -94,11 +94,11 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       ) {
         return;
       }
-
+      const { interaction } = this.spreadsheet;
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      this.interaction.addIntercepts([InterceptType.HOVER]);
       this.endBrushPoint = this.getBrushPoint(event);
-      this.interaction.clearStyleIndependent();
+      interaction.addIntercepts([InterceptType.HOVER]);
+      interaction.clearStyleIndependent();
       this.updatePrepareSelectMask();
       this.showPrepareSelectedCells();
     });
@@ -110,7 +110,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       event.preventDefault();
 
       if (this.isValidBrushSelection()) {
-        this.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
+        this.spreadsheet.interaction.addIntercepts([
+          InterceptType.BRUSH_SELECTION,
+        ]);
         this.updateSelectedCells();
         this.spreadsheet.showTooltipWithInfo(
           event,
@@ -135,7 +137,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private setDisplayedDataCells() {
-    this.displayedDataCells = this.interaction.getPanelGroupAllDataCells();
+    this.displayedDataCells =
+      this.spreadsheet.interaction.getPanelGroupAllDataCells();
   }
 
   private updatePrepareSelectMask() {
@@ -232,7 +235,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   // 刷选过程中高亮的cell
   private showPrepareSelectedCells = () => {
     const brushRangeDataCells = this.getBrushRangeDataCells();
-    this.interaction.changeState({
+    this.spreadsheet.interaction.changeState({
       cells: brushRangeDataCells.map((item) => getCellMeta(item)),
       stateName: InteractionStateName.PREPARE_SELECT,
       // 刷选首先会经过 hover => mousedown => mousemove, hover时会将当前行全部高亮 (row cell + data cell)
@@ -245,7 +248,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   // 最终刷选的cell
   private updateSelectedCells() {
-    this.interaction.changeState({
+    const { interaction } = this.spreadsheet;
+    interaction.changeState({
       cells: this.brushRangeDataCells.map((item) => getCellMeta(item)),
       stateName: InteractionStateName.SELECTED,
     });
@@ -256,7 +260,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.brushRangeDataCells);
     // 未刷选到有效格子, 允许 hover
     if (isEmpty(this.brushRangeDataCells)) {
-      this.interaction.removeIntercepts([InterceptType.HOVER]);
+      interaction.removeIntercepts([InterceptType.HOVER]);
     }
   }
 }

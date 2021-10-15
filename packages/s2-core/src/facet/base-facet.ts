@@ -28,7 +28,6 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
-  InteractionStateName,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
@@ -807,8 +806,13 @@ export abstract class BaseFacet {
   };
 
   onWheel = (event: S2WheelEvent) => {
+    const ratio = this.cfg.scrollSpeedRatio;
     const { deltaX, deltaY, layerX, layerY } = event;
-    const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(deltaX, deltaY);
+    const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
+      deltaX,
+      deltaY,
+      ratio,
+    );
 
     this.spreadsheet.hideTooltip();
 
@@ -881,7 +885,7 @@ export abstract class BaseFacet {
     hRowScroll: number,
   ) {
     translateGroup(
-      this.spreadsheet.panelScrollGroup,
+      this.spreadsheet.panelGroup,
       this.cornerBBox.width - scrollX,
       this.cornerBBox.height - scrollY,
     );
@@ -1159,7 +1163,13 @@ export abstract class BaseFacet {
    */
   protected dynamicRenderCell(delay = true) {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
-    const scrollY = sy + this.getPaginationScrollY();
+    let scrollY = sy + this.getPaginationScrollY();
+    const maxScrollY =
+      this.viewCellHeights.getTotalHeight() - this.panelBBox.height;
+
+    if (scrollY > maxScrollY) {
+      scrollY = maxScrollY;
+    }
 
     if (delay) {
       this.debounceRenderCell(scrollX, scrollY);

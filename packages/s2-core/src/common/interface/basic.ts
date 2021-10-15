@@ -128,6 +128,11 @@ export interface SortParam extends Sort {
   sortFunc?: (v: SortFuncParam) => Array<string>;
 }
 
+export interface FilterParam {
+  filterKey: string;
+  filteredValues: unknown[];
+}
+
 export type SortParams = SortParam[];
 
 export interface Style {
@@ -412,3 +417,8 @@ export type ResizeEvent =
   | S2Event.LAYOUT_RESIZE_ROW_HEIGHT
   | S2Event.LAYOUT_RESIZE_COL_HEIGHT
   | S2Event.LAYOUT_RESIZE_TREE_WIDTH;
+
+export interface ScrollRatio {
+  horizontal?: number;
+  vertical?: number;
+}

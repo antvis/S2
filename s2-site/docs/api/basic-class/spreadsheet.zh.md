@@ -7,7 +7,7 @@ order: 1
 
 | 参数 | 类型 | 默认值 | 功能描述 |
 | --- | --- | --- | --- |
-| dom | `string | HTMLElement` |   | 挂载的容器节点 |
+| dom | `string` \| `HTMLElement` |   | 挂载的容器节点 |
 | theme | [S2Theme](/zh/docs/api/general/S2Theme) |    | 主题配置 |
 | store | [Store](/zh/docs/api/basic-class/store) |    | 存储的一些信息 |
 | dataCfg | [S2DataConfig](/zh/docs/api/general/S2DataConfig) |   | 数据配置 |

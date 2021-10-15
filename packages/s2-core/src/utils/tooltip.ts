@@ -23,6 +23,7 @@ import {
   every,
 } from 'lodash';
 import React from 'react';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import {
   LayoutResult,
   ListItem,
@@ -51,6 +52,7 @@ import {
   PRECISION,
   VALUE_FIELD,
 } from '@/common/constant';
+import { Tooltip } from '@/common/interface';
 
 const isNotNumber = (v) => {
   return Number.isNaN(Number(v));
@@ -509,4 +511,34 @@ export const getActiveCellsTooltipData = (
     }
   });
   return cellInfos;
+};
+
+export const getTooltipOptionsByCellType = (
+  cellTooltip: Tooltip,
+  cellType: CellTypes,
+) => {
+  const getOptionsByCell = (cell) => {
+    return { ...cellTooltip, ...cell };
+  };
+
+  const { col, row, cell } = cellTooltip || {};
+  if (col && cellType === CellTypes.COL_CELL) {
+    return getOptionsByCell(col);
+  }
+  if (row && cellType === CellTypes.ROW_CELL) {
+    return getOptionsByCell(row);
+  }
+  if (cell && cellType === CellTypes.DATA_CELL) {
+    return getOptionsByCell(cell);
+  }
+
+  return { ...cellTooltip };
+};
+
+export const getTooltipOptions = (
+  spreadsheet: SpreadSheet,
+  event: CanvasEvent | MouseEvent | Event,
+) => {
+  const cellType = spreadsheet.getCellType?.(event.target);
+  return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType);
 };
