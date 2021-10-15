@@ -18,6 +18,7 @@ import {
   SortParams,
 } from '../common/interface';
 import { ValueRange } from './../common/interface/condition';
+import { ViewMeta } from '@/common/interface';
 import { CellDataParams, DataType } from '@/data-set/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
@@ -74,7 +75,7 @@ export abstract class BaseDataSet {
    * 获得字段名称
    * @param field
    */
-  public getFieldFormatter(field: string): Formatter {
+  public getFieldFormatter(field: string, viewMeta?: ViewMeta): Formatter {
     return get(this.getFieldMeta(field, this.meta), 'formatter', identity);
   }
 

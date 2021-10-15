@@ -27,10 +27,16 @@ import {
   splitTotal,
   isTotalData,
 } from '@/utils/data-set-operate';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '@/common/debug';
 import { i18n } from '@/common/i18n';
-import { Data, Meta, S2DataConfig } from '@/common/interface';
+import {
+  Data,
+  Formatter,
+  Meta,
+  S2DataConfig,
+  ViewMeta,
+} from '@/common/interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
 import { CellDataParams, DataType, PivotMeta } from '@/data-set/interface';
 import { handleSortAction } from '@/utils/sort-action';
@@ -453,5 +459,26 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     return result || [];
+  }
+
+  public getFieldFormatter(field: string, cellMeta?: ViewMeta): Formatter {
+    // 兼容总计小计场景
+    if (field === TOTAL_VALUE) {
+      return this.getFieldFormatterForTotalValue(cellMeta);
+    }
+    return super.getFieldFormatter(field);
+  }
+
+  private getFieldFormatterForTotalValue(cellMeta?: ViewMeta) {
+    let valueField;
+    // 当数据置于行头时，小计总计列尝试去找对应的指标
+    if (!this.spreadsheet.isValueInCols() && cellMeta) {
+      valueField = get(cellMeta.rowQuery, EXTRA_FIELD);
+    }
+
+    // 如果没有找到对应指标，则默认取第一个维度
+    valueField = valueField ?? this.fields.values[0];
+
+    return super.getFieldFormatter(valueField);
   }
 }
