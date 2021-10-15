@@ -25,6 +25,7 @@ const s2Options: S2Options = {
     showTooltip: true,
   },
   enableCopy: true,
+  autoResetSheetStyle: true,
 };
 
 describe('Interaction Event Controller Tests', () => {
