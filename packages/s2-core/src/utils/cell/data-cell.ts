@@ -30,5 +30,5 @@ export const includeCell = (cells: CellMeta[], currentCell: S2CellType) => {
 };
 
 export const getDataCellId = (rowIndex: string, colIndex: string) => {
-  return `${rowIndex}-${colIndex}}`;
+  return `${rowIndex}-${colIndex}`;
 };
