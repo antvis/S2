@@ -3,22 +3,25 @@ import React from 'react';
 import { Switch, Button } from 'antd';
 import { forEach } from 'lodash';
 import { act } from 'react-dom/test-utils';
-import { getContainer, getMockData } from '../util/helpers';
+import {
+  mockTabularDataCfg,
+  mockTabularOptions,
+} from 'tests/data/tabular-data';
+import { getContainer } from '../util/helpers';
+import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
 import { mergeCells } from '@/utils/interaction/merge-cells';
 import 'antd/dist/antd.min.css';
 import {
-  auto,
   S2DataConfig,
   S2Options,
   SheetComponent,
   PivotSheet,
   SheetType,
+  defaultStyle,
 } from '@/index';
 
-let data = getMockData('../data/tableau-supermarket.csv');
-
-data = data.map((row) => {
+const data = mockData.map((row) => {
   row['profit-tongbi'] = 0.2233;
   row['profit-huanbi'] = -0.4411;
   row['count-tongbi'] = 0.1234;
@@ -37,69 +40,20 @@ const getSpreadSheet = (
 const baseDataCfg: S2DataConfig = {
   fields: {
     // rows has value
-    rows: ['area', 'province', 'city'],
+    rows: ['province', 'city'],
     columns: ['type', 'sub_type'],
-    values: ['profit', 'count'],
+    values: ['number'],
+    valueInCols: true,
   },
-  meta: [
-    {
-      field: 'profit-tongbi',
-      name: '利润同比',
-      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
-    },
-    {
-      field: 'profit-huanbi',
-      name: '利润环比',
-      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
-    },
-    {
-      field: 'count-tongbi',
-      name: '个数同比',
-      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
-    },
-    {
-      field: 'count-huanbi',
-      name: '个数环比',
-      formatter: (v: number) => (!v ? '' : `${auto(v) + '%'}`),
-    },
-    {
-      field: 'sale_amt',
-      name: '销售额',
-      formatter: (v: number) => v,
-    },
-    {
-      field: 'count',
-      name: '销售个数',
-      formatter: (v) => v,
-    },
-    {
-      field: 'discount',
-      name: '折扣',
-      formatter: (v) => v,
-    },
-    {
-      field: 'profit',
-      name: '利润',
-      formatter: (v) => v,
-    },
-  ],
   data,
-  sortParams: [
-    {
-      sortFieldId: 'area',
-      sortMethod: 'ASC',
-    },
-    {
-      sortFieldId: 'province',
-      sortMethod: 'DESC',
-    },
-  ],
+  meta,
+  totalData,
 } as S2DataConfig;
 
 const baseOptions = {
   debug: false,
-  width: 800,
-  height: 600,
+  width: 600,
+  height: 480,
   hierarchyType: 'grid',
   hierarchyCollapse: false,
   showSeriesNumber: true,
@@ -111,19 +65,7 @@ const baseOptions = {
     background: [],
     icon: [],
   },
-  style: {
-    treeRowsWidth: 100,
-    collapsedRows: {},
-    colCfg: {
-      widthByFieldValue: {},
-      heightByField: {},
-      colWidthType: 'compact',
-    },
-    cellCfg: {
-      height: 32,
-    },
-    device: 'pc',
-  },
+  style: defaultStyle,
   mergedCellsInfo: [
     [
       { colIndex: 1, rowIndex: 6 },
@@ -141,196 +83,8 @@ const baseOptions = {
   },
 } as S2Options;
 
-const tabularDataCfg = {
-  fields: {
-    rows: ['COLUMNDIMENSION-scene'],
-    columns: ['DIMENSION-sex', 'DIMENSION-age'],
-    values: ['value'],
-  },
-  meta: [
-    { field: 'DIMENSION-sex', name: 'sex' },
-    {
-      field: 'DIMENSION-age',
-      name: 'age',
-    },
-    { field: 'COLUMNDIMENSION-scene', name: 'scene' },
-    { field: 'value', name: '' },
-  ],
-  data: [
-    {
-      'DIMENSION-sex': '男',
-      'DIMENSION-age': 16,
-      'COLUMNDIMENSION-scene': '账单',
-      'DATE-日期': '2021-04-11',
-      'MEASURE-最近7天登端天数': 66666,
-      'MEASURE-最近7天登端天数-COMPARE-VALUE': 0.001,
-      'MEASURE-最近7天登端天数-COMPARE-MINUS': 1,
-      value: {
-        label: '账单男16',
-        values: [
-          ['最近7天登端天数', 1, 3423423, -323],
-          ['自然月新登用户数', 1, -3423423, 323],
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-        ],
-      },
-    },
-    {
-      'DIMENSION-sex': '男',
-      'DIMENSION-age': 17,
-      'COLUMNDIMENSION-scene': '账单',
-      'DATE-日期': '2021-04-11',
-      'MEASURE-最近7天登端天数': 66666,
-      'MEASURE-最近7天登端天数-COMPARE-VALUE': 0.001,
-      'MEASURE-最近7天登端天数-COMPARE-MINUS': 1,
-      value: {
-        label: '账单男17',
-        values: [
-          ['最近7天登端天数', 1323, -3423423, 323],
-          ['自然月新登用户数', 1232, 3423423, -323],
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-        ],
-      },
-    },
-    {
-      'DIMENSION-sex': '男',
-      'DIMENSION-age': 16,
-      'COLUMNDIMENSION-scene': '花呗',
-      'DATE-日期': '2021-04-11',
-      'MEASURE-最近7天登端天数': 2,
-      'MEASURE-最近7天登端天数-COMPARE-VALUE': 0.002,
-      'MEASURE-最近7天登端天数-COMPARE-MINUS': -20,
-      value: {
-        label: '花呗男16',
-        values: [
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-        ],
-      },
-    },
-    {
-      'DIMENSION-sex': '男',
-      'DIMENSION-age': 17,
-      'COLUMNDIMENSION-scene': '花呗',
-      'DATE-日期': '2021-04-11',
-      'MEASURE-最近7天登端天数': 2,
-      'MEASURE-最近7天登端天数-COMPARE-VALUE': 0.002,
-      'MEASURE-最近7天登端天数-COMPARE-MINUS': -20,
-      value: {
-        label: '花呗男17',
-        values: [
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-        ],
-      },
-    },
-    {
-      'DIMENSION-sex': '女',
-      'DIMENSION-age': 16,
-      'COLUMNDIMENSION-scene': '账单',
-      'DATE-日期': '2021-04-11',
-      'MEASURE-最近7天登端天数': 1888883,
-      'MEASURE-最近7天登端天数-COMPARE-VALUE': 0.0001,
-      'MEASURE-最近7天登端天数-COMPARE-MINUS': -50,
-      value: {
-        label: '账单女16',
-        values: [
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-        ],
-      },
-    },
-    {
-      'DIMENSION-sex': '女',
-      'DIMENSION-age': 16,
-      'COLUMNDIMENSION-scene': '花呗',
-      'DATE-日期': '2021-04-11',
-      'MEASURE-最近7天登端天数': 1888883,
-      'MEASURE-最近7天登端天数-COMPARE-VALUE': 0.0001,
-      'MEASURE-最近7天登端天数-COMPARE-MINUS': -50,
-      value: {
-        label: '花呗女16',
-        values: [
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-        ],
-      },
-    },
-    {
-      'DIMENSION-sex': '女',
-      'DIMENSION-age': 16,
-      'COLUMNDIMENSION-scene': '余额',
-      'DATE-日期': '2021-04-11',
-      'MEASURE-最近7天登端天数': 1,
-      value: {
-        label: '余额女16',
-        values: [
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-        ],
-      },
-    },
-    {
-      'DIMENSION-sex': '女',
-      'DIMENSION-age': 17,
-      'COLUMNDIMENSION-scene': '花呗',
-      'DATE-日期': '2021-04-11',
-      'MEASURE-最近7天登端天数': 1888883,
-      'MEASURE-最近7天登端天数-COMPARE-VALUE': 0.0001,
-      'MEASURE-最近7天登端天数-COMPARE-MINUS': -50,
-      value: {
-        label: '花呗女16',
-        values: [
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-        ],
-      },
-    },
-    {
-      'DIMENSION-sex': '女',
-      'DIMENSION-age': 17,
-      'COLUMNDIMENSION-scene': '余额',
-      'DATE-日期': '2021-04-11',
-      'MEASURE-最近7天登端天数': 1,
-      value: {
-        label: '余额女16',
-        values: [
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-          ['最近7天登端天数', 1, 3423423, 323],
-          ['自然月新登用户数', 1, 3423423, 323],
-        ],
-      },
-    },
-  ],
-} as S2DataConfig;
-
 const tabularOptions = {
-  width: 1000,
-  height: 600,
-  hierarchyType: 'grid',
-  style: {
-    cellCfg: {
-      lineHeight: 30,
-      width: 400,
-      height: 300,
-      minorMeasureRowIndex: 3,
-      firstDerivedMeasureRowIndex: 2,
-    },
-  },
+  ...mockTabularOptions,
   mergedCellsInfo: [
     [
       { colIndex: 0, rowIndex: 0 },
@@ -342,7 +96,7 @@ const tabularOptions = {
 const getDataCfg = (sheetType: SheetType) => {
   switch (sheetType) {
     case 'tabular':
-      return tabularDataCfg;
+      return mockTabularDataCfg;
     case 'pivot':
     default:
       return baseDataCfg;
