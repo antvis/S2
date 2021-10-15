@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { each, orderBy } from 'lodash';
+import { each, orderBy, filter, includes } from 'lodash';
 import { CellDataParams, DataType } from './interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
 import { S2DataConfig } from '@/common/interface';
 
 export class TableDataSet extends BaseDataSet {
-  // sorted dimension values
-  public sortedDimensionValues: DataType[];
+  // data that goes into canvas (aka sorted & filtered)
+  protected displayData: DataType[];
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     return dataCfg;
@@ -14,29 +14,71 @@ export class TableDataSet extends BaseDataSet {
 
   public setDataCfg(dataCfg: S2DataConfig) {
     super.setDataCfg(dataCfg);
-    this.sortedDimensionValues = this.originData;
     this.handleDimensionValuesSort();
+    this.handleDimensionValueFilter();
   }
 
-  handleDimensionValuesSort = () => {
-    const { frozenRowCount, frozenTrailingRowCount } =
+  /**
+   * 返回顶部冻结行
+   * @returns
+   */
+  protected getStartRows() {
+    const { frozenRowCount } = this.spreadsheet.options || {};
+    const { displayData } = this;
+    return displayData.slice(0, frozenRowCount);
+  }
+
+  /**
+   * 返回底部冻结行
+   * @returns
+   */
+  protected getEndRows() {
+    const { frozenTrailingRowCount } = this.spreadsheet.options || {};
+    const { displayData } = this;
+    return displayData.slice(-frozenTrailingRowCount);
+  }
+
+  /**
+   * 返回可移动的非冻结行
+   * @returns
+   */
+  protected getMovableRows() {
+    const { displayData } = this;
+    const { frozenTrailingRowCount, frozenRowCount } =
       this.spreadsheet.options || {};
-    const { sortedDimensionValues } = this;
+    return displayData.slice(
+      frozenRowCount || 0,
+      -frozenTrailingRowCount || undefined,
+    );
+  }
+
+  handleDimensionValueFilter = () => {
+    each(this.filterParams, ({ filterKey, filteredValues }) => {
+      this.displayData = [
+        ...this.getStartRows(),
+        ...filter(
+          this.getMovableRows(),
+          (row) => row[filterKey] && !includes(filteredValues, row[filterKey]),
+        ),
+        ...this.getEndRows(),
+      ];
+    });
+  };
+
+  handleDimensionValuesSort = () => {
     each(this.sortParams, (item) => {
       const { sortFieldId, sortBy, sortMethod } = item;
       // 万物排序的前提
       if (!sortFieldId) return;
       // For frozen options
-      const startRow = sortedDimensionValues.slice(0, frozenRowCount);
-      const endRow = sortedDimensionValues.slice(-frozenTrailingRowCount);
-      this.sortedDimensionValues = [
-        ...startRow,
+      this.displayData = [
+        ...this.getStartRows(),
         ...orderBy(
-          sortedDimensionValues,
+          this.getMovableRows(),
           [sortBy || sortFieldId],
           [sortMethod.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
         ),
-        ...endRow,
+        ...this.getEndRows(),
       ];
     });
   };
@@ -46,10 +88,10 @@ export class TableDataSet extends BaseDataSet {
   }
 
   public getCellData({ query }: CellDataParams): DataType {
-    return this.sortedDimensionValues[query.rowIndex][query.col];
+    return this.displayData[query.rowIndex][query.col];
   }
 
   public getMultiData(query: DataType, isTotals?: boolean): DataType[] {
-    return this.originData;
+    return this.displayData;
   }
 }

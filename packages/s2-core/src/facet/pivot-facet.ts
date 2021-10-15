@@ -213,7 +213,7 @@ export class PivotFacet extends BaseFacet {
         const preLevelSample = colsHierarchy.sampleNodesForAllLevels.find(
           (n) => n.level === currentNode.level - 1,
         );
-        currentNode.y = preLevelSample.y + preLevelSample.height;
+        currentNode.y = preLevelSample?.y + preLevelSample?.height ?? 0;
       }
       currentNode.height = this.getColNodeHeight(currentNode);
       layoutCoordinate(this.cfg, null, currentNode);
@@ -416,8 +416,11 @@ export class PivotFacet extends BaseFacet {
       forEach(grandTotalChildren, (node: Node) => {
         node.x = hierarchy.getNodes(maxLevel)[0].x;
       });
-    } else if (maxLevel > 1) {
-      // 只有当列头总层级大于1级时总计格高度才需要填充
+    } else if (
+      maxLevel > 1 ||
+      (maxLevel <= 1 && !this.cfg.dataSet.moreThanOneValue())
+    ) {
+      // 只有当列头总层级大于1级或列头为1级单指标时总计格高度才需要填充
       // 填充列总单元格高度
       grandTotalNode.height = hierarchy.sampleNodesForAllLevels
         .map((value) => value.height)

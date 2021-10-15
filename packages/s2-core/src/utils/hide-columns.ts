@@ -5,7 +5,7 @@ import { S2Event } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 
 /**
- * @name  获取需要隐藏的 filed 转成对应的 Node
+ * @name  获取需要隐藏的 field 转成对应的 Node
  */
 export const getHiddenColumnNodes = (
   spreadsheet: SpreadSheet,

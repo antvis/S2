@@ -43,7 +43,9 @@ const plugins = [
     'process.env.NODE_ENV': JSON.stringify('production'),
     preventAssignment: true,
   }),
-  commonjs(),
+  commonjs({
+    ignore: ['react-is'],
+  }),
   resolve(),
   typescript({
     outDir: outDir,

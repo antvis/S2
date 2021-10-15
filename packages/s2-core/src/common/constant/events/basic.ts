@@ -44,8 +44,11 @@ export enum S2Event {
 
   /** ================ Table Sort ================  */
   RANGE_SORT = 'sort:range-sort',
-  RANGE_SORTING = 'sort:range-sorting',
   RANGE_SORTED = 'sort:range-sorted',
+
+  /** ================ Table Filter ================  */
+  RANGE_FILTER = 'filter:range-filter',
+  RANGE_FILTERED = 'filter:range-filtered',
 
   /** ================ Table Layout ================  */
   LAYOUT_AFTER_HEADER_LAYOUT = 'layout:after-header-layout',
