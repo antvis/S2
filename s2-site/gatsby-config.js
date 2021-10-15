@@ -97,6 +97,30 @@ module.exports = {
         order: 4,
       },
       {
+        slug: 'manual/advanced/data-process',
+        title: {
+          zh: '数据流处理',
+          en: 'Data Process',
+        },
+        order: 2,
+      },
+      {
+        slug: 'manual/advanced/layout',
+        title: {
+          zh: '布局',
+          en: 'Layout',
+        },
+        order: 3,
+      },
+      {
+        slug: 'manual/advanced/custom',
+        title: {
+          zh: '自定义',
+          en: 'Custom',
+        },
+        order: 4,
+      },
+      {
         slug: 'manual/advanced/interaction',
         title: {
           zh: '交互',

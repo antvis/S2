@@ -1,11 +1,11 @@
 ---
 title: 明细表
-order: 1
+order: 2
 ---
 
 # 明细表简介
 
-明细表是 S2 的基础形态之一。明细表就是普通的表格，在列头下把每行数据直接展示出来。主要用于大数据场景下明细数据的展示。
+明细表是 `S2` 的基础形态之一。明细表就是普通的表格，在列头下把每行数据直接展示出来。主要用于大数据场景下明细数据的展示。
 
 ![tablmode](https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*rUnvRKlKL0wAAAAAAAAAAAAAARQnAQ)
 
@@ -103,13 +103,13 @@ ReactDOM.render(
 
 ```
 
-## TableSheet 类方式
+### TableSheet 类方式
 
 如果不打算依赖 React，可以在上面第三步之后直接调用：
 
 ```typescript
-const sheet = new TableSheet("#container", dataCfg, options)
-sheet.render()
+const sheet = new TableSheet("#container", dataCfg, options);
+sheet.render();
 ```
 
 ## 特性
