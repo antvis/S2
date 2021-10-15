@@ -49,7 +49,6 @@ export class EventController {
   }
 
   public bindEvents() {
-    const { options } = this.spreadsheet;
     this.clearAllEvents();
 
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
