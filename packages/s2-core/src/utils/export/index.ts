@@ -89,8 +89,11 @@ const processValueInDetail = (
         return getCsvString(mainFormatter(record[v]));
       });
     }
+    if (sheetInstance.options.showSeriesNumber) {
+      tempRows = [getCsvString(index + 1)].concat(tempRows);
+    }
 
-    res.push([getCsvString(index + 1)].concat(tempRows).join(split));
+    res.push(tempRows.join(split));
   }
   return res;
 };
