@@ -77,28 +77,23 @@ const processValueInDetail = (
   isFormat?: boolean,
 ): string[] => {
   const data = sheetInstance.dataSet.getDisplayDataSet();
-  const { rows, values } = sheetInstance.dataCfg?.fields;
+  const { columns } = sheetInstance.dataCfg?.fields;
   const res = [];
-  for (const record of data) {
-    const tempLine = [];
+  for (const [index, record] of data.entries()) {
     let tempRows = [];
-    let tempValues = [];
     if (!isFormat) {
-      tempRows = rows.map((v: string) => getCsvString(record[v]));
-      tempValues = values.map((v: string) => getCsvString(record[v]));
+      tempRows = columns.map((v: string) => getCsvString(record[v]));
     } else {
-      tempRows = rows.map((v: string) => {
-        const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
-        return getCsvString(mainFormatter(record[v]));
-      });
-      tempValues = values.map((v: string) => {
+      tempRows = columns.map((v: string) => {
         const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
         return getCsvString(mainFormatter(record[v]));
       });
     }
+    if (sheetInstance.options.showSeriesNumber) {
+      tempRows = [getCsvString(index + 1)].concat(tempRows);
+    }
 
-    tempLine.push(tempRows.concat(tempValues).join(split));
-    res.push(tempLine);
+    res.push(tempRows.join(split));
   }
   return res;
 };
