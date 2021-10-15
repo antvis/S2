@@ -1,0 +1,33 @@
+name: PR Labeled
+
+on:
+  pull_request_target:
+    types: [labeled]
+
+jobs:
+  pr-labeled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Need test case or docs
+        if: github.event.label.name == '🙏 need test cases or docs'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，感谢你的贡献, 为了让代码更健壮, 请补充相应单元测试, 如果有API改动, 请修改 [相应的文档](https://github.com/antvis/S2/tree/master/s2-site)
+
+            Hello, @${{ github.event.issue.user.login }}, Thank you for your contribution. In order to make the code more robust, please supplement the corresponding unit tests, if there are API changes, please edit the [docs](https://github.com/antvis/S2/tree/master/s2-site).
+
+      - name: Need more info
+        if: github.event.label.name == '👀 need more info'
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            你好 @${{ github.event.issue.user.login }}，感谢你的贡献, 请根据模板完善 PR 描述, 说明其改动目的和类型, 以便于我们可以更好的进行 Code Review
+
+            Hello, @${{ github.event.issue.user.login }}, Thank you for your contribution. Please improve the PR description according to the template, and explain the purpose and type of change, so that we can conduct a better Code Review.

@@ -24,7 +24,7 @@
 - [ ] Docs / demos update
 - [ ] CI / workflow
 - [ ] Release
-- [ ] Other
+- [ ] Other (<!-- what? -->)
 
 ### 📝 Description
 
@@ -35,3 +35,5 @@
 | ❌      | ✅     |
 
 ### 🔗 Related issue link
+
+<!-- close #0 -->

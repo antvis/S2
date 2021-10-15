@@ -20,6 +20,6 @@ jobs:
         uses: actions-cool/pr-welcome@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          pr-emoji: '+1'
-          reviewers: 'xingwanying,qubaomingg,yangzhanmei,YardWill,lijinke666,wjgogogo,zxc0328'
+          pr-emoji: '+1, rocket'
+          reviewers: 'xingwanying,qubaomingg,yangzhanmei,YardWill,lijinke666,wjgogogo,zxc0328,stone-lyl'
           review-creator: false
