@@ -2,7 +2,10 @@ import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
 import { getDataCellId } from 'src/utils/cell/data-cell';
 import { get, maxBy, set, size } from 'lodash';
+import { TableColHeader } from 'src/facet/header/table-col';
+import { ColHeader } from 'src/facet/header/col';
 import type {
+  Formatter,
   LayoutResult,
   S2CellType,
   SplitLine,
@@ -628,6 +631,28 @@ export class TableFacet extends BaseFacet {
         height,
       },
     });
+  }
+
+  protected getColHeader(): ColHeader {
+    if (!this.columnHeader) {
+      const { x, width, height } = this.panelBBox;
+      return new TableColHeader({
+        width,
+        height: this.cornerBBox.height,
+        viewportWidth: width,
+        viewportHeight: height,
+        position: { x, y: 0 },
+        data: this.layoutResult.colNodes,
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        offset: 0,
+        formatter: (field: string): Formatter =>
+          this.cfg.dataSet.getFieldFormatter(field),
+        sortParam: this.cfg.spreadsheet.store.get('sortParam'),
+        spreadsheet: this.spreadsheet,
+      });
+    }
+    return this.columnHeader;
   }
 
   public render() {

@@ -1,19 +1,20 @@
 import { each, isEmpty } from 'lodash';
 import { IGroup, IShape } from '@antv/g-base';
+import { Group } from '@antv/g-canvas';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import {
-  KEY_GROUP_COL_RESIZE_AREA,
-  SERIES_NUMBER_FIELD,
-  KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_SCROLL,
-  KEY_GROUP_COL_FROZEN_TRAILING,
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
-  FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
+  KEY_GROUP_COL_RESIZE_AREA,
+  HORIZONTAL_RESIZE_AREA_KEY_PRE,
+  CellTypes,
 } from '@/common/constant';
-import { ColCell, TableColCell, TableCornerCell } from '@/cell';
-import { Formatter, S2CellType } from '@/common/interface';
+import { ColCell } from '@/cell';
+import { Formatter, S2CellType, ViewMeta } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
+import { ResizeInfo } from '@/facet/header/interface';
+import { SpreadSheet } from '@/sheet-type/index';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
   // format field value
@@ -27,37 +28,17 @@ export interface ColHeaderConfig extends BaseHeaderConfig {
  * Column Header for SpreadSheet
  */
 export class ColHeader extends BaseHeader<ColHeaderConfig> {
-  protected frozenColGroup: IGroup;
-
-  protected frozenTrailingColGroup: IGroup;
-
   protected scrollGroup: IGroup;
 
   protected background: IShape;
 
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
-    const { frozenColCount, frozenTrailingColCount } =
-      this.headerConfig.spreadsheet?.options;
 
     this.scrollGroup = this.addGroup({
       name: KEY_GROUP_COL_SCROLL,
       zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
     });
-
-    if (frozenColCount) {
-      this.frozenColGroup = this.addGroup({
-        name: KEY_GROUP_COL_FROZEN,
-        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
-      });
-    }
-
-    if (frozenTrailingColCount) {
-      this.frozenTrailingColGroup = this.addGroup({
-        name: KEY_GROUP_COL_FROZEN_TRAILING,
-        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
-      });
-    }
   }
 
   /**
@@ -79,122 +60,86 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected clip(): void {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
 
-    const { frozenColCount, frozenTrailingColCount } = spreadsheet.options;
-    const colLeafNodes = spreadsheet.facet?.layoutResult.colLeafNodes;
-
-    let frozenColWidth = 0;
-    let frozenTrailingColWidth = 0;
-    if (spreadsheet.isTableMode()) {
-      for (let i = 0; i < frozenColCount; i++) {
-        frozenColWidth += colLeafNodes[i].width;
-      }
-
-      for (let i = 0; i < frozenTrailingColCount; i++) {
-        frozenTrailingColWidth +=
-          colLeafNodes[colLeafNodes.length - 1 - i].width;
-      }
-    }
-
     this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
-        x: (spreadsheet.isFreezeRowHeader() ? scrollX : 0) + frozenColWidth,
+        x: spreadsheet.isFreezeRowHeader() ? scrollX : 0,
         y: 0,
-        width:
-          width +
-          (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
-          frozenColWidth -
-          frozenTrailingColWidth,
+        width: width + (spreadsheet.isFreezeRowHeader() ? 0 : scrollX),
         height,
       },
     });
-
-    const prevResizeArea = spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_COL_RESIZE_AREA,
-    );
-    const resizeAreaSize = spreadsheet.theme.resizeArea?.size ?? 0;
-
-    if (prevResizeArea) {
-      prevResizeArea.setClip({
-        type: 'rect',
-        attrs: {
-          x: 0 + frozenColWidth,
-          y: 0,
-          width:
-            width +
-            (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
-            frozenColWidth -
-            frozenTrailingColWidth +
-            resizeAreaSize,
-          height,
-        },
-      });
-    }
   }
 
   public clear() {
-    this.frozenTrailingColGroup?.clear();
-    this.frozenColGroup?.clear();
-    this.scrollGroup.clear();
     this.background?.remove(true);
   }
 
+  protected prevRendererColIds: string[] = [];
+
+  protected getCellInstance(
+    item: Node,
+    spreadsheet: SpreadSheet,
+    headerConfig: ColHeaderConfig,
+  ) {
+    return new ColCell(item, spreadsheet, headerConfig);
+  }
+
+  protected getCellGroup(node: Node) {
+    return this.scrollGroup;
+  }
+
+  protected isColCellInRect(item: Node): boolean {
+    const { spreadsheet, cornerWidth, width, scrollX } = this.headerConfig;
+
+    return (
+      // don't care about scrollY, because there is only freeze col-header exist
+      width + scrollX > item.x &&
+      scrollX - (spreadsheet.isFreezeRowHeader() ? 0 : cornerWidth) <
+        item.x + item.width
+    );
+  }
+
   protected layout() {
-    const { data, spreadsheet, cornerWidth, width, scrollX } =
-      this.headerConfig;
-    const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
-    const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
+    const { data, spreadsheet } = this.headerConfig;
 
     const colCell = spreadsheet?.facet?.cfg?.colCell;
-    // don't care about scrollY, because there is only freeze col-header exist
-    const colCellInRect = (item: Node): boolean => {
-      if (
-        (frozenColCount > 0 && item.colIndex < frozenColCount) ||
-        (frozenTrailingColCount > 0 &&
-          item.colIndex >= colLength - frozenTrailingColCount)
-      ) {
-        return true;
-      }
-      return (
-        width + scrollX > item.x &&
-        scrollX - (spreadsheet.isFreezeRowHeader() ? 0 : cornerWidth) <
-          item.x + item.width
-      );
-    };
+
+    const rendererColIds = [];
+
     each(data, (node: Node) => {
       const item = node;
-      if (colCellInRect(item)) {
+      const isColCellInRect = this.isColCellInRect(item);
+      if (isColCellInRect) {
+        rendererColIds.push(item);
+      }
+      const hasRender = this.prevRendererColIds.includes(item.id);
+
+      if (isColCellInRect && !hasRender) {
         let cell: S2CellType;
         if (colCell) {
           cell = colCell(item, spreadsheet, this.headerConfig);
         }
 
         if (isEmpty(cell)) {
-          if (spreadsheet.isPivotMode()) {
-            cell = new ColCell(item, spreadsheet, this.headerConfig);
-          } else if (item.field === SERIES_NUMBER_FIELD) {
-            cell = new TableCornerCell(item, spreadsheet, this.headerConfig);
-          } else {
-            cell = new TableColCell(item, spreadsheet, this.headerConfig);
-          }
+          cell = this.getCellInstance(item, spreadsheet, this.headerConfig);
         }
         item.belongsCell = cell;
 
-        if (this.headerConfig.spreadsheet.isTableMode()) {
-          if (node.colIndex < frozenColCount) {
-            this.frozenColGroup.add(cell);
-            return;
-          }
-          if (
-            frozenTrailingColCount > 0 &&
-            node.colIndex >= colLength - frozenTrailingColCount
-          ) {
-            this.frozenTrailingColGroup.add(cell);
-            return;
-          }
-        }
-        this.scrollGroup.add(cell);
+        const group = this.getCellGroup(item);
+        group.add(cell);
+      } else if (!isColCellInRect && hasRender) {
+        this.scrollGroup
+          .getChildren()
+          .filter((n: ColCell) => n.getMeta().id === item.id)[0]
+          ?.remove(true);
       }
+    });
+
+    this.prevRendererColIds = rendererColIds.map((item) => item.id);
+
+    this.scrollGroup.getChildren().forEach((n: ColCell) => {
+      this.drawResizeArea(n.getMeta());
     });
   }
 
@@ -202,5 +147,104 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const { position, scrollX } = this.headerConfig;
     // 暂时不考虑移动y
     translateGroup(this.scrollGroup, position.x - scrollX, 0);
+  }
+
+  protected getColResizeAreaKey(meta: Node) {
+    return meta.key;
+  }
+
+  protected getColResizeAreaOffset(meta: Node) {
+    const { offset, position } = this.headerConfig;
+    const { x, y } = meta;
+
+    return {
+      x: position.x - offset + x,
+      y: position.y + y,
+    };
+  }
+
+  protected getColResizeArea() {
+    const { spreadsheet } = this.headerConfig;
+
+    const prevResizeArea = spreadsheet?.foregroundGroup.findById(
+      KEY_GROUP_COL_RESIZE_AREA,
+    );
+    return (prevResizeArea ||
+      spreadsheet?.foregroundGroup.addGroup({
+        id: KEY_GROUP_COL_RESIZE_AREA,
+      })) as Group;
+  }
+
+  protected getStyle(cellType: CellTypes) {
+    const { spreadsheet } = this.headerConfig;
+    return spreadsheet.theme[cellType];
+  }
+
+  // 绘制热区
+  private drawResizeArea(meta: Node) {
+    const { spreadsheet } = this.headerConfig;
+    const { position, viewportWidth } = this.headerConfig;
+    const { label, y, width: cellWidth, height: cellHeight, parent } = meta;
+    const resizeStyle = spreadsheet?.theme?.resizeArea;
+    const resizeArea = this.getColResizeArea();
+    const prevHorizontalResizeArea = resizeArea.find((element) => {
+      return (
+        element.attrs.name === `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${meta.key}`
+      );
+    });
+    // 如果已经绘制当前列高调整热区热区，则不再绘制
+    if (!prevHorizontalResizeArea) {
+      // 列高调整热区
+      resizeArea.addShape('rect', {
+        attrs: {
+          name: `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${meta.key}`,
+          x: position.x,
+          y: position.y + y + cellHeight - resizeStyle.size / 2,
+          width: viewportWidth,
+          height: resizeStyle.size,
+          fill: resizeStyle.background,
+          fillOpacity: resizeStyle.backgroundOpacity,
+          cursor: 'row-resize',
+          appendInfo: {
+            isResizeArea: true,
+            class: 'resize-trigger',
+            type: 'row',
+            id: this.getColResizeAreaKey(meta),
+            affect: 'field',
+            offsetX: position.x,
+            offsetY: position.y + y,
+            width: viewportWidth,
+            height: cellHeight,
+          } as ResizeInfo,
+        },
+      });
+    }
+    if (meta.isLeaf) {
+      const resizerOffset = this.getColResizeAreaOffset(meta);
+      // 列宽调整热区
+      // 基准线是根据container坐标来的，因此把热区画在container
+      resizeArea.addShape('rect', {
+        attrs: {
+          x: resizerOffset.x + cellWidth - resizeStyle.size / 2,
+          y: resizerOffset.y,
+          width: resizeStyle.size,
+          height: cellHeight,
+          fill: resizeStyle.background,
+          fillOpacity: resizeStyle.backgroundOpacity,
+          cursor: 'col-resize',
+          appendInfo: {
+            isResizeArea: true,
+            class: 'resize-trigger',
+            type: 'col',
+            affect: 'cell',
+            caption: parent.isTotals ? '' : label,
+            offsetX: resizerOffset.x,
+            offsetY: resizerOffset.y,
+            width: cellWidth,
+            height: cellHeight,
+          } as ResizeInfo,
+        },
+      });
+    }
   }
 }

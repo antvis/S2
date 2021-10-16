@@ -38,7 +38,7 @@ export class ColCell extends HeaderCell {
     // draw right border
     this.drawRightBorder();
     // draw resize ares
-    this.drawResizeArea();
+    // this.drawResizeArea();
     this.update();
   }
 
@@ -128,104 +128,6 @@ export class ColCell extends HeaderCell {
 
     const textY = contentBox.y + contentBox.height / 2;
     return { x: textX, y: textY };
-  }
-
-  protected getColResizeAreaKey() {
-    return this.meta.key;
-  }
-
-  protected getColResizeAreaOffset() {
-    const { offset, position } = this.headerConfig;
-    const { x, y } = this.meta;
-
-    return {
-      x: position.x - offset + x,
-      y: position.y + y,
-    };
-  }
-
-  protected getColResizeArea() {
-    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_COL_RESIZE_AREA,
-    );
-    return (prevResizeArea ||
-      this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_COL_RESIZE_AREA,
-      })) as Group;
-  }
-
-  // 绘制热区
-  private drawResizeArea() {
-    const { position, viewportWidth } = this.headerConfig;
-    const {
-      label,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      parent,
-    } = this.meta;
-    const resizeStyle = this.getStyle('resizeArea');
-    const resizeArea = this.getColResizeArea();
-    const prevHorizontalResizeArea = resizeArea.find((element) => {
-      return (
-        element.attrs.name ===
-        `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`
-      );
-    });
-    // 如果已经绘制当前列高调整热区热区，则不再绘制
-    if (!prevHorizontalResizeArea) {
-      // 列高调整热区
-      resizeArea.addShape('rect', {
-        attrs: {
-          name: `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`,
-          x: position.x,
-          y: position.y + y + cellHeight - resizeStyle.size / 2,
-          width: viewportWidth,
-          height: resizeStyle.size,
-          fill: resizeStyle.background,
-          fillOpacity: resizeStyle.backgroundOpacity,
-          cursor: 'row-resize',
-          appendInfo: {
-            isResizeArea: true,
-            class: 'resize-trigger',
-            type: 'row',
-            id: this.getColResizeAreaKey(),
-            affect: 'field',
-            offsetX: position.x,
-            offsetY: position.y + y,
-            width: viewportWidth,
-            height: cellHeight,
-          } as ResizeInfo,
-        },
-      });
-    }
-    if (this.meta.isLeaf) {
-      const resizerOffset = this.getColResizeAreaOffset();
-      // 列宽调整热区
-      // 基准线是根据container坐标来的，因此把热区画在container
-      resizeArea.addShape('rect', {
-        attrs: {
-          x: resizerOffset.x + cellWidth - resizeStyle.size / 2,
-          y: resizerOffset.y,
-          width: resizeStyle.size,
-          height: cellHeight,
-          fill: resizeStyle.background,
-          fillOpacity: resizeStyle.backgroundOpacity,
-          cursor: 'col-resize',
-          appendInfo: {
-            isResizeArea: true,
-            class: 'resize-trigger',
-            type: 'col',
-            affect: 'cell',
-            caption: parent.isTotals ? '' : label,
-            offsetX: resizerOffset.x,
-            offsetY: resizerOffset.y,
-            width: cellWidth,
-            height: cellHeight,
-          } as ResizeInfo,
-        },
-      });
-    }
   }
 
   private drawRightBorder() {
