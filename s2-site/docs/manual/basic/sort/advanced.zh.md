@@ -77,12 +77,12 @@ advancedSortCfg: {
 
 `S2` 提供了对入口 `Button` 的显示定制以及规则文案定制
 
-| 属性       | 类型            | 必选  | 默认值 | 功能描述   |
-| :---------- | :--------------- |  :---- | :------ | :---------- |
-| className | `string`          |      |    |  class类名称   |
-| icon   | `React.ReactNode`          |      |    | 排序按钮图标 |
-| text       | `ReactNode`       |      |    |  排序按钮名称  |
-| ruleText       | `string`       |      |    | 规则描述   |
+| 属性      | 类型              | 必选 | 默认值 | 功能描述     |
+| :-------- | :---------------- | :--- | :----- | :----------- |
+| className | `string`          |      |        | class类名称  |
+| icon      | `React.ReactNode` |      |        | 排序按钮图标 |
+| text      | `ReactNode`       |      |        | 排序按钮名称 |
+| ruleText  | `string`          |      |        | 规则描述     |
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*oreXQrKd7cQAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
@@ -92,11 +92,11 @@ advancedSortCfg: {
 
 支持自定义维度列表 `demissions` ，不配置默认为：`行头+列头+数值`
 
-| 属性       | 类型            | 必选  | 默认值 | 功能描述   |
-| :---------- | :--------------- |  :---- | :------ | :---------- |
-| field       | `string`           |      |  ✓  |  维度id  |
-| name | `string`          |      |  ✓  | 维度名称   |
-| list | `string[]`         |      |  ✓  | 维度列表   |
+| 属性  | 类型       | 必选 | 默认值 | 功能描述 |
+| :---- | :--------- | :--- | :----- | :------- |
+| field | `string`   |      | ✓      | 维度id   |
+| name  | `string`   |      | ✓      | 维度名称 |
+| list  | `string[]` |      | ✓      | 维度列表 |
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*IZrSSJpqq40AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
@@ -110,11 +110,11 @@ advancedSortCfg: {
 
 >注意：如果这里自定义，则需在 onSortConfirm 中通过 ruleValues 自定义 sortParams
 
-| 属性       | 类型            | 必选  | 默认值 | 功能描述   |
-| :---------- | :--------------- |  :---- | :------ | :---------- |
-| label       | `string`           |      |  ✓  | 规则名称   |
-| value | `'sortMethod' | 'sortBy' | 'sortByMeasure'` |   ✓   |    | 规则值   |
-| children | `RuleOption[]`          |      |  ✓  | 规则子列表   |
+| 属性     | 类型                                        | 必选 | 默认值 | 功能描述   |
+| :------- | :------------------------------------------ | :--- | :----- | :--------- |
+| label    | `string`                                    |      | ✓      | 规则名称   |
+| value    | `'sortMethod' | 'sortBy' | 'sortByMeasure'` | ✓    |        | 规则值     |
+| children | `RuleOption[]`                              |      | ✓      | 规则子列表 |
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*77KeT5mr_qoAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
