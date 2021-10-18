@@ -54,6 +54,8 @@ this.spreadsheet.interaction.xx()
 | hiddenColumnFields | `string[]` |  |  | 隐藏列 （明细表有效） |
 | enableCopy | `boolean` |   | `false` | 是否允许复制 |
 | customInteractions | [CustomInteraction[]](#custominteraction) |   |  | 自定义交互 |
+| scrollSpeedRatio | [ScrollRatio](/zh/docs/api/general/S2Options#scrollratio)|  | |  用于控制滚动速率，分水平和垂直两个方向，默认为 1 |
+| autoResetSheetStyle | `boolean` | | `true` |  用于控制点击表格外区域和按下 esc 键时是否重置交互状态 |
 
 ### CustomInteraction
 

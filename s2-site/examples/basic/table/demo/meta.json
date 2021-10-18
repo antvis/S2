@@ -19,6 +19,14 @@
         "en": "Sort mode"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ubBlmmsSAQ/07b110d2-5bd1-4474-9140-5cc9ad860423.png"
+    },
+    {
+      "filename": "frozen.ts",
+      "title": {
+        "zh": "行列冻结",
+        "en": "Frozen rows and cols"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*QjBMRJYPrNcAAAAAAAAAAAAAARQnAQ"
     }
   ]
 }

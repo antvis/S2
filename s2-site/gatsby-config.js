@@ -129,12 +129,20 @@ module.exports = {
         order: 5,
       },
       {
+        slug: 'manual/basic/sort',
+        title: {
+          zh: '排序',
+          en: 'Sort',
+        },
+        order: 6,
+      },
+      {
         slug: 'manual/basic/analysis',
         title: {
           zh: '分析组件',
           en: 'Analyze component',
         },
-        order: 6,
+        order: 7,
       },
       {
         slug: 'manual/contribution',
@@ -142,7 +150,7 @@ module.exports = {
           zh: '贡献指南',
           en: 'Contributing',
         },
-        order: 7,
+        order: 8,
       },
     ],
     // demo配置
@@ -180,6 +188,24 @@ module.exports = {
         },
       },
       {
+        slug: 'totals',
+        icon: 'facet',
+        title: {
+          zh: '小计总计',
+          en: 'Totals',
+        },
+      },
+      {
+        slug: 'sort',
+        icon: 'facet',
+        title: {
+          zh: '排序',
+          en: 'Sort',
+        },
+      },
+      {
+        slug: 'theme',
+        icon: 'gallery',
         slug: 'conditions',
         icon: 'guide',
         title: {
