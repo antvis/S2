@@ -159,7 +159,7 @@ export const mergeCells = (
       merge(sheet.options, { mergedCellsInfo: mergedCellsInfo }),
     );
     const value = hideData ? '' : viewMeta;
-    sheet.facet.panelGroup.add(new MergedCells(value, sheet, cells));
+    sheet.panelScrollGroup.add(new MergedCells(value, sheet, cells));
   }
 };
 
@@ -186,14 +186,13 @@ const removeMergedCells = (cells: S2CellType[], mergedCells: MergedCells) => {
 /**
  * upddate the merge
  * @param sheet the base sheet instance
- * @param curSelectedState
  */
 export const updateMergedCells = (sheet: SpreadSheet) => {
   const mergedCellsInfo = sheet.options?.mergedCellsInfo;
   if (isEmpty(mergedCellsInfo)) return;
 
   const allCells = filter(
-    sheet.panelGroup.getChildren(),
+    sheet.panelScrollGroup.getChildren(),
     (child) => !(child instanceof MergedCells),
   ) as unknown as S2CellType[];
   if (isEmpty(allCells)) return;
@@ -204,7 +203,7 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   });
 
   const oldMergedCells = filter(
-    sheet.panelGroup.getChildren(),
+    sheet.panelScrollGroup.getChildren(),
     (child) => child instanceof MergedCells,
   ) as unknown as MergedCells;
 
@@ -217,14 +216,14 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
     } else if (commonCells.length > 0 && commonCells.length < cells.length) {
       // 合并的单元格部分在当前可视区域内
       removeMergedCells(mergedCell, oldMergedCells);
-      sheet.facet.panelGroup.add(new MergedCells(viewMeta, sheet, cells));
+      sheet.panelScrollGroup.add(new MergedCells(viewMeta, sheet, cells));
     } else {
       const findOne = find(oldMergedCells, (item: MergedCells) =>
         isEqual(mergedCell, item.cells),
       ) as MergedCells;
       // 如果合并单元格完全在可视区域内，且之前没有添加道panelGroup中，需要重新添加
       if (!findOne)
-        sheet.facet.panelGroup.add(new MergedCells(viewMeta, sheet, cells));
+        sheet.panelScrollGroup.add(new MergedCells(viewMeta, sheet, cells));
     }
   });
 };
