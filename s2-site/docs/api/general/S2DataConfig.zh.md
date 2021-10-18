@@ -50,18 +50,7 @@ object **必选**,_default：null_ 功能描述： 配置表格的维度域，�
 | values | `string[]` | |  `[]`| 指标维度列表 |
 | valueInCols | `boolean` | |  `true`| 指标维度是否在列头 |
 
-## sortParams
-
-array SortParam **可选**,_default：null_ 功能描述： 配置表格的度量的排序 **sortparam** \*\*
-
-| 细分配置项名称 | 类型 | 必选  | 功能描述 |
-| :-- | :-- | :-- | :--  | --- |
-| sortFieldId | `string` | ✓  | 度量 Id，业务中一般是 displayId |
-| sortMethod | `ASC` \| `DESC` |    | 列维度列表 |
-| sortBy | `string[]`   || 自定义排序 |
-| sortByField | `string` |    | 按照其他维度排序 |
-| query | `object` |  |   筛选条件，缩小排序范围 如 ：`{city:'白山'}` |
-| type | `string` |     | 组内排序用来显示icon |
+`markdown:docs/common/sort-params.zh.md`
 
 ## 额外属性
 
