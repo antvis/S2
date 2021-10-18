@@ -56,9 +56,9 @@ jobs:
           emojis: 'eyes'
           body-include: '<!-- Created by actions-cool/maintain-one-comment -->'
 
-      # Github PR 列表 有显示 √ X 的提示, 但是比如一些 APP, 例如 codecov 的 patch 变低也会导致 出现 X, 添加label 快速识别是不是测试挂了
+      # Github PR 列表 有显示 √ X 的提示, 但是比如一些 APP, 例如 codecov 的 patch 变低, 也会导致 出现 X, 添加label 快速识别是不是测试挂了
       - name: Workflow failed add label
-        if: ${{ failure() }}
+        if: ${{ failure() && github.event.pull_request.number != '' }}
         uses: actions-cool/issues-helper@main
         with:
           actions: 'add-labels'
@@ -67,7 +67,7 @@ jobs:
           labels: '🚨 test failed'
 
       - name: Remove failed label
-        if: ${{ success() }}
+        if: ${{ success() && github.event.pull_request.number != '' }}
         uses: actions-cool/issues-helper@main
         with:
           actions: 'remove-labels'
