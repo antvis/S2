@@ -1,6 +1,6 @@
 ---
 title: Quick Start
-order: 0
+order: 1
 ---
 
 `markdown:docs/manual/getting-started.zh.md`
