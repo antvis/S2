@@ -77,7 +77,7 @@ export const SheetEntry = forwardRef(
 
     const initDataCfg = props.forceUpdateDataCfg
       ? props.dataCfg
-      : assembleOptions(props.dataCfg);
+      : assembleDataCfg(props.dataCfg);
     const [options, setOptions] = useState(() => initOptions);
     const [dataCfg, setDataCfg] = useState(() => initDataCfg);
 
