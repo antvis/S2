@@ -26,7 +26,7 @@ export interface FormatResult {
   value: DataItem;
 }
 
-export type SortMethod = 'ASC' | 'DESC';
+export type SortMethod = 'ASC' | 'DESC' | 'asc' | 'desc';
 
 export interface Meta {
   readonly field: string; // 字段 id
@@ -126,6 +126,11 @@ export interface SortFuncParam extends Sort {
 export interface SortParam extends Sort {
   /** 自定义func */
   sortFunc?: (v: SortFuncParam) => Array<string>;
+}
+
+export interface FilterParam {
+  filterKey: string;
+  filteredValues: unknown[];
 }
 
 export type SortParams = SortParam[];

@@ -11,7 +11,6 @@ import {
   LayoutResult,
   LayoutRow,
   ListSortParams,
-  Pagination as PaginationCfg,
   S2Constructor,
   safetyDataConfig,
   safetyOptions,
@@ -25,8 +24,10 @@ import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { HandleDrillDown, HandleDrillDownIcon } from '@/utils/drill-down';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { useResizeEffect } from '@/components/sheets/hooks';
-import './index.less';
+import { getTooltipOptions } from '@/utils/tooltip';
+import { S2Pagination } from '@/components/pagination';
 
+import './index.less';
 export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
     spreadsheet,
@@ -52,7 +53,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     onDataCellMouseUp,
     getSpreadsheet,
     partDrillDown,
-    showDefaultPagination = true,
+    showPagination = true,
   } = props;
   const container = useRef<HTMLDivElement>();
   const baseSpreadsheet = useRef<SpreadSheet>();
@@ -60,7 +61,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
   const [drillFields, setDrillFields] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [total, setTotal] = useState<number>();
+  const [total, setTotal] = useState<number>(0);
   const [current, setCurrent] = useState<number>(
     options?.pagination?.current || 1,
   );
@@ -104,9 +105,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       string,
       (...args: unknown[]) => unknown
     > = {
-      [S2Event.LAYOUT_PAGINATION]: (data: PaginationCfg) => {
-        setTotal(data?.total);
-      },
       [S2Event.DATA_CELL_MOUSE_UP]: (ev: GEvent) => {
         onDataCellMouseUp?.(getBaseCellData(ev));
       },
@@ -154,7 +152,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const unBindEvent = () => {
     [
       S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
-      S2Event.LAYOUT_PAGINATION,
       S2Event.LAYOUT_ROW_NODE_BORDER_REACHED,
       S2Event.LAYOUT_COL_NODE_BORDER_REACHED,
       S2Event.LAYOUT_CELL_SCROLL,
@@ -182,13 +179,19 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
         disabledFields={disabledFields}
       />
     );
-    sheetInstance.showTooltip({
-      position: {
-        x: event.clientX,
-        y: event.clientY,
-      },
-      element,
-    });
+    if (event) {
+      const { showTooltip } = getTooltipOptions(sheetInstance, event);
+      if (!showTooltip) {
+        return;
+      }
+      sheetInstance.showTooltip({
+        position: {
+          x: event.clientX,
+          y: event.clientY,
+        },
+        element,
+      });
+    }
   };
 
   const setOptions = (
@@ -217,6 +220,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (!ownSpreadsheet) return;
     if (isFunction(reset)) reset();
     ownSpreadsheet.render(reloadData);
+    setTotal(ownSpreadsheet.facet.viewCellHeights.getTotalLength());
     setLoading(false);
   };
 
@@ -228,44 +232,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (!ownSpreadsheet) return;
     setLoading(true);
     ownSpreadsheet.clearDrillDownData(rowId);
-  };
-
-  const renderPagination = (): JSX.Element => {
-    const paginationCfg = get(options, 'pagination', false);
-    // not show the pagination
-    if (isEmpty(paginationCfg)) {
-      return null;
-    }
-    // only show the pagination when the pageSize > 5
-    const showQuickJumper = total / pageSize > 5;
-    const preCls = `${S2_PREFIX_CLS}-pagination`;
-
-    return (
-      <div className={preCls}>
-        <Pagination
-          defaultCurrent={current}
-          total={total}
-          pageSize={pageSize}
-          // TODO 外部定义的pageSize和内部PageSize改变的优先级处理
-          showSizeChanger={true}
-          onShowSizeChange={(current, size) => {
-            setCurrent(1);
-            setPageSize(size);
-          }}
-          size={'small'}
-          showQuickJumper={showQuickJumper}
-          onChange={(page) => setCurrent(page)}
-        />
-        <span
-          className={`${preCls}-count`}
-          title={`${i18n('共计')}${total}${i18n('条')}`}
-        >
-          {i18n('共计')}
-          {total || ' - '}
-          {i18n('条')}
-        </span>
-      </div>
-    );
   };
 
   const buildSpreadSheet = () => {
@@ -351,7 +317,8 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (!ownSpreadsheet || isEmpty(options?.pagination)) return;
     const newOptions = merge({}, options, {
       pagination: {
-        current: current,
+        current,
+        pageSize,
       },
     });
     const newProps = merge({}, props, {
@@ -359,21 +326,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     });
     setOptions(ownSpreadsheet, newProps);
     update(null, false);
-  }, [current]);
-
-  useEffect(() => {
-    if (!ownSpreadsheet || isEmpty(options?.pagination)) return;
-    const newOptions = merge({}, options, {
-      pagination: {
-        pageSize: pageSize,
-      },
-    });
-    const newProps = merge({}, props, {
-      options: newOptions,
-    });
-    setOptions(ownSpreadsheet, newProps);
-    update(null, false);
-  }, [pageSize]);
+  }, [pageSize, current]);
 
   useEffect(() => {
     ownSpreadsheet?.setOptions({ hiddenColumnFields: [] });
@@ -385,7 +338,16 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && <Header {...header} sheet={ownSpreadsheet} />}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
-        {showDefaultPagination && renderPagination()}
+        {showPagination && (
+          <S2Pagination
+            total={total}
+            pageSize={pageSize}
+            current={current}
+            setCurrent={setCurrent}
+            setPageSize={setPageSize}
+            pagination={options?.pagination}
+          />
+        )}
       </Spin>
     </StrictMode>
   );

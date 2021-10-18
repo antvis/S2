@@ -97,6 +97,30 @@ module.exports = {
         order: 4,
       },
       {
+        slug: 'manual/advanced/data-process',
+        title: {
+          zh: '数据流处理',
+          en: 'Data Process',
+        },
+        order: 2,
+      },
+      {
+        slug: 'manual/advanced/layout',
+        title: {
+          zh: '布局',
+          en: 'Layout',
+        },
+        order: 3,
+      },
+      {
+        slug: 'manual/advanced/custom',
+        title: {
+          zh: '自定义',
+          en: 'Custom',
+        },
+        order: 4,
+      },
+      {
         slug: 'manual/advanced/interaction',
         title: {
           zh: '交互',
@@ -148,16 +172,16 @@ module.exports = {
         },
       },
       {
-        slug: 'conditions',
-        icon: 'facet',
+        slug: 'config',
+        icon: 'tool',
         title: {
-          zh: '字段标记',
-          en: 'Conditions',
+          zh: '通用配置',
+          en: 'Config',
         },
       },
       {
         slug: 'interaction',
-        icon: 'facet',
+        icon: 'all',
         title: {
           zh: '交互',
           en: 'Interaction',
@@ -182,14 +206,16 @@ module.exports = {
       {
         slug: 'theme',
         icon: 'gallery',
+        slug: 'conditions',
+        icon: 'guide',
         title: {
-          zh: '主题',
-          en: 'theme',
+          zh: '字段标记',
+          en: 'Conditions',
         },
       },
       {
         slug: 'analysis',
-        icon: 'facet',
+        icon: 'search',
         title: {
           zh: '分析组件',
           en: 'Analyze component',

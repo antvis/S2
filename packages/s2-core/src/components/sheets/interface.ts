@@ -65,7 +65,7 @@ export interface BaseSheetProps {
   isLoading?: boolean;
   partDrillDown?: PartDrillDown;
   adaptive?: boolean;
-  showDefaultPagination?: boolean;
+  showPagination?: boolean;
   themeCfg?: ThemeCfg;
   header?: HeaderCfgProps;
   rowLevel?: number;

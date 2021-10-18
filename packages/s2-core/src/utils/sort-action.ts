@@ -34,7 +34,7 @@ export const sortAction = (
         if (specialValues?.includes(a?.toString())) {
           return -sort;
         }
-        if (Number(a) && specialValues?.includes(b.toString())) {
+        if (Number(a) && specialValues?.includes(b?.toString())) {
           return sort;
         }
       }

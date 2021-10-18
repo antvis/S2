@@ -544,7 +544,7 @@ export abstract class BaseFacet {
     }
     if (newY !== undefined) {
       this.vScrollBar?.onlyUpdateThumbOffset(
-        (scrollY / this.layoutResult.rowsHierarchy.height) *
+        (scrollY / this.viewCellHeights.getTotalHeight()) *
           this.vScrollBar.trackLen,
       );
     }
@@ -1163,7 +1163,13 @@ export abstract class BaseFacet {
    */
   protected dynamicRenderCell(delay = true) {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
-    const scrollY = sy + this.getPaginationScrollY();
+    let scrollY = sy + this.getPaginationScrollY();
+    const maxScrollY =
+      this.viewCellHeights.getTotalHeight() - this.panelBBox.height;
+
+    if (scrollY > maxScrollY) {
+      scrollY = maxScrollY;
+    }
 
     if (delay) {
       this.debounceRenderCell(scrollX, scrollY);

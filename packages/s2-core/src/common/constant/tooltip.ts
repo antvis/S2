@@ -37,6 +37,7 @@ export const TOOLTIP_OPERATOR_MENUS: Record<
       icon: EyeOutlined,
     },
   ],
+
   Sort: [
     {
       id: 'asc',

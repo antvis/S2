@@ -16,6 +16,7 @@ import {
 import { ResizeInfo } from '@/facet/header/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
+import { getTooltipOptions } from '@/utils/tooltip';
 
 interface EventListener {
   target: EventTarget;
@@ -63,6 +64,7 @@ export class EventController {
         this.resetSheetStyle(event);
       },
     );
+
     this.addDomEventListener(
       window,
       OriginEventType.KEY_DOWN,
@@ -109,6 +111,11 @@ export class EventController {
   }
 
   private resetSheetStyle(event: Event) {
+    const { autoResetSheetStyle } = this.spreadsheet.options;
+    if (!autoResetSheetStyle) {
+      return;
+    }
+
     // 全局有 mouseUp 和 click 事件, 当刷选完成后会同时触发, 当选中单元格后, 会同时触发 click 对应的 reset 事件
     // 所以如果是 刷选过程中 引起的 click(mousedown + mouseup) 事件, 则不需要重置
     const { interaction } = this.spreadsheet;
@@ -156,7 +163,7 @@ export class EventController {
   }
 
   private isMouseOnTheTooltip(event: Event) {
-    if (!this.spreadsheet.options.tooltip?.showTooltip) {
+    if (!getTooltipOptions(this.spreadsheet, event).showTooltip) {
       return false;
     }
 

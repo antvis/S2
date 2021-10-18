@@ -85,6 +85,8 @@ export interface S2PartialOptions {
   readonly enableCopy?: boolean;
   // the ratio to control scroll speed, default set to 1
   readonly scrollSpeedRatio?: ScrollRatio;
+  // auto reset sheet style when click outside or press ecs key, default true
+  readonly autoResetSheetStyle?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -186,10 +188,10 @@ export const defaultOptions: S2Options = {
   showSeriesNumber: false,
   scrollReachNodeField: {},
   hiddenColumnFields: [],
-  customSVGIcons: null,
+  customSVGIcons: [],
   customHeaderCells: null,
   showDefaultHeaderActionIcon: true,
-  headerActionIcons: null,
+  headerActionIcons: [],
   style: defaultStyle,
   selectedCellsSpotlight: true,
   hoverHighlight: true,
@@ -202,6 +204,7 @@ export const defaultOptions: S2Options = {
     horizontal: 1,
     vertical: 1,
   },
+  autoResetSheetStyle: true,
 } as S2Options;
 
 export const safetyOptions = (options: S2Options) =>

@@ -5,20 +5,20 @@
   },
   "demos": [
     {
-      "filename": "sort.ts",
-      "title": {
-        "zh": "排序模式",
-        "en": "Sort mode"
-      },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*drQtQbdS-6wAAAAAAAAAAAAAARQnAQ"
-    },
-    {
       "filename": "table.ts",
       "title": {
         "zh": "明细表模式",
         "en": "Table mode"
       },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*rUnvRKlKL0wAAAAAAAAAAAAAARQnAQ"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/GEeTOd%24ZWp/f59a00c1-ee15-4e61-9015-fd29e163a0cf.png"
+    },
+    {
+      "filename": "sort.ts",
+      "title": {
+        "zh": "排序模式",
+        "en": "Sort mode"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ubBlmmsSAQ/07b110d2-5bd1-4474-9140-5cc9ad860423.png"
     }
   ]
 }

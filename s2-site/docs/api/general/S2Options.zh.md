@@ -18,7 +18,8 @@ order: 1
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
 | scrollReachNodeField | [NodeField](#nodefield) |  |  | 滚动监听的节点度量 |
 | customHeaderCells | [CustomHeaderCells](#customheadercells) |   | `false` | 自定义行列头单元格 |
-| headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标 |
+| showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |
+| headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
 | customSVGIcons | [CustomSVGIcon[]](#CustomSVGIcon) |  |   `false` | 自定义 svg 图标 |
 | style | [Style](#style) |  |    | 附加样式 |
 | frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 |
@@ -315,27 +316,7 @@ OtterLayout = (spreadsheet: SpreadSheet, rowNode: Node, colNode: Node) => void;
 | cellLabels | `string[]` | ✓ |  |   自定义单元格标签 |
 | mode | `pick` \| `omit`  | ✓ |  |   pick: 提取，omit: 去除 |
 
-## HeaderActionIcon
-
-功能描述：自定义行列头操作图标：
-
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-: | ---  | --- |
-| iconNames | `string[]` | ✓ |  |   已注册的 icon 类型或自定义的 icon 类型名 |
-| belongsCell | [Omit<CellTypes, 'dataCell'>]()  | ✓ |  |   所属的 cell 类型 |
-| defaultHide | `boolean`  |  |  |   是否默认隐藏， true 为 hover 后显示，false 为一直显示 |
-| displayCondition | `(mete: Node) => boolean`  |  |  |   需要展示的层级（行头/列头） 如果没有改配置则默认全部打开 |
-| action | `(headerActionIconProps: HeaderActionIconProps) => void`  |    |  | 点击后的执行函数 |
-
-## HeaderActionIconProps
-
-```ts
-interface HeaderActionIconProps {
-  iconName: string;
-  meta: Node;
-  event: Event;
-}
-```
+`markdown:docs/common/header-action-icon.zh.md`
 
 ## DataSet
 

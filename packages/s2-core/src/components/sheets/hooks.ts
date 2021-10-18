@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { debounce } from 'lodash';
+import { debounce, isEmpty, merge } from 'lodash';
 import { SpreadSheet } from '@/sheet-type';
-import { S2Options } from '@/common/interface';
+import { S2Options, safetyOptions } from '@/common/interface';
 
 export const useResizeEffect = (
   container: HTMLDivElement,
@@ -36,4 +36,21 @@ export const useResizeEffect = (
   }, [adaptive, debounceResize]);
 };
 
-export const a = () => {};
+export const usePaginationEffect = (
+  s2: SpreadSheet,
+  options: S2Options,
+  current: number,
+  pageSize: number,
+) => {
+  useEffect(() => {
+    if (!s2 || isEmpty(options?.pagination)) return;
+    const newOptions = merge({}, options, {
+      pagination: {
+        current,
+        pageSize,
+      },
+    });
+    s2.setOptions(safetyOptions(newOptions));
+    s2.render(false);
+  }, [options, current, pageSize, s2]);
+};

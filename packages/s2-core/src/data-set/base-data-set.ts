@@ -11,12 +11,14 @@ import {
 } from 'lodash';
 import {
   Fields,
+  FilterParam,
   Formatter,
   Meta,
   S2DataConfig,
   SortParams,
 } from '../common/interface';
 import { ValueRange } from './../common/interface/condition';
+import { ViewMeta } from '@/common/interface';
 import { CellDataParams, DataType } from '@/data-set/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
@@ -43,12 +45,16 @@ export abstract class BaseDataSet {
   // 高级排序, 组内排序
   public sortParams: SortParams;
 
+  public filterParams: FilterParam[];
+
   // 交叉表入口对象实例
   protected spreadsheet: SpreadSheet;
 
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
   }
+
+  protected displayData: DataType[];
 
   /**
    * 查找字段信息
@@ -69,20 +75,26 @@ export abstract class BaseDataSet {
    * 获得字段名称
    * @param field
    */
-  public getFieldFormatter(field: string): Formatter {
+  public getFieldFormatter(field: string, viewMeta?: ViewMeta): Formatter {
     return get(this.getFieldMeta(field, this.meta), 'formatter', identity);
   }
 
   public setDataCfg(dataCfg: S2DataConfig) {
     this.getFieldMeta.cache.clear();
-    const { fields, meta, data, totalData, sortParams } =
+    const { fields, meta, data, totalData, sortParams, filterParams } =
       this.processDataCfg(dataCfg);
     this.fields = fields;
     this.meta = meta;
     this.originData = data;
     this.totalData = totalData;
     this.sortParams = sortParams;
+    this.filterParams = filterParams;
+    this.displayData = this.originData;
     this.indexesData = [];
+  }
+
+  public getDisplayDataSet() {
+    return this.displayData;
   }
 
   public getValueRangeByField(field: string): ValueRange {

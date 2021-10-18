@@ -1,6 +1,6 @@
 ---
 title: Table Mode
-order: 1
+order: 2
 ---
 
 `markdown:docs/manual/basic/sheet-type/table-mode.zh.md`

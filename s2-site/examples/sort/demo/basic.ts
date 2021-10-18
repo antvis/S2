@@ -17,6 +17,7 @@ fetch('./data/basic.json')
     const s2options = {
       width: 800,
       height: 600,
+      showDefaultHeaderActionIcon: true, // 默认打开
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2options);
 

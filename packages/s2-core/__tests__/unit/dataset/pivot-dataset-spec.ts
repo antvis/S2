@@ -4,7 +4,8 @@
 import { get } from 'lodash';
 import { assembleDataCfg } from '../../util/sheet-entry';
 import { data as drillDownData } from '../../data/mock-drill-down-dataset.json';
-import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
+import { ViewMeta } from '@/common/interface';
+import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
 import { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
@@ -360,6 +361,47 @@ describe('Pivot Dataset Test', () => {
       const metaMap = dataSet.rowPivotMeta.get('浙江省').children.get('杭州市');
       expect(metaMap.childField).toBeUndefined();
       expect(metaMap.children).toBeEmpty();
+    });
+  });
+
+  describe('row formatter test', () => {
+    let dataConfig: S2DataConfig;
+    beforeEach(() => {
+      dataConfig = assembleDataCfg({
+        meta: [
+          {
+            field: 'price',
+            formatter: jest.fn(),
+          },
+          {
+            field: 'cost',
+            formatter: jest.fn(),
+          },
+        ],
+        fields: {
+          values: ['price', 'cost'],
+          valueInCols: false,
+        },
+      });
+      dataSet.setDataCfg(dataConfig);
+    });
+    test('should return correct total measure formatter when values in rows', () => {
+      const priceFormatter = dataSet.getFieldFormatter(TOTAL_VALUE, {
+        rowQuery: { [EXTRA_FIELD]: 'price' },
+      } as unknown as ViewMeta);
+      expect(priceFormatter).toEqual(dataConfig.meta[0].formatter);
+
+      const costFormatter = dataSet.getFieldFormatter(TOTAL_VALUE, {
+        rowQuery: { [EXTRA_FIELD]: 'cost' },
+      } as unknown as ViewMeta);
+      expect(costFormatter).toEqual(dataConfig.meta[1].formatter);
+    });
+
+    test('should return default total measure formatter when values in rows', () => {
+      const defaultFormatter = dataSet.getFieldFormatter(TOTAL_VALUE, {
+        rowQuery: {},
+      } as unknown as ViewMeta);
+      expect(defaultFormatter).toEqual(dataConfig.meta[0].formatter);
     });
   });
 });

@@ -8,8 +8,8 @@ jobs:
   issue-labeled:
     runs-on: ubuntu-latest
     steps:
-      - name: Need Reproduce
-        if: github.event.label.name == '🤔 Need Reproduce'
+      - name: Need reproduce
+        if: github.event.label.name == '🤔 need reproduce'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment'
