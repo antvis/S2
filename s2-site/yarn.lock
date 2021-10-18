@@ -87,10 +87,10 @@
     "@antv/util" "~2.0.0"
     gl-matrix "^3.0.0"
 
-"@antv/gatsby-theme-antv@^1.1.8":
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.10.tgz#654d838c2e544ec76d9a9465fcf6fcb173f8d3d3"
-  integrity sha512-OJE+017gCsqSTQKIWoQqWcOGk4iHmwoKze3k9UqRVfy00fOYulEWADHIqGRPy347VhFF7C8XemWLA2jS2CtXpw==
+"@antv/gatsby-theme-antv@^1.1.12":
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.12.tgz#91b7377505c85d0888f63d7eb4a055cd2b7398f3"
+  integrity sha512-6QnicsYBpMEsN2leRIiSbkb66subcARPJzIuElBha3q07RErQomzqj2hWk9E3aMQpyGuZYWc/eh5k6RGqGxa6g==
   dependencies:
     "@ant-design/icons" "^4.1.0"
     "@hot-loader/react-dom" "^16.9.0+4.12.11"
