@@ -5,6 +5,13 @@ export { Node } from './facet/layout/node';
 export { Hierarchy } from './facet/layout/hierarchy';
 export { BaseEvent, BaseEventImplement } from './interaction/base-interaction';
 export { GuiIcon } from './common/icons/gui-icon';
+export { TooltipDetail } from '@/ui/tooltip/components/detail';
+export { TooltipHead } from '@/ui/tooltip/components/head-info';
+export { Infos } from '@/ui/tooltip/components/infos';
+export { Interpretation } from '@/ui/tooltip/components/interpretation';
+export { TooltipOperator } from '@/ui/tooltip/components/operator';
+export { SimpleTips } from '@/ui/tooltip/components/simple-tips';
+export { TooltipSummary } from '@/ui/tooltip/components/summary';
 
 export * from './components/index';
 export * from './utils';
