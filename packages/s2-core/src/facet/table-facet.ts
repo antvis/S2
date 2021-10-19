@@ -104,6 +104,7 @@ export class TableFacet extends BaseFacet {
   public destroy() {
     super.destroy();
     this.spreadsheet.off(S2Event.RANGE_SORT);
+    this.spreadsheet.off(S2Event.RANGE_FILTER);
   }
 
   private saveInitColumnNodes(columnNodes: Node[] = []) {
