@@ -63,3 +63,5 @@ export const MIN_CELL_HEIGHT = 16;
 export const PRECISION = 16;
 
 export const ROOT_BEGINNING_REGEX = /^root\[&\]*/;
+
+export const IMAGE = 'image';

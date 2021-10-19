@@ -49,6 +49,7 @@ order: 1
 | customInteractions | [CustomInteraction[]](#custominteraction) |    |  | 自定义交互 |
 | dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
 | scrollSpeedRatio | [ScrollRatio](#scrollratio)|  |  |  用于控制滚动速率，分水平和垂直两个方向，默认为 1 |
+| autoResetSheetStyle | `boolean` |  | `true` |  用于控制点击表格外区域和按下 esc 键时是否重置交互状态 |
 | [key: string] | `unknown` |  |  |   其他任意的选择配置，用于自定义表格 |
 
 `markdown:docs/common/conditions.zh.md`

@@ -1,10 +1,9 @@
 import { Event as GEvent } from '@antv/g-canvas';
-import { Pagination, Spin } from 'antd';
-import { forIn, get, isEmpty, isFunction, merge } from 'lodash';
+import { Spin } from 'antd';
+import { forIn, isEmpty, isFunction, merge } from 'lodash';
 import React, { memo, StrictMode, useEffect, useRef, useState } from 'react';
 import { S2Event } from '@/common/constant';
 import { S2_PREFIX_CLS } from '@/common/constant/classnames';
-import { i18n } from '@/common/i18n';
 import {
   CellScrollPosition,
   LayoutCol,
