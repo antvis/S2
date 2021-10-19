@@ -14,8 +14,8 @@ export class TableDataSet extends BaseDataSet {
 
   public setDataCfg(dataCfg: S2DataConfig) {
     super.setDataCfg(dataCfg);
-    this.handleDimensionValuesSort();
     this.handleDimensionValueFilter();
+    this.handleDimensionValuesSort();
   }
 
   /**
