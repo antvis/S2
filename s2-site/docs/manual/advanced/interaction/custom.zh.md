@@ -98,8 +98,8 @@ const s2 = new TableSheet(container, s2DataConfig, s2options);
 s2.render();
 ```
 
-<playground path='interaction/demo/custom.ts' rid='container' height='400'></playground>
+<playground path='interaction/advanced/demo/custom.ts' rid='container' height='400'></playground>
 
 ## 4 效果
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/niXiAVu74/5f9adba7-923c-431f-aa37-95f2d892da8c.png)
+![preview](https://gw.alipayobjects.com/zos/antfincdn/loLnamrCW/Kapture%2525202021-10-19%252520at%25252014.52.56.gif)
