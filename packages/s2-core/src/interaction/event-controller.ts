@@ -7,6 +7,7 @@ import {
 import { each, get, isEmpty } from 'lodash';
 import {
   CellTypes,
+  IMAGE,
   InteractionKeyboardKey,
   InterceptType,
   OriginEventType,
@@ -88,6 +89,10 @@ export class EventController {
         this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_UP, event);
       },
     );
+  }
+
+  private getTargetType() {
+    return get(this, 'target.cfg.type');
   }
 
   private onKeyboardCopy(event: KeyboardEvent) {
@@ -324,19 +329,19 @@ export class EventController {
             break;
           case CellTypes.ROW_CELL:
             // 屏蔽 actionIcons的点击，只有HeaderCells 需要， DataCell 有状态类 icon， 不需要屏蔽
-            if (this.target.cfg?.type === 'image') {
+            if (this.getTargetType() === IMAGE) {
               break;
             }
             this.spreadsheet.emit(S2Event.ROW_CELL_CLICK, event);
             break;
           case CellTypes.COL_CELL:
-            if (this.target.cfg?.type === 'image') {
+            if (this.getTargetType() === IMAGE) {
               break;
             }
             this.spreadsheet.emit(S2Event.COL_CELL_CLICK, event);
             break;
           case CellTypes.CORNER_CELL:
-            if (this.target.cfg?.type === 'image') {
+            if (this.getTargetType() === IMAGE) {
               break;
             }
             this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, event);
