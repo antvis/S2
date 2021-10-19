@@ -1,6 +1,6 @@
 ---
 title: 维度下钻
-order: 1
+order: 2
 ---
 
 ## PartDrillDown
@@ -11,7 +11,7 @@ order: 1
 
 | 参数       | 类型            | 必选  | 默认值 | 功能描述   |
 | ---------- | --------------- | ----  | ------ | ---------- |
-| drillConfig | [DrillDownProps]('#drilldownprops') | ✓ |  | 下钻菜单组件配置项 |
+| drillConfig | [DrillDownProps](#drilldownprops) | ✓ |  | 下钻菜单组件配置项 |
 | drillItemsNum | `number` | | -1 | 下钻完成后展示的个数，默认全部展示  |
 | fetchData | [FetchCallBack](#fetchcallback) | ✓ | | 点击下钻后的回调 |
 | clearDrillDown | `{rowId: string;}` | | | 清除下钻信息，当有指定的rowId 传递时清除对应rowId的下钻信息；如果参数是 空对象 {}，则清空所有的下钻信息 |

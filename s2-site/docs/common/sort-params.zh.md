@@ -3,9 +3,8 @@ title: SortParams
 order: 7
 ---
 
-## SortParams
 
-array SortParam **可选**,_default：null_ 功能描述： 配置表格的度量的排序 **sortParams**
+### SortParams
 
 | 细分配置项名称 | 类型                                  | 必选 | 功能描述                                    |
 | :------------- | :------------------------------------ | :--- | :------------------------------------------ |
@@ -17,7 +16,7 @@ array SortParam **可选**,_default：null_ 功能描述： 配置表格的度�
 | type           | `string`                              |      | 组内排序用来显示icon                        |
 | sortFunc       | `(v: SortFuncParam) => Array<string>` |      | 自定义排序的function                        |
 
-### SortFuncParam
+#### SortFuncParam
 
 | 细分配置项名称 | 类型                                  | 必选 | 功能描述                                    |
 | :------------- | :------------------------------------ | :--- | :------------------------------------------ |

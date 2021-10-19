@@ -60,7 +60,7 @@ order: 1
 
 ## Pagination
 
-boolean ｜ object **必选**,_default：null_ 功能描述： 分页配置
+boolean ｜ object **必选**,_default: null_ 功能描述： 分页配置
 
 | 参数      | 类型   | 必选  | 默认值 | 功能描述            |
 | --------- | ------ | :--:  | ------ | ------------------- |

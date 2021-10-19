@@ -6,7 +6,6 @@ import { AdvancedSort, AdvancedSortCfgProps } from '../advanced-sort';
 import { SpreadSheet } from '@/sheet-type';
 
 export interface HeaderCfgProps {
-  style?: React.CSSProperties;
   className?: string;
   title?: React.ReactNode;
   description?: string;
