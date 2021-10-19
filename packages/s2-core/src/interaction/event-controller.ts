@@ -311,6 +311,7 @@ export class EventController {
 
     this.spreadsheet.on(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
       this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
+      this.spreadsheet.interaction.clearState();
     });
     const cell = this.spreadsheet.getCell(event.target);
     if (cell) {
@@ -322,12 +323,22 @@ export class EventController {
             this.spreadsheet.emit(S2Event.DATA_CELL_CLICK, event);
             break;
           case CellTypes.ROW_CELL:
+            // 屏蔽 actionIcons的点击，只有HeaderCells 需要， DataCell 有状态类 icon， 不需要屏蔽
+            if (this.target.cfg?.type === 'image') {
+              break;
+            }
             this.spreadsheet.emit(S2Event.ROW_CELL_CLICK, event);
             break;
           case CellTypes.COL_CELL:
+            if (this.target.cfg?.type === 'image') {
+              break;
+            }
             this.spreadsheet.emit(S2Event.COL_CELL_CLICK, event);
             break;
           case CellTypes.CORNER_CELL:
+            if (this.target.cfg?.type === 'image') {
+              break;
+            }
             this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, event);
             break;
           case CellTypes.MERGED_CELLS:
