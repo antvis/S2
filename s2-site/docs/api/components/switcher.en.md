@@ -1,6 +1,6 @@
 ---
 title: Switcher
-order: 2
+order: 3
 ---
 
 `markdown:docs/api/components/switcher.zh.md`

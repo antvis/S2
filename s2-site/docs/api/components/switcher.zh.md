@@ -1,6 +1,6 @@
 ---
 title: 维度切换组件
-order: 2
+order: 3
 ---
 
 ## Switcher 组件 Props

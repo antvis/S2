@@ -16,7 +16,6 @@ export interface DataSet {
 
 export interface ExportCfgProps {
   open: boolean;
-  style?: React.CSSProperties;
   className?: string;
   icon?: React.ReactNode;
   copyOriginalText?: string;

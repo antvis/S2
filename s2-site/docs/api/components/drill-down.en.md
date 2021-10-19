@@ -1,6 +1,6 @@
 ---
 title: DrillDown
-order: 1
+order: 2
 ---
 
 `markdown:docs/api/components/drill-down.zh.md`
