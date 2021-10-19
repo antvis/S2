@@ -11,8 +11,14 @@ import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';
 import { Node } from '@/facet/layout/node';
+import { RootInteraction } from '@/interaction/root';
 
 jest.mock('@/sheet-type');
+
+jest.mock('@/interaction/root');
+
+const MockRootInteraction =
+  RootInteraction as unknown as jest.Mock<RootInteraction>;
 
 const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
 
@@ -27,6 +33,7 @@ describe('Pivot Dataset Test', () => {
     MockPivotSheet.mockClear();
     const mockSheet = new MockPivotSheet();
     mockSheet.store = new Store();
+    mockSheet.interaction = new MockRootInteraction(mockSheet);
     dataSet = new PivotDataSet(mockSheet);
     dataSet.setDataCfg(dataCfg);
   });

@@ -59,7 +59,6 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
   private handleRowColClick = (event: CanvasEvent, isTreeRowClick = false) => {
     event.stopPropagation();
-
     const { interaction } = this.spreadsheet;
     const lastState = interaction.getState();
     const cell = this.spreadsheet.getCell(event.target);

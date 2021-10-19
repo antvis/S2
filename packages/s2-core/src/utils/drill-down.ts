@@ -175,6 +175,8 @@ export const HandleDrillDown = (params: DrillDownParams) => {
       spreadsheet.store.set('drillDownDataCache', newDrillDownDataCache);
     }
 
+    // 重置当前交互
+    spreadsheet.interaction.reset();
     spreadsheet.render(false);
   });
 };
