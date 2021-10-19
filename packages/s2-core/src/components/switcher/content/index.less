@@ -1,5 +1,7 @@
 @prefix: antv-s2-switcher-content;
+
 @large-span: 16px;
+@normal-span: 8px;
 
 @large-font-size: 14px;
 @normal-font-size: 12px;
@@ -37,12 +39,23 @@
     grid-template-columns: 1fr;
   }
 
-  &-reset-button {
-    color: #3572f9;
-    font-size: @large-font-size;
-    padding: 0;
-    display: inline-flex;
-    align-items: baseline;
+  &-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &-reset-button {
+      font-size: @large-font-size;
+      padding: 0;
+      display: inline-flex;
+      align-items: baseline;
+    }
+
+    &-actions {
+      button + button {
+        margin-left: @normal-span;
+      }
+    }
   }
 
   .ant-checkbox-inner {
