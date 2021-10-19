@@ -131,19 +131,13 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
-    const handlers = [];
-
-    const operator: TooltipOperatorOptions = {
-      menus: [],
-      onClick: (params) => handlers.map((handler) => handler(params)),
-    };
-
-    if (operation.hiddenColumns && this.spreadsheet.isTableMode()) {
-      operator.menus.push(...TOOLTIP_OPERATOR_MENUS.HiddenColumns);
-      handlers.push(({ key }) => {
-        if (key === 'hiddenColumns') this.hideSelectedColumns();
-      });
-    }
+    const operator: TooltipOperatorOptions = this.spreadsheet.isTableMode() &&
+      operation.hiddenColumns && {
+        onClick: () => {
+          this.hideSelectedColumns();
+        },
+        menus: TOOLTIP_OPERATOR_MENUS.HiddenColumns,
+      };
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       showSingleTips: true,
