@@ -204,6 +204,14 @@ module.exports = {
         },
       },
       {
+        slug: 'tooltip',
+        icon: 'facet',
+        title: {
+          zh: 'Tooltip',
+          en: 'Tooltip',
+        },
+      },
+      {
         slug: 'theme',
         icon: 'gallery',
         slug: 'conditions',
