@@ -13,6 +13,7 @@ import { Store } from '@/common/store';
 import { getTheme } from '@/theme';
 import { defaultStyle, defaultOptions } from '@/common/interface/s2Options';
 import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
+import { ViewMeta } from '@/common/interface/basic';
 
 const actualPivotDataSet = jest.requireActual(
   'src/data-set/pivot-data-set',
@@ -63,7 +64,8 @@ jest.mock('src/data-set/pivot-data-set', () => {
         sortedDimensionValues: sortedDimensionValues,
         moreThanOneValue: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
-        getFieldMeta: (field, meta) => find(meta, (m) => m.field === field),
+        getFieldMeta: (field: string, meta: ViewMeta) =>
+          find(meta, (m) => m.field === field),
         getFieldName: actualPivotDataSet.prototype.getFieldName,
         getCellData: actualPivotDataSet.prototype.getCellData,
         getDimensionValues: actualPivotDataSet.prototype.getDimensionValues,
@@ -89,8 +91,9 @@ describe('Pivot Mode Facet Test', () => {
   });
 
   describe('should get correct hierarchy', () => {
-    const { cellCfg, colCfg, rows } = facet.cfg;
+    const { cellCfg, colCfg, rows, spreadsheet } = facet.cfg;
     const { rowsHierarchy, colsHierarchy, colLeafNodes } = facet.layoutResult;
+    const rowCellStyle = spreadsheet.theme.rowCell.cell;
     const width = Math.max(
       defaultStyle.cellCfg.width,
       defaultOptions.width / (size(rows) + size(colLeafNodes)),
@@ -104,7 +107,9 @@ describe('Pivot Mode Facet Test', () => {
       rowsHierarchy.getLeaves().forEach((node, index) => {
         expect(node.width).toBe(width);
         expect(node.height).toBe(
-          cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom,
+          cellCfg.height +
+            rowCellStyle.padding?.top +
+            rowCellStyle.padding?.bottom,
         );
         expect(node.x).toBe(width * node.level);
         expect(node.y).toBe(node.height * index);
@@ -174,7 +179,8 @@ describe('Pivot Mode Facet Test', () => {
     const { rowsHierarchy } = treeFacet.layoutResult;
 
     test('row hierarchy when tree mode', () => {
-      const { cellCfg } = facet.cfg;
+      const { cellCfg, spreadsheet } = facet.cfg;
+      const rowCellStyle = spreadsheet.theme.rowCell.cell;
       const width = facet.cfg.treeRowsWidth;
 
       expect(rowsHierarchy.getLeaves()).toHaveLength(8);
@@ -184,7 +190,9 @@ describe('Pivot Mode Facet Test', () => {
       rowsHierarchy.getNodes().forEach((node, index) => {
         expect(node.width).toBe(width);
         expect(node.height).toBe(
-          cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom,
+          cellCfg.height +
+            rowCellStyle.padding?.top +
+            rowCellStyle.padding?.bottom,
         );
         expect(node.x).toBe(0);
         expect(node.y).toBe(node.height * index);

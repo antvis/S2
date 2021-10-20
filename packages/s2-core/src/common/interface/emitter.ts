@@ -10,7 +10,7 @@ import {
   Style,
   ViewMeta,
 } from '.';
-import { ResizeInfo } from '@/facet/header/interface';
+import { ResizeInfo } from '@/common/interface';
 import { S2Event, SortMethodType } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell/data-cell';

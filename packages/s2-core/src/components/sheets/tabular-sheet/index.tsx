@@ -41,13 +41,13 @@ export const TabularSheet = (props: BaseSheetProps) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   // 网格内行高
-  const CELL_LINEHEIGHT = 30;
+  const CELL_LINE_HEIGHT = 30;
 
   const getCellHeight = (): number => {
     const { data } = dataCfg;
     const height = options?.style?.cellCfg?.height;
     if (height) return height;
-    const lineHeight = options?.style?.cellCfg?.lineHeight || CELL_LINEHEIGHT;
+    const lineHeight = options?.style?.cellCfg?.lineHeight || CELL_LINE_HEIGHT;
     if (isEmpty(data)) return lineHeight;
     const lengths = [];
     // TODO 还没想清楚需不需要找最大的，需不需要限定都一样的个数，先让子弹飞一飞

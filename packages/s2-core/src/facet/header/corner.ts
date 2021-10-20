@@ -2,7 +2,7 @@ import { Group, Point, SimpleBBox } from '@antv/g-canvas';
 import { get, includes, isEmpty, last, max, min } from 'lodash';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
-import { CornerData, ResizeInfo } from './interface';
+import { CornerData } from './interface';
 import { CornerCell } from '@/cell/corner-cell';
 import {
   KEY_GROUP_CORNER_RESIZE_AREA,
@@ -14,6 +14,7 @@ import {
   S2CellType,
   S2Options,
   SpreadSheetFacetCfg,
+  ResizeInfo,
 } from '@/common/interface';
 import { BaseDataSet } from '@/data-set';
 import { Hierarchy } from '@/facet/layout/hierarchy';

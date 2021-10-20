@@ -7,9 +7,8 @@ import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme } from '@/common/interface';
+import { FormatResult, TextTheme, ResizeInfo } from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
-import { ResizeInfo } from '@/facet/header/interface';
 import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
 import {
   renderLine,

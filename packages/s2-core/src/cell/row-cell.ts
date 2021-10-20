@@ -6,8 +6,7 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme } from '@/common/interface';
-import { ResizeInfo } from '@/facet/header/interface';
+import { FormatResult, TextTheme, ResizeInfo } from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';

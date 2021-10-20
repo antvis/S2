@@ -10,9 +10,9 @@ import {
   TextAlign,
   TextBaseline,
   TextTheme,
+  ResizeInfo,
 } from '@/common/interface';
 import { ColHeaderConfig } from '@/facet/header/col';
-import { ResizeInfo } from '@/facet/header/interface';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect } from '@/utils/g-renders';
 import { AreaRange } from '@/common/interface/scroll';

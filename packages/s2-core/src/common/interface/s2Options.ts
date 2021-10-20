@@ -145,12 +145,6 @@ export const defaultStyle: Style = {
   cellCfg: {
     width: 96,
     height: 30,
-    padding: {
-      top: 8,
-      right: 12,
-      bottom: 8,
-      left: 12,
-    },
   },
   rowCfg: {
     width: 96,
