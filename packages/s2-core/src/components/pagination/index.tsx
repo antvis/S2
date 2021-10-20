@@ -34,12 +34,12 @@ export const S2Pagination: React.FC<S2PaginationProps> = ({
   return (
     <div className={PRE_CLASS}>
       <AntDPagination
-        defaultCurrent={current}
+        defaultCurrent={1}
+        current={current}
         total={total}
         pageSize={pageSize}
         showSizeChanger
         onShowSizeChange={(current, size) => {
-          setCurrent(1);
           setPageSize(size);
         }}
         size={'small'}
