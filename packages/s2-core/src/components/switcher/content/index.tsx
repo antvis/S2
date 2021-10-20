@@ -30,6 +30,7 @@ export interface SwitcherContentRef {
 }
 
 export interface SwitcherContentProps extends SwitcherFields {
+  contentTitleText?: string;
   resetText?: string;
   innerContentClassName?: string;
   onToggleVisible: () => void;
@@ -38,6 +39,7 @@ export interface SwitcherContentProps extends SwitcherFields {
 
 export const SwitcherContent: FC<SwitcherContentProps> = ({
   innerContentClassName,
+  contentTitleText,
   resetText,
   onToggleVisible,
   onSubmit,
@@ -111,7 +113,7 @@ export const SwitcherContent: FC<SwitcherContentProps> = ({
         )}
       >
         <header className={getSwitcherClassName(CLASS_NAME_PREFIX, 'header')}>
-          {i18n('行列切换')}
+          {contentTitleText}
         </header>
         <main
           className={cx(
@@ -124,6 +126,7 @@ export const SwitcherContent: FC<SwitcherContentProps> = ({
               isNil(defaultFields[type]) || (
                 <Dimension
                   {...defaultFields[type]}
+                  key={type}
                   fieldType={type}
                   items={state[type]}
                   crossRows={shouldCrossRows(nonEmptyCount, type)}
@@ -173,5 +176,6 @@ export const SwitcherContent: FC<SwitcherContentProps> = ({
 SwitcherContent.displayName = 'SwitcherContent';
 
 SwitcherContent.defaultProps = {
+  contentTitleText: i18n('行列切换'),
   resetText: i18n('恢复默认'),
 };

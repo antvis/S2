@@ -11,10 +11,11 @@ order: 2
 | columns               | [SwitcherField](#switcherfield)                         |      |          | 列头配置描述                           |
 | values                | [SwitcherField](#switcherfield)                         |      |          | 指标配置描述                           |
 | title                 | `ReactNode`                                             |      |          | 打开切换弹窗的触发节点                 |
+| contentTitleText      | `string`                                                |      | 行列切换 | 弹窗默认标题文字                       |
 | resetText             | `string`                                                |      | 恢复默认 | 重置按钮文字                           |
-| triggerClassName      | `string`                                                |      |          |                      触发按钮样式名                 |
-| overlayClassName      | `string`                                                |      |          | 弹出框样式名 |
-| innerContentClassName | `string`                                                |      |          | 弹出框内容样式名 |
+| triggerClassName      | `string`                                                |      |          | 触发按钮样式名                         |
+| overlayClassName      | `string`                                                |      |          | 弹出框样式名                           |
+| innerContentClassName | `string`                                                |      |          | 弹出框内容样式名                       |
 | onSubmit              | `(result:` [SwitcherResult](#switcherresult)`) => void` |      |          | 关闭弹窗后，处理行列切换结果的回调函数 |
 
 ## SwitcherField
