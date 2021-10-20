@@ -97,7 +97,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     s2: SpreadSheet,
   ): Node[] {
     const cornerNodes: Node[] = [];
-    const isPivotMode = s2.isPivotMode();
     // check if show series number node
     // spreadsheet must have at least one node in last level
     if (seriesNumberWidth && colsHierarchy?.sampleNodeForLastLevel) {
@@ -108,15 +107,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       });
       sNode.x = position?.x;
       // different type different y
-      sNode.y = isPivotMode
-        ? colsHierarchy?.sampleNodeForLastLevel?.y
-        : position?.y;
+      sNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
       sNode.width = seriesNumberWidth;
       // different type different height
-      sNode.height = isPivotMode
-        ? colsHierarchy?.sampleNodeForLastLevel?.height
-        : height;
-      sNode.isPivotMode = isPivotMode;
+      sNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
+      sNode.isPivotMode = true;
       sNode.cornerType = CornerNodeType.ROW;
       cornerNodes.push(sNode);
     }
@@ -124,7 +119,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     // 列头 label 横坐标偏移量：与行头 label 最右对齐
     let columOffsetX = seriesNumberWidth;
     // spreadsheet type tree mode
-    if (isPivotMode && colsHierarchy?.sampleNodeForLastLevel) {
+    if (colsHierarchy?.sampleNodeForLastLevel) {
       if (s2.isHierarchyTreeType()) {
         const drillDownFieldInLevel = s2.store.get('drillDownFieldInLevel', []);
         const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
@@ -144,7 +139,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cNode.width = width - seriesNumberWidth;
         cNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
         cNode.seriesNumberWidth = seriesNumberWidth;
-        cNode.isPivotMode = isPivotMode;
+        cNode.isPivotMode = true;
         cNode.spreadsheet = s2;
         cNode.cornerType = CornerNodeType.ROW;
         cornerNodes.push(cNode);
@@ -164,7 +159,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           cNode.width = rowNode.originalWidth || rowNode.width;
           cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
           cNode.field = field;
-          cNode.isPivotMode = isPivotMode;
+          cNode.isPivotMode = true;
           cNode.cornerType = CornerNodeType.ROW;
           cNode.spreadsheet = s2;
           cornerNodes.push(cNode);
@@ -190,7 +185,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cNode.width = width - columOffsetX;
         cNode.height = colNode.originalHeight || colNode.height;
         cNode.field = field;
-        cNode.isPivotMode = isPivotMode;
+        cNode.isPivotMode = true;
         cNode.cornerType = CornerNodeType.Col;
         cNode.spreadsheet = s2;
         cornerNodes.push(cNode);
