@@ -19,6 +19,7 @@ import { BaseDataSet } from '@/data-set';
 import { Hierarchy } from '@/facet/layout/hierarchy';
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type';
+import { CornerNodeType } from '@/common/interface/node';
 
 export interface CornerHeaderConfig extends BaseHeaderConfig {
   // header's hierarchy type
@@ -37,7 +38,7 @@ export interface CornerHeaderConfig extends BaseHeaderConfig {
 export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   /**
    * Get corner Header by config
-   * @param viewportBBox
+   * @param panelBBox
    * @param cornerBBox
    * @param seriesNumberWidth
    * @param cfg
@@ -45,14 +46,14 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
    * @param s2 spreadsheet
    */
   public static getCornerHeader(
-    viewportBBox: SimpleBBox,
+    panelBBox: SimpleBBox,
     cornerBBox: SimpleBBox,
     seriesNumberWidth: number,
     cfg: SpreadSheetFacetCfg,
     layoutResult: LayoutResult,
     s2: SpreadSheet,
   ) {
-    const { width, height } = viewportBBox;
+    const { width, height } = panelBBox;
     const cornerWidth = cornerBBox.width;
     const cornerHeight = cornerBBox.height;
     const cornerNodes: Node[] = this.getCornerNodes(
@@ -96,39 +97,35 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     s2: SpreadSheet,
   ): Node[] {
     const cornerNodes: Node[] = [];
-
-    // 列头 label 横坐标偏移量：与行头 label 最右对齐
-    let columOffsetX = 0;
-
     const isPivotMode = s2.isPivotMode();
     // check if show series number node
-    if (seriesNumberWidth) {
-      // 1、spreadsheet must have at least one node in last level
-      if (isPivotMode && colsHierarchy?.sampleNodeForLastLevel) {
-        const sNode: Node = new Node({
-          key: KEY_SERIES_NUMBER_NODE, // mark series node
-          id: '',
-          value: i18n('序号'),
-        });
-        sNode.x = position?.x;
-        // different type different y
-        sNode.y = isPivotMode
-          ? colsHierarchy?.sampleNodeForLastLevel?.y
-          : position?.y;
-        sNode.width = seriesNumberWidth;
-        // different type different height
-        sNode.height = isPivotMode
-          ? colsHierarchy?.sampleNodeForLastLevel?.height
-          : height;
-        sNode.isPivotMode = isPivotMode;
-        sNode.cornerType = 'row';
-        cornerNodes.push(sNode);
-      }
+    // spreadsheet must have at least one node in last level
+    if (seriesNumberWidth && colsHierarchy?.sampleNodeForLastLevel) {
+      const sNode: Node = new Node({
+        key: KEY_SERIES_NUMBER_NODE, // mark series node
+        id: '',
+        value: i18n('序号'),
+      });
+      sNode.x = position?.x;
+      // different type different y
+      sNode.y = isPivotMode
+        ? colsHierarchy?.sampleNodeForLastLevel?.y
+        : position?.y;
+      sNode.width = seriesNumberWidth;
+      // different type different height
+      sNode.height = isPivotMode
+        ? colsHierarchy?.sampleNodeForLastLevel?.height
+        : height;
+      sNode.isPivotMode = isPivotMode;
+      sNode.cornerType = CornerNodeType.ROW;
+      cornerNodes.push(sNode);
     }
 
+    // 列头 label 横坐标偏移量：与行头 label 最右对齐
+    let columOffsetX = seriesNumberWidth;
     // spreadsheet type tree mode
-    if (isPivotMode && s2.isHierarchyTreeType()) {
-      if (get(colsHierarchy, 'sampleNodeForLastLevel', undefined)) {
+    if (isPivotMode && colsHierarchy?.sampleNodeForLastLevel) {
+      if (s2.isHierarchyTreeType()) {
         const drillDownFieldInLevel = s2.store.get('drillDownFieldInLevel', []);
         const drillFields = drillDownFieldInLevel.map((d) => d.drillField);
 
@@ -142,7 +139,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
             .join('/'),
         });
         cNode.x = position.x + seriesNumberWidth;
-        columOffsetX = max([cNode.x, columOffsetX]);
         cNode.y = colsHierarchy?.sampleNodeForLastLevel?.y;
         // cNode should subtract series width
         cNode.width = width - seriesNumberWidth;
@@ -150,20 +146,12 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cNode.seriesNumberWidth = seriesNumberWidth;
         cNode.isPivotMode = isPivotMode;
         cNode.spreadsheet = s2;
-        cNode.cornerType = 'row';
+        cNode.cornerType = CornerNodeType.ROW;
         cornerNodes.push(cNode);
-      }
-    } else {
-      // spreadsheet type
-      // eslint-disable-next-line no-lonely-if
-      if (
-        isPivotMode &&
-        get(colsHierarchy, 'sampleNodeForLastLevel', undefined)
-      ) {
-        let nodeWidth = Infinity;
+      } else {
+        // spreadsheet type grid mode
         rowsHierarchy.sampleNodesForAllLevels.forEach((rowNode) => {
           // 避免因为小计总计格子宽度调整出现的错位
-          nodeWidth = min([rowNode.width, nodeWidth]);
           const field = rows[rowNode.level];
           const cNode: Node = new Node({
             key: field,
@@ -171,26 +159,26 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
             value: dataSet.getFieldName(field),
           });
 
-          cNode.x = rowNode.level * nodeWidth + seriesNumberWidth;
-          columOffsetX = max([cNode.x, columOffsetX]);
+          cNode.x = columOffsetX;
           cNode.y = colsHierarchy.sampleNodeForLastLevel.y;
-          cNode.width = nodeWidth;
+          cNode.width = rowNode.originalWidth || rowNode.width;
           cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
           cNode.field = field;
           cNode.isPivotMode = isPivotMode;
-          cNode.cornerType = 'row';
+          cNode.cornerType = CornerNodeType.ROW;
           cNode.spreadsheet = s2;
           cornerNodes.push(cNode);
+
+          if (rowNode.level < rowsHierarchy.maxLevel) {
+            columOffsetX += cNode.width;
+          }
         });
       }
     }
 
-    let nodeHeight = Infinity;
     colsHierarchy.sampleNodesForAllLevels.forEach((colNode) => {
       // 列头最后一个层级的位置为行头 label 标识，需要过滤
       if (colNode.level < colsHierarchy.maxLevel) {
-        // 避免因为小计总计格子高度调整出现的错位
-        nodeHeight = min([colNode.height, nodeHeight]);
         const field = columns[colNode.level];
         const cNode: Node = new Node({
           key: field,
@@ -198,12 +186,12 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           value: dataSet.getFieldName(field),
         });
         cNode.x = columOffsetX;
-        cNode.y = colNode.level * nodeHeight;
-        cNode.width = colsHierarchy.sampleNodeForLastLevel.width;
-        cNode.height = nodeHeight;
+        cNode.y = colNode.y;
+        cNode.width = width - columOffsetX;
+        cNode.height = colNode.originalHeight || colNode.height;
         cNode.field = field;
         cNode.isPivotMode = isPivotMode;
-        cNode.cornerType = 'col';
+        cNode.cornerType = CornerNodeType.Col;
         cNode.spreadsheet = s2;
         cornerNodes.push(cNode);
       }

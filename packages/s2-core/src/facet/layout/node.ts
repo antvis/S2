@@ -3,6 +3,7 @@ import { Hierarchy } from './hierarchy';
 import { ROOT_ID } from '@/common/constant/basic';
 import { SpreadSheet } from '@/index';
 import { S2CellType } from '@/common/interface';
+import { CornerNodeType } from '@/common/interface/node';
 
 export interface BaseNodeConfig {
   id: string;
@@ -223,8 +224,14 @@ export class Node {
   // node width
   public width = 0;
 
+  // 针对小计总计，在未进行宽高变换前的宽度值
+  public originalWidth = 0;
+
   // node height
   public height = 0;
+
+  // 针对小计总计，在未进行宽高变换前的高度值
+  public originalHeight = 0;
 
   // node real display text label
   public label: string;
@@ -291,6 +298,8 @@ export class Node {
   public belongsCell?: S2CellType;
 
   public inCollapseNode?: boolean;
+
+  public cornerType?: CornerNodeType;
 
   [key: string]: any;
 
