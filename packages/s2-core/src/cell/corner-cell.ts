@@ -237,20 +237,6 @@ export class CornerCell extends HeaderCell {
     );
   }
 
-  protected getIconPosition(): Point {
-    const textCfg = this.textShapes?.[0]?.cfg.attrs;
-    const { textBaseline } = this.getTextStyle();
-    const { size, margin } = this.getStyle().icon;
-    const iconX = textCfg?.x + this.actualTextWidth + margin.left;
-    const iconY = getVerticalPosition(
-      this.getContentArea(),
-      textBaseline,
-      size,
-    );
-
-    return { x: iconX, y: iconY };
-  }
-
   private getTreeIconWidth() {
     const { size, margin } = this.getStyle().icon;
     return this.showTreeIcon() ? size + margin.right : 0;

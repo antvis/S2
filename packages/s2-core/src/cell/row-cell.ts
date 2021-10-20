@@ -283,10 +283,16 @@ export class RowCell extends HeaderCell {
   }
 
   protected getIconPosition() {
-    const textCfg = this.textShape.cfg.attrs;
+    const { x, y, textAlign } = this.textShape.cfg.attrs;
+
     return {
-      x: textCfg.x + this.actualTextWidth + this.getStyle().icon.margin.left,
-      y: textCfg.y,
+      x:
+        x +
+        (textAlign === 'center'
+          ? this.actualTextWidth / 2
+          : this.actualTextWidth) +
+        this.getStyle().icon.margin.left,
+      y: y,
     };
   }
 
