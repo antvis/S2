@@ -158,8 +158,11 @@ export const SwitcherContent: FC<SwitcherContentProps> = ({
               'actions',
             )}
           >
-            <Button onClick={onToggleVisible}>{i18n('取消')}</Button>
+            <Button className="action-button" onClick={onToggleVisible}>
+              {i18n('取消')}
+            </Button>
             <Button
+              className="action-button"
               type="primary"
               disabled={isNothingChanged}
               onClick={onConfirm}
