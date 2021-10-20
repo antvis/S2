@@ -34,22 +34,12 @@ fetch(
       width: 660,
       height: 600,
       hoverHighlight: false, // 为了视觉效果，可不设置
+      dataCell: (viewMeta) => {
+        return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
+      }
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2options);
     
     // 使用
     s2.render();
-
-    setTimeout(() => {
-      console.log("render!!");
-      // TODO dataCell 支持第二个参数是s2
-      s2.setOptions({
-        width: 660,
-        height: 600,
-        dataCell: (viewMeta) => {
-          return new CustomDataCell(viewMeta, s2);
-        }
-      });
-      s2.render();
-    }, 2000);
   });
