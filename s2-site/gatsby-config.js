@@ -221,6 +221,14 @@ module.exports = {
           en: 'Analyze component',
         },
       },
+      {
+        slug: 'custom',
+        icon: 'net',
+        title: {
+          zh: '自定义',
+          en: 'Custom Hooks',
+        },
+      },
     ],
     mdPlayground: {
       // markdown 文档中的 playground 若干设置
