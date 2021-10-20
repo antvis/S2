@@ -75,6 +75,7 @@ export class TableColHeader extends ColHeader {
         return this.frozenTrailingColGroup;
       }
     }
+    return this.scrollGroup;
   }
 
   protected isColCellInRect(item: Node): boolean {
