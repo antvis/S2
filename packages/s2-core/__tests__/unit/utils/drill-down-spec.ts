@@ -124,7 +124,7 @@ describe('Drill Down Test', () => {
       iconName: 'DrillDownIcon',
     });
     await sleep(1000);
-    expect(mockInstance.store.get('drillDownMeta').id).toEqual(
+    expect(mockInstance.store.get('drillDownNode').id).toEqual(
       'root[&]浙江省[&]杭州市',
     );
   });

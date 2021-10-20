@@ -61,7 +61,6 @@ export const getDrillDownCash = (spreadsheet: SpreadSheet, meta: Node) => {
 export const handleActionIconClick = (params: ActionIconParams) => {
   const { meta, spreadsheet, event, callback, iconName } = params;
   if (iconName === 'DrillDownIcon') {
-    spreadsheet.store.set('drillDownMeta', meta);
     const { drillDownDataCache, drillDownCurrentCash } = getDrillDownCash(
       spreadsheet,
       meta,

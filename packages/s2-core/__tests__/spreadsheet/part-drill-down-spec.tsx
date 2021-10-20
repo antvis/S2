@@ -11,6 +11,7 @@ import {
   HeaderActionIconProps,
   PartDrillDown,
   PartDrillDownInfo,
+  S2DataConfig,
   S2Options,
   SheetComponent,
 } from '@/index';
@@ -137,12 +138,20 @@ const drillData = {
 } as PartDrillDown;
 function MainLayout(props) {
   const [options, setOptions] = useState<S2Options>(props.options);
+  const [dataCfg, setDataCfg] = useState<S2DataConfig>(props.dataCfg);
 
   const [partDrillDown, setPartDrillDown] = useState<PartDrillDown>(drillData);
   const onHierarchyChange = (checked) => {
     setOptions(
       merge({}, options, {
         hierarchyType: checked ? 'tree' : 'grid',
+      }),
+    );
+    setDataCfg(
+      merge({}, dataCfg, {
+        fields: {
+          valueInCols: checked,
+        },
       }),
     );
   };
@@ -179,7 +188,7 @@ function MainLayout(props) {
           </Header>
           <Content style={{ backgroundColor: '#ffffff' }}>
             <SheetComponent
-              dataCfg={props.dataCfg}
+              dataCfg={dataCfg}
               options={options}
               isLoading={false}
               partDrillDown={partDrillDown}
