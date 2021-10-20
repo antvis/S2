@@ -35,8 +35,9 @@ export class TableDataSet extends BaseDataSet {
   protected getEndRows() {
     const { frozenTrailingRowCount } = this.spreadsheet.options || {};
     // 没有冻结行时返回空数组
-    if (isEmpty(frozenTrailingRowCount)) return [];
+    if (!frozenTrailingRowCount) return [];
     const { displayData } = this;
+
     return displayData.slice(-frozenTrailingRowCount);
   }
 
