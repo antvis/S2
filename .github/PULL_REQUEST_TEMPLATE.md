@@ -16,14 +16,14 @@
 
 🐛 Bugfix
 
-- [ ] Bug fix issue close #0
+- [ ] Solve the issue and close #0
 
 🔧 Chore
 
 - [ ] Test case
 - [ ] Docs / demos update
 - [ ] CI / workflow
-- [ ] Release
+- [ ] Release version
 - [ ] Other (<!-- what? -->)
 
 ### 📝 Description

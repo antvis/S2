@@ -124,6 +124,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
         fill: text.fill,
       });
       sortIcon.on('click', (event) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
         this.spreadsheet.handleGroupSort(event, this.meta);
       });
       this.add(sortIcon);

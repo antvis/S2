@@ -219,6 +219,8 @@ export class PivotDataSet extends BaseDataSet {
       this.spreadsheet.store.set('drillDownFieldInLevel', []);
     }
 
+    // 重置当前交互
+    this.spreadsheet.interaction.reset();
     store.set('drillDownIdPathMap', idPathMap);
   }
 
