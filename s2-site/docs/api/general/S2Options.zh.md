@@ -17,10 +17,9 @@ order: 1
 | freezeRowHeader | `boolean` |  |   `true` | 冻结行头 |
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
 | scrollReachNodeField | [NodeField](#nodefield) |  |  | 滚动监听的节点度量 |
-| customHeaderCells | [CustomHeaderCells](#customheadercells) |   | `false` | 自定义行列头单元格 |
 | showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |
 | headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
-| customSVGIcons | [CustomSVGIcon[]](#CustomSVGIcon) |  |   `false` | 自定义 svg 图标 |
+| customSVGIcons | [CustomSVGIcon[]](#customsvgicon) |  |   `false` | 自定义 svg 图标 |
 | style | [Style](#style) |  |    | 附加样式 |
 | frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 |
 | frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 |
@@ -37,7 +36,6 @@ order: 1
 | cornerCell | [CellCallback](#cellcallback) |  |    | 自定义 cornerCell |
 | rowCell | [CellCallback](#cellcallback) |  |  |   自定义行头 cell |
 | colCell | [CellCallback](#cellcallback) |  |  |   自定义列头 cell |
-| frame | [FrameCallback](#framecallback) |  |  |   自定义 frame 边框 |
 | cornerHeader | [CornerHeaderCallback](#cornerheadercallback) |    |  | 自定义角头 |
 | layoutHierarchy | [LayoutHierarchy](#layouthierarchy) |  |    | 自定义层级结构 |
 | layoutArrange | [LayoutArrange](#layoutarrange) |  |  |   自定义排列顺序 |
@@ -45,7 +43,7 @@ order: 1
 | layoutDataPosition | [layoutDataPosition](#layoutdataposition)   |  |  | 自定义数据 |
 | filterDisplayDataItem | [FilterDataItemCallback](#filterdataitemcallback) |  |    | 过滤数据 |
 | mappingDisplayDataItem | [MappingDataItemCallback](#mappingdataitemcallback) |  |    | 转换数据，用于 tooltip 显示 |
-| otterLayout | [OtterLayout](#OtterLayout) |  |  |   自定义 layout |
+| otterLayout | [OtterLayout](#otterlayout) |  |  |   自定义 layout |
 | customInteractions | [CustomInteraction[]](#custominteraction) |    |  | 自定义交互 |
 | dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
 | scrollSpeedRatio | [ScrollRatio](#scrollratio)|  |  |  用于控制滚动速率，分水平和垂直两个方向，默认为 1 |
@@ -78,8 +76,8 @@ object **必选**,_default：null_ 功能描述：样式设置
 | collapsedRows | `Record<string, boolean>` |  |    | 树状模式行的折叠、收起状态 |
 | collapsedCols | `Record<string, boolean>`  |  |    | 树状模式列的折叠、收起状态 |
 | cellCfg | [CellCfg](#cellcfg) |  |  |   单元格配置 |
-| colCfg | [ColCfg](#ColCfg) |  |  |   列样式配置 |
-| rowCfg | [RowCfg](#RowCfg) |  |  |   行样式配置 |
+| colCfg | [ColCfg](#colcfg) |  |  |   列样式配置 |
+| rowCfg | [RowCfg](#rowcfg) |  |  |   行样式配置 |
 | device | `pc` \| `mobile` | |  `pc` | 设备类型 |
 
 ## CellCfg
@@ -126,17 +124,17 @@ object 可选，_default：{}_ 功能描述：滚动监听的节点度量
 ## DataCellCallback
 
 ```js
-DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
+DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;
 ```
 
-功能描述：自定义数值单元格
+功能描述：自定义数值单元格，[ViewMeta](#viewmeta)
 
 `markdown:docs/common/view-meta.zh.md`
 
 ## CellCallback
 
 ```js
-CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[]) => S2CellType;
+CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[]) => G.Group;
 ```
 
 功能描述：自定义单元格
@@ -157,88 +155,31 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- |
-| parent | [S2CellType](#S2CellType) | ✓ |  |   父级单元格 |
+| parent | [S2CellType](#s2celltype) | ✓ |  |   父级单元格 |
 | spreadsheet | [SpreadSheet](#spreadsheet) | ✓   |  | 表类实例，可以访问任意的配置信息 |
 | restOptions | `unknown[]` |  |  |   不定参数，传递额外的信息 |
 
-## FrameCallback
+`markdown:docs/common/custom/layoutHierarchy.zh.md`
 
-```js
-FrameCallback = (cfg: FrameConfig) => Frame;
-```
+`markdown:docs/common/custom/layoutArrange.zh.md`
 
-功能描述：自定义框架
+`markdown:docs/common/custom/layoutCoordinate.zh.md`
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| cfg | [FrameConfig](#frameconfig) | ✓ |    | 当前渲染的 node 节点 |
+`markdown:docs/common/custom/layoutDataPosition.zh.md`
 
-## LayoutHierarchy
+`markdown:docs/common/custom/headerActionIcons.zh.md`
 
-```js
-LayoutHierarchy = (spreadsheet: SpreadSheet, node: Node) => LayoutHierarchyReturnType;
-```
+## HeaderActionIconProps
 
-功能描述：自定义层级结构
+功能描述： 点击自定义操作 icon 后交叉表返回的当前 icon 相关
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- |
-| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |    | 表类实例，可以访问任意的配置信息 |
-| node | [Node](#node) | ✓ |  |   当前渲染的 node 节点 |
+| iconName | string | ✓ |    | 当前点击的 icon 名称 |
+| meta | Node | ✓ |    | 当前 cell 的 meta 信息 |
+| event | Event | ✓ |  false  | 当前点击事件信息 |
 
-```ts
-interface LayoutHierarchyReturnType {
-  push?: Node[];
-  unshift?: Node[];
-  delete?: boolean;
-}
-```
-
-## LayoutArrange
-
-```js
-LayoutArrange = (spreadsheet: SpreadSheet, parent: Node, field: string, fieldValues: string[]) => string[];
-```
-
-功能描述：自定义顺序
-
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |    | 表类实例，可以访问任意的配置信息 |
-| node | [Node](#node) | ✓ |  |   当前渲染的 node 节点 |
-| field | `string` | ✓ |  |   当前的字段名 |
-| fieldValues | `string[]` | ✓ |  |   当前字段值 |
-
-## LayoutCoordinate
-
-```js
-LayoutCoordinate = (spreadsheet: SpreadSheet, rowNode: Node, colNode: Node) => void
-```
-
-功能描述：自定义坐标
-
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |    | 表类实例，可以访问任意的配置信息 |
-| rowNode | [Node](#node) | ✓ |    | 行节点 |
-| colNode | [Node](#node) | ✓ |    | 列节点 |
-
-## LayoutDataPosition
-
-```js
-LayoutDataPosition = (spreadsheet: SpreadSheet, getCellData: GetCellMeta) => GetCellMeta
-```
-
-功能描述：自定义数据
-
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-: | ---  | --- |
-| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |    | 表类实例，可以访问任意的配置信息 |
-| getCellData | [GetCellMeta](#GetCellMeta) | ✓ |    | 获取单元格数据和位置等信息|
-
-```ts
-type GetCellMeta = (rowIndex?: number, colIndex?: number) => ViewMeta;
-```
+`markdown:docs/common/custom/customSvgIcons.zh.md`
 
 ## FilterDataItemCallback
 
@@ -251,7 +192,7 @@ FilterDataItemCallback = (valueField: string, data: DataItem) => DataItem
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- |
 | valueField | `string` | ✓ |    | 表类实例，可以访问任意的配置信息 |
-| data | [DataItem](#DataItem) | ✓   |  | 数据格式 |
+| data | [DataItem](#dataitem) | ✓   |  | 数据格式 |
 
 ## MappingDataItemCallback
 
@@ -264,7 +205,7 @@ MappingDataItemCallback = (valueField: string, data: DataItem) => Record<string,
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-: | --- | --- |
 | valueField | `string` | ✓ |  |   表类实例，可以访问任意的配置信息 |
-| data | [DataItem](#DataItem) | ✓ |    | 数据格式 |
+| data | [DataItem](#dataitem) | ✓ |    | 数据格式 |
 
 ## DataItem
 
@@ -308,17 +249,6 @@ OtterLayout = (spreadsheet: SpreadSheet, rowNode: Node, colNode: Node) => void;
 | getViewMeta | `(rowIndex: number, colIndex: number) => ViewMeta` | | |  获取交叉出 [x,y] 对应坐标的信息 |
 | spreadsheet | [SpreadSheet](#spreadsheet) |  | |  表类实例，可以访问任意的配置信息 |
 
-## CustomHeaderCells
-
-功能描述：自定义行列头单元格：
-
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-: | ---  | --- |
-| cellLabels | `string[]` | ✓ |  |   自定义单元格标签 |
-| mode | `pick` \| `omit`  | ✓ |  |   pick: 提取，omit: 去除 |
-
-`markdown:docs/common/header-action-icon.zh.md`
-
 ## DataSet
 
 ```js
@@ -332,22 +262,6 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 | colIndex | `boolean` |  |  |   列索引 |
 | rowIndex | `boolean` |  |  |   行索引 |
 | showText | `boolean` |  |  |   是否显示文本 |
-
-## FrameConfig
-
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| position | `{x: number, y: number}` |  |  |   位置 |
-| scrollX | `number` |  |    | 横向偏移量 |
-| width | `number` |  |  |   宽度 |
-| height | `number` |  |  |   高度 |
-| viewportWidth | `number` |  |  |   可视区域宽度 |
-| viewportHeight | `number` |  |  |   可视区域高度 |
-| showCornerRightShadow | `boolean` |  |  |   显示角头右阴影 |
-| showViewPortRightShadow | `boolean` |  |  |   显示可视区域右阴影 |
-| scrollContainsRowHeader | `boolean` |  |  |   滚动时是否包含焊头 |
-| isPivotMode | `boolean` |  |  |   是否是透视表 |
-| spreadsheet | [SpreadSheet](#spreadsheet) |  |    | 表格实例 |
 
 ## ScrollRatio
 
