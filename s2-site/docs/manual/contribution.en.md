@@ -1,6 +1,6 @@
 ---
 title: Contribution
-order: 0
+order: 7
 ---
 
 `markdown:docs/manual/contribution.zh.md`

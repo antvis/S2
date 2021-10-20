@@ -87,10 +87,10 @@
     "@antv/util" "~2.0.0"
     gl-matrix "^3.0.0"
 
-"@antv/gatsby-theme-antv@^1.1.8":
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.10.tgz#654d838c2e544ec76d9a9465fcf6fcb173f8d3d3"
-  integrity sha512-OJE+017gCsqSTQKIWoQqWcOGk4iHmwoKze3k9UqRVfy00fOYulEWADHIqGRPy347VhFF7C8XemWLA2jS2CtXpw==
+"@antv/gatsby-theme-antv@^1.1.12":
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.12.tgz#91b7377505c85d0888f63d7eb4a055cd2b7398f3"
+  integrity sha512-6QnicsYBpMEsN2leRIiSbkb66subcARPJzIuElBha3q07RErQomzqj2hWk9E3aMQpyGuZYWc/eh5k6RGqGxa6g==
   dependencies:
     "@ant-design/icons" "^4.1.0"
     "@hot-loader/react-dom" "^16.9.0+4.12.11"
@@ -185,10 +185,10 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-0.2.0.tgz#45f5ea8a08096f1eeab339a969d4b5ab87b4ef5a"
-  integrity sha512-cgOT5RyECZ0XXH4hd2nXaC2saU9iCWORiterhe8CoDJJ/VWj+4I+Acgzw5V3+T2fCBRDTJAqp3DNQrmY+dG+JA==
+"@antv/s2@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-0.2.1.tgz#0114d8fbb7ecae82c4ea4f2b49fcdf90c13a95b3"
+  integrity sha512-7KcNGNx7qrogmD5n68h+xvakotJ/UY500ngFZhBfYzZjQpFf0mlahq4Z7Yw/HvexrXWL0m1wmh/pOkRv6nQ89Q==
   dependencies:
     "@antv/event-emitter" "~0.1.2"
     "@antv/g-canvas" "^0.5.12"
