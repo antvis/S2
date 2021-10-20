@@ -215,7 +215,10 @@ export type CellCallback = (
   ...restOptions: unknown[]
 ) => S2CellType;
 
-export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
+export type DataCellCallback = (
+  viewMeta: ViewMeta,
+  s2?: SpreadSheet,
+) => S2CellType;
 
 export type FrameCallback = (cfg: FrameConfig) => Frame;
 
