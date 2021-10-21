@@ -77,8 +77,9 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
           /**
            * cellStartBorder 当前resize的起始边
            * cellEndBorder 当前resize的响应边，也就是点击的边
+           * mask 遮罩
            */
-          const [cellStartBorder, cellEndBorder] = children;
+          const [cellStartBorder, cellEndBorder, mask] = children;
           const { offsetX, offsetY, width, height } = resizeInfo;
           const canvasWidth = this.spreadsheet.facet.getCanvasHW().width;
           const canvasHeight = this.spreadsheet.facet.getCanvasHW().height;
@@ -103,7 +104,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             ]);
             this.startPos.offsetY = originalEvent.offsetY;
           }
-          cellEndBorder.attr('cursor', `${resizeInfo.type}-resize`);
+          mask.attr('cursor', `${resizeInfo.type}-resize`);
           const header = this.getHeaderGroup();
           this.resizeGroup.move(header.get('x'), header.get('y'));
         }
