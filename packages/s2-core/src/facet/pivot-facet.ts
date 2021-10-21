@@ -24,6 +24,7 @@ import {
 import { Node } from '@/facet/layout/node';
 import { handleDataItem } from '@/utils/cell/data-cell';
 import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
+import { getSubTotalNodeWidthOrHeightByLevel } from '@/utils/facet';
 
 export class PivotFacet extends BaseFacet {
   protected doLayout(): LayoutResult {
@@ -243,7 +244,7 @@ export class PivotFacet extends BaseFacet {
         // parent's width = all children's width
         parent.width = parent.children
           .map((value: Node) => value.width)
-          .reduce((sum, current) => sum + current);
+          .reduce((sum, current) => sum + current, 0);
         prevColParent = parent;
       }
     }
@@ -384,7 +385,7 @@ export class PivotFacet extends BaseFacet {
         // parent's height = all children's height
         parent.height = parent.children
           .map((value) => value.height)
-          .reduce((sum, current) => sum + current);
+          .reduce((sum, current) => sum + current, 0);
         prevRowParent = parent;
       }
     }
@@ -447,10 +448,11 @@ export class PivotFacet extends BaseFacet {
       const subTotalNodeChildren = subTotalNode.children;
       if (isRowHeader) {
         // 填充行总单元格宽度
-        subTotalNode.width = hierarchy.sampleNodesForAllLevels
-          .filter((node: Node) => node.level >= subTotalNode.level)
-          .map((value) => value.width)
-          .reduce((sum, current) => sum + current);
+        subTotalNode.width = getSubTotalNodeWidthOrHeightByLevel(
+          hierarchy.sampleNodesForAllLevels,
+          subTotalNode.level,
+          'width',
+        );
 
         // 调整其叶子结点位置
         forEach(subTotalNodeChildren, (node: Node) => {
@@ -458,10 +460,11 @@ export class PivotFacet extends BaseFacet {
         });
       } else {
         // 填充列总单元格高度
-        subTotalNode.height = hierarchy.sampleNodesForAllLevels
-          .filter((node: Node) => node.level >= subTotalNode.level)
-          .map((value) => value.height)
-          .reduce((sum, current) => sum + current);
+        subTotalNode.height = getSubTotalNodeWidthOrHeightByLevel(
+          hierarchy.sampleNodesForAllLevels,
+          subTotalNode.level,
+          'height',
+        );
         // 调整其叶子结点位置
         forEach(subTotalNodeChildren, (node: Node) => {
           node.y = hierarchy.getNodes(maxLevel)[0].y;
