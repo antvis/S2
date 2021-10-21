@@ -243,7 +243,10 @@ export abstract class SpreadSheet extends EE {
 
   protected abstract buildFacet(): void;
 
-  public abstract clearDrillDownData(rowNodeId?: string): void;
+  public abstract clearDrillDownData(
+    rowNodeId?: string,
+    preventRender?: boolean,
+  ): void;
 
   public showTooltip(showOptions: TooltipShowOptions) {
     this.tooltip.show?.(showOptions);
@@ -322,6 +325,7 @@ export abstract class SpreadSheet extends EE {
   public render(reloadData = true) {
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
     if (reloadData) {
+      this.clearDrillDownData('', true);
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();

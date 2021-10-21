@@ -84,8 +84,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (this.spreadsheet.options.showDefaultHeaderActionIcon) {
       const { sortParam } = this.headerConfig;
       const query = this.meta.query;
+      // sortParam的query，和type本身可能会 undefined
       return (
         isEqual(get(sortParam, 'query'), query) &&
+        get(sortParam, 'type') &&
         get(sortParam, 'type') !== 'none'
       );
     }
@@ -101,35 +103,33 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (actionIconCfg) {
       const iconNames = actionIconCfg.iconNames;
       const { size, margin } = this.getStyle().icon;
-      return (
-        size * iconNames.length +
-        margin.left +
-        margin.right * (iconNames.length - 1)
-      );
+      return size * iconNames.length + margin.left * iconNames.length;
     }
     return 0;
   }
 
   // 绘制排序icon
   protected drawSortIcons() {
-    const { icon, text } = this.getStyle();
-    if (this.showSortIcon()) {
-      const { sortParam } = this.headerConfig;
-      const position = this.getIconPosition();
-      const sortIcon = new GuiIcon({
-        name: get(sortParam, 'type', 'none'),
-        ...position,
-        width: icon.size,
-        height: icon.size,
-        fill: text.fill,
-      });
-      sortIcon.on('click', (event) => {
-        this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
-        this.spreadsheet.handleGroupSort(event, this.meta);
-      });
-      this.add(sortIcon);
-      this.actionIcons.push(sortIcon);
+    if (!this.showSortIcon()) {
+      return;
     }
+
+    const { icon, text } = this.getStyle();
+    const { sortParam } = this.headerConfig;
+    const position = this.getIconPosition();
+    const sortIcon = new GuiIcon({
+      name: get(sortParam, 'type', 'none'),
+      ...position,
+      width: icon.size,
+      height: icon.size,
+      fill: text.fill,
+    });
+    sortIcon.on('click', (event) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+      this.spreadsheet.handleGroupSort(event, this.meta);
+    });
+    this.add(sortIcon);
+    this.actionIcons.push(sortIcon);
   }
 
   protected addActionIcon(
@@ -168,13 +168,17 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected drawActionIcons() {
-    this.drawSortIcons();
-    const actionIconCfg = this.getActionIconCfg();
+    if (this.showSortIcon()) {
+      this.drawSortIcons();
+      return;
+    }
 
+    const actionIconCfg = this.getActionIconCfg();
     if (!actionIconCfg) return;
     const { iconNames, action, defaultHide } = actionIconCfg;
 
     const position = this.getIconPosition();
+
     const { size, margin } = this.getStyle().icon;
     forEach(iconNames, (iconName, key) => {
       const x = position.x + key * size + key * margin.left;
@@ -202,12 +206,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
+    this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
   }
 
   public toggleActionIcon(id: string, type: CellTypes) {
-    if (isEmpty(this.actionIcons) || !this.getActionIconCfg()?.defaultHide) {
-      return;
-    }
     let allCells = [];
     if (type === CellTypes.ROW_CELL) {
       allCells = this.spreadsheet.interaction.getAllRowHeaderCells();
