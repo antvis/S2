@@ -283,7 +283,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (!ownSpreadsheet) return;
     ownSpreadsheet.hideTooltip();
     if (isEmpty(drillFields)) {
-      clearDrillDownInfo(ownSpreadsheet.store.get('drillDownMeta')?.id);
+      clearDrillDownInfo(ownSpreadsheet.store.get('drillDownNode')?.id);
     } else {
       setLoading(true);
       HandleDrillDown({

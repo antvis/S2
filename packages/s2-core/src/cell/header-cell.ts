@@ -202,12 +202,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
+    this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
   }
 
   public toggleActionIcon(id: string, type: CellTypes) {
-    if (isEmpty(this.actionIcons) || !this.getActionIconCfg()?.defaultHide) {
-      return;
-    }
     let allCells = [];
     if (type === CellTypes.ROW_CELL) {
       allCells = this.spreadsheet.interaction.getAllRowHeaderCells();
