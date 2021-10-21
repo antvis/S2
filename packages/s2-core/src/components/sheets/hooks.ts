@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { debounce, isEmpty, merge } from 'lodash';
 import { SpreadSheet } from '@/sheet-type';
-import { S2Options, safetyOptions } from '@/common/interface';
+import { S2Options } from '@/common/interface';
+import { safetyOptions } from '@/utils/merge';
 
 export const useResizeEffect = (
   container: HTMLDivElement,

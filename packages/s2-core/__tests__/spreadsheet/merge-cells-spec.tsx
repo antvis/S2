@@ -7,8 +7,12 @@ import {
   mockTabularDataCfg,
   mockTabularOptions,
 } from 'tests/data/tabular-data';
-import { getContainer } from '../util/helpers';
-import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
+import { getContainer } from 'tests/util/helpers';
+import {
+  data as mockData,
+  totalData,
+  meta,
+} from 'tests/data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
 import { mergeCells } from '@/utils/interaction/merge-cells';
 import 'antd/dist/antd.min.css';
@@ -18,7 +22,7 @@ import {
   SheetComponent,
   PivotSheet,
   SheetType,
-  defaultStyle,
+  DEFAULT_STYLE,
 } from '@/index';
 
 const data = mockData.map((row) => {
@@ -65,7 +69,7 @@ const baseOptions = {
     background: [],
     icon: [],
   },
-  style: defaultStyle,
+  style: DEFAULT_STYLE,
   mergedCellsInfo: [
     [
       { colIndex: 1, rowIndex: 6 },

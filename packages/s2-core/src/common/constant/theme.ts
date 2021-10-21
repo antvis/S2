@@ -16,7 +16,4 @@ export const FONT_FAMILY =
 // cell default padding
 export const DEFAULT_PADDING = 4;
 
-// tree row default width
-export const TREE_ROW_DEFAULT_WIDTH = 120;
-
 export const MINI_BAR_CHART_HEIGHT = 12;

@@ -10,8 +10,6 @@ import {
   ListSortParams,
   S2Constructor,
   S2Options,
-  safetyDataConfig,
-  safetyOptions,
   TargetLayoutNode,
 } from '@/common/interface';
 import { EmitterType } from '@/common/interface/emitter';
@@ -24,6 +22,7 @@ import {
   usePaginationEffect,
 } from '@/components/sheets/hooks';
 import { S2Pagination } from '@/components/pagination';
+import { safetyDataConfig, safetyOptions } from '@/utils/merge';
 
 export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {

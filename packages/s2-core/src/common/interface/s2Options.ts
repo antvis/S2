@@ -1,4 +1,3 @@
-import { merge } from 'lodash';
 import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
 import {
@@ -27,7 +26,6 @@ import {
   LayoutDataPosition,
   LayoutHierarchy,
 } from '@/common/interface/hooks';
-import { TREE_ROW_DEFAULT_WIDTH } from '@/common/constant';
 import { BaseDataSet } from '@/data-set';
 import { SpreadSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
@@ -137,69 +135,3 @@ export type S2Options = S2PartialOptions & {
   // custom data set
   readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
 };
-
-export const defaultStyle: Style = {
-  treeRowsWidth: TREE_ROW_DEFAULT_WIDTH,
-  collapsedRows: {},
-  collapsedCols: {},
-  cellCfg: {
-    width: 96,
-    height: 30,
-  },
-  rowCfg: {
-    width: 96,
-    widthByField: {},
-  },
-  colCfg: {
-    height: 40,
-    widthByFieldValue: {},
-    heightByField: {},
-    colWidthType: 'adaptive',
-    totalSample: 10,
-    detailSample: 30,
-    maxSampleIndex: 1,
-  },
-  device: 'pc',
-};
-
-export const defaultOptions: S2Options = {
-  width: 600,
-  height: 480,
-  debug: false,
-  hierarchyType: 'grid',
-  conditions: {},
-  totals: {},
-  tooltip: {
-    showTooltip: true,
-    operation: {
-      hiddenColumns: true,
-      trend: false,
-      sort: true,
-    },
-  },
-  linkFields: [],
-  freezeRowHeader: true,
-  showSeriesNumber: false,
-  scrollReachNodeField: {},
-  hiddenColumnFields: [],
-  customSVGIcons: [],
-  customHeaderCells: null,
-  showDefaultHeaderActionIcon: true,
-  headerActionIcons: [],
-  style: defaultStyle,
-  selectedCellsSpotlight: true,
-  hoverHighlight: true,
-  frozenRowCount: 0,
-  frozenColCount: 0,
-  frozenTrailingRowCount: 0,
-  frozenTrailingColCount: 0,
-  hdAdapter: false,
-  scrollSpeedRatio: {
-    horizontal: 1,
-    vertical: 1,
-  },
-  autoResetSheetStyle: true,
-} as S2Options;
-
-export const safetyOptions = (options: S2Options) =>
-  merge({}, defaultOptions, options);

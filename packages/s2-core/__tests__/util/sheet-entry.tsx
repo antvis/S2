@@ -5,12 +5,11 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Checkbox, Input, Space, Switch } from 'antd';
+import { Input, Space, Switch } from 'antd';
 import { isArray, merge, mergeWith } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
-  defaultDataConfig,
-  defaultOptions,
+  DEFAULT_OPTIONS,
   S2DataConfig,
   S2Options,
   SheetComponent,
@@ -18,13 +17,14 @@ import {
   ThemeCfg,
   SheetType,
   TargetCellInfo,
+  DEFAULT_DATA_CONFIG,
 } from '@/index';
 import 'antd/dist/antd.min.css';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
   mergeWith(
     {},
-    defaultOptions,
+    DEFAULT_OPTIONS,
     { debug: true, width: 1000, height: 600 },
     ...options,
     (origin, updated) => {
@@ -37,7 +37,7 @@ export const assembleOptions = (...options: Partial<S2Options>[]) =>
 export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
   mergeWith(
     {},
-    defaultDataConfig,
+    DEFAULT_DATA_CONFIG,
     {
       fields: {
         rows: ['province', 'city'],

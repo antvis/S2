@@ -10,7 +10,8 @@ import { TabularDataCell } from './tabular-data-cell';
 import { TabularTheme } from './tabular-theme';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
-import { safetyDataConfig, safetyOptions, S2Options } from '@/common/interface';
+import { S2Options } from '@/common/interface';
+import { safetyDataConfig, safetyOptions } from '@/utils/merge';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { useResizeEffect } from '@/components/sheets/hooks';
 

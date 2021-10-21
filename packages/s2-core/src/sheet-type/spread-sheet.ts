@@ -32,8 +32,6 @@ import {
   S2DataConfig,
   S2MountContainer,
   S2Options,
-  safetyDataConfig,
-  safetyOptions,
   SpreadSheetFacetCfg,
   ThemeCfg,
   TooltipData,
@@ -55,6 +53,7 @@ import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
 import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
 import { registerIcon, getIcon } from '@/common/icons/factory';
+import { safetyDataConfig, safetyOptions } from '@/utils/merge';
 
 export abstract class SpreadSheet extends EE {
   // dom id

@@ -11,8 +11,6 @@ import {
   LayoutRow,
   ListSortParams,
   S2Constructor,
-  safetyDataConfig,
-  safetyOptions,
   TargetLayoutNode,
 } from '@/common/interface';
 import { EmitterType } from '@/common/interface/emitter';
@@ -24,6 +22,7 @@ import { HandleDrillDown, HandleDrillDownIcon } from '@/utils/drill-down';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { useResizeEffect } from '@/components/sheets/hooks';
 import { getTooltipOptions } from '@/utils/tooltip';
+import { safetyDataConfig, safetyOptions } from '@/utils/merge';
 import { S2Pagination } from '@/components/pagination';
 
 import './index.less';

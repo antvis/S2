@@ -11,7 +11,7 @@ import { PivotFacet } from '@/facet/pivot-facet';
 import { DataCell } from '@/cell';
 import { Store } from '@/common/store';
 import { getTheme } from '@/theme';
-import { defaultStyle, defaultOptions } from '@/common/interface/s2Options';
+import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
 import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
 import { ViewMeta } from '@/common/interface/basic';
 
@@ -21,8 +21,10 @@ const actualPivotDataSet = jest.requireActual(
 const actualDataSet = jest.requireActual(
   'src/data-set/base-data-set',
 ).BaseDataSet;
+
 const { rowPivotMeta, colPivotMeta, indexesData, sortedDimensionValues } =
   getMockPivotMeta();
+
 jest.mock('src/sheet-type', () => {
   const container = new Canvas({
     width: 100,
@@ -87,7 +89,7 @@ describe('Pivot Mode Facet Test', () => {
     dataCell: (fct) => new DataCell(fct, s2),
     ...assembleDataCfg().fields,
     ...assembleOptions(),
-    ...defaultStyle,
+    ...DEFAULT_STYLE,
   });
 
   describe('should get correct hierarchy', () => {
@@ -95,8 +97,8 @@ describe('Pivot Mode Facet Test', () => {
     const { rowsHierarchy, colsHierarchy, colLeafNodes } = facet.layoutResult;
     const rowCellStyle = spreadsheet.theme.rowCell.cell;
     const width = Math.max(
-      defaultStyle.cellCfg.width,
-      defaultOptions.width / (size(rows) + size(colLeafNodes)),
+      DEFAULT_STYLE.cellCfg.width,
+      DEFAULT_OPTIONS.width / (size(rows) + size(colLeafNodes)),
     );
     test('row hierarchy', () => {
       expect(rowsHierarchy.getIndexNodes()).toHaveLength(8);
@@ -173,7 +175,7 @@ describe('Pivot Mode Facet Test', () => {
       dataSet: ds,
       ...assembleDataCfg().fields,
       ...assembleOptions(),
-      ...defaultStyle,
+      ...DEFAULT_STYLE,
       hierarchyType: 'tree',
     });
     const { rowsHierarchy } = treeFacet.layoutResult;

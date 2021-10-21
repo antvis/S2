@@ -6,3 +6,5 @@ export * from './scroll';
 export * from './theme';
 export * from './tooltip';
 export * from './sort';
+export * from './options';
+export * from './dataConfig';
