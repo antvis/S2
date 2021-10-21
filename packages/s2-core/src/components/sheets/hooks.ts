@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { debounce, isEmpty, merge } from 'lodash';
 import { SpreadSheet } from '@/sheet-type';
 import { S2Options } from '@/common/interface';
-import { safetyOptions } from '@/utils/merge';
+import { getSafetyOptions } from '@/utils/merge';
 
 export const useResizeEffect = (
   container: HTMLDivElement,
@@ -62,7 +62,7 @@ export const usePaginationEffect = (
         pageSize,
       },
     });
-    s2.setOptions(safetyOptions(newOptions));
+    s2.setOptions(getSafetyOptions(newOptions));
     s2.render(false);
   }, [options, current, pageSize, s2]);
 };

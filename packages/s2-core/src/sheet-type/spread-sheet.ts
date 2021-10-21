@@ -53,7 +53,7 @@ import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
 import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
 import { registerIcon, getIcon } from '@/common/icons/factory';
-import { safetyDataConfig, safetyOptions } from '@/utils/merge';
+import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 
 export abstract class SpreadSheet extends EE {
   // dom id
@@ -135,8 +135,8 @@ export abstract class SpreadSheet extends EE {
   ) {
     super();
     this.dom = this.getMountContainer(dom);
-    this.dataCfg = safetyDataConfig(dataCfg);
-    this.options = safetyOptions(options);
+    this.dataCfg = getSafetyDataConfig(dataCfg);
+    this.options = getSafetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
 
     this.initTooltip();
@@ -313,7 +313,7 @@ export abstract class SpreadSheet extends EE {
     const lastSortParam = this.store.get('sortParam');
     const { sortParams } = newDataCfg;
     newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
-    this.dataCfg = safetyDataConfig(newDataCfg);
+    this.dataCfg = getSafetyDataConfig(newDataCfg);
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }

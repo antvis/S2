@@ -11,7 +11,7 @@ import { TabularTheme } from './tabular-theme';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { S2Options } from '@/common/interface';
-import { safetyDataConfig, safetyOptions } from '@/utils/merge';
+import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { useResizeEffect } from '@/components/sheets/hooks';
 
@@ -64,7 +64,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
   };
 
   const buildOptions = (): S2Options => {
-    return safetyOptions(
+    return getSafetyOptions(
       merge(options, {
         dataCell: TabularDataCell,
         style: {
@@ -158,7 +158,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     if (!baseSpreadsheet) {
       baseSpreadsheet = getSpreadSheet();
       bindEvent();
-      const newDataCfg = safetyDataConfig(dataCfg);
+      const newDataCfg = getSafetyDataConfig(dataCfg);
       baseSpreadsheet.setDataCfg(newDataCfg);
       setOptions(baseSpreadsheet);
       baseSpreadsheet.setThemeCfg(themeCfg);

@@ -14,6 +14,9 @@ import { getTheme } from '@/theme';
 import { DEFAULT_OPTIONS, DEFAULT_STYLE } from '@/common/constant/options';
 import { ColHeader, CornerHeader, Frame, RowHeader } from '@/facet/header';
 import { ViewMeta } from '@/common/interface/basic';
+import { RootInteraction } from '@/interaction/root';
+
+jest.mock('@/interaction/root');
 
 const actualPivotDataSet = jest.requireActual(
   'src/data-set/pivot-data-set',
@@ -82,6 +85,7 @@ describe('Pivot Mode Facet Test', () => {
   const s2: SpreadSheet = new MockSpreadSheet();
   const dataSet: PivotDataSet = new MockPivotDataSet(s2);
   s2.dataSet = dataSet;
+  s2.interaction = new RootInteraction(s2);
 
   const facet: PivotFacet = new PivotFacet({
     spreadsheet: s2,

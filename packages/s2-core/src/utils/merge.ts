@@ -14,7 +14,7 @@ export const customMerge = (...objects: unknown[]) => {
   return mergeWith(...args);
 };
 
-export const safetyDataConfig = (dataConfig: S2DataConfig) => {
+export const getSafetyDataConfig = (dataConfig: Partial<S2DataConfig>) => {
   const result = merge({}, DEFAULT_DATA_CONFIG, dataConfig) as S2DataConfig;
   if (!isEmpty(result.fields.customTreeItems)) {
     // when there are custom tree config, valueInCols must be false
@@ -23,5 +23,5 @@ export const safetyDataConfig = (dataConfig: S2DataConfig) => {
   return result;
 };
 
-export const safetyOptions = (options: S2Options) =>
+export const getSafetyOptions = (options: Partial<S2Options>) =>
   merge({}, DEFAULT_OPTIONS, options);
