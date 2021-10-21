@@ -124,15 +124,13 @@ function MainLayout() {
   let mergedCellsInfo = [];
 
   const dataCellTooltip = (
-    <div>
-      <Button
-        onClick={() => {
-          mergeCells(sheet, mergedCellsInfo);
-        }}
-      >
-        合并单元格
-      </Button>
-    </div>
+    <Button
+      onClick={() => {
+        mergeCells(sheet, mergedCellsInfo);
+      }}
+    >
+      合并单元格
+    </Button>
   );
 
   const mergedCellsTooltip = <div>合并后的tooltip</div>;
@@ -187,6 +185,13 @@ function MainLayout() {
         spreadsheet={getSpreadSheet}
         onDataCellMouseUp={onDataCellMouseUp}
         onMergedCellsClick={onMergedCellsClick}
+        header={{
+          title: '表头标题',
+          description: '表头描述',
+          exportCfg: { open: true },
+          advancedSortCfg: { open: true },
+          extra: [dataCellTooltip],
+        }}
       />
     </div>
   );
