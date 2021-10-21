@@ -153,8 +153,8 @@ export class RootInteraction {
     if (isEmpty(currentNode)) {
       return [];
     }
-    while (!currentNode[0]?.cellType) {
-      currentNode = currentNode[0]?.cfg?.children;
+    while (!currentNode?.[0]?.cellType) {
+      currentNode = currentNode?.[0]?.cfg?.children;
     }
 
     const rowCells = currentNode || [];
@@ -173,8 +173,8 @@ export class RootInteraction {
     if (isEmpty(currentNode)) {
       return [];
     }
-    while (!currentNode[0]?.cellType) {
-      currentNode = currentNode[0]?.cfg?.children;
+    while (!currentNode?.[0]?.cellType) {
+      currentNode = currentNode?.[0]?.cfg?.children;
     }
 
     const colCells = currentNode;

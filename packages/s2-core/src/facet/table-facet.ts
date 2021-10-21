@@ -273,7 +273,6 @@ export class TableFacet extends BaseFacet {
       currentNode.colIndex = i;
       currentNode.x = preLeafNode.x + preLeafNode.width;
       currentNode.width = this.calculateColLeafNodesWidth(currentNode);
-      colsHierarchy.width += currentNode.width;
       preLeafNode = currentNode;
       currentNode.y = 0;
 
@@ -284,6 +283,7 @@ export class TableFacet extends BaseFacet {
       if (frozenTrailingColCount === 0) {
         layoutCoordinate(this.cfg, null, currentNode);
       }
+      colsHierarchy.width += currentNode.width;
     }
 
     preLeafNode = Node.blankNode();
