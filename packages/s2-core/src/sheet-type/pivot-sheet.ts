@@ -1,4 +1,5 @@
 import { last } from 'lodash';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import { SpreadSheet } from './spread-sheet';
 import { DataCell } from '@/cell';
 import {
@@ -155,7 +156,7 @@ export class PivotSheet extends SpreadSheet {
     this.render(false);
   }
 
-  public handleGroupSort(event: MouseEvent, meta: Node) {
+  public handleGroupSort(event: CanvasEvent, meta: Node) {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
     const operator: TooltipOperatorOptions = {

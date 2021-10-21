@@ -13,8 +13,11 @@ export const useResizeEffect = (
   const debounceResize = debounce((e: Event) => {
     setResizeTimeStamp(e.timeStamp);
   }, 200);
+
   useEffect(() => {
-    if (!container || !s2) return;
+    if (!container || !s2 || !adaptive) {
+      return;
+    }
 
     const style = getComputedStyle(container);
 
@@ -25,13 +28,21 @@ export const useResizeEffect = (
 
     s2.changeSize(box?.width, box?.height);
     s2.render(false);
-  }, [resizeTimeStamp, container, s2, options.width, options.height]);
+  }, [resizeTimeStamp, container, s2, adaptive]);
 
   useEffect(() => {
-    // 监听窗口变化
-    if (adaptive) window.addEventListener('resize', debounceResize);
+    s2?.changeSize(options.width, options.height);
+    s2?.render(false);
+  }, [s2, options.width, options.height]);
+
+  useEffect(() => {
+    if (adaptive) {
+      window.addEventListener('resize', debounceResize);
+    }
     return () => {
-      if (adaptive) window.removeEventListener('resize', debounceResize);
+      if (adaptive) {
+        window.removeEventListener('resize', debounceResize);
+      }
     };
   }, [adaptive, debounceResize]);
 };

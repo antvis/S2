@@ -14,7 +14,6 @@ import {
   ResizeInfo,
 } from '@/common/interface/resize';
 import { SpreadSheet } from '@/sheet-type';
-import { Style } from '@/common/interface';
 import {
   InterceptType,
   MIN_CELL_HEIGHT,
@@ -137,11 +136,11 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
         return;
       }
 
+      this.spreadsheet.interaction.addIntercepts([InterceptType.RESIZE]);
       this.setResizeArea(shape);
       this.showResizeGroup();
       this.updateResizeGuideLinePosition(originalEvent, resizeInfo);
 
-      // FIXME: 这里拿不到 x
       const header = this.getHeaderGroup();
       this.resizeGroup.move(header.get('x'), header.get('y'));
     });
@@ -149,10 +148,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
 
   private bindMouseMove() {
     this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_MOVE, (event) => {
-      throttle(
-        this.resizeMouseMove,
-        33, // 30fps
-      )(event);
+      throttle(this.resizeMouseMove, 33)(event);
     });
   }
 
@@ -181,9 +177,8 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getColCellResizeDetail(): ResizeDetail {
-    const { padding: colCellPadding } = this.spreadsheet.theme.colCell.cell;
     const { start, end } = this.getResizeGuideLinePosition();
-    const width = end.x - start.x - colCellPadding.left - colCellPadding.right;
+    const width = Math.floor(end.x - start.x);
     const resizeInfo = this.getResizeInfo();
     switch (resizeInfo.affect) {
       case 'field':
@@ -222,13 +217,11 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
     }
   }
 
-  private getRowCellResizeDetail(): {
-    eventType: S2Event;
-    style: Style;
-  } {
+  private getRowCellResizeDetail(): ResizeDetail {
     const { padding: rowCellPadding } = this.spreadsheet.theme.rowCell.cell;
     const { start, end } = this.getResizeGuideLinePosition();
-    const height = end.y - start.y - rowCellPadding.top - rowCellPadding.bottom;
+    const baseHeight = Math.floor(end.y - start.y);
+    const height = baseHeight - rowCellPadding.top - rowCellPadding.bottom;
     const resizeInfo = this.getResizeInfo();
 
     switch (resizeInfo.affect) {
@@ -238,7 +231,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
           style: {
             colCfg: {
               heightByField: {
-                [resizeInfo.id]: height,
+                [resizeInfo.id]: baseHeight,
               },
             },
           },
@@ -298,49 +291,58 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
     const originalEvent = event.originalEvent as MouseEvent;
     const resizeInfo = this.getResizeInfo();
     const resizeShapes = this.resizeGroup.get('children') as IShape[];
-    if (!isEmpty(resizeShapes)) {
-      const [, cellEndBorder] = resizeShapes;
-      const [guideLineStart, guideLineEnd]: ResizeGuideLinePath[] = clone(
-        cellEndBorder.attr('path'),
-      );
 
-      if (resizeInfo.type === 'col') {
-        // 横向移动
-        let offset = originalEvent.offsetX - this.startPos.offsetX;
-        if (guideLineStart[1] + offset - resizeInfo.offsetX < MIN_CELL_WIDTH) {
-          // 禁止拖到最小宽度
-          this.startPos.offsetX = resizeInfo.offsetX + MIN_CELL_WIDTH;
-          offset = resizeInfo.offsetX + MIN_CELL_WIDTH - guideLineStart[1];
-        } else {
-          this.startPos.offsetX = originalEvent.offsetX;
-        }
-        guideLineStart[1] += offset;
-        guideLineEnd[1] += offset;
-        this.resizeArea.attr({
-          x: this.resizeArea.attr('x') + offset,
-        });
-      } else {
-        const guideLineStartY = guideLineStart[2];
-        let offsetY = originalEvent.offsetY - this.startPos.offsetY;
-        if (guideLineStartY + offsetY - resizeInfo.offsetY < MIN_CELL_HEIGHT) {
-          this.startPos.offsetY = resizeInfo.offsetY + MIN_CELL_HEIGHT;
-          offsetY = resizeInfo.offsetY + MIN_CELL_HEIGHT - guideLineStartY;
-        } else {
-          this.startPos.offsetY = originalEvent.offsetY;
-        }
-        guideLineStart[2] += offsetY;
-        guideLineEnd[2] += offsetY;
-        this.resizeArea.attr({
-          y: this.resizeArea.attr('y') + offsetY,
-        });
-      }
-      cellEndBorder.attr('path', [guideLineStart, guideLineEnd]);
+    if (isEmpty(resizeShapes)) {
+      return;
     }
+
+    // resize 拖拽过程中, 将 tooltip 设置为鼠标穿透, 避免造成干扰
+    this.spreadsheet.tooltip.disablePointerEvent();
+
+    const [, cellEndBorder] = resizeShapes;
+    const [guideLineStart, guideLineEnd]: ResizeGuideLinePath[] = clone(
+      cellEndBorder.attr('path'),
+    );
+
+    // 下面的神仙代码我改不动了
+    if (resizeInfo.type === 'col') {
+      // 横向移动
+      let offset = originalEvent.offsetX - this.startPos.offsetX;
+      if (guideLineStart[1] + offset - resizeInfo.offsetX < MIN_CELL_WIDTH) {
+        // 禁止拖到最小宽度
+        this.startPos.offsetX = resizeInfo.offsetX + MIN_CELL_WIDTH;
+        offset = resizeInfo.offsetX + MIN_CELL_WIDTH - guideLineStart[1];
+      } else {
+        this.startPos.offsetX = originalEvent.offsetX;
+      }
+      guideLineStart[1] += offset;
+      guideLineEnd[1] += offset;
+      this.resizeArea.attr({
+        x: this.resizeArea.attr('x') + offset,
+      });
+    } else {
+      const guideLineStartY = guideLineStart[2];
+      let offsetY = originalEvent.offsetY - this.startPos.offsetY;
+      if (guideLineStartY + offsetY - resizeInfo.offsetY < MIN_CELL_HEIGHT) {
+        this.startPos.offsetY = resizeInfo.offsetY + MIN_CELL_HEIGHT;
+        offsetY = resizeInfo.offsetY + MIN_CELL_HEIGHT - guideLineStartY;
+      } else {
+        this.startPos.offsetY = originalEvent.offsetY;
+      }
+      guideLineStart[2] += offsetY;
+      guideLineEnd[2] += offsetY;
+      this.resizeArea.attr({
+        y: this.resizeArea.attr('y') + offsetY,
+      });
+    }
+    cellEndBorder.attr('path', [guideLineStart, guideLineEnd]);
   };
 
   private renderByResize() {
     const resizeInfo = this.getResizeInfo();
-    const { style, eventType: resizeEventType } = this.getCellResizeDetail();
+    const { style, eventType: resizeEventType } =
+      this.getCellResizeDetail() || {};
+
     const resizeDetail = {
       info: resizeInfo,
       style,

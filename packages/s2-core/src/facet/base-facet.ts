@@ -28,6 +28,7 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
+  InterceptType,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
@@ -195,6 +196,11 @@ export abstract class BaseFacet {
     this.renderScrollBars();
     this.renderBackground();
     this.dynamicRenderCell(false);
+    this.removeResizeIntercept();
+  }
+
+  private removeResizeIntercept() {
+    this.spreadsheet.interaction.removeIntercepts([InterceptType.RESIZE]);
   }
 
   /**
@@ -403,34 +409,46 @@ export abstract class BaseFacet {
     return cornerWidth;
   };
 
-  getCornerWidth = (leftWidth: number, colsHierarchy: Hierarchy): number => {
+  getCornerWidth = (
+    originalCornerWidth: number,
+    colsHierarchy: Hierarchy,
+  ): number => {
+    if (this.spreadsheet.isHierarchyTreeType()) {
+      return originalCornerWidth;
+    }
+
+    // 这TM什么艺术代码 ???
     const box = this.getCanvasHW();
     const leftMaxRatio = 0.5;
     const maxRightWidth = box.width * (1 - leftMaxRatio);
-    const rightWidth = box.width - leftWidth;
-    let renderWidth: number;
-    if (!this.spreadsheet.isHierarchyTreeType()) {
-      if (
-        colsHierarchy.width > rightWidth &&
-        colsHierarchy.width <= maxRightWidth
-      ) {
-        renderWidth = leftWidth - (maxRightWidth - colsHierarchy.width);
-      } else if (colsHierarchy.width <= rightWidth) {
-        renderWidth = leftWidth;
-      } else {
-        renderWidth = Math.min(leftWidth, box.width * leftMaxRatio);
-      }
-      if (
-        box.width - renderWidth > colsHierarchy.width &&
-        this.spreadsheet.isColAdaptive()
-      ) {
-        renderWidth += box.width - renderWidth - colsHierarchy.width;
-      }
+    const rightWidth = box.width - originalCornerWidth;
+    let cornerWidth: number;
+    if (
+      colsHierarchy.width > rightWidth &&
+      colsHierarchy.width <= maxRightWidth
+    ) {
+      cornerWidth = originalCornerWidth - (maxRightWidth - colsHierarchy.width);
+    } else if (colsHierarchy.width <= rightWidth) {
+      cornerWidth = originalCornerWidth;
     } else {
-      // tree mode
-      renderWidth = leftWidth;
+      cornerWidth = Math.min(originalCornerWidth, box.width * leftMaxRatio);
     }
-    return Math.floor(renderWidth);
+
+    const panelWidth = box.width - cornerWidth;
+    // 拖拽时需要忽略自适应, 避免出现角头空白的情况, (拖拽宽度权重 > 自适应宽度权重)
+    const isResizeAction = this.spreadsheet.interaction.hasIntercepts([
+      InterceptType.RESIZE,
+    ]);
+
+    if (
+      panelWidth > colsHierarchy.width &&
+      this.spreadsheet.isColAdaptive() &&
+      !isResizeAction
+    ) {
+      const adaptiveCornerWidthDiff = panelWidth - colsHierarchy.width;
+      cornerWidth += adaptiveCornerWidthDiff;
+    }
+    return Math.floor(cornerWidth);
   };
 
   calculatePanelBBox = () => {

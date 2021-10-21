@@ -168,7 +168,9 @@ export class CornerCell extends HeaderCell {
    * @private
    */
   protected drawBorderShape() {
-    if (this.meta.cornerType !== 'row') return;
+    if (this.meta.cornerType !== 'row') {
+      return;
+    }
     const { x, y, width } = this.getCellArea();
     const {
       horizontalBorderColor,

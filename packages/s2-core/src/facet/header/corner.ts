@@ -57,7 +57,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const { width, height } = panelBBox;
     const cornerWidth = cornerBBox.width;
     const cornerHeight = cornerBBox.height;
-    const cornerNodes: Node[] = this.getCornerNodes(
+    const cornerNodes = this.getCornerNodes(
       { x: cornerBBox.x, y: cornerBBox.y },
       cornerWidth,
       cornerHeight,
@@ -258,8 +258,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected clip(): void {
-    const cfg = this.headerConfig;
-    const { width, height, scrollX } = cfg;
+    const { width, height, scrollX } = this.headerConfig;
     this.setClip({
       type: 'rect',
       attrs: {
@@ -301,9 +300,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         id: KEY_GROUP_CORNER_RESIZE_AREA,
       })) as Group;
     const treeType = this.headerConfig.spreadsheet.isHierarchyTreeType();
-    if (!treeType) {
-      // do it in corner cell
-    } else if (treeType) {
+    if (treeType) {
       resizeArea.addShape('rect', {
         attrs: {
           x: position.x + width - resizeStyle.size / 2,

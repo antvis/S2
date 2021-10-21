@@ -193,7 +193,7 @@ export const defaultOptions: S2Options = {
   frozenColCount: 0,
   frozenTrailingRowCount: 0,
   frozenTrailingColCount: 0,
-  hdAdapter: true,
+  hdAdapter: false,
   scrollSpeedRatio: {
     horizontal: 1,
     vertical: 1,

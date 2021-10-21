@@ -156,30 +156,23 @@ export class ColCell extends HeaderCell {
 
   // 绘制热区
   private drawResizeArea() {
-    const { position, viewportWidth } = this.headerConfig;
-    const {
-      label,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      parent,
-    } = this.meta;
+    const { viewportWidth, offset } = this.headerConfig;
+    const { label, width: cellWidth, height: cellHeight, parent } = this.meta;
     const resizeStyle = this.getStyle('resizeArea');
     const resizeArea = this.getColResizeArea();
+    const resizeAreaName = `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`;
     const prevHorizontalResizeArea = resizeArea.find((element) => {
-      return (
-        element.attrs.name ===
-        `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`
-      );
+      return element.attrs.name === resizeAreaName;
     });
+    const resizerOffset = this.getColResizeAreaOffset();
     // 如果已经绘制当前列高调整热区热区，则不再绘制
     if (!prevHorizontalResizeArea) {
       // 列高调整热区
       resizeArea.addShape('rect', {
         attrs: {
-          name: `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`,
-          x: position.x,
-          y: position.y + y + cellHeight - resizeStyle.size / 2,
+          name: resizeAreaName,
+          x: resizerOffset.x + offset,
+          y: resizerOffset.y + cellHeight - resizeStyle.size / 2,
           width: viewportWidth,
           height: resizeStyle.size,
           fill: resizeStyle.background,
@@ -191,8 +184,8 @@ export class ColCell extends HeaderCell {
             type: 'row',
             id: this.getColResizeAreaKey(),
             affect: 'field',
-            offsetX: position.x,
-            offsetY: position.y + y,
+            offsetX: resizerOffset.x,
+            offsetY: resizerOffset.y,
             width: viewportWidth,
             height: cellHeight,
           } as ResizeInfo,
@@ -200,7 +193,6 @@ export class ColCell extends HeaderCell {
       });
     }
     if (this.meta.isLeaf) {
-      const resizerOffset = this.getColResizeAreaOffset();
       // 列宽调整热区
       // 基准线是根据container坐标来的，因此把热区画在container
       resizeArea.addShape('rect', {

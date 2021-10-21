@@ -245,6 +245,9 @@ export abstract class SpreadSheet extends EE {
 
   public abstract clearDrillDownData(rowNodeId?: string): void;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public handleGroupSort(event: CanvasEvent, meta: Node) {}
+
   public showTooltip(showOptions: TooltipShowOptions) {
     this.tooltip.show?.(showOptions);
   }
@@ -542,7 +545,4 @@ export abstract class SpreadSheet extends EE {
     }
     hideColumnsByThunkGroup(this, hiddenColumnFields, true);
   });
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public handleGroupSort(event: MouseEvent, meta: Node) {}
 }
