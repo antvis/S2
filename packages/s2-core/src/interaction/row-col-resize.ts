@@ -51,6 +51,8 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
             stroke: this.spreadsheet.theme.resizeArea.guidLineColor,
             strokeWidth: this.spreadsheet.theme.resizeArea.size,
           };
+
+          this.resizeGroup.addShape('path', { attrs });
           this.resizeGroup.addShape('path', { attrs });
           // 加这个shape是其实是一层透明的mask遮罩
           // 防止resize过程中触发到别的interaction，因此加了遮罩，触发resize后在遮罩上滚动
@@ -70,6 +72,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
         this.resizeGroup.set('visible', true);
         this.resizeGroup.set('name', 'resize-group');
         const children = this.resizeGroup.get('children');
+
         if (children) {
           /**
            * cellStartBorder 当前resize的起始边
