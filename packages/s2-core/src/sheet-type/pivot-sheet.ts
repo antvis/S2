@@ -79,10 +79,14 @@ export class PivotSheet extends SpreadSheet {
     return this.dataSet.fields.valueInCols;
   }
 
-  public clearDrillDownData(rowNodeId?: string) {
+  public clearDrillDownData(rowNodeId?: string, preventRender?: boolean) {
     if (this.dataSet instanceof PivotDataSet) {
       this.dataSet.clearDrillDownData(rowNodeId);
-      this.render(false);
+      if (!preventRender) {
+        // 重置当前交互
+        this.interaction.reset();
+        this.render();
+      }
     }
   }
 

@@ -242,7 +242,10 @@ export abstract class SpreadSheet extends EE {
 
   protected abstract buildFacet(): void;
 
-  public abstract clearDrillDownData(rowNodeId?: string): void;
+  public abstract clearDrillDownData(
+    rowNodeId?: string,
+    preventRender?: boolean,
+  ): void;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public handleGroupSort(event: CanvasEvent, meta: Node) {}
@@ -324,6 +327,7 @@ export abstract class SpreadSheet extends EE {
   public render(reloadData = true) {
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
     if (reloadData) {
+      this.clearDrillDownData('', true);
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();
