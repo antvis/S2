@@ -64,3 +64,6 @@ export const PRECISION = 16;
 export const ROOT_BEGINNING_REGEX = /^root\[&\]*/;
 
 export const IMAGE = 'image';
+
+// 箭头最大占整个容器的比例 (0-1)
+export const CORNER_MAX_WIDTH_RATIO = 0.5;

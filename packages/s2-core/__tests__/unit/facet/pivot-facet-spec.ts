@@ -58,6 +58,7 @@ jest.mock('src/sheet-type', () => {
     }),
   };
 });
+
 jest.mock('src/data-set/pivot-data-set', () => {
   return {
     PivotDataSet: jest.fn().mockImplementation(() => {
@@ -78,8 +79,9 @@ jest.mock('src/data-set/pivot-data-set', () => {
     }),
   };
 });
-const MockSpreadSheet = SpreadSheet as any as jest.Mock<SpreadSheet>;
-const MockPivotDataSet = PivotDataSet as any as jest.Mock<PivotDataSet>;
+
+const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
+const MockPivotDataSet = PivotDataSet as unknown as jest.Mock<PivotDataSet>;
 
 describe('Pivot Mode Facet Test', () => {
   const s2: SpreadSheet = new MockSpreadSheet();

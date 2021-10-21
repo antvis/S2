@@ -21,17 +21,14 @@ import {
   S2Event,
 } from '@/common/constant';
 
-/**
- * Resize row&col width/height interaction
- */
-export class RowColResize extends BaseEvent implements BaseEventImplement {
+export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private resizeArea: IGroup;
 
   private resizeGroup: IGroup;
 
   private container: IGroup;
 
-  private startPos: { offsetX?: number; offsetY?: number } = {};
+  private resizeStartPosition: { offsetX?: number; offsetY?: number } = {};
 
   constructor(spreadsheet: SpreadSheet) {
     super(spreadsheet);
@@ -111,7 +108,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
         ['M', offsetX + width, offsetY],
         ['L', offsetX + width, canvasHeight],
       ]);
-      this.startPos.offsetX = event.offsetX;
+      this.resizeStartPosition.offsetX = event.offsetX;
       return;
     }
 
@@ -123,7 +120,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
       ['M', offsetX, offsetY + height],
       ['L', canvasWidth, offsetY + height],
     ]);
-    this.startPos.offsetY = event.offsetY;
+    this.resizeStartPosition.offsetY = event.offsetY;
   }
 
   private bindMouseDown() {
@@ -180,6 +177,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
     const { start, end } = this.getResizeGuideLinePosition();
     const width = Math.floor(end.x - start.x);
     const resizeInfo = this.getResizeInfo();
+
     switch (resizeInfo.affect) {
       case 'field':
         return {
@@ -307,13 +305,13 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
     // 下面的神仙代码我改不动了
     if (resizeInfo.type === 'col') {
       // 横向移动
-      let offset = originalEvent.offsetX - this.startPos.offsetX;
+      let offset = originalEvent.offsetX - this.resizeStartPosition.offsetX;
       if (guideLineStart[1] + offset - resizeInfo.offsetX < MIN_CELL_WIDTH) {
         // 禁止拖到最小宽度
-        this.startPos.offsetX = resizeInfo.offsetX + MIN_CELL_WIDTH;
+        this.resizeStartPosition.offsetX = resizeInfo.offsetX + MIN_CELL_WIDTH;
         offset = resizeInfo.offsetX + MIN_CELL_WIDTH - guideLineStart[1];
       } else {
-        this.startPos.offsetX = originalEvent.offsetX;
+        this.resizeStartPosition.offsetX = originalEvent.offsetX;
       }
       guideLineStart[1] += offset;
       guideLineEnd[1] += offset;
@@ -322,12 +320,12 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
       });
     } else {
       const guideLineStartY = guideLineStart[2];
-      let offsetY = originalEvent.offsetY - this.startPos.offsetY;
+      let offsetY = originalEvent.offsetY - this.resizeStartPosition.offsetY;
       if (guideLineStartY + offsetY - resizeInfo.offsetY < MIN_CELL_HEIGHT) {
-        this.startPos.offsetY = resizeInfo.offsetY + MIN_CELL_HEIGHT;
+        this.resizeStartPosition.offsetY = resizeInfo.offsetY + MIN_CELL_HEIGHT;
         offsetY = resizeInfo.offsetY + MIN_CELL_HEIGHT - guideLineStartY;
       } else {
-        this.startPos.offsetY = originalEvent.offsetY;
+        this.resizeStartPosition.offsetY = originalEvent.offsetY;
       }
       guideLineStart[2] += offsetY;
       guideLineEnd[2] += offsetY;
@@ -362,7 +360,7 @@ export class RowColResize extends BaseEvent implements BaseEventImplement {
   }
 
   private render() {
-    this.startPos = {};
+    this.resizeStartPosition = {};
     this.resizeArea = null;
     this.resizeGroup = null;
     this.spreadsheet.render(false);

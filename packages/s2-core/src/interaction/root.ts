@@ -7,7 +7,7 @@ import {
 } from './base-interaction/click';
 import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
-import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
+import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
 import { ColCell, DataCell, RowCell } from '@/cell';
 import {
   CellTypes,
@@ -239,7 +239,7 @@ export class RootInteraction {
       );
       this.interactions.set(
         InteractionName.COL_ROW_RESIZE,
-        new RowColResize(this.spreadsheet),
+        new RowColumnResize(this.spreadsheet),
       );
       this.interactions.set(
         InteractionName.COL_ROW_MULTI_SELECTION,
