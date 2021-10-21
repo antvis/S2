@@ -154,7 +154,7 @@ export class RootInteraction {
       return [];
     }
     while (!currentNode?.[0]?.cellType) {
-      currentNode = currentNode[0]?.cfg?.children;
+      currentNode = currentNode?.[0]?.cfg?.children;
     }
 
     const rowCells = currentNode || [];
