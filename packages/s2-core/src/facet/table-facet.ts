@@ -78,7 +78,10 @@ export class TableFacet extends BaseFacet {
       set(s2.dataCfg, 'filterParams', oldConfig);
 
       s2.render(true);
-      s2.emit(S2Event.RANGE_FILTERED, params);
+      s2.emit(
+        S2Event.RANGE_FILTERED,
+        (s2.dataSet as TableDataSet).getDisplayDataSet(),
+      );
     });
   }
 
