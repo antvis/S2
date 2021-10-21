@@ -5,18 +5,15 @@ import { act } from 'react-dom/test-utils';
 import { SpreadSheet } from '../../src';
 import { getContainer } from '../util/helpers';
 import { SheetEntry } from '../util/sheet-entry';
-
-const intervalColor = 'red';
-const bgColor = '#29A294';
+import { getGradient } from '../../../../s2-site/examples/conditions/advanced/demo/gradient-interval';
 
 const sheetInstance: MutableRefObject<SpreadSheet> = { current: null };
 
 function MainLayout() {
   const [isCompare, setCompare] = useState(false);
-  const [values, setValues] = useState({ min: 0, max: 1000 });
-
+  const [intervalValue, setIntervalValue] = useState({ min: 0, max: 1000 });
+  const [backgroundValue, setBackgroundValue] = useState({ min: 0, max: 1000 });
   const [enableBg, setEnableBg] = useState(false);
-  const [bgThreshold, setBgThreshold] = useState(0);
 
   const onCompareChange = (checked) => {
     setCompare(checked);
@@ -26,10 +23,6 @@ function MainLayout() {
     setEnableBg(checked);
   };
 
-  const onThresholdChange = (threshold: number) => {
-    setBgThreshold(threshold);
-  };
-
   return (
     <SheetEntry
       dataCfg={{}}
@@ -37,32 +30,68 @@ function MainLayout() {
         conditions: {
           interval: [
             {
-              field: 'price',
-              mapping() {
+              field: 'number',
+              mapping(fieldValue) {
+                const rage =
+                  (fieldValue - intervalValue.min) /
+                  (intervalValue.max - intervalValue.min);
+                const intervalColor = getGradient(rage, '#7ee5f6', '#3a9dbf');
                 return isCompare
                   ? {
                       fill: intervalColor,
                       isCompare: true,
-                      minValue: values.min,
-                      maxValue: values.max,
+                      minValue: intervalValue.min,
+                      maxValue: intervalValue.max,
                     }
-                  : { fill: intervalColor };
+                  : {
+                      fill: '',
+                      isCompare,
+                    };
               },
             },
           ],
           background: [
             {
-              field: 'cost',
+              field: 'number',
               mapping(value: number) {
+                const rage =
+                  (value - backgroundValue.min) /
+                  (backgroundValue.max - backgroundValue.min);
+                const intervalColor = getGradient(rage, '#daccfa', '#a171f7');
                 return (
-                  enableBg &&
-                  value >= bgThreshold && {
-                    fill: bgColor,
+                  enableBg && {
+                    fill: intervalColor,
                   }
                 );
               },
             },
           ],
+          text: [
+            {
+              field: 'number',
+              mapping(fieldValue) {
+                return {
+                  fill: fieldValue >= 15000 && enableBg ? '#fff' : '#282b32',
+                };
+              },
+            },
+          ],
+        },
+        totals: {
+          row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: ['province'],
+          },
+          col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            reverseLayout: true,
+            reverseSubLayout: true,
+            subTotalsDimensions: ['type', 'sub_type'],
+          },
         },
       }}
       ref={sheetInstance}
@@ -80,24 +109,25 @@ function MainLayout() {
             最小值：{' '}
             <InputNumber
               disabled={!isCompare}
-              value={values.min}
+              value={intervalValue.min}
               onChange={(v) => {
-                const updated = { ...values, min: v };
-                setValues(updated);
+                const updated = { ...intervalValue, min: v };
+                setIntervalValue(updated);
               }}
             />
             最大值：{' '}
             <InputNumber
               disabled={!isCompare}
-              value={values.max}
+              value={intervalValue.max}
               onChange={(v) => {
-                const updated = { ...values, max: v };
-                setValues(updated);
+                const updated = { ...intervalValue, max: v };
+                setIntervalValue(updated);
               }}
             />
           </div>
+
           <div style={{ display: 'block', marginBottom: 20 }}>
-            开启背景色条自定义区间：
+            开启背景自定义区间：
             <Switch
               checkedChildren="是"
               unCheckedChildren="否"
@@ -105,11 +135,23 @@ function MainLayout() {
               onChange={onBgChange}
               style={{ marginRight: 10 }}
             />
-            阈值：{' '}
+            最小值：{' '}
             <InputNumber
               disabled={!enableBg}
-              value={bgThreshold}
-              onChange={onThresholdChange}
+              value={backgroundValue.min}
+              onChange={(v) => {
+                const updated = { ...backgroundValue, min: v };
+                setBackgroundValue(updated);
+              }}
+            />
+            最大值：{' '}
+            <InputNumber
+              disabled={!enableBg}
+              value={backgroundValue.max}
+              onChange={(v) => {
+                const updated = { ...backgroundValue, max: v };
+                setBackgroundValue(updated);
+              }}
             />
           </div>
         </div>
@@ -127,6 +169,5 @@ describe('spreadsheet multiple values cell spec', () => {
     expect(sheetInstance.current.options.conditions.interval).toHaveLength(1);
     expect(sheetInstance.current.options.conditions.background).toHaveLength(1);
     expect(sheetInstance.current.options.conditions.icon).toBeUndefined();
-    expect(sheetInstance.current.options.conditions.text).toBeUndefined();
   });
 });
