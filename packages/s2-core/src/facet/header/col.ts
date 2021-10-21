@@ -137,10 +137,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     });
 
     this.prevRendererColIds = rendererColIds.map((item) => item.id);
-
-    this.scrollGroup.getChildren().forEach((n: ColCell) => {
-      this.drawResizeArea(n.getMeta());
-    });
+    this.drawResizeArea();
   }
 
   protected offset() {
@@ -163,7 +160,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     };
   }
 
-  protected getColResizeArea() {
+  protected getColResizeArea(meta: Node) {
     const { spreadsheet } = this.headerConfig;
 
     const prevResizeArea = spreadsheet?.foregroundGroup.findById(
@@ -180,13 +177,19 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     return spreadsheet.theme[cellType];
   }
 
-  // 绘制热区
-  private drawResizeArea(meta: Node) {
+  protected drawResizeArea() {
+    this.scrollGroup.getChildren().forEach((n: ColCell) => {
+      this.drawResizeAreaForNode(n.getMeta());
+    });
+  }
+
+  // 绘制单个节点的热区
+  protected drawResizeAreaForNode(meta: Node) {
     const { spreadsheet } = this.headerConfig;
     const { position, viewportWidth } = this.headerConfig;
     const { label, y, width: cellWidth, height: cellHeight, parent } = meta;
     const resizeStyle = spreadsheet?.theme?.resizeArea;
-    const resizeArea = this.getColResizeArea();
+    const resizeArea = this.getColResizeArea(meta);
     const prevHorizontalResizeArea = resizeArea.find((element) => {
       return (
         element.attrs.name === `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${meta.key}`

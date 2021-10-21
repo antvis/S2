@@ -1,19 +1,16 @@
-import { each, isEmpty } from 'lodash';
-import { IGroup, IShape } from '@antv/g-base';
-import { translateGroup } from '../utils';
-import { BaseHeader, BaseHeaderConfig } from './base';
+import { IGroup } from '@antv/g-base';
+import { Group } from '@antv/g-canvas';
+import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
 import { ColHeader, ColHeaderConfig } from './col';
 import {
   KEY_GROUP_COL_RESIZE_AREA,
+  KEY_GROUP_FROZEN_COL_RESIZE_AREA,
   SERIES_NUMBER_FIELD,
   KEY_GROUP_COL_FROZEN,
-  KEY_GROUP_COL_SCROLL,
   KEY_GROUP_COL_FROZEN_TRAILING,
-  FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
 } from '@/common/constant';
-import { ColCell, TableColCell, TableCornerCell } from '@/cell';
-import { Formatter, S2CellType } from '@/common/interface';
+import { TableColCell, TableCornerCell, ColCell } from '@/cell';
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type/index';
 
@@ -45,6 +42,69 @@ export class TableColHeader extends ColHeader {
     }
   }
 
+  protected isFrozenCell(meta: Node) {
+    const { spreadsheet } = this.headerConfig;
+    const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
+    const { colIndex } = meta;
+    const colLeafNodes = spreadsheet?.facet.layoutResult.colLeafNodes;
+    return (
+      isFrozenCol(colIndex, frozenColCount) ||
+      isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLeafNodes.length)
+    );
+  }
+
+  protected drawResizeArea() {
+    const nodes = [
+      ...this.scrollGroup.getChildren(),
+      ...(this.frozenColGroup?.getChildren() || []),
+      ...(this.frozenTrailingColGroup?.getChildren() || []),
+    ];
+    nodes.forEach((n: ColCell) => {
+      this.drawResizeAreaForNode(n.getMeta());
+    });
+  }
+
+  public clear() {
+    const { spreadsheet } = this.headerConfig;
+    super.clear();
+    // 额外清除冻结列的 Resizer Area
+    const resizerArea = spreadsheet?.foregroundGroup.findById(
+      KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+    ) as unknown as IGroup;
+    resizerArea?.clear();
+  }
+
+  protected getColResizeAreaOffset(meta: Node) {
+    const { offset, position } = this.headerConfig;
+    const { x, y } = meta;
+
+    let finalOffset = offset;
+    // 如果当前列被冻结，不对 resizer 做 offset 处理
+    if (this.isFrozenCell(meta)) {
+      finalOffset = 0;
+    }
+
+    return {
+      x: position.x - finalOffset + x,
+      y: position.y + y,
+    };
+  }
+
+  protected getColResizeArea(meta: Node) {
+    const { spreadsheet } = this.headerConfig;
+    if (this.isFrozenCell(meta)) {
+      const resizerArea = spreadsheet?.foregroundGroup.findById(
+        KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+      );
+      return (resizerArea ||
+        spreadsheet?.foregroundGroup.addGroup({
+          id: KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+        })) as Group;
+    }
+
+    return super.getColResizeArea(meta);
+  }
+
   protected getCellInstance(
     item: Node,
     spreadsheet: SpreadSheet,
@@ -64,17 +124,13 @@ export class TableColHeader extends ColHeader {
     const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
     const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
 
-    if (this.headerConfig.spreadsheet.isTableMode()) {
-      if (node.colIndex < frozenColCount) {
-        return this.frozenColGroup;
-      }
-      if (
-        frozenTrailingColCount > 0 &&
-        node.colIndex >= colLength - frozenTrailingColCount
-      ) {
-        return this.frozenTrailingColGroup;
-      }
+    if (isFrozenCol(node.colIndex, frozenColCount)) {
+      return this.frozenColGroup;
     }
+    if (isFrozenTrailingCol(node.colIndex, frozenTrailingColCount, colLength)) {
+      return this.frozenTrailingColGroup;
+    }
+
     return this.scrollGroup;
   }
 
@@ -84,9 +140,8 @@ export class TableColHeader extends ColHeader {
     const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
 
     if (
-      (frozenColCount > 0 && item.colIndex < frozenColCount) ||
-      (frozenTrailingColCount > 0 &&
-        item.colIndex >= colLength - frozenTrailingColCount)
+      isFrozenCol(item.colIndex, frozenColCount) ||
+      isFrozenTrailingCol(item.colIndex, frozenTrailingColCount, colLength)
     ) {
       return true;
     }
