@@ -44,9 +44,9 @@ describe('Total Cells Rendering Test', () => {
       .filter((node: Node) => node.isSubTotals);
 
     expect(rowSubTotalNodes[0].width).toEqual(192);
-    expect(rowSubTotalNodes[0].height).toEqual(46);
+    expect(rowSubTotalNodes[0].height).toEqual(30);
     expect(rowSubTotalNodes[0].x).toEqual(96);
-    expect(rowSubTotalNodes[0].y).toEqual(46);
+    expect(rowSubTotalNodes[0].y).toEqual(30);
 
     expect(colSubTotalNodes[0].width).toEqual(192);
     expect(colSubTotalNodes[0].height).toEqual(120);
