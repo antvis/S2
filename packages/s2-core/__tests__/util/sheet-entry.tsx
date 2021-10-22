@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Input, Space, Switch } from 'antd';
+import { Input, Select, Space, Switch } from 'antd';
 import { isArray, merge, mergeWith } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
@@ -83,7 +83,7 @@ export const SheetEntry = forwardRef(
       () => initDataCfg,
     );
 
-    const onValueInColsChange = (checked) => {
+    const onValueInColsChange = (checked: boolean) => {
       setValueInCols(checked);
       setDataCfg(
         merge({}, dataCfg, {
@@ -94,7 +94,17 @@ export const SheetEntry = forwardRef(
       );
     };
 
-    const onModeChange = (checked) => {
+    const onAutoAdjustBoundary = (value: string) => {
+      setOptions(
+        merge({}, options, {
+          tooltip: {
+            autoAdjustBoundary: value || null,
+          },
+        }),
+      );
+    };
+
+    const onModeChange = (checked: boolean) => {
       setMode(checked ? 'tree' : 'grid');
       setOptions(
         merge({}, options, {
@@ -103,7 +113,7 @@ export const SheetEntry = forwardRef(
       );
     };
 
-    const onFreezeRowHeaderChange = (checked) => {
+    const onFreezeRowHeaderChange = (checked: boolean) => {
       setOptions(
         merge({}, options, {
           freezeRowHeader: checked,
@@ -160,6 +170,16 @@ export const SheetEntry = forwardRef(
               setAdaptive(checked);
             }}
           />
+          <Select
+            defaultValue={options.tooltip.autoAdjustBoundary}
+            onChange={onAutoAdjustBoundary}
+          >
+            <Select.Option value="container">
+              container (表格区域)
+            </Select.Option>
+            <Select.Option value="body">body (浏览器可视区域)</Select.Option>
+            <Select.Option value="">无</Select.Option>
+          </Select>
           <Space>
             设置宽度 ：
             <Input

@@ -70,6 +70,7 @@ describe('merge test', () => {
       totals: {},
       tooltip: {
         showTooltip: true,
+        autoAdjustBoundary: 'body',
         operation: {
           hiddenColumns: true,
           trend: false,
