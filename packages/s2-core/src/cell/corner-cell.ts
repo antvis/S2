@@ -171,11 +171,14 @@ export class CornerCell extends HeaderCell {
     if (this.meta.cornerType !== 'row') {
       return;
     }
-    const { x, y, width } = this.getCellArea();
+    const { x, y, width, height } = this.getCellArea();
     const {
       horizontalBorderColor,
       horizontalBorderWidth,
       horizontalBorderColorOpacity,
+      verticalBorderColor,
+      verticalBorderWidth,
+      verticalBorderColorOpacity,
     } = this.getStyle().cell;
 
     // horizontal border
@@ -191,6 +194,21 @@ export class CornerCell extends HeaderCell {
         stroke: horizontalBorderColor,
         lineWidth: horizontalBorderWidth,
         opacity: horizontalBorderColorOpacity,
+      },
+    );
+    // vertical border
+    renderLine(
+      this,
+      {
+        x1: x + width,
+        y1: y,
+        x2: x + width,
+        y2: y + height,
+      },
+      {
+        stroke: verticalBorderColor,
+        lineWidth: verticalBorderWidth,
+        opacity: verticalBorderColorOpacity,
       },
     );
   }

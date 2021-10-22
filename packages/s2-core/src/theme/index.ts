@@ -97,7 +97,7 @@ export const getTheme = (
         verticalBorderColorOpacity: 1,
         // ----------- bottom border width --------------
         horizontalBorderWidth: 1,
-        verticalBorderWidth: 0,
+        verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
           top: 0,
@@ -236,7 +236,7 @@ export const getTheme = (
         verticalBorderColorOpacity: 1,
         // ----------- border width --------------
         horizontalBorderWidth: 1,
-        verticalBorderWidth: 0,
+        verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
           top: 0,

@@ -169,9 +169,12 @@ export class RowCell extends HeaderCell {
       horizontalBorderColor,
       horizontalBorderWidth,
       horizontalBorderOpacity,
+      verticalBorderColor,
+      verticalBorderWidth,
+      verticalBorderColorOpacity,
     } = this.getStyle().cell;
-    const { x, y, height } = this.getCellArea();
-    // 1、bottom border
+    const { x, y, height, width: cellWidth } = this.getCellArea();
+    // horizontal border
     const contentIndent = this.getContentIndent();
     renderLine(
       this,
@@ -185,6 +188,22 @@ export class RowCell extends HeaderCell {
         stroke: horizontalBorderColor,
         lineWidth: horizontalBorderWidth,
         opacity: horizontalBorderOpacity,
+      },
+    );
+
+    // vertical border
+    renderLine(
+      this,
+      {
+        x1: x + contentIndent + cellWidth,
+        y1: y,
+        x2: x + contentIndent + cellWidth,
+        y2: y + height,
+      },
+      {
+        stroke: verticalBorderColor,
+        lineWidth: verticalBorderWidth,
+        opacity: verticalBorderColorOpacity,
       },
     );
   }
