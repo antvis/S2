@@ -1,6 +1,6 @@
 import { Group } from '@antv/g-canvas';
 import { GuiIcon } from '@/common/icons';
-import { S2Event, DEFAULT_PADDING, SortMethodType } from '@/common/constant';
+import { S2Event, SortMethodType } from '@/common/constant';
 import { SpreadSheet } from '@/.';
 
 export const getSortParam = (key: string, spreadsheet: SpreadSheet) => {
