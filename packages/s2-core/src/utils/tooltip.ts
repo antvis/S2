@@ -40,7 +40,6 @@ import {
 } from '..';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
-import { getRightFieldInQuery } from '@/utils/layout/get-right-field-in-query';
 import { i18n } from '@/common/i18n';
 import {
   POSITION_X_OFFSET,
@@ -135,7 +134,6 @@ export const getPosition = (
   return {
     x,
     y,
-    tipHeight: tooltipBCR.height,
   };
 };
 
@@ -458,18 +456,6 @@ export const getTooltipData = (params: TooltipDataParam) => {
   }
   const { interpretation, infos, tips, name } = firstCellInfo || {};
   return { summaries, interpretation, infos, tips, name, headInfo, details };
-};
-
-export const getRightAndValueField = (
-  spreadsheet: SpreadSheet,
-  options: TooltipOptions,
-): { rightField: string; valueField: string } => {
-  const rowFields = spreadsheet?.dataSet?.fields?.rows || [];
-  const rowQuery = options?.rowQuery || {};
-  const rightField = getRightFieldInQuery(rowQuery, rowFields);
-  const valueField = get(rowQuery, rightField, '') as string;
-
-  return { rightField, valueField };
 };
 
 export const mergeCellInfo = (cells: S2CellType[]): TooltipData[] => {

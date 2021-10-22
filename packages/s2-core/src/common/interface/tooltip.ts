@@ -21,7 +21,6 @@ export interface TooltipOperatorOptions {
 export interface TooltipPosition {
   x: number;
   y: number;
-  tipHeight?: number;
 }
 
 export type ListItem = {
@@ -43,7 +42,6 @@ export interface TooltipOptions {
   isTotals?: boolean;
   showSingleTips?: boolean;
   onlyMenu?: boolean;
-  rowQuery?: Record<string, unknown>;
 }
 
 export interface TooltipSummaryOptions {
