@@ -65,15 +65,16 @@ export const renderDetailTypeSortIcon = (
   parent: Group,
   spreadsheet: SpreadSheet,
   textX: number,
-  textY,
-  key,
+  textY: number,
+  marginTop: number,
+  key: string,
 ) => {
   const icons = getIcon(key, spreadsheet);
   renderIcon(
     parent,
     spreadsheet,
     textX,
-    textY - DEFAULT_PADDING * 2,
+    textY - marginTop,
     icons.upIcon,
     key,
     SortMethodType.ASC,
@@ -82,7 +83,7 @@ export const renderDetailTypeSortIcon = (
     parent,
     spreadsheet,
     textX,
-    textY - DEFAULT_PADDING / 2,
+    textY,
     icons.downIcon,
     key,
     SortMethodType.DESC,
