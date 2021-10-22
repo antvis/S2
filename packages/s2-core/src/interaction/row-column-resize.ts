@@ -94,10 +94,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     const { width: canvasWidth, height: canvasHeight } =
       this.spreadsheet.options;
-    const [startResizeGuideLineShape, endResizeGuideLineShape] = resizeShapes;
+    const [startResizeGuideLineShape, endResizeGuideLineShape, mask] =
+      resizeShapes;
     const { type: cellType, offsetX, offsetY, width, height } = resizeInfo;
 
-    endResizeGuideLineShape.attr('cursor', `${cellType}-resize`);
+    mask.attr('cursor', `${cellType}-resize`);
 
     if (cellType === 'col') {
       startResizeGuideLineShape.attr('path', [
