@@ -125,6 +125,7 @@ function MainLayout() {
 
   const dataCellTooltip = (
     <Button
+      key={'button'}
       onClick={() => {
         mergeCells(sheet, mergedCellsInfo);
       }}
