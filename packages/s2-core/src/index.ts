@@ -16,5 +16,5 @@ export * from './interaction';
 export * from './ui/tooltip';
 export * from './facet/header';
 export * from './common/constant';
-export * from './interaction/row-col-resize';
+export * from './interaction/row-column-resize';
 export * from './interaction/base-interaction';

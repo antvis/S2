@@ -21,7 +21,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 14,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -100,10 +100,10 @@ export const getTheme = (
         verticalBorderWidth: 0,
         // -------------- layout -----------------
         padding: {
-          top: 6,
-          right: 8,
-          bottom: 6,
-          left: 8,
+          top: 8,
+          right: 12,
+          bottom: 8,
+          left: 12,
         },
         /* ---------- interaction state ----------- */
         interactionState: {
@@ -294,6 +294,7 @@ export const getTheme = (
       size: 3,
       background: basicColors[7],
       guidLineColor: basicColors[7],
+      guidLineDash: 3,
       backgroundOpacity: 0,
       /* ---------- interaction state ----------- */
       interactionState: {

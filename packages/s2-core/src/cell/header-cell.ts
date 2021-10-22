@@ -1,4 +1,4 @@
-import { Event } from '@antv/g-canvas';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import {
   first,
   map,
@@ -124,7 +124,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       height: icon.size,
       fill: text.fill,
     });
-    sortIcon.on('click', (event) => {
+    sortIcon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       this.spreadsheet.handleGroupSort(event, this.meta);
     });
@@ -151,10 +151,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
     // 默认隐藏，hover 可见
     icon.set('visible', !defaultHide);
-    icon.on('mouseover', (event: Event) => {
+    icon.on('mouseover', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
     });
-    icon.on('click', (event: Event) => {
+    icon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       action({
         iconName: iconName,
@@ -249,7 +249,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
-  updateByState(stateName: InteractionStateName) {
+  public updateByState(stateName: InteractionStateName) {
     super.updateByState(stateName, this);
   }
 

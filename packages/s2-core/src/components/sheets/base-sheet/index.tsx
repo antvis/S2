@@ -11,8 +11,6 @@ import {
   LayoutRow,
   ListSortParams,
   S2Constructor,
-  safetyDataConfig,
-  safetyOptions,
   TargetLayoutNode,
 } from '@/common/interface';
 import { EmitterType } from '@/common/interface/emitter';
@@ -24,6 +22,7 @@ import { HandleDrillDown, HandleDrillDownIcon } from '@/utils/drill-down';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { useResizeEffect } from '@/components/sheets/hooks';
 import { getTooltipOptions } from '@/utils/tooltip';
+import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 import { S2Pagination } from '@/components/pagination';
 
 import './index.less';
@@ -206,13 +205,13 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       curOptions = HandleDrillDownIcon(curProps, curSheet, iconClickCallback);
     }
 
-    curSheet.setOptions(safetyOptions(curOptions));
+    curSheet.setOptions(getSafetyOptions(curOptions));
   };
 
   const setDataCfg = () => {
     // reset the options since it could be changed by layout
     setOptions();
-    ownSpreadsheet.setDataCfg(safetyDataConfig(dataCfg));
+    ownSpreadsheet.setDataCfg(getSafetyDataConfig(dataCfg));
   };
 
   const update = (reset?: () => void, reloadData?: boolean) => {
@@ -239,7 +238,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     }
     baseSpreadsheet.current = getSpreadSheet();
     bindEvent();
-    baseSpreadsheet.current.setDataCfg(safetyDataConfig(dataCfg));
+    baseSpreadsheet.current.setDataCfg(getSafetyDataConfig(dataCfg));
     baseSpreadsheet.current.store.set('originalDataCfg', dataCfg);
     setOptions(baseSpreadsheet.current, props);
     baseSpreadsheet.current.setThemeCfg(themeCfg);

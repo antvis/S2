@@ -8,7 +8,7 @@ import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
 import { Store } from '@/common/store';
 import { getTheme } from '@/theme';
-import { defaultStyle } from '@/common/interface/s2Options';
+import { DEFAULT_STYLE } from '@/index';
 
 jest.mock('src/sheet-type', () => {
   const container = new Canvas({
@@ -70,7 +70,7 @@ describe('Table Mode Facet Test', () => {
     dataSet: dataSet,
     ...assembleDataCfg().fields,
     ...assembleOptions(),
-    ...defaultStyle,
+    ...DEFAULT_STYLE,
     columns: ['province', 'city', 'type', 'sub_type', 'price'],
   });
 

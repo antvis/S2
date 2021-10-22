@@ -8,3 +8,4 @@ export * from './store';
 export * from './theme';
 export * from './tooltip';
 export * from './frame';
+export * from './resize';

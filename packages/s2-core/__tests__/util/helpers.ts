@@ -5,10 +5,11 @@ import EE from '@antv/event-emitter';
 import { Canvas } from '@antv/g-canvas';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
-import { defaultOptions, S2Options } from '@/common/interface';
+import { S2Options } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
+import { DEFAULT_OPTIONS } from '@/common/constant';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
@@ -45,7 +46,7 @@ export const createFakeSpreadSheet = () => {
   }
 
   const s2 = new FakeSpreadSheet() as SpreadSheet;
-  s2.options = defaultOptions;
+  s2.options = DEFAULT_OPTIONS;
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
   s2.store = new Store();
   s2.interaction = interaction;
