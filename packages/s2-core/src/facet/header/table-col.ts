@@ -150,6 +150,7 @@ export class TableColHeader extends ColHeader {
   }
 
   protected clip(): void {
+    super.clip();
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
 
     const { frozenColCount, frozenTrailingColCount } = spreadsheet.options;
@@ -157,48 +158,33 @@ export class TableColHeader extends ColHeader {
 
     let frozenColWidth = 0;
     let frozenTrailingColWidth = 0;
-    if (spreadsheet.isTableMode()) {
-      for (let i = 0; i < frozenColCount; i++) {
-        frozenColWidth += colLeafNodes[i].width;
-      }
-
-      for (let i = 0; i < frozenTrailingColCount; i++) {
-        frozenTrailingColWidth +=
-          colLeafNodes[colLeafNodes.length - 1 - i].width;
-      }
+    for (let i = 0; i < frozenColCount; i++) {
+      frozenColWidth += colLeafNodes[i].width;
     }
 
-    this.scrollGroup.setClip({
-      type: 'rect',
-      attrs: {
-        x: (spreadsheet.isFreezeRowHeader() ? scrollX : 0) + frozenColWidth,
-        y: 0,
-        width:
-          width +
-          (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
-          frozenColWidth -
-          frozenTrailingColWidth,
-        height,
-      },
-    });
+    for (let i = 0; i < frozenTrailingColCount; i++) {
+      frozenTrailingColWidth += colLeafNodes[colLeafNodes.length - 1 - i].width;
+    }
+
+    const frozenClipWidth =
+      width +
+      (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
+      frozenColWidth -
+      frozenTrailingColWidth;
 
     const prevResizeArea = spreadsheet.foregroundGroup.findById(
       KEY_GROUP_COL_RESIZE_AREA,
     );
-    const resizeAreaSize = spreadsheet.theme.resizeArea?.size ?? 0;
 
     if (prevResizeArea) {
+      const resizeAreaSize = spreadsheet.theme.resizeArea?.size ?? 0;
+      const { x, y } = prevResizeArea.getBBox();
       prevResizeArea.setClip({
         type: 'rect',
         attrs: {
-          x: 0 + frozenColWidth,
-          y: 0,
-          width:
-            width +
-            (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
-            frozenColWidth -
-            frozenTrailingColWidth +
-            resizeAreaSize,
+          x,
+          y,
+          width: frozenClipWidth + resizeAreaSize,
           height,
         },
       });

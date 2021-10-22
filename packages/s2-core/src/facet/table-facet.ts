@@ -9,6 +9,7 @@ import type {
   LayoutResult,
   S2CellType,
   SplitLine,
+  SpreadSheetFacetCfg,
   ViewMeta,
 } from '../common/interface';
 import {
@@ -37,8 +38,9 @@ import { PanelIndexes } from '@/utils/indexes';
 import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
 
 export class TableFacet extends BaseFacet {
-  public constructor(props) {
-    super(props);
+  public constructor(cfg: SpreadSheetFacetCfg) {
+    super(cfg);
+
     const s2 = this.spreadsheet;
     s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
       const sortParam = getSortParam(sortKey, s2);
@@ -59,7 +61,7 @@ export class TableFacet extends BaseFacet {
 
     s2.on(S2Event.RANGE_FILTER, (params) => {
       /** remove filter params on current key if passed an empty filterValues field */
-      const unfilter =
+      const unFilter =
         !params.filteredValues || params.filteredValues.length === 0;
 
       const oldConfig = s2.dataCfg.filterParams || [];
@@ -69,20 +71,29 @@ export class TableFacet extends BaseFacet {
       );
 
       if (oldIndex !== -1) {
-        if (unfilter) {
+        if (unFilter) {
           // remove filter params on current key if passed an empty filterValues field
           oldConfig.splice(oldIndex);
         } else {
           // if filter with same key already exists, replace it
           oldConfig[oldIndex] = params;
         }
-      } else oldConfig.push(params);
+      } else {
+        oldConfig.push(params);
+      }
 
       set(s2.dataCfg, 'filterParams', oldConfig);
 
       s2.render(true);
-      s2.emit(S2Event.RANGE_FILTERED, params);
+      s2.emit(
+        S2Event.RANGE_FILTERED,
+        (s2.dataSet as TableDataSet).getDisplayDataSet(),
+      );
     });
+  }
+
+  get colCellTheme() {
+    return this.spreadsheet.theme.colCell.cell;
   }
 
   protected calculateCornerBBox() {
@@ -148,7 +159,9 @@ export class TableFacet extends BaseFacet {
       const showSeriesNumber = this.getSeriesNumberWidth() > 0;
       const col = colLeafNodes[colIndex];
       const cellHeight =
-        cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
+        cellCfg.height +
+        this.colCellTheme.padding?.top +
+        this.colCellTheme.padding?.bottom;
 
       const cellRange = this.getCellRange();
 
@@ -276,7 +289,6 @@ export class TableFacet extends BaseFacet {
       currentNode.colIndex = i;
       currentNode.x = preLeafNode.x + preLeafNode.width;
       currentNode.width = this.calculateColLeafNodesWidth(currentNode);
-      colsHierarchy.width += currentNode.width;
       preLeafNode = currentNode;
       currentNode.y = 0;
 
@@ -287,6 +299,7 @@ export class TableFacet extends BaseFacet {
       if (frozenTrailingColCount === 0) {
         layoutCoordinate(this.cfg, null, currentNode);
       }
+      colsHierarchy.width += currentNode.width;
     }
 
     preLeafNode = Node.blankNode();
@@ -338,18 +351,22 @@ export class TableFacet extends BaseFacet {
       );
 
       const seriesNumberWidth = this.getSeriesNumberWidth();
-      const iconSize = get(spreadsheet, 'theme.colCell.icon.size');
-      const textStyle = get(spreadsheet, 'theme.colCell.bolderText');
+      const {
+        cell: colCellStyle,
+        icon: colCellIconStyle,
+        bolderText: colCellTextStyle,
+      } = spreadsheet.theme.colCell;
+
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
         col.field,
         maxLabel,
       );
       colWidth =
-        measureTextWidth(maxLabel, textStyle) +
-        cellCfg.padding?.left +
-        cellCfg.padding?.right +
-        iconSize;
+        measureTextWidth(maxLabel, colCellTextStyle) +
+        colCellStyle.padding?.left +
+        colCellStyle.padding?.right +
+        colCellIconStyle.size;
 
       if (col.field === SERIES_NUMBER_FIELD) {
         colWidth = seriesNumberWidth;
@@ -364,7 +381,11 @@ export class TableFacet extends BaseFacet {
   protected getCellHeight() {
     const { cellCfg } = this.cfg;
 
-    return cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom;
+    return (
+      cellCfg.height +
+      this.colCellTheme.padding?.top +
+      this.colCellTheme.padding?.bottom
+    );
   }
 
   protected getViewCellHeights() {

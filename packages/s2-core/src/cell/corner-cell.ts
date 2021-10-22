@@ -7,9 +7,8 @@ import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme } from '@/common/interface';
+import { FormatResult, TextTheme, ResizeInfo } from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
-import { ResizeInfo } from '@/facet/header/interface';
 import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
 import {
   renderLine,
@@ -169,7 +168,9 @@ export class CornerCell extends HeaderCell {
    * @private
    */
   protected drawBorderShape() {
-    if (this.meta.cornerType !== 'row') return;
+    if (this.meta.cornerType !== 'row') {
+      return;
+    }
     const { x, y, width } = this.getCellArea();
     const {
       horizontalBorderColor,
@@ -236,20 +237,6 @@ export class CornerCell extends HeaderCell {
       this.headerConfig.spreadsheet.isPivotMode() &&
       this.meta?.x === 0
     );
-  }
-
-  protected getIconPosition(): Point {
-    const textCfg = this.textShapes?.[0]?.cfg.attrs;
-    const { textBaseline } = this.getTextStyle();
-    const { size, margin } = this.getStyle().icon;
-    const iconX = textCfg?.x + this.actualTextWidth + margin.left;
-    const iconY = getVerticalPosition(
-      this.getContentArea(),
-      textBaseline,
-      size,
-    );
-
-    return { x: iconX, y: iconY };
   }
 
   private getTreeIconWidth() {

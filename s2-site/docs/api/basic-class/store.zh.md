@@ -23,7 +23,6 @@ this.spreadsheet.store.set('key', value) // 存储
 | interactionStateInfo | `number` |   | 当前交互状态信息 |
 | drillDownFieldInLevel | [PartDrillDownInfo[]](#partdrilldowninfo) |  | 下钻节点层级信息 |
 | originalDataCfg | [S2DataConfig](/zh/docs/api/general/S2DataConfig)|   | 原始数据配置 |
-| drillDownMeta | `Record<string, any>` |  | 下钻元数据 |
 | panelBBox | [BBox](#BBox) |   | 可视区域包裹盒模型 |
 | activeResizeArea | [Group](https://g.antv.vision/zh/docs/api/group) |  | 当前调整大小区域 group |
 | valueRanges | [ValueRanges](#ValueRanges) |  | ? |

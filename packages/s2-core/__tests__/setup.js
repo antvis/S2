@@ -1,3 +1,3 @@
-['time', 'info'].forEach((type) => {
+['time', 'info', 'warn'].forEach((type) => {
   jest.spyOn(console, type).mockImplementation(() => {});
 });

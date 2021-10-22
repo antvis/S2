@@ -1,4 +1,3 @@
-import { isEmpty, merge } from 'lodash';
 import {
   Fields,
   FilterParam,
@@ -45,7 +44,7 @@ export interface S2DataConfig {
   totalData?: Data[];
   // data keys for render row,columns,values etc
   fields: Fields;
-  // data keys mata info
+  // data keys meta info
   meta?: Meta[];
   // field sort info
   sortParams?: SortParams;
@@ -55,27 +54,3 @@ export interface S2DataConfig {
   // extra config
   [key: string]: any;
 }
-
-export const defaultDataConfig = {
-  data: [],
-  totalData: [],
-  fields: {
-    rows: [],
-    columns: [],
-    values: [],
-    customTreeItems: [],
-    valueInCols: true,
-  },
-  meta: [],
-  sortParams: [],
-  filterParams: [],
-} as S2DataConfig;
-
-export const safetyDataConfig = (dataConfig: S2DataConfig) => {
-  const result = merge({}, defaultDataConfig, dataConfig) as S2DataConfig;
-  if (!isEmpty(result.fields.customTreeItems)) {
-    // when there are custom tree config, valueInCols must be false
-    result.fields.valueInCols = false;
-  }
-  return result;
-};

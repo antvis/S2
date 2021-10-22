@@ -1,4 +1,5 @@
 import { last } from 'lodash';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import { SpreadSheet } from './spread-sheet';
 import { DataCell } from '@/cell';
 import {
@@ -78,10 +79,14 @@ export class PivotSheet extends SpreadSheet {
     return this.dataSet.fields.valueInCols;
   }
 
-  public clearDrillDownData(rowNodeId?: string) {
+  public clearDrillDownData(rowNodeId?: string, preventRender?: boolean) {
     if (this.dataSet instanceof PivotDataSet) {
       this.dataSet.clearDrillDownData(rowNodeId);
-      this.render(false);
+      if (!preventRender) {
+        // 重置当前交互
+        this.interaction.reset();
+        this.render();
+      }
     }
   }
 
@@ -155,7 +160,7 @@ export class PivotSheet extends SpreadSheet {
     this.render(false);
   }
 
-  public handleGroupSort(event: MouseEvent, meta: Node) {
+  public handleGroupSort(event: CanvasEvent, meta: Node) {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
     const operator: TooltipOperatorOptions = {

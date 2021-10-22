@@ -1,10 +1,6 @@
-import { Group, Point } from '@antv/g-canvas';
+import { Point } from '@antv/g-canvas';
 import { HeaderCell } from './header-cell';
-import {
-  CellTypes,
-  KEY_GROUP_COL_RESIZE_AREA,
-  HORIZONTAL_RESIZE_AREA_KEY_PRE,
-} from '@/common/constant';
+import { CellTypes } from '@/common/constant';
 import {
   FormatResult,
   TextAlign,
@@ -12,7 +8,6 @@ import {
   TextTheme,
 } from '@/common/interface';
 import { ColHeaderConfig } from '@/facet/header/col';
-import { ResizeInfo } from '@/facet/header/interface';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect } from '@/utils/g-renders';
 import { AreaRange } from '@/common/interface/scroll';

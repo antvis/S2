@@ -11,9 +11,9 @@ import {
   CellTypes,
 } from '@/common/constant';
 import { ColCell } from '@/cell';
-import { Formatter, S2CellType, ViewMeta } from '@/common/interface';
+import { Formatter, S2CellType, ResizeInfo } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
-import { ResizeInfo } from '@/facet/header/interface';
+
 import { SpreadSheet } from '@/sheet-type/index';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
@@ -47,7 +47,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
    * @param cornerWidth only has real meaning when scroll contains rowCell
    * @param type
    */
-  public onColScroll(scrollX: number, cornerWidth: number, type: string): void {
+  public onColScroll(scrollX: number, cornerWidth: number, type: string) {
     // this is works in scroll-keep-text-center feature
     if (this.headerConfig.scrollX !== scrollX) {
       this.headerConfig.offset = scrollX;
@@ -57,15 +57,16 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     }
   }
 
-  protected clip(): void {
+  protected clip() {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
 
+    const scrollXOffset = spreadsheet.isFreezeRowHeader() ? scrollX : 0;
     this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
-        x: spreadsheet.isFreezeRowHeader() ? scrollX : 0,
+        x: scrollXOffset,
         y: 0,
-        width: width + (spreadsheet.isFreezeRowHeader() ? 0 : scrollX),
+        width: width + scrollXOffset,
         height,
       },
     });
@@ -185,24 +186,25 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   // 绘制单个节点的热区
   protected drawResizeAreaForNode(meta: Node) {
-    const { spreadsheet } = this.headerConfig;
-    const { position, viewportWidth } = this.headerConfig;
-    const { label, y, width: cellWidth, height: cellHeight, parent } = meta;
+    const { spreadsheet, offset } = this.headerConfig;
+    const { viewportWidth } = this.headerConfig;
+    const { label, width: cellWidth, height: cellHeight, parent } = meta;
     const resizeStyle = spreadsheet?.theme?.resizeArea;
     const resizeArea = this.getColResizeArea(meta);
+    const resizeAreaName = `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${meta.key}`;
+
     const prevHorizontalResizeArea = resizeArea.find((element) => {
-      return (
-        element.attrs.name === `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${meta.key}`
-      );
+      return element.attrs.name === resizeAreaName;
     });
+    const resizerOffset = this.getColResizeAreaOffset(meta);
     // 如果已经绘制当前列高调整热区热区，则不再绘制
     if (!prevHorizontalResizeArea) {
       // 列高调整热区
       resizeArea.addShape('rect', {
         attrs: {
-          name: `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${meta.key}`,
-          x: position.x,
-          y: position.y + y + cellHeight - resizeStyle.size / 2,
+          name: resizeAreaName,
+          x: resizerOffset.x + offset,
+          y: resizerOffset.y + cellHeight - resizeStyle.size / 2,
           width: viewportWidth,
           height: resizeStyle.size,
           fill: resizeStyle.background,
@@ -214,8 +216,8 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
             type: 'row',
             id: this.getColResizeAreaKey(meta),
             affect: 'field',
-            offsetX: position.x,
-            offsetY: position.y + y,
+            offsetX: resizerOffset.x,
+            offsetY: resizerOffset.y,
             width: viewportWidth,
             height: cellHeight,
           } as ResizeInfo,
@@ -223,7 +225,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       });
     }
     if (meta.isLeaf) {
-      const resizerOffset = this.getColResizeAreaOffset(meta);
       // 列宽调整热区
       // 基准线是根据container坐标来的，因此把热区画在container
       resizeArea.addShape('rect', {
