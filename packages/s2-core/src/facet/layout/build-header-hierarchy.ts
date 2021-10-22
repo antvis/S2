@@ -42,6 +42,7 @@ const handleGridRowColHierarchy = (params: HeaderParams) => {
     addTotalMeasureInTotal = isValueInCols && moreThanOneValue;
     addMeasureInTotalQuery = isValueInCols && !moreThanOneValue;
   }
+
   buildGridHierarchy({
     addTotalMeasureInTotal,
     addMeasureInTotalQuery,
@@ -85,13 +86,12 @@ const handleTreeRowHierarchy = (params: HeaderParams) => {
 };
 
 const handleRowHeaderHierarchy = (params: HeaderParams) => {
-  const { isPivotMode, spreadsheet } = params;
-  if (isPivotMode) {
-    if (spreadsheet.isHierarchyTreeType()) {
-      handleTreeRowHierarchy(params);
-    } else {
-      handleGridRowColHierarchy(params);
-    }
+  // table 表无行头
+  const { spreadsheet } = params;
+  if (spreadsheet.isHierarchyTreeType()) {
+    handleTreeRowHierarchy(params);
+  } else {
+    handleGridRowColHierarchy(params);
   }
 };
 

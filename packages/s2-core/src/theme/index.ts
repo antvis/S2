@@ -197,9 +197,9 @@ export const getTheme = (
         fill: basicColors[0],
         size: 10,
         margin: {
-          top: 8,
+          top: 6,
           right: 4,
-          bottom: 8,
+          bottom: 6,
           left: 4,
         },
       },

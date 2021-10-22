@@ -1,4 +1,4 @@
-import { difference, isEmpty } from 'lodash';
+import { difference, isEmpty, map } from 'lodash';
 import { TableHeaderParams } from '@/facet/layout/interface';
 import { SERIES_NUMBER_FIELD } from '@/common/constant';
 import { i18n } from '@/common/i18n';
@@ -16,7 +16,7 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
     : columns;
   const fields = [...displayedColumns];
 
-  const fieldValues = displayedColumns.map((val) => dataSet.getFieldName(val));
+  const fieldValues = map(displayedColumns, (val) => dataSet.getFieldName(val));
 
   if (showSeriesNumber) {
     fields.unshift(SERIES_NUMBER_FIELD);
