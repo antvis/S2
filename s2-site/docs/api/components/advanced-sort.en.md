@@ -1,6 +1,6 @@
 ---
 title: Advanced Sort
-order: 3
+order: 4
 ---
 
-`markdown:docs/common/advanced-sort.zh.md`
+`markdown:docs/api/components/advanced-sort.zh.md`

@@ -10,8 +10,6 @@ import {
   ListSortParams,
   S2Constructor,
   S2Options,
-  safetyDataConfig,
-  safetyOptions,
   TargetLayoutNode,
 } from '@/common/interface';
 import { EmitterType } from '@/common/interface/emitter';
@@ -24,6 +22,7 @@ import {
   usePaginationEffect,
 } from '@/components/sheets/hooks';
 import { S2Pagination } from '@/components/pagination';
+import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 
 export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
@@ -149,13 +148,13 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
 
   const setOptions = (newOptions?: S2Options) => {
     const curOptions = newOptions || options;
-    ownSpreadsheet.setOptions(safetyOptions(curOptions));
+    ownSpreadsheet.setOptions(getSafetyOptions(curOptions));
   };
 
   const setDataCfg = () => {
     // reset the options since it could be changed by layout
     setOptions();
-    ownSpreadsheet.setDataCfg(safetyDataConfig(dataCfg));
+    ownSpreadsheet.setDataCfg(getSafetyDataConfig(dataCfg));
   };
 
   const update = (reset?: () => void, reloadData = true) => {
@@ -172,8 +171,8 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     }
     baseSpreadsheet.current = getSpreadSheet();
     bindEvent();
-    baseSpreadsheet.current.setDataCfg(safetyDataConfig(dataCfg));
-    baseSpreadsheet.current.setOptions(safetyOptions(options));
+    baseSpreadsheet.current.setDataCfg(getSafetyDataConfig(dataCfg));
+    baseSpreadsheet.current.setOptions(getSafetyOptions(options));
     baseSpreadsheet.current.setThemeCfg(themeCfg);
     baseSpreadsheet.current.render();
     setLoading(false);

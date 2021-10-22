@@ -1,4 +1,4 @@
-import { Event } from '@antv/g-canvas';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import {
   first,
   map,
@@ -84,8 +84,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (this.spreadsheet.options.showDefaultHeaderActionIcon) {
       const { sortParam } = this.headerConfig;
       const query = this.meta.query;
+      // sortParam的query，和type本身可能会 undefined
       return (
         isEqual(get(sortParam, 'query'), query) &&
+        get(sortParam, 'type') &&
         get(sortParam, 'type') !== 'none'
       );
     }
@@ -101,34 +103,39 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (actionIconCfg) {
       const iconNames = actionIconCfg.iconNames;
       const { size, margin } = this.getStyle().icon;
-      return (
-        size * iconNames.length +
-        margin.left +
-        margin.right * (iconNames.length - 1)
-      );
+      return size * iconNames.length + margin.left * iconNames.length;
     }
     return 0;
   }
 
   // 绘制排序icon
   protected drawSortIcons() {
-    const { icon, text } = this.getStyle();
-    if (this.showSortIcon()) {
-      const { sortParam } = this.headerConfig;
-      const position = this.getIconPosition();
-      const sortIcon = new GuiIcon({
-        name: get(sortParam, 'type', 'none'),
-        ...position,
-        width: icon.size,
-        height: icon.size,
-        fill: text.fill,
-      });
-      sortIcon.on('click', (event) => {
-        this.spreadsheet.handleGroupSort(event, this.meta);
-      });
-      this.add(sortIcon);
-      this.actionIcons.push(sortIcon);
+    if (!this.showSortIcon()) {
+      return;
     }
+
+    const { icon, text } = this.getStyle();
+    const { sortParam } = this.headerConfig;
+    const position = this.getIconPosition();
+    const sortIcon = new GuiIcon({
+      name: get(sortParam, 'type', 'none'),
+      ...position,
+      width: icon.size,
+      height: icon.size,
+      fill: text.fill,
+    });
+    sortIcon.on('click', (event: CanvasEvent) => {
+      this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
+      this.spreadsheet.handleGroupSort(event, this.meta);
+    });
+    this.add(sortIcon);
+    this.actionIcons.push(sortIcon);
+  }
+
+  // 是否设置为默认隐藏 action icon，默认隐藏的交互为 hover 后可见
+  protected defaultHideActionIcons() {
+    const actionIconCfg = this.getActionIconCfg();
+    return actionIconCfg?.defaultHide;
   }
 
   protected addActionIcon(
@@ -150,10 +157,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
     // 默认隐藏，hover 可见
     icon.set('visible', !defaultHide);
-    icon.on('mouseover', (event: Event) => {
+    icon.on('mouseover', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
     });
-    icon.on('click', (event: Event) => {
+    icon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       action({
         iconName: iconName,
@@ -167,13 +174,17 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   protected drawActionIcons() {
-    this.drawSortIcons();
-    const actionIconCfg = this.getActionIconCfg();
+    if (this.showSortIcon()) {
+      this.drawSortIcons();
+      return;
+    }
 
+    const actionIconCfg = this.getActionIconCfg();
     if (!actionIconCfg) return;
     const { iconNames, action, defaultHide } = actionIconCfg;
 
     const position = this.getIconPosition();
+
     const { size, margin } = this.getStyle().icon;
     forEach(iconNames, (iconName, key) => {
       const x = position.x + key * size + key * margin.left;
@@ -188,8 +199,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
   private handleHover(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.HOVER);
-      // hover 只会有一个 cell
-      this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
+      if (this.defaultHideActionIcons()) {
+        // hover 只会有一个 cell
+        this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
+      }
     }
   }
 
@@ -204,9 +217,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   public toggleActionIcon(id: string, type: CellTypes) {
-    if (isEmpty(this.actionIcons) || !this.getActionIconCfg()?.defaultHide) {
-      return;
-    }
     let allCells = [];
     if (type === CellTypes.ROW_CELL) {
       allCells = this.spreadsheet.interaction.getAllRowHeaderCells();
@@ -246,7 +256,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
-  updateByState(stateName: InteractionStateName) {
+  public updateByState(stateName: InteractionStateName) {
     super.updateByState(stateName, this);
   }
 

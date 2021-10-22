@@ -32,8 +32,6 @@ import {
   S2DataConfig,
   S2MountContainer,
   S2Options,
-  safetyDataConfig,
-  safetyOptions,
   SpreadSheetFacetCfg,
   ThemeCfg,
   TooltipData,
@@ -55,6 +53,7 @@ import { clearValueRangeState } from '@/utils/condition/state-controller';
 import { customMerge } from '@/utils/merge';
 import { getTooltipData, getTooltipOptions } from '@/utils/tooltip';
 import { registerIcon, getIcon } from '@/common/icons/factory';
+import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 
 export abstract class SpreadSheet extends EE {
   // dom id
@@ -136,8 +135,8 @@ export abstract class SpreadSheet extends EE {
   ) {
     super();
     this.dom = this.getMountContainer(dom);
-    this.dataCfg = safetyDataConfig(dataCfg);
-    this.options = safetyOptions(options);
+    this.dataCfg = getSafetyDataConfig(dataCfg);
+    this.options = getSafetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
 
     this.initTooltip();
@@ -243,7 +242,13 @@ export abstract class SpreadSheet extends EE {
 
   protected abstract buildFacet(): void;
 
-  public abstract clearDrillDownData(rowNodeId?: string): void;
+  public abstract clearDrillDownData(
+    rowNodeId?: string,
+    preventRender?: boolean,
+  ): void;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public handleGroupSort(event: CanvasEvent, meta: Node) {}
 
   public showTooltip(showOptions: TooltipShowOptions) {
     this.tooltip.show?.(showOptions);
@@ -308,7 +313,7 @@ export abstract class SpreadSheet extends EE {
     const lastSortParam = this.store.get('sortParam');
     const { sortParams } = newDataCfg;
     newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
-    this.dataCfg = safetyDataConfig(newDataCfg);
+    this.dataCfg = getSafetyDataConfig(newDataCfg);
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
   }
@@ -322,6 +327,7 @@ export abstract class SpreadSheet extends EE {
   public render(reloadData = true) {
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
     if (reloadData) {
+      this.clearDrillDownData('', true);
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();
@@ -542,7 +548,4 @@ export abstract class SpreadSheet extends EE {
     }
     hideColumnsByThunkGroup(this, hiddenColumnFields, true);
   });
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public handleGroupSort(event: MouseEvent, meta: Node) {}
 }

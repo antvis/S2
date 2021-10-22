@@ -6,8 +6,7 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme } from '@/common/interface';
-import { ResizeInfo } from '@/facet/header/interface';
+import { FormatResult, TextTheme, ResizeInfo } from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
@@ -284,10 +283,16 @@ export class RowCell extends HeaderCell {
   }
 
   protected getIconPosition() {
-    const textCfg = this.textShape.cfg.attrs;
+    const { x, y, textAlign } = this.textShape.cfg.attrs;
+
     return {
-      x: textCfg.x + this.actualTextWidth + this.getStyle().icon.margin.left,
-      y: textCfg.y,
+      x:
+        x +
+        (textAlign === 'center'
+          ? this.actualTextWidth / 2
+          : this.actualTextWidth) +
+        this.getStyle().icon.margin.left,
+      y: y,
     };
   }
 

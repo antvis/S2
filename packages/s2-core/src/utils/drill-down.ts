@@ -60,8 +60,9 @@ export const getDrillDownCash = (spreadsheet: SpreadSheet, meta: Node) => {
  */
 export const handleActionIconClick = (params: ActionIconParams) => {
   const { meta, spreadsheet, event, callback, iconName } = params;
+
   if (iconName === 'DrillDownIcon') {
-    spreadsheet.store.set('drillDownMeta', meta);
+    spreadsheet.store.set('drillDownNode', meta);
     const { drillDownDataCache, drillDownCurrentCash } = getDrillDownCash(
       spreadsheet,
       meta,
@@ -175,6 +176,8 @@ export const HandleDrillDown = (params: DrillDownParams) => {
       spreadsheet.store.set('drillDownDataCache', newDrillDownDataCache);
     }
 
+    // 重置当前交互
+    spreadsheet.interaction.reset();
     spreadsheet.render(false);
   });
 };

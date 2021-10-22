@@ -170,6 +170,9 @@ export class PivotDataSet extends BaseDataSet {
   public clearDrillDownData(rowNodeId?: string) {
     const store = this.spreadsheet.store;
     const idPathMap = store.get('drillDownIdPathMap');
+    if (!idPathMap) {
+      return;
+    }
     const drillDownDataCache = store.get(
       'drillDownDataCache',
       [],
@@ -215,6 +218,7 @@ export class PivotDataSet extends BaseDataSet {
       }
 
       // 清空所有的下钻信息
+      this.spreadsheet.store.set('drillItemsNum', -1);
       this.spreadsheet.store.set('drillDownDataCache', []);
       this.spreadsheet.store.set('drillDownFieldInLevel', []);
     }

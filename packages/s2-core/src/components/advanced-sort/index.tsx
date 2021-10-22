@@ -14,14 +14,13 @@ import {
 import cx from 'classnames';
 import { SortIcon } from '../icons';
 import { CustomSort } from './custom-sort';
+import { SortParam, SortMethod } from '@/common/interface/basic';
+import { TOTAL_VALUE } from '@/common/constant/basic';
 import {
-  SortParam,
-  TOTAL_VALUE,
   SORT_METHOD,
   RULE_OPTIONS,
   ADVANCED_PRE_CLS,
-  SortMethod,
-} from '@/index';
+} from '@/common/constant/sort';
 import { i18n } from '@/common/i18n';
 import { SpreadSheet } from '@/sheet-type';
 import './index.less';

@@ -216,7 +216,7 @@ describe('RootInteraction Tests', () => {
         InterceptType.HOVER,
         InterceptType.CLICK,
       ]);
-      expect(rootInteraction.intercept.size).toEqual(2);
+      expect(rootInteraction.intercepts.size).toEqual(2);
     });
 
     test('should check intercepts status correct', () => {

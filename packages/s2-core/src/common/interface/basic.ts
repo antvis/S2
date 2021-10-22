@@ -2,8 +2,7 @@ import { Event, ShapeAttrs } from '@antv/g-canvas';
 import { Padding } from '../interface/theme';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
-import { CustomTreeItem } from '@/common/interface';
-import { ResizeInfo } from '@/facet/header/interface';
+import { CustomTreeItem, ResizeInfo } from '@/common/interface';
 import { S2PartialOptions } from '@/common/interface/s2Options';
 import { BaseDataSet } from '@/data-set';
 import { Frame } from '@/facet/header';
@@ -12,7 +11,6 @@ import {
   FrameConfig,
   Hierarchy,
   Node,
-  S2Event,
   S2Options,
   SpreadSheet,
   TextAlign,
@@ -239,7 +237,6 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
-  padding?: Padding;
   lineHeight?: number;
   firstDerivedMeasureRowIndex?: number;
   minorMeasureRowIndex?: number;
@@ -412,14 +409,6 @@ export interface OriginalEvent extends Event {
   layerX: number;
   layerY: number;
 }
-
-export type ResizeEvent =
-  | S2Event.LAYOUT_RESIZE
-  | S2Event.LAYOUT_RESIZE_ROW_WIDTH
-  | S2Event.LAYOUT_RESIZE_COL_WIDTH
-  | S2Event.LAYOUT_RESIZE_ROW_HEIGHT
-  | S2Event.LAYOUT_RESIZE_COL_HEIGHT
-  | S2Event.LAYOUT_RESIZE_TREE_WIDTH;
 
 export interface ScrollRatio {
   horizontal?: number;

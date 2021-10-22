@@ -13,10 +13,14 @@ import {
 } from '@/utils';
 import { PartDrillDown, PartDrillDownInfo } from '@/components';
 import { PivotDataSet } from '@/data-set';
+import { RootInteraction } from '@/interaction/root';
 
 jest.mock('@/sheet-type');
-const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
+jest.mock('@/interaction/root');
 
+const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
+const MockRootInteraction =
+  RootInteraction as unknown as jest.Mock<RootInteraction>;
 describe('Drill Down Test', () => {
   let mockInstance: SpreadSheet;
   const mockDataCfg = {
@@ -86,6 +90,7 @@ describe('Drill Down Test', () => {
     mockInstance.store = new Store();
     mockInstance.dataSet = new PivotDataSet(mockInstance);
     mockInstance.dataSet.setDataCfg(mockDataCfg);
+    mockInstance.interaction = new MockRootInteraction(mockInstance);
     mockInstance.options = mockOptions;
   });
 
@@ -124,7 +129,7 @@ describe('Drill Down Test', () => {
       iconName: 'DrillDownIcon',
     });
     await sleep(1000);
-    expect(mockInstance.store.get('drillDownMeta').id).toEqual(
+    expect(mockInstance.store.get('drillDownNode')?.id).toEqual(
       'root[&]浙江省[&]杭州市',
     );
   });

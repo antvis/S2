@@ -50,11 +50,13 @@ export interface StoreKey {
   drillDownNode: Node;
   // 下钻数据的个数控制
   drillItemsNum: number;
+  drillDownFieldInLevel: PartDrillDownFieldInLevel[];
+
   // interaction state
   interactionStateInfo: InteractionStateInfo;
-  drillDownFieldInLevel: PartDrillDownFieldInLevel[];
+
   originalDataCfg: S2DataConfig;
-  drillDownMeta: Record<string, any>;
+
   panelBBox: BBox;
   // resize area group
   activeResizeArea: Group;
