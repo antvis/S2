@@ -66,7 +66,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
    * @param cornerWidth only has real meaning when scroll contains rowCell
    * @param type
    */
-  public onColScroll(scrollX: number, cornerWidth: number, type: string): void {
+  public onColScroll(scrollX: number, cornerWidth: number, type: string) {
     // this is works in scroll-keep-text-center feature
     if (this.headerConfig.scrollX !== scrollX) {
       this.headerConfig.offset = scrollX;
@@ -76,15 +76,16 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     }
   }
 
-  protected clip(): void {
+  protected clip() {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
 
     const { frozenColCount, frozenTrailingColCount } = spreadsheet.options;
     const colLeafNodes = spreadsheet.facet?.layoutResult.colLeafNodes;
+    const isTableMode = spreadsheet.isTableMode();
 
     let frozenColWidth = 0;
     let frozenTrailingColWidth = 0;
-    if (spreadsheet.isTableMode()) {
+    if (isTableMode) {
       for (let i = 0; i < frozenColCount; i++) {
         frozenColWidth += colLeafNodes[i].width;
       }
@@ -95,16 +96,18 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       }
     }
 
+    const frozenClipWidth =
+      width +
+      (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
+      frozenColWidth -
+      frozenTrailingColWidth;
+
     this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
         x: (spreadsheet.isFreezeRowHeader() ? scrollX : 0) + frozenColWidth,
         y: 0,
-        width:
-          width +
-          (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
-          frozenColWidth -
-          frozenTrailingColWidth,
+        width: frozenClipWidth,
         height,
       },
     });
@@ -112,20 +115,16 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     const prevResizeArea = spreadsheet.foregroundGroup.findById(
       KEY_GROUP_COL_RESIZE_AREA,
     );
-    const resizeAreaSize = spreadsheet.theme.resizeArea?.size ?? 0;
 
-    if (prevResizeArea) {
+    if (prevResizeArea && isTableMode) {
+      const resizeAreaSize = spreadsheet.theme.resizeArea?.size ?? 0;
+      const { x, y } = prevResizeArea.getBBox();
       prevResizeArea.setClip({
         type: 'rect',
         attrs: {
-          x: 0 + frozenColWidth,
-          y: 0,
-          width:
-            width +
-            (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
-            frozenColWidth -
-            frozenTrailingColWidth +
-            resizeAreaSize,
+          x,
+          y,
+          width: frozenClipWidth + resizeAreaSize,
           height,
         },
       });

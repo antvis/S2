@@ -251,8 +251,9 @@ describe('Pivot Table Core Data Process', () => {
       ]);
       // leaf node
       rowLeafNodes.forEach((node, index) => {
+        const { padding } = s2.theme.rowCell.cell;
         expect(node.height).toEqual(
-          cellCfg.height + cellCfg.padding?.top + cellCfg.padding?.bottom,
+          cellCfg.height + padding?.top + padding.bottom,
         );
         expect(node.y).toEqual(node.height * index);
         expect(node.x).toEqual(rowCfg.width);

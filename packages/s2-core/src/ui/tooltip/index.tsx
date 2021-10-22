@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { InterceptType } from '@/common/constant/interaction';
 import { SpreadSheet } from '@/sheet-type';
 import {
   ListItem,
@@ -24,6 +25,7 @@ import { TooltipOperator } from '@/ui/tooltip/components/operator';
 import { SimpleTips } from '@/ui/tooltip/components/simple-tips';
 import { TooltipSummary } from '@/ui/tooltip/components/summary';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
+
 import './index.less';
 
 /**
@@ -94,6 +96,15 @@ export class BaseTooltip {
       this.resetPosition();
       document.body.removeChild(this.container);
     }
+  }
+
+  public disablePointerEvent() {
+    if (this.container.style.pointerEvents === 'none') {
+      return;
+    }
+    setContainerStyle(this.container, {
+      pointerEvents: 'none',
+    });
   }
 
   private resetPosition() {

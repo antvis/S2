@@ -10,7 +10,8 @@ import { TabularDataCell } from './tabular-data-cell';
 import { TabularTheme } from './tabular-theme';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
-import { safetyDataConfig, safetyOptions, S2Options } from '@/common/interface';
+import { S2Options } from '@/common/interface';
+import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { useResizeEffect } from '@/components/sheets/hooks';
 
@@ -41,13 +42,13 @@ export const TabularSheet = (props: BaseSheetProps) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   // 网格内行高
-  const CELL_LINEHEIGHT = 30;
+  const CELL_LINE_HEIGHT = 30;
 
   const getCellHeight = (): number => {
     const { data } = dataCfg;
     const height = options?.style?.cellCfg?.height;
     if (height) return height;
-    const lineHeight = options?.style?.cellCfg?.lineHeight || CELL_LINEHEIGHT;
+    const lineHeight = options?.style?.cellCfg?.lineHeight || CELL_LINE_HEIGHT;
     if (isEmpty(data)) return lineHeight;
     const lengths = [];
     // TODO 还没想清楚需不需要找最大的，需不需要限定都一样的个数，先让子弹飞一飞
@@ -63,7 +64,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
   };
 
   const buildOptions = (): S2Options => {
-    return safetyOptions(
+    return getSafetyOptions(
       merge(options, {
         dataCell: TabularDataCell,
         style: {
@@ -157,7 +158,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     if (!baseSpreadsheet) {
       baseSpreadsheet = getSpreadSheet();
       bindEvent();
-      const newDataCfg = safetyDataConfig(dataCfg);
+      const newDataCfg = getSafetyDataConfig(dataCfg);
       baseSpreadsheet.setDataCfg(newDataCfg);
       setOptions(baseSpreadsheet);
       baseSpreadsheet.setThemeCfg(themeCfg);

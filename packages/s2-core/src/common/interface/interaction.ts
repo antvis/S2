@@ -1,5 +1,5 @@
 import { SimpleBBox } from '@antv/g-canvas';
-import { InteractionStateName, CellTypes } from '../constant';
+import { InteractionStateName, CellTypes, InterceptType } from '../constant';
 import { ViewMeta } from './basic';
 import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
 import { HeaderCell } from '@/cell/header-cell';
@@ -60,3 +60,10 @@ export interface BrushRange {
 }
 
 export type StateShapeLayer = 'interactiveBgShape' | 'interactiveBorderShape';
+
+export type Intercept =
+  | InterceptType.HOVER
+  | InterceptType.CLICK
+  | InterceptType.BRUSH_SELECTION
+  | InterceptType.MULTI_SELECTION
+  | InterceptType.RESIZE;
