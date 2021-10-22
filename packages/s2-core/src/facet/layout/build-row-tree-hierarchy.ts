@@ -36,11 +36,11 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const { spreadsheet, dataSet, collapsedRows, hierarchyCollapse } = facetCfg;
   const query = parentNode.query;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
+  const sortedDimensionValues =
+    (dataSet as PivotDataSet)?.sortedDimensionValues?.get(currentField) || [];
+
   const dimValues = filterUndefined(
-    getIntersections(
-      [...(dataSet as PivotDataSet)?.sortedDimensionValues?.get(currentField)],
-      [...pivotMeta.keys()],
-    ),
+    getIntersections([...sortedDimensionValues], [...(pivotMeta.keys() || [])]),
   );
 
   let fieldValues: FieldValue[] = layoutArrange(
