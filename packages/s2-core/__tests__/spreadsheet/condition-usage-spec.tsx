@@ -3,9 +3,8 @@ import React, { MutableRefObject, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { SpreadSheet } from '../../src';
-import { getContainer } from '../util/helpers';
+import { getContainer, getGradient } from '../util/helpers';
 import { SheetEntry } from '../util/sheet-entry';
-import { getGradient } from '../../../../s2-site/examples/conditions/advanced/demo/gradient-interval';
 
 const sheetInstance: MutableRefObject<SpreadSheet> = { current: null };
 
