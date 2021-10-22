@@ -15,17 +15,7 @@ order: 7
 
 ## 使用
 
-在 `s2options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，可通过 `row`、`col`、`cell` 单独配置行头、列头、数据单元格
-
-| 参数             | 类型                                    | 必选  | 默认值 | 功能描述                                                  |
-| ---------------- | --------------------------------------- | :---: | ------ | --------------------------------------------------------- |
-| showTooltip      | `boolean`                               |       | `true` | 是否展示 tooltip                                          |
-| operation        | [TooltipOperation](#TooltipOperation)   |       |        | tooltip 操作配置项                                        |
-| row              | [BaseTooltipConfig](#BaseTooltipConfig) |       |        | 行头配置                                                  |
-| col              | [BaseTooltipConfig](#BaseTooltipConfig) |       |        | 列头配置                                                  |
-| cell             | [BaseTooltipConfig](#BaseTooltipConfig) |       |        | 单元格配置                                                |
-| renderTooltip    | [RenderTooltip](#rendertooltip)         |       |        | 自定义整个 tooltip, 可以继承 BaseTooltip 自己重写一些方法 |
-| tooltipComponent | `JSX.Element`                           |       |        | 自定义 tooltip 弹框组件                                   |
+在 `s2options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，还可通过 `row`、`col`、`cell` 分别配置行头、列头、数据单元格
 
 ```ts
 const s2options = {
@@ -35,7 +25,7 @@ const s2options = {
 };
 ```
 
-### 显示配置
+### 显示 配置项
 
 通过配置 `showTooltip` 字段控制 `Tooltip` 的显示，默认为 `true`
 
@@ -43,8 +33,9 @@ const s2options = {
 const s2options = {
   tooltip: {
       showTooltip: true,
-      row: { // 行头设置不显示
-          showTooltip: false,
+      row: {
+        // 行头设置不显示
+        showTooltip: false,
       }
   }
 };
@@ -52,7 +43,7 @@ const s2options = {
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*4SNvSbjIE60AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
-### 操作项配置
+### 操作 配置项
 
 通过配置 `operation` 字段在 `Tooltip` 上增加操作项
 
@@ -60,8 +51,8 @@ const s2options = {
 const s2options = {
   tooltip: {
     operation: {
-        trend: true,
-        hiddenColumns: true, // 适用于明细表
+      trend: true, // 显示趋势图按钮
+      hiddenColumns: true, //开启隐藏列 (明细表有效)
     },
   }
 };
@@ -71,6 +62,23 @@ const s2options = {
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*V6OdQJvABJQAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*bllyR4r_6qMAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+
+### 超出指定区域自动调整位置
+
+通过配置 `autoAdjustBoundary` 字段开启:
+
+- `container` : tooltip 超出表格容器范围时, 自动调整位置, 始终在表格内显示
+- `body` : tooltip 超出浏览器窗口可视范围时, 自动调整位置, 始终在可视范围内显示
+- `null` : 关闭自动调整
+
+```ts
+const s2options = {
+  tooltip: {
+    autoAdjustBoundary: "container" // 默认 "body"
+  }
+};
+
+```
 
 ### 自定义
 
@@ -149,7 +157,7 @@ protected renderOperation(
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*fw6TSrt6nGEAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 - 名称 + 提示（ renderNameTips ）
-  
+
   当前单元格名称和提示信息
 
 ```tsx
@@ -173,7 +181,7 @@ protected renderNameTips(nameTip: { name: string; tips: string }) {
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NhxIS7VU87YAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 - 所选项统计列表（ renderSummary ）
-  
+
   所选项统计列表，主要按度量值区分
 
 ```tsx
@@ -192,7 +200,7 @@ protected renderSummary(summaries) {
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*w4svRqPJmG4AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 - 轴列表（ renderHeadInfo ）
-  
+
   轴列表，在数据单元格中显示 `行/列头` 名称
 
 ```tsx
@@ -214,9 +222,9 @@ protected renderHeadInfo(headInfo) {
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*VkbzTY0wcrwAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 - 数据点明细信息（ renderDetail ）
-  
+
   数据点明细信息，即当前单元格的数据信息
-  
+
 ```tsx
 protected renderDetail(details: ListItem[]) {
   const customDetails = (details || []).map((item) => {
@@ -227,7 +235,7 @@ protected renderDetail(details: ListItem[]) {
 ```
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*O6H6SKQDViUAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
-  
+
 - 底部提示信息（ renderInfos ）
 
 底部提示信息，一般可用于快捷键操作提示
