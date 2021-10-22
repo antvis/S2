@@ -114,15 +114,7 @@ export class PivotDataSet extends BaseDataSet {
     const store = this.spreadsheet.store;
 
     // 1、通过values在data中注入额外的维度信息
-    // TODO 定value位置
-    drillDownData = map(drillDownData, (datum) => {
-      const valueKey = find(keys(datum), (k) => includes(dataValues, k));
-      return {
-        ...datum,
-        [EXTRA_FIELD]: valueKey,
-        [VALUE_FIELD]: datum[valueKey],
-      };
-    });
+    drillDownData = this.standardTransform(drillDownData, dataValues);
 
     // 2. 检查该节点是否已经存在下钻维度
     const rowNodeId = rowNode?.id;
@@ -253,6 +245,25 @@ export class PivotDataSet extends BaseDataSet {
     });
   };
 
+  protected standardTransform(originData: Data[], fieldsValues: string[]) {
+    if (isEmpty(fieldsValues)) {
+      return originData;
+    }
+    const transformedData = [];
+    forEach(fieldsValues, (value) => {
+      forEach(originData, (dataItem) => {
+        if (dataItem[value]) {
+          transformedData.push({
+            ...dataItem,
+            [EXTRA_FIELD]: value,
+            [VALUE_FIELD]: dataItem[value],
+          });
+        }
+      });
+    });
+    return transformedData;
+  }
+
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
     const { columns, rows, values, valueInCols } = fields;
@@ -275,27 +286,8 @@ export class PivotDataSet extends BaseDataSet {
       } as Meta,
     ];
 
-    const standardTransform = (originData: Data[]) => {
-      if (isEmpty(values)) {
-        return originData;
-      }
-      const transformedData = [];
-      forEach(values, (value) => {
-        forEach(originData, (dataItem) => {
-          if (dataItem[value]) {
-            transformedData.push({
-              ...dataItem,
-              [EXTRA_FIELD]: value,
-              [VALUE_FIELD]: dataItem[value],
-            });
-          }
-        });
-      });
-      return transformedData;
-    };
-
-    const newData = standardTransform(data);
-    const newTotalData = standardTransform(totalData);
+    const newData = this.standardTransform(data, values);
+    const newTotalData = this.standardTransform(totalData, values);
 
     // 返回新的结构
     return {
