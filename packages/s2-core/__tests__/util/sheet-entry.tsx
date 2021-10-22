@@ -77,8 +77,11 @@ export const SheetEntry = forwardRef(
     const initDataCfg = props.forceUpdateDataCfg
       ? props.dataCfg
       : assembleDataCfg(props.dataCfg);
-    const [options, setOptions] = useState(() => initOptions);
-    const [dataCfg, setDataCfg] = useState(() => initDataCfg);
+    const [adaptive, setAdaptive] = useState(false);
+    const [options, setOptions] = useState<S2Options>(() => initOptions);
+    const [dataCfg, setDataCfg] = useState<Partial<S2DataConfig>>(
+      () => initDataCfg,
+    );
 
     const onValueInColsChange = (checked) => {
       setValueInCols(checked);
@@ -149,6 +152,14 @@ export const SheetEntry = forwardRef(
             defaultChecked={options.freezeRowHeader}
             onChange={onFreezeRowHeaderChange}
           />
+          <Switch
+            checkedChildren="自适应开"
+            unCheckedChildren="自适应关"
+            defaultChecked={adaptive}
+            onChange={(checked) => {
+              setAdaptive(checked);
+            }}
+          />
           <Space>
             设置宽度 ：
             <Input
@@ -170,10 +181,10 @@ export const SheetEntry = forwardRef(
         </Space>
         <div style={{ marginBottom: 20 }}>{props.header}</div>
         <SheetComponent
-          dataCfg={dataCfg}
+          dataCfg={dataCfg as S2DataConfig}
           options={options}
           sheetType={props.sheetType}
-          adaptive={false}
+          adaptive={adaptive}
           getSpreadsheet={(instance) => {
             if (ref) {
               ref.current = instance;

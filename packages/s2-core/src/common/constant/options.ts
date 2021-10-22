@@ -34,6 +34,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   totals: {},
   tooltip: {
     showTooltip: true,
+    autoAdjustBoundary: 'container',
     operation: {
       hiddenColumns: true,
       trend: false,
