@@ -86,12 +86,13 @@ const handleTreeRowHierarchy = (params: HeaderParams) => {
 };
 
 const handleRowHeaderHierarchy = (params: HeaderParams) => {
-  // table 表无行头
-  const { spreadsheet } = params;
-  if (spreadsheet.isHierarchyTreeType()) {
-    handleTreeRowHierarchy(params);
-  } else {
-    handleGridRowColHierarchy(params);
+  const { isPivotMode, spreadsheet } = params;
+  if (isPivotMode) {
+    if (spreadsheet.isHierarchyTreeType()) {
+      handleTreeRowHierarchy(params);
+    } else {
+      handleGridRowColHierarchy(params);
+    }
   }
 };
 
