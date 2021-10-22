@@ -214,9 +214,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
-    if (this.defaultHideActionIcons()) {
-      this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
-    }
   }
 
   public toggleActionIcon(id: string, type: CellTypes) {
