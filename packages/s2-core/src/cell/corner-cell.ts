@@ -18,6 +18,7 @@ import {
 } from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
 import { getEllipsisText, measureTextWidth } from '@/utils/text';
+import { CornerNodeType } from '@/common/interface/node';
 
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
@@ -25,7 +26,7 @@ export class CornerCell extends HeaderCell {
   protected textShapes: IShape[] = [];
 
   /* 角头 label 类型 */
-  public cornerType: 'col' | 'row';
+  public cornerType: CornerNodeType;
 
   public get cellType() {
     return CellTypes.CORNER_CELL;
@@ -123,7 +124,7 @@ export class CornerCell extends HeaderCell {
    * 绘制折叠展开的icon
    */
   private drawTreeIcon() {
-    if (!this.showTreeIcon() || this.meta.cornerType !== 'row') {
+    if (!this.showTreeIcon() || this.meta.cornerType !== CornerNodeType.ROW) {
       return;
     }
     // 只有交叉表才有icon
@@ -168,7 +169,7 @@ export class CornerCell extends HeaderCell {
    * @private
    */
   protected drawBorderShape() {
-    if (this.meta.cornerType !== 'row') {
+    if (this.meta.cornerType !== CornerNodeType.ROW) {
       return;
     }
     const { x, y, width, height } = this.getCellArea();
@@ -255,6 +256,25 @@ export class CornerCell extends HeaderCell {
       this.headerConfig.spreadsheet.isPivotMode() &&
       this.meta?.x === 0
     );
+  }
+
+  protected getIconPosition(): Point {
+    const textCfg = this.textShapes?.[0]?.cfg.attrs;
+    const { textBaseline, textAlign } = this.getTextStyle();
+    const { size, margin } = this.getStyle().icon;
+    const iconX =
+      textCfg?.x +
+      (textAlign === 'center'
+        ? this.actualTextWidth / 2
+        : this.actualTextWidth) +
+      margin.left;
+    const iconY = getVerticalPosition(
+      this.getContentArea(),
+      textBaseline,
+      size,
+    );
+
+    return { x: iconX, y: iconY };
   }
 
   private getTreeIconWidth() {
