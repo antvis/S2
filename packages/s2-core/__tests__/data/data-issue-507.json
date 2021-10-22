@@ -1,7 +1,7 @@
 {
   "fields": {
     "rows": ["rows0", "row1"],
-    "columns": [],
+    "columns": ["col0", "col1"],
     "values": ["value"],
     "valueInCols": true
   },

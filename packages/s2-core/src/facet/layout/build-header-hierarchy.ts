@@ -42,6 +42,7 @@ const handleGridRowColHierarchy = (params: HeaderParams) => {
     addTotalMeasureInTotal = isValueInCols && moreThanOneValue;
     addMeasureInTotalQuery = isValueInCols && !moreThanOneValue;
   }
+
   buildGridHierarchy({
     addTotalMeasureInTotal,
     addMeasureInTotalQuery,
