@@ -132,6 +132,12 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.actionIcons.push(sortIcon);
   }
 
+  // 是否设置为默认隐藏 action icon，默认隐藏的交互为 hover 后可见
+  protected defaultHideActionIcons() {
+    const actionIconCfg = this.getActionIconCfg();
+    return actionIconCfg?.defaultHide;
+  }
+
   protected addActionIcon(
     iconName: string,
     x: number,
@@ -193,8 +199,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
   private handleHover(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.HOVER);
-      // hover 只会有一个 cell
-      this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
+      if (this.defaultHideActionIcons()) {
+        // hover 只会有一个 cell
+        this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
+      }
     }
   }
 
@@ -206,7 +214,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
-    this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
   }
 
   public toggleActionIcon(id: string, type: CellTypes) {

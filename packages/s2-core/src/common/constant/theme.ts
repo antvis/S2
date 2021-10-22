@@ -13,7 +13,4 @@ export const PALETTE_MAP: Record<string, Palette> = {
 export const FONT_FAMILY =
   'Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
 
-// cell default padding
-export const DEFAULT_PADDING = 4;
-
 export const MINI_BAR_CHART_HEIGHT = 12;
