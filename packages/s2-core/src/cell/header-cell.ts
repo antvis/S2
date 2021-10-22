@@ -1,4 +1,4 @@
-import { Event } from '@antv/g-canvas';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import {
   first,
   map,
@@ -124,12 +124,18 @@ export abstract class HeaderCell extends BaseCell<Node> {
       height: icon.size,
       fill: text.fill,
     });
-    sortIcon.on('click', (event) => {
+    sortIcon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       this.spreadsheet.handleGroupSort(event, this.meta);
     });
     this.add(sortIcon);
     this.actionIcons.push(sortIcon);
+  }
+
+  // 是否设置为默认隐藏 action icon，默认隐藏的交互为 hover 后可见
+  protected defaultHideActionIcons() {
+    const actionIconCfg = this.getActionIconCfg();
+    return actionIconCfg?.defaultHide;
   }
 
   protected addActionIcon(
@@ -151,10 +157,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
     // 默认隐藏，hover 可见
     icon.set('visible', !defaultHide);
-    icon.on('mouseover', (event: Event) => {
+    icon.on('mouseover', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_HOVER, event);
     });
-    icon.on('click', (event: Event) => {
+    icon.on('click', (event: CanvasEvent) => {
       this.spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
       action({
         iconName: iconName,
@@ -193,8 +199,10 @@ export abstract class HeaderCell extends BaseCell<Node> {
   private handleHover(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.HOVER);
-      // hover 只会有一个 cell
-      this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
+      if (this.defaultHideActionIcons()) {
+        // hover 只会有一个 cell
+        this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
+      }
     }
   }
 
@@ -206,7 +214,6 @@ export abstract class HeaderCell extends BaseCell<Node> {
     if (includes(selectedNodeIds, this.meta.id)) {
       this.updateByState(InteractionStateName.SELECTED);
     }
-    this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
   }
 
   public toggleActionIcon(id: string, type: CellTypes) {
@@ -249,7 +256,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
-  updateByState(stateName: InteractionStateName) {
+  public updateByState(stateName: InteractionStateName) {
     super.updateByState(stateName, this);
   }
 

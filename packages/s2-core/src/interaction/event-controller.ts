@@ -14,7 +14,7 @@ import {
   S2Event,
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
-import { ResizeInfo } from '@/facet/header/interface';
+import { ResizeInfo } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
 import { getTooltipOptions } from '@/utils/tooltip';

@@ -5,12 +5,11 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Checkbox, Switch } from 'antd';
+import { Input, Space, Switch } from 'antd';
 import { isArray, merge, mergeWith } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
-  defaultDataConfig,
-  defaultOptions,
+  DEFAULT_OPTIONS,
   S2DataConfig,
   S2Options,
   SheetComponent,
@@ -18,13 +17,14 @@ import {
   ThemeCfg,
   SheetType,
   TargetCellInfo,
+  DEFAULT_DATA_CONFIG,
 } from '@/index';
 import 'antd/dist/antd.min.css';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
   mergeWith(
     {},
-    defaultOptions,
+    DEFAULT_OPTIONS,
     { debug: true, width: 1000, height: 600 },
     ...options,
     (origin, updated) => {
@@ -37,7 +37,7 @@ export const assembleOptions = (...options: Partial<S2Options>[]) =>
 export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
   mergeWith(
     {},
-    defaultDataConfig,
+    DEFAULT_DATA_CONFIG,
     {
       fields: {
         rows: ['province', 'city'],
@@ -72,7 +72,6 @@ export const SheetEntry = forwardRef(
   (props: SheetEntryProps, ref: MutableRefObject<SpreadSheet>) => {
     const [mode, setMode] = useState('grid');
     const [valueInCols, setValueInCols] = useState(true);
-    const [freezeRowHeader, setFreezeRowHeader] = useState(true);
     const initOptions = assembleOptions(props.options);
 
     const initDataCfg = props.forceUpdateDataCfg
@@ -101,11 +100,18 @@ export const SheetEntry = forwardRef(
       );
     };
 
-    const onFreezeRowHeaderChange = (e) => {
-      setFreezeRowHeader(e.target.checked);
+    const onFreezeRowHeaderChange = (checked) => {
       setOptions(
         merge({}, options, {
-          freezeRowHeader: e.target.checked,
+          freezeRowHeader: checked,
+        }),
+      );
+    };
+
+    const onSizeChange = (type: 'width' | 'height') => (e) => {
+      setOptions(
+        merge({}, options, {
+          [type]: e.target.value,
         }),
       );
     };
@@ -124,27 +130,44 @@ export const SheetEntry = forwardRef(
 
     return (
       <div>
-        <div style={{ marginBottom: 20 }}>
+        <Space style={{ marginBottom: 20 }}>
           <Switch
             checkedChildren="树形"
             unCheckedChildren="平铺"
             checked={mode === 'tree'}
             onChange={onModeChange}
-            style={{ marginRight: 10 }}
           />
           <Switch
-            checkedChildren="挂列头"
-            unCheckedChildren="挂行头"
+            checkedChildren="数值挂列头"
+            unCheckedChildren="数值挂行头"
             defaultChecked={valueInCols}
             onChange={onValueInColsChange}
-            style={{ marginRight: 10 }}
           />
-          冻结行头：
-          <Checkbox
-            checked={freezeRowHeader}
+          <Switch
+            checkedChildren="冻结行头开"
+            unCheckedChildren="冻结行头关"
+            defaultChecked={options.freezeRowHeader}
             onChange={onFreezeRowHeaderChange}
           />
-        </div>
+          <Space>
+            设置宽度 ：
+            <Input
+              style={{ width: 100 }}
+              placeholder="宽度(px)"
+              onChange={onSizeChange('width')}
+              defaultValue={options.width}
+              suffix="px"
+            />
+            设置高度 ：
+            <Input
+              style={{ width: 100 }}
+              placeholder="高度(px)"
+              onChange={onSizeChange('height')}
+              defaultValue={options.height}
+              suffix="px"
+            />
+          </Space>
+        </Space>
         <div style={{ marginBottom: 20 }}>{props.header}</div>
         <SheetComponent
           dataCfg={dataCfg}

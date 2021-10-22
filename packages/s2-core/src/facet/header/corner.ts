@@ -2,7 +2,7 @@ import { Group, Point, SimpleBBox } from '@antv/g-canvas';
 import { get, includes, isEmpty, last, max, min } from 'lodash';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
-import { CornerData, ResizeInfo } from './interface';
+import { CornerData } from './interface';
 import { CornerCell } from '@/cell/corner-cell';
 import {
   KEY_GROUP_CORNER_RESIZE_AREA,
@@ -14,6 +14,7 @@ import {
   S2CellType,
   S2Options,
   SpreadSheetFacetCfg,
+  ResizeInfo,
 } from '@/common/interface';
 import { BaseDataSet } from '@/data-set';
 import { Hierarchy } from '@/facet/layout/hierarchy';
@@ -56,7 +57,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const { width, height } = panelBBox;
     const cornerWidth = cornerBBox.width;
     const cornerHeight = cornerBBox.height;
-    const cornerNodes: Node[] = this.getCornerNodes(
+    const cornerNodes = this.getCornerNodes(
       { x: cornerBBox.x, y: cornerBBox.y },
       cornerWidth,
       cornerHeight,
@@ -257,8 +258,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected clip(): void {
-    const cfg = this.headerConfig;
-    const { width, height, scrollX } = cfg;
+    const { width, height, scrollX } = this.headerConfig;
     this.setClip({
       type: 'rect',
       attrs: {
@@ -300,9 +300,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         id: KEY_GROUP_CORNER_RESIZE_AREA,
       })) as Group;
     const treeType = this.headerConfig.spreadsheet.isHierarchyTreeType();
-    if (!treeType) {
-      // do it in corner cell
-    } else if (treeType) {
+    if (treeType) {
       resizeArea.addShape('rect', {
         attrs: {
           x: position.x + width - resizeStyle.size / 2,

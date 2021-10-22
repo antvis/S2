@@ -20,8 +20,8 @@ export const getTheme = (
     cornerCell: {
       bolderText: {
         fontFamily: FONT_FAMILY,
-        fontSize: 14,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontSize: 12,
+        fontWeight: isWindows() ? 'bold' : '500',
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -29,7 +29,7 @@ export const getTheme = (
       },
       text: {
         fontFamily: FONT_FAMILY,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: 'normal',
         fill: basicColors[0],
         opacity: 1,
@@ -100,9 +100,9 @@ export const getTheme = (
         verticalBorderWidth: 0,
         // -------------- layout -----------------
         padding: {
-          top: 6,
+          top: 0,
           right: 8,
-          bottom: 6,
+          bottom: 0,
           left: 8,
         },
         /* ---------- interaction state ----------- */
@@ -138,7 +138,7 @@ export const getTheme = (
     colCell: {
       bolderText: {
         fontFamily: FONT_FAMILY,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: isWindows() ? 'bold' : '520',
         fill: basicColors[0],
         opacity: 1,
@@ -147,7 +147,7 @@ export const getTheme = (
       },
       text: {
         fontFamily: FONT_FAMILY,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: 'normal',
         fill: basicColors[0],
         opacity: 1,
@@ -168,9 +168,9 @@ export const getTheme = (
         verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
-          top: 10,
+          top: 0,
           right: 8,
-          bottom: 10,
+          bottom: 0,
           left: 8,
         },
         /* ---------- interaction state ----------- */
@@ -197,7 +197,9 @@ export const getTheme = (
         fill: basicColors[0],
         size: 10,
         margin: {
+          top: 8,
           right: 4,
+          bottom: 8,
           left: 4,
         },
       },
@@ -237,9 +239,9 @@ export const getTheme = (
         verticalBorderWidth: 0,
         // -------------- layout -----------------
         padding: {
-          top: 6,
+          top: 0,
           right: 8,
-          bottom: 6,
+          bottom: 0,
           left: 8,
         },
         /* ---------- interaction state ----------- */
@@ -294,6 +296,7 @@ export const getTheme = (
       size: 3,
       background: basicColors[7],
       guidLineColor: basicColors[7],
+      guidLineDash: 3,
       backgroundOpacity: 0,
       /* ---------- interaction state ----------- */
       interactionState: {

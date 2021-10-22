@@ -1,4 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
+import { ResizeInfo } from './resize';
 import {
   CellScrollPosition,
   Data,
@@ -10,7 +11,6 @@ import {
   Style,
   ViewMeta,
 } from '.';
-import { ResizeInfo } from '@/facet/header/interface';
 import { S2Event, SortMethodType } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell/data-cell';
