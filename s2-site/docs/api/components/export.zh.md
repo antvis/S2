@@ -3,7 +3,7 @@ title: 导出
 order: 5
 ---
 
-```typescript
+```tsx
 <SheetComponent
   dataCfg={dataCfg}
   options={options}
