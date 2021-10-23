@@ -32,8 +32,6 @@ export class ColCell extends HeaderCell {
     this.drawActionIcons();
     // draw right border
     this.drawRightBorder();
-    // draw resize ares
-    // this.drawResizeArea();
     this.update();
   }
 
