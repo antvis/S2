@@ -197,8 +197,7 @@ export class PivotFacet extends BaseFacet {
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
     for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
-      levelSample.originalHeight = this.getColNodeHeight(levelSample);
-      levelSample.height = levelSample.originalHeight;
+      levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
     }
     let currentCollIndex = 0;
@@ -326,8 +325,7 @@ export class PivotFacet extends BaseFacet {
       rowsHierarchy.width = this.getTreeRowHeaderWidth();
     } else {
       for (const levelSample of rowsHierarchy.sampleNodesForAllLevels) {
-        levelSample.originWidth = this.calculateRowLeafNodesWidth(levelSample);
-        levelSample.width = levelSample.originWidth;
+        levelSample.width = this.calculateRowLeafNodesWidth(levelSample);
         rowsHierarchy.width += levelSample.width;
       }
     }
