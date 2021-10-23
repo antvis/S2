@@ -723,52 +723,16 @@ function MainLayout() {
     sortParams: [],
   };
   const options = {
-    showSeriesNumber: false,
-    hierarchyCollapse: false,
     style: {
       treeRowsWidth: 120,
-      collapsedRows: {},
-      colCfg: {
-        widthByFieldValue: {},
-        heightByField: {},
-        colWidthType: 'adaptive',
-      },
       cellCfg: {
         height: 32,
-      },
-      device: 'pc',
-    },
-    tooltip: {
-      showTooltip: true,
-      operation: {
-        trend: true,
       },
     },
     containsRowHeader: true,
     valueInCols: true,
-    customSVGIcons: [
-      {
-        name: 'Filter',
-        svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
-      },
-      {
-        name: 'FilterAsc',
-        svg: 'https://gw.alipayobjects.com/zos/antfincdn/XE6q0BZDe6/filter_sort_asc.svg',
-      },
-      {
-        name: 'FilterDesc',
-        svg: 'https://gw.alipayobjects.com/zos/antfincdn/zBWAjRerGK/filter_sort.svg',
-      },
-    ],
     width: 1180,
     height: 525,
-    hierarchyType: 'grid',
-    showTrend: true,
-    pagination: null,
-    conditions: {
-      icon: [],
-      text: [],
-    },
     totals: {
       row: {
         showGrandTotals: true,
@@ -788,61 +752,6 @@ function MainLayout() {
         subTotalsDimensions: null,
       },
     },
-    showDefaultHeaderActionIcon: false,
-    headerActionIcons: [
-      {
-        iconNames: ['SortDownSelected'],
-        belongsCell: 'colCell',
-      },
-      {
-        iconNames: ['SortDownSelected'],
-        belongsCell: 'colCell',
-      },
-      {
-        iconNames: ['GlobalAsc'],
-        belongsCell: 'colCell',
-      },
-      {
-        iconNames: ['GlobalDesc'],
-        belongsCell: 'colCell',
-      },
-      {
-        iconNames: ['Filter'],
-        belongsCell: 'colCell',
-      },
-      {
-        iconNames: ['FilterAsc'],
-        belongsCell: 'colCell',
-      },
-      {
-        iconNames: ['FilterDesc'],
-        belongsCell: 'colCell',
-      },
-      {
-        iconNames: ['SortDownSelected'],
-        belongsCell: 'cornerCell',
-      },
-      {
-        iconNames: ['GlobalAsc'],
-        belongsCell: 'cornerCell',
-      },
-      {
-        iconNames: ['GlobalDesc'],
-        belongsCell: 'cornerCell',
-      },
-      {
-        iconNames: ['Filter'],
-        belongsCell: 'cornerCell',
-      },
-      {
-        iconNames: ['FilterAsc'],
-        belongsCell: 'cornerCell',
-      },
-      {
-        iconNames: ['FilterDesc'],
-        belongsCell: 'cornerCell',
-      },
-    ],
   };
   return (
     <div>
