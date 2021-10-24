@@ -7,19 +7,19 @@ import {
 } from './base-interaction/click';
 import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
-import { BrushSelection, DataCellMultiSelection, RowColResize } from './';
+import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
 import { ColCell, DataCell, RowCell } from '@/cell';
 import {
   CellTypes,
   InteractionName,
   InteractionStateName,
   INTERACTION_STATE_INFO_KEY,
-  Intercept,
   InterceptType,
 } from '@/common/constant';
 import {
   CustomInteraction,
   InteractionStateInfo,
+  Intercept,
   S2CellType,
 } from '@/common/interface';
 import { ColHeader, RowHeader } from '@/facet/header';
@@ -35,7 +35,7 @@ export class RootInteraction {
   public interactions = new Map<string, BaseEvent>();
 
   // 用来标记需要拦截的交互，interaction和本身的hover等事件可能会有冲突，有冲突时在此屏蔽
-  public intercept = new Set<Intercept>();
+  public intercepts = new Set<Intercept>();
 
   // hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
   // 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
@@ -153,8 +153,8 @@ export class RootInteraction {
     if (isEmpty(currentNode)) {
       return [];
     }
-    while (!currentNode[0]?.cellType) {
-      currentNode = currentNode[0]?.cfg?.children;
+    while (!currentNode?.[0]?.cellType) {
+      currentNode = currentNode?.[0]?.cfg?.children;
     }
 
     const rowCells = currentNode || [];
@@ -173,8 +173,8 @@ export class RootInteraction {
     if (isEmpty(currentNode)) {
       return [];
     }
-    while (!currentNode[0]?.cellType) {
-      currentNode = currentNode[0]?.cfg?.children;
+    while (!currentNode?.[0]?.cellType) {
+      currentNode = currentNode?.[0]?.cfg?.children;
     }
 
     const colCells = currentNode;
@@ -199,7 +199,7 @@ export class RootInteraction {
   }
 
   public selectAll = () => {
-    this.spreadsheet.interaction.changeState({
+    this.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
   };
@@ -239,7 +239,7 @@ export class RootInteraction {
       );
       this.interactions.set(
         InteractionName.COL_ROW_RESIZE,
-        new RowColResize(this.spreadsheet),
+        new RowColumnResize(this.spreadsheet),
       );
       this.interactions.set(
         InteractionName.COL_ROW_MULTI_SELECTION,
@@ -273,9 +273,9 @@ export class RootInteraction {
   }
 
   public reset() {
-    this.spreadsheet.interaction.clearState();
+    this.clearState();
+    this.intercepts.clear();
     this.spreadsheet.hideTooltip();
-    this.spreadsheet.interaction.intercept.clear();
   }
 
   public changeState(interactionStateInfo: InteractionStateInfo) {
@@ -310,19 +310,19 @@ export class RootInteraction {
 
   public addIntercepts(interceptTypes: InterceptType[] = []) {
     interceptTypes.forEach((interceptType) => {
-      this.spreadsheet.interaction.intercept.add(interceptType);
+      this.intercepts.add(interceptType);
     });
   }
 
   public hasIntercepts(interceptTypes: InterceptType[] = []) {
     return interceptTypes.some((interceptType) =>
-      this.spreadsheet.interaction.intercept.has(interceptType),
+      this.intercepts.has(interceptType),
     );
   }
 
   public removeIntercepts(interceptTypes: InterceptType[] = []) {
     interceptTypes.forEach((interceptType) => {
-      this.spreadsheet.interaction.intercept.delete(interceptType);
+      this.intercepts.delete(interceptType);
     });
   }
 }

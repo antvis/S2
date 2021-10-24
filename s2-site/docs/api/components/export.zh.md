@@ -1,9 +1,9 @@
 ---
 title: 导出
-order: 3
+order: 5
 ---
 
-```typescript
+```tsx
 <SheetComponent
   dataCfg={dataCfg}
   options={options}
@@ -11,12 +11,11 @@ order: 3
 />
 ```
 
-## exportCfg
+## ExportCfgProps
 
 | 属性       | 类型            | 必选  | 默认值 | 功能描述   |
 | :---------- | :--------------- |  :---- | :------ | :---------- |
 | open       | boolean           |   是   | false    | 开启组件   |
-| style | `React.CSSProperties`         |      |    | 样式   |
 | className   | `string`           |      |    | 类名 |
 | icon       | `ReactNode`       |      |    |  展示图标  |
 | copyOriginalText       | `string`       |      |    | 复制原始数据文案   |

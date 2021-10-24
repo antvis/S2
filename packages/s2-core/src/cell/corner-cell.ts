@@ -7,9 +7,8 @@ import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme } from '@/common/interface';
+import { FormatResult, TextTheme, ResizeInfo } from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
-import { ResizeInfo } from '@/facet/header/interface';
 import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
 import {
   renderLine,
@@ -19,6 +18,7 @@ import {
 } from '@/utils/g-renders';
 import { isIPhoneX } from '@/utils/is-mobile';
 import { getEllipsisText, measureTextWidth } from '@/utils/text';
+import { CornerNodeType } from '@/common/interface/node';
 
 export class CornerCell extends HeaderCell {
   protected headerConfig: CornerHeaderConfig;
@@ -26,7 +26,7 @@ export class CornerCell extends HeaderCell {
   protected textShapes: IShape[] = [];
 
   /* 角头 label 类型 */
-  public cornerType: 'col' | 'row';
+  public cornerType: CornerNodeType;
 
   public get cellType() {
     return CellTypes.CORNER_CELL;
@@ -124,7 +124,7 @@ export class CornerCell extends HeaderCell {
    * 绘制折叠展开的icon
    */
   private drawTreeIcon() {
-    if (!this.showTreeIcon() || this.meta.cornerType !== 'row') {
+    if (!this.showTreeIcon() || this.meta.cornerType !== CornerNodeType.ROW) {
       return;
     }
     // 只有交叉表才有icon
@@ -169,12 +169,17 @@ export class CornerCell extends HeaderCell {
    * @private
    */
   protected drawBorderShape() {
-    if (this.meta.cornerType !== 'row') return;
-    const { x, y, width } = this.getCellArea();
+    if (this.meta.cornerType !== CornerNodeType.ROW) {
+      return;
+    }
+    const { x, y, width, height } = this.getCellArea();
     const {
       horizontalBorderColor,
       horizontalBorderWidth,
       horizontalBorderColorOpacity,
+      verticalBorderColor,
+      verticalBorderWidth,
+      verticalBorderColorOpacity,
     } = this.getStyle().cell;
 
     // horizontal border
@@ -190,6 +195,21 @@ export class CornerCell extends HeaderCell {
         stroke: horizontalBorderColor,
         lineWidth: horizontalBorderWidth,
         opacity: horizontalBorderColorOpacity,
+      },
+    );
+    // vertical border
+    renderLine(
+      this,
+      {
+        x1: x + width,
+        y1: y,
+        x2: x + width,
+        y2: y + height,
+      },
+      {
+        stroke: verticalBorderColor,
+        lineWidth: verticalBorderWidth,
+        opacity: verticalBorderColorOpacity,
       },
     );
   }
@@ -240,9 +260,14 @@ export class CornerCell extends HeaderCell {
 
   protected getIconPosition(): Point {
     const textCfg = this.textShapes?.[0]?.cfg.attrs;
-    const { textBaseline } = this.getTextStyle();
+    const { textBaseline, textAlign } = this.getTextStyle();
     const { size, margin } = this.getStyle().icon;
-    const iconX = textCfg?.x + this.actualTextWidth + margin.left;
+    const iconX =
+      textCfg?.x +
+      (textAlign === 'center'
+        ? this.actualTextWidth / 2
+        : this.actualTextWidth) +
+      margin.left;
     const iconY = getVerticalPosition(
       this.getContentArea(),
       textBaseline,

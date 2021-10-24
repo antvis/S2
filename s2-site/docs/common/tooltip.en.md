@@ -1,5 +1,5 @@
 ---
 title: Tooltip
-order: 3
+order: 4
 ---
 `markdown:docs/common/tooltip.zh.md`

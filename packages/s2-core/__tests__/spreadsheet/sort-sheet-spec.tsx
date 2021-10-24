@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import { getContainer } from 'tests/util/helpers';
+import { originData, totalData, meta, fields } from 'tests/data/data-sort.json';
 import {
+  DEFAULT_OPTIONS,
   S2DataConfig,
   S2Options,
   SheetComponent,
-  defaultOptions,
-} from '../../src';
-import { getContainer } from '../util/helpers';
-import { originData, totalData, meta, fields } from '../data/data-sort.json';
+} from '@/index';
 import 'antd/dist/antd.min.css';
 import './less/sort-sheet-spec.less';
 
 function MainLayout() {
   const options: S2Options = {
-    ...defaultOptions,
+    ...DEFAULT_OPTIONS,
     width: 880,
     height: 600,
     totals: {

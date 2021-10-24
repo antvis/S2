@@ -62,23 +62,3 @@ export interface Cfg {
 
   spreadsheet?: SpreadSheet;
 }
-
-export interface ResizeInfo {
-  isResizeArea: boolean;
-  class: 'resize-trigger';
-  /**
-   * col是改变列配置，即改变宽度
-   * row是改变行配置，即改变高度
-   */
-  type: 'row' | 'col';
-  /** 改动区域 */
-  affect: 'field' | 'cell' | 'tree';
-  /** 字段id */
-  id: string;
-  /** 维值，用于指定该维值对应的配置 */
-  caption: string;
-  offsetX: number;
-  offsetY: number;
-  width: number;
-  height: number;
-}

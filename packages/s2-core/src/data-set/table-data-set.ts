@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { each, orderBy, filter, includes } from 'lodash';
+import { each, orderBy, filter, includes, isEmpty } from 'lodash';
 import { CellDataParams, DataType } from './interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
 import { S2DataConfig } from '@/common/interface';
@@ -14,8 +14,8 @@ export class TableDataSet extends BaseDataSet {
 
   public setDataCfg(dataCfg: S2DataConfig) {
     super.setDataCfg(dataCfg);
-    this.handleDimensionValuesSort();
     this.handleDimensionValueFilter();
+    this.handleDimensionValuesSort();
   }
 
   /**
@@ -34,7 +34,10 @@ export class TableDataSet extends BaseDataSet {
    */
   protected getEndRows() {
     const { frozenTrailingRowCount } = this.spreadsheet.options || {};
+    // 没有冻结行时返回空数组
+    if (!frozenTrailingRowCount) return [];
     const { displayData } = this;
+
     return displayData.slice(-frozenTrailingRowCount);
   }
 

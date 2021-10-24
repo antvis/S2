@@ -1,4 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
+import { ResizeInfo } from './resize';
 import {
   CellScrollPosition,
   Data,
@@ -10,7 +11,6 @@ import {
   Style,
   ViewMeta,
 } from '.';
-import { ResizeInfo } from '@/facet/header/interface';
 import { S2Event, SortMethodType } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell/data-cell';
@@ -39,7 +39,6 @@ type MouseEventHandler = (event: MouseEvent) => void;
 type EventHandler = (event: Event) => void;
 type ResizeHandler = (data: { info: ResizeInfo; style: Style }) => void;
 type SelectedHandler = (cells: S2CellType[]) => void;
-type FilterHandler = (info: FilterParam) => void;
 
 export interface EmitterType {
   /** ================ Global ================  */
@@ -59,11 +58,11 @@ export interface EmitterType {
 
   /** ================ Sort ================  */
   [S2Event.RANGE_SORT]: (info: SortParams) => void;
-  [S2Event.RANGE_SORTED]: (rangeData: Data[]) => void;
+  [S2Event.RANGE_SORTED]: (rangeData: Data[]) => any;
 
   /** ================ Filter ================  */
-  [S2Event.RANGE_FILTER]: FilterHandler;
-  [S2Event.RANGE_FILTERED]: FilterHandler;
+  [S2Event.RANGE_FILTER]: (info: FilterParam) => void;
+  [S2Event.RANGE_FILTERED]: (data: Data[]) => any;
 
   /** ================ Cell ================  */
   [S2Event.GLOBAL_LINK_FIELD_JUMP]: (data: {

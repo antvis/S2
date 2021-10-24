@@ -68,7 +68,7 @@ export class TableColCell extends ColCell {
     const textStyle = get(style, 'bolderText');
     const padding = get(style, 'cell.padding');
     const iconSize = get(style, 'icon.size');
-    const iconMarginRight = get(style, 'icon.margin.right');
+    const iconMargin = get(style, 'icon.margin');
     const rightPadding = padding?.right + iconSize;
     const leftPadding = padding?.left;
 
@@ -111,12 +111,13 @@ export class TableColCell extends ColCell {
       { cursor: 'pointer' },
     );
 
-    if (!isEmpty(spreadsheet.options.headerActionIcons)) {
+    if (spreadsheet.options.showDefaultHeaderActionIcon) {
       renderDetailTypeSortIcon(
         this,
         spreadsheet,
-        x + cellWidth - iconSize - iconMarginRight,
+        x + cellWidth - iconSize - iconMargin?.right,
         textY,
+        iconMargin?.top,
         key,
       );
     }

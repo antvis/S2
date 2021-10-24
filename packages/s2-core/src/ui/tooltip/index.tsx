@@ -14,7 +14,11 @@ import {
   TooltipHeadInfo as TooltipHeadInfoType,
   TooltipInterpretationOptions,
 } from '@/common/interface';
-import { getOptions, getPosition, setContainerStyle } from '@/utils/tooltip';
+import {
+  getOptions,
+  getAutoAdjustPosition,
+  setContainerStyle,
+} from '@/utils/tooltip';
 import { TooltipDetail } from '@/ui/tooltip/components/detail';
 import { Divider } from '@/ui/tooltip/components/divider';
 import { TooltipHead } from '@/ui/tooltip/components/head-info';
@@ -24,6 +28,7 @@ import { TooltipOperator } from '@/ui/tooltip/components/operator';
 import { SimpleTips } from '@/ui/tooltip/components/simple-tips';
 import { TooltipSummary } from '@/ui/tooltip/components/summary';
 import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
+
 import './index.less';
 
 /**
@@ -55,16 +60,22 @@ export class BaseTooltip {
     const { position, data, options, element } = showOptions;
     const { enterable } = getOptions(options);
     const container = this.getContainer();
+    const { tooltipComponent, autoAdjustBoundary } =
+      this.spreadsheet.options.tooltip || {};
 
-    const CustomComponent =
-      element || this.spreadsheet.options.tooltip?.tooltipComponent;
+    const CustomComponent = element || tooltipComponent;
 
     this.options = showOptions;
     this.renderElement = CustomComponent
       ? ReactDOM.render(CustomComponent, container)
       : ReactDOM.render(this.renderContent(data, options), container);
 
-    const { x, y } = getPosition(position, container);
+    const { x, y } = getAutoAdjustPosition({
+      spreadsheet: this.spreadsheet,
+      position,
+      tooltipContainer: container,
+      autoAdjustBoundary,
+    });
 
     this.position = {
       x,
@@ -94,6 +105,15 @@ export class BaseTooltip {
       this.resetPosition();
       document.body.removeChild(this.container);
     }
+  }
+
+  public disablePointerEvent() {
+    if (this.container.style.pointerEvents === 'none') {
+      return;
+    }
+    setContainerStyle(this.container, {
+      pointerEvents: 'none',
+    });
   }
 
   private resetPosition() {

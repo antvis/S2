@@ -1,35 +1,40 @@
 import { Button, Popover } from 'antd';
-import React, { FC, useRef, ReactNode } from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 import { SwitcherIcon } from '../icons';
-import {
-  SwitcherContent,
-  SwitcherContentProps,
-  SwitcherContentRef,
-} from './content';
+import { SwitcherContent, SwitcherContentProps } from './content';
 import './index.less';
-import { SwitcherResult } from './interface';
 import { getSwitcherClassName } from './util';
 import { i18n } from '@/common/i18n';
 
-export interface SwitcherProps extends SwitcherContentProps {
+export interface SwitcherProps
+  extends Omit<SwitcherContentProps, 'onToggleVisible'> {
   title?: ReactNode;
-  onSubmit?: (result: SwitcherResult) => void;
+  triggerClassName?: string;
+  overlayClassName?: string;
 }
 
-export const Switcher: FC<SwitcherProps> = ({ title, onSubmit, ...props }) => {
-  const ref = useRef<SwitcherContentRef>();
+export const Switcher: FC<SwitcherProps> = ({
+  title,
+  triggerClassName,
+  overlayClassName,
+  ...props
+}) => {
+  const [visible, setVisible] = useState(false);
+
+  const onToggleVisible = () => {
+    setVisible((prev) => !prev);
+  };
+
   return (
     <Popover
-      overlayClassName={getSwitcherClassName()}
+      className={triggerClassName}
+      overlayClassName={overlayClassName}
       placement="bottomLeft"
       trigger="click"
+      visible={visible}
       destroyTooltipOnHide={true}
-      content={<SwitcherContent {...props} ref={ref} />}
-      onVisibleChange={(visible) => {
-        if (!visible) {
-          onSubmit?.(ref.current.getResult());
-        }
-      }}
+      content={<SwitcherContent {...props} onToggleVisible={onToggleVisible} />}
+      onVisibleChange={onToggleVisible}
     >
       {title || (
         <Button

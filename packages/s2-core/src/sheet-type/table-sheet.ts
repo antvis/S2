@@ -12,6 +12,7 @@ import {
 import { S2Options, SpreadSheetFacetCfg, ViewMeta } from '@/common/interface';
 import { TableDataSet } from '@/data-set';
 import { TableFacet } from '@/facet';
+
 export class TableSheet extends SpreadSheet {
   public getDataSet(options: S2Options) {
     const { dataSet } = options;

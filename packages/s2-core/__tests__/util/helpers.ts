@@ -5,10 +5,11 @@ import EE from '@antv/event-emitter';
 import { Canvas } from '@antv/g-canvas';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
-import { defaultOptions, S2Options } from '@/common/interface';
+import { S2Options } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
+import { DEFAULT_OPTIONS } from '@/common/constant';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
@@ -45,7 +46,7 @@ export const createFakeSpreadSheet = () => {
   }
 
   const s2 = new FakeSpreadSheet() as SpreadSheet;
-  s2.options = defaultOptions;
+  s2.options = DEFAULT_OPTIONS;
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
   s2.store = new Store();
   s2.interaction = interaction;
@@ -62,3 +63,19 @@ export const createFakeSpreadSheet = () => {
 
   return s2;
 };
+// 可借助 tinygradient 完成功能更全面的颜色过渡
+export function getGradient(rate, startColor, endColor) {
+  function toGgb(color) {
+    color = color.slice(1);
+    const r = parseInt(color.substring(0, 2), 16);
+    const g = parseInt(color.substring(2, 4), 16);
+    const b = parseInt(color.substring(4, 6), 16);
+    return [r, g, b];
+  }
+  const start = toGgb(startColor);
+  const end = toGgb(endColor);
+  const r = start[0] + (end[0] - start[0]) * rate;
+  const g = start[1] + (end[1] - start[1]) * rate;
+  const b = start[2] + (end[2] - start[2]) * rate;
+  return `rgb(${r},${g},${b})`;
+}

@@ -6,7 +6,6 @@ import { AdvancedSort, AdvancedSortCfgProps } from '../advanced-sort';
 import { SpreadSheet } from '@/sheet-type';
 
 export interface HeaderCfgProps {
-  style?: React.CSSProperties;
   className?: string;
   title?: React.ReactNode;
   description?: string;
@@ -33,12 +32,12 @@ export const Header: React.FC<HeaderProps> = ({
   let extraOperationComponents = [];
   if (advancedSortCfg.open) {
     const advancedSortNode = (
-      <AdvancedSort sheet={sheet} {...advancedSortCfg} />
+      <AdvancedSort key={'advancedSort'} sheet={sheet} {...advancedSortCfg} />
     );
     extraOperationComponents = extra.concat([advancedSortNode]);
   }
   if (exportCfg.open) {
-    const exportNode = <Export sheet={sheet} {...exportCfg} />;
+    const exportNode = <Export key={'export'} sheet={sheet} {...exportCfg} />;
     extraOperationComponents.push(exportNode);
   }
 

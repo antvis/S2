@@ -77,7 +77,7 @@ describe('Interaction Event Controller Tests', () => {
     );
     spreadsheet.interaction.reset = jest.fn();
     spreadsheet.interaction.removeIntercepts = jest.fn();
-    spreadsheet.interaction.intercept.clear();
+    spreadsheet.interaction.intercepts.clear();
     spreadsheet.getCell = () => ({} as any);
     spreadsheet.options = s2Options;
     spreadsheet.tooltip.container.getBoundingClientRect = () =>

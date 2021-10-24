@@ -73,10 +73,5 @@ export enum InterceptType {
   CLICK = 'click',
   BRUSH_SELECTION = 'brushSelection',
   MULTI_SELECTION = 'multiSelection',
+  RESIZE = 'resize',
 }
-
-export type Intercept =
-  | InterceptType.HOVER
-  | InterceptType.CLICK
-  | InterceptType.BRUSH_SELECTION
-  | InterceptType.MULTI_SELECTION;
