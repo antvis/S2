@@ -16,8 +16,8 @@ describe('Data order Test', () => {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
   s2.render();
   test('should get right order of rendering data', () => {
-    const colLeafNodes = s2.facet.layoutResult.colLeafNodes;
-    expect(colLeafNodes[0].label).toEqual('price');
-    expect(colLeafNodes[1].label).toEqual('cost');
+    const rowLeafNodes = s2.facet.layoutResult.rowLeafNodes;
+    expect(rowLeafNodes[0].label).toEqual('司五');
+    expect(rowLeafNodes[1].label).toEqual('于四');
   });
 });
