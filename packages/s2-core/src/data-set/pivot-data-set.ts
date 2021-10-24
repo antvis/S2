@@ -95,7 +95,7 @@ export class PivotDataSet extends BaseDataSet {
       this.indexesData = indexesData;
     });
 
-    // this.handleDimensionValuesSort();
+    this.handleDimensionValuesSort();
   }
 
   /**
@@ -315,6 +315,7 @@ export class PivotDataSet extends BaseDataSet {
       meta = this.colPivotMeta;
       dimensions = columns;
     }
+
     if (!isEmpty(query)) {
       let sortedMeta = [];
       for (const dimension of dimensions) {
