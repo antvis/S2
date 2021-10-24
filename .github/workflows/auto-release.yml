@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - master
+      - beta
+      - alpha
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -40,15 +43,17 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn release
 
+      # 内部开发群
       - name: Release success ding talk official group notify
         if: ${{ success() }}
         uses: visiky/dingtalk-release-notify@main
         with:
-          DING_TALK_TOKEN: ${{ secrets.DING_TALK_GROUP_TOKEN }}
+          DING_TALK_TOKEN: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
           notify_title: '🎉 {release_tag} 发布 🎉'
           notify_body: '### { title }<hr /> ![preview](https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png) <hr /> { body } <hr />'
           at_all: false
 
+      # 金牌服务群
       - name: Release success ding talk dev group notify
         if: ${{ success() }}
         uses: visiky/dingtalk-release-notify@main
@@ -58,6 +63,7 @@ jobs:
           notify_body: '### { title }<hr /> ![preview](https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png) <hr /> { body } <hr />'
           at_all: false
 
+      # 发布失败推送通知内部开发群
       - name: Release failed ding talk dev group notify
         if: ${{ failure() }}
         uses: zcong1993/actions-ding@master
