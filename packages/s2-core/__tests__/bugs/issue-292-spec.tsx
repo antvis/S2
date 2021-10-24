@@ -1,10 +1,11 @@
 /**
- * @description spec for issue #511
- * https://github.com/antvis/S2/issues/511
- * The rendering data order does not match the data order
+ * @description spec for issue #292
+ * https://github.com/antvis/S2/issues/292
+ * discussions: https://github.com/antvis/S2/discussions/384
+ * Wrong order of multi-values
  */
 import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/data-issue-511.json';
+import * as mockDataConfig from '../data/data-issue-292.json';
 import { PivotSheet } from '@/sheet-type';
 
 const s2options = {
@@ -12,10 +13,10 @@ const s2options = {
   height: 600,
 };
 
-describe('Data order Test', () => {
+describe('Multi-Values Test', () => {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
   s2.render();
-  test('should get right order of rendering data', () => {
+  test('should get right order of multi-values', () => {
     const colLeafNodes = s2.facet.layoutResult.colLeafNodes;
     expect(colLeafNodes[0].label).toEqual('price');
     expect(colLeafNodes[1].label).toEqual('cost');

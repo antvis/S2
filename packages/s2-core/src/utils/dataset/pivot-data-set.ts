@@ -203,7 +203,6 @@ export function transformIndexesData(params: Param) {
     paths.push(path);
     set(indexesData, path, data);
   }
-
   return {
     paths,
     indexesData,
