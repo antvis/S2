@@ -111,8 +111,10 @@ describe('merge test', () => {
         },
       },
     });
+
     expect(options.tooltip).toStrictEqual({
       showTooltip: false,
+      autoAdjustBoundary: 'body',
       operation: {
         hiddenColumns: true,
         trend: false,

@@ -157,7 +157,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
           cNode.x = columOffsetX;
           cNode.y = colsHierarchy.sampleNodeForLastLevel.y;
-          cNode.width = rowNode.originalWidth || rowNode.width;
+          cNode.width = rowNode.width;
           cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
           cNode.field = field;
           cNode.isPivotMode = true;
@@ -184,7 +184,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cNode.x = columOffsetX;
         cNode.y = colNode.y;
         cNode.width = width - columOffsetX;
-        cNode.height = colNode.originalHeight || colNode.height;
+        cNode.height = colNode.height;
         cNode.field = field;
         cNode.isPivotMode = true;
         cNode.cornerType = CornerNodeType.Col;

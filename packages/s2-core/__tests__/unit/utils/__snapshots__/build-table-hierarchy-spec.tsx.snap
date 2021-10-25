@@ -22,8 +22,6 @@ Object {
       "key": "$$series_number$$",
       "label": "序号",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "$$series_number$$": "序号",
@@ -54,8 +52,6 @@ Object {
       "key": "province",
       "label": "省份",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "province": "省份",
@@ -86,8 +82,6 @@ Object {
       "key": "city",
       "label": "城市",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "city": "城市",
@@ -118,8 +112,6 @@ Object {
       "key": "type",
       "label": "类别",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "type": "类别",
@@ -150,8 +142,6 @@ Object {
       "key": "sub_type",
       "label": "子类别",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "sub_type": "子类别",
@@ -182,8 +172,6 @@ Object {
       "key": "number",
       "label": "数量",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "number": "数量",
@@ -212,8 +200,6 @@ Object {
   "key": "",
   "label": "",
   "level": undefined,
-  "originalHeight": 0,
-  "originalWidth": 0,
   "padding": 0,
   "query": undefined,
   "rowIndex": undefined,
@@ -247,8 +233,6 @@ Hierarchy {
       "key": "$$series_number$$",
       "label": "序号",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "$$series_number$$": "序号",
@@ -279,8 +263,6 @@ Hierarchy {
       "key": "province",
       "label": "省份",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "province": "省份",
@@ -311,8 +293,6 @@ Hierarchy {
       "key": "city",
       "label": "城市",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "city": "城市",
@@ -343,8 +323,6 @@ Hierarchy {
       "key": "type",
       "label": "类别",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "type": "类别",
@@ -375,8 +353,6 @@ Hierarchy {
       "key": "sub_type",
       "label": "子类别",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "sub_type": "子类别",
@@ -407,8 +383,6 @@ Hierarchy {
       "key": "number",
       "label": "数量",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "number": "数量",
@@ -442,8 +416,6 @@ Hierarchy {
       "key": "$$series_number$$",
       "label": "序号",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "$$series_number$$": "序号",
@@ -474,8 +446,6 @@ Hierarchy {
       "key": "province",
       "label": "省份",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "province": "省份",
@@ -506,8 +476,6 @@ Hierarchy {
       "key": "city",
       "label": "城市",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "city": "城市",
@@ -538,8 +506,6 @@ Hierarchy {
       "key": "type",
       "label": "类别",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "type": "类别",
@@ -570,8 +536,6 @@ Hierarchy {
       "key": "sub_type",
       "label": "子类别",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "sub_type": "子类别",
@@ -602,8 +566,6 @@ Hierarchy {
       "key": "number",
       "label": "数量",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "number": "数量",
@@ -636,8 +598,6 @@ Hierarchy {
     "key": "$$series_number$$",
     "label": "序号",
     "level": 0,
-    "originalHeight": 0,
-    "originalWidth": 0,
     "padding": 0,
     "query": Object {
       "$$series_number$$": "序号",
@@ -669,8 +629,6 @@ Hierarchy {
       "key": "$$series_number$$",
       "label": "序号",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "$$series_number$$": "序号",
