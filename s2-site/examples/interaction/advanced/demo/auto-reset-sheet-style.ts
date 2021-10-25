@@ -1,4 +1,4 @@
-import { S2Event, TableSheet } from '@antv/s2';
+import { TableSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 fetch('../data/basic.json')
@@ -15,7 +15,9 @@ fetch('../data/basic.json')
     const s2options = {
       width: 600,
       height: 400,
-      autoResetSheetStyle: false,
+      interaction: {
+        autoResetSheetStyle: false,
+      },
     };
 
     const s2 = new TableSheet(container, s2DataConfig, s2options);

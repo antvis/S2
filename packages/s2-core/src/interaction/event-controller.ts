@@ -98,7 +98,7 @@ export class EventController {
   private onKeyboardCopy(event: KeyboardEvent) {
     // windows and macos copy
     if (
-      this.spreadsheet.options.enableCopy &&
+      this.spreadsheet.options.interaction.enableCopy &&
       keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
       (event.metaKey || event.ctrlKey)
     ) {
@@ -116,7 +116,7 @@ export class EventController {
   }
 
   private resetSheetStyle(event: Event) {
-    const { autoResetSheetStyle } = this.spreadsheet.options;
+    const { autoResetSheetStyle } = this.spreadsheet.options.interaction;
     if (!autoResetSheetStyle) {
       return;
     }

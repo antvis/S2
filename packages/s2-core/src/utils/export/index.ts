@@ -180,7 +180,7 @@ export const copyData = (
 ): string => {
   const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
     sheetInstance?.facet?.layoutResult;
-  const { valueInCols } = sheetInstance.options;
+  const { valueInCols } = sheetInstance.dataCfg.fields;
   // Generate the table header.
 
   const rowsHeader = rowsHierarchy.sampleNodesForAllLevels.map((item) =>

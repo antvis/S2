@@ -30,7 +30,9 @@ describe('Interaction Hover Tests', () => {
       } as any);
     hoverEvent = new HoverEvent(s2 as unknown as SpreadSheet);
     s2.options = {
-      hoverHighlight: true,
+      interaction: {
+        hoverHighlight: true,
+      },
     } as S2Options;
     s2.isTableMode = jest.fn(() => true);
   });

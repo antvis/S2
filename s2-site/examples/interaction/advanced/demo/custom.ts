@@ -52,16 +52,18 @@ fetch(
       tooltip: {
         showTooltip: true,
       },
-      customInteractions: [
-        {
-          key: 'HiddenInteraction',
-          interaction: HiddenInteraction,
-        },
-        {
-          key: 'ContextMenuInteraction',
-          interaction: ContextMenuInteraction,
-        },
-      ],
+      interaction: {
+        customInteractions: [
+          {
+            key: 'HiddenInteraction',
+            interaction: HiddenInteraction,
+          },
+          {
+            key: 'ContextMenuInteraction',
+            interaction: ContextMenuInteraction,
+          },
+        ],
+      },
     };
     const s2 = new TableSheet(container, s2DataConfig, s2options);
 

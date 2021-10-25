@@ -247,7 +247,8 @@ export class RootInteraction {
       );
     }
 
-    const customInteractions = this.spreadsheet.options?.customInteractions;
+    const customInteractions =
+      this.spreadsheet.options?.interaction.customInteractions;
     if (!isEmpty(customInteractions)) {
       forEach(customInteractions, (customInteraction: CustomInteraction) => {
         const CustomInteractionClass = customInteraction.interaction;

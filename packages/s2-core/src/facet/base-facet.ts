@@ -848,7 +848,7 @@ export abstract class BaseFacet {
   };
 
   onWheel = (event: S2WheelEvent) => {
-    const ratio = this.cfg.scrollSpeedRatio;
+    const ratio = this.cfg.interaction.scrollSpeedRatio;
     const { deltaX, deltaY, layerX, layerY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,

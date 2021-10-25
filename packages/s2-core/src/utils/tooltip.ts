@@ -497,7 +497,7 @@ export const getActiveCellsTooltipData = (
     return [];
   }
   spreadsheet.interaction.getActiveCells().forEach((cell) => {
-    const valueInCols = spreadsheet.options.valueInCols;
+    const { valueInCols } = spreadsheet.dataCfg.fields;
     const meta = cell.getMeta() as ViewMeta;
     const query = getMergedQuery(meta);
     if (isEmpty(meta) || isEmpty(query)) {

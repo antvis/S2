@@ -5,7 +5,7 @@ order: 3
 
 对于明细表来说，当你想降低不重要信息干扰时，可以隐藏列头，方便你更直观的查看数据，有两种方式隐藏列头
 
-<playground path='interaction/demo/hide-columns.ts' rid='container' height='400'></playground>
+<playground path='interaction/advanced/demo/hide-columns.ts' rid='container' height='400'></playground>
 
 ## 手动隐藏 - 通过点击
 
@@ -35,7 +35,9 @@ const s2DataConfig = {
 };
 
 const s2Options = {
-  hiddenColumnFields: ['city']
+  interaction: {
+    hiddenColumnFields: ['city']
+  }
 }
 ```
 
@@ -50,7 +52,9 @@ const s2Options = {
 
 ```ts
 const s2Options = {
-  hiddenColumnFields: ['province', 'type', 'price']
+  interaction: {
+    hiddenColumnFields: ['province', 'type', 'price']
+  }
 }
 ```
 

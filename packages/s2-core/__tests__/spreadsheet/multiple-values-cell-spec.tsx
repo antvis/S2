@@ -121,7 +121,7 @@ const getOptions = (): S2Options => {
       {
         iconNames: ['SortDown', 'SortUp'],
         belongsCell: 'colCell',
-        display: (meta: Node) => meta.level >= 0,
+        displayCondition: (meta: Node) => meta.level >= 0,
         action() {},
       },
     ],

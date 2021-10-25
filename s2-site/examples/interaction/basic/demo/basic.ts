@@ -31,8 +31,10 @@ fetch(
     const s2options = {
       width: 800,
       height: 600,
-      selectedCellsSpotlight: true,
-      hoverHighlight: true,
+      interaction: {
+        selectedCellsSpotlight: true,
+        hoverHighlight: true,
+      },
       tooltip: {
         showTooltip: true,
       },

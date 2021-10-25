@@ -77,9 +77,11 @@ function MainLayout() {
         subTotalsDimensions: ['type'],
       },
     },
+    interaction: {
+      selectedCellsSpotlight: spotLight,
+      hoverHighlight: hoverHighlight,
+    },
     showSeriesNumber: showSeriesNumber,
-    selectedCellsSpotlight: spotLight,
-    hoverHighlight: hoverHighlight,
     customSVGIcons: !showDefaultActionIcons && [
       {
         name: 'Filter',

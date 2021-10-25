@@ -3,7 +3,7 @@ import { Padding } from '../interface/theme';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { CustomTreeItem, ResizeInfo } from '@/common/interface';
-import { S2PartialOptions } from '@/common/interface/s2Options';
+import { S2BasicOptions } from '@/common/interface/s2Options';
 import { BaseDataSet } from '@/data-set';
 import { Frame } from '@/facet/header';
 import {
@@ -12,6 +12,7 @@ import {
   Hierarchy,
   Node,
   S2Options,
+  S2TableSheetOptions,
   SpreadSheet,
   TextAlign,
   TextBaseline,
@@ -297,7 +298,11 @@ export type MappingDataItemCallback = (
 /**
  * Spreadsheet facet config
  */
-export interface SpreadSheetFacetCfg extends Fields, S2PartialOptions, Style {
+export interface SpreadSheetFacetCfg
+  extends Fields,
+    S2BasicOptions,
+    S2TableSheetOptions,
+    Style {
   // spreadsheet interface
   spreadsheet: SpreadSheet;
   // data set of spreadsheet

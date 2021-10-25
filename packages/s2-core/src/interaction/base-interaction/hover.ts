@@ -151,7 +151,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         stateName: InteractionStateName.HOVER,
       });
 
-      if (this.spreadsheet.options.hoverHighlight) {
+      if (this.spreadsheet.options.interaction.hoverHighlight) {
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
         if (interaction.hoverTimer) {

@@ -12,6 +12,7 @@ export interface BaseNodeConfig {
   label?: string;
   level?: number;
   rowIndex?: number;
+  colIndex?: number;
   parent?: Node;
   isTotals?: boolean;
   isSubTotals?: boolean;
@@ -24,9 +25,15 @@ export interface BaseNodeConfig {
   spreadsheet?: SpreadSheet;
   query?: Record<string, any>;
   belongsCell?: S2CellType;
+  isTotalMeasure?: boolean;
   inCollapseNode?: boolean;
   isLeaf?: boolean;
-  [key: string]: any;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  padding?: number;
+  children?: Node[];
 }
 
 /**
