@@ -8,8 +8,7 @@ module.exports = {
     [
       '@semantic-release/git',
       {
-        message:
-          'chore(release): 🤖 ${nextRelease.version} [ci skip] \n${nextRelease.notes}',
+        message: 'chore(release): 🤖 ${nextRelease.version} [ci skip]',
       },
     ],
     '@semantic-release/npm',
