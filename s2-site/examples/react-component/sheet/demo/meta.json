@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "表格组件",
+    "en": "Sheet Component"
+  },
+  "demos": [
+    {
+      "filename": "pivot.tsx",
+      "title": {
+        "zh": "透视表组件",
+        "en": "PivotSheet component"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*d0CqRY6M3yMAAAAAAAAAAAAAARQnAQ"
+    },
+    {
+      "filename": "table.tsx",
+      "title": {
+        "zh": "明细表组件",
+        "en": "TableSheet component"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*d0CqRY6M3yMAAAAAAAAAAAAAARQnAQ"
+    }
+  ]
+}

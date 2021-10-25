@@ -1,0 +1,64 @@
+{
+  "title": {
+    "zh": "基础字段标记",
+    "en": "Basic conditions"
+  },
+  "demos": [
+    {
+      "filename": "text.ts",
+      "title": {
+        "zh": "文本标记",
+        "en": "Text condition"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/VjVcR8bBC/e0f82824-624e-4bc9-9c16-e1db412f3fca.png"
+    },
+    {
+      "filename": "background.ts",
+      "title": {
+        "zh": "背景标记",
+        "en": "Background condition"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24rOihAAplu/40ad145a-ae43-4711-821f-f83d2619165a.png"
+    },
+    {
+      "filename": "icon.ts",
+      "title": {
+        "zh": "图标标记",
+        "en": "Icon condition"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/YGO%24lpuWT%26/a50795a4-337f-4da1-a26d-a3f334dc5390.png"
+    },
+    {
+      "filename": "interval.ts",
+      "title": {
+        "zh": "柱状图标记",
+        "en": "Interval condition"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/FZaYkBQZ0q/f0d70cec-e509-4dc0-93d4-a732c5a49b1b.png"
+    },
+    {
+      "filename": "table-text.ts",
+      "title": {
+        "zh": "明细表文本标记",
+        "en": "Table text condition"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/rfcxNzMa4/b11a23c2-5e9b-4a14-a726-28d57d5e5b0d.png"
+    },
+    {
+      "filename": "multi-background.ts",
+      "title": {
+        "zh": "色块图",
+        "en": "Color block diagram"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/NoMcP7M%24J2/9cf16b9b-82f2-4b45-9006-16768ed900eb.png"
+    },
+    {
+      "filename": "gradient-interval.ts",
+      "title": {
+        "zh": "渐变柱状图",
+        "en": "Interval gradient"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/jx431yDQm/13778cd8-0de0-4ed6-b3a2-f8236860e7b3.png"
+    }
+  ]
+}
