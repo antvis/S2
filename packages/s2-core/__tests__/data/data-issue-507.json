@@ -1,0 +1,9 @@
+{
+  "fields": {
+    "rows": ["rows0", "row1"],
+    "columns": ["col0", "col1"],
+    "values": ["value"],
+    "valueInCols": true
+  },
+  "data": []
+}

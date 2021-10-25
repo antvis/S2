@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { layoutArrange } from '@/facet/layout/layout-hooks';
@@ -37,7 +38,8 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
   } = params;
   const index = fields.indexOf(currentField);
   const { dataSet, values, spreadsheet } = facetCfg;
-  const fieldValues = [] as FieldValue[];
+  const fieldValues: FieldValue[] = [];
+
   let query = {};
   if (parentNode.isTotals) {
     // add total measures
@@ -58,6 +60,13 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       currentField,
     );
     fieldValues.push(...(arrangedValues || []));
+
+    // add skeleton for empty data
+    const fieldName = dataSet.getFieldName(currentField);
+    if (isEmpty(fieldValues) && fieldName) {
+      fieldValues.push(fieldName);
+    }
+
     // hide measure in columns
     hideMeasureColumn(fieldValues, currentField, facetCfg);
     // add totals if needed

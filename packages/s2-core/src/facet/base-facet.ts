@@ -491,8 +491,8 @@ export abstract class BaseFacet {
     const realWidth = this.getRealWidth();
     const realHeight = this.getRealHeight();
 
-    width = Math.floor(Math.min(width, realWidth));
-    height = Math.floor(Math.min(height, realHeight));
+    width = Math.ceil(Math.min(width, realWidth));
+    height = Math.ceil(Math.min(height, realHeight));
 
     this.panelBBox = {
       x: br.x,

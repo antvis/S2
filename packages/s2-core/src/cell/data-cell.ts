@@ -412,6 +412,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       horizontalBorderColorOpacity,
       verticalBorderColor,
       verticalBorderWidth,
+      verticalBorderColorOpacity,
     } = this.getStyle().cell;
 
     // horizontal border
@@ -442,7 +443,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       {
         stroke: verticalBorderColor,
         lineWidth: verticalBorderWidth,
-        opacity: horizontalBorderColorOpacity,
+        opacity: verticalBorderColorOpacity,
       },
     );
   }

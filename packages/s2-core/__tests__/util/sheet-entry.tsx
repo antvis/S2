@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Input, Space, Switch } from 'antd';
+import { Input, Select, Space, Switch } from 'antd';
 import { isArray, merge, mergeWith } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
@@ -77,10 +77,13 @@ export const SheetEntry = forwardRef(
     const initDataCfg = props.forceUpdateDataCfg
       ? props.dataCfg
       : assembleDataCfg(props.dataCfg);
-    const [options, setOptions] = useState(() => initOptions);
-    const [dataCfg, setDataCfg] = useState(() => initDataCfg);
+    const [adaptive, setAdaptive] = useState(false);
+    const [options, setOptions] = useState<S2Options>(() => initOptions);
+    const [dataCfg, setDataCfg] = useState<Partial<S2DataConfig>>(
+      () => initDataCfg,
+    );
 
-    const onValueInColsChange = (checked) => {
+    const onValueInColsChange = (checked: boolean) => {
       setValueInCols(checked);
       setDataCfg(
         merge({}, dataCfg, {
@@ -91,7 +94,17 @@ export const SheetEntry = forwardRef(
       );
     };
 
-    const onModeChange = (checked) => {
+    const onAutoAdjustBoundary = (value: string) => {
+      setOptions(
+        merge({}, options, {
+          tooltip: {
+            autoAdjustBoundary: value || null,
+          },
+        }),
+      );
+    };
+
+    const onModeChange = (checked: boolean) => {
       setMode(checked ? 'tree' : 'grid');
       setOptions(
         merge({}, options, {
@@ -100,7 +113,7 @@ export const SheetEntry = forwardRef(
       );
     };
 
-    const onFreezeRowHeaderChange = (checked) => {
+    const onFreezeRowHeaderChange = (checked: boolean) => {
       setOptions(
         merge({}, options, {
           freezeRowHeader: checked,
@@ -149,6 +162,24 @@ export const SheetEntry = forwardRef(
             defaultChecked={options.freezeRowHeader}
             onChange={onFreezeRowHeaderChange}
           />
+          <Switch
+            checkedChildren="自适应开"
+            unCheckedChildren="自适应关"
+            defaultChecked={adaptive}
+            onChange={(checked) => {
+              setAdaptive(checked);
+            }}
+          />
+          <Select
+            defaultValue={options.tooltip.autoAdjustBoundary}
+            onChange={onAutoAdjustBoundary}
+          >
+            <Select.Option value="container">
+              container (表格区域)
+            </Select.Option>
+            <Select.Option value="body">body (浏览器可视区域)</Select.Option>
+            <Select.Option value="">无</Select.Option>
+          </Select>
           <Space>
             设置宽度 ：
             <Input
@@ -170,10 +201,10 @@ export const SheetEntry = forwardRef(
         </Space>
         <div style={{ marginBottom: 20 }}>{props.header}</div>
         <SheetComponent
-          dataCfg={dataCfg}
+          dataCfg={dataCfg as S2DataConfig}
           options={options}
           sheetType={props.sheetType}
-          adaptive={false}
+          adaptive={adaptive}
           getSpreadsheet={(instance) => {
             if (ref) {
               ref.current = instance;

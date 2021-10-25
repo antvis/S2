@@ -85,7 +85,7 @@ export class PivotSheet extends SpreadSheet {
       if (!preventRender) {
         // 重置当前交互
         this.interaction.reset();
-        this.render();
+        this.render(false);
       }
     }
   }

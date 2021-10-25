@@ -239,7 +239,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     baseSpreadsheet.current = getSpreadSheet();
     bindEvent();
     baseSpreadsheet.current.setDataCfg(getSafetyDataConfig(dataCfg));
-    baseSpreadsheet.current.store.set('originalDataCfg', dataCfg);
     setOptions(baseSpreadsheet.current, props);
     baseSpreadsheet.current.setThemeCfg(themeCfg);
     baseSpreadsheet.current.render();

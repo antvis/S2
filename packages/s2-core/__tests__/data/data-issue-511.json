@@ -1,0 +1,39 @@
+{
+  "fields": {
+    "rows": ["row0", "row1"],
+    "columns": [],
+    "values": ["value"],
+    "valueInCols": true
+  },
+  "meta": [
+    {
+      "field": "row0",
+      "name": "销售渠道"
+    },
+    {
+      "field": "row1",
+      "name": "客户姓名"
+    },
+    {
+      "field": "value",
+      "name": "数量"
+    }
+  ],
+  "data": [
+    {
+      "value": 1354,
+      "row0": "欧尚",
+      "row1": "张三"
+    },
+    {
+      "value": 1460,
+      "row0": "物美",
+      "row1": "李四"
+    },
+    {
+      "value": 1339,
+      "row0": "物美",
+      "row1": "张三"
+    }
+  ]
+}
