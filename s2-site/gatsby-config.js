@@ -157,7 +157,7 @@ module.exports = {
     examples: [
       {
         slug: 'case',
-        icon: 'star',
+        icon: 'star-single-line',
         title: {
           zh: '场景案例',
           en: 'Show Case',
