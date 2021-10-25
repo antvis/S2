@@ -9,7 +9,9 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
 import dataCfg from '../data/data-issue-522.json';
-import { SheetComponent } from '@/index';
+import { SheetComponent, SpreadSheet, Node } from '@/index';
+
+let sheetInstance: SpreadSheet;
 
 function MainLayout() {
   const options = {
@@ -42,17 +44,29 @@ function MainLayout() {
   };
   return (
     <div>
-      <SheetComponent dataCfg={dataCfg} options={options} />
+      <SheetComponent
+        getSpreadsheet={(s2) => {
+          sheetInstance = s2;
+        }}
+        dataCfg={dataCfg}
+        options={options}
+      />
     </div>
   );
 }
 
 describe('spreadsheet normal spec', () => {
-  test('demo', () => {
-    expect(1).toBe(1);
-  });
-
   act(() => {
     ReactDOM.render(<MainLayout />, getContainer());
+  });
+  test(`sampleForAllLevels shouldn't include total node`, () => {
+    const { sampleNodesForAllLevels } =
+      sheetInstance.facet.layoutResult.rowsHierarchy;
+
+    expect(sampleNodesForAllLevels).toHaveLength(3);
+
+    expect(sampleNodesForAllLevels).toSatisfyAll(
+      (node: Node) => !node.isTotals,
+    );
   });
 });
