@@ -130,7 +130,7 @@ export class TableColCell extends ColCell {
 
   private hasHiddenColumnCell() {
     const {
-      interaction: { hiddenColumnFields = [] },
+      hiddenColumnFields = [],
       tooltip: { operation },
     } = this.spreadsheet.options;
 
