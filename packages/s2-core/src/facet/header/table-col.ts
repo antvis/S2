@@ -55,6 +55,8 @@ export class TableColHeader extends ColHeader {
   public clear() {
     const { spreadsheet } = this.headerConfig;
     super.clear();
+    this.frozenTrailingColGroup?.clear();
+    this.frozenColGroup?.clear();
     // 额外清除冻结列的 Resizer Area
     const resizerArea = spreadsheet?.foregroundGroup.findById(
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,

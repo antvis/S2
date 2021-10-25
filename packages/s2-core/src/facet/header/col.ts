@@ -1,17 +1,13 @@
 import { each, isEmpty } from 'lodash';
 import { IGroup, IShape } from '@antv/g-base';
-import { Group } from '@antv/g-canvas';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import {
   KEY_GROUP_COL_SCROLL,
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
-  KEY_GROUP_COL_RESIZE_AREA,
-  HORIZONTAL_RESIZE_AREA_KEY_PRE,
-  CellTypes,
 } from '@/common/constant';
 import { ColCell } from '@/cell';
-import { Formatter, S2CellType, ResizeInfo } from '@/common/interface';
+import { Formatter, S2CellType } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 
 import { SpreadSheet } from '@/sheet-type/index';
@@ -72,10 +68,9 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   }
 
   public clear() {
+    this.scrollGroup.clear();
     this.background?.remove(true);
   }
-
-  protected prevRendererColIds: string[] = [];
 
   protected getCellInstance(
     item: Node,
