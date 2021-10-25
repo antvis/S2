@@ -1,29 +1,39 @@
 {
   "fields": {
-    "rows": ["province", "city"],
-    "columns": ["type"],
-    "values": ["price", "cost"],
+    "rows": ["row0", "row1"],
+    "columns": [],
+    "values": ["value"],
     "valueInCols": true
   },
+  "meta": [
+    {
+      "field": "row0",
+      "name": "销售渠道"
+    },
+    {
+      "field": "row1",
+      "name": "客户姓名"
+    },
+    {
+      "field": "value",
+      "name": "数量"
+    }
+  ],
   "data": [
     {
-      "province": "浙江",
-      "city": "义乌",
-      "type": "笔",
-      "cost": "2"
+      "value": 1354,
+      "row0": "欧尚",
+      "row1": "张三"
     },
     {
-      "province": "浙江",
-      "city": "义乌",
-      "type": "笔",
-      "price": "8"
+      "value": 1460,
+      "row0": "物美",
+      "row1": "李四"
     },
     {
-      "province": "浙江",
-      "city": "杭州",
-      "type": "笔",
-      "price": "",
-      "cost": 10
+      "value": 1339,
+      "row0": "物美",
+      "row1": "张三"
     }
   ]
 }

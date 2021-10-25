@@ -252,7 +252,7 @@ export class PivotDataSet extends BaseDataSet {
     const transformedData = [];
     forEach(fieldsValues, (value) => {
       forEach(originData, (dataItem) => {
-        if (dataItem[value]) {
+        if (has(dataItem, value)) {
           transformedData.push({
             ...dataItem,
             [EXTRA_FIELD]: value,
@@ -315,6 +315,7 @@ export class PivotDataSet extends BaseDataSet {
       meta = this.colPivotMeta;
       dimensions = columns;
     }
+
     if (!isEmpty(query)) {
       let sortedMeta = [];
       for (const dimension of dimensions) {
@@ -327,7 +328,7 @@ export class PivotDataSet extends BaseDataSet {
           }
         }
       }
-      return filterUndefined(getIntersections(sortedMeta, [...meta.keys()]));
+      return filterUndefined(getIntersections([...meta.keys()], sortedMeta));
     }
 
     if (this.sortedDimensionValues.has(field)) {
