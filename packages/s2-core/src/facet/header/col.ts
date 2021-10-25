@@ -59,7 +59,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected clip() {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
-
     const scrollXOffset = spreadsheet.isFreezeRowHeader() ? scrollX : 0;
     this.scrollGroup.setClip({
       type: 'rect',
@@ -106,13 +105,13 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
     const colCell = spreadsheet?.facet?.cfg?.colCell;
 
-    const rendererColIds = [];
+    const rendererColNodes = [];
 
     each(data, (node: Node) => {
       const item = node;
       const isColCellInRect = this.isColCellInRect(item);
       if (isColCellInRect) {
-        rendererColIds.push(item);
+        rendererColNodes.push(item);
       }
       const hasRender = this.prevRendererColIds.includes(item.id);
 
@@ -137,7 +136,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
       }
     });
 
-    this.prevRendererColIds = rendererColIds.map((item) => item.id);
+    this.prevRendererColIds = rendererColNodes.map((item) => item.id);
     this.drawResizeArea();
   }
 

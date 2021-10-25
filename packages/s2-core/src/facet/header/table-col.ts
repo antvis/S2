@@ -150,9 +150,7 @@ export class TableColHeader extends ColHeader {
   }
 
   protected clip(): void {
-    super.clip();
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
-
     const { frozenColCount, frozenTrailingColCount } = spreadsheet.options;
     const colLeafNodes = spreadsheet.facet?.layoutResult.colLeafNodes;
 
@@ -167,10 +165,17 @@ export class TableColHeader extends ColHeader {
     }
 
     const frozenClipWidth =
-      width +
-      (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
-      frozenColWidth -
-      frozenTrailingColWidth;
+      width + scrollX - frozenColWidth - frozenTrailingColWidth;
+
+    this.scrollGroup.setClip({
+      type: 'rect',
+      attrs: {
+        x: scrollX + frozenColWidth,
+        y: 0,
+        width: frozenClipWidth,
+        height,
+      },
+    });
 
     const prevResizeArea = spreadsheet.foregroundGroup.findById(
       KEY_GROUP_COL_RESIZE_AREA,
@@ -184,7 +189,7 @@ export class TableColHeader extends ColHeader {
         attrs: {
           x,
           y,
-          width: frozenClipWidth + resizeAreaSize,
+          width: width - x - frozenTrailingColWidth + resizeAreaSize,
           height,
         },
       });
