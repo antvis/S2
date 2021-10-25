@@ -1,0 +1,706 @@
+{
+  "fields": {
+    "rows": ["company", "grade", "type"],
+    "columns": [],
+    "values": ["value"],
+    "valueInCols": true
+  },
+  "meta": [
+    {
+      "field": "company",
+      "name": "销售渠道"
+    },
+    {
+      "field": "grade",
+      "name": "客户等级"
+    },
+    {
+      "field": "type",
+      "name": "商品类别"
+    },
+    {
+      "field": "value",
+      "name": "数量_求和"
+    }
+  ],
+  "data": [
+    {
+      "grade": "普通会员",
+      "type": "办公用品",
+      "value": 1931577,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "普通会员",
+      "type": "家具",
+      "value": 404990,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "普通会员",
+      "type": "设备",
+      "value": 38595,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "白金会员",
+      "type": "办公用品",
+      "value": 1844762,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "白金会员",
+      "type": "家具",
+      "value": 406853,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "白金会员",
+      "type": "设备",
+      "value": 46451,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "办公用品",
+      "value": 1855731,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "家具",
+      "value": 456788,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "设备",
+      "value": 44820,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "办公用品",
+      "value": 1936695,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "家具",
+      "value": 424409,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "设备",
+      "value": 41106,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "普通会员",
+      "type": "办公用品",
+      "value": 1910836,
+      "company": "其他"
+    },
+    {
+      "grade": "普通会员",
+      "type": "家具",
+      "value": 426824,
+      "company": "其他"
+    },
+    {
+      "grade": "普通会员",
+      "type": "设备",
+      "value": 43300,
+      "company": "其他"
+    },
+    {
+      "grade": "白金会员",
+      "type": "办公用品",
+      "value": 1950033,
+      "company": "其他"
+    },
+    {
+      "grade": "白金会员",
+      "type": "家具",
+      "value": 408809,
+      "company": "其他"
+    },
+    {
+      "grade": "白金会员",
+      "type": "设备",
+      "value": 42793,
+      "company": "其他"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "办公用品",
+      "value": 1915115,
+      "company": "其他"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "家具",
+      "value": 433313,
+      "company": "其他"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "设备",
+      "value": 39741,
+      "company": "其他"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "办公用品",
+      "value": 1878369,
+      "company": "其他"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "家具",
+      "value": 428597,
+      "company": "其他"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "设备",
+      "value": 42518,
+      "company": "其他"
+    },
+    {
+      "grade": "普通会员",
+      "type": "办公用品",
+      "value": 1907045,
+      "company": "大润发"
+    },
+    {
+      "grade": "普通会员",
+      "type": "家具",
+      "value": 388292,
+      "company": "大润发"
+    },
+    {
+      "grade": "普通会员",
+      "type": "设备",
+      "value": 40855,
+      "company": "大润发"
+    },
+    {
+      "grade": "白金会员",
+      "type": "办公用品",
+      "value": 1881560,
+      "company": "大润发"
+    },
+    {
+      "grade": "白金会员",
+      "type": "家具",
+      "value": 417567,
+      "company": "大润发"
+    },
+    {
+      "grade": "白金会员",
+      "type": "设备",
+      "value": 42877,
+      "company": "大润发"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "办公用品",
+      "value": 1922153,
+      "company": "大润发"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "家具",
+      "value": 432523,
+      "company": "大润发"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "设备",
+      "value": 42008,
+      "company": "大润发"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "办公用品",
+      "value": 1901844,
+      "company": "大润发"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "家具",
+      "value": 403661,
+      "company": "大润发"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "设备",
+      "value": 37692,
+      "company": "大润发"
+    },
+    {
+      "grade": "普通会员",
+      "type": "办公用品",
+      "value": 1916539,
+      "company": "家乐福"
+    },
+    {
+      "grade": "普通会员",
+      "type": "家具",
+      "value": 389673,
+      "company": "家乐福"
+    },
+    {
+      "grade": "普通会员",
+      "type": "设备",
+      "value": 43678,
+      "company": "家乐福"
+    },
+    {
+      "grade": "白金会员",
+      "type": "办公用品",
+      "value": 1953372,
+      "company": "家乐福"
+    },
+    {
+      "grade": "白金会员",
+      "type": "家具",
+      "value": 415695,
+      "company": "家乐福"
+    },
+    {
+      "grade": "白金会员",
+      "type": "设备",
+      "value": 43170,
+      "company": "家乐福"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "办公用品",
+      "value": 1981510,
+      "company": "家乐福"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "家具",
+      "value": 386125,
+      "company": "家乐福"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "设备",
+      "value": 41683,
+      "company": "家乐福"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "办公用品",
+      "value": 1888097,
+      "company": "家乐福"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "家具",
+      "value": 425433,
+      "company": "家乐福"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "设备",
+      "value": 41576,
+      "company": "家乐福"
+    },
+    {
+      "grade": "普通会员",
+      "type": "办公用品",
+      "value": 1958042,
+      "company": "欧尚"
+    },
+    {
+      "grade": "普通会员",
+      "type": "家具",
+      "value": 414013,
+      "company": "欧尚"
+    },
+    {
+      "grade": "普通会员",
+      "type": "设备",
+      "value": 42623,
+      "company": "欧尚"
+    },
+    {
+      "grade": "白金会员",
+      "type": "办公用品",
+      "value": 1872576,
+      "company": "欧尚"
+    },
+    {
+      "grade": "白金会员",
+      "type": "家具",
+      "value": 419170,
+      "company": "欧尚"
+    },
+    {
+      "grade": "白金会员",
+      "type": "设备",
+      "value": 42520,
+      "company": "欧尚"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "办公用品",
+      "value": 1881677,
+      "company": "欧尚"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "家具",
+      "value": 436304,
+      "company": "欧尚"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "设备",
+      "value": 40944,
+      "company": "欧尚"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "办公用品",
+      "value": 1888707,
+      "company": "欧尚"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "家具",
+      "value": 419261,
+      "company": "欧尚"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "设备",
+      "value": 43045,
+      "company": "欧尚"
+    },
+    {
+      "grade": "普通会员",
+      "type": "办公用品",
+      "value": 1917090,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "普通会员",
+      "type": "家具",
+      "value": 404911,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "普通会员",
+      "type": "设备",
+      "value": 42219,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "白金会员",
+      "type": "办公用品",
+      "value": 1803168,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "白金会员",
+      "type": "家具",
+      "value": 439180,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "白金会员",
+      "type": "设备",
+      "value": 44684,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "办公用品",
+      "value": 1906592,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "家具",
+      "value": 411321,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "设备",
+      "value": 43326,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "办公用品",
+      "value": 1896107,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "家具",
+      "value": 379722,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "设备",
+      "value": 38953,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "普通会员",
+      "type": "办公用品",
+      "value": 1907133,
+      "company": "物美"
+    },
+    {
+      "grade": "普通会员",
+      "type": "家具",
+      "value": 433040,
+      "company": "物美"
+    },
+    {
+      "grade": "普通会员",
+      "type": "设备",
+      "value": 40195,
+      "company": "物美"
+    },
+    {
+      "grade": "白金会员",
+      "type": "办公用品",
+      "value": 1924829,
+      "company": "物美"
+    },
+    {
+      "grade": "白金会员",
+      "type": "家具",
+      "value": 430470,
+      "company": "物美"
+    },
+    {
+      "grade": "白金会员",
+      "type": "设备",
+      "value": 40545,
+      "company": "物美"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "办公用品",
+      "value": 1896059,
+      "company": "物美"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "家具",
+      "value": 409875,
+      "company": "物美"
+    },
+    {
+      "grade": "钻石会员",
+      "type": "设备",
+      "value": 44269,
+      "company": "物美"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "办公用品",
+      "value": 1849781,
+      "company": "物美"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "家具",
+      "value": 416223,
+      "company": "物美"
+    },
+    {
+      "grade": "黄金会员",
+      "type": "设备",
+      "value": 41735,
+      "company": "物美"
+    }
+  ],
+  "totalData": [
+    {
+      "Group": "",
+      "value": 66117962
+    },
+    {
+      "grade": "普通会员",
+      "value": 2375162,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "白金会员",
+      "value": 2298066,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "钻石会员",
+      "value": 2357339,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "黄金会员",
+      "value": 2402210,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "普通会员",
+      "value": 2380960,
+      "company": "其他"
+    },
+    {
+      "grade": "白金会员",
+      "value": 2401635,
+      "company": "其他"
+    },
+    {
+      "grade": "钻石会员",
+      "value": 2388169,
+      "company": "其他"
+    },
+    {
+      "grade": "黄金会员",
+      "value": 2349484,
+      "company": "其他"
+    },
+    {
+      "grade": "普通会员",
+      "value": 2336192,
+      "company": "大润发"
+    },
+    {
+      "grade": "白金会员",
+      "value": 2342004,
+      "company": "大润发"
+    },
+    {
+      "grade": "钻石会员",
+      "value": 2396684,
+      "company": "大润发"
+    },
+    {
+      "grade": "黄金会员",
+      "value": 2343197,
+      "company": "大润发"
+    },
+    {
+      "grade": "普通会员",
+      "value": 2349890,
+      "company": "家乐福"
+    },
+    {
+      "grade": "白金会员",
+      "value": 2412237,
+      "company": "家乐福"
+    },
+    {
+      "grade": "钻石会员",
+      "value": 2409318,
+      "company": "家乐福"
+    },
+    {
+      "grade": "黄金会员",
+      "value": 2355106,
+      "company": "家乐福"
+    },
+    {
+      "grade": "普通会员",
+      "value": 2414678,
+      "company": "欧尚"
+    },
+    {
+      "grade": "白金会员",
+      "value": 2334266,
+      "company": "欧尚"
+    },
+    {
+      "grade": "钻石会员",
+      "value": 2358925,
+      "company": "欧尚"
+    },
+    {
+      "grade": "黄金会员",
+      "value": 2351013,
+      "company": "欧尚"
+    },
+    {
+      "grade": "普通会员",
+      "value": 2364220,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "白金会员",
+      "value": 2287032,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "钻石会员",
+      "value": 2361239,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "黄金会员",
+      "value": 2314782,
+      "company": "沃尔玛"
+    },
+    {
+      "grade": "普通会员",
+      "value": 2380368,
+      "company": "物美"
+    },
+    {
+      "grade": "白金会员",
+      "value": 2395844,
+      "company": "物美"
+    },
+    {
+      "grade": "钻石会员",
+      "value": 2350203,
+      "company": "物美"
+    },
+    {
+      "grade": "黄金会员",
+      "value": 2307739,
+      "company": "物美"
+    },
+    {
+      "value": 9432777,
+      "company": "世纪联华"
+    },
+    {
+      "value": 9520248,
+      "company": "其他"
+    },
+    {
+      "value": 9418077,
+      "company": "大润发"
+    },
+    {
+      "value": 9526551,
+      "company": "家乐福"
+    },
+    {
+      "value": 9458882,
+      "company": "欧尚"
+    },
+    {
+      "value": 9327273,
+      "company": "沃尔玛"
+    },
+    {
+      "value": 9434154,
+      "company": "物美"
+    }
+  ]
+}
