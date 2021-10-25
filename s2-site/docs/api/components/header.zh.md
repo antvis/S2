@@ -1,20 +1,30 @@
 ---
-title: 表头组件
-order: 1
+title: 表头 header
+order: 4
 ---
 
+> **optional**  _HeaderCfgProps_   default: `{}`
 
-## HeaderCfgProps
+表格页头，位于表格容器顶部，起到了内容概览和表格工具栏的作用。由表标题、描述、导出、高级排序和自定操作区组成。
 
-<description> **optional**  _object_ </description>
+## 使用方式
 
-功能描述： 表头组件配置项。
+```tsx
+<SheetComponent
+  dataCfg={dataCfg}
+  options={options}
+  header={{
+    title: '表头标题', 
+    description: '表头描述',
+    exportCfg: { open: true }, // 导出link
+    advancedSortCfg: { open: true }, // 高级排序 link
+    extra: (<button>  插入内容 </button>), //自定义 ReactNode 
+  }}
+/>
+```
 
-| 细分配置项名称 | 类型 | 必选 | 默认值 | 功能描述 |
-| :--- | :--- | :--- | :--- | :--- |
-| className | string |  |  | 类名 |
-| title | string |  |  | 表头标题 |
-| description | string |  |  | 表格描述 |
-| exportCfg | [ExportCfgProps](/zh/docs/api/components/export)  |  | {open: false} | 导出功配置项 |
-| advancedSortCfg | [AdvancedSortCfgProps](/zh/docs/api/components/advanced-sort)  |  | {open: false} | 高级排序配置项 |
-| extra | ReactNode[] |  |  | 操作区dom，位于title行尾 |
+<playground path='analysis/header/demo/default.tsx' rid='container' height='400'></playground>
+
+## API
+
+`markdown:docs/common/header.zh.md`

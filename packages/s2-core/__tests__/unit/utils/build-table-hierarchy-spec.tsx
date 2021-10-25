@@ -2,19 +2,18 @@ import { act } from 'react-dom/test-utils';
 import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { getContainer, getMockData } from '../../util/helpers';
+import { assembleDataCfg } from 'tests/util/sheet-entry';
+import { getContainer } from '../../util/helpers';
 import {
   S2DataConfig,
   S2Options,
   SheetComponent,
   SpreadSheet,
-  PivotSheet,
+  TableSheet,
   Node,
   Hierarchy,
 } from '@/index';
 import { buildTableHierarchy } from '@/facet/layout/build-table-hierarchy';
-
-const data = getMockData('../data/tableau-supermarket.csv');
 
 let spreadsheetIns: SpreadSheet;
 
@@ -23,25 +22,19 @@ const getSpreadSheet = (
   dataCfg: S2DataConfig,
   options: S2Options,
 ) => {
-  spreadsheetIns = new PivotSheet(dom, dataCfg, options);
+  spreadsheetIns = new TableSheet(dom, dataCfg, options);
   return spreadsheetIns;
 };
 
+const tableDataFields = {
+  fields: {
+    columns: ['province', 'city', 'type', 'sub_type', 'number'],
+    valueInCols: true,
+  },
+};
+
 const getDataCfg = () => {
-  return {
-    fields: {
-      columns: [
-        'area',
-        'province',
-        'city',
-        'type',
-        'sub_type',
-        'profit',
-        'count',
-      ],
-    },
-    data,
-  };
+  return assembleDataCfg(tableDataFields);
 };
 
 const getOptions = () => {
@@ -67,6 +60,7 @@ function MainLayout(props) {
     <div>
       <div style={{ display: 'inline-block' }}></div>
       <SheetComponent
+        sheetType={'table'}
         dataCfg={props.dataCfg}
         adaptive={false}
         options={props.options}

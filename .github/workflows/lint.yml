@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         # node-version: [12.x, 14.x, 16.x]
-        node-version: [12.x]
+        node-version: [16.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -57,3 +57,22 @@ jobs:
             <!-- Created by actions-cool/maintain-one-comment -->
           emojis: 'eyes'
           body-include: '<!-- Created by actions-cool/maintain-one-comment -->'
+
+      - name: Workflow failed add label
+        if: ${{ failure() && github.event.pull_request.number != '' }}
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'add-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          labels: '🚨 lint failed'
+
+
+      - name: Remove failed label
+        if: ${{ success() && github.event.pull_request.number != '' }}
+        uses: actions-cool/issues-helper@main
+        with:
+          actions: 'remove-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          labels: '🚨 lint failed'

@@ -4,37 +4,23 @@
  * Show err when hierarchyType is tree and data is empty
  *
  */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { act } from 'react-dom/test-utils';
+
 import { getContainer } from '../util/helpers';
 import * as dataCfg from '../data/data-issue-507.json';
-import { SheetComponent, S2Options } from '@/index';
+import { S2Options, PivotSheet } from '@/index';
 
-function MainLayout() {
-  const s2options: S2Options = {
-    width: 800,
-    height: 600,
-    hierarchyType: 'tree',
-  };
+const s2options: S2Options = {
+  width: 800,
+  height: 600,
+  hierarchyType: 'tree',
+};
 
-  return (
-    <div>
-      <SheetComponent
-        dataCfg={dataCfg}
-        sheetType={'pivot'}
-        options={s2options}
-      />
-    </div>
-  );
-}
-
-describe('spreadsheet normal spec', () => {
-  test('demo', () => {
-    expect(1).toBe(1);
-  });
-
-  act(() => {
-    ReactDOM.render(<MainLayout />, getContainer());
+describe('Spreadsheet Empty Test', () => {
+  const s2 = new PivotSheet(getContainer(), dataCfg, s2options);
+  s2.render();
+  test('should render skeleton when the data is empty', () => {
+    const layoutResult = s2.facet.layoutResult;
+    expect(layoutResult.colNodes).toEqual(3);
+    expect(layoutResult.rowNodes).toEqual(2);
   });
 });
