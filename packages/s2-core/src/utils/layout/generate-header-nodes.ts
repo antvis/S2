@@ -102,7 +102,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       hierarchy,
     );
 
-    // omit the the whole column or row of the grandTotal or subTotalss
+    // omit the the whole column or row of the grandTotal or subTotals
     if (
       level > hierarchy.maxLevel &&
       !isGrandTotals &&

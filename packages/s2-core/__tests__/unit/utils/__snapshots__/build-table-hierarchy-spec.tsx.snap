@@ -200,8 +200,6 @@ Object {
   "key": "",
   "label": "",
   "level": undefined,
-  "originalHeight": 0,
-  "originalWidth": 0,
   "padding": 0,
   "query": undefined,
   "rowIndex": undefined,
@@ -307,37 +305,6 @@ Hierarchy {
       "x": 0,
       "y": 0,
     },
-  ],
-  "colIndex": -1,
-  "field": undefined,
-  "height": 0,
-  "id": "root",
-  "inCollapseNode": undefined,
-  "isCollapsed": undefined,
-  "isGrandTotals": undefined,
-  "isLeaf": undefined,
-  "isPivotMode": undefined,
-  "isSubTotals": undefined,
-  "isTotalMeasure": undefined,
-  "isTotals": undefined,
-  "key": "",
-  "label": "",
-  "level": undefined,
-  "padding": 0,
-  "query": undefined,
-  "rowIndex": undefined,
-  "seriesNumberWidth": undefined,
-  "toJSON": [Function],
-  "value": "",
-  "width": 0,
-  "x": 0,
-  "y": 0,
-}
-`;
-
-exports[`buildTableHierarchy should generate nodes and hierarchy correctly 2`] = `
-Hierarchy {
-  "allNodesWithoutRoot": Array [
     Object {
       "belongsCell": undefined,
       "children": Array [],
