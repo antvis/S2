@@ -2,7 +2,7 @@ name: 🚀 Auto Release
 on:
   push:
     branches:
-      - master
+      # - master # 正式版 先不发
       - beta
       - alpha
 
