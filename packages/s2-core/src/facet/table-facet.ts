@@ -605,7 +605,7 @@ export class TableFacet extends BaseFacet {
   addFrozenCell = (colIndex: number, rowIndex: number, group: IGroup) => {
     const viewMeta = this.layoutResult.getCellMeta(rowIndex, colIndex);
     if (viewMeta) {
-      const cell = this.cfg.dataCell(viewMeta, this.cfg.spreadsheet);
+      const cell = this.cfg.dataCell(viewMeta);
       group.add(cell);
     }
   };
