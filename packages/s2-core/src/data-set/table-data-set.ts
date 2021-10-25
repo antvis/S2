@@ -79,7 +79,7 @@ export class TableDataSet extends BaseDataSet {
         ...orderBy(
           this.getMovableRows(),
           [sortBy || sortFieldId],
-          [sortMethod.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
+          [sortMethod?.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
         ),
         ...this.getEndRows(),
       ];
