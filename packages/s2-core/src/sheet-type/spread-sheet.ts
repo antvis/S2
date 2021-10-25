@@ -309,6 +309,7 @@ export abstract class SpreadSheet extends EE {
    * @param dataCfg
    */
   public setDataCfg(dataCfg: S2DataConfig) {
+    this.store.set('originalDataCfg', dataCfg);
     const newDataCfg = clone(dataCfg);
     const lastSortParam = this.store.get('sortParam');
     const { sortParams } = newDataCfg;
