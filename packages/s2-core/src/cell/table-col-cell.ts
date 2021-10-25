@@ -1,4 +1,6 @@
 import { get, isEmpty } from 'lodash';
+import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
+import { Group } from '@antv/g-canvas';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
 import { S2Event } from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
@@ -6,8 +8,51 @@ import { getEllipsisText, getTextPosition } from '@/utils/text';
 import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
 import { CellBoxCfg, DefaultCellTheme, IconTheme } from '@/common/interface';
+import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 
 export class TableColCell extends ColCell {
+  protected isFrozenCell() {
+    const { frozenColCount, frozenTrailingColCount } = this.spreadsheet.options;
+    const { colIndex } = this.meta;
+    const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
+
+    return (
+      isFrozenCol(colIndex, frozenColCount) ||
+      isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLeafNodes.length)
+    );
+  }
+
+  protected getColResizeArea() {
+    const isFrozenCell = this.isFrozenCell();
+
+    if (!isFrozenCell) {
+      return super.getColResizeArea();
+    }
+    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+      KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+    );
+    return (prevResizeArea ||
+      this.spreadsheet.foregroundGroup.addGroup({
+        id: KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+      })) as Group;
+  }
+
+  protected getColResizeAreaOffset() {
+    const { offset, position } = this.headerConfig;
+    const { x, y } = this.meta;
+
+    let finalOffset = offset;
+    // 如果当前列被冻结，不对 resizer 做 offset 处理
+    if (this.isFrozenCell()) {
+      finalOffset = 0;
+    }
+
+    return {
+      x: position.x - finalOffset + x,
+      y: position.y + y,
+    };
+  }
+
   protected drawTextShape() {
     const { spreadsheet } = this.headerConfig;
     const {
@@ -85,7 +130,7 @@ export class TableColCell extends ColCell {
 
   private hasHiddenColumnCell() {
     const {
-      hiddenColumnFields = [],
+      interaction: { hiddenColumnFields = [] },
       tooltip: { operation },
     } = this.spreadsheet.options;
 
