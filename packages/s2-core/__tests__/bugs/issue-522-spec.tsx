@@ -1,7 +1,7 @@
 /**
  * @description spec for issue #522
  * https://github.com/antvis/S2/issues/522
- * Show err when hierarchyTypxe is tree and data is empty
+ * The corner cell error rendering state
  *
  */
 import React from 'react';
@@ -15,14 +15,6 @@ let sheetInstance: SpreadSheet;
 
 function MainLayout() {
   const options = {
-    style: {
-      treeRowsWidth: 120,
-      cellCfg: {
-        height: 32,
-      },
-    },
-    containsRowHeader: true,
-    valueInCols: true,
     width: 1180,
     height: 525,
     totals: {
