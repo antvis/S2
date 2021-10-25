@@ -30,7 +30,26 @@ import { BaseDataSet } from '@/data-set';
 import { SpreadSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
 
-export interface S2PartialOptions {
+export interface InteractionOptions {
+  // record which row/col field need extra link info
+  readonly linkFields?: string[];
+  // focus selected cell, like the spotlight
+  readonly selectedCellsSpotlight?: boolean;
+  // highlight all row header cells and column header cells to which the hovered cell belongs
+  readonly hoverHighlight?: boolean;
+  // enable Command + C to copy spread data
+  readonly enableCopy?: boolean;
+  // auto reset sheet style when click outside or press ecs key, default true
+  readonly autoResetSheetStyle?: boolean;
+  readonly hiddenColumnFields?: string[];
+  // the ratio to control scroll speed, default set to 1
+  readonly scrollSpeedRatio?: ScrollRatio;
+  /** ***********CUSTOM INTERACTION HOOKS**************** */
+  // register custom interactions
+  customInteractions?: CustomInteraction[];
+}
+
+export interface S2BasicOptions {
   // canvas's width
   readonly width: number;
   // canvas's height
@@ -45,8 +64,8 @@ export interface S2PartialOptions {
   readonly totals?: Totals;
   // tooltip configs
   readonly tooltip?: Tooltip;
-  // record which row/col field need extra link info
-  readonly linkFields?: string[];
+  // interaction configs
+  readonly interaction?: InteractionOptions;
   // pagination config
   readonly pagination?: Pagination;
   // freeze row header
@@ -65,26 +84,10 @@ export interface S2PartialOptions {
   readonly customSVGIcons?: CustomSVGIcon[];
   // extra styles
   readonly style?: Partial<Style>;
-  // frozen row & cols
-  readonly frozenRowCount?: number;
-  readonly frozenColCount?: number;
-  readonly frozenTrailingRowCount?: number;
-  readonly frozenTrailingColCount?: number;
   readonly hierarchyCollapse?: boolean;
-  // focus selected cell, like the spotlight
-  readonly selectedCellsSpotlight?: boolean;
-  // highlight all row header cells and column header cells to which the hovered cell belongs
-  readonly hoverHighlight?: boolean;
   readonly hdAdapter?: boolean;
-  readonly hiddenColumnFields?: string[];
   // the collection of row id and column id of cells which to be merged
   readonly mergedCellsInfo?: MergedCellInfo[][];
-  // enable Command + C to copy spread data
-  readonly enableCopy?: boolean;
-  // the ratio to control scroll speed, default set to 1
-  readonly scrollSpeedRatio?: ScrollRatio;
-  // auto reset sheet style when click outside or press ecs key, default true
-  readonly autoResetSheetStyle?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -124,14 +127,25 @@ export interface S2PartialOptions {
     rowNode: Node,
     colNode: Node,
   ) => void;
-  /** ***********CUSTOM INTERACTION HOOKS**************** */
-  // register custom interactions
-  customInteractions?: CustomInteraction[];
-  // extra options if needed
-  [key: string]: unknown;
 }
 
-export type S2Options = S2PartialOptions & {
+// Table sheet options
+export interface S2TableSheetOptions {
+  // frozen row & cols
+  readonly frozenRowCount?: number;
+  readonly frozenColCount?: number;
+  readonly frozenTrailingRowCount?: number;
+  readonly frozenTrailingColCount?: number;
+}
+
+// Pivot sheet options
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface S2PivotSheetOptions {}
+
+export interface S2Options
+  extends S2BasicOptions,
+    S2TableSheetOptions,
+    S2PivotSheetOptions {
   // custom data set
   readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
-};
+}

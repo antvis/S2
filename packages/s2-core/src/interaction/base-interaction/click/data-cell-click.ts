@@ -55,13 +55,6 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   }
 
   private getTooltipOperator(meta: ViewMeta): TooltipOperatorOptions {
-    const cellOperator = this.spreadsheet.options
-      ?.cellOperator as TooltipOperatorOptions;
-
-    if (cellOperator) {
-      return cellOperator;
-    }
-
     const operator: TooltipOperatorOptions = this.spreadsheet.options.tooltip
       .operation.trend && {
       onClick: () => {

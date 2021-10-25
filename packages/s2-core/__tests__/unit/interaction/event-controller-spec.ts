@@ -24,8 +24,10 @@ const s2Options: S2Options = {
   tooltip: {
     showTooltip: true,
   },
-  enableCopy: true,
-  autoResetSheetStyle: true,
+  interaction: {
+    enableCopy: true,
+    autoResetSheetStyle: true,
+  },
 };
 
 describe('Interaction Event Controller Tests', () => {
@@ -431,7 +433,9 @@ describe('Interaction Event Controller Tests', () => {
       } as BBox,
     } as BaseFacet;
     spreadsheet.setOptions({
-      autoResetSheetStyle: false,
+      interaction: {
+        autoResetSheetStyle: false,
+      },
     });
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
@@ -450,7 +454,9 @@ describe('Interaction Event Controller Tests', () => {
     expect(reset).not.toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
     spreadsheet.setOptions({
-      autoResetSheetStyle: true,
+      interaction: {
+        autoResetSheetStyle: true,
+      },
     });
   });
 });

@@ -15,7 +15,7 @@ export const clearState = (spreadsheet: SpreadSheet) => {
     });
 
     spreadsheet.interaction.resetState();
-    if (spreadsheet.options.selectedCellsSpotlight) {
+    if (spreadsheet.options.interaction.selectedCellsSpotlight) {
       const unSelectedCells =
         spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
       forEach(unSelectedCells, (cell) => {

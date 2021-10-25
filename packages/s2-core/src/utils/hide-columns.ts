@@ -92,7 +92,8 @@ export const hideColumns = (
     'hiddenColumnsDetail',
     [],
   );
-  const { hiddenColumnFields: lastHiddenColumnFields } = spreadsheet.options;
+  const { hiddenColumnFields: lastHiddenColumnFields } =
+    spreadsheet.options.interaction;
 
   if (isEqual(selectedColumnFields, lastHiddenColumnFields) && !forceRender) {
     return;
@@ -103,7 +104,9 @@ export const hideColumns = (
     ...lastHiddenColumnFields,
   ]);
   spreadsheet.setOptions({
-    hiddenColumnFields,
+    interaction: {
+      hiddenColumnFields,
+    },
   });
   const displaySiblingNode = getHiddenColumnDisplaySiblingNode(
     spreadsheet,
