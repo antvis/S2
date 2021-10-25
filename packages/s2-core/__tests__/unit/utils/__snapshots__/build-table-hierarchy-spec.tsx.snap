@@ -22,8 +22,6 @@ Object {
       "key": "area",
       "label": "序号",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "序号",
@@ -54,8 +52,6 @@ Object {
       "key": "area",
       "label": "area",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "area",
@@ -86,8 +82,6 @@ Object {
       "key": "area",
       "label": "province",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "province",
@@ -118,8 +112,6 @@ Object {
       "key": "area",
       "label": "city",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "city",
@@ -150,8 +142,6 @@ Object {
       "key": "area",
       "label": "type",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "type",
@@ -182,8 +172,6 @@ Object {
       "key": "area",
       "label": "sub_type",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "sub_type",
@@ -214,8 +202,6 @@ Object {
       "key": "area",
       "label": "profit",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "profit",
@@ -246,8 +232,6 @@ Object {
       "key": "area",
       "label": "count",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "count",
@@ -278,8 +262,6 @@ Object {
       "key": "area",
       "label": "数值",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "数值",
@@ -308,8 +290,6 @@ Object {
   "key": "",
   "label": "",
   "level": undefined,
-  "originalHeight": 0,
-  "originalWidth": 0,
   "padding": 0,
   "query": undefined,
   "rowIndex": undefined,
@@ -343,8 +323,6 @@ Hierarchy {
       "key": "area",
       "label": "序号",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "序号",
@@ -375,8 +353,6 @@ Hierarchy {
       "key": "area",
       "label": "area",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "area",
@@ -407,8 +383,6 @@ Hierarchy {
       "key": "area",
       "label": "province",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "province",
@@ -439,8 +413,6 @@ Hierarchy {
       "key": "area",
       "label": "city",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "city",
@@ -471,8 +443,6 @@ Hierarchy {
       "key": "area",
       "label": "type",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "type",
@@ -503,8 +473,6 @@ Hierarchy {
       "key": "area",
       "label": "sub_type",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "sub_type",
@@ -535,8 +503,6 @@ Hierarchy {
       "key": "area",
       "label": "profit",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "profit",
@@ -567,8 +533,6 @@ Hierarchy {
       "key": "area",
       "label": "count",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "count",
@@ -599,8 +563,6 @@ Hierarchy {
       "key": "area",
       "label": "数值",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "数值",
@@ -635,8 +597,6 @@ Hierarchy {
     "key": "area",
     "label": "序号",
     "level": 0,
-    "originalHeight": 0,
-    "originalWidth": 0,
     "padding": 0,
     "query": Object {
       "area": "序号",
@@ -668,8 +628,6 @@ Hierarchy {
       "key": "area",
       "label": "序号",
       "level": 0,
-      "originalHeight": 0,
-      "originalWidth": 0,
       "padding": 0,
       "query": Object {
         "area": "序号",
