@@ -105,17 +105,10 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
     const colCell = spreadsheet?.facet?.cfg?.colCell;
 
-    const rendererColNodes = [];
-
     each(data, (node: Node) => {
       const item = node;
-      const isColCellInRect = this.isColCellInRect(item);
-      if (isColCellInRect) {
-        rendererColNodes.push(item);
-      }
-      const hasRender = this.prevRendererColIds.includes(item.id);
 
-      if (isColCellInRect && !hasRender) {
+      if (this.isColCellInRect(item)) {
         let cell: S2CellType;
         if (colCell) {
           cell = colCell(item, spreadsheet, this.headerConfig);
@@ -128,126 +121,13 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
         const group = this.getCellGroup(item);
         group.add(cell);
-      } else if (!isColCellInRect && hasRender) {
-        this.scrollGroup
-          .getChildren()
-          .filter((n: ColCell) => n.getMeta().id === item.id)[0]
-          ?.remove(true);
       }
     });
-
-    this.prevRendererColIds = rendererColNodes.map((item) => item.id);
-    this.drawResizeArea();
   }
 
   protected offset() {
     const { position, scrollX } = this.headerConfig;
     // 暂时不考虑移动y
     translateGroup(this.scrollGroup, position.x - scrollX, 0);
-  }
-
-  protected getColResizeAreaKey(meta: Node) {
-    return meta.key;
-  }
-
-  protected getColResizeAreaOffset(meta: Node) {
-    const { offset, position } = this.headerConfig;
-    const { x, y } = meta;
-
-    return {
-      x: position.x - offset + x,
-      y: position.y + y,
-    };
-  }
-
-  protected getColResizeArea(meta: Node) {
-    const { spreadsheet } = this.headerConfig;
-
-    const prevResizeArea = spreadsheet?.foregroundGroup.findById(
-      KEY_GROUP_COL_RESIZE_AREA,
-    );
-    return (prevResizeArea ||
-      spreadsheet?.foregroundGroup.addGroup({
-        id: KEY_GROUP_COL_RESIZE_AREA,
-      })) as Group;
-  }
-
-  protected getStyle(cellType: CellTypes) {
-    const { spreadsheet } = this.headerConfig;
-    return spreadsheet.theme[cellType];
-  }
-
-  protected drawResizeArea() {
-    this.scrollGroup.getChildren().forEach((n: ColCell) => {
-      this.drawResizeAreaForNode(n.getMeta());
-    });
-  }
-
-  // 绘制单个节点的热区
-  protected drawResizeAreaForNode(meta: Node) {
-    const { spreadsheet, offset } = this.headerConfig;
-    const { viewportWidth } = this.headerConfig;
-    const { label, width: cellWidth, height: cellHeight, parent } = meta;
-    const resizeStyle = spreadsheet?.theme?.resizeArea;
-    const resizeArea = this.getColResizeArea(meta);
-    const resizeAreaName = `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${meta.key}`;
-
-    const prevHorizontalResizeArea = resizeArea.find((element) => {
-      return element.attrs.name === resizeAreaName;
-    });
-    const resizerOffset = this.getColResizeAreaOffset(meta);
-    // 如果已经绘制当前列高调整热区热区，则不再绘制
-    if (!prevHorizontalResizeArea) {
-      // 列高调整热区
-      resizeArea.addShape('rect', {
-        attrs: {
-          name: resizeAreaName,
-          x: resizerOffset.x + offset,
-          y: resizerOffset.y + cellHeight - resizeStyle.size / 2,
-          width: viewportWidth,
-          height: resizeStyle.size,
-          fill: resizeStyle.background,
-          fillOpacity: resizeStyle.backgroundOpacity,
-          cursor: 'row-resize',
-          appendInfo: {
-            isResizeArea: true,
-            class: 'resize-trigger',
-            type: 'row',
-            id: this.getColResizeAreaKey(meta),
-            affect: 'field',
-            offsetX: resizerOffset.x,
-            offsetY: resizerOffset.y,
-            width: viewportWidth,
-            height: cellHeight,
-          } as ResizeInfo,
-        },
-      });
-    }
-    if (meta.isLeaf) {
-      // 列宽调整热区
-      // 基准线是根据container坐标来的，因此把热区画在container
-      resizeArea.addShape('rect', {
-        attrs: {
-          x: resizerOffset.x + cellWidth - resizeStyle.size / 2,
-          y: resizerOffset.y,
-          width: resizeStyle.size,
-          height: cellHeight,
-          fill: resizeStyle.background,
-          fillOpacity: resizeStyle.backgroundOpacity,
-          cursor: 'col-resize',
-          appendInfo: {
-            isResizeArea: true,
-            class: 'resize-trigger',
-            type: 'col',
-            affect: 'cell',
-            caption: parent.isTotals ? '' : label,
-            offsetX: resizerOffset.x,
-            offsetY: resizerOffset.y,
-            width: cellWidth,
-            height: cellHeight,
-          } as ResizeInfo,
-        },
-      });
-    }
   }
 }

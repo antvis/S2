@@ -1,5 +1,4 @@
 import { IGroup } from '@antv/g-base';
-import { Group } from '@antv/g-canvas';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
 import { ColHeader, ColHeaderConfig } from './col';
 import {
@@ -10,7 +9,7 @@ import {
   KEY_GROUP_COL_FROZEN_TRAILING,
   FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
 } from '@/common/constant';
-import { TableColCell, TableCornerCell, ColCell } from '@/cell';
+import { TableColCell, TableCornerCell } from '@/cell';
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type/index';
 
@@ -53,17 +52,6 @@ export class TableColHeader extends ColHeader {
     );
   }
 
-  protected drawResizeArea() {
-    const nodes = [
-      ...this.scrollGroup.getChildren(),
-      ...(this.frozenColGroup?.getChildren() || []),
-      ...(this.frozenTrailingColGroup?.getChildren() || []),
-    ];
-    nodes.forEach((n: ColCell) => {
-      this.drawResizeAreaForNode(n.getMeta());
-    });
-  }
-
   public clear() {
     const { spreadsheet } = this.headerConfig;
     super.clear();
@@ -72,37 +60,6 @@ export class TableColHeader extends ColHeader {
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,
     ) as unknown as IGroup;
     resizerArea?.clear();
-  }
-
-  protected getColResizeAreaOffset(meta: Node) {
-    const { offset, position } = this.headerConfig;
-    const { x, y } = meta;
-
-    let finalOffset = offset;
-    // 如果当前列被冻结，不对 resizer 做 offset 处理
-    if (this.isFrozenCell(meta)) {
-      finalOffset = 0;
-    }
-
-    return {
-      x: position.x - finalOffset + x,
-      y: position.y + y,
-    };
-  }
-
-  protected getColResizeArea(meta: Node) {
-    const { spreadsheet } = this.headerConfig;
-    if (this.isFrozenCell(meta)) {
-      const resizerArea = spreadsheet?.foregroundGroup.findById(
-        KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-      );
-      return (resizerArea ||
-        spreadsheet?.foregroundGroup.addGroup({
-          id: KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-        })) as Group;
-    }
-
-    return super.getColResizeArea(meta);
   }
 
   protected getCellInstance(
