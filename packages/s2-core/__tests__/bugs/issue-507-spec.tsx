@@ -5,22 +5,72 @@
  *
  */
 
+import { cloneDeep } from 'lodash';
 import { getContainer } from '../util/helpers';
-import * as dataCfg from '../data/data-issue-507.json';
+import { valueInCols } from '../data/data-issue-507.json';
 import { S2Options, PivotSheet } from '@/index';
 
-const s2options: S2Options = {
-  width: 800,
-  height: 600,
+const valueInRows = cloneDeep(valueInCols);
+
+valueInRows.fields.valueInCols = false;
+
+const gridOptions: S2Options = {
+  width: 600,
+  height: 200,
+};
+
+const treeOptions: S2Options = {
+  width: 600,
+  height: 200,
+  hierarchyType: 'tree',
 };
 
 describe('Spreadsheet Empty Test', () => {
-  const s2 = new PivotSheet(getContainer(), dataCfg, s2options);
-  s2.render();
-  test('should render skeleton when the data is empty', () => {
-    const layoutResult = s2.facet.layoutResult;
-
-    expect(layoutResult.colNodes).toHaveLength(3);
+  const valueInColsGridS2 = new PivotSheet(
+    getContainer(),
+    valueInCols,
+    gridOptions,
+  );
+  valueInColsGridS2.render();
+  test('should render skeleton when grid sheet in the valueInCols mode', () => {
+    const layoutResult = valueInColsGridS2.facet.layoutResult;
+    expect(layoutResult.colNodes).toHaveLength(5);
     expect(layoutResult.rowNodes).toHaveLength(2);
+  });
+
+  const valueInRowsGridS2 = new PivotSheet(
+    getContainer(),
+    valueInRows,
+    gridOptions,
+  );
+  valueInRowsGridS2.render();
+  test('should render skeleton when grid sheet in the valueInRows mode', () => {
+    const layoutResult = valueInRowsGridS2.facet.layoutResult;
+    expect(layoutResult.colNodes).toHaveLength(2);
+    expect(layoutResult.rowNodes).toHaveLength(5);
+  });
+
+  const valueInColstreeS2 = new PivotSheet(
+    getContainer(),
+    valueInCols,
+    treeOptions,
+  );
+  valueInColstreeS2.render();
+  test('should render skeleton when tree sheet in the valueInCols mode', () => {
+    const layoutResult = valueInColstreeS2.facet.layoutResult;
+    expect(layoutResult.colNodes).toHaveLength(5);
+    expect(layoutResult.rowNodes).toBeEmpty();
+  });
+
+  const valueInRowsTreeS2 = new PivotSheet(
+    getContainer(),
+    valueInRows,
+    treeOptions,
+  );
+  valueInRowsTreeS2.render();
+  test('should render skeleton when tree sheet in the valueInRows mode', () => {
+    const layoutResult = valueInRowsTreeS2.facet.layoutResult;
+    expect(layoutResult.colNodes).toHaveLength(2);
+    expect(layoutResult.rowNodes).toBeEmpty();
   });
 });
