@@ -50,7 +50,7 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
   protected clearResizeAreaGroup(type: string) {
     const foregroundGroup = this.get('parent');
     const resizerGroup = foregroundGroup?.findById(type);
-    resizerGroup?.remove();
+    resizerGroup?.clear();
   }
 
   // start render header
