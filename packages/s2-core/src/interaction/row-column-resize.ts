@@ -311,9 +311,9 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     // resize 拖拽过程中, 将 tooltip 设置为鼠标穿透, 避免造成干扰
     this.spreadsheet.tooltip.disablePointerEvent();
 
-    const [, cellEndBorder] = resizeShapes;
+    const [, endGuideLineShape] = resizeShapes;
     const [guideLineStart, guideLineEnd]: ResizeGuideLinePath[] = clone(
-      cellEndBorder.attr('path'),
+      endGuideLineShape.attr('path'),
     );
 
     // 下面的神仙代码我改不动了
@@ -347,7 +347,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         y: this.resizeArea.attr('y') + offsetY,
       });
     }
-    cellEndBorder.attr('path', [guideLineStart, guideLineEnd]);
+    endGuideLineShape.attr('path', [guideLineStart, guideLineEnd]);
   };
 
   private renderByResize() {
