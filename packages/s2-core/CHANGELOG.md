@@ -1,3 +1,15 @@
+# [@antv/s2-v1.0.0-beta.2](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.1...@antv/s2-v1.0.0-beta.2) (2021-10-26)
+
+
+### Bug Fixes
+
+* :bug: optimize the rendering logic for the skeleton and close [#507](https://github.com/antvis/S2/issues/507) ([#564](https://github.com/antvis/S2/issues/564)) ([2cbd2b7](https://github.com/antvis/S2/commit/2cbd2b7b06260ec3a6a9290556ebce89f2d837ce))
+* 🐛 optimize the logic of toggleActionIcon and close [#552](https://github.com/antvis/S2/issues/552) ([#560](https://github.com/antvis/S2/issues/560)) ([2d08950](https://github.com/antvis/S2/commit/2d0895068fb1ea84cb722defa2b4774742b9f0bc))
+* **interaction:** fix wrong corner header width by resize ([#563](https://github.com/antvis/S2/issues/563)) ([6b25a17](https://github.com/antvis/S2/commit/6b25a17a64b3394d9645a5b0896cf1fe3585f0a7))
+* not sort when sortMethod is not true ([#562](https://github.com/antvis/S2/issues/562)) ([929bcdc](https://github.com/antvis/S2/commit/929bcdc4c3567ee2f65cd0b7b1e65c19370599a7))
+* **scroll:** show tooltip when scrolling ([#567](https://github.com/antvis/S2/issues/567)) ([62b1d06](https://github.com/antvis/S2/commit/62b1d06afc417eec3fd90a4fab2309770fc0fadf))
+* sortBy ([#566](https://github.com/antvis/S2/issues/566)) ([a16a331](https://github.com/antvis/S2/commit/a16a331a27b4ece17e78919bdcf4fc9a97c03830))
+
 # @antv/s2-v1.0.0-beta.1 (2021-10-25)
 
 
