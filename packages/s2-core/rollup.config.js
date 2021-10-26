@@ -22,11 +22,9 @@ const isEsmFormat = format === 'esm';
 
 const output = {
   format: format,
-  preserveModules: isEsmFormat,
   exports: 'named',
   name: 'S2',
   sourcemap: true,
-  preserveModulesRoot: 'src',
 };
 
 const plugins = [
@@ -43,9 +41,7 @@ const plugins = [
     'process.env.NODE_ENV': JSON.stringify('production'),
     preventAssignment: true,
   }),
-  commonjs({
-    ignore: ['react-is'],
-  }),
+  commonjs(),
   resolve(),
   typescript({
     outDir: outDir,

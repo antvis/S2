@@ -35,16 +35,28 @@
   ],
   "scripts": {
     "start": "vite",
-    "build": "tsc --noEmit && vite build"
+    "build": "yarn tsc && vite build --debug",
+    "clean": "rimraf lib esm dist",
+    "build:esm": "rollup -c rollup.config.js --environment FORMAT:esm ",
+    "build:cjs": "rollup -c rollup.config.js --environment FORMAT:cjs",
+    "build:umd": "rollup -c rollup.config.js --environment FORMAT:umd",
+    "build:analysis": "rollup -c rollup.config.js --environment FORMAT:esm,ANALYSIS",
+    "bundle:size": "bundlesize",
+    "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
+    "test": "jest",
+    "test:coverage": "yarn test --coverage",
+    "test:watch": "yarn test --watch",
+    "tsc": "tsc --noEmit",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "peerDependencies": {
+    "@antv/s2": "^0.2.5",
     "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "@antv/s2":"^0.2.5"
+    "react-dom": "^16.14.0"
   },
-  
   "devDependencies": {
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0"
+    "@antv/s2": "^0.2.5",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   }
 }
