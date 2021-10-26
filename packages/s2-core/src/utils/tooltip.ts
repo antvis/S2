@@ -24,7 +24,9 @@ import {
 } from 'lodash';
 import React from 'react';
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import {
+import { handleDataItem } from './cell/data-cell';
+import { isMultiDataItem } from './data-item-type-checker';
+import type {
   AutoAdjustPositionOptions,
   LayoutResult,
   ListItem,
@@ -38,9 +40,8 @@ import {
   TooltipOptions,
   TooltipPosition,
   TooltipSummaryOptions,
-} from '..';
-import { handleDataItem } from './cell/data-cell';
-import { isMultiDataItem } from './data-item-type-checker';
+  BaseTooltipConfig,
+} from '@/index';
 import { i18n } from '@/common/i18n';
 import {
   CellTypes,
@@ -50,8 +51,8 @@ import {
 } from '@/common/constant';
 import { Tooltip, ViewMeta } from '@/common/interface';
 
-const isNotNumber = (v) => {
-  return Number.isNaN(Number(v));
+const isNotNumber = (value: unknown) => {
+  return Number.isNaN(Number(value));
 };
 
 /**
@@ -523,7 +524,7 @@ export const getTooltipOptionsByCellType = (
   cellTooltip: Tooltip,
   cellType: CellTypes,
 ) => {
-  const getOptionsByCell = (cell) => {
+  const getOptionsByCell = (cell: BaseTooltipConfig) => {
     return { ...cellTooltip, ...cell };
   };
 

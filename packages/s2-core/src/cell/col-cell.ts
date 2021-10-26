@@ -135,7 +135,7 @@ export class ColCell extends HeaderCell {
   }
 
   protected getColResizeAreaOffset() {
-    const { offset, position } = this.headerConfig;
+    const { offset, scrollX, position } = this.headerConfig;
     const { x, y } = this.meta;
 
     return {
@@ -156,14 +156,14 @@ export class ColCell extends HeaderCell {
 
   // 绘制热区
   private drawResizeArea() {
-    const { viewportWidth, offset } = this.headerConfig;
+    const { viewportWidth, scrollX } = this.headerConfig;
     const { label, width: cellWidth, height: cellHeight, parent } = this.meta;
     const resizeStyle = this.getStyle('resizeArea');
     const resizeArea = this.getColResizeArea();
     const resizeAreaName = `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`;
-    const prevHorizontalResizeArea = resizeArea.find((element) => {
-      return element.attrs.name === resizeAreaName;
-    });
+    const prevHorizontalResizeArea = resizeArea.find(
+      (element) => element.attrs.name === resizeAreaName,
+    );
     const resizerOffset = this.getColResizeAreaOffset();
     // 如果已经绘制当前列高调整热区热区，则不再绘制
     if (!prevHorizontalResizeArea) {
@@ -171,9 +171,9 @@ export class ColCell extends HeaderCell {
       resizeArea.addShape('rect', {
         attrs: {
           name: resizeAreaName,
-          x: resizerOffset.x + offset,
+          x: resizerOffset.x,
           y: resizerOffset.y + cellHeight - resizeStyle.size / 2,
-          width: viewportWidth,
+          width: viewportWidth + scrollX,
           height: resizeStyle.size,
           fill: resizeStyle.background,
           fillOpacity: resizeStyle.backgroundOpacity,
