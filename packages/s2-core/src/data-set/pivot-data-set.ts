@@ -334,6 +334,7 @@ export class PivotDataSet extends BaseDataSet {
     if (this.sortedDimensionValues.has(field)) {
       return filterUndefined([...this.sortedDimensionValues.get(field)]);
     }
+
     return filterUndefined([...meta.keys()]);
   }
 
