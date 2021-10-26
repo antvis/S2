@@ -167,7 +167,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       .getActiveCells()
       .map((cell) => cell.getMeta().field);
 
-    const { hiddenColumnFields: defaultHiddenColumnFields } = options;
+    const { hiddenColumnFields: defaultHiddenColumnFields } =
+      options.interaction;
     // 当前点击的, 和默认隐藏的
     const hiddenColumnFields = [
       ...defaultHiddenColumnFields,
@@ -179,7 +180,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
 
   private handleExpandIconClick(node: Node) {
     const { hiddenColumnFields: lastHideColumnFields } =
-      this.spreadsheet.options;
+      this.spreadsheet.options.interaction;
     const hiddenColumnsDetail = this.spreadsheet.store.get(
       'hiddenColumnsDetail',
       [],
@@ -190,10 +191,12 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       ) || {};
     const willDisplayColumnFields = hideColumnNodes.map(({ field }) => field);
     this.spreadsheet.setOptions({
-      hiddenColumnFields: difference(
-        lastHideColumnFields,
-        willDisplayColumnFields,
-      ),
+      interaction: {
+        hiddenColumnFields: difference(
+          lastHideColumnFields,
+          willDisplayColumnFields,
+        ),
+      },
     });
     this.spreadsheet.store.set(
       'hiddenColumnsDetail',

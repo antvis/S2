@@ -24,7 +24,9 @@ import {
 } from 'lodash';
 import React from 'react';
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import {
+import { handleDataItem } from './cell/data-cell';
+import { isMultiDataItem } from './data-item-type-checker';
+import type {
   AutoAdjustPositionOptions,
   LayoutResult,
   ListItem,
@@ -38,9 +40,8 @@ import {
   TooltipOptions,
   TooltipPosition,
   TooltipSummaryOptions,
-} from '..';
-import { handleDataItem } from './cell/data-cell';
-import { isMultiDataItem } from './data-item-type-checker';
+  BaseTooltipConfig,
+} from '@/index';
 import { i18n } from '@/common/i18n';
 import {
   CellTypes,
@@ -50,8 +51,8 @@ import {
 } from '@/common/constant';
 import { Tooltip, ViewMeta } from '@/common/interface';
 
-const isNotNumber = (v) => {
-  return Number.isNaN(Number(v));
+const isNotNumber = (value: unknown) => {
+  return Number.isNaN(Number(value));
 };
 
 /**
@@ -176,12 +177,21 @@ export const getMergedQuery = (meta: ViewMeta) => {
  */
 export const setContainerStyle = (
   container: HTMLElement,
-  styles: React.CSSProperties,
+  options: { style?: React.CSSProperties; className?: string } = {
+    className: '',
+  },
 ) => {
-  if (container && styles) {
-    Object.keys(styles)?.forEach((item) => {
-      container.style[item] = styles[item];
+  if (!container) {
+    return;
+  }
+  const { style, className } = options;
+  if (style) {
+    Object.keys(style).forEach((item) => {
+      container.style[item] = style[item];
     });
+  }
+  if (className) {
+    container.classList.add(className);
   }
 };
 
@@ -497,7 +507,7 @@ export const getActiveCellsTooltipData = (
     return [];
   }
   spreadsheet.interaction.getActiveCells().forEach((cell) => {
-    const valueInCols = spreadsheet.options.valueInCols;
+    const { valueInCols } = spreadsheet.dataCfg.fields;
     const meta = cell.getMeta() as ViewMeta;
     const query = getMergedQuery(meta);
     if (isEmpty(meta) || isEmpty(query)) {
@@ -523,7 +533,7 @@ export const getTooltipOptionsByCellType = (
   cellTooltip: Tooltip,
   cellType: CellTypes,
 ) => {
-  const getOptionsByCell = (cell) => {
+  const getOptionsByCell = (cell: BaseTooltipConfig) => {
     return { ...cellTooltip, ...cell };
   };
 

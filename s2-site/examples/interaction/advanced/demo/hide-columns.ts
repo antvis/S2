@@ -17,7 +17,9 @@ fetch(
     const s2options = {
       width: 800,
       height: 600,
-      hiddenColumnFields: ['price'],
+      interaction: {
+        hiddenColumnFields: ['price'],
+      },
       tooltip: {
         showTooltip: true,
         operation: {

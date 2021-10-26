@@ -87,6 +87,7 @@ export class CornerCell extends HeaderCell {
       },
       textStyle,
     );
+
     const textY = y + (isEmpty(secondLine) ? height / 2 : height / 4);
     // first line
     this.textShapes.push(
@@ -223,11 +224,12 @@ export class CornerCell extends HeaderCell {
       this.spreadsheet.foregroundGroup.addGroup({
         id: KEY_GROUP_CORNER_RESIZE_AREA,
       })) as Group;
-    const { position } = this.headerConfig;
+    const { position, scrollX } = this.headerConfig;
     const { x, y, width: cellWidth, height: cellHeight, field } = this.meta;
+
     resizeArea.addShape('rect', {
       attrs: {
-        x: position.x + x + cellWidth - resizeStyle.size / 2,
+        x: position.x + x - scrollX + cellWidth - resizeStyle.size / 2,
         y: position.y + y,
         width: resizeStyle.size,
         height: cellHeight,

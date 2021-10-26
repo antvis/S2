@@ -210,3 +210,5 @@ export const TabularSheet = (props: BaseSheetProps) => {
     </Spin>
   );
 };
+
+TabularSheet.displayName = 'TabularSheet';

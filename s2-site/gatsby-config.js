@@ -157,7 +157,7 @@ module.exports = {
     examples: [
       {
         slug: 'case',
-        icon: 'gallery',
+        icon: 'star-single-line',
         title: {
           zh: '场景案例',
           en: 'Show Case',
@@ -167,71 +167,45 @@ module.exports = {
         slug: 'basic',
         icon: 'facet',
         title: {
-          zh: '表形态',
+          zh: '表格形态',
           en: 'Basic Sheets',
         },
       },
-      {
-        slug: 'config',
-        icon: 'tool',
+       {
+        slug: 'theme',
+        icon: 'skin',
         title: {
-          zh: '通用配置',
-          en: 'Config',
+          zh: '表格主题',
+          en: 'Theme',
         },
       },
       {
         slug: 'interaction',
-        icon: 'all',
+        icon: 'block',
         title: {
-          zh: '交互',
+          zh: '表格交互',
           en: 'Interaction',
         },
       },
       {
-        slug: 'totals',
-        icon: 'facet',
-        title: {
-          zh: '小计总计',
-          en: 'Totals',
-        },
-      },
-      {
-        slug: 'sort',
-        icon: 'facet',
-        title: {
-          zh: '排序',
-          en: 'Sort',
-        },
-      },
-      {
-        slug: 'tooltip',
-        icon: 'facet',
-        title: {
-          zh: 'Tooltip',
-          en: 'Tooltip',
-        },
-      },
-      {
-        slug: 'theme',
-        icon: 'gallery',
-        slug: 'conditions',
-        icon: 'guide',
-        title: {
-          zh: '字段标记',
-          en: 'Conditions',
-        },
-      },
-      {
         slug: 'analysis',
-        icon: 'search',
+        icon: 'bulb',
         title: {
-          zh: '分析组件',
-          en: 'Analyze component',
+          zh: '分析能力',
+          en: 'Analysis',
+        },
+      },
+      {
+        slug: 'react-component',
+        icon: 'build',
+        title: {
+          zh: 'React组件',
+          en: 'React Component',
         },
       },
       {
         slug: 'custom',
-        icon: 'net',
+        icon: 'edit',
         title: {
           zh: '自定义',
           en: 'Custom Hooks',

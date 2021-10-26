@@ -9,7 +9,7 @@ order: 1
 
 这是一个自定义交互类的基本格式：
 
-继承 `BaseEvent` 拿到当前表格实例 `this.spreadsheet`, 实现 `bindEvents` 方法，结合 `this.spreadsheet` 提供的[一系列方法](/zh/docs/api/general/S2Options#spreadsheet)，自定义交互，最后表格初始化时会注册默认交互，和自定义交互。
+继承 `BaseEvent` 拿到当前表格实例 `this.spreadsheet`, 实现 `bindEvents` 方法，结合 `this.spreadsheet` 提供的 [一系列方法](/zh/docs/api/general/S2Options#spreadsheet)，自定义交互，最后表格初始化时会注册默认交互，和自定义交互。
 
 ```ts
 import { BaseEvent } from '@antv/s2';
@@ -49,13 +49,15 @@ import { TableSheet } from '@antv/s2';
 const s2options = {
   width: 600,
   height: 300,
-  customInteractions: [
-    {
-      // 交互的唯一标识，需要保证和已有交互不冲突
-      key: 'MyInteraction',
-      interaction: MyInteraction,
-    },
-  ],
+  interaction: {
+    customInteractions: [
+      {
+        // 交互的唯一标识，需要保证和已有交互不冲突
+        key: 'MyInteraction',
+        interaction: MyInteraction,
+      },
+    ],
+  }
 };
 const s2 = new TableSheet(container, s2DataConfig, s2options);
 
@@ -81,16 +83,18 @@ class ContextMenuInteraction extends BaseEvent {
 const s2options = {
   width: 600,
   height: 300,
-  customInteractions: [
-    {
-      key: 'MyInteraction',
-      interaction: MyInteraction,
-    },
-    {
-      key: 'ContextMenuInteraction',
-      interaction: ContextMenuInteraction,
-    },
-  ],
+  interaction: {
+    customInteractions: [
+      {
+        key: 'MyInteraction',
+        interaction: MyInteraction,
+      },
+      {
+        key: 'ContextMenuInteraction',
+        interaction: ContextMenuInteraction,
+      },
+    ],
+  }
 };
 
 const s2 = new TableSheet(container, s2DataConfig, s2options);

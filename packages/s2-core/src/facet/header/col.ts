@@ -3,17 +3,14 @@ import { IGroup, IShape } from '@antv/g-base';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import {
-  KEY_GROUP_COL_RESIZE_AREA,
-  SERIES_NUMBER_FIELD,
-  KEY_GROUP_COL_FROZEN,
   KEY_GROUP_COL_SCROLL,
-  KEY_GROUP_COL_FROZEN_TRAILING,
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
-  FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
 } from '@/common/constant';
-import { ColCell, TableColCell, TableCornerCell } from '@/cell';
+import { ColCell } from '@/cell';
 import { Formatter, S2CellType } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
+
+import { SpreadSheet } from '@/sheet-type/index';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
   // format field value
@@ -27,37 +24,17 @@ export interface ColHeaderConfig extends BaseHeaderConfig {
  * Column Header for SpreadSheet
  */
 export class ColHeader extends BaseHeader<ColHeaderConfig> {
-  protected frozenColGroup: IGroup;
-
-  protected frozenTrailingColGroup: IGroup;
-
   protected scrollGroup: IGroup;
 
   protected background: IShape;
 
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
-    const { frozenColCount, frozenTrailingColCount } =
-      this.headerConfig.spreadsheet?.options;
 
     this.scrollGroup = this.addGroup({
       name: KEY_GROUP_COL_SCROLL,
       zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
     });
-
-    if (frozenColCount) {
-      this.frozenColGroup = this.addGroup({
-        name: KEY_GROUP_COL_FROZEN,
-        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
-      });
-    }
-
-    if (frozenTrailingColCount) {
-      this.frozenTrailingColGroup = this.addGroup({
-        name: KEY_GROUP_COL_FROZEN_TRAILING,
-        zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
-      });
-    }
   }
 
   /**
@@ -78,121 +55,67 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected clip() {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
-
-    const { frozenColCount, frozenTrailingColCount } = spreadsheet.options;
-    const colLeafNodes = spreadsheet.facet?.layoutResult.colLeafNodes;
-    const isTableMode = spreadsheet.isTableMode();
-
-    let frozenColWidth = 0;
-    let frozenTrailingColWidth = 0;
-    if (isTableMode) {
-      for (let i = 0; i < frozenColCount; i++) {
-        frozenColWidth += colLeafNodes[i].width;
-      }
-
-      for (let i = 0; i < frozenTrailingColCount; i++) {
-        frozenTrailingColWidth +=
-          colLeafNodes[colLeafNodes.length - 1 - i].width;
-      }
-    }
-
-    const frozenClipWidth =
-      width +
-      (spreadsheet.isFreezeRowHeader() ? 0 : scrollX) -
-      frozenColWidth -
-      frozenTrailingColWidth;
-
+    const scrollXOffset = spreadsheet.isFreezeRowHeader() ? scrollX : 0;
     this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
-        x: (spreadsheet.isFreezeRowHeader() ? scrollX : 0) + frozenColWidth,
+        x: scrollXOffset,
         y: 0,
-        width: frozenClipWidth,
+        width: width + scrollXOffset,
         height,
       },
     });
-
-    const prevResizeArea = spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_COL_RESIZE_AREA,
-    );
-
-    if (prevResizeArea && isTableMode) {
-      const resizeAreaSize = spreadsheet.theme.resizeArea?.size ?? 0;
-      const { x, y } = prevResizeArea.getBBox();
-      prevResizeArea.setClip({
-        type: 'rect',
-        attrs: {
-          x,
-          y,
-          width: frozenClipWidth + resizeAreaSize,
-          height,
-        },
-      });
-    }
   }
 
   public clear() {
-    this.frozenTrailingColGroup?.clear();
-    this.frozenColGroup?.clear();
     this.scrollGroup.clear();
     this.background?.remove(true);
   }
 
+  protected getCellInstance(
+    item: Node,
+    spreadsheet: SpreadSheet,
+    headerConfig: ColHeaderConfig,
+  ) {
+    return new ColCell(item, spreadsheet, headerConfig);
+  }
+
+  protected getCellGroup(node: Node) {
+    return this.scrollGroup;
+  }
+
+  protected isColCellInRect(item: Node): boolean {
+    const { spreadsheet, cornerWidth, width, scrollX } = this.headerConfig;
+
+    return (
+      // don't care about scrollY, because there is only freeze col-header exist
+      width + scrollX > item.x &&
+      scrollX - (spreadsheet.isFreezeRowHeader() ? 0 : cornerWidth) <
+        item.x + item.width
+    );
+  }
+
   protected layout() {
-    const { data, spreadsheet, cornerWidth, width, scrollX } =
-      this.headerConfig;
-    const { frozenColCount, frozenTrailingColCount } = spreadsheet?.options;
-    const colLength = spreadsheet?.facet?.layoutResult.colLeafNodes.length;
+    const { data, spreadsheet } = this.headerConfig;
 
     const colCell = spreadsheet?.facet?.cfg?.colCell;
-    // don't care about scrollY, because there is only freeze col-header exist
-    const colCellInRect = (item: Node): boolean => {
-      if (
-        (frozenColCount > 0 && item.colIndex < frozenColCount) ||
-        (frozenTrailingColCount > 0 &&
-          item.colIndex >= colLength - frozenTrailingColCount)
-      ) {
-        return true;
-      }
-      return (
-        width + scrollX > item.x &&
-        scrollX - (spreadsheet.isFreezeRowHeader() ? 0 : cornerWidth) <
-          item.x + item.width
-      );
-    };
+
     each(data, (node: Node) => {
       const item = node;
-      if (colCellInRect(item)) {
+
+      if (this.isColCellInRect(item)) {
         let cell: S2CellType;
         if (colCell) {
           cell = colCell(item, spreadsheet, this.headerConfig);
         }
 
         if (isEmpty(cell)) {
-          if (spreadsheet.isPivotMode()) {
-            cell = new ColCell(item, spreadsheet, this.headerConfig);
-          } else if (item.field === SERIES_NUMBER_FIELD) {
-            cell = new TableCornerCell(item, spreadsheet, this.headerConfig);
-          } else {
-            cell = new TableColCell(item, spreadsheet, this.headerConfig);
-          }
+          cell = this.getCellInstance(item, spreadsheet, this.headerConfig);
         }
         item.belongsCell = cell;
 
-        if (this.headerConfig.spreadsheet.isTableMode()) {
-          if (node.colIndex < frozenColCount) {
-            this.frozenColGroup.add(cell);
-            return;
-          }
-          if (
-            frozenTrailingColCount > 0 &&
-            node.colIndex >= colLength - frozenTrailingColCount
-          ) {
-            this.frozenTrailingColGroup.add(cell);
-            return;
-          }
-        }
-        this.scrollGroup.add(cell);
+        const group = this.getCellGroup(item);
+        group.add(cell);
       }
     });
   }

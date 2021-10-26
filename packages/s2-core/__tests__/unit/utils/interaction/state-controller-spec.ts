@@ -33,7 +33,9 @@ describe('State Test', () => {
     MockSpreadSheet.mockClear();
 
     mockInstance = new MockSpreadSheet();
-    mockInstance.options = { selectedCellsSpotlight: false } as S2Options;
+    mockInstance.options = {
+      interaction: { selectedCellsSpotlight: false },
+    } as S2Options;
     mockInstance.store = new Store();
     mockInstance.interaction = new RootInteraction(mockInstance);
   });

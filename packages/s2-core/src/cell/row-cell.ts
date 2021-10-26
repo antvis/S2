@@ -208,6 +208,16 @@ export class RowCell extends HeaderCell {
     );
   }
 
+  protected getColResizeAreaOffset() {
+    const { offset, position } = this.headerConfig;
+    const { x, y } = this.meta;
+
+    return {
+      x: position.x - offset + x,
+      y: position.y + y,
+    };
+  }
+
   protected drawResizeAreaInLeaf() {
     if (this.meta.isLeaf) {
       const { x, y, width, height } = this.getCellArea();
@@ -221,11 +231,12 @@ export class RowCell extends HeaderCell {
           id: KEY_GROUP_ROW_RESIZE_AREA,
         })) as Group;
 
-      const { offset, position, seriesNumberWidth } = this.headerConfig;
+      const { offset, position, seriesNumberWidth, scrollX } =
+        this.headerConfig;
       const { label, parent } = this.meta;
       resizeArea.addShape('rect', {
         attrs: {
-          x: position.x + x + seriesNumberWidth,
+          x: position.x + x - scrollX + seriesNumberWidth,
           y: position.y + y - offset + height - resizeStyle.size / 2,
           width,
           height: resizeStyle.size,

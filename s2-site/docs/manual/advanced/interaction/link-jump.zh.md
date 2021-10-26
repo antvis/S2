@@ -21,7 +21,9 @@ const s2DataConfig = {
 const s2options = {
   width: 800,
   height: 600,
-  linkFields: ['city'],
+  interaction: {
+    linkFields: ['city'],
+  }
 };
 ```
 
@@ -50,7 +52,9 @@ const s2DataConfig = {
 const s2options = {
   width: 800,
   height: 600,
-  linkFields: ['province', 'city'],
+  interaction: {
+    linkFields: ['province', 'city'],
+  }
 };
 
 const s2 = new PivotSheet(container, s2DataConfig, s2options);
@@ -65,7 +69,7 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 s2.render();
 ```
 
-<playground path='interaction/demo/pivot-link-jump.ts' rid='container' height='400'></playground>
+<playground path='interaction/advanced/demo/pivot-link-jump.ts' rid='container' height='400'></playground>
 
 ## 明细表
 
@@ -82,7 +86,9 @@ const s2DataConfig = {
 const s2options = {
   width: 800,
   height: 600,
-  linkFieldIds: ['type', 'price', 'province'],
+  interaction: {
+    linkFields: ['type', 'price', 'province'],
+  }
 };
 
 const s2 = new TableSheet(container, s2DataConfig, s2options);
@@ -97,4 +103,4 @@ s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
 s2.render();
 ```
 
-<playground path='interaction/demo/table-link-jump.ts' rid='container2' height='400'></playground>
+<playground path='interaction/advanced/demo/table-link-jump.ts' rid='container2' height='400'></playground>

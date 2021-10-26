@@ -49,7 +49,9 @@ describe('RootInteraction Tests', () => {
     mockSpreadSheetInstance = new MockSpreadSheet();
     mockSpreadSheetInstance.store = new Store();
     mockSpreadSheetInstance.options = {
-      selectedCellsSpotlight: false,
+      interaction: {
+        selectedCellsSpotlight: false,
+      },
     } as S2Options;
     mockSpreadSheetInstance.container = {
       draw: jest.fn(),
