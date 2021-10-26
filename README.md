@@ -28,7 +28,7 @@
 
 <p>
   <a href="https://david-dm.org/antvis/s2" target="_blank">
-    <img src="https://status.david-dm.org/gh/antvis/s2.svg" alt="dependencies"/>
+    <img src="https://status.david-dm.org/gh/antvis/S2.svg" alt="dependencies"/>
   </a>
   <a href="https://david-dm.org/antvis/S2?type=dev" title="devDependencies status" target="_blank">
     <img src="https://david-dm.org/antvis/S2/dev-status.svg" alt="devDependencies"/>
