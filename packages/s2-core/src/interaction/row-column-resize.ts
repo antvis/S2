@@ -12,28 +12,24 @@ import {
   ResizeGuideLinePath,
   ResizeGuideLinePosition,
   ResizeInfo,
+  ResizePosition,
 } from '@/common/interface/resize';
-import { SpreadSheet } from '@/sheet-type';
 import {
   InterceptType,
   MIN_CELL_HEIGHT,
   MIN_CELL_WIDTH,
+  RESIZE_MASK_ID,
+  RESIZE_START_GUIDE_LINE_ID,
+  RESIZE_END_GUIDE_LINE_ID,
   S2Event,
 } from '@/common/constant';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private resizeArea: IGroup;
 
-  private resizeGroup: IGroup;
+  public resizeGroup: IGroup;
 
-  private container: IGroup;
-
-  private resizeStartPosition: { offsetX?: number; offsetY?: number } = {};
-
-  constructor(spreadsheet: SpreadSheet) {
-    super(spreadsheet);
-    this.container = this.spreadsheet.foregroundGroup;
-  }
+  public resizeStartPosition: ResizePosition = {};
 
   public bindEvents() {
     this.bindMouseDown();
@@ -45,7 +41,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     if (this.resizeGroup) {
       return;
     }
-    this.resizeGroup = this.container.addGroup();
+    this.resizeGroup = this.spreadsheet.foregroundGroup.addGroup();
 
     const { width, height } = this.spreadsheet.options;
     const { guidLineColor, guidLineDash, size } = this.getResizeAreaTheme();
@@ -56,12 +52,15 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       strokeWidth: size,
     };
     // 起始参考线
-    this.resizeGroup.addShape('path', { id: 'startGuideLine', attrs });
+    this.resizeGroup.addShape('path', {
+      id: RESIZE_START_GUIDE_LINE_ID,
+      attrs,
+    });
     // 结束参考线
-    this.resizeGroup.addShape('path', { id: 'endGuideLine', attrs });
+    this.resizeGroup.addShape('path', { id: RESIZE_END_GUIDE_LINE_ID, attrs });
     // Resize 蒙层
     this.resizeGroup.addShape('rect', {
-      id: 'resizeMask',
+      id: RESIZE_MASK_ID,
       attrs: {
         appendInfo: {
           isResizeArea: true,
@@ -83,31 +82,44 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     this.resizeArea = target;
   }
 
+  private getGuideLineWidthAndHeight() {
+    const { width: canvasWidth, height: canvasHeight } =
+      this.spreadsheet.options;
+    const { maxY, maxX } = this.spreadsheet.facet.panelBBox;
+    const width = Math.min(maxX, canvasWidth);
+    const height = Math.min(maxY, canvasHeight);
+
+    return {
+      width,
+      height,
+    };
+  }
+
   private updateResizeGuideLinePosition(
     event: MouseEvent,
     resizeInfo: ResizeInfo,
   ) {
-    const resizeShapes = this.resizeGroup.get('children');
+    const resizeShapes: IShape[] = this.resizeGroup.get('children');
     if (isEmpty(resizeShapes)) {
       return;
     }
 
-    const { width: canvasWidth, height: canvasHeight } =
-      this.spreadsheet.options;
     const [startResizeGuideLineShape, endResizeGuideLineShape, resizeMask] =
       resizeShapes;
     const { type: cellType, offsetX, offsetY, width, height } = resizeInfo;
+    const { width: guideLineMaxWidth, height: guideLineMaxHeight } =
+      this.getGuideLineWidthAndHeight();
 
     resizeMask.attr('cursor', `${cellType}-resize`);
 
     if (cellType === 'col') {
       startResizeGuideLineShape.attr('path', [
         ['M', offsetX, offsetY],
-        ['L', offsetX, canvasHeight],
+        ['L', offsetX, guideLineMaxHeight],
       ]);
       endResizeGuideLineShape.attr('path', [
         ['M', offsetX + width, offsetY],
-        ['L', offsetX + width, canvasHeight],
+        ['L', offsetX + width, guideLineMaxHeight],
       ]);
       this.resizeStartPosition.offsetX = event.offsetX;
       return;
@@ -115,11 +127,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     startResizeGuideLineShape.attr('path', [
       ['M', offsetX, offsetY],
-      ['L', canvasWidth, offsetY],
+      ['L', guideLineMaxWidth, offsetY],
     ]);
     endResizeGuideLineShape.attr('path', [
       ['M', offsetX, offsetY + height],
-      ['L', canvasWidth, offsetY + height],
+      ['L', guideLineMaxWidth, offsetY + height],
     ]);
     this.resizeStartPosition.offsetY = event.offsetY;
   }
@@ -129,6 +141,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       const shape = event.target as IGroup;
       const resizeInfo: ResizeInfo = shape?.attr('appendInfo');
       const originalEvent = event.originalEvent as MouseEvent;
+      this.spreadsheet.store.set('resized', false);
 
       if (!resizeInfo?.isResizeArea) {
         return;
@@ -349,6 +362,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     this.spreadsheet.emit(S2Event.LAYOUT_RESIZE, resizeDetail);
     this.spreadsheet.emit(resizeEventType, resizeDetail);
     this.spreadsheet.setOptions({ style });
+    this.spreadsheet.store.set('resized', true);
     this.render();
   }
 
@@ -356,7 +370,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     return this.resizeArea?.attr('appendInfo');
   }
 
-  private getHeaderGroup(): Group {
+  public getHeaderGroup(): Group {
     return this.resizeArea?.get('parent').get('parent');
   }
 

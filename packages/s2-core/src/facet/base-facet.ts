@@ -197,11 +197,6 @@ export abstract class BaseFacet {
     this.renderScrollBars();
     this.renderBackground();
     this.dynamicRenderCell(false);
-    this.removeResizeIntercept();
-  }
-
-  private removeResizeIntercept() {
-    this.spreadsheet.interaction.removeIntercepts([InterceptType.RESIZE]);
   }
 
   /**
@@ -417,14 +412,12 @@ export abstract class BaseFacet {
     const { width: canvasWidth } = this.spreadsheet.options;
     const panelWidth = canvasWidth - cornerWidth;
     // 拖拽时需要忽略自适应, 避免出现角头空白的情况, (拖拽宽度权重 > 自适应宽度权重)
-    const isResizeAction = this.spreadsheet.interaction.hasIntercepts([
-      InterceptType.RESIZE,
-    ]);
+    const isResized = this.spreadsheet.store.get('resized');
 
     if (
       panelWidth > colsHierarchy.width &&
       this.spreadsheet.isColAdaptive() &&
-      !isResizeAction
+      !isResized
     ) {
       const adaptiveCornerWidthDiff = panelWidth - colsHierarchy.width;
       return cornerWidth + adaptiveCornerWidthDiff;
@@ -1030,6 +1023,7 @@ export abstract class BaseFacet {
 
     this.clipPanelGroup();
     this.bindEvents();
+    // this.removeResizeIntercept();
   }
 
   protected renderBackground() {
