@@ -22,6 +22,7 @@ import {
   RESIZE_START_GUIDE_LINE_ID,
   RESIZE_END_GUIDE_LINE_ID,
   S2Event,
+  CORNER_MAX_WIDTH_RATIO,
 } from '@/common/constant';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -295,8 +296,24 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     });
   }
 
+  private isResizeMoreThanMaxCornerWidthLimit(offsetX: number) {
+    const resizeInfo = this.getResizeInfo();
+    const isResizeFreezeRowHeader =
+      resizeInfo.affect === 'field' &&
+      this.spreadsheet.isFreezeRowHeader() &&
+      !this.spreadsheet.isHierarchyTreeType();
+
+    const { width: canvasWidth } = this.spreadsheet.options;
+    const maxCornerWidth = Math.floor(canvasWidth * CORNER_MAX_WIDTH_RATIO);
+    const isMoreThanMaxRowHeaderWidthLimit = offsetX >= maxCornerWidth;
+
+    return isResizeFreezeRowHeader && isMoreThanMaxRowHeaderWidthLimit;
+  }
+
   private resizeMouseMove = (event: CanvasEvent) => {
     if (!this.resizeGroup?.get('visible')) {
+      // 鼠标在 resize 热区 时, 将 tooltip 关闭, 避免造成干扰
+      this.spreadsheet.hideTooltip();
       return;
     }
     event.preventDefault();
@@ -308,9 +325,6 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       return;
     }
 
-    // resize 拖拽过程中, 将 tooltip 设置为鼠标穿透, 避免造成干扰
-    this.spreadsheet.tooltip.disablePointerEvent();
-
     const [, endGuideLineShape] = resizeShapes;
     const [guideLineStart, guideLineEnd]: ResizeGuideLinePath[] = clone(
       endGuideLineShape.attr('path'),
@@ -318,6 +332,10 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     // 下面的神仙代码我改不动了
     if (resizeInfo.type === 'col') {
+      if (this.isResizeMoreThanMaxCornerWidthLimit(originalEvent.offsetX)) {
+        return;
+      }
+
       // 横向移动
       let offset = originalEvent.offsetX - this.resizeStartPosition.offsetX;
       if (guideLineStart[1] + offset - resizeInfo.offsetX < MIN_CELL_WIDTH) {
