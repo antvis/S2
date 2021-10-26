@@ -216,10 +216,9 @@ export class EventController {
 
   private onCanvasMousedown = (event: CanvasEvent) => {
     this.target = event.target;
-    // 任何点击都该取消hover的后续keep态
-    if (this.spreadsheet.interaction.hoverTimer) {
-      clearTimeout(this.spreadsheet.interaction.hoverTimer);
-    }
+    // 点击时清除 hover focus 状态
+    this.spreadsheet.interaction.clearHoverTimer();
+
     if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, event);
       return;

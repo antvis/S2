@@ -5,6 +5,8 @@ import { i18n } from '@/common/i18n';
 
 export const TOOLTIP_PREFIX_CLS = `${S2_PREFIX_CLS}-tooltip`;
 
+export const TOOLTIP_CONTAINER_CLS = `${TOOLTIP_PREFIX_CLS}-container`;
+
 export const TOOLTIP_OPERATION_PREFIX_CLS = `${TOOLTIP_PREFIX_CLS}-operation`;
 
 export const DEFAULT_ICON_PROPS = {

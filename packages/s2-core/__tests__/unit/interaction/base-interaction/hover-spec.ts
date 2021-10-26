@@ -4,7 +4,11 @@ import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
 import { S2Options, ViewMeta } from '@/common/interface';
 import { HoverEvent } from '@/interaction/base-interaction/hover';
 import { SpreadSheet } from '@/sheet-type';
-import { InteractionStateName, S2Event } from '@/common/constant';
+import {
+  HOVER_FOCUS_TIME,
+  InteractionStateName,
+  S2Event,
+} from '@/common/constant';
 
 jest.mock('@/interaction/event-controller');
 
@@ -83,5 +87,20 @@ describe('Interaction Hover Tests', () => {
     });
     expect(mockCellUpdate).toHaveBeenCalled();
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
+  });
+
+  test('should clear hover focus timer when cell clicked', async () => {
+    s2.emit(S2Event.DATA_CELL_HOVER, { target: {} } as GEvent);
+
+    // click date cell before will trigger hover focus
+    await sleep(HOVER_FOCUS_TIME - 100);
+
+    s2.emit(S2Event.DATA_CELL_CLICK, { target: {} } as GEvent);
+
+    await sleep(200);
+
+    expect(s2.interaction.getCurrentStateName()).not.toEqual(
+      InteractionStateName.HOVER_FOCUS,
+    );
   });
 });

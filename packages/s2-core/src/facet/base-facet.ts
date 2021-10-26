@@ -857,6 +857,7 @@ export abstract class BaseFacet {
     );
 
     this.spreadsheet.hideTooltip();
+    this.spreadsheet.interaction.clearHoverTimer();
 
     if (!this.isScrollInTheViewport(optimizedDeltaX, optimizedDeltaY)) {
       return;
