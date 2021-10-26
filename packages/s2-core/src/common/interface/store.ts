@@ -4,7 +4,7 @@ import { ValueRanges } from './condition';
 import { S2DataConfig } from './s2DataConfig';
 import { Node } from '@/facet/layout/node';
 import { PartDrillDownFieldInLevel } from '@/components/sheets/interface';
-import { GuiIcon } from '@/';
+import { GuiIcon } from '@/common/icons';
 
 export interface Selected {
   type:
