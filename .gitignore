@@ -22,11 +22,12 @@ s2-site/.cache/
 s2-site/public
 
 # s2-core
-packages/s2-core/lib/
-packages/s2-core/esm/
-packages/s2-core/dist/
-packages/s2-core/coverage/
-packages/s2-core/stats.html
+packages/s2-*/lib/
+packages/s2-*/esm/
+packages/s2-*/dist/
+packages/s2-*/coverage/
+packages/s2-*/stats.html
+
 
 
 
