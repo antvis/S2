@@ -4,6 +4,7 @@ import { ValueRanges } from './condition';
 import { S2DataConfig } from './s2DataConfig';
 import { Node } from '@/facet/layout/node';
 import { PartDrillDownFieldInLevel } from '@/components/sheets/interface';
+import { GuiIcon } from '@/';
 
 export interface Selected {
   type:
@@ -71,6 +72,9 @@ export interface StoreKey {
   hiddenColumnsDetail: HiddenColumnsInfo[];
   // 上一次渲染的列头配置
   lastRenderedColumnFields: string[];
+
+  // hover 显示的 icon 缓存
+  visibleActionIcons: GuiIcon[];
 
   [key: string]: unknown;
 }
