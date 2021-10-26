@@ -42,13 +42,12 @@ export class TableFacet extends BaseFacet {
     super(cfg);
 
     const s2 = this.spreadsheet;
-    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
-      const sortParam = getSortParam(sortKey, s2);
+    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod, sortBy }) => {
       set(s2.dataCfg, 'sortParams', [
         {
           sortFieldId: sortKey,
           sortMethod,
-          sortBy: sortParam?.sortBy,
+          sortBy,
         },
       ]);
       s2.setDataCfg(s2.dataCfg);
