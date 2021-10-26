@@ -24,7 +24,7 @@ type CollapsedRowsType = {
 type SortParams = {
   sortKey: string;
   sortMethod: SortMethodType;
-  compareFunc?: (data: Data) => DataItem;
+  sortBy?: (data: Data) => DataItem;
 };
 
 export type RowCellCollapseTreeRowsType = {
