@@ -1,4 +1,4 @@
-import { Radio, Space, Switch, RadioChangeEvent } from 'antd';
+import { Radio, Space, Switch, RadioChangeEvent, Button, Input } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
@@ -11,6 +11,7 @@ import {
   SheetType,
   ThemeName,
   Node,
+  SpreadSheet,
 } from '@/index';
 
 const tableDataFields = {
@@ -33,12 +34,25 @@ function MainLayout() {
   const [showDefaultActionIcons, setShowDefaultActionIcons] =
     React.useState(true);
   const [themeName, setThemeName] = React.useState<ThemeName>('default');
+  const s2Ref = React.useRef<SpreadSheet>();
 
   const CornerTooltip = <div>cornerTooltip</div>;
 
   const RowTooltip = <div>rowTooltip</div>;
 
-  const ColTooltip = <div>colTooltip</div>;
+  const ColTooltip = (
+    <div>
+      自定义 colTooltip
+      <p>
+        <Button type="primary" onClick={() => s2Ref.current.hideTooltip()}>
+          关闭
+        </Button>
+      </p>
+      <p>
+        <Input placeholder={'请输入'} />
+      </p>
+    </div>
+  );
 
   const onToggleRender = () => {
     setRender(!render);
@@ -173,6 +187,7 @@ function MainLayout() {
           options={mergedOptions}
           themeCfg={{ name: themeName }}
           sheetType={sheetType}
+          ref={s2Ref}
           header={
             <Space size="middle" style={{ marginBottom: 20 }}>
               <Radio.Group onChange={onRadioChange} defaultValue="default">

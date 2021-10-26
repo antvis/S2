@@ -177,12 +177,21 @@ export const getMergedQuery = (meta: ViewMeta) => {
  */
 export const setContainerStyle = (
   container: HTMLElement,
-  styles: React.CSSProperties,
+  options: { style?: React.CSSProperties; className?: string } = {
+    className: '',
+  },
 ) => {
-  if (container && styles) {
-    Object.keys(styles)?.forEach((item) => {
-      container.style[item] = styles[item];
+  if (!container) {
+    return;
+  }
+  const { style, className } = options;
+  if (style) {
+    Object.keys(style).forEach((item) => {
+      container.style[item] = style[item];
     });
+  }
+  if (className) {
+    container.classList.add(className);
   }
 };
 
