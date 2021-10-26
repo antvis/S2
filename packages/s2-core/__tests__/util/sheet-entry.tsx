@@ -163,23 +163,26 @@ export const SheetEntry = forwardRef(
             onChange={onFreezeRowHeaderChange}
           />
           <Switch
-            checkedChildren="自适应开"
-            unCheckedChildren="自适应关"
+            checkedChildren="容器自适应开"
+            unCheckedChildren="容器自适应关"
             defaultChecked={adaptive}
             onChange={(checked) => {
               setAdaptive(checked);
             }}
           />
-          <Select
-            defaultValue={options.tooltip.autoAdjustBoundary}
-            onChange={onAutoAdjustBoundary}
-          >
-            <Select.Option value="container">
-              container (表格区域)
-            </Select.Option>
-            <Select.Option value="body">body (浏览器可视区域)</Select.Option>
-            <Select.Option value="">无</Select.Option>
-          </Select>
+          <Space>
+            tooltip 自动调整:
+            <Select
+              defaultValue={options.tooltip.autoAdjustBoundary}
+              onChange={onAutoAdjustBoundary}
+            >
+              <Select.Option value="container">
+                container (表格区域)
+              </Select.Option>
+              <Select.Option value="body">body (浏览器可视区域)</Select.Option>
+              <Select.Option value="">无</Select.Option>
+            </Select>
+          </Space>
           <Space>
             设置宽度 ：
             <Input

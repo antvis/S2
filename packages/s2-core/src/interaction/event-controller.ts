@@ -98,7 +98,7 @@ export class EventController {
   private onKeyboardCopy(event: KeyboardEvent) {
     // windows and macos copy
     if (
-      this.spreadsheet.options.enableCopy &&
+      this.spreadsheet.options.interaction.enableCopy &&
       keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
       (event.metaKey || event.ctrlKey)
     ) {
@@ -116,7 +116,7 @@ export class EventController {
   }
 
   private resetSheetStyle(event: Event) {
-    const { autoResetSheetStyle } = this.spreadsheet.options;
+    const { autoResetSheetStyle } = this.spreadsheet.options.interaction;
     if (!autoResetSheetStyle) {
       return;
     }
@@ -216,10 +216,9 @@ export class EventController {
 
   private onCanvasMousedown = (event: CanvasEvent) => {
     this.target = event.target;
-    // 任何点击都该取消hover的后续keep态
-    if (this.spreadsheet.interaction.hoverTimer) {
-      clearTimeout(this.spreadsheet.interaction.hoverTimer);
-    }
+    // 点击时清除 hover focus 状态
+    this.spreadsheet.interaction.clearHoverTimer();
+
     if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, event);
       return;

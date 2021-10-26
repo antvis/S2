@@ -132,7 +132,9 @@ describe('hide-columns test', () => {
     hideColumns(mockSpreadSheetInstance, ['3']);
 
     // update options
-    expect(mockSpreadSheetInstance.options.hiddenColumnFields).toEqual(['3']);
+    expect(
+      mockSpreadSheetInstance.options.interaction.hiddenColumnFields,
+    ).toEqual(['3']);
     // save hidden meta
     expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual([
       {
@@ -179,7 +181,9 @@ describe('hide-columns test', () => {
       ],
     );
     // update options
-    expect(mockSpreadSheetInstance.options.hiddenColumnFields).toEqual(['5']);
+    expect(
+      mockSpreadSheetInstance.options.interaction.hiddenColumnFields,
+    ).toEqual(['5']);
     // reset interaction
     expect(mockSpreadSheetInstance.interaction.reset).toHaveBeenCalledTimes(1);
     // rerender table

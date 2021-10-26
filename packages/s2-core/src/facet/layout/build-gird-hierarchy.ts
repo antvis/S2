@@ -21,6 +21,7 @@ const hideMeasureColumn = (
     }
   }
 };
+
 /**
  * Build grid hierarchy in rows or columns
  *
@@ -53,6 +54,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     query = getDimsCondition(parentNode, true);
 
     const dimValues = dataSet.getDimensionValues(currentField, query);
+
     const arrangedValues = layoutArrange(
       dimValues,
       facetCfg,
@@ -62,11 +64,16 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     fieldValues.push(...(arrangedValues || []));
 
     // add skeleton for empty data
-    const fieldName = dataSet.getFieldName(currentField);
-    if (isEmpty(fieldValues) && fieldName) {
-      fieldValues.push(fieldName);
-    }
 
+    const fieldName = dataSet.getFieldName(currentField);
+
+    if (isEmpty(fieldValues)) {
+      if (currentField === EXTRA_FIELD) {
+        fieldValues.push(...dataSet.fields?.values);
+      } else {
+        fieldValues.push(fieldName || currentField);
+      }
+    }
     // hide measure in columns
     hideMeasureColumn(fieldValues, currentField, facetCfg);
     // add totals if needed

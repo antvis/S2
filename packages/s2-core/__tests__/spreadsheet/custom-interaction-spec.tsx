@@ -7,12 +7,14 @@ import { CustomHover } from './custom/custom-interaction';
 import { S2Options } from '@/common/interface';
 
 const options: Partial<S2Options> = {
-  customInteractions: [
-    {
-      key: 'spreadsheet:custom-hover',
-      interaction: CustomHover,
-    },
-  ],
+  interaction: {
+    customInteractions: [
+      {
+        key: 'spreadsheet:custom-hover',
+        interaction: CustomHover,
+      },
+    ],
+  },
   tooltip: {
     showTooltip: true,
   },

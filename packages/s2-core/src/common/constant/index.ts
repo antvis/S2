@@ -8,3 +8,4 @@ export * from './tooltip';
 export * from './sort';
 export * from './options';
 export * from './dataConfig';
+export * from './resize';

@@ -72,14 +72,14 @@ export class TableDataSet extends BaseDataSet {
     each(this.sortParams, (item) => {
       const { sortFieldId, sortBy, sortMethod } = item;
       // 万物排序的前提
-      if (!sortFieldId) return;
+      if (!sortFieldId || !sortMethod) return;
       // For frozen options
       this.displayData = [
         ...this.getStartRows(),
         ...orderBy(
           this.getMovableRows(),
           [sortBy || sortFieldId],
-          [sortMethod?.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
+          [sortMethod.toLocaleLowerCase() as boolean | 'asc' | 'desc'],
         ),
         ...this.getEndRows(),
       ];

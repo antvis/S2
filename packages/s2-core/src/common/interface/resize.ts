@@ -22,6 +22,11 @@ export interface ResizeGuideLinePosition {
   };
 }
 
+export interface ResizePosition {
+  offsetX?: number;
+  offsetY?: number;
+}
+
 export interface ResizeDetail {
   eventType: ResizeEvent;
   style: Style;
@@ -29,7 +34,7 @@ export interface ResizeDetail {
 
 export interface ResizeInfo {
   isResizeArea: boolean;
-  class: string;
+  class?: string;
   /**
    * col是改变列配置，即改变宽度
    * row是改变行配置，即改变高度

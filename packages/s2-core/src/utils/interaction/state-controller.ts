@@ -8,6 +8,12 @@ import { SpreadSheet } from '@/sheet-type';
  * @param spreadsheet sheet instance
  */
 export const clearState = (spreadsheet: SpreadSheet) => {
+  const activeIcons = spreadsheet.store.get('visibleActionIcons');
+  forEach(activeIcons, (icon) => {
+    icon.set('visible', false);
+  });
+  spreadsheet.store.set('visibleActionIcons', []);
+
   const allInteractedCells = spreadsheet.interaction.getInteractedCells();
   if (!isEmpty(allInteractedCells)) {
     forEach(allInteractedCells, (cell: S2CellType) => {
@@ -15,7 +21,7 @@ export const clearState = (spreadsheet: SpreadSheet) => {
     });
 
     spreadsheet.interaction.resetState();
-    if (spreadsheet.options.selectedCellsSpotlight) {
+    if (spreadsheet.options.interaction.selectedCellsSpotlight) {
       const unSelectedCells =
         spreadsheet.interaction.getPanelGroupAllUnSelectedDataCells() || [];
       forEach(unSelectedCells, (cell) => {

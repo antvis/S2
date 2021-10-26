@@ -60,7 +60,9 @@ describe('Interaction Data Cell Click Tests', () => {
     };
     s2.getInitColumnNodes = () => initColumnNodes as Node[];
     s2.options = {
-      hiddenColumnFields: ['a'],
+      interaction: {
+        hiddenColumnFields: ['a'],
+      },
       tooltip: {
         showTooltip: true,
         operation: {
@@ -127,7 +129,9 @@ describe('Interaction Data Cell Click Tests', () => {
     });
     // update options
     expect(s2.setOptions).toHaveBeenCalledWith({
-      hiddenColumnFields: [],
+      interaction: {
+        hiddenColumnFields: [],
+      },
     });
     // rerender
     expect(s2.render).toHaveBeenCalled();

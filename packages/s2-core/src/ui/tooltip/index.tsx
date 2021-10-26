@@ -27,7 +27,10 @@ import { Interpretation } from '@/ui/tooltip/components/interpretation';
 import { TooltipOperator } from '@/ui/tooltip/components/operator';
 import { SimpleTips } from '@/ui/tooltip/components/simple-tips';
 import { TooltipSummary } from '@/ui/tooltip/components/summary';
-import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
+import {
+  TOOLTIP_CONTAINER_CLS,
+  TOOLTIP_PREFIX_CLS,
+} from '@/common/constant/tooltip';
 
 import './index.less';
 
@@ -83,18 +86,19 @@ export class BaseTooltip {
     };
 
     setContainerStyle(container, {
-      left: `${x}px`,
-      top: `${y}px`,
-      pointerEvents: enterable ? 'all' : 'none',
-      visibility: 'visible',
+      style: {
+        left: `${x}px`,
+        top: `${y}px`,
+        pointerEvents: enterable ? 'all' : 'none',
+      },
+      className: `${TOOLTIP_CONTAINER_CLS}-show`,
     });
   }
 
   public hide() {
     const container = this.getContainer();
     setContainerStyle(container, {
-      pointerEvents: 'none',
-      visibility: 'hidden',
+      className: `${TOOLTIP_CONTAINER_CLS}-hide`,
     });
     this.resetPosition();
     this.unMountComponent(container);
@@ -112,7 +116,9 @@ export class BaseTooltip {
       return;
     }
     setContainerStyle(this.container, {
-      pointerEvents: 'none',
+      style: {
+        pointerEvents: 'none',
+      },
     });
   }
 
@@ -205,7 +211,7 @@ export class BaseTooltip {
       document.body.appendChild(container);
       this.container = container;
     }
-    this.container.className = `${TOOLTIP_PREFIX_CLS}-container`;
+    this.container.className = TOOLTIP_CONTAINER_CLS;
     return this.container;
   }
 

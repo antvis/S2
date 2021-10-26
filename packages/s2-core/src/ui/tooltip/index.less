@@ -22,6 +22,22 @@
       Helvetica,
       Arial,
       sans-serif;
+
+    &-show {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: all;
+    }
+
+    &-hide {
+      opacity: 0;
+      visibility: none;
+      pointer-events: none;
+
+      * {
+        transition: none;
+      }
+    }
   }
 
   &.trans-2-middle {

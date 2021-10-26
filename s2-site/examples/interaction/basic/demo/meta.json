@@ -11,6 +11,14 @@
         "en": "Basic interaction"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+    },
+    {
+      "filename": "frozen.ts",
+      "title": {
+        "zh": "行列冻结",
+        "en": "Frozen Rows and Cols"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*QjBMRJYPrNcAAAAAAAAAAAAAARQnAQ"
     }
   ]
 }

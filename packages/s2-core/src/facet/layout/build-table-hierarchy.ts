@@ -6,7 +6,12 @@ import { generateHeaderNodes } from '@/utils/layout/generate-header-nodes';
 
 export const buildTableHierarchy = (params: TableHeaderParams) => {
   const { facetCfg, hierarchy, parentNode } = params;
-  const { columns, spreadsheet, dataSet, hiddenColumnFields = [] } = facetCfg;
+  const {
+    columns,
+    spreadsheet,
+    dataSet,
+    interaction: { hiddenColumnFields = [] },
+  } = facetCfg;
 
   const hasInitColumnNodes = !isEmpty(spreadsheet.store.get('initColumnNodes'));
   const showSeriesNumber = spreadsheet.options?.showSeriesNumber;

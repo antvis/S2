@@ -17,7 +17,9 @@ fetch(
     const s2options = {
       width: 800,
       height: 600,
-      linkFields: ['type', 'price', 'province'],
+      interaction: {
+        linkFields: ['type', 'price', 'province'],
+      },
     };
     const s2 = new TableSheet(container, s2DataConfig, s2options);
 
