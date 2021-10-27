@@ -48,7 +48,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     hoverHighlight: true,
     scrollSpeedRatio: {
       horizontal: 1,
-      vertical: 1,
+      vertical: 2,
     },
     autoResetSheetStyle: true,
   },

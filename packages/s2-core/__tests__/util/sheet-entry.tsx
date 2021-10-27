@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Input, Select, Space, Switch } from 'antd';
+import { Input, Select, Slider, Space, Switch } from 'antd';
 import { isArray, merge, mergeWith } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
@@ -141,6 +141,32 @@ export const SheetEntry = forwardRef(
       }
     }, [props.dataCfg]);
 
+    const sliderOptions = {
+      min: 0,
+      max: 10,
+      step: 0.1,
+      marks: {
+        0.2: '0.2倍',
+        0.5: '0.5倍',
+        1: '1 (默认)',
+        2: '2倍',
+        10: '10倍',
+      },
+    };
+
+    const onScrollSpeedRatioChange =
+      (type: 'horizontal' | 'vertical') => (value: number) => {
+        setOptions(
+          merge({}, options, {
+            interaction: {
+              scrollSpeedRatio: {
+                [type]: value,
+              },
+            },
+          }),
+        );
+      };
+
     return (
       <div>
         <Space style={{ marginBottom: 20 }}>
@@ -175,6 +201,7 @@ export const SheetEntry = forwardRef(
             <Select
               defaultValue={options.tooltip.autoAdjustBoundary}
               onChange={onAutoAdjustBoundary}
+              style={{ width: 200 }}
             >
               <Select.Option value="container">
                 container (表格区域)
@@ -202,6 +229,20 @@ export const SheetEntry = forwardRef(
             />
           </Space>
         </Space>
+        <div style={{ marginBottom: 40, width: '70%' }}>
+          水平滚动速率 ：
+          <Slider
+            {...sliderOptions}
+            defaultValue={options.interaction.scrollSpeedRatio.horizontal}
+            onChange={onScrollSpeedRatioChange('horizontal')}
+          />
+          垂直滚动速率 ：
+          <Slider
+            {...sliderOptions}
+            defaultValue={options.interaction.scrollSpeedRatio.vertical}
+            onChange={onScrollSpeedRatioChange('vertical')}
+          />
+        </div>
         <div style={{ marginBottom: 20 }}>{props.header}</div>
         <SheetComponent
           dataCfg={dataCfg as S2DataConfig}
