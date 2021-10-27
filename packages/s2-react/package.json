@@ -47,8 +47,8 @@
     "build:cjs": "vite build --mode cjs",
     "build:umd": "vite build --mode umd",
     "bundle:size": "bundlesize",
-    "test": "jest",
-    "test:coverage": "yarn test --coverage",
+    "test": "jest --passWithNoTests",
+    "test:coverage": "yarn test --passWithNoTests --coverage",
     "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
@@ -62,5 +62,15 @@
     "@antv/s2": "^0.2.5",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/index.js",
+      "maxSize": "200 kB"
+    },
+    {
+      "path": "./dist/style.css",
+      "maxSize": "5 kB"
+    }
+  ]
 }
