@@ -84,7 +84,7 @@ export interface Total {
   showSubTotals: boolean;
   /** 小计的汇总维度 */
   subTotalsDimensions: string[];
-  /** 布局位置，默认是下或右 */
+  /** 总计布局位置，默认是下或右 */
   reverseLayout: boolean;
   /** 小计布局位置，默认下或者右 */
   reverseSubLayout: boolean;
