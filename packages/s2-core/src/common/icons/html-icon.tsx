@@ -1,17 +1,18 @@
-import * as React from 'react';
+import React from 'react';
 import cx from 'classnames';
 import { getIcon } from './factory';
 
 import './html-icon.less';
 
-interface Props {
+export interface HtmlIconProps {
   name: string; // 'globalAsc' | 'globalDesc' | 'groupAsc' | 'groupDesc' | 'none';
   style?: any;
   width?: number;
   height?: number;
   className?: string;
 }
-export class HtmlIcon extends React.PureComponent<Props> {
+
+export class HtmlIcon extends React.PureComponent<HtmlIconProps> {
   render() {
     const { style = {}, width, height, className, name } = this.props;
     const svgIcon = () => getIcon(name);
