@@ -118,8 +118,14 @@ export const getAutoAdjustPosition = ({
   tooltipContainer,
   autoAdjustBoundary,
 }: AutoAdjustPositionOptions): TooltipPosition => {
+  let x = position.x + TOOLTIP_POSITION_OFFSET.x;
+  let y = position.y + TOOLTIP_POSITION_OFFSET.y;
+
   if (!autoAdjustBoundary) {
-    return position;
+    return {
+      x,
+      y,
+    };
   }
 
   const isAdjustBodyBoundary = autoAdjustBoundary === 'body';
@@ -140,9 +146,6 @@ export const getAutoAdjustPosition = ({
   const maxHeight = isAdjustBodyBoundary
     ? viewportHeight
     : Math.min(height, maxY) + canvasOffsetTop;
-
-  let x = position.x + TOOLTIP_POSITION_OFFSET.x;
-  let y = position.y + TOOLTIP_POSITION_OFFSET.y;
 
   if (x + tooltipWidth >= maxWidth) {
     x = maxWidth - tooltipWidth;

@@ -1,7 +1,7 @@
 import { getTextPosition } from '@/utils/text';
 import { CellBoxCfg } from '@/common/interface';
 
-describe('Test utils function', () => {
+describe('Text Utils Tets', () => {
   describe('getTextPosition', () => {
     it('returns the "leftTop" text position', () => {
       const props = {
