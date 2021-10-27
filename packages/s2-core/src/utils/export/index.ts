@@ -187,7 +187,11 @@ export const copyData = (
     sheetInstance.dataSet.getFieldName(item.key),
   );
 
-  const rowLength = rowsHeader.length;
+  // get max query property length
+  const rowLength = rowLeafNodes.reduce((pre, cur) => {
+    const length = Object.keys(cur.query).length;
+    return length > pre ? length : pre;
+  }, 0);
 
   let headers: string[][] = [];
 
@@ -222,8 +226,10 @@ export const copyData = (
 
     // Generate the table header.
     headers = colHeader.map((item, index) => {
-      return index < colHeader.length - 1
-        ? Array(rowLength).concat(...item)
+      return index < colHeader.length
+        ? Array(rowLength)
+            .fill('')
+            .concat(...item)
         : rowsHeader.concat(...item);
     });
   }
