@@ -7,6 +7,7 @@ import { Node } from '@/facet/layout/node';
 import { PivotDataSet } from '@/data-set';
 import { S2Event } from '@/common/constant';
 import { PartDrillDownDataCache } from '@/components/sheets/interface';
+import { i18n } from '@/common/i18n';
 
 export interface DrillDownParams {
   // 行维度id
@@ -104,7 +105,8 @@ export const HandleDrillDownIcon = (
       displayCondition = (meta: Node) => {
         return (
           iconLevel <= meta.level &&
-          spreadsheet.options.hierarchyType === 'tree'
+          spreadsheet.options.hierarchyType === 'tree' &&
+          meta.label !== i18n('总计')
         );
       };
     }
