@@ -56,8 +56,17 @@ export class RootInteraction {
 
   public destroy() {
     this.interactions.clear();
+    this.intercepts.clear();
     this.eventController.clear();
+    this.clearHoverTimer();
     this.resetState();
+  }
+
+  public reset() {
+    this.clearState();
+    this.clearHoverTimer();
+    this.intercepts.clear();
+    this.spreadsheet.hideTooltip();
   }
 
   public setState(interactionStateInfo: InteractionStateInfo) {
@@ -273,12 +282,6 @@ export class RootInteraction {
     this.draw();
   }
 
-  public reset() {
-    this.clearState();
-    this.intercepts.clear();
-    this.spreadsheet.hideTooltip();
-  }
-
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { interaction } = this.spreadsheet;
     const { cells, force, stateName } = interactionStateInfo;
@@ -333,5 +336,9 @@ export class RootInteraction {
 
   public setHoverTimer(timer: NodeJS.Timeout) {
     this.hoverTimer = timer;
+  }
+
+  public getHoverTimer() {
+    return this.hoverTimer;
   }
 }

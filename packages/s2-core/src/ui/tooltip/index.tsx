@@ -98,6 +98,9 @@ export class BaseTooltip {
   public hide() {
     const container = this.getContainer();
     setContainerStyle(container, {
+      style: {
+        pointerEvents: 'none',
+      },
       className: `${TOOLTIP_CONTAINER_CLS}-hide`,
     });
     this.resetPosition();
