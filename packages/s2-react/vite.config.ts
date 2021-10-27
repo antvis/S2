@@ -14,7 +14,7 @@ const OUT_DIR_NAME_MAP = {
 };
 
 // eslint-disable-next-line import/no-default-export
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode, command }) => {
   const format = mode as LibraryFormats;
   const isEsmFormat = format === 'es';
   const outDir = OUT_DIR_NAME_MAP[format];
@@ -34,25 +34,14 @@ export default defineConfig(({ mode }) => {
     },
 
     define: {
-      'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.NODE_ENV': JSON.stringify(
+        command === 'serve' ? 'development' : 'production',
+      ),
     },
     plugins: [
-      peerDepsExternal(),
       viteCommonjs(),
       react({
         jsxRuntime: 'classic',
-      }),
-      typescript({
-        abortOnError: true,
-        tsconfig: 'tsconfig.json',
-        tsconfigOverride: {
-          include: ['src'],
-          exclude: ['__tests__'],
-          compilerOptions: {
-            declaration: isEsmFormat,
-          },
-        },
-        typescript: ttypescript,
       }),
       // TODO: antd 按需引入还是整个 external?
       viteImp({
@@ -84,6 +73,21 @@ export default defineConfig(({ mode }) => {
       outDir: outDir,
 
       rollupOptions: {
+        plugins: [
+          peerDepsExternal(),
+          typescript({
+            abortOnError: true,
+            tsconfig: 'tsconfig.json',
+            tsconfigOverride: {
+              include: ['src'],
+              exclude: ['__tests__'],
+              compilerOptions: {
+                declaration: isEsmFormat,
+              },
+            },
+            typescript: ttypescript,
+          }),
+        ],
         output: {
           entryFileNames: '[name].js',
           globals: {
