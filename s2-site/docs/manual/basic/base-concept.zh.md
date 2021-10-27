@@ -15,7 +15,7 @@ order: 0
 
 ### 构成
 
-交叉表由五部分组成，分别是行头、列头、角头、数据单元格 (data-cell) 如下图所示：
+交叉表由四部分组成，分别是行头、列头、角头、数据单元格 (data-cell) 如下图所示：
 
 ![s2](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*nzcERYjsPZoAAAAAAAAAAAAAARQnAQ)
 
