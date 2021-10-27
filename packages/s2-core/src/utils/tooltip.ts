@@ -26,7 +26,7 @@ import React from 'react';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
-import type {
+import {
   AutoAdjustPositionOptions,
   LayoutResult,
   ListItem,
@@ -41,6 +41,7 @@ import type {
   TooltipPosition,
   TooltipSummaryOptions,
   BaseTooltipConfig,
+  TOOLTIP_POSITION_OFFSET,
 } from '@/index';
 import { i18n } from '@/common/i18n';
 import {
@@ -117,8 +118,14 @@ export const getAutoAdjustPosition = ({
   tooltipContainer,
   autoAdjustBoundary,
 }: AutoAdjustPositionOptions): TooltipPosition => {
+  let x = position.x + TOOLTIP_POSITION_OFFSET.x;
+  let y = position.y + TOOLTIP_POSITION_OFFSET.y;
+
   if (!autoAdjustBoundary) {
-    return position;
+    return {
+      x,
+      y,
+    };
   }
 
   const isAdjustBodyBoundary = autoAdjustBoundary === 'body';
@@ -139,9 +146,6 @@ export const getAutoAdjustPosition = ({
   const maxHeight = isAdjustBodyBoundary
     ? viewportHeight
     : Math.min(height, maxY) + canvasOffsetTop;
-
-  let x = position.x;
-  let y = position.y;
 
   if (x + tooltipWidth >= maxWidth) {
     x = maxWidth - tooltipWidth;

@@ -26,7 +26,6 @@ import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
-  MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
   InterceptType,
   CORNER_MAX_WIDTH_RATIO,
@@ -772,9 +771,7 @@ export abstract class BaseFacet {
   };
 
   updateVScrollBarThumbOffset = (deltaY: number) => {
-    const offsetTop =
-      this.vScrollBar?.thumbOffset +
-      Math.max(-MAX_SCROLL_OFFSET, Math.min(deltaY / 8, MAX_SCROLL_OFFSET));
+    const offsetTop = this.vScrollBar?.thumbOffset + deltaY / 8;
 
     this.vScrollBar?.updateThumbOffset(offsetTop);
   };
@@ -857,6 +854,7 @@ export abstract class BaseFacet {
     }
 
     event.preventDefault?.();
+    this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 
     cancelAnimationFrame(this.scrollFrameId);
 
@@ -1218,7 +1216,12 @@ export abstract class BaseFacet {
     this.clip(scrollX, scrollY);
 
     this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, { scrollX, scrollY });
+    this.onAfterScroll();
   }
+
+  protected onAfterScroll = debounce(() => {
+    this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+  }, 300);
 
   protected abstract doLayout(): LayoutResult;
 

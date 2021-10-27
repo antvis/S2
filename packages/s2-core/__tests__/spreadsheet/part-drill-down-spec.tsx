@@ -46,6 +46,12 @@ const getOptions = () => {
     showSeriesNumber: false,
     freezeRowHeader: false,
     showDefaultHeaderActionIcon: false,
+    totals: {
+      row: {
+        showGrandTotals: false,
+        reverseLayout: false,
+      },
+    },
     headerActionIcons: [
       {
         iconNames: ['SortDownSelected'],
@@ -156,6 +162,19 @@ function MainLayout(props) {
     );
   };
 
+  const onTotalChange = (checked) => {
+    setOptions(
+      merge({}, options, {
+        totals: {
+          row: {
+            showGrandTotals: checked,
+            reverseLayout: checked,
+          },
+        },
+      }),
+    );
+  };
+
   const clearAllDrillDown = () => {
     setPartDrillDown(
       merge({}, partDrillDown, {
@@ -176,6 +195,13 @@ function MainLayout(props) {
               unCheckedChildren="平铺"
               defaultChecked={true}
               onChange={onHierarchyChange}
+              style={{ marginRight: 10 }}
+            />
+            <Switch
+              checkedChildren="总计"
+              unCheckedChildren="无总计"
+              defaultChecked={true}
+              onChange={onTotalChange}
               style={{ marginRight: 10 }}
             />
             <Button
