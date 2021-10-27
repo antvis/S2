@@ -8,6 +8,7 @@ import typescript from 'rollup-plugin-typescript2';
 import { visualizer } from 'rollup-plugin-visualizer';
 import ttypescript from 'ttypescript';
 
+// TODO: 拆包完成后，简化 core 层打包逻辑
 const format = process.env.FORMAT;
 const enableAnalysis = process.env.ANALYSIS;
 

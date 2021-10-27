@@ -3,8 +3,14 @@
   "version": "0.1.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
-  "unpkg": "dist/s2.min.js",
+  "unpkg": "dist/index.js",
   "types": "esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./esm/index.js",
+      "require": "./lib/index.js"
+    }
+  },
   "description": "effective spreadsheet render lib",
   "license": "MIT",
   "homepage": "https://s2.antv.vision",
@@ -35,14 +41,12 @@
   ],
   "scripts": {
     "start": "vite",
-    "build": "yarn tsc && vite build --debug",
     "clean": "rimraf lib esm dist",
-    "build:esm": "rollup -c rollup.config.js --environment FORMAT:esm ",
-    "build:cjs": "rollup -c rollup.config.js --environment FORMAT:cjs",
-    "build:umd": "rollup -c rollup.config.js --environment FORMAT:umd",
-    "build:analysis": "rollup -c rollup.config.js --environment FORMAT:esm,ANALYSIS",
+    "build": "run-s clean build:*",
+    "build:esm": "vite build --mode es",
+    "build:cjs": "vite build --mode cjs",
+    "build:umd": "vite build --mode umd",
     "bundle:size": "bundlesize",
-    "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
     "test": "jest",
     "test:coverage": "yarn test --coverage",
     "test:watch": "yarn test --watch",
