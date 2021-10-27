@@ -15,7 +15,7 @@ const s2options = {
   hierarchyType: 'tree' as const,
 };
 
-describe('export Pivot', () => {
+describe('Export data in pivot tree mode', () => {
   test('should export correct col header in pivot tree mode', () => {
     const s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
     s2.render();
