@@ -133,8 +133,5 @@
     "vite": "^2.6.11",
     "vite-plugin-imp": "^2.0.9"
   },
-  "resolutions": {
-    "electron": "^11.0.0"
-  },
   "license": "MIT"
 }
