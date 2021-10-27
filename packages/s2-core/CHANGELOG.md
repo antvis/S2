@@ -1,3 +1,13 @@
+# [@antv/s2-v1.0.0-beta.3](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.2...@antv/s2-v1.0.0-beta.3) (2021-10-27)
+
+
+### Bug Fixes
+
+* **copy:** export data in pivot tree mode ([#572](https://github.com/antvis/S2/issues/572)) ([b9c5b89](https://github.com/antvis/S2/commit/b9c5b899728cb591052d2cb21457a64a486a498d))
+* disable the drill-down icon for the total row ([#579](https://github.com/antvis/S2/issues/579)) ([37b42b9](https://github.com/antvis/S2/commit/37b42b985252cd42b4e0308ce7e0316321dda837))
+* **scroll:** optimize scroll hover event ([#577](https://github.com/antvis/S2/issues/577)) ([5006bdc](https://github.com/antvis/S2/commit/5006bdc7b1bcd2d1f4e0d7157c59d84f3c51d66b))
+* **tooltip:** fix tooltip position and point event ([#574](https://github.com/antvis/S2/issues/574)) ([da71848](https://github.com/antvis/S2/commit/da71848aa15f495d1570bc1d529bbd10ac27f2a0))
+
 # [@antv/s2-v1.0.0-beta.2](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.1...@antv/s2-v1.0.0-beta.2) (2021-10-26)
 
 
