@@ -6,10 +6,11 @@ on:
 
 jobs:
   issue-labeled:
+    if: github.actor != github.event.issue.user.login
     runs-on: ubuntu-latest
     steps:
       - name: Need reproduce
-        if: github.event.label.name == '🤔 need reproduce' && github.actor != github.event.issue.user.login
+        if: github.event.label.name == '🤔 need reproduce'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment'
@@ -21,7 +22,7 @@ jobs:
             Hello, @${{ github.event.issue.user.login }}, please provide an accessible link or use[codesandbox](https://codesandbox.io/s/29zle) to describe the step. It will be closed if we receive no replay in 7 days.
 
       - name: Need more info
-        if: github.event.label.name == '👀 need more info' && github.actor != github.event.issue.user.login
+        if: github.event.label.name == '👀 need more info'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment'
@@ -33,7 +34,7 @@ jobs:
             Hello, @${{ github.event.issue.user.login }}, the information you provided is not enough for us to trace the problem. Please complete the issue description, provide gifs, screenshots, etc. and explain the reproduction steps in detail. Thank you so much for being so cooperative!
 
       - name: Invalid
-        if: github.event.label.name == '⛔ invalid' && github.actor != github.event.issue.user.login
+        if: github.event.label.name == '⛔ invalid'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment,close-issue'
@@ -45,7 +46,7 @@ jobs:
             Hello @${{ github.event.issue.user.login }}, please fill in the relevant information according to the issue template, so that everyone can communicate efficiently. Thank you so much!
 
       - name: Enhancement
-        if: github.event.label.name == '⚡ enhancement' && github.actor != github.event.issue.user.login
+        if: github.event.label.name == '⚡ enhancement'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment'
@@ -57,7 +58,7 @@ jobs:
             Hello, @${{ github.event.issue.user.login }}, thanks for your advice. We will evaluate and schedule in time. Thank you!
 
       - name: Bug
-        if: github.event.label.name == '🐛 bug' && github.actor != github.event.issue.user.login
+        if: github.event.label.name == '🐛 bug'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment'
@@ -69,7 +70,7 @@ jobs:
             Hello, @${{ github.event.issue.user.login }}, We are very sorry for the bad experience. We will troubleshoot and fix the problem as soon as possible. Please pay attention to the subsequent change logs.
 
       - name: Usage
-        if: (github.event.label.name == '🙀 usage' || github.event.label.name == '❔question') && github.actor != github.event.issue.user.login
+        if: github.event.label.name == '🙀 usage' || github.event.label.name == '❔question'
         uses: actions-cool/issues-helper@main
         with:
           actions: 'create-comment,close-issue'
