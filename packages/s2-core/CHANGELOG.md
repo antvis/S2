@@ -1,3 +1,10 @@
+# [@antv/s2-v1.0.0-beta.4](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.3...@antv/s2-v1.0.0-beta.4) (2021-10-28)
+
+
+### Bug Fixes
+
+* **export:** pivot tree mode export error in total dim ([#582](https://github.com/antvis/S2/issues/582)) ([136695e](https://github.com/antvis/S2/commit/136695e2001763b48e4f3b0e05bbbc21d2a1a34d))
+
 # [@antv/s2-v1.0.0-beta.3](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.2...@antv/s2-v1.0.0-beta.3) (2021-10-27)
 
 
