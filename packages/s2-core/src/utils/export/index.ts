@@ -189,7 +189,7 @@ export const copyData = (
 
   // get max query property length
   const rowLength = rowLeafNodes.reduce((pre, cur) => {
-    const length = Object.keys(cur.query).length;
+    const length = cur.query ? Object.keys(cur.query).length : 0;
     return length > pre ? length : pre;
   }, 0);
 
