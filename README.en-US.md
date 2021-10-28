@@ -35,7 +35,7 @@ Data-driven multi-dimensional analysis table.
     <img src="https://david-dm.org/antvis/S2/dev-status.svg" alt="devDependencies"/>
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square" alt="bundle size"/>
+    <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2" alt="bundle size"/>
   </a>
   <a href="https://github.com/actions-cool/issues-helper" target="_blank">
     <img src="https://img.shields.io/badge/using-issues--helper-blueviolet" alt="issues-helper"/>
