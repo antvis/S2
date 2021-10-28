@@ -37,7 +37,7 @@
     <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square" alt="bundle size"/>
   </a>
   <a href="https://github.com/actions-cool/issues-helper" target="_blank">
-    <img src="https://img.shields.io/badge/Issues%20Manage%20By-issues--helper-blueviolet" alt="issues-helper"/>
+    <img src="https://img.shields.io/badge/using-issues--helper-blueviolet" alt="issues-helper"/>
   </a>
   <a href="#" target="_blank" target="_blank">
     <img alt="License: MIT@AntV" src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" alt="license"/>
