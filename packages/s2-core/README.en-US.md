@@ -11,22 +11,37 @@ Data-driven multi-dimensional analysis table.
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg" alt="version">
   </a>
-  <a href="https://github.com/antvis/S2/actions" target="_blank">
-    <img src="https://github.com/antvis/S2/workflows/CI/badge.svg" />
+    <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg" alt="version">
   </a>
-  <a href="https://codecov.io/gh/@antv/s2" target="_blank">
-    <img src="https://codecov.io/gh/@antv/s2/branch/master/graph/badge.svg" />
+   <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
+    <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
   </a>
-  <a href="https://david-dm.org/@antv/s2" target="_blank">
-    <img src="https://david-dm.org/@antv/s2/status.svg"/>
+  <a href="https://codecov.io/gh/antvis/S2" target="_blank">
+    <img src="https://codecov.io/gh/antvis/S2/branch/master/graph/badge.svg" alt="Coverage"/>
+  </a>
+  <a href="https://github.com/antvis/S2/releases" target="_blank">
+    <img src="https://img.shields.io/github/release-date/antvis/S2" alt="release-date"/>
+  </a>
+</p>
+
+<p>
+  <a href="https://david-dm.org/antvis/s2" target="_blank">
+    <img src="https://status.david-dm.org/gh/antvis/S2.svg" alt="dependencies"/>
+  </a>
+  <a href="https://david-dm.org/antvis/S2?type=dev" title="devDependencies status" target="_blank">
+    <img src="https://david-dm.org/antvis/S2/dev-status.svg" alt="devDependencies"/>
+  </a>
+  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
+    <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square" alt="bundle size"/>
+  </a>
+  <a href="https://github.com/actions-cool/issues-helper" target="_blank">
+    <img src="https://img.shields.io/badge/Issues%20Manage%20By-issues--helper-blueviolet" alt="issues-helper"/>
   </a>
   <a href="#" target="_blank" target="_blank">
-    <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square"/>
-  </a>
-  <a href="#" target="_blank" target="_blank">
-    <img alt="License: MIT@AntV" src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" />
+    <img alt="License: MIT@AntV" src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" alt="license"/>
   </a>
 </p>
 
@@ -50,7 +65,8 @@ demo components and expansion capabilities, it allows developers to use it quick
 ## 📦 Installation
 
 ```bash
-npm install @antv/s2
+$ npm install @antv/s2
+# yarn add @antv/s2
 ```
 
 ## 🔨 Getting Started
@@ -166,9 +182,9 @@ git clone git@github.com:antvis/S2.git
 
 cd s2
 
-npm run bootstrap
+yarn
 
-npm run core:start
+yarn core:start
 ```
 
 ## 📄 License
