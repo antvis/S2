@@ -134,7 +134,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   // get content area that exclude padding
   protected getContentArea() {
-    const { padding } = this.theme.dataCell.cell;
+    const { padding } = this.getStyle().cell;
     return getContentArea(this.getCellArea(), padding);
   }
 
