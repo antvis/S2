@@ -134,7 +134,7 @@ s2.render();
 
 <playground path='basic/pivot/demo/grid.ts' rid='container' height='300'></playground>
 
-### React 中使用 S2
+### 在React 中使用 S2
 
 S2 提供了开箱即用的 react 版本[表格组件](/zh/examples/gallery#category-表格组件)，还有配套丰富的[分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
