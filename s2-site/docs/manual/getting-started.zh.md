@@ -166,7 +166,7 @@ yarn bootstrap
 
 yarn core:start
 
-# 网站开发
+# 本地启动官网
 
 yarn site:bootstrap
 
