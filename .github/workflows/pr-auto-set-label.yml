@@ -5,7 +5,7 @@ on:
     types: [opened, edited]
 
 jobs:
-  set-labels:
+  auto-set-labels:
     runs-on: ubuntu-latest
     steps:
       - name: pr-auto-label
