@@ -10,7 +10,7 @@
         "zh": "明细表排序",
         "en": "Table Sort"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ubBlmmsSAQ/07b110d2-5bd1-4474-9140-5cc9ad860423.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/WEiAq3byem/69cfeded-4d7a-400d-a4e5-bd03f83c75f5.png"
     },
     {
       "filename": "group-sort.ts",
@@ -18,7 +18,7 @@
         "zh": "组内排序",
         "en": "Group Sort"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/kN2XHP0RdW/34839688-ffd6-43b8-b48e-7b6aa23c4ad0.png"
     },
     {
       "filename": "advanced.tsx",
@@ -26,7 +26,7 @@
         "zh": "高级排序",
         "en": "Advanced Sort"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/IyjMAgBmPu/b5d75e5a-c7fc-4447-a318-0a388ee12d50.png"
     },
     {
       "filename": "custom-method.ts",
@@ -34,7 +34,7 @@
         "zh": "根据升/降序方法排序",
         "en": "Custom Method Sort"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/fn1vIMwK7B/02afdeff-6251-491f-a99c-4e8a1c14b3cd.png"
     },
     {
       "filename": "custom-list.ts",

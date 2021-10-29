@@ -4,7 +4,9 @@ import { SheetComponent, SortParams } from '@antv/s2';
 import insertCss from 'insert-css';
 import '@antv/s2/dist/s2.min.css';
 
-fetch('./data/basic.json')
+fetch(
+  'https://gw.alipayobjects.com/os/bmw-prod/6531b95e-a955-4735-91d6-e63fc32b3f34.json',
+)
   .then((res) => res.json())
   .then((data) => {
     const s2DataConfig = {

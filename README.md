@@ -178,6 +178,12 @@ cd s2
 yarn
 
 yarn core:start
+
+# 本地启动官网
+
+yarn site:bootstrap
+
+yarn site:start
 ```
 
 ## 📄 License

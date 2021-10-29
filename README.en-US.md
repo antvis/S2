@@ -185,6 +185,12 @@ cd s2
 yarn
 
 yarn core:start
+
+# start the website
+
+yarn site:bootstrap
+
+yarn site:start
 ```
 
 ## 📄 License
