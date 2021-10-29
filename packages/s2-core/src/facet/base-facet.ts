@@ -661,7 +661,7 @@ export abstract class BaseFacet {
           (this.cfg.spreadsheet.isScrollContainsRowHeader()
             ? -this.cornerBBox.width + halfScrollSize
             : halfScrollSize),
-        y: this.panelBBox.maxY - this.scrollBarSize / 2,
+        y: this.panelBBox.maxY,
       };
       const finaleRealWidth =
         realWidth +
