@@ -24,7 +24,7 @@ describe('export', () => {
     expect(data.split('\n').length).toEqual(3);
     expect(data.split('\n')[0].split('\t').length).toEqual(4);
     expect(data.split('\n')[0].split('\t')[0]).toEqual('"序号"');
-    expect(data.length).toEqual(101);
+    expect(data.length).toEqual(89);
   });
 
   test('should export correct data without showSeriesNumber', () => {
@@ -38,6 +38,6 @@ describe('export', () => {
     expect(data.split('\n').length).toEqual(3);
     expect(data.split('\n')[0].split('\t').length).toEqual(3);
     expect(data.split('\n')[0].split('\t')[0]).toEqual('"col0"');
-    expect(data.length).toEqual(85);
+    expect(data.length).toEqual(76);
   });
 });
