@@ -1,3 +1,18 @@
+# [@antv/s2-v1.0.0-beta.5](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.4...@antv/s2-v1.0.0-beta.5) (2021-11-01)
+
+
+### Bug Fixes
+
+* :bug: refactor the csvString ([#596](https://github.com/antvis/S2/issues/596)) ([1a88b8f](https://github.com/antvis/S2/commit/1a88b8f652b0d5eb404b7d230e6f62e3f275149c))
+* **cell:** cell padding issue ([#595](https://github.com/antvis/S2/issues/595)) ([4a3a82b](https://github.com/antvis/S2/commit/4a3a82be3f43172992a612c21f3cea8e1dde0a61))
+* h scrollbar position ([#592](https://github.com/antvis/S2/issues/592)) ([0a64744](https://github.com/antvis/S2/commit/0a64744952cb21d131308f7406dedcfb7786a747))
+
+
+### Features
+
+* fix table col issue ([#589](https://github.com/antvis/S2/issues/589)) ([329b9a5](https://github.com/antvis/S2/commit/329b9a51829fafa5314cb2f8506d161ea0697ad3))
+* release 1.0.0-beta.5 ([#598](https://github.com/antvis/S2/issues/598)) ([cfb3a74](https://github.com/antvis/S2/commit/cfb3a744a2b5e5413f7ea678f8e3f0dfad9c343e))
+
 # [@antv/s2-v1.0.0-beta.4](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.3...@antv/s2-v1.0.0-beta.4) (2021-10-28)
 
 
