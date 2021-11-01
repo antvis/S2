@@ -154,10 +154,9 @@ export class ColCell extends HeaderCell {
       })) as Group;
   }
 
-  // 绘制热区
-  private drawResizeArea() {
+  protected drawHorizontalResizeArea() {
     const { viewportWidth, scrollX } = this.headerConfig;
-    const { label, width: cellWidth, height: cellHeight, parent } = this.meta;
+    const { height: cellHeight } = this.meta;
     const resizeStyle = this.getStyle('resizeArea');
     const resizeArea = this.getColResizeArea();
     const resizeAreaName = `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`;
@@ -192,6 +191,13 @@ export class ColCell extends HeaderCell {
         },
       });
     }
+  }
+
+  protected drawVerticalResizeArea() {
+    const { label, width: cellWidth, height: cellHeight, parent } = this.meta;
+    const resizerOffset = this.getColResizeAreaOffset();
+    const resizeStyle = this.getStyle('resizeArea');
+    const resizeArea = this.getColResizeArea();
     if (this.meta.isLeaf) {
       // 列宽调整热区
       // 基准线是根据container坐标来的，因此把热区画在container
@@ -218,6 +224,12 @@ export class ColCell extends HeaderCell {
         },
       });
     }
+  }
+
+  // 绘制热区
+  private drawResizeArea() {
+    this.drawHorizontalResizeArea();
+    this.drawVerticalResizeArea();
   }
 
   private drawRightBorder() {

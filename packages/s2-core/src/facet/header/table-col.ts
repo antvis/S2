@@ -123,8 +123,7 @@ export class TableColHeader extends ColHeader {
       frozenTrailingColWidth += colLeafNodes[colLeafNodes.length - 1 - i].width;
     }
 
-    const frozenClipWidth =
-      width + scrollX - frozenColWidth - frozenTrailingColWidth;
+    const frozenClipWidth = width - frozenColWidth - frozenTrailingColWidth;
 
     this.scrollGroup.setClip({
       type: 'rect',

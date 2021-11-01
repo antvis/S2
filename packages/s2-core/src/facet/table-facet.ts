@@ -264,8 +264,9 @@ export class TableFacet extends BaseFacet {
 
   private getColNodeHeight(col: Node) {
     const { colCfg } = this.cfg;
-    const userDragWidth = get(colCfg, `heightByField.${col.key}`);
-    return userDragWidth || colCfg.height;
+    // 明细表所有列节点高度保持一致
+    const userDragHeight = Object.values(get(colCfg, `heightByField`))[0];
+    return userDragHeight || colCfg.height;
   }
 
   private calculateColNodesCoordinate(
