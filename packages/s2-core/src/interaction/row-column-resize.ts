@@ -193,7 +193,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const width = Math.floor(end.x - start.x);
     const resizeInfo = this.getResizeInfo();
 
-    switch (resizeInfo.affect) {
+    switch (resizeInfo.effect) {
       case 'field':
         return {
           eventType: S2Event.LAYOUT_RESIZE_ROW_WIDTH,
@@ -237,7 +237,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const height = baseHeight - rowCellPadding.top - rowCellPadding.bottom;
     const resizeInfo = this.getResizeInfo();
 
-    switch (resizeInfo.affect) {
+    switch (resizeInfo.effect) {
       case 'field':
         return {
           eventType: S2Event.LAYOUT_RESIZE_COL_HEIGHT,
@@ -283,7 +283,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private bindMouseUp() {
-    this.spreadsheet.on(S2Event.LAYOUT_RESIZE_MOUSE_UP, () => {
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, () => {
       if (!this.resizeGroup) {
         return;
       }
@@ -299,7 +299,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private isResizeMoreThanMaxCornerWidthLimit(offsetX: number) {
     const resizeInfo = this.getResizeInfo();
     const isResizeFreezeRowHeader =
-      resizeInfo.affect === 'field' &&
+      resizeInfo.effect === 'field' &&
       this.spreadsheet.isFreezeRowHeader() &&
       !this.spreadsheet.isHierarchyTreeType();
 

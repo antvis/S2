@@ -1,4 +1,4 @@
-import { Group, Point } from '@antv/g-canvas';
+import { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { HeaderCell } from './header-cell';
 import {
@@ -6,12 +6,16 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme, ResizeInfo } from '@/common/interface';
+import { FormatResult, TextTheme } from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
+import {
+  getResizeAreaAttrs,
+  getResizeAreaGroupById,
+} from '@/utils/interaction/resize';
 
 export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;
@@ -221,39 +225,38 @@ export class RowCell extends HeaderCell {
   protected drawResizeAreaInLeaf() {
     if (this.meta.isLeaf) {
       const { x, y, width, height } = this.getCellArea();
-      const resizeStyle = this.getStyle('resizeArea');
-      // 热区公用一个group
-      const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+      const resizeStyle = this.getResizeAreaStyle();
+      const resizeArea = getResizeAreaGroupById(
+        this.spreadsheet,
         KEY_GROUP_ROW_RESIZE_AREA,
       );
-      const resizeArea = (prevResizeArea ||
-        this.spreadsheet.foregroundGroup.addGroup({
-          id: KEY_GROUP_ROW_RESIZE_AREA,
-        })) as Group;
 
       const { offset, position, seriesNumberWidth, scrollX } =
         this.headerConfig;
       const { label, parent } = this.meta;
+
+      const freezeCornerDiffWidth =
+        this.spreadsheet.facet.getFreezeCornerDiffWidth();
+
+      const resizeAreaWidth = this.spreadsheet.isFreezeRowHeader()
+        ? width - freezeCornerDiffWidth + scrollX
+        : width;
+
       resizeArea.addShape('rect', {
         attrs: {
-          x: position.x + x - scrollX + seriesNumberWidth,
-          y: position.y + y - offset + height - resizeStyle.size / 2,
-          width,
-          height: resizeStyle.size,
-          fill: resizeStyle.background,
-          fillOpacity: resizeStyle.backgroundOpacity,
-          cursor: 'row-resize',
-          appendInfo: {
-            isResizeArea: true,
-            class: 'resize-trigger',
+          ...getResizeAreaAttrs({
+            theme: resizeStyle,
             type: 'row',
-            affect: 'cell',
+            effect: 'cell',
             caption: parent.isTotals ? '' : label,
             offsetX: position.x + x + seriesNumberWidth,
             offsetY: position.y + y - offset,
             width,
             height,
-          } as ResizeInfo,
+          }),
+          x: position.x + x - scrollX + seriesNumberWidth,
+          y: position.y + y - offset + height - resizeStyle.size / 2,
+          width: resizeAreaWidth,
         },
       });
     }

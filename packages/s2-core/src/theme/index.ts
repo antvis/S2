@@ -297,7 +297,7 @@ export const getTheme = (
       background: basicColors[7],
       guidLineColor: basicColors[7],
       guidLineDash: 3,
-      backgroundOpacity: 0,
+      backgroundOpacity: 1,
       /* ---------- interaction state ----------- */
       interactionState: {
         hover: {

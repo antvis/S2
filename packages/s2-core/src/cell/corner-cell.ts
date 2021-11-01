@@ -1,13 +1,17 @@
-import { Group, IShape, Point, ShapeAttrs } from '@antv/g-canvas';
+import { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
 import { isEmpty, isEqual, max } from 'lodash';
 import { HeaderCell } from './header-cell';
+import {
+  getResizeAreaAttrs,
+  getResizeAreaGroupById,
+} from '@/utils/interaction/resize';
 import {
   CellTypes,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZE_AREA,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme, ResizeInfo } from '@/common/interface';
+import { FormatResult, TextTheme } from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
 import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
 import {
@@ -216,37 +220,38 @@ export class CornerCell extends HeaderCell {
   }
 
   private drawResizeArea() {
-    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+    const resizeStyle = this.getResizeAreaStyle();
+    const resizeArea = getResizeAreaGroupById(
+      this.spreadsheet,
       KEY_GROUP_CORNER_RESIZE_AREA,
     );
-    const resizeStyle = this.getStyle('resizeArea');
-    const resizeArea = (prevResizeArea ||
-      this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_CORNER_RESIZE_AREA,
-      })) as Group;
-    const { position, scrollX } = this.headerConfig;
+    const { position, scrollX, width: headerWidth } = this.headerConfig;
     const { x, y, width: cellWidth, height: cellHeight, field } = this.meta;
+    const freezeCornerDiffWidth =
+      this.spreadsheet.facet.getFreezeCornerDiffWidth();
+
+    const offsetX = position.x + x - scrollX;
+    const offsetY = position.y + y;
+    const freezeOffsetX =
+      this.spreadsheet.isFreezeRowHeader() && x + cellWidth > headerWidth
+        ? freezeCornerDiffWidth - scrollX
+        : 0;
 
     resizeArea.addShape('rect', {
       attrs: {
-        x: position.x + x - scrollX + cellWidth - resizeStyle.size / 2,
-        y: position.y + y,
-        width: resizeStyle.size,
-        height: cellHeight,
-        fill: resizeStyle.background,
-        fillOpacity: resizeStyle.backgroundOpacity,
-        cursor: 'col-resize',
-        appendInfo: {
-          isResizeArea: true,
-          class: 'resize-trigger',
+        ...getResizeAreaAttrs({
+          theme: resizeStyle,
           type: 'col',
           id: field,
-          affect: 'field',
-          offsetX: position.x + x,
-          offsetY: position.y + y,
+          effect: 'field',
+          offsetX,
+          offsetY,
           width: cellWidth,
           height: cellHeight,
-        } as ResizeInfo,
+        }),
+        x: offsetX + cellWidth - resizeStyle.size - freezeOffsetX,
+        y: offsetY,
+        height: cellHeight,
       },
     });
   }

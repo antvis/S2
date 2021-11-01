@@ -97,7 +97,7 @@ export abstract class BaseFacet {
 
   protected hScrollBar: ScrollBar;
 
-  protected hRowScrollBar: ScrollBar;
+  public hRowScrollBar: ScrollBar;
 
   protected vScrollBar: ScrollBar;
 
@@ -398,15 +398,15 @@ export abstract class BaseFacet {
 
   getCornerBBoxWidth = (cornerWidth: number): number => {
     const { colsHierarchy } = this.layoutResult;
-    if (!this.cfg.spreadsheet.isScrollContainsRowHeader()) {
-      return this.getCornerWidth(cornerWidth, colsHierarchy);
+    if (!this.spreadsheet.isScrollContainsRowHeader()) {
+      return this.getCornerWidth(cornerWidth, colsHierarchy.width);
     }
     return cornerWidth;
   };
 
   private getAdaptiveCornerWidth = (
     cornerWidth: number,
-    colsHierarchy: Hierarchy,
+    colsHierarchyWidth: number,
   ): number => {
     const { width: canvasWidth } = this.spreadsheet.options;
     const panelWidth = canvasWidth - cornerWidth;
@@ -414,11 +414,11 @@ export abstract class BaseFacet {
     const isResized = this.spreadsheet.store.get('resized');
 
     if (
-      panelWidth > colsHierarchy.width &&
+      panelWidth > colsHierarchyWidth &&
       this.spreadsheet.isColAdaptive() &&
       !isResized
     ) {
-      const adaptiveCornerWidthDiff = panelWidth - colsHierarchy.width;
+      const adaptiveCornerWidthDiff = panelWidth - colsHierarchyWidth;
       return cornerWidth + adaptiveCornerWidthDiff;
     }
 
@@ -427,7 +427,7 @@ export abstract class BaseFacet {
 
   private getDefaultCornerWidth = (
     originalCornerWidth: number,
-    colsHierarchy: Hierarchy,
+    colsHierarchyWidth: number,
   ): number => {
     const { width: canvasWidth } = this.spreadsheet.options;
     const maxPanelWidth = Math.floor(
@@ -436,13 +436,13 @@ export abstract class BaseFacet {
     const panelWidth = Math.floor(canvasWidth - originalCornerWidth);
 
     if (
-      colsHierarchy.width > panelWidth &&
-      colsHierarchy.width <= maxPanelWidth
+      colsHierarchyWidth > panelWidth &&
+      colsHierarchyWidth <= maxPanelWidth
     ) {
-      return originalCornerWidth - (maxPanelWidth - colsHierarchy.width);
+      return originalCornerWidth - (maxPanelWidth - colsHierarchyWidth);
     }
 
-    if (colsHierarchy.width <= panelWidth) {
+    if (colsHierarchyWidth <= panelWidth) {
       return originalCornerWidth;
     }
 
@@ -451,21 +451,37 @@ export abstract class BaseFacet {
 
   private getCornerWidth = (
     originalCornerWidth: number,
-    colsHierarchy: Hierarchy,
+    colsHierarchyWidth: number,
   ): number => {
+    this.setFreezeCornerDiffWidth(0);
+
     if (this.spreadsheet.isHierarchyTreeType()) {
       return originalCornerWidth;
     }
     const defaultCornerWidth = this.getDefaultCornerWidth(
       originalCornerWidth,
-      colsHierarchy,
+      colsHierarchyWidth,
     );
     const cornerWidth = this.getAdaptiveCornerWidth(
       defaultCornerWidth,
-      colsHierarchy,
+      colsHierarchyWidth,
     );
-    return Math.floor(cornerWidth);
+    const freezeCornerDiffWidth = originalCornerWidth - cornerWidth;
+    this.setFreezeCornerDiffWidth(freezeCornerDiffWidth);
+
+    return cornerWidth;
   };
+
+  getFreezeCornerDiffWidth(): number {
+    if (!this.spreadsheet.isFreezeRowHeader()) {
+      return 0;
+    }
+    return this.spreadsheet.store.get('freezeCornerDiffWidth', 0);
+  }
+
+  setFreezeCornerDiffWidth(width: number) {
+    this.spreadsheet.store.set('freezeCornerDiffWidth', width);
+  }
 
   calculatePanelBBox = () => {
     const corner = this.cornerBBox;

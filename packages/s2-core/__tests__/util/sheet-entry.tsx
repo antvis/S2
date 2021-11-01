@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { Input, Select, Slider, Space, Switch } from 'antd';
-import { isArray, merge, mergeWith } from 'lodash';
+import { merge } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
   DEFAULT_OPTIONS,
@@ -20,23 +20,17 @@ import {
   DEFAULT_DATA_CONFIG,
 } from '@/index';
 import 'antd/dist/antd.min.css';
+import { customMerge } from '@/utils/merge';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
-  mergeWith(
-    {},
+  customMerge(
     DEFAULT_OPTIONS,
     { debug: true, width: 1000, height: 600 },
     ...options,
-    (origin, updated) => {
-      if (isArray(origin) && isArray(updated)) {
-        return updated;
-      }
-    },
   );
 
 export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
-  mergeWith(
-    {},
+  customMerge(
     DEFAULT_DATA_CONFIG,
     {
       fields: {
@@ -50,11 +44,6 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
       totalData,
     },
     ...dataCfg,
-    (origin, updated) => {
-      if (isArray(origin) && isArray(updated)) {
-        return updated;
-      }
-    },
   );
 
 interface SheetEntryProps {
@@ -146,7 +135,6 @@ export const SheetEntry = forwardRef(
       max: 10,
       step: 0.1,
       marks: {
-        0.2: '0.2倍',
         0.5: '0.5倍',
         1: '1 (默认)',
         2: '2倍',
