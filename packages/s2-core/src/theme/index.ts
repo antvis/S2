@@ -295,9 +295,9 @@ export const getTheme = (
     resizeArea: {
       size: 3,
       background: basicColors[7],
-      guidLineColor: basicColors[7],
-      guidLineDash: 3,
-      backgroundOpacity: 1,
+      guideLineColor: basicColors[7],
+      guideLineDash: 3,
+      backgroundOpacity: 0,
       /* ---------- interaction state ----------- */
       interactionState: {
         hover: {

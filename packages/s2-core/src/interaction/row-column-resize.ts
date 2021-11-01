@@ -45,11 +45,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     this.resizeGroup = this.spreadsheet.foregroundGroup.addGroup();
 
     const { width, height } = this.spreadsheet.options;
-    const { guidLineColor, guidLineDash, size } = this.getResizeAreaTheme();
+    const { guideLineColor, guideLineDash, size } = this.getResizeAreaTheme();
     const attrs: ShapeAttrs = {
       path: '',
-      lineDash: [guidLineDash, guidLineDash],
-      stroke: guidLineColor,
+      lineDash: [guideLineDash, guideLineDash],
+      stroke: guideLineColor,
       strokeWidth: size,
     };
     // 起始参考线
