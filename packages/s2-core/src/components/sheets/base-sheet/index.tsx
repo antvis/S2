@@ -261,12 +261,11 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
 
   useEffect(() => {
     update(setDataCfg);
-  }, [dataCfg]);
+  }, [JSON.stringify(dataCfg)]);
 
   useEffect(() => {
     update(setOptions, false);
-  }, [options]);
-
+  }, [JSON.stringify(options)]);
   useEffect(() => {
     update(() => {
       ownSpreadsheet.setThemeCfg(themeCfg);

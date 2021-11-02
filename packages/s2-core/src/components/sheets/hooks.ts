@@ -29,12 +29,12 @@ export const useResizeEffect = (
 
     s2.changeSize(box?.width, box?.height);
     s2.render(false);
-  }, [resizeTimeStamp, container, s2, adaptive]);
+  }, [resizeTimeStamp, container, adaptive]);
 
   useEffect(() => {
     s2?.changeSize(options.width, options.height);
     s2?.render(false);
-  }, [s2, options.width, options.height]);
+  }, [options.width, options.height]);
 
   useEffect(() => {
     if (adaptive) {
