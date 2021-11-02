@@ -10,7 +10,7 @@ import {
 import { getContainer } from '../util/helpers';
 import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
-import { mergeCells, removeCell } from '@/utils/interaction/merge-cells';
+import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
 import 'antd/dist/antd.min.css';
 import {
   S2DataConfig,
@@ -143,7 +143,7 @@ function MainLayout() {
       合并后的tooltip
       <Button
         onClick={() => {
-          removeCell(mergedCell, spreadSheet);
+          unmergeCell(mergedCell, spreadSheet);
         }}
       >
         取消合并单元格
