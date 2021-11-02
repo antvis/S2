@@ -148,8 +148,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return;
       }
 
-      // 防止在拖拽过程中 鼠标在 tooltip 上面 导致拖拽失效
-      this.spreadsheet.tooltip.disablePointerEvent();
+      // 鼠标在 resize 热区 按下时, 将 tooltip 关闭, 避免造成干扰
+      this.spreadsheet.hideTooltip();
       this.spreadsheet.interaction.addIntercepts([InterceptType.RESIZE]);
       this.setResizeArea(shape);
       this.showResizeGroup();
