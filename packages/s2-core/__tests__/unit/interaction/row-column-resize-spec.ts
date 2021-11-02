@@ -85,6 +85,7 @@ describe('Interaction Row Column Resize Tests', () => {
     rowColumnResizeInstance = new RowColumnResize(s2);
     rowColumnResizeInstance.getHeaderGroup = () => new Group('');
     s2.render = jest.fn();
+    s2.tooltip.container = document.createElement('div');
   });
 
   test('should register events', () => {
@@ -351,5 +352,29 @@ describe('Interaction Row Column Resize Tests', () => {
 
     // reset resize position
     expect(rowColumnResizeInstance.resizeStartPosition).toEqual({});
+  });
+
+  test('should disable tooltip point event when mouse down', () => {
+    const resizeInfo: ResizeInfo = {
+      type: 'row',
+      offsetX: 2,
+      offsetY: 2,
+      width: 5,
+      height: 2,
+      isResizeArea: true,
+      affect: 'cell',
+      caption: 'filedB',
+      id: '',
+    };
+
+    emitResizeEvent(
+      S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
+      {
+        offsetX: 10,
+        offsetY: 20,
+      },
+      resizeInfo,
+    );
+    expect(s2.tooltip.container.style.pointerEvents).not.toEqual('all');
   });
 });
