@@ -59,6 +59,7 @@ interface SheetEntryProps {
 // eslint-disable-next-line react/display-name
 export const SheetEntry = forwardRef(
   (props: SheetEntryProps, ref: MutableRefObject<SpreadSheet>) => {
+    const { themeCfg = {} } = props;
     const [mode, setMode] = useState('grid');
     const [valueInCols, setValueInCols] = useState(true);
     const initOptions = assembleOptions(props.options);
@@ -67,6 +68,7 @@ export const SheetEntry = forwardRef(
       ? props.dataCfg
       : assembleDataCfg(props.dataCfg);
     const [adaptive, setAdaptive] = useState(false);
+    const [showResizeArea, setShowResizeArea] = useState(true);
     const [options, setOptions] = useState<S2Options>(() => initOptions);
     const [dataCfg, setDataCfg] = useState<Partial<S2DataConfig>>(
       () => initDataCfg,
@@ -177,11 +179,19 @@ export const SheetEntry = forwardRef(
             onChange={onFreezeRowHeaderChange}
           />
           <Switch
-            checkedChildren="容器自适应开"
-            unCheckedChildren="容器自适应关"
+            checkedChildren="容器宽高自适应开"
+            unCheckedChildren="容器宽高自适应关"
             defaultChecked={adaptive}
             onChange={(checked) => {
               setAdaptive(checked);
+            }}
+          />
+          <Switch
+            checkedChildren="resize热区开"
+            unCheckedChildren="resize热区关"
+            defaultChecked={showResizeArea}
+            onChange={(checked) => {
+              setShowResizeArea(checked);
             }}
           />
           <Space>
@@ -242,7 +252,14 @@ export const SheetEntry = forwardRef(
               ref.current = instance;
             }
           }}
-          themeCfg={props.themeCfg}
+          themeCfg={{
+            ...themeCfg,
+            theme: merge({}, themeCfg.theme, {
+              resizeArea: {
+                backgroundOpacity: showResizeArea ? 1 : 0,
+              },
+            }),
+          }}
           onColCellClick={props.onColCellClick}
         />
       </div>
