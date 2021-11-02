@@ -1,6 +1,6 @@
 import { filter, find, forEach, isEmpty, isEqual } from 'lodash';
 import { MergedCells } from '@/cell/merged-cells';
-import { MergedCellInfo, TempMergedCell } from '@/common/interface';
+import { MergedCellInfo, TempMergedCell, ViewMeta } from '@/common/interface';
 import { S2CellType } from '@/common/interface/interaction';
 import { SpreadSheet } from '@/sheet-type';
 
@@ -94,7 +94,7 @@ export const getPolygonPoints = (cells: S2CellType[]) => {
  * @param outsideVisibleCellInfo
  * @param sheet
  */
-function getOutsideVisible(
+function getOutsideVisibleInfo(
   outsideVisibleCellInfo: MergedCellInfo[],
   sheet: SpreadSheet,
 ) {
@@ -113,19 +113,18 @@ function getOutsideVisible(
 }
 
 /**
- * return the collections of cells depended by the merged cells information
+ * get { cells, outsideVisibleCellInfo, cellsMeta } in the inside of visible area through mergeCellInfo
  * @param cellsInfos
  * @param allVisibleCells
- * @param sheet
+ * @returns { cells, outsideVisibleCellInfo, cellsMeta }
  */
-const getCellsByInfo = (
+function getInsideVisibleInfo(
+  cellsInfos: MergedCellInfo[],
   allVisibleCells: S2CellType[],
-  sheet?: SpreadSheet,
-  cellsInfos: MergedCellInfo[] = [],
-): TempMergedCell => {
-  let cells: S2CellType[] = [];
-  let cellsMeta;
+) {
+  const cells: S2CellType[] = [];
   const outsideVisibleCellInfo: MergedCellInfo[] = [];
+  let cellsMeta: ViewMeta | Node | undefined;
   forEach(cellsInfos, (cellInfo: MergedCellInfo) => {
     const findCell = find(allVisibleCells, (cell: S2CellType) => {
       const meta = cell?.getMeta?.();
@@ -138,26 +137,47 @@ const getCellsByInfo = (
     }) as S2CellType;
     if (findCell) {
       cells.push(findCell);
-      if (cellInfo?.showText) cellsMeta = findCell?.getMeta();
+      if (cellInfo?.showText) cellsMeta = findCell?.getMeta() as ViewMeta;
     } else {
       outsideVisibleCellInfo.push(cellInfo);
     }
   });
+  return { cells, outsideVisibleCellInfo, cellsMeta };
+}
 
-  // generate cellData outside the visible area of the merged cell
+/**
+ * return the collections of cells depended by the merged cells information
+ * @param cellsInfos
+ * @param allVisibleCells
+ * @param sheet
+ */
+const getCellsByInfo = (
+  allVisibleCells: S2CellType[],
+  sheet?: SpreadSheet,
+  cellsInfos: MergedCellInfo[] = [],
+): TempMergedCell => {
+  const { cellsMeta, cells, outsideVisibleCellInfo } = getInsideVisibleInfo(
+    cellsInfos,
+    allVisibleCells,
+  );
+  let viewMeta: ViewMeta | Node = cellsMeta;
+  let allCells: S2CellType<ViewMeta>[] = cells;
+  // 当 MergedCell 只有部分在可视区域时，在此获取 MergedCell 不在可视区域内的 cells
   if (
     outsideVisibleCellInfo?.length > 0 &&
     outsideVisibleCellInfo.length < cellsInfos.length
   ) {
-    cells = cells.concat(getOutsideVisible(outsideVisibleCellInfo, sheet));
+    allCells = cells.concat(
+      getOutsideVisibleInfo(outsideVisibleCellInfo, sheet),
+    );
   }
 
   if (!isEmpty(cells) && !cellsMeta) {
-    cellsMeta = cells[0]?.getMeta(); // 如果没有指定合并后的文本绘制的位置，默认画在选择的第一个单元格内
+    viewMeta = cells[0]?.getMeta() as ViewMeta; // 如果没有指定合并后的文本绘制的位置，默认画在选择的第一个单元格内
   }
   return {
-    cells,
-    viewMeta: cellsMeta,
+    cells: allCells,
+    viewMeta: viewMeta as ViewMeta,
   };
 };
 
