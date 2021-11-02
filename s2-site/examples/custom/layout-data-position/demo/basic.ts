@@ -20,10 +20,10 @@ fetch(
     const s2options = {
       width: 660,
       height: 600,
-      layoutDataPosition: (s2: SpreadSheet, getCellData: GetCellMeta) => {
+      layoutDataPosition: (s2, getCellData) => {
         // layoutDataPosition 动态改变数据的定位，确定修订某个或者某些格子的值
         // 下面以更改「浙江省-宁波市-家具-桌子」的单元格数据为例
-        const getCellMeta = (rowIndex: number, colIndex: number):ViewMeta => {
+        const getCellMeta = (rowIndex, colIndex) => {
           const viewMeta = getCellData(rowIndex, colIndex);
           if (rowIndex === 2 && colIndex === 0) {
             return {
