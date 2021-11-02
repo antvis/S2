@@ -9,6 +9,8 @@ import {
   CellTypes,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZE_AREA,
+  ResizeAreaEffect,
+  ResizeAreaType,
   S2Event,
 } from '@/common/constant';
 import { FormatResult, TextTheme } from '@/common/interface';
@@ -241,9 +243,9 @@ export class CornerCell extends HeaderCell {
       attrs: {
         ...getResizeAreaAttrs({
           theme: resizeStyle,
-          type: 'col',
+          type: ResizeAreaType.Col,
           id: field,
-          effect: 'field',
+          effect: ResizeAreaEffect.Filed,
           offsetX,
           offsetY,
           width: cellWidth,

@@ -1,10 +1,13 @@
 import { get, isEmpty } from 'lodash';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
+import { Group } from '@antv/g-canvas';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
 import {
   S2Event,
   TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY,
   KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA,
+  ResizeAreaType,
+  ResizeAreaEffect,
 } from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '@/utils/text';
@@ -38,7 +41,7 @@ export class TableColCell extends ColCell {
     return getResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-    );
+    ) as Group;
   }
 
   protected getColResizeAreaOffset() {
@@ -245,9 +248,9 @@ export class TableColCell extends ColCell {
         attrs: {
           ...getResizeAreaAttrs({
             theme: resizeStyle,
-            type: 'row',
+            type: ResizeAreaType.Row,
             id: this.getColResizeAreaKey(),
-            effect: 'field',
+            effect: ResizeAreaEffect.Filed,
             offsetX: 0,
             offsetY: 0,
             width: viewportWidth,

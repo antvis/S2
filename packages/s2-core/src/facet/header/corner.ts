@@ -11,6 +11,8 @@ import { CornerCell } from '@/cell/corner-cell';
 import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_SERIES_NUMBER_NODE,
+  ResizeAreaEffect,
+  ResizeAreaType,
 } from '@/common/constant';
 import { i18n } from '@/common/i18n';
 import {
@@ -217,11 +219,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected layout() {
-    this.startRender();
-    this.handleHotsSpotArea();
+    this.renderCells();
+    this.renderResizeAreas();
   }
 
-  protected startRender() {
+  protected renderCells() {
     const { data, spreadsheet } = this.headerConfig;
     const cornerHeader = spreadsheet?.facet?.cfg?.cornerHeader;
     const cornerCell = spreadsheet?.facet?.cfg?.cornerCell;
@@ -233,7 +235,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       );
       return;
     }
-    // 背景
     this.addBgRect();
     data.forEach((item: Node) => {
       let cell: Group;
@@ -291,7 +292,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     });
   }
 
-  private handleHotsSpotArea() {
+  private renderResizeAreas() {
     const { data, position, width, height, seriesNumberWidth, spreadsheet } =
       this.headerConfig;
     const resizeStyle = spreadsheet.theme.resizeArea;
@@ -300,14 +301,13 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       KEY_GROUP_CORNER_RESIZE_AREA,
     );
 
-    const treeType = spreadsheet.isHierarchyTreeType();
-    if (treeType) {
+    if (spreadsheet.isHierarchyTreeType()) {
       resizeArea.addShape('rect', {
         attrs: {
           ...getResizeAreaAttrs({
             theme: resizeStyle,
-            type: 'col',
-            effect: 'tree',
+            type: ResizeAreaType.Col,
+            effect: ResizeAreaEffect.Tree,
             offsetX: position.x + seriesNumberWidth,
             offsetY: position.y,
             width: width - seriesNumberWidth,
@@ -327,8 +327,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       attrs: {
         ...getResizeAreaAttrs({
           theme: resizeStyle,
-          type: 'row',
-          effect: 'field',
+          type: ResizeAreaType.Row,
+          effect: ResizeAreaEffect.Filed,
           id: last(this.get('columns')),
           offsetX,
           offsetY,

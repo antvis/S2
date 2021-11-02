@@ -23,6 +23,8 @@ import {
   RESIZE_END_GUIDE_LINE_ID,
   S2Event,
   CORNER_MAX_WIDTH_RATIO,
+  ResizeAreaType,
+  ResizeAreaEffect,
 } from '@/common/constant';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -113,7 +115,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     resizeMask.attr('cursor', `${cellType}-resize`);
 
-    if (cellType === 'col') {
+    if (cellType === ResizeAreaType.Col) {
       startResizeGuideLineShape.attr('path', [
         ['M', offsetX, offsetY],
         ['L', offsetX, guideLineMaxHeight],
@@ -194,7 +196,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const resizeInfo = this.getResizeInfo();
 
     switch (resizeInfo.effect) {
-      case 'field':
+      case ResizeAreaEffect.Filed:
         return {
           eventType: S2Event.LAYOUT_RESIZE_ROW_WIDTH,
           style: {
@@ -205,7 +207,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
             },
           },
         };
-      case 'tree':
+      case ResizeAreaEffect.Tree:
         return {
           eventType: S2Event.LAYOUT_RESIZE_TREE_WIDTH,
           style: {
@@ -214,7 +216,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
             },
           },
         };
-      case 'cell':
+      case ResizeAreaEffect.Cell:
         return {
           eventType: S2Event.LAYOUT_RESIZE_COL_WIDTH,
           style: {
@@ -238,7 +240,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const resizeInfo = this.getResizeInfo();
 
     switch (resizeInfo.effect) {
-      case 'field':
+      case ResizeAreaEffect.Filed:
         return {
           eventType: S2Event.LAYOUT_RESIZE_COL_HEIGHT,
           style: {
@@ -249,8 +251,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
             },
           },
         };
-      case 'cell':
-      case 'tree':
+      case ResizeAreaEffect.Cell:
+      case ResizeAreaEffect.Tree:
         return {
           eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
           style: {
@@ -267,7 +269,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private getCellResizeDetail() {
     const resizeInfo = this.getResizeInfo();
 
-    if (resizeInfo.type === 'col') {
+    if (resizeInfo.type === ResizeAreaType.Col) {
       return this.getColCellResizeDetail();
     }
     return this.getRowCellResizeDetail();
@@ -299,7 +301,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private isResizeMoreThanMaxCornerWidthLimit(offsetX: number) {
     const resizeInfo = this.getResizeInfo();
     const isResizeFreezeRowHeader =
-      resizeInfo.effect === 'field' &&
+      resizeInfo.effect === ResizeAreaEffect.Filed &&
       this.spreadsheet.isFreezeRowHeader() &&
       !this.spreadsheet.isHierarchyTreeType();
 
@@ -331,7 +333,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     );
 
     // 下面的神仙代码我改不动了
-    if (resizeInfo.type === 'col') {
+    if (resizeInfo.type === ResizeAreaType.Col) {
       if (this.isResizeMoreThanMaxCornerWidthLimit(originalEvent.offsetX)) {
         return;
       }

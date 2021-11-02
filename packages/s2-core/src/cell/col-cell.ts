@@ -1,4 +1,4 @@
-import { Group, Point } from '@antv/g-canvas';
+import { Point } from '@antv/g-canvas';
 import { HeaderCell } from './header-cell';
 import {
   getResizeAreaAttrs,
@@ -8,6 +8,8 @@ import {
   CellTypes,
   KEY_GROUP_COL_RESIZE_AREA,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
+  ResizeAreaType,
+  ResizeAreaEffect,
 } from '@/common/constant';
 import {
   FormatResult,
@@ -168,9 +170,9 @@ export class ColCell extends HeaderCell {
         attrs: {
           ...getResizeAreaAttrs({
             theme: resizeStyle,
-            type: 'row',
+            type: ResizeAreaType.Row,
             id: this.getColResizeAreaKey(),
-            effect: 'field',
+            effect: ResizeAreaEffect.Filed,
             offsetX: resizerOffset.x,
             offsetY: resizerOffset.y,
             width: viewportWidth,
@@ -197,8 +199,8 @@ export class ColCell extends HeaderCell {
         attrs: {
           ...getResizeAreaAttrs({
             theme: resizeStyle,
-            type: 'col',
-            effect: 'cell',
+            type: ResizeAreaType.Col,
+            effect: ResizeAreaEffect.Cell,
             caption: parent.isTotals ? '' : label,
             offsetX: resizerOffset.x,
             offsetY: resizerOffset.y,

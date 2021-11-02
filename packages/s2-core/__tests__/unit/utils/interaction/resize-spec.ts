@@ -5,6 +5,7 @@ import {
   getResizeAreaAttrs,
   getResizeAreaGroupById,
 } from '@/utils/interaction/resize';
+import { ResizeAreaEffect, ResizeAreaType } from '@/common/constant/resize';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
@@ -41,7 +42,7 @@ describe('Resize Utils Tests', () => {
       expect(
         getResizeAreaAttrs({
           ...commonConfig,
-          type: 'col',
+          type: ResizeAreaType.Col,
         }),
       ).toStrictEqual({
         fill: resizeAreaTheme.background,
@@ -52,8 +53,8 @@ describe('Resize Utils Tests', () => {
         appendInfo: {
           isResizeArea: true,
           class: 'resize-trigger',
-          effect: 'cell',
-          type: 'col',
+          effect: ResizeAreaEffect.Cell,
+          type: ResizeAreaType.Col,
           id: undefined,
           offsetX: 0,
           offsetY: 0,
@@ -67,7 +68,7 @@ describe('Resize Utils Tests', () => {
       expect(
         getResizeAreaAttrs({
           ...commonConfig,
-          type: 'row',
+          type: ResizeAreaType.Row,
         }),
       ).toStrictEqual({
         fill: resizeAreaTheme.background,
@@ -77,9 +78,9 @@ describe('Resize Utils Tests', () => {
         height: resizeAreaTheme.size,
         appendInfo: {
           isResizeArea: true,
-          effect: 'cell',
+          effect: ResizeAreaEffect.Cell,
+          type: ResizeAreaType.Row,
           class: 'resize-trigger',
-          type: 'row',
           id: undefined,
           offsetX: 0,
           offsetY: 0,
@@ -92,7 +93,7 @@ describe('Resize Utils Tests', () => {
     test('should merge custom width and height', () => {
       const attrs = getResizeAreaAttrs({
         ...commonConfig,
-        type: 'row',
+        type: ResizeAreaType.Row,
         width: 100,
         height: 200,
       });
@@ -103,7 +104,7 @@ describe('Resize Utils Tests', () => {
     test('should merge custom width with row field', () => {
       const attrs = getResizeAreaAttrs({
         ...commonConfig,
-        type: 'row',
+        type: ResizeAreaType.Row,
         width: 100,
       });
       expect(attrs.appendInfo.width).toStrictEqual(100);
@@ -113,7 +114,7 @@ describe('Resize Utils Tests', () => {
     test('should merge custom height with col field', () => {
       const attrs = getResizeAreaAttrs({
         ...commonConfig,
-        type: 'col',
+        type: ResizeAreaType.Col,
         height: 100,
       });
       expect(attrs.width).toStrictEqual(resizeAreaTheme.size);
@@ -123,7 +124,7 @@ describe('Resize Utils Tests', () => {
     test('should get resize cursor with col field', () => {
       const attrs = getResizeAreaAttrs({
         ...commonConfig,
-        type: 'col',
+        type: ResizeAreaType.Col,
       });
       expect(attrs.cursor).toStrictEqual('col-resize');
     });
@@ -131,7 +132,7 @@ describe('Resize Utils Tests', () => {
     test('should get resize cursor with row field', () => {
       const attrs = getResizeAreaAttrs({
         ...commonConfig,
-        type: 'row',
+        type: ResizeAreaType.Row,
       });
       expect(attrs.cursor).toStrictEqual('row-resize');
     });
@@ -147,10 +148,12 @@ describe('Resize Utils Tests', () => {
     test('should get prev resize area group if prevResizeArea is exist', () => {
       const groupId = 'id';
 
+      // create multiple group
       getResizeAreaGroupById(s2, groupId);
       getResizeAreaGroupById(s2, groupId);
       getResizeAreaGroupById(s2, groupId);
 
+      // use prev created group, only one resize area group
       expect(s2.foregroundGroup.getChildren()).toHaveLength(1);
     });
   });

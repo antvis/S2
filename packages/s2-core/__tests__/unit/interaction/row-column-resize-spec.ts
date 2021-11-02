@@ -3,6 +3,8 @@ import { pick } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
 import {
   PivotSheet,
+  ResizeAreaEffect,
+  ResizeAreaType,
   ResizeInfo,
   RESIZE_END_GUIDE_LINE_ID,
   RESIZE_MASK_ID,
@@ -142,13 +144,13 @@ describe('Interaction Row Column Resize Tests', () => {
   test('should update resize guide line position when col cell mouse down', () => {
     const resizeInfo: ResizeInfo = {
       theme: {},
-      type: 'col',
+      type: ResizeAreaType.Col,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      effect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: '',
       id: '',
     };
@@ -184,13 +186,13 @@ describe('Interaction Row Column Resize Tests', () => {
 
     const resizeInfo: ResizeInfo = {
       theme: {},
-      type: 'col',
+      type: ResizeAreaType.Col,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      effect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: 'filedA',
       id: '',
     };
@@ -256,13 +258,13 @@ describe('Interaction Row Column Resize Tests', () => {
   test('should update resize guide line position when row cell mouse down', () => {
     const resizeInfo: ResizeInfo = {
       theme: {},
-      type: 'row',
+      type: ResizeAreaType.Row,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      effect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: '',
       id: '',
     };
@@ -297,13 +299,13 @@ describe('Interaction Row Column Resize Tests', () => {
 
     const resizeInfo: ResizeInfo = {
       theme: {},
-      type: 'row',
+      type: ResizeAreaType.Row,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      effect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: 'filedB',
       id: '',
     };

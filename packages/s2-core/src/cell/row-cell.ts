@@ -4,6 +4,8 @@ import { HeaderCell } from './header-cell';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
+  ResizeAreaEffect,
+  ResizeAreaType,
   S2Event,
 } from '@/common/constant';
 import { FormatResult, TextTheme } from '@/common/interface';
@@ -246,8 +248,8 @@ export class RowCell extends HeaderCell {
         attrs: {
           ...getResizeAreaAttrs({
             theme: resizeStyle,
-            type: 'row',
-            effect: 'cell',
+            type: ResizeAreaType.Row,
+            effect: ResizeAreaEffect.Cell,
             caption: parent.isTotals ? '' : label,
             offsetX: position.x + x + seriesNumberWidth,
             offsetY: position.y + y - offset,

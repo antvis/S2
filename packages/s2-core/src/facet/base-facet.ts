@@ -97,7 +97,7 @@ export abstract class BaseFacet {
 
   protected hScrollBar: ScrollBar;
 
-  public hRowScrollBar: ScrollBar;
+  protected hRowScrollBar: ScrollBar;
 
   protected vScrollBar: ScrollBar;
 
