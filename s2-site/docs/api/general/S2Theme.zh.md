@@ -70,7 +70,7 @@ order: 2
 | size | `number` |  | 3 | 热区尺寸 |
 | background | `string` | |  | 热区背景色 |
 | backgroundOpacity | `number` |  | | 热区背景色透明度 |
-| guidLineColor | `string` |  | | 参考线颜色 |
+| guideLineColor | `string` |  | | 参考线颜色 |
 | interactionState | [InteractionState](#interactionstate) | |  | 热区交互态样式 |
 
 #### ScrollBarTheme
@@ -106,7 +106,7 @@ order: 2
 | shadowWidth | `number` | | 10 | 阴影宽度 |
 | shadowColors | `{left: string,` <br> `right: string}` | | `{left: 'rgba(0,0,0,0.1)',`<br>`right: 'rgba(0,0,0,0)'}` | `left` : 线性变化左侧颜色  <br> `right` : 线性变化右侧颜色 |
 
-#### TextTheme  
+#### TextTheme
 
 <description> **optional**  _object_ </description>
 

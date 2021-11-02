@@ -12,7 +12,7 @@ jest.mock('@/interaction/event-controller');
 
 const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 
-describe('State Test', () => {
+describe('State Controller Utils Tests', () => {
   const mockRowCell = {
     type: CellTypes.ROW_CELL,
     hideInteractionShape: jest.fn(),
