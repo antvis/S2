@@ -123,8 +123,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
 
-  protected getStyle(name?: string) {
+  protected getStyle(name?: keyof S2Theme) {
     return this.theme[name || this.cellType];
+  }
+
+  protected getResizeAreaStyle() {
+    return this.getStyle('resizeArea');
   }
 
   protected getCellArea() {

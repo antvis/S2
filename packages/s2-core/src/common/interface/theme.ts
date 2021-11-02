@@ -118,9 +118,9 @@ export interface ResizeArea {
   /* 热区背景色 */
   background?: string;
   /* 参考线颜色 */
-  guidLineColor?: string;
+  guideLineColor?: string;
   /* 参考线间隔 */
-  guidLineDash?: number;
+  guideLineDash?: number;
   /* 热区背景色透明度 */
   backgroundOpacity?: number;
   /* 交互态 */

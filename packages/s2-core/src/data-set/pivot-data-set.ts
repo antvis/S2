@@ -230,7 +230,7 @@ export class PivotDataSet extends BaseDataSet {
       // 万物排序的前提
       if (!sortFieldId) return;
       const originValues = [
-        ...this.sortedDimensionValues.get(sortFieldId)?.keys(),
+        ...(this.sortedDimensionValues.get(sortFieldId)?.keys?.() || []),
       ];
       const result = handleSortAction({
         dataSet: this,
