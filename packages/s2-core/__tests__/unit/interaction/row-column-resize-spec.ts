@@ -3,6 +3,8 @@ import { pick } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
 import {
   PivotSheet,
+  ResizeAreaEffect,
+  ResizeAreaType,
   ResizeInfo,
   RESIZE_END_GUIDE_LINE_ID,
   RESIZE_MASK_ID,
@@ -143,13 +145,14 @@ describe('Interaction Row Column Resize Tests', () => {
 
   test('should update resize guide line position when col cell mouse down', () => {
     const resizeInfo: ResizeInfo = {
-      type: 'col',
+      theme: {},
+      type: ResizeAreaType.Col,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      affect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: '',
       id: '',
     };
@@ -184,13 +187,14 @@ describe('Interaction Row Column Resize Tests', () => {
     s2.on(S2Event.LAYOUT_RESIZE_COL_WIDTH, colWidthResize);
 
     const resizeInfo: ResizeInfo = {
-      type: 'col',
+      theme: {},
+      type: ResizeAreaType.Col,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      affect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: 'filedA',
       id: '',
     };
@@ -208,7 +212,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(getResizeMask().attr('cursor')).toEqual('col-resize');
 
     emitResizeEvent(
-      S2Event.LAYOUT_RESIZE_MOUSE_UP,
+      S2Event.GLOBAL_MOUSE_UP,
       {
         offsetX: 30,
         offsetY: 20,
@@ -255,13 +259,14 @@ describe('Interaction Row Column Resize Tests', () => {
 
   test('should update resize guide line position when row cell mouse down', () => {
     const resizeInfo: ResizeInfo = {
-      type: 'row',
+      theme: {},
+      type: ResizeAreaType.Row,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      affect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: '',
       id: '',
     };
@@ -295,13 +300,14 @@ describe('Interaction Row Column Resize Tests', () => {
     s2.on(S2Event.LAYOUT_RESIZE_ROW_HEIGHT, rowWidthResize);
 
     const resizeInfo: ResizeInfo = {
-      type: 'row',
+      theme: {},
+      type: ResizeAreaType.Row,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      affect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: 'filedB',
       id: '',
     };
@@ -319,7 +325,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(getResizeMask().attr('cursor')).toEqual('row-resize');
 
     emitResizeEvent(
-      S2Event.LAYOUT_RESIZE_MOUSE_UP,
+      S2Event.GLOBAL_MOUSE_UP,
       {
         offsetX: 30,
         offsetY: 30,
