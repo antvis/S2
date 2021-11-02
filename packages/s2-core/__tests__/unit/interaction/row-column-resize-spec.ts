@@ -363,13 +363,14 @@ describe('Interaction Row Column Resize Tests', () => {
 
   test('should hidden tooltip when resize start', () => {
     const resizeInfo: ResizeInfo = {
-      type: 'row',
+      theme: {},
+      type: ResizeAreaType.Row,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      affect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: 'filedB',
       id: '',
     };
