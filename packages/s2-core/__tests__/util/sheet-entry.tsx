@@ -59,6 +59,7 @@ interface SheetEntryProps {
 // eslint-disable-next-line react/display-name
 export const SheetEntry = forwardRef(
   (props: SheetEntryProps, ref: MutableRefObject<SpreadSheet>) => {
+    const { themeCfg = {} } = props;
     const [mode, setMode] = useState('grid');
     const [valueInCols, setValueInCols] = useState(true);
     const initOptions = assembleOptions(props.options);
@@ -252,8 +253,8 @@ export const SheetEntry = forwardRef(
             }
           }}
           themeCfg={{
-            ...props.themeCfg,
-            theme: merge({}, props.themeCfg.theme, {
+            ...themeCfg,
+            theme: merge({}, themeCfg.theme, {
               resizeArea: {
                 backgroundOpacity: showResizeArea ? 1 : 0,
               },
