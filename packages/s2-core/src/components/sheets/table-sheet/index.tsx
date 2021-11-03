@@ -214,9 +214,9 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   }, [spreadsheet]);
 
   useEffect(() => {
-    ownSpreadsheet?.setOptions({ hiddenColumnFields: [] });
-    ownSpreadsheet?.hideColumns(options.hiddenColumnFields);
-  }, [ownSpreadsheet, options.hiddenColumnFields]);
+    ownSpreadsheet?.setOptions({ interaction: { hiddenColumnFields: [] } });
+    ownSpreadsheet?.hideColumns(options.interaction?.hiddenColumnFields);
+  }, [ownSpreadsheet, options.interaction?.hiddenColumnFields]);
 
   return (
     <StrictMode>

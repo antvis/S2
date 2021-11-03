@@ -5,8 +5,8 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Input, Space, Switch } from 'antd';
-import { isArray, merge, mergeWith } from 'lodash';
+import { Input, Select, Slider, Space, Switch } from 'antd';
+import { merge } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
   DEFAULT_OPTIONS,
@@ -20,23 +20,17 @@ import {
   DEFAULT_DATA_CONFIG,
 } from '@/index';
 import 'antd/dist/antd.min.css';
+import { customMerge } from '@/utils/merge';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
-  mergeWith(
-    {},
+  customMerge(
     DEFAULT_OPTIONS,
     { debug: true, width: 1000, height: 600 },
     ...options,
-    (origin, updated) => {
-      if (isArray(origin) && isArray(updated)) {
-        return updated;
-      }
-    },
   );
 
 export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
-  mergeWith(
-    {},
+  customMerge(
     DEFAULT_DATA_CONFIG,
     {
       fields: {
@@ -50,11 +44,6 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
       totalData,
     },
     ...dataCfg,
-    (origin, updated) => {
-      if (isArray(origin) && isArray(updated)) {
-        return updated;
-      }
-    },
   );
 
 interface SheetEntryProps {
@@ -70,6 +59,7 @@ interface SheetEntryProps {
 // eslint-disable-next-line react/display-name
 export const SheetEntry = forwardRef(
   (props: SheetEntryProps, ref: MutableRefObject<SpreadSheet>) => {
+    const { themeCfg = {} } = props;
     const [mode, setMode] = useState('grid');
     const [valueInCols, setValueInCols] = useState(true);
     const initOptions = assembleOptions(props.options);
@@ -77,10 +67,14 @@ export const SheetEntry = forwardRef(
     const initDataCfg = props.forceUpdateDataCfg
       ? props.dataCfg
       : assembleDataCfg(props.dataCfg);
-    const [options, setOptions] = useState(() => initOptions);
-    const [dataCfg, setDataCfg] = useState(() => initDataCfg);
+    const [adaptive, setAdaptive] = useState(false);
+    const [showResizeArea, setShowResizeArea] = useState(true);
+    const [options, setOptions] = useState<S2Options>(() => initOptions);
+    const [dataCfg, setDataCfg] = useState<Partial<S2DataConfig>>(
+      () => initDataCfg,
+    );
 
-    const onValueInColsChange = (checked) => {
+    const onValueInColsChange = (checked: boolean) => {
       setValueInCols(checked);
       setDataCfg(
         merge({}, dataCfg, {
@@ -91,7 +85,17 @@ export const SheetEntry = forwardRef(
       );
     };
 
-    const onModeChange = (checked) => {
+    const onAutoAdjustBoundary = (value: string) => {
+      setOptions(
+        merge({}, options, {
+          tooltip: {
+            autoAdjustBoundary: value || null,
+          },
+        }),
+      );
+    };
+
+    const onModeChange = (checked: boolean) => {
       setMode(checked ? 'tree' : 'grid');
       setOptions(
         merge({}, options, {
@@ -100,7 +104,7 @@ export const SheetEntry = forwardRef(
       );
     };
 
-    const onFreezeRowHeaderChange = (checked) => {
+    const onFreezeRowHeaderChange = (checked: boolean) => {
       setOptions(
         merge({}, options, {
           freezeRowHeader: checked,
@@ -128,6 +132,31 @@ export const SheetEntry = forwardRef(
       }
     }, [props.dataCfg]);
 
+    const sliderOptions = {
+      min: 0,
+      max: 10,
+      step: 0.1,
+      marks: {
+        0.5: '0.5倍',
+        1: '1 (默认)',
+        2: '2倍',
+        10: '10倍',
+      },
+    };
+
+    const onScrollSpeedRatioChange =
+      (type: 'horizontal' | 'vertical') => (value: number) => {
+        setOptions(
+          merge({}, options, {
+            interaction: {
+              scrollSpeedRatio: {
+                [type]: value,
+              },
+            },
+          }),
+        );
+      };
+
     return (
       <div>
         <Space style={{ marginBottom: 20 }}>
@@ -149,6 +178,36 @@ export const SheetEntry = forwardRef(
             defaultChecked={options.freezeRowHeader}
             onChange={onFreezeRowHeaderChange}
           />
+          <Switch
+            checkedChildren="容器宽高自适应开"
+            unCheckedChildren="容器宽高自适应关"
+            defaultChecked={adaptive}
+            onChange={(checked) => {
+              setAdaptive(checked);
+            }}
+          />
+          <Switch
+            checkedChildren="resize热区开"
+            unCheckedChildren="resize热区关"
+            defaultChecked={showResizeArea}
+            onChange={(checked) => {
+              setShowResizeArea(checked);
+            }}
+          />
+          <Space>
+            tooltip 自动调整:
+            <Select
+              defaultValue={options.tooltip.autoAdjustBoundary}
+              onChange={onAutoAdjustBoundary}
+              style={{ width: 200 }}
+            >
+              <Select.Option value="container">
+                container (表格区域)
+              </Select.Option>
+              <Select.Option value="body">body (浏览器可视区域)</Select.Option>
+              <Select.Option value="">无</Select.Option>
+            </Select>
+          </Space>
           <Space>
             设置宽度 ：
             <Input
@@ -168,18 +227,39 @@ export const SheetEntry = forwardRef(
             />
           </Space>
         </Space>
+        <div style={{ marginBottom: 40, width: '70%' }}>
+          水平滚动速率 ：
+          <Slider
+            {...sliderOptions}
+            defaultValue={options.interaction.scrollSpeedRatio.horizontal}
+            onChange={onScrollSpeedRatioChange('horizontal')}
+          />
+          垂直滚动速率 ：
+          <Slider
+            {...sliderOptions}
+            defaultValue={options.interaction.scrollSpeedRatio.vertical}
+            onChange={onScrollSpeedRatioChange('vertical')}
+          />
+        </div>
         <div style={{ marginBottom: 20 }}>{props.header}</div>
         <SheetComponent
-          dataCfg={dataCfg}
+          dataCfg={dataCfg as S2DataConfig}
           options={options}
           sheetType={props.sheetType}
-          adaptive={false}
+          adaptive={adaptive}
           getSpreadsheet={(instance) => {
             if (ref) {
               ref.current = instance;
             }
           }}
-          themeCfg={props.themeCfg}
+          themeCfg={{
+            ...themeCfg,
+            theme: merge({}, themeCfg.theme, {
+              resizeArea: {
+                backgroundOpacity: showResizeArea ? 1 : 0,
+              },
+            }),
+          }}
           onColCellClick={props.onColCellClick}
         />
       </div>

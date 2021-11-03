@@ -1,0 +1,72 @@
+{
+  "title": {
+    "zh": "排序",
+    "en": "Sort"
+  },
+  "demos": [
+    {
+      "filename": "sort.ts",
+      "title": {
+        "zh": "明细表排序",
+        "en": "Table Sort"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/WEiAq3byem/69cfeded-4d7a-400d-a4e5-bd03f83c75f5.png"
+    },
+    {
+      "filename": "group-sort.ts",
+      "title": {
+        "zh": "组内排序",
+        "en": "Group Sort"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/kN2XHP0RdW/34839688-ffd6-43b8-b48e-7b6aa23c4ad0.png"
+    },
+    {
+      "filename": "advanced.tsx",
+      "title": {
+        "zh": "高级排序",
+        "en": "Advanced Sort"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/IyjMAgBmPu/b5d75e5a-c7fc-4447-a318-0a388ee12d50.png"
+    },
+    {
+      "filename": "custom-method.ts",
+      "title": {
+        "zh": "根据升/降序方法排序",
+        "en": "Custom Method Sort"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/fn1vIMwK7B/02afdeff-6251-491f-a99c-4e8a1c14b3cd.png"
+    },
+    {
+      "filename": "custom-list.ts",
+      "title": {
+        "zh": "根据维度列表排序",
+        "en": "Custom List Sort"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+    },
+    {
+      "filename": "custom-measure.ts",
+      "title": {
+        "zh": "根据度量值排序",
+        "en": "Custom Measure Sort"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+    },
+    {
+      "filename": "custom-totals.ts",
+      "title": {
+        "zh": "根据汇总值排序",
+        "en": "Custom Totals Sort"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+    },
+    {
+      "filename": "custom-sort-func.ts",
+      "title": {
+        "zh": "根据自定义方法排序",
+        "en": "Custom Measure Sort"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png"
+    }
+  ]
+}

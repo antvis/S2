@@ -26,7 +26,6 @@ import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_GROUP_ROW_INDEX_RESIZE_AREA,
   KEY_GROUP_ROW_RESIZE_AREA,
-  MAX_SCROLL_OFFSET,
   MIN_SCROLL_BAR_HEIGHT,
   InterceptType,
   CORNER_MAX_WIDTH_RATIO,
@@ -197,11 +196,6 @@ export abstract class BaseFacet {
     this.renderScrollBars();
     this.renderBackground();
     this.dynamicRenderCell(false);
-    this.removeResizeIntercept();
-  }
-
-  private removeResizeIntercept() {
-    this.spreadsheet.interaction.removeIntercepts([InterceptType.RESIZE]);
   }
 
   /**
@@ -404,29 +398,27 @@ export abstract class BaseFacet {
 
   getCornerBBoxWidth = (cornerWidth: number): number => {
     const { colsHierarchy } = this.layoutResult;
-    if (!this.cfg.spreadsheet.isScrollContainsRowHeader()) {
-      return this.getCornerWidth(cornerWidth, colsHierarchy);
+    if (!this.spreadsheet.isScrollContainsRowHeader()) {
+      return this.getCornerWidth(cornerWidth, colsHierarchy.width);
     }
     return cornerWidth;
   };
 
   private getAdaptiveCornerWidth = (
     cornerWidth: number,
-    colsHierarchy: Hierarchy,
+    colsHierarchyWidth: number,
   ): number => {
     const { width: canvasWidth } = this.spreadsheet.options;
     const panelWidth = canvasWidth - cornerWidth;
     // 拖拽时需要忽略自适应, 避免出现角头空白的情况, (拖拽宽度权重 > 自适应宽度权重)
-    const isResizeAction = this.spreadsheet.interaction.hasIntercepts([
-      InterceptType.RESIZE,
-    ]);
+    const isResized = this.spreadsheet.store.get('resized');
 
     if (
-      panelWidth > colsHierarchy.width &&
+      panelWidth > colsHierarchyWidth &&
       this.spreadsheet.isColAdaptive() &&
-      !isResizeAction
+      !isResized
     ) {
-      const adaptiveCornerWidthDiff = panelWidth - colsHierarchy.width;
+      const adaptiveCornerWidthDiff = panelWidth - colsHierarchyWidth;
       return cornerWidth + adaptiveCornerWidthDiff;
     }
 
@@ -435,7 +427,7 @@ export abstract class BaseFacet {
 
   private getDefaultCornerWidth = (
     originalCornerWidth: number,
-    colsHierarchy: Hierarchy,
+    colsHierarchyWidth: number,
   ): number => {
     const { width: canvasWidth } = this.spreadsheet.options;
     const maxPanelWidth = Math.floor(
@@ -444,13 +436,13 @@ export abstract class BaseFacet {
     const panelWidth = Math.floor(canvasWidth - originalCornerWidth);
 
     if (
-      colsHierarchy.width > panelWidth &&
-      colsHierarchy.width <= maxPanelWidth
+      colsHierarchyWidth > panelWidth &&
+      colsHierarchyWidth <= maxPanelWidth
     ) {
-      return originalCornerWidth - (maxPanelWidth - colsHierarchy.width);
+      return originalCornerWidth - (maxPanelWidth - colsHierarchyWidth);
     }
 
-    if (colsHierarchy.width <= panelWidth) {
+    if (colsHierarchyWidth <= panelWidth) {
       return originalCornerWidth;
     }
 
@@ -459,21 +451,37 @@ export abstract class BaseFacet {
 
   private getCornerWidth = (
     originalCornerWidth: number,
-    colsHierarchy: Hierarchy,
+    colsHierarchyWidth: number,
   ): number => {
+    this.setFreezeCornerDiffWidth(0);
+
     if (this.spreadsheet.isHierarchyTreeType()) {
       return originalCornerWidth;
     }
     const defaultCornerWidth = this.getDefaultCornerWidth(
       originalCornerWidth,
-      colsHierarchy,
+      colsHierarchyWidth,
     );
     const cornerWidth = this.getAdaptiveCornerWidth(
       defaultCornerWidth,
-      colsHierarchy,
+      colsHierarchyWidth,
     );
-    return Math.floor(cornerWidth);
+    const freezeCornerDiffWidth = originalCornerWidth - cornerWidth;
+    this.setFreezeCornerDiffWidth(freezeCornerDiffWidth);
+
+    return cornerWidth;
   };
+
+  getFreezeCornerDiffWidth(): number {
+    if (!this.spreadsheet.isFreezeRowHeader()) {
+      return 0;
+    }
+    return this.spreadsheet.store.get('freezeCornerDiffWidth', 0);
+  }
+
+  setFreezeCornerDiffWidth(width: number) {
+    this.spreadsheet.store.set('freezeCornerDiffWidth', width);
+  }
 
   calculatePanelBBox = () => {
     const corner = this.cornerBBox;
@@ -491,8 +499,8 @@ export abstract class BaseFacet {
     const realWidth = this.getRealWidth();
     const realHeight = this.getRealHeight();
 
-    width = Math.floor(Math.min(width, realWidth));
-    height = Math.floor(Math.min(height, realHeight));
+    width = Math.ceil(Math.min(width, realWidth));
+    height = Math.ceil(Math.min(height, realHeight));
 
     this.panelBBox = {
       x: br.x,
@@ -669,7 +677,7 @@ export abstract class BaseFacet {
           (this.cfg.spreadsheet.isScrollContainsRowHeader()
             ? -this.cornerBBox.width + halfScrollSize
             : halfScrollSize),
-        y: this.panelBBox.maxY - this.scrollBarSize / 2,
+        y: this.panelBBox.maxY,
       };
       const finaleRealWidth =
         realWidth +
@@ -779,9 +787,7 @@ export abstract class BaseFacet {
   };
 
   updateVScrollBarThumbOffset = (deltaY: number) => {
-    const offsetTop =
-      this.vScrollBar?.thumbOffset +
-      Math.max(-MAX_SCROLL_OFFSET, Math.min(deltaY / 8, MAX_SCROLL_OFFSET));
+    const offsetTop = this.vScrollBar?.thumbOffset + deltaY / 8;
 
     this.vScrollBar?.updateThumbOffset(offsetTop);
   };
@@ -848,7 +854,7 @@ export abstract class BaseFacet {
   };
 
   onWheel = (event: S2WheelEvent) => {
-    const ratio = this.cfg.scrollSpeedRatio;
+    const ratio = this.cfg.interaction.scrollSpeedRatio;
     const { deltaX, deltaY, layerX, layerY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,
@@ -857,12 +863,14 @@ export abstract class BaseFacet {
     );
 
     this.spreadsheet.hideTooltip();
+    this.spreadsheet.interaction.clearHoverTimer();
 
     if (!this.isScrollInTheViewport(optimizedDeltaX, optimizedDeltaY)) {
       return;
     }
 
     event.preventDefault?.();
+    this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 
     cancelAnimationFrame(this.scrollFrameId);
 
@@ -1030,6 +1038,7 @@ export abstract class BaseFacet {
 
     this.clipPanelGroup();
     this.bindEvents();
+    // this.removeResizeIntercept();
   }
 
   protected renderBackground() {
@@ -1223,7 +1232,12 @@ export abstract class BaseFacet {
     this.clip(scrollX, scrollY);
 
     this.spreadsheet.emit(S2Event.LAYOUT_CELL_SCROLL, { scrollX, scrollY });
+    this.onAfterScroll();
   }
+
+  protected onAfterScroll = debounce(() => {
+    this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+  }, 300);
 
   protected abstract doLayout(): LayoutResult;
 

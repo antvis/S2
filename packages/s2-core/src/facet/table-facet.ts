@@ -2,7 +2,10 @@ import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
 import { getDataCellId } from 'src/utils/cell/data-cell';
 import { get, maxBy, set, size } from 'lodash';
+import { TableColHeader } from 'src/facet/header/table-col';
+import { ColHeader } from 'src/facet/header/col';
 import type {
+  Formatter,
   LayoutResult,
   S2CellType,
   SplitLine,
@@ -39,13 +42,12 @@ export class TableFacet extends BaseFacet {
     super(cfg);
 
     const s2 = this.spreadsheet;
-    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
-      const sortParam = getSortParam(sortKey, s2);
+    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod, sortBy }) => {
       set(s2.dataCfg, 'sortParams', [
         {
           sortFieldId: sortKey,
           sortMethod,
-          sortBy: sortParam?.sortBy,
+          sortBy,
         },
       ]);
       s2.setDataCfg(s2.dataCfg);
@@ -262,8 +264,9 @@ export class TableFacet extends BaseFacet {
 
   private getColNodeHeight(col: Node) {
     const { colCfg } = this.cfg;
-    const userDragWidth = get(colCfg, `heightByField.${col.key}`);
-    return userDragWidth || colCfg.height;
+    // 明细表所有列节点高度保持一致
+    const userDragHeight = Object.values(get(colCfg, `heightByField`))[0];
+    return userDragHeight || colCfg.height;
   }
 
   private calculateColNodesCoordinate(
@@ -459,6 +462,11 @@ export class TableFacet extends BaseFacet {
     return totalHeight;
   };
 
+  private getShadowFill = (angle: number) => {
+    const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
+    return `l (${angle}) 0:${style.shadowColors?.left} 1:${style.shadowColors?.right}`;
+  };
+
   protected renderFrozenGroupSplitLine = () => {
     const {
       frozenRowCount,
@@ -503,6 +511,18 @@ export class TableFacet extends BaseFacet {
           ...verticalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x,
+            y: this.cornerBBox.height,
+            width: style.shadowWidth,
+            height: this.panelBBox.maxY - this.cornerBBox.height,
+            fill: this.getShadowFill(0),
+          },
+        });
+      }
     }
 
     if (frozenRowCount > 0) {
@@ -521,6 +541,18 @@ export class TableFacet extends BaseFacet {
           ...horizontalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x: 0,
+            y: y,
+            width: this.panelBBox.width,
+            height: style.shadowWidth,
+            fill: this.getShadowFill(90),
+          },
+        });
+      }
     }
 
     if (frozenTrailingColCount > 0) {
@@ -545,6 +577,18 @@ export class TableFacet extends BaseFacet {
           ...verticalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x: x - style.shadowWidth,
+            y: this.cornerBBox.height,
+            width: style.shadowWidth,
+            height: this.panelBBox.maxY - this.cornerBBox.height,
+            fill: this.getShadowFill(180),
+          },
+        });
+      }
     }
 
     if (frozenTrailingRowCount > 0) {
@@ -566,6 +610,18 @@ export class TableFacet extends BaseFacet {
           ...horizontalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x: 0,
+            y: y - style.shadowWidth,
+            width: this.panelBBox.width,
+            height: style.shadowWidth,
+            fill: this.getShadowFill(270),
+          },
+        });
+      }
     }
   };
 
@@ -650,6 +706,28 @@ export class TableFacet extends BaseFacet {
         height,
       },
     });
+  }
+
+  protected getColHeader(): ColHeader {
+    if (!this.columnHeader) {
+      const { x, width, height } = this.panelBBox;
+      return new TableColHeader({
+        width,
+        height: this.cornerBBox.height,
+        viewportWidth: width,
+        viewportHeight: height,
+        position: { x, y: 0 },
+        data: this.layoutResult.colNodes,
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        offset: 0,
+        formatter: (field: string): Formatter =>
+          this.cfg.dataSet.getFieldFormatter(field),
+        sortParam: this.cfg.spreadsheet.store.get('sortParam'),
+        spreadsheet: this.spreadsheet,
+      });
+    }
+    return this.columnHeader;
   }
 
   public render() {

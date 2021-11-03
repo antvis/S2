@@ -1,12 +1,18 @@
 import { Group, Point, SimpleBBox } from '@antv/g-canvas';
-import { get, includes, isEmpty, last, max, min } from 'lodash';
-import { translateGroup } from '../utils';
+import { get, includes, isEmpty, last } from 'lodash';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { CornerData } from './interface';
+import { translateGroup } from '@/facet/utils';
+import {
+  getResizeAreaAttrs,
+  getResizeAreaGroupById,
+} from '@/utils/interaction/resize';
 import { CornerCell } from '@/cell/corner-cell';
 import {
   KEY_GROUP_CORNER_RESIZE_AREA,
   KEY_SERIES_NUMBER_NODE,
+  ResizeAreaEffect,
+  ResizeAreaType,
 } from '@/common/constant';
 import { i18n } from '@/common/i18n';
 import {
@@ -14,7 +20,6 @@ import {
   S2CellType,
   S2Options,
   SpreadSheetFacetCfg,
-  ResizeInfo,
 } from '@/common/interface';
 import { BaseDataSet } from '@/data-set';
 import { Hierarchy } from '@/facet/layout/hierarchy';
@@ -157,7 +162,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
           cNode.x = columOffsetX;
           cNode.y = colsHierarchy.sampleNodeForLastLevel.y;
-          cNode.width = rowNode.originalWidth || rowNode.width;
+          cNode.width = rowNode.width;
           cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
           cNode.field = field;
           cNode.isPivotMode = true;
@@ -175,6 +180,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     colsHierarchy.sampleNodesForAllLevels.forEach((colNode) => {
       // 列头最后一个层级的位置为行头 label 标识，需要过滤
       if (colNode.level < colsHierarchy.maxLevel) {
+        const freezeCornerDiffWidth = s2.facet.getFreezeCornerDiffWidth();
         const field = columns[colNode.level];
         const cNode: Node = new Node({
           key: field,
@@ -183,8 +189,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         });
         cNode.x = columOffsetX;
         cNode.y = colNode.y;
-        cNode.width = width - columOffsetX;
-        cNode.height = colNode.originalHeight || colNode.height;
+        cNode.width = width - columOffsetX + freezeCornerDiffWidth;
+        cNode.height = colNode.height;
         cNode.field = field;
         cNode.isPivotMode = true;
         cNode.cornerType = CornerNodeType.Col;
@@ -213,11 +219,11 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
   }
 
   protected layout() {
-    this.startRender();
-    this.handleHotsSpotArea();
+    this.renderCells();
+    this.renderResizeAreas();
   }
 
-  protected startRender() {
+  protected renderCells() {
     const { data, spreadsheet } = this.headerConfig;
     const cornerHeader = spreadsheet?.facet?.cfg?.cornerHeader;
     const cornerCell = spreadsheet?.facet?.cfg?.cornerCell;
@@ -229,7 +235,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       );
       return;
     }
-    // 背景
     this.addBgRect();
     data.forEach((item: Node) => {
       let cell: Group;
@@ -287,63 +292,52 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     });
   }
 
-  private handleHotsSpotArea() {
-    const { data, position, width, height, seriesNumberWidth } =
+  private renderResizeAreas() {
+    const { data, position, width, height, seriesNumberWidth, spreadsheet } =
       this.headerConfig;
-    const resizeStyle = this.headerConfig.spreadsheet.theme.resizeArea;
-    const prevResizeArea =
-      this.headerConfig.spreadsheet.foregroundGroup.findById(
-        KEY_GROUP_CORNER_RESIZE_AREA,
-      );
-    const resizeArea = (prevResizeArea ||
-      this.headerConfig.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_CORNER_RESIZE_AREA,
-      })) as Group;
-    const treeType = this.headerConfig.spreadsheet.isHierarchyTreeType();
-    if (treeType) {
+    const resizeStyle = spreadsheet.theme.resizeArea;
+    const resizeArea = getResizeAreaGroupById(
+      spreadsheet,
+      KEY_GROUP_CORNER_RESIZE_AREA,
+    );
+
+    if (spreadsheet.isHierarchyTreeType()) {
       resizeArea.addShape('rect', {
         attrs: {
-          x: position.x + width - resizeStyle.size / 2,
-          y: position.y,
-          width: resizeStyle.size,
-          height: this.get('viewportHeight') + height,
-          fill: resizeStyle.background,
-          fillOpacity: resizeStyle.backgroundOpacity,
-          cursor: 'col-resize',
-          appendInfo: {
-            isResizeArea: true,
-            class: 'resize-trigger',
-            type: 'col',
-            affect: 'tree',
+          ...getResizeAreaAttrs({
+            theme: resizeStyle,
+            type: ResizeAreaType.Col,
+            effect: ResizeAreaEffect.Tree,
             offsetX: position.x + seriesNumberWidth,
             offsetY: position.y,
             width: width - seriesNumberWidth,
             height,
-          } as ResizeInfo,
+          }),
+          x: position.x + width - resizeStyle.size / 2,
+          y: position.y,
+          height: this.get('viewportHeight') + height,
         },
       });
     }
     const cell: CornerData = get(data, '0', {});
+    const offsetX = position.x;
+    const offsetY = position.y;
+
     resizeArea.addShape('rect', {
       attrs: {
-        x: position.x,
-        y: position.y + cell.y + cell.height - resizeStyle.size / 2,
-        width,
-        height: resizeStyle.size,
-        fill: resizeStyle.background,
-        fillOpacity: resizeStyle.backgroundOpacity,
-        cursor: 'row-resize',
-        appendInfo: {
-          isResizeArea: true,
-          class: 'resize-trigger',
-          type: 'row',
-          affect: 'field',
+        ...getResizeAreaAttrs({
+          theme: resizeStyle,
+          type: ResizeAreaType.Row,
+          effect: ResizeAreaEffect.Filed,
           id: last(this.get('columns')),
-          offsetX: position.x,
-          offsetY: position.y + cell.y,
+          offsetX,
+          offsetY,
           width: cell.width,
           height: cell.height,
-        } as ResizeInfo,
+        }),
+        x: offsetX,
+        y: offsetY + cell.y + cell.height - resizeStyle.size / 2,
+        width,
       },
     });
   }

@@ -120,7 +120,7 @@ export class Frame extends Group {
     }
     const splitLine = spreadsheet.theme?.splitLine;
     if (
-      splitLine.showRightShadow &&
+      splitLine.showShadow &&
       showViewPortRightShadow &&
       this.cfg.spreadsheet.isFreezeRowHeader()
     ) {

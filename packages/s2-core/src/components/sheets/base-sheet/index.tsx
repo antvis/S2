@@ -26,6 +26,7 @@ import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 import { S2Pagination } from '@/components/pagination';
 
 import './index.less';
+
 export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
     spreadsheet,
@@ -239,7 +240,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     baseSpreadsheet.current = getSpreadSheet();
     bindEvent();
     baseSpreadsheet.current.setDataCfg(getSafetyDataConfig(dataCfg));
-    baseSpreadsheet.current.store.set('originalDataCfg', dataCfg);
     setOptions(baseSpreadsheet.current, props);
     baseSpreadsheet.current.setThemeCfg(themeCfg);
     baseSpreadsheet.current.render();
@@ -325,11 +325,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     setOptions(ownSpreadsheet, newProps);
     update(null, false);
   }, [pageSize, current]);
-
-  useEffect(() => {
-    ownSpreadsheet?.setOptions({ hiddenColumnFields: [] });
-    ownSpreadsheet?.hideColumns(options.hiddenColumnFields);
-  }, [ownSpreadsheet, options.hiddenColumnFields]);
 
   return (
     <StrictMode>

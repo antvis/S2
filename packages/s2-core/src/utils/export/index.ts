@@ -180,14 +180,18 @@ export const copyData = (
 ): string => {
   const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
     sheetInstance?.facet?.layoutResult;
-  const { valueInCols } = sheetInstance.options;
+  const { valueInCols } = sheetInstance.dataCfg.fields;
   // Generate the table header.
 
   const rowsHeader = rowsHierarchy.sampleNodesForAllLevels.map((item) =>
     sheetInstance.dataSet.getFieldName(item.key),
   );
 
-  const rowLength = rowsHeader.length;
+  // get max query property length
+  const rowLength = rowLeafNodes.reduce((pre, cur) => {
+    const length = cur.query ? Object.keys(cur.query).length : 0;
+    return length > pre ? length : pre;
+  }, 0);
 
   let headers: string[][] = [];
 
@@ -222,8 +226,10 @@ export const copyData = (
 
     // Generate the table header.
     headers = colHeader.map((item, index) => {
-      return index < colHeader.length - 1
-        ? Array(rowLength).concat(...item)
+      return index < colHeader.length
+        ? Array(rowLength)
+            .fill('')
+            .concat(...item)
         : rowsHeader.concat(...item);
     });
   }

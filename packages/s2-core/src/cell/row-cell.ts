@@ -1,17 +1,23 @@
-import { Group, Point } from '@antv/g-canvas';
+import { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { HeaderCell } from './header-cell';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
+  ResizeAreaEffect,
+  ResizeAreaType,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme, ResizeInfo } from '@/common/interface';
+import { FormatResult, TextTheme } from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
+import {
+  getResizeAreaAttrs,
+  getResizeAreaGroupById,
+} from '@/utils/interaction/resize';
 
 export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;
@@ -169,9 +175,12 @@ export class RowCell extends HeaderCell {
       horizontalBorderColor,
       horizontalBorderWidth,
       horizontalBorderOpacity,
+      verticalBorderColor,
+      verticalBorderWidth,
+      verticalBorderColorOpacity,
     } = this.getStyle().cell;
-    const { x, y, height } = this.getCellArea();
-    // 1、bottom border
+    const { x, y, height, width: cellWidth } = this.getCellArea();
+    // horizontal border
     const contentIndent = this.getContentIndent();
     renderLine(
       this,
@@ -187,43 +196,69 @@ export class RowCell extends HeaderCell {
         opacity: horizontalBorderOpacity,
       },
     );
+
+    // vertical border
+    renderLine(
+      this,
+      {
+        x1: x + contentIndent + cellWidth,
+        y1: y,
+        x2: x + contentIndent + cellWidth,
+        y2: y + height,
+      },
+      {
+        stroke: verticalBorderColor,
+        lineWidth: verticalBorderWidth,
+        opacity: verticalBorderColorOpacity,
+      },
+    );
+  }
+
+  protected getColResizeAreaOffset() {
+    const { offset, position } = this.headerConfig;
+    const { x, y } = this.meta;
+
+    return {
+      x: position.x - offset + x,
+      y: position.y + y,
+    };
   }
 
   protected drawResizeAreaInLeaf() {
     if (this.meta.isLeaf) {
       const { x, y, width, height } = this.getCellArea();
-      const resizeStyle = this.getStyle('resizeArea');
-      // 热区公用一个group
-      const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+      const resizeStyle = this.getResizeAreaStyle();
+      const resizeArea = getResizeAreaGroupById(
+        this.spreadsheet,
         KEY_GROUP_ROW_RESIZE_AREA,
       );
-      const resizeArea = (prevResizeArea ||
-        this.spreadsheet.foregroundGroup.addGroup({
-          id: KEY_GROUP_ROW_RESIZE_AREA,
-        })) as Group;
 
-      const { offset, position, seriesNumberWidth } = this.headerConfig;
+      const { offset, position, seriesNumberWidth, scrollX } =
+        this.headerConfig;
       const { label, parent } = this.meta;
+
+      const freezeCornerDiffWidth =
+        this.spreadsheet.facet.getFreezeCornerDiffWidth();
+
+      const resizeAreaWidth = this.spreadsheet.isFreezeRowHeader()
+        ? width - freezeCornerDiffWidth + scrollX
+        : width;
+
       resizeArea.addShape('rect', {
         attrs: {
-          x: position.x + x + seriesNumberWidth,
-          y: position.y + y - offset + height - resizeStyle.size / 2,
-          width,
-          height: resizeStyle.size,
-          fill: resizeStyle.background,
-          fillOpacity: resizeStyle.backgroundOpacity,
-          cursor: 'row-resize',
-          appendInfo: {
-            isResizeArea: true,
-            class: 'resize-trigger',
-            type: 'row',
-            affect: 'cell',
+          ...getResizeAreaAttrs({
+            theme: resizeStyle,
+            type: ResizeAreaType.Row,
+            effect: ResizeAreaEffect.Cell,
             caption: parent.isTotals ? '' : label,
             offsetX: position.x + x + seriesNumberWidth,
             offsetY: position.y + y - offset,
             width,
             height,
-          } as ResizeInfo,
+          }),
+          x: position.x + x - scrollX + seriesNumberWidth,
+          y: position.y + y - offset + height - resizeStyle.size / 2,
+          width: resizeAreaWidth,
         },
       });
     }

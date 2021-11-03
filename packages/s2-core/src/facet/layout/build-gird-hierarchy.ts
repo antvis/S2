@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { layoutArrange } from '@/facet/layout/layout-hooks';
@@ -20,6 +21,7 @@ const hideMeasureColumn = (
     }
   }
 };
+
 /**
  * Build grid hierarchy in rows or columns
  *
@@ -37,7 +39,8 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
   } = params;
   const index = fields.indexOf(currentField);
   const { dataSet, values, spreadsheet } = facetCfg;
-  const fieldValues = [] as FieldValue[];
+  const fieldValues: FieldValue[] = [];
+
   let query = {};
   if (parentNode.isTotals) {
     // add total measures
@@ -51,6 +54,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     query = getDimsCondition(parentNode, true);
 
     const dimValues = dataSet.getDimensionValues(currentField, query);
+
     const arrangedValues = layoutArrange(
       dimValues,
       facetCfg,
@@ -58,6 +62,18 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       currentField,
     );
     fieldValues.push(...(arrangedValues || []));
+
+    // add skeleton for empty data
+
+    const fieldName = dataSet.getFieldName(currentField);
+
+    if (isEmpty(fieldValues)) {
+      if (currentField === EXTRA_FIELD) {
+        fieldValues.push(...dataSet.fields?.values);
+      } else {
+        fieldValues.push(fieldName || currentField);
+      }
+    }
     // hide measure in columns
     hideMeasureColumn(fieldValues, currentField, facetCfg);
     // add totals if needed

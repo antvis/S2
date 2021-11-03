@@ -39,7 +39,7 @@ export class RootInteraction {
 
   // hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
   // 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
-  public hoverTimer: number = null;
+  private hoverTimer: NodeJS.Timeout = null;
 
   public eventController: EventController;
 
@@ -56,8 +56,17 @@ export class RootInteraction {
 
   public destroy() {
     this.interactions.clear();
+    this.intercepts.clear();
     this.eventController.clear();
+    this.clearHoverTimer();
     this.resetState();
+  }
+
+  public reset() {
+    this.clearState();
+    this.clearHoverTimer();
+    this.intercepts.clear();
+    this.spreadsheet.hideTooltip();
   }
 
   public setState(interactionStateInfo: InteractionStateInfo) {
@@ -247,7 +256,8 @@ export class RootInteraction {
       );
     }
 
-    const customInteractions = this.spreadsheet.options?.customInteractions;
+    const customInteractions =
+      this.spreadsheet.options?.interaction.customInteractions;
     if (!isEmpty(customInteractions)) {
       forEach(customInteractions, (customInteraction: CustomInteraction) => {
         const CustomInteractionClass = customInteraction.interaction;
@@ -270,12 +280,6 @@ export class RootInteraction {
   public clearState() {
     clearState(this.spreadsheet);
     this.draw();
-  }
-
-  public reset() {
-    this.clearState();
-    this.intercepts.clear();
-    this.spreadsheet.hideTooltip();
   }
 
   public changeState(interactionStateInfo: InteractionStateInfo) {
@@ -324,5 +328,17 @@ export class RootInteraction {
     interceptTypes.forEach((interceptType) => {
       this.intercepts.delete(interceptType);
     });
+  }
+
+  public clearHoverTimer() {
+    clearTimeout(this.hoverTimer);
+  }
+
+  public setHoverTimer(timer: NodeJS.Timeout) {
+    this.hoverTimer = timer;
+  }
+
+  public getHoverTimer() {
+    return this.hoverTimer;
   }
 }

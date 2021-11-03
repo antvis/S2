@@ -385,7 +385,7 @@ export class ScrollBar extends Group {
   private onMouseUp = (e: MouseEvent) => {
     this.emit(ScrollType.ScrollEnd, {});
     e.preventDefault();
-    this.clearEvents();
+    this.clearEvents?.();
   };
 
   private onTrackMouseOver = () => {

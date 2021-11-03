@@ -1,7 +1,6 @@
 import { isEmpty } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { InterceptType } from '@/common/constant/interaction';
 import { SpreadSheet } from '@/sheet-type';
 import {
   ListItem,
@@ -15,7 +14,11 @@ import {
   TooltipHeadInfo as TooltipHeadInfoType,
   TooltipInterpretationOptions,
 } from '@/common/interface';
-import { getOptions, getPosition, setContainerStyle } from '@/utils/tooltip';
+import {
+  getOptions,
+  getAutoAdjustPosition,
+  setContainerStyle,
+} from '@/utils/tooltip';
 import { TooltipDetail } from '@/ui/tooltip/components/detail';
 import { Divider } from '@/ui/tooltip/components/divider';
 import { TooltipHead } from '@/ui/tooltip/components/head-info';
@@ -24,7 +27,7 @@ import { Interpretation } from '@/ui/tooltip/components/interpretation';
 import { TooltipOperator } from '@/ui/tooltip/components/operator';
 import { SimpleTips } from '@/ui/tooltip/components/simple-tips';
 import { TooltipSummary } from '@/ui/tooltip/components/summary';
-import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
+import { TOOLTIP_CONTAINER_CLS } from '@/common/constant/tooltip';
 
 import './index.less';
 
@@ -57,16 +60,22 @@ export class BaseTooltip {
     const { position, data, options, element } = showOptions;
     const { enterable } = getOptions(options);
     const container = this.getContainer();
+    const { tooltipComponent, autoAdjustBoundary } =
+      this.spreadsheet.options.tooltip || {};
 
-    const CustomComponent =
-      element || this.spreadsheet.options.tooltip?.tooltipComponent;
+    const CustomComponent = element || tooltipComponent;
 
     this.options = showOptions;
     this.renderElement = CustomComponent
       ? ReactDOM.render(CustomComponent, container)
       : ReactDOM.render(this.renderContent(data, options), container);
 
-    const { x, y } = getPosition(position, container);
+    const { x, y } = getAutoAdjustPosition({
+      spreadsheet: this.spreadsheet,
+      position,
+      tooltipContainer: container,
+      autoAdjustBoundary,
+    });
 
     this.position = {
       x,
@@ -74,18 +83,22 @@ export class BaseTooltip {
     };
 
     setContainerStyle(container, {
-      left: `${x}px`,
-      top: `${y}px`,
-      pointerEvents: enterable ? 'all' : 'none',
-      visibility: 'visible',
+      style: {
+        left: `${x}px`,
+        top: `${y}px`,
+        pointerEvents: enterable ? 'all' : 'none',
+      },
+      className: `${TOOLTIP_CONTAINER_CLS}-show`,
     });
   }
 
   public hide() {
     const container = this.getContainer();
     setContainerStyle(container, {
-      pointerEvents: 'none',
-      visibility: 'hidden',
+      style: {
+        pointerEvents: 'none',
+      },
+      className: `${TOOLTIP_CONTAINER_CLS}-hide`,
     });
     this.resetPosition();
     this.unMountComponent(container);
@@ -99,11 +112,18 @@ export class BaseTooltip {
   }
 
   public disablePointerEvent() {
+    if (!this.container) {
+      return;
+    }
+
     if (this.container.style.pointerEvents === 'none') {
       return;
     }
+
     setContainerStyle(this.container, {
-      pointerEvents: 'none',
+      style: {
+        pointerEvents: 'none',
+      },
     });
   }
 
@@ -196,7 +216,7 @@ export class BaseTooltip {
       document.body.appendChild(container);
       this.container = container;
     }
-    this.container.className = `${TOOLTIP_PREFIX_CLS}-container`;
+    this.container.className = TOOLTIP_CONTAINER_CLS;
     return this.container;
   }
 

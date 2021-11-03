@@ -54,6 +54,9 @@ jest.mock('src/sheet-type', () => {
         emit: jest.fn(),
         isScrollContainsRowHeader: jest.fn(),
         isHierarchyTreeType: jest.fn(),
+        facet: {
+          getFreezeCornerDiffWidth: jest.fn(),
+        },
       };
     }),
   };

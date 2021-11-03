@@ -309,6 +309,7 @@ export abstract class SpreadSheet extends EE {
    * @param dataCfg
    */
   public setDataCfg(dataCfg: S2DataConfig) {
+    this.store.set('originalDataCfg', dataCfg);
     const newDataCfg = clone(dataCfg);
     const lastSortParam = this.store.get('sortParam');
     const { sortParams } = newDataCfg;
@@ -542,7 +543,7 @@ export abstract class SpreadSheet extends EE {
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息
   private initHiddenColumnsDetail = once(() => {
-    const { hiddenColumnFields } = this.options;
+    const { hiddenColumnFields } = this.options.interaction;
     if (isEmpty(hiddenColumnFields)) {
       return;
     }

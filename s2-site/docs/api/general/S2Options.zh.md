@@ -12,7 +12,7 @@ order: 1
 | conditions | [Conditions](#conditions) |  |    | 条件模式配置 |
 | totals | [Totals](#totals) |  |    | 小计总计配置 |
 | tooltip | [Tooltip](#tooltip) |    |  |  tooltip 总配置 |
-| linkFields | `string[]` |  |  |   标记字段为链接样式，用于外链跳转 |
+| interaction | [Interaction](#interaction) |    |  |  表格交互配置 |
 | pagination | [Pagination](#pagination) |  |    | 分页配置 |
 | freezeRowHeader | `boolean` |  |   `true` | 冻结行头 |
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
@@ -21,17 +21,13 @@ order: 1
 | headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
 | customSVGIcons | [CustomSVGIcon[]](#customsvgicon) |  |   `false` | 自定义 svg 图标 |
 | style | [Style](#style) |  |    | 附加样式 |
-| frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 |
-| frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 |
-| frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 |
-| frozenTrailingColCount | `number` |    |  | 冻结列的数量，从右侧开始计数 |
+| frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 (明细表有效) |
+| frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 (明细表有效) |
+| frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 (明细表有效) |
+| frozenTrailingColCount | `number` |    |  | 冻结列的数量，从右侧开始计数 (明细表有效) |
 | hierarchyCollapse | `boolean` |  |   `false` | 在树状结构模式下行头是否默认展开。 |
-| selectedCellsSpotlight | `boolean` |  |   `true` | 是否开启选中高亮聚光灯效果 |
-| hoverHighlight | `boolean` |  |   `true` | 鼠标悬停时高亮当前单元格，以及所对应的行头，列头 |
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题 |
-| hiddenColumnFields | `string[]` |  |    | 隐藏列 （明细表有效） |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
-| enableCopy | `boolean` |  |   `false` | 是否允许复制 |
 | dataCell | [DataCellCallback](#datacellcallback) |  |    | 自定义单元格 cell |
 | cornerCell | [CellCallback](#cellcallback) |  |    | 自定义 cornerCell |
 | rowCell | [CellCallback](#cellcallback) |  |  |   自定义行头 cell |
@@ -44,11 +40,9 @@ order: 1
 | filterDisplayDataItem | [FilterDataItemCallback](#filterdataitemcallback) |  |    | 过滤数据 |
 | mappingDisplayDataItem | [MappingDataItemCallback](#mappingdataitemcallback) |  |    | 转换数据，用于 tooltip 显示 |
 | otterLayout | [OtterLayout](#otterlayout) |  |  |   自定义 layout |
-| customInteractions | [CustomInteraction[]](#custominteraction) |    |  | 自定义交互 |
 | dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
-| scrollSpeedRatio | [ScrollRatio](#scrollratio)|  |  |  用于控制滚动速率，分水平和垂直两个方向，默认为 1 |
-| autoResetSheetStyle | `boolean` |  | `true` |  用于控制点击表格外区域和按下 esc 键时是否重置交互状态 |
-| [key: string] | `unknown` |  |  |   其他任意的选择配置，用于自定义表格 |
+
+`markdown:docs/common/interaction.zh.md`
 
 `markdown:docs/common/conditions.zh.md`
 
@@ -262,13 +256,3 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 | colIndex | `boolean` |  |  |   列索引 |
 | rowIndex | `boolean` |  |  |   行索引 |
 | showText | `boolean` |  |  |   是否显示文本 |
-
-## ScrollRatio
-
-```js
-interface ScrollRatio {
-  horizontal?: number; // 水平滚动速率，默认为 1
-  vertical?: number; // 垂直滚动速率，默认为 1
-}
-
-```

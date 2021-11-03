@@ -1,0 +1,40 @@
+{
+  "title": {
+    "zh": "基础Tooltip",
+    "en": "Basic Tooltip"
+  },
+  "demos": [
+    {
+      "filename": "basic.ts",
+      "title": {
+        "zh": "显示",
+        "en": "Basic Show"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/F6RSff0pe/de0c574d-ddb1-4096-9416-13eec503ebf7.png"
+    },
+    {
+      "filename": "operation.ts",
+      "title": {
+        "zh": "操作项",
+        "en": "Operation"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/2rmoKjpB1%26/7973e74e-9644-4302-a20c-3959c8b5beeb.png"
+    },
+    {
+      "filename": "component.tsx",
+      "title": {
+        "zh": "组件",
+        "en": "Custom Component"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/bkwOEFF14e/718e8b35-1660-4b06-8df0-4114da911179.png"
+    },
+    {
+      "filename": "render-tooltip.tsx",
+      "title": {
+        "zh": "重写基类",
+        "en": "Custom Render"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/F6RSff0pe/de0c574d-ddb1-4096-9416-13eec503ebf7.png"
+    }
+  ]
+}

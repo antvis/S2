@@ -1,0 +1,72 @@
+{
+  "fields": {
+    "rows": ["company", "grade", "type"],
+    "columns": [],
+    "values": ["value"],
+    "valueInCols": true
+  },
+  "meta": [
+    {
+      "field": "company",
+      "name": "销售渠道"
+    },
+    {
+      "field": "grade",
+      "name": "客户等级"
+    },
+    {
+      "field": "type",
+      "name": "商品类别"
+    },
+    {
+      "field": "value",
+      "name": "数量"
+    }
+  ],
+  "data": [
+    {
+      "grade": "普通会员",
+      "type": "办公用品",
+      "value": 1931577,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "普通会员",
+      "type": "家具",
+      "value": 404990,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "白金会员",
+      "type": "办公用品",
+      "value": 1844762,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "白金会员",
+      "type": "家具",
+      "value": 406853,
+      "company": "世纪联华"
+    }
+  ],
+  "totalData": [
+    {
+      "Group": "",
+      "value": 4588182
+    },
+    {
+      "company": "世纪联华",
+      "value": 4588182
+    },
+    {
+      "grade": "普通会员",
+      "value": 2336567,
+      "company": "世纪联华"
+    },
+    {
+      "grade": "白金会员",
+      "value": 2251615,
+      "company": "世纪联华"
+    }
+  ]
+}

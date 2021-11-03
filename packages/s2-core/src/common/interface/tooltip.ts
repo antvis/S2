@@ -21,7 +21,6 @@ export interface TooltipOperatorOptions {
 export interface TooltipPosition {
   x: number;
   y: number;
-  tipHeight?: number;
 }
 
 export type ListItem = {
@@ -43,7 +42,6 @@ export interface TooltipOptions {
   isTotals?: boolean;
   showSingleTips?: boolean;
   onlyMenu?: boolean;
-  rowQuery?: Record<string, unknown>;
 }
 
 export interface TooltipSummaryOptions {
@@ -98,6 +96,8 @@ export type TooltipData = {
   tips?: string;
   infos?: string;
   interpretation?: TooltipInterpretationOptions;
+  colIndex?: number;
+  rowIndex?: number;
 };
 
 export type TooltipHeadInfo = {
@@ -138,12 +138,15 @@ export interface OrderOption {
   name: string;
 }
 
+export type TooltipAutoAdjustBoundary = 'body' | 'container';
+
 export interface BaseTooltipConfig {
   readonly showTooltip?: boolean;
   // replace the whole default tooltip component
   readonly tooltipComponent?: JSX.Element;
   // Tooltip operation
   readonly operation?: TooltipOperation;
+  readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
 }
 
 export interface Tooltip extends BaseTooltipConfig {
@@ -164,3 +167,10 @@ export interface TooltipOperation {
 }
 
 export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;
+
+export interface AutoAdjustPositionOptions {
+  position: TooltipPosition;
+  tooltipContainer: HTMLElement;
+  spreadsheet: SpreadSheet;
+  autoAdjustBoundary: TooltipAutoAdjustBoundary;
+}

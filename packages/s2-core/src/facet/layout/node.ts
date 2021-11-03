@@ -12,6 +12,7 @@ export interface BaseNodeConfig {
   label?: string;
   level?: number;
   rowIndex?: number;
+  colIndex?: number;
   parent?: Node;
   isTotals?: boolean;
   isSubTotals?: boolean;
@@ -24,9 +25,15 @@ export interface BaseNodeConfig {
   spreadsheet?: SpreadSheet;
   query?: Record<string, any>;
   belongsCell?: S2CellType;
+  isTotalMeasure?: boolean;
   inCollapseNode?: boolean;
   isLeaf?: boolean;
-  [key: string]: any;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  padding?: number;
+  children?: Node[];
 }
 
 /**
@@ -224,14 +231,8 @@ export class Node {
   // node width
   public width = 0;
 
-  // 针对小计总计，在未进行宽高变换前的宽度值
-  public originalWidth = 0;
-
   // node height
   public height = 0;
-
-  // 针对小计总计，在未进行宽高变换前的高度值
-  public originalHeight = 0;
 
   // node real display text label
   public label: string;

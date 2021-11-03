@@ -76,7 +76,9 @@ export class DataCell extends BaseCell<ViewMeta> {
       case CellTypes.DATA_CELL:
         if (includeCell(cells, this)) {
           this.updateByState(InteractionStateName.SELECTED);
-        } else if (this.spreadsheet.options.selectedCellsSpotlight) {
+        } else if (
+          this.spreadsheet.options.interaction.selectedCellsSpotlight
+        ) {
           this.updateByState(InteractionStateName.UNSELECTED);
         }
         break;
@@ -92,7 +94,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       return;
     }
 
-    if (this.spreadsheet.options.hoverHighlight) {
+    if (this.spreadsheet.options.interaction.hoverHighlight) {
       // 如果当前是hover，要绘制出十字交叉的行列样式
 
       const currentColIndex = this.meta.colIndex;
@@ -393,7 +395,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     );
     if (isEqualIndex) {
       this.updateByState(InteractionStateName.SELECTED);
-    } else if (this.spreadsheet.options.selectedCellsSpotlight) {
+    } else if (this.spreadsheet.options.interaction.selectedCellsSpotlight) {
       this.updateByState(InteractionStateName.UNSELECTED);
     } else {
       this.hideInteractionShape();
@@ -412,6 +414,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       horizontalBorderColorOpacity,
       verticalBorderColor,
       verticalBorderWidth,
+      verticalBorderColorOpacity,
     } = this.getStyle().cell;
 
     // horizontal border
@@ -442,7 +445,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       {
         stroke: verticalBorderColor,
         lineWidth: verticalBorderWidth,
-        opacity: horizontalBorderColorOpacity,
+        opacity: verticalBorderColorOpacity,
       },
     );
   }

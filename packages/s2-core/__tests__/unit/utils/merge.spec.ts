@@ -70,34 +70,37 @@ describe('merge test', () => {
       totals: {},
       tooltip: {
         showTooltip: true,
+        autoAdjustBoundary: 'body',
         operation: {
           hiddenColumns: true,
           trend: false,
           sort: true,
         },
       },
-      linkFields: [],
+      interaction: {
+        linkFields: [],
+        hiddenColumnFields: [],
+        selectedCellsSpotlight: true,
+        hoverHighlight: true,
+        scrollSpeedRatio: {
+          horizontal: 1,
+          vertical: 1,
+        },
+        autoResetSheetStyle: true,
+      },
       freezeRowHeader: true,
       showSeriesNumber: false,
       scrollReachNodeField: {},
-      hiddenColumnFields: [],
       customSVGIcons: [],
       customHeaderCells: null,
       showDefaultHeaderActionIcon: true,
       headerActionIcons: [],
       style: DEFAULT_STYLE,
-      selectedCellsSpotlight: true,
-      hoverHighlight: true,
       frozenRowCount: 0,
       frozenColCount: 0,
       frozenTrailingRowCount: 0,
       frozenTrailingColCount: 0,
       hdAdapter: true,
-      scrollSpeedRatio: {
-        horizontal: 1,
-        vertical: 1,
-      },
-      autoResetSheetStyle: true,
     });
   });
 
@@ -110,8 +113,10 @@ describe('merge test', () => {
         },
       },
     });
+
     expect(options.tooltip).toStrictEqual({
       showTooltip: false,
+      autoAdjustBoundary: 'body',
       operation: {
         hiddenColumns: true,
         trend: false,

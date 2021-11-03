@@ -12,7 +12,7 @@ jest.mock('@/interaction/event-controller');
 
 const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 
-describe('State Test', () => {
+describe('State Controller Utils Tests', () => {
   const mockRowCell = {
     type: CellTypes.ROW_CELL,
     hideInteractionShape: jest.fn(),
@@ -33,7 +33,9 @@ describe('State Test', () => {
     MockSpreadSheet.mockClear();
 
     mockInstance = new MockSpreadSheet();
-    mockInstance.options = { selectedCellsSpotlight: false } as S2Options;
+    mockInstance.options = {
+      interaction: { selectedCellsSpotlight: false },
+    } as S2Options;
     mockInstance.store = new Store();
     mockInstance.interaction = new RootInteraction(mockInstance);
   });

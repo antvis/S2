@@ -1,8 +1,9 @@
 export function getCsvString(v: any): string {
   if (!v) return v;
   if (typeof v === 'string') {
-    // 1. replace '"': https://en.wikipedia.org/wiki/Comma-separated_values#Example
-    return `" ${v.replace(/"/g, '""')}"`;
+    const out = v;
+    // 需要替换", https://en.wikipedia.org/wiki/Comma-separated_values#Example
+    return `"${out.replace(/"/g, '""')}"`;
   }
-  return `" ${v}"`;
+  return `"${v}"`;
 }

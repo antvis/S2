@@ -165,4 +165,15 @@ describe('table sheet filter spec', () => {
       start: 0,
     });
   });
+
+  test('filtered event fired with new data', () => {
+    spreadSheet.on(S2Event.RANGE_FILTERED, (data) => {
+      expect(data.length).toStrictEqual(468);
+    });
+
+    spreadSheet.emit(S2Event.RANGE_FILTER, {
+      filterKey: 'customer_type',
+      filteredValues: ['消费者'],
+    });
+  });
 });

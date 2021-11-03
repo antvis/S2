@@ -23,7 +23,7 @@ function MainLayout() {
   return (
     <SheetEntry
       dataCfg={{}}
-      options={{ linkFields }}
+      options={{ interaction: { linkFields } }}
       ref={sheetRef}
       header={
         <Space size="middle" style={{ marginBottom: 20 }}>

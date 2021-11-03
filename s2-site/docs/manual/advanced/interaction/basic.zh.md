@@ -41,7 +41,7 @@ order: 0
 [所有事件](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts)
 
 <details>
-<summary>点击查看交互事件</summary>
+<summary>点击查看所有交互事件</summary>
 
 ### 行头
 
@@ -144,6 +144,23 @@ s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, (event) => {
 })
 ```
 
+## 交互相关配置
+
+```ts
+const s2Options = {
+  interaction: {
+    ...
+  }
+}
+```
+
+<details>
+<summary>点击查看详情</summary>
+
+`markdown:docs/common/interaction.zh.md`
+
+</details>
+
 ## 交互默认样式
 
 > 如何修改默认样式？请查看 《主题》 了解
@@ -152,23 +169,27 @@ s2.on(S2Event.GLOBAL_KEYBOARD_DOWN, (event) => {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/Z0nENy85%26/929f6638-a19f-4a6c-9ad8-a9a6ef2269c3.png)
 
-默认情况下，我们会在选中单元格后，置灰未选中的单元格，强调需要关注的数据，可以自行关闭：
+默认情况下，我们会在选中单元格后，置灰未选中的单元格，强调需要关注的数据，可配置 `selectedCellsSpotlight` 关闭：
 
 ```ts
 const s2options = {
-  selectedCellsSpotlight: false,
+  interaction: {
+    selectedCellsSpotlight: false,
+  }
 };
 ```
 
 ### 十字高亮
 
-默认情况下，我们会在鼠标悬停时，高亮对应的行列头，更直观的查看数据，可以自行关闭：
+默认情况下，我们会在鼠标悬停时，高亮对应的行列头，更直观的查看数据，可配置 `hoverHighlight` 关闭：
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/1oWitPZ7j/802123cc-6ee6-41c7-9310-049348a016ca.png)
 
 ```ts
 const s2options = {
-  hoverHighlight: false
+  interaction: {
+    hoverHighlight: false
+  }
 };
 ```
 
@@ -180,7 +201,22 @@ const s2options = {
 
 ### 隐藏列头 （明细表有效）
 
-列头隐藏后，会在紧邻的兄弟单元格显示一个展示按钮，和一个隐藏提示线，鼠标单击即可展开
+列头隐藏后，会在紧邻的兄弟单元格显示一个展示按钮，和一个隐藏提示线，鼠标单击即可展开，可配置 `hiddenColumns` 实现 `默认隐藏` 和 `交互式隐藏`. [查看具体例子](zh/examples/interaction/advanced#hide-columns)
+
+```ts
+const s2options = {
+  interaction: {
+    // 默认隐藏
+    hiddenColumns: ['fieldA']
+  },
+  // 关闭手动隐藏
+  tooltip: {
+    operation: {
+      hiddenColumns: false
+    }
+  }
+};
+```
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/PNFrjWu%261/8b9de9d4-b4be-48dd-abdb-40f98371592e.png)
 
@@ -198,4 +234,27 @@ const s2options = {
 s2.on(S2Event.GLOBAL_RESET,() => {
   console.log('重置')
 })
+```
+
+可配置 `autoResetSheetStyle` 关闭重置交互。[查看具体例子](/zh/examples/interaction/advanced#auto-reset-sheet-style)
+
+```ts
+const s2options = {
+  autoResetSheetStyle: false
+};
+```
+
+## 自定义滚动速度
+
+可配置 `scrollSpeedRatio` 控制滚动速率，分为 `水平` 和 `垂直` 两个方向，默认为 1. [查看具体例子](http://localhost:8001/zh/examples/interaction/advanced#scroll-speed-ratio)
+
+```ts
+const s2options = {
+  interaction: {
+    scrollSpeedRatio: {
+      vertical: 0.3, // 垂直
+      horizontal: 1, // 水平
+    },
+  },
+};
 ```

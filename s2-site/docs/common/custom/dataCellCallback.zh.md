@@ -3,7 +3,7 @@ title: 自定义单元格
 order: 2
 ---
 
-## DataCellCallback1
+## DataCellCallback
 
 ```js
 DataCellCallback = (viewMeta: ViewMeta, s2: Spreadsheet) => G.Group;

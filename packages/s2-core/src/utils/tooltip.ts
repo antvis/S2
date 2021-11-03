@@ -24,7 +24,10 @@ import {
 } from 'lodash';
 import React from 'react';
 import { Event as CanvasEvent } from '@antv/g-canvas';
+import { handleDataItem } from './cell/data-cell';
+import { isMultiDataItem } from './data-item-type-checker';
 import {
+  AutoAdjustPositionOptions,
   LayoutResult,
   ListItem,
   S2CellType,
@@ -37,25 +40,20 @@ import {
   TooltipOptions,
   TooltipPosition,
   TooltipSummaryOptions,
-} from '..';
-import { handleDataItem } from './cell/data-cell';
-import { isMultiDataItem } from './data-item-type-checker';
-import { getRightFieldInQuery } from '@/utils/layout/get-right-field-in-query';
+  BaseTooltipConfig,
+  TOOLTIP_POSITION_OFFSET,
+} from '@/index';
 import { i18n } from '@/common/i18n';
-import {
-  POSITION_X_OFFSET,
-  POSITION_Y_OFFSET,
-} from '@/common/constant/tooltip';
 import {
   CellTypes,
   EXTRA_FIELD,
   PRECISION,
   VALUE_FIELD,
 } from '@/common/constant';
-import { Tooltip } from '@/common/interface';
+import { Tooltip, ViewMeta } from '@/common/interface';
 
-const isNotNumber = (v) => {
-  return Number.isNaN(Number(v));
+const isNotNumber = (value: unknown) => {
+  return Number.isNaN(Number(value));
 };
 
 /**
@@ -114,28 +112,52 @@ export const isHoverDataInSelectedData = (
 /**
  * calculate tooltip show position
  */
-export const getPosition = (
-  position: TooltipPosition,
-  currContainer: HTMLElement = document.body,
-  viewportContainer: HTMLElement = document.body,
-): TooltipPosition => {
-  const tooltipBCR = currContainer.getBoundingClientRect();
-  const viewportBCR = viewportContainer.getBoundingClientRect();
-  let x = position.x + POSITION_X_OFFSET;
-  let y = position.y + POSITION_Y_OFFSET;
+export const getAutoAdjustPosition = ({
+  spreadsheet,
+  position,
+  tooltipContainer,
+  autoAdjustBoundary,
+}: AutoAdjustPositionOptions): TooltipPosition => {
+  let x = position.x + TOOLTIP_POSITION_OFFSET.x;
+  let y = position.y + TOOLTIP_POSITION_OFFSET.y;
 
-  if (x + tooltipBCR.width > viewportBCR.width) {
-    x = viewportBCR.width - tooltipBCR.width - 2;
+  if (!autoAdjustBoundary) {
+    return {
+      x,
+      y,
+    };
   }
 
-  if (y + tooltipBCR.height > viewportBCR.height) {
-    y = viewportBCR.height - tooltipBCR.height - 2;
+  const isAdjustBodyBoundary = autoAdjustBoundary === 'body';
+  const { maxX, maxY } = spreadsheet.facet.panelBBox;
+  const { width, height } = spreadsheet.options;
+  const canvas = spreadsheet.container.get('el') as HTMLCanvasElement;
+
+  const { top: canvasOffsetTop, left: canvasOffsetLeft } =
+    canvas.getBoundingClientRect();
+  const { width: tooltipWidth, height: tooltipHeight } =
+    tooltipContainer.getBoundingClientRect();
+  const { width: viewportWidth, height: viewportHeight } =
+    document.body.getBoundingClientRect();
+
+  const maxWidth = isAdjustBodyBoundary
+    ? viewportWidth
+    : Math.min(width, maxX) + canvasOffsetLeft;
+  const maxHeight = isAdjustBodyBoundary
+    ? viewportHeight
+    : Math.min(height, maxY) + canvasOffsetTop;
+
+  if (x + tooltipWidth >= maxWidth) {
+    x = maxWidth - tooltipWidth;
+  }
+
+  if (y + tooltipHeight >= maxHeight) {
+    y = maxHeight - tooltipHeight;
   }
 
   return {
     x,
     y,
-    tipHeight: tooltipBCR.height,
   };
 };
 
@@ -150,7 +172,7 @@ export const getOptions = (options?: TooltipOptions) => {
   } as TooltipOptions;
 };
 
-export const getMergedQuery = (meta) => {
+export const getMergedQuery = (meta: ViewMeta) => {
   return { ...meta?.colQuery, ...meta?.rowQuery };
 };
 
@@ -159,12 +181,21 @@ export const getMergedQuery = (meta) => {
  */
 export const setContainerStyle = (
   container: HTMLElement,
-  styles: React.CSSProperties,
+  options: { style?: React.CSSProperties; className?: string } = {
+    className: '',
+  },
 ) => {
-  if (container && styles) {
-    Object.keys(styles)?.forEach((item) => {
-      container.style[item] = styles[item];
+  if (!container) {
+    return;
+  }
+  const { style, className } = options;
+  if (style) {
+    Object.keys(style).forEach((item) => {
+      container.style[item] = style[item];
     });
+  }
+  if (className) {
+    container.classList.add(className);
   }
 };
 
@@ -372,7 +403,8 @@ export const getSelectedCellsData = (
   const cells = spreadsheet.interaction.getActiveCells();
   return map(
     cells,
-    (cell) => cell.getMeta()?.data || getMergedQuery(cell.getMeta()),
+    (cell) =>
+      cell.getMeta()?.data || getMergedQuery(cell.getMeta() as ViewMeta),
   );
 };
 
@@ -460,18 +492,6 @@ export const getTooltipData = (params: TooltipDataParam) => {
   return { summaries, interpretation, infos, tips, name, headInfo, details };
 };
 
-export const getRightAndValueField = (
-  spreadsheet: SpreadSheet,
-  options: TooltipOptions,
-): { rightField: string; valueField: string } => {
-  const rowFields = spreadsheet?.dataSet?.fields?.rows || [];
-  const rowQuery = options?.rowQuery || {};
-  const rightField = getRightFieldInQuery(rowQuery, rowFields);
-  const valueField = get(rowQuery, rightField, '') as string;
-
-  return { rightField, valueField };
-};
-
 export const mergeCellInfo = (cells: S2CellType[]): TooltipData[] => {
   return map(cells, (stateCell) => {
     const stateCellMeta = stateCell.getMeta();
@@ -491,8 +511,8 @@ export const getActiveCellsTooltipData = (
     return [];
   }
   spreadsheet.interaction.getActiveCells().forEach((cell) => {
-    const valueInCols = spreadsheet.options.valueInCols;
-    const meta = cell.getMeta();
+    const { valueInCols } = spreadsheet.dataCfg.fields;
+    const meta = cell.getMeta() as ViewMeta;
     const query = getMergedQuery(meta);
     if (isEmpty(meta) || isEmpty(query)) {
       return;
@@ -517,7 +537,7 @@ export const getTooltipOptionsByCellType = (
   cellTooltip: Tooltip,
   cellType: CellTypes,
 ) => {
-  const getOptionsByCell = (cell) => {
+  const getOptionsByCell = (cell: BaseTooltipConfig) => {
     return { ...cellTooltip, ...cell };
   };
 

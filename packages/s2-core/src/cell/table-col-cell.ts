@@ -2,13 +2,23 @@ import { get, isEmpty } from 'lodash';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
 import { Group } from '@antv/g-canvas';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
-import { S2Event } from '@/common/constant';
+import {
+  S2Event,
+  TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY,
+  KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA,
+  ResizeAreaType,
+  ResizeAreaEffect,
+} from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '@/utils/text';
 import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
 import { CellBoxCfg, DefaultCellTheme, IconTheme } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
+import {
+  getResizeAreaAttrs,
+  getResizeAreaGroupById,
+} from '@/utils/interaction/resize';
 
 export class TableColCell extends ColCell {
   protected isFrozenCell() {
@@ -28,13 +38,10 @@ export class TableColCell extends ColCell {
     if (!isFrozenCell) {
       return super.getColResizeArea();
     }
-    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+    return getResizeAreaGroupById(
+      this.spreadsheet,
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-    );
-    return (prevResizeArea ||
-      this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-      })) as Group;
+    ) as Group;
   }
 
   protected getColResizeAreaOffset() {
@@ -130,7 +137,7 @@ export class TableColCell extends ColCell {
 
   private hasHiddenColumnCell() {
     const {
-      hiddenColumnFields = [],
+      interaction: { hiddenColumnFields = [] },
       tooltip: { operation },
     } = this.spreadsheet.options;
 
@@ -215,5 +222,46 @@ export class TableColCell extends ColCell {
 
   private isLastColumn() {
     return isLastColumnAfterHidden(this.spreadsheet, this.meta.field);
+  }
+
+  private getHorizontalResizeArea() {
+    return getResizeAreaGroupById(
+      this.spreadsheet,
+      KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA,
+    );
+  }
+
+  protected drawHorizontalResizeArea() {
+    const { viewportWidth } = this.headerConfig;
+    const { height: cellHeight } = this.meta;
+    const resizeStyle = this.getResizeAreaStyle();
+    const resizeArea = this.getHorizontalResizeArea();
+
+    const prevHorizontalResizeArea = resizeArea.find(
+      (element) => element.attrs.name === TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY,
+    );
+
+    // 如果已经绘制当前列高调整热区热区，则不再绘制
+    if (!prevHorizontalResizeArea) {
+      // 列高调整热区
+      resizeArea.addShape('rect', {
+        attrs: {
+          ...getResizeAreaAttrs({
+            theme: resizeStyle,
+            type: ResizeAreaType.Row,
+            id: this.getColResizeAreaKey(),
+            effect: ResizeAreaEffect.Filed,
+            offsetX: 0,
+            offsetY: 0,
+            width: viewportWidth,
+            height: cellHeight,
+          }),
+          name: TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY,
+          x: 0,
+          y: cellHeight - resizeStyle.size,
+          width: viewportWidth,
+        },
+      });
+    }
   }
 }
