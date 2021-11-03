@@ -11,7 +11,7 @@ import {
 } from 'lodash';
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
-import { ViewMeta } from '@/index';
+import { ViewMeta } from '@/common/interface';
 import {
   ID_SEPARATOR,
   EMPTY_PLACEHOLDER,
