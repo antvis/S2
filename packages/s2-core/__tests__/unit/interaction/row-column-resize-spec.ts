@@ -87,6 +87,8 @@ describe('Interaction Row Column Resize Tests', () => {
     rowColumnResizeInstance = new RowColumnResize(s2);
     rowColumnResizeInstance.getHeaderGroup = () => new Group('');
     s2.render = jest.fn();
+    s2.tooltip.container = document.createElement('div');
+    s2.hideTooltip = jest.fn();
   });
 
   test('should register events', () => {
@@ -357,5 +359,30 @@ describe('Interaction Row Column Resize Tests', () => {
 
     // reset resize position
     expect(rowColumnResizeInstance.resizeStartPosition).toEqual({});
+  });
+
+  test('should hidden tooltip when resize start', () => {
+    const resizeInfo: ResizeInfo = {
+      theme: {},
+      type: ResizeAreaType.Row,
+      offsetX: 2,
+      offsetY: 2,
+      width: 5,
+      height: 2,
+      isResizeArea: true,
+      effect: ResizeAreaEffect.Cell,
+      caption: 'filedB',
+      id: '',
+    };
+
+    emitResizeEvent(
+      S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
+      {
+        offsetX: 10,
+        offsetY: 20,
+      },
+      resizeInfo,
+    );
+    expect(s2.hideTooltip).toHaveBeenCalledTimes(1);
   });
 });
