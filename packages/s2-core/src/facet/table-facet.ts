@@ -462,6 +462,11 @@ export class TableFacet extends BaseFacet {
     return totalHeight;
   };
 
+  private getShadowFill = (angle: number) => {
+    const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
+    return `l (${angle}) 0:${style.shadowColors?.left} 1:${style.shadowColors?.right}`;
+  };
+
   protected renderFrozenGroupSplitLine = () => {
     const {
       frozenRowCount,
@@ -506,6 +511,18 @@ export class TableFacet extends BaseFacet {
           ...verticalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x,
+            y: this.cornerBBox.height,
+            width: style.shadowWidth,
+            height: this.panelBBox.maxY - this.cornerBBox.height,
+            fill: this.getShadowFill(0),
+          },
+        });
+      }
     }
 
     if (frozenRowCount > 0) {
@@ -524,6 +541,18 @@ export class TableFacet extends BaseFacet {
           ...horizontalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x: 0,
+            y: y,
+            width: this.panelBBox.width,
+            height: style.shadowWidth,
+            fill: this.getShadowFill(90),
+          },
+        });
+      }
     }
 
     if (frozenTrailingColCount > 0) {
@@ -548,6 +577,18 @@ export class TableFacet extends BaseFacet {
           ...verticalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x: x - style.shadowWidth,
+            y: this.cornerBBox.height,
+            width: style.shadowWidth,
+            height: this.panelBBox.maxY - this.cornerBBox.height,
+            fill: this.getShadowFill(180),
+          },
+        });
+      }
     }
 
     if (frozenTrailingRowCount > 0) {
@@ -569,6 +610,18 @@ export class TableFacet extends BaseFacet {
           ...horizontalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x: 0,
+            y: y - style.shadowWidth,
+            width: this.panelBBox.width,
+            height: style.shadowWidth,
+            fill: this.getShadowFill(270),
+          },
+        });
+      }
     }
   };
 

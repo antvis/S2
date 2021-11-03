@@ -155,8 +155,8 @@ export interface SplitLine {
   verticalBorderColorOpacity?: number;
   /* 垂直分割线宽度 */
   verticalBorderWidth?: number;
-  /* 分割线是否显示右侧外阴影 */
-  showRightShadow?: boolean;
+  /* 分割线是否显示外阴影 */
+  showShadow?: boolean;
   /* 阴影宽度 */
   shadowWidth?: number;
   /* 阴影线性渐变色 */
