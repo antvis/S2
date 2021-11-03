@@ -102,7 +102,7 @@ order: 2
 | verticalBorderColor | `string` | | | 垂直分割线颜色 |
 | verticalBorderColorOpacity | `number` | | 1 | 垂直分割线颜色透明度 |
 | verticalBorderWidth | `number` | | 2 | 垂直分割线宽度 |
-| showRightShadow | `boolean` | | `true` | 分割线是否显示右侧外阴影(透视表行头冻结情况下) |
+| showShadow | `boolean` | | `true` | 分割线是否显示外阴影(行列冻结情况下) |
 | shadowWidth | `number` | | 10 | 阴影宽度 |
 | shadowColors | `{left: string,` <br> `right: string}` | | `{left: 'rgba(0,0,0,0.1)',`<br>`right: 'rgba(0,0,0,0)'}` | `left` : 线性变化左侧颜色  <br> `right` : 线性变化右侧颜色 |
 

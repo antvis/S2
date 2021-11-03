@@ -27,10 +27,7 @@ import { Interpretation } from '@/ui/tooltip/components/interpretation';
 import { TooltipOperator } from '@/ui/tooltip/components/operator';
 import { SimpleTips } from '@/ui/tooltip/components/simple-tips';
 import { TooltipSummary } from '@/ui/tooltip/components/summary';
-import {
-  TOOLTIP_CONTAINER_CLS,
-  TOOLTIP_PREFIX_CLS,
-} from '@/common/constant/tooltip';
+import { TOOLTIP_CONTAINER_CLS } from '@/common/constant/tooltip';
 
 import './index.less';
 
@@ -115,9 +112,14 @@ export class BaseTooltip {
   }
 
   public disablePointerEvent() {
+    if (!this.container) {
+      return;
+    }
+
     if (this.container.style.pointerEvents === 'none') {
       return;
     }
+
     setContainerStyle(this.container, {
       style: {
         pointerEvents: 'none',

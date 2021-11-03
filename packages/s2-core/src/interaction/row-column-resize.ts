@@ -150,6 +150,8 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
         return;
       }
 
+      // 鼠标在 resize 热区 按下时, 将 tooltip 关闭, 避免造成干扰
+      this.spreadsheet.hideTooltip();
       this.spreadsheet.interaction.addIntercepts([InterceptType.RESIZE]);
       this.setResizeArea(shape);
       this.showResizeGroup();
@@ -314,8 +316,6 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private resizeMouseMove = (event: CanvasEvent) => {
     if (!this.resizeGroup?.get('visible')) {
-      // 鼠标在 resize 热区 时, 将 tooltip 关闭, 避免造成干扰
-      this.spreadsheet.hideTooltip();
       return;
     }
     event.preventDefault();
