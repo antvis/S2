@@ -1,5 +1,4 @@
-import { SpreadSheet } from '@/index';
-
+import { SpreadSheet } from '@/sheet-type';
 export interface FrameConfig {
   position: {
     x: number;

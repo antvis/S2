@@ -1,16 +1,15 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { ResizeInfo } from './resize';
+import { Data, DataItem } from '@/common/interface/s2DataConfig';
+import { FilterParam, Style } from '@/common/interface/basic';
 import {
-  CellScrollPosition,
-  Data,
-  DataItem,
-  FilterParam,
   HiddenColumnsInfo,
-  LayoutResult,
   S2CellType,
-  Style,
   ViewMeta,
-} from '.';
+  LayoutResult,
+  CellScrollPosition,
+} from '@/common/interface';
+
 import { S2Event, SortMethodType } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell/data-cell';
