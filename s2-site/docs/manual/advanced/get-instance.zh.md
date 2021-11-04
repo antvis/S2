@@ -3,7 +3,7 @@ title: 获取表格实例
 order: 8
 ---
 
-对于使用 React 组件 `SheetComponent` 这一类场景，如果需要获取到 [表格实例](zh/docs/api/basic-class/spreadsheet), 进行一些 进阶操作时，可以使用 `React.useRef` 和 `getSpreadSheet` 两种方式
+对于使用 React 组件 `SheetComponent` 这一类场景，如果需要获取到 [表格实例](zh/docs/api/basic-class/spreadsheet), 进行一些进阶操作时，可以使用 `React.useRef` 和 `getSpreadSheet` 两种方式
 
 ### ref 方式 （推荐）
 
@@ -97,7 +97,7 @@ function App() {
 
 ### 转发实例给上层组件
 
-如果你的业务对于 `SheetComponent` 进行了 二次封装，需要暴露实例时，可以使用 `React.forwardRef` 进行实例转发
+如果你的业务对于 `SheetComponent` 进行了二次封装，需要暴露实例时，可以使用 `React.forwardRef` 进行实例转发
 
 ```tsx
 const YourComponent = React.forwardRef(
