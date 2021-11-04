@@ -97,6 +97,7 @@
       2
     ],
     "no-shadow": 0,
+    "curly": 1,
     "@typescript-eslint/no-shadow": [
       1
     ]

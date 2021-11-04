@@ -282,6 +282,14 @@ export interface MergedCellInfo {
   showText?: boolean;
 }
 
+/**
+ * mergedCell intermediate state, temporary use
+ */
+export type TempMergedCell = {
+  cells: S2CellType[];
+  viewMeta: ViewMeta;
+};
+
 export type FilterDataItemCallback = (
   valueField: string,
   data: DataItem,
