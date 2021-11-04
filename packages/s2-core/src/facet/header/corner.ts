@@ -5,7 +5,7 @@ import { CornerData } from './interface';
 import { translateGroup } from '@/facet/utils';
 import {
   getResizeAreaAttrs,
-  getResizeAreaGroupById,
+  getOrCreateResizeAreaGroupById,
 } from '@/utils/interaction/resize';
 import { CornerCell } from '@/cell/corner-cell';
 import {
@@ -296,7 +296,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     const { data, position, width, height, seriesNumberWidth, spreadsheet } =
       this.headerConfig;
     const resizeStyle = spreadsheet.theme.resizeArea;
-    const resizeArea = getResizeAreaGroupById(
+    const resizeArea = getOrCreateResizeAreaGroupById(
       spreadsheet,
       KEY_GROUP_CORNER_RESIZE_AREA,
     );

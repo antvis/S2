@@ -3,7 +3,7 @@ import { ResizeArea, ResizeInfo } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
   getResizeAreaAttrs,
-  getResizeAreaGroupById,
+  getOrCreateResizeAreaGroupById,
 } from '@/utils/interaction/resize';
 import { ResizeAreaEffect, ResizeAreaType } from '@/common/constant/resize';
 
@@ -140,7 +140,7 @@ describe('Resize Utils Tests', () => {
 
   describe('#getResizeAreaGroupById()', () => {
     test('should get new resize area group if prevResizeArea is empty', () => {
-      const group = getResizeAreaGroupById(s2, 'id');
+      const group = getOrCreateResizeAreaGroupById(s2, 'id');
       expect(group.add).toBeDefined();
       expect(s2.foregroundGroup.getChildren()).toHaveLength(1);
     });
@@ -149,9 +149,9 @@ describe('Resize Utils Tests', () => {
       const groupId = 'id';
 
       // create multiple group
-      getResizeAreaGroupById(s2, groupId);
-      getResizeAreaGroupById(s2, groupId);
-      getResizeAreaGroupById(s2, groupId);
+      getOrCreateResizeAreaGroupById(s2, groupId);
+      getOrCreateResizeAreaGroupById(s2, groupId);
+      getOrCreateResizeAreaGroupById(s2, groupId);
 
       // use prev created group, only one resize area group
       expect(s2.foregroundGroup.getChildren()).toHaveLength(1);

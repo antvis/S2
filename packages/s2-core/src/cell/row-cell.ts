@@ -16,7 +16,7 @@ import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
 import {
   getResizeAreaAttrs,
-  getResizeAreaGroupById,
+  getOrCreateResizeAreaGroupById,
 } from '@/utils/interaction/resize';
 
 export class RowCell extends HeaderCell {
@@ -225,43 +225,44 @@ export class RowCell extends HeaderCell {
   }
 
   protected drawResizeAreaInLeaf() {
-    if (this.meta.isLeaf) {
-      const { x, y, width, height } = this.getCellArea();
-      const resizeStyle = this.getResizeAreaStyle();
-      const resizeArea = getResizeAreaGroupById(
-        this.spreadsheet,
-        KEY_GROUP_ROW_RESIZE_AREA,
-      );
-
-      const { offset, position, seriesNumberWidth, scrollX } =
-        this.headerConfig;
-      const { label, parent } = this.meta;
-
-      const freezeCornerDiffWidth =
-        this.spreadsheet.facet.getFreezeCornerDiffWidth();
-
-      const resizeAreaWidth = this.spreadsheet.isFreezeRowHeader()
-        ? width - freezeCornerDiffWidth + scrollX
-        : width;
-
-      resizeArea.addShape('rect', {
-        attrs: {
-          ...getResizeAreaAttrs({
-            theme: resizeStyle,
-            type: ResizeAreaType.Row,
-            effect: ResizeAreaEffect.Cell,
-            caption: parent.isTotals ? '' : label,
-            offsetX: position.x + x + seriesNumberWidth,
-            offsetY: position.y + y - offset,
-            width,
-            height,
-          }),
-          x: position.x + x - scrollX + seriesNumberWidth,
-          y: position.y + y - offset + height - resizeStyle.size / 2,
-          width: resizeAreaWidth,
-        },
-      });
+    if (!this.meta.isLeaf) {
+      return;
     }
+
+    const { x, y, width, height } = this.getCellArea();
+    const resizeStyle = this.getResizeAreaStyle();
+    const resizeArea = getOrCreateResizeAreaGroupById(
+      this.spreadsheet,
+      KEY_GROUP_ROW_RESIZE_AREA,
+    );
+
+    const { offset, position, seriesNumberWidth, scrollX } = this.headerConfig;
+    const { label, parent } = this.meta;
+
+    const freezeCornerDiffWidth =
+      this.spreadsheet.facet.getFreezeCornerDiffWidth();
+
+    const resizeAreaWidth = this.spreadsheet.isFreezeRowHeader()
+      ? width - freezeCornerDiffWidth + scrollX
+      : width;
+
+    resizeArea.addShape('rect', {
+      attrs: {
+        ...getResizeAreaAttrs({
+          theme: resizeStyle,
+          type: ResizeAreaType.Row,
+          effect: ResizeAreaEffect.Cell,
+          caption: parent.isTotals ? '' : label,
+          offsetX: position.x + x + seriesNumberWidth,
+          offsetY: position.y + y - offset,
+          width,
+          height,
+        }),
+        x: position.x + x - scrollX + seriesNumberWidth,
+        y: position.y + y - offset + height - resizeStyle.size / 2,
+        width: resizeAreaWidth,
+      },
+    });
   }
 
   protected getContentIndent() {

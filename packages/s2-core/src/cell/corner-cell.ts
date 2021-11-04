@@ -3,7 +3,7 @@ import { isEmpty, isEqual, max } from 'lodash';
 import { HeaderCell } from './header-cell';
 import {
   getResizeAreaAttrs,
-  getResizeAreaGroupById,
+  getOrCreateResizeAreaGroupById,
 } from '@/utils/interaction/resize';
 import {
   CellTypes,
@@ -223,7 +223,7 @@ export class CornerCell extends HeaderCell {
 
   private drawResizeArea() {
     const resizeStyle = this.getResizeAreaStyle();
-    const resizeArea = getResizeAreaGroupById(
+    const resizeArea = getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_CORNER_RESIZE_AREA,
     );

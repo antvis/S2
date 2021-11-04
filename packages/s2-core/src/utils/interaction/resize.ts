@@ -32,7 +32,7 @@ export const getResizeAreaAttrs = (options: ResizeInfo): ShapeAttrs => {
   };
 };
 
-export const getResizeAreaGroupById = (
+export const getOrCreateResizeAreaGroupById = (
   spreadsheet: SpreadSheet,
   id: string,
 ): IGroup => {
@@ -40,10 +40,10 @@ export const getResizeAreaGroupById = (
     return;
   }
 
-  const prevResizeArea = spreadsheet.foregroundGroup.findById(id) as IGroup;
+  const existedResizeArea = spreadsheet.foregroundGroup.findById(id) as IGroup;
 
   return (
-    prevResizeArea ||
+    existedResizeArea ||
     spreadsheet.foregroundGroup.addGroup({
       id,
     })

@@ -2,7 +2,7 @@ import { Point } from '@antv/g-canvas';
 import { HeaderCell } from './header-cell';
 import {
   getResizeAreaAttrs,
-  getResizeAreaGroupById,
+  getOrCreateResizeAreaGroupById,
 } from '@/utils/interaction/resize';
 import {
   CellTypes,
@@ -150,7 +150,10 @@ export class ColCell extends HeaderCell {
   }
 
   protected getColResizeArea() {
-    return getResizeAreaGroupById(this.spreadsheet, KEY_GROUP_COL_RESIZE_AREA);
+    return getOrCreateResizeAreaGroupById(
+      this.spreadsheet,
+      KEY_GROUP_COL_RESIZE_AREA,
+    );
   }
 
   protected drawHorizontalResizeArea() {

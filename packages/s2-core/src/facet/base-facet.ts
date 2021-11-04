@@ -78,7 +78,7 @@ export abstract class BaseFacet {
   // render viewport cell
   public panelGroup: IGroup;
 
-  // render header/corner/scrollbar...
+  // render header/corner/scrollbar/resize
   public foregroundGroup: IGroup;
 
   public cfg: SpreadSheetFacetCfg;

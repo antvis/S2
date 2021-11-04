@@ -17,7 +17,7 @@ import { CellBoxCfg, DefaultCellTheme, IconTheme } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 import {
   getResizeAreaAttrs,
-  getResizeAreaGroupById,
+  getOrCreateResizeAreaGroupById,
 } from '@/utils/interaction/resize';
 
 export class TableColCell extends ColCell {
@@ -38,7 +38,7 @@ export class TableColCell extends ColCell {
     if (!isFrozenCell) {
       return super.getColResizeArea();
     }
-    return getResizeAreaGroupById(
+    return getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,
     ) as Group;
@@ -225,7 +225,7 @@ export class TableColCell extends ColCell {
   }
 
   private getHorizontalResizeArea() {
-    return getResizeAreaGroupById(
+    return getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA,
     );
