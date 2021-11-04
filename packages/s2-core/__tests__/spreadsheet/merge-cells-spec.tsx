@@ -7,14 +7,10 @@ import {
   mockTabularDataCfg,
   mockTabularOptions,
 } from 'tests/data/tabular-data';
-import { getContainer } from 'tests/util/helpers';
-import {
-  data as mockData,
-  totalData,
-  meta,
-} from 'tests/data/mock-dataset.json';
+import { getContainer } from '../util/helpers';
+import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
-import { mergeCells } from '@/utils/interaction/merge-cells';
+import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
 import 'antd/dist/antd.min.css';
 import {
   S2DataConfig,
@@ -23,6 +19,8 @@ import {
   PivotSheet,
   SheetType,
   DEFAULT_STYLE,
+  MergedCells,
+  SpreadSheet,
 } from '@/index';
 
 const data = mockData.map((row) => {
@@ -57,7 +55,7 @@ const baseDataCfg: S2DataConfig = {
 const baseOptions = {
   debug: false,
   width: 600,
-  height: 480,
+  height: 280,
   hierarchyType: 'grid',
   hierarchyCollapse: false,
   showSeriesNumber: true,
@@ -123,7 +121,6 @@ function MainLayout() {
   const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(
     getDataCfg('pivot'),
   );
-
   let sheet;
   let mergedCellsInfo = [];
 
@@ -138,7 +135,21 @@ function MainLayout() {
     </Button>
   );
 
-  const mergedCellsTooltip = <div>合并后的tooltip</div>;
+  const mergedCellsTooltip = (
+    mergedCell: MergedCells,
+    spreadSheet: SpreadSheet,
+  ) => (
+    <div>
+      合并后的tooltip
+      <Button
+        onClick={() => {
+          unmergeCell(mergedCell, spreadSheet);
+        }}
+      >
+        取消合并单元格
+      </Button>
+    </div>
+  );
 
   const onDataCellMouseUp = (value) => {
     sheet = value?.viewMeta?.spreadsheet;
@@ -160,7 +171,7 @@ function MainLayout() {
     sheet = value?.target?.cells[0].spreadsheet;
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },
-      element: mergedCellsTooltip,
+      element: mergedCellsTooltip(value.target, sheet),
     });
   };
 

@@ -44,7 +44,7 @@ const plugins = [
     preventAssignment: true,
   }),
   commonjs({
-    ignore: ['react-is'],
+    ignore: format === 'umd' ? [] : ['react-is'],
   }),
   resolve(),
   typescript({

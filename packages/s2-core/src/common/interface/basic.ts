@@ -6,17 +6,13 @@ import { CustomTreeItem, ResizeInfo } from '@/common/interface';
 import { S2BasicOptions } from '@/common/interface/s2Options';
 import { BaseDataSet } from '@/data-set';
 import { Frame } from '@/facet/header';
-import {
-  CellTypes,
-  FrameConfig,
-  Hierarchy,
-  Node,
-  S2Options,
-  S2TableSheetOptions,
-  SpreadSheet,
-  TextAlign,
-  TextBaseline,
-} from '@/index';
+import { CellTypes } from '@/common/constant';
+import { FrameConfig } from '@/common/interface/frame';
+import { Hierarchy } from '@/facet/layout/hierarchy';
+import { Node } from '@/facet/layout/node';
+import { SpreadSheet } from '@/sheet-type';
+import { S2Options, S2TableSheetOptions } from '@/common/interface/s2Options';
+import { TextAlign, TextBaseline } from '@/common/interface';
 
 export type Formatter = (v: unknown) => string;
 
@@ -288,6 +284,14 @@ export interface MergedCellInfo {
   rowIndex?: number;
   showText?: boolean;
 }
+
+/**
+ * mergedCell intermediate state, temporary use
+ */
+export type TempMergedCell = {
+  cells: S2CellType[];
+  viewMeta: ViewMeta;
+};
 
 export type FilterDataItemCallback = (
   valueField: string,

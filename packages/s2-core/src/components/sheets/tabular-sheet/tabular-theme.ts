@@ -1,4 +1,4 @@
-import { S2Theme } from '@/index';
+import { S2Theme } from '@/common/interface';
 import { isWindows } from '@/utils/is-mobile';
 
 const FONT_FAMILY =
