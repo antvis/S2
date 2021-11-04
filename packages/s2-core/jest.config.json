@@ -20,7 +20,7 @@
     "!**/interface.ts"
   ],
   "coverageReporters": ["json", "lcov", "text", "clover", "html"],
-  "transformIgnorePatterns": [],
+  "transformIgnorePatterns": ["/node_modules/(?!d3-(interpolate|color))"],
   "testRegex": "/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js)?$",
   "transform": {
     "\\.(less|css)$": "jest-less-loader",

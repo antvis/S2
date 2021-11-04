@@ -34,6 +34,7 @@ order: 8
 `head` 里面引入如下 `js` , 各图表挂载全局 `S2` 上。
 
 ```ts
+<link rel="stylesheet" href="https://unpkg.com/@antv/s2@latest/dist/s2.min.css">
 <script src="https://unpkg.com/@babel/polyfill@latest/dist/polyfill.min.js"></script> // 非必需
 <script src="https://unpkg.com/@antv/s2@latest"></script>
 
