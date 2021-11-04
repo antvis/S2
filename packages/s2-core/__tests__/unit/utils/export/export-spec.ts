@@ -22,10 +22,10 @@ describe('TableSheet Export Test', () => {
     const rows = data.split('\n');
     const headers = rows[0].split('\t');
     // 33行数据 包括一行列头
-    expect(rows.length).toEqual(33);
+    expect(rows).toHaveLength(33);
     // 6列数据 包括序列号
     rows.forEach((e) => {
-      expect(e.split('\t').length).toEqual(6);
+      expect(e.split('\t')).toHaveLength(6);
     });
     expect(headers.map((e) => JSON.parse(e))).toEqual([
       '序号',
@@ -54,10 +54,10 @@ describe('TableSheet Export Test', () => {
     const rows = data.split('\n');
     const headers = rows[0].split('\t');
     // 33行数据 包括一行列头
-    expect(rows.length).toEqual(33);
+    expect(rows).toHaveLength(33);
     // 5列数据 包括序列号
     rows.forEach((e) => {
-      expect(e.split('\t').length).toEqual(5);
+      expect(e.split('\t')).toHaveLength(5);
     });
     expect(headers.map((e) => JSON.parse(e))).toEqual([
       'province',
@@ -85,9 +85,9 @@ describe('PivotSheet Export Test', () => {
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
-    expect(rows.length).toEqual(14);
+    expect(rows).toHaveLength(14);
     rows.forEach((e) => {
-      expect(e.split('\t').length).toEqual(34);
+      expect(e.split('\t')).toHaveLength(34);
     });
   });
   it('should export correct data in tree mode', () => {
@@ -107,9 +107,9 @@ describe('PivotSheet Export Test', () => {
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
-    expect(rows.length).toEqual(16);
+    expect(rows).toHaveLength(16);
     rows.forEach((e) => {
-      expect(e.split('\t').length).toEqual(34);
+      expect(e.split('\t')).toHaveLength(34);
     });
   });
   it('should export correct data in grid mode with valueInCols is false', () => {
@@ -129,9 +129,77 @@ describe('PivotSheet Export Test', () => {
     s2.render();
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
-    expect(rows.length).toEqual(13);
+    expect(rows).toHaveLength(13);
     rows.forEach((e) => {
-      expect(e.split('\t').length).toEqual(35);
+      expect(e.split('\t')).toHaveLength(35);
+    });
+  });
+
+  it('should export correct data in grid mode with totals in col', () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          valueInCols: true,
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        hierarchyType: 'grid',
+        totals: {
+          row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['province'],
+          },
+          col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['type'],
+          },
+        },
+      }),
+    );
+    s2.render();
+    const data = copyData(s2, '\t');
+    const rows = data.split('\n');
+    expect(rows).toHaveLength(17);
+    rows.forEach((e) => {
+      expect(e.split('\t')).toHaveLength(53);
+    });
+  });
+
+  it('should export correct data in grid mode with totals in row', () => {
+    const s2 = new PivotSheet(
+      getContainer(),
+      assembleDataCfg({
+        fields: {
+          valueInCols: false,
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        hierarchyType: 'grid',
+        totals: {
+          row: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['province'],
+          },
+          col: {
+            showGrandTotals: true,
+            showSubTotals: true,
+            subTotalsDimensions: ['type'],
+          },
+        },
+      }),
+    );
+    s2.render();
+    const data = copyData(s2, '\t');
+    const rows = data.split('\n');
+    expect(rows).toHaveLength(16);
+    rows.forEach((e) => {
+      expect(e.split('\t')).toHaveLength(54);
     });
   });
 });

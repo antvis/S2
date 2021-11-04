@@ -12,6 +12,7 @@ import {
   ThemeName,
   Node,
   SpreadSheet,
+  copyData,
 } from '@/index';
 
 const tableDataFields = {
@@ -180,6 +181,7 @@ function MainLayout() {
           defaultChecked={render}
           onChange={onToggleRender}
         />
+        <div onClick={() => copyData(s2Ref.current, '\t')}>导出全部</div>
       </Space>
       {render && (
         <SheetEntry
