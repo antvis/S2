@@ -1,4 +1,4 @@
-import { PivotSheet, S2Event } from '@antv/s2';
+import { PivotSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
@@ -6,8 +6,6 @@ fetch(
   )
   .then((res) => res.json())
   .then((res) => {
-    console.log(res.data);
-    console.log(res.meta);
     const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {
@@ -39,7 +37,4 @@ fetch(
     const s2 = new PivotSheet(container, s2DataConfig, s2options);
 
     s2.render();
-    // s2.on(S2Event.MERGED_CELLS_CLICK, () => {
-    //
-    // })
   });
