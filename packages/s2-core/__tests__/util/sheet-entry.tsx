@@ -136,7 +136,7 @@ export const SheetEntry = forwardRef(
     }, [props.dataCfg]);
 
     useEffect(() => {
-      ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {
+      ref?.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {
         console.log('[forwardRef 方式] 趋势图icon点击');
       });
     }, [ref, props.sheetType]);
