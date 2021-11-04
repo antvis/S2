@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, {
   forwardRef,
   MutableRefObject,
@@ -18,6 +19,7 @@ import {
   SheetType,
   TargetCellInfo,
   DEFAULT_DATA_CONFIG,
+  S2Event,
 } from '@/index';
 import 'antd/dist/antd.min.css';
 import { customMerge } from '@/utils/merge';
@@ -54,15 +56,16 @@ interface SheetEntryProps {
   header?: ReactNode;
   sheetType?: SheetType;
   onColCellClick?: (data: TargetCellInfo) => void;
+  getSpreadSheet?: (instance: SpreadSheet) => void;
 }
 
-// eslint-disable-next-line react/display-name
 export const SheetEntry = forwardRef(
   (props: SheetEntryProps, ref: MutableRefObject<SpreadSheet>) => {
     const { themeCfg = {} } = props;
     const [mode, setMode] = useState('grid');
     const [valueInCols, setValueInCols] = useState(true);
     const initOptions = assembleOptions(props.options);
+    const s2Ref = React.useRef<SpreadSheet>();
 
     const initDataCfg = props.forceUpdateDataCfg
       ? props.dataCfg
@@ -131,6 +134,18 @@ export const SheetEntry = forwardRef(
         setDataCfg(assembleDataCfg(dataCfg, props.dataCfg));
       }
     }, [props.dataCfg]);
+
+    useEffect(() => {
+      ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {
+        console.log('[forwardRef 方式] 趋势图icon点击');
+      });
+    }, [ref, props.sheetType]);
+
+    useEffect(() => {
+      s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {
+        console.log('[getSpreadSheet 回调方式] 趋势图icon点击');
+      });
+    }, [props.sheetType]);
 
     const sliderOptions = {
       min: 0,
@@ -247,10 +262,9 @@ export const SheetEntry = forwardRef(
           options={options}
           sheetType={props.sheetType}
           adaptive={adaptive}
-          getSpreadsheet={(instance) => {
-            if (ref) {
-              ref.current = instance;
-            }
+          ref={ref}
+          getSpreadSheet={(instance) => {
+            s2Ref.current = instance;
           }}
           themeCfg={{
             ...themeCfg,
@@ -266,3 +280,5 @@ export const SheetEntry = forwardRef(
     );
   },
 );
+
+SheetEntry.displayName = 'SheetEntry';
