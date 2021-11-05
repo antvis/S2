@@ -17,10 +17,8 @@ $ yarn add @antv/s2
 
 ```html
 <!-- 引入在线资源 -->
-<script type="text/javascript" src="https://unpkg.com/@antv/s2@0.2.5/dist/s2.min.js"></script>
-<script>
- 
-</script>
+<script type="text/javascript" src="https://unpkg.com/@antv/s2@latest"></script>
+
 <!-- 下载到本地 引入本地脚本 -->
 <script src="./s2.min.js"></script>
 ```
