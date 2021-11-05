@@ -14,7 +14,7 @@ export const DEFAULT_STYLE: Readonly<Style> = {
     widthByField: {},
   },
   colCfg: {
-    height: 40,
+    height: 30,
     widthByFieldValue: {},
     heightByField: {},
     colWidthType: 'adaptive',
