@@ -105,7 +105,7 @@ export class ColCell extends HeaderCell {
 
   protected getTextPosition(): Point {
     const { isLeaf } = this.meta;
-    const { offset, width, scrollContainsRowHeader, cornerWidth } =
+    const { width, scrollContainsRowHeader, cornerWidth, scrollX } =
       this.headerConfig;
 
     const textStyle = this.getTextStyle();
@@ -121,7 +121,7 @@ export class ColCell extends HeaderCell {
 
     // 将viewport坐标映射到 col header的坐标体系中，简化计算逻辑
     const viewport: AreaRange = {
-      start: offset - (scrollContainsRowHeader ? cornerWidth : 0),
+      start: scrollX - (scrollContainsRowHeader ? cornerWidth : 0),
       width: width + (scrollContainsRowHeader ? cornerWidth : 0),
     };
 
@@ -140,11 +140,11 @@ export class ColCell extends HeaderCell {
   }
 
   protected getColResizeAreaOffset() {
-    const { offset, position } = this.headerConfig;
+    const { scrollX, position } = this.headerConfig;
     const { x, y } = this.meta;
 
     return {
-      x: position.x - offset + x,
+      x: position.x - scrollX + x,
       y: position.y + y,
     };
   }

@@ -45,10 +45,10 @@ export class TableColCell extends ColCell {
   }
 
   protected getColResizeAreaOffset() {
-    const { offset, position } = this.headerConfig;
+    const { scrollX, position } = this.headerConfig;
     const { x, y } = this.meta;
 
-    let finalOffset = offset;
+    let finalOffset = scrollX;
     // 如果当前列被冻结，不对 resizer 做 offset 处理
     if (this.isFrozenCell()) {
       finalOffset = 0;

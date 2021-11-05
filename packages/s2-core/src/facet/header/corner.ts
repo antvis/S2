@@ -81,7 +81,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       height: cornerHeight,
       viewportWidth: width,
       viewportHeight: height,
-      offset: 0,
       hierarchyType: cfg.hierarchyType, // 是否为树状布局
       hierarchyCollapse: cfg.hierarchyCollapse,
       columns: cfg.columns,

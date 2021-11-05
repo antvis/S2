@@ -720,7 +720,6 @@ export class TableFacet extends BaseFacet {
         data: this.layoutResult.colNodes,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
         sortParam: this.cfg.spreadsheet.store.get('sortParam'),

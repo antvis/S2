@@ -1121,7 +1121,6 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x: 0, y },
         data: this.layoutResult.rowNodes,
-        offset: 0,
         hierarchyType: this.cfg.hierarchyType,
         linkFields: get(this.cfg.spreadsheet, 'options.linkFields'),
         seriesNumberWidth,
@@ -1143,7 +1142,6 @@ export abstract class BaseFacet {
         data: this.layoutResult.colNodes,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
         sortParam: this.cfg.spreadsheet.store.get('sortParam'),

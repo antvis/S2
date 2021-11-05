@@ -46,7 +46,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   public onColScroll(scrollX: number, cornerWidth: number, type: string) {
     // this is works in scroll-keep-text-center feature
     if (this.headerConfig.scrollX !== scrollX) {
-      this.headerConfig.offset = scrollX;
       this.headerConfig.scrollX = scrollX;
       this.headerConfig.cornerWidth = cornerWidth || 0;
       this.render(type);

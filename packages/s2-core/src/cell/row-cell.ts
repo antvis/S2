@@ -215,11 +215,11 @@ export class RowCell extends HeaderCell {
   }
 
   protected getColResizeAreaOffset() {
-    const { offset, position } = this.headerConfig;
+    const { scrollX, position } = this.headerConfig;
     const { x, y } = this.meta;
 
     return {
-      x: position.x - offset + x,
+      x: position.x - scrollX + x,
       y: position.y + y,
     };
   }
@@ -236,7 +236,7 @@ export class RowCell extends HeaderCell {
       KEY_GROUP_ROW_RESIZE_AREA,
     );
 
-    const { offset, position, seriesNumberWidth, scrollX } = this.headerConfig;
+    const { position, seriesNumberWidth, scrollX, scrollY } = this.headerConfig;
     const { label, parent } = this.meta;
 
     const freezeCornerDiffWidth =
@@ -254,12 +254,12 @@ export class RowCell extends HeaderCell {
           effect: ResizeAreaEffect.Cell,
           caption: parent.isTotals ? '' : label,
           offsetX: position.x + x + seriesNumberWidth,
-          offsetY: position.y + y - offset,
+          offsetY: position.y + y - scrollY,
           width,
           height,
         }),
         x: position.x + x - scrollX + seriesNumberWidth,
-        y: position.y + y - offset + height - resizeStyle.size / 2,
+        y: position.y + y - scrollY + height - resizeStyle.size / 2,
         width: resizeAreaWidth,
       },
     });
@@ -339,11 +339,17 @@ export class RowCell extends HeaderCell {
 
   protected getTextPosition(): Point {
     const { y, height: contentHeight } = this.getContentArea();
-    const { offset, height } = this.headerConfig;
+    const { scrollY, height } = this.headerConfig;
 
     const { fontSize } = this.getTextStyle();
     const textIndent = this.getTextIndent();
-    const textY = getAdjustPosition(y, contentHeight, offset, height, fontSize);
+    const textY = getAdjustPosition(
+      y,
+      contentHeight,
+      scrollY,
+      height,
+      fontSize,
+    );
     const textX =
       getTextPosition(this.getContentArea(), this.getTextStyle()).x +
       textIndent;
