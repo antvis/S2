@@ -23,6 +23,7 @@ import {
   isFrozenTrailingCol,
   isFrozenTrailingRow,
 } from './utils';
+import { CornerBBox } from './bbox/cornerBbox';
 import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
 import { FrozenCellGroupMap } from '@/common/constant/frozen';
 import { DebuggerUtil } from '@/common/debug';
@@ -33,7 +34,6 @@ import { layoutCoordinate } from '@/facet/layout/layout-hooks';
 import { Node } from '@/facet/layout/node';
 import { renderLine } from '@/utils/g-renders';
 import { TableDataSet } from '@/data-set';
-import { getSortParam } from '@/utils/layout/add-detail-type-sort-icon';
 import { PanelIndexes } from '@/utils/indexes';
 import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
 
@@ -96,22 +96,7 @@ export class TableFacet extends BaseFacet {
   }
 
   protected calculateCornerBBox() {
-    const { colsHierarchy } = this.layoutResult;
-
-    const height = Math.floor(colsHierarchy.height);
-    const width = 0;
-
-    this.cornerBBox = {
-      x: 0,
-      y: 0,
-      width,
-      height,
-      maxX: width,
-      maxY: height,
-      minX: 0,
-      minY: 0,
-    };
-    this.cornerWidth = 0;
+    this.cornerBBox = new CornerBBox(this);
   }
 
   public destroy() {
