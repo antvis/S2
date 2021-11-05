@@ -50,9 +50,9 @@ export const getTheme = (
         verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
-          top: 10,
+          top: 0,
           right: 8,
-          bottom: 10,
+          bottom: 0,
           left: 8,
         },
       },
