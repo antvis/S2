@@ -6,18 +6,19 @@ import {
   S2Event,
   TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY,
   KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA,
+  ResizeAreaType,
+  ResizeAreaEffect,
 } from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
 import { getEllipsisText, getTextPosition } from '@/utils/text';
 import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
-import {
-  CellBoxCfg,
-  DefaultCellTheme,
-  IconTheme,
-  ResizeInfo,
-} from '@/common/interface';
+import { CellBoxCfg, DefaultCellTheme, IconTheme } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
+import {
+  getResizeAreaAttrs,
+  getResizeAreaGroupById,
+} from '@/utils/interaction/resize';
 
 export class TableColCell extends ColCell {
   protected isFrozenCell() {
@@ -37,13 +38,10 @@ export class TableColCell extends ColCell {
     if (!isFrozenCell) {
       return super.getColResizeArea();
     }
-    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+    return getResizeAreaGroupById(
+      this.spreadsheet,
       KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-    );
-    return (prevResizeArea ||
-      this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_FROZEN_COL_RESIZE_AREA,
-      })) as Group;
+    ) as Group;
   }
 
   protected getColResizeAreaOffset() {
@@ -227,19 +225,16 @@ export class TableColCell extends ColCell {
   }
 
   private getHorizontalResizeArea() {
-    const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
+    return getResizeAreaGroupById(
+      this.spreadsheet,
       KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA,
     );
-    return (prevResizeArea ||
-      this.spreadsheet.foregroundGroup.addGroup({
-        id: KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA,
-      })) as Group;
   }
 
   protected drawHorizontalResizeArea() {
     const { viewportWidth } = this.headerConfig;
     const { height: cellHeight } = this.meta;
-    const resizeStyle = this.getStyle('resizeArea');
+    const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getHorizontalResizeArea();
 
     const prevHorizontalResizeArea = resizeArea.find(
@@ -251,25 +246,20 @@ export class TableColCell extends ColCell {
       // 列高调整热区
       resizeArea.addShape('rect', {
         attrs: {
-          name: TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY,
-          x: 0,
-          y: cellHeight - resizeStyle.size,
-          width: viewportWidth,
-          height: resizeStyle.size,
-          fill: resizeStyle.background,
-          fillOpacity: resizeStyle.backgroundOpacity,
-          cursor: 'row-resize',
-          appendInfo: {
-            isResizeArea: true,
-            class: 'resize-trigger',
-            type: 'row',
+          ...getResizeAreaAttrs({
+            theme: resizeStyle,
+            type: ResizeAreaType.Row,
             id: this.getColResizeAreaKey(),
-            affect: 'field',
+            effect: ResizeAreaEffect.Filed,
             offsetX: 0,
             offsetY: 0,
             width: viewportWidth,
             height: cellHeight,
-          } as ResizeInfo,
+          }),
+          name: TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY,
+          x: 0,
+          y: cellHeight - resizeStyle.size,
+          width: viewportWidth,
         },
       });
     }

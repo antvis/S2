@@ -14,7 +14,7 @@ export const DEFAULT_STYLE: Readonly<Style> = {
     widthByField: {},
   },
   colCfg: {
-    height: 40,
+    height: 30,
     widthByFieldValue: {},
     heightByField: {},
     colWidthType: 'adaptive',
@@ -44,7 +44,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   interaction: {
     linkFields: [],
     hiddenColumnFields: [],
-    selectedCellsSpotlight: true,
+    selectedCellsSpotlight: false,
     hoverHighlight: true,
     scrollSpeedRatio: {
       horizontal: 1,

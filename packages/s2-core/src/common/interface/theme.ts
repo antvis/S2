@@ -118,9 +118,9 @@ export interface ResizeArea {
   /* 热区背景色 */
   background?: string;
   /* 参考线颜色 */
-  guidLineColor?: string;
+  guideLineColor?: string;
   /* 参考线间隔 */
-  guidLineDash?: number;
+  guideLineDash?: number;
   /* 热区背景色透明度 */
   backgroundOpacity?: number;
   /* 交互态 */
@@ -155,8 +155,8 @@ export interface SplitLine {
   verticalBorderColorOpacity?: number;
   /* 垂直分割线宽度 */
   verticalBorderWidth?: number;
-  /* 分割线是否显示右侧外阴影 */
-  showRightShadow?: boolean;
+  /* 分割线是否显示外阴影 */
+  showShadow?: boolean;
   /* 阴影宽度 */
   shadowWidth?: number;
   /* 阴影线性渐变色 */
@@ -199,7 +199,7 @@ export interface S2Theme extends CellThemes {
   [key: string]: any;
 }
 
-export type ThemeName = 'default' | 'simple' | 'colorful';
+export type ThemeName = 'default' | 'colorful' | 'gray';
 
 export interface ThemeCfg {
   /* 主题 */

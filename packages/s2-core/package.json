@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "1.0.0-beta.5",
+  "version": "1.2.1-beta.6",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/s2.min.js",
@@ -60,8 +60,7 @@
     "antd": "^4.16.13",
     "classnames": "^2.3.1",
     "lodash": "^4.17.21",
-    "react-beautiful-dnd": "^13.1.0",
-    "react-debounce-render": "^7.0.0"
+    "react-beautiful-dnd": "^13.1.0"
   },
   "devDependencies": {
     "@types/react-beautiful-dnd": "^13.1.2",

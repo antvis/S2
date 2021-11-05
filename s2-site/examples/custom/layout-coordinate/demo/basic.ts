@@ -19,7 +19,7 @@ fetch(
     const s2options = {
       width: 660,
       height: 600,
-      layoutCoordinate: (facetCfg: SpreadSheetFacetCfg, rowNode: Node, colNode: Node) => {
+      layoutCoordinate: (facetCfg, rowNode, colNode) => {
         // layoutCoordinate 用于改变行列叶子结点的尺寸（长、宽）和坐标（x、y）
         // 改变「宁波市」节点高度和所有 「number」 列叶子节点宽度。
         console.log(rowNode);

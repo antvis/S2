@@ -3,10 +3,9 @@ import { InteractionStateName, CellTypes, InterceptType } from '../constant';
 import { ViewMeta } from './basic';
 import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
 import { HeaderCell } from '@/cell/header-cell';
-import { Node } from '@/index';
+import { Node } from '@/facet/layout/node';
 import { BaseEvent } from '@/interaction/base-event';
 import { SpreadSheet } from '@/sheet-type';
-import { RootInteraction } from '@/interaction/root';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell

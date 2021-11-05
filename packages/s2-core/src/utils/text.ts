@@ -11,7 +11,8 @@ import {
 } from 'lodash';
 import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
 import { CellBoxCfg, CellCfg, TooltipPosition } from '@/common/interface';
-import { S2Options, S2Theme } from '@/index';
+import { S2Options } from '@/common/interface/s2Options';
+import { S2Theme } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 
 const canvas = document.createElement('canvas');

@@ -47,7 +47,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     onMergedCellsDoubleClick,
     onDataCellMouseUp,
     onContextMenu,
-    getSpreadsheet,
+    getSpreadSheet,
     showPagination = true,
   } = props;
   const container = useRef<HTMLDivElement>();
@@ -63,7 +63,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     options?.pagination?.pageSize || 10,
   );
 
-  const getSpreadSheet = (): SpreadSheet => {
+  const renderSpreadSheet = (): SpreadSheet => {
     const params: S2Constructor = [container.current, dataCfg, options];
 
     if (spreadsheet) {
@@ -169,7 +169,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (baseSpreadsheet.current) {
       return;
     }
-    baseSpreadsheet.current = getSpreadSheet();
+    baseSpreadsheet.current = renderSpreadSheet();
     bindEvent();
     baseSpreadsheet.current.setDataCfg(getSafetyDataConfig(dataCfg));
     baseSpreadsheet.current.setOptions(getSafetyOptions(options));
@@ -177,7 +177,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     baseSpreadsheet.current.render();
     setLoading(false);
     setOwnSpreadsheet(baseSpreadsheet.current);
-    getSpreadsheet?.(baseSpreadsheet.current);
+    getSpreadSheet?.(baseSpreadsheet.current);
   };
 
   useEffect(() => {

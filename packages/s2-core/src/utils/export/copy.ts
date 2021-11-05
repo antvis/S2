@@ -1,4 +1,4 @@
-import { copyToClipboard } from '.';
+import { copyToClipboard } from '@/utils/export';
 import { S2CellType, ViewMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
