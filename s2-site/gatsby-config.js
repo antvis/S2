@@ -152,6 +152,14 @@ module.exports = {
         },
         order: 8,
       },
+      {
+        slug: 'manual/faq',
+        title: {
+          zh: '常见问题',
+          en: 'Common problem',
+        },
+        order: 8,
+      },
     ],
     // demo配置
     examples: [

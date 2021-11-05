@@ -12,8 +12,8 @@ order: 2
 | 参数 | 类型 | 必选 | 默认值  | 功能描述 |
 | :--- | :--- | :---: | :--- | :--- |
 | theme | [S2Theme](#s2theme) | | |主题 schema |
-| palette | <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/default.ts" target="_blank" >paletteDefault</a> \| <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/simple-blue.ts" target="_blank" >paletteSimpleBlue</a> \|  <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful-blue.ts" target="_blank" >paletteColorfulBlue</a>  | | <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/default.ts" target="_blank" >paletteDefault</a>| 色板 schema |
-| name | `default` \|  `simple` \| `colorful`  | | `default`|  色板 schema |
+| palette | <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/default.ts" target="_blank" >paletteDefault</a> \| <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/simple-blue.ts" target="_blank" >paletteGray</a> \|  <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful-blue.ts" target="_blank" >paletteColorful</a>  | | <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/default.ts" target="_blank" >paletteDefault</a>| 色板 schema |
+| name | `default` \|  `colorful` \| `gray`  | | `default`|  色板 schema |
 
 ### Palette
 

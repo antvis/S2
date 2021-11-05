@@ -51,7 +51,6 @@ function MainLayout() {
         dataCfg={dataCfg}
         options={options}
         adaptive={false}
-        themeCfg={{ name: 'simple' }}
         header={{
           advancedSortCfg: {
             open: true,
