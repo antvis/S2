@@ -24,7 +24,7 @@ export const TOOLTIP_DEFAULT_ICON_PROPS: Partial<HtmlIconProps> = {
 };
 
 export const TOOLTIP_POSITION_OFFSET: TooltipPosition = {
-  x: 10,
+  x: 15,
   y: 10,
 };
 

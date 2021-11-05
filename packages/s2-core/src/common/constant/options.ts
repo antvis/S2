@@ -44,7 +44,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   interaction: {
     linkFields: [],
     hiddenColumnFields: [],
-    selectedCellsSpotlight: true,
+    selectedCellsSpotlight: false,
     hoverHighlight: true,
     scrollSpeedRatio: {
       horizontal: 1,
