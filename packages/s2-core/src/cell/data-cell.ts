@@ -96,7 +96,6 @@ export class DataCell extends BaseCell<ViewMeta> {
 
     if (this.spreadsheet.options.interaction.hoverHighlight) {
       // 如果当前是hover，要绘制出十字交叉的行列样式
-
       const currentColIndex = this.meta.colIndex;
       const currentRowIndex = this.meta.rowIndex;
       // 当视图内的 cell 行列 index 与 hover 的 cell 一致，绘制hover的十字样式
@@ -111,7 +110,7 @@ export class DataCell extends BaseCell<ViewMeta> {
       }
     }
 
-    if (isEqual(currentHoverCell, this)) {
+    if (isEqual(currentHoverCell.id, this.getMeta().id)) {
       this.updateByState(InteractionStateName.HOVER_FOCUS);
     }
   }
@@ -476,7 +475,6 @@ export class DataCell extends BaseCell<ViewMeta> {
         `${this.cellType}.cell.interactionState.${stateName}`,
       );
       if (stateStyles) {
-        // 对于
         updateShapeAttr(
           this.conditionIntervalShape,
           SHAPE_STYLE_MAP.backgroundOpacity,
