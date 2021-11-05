@@ -1,6 +1,6 @@
 import { TableSheet } from 'src/sheet-type';
-import { assembleDataCfg, assembleOptions } from '../../util/sheet-entry';
-import { getContainer } from '../../util/helpers';
+import { assembleDataCfg, assembleOptions } from '../../../util/sheet-entry';
+import { getContainer } from '../../../util/helpers';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { getSelectedData } from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
