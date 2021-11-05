@@ -32,7 +32,6 @@ const s2options = {
 
 describe('Total Cells Rendering Test', () => {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
-  s2.setThemeCfg({ name: 'simple' });
   s2.render();
   test('should get right SubTotals position', () => {
     const layoutResult = s2.facet.layoutResult;
@@ -51,6 +50,6 @@ describe('Total Cells Rendering Test', () => {
     expect(colSubTotalNodes[0].width).toEqual(192);
     expect(colSubTotalNodes[0].height).toEqual(120);
     expect(colSubTotalNodes[0].x).toEqual(192);
-    expect(colSubTotalNodes[0].y).toEqual(40);
+    expect(colSubTotalNodes[0].y).toEqual(30);
   });
 });
