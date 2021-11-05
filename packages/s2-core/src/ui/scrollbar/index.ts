@@ -318,7 +318,7 @@ export class ScrollBar extends Group {
 
   private bindLaterEvent = () => {
     const canvas = this.get('canvas');
-    const containerDOM: EventTarget = canvas.get('container');
+    const containerDOM: EventTarget = document.body;
 
     let events: EventListenerReturn[] = [];
     if (this.isMobile) {
