@@ -20,7 +20,6 @@
     "!**/interface.ts"
   ],
   "coverageReporters": ["json", "lcov", "text", "clover", "html"],
-  "transformIgnorePatterns": ["/node_modules/(?!d3-(interpolate|color))"],
   "testRegex": "/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js)?$",
   "transform": {
     "\\.(less|css)$": "jest-less-loader",
@@ -31,5 +30,6 @@
     "^tests/(.*)": "<rootDir>/__tests__/$1",
     "^src/(.*)": "<rootDir>/src/$1"
   },
+  "transformIgnorePatterns": ["<rootDir>/node_modules/(?!d3)"],
   "testTimeout": 30000
 }
