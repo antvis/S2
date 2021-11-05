@@ -1,0 +1,246 @@
+{
+  "1000": [
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": 1,
+      "value": 102
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": 2,
+      "value": 103
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": 3,
+      "value": 105
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": 4,
+      "value": 102
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": 5,
+      "value": 104
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": 6,
+      "value": 103
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": 7,
+      "value": 104
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": 8,
+      "value": 105
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": 9,
+      "value": 104
+    },
+    {
+      "size": "10 * 100",
+      "name": "orb",
+      "time": 10,
+      "value": 104
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": 1,
+      "value": 54
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": 2,
+      "value": 59
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": 3,
+      "value": 64
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": 4,
+      "value": 64
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": 5,
+      "value": 64
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": 6,
+      "value": 59
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": 7,
+      "value": 54
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": 8,
+      "value": 56
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": 9,
+      "value": 57
+    },
+    {
+      "size": "10 * 100",
+      "name": "@antv/s2",
+      "time": 10,
+      "value": 56
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": 1,
+      "value": 12
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": 2,
+      "value": 14
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": 3,
+      "value": 12
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": 4,
+      "value": 16
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": 5,
+      "value": 12
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": 6,
+      "value": 13
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": 7,
+      "value": 10
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": 8,
+      "value": 11
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": 9,
+      "value": 11
+    },
+    {
+      "size": "10 * 100",
+      "name": "PivotTable.js",
+      "time": 10,
+      "value": 10
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": 1,
+      "value": 114
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": 2,
+      "value": 134
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": 3,
+      "value": 122
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": 4,
+      "value": 135
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": 5,
+      "value": 141
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": 6,
+      "value": 153
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": 7,
+      "value": 140
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": 8,
+      "value": 154
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": 9,
+      "value": 136
+    },
+    {
+      "size": "10 * 100",
+      "name": "ReactPivot",
+      "time": 10,
+      "value": 153
+    }
+  ],
+  "10000": [],
+  "1000000": []
+}
