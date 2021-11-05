@@ -26,7 +26,6 @@ const s2options = {
 
 describe('GrandTotal Cells Rendering Test', () => {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
-  s2.setThemeCfg({ name: 'simple' });
   s2.render();
   test('should get right height of GrandTotal node', () => {
     const hierarchy = s2.facet.layoutResult.colsHierarchy;

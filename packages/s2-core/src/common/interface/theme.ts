@@ -199,7 +199,7 @@ export interface S2Theme extends CellThemes {
   [key: string]: any;
 }
 
-export type ThemeName = 'default' | 'simple' | 'colorful';
+export type ThemeName = 'default' | 'colorful' | 'gray';
 
 export interface ThemeCfg {
   /* 主题 */

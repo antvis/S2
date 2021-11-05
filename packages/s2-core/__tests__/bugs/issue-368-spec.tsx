@@ -32,7 +32,6 @@ const s2options = {
 
 describe('Total Cells Rendering Test', () => {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
-  s2.setThemeCfg({ name: 'simple' });
   s2.render();
   test('should get right SubTotals position', () => {
     const layoutResult = s2.facet.layoutResult;
