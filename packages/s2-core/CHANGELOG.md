@@ -1,3 +1,10 @@
+# [@antv/s2-v1.0.0-beta.6](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.5...@antv/s2-v1.0.0-beta.6) (2021-11-05)
+
+
+### Bug Fixes
+
+* set version to beta5 ([7a23b76](https://github.com/antvis/S2/commit/7a23b769e475bb4520837fe062294b92a2715e9f))
+
 # [@antv/s2-v1.0.0-beta.5](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.4...@antv/s2-v1.0.0-beta.5) (2021-11-01)
 
 
