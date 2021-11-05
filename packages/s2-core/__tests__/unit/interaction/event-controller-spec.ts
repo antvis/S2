@@ -3,6 +3,7 @@ import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { EmitterType } from '@/common/interface/emitter';
 import {
   CellTypes,
+  InteractionStateName,
   InterceptType,
   OriginEventType,
   S2Event,
@@ -10,7 +11,7 @@ import {
 import { EventController } from '@/interaction/event-controller';
 import { SpreadSheet } from '@/sheet-type';
 import { RootInteraction } from '@/interaction/root';
-import { S2Options } from '@/common/interface';
+import { CellMeta, S2Options } from '@/common/interface';
 import { BaseFacet } from '@/facet';
 
 jest.mock('@/interaction/brush-selection');
@@ -94,6 +95,14 @@ describe('Interaction Event Controller Tests', () => {
     );
   });
 
+  afterEach(() => {
+    spreadsheet.setOptions({
+      interaction: {
+        autoResetSheetStyle: true,
+      },
+    });
+  });
+
   test('should bind events', () => {
     expect(eventController.bindEvents).toBeDefined();
   });
@@ -103,6 +112,7 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.MOUSE_DOWN,
       OriginEventType.MOUSE_MOVE,
       OriginEventType.MOUSE_UP,
+      OriginEventType.MOUSE_OUT,
       OriginEventType.CONTEXT_MENU,
       OriginEventType.DOUBLE_CLICK,
     ];
@@ -453,10 +463,38 @@ describe('Interaction Event Controller Tests', () => {
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     expect(reset).not.toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+  });
+
+  test('should hide tooltip and clear hover highlight cell if current mouse outside the cell', () => {
+    spreadsheet.interaction.changeState({
+      cells: [{} as CellMeta],
+      stateName: InteractionStateName.HOVER,
+    });
+    spreadsheet.container.emit(OriginEventType.MOUSE_OUT);
+
+    expect(spreadsheet.interaction.reset).toHaveBeenCalled();
+    expect(spreadsheet.hideTooltip).toHaveBeenCalled();
+    expect(spreadsheet.interaction.getActiveCells()).toHaveLength(0);
+  });
+
+  test('should not hide tooltip if mouse outside the cell and has selected cells', () => {
+    spreadsheet.interaction.changeState({
+      cells: [{} as CellMeta],
+      stateName: InteractionStateName.SELECTED,
+    });
+    spreadsheet.container.emit(OriginEventType.MOUSE_OUT);
+
+    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
+  });
+
+  test('should disable reset if mouse outside the cell and autoResetSheetStyle set to false', () => {
     spreadsheet.setOptions({
       interaction: {
-        autoResetSheetStyle: true,
+        autoResetSheetStyle: false,
       },
     });
+
+    spreadsheet.container.emit(OriginEventType.MOUSE_OUT);
+    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
 });
