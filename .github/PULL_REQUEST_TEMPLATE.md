@@ -30,10 +30,16 @@
 
 ### 🖼️ Screenshot
 
-| Before | After |
-| ------ | ----- |
-| ❌      | ✅     |
+| Before                         | After                         |
+| ------------------------------ | ------------------------------ |
+| ❌                             | ✅                              |
 
 ### 🔗 Related issue link
 
 <!-- close #0 -->
+
+### 🔍 Self Check before Merge
+
+- [ ] Doc is updated/provided or not needed
+- [ ] Demo is updated/provided or not needed
+- [ ] TypeScript definition is updated/provided or not needed

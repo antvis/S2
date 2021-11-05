@@ -45,6 +45,7 @@ fetch('../data/basic.json')
       interaction: {
         scrollSpeedRatio: {
           vertical: defaultScrollSpeedRatio,
+          horizontal: 1,
         },
       },
     };
