@@ -1,6 +1,7 @@
 import { IGroup, ShapeAttrs } from '@antv/g-canvas';
 import { ResizeInfo } from '@/common/interface/resize';
 import { SpreadSheet } from '@/sheet-type/spread-sheet';
+import { ResizeAreaType } from '@/common/constant/resize';
 
 export const getResizeAreaAttrs = (options: ResizeInfo): ShapeAttrs => {
   const {
@@ -11,8 +12,8 @@ export const getResizeAreaAttrs = (options: ResizeInfo): ShapeAttrs => {
     height: resizeAreaHeight,
     ...otherOptions
   } = options;
-  const width = type === 'col' ? theme.size : null;
-  const height = type === 'row' ? theme.size : null;
+  const width = type === ResizeAreaType.Col ? theme.size : null;
+  const height = type === ResizeAreaType.Row ? theme.size : null;
 
   return {
     fill: theme.background,
