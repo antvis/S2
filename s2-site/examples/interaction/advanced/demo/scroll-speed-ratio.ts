@@ -13,7 +13,7 @@ function createSlider(s2) {
   slider.step = '0.1';
   slider.title = `当前滚动速率: ${defaultScrollSpeedRatio}`;
 
-  slider.addEventListener('change', (e) => {
+  slider.addEventListener('input', (e) => {
     const ratio = e.target.value;
     console.log('ratio: ', ratio);
     s2.setOptions({
@@ -25,7 +25,7 @@ function createSlider(s2) {
     });
     slider.title = `当前滚动速率: ${ratio}`;
   });
-  document.getElementById('container').appendChild(slider);
+  document.querySelector('#container > canvas').before(slider);
 }
 
 fetch('../data/basic.json')
@@ -45,7 +45,7 @@ fetch('../data/basic.json')
       interaction: {
         scrollSpeedRatio: {
           vertical: defaultScrollSpeedRatio,
-          horizontal: 1,
+          horizontal: defaultScrollSpeedRatio,
         },
       },
     };
@@ -67,6 +67,6 @@ insertCss(`
   input[type='range']::before {
     content: attr(title);
     position: absolute;
-    left: 0;
+    left: 15px;
   }
 `);
