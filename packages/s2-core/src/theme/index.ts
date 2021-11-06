@@ -308,11 +308,11 @@ export const getTheme = (
     },
     // ------------- scrollBar -------------------
     scrollBar: {
-      trackColor: 'rgba(0,0,0,0)',
-      thumbHoverColor: 'rgba(0,0,0,0.4)',
+      trackColor: 'rgba(0,0,0,0.01)',
+      thumbHoverColor: 'rgba(0,0,0,0.25)',
       thumbColor: 'rgba(0,0,0,0.15)',
       size: isMobile() ? 3 : 6,
-      hoverSize: 16,
+      hoverSize: isMobile() ? 4 : 8,
       lineCap: 'round',
     },
     // ------------- split line -----------------
