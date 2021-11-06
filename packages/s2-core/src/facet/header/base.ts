@@ -15,6 +15,10 @@ export interface BaseHeaderConfig {
   width: number;
   // group's height
   height: number;
+  // group's original width without clip
+  originalWidth?: number;
+  // group's original height without clip
+  originalHeight?: number;
   // group's container's width
   viewportWidth: number;
   // group's container's height

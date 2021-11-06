@@ -3,6 +3,7 @@ import { BaseFacet } from '@/facet/base-facet';
 import { LayoutResult } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 
+// BBox相同数据结构，便于已有逻辑的直接复用
 export abstract class BaseBBox implements BBox {
   protected spreadsheet: SpreadSheet;
 
@@ -10,7 +11,6 @@ export abstract class BaseBBox implements BBox {
 
   protected layoutResult: LayoutResult;
 
-  // BBox相同数据结构
   x = 0;
 
   y = 0;
@@ -32,10 +32,14 @@ export abstract class BaseBBox implements BBox {
 
   originalHeight = 0;
 
-  constructor(facet: BaseFacet) {
+  constructor(facet: BaseFacet, autoCalculateBBoxWhenCreated = false) {
     this.facet = facet;
     this.spreadsheet = facet.spreadsheet;
     this.layoutResult = facet.layoutResult;
+
+    if (autoCalculateBBoxWhenCreated) {
+      this.calculateBBox();
+    }
   }
 
   abstract calculateBBox(): void;

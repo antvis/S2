@@ -19,7 +19,7 @@ export class CornerBBox extends BaseBBox {
     return this.originalHeight;
   }
 
-  private getCornerBBoxWidth = (): number => {
+  private getCornerBBoxWidth() {
     const { rowsHierarchy } = this.layoutResult;
     this.originalWidth = Math.floor(
       rowsHierarchy.width + this.facet.getSeriesNumberWidth(),
@@ -34,7 +34,7 @@ export class CornerBBox extends BaseBBox {
     }
 
     return this.adjustCornerBBoxWidth();
-  };
+  }
 
   private adjustCornerBBoxWidth() {
     const { colsHierarchy } = this.layoutResult;

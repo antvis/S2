@@ -373,8 +373,7 @@ export abstract class BaseFacet {
   };
 
   protected calculateCornerBBox() {
-    this.cornerBBox = new CornerBBox(this);
-    this.cornerBBox.calculateBBox();
+    this.cornerBBox = new CornerBBox(this, true);
     this.setFreezeCornerDiffWidth(0);
 
     this.setFreezeCornerDiffWidth(
@@ -394,8 +393,7 @@ export abstract class BaseFacet {
   }
 
   calculatePanelBBox = () => {
-    this.panelBBox = new PanelBBox(this);
-    this.panelBBox.calculateBBox();
+    this.panelBBox = new PanelBBox(this, true);
   };
 
   getRealWidth = (): number => {
@@ -519,7 +517,7 @@ export abstract class BaseFacet {
           this.cornerBBox.originalWidth,
         position: {
           x: this.cornerBBox.minX + this.scrollBarSize / 2,
-          y: this.panelBBox.maxY - this.scrollBarSize / 2,
+          y: this.panelBBox.maxY,
         },
         thumbOffset:
           (rowScrollX * this.cornerBBox.width) / this.cornerBBox.originalWidth,
