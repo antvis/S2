@@ -1,9 +1,12 @@
 import { Style } from './basic';
 import { ResizeArea } from './theme';
 import { S2Event } from '@/common/constant/events/basic';
-import { ResizeAreaEffect, ResizeAreaType } from '@/common/constant/resize';
+import {
+  ResizeAreaEffect,
+  ResizeDirectionType,
+} from '@/common/constant/resize';
 
-export type ResizeGuideLinePath = ['M' | 'L', number, number];
+export type ResizeGuideLinePath = [operation: 'M' | 'L', x: number, y: number];
 
 export type ResizeEvent =
   | S2Event.LAYOUT_RESIZE
@@ -37,19 +40,14 @@ export interface ResizeDetail {
 export interface ResizeInfo {
   theme: ResizeArea;
   isResizeArea?: boolean;
-  /**
-   * col是改变列配置，即改变宽度
-   * row是改变行配置，即改变高度
-   */
-  type: ResizeAreaType;
+  type: ResizeDirectionType;
   /** 改动影响区域 */
   effect: ResizeAreaEffect;
   /** 字段id */
   id?: string;
-  /** 维值，用于指定该维值对应的配置 */
-  caption?: string;
   offsetX: number;
   offsetY: number;
   width: number;
   height: number;
+  size: number;
 }

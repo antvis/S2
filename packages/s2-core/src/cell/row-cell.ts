@@ -1,11 +1,13 @@
+import { size } from 'lodash';
 import { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
+import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
   ResizeAreaEffect,
-  ResizeAreaType,
+  ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
 import { FormatResult, TextTheme } from '@/common/interface';
@@ -214,16 +216,6 @@ export class RowCell extends HeaderCell {
     );
   }
 
-  protected getColResizeAreaOffset() {
-    const { scrollX, position } = this.headerConfig;
-    const { x, y } = this.meta;
-
-    return {
-      x: position.x - scrollX + x,
-      y: position.y + y,
-    };
-  }
-
   protected drawResizeAreaInLeaf() {
     if (!this.meta.isLeaf) {
       return;
@@ -236,30 +228,58 @@ export class RowCell extends HeaderCell {
       KEY_GROUP_ROW_RESIZE_AREA,
     );
 
-    const { position, seriesNumberWidth, scrollX, scrollY } = this.headerConfig;
-    const { label, parent } = this.meta;
+    const {
+      position,
+      seriesNumberWidth,
+      width: headerWidth,
+      height: headerHeight,
+      scrollX,
+      scrollY,
+    } = this.headerConfig;
 
-    const freezeCornerDiffWidth =
-      this.spreadsheet.facet.getFreezeCornerDiffWidth();
+    const resizeAreaBBox = {
+      x,
+      y: y + height - resizeStyle.size / 2,
+      width,
+      height: resizeStyle.size,
+    };
+
+    const resizeClipAreaBBox = {
+      x: 0,
+      y: 0,
+      width: headerWidth,
+      height: headerHeight,
+    };
+
+    if (
+      !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+        scrollX,
+        scrollY,
+      })
+    ) {
+      return;
+    }
+
+    const offsetX = position.x + x - scrollX + seriesNumberWidth;
+    const offsetY = position.y + y - scrollY;
 
     const resizeAreaWidth = this.spreadsheet.isFreezeRowHeader()
-      ? width - freezeCornerDiffWidth + scrollX
+      ? headerWidth - seriesNumberWidth - (x - scrollX)
       : width;
 
     resizeArea.addShape('rect', {
       attrs: {
         ...getResizeAreaAttrs({
           theme: resizeStyle,
-          type: ResizeAreaType.Row,
+          type: ResizeDirectionType.Vertical,
           effect: ResizeAreaEffect.Cell,
-          caption: parent.isTotals ? '' : label,
-          offsetX: position.x + x + seriesNumberWidth,
-          offsetY: position.y + y - scrollY,
+          offsetX,
+          offsetY,
           width,
           height,
         }),
-        x: position.x + x - scrollX + seriesNumberWidth,
-        y: position.y + y - scrollY + height - resizeStyle.size / 2,
+        x: offsetX,
+        y: offsetY + height - resizeStyle.size / 2,
         width: resizeAreaWidth,
       },
     });

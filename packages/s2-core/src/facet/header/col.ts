@@ -1,7 +1,8 @@
+import { debug } from 'console';
 import { each, isEmpty } from 'lodash';
 import { IGroup, IShape } from '@antv/g-base';
-import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
+import { translateGroupX } from '@/facet/utils';
 import {
   KEY_GROUP_COL_SCROLL,
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
@@ -30,7 +31,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
-
     this.scrollGroup = this.addGroup({
       name: KEY_GROUP_COL_SCROLL,
       zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
@@ -43,11 +43,9 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
    * @param cornerWidth only has real meaning when scroll contains rowCell
    * @param type
    */
-  public onColScroll(scrollX: number, cornerWidth: number, type: string) {
-    // this is works in scroll-keep-text-center feature
+  public onColScroll(scrollX: number, type: string) {
     if (this.headerConfig.scrollX !== scrollX) {
       this.headerConfig.scrollX = scrollX;
-      this.headerConfig.cornerWidth = cornerWidth || 0;
       this.render(type);
     }
   }
@@ -96,7 +94,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected layout() {
     const { data, spreadsheet } = this.headerConfig;
-
     const colCell = spreadsheet?.facet?.cfg?.colCell;
 
     each(data, (node: Node) => {
@@ -122,6 +119,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected offset() {
     const { position, scrollX } = this.headerConfig;
     // 暂时不考虑移动y
-    translateGroup(this.scrollGroup, position.x - scrollX, 0);
+    translateGroupX(this.scrollGroup, position.x - scrollX);
   }
 }

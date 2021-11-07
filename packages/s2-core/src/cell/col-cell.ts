@@ -1,4 +1,5 @@
 import { Point } from '@antv/g-canvas';
+import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import {
   getResizeAreaAttrs,
@@ -8,7 +9,7 @@ import {
   CellTypes,
   KEY_GROUP_COL_RESIZE_AREA,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
-  ResizeAreaType,
+  ResizeDirectionType,
   ResizeAreaEffect,
 } from '@/common/constant';
 import {
@@ -157,65 +158,108 @@ export class ColCell extends HeaderCell {
   }
 
   protected drawHorizontalResizeArea() {
-    const { viewportWidth, scrollX } = this.headerConfig;
-    const { height: cellHeight } = this.meta;
+    const { cornerWidth, width: headerWidth } = this.headerConfig;
+    const { y, height } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
+
     const resizeAreaName = `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`;
-    const prevHorizontalResizeArea = resizeArea.find(
+
+    const existedHorizontalResizeArea = resizeArea.find(
       (element) => element.attrs.name === resizeAreaName,
     );
-    const resizerOffset = this.getColResizeAreaOffset();
+
     // 如果已经绘制当前列高调整热区热区，则不再绘制
-    if (!prevHorizontalResizeArea) {
-      // 列高调整热区
-      resizeArea.addShape('rect', {
-        attrs: {
-          ...getResizeAreaAttrs({
-            theme: resizeStyle,
-            type: ResizeAreaType.Row,
-            id: this.getColResizeAreaKey(),
-            effect: ResizeAreaEffect.Filed,
-            offsetX: resizerOffset.x,
-            offsetY: resizerOffset.y,
-            width: viewportWidth,
-            height: cellHeight,
-          }),
-          name: resizeAreaName,
-          x: resizerOffset.x,
-          y: resizerOffset.y + cellHeight - resizeStyle.size / 2,
-          width: viewportWidth + scrollX,
-        },
-      });
+    if (existedHorizontalResizeArea) {
+      return;
     }
+
+    const resizeAreaWidth = cornerWidth + headerWidth;
+    // 列高调整热区
+    resizeArea.addShape('rect', {
+      attrs: {
+        ...getResizeAreaAttrs({
+          theme: resizeStyle,
+          type: ResizeDirectionType.Vertical,
+          id: this.getColResizeAreaKey(),
+          effect: ResizeAreaEffect.Field,
+          offsetX: 0,
+          offsetY: y,
+          width: resizeAreaWidth,
+          height: height,
+        }),
+        name: resizeAreaName,
+        x: 0,
+        y: y + height - resizeStyle.size / 2,
+        width: resizeAreaWidth,
+      },
+    });
   }
 
   protected drawVerticalResizeArea() {
-    const { label, width: cellWidth, height: cellHeight, parent } = this.meta;
-    const resizerOffset = this.getColResizeAreaOffset();
+    if (!this.meta.isLeaf) {
+      return;
+    }
+
+    const { x, y, label, width, height, parent } = this.meta;
+    const {
+      scrollX,
+      scrollY,
+      position,
+      scrollContainsRowHeader,
+      cornerWidth,
+      height: headerHeight,
+      width: headerWidth,
+    } = this.headerConfig;
+
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
-    if (this.meta.isLeaf) {
-      // 列宽调整热区
-      // 基准线是根据container坐标来的，因此把热区画在container
-      resizeArea.addShape('rect', {
-        attrs: {
-          ...getResizeAreaAttrs({
-            theme: resizeStyle,
-            type: ResizeAreaType.Col,
-            effect: ResizeAreaEffect.Cell,
-            caption: parent.isTotals ? '' : label,
-            offsetX: resizerOffset.x,
-            offsetY: resizerOffset.y,
-            width: cellWidth,
-            height: cellHeight,
-          }),
-          x: resizerOffset.x + cellWidth - resizeStyle.size / 2,
-          y: resizerOffset.y,
-          height: cellHeight,
-        },
-      });
+
+    const resizeAreaBBox = {
+      x: x + width - resizeStyle.size / 2,
+      y,
+      width: resizeStyle.size,
+      height,
+    };
+
+    const resizeClipAreaBBox = {
+      x: scrollContainsRowHeader ? -cornerWidth : 0,
+      y: 0,
+      width: scrollContainsRowHeader ? cornerWidth + headerWidth : headerWidth,
+      height: headerHeight,
+    };
+
+    if (
+      !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+        scrollX,
+        scrollY,
+      })
+    ) {
+      return;
     }
+
+    const offsetX = position.x + x - scrollX;
+    const offsetY = position.y + y;
+
+    // 列宽调整热区
+    // 基准线是根据container坐标来的，因此把热区画在container
+    resizeArea.addShape('rect', {
+      attrs: {
+        ...getResizeAreaAttrs({
+          theme: resizeStyle,
+          type: ResizeDirectionType.Horizontal,
+          effect: ResizeAreaEffect.Cell,
+          id: parent.isTotals ? '' : label,
+          offsetX,
+          offsetY,
+          width,
+          height,
+        }),
+        x: offsetX + width - resizeStyle.size / 2,
+        y: offsetY,
+        height,
+      },
+    });
   }
 
   // 绘制热区

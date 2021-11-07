@@ -26,10 +26,7 @@ export class CornerBBox extends BaseBBox {
     );
 
     // 在行头不固定时，或者行头为树形布局时，不需要需要对应角头bbox进行裁剪
-    if (
-      this.spreadsheet.isScrollContainsRowHeader() ||
-      this.spreadsheet.isHierarchyTreeType()
-    ) {
+    if (this.spreadsheet.isScrollContainsRowHeader()) {
       return this.originalWidth;
     }
 

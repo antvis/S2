@@ -374,22 +374,6 @@ export abstract class BaseFacet {
 
   protected calculateCornerBBox() {
     this.cornerBBox = new CornerBBox(this, true);
-    this.setFreezeCornerDiffWidth(0);
-
-    this.setFreezeCornerDiffWidth(
-      this.cornerBBox.originalWidth - this.cornerBBox.width,
-    );
-  }
-
-  getFreezeCornerDiffWidth(): number {
-    if (!this.spreadsheet.isFreezeRowHeader()) {
-      return 0;
-    }
-    return this.spreadsheet.store.get('freezeCornerDiffWidth', 0);
-  }
-
-  setFreezeCornerDiffWidth(width: number) {
-    this.spreadsheet.store.set('freezeCornerDiffWidth', width);
   }
 
   calculatePanelBBox = () => {
@@ -511,7 +495,7 @@ export abstract class BaseFacet {
     ) {
       this.hRowScrollBar = new ScrollBar({
         isHorizontal: true,
-        trackLen: this.cornerBBox.width - this.scrollBarSize / 2,
+        trackLen: this.cornerBBox.width,
         thumbLen:
           (this.cornerBBox.width * this.cornerBBox.width) /
           this.cornerBBox.originalWidth,
@@ -846,13 +830,7 @@ export abstract class BaseFacet {
       false,
     );
     this.centerFrame.onBorderScroll(this.getRealScrollX(scrollX));
-    this.columnHeader.onColScroll(
-      scrollX,
-      this.cfg.spreadsheet.isScrollContainsRowHeader()
-        ? this.cornerBBox.width
-        : undefined,
-      KEY_GROUP_COL_RESIZE_AREA,
-    );
+    this.columnHeader.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
   }
 
   addCell = (cell: S2CellType<ViewMeta>) => {
@@ -1022,6 +1000,7 @@ export abstract class BaseFacet {
       const { x, width, height } = this.panelBBox;
       return new ColHeader({
         width,
+        cornerWidth: this.cornerBBox.width,
         height: this.cornerBBox.height,
         viewportWidth: width,
         viewportHeight: height,
