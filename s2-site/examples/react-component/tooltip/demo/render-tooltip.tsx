@@ -24,10 +24,7 @@ const extra = [
 ];
 
 class CustomTooltip extends BaseTooltip {
-  protected renderOperation(
-    operator: TooltipOperatorOptions,
-    onlyMenu?: boolean,
-  ) {
+  renderOperation(operator, onlyMenu) {
     const customOperator = {
       onClick: () => {
         console.log('测试');
@@ -44,7 +41,7 @@ class CustomTooltip extends BaseTooltip {
     return <TooltipOperator {...customOperator} />;
   }
 
-  protected renderNameTips(nameTip: { name: string; tips: string }) {
+  renderNameTips(nameTip) {
     const { tips } = extra.find((item) => item.value === nameTip.name) || {};
     if (tips) {
       return <SimpleTips tips={tips} name={`${nameTip.name} - 测试`} />;
@@ -52,7 +49,7 @@ class CustomTooltip extends BaseTooltip {
     return super.renderNameTips(nameTip);
   }
 
-  protected renderSummary(summaries) {
+  renderSummary(summaries) {
     const customSummaries = (summaries || []).map((item) => {
       return { ...item, name: `${item.name} - 测试` };
     });
@@ -63,7 +60,7 @@ class CustomTooltip extends BaseTooltip {
     );
   }
 
-  protected renderHeadInfo(headInfo) {
+  renderHeadInfo(headInfo) {
     const { cols = [], rows = [] } = headInfo || {};
     const customCols = cols.map((item) => {
       return { ...item, value: `${item.value} - 测试` };
@@ -78,14 +75,14 @@ class CustomTooltip extends BaseTooltip {
     );
   }
 
-  protected renderDetail(details: ListItem[]) {
+  renderDetail(details) {
     const customDetails = (details || []).map((item) => {
       return { name: `${item.name} - 测试`, value: `${item.value} - w` };
     });
     return customDetails.length > 0 && <TooltipDetail list={customDetails} />;
   }
 
-  protected renderInfos(infos) {
+  renderInfos(infos) {
     return <Infos infos={`按住Cmd/Ctrl或框选，查看多个数据点`} />;
   }
 }
