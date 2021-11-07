@@ -11,7 +11,7 @@
 - [ ] Code style optimization
 - [ ] Refactoring
 - [ ] Change the UI
-- [ ] Improve performance.
+- [ ] Improve the performance
 - [ ] Type optimization
 
 🐛 Bugfix
@@ -40,6 +40,6 @@
 
 ### 🔍 Self Check before Merge
 
-- [ ] Doc is updated/provided or not needed
-- [ ] Demo is updated/provided or not needed
-- [ ] TypeScript definition is updated/provided or not needed
+- [ ] Add or update relevant Docs.
+- [ ] Add or update relevant Demos.
+- [ ] Add or update relevant TypeScript definitions.
