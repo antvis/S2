@@ -123,26 +123,26 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
 
-  protected getStyle(name?: keyof S2Theme) {
+  public getStyle(name?: keyof S2Theme) {
     return this.theme[name || this.cellType];
   }
 
-  protected getResizeAreaStyle() {
+  public getResizeAreaStyle() {
     return this.getStyle('resizeArea');
   }
 
-  protected getCellArea() {
+  public getCellArea() {
     const { x, y, height, width } = this.meta;
     return { x, y, height, width };
   }
 
   // get content area that exclude padding
-  protected getContentArea() {
+  public getContentArea() {
     const { padding } = this.getStyle()?.cell || this.theme.dataCell.cell;
     return getContentArea(this.getCellArea(), padding);
   }
 
-  protected getIconPosition() {
+  public getIconPosition() {
     return this.getTextAndIconPosition().icon;
   }
 

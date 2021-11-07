@@ -7,15 +7,7 @@ import {
   mockGridAnalysisOptions,
 } from 'tests/data/grid-analysis-data';
 import { getContainer } from '../util/helpers';
-import { S2DataConfig, S2Options, SheetComponent, PivotSheet } from '@/index';
-
-const getSpreadSheet = (
-  dom: string | HTMLElement,
-  dataCfg: S2DataConfig,
-  options: S2Options,
-) => {
-  return new PivotSheet(dom, dataCfg, options);
-};
+import { SheetComponent } from '@/index';
 
 const options = mockGridAnalysisOptions;
 
@@ -31,7 +23,6 @@ describe('spreadsheet gridAnalysis spec', () => {
         dataCfg={mockGridAnalysisDataCfg}
         adaptive={false}
         options={options}
-        spreadsheet={getSpreadSheet}
         header={{ exportCfg: { open: true } }}
       />,
       getContainer(),

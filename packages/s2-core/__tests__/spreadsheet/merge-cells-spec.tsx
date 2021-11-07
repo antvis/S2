@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils';
 import {
   mockGridAnalysisDataCfg,
   mockGridAnalysisOptions,
-} from 'tests/data/gridAnalysis-data';
+} from 'tests/data/grid-analysis-data';
 import { getContainer } from '../util/helpers';
 import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
@@ -90,7 +90,8 @@ const gridAnalysisOptions = {
   mergedCellsInfo: [
     [
       { colIndex: 0, rowIndex: 0 },
-      { colIndex: 0, rowIndex: 1, showText: true },
+      { colIndex: 0, rowIndex: 1 },
+      { colIndex: 1, rowIndex: 0, showText: true },
     ],
   ],
 } as S2Options;

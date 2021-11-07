@@ -178,6 +178,8 @@ export interface DefaultCellTheme {
   icon?: IconTheme;
   /* 序号列宽 */
   seriesNumberWidth?: number;
+  /* 额外属性字段 */
+  [key: string]: any;
 }
 
 type CellThemes = {

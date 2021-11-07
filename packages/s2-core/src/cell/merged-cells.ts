@@ -74,8 +74,7 @@ export class MergedCells extends DataCell {
    */
   public drawTextShape() {
     if (isEmpty(this.meta)) return;
-    const { formattedValue: text } = this.getFormattedFieldValue();
-    if (isObject(text)) {
+    if (isObject(this.meta.fieldValue)) {
       drawObjectText(this);
     } else {
       super.drawTextShape();

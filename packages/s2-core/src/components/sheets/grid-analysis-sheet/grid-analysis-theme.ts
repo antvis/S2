@@ -1,49 +1,15 @@
-import { S2Theme } from '@/common/interface';
-import { isWindows } from '@/utils/is-mobile';
+import { FONT_FAMILY } from '@/common/constant/theme';
+import { DefaultCellTheme } from '@/common/interface/theme';
 
-const FONT_FAMILY =
-  'Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';
+import { isWindows } from '@/utils/is-mobile';
 
 export const FONT_SIZE = 12;
 export const FONT_SIZE_MINOR = 11;
 
 /* 交叉表的样式 */
 export const GridAnalysisTheme = {
-  fontFamily: FONT_FAMILY,
   // 表头
-  header: {
-    cell: {
-      borderColor: ['#E8E8E8', '#E8E8E8'],
-      borderWidth: [1, 1],
-      backgroundColor: '#fff',
-      rowBackgroundColor: '#fff',
-      colBackgroundColor: '#fff',
-      cornerBackgroundColor: '#fff',
-      interactiveBgColor: '#ebf2ff',
-      interactiveFillOpacity: [0, 1],
-      padding: [12, 4, 12, 4],
-      textIndent: 12,
-    },
-    text: {
-      fontSize: FONT_SIZE,
-      fontFamily: FONT_FAMILY,
-      fill: 'rgba(0,0,0,1)',
-      textBaseline: 'middle',
-    },
-    bolderText: {
-      fontSize: FONT_SIZE,
-      fontFamily: FONT_FAMILY,
-      fill: 'rgba(0,0,0,0.85)',
-      fontWeight: isWindows() ? 'bold' : '520',
-      textBaseline: 'middle',
-    },
-    icon: {
-      radius: 6,
-    },
-    seriesNumberWidth: 50,
-  },
-  // 视窗内
-  view: {
+  dataCell: {
     text: {
       fontSize: FONT_SIZE,
       fontFamily: FONT_FAMILY,
@@ -61,6 +27,7 @@ export const GridAnalysisTheme = {
       textBaseline: 'middle',
       textAlign: 'left',
     },
+
     // 衍生指标
     derivedMeasureText: {
       mainUp: '#F46649',
@@ -76,30 +43,5 @@ export const GridAnalysisTheme = {
       textBaseline: 'middle',
       textAlign: 'left',
     },
-    cell: {
-      borderColor: ['#E8E8E8', '#BBBBBB'],
-      borderWidth: [1, 1],
-      crossColor: '#fff',
-      backgroundColor: '#fff',
-      backgroundHoverColor: '#ebf2ff',
-      interactiveBgColor: '#ebf2ff',
-      interactiveFillOpacity: [0, 1],
-      padding: [16, 12, 16, 12],
-      intervalBgHeight: 12,
-    },
   },
-  scrollBar: {
-    trackColor: 'rgba(0,0,0,0)',
-    thumbHoverColor: 'rgba(0,0,0,0.2)',
-    thumbColor: 'rgba(0,0,0,0.15)',
-    size: 8,
-  },
-  center: {
-    verticalBorderColor: '#BBBBBB',
-    verticalBorderWidth: 1,
-    horizontalBorderColor: '#BBBBBB',
-    horizontalBorderWidth: 1,
-    showCenterRightShadow: false,
-    centerRightShadowWidth: 0,
-  },
-} as S2Theme;
+} as DefaultCellTheme;

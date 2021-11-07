@@ -21,7 +21,7 @@ export const GridAnalysisSheet = (props: BaseSheetProps) => {
     // TODO dataCfg细化
     dataCfg,
     options,
-    adaptive = true,
+    adaptive = false,
     header,
     themeCfg = {
       theme: GridAnalysisTheme,
@@ -192,7 +192,7 @@ export const GridAnalysisSheet = (props: BaseSheetProps) => {
     update(() => {
       ownSpreadsheet.setThemeCfg(themeCfg);
     });
-  }, [JSON.stringify(themeCfg)]);
+  }, [themeCfg]);
 
   useEffect(() => {
     if (!ownSpreadsheet) return;
