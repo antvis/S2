@@ -66,6 +66,7 @@ export enum S2Event {
 
   /** ================ Table Layout Resize ================  */
   LAYOUT_RESIZE = 'layout:resize',
+  LAYOUT_RESIZE_SERIES_WIDTH = 'layout:resize-series-width',
   LAYOUT_RESIZE_ROW_WIDTH = 'layout:resize-row-width',
   LAYOUT_RESIZE_ROW_HEIGHT = 'layout:resize-row-height',
   LAYOUT_RESIZE_COL_WIDTH = 'layout:resize-column-width',

@@ -228,6 +228,12 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
             },
           },
         };
+
+      case ResizeAreaEffect.Series:
+        return {
+          eventType: S2Event.LAYOUT_RESIZE_SERIES_WIDTH,
+          seriesNumberWidth: width,
+        };
       default:
         return null;
     }
@@ -301,8 +307,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     const resizeInfo = this.getResizeInfo();
 
     const isResizeFreezeRowHeader =
-      (resizeInfo.effect === ResizeAreaEffect.Field ||
-        resizeInfo.effect === ResizeAreaEffect.Tree) &&
+      resizeInfo.effect !== ResizeAreaEffect.Cell &&
       this.spreadsheet.isFreezeRowHeader();
 
     const { width: canvasWidth } = this.spreadsheet.options;
@@ -399,7 +404,11 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
   private renderResizedResult() {
     const resizeInfo = this.getResizeInfo();
-    const { style, eventType: resizeEventType } = this.getResizeDetail() || {};
+    const {
+      style,
+      seriesNumberWidth,
+      eventType: resizeEventType,
+    } = this.getResizeDetail() || {};
 
     const resizeDetail = {
       info: resizeInfo,
@@ -407,7 +416,13 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     };
     this.spreadsheet.emit(S2Event.LAYOUT_RESIZE, resizeDetail);
     this.spreadsheet.emit(resizeEventType, resizeDetail);
-    this.spreadsheet.setOptions({ style });
+
+    if (style) {
+      this.spreadsheet.setOptions({ style });
+    } else {
+      this.spreadsheet.theme.rowCell.seriesNumberWidth = seriesNumberWidth;
+    }
+
     this.spreadsheet.store.set('resized', true);
     this.render();
   }

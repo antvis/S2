@@ -229,6 +229,12 @@ export class CornerCell extends HeaderCell {
   }
 
   private getResizeAreaEffect() {
+    const { key } = this.meta;
+
+    if (key === KEY_SERIES_NUMBER_NODE) {
+      return ResizeAreaEffect.Series;
+    }
+
     return this.isLastRowCornerCell() && this.spreadsheet.isHierarchyTreeType()
       ? ResizeAreaEffect.Tree
       : ResizeAreaEffect.Field;
@@ -266,7 +272,6 @@ export class CornerCell extends HeaderCell {
     };
 
     if (
-      key === KEY_SERIES_NUMBER_NODE ||
       cornerType === CornerNodeType.Col ||
       !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
         scrollX,

@@ -10,6 +10,7 @@ export type ResizeGuideLinePath = [operation: 'M' | 'L', x: number, y: number];
 
 export type ResizeEvent =
   | S2Event.LAYOUT_RESIZE
+  | S2Event.LAYOUT_RESIZE_SERIES_WIDTH
   | S2Event.LAYOUT_RESIZE_ROW_WIDTH
   | S2Event.LAYOUT_RESIZE_COL_WIDTH
   | S2Event.LAYOUT_RESIZE_ROW_HEIGHT
@@ -34,7 +35,8 @@ export interface ResizePosition {
 
 export interface ResizeDetail {
   eventType: ResizeEvent;
-  style: Style;
+  style?: Style;
+  seriesNumberWidth?: number;
 }
 
 export interface ResizeInfo {

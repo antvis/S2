@@ -12,4 +12,5 @@ export enum ResizeAreaEffect {
   Field = 'field',
   Cell = 'cell',
   Tree = 'tree',
+  Series = 'series',
 }
