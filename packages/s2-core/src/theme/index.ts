@@ -324,7 +324,7 @@ export const getTheme = (
       verticalBorderColorOpacity: 1,
       verticalBorderWidth: 2,
       showShadow: true,
-      shadowWidth: 10,
+      shadowWidth: 8,
       shadowColors: {
         left: 'rgba(0,0,0,0.1)',
         right: 'rgba(0,0,0,0)',
