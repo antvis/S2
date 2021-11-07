@@ -1,6 +1,6 @@
 import { S2DataConfig, S2Options } from '@/common/interface';
 
-export const mockTabularOptions = {
+export const mockGridAnalysisOptions = {
   width: 1000,
   height: 600,
   hierarchyType: 'grid',
@@ -15,7 +15,7 @@ export const mockTabularOptions = {
   },
 } as S2Options;
 
-export const mockTabularDataCfg = {
+export const mockGridAnalysisDataCfg = {
   fields: {
     rows: ['COLUMNDIMENSION-scene'],
     columns: ['DIMENSION-sex', 'DIMENSION-age'],

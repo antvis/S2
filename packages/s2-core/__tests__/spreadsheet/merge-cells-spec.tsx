@@ -4,9 +4,9 @@ import { Switch, Button } from 'antd';
 import { forEach } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import {
-  mockTabularDataCfg,
-  mockTabularOptions,
-} from 'tests/data/tabular-data';
+  mockGridAnalysisDataCfg,
+  mockGridAnalysisOptions,
+} from 'tests/data/gridAnalysis-data';
 import { getContainer } from '../util/helpers';
 import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
@@ -85,8 +85,8 @@ const baseOptions = {
   },
 } as S2Options;
 
-const tabularOptions = {
-  ...mockTabularOptions,
+const gridAnalysisOptions = {
+  ...mockGridAnalysisOptions,
   mergedCellsInfo: [
     [
       { colIndex: 0, rowIndex: 0 },
@@ -97,8 +97,8 @@ const tabularOptions = {
 
 const getDataCfg = (sheetType: SheetType) => {
   switch (sheetType) {
-    case 'tabular':
-      return mockTabularDataCfg;
+    case 'gridAnalysis':
+      return mockGridAnalysisDataCfg;
     case 'pivot':
     default:
       return baseDataCfg;
@@ -107,8 +107,8 @@ const getDataCfg = (sheetType: SheetType) => {
 
 const getOptions = (sheetType: SheetType) => {
   switch (sheetType) {
-    case 'tabular':
-      return tabularOptions;
+    case 'gridAnalysis':
+      return gridAnalysisOptions;
     case 'pivot':
     default:
       return baseOptions;
@@ -176,7 +176,7 @@ function MainLayout() {
   };
 
   const onCheckChanged = (checked) => {
-    const type = checked ? 'pivot' : 'tabular';
+    const type = checked ? 'pivot' : 'gridAnalysis';
     setSheetType(type);
     setDataCfg(getDataCfg(type));
     setOptions(getOptions(type));
@@ -187,7 +187,7 @@ function MainLayout() {
       <div style={{ display: 'inline-block' }}>
         <Switch
           checkedChildren="base"
-          unCheckedChildren="tabular"
+          unCheckedChildren="gridAnalysis"
           defaultChecked={true}
           onChange={onCheckChanged}
           style={{ marginRight: 10 }}

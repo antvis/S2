@@ -3,9 +3,9 @@ import 'antd/dist/antd.min.css';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import {
-  mockTabularDataCfg,
-  mockTabularOptions,
-} from 'tests/data/tabular-data';
+  mockGridAnalysisDataCfg,
+  mockGridAnalysisOptions,
+} from 'tests/data/grid-analysis-data';
 import { getContainer } from '../util/helpers';
 import { S2DataConfig, S2Options, SheetComponent, PivotSheet } from '@/index';
 
@@ -17,9 +17,9 @@ const getSpreadSheet = (
   return new PivotSheet(dom, dataCfg, options);
 };
 
-const options = mockTabularOptions;
+const options = mockGridAnalysisOptions;
 
-describe('spreadsheet tabular spec', () => {
+describe('spreadsheet gridAnalysis spec', () => {
   test('demo', () => {
     expect(1).toBe(1);
   });
@@ -27,8 +27,8 @@ describe('spreadsheet tabular spec', () => {
   act(() => {
     ReactDOM.render(
       <SheetComponent
-        sheetType="tabular"
-        dataCfg={mockTabularDataCfg}
+        sheetType="gridAnalysis"
+        dataCfg={mockGridAnalysisDataCfg}
         adaptive={false}
         options={options}
         spreadsheet={getSpreadSheet}

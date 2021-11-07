@@ -8,7 +8,7 @@ export const FONT_SIZE = 12;
 export const FONT_SIZE_MINOR = 11;
 
 /* 交叉表的样式 */
-export const TabularTheme = {
+export const GridAnalysisTheme = {
   fontFamily: FONT_FAMILY,
   // 表头
   header: {
