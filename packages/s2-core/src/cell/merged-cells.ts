@@ -1,19 +1,18 @@
-import { Point, SimpleBBox } from '@antv/g-canvas';
+import { SimpleBBox } from '@antv/g-canvas';
 import { isEmpty, isObject } from 'lodash';
 import { CellTypes } from '../common/constant';
-import { FormatResult, TextTheme, ViewMeta } from '../common/interface';
-import { DataItem } from '../common/interface/s2DataConfig';
-import { BaseCell } from './base-cell';
+import { ViewMeta } from '../common/interface';
+import { DataCell } from './data-cell';
 import { getPolygonPoints } from '@/utils/interaction/merge-cells';
 import { SpreadSheet } from '@/sheet-type';
 import { S2CellType } from '@/common/interface/interaction';
 import { renderPolygon } from '@/utils/g-renders';
-import { drawObjectText, drawStringText } from '@/utils/text';
+import { drawObjectText } from '@/utils/text';
 
 /**
  * Cell for panelGroup area
  */
-export class MergedCells extends BaseCell<ViewMeta> {
+export class MergedCells extends DataCell {
   public cells: S2CellType[];
 
   public constructor(
@@ -33,38 +32,6 @@ export class MergedCells extends BaseCell<ViewMeta> {
   }
 
   public update() {}
-
-  protected getFormattedFieldValue(): FormatResult {
-    const rowField = this.meta.rowId;
-    const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowField);
-    let formatter;
-    if (rowMeta) {
-      // format by row field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(rowField);
-    } else {
-      // format by value field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(
-        this.meta.valueField,
-      );
-    }
-    const formattedValue = formatter(this.meta.fieldValue);
-    return {
-      value: this.meta.fieldValue as DataItem,
-      formattedValue,
-    };
-  }
-
-  protected getMaxTextWidth(): number {
-    return 0;
-  }
-
-  protected getTextPosition(): Point {
-    return { x: 0, y: 0 };
-  }
-
-  protected getTextStyle(): TextTheme {
-    return {};
-  }
 
   protected initCell() {
     // TODO：1、条件格式支持； 2、交互态扩展； 3、合并后的单元格文字布局及文字内容（目前参考Excel合并后只保留第一个单元格子的数据）
@@ -105,13 +72,13 @@ export class MergedCells extends BaseCell<ViewMeta> {
   /**
    * Render data text
    */
-  protected drawTextShape() {
+  public drawTextShape() {
     if (isEmpty(this.meta)) return;
     const { formattedValue: text } = this.getFormattedFieldValue();
     if (isObject(text)) {
       drawObjectText(this);
     } else {
-      drawStringText(this);
+      super.drawTextShape();
     }
   }
 }
