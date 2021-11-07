@@ -42,20 +42,6 @@ export class MergedCells extends DataCell {
   }
 
   /**
-   * Get left rest area size by icon condition
-   * @protected
-   */
-  protected getContentAreaBBox(): SimpleBBox {
-    const { x, y, height, width } = this.meta;
-    return {
-      x,
-      y,
-      width,
-      height,
-    };
-  }
-
-  /**
    * Draw merged cells background
    */
   protected drawBackgroundShape() {

@@ -127,11 +127,11 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.theme[name || this.cellType];
   }
 
-  public getResizeAreaStyle() {
+  protected getResizeAreaStyle() {
     return this.getStyle('resizeArea');
   }
 
-  public getCellArea() {
+  protected getCellArea() {
     const { x, y, height, width } = this.meta;
     return { x, y, height, width };
   }
@@ -142,7 +142,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return getContentArea(this.getCellArea(), padding);
   }
 
-  public getIconPosition() {
+  protected getIconPosition() {
     return this.getTextAndIconPosition().icon;
   }
 
