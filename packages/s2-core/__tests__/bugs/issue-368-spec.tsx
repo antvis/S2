@@ -48,8 +48,8 @@ describe('Total Cells Rendering Test', () => {
     expect(rowSubTotalNodes[0].y).toEqual(30);
 
     expect(colSubTotalNodes[0].width).toEqual(192);
-    expect(colSubTotalNodes[0].height).toEqual(120);
+    expect(colSubTotalNodes[0].height).toEqual(90);
     expect(colSubTotalNodes[0].x).toEqual(192);
-    expect(colSubTotalNodes[0].y).toEqual(40);
+    expect(colSubTotalNodes[0].y).toEqual(30);
   });
 });

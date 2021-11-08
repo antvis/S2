@@ -19,36 +19,61 @@ function getGradient(rate, startColor, endColor) {
 }
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((data) => {
+  .then((dataCfg) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
-      fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price'],
-      },
-      data,
-    };
+    const s2DataConfig = dataCfg;
 
     const s2options = {
-      width: 800,
+      width: 600,
       height: 600,
       hoverHighlight: false,
       conditions: {
+        text: [
+          {
+            field: 'number',
+            mapping() {
+              return {
+                fill: '#142C61',
+              };
+            },
+          },
+        ],
+        icon: [
+          {
+            field: 'number',
+            position: 'right',
+            mapping() {
+              return {
+                icon: 'Trend',
+                fill: '#142C61',
+              };
+            },
+          },
+        ],
+        background: [
+          {
+            field: 'number',
+            mapping() {
+              return {
+                fill: '#E0E9FD',
+              };
+            },
+          },
+        ],
         interval: [
           {
-            field: 'price',
+            field: 'number',
             mapping(fieldValue) {
-              const maxValue = 20;
+              const maxValue = 7789;
               const minValue = 0;
               const rage = (fieldValue - minValue) / (maxValue - minValue);
 
-              const color = getGradient(rage, '#95F0FF', '#3A9DBF');
+              const color = getGradient(rage, '#5083F5', '#F7B46F');
               return {
-                fill: `l(0) 0:#95F0FF 1:${color}`,
+                fill: `l(0) 0:#5083F5 1:${color}`,
                 isCompare: true,
                 maxValue,
               };
@@ -58,6 +83,6 @@ fetch(
       },
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2options);
-
+    s2.setThemeCfg({ name: 'colorful' });
     s2.render();
   });

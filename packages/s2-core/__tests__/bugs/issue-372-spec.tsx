@@ -33,6 +33,6 @@ describe('GrandTotal Cells Rendering Test', () => {
       hierarchy.getNodes(0),
       (node: Node) => node.isGrandTotals,
     ) as Node;
-    expect(grandTotalNode.height).toEqual(40);
+    expect(grandTotalNode.height).toEqual(30);
   });
 });

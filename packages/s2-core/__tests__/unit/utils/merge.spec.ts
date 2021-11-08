@@ -80,7 +80,7 @@ describe('merge test', () => {
       interaction: {
         linkFields: [],
         hiddenColumnFields: [],
-        selectedCellsSpotlight: true,
+        selectedCellsSpotlight: false,
         hoverHighlight: true,
         scrollSpeedRatio: {
           horizontal: 1,
