@@ -69,6 +69,7 @@ export class CornerCell extends HeaderCell {
 
     const maxWidth = this.getMaxTextWidth();
     const text = getEllipsisText(formattedValue, maxWidth, textStyle);
+    this.actualText = text;
     const ellipseIndex = text.indexOf('...');
 
     let firstLine = text;
