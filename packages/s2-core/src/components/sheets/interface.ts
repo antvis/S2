@@ -15,7 +15,8 @@ import { ThemeCfg } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
 
-export type SheetType = 'pivot' | 'table' | 'tabular';
+export type SheetType = 'pivot' | 'table' | 'gridAnalysis';
+
 export interface SpreadsheetProps extends BaseSheetProps {
   sheetType?: SheetType;
 }
@@ -88,5 +89,5 @@ export interface BaseSheetProps {
   onMergedCellsClick?: (data: TargetCellInfo) => void;
   onMergedCellsDoubleClick?: (data: TargetCellInfo) => void;
   onContextMenu?: (data: TargetCellInfo) => void;
-  getSpreadsheet?: (spreadsheet: SpreadSheet) => void;
+  getSpreadSheet?: (spreadsheet: SpreadSheet) => void;
 }

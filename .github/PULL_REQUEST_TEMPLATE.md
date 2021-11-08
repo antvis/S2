@@ -11,7 +11,7 @@
 - [ ] Code style optimization
 - [ ] Refactoring
 - [ ] Change the UI
-- [ ] Improve performance.
+- [ ] Improve the performance
 - [ ] Type optimization
 
 🐛 Bugfix
@@ -30,10 +30,16 @@
 
 ### 🖼️ Screenshot
 
-| Before | After |
-| ------ | ----- |
-| ❌      | ✅     |
+| Before                         | After                         |
+| ------------------------------ | ------------------------------ |
+| ❌                             | ✅                              |
 
 ### 🔗 Related issue link
 
 <!-- close #0 -->
+
+### 🔍 Self Check before Merge
+
+- [ ] Add or update relevant Docs.
+- [ ] Add or update relevant Demos.
+- [ ] Add or update relevant TypeScript definitions.

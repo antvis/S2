@@ -178,6 +178,8 @@ export interface DefaultCellTheme {
   icon?: IconTheme;
   /* 序号列宽 */
   seriesNumberWidth?: number;
+  /* 额外属性字段 */
+  [key: string]: any;
 }
 
 type CellThemes = {
@@ -199,7 +201,7 @@ export interface S2Theme extends CellThemes {
   [key: string]: any;
 }
 
-export type ThemeName = 'default' | 'simple' | 'colorful';
+export type ThemeName = 'default' | 'colorful' | 'gray';
 
 export interface ThemeCfg {
   /* 主题 */

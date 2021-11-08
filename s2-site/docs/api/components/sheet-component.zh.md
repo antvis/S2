@@ -9,7 +9,7 @@ order: 0
 
 | 参数 | 类型 | 必选 | 默认值  | 功能描述 |
 | :--- | :--- | :---: | :--- | :--- |
-| sheetType | `pivot | table | tabular` | | `pivot` |  表格类型：<br> 1. `pivot`: 透视表 <br> 2. `table`: 明细表 <br> 3. `tabular`: 网格分析表|
+| sheetType | `pivot | table | gridAnalysis` | | `pivot` |  表格类型：<br> 1. `pivot`: 透视表 <br> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表|
 | spreadsheet |`(...args: S2Constructor) => SpreadSheet`|  | | | 外部自定义的表实体， 用于初始化自定义表格 |
 | dataCfg | [S2DataConfig](/zh/docs/api/general/S2DataConfig) | ✓ | |  交叉表数据映射相关配置项 |
 | options | [S2Options](/zh/docs/api/general/S2Options) | ✓ | | 交叉表属性配置项 |
@@ -19,7 +19,7 @@ order: 0
 | themeCfg | [ThemeCfg](/zh/docs/api/general/S2Theme) |  | | 自定义交叉表主题样式 |
 | isLoading | `boolean` | | | 控制表格的加载状态 |
 | header | [HeaderCfgProps](/zh/docs/api/components/header) | | | 表头配置项 |
-| getSpreadsheet | (spreadsheet: BaseSpreadsheet) => void; | | | 获取表实例 |
+| getSpreadSheet | (spreadsheet: SpreadSheet) => void; | | | 获取表实例 |
 | onListSort |  (params: [ListSortParams](#listsortparams) ) => void; |  | | 排序回调，用于做自定义排序 |
 | onRowCellClick| (data: [TargetCellInfo](#targetcellinfo)) => void | | | 行头单击回调事件|
 | onRowCellDoubleClick| (data: [TargetCellInfo](#targetcellinfo)) => void | | | 行头双击回调事件|

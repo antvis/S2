@@ -169,12 +169,12 @@ const s2Options = {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/Z0nENy85%26/929f6638-a19f-4a6c-9ad8-a9a6ef2269c3.png)
 
-默认情况下，我们会在选中单元格后，置灰未选中的单元格，强调需要关注的数据，可配置 `selectedCellsSpotlight` 关闭：
+在选中单元格后，如果需要置灰未选中的单元格，强调需要关注的数据，可配置 `selectedCellsSpotlight` 开启：
 
 ```ts
 const s2options = {
   interaction: {
-    selectedCellsSpotlight: false,
+    selectedCellsSpotlight: true, // 默认 false
   }
 };
 ```

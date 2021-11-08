@@ -1,15 +1,16 @@
 import { get, isEmpty } from 'lodash';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
-import { Group } from '@antv/g-canvas';
+import { Group, SimpleBBox } from '@antv/g-canvas';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
 import { S2Event, HORIZONTAL_RESIZE_AREA_KEY_PRE } from '@/common/constant';
 import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
-import { getEllipsisText, getTextPosition } from '@/utils/text';
+import { getEllipsisText } from '@/utils/text';
 import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
-import { CellBoxCfg, DefaultCellTheme, IconTheme } from '@/common/interface';
+import { DefaultCellTheme, IconTheme } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
+import { getTextPosition } from '@/utils/cell/cell';
 
 export class TableColCell extends ColCell {
   protected isFrozenCell() {
@@ -57,19 +58,13 @@ export class TableColCell extends ColCell {
     const textAlign = get(textStyle, 'textAlign');
     const textBaseline = get(textStyle, 'textBaseline');
 
-    const cellBoxCfg: CellBoxCfg = {
+    const cellBoxCfg: SimpleBBox = {
       x,
       y,
       width: cellWidth,
       height: cellHeight,
-      textAlign,
-      textBaseline,
-      padding: {
-        left: leftPadding,
-        right: rightPadding,
-      },
     };
-    const position = getTextPosition(cellBoxCfg);
+    const position = getTextPosition(cellBoxCfg, { textAlign, textBaseline });
 
     const textX = position.x;
     const textY = position.y;

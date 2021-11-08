@@ -43,7 +43,6 @@ export const SHAPE_STYLE_MAP = {
 export const SHAPE_ATTRS_MAP = {
   textShape: ['textOpacity'],
   linkFieldShape: ['opacity'],
-  backgroundShape: ['backgroundOpacity'],
   interactiveBgShape: ['backgroundColor', 'backgroundOpacity'],
   interactiveBorderShape: ['borderColor', 'borderOpacity'],
 };

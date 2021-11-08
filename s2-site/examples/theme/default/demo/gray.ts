@@ -22,7 +22,7 @@ fetch(
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2options);
 
-    s2.setThemeCfg({ name: 'simple' });
+    s2.setThemeCfg({ name: 'gray' });
 
     s2.render();
   });

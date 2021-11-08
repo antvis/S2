@@ -6,8 +6,8 @@ import { Spin } from 'antd';
 import { Event } from '@antv/g-canvas';
 import { Header } from '../../header';
 import { BaseSheetProps } from '../interface';
-import { TabularDataCell } from './tabular-data-cell';
-import { TabularTheme } from './tabular-theme';
+import { GridAnalysisDataCell } from './grid-analysis-data-cell';
+import { GridAnalysisTheme } from './grid-analysis-theme';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { S2Options } from '@/common/interface';
@@ -15,16 +15,16 @@ import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { useResizeEffect } from '@/components/sheets/hooks';
 
-export const TabularSheet = (props: BaseSheetProps) => {
+export const GridAnalysisSheet = (props: BaseSheetProps) => {
   const {
     spreadsheet,
     // TODO dataCfg细化
     dataCfg,
     options,
-    adaptive = true,
+    adaptive = false,
     header,
     themeCfg = {
-      theme: TabularTheme,
+      theme: GridAnalysisTheme,
     },
     isLoading,
     onRowCellClick,
@@ -34,7 +34,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     onColCellDoubleClick,
     onMergedCellsDoubleClick,
     onDataCellMouseUp,
-    getSpreadsheet,
+    getSpreadSheet,
   } = props;
   let container: HTMLDivElement;
   let baseSpreadsheet: SpreadSheet;
@@ -66,7 +66,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
   const buildOptions = (): S2Options => {
     return getSafetyOptions(
       merge(options, {
-        dataCell: TabularDataCell,
+        dataCell: GridAnalysisDataCell,
         style: {
           colCfg: {
             colWidthType: 'adaptive',
@@ -100,7 +100,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     setLoading(false);
   };
 
-  const getSpreadSheet = (): SpreadSheet => {
+  const initSpreadSheet = (): SpreadSheet => {
     if (spreadsheet) {
       return spreadsheet(container, dataCfg, buildOptions());
     }
@@ -156,7 +156,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
 
   const buildSpreadSheet = () => {
     if (!baseSpreadsheet) {
-      baseSpreadsheet = getSpreadSheet();
+      baseSpreadsheet = initSpreadSheet();
       bindEvent();
       const newDataCfg = getSafetyDataConfig(dataCfg);
       baseSpreadsheet.setDataCfg(newDataCfg);
@@ -165,7 +165,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
       baseSpreadsheet.render();
       setLoading(false);
       setOwnSpreadsheet(baseSpreadsheet);
-      if (getSpreadsheet) getSpreadsheet(baseSpreadsheet);
+      getSpreadSheet?.(baseSpreadsheet);
     }
   };
 
@@ -192,7 +192,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     update(() => {
       ownSpreadsheet.setThemeCfg(themeCfg);
     });
-  }, [JSON.stringify(themeCfg)]);
+  }, [themeCfg]);
 
   useEffect(() => {
     if (!ownSpreadsheet) return;
@@ -211,4 +211,4 @@ export const TabularSheet = (props: BaseSheetProps) => {
   );
 };
 
-TabularSheet.displayName = 'TabularSheet';
+GridAnalysisSheet.displayName = 'GridAnalysisSheet';

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, {
   forwardRef,
   MutableRefObject,
@@ -5,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Input, Select, Slider, Space, Switch } from 'antd';
+import { Input, Select, Slider, Space, Switch, Tooltip } from 'antd';
 import { merge } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
@@ -18,11 +19,12 @@ import {
   SheetType,
   TargetCellInfo,
   DEFAULT_DATA_CONFIG,
+  S2Event,
 } from '@/index';
 import 'antd/dist/antd.min.css';
 import { customMerge } from '@/utils/merge';
 
-export const assembleOptions = (...options: Partial<S2Options>[]) =>
+export const assembleOptions = (...options: Partial<S2Options>[]): S2Options =>
   customMerge(
     DEFAULT_OPTIONS,
     { debug: true, width: 1000, height: 600 },
@@ -54,21 +56,22 @@ interface SheetEntryProps {
   header?: ReactNode;
   sheetType?: SheetType;
   onColCellClick?: (data: TargetCellInfo) => void;
+  getSpreadSheet?: (instance: SpreadSheet) => void;
 }
 
-// eslint-disable-next-line react/display-name
 export const SheetEntry = forwardRef(
   (props: SheetEntryProps, ref: MutableRefObject<SpreadSheet>) => {
     const { themeCfg = {} } = props;
     const [mode, setMode] = useState('grid');
     const [valueInCols, setValueInCols] = useState(true);
     const initOptions = assembleOptions(props.options);
+    const s2Ref = React.useRef<SpreadSheet>();
 
     const initDataCfg = props.forceUpdateDataCfg
       ? props.dataCfg
       : assembleDataCfg(props.dataCfg);
     const [adaptive, setAdaptive] = useState(false);
-    const [showResizeArea, setShowResizeArea] = useState(true);
+    const [showResizeArea, setShowResizeArea] = useState(false);
     const [options, setOptions] = useState<S2Options>(() => initOptions);
     const [dataCfg, setDataCfg] = useState<Partial<S2DataConfig>>(
       () => initDataCfg,
@@ -120,6 +123,16 @@ export const SheetEntry = forwardRef(
       );
     };
 
+    const onAutoResetSheetStyleChange = (checked: boolean) => {
+      setOptions(
+        merge({}, options, {
+          interaction: {
+            autoResetSheetStyle: checked,
+          },
+        }),
+      );
+    };
+
     useEffect(() => {
       setOptions(assembleOptions(options, props.options));
     }, [props.options]);
@@ -131,6 +144,18 @@ export const SheetEntry = forwardRef(
         setDataCfg(assembleDataCfg(dataCfg, props.dataCfg));
       }
     }, [props.dataCfg]);
+
+    useEffect(() => {
+      ref?.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {
+        console.log('[forwardRef 方式] 趋势图icon点击');
+      });
+    }, [ref, props.sheetType]);
+
+    useEffect(() => {
+      s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, () => {
+        console.log('[getSpreadSheet 回调方式] 趋势图icon点击');
+      });
+    }, [props.sheetType]);
 
     const sliderOptions = {
       min: 0,
@@ -194,12 +219,23 @@ export const SheetEntry = forwardRef(
               setShowResizeArea(checked);
             }}
           />
+          <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
+            <Switch
+              checkedChildren="自动重置交互样式开"
+              unCheckedChildren="自动重置交互样式关"
+              defaultChecked={initOptions.interaction.autoResetSheetStyle}
+              onChange={onAutoResetSheetStyleChange}
+            />
+          </Tooltip>
           <Space>
-            tooltip 自动调整:
+            <Tooltip title="显示的tooltip超过指定区域时自动调整, 使其不遮挡">
+              tooltip 自动调整:
+            </Tooltip>
             <Select
               defaultValue={options.tooltip.autoAdjustBoundary}
               onChange={onAutoAdjustBoundary}
-              style={{ width: 200 }}
+              style={{ width: 180 }}
+              size="small"
             >
               <Select.Option value="container">
                 container (表格区域)
@@ -216,6 +252,7 @@ export const SheetEntry = forwardRef(
               onChange={onSizeChange('width')}
               defaultValue={options.width}
               suffix="px"
+              size="small"
             />
             设置高度 ：
             <Input
@@ -224,6 +261,7 @@ export const SheetEntry = forwardRef(
               onChange={onSizeChange('height')}
               defaultValue={options.height}
               suffix="px"
+              size="small"
             />
           </Space>
         </Space>
@@ -247,10 +285,9 @@ export const SheetEntry = forwardRef(
           options={options}
           sheetType={props.sheetType}
           adaptive={adaptive}
-          getSpreadsheet={(instance) => {
-            if (ref) {
-              ref.current = instance;
-            }
+          ref={ref}
+          getSpreadSheet={(instance) => {
+            s2Ref.current = instance;
           }}
           themeCfg={{
             ...themeCfg,
@@ -266,3 +303,5 @@ export const SheetEntry = forwardRef(
     );
   },
 );
+
+SheetEntry.displayName = 'SheetEntry';
