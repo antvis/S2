@@ -21,7 +21,6 @@ describe('Interaction Hover Tests', () => {
     rowIndex: 0,
     type: undefined,
   };
-
   const mockCellMeta = omit(mockCell, 'update');
   const mockCellUpdate = jest.fn();
   const mockTooltipParams = [
@@ -40,7 +39,6 @@ describe('Interaction Hover Tests', () => {
       ({
         update: mockCellUpdate,
         getMeta: () => mockCell,
-        getActualText: () => '',
       } as any);
     hoverEvent = new HoverEvent(s2 as unknown as SpreadSheet);
     s2.options = {

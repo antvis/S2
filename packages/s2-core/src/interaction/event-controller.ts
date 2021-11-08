@@ -418,11 +418,7 @@ export class EventController {
       return;
     }
     const { interaction } = this.spreadsheet;
-    // 两种情况不能重置 1. 选中单元格 2. 有交互功能的tooltip打开时
-    if (
-      !interaction.isSelectedState() &&
-      !interaction.hasIntercepts([InterceptType.HOVER])
-    ) {
+    if (!interaction.isSelectedState()) {
       interaction.reset();
     }
   };

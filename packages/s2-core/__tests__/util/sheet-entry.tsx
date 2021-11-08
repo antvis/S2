@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Input, Select, Slider, Space, Switch, Tooltip } from 'antd';
+import { Input, Select, Slider, Space, Switch } from 'antd';
 import { merge } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
@@ -24,7 +24,7 @@ import {
 import 'antd/dist/antd.min.css';
 import { customMerge } from '@/utils/merge';
 
-export const assembleOptions = (...options: Partial<S2Options>[]): S2Options =>
+export const assembleOptions = (...options: Partial<S2Options>[]) =>
   customMerge(
     DEFAULT_OPTIONS,
     { debug: true, width: 1000, height: 600 },
@@ -123,16 +123,6 @@ export const SheetEntry = forwardRef(
       );
     };
 
-    const onAutoResetSheetStyleChange = (checked: boolean) => {
-      setOptions(
-        merge({}, options, {
-          interaction: {
-            autoResetSheetStyle: checked,
-          },
-        }),
-      );
-    };
-
     useEffect(() => {
       setOptions(assembleOptions(options, props.options));
     }, [props.options]);
@@ -219,23 +209,12 @@ export const SheetEntry = forwardRef(
               setShowResizeArea(checked);
             }}
           />
-          <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
-            <Switch
-              checkedChildren="自动重置交互样式开"
-              unCheckedChildren="自动重置交互样式关"
-              defaultChecked={initOptions.interaction.autoResetSheetStyle}
-              onChange={onAutoResetSheetStyleChange}
-            />
-          </Tooltip>
           <Space>
-            <Tooltip title="显示的tooltip超过指定区域时自动调整, 使其不遮挡">
-              tooltip 自动调整:
-            </Tooltip>
+            tooltip 自动调整:
             <Select
               defaultValue={options.tooltip.autoAdjustBoundary}
               onChange={onAutoAdjustBoundary}
-              style={{ width: 180 }}
-              size="small"
+              style={{ width: 200 }}
             >
               <Select.Option value="container">
                 container (表格区域)
@@ -252,7 +231,6 @@ export const SheetEntry = forwardRef(
               onChange={onSizeChange('width')}
               defaultValue={options.width}
               suffix="px"
-              size="small"
             />
             设置高度 ：
             <Input
@@ -261,7 +239,6 @@ export const SheetEntry = forwardRef(
               onChange={onSizeChange('height')}
               defaultValue={options.height}
               suffix="px"
-              size="small"
             />
           </Space>
         </Space>

@@ -4,9 +4,9 @@ import { Switch, Button } from 'antd';
 import { forEach } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import {
-  mockGridAnalysisDataCfg,
-  mockGridAnalysisOptions,
-} from 'tests/data/grid-analysis-data';
+  mockTabularDataCfg,
+  mockTabularOptions,
+} from 'tests/data/tabular-data';
 import { getContainer } from '../util/helpers';
 import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
@@ -85,21 +85,20 @@ const baseOptions = {
   },
 } as S2Options;
 
-const gridAnalysisOptions = {
-  ...mockGridAnalysisOptions,
+const tabularOptions = {
+  ...mockTabularOptions,
   mergedCellsInfo: [
     [
       { colIndex: 0, rowIndex: 0 },
-      { colIndex: 0, rowIndex: 1 },
-      { colIndex: 1, rowIndex: 0, showText: true },
+      { colIndex: 0, rowIndex: 1, showText: true },
     ],
   ],
 } as S2Options;
 
 const getDataCfg = (sheetType: SheetType) => {
   switch (sheetType) {
-    case 'gridAnalysis':
-      return mockGridAnalysisDataCfg;
+    case 'tabular':
+      return mockTabularDataCfg;
     case 'pivot':
     default:
       return baseDataCfg;
@@ -108,8 +107,8 @@ const getDataCfg = (sheetType: SheetType) => {
 
 const getOptions = (sheetType: SheetType) => {
   switch (sheetType) {
-    case 'gridAnalysis':
-      return gridAnalysisOptions;
+    case 'tabular':
+      return tabularOptions;
     case 'pivot':
     default:
       return baseOptions;
@@ -177,7 +176,7 @@ function MainLayout() {
   };
 
   const onCheckChanged = (checked) => {
-    const type = checked ? 'pivot' : 'gridAnalysis';
+    const type = checked ? 'pivot' : 'tabular';
     setSheetType(type);
     setDataCfg(getDataCfg(type));
     setOptions(getOptions(type));
@@ -188,7 +187,7 @@ function MainLayout() {
       <div style={{ display: 'inline-block' }}>
         <Switch
           checkedChildren="base"
-          unCheckedChildren="gridAnalysis"
+          unCheckedChildren="tabular"
           defaultChecked={true}
           onChange={onCheckChanged}
           style={{ marginRight: 10 }}

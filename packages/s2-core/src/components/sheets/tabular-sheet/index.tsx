@@ -6,8 +6,8 @@ import { Spin } from 'antd';
 import { Event } from '@antv/g-canvas';
 import { Header } from '../../header';
 import { BaseSheetProps } from '../interface';
-import { GridAnalysisDataCell } from './grid-analysis-data-cell';
-import { GridAnalysisTheme } from './grid-analysis-theme';
+import { TabularDataCell } from './tabular-data-cell';
+import { TabularTheme } from './tabular-theme';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { S2Options } from '@/common/interface';
@@ -15,16 +15,16 @@ import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { useResizeEffect } from '@/components/sheets/hooks';
 
-export const GridAnalysisSheet = (props: BaseSheetProps) => {
+export const TabularSheet = (props: BaseSheetProps) => {
   const {
     spreadsheet,
     // TODO dataCfg细化
     dataCfg,
     options,
-    adaptive = false,
+    adaptive = true,
     header,
     themeCfg = {
-      theme: GridAnalysisTheme,
+      theme: TabularTheme,
     },
     isLoading,
     onRowCellClick,
@@ -66,7 +66,7 @@ export const GridAnalysisSheet = (props: BaseSheetProps) => {
   const buildOptions = (): S2Options => {
     return getSafetyOptions(
       merge(options, {
-        dataCell: GridAnalysisDataCell,
+        dataCell: TabularDataCell,
         style: {
           colCfg: {
             colWidthType: 'adaptive',
@@ -192,7 +192,7 @@ export const GridAnalysisSheet = (props: BaseSheetProps) => {
     update(() => {
       ownSpreadsheet.setThemeCfg(themeCfg);
     });
-  }, [themeCfg]);
+  }, [JSON.stringify(themeCfg)]);
 
   useEffect(() => {
     if (!ownSpreadsheet) return;
@@ -211,4 +211,4 @@ export const GridAnalysisSheet = (props: BaseSheetProps) => {
   );
 };
 
-GridAnalysisSheet.displayName = 'GridAnalysisSheet';
+TabularSheet.displayName = 'TabularSheet';

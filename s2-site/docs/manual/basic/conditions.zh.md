@@ -12,7 +12,7 @@ S2 自带字段标记特性。用户可以根据业务语义设置不同的渲�
 
 下图直观展示了四种字段标记的形态：
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/oFlPGyE3Ve/bf62b173-ccd0-4e36-b907-7260566d9dae.png)
+![preview](https://gw.alipayobjects.com/zos/antfincdn/UagqR4rrA/8c408479-cc79-4c7f-964f-8afeccbe8dba.png)
 
 ## 快速上手
 
@@ -201,7 +201,7 @@ s2.render();
             交叉表
             </td>
             <td>
-               <playground path="analysis/conditions/demo/text.ts" rid='pivot' height='300'></playground>
+               <playground path="conditions/basic/demo/text.ts" rid='pivot' height='300'></playground>
             </td>
           </tr>
          <tr>
@@ -209,7 +209,7 @@ s2.render();
              明细表
             </td>
               <td >
-               <playground path="/analysis/conditions/demo/table-text.ts" rid='table' height='300'></playground>
+               <playground path="conditions/basic/demo/table-text.ts" rid='table' height='300'></playground>
             </td>
           </tr>
         </tbody>

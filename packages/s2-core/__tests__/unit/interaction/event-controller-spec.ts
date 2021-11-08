@@ -497,11 +497,4 @@ describe('Interaction Event Controller Tests', () => {
     spreadsheet.container.emit(OriginEventType.MOUSE_OUT);
     expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
   });
-
-  test('should disable reset if mouse outside the cell and action tooltip is active', () => {
-    spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
-
-    spreadsheet.container.emit(OriginEventType.MOUSE_OUT);
-    expect(spreadsheet.interaction.reset).not.toHaveBeenCalled();
-  });
 });

@@ -24,7 +24,8 @@ fetch(
         background: [
           {
             field: 'price',
-            mapping() {
+            mapping(fieldValue, data) {
+              console.log(fieldValue, data);
               return {
                 // fill 是背景字段下唯一必须的字段，用于指定文本颜色
                 fill: '#7DAAFF',
