@@ -5,9 +5,7 @@ import { Divider, Space, InputNumber } from 'antd';
 import '@antv/s2/dist/s2.min.css';
 import 'antd/es/input-number/style/index.css';
 
-const App: React.FC<{
-  dataCfg: S2DataConfig;
-}> = ({ dataCfg }) => {
+const App = ({ dataCfg }) => {
   const [options, setOptions] = useState({
     width: 450,
     height: 400,
