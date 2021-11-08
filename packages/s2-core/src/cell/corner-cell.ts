@@ -294,9 +294,13 @@ export class CornerCell extends HeaderCell {
 
   protected getTextStyle(): TextTheme {
     const cornerTextStyle = this.getStyle().bolderText;
+    const { cornerType } = this.meta;
+
+    const textAlign = cornerType === CornerNodeType.ROW ? 'left' : 'right';
+
     return {
       ...cornerTextStyle,
-      textAlign: this.spreadsheet.isHierarchyTreeType() ? 'left' : 'center',
+      textAlign,
       textBaseline: 'middle',
     };
   }
