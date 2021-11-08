@@ -23,7 +23,7 @@ import {
   isFrozenTrailingCol,
   isFrozenTrailingRow,
 } from './utils';
-import { CornerBBox } from './bbox/cornerBbox';
+import { CornerBBox } from './bbox/cornerBBox';
 import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
 import { FrozenCellGroupMap } from '@/common/constant/frozen';
 import { DebuggerUtil } from '@/common/debug';

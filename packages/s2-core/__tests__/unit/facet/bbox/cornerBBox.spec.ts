@@ -1,7 +1,7 @@
 import { BaseFacet } from '@/facet/base-facet';
-import { CornerBBox } from '@/facet/bbox/cornerBbox';
+import { CornerBBox } from '@/facet/bbox/cornerBBox';
 
-describe('cornerBbox test', () => {
+describe('cornerBBox test', () => {
   let mockFacet;
   beforeEach(() => {
     mockFacet = {

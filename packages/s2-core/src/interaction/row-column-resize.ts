@@ -1,5 +1,4 @@
 import {
-  Group,
   Event as CanvasEvent,
   IGroup,
   ShapeAttrs,

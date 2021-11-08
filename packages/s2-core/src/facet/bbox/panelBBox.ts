@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { BaseBBox } from './baseBbox';
+import { BaseBBox } from './baseBBox';
 
 export class PanelBBox extends BaseBBox {
   calculateBBox() {

@@ -14,7 +14,7 @@ import {
   last,
   reduce,
 } from 'lodash';
-import { CornerBBox } from './bbox/cornerBbox';
+import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
   calculateInViewIndexes,

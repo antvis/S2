@@ -1,4 +1,3 @@
-import { size } from 'lodash';
 import { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { shouldAddResizeArea } from './../utils/interaction/resize';

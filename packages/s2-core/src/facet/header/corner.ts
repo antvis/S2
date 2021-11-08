@@ -1,7 +1,7 @@
 import { Group, Point } from '@antv/g-canvas';
-import { get, includes, isEmpty, last } from 'lodash';
-import { CornerBBox } from '../bbox/cornerBbox';
-import { PanelBBox } from './../bbox/panelBBox';
+import { get, includes, isEmpty } from 'lodash';
+import { CornerBBox } from '../bbox/cornerBBox';
+import { PanelBBox } from '../bbox/panelBBox';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroupX } from '@/facet/utils';
 import { CornerCell } from '@/cell/corner-cell';

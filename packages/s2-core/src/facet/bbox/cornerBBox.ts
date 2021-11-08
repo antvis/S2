@@ -1,4 +1,4 @@
-import { BaseBBox } from './baseBbox';
+import { BaseBBox } from './baseBBox';
 import { CORNER_MAX_WIDTH_RATIO } from '@/common/constant';
 
 export class CornerBBox extends BaseBBox {
