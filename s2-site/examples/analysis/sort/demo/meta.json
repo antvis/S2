@@ -42,7 +42,7 @@
         "zh": "根据维度列表排序",
         "en": "Custom List Sort"
       },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*CpV-QLBbSYAAAAAAAAAAAAAAARQnAQ"
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*OS4VRZXmq0cAAAAAAAAAAAAAARQnAQ"
     },
     {
       "filename": "custom-measure.ts",
@@ -50,7 +50,7 @@
         "zh": "根据度量值排序",
         "en": "Custom Measure Sort"
       },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*VtN5TbS56KAAAAAAAAAAAAAAARQnAQ"
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*vmdnSo1sC4QAAAAAAAAAAAAAARQnAQ"
     },
     {
       "filename": "custom-totals.ts",
@@ -58,7 +58,7 @@
         "zh": "根据汇总值排序",
         "en": "Custom Totals Sort"
       },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*E9stTbHHMD4AAAAAAAAAAAAAARQnAQ"
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*rKvlRqLF8qkAAAAAAAAAAAAAARQnAQ"
     },
     {
       "filename": "custom-sort-func.ts",

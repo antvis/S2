@@ -105,15 +105,18 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       stateName: InteractionStateName.HOVER,
     });
     cell.update();
-    const showSingleTips = true;
-    const options: TooltipOptions = {
-      isTotals: meta.isTotals,
-      enterable: true,
-      hideSummary: true,
-      showSingleTips,
-    };
-    const data = this.getCellInfo(meta, showSingleTips);
-    this.spreadsheet.showTooltipWithInfo(event, data, options);
+
+    if (cell.getActualText() !== meta.value) {
+      const showSingleTips = true;
+      const options: TooltipOptions = {
+        isTotals: meta.isTotals,
+        enterable: true,
+        hideSummary: true,
+        showSingleTips,
+      };
+      const data = this.getCellInfo(meta, showSingleTips);
+      this.spreadsheet.showTooltipWithInfo(event, data, options);
+    }
   }
 
   private getCellInfo(

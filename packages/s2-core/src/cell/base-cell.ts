@@ -41,6 +41,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // link text underline shape
   protected linkFieldShape: IShape;
 
+  // actualText
+  protected actualText: string;
+
   // actual text width after be ellipsis
   protected actualTextWidth = 0;
 
@@ -81,6 +84,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       this.actualTextWidth,
       iconCfg,
     );
+  }
+
+  public getActualText() {
+    return this.actualText;
   }
 
   /**
@@ -155,7 +162,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       maxTextWidth,
       textStyle,
     );
-
+    this.actualText = ellipsisText;
     this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
     const position = this.getTextPosition();
     this.textShape = renderText(
