@@ -1,6 +1,6 @@
 // 不本地直接引用svg文件，避免下游无依赖
 
-export const CellDown = `
+export const ArrowDown = `
 <svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold">
     <text id="↓" fill="#29A294">
@@ -9,7 +9,7 @@ export const CellDown = `
 </g>
 </svg>`;
 
-export const CellUp = `<svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+export const ArrowUp = `<svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold">
     <text id="↑" fill="#FF4D4F">
         <tspan x="-0.225097656" y="8.5">↑</tspan>
@@ -17,6 +17,26 @@ export const CellUp = `<svg width="10px" height="10px" viewBox="0 0 10 10" versi
 </g>
 </svg>
 `;
+
+export const CellDown = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="7px" height="9px" viewBox="0 0 7 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>down</title>
+    <desc>Created with Sketch.</desc>
+    <g id="一期开发" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="down" fill="#58AE57" transform="translate(3.500000, 4.500000) scale(1, -1) translate(-3.500000, -4.500000) " points="3.5 0 7 9 0 9"></polygon>
+    </g>
+</svg>`;
+
+export const CellUp = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="7px" height="9px" viewBox="0 0 7 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>up</title>
+    <desc>Created with Sketch.</desc>
+    <g id="一期开发" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="up" fill="#F46649" points="3.5 0 7 9 0 9"></polygon>
+    </g>
+</svg> `;
 
 export const GlobalAsc = `<svg t="1557124621626" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
 xmlns="http://www.w3.org/2000/svg" p-id="17452"
