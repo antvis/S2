@@ -140,21 +140,15 @@ export class ColCell extends HeaderCell {
     return this.meta.key;
   }
 
-  protected getColResizeAreaOffset() {
-    const { scrollX, position } = this.headerConfig;
-    const { x, y } = this.meta;
-
-    return {
-      x: position.x - scrollX + x,
-      y: position.y + y,
-    };
-  }
-
   protected getColResizeArea() {
     return getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_COL_RESIZE_AREA,
     );
+  }
+
+  protected getHorizontalResizeAreaName() {
+    return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`;
   }
 
   protected drawHorizontalResizeArea() {
@@ -163,7 +157,7 @@ export class ColCell extends HeaderCell {
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
 
-    const resizeAreaName = `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${this.meta.key}`;
+    const resizeAreaName = this.getHorizontalResizeAreaName();
 
     const existedHorizontalResizeArea = resizeArea.find(
       (element) => element.attrs.name === resizeAreaName,

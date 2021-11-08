@@ -255,7 +255,7 @@ export class CornerCell extends HeaderCell {
       width: headerWidth,
       height: headerHeight,
     } = this.headerConfig;
-    const { x, y, width, height, key, field, cornerType } = this.meta;
+    const { x, y, width, height, field, cornerType } = this.meta;
 
     const resizeAreaBBox = {
       x: x + width - resizeStyle.size / 2,

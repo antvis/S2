@@ -96,7 +96,13 @@ export class TableFacet extends BaseFacet {
   }
 
   protected calculateCornerBBox() {
+    const { colsHierarchy } = this.layoutResult;
+    const height = Math.floor(colsHierarchy.height);
+
     this.cornerBBox = new CornerBBox(this);
+
+    this.cornerBBox.height = height;
+    this.cornerBBox.maxY = height;
   }
 
   public destroy() {
@@ -701,6 +707,7 @@ export class TableFacet extends BaseFacet {
         height: this.cornerBBox.height,
         viewportWidth: width,
         viewportHeight: height,
+        cornerWidth: this.cornerBBox.width,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
         scrollContainsRowHeader:

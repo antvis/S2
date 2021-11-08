@@ -903,7 +903,6 @@ export abstract class BaseFacet {
 
     this.clipPanelGroup();
     this.bindEvents();
-    // this.removeResizeIntercept();
   }
 
   protected renderBackground() {
