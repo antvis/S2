@@ -296,7 +296,7 @@ export const getTheme = (
       size: 3,
       background: basicColors[7],
       guideLineColor: basicColors[7],
-      guideLineDash: [3],
+      guideLineDash: [3, 3],
       backgroundOpacity: 0,
       /* ---------- interaction state ----------- */
       interactionState: {
