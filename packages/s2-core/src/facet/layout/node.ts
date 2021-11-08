@@ -1,7 +1,7 @@
 import { omit, isEqual } from 'lodash';
 import { Hierarchy } from './hierarchy';
 import { ROOT_ID } from '@/common/constant/basic';
-import { SpreadSheet } from '@/index';
+import { SpreadSheet } from '@/sheet-type';
 import { S2CellType } from '@/common/interface';
 import { CornerNodeType } from '@/common/interface/node';
 

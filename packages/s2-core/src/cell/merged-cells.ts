@@ -17,9 +17,9 @@ export class MergedCells extends BaseCell<ViewMeta> {
   public cells: S2CellType[];
 
   public constructor(
-    meta: ViewMeta,
     spreadsheet: SpreadSheet,
     cells: S2CellType[],
+    meta?: ViewMeta,
   ) {
     super(meta, spreadsheet, cells);
   }

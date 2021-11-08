@@ -50,9 +50,9 @@ export const getTheme = (
         verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
-          top: 10,
+          top: 0,
           right: 8,
-          bottom: 10,
+          bottom: 0,
           left: 8,
         },
       },
@@ -295,8 +295,8 @@ export const getTheme = (
     resizeArea: {
       size: 3,
       background: basicColors[7],
-      guidLineColor: basicColors[7],
-      guidLineDash: 3,
+      guideLineColor: basicColors[7],
+      guideLineDash: 3,
       backgroundOpacity: 0,
       /* ---------- interaction state ----------- */
       interactionState: {
@@ -308,11 +308,11 @@ export const getTheme = (
     },
     // ------------- scrollBar -------------------
     scrollBar: {
-      trackColor: 'rgba(0,0,0,0)',
-      thumbHoverColor: 'rgba(0,0,0,0.4)',
+      trackColor: 'rgba(0,0,0,0.01)',
+      thumbHoverColor: 'rgba(0,0,0,0.25)',
       thumbColor: 'rgba(0,0,0,0.15)',
       size: isMobile() ? 3 : 6,
-      hoverSize: 16,
+      hoverSize: isMobile() ? 4 : 8,
       lineCap: 'round',
     },
     // ------------- split line -----------------
@@ -323,7 +323,7 @@ export const getTheme = (
       verticalBorderColor: basicColors[11],
       verticalBorderColorOpacity: 1,
       verticalBorderWidth: 2,
-      showRightShadow: true,
+      showShadow: true,
       shadowWidth: 10,
       shadowColors: {
         left: 'rgba(0,0,0,0.1)',

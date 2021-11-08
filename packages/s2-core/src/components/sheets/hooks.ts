@@ -32,9 +32,11 @@ export const useResizeEffect = (
   }, [resizeTimeStamp, container, s2, adaptive]);
 
   useEffect(() => {
-    s2?.changeSize(options.width, options.height);
-    s2?.render(false);
-  }, [s2, options.width, options.height]);
+    if (!adaptive) {
+      s2?.changeSize(options.width, options.height);
+      s2?.render(false);
+    }
+  }, [s2, options.width, options.height, adaptive]);
 
   useEffect(() => {
     if (adaptive) {

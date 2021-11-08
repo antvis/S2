@@ -1,4 +1,4 @@
-export const paletteColorfulBlue = {
+export const paletteColorful = {
   // --------- basic colors -----------
   basicColors: [
     '#FFFFFF',

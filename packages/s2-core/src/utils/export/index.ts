@@ -11,7 +11,7 @@ import {
 } from 'lodash';
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
-import { ViewMeta } from '@/index';
+import { ViewMeta } from '@/common/interface';
 import {
   ID_SEPARATOR,
   EMPTY_PLACEHOLDER,
@@ -219,6 +219,12 @@ export const copyData = (
     for (let i = colLevel - 1; i >= 0; i -= 1) {
       // The map of data set: key-name
       const colHeaderItem = tempColHeader
+        // total col completion
+        .map((item) =>
+          item.length < colLevel
+            ? [...new Array(colLevel - item.length), ...item]
+            : item,
+        )
         .map((item) => item[i])
         .map((colItem) => sheetInstance.dataSet.getFieldName(colItem));
       colHeader.push(colHeaderItem);
@@ -242,6 +248,7 @@ export const copyData = (
 
   // Generate the table body.
   let detailRows = [];
+  let colLevel = 0;
 
   if (!sheetInstance.isPivotMode()) {
     detailRows = processValueInDetail(sheetInstance, split, isFormat);
@@ -253,6 +260,12 @@ export const copyData = (
       rowNode.label = trim(rowNode?.label);
       const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
       const tempLine = id.split(ID_SEPARATOR);
+      if (tempLine.length < colLevel) {
+        // total row completion
+        tempLine.push(...new Array(colLevel - tempLine.length));
+      } else {
+        colLevel = tempLine.length;
+      }
       const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));
       tempLine[tempLine.length - 1] = lastLabel;
       const { rows: tempRows } = sheetInstance?.dataCfg?.fields;

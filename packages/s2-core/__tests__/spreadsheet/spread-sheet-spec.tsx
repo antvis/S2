@@ -12,6 +12,7 @@ import {
   ThemeName,
   Node,
   SpreadSheet,
+  copyData,
 } from '@/index';
 
 const tableDataFields = {
@@ -180,6 +181,7 @@ function MainLayout() {
           defaultChecked={render}
           onChange={onToggleRender}
         />
+        <div onClick={() => copyData(s2Ref.current, '\t')}>导出全部</div>
       </Space>
       {render && (
         <SheetEntry
@@ -192,8 +194,8 @@ function MainLayout() {
             <Space size="middle" style={{ marginBottom: 20 }}>
               <Radio.Group onChange={onRadioChange} defaultValue="default">
                 <Radio.Button value="default">默认</Radio.Button>
-                <Radio.Button value="simple">简约蓝</Radio.Button>
                 <Radio.Button value="colorful">多彩蓝</Radio.Button>
+                <Radio.Button value="gray">简约灰</Radio.Button>
               </Radio.Group>
 
               <Switch

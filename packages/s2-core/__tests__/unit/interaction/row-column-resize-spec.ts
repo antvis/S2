@@ -3,6 +3,8 @@ import { pick } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
 import {
   PivotSheet,
+  ResizeAreaEffect,
+  ResizeAreaType,
   ResizeInfo,
   RESIZE_END_GUIDE_LINE_ID,
   RESIZE_MASK_ID,
@@ -85,6 +87,8 @@ describe('Interaction Row Column Resize Tests', () => {
     rowColumnResizeInstance = new RowColumnResize(s2);
     rowColumnResizeInstance.getHeaderGroup = () => new Group('');
     s2.render = jest.fn();
+    s2.tooltip.container = document.createElement('div');
+    s2.hideTooltip = jest.fn();
   });
 
   test('should register events', () => {
@@ -141,13 +145,14 @@ describe('Interaction Row Column Resize Tests', () => {
 
   test('should update resize guide line position when col cell mouse down', () => {
     const resizeInfo: ResizeInfo = {
-      type: 'col',
+      theme: {},
+      type: ResizeAreaType.Col,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      affect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: '',
       id: '',
     };
@@ -182,13 +187,14 @@ describe('Interaction Row Column Resize Tests', () => {
     s2.on(S2Event.LAYOUT_RESIZE_COL_WIDTH, colWidthResize);
 
     const resizeInfo: ResizeInfo = {
-      type: 'col',
+      theme: {},
+      type: ResizeAreaType.Col,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      affect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: 'filedA',
       id: '',
     };
@@ -206,7 +212,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(getResizeMask().attr('cursor')).toEqual('col-resize');
 
     emitResizeEvent(
-      S2Event.LAYOUT_RESIZE_MOUSE_UP,
+      S2Event.GLOBAL_MOUSE_UP,
       {
         offsetX: 30,
         offsetY: 20,
@@ -232,7 +238,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(s2.options.style.colCfg).toEqual({
       colWidthType: 'adaptive',
       detailSample: 30,
-      height: 40,
+      height: 30,
       heightByField: {},
       maxSampleIndex: 1,
       totalSample: 10,
@@ -253,13 +259,14 @@ describe('Interaction Row Column Resize Tests', () => {
 
   test('should update resize guide line position when row cell mouse down', () => {
     const resizeInfo: ResizeInfo = {
-      type: 'row',
+      theme: {},
+      type: ResizeAreaType.Row,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      affect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: '',
       id: '',
     };
@@ -293,13 +300,14 @@ describe('Interaction Row Column Resize Tests', () => {
     s2.on(S2Event.LAYOUT_RESIZE_ROW_HEIGHT, rowWidthResize);
 
     const resizeInfo: ResizeInfo = {
-      type: 'row',
+      theme: {},
+      type: ResizeAreaType.Row,
       offsetX: 2,
       offsetY: 2,
       width: 5,
       height: 2,
       isResizeArea: true,
-      affect: 'cell',
+      effect: ResizeAreaEffect.Cell,
       caption: 'filedB',
       id: '',
     };
@@ -317,7 +325,7 @@ describe('Interaction Row Column Resize Tests', () => {
     expect(getResizeMask().attr('cursor')).toEqual('row-resize');
 
     emitResizeEvent(
-      S2Event.LAYOUT_RESIZE_MOUSE_UP,
+      S2Event.GLOBAL_MOUSE_UP,
       {
         offsetX: 30,
         offsetY: 30,
@@ -351,5 +359,30 @@ describe('Interaction Row Column Resize Tests', () => {
 
     // reset resize position
     expect(rowColumnResizeInstance.resizeStartPosition).toEqual({});
+  });
+
+  test('should hidden tooltip when resize start', () => {
+    const resizeInfo: ResizeInfo = {
+      theme: {},
+      type: ResizeAreaType.Row,
+      offsetX: 2,
+      offsetY: 2,
+      width: 5,
+      height: 2,
+      isResizeArea: true,
+      effect: ResizeAreaEffect.Cell,
+      caption: 'filedB',
+      id: '',
+    };
+
+    emitResizeEvent(
+      S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
+      {
+        offsetX: 10,
+        offsetY: 20,
+      },
+      resizeInfo,
+    );
+    expect(s2.hideTooltip).toHaveBeenCalledTimes(1);
   });
 });

@@ -34,7 +34,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     onColCellDoubleClick,
     onMergedCellsDoubleClick,
     onDataCellMouseUp,
-    getSpreadsheet,
+    getSpreadSheet,
   } = props;
   let container: HTMLDivElement;
   let baseSpreadsheet: SpreadSheet;
@@ -100,7 +100,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     setLoading(false);
   };
 
-  const getSpreadSheet = (): SpreadSheet => {
+  const initSpreadSheet = (): SpreadSheet => {
     if (spreadsheet) {
       return spreadsheet(container, dataCfg, buildOptions());
     }
@@ -156,7 +156,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
 
   const buildSpreadSheet = () => {
     if (!baseSpreadsheet) {
-      baseSpreadsheet = getSpreadSheet();
+      baseSpreadsheet = initSpreadSheet();
       bindEvent();
       const newDataCfg = getSafetyDataConfig(dataCfg);
       baseSpreadsheet.setDataCfg(newDataCfg);
@@ -165,7 +165,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
       baseSpreadsheet.render();
       setLoading(false);
       setOwnSpreadsheet(baseSpreadsheet);
-      if (getSpreadsheet) getSpreadsheet(baseSpreadsheet);
+      getSpreadSheet?.(baseSpreadsheet);
     }
   };
 
