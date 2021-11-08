@@ -1,3 +1,28 @@
+# [@antv/s2-v1.0.0-beta.7](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.6...@antv/s2-v1.0.0-beta.7) (2021-11-08)
+
+
+### Bug Fixes
+
+* **component:** fix not use container width when enable adaptive and first rendered ([#620](https://github.com/antvis/S2/issues/620)) ([f7cf450](https://github.com/antvis/S2/commit/f7cf45006ad1a51a5348ae0fddcc23ca6a14114b))
+* **interaction:** cancel data cell hover focus timer when row or col mousemove ([#603](https://github.com/antvis/S2/issues/603)) ([854282b](https://github.com/antvis/S2/commit/854282b77f60676731d9f5c23cac642daeddd422))
+* **interaction:** hide tooltip and clear hover highlight if mouseleave the cell ([#624](https://github.com/antvis/S2/issues/624)) ([682bf35](https://github.com/antvis/S2/commit/682bf35a8a3e15dfe5aff52deba7cf4cb08ccb27))
+* **interaction:** wrong hidden action tooltip when mouse outside the cell ([#635](https://github.com/antvis/S2/issues/635)) ([46274ee](https://github.com/antvis/S2/commit/46274ee5356a3aacaa9777c1d76c97da3e08fded))
+* **resize:** fix corner resize blank ([#599](https://github.com/antvis/S2/issues/599)) ([82cc929](https://github.com/antvis/S2/commit/82cc929d656ff0c82c80bdbc339958af19c3fe7c))
+* scroll move event target ([#622](https://github.com/antvis/S2/issues/622)) ([79583c1](https://github.com/antvis/S2/commit/79583c183bfdc1f9fc383b0cc24168e98c46fa8b))
+
+
+### Features
+
+* :art: only show the header cell tooltip when the text is omitted ([#633](https://github.com/antvis/S2/issues/633)) ([ad785db](https://github.com/antvis/S2/commit/ad785dbbaba3547f47d0d6390d5f1f3958165d86))
+* add shadow for table mode ([#610](https://github.com/antvis/S2/issues/610)) ([07039a9](https://github.com/antvis/S2/commit/07039a95e7cedfdc3e6b84107ba36b64ddb87a74))
+* perfect and repair merged cells ([#608](https://github.com/antvis/S2/issues/608)) ([edd3ae3](https://github.com/antvis/S2/commit/edd3ae36585607320646b4f3740b84237416bea7))
+
+
+### Reverts
+
+* Revert "chore: merge master (#638)" (#642) ([ae5c7ef](https://github.com/antvis/S2/commit/ae5c7ef1692f55cbed355c25b457f902c22a2b87)), closes [#638](https://github.com/antvis/S2/issues/638) [#642](https://github.com/antvis/S2/issues/642)
+* Revert "chore(release): 1.0.0-beta.7 (#640)" (#641) ([81aff40](https://github.com/antvis/S2/commit/81aff4083dac66d26af5497ab7e68704b6ca15a4)), closes [#640](https://github.com/antvis/S2/issues/640) [#641](https://github.com/antvis/S2/issues/641)
+
 # [@antv/s2-v1.0.0-beta.6](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.5...@antv/s2-v1.0.0-beta.6) (2021-11-05)
 
 
