@@ -130,7 +130,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
 
-  protected getStyle(name?: keyof S2Theme) {
+  public getStyle(name?: keyof S2Theme) {
     return this.theme[name || this.cellType];
   }
 
@@ -144,7 +144,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   // get content area that exclude padding
-  protected getContentArea() {
+  public getContentArea() {
     const { padding } = this.getStyle()?.cell || this.theme.dataCell.cell;
     return getContentArea(this.getCellArea(), padding);
   }
