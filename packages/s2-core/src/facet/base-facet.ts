@@ -725,7 +725,7 @@ export abstract class BaseFacet {
         thumbLen: thumbHeight,
         thumbOffset: (scrollY * this.panelBBox.height) / realHeight,
         position: {
-          x: this.panelBBox.maxX - this.scrollBarSize,
+          x: this.panelBBox.maxX,
           y: this.panelBBox.minY,
         },
         theme: this.scrollBarTheme,

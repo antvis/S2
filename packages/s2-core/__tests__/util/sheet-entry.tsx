@@ -71,7 +71,7 @@ export const SheetEntry = forwardRef(
       ? props.dataCfg
       : assembleDataCfg(props.dataCfg);
     const [adaptive, setAdaptive] = useState(false);
-    const [showResizeArea, setShowResizeArea] = useState(true);
+    const [showResizeArea, setShowResizeArea] = useState(false);
     const [options, setOptions] = useState<S2Options>(() => initOptions);
     const [dataCfg, setDataCfg] = useState<Partial<S2DataConfig>>(
       () => initDataCfg,

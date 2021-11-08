@@ -9,7 +9,7 @@ order: 5
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | :-- | :-- | :-: | :-- | --- |
 | linkFields | `string[]` |  |  | 标记字段为链接样式，用于外链跳转 |
-| selectedCellsSpotlight | `boolean` |   | `true` | 是否开启选中高亮聚光灯效果 |
+| selectedCellsSpotlight | `boolean` |   | `false` | 是否开启选中高亮聚光灯效果 |
 | hoverHighlight | `boolean` |   | `true` | 鼠标悬停时高亮当前单元格，以及所对应的行头，列头 |
 | hiddenColumnFields | `string[]` |  |  | 隐藏列 （明细表有效） |
 | enableCopy | `boolean` |   | `false` | 是否允许复制 |
