@@ -59,7 +59,6 @@ export const download = (str: string, fileName: string) => {
  * use the '$' to divide different lines
  */
 const processObjectValue = (data: MultiData) => {
-  // TODO 如何去业务化
   const tempCell = data?.label ? [data?.label] : [];
   const values = data?.values;
   if (!isEmpty(values)) {
@@ -128,9 +127,7 @@ const processValueInRow = (
   isFormat?: boolean,
 ): string => {
   const tempCell = [];
-  // TODO: 处理derivedValues
-  const derivedValues = [];
-  const derivedValue = head(derivedValues);
+
   if (viewMeta) {
     const { data, fieldValue, valueField } = viewMeta;
     // The main measure.
@@ -140,29 +137,9 @@ const processValueInRow = (
       const mainFormatter = sheetInstance.dataSet.getFieldFormatter(valueField);
       tempCell.push(mainFormatter(fieldValue));
     }
-
-    const currentDV = { derivedValueField: [] };
-    if (currentDV && !isEmpty(currentDV.derivedValueField)) {
-      // When the derivedValue under the dimensions.
-      for (const dv of currentDV.derivedValueField) {
-        const derivedData = get(data, [0, dv]);
-        if (!isFormat) {
-          tempCell.push(derivedData);
-        } else {
-          const formatter = sheetInstance.dataSet.getFieldFormatter(dv);
-          tempCell.push(formatter(derivedData));
-        }
-      }
-    }
   } else {
     // If the meta equals null then it will be replaced by '-'.
     tempCell.push(EMPTY_PLACEHOLDER);
-    if (!isEmpty(derivedValue?.derivedValueField)) {
-      // When the derivedValue under the dimensions.
-      for (const dv of derivedValue.derivedValueField) {
-        tempCell.push(dv);
-      }
-    }
   }
   return tempCell.join('    ');
 };

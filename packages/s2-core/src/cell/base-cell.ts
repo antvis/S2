@@ -41,6 +41,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // link text underline shape
   protected linkFieldShape: IShape;
 
+  // actualText
+  protected actualText: string;
+
   // actual text width after be ellipsis
   protected actualTextWidth = 0;
 
@@ -83,6 +86,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     );
   }
 
+  public getActualText() {
+    return this.actualText;
+  }
+
   /**
    * in case there are more params to be handled
    * @param options any type's rest params
@@ -123,7 +130,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
 
-  protected getStyle(name?: keyof S2Theme) {
+  public getStyle(name?: keyof S2Theme) {
     return this.theme[name || this.cellType];
   }
 
@@ -137,7 +144,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   // get content area that exclude padding
-  protected getContentArea() {
+  public getContentArea() {
     const { padding } = this.getStyle()?.cell || this.theme.dataCell.cell;
     return getContentArea(this.getCellArea(), padding);
   }
@@ -155,7 +162,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       maxTextWidth,
       textStyle,
     );
-
+    this.actualText = ellipsisText;
     this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
     const position = this.getTextPosition();
     this.textShape = renderText(

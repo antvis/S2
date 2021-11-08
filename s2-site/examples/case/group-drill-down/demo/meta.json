@@ -1,0 +1,16 @@
+{
+  "title": {
+    "zh": "分群下钻表",
+    "en": "Group drill down sheet"
+  },
+  "demos": [
+    {
+      "filename": "basic.tsx",
+      "title": {
+        "zh": "分群下钻表",
+        "en": "Measure Comparison Sheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/WeqJRsJBI%24/4afc5aa2-5480-421d-9495-fce726726f74.png"
+    }
+  ]
+}
