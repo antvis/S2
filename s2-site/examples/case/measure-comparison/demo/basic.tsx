@@ -15,9 +15,9 @@ const UP_COLOR = '#F46649';
 const DOWN_COLOR = '#2AA491';
 
 class CustomColCell extends ColCell {
-  private lineConfig = {};
+  lineConfig = {};
 
-  private lineConfigStyle = {};
+  lineConfigStyle = {};
 
   initCell() {
     super.initCell();
@@ -147,13 +147,13 @@ class CustomColCell extends ColCell {
 }
 
 class CustomDataCell extends DataCell {
-  private lineConfig = {};
+  lineConfig = {};
 
-  private lineConfigStyle = {};
+  lineConfigStyle = {};
 
-  private customConditions = {};
+  customConditions = {};
 
-  private textConfig = {};
+  textConfig = {};
 
   initCell() {
     super.initCell();
