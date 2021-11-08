@@ -1,7 +1,7 @@
 import React from 'react';
 import type { SpreadSheet } from '../../sheet-type/spread-sheet';
 import { BaseSheet } from './base-sheet';
-import { GridAnalysisSheet } from './grid-analysis-sheet';
+import { TabularSheet } from './tabular-sheet';
 import { TableSheet } from './table-sheet';
 import type { SpreadsheetProps } from './interface';
 
@@ -21,8 +21,8 @@ const Sheet = React.forwardRef(
     switch (sheetType) {
       case 'table':
         return <TableSheet {...sheetProps} />;
-      case 'gridAnalysis':
-        return <GridAnalysisSheet {...sheetProps} />;
+      case 'tabular':
+        return <TabularSheet {...sheetProps} />;
       default:
         return <BaseSheet {...sheetProps} />;
     }

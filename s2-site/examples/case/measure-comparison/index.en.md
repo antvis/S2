@@ -1,6 +1,5 @@
 ---
 title: Measure Comparison Sheet
-order: 1
+order: 2
 ---
 
-`markdown:docs/api/components/sheet-component.zh.md`

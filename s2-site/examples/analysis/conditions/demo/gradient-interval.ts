@@ -41,7 +41,7 @@ fetch(
         interval: [
           {
             field: 'price',
-            mapping(fieldValue) {
+            mapping(fieldValue, data) {
               const maxValue = 20;
               const minValue = 0;
               const rage = (fieldValue - minValue) / (maxValue - minValue);

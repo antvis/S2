@@ -386,6 +386,27 @@ export interface CellAttrs<T extends Record<string, unknown> = Node>
   appendInfo?: CellAppendInfo<T>;
 }
 
+/**
+ * 单元格属性配置
+ */
+export interface CellBoxCfg {
+  // 起点坐标 x 值
+  x: number;
+  // 起点坐标 y 值
+  y: number;
+  // 单元格宽度
+  width: number;
+  // 单元格高度
+  height: number;
+  // 对应 g text textAlign 属性 https://g.antv.vision/zh/docs/api/shape/text#textalign
+  // 水平对齐方式, 默认 left
+  textAlign?: TextAlign;
+  // 对应 g text baseline 属性 https://g.antv.vision/zh/docs/api/shape/text#textbaseline
+  // 垂直对齐方式，默认 bottom
+  textBaseline?: TextBaseline;
+  // 单元格 padding 值
+  padding?: Padding;
+}
 export type S2MountContainer = string | HTMLElement;
 
 export type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];

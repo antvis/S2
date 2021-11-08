@@ -15,7 +15,7 @@ import { ThemeCfg } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
 
-export type SheetType = 'pivot' | 'table' | 'gridAnalysis';
+export type SheetType = 'pivot' | 'table' | 'tabular';
 
 export interface SpreadsheetProps extends BaseSheetProps {
   sheetType?: SheetType;
