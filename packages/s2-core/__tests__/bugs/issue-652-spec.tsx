@@ -10,12 +10,13 @@ import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
 import { SheetComponent } from '@/components/sheets';
 import { S2Options } from '@/common/interface';
+import { SheetType } from '@/components/sheets/interface';
 
-function MainLayout() {
+function MainLayout({ sheetType }: { sheetType: SheetType }) {
   const [s2Options] = React.useState<S2Options>();
   return (
     <SheetComponent
-      sheetType="pivot"
+      sheetType={sheetType}
       dataCfg={mockDataConfig}
       options={s2Options}
       themeCfg={{ name: 'default' }}
@@ -24,9 +25,14 @@ function MainLayout() {
 }
 
 describe('SheetComponent Correct Render Tests', () => {
-  test('should correct render with empty options', () => {
+  test.each(['pivot', 'table', 'gridAnalysis'] as unknown as Array<
+    keyof SheetType
+  >)('should correct render %o with empty options', (type) => {
     function render() {
-      ReactDOM.render(<MainLayout />, getContainer());
+      ReactDOM.render(
+        <MainLayout sheetType={type as SheetType} />,
+        getContainer(),
+      );
     }
 
     expect(render).not.toThrowError();

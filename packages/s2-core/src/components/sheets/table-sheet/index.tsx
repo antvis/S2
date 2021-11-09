@@ -29,7 +29,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     spreadsheet,
     dataCfg,
     options,
-    adaptive = false,
+    adaptive,
     header,
     themeCfg,
     isLoading,
@@ -48,7 +48,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     onDataCellMouseUp,
     onContextMenu,
     getSpreadSheet,
-    showPagination = true,
+    showPagination,
   } = props;
   const container = useRef<HTMLDivElement>();
   const baseSpreadsheet = useRef<SpreadSheet>();
@@ -243,4 +243,9 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   );
 });
 
+TableSheet.defaultProps = {
+  options: {} as S2Options,
+  adaptive: false,
+  showPagination: true,
+};
 TableSheet.displayName = 'TableSheet';
