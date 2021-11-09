@@ -185,7 +185,7 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2@1.0.0-beta.7":
+"@antv/s2@^1.0.0-beta.7":
   version "1.0.0-beta.7"
   resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.0.0-beta.7.tgz#fd416c27180d651d507e92e209eb033101bd7b33"
   integrity sha512-9lBU2urYDuTtZyXefrzK0DPHrcu3SdmHo/NmbVrUsMSBLJNaZlGeA3JqaWoVXqEj07vSJc4SB/ksyMA6BNr9WQ==

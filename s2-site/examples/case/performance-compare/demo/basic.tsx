@@ -29,6 +29,7 @@ function getIndex(fieldValue, rawData) {
   const step = Math.floor((max - min) / (colors.length - 1));
   return Math.floor((fieldValue - min) / step);
 }
+
 function getDataConfig(rawData) {
   return {
     fields: {
@@ -57,6 +58,7 @@ function getDataConfig(rawData) {
     data: rawData,
   };
 }
+
 function getOptions(rawData) {
   return {
     width: 600,
@@ -84,7 +86,7 @@ function getOptions(rawData) {
 fetch('../data/compare.json')
   .then((res) => res.json())
   .then((data) => {
-    const s2options = ReactDOM.render(
+    ReactDOM.render(
       <div>
         <h3>1000 数据规模表格渲染时间对比</h3>
         <SheetComponent

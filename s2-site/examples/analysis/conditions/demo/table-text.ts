@@ -17,7 +17,9 @@ fetch(
     const s2options = {
       width: 600,
       height: 600,
-      hoverHighlight: false,
+      interaction: {
+        hoverHighlight: false,
+      },
       conditions: {
         text: [
           {
