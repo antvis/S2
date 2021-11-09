@@ -38,24 +38,24 @@ export function transformDimensionsValues(
   sortedDimensionValues: SortedDimensionValues,
   dimensionCache: Record<string, number>,
 ): string[] {
-  const dimensionLink = [];
+  const dimensionValuePath: string[] = [];
   return map(dimensions, (dimension) => {
     const dimensionValue = record[dimension];
-    dimensionLink.push(`${dimension}${ID_SEPARATOR}${dimensionValue}`);
+    dimensionValuePath.push(`${dimension}${ID_SEPARATOR}${dimensionValue}`);
 
     if (!sortedDimensionValues[dimension]) {
       sortedDimensionValues[dimension] = [
         isUndefined(dimensionValue) ? String(dimensionValue) : dimensionValue,
       ];
     } else if (
-      !dimensionCache[dimensionLink.join(ID_SEPARATOR)] &&
+      !dimensionCache[dimensionValuePath.join(ID_SEPARATOR)] &&
       dimension !== EXTRA_FIELD
     ) {
       sortedDimensionValues[dimension].push(dimensionValue);
     }
 
-    if (!dimensionCache[dimensionLink.join(ID_SEPARATOR)]) {
-      dimensionCache[dimensionLink.join(ID_SEPARATOR)] = 1;
+    if (!dimensionCache[dimensionValuePath.join(ID_SEPARATOR)]) {
+      dimensionCache[dimensionValuePath.join(ID_SEPARATOR)] = 1;
     }
 
     return dimensionValue;
