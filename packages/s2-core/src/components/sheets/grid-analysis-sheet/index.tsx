@@ -15,13 +15,13 @@ import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { useResizeEffect } from '@/components/sheets/hooks';
 
-export const GridAnalysisSheet = (props: BaseSheetProps) => {
+export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
   const {
     spreadsheet,
     // TODO dataCfg细化
     dataCfg,
     options,
-    adaptive = false,
+    adaptive,
     header,
     themeCfg = {
       theme: GridAnalysisTheme,
@@ -46,9 +46,9 @@ export const GridAnalysisSheet = (props: BaseSheetProps) => {
 
   const getCellHeight = (): number => {
     const { data } = dataCfg;
-    const height = options?.style?.cellCfg?.height;
+    const height = options.style?.cellCfg?.height;
     if (height) return height;
-    const lineHeight = options?.style?.cellCfg?.lineHeight || CELL_LINE_HEIGHT;
+    const lineHeight = options.style?.cellCfg?.lineHeight || CELL_LINE_HEIGHT;
     if (isEmpty(data)) return lineHeight;
     const lengths = [];
     // TODO 还没想清楚需不需要找最大的，需不需要限定都一样的个数，先让子弹飞一飞
@@ -178,7 +178,12 @@ export const GridAnalysisSheet = (props: BaseSheetProps) => {
   }, []);
 
   // handle box size change and resize
-  useResizeEffect(container, ownSpreadsheet, adaptive, options);
+  useResizeEffect({
+    spreadsheet: ownSpreadsheet,
+    container,
+    adaptive,
+    options,
+  });
 
   useEffect(() => {
     update(setDataCfg, setOptions);
@@ -211,4 +216,8 @@ export const GridAnalysisSheet = (props: BaseSheetProps) => {
   );
 };
 
+GridAnalysisSheet.defaultProps = {
+  adaptive: false,
+  options: {} as S2Options,
+};
 GridAnalysisSheet.displayName = 'GridAnalysisSheet';
