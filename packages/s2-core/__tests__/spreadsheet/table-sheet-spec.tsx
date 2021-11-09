@@ -117,11 +117,13 @@ function MainLayout({ callback }) {
       pageSize: 50,
       current: 1,
     },
+    interaction: {
+      linkFields: ['order_id', 'customer_name'],
+    },
     frozenRowCount: 2,
     frozenColCount: 1,
     frozenTrailingColCount: 1,
     frozenTrailingRowCount: 1,
-    linkFields: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
       operation: {
