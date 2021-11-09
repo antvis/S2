@@ -10,7 +10,7 @@ fetch(
   .then((data) => {
     const s2DataConfig = data;
     const s2options = {
-      width: 600,
+      width: 1000,
       height: 600,
       style: {
         cellCfg: {
@@ -26,7 +26,7 @@ fetch(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2options}
-        sheetType="tabular"
+        sheetType="gridAnalysis"
         header={{ title: '人群网络分析' }}
       />,
       document.getElementById('container'),
