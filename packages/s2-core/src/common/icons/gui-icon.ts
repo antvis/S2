@@ -32,7 +32,7 @@ export class GuiIcon extends Group {
     cacheKey: string,
     fill?: string,
   ): Promise<HTMLImageElement> {
-    return new Promise((resolve: (i) => void, reject: (i) => void): void => {
+    return new Promise<HTMLImageElement>((resolve, reject): void => {
       const img = new Image();
       // 成功
       img.onload = () => {
@@ -49,11 +49,12 @@ export class GuiIcon extends Group {
       // 1、base 64
       // 2、svg本地文件（兼容老方式，可以改颜色）
       // 3、线上支持的图片地址
-      if (svg && svg.includes('data:image/svg+xml')) {
+      if (
+        svg &&
+        (svg.includes('data:image/svg+xml') || this.hasSupportSuffix(svg))
+      ) {
         // 传入 base64 字符串
-        img.src = svg;
-      } else if (this.hasSupportSuffix(svg)) {
-        // online 图片
+        // 或者 online 链接
         img.src = svg;
       } else if (svg) {
         // 传入 svg 字符串（支持颜色fill）
