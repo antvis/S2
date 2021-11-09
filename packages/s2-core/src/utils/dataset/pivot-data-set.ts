@@ -1,7 +1,11 @@
 import { set, map, reduce, isUndefined, forEach, last } from 'lodash';
 import { DataType } from '@/data-set/interface';
-import { DataPathParams, PivotMeta } from '@/data-set/interface';
-import { ID_SEPARATOR } from '@/common/constant';
+import {
+  DataPathParams,
+  PivotMeta,
+  SortedDimensionValues,
+} from '@/data-set/interface';
+import { ID_SEPARATOR, EXTRA_FIELD } from '@/common/constant';
 
 interface Param {
   rows: string[];
@@ -9,7 +13,7 @@ interface Param {
   originData: DataType[];
   indexesData: DataType[][] | DataType[];
   totalData?: DataType[];
-  sortedDimensionValues: Map<string, Set<string>>;
+  sortedDimensionValues: SortedDimensionValues;
   rowPivotMeta?: PivotMeta;
   colPivotMeta?: PivotMeta;
 }
@@ -31,15 +35,28 @@ interface Param {
 export function transformDimensionsValues(
   record: DataType,
   dimensions: string[],
-  sortedDimensionValues: Map<string, Set<string>>,
+  sortedDimensionValues: SortedDimensionValues,
+  dimensionCache: Record<string, number>,
 ): string[] {
+  const dimensionLink = [];
   return map(dimensions, (dimension) => {
     const dimensionValue = record[dimension];
-    if (!sortedDimensionValues.has(dimension)) {
-      sortedDimensionValues.set(dimension, new Set());
+    dimensionLink.push(`${dimension}${ID_SEPARATOR}${dimensionValue}`);
+
+    if (!sortedDimensionValues[dimension]) {
+      sortedDimensionValues[dimension] = [
+        isUndefined(dimensionValue) ? String(dimensionValue) : dimensionValue,
+      ];
+    } else if (
+      !dimensionCache[dimensionLink.join(ID_SEPARATOR)] &&
+      dimension !== EXTRA_FIELD
+    ) {
+      sortedDimensionValues[dimension].push(dimensionValue);
     }
-    const values = sortedDimensionValues.get(dimension);
-    values.add(record[dimension]);
+
+    if (!dimensionCache[dimensionLink.join(ID_SEPARATOR)]) {
+      dimensionCache[dimensionLink.join(ID_SEPARATOR)] = 1;
+    }
 
     return dimensionValue;
   });
@@ -179,16 +196,19 @@ export function transformIndexesData(params: Param) {
     colPivotMeta,
   } = params;
   const paths = [];
+  const dimensionCache = {};
   for (const data of [...originData, ...totalData]) {
     const rowDimensionValues = transformDimensionsValues(
       data,
       rows,
       sortedDimensionValues,
+      dimensionCache,
     );
     const colDimensionValues = transformDimensionsValues(
       data,
       columns,
       sortedDimensionValues,
+      dimensionCache,
     );
     const path = getDataPath({
       rowDimensionValues,

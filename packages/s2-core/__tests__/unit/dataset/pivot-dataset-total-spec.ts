@@ -1,7 +1,7 @@
 /**
  * pivot mode base data-set test.
  */
-import { get } from 'lodash';
+import { get, keys } from 'lodash';
 import { assembleDataCfg } from '../../util/sheet-entry';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import { S2DataConfig } from '@/common/interface';
@@ -107,19 +107,19 @@ describe('Pivot Dataset Total Test', () => {
 
     test('should get correct sorted dimension value', () => {
       const sortedDimensionValues = dataSet.sortedDimensionValues;
-      expect([...sortedDimensionValues.keys()]).toEqual([
+      expect([...keys(sortedDimensionValues)]).toEqual([
         'province',
         'city',
         'type',
         'sub_type',
         EXTRA_FIELD,
       ]);
-      expect([...sortedDimensionValues.get('province')]).toEqual([
+      expect([...sortedDimensionValues.province]).toEqual([
         '浙江省',
         '四川省',
         undefined,
       ]);
-      expect([...sortedDimensionValues.get('city')]).toEqual([
+      expect([...sortedDimensionValues.city]).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
@@ -129,20 +129,24 @@ describe('Pivot Dataset Total Test', () => {
         '南充市',
         '乐山市',
         undefined,
+        undefined,
+        undefined,
       ]);
-      expect([...sortedDimensionValues.get('type')]).toEqual([
+      expect([...sortedDimensionValues.type]).toEqual([
         '家具',
         '办公用品',
         undefined,
       ]);
-      expect([...sortedDimensionValues.get('sub_type')]).toEqual([
+      expect([...sortedDimensionValues.sub_type]).toEqual([
         '桌子',
         '沙发',
         '笔',
         '纸张',
         undefined,
+        undefined,
+        undefined,
       ]);
-      expect([...sortedDimensionValues.get(EXTRA_FIELD)]).toEqual(['number']);
+      expect([...sortedDimensionValues[EXTRA_FIELD]]).toEqual(['number']);
     });
   });
 
