@@ -282,7 +282,7 @@ export const SheetEntry = forwardRef(
         <div style={{ marginBottom: 20 }}>{props.header}</div>
         <SheetComponent
           dataCfg={dataCfg as S2DataConfig}
-          options={undefined}
+          options={options}
           sheetType={props.sheetType}
           adaptive={adaptive}
           ref={ref}
