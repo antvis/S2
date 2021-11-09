@@ -178,7 +178,12 @@ export const GridAnalysisSheet = (props: BaseSheetProps) => {
   }, []);
 
   // handle box size change and resize
-  useResizeEffect(container, ownSpreadsheet, adaptive, options);
+  useResizeEffect({
+    spreadsheet: ownSpreadsheet,
+    container,
+    adaptive,
+    options,
+  });
 
   useEffect(() => {
     update(setDataCfg, setOptions);

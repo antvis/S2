@@ -4,12 +4,20 @@ import { SpreadSheet } from '@/sheet-type';
 import { S2Options } from '@/common/interface';
 import { getSafetyOptions } from '@/utils/merge';
 
-export const useResizeEffect = (
-  container: HTMLDivElement,
-  s2: SpreadSheet,
-  adaptive: boolean,
-  options: S2Options,
-) => {
+export interface UseResizeEffectParams {
+  container: HTMLDivElement;
+  spreadsheet: SpreadSheet;
+  adaptive: boolean;
+  options: S2Options;
+}
+
+export const useResizeEffect = (params: UseResizeEffectParams) => {
+  const {
+    container,
+    spreadsheet: s2,
+    adaptive,
+    options = {} as S2Options,
+  } = params;
   const [resizeTimeStamp, setResizeTimeStamp] = useState<number | null>(null);
   const debounceResize = debounce((e: Event) => {
     setResizeTimeStamp(e.timeStamp);

@@ -186,7 +186,7 @@ function MainLayout() {
       {render && (
         <SheetEntry
           dataCfg={dataCfg}
-          options={mergedOptions}
+          options={undefined}
           themeCfg={{ name: themeName }}
           sheetType={sheetType}
           ref={s2Ref}
