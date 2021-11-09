@@ -231,7 +231,7 @@ describe('Pivot Dataset Total Test', () => {
           sub_type: '桌子',
           [EXTRA_FIELD]: 'number',
         }),
-      ).toHaveLength(4);
+      ).toHaveLength(5);
 
       expect(
         dataSet.getMultiData({
@@ -239,20 +239,20 @@ describe('Pivot Dataset Total Test', () => {
           sub_type: '桌子',
           [EXTRA_FIELD]: 'number',
         }),
-      ).toHaveLength(8);
+      ).toHaveLength(11);
 
       expect(
         dataSet.getMultiData({
           type: '家具',
           [EXTRA_FIELD]: 'number',
         }),
-      ).toHaveLength(16);
+      ).toHaveLength(33);
 
       expect(
         dataSet.getMultiData({
           [EXTRA_FIELD]: 'number',
         }),
-      ).toHaveLength(32);
+      ).toHaveLength(77);
     });
 
     test('getDimensionValues function', () => {

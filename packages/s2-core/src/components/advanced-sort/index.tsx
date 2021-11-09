@@ -109,6 +109,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   };
   const handleCustomSort = (demission, splitOrders) => {
     handleCustom();
+    setCurrentDemission(demission);
     if (splitOrders) {
       setSortBy(splitOrders);
     } else {
@@ -120,7 +121,9 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   };
   const customSort = () => {
     handleCustom();
-    form.getFieldValue(currentDemission?.field).sortBy = sortBy;
+    const currentFieldValue = form.getFieldsValue([currentDemission?.field]);
+    currentFieldValue.sortBy = sortBy;
+    form.setFieldsValue({ [currentDemission?.field]: currentFieldValue });
     const newRuleList = map(ruleList, (item) => {
       if (item.field === currentDemission?.field) {
         return {
@@ -146,13 +149,13 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
     const ruleValue = form.getFieldsValue();
     const { values = [] } = sheet.dataCfg.fields;
     const ruleValues = [];
-    const sortParams = [];
+    const currentSortParams = [];
     forEach(keys(ruleValue), (item) => {
-      const { sortMethod, rule = [], sortBy } = ruleValue[item];
+      const { sortMethod, rule = [], sortBy: currentSortBy } = ruleValue[item];
       const current: SortParam = { sortFieldId: item };
-      if (rule[0] === 'sortByMeasure') {
+      if (rule[0] === 'sortByMeasure' || rule[1]) {
         // 如果不是数值 key ，则按照汇总值排序
-        if (!includes(values, item)) {
+        if (!includes(values, rule[1])) {
           current.sortByMeasure = TOTAL_VALUE;
         } else {
           current.sortByMeasure = rule[1];
@@ -162,16 +165,15 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
           $$extra$$: rule[1],
         };
       } else if (rule[0] === 'sortBy') {
-        current.sortBy = sortBy;
+        current.sortBy = currentSortBy;
       } else {
         current.sortMethod = sortMethod;
       }
       ruleValues.push({ field: item, ...ruleValue[item] });
-      sortParams.push(current);
+      currentSortParams.push(current);
     });
-
     if (onSortConfirm) {
-      onSortConfirm(ruleValues, sortParams);
+      onSortConfirm(ruleValues, currentSortParams);
     }
     handleModal();
   };
@@ -211,21 +213,26 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   };
   const getRuleList = () => {
     return map(sortParams, (item) => {
-      const { sortFieldId, sortMethod, sortBy, sortByMeasure } = item;
-      let rule: string;
-      if (sortBy) {
-        rule = 'sortBy';
+      const {
+        sortFieldId,
+        sortMethod,
+        sortBy: currentSortBy,
+        sortByMeasure,
+      } = item;
+      let rule: string[];
+      if (currentSortBy) {
+        rule = ['sortBy'];
       } else if (sortByMeasure) {
-        rule = 'sortByMeasure';
+        rule = ['sortByMeasure', sortByMeasure];
       } else {
-        rule = 'sortMethod';
+        rule = ['sortMethod'];
       }
       return {
         field: sortFieldId,
         name: sheet.dataSet.getFieldName(sortFieldId),
         rule,
         sortMethod,
-        sortBy,
+        sortBy: currentSortBy,
         sortByMeasure,
       };
     });
@@ -265,7 +272,13 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
           className={`${ADVANCED_PRE_CLS}-custom-form`}
         >
           {map(ruleList, (item) => {
-            const { field, name, rule, sortMethod, sortBy } = item || {};
+            const {
+              field,
+              name,
+              rule,
+              sortMethod,
+              sortBy: currentSortBy,
+            } = item || {};
             return (
               <Form.Item name={field} key={field}>
                 <Form.Item name={[field, 'name']} initialValue={name} noStyle>
@@ -279,7 +292,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
                 </span>
                 <Form.Item
                   name={[field, 'rule']}
-                  initialValue={[rule || 'sortMethod']}
+                  initialValue={rule || ['sortMethod']}
                   noStyle
                 >
                   <Cascader
@@ -311,14 +324,21 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
                         </Radio.Group>
                       </Form.Item>
                     ) : (
-                      <a
-                        className={`${ADVANCED_PRE_CLS}-rule-end`}
-                        onClick={() => {
-                          handleCustomSort(item, sortBy);
-                        }}
-                      >
-                        {i18n('设置顺序')}
-                      </a>
+                      <>
+                        <a
+                          className={`${ADVANCED_PRE_CLS}-rule-end`}
+                          onClick={() => {
+                            handleCustomSort(item, currentSortBy);
+                          }}
+                        >
+                          {i18n('设置顺序')}
+                        </a>
+                        <Form.Item
+                          noStyle
+                          name={[field, 'sortBy']}
+                          initialValue={currentSortBy}
+                        />
+                      </>
                     );
                   }}
                 </Form.Item>
