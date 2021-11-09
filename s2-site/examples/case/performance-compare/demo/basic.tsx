@@ -24,6 +24,7 @@ function getRange(data) {
     max: Math.max(...compactValue),
   };
 }
+
 function getIndex(fieldValue, rawData) {
   const { min, max } = getRange(rawData);
   const step = Math.floor((max - min) / (colors.length - 1));
