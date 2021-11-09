@@ -181,12 +181,11 @@ export class TableFacet extends BaseFacet {
       if (isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)) {
         x =
           width -
-          colLeafNodes.reduceRight((prev, item, idx) => {
-            if (idx >= colLength - frozenTrailingColCount) {
+          colLeafNodes
+            .slice(-(colLength - colIndex))
+            .reduce((prev, item, idx) => {
               return prev + item.width;
-            }
-            return prev;
-          }, 0);
+            }, 0);
       }
 
       if (showSeriesNumber && col.field === SERIES_NUMBER_FIELD) {
@@ -808,6 +807,7 @@ export class TableFacet extends BaseFacet {
     } = this.spreadsheet;
     const frozenColGroupWidth = frozenColGroup.getBBox().width;
     const frozenRowGroupHeight = frozenRowGroup.getBBox().height;
+    const frozenTrailingColBBox = frozenTrailingColGroup.getBBox();
     const frozenTrailingRowGroupHeight =
       frozenTrailingRowGroup.getBBox().height;
     const panelScrollGroupWidth =
@@ -862,9 +862,9 @@ export class TableFacet extends BaseFacet {
     frozenTrailingColGroup.setClip({
       type: 'rect',
       attrs: {
-        x: frozenTrailingColGroup.getBBox().minX,
+        x: frozenTrailingColBBox.minX,
         y: scrollY + frozenRowGroupHeight,
-        width: frozenColGroupWidth,
+        width: frozenTrailingColBBox.width,
         height: panelScrollGroupHeight,
       },
     });

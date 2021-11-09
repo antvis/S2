@@ -1123,7 +1123,7 @@ export abstract class BaseFacet {
         data: this.layoutResult.rowNodes,
         offset: 0,
         hierarchyType: this.cfg.hierarchyType,
-        linkFields: get(this.cfg.spreadsheet, 'options.linkFields'),
+        linkFields: this.cfg.spreadsheet.options?.interaction?.linkFields ?? [],
         seriesNumberWidth,
         spreadsheet: this.spreadsheet,
       });
