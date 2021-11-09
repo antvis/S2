@@ -8,6 +8,7 @@ import {
 } from '@/common/constant';
 import {
   FormatResult,
+  ResizeArea,
   S2CellType,
   S2Theme,
   StateShapeLayer,
@@ -134,7 +135,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.theme[name || this.cellType];
   }
 
-  protected getResizeAreaStyle() {
+  protected getResizeAreaStyle(): ResizeArea {
     return this.getStyle('resizeArea');
   }
 

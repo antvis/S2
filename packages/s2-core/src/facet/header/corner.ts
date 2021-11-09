@@ -1,19 +1,11 @@
-import { Group, Point, SimpleBBox } from '@antv/g-canvas';
-import { get, includes, isEmpty, last } from 'lodash';
+import { Group, Point } from '@antv/g-canvas';
+import { get, includes, isEmpty } from 'lodash';
+import { CornerBBox } from '../bbox/cornerBBox';
+import { PanelBBox } from '../bbox/panelBBox';
 import { BaseHeader, BaseHeaderConfig } from './base';
-import { CornerData } from './interface';
-import { translateGroup } from '@/facet/utils';
-import {
-  getResizeAreaAttrs,
-  getResizeAreaGroupById,
-} from '@/utils/interaction/resize';
+import { translateGroupX } from '@/facet/utils';
 import { CornerCell } from '@/cell/corner-cell';
-import {
-  KEY_GROUP_CORNER_RESIZE_AREA,
-  KEY_SERIES_NUMBER_NODE,
-  ResizeAreaEffect,
-  ResizeAreaType,
-} from '@/common/constant';
+import { KEY_SERIES_NUMBER_NODE } from '@/common/constant';
 import { i18n } from '@/common/i18n';
 import {
   LayoutResult,
@@ -32,6 +24,8 @@ export interface CornerHeaderConfig extends BaseHeaderConfig {
   hierarchyType: S2Options['hierarchyType'];
   // the hierarchy collapse or not
   hierarchyCollapse: boolean;
+  // rows fields
+  rows: string[];
   // column fields
   columns: string[];
   // series number width
@@ -52,20 +46,25 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
    * @param s2 spreadsheet
    */
   public static getCornerHeader(
-    panelBBox: SimpleBBox,
-    cornerBBox: SimpleBBox,
+    panelBBox: PanelBBox,
+    cornerBBox: CornerBBox,
     seriesNumberWidth: number,
     cfg: SpreadSheetFacetCfg,
     layoutResult: LayoutResult,
     s2: SpreadSheet,
   ) {
     const { width, height } = panelBBox;
-    const cornerWidth = cornerBBox.width;
-    const cornerHeight = cornerBBox.height;
+    const {
+      originalWidth: cornerOriginalWidth,
+      originalHeight: cornerOriginalHeight,
+      width: cornerWidth,
+      height: cornerHeight,
+    } = cornerBBox;
+
     const cornerNodes = this.getCornerNodes(
       { x: cornerBBox.x, y: cornerBBox.y },
-      cornerWidth,
-      cornerHeight,
+      cornerOriginalWidth,
+      cornerOriginalHeight,
       cfg.rows,
       cfg.columns,
       layoutResult.rowsHierarchy,
@@ -79,11 +78,13 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       position: { x: cornerBBox.x, y: cornerBBox.y },
       width: cornerWidth,
       height: cornerHeight,
+      originalHeight: cornerOriginalHeight,
+      originalWidth: cornerOriginalWidth,
       viewportWidth: width,
       viewportHeight: height,
-      offset: 0,
       hierarchyType: cfg.hierarchyType, // 是否为树状布局
       hierarchyCollapse: cfg.hierarchyCollapse,
+      rows: cfg.rows,
       columns: cfg.columns,
       seriesNumberWidth,
       spreadsheet: s2,
@@ -107,8 +108,8 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     // spreadsheet must have at least one node in last level
     if (seriesNumberWidth && colsHierarchy?.sampleNodeForLastLevel) {
       const sNode: Node = new Node({
-        key: KEY_SERIES_NUMBER_NODE, // mark series node
         id: '',
+        key: KEY_SERIES_NUMBER_NODE, // mark series node
         value: i18n('序号'),
       });
       sNode.x = position?.x;
@@ -122,8 +123,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       cornerNodes.push(sNode);
     }
 
-    // 列头 label 横坐标偏移量：与行头 label 最右对齐
-    let columOffsetX = seriesNumberWidth;
     // spreadsheet type tree mode
     if (colsHierarchy?.sampleNodeForLastLevel) {
       if (s2.isHierarchyTreeType()) {
@@ -152,7 +151,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       } else {
         // spreadsheet type grid mode
         rowsHierarchy.sampleNodesForAllLevels.forEach((rowNode) => {
-          // 避免因为小计总计格子宽度调整出现的错位
           const field = rows[rowNode.level];
           const cNode: Node = new Node({
             key: field,
@@ -160,7 +158,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
             value: dataSet.getFieldName(field),
           });
 
-          cNode.x = columOffsetX;
+          cNode.x = rowNode.x + seriesNumberWidth;
           cNode.y = colsHierarchy.sampleNodeForLastLevel.y;
           cNode.width = rowNode.width;
           cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
@@ -169,10 +167,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           cNode.cornerType = CornerNodeType.ROW;
           cNode.spreadsheet = s2;
           cornerNodes.push(cNode);
-
-          if (rowNode.level < rowsHierarchy.maxLevel) {
-            columOffsetX += cNode.width;
-          }
         });
       }
     }
@@ -180,16 +174,15 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
     colsHierarchy.sampleNodesForAllLevels.forEach((colNode) => {
       // 列头最后一个层级的位置为行头 label 标识，需要过滤
       if (colNode.level < colsHierarchy.maxLevel) {
-        const freezeCornerDiffWidth = s2.facet.getFreezeCornerDiffWidth();
         const field = columns[colNode.level];
         const cNode: Node = new Node({
           key: field,
           id: '',
           value: dataSet.getFieldName(field),
         });
-        cNode.x = columOffsetX;
+        cNode.x = position.x;
         cNode.y = colNode.y;
-        cNode.width = width - columOffsetX + freezeCornerDiffWidth;
+        cNode.width = width;
         cNode.height = colNode.height;
         cNode.field = field;
         cNode.isPivotMode = true;
@@ -220,7 +213,6 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
   protected layout() {
     this.renderCells();
-    this.renderResizeAreas();
   }
 
   protected renderCells() {
@@ -236,6 +228,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       return;
     }
     this.addBgRect();
+
     data.forEach((item: Node) => {
       let cell: Group;
       if (cornerCell) {
@@ -259,7 +252,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
   protected offset() {
     const { scrollX } = this.headerConfig;
-    translateGroup(this, -scrollX, 0);
+    translateGroupX(this, -scrollX);
   }
 
   protected clip(): void {
@@ -277,67 +270,17 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
 
   protected addBgRect() {
     const cfg = this.headerConfig;
-    const { width, height, position } = cfg;
+    const { originalWidth, originalHeight, position } = cfg;
     this.addShape('rect', {
       attrs: {
         x: position.x,
         y: position.y,
-        width,
-        height,
+        width: originalWidth,
+        height: originalHeight,
         fill: get(
           this.headerConfig,
           'spreadsheet.theme.cornerCell.cell.backgroundColor',
         ),
-      },
-    });
-  }
-
-  private renderResizeAreas() {
-    const { data, position, width, height, seriesNumberWidth, spreadsheet } =
-      this.headerConfig;
-    const resizeStyle = spreadsheet.theme.resizeArea;
-    const resizeArea = getResizeAreaGroupById(
-      spreadsheet,
-      KEY_GROUP_CORNER_RESIZE_AREA,
-    );
-
-    if (spreadsheet.isHierarchyTreeType()) {
-      resizeArea.addShape('rect', {
-        attrs: {
-          ...getResizeAreaAttrs({
-            theme: resizeStyle,
-            type: ResizeAreaType.Col,
-            effect: ResizeAreaEffect.Tree,
-            offsetX: position.x + seriesNumberWidth,
-            offsetY: position.y,
-            width: width - seriesNumberWidth,
-            height,
-          }),
-          x: position.x + width - resizeStyle.size / 2,
-          y: position.y,
-          height: this.get('viewportHeight') + height,
-        },
-      });
-    }
-    const cell: CornerData = get(data, '0', {});
-    const offsetX = position.x;
-    const offsetY = position.y;
-
-    resizeArea.addShape('rect', {
-      attrs: {
-        ...getResizeAreaAttrs({
-          theme: resizeStyle,
-          type: ResizeAreaType.Row,
-          effect: ResizeAreaEffect.Filed,
-          id: last(this.get('columns')),
-          offsetX,
-          offsetY,
-          width: cell.width,
-          height: cell.height,
-        }),
-        x: offsetX,
-        y: offsetY + cell.y + cell.height - resizeStyle.size / 2,
-        width,
       },
     });
   }
