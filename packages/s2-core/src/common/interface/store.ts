@@ -77,8 +77,6 @@ export interface StoreKey {
 
   // hover 显示的 icon 缓存
   visibleActionIcons: GuiIcon[];
-  // 冻结行头时 真实 和 实际渲染的角头宽度差值
-  freezeCornerDiffWidth: number;
 
   [key: string]: unknown;
 }

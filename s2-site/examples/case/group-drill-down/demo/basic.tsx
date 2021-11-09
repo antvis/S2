@@ -26,7 +26,7 @@ fetch(
       <SheetComponent
         dataCfg={s2DataConfig}
         options={s2options}
-        sheetType="tabular"
+        sheetType="gridAnalysis"
         header={{ title: '人群网络分析' }}
       />,
       document.getElementById('container'),

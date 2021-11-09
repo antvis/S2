@@ -1,4 +1,4 @@
-import type { BBox, IGroup, Point } from '@antv/g-canvas';
+import type { IGroup, Point } from '@antv/g-canvas';
 import type { GestureEvent } from '@antv/g-gesture';
 import { Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
@@ -14,6 +14,8 @@ import {
   last,
   reduce,
 } from 'lodash';
+import { CornerBBox } from './bbox/cornerBBox';
+import { PanelBBox } from './bbox/panelBBox';
 import {
   calculateInViewIndexes,
   getCellRange,
@@ -28,7 +30,6 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MIN_SCROLL_BAR_HEIGHT,
   InterceptType,
-  CORNER_MAX_WIDTH_RATIO,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
@@ -39,7 +40,6 @@ import {
   RowHeader,
   SeriesNumberHeader,
 } from '@/facet/header';
-import { Hierarchy } from '@/facet/layout/hierarchy';
 import { ViewCellHeights } from '@/facet/layout/interface';
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type';
@@ -67,10 +67,10 @@ export abstract class BaseFacet {
   public spreadsheet: SpreadSheet;
 
   // corner box
-  public cornerBBox: BBox;
+  public cornerBBox: CornerBBox;
 
   // viewport cells box
-  public panelBBox: BBox;
+  public panelBBox: PanelBBox;
 
   // background (useless now)
   public backgroundGroup: IGroup;
@@ -78,7 +78,7 @@ export abstract class BaseFacet {
   // render viewport cell
   public panelGroup: IGroup;
 
-  // render header/corner/scrollbar...
+  // render header/corner/scrollbar/resize
   public foregroundGroup: IGroup;
 
   public cfg: SpreadSheetFacetCfg;
@@ -88,8 +88,6 @@ export abstract class BaseFacet {
   public viewCellWidths: number[];
 
   public viewCellHeights: ViewCellHeights;
-
-  public cornerWidth: number;
 
   protected mobileWheel: Wheel;
 
@@ -375,143 +373,11 @@ export abstract class BaseFacet {
   };
 
   protected calculateCornerBBox() {
-    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
-
-    const originalCornerWidth = Math.floor(
-      rowsHierarchy.width + this.getSeriesNumberWidth(),
-    );
-    const height = Math.floor(colsHierarchy.height);
-    const width = this.getCornerBBoxWidth(originalCornerWidth);
-
-    this.cornerBBox = {
-      x: 0,
-      y: 0,
-      width,
-      height,
-      maxX: width,
-      maxY: height,
-      minX: 0,
-      minY: 0,
-    };
-    this.cornerWidth = originalCornerWidth;
-  }
-
-  getCornerBBoxWidth = (cornerWidth: number): number => {
-    const { colsHierarchy } = this.layoutResult;
-    if (!this.spreadsheet.isScrollContainsRowHeader()) {
-      return this.getCornerWidth(cornerWidth, colsHierarchy.width);
-    }
-    return cornerWidth;
-  };
-
-  private getAdaptiveCornerWidth = (
-    cornerWidth: number,
-    colsHierarchyWidth: number,
-  ): number => {
-    const { width: canvasWidth } = this.spreadsheet.options;
-    const panelWidth = canvasWidth - cornerWidth;
-    // 拖拽时需要忽略自适应, 避免出现角头空白的情况, (拖拽宽度权重 > 自适应宽度权重)
-    const isResized = this.spreadsheet.store.get('resized');
-
-    if (
-      panelWidth > colsHierarchyWidth &&
-      this.spreadsheet.isColAdaptive() &&
-      !isResized
-    ) {
-      const adaptiveCornerWidthDiff = panelWidth - colsHierarchyWidth;
-      return cornerWidth + adaptiveCornerWidthDiff;
-    }
-
-    return cornerWidth;
-  };
-
-  private getDefaultCornerWidth = (
-    originalCornerWidth: number,
-    colsHierarchyWidth: number,
-  ): number => {
-    const { width: canvasWidth } = this.spreadsheet.options;
-    const maxPanelWidth = Math.floor(
-      canvasWidth * (1 - CORNER_MAX_WIDTH_RATIO),
-    );
-    const panelWidth = Math.floor(canvasWidth - originalCornerWidth);
-
-    if (
-      colsHierarchyWidth > panelWidth &&
-      colsHierarchyWidth <= maxPanelWidth
-    ) {
-      return originalCornerWidth - (maxPanelWidth - colsHierarchyWidth);
-    }
-
-    if (colsHierarchyWidth <= panelWidth) {
-      return originalCornerWidth;
-    }
-
-    return Math.min(originalCornerWidth, canvasWidth * CORNER_MAX_WIDTH_RATIO);
-  };
-
-  private getCornerWidth = (
-    originalCornerWidth: number,
-    colsHierarchyWidth: number,
-  ): number => {
-    this.setFreezeCornerDiffWidth(0);
-
-    if (this.spreadsheet.isHierarchyTreeType()) {
-      return originalCornerWidth;
-    }
-    const defaultCornerWidth = this.getDefaultCornerWidth(
-      originalCornerWidth,
-      colsHierarchyWidth,
-    );
-    const cornerWidth = this.getAdaptiveCornerWidth(
-      defaultCornerWidth,
-      colsHierarchyWidth,
-    );
-    const freezeCornerDiffWidth = originalCornerWidth - cornerWidth;
-    this.setFreezeCornerDiffWidth(freezeCornerDiffWidth);
-
-    return cornerWidth;
-  };
-
-  getFreezeCornerDiffWidth(): number {
-    if (!this.spreadsheet.isFreezeRowHeader()) {
-      return 0;
-    }
-    return this.spreadsheet.store.get('freezeCornerDiffWidth', 0);
-  }
-
-  setFreezeCornerDiffWidth(width: number) {
-    this.spreadsheet.store.set('freezeCornerDiffWidth', width);
+    this.cornerBBox = new CornerBBox(this, true);
   }
 
   calculatePanelBBox = () => {
-    const corner = this.cornerBBox;
-    const br = {
-      x: Math.floor(corner.maxX),
-      y: Math.floor(corner.maxY),
-    };
-    const box = this.getCanvasHW();
-    let width = box.width - br.x;
-    let height =
-      box.height -
-      br.y -
-      (get(this.cfg, 'spreadsheet.theme.scrollBar.size') as number);
-
-    const realWidth = this.getRealWidth();
-    const realHeight = this.getRealHeight();
-
-    width = Math.ceil(Math.min(width, realWidth));
-    height = Math.ceil(Math.min(height, realHeight));
-
-    this.panelBBox = {
-      x: br.x,
-      y: br.y,
-      width,
-      height,
-      maxX: br.x + width,
-      maxY: br.y + height,
-      minX: br.x,
-      minY: br.y,
-    } as BBox;
+    this.panelBBox = new PanelBBox(this, true);
   };
 
   getRealWidth = (): number => {
@@ -625,24 +491,27 @@ export abstract class BaseFacet {
   renderRowScrollBar = (rowScrollX: number) => {
     if (
       !this.cfg.spreadsheet.isScrollContainsRowHeader() &&
-      this.cornerBBox.width < this.cornerWidth
+      this.cornerBBox.width < this.cornerBBox.originalWidth
     ) {
       this.hRowScrollBar = new ScrollBar({
         isHorizontal: true,
-        trackLen: this.cornerBBox.width - this.scrollBarSize / 2,
+        trackLen: this.cornerBBox.width,
         thumbLen:
-          (this.cornerBBox.width * this.cornerBBox.width) / this.cornerWidth,
+          (this.cornerBBox.width * this.cornerBBox.width) /
+          this.cornerBBox.originalWidth,
         position: {
           x: this.cornerBBox.minX + this.scrollBarSize / 2,
-          y: this.panelBBox.maxY - this.scrollBarSize / 2,
+          y: this.panelBBox.maxY,
         },
-        thumbOffset: (rowScrollX * this.cornerBBox.width) / this.cornerWidth,
+        thumbOffset:
+          (rowScrollX * this.cornerBBox.width) / this.cornerBBox.originalWidth,
         theme: this.scrollBarTheme,
       });
 
       this.hRowScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
         const hRowScrollX =
-          (thumbOffset / this.hRowScrollBar.trackLen) * this.cornerWidth;
+          (thumbOffset / this.hRowScrollBar.trackLen) *
+          this.cornerBBox.originalWidth;
         this.setScrollOffset({ hRowScrollX });
         this.rowHeader.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
         this.rowIndexHeader?.onRowScrollX(
@@ -651,7 +520,9 @@ export abstract class BaseFacet {
         );
         this.centerFrame.onChangeShadowVisibility(
           hRowScrollX,
-          this.cornerWidth - this.cornerBBox.width - this.scrollBarSize * 2,
+          this.cornerBBox.originalWidth -
+            this.cornerBBox.width -
+            this.scrollBarSize * 2,
           true,
         );
         this.cornerHeader.onRowScrollX(
@@ -959,13 +830,7 @@ export abstract class BaseFacet {
       false,
     );
     this.centerFrame.onBorderScroll(this.getRealScrollX(scrollX));
-    this.columnHeader.onColScroll(
-      scrollX,
-      this.cfg.spreadsheet.isScrollContainsRowHeader()
-        ? this.cornerBBox.width
-        : undefined,
-      KEY_GROUP_COL_RESIZE_AREA,
-    );
+    this.columnHeader.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
   }
 
   addCell = (cell: S2CellType<ViewMeta>) => {
@@ -1038,7 +903,6 @@ export abstract class BaseFacet {
 
     this.clipPanelGroup();
     this.bindEvents();
-    // this.removeResizeIntercept();
   }
 
   protected renderBackground() {
@@ -1121,9 +985,8 @@ export abstract class BaseFacet {
         viewportHeight: height,
         position: { x: 0, y },
         data: this.layoutResult.rowNodes,
-        offset: 0,
         hierarchyType: this.cfg.hierarchyType,
-        linkFields: get(this.cfg.spreadsheet, 'options.linkFields'),
+        linkFields: this.cfg.spreadsheet.options?.interaction?.linkFields ?? [],
         seriesNumberWidth,
         spreadsheet: this.spreadsheet,
       });
@@ -1136,6 +999,7 @@ export abstract class BaseFacet {
       const { x, width, height } = this.panelBBox;
       return new ColHeader({
         width,
+        cornerWidth: this.cornerBBox.width,
         height: this.cornerBBox.height,
         viewportWidth: width,
         viewportHeight: height,
@@ -1143,7 +1007,6 @@ export abstract class BaseFacet {
         data: this.layoutResult.colNodes,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
         sortParam: this.cfg.spreadsheet.store.get('sortParam'),
