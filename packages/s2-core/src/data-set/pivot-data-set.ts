@@ -10,7 +10,6 @@ import {
   keys,
   uniq,
   values,
-  cloneDeep,
   filter,
   forEach,
   unset,
@@ -377,9 +376,7 @@ export class PivotDataSet extends BaseDataSet {
 
   getCustomData = (path: number[]) => {
     let hadUndefined = false;
-    let currentData: DataType | DataType[] | DataType[][] = cloneDeep(
-      this.indexesData,
-    );
+    let currentData: DataType | DataType[] | DataType[][] = this.indexesData;
 
     for (let i = 0; i < path.length; i++) {
       const current = path[i];
