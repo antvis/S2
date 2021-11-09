@@ -10,7 +10,7 @@ fetch(
   .then((data) => {
     const s2DataConfig = data;
     const s2options = {
-      width: 1000,
+      width: 600,
       height: 600,
       style: {
         cellCfg: {

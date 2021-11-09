@@ -30,6 +30,11 @@ const STATUS_COLOR = {
   danger: '#F4664A',
 };
 
+const DERIVE_COLOR = {
+  up: '#F4664A',
+  down: '#30BF78',
+};
+
 // 间距
 const PADDING = 10;
 
@@ -88,7 +93,7 @@ class KpiStrategyDataCell extends DataCell {
     }
     const value = data?.compare ?? '';
     const isDown = value.startsWith('-');
-    const color = isDown ? '#30BF78' : '#F4664A';
+    const color = isDown ? DERIVE_COLOR.down : DERIVE_COLOR.up;
     const displayValue = value.replace('-', '');
     const text = isDown ? `↓ ${displayValue}` : `↑ ${displayValue}`;
     const textStyle = {
@@ -205,7 +210,7 @@ fetch('../data/kpi-strategy.json')
     };
 
     const s2options = {
-      width: 1200,
+      width: 800,
       height: 600,
       hierarchyType: 'tree',
       tooltip: {
@@ -217,6 +222,15 @@ fetch('../data/kpi-strategy.json')
       interaction: {
         selectedCellsSpotlight: true,
         hoverHighlight: true,
+      },
+      // 默认数值挂列头, 会同时显示列头和数值, 隐藏数值列, 使其列头只展示日期, 更美观
+      style: {
+        colCfg: {
+          hideMeasureColumn: true,
+        },
+        cellCfg: {
+          width: 150,
+        },
       },
       // 覆盖默认角头单元格, 使其在树状结构下只显示 [指标] 两个值
       cornerCell: (...args) => new KpiStrategyCornelCell(...args),
