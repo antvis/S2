@@ -98,6 +98,8 @@ export class TableColCell extends ColCell {
       label,
       cellWidth - leftPadding - rightPadding,
       textStyle,
+      [],
+      this.spreadsheet.options.emptyPlaceholder,
     );
 
     this.textShape = renderText(

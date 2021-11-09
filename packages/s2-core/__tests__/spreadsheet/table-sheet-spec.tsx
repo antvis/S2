@@ -104,6 +104,7 @@ function MainLayout({ callback }) {
     showSeriesNumber: true,
     enableCopy: true,
     hoverHighlight: false,
+    emptyPlaceholder: '',
     style: {
       colCfg: {
         colWidthType: 'compact',

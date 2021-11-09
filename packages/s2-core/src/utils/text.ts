@@ -14,6 +14,7 @@ import { S2Options } from '@/common/interface/s2Options';
 import { DefaultCellTheme, S2Theme } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell/data-cell';
+import { EMPTY_PLACEHOLDER } from '@/common/constant';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -171,9 +172,10 @@ export const getEllipsisText = (
   maxWidth: number,
   fontParam?: unknown,
   priorityParam?: string[],
+  empty?: string,
 ) => {
   let font = {};
-  const finalText = text ?? '-';
+  const finalText = (text || empty) ?? EMPTY_PLACEHOLDER;
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
@@ -315,7 +317,7 @@ export const drawObjectText = (cell: DataCell) => {
     [],
     calX(x, padding.right),
     y + realHeight / 2,
-    getEllipsisText(text.label || '-', width - padding.left, labelStyle),
+    getEllipsisText(text.label, width - padding.left, labelStyle),
     labelStyle,
   );
 

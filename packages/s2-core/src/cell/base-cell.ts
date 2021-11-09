@@ -161,6 +161,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       formattedValue,
       maxTextWidth,
       textStyle,
+      [],
+      this.spreadsheet.options.emptyPlaceholder,
     );
     this.actualText = ellipsisText;
     this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);

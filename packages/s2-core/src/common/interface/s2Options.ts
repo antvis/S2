@@ -88,6 +88,8 @@ export interface S2BasicOptions {
   readonly hdAdapter?: boolean;
   // the collection of row id and column id of cells which to be merged
   readonly mergedCellsInfo?: MergedCellInfo[][];
+  // empty cell placeholder
+  readonly emptyPlaceholder?: string;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
