@@ -59,9 +59,7 @@ describe('PivotDataSet util test', () => {
     });
     expect(result.colPivotMeta.has('家具')).toBeTrue();
     expect(result.rowPivotMeta.has('浙江省')).toBeTrue();
-    expect(result.sortedDimensionValues.province).toEqual(
-      new Set(['浙江省', '四川省']),
-    );
+    expect(result.sortedDimensionValues.province).toEqual(['浙江省', '四川省']);
   });
 
   test('for transformDimensionsValues function', () => {
