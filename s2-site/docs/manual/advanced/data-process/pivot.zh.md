@@ -47,7 +47,7 @@ const dataCfg = {
     }]
 };
 const options = {
-    width: 800,
+    width: 600,
     height: 600
 };
 

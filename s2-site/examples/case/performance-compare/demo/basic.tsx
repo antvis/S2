@@ -62,7 +62,7 @@ function getDataConfig(rawData) {
 
 function getOptions(rawData) {
   return {
-    width: 800,
+    width: 600,
     height: 200,
     interaction: {
       selectedCellsSpotlight: false,

@@ -480,7 +480,7 @@ fetch('../data/index-comparison.json')
       pv: 1,
     };
     const s2options = {
-      width: 800,
+      width: 600,
       height: 600,
       showDefaultHeaderActionIcon: false,
       tooltip: {

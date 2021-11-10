@@ -19,7 +19,7 @@ order: 0
 
 ```ts
 const s2options = {
-  width: 800,
+  width: 600,
   height: 600,
   showDefaultHeaderActionIcon: true, // 默认为打开，可设置为false关闭
 };
