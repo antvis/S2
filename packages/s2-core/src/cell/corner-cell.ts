@@ -68,13 +68,12 @@ export class CornerCell extends HeaderCell {
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
 
     const maxWidth = this.getMaxTextWidth();
-    const text = getEllipsisText(
-      formattedValue,
-      maxWidth,
-      textStyle,
-      [],
-      this.spreadsheet.options.emptyPlaceholder,
-    );
+    const text = getEllipsisText({
+      text: formattedValue,
+      maxWidth: maxWidth,
+      fontParam: textStyle,
+      placeholder: this.spreadsheet.options.placeholder,
+    });
     this.actualText = text;
     const ellipseIndex = text.indexOf('...');
 
@@ -88,13 +87,11 @@ export class CornerCell extends HeaderCell {
       firstLine = formattedValue.substr(0, lastIndex);
       secondLine = formattedValue.slice(lastIndex);
       // 第二行重新计算...逻辑
-      secondLine = getEllipsisText(
-        secondLine,
-        maxWidth,
-        textStyle,
-        [],
-        this.spreadsheet.options.emptyPlaceholder,
-      );
+      secondLine = getEllipsisText({
+        text: secondLine,
+        maxWidth: maxWidth,
+        fontParam: textStyle,
+      });
     }
 
     const { x: textX } = getTextPosition(
