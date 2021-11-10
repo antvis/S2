@@ -8,7 +8,7 @@ export const paletteGray = {
     '#D9EAFF',
     '#2C60D3',
     '#0000EE',
-    '#326EF4',
+    '#3471F9',
     '#FFFFFF',
     '#E6E9F1',
     '#E6E9F1',

@@ -9,7 +9,6 @@ export {
   GroupAsc,
   GroupDesc,
   Minus,
-  MinusSquare,
   Plus,
   SortDown,
   SortUp,
