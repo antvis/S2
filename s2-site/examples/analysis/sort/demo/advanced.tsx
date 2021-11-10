@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent, SortParams } from '@antv/s2';
 import insertCss from 'insert-css';
-// import 'antd/dist/antd.min.css';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
