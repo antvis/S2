@@ -9,8 +9,6 @@ import {
   TooltipDetail,
   TooltipOperator,
   TooltipSummary,
-  TooltipOperatorOptions,
-  ListItem,
 } from '@antv/s2';
 import insertCss from 'insert-css';
 import '@antv/s2/dist/s2.min.css';
