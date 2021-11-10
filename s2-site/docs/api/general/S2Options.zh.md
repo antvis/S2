@@ -28,6 +28,7 @@ order: 1
 | hierarchyCollapse | `boolean` |  |   `false` | 在树状结构模式下行头是否默认展开。 |
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题 |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
+| placeholder | string |    |  | 空单元格的填充内容 |
 | dataCell | [DataCellCallback](#datacellcallback) |  |    | 自定义单元格 cell |
 | cornerCell | [CellCallback](#cellcallback) |  |    | 自定义 cornerCell |
 | rowCell | [CellCallback](#cellcallback) |  |  |   自定义行头 cell |

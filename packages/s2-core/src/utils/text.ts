@@ -11,9 +11,10 @@ import {
 } from 'lodash';
 import { CellCfg, MultiData } from '@/common/interface';
 import { S2Options } from '@/common/interface/s2Options';
-import { DefaultCellTheme, S2Theme } from '@/common/interface/theme';
+import { DefaultCellTheme } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell/data-cell';
+import { EMPTY_PLACEHOLDER } from '@/common/constant';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -166,14 +167,21 @@ export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
  * @param font optional 文本字体 或 优先显示的文本
  * @param priority optional 优先显示的文本
  */
-export const getEllipsisText = (
-  text: string,
-  maxWidth: number,
-  fontParam?: unknown,
-  priorityParam?: string[],
-) => {
+export const getEllipsisText = ({
+  text,
+  maxWidth,
+  fontParam,
+  priorityParam,
+  placeholder,
+}: {
+  text: string;
+  maxWidth: number;
+  fontParam?: unknown;
+  priorityParam?: string[];
+  placeholder?: string;
+}) => {
   let font = {};
-  const finalText = text ?? '-';
+  const finalText = (text || placeholder) ?? EMPTY_PLACEHOLDER;
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
@@ -315,7 +323,11 @@ export const drawObjectText = (cell: DataCell) => {
     [],
     calX(x, padding.right),
     y + realHeight / 2,
-    getEllipsisText(text.label || '-', width - padding.left, labelStyle),
+    getEllipsisText({
+      text: text.label,
+      maxWidth: width - padding.left,
+      fontParam: labelStyle,
+    }),
     labelStyle,
   );
 
@@ -345,7 +357,11 @@ export const drawObjectText = (cell: DataCell) => {
         [],
         curX,
         curY,
-        getEllipsisText(`${curText}`, curWidth, curStyle),
+        getEllipsisText({
+          text: `${curText}`,
+          maxWidth: curWidth,
+          fontParam: curStyle,
+        }),
         curStyle,
         curStyle?.fill,
       );
