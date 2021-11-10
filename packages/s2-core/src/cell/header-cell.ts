@@ -36,10 +36,12 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const { value, query } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams;
     const isValueCell = this.isValueCell(); // 是否是数值节点
-    const sortParam: SortParam = find(sortParams.reverse(), (item) =>
-      isValueCell
-        ? item?.sortByMeasure === value && isEqual(get(item, 'query'), query)
-        : isEqual(get(item, 'query'), query),
+    const sortParam: SortParam = find(
+      sortParams.reverse(),
+      (item) =>
+        isValueCell &&
+        item?.sortByMeasure === value &&
+        isEqual(get(item, 'query'), query),
     );
 
     const type = getSortTypeIcon(sortParam, isValueCell);
@@ -86,6 +88,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       const query = this.meta.query;
       // sortParam的query，和type本身可能会 undefined
       return (
+        query &&
         isEqual(get(sortParam, 'query'), query) &&
         get(sortParam, 'type') &&
         get(sortParam, 'type') !== 'none'
