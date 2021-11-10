@@ -158,11 +158,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const { formattedValue } = this.getFormattedFieldValue();
     const maxTextWidth = this.getMaxTextWidth();
     const textStyle = this.getTextStyle();
-    const ellipsisText = getEllipsisText(
-      formattedValue,
-      maxTextWidth,
-      textStyle,
-    );
+    const ellipsisText = getEllipsisText({
+      text: formattedValue,
+      maxWidth: maxTextWidth,
+      fontParam: textStyle,
+      placeholder: this.spreadsheet.options.placeholder,
+    });
     this.actualText = ellipsisText;
     this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
     const position = this.getTextPosition();
