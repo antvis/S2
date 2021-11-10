@@ -8,6 +8,7 @@ import {
 } from '@/common/constant';
 import {
   FormatResult,
+  ResizeArea,
   S2CellType,
   S2Theme,
   StateShapeLayer,
@@ -40,6 +41,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   // link text underline shape
   protected linkFieldShape: IShape;
+
+  // actualText
+  protected actualText: string;
 
   // actual text width after be ellipsis
   protected actualTextWidth = 0;
@@ -83,6 +87,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     );
   }
 
+  public getActualText() {
+    return this.actualText;
+  }
+
   /**
    * in case there are more params to be handled
    * @param options any type's rest params
@@ -123,8 +131,12 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
 
-  protected getStyle(name?: string) {
+  public getStyle(name?: keyof S2Theme) {
     return this.theme[name || this.cellType];
+  }
+
+  protected getResizeAreaStyle(): ResizeArea {
+    return this.getStyle('resizeArea');
   }
 
   protected getCellArea() {
@@ -133,8 +145,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   // get content area that exclude padding
-  protected getContentArea() {
-    const { padding } = this.theme.dataCell.cell;
+  public getContentArea() {
+    const { padding } = this.getStyle()?.cell || this.theme.dataCell.cell;
     return getContentArea(this.getCellArea(), padding);
   }
 
@@ -146,12 +158,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     const { formattedValue } = this.getFormattedFieldValue();
     const maxTextWidth = this.getMaxTextWidth();
     const textStyle = this.getTextStyle();
-    const ellipsisText = getEllipsisText(
-      formattedValue,
-      maxTextWidth,
-      textStyle,
-    );
-
+    const ellipsisText = getEllipsisText({
+      text: formattedValue,
+      maxWidth: maxTextWidth,
+      fontParam: textStyle,
+      placeholder: this.spreadsheet.options.placeholder,
+    });
+    this.actualText = ellipsisText;
     this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
     const position = this.getTextPosition();
     this.textShape = renderText(

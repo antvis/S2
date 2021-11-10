@@ -123,8 +123,7 @@ export class TableColHeader extends ColHeader {
       frozenTrailingColWidth += colLeafNodes[colLeafNodes.length - 1 - i].width;
     }
 
-    const frozenClipWidth =
-      width + scrollX - frozenColWidth - frozenTrailingColWidth;
+    const frozenClipWidth = width - frozenColWidth - frozenTrailingColWidth;
 
     this.scrollGroup.setClip({
       type: 'rect',
@@ -135,23 +134,5 @@ export class TableColHeader extends ColHeader {
         height,
       },
     });
-
-    const prevResizeArea = spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_COL_RESIZE_AREA,
-    );
-
-    if (prevResizeArea) {
-      const resizeAreaSize = spreadsheet.theme.resizeArea?.size ?? 0;
-      const { x, y } = prevResizeArea.getBBox();
-      prevResizeArea.setClip({
-        type: 'rect',
-        attrs: {
-          x,
-          y,
-          width: width - x - frozenTrailingColWidth + resizeAreaSize,
-          height,
-        },
-      });
-    }
   }
 }

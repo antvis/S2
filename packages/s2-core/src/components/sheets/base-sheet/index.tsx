@@ -11,6 +11,7 @@ import {
   LayoutRow,
   ListSortParams,
   S2Constructor,
+  S2Options,
   TargetLayoutNode,
 } from '@/common/interface';
 import { EmitterType } from '@/common/interface/emitter';
@@ -32,7 +33,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     spreadsheet,
     dataCfg,
     options,
-    adaptive = false,
+    adaptive,
     header,
     themeCfg,
     rowLevel,
@@ -50,9 +51,9 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     onColCellDoubleClick,
     onMergedCellsDoubleClick,
     onDataCellMouseUp,
-    getSpreadsheet,
+    getSpreadSheet,
     partDrillDown,
-    showPagination = true,
+    showPagination,
   } = props;
   const container = useRef<HTMLDivElement>();
   const baseSpreadsheet = useRef<SpreadSheet>();
@@ -62,13 +63,13 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [total, setTotal] = useState<number>(0);
   const [current, setCurrent] = useState<number>(
-    options?.pagination?.current || 1,
+    options.pagination?.current || 1,
   );
   const [pageSize, setPageSize] = useState<number>(
-    options?.pagination?.pageSize || 10,
+    options.pagination?.pageSize || 10,
   );
 
-  const getSpreadSheet = (): SpreadSheet => {
+  const renderSpreadSheet = (): SpreadSheet => {
     const params: S2Constructor = [container.current, dataCfg, options];
 
     if (spreadsheet) {
@@ -237,7 +238,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (baseSpreadsheet.current) {
       return;
     }
-    baseSpreadsheet.current = getSpreadSheet();
+    baseSpreadsheet.current = renderSpreadSheet();
     bindEvent();
     baseSpreadsheet.current.setDataCfg(getSafetyDataConfig(dataCfg));
     setOptions(baseSpreadsheet.current, props);
@@ -245,7 +246,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     baseSpreadsheet.current.render();
     setLoading(false);
     setOwnSpreadsheet(baseSpreadsheet.current);
-    getSpreadsheet?.(baseSpreadsheet.current);
+    getSpreadSheet?.(baseSpreadsheet.current);
   };
 
   useEffect(() => {
@@ -257,7 +258,12 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   }, []);
 
   // handle box size change and resize
-  useResizeEffect(container.current, ownSpreadsheet, adaptive, options);
+  useResizeEffect({
+    spreadsheet: ownSpreadsheet,
+    container: container.current,
+    adaptive,
+    options,
+  });
 
   useEffect(() => {
     update(setDataCfg);
@@ -312,7 +318,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   }, [partDrillDown?.drillConfig?.dataSet]);
 
   useEffect(() => {
-    if (!ownSpreadsheet || isEmpty(options?.pagination)) return;
+    if (!ownSpreadsheet || isEmpty(options.pagination)) return;
     const newOptions = merge({}, options, {
       pagination: {
         current,
@@ -338,10 +344,16 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
             current={current}
             setCurrent={setCurrent}
             setPageSize={setPageSize}
-            pagination={options?.pagination}
+            pagination={options.pagination}
           />
         )}
       </Spin>
     </StrictMode>
   );
 });
+
+BaseSheet.defaultProps = {
+  options: {} as S2Options,
+  adaptive: false,
+  showPagination: true,
+};

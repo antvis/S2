@@ -1,16 +1,15 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { ResizeInfo } from './resize';
+import { Data, DataItem } from '@/common/interface/s2DataConfig';
+import { FilterParam, Style } from '@/common/interface/basic';
 import {
-  CellScrollPosition,
-  Data,
-  DataItem,
-  FilterParam,
   HiddenColumnsInfo,
-  LayoutResult,
   S2CellType,
-  Style,
   ViewMeta,
-} from '.';
+  LayoutResult,
+  CellScrollPosition,
+} from '@/common/interface';
+
 import { S2Event, SortMethodType } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell/data-cell';
@@ -37,7 +36,11 @@ type CanvasEventHandler = (event: CanvasEvent) => void;
 type KeyboardEventHandler = (event: KeyboardEvent) => void;
 type MouseEventHandler = (event: MouseEvent) => void;
 type EventHandler = (event: Event) => void;
-type ResizeHandler = (data: { info: ResizeInfo; style: Style }) => void;
+type ResizeHandler = (data: {
+  info: ResizeInfo;
+  style?: Style;
+  seriesNumberWidth?: number;
+}) => void;
 type SelectedHandler = (cells: S2CellType[]) => void;
 
 export interface EmitterType {
@@ -139,6 +142,7 @@ export interface EmitterType {
 
   /** ================ Layout Resize ================  */
   [S2Event.LAYOUT_RESIZE]: ResizeHandler;
+  [S2Event.LAYOUT_RESIZE_SERIES_WIDTH]: ResizeHandler;
   [S2Event.LAYOUT_RESIZE_ROW_WIDTH]: ResizeHandler;
   [S2Event.LAYOUT_RESIZE_ROW_HEIGHT]: ResizeHandler;
   [S2Event.LAYOUT_RESIZE_COL_WIDTH]: ResizeHandler;

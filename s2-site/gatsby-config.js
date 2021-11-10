@@ -5,7 +5,7 @@ module.exports = {
     {
       resolve: '@antv/gatsby-theme-antv',
       options: {
-        GATrackingId: ``,
+        GATrackingId: `G-SJ4N89WC85`,
       },
     },
   ],
@@ -149,6 +149,14 @@ module.exports = {
         title: {
           zh: '贡献指南',
           en: 'Contributing',
+        },
+        order: 8,
+      },
+      {
+        slug: 'manual/faq',
+        title: {
+          zh: '常见问题',
+          en: 'Common problem',
         },
         order: 8,
       },

@@ -48,7 +48,7 @@ fetch(
     const s2options = {
       width: 660,
       height: 600,
-      layoutHierarchy: (s2: SpreadSheet, node: Node) => {
+      layoutHierarchy: (s2, node) => {
         // layoutHierarchy 用于手动控制行列结构的增加、删除的特殊场景。
         // 以 「宁波市」为例，删除其节点，增加宁波A和宁波B节点。
         const { field, label } = node;

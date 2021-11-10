@@ -102,8 +102,7 @@ function MainLayout({ callback }) {
     width: 800,
     height: 600,
     showSeriesNumber: true,
-    enableCopy: true,
-    hoverHighlight: false,
+    placeholder: '',
     style: {
       colCfg: {
         colWidthType: 'compact',
@@ -117,11 +116,15 @@ function MainLayout({ callback }) {
       pageSize: 50,
       current: 1,
     },
+    interaction: {
+      enableCopy: true,
+      hoverHighlight: false,
+      linkFields: ['order_id', 'customer_name'],
+    },
     frozenRowCount: 2,
     frozenColCount: 1,
     frozenTrailingColCount: 1,
     frozenTrailingRowCount: 1,
-    linkFields: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
       operation: {

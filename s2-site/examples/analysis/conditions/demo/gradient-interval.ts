@@ -34,14 +34,16 @@ fetch(
     };
 
     const s2options = {
-      width: 800,
+      width: 600,
       height: 600,
-      hoverHighlight: false,
+      interaction: {
+        hoverHighlight: false,
+      },
       conditions: {
         interval: [
           {
             field: 'price',
-            mapping(fieldValue, data) {
+            mapping(fieldValue) {
               const maxValue = 20;
               const minValue = 0;
               const rage = (fieldValue - minValue) / (maxValue - minValue);

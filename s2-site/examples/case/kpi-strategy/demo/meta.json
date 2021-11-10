@@ -1,0 +1,16 @@
+{
+  "title": {
+    "zh": "KPI 趋势表",
+    "en": "KPI StrategySheet"
+  },
+  "demos": [
+    {
+      "filename": "basic.tsx",
+      "title": {
+        "zh": "KPI 趋势表",
+        "en": "KPI StrategySheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/dokLnCf1%24/6ed4c204-9d02-4774-bf09-9addf05d05e2.png"
+    }
+  ]
+}

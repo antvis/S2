@@ -1,17 +1,24 @@
-import { Group, Point } from '@antv/g-canvas';
+import { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
+import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
+  ResizeAreaEffect,
+  ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme, ResizeInfo } from '@/common/interface';
+import { FormatResult, TextTheme } from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
+import {
+  getResizeAreaAttrs,
+  getOrCreateResizeAreaGroupById,
+} from '@/utils/interaction/resize';
 
 export class RowCell extends HeaderCell {
   protected headerConfig: RowHeaderConfig;
@@ -208,55 +215,73 @@ export class RowCell extends HeaderCell {
     );
   }
 
-  protected getColResizeAreaOffset() {
-    const { offset, position } = this.headerConfig;
-    const { x, y } = this.meta;
-
-    return {
-      x: position.x - offset + x,
-      y: position.y + y,
-    };
-  }
-
   protected drawResizeAreaInLeaf() {
-    if (this.meta.isLeaf) {
-      const { x, y, width, height } = this.getCellArea();
-      const resizeStyle = this.getStyle('resizeArea');
-      // 热区公用一个group
-      const prevResizeArea = this.spreadsheet.foregroundGroup.findById(
-        KEY_GROUP_ROW_RESIZE_AREA,
-      );
-      const resizeArea = (prevResizeArea ||
-        this.spreadsheet.foregroundGroup.addGroup({
-          id: KEY_GROUP_ROW_RESIZE_AREA,
-        })) as Group;
-
-      const { offset, position, seriesNumberWidth, scrollX } =
-        this.headerConfig;
-      const { label, parent } = this.meta;
-      resizeArea.addShape('rect', {
-        attrs: {
-          x: position.x + x - scrollX + seriesNumberWidth,
-          y: position.y + y - offset + height - resizeStyle.size / 2,
-          width,
-          height: resizeStyle.size,
-          fill: resizeStyle.background,
-          fillOpacity: resizeStyle.backgroundOpacity,
-          cursor: 'row-resize',
-          appendInfo: {
-            isResizeArea: true,
-            class: 'resize-trigger',
-            type: 'row',
-            affect: 'cell',
-            caption: parent.isTotals ? '' : label,
-            offsetX: position.x + x + seriesNumberWidth,
-            offsetY: position.y + y - offset,
-            width,
-            height,
-          } as ResizeInfo,
-        },
-      });
+    if (!this.meta.isLeaf) {
+      return;
     }
+
+    const { x, y, width, height } = this.getCellArea();
+    const resizeStyle = this.getResizeAreaStyle();
+    const resizeArea = getOrCreateResizeAreaGroupById(
+      this.spreadsheet,
+      KEY_GROUP_ROW_RESIZE_AREA,
+    );
+
+    const {
+      position,
+      seriesNumberWidth,
+      width: headerWidth,
+      height: headerHeight,
+      scrollX,
+      scrollY,
+    } = this.headerConfig;
+
+    const resizeAreaBBox = {
+      x,
+      y: y + height - resizeStyle.size / 2,
+      width,
+      height: resizeStyle.size,
+    };
+
+    const resizeClipAreaBBox = {
+      x: 0,
+      y: 0,
+      width: headerWidth,
+      height: headerHeight,
+    };
+
+    if (
+      !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+        scrollX,
+        scrollY,
+      })
+    ) {
+      return;
+    }
+
+    const offsetX = position.x + x - scrollX + seriesNumberWidth;
+    const offsetY = position.y + y - scrollY;
+
+    const resizeAreaWidth = this.spreadsheet.isFreezeRowHeader()
+      ? headerWidth - seriesNumberWidth - (x - scrollX)
+      : width;
+
+    resizeArea.addShape('rect', {
+      attrs: {
+        ...getResizeAreaAttrs({
+          theme: resizeStyle,
+          type: ResizeDirectionType.Vertical,
+          effect: ResizeAreaEffect.Cell,
+          offsetX,
+          offsetY,
+          width,
+          height,
+        }),
+        x: offsetX,
+        y: offsetY + height - resizeStyle.size / 2,
+        width: resizeAreaWidth,
+      },
+    });
   }
 
   protected getContentIndent() {
@@ -290,9 +315,11 @@ export class RowCell extends HeaderCell {
     const { text, bolderText } = this.getStyle();
     const style = isLeaf && !isTotals ? text : bolderText;
 
+    const textAlign = isTotals ? 'right' : 'left';
+
     return {
       ...style,
-      textAlign: this.spreadsheet.isHierarchyTreeType() ? 'left' : 'center',
+      textAlign,
       textBaseline: 'top',
     };
   }
@@ -333,11 +360,17 @@ export class RowCell extends HeaderCell {
 
   protected getTextPosition(): Point {
     const { y, height: contentHeight } = this.getContentArea();
-    const { offset, height } = this.headerConfig;
+    const { scrollY, height } = this.headerConfig;
 
     const { fontSize } = this.getTextStyle();
     const textIndent = this.getTextIndent();
-    const textY = getAdjustPosition(y, contentHeight, offset, height, fontSize);
+    const textY = getAdjustPosition(
+      y,
+      contentHeight,
+      scrollY,
+      height,
+      fontSize,
+    );
     const textX =
       getTextPosition(this.getContentArea(), this.getTextStyle()).x +
       textIndent;

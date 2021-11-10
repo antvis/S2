@@ -29,7 +29,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     spreadsheet,
     dataCfg,
     options,
-    adaptive = false,
+    adaptive,
     header,
     themeCfg,
     isLoading,
@@ -47,8 +47,8 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     onMergedCellsDoubleClick,
     onDataCellMouseUp,
     onContextMenu,
-    getSpreadsheet,
-    showPagination = true,
+    getSpreadSheet,
+    showPagination,
   } = props;
   const container = useRef<HTMLDivElement>();
   const baseSpreadsheet = useRef<SpreadSheet>();
@@ -63,7 +63,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     options?.pagination?.pageSize || 10,
   );
 
-  const getSpreadSheet = (): SpreadSheet => {
+  const renderSpreadSheet = (): SpreadSheet => {
     const params: S2Constructor = [container.current, dataCfg, options];
 
     if (spreadsheet) {
@@ -169,7 +169,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     if (baseSpreadsheet.current) {
       return;
     }
-    baseSpreadsheet.current = getSpreadSheet();
+    baseSpreadsheet.current = renderSpreadSheet();
     bindEvent();
     baseSpreadsheet.current.setDataCfg(getSafetyDataConfig(dataCfg));
     baseSpreadsheet.current.setOptions(getSafetyOptions(options));
@@ -177,7 +177,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     baseSpreadsheet.current.render();
     setLoading(false);
     setOwnSpreadsheet(baseSpreadsheet.current);
-    getSpreadsheet?.(baseSpreadsheet.current);
+    getSpreadSheet?.(baseSpreadsheet.current);
   };
 
   useEffect(() => {
@@ -189,7 +189,12 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   }, []);
 
   // handle box size change and resize
-  useResizeEffect(container.current, ownSpreadsheet, adaptive, options);
+  useResizeEffect({
+    spreadsheet: ownSpreadsheet,
+    container: container.current,
+    adaptive,
+    options,
+  });
 
   // handle pagination change
   usePaginationEffect(ownSpreadsheet, options, current, pageSize);
@@ -238,4 +243,9 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   );
 });
 
+TableSheet.defaultProps = {
+  options: {} as S2Options,
+  adaptive: false,
+  showPagination: true,
+};
 TableSheet.displayName = 'TableSheet';

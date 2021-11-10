@@ -3,6 +3,7 @@ import { Group } from '@antv/g-canvas';
 import { clamp, each, get } from 'lodash';
 import type { PointObject, ScrollBarCfg } from './interface';
 import { ScrollBarTheme } from '@/common/interface/theme';
+import { MIN_SCROLL_BAR_HEIGHT } from '@/common/constant/scroll';
 
 export enum ScrollType {
   ScrollChange = 'scroll-change',
@@ -68,7 +69,7 @@ export class ScrollBar extends Group {
       trackLen,
       thumbLen,
       position,
-      minThumbLen = 20,
+      minThumbLen = MIN_SCROLL_BAR_HEIGHT,
       thumbOffset = 0,
       theme,
     } = scrollBarCfg;
@@ -318,7 +319,7 @@ export class ScrollBar extends Group {
 
   private bindLaterEvent = () => {
     const canvas = this.get('canvas');
-    const containerDOM: EventTarget = canvas.get('container');
+    const containerDOM: EventTarget = document.body;
 
     let events: EventListenerReturn[] = [];
     if (this.isMobile) {
@@ -389,13 +390,15 @@ export class ScrollBar extends Group {
   };
 
   private onTrackMouseOver = () => {
-    const { thumbHoverColor } = this.theme;
+    const { thumbHoverColor, hoverSize } = this.theme;
     this.thumbShape.attr('stroke', thumbHoverColor);
+    this.thumbShape.attr('lineWidth', hoverSize);
   };
 
   private onTrackMouseOut = () => {
-    const { thumbColor } = this.theme;
+    const { thumbColor, size } = this.theme;
     this.thumbShape.attr('stroke', thumbColor);
+    this.thumbShape.attr('lineWidth', size);
   };
 
   // 判断滑块位置是否超出滑道区域

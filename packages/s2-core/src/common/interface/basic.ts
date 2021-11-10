@@ -6,17 +6,13 @@ import { CustomTreeItem, ResizeInfo } from '@/common/interface';
 import { S2BasicOptions } from '@/common/interface/s2Options';
 import { BaseDataSet } from '@/data-set';
 import { Frame } from '@/facet/header';
-import {
-  CellTypes,
-  FrameConfig,
-  Hierarchy,
-  Node,
-  S2Options,
-  S2TableSheetOptions,
-  SpreadSheet,
-  TextAlign,
-  TextBaseline,
-} from '@/index';
+import { CellTypes } from '@/common/constant';
+import { FrameConfig } from '@/common/interface/frame';
+import { Hierarchy } from '@/facet/layout/hierarchy';
+import { Node } from '@/facet/layout/node';
+import { SpreadSheet } from '@/sheet-type';
+import { S2Options, S2TableSheetOptions } from '@/common/interface/s2Options';
+import { TextAlign, TextBaseline } from '@/common/interface';
 
 export type Formatter = (v: unknown) => string;
 
@@ -286,6 +282,14 @@ export interface MergedCellInfo {
   showText?: boolean;
 }
 
+/**
+ * mergedCell intermediate state, temporary use
+ */
+export type TempMergedCell = {
+  cells: S2CellType[];
+  viewMeta: ViewMeta;
+};
+
 export type FilterDataItemCallback = (
   valueField: string,
   data: DataItem,
@@ -382,27 +386,6 @@ export interface CellAttrs<T extends Record<string, unknown> = Node>
   appendInfo?: CellAppendInfo<T>;
 }
 
-/**
- * 单元格属性配置
- */
-export interface CellBoxCfg {
-  // 起点坐标 x 值
-  x: number;
-  // 起点坐标 y 值
-  y: number;
-  // 单元格宽度
-  width: number;
-  // 单元格高度
-  height: number;
-  // 对应 g text textAlign 属性 https://g.antv.vision/zh/docs/api/shape/text#textalign
-  // 水平对齐方式, 默认 left
-  textAlign?: TextAlign;
-  // 对应 g text baseline 属性 https://g.antv.vision/zh/docs/api/shape/text#textbaseline
-  // 垂直对齐方式，默认 bottom
-  textBaseline?: TextBaseline;
-  // 单元格 padding 值
-  padding?: Padding;
-}
 export type S2MountContainer = string | HTMLElement;
 
 export type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];

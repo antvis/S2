@@ -21,8 +21,18 @@ describe('Interaction Hover Tests', () => {
     rowIndex: 0,
     type: undefined,
   };
+
   const mockCellMeta = omit(mockCell, 'update');
   const mockCellUpdate = jest.fn();
+  const mockTooltipParams = [
+    [{ value: undefined, valueField: undefined }],
+    {
+      enterable: true,
+      hideSummary: true,
+      isTotals: undefined,
+      showSingleTips: true,
+    },
+  ];
 
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
@@ -30,6 +40,7 @@ describe('Interaction Hover Tests', () => {
       ({
         update: mockCellUpdate,
         getMeta: () => mockCell,
+        getActualText: () => '',
       } as any);
     hoverEvent = new HoverEvent(s2 as unknown as SpreadSheet);
     s2.options = {
@@ -91,7 +102,7 @@ describe('Interaction Hover Tests', () => {
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
   });
 
-  test('should clear hover focus timer when cell clicked', async () => {
+  test('should clear data cell hover focus timer when cell clicked', async () => {
     s2.emit(S2Event.DATA_CELL_HOVER, { target: {} } as GEvent);
 
     // click date cell before will trigger hover focus
@@ -107,6 +118,52 @@ describe('Interaction Hover Tests', () => {
 
     expect(s2.interaction.getCurrentStateName()).not.toEqual(
       InteractionStateName.HOVER_FOCUS,
+    );
+  });
+
+  test('should clear data cell hover focus timer when row cell hover', async () => {
+    const dataCellEvent = {
+      target: {
+        id: 'data-cell',
+      },
+    };
+
+    const rowCellEvent = {
+      target: {
+        id: 'row-cell',
+      },
+    };
+    s2.emit(S2Event.DATA_CELL_HOVER, dataCellEvent as unknown as GEvent);
+    s2.emit(S2Event.ROW_CELL_HOVER, rowCellEvent as unknown as GEvent);
+
+    await sleep(HOVER_FOCUS_TIME + 200);
+
+    expect(s2.showTooltipWithInfo).toHaveBeenLastCalledWith(
+      rowCellEvent,
+      ...mockTooltipParams,
+    );
+  });
+
+  test('should clear data cell hover focus timer when col cell hover', async () => {
+    const dataCellEvent = {
+      target: {
+        id: 'data-cell',
+      },
+    };
+
+    const colCellEvent = {
+      target: {
+        id: 'col-cell',
+      },
+    };
+    s2.emit(S2Event.DATA_CELL_HOVER, dataCellEvent as unknown as GEvent);
+    s2.emit(S2Event.COL_CELL_HOVER, colCellEvent as unknown as GEvent);
+
+    await sleep(HOVER_FOCUS_TIME + 200);
+
+    expect(s2.showTooltipWithInfo).toHaveBeenLastCalledWith(
+      colCellEvent,
+      ...mockTooltipParams,
     );
   });
 });

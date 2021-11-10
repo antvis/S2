@@ -19,7 +19,7 @@ fetch(
     const s2options = {
       width: 660,
       height: 600,
-      layoutArrange: (s2: SpreadSheet, parent: Node, field: string, fieldValues: string[]) => {
+      layoutArrange: (s2, parent, field, fieldValues) => {
         console.log(fieldValues);
         if(field === 'city' && parent.label === '浙江省') {
           // layoutArrange 可手动设置行、列顺序，适用于局部调整，非规则调整。

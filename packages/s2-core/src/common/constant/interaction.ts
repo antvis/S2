@@ -36,6 +36,7 @@ export const SHAPE_STYLE_MAP = {
   backgroundColor: 'fill',
   borderOpacity: 'strokeOpacity',
   borderColor: 'stroke',
+  borderWidth: 'lineWidth',
   opacity: 'opacity',
 };
 
@@ -43,9 +44,8 @@ export const SHAPE_STYLE_MAP = {
 export const SHAPE_ATTRS_MAP = {
   textShape: ['textOpacity'],
   linkFieldShape: ['opacity'],
-  backgroundShape: ['backgroundOpacity'],
   interactiveBgShape: ['backgroundColor', 'backgroundOpacity'],
-  interactiveBorderShape: ['borderColor', 'borderOpacity'],
+  interactiveBorderShape: ['borderColor', 'borderOpacity', 'borderWidth'],
 };
 
 export const INTERACTION_STATE_INFO_KEY = 'interactionStateInfo';

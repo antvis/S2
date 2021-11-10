@@ -6,8 +6,10 @@ import Features from '@antv/gatsby-theme-antv/site/components/Features';
 import Cases from '@antv/gatsby-theme-antv/site/components/Cases';
 import './index.less';
 
+const PRE_CLASS = 's2-homepage';
 const BannerSVG =
   'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*s0yOSpYP3pAAAAAAAAAAAAAAARQnAQ';
+
 const IndexPage = () => {
   const { t, i18n } = useTranslation();
 
@@ -33,27 +35,25 @@ const IndexPage = () => {
     },
   ];
 
-  const cases = [
-    {
-      logo: 'https://gw.alipayobjects.com/zos/bmw-prod/5fba9b98-223a-42b5-bf1f-bdfc5f9a78f2.svg',
-      isAppLogo: true,
-      title: '多维交叉分析表格',
-      description:
-        '多维交叉分析表格领域的解决方案，完全基于数据驱动的方式，弥补行业中此领域空缺。',
-      link: '#',
-      image:
-        'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*2PywSZP23xUAAAAAAAAAAAAAARQnAQ',
-    },
-  ];
+  const cases = {
+    logo: 'https://gw.alipayobjects.com/zos/bmw-prod/5fba9b98-223a-42b5-bf1f-bdfc5f9a78f2.svg',
+    isAppLogo: true,
+    title: '多维交叉分析表格',
+    description:
+      '多维交叉分析表格领域的解决方案，完全基于数据驱动的方式，弥补行业中此领域空缺。',
+    link: '#',
+    image:
+      'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*2PywSZP23xUAAAAAAAAAAAAAARQnAQ',
+  };
 
   const bannerButtons = [
     {
       text: t('图表示例'),
-      link: '#features',
+      link: `/${i18n.language}/examples`,
       type: 'primary',
     },
     {
-      text: t('开始使用'),
+      text: t('现在开始使用'),
       link: `/${i18n.language}/docs/manual/getting-started`,
     },
   ];
@@ -65,7 +65,7 @@ const IndexPage = () => {
         coverImage={
           <img
             width="100%"
-            style={{ marginLeft: '100px', marginTop: '40px' }}
+            style={{ marginRight: '30px', marginTop: '40px' }}
             src={BannerSVG}
             alt={'banner'}
           />
@@ -79,7 +79,7 @@ const IndexPage = () => {
         showGithubStars={true}
       />
       <Features id="features" features={features} style={{ width: '100%' }} />
-      <Cases cases={cases} />
+      <Cases className={`${PRE_CLASS}-cases`} cases={[cases]} />
     </>
   );
 };

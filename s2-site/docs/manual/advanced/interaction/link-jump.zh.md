@@ -19,7 +19,7 @@ const s2DataConfig = {
 };
 
 const s2options = {
-  width: 800,
+  width: 600,
   height: 600,
   interaction: {
     linkFields: ['city'],
@@ -50,7 +50,7 @@ const s2DataConfig = {
 };
 
 const s2options = {
-  width: 800,
+  width: 600,
   height: 600,
   interaction: {
     linkFields: ['province', 'city'],
@@ -84,7 +84,7 @@ const s2DataConfig = {
 };
 
 const s2options = {
-  width: 800,
+  width: 600,
   height: 600,
   interaction: {
     linkFields: ['type', 'price', 'province'],

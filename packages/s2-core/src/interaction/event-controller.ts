@@ -49,11 +49,16 @@ export class EventController {
     return this.spreadsheet.container;
   }
 
+  public get isAutoResetSheetStyle() {
+    return this.spreadsheet.options.interaction.autoResetSheetStyle;
+  }
+
   public bindEvents() {
     this.clearAllEvents();
 
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
     this.addCanvasEvent(OriginEventType.MOUSE_MOVE, this.onCanvasMousemove);
+    this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
     this.addCanvasEvent(OriginEventType.MOUSE_UP, this.onCanvasMouseup);
     this.addCanvasEvent(OriginEventType.DOUBLE_CLICK, this.onCanvasDoubleClick);
     this.addCanvasEvent(OriginEventType.CONTEXT_MENU, this.onCanvasContextMenu);
@@ -116,8 +121,7 @@ export class EventController {
   }
 
   private resetSheetStyle(event: Event) {
-    const { autoResetSheetStyle } = this.spreadsheet.options.interaction;
-    if (!autoResetSheetStyle) {
+    if (!this.isAutoResetSheetStyle) {
       return;
     }
 
@@ -406,6 +410,20 @@ export class EventController {
             break;
         }
       }
+    }
+  };
+
+  private onCanvasMouseout = () => {
+    if (!this.isAutoResetSheetStyle) {
+      return;
+    }
+    const { interaction } = this.spreadsheet;
+    // 两种情况不能重置 1. 选中单元格 2. 有交互功能的tooltip打开时
+    if (
+      !interaction.isSelectedState() &&
+      !interaction.hasIntercepts([InterceptType.HOVER])
+    ) {
+      interaction.reset();
     }
   };
 

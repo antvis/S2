@@ -5,7 +5,7 @@ import {
   SortParams,
 } from '@/common/interface/index';
 
-/** use for tabularSheet
+/** use for gridAnalysisSheet
  *  eg. { label: '余额女',
         values: [
           ['最近7天登端天数', 1, 3423423, 323],
@@ -17,7 +17,7 @@ import {
  */
 
 export interface MultiData {
-  // the title of one cell of the tabularSheet
+  // the title of one cell of the gridAnalysisSheet
   label?: string;
   values: (string | number)[][];
 }

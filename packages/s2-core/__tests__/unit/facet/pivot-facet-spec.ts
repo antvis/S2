@@ -54,6 +54,9 @@ jest.mock('src/sheet-type', () => {
         emit: jest.fn(),
         isScrollContainsRowHeader: jest.fn(),
         isHierarchyTreeType: jest.fn(),
+        facet: {
+          getFreezeCornerDiffWidth: jest.fn(),
+        },
       };
     }),
   };
@@ -67,7 +70,7 @@ jest.mock('src/data-set/pivot-data-set', () => {
         rowPivotMeta,
         colPivotMeta,
         indexesData,
-        sortedDimensionValues: sortedDimensionValues,
+        sortedDimensionValues,
         moreThanOneValue: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
         getFieldMeta: (field: string, meta: ViewMeta) =>

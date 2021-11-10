@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
+
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
 )
   .then((res) => res.json())
   .then((res) => {
     const s2options = {
-      width: 800,
+      width: 600,
       height: 600,
       enableCopy: true,
     };
@@ -28,7 +29,7 @@ fetch(
       description: '表头描述',
       exportCfg: { open: true },
       advancedSortCfg: { open: true },
-      extra: [ (<button style={{ verticalAlign: 'top' }}>  插入内容 </button>) ],
+      extra: [<button style={{ verticalAlign: 'top' }}> 插入内容 </button>],
     };
 
     ReactDOM.render(
@@ -41,4 +42,3 @@ fetch(
       document.getElementById('container'),
     );
   });
-

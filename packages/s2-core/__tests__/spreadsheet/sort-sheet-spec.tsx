@@ -8,6 +8,7 @@ import {
   S2DataConfig,
   S2Options,
   SheetComponent,
+  SortParams,
 } from '@/index';
 import 'antd/dist/antd.min.css';
 import './less/sort-sheet-spec.less';
@@ -35,6 +36,16 @@ function MainLayout() {
     },
   };
 
+  const sortParams: SortParams = [
+    { sortFieldId: 'province', sortMethod: 'DESC' },
+    { sortFieldId: 'type', sortBy: ['家具产品', '办公用品'] },
+    {
+      sortFieldId: 'city',
+      sortByMeasure: 'cost',
+      sortMethod: 'DESC',
+    },
+  ];
+
   const [dataCfg, setDataCfg] = useState<S2DataConfig>({
     fields: {
       ...fields,
@@ -43,6 +54,7 @@ function MainLayout() {
     meta,
     data: originData,
     totalData,
+    sortParams,
   });
 
   return (
@@ -51,19 +63,10 @@ function MainLayout() {
         dataCfg={dataCfg}
         options={options}
         adaptive={false}
-        themeCfg={{ name: 'simple' }}
         header={{
           advancedSortCfg: {
             open: true,
-            sortParams: [
-              { sortFieldId: 'province', sortMethod: 'DESC' },
-              { sortFieldId: 'type', sortBy: ['家具产品', '办公用品'] },
-              {
-                sortFieldId: 'city',
-                sortByMeasure: 'cost',
-                sortMethod: 'DESC',
-              },
-            ],
+            sortParams,
             onSortConfirm: (ruleValues, sortParams) => {
               setDataCfg({ ...dataCfg, sortParams });
             },

@@ -22,7 +22,7 @@ fetch(
         iconNames: ['Trend'],
         belongsCell: 'rowCell',
         defaultHide: false,
-        displayCondition: (meta: Node) => {
+        displayCondition: (meta) => {
           return meta.key === 'province';
         },
         action: (props) => {

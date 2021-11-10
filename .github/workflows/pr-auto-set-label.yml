@@ -5,76 +5,11 @@ on:
     types: [opened, edited]
 
 jobs:
-  set-labels:
+  auto-set-labels:
     runs-on: ubuntu-latest
     steps:
-      - name: Remove labels
-        uses: actions-cool/issues-helper@main
+      - name: pr-auto-label
+        uses: actions-cool/pr-auto-label@v1
         with:
-          actions: 'remove-labels'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(fix),pr(feature),pr(chore),pr(refactor),pr(test),pr(documentation),pr(refactor)'
-
-      - name: Add fix label
-        if: startsWith(github.event.pull_request.title, 'fix')
-        uses: actions-cool/issues-helper@main
-        with:
-          actions: 'add-labels'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(fix)'
-
-      - name: Add chore label
-        if: startsWith(github.event.pull_request.title, 'chore')
-        uses: actions-cool/issues-helper@main
-        with:
-          actions: 'add-labels'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(chore)'
-
-      - name: Add feat label
-        if: startsWith(github.event.pull_request.title, 'feat')
-        uses: actions-cool/issues-helper@main
-        with:
-          actions: 'add-labels'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(feature)'
-
-      - name: Add refactor label
-        if: startsWith(github.event.pull_request.title, 'refactor')
-        uses: actions-cool/issues-helper@main
-        with:
-          actions: 'add-labels'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(refactor)'
-
-      - name: Add test label
-        if: startsWith(github.event.pull_request.title, 'test')
-        uses: actions-cool/issues-helper@main
-        with:
-          actions: 'add-labels'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(test)'
-
-      - name: Add docs label
-        if: startsWith(github.event.pull_request.title, 'docs')
-        uses: actions-cool/issues-helper@main
-        with:
-          actions: 'add-labels'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(documentation)'
-
-      - name: Add refactor label
-        if: startsWith(github.event.pull_request.title, 'refactor')
-        uses: actions-cool/issues-helper@main
-        with:
-          actions: 'add-labels'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          labels: 'pr(refactor)'
+          enum: 'fix, chore, feat, refactor, test, docs'
+          extra: 'feat/feature, docs/documentation'

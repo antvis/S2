@@ -26,12 +26,9 @@ import React from 'react';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
+import { AutoAdjustPositionOptions, ListItem } from '@/common/interface';
+import { LayoutResult } from '@/common/interface/basic';
 import {
-  AutoAdjustPositionOptions,
-  LayoutResult,
-  ListItem,
-  S2CellType,
-  SpreadSheet,
   SummaryParam,
   TooltipData,
   TooltipDataItem,
@@ -41,8 +38,10 @@ import {
   TooltipPosition,
   TooltipSummaryOptions,
   BaseTooltipConfig,
-  TOOLTIP_POSITION_OFFSET,
-} from '@/index';
+} from '@/common/interface/tooltip';
+import { TOOLTIP_POSITION_OFFSET } from '@/common/constant/tooltip';
+import { S2CellType } from '@/common/interface/interaction';
+import { SpreadSheet } from '@/sheet-type';
 import { i18n } from '@/common/i18n';
 import {
   CellTypes,
@@ -464,7 +463,7 @@ export const getTooltipData = (params: TooltipDataParam) => {
   let headInfo = null;
   let details = null;
   const firstCellInfo = cellInfos[0] || {};
-  // TODO：tabular类型数据需要补充兼容
+  // TODO：gridAnalysis类型数据需要补充兼容
   if (!options?.hideSummary) {
     // 计算多项的sum（默认为sum，可自定义）
     summaries = getSummaries({
