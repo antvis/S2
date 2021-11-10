@@ -10,8 +10,6 @@ import {
   keys,
   uniq,
   values,
-  map,
-  cloneDeep,
   filter,
   forEach,
   unset,
@@ -22,7 +20,7 @@ import {
   flatten as customFlatten,
   flattenDeep as customFlattenDeep,
   getFieldKeysByDimensionValues,
-  getIntersections,
+  getListBySorted,
   isEveryUndefined,
   splitTotal,
   isTotalData,
@@ -38,7 +36,12 @@ import {
   ViewMeta,
 } from '@/common/interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
-import { CellDataParams, DataType, PivotMeta } from '@/data-set/interface';
+import {
+  CellDataParams,
+  DataType,
+  PivotMeta,
+  SortedDimensionValues,
+} from '@/data-set/interface';
 import { handleSortAction } from '@/utils/sort-action';
 import {
   transformIndexesData,
@@ -59,7 +62,7 @@ export class PivotDataSet extends BaseDataSet {
   public colPivotMeta: PivotMeta;
 
   // sorted dimension values
-  public sortedDimensionValues: Map<string, Set<string>>;
+  public sortedDimensionValues: SortedDimensionValues;
 
   // each path items max index
   protected pathIndexMax = [];
@@ -73,7 +76,7 @@ export class PivotDataSet extends BaseDataSet {
    */
   public setDataCfg(dataCfg: S2DataConfig) {
     super.setDataCfg(dataCfg);
-    this.sortedDimensionValues = new Map();
+    this.sortedDimensionValues = {};
     this.rowPivotMeta = new Map();
     this.colPivotMeta = new Map();
     // total data in raw data scene.
@@ -229,19 +232,16 @@ export class PivotDataSet extends BaseDataSet {
       const { sortFieldId, sortByMeasure } = item;
       // 万物排序的前提
       if (!sortFieldId) return;
-      const originValues = [
-        ...(this.sortedDimensionValues.get(sortFieldId)?.keys?.() || []),
-      ];
+      const originValues = [...(this.sortedDimensionValues[sortFieldId] || [])];
       const result = handleSortAction({
         dataSet: this,
         sortParam: item,
         originValues,
         isSortByMeasure: !isEmpty(sortByMeasure),
       });
-      this.sortedDimensionValues.set(
-        sortFieldId,
-        new Set([...result, ...originValues]), // 这里是控制顺序的，优先result
-      );
+      this.sortedDimensionValues[sortFieldId] = [
+        ...getListBySorted(originValues, [...(new Set(result) || [])]),
+      ];
     });
   };
 
@@ -323,16 +323,24 @@ export class PivotDataSet extends BaseDataSet {
         if (meta.has(value) && !isUndefined(value)) {
           const childField = meta.get(value)?.childField;
           meta = meta.get(value).children;
-          if (this.sortedDimensionValues.has(childField)) {
-            sortedMeta = [...this.sortedDimensionValues.get(childField)];
+          if (
+            find(this.sortParams, (item) => item.sortFieldId === childField) &&
+            this.sortedDimensionValues[childField]
+          ) {
+            sortedMeta = [...this.sortedDimensionValues[childField]];
+          } else {
+            sortedMeta = [...meta.keys()];
           }
         }
       }
-      return filterUndefined(getIntersections([...meta.keys()], sortedMeta));
+      if (isEmpty(sortedMeta)) {
+        return [];
+      }
+      return filterUndefined(getListBySorted([...meta.keys()], sortedMeta));
     }
 
-    if (this.sortedDimensionValues.has(field)) {
-      return filterUndefined([...this.sortedDimensionValues.get(field)]);
+    if (this.sortedDimensionValues[field]) {
+      return filterUndefined([...this.sortedDimensionValues[field]]);
     }
 
     return filterUndefined([...meta.keys()]);
@@ -368,9 +376,7 @@ export class PivotDataSet extends BaseDataSet {
 
   getCustomData = (path: number[]) => {
     let hadUndefined = false;
-    let currentData: DataType | DataType[] | DataType[][] = cloneDeep(
-      this.indexesData,
-    );
+    let currentData: DataType | DataType[] | DataType[][] = this.indexesData;
 
     for (let i = 0; i < path.length; i++) {
       const current = path[i];

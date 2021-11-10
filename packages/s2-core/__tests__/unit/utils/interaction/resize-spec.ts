@@ -3,9 +3,12 @@ import { ResizeArea, ResizeInfo } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
   getResizeAreaAttrs,
-  getResizeAreaGroupById,
+  getOrCreateResizeAreaGroupById,
 } from '@/utils/interaction/resize';
-import { ResizeAreaEffect, ResizeAreaType } from '@/common/constant/resize';
+import {
+  ResizeAreaEffect,
+  ResizeDirectionType,
+} from '@/common/constant/resize';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
@@ -42,7 +45,7 @@ describe('Resize Utils Tests', () => {
       expect(
         getResizeAreaAttrs({
           ...commonConfig,
-          type: ResizeAreaType.Col,
+          type: ResizeDirectionType.Horizontal,
         }),
       ).toStrictEqual({
         fill: resizeAreaTheme.background,
@@ -52,14 +55,14 @@ describe('Resize Utils Tests', () => {
         height: null,
         appendInfo: {
           isResizeArea: true,
-          class: 'resize-trigger',
           effect: ResizeAreaEffect.Cell,
-          type: ResizeAreaType.Col,
+          type: ResizeDirectionType.Horizontal,
           id: undefined,
           offsetX: 0,
           offsetY: 0,
           width: 20,
           height: 20,
+          size: 3,
         },
       });
     });
@@ -68,7 +71,7 @@ describe('Resize Utils Tests', () => {
       expect(
         getResizeAreaAttrs({
           ...commonConfig,
-          type: ResizeAreaType.Row,
+          type: ResizeDirectionType.Vertical,
         }),
       ).toStrictEqual({
         fill: resizeAreaTheme.background,
@@ -79,13 +82,13 @@ describe('Resize Utils Tests', () => {
         appendInfo: {
           isResizeArea: true,
           effect: ResizeAreaEffect.Cell,
-          type: ResizeAreaType.Row,
-          class: 'resize-trigger',
+          type: ResizeDirectionType.Vertical,
           id: undefined,
           offsetX: 0,
           offsetY: 0,
           width: 20,
           height: 20,
+          size: 3,
         },
       });
     });
@@ -93,7 +96,7 @@ describe('Resize Utils Tests', () => {
     test('should merge custom width and height', () => {
       const attrs = getResizeAreaAttrs({
         ...commonConfig,
-        type: ResizeAreaType.Row,
+        type: ResizeDirectionType.Vertical,
         width: 100,
         height: 200,
       });
@@ -104,7 +107,7 @@ describe('Resize Utils Tests', () => {
     test('should merge custom width with row field', () => {
       const attrs = getResizeAreaAttrs({
         ...commonConfig,
-        type: ResizeAreaType.Row,
+        type: ResizeDirectionType.Vertical,
         width: 100,
       });
       expect(attrs.appendInfo.width).toStrictEqual(100);
@@ -114,7 +117,7 @@ describe('Resize Utils Tests', () => {
     test('should merge custom height with col field', () => {
       const attrs = getResizeAreaAttrs({
         ...commonConfig,
-        type: ResizeAreaType.Col,
+        type: ResizeDirectionType.Horizontal,
         height: 100,
       });
       expect(attrs.width).toStrictEqual(resizeAreaTheme.size);
@@ -124,7 +127,7 @@ describe('Resize Utils Tests', () => {
     test('should get resize cursor with col field', () => {
       const attrs = getResizeAreaAttrs({
         ...commonConfig,
-        type: ResizeAreaType.Col,
+        type: ResizeDirectionType.Horizontal,
       });
       expect(attrs.cursor).toStrictEqual('col-resize');
     });
@@ -132,7 +135,7 @@ describe('Resize Utils Tests', () => {
     test('should get resize cursor with row field', () => {
       const attrs = getResizeAreaAttrs({
         ...commonConfig,
-        type: ResizeAreaType.Row,
+        type: ResizeDirectionType.Vertical,
       });
       expect(attrs.cursor).toStrictEqual('row-resize');
     });
@@ -140,7 +143,7 @@ describe('Resize Utils Tests', () => {
 
   describe('#getResizeAreaGroupById()', () => {
     test('should get new resize area group if prevResizeArea is empty', () => {
-      const group = getResizeAreaGroupById(s2, 'id');
+      const group = getOrCreateResizeAreaGroupById(s2, 'id');
       expect(group.add).toBeDefined();
       expect(s2.foregroundGroup.getChildren()).toHaveLength(1);
     });
@@ -149,9 +152,9 @@ describe('Resize Utils Tests', () => {
       const groupId = 'id';
 
       // create multiple group
-      getResizeAreaGroupById(s2, groupId);
-      getResizeAreaGroupById(s2, groupId);
-      getResizeAreaGroupById(s2, groupId);
+      getOrCreateResizeAreaGroupById(s2, groupId);
+      getOrCreateResizeAreaGroupById(s2, groupId);
+      getOrCreateResizeAreaGroupById(s2, groupId);
 
       // use prev created group, only one resize area group
       expect(s2.foregroundGroup.getChildren()).toHaveLength(1);

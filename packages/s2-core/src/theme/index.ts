@@ -212,7 +212,7 @@ export const getTheme = (
         fontWeight: isWindows() ? 'bold' : '520',
         fill: basicColors[13],
         opacity: 1,
-        textAlign: 'right',
+        textAlign: 'center',
         textBaseline: 'middle',
       },
       text: {
@@ -221,7 +221,7 @@ export const getTheme = (
         fontWeight: 'normal',
         fill: basicColors[13],
         opacity: 1,
-        textAlign: 'right',
+        textAlign: 'center',
         textBaseline: 'middle',
       },
       cell: {
@@ -295,9 +295,9 @@ export const getTheme = (
     resizeArea: {
       size: 3,
       background: basicColors[7],
-      guideLineColor: basicColors[7],
-      guideLineDash: 3,
       backgroundOpacity: 0,
+      guideLineColor: basicColors[7],
+      guideLineDash: [3, 3],
       /* ---------- interaction state ----------- */
       interactionState: {
         hover: {

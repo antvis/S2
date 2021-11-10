@@ -6,7 +6,7 @@ import { i18n } from '@/common/i18n';
 import { Node } from '@/facet/layout/node';
 import { generateId } from '@/utils/layout/generate-id';
 import { SpreadSheet } from '@/sheet-type';
-import { getIntersections, filterUndefined } from '@/utils/data-set-operate';
+import { getListBySorted, filterUndefined } from '@/utils/data-set-operate';
 import { PivotDataSet } from '@/data-set';
 
 const addTotals = (
@@ -37,10 +37,10 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const query = parentNode.query;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
   const sortedDimensionValues =
-    (dataSet as PivotDataSet)?.sortedDimensionValues?.get(currentField) || [];
+    (dataSet as PivotDataSet)?.sortedDimensionValues?.[currentField] || [];
 
   const dimValues = filterUndefined(
-    getIntersections([...sortedDimensionValues], [...(pivotMeta.keys() || [])]),
+    getListBySorted([...(pivotMeta.keys() || [])], [...sortedDimensionValues]),
   );
 
   let fieldValues: FieldValue[] = layoutArrange(
