@@ -1,3 +1,23 @@
+# [@antv/s2-v1.0.0-beta.8](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.7...@antv/s2-v1.0.0-beta.8) (2021-11-10)
+
+
+### Bug Fixes
+
+* **components:** fix component render crash with empty options ([#653](https://github.com/antvis/S2/issues/653)) ([ce7aacc](https://github.com/antvis/S2/commit/ce7aacc51c9dc2340fe0ce1a580dd120c562981a))
+* fix internal svg icon disappear issue in official website ([#654](https://github.com/antvis/S2/issues/654)) ([bd2cdb2](https://github.com/antvis/S2/commit/bd2cdb2c9def850965a92519ebadccda74562cdd))
+* fix linkField config path ([#650](https://github.com/antvis/S2/issues/650)) ([fc598b9](https://github.com/antvis/S2/commit/fc598b96171f89b73b74a872a266bc2b826d0a60))
+* pivot data set's get multi data and optimize advanced sort ([#659](https://github.com/antvis/S2/issues/659)) ([248c038](https://github.com/antvis/S2/commit/248c038116df5a5d1d182bf5d53cadd4e45c2d47))
+* pivot sheet sort icon's show ([#662](https://github.com/antvis/S2/issues/662)) ([ea1a4f3](https://github.com/antvis/S2/commit/ea1a4f3525001d2b0b898ad974e775c09e71e624))
+* render right trailing col ([#647](https://github.com/antvis/S2/issues/647)) ([f367f05](https://github.com/antvis/S2/commit/f367f0554d897826300bd007bd229c25e889567c))
+
+
+### Features
+
+* 🎸 修复interactionState的borderWidth和borderColor不生效问题 ([#664](https://github.com/antvis/S2/issues/664)) ([8464b4b](https://github.com/antvis/S2/commit/8464b4bc7f54a16599f4e20e5dac0344b873e385))
+* add resize area highlight for whole rows and columns ([#645](https://github.com/antvis/S2/issues/645)) ([ec224d9](https://github.com/antvis/S2/commit/ec224d9a2028ced85024d2a05f80e19d8af12e5e))
+* **custom-tree:** fix custom-tree mode & custom-tree test ([#666](https://github.com/antvis/S2/issues/666)) ([f849a2f](https://github.com/antvis/S2/commit/f849a2f873e9bbed543e9bb3c8c57f2d1bd68506)), closes [#605](https://github.com/antvis/S2/issues/605)
+* **options:** add empty cell placeholder options ([#658](https://github.com/antvis/S2/issues/658)) ([b4b7fdd](https://github.com/antvis/S2/commit/b4b7fdd94aba0f9312754435569d906b5d371ffb))
+
 # [@antv/s2-v1.0.0-beta.7](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.6...@antv/s2-v1.0.0-beta.7) (2021-11-08)
 
 
