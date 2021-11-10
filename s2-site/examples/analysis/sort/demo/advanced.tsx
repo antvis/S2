@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent, SortParams } from '@antv/s2';
 import insertCss from 'insert-css';
+// import 'antd/dist/antd.min.css';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
@@ -9,6 +10,16 @@ fetch(
 )
   .then((res) => res.json())
   .then((data) => {
+    const sortParams = [
+      { sortFieldId: 'province', sortMethod: 'DESC' },
+      { sortFieldId: 'type', sortBy: ['纸张', '笔'] },
+      {
+        sortFieldId: 'city',
+        sortByMeasure: 'price',
+        sortMethod: 'DESC',
+      },
+    ];
+
     const s2DataConfig = {
       fields: {
         rows: ['province', 'city'],
@@ -16,6 +27,7 @@ fetch(
         values: ['price'],
       },
       data,
+      sortParams
     };
 
     const s2options = {
@@ -36,15 +48,7 @@ fetch(
             header={{
               advancedSortCfg: {
                 open: true,
-                sortParams: [
-                  { sortFieldId: 'province', sortMethod: 'DESC' },
-                  { sortFieldId: 'type', sortBy: ['纸张', '笔'] },
-                  {
-                    sortFieldId: 'city',
-                    sortByMeasure: 'price',
-                    sortMethod: 'DESC',
-                  },
-                ],
+                sortParams,
                 onSortConfirm: (ruleValues, sortParams: SortParams) => {
                   setDataCfg({ ...dataCfg, sortParams });
                 },
