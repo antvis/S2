@@ -10,8 +10,8 @@
 
 ## 构成
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/T78TTWvUU/7cbd9356-549f-4021-b3e6-103719539074.png" alt="构成" style="width: 560px;">
+<img src="https://gw.alipayobjects.com/zos/antfincdn/T78TTWvUU/7cbd9356-549f-4021-b3e6-103719539074.png" alt="构成" style="width: 560px; margin-bottom: 30px">
 
 ## 分析思路
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/WYu2H7mgW/5fe8b69b-6018-4fe9-8c77-422dbb9336d3.png" alt="分析思路" style="width: 560px;"></img>
+<img src="https://gw.alipayobjects.com/zos/antfincdn/WYu2H7mgW/5fe8b69b-6018-4fe9-8c77-422dbb9336d3.png" alt="分析思路" style="width: 600px;"></img>
