@@ -70,7 +70,7 @@ jest.mock('src/data-set/pivot-data-set', () => {
         rowPivotMeta,
         colPivotMeta,
         indexesData,
-        sortedDimensionValues: sortedDimensionValues,
+        sortedDimensionValues,
         moreThanOneValue: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
         getFieldMeta: (field: string, meta: ViewMeta) =>

@@ -7,8 +7,6 @@ import { SpreadSheet } from '@/sheet-type';
  * Base header config interface
  */
 export interface BaseHeaderConfig {
-  // group's transform info(x | y)
-  offset: number;
   // group's scroll x value
   scrollX?: number;
   // group's scroll y value
@@ -17,6 +15,10 @@ export interface BaseHeaderConfig {
   width: number;
   // group's height
   height: number;
+  // group's original width without clip
+  originalWidth?: number;
+  // group's original height without clip
+  originalHeight?: number;
   // group's container's width
   viewportWidth: number;
   // group's container's height
@@ -77,7 +79,6 @@ export abstract class BaseHeader<T extends BaseHeaderConfig> extends Group {
    */
   public onScrollXY(scrollX: number, scrollY: number, type: string): void {
     this.headerConfig.scrollX = scrollX;
-    this.headerConfig.offset = scrollY;
     this.headerConfig.scrollY = scrollY;
     this.render(type);
   }

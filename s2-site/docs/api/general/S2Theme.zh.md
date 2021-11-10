@@ -71,6 +71,7 @@ order: 2
 | background | `string` | |  | 热区背景色 |
 | backgroundOpacity | `number` |  | | 热区背景色透明度 |
 | guideLineColor | `string` |  | | 参考线颜色 |
+| guideLineDash | `number[]` |  | `[3, 3]`| 热区参考线 [虚线模式](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/setLineDash) |
 | interactionState | [InteractionState](#interactionstate) | |  | 热区交互态样式 |
 
 #### ScrollBarTheme
@@ -102,7 +103,7 @@ order: 2
 | verticalBorderColor | `string` | | | 垂直分割线颜色 |
 | verticalBorderColorOpacity | `number` | | 1 | 垂直分割线颜色透明度 |
 | verticalBorderWidth | `number` | | 2 | 垂直分割线宽度 |
-| showShadow | `boolean` | | `true` | 分割线是否显示外阴影(行列冻结情况下) |
+| showShadow | `boolean` | | `true` | 分割线是否显示外阴影（行列冻结情况下） |
 | shadowWidth | `number` | | 10 | 阴影宽度 |
 | shadowColors | `{left: string,` <br> `right: string}` | | `{left: 'rgba(0,0,0,0.1)',`<br>`right: 'rgba(0,0,0,0)'}` | `left` : 线性变化左侧颜色  <br> `right` : 线性变化右侧颜色 |
 
@@ -120,7 +121,6 @@ order: 2
 | fontSize | `number` | |  | 字体大小 |
 | fontWeight | `number` \| `string` | | 粗体文本：Mobile：`520`  PC: `bold` <br> 普通文本：`normal` | number <br> string: `normal` <br> `bold` <br> `bolder` <br> `lighter` 字体粗细 |
 | fill | `string` | | | 字体颜色 |
-| linkTextFill | `string` | | |链接文本颜色 |
 | linkTextFill | `string` | | |链接文本颜色 |
 | opacity | `number` | | 1 | 字体透明度 |
 

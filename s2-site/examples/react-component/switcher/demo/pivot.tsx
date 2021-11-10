@@ -10,7 +10,7 @@ fetch(
   .then((res) => res.json())
   .then((data) => {
     const s2options = {
-      width: 800,
+      width: 600,
       height: 600,
     };
 

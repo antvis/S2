@@ -54,7 +54,6 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       viewportHeight: height,
       position: { x: 0, y: viewportBBox.y },
       data: seriesNodes,
-      offset: 0,
       spreadsheet,
     });
   }
@@ -66,7 +65,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   public clip(): void {}
 
   public layout() {
-    const { data, offset, height, spreadsheet } = this.headerConfig;
+    const { data, scrollY, height, spreadsheet } = this.headerConfig;
     if (spreadsheet.isPivotMode) {
       //  添加矩形背景
       this.addBackGround();
@@ -78,7 +77,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       const isHeaderCellInViewport = this.isHeaderCellInViewport(
         y,
         cellHeight,
-        offset,
+        scrollY,
         height,
       );
       if (isHeaderCellInViewport) {
@@ -139,7 +138,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private addText(group: IGroup, cellData: ViewMeta) {
-    const { offset, height } = this.headerConfig;
+    const { scrollY, height } = this.headerConfig;
     const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
     const {
       label,
@@ -156,7 +155,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const textY = getAdjustPosition(
       y + padding.top,
       cellHeight - padding.top - padding.bottom,
-      offset,
+      scrollY,
       height,
       textStyle.fontSize,
     );

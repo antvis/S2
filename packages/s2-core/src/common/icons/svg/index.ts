@@ -1,5 +1,7 @@
 // 不本地直接引用svg，避免下游无依赖
 export {
+  ArrowDown,
+  ArrowUp,
   CellDown,
   CellUp,
   GlobalAsc,
@@ -7,6 +9,7 @@ export {
   GroupAsc,
   GroupDesc,
   Minus,
+  MinusSquare,
   Plus,
   SortDown,
   SortUp,

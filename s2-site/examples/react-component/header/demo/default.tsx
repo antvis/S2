@@ -9,7 +9,7 @@ fetch(
   .then((res) => res.json())
   .then((res) => {
     const s2options = {
-      width: 800,
+      width: 600,
       height: 600,
       enableCopy: true,
     };
@@ -29,7 +29,7 @@ fetch(
       description: '表头描述',
       exportCfg: { open: true },
       advancedSortCfg: { open: true },
-      extra: [ (<button style={{ verticalAlign: 'top' }}>  插入内容 </button>) ],
+      extra: [<button style={{ verticalAlign: 'top' }}> 插入内容 </button>],
     };
 
     ReactDOM.render(
@@ -42,4 +42,3 @@ fetch(
       document.getElementById('container'),
     );
   });
-

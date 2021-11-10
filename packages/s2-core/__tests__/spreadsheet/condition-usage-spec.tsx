@@ -9,10 +9,10 @@ import { SheetEntry } from '../util/sheet-entry';
 const sheetInstance: MutableRefObject<SpreadSheet> = { current: null };
 
 function MainLayout() {
-  const [isCompare, setCompare] = useState(false);
+  const [isCompare, setCompare] = useState(true);
   const [intervalValue, setIntervalValue] = useState({ min: 0, max: 1000 });
   const [backgroundValue, setBackgroundValue] = useState({ min: 0, max: 1000 });
-  const [enableBg, setEnableBg] = useState(false);
+  const [enableBg, setEnableBg] = useState(true);
 
   const onCompareChange = (checked) => {
     setCompare(checked);

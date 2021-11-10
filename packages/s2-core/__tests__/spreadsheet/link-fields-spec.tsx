@@ -7,7 +7,7 @@ import { getContainer } from '../util/helpers';
 import { SheetEntry } from '../util/sheet-entry';
 
 function MainLayout() {
-  const [linkFields, setLinkFields] = useState<string[]>([]);
+  const [linkFields, setLinkFields] = useState<string[]>(['city']);
   const sheetRef = useRef<SpreadSheet>();
 
   const onLinkFieldsChanged = (ids: string[]) => {

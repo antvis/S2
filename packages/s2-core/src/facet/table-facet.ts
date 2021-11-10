@@ -23,6 +23,7 @@ import {
   isFrozenTrailingCol,
   isFrozenTrailingRow,
 } from './utils';
+import { CornerBBox } from './bbox/cornerBBox';
 import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
 import { FrozenCellGroupMap } from '@/common/constant/frozen';
 import { DebuggerUtil } from '@/common/debug';
@@ -33,7 +34,6 @@ import { layoutCoordinate } from '@/facet/layout/layout-hooks';
 import { Node } from '@/facet/layout/node';
 import { renderLine } from '@/utils/g-renders';
 import { TableDataSet } from '@/data-set';
-import { getSortParam } from '@/utils/layout/add-detail-type-sort-icon';
 import { PanelIndexes } from '@/utils/indexes';
 import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
 
@@ -97,21 +97,12 @@ export class TableFacet extends BaseFacet {
 
   protected calculateCornerBBox() {
     const { colsHierarchy } = this.layoutResult;
-
     const height = Math.floor(colsHierarchy.height);
-    const width = 0;
 
-    this.cornerBBox = {
-      x: 0,
-      y: 0,
-      width,
-      height,
-      maxX: width,
-      maxY: height,
-      minX: 0,
-      minY: 0,
-    };
-    this.cornerWidth = 0;
+    this.cornerBBox = new CornerBBox(this);
+
+    this.cornerBBox.height = height;
+    this.cornerBBox.maxY = height;
   }
 
   public destroy() {
@@ -181,12 +172,11 @@ export class TableFacet extends BaseFacet {
       if (isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)) {
         x =
           width -
-          colLeafNodes.reduceRight((prev, item, idx) => {
-            if (idx >= colLength - frozenTrailingColCount) {
+          colLeafNodes
+            .slice(-(colLength - colIndex))
+            .reduce((prev, item, idx) => {
               return prev + item.width;
-            }
-            return prev;
-          }, 0);
+            }, 0);
       }
 
       if (showSeriesNumber && col.field === SERIES_NUMBER_FIELD) {
@@ -716,11 +706,11 @@ export class TableFacet extends BaseFacet {
         height: this.cornerBBox.height,
         viewportWidth: width,
         viewportHeight: height,
+        cornerWidth: this.cornerBBox.width,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        offset: 0,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
         sortParam: this.cfg.spreadsheet.store.get('sortParam'),
@@ -808,6 +798,7 @@ export class TableFacet extends BaseFacet {
     } = this.spreadsheet;
     const frozenColGroupWidth = frozenColGroup.getBBox().width;
     const frozenRowGroupHeight = frozenRowGroup.getBBox().height;
+    const frozenTrailingColBBox = frozenTrailingColGroup.getBBox();
     const frozenTrailingRowGroupHeight =
       frozenTrailingRowGroup.getBBox().height;
     const panelScrollGroupWidth =
@@ -862,9 +853,9 @@ export class TableFacet extends BaseFacet {
     frozenTrailingColGroup.setClip({
       type: 'rect',
       attrs: {
-        x: frozenTrailingColGroup.getBBox().minX,
+        x: frozenTrailingColBBox.minX,
         y: scrollY + frozenRowGroupHeight,
-        width: frozenColGroupWidth,
+        width: frozenTrailingColBBox.width,
         height: panelScrollGroupHeight,
       },
     });

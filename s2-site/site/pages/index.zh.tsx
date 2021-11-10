@@ -7,7 +7,9 @@ import Cases from '@antv/gatsby-theme-antv/site/components/Cases';
 import './index.less';
 
 const PRE_CLASS = 's2-homepage';
-const BannerSVG = 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*s0yOSpYP3pAAAAAAAAAAAAAAARQnAQ';
+const BannerSVG =
+  'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*s0yOSpYP3pAAAAAAAAAAAAAAARQnAQ';
+
 const IndexPage = () => {
   const { t, i18n } = useTranslation();
 
@@ -15,9 +17,7 @@ const IndexPage = () => {
     {
       icon: 'https://gw.alipayobjects.com/zos/bmw-prod/f0ae3be6-9cbb-479d-aba7-522b64d14119.svg',
       title: t('专业多维交叉分析'),
-      description: t(
-        '告别单一分析维度，全面拥抱任意维度的自由组合分析',
-      ),
+      description: t('告别单一分析维度，全面拥抱任意维度的自由组合分析'),
     },
     {
       icon: 'https://gw.alipayobjects.com/zos/bmw-prod/8850a540-c1cf-4581-8ff9-9592730fc6b8.svg',
@@ -42,39 +42,44 @@ const IndexPage = () => {
     description:
       '多维交叉分析表格领域的解决方案，完全基于数据驱动的方式，弥补行业中此领域空缺。',
     link: '#',
-    image: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*2PywSZP23xUAAAAAAAAAAAAAARQnAQ',
+    image:
+      'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*2PywSZP23xUAAAAAAAAAAAAAARQnAQ',
   };
 
   const bannerButtons = [
     {
       text: t('图表示例'),
-      link: '#features',
+      link: `/${i18n.language}/examples`,
       type: 'primary',
     },
     {
       text: t('现在开始使用'),
-      link: `/${ i18n.language }/docs/manual/getting-started`,
+      link: `/${i18n.language}/docs/manual/getting-started`,
     },
   ];
 
   return (
     <>
-      <SEO title={ t('S2') } lang={ i18n.language } />
+      <SEO title={t('S2')} lang={i18n.language} />
       <Banner
-        coverImage={ <img width='100%' style={ { marginRight: '30px', marginTop: '40px' } }
-                          src={ BannerSVG } alt={ 'banner' } /> }
-        title={ t('S2 多维交叉分析表格') }
-        description={ t('S2 是一种多维交叉分析表格领域的解决方案，完全基于数据驱动的方式，弥补行业中此领域空缺。通过提供底层能力库、基础组件、业务场景组件及自由扩展的能力，让开发者基于自身场景自由选择，既能开箱即用，又能自由发挥。') }
-        className='banner'
-        buttons={ bannerButtons }
-        showGithubStars={ true }
+        coverImage={
+          <img
+            width="100%"
+            style={{ marginRight: '30px', marginTop: '40px' }}
+            src={BannerSVG}
+            alt={'banner'}
+          />
+        }
+        title={t('S2 多维交叉分析表格')}
+        description={t(
+          'S2 是一种多维交叉分析表格领域的解决方案，完全基于数据驱动的方式，弥补行业中此领域空缺。通过提供底层能力库、基础组件、业务场景组件及自由扩展的能力，让开发者基于自身场景自由选择，既能开箱即用，又能自由发挥。',
+        )}
+        className="banner"
+        buttons={bannerButtons}
+        showGithubStars={true}
       />
-      <Features
-        id='features'
-        features={ features }
-        style={ { width: '100%' } }
-      />
-      <Cases className={`${ PRE_CLASS }-cases` } cases={ [ cases ] } />
+      <Features id="features" features={features} style={{ width: '100%' }} />
+      <Cases className={`${PRE_CLASS}-cases`} cases={[cases]} />
     </>
   );
 };

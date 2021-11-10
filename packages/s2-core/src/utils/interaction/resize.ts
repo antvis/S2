@@ -1,8 +1,11 @@
-import { IGroup, ShapeAttrs } from '@antv/g-canvas';
+import { IGroup, ShapeAttrs, SimpleBBox } from '@antv/g-canvas';
 import { ResizeInfo } from '@/common/interface/resize';
 import { SpreadSheet } from '@/sheet-type/spread-sheet';
+import { ResizeDirectionType } from '@/common/constant/resize';
 
-export const getResizeAreaAttrs = (options: ResizeInfo): ShapeAttrs => {
+export const getResizeAreaAttrs = (
+  options: Omit<ResizeInfo, 'size'>,
+): ShapeAttrs => {
   const {
     type,
     id,
@@ -11,8 +14,8 @@ export const getResizeAreaAttrs = (options: ResizeInfo): ShapeAttrs => {
     height: resizeAreaHeight,
     ...otherOptions
   } = options;
-  const width = type === 'col' ? theme.size : null;
-  const height = type === 'row' ? theme.size : null;
+  const width = type === ResizeDirectionType.Horizontal ? theme.size : null;
+  const height = type === ResizeDirectionType.Vertical ? theme.size : null;
 
   return {
     fill: theme.background,
@@ -23,16 +26,16 @@ export const getResizeAreaAttrs = (options: ResizeInfo): ShapeAttrs => {
     appendInfo: {
       ...otherOptions,
       isResizeArea: true,
-      class: 'resize-trigger',
       type,
       id,
       width: resizeAreaWidth,
       height: resizeAreaHeight,
-    } as Omit<ResizeInfo, 'theme'>,
+      size: theme.size,
+    } as ResizeInfo,
   };
 };
 
-export const getResizeAreaGroupById = (
+export const getOrCreateResizeAreaGroupById = (
   spreadsheet: SpreadSheet,
   id: string,
 ): IGroup => {
@@ -40,12 +43,37 @@ export const getResizeAreaGroupById = (
     return;
   }
 
-  const prevResizeArea = spreadsheet.foregroundGroup.findById(id) as IGroup;
+  const existedResizeArea = spreadsheet.foregroundGroup.findById(id) as IGroup;
 
   return (
-    prevResizeArea ||
+    existedResizeArea ||
     spreadsheet.foregroundGroup.addGroup({
       id,
     })
   );
+};
+
+export const shouldAddResizeArea = (
+  resizeArea: SimpleBBox,
+  resizeClipArea: SimpleBBox,
+  scrollOffset?: {
+    scrollX?: number;
+    scrollY?: number;
+  },
+) => {
+  const { scrollX = 0, scrollY = 0 } = scrollOffset ?? {};
+
+  // x轴上有重叠
+  const overlapInXAxis = !(
+    resizeArea.x - scrollX > resizeClipArea.x + resizeClipArea.width ||
+    resizeArea.x + resizeArea.width - scrollX < resizeClipArea.x
+  );
+
+  // y轴上有重叠
+  const overlapInYAxis = !(
+    resizeArea.y - scrollY > resizeClipArea.y + resizeClipArea.height ||
+    resizeArea.y + resizeArea.height - scrollY < resizeClipArea.y
+  );
+
+  return overlapInXAxis && overlapInYAxis;
 };
