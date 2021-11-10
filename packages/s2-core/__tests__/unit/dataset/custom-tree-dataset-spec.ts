@@ -1,5 +1,5 @@
 /**
- * pivot mode base data-set test.
+ * custom-tree mode base data-set test.
  */
 import { get } from 'lodash';
 import { customTreeItems } from 'tests/data/custom-tree-items';
