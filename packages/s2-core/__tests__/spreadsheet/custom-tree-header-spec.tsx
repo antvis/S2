@@ -22,7 +22,7 @@ const getDataCfg = () => {
   return {
     fields: {
       rows: [],
-      columns: ['category', 'subCategory'],
+      columns: ['type', 'sub_type'],
       values: [
         'measure-a',
         'measure-b',
