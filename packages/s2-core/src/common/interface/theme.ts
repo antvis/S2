@@ -40,7 +40,7 @@ export interface InteractionStateTheme {
   borderColor?: string;
   /* 边线宽度 */
   borderWidth?: number;
-  /* 边明度 */
+  /* 边线透明度 */
   borderOpacity?: number;
   /* 透明度 */
   opacity?: number;
