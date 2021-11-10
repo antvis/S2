@@ -1,4 +1,4 @@
-import { get, omit, size } from 'lodash';
+import { get, intersection } from 'lodash';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { CellDataParams, DataType } from '@/data-set/interface';
 import { S2DataConfig } from '@/common/interface';
@@ -14,8 +14,12 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     const path = getDataPath({
       rowDimensionValues,
       colDimensionValues,
-      rowPivotMeta: new Map(),
-      colPivotMeta: new Map(),
+      rowPivotMeta: this.rowPivotMeta,
+      colPivotMeta: this.colPivotMeta,
+      isFirstCreate: true,
+      careUndefined: true,
+      rowFields: rows,
+      colFields: columns,
     });
     const data = get(this.indexesData, path);
     return data;
@@ -28,7 +32,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     // 3、values 不需要参与计算，默认就在行头结构中
     dataCfg.fields.rows = [EXTRA_FIELD];
     dataCfg.fields.valueInCols = false;
-    const { columns } = dataCfg.fields;
+    const { values } = dataCfg.fields;
     // 将源数据中的value值，映射为 $$extra$$,$$value$$
     // {
     // province: '四川',    province: '四川',
@@ -38,17 +42,14 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     //                      $$value$$=11
     // 此时 province, city 均配置在columns里面
     // }
-    dataCfg.data = dataCfg.data.map((datum) => {
+    dataCfg.data = dataCfg.data.map((data) => {
       // 正常数据omit后只会唯一存在 value key
-      const keys = Object.keys(omit(datum, columns));
-      if (size(keys) > 1) {
-        throw new Error(`Data type ${datum} is wrong in custom tree mode`);
-      }
-      const valueKey = keys?.[0] || '';
+      const keys = Object.keys(data);
+      const valueKey = get(intersection(values, keys), 0);
       return {
-        ...datum,
+        ...data,
         [EXTRA_FIELD]: valueKey,
-        [VALUE_FIELD]: datum[valueKey],
+        [VALUE_FIELD]: data[valueKey],
       };
     });
     return dataCfg;
