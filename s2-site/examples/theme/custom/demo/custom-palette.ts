@@ -22,7 +22,6 @@ fetch(
     };
 
     const s2Palette = {
-      // --------- basic colors -----------
       basicColors: [
         '#FFFFFF',
         '#F8F5FE',

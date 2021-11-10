@@ -35,7 +35,7 @@ describe('PivotDataSet util test', () => {
 
   test('for transformIndexesData function', () => {
     const { rows, columns } = dataCfg.fields;
-    const sortedDimensionValues = new Map();
+    const sortedDimensionValues = {};
     const rowPivotMeta = new Map();
     const colPivotMeta = new Map();
     const result = transformIndexesData({
@@ -44,7 +44,7 @@ describe('PivotDataSet util test', () => {
       originData: dataCfg.data,
       totalData: [],
       indexesData: [],
-      sortedDimensionValues: sortedDimensionValues,
+      sortedDimensionValues,
       rowPivotMeta: rowPivotMeta,
       colPivotMeta: colPivotMeta,
     });
@@ -59,14 +59,12 @@ describe('PivotDataSet util test', () => {
     });
     expect(result.colPivotMeta.has('家具')).toBeTrue();
     expect(result.rowPivotMeta.has('浙江省')).toBeTrue();
-    expect(result.sortedDimensionValues.get('province')).toEqual(
-      new Set(['浙江省', '四川省']),
-    );
+    expect(result.sortedDimensionValues.province).toEqual(['浙江省', '四川省']);
   });
 
   test('for transformDimensionsValues function', () => {
     const rows = ['province', 'city'];
-    const sortedDimensionValues = new Map();
+    const sortedDimensionValues = {};
     const data = {
       city: '杭州市',
       number: 7789,
@@ -74,7 +72,12 @@ describe('PivotDataSet util test', () => {
       sub_type: '桌子',
       type: '家具',
     };
-    const result = transformDimensionsValues(data, rows, sortedDimensionValues);
+    const result = transformDimensionsValues(
+      data,
+      rows,
+      sortedDimensionValues,
+      {},
+    );
     expect(result).toEqual(['浙江省', '杭州市']);
   });
 

@@ -39,7 +39,7 @@ fetch(
     };
 
     const s2options = {
-      width: 800,
+      width: 600,
       height: 600,
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2options);

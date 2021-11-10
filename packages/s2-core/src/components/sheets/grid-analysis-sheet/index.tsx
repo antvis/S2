@@ -6,8 +6,8 @@ import { Spin } from 'antd';
 import { Event } from '@antv/g-canvas';
 import { Header } from '../../header';
 import { BaseSheetProps } from '../interface';
-import { TabularDataCell } from './tabular-data-cell';
-import { TabularTheme } from './tabular-theme';
+import { GridAnalysisDataCell } from './grid-analysis-data-cell';
+import { GridAnalysisTheme } from './grid-analysis-theme';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
 import { S2Options } from '@/common/interface';
@@ -15,16 +15,16 @@ import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { useResizeEffect } from '@/components/sheets/hooks';
 
-export const TabularSheet = (props: BaseSheetProps) => {
+export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
   const {
     spreadsheet,
     // TODO dataCfg细化
     dataCfg,
     options,
-    adaptive = true,
+    adaptive,
     header,
     themeCfg = {
-      theme: TabularTheme,
+      theme: GridAnalysisTheme,
     },
     isLoading,
     onRowCellClick,
@@ -46,9 +46,9 @@ export const TabularSheet = (props: BaseSheetProps) => {
 
   const getCellHeight = (): number => {
     const { data } = dataCfg;
-    const height = options?.style?.cellCfg?.height;
+    const height = options.style?.cellCfg?.height;
     if (height) return height;
-    const lineHeight = options?.style?.cellCfg?.lineHeight || CELL_LINE_HEIGHT;
+    const lineHeight = options.style?.cellCfg?.lineHeight || CELL_LINE_HEIGHT;
     if (isEmpty(data)) return lineHeight;
     const lengths = [];
     // TODO 还没想清楚需不需要找最大的，需不需要限定都一样的个数，先让子弹飞一飞
@@ -66,7 +66,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
   const buildOptions = (): S2Options => {
     return getSafetyOptions(
       merge(options, {
-        dataCell: TabularDataCell,
+        dataCell: GridAnalysisDataCell,
         style: {
           colCfg: {
             colWidthType: 'adaptive',
@@ -178,7 +178,12 @@ export const TabularSheet = (props: BaseSheetProps) => {
   }, []);
 
   // handle box size change and resize
-  useResizeEffect(container, ownSpreadsheet, adaptive, options);
+  useResizeEffect({
+    spreadsheet: ownSpreadsheet,
+    container,
+    adaptive,
+    options,
+  });
 
   useEffect(() => {
     update(setDataCfg, setOptions);
@@ -192,7 +197,7 @@ export const TabularSheet = (props: BaseSheetProps) => {
     update(() => {
       ownSpreadsheet.setThemeCfg(themeCfg);
     });
-  }, [JSON.stringify(themeCfg)]);
+  }, [themeCfg]);
 
   useEffect(() => {
     if (!ownSpreadsheet) return;
@@ -211,4 +216,8 @@ export const TabularSheet = (props: BaseSheetProps) => {
   );
 };
 
-TabularSheet.displayName = 'TabularSheet';
+GridAnalysisSheet.defaultProps = {
+  adaptive: false,
+  options: {} as S2Options,
+};
+GridAnalysisSheet.displayName = 'GridAnalysisSheet';

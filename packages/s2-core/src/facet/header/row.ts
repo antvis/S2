@@ -74,7 +74,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected offset() {
-    const { scrollY, scrollX, position, seriesNumberWidth } = this.headerConfig;
+    const { scrollX, scrollY, position, seriesNumberWidth } = this.headerConfig;
     // 向右多移动的seriesNumberWidth是序号的宽度
     translateGroup(
       this,

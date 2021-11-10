@@ -8,6 +8,7 @@ import {
 } from '@/common/constant';
 import {
   FormatResult,
+  ResizeArea,
   S2CellType,
   S2Theme,
   StateShapeLayer,
@@ -130,11 +131,11 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
 
-  protected getStyle(name?: keyof S2Theme) {
+  public getStyle(name?: keyof S2Theme) {
     return this.theme[name || this.cellType];
   }
 
-  protected getResizeAreaStyle() {
+  protected getResizeAreaStyle(): ResizeArea {
     return this.getStyle('resizeArea');
   }
 
@@ -144,7 +145,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   }
 
   // get content area that exclude padding
-  protected getContentArea() {
+  public getContentArea() {
     const { padding } = this.getStyle()?.cell || this.theme.dataCell.cell;
     return getContentArea(this.getCellArea(), padding);
   }

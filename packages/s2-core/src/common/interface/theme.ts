@@ -120,7 +120,7 @@ export interface ResizeArea {
   /* 参考线颜色 */
   guideLineColor?: string;
   /* 参考线间隔 */
-  guideLineDash?: number;
+  guideLineDash?: number[];
   /* 热区背景色透明度 */
   backgroundOpacity?: number;
   /* 交互态 */
@@ -178,6 +178,8 @@ export interface DefaultCellTheme {
   icon?: IconTheme;
   /* 序号列宽 */
   seriesNumberWidth?: number;
+  /* 额外属性字段 */
+  [key: string]: any;
 }
 
 type CellThemes = {

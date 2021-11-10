@@ -32,8 +32,8 @@ export interface Cfg {
   viewportHeight: number;
 
   // 滚动距离
-  offset?: number;
   scrollX?: number;
+  scrollY?: number;
   hScrollX?: number;
 
   // 角边宽度
