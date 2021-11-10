@@ -1,218 +1,178 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { merge } from 'lodash';
-import {
-  SheetComponent,
-  DataCell,
-  CornerCell,
-  measureTextWidth,
-} from '@antv/s2';
+import insertCss from 'insert-css';
+import { SheetComponent, ColCell } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
-// 进度条
-const PROGRESS_BAR = {
-  width: 80,
-  height: 16,
-  innerHeight: 10,
+const PALETTE_COLORS = [
+  {
+    limit: -50,
+    background: 'rgb(62,144,109)',
+    color: 'black',
+  },
+  {
+    limit: -35,
+    background: 'rgb(74,181,120)',
+    color: 'black',
+  },
+  {
+    limit: -20,
+    background: 'rgb(112,196,121)',
+    color: 'black',
+  },
+  {
+    limit: -5,
+    background: 'rgb(150,212,164)',
+    color: 'black',
+  },
+  {
+    limit: 10,
+    background: 'rgb(190,226,188)',
+    color: 'black',
+  },
+  {
+    limit: 25,
+    background: 'rgb(238,229,229)',
+    color: 'black',
+  },
+  {
+    limit: 40,
+    background: 'rgb(243,187,161)',
+    color: 'white',
+  },
+  {
+    limit: 55,
+    background: 'rgb(238,154,119)',
+    color: 'white',
+  },
+  {
+    limit: 70,
+    background: 'rgb(235,123,85)',
+    color: 'white',
+  },
+  {
+    limit: 85,
+    background: 'rgb(230,91,55)',
+    color: 'white',
+  },
+  {
+    limit: 100,
+    background: 'rgb(214,61,33)',
+    color: 'white',
+  },
+];
+
+const GROUP_COLOR = {
+  'people-group-a': 'rgb(99,133,241)',
+  'people-group-b': 'rgb(116,213,157)',
 };
 
-// 期望线
-const EXPECTED_LINE = {
-  width: 1,
-  height: 20,
-  color: '#000',
-};
+const GROUP_SEPARATOR_WIDTH = 4;
 
-// 当前进度状态颜色
-const STATUS_COLOR = {
-  healthy: '#30BF78',
-  late: '#FAAD14',
-  danger: '#F4664A',
-};
+const getFormatter =
+  (enablePrefix = false) =>
+  (value) => {
+    const prefix = enablePrefix && value > 0 ? '+' : '';
+    const suffix = value !== 0 ? '%' : '';
+    return `${prefix}${value}${suffix}`;
+  };
 
-const DERIVE_COLOR = {
-  up: '#F4664A',
-  down: '#30BF78',
-};
+const getTargetColor = (value) =>
+  PALETTE_COLORS.find((color) => color.limit >= value) ??
+  PALETTE_COLORS[PALETTE_COLORS.length - 1];
 
-// 间距
-const PADDING = 10;
-
-function getStatusColorByProgress(realProgress, expectedProgress) {
-  const leftWorker = expectedProgress - realProgress;
-  if (leftWorker <= 0.1) {
-    return STATUS_COLOR.healthy;
-  }
-  if (leftWorker > 0.1 && leftWorker <= 0.3) {
-    return STATUS_COLOR.late;
-  }
-  return STATUS_COLOR.danger;
-}
-
-const CONTAINER_COLOR = '#E9E9E9';
-
-class KpiStrategyCornelCell extends CornerCell {
-  drawCellText() {
-    if (this.meta.cornerType === 'col') {
-      return;
-    }
-    super.drawCellText();
-  }
-
-  getFormattedFieldValue() {
-    const text = '指标';
-    return { formattedValue: text, value: text };
-  }
-}
-
-class KpiStrategyDataCell extends DataCell {
-  // 重写数值单元格
+class CustomColCell extends ColCell {
   initCell() {
     super.initCell();
-    // 在绘制完原本的单元格后, 再绘制进度条和衍生指标
-    this.renderProgressBar();
-    this.renderDeriveValue();
+    this.renderGroupSeparator();
   }
 
-  // 如果是进度, 格式化为百分比 (只做 demo 示例, 请根据实际情况使用)
-  getFormattedFieldValue() {
-    const { data } = this.meta;
-    if (!data || !data.isProgress) {
-      return super.getFormattedFieldValue();
-    }
-    const formattedValue = `${data.value * 100} %`;
-    return { formattedValue, value: data.value };
-  }
-
-  // 绘制衍生指标
-  renderDeriveValue() {
-    // 通过 this.meta 拿到当前单元格的有效信息
-    const { x, width, data } = this.meta;
-    if (!data || data.isExtra) {
+  renderGroupSeparator() {
+    const { label, isLeaf } = this.meta;
+    // 只需要为 A B 群组绘制标识
+    if (!isLeaf || label === 'people-group-delta') {
       return;
     }
-    const value = data?.compare ?? '';
-    const isDown = value.startsWith('-');
-    const color = isDown ? DERIVE_COLOR.down : DERIVE_COLOR.up;
-    const displayValue = value.replace('-', '');
-    const text = isDown ? `↓ ${displayValue}` : `↑ ${displayValue}`;
-    const textStyle = {
-      fill: color,
-      fontSize: 12,
-    };
-    // 获取当前文本坐标
-    const { maxY } = this.textShape.getBBox();
-    // 获取当前文本宽度
-    const textWidth = measureTextWidth(text, textStyle);
-    // 衍生指标靠右显示
-    const textX = x + width - textWidth - PADDING;
-    // 衍生指标和数值对齐显示
-    const textY = maxY;
 
-    this.addShape('text', {
-      attrs: {
-        x: textX,
-        y: textY,
-        text,
-        ...textStyle,
-      },
-    });
-  }
-
-  // 绘制子弹进度条
-
-  renderProgressBar() {
-    const { x, y, width, height, data } = this.meta;
-    if (!data || !data.isProgress) {
-      return;
-    }
-    const currentProgress = data.value;
-    const expectedProgress = data.expectedValue;
-
-    const currentProgressWidth = Math.min(
-      PROGRESS_BAR.width * currentProgress,
-      PROGRESS_BAR.width,
-    );
-
-    // 总进度条
+    const fill = GROUP_COLOR[label];
+    const { x, y, height } = this.textShape.getBBox();
     this.addShape('rect', {
       attrs: {
-        x: x + width - PROGRESS_BAR.width - PADDING,
-        y: y + (height - PROGRESS_BAR.height) / 2,
-        width: PROGRESS_BAR.width,
-        height: PROGRESS_BAR.height,
-        fill: CONTAINER_COLOR,
-      },
-    });
-    // 当前进度条
-    this.addShape('rect', {
-      attrs: {
-        x: x + width - PROGRESS_BAR.width - PADDING,
-        y: y + (height - PROGRESS_BAR.innerHeight) / 2,
-        width: currentProgressWidth,
-        height: PROGRESS_BAR.innerHeight,
-        fill: getStatusColorByProgress(currentProgress, expectedProgress),
-      },
-    });
-    // 期望线
-    this.addShape('line', {
-      attrs: {
-        x1:
-          x +
-          width -
-          PROGRESS_BAR.width +
-          PROGRESS_BAR.width * expectedProgress,
-        y1: y + (height - EXPECTED_LINE.height) / 2,
-        x2:
-          x +
-          width -
-          PROGRESS_BAR.width +
-          PROGRESS_BAR.width * expectedProgress,
-        y2: y + (height - EXPECTED_LINE.height) / 2 + EXPECTED_LINE.height,
-        stroke: EXPECTED_LINE.color,
-        lineWidth: EXPECTED_LINE.width,
-        opacity: 0.25,
+        x: x - GROUP_SEPARATOR_WIDTH * 1.5,
+        y,
+        height,
+        width: GROUP_SEPARATOR_WIDTH,
+        fill,
       },
     });
   }
 }
 
-fetch('../data/kpi-strategy.json')
+const PaletteLegend = () => {
+  return (
+    <div className="palette-legend">
+      <div className="palette-limit">-56%</div>
+      {PALETTE_COLORS.map((color) => (
+        <span
+          key={color.background}
+          className="palette-color"
+          style={{ background: color.background }}
+        />
+      ))}
+      <div className="palette-limit">96.32%</div>
+    </div>
+  );
+};
+
+fetch('../data/multiple-people-comparison.json')
   .then((res) => res.json())
-  .then(({ data, totalData }) => {
+  .then(({ data }) => {
     const s2DataConfig = {
       fields: {
-        rows: ['type', 'subType'],
-        columns: ['name'],
-        values: ['value'],
+        rows: ['type', 'job'],
+        columns: ['age', 'city'],
+        values: ['people-group-a', 'people-group-b', 'people-group-delta'],
         valueInCols: true,
       },
       meta: [
         {
           field: 'type',
-          name: '指标',
+          name: '类别',
         },
         {
-          field: 'name',
-          name: '日期',
-          formatter: (value) => value ?? '-',
+          field: 'job',
+          name: '职业',
         },
         {
-          field: 'subType',
-          name: '子类别',
+          field: 'age',
+          name: '年龄分布',
         },
         {
-          field: 'value',
+          field: 'city',
+          name: '所在城市',
+        },
+        {
+          field: 'people-group-a',
+          name: 'A人群',
+          formatter: getFormatter(),
+        },
+        {
+          field: 'people-group-b',
+          name: 'B人群',
+          formatter: getFormatter(),
+        },
+        {
+          field: 'people-group-delta',
+          name: '差值',
+          formatter: getFormatter(true),
         },
       ],
       data,
-      totalData,
     };
 
     const s2options = {
-      width: 800,
+      width: 600,
       height: 600,
-      hierarchyType: 'tree',
       tooltip: {
         operation: {
           trend: true,
@@ -221,47 +181,96 @@ fetch('../data/kpi-strategy.json')
       },
       interaction: {
         selectedCellsSpotlight: true,
-        hoverHighlight: true,
+        hoverHighlight: false,
       },
-      // 默认数值挂列头, 会同时显示列头和数值, 隐藏数值列, 使其列头只展示日期, 更美观
       style: {
-        colCfg: {
-          hideMeasureColumn: true,
-        },
         cellCfg: {
-          width: 150,
+          width: 100,
         },
       },
-      // 覆盖默认角头单元格, 使其在树状结构下只显示 [指标] 两个值
-      cornerCell: (...args) => new KpiStrategyCornelCell(...args),
-      // 覆盖默认数值单元格, 额外绘制衍生指标和子弹图
-      dataCell: (viewMeta) =>
-        new KpiStrategyDataCell(viewMeta, viewMeta.spreadsheet),
+      conditions: {
+        text: [
+          {
+            field: 'people-group-delta',
+            mapping(value) {
+              const { color } = getTargetColor(value);
+              return {
+                fill: color,
+              };
+            },
+          },
+        ],
+        background: [
+          {
+            field: 'people-group-delta',
+            mapping(value) {
+              const { background } = getTargetColor(value);
+              return {
+                fill: background,
+              };
+            },
+          },
+        ],
+      },
+      colCell(viewMeta, spreadsheet, headerConfig) {
+        return new CustomColCell(viewMeta, spreadsheet, headerConfig);
+      },
     };
 
-    // 覆盖默认主题, 让单元格文字靠左显示
     const theme = {
       dataCell: {
         // 父节点
         bolderText: {
-          textAlign: 'left',
+          fill: 'rgb(84,84,84)',
         },
         // 子节点
         text: {
-          textAlign: 'left',
+          fill: 'rgb(84,84,84)',
         },
       },
     };
 
     ReactDOM.render(
-      <SheetComponent
-        dataCfg={s2DataConfig}
-        options={s2options}
-        sheetType="pivot"
-        themeCfg={{
-          theme: merge({}, theme),
-        }}
-      />,
+      <div className="root">
+        <PaletteLegend />
+        <SheetComponent
+          dataCfg={s2DataConfig}
+          options={s2options}
+          sheetType="pivot"
+          themeCfg={{ theme }}
+        />
+      </div>,
       document.getElementById('container'),
     );
   });
+
+insertCss(`
+  .root{
+    display: inline-block;
+  }
+
+  .palette-legend {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .palette-color {
+    width: 12px;
+    height: 12px;
+  }
+
+  .palette-limit{
+    font-size: 12px;
+    color: rgb(94,94,94);
+  }
+
+  .palette-color + .palette-limit {
+    margin-left: 5px;
+  }
+
+  .palette-limit + .palette-color {
+    margin-left: 5px;
+  }
+`);
