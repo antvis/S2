@@ -46,7 +46,5 @@ fetch(
       hierarchyType: 'customTree',
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2options);
-
-    // 使用
     s2.render();
   });
