@@ -83,6 +83,10 @@ describe('List Table Core Data Process', () => {
         },
       }),
       assembleOptions({
+        interaction: {
+          enableCopy: true,
+          copyWithFormat: true,
+        },
         showSeriesNumber: true,
       }),
     );
