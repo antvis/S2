@@ -71,7 +71,6 @@ const getOptions = () => {
       colCfg: {
         widthByFieldValue: {},
         heightByField: {},
-        colWidthType: 'adaptive',
         hideMeasureColumn: false,
       },
       cellCfg: {
