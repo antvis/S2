@@ -854,7 +854,7 @@ export abstract class BaseFacet {
       each(add, ([i, j]) => {
         const viewMeta = this.layoutResult.getCellMeta(j, i);
         if (viewMeta) {
-          const cell = this.cfg.dataCell(viewMeta, this.cfg.spreadsheet);
+          const cell = this.cfg.dataCell(viewMeta);
           // mark cell for removing
           cell.set('name', `${i}-${j}`);
           this.addCell(cell);
