@@ -3,18 +3,11 @@ import debounceRender from 'react-debounce-render';
 import { BaseSheet } from './sheets/base-sheet';
 import { TabularSheet } from './sheets/tabular-sheet';
 import { TableSheet } from './sheets/table-sheet';
-export type {
-  SpreadsheetProps,
-  SheetType,
-  PartDrillDown,
-  PartDrillDownInfo,
-  DrillDownProps,
-  SwitcherProps,
-  AdvancedSortProps,
-} from './sheets/interface';
+import { SpreadsheetProps } from './sheets/interface';
 export { DrillDown } from './drill-down';
 export { Switcher } from './switcher';
 export { AdvancedSort } from './advanced-sort';
+export * from './sheets';
 
 export const SheetComponent: React.FC<SpreadsheetProps> = debounceRender(
   (props: SpreadsheetProps) => {

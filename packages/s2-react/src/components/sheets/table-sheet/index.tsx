@@ -16,6 +16,7 @@ import {
   getBaseCellData,
   getSafetyDataConfig,
   getSafetyOptions,
+  TableSheet as BaseTableSheet,
 } from '@antv/s2';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
@@ -24,7 +25,6 @@ import {
   usePaginationEffect,
 } from '@/components/sheets/hooks';
 import { S2Pagination } from '@/components/pagination';
-import { TableSheet as BaseTableSheet } from '@/components/sheets/table-sheet';
 
 export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
