@@ -1,3 +1,27 @@
+# [@antv/s2-v1.0.0-beta.9](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.8...@antv/s2-v1.0.0-beta.9) (2021-11-11)
+
+
+### Bug Fixes
+
+* add v scrollbar ([#685](https://github.com/antvis/S2/issues/685)) ([b5a1137](https://github.com/antvis/S2/commit/b5a113734b8138c5c0c680ca7245ad4ac2982a7d))
+* **copy:** copy with format data ([#674](https://github.com/antvis/S2/issues/674)) ([9dc1b20](https://github.com/antvis/S2/commit/9dc1b20d8c6e550939c7a9c38e243ec7af7bed01))
+* **table:** fix expand column icon cover text and sort icon ([#677](https://github.com/antvis/S2/issues/677)) ([b2e1658](https://github.com/antvis/S2/commit/b2e16585c3cf4995d8b11facfac3d11d7c024324))
+
+
+### Features
+
+* ♻️ refactor the layout logic and provide tree layout-widths ([#682](https://github.com/antvis/S2/issues/682)) ([ac7dd6e](https://github.com/antvis/S2/commit/ac7dd6e1203d3f81ce7faf0ccad0557a944518ee))
+
+
+### Performance Improvements
+
+* **sa:** fix console.time & sa performance ([#672](https://github.com/antvis/S2/issues/672)) ([cb5990f](https://github.com/antvis/S2/commit/cb5990f81f8c9b4da674eebdb0c49bb8eaa4f19d))
+
+
+### Reverts
+
+* Revert "chore(release): 🔖 publish the version 1.0.0-beta.9 (#683)" (#687) ([ba86fc2](https://github.com/antvis/S2/commit/ba86fc288aa9b7c88b696aeab3bec8a3c5568bb4)), closes [#683](https://github.com/antvis/S2/issues/683) [#687](https://github.com/antvis/S2/issues/687)
+
 # [@antv/s2-v1.0.0-beta.8](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.7...@antv/s2-v1.0.0-beta.8) (2021-11-10)
 
 
