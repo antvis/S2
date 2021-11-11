@@ -13,6 +13,7 @@ order: 5
 | hoverHighlight | `boolean` |   | `true` | 鼠标悬停时高亮当前单元格，以及所对应的行头，列头 |
 | hiddenColumnFields | `string[]` |  |  | 隐藏列 （明细表有效） |
 | enableCopy | `boolean` |   | `false` | 是否允许复制 |
+| copyWithFormat | `boolean` |   | `false` | 是否使用 field format 格式复制 |
 | customInteractions | [CustomInteraction[]](#custominteraction) |   |  | 自定义交互 |
 | scrollSpeedRatio | [ScrollRatio](/zh/docs/api/general/S2Options#scrollratio)|  | |  用于控制滚动速率，分水平和垂直两个方向，默认为 1 |
 | autoResetSheetStyle | `boolean` | | `true` |  用于控制点击表格外区域和按下 esc 键时是否重置交互状态 |
