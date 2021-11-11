@@ -110,12 +110,12 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- selected -------------------
           selected: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- unselected -------------------
           unselected: {
@@ -178,12 +178,12 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: basicColors[4],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- selected -------------------
           selected: {
             backgroundColor: basicColors[4],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- unselected -------------------
           unselected: {
@@ -212,7 +212,7 @@ export const getTheme = (
         fontWeight: isWindows() ? 'bold' : '520',
         fill: basicColors[13],
         opacity: 1,
-        textAlign: 'center',
+        textAlign: 'right',
         textBaseline: 'middle',
       },
       text: {
@@ -221,7 +221,7 @@ export const getTheme = (
         fontWeight: 'normal',
         fill: basicColors[13],
         opacity: 1,
-        textAlign: 'center',
+        textAlign: 'right',
         textBaseline: 'middle',
       },
       cell: {
@@ -249,19 +249,19 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- keep hover -------------------
           hoverFocus: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
             borderColor: basicColors[14],
             borderOpacity: 1,
           },
           // -------------- selected -------------------
           selected: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- unselected -------------------
           unselected: {
@@ -318,10 +318,10 @@ export const getTheme = (
     // ------------- split line -----------------
     splitLine: {
       horizontalBorderColor: basicColors[12],
-      horizontalBorderColorOpacity: 1,
+      horizontalBorderColorOpacity: 0.2,
       horizontalBorderWidth: 2,
       verticalBorderColor: basicColors[11],
-      verticalBorderColorOpacity: 1,
+      verticalBorderColorOpacity: 0.25,
       verticalBorderWidth: 2,
       showShadow: true,
       shadowWidth: 8,

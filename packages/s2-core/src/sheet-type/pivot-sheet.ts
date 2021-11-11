@@ -62,14 +62,14 @@ export class PivotSheet extends SpreadSheet {
    * For now contains row header in ListSheet mode by default
    */
   public isScrollContainsRowHeader(): boolean {
-    return !this.isFreezeRowHeader();
+    return !this.isFrozenRowHeader();
   }
 
   /**
    * Scroll Freeze Row Header
    */
-  public isFreezeRowHeader(): boolean {
-    return this.options?.freezeRowHeader;
+  public isFrozenRowHeader(): boolean {
+    return this.options?.frozenRowHeader;
   }
 
   /**

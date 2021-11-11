@@ -44,7 +44,7 @@ const getOptions = () => {
     hierarchyType: 'tree',
     hierarchyCollapse: false,
     showSeriesNumber: false,
-    freezeRowHeader: false,
+    frozenRowHeader: false,
     showDefaultHeaderActionIcon: false,
     totals: {
       row: {

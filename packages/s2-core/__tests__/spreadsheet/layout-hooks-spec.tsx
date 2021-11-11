@@ -161,7 +161,7 @@ const getOptions = () => {
     height: 600,
     hierarchyType: 'grid',
     hierarchyCollapse: false,
-    freezeRowHeader: true,
+    frozenRowHeader: true,
     style: {
       treeRowsWidth: 120,
       collapsedRows: {},

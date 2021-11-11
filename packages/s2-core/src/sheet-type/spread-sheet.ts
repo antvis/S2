@@ -223,7 +223,7 @@ export abstract class SpreadSheet extends EE {
   /**
    * Scroll Freeze Row Header
    */
-  public abstract isFreezeRowHeader(): boolean;
+  public abstract isFrozenRowHeader(): boolean;
 
   /**
    * Check if is pivot mode

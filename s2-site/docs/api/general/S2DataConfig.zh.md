@@ -66,3 +66,5 @@ array object **必选**,_default：null_
 | formatter | `(v: any) => string` | | | 格式化<br/>数值度量：一般用于格式化数字<br/>文本度量：一般用于做字段枚举值的别名 |
 
 `markdown:docs/common/sort-params.zh.md`
+
+`markdown:docs/common/custom/customTreeItem.zh.md`
