@@ -4,11 +4,11 @@ import { get } from 'lodash';
 import '@antv/s2/dist/s2.min.css';
 
 // 自定义角头单元格，实现特有功能
-class CustomCornerHeader<Group> extends Group {
-  protected node: Group;
-  protected backgroundShape: IShape;
-  protected textShape: IShape;
-  public constructor(node: Group) {
+class CustomCornerHeader extends Group {
+  protected node;
+  protected backgroundShape;
+  protected textShape;
+  public constructor(node) {
     super({});
     this.node = node;
     this.initCornerHeader();
