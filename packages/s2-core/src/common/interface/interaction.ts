@@ -6,7 +6,6 @@ import { HeaderCell } from '@/cell/header-cell';
 import { Node } from '@/index';
 import { BaseEvent } from '@/interaction/base-event';
 import { SpreadSheet } from '@/sheet-type';
-import { RootInteraction } from '@/interaction/root';
 
 export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | DataCell

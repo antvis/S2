@@ -1,10 +1,9 @@
 export { splitTotal } from './data-set-operate';
 export { auto } from './formatter';
-export { generateId } from './layout';
+export * from './layout';
 export * from './text';
 export * from './export/index';
-export * from './interaction/merge-cells';
-export * from './interaction/formatter';
+export * from './interaction';
 export * from './g-renders';
 export * from './merge';
 export * from './is-mobile';

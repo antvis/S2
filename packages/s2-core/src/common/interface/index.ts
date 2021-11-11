@@ -9,6 +9,7 @@ export * from './node';
 export * from './resize';
 export * from './s2DataConfig';
 export * from './s2Options';
+export * from './scroll';
 export * from './store';
 export * from './theme';
 export * from './tooltip';

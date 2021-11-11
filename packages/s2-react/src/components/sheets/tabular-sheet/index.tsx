@@ -17,10 +17,6 @@ import { Header } from '../../header';
 import { BaseSheetProps } from '../interface';
 import { TabularDataCell } from './tabular-data-cell';
 import { TabularTheme } from './tabular-theme';
-// import { getBaseCellData } from '@/utils/interaction/formatter';
-// import { S2Options } from '@/common/interface';
-// import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
-// import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { useResizeEffect } from '@/components/sheets/hooks';
 
 export const TabularSheet = (props: BaseSheetProps) => {
