@@ -32,7 +32,7 @@ class CustomColCell extends ColCell {
 
   getCellArea() {
     const { x, y, height, width, parent } = this.meta;
-    const tagHeight = 30; // 指标高度
+    const tagHeight = height; // 指标高度
     const tagWidth = 120; // 指标宽度
     if (parent?.id === 'root') {
       return {
@@ -103,7 +103,7 @@ class CustomColCell extends ColCell {
       this.addShape('line', {
         attrs: {
           x1: x,
-          y1: y + 10,
+          y1: y,
           x2: x,
           y2: y + height,
           stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
@@ -259,8 +259,9 @@ class CustomDataCell extends DataCell {
   }
 
   drawRightBorder() {
-    const { x, y, width, valueField, colIndex, height } = this.meta;
-    const valueLength = this.spreadsheet.dataCfg.fields.values.length;
+    const { x, y, width, valueField, colIndex, height, spreadsheet } =
+      this.meta;
+    const valueLength = spreadsheet.dataCfg.fields.values.length;
     const currentConfig = this.lineConfig[valueField];
     const {
       horizontalBorderColor,
@@ -280,7 +281,11 @@ class CustomDataCell extends DataCell {
         },
       });
     }
-    if ((colIndex + 1) % valueLength === 0) {
+    const tagLength = [...(spreadsheet.dataSet.colPivotMeta || [])].length;
+    if (
+      (colIndex + 1) % valueLength === 0 &&
+      colIndex + 1 !== tagLength * valueLength  // 最后一列不加line
+    ) {
       this.addShape('line', {
         attrs: {
           x1: x + width,
@@ -388,6 +393,17 @@ class CustomCornelCell extends CornerCell {
       return;
     }
     super.drawCellText();
+  }
+  drawBackgroundShape() {
+    const { backgroundColorOpacity, backgroundColor } = this.getStyle().cell;
+    const attrs = {
+      ...this.getCellArea(),
+      fill: this.meta.cornerType === 'col' ? '#FFFFFF' : backgroundColor,
+      opacity: 1,
+    };
+    this.backgroundShape = this.addShape('rect', {
+      attrs,
+    });
   }
 }
 
