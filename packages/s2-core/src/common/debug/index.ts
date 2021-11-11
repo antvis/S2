@@ -22,9 +22,9 @@ export class DebuggerUtil {
 
   public debugCallback = (info: string, callback: () => void) => {
     if (this.debug) {
-      const start = window.performance.now();
+      const start = performance.now();
       callback();
-      const end = window.performance.now();
+      const end = performance.now();
       console.log(info, `${end - start} ms`);
     } else {
       callback();
