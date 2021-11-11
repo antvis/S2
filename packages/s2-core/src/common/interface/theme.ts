@@ -180,11 +180,9 @@ export interface DefaultCellTheme {
   icon?: IconTheme;
   /* 序号列宽 */
   seriesNumberWidth?: number;
-  /* 额外属性字段 */
-  [key: string]: any;
 }
 
-type CellThemes = {
+export type CellThemes = {
   [K in CellTypes]?: DefaultCellTheme;
 };
 
@@ -199,8 +197,6 @@ export interface S2Theme extends CellThemes {
   prepareSelectMask?: InteractionStateTheme;
   /* 画布背景底色 */
   background?: Background;
-  /* 额外属性字段 */
-  [key: string]: any;
 }
 
 export type ThemeName = 'default' | 'colorful' | 'gray';

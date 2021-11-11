@@ -7,6 +7,7 @@ import {
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
 import {
+  CellThemes,
   FormatResult,
   ResizeArea,
   S2CellType,
@@ -131,7 +132,9 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
 
-  public getStyle(name?: keyof S2Theme): S2Theme[keyof S2Theme] {
+  public getStyle<K extends keyof S2Theme = keyof CellThemes>(
+    name?: K,
+  ): S2Theme[K] {
     return this.theme[name || this.cellType];
   }
 
