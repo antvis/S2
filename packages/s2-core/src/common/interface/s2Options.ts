@@ -39,6 +39,8 @@ export interface InteractionOptions {
   readonly hoverHighlight?: boolean;
   // enable Command + C to copy spread data
   readonly enableCopy?: boolean;
+  // copy with filed format
+  readonly copyWithFormat?: boolean;
   // auto reset sheet style when click outside or press ecs key, default true
   readonly autoResetSheetStyle?: boolean;
   readonly hiddenColumnFields?: string[];

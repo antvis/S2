@@ -22,7 +22,7 @@ const format = (cell: S2CellType, spreadsheet: SpreadSheet) => {
     // format by value field
     formatter = spreadsheet.dataSet.getFieldFormatter(meta.valueField);
   }
-  if (formatter) {
+  if (formatter && spreadsheet.options.interaction.copyWithFormat) {
     return formatter(meta.fieldValue);
   }
   return meta.fieldValue;
