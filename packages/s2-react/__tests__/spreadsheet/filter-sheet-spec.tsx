@@ -3,10 +3,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { Button, Space } from 'antd';
-import { S2DataConfig, S2Event, S2Options, SpreadSheet } from '@antv/s2';
+import {
+  S2DataConfig,
+  S2Event,
+  S2Options,
+  SpreadSheet,
+  TableSheet,
+} from '@antv/s2';
 import { getContainer, getMockData } from '../util/helpers';
 import { SheetComponent } from '@/components/index';
-import { TableSheet } from '@/components/sheets/table-sheet';
 
 import 'antd/dist/antd.min.css';
 const data = getMockData('../data/tableau-supermarket.csv');

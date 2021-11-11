@@ -11,12 +11,12 @@ import {
   S2Options,
   SpreadSheet,
   S2WheelEvent,
+  TableSheet,
 } from '@antv/s2';
 import { getContainer, getMockData, sleep } from '../util/helpers';
 import { Switcher } from '@/components/switcher';
 import { SwitcherFields } from '@/components/switcher/interface';
 import { SheetComponent } from '@/components/index';
-import { TableSheet } from '@/components/sheets/table-sheet';
 
 let s2: TableSheet;
 

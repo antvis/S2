@@ -1,9 +1,8 @@
 /* eslint-disable no-console */
 import { act } from 'react-dom/test-utils';
-import { S2Event } from '@antv/s2';
+import { S2Event, TableSheet } from '@antv/s2';
 import { data } from '../data/mock-dataset.json';
 import { getContainer } from '../util/helpers';
-import { TableSheet } from '@/components/sheets/table-sheet';
 
 describe('hidden columns spec', () => {
   act(() => {
