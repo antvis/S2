@@ -14,7 +14,7 @@ import { BaseFacet } from 'src/facet/base-facet';
 import { getDataCellId } from 'src/utils/cell/data-cell';
 import {
   EXTRA_FIELD,
-  LAYOUT_WIDTH_TYPES,
+  LayoutWidthTypes,
   S2Event,
   VALUE_FIELD,
 } from '@/common/constant';
@@ -282,7 +282,7 @@ export class PivotFacet extends BaseFacet {
     if (userDragWidth) {
       return userDragWidth;
     }
-    if (this.spreadsheet.getLayoutWidthType() === LAYOUT_WIDTH_TYPES.Compact) {
+    if (this.spreadsheet.getLayoutWidthType() === LayoutWidthTypes.Compact) {
       // compat
       const multiData = dataSet.getMultiData(
         col.query,
@@ -518,7 +518,7 @@ export class PivotFacet extends BaseFacet {
     if (userDragWidth) {
       return userDragWidth;
     }
-    if (spreadsheet.getLayoutWidthType() !== LAYOUT_WIDTH_TYPES.Adaptive) {
+    if (spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Adaptive) {
       // compact or colAdaptive
       return this.getCompactGridRowWidth(node);
     }

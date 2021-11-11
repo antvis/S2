@@ -29,7 +29,6 @@ import {
   TargetCellInfo,
   DEFAULT_DATA_CONFIG,
   S2Event,
-  LayoutWidthType,
 } from '@/index';
 import 'antd/dist/antd.min.css';
 import { customMerge } from '@/utils/merge';
@@ -37,7 +36,7 @@ import { customMerge } from '@/utils/merge';
 export const assembleOptions = (...options: Partial<S2Options>[]): S2Options =>
   customMerge(
     DEFAULT_OPTIONS,
-    { debug: true, width: 1000, height: 600 },
+    { debug: true, width: 600, height: 600 },
     ...options,
   );
 

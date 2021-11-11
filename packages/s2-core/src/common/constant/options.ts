@@ -1,8 +1,14 @@
 import { S2Options } from '../interface/s2Options';
 import { Style } from '@/common/interface/basic';
 
+export enum LayoutWidthTypes {
+  Adaptive = 'adaptive',
+  ColAdaptive = 'colAdaptive',
+  Compact = 'compact',
+}
+
 export const DEFAULT_STYLE: Readonly<Style> = {
-  layoutWidthType: 'adaptive',
+  layoutWidthType: LayoutWidthTypes.Adaptive,
   treeRowsWidth: 120,
   collapsedRows: {},
   collapsedCols: {},
@@ -66,9 +72,3 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   frozenTrailingColCount: 0,
   hdAdapter: true,
 };
-
-export enum LAYOUT_WIDTH_TYPES {
-  Adaptive = 'adaptive',
-  ColAdaptive = 'colAdaptive',
-  Compact = 'compact',
-}

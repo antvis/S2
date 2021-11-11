@@ -25,7 +25,7 @@ import {
 } from './utils';
 import { CornerBBox } from './bbox/cornerBBox';
 import {
-  LAYOUT_WIDTH_TYPES,
+  LayoutWidthTypes,
   S2Event,
   SERIES_NUMBER_FIELD,
 } from '@/common/constant';
@@ -246,7 +246,7 @@ export class TableFacet extends BaseFacet {
   private calculateColWidth(colLeafNodes: Node[]) {
     const { rowCfg, cellCfg } = this.cfg;
     let colWidth;
-    if (this.spreadsheet.getLayoutWidthType() !== LAYOUT_WIDTH_TYPES.Compact) {
+    if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
       colWidth = this.getAdaptiveColWidth(colLeafNodes);
     } else {
       colWidth = -1;
