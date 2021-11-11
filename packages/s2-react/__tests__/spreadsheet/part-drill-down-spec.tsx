@@ -5,12 +5,16 @@ import { act } from 'react-dom/test-utils';
 import { Switch, Button, Layout } from 'antd';
 const { Header, Sider, Content } = Layout;
 import { forEach, merge, random } from 'lodash';
-import { S2DataConfig, S2Options, DataType } from '@antv/s2';
+import {
+  S2DataConfig,
+  S2Options,
+  DataType,
+  HeaderActionIconProps,
+} from '@antv/s2';
 import { data as originData, meta } from '../data/mock-dataset.json';
 import { getContainer } from '../util/helpers';
 import {
   SheetComponent,
-  HeaderActionIconProps,
   PartDrillDown,
   PartDrillDownInfo,
 } from '@/components/index';
