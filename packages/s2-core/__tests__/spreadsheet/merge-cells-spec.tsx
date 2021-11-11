@@ -59,7 +59,7 @@ const baseOptions = {
   hierarchyType: 'grid',
   hierarchyCollapse: false,
   showSeriesNumber: true,
-  freezeRowHeader: false,
+  frozenRowHeader: false,
   valueInCols: true,
   conditions: {
     text: [],

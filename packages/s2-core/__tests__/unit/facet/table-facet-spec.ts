@@ -37,7 +37,7 @@ jest.mock('src/sheet-type', () => {
         isTableMode: jest.fn().mockReturnValue(true),
         isPivotMode: jest.fn(),
         getTotalsConfig: jest.fn(),
-        isColAdaptive: jest.fn().mockRejectedValue('adaptive'),
+        getLayoutWidthType: jest.fn().mockRejectedValue('adaptive'),
         emit: jest.fn(),
         isScrollContainsRowHeader: jest.fn(),
         isHierarchyTreeType: jest.fn(),

@@ -97,8 +97,6 @@ export const ExpandColIcon = `<?xml version="1.0" encoding="UTF-8"?>
     </g>
 </svg>`;
 
-export const MinusSquare = `<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1601257524828" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="20438" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16"><defs><style type="text/css"></style></defs><path d="M888 64H136q-30.016 0-51.008 20.992T64 136v752.992q0 28.992 20.992 50.496t51.008 21.504h752.992q28.992 0 50.496-21.504t21.504-50.496V136q0-30.016-21.504-51.008T888 64zM768 512.992q0 15.008-11.008 25.504t-24.992 10.496H289.984q-14.016 0-24.992-10.496t-11.008-25.504q0-15.008 11.008-25.504t24.992-10.496h442.016q14.016 0 24.992 10.496t11.008 25.504z" fill="" p-id="20439"></path></svg>`;
-
 export const Minus = `<svg t="1557140120188" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
 xmlns="http://www.w3.org/2000/svg" p-id="16909" xmlns:xlink="http://www.w3.org/1999/xlink"
 width="200" height="200">

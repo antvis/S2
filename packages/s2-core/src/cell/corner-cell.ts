@@ -317,9 +317,7 @@ export class CornerCell extends HeaderCell {
   private showTreeIcon() {
     // 批量折叠或者展开的icon，只存在树状结构的第一个cell前
     return (
-      this.headerConfig.spreadsheet.isHierarchyTreeType() &&
-      this.headerConfig.spreadsheet.isPivotMode() &&
-      this.meta?.x === 0
+      this.headerConfig.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0
     );
   }
 

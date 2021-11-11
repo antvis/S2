@@ -1,0 +1,16 @@
+{
+  "title": {
+    "zh": "目录树",
+    "en": "custom tree"
+  },
+  "demos": [
+    {
+      "filename": "custom-tree.ts",
+      "title": {
+        "zh": "自定义目录树",
+        "en": "custom tree"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24OWMuQNdVl/1f3ab80b-757b-4d9c-826e-d3a881c844de.png"
+    }
+  ]
+}

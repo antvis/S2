@@ -34,7 +34,7 @@ order: 1
 | isPivotMode | `() => boolean` |  | 是否是透视表 |
 | isHierarchyTreeType | `() => boolean` |  | 是否是树状结构 |
 | isScrollContainsRowHeader | `() => boolean` |  | 是否是包含行头的滚动 |
-| isFreezeRowHeader | `() => boolean` | | 是否是冻结行头状态 |
+| isFrozenRowHeader | `() => boolean` | | 是否是冻结行头状态 |
 | isTableMode | `() => boolean` |  | 是否是明细表 |
 | isValueInCols | `() => boolean` |   | 是否是数值置于行头 |
 | clearDrillDownData | `(rowNodeId?: string) => void` |   | 清除下钻数据 |
@@ -51,7 +51,7 @@ order: 1
 | updatePagination | `(pagination: Pagination) => void` |   | 更新分页 |
 | getContentHeight | `() => number` |   | 获取当前表格实际内容高度 |
 | changeSize | `(width: number, height: number) => void` |    | 修改表格画布大小，不用重新加载数据 |
-| isColAdaptive | `(width: number, height: number) => void` |   | 是否是自适应单元格 |
+| getLayoutWidthType | `() => LayoutWidthType` |   | 获取单元格宽度布局类型（LayoutWidthType: `adaptive` \| `colAdaptive` \| `compact`） |
 | getRowNodes | `(level: number) => Node[]` |    | 获取行头节点 |
 | getColumnNodes | `(level: number) => Node[]` |   | 获取列节点 |
 | updateScrollOffset | `(config: OffsetConfig) => void` |    | 更新滚动偏移 |

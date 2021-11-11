@@ -66,12 +66,16 @@ export class TableColCell extends ColCell {
     };
     const position = getTextPosition(cellBoxCfg, { textAlign, textBaseline });
 
-    const textX = position.x;
-    const textY = position.y;
+    const expandIconMargin = this.getExpandIconMargin();
 
     const text = getEllipsisText({
       text: label,
-      maxWidth: cellWidth - leftPadding - rightPadding,
+      maxWidth:
+        cellWidth -
+        leftPadding -
+        rightPadding -
+        expandIconMargin -
+        iconMargin?.left,
       fontParam: textStyle,
       placeholder: this.spreadsheet.options.placeholder,
     });
@@ -79,8 +83,8 @@ export class TableColCell extends ColCell {
     this.textShape = renderText(
       this,
       [this.textShape],
-      textX,
-      textY,
+      position.x,
+      position.y,
       text,
       {
         textAlign,
@@ -93,8 +97,8 @@ export class TableColCell extends ColCell {
       renderDetailTypeSortIcon(
         this,
         spreadsheet,
-        x + cellWidth - iconSize - iconMargin?.right,
-        textY,
+        x + cellWidth - iconSize - iconMargin?.right - expandIconMargin,
+        position.y,
         iconMargin?.top,
         key,
       );
@@ -104,6 +108,23 @@ export class TableColCell extends ColCell {
   protected initCell() {
     super.initCell();
     this.addExpandColumnIconShapes();
+  }
+
+  // 有展开图标时, 需要将文字和排序图标向左移动, 空出图标的位置, 避免遮挡
+  private getExpandIconMargin() {
+    const style = this.getStyle();
+    const iconMarginLeft = style.icon.margin?.left || 0;
+    const hiddenColumnsDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
+      [],
+    );
+    const expandIconPrevSiblingCell = hiddenColumnsDetail.find(
+      (column) => column?.displaySiblingNode?.prev?.field === this.meta?.field,
+    );
+    const { size } = this.getExpandIconTheme();
+
+    // 图标本身宽度 + 主题配置的 icon margin
+    return expandIconPrevSiblingCell ? size / 2 + iconMarginLeft : 0;
   }
 
   private hasHiddenColumnCell() {
@@ -119,9 +140,11 @@ export class TableColCell extends ColCell {
       'hiddenColumnsDetail',
       [],
     );
-    return !!hiddenColumnsDetail.find(
-      (column) => column?.displaySiblingNode?.field === this.meta?.field,
-    );
+    return !!hiddenColumnsDetail.find((column) => {
+      const { prev, next } = column?.displaySiblingNode || {};
+      const hiddenSiblingNode = next || prev;
+      return hiddenSiblingNode?.field === this.meta?.field;
+    });
   }
 
   private getExpandIconTheme(): IconTheme {

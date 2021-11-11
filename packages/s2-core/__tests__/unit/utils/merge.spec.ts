@@ -88,7 +88,7 @@ describe('merge test', () => {
         },
         autoResetSheetStyle: true,
       },
-      freezeRowHeader: true,
+      frozenRowHeader: true,
       showSeriesNumber: false,
       scrollReachNodeField: {},
       customSVGIcons: [],

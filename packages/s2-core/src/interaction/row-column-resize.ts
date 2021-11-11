@@ -307,7 +307,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
 
     const isResizeFreezeRowHeader =
       resizeInfo.effect !== ResizeAreaEffect.Cell &&
-      this.spreadsheet.isFreezeRowHeader();
+      this.spreadsheet.isFrozenRowHeader();
 
     const { width: canvasWidth } = this.spreadsheet.options;
     const maxCornerWidth = Math.floor(canvasWidth * CORNER_MAX_WIDTH_RATIO);
