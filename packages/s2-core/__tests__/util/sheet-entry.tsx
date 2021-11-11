@@ -6,7 +6,16 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Input, Select, Slider, Space, Switch, Tooltip } from 'antd';
+import {
+  Input,
+  Radio,
+  RadioChangeEvent,
+  Select,
+  Slider,
+  Space,
+  Switch,
+  Tooltip,
+} from 'antd';
 import { merge } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
@@ -20,6 +29,7 @@ import {
   TargetCellInfo,
   DEFAULT_DATA_CONFIG,
   S2Event,
+  LayoutWidthType,
 } from '@/index';
 import 'antd/dist/antd.min.css';
 import { customMerge } from '@/utils/merge';
@@ -71,6 +81,8 @@ export const SheetEntry = forwardRef(
       ? props.dataCfg
       : assembleDataCfg(props.dataCfg);
     const [adaptive, setAdaptive] = useState(false);
+    const [layoutWidthType, setLayoutWidthType] =
+      React.useState<LayoutWidthType>('adaptive');
     const [showResizeArea, setShowResizeArea] = useState(false);
     const [options, setOptions] = useState<S2Options>(() => initOptions);
     const [dataCfg, setDataCfg] = useState<Partial<S2DataConfig>>(
@@ -103,6 +115,17 @@ export const SheetEntry = forwardRef(
       setOptions(
         merge({}, options, {
           hierarchyType: checked ? 'tree' : 'grid',
+        }),
+      );
+    };
+
+    const onRadioChange = (e: RadioChangeEvent) => {
+      setLayoutWidthType(e.target.value);
+      setOptions(
+        merge({}, options, {
+          style: {
+            layoutWidthType: e.target.value,
+          },
         }),
       );
     };
@@ -219,6 +242,13 @@ export const SheetEntry = forwardRef(
               setShowResizeArea(checked);
             }}
           />
+          <Radio.Group onChange={onRadioChange} defaultValue="adaptive">
+            <Radio.Button value="adaptive">行列等宽</Radio.Button>
+            <Radio.Button value="colAdaptive">列等宽</Radio.Button>
+            <Radio.Button value="compact">紧凑</Radio.Button>
+          </Radio.Group>
+        </Space>
+        <div style={{ marginBottom: 20 }}>
           <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
             <Switch
               checkedChildren="自动重置交互样式开"
@@ -264,7 +294,8 @@ export const SheetEntry = forwardRef(
               size="small"
             />
           </Space>
-        </Space>
+        </div>
+
         <div style={{ marginBottom: 40, width: '70%' }}>
           水平滚动速率 ：
           <Slider

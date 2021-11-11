@@ -26,6 +26,7 @@ import {
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
 import {
+  LayoutWidthType,
   OffsetConfig,
   Pagination,
   S2CellType,
@@ -388,12 +389,8 @@ export abstract class SpreadSheet extends EE {
     this.container.changeSize(width, height);
   }
 
-  public isColAdaptive(): boolean {
-    return this.options.style.colCfg?.colWidthType === 'adaptive';
-  }
-
-  public isColCustom(): boolean {
-    return this.options.style.colCfg?.colWidthType === 'custom';
+  public getLayoutWidthType(): LayoutWidthType {
+    return this.options.style.layoutWidthType;
   }
 
   public getRowNodes(level = -1): Node[] {

@@ -95,7 +95,7 @@ object **必选**,_default：null_ 功能描述： 列样式配置
 | height | `number` |  | 30 |   单元格高度（普通状态） |
 | widthByFieldValue | `number`   |  |  | 根据度量值设置宽度（拖拽或者预设宽度场景） |
 | heightByField | `Record<string, number>` |    |  | 根据度量值设置高度（拖拽或者预设宽度场景） |
-| colWidthType | `adaptive` \| `compact`  \| `custom` |    |  | 列类型，adaptive: 自适应; compact: 列紧凑; custom: 自定义（此场景下行列和行头宽度完全由用户设置的 `CellCfg.width` 和 `RowCfg.width` 决定） |
+| colWidthType | `adaptive` \| `compact`  \| `custom` |    |  | 列布局风格，adaptive: 自适应容器列等分; compact: 列紧凑; |
 
 ## RowCfg
 
@@ -103,8 +103,7 @@ object **必选**,_default：null_ 功能描述：行样式配置
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- |
-| width | `number` |  |   96  | 单元格宽度 |
-| widthByField | `Record<string, number>` |    |  | 根据度量值设置宽度（拖拽或者预设宽度场景） |
+| rowWidthType | `adaptive` \| `compact`   |  | 行布局风格，adaptive: 自适应容器参与列等分, 设置改项后默认行头单元格宽度和列头单元格宽度一致; compact: 行紧凑; |
 
 ## NodeField
 

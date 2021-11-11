@@ -5,18 +5,13 @@ export const mockGridAnalysisOptions = {
   height: 600,
   hierarchyType: 'grid',
   style: {
+    layoutWidthType: 'colAdaptive',
     cellCfg: {
       lineHeight: 20,
       width: 400,
       height: 100,
       minorMeasureRowIndex: 3,
       firstDerivedMeasureRowIndex: 2,
-    },
-    colCfg: {
-      colWidthType: 'custom',
-    },
-    rowCfg: {
-      width: 100,
     },
   },
 } as S2Options;
