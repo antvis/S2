@@ -12,6 +12,12 @@ export const mockGridAnalysisOptions = {
       minorMeasureRowIndex: 3,
       firstDerivedMeasureRowIndex: 2,
     },
+    colCfg: {
+      colWidthType: 'custom',
+    },
+    rowCfg: {
+      width: 100,
+    },
   },
 } as S2Options;
 

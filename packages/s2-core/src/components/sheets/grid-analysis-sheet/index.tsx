@@ -69,7 +69,6 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
         dataCell: GridAnalysisDataCell,
         style: {
           colCfg: {
-            colWidthType: 'adaptive',
             hideMeasureColumn: true,
           },
           cellCfg: {

@@ -392,6 +392,10 @@ export abstract class SpreadSheet extends EE {
     return this.options.style.colCfg?.colWidthType === 'adaptive';
   }
 
+  public isColCustom(): boolean {
+    return this.options.style.colCfg?.colWidthType === 'custom';
+  }
+
   public getRowNodes(level = -1): Node[] {
     if (level === -1) {
       return this.facet.layoutResult.rowNodes;

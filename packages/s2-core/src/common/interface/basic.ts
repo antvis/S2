@@ -23,6 +23,8 @@ export interface FormatResult {
 
 export type SortMethod = 'ASC' | 'DESC' | 'asc' | 'desc';
 
+export type ColWidthType = 'adaptive' | 'compact' | 'custom';
+
 export interface Meta {
   readonly field: string; // 字段 id
   readonly name?: string; // 字段名称
@@ -251,7 +253,7 @@ export interface ColCfg {
   // specific some col field's width
   widthByFieldValue?: Record<string, number>;
   // col width's type
-  colWidthType?: 'adaptive' | 'compact';
+  colWidthType?: ColWidthType;
   // specific some col field's height
   heightByField?: Record<string, number>;
   // hide last column(measure values), only work when has one value

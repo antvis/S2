@@ -529,6 +529,9 @@ export class PivotFacet extends BaseFacet {
    * 2.colCfg.colWidthType = compat
    * col width determined by col info(label's max width in current column)
    *
+   * 3. colCfg.colWidthType = custom
+   * col width determined by the cellCfg.width
+   *
    * colWidth will be specific value or -1
    * where -1 represent compat width
    *
@@ -538,7 +541,10 @@ export class PivotFacet extends BaseFacet {
    */
   private calculateColWidth(colLeafNodes: Node[]) {
     const { rowCfg, cellCfg } = this.cfg;
-    let colWidth;
+    let colWidth: number;
+    if (this.spreadsheet.isColCustom()) {
+      return;
+    }
     if (this.spreadsheet.isColAdaptive()) {
       // auto fit canvas width
       if (this.spreadsheet.isHierarchyTreeType()) {

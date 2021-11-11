@@ -67,7 +67,7 @@ object **必选**,_default：null_ 功能描述：样式设置
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- | --- |
-| treeRowsWidth | `number` |  |    | 树状模式行单元格宽度 |
+| treeRowsWidth | `number` |  |  120  | 树状模式行单元格宽度 |
 | collapsedRows | `Record<string, boolean>` |  |    | 树状模式行的折叠、收起状态 |
 | collapsedCols | `Record<string, boolean>`  |  |    | 树状模式列的折叠、收起状态 |
 | cellCfg | [CellCfg](#cellcfg) |  |  |   单元格配置 |
@@ -81,8 +81,8 @@ object **必选**,_default：null_ 功能描述：单元格配置
 
 | 参数    | 类型   | 必选  | 默认值 | 功能描述     |
 | ------- | ------ | ---- | ------ | ------------ |
-| width   | `number` |      |              | 单元格宽度   |
-| height  | `number` |      |              | 单元格高度   |
+| width   | `number` |      |    96 | 单元格宽度   |
+| height  | `number` |      |    30 | 单元格高度   |
 | padding | `number` |      |              | 单元格内边距 |
 | lineHeight | `number` |            |        | 单元格行高 |
 
@@ -92,10 +92,10 @@ object **必选**,_default：null_ 功能描述： 列样式配置
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- |
-| height | `number` |  |  |   单元格高度（普通状态） |
+| height | `number` |  | 30 |   单元格高度（普通状态） |
 | widthByFieldValue | `number`   |  |  | 根据度量值设置宽度（拖拽或者预设宽度场景） |
 | heightByField | `Record<string, number>` |    |  | 根据度量值设置高度（拖拽或者预设宽度场景） |
-| colWidthType | `adaptive` \| `compact` |    |  | 列类型，adaptive: 自适应，compact: 紧凑 |
+| colWidthType | `adaptive` \| `compact`  \| `custom` |    |  | 列类型，adaptive: 自适应; compact: 列紧凑; custom: 自定义（此场景下行列和行头宽度完全由用户设置的 `CellCfg.width` 和 `RowCfg.width` 决定） |
 
 ## RowCfg
 
@@ -103,9 +103,8 @@ object **必选**,_default：null_ 功能描述：行样式配置
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- |
-| width | `number` |  |    | 单元格宽度 |
+| width | `number` |  |   96  | 单元格宽度 |
 | widthByField | `Record<string, number>` |    |  | 根据度量值设置宽度（拖拽或者预设宽度场景） |
-| treeRowsWidth | `adaptive` \| `compact` |    |  | 树状结构下行宽 （拖拽场景） |
 
 ## NodeField
 
