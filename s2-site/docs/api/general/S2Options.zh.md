@@ -67,12 +67,12 @@ object **必选**,_default：null_ 功能描述：样式设置
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- | --- |
+|layoutWidthType | `adaptive` \| `colAdaptive`  \| `compact` |    |  | 单元格宽度布局类型<br> `adaptive` : 行列等宽，均分整个 canvas 画布宽度 <br> `colAdaptive`：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度<br> `compact`：行列紧凑布局，指标维度少的时候无法布满整个画布 |
 | treeRowsWidth | `number` |  |  120  | 树状模式行单元格宽度 |
 | collapsedRows | `Record<string, boolean>` |  |    | 树状模式行的折叠、收起状态 |
 | collapsedCols | `Record<string, boolean>`  |  |    | 树状模式列的折叠、收起状态 |
 | cellCfg | [CellCfg](#cellcfg) |  |  |   单元格配置 |
 | colCfg | [ColCfg](#colcfg) |  |  |   列样式配置 |
-| rowCfg | [RowCfg](#rowcfg) |  |  |   行样式配置 |
 | device | `pc` \| `mobile` | |  `pc` | 设备类型 |
 
 ## CellCfg
@@ -95,15 +95,6 @@ object **必选**,_default：null_ 功能描述： 列样式配置
 | height | `number` |  | 30 |   单元格高度（普通状态） |
 | widthByFieldValue | `number`   |  |  | 根据度量值设置宽度（拖拽或者预设宽度场景） |
 | heightByField | `Record<string, number>` |    |  | 根据度量值设置高度（拖拽或者预设宽度场景） |
-| colWidthType | `adaptive` \| `compact`  \| `custom` |    |  | 列布局风格，adaptive: 自适应容器列等分; compact: 列紧凑; |
-
-## RowCfg
-
-object **必选**,_default：null_ 功能描述：行样式配置
-
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| rowWidthType | `adaptive` \| `compact`   |  | 行布局风格，adaptive: 自适应容器参与列等分, 设置改项后默认行头单元格宽度和列头单元格宽度一致; compact: 行紧凑; |
 
 ## NodeField
 

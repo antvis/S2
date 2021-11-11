@@ -81,8 +81,6 @@ export const SheetEntry = forwardRef(
       ? props.dataCfg
       : assembleDataCfg(props.dataCfg);
     const [adaptive, setAdaptive] = useState(false);
-    const [layoutWidthType, setLayoutWidthType] =
-      React.useState<LayoutWidthType>('adaptive');
     const [showResizeArea, setShowResizeArea] = useState(false);
     const [options, setOptions] = useState<S2Options>(() => initOptions);
     const [dataCfg, setDataCfg] = useState<Partial<S2DataConfig>>(
@@ -120,7 +118,6 @@ export const SheetEntry = forwardRef(
     };
 
     const onRadioChange = (e: RadioChangeEvent) => {
-      setLayoutWidthType(e.target.value);
       setOptions(
         merge({}, options, {
           style: {
