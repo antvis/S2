@@ -5,13 +5,9 @@ order: 7
 
 ## 简介
 
-用于透出表格信息以及部分分析功能
+通过表格交互透出表格信息以及部分分析功能
 
-> `Tooltip` 暂时依赖 `Antd`
-
-## 形式
-
-待补充...
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*zRquQpJqBzUAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 ## 使用
 
