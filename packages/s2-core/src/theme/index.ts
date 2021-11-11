@@ -21,7 +21,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '500',
+        fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -69,7 +69,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[14],
         linkTextFill: basicColors[14],
         opacity: 1,
@@ -120,7 +120,6 @@ export const getTheme = (
           // -------------- unselected -------------------
           unselected: {
             backgroundOpacity: 0.3,
-            textOpacity: 0.3,
             opacity: 0.3,
           },
         },
@@ -139,7 +138,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -188,7 +187,6 @@ export const getTheme = (
           // -------------- unselected -------------------
           unselected: {
             backgroundOpacity: 0.3,
-            textOpacity: 0.3,
             opacity: 0.3,
           },
         },
@@ -209,7 +207,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[13],
         opacity: 1,
         textAlign: 'right',
@@ -266,7 +264,6 @@ export const getTheme = (
           // -------------- unselected -------------------
           unselected: {
             backgroundOpacity: 0.3,
-            textOpacity: 0.3,
             opacity: 0.3,
           },
           // -------------- prepare select --------------
@@ -340,5 +337,5 @@ export const getTheme = (
       color: basicColors[8],
       opacity: 1,
     },
-  } as S2Theme;
+  };
 };

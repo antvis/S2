@@ -177,7 +177,7 @@ export class EventController {
     }
 
     const { x, y, width, height } =
-      this.spreadsheet.tooltip?.container?.getBoundingClientRect() || {};
+      this.spreadsheet.tooltip?.container?.getBoundingClientRect?.() || {};
 
     if (event instanceof MouseEvent) {
       return (
