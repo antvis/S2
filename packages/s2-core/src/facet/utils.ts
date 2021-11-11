@@ -140,7 +140,7 @@ export const translateGroupY = (group: IGroup, scrollY: number) => {
  * frozen                     frozenTrailing
  * ColCount                   ColCount
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * |     |     forzenRow     |          |  frozenRowCount
+ * |     |     frozenRow     |          |  frozenRowCount
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * | fro |                   | fro      |
  * | zen |      panel        | zen      |

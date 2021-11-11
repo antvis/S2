@@ -46,7 +46,7 @@ jest.mock('src/sheet-type', () => {
         panelGroup: container.addGroup(),
         foregroundGroup: container.addGroup(),
         backgroundGroup: container.addGroup(),
-        isFreezeRowHeader: jest.fn(),
+        isFrozenRowHeader: jest.fn(),
         isTableMode: jest.fn().mockReturnValue(false),
         isPivotMode: jest.fn().mockReturnValue(true),
         getTotalsConfig: jest.fn().mockReturnValue({}),

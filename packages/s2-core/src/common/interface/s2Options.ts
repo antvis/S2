@@ -69,7 +69,7 @@ export interface S2BasicOptions {
   // pagination config
   readonly pagination?: Pagination;
   // freeze row header
-  readonly freezeRowHeader?: boolean;
+  readonly frozenRowHeader?: boolean;
   // show Series Number
   readonly showSeriesNumber?: boolean;
   // scroll reach node border(which field node belongs to) event config

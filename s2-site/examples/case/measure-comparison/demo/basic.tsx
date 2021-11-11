@@ -365,7 +365,7 @@ class CustomFrame extends Frame {
     if (
       showRightShadow &&
       showViewPortRightShadow &&
-      spreadsheet.isFreezeRowHeader()
+      spreadsheet.isFrozenRowHeader()
     ) {
       const x = position.x + width;
       const y = position.y;

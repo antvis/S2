@@ -104,7 +104,7 @@ const getOptions = () => {
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: false,
-    freezeRowHeader: false,
+    frozenRowHeader: false,
     totals: {
       row: {
         showGrandTotals: true,

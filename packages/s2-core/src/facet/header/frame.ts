@@ -122,7 +122,7 @@ export class Frame extends Group {
     if (
       splitLine.showShadow &&
       showViewPortRightShadow &&
-      this.cfg.spreadsheet.isFreezeRowHeader()
+      this.cfg.spreadsheet.isFrozenRowHeader()
     ) {
       const x = position.x + width;
       const y = position.y;
