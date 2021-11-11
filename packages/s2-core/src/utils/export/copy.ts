@@ -36,7 +36,7 @@ export const processCopyData = (
     pre + (cur ? format(cur, spreadsheet) : '') + '\t';
   const getColString = (pre: string, cur: S2CellType[]) =>
     pre + cur.reduce(getRowString, '') + '\n';
-  return cells.reduce(getColString, '');
+  return cells.reduce(getColString, '').slice(0, -2);
 };
 
 export const getTwoDimData = (cells: S2CellType[]) => {
