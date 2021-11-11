@@ -399,7 +399,7 @@ class CustomCornelCell extends CornerCell {
     const attrs = {
       ...this.getCellArea(),
       fill: this.meta.cornerType === 'col' ? '#FFFFFF' : backgroundColor,
-      opacity: 1,
+      opacity: backgroundColorOpacity,
     };
     this.backgroundShape = this.addShape('rect', {
       attrs,
