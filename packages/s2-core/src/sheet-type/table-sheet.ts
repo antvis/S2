@@ -55,7 +55,7 @@ export class TableSheet extends SpreadSheet {
   /**
    * Scroll Freeze Row Header
    */
-  public isFreezeRowHeader(): boolean {
+  public isFrozenRowHeader(): boolean {
     return false;
   }
 

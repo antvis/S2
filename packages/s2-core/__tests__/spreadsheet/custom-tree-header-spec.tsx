@@ -46,14 +46,13 @@ const getOptions = () => {
     height: 600,
     hierarchyType: 'customTree',
     hierarchyCollapse: false,
-    freezeRowHeader: false,
+    frozenRowHeader: false,
     style: {
       treeRowsWidth: 120,
       collapsedRows: {},
       colCfg: {
         widthByFieldValue: {},
         heightByField: {},
-        colWidthType: 'adaptive',
       },
       cellCfg: {
         height: 32,

@@ -22,15 +22,10 @@ export class DebuggerUtil {
 
   public debugCallback = (info: string, callback: () => void) => {
     if (this.debug) {
-      try {
-        console.time(info);
-      } catch (e) {
-        // timer already exist
-        console.timeEnd(info);
-        callback();
-      }
+      const start = performance.now();
       callback();
-      console.timeEnd(info);
+      const end = performance.now();
+      console.log(info, `${end - start} ms`);
     } else {
       callback();
     }

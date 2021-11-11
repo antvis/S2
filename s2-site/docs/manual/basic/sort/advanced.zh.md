@@ -51,7 +51,7 @@ ReactDOM.render(<AdvancedSortDemo />, document.getElementById('container'));
 ```ts
 advancedSortCfg: {
   open: true,
-},
+}
 
 ```
 

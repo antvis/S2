@@ -99,7 +99,7 @@ describe('Interaction Row Column Resize Tests', () => {
 
     const guideLineAttrs: ShapeAttrs = {
       lineDash: [3, 3],
-      stroke: '#326EF4',
+      stroke: '#B7CBF8',
       strokeWidth: 3,
       fillOpacity: 1,
     };
@@ -232,7 +232,6 @@ describe('Interaction Row Column Resize Tests', () => {
 
     // update style options
     expect(s2.options.style.colCfg).toEqual({
-      colWidthType: 'adaptive',
       detailSample: 30,
       height: 30,
       heightByField: {},

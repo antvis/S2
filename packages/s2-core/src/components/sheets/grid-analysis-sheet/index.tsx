@@ -10,7 +10,7 @@ import { GridAnalysisDataCell } from './grid-analysis-data-cell';
 import { GridAnalysisTheme } from './grid-analysis-theme';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
-import { S2Options } from '@/common/interface';
+import { S2Options, ThemeCfg } from '@/common/interface';
 import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { useResizeEffect } from '@/components/sheets/hooks';
@@ -69,7 +69,6 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
         dataCell: GridAnalysisDataCell,
         style: {
           colCfg: {
-            colWidthType: 'adaptive',
             hideMeasureColumn: true,
           },
           cellCfg: {

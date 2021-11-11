@@ -24,7 +24,11 @@ import {
   isFrozenTrailingRow,
 } from './utils';
 import { CornerBBox } from './bbox/cornerBBox';
-import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
+import {
+  LayoutWidthTypes,
+  S2Event,
+  SERIES_NUMBER_FIELD,
+} from '@/common/constant';
 import { FrozenCellGroupMap } from '@/common/constant/frozen';
 import { DebuggerUtil } from '@/common/debug';
 import { BaseFacet } from '@/facet/base-facet';
@@ -242,7 +246,7 @@ export class TableFacet extends BaseFacet {
   private calculateColWidth(colLeafNodes: Node[]) {
     const { rowCfg, cellCfg } = this.cfg;
     let colWidth;
-    if (this.spreadsheet.isColAdaptive()) {
+    if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
       colWidth = this.getAdaptiveColWidth(colLeafNodes);
     } else {
       colWidth = -1;

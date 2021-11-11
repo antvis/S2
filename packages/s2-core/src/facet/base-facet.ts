@@ -596,7 +596,7 @@ export abstract class BaseFacet {
         thumbLen: thumbHeight,
         thumbOffset: (scrollY * this.panelBBox.height) / realHeight,
         position: {
-          x: this.panelBBox.maxX,
+          x: this.panelBBox.maxX - this.scrollBarSize,
           y: this.panelBBox.minY,
         },
         theme: this.scrollBarTheme,
@@ -779,14 +779,13 @@ export abstract class BaseFacet {
   };
 
   protected clip(scrollX: number, scrollY: number) {
+    const isFrozenRowHeader = this.cfg.spreadsheet.isFrozenRowHeader();
     this.spreadsheet.panelScrollGroup?.setClip({
       type: 'rect',
       attrs: {
-        x: this.cfg.spreadsheet.isFreezeRowHeader() ? scrollX : 0,
+        x: isFrozenRowHeader ? scrollX : 0,
         y: scrollY,
-        width:
-          this.panelBBox.width +
-          (this.cfg.spreadsheet.isFreezeRowHeader() ? 0 : scrollX),
+        width: this.panelBBox.width + (isFrozenRowHeader ? 0 : scrollX),
         height: this.panelBBox.height,
       },
     });
