@@ -246,7 +246,7 @@ export class TableFacet extends BaseFacet {
   private calculateColWidth(colLeafNodes: Node[]) {
     const { rowCfg, cellCfg } = this.cfg;
     let colWidth;
-    if (!this.spreadsheet.getLayoutWidthType() === LAYOUT_WIDTH_TYPES.Compact) {
+    if (this.spreadsheet.getLayoutWidthType() !== LAYOUT_WIDTH_TYPES.Compact) {
       colWidth = this.getAdaptiveColWidth(colLeafNodes);
     } else {
       colWidth = -1;
