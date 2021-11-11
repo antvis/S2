@@ -110,7 +110,7 @@ export const SheetEntry = forwardRef(
     const onFreezeRowHeaderChange = (checked: boolean) => {
       setOptions(
         merge({}, options, {
-          freezeRowHeader: checked,
+          frozenRowHeader: checked,
         }),
       );
     };
@@ -200,7 +200,7 @@ export const SheetEntry = forwardRef(
           <Switch
             checkedChildren="冻结行头开"
             unCheckedChildren="冻结行头关"
-            defaultChecked={options.freezeRowHeader}
+            defaultChecked={options.frozenRowHeader}
             onChange={onFreezeRowHeaderChange}
           />
           <Switch

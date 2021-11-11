@@ -52,7 +52,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected clip() {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
-    const scrollXOffset = spreadsheet.isFreezeRowHeader() ? scrollX : 0;
+    const scrollXOffset = spreadsheet.isFrozenRowHeader() ? scrollX : 0;
     this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
@@ -87,7 +87,7 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     return (
       // don't care about scrollY, because there is only freeze col-header exist
       width + scrollX > item.x &&
-      scrollX - (spreadsheet.isFreezeRowHeader() ? 0 : cornerWidth) <
+      scrollX - (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth) <
         item.x + item.width
     );
   }

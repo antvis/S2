@@ -34,7 +34,7 @@ order: 1
 | isPivotMode | `() => boolean` |  | 是否是透视表 |
 | isHierarchyTreeType | `() => boolean` |  | 是否是树状结构 |
 | isScrollContainsRowHeader | `() => boolean` |  | 是否是包含行头的滚动 |
-| isFreezeRowHeader | `() => boolean` | | 是否是冻结行头状态 |
+| isFrozenRowHeader | `() => boolean` | | 是否是冻结行头状态 |
 | isTableMode | `() => boolean` |  | 是否是明细表 |
 | isValueInCols | `() => boolean` |   | 是否是数值置于行头 |
 | clearDrillDownData | `(rowNodeId?: string) => void` |   | 清除下钻数据 |

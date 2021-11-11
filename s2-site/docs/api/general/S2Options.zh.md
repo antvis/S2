@@ -14,7 +14,7 @@ order: 1
 | tooltip | [Tooltip](#tooltip) |    |  |  tooltip 总配置 |
 | interaction | [Interaction](#interaction) |    |  |  表格交互配置 |
 | pagination | [Pagination](#pagination) |  |    | 分页配置 |
-| freezeRowHeader | `boolean` |  |   `true` | 冻结行头 |
+| frozenRowHeader | `boolean` |  |   `true` | 冻结行头 (透视表有效) |
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
 | scrollReachNodeField | [NodeField](#nodefield) |  |  | 滚动监听的节点度量 |
 | showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |

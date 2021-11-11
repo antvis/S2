@@ -85,7 +85,7 @@ const getOptions = (): S2Options => {
     hierarchyType: 'tree',
     hierarchyCollapse: false,
     showSeriesNumber: true,
-    freezeRowHeader: false,
+    frozenRowHeader: false,
     conditions: {
       text: [],
       interval: [
