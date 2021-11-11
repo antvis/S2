@@ -558,8 +558,6 @@ export class PivotFacet extends BaseFacet {
       // compact cell width
       colWidth = -1;
     }
-    // row width use rowCfg.width as width
-    rowCfg.width = colWidth;
     // col leaf nodes use cellCfg.width as width
     cellCfg.width = colWidth;
   }
