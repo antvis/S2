@@ -2,7 +2,7 @@
  * table mode pivot test.
  */
 import { Canvas } from '@antv/g-canvas';
-import { assembleDataCfg, assembleOptions } from 'tests/util/sheet-entry';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { SpreadSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';

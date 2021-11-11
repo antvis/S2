@@ -24,7 +24,7 @@ import {
   usePaginationEffect,
 } from '@/components/sheets/hooks';
 import { S2Pagination } from '@/components/pagination';
-import { TableSheet as BaseTableSheet } from '@/components/table-sheet';
+import { TableSheet as BaseTableSheet } from '@/components/sheets/table-sheet';
 
 export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {

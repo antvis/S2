@@ -9,7 +9,7 @@
   "preset": "ts-jest",
   "runner": "jest-electron/runner",
   "testEnvironment": "jest-electron/environment",
-  "setupFilesAfterEnv": ["jest-extended"],
+  "setupFilesAfterEnv": ["jest-extended", "./__tests__/setup.js"],
   "clearMocks": true,
   "collectCoverage": false,
   "collectCoverageFrom": [

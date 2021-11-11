@@ -2,7 +2,7 @@
  * pivot mode base data-set test.
  */
 import { get } from 'lodash';
-import { assembleDataCfg } from '../../util/sheet-entry';
+import { assembleDataCfg } from '../../util';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
