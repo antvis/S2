@@ -47,8 +47,9 @@
     "build:cjs": "vite build --mode cjs",
     "build:umd": "vite build --mode umd",
     "bundle:size": "bundlesize",
-    "test": "jest --passWithNoTests",
-    "test:coverage": "yarn test --passWithNoTests --coverage",
+    "test": "jest",
+    "test:live": "node ./scripts/test-live.mjs",
+    "test:coverage": "yarn test --coverage",
     "test:watch": "yarn test --watch",
     "tsc": "tsc --noEmit",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
