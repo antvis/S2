@@ -69,11 +69,12 @@ export class TableColCell extends ColCell {
     const textX = position.x;
     const textY = position.y;
 
-    const text = getEllipsisText(
-      label,
-      cellWidth - leftPadding - rightPadding,
-      textStyle,
-    );
+    const text = getEllipsisText({
+      text: label,
+      maxWidth: cellWidth - leftPadding - rightPadding,
+      fontParam: textStyle,
+      placeholder: this.spreadsheet.options.placeholder,
+    });
 
     this.textShape = renderText(
       this,
