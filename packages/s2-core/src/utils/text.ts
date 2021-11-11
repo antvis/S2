@@ -14,7 +14,7 @@ import { S2Options } from '@/common/interface/s2Options';
 import { DefaultCellTheme } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell/data-cell';
-import { EMPTY_PLACEHOLDER } from '@/common/constant';
+import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -280,21 +280,23 @@ const getStyle = (
   colIndex: number,
   value: string | number,
   options: S2Options,
-  theme: DefaultCellTheme,
+  dataCellTheme: DefaultCellTheme,
 ) => {
   const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
   const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
   const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
   const isMinor = rowIndex === minorMeasureIndex;
   const isDerivedMeasure = colIndex >= derivedMeasureIndex;
-  const style = isMinor ? clone(theme.minorText) : clone(theme.text);
-  const derivedMeasureText = theme.derivedMeasureText;
+  const style = isMinor
+    ? clone(dataCellTheme.minorText)
+    : clone(dataCellTheme.text);
+  const derivedMeasureText = dataCellTheme.derivedMeasureText;
   const upFill = isMinor
     ? derivedMeasureText?.minorUp
-    : derivedMeasureText?.mainUp || theme.dataCell.icon.upIconColor;
+    : derivedMeasureText?.mainUp || dataCellTheme.icon.upIconColor;
   const downFill = isMinor
     ? derivedMeasureText?.minorDown
-    : derivedMeasureText?.mainDown || theme.dataCell.icon.downIconColor;
+    : derivedMeasureText?.mainDown || dataCellTheme.icon.downIconColor;
   if (isDerivedMeasure) {
     const isUp = getDataState(value);
     return merge(style, {
@@ -311,9 +313,9 @@ const getStyle = (
 export const drawObjectText = (cell: DataCell) => {
   const { x, y, height, width } = cell.getContentArea();
   const text = cell.getMeta().fieldValue as MultiData;
-  const cellStyle = cell.getStyle('dataCell') as DefaultCellTheme;
-  const labelStyle = cellStyle.bolderText;
-  const padding = cellStyle.cell.padding;
+  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+  const labelStyle = dataCellStyle.bolderText;
+  const padding = dataCellStyle.cell.padding;
 
   // 指标个数相同，任取其一即可
   const realWidth = width / (text.values[0].length + 1);
@@ -347,7 +349,7 @@ export const drawObjectText = (cell: DataCell) => {
         j,
         curText,
         cell?.getMeta().spreadsheet.options,
-        cellStyle,
+        dataCellStyle,
       );
       curWidth = j === 0 ? realWidth * 2 : realWidth;
       curX = calX(x, padding.right, totalWidth);
@@ -363,7 +365,6 @@ export const drawObjectText = (cell: DataCell) => {
           fontParam: curStyle,
         }),
         curStyle,
-        curStyle?.fill,
       );
     }
   }

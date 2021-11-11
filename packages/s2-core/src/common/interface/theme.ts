@@ -169,7 +169,7 @@ export interface SplitLine {
     right: string;
   };
 }
-export interface DefaultCellTheme {
+export interface DefaultCellTheme extends GridAnalysisCellTheme {
   /* 粗体文本样式 */
   bolderText?: TextTheme;
   /* 文本样式 */
@@ -180,6 +180,18 @@ export interface DefaultCellTheme {
   icon?: IconTheme;
   /* 序号列宽 */
   seriesNumberWidth?: number;
+}
+
+export interface GridAnalysisCellTheme {
+  // 次级文本，如副指标
+  minorText?: TextTheme;
+  // 衍生指标
+  derivedMeasureText?: {
+    mainUp: string;
+    mainDown: string;
+    minorUp: string;
+    minorDown: string;
+  };
 }
 
 export type CellThemes = {
