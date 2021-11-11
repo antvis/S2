@@ -37,14 +37,14 @@ export const useResizeEffect = (params: UseResizeEffectParams) => {
 
     s2.changeSize(box?.width, box?.height);
     s2.render(false);
-  }, [resizeTimeStamp, container, s2, adaptive]);
+  }, [resizeTimeStamp, container, adaptive]);
 
   useEffect(() => {
     if (!adaptive) {
       s2?.changeSize(options.width, options.height);
       s2?.render(false);
     }
-  }, [s2, options.width, options.height, adaptive]);
+  }, [options.width, options.height, adaptive]);
 
   useEffect(() => {
     if (adaptive) {
