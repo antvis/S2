@@ -3,6 +3,7 @@ import { MergedCells } from '@/cell/merged-cells';
 import { MergedCellInfo, TempMergedCell, ViewMeta } from '@/common/interface';
 import { S2CellType } from '@/common/interface/interaction';
 import { SpreadSheet } from '@/sheet-type';
+import { CellTypes } from '@/common/constant';
 
 /**
  *  according to the coordinates of the starting point of the rectangle,
@@ -183,6 +184,24 @@ const getCellsByInfo = (
 };
 
 /**
+ * get the active cells' info as the default info of merged cells
+ * @param sheet
+ */
+const getActiveCellsInfo = (sheet: SpreadSheet) => {
+  const { interaction } = sheet;
+  const cells = interaction.getActiveCells();
+  const mergedCellsInfo: MergedCellInfo[] = [];
+  forEach(cells, (cell) => {
+    const meta = cell.getMeta();
+    mergedCellsInfo.push({
+      colIndex: meta?.colIndex,
+      rowIndex: meta?.rowIndex,
+    });
+  });
+  return mergedCellsInfo;
+};
+
+/**
  * draw the background of the merged cell
  * @param sheet the base sheet instance
  * @param cellsInfo
@@ -190,17 +209,33 @@ const getCellsByInfo = (
  */
 export const mergeCells = (
   sheet: SpreadSheet,
-  cellsInfo: MergedCellInfo[],
+  cellsInfo?: MergedCellInfo[],
   hideData?: boolean,
 ) => {
+  let mergeCellsInfo = cellsInfo;
+  if (!mergeCellsInfo) {
+    mergeCellsInfo = getActiveCellsInfo(sheet);
+  }
+
+  if (mergeCellsInfo?.length <= 1) {
+    // eslint-disable-next-line no-console
+    console.error('then merged cells must be more than one');
+    return;
+  }
+
   const allVisibleCells = filter(
     sheet.panelScrollGroup.getChildren(),
     (child) => !(child instanceof MergedCells),
   ) as unknown as S2CellType[];
-  const { cells, viewMeta } = getCellsByInfo(allVisibleCells, sheet, cellsInfo);
+  const { cells, viewMeta } = getCellsByInfo(
+    allVisibleCells,
+    sheet,
+    mergeCellsInfo,
+  );
+
   if (!isEmpty(cells)) {
     const mergedCellsInfo = sheet.options?.mergedCellsInfo || [];
-    mergedCellsInfo.push(cellsInfo);
+    mergedCellsInfo.push(mergeCellsInfo);
     sheet.setOptions({
       mergedCellsInfo: mergedCellsInfo,
     });
@@ -244,18 +279,21 @@ const removeUnmergedCellsInfo = (
  * @param removedCells
  * @param sheet
  */
-export const unmergeCell = (removedCells: MergedCells, sheet: SpreadSheet) => {
-  if (removedCells) {
-    const newMergedCellsInfo = removeUnmergedCellsInfo(
-      removedCells,
-      sheet.options?.mergedCellsInfo,
-    );
-    if (newMergedCellsInfo?.length !== sheet.options?.mergedCellsInfo?.length) {
-      sheet.setOptions({
-        mergedCellsInfo: newMergedCellsInfo,
-      });
-      removedCells.remove(true);
-    }
+export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCells) => {
+  if (!removedCells || removedCells.cellType !== CellTypes.MERGED_CELLS) {
+    // eslint-disable-next-line no-console
+    console.error('unmergeCell: the cell is not a MergedCell');
+    return;
+  }
+  const newMergedCellsInfo = removeUnmergedCellsInfo(
+    removedCells,
+    sheet.options?.mergedCellsInfo,
+  );
+  if (newMergedCellsInfo?.length !== sheet.options?.mergedCellsInfo?.length) {
+    sheet.setOptions({
+      mergedCellsInfo: newMergedCellsInfo,
+    });
+    removedCells.remove(true);
   }
 };
 

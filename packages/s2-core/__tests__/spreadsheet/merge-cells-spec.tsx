@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch, Button } from 'antd';
-import { forEach } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import {
   mockGridAnalysisDataCfg,
@@ -10,7 +9,6 @@ import {
 import { getContainer } from '../util/helpers';
 import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
 import { CustomTooltip } from './custom/custom-tooltip';
-import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
 import 'antd/dist/antd.min.css';
 import {
   S2DataConfig,
@@ -20,7 +18,6 @@ import {
   SheetType,
   DEFAULT_STYLE,
   MergedCells,
-  SpreadSheet,
 } from '@/index';
 
 const data = mockData.map((row) => {
@@ -123,28 +120,24 @@ function MainLayout() {
     getDataCfg('pivot'),
   );
   let sheet;
-  let mergedCellsInfo = [];
 
   const dataCellTooltip = (
     <Button
       key={'button'}
       onClick={() => {
-        mergeCells(sheet, mergedCellsInfo);
+        sheet.tool.mergeCells();
       }}
     >
       合并单元格
     </Button>
   );
 
-  const mergedCellsTooltip = (
-    mergedCell: MergedCells,
-    spreadSheet: SpreadSheet,
-  ) => (
+  const mergedCellsTooltip = (mergedCell: MergedCells) => (
     <div>
       合并后的tooltip
       <Button
         onClick={() => {
-          unmergeCell(mergedCell, spreadSheet);
+          sheet.tool.unmergeCell(mergedCell);
         }}
       >
         取消合并单元格
@@ -154,14 +147,6 @@ function MainLayout() {
 
   const onDataCellMouseUp = (value) => {
     sheet = value?.viewMeta?.spreadsheet;
-    const cells = sheet.interaction.getActiveCells();
-    mergedCellsInfo = [];
-    forEach(cells, (cell) => {
-      mergedCellsInfo.push({
-        colIndex: cell?.meta?.colIndex,
-        rowIndex: cell?.meta?.rowIndex,
-      });
-    });
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },
       element: dataCellTooltip,
@@ -172,7 +157,7 @@ function MainLayout() {
     sheet = value?.target?.cells[0].spreadsheet;
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },
-      element: mergedCellsTooltip(value.target, sheet),
+      element: mergedCellsTooltip(value.target),
     });
   };
 
