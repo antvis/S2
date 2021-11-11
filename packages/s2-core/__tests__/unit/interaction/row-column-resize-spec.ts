@@ -99,7 +99,7 @@ describe('Interaction Row Column Resize Tests', () => {
 
     const guideLineAttrs: ShapeAttrs = {
       lineDash: [3, 3],
-      stroke: '#3471F9',
+      stroke: '#B7CBF8',
       strokeWidth: 3,
       fillOpacity: 1,
     };
