@@ -10,7 +10,7 @@ import {
   Hierarchy,
   buildTableHierarchy,
 } from '@antv/s2';
-import { assembleDataCfg } from '../../util';
+import { assembleDataCfg } from '../../util/sheet-entry';
 import { getContainer } from '../../util/helpers';
 import { SheetComponent } from '@/components/index';
 import { TableSheet } from '@/components/sheets/table-sheet';
