@@ -24,7 +24,7 @@ export const useResizeEffect = (params: UseResizeEffectParams) => {
   }, 200);
 
   useEffect(() => {
-    if (!container || !s2 || !adaptive) {
+    if (!container || !adaptive) {
       return;
     }
 
