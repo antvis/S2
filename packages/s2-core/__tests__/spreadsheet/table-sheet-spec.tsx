@@ -101,7 +101,7 @@ function MainLayout({ callback }) {
   const options: S2Options = {
     width: 800,
     height: 600,
-    showSeriesNumber: true,
+    // showSeriesNumber: true,
     placeholder: '',
     style: {
       colCfg: {
@@ -120,24 +120,24 @@ function MainLayout({ callback }) {
       enableCopy: true,
       hoverHighlight: false,
       linkFields: ['order_id', 'customer_name'],
+      hiddenColumnFields,
     },
-    frozenRowCount: 2,
-    frozenColCount: 1,
-    frozenTrailingColCount: 1,
-    frozenTrailingRowCount: 1,
+    // frozenRowCount: 2,
+    // frozenColCount: 1,
+    // frozenTrailingColCount: 1,
+    // frozenTrailingRowCount: 1,
     tooltip: {
       showTooltip: true,
       operation: {
         hiddenColumns: hiddenColumnsOperator,
       },
     },
-    hiddenColumnFields,
-  } as S2Options;
+  };
 
   const s2Ref = React.useRef<SpreadSheet>(null);
 
   const logData = (...d: unknown[]) => {
-    console.info(...d);
+    console.log(...d);
   };
 
   useEffect(() => {

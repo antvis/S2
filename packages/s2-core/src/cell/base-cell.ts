@@ -131,7 +131,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
 
-  public getStyle(name?: keyof S2Theme) {
+  public getStyle(name?: keyof S2Theme): S2Theme[keyof S2Theme] {
     return this.theme[name || this.cellType];
   }
 

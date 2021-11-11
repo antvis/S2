@@ -110,7 +110,7 @@ describe('Interaction Data Cell Click Tests', () => {
 
     const defaultColumnsDetail: HiddenColumnsInfo[] = [
       {
-        displaySiblingNode: mockNode as Node,
+        displaySiblingNode: { prev: null, next: mockNode as Node },
         hideColumnNodes: [mockNode] as Node[],
       },
     ];
@@ -148,13 +148,13 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(columnsHidden).toHaveBeenCalledWith(
       // current hidden column infos
       {
-        displaySiblingNode: { colIndex: 2, field: '2' },
+        displaySiblingNode: { prev: null, next: { colIndex: 2, field: '2' } },
         hideColumnNodes: [{ colIndex: 1, field: mockField }],
       },
       // hidden columns detail
       [
         {
-          displaySiblingNode: { colIndex: 2, field: '2' },
+          displaySiblingNode: { prev: null, next: { colIndex: 2, field: '2' } },
           hideColumnNodes: [{ colIndex: 1, field: mockField }],
         },
       ],
