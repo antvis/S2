@@ -125,7 +125,7 @@ function MainLayout() {
     <Button
       key={'button'}
       onClick={() => {
-        sheet.tool.mergeCells();
+        sheet.interaction.mergeCells();
       }}
     >
       合并单元格
@@ -137,7 +137,7 @@ function MainLayout() {
       合并后的tooltip
       <Button
         onClick={() => {
-          sheet.tool.unmergeCell(mergedCell);
+          sheet.interaction.unmergeCell(mergedCell);
         }}
       >
         取消合并单元格
