@@ -1,5 +1,5 @@
 import { copyToClipboard } from '@/utils/export';
-import { S2CellType, ViewMeta } from '@/common/interface';
+import { Formatter, S2CellType, ViewMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 
@@ -10,9 +10,30 @@ export function keyEqualTo(key: string, compareKey: string) {
   return String(key).toLowerCase() === String(compareKey).toLowerCase();
 }
 
-export const processCopyData = (cells: S2CellType[][]): string => {
+const format = (cell: S2CellType, spreadsheet: SpreadSheet) => {
+  const meta = cell.getMeta();
+  const rowField = meta.rowId;
+  const rowMeta = spreadsheet.dataSet.getFieldMeta(rowField);
+  let formatter: Formatter;
+  if (rowMeta) {
+    // format by row field
+    formatter = spreadsheet.dataSet.getFieldFormatter(rowField);
+  } else {
+    // format by value field
+    formatter = spreadsheet.dataSet.getFieldFormatter(meta.valueField);
+  }
+  if (formatter) {
+    return formatter(meta.fieldValue);
+  }
+  return meta.fieldValue;
+};
+
+export const processCopyData = (
+  cells: S2CellType[][],
+  spreadsheet: SpreadSheet,
+): string => {
   const getRowString = (pre: string, cur: S2CellType) =>
-    pre + (cur ? cur.getMeta().fieldValue : '') + '\t';
+    pre + (cur ? format(cur, spreadsheet) : '') + '\t';
   const getColString = (pre: string, cur: S2CellType[]) =>
     pre + cur.reduce(getRowString, '') + '\n';
   return cells.reduce(getColString, '');
@@ -109,7 +130,7 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
     data = processRowSelected(spreadsheet, selectedRows);
   } else {
     // normal selected
-    data = processCopyData(getTwoDimData(cells));
+    data = processCopyData(getTwoDimData(cells), spreadsheet);
   }
   if (data) {
     copyToClipboard(data);
