@@ -2,13 +2,13 @@ export const paletteDefault = {
   // --------- basic colors -----------
   basicColors: [
     '#000000',
-    '#F7FAFF',
+    '#f7faff',
     '#E1EAFE',
     '#E1EAFE',
     '#CCDBFD',
     '#2C60D3',
     '#0000EE',
-    '#3471F9',
+    '#B7CBF8',
     '#FFFFFF',
     '#EBF2FF',
     '#D6E3FE',
