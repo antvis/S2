@@ -7,6 +7,7 @@ order: 2
 自定义目录树模式适用于数值挂在行头，需要开发者自定义目录结构的场景。
 
 ## 前提
+
 这种模式需要一些前提：
 
 1、数值必须置于行头（`dataCfg.fields.valueInCols = false`，无论配置与否都会被强制改为 `false`）
@@ -14,6 +15,7 @@ order: 2
 2、`rows` 配置应该为空 (`dataCfg.fields.rows = []` 无论配置与否都会被强制改为 []）
 
 ## 配置
+
 生成目录树结构的配置如下：
 
 ```ts
@@ -37,7 +39,9 @@ const s2DataConfig = {
 };
 
 ```
+
 ## 结构描述
+
 `dataCfg.fields.customTreeItems` 结构完全兼容 [AntD Tree](https://ant.design/components/tree-cn/) 树形的配置方式，并且在其基础上增加额外的功能元信息。
 
 ```ts
