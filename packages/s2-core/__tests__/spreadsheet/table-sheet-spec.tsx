@@ -101,7 +101,7 @@ function MainLayout({ callback }) {
   const options: S2Options = {
     width: 800,
     height: 600,
-    // showSeriesNumber: true,
+    showSeriesNumber: true,
     placeholder: '',
     style: {
       colCfg: {
@@ -122,10 +122,10 @@ function MainLayout({ callback }) {
       linkFields: ['order_id', 'customer_name'],
       hiddenColumnFields,
     },
-    // frozenRowCount: 2,
-    // frozenColCount: 1,
-    // frozenTrailingColCount: 1,
-    // frozenTrailingRowCount: 1,
+    frozenRowCount: 2,
+    frozenColCount: 1,
+    frozenTrailingColCount: 1,
+    frozenTrailingRowCount: 1,
     tooltip: {
       showTooltip: true,
       operation: {
