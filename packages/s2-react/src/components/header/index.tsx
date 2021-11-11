@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 import { PageHeader } from 'antd';
 import cx from 'classnames';
+import { SpreadSheet } from '@antv/s2';
 import { Export, ExportCfgProps } from '../export';
 import { AdvancedSort, AdvancedSortCfgProps } from '../advanced-sort';
-import { SpreadSheet } from '@/sheet-type';
 
 export interface HeaderCfgProps {
   className?: string;

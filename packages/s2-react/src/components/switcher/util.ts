@@ -1,5 +1,6 @@
 import { filter, flatten, isNil, map, mapValues } from 'lodash';
 import { DraggableLocation } from 'react-beautiful-dnd';
+import { getClassNameWithPrefix } from '@antv/s2';
 import {
   FieldType,
   MAX_DIMENSION_COUNT,
@@ -13,7 +14,6 @@ import {
   SwitcherFields,
   SwitcherResultItem,
 } from './interface';
-import { getClassNameWithPrefix } from '@/utils/get-classnames';
 
 export const getSwitcherClassName = (...classNames: string[]) =>
   getClassNameWithPrefix(SWITCHER_PREFIX_CLS, ...classNames);

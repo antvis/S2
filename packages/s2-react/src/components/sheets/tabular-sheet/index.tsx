@@ -4,15 +4,23 @@ import { forEach, isEmpty, isFunction, forIn, isObject, max } from 'lodash';
 import { merge } from 'lodash';
 import { Spin } from 'antd';
 import { Event } from '@antv/g-canvas';
+import {
+  SpreadSheet,
+  PivotSheet,
+  S2Event,
+  S2Options,
+  getBaseCellData,
+  getSafetyDataConfig,
+  getSafetyOptions,
+} from '@antv/s2';
 import { Header } from '../../header';
 import { BaseSheetProps } from '../interface';
 import { TabularDataCell } from './tabular-data-cell';
 import { TabularTheme } from './tabular-theme';
-import { S2Event } from '@/common/constant';
-import { getBaseCellData } from '@/utils/interaction/formatter';
-import { S2Options } from '@/common/interface';
-import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
-import { SpreadSheet, PivotSheet } from '@/sheet-type';
+// import { getBaseCellData } from '@/utils/interaction/formatter';
+// import { S2Options } from '@/common/interface';
+// import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
+// import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { useResizeEffect } from '@/components/sheets/hooks';
 
 export const TabularSheet = (props: BaseSheetProps) => {

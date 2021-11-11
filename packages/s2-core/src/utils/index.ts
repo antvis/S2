@@ -1,8 +1,12 @@
 export { splitTotal } from './data-set-operate';
 export { auto } from './formatter';
 export { generateId } from './layout';
-export { measureTextWidth } from './text';
-export * from './drill-down';
+export * from './text';
 export * from './export/index';
 export * from './interaction/merge-cells';
+export * from './interaction/formatter';
 export * from './g-renders';
+export * from './merge';
+export * from './is-mobile';
+export * from './tooltip';
+export * from './get-classnames';

@@ -1,4 +1,4 @@
-export * from '@antv/s2';
+// export * from '@antv/s2';
 import React, { FC } from 'react';
 import './index.less';
 import './index.module.less';

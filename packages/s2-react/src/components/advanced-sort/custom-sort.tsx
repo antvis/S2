@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card } from 'antd';
-import { HtmlIcon } from '@/common/icons';
-import { DEFAULT_ICON_PROPS, ADVANCED_PRE_CLS } from '@/common/constant';
+import { DEFAULT_ICON_PROPS, ADVANCED_PRE_CLS, HtmlIcon } from '@antv/s2';
 
 export interface CustomSortProps {
   splitOrders: string[];

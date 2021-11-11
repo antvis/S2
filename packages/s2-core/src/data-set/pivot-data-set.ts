@@ -36,6 +36,8 @@ import {
   Meta,
   S2DataConfig,
   ViewMeta,
+  PartDrillDownDataCache,
+  PartDrillDownFieldInLevel,
 } from '@/common/interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
 import { CellDataParams, DataType, PivotMeta } from '@/data-set/interface';
@@ -46,10 +48,6 @@ import {
   getQueryDimValues,
   deleteMetaById,
 } from '@/utils/dataset/pivot-data-set';
-import {
-  PartDrillDownDataCache,
-  PartDrillDownFieldInLevel,
-} from '@/components/sheets/interface';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure

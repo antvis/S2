@@ -10,8 +10,13 @@ import {
   values,
 } from 'lodash';
 import { PADDING_LEFT, PADDING_RIGHT } from '@/common/constant';
-import { CellBoxCfg, CellCfg, TooltipPosition } from '@/common/interface';
-import { S2Options, S2Theme } from '@/index';
+import {
+  CellBoxCfg,
+  S2Options,
+  S2Theme,
+  CellCfg,
+  TooltipPosition,
+} from '@/common/interface';
 import { renderText } from '@/utils/g-renders';
 
 const canvas = document.createElement('canvas');

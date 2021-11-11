@@ -24,6 +24,8 @@ import {
 } from 'lodash';
 import React from 'react';
 import { Event as CanvasEvent } from '@antv/g-canvas';
+import { handleDataItem } from './cell/data-cell';
+import { isMultiDataItem } from './data-item-type-checker';
 import {
   AutoAdjustPositionOptions,
   LayoutResult,
@@ -38,9 +40,7 @@ import {
   TooltipOptions,
   TooltipPosition,
   TooltipSummaryOptions,
-} from '..';
-import { handleDataItem } from './cell/data-cell';
-import { isMultiDataItem } from './data-item-type-checker';
+} from '@/index';
 import { i18n } from '@/common/i18n';
 import {
   CellTypes,

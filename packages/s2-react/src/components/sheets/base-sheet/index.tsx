@@ -2,9 +2,9 @@ import { Event as GEvent } from '@antv/g-canvas';
 import { Spin } from 'antd';
 import { forIn, isEmpty, isFunction, merge } from 'lodash';
 import React, { memo, StrictMode, useEffect, useRef, useState } from 'react';
-import { S2Event } from '@/common/constant';
-import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 import {
+  S2Event,
+  S2_PREFIX_CLS,
   CellScrollPosition,
   LayoutCol,
   LayoutResult,
@@ -12,18 +12,20 @@ import {
   ListSortParams,
   S2Constructor,
   TargetLayoutNode,
-} from '@/common/interface';
-import { EmitterType } from '@/common/interface/emitter';
+  EmitterType,
+  SpreadSheet,
+  PivotSheet,
+  getBaseCellData,
+  getTooltipOptions,
+  getSafetyDataConfig,
+  getSafetyOptions,
+} from '@antv/s2';
 import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
-import { SpreadSheet, PivotSheet } from '@/sheet-type';
-import { HandleDrillDown, HandleDrillDownIcon } from '@/utils/drill-down';
-import { getBaseCellData } from '@/utils/interaction/formatter';
 import { useResizeEffect } from '@/components/sheets/hooks';
-import { getTooltipOptions } from '@/utils/tooltip';
-import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 import { S2Pagination } from '@/components/pagination';
+import { HandleDrillDown, HandleDrillDownIcon } from '@/utils';
 
 import './index.less';
 

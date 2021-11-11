@@ -3,26 +3,28 @@ import { Event as GEvent } from '@antv/g-canvas';
 import { Spin } from 'antd';
 import { forIn, isFunction } from 'lodash';
 import React, { memo, StrictMode, useEffect, useRef, useState } from 'react';
-import { S2Event } from '@/common/constant';
-import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 import {
+  SpreadSheet,
+  TableSheet as BaseTableSheet,
   CellScrollPosition,
   ListSortParams,
   S2Constructor,
   S2Options,
   TargetLayoutNode,
-} from '@/common/interface';
-import { EmitterType } from '@/common/interface/emitter';
+  EmitterType,
+  S2_PREFIX_CLS,
+  S2Event,
+  getBaseCellData,
+  getSafetyDataConfig,
+  getSafetyOptions,
+} from '@antv/s2';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
-import { SpreadSheet, TableSheet as BaseTableSheet } from '@/sheet-type';
-import { getBaseCellData } from '@/utils/interaction/formatter';
 import {
   useResizeEffect,
   usePaginationEffect,
 } from '@/components/sheets/hooks';
 import { S2Pagination } from '@/components/pagination';
-import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 
 export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {

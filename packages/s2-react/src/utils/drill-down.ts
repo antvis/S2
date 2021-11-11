@@ -1,11 +1,10 @@
 import { clone, filter, get, isEmpty, set } from 'lodash';
 import { Event } from '@antv/g-canvas';
-import { S2Options, HeaderActionIconProps } from '@/common/interface';
+import { S2Options, HeaderActionIconProps, S2Event } from '@antv/s2';
 import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
 import { SpreadSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
 import { PivotDataSet } from '@/data-set';
-import { S2Event } from '@/common/constant';
 import { PartDrillDownDataCache } from '@/components/sheets/interface';
 
 export interface DrillDownParams {

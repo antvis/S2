@@ -12,17 +12,18 @@ import {
   find,
 } from 'lodash';
 import cx from 'classnames';
-import { SortIcon } from '../icons';
-import { CustomSort } from './custom-sort';
-import { SortParam, SortMethod } from '@/common/interface/basic';
-import { TOTAL_VALUE } from '@/common/constant/basic';
 import {
+  SpreadSheet,
+  SortParam,
+  SortMethod,
+  TOTAL_VALUE,
   SORT_METHOD,
   RULE_OPTIONS,
   ADVANCED_PRE_CLS,
-} from '@/common/constant/sort';
+} from '@antv/s2';
+import { SortIcon } from '../icons';
+import { CustomSort } from './custom-sort';
 import { i18n } from '@/common/i18n';
-import { SpreadSheet } from '@/sheet-type';
 import './index.less';
 
 const { Sider, Content } = Layout;

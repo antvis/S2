@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '../src';
+import { SheetComponent } from '@/components';
 import '@antv/s2/dist/s2.min.css';
 
 const Playground: FC = () => {

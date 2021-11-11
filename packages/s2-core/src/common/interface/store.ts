@@ -3,7 +3,7 @@ import { InteractionStateInfo, SortParam } from '../interface';
 import { ValueRanges } from './condition';
 import { S2DataConfig } from './s2DataConfig';
 import { Node } from '@/facet/layout/node';
-import { PartDrillDownFieldInLevel } from '@/components/sheets/interface';
+import { PartDrillDownFieldInLevel } from '@/common/interface';
 
 export interface Selected {
   type:

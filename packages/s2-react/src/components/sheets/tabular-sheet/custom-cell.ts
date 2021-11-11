@@ -1,6 +1,6 @@
 import { isObject } from 'lodash';
-import { DataCell } from '@/cell/data-cell';
-import { drawObjectText, drawStringText } from '@/utils/text';
+import { DataCell, drawObjectText, drawStringText } from '@antv/s2';
+// import { drawObjectText, drawStringText } from '@/utils/text';
 
 /**
  * Cell for panelGroup area

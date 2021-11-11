@@ -8,12 +8,15 @@ import {
   ListSortParams,
   TargetLayoutNode,
   S2Constructor,
-} from '@/common/interface';
+  Node,
+  SpreadSheet,
+  ThemeCfg,
+} from '@antv/s2';
 import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
-import { Node, SpreadSheet, ThemeCfg } from '@/index';
 
 export type SheetType = 'pivot' | 'table' | 'tabular';
+
 export interface SpreadsheetProps extends BaseSheetProps {
   sheetType?: SheetType;
 }

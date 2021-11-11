@@ -1,5 +1,5 @@
-import { S2Theme } from '@/index';
-import { isWindows } from '@/utils/is-mobile';
+import { S2Theme, isWindows } from '@antv/s2';
+// import { isWindows } from '@/utils/is-mobile';
 
 const FONT_FAMILY =
   'Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif';

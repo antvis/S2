@@ -1,10 +1,14 @@
 import React from 'react';
 import { Menu, Dropdown, message } from 'antd';
 import cx from 'classnames';
+import {
+  SpreadSheet,
+  copyData,
+  copyToClipboard,
+  download,
+  S2_PREFIX_CLS,
+} from '@antv/s2';
 import { DotIcon } from '../icons/index';
-import { copyData, copyToClipboard, download } from '../../utils/export';
-import { SpreadSheet } from '@/sheet-type';
-import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 
 export interface DataSet {
   icon?: React.ReactNode;
