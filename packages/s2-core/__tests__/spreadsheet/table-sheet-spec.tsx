@@ -104,9 +104,6 @@ function MainLayout({ callback }) {
     showSeriesNumber: true,
     placeholder: '',
     style: {
-      colCfg: {
-        colWidthType: 'compact',
-      },
       cellCfg: {
         height: 32,
       },
