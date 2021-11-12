@@ -14,9 +14,9 @@ export class PanelBBox extends BaseBBox {
 
     const scrollBarSize = this.spreadsheet.theme.scrollBar.size;
     const { width: canvasWidth, height: canvasHeight } =
-      this.facet.getCanvasHW();
+      this.spreadsheet.options;
 
-    let panelWidth = canvasWidth - cornerPosition.x - scrollBarSize;
+    let panelWidth = canvasWidth - cornerPosition.x;
     let panelHeight = canvasHeight - cornerPosition.y - scrollBarSize;
 
     const realWidth = this.facet.getRealWidth();
