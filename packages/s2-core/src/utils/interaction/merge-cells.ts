@@ -16,7 +16,7 @@ import { CellTypes } from '@/common/constant';
  * @param width
  * @param height
  */
-const getRectangleEdges = (
+export const getRectangleEdges = (
   x: number,
   y: number,
   width: number,
@@ -42,8 +42,8 @@ const getRectangleEdges = (
  * return the edges without overlapping edges
  * @param edges the collection of edges
  */
-const unique = (edges: number[][]) => {
-  const result = [];
+export const unique = (edges: number[][][]) => {
+  const result: number[][][] = [];
   forEach(edges, (edge) => {
     const reverseEdge = [edge[1], edge[0]];
     if (!JSON.stringify(edges).includes(JSON.stringify(reverseEdge))) {
@@ -59,7 +59,10 @@ const unique = (edges: number[][]) => {
  * @param curEdge the  coordinate of current edge
  * @param edges the collection of edges
  */
-const getNextEdge = (curEdge: number[], edges: number[][]) => {
+export const getNextEdge = (
+  curEdge: number[][],
+  edges: number[][][],
+): number[][] => {
   return find(edges, (edge) => isEqual(edge[0], curEdge[1]));
 };
 
@@ -68,7 +71,7 @@ const getNextEdge = (curEdge: number[], edges: number[][]) => {
  * @param cells the collection of information of cells which needed be merged
  */
 export const getPolygonPoints = (cells: S2CellType[]) => {
-  let allEdges = [];
+  let allEdges: number[][][] = [];
 
   cells.forEach((cell) => {
     const meta = cell.getMeta();
@@ -77,10 +80,10 @@ export const getPolygonPoints = (cells: S2CellType[]) => {
   });
   allEdges = unique(allEdges);
 
-  let allPoints = [];
+  let allPoints: number[][] = [];
   const startEdge = allEdges[0];
   let curEdge = startEdge;
-  let nextEdge = [];
+  let nextEdge: number[][] = [];
 
   while (!isEqual(startEdge, nextEdge)) {
     allPoints = allPoints.concat(curEdge);
@@ -159,11 +162,10 @@ const getCellsByInfo = (
   sheet?: SpreadSheet,
   cellsInfos: MergedCellInfo[] = [],
 ): TempMergedCell => {
-  const {
-    cellsMeta,
-    cells,
-    invisibleCellInfo: invisibleCellInfo,
-  } = getInsideVisibleInfo(cellsInfos, allVisibleCells);
+  const { cellsMeta, cells, invisibleCellInfo } = getInsideVisibleInfo(
+    cellsInfos,
+    allVisibleCells,
+  );
   let viewMeta: ViewMeta | Node = cellsMeta;
   let allCells: S2CellType[] = cells;
   // 当 MergedCell 只有部分在可视区域时，在此获取 MergedCell 不在可视区域内的 cells
@@ -187,7 +189,7 @@ const getCellsByInfo = (
  * get the active cells' info as the default info of merged cells
  * @param sheet
  */
-const getActiveCellsInfo = (sheet: SpreadSheet) => {
+export const getActiveCellsInfo = (sheet: SpreadSheet) => {
   const { interaction } = sheet;
   const cells = interaction.getActiveCells();
   const mergedCellsInfo: MergedCellInfo[] = [];
