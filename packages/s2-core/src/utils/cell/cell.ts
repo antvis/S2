@@ -115,15 +115,20 @@ export const getTextAndFollowingIconPosition = (
       iconX = startX + (iconPosition === 'left' ? 0 : textWidth + margin.left);
       break;
     }
-
-    default:
-      textX = x + width - (iconPosition === 'right' ? size + margin.left : 0);
+    default: {
+      textX =
+        x +
+        width -
+        (iconPosition === 'right' ? size + margin.left + margin.right : 0);
       iconX =
         x +
         width -
-        (iconPosition === 'right' ? size : textWidth + size + margin.right);
+        (iconPosition === 'right'
+          ? size + margin.right
+          : textWidth + size + margin.right);
 
       break;
+    }
   }
 
   const textY = getVerticalPosition(contentBox, textBaseline, 0);

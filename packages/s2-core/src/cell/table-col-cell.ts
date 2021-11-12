@@ -1,5 +1,6 @@
 import { get, isEmpty } from 'lodash';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
+import { getOccupiedWidthForTableCol } from 'src/utils/cell/table-col-cell';
 import { Group, SimpleBBox } from '@antv/g-canvas';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
 import { S2Event, HORIZONTAL_RESIZE_AREA_KEY_PRE } from '@/common/constant';
@@ -10,7 +11,7 @@ import { ColCell } from '@/cell/col-cell';
 import { DefaultCellTheme, IconTheme } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
-import { getTextPosition } from '@/utils/cell/cell';
+import { getTextAndFollowingIconPosition } from '@/utils/cell/cell';
 
 export class TableColCell extends ColCell {
   protected isFrozenCell() {
@@ -49,11 +50,8 @@ export class TableColCell extends ColCell {
 
     const style = this.getStyle();
     const textStyle = get(style, 'bolderText');
-    const padding = get(style, 'cell.padding');
     const iconSize = get(style, 'icon.size');
     const iconMargin = get(style, 'icon.margin');
-    const rightPadding = padding?.right + iconSize;
-    const leftPadding = padding?.left;
 
     const textAlign = get(textStyle, 'textAlign');
     const textBaseline = get(textStyle, 'textBaseline');
@@ -64,21 +62,25 @@ export class TableColCell extends ColCell {
       width: cellWidth,
       height: cellHeight,
     };
-    const position = getTextPosition(cellBoxCfg, { textAlign, textBaseline });
 
     const expandIconMargin = this.getExpandIconMargin();
+    const textWidth =
+      cellWidth -
+      getOccupiedWidthForTableCol(this.spreadsheet, this.meta?.field, style);
 
     const text = getEllipsisText({
       text: label,
-      maxWidth:
-        cellWidth -
-        leftPadding -
-        rightPadding -
-        expandIconMargin -
-        iconMargin?.left,
+      maxWidth: textWidth,
       fontParam: textStyle,
       placeholder: this.spreadsheet.options.placeholder,
     });
+
+    const position = getTextAndFollowingIconPosition(
+      cellBoxCfg,
+      { textAlign, textBaseline },
+      textWidth,
+      get(style, 'icon'),
+    ).text;
 
     this.textShape = renderText(
       this,

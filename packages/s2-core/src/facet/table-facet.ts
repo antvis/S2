@@ -4,6 +4,7 @@ import { getDataCellId } from 'src/utils/cell/data-cell';
 import { get, maxBy, set, size } from 'lodash';
 import { TableColHeader } from 'src/facet/header/table-col';
 import { ColHeader } from 'src/facet/header/col';
+import { getOccupiedWidthForTableCol } from 'src/utils/cell/table-col-cell';
 import type {
   Formatter,
   LayoutResult,
@@ -341,22 +342,37 @@ export class TableFacet extends BaseFacet {
       );
 
       const seriesNumberWidth = this.getSeriesNumberWidth();
+      const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell;
       const {
-        cell: colCellStyle,
-        icon: colCellIconStyle,
-        bolderText: colCellTextStyle,
-      } = spreadsheet.theme.colCell;
+        text: dataCellTextStyle,
+        cell: cellStyle,
+        icon: iconStyle,
+      } = spreadsheet.theme.dataCell;
 
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
         col.field,
         maxLabel,
       );
-      colWidth =
-        measureTextWidth(maxLabel, colCellTextStyle) +
-        colCellStyle.padding?.left +
-        colCellStyle.padding?.right +
-        colCellIconStyle.size;
+
+      // 最长的 Label 如果是列名，按列名的标准计算宽度
+      if (colLabel === maxLabel) {
+        colWidth =
+          measureTextWidth(maxLabel, colCellTextStyle) +
+          getOccupiedWidthForTableCol(
+            this.spreadsheet,
+            col.meta?.field,
+            spreadsheet.theme.colCell,
+          );
+      } else {
+        colWidth =
+          measureTextWidth(maxLabel, dataCellTextStyle) +
+          cellStyle.padding.left +
+          cellStyle.padding.right +
+          iconStyle.size +
+          iconStyle.margin.right +
+          iconStyle.margin.left;
+      }
 
       if (col.field === SERIES_NUMBER_FIELD) {
         colWidth = seriesNumberWidth;
