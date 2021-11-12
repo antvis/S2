@@ -1,4 +1,3 @@
-import { debug } from 'console';
 import { each, isEmpty } from 'lodash';
 import { IGroup, IShape } from '@antv/g-base';
 import { BaseHeader, BaseHeaderConfig } from './base';
