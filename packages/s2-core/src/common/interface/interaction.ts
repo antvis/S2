@@ -1,7 +1,14 @@
 import { SimpleBBox } from '@antv/g-canvas';
 import { InteractionStateName, CellTypes, InterceptType } from '../constant';
 import { ViewMeta } from './basic';
-import { BaseCell, ColCell, CornerCell, DataCell, RowCell } from '@/cell';
+import {
+  BaseCell,
+  ColCell,
+  CornerCell,
+  DataCell,
+  MergedCells,
+  RowCell,
+} from '@/cell';
 import { HeaderCell } from '@/cell/header-cell';
 import { Node } from '@/facet/layout/node';
 import { BaseEvent } from '@/interaction/base-event';
@@ -13,6 +20,7 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | ColCell
   | CornerCell
   | RowCell
+  | MergedCells
   | BaseCell<T>;
 
 export interface CellMeta {
