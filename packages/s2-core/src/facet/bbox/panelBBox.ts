@@ -1,4 +1,3 @@
-import { get } from 'lodash';
 import { BaseBBox } from './baseBBox';
 
 export class PanelBBox extends BaseBBox {
@@ -7,31 +6,32 @@ export class PanelBBox extends BaseBBox {
     this.originalWidth = Math.floor(rowsHierarchy.width);
     this.originalHeight = Math.floor(colsHierarchy.height);
 
-    const corner = this.facet.cornerBBox;
-    const br = {
-      x: Math.floor(corner.maxX),
-      y: Math.floor(corner.maxY),
+    const { cornerBBox } = this.facet;
+    const cornerPosition = {
+      x: Math.floor(cornerBBox.maxX),
+      y: Math.floor(cornerBBox.maxY),
     };
-    const box = this.facet.getCanvasHW();
-    let width = box.width - br.x;
-    let height =
-      box.height -
-      br.y -
-      (get(this.facet.cfg, 'spreadsheet.theme.scrollBar.size') as number);
+
+    const scrollBarSize = this.spreadsheet.theme.scrollBar.size;
+    const { width: containerWidth, height: containerHeight } =
+      this.spreadsheet.options;
+
+    let panelWidth = containerWidth - cornerPosition.x - scrollBarSize;
+    let panelHeight = containerHeight - cornerPosition.y - scrollBarSize;
 
     const realWidth = this.facet.getRealWidth();
     const realHeight = this.facet.getRealHeight();
 
-    width = Math.floor(Math.min(width, realWidth));
-    height = Math.floor(Math.min(height, realHeight));
+    panelWidth = Math.abs(Math.floor(Math.min(panelWidth, realWidth)));
+    panelHeight = Math.abs(Math.floor(Math.min(panelHeight, realHeight)));
 
-    this.x = br.x;
-    this.y = br.y;
-    this.width = width;
-    this.height = height;
-    this.maxX = br.x + width;
-    this.maxY = br.y + height;
-    this.minX = br.x;
-    this.minY = br.y;
+    this.x = cornerPosition.x;
+    this.y = cornerPosition.y;
+    this.width = panelWidth;
+    this.height = panelHeight;
+    this.maxX = cornerPosition.x + panelWidth;
+    this.maxY = cornerPosition.y + panelHeight;
+    this.minX = cornerPosition.x;
+    this.minY = cornerPosition.y;
   }
 }
