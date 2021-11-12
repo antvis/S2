@@ -17,10 +17,15 @@ $ yarn add @antv/s2
 
 ```html
 <!-- 引入在线资源 -->
-<script type="text/javascript" src="https://unpkg.com/@antv/s2@latest"></script>
+<link type="text/css" href="//unpkg.com/@antv/s2@latest/dist/s2.min.css">
+<script type="text/javascript" src="//unpkg.com/@antv/s2@latest/dist/s2.min.js"></script>
+
+<!-- 测试版 -->
+<!-- <script type="text/javascript" src="//unpkg.com/@antv/s2@beta/dist/s2.min.js"></script> -->
+
 
 <!-- 下载到本地 引入本地脚本 -->
-<script src="./s2.min.js"></script>
+<script src="./dist/s2.min.js"></script>
 ```
 
 ## 🔨 使用
