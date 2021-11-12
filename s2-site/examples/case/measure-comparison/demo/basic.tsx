@@ -282,10 +282,10 @@ class CustomDataCell extends DataCell {
       });
     }
     const tagLength = [...(spreadsheet.dataSet.colPivotMeta || [])].length;
-    if (
+    const shouldAddRightLine =
       (colIndex + 1) % valueLength === 0 &&
-      colIndex + 1 !== tagLength * valueLength  // 最后一列不加line
-    ) {
+      colIndex + 1 !== tagLength * valueLength; // 除了表格最后一列,每个 tag 最后一个子列加 right line
+    if (shouldAddRightLine) {
       this.addShape('line', {
         attrs: {
           x1: x + width,
@@ -398,7 +398,7 @@ class CustomCornelCell extends CornerCell {
     const { backgroundColorOpacity, backgroundColor } = this.getStyle().cell;
     const attrs = {
       ...this.getCellArea(),
-      fill: this.meta.cornerType === 'col' ? '#FFFFFF' : backgroundColor,
+      fill: this.meta.cornerType === 'col' ? '#FFF' : backgroundColor,
       opacity: backgroundColorOpacity,
     };
     this.backgroundShape = this.addShape('rect', {
