@@ -1,4 +1,4 @@
-import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
+import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { DataCellMultiSelection } from '@/interaction/data-cell-multi-selection';
