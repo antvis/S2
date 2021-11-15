@@ -1,5 +1,14 @@
 import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import { each, get, includes, isEmpty, keys, pickBy } from 'lodash';
+import {
+  each,
+  forEach,
+  get,
+  includes,
+  isEmpty,
+  isNumber,
+  keys,
+  pickBy,
+} from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
@@ -228,13 +237,31 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       this.theme,
       `${this.cellType}.cell.interactionState.${stateName}`,
     );
+
+    const { x, y, height, width } = this.getCellArea();
+    const margin = Number(stateStyles.borderWidth || 1);
+
+    const shape = this.stateShapes.get('interactiveBorderShape') || null;
+
+    if (shape && isNumber(margin)) {
+      // 默认留下2 pixel的buffer防止和周边cell的边框重合
+      const marginStyle = {
+        x: x + 1 + margin / 2,
+        y: y + 1 + margin / 2,
+        width: width - margin - 2,
+        height: height - margin - 2,
+        lineWidth: margin,
+      };
+
+      each(marginStyle, (style, styleKey) => {
+        updateShapeAttr(shape, styleKey, style);
+      });
+    }
+
     each(stateStyles, (style, styleKey) => {
       const targetShapeNames = keys(
         pickBy(SHAPE_ATTRS_MAP, (attrs) => includes(attrs, styleKey)),
       );
-      if (isEmpty(targetShapeNames)) {
-        return;
-      }
       targetShapeNames.forEach((shapeName: StateShapeLayer) => {
         const shape = this.stateShapes.has(shapeName)
           ? this.stateShapes.get(shapeName)
