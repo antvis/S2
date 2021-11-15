@@ -247,10 +247,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     if (shape && isNumber(margin)) {
       // 默认留下1pixel的buffer防止和周边cell的边框重合
       const marginStyle = {
-        x: x + 1 + margin / 2,
-        y: y + 1 + margin / 2,
-        width: width - margin - 2,
-        height: height - margin - 2,
+        x: x + margin / 2,
+        y: y + margin / 2,
+        width: width - margin - 1,
+        height: height - margin - 1,
         lineWidth: margin,
       };
 
