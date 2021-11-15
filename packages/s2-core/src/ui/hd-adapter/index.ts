@@ -82,17 +82,15 @@ export class HdAdapter {
       container,
       options: { width, height },
     } = this.spreadsheet;
-    const newWidth = Math.floor(width * ratio);
-    const newHeight = Math.floor(height * ratio);
 
     container.set('pixelRatio', ratio);
-    container.changeSize(newWidth, newHeight);
+    container.changeSize(width, height);
 
     this.spreadsheet.render(false);
   };
 
   private renderByZoomScale = debounce((e) => {
-    const ratio = Math.max(e.target.scale, window.devicePixelRatio);
+    const ratio = Math.ceil(e.target.scale);
     if (ratio > 1) {
       this.renderByDevicePixelRatio(ratio);
     }

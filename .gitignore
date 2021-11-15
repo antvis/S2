@@ -5,6 +5,7 @@
 .changelog
 *.log
 *.zip
+coverage
 
 # Mac files
 .DS_Store
@@ -16,7 +17,6 @@ s2-site/node_modules/
 dist/s2-site.d.ts
 temp/
 
-
 # gatsby files
 s2-site/.cache/
 s2-site/public
@@ -27,6 +27,3 @@ packages/s2-core/esm/
 packages/s2-core/dist/
 packages/s2-core/coverage/
 packages/s2-core/stats.html
-
-
-

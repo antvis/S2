@@ -69,6 +69,43 @@ describe('Interaction Row Column Resize Tests', () => {
     ) as IShape;
   };
 
+  const emitResize = (
+    directionType: ResizeDirectionType,
+    effect: ResizeAreaEffect,
+  ) => {
+    const resizeInfo = {
+      theme: {},
+      type: directionType,
+      offsetX: 2,
+      offsetY: 2,
+      width: 5,
+      height: 2,
+      isResizeArea: true,
+      effect,
+      id: 'testId',
+    } as ResizeInfo;
+
+    emitResizeEvent(
+      S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
+      {
+        offsetX: 10,
+        offsetY: 20,
+      },
+      resizeInfo,
+    );
+
+    emitResizeEvent(
+      S2Event.GLOBAL_MOUSE_UP,
+      {
+        offsetX: 30,
+        offsetY: 30,
+      },
+      resizeInfo,
+    );
+
+    return resizeInfo;
+  };
+
   beforeEach(() => {
     MockRootInteraction.mockClear();
 
@@ -99,7 +136,7 @@ describe('Interaction Row Column Resize Tests', () => {
 
     const guideLineAttrs: ShapeAttrs = {
       lineDash: [3, 3],
-      stroke: '#B7CBF8',
+      stroke: '#326EF4',
       strokeWidth: 3,
       fillOpacity: 1,
     };
@@ -232,7 +269,6 @@ describe('Interaction Row Column Resize Tests', () => {
 
     // update style options
     expect(s2.options.style.colCfg).toEqual({
-      colWidthType: 'adaptive',
       detailSample: 30,
       height: 30,
       heightByField: {},
@@ -248,6 +284,9 @@ describe('Interaction Row Column Resize Tests', () => {
 
     // render
     expect(s2.render).toHaveBeenCalledTimes(1);
+
+    // destroy resize reference group
+    expect(rowColumnResizeInstance.resizeReferenceGroup).toBeNull();
 
     // reset resize position
     expect(rowColumnResizeInstance.resizeStartPosition).toEqual({});
@@ -351,8 +390,74 @@ describe('Interaction Row Column Resize Tests', () => {
     // render
     expect(s2.render).toHaveBeenCalledTimes(1);
 
+    // destroy resize reference group
+    expect(rowColumnResizeInstance.resizeReferenceGroup).toBeNull();
+
     // reset resize position
     expect(rowColumnResizeInstance.resizeStartPosition).toEqual({});
+  });
+
+  test('should get horizontal cell resize style', () => {
+    const resizeInfo = emitResize(
+      ResizeDirectionType.Horizontal,
+      ResizeAreaEffect.Cell,
+    );
+
+    expect(s2.options.style.colCfg.widthByFieldValue).toEqual({
+      [resizeInfo.id]: resizeInfo.width,
+    });
+  });
+
+  test('should get horizontal tree resize style', () => {
+    const resizeInfo = emitResize(
+      ResizeDirectionType.Horizontal,
+      ResizeAreaEffect.Tree,
+    );
+
+    expect(s2.options.style.rowCfg.treeRowsWidth).toEqual(resizeInfo.width);
+  });
+
+  test('should get horizontal filed resize style', () => {
+    const resizeInfo = emitResize(
+      ResizeDirectionType.Horizontal,
+      ResizeAreaEffect.Field,
+    );
+
+    expect(s2.options.style.rowCfg.widthByField).toEqual({
+      [resizeInfo.id]: resizeInfo.width,
+    });
+  });
+
+  test('should get horizontal series resize style', () => {
+    const resizeInfo = emitResize(
+      ResizeDirectionType.Horizontal,
+      ResizeAreaEffect.Series,
+    );
+
+    expect(s2.theme.rowCell.seriesNumberWidth).toEqual(resizeInfo.width);
+  });
+
+  test('should get vertical cell resize style', () => {
+    const resizeInfo = emitResize(
+      ResizeDirectionType.Vertical,
+      ResizeAreaEffect.Cell,
+    );
+
+    expect(s2.options.style.cellCfg).toEqual({
+      width: 96,
+      height: resizeInfo.height,
+    });
+  });
+
+  test('should get vertical filed resize style', () => {
+    const resizeInfo = emitResize(
+      ResizeDirectionType.Vertical,
+      ResizeAreaEffect.Field,
+    );
+
+    expect(s2.options.style.colCfg.heightByField).toEqual({
+      [resizeInfo.id]: resizeInfo.height,
+    });
   });
 
   test('should hidden tooltip when resize start', () => {

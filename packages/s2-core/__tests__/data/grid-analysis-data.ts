@@ -5,6 +5,7 @@ export const mockGridAnalysisOptions = {
   height: 600,
   hierarchyType: 'grid',
   style: {
+    layoutWidthType: 'colAdaptive',
     cellCfg: {
       lineHeight: 20,
       width: 400,

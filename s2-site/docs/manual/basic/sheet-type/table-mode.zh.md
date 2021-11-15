@@ -3,13 +3,13 @@ title: 明细表
 order: 2
 ---
 
-# 明细表简介
+## 明细表简介
 
 明细表是 `S2` 的基础形态之一。明细表就是普通的表格，在列头下把每行数据直接展示出来。主要用于大数据场景下明细数据的展示。
 
-![tablmode](https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*rUnvRKlKL0wAAAAAAAAAAAAAARQnAQ)
+<img alt="pivot-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*PmpvRrcBEbMAAAAAAAAAAAAAARQnAQ" width="600">
 
-明细表和交叉表共享基础交互、主题、复制、自定义 Cell 等能力。除此之外，明细表还支持行列冻结等特色功能。在海量明细数据渲染场景下，明细表可以替换基于 DOM 的表格组件，来提升性能和用户体验。
+明细表和透视表共享基础交互、主题、复制、自定义 `Cell` 等能力。除此之外，明细表还支持行列冻结等特色功能。在海量明细数据渲染场景下，明细表可以替换基于 `DOM` 的表格组件，来提升性能和用户体验。
 
 ## 使用
 
@@ -42,7 +42,7 @@ const data = [
 ];
 
 // 2. 配置数据
-const dataCfg = {
+const s2DataCfg = {
   fields: {
     columns: ["province", "city", "type", "price"], // 要展示的列头字段 id 列表
   },
@@ -69,38 +69,20 @@ const dataCfg = {
 };
 
 // 3. S2 相关配置
-const options = {
+const s2Options = {
   width: 400,
   height: 200,
-  showSeriesNumber: true,
-  style: {
-    cellCfg: {
-      height: 32,
-    },
-    device: "pc",
-  },
-};
-
-// 4. 准备表实例
-const getSpreadSheet = (
-  dom: string | HTMLElement,
-  dataCfg: DataCfg,
-  options: SpreadsheetOptions
-) => {
-  return new TableSheet(dom, dataCfg, options);
 };
 
 // 5, 渲染 React 组件
 ReactDOM.render(
   <SheetComponent
-    dataCfg={dataCfg}
-    options={options}
-    spreadsheet={getSpreadSheet}
+    dataCfg={s2DataCfg}
+    options={s2Options}
     sheetType={"table"}
   />,
-  "#container"
+  mountNode
 );
-
 ```
 
 ### TableSheet 类方式
@@ -108,7 +90,7 @@ ReactDOM.render(
 如果不打算依赖 React，可以在上面第三步之后直接调用：
 
 ```typescript
-const sheet = new TableSheet("#container", dataCfg, options);
+const sheet = new TableSheet("#mountNode", dataCfg, options);
 sheet.render();
 ```
 
@@ -116,13 +98,13 @@ sheet.render();
 
 ### 序号
 
-在 S2 Options 中传入 `showSeriesNumber` 即可展示内置的序号。
+在 `s2Options` 中传入 `showSeriesNumber` 即可展示内置的序号。
 
 ### 行列冻结
 
 行列冻结让特定行列在滚动时保持固定，从而一直保持在视口范围内，提供信息的对照和参考。
 
-行列冻结通过在 S2 Options 中传入这些属性控制：
+行列冻结通过在 `s2Options` 中传入这些属性控制：
 
 ```typescript
 {

@@ -1,7 +1,14 @@
 import { S2Options } from '../interface/s2Options';
 import { Style } from '@/common/interface/basic';
 
+export enum LayoutWidthTypes {
+  Adaptive = 'adaptive',
+  ColAdaptive = 'colAdaptive',
+  Compact = 'compact',
+}
+
 export const DEFAULT_STYLE: Readonly<Style> = {
+  layoutWidthType: LayoutWidthTypes.Adaptive,
   treeRowsWidth: 120,
   collapsedRows: {},
   collapsedCols: {},
@@ -17,7 +24,6 @@ export const DEFAULT_STYLE: Readonly<Style> = {
     height: 30,
     widthByFieldValue: {},
     heightByField: {},
-    colWidthType: 'adaptive',
     totalSample: 10,
     detailSample: 30,
     maxSampleIndex: 1,

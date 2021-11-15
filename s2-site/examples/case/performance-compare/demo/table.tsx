@@ -1,6 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2';
+import { TableSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 const s2options = {
@@ -44,11 +42,8 @@ const s2DataConfig = {
   ),
 };
 
-ReactDOM.render(
-  <SheetComponent
-    dataCfg={s2DataConfig}
-    options={s2options}
-    sheetType="table"
-  />,
-  document.getElementById('container'),
-);
+const container = document.getElementById('container');
+
+const s2 = new TableSheet(container, s2DataConfig, s2options);
+
+s2.render();

@@ -134,7 +134,6 @@ const getOptions = (): S2Options => {
       colCfg: {
         widthByFieldValue: {},
         heightByField: {},
-        colWidthType: 'compact',
       },
       cellCfg: {
         height: 32,

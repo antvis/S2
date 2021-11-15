@@ -9,7 +9,7 @@ import {
   InteractionStateName,
   S2Event,
 } from '@/common/constant';
-import { S2CellType, ViewMeta } from '@/common/interface';
+import { CellMeta, S2CellType, ViewMeta } from '@/common/interface';
 
 const ACTIVATE_KEYS = [
   InteractionKeyboardKey.SHIFT,
@@ -53,7 +53,7 @@ export class DataCellMultiSelection
     const id = cell.getMeta().id;
     const { interaction } = this.spreadsheet;
     let selectedCells = interaction.getCells();
-    let cells = [];
+    let cells: CellMeta[] = [];
     if (interaction.getCurrentStateName() !== InteractionStateName.SELECTED) {
       selectedCells = [];
     }
@@ -83,7 +83,6 @@ export class DataCellMultiSelection
         }
 
         interaction.addIntercepts([InterceptType.CLICK, InterceptType.HOVER]);
-        this.getSelectedCells(cell);
         this.spreadsheet.hideTooltip();
         interaction.changeState({
           cells: selectedCells,

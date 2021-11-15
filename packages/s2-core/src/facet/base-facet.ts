@@ -376,7 +376,7 @@ export abstract class BaseFacet {
     this.cornerBBox = new CornerBBox(this, true);
   }
 
-  calculatePanelBBox = () => {
+  protected calculatePanelBBox = () => {
     this.panelBBox = new PanelBBox(this, true);
   };
 
@@ -467,6 +467,14 @@ export abstract class BaseFacet {
     this.dynamicRenderCell();
   };
 
+  getRendererHeight = () => {
+    const { start, end } = this.getCellRange();
+    return (
+      this.viewCellHeights.getCellOffsetY(end + 1) -
+      this.viewCellHeights.getCellOffsetY(start)
+    );
+  };
+
   adjustXAndY = (x: number, y: number): Point => {
     let newX = x;
     let newY = y;
@@ -475,11 +483,10 @@ export abstract class BaseFacet {
         newX = this.layoutResult.colsHierarchy.width - this.panelBBox.width;
       }
     }
-
-    const totalHeight = this.viewCellHeights.getTotalHeight();
+    const rendererHeight = this.getRendererHeight();
     if (y !== undefined) {
-      if (y + this.panelBBox.height >= totalHeight) {
-        newY = totalHeight - this.panelBBox.height;
+      if (y + this.panelBBox.height >= rendererHeight) {
+        newY = rendererHeight - this.panelBBox.height;
       }
     }
     return {
@@ -667,18 +674,29 @@ export abstract class BaseFacet {
     if (!this.hScrollBar) {
       return true;
     }
-    return deltaX <= 0 && this.hScrollBar?.thumbOffset <= 0;
+
+    const isScrollRowHeaderToLeft =
+      !this.hRowScrollBar || this.hRowScrollBar.thumbOffset <= 0;
+
+    const isScrollPanelToLeft = deltaX <= 0 && this.hScrollBar.thumbOffset <= 0;
+
+    return isScrollPanelToLeft && isScrollRowHeaderToLeft;
   };
 
   isScrollToRight = (deltaX: number) => {
     if (!this.hScrollBar) {
       return true;
     }
-    return (
-      deltaX >= 0 &&
-      this.hScrollBar?.thumbOffset + this.hScrollBar?.thumbLen >=
-        this.panelBBox?.width
-    );
+    const isScrollRowHeaderToRight =
+      !this.hRowScrollBar ||
+      this.hRowScrollBar.thumbOffset + this.hRowScrollBar.thumbLen >=
+        this.cornerBBox.width;
+
+    const isScrollPanelToRight =
+      this.hScrollBar.thumbOffset + this.hScrollBar.thumbLen >=
+      this.panelBBox?.width;
+
+    return deltaX >= 0 && isScrollPanelToRight && isScrollRowHeaderToRight;
   };
 
   isScrollToTop = (deltaY: number) => {
