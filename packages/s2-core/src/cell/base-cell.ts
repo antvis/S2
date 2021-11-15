@@ -238,13 +238,14 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       `${this.cellType}.cell.interactionState.${stateName}`,
     );
 
+    // // 根据borderWidth更新borderShape大小     https://github.com/antvis/S2/pull/705
     const { x, y, height, width } = this.getCellArea();
     const margin = Number(stateStyles.borderWidth || 1);
 
     const shape = this.stateShapes.get('interactiveBorderShape') || null;
 
     if (shape && isNumber(margin)) {
-      // 默认留下2 pixel的buffer防止和周边cell的边框重合
+      // 默认留下1pixel的buffer防止和周边cell的边框重合
       const marginStyle = {
         x: x + 1 + margin / 2,
         y: y + 1 + margin / 2,
