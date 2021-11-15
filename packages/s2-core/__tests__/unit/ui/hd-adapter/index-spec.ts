@@ -1,7 +1,8 @@
 import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
-import { SpreadSheet } from '@/sheet-type/spread-sheet';
+import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { HdAdapter } from '@/ui/hd-adapter';
 
+jest.mock('@/sheet-type/spread-sheet');
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 jest.mock('@/utils/tooltip');
@@ -43,6 +44,11 @@ describe('HD Adapter Tests', () => {
 
   afterEach(() => {
     hdAdapter.destroy();
+
+    Object.defineProperty(visualViewport, 'scale', {
+      value: 1,
+      configurable: true,
+    });
   });
 
   // eslint-disable-next-line jest/expect-expect
@@ -58,7 +64,7 @@ describe('HD Adapter Tests', () => {
 
   test('should update container size when zoom scale changed, and scale more than current DPR', async () => {
     Object.defineProperty(visualViewport, 'scale', {
-      value: 2.5,
+      value: 2.6,
       configurable: true,
     });
     visualViewport.dispatchEvent(new Event('resize'));
@@ -79,10 +85,7 @@ describe('HD Adapter Tests', () => {
     });
     visualViewport.dispatchEvent(new Event('resize'));
 
-    await expectContainerSize(
-      [s2.options.width, s2.options.height],
-      [s2.options.width * DPR, s2.options.height * DPR],
-    );
+    await expectContainerSize();
     expect(s2.render).not.toHaveBeenCalled();
   });
 
