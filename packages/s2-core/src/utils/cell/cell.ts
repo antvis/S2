@@ -101,10 +101,33 @@ export const getTextAndFollowingIconPosition = (
 
   switch (textAlign) {
     case 'left':
+      /**
+       * icon left -- text left
+       * ------------------------------------------------------
+       * | margin-left | icon | margin-right | text | padding |
+       * ------------------------------------------------------
+       *
+       * text left - icon right
+       * ------------------------------------------------------
+       * | text | margin-left | icon | margin-right | padding |
+       * ------------------------------------------------------
+       */
       textX = x + (iconPosition === 'left' ? iconSpace : 0);
-      iconX = x + (iconPosition === 'left' ? 0 : textWidth + margin.left);
+      iconX =
+        x + (iconPosition === 'left' ? margin.left : textWidth + margin.left);
       break;
     case 'center': {
+      /**
+       * icon left -- text center
+       * ----------------------------------------------------------------
+       * | padding | margin-left | icon | margin-right | text | padding |
+       * ----------------------------------------------------------------
+       *
+       * text center - icon right
+       * ----------------------------------------------------------------
+       * | padding | text | margin-left | icon | margin-right | padding |
+       * ----------------------------------------------------------------
+       */
       const totalWidth =
         iconSpace -
         (iconPosition === 'left' ? margin.left : margin.right) +
@@ -118,6 +141,17 @@ export const getTextAndFollowingIconPosition = (
       break;
     }
     default: {
+      /**
+       * icon left -- text right
+       * ------------------------------------------------------
+       * | padding | margin-left | icon | margin-right | text |
+       * ------------------------------------------------------
+       *
+       * text right - icon right
+       * ------------------------------------------------------
+       * | padding | text | margin-left | icon | margin-right |
+       * ------------------------------------------------------
+       */
       textX = x + width - (iconPosition === 'right' ? iconSpace : 0);
       iconX =
         x +
