@@ -120,13 +120,14 @@ export const getTheme = (
           // -------------- unselected -------------------
           unselected: {
             backgroundOpacity: 0.3,
+            textOpacity: 0.3,
             opacity: 0.3,
           },
         },
       },
       icon: {
         fill: basicColors[0],
-        size: 12,
+        size: 10,
         margin: {
           right: 4,
           left: 4,
@@ -187,6 +188,7 @@ export const getTheme = (
           // -------------- unselected -------------------
           unselected: {
             backgroundOpacity: 0.3,
+            textOpacity: 0.3,
             opacity: 0.3,
           },
         },
@@ -264,6 +266,7 @@ export const getTheme = (
           // -------------- unselected -------------------
           unselected: {
             backgroundOpacity: 0.3,
+            textOpacity: 0.3,
             opacity: 0.3,
           },
           // -------------- prepare select --------------
