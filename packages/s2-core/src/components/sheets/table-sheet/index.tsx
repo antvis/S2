@@ -223,6 +223,11 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     ownSpreadsheet?.hideColumns(options.interaction?.hiddenColumnFields);
   }, [ownSpreadsheet, options.interaction?.hiddenColumnFields]);
 
+  useEffect(() => {
+    setCurrent(options?.pagination?.current || 1);
+    setPageSize(options?.pagination?.pageSize || 10);
+  }, [options?.pagination]);
+
   return (
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
