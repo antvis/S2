@@ -492,18 +492,19 @@ export abstract class BaseFacet {
       this.cornerBBox.width < this.cornerBBox.originalWidth
     ) {
       const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
+      const thumbLen =
+        (this.cornerBBox.width * this.cornerBBox.width) /
+        this.cornerBBox.originalWidth;
       this.hRowScrollBar = new ScrollBar({
         isHorizontal: true,
         trackLen: this.cornerBBox.width,
-        thumbLen:
-          (this.cornerBBox.width * this.cornerBBox.width) /
-          this.cornerBBox.originalWidth,
+        thumbLen,
         position: {
           x: this.cornerBBox.minX + this.scrollBarSize / 2,
           y: this.panelBBox.maxY,
         },
         thumbOffset:
-          (rowScrollX * this.cornerBBox.width) / this.cornerBBox.originalWidth,
+          (rowScrollX * (this.cornerBBox.width - thumbLen)) / maxOffset,
         theme: this.scrollBarTheme,
         scrollTargetMaxOffset: maxOffset,
       });
@@ -570,15 +571,16 @@ export abstract class BaseFacet {
           ? this.cornerBBox.width
           : 0);
       const maxOffset = finaleRealWidth - finalWidth;
+      const thumbLen = (finalWidth / finaleRealWidth) * finalWidth;
 
       // TODO abstract
       this.hScrollBar = new ScrollBar({
         isHorizontal: true,
         trackLen: finalWidth,
-        thumbLen: (finalWidth / finaleRealWidth) * finalWidth,
+        thumbLen,
         // position: this.viewport.bl,
         position: finalPosition,
-        thumbOffset: (scrollX * finalWidth) / finaleRealWidth,
+        thumbOffset: (scrollX * (finalWidth - thumbLen)) / maxOffset,
         theme: this.scrollBarTheme,
         scrollTargetMaxOffset: maxOffset,
       });
@@ -617,8 +619,7 @@ export abstract class BaseFacet {
         isHorizontal: false,
         trackLen: height,
         thumbLen: thumbHeight,
-        thumbOffset:
-          (scrollY * (this.panelBBox.height - thumbHeight)) / realHeight,
+        thumbOffset: (scrollY * (height - thumbHeight)) / maxOffset,
         position: {
           x: this.panelBBox.maxX - this.scrollBarSize,
           y: this.panelBBox.minY,
@@ -850,7 +851,6 @@ export abstract class BaseFacet {
     //   this.preCellIndexes,
     //   indexes,
     // );
-
     const { add, remove } = diffPanelIndexes(this.preCellIndexes, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
@@ -1082,6 +1082,7 @@ export abstract class BaseFacet {
   protected dynamicRenderCell(delay = true) {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
     let scrollY = sy + this.getPaginationScrollY();
+
     const maxScrollY =
       this.viewCellHeights.getTotalHeight() - this.panelBBox.height;
 
