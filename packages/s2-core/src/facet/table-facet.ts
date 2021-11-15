@@ -361,17 +361,14 @@ export class TableFacet extends BaseFacet {
           measureTextWidth(maxLabel, colCellTextStyle) +
           getOccupiedWidthForTableCol(
             this.spreadsheet,
-            col.meta?.field,
+            col,
             spreadsheet.theme.colCell,
           );
       } else {
         colWidth =
           measureTextWidth(maxLabel, dataCellTextStyle) +
           cellStyle.padding.left +
-          cellStyle.padding.right +
-          iconStyle.size +
-          iconStyle.margin.right +
-          iconStyle.margin.left;
+          cellStyle.padding.right;
       }
 
       if (col.field === SERIES_NUMBER_FIELD) {

@@ -1,39 +1,78 @@
-import { get } from 'lodash';
-import { DefaultCellTheme } from 'src/common/interface/theme';
+import { Node } from 'src/facet/layout/node';
+import { get, find } from 'lodash';
+import { CellTypes } from 'src/common/constant';
+import { DefaultCellTheme, IconTheme } from 'src/common/interface/theme';
 import { SpreadSheet } from 'src/sheet-type';
+import { HeaderActionIcon } from 'src/common/interface/basic';
+import { shouldShowActionIcons } from './header-cell';
 
-const getExpandIconMargin = (
+export const getTableColIconsWidth = (
+  ss: SpreadSheet,
+  meta: Node,
+  cellType: CellTypes,
+  iconStyle: IconTheme,
+) => {
+  const iconSize = get(iconStyle, 'size');
+  const iconMargin = get(iconStyle, 'margin');
+
+  let iconNums = 0;
+  if (ss.options.showDefaultHeaderActionIcon) {
+    iconNums = 1;
+  } else {
+    iconNums = (
+      find(ss.options.headerActionIcons, (headerActionIcon: HeaderActionIcon) =>
+        shouldShowActionIcons(headerActionIcon, meta, cellType),
+      )?.iconNames ?? []
+    ).length;
+  }
+
+  return (
+    iconNums * (iconSize + iconMargin.left) +
+    (iconNums > 0 ? iconMargin.right : 0)
+  );
+};
+
+export const getExtraPaddingForExpandIcon = (
   ss: SpreadSheet,
   field: string,
   style: DefaultCellTheme,
 ) => {
   const iconMarginLeft = style.icon.margin?.left || 0;
+  const iconMarginRight = style.icon.margin?.right || 0;
   const hiddenColumnsDetail = ss.store.get('hiddenColumnsDetail', []);
-  const expandIconPrevSiblingCell = hiddenColumnsDetail.find(
-    (column) => column?.displaySiblingNode?.prev?.field === field,
-  );
+
+  let hasPrevSiblingCell = false;
+  let hasNextSiblingCell = false;
+  hiddenColumnsDetail.forEach((column) => {
+    if (column?.displaySiblingNode?.prev?.field === field) {
+      hasPrevSiblingCell = true;
+    }
+    if (column?.displaySiblingNode?.next?.field === field) {
+      hasNextSiblingCell = true;
+    }
+  });
   const iconSize = get(style, 'icon.size');
 
   // 图标本身宽度 + 主题配置的 icon margin
-  return expandIconPrevSiblingCell ? iconSize / 2 + iconMarginLeft : 0;
+  return {
+    left: hasNextSiblingCell ? iconSize + iconMarginRight : 0,
+    right: hasPrevSiblingCell ? iconSize + iconMarginLeft : 0,
+  };
 };
 
 export const getOccupiedWidthForTableCol = (
   ss: SpreadSheet,
-  field: string,
+  meta: Node,
   style: DefaultCellTheme,
 ) => {
   const padding = get(style, 'cell.padding');
-  const iconSize = get(style, 'icon.size');
-  const iconMargin = get(style, 'icon.margin');
-  const expandIconMargin = getExpandIconMargin(ss, field, style);
+  const expandIconPadding = getExtraPaddingForExpandIcon(ss, meta.field, style);
 
   return (
     padding.left +
     padding.right +
-    iconSize +
-    iconMargin.left +
-    iconMargin.right +
-    expandIconMargin
+    getTableColIconsWidth(ss, meta, CellTypes.COL_CELL, get(style, 'icon')) +
+    expandIconPadding.left +
+    expandIconPadding.right
   );
 };

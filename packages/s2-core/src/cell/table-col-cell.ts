@@ -1,17 +1,15 @@
 import { get, isEmpty } from 'lodash';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
-import { getOccupiedWidthForTableCol } from 'src/utils/cell/table-col-cell';
-import { Group, SimpleBBox } from '@antv/g-canvas';
+import { getExtraPaddingForExpandIcon } from 'src/utils/cell/table-col-cell';
+import { getContentArea } from 'src/utils/cell/cell';
+import { Group } from '@antv/g-canvas';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
 import { S2Event, HORIZONTAL_RESIZE_AREA_KEY_PRE } from '@/common/constant';
-import { renderDetailTypeSortIcon } from '@/utils/layout/add-detail-type-sort-icon';
-import { getEllipsisText } from '@/utils/text';
-import { renderIcon, renderLine, renderText } from '@/utils/g-renders';
+import { renderIcon, renderLine } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
 import { DefaultCellTheme, IconTheme } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
-import { getTextAndFollowingIconPosition } from '@/utils/cell/cell';
 
 export class TableColCell extends ColCell {
   protected isFrozenCell() {
@@ -37,96 +35,22 @@ export class TableColCell extends ColCell {
     ) as Group;
   }
 
-  protected drawTextShape() {
-    const { spreadsheet } = this.headerConfig;
-    const {
-      label,
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-      key,
-    } = this.meta;
+  protected isValueCell() {
+    return true;
+  }
 
+  protected showSortIcon() {
+    return this.spreadsheet.options.showDefaultHeaderActionIcon;
+  }
+
+  protected getTextStyle() {
     const style = this.getStyle();
-    const textStyle = get(style, 'bolderText');
-    const iconSize = get(style, 'icon.size');
-    const iconMargin = get(style, 'icon.margin');
-
-    const textAlign = get(textStyle, 'textAlign');
-    const textBaseline = get(textStyle, 'textBaseline');
-
-    const cellBoxCfg: SimpleBBox = {
-      x,
-      y,
-      width: cellWidth,
-      height: cellHeight,
-    };
-
-    const expandIconMargin = this.getExpandIconMargin();
-    const textWidth =
-      cellWidth -
-      getOccupiedWidthForTableCol(this.spreadsheet, this.meta?.field, style);
-
-    const text = getEllipsisText({
-      text: label,
-      maxWidth: textWidth,
-      fontParam: textStyle,
-      placeholder: this.spreadsheet.options.placeholder,
-    });
-
-    const position = getTextAndFollowingIconPosition(
-      cellBoxCfg,
-      { textAlign, textBaseline },
-      textWidth,
-      get(style, 'icon'),
-    ).text;
-
-    this.textShape = renderText(
-      this,
-      [this.textShape],
-      position.x,
-      position.y,
-      text,
-      {
-        textAlign,
-        ...textStyle,
-      },
-      { cursor: 'pointer' },
-    );
-
-    if (spreadsheet.options.showDefaultHeaderActionIcon) {
-      renderDetailTypeSortIcon(
-        this,
-        spreadsheet,
-        x + cellWidth - iconSize - iconMargin?.right - expandIconMargin,
-        position.y,
-        iconMargin?.top,
-        key,
-      );
-    }
+    return get(style, 'bolderText');
   }
 
   protected initCell() {
     super.initCell();
     this.addExpandColumnIconShapes();
-  }
-
-  // 有展开图标时, 需要将文字和排序图标向左移动, 空出图标的位置, 避免遮挡
-  private getExpandIconMargin() {
-    const style = this.getStyle();
-    const iconMarginLeft = style.icon.margin?.left || 0;
-    const hiddenColumnsDetail = this.spreadsheet.store.get(
-      'hiddenColumnsDetail',
-      [],
-    );
-    const expandIconPrevSiblingCell = hiddenColumnsDetail.find(
-      (column) => column?.displaySiblingNode?.prev?.field === this.meta?.field,
-    );
-    const { size } = this.getExpandIconTheme();
-
-    // 图标本身宽度 + 主题配置的 icon margin
-    return expandIconPrevSiblingCell ? size / 2 + iconMarginLeft : 0;
   }
 
   private hasHiddenColumnCell() {
@@ -147,6 +71,25 @@ export class TableColCell extends ColCell {
       const hiddenSiblingNode = next || prev;
       return hiddenSiblingNode?.field === this.meta?.field;
     });
+  }
+
+  public getContentArea() {
+    const { padding } = this.getStyle()?.cell || this.theme.dataCell.cell;
+    const newPadding = { ...padding };
+    const extraPadding = getExtraPaddingForExpandIcon(
+      this.spreadsheet,
+      this.meta.field,
+      this.getStyle(),
+    );
+
+    if (extraPadding.left) {
+      newPadding.left = (newPadding.left || 0) + extraPadding.left;
+    }
+    if (extraPadding.right) {
+      newPadding.right = (newPadding.right || 0) + extraPadding.right;
+    }
+
+    return getContentArea(this.getCellArea(), newPadding);
   }
 
   private getExpandIconTheme(): IconTheme {

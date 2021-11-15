@@ -19,10 +19,12 @@ import {
   TextTheme,
 } from '@/common/interface';
 import { ColHeaderConfig } from '@/facet/header/col';
-import { getTextPosition } from '@/utils/cell/cell';
 import { renderLine, renderRect } from '@/utils/g-renders';
 import { AreaRange } from '@/common/interface/scroll';
-import { getTextPositionWhenHorizontalScrolling } from '@/utils/cell/cell';
+import {
+  getTextPositionWhenHorizontalScrolling,
+  getTextAndFollowingIconPosition,
+} from '@/utils/cell/cell';
 
 export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;
@@ -111,13 +113,16 @@ export class ColCell extends HeaderCell {
 
     const textStyle = this.getTextStyle();
     const contentBox = this.getContentArea();
+    const iconStyle = this.getIconStyle();
 
-    const textBox = {
-      ...contentBox,
-      width: contentBox.width - this.getActionIconsWidth(),
-    };
     if (isLeaf) {
-      return getTextPosition(textBox, textStyle);
+      return getTextAndFollowingIconPosition(
+        contentBox,
+        textStyle,
+        this.actualTextWidth,
+        iconStyle,
+        this.getActionIconsCount(),
+      ).text;
     }
 
     // 将viewport坐标映射到 col header的坐标体系中，简化计算逻辑

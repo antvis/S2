@@ -92,7 +92,6 @@ describe('Text and Icon area Test', () => {
     expect(
       getTextAndFollowingIconPosition(
         content,
-
         {
           textAlign: 'right',
           textBaseline: 'top',
@@ -106,11 +105,37 @@ describe('Text and Icon area Test', () => {
       ),
     ).toEqual({
       text: {
-        x: 80,
+        x: 72,
         y: 0,
       },
       icon: {
-        x: 90,
+        x: 82,
+        y: 0,
+      },
+    });
+
+    expect(
+      getTextAndFollowingIconPosition(
+        content,
+        {
+          textAlign: 'right',
+          textBaseline: 'top',
+        },
+        50,
+        {
+          position: 'right',
+          size: 10,
+          margin: { left: 10, right: 8 },
+        },
+        2,
+      ),
+    ).toEqual({
+      text: {
+        x: 52,
+        y: 0,
+      },
+      icon: {
+        x: 62,
         y: 0,
       },
     });
@@ -142,6 +167,33 @@ describe('Text and Icon area Test', () => {
         y: 0,
       },
     });
+
+    expect(
+      getTextAndFollowingIconPosition(
+        content,
+
+        {
+          textAlign: 'right',
+          textBaseline: 'top',
+        },
+        50,
+        {
+          position: 'left',
+          size: 10,
+          margin: { left: 10, right: 8 },
+        },
+        2,
+      ),
+    ).toEqual({
+      text: {
+        x: 100,
+        y: 0,
+      },
+      icon: {
+        x: 12,
+        y: 0,
+      },
+    });
   });
 
   test('should return text when text is center and icon is left', () => {
@@ -170,6 +222,88 @@ describe('Text and Icon area Test', () => {
         y: 0,
       },
     });
+
+    expect(
+      getTextAndFollowingIconPosition(
+        content,
+
+        {
+          textAlign: 'center',
+          textBaseline: 'top',
+        },
+        50,
+        {
+          position: 'left',
+          size: 10,
+          margin: { left: 10, right: 8 },
+        },
+        2,
+      ),
+    ).toEqual({
+      text: {
+        x: 69,
+        y: 0,
+      },
+      icon: {
+        x: 6,
+        y: 0,
+      },
+    });
+  });
+
+  test('should return text when text is center and icon is right', () => {
+    expect(
+      getTextAndFollowingIconPosition(
+        content,
+
+        {
+          textAlign: 'center',
+          textBaseline: 'top',
+        },
+        50,
+        {
+          position: 'right',
+          size: 10,
+          margin: { left: 10, right: 8 },
+        },
+      ),
+    ).toEqual({
+      text: {
+        x: 40,
+        y: 0,
+      },
+      icon: {
+        x: 75,
+        y: 0,
+      },
+    });
+
+    expect(
+      getTextAndFollowingIconPosition(
+        content,
+
+        {
+          textAlign: 'center',
+          textBaseline: 'top',
+        },
+        50,
+        {
+          position: 'right',
+          size: 10,
+          margin: { left: 10, right: 8 },
+        },
+        2,
+      ),
+    ).toEqual({
+      text: {
+        x: 30,
+        y: 0,
+      },
+      icon: {
+        x: 65,
+        y: 0,
+      },
+    });
   });
 
   test('should return text when text is left and icon is left', () => {
@@ -190,11 +324,92 @@ describe('Text and Icon area Test', () => {
       ),
     ).toEqual({
       text: {
-        x: 18,
+        x: 28,
         y: 0,
       },
       icon: {
         x: 0,
+        y: 0,
+      },
+    });
+
+    expect(
+      getTextAndFollowingIconPosition(
+        content,
+
+        {
+          textAlign: 'left',
+          textBaseline: 'top',
+        },
+        50,
+        {
+          position: 'left',
+          size: 10,
+          margin: { left: 10, right: 8 },
+        },
+        2,
+      ),
+    ).toEqual({
+      text: {
+        x: 48,
+        y: 0,
+      },
+      icon: {
+        x: 0,
+        y: 0,
+      },
+    });
+  });
+
+  test('should return text when text is left and icon is right', () => {
+    expect(
+      getTextAndFollowingIconPosition(
+        content,
+
+        {
+          textAlign: 'left',
+          textBaseline: 'top',
+        },
+        50,
+        {
+          position: 'right',
+          size: 10,
+          margin: { left: 10, right: 8 },
+        },
+      ),
+    ).toEqual({
+      text: {
+        x: 0,
+        y: 0,
+      },
+      icon: {
+        x: 60,
+        y: 0,
+      },
+    });
+    expect(
+      getTextAndFollowingIconPosition(
+        content,
+
+        {
+          textAlign: 'left',
+          textBaseline: 'top',
+        },
+        50,
+        {
+          position: 'right',
+          size: 10,
+          margin: { left: 10, right: 8 },
+        },
+        2,
+      ),
+    ).toEqual({
+      text: {
+        x: 0,
+        y: 0,
+      },
+      icon: {
+        x: 60,
         y: 0,
       },
     });

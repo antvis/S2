@@ -89,43 +89,42 @@ export const getTextAndFollowingIconPosition = (
   textCfg: TextAlignCfg,
   textWidth = 0,
   iconCfg?: IconCfg,
+  iconCount = 1,
 ) => {
   const { x, width } = contentBox;
   const { textAlign, textBaseline } = textCfg;
   const { size, margin, position: iconPosition } = normalizeIconCfg(iconCfg);
 
+  const iconSpace = iconCount * (size + margin.left) + margin.right;
   let textX: number;
   let iconX: number;
 
   switch (textAlign) {
     case 'left':
-      textX = x + (iconPosition === 'left' ? size + margin.right : 0);
+      textX = x + (iconPosition === 'left' ? iconSpace : 0);
       iconX = x + (iconPosition === 'left' ? 0 : textWidth + margin.left);
       break;
     case 'center': {
       const totalWidth =
-        size +
-        (iconPosition === 'left' ? margin.right : margin.left) +
+        iconSpace -
+        (iconPosition === 'left' ? margin.left : margin.right) +
         textWidth;
       const startX = x + width / 2 - totalWidth / 2;
       textX =
         startX +
         textWidth / 2 +
-        (iconPosition === 'left' ? size + margin.right : 0);
+        (iconPosition === 'left' ? iconSpace - margin.left : 0);
       iconX = startX + (iconPosition === 'left' ? 0 : textWidth + margin.left);
       break;
     }
     default: {
-      textX =
-        x +
-        width -
-        (iconPosition === 'right' ? size + margin.left + margin.right : 0);
+      textX = x + width - (iconPosition === 'right' ? iconSpace : 0);
       iconX =
         x +
         width -
         (iconPosition === 'right'
-          ? size + margin.right
-          : textWidth + size + margin.right);
+          ? iconSpace - margin.left
+          : textWidth + iconSpace - margin.left);
 
       break;
     }
