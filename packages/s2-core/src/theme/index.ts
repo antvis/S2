@@ -21,7 +21,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '500',
+        fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -69,7 +69,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[14],
         linkTextFill: basicColors[14],
         opacity: 1,
@@ -127,7 +127,7 @@ export const getTheme = (
       },
       icon: {
         fill: basicColors[0],
-        size: 12,
+        size: 10,
         margin: {
           right: 4,
           left: 4,
@@ -139,7 +139,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -209,7 +209,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[13],
         opacity: 1,
         textAlign: 'right',
@@ -340,5 +340,5 @@ export const getTheme = (
       color: basicColors[8],
       opacity: 1,
     },
-  } as S2Theme;
+  };
 };

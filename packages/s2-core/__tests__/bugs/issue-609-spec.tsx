@@ -22,6 +22,7 @@ interface Props {
 const s2Options: S2Options = {
   width: 200,
   height: 200,
+  hdAdapter: false,
 };
 
 let s2: SpreadSheet;

@@ -6,7 +6,7 @@ order: 8
 
 使用 `S2` 过程中，如果出现性能问题，比如渲染时间长，浏览器无响应等，可能原因如下：
 
-- 数据量大。正常 `1w` 数据渲染时间是4秒，数据超过 `1w` 感受会比较明显，详见[性能介绍](/zh/docs/manual/advanced/performance)。
+- 数据量大。正常 `1w` 数据渲染时间是 `150ms`，`100w` 数据渲染时间是 `4s`，数据超过 `100w` 感受会比较明显，详见[性能介绍](/zh/docs/manual/advanced/performance)。
 - 属性频繁变化。比如 `<SheetComponent />` 组件中，`options`、`dataCfg`等属性的引用频繁变化，每一次变化都会重新计算布局和渲染，因此属性改变时建议使用新的数据对象，避免重复渲染，[更多了解](https://zh-hans.reactjs.org/docs/optimizing-performance.html#the-power-of-not-mutating-data)。
 
    举个例子：
@@ -23,7 +23,7 @@ order: 8
 
 ## 浏览器兼容性
 
-> 由于条件限制，版本下限仅供参考，并不意味着不能支持更低版本，该测试在 CDN 模式下测试完成，[在线 Demo](等福晋部署好了给)
+> 由于条件限制，版本下限仅供参考，并不意味着不能支持更低版本，该测试在 CDN 模式下测试完成，[在线 Demo](https://lxfu1.github.io/browser-compatibility-of-antv/?tab=s2)
 
 |        | Chrome | Edge | Firefox | IE  | Opera | Safari | UC  | 360 极速浏览器 | 360 安全浏览器 |
 | ------ | :----: | :--: | :-----: | :-: | :---: | :----: | :-: | :------------: | :------------: |
@@ -35,7 +35,6 @@ order: 8
 
 ```ts
 <link rel="stylesheet" href="https://unpkg.com/@antv/s2@latest/dist/s2.min.css">
-<script src="https://unpkg.com/@babel/polyfill@latest/dist/polyfill.min.js"></script> // 非必需
 <script src="https://unpkg.com/@antv/s2@latest"></script>
 
 // s2.js

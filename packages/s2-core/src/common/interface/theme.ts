@@ -36,6 +36,8 @@ export interface InteractionStateTheme {
   backgroundOpacity?: number;
   /* 背景填充色 */
   backgroundColor?: string;
+  /* 文本透明度 */
+  textOpacity?: number;
   /* 边线颜色 */
   borderColor?: string;
   /* 边线宽度 */
@@ -169,7 +171,7 @@ export interface SplitLine {
     right: string;
   };
 }
-export interface DefaultCellTheme {
+export interface DefaultCellTheme extends GridAnalysisCellTheme {
   /* 粗体文本样式 */
   bolderText?: TextTheme;
   /* 文本样式 */
@@ -180,11 +182,21 @@ export interface DefaultCellTheme {
   icon?: IconTheme;
   /* 序号列宽 */
   seriesNumberWidth?: number;
-  /* 额外属性字段 */
-  [key: string]: any;
 }
 
-type CellThemes = {
+export interface GridAnalysisCellTheme {
+  // 次级文本，如副指标
+  minorText?: TextTheme;
+  // 衍生指标
+  derivedMeasureText?: {
+    mainUp: string;
+    mainDown: string;
+    minorUp: string;
+    minorDown: string;
+  };
+}
+
+export type CellThemes = {
   [K in CellTypes]?: DefaultCellTheme;
 };
 
@@ -199,8 +211,6 @@ export interface S2Theme extends CellThemes {
   prepareSelectMask?: InteractionStateTheme;
   /* 画布背景底色 */
   background?: Background;
-  /* 额外属性字段 */
-  [key: string]: any;
 }
 
 export type ThemeName = 'default' | 'colorful' | 'gray';

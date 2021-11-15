@@ -104,9 +104,6 @@ function MainLayout({ callback }) {
     showSeriesNumber: true,
     placeholder: '',
     style: {
-      colCfg: {
-        colWidthType: 'compact',
-      },
       cellCfg: {
         height: 32,
       },
@@ -120,6 +117,7 @@ function MainLayout({ callback }) {
       enableCopy: true,
       hoverHighlight: false,
       linkFields: ['order_id', 'customer_name'],
+      hiddenColumnFields,
     },
     frozenRowCount: 2,
     frozenColCount: 1,
@@ -131,13 +129,12 @@ function MainLayout({ callback }) {
         hiddenColumns: hiddenColumnsOperator,
       },
     },
-    hiddenColumnFields,
-  } as S2Options;
+  };
 
   const s2Ref = React.useRef<SpreadSheet>(null);
 
   const logData = (...d: unknown[]) => {
-    console.info(...d);
+    console.log(...d);
   };
 
   useEffect(() => {

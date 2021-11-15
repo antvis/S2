@@ -1,6 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2';
+import { PivotSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 const s2options = {
@@ -10,7 +8,6 @@ const s2options = {
 
 export function generateRawData(row, col) {
   const res = [];
-
   const rowKeys = Object.keys(row);
   const colKeys = Object.keys(col);
 
@@ -44,8 +41,8 @@ const s2DataConfig = {
     { type: 10, sub_type: 100 },
   ),
 };
+const container = document.getElementById('container');
 
-ReactDOM.render(
-  <SheetComponent dataCfg={s2DataConfig} options={s2options} />,
-  document.getElementById('container'),
-);
+const s2 = new PivotSheet(container, s2DataConfig, s2options);
+
+s2.render();

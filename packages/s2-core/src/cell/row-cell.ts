@@ -175,7 +175,7 @@ export class RowCell extends HeaderCell {
     const {
       horizontalBorderColor,
       horizontalBorderWidth,
-      horizontalBorderOpacity,
+      horizontalBorderColorOpacity,
       verticalBorderColor,
       verticalBorderWidth,
       verticalBorderColorOpacity,
@@ -194,7 +194,7 @@ export class RowCell extends HeaderCell {
       {
         stroke: horizontalBorderColor,
         lineWidth: horizontalBorderWidth,
-        opacity: horizontalBorderOpacity,
+        opacity: horizontalBorderColorOpacity,
       },
     );
 
