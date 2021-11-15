@@ -13,6 +13,8 @@ export interface ScrollBarCfg {
   readonly minThumbLen?: number;
   // 滑块相对滑道的偏移量
   readonly thumbOffset?: number;
+  // 滚动对象的长度
+  readonly scrollTargetMaxOffset: number;
 
   // 滚动条样式
   readonly theme?: ScrollBarTheme;

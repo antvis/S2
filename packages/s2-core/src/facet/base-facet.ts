@@ -454,14 +454,12 @@ export abstract class BaseFacet {
     const { scrollX, scrollY } = this.getScrollOffset();
     if (newX !== undefined) {
       this.hScrollBar?.onlyUpdateThumbOffset(
-        (scrollX / this.layoutResult.colsHierarchy.width) *
-          this.hScrollBar.trackLen,
+        this.getScrollBarOffset(scrollX, this.hScrollBar),
       );
     }
     if (newY !== undefined) {
       this.vScrollBar?.onlyUpdateThumbOffset(
-        (scrollY / this.viewCellHeights.getTotalHeight()) *
-          this.vScrollBar.trackLen,
+        this.getScrollBarOffset(scrollY, this.vScrollBar),
       );
     }
     this.dynamicRenderCell();
@@ -500,25 +498,27 @@ export abstract class BaseFacet {
       !this.cfg.spreadsheet.isScrollContainsRowHeader() &&
       this.cornerBBox.width < this.cornerBBox.originalWidth
     ) {
+      const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
+      const thumbLen =
+        (this.cornerBBox.width * this.cornerBBox.width) /
+        this.cornerBBox.originalWidth;
       this.hRowScrollBar = new ScrollBar({
         isHorizontal: true,
         trackLen: this.cornerBBox.width,
-        thumbLen:
-          (this.cornerBBox.width * this.cornerBBox.width) /
-          this.cornerBBox.originalWidth,
+        thumbLen,
         position: {
           x: this.cornerBBox.minX + this.scrollBarSize / 2,
           y: this.panelBBox.maxY,
         },
         thumbOffset:
-          (rowScrollX * this.cornerBBox.width) / this.cornerBBox.originalWidth,
+          (rowScrollX * (this.cornerBBox.width - thumbLen)) / maxOffset,
         theme: this.scrollBarTheme,
+        scrollTargetMaxOffset: maxOffset,
       });
 
-      this.hRowScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
-        const hRowScrollX =
-          (thumbOffset / this.hRowScrollBar.trackLen) *
-          this.cornerBBox.originalWidth;
+      this.hRowScrollBar.on(ScrollType.ScrollChange, ({ offset }) => {
+        const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
+        const hRowScrollX = newOffset;
         this.setScrollOffset({ hRowScrollX });
         this.rowHeader.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
         this.rowIndexHeader?.onRowScrollX(
@@ -536,14 +536,29 @@ export abstract class BaseFacet {
           hRowScrollX,
           KEY_GROUP_CORNER_RESIZE_AREA,
         );
+        this.hRowScrollBar.updateThumbOffset(
+          this.getScrollBarOffset(newOffset, this.hRowScrollBar),
+          false,
+        );
       });
       this.foregroundGroup.add(this.hRowScrollBar);
     }
   };
 
+  getValidScrollBarOffset = (offset: number, maxOffset: number) => {
+    if (offset > maxOffset) {
+      return maxOffset;
+    }
+    if (offset < 0) {
+      return 0;
+    }
+    return offset;
+  };
+
   renderHScrollBar = (width: number, realWidth: number, scrollX: number) => {
     if (Math.floor(width) < Math.floor(realWidth)) {
       const halfScrollSize = this.scrollBarSize / 2;
+
       const finalWidth =
         width +
         (this.cfg.spreadsheet.isScrollContainsRowHeader()
@@ -562,26 +577,38 @@ export abstract class BaseFacet {
         (this.cfg.spreadsheet.isScrollContainsRowHeader()
           ? this.cornerBBox.width
           : 0);
+      const maxOffset = finaleRealWidth - finalWidth;
+      const thumbLen = (finalWidth / finaleRealWidth) * finalWidth;
 
       // TODO abstract
       this.hScrollBar = new ScrollBar({
         isHorizontal: true,
         trackLen: finalWidth,
-        thumbLen: (finalWidth / finaleRealWidth) * finalWidth,
+        thumbLen,
         // position: this.viewport.bl,
         position: finalPosition,
-        thumbOffset: (scrollX * finalWidth) / finaleRealWidth,
+        thumbOffset: (scrollX * (finalWidth - thumbLen)) / maxOffset,
         theme: this.scrollBarTheme,
+        scrollTargetMaxOffset: maxOffset,
       });
 
-      this.hScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
-        const offsetLeft =
-          (thumbOffset / this.hScrollBar.trackLen) * finaleRealWidth;
-        this.setScrollOffset({
-          scrollX: offsetLeft,
-        });
-        this.dynamicRenderCell();
-      });
+      this.hScrollBar.on(
+        ScrollType.ScrollChange,
+        ({ offset, updateThumbOffset }) => {
+          const newScrollX = this.getValidScrollBarOffset(offset, maxOffset);
+          if (updateThumbOffset) {
+            this.hScrollBar.updateThumbOffset(
+              this.getScrollBarOffset(newScrollX, this.hScrollBar),
+              false,
+            );
+          }
+
+          this.setScrollOffset({
+            scrollX: newScrollX,
+          });
+          this.dynamicRenderCell();
+        },
+      );
 
       this.foregroundGroup.add(this.hScrollBar);
     }
@@ -593,29 +620,45 @@ export abstract class BaseFacet {
         (height / realHeight) * height,
         MIN_SCROLL_BAR_HEIGHT,
       );
-      const getOffsetTop = (scrollTop: number) =>
-        (scrollTop / (height - thumbHeight)) *
-        (realHeight - this.panelBBox.height);
+      const maxOffset = realHeight - height;
 
       this.vScrollBar = new ScrollBar({
         isHorizontal: false,
         trackLen: height,
         thumbLen: thumbHeight,
-        thumbOffset: (scrollY * this.panelBBox.height) / realHeight,
+        thumbOffset: (scrollY * (height - thumbHeight)) / maxOffset,
         position: {
           x: this.panelBBox.maxX - this.scrollBarSize,
           y: this.panelBBox.minY,
         },
         theme: this.scrollBarTheme,
+        scrollTargetMaxOffset: maxOffset,
       });
 
-      this.vScrollBar.on(ScrollType.ScrollChange, ({ thumbOffset }) => {
-        this.setScrollOffset({ scrollY: getOffsetTop(thumbOffset) });
-        this.dynamicRenderCell();
-      });
+      this.vScrollBar.on(
+        ScrollType.ScrollChange,
+        ({ offset, updateThumbOffset }) => {
+          const newScrollY = this.getValidScrollBarOffset(offset, maxOffset);
+          if (updateThumbOffset) {
+            this.vScrollBar.updateThumbOffset(
+              this.getScrollBarOffset(newScrollY, this.vScrollBar),
+              false,
+            );
+          }
+
+          this.setScrollOffset({ scrollY: newScrollY });
+          this.dynamicRenderCell();
+        },
+      );
 
       this.foregroundGroup.add(this.vScrollBar);
     }
+  };
+
+  // (滑动 offset / 最大 offset（滚动对象真正长度 - 轨道长）) = (滑块 offset / 最大滑动距离（轨道长 - 滑块长）)
+  getScrollBarOffset = (offset: number, scrollbar: ScrollBar) => {
+    const { trackLen, thumbLen, scrollTargetMaxOffset } = scrollbar;
+    return (offset * (trackLen - thumbLen)) / scrollTargetMaxOffset;
   };
 
   isScrollOverThePanelArea = ({ layerX, layerY }: Partial<S2WheelEvent>) => {
@@ -634,40 +677,6 @@ export abstract class BaseFacet {
       layerY > this.cornerBBox.minY &&
       layerY < this.cornerBBox.maxY + this.panelBBox.height
     );
-  };
-
-  updateHScrollBarThumbOffsetWhenOverThePanel = (
-    wheelEvent: Partial<S2WheelEvent>,
-  ) => {
-    if (this.isScrollOverThePanelArea(wheelEvent)) {
-      this.updateHScrollBarThumbOffset(wheelEvent.deltaX);
-    }
-  };
-
-  updateHRowScrollBarThumbOffsetWhenOverTheCorner = (
-    wheelEvent: Partial<S2WheelEvent>,
-  ) => {
-    if (this.isScrollOverTheCornerArea(wheelEvent)) {
-      this.updateHRowScrollBarThumbOffset(wheelEvent.deltaX);
-    }
-  };
-
-  updateHScrollBarThumbOffset = (deltaX: number) => {
-    this.hScrollBar?.updateThumbOffset(
-      this.hScrollBar.thumbOffset + deltaX / 8,
-    );
-  };
-
-  updateHRowScrollBarThumbOffset = (deltaX: number) => {
-    this.hRowScrollBar.updateThumbOffset(
-      this.hRowScrollBar.thumbOffset + deltaX / 8,
-    );
-  };
-
-  updateVScrollBarThumbOffset = (deltaY: number) => {
-    const offsetTop = this.vScrollBar?.thumbOffset + deltaY / 8;
-
-    this.vScrollBar?.updateThumbOffset(offsetTop);
   };
 
   isScrollToLeft = (deltaX: number) => {
@@ -764,6 +773,11 @@ export abstract class BaseFacet {
     cancelAnimationFrame(this.scrollFrameId);
 
     this.scrollFrameId = requestAnimationFrame(() => {
+      const {
+        scrollX: currentScrollX,
+        scrollY: currentScrollY,
+        hRowScrollX,
+      } = this.getScrollOffset();
       if (optimizedDeltaX > 0) {
         this.showHScrollBar();
       }
@@ -774,24 +788,16 @@ export abstract class BaseFacet {
 
       if (this.hRowScrollBar) {
         // When rowScrollBar is exists, scrolling is only valid at the corresponding render range
-        this.updateHScrollBarThumbOffsetWhenOverThePanel({
-          layerX,
-          layerY,
-          deltaX,
-          deltaY: optimizedDeltaX,
-        });
+        this.hScrollBar.emitScrollChange(optimizedDeltaX + currentScrollX);
 
-        this.updateHRowScrollBarThumbOffsetWhenOverTheCorner({
-          layerX,
-          layerY,
-          deltaX,
-          deltaY: optimizedDeltaX,
-        });
-      } else if (this.hScrollBar) {
-        this.updateHScrollBarThumbOffset(optimizedDeltaX);
+        this.hRowScrollBar.emitScrollChange(optimizedDeltaX + hRowScrollX);
+      } else if (this.hScrollBar && optimizedDeltaX !== 0) {
+        this.hScrollBar.emitScrollChange(optimizedDeltaX + currentScrollX);
+      }
+      if (optimizedDeltaY !== 0) {
+        this.vScrollBar.emitScrollChange(optimizedDeltaY + currentScrollY);
       }
 
-      this.updateVScrollBarThumbOffset(optimizedDeltaY);
       this.delayHideScrollbarOnMobile();
     });
   };
@@ -863,7 +869,6 @@ export abstract class BaseFacet {
     //   this.preCellIndexes,
     //   indexes,
     // );
-
     const { add, remove } = diffPanelIndexes(this.preCellIndexes, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
@@ -1095,6 +1100,7 @@ export abstract class BaseFacet {
   protected dynamicRenderCell(delay = true) {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
     let scrollY = sy + this.getPaginationScrollY();
+
     const maxScrollY =
       this.viewCellHeights.getTotalHeight() - this.panelBBox.height;
 
