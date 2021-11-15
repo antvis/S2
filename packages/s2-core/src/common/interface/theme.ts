@@ -36,6 +36,8 @@ export interface InteractionStateTheme {
   backgroundOpacity?: number;
   /* 背景填充色 */
   backgroundColor?: string;
+  /* 文本透明度 */
+  textOpacity?: number;
   /* 边线颜色 */
   borderColor?: string;
   /* 边线宽度 */
