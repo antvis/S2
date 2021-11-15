@@ -52,7 +52,7 @@ class CustomTableColCell extends TableColCell {
   protected renderFilterIcon(position) {
     const { x, y, width, height } = position;
     const icon = new GuiIcon({
-      name: 'SortUpXXX',
+      name: 'Filter',
       x,
       y,
       width,
@@ -108,7 +108,7 @@ const App = ({ data }) => {
         svg: filterIcon,
       },
       {
-        name: 'SortUpXXX',
+        name: 'SortUp',
         svg: sortUp,
       },
       {
@@ -134,7 +134,6 @@ const App = ({ data }) => {
 
   return (
     <div>
-      <InputNumber />
       <Space>
         <Search
           placeholder="输入关键词搜索"

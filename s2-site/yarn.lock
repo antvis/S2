@@ -185,10 +185,10 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2@1.0.0-beta.6":
-  version "1.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.0.0-beta.6.tgz#1d91c647b658ed0d6285f285818baff12db7ec86"
-  integrity sha512-uVezQNxbYDC90vhE3IEW4ZLuxmiefOQbuzTjfNyHH+nIc30Y56J4GX3EexxDD23eUELfCwQpfYwL91ztux3/lQ==
+"@antv/s2@1.0.0-beta.9":
+  version "1.0.0-beta.9"
+  resolved "https://registry.npmjs.org/@antv/s2/-/s2-1.0.0-beta.9.tgz#aac5d21266ca5f4f2a0b9ae803fc82e50648ce70"
+  integrity sha512-rPF+FkmNmxyZnXChGMYU07dL8xR34IGc79q9rMKi9SI3VXASlo3OciopvPzSf/oLeYtHIFYjoNoUi+wxZrSBHA==
   dependencies:
     "@antv/event-emitter" "~0.1.2"
     "@antv/g-canvas" "^0.5.12"
