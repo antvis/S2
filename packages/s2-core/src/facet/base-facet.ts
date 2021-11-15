@@ -467,6 +467,14 @@ export abstract class BaseFacet {
     this.dynamicRenderCell();
   };
 
+  getRendererHeight = () => {
+    const { start, end } = this.getCellRange();
+    return (
+      this.viewCellHeights.getCellOffsetY(end + 1) -
+      this.viewCellHeights.getCellOffsetY(start)
+    );
+  };
+
   adjustXAndY = (x: number, y: number): Point => {
     let newX = x;
     let newY = y;
@@ -475,11 +483,10 @@ export abstract class BaseFacet {
         newX = this.layoutResult.colsHierarchy.width - this.panelBBox.width;
       }
     }
-
-    const totalHeight = this.viewCellHeights.getTotalHeight();
+    const rendererHeight = this.getRendererHeight();
     if (y !== undefined) {
-      if (y + this.panelBBox.height >= totalHeight) {
-        newY = totalHeight - this.panelBBox.height;
+      if (y + this.panelBBox.height >= rendererHeight) {
+        newY = rendererHeight - this.panelBBox.height;
       }
     }
     return {
