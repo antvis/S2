@@ -2,7 +2,7 @@ import { PivotSheet, S2Event } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 import React from 'react';
 import { Button } from 'antd';
-import { MergedCells } from '@antv/s2/src';
+import { MergedCell } from '@antv/s2/src';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
@@ -30,7 +30,7 @@ fetch(
       </Button>
     );
 
-    const mergedCellsTooltip = (mergedCell: MergedCells) => (
+    const mergedCellsTooltip = (mergedCell: MergedCell) => (
       <div>
         合并后的tooltip
         <Button
@@ -65,7 +65,7 @@ fetch(
     s2.render();
 
     s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
-      const cell: MergedCells = s2.getCell(event.target);
+      const cell: MergedCell = s2.getCell(event.target);
       s2.tooltip.show({
         position: { x: event.clientX, y: event.clientY },
         element: mergedCellsTooltip(cell),

@@ -290,7 +290,7 @@ const TooltipComponent = (
 );
 
 // 将取消单元格合并操作集成到合并单元格的 tooltip 操作中
-const mergedCellsTooltip = (mergedCell: MergedCells) => (
+const mergedCellsTooltip = (mergedCell: MergedCell) => (
   <div>
     合并后的tooltip
     <Button
@@ -326,7 +326,7 @@ const s2 = new PivotSheet(container, s2DataConfig, s2options);
 s2.render();
 // 监听 mergedCells 的点击事件，自定义点击后的交互操作
 s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
-  const cell: MergedCells = s2.getCell(event.target);
+  const cell: MergedCell = s2.getCell(event.target);
   s2.tooltip.show({
     position: { x: event.clientX, y: event.clientY },
     element: mergedCellsTooltip(cell),
@@ -358,7 +358,7 @@ s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
 
 ### mergeCells
 
-<description> **function unmergeCell(removedCells: MergedCells): void** </description>
+<description> **function unmergeCell(removedCells: MergedCell): void** </description>
 
 合并单元格方法
 
@@ -369,10 +369,10 @@ s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
 
 ### unmergeCells
 
-<description> **function unmergeCell(removedCells: MergedCells): void**</description>
+<description> **function unmergeCell(removedCells: MergedCell): void**</description>
 
 取消合并单元格方法
 
 | 参数           | 说明                 | 类型                   | 默认值 | 必选 |
 | ---------------| ------------------ | ---------------------- | ------ | ---- |
-| removedCells   | 被取消合并的合并单元格  | `MergedCells`          | -      |      |
+| removedCells   | 被取消合并的合并单元格  | `MergedCell`          | -      |      |

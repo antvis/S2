@@ -6,7 +6,7 @@ import {
   ColCell,
   CornerCell,
   DataCell,
-  MergedCells,
+  MergedCell,
   RowCell,
 } from '@/cell';
 import { HeaderCell } from '@/cell/header-cell';
@@ -20,7 +20,7 @@ export type S2CellType<T extends SimpleBBox = ViewMeta> =
   | ColCell
   | CornerCell
   | RowCell
-  | MergedCells
+  | MergedCell
   | BaseCell<T>;
 
 export interface CellMeta {

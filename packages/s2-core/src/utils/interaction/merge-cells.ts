@@ -1,5 +1,5 @@
 import { filter, find, forEach, isEmpty, isEqual, map } from 'lodash';
-import { MergedCells } from '@/cell/merged-cells';
+import { MergedCell } from '@/cell/merged-cell';
 import { MergedCellInfo, TempMergedCell, ViewMeta } from '@/common/interface';
 import { S2CellType } from '@/common/interface/interaction';
 import { SpreadSheet } from '@/sheet-type';
@@ -214,10 +214,7 @@ export const mergeCells = (
   cellsInfo?: MergedCellInfo[],
   hideData?: boolean,
 ) => {
-  let mergeCellsInfo = cellsInfo;
-  if (!mergeCellsInfo) {
-    mergeCellsInfo = getActiveCellsInfo(sheet);
-  }
+  const mergeCellsInfo = cellsInfo || getActiveCellsInfo(sheet);
 
   if (mergeCellsInfo?.length <= 1) {
     // eslint-disable-next-line no-console
@@ -227,7 +224,7 @@ export const mergeCells = (
 
   const allVisibleCells = filter(
     sheet.panelScrollGroup.getChildren(),
-    (child) => !(child instanceof MergedCells),
+    (child) => !(child instanceof MergedCell),
   ) as unknown as S2CellType[];
   const { cells, viewMeta } = getCellsByInfo(
     allVisibleCells,
@@ -242,7 +239,7 @@ export const mergeCells = (
       mergedCellsInfo: mergedCellsInfo,
     });
     const meta = hideData ? undefined : viewMeta;
-    sheet.panelScrollGroup.add(new MergedCells(sheet, cells, meta));
+    sheet.panelScrollGroup.add(new MergedCell(sheet, cells, meta));
   }
 };
 
@@ -252,7 +249,7 @@ export const mergeCells = (
  * @param mergedCellsInfo
  */
 const removeUnmergedCellsInfo = (
-  removeMergedCell: MergedCells,
+  removeMergedCell: MergedCell,
   mergedCellsInfo: MergedCellInfo[][],
 ) => {
   const removeCellInfo = map(removeMergedCell.cells, (cell: S2CellType) => {
@@ -281,7 +278,7 @@ const removeUnmergedCellsInfo = (
  * @param removedCells
  * @param sheet
  */
-export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCells) => {
+export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
   if (!removedCells || removedCells.cellType !== CellTypes.MERGED_CELLS) {
     // eslint-disable-next-line no-console
     console.error('unmergeCell: the cell is not a MergedCell');
@@ -309,27 +306,27 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   // 可见区域的所有cells
   const allCells = filter(
     sheet.panelScrollGroup.getChildren(),
-    (child) => !(child instanceof MergedCells),
+    (child) => !(child instanceof MergedCell),
   ) as unknown as S2CellType[];
   if (isEmpty(allCells)) return;
 
   // allVisibleMergedCells 所有可视区域的 mergedCell
   const allVisibleMergedCells: TempMergedCell[] = [];
   mergedCellsInfo.forEach((cellsInfo: MergedCellInfo[]) => {
-    const MergedCell = getCellsByInfo(allCells, sheet, cellsInfo);
-    if (MergedCell.cells.length > 0) {
-      allVisibleMergedCells.push(MergedCell);
+    const tempMergedCell = getCellsByInfo(allCells, sheet, cellsInfo);
+    if (tempMergedCell.cells.length > 0) {
+      allVisibleMergedCells.push(tempMergedCell);
     }
   });
   const oldMergedCells = filter(
     sheet.panelScrollGroup.getChildren(),
-    (child) => child instanceof MergedCells,
-  ) as unknown as MergedCells[];
-  // 移除所有旧的合并单元格，重新添加可视区域的合并单元格。（ stone-todo: 后续优化,没有使用 diff 差量删减
+    (child) => child instanceof MergedCell,
+  ) as unknown as MergedCell[];
+  // 移除所有旧的合并单元格，重新添加可视区域的合并单元格。
   oldMergedCells.forEach((oldMergedCell) => {
     oldMergedCell.remove(true);
   });
   allVisibleMergedCells.forEach(({ cells, viewMeta }) => {
-    sheet.panelScrollGroup.add(new MergedCells(sheet, cells, viewMeta));
+    sheet.panelScrollGroup.add(new MergedCell(sheet, cells, viewMeta));
   });
 };

@@ -17,7 +17,7 @@ import {
   PivotSheet,
   SheetType,
   DEFAULT_STYLE,
-  MergedCells,
+  MergedCell,
 } from '@/index';
 
 const data = mockData.map((row) => {
@@ -132,7 +132,7 @@ function MainLayout() {
     </Button>
   );
 
-  const mergedCellsTooltip = (mergedCell: MergedCells) => (
+  const mergedCellsTooltip = (mergedCell: MergedCell) => (
     <div>
       合并后的tooltip
       <Button

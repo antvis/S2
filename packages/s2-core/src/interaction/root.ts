@@ -8,7 +8,7 @@ import {
 import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
-import { ColCell, DataCell, MergedCells, RowCell } from '@/cell';
+import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
 import {
   CellTypes,
   InteractionName,
@@ -219,7 +219,7 @@ export class RootInteraction {
     mergeCells(this.spreadsheet, cellsInfo, hideData);
   };
 
-  public unmergeCell = (removedCells: MergedCells) => {
+  public unmergeCell = (removedCells: MergedCell) => {
     unmergeCell(this.spreadsheet, removedCells);
   };
 
