@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import insertCss from 'insert-css';
 import { SheetComponent } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
-import { Button, Checkbox, Radio } from 'antd';
 
 const PALETTE_COLORS = [
   {
@@ -48,14 +47,6 @@ const PALETTE_COLORS = [
   },
 ];
 
-
-const getFormatter =
-  (enablePrefix = false) =>
-    (value) => {
-      const suffix = value !== 0 ? '%' : '';
-      return enablePrefix ? `${ value }${ suffix }` : value;
-    };
-
 const getTargetColor = (value) => {
   if (isNaN(Number(value))) {
     return PALETTE_COLORS[0].background;
@@ -77,55 +68,6 @@ const PaletteLegend = () => {
       <div className='palette-limit'>100%</div>
     </div>
   );
-};
-
-
-const s2options = {
-  width: 600,
-  height: 600,
-  hierarchyType: 'tree',
-  tooltip: {
-    operation: {
-      trend: true,
-      hiddenColumns: true,
-    },
-  },
-  interaction: {
-    selectedCellsSpotlight: true,
-    hoverHighlight: false,
-  },
-  style: {
-    colCfg: {
-      hideMeasureColumn: true,
-    },
-    cellCfg: {
-      width: 100,
-    },
-  },
-
-};
-const conditions = {
-  text: [
-    {
-      field: 'count',
-      mapping(value) {
-        return {
-          fill: value >= 75 ? '#fff' : '#282b32',
-        };
-      },
-    },
-  ],
-  background: [
-    {
-      field: 'count',
-      mapping(value) {
-        const backgroundColor = getTargetColor(value);
-        return {
-          fill: backgroundColor,
-        };
-      },
-    },
-  ],
 };
 
 
@@ -163,77 +105,62 @@ fetch('../data/single-population-proportion.json')
       ],
       data,
     };
-
-    const ProportionSheet = (props) => {
-      const { s2DataConfig, s2options, theme } = props;
-      const [ options, setOptions ] = useState({ ...s2options, conditions });
-      const [ dataConfig, setDataConfig ] = useState(s2DataConfig);
-
-      const onChangeBackgroundColor = (e) => {
-        console.log(`onChangeBackgroundColor = ${ e.target.checked }`);
-        if (e.target.checked) {
-          setOptions({
-            ...options,
-            conditions,
-          });
-        } else {
-          setOptions(options);
-        }
-      };
-
-      const onChangeTableState = (e) => {
-        console.log(e.target.value, 'e.target.value');
-        if (e.target.value === 'percent') {
-          setDataConfig({
-            ...s2DataConfig,
-            meta: [
-              ...s2DataConfig.meta,
-              {
-                field: 'count',
-                name: '数值',
-                formatter: getFormatter(true),
-              },
-            ],
-          });
-        } else {
-          setDataConfig(s2DataConfig);
-        }
-      };
-
-      const header = {
-        title: '单人群占比表',
-        exportCfg: { open: true },
-        advancedSortCfg: { open: true },
-        extra: [
-          <Button style={ { verticalAlign: 'top' } }> 插入内容 </Button>,
-          <PaletteLegend />,
-          <Checkbox onChange={ onChangeBackgroundColor }>背景色</Checkbox>,
-          <Radio.Group onChange={ onChangeTableState } defaultValue='count' size='small' style={ { marginTop: 16 } }>
-            <Radio.Button value='count'>123 数值</Radio.Button>
-            <Radio.Button value='percent'> % 占比</Radio.Button>
-          </Radio.Group>,
+    const s2options = {
+      width: 800,
+      height: 600,
+      tooltip: {
+        operation: {
+          trend: true,
+          hiddenColumns: true,
+        },
+      },
+      interaction: {
+        selectedCellsSpotlight: true,
+        hoverHighlight: false,
+      },
+      style: {
+        colCfg: {
+          hideMeasureColumn: true,
+        },
+        cellCfg: {
+          width: 100,
+        },
+      },
+      conditions: {
+        text: [
+          {
+            field: 'count',
+            mapping(value) {
+              return {
+                fill: value >= 70 ? '#fff' : '#282b32',
+              };
+            },
+          },
         ],
-      };
-
-
-      return (
-        <div className='root'>
-          <SheetComponent
-            dataCfg={ dataConfig }
-            options={ options }
-            sheetType='pivot'
-            header={ header }
-            adaptive={ false }
-          />
-        </div>
-      );
+        background: [
+          {
+            field: 'count',
+            mapping(value) {
+              const backgroundColor = getTargetColor(value);
+              return {
+                fill: backgroundColor,
+              };
+            },
+          },
+        ],
+      },
     };
 
     ReactDOM.render(
-      <ProportionSheet
-        s2DataConfig={ s2DataConfig }
-        s2options={ s2options }
-      />,
+      <div className='root'>
+        <PaletteLegend />
+        <SheetComponent
+          dataCfg={ s2DataConfig }
+          options={ s2options }
+          sheetType='pivot'
+          adaptive={ false }
+        />
+      </div>,
       document.getElementById('container'),
     );
   });
@@ -249,6 +176,23 @@ insertCss(`
     align-items: center;
     margin-bottom: 8px;
   }
+  
+ .palette-color {
+    width: 12px;
+    height: 12px;
+  }
 
+  .palette-limit{
+    font-size: 12px;
+    color: rgb(94,94,94);
+  }
+
+  .palette-color + .palette-limit {
+    margin-left: 5px;
+  }
+
+  .palette-limit + .palette-color {
+    margin-left: 5px;
+  }
 `);
 
