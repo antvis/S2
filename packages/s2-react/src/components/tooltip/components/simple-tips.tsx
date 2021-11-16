@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { TooltipNameTipsOptions } from '@/common/interface';
-import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
+import { TooltipNameTipsOptions, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 
 export const SimpleTips = (props: TooltipNameTipsOptions) => {
   const { tips = '', name = '' } = props;

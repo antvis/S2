@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { ListItem, TooltipHeadInfo } from '@/common/interface';
-import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
+import { ListItem, TooltipHeadInfo, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 
 export const TooltipHead = (props: TooltipHeadInfo) => {
   const { rows = [], cols = [] } = props;

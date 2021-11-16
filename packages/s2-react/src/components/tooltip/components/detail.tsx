@@ -1,7 +1,6 @@
 import React from 'react';
+import { ListItem, TooltipDetailProps, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 import { Icon } from './icon';
-import { ListItem, TooltipDetailProps } from '@/common/interface';
-import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
 export const TooltipDetail = (props: TooltipDetailProps) => {
   const { list = [] } = props;

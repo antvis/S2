@@ -1,7 +1,6 @@
 import React from 'react';
-import { DEFAULT_ICON_PROPS } from '@/common/constant/tooltip';
-import { IconProps } from '@/common/interface/tooltip';
-import { getIcon, HtmlIcon } from '@/common/icons';
+import { DEFAULT_ICON_PROPS, IconProps, getIcon } from '@antv/s2';
+import { HtmlIcon } from '@/common/icons';
 
 export const Icon = (props: IconProps) => {
   const { icon, ...attrs } = props;

@@ -1,19 +1,17 @@
-import { MenuProps } from 'antd';
 import { SpreadSheet } from '@/sheet-type';
 import { SortParam } from '@/common/interface';
-import { BaseTooltip } from '@/ui/tooltip';
 
 export type TooltipDataItem = Record<string, any>;
 
 export interface TooltipOperatorMenu {
   id: string;
-  icon?: React.ReactNode;
+  icon?: Node | Element | string;
   text?: string;
   children?: TooltipOperatorMenu[]; // subMenu
 }
 
 export interface TooltipOperatorOptions {
-  onClick: MenuProps['onClick'];
+  onClick: (...params: unknown[]) => void;
   menus: TooltipOperatorMenu[];
   [key: string]: unknown;
 }
@@ -26,7 +24,7 @@ export interface TooltipPosition {
 export type ListItem = {
   name: string;
   value: string | number;
-  icon?: React.ReactNode;
+  icon?: Node | Element | string;
 };
 
 export interface SortQuery {
@@ -71,13 +69,13 @@ export type TooltipDetailProps = {
 
 export type TooltipInterpretationOptions = {
   name: string;
-  icon?: React.ReactNode;
+  icon?: Node | Element | string;
   text?: string;
-  render?: React.ElementType;
+  render?: Node | Element | string;
 };
 
 export type InfosProps = {
-  infos: React.ReactNode;
+  infos: string;
 };
 
 export type TooltipShowOptions = {
@@ -85,7 +83,7 @@ export type TooltipShowOptions = {
   data?: TooltipData;
   cellInfos?: TooltipDataItem[];
   options?: TooltipOptions;
-  element?: React.ReactElement;
+  element?: Node | string;
 };
 
 export type TooltipData = {
@@ -116,7 +114,7 @@ export type DataParam = {
 };
 
 export type IconProps = {
-  icon: React.ReactNode;
+  icon: Node | Element | string;
   [key: string]: unknown;
 };
 
@@ -143,18 +141,20 @@ export type TooltipAutoAdjustBoundary = 'body' | 'container';
 export interface BaseTooltipConfig {
   readonly showTooltip?: boolean;
   // replace the whole default tooltip component
-  readonly tooltipComponent?: JSX.Element;
+  readonly tooltipComponent?: Node | Element | string;
   // Tooltip operation
   readonly operation?: TooltipOperation;
   readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
+  readonly getTooltipComponent?: (
+    options: TooltipShowOptions,
+    container: HTMLElement,
+  ) => Node | Element | string;
 }
 
 export interface Tooltip extends BaseTooltipConfig {
   readonly row?: BaseTooltipConfig;
   readonly col?: BaseTooltipConfig;
   readonly cell?: BaseTooltipConfig;
-  // custom tooltips
-  readonly renderTooltip?: RenderTooltip;
 }
 
 export interface TooltipOperation {
@@ -165,8 +165,6 @@ export interface TooltipOperation {
   // 组内排序
   sort?: boolean;
 }
-
-export type RenderTooltip = (spreadsheet: SpreadSheet) => BaseTooltip;
 
 export interface AutoAdjustPositionOptions {
   position: TooltipPosition;

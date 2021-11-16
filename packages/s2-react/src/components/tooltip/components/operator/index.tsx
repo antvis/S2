@@ -1,12 +1,12 @@
 import { Menu, Dropdown } from 'antd';
 import { isEmpty, map, size } from 'lodash';
 import React from 'react';
-import { Icon } from '../icon';
-import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 import {
+  TOOLTIP_PREFIX_CLS,
   TooltipOperatorMenu,
   TooltipOperatorOptions,
-} from '@/common/interface';
+} from '@antv/s2';
+import { Icon } from '../icon';
 import './index.less';
 
 /**

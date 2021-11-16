@@ -1,8 +1,7 @@
 import React from 'react';
 import { size, reduce } from 'lodash';
-import { SummaryProps } from '@/common/interface';
+import { SummaryProps, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 import { i18n } from '@/common/i18n';
-import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
 export const TooltipSummary: React.FC<SummaryProps> = React.memo((props) => {
   const { summaries = [] } = props;

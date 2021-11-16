@@ -22,7 +22,7 @@ import {
   mapKeys,
   every,
 } from 'lodash';
-import React from 'react';
+import * as CSS from 'csstype';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
@@ -176,7 +176,7 @@ export const getMergedQuery = (meta: ViewMeta) => {
  */
 export const setContainerStyle = (
   container: HTMLElement,
-  styles: React.CSSProperties,
+  styles: CSS.Properties,
 ) => {
   if (container && styles) {
     Object.keys(styles)?.forEach((item) => {

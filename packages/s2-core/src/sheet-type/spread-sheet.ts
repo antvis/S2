@@ -196,7 +196,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private renderTooltip(): BaseTooltip {
-    return this.options.tooltip?.renderTooltip?.(this) || new BaseTooltip(this);
+    return new BaseTooltip(this);
   }
 
   protected abstract bindEvents();

@@ -1,6 +1,7 @@
 import { Event as GEvent } from '@antv/g-canvas';
 import { Spin } from 'antd';
 import { forIn, isEmpty, isFunction, merge } from 'lodash';
+import ReactDOM from 'react-dom';
 import React, { memo, StrictMode, useEffect, useRef, useState } from 'react';
 import {
   S2Event,
@@ -19,13 +20,16 @@ import {
   getTooltipOptions,
   getSafetyDataConfig,
   getSafetyOptions,
+  TooltipShowOptions,
 } from '@antv/s2';
 import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
 import { useResizeEffect } from '@/components/sheets/hooks';
 import { S2Pagination } from '@/components/pagination';
+import { TooltipComponent } from '@/components/tooltip';
 import { HandleDrillDown, HandleDrillDownIcon } from '@/utils';
+import { REACT_DEFAULT_OPTIONS } from '@/common/constant';
 
 import './index.less';
 
@@ -71,8 +75,24 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   );
 
   const getSpreadSheet = (): SpreadSheet => {
-    const params: S2Constructor = [container.current, dataCfg, options];
-
+    const s2Options = merge({}, REACT_DEFAULT_OPTIONS, options);
+    const getTooltipComponent = (
+      tooltipOptions: TooltipShowOptions,
+      tooltipContainer: HTMLElement,
+    ) => {
+      ReactDOM.render(
+        <TooltipComponent
+          {...tooltipOptions}
+          tooltipComponent={s2Options.tooltip.tooltipComponent}
+        />,
+        tooltipContainer,
+      );
+    };
+    const params: S2Constructor = [
+      container.current,
+      dataCfg,
+      { ...s2Options, tooltip: { ...s2Options.tooltip, getTooltipComponent } },
+    ];
     if (spreadsheet) {
       return spreadsheet(...params);
     }
@@ -180,6 +200,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
         disabledFields={disabledFields}
       />
     );
+
     if (event) {
       const { showTooltip } = getTooltipOptions(sheetInstance, event);
       if (!showTooltip) {

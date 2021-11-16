@@ -59,6 +59,7 @@
     "@antv/g-gesture": "^1.0.0",
     "antd": "^4.16.13",
     "classnames": "^2.3.1",
+    "csstype": "^3.0.9",
     "lodash": "^4.17.21",
     "react-beautiful-dnd": "^13.1.0",
     "react-debounce-render": "^7.0.0"

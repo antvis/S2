@@ -1,6 +1,5 @@
 import React from 'react';
-import { InfosProps } from '@/common/interface';
-import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
+import { InfosProps, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 
 export const Infos = (props: InfosProps) => {
   const { infos = '' } = props;

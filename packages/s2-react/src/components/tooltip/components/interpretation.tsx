@@ -1,7 +1,6 @@
 import * as React from 'react';
+import { TooltipInterpretationOptions, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 import { Icon } from './icon';
-import { TooltipInterpretationOptions } from '@/common/interface';
-import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
 
 export const Interpretation = (props: TooltipInterpretationOptions) => {
   const { name, icon, text, render } = props;
