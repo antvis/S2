@@ -33,7 +33,6 @@ import { renderLine, renderText, updateShapeAttr } from '@/utils/g-renders';
 import { isMobile } from '@/utils/is-mobile';
 import { getEllipsisText, measureTextWidth } from '@/utils/text';
 
-const DEFAULT_BORDER_WIDTH = 1;
 export abstract class BaseCell<T extends SimpleBBox> extends Group {
   // cell's data meta info
   protected meta: T;
@@ -240,7 +239,6 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     );
 
     const { x, y, height, width } = this.getCellArea();
-    const margin = Number(stateStyles.borderWidth || DEFAULT_BORDER_WIDTH);
 
     each(stateStyles, (style, styleKey) => {
       const targetShapeNames = keys(
@@ -256,7 +254,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           shapeName === 'interactiveBorderShape' &&
           styleKey === 'borderWidth'
         ) {
-          if (isNumber(margin)) {
+          if (isNumber(style)) {
             const marginStyle = {
               x: x + style / 2,
               y: y + style / 2,
