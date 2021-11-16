@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import {
   SheetComponent,
@@ -7,6 +7,8 @@ import {
   TableColCell,
   GuiIcon,
   TableCornerCell,
+  S2Event,
+  SpreadSheet,
 } from '@antv/s2';
 import {
   Input,
@@ -17,10 +19,50 @@ import {
   Radio,
   Form,
   InputNumber,
+  Popover,
+  Checkbox,
+  message,
 } from 'antd';
 import { get } from 'lodash';
 import '@antv/s2/dist/s2.min.css';
 const { Search } = Input;
+
+const ShowList = ({ columns, setColumns, allChecked }) => {
+  return (
+    <Popover
+      trigger="click"
+      placement="bottomRight"
+      title={
+        <div>
+          <Checkbox
+            checked={allChecked}
+            onChange={() =>
+              allChecked ? setColumns([]) : setColumns([...initColumns])
+            }
+          >
+            全选 {columns.length} / {initColumns.length}
+          </Checkbox>
+        </div>
+      }
+      content={initColumns.map((e, i) => (
+        <div key={e}>
+          <Checkbox
+            checked={columns.includes(e)}
+            onChange={() =>
+              columns.includes(e)
+                ? setColumns((fields) => fields.filter((item) => e !== item))
+                : setColumns((fields) => [...fields, e])
+            }
+          >
+            {e}
+          </Checkbox>
+        </div>
+      ))}
+    >
+      <Button>呈现列</Button>
+    </Popover>
+  );
+};
 
 class CustomTableColCell extends TableColCell {
   private onIconClick: Function;
@@ -80,14 +122,21 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
+const initColumns = ['province', 'city', 'type', 'price'];
+
 const App = ({ data }) => {
   const onIconClick = ({ meta }) => {
     setColModalVisible(!colModalVisible);
   };
+  const s2Ref = useRef<SpreadSheet>(null);
+  const [columns, setColumns] = React.useState<string[]>(initColumns);
   const [options, setOptions] = useState<S2Options>({
     width: 600,
     height: 400,
     showSeriesNumber: true,
+    interaction: {
+      enableCopy: true,
+    },
     colCell: (item, spreadsheet, headerConfig) => {
       let cell;
       if (item.colIndex === 0) {
@@ -116,25 +165,53 @@ const App = ({ data }) => {
         svg: sortDown,
       },
     ],
+    tooltip: {
+      operation: {
+        hiddenColumns: true,
+      },
+    },
     showDefaultHeaderActionIcon: false,
   });
   const [dataCfg, setDataCfg] = useState<S2DataConfig>({
     fields: {
-      columns: ['province', 'city', 'type', 'price'],
+      columns,
     },
     data,
     sortParams: [],
     filterParams: [],
   });
 
+  useEffect(() => {
+    setDataCfg((cfg) => ({
+      ...cfg,
+      fields: { columns },
+    }));
+    s2Ref.current.render(true);
+  }, [columns.length]);
+
+  useEffect(() => {
+    s2Ref.current.on(S2Event.GLOBAL_COPIED, (data) => {
+      console.log(data);
+      message.success('复制成功');
+    });
+    return () => s2Ref.current.off(S2Event.GLOBAL_COPIED);
+  }, []);
+
   const [searchKey, setSearchKey] = useState('');
   const [colModalVisible, setColModalVisible] = useState(false);
   const [colModalMeta, setColModalMeta] = useState(null);
   const [form] = Form.useForm();
 
+  const allChecked = columns.length === initColumns.length;
+
   return (
     <div>
       <Space>
+        <ShowList
+          columns={columns}
+          allChecked={allChecked}
+          setColumns={setColumns}
+        />
         <Search
           placeholder="输入关键词搜索"
           allowClear
@@ -145,8 +222,14 @@ const App = ({ data }) => {
         <Button shape="circle" icon={<antdIcons.ArrowLeftOutlined />} />
         <Button shape="circle" icon={<antdIcons.ArrowRightOutlined />} />
       </Space>
+
       <Divider />
-      <SheetComponent dataCfg={dataCfg} options={options} sheetType="table" />
+      <SheetComponent
+        ref={s2Ref}
+        dataCfg={dataCfg}
+        options={options}
+        sheetType="table"
+      />
       <Modal
         title="列设置"
         visible={colModalVisible}
