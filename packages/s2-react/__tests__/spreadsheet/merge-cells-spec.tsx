@@ -138,6 +138,8 @@ function MainLayout() {
     });
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       element: dataCellTooltip,
     });
   };
@@ -146,6 +148,8 @@ function MainLayout() {
     sheet = value?.target?.cells[0].spreadsheet;
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       element: mergedCellsTooltip,
     });
   };
