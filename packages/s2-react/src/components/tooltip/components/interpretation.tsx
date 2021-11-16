@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { TooltipInterpretationOptions, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 import { Icon } from './icon';
+import { ReactElement } from '@/common/react-element';
 
 export const Interpretation = (props: TooltipInterpretationOptions) => {
   const { name, icon, text, render } = props;
@@ -20,9 +21,7 @@ export const Interpretation = (props: TooltipInterpretationOptions) => {
   };
 
   const renderElement = () => {
-    const Component = render;
-
-    return Component && <Component />;
+    return <ReactElement element={render} />;
   };
 
   return (
