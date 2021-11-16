@@ -7,15 +7,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { getContainer } from 'tests/util/helpers';
+import { TableSheet, SpreadSheet, S2Event } from '@antv/s2';
+import * as mockDataConfig from '../data/simple-data.json';
+import { getContainer } from '../util/helpers';
 import type {
   SheetType,
   SpreadsheetProps,
 } from '@/components/sheets/interface';
 import { SheetComponent } from '@/components/sheets';
-import { TableSheet, SpreadSheet } from '@/sheet-type';
-import { S2Event } from '@/common/constant/events';
 
 let s2: SpreadSheet;
 

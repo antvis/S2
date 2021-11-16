@@ -6,10 +6,10 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { getContainer } from 'tests/util/helpers';
+import { S2Options } from '@antv/s2';
+import * as mockDataConfig from '../data/simple-data.json';
+import { getContainer } from '../util/helpers';
 import { SheetComponent } from '@/components/sheets';
-import { S2Options } from '@/common/interface';
 import { SheetType } from '@/components/sheets/interface';
 
 function MainLayout({ sheetType }: { sheetType: SheetType }) {

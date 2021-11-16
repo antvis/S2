@@ -7,11 +7,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import * as mockDataConfig from 'tests/data/simple-data.json';
-import { getContainer, sleep } from 'tests/util/helpers';
+import { SpreadSheet, S2Options } from '@antv/s2';
+import * as mockDataConfig from '../data/simple-data.json';
+import { getContainer, sleep } from '../util/helpers';
 import { SheetComponent } from '@/components/sheets';
-import { SpreadSheet } from '@/sheet-type';
-import { S2Options } from '@/common/interface';
 
 interface Props {
   containerWidth: number;
