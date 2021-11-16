@@ -6,6 +6,7 @@ import {
   get,
   includes,
   isEmpty,
+  isObject,
   isString,
   merge,
   once,
@@ -262,7 +263,8 @@ export abstract class SpreadSheet extends EE {
     options?: TooltipOptions,
   ) {
     const { showTooltip, tooltipComponent } = getTooltipOptions(this, event);
-    if (!showTooltip) {
+    // Object 型数据目前不做默认 Tooltip呈现，走业务自定义 Tooltip
+    if (!showTooltip || isObject(data[0])) {
       return;
     }
 
@@ -271,6 +273,7 @@ export abstract class SpreadSheet extends EE {
       cellInfos: data,
       options,
     });
+
     this.showTooltip({
       data: tooltipData,
       position: {
