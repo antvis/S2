@@ -23,31 +23,10 @@ fetch(
     const s2DataConfig = {
       fields: {
         rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price', 'cost'],
+        columns: ['type', 'sub_type'],
+        values: ['number'],
       },
-      meta: [
-        {
-          field: 'province',
-          name: '省份',
-        },
-        {
-          field: 'city',
-          name: '城市',
-        },
-        {
-          field: 'type',
-          name: '商品类别',
-        },
-        {
-          field: 'price',
-          name: '价格',
-        },
-        {
-          field: 'cost',
-          name: '成本',
-        },
-      ],
+      meta: res.meta,
       data: res.data,
     };
     const s2Options = {
