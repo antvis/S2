@@ -112,7 +112,7 @@ export class ColCell extends HeaderCell {
     const { isLeaf } = this.meta;
     const iconStyle = this.getIconStyle();
     if (isLeaf) {
-      return super.getIconPosition();
+      return super.getIconPosition(this.getActionIconsCount());
     }
     const position = this.textAndIconPositionWhenHorizontalScrolling;
 
