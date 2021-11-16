@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent, SortParams } from '@antv/s2';
+import { SheetComponent } from '@antv/s2';
 import insertCss from 'insert-css';
+import 'antd/es/cascader/style/index.css';
 import '@antv/s2/dist/s2.min.css';
-import 'antd/dist/antd.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/6531b95e-a955-4735-91d6-e63fc32b3f34.json',
@@ -49,7 +49,7 @@ fetch(
               advancedSortCfg: {
                 open: true,
                 sortParams,
-                onSortConfirm: (ruleValues, sortParams: SortParams) => {
+                onSortConfirm: (ruleValues, sortParams) => {
                   setDataCfg({ ...dataCfg, sortParams });
                 },
               },
@@ -68,5 +68,11 @@ insertCss(`
   }
   .antv-s2-advanced-sort-btn.ant-btn:hover svg path, .antv-s2-advanced-sort-btn.ant-btn:focus svg path {
     fill: #873bf4;
+  }
+  .ant-cascader-menu-item {
+    font-size: 12px;
+  }
+  .ant-col {
+    width: 100%;
   }
 `);
