@@ -9,9 +9,7 @@ fetch(
     const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price', 'cost'],
+        columns: ['province', 'city', 'type', 'price', 'cost'],
       },
       meta: [
         {

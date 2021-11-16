@@ -405,7 +405,8 @@ class CustomCornelCell extends CornerCell {
       attrs,
     });
   }
-}
+  drawBorderShape() {}
+} 
 
 fetch('../data/index-comparison.json')
   .then((res) => res.json())
