@@ -12,7 +12,7 @@ import { drawObjectText } from '@/utils/text';
 /**
  * Cell for panelGroup area
  */
-export class MergedCells extends DataCell {
+export class MergedCell extends DataCell {
   public cells: S2CellType[];
 
   public constructor(
