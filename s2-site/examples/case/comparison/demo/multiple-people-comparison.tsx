@@ -170,9 +170,9 @@ fetch('../data/multiple-people-comparison.json')
       data,
     };
 
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 600,
+      height: 480,
       tooltip: {
         operation: {
           trend: true,
@@ -235,7 +235,7 @@ fetch('../data/multiple-people-comparison.json')
         <PaletteLegend />
         <SheetComponent
           dataCfg={s2DataConfig}
-          options={s2options}
+          options={s2Options}
           sheetType="pivot"
           themeCfg={{ theme }}
         />

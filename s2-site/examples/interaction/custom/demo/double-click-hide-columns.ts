@@ -41,14 +41,36 @@ fetch(
     const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {
-        columns: ['province', 'city', 'type', 'price'],
+        columns: ['type', 'province', 'city', 'price', 'cost'],
       },
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
       data,
     };
 
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 300,
+      height: 480,
       tooltip: {
         showTooltip: true,
       },
@@ -65,7 +87,8 @@ fetch(
         ],
       },
     };
-    const s2 = new TableSheet(container, s2DataConfig, s2options);
+
+    const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
     s2.render();
   });

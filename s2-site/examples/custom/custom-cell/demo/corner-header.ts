@@ -57,19 +57,41 @@ fetch(
     const s2DataConfig = {
       fields: {
         rows: ['province', 'city'],
-        columns: ['type', 'sub_type'],
-        values: ['number'],
+        columns: ['type'],
+        values: ['price', 'cost'],
       },
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
       data: res.data,
     };
-    const s2options = {
-      width: 660,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       cornerHeader: (node, s2, headConfig) => {
         return new CustomCornerHeader(node);
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     // 使用
     s2.render();

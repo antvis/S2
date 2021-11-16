@@ -495,9 +495,9 @@ fetch('../data/index-comparison.json')
       price: 1,
       pv: 1,
     };
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 600,
+      height: 480,
       showDefaultHeaderActionIcon: false,
       tooltip: {
         showTooltip: false,
@@ -550,7 +550,7 @@ fetch('../data/index-comparison.json')
     ReactDOM.render(
       <SheetComponent
         dataCfg={s2DataConfig}
-        options={s2options}
+        options={s2Options}
         sheetType="pivot"
       />,
       document.getElementById('container'),

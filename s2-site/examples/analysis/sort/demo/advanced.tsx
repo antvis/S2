@@ -24,15 +24,37 @@ fetch(
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
-        values: ['price'],
+        values: ['price', 'cost'],
       },
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
       data,
-      sortParams
+      sortParams,
     };
 
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 600,
+      height: 480,
     };
 
     const AdvancedSortDemo = () => {
@@ -44,7 +66,7 @@ fetch(
             sheetType={'pivot'}
             adaptive={false}
             dataCfg={dataCfg}
-            options={s2options}
+            options={s2Options}
             header={{
               advancedSortCfg: {
                 open: true,
