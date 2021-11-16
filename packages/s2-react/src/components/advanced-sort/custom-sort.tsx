@@ -2,8 +2,7 @@ import React from 'react';
 import { Card } from 'antd';
 import { TOOLTIP_DEFAULT_ICON_PROPS } from '@/components/tooltip/interface';
 import { HtmlIcon } from '@/common/icons';
-
-export const ADVANCED_PRE_CLS = 'antv-s2-advanced-sort';
+import { ADVANCED_PRE_CLS } from '@/common/constant';
 
 export interface CustomSortProps {
   splitOrders: string[];
