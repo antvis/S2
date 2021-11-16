@@ -231,29 +231,32 @@ fetch('../data/multiple-people-comparison.json')
     };
 
     ReactDOM.render(
-      <div className="root">
-        <PaletteLegend />
-        <SheetComponent
-          dataCfg={s2DataConfig}
-          options={s2Options}
-          sheetType="pivot"
-          themeCfg={{ theme }}
-        />
-      </div>,
+      <SheetComponent
+        dataCfg={s2DataConfig}
+        options={s2Options}
+        sheetType="pivot"
+        themeCfg={{ theme }}
+        header={{
+          title: '多人群对比表',
+          extra: [<PaletteLegend />],
+        }}
+      />,
       document.getElementById('container'),
     );
   });
 
 insertCss(`
-  .root{
-    display: inline-block;
+
+  .ant-page-header {
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .palette-legend {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-bottom: 8px;
+    margin-top: 8px;
   }
 
   .palette-color {
