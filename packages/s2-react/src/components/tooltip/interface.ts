@@ -5,7 +5,7 @@ export interface TooltipRenderProps extends TooltipShowOptions {
   readonly getTooltipComponent?: (
     options: TooltipShowOptions,
     container: HTMLElement,
-  ) => Node | Element | string;
+  ) => void;
 }
 
 export type TooltipRenderComponent = JSX.Element;

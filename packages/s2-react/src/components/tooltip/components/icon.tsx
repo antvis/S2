@@ -1,6 +1,7 @@
 import React from 'react';
 import { DEFAULT_ICON_PROPS, IconProps, getIcon } from '@antv/s2';
 import { HtmlIcon } from '@/common/icons';
+import { ReactElement } from '@/common/react-element';
 
 export const Icon = (props: IconProps) => {
   const { icon, ...attrs } = props;
@@ -14,6 +15,5 @@ export const Icon = (props: IconProps) => {
 
     return <HtmlIcon name={name} {...DEFAULT_ICON_PROPS} {...attrs} />;
   }
-  const Component = icon as React.ComponentClass;
-  return <Component {...DEFAULT_ICON_PROPS} {...attrs} />;
+  return <ReactElement element={icon} {...DEFAULT_ICON_PROPS} {...attrs} />;
 };

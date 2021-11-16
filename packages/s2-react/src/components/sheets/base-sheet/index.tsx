@@ -229,6 +229,9 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
           x: event.clientX,
           y: event.clientY,
         },
+        // TODO: s2-react增加自己的options类型
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         element,
       });
     }

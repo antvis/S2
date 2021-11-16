@@ -19,7 +19,7 @@ import './index.less';
 export const TooltipOperator = (props: TooltipOperatorOptions) => {
   const { menus, onClick, onlyMenu } = props;
 
-  const renderTitle = (text: string, icon: React.ReactNode) => {
+  const renderTitle = (text: string, icon: Element | string) => {
     return (
       <span>
         <Icon icon={icon} className={`${TOOLTIP_PREFIX_CLS}-operator-icon`} />
