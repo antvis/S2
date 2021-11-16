@@ -33,12 +33,12 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   conditions: {},
   totals: {},
   tooltip: {
-    showTooltip: true,
+    showTooltip: false,
     autoAdjustBoundary: 'body',
     operation: {
-      hiddenColumns: true,
+      hiddenColumns: false,
       trend: false,
-      sort: true,
+      sort: false,
     },
   },
   interaction: {
@@ -57,7 +57,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   scrollReachNodeField: {},
   customSVGIcons: [],
   customHeaderCells: null,
-  showDefaultHeaderActionIcon: true,
+  showDefaultHeaderActionIcon: false,
   headerActionIcons: [],
   style: DEFAULT_STYLE,
   frozenRowCount: 0,

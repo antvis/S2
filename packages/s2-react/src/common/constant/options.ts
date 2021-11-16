@@ -11,4 +11,5 @@ export const REACT_DEFAULT_OPTIONS: Readonly<S2Options> = {
       sort: true,
     },
   },
+  showDefaultHeaderActionIcon: true,
 };
