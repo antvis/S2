@@ -40,9 +40,9 @@ fetch('../data/basic.json')
       sortParams: [
         {
           sortFieldId: 'price',
-          sortBy: ((obj) =>
-            canConvertToNumber('price') ? Number(obj.price) : obj.price) as any,
-          sortMethod: 'DESC' as SortMethod,
+          sortBy: (obj) =>
+            canConvertToNumber('price') ? Number(obj.price) : obj.price,
+          sortMethod: 'DESC',
         },
       ],
     };

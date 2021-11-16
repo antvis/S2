@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { SheetComponent, SortParams } from '@antv/s2';
 import insertCss from 'insert-css';
 import '@antv/s2/dist/s2.min.css';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.mini.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/6531b95e-a955-4735-91d6-e63fc32b3f34.json',
