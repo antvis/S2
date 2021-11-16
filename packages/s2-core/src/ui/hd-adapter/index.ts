@@ -89,10 +89,13 @@ export class HdAdapter {
     this.spreadsheet.render(false);
   };
 
-  private renderByZoomScale = debounce((e) => {
-    const ratio = Math.ceil(e.target.scale);
-    if (ratio > 1) {
-      this.renderByDevicePixelRatio(ratio);
-    }
-  }, 350);
+  private renderByZoomScale = debounce(
+    (event: Event & { target: VisualViewport }) => {
+      const ratio = Math.ceil(event.target.scale);
+      if (ratio > 1) {
+        this.renderByDevicePixelRatio(ratio);
+      }
+    },
+    350,
+  );
 }
