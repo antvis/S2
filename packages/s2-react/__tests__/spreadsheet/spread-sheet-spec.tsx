@@ -5,7 +5,6 @@ import { act } from 'react-dom/test-utils';
 import { HeaderActionIconProps, S2Options, ThemeName, Node } from '@antv/s2';
 import { getContainer } from '../util/helpers';
 import { SheetEntry, assembleDataCfg } from '../util/sheet-entry';
-import { CustomTooltip } from './custom/custom-tooltip';
 import { SheetType } from '@/components/index';
 
 const tableDataFields = {
@@ -49,9 +48,6 @@ function MainLayout() {
       current: 1,
     },
     tooltip: {
-      renderTooltip: (spreadsheet) => {
-        return new CustomTooltip(spreadsheet);
-      },
       operation: {
         trend: true,
         hiddenColumns: true,
@@ -93,11 +89,13 @@ function MainLayout() {
         iconNames: ['Filter'],
         belongsCell: 'colCell',
         displayCondition: (meta: Node) =>
-          meta.id !== 'root[&]家具[&]桌子[&]price',
+          meta.id !== 'root[&]家具[&]桌子[&]number',
         action: (props: HeaderActionIconProps) => {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             element: ColTooltip,
           });
         },
@@ -106,11 +104,13 @@ function MainLayout() {
         iconNames: ['SortDown'],
         belongsCell: 'colCell',
         displayCondition: (meta: Node) =>
-          meta.id === 'root[&]家具[&]桌子[&]price',
+          meta.id === 'root[&]家具[&]桌子[&]number',
         action: (props: HeaderActionIconProps) => {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             element: ColTooltip,
           });
         },
@@ -122,6 +122,8 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             element: CornerTooltip,
           });
         },
@@ -133,13 +135,14 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             element: RowTooltip,
           });
         },
       },
     ],
   };
-
   const onSheetTypeChange = (checked: boolean) => {
     setIsPivotSheet(checked);
     // 透视表

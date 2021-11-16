@@ -13,7 +13,6 @@ import {
 import { mockTabularDataCfg, mockTabularOptions } from '../data/tabular-data';
 import { getContainer } from '../util/helpers';
 import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
-import { CustomTooltip } from './custom/custom-tooltip';
 import { SheetComponent, SheetType } from '@/components/index';
 import 'antd/dist/antd.min.css';
 
@@ -72,11 +71,6 @@ const baseOptions = {
       { colIndex: 3, rowIndex: 7 },
     ],
   ],
-  tooltip: {
-    renderTooltip: (spreadsheet) => {
-      return new CustomTooltip(spreadsheet);
-    },
-  },
 } as S2Options;
 
 const tabularOptions = {

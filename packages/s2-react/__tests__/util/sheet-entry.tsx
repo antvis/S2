@@ -8,7 +8,6 @@ import React, {
 import { Input, Select, Space, Switch } from 'antd';
 import { isArray, merge, mergeWith } from 'lodash';
 import {
-  DEFAULT_OPTIONS,
   S2DataConfig,
   S2Options,
   SpreadSheet,
@@ -19,11 +18,12 @@ import {
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import 'antd/dist/antd.min.css';
 import { SheetComponent, SheetType } from '@/components/index';
+import { REACT_DEFAULT_OPTIONS } from '@/common/constant';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
   mergeWith(
     {},
-    DEFAULT_OPTIONS,
+    REACT_DEFAULT_OPTIONS,
     { debug: true, width: 1000, height: 600 },
     ...options,
     (origin, updated) => {
