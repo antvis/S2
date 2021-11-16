@@ -239,26 +239,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       `${this.cellType}.cell.interactionState.${stateName}`,
     );
 
-    // 根据borderWidth更新borderShape大小     https://github.com/antvis/S2/pull/705
     const { x, y, height, width } = this.getCellArea();
     const margin = Number(stateStyles.borderWidth || DEFAULT_BORDER_WIDTH);
-
-    const shape = this.stateShapes.get('interactiveBorderShape') || null;
-
-    if (shape && isNumber(margin)) {
-      // 默认留下0.5 pixel的buffer防止和周边cell的边框重合  (borderWidth = 1时，只有0.5px会被绘制在cell内部)
-      const marginStyle = {
-        x: x + margin / 2,
-        y: y + margin / 2,
-        width: width - margin - 0.5,
-        height: height - margin - 0.5,
-        lineWidth: margin,
-      };
-
-      each(marginStyle, (style, styleKey) => {
-        updateShapeAttr(shape, styleKey, style);
-      });
-    }
 
     each(stateStyles, (style, styleKey) => {
       const targetShapeNames = keys(
@@ -268,6 +250,24 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         const shape = this.stateShapes.has(shapeName)
           ? this.stateShapes.get(shapeName)
           : this[shapeName];
+
+        // 根据borderWidth更新borderShape大小     https://github.com/antvis/S2/pull/705
+        if (
+          shapeName === 'interactiveBorderShape' &&
+          styleKey === 'borderWidth'
+        ) {
+          if (isNumber(margin)) {
+            const marginStyle = {
+              x: x + style / 2,
+              y: y + style / 2,
+              width: width - style,
+              height: height - style,
+            };
+            each(marginStyle, (style, styleKey) => {
+              updateShapeAttr(shape, styleKey, style);
+            });
+          }
+        }
         updateShapeAttr(shape, SHAPE_STYLE_MAP[styleKey], style);
       });
     });
@@ -278,6 +278,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent');
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0);
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderWidth, 1);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderColor, 'transparent');
     });
   }
