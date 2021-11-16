@@ -102,7 +102,6 @@ describe('HD Adapter Tests', () => {
     });
     visualViewport.dispatchEvent(new Event('resize'));
 
-    await expectContainerSize();
     expect(s2.render).not.toHaveBeenCalled();
   });
 
