@@ -1,4 +1,3 @@
-import { LineChartOutlined, EyeOutlined } from '@ant-design/icons';
 import { TooltipOperation, TooltipOperatorMenu } from '@/common/interface';
 import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 import { i18n } from '@/common/i18n';
@@ -27,17 +26,16 @@ export const TOOLTIP_OPERATOR_MENUS: Record<
     {
       id: 'trend',
       text: i18n('趋势'),
-      icon: LineChartOutlined,
+      icon: 'Trend',
     },
   ],
   HiddenColumns: [
     {
       id: 'hiddenColumns',
       text: i18n('隐藏'),
-      icon: EyeOutlined,
+      icon: 'EyeOutlined',
     },
   ],
-
   Sort: [
     {
       id: 'asc',
