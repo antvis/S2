@@ -21,6 +21,10 @@ describe('HD Adapter Tests', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     window.devicePixelRatio = DPR;
+    Object.defineProperty(visualViewport, 'scale', {
+      value: 1,
+      configurable: true,
+    });
 
     s2 = createFakeSpreadSheet();
     hdAdapter = new HdAdapter(s2);
@@ -33,7 +37,7 @@ describe('HD Adapter Tests', () => {
         s2.options.height * DPR,
       ],
     ) => {
-      await sleep(500);
+      await sleep(1000);
       const canvas: HTMLCanvasElement = s2.container.get('el');
       expect(canvas.style.width).toEqual(`${width}px`);
       expect(canvas.style.height).toEqual(`${height}px`);
@@ -63,8 +67,9 @@ describe('HD Adapter Tests', () => {
   });
 
   test('should update container size when zoom scale changed, and scale more than current DPR', async () => {
+    const scale = 3;
     Object.defineProperty(visualViewport, 'scale', {
-      value: 2.6,
+      value: scale,
       configurable: true,
     });
     visualViewport.dispatchEvent(new Event('resize'));
@@ -73,7 +78,7 @@ describe('HD Adapter Tests', () => {
     // eg: <canvas width="1000" height="500" style="width:500px; height: 250px;" />
     await expectContainerSize(
       [s2.options.width, s2.options.height],
-      [s2.options.width * 3, s2.options.height * 3],
+      [s2.options.width * scale, s2.options.height * scale],
     );
     expect(s2.render).toHaveBeenCalledTimes(1);
   });
