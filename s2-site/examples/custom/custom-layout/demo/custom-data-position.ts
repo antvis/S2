@@ -17,9 +17,9 @@ fetch(
       data: res.data,
     };
 
-    const s2options = {
-      width: 660,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       layoutDataPosition: (s2, getCellData) => {
         // layoutDataPosition 动态改变数据的定位，确定修订某个或者某些格子的值
         // 下面以更改「浙江省-宁波市-家具-桌子」的单元格数据为例
@@ -45,7 +45,7 @@ fetch(
         return getCellMeta;
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     s2.render();
   });
