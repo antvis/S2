@@ -29,14 +29,6 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/nAU23PQjf/61dc2aab-e1db-4403-8121-81d99029cd15.png"
     },
     {
-      "filename": "custom-header-action-icon.tsx",
-      "title": {
-        "zh": "自定义行列头操作图标",
-        "en": "Custom header action icons"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%26aAhOS525G/8b2a2d0a-6190-4d82-be77-ee3b2cb2f066.png"
-    },
-    {
       "filename": "scroll-speed-ratio.ts",
       "title": {
         "zh": "自定义滚动速度",

@@ -1,4 +1,4 @@
 ---
-title: Tooltip
+title: Tooltip Component
 order: 1
 ---
