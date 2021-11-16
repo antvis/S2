@@ -86,11 +86,16 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       tooltipOptions: TooltipShowOptions,
       tooltipContainer: HTMLElement,
     ) => {
-      const tooltipComponent: TooltipRenderComponent = (
-        <ReactElement
-          element={s2Options.tooltip.tooltipComponent || tooltipOptions.element}
-        />
-      );
+      let tooltipComponent: TooltipRenderComponent;
+      if (s2Options.tooltip.tooltipComponent || tooltipOptions.element) {
+        tooltipComponent = (
+          <ReactElement
+            element={
+              s2Options.tooltip.tooltipComponent || tooltipOptions.element
+            }
+          />
+        );
+      }
       const tooltipProps: TooltipRenderProps = {
         ...tooltipOptions,
         tooltipComponent,

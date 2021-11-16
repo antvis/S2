@@ -12,7 +12,7 @@ export class ReactElement extends React.PureComponent<Props> {
     const { style = {}, className, element } = this.props;
     let htmlNode: string;
     if (typeof element !== 'string') {
-      htmlNode = element.innerHTML;
+      htmlNode = element?.innerHTML || '';
     } else {
       htmlNode = element;
     }
