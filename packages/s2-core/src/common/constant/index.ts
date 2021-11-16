@@ -7,7 +7,6 @@ export * from './frozen';
 export * from './interaction';
 export * from './options';
 export * from './scroll';
-export * from '../../../../s2-react/src/common/constant/sort';
 export * from './theme';
 export * from './tooltip';
 export * from './resize';
