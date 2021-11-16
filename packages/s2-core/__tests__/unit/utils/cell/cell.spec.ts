@@ -4,7 +4,7 @@ import {
   getContentArea,
   getMaxTextWidth,
   getTextAndFollowingIconPosition,
-  getTextPositionWhenHorizontalScrolling,
+  getTextAndIconPositionWhenHorizontalScrolling,
 } from '@/utils/cell/cell';
 
 describe('Cell Content Test', () => {
@@ -424,7 +424,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
   const textWidth = 20;
   test('should get center position when content is larger than viewport', () => {
     expect(
-      getTextPositionWhenHorizontalScrolling(
+      getTextAndIconPositionWhenHorizontalScrolling(
         {
           start: 20,
           width: 50,
@@ -438,7 +438,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
   test('should get center position when content is on the left of viewport', () => {
     // reset width is enough
     expect(
-      getTextPositionWhenHorizontalScrolling(
+      getTextAndIconPositionWhenHorizontalScrolling(
         {
           start: 50,
           width: 100,
@@ -450,7 +450,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
 
     // reset width isn't enough
     expect(
-      getTextPositionWhenHorizontalScrolling(
+      getTextAndIconPositionWhenHorizontalScrolling(
         {
           start: 90,
           width: 100,
@@ -464,7 +464,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
   test('should get center position when content is on the right of viewport', () => {
     // reset width is enough
     expect(
-      getTextPositionWhenHorizontalScrolling(
+      getTextAndIconPositionWhenHorizontalScrolling(
         {
           start: -50,
           width: 100,
@@ -476,7 +476,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
 
     // reset width isn't enough
     expect(
-      getTextPositionWhenHorizontalScrolling(
+      getTextAndIconPositionWhenHorizontalScrolling(
         {
           start: -90,
           width: 100,
@@ -489,7 +489,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
 
   test('should get center position when content is inside of viewport', () => {
     expect(
-      getTextPositionWhenHorizontalScrolling(
+      getTextAndIconPositionWhenHorizontalScrolling(
         {
           start: -50,
           width: 200,
