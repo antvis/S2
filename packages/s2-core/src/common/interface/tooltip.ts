@@ -5,7 +5,7 @@ export type TooltipDataItem = Record<string, any>;
 
 export interface TooltipOperatorMenu {
   id: string;
-  icon?: Node | Element | string;
+  icon?: Element | string;
   text?: string;
   children?: TooltipOperatorMenu[]; // subMenu
 }
@@ -24,7 +24,7 @@ export interface TooltipPosition {
 export type ListItem = {
   name: string;
   value: string | number;
-  icon?: Node | Element | string;
+  icon?: Element | string;
 };
 
 export interface SortQuery {
@@ -69,9 +69,9 @@ export type TooltipDetailProps = {
 
 export type TooltipInterpretationOptions = {
   name: string;
-  icon?: Node | Element | string;
+  icon?: Element | string;
   text?: string;
-  render?: Node | Element | string;
+  render?: Element | string;
 };
 
 export type InfosProps = {
@@ -83,7 +83,7 @@ export type TooltipShowOptions = {
   data?: TooltipData;
   cellInfos?: TooltipDataItem[];
   options?: TooltipOptions;
-  element?: Node | string;
+  element?: Element | string;
 };
 
 export type TooltipData = {
@@ -114,7 +114,7 @@ export type DataParam = {
 };
 
 export type IconProps = {
-  icon: Node | Element | string;
+  icon: Element | string;
   [key: string]: unknown;
 };
 
@@ -141,14 +141,14 @@ export type TooltipAutoAdjustBoundary = 'body' | 'container';
 export interface BaseTooltipConfig {
   readonly showTooltip?: boolean;
   // replace the whole default tooltip component
-  readonly tooltipComponent?: Node | Element | string;
+  readonly tooltipComponent?: Element | string;
   // Tooltip operation
   readonly operation?: TooltipOperation;
   readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
   readonly getTooltipComponent?: (
     options: TooltipShowOptions,
     container: HTMLElement,
-  ) => Node | Element | string;
+  ) => void;
 }
 
 export interface Tooltip extends BaseTooltipConfig {

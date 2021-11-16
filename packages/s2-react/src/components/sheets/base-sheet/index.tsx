@@ -20,6 +20,7 @@ import {
   getTooltipOptions,
   getSafetyDataConfig,
   getSafetyOptions,
+  S2Options,
   TooltipShowOptions,
 } from '@antv/s2';
 import { DrillDown } from '@/components/drill-down';
@@ -28,8 +29,13 @@ import { BaseSheetProps } from '@/components/sheets/interface';
 import { useResizeEffect } from '@/components/sheets/hooks';
 import { S2Pagination } from '@/components/pagination';
 import { TooltipComponent } from '@/components/tooltip';
+import {
+  TooltipRenderProps,
+  TooltipRenderComponent,
+} from '@/components/tooltip/interface';
 import { HandleDrillDown, HandleDrillDownIcon } from '@/utils';
 import { REACT_DEFAULT_OPTIONS } from '@/common/constant';
+import { ReactElement } from '@/common/react-element';
 
 import './index.less';
 
@@ -74,25 +80,32 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     options?.pagination?.pageSize || 10,
   );
 
-  const getSpreadSheet = (): SpreadSheet => {
+  const getOptions = (): S2Options => {
     const s2Options = merge({}, REACT_DEFAULT_OPTIONS, options);
     const getTooltipComponent = (
       tooltipOptions: TooltipShowOptions,
       tooltipContainer: HTMLElement,
     ) => {
-      ReactDOM.render(
-        <TooltipComponent
-          {...tooltipOptions}
-          tooltipComponent={s2Options.tooltip.tooltipComponent}
-        />,
-        tooltipContainer,
+      const tooltipComponent: TooltipRenderComponent = (
+        <ReactElement
+          element={s2Options.tooltip.tooltipComponent || tooltipOptions.element}
+        />
       );
+      const tooltipProps: TooltipRenderProps = {
+        ...tooltipOptions,
+        tooltipComponent,
+      };
+      ReactDOM.render(<TooltipComponent {...tooltipProps} />, tooltipContainer);
     };
-    const params: S2Constructor = [
-      container.current,
-      dataCfg,
-      { ...s2Options, tooltip: { ...s2Options.tooltip, getTooltipComponent } },
-    ];
+
+    return {
+      ...s2Options,
+      tooltip: { ...s2Options.tooltip, getTooltipComponent },
+    };
+  };
+
+  const getSpreadSheet = (): SpreadSheet => {
+    const params: S2Constructor = [container.current, dataCfg, getOptions()];
     if (spreadsheet) {
       return spreadsheet(...params);
     }
