@@ -44,9 +44,6 @@ const getOptions = () => {
     showSeriesNumber: true,
     mode: 'table',
     style: {
-      colCfg: {
-        colWidthType: 'compact',
-      },
       cellCfg: {
         height: 32,
       },

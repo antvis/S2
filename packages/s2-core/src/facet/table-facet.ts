@@ -2,7 +2,10 @@ import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
 import { getDataCellId } from 'src/utils/cell/data-cell';
 import { get, maxBy, set, size } from 'lodash';
+import { TableColHeader } from 'src/facet/header/table-col';
+import { ColHeader } from 'src/facet/header/col';
 import type {
+  Formatter,
   LayoutResult,
   S2CellType,
   SplitLine,
@@ -20,7 +23,12 @@ import {
   isFrozenTrailingCol,
   isFrozenTrailingRow,
 } from './utils';
-import { S2Event, SERIES_NUMBER_FIELD } from '@/common/constant';
+import { CornerBBox } from './bbox/cornerBBox';
+import {
+  LayoutWidthTypes,
+  S2Event,
+  SERIES_NUMBER_FIELD,
+} from '@/common/constant';
 import { FrozenCellGroupMap } from '@/common/constant/frozen';
 import { DebuggerUtil } from '@/common/debug';
 import { BaseFacet } from '@/facet/base-facet';
@@ -30,7 +38,6 @@ import { layoutCoordinate } from '@/facet/layout/layout-hooks';
 import { Node } from '@/facet/layout/node';
 import { renderLine } from '@/utils/g-renders';
 import { TableDataSet } from '@/data-set';
-import { getSortParam } from '@/utils/layout/add-detail-type-sort-icon';
 import { PanelIndexes } from '@/utils/indexes';
 import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
 
@@ -39,13 +46,12 @@ export class TableFacet extends BaseFacet {
     super(cfg);
 
     const s2 = this.spreadsheet;
-    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod }) => {
-      const sortParam = getSortParam(sortKey, s2);
+    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod, sortBy }) => {
       set(s2.dataCfg, 'sortParams', [
         {
           sortFieldId: sortKey,
           sortMethod,
-          sortBy: sortParam?.sortBy,
+          sortBy,
         },
       ]);
       s2.setDataCfg(s2.dataCfg);
@@ -95,21 +101,12 @@ export class TableFacet extends BaseFacet {
 
   protected calculateCornerBBox() {
     const { colsHierarchy } = this.layoutResult;
-
     const height = Math.floor(colsHierarchy.height);
-    const width = 0;
 
-    this.cornerBBox = {
-      x: 0,
-      y: 0,
-      width,
-      height,
-      maxX: width,
-      maxY: height,
-      minX: 0,
-      minY: 0,
-    };
-    this.cornerWidth = 0;
+    this.cornerBBox = new CornerBBox(this);
+
+    this.cornerBBox.height = height;
+    this.cornerBBox.maxY = height;
   }
 
   public destroy() {
@@ -179,12 +176,11 @@ export class TableFacet extends BaseFacet {
       if (isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)) {
         x =
           width -
-          colLeafNodes.reduceRight((prev, item, idx) => {
-            if (idx >= colLength - frozenTrailingColCount) {
+          colLeafNodes
+            .slice(-(colLength - colIndex))
+            .reduce((prev, item, idx) => {
               return prev + item.width;
-            }
-            return prev;
-          }, 0);
+            }, 0);
       }
 
       if (showSeriesNumber && col.field === SERIES_NUMBER_FIELD) {
@@ -250,7 +246,7 @@ export class TableFacet extends BaseFacet {
   private calculateColWidth(colLeafNodes: Node[]) {
     const { rowCfg, cellCfg } = this.cfg;
     let colWidth;
-    if (this.spreadsheet.isColAdaptive()) {
+    if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
       colWidth = this.getAdaptiveColWidth(colLeafNodes);
     } else {
       colWidth = -1;
@@ -262,8 +258,9 @@ export class TableFacet extends BaseFacet {
 
   private getColNodeHeight(col: Node) {
     const { colCfg } = this.cfg;
-    const userDragWidth = get(colCfg, `heightByField.${col.key}`);
-    return userDragWidth || colCfg.height;
+    // 明细表所有列节点高度保持一致
+    const userDragHeight = Object.values(get(colCfg, `heightByField`))[0];
+    return userDragHeight || colCfg.height;
   }
 
   private calculateColNodesCoordinate(
@@ -459,6 +456,11 @@ export class TableFacet extends BaseFacet {
     return totalHeight;
   };
 
+  private getShadowFill = (angle: number) => {
+    const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
+    return `l (${angle}) 0:${style.shadowColors?.left} 1:${style.shadowColors?.right}`;
+  };
+
   protected renderFrozenGroupSplitLine = () => {
     const {
       frozenRowCount,
@@ -503,6 +505,18 @@ export class TableFacet extends BaseFacet {
           ...verticalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x,
+            y: this.cornerBBox.height,
+            width: style.shadowWidth,
+            height: this.panelBBox.maxY - this.cornerBBox.height,
+            fill: this.getShadowFill(0),
+          },
+        });
+      }
     }
 
     if (frozenRowCount > 0) {
@@ -521,6 +535,18 @@ export class TableFacet extends BaseFacet {
           ...horizontalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x: 0,
+            y: y,
+            width: this.panelBBox.width,
+            height: style.shadowWidth,
+            fill: this.getShadowFill(90),
+          },
+        });
+      }
     }
 
     if (frozenTrailingColCount > 0) {
@@ -545,6 +571,18 @@ export class TableFacet extends BaseFacet {
           ...verticalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x: x - style.shadowWidth,
+            y: this.cornerBBox.height,
+            width: style.shadowWidth,
+            height: this.panelBBox.maxY - this.cornerBBox.height,
+            fill: this.getShadowFill(180),
+          },
+        });
+      }
     }
 
     if (frozenTrailingRowCount > 0) {
@@ -566,6 +604,18 @@ export class TableFacet extends BaseFacet {
           ...horizontalBorderStyle,
         },
       );
+
+      if (style.showShadow) {
+        this.foregroundGroup.addShape('rect', {
+          attrs: {
+            x: 0,
+            y: y - style.shadowWidth,
+            width: this.panelBBox.width,
+            height: style.shadowWidth,
+            fill: this.getShadowFill(270),
+          },
+        });
+      }
     }
   };
 
@@ -652,6 +702,28 @@ export class TableFacet extends BaseFacet {
     });
   }
 
+  protected getColHeader(): ColHeader {
+    if (!this.columnHeader) {
+      const { x, width, height } = this.panelBBox;
+      return new TableColHeader({
+        width,
+        height: this.cornerBBox.height,
+        viewportWidth: width,
+        viewportHeight: height,
+        cornerWidth: this.cornerBBox.width,
+        position: { x, y: 0 },
+        data: this.layoutResult.colNodes,
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        formatter: (field: string): Formatter =>
+          this.cfg.dataSet.getFieldFormatter(field),
+        sortParam: this.cfg.spreadsheet.store.get('sortParam'),
+        spreadsheet: this.spreadsheet,
+      });
+    }
+    return this.columnHeader;
+  }
+
   public render() {
     super.render();
     this.renderFrozenPanelCornerGroup();
@@ -730,6 +802,7 @@ export class TableFacet extends BaseFacet {
     } = this.spreadsheet;
     const frozenColGroupWidth = frozenColGroup.getBBox().width;
     const frozenRowGroupHeight = frozenRowGroup.getBBox().height;
+    const frozenTrailingColBBox = frozenTrailingColGroup.getBBox();
     const frozenTrailingRowGroupHeight =
       frozenTrailingRowGroup.getBBox().height;
     const panelScrollGroupWidth =
@@ -784,9 +857,9 @@ export class TableFacet extends BaseFacet {
     frozenTrailingColGroup.setClip({
       type: 'rect',
       attrs: {
-        x: frozenTrailingColGroup.getBBox().minX,
+        x: frozenTrailingColBBox.minX,
         y: scrollY + frozenRowGroupHeight,
-        width: frozenColGroupWidth,
+        width: frozenTrailingColBBox.width,
         height: panelScrollGroupHeight,
       },
     });

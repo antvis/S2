@@ -1,5 +1,23 @@
 // 不本地直接引用svg文件，避免下游无依赖
 
+export const ArrowDown = `
+<svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold">
+    <text id="↓" fill="#29A294">
+        <tspan x="-0.225097656" y="8.5">↓</tspan>
+    </text>
+</g>
+</svg>`;
+
+export const ArrowUp = `<svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Roboto, PingFangSC, BlinkMacSystemFont, Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold">
+    <text id="↑" fill="#FF4D4F">
+        <tspan x="-0.225097656" y="8.5">↑</tspan>
+    </text>
+</g>
+</svg>
+`;
+
 export const CellDown = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="7px" height="9px" viewBox="0 0 7 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
@@ -21,12 +39,12 @@ export const CellUp = `<?xml version="1.0" encoding="UTF-8"?>
 </svg> `;
 
 export const GlobalAsc = `<svg t="1557124621626" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" p-id="17452"
-  xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
-  <defs>
-    <style type="text/css"></style>
-  </defs>
-  <path d="M182.272 167.04a8 8 0 0 0-12.544 0L57.728 309.056A8 8 0 0 0 64 321.984h76.032v530.048c0 4.352 3.584 7.936 7.936 7.936h56.064a8 8 0 0 0 7.936-7.936V321.92H288a8 8 0 0 0 6.272-12.992l-112-141.888z m209.728 626.944h176c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8h-176A8 8 0 0 1 384 857.984v-56c0-4.416 3.584-8 8-8z m0-424h368c4.416 0 8 3.648 8 8v56a8 8 0 0 1-8 8h-368A8 8 0 0 1 384 433.984v-56c0-4.352 3.584-8 8-8z m528-139.968h-528A8 8 0 0 1 384 222.016v-56c0-4.416 3.584-8 8-8h528c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8z m-256 424h-272A8 8 0 0 1 384 646.016v-56c0-4.416 3.584-8 8-8h272c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8z" p-id="17453"></path>
+xmlns="http://www.w3.org/2000/svg" p-id="17452"
+xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14">
+<defs>
+  <style type="text/css"></style>
+</defs>
+<path d="M182.272 167.04a8 8 0 0 0-12.544 0L57.728 309.056A8 8 0 0 0 64 321.984h76.032v530.048c0 4.352 3.584 7.936 7.936 7.936h56.064a8 8 0 0 0 7.936-7.936V321.92H288a8 8 0 0 0 6.272-12.992l-112-141.888z m209.728 626.944h176c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8h-176A8 8 0 0 1 384 857.984v-56c0-4.416 3.584-8 8-8z m0-424h368c4.416 0 8 3.648 8 8v56a8 8 0 0 1-8 8h-368A8 8 0 0 1 384 433.984v-56c0-4.352 3.584-8 8-8z m528-139.968h-528A8 8 0 0 1 384 222.016v-56c0-4.416 3.584-8 8-8h528c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8z m-256 424h-272A8 8 0 0 1 384 646.016v-56c0-4.416 3.584-8 8-8h272c4.416 0 8 3.584 8 8v56a8 8 0 0 1-8 8z" p-id="17453"></path>
 </svg>`;
 
 export const GlobalDesc = `<svg t="1557124685600" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
@@ -78,8 +96,6 @@ export const ExpandColIcon = `<?xml version="1.0" encoding="UTF-8"?>
         </g>
     </g>
 </svg>`;
-
-export const MinusSquare = `<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1601257524828" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="20438" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16"><defs><style type="text/css"></style></defs><path d="M888 64H136q-30.016 0-51.008 20.992T64 136v752.992q0 28.992 20.992 50.496t51.008 21.504h752.992q28.992 0 50.496-21.504t21.504-50.496V136q0-30.016-21.504-51.008T888 64zM768 512.992q0 15.008-11.008 25.504t-24.992 10.496H289.984q-14.016 0-24.992-10.496t-11.008-25.504q0-15.008 11.008-25.504t24.992-10.496h442.016q14.016 0 24.992 10.496t11.008 25.504z" fill="" p-id="20439"></path></svg>`;
 
 export const Minus = `<svg t="1557140120188" class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
 xmlns="http://www.w3.org/2000/svg" p-id="16909" xmlns:xlink="http://www.w3.org/1999/xlink"

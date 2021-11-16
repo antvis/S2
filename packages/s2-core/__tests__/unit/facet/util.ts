@@ -5,7 +5,7 @@ import { transformIndexesData } from '@/utils/dataset/pivot-data-set';
  * 获取 Mock 数据
  */
 export function getMockPivotMeta() {
-  const sortedDimensionValues = new Map();
+  const sortedDimensionValues = {};
   const rawRowPivotMeta = new Map();
   const rawColPivotMeta = new Map();
   const rawIndexesData = [];

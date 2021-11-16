@@ -57,13 +57,24 @@ function MainLayout() {
     },
   };
   return (
-    <div>
-      <div style={{ margin: '10px' }}>
+    <div style={{ overflow: 'scroll', height: 600 }}>
+      <div
+        style={{
+          padding: 10,
+          height: 1000,
+          background: '#eee',
+          position: 'relative',
+        }}
+      >
+        <h2>测试滚动跟随</h2>
         <Switcher
           {...fields}
           onSubmit={(result) => {
             // eslint-disable-next-line no-console
             console.log('result: ', result);
+          }}
+          popover={{
+            getPopupContainer: (trigger) => trigger.parentElement,
           }}
         />
       </div>

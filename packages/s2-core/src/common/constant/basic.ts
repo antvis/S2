@@ -35,6 +35,8 @@ export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
 export const KEY_GROUP_CORNER_RESIZE_AREA = 'cornerResizeAreaGroup';
 export const KEY_GROUP_COL_RESIZE_AREA = 'colResizeAreaGroup';
 export const KEY_GROUP_FROZEN_COL_RESIZE_AREA = 'colFrozenResizeAreaGroup';
+export const KEY_GROUP_COL_HORIZONTAL_RESIZE_AREA =
+  'colHorizontalResizeAreaGroup';
 export const KEY_GROUP_COL_SCROLL = 'colScrollGroup';
 export const KEY_GROUP_COL_FROZEN = 'colFrozenGroup';
 export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
@@ -43,6 +45,8 @@ export const KEY_GROUP_COL_FROZEN_TRAILING = 'colFrozenTrailingGroup';
 export const KEY_SERIES_NUMBER_NODE = 'series-number-node';
 
 export const HORIZONTAL_RESIZE_AREA_KEY_PRE = 'horizontal-resize-area-';
+export const TABLE_COL_HORIZONTAL_RESIZE_AREA_KEY =
+  'table-col-horizontal-resize-area';
 
 export const KEY_COL_REAL_WIDTH_INFO = 'col-real-width-info';
 
@@ -65,5 +69,5 @@ export const ROOT_BEGINNING_REGEX = /^root\[&\]*/;
 
 export const IMAGE = 'image';
 
-// 箭头最大占整个容器的比例 (0-1)
+// 角头最大占整个容器的比例 (0-1)
 export const CORNER_MAX_WIDTH_RATIO = 0.5;

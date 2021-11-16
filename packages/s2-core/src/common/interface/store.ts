@@ -4,6 +4,7 @@ import { ValueRanges } from './condition';
 import { S2DataConfig } from './s2DataConfig';
 import { Node } from '@/facet/layout/node';
 import { PartDrillDownFieldInLevel } from '@/common/interface';
+import { GuiIcon } from '@/common/icons';
 
 export interface Selected {
   type:
@@ -27,7 +28,10 @@ export interface HiddenColumnsInfo {
   // 当前显示的兄弟节点之前所隐藏的节点
   hideColumnNodes: Node[];
   // 当前隐藏列所对应展示展开按钮的兄弟节点
-  displaySiblingNode: Node;
+  displaySiblingNode: {
+    prev: Node;
+    next: Node;
+  };
 }
 
 /**
@@ -71,6 +75,11 @@ export interface StoreKey {
   hiddenColumnsDetail: HiddenColumnsInfo[];
   // 上一次渲染的列头配置
   lastRenderedColumnFields: string[];
+  // 是否手动调整过宽高
+  resized: boolean;
+
+  // hover 显示的 icon 缓存
+  visibleActionIcons: GuiIcon[];
 
   [key: string]: unknown;
 }

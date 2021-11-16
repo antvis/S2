@@ -5,7 +5,10 @@ import {
   getAutoAdjustPosition,
   setContainerStyle,
 } from '@/utils/tooltip';
-import { TOOLTIP_PREFIX_CLS } from '@/common/constant/tooltip';
+import {
+  TOOLTIP_PREFIX_CLS,
+  TOOLTIP_CONTAINER_CLS,
+} from '@/common/constant/tooltip';
 
 import './index.less';
 
@@ -67,18 +70,22 @@ export class BaseTooltip {
     };
 
     setContainerStyle(container, {
-      left: `${x}px`,
-      top: `${y}px`,
-      pointerEvents: enterable ? 'all' : 'none',
-      visibility: 'visible',
+      style: {
+        left: `${x}px`,
+        top: `${y}px`,
+        pointerEvents: enterable ? 'all' : 'none',
+      },
+      className: `${TOOLTIP_CONTAINER_CLS}-show`,
     });
   }
 
   public hide() {
     const container = this.getContainer();
     setContainerStyle(container, {
-      pointerEvents: 'none',
-      visibility: 'hidden',
+      style: {
+        pointerEvents: 'none',
+      },
+      className: `${TOOLTIP_CONTAINER_CLS}-hide`,
     });
     this.resetPosition();
   }
@@ -91,11 +98,17 @@ export class BaseTooltip {
   }
 
   public disablePointerEvent() {
+    if (!this.container) {
+      return;
+    }
+
     if (this.container.style.pointerEvents === 'none') {
       return;
     }
     setContainerStyle(this.container, {
-      pointerEvents: 'none',
+      style: {
+        pointerEvents: 'none',
+      },
     });
   }
 

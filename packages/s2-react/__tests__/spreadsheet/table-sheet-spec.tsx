@@ -75,13 +75,15 @@ function MainLayout({ callback }) {
   const [hiddenColumnFields, setHiddenColumnFields] = React.useState<string[]>([
     'order_date',
   ]);
+  const a = `1
+  2`;
 
   const dataCfg: S2DataConfig = {
     fields: {
       columns,
     },
     meta,
-    data,
+    data: data.map((e) => ({ ...e, express_type: a })),
     sortParams: [
       {
         sortFieldId: 'count',
@@ -102,12 +104,8 @@ function MainLayout({ callback }) {
     width: 800,
     height: 600,
     showSeriesNumber: true,
-    enableCopy: true,
-    hoverHighlight: false,
+    placeholder: '',
     style: {
-      colCfg: {
-        colWidthType: 'compact',
-      },
       cellCfg: {
         height: 32,
       },
@@ -117,24 +115,28 @@ function MainLayout({ callback }) {
       pageSize: 50,
       current: 1,
     },
+    interaction: {
+      enableCopy: true,
+      hoverHighlight: false,
+      linkFields: ['order_id', 'customer_name'],
+      hiddenColumnFields,
+    },
     frozenRowCount: 2,
     frozenColCount: 1,
     frozenTrailingColCount: 1,
     frozenTrailingRowCount: 1,
-    linkFields: ['order_id', 'customer_name'],
     tooltip: {
       showTooltip: true,
       operation: {
         hiddenColumns: hiddenColumnsOperator,
       },
     },
-    hiddenColumnFields,
-  } as S2Options;
+  };
 
   const s2Ref = React.useRef<SpreadSheet>(null);
 
   const logData = (...d: unknown[]) => {
-    console.info(...d);
+    console.log(...d);
   };
 
   useEffect(() => {

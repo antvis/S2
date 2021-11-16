@@ -10,6 +10,7 @@ import {
 } from '@antv/s2';
 import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
 import { PartDrillDownDataCache } from '@/components/sheets/interface';
+import { i18n } from '@/common/i18n';
 
 export interface DrillDownParams {
   // 行维度id
@@ -76,8 +77,9 @@ export const handleActionIconClick = (params: ActionIconParams) => {
     const disabled = [];
     // 父节点已经下钻过的维度不应该再下钻
     drillDownDataCache.forEach((val) => {
-      if (meta.id.includes(val.rowId) && meta.id !== val.rowId)
+      if (meta.id.includes(val.rowId) && meta.id !== val.rowId) {
         disabled.push(val.drillField);
+      }
     });
     spreadsheet.emit(S2Event.GLOBAL_ACTION_ICON_CLICK, event);
     callback(spreadsheet, cache, disabled, event);
@@ -107,7 +109,8 @@ export const HandleDrillDownIcon = (
       displayCondition = (meta: Node) => {
         return (
           iconLevel <= meta.level &&
-          spreadsheet.options.hierarchyType === 'tree'
+          spreadsheet.options.hierarchyType === 'tree' &&
+          meta.label !== i18n('总计')
         );
       };
     }

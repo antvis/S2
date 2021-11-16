@@ -39,6 +39,8 @@ export interface InteractionOptions {
   readonly hoverHighlight?: boolean;
   // enable Command + C to copy spread data
   readonly enableCopy?: boolean;
+  // copy with filed format
+  readonly copyWithFormat?: boolean;
   // auto reset sheet style when click outside or press ecs key, default true
   readonly autoResetSheetStyle?: boolean;
   readonly hiddenColumnFields?: string[];
@@ -69,7 +71,7 @@ export interface S2BasicOptions {
   // pagination config
   readonly pagination?: Pagination;
   // freeze row header
-  readonly freezeRowHeader?: boolean;
+  readonly frozenRowHeader?: boolean;
   // show Series Number
   readonly showSeriesNumber?: boolean;
   // scroll reach node border(which field node belongs to) event config
@@ -88,6 +90,8 @@ export interface S2BasicOptions {
   readonly hdAdapter?: boolean;
   // the collection of row id and column id of cells which to be merged
   readonly mergedCellsInfo?: MergedCellInfo[][];
+  // empty cell placeholder
+  readonly placeholder?: string;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell

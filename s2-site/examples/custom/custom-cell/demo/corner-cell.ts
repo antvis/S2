@@ -14,10 +14,10 @@ class CustomCornelCell extends CornerCell {
    */
   renderExtraImg() {
     this.addShape('image', {
-        attrs: {
-            ...this.getCellArea(),
-            img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*2vnsQ58ErqkAAAAAAAAAAAAAARQnAQ',
-        }
+      attrs: {
+        ...this.getCellArea(),
+        img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
+      },
     });
   }
 }
@@ -41,10 +41,10 @@ fetch(
       height: 600,
       cornerCell: (node, s2, headConfig) => {
         return new CustomCornelCell(node, s2, headConfig);
-      }
+      },
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2options);
-    
+
     // 使用
     s2.render();
   });

@@ -87,10 +87,10 @@
     "@antv/util" "~2.0.0"
     gl-matrix "^3.0.0"
 
-"@antv/gatsby-theme-antv@^1.1.12":
-  version "1.1.12"
-  resolved "https://registry.yarnpkg.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.12.tgz#91b7377505c85d0888f63d7eb4a055cd2b7398f3"
-  integrity sha512-6QnicsYBpMEsN2leRIiSbkb66subcARPJzIuElBha3q07RErQomzqj2hWk9E3aMQpyGuZYWc/eh5k6RGqGxa6g==
+"@antv/gatsby-theme-antv@^1.1.13":
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.13.tgz#1acf9055de52ff5ffc8e73bdd02c7920f0284ef8"
+  integrity sha512-SUfmwviW6wsL8dPBZzv8ULs/yyR4bx82XB8/x4fERFk0Ut2On4q54ekwG5OgBban8bsivsPNTTWkp7+x/cRhjQ==
   dependencies:
     "@ant-design/icons" "^4.1.0"
     "@hot-loader/react-dom" "^16.9.0+4.12.11"
@@ -185,10 +185,10 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-0.2.1.tgz#0114d8fbb7ecae82c4ea4f2b49fcdf90c13a95b3"
-  integrity sha512-7KcNGNx7qrogmD5n68h+xvakotJ/UY500ngFZhBfYzZjQpFf0mlahq4Z7Yw/HvexrXWL0m1wmh/pOkRv6nQ89Q==
+"@antv/s2@^1.0.0-beta.9":
+  version "1.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.0.0-beta.9.tgz#aac5d21266ca5f4f2a0b9ae803fc82e50648ce70"
+  integrity sha512-rPF+FkmNmxyZnXChGMYU07dL8xR34IGc79q9rMKi9SI3VXASlo3OciopvPzSf/oLeYtHIFYjoNoUi+wxZrSBHA==
   dependencies:
     "@antv/event-emitter" "~0.1.2"
     "@antv/g-canvas" "^0.5.12"
@@ -197,7 +197,6 @@
     classnames "^2.3.1"
     lodash "^4.17.21"
     react-beautiful-dnd "^13.1.0"
-    react-debounce-render "^7.0.0"
 
 "@antv/util@^2.0.9", "@antv/util@~2.0.0":
   version "2.0.17"
@@ -12446,14 +12445,6 @@ react-beautiful-dnd@^13.1.0:
     react-redux "^7.2.0"
     redux "^4.0.4"
     use-memo-one "^1.1.1"
-
-react-debounce-render@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/react-debounce-render/-/react-debounce-render-7.0.0.tgz#4e36df3a867b298ef64b6ab3b8bffb3d46d3055d"
-  integrity sha512-OaI1RhLxchlV2nKukQgbq2CZG5DQoNkHG1O9vMw8fnY4bLCIdKPDy2EL4aQY9cdeXW/NkYkso7O/5ARbs/XI6w==
-  dependencies:
-    hoist-non-react-statics "^3.3.2"
-    lodash.debounce "^4.0.8"
 
 react-dev-utils@^4.2.3:
   version "4.2.3"

@@ -1,10 +1,7 @@
 @pre: s2-drill-down;
 .@{pre} {
   width: 260px;
-  max-height: 370px;
   min-height: 20px;
-  overflow-y: auto;
-  overflow-x: hidden;
   position: relative;
 
   &-header {
@@ -17,7 +14,7 @@
     button {
       position: absolute;
       right: 0;
-      top: 12px;
+      top: -4px;
       font-size: 12px;
       color: #1890ff;
       letter-spacing: -0.2px;
@@ -26,7 +23,7 @@
   }
 
   &-search {
-    height: 25.4px;
+    height: 24px;
     width: 228px !important;
     margin: 0 16px;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -39,20 +36,24 @@
     }
   }
 
-  &-menu-item {
-    svg {
-      margin-right: 8px;
-    }
-  }
+  &-menu {
+    max-height: 314px;
+    overflow-y: auto;
+    overflow-x: hidden;
 
-  &-item {
-    height: 32px !important;
-    line-height: 32px !important;
-    font-size: 12px;
-    opacity: 0.65;
+    &-item {
+      height: 32px !important;
+      line-height: 32px !important;
+      font-size: 12px;
+      opacity: 0.65;
 
-    span:last-child {
-      line-height: 32px;
+      span:last-child {
+        line-height: 32px;
+      }
+
+      svg {
+        margin-right: 8px;
+      }
     }
   }
 

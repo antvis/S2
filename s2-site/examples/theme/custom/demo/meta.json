@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "自定义主题",
+    "en": "Custom Theme"
+  },
+  "demos": [
+    {
+      "filename": "custom-palette.ts",
+      "title": {
+        "zh": "自定义色板",
+        "en": "Custom palette"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/t3Bh2KPmR2/ae553ac0-b7e1-40c3-a8b7-75e97d3cdd36.png"
+    },
+    {
+      "filename": "custom-schema.ts",
+      "title": {
+        "zh": "自定义 schema",
+        "en": "Custom schema"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/PKNlnsUU2r/8ca0bf18-187f-430b-89ba-113b41614063.png"
+    }
+  ]
+}

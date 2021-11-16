@@ -21,7 +21,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '500',
+        fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -50,9 +50,9 @@ export const getTheme = (
         verticalBorderWidth: 1,
         // -------------- layout -----------------
         padding: {
-          top: 10,
+          top: 0,
           right: 8,
-          bottom: 10,
+          bottom: 0,
           left: 8,
         },
       },
@@ -69,7 +69,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[14],
         linkTextFill: basicColors[14],
         opacity: 1,
@@ -110,12 +110,12 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- selected -------------------
           selected: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- unselected -------------------
           unselected: {
@@ -127,7 +127,7 @@ export const getTheme = (
       },
       icon: {
         fill: basicColors[0],
-        size: 12,
+        size: 10,
         margin: {
           right: 4,
           left: 4,
@@ -139,7 +139,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -178,12 +178,12 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: basicColors[4],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- selected -------------------
           selected: {
             backgroundColor: basicColors[4],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- unselected -------------------
           unselected: {
@@ -209,7 +209,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[13],
         opacity: 1,
         textAlign: 'right',
@@ -249,19 +249,19 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- keep hover -------------------
           hoverFocus: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
             borderColor: basicColors[14],
             borderOpacity: 1,
           },
           // -------------- selected -------------------
           selected: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- unselected -------------------
           unselected: {
@@ -295,9 +295,9 @@ export const getTheme = (
     resizeArea: {
       size: 3,
       background: basicColors[7],
-      guidLineColor: basicColors[7],
-      guidLineDash: 3,
       backgroundOpacity: 0,
+      guideLineColor: basicColors[7],
+      guideLineDash: [3, 3],
       /* ---------- interaction state ----------- */
       interactionState: {
         hover: {
@@ -308,23 +308,23 @@ export const getTheme = (
     },
     // ------------- scrollBar -------------------
     scrollBar: {
-      trackColor: 'rgba(0,0,0,0)',
-      thumbHoverColor: 'rgba(0,0,0,0.4)',
+      trackColor: 'rgba(0,0,0,0.01)',
+      thumbHoverColor: 'rgba(0,0,0,0.25)',
       thumbColor: 'rgba(0,0,0,0.15)',
       size: isMobile() ? 3 : 6,
-      hoverSize: 16,
+      hoverSize: isMobile() ? 4 : 8,
       lineCap: 'round',
     },
     // ------------- split line -----------------
     splitLine: {
       horizontalBorderColor: basicColors[12],
-      horizontalBorderColorOpacity: 1,
+      horizontalBorderColorOpacity: 0.2,
       horizontalBorderWidth: 2,
       verticalBorderColor: basicColors[11],
-      verticalBorderColorOpacity: 1,
+      verticalBorderColorOpacity: 0.25,
       verticalBorderWidth: 2,
-      showRightShadow: true,
-      shadowWidth: 10,
+      showShadow: true,
+      shadowWidth: 8,
       shadowColors: {
         left: 'rgba(0,0,0,0.1)',
         right: 'rgba(0,0,0,0)',
@@ -340,5 +340,5 @@ export const getTheme = (
       color: basicColors[8],
       opacity: 1,
     },
-  } as S2Theme;
+  };
 };

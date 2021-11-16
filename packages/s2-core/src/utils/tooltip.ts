@@ -26,12 +26,9 @@ import * as CSS from 'csstype';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
+import { AutoAdjustPositionOptions, ListItem } from '@/common/interface';
+import { LayoutResult } from '@/common/interface/basic';
 import {
-  AutoAdjustPositionOptions,
-  LayoutResult,
-  ListItem,
-  S2CellType,
-  SpreadSheet,
   SummaryParam,
   TooltipData,
   TooltipDataItem,
@@ -40,7 +37,11 @@ import {
   TooltipOptions,
   TooltipPosition,
   TooltipSummaryOptions,
-} from '@/index';
+  BaseTooltipConfig,
+} from '@/common/interface/tooltip';
+import { TOOLTIP_POSITION_OFFSET } from '@/common/constant/tooltip';
+import { S2CellType } from '@/common/interface/interaction';
+import { SpreadSheet } from '@/sheet-type';
 import { i18n } from '@/common/i18n';
 import {
   CellTypes,
@@ -50,8 +51,8 @@ import {
 } from '@/common/constant';
 import { Tooltip, ViewMeta } from '@/common/interface';
 
-const isNotNumber = (v) => {
-  return Number.isNaN(Number(v));
+const isNotNumber = (value: unknown) => {
+  return Number.isNaN(Number(value));
 };
 
 /**
@@ -116,8 +117,14 @@ export const getAutoAdjustPosition = ({
   tooltipContainer,
   autoAdjustBoundary,
 }: AutoAdjustPositionOptions): TooltipPosition => {
+  let x = position.x + TOOLTIP_POSITION_OFFSET.x;
+  let y = position.y + TOOLTIP_POSITION_OFFSET.y;
+
   if (!autoAdjustBoundary) {
-    return position;
+    return {
+      x,
+      y,
+    };
   }
 
   const isAdjustBodyBoundary = autoAdjustBoundary === 'body';
@@ -138,9 +145,6 @@ export const getAutoAdjustPosition = ({
   const maxHeight = isAdjustBodyBoundary
     ? viewportHeight
     : Math.min(height, maxY) + canvasOffsetTop;
-
-  let x = position.x;
-  let y = position.y;
 
   if (x + tooltipWidth >= maxWidth) {
     x = maxWidth - tooltipWidth;
@@ -176,12 +180,21 @@ export const getMergedQuery = (meta: ViewMeta) => {
  */
 export const setContainerStyle = (
   container: HTMLElement,
-  styles: CSS.Properties,
+  options: { style?: CSS.Properties; className?: string } = {
+    className: '',
+  },
 ) => {
-  if (container && styles) {
-    Object.keys(styles)?.forEach((item) => {
-      container.style[item] = styles[item];
+  if (!container) {
+    return;
+  }
+  const { style, className } = options;
+  if (style) {
+    Object.keys(style).forEach((item) => {
+      container.style[item] = style[item];
     });
+  }
+  if (className) {
+    container.classList.add(className);
   }
 };
 
@@ -450,7 +463,7 @@ export const getTooltipData = (params: TooltipDataParam) => {
   let headInfo = null;
   let details = null;
   const firstCellInfo = cellInfos[0] || {};
-  // TODO：tabular类型数据需要补充兼容
+  // TODO：gridAnalysis类型数据需要补充兼容
   if (!options?.hideSummary) {
     // 计算多项的sum（默认为sum，可自定义）
     summaries = getSummaries({
@@ -523,7 +536,7 @@ export const getTooltipOptionsByCellType = (
   cellTooltip: Tooltip,
   cellType: CellTypes,
 ) => {
-  const getOptionsByCell = (cell) => {
+  const getOptionsByCell = (cell: BaseTooltipConfig) => {
     return { ...cellTooltip, ...cell };
   };
 

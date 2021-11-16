@@ -19,13 +19,14 @@ fetch(
     const s2options = {
       width: 600,
       height: 600,
-      hoverHighlight: false,
+      interaction: {
+        hoverHighlight: false,
+      },
       conditions: {
         background: [
           {
             field: 'price',
-            mapping(fieldValue, data) {
-              console.log(fieldValue, data);
+            mapping() {
               return {
                 // fill 是背景字段下唯一必须的字段，用于指定文本颜色
                 fill: '#7DAAFF',

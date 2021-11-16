@@ -8,7 +8,7 @@ import {
 import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
-import { ColCell, DataCell, RowCell } from '@/cell';
+import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
 import {
   CellTypes,
   InteractionName,
@@ -20,6 +20,7 @@ import {
   CustomInteraction,
   InteractionStateInfo,
   Intercept,
+  MergedCellInfo,
   S2CellType,
 } from '@/common/interface';
 import { ColHeader, RowHeader } from '@/facet/header';
@@ -28,6 +29,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
+import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -39,7 +41,7 @@ export class RootInteraction {
 
   // hover有keep-hover态，是个计时器，hover后800毫秒还在当前cell的情况下，该cell进入keep-hover状态
   // 在任何触发点击，或者点击空白区域时，说明已经不是hover了，因此需要取消这个计时器。
-  public hoverTimer: number = null;
+  private hoverTimer: NodeJS.Timeout = null;
 
   public eventController: EventController;
 
@@ -56,8 +58,17 @@ export class RootInteraction {
 
   public destroy() {
     this.interactions.clear();
+    this.intercepts.clear();
     this.eventController.clear();
+    this.clearHoverTimer();
     this.resetState();
+  }
+
+  public reset() {
+    this.clearState();
+    this.clearHoverTimer();
+    this.intercepts.clear();
+    this.spreadsheet.hideTooltip();
   }
 
   public setState(interactionStateInfo: InteractionStateInfo) {
@@ -204,6 +215,14 @@ export class RootInteraction {
     });
   };
 
+  public mergeCells = (cellsInfo?: MergedCellInfo[], hideData?: boolean) => {
+    mergeCells(this.spreadsheet, cellsInfo, hideData);
+  };
+
+  public unmergeCell = (removedCells: MergedCell) => {
+    unmergeCell(this.spreadsheet, removedCells);
+  };
+
   /**
    * 注册交互（组件按自己的场景写交互，继承此方法注册）
    * @param options
@@ -273,12 +292,6 @@ export class RootInteraction {
     this.draw();
   }
 
-  public reset() {
-    this.clearState();
-    this.intercepts.clear();
-    this.spreadsheet.hideTooltip();
-  }
-
   public changeState(interactionStateInfo: InteractionStateInfo) {
     const { interaction } = this.spreadsheet;
     const { cells, force, stateName } = interactionStateInfo;
@@ -325,5 +338,17 @@ export class RootInteraction {
     interceptTypes.forEach((interceptType) => {
       this.intercepts.delete(interceptType);
     });
+  }
+
+  public clearHoverTimer() {
+    clearTimeout(this.hoverTimer);
+  }
+
+  public setHoverTimer(timer: NodeJS.Timeout) {
+    this.hoverTimer = timer;
+  }
+
+  public getHoverTimer() {
+    return this.hoverTimer;
   }
 }

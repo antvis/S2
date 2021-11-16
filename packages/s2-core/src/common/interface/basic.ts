@@ -6,17 +6,12 @@ import { CustomTreeItem, ResizeInfo } from '@/common/interface';
 import { S2BasicOptions } from '@/common/interface/s2Options';
 import { BaseDataSet } from '@/data-set';
 import { Frame } from '@/facet/header';
-import {
-  CellTypes,
-  FrameConfig,
-  Hierarchy,
-  Node,
-  S2Options,
-  S2TableSheetOptions,
-  SpreadSheet,
-  TextAlign,
-  TextBaseline,
-} from '@/index';
+import { CellTypes } from '@/common/constant';
+import { FrameConfig } from '@/common/interface/frame';
+import { Hierarchy } from '@/facet/layout/hierarchy';
+import { Node } from '@/facet/layout/node';
+import { SpreadSheet } from '@/sheet-type';
+import { S2Options, S2TableSheetOptions } from '@/common/interface/s2Options';
 
 export type Formatter = (v: unknown) => string;
 
@@ -26,6 +21,14 @@ export interface FormatResult {
 }
 
 export type SortMethod = 'ASC' | 'DESC' | 'asc' | 'desc';
+
+/**
+ * 布局类型：
+ * adaptive: 行列等宽，均分整个 canvas 画布宽度
+ * colAdaptive：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度
+ * compact：行列紧凑布局，指标维度少的时候无法布满整个画布
+ */
+export type LayoutWidthType = 'adaptive' | 'colAdaptive' | 'compact';
 
 export interface Meta {
   readonly field: string; // 字段 id
@@ -84,7 +87,7 @@ export interface Total {
   showSubTotals: boolean;
   /** 小计的汇总维度 */
   subTotalsDimensions: string[];
-  /** 布局位置，默认是下或右 */
+  /** 总计布局位置，默认是下或右 */
   reverseLayout: boolean;
   /** 小计布局位置，默认下或者右 */
   reverseSubLayout: boolean;
@@ -135,6 +138,7 @@ export interface FilterParam {
 export type SortParams = SortParam[];
 
 export interface Style {
+  readonly layoutWidthType?: LayoutWidthType;
   // row cell's height in tree mode
   readonly treeRowsWidth?: number;
   // row header in tree mode collapse some nodes
@@ -254,8 +258,6 @@ export interface ColCfg {
   height?: number;
   // specific some col field's width
   widthByFieldValue?: Record<string, number>;
-  // col width's type
-  colWidthType?: 'adaptive' | 'compact';
   // specific some col field's height
   heightByField?: Record<string, number>;
   // hide last column(measure values), only work when has one value
@@ -285,6 +287,14 @@ export interface MergedCellInfo {
   rowIndex?: number;
   showText?: boolean;
 }
+
+/**
+ * mergedCell intermediate state, temporary use
+ */
+export type TempMergedCell = {
+  cells: S2CellType[];
+  viewMeta: ViewMeta;
+};
 
 export type FilterDataItemCallback = (
   valueField: string,
@@ -382,27 +392,6 @@ export interface CellAttrs<T extends Record<string, unknown> = Node>
   appendInfo?: CellAppendInfo<T>;
 }
 
-/**
- * 单元格属性配置
- */
-export interface CellBoxCfg {
-  // 起点坐标 x 值
-  x: number;
-  // 起点坐标 y 值
-  y: number;
-  // 单元格宽度
-  width: number;
-  // 单元格高度
-  height: number;
-  // 对应 g text textAlign 属性 https://g.antv.vision/zh/docs/api/shape/text#textalign
-  // 水平对齐方式, 默认 left
-  textAlign?: TextAlign;
-  // 对应 g text baseline 属性 https://g.antv.vision/zh/docs/api/shape/text#textbaseline
-  // 垂直对齐方式，默认 bottom
-  textBaseline?: TextBaseline;
-  // 单元格 padding 值
-  padding?: Padding;
-}
 export type S2MountContainer = string | HTMLElement;
 
 export type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];

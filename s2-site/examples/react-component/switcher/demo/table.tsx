@@ -10,7 +10,7 @@ fetch(
   .then((res) => res.json())
   .then((data) => {
     const s2options = {
-      width: 800,
+      width: 600,
       height: 600,
     };
 
@@ -69,7 +69,7 @@ fetch(
             sheetType={'table'}
             adaptive={false}
             dataCfg={{ data, fields }}
-            options={{ ...s2options, hiddenColumnFields }}
+            options={{ ...s2options, interaction: { hiddenColumnFields } }}
           />
         </div>
       );

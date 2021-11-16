@@ -3,6 +3,7 @@
  */
 import { Canvas } from '@antv/g-canvas';
 import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { data } from '../../data/mock-dataset.json';
 import { SpreadSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';
 import { TableFacet } from '@/facet/table-facet';
@@ -36,7 +37,7 @@ jest.mock('src/sheet-type', () => {
         isTableMode: jest.fn().mockReturnValue(true),
         isPivotMode: jest.fn(),
         getTotalsConfig: jest.fn(),
-        isColAdaptive: jest.fn().mockRejectedValue('adaptive'),
+        getLayoutWidthType: jest.fn().mockRejectedValue('adaptive'),
         emit: jest.fn(),
         isScrollContainsRowHeader: jest.fn(),
         isHierarchyTreeType: jest.fn(),
@@ -49,12 +50,13 @@ jest.mock('src/data-set/table-data-set', () => {
     TableDataSet: jest.fn().mockImplementation(() => {
       return {
         ...assembleDataCfg(),
-        originData: [],
-        displayData: [],
+        originData: data,
+        displayData: data,
         moreThanOneValue: jest.fn(),
         getFieldName: jest.fn(),
         getDimensionValues: jest.fn(),
-        getDisplayDataSet: jest.fn(() => []),
+        getDisplayDataSet: jest.fn(() => data),
+        getCellData: () => 1,
       };
     }),
   };
@@ -118,5 +120,70 @@ describe('Table Mode Facet Test', () => {
         expect(node.height).toBe(colCfg.height);
       });
     });
+  });
+});
+
+describe('Table Mode Facet With Frozen Test', () => {
+  const ss: SpreadSheet = new MockSpreadSheet();
+  const dataSet: TableDataSet = new MockTableDataSet(ss);
+  const facet: TableFacet = new TableFacet({
+    spreadsheet: ss,
+    dataSet: dataSet,
+    ...assembleDataCfg().fields,
+    ...assembleOptions({
+      frozenTrailingColCount: 2,
+      frozenTrailingRowCount: 2,
+    }),
+    ...DEFAULT_STYLE,
+    columns: ['province', 'city', 'type', 'sub_type', 'price'],
+  });
+
+  test('should get correct col layout with frozen col', () => {
+    const { width } = facet.spreadsheet.options;
+    const { frozenTrailingColCount } = facet.cfg;
+    const { colLeafNodes } = facet.layoutResult;
+
+    let prevWidth = 0;
+    colLeafNodes
+      .slice(-frozenTrailingColCount)
+      .reverse()
+      .forEach((node) => {
+        prevWidth += node.width;
+        expect(node.x).toBe(width - prevWidth);
+      });
+  });
+
+  test('should get correct cell layout with frozenTrailingCol', () => {
+    const { width } = facet.spreadsheet.options;
+    const { frozenTrailingColCount } = facet.cfg;
+    const { colLeafNodes, getCellMeta } = facet.layoutResult;
+
+    let prevWidth = 0;
+    colLeafNodes
+      .slice(-frozenTrailingColCount)
+      .reverse()
+      .forEach((node, index) => {
+        prevWidth += node.width;
+        expect(getCellMeta(1, colLeafNodes.length - 1 - index).x).toBe(
+          width - prevWidth,
+        );
+      });
+  });
+
+  test('should get correct cell layout with frozenTrailingRow', () => {
+    const { frozenTrailingRowCount, cellCfg } = facet.cfg;
+    const { getCellMeta } = facet.layoutResult;
+    const displayData = dataSet.getDisplayDataSet();
+    const panelBBox = facet.panelBBox;
+    let prevHeight = 0;
+    displayData
+      .slice(-frozenTrailingRowCount)
+      .reverse()
+      .forEach((_, idx) => {
+        prevHeight += cellCfg.height;
+        expect(getCellMeta(displayData.length - 1 - idx, 1).y).toBe(
+          panelBBox.maxY - prevHeight,
+        );
+      });
   });
 });

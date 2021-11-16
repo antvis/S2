@@ -36,10 +36,14 @@ export interface InteractionStateTheme {
   backgroundOpacity?: number;
   /* 背景填充色 */
   backgroundColor?: string;
+  /* 文本透明度 */
+  textOpacity?: number;
   /* 边线颜色 */
   borderColor?: string;
   /* 边线宽度 */
   borderWidth?: number;
+  /* 边线透明度 */
+  borderOpacity?: number;
   /* 透明度 */
   opacity?: number;
 }
@@ -118,9 +122,9 @@ export interface ResizeArea {
   /* 热区背景色 */
   background?: string;
   /* 参考线颜色 */
-  guidLineColor?: string;
+  guideLineColor?: string;
   /* 参考线间隔 */
-  guidLineDash?: number;
+  guideLineDash?: number[];
   /* 热区背景色透明度 */
   backgroundOpacity?: number;
   /* 交互态 */
@@ -155,8 +159,8 @@ export interface SplitLine {
   verticalBorderColorOpacity?: number;
   /* 垂直分割线宽度 */
   verticalBorderWidth?: number;
-  /* 分割线是否显示右侧外阴影 */
-  showRightShadow?: boolean;
+  /* 分割线是否显示外阴影 */
+  showShadow?: boolean;
   /* 阴影宽度 */
   shadowWidth?: number;
   /* 阴影线性渐变色 */
@@ -167,7 +171,7 @@ export interface SplitLine {
     right: string;
   };
 }
-export interface DefaultCellTheme {
+export interface DefaultCellTheme extends GridAnalysisCellTheme {
   /* 粗体文本样式 */
   bolderText?: TextTheme;
   /* 文本样式 */
@@ -180,7 +184,19 @@ export interface DefaultCellTheme {
   seriesNumberWidth?: number;
 }
 
-type CellThemes = {
+export interface GridAnalysisCellTheme {
+  // 次级文本，如副指标
+  minorText?: TextTheme;
+  // 衍生指标
+  derivedMeasureText?: {
+    mainUp: string;
+    mainDown: string;
+    minorUp: string;
+    minorDown: string;
+  };
+}
+
+export type CellThemes = {
   [K in CellTypes]?: DefaultCellTheme;
 };
 
@@ -195,11 +211,9 @@ export interface S2Theme extends CellThemes {
   prepareSelectMask?: InteractionStateTheme;
   /* 画布背景底色 */
   background?: Background;
-  /* 额外属性字段 */
-  [key: string]: any;
 }
 
-export type ThemeName = 'default' | 'simple' | 'colorful';
+export type ThemeName = 'default' | 'colorful' | 'gray';
 
 export interface ThemeCfg {
   /* 主题 */

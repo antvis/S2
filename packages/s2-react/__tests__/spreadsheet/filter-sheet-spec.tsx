@@ -74,9 +74,6 @@ function MainLayout() {
     showSeriesNumber: true,
     enableCopy: true,
     style: {
-      colCfg: {
-        colWidthType: 'compact',
-      },
       cellCfg: {
         height: 32,
       },

@@ -60,7 +60,10 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     meta: ViewMeta,
   ) {
     const { interaction } = this.spreadsheet;
-    interaction.hoverTimer = window.setTimeout(() => {
+
+    interaction.clearHoverTimer();
+
+    const hoverTimer = setTimeout(() => {
       interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER_FOCUS,
@@ -75,6 +78,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       const data = this.getCellInfo(meta, showSingleTips);
       this.spreadsheet.showTooltipWithInfo(event, data, options);
     }, HOVER_FOCUS_TIME);
+
+    interaction.setHoverTimer(hoverTimer);
   }
 
   /**
@@ -88,6 +93,8 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     }
     const { interaction } = this.spreadsheet;
     const activeCells = interaction.getActiveCells();
+    interaction.clearHoverTimer();
+
     // 避免在统一单元格内鼠标移动造成的多次渲染
     if (isEqual(activeCells?.[0], cell)) {
       return;
@@ -98,15 +105,18 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       stateName: InteractionStateName.HOVER,
     });
     cell.update();
-    const showSingleTips = true;
-    const options: TooltipOptions = {
-      isTotals: meta.isTotals,
-      enterable: true,
-      hideSummary: true,
-      showSingleTips,
-    };
-    const data = this.getCellInfo(meta, showSingleTips);
-    this.spreadsheet.showTooltipWithInfo(event, data, options);
+
+    if (cell.getActualText() !== meta.value) {
+      const showSingleTips = true;
+      const options: TooltipOptions = {
+        isTotals: meta.isTotals,
+        enterable: true,
+        hideSummary: true,
+        showSingleTips,
+      };
+      const data = this.getCellInfo(meta, showSingleTips);
+      this.spreadsheet.showTooltipWithInfo(event, data, options);
+    }
   }
 
   private getCellInfo(
@@ -154,9 +164,6 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
       if (this.spreadsheet.options.interaction.hoverHighlight) {
         // highlight all the row and column cells which the cell belongs to
         this.updateRowColCells(meta);
-        if (interaction.hoverTimer) {
-          window.clearTimeout(interaction.hoverTimer);
-        }
         this.changeStateToHoverFocus(cell, event, meta);
       }
     });

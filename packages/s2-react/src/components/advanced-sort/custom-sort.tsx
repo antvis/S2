@@ -1,7 +1,9 @@
 import React from 'react';
 import { Card } from 'antd';
-import { DEFAULT_ICON_PROPS, ADVANCED_PRE_CLS } from '@antv/s2';
+import { TOOLTIP_DEFAULT_ICON_PROPS } from '@/components/tooltip/interface';
 import { HtmlIcon } from '@/common/icons';
+
+export const ADVANCED_PRE_CLS = 'antv-s2-advanced-sort';
 
 export interface CustomSortProps {
   splitOrders: string[];
@@ -43,7 +45,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
             upHandler(value);
           }}
         >
-          <HtmlIcon name="groupAsc" {...DEFAULT_ICON_PROPS} />
+          <HtmlIcon name="groupAsc" {...TOOLTIP_DEFAULT_ICON_PROPS} />
         </span>
         <span
           className={`${ADVANCED_PRE_CLS}-split-icon`}
@@ -51,7 +53,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
             downHandler(value);
           }}
         >
-          <HtmlIcon name="groupDesc" {...DEFAULT_ICON_PROPS} />
+          <HtmlIcon name="groupDesc" {...TOOLTIP_DEFAULT_ICON_PROPS} />
         </span>
         <span
           className={`${ADVANCED_PRE_CLS}-split-icon`}
@@ -59,7 +61,7 @@ export const CustomSort: React.FC<CustomSortProps> = (props) => {
             toTopHandler(value);
           }}
         >
-          <HtmlIcon name="globalAsc" {...DEFAULT_ICON_PROPS} />
+          <HtmlIcon name="globalAsc" {...TOOLTIP_DEFAULT_ICON_PROPS} />
         </span>
       </>
     );

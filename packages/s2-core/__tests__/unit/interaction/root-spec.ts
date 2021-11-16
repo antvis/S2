@@ -1,5 +1,6 @@
 import { Canvas, Group } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
+import { sleep } from 'tests/util/helpers';
 import { RootInteraction } from '@/interaction/root';
 import {
   CellTypes,
@@ -9,12 +10,19 @@ import {
   DataCell,
   S2Options,
   SpreadSheet,
+  MergedCell,
 } from '@/index';
 import { Store } from '@/common/store';
+import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
-
+jest.mock('@/utils/interaction/merge-cells', () => {
+  return {
+    mergeCells: jest.fn(),
+    unmergeCell: jest.fn(),
+  };
+});
 const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 
 describe('RootInteraction Tests', () => {
@@ -22,7 +30,7 @@ describe('RootInteraction Tests', () => {
   let mockSpreadSheetInstance: SpreadSheet;
   let panelGroupAllDataCells: DataCell[];
 
-  let mockCell;
+  let mockCell: DataCell;
 
   const getMockCell = (id: number) =>
     ({
@@ -53,6 +61,7 @@ describe('RootInteraction Tests', () => {
         selectedCellsSpotlight: false,
       },
     } as S2Options;
+    mockSpreadSheetInstance.hideTooltip = jest.fn();
     mockSpreadSheetInstance.container = {
       draw: jest.fn(),
     } as unknown as Canvas;
@@ -89,6 +98,17 @@ describe('RootInteraction Tests', () => {
     });
   });
 
+  test('should call merge cells', () => {
+    rootInteraction.mergeCells();
+    expect(mergeCells).toBeCalled();
+  });
+
+  test('should call cancel mergedCell', () => {
+    let mergedCell: MergedCell;
+    rootInteraction.unmergeCell(mergedCell);
+    expect(unmergeCell).toBeCalled();
+  });
+
   test('should get default interacted cells', () => {
     expect(rootInteraction.getInteractedCells()).toEqual([]);
   });
@@ -98,6 +118,71 @@ describe('RootInteraction Tests', () => {
     expect(rootInteraction.getInteractedCells()).toEqual([mockCell]);
     rootInteraction.setInteractedCells(mockCell);
     expect(rootInteraction.getInteractedCells()).toEqual([mockCell, mockCell]);
+  });
+
+  test('should reset interaction', async () => {
+    let flag = false;
+    const hoverTimer = setTimeout(() => {
+      flag = true;
+    }, 100);
+
+    rootInteraction.setState({
+      cells: [getCellMeta(mockCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    rootInteraction.setInteractedCells(mockCell);
+    rootInteraction.addIntercepts([InterceptType.CLICK]);
+    rootInteraction.setHoverTimer(hoverTimer);
+
+    rootInteraction.reset();
+
+    await sleep(200);
+
+    // reset intercept
+    expect(rootInteraction.intercepts.size).toEqual(0);
+    // clear hover focus timer
+    expect(flag).toBeFalsy();
+    // reset state
+    expect(rootInteraction.getState()).toEqual({
+      cells: [],
+      force: false,
+    });
+    // hide tooltip
+    expect(mockSpreadSheetInstance.hideTooltip).toHaveBeenCalled();
+  });
+
+  test('should destroy interaction', async () => {
+    let flag = false;
+    const hoverTimer = setTimeout(() => {
+      flag = true;
+    }, 100);
+
+    rootInteraction.setState({
+      cells: [getCellMeta(mockCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    rootInteraction.setInteractedCells(mockCell);
+    rootInteraction.addIntercepts([InterceptType.CLICK]);
+    rootInteraction.setHoverTimer(hoverTimer);
+
+    rootInteraction.destroy();
+
+    await sleep(200);
+
+    // reset intercept
+    expect(rootInteraction.intercepts.size).toEqual(0);
+    // clear registered interactions
+    expect(rootInteraction.interactions.size).toEqual(0);
+    // clear hover focus timer
+    expect(flag).toBeFalsy();
+    // reset state
+    expect(rootInteraction.getState()).toEqual({
+      cells: [],
+      force: false,
+    });
+    // clear events
+    expect(rootInteraction.eventController.canvasEventHandlers).toBeFalsy();
+    expect(rootInteraction.eventController.domEventListeners).toBeFalsy();
   });
 
   describe('RootInteraction Change State', () => {
@@ -247,6 +332,30 @@ describe('RootInteraction Tests', () => {
       rootInteraction.removeIntercepts([InterceptType.CLICK]);
       expect(rootInteraction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
       expect(rootInteraction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
+    });
+  });
+
+  describe('RootInteraction Hover Timer Tests', () => {
+    test('should save hover timer', () => {
+      const timer = setTimeout(() => jest.fn(), 200);
+
+      rootInteraction.setHoverTimer(timer);
+
+      expect(rootInteraction.getHoverTimer()).toEqual(timer);
+    });
+
+    test('should clear hover timer', async () => {
+      let flag = false;
+      const timer = setTimeout(() => {
+        flag = true;
+      }, 200);
+
+      rootInteraction.setHoverTimer(timer);
+      rootInteraction.clearHoverTimer();
+
+      await sleep(300);
+
+      expect(flag).toBeFalsy();
     });
   });
 });

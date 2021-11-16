@@ -10,7 +10,7 @@ import {
   forEach,
 } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
-import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
+import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
 import {
   HeaderActionIcon,
@@ -36,10 +36,12 @@ export abstract class HeaderCell extends BaseCell<Node> {
     const { value, query } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams;
     const isValueCell = this.isValueCell(); // 是否是数值节点
-    const sortParam: SortParam = find(sortParams.reverse(), (item) =>
-      isValueCell
-        ? item?.sortByMeasure === value && isEqual(get(item, 'query'), query)
-        : isEqual(get(item, 'query'), query),
+    const sortParam: SortParam = find(
+      sortParams.reverse(),
+      (item) =>
+        isValueCell &&
+        item?.sortByMeasure === value &&
+        isEqual(get(item, 'query'), query),
     );
 
     const type = getSortTypeIcon(sortParam, isValueCell);
@@ -86,6 +88,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       const query = this.meta.query;
       // sortParam的query，和type本身可能会 undefined
       return (
+        query &&
         isEqual(get(sortParam, 'query'), query) &&
         get(sortParam, 'type') &&
         get(sortParam, 'type') !== 'none'
@@ -201,7 +204,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
       this.updateByState(InteractionStateName.HOVER);
       if (this.defaultHideActionIcons()) {
         // hover 只会有一个 cell
-        this.toggleActionIcon(cells?.[0].id, cells?.[0].type);
+        this.toggleActionIcon(cells?.[0].id);
       }
     }
   }
@@ -216,24 +219,16 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
-  public toggleActionIcon(id: string, type: CellTypes) {
-    let allCells = [];
-    if (type === CellTypes.ROW_CELL) {
-      allCells = this.spreadsheet.interaction.getAllRowHeaderCells();
-    } else if (type === CellTypes.COL_CELL) {
-      allCells = this.spreadsheet.interaction.getAllColHeaderCells();
+  public toggleActionIcon(id: string) {
+    if (this.getMeta().id === id) {
+      const visibleActionIcons: GuiIcon[] = [];
+      // 理论上每次只会显示一个 header cell 的所有 actionIcon（大部分情况下只会有一个）
+      forEach(this.actionIcons, (icon) => {
+        icon.set('visible', true);
+        visibleActionIcons.push(icon);
+      });
+      this.spreadsheet.store.set('visibleActionIcons', visibleActionIcons);
     }
-    forEach(allCells, (cell) => {
-      if (cell.getMeta().id === id) {
-        forEach(cell.actionIcons, (icon) => {
-          icon.set('visible', true);
-        });
-      } else {
-        forEach(cell.actionIcons, (icon) => {
-          icon.set('visible', false);
-        });
-      }
-    });
   }
 
   public update() {

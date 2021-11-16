@@ -4,11 +4,11 @@ import { get } from 'lodash';
 import '@antv/s2/dist/s2.min.css';
 
 // 自定义角头单元格，实现特有功能
-class CustomCornerHeader<Group> extends Group {
-  protected node: Group;
-  protected backgroundShape: IShape;
-  protected textShape: IShape;
-  public constructor(node: Group) {
+class CustomCornerHeader extends Group {
+  protected node;
+  protected backgroundShape;
+  protected textShape;
+  public constructor(node) {
     super({});
     this.node = node;
     this.initCornerHeader();
@@ -20,13 +20,13 @@ class CustomCornerHeader<Group> extends Group {
 
   initBg() {
     this.backgroundShape = this.addShape('image', {
-        attrs: {
-            x: 0,
-            y: 0,
-            width: get(this.node, 'headerConfig.width'),
-            height: get(this.node, 'headerConfig.height'),
-            img: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*2vnsQ58ErqkAAAAAAAAAAAAAARQnAQ',
-        }
+      attrs: {
+        x: 0,
+        y: 0,
+        width: get(this.node, 'headerConfig.width'),
+        height: get(this.node, 'headerConfig.height'),
+        img: 'https://gw.alipayobjects.com/zos/antfincdn/og1XQOMyyj/1e3a8de1-3b42-405d-9f82-f92cb1c10413.png',
+      },
     });
     this.node.add(this.backgroundShape);
   }
@@ -42,7 +42,7 @@ class CustomCornerHeader<Group> extends Group {
         fontSize: 20,
         fill: 'black',
         stroke: 'black',
-      }
+      },
     });
     this.node.add(this.textShape);
   }
@@ -67,10 +67,10 @@ fetch(
       height: 600,
       cornerHeader: (node, s2, headConfig) => {
         return new CustomCornerHeader(node);
-      }
+      },
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2options);
-    
+
     // 使用
     s2.render();
   });

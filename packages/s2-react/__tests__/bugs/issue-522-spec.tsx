@@ -38,7 +38,7 @@ function MainLayout() {
   return (
     <div>
       <SheetComponent
-        getSpreadsheet={(s2) => {
+        getSpreadSheet={(s2) => {
           sheetInstance = s2;
         }}
         dataCfg={dataCfg}

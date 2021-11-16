@@ -49,11 +49,16 @@ export class EventController {
     return this.spreadsheet.container;
   }
 
+  public get isAutoResetSheetStyle() {
+    return this.spreadsheet.options.interaction.autoResetSheetStyle;
+  }
+
   public bindEvents() {
     this.clearAllEvents();
 
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
     this.addCanvasEvent(OriginEventType.MOUSE_MOVE, this.onCanvasMousemove);
+    this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
     this.addCanvasEvent(OriginEventType.MOUSE_UP, this.onCanvasMouseup);
     this.addCanvasEvent(OriginEventType.DOUBLE_CLICK, this.onCanvasDoubleClick);
     this.addCanvasEvent(OriginEventType.CONTEXT_MENU, this.onCanvasContextMenu);
@@ -116,8 +121,7 @@ export class EventController {
   }
 
   private resetSheetStyle(event: Event) {
-    const { autoResetSheetStyle } = this.spreadsheet.options.interaction;
-    if (!autoResetSheetStyle) {
+    if (!this.isAutoResetSheetStyle) {
       return;
     }
 
@@ -173,7 +177,7 @@ export class EventController {
     }
 
     const { x, y, width, height } =
-      this.spreadsheet.tooltip?.container?.getBoundingClientRect() || {};
+      this.spreadsheet.tooltip?.container?.getBoundingClientRect?.() || {};
 
     if (event instanceof MouseEvent) {
       return (
@@ -216,10 +220,9 @@ export class EventController {
 
   private onCanvasMousedown = (event: CanvasEvent) => {
     this.target = event.target;
-    // 任何点击都该取消hover的后续keep态
-    if (this.spreadsheet.interaction.hoverTimer) {
-      clearTimeout(this.spreadsheet.interaction.hoverTimer);
-    }
+    // 点击时清除 hover focus 状态
+    this.spreadsheet.interaction.clearHoverTimer();
+
     if (this.isResizeArea(event)) {
       this.spreadsheet.emit(S2Event.LAYOUT_RESIZE_MOUSE_DOWN, event);
       return;
@@ -407,6 +410,20 @@ export class EventController {
             break;
         }
       }
+    }
+  };
+
+  private onCanvasMouseout = () => {
+    if (!this.isAutoResetSheetStyle) {
+      return;
+    }
+    const { interaction } = this.spreadsheet;
+    // 两种情况不能重置 1. 选中单元格 2. 有交互功能的tooltip打开时
+    if (
+      !interaction.isSelectedState() &&
+      !interaction.hasIntercepts([InterceptType.HOVER])
+    ) {
+      interaction.reset();
     }
   };
 

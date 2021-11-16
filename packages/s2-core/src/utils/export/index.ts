@@ -11,7 +11,7 @@ import {
 } from 'lodash';
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
-import { ViewMeta } from '@/index';
+import { ViewMeta } from '@/common/interface';
 import {
   ID_SEPARATOR,
   EMPTY_PLACEHOLDER,
@@ -59,7 +59,6 @@ export const download = (str: string, fileName: string) => {
  * use the '$' to divide different lines
  */
 const processObjectValue = (data: MultiData) => {
-  // TODO 如何去业务化
   const tempCell = data?.label ? [data?.label] : [];
   const values = data?.values;
   if (!isEmpty(values)) {
@@ -128,9 +127,7 @@ const processValueInRow = (
   isFormat?: boolean,
 ): string => {
   const tempCell = [];
-  // TODO: 处理derivedValues
-  const derivedValues = [];
-  const derivedValue = head(derivedValues);
+
   if (viewMeta) {
     const { data, fieldValue, valueField } = viewMeta;
     // The main measure.
@@ -140,29 +137,9 @@ const processValueInRow = (
       const mainFormatter = sheetInstance.dataSet.getFieldFormatter(valueField);
       tempCell.push(mainFormatter(fieldValue));
     }
-
-    const currentDV = { derivedValueField: [] };
-    if (currentDV && !isEmpty(currentDV.derivedValueField)) {
-      // When the derivedValue under the dimensions.
-      for (const dv of currentDV.derivedValueField) {
-        const derivedData = get(data, [0, dv]);
-        if (!isFormat) {
-          tempCell.push(derivedData);
-        } else {
-          const formatter = sheetInstance.dataSet.getFieldFormatter(dv);
-          tempCell.push(formatter(derivedData));
-        }
-      }
-    }
   } else {
     // If the meta equals null then it will be replaced by '-'.
     tempCell.push(EMPTY_PLACEHOLDER);
-    if (!isEmpty(derivedValue?.derivedValueField)) {
-      // When the derivedValue under the dimensions.
-      for (const dv of derivedValue.derivedValueField) {
-        tempCell.push(dv);
-      }
-    }
   }
   return tempCell.join('    ');
 };
@@ -187,7 +164,11 @@ export const copyData = (
     sheetInstance.dataSet.getFieldName(item.key),
   );
 
-  const rowLength = rowsHeader.length;
+  // get max query property length
+  const rowLength = rowLeafNodes.reduce((pre, cur) => {
+    const length = cur.query ? Object.keys(cur.query).length : 0;
+    return length > pre ? length : pre;
+  }, 0);
 
   let headers: string[][] = [];
 
@@ -215,6 +196,12 @@ export const copyData = (
     for (let i = colLevel - 1; i >= 0; i -= 1) {
       // The map of data set: key-name
       const colHeaderItem = tempColHeader
+        // total col completion
+        .map((item) =>
+          item.length < colLevel
+            ? [...new Array(colLevel - item.length), ...item]
+            : item,
+        )
         .map((item) => item[i])
         .map((colItem) => sheetInstance.dataSet.getFieldName(colItem));
       colHeader.push(colHeaderItem);
@@ -222,8 +209,10 @@ export const copyData = (
 
     // Generate the table header.
     headers = colHeader.map((item, index) => {
-      return index < colHeader.length - 1
-        ? Array(rowLength).concat(...item)
+      return index < colHeader.length
+        ? Array(rowLength)
+            .fill('')
+            .concat(...item)
         : rowsHeader.concat(...item);
     });
   }
@@ -236,6 +225,7 @@ export const copyData = (
 
   // Generate the table body.
   let detailRows = [];
+  let colLevel = 0;
 
   if (!sheetInstance.isPivotMode()) {
     detailRows = processValueInDetail(sheetInstance, split, isFormat);
@@ -247,6 +237,12 @@ export const copyData = (
       rowNode.label = trim(rowNode?.label);
       const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
       const tempLine = id.split(ID_SEPARATOR);
+      if (tempLine.length < colLevel) {
+        // total row completion
+        tempLine.push(...new Array(colLevel - tempLine.length));
+      } else {
+        colLevel = tempLine.length;
+      }
       const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));
       tempLine[tempLine.length - 1] = lastLabel;
       const { rows: tempRows } = sheetInstance?.dataCfg?.fields;

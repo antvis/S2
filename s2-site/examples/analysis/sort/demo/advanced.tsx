@@ -3,10 +3,23 @@ import ReactDOM from 'react-dom';
 import { SheetComponent, SortParams } from '@antv/s2';
 import insertCss from 'insert-css';
 import '@antv/s2/dist/s2.min.css';
+import 'antd/dist/antd.css';
 
-fetch('./data/basic.json')
+fetch(
+  'https://gw.alipayobjects.com/os/bmw-prod/6531b95e-a955-4735-91d6-e63fc32b3f34.json',
+)
   .then((res) => res.json())
   .then((data) => {
+    const sortParams = [
+      { sortFieldId: 'province', sortMethod: 'DESC' },
+      { sortFieldId: 'type', sortBy: ['纸张', '笔'] },
+      {
+        sortFieldId: 'city',
+        sortByMeasure: 'price',
+        sortMethod: 'DESC',
+      },
+    ];
+
     const s2DataConfig = {
       fields: {
         rows: ['province', 'city'],
@@ -14,10 +27,11 @@ fetch('./data/basic.json')
         values: ['price'],
       },
       data,
+      sortParams
     };
 
     const s2options = {
-      width: 800,
+      width: 600,
       height: 600,
     };
 
@@ -34,15 +48,7 @@ fetch('./data/basic.json')
             header={{
               advancedSortCfg: {
                 open: true,
-                sortParams: [
-                  { sortFieldId: 'province', sortMethod: 'DESC' },
-                  { sortFieldId: 'type', sortBy: ['纸张', '笔'] },
-                  {
-                    sortFieldId: 'city',
-                    sortByMeasure: 'price',
-                    sortMethod: 'DESC',
-                  },
-                ],
+                sortParams,
                 onSortConfirm: (ruleValues, sortParams: SortParams) => {
                   setDataCfg({ ...dataCfg, sortParams });
                 },

@@ -2,12 +2,21 @@ import { filter, isUndefined, keys, get, reduce, every } from 'lodash';
 import { Data } from '@/common/interface/s2DataConfig';
 import { Fields } from '@/common/interface/index';
 
-/**
- * get intersections between two arrs
- *
- */
-export const getIntersections = (arr1: string[], arr2: string[]) => {
-  return arr1.filter((item) => arr2.includes(item));
+export const getListBySorted = (list: string[], sorted: string[]) => {
+  return list.sort((a, b) => {
+    const ia = sorted.indexOf(a);
+    const ib = sorted.indexOf(b);
+    if (ia === -1 && ib === -1) {
+      return 0;
+    }
+    if (ia === -1) {
+      return 1;
+    }
+    if (ib === -1) {
+      return -1;
+    }
+    return ia - ib;
+  });
 };
 
 export const filterUndefined = (values: string[]) => {

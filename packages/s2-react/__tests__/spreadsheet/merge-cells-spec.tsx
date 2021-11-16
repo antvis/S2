@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Switch, Button } from 'antd';
-import { forEach } from 'lodash';
 import { act } from 'react-dom/test-utils';
 import {
   S2DataConfig,
@@ -9,10 +8,14 @@ import {
   PivotSheet,
   DEFAULT_STYLE,
   mergeCells,
+  MergedCell,
 } from '@antv/s2';
-import { mockTabularDataCfg, mockTabularOptions } from '../data/tabular-data';
-import { getContainer } from '../util/helpers';
+import {
+  mockGridAnalysisDataCfg,
+  mockGridAnalysisOptions,
+} from '../data/grid-analysis-data';
 import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
+import { getContainer } from '../util/helpers';
 import { SheetComponent, SheetType } from '@/components/index';
 import 'antd/dist/antd.min.css';
 
@@ -48,11 +51,11 @@ const baseDataCfg: S2DataConfig = {
 const baseOptions = {
   debug: false,
   width: 600,
-  height: 480,
+  height: 400,
   hierarchyType: 'grid',
   hierarchyCollapse: false,
   showSeriesNumber: true,
-  freezeRowHeader: false,
+  frozenRowHeader: false,
   valueInCols: true,
   conditions: {
     text: [],
@@ -73,20 +76,21 @@ const baseOptions = {
   ],
 } as S2Options;
 
-const tabularOptions = {
-  ...mockTabularOptions,
+const gridAnalysisOptions = {
+  ...mockGridAnalysisOptions,
   mergedCellsInfo: [
     [
       { colIndex: 0, rowIndex: 0 },
-      { colIndex: 0, rowIndex: 1, showText: true },
+      { colIndex: 0, rowIndex: 1 },
+      { colIndex: 1, rowIndex: 0, showText: true },
     ],
   ],
 } as S2Options;
 
 const getDataCfg = (sheetType: SheetType) => {
   switch (sheetType) {
-    case 'tabular':
-      return mockTabularDataCfg;
+    case 'gridAnalysis':
+      return mockGridAnalysisDataCfg;
     case 'pivot':
     default:
       return baseDataCfg;
@@ -95,8 +99,8 @@ const getDataCfg = (sheetType: SheetType) => {
 
 const getOptions = (sheetType: SheetType) => {
   switch (sheetType) {
-    case 'tabular':
-      return tabularOptions;
+    case 'gridAnalysis':
+      return gridAnalysisOptions;
     case 'pivot':
     default:
       return baseOptions;
@@ -109,33 +113,34 @@ function MainLayout() {
   const [dataCfg, setDataCfg] = React.useState<S2DataConfig>(
     getDataCfg('pivot'),
   );
-
   let sheet;
-  let mergedCellsInfo = [];
 
   const dataCellTooltip = (
     <Button
       key={'button'}
       onClick={() => {
-        mergeCells(sheet, mergedCellsInfo);
+        sheet.interaction.mergeCells();
       }}
     >
       合并单元格
     </Button>
   );
 
-  const mergedCellsTooltip = <div>合并后的tooltip</div>;
+  const mergedCellsTooltip = (mergedCell: MergedCell) => (
+    <div>
+      合并后的tooltip
+      <Button
+        onClick={() => {
+          sheet.interaction.unmergeCell(mergedCell);
+        }}
+      >
+        取消合并单元格
+      </Button>
+    </div>
+  );
 
   const onDataCellMouseUp = (value) => {
     sheet = value?.viewMeta?.spreadsheet;
-    const cells = sheet.interaction.getActiveCells();
-    mergedCellsInfo = [];
-    forEach(cells, (cell) => {
-      mergedCellsInfo.push({
-        colIndex: cell?.meta?.colIndex,
-        rowIndex: cell?.meta?.rowIndex,
-      });
-    });
     sheet.tooltip.show({
       position: { x: value.event.clientX, y: value.event.clientY },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -150,12 +155,12 @@ function MainLayout() {
       position: { x: value.event.clientX, y: value.event.clientY },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      element: mergedCellsTooltip,
+      element: mergedCellsTooltip(value.target),
     });
   };
 
   const onCheckChanged = (checked) => {
-    const type = checked ? 'pivot' : 'tabular';
+    const type = checked ? 'pivot' : 'gridAnalysis';
     setSheetType(type);
     setDataCfg(getDataCfg(type));
     setOptions(getOptions(type));
@@ -166,7 +171,7 @@ function MainLayout() {
       <div style={{ display: 'inline-block' }}>
         <Switch
           checkedChildren="base"
-          unCheckedChildren="tabular"
+          unCheckedChildren="gridAnalysis"
           defaultChecked={true}
           onChange={onCheckChanged}
           style={{ marginRight: 10 }}

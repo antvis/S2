@@ -80,7 +80,7 @@ describe('merge test', () => {
       interaction: {
         linkFields: [],
         hiddenColumnFields: [],
-        selectedCellsSpotlight: true,
+        selectedCellsSpotlight: false,
         hoverHighlight: true,
         scrollSpeedRatio: {
           horizontal: 1,
@@ -88,7 +88,7 @@ describe('merge test', () => {
         },
         autoResetSheetStyle: true,
       },
-      freezeRowHeader: true,
+      frozenRowHeader: true,
       showSeriesNumber: false,
       scrollReachNodeField: {},
       customSVGIcons: [],

@@ -2,19 +2,27 @@ import { useEffect, useState } from 'react';
 import { debounce, isEmpty, merge } from 'lodash';
 import { SpreadSheet, S2Options, getSafetyOptions } from '@antv/s2';
 
-export const useResizeEffect = (
-  container: HTMLDivElement,
-  s2: SpreadSheet,
-  adaptive: boolean,
-  options: S2Options,
-) => {
+export interface UseResizeEffectParams {
+  container: HTMLDivElement;
+  spreadsheet: SpreadSheet;
+  adaptive: boolean;
+  options: S2Options;
+}
+
+export const useResizeEffect = (params: UseResizeEffectParams) => {
+  const {
+    container,
+    spreadsheet: s2,
+    adaptive,
+    options = {} as S2Options,
+  } = params;
   const [resizeTimeStamp, setResizeTimeStamp] = useState<number | null>(null);
   const debounceResize = debounce((e: Event) => {
     setResizeTimeStamp(e.timeStamp);
   }, 200);
 
   useEffect(() => {
-    if (!container || !s2 || !adaptive) {
+    if (!container || !adaptive) {
       return;
     }
 
@@ -27,12 +35,14 @@ export const useResizeEffect = (
 
     s2.changeSize(box?.width, box?.height);
     s2.render(false);
-  }, [resizeTimeStamp, container, s2, adaptive]);
+  }, [resizeTimeStamp, container, adaptive]);
 
   useEffect(() => {
-    s2?.changeSize(options.width, options.height);
-    s2?.render(false);
-  }, [s2, options.width, options.height]);
+    if (!adaptive) {
+      s2?.changeSize(options.width, options.height);
+      s2?.render(false);
+    }
+  }, [options.width, options.height, adaptive]);
 
   useEffect(() => {
     if (adaptive) {

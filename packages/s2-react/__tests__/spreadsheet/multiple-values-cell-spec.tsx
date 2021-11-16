@@ -85,7 +85,7 @@ const getOptions = (): S2Options => {
     hierarchyType: 'tree',
     hierarchyCollapse: false,
     showSeriesNumber: true,
-    freezeRowHeader: false,
+    frozenRowHeader: false,
     conditions: {
       text: [],
       interval: [
@@ -134,7 +134,6 @@ const getOptions = (): S2Options => {
       colCfg: {
         widthByFieldValue: {},
         heightByField: {},
-        colWidthType: 'compact',
       },
       cellCfg: {
         height: 32,

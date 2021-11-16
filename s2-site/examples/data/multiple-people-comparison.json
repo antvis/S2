@@ -1,0 +1,652 @@
+{
+  "data": [
+    {
+      "type": "有信用卡",
+      "job": "白领",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 99.56,
+      "people-group-b": 96,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "有信用卡",
+      "job": "白领",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 82.5,
+      "people-group-b": 59.56,
+      "people-group-delta": 86.32
+    },
+    {
+      "type": "有信用卡",
+      "job": "白领",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 99.26,
+      "people-group-b": 99.56,
+      "people-group-delta": 16.32
+    },
+    {
+      "type": "有信用卡",
+      "job": "白领",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 49.5,
+      "people-group-b": 59.6,
+      "people-group-delta": 16.32
+    },
+    {
+      "type": "有信用卡",
+      "job": "白领",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 29.5,
+      "people-group-b": 49.5,
+      "people-group-delta": 26.3
+    },
+    {
+      "type": "有信用卡",
+      "job": "白领",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 40.5,
+      "people-group-b": 55.5,
+      "people-group-delta": 36.32
+    },
+    {
+      "type": "有信用卡",
+      "job": "蓝领",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 46.32
+    },
+    {
+      "type": "有信用卡",
+      "job": "蓝领",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 76,
+      "people-group-b": 69.6,
+      "people-group-delta": 66
+    },
+    {
+      "type": "有信用卡",
+      "job": "蓝领",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 89.6,
+      "people-group-b": 88,
+      "people-group-delta": 52
+    },
+    {
+      "type": "有信用卡",
+      "job": "蓝领",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 96.32
+    },
+    {
+      "type": "有信用卡",
+      "job": "蓝领",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 92.6,
+      "people-group-b": 96.6,
+      "people-group-delta": 94.32
+    },
+    {
+      "type": "有信用卡",
+      "job": "蓝领",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 16,
+      "people-group-b": 16,
+      "people-group-delta": -26.3
+    },
+    {
+      "type": "有信用卡",
+      "job": "学生",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 20,
+      "people-group-b": 20.5,
+      "people-group-delta": -16
+    },
+    {
+      "type": "有信用卡",
+      "job": "学生",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 7.6,
+      "people-group-b": 9.5,
+      "people-group-delta": 6
+    },
+    {
+      "type": "有信用卡",
+      "job": "学生",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 20,
+      "people-group-b": 25.56,
+      "people-group-delta": 0
+    },
+    {
+      "type": "有信用卡",
+      "job": "学生",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 29.5,
+      "people-group-b": 49.5,
+      "people-group-delta": 17.2
+    },
+    {
+      "type": "有信用卡",
+      "job": "学生",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 99.56,
+      "people-group-b": 89.56,
+      "people-group-delta": 66.32
+    },
+    {
+      "type": "有信用卡",
+      "job": "学生",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 35.5,
+      "people-group-b": 36.6,
+      "people-group-delta": 36.2
+    },
+    {
+      "type": "有信用卡",
+      "job": "其他",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 5,
+      "people-group-b": 4.56,
+      "people-group-delta": 4.32
+    },
+    {
+      "type": "有信用卡",
+      "job": "其他",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 42.56,
+      "people-group-b": 46.56,
+      "people-group-delta": 40.3
+    },
+    {
+      "type": "有信用卡",
+      "job": "其他",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 29.6,
+      "people-group-b": 35.5,
+      "people-group-delta": 26.3
+    },
+    {
+      "type": "有信用卡",
+      "job": "其他",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 5.5,
+      "people-group-b": 10,
+      "people-group-delta": -16.5
+    },
+    {
+      "type": "有信用卡",
+      "job": "其他",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 92.5,
+      "people-group-b": 94.6,
+      "people-group-delta": 56.2
+    },
+    {
+      "type": "有信用卡",
+      "job": "其他",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 45,
+      "people-group-b": 54,
+      "people-group-delta": 36.3
+    },
+    {
+      "type": "无信用卡",
+      "job": "白领",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 56.5,
+      "people-group-b": 60.5,
+      "people-group-delta": 86.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "白领",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 95,
+      "people-group-b": 95,
+      "people-group-delta": 76
+    },
+    {
+      "type": "无信用卡",
+      "job": "白领",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "白领",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 24.56,
+      "people-group-b": 28.5,
+      "people-group-delta": 26.2
+    },
+    {
+      "type": "无信用卡",
+      "job": "白领",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 69.56,
+      "people-group-b": 69.56,
+      "people-group-delta": 66.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "白领",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 78.56,
+      "people-group-b": 75.5,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "蓝领",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 89.6,
+      "people-group-b": 80.56,
+      "people-group-delta": 83.3
+    },
+    {
+      "type": "无信用卡",
+      "job": "蓝领",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "蓝领",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 5.5,
+      "people-group-b": 3,
+      "people-group-delta": -28
+    },
+    {
+      "type": "无信用卡",
+      "job": "蓝领",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 5.56,
+      "people-group-b": 6.56,
+      "people-group-delta": 7.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "蓝领",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 33.6,
+      "people-group-b": 32.5,
+      "people-group-delta": 30
+    },
+    {
+      "type": "无信用卡",
+      "job": "蓝领",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 0,
+      "people-group-b": 9.6,
+      "people-group-delta": 6.5
+    },
+    {
+      "type": "无信用卡",
+      "job": "学生",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 24.5,
+      "people-group-b": 24.6,
+      "people-group-delta": 25
+    },
+    {
+      "type": "无信用卡",
+      "job": "学生",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 34.56,
+      "people-group-b": 36.6,
+      "people-group-delta": 40.2
+    },
+    {
+      "type": "无信用卡",
+      "job": "学生",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 32.5,
+      "people-group-b": 36.5,
+      "people-group-delta": 45
+    },
+    {
+      "type": "无信用卡",
+      "job": "学生",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "学生",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "学生",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 5,
+      "people-group-b": 10,
+      "people-group-delta": -2.2
+    },
+    {
+      "type": "无信用卡",
+      "job": "其他",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 68.6,
+      "people-group-b": 69.6,
+      "people-group-delta": 69.3
+    },
+    {
+      "type": "无信用卡",
+      "job": "其他",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 87.56,
+      "people-group-b": 88.56,
+      "people-group-delta": 86.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "其他",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 92.56,
+      "people-group-b": 95.56,
+      "people-group-delta": 96.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "其他",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "其他",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "无信用卡",
+      "job": "其他",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 9.6,
+      "people-group-b": 9.8,
+      "people-group-delta": -6.2
+    },
+    {
+      "type": "其他",
+      "job": "白领",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 21.56,
+      "people-group-b": 25.56,
+      "people-group-delta": 26.32
+    },
+    {
+      "type": "其他",
+      "job": "白领",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "其他",
+      "job": "白领",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 12.56,
+      "people-group-b": 15.6,
+      "people-group-delta": 16.2
+    },
+    {
+      "type": "其他",
+      "job": "白领",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 25.5,
+      "people-group-b": 20.6,
+      "people-group-delta": -30.2
+    },
+    {
+      "type": "其他",
+      "job": "白领",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "其他",
+      "job": "白领",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 42.56,
+      "people-group-b": 42.56,
+      "people-group-delta": 42.32
+    },
+    {
+      "type": "其他",
+      "job": "蓝领",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "其他",
+      "job": "蓝领",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 56.56,
+      "people-group-b": 56.56,
+      "people-group-delta": 66.32
+    },
+    {
+      "type": "其他",
+      "job": "蓝领",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "其他",
+      "job": "蓝领",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 5.56,
+      "people-group-b": 0.5,
+      "people-group-delta": -56
+    },
+    {
+      "type": "其他",
+      "job": "蓝领",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "其他",
+      "job": "蓝领",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 70.56,
+      "people-group-b": 78.56,
+      "people-group-delta": 72.2
+    },
+    {
+      "type": "其他",
+      "job": "学生",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "其他",
+      "job": "学生",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 10.5,
+      "people-group-b": 20.56,
+      "people-group-delta": -42.32
+    },
+    {
+      "type": "其他",
+      "job": "学生",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 30,
+      "people-group-b": 35,
+      "people-group-delta": -40
+    },
+    {
+      "type": "其他",
+      "job": "学生",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "其他",
+      "job": "学生",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 34.6,
+      "people-group-b": 22.5,
+      "people-group-delta": 25.5
+    },
+    {
+      "type": "其他",
+      "job": "学生",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 99.56,
+      "people-group-b": 99.56,
+      "people-group-delta": 76.32
+    },
+    {
+      "type": "其他",
+      "job": "其他",
+      "age": "20岁以下",
+      "city": "一二线城市",
+      "people-group-a": 10.6,
+      "people-group-b": 9.5,
+      "people-group-delta": -50.2
+    },
+    {
+      "type": "其他",
+      "job": "其他",
+      "age": "20岁以下",
+      "city": "三四线城市",
+      "people-group-a": 45.5,
+      "people-group-b": 40.5,
+      "people-group-delta": 46.2
+    },
+    {
+      "type": "其他",
+      "job": "其他",
+      "age": "20至40岁",
+      "city": "一二城市",
+      "people-group-a": 78.6,
+      "people-group-b": 88.5,
+      "people-group-delta": 66.2
+    },
+    {
+      "type": "其他",
+      "job": "其他",
+      "age": "20至40岁",
+      "city": "三四线城市",
+      "people-group-a": 50.5,
+      "people-group-b": 45,
+      "people-group-delta": 36.3
+    },
+    {
+      "type": "其他",
+      "job": "其他",
+      "age": "40岁以上",
+      "city": "一二城市",
+      "people-group-a": 90.56,
+      "people-group-b": 94.56,
+      "people-group-delta": 16.2
+    },
+    {
+      "type": "其他",
+      "job": "其他",
+      "age": "40岁以上",
+      "city": "三四线城市",
+      "people-group-a": 45.6,
+      "people-group-b": 34.6,
+      "people-group-delta": 46.2
+    }
+  ]
+}

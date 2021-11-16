@@ -26,5 +26,3 @@ export const RULE_OPTIONS = [
     children: [],
   },
 ];
-
-export const ADVANCED_PRE_CLS = 'antv-s2-advanced-sort';

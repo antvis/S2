@@ -26,6 +26,7 @@ import {
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
 import {
+  LayoutWidthType,
   OffsetConfig,
   Pagination,
   S2CellType,
@@ -44,7 +45,8 @@ import { EmitterType } from '@/common/interface/emitter';
 import { Store } from '@/common/store';
 import { BaseDataSet } from '@/data-set';
 import { BaseFacet } from '@/facet';
-import { CustomSVGIcon, Node, S2Theme } from '@/index';
+import { Node } from '@/facet/layout/node';
+import { CustomSVGIcon, S2Theme } from '@/common/interface';
 import { RootInteraction } from '@/interaction/root';
 import { getTheme } from '@/theme';
 import { HdAdapter } from '@/ui/hd-adapter';
@@ -222,7 +224,7 @@ export abstract class SpreadSheet extends EE {
   /**
    * Scroll Freeze Row Header
    */
-  public abstract isFreezeRowHeader(): boolean;
+  public abstract isFrozenRowHeader(): boolean;
 
   /**
    * Check if is pivot mode
@@ -387,8 +389,8 @@ export abstract class SpreadSheet extends EE {
     this.container.changeSize(width, height);
   }
 
-  public isColAdaptive(): boolean {
-    return this.options.style.colCfg?.colWidthType === 'adaptive';
+  public getLayoutWidthType(): LayoutWidthType {
+    return this.options.style.layoutWidthType;
   }
 
   public getRowNodes(level = -1): Node[] {

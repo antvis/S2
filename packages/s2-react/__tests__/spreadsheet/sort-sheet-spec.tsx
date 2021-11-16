@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { DEFAULT_OPTIONS, S2DataConfig, S2Options } from '@antv/s2';
+import { DEFAULT_OPTIONS, S2DataConfig, S2Options, SortParams } from '@antv/s2';
 import { getContainer } from '../util/helpers';
 import { originData, totalData, meta, fields } from '../data/data-sort.json';
 import 'antd/dist/antd.min.css';
@@ -31,6 +31,16 @@ function MainLayout() {
     },
   };
 
+  const sortParams: SortParams = [
+    { sortFieldId: 'province', sortMethod: 'DESC' },
+    { sortFieldId: 'type', sortBy: ['家具产品', '办公用品'] },
+    {
+      sortFieldId: 'city',
+      sortByMeasure: 'cost',
+      sortMethod: 'DESC',
+    },
+  ];
+
   const [dataCfg, setDataCfg] = useState<S2DataConfig>({
     fields: {
       ...fields,
@@ -39,6 +49,7 @@ function MainLayout() {
     meta,
     data: originData,
     totalData,
+    sortParams,
   });
 
   return (
@@ -47,19 +58,10 @@ function MainLayout() {
         dataCfg={dataCfg}
         options={options}
         adaptive={false}
-        themeCfg={{ name: 'simple' }}
         header={{
           advancedSortCfg: {
             open: true,
-            sortParams: [
-              { sortFieldId: 'province', sortMethod: 'DESC' },
-              { sortFieldId: 'type', sortBy: ['家具产品', '办公用品'] },
-              {
-                sortFieldId: 'city',
-                sortByMeasure: 'cost',
-                sortMethod: 'DESC',
-              },
-            ],
+            sortParams,
             onSortConfirm: (ruleValues, sortParams) => {
               setDataCfg({ ...dataCfg, sortParams });
             },

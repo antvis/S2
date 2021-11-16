@@ -1,5 +1,6 @@
-import { copyToClipboard } from '.';
-import { S2CellType, ViewMeta } from '@/common/interface';
+import { getCsvString } from './export-worker';
+import { copyToClipboard } from '@/utils/export';
+import { Formatter, S2CellType, ViewMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 
@@ -10,12 +11,33 @@ export function keyEqualTo(key: string, compareKey: string) {
   return String(key).toLowerCase() === String(compareKey).toLowerCase();
 }
 
-export const processCopyData = (cells: S2CellType[][]): string => {
+const format = (cell: S2CellType, spreadsheet: SpreadSheet) => {
+  const meta = cell.getMeta();
+  const rowField = meta.rowId;
+  const rowMeta = spreadsheet.dataSet.getFieldMeta(rowField);
+  let formatter: Formatter;
+  if (rowMeta) {
+    // format by row field
+    formatter = spreadsheet.dataSet.getFieldFormatter(rowField);
+  } else {
+    // format by value field
+    formatter = spreadsheet.dataSet.getFieldFormatter(meta.valueField);
+  }
+  if (formatter && spreadsheet.options.interaction.copyWithFormat) {
+    return formatter(meta.fieldValue);
+  }
+  return meta.fieldValue;
+};
+
+export const processCopyData = (
+  cells: S2CellType[][],
+  spreadsheet: SpreadSheet,
+): string => {
   const getRowString = (pre: string, cur: S2CellType) =>
-    pre + (cur ? cur.getMeta().fieldValue : '') + '\t';
+    pre + (cur ? getCsvString(format(cur, spreadsheet)) : '') + '\t';
   const getColString = (pre: string, cur: S2CellType[]) =>
-    pre + cur.reduce(getRowString, '') + '\n';
-  return cells.reduce(getColString, '');
+    pre + cur.reduce(getRowString, '').slice(0, -1) + '\n';
+  return cells.reduce(getColString, '').slice(0, -1);
 };
 
 export const getTwoDimData = (cells: S2CellType[]) => {
@@ -109,7 +131,7 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
     data = processRowSelected(spreadsheet, selectedRows);
   } else {
     // normal selected
-    data = processCopyData(getTwoDimData(cells));
+    data = processCopyData(getTwoDimData(cells), spreadsheet);
   }
   if (data) {
     copyToClipboard(data);

@@ -103,7 +103,7 @@ order: 0
 | 列头宽度改变  | `S2Event.LAYOUT_RESIZE_COL_WIDTH` |   |
 | 行头宽度改变  | `S2Event.LAYOUT_RESIZE_COL_HEIGHT` |   |
 | 树状结构宽度改变  | `S2Event.LAYOUT_RESIZE_TREE_WIDTH` |  树状模式下，单元格宽度发生改变时触发 |
-| 列头展开  | `S2Event.LAYOUT_TABLE_COL_EXPANDED` |  列头展开时触犯，明细表有效  |
+| 列头展开  | `S2Event.LAYOUT_TABLE_COL_EXPANDED` |  列头展开时触发，明细表有效  |
 | 列头隐藏  | `S2Event.LAYOUT_TABLE_COL_HIDDEN` |  列头隐藏时触发，明细表有效  |
 
 ### 全局
@@ -169,12 +169,12 @@ const s2Options = {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/Z0nENy85%26/929f6638-a19f-4a6c-9ad8-a9a6ef2269c3.png)
 
-默认情况下，我们会在选中单元格后，置灰未选中的单元格，强调需要关注的数据，可配置 `selectedCellsSpotlight` 关闭：
+在选中单元格后，如果需要置灰未选中的单元格，强调需要关注的数据，可配置 `selectedCellsSpotlight` 开启：
 
 ```ts
 const s2options = {
   interaction: {
-    selectedCellsSpotlight: false,
+    selectedCellsSpotlight: true, // 默认 false
   }
 };
 ```
@@ -240,7 +240,9 @@ s2.on(S2Event.GLOBAL_RESET,() => {
 
 ```ts
 const s2options = {
-  autoResetSheetStyle: false
+  interaction: {
+    autoResetSheetStyle: false
+  }
 };
 ```
 
@@ -257,4 +259,13 @@ const s2options = {
     },
   },
 };
+```
+
+## 调用交互方法
+
+`S2` 内置了一些交互相关的方法，统一挂载在 `interaction` 命名空间下，你可以在拿到 `SpreadSheet` 实例后调用它们来实现你的效果，比如 `选中所有单元格`, `获取列头单元格` 等常用方法，具体请查看 [Interaction 实例类](/zh/docs/api/basic-class/interaction)
+
+```ts
+const s2 = new PivotSheet()
+s2.interaction.selectAll()
 ```

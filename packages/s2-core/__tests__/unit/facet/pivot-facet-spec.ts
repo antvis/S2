@@ -46,14 +46,17 @@ jest.mock('src/sheet-type', () => {
         panelGroup: container.addGroup(),
         foregroundGroup: container.addGroup(),
         backgroundGroup: container.addGroup(),
-        isFreezeRowHeader: jest.fn(),
+        isFrozenRowHeader: jest.fn(),
         isTableMode: jest.fn().mockReturnValue(false),
         isPivotMode: jest.fn().mockReturnValue(true),
         getTotalsConfig: jest.fn().mockReturnValue({}),
-        isColAdaptive: jest.fn().mockReturnValue('adaptive'),
+        getLayoutWidthType: jest.fn().mockReturnValue('adaptive'),
         emit: jest.fn(),
         isScrollContainsRowHeader: jest.fn(),
         isHierarchyTreeType: jest.fn(),
+        facet: {
+          getFreezeCornerDiffWidth: jest.fn(),
+        },
       };
     }),
   };
@@ -67,7 +70,7 @@ jest.mock('src/data-set/pivot-data-set', () => {
         rowPivotMeta,
         colPivotMeta,
         indexesData,
-        sortedDimensionValues: sortedDimensionValues,
+        sortedDimensionValues,
         moreThanOneValue: jest.fn(),
         getFieldFormatter: actualDataSet.prototype.getFieldFormatter,
         getFieldMeta: (field: string, meta: ViewMeta) =>
