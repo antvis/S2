@@ -66,7 +66,7 @@ fetch('../data/basic.json')
 
     const s2options = {
       width: 600,
-      height: 480,
+      height: 300,
       interaction: {
         scrollSpeedRatio: {
           vertical: defaultScrollSpeedRatio,
