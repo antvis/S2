@@ -1,45 +1,6 @@
 @tooltip-prefix-cls: antv-s2-tooltip;
 
 .@{tooltip-prefix-cls} {
-  &-container {
-    position: fixed;
-    min-width: 200px;
-    max-width: 640px;
-    z-index: 1024;
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.96);
-    border-radius: 2px;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
-    font-family:
-      'Roboto',
-      'PingFang SC',
-      'Chinese Quote',
-      'BlinkMacSystemFont',
-      'Segoe UI',
-      'Hiragino Sans GB',
-      'Microsoft YaHei',
-      'Helvetica Neue',
-      Helvetica,
-      Arial,
-      sans-serif;
-
-    &-show {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: all;
-    }
-
-    &-hide {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-
-      * {
-        transition: none;
-      }
-    }
-  }
-
   &.trans-2-middle {
     transform: translateX(-90px) translateY(-160%);
     pointer-events: none;
