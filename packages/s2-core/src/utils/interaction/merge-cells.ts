@@ -1,8 +1,9 @@
 import { filter, find, forEach, isEmpty, isEqual, map } from 'lodash';
-import { MergedCells } from '@/cell/merged-cells';
+import { MergedCell } from '@/cell/merged-cell';
 import { MergedCellInfo, TempMergedCell, ViewMeta } from '@/common/interface';
 import { S2CellType } from '@/common/interface/interaction';
 import { SpreadSheet } from '@/sheet-type';
+import { CellTypes } from '@/common/constant';
 
 /**
  *  according to the coordinates of the starting point of the rectangle,
@@ -15,7 +16,7 @@ import { SpreadSheet } from '@/sheet-type';
  * @param width
  * @param height
  */
-const getRectangleEdges = (
+export const getRectangleEdges = (
   x: number,
   y: number,
   width: number,
@@ -41,8 +42,8 @@ const getRectangleEdges = (
  * return the edges without overlapping edges
  * @param edges the collection of edges
  */
-const unique = (edges: number[][]) => {
-  const result = [];
+export const unique = (edges: number[][][]) => {
+  const result: number[][][] = [];
   forEach(edges, (edge) => {
     const reverseEdge = [edge[1], edge[0]];
     if (!JSON.stringify(edges).includes(JSON.stringify(reverseEdge))) {
@@ -58,7 +59,10 @@ const unique = (edges: number[][]) => {
  * @param curEdge the  coordinate of current edge
  * @param edges the collection of edges
  */
-const getNextEdge = (curEdge: number[], edges: number[][]) => {
+export const getNextEdge = (
+  curEdge: number[][],
+  edges: number[][][],
+): number[][] => {
   return find(edges, (edge) => isEqual(edge[0], curEdge[1]));
 };
 
@@ -67,7 +71,7 @@ const getNextEdge = (curEdge: number[], edges: number[][]) => {
  * @param cells the collection of information of cells which needed be merged
  */
 export const getPolygonPoints = (cells: S2CellType[]) => {
-  let allEdges = [];
+  let allEdges: number[][][] = [];
 
   cells.forEach((cell) => {
     const meta = cell.getMeta();
@@ -76,10 +80,10 @@ export const getPolygonPoints = (cells: S2CellType[]) => {
   });
   allEdges = unique(allEdges);
 
-  let allPoints = [];
+  let allPoints: number[][] = [];
   const startEdge = allEdges[0];
   let curEdge = startEdge;
-  let nextEdge = [];
+  let nextEdge: number[][] = [];
 
   while (!isEqual(startEdge, nextEdge)) {
     allPoints = allPoints.concat(curEdge);
@@ -99,31 +103,34 @@ const getInvisibleInfo = (
   sheet: SpreadSheet,
 ) => {
   const cells: S2CellType[] = [];
+  let viewMeta: ViewMeta | undefined;
   forEach(invisibleCellInfo, (cellInfo) => {
     const meta = sheet?.facet?.layoutResult?.getCellMeta(
       cellInfo.rowIndex,
       cellInfo.colIndex,
     );
+
     if (meta) {
       const cell = sheet?.facet?.cfg.dataCell(meta);
+      viewMeta = cellInfo?.showText ? meta : viewMeta;
       cells.push(cell);
     }
   });
-  return cells;
+  return { cells, cellsMeta: viewMeta };
 };
 
 /**
  * get { cells, invisibleCellInfo, cellsMeta } in the inside of visible area through mergeCellInfo
  * @param cellsInfos
  * @param allVisibleCells
- * @returns { cells, invisibleCellInfo, cellsMeta }
+ * @returns { cells, visibleCellInfo, cellsMeta }
  */
-const getInsideVisibleInfo = (
+const getVisibleInfo = (
   cellsInfos: MergedCellInfo[],
   allVisibleCells: S2CellType[],
 ) => {
   const cells: S2CellType[] = [];
-  const invisibleCellInfo: MergedCellInfo[] = [];
+  const visibleCellInfo: MergedCellInfo[] = [];
   let cellsMeta: ViewMeta | Node | undefined;
   forEach(cellsInfos, (cellInfo: MergedCellInfo) => {
     const findCell = find(allVisibleCells, (cell: S2CellType) => {
@@ -137,14 +144,14 @@ const getInsideVisibleInfo = (
     }) as S2CellType;
     if (findCell) {
       cells.push(findCell);
+      cellsMeta = cellInfo?.showText
+        ? (findCell?.getMeta() as ViewMeta)
+        : cellsMeta;
     } else {
-      if (cellInfo?.showText) {
-        cellsMeta = findCell?.getMeta() as ViewMeta;
-      }
-      invisibleCellInfo.push(cellInfo);
+      visibleCellInfo.push(cellInfo);
     }
   });
-  return { cells, invisibleCellInfo, cellsMeta };
+  return { cells, visibleCellInfo, cellsMeta };
 };
 
 /**
@@ -158,28 +165,48 @@ const getCellsByInfo = (
   sheet?: SpreadSheet,
   cellsInfos: MergedCellInfo[] = [],
 ): TempMergedCell => {
-  const {
-    cellsMeta,
-    cells,
-    invisibleCellInfo: invisibleCellInfo,
-  } = getInsideVisibleInfo(cellsInfos, allVisibleCells);
+  const { cellsMeta, cells, visibleCellInfo } = getVisibleInfo(
+    cellsInfos,
+    allVisibleCells,
+  );
   let viewMeta: ViewMeta | Node = cellsMeta;
   let allCells: S2CellType[] = cells;
   // 当 MergedCell 只有部分在可视区域时，在此获取 MergedCell 不在可视区域内的 cells
   if (
-    invisibleCellInfo?.length > 0 &&
-    invisibleCellInfo.length < cellsInfos.length
+    visibleCellInfo?.length > 0 &&
+    visibleCellInfo.length < cellsInfos.length
   ) {
-    allCells = cells.concat(getInvisibleInfo(invisibleCellInfo, sheet));
+    const { cells: invisibleCells, cellsMeta: invisibleMeta } =
+      getInvisibleInfo(visibleCellInfo, sheet);
+    viewMeta = viewMeta || invisibleMeta;
+    allCells = cells.concat(invisibleCells);
   }
 
-  if (!isEmpty(cells) && !cellsMeta) {
+  if (!isEmpty(cells) && !viewMeta) {
     viewMeta = cells[0]?.getMeta() as ViewMeta; // 如果没有指定合并后的文本绘制的位置，默认画在选择的第一个单元格内
   }
   return {
     cells: allCells,
     viewMeta: viewMeta as ViewMeta,
   };
+};
+
+/**
+ * get the active cells' info as the default info of merged cells
+ * @param sheet
+ */
+export const getActiveCellsInfo = (sheet: SpreadSheet) => {
+  const { interaction } = sheet;
+  const cells = interaction.getActiveCells();
+  const mergedCellsInfo: MergedCellInfo[] = [];
+  forEach(cells, (cell) => {
+    const meta = cell.getMeta();
+    mergedCellsInfo.push({
+      colIndex: meta?.colIndex,
+      rowIndex: meta?.rowIndex,
+    });
+  });
+  return mergedCellsInfo;
 };
 
 /**
@@ -190,22 +217,35 @@ const getCellsByInfo = (
  */
 export const mergeCells = (
   sheet: SpreadSheet,
-  cellsInfo: MergedCellInfo[],
+  cellsInfo?: MergedCellInfo[],
   hideData?: boolean,
 ) => {
+  const mergeCellsInfo = cellsInfo || getActiveCellsInfo(sheet);
+
+  if (mergeCellsInfo?.length <= 1) {
+    // eslint-disable-next-line no-console
+    console.error('then merged cells must be more than one');
+    return;
+  }
+
   const allVisibleCells = filter(
     sheet.panelScrollGroup.getChildren(),
-    (child) => !(child instanceof MergedCells),
+    (child) => !(child instanceof MergedCell),
   ) as unknown as S2CellType[];
-  const { cells, viewMeta } = getCellsByInfo(allVisibleCells, sheet, cellsInfo);
+  const { cells, viewMeta } = getCellsByInfo(
+    allVisibleCells,
+    sheet,
+    mergeCellsInfo,
+  );
+
   if (!isEmpty(cells)) {
     const mergedCellsInfo = sheet.options?.mergedCellsInfo || [];
-    mergedCellsInfo.push(cellsInfo);
+    mergedCellsInfo.push(mergeCellsInfo);
     sheet.setOptions({
       mergedCellsInfo: mergedCellsInfo,
     });
     const meta = hideData ? undefined : viewMeta;
-    sheet.panelScrollGroup.add(new MergedCells(sheet, cells, meta));
+    sheet.panelScrollGroup.add(new MergedCell(sheet, cells, meta));
   }
 };
 
@@ -215,7 +255,7 @@ export const mergeCells = (
  * @param mergedCellsInfo
  */
 const removeUnmergedCellsInfo = (
-  removeMergedCell: MergedCells,
+  removeMergedCell: MergedCell,
   mergedCellsInfo: MergedCellInfo[][],
 ) => {
   const removeCellInfo = map(removeMergedCell.cells, (cell: S2CellType) => {
@@ -244,18 +284,21 @@ const removeUnmergedCellsInfo = (
  * @param removedCells
  * @param sheet
  */
-export const unmergeCell = (removedCells: MergedCells, sheet: SpreadSheet) => {
-  if (removedCells) {
-    const newMergedCellsInfo = removeUnmergedCellsInfo(
-      removedCells,
-      sheet.options?.mergedCellsInfo,
-    );
-    if (newMergedCellsInfo?.length !== sheet.options?.mergedCellsInfo?.length) {
-      sheet.setOptions({
-        mergedCellsInfo: newMergedCellsInfo,
-      });
-      removedCells.remove(true);
-    }
+export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
+  if (!removedCells || removedCells.cellType !== CellTypes.MERGED_CELLS) {
+    // eslint-disable-next-line no-console
+    console.error(`unmergeCell: the ${removedCells} is not a MergedCell`);
+    return;
+  }
+  const newMergedCellsInfo = removeUnmergedCellsInfo(
+    removedCells,
+    sheet.options?.mergedCellsInfo,
+  );
+  if (newMergedCellsInfo?.length !== sheet.options?.mergedCellsInfo?.length) {
+    sheet.setOptions({
+      mergedCellsInfo: newMergedCellsInfo,
+    });
+    removedCells.remove(true);
   }
 };
 
@@ -269,27 +312,27 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   // 可见区域的所有cells
   const allCells = filter(
     sheet.panelScrollGroup.getChildren(),
-    (child) => !(child instanceof MergedCells),
+    (child) => !(child instanceof MergedCell),
   ) as unknown as S2CellType[];
   if (isEmpty(allCells)) return;
 
   // allVisibleMergedCells 所有可视区域的 mergedCell
   const allVisibleMergedCells: TempMergedCell[] = [];
   mergedCellsInfo.forEach((cellsInfo: MergedCellInfo[]) => {
-    const MergedCell = getCellsByInfo(allCells, sheet, cellsInfo);
-    if (MergedCell.cells.length > 0) {
-      allVisibleMergedCells.push(MergedCell);
+    const tempMergedCell = getCellsByInfo(allCells, sheet, cellsInfo);
+    if (tempMergedCell.cells.length > 0) {
+      allVisibleMergedCells.push(tempMergedCell);
     }
   });
   const oldMergedCells = filter(
     sheet.panelScrollGroup.getChildren(),
-    (child) => child instanceof MergedCells,
-  ) as unknown as MergedCells[];
-  // 移除所有旧的合并单元格，重新添加可视区域的合并单元格。（ stone-todo: 后续优化,没有使用 diff 差量删减
+    (child) => child instanceof MergedCell,
+  ) as unknown as MergedCell[];
+  // 移除所有旧的合并单元格，重新添加可视区域的合并单元格。
   oldMergedCells.forEach((oldMergedCell) => {
     oldMergedCell.remove(true);
   });
   allVisibleMergedCells.forEach(({ cells, viewMeta }) => {
-    sheet.panelScrollGroup.add(new MergedCells(sheet, cells, viewMeta));
+    sheet.panelScrollGroup.add(new MergedCell(sheet, cells, viewMeta));
   });
 };

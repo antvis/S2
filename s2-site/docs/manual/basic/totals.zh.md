@@ -29,12 +29,15 @@ order: 5
 
 #### 1. 单度量值
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NZUsTYZllO0AAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*YOcuTLNDYXIAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*PmpvRrcBEbMAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*nLqvRYWFGRoAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
 
 #### 2. 多度量值
 
-待放图...
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*QY_iSpJLVLQAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*XUzVTZ9951MAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
 
 ## 使用
 

@@ -5,7 +5,10 @@ import { Export, ExportCfgProps } from '../export';
 import { AdvancedSort, AdvancedSortCfgProps } from '../advanced-sort';
 import { SpreadSheet } from '@/sheet-type';
 
+import './index.less';
+
 export interface HeaderCfgProps {
+  width?: number;
   className?: string;
   title?: React.ReactNode;
   description?: string;
@@ -21,6 +24,7 @@ export interface HeaderProps extends HeaderCfgProps {
 export const Header: React.FC<HeaderProps> = ({
   className,
   title,
+  width,
   description,
   exportCfg,
   advancedSortCfg,
@@ -28,8 +32,9 @@ export const Header: React.FC<HeaderProps> = ({
   extra = [],
   ...restProps
 }) => {
-  const PRECLASS = 'spreadsheet-header';
-  let extraOperationComponents = [];
+  const PRE_CLASS = 's2-header';
+
+  let extraOperationComponents = extra;
   if (advancedSortCfg.open) {
     const advancedSortNode = (
       <AdvancedSort key={'advancedSort'} sheet={sheet} {...advancedSortCfg} />
@@ -43,7 +48,8 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <PageHeader
-      className={cx(PRECLASS, className)}
+      className={cx(PRE_CLASS, className)}
+      style={{ width: `${width}px` }}
       ghost={false}
       title={title}
       extra={extraOperationComponents}

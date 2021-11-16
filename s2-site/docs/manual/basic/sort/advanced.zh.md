@@ -3,9 +3,9 @@ title: 高级排序
 order: 1
 ---
 
-S2自带高级排序组件，可根据选择组合数据提供給用户使用
+`S2` 自带高级排序组件，可根据选择组合数据提供給用户使用。
 
->注意：内部不维护状态
+> 注意：内部不维护状态
 
 ## 快速上手
 
@@ -22,7 +22,7 @@ const AdvancedSortDemo = () => {
   return (
     <div>
       <SheetComponent
-        sheetType={'pivot'}
+        sheetType="pivot"
         adaptive={false}
         dataCfg={dataCfg}
         options={s2options}
@@ -52,10 +52,9 @@ ReactDOM.render(<AdvancedSortDemo />, document.getElementById('container'));
 advancedSortCfg: {
   open: true,
 }
-
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*QCRdRIzLKwYAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*E4dxS6EpfHEAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 ### 提交
 

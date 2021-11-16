@@ -15,6 +15,7 @@ import {
   Space,
   Switch,
   Tooltip,
+  Button,
 } from 'antd';
 import { merge } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
@@ -323,6 +324,11 @@ export const SheetEntry = forwardRef(
                 backgroundOpacity: showResizeArea ? 1 : 0,
               },
             }),
+          }}
+          header={{
+            title: 'Title',
+            description: 'description',
+            extra: [<Button key="button">click me</Button>],
           }}
           onColCellClick={props.onColCellClick}
         />

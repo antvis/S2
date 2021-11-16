@@ -8,7 +8,7 @@ export const paletteDefault = {
     '#CCDBFD',
     '#2C60D3',
     '#0000EE',
-    '#B7CBF8',
+    '#326EF4',
     '#FFFFFF',
     '#EBF2FF',
     '#D6E3FE',
