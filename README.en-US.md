@@ -10,6 +10,9 @@ Data-driven multi-dimensional analysis table.
 🚧 Coming soon ... [Roadmap for S2](https://github.com/antvis/S2/discussions/258)
 
 <p>
+  <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
+    <img src="https://img.shields.io/npm/dm/@antv/s2.svg" alt="npm"/>
+  </a>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg" alt="version">
   </a>
@@ -32,7 +35,7 @@ Data-driven multi-dimensional analysis table.
     <img alt="npm bundle size" src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/s2.min.js?label=gzip%20size&compression=gzip" alt="bundle size"/>
   </a>
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
-    <img src="https://img.shields.io/badge/discussions-on%20github-blue?style=flat-square" alt="Discussions"/>
+    <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="Discussions"/>
   </a>
   <a href="https://github.com/actions-cool/issues-helper" target="_blank">
     <img src="https://img.shields.io/badge/using-issues--helper-blueviolet" alt="issues-helper"/>
