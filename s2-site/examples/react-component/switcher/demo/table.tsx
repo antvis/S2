@@ -69,7 +69,7 @@ fetch(
             sheetType={'table'}
             adaptive={false}
             dataCfg={{ data, fields }}
-            options={{ ...s2Options, hiddenColumnFields }}
+            options={{ ...s2Options, interaction: { hiddenColumnFields } }}
           />
         </div>
       );

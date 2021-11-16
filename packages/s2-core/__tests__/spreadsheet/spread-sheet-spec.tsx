@@ -173,7 +173,7 @@ function MainLayout() {
   };
 
   return (
-    <div>
+    <div style={{ paddingBottom: 50 }}>
       <Space size="middle" style={{ marginBottom: 20 }}>
         <Switch
           checkedChildren="渲染组件"
