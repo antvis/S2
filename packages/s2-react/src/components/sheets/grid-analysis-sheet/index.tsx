@@ -1,9 +1,17 @@
 // TODO 抽取不同sheet组件的公共方法
 import React, { useEffect, useState } from 'react';
-import { forEach, isEmpty, isFunction, forIn, isObject, max } from 'lodash';
-import { merge } from 'lodash';
+import {
+  forEach,
+  isEmpty,
+  isFunction,
+  forIn,
+  isObject,
+  max,
+  merge,
+} from 'lodash';
 import { Spin } from 'antd';
 import { Event } from '@antv/g-canvas';
+import ReactDOM from 'react-dom';
 import {
   SpreadSheet,
   PivotSheet,
@@ -12,12 +20,21 @@ import {
   getBaseCellData,
   getSafetyDataConfig,
   getSafetyOptions,
+  TooltipShowOptions,
+  S2Constructor,
 } from '@antv/s2';
 import { Header } from '../../header';
 import { BaseSheetProps } from '../interface';
 import { GridAnalysisDataCell } from './grid-analysis-data-cell';
 import { GridAnalysisTheme } from './grid-analysis-theme';
 import { useResizeEffect } from '@/components/sheets/hooks';
+import { REACT_DEFAULT_OPTIONS } from '@/common/constant';
+import { ReactElement } from '@/common/react-element';
+import {
+  TooltipRenderProps,
+  TooltipRenderComponent,
+} from '@/components/tooltip/interface';
+import { TooltipComponent } from '@/components/tooltip';
 
 export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
   const {
@@ -103,11 +120,41 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
     setLoading(false);
   };
 
+  const getOptions = (): S2Options => {
+    const s2Options = merge({}, REACT_DEFAULT_OPTIONS, buildOptions());
+    const getTooltipComponent = (
+      tooltipOptions: TooltipShowOptions,
+      tooltipContainer: HTMLElement,
+    ) => {
+      let tooltipComponent: TooltipRenderComponent;
+      if (s2Options.tooltip.tooltipComponent || tooltipOptions.element) {
+        tooltipComponent = (
+          <ReactElement
+            element={
+              s2Options.tooltip.tooltipComponent || tooltipOptions.element
+            }
+          />
+        );
+      }
+      const tooltipProps: TooltipRenderProps = {
+        ...tooltipOptions,
+        tooltipComponent,
+      };
+      ReactDOM.render(<TooltipComponent {...tooltipProps} />, tooltipContainer);
+    };
+
+    return {
+      ...s2Options,
+      tooltip: { ...s2Options.tooltip, getTooltipComponent },
+    };
+  };
+
   const initSpreadSheet = (): SpreadSheet => {
+    const params: S2Constructor = [container, dataCfg, getOptions()];
     if (spreadsheet) {
-      return spreadsheet(container, dataCfg, buildOptions());
+      return spreadsheet(...params);
     }
-    return new PivotSheet(container, dataCfg, buildOptions());
+    return new PivotSheet(...params);
   };
 
   const bindEvent = () => {
