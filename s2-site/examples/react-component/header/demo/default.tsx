@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Button } from 'antd';
 import { SheetComponent } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
@@ -29,7 +30,7 @@ fetch(
       description: '表头描述',
       exportCfg: { open: true },
       advancedSortCfg: { open: true },
-      extra: [<button style={{ verticalAlign: 'top' }}> 插入内容 </button>],
+      extra: [ (<Button size={'small'} style={{ verticalAlign: 'top' }}>  插入内容 </Button>) ],
     };
 
     ReactDOM.render(
@@ -42,3 +43,4 @@ fetch(
       document.getElementById('container'),
     );
   });
+
