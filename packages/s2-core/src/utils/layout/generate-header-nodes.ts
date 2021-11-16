@@ -66,10 +66,11 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       value = fieldValue;
       // root[&]四川[&]成都 => {province: '四川', city: '成都' }
       nodeQuery = merge({}, query, { [currentField]: value });
-      const hideMeasure = colCfg.hideMeasureColumn ?? false;
-      const isValueInCols = spreadsheet.dataCfg.fields.valueInCols ?? true;
+      const isValueInCols = spreadsheet.dataCfg.fields?.valueInCols ?? true;
       const isHideMeasure =
-        hideMeasure && isValueInCols && includes(fields, EXTRA_FIELD);
+        colCfg?.hideMeasureColumn &&
+        isValueInCols &&
+        includes(fields, EXTRA_FIELD);
       const extraSize = isHideMeasure ? 2 : 1;
       isLeaf = level === fields.length - extraSize;
     }
