@@ -1,0 +1,16 @@
+{
+  "title": {
+    "zh": "单人群占比表",
+    "en": "Single population proportion Sheet"
+  },
+  "demos": [
+    {
+      "filename": "basic.tsx",
+      "title": {
+        "zh": "单人群占比表",
+        "en": "Single population proportion Sheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%26d0o1Z0fU/2a2bab57-ec1c-4f79-83b8-65a43285a3b0.png"
+    }
+  ]
+}
