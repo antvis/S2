@@ -57,9 +57,7 @@ const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg => {
 export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconCfg) => {
   iconCfg = normalizeIconCfg(iconCfg);
   return (
-    contentWidth -
-    iconCfg.size -
-    (iconCfg.position === 'left' ? iconCfg.margin.right : iconCfg.margin.left)
+    contentWidth - iconCfg.size - iconCfg.margin.right - iconCfg.margin.left
   );
 };
 
@@ -159,7 +157,6 @@ export const getTextAndFollowingIconPosition = (
         (iconPosition === 'right'
           ? iconSpace - margin.left
           : textWidth + iconSpace - margin.left);
-
       break;
     }
   }
@@ -179,7 +176,7 @@ export const getTextPosition = (
 ) => getTextAndFollowingIconPosition(contentBox, textCfg).text;
 
 // 获取在列头水平滚动时，text坐标，使其始终在可视区域的格子中处于居中位置
-export const getTextPositionWhenHorizontalScrolling = (
+export const getTextAndIconPositionWhenHorizontalScrolling = (
   viewport: AreaRange,
   content: AreaRange,
   textWidth: number,

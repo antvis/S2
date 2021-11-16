@@ -22,12 +22,14 @@ import { ColHeaderConfig } from '@/facet/header/col';
 import { renderLine, renderRect } from '@/utils/g-renders';
 import { AreaRange } from '@/common/interface/scroll';
 import {
-  getTextPositionWhenHorizontalScrolling,
+  getTextAndIconPositionWhenHorizontalScrolling,
   getTextAndFollowingIconPosition,
 } from '@/utils/cell/cell';
 
 export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;
+
+  protected textAndIconPositionWhenHorizontalScrolling: Point;
 
   public get cellType() {
     return CellTypes.COL_CELL;
@@ -106,6 +108,25 @@ export class ColCell extends HeaderCell {
     return width - this.getActionIconsWidth();
   }
 
+  protected getIconPosition(): Point {
+    const { isLeaf } = this.meta;
+    const iconStyle = this.getIconStyle();
+    if (isLeaf) {
+      return super.getIconPosition();
+    }
+    const position = this.textAndIconPositionWhenHorizontalScrolling;
+
+    const totalSpace =
+      this.actualTextWidth +
+      this.getActionIconsWidth() -
+      iconStyle.margin.right;
+    const startX = position.x - totalSpace / 2;
+    return {
+      x: startX + this.actualTextWidth + iconStyle.margin.left,
+      y: position.y - iconStyle.size / 2,
+    };
+  }
+
   protected getTextPosition(): Point {
     const { isLeaf } = this.meta;
     const { width, scrollContainsRowHeader, cornerWidth, scrollX } =
@@ -131,14 +152,28 @@ export class ColCell extends HeaderCell {
       width: width + (scrollContainsRowHeader ? cornerWidth : 0),
     };
 
-    const textX = getTextPositionWhenHorizontalScrolling(
+    const textAndIconSpace =
+      this.actualTextWidth +
+      this.getActionIconsWidth() -
+      iconStyle.margin.right;
+
+    const startX = getTextAndIconPositionWhenHorizontalScrolling(
       viewport,
       { start: contentBox.x, width: contentBox.width },
-      this.actualTextWidth,
+      textAndIconSpace, // icon position 默认为 right
     );
 
     const textY = contentBox.y + contentBox.height / 2;
-    return { x: textX, y: textY };
+    this.textAndIconPositionWhenHorizontalScrolling = { x: startX, y: textY };
+    return {
+      x: startX - textAndIconSpace / 2 + this.actualTextWidth / 2,
+      y: textY,
+    };
+  }
+
+  protected getActionIconsWidth() {
+    const { size, margin } = this.getStyle().icon;
+    return (size + margin.left) * this.getActionIconsCount() + margin.right;
   }
 
   protected getColResizeAreaKey() {

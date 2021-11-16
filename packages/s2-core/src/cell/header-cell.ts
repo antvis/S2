@@ -89,7 +89,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected getActionIconsWidth() {
     const { size, margin } = this.getStyle().icon;
-    return (size + margin.left) * this.getActionIconsCount() + margin.right;
+    return (size + margin.left) * this.getActionIconsCount();
   }
 
   // 绘制排序icon
