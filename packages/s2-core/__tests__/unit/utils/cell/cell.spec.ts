@@ -37,24 +37,13 @@ describe('Max Text Width Calculation Test', () => {
     expect(getMaxTextWidth(100)).toEqual(100);
   });
 
-  test('should  return max text width with left icon', () => {
+  test('should  return max text width with icon', () => {
     expect(
       getMaxTextWidth(100, {
-        position: 'left',
         size: 10,
         margin: { left: 10, right: 8 },
       }),
-    ).toEqual(82);
-  });
-
-  test('should  return max text width with right icon', () => {
-    expect(
-      getMaxTextWidth(100, {
-        position: 'right',
-        size: 10,
-        margin: { left: 10, right: 8 },
-      }),
-    ).toEqual(80);
+    ).toEqual(72);
   });
 });
 
@@ -328,7 +317,7 @@ describe('Text and Icon area Test', () => {
         y: 0,
       },
       icon: {
-        x: 0,
+        x: 10,
         y: 0,
       },
     });
