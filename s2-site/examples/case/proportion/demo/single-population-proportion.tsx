@@ -153,12 +153,15 @@ fetch('../data/single-population-proportion.json')
 
     ReactDOM.render(
       <div className='root'>
-        <PaletteLegend />
         <SheetComponent
           dataCfg={ s2DataConfig }
           options={ s2options }
           sheetType='pivot'
           adaptive={ false }
+          header={{
+            title: '单人群占比表',
+            extra: [<PaletteLegend />],
+          }}
         />
       </div>,
       document.getElementById('container'),
