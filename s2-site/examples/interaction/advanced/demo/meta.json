@@ -10,7 +10,7 @@
         "zh": "链接跳转 - 透视表",
         "en": "Link jump"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/F6RSff0pe/de0c574d-ddb1-4096-9416-13eec503ebf7.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/YLqX0KKvy/2021-11-16%25252020.24.58.gif"
     },
     {
       "filename": "table-link-jump.ts",
@@ -18,7 +18,7 @@
         "zh": "链接跳转 - 明细表",
         "en": "Link jump"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/DxQLZPeda/32a0cae6-0f1d-4e00-a274-4b0896467b02.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/rhDZXzc3W/2021-11-16%25252020.25.55.gif"
     },
     {
       "filename": "hide-columns.ts",
@@ -26,7 +26,7 @@
         "zh": "明细表隐藏列头",
         "en": "Hide table columns"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/nAU23PQjf/61dc2aab-e1db-4403-8121-81d99029cd15.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ioWEF3%24c%24/2021-11-16%25252020.06.52.gif"
     },
     {
       "filename": "scroll-speed-ratio.ts",
@@ -34,15 +34,7 @@
         "zh": "自定义滚动速度",
         "en": "Custom scroll speed"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/GEeTOd%24ZWp/f59a00c1-ee15-4e61-9015-fd29e163a0cf.png"
-    },
-    {
-      "filename": "auto-reset-sheet-style.ts",
-      "title": {
-        "zh": "关闭自动交互状态重置",
-        "en": "Disable auto reset sheet style"
-      },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/GEeTOd%24ZWp/f59a00c1-ee15-4e61-9015-fd29e163a0cf.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/e0z41b3e4/2021-11-16%25252020.11.53.gif"
     },
     {
       "filename": "merge-cells.tsx",
@@ -50,7 +42,7 @@
         "zh": "合并单元格",
         "en": "Merge cells"
       },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*QrojSIm39CUAAAAAAAAAAAAAARQnAQ"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/DUUJc%26k4s/2021-11-16%25252020.12.29.gif"
     }
   ]
 }
