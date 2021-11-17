@@ -13,6 +13,8 @@ import '@antv/s2/dist/s2.min.css';
 
 const UP_COLOR = '#F46649';
 const DOWN_COLOR = '#2AA491';
+const TAG_HEIGHT = 20; // 指标高度
+const TAG_WIDTH = 80; // 指标宽度
 
 class CustomColCell extends ColCell {
   lineConfig = {};
@@ -32,14 +34,12 @@ class CustomColCell extends ColCell {
 
   getCellArea() {
     const { x, y, height, width, parent } = this.meta;
-    const tagHeight = height; // 指标高度
-    const tagWidth = 120; // 指标宽度
     if (parent?.id === 'root') {
       return {
         x,
-        y: y + (height - tagHeight),
-        height: tagHeight,
-        width: tagWidth,
+        y: y + (height - TAG_HEIGHT),
+        height: TAG_HEIGHT,
+        width: TAG_WIDTH,
       };
     }
     return { x, y, height, width };
@@ -105,7 +105,7 @@ class CustomColCell extends ColCell {
           x1: x,
           y1: y,
           x2: x,
-          y2: y + height,
+          y2: y + TAG_HEIGHT,
           stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
           lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
         },
@@ -118,7 +118,7 @@ class CustomColCell extends ColCell {
           x1: x,
           y1: y,
           x2: x,
-          y2: y + height,
+          y2: y + TAG_HEIGHT,
           stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
           lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
         },
@@ -406,7 +406,7 @@ class CustomCornelCell extends CornerCell {
     });
   }
   drawBorderShape() {}
-} 
+}
 
 fetch('../data/index-comparison.json')
   .then((res) => res.json())
