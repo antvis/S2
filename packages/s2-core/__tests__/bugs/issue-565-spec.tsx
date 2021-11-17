@@ -4,8 +4,8 @@
  * copyData error in tree mode
  *
  */
-import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/data-issue-565.json';
+import * as mockDataConfig from 'tests/data/data-issue-565.json';
+import { getContainer } from 'tests/util/helpers';
 import { PivotSheet } from '@/sheet-type';
 import { copyData } from '@/utils';
 
