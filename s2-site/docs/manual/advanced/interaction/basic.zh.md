@@ -199,6 +199,16 @@ const s2options = {
 
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png)
 
+### 快捷键多选
+
+META(Command/Ctrl) + click: 单个多选叠加
+
+![preview](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ubk0RrTI0ZsAAAAAAAAAAAAAARQnAQ)
+
+SHIFT + click: 区间选择（类似刷选）
+
+![preview](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wq-XRYpVAGMAAAAAAAAAAAAAARQnAQ)
+
 ### 隐藏列头 （明细表有效）
 
 列头隐藏后，会在紧邻的兄弟单元格显示一个展示按钮，和一个隐藏提示线，鼠标单击即可展开，可配置 `hiddenColumns` 实现 `默认隐藏` 和 `交互式隐藏`. [查看具体例子](zh/examples/interaction/advanced#hide-columns)
