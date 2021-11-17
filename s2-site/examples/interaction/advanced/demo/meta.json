@@ -45,7 +45,7 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/GEeTOd%24ZWp/f59a00c1-ee15-4e61-9015-fd29e163a0cf.png"
     },
     {
-      "filename": "merge-cells.ts",
+      "filename": "merge-cells.tsx",
       "title": {
         "zh": "合并单元格",
         "en": "Merge cells"

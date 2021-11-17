@@ -23,6 +23,7 @@ import {
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
   S2Event,
+  VALUE_FIELD,
 } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
@@ -263,8 +264,7 @@ export abstract class SpreadSheet extends EE {
     options?: TooltipOptions,
   ) {
     const { showTooltip, tooltipComponent } = getTooltipOptions(this, event);
-    // Object 型数据目前不做默认 Tooltip呈现，走业务自定义 Tooltip
-    if (!showTooltip || isObject(data[0])) {
+    if (!showTooltip) {
       return;
     }
 
