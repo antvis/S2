@@ -68,7 +68,7 @@ describe('HD Adapter Tests', () => {
   });
 
   test('should update container size when zoom scale changed, and scale more than current DPR', async () => {
-    const scale = 3;
+    const scale = 2;
     Object.defineProperty(visualViewport, 'scale', {
       value: scale,
       configurable: true,
