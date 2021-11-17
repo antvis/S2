@@ -6,6 +6,8 @@ jest.mock('@/sheet-type/spread-sheet');
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 jest.mock('@/utils/tooltip');
+jest.mock('@/data-set');
+jest.mock('@/facet');
 
 describe('HD Adapter Tests', () => {
   const DPR = 2;
