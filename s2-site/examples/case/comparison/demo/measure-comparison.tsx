@@ -103,9 +103,9 @@ class CustomColCell extends ColCell {
       this.addShape('line', {
         attrs: {
           x1: x,
-          y1: y,
+          y1: y + height - TAG_HEIGHT,
           x2: x,
-          y2: y + TAG_HEIGHT,
+          y2: y + height,
           stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
           lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
         },
@@ -118,7 +118,7 @@ class CustomColCell extends ColCell {
           x1: x,
           y1: y,
           x2: x,
-          y2: y + TAG_HEIGHT,
+          y2: y + height,
           stroke: this.lineConfigStyle.stroke || horizontalBorderColor,
           lineWidth: this.lineConfigStyle.lineWidth || horizontalBorderWidth,
         },
@@ -329,7 +329,7 @@ class CustomFrame extends Frame {
       this.addShape('line', {
         attrs: {
           x1: x,
-          y1: y1 + height / 2,
+          y1: y1 + height / 2 - TAG_HEIGHT,
           x2: x,
           y2,
           stroke: verticalBorderColor,
@@ -341,7 +341,7 @@ class CustomFrame extends Frame {
       this.addShape('line', {
         attrs: {
           x1: x,
-          y1: y1 + height / 2,
+          y1: y1 + height / 2 - TAG_HEIGHT,
           x2: x,
           y2,
           stroke: lineConfigStyle?.stroke || verticalBorderColor,
