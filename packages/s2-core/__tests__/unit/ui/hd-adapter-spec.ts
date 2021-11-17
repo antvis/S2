@@ -1,10 +1,3 @@
-jest.mock('@/sheet-type/spread-sheet');
-jest.mock('@/interaction/event-controller');
-jest.mock('@/interaction/root');
-jest.mock('@/utils/tooltip');
-jest.mock('@/data-set/pivot-data-set');
-jest.mock('@/facet/pivot-facet');
-
 import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { HdAdapter } from '@/ui/hd-adapter';
