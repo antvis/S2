@@ -20,7 +20,7 @@ import {
   totalData9,
 } from '../data/data-accuracy';
 import { getContainer } from '../util/helpers';
-import { SheetComponent } from '@/components/index';
+import { SheetComponent } from '@/components';
 import 'antd/dist/antd.min.css';
 
 let spreadsheet1: SpreadSheet;

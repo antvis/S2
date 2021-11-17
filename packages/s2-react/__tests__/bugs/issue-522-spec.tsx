@@ -10,7 +10,7 @@ import { act } from 'react-dom/test-utils';
 import { SpreadSheet, Node } from '@antv/s2';
 import { getContainer } from '../util/helpers';
 import dataCfg from '../data/data-issue-522.json';
-import { SheetComponent } from '@/components/index';
+import { SheetComponent } from '@/components';
 
 let sheetInstance: SpreadSheet;
 

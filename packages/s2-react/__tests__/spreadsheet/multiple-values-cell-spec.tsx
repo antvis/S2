@@ -17,7 +17,7 @@ import {
   multipleDataWithNormal,
 } from '../data/multiple-values-cell-mock-data';
 import { getContainer } from '../util/helpers';
-import { SheetComponent } from '@/components/index';
+import { SheetComponent } from '@/components';
 
 let sheet: SpreadSheet;
 const getSpreadSheet = (

@@ -16,7 +16,7 @@ import {
 import { getContainer, getMockData, sleep } from '../util/helpers';
 import { Switcher } from '@/components/switcher';
 import { SwitcherFields } from '@/components/switcher/interface';
-import { SheetComponent } from '@/components/index';
+import { SheetComponent } from '@/components';
 
 let s2: TableSheet;
 

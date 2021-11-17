@@ -11,7 +11,7 @@ import {
   TableSheet,
 } from '@antv/s2';
 import { getContainer, getMockData } from '../util/helpers';
-import { SheetComponent } from '@/components/index';
+import { SheetComponent } from '@/components';
 
 import 'antd/dist/antd.min.css';
 const data = getMockData('../data/tableau-supermarket.csv');

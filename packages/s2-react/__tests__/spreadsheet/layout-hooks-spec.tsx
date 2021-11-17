@@ -15,7 +15,7 @@ import {
   generateId,
 } from '@antv/s2';
 import { getContainer, getMockData } from '../util/helpers';
-import { SheetComponent } from '@/components/index';
+import { SheetComponent } from '@/components';
 const data = getMockData('../data/tableau-supermarket.csv');
 
 let innerSS: SpreadSheet;

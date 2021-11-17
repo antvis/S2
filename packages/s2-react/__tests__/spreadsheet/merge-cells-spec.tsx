@@ -16,7 +16,7 @@ import {
 } from '../data/grid-analysis-data';
 import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
 import { getContainer } from '../util/helpers';
-import { SheetComponent, SheetType } from '@/components/index';
+import { SheetComponent, SheetType } from '@/components';
 import 'antd/dist/antd.min.css';
 
 const data = mockData.map((row) => {

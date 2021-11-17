@@ -5,7 +5,7 @@ import { act } from 'react-dom/test-utils';
 import { HeaderActionIconProps, S2Options, ThemeName, Node } from '@antv/s2';
 import { getContainer } from '../util/helpers';
 import { SheetEntry, assembleDataCfg } from '../util/sheet-entry';
-import { SheetType } from '@/components/index';
+import { SheetType } from '@/components';
 
 const tableDataFields = {
   fields: {

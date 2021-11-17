@@ -6,7 +6,7 @@ import { getContainer } from '../util/helpers';
 import { originData, totalData, meta, fields } from '../data/data-sort.json';
 import 'antd/dist/antd.min.css';
 import './less/sort-sheet-spec.less';
-import { SheetComponent } from '@/components/index';
+import { SheetComponent } from '@/components';
 
 function MainLayout() {
   const options: S2Options = {

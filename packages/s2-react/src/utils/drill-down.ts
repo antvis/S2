@@ -8,7 +8,7 @@ import {
   Node,
   PivotDataSet,
 } from '@antv/s2';
-import { PartDrillDownInfo, SpreadsheetProps } from '@/components/index';
+import { PartDrillDownInfo, SpreadsheetProps } from '@/components';
 import { PartDrillDownDataCache } from '@/components/sheets/interface';
 import { i18n } from '@/common/i18n';
 

@@ -23,7 +23,7 @@ import {
   totalData5,
   totalData6,
 } from '../data/data-accuracy';
-import { SheetComponent } from '@/components/index';
+import { SheetComponent } from '@/components';
 
 let spreadsheet1: SpreadSheet;
 const setSpreadSheet = (

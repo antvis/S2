@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { auto, S2DataConfig, S2Options, PivotSheet } from '@antv/s2';
 import { getContainer } from '../util/helpers';
-import { SheetComponent } from '@/components/index';
+import { SheetComponent } from '@/components';
 
 const data = [];
 

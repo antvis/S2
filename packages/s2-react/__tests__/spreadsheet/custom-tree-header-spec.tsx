@@ -11,7 +11,7 @@ import {
 import { getContainer } from '../util/helpers';
 import { customTreeItems } from '../data/custom-tree-items';
 import { dataCustomTrees } from '../data/data-custom-trees';
-import { SheetComponent } from '@/components/index';
+import { SheetComponent } from '@/components';
 
 const getSpreadSheet = (
   dom: string | HTMLElement,

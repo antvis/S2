@@ -13,11 +13,7 @@ import {
 } from '@antv/s2';
 import { data as originData, meta } from '../data/mock-dataset.json';
 import { getContainer } from '../util/helpers';
-import {
-  SheetComponent,
-  PartDrillDown,
-  PartDrillDownInfo,
-} from '@/components/index';
+import { SheetComponent, PartDrillDown, PartDrillDownInfo } from '@/components';
 
 const fieldMap = {
   channel: ['物美', '华联'],
