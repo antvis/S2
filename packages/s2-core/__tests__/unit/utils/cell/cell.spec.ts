@@ -344,7 +344,7 @@ describe('Text and Icon area Test', () => {
         y: 0,
       },
       icon: {
-        x: 0,
+        x: 10,
         y: 0,
       },
     });
