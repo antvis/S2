@@ -1,4 +1,4 @@
-import { PivotSheet } from '@antv/s2';
+import { TableSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
@@ -9,9 +9,7 @@ fetch(
     const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price', 'cost'],
+        columns: ['province', 'city', 'type', 'price', 'cost'],
       },
       meta: [
         {
@@ -41,13 +39,11 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
-      tooltip: {
-        operation: {
-          trend: true,
-        },
+      interaction: {
+        autoResetSheetStyle: true, // 在鼠标移出表格区域后，自动reset选中状态
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
+    const s2 = new TableSheet(container, s2DataConfig, s2Options);
     s2.render();
   });

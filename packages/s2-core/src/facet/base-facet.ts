@@ -1,4 +1,4 @@
-import type { IGroup, Point } from '@antv/g-canvas';
+import type { IGroup } from '@antv/g-canvas';
 import type { GestureEvent } from '@antv/g-gesture';
 import { Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
@@ -204,19 +204,20 @@ export abstract class BaseFacet {
    *     此时就需要重置 scrollOffsetX，否则就会导致滚动过多，出现空白区域
    */
   protected adjustScrollOffset() {
-    const { scrollX, scrollY } = this.getScrollOffset();
-    const { x: newX, y: newY } = this.adjustXAndY(scrollX, scrollY);
-    this.setScrollOffset({ scrollX: newX, scrollY: newY });
+    const { scrollX, scrollY, hRowScrollX } = this.getAdjustedScrollOffset(
+      this.getScrollOffset(),
+    );
+    this.setScrollOffset({
+      scrollX,
+      scrollY,
+      hRowScrollX,
+    });
   }
 
   public getSeriesNumberWidth(): number {
-    const showSeriesNumber = get(
-      this.cfg.spreadsheet,
-      'options.showSeriesNumber',
-      false,
-    );
+    const { showSeriesNumber } = this.spreadsheet.options;
     return showSeriesNumber
-      ? (get(this.cfg, 'spreadsheet.theme.rowCell.seriesNumberWidth') as number)
+      ? this.spreadsheet.theme.rowCell.seriesNumberWidth
       : 0;
   }
 
@@ -303,13 +304,10 @@ export abstract class BaseFacet {
     }
   };
 
-  unbindEvents = () => {
-    (this.spreadsheet.container.get('el') as HTMLElement).removeEventListener(
-      'wheel',
-      this.onWheel,
-    );
+  private unbindEvents = () => {
+    const canvas = this.spreadsheet.container.get('el') as HTMLElement;
+    canvas.removeEventListener('wheel', this.onWheel);
     this.mobileWheel.destroy();
-    this.setScrollOffset({ hRowScrollX: 0 });
   };
 
   clipPanelGroup = () => {
@@ -416,25 +414,26 @@ export abstract class BaseFacet {
   };
 
   scrollWithAnimation = (offsetConfig: OffsetConfig) => {
-    const { x: newX, y: newY } = this.adjustXAndY(
-      offsetConfig.offsetX.value,
-      offsetConfig.offsetY.value,
-    );
+    const { scrollX: adjustedScrollX, scrollY: adjustedScrollY } =
+      this.getAdjustedScrollOffset({
+        scrollX: offsetConfig.offsetX.value,
+        scrollY: offsetConfig.offsetY.value,
+      });
     if (this.timer) {
       this.timer.stop();
     }
     const duration = 200;
     const oldOffset = Object.values(this.getScrollOffset());
     const newOffset: number[] = [
-      newX === undefined ? oldOffset[0] : newX,
-      newY === undefined ? oldOffset[1] : newY,
+      adjustedScrollX === undefined ? oldOffset[0] : adjustedScrollX,
+      adjustedScrollY === undefined ? oldOffset[1] : adjustedScrollY,
     ];
     const interpolate = interpolateArray(oldOffset, newOffset);
     this.timer = d3Timer.timer((elapsed) => {
       const ratio = Math.min(elapsed / duration, 1);
       const [scrollX, scrollY] = interpolate(ratio);
       this.setScrollOffset({ scrollX, scrollY });
-      this.startScroll(newX, newY);
+      this.startScroll(adjustedScrollX, adjustedScrollY);
       if (elapsed > duration) {
         this.timer.stop();
       }
@@ -442,12 +441,12 @@ export abstract class BaseFacet {
   };
 
   scrollImmediately = (offsetConfig: OffsetConfig) => {
-    const { x: newX, y: newY } = this.adjustXAndY(
-      offsetConfig.offsetX.value,
-      offsetConfig.offsetY.value,
-    );
-    this.setScrollOffset({ scrollX: newX, scrollY: newY });
-    this.startScroll(newX, newY);
+    const { scrollX, scrollY } = this.getAdjustedScrollOffset({
+      scrollX: offsetConfig.offsetX.value,
+      scrollY: offsetConfig.offsetY.value,
+    });
+    this.setScrollOffset({ scrollX, scrollY });
+    this.startScroll(scrollX, scrollY);
   };
 
   startScroll = (newX: number, newY: number) => {
@@ -473,23 +472,40 @@ export abstract class BaseFacet {
     );
   };
 
-  adjustXAndY = (x: number, y: number): Point => {
-    let newX = x;
-    let newY = y;
-    if (x !== undefined) {
-      if (x + this.panelBBox.width >= this.layoutResult.colsHierarchy.width) {
-        newX = this.layoutResult.colsHierarchy.width - this.panelBBox.width;
-      }
+  private getAdjustedRowScrollX = (hRowScrollX: number): number => {
+    if (hRowScrollX + this.cornerBBox.width >= this.cornerBBox.originalWidth) {
+      return this.cornerBBox.originalWidth - this.cornerBBox.width;
     }
+    return hRowScrollX;
+  };
+
+  private getAdjustedScrollX = (scrollX: number): number => {
+    const colsHierarchyWidth = this.layoutResult.colsHierarchy.width;
+    const panelWidth = this.panelBBox.width;
+    if (scrollX + panelWidth >= colsHierarchyWidth) {
+      return colsHierarchyWidth - panelWidth;
+    }
+    return scrollX;
+  };
+
+  private getAdjustedScrollY = (scrollY: number): number => {
     const rendererHeight = this.getRendererHeight();
-    if (y !== undefined) {
-      if (y + this.panelBBox.height >= rendererHeight) {
-        newY = rendererHeight - this.panelBBox.height;
-      }
+    const panelHeight = this.panelBBox.height;
+    if (scrollY + panelHeight >= rendererHeight) {
+      return rendererHeight - panelHeight;
     }
+    return scrollY;
+  };
+
+  private getAdjustedScrollOffset = ({
+    scrollX,
+    scrollY,
+    hRowScrollX,
+  }: ScrollOffset): ScrollOffset => {
     return {
-      x: newX,
-      y: newY,
+      scrollX: this.getAdjustedScrollX(scrollX),
+      scrollY: this.getAdjustedScrollY(scrollY),
+      hRowScrollX: this.getAdjustedRowScrollX(hRowScrollX),
     };
   };
 

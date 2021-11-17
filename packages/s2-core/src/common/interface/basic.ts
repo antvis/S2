@@ -239,7 +239,6 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
-  lineHeight?: number;
   firstDerivedMeasureRowIndex?: number;
   minorMeasureRowIndex?: number;
 }

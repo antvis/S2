@@ -17,41 +17,44 @@ fetch(
         columns: ['type', 'sub_type'],
         values: ['number'],
       },
-      data: [].concat(res.data).concat([
-        {
-          province: '浙江省',
-          city: '宁波A',
-          type: '家具',
-          sub_type: '桌子',
-          number: 1001,
-        },
-        {
-          province: '浙江省',
-          city: '宁波A',
-          type: '家具',
-          sub_type: '沙发',
-          number: 1002,
-        },
-        {
-          province: '浙江省',
-          city: '宁波A',
-          type: '办公用品',
-          sub_type: '笔',
-          number: 1003,
-        },
-        {
-          province: '浙江省',
-          city: '宁波A',
-          type: '办公用品',
-          sub_type: '纸张',
-          number: 1004,
-        },
-      ]),
+      data: [
+        ...res.data,
+        ...[
+          {
+            province: '浙江省',
+            city: '宁波A',
+            type: '家具',
+            sub_type: '桌子',
+            number: 1001,
+          },
+          {
+            province: '浙江省',
+            city: '宁波A',
+            type: '家具',
+            sub_type: '沙发',
+            number: 1002,
+          },
+          {
+            province: '浙江省',
+            city: '宁波A',
+            type: '办公用品',
+            sub_type: '笔',
+            number: 1003,
+          },
+          {
+            province: '浙江省',
+            city: '宁波A',
+            type: '办公用品',
+            sub_type: '纸张',
+            number: 1004,
+          },
+        ],
+      ],
     };
 
-    const s2options = {
-      width: 660,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       layoutHierarchy: (s2, node) => {
         // layoutHierarchy 用于手动控制行列结构的增加、删除的特殊场景。
         // 以 「宁波市」为例，删除其节点，增加宁波A和宁波B节点。
@@ -90,7 +93,7 @@ fetch(
         return null;
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     s2.render();
   });

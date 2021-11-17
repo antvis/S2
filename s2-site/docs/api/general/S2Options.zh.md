@@ -84,7 +84,6 @@ object **必选**,_default：null_ 功能描述：单元格配置
 | width   | `number` |      |    96 | 单元格宽度   |
 | height  | `number` |      |    30 | 单元格高度   |
 | padding | `number` |      |              | 单元格内边距 |
-| lineHeight | `number` |            |        | 单元格行高 |
 
 ## ColCfg
 

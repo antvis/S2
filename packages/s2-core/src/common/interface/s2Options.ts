@@ -102,7 +102,7 @@ export interface S2BasicOptions {
   readonly rowCell?: CellCallback;
   // custom col cell
   readonly colCell?: CellCallback;
-  // custom frame TODO rename this
+  // custom frame
   readonly frame?: FrameCallback;
   // custom corner header
   readonly cornerHeader?: CornerHeaderCallback;

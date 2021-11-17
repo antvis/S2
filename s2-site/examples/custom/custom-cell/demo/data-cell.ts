@@ -6,7 +6,7 @@ class CustomDataCell extends DataCell {
   /**
    * Draw cell backgroud with image
    */
-  protected drawBackgroundShape() {
+  drawBackgroundShape() {
     this.backgroundShape = this.addShape('image', {
       attrs: {
         ...this.getCellArea(),
@@ -28,17 +28,18 @@ fetch(
         columns: ['type', 'sub_type'],
         values: ['number'],
       },
+      meta: res.meta,
       data: res.data,
     };
-    const s2options = {
-      width: 660,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       hoverHighlight: false, // 为了视觉效果，可不设置
       dataCell: (viewMeta) => {
         return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     // 使用
     s2.render();

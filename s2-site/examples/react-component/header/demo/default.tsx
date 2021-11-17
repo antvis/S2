@@ -9,9 +9,9 @@ fetch(
 )
   .then((res) => res.json())
   .then((res) => {
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 600,
+      height: 480,
       enableCopy: true,
     };
 
@@ -30,13 +30,18 @@ fetch(
       description: '表头描述',
       exportCfg: { open: true },
       advancedSortCfg: { open: true },
-      extra: [ (<Button size={'small'} style={{ verticalAlign: 'top' }}>  插入内容 </Button>) ],
+      extra: [
+        <Button size={'small'} style={{ verticalAlign: 'top' }}>
+          {' '}
+          插入内容{' '}
+        </Button>,
+      ],
     };
 
     ReactDOM.render(
       <SheetComponent
         dataCfg={s2DataConfig}
-        options={s2options}
+        options={s2Options}
         header={header}
         adaptive={false}
       />,
