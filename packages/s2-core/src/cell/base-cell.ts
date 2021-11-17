@@ -77,7 +77,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.theme[this.cellType].icon;
   }
 
-  public getTextAndIconPosition() {
+  public getTextAndIconPosition(iconCount = 1) {
     const textStyle = this.getTextStyle();
     const iconCfg = this.getIconStyle();
     return getTextAndFollowingIconPosition(
@@ -85,6 +85,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       textStyle,
       this.actualTextWidth,
       iconCfg,
+      iconCount,
     );
   }
 
@@ -153,8 +154,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return getContentArea(this.getCellArea(), padding);
   }
 
-  protected getIconPosition() {
-    return this.getTextAndIconPosition().icon;
+  protected getIconPosition(iconCount = 1) {
+    return this.getTextAndIconPosition(iconCount).icon;
   }
 
   protected drawTextShape() {
