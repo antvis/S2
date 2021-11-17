@@ -242,7 +242,7 @@ export class EventController {
       case CellTypes.CORNER_CELL:
         this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_DOWN, event);
         break;
-      case CellTypes.MERGED_CELLS:
+      case CellTypes.MERGED_CELL:
         this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_DOWN, event);
         break;
       default:
@@ -274,7 +274,7 @@ export class EventController {
         case CellTypes.CORNER_CELL:
           this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_MOVE, event);
           break;
-        case CellTypes.MERGED_CELLS:
+        case CellTypes.MERGED_CELL:
           this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_MOVE, event);
           break;
         default:
@@ -301,7 +301,7 @@ export class EventController {
           case CellTypes.CORNER_CELL:
             this.spreadsheet.emit(S2Event.CORNER_CELL_HOVER, event);
             break;
-          case CellTypes.MERGED_CELLS:
+          case CellTypes.MERGED_CELL:
             this.spreadsheet.emit(S2Event.MERGED_CELLS_HOVER, event);
             break;
           default:
@@ -349,7 +349,7 @@ export class EventController {
             }
             this.spreadsheet.emit(S2Event.CORNER_CELL_CLICK, event);
             break;
-          case CellTypes.MERGED_CELLS:
+          case CellTypes.MERGED_CELL:
             this.spreadsheet.emit(S2Event.MERGED_CELLS_CLICK, event);
             break;
           default:
@@ -371,7 +371,7 @@ export class EventController {
         case CellTypes.CORNER_CELL:
           this.spreadsheet.emit(S2Event.CORNER_CELL_MOUSE_UP, event);
           break;
-        case CellTypes.MERGED_CELLS:
+        case CellTypes.MERGED_CELL:
           this.spreadsheet.emit(S2Event.MERGED_CELLS_MOUSE_UP, event);
           break;
         default:
@@ -403,7 +403,7 @@ export class EventController {
           case CellTypes.CORNER_CELL:
             spreadsheet.emit(S2Event.CORNER_CELL_DOUBLE_CLICK, event);
             break;
-          case CellTypes.MERGED_CELLS:
+          case CellTypes.MERGED_CELL:
             spreadsheet.emit(S2Event.MERGED_CELLS_DOUBLE_CLICK, event);
             break;
           default:

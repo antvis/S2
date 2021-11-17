@@ -98,7 +98,7 @@ export const getPolygonPoints = (cells: S2CellType[]) => {
  * @param invisibleCellInfo
  * @param sheet
  */
-const getInvisibleInfo = (
+export const getInvisibleInfo = (
   invisibleCellInfo: MergedCellInfo[],
   sheet: SpreadSheet,
 ) => {
@@ -285,7 +285,7 @@ const removeUnmergedCellsInfo = (
  * @param sheet
  */
 export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
-  if (!removedCells || removedCells.cellType !== CellTypes.MERGED_CELLS) {
+  if (!removedCells || removedCells.cellType !== CellTypes.MERGED_CELL) {
     // eslint-disable-next-line no-console
     console.error(`unmergeCell: the ${removedCells} is not a MergedCell`);
     return;
