@@ -184,6 +184,7 @@ fetch('../data/multiple-people-comparison.json')
         hoverHighlight: false,
       },
       style: {
+        layoutWidthType: 'colAdaptive',
         cellCfg: {
           width: 100,
         },
