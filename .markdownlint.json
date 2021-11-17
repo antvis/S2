@@ -4,5 +4,6 @@
   "line-length": false,
   "single-h1": false,
   "first-line-h1": false,
-  "no-empty-links": false
+  "no-empty-links": false,
+  "no-duplicate-heading": false
 }
