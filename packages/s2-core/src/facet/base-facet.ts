@@ -141,11 +141,11 @@ export abstract class BaseFacet {
     }
   };
 
-  showVScrollBar = () => {
+  showVerticalScrollBar = () => {
     this.vScrollBar?.show();
   };
 
-  showHScrollBar = () => {
+  showHorizontalScrollBar = () => {
     this.hRowScrollBar?.show();
     this.hScrollBar?.show();
   };
@@ -695,6 +695,23 @@ export abstract class BaseFacet {
     );
   };
 
+  updateHorizontalRowScrollOffset = ({ offset, layerX, layerY }) => {
+    // 在行头区域滚动时 才更新行头水平滚动条
+    if (this.isScrollOverTheCornerArea({ layerX, layerY })) {
+      this.hRowScrollBar?.emitScrollChange(offset);
+    }
+  };
+
+  updateHorizontalScrollOffset = ({ offset, layerX, layerY }) => {
+    // 1.行头没有滚动条 2.在数值区域滚动时 才更新数值区域水平滚动条
+    if (
+      !this.hRowScrollBar ||
+      this.isScrollOverThePanelArea({ layerX, layerY })
+    ) {
+      this.hScrollBar?.emitScrollChange(offset);
+    }
+  };
+
   isScrollToLeft = (deltaX: number) => {
     if (!this.hScrollBar) {
       return true;
@@ -712,14 +729,18 @@ export abstract class BaseFacet {
     if (!this.hScrollBar) {
       return true;
     }
+
+    const viewportWidth = this.spreadsheet.isFrozenRowHeader()
+      ? this.panelBBox?.width
+      : this.panelBBox?.maxX;
+
     const isScrollRowHeaderToRight =
       !this.hRowScrollBar ||
       this.hRowScrollBar.thumbOffset + this.hRowScrollBar.thumbLen >=
         this.cornerBBox.width;
 
     const isScrollPanelToRight =
-      this.hScrollBar.thumbOffset + this.hScrollBar.thumbLen >=
-      this.panelBBox?.width;
+      this.hScrollBar.thumbOffset + this.hScrollBar.thumbLen >= viewportWidth;
 
     return deltaX >= 0 && isScrollPanelToRight && isScrollRowHeaderToRight;
   };
@@ -742,11 +763,11 @@ export abstract class BaseFacet {
     );
   };
 
-  isVerticalScrollInTheViewport = (deltaY: number) => {
+  isVerticalScrollOverTheViewport = (deltaY: number) => {
     return !this.isScrollToTop(deltaY) && !this.isScrollToBottom(deltaY);
   };
 
-  isHorizontalScrollInTheViewport = (deltaX: number) => {
+  isHorizontalScrollOverTheViewport = (deltaX: number) => {
     return !this.isScrollToLeft(deltaX) && !this.isScrollToRight(deltaX);
   };
 
@@ -757,12 +778,21 @@ export abstract class BaseFacet {
       - 未滚动到顶部或底部: 当前表格滚动, 阻止外部容器滚动
       - 滚动到顶部或底部: 恢复外部容器滚动
   */
-  isScrollInTheViewport = (deltaX: number, deltaY: number) => {
+  isScrollOverTheViewport = (
+    deltaX: number,
+    deltaY: number,
+    layerY: number,
+  ) => {
+    const isScrollOverTheHeader = layerY <= this.cornerBBox.maxY;
+    // 光标在角头或列头时, 不触发表格自身滚动
+    if (isScrollOverTheHeader) {
+      return false;
+    }
     if (deltaY !== 0) {
-      return this.isVerticalScrollInTheViewport(deltaY);
+      return this.isVerticalScrollOverTheViewport(deltaY);
     }
     if (deltaX !== 0) {
-      return this.isHorizontalScrollInTheViewport(deltaX);
+      return this.isHorizontalScrollOverTheViewport(deltaX);
     }
     return false;
   };
@@ -779,7 +809,9 @@ export abstract class BaseFacet {
     this.spreadsheet.hideTooltip();
     this.spreadsheet.interaction.clearHoverTimer();
 
-    if (!this.isScrollInTheViewport(optimizedDeltaX, optimizedDeltaY)) {
+    if (
+      !this.isScrollOverTheViewport(optimizedDeltaX, optimizedDeltaY, layerY)
+    ) {
       return;
     }
 
@@ -794,24 +826,24 @@ export abstract class BaseFacet {
         scrollY: currentScrollY,
         hRowScrollX,
       } = this.getScrollOffset();
-      if (optimizedDeltaX > 0) {
-        this.showHScrollBar();
+
+      if (optimizedDeltaX !== 0) {
+        this.showHorizontalScrollBar();
+        this.updateHorizontalRowScrollOffset({
+          layerX,
+          layerY,
+          offset: optimizedDeltaX + hRowScrollX,
+        });
+        this.updateHorizontalScrollOffset({
+          layerX,
+          layerY,
+          offset: optimizedDeltaX + currentScrollX,
+        });
       }
 
-      if (optimizedDeltaY > 0) {
-        this.showVScrollBar();
-      }
-
-      if (this.hRowScrollBar) {
-        // When rowScrollBar is exists, scrolling is only valid at the corresponding render range
-        this.hScrollBar.emitScrollChange(optimizedDeltaX + currentScrollX);
-
-        this.hRowScrollBar.emitScrollChange(optimizedDeltaX + hRowScrollX);
-      } else if (this.hScrollBar && optimizedDeltaX !== 0) {
-        this.hScrollBar.emitScrollChange(optimizedDeltaX + currentScrollX);
-      }
       if (optimizedDeltaY !== 0) {
-        this.vScrollBar.emitScrollChange(optimizedDeltaY + currentScrollY);
+        this.showVerticalScrollBar();
+        this.vScrollBar?.emitScrollChange(optimizedDeltaY + currentScrollY);
       }
 
       this.delayHideScrollbarOnMobile();
