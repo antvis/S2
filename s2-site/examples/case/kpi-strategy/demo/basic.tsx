@@ -209,9 +209,9 @@ fetch('../data/kpi-strategy.json')
       totalData,
     };
 
-    const s2options = {
-      width: 800,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       hierarchyType: 'tree',
       tooltip: {
         operation: {
@@ -256,7 +256,7 @@ fetch('../data/kpi-strategy.json')
     ReactDOM.render(
       <SheetComponent
         dataCfg={s2DataConfig}
-        options={s2options}
+        options={s2Options}
         sheetType="pivot"
         themeCfg={{
           theme: merge({}, theme),

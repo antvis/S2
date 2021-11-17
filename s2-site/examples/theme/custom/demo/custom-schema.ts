@@ -9,21 +9,44 @@ fetch(
     const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {
-        columns: ['province', 'city', 'type', 'price'],
+        columns: ['province', 'city', 'type', 'price', 'cost'],
       },
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
       data,
     };
 
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 300,
+      height: 480,
     };
 
     const BORDER_COLOR = 'rgb(39, 44, 65)';
     const BACK_COLOR = 'rgb(67, 72, 91)';
     const HEADER_BACK_COLOR = '#353c59';
     const CELL_ACTIVE_BACK_COLOR = '#434c6c';
-    const cusomTheme = {
+
+    const customTheme = {
       background: {
         color: HEADER_BACK_COLOR,
       },
@@ -170,9 +193,9 @@ fetch(
       },
     };
 
-    const s2 = new TableSheet(container, s2DataConfig, s2options);
+    const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
-    s2.setThemeCfg({ theme: cusomTheme });
+    s2.setThemeCfg({ theme: customTheme });
 
     s2.render();
   });

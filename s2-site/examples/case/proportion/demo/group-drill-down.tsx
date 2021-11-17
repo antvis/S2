@@ -9,9 +9,10 @@ fetch(
   .then((res) => res.json())
   .then((data) => {
     const s2DataConfig = data;
-    const s2options = {
+    
+    const s2Options = {
       width: 600,
-      height: 600,
+      height: 480,
       style: {
         cellCfg: {
           width: 250,
@@ -25,7 +26,7 @@ fetch(
     ReactDOM.render(
       <SheetComponent
         dataCfg={s2DataConfig}
-        options={s2options}
+        options={s2Options}
         sheetType="gridAnalysis"
         header={{ title: '人群网络分析' }}
       />,

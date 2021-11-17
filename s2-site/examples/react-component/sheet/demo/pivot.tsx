@@ -6,22 +6,44 @@ import '@antv/s2/dist/s2.min.css';
 fetch('../data/basic.json')
   .then((res) => res.json())
   .then((res) => {
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 400,
+      height: 480,
     };
 
     const s2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
-        values: ['price'],
+        values: ['price', 'cost'],
       },
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
       data: res,
     };
 
     ReactDOM.render(
-      <SheetComponent dataCfg={s2DataConfig} options={s2options} />,
+      <SheetComponent dataCfg={s2DataConfig} options={s2Options} />,
       document.getElementById('container'),
     );
   });
