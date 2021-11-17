@@ -59,8 +59,6 @@ describe('Sync Row Scroll Offset Tests', () => {
       },
     } as any);
 
-    // should resize successfully
-    expect(s2.store.get('resized')).toBeTruthy();
     expect(s2.store.get('hRowScrollX')).not.toEqual(0);
   });
 });
