@@ -4,20 +4,18 @@ import { SheetComponent } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/ee9ba442-2241-4052-ab7c-2c226765cedb.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/ff31b171-17a7-4d29-b20a-0b90a810d2de.json',
 )
   .then((res) => res.json())
   .then((data) => {
     const GridSheet = () => {
       const [s2DataConfig, setS2DataConfig] = useState(data.dataCfg);
-      const [sheetType, setSheetType] = useState('gridAnalysis');
-      const [showTooltip, setShowTooltip] = useState(false);
       const [drillDownField, setDrillDownField] = useState('');
       const s2options = {
         width: 600,
         height: 600,
         tooltip: {
-          showTooltip: showTooltip,
+          showTooltip: false,
         },
         style: {
           layoutWidthType: 'colAdaptive',
@@ -27,33 +25,27 @@ fetch(
             minorMeasureRowIndex: 3,
             firstDerivedMeasureRowIndex: 2,
           },
-          colCfg: {
-            hideMeasureColumn: true,
-          },
         },
       };
 
       const Breadcrumb = () => {
-        if (drillDownField) {
-          return (
-            <div className="antv-s2-breadcrumb">
-              <span
-                className="antv-s2-breadcrumb-all"
-                onClick={() => {
-                  setSheetType('gridAnalysis');
-                  setShowTooltip(false);
-                  setS2DataConfig(data.dataCfg);
-                  setDrillDownField('');
-                }}
-              >
-                全部
-              </span>
-              <span> / {drillDownField}</span>
-            </div>
-          );
-        } else {
+        if (!drillDownField) {
           return null;
         }
+        return (
+          <div className="antv-s2-breadcrumb">
+            <span
+              className="antv-s2-breadcrumb-all"
+              onClick={() => {
+                setS2DataConfig(data.dataCfg);
+                setDrillDownField('');
+              }}
+            >
+              全部
+            </span>
+            <span> / {drillDownField}</span>
+          </div>
+        );
       };
 
       const dataCellTooltip = (viewMeta) => {
@@ -64,8 +56,6 @@ fetch(
               <div
                 className="antv-s2-tooltip-action"
                 onClick={() => {
-                  setSheetType('pivot');
-                  setShowTooltip(true);
                   setS2DataConfig(data.drillDownDataCfg);
                   setDrillDownField(fieldValue.label);
                 }}
@@ -123,7 +113,7 @@ fetch(
         <SheetComponent
           dataCfg={s2DataConfig}
           options={s2options}
-          sheetType={sheetType}
+          sheetType="gridAnalysis"
           header={{
             title: '人群网络分析',
             advancedSortCfg: { open: true },
