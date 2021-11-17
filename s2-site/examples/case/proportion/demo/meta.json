@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "占比表",
+    "en": "Group drill down sheet"
+  },
+  "demos": [
+    {
+      "filename": "group-drill-down.tsx",
+      "title": {
+        "zh": "分群下钻表",
+        "en": "Measure Comparison Sheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/MYTYI6%26cAC/drilldown.gif"
+    },
+    {
+      "filename": "single-population-proportion.tsx",
+      "title": {
+        "zh": "单人群占比表",
+        "en": "Single population proportion Sheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*6ge6Ra_ZSRsAAAAAAAAAAAAAARQnAQ"
+    }
+  ]
+}

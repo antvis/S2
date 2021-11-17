@@ -6,6 +6,7 @@ import {
   get,
   includes,
   isEmpty,
+  isObject,
   isString,
   merge,
   once,
@@ -306,6 +307,7 @@ export abstract class SpreadSheet extends EE {
       cellInfos: data,
       options,
     });
+
     this.showTooltip({
       data: tooltipData,
       position: {

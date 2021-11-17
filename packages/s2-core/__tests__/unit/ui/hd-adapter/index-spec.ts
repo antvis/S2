@@ -1,7 +1,8 @@
 import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
-import { SpreadSheet } from '@/sheet-type/spread-sheet';
+import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { HdAdapter } from '@/ui/hd-adapter';
 
+jest.mock('@/sheet-type/spread-sheet');
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 jest.mock('@/utils/tooltip');
@@ -14,25 +15,28 @@ describe('HD Adapter Tests', () => {
   let expectContainerSize: (
     size?: [number, number],
     updatedSize?: [number, number],
-  ) => Promise<void>;
+  ) => void;
 
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     window.devicePixelRatio = DPR;
+    Object.defineProperty(visualViewport, 'scale', {
+      value: 1,
+      configurable: true,
+    });
 
     s2 = createFakeSpreadSheet();
     hdAdapter = new HdAdapter(s2);
     hdAdapter.init();
 
-    expectContainerSize = async (
+    expectContainerSize = (
       [width, height] = [s2.options.width, s2.options.height],
       [updatedWidth, updatedHeight] = [
         s2.options.width * DPR,
         s2.options.height * DPR,
       ],
     ) => {
-      await sleep(500);
       const canvas: HTMLCanvasElement = s2.container.get('el');
       expect(canvas.style.width).toEqual(`${width}px`);
       expect(canvas.style.height).toEqual(`${height}px`);
@@ -43,6 +47,11 @@ describe('HD Adapter Tests', () => {
 
   afterEach(() => {
     hdAdapter.destroy();
+
+    Object.defineProperty(visualViewport, 'scale', {
+      value: 1,
+      configurable: true,
+    });
   });
 
   // eslint-disable-next-line jest/expect-expect
@@ -52,24 +61,28 @@ describe('HD Adapter Tests', () => {
 
   test('should not be update container size when zoom scale changed, but scale less than current DPR', async () => {
     visualViewport.dispatchEvent(new Event('resize'));
-    await expectContainerSize();
+    await sleep(500);
+
+    expectContainerSize();
     expect(s2.render).not.toHaveBeenCalled();
   });
 
+  // eslint-disable-next-line jest/expect-expect
   test('should update container size when zoom scale changed, and scale more than current DPR', async () => {
+    const scale = 2;
     Object.defineProperty(visualViewport, 'scale', {
-      value: 2.5,
+      value: scale,
       configurable: true,
     });
     visualViewport.dispatchEvent(new Event('resize'));
+    await sleep(500);
 
     // update container width/height, not update container stylesheet width/height
     // eg: <canvas width="1000" height="500" style="width:500px; height: 250px;" />
-    await expectContainerSize(
+    expectContainerSize(
       [s2.options.width, s2.options.height],
-      [s2.options.width * 3, s2.options.height * 3],
+      [s2.options.width * scale, s2.options.height * scale],
     );
-    expect(s2.render).toHaveBeenCalledTimes(1);
   });
 
   test('should use DPR for update container size when zoom scale changed, and scale less than current DPR', async () => {
@@ -79,10 +92,7 @@ describe('HD Adapter Tests', () => {
     });
     visualViewport.dispatchEvent(new Event('resize'));
 
-    await expectContainerSize(
-      [s2.options.width, s2.options.height],
-      [s2.options.width * DPR, s2.options.height * DPR],
-    );
+    await sleep(500);
     expect(s2.render).not.toHaveBeenCalled();
   });
 
@@ -94,7 +104,7 @@ describe('HD Adapter Tests', () => {
     });
     visualViewport.dispatchEvent(new Event('resize'));
 
-    await expectContainerSize();
+    await sleep(500);
     expect(s2.render).not.toHaveBeenCalled();
   });
 
@@ -107,7 +117,9 @@ describe('HD Adapter Tests', () => {
     hdAdapter.init();
     visualViewport.dispatchEvent(new Event('resize'));
 
-    await expectContainerSize();
+    await sleep(500);
+
+    expectContainerSize();
     expect(s2.render).not.toHaveBeenCalled();
   });
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Button } from 'antd';
 import { SheetComponent } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
@@ -8,9 +9,9 @@ fetch(
 )
   .then((res) => res.json())
   .then((res) => {
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 600,
+      height: 480,
       enableCopy: true,
     };
 
@@ -29,16 +30,22 @@ fetch(
       description: '表头描述',
       exportCfg: { open: true },
       advancedSortCfg: { open: true },
-      extra: [<button style={{ verticalAlign: 'top' }}> 插入内容 </button>],
+      extra: [
+        <Button size={'small'} style={{ verticalAlign: 'top' }}>
+          {' '}
+          插入内容{' '}
+        </Button>,
+      ],
     };
 
     ReactDOM.render(
       <SheetComponent
         dataCfg={s2DataConfig}
-        options={s2options}
+        options={s2Options}
         header={header}
         adaptive={false}
       />,
       document.getElementById('container'),
     );
   });
+
