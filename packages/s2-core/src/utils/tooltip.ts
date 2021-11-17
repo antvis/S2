@@ -21,6 +21,7 @@ import {
   noop,
   mapKeys,
   every,
+  isObject,
 } from 'lodash';
 import * as CSS from 'csstype';
 import { Event as CanvasEvent } from '@antv/g-canvas';
@@ -222,8 +223,11 @@ export const getListItem = (
 ): ListItem => {
   const name = spreadsheet?.dataSet?.getFieldName(field);
   const formatter = getFieldFormatter(spreadsheet, field);
-  // eslint-disable-next-line
-  const value = formatter(valueField ? valueField : data[field]);
+  // 暂时对 object 类型 data 不作处理，上层通过自定义 tooltip 的方式去自行定制
+  const dataValue = isObject(data[field])
+    ? JSON.stringify(data[field])
+    : data[field];
+  const value = formatter(valueField || dataValue);
 
   return {
     name,
@@ -463,7 +467,6 @@ export const getTooltipData = (params: TooltipDataParam) => {
   let headInfo = null;
   let details = null;
   const firstCellInfo = cellInfos[0] || {};
-  // TODO：gridAnalysis类型数据需要补充兼容
   if (!options?.hideSummary) {
     // 计算多项的sum（默认为sum，可自定义）
     summaries = getSummaries({
