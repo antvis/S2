@@ -74,10 +74,6 @@ export type TooltipInterpretationOptions = {
   render?: Element | string;
 };
 
-export type InfosProps = {
-  infos: string;
-};
-
 export type TooltipShowOptions = {
   position: TooltipPosition;
   data?: TooltipData;

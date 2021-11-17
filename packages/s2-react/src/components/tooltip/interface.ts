@@ -9,6 +9,10 @@ export interface TooltipRenderProps extends TooltipShowOptions {
   ) => void;
 }
 
+export type InfosProps = {
+  infos: string;
+};
+
 export type TooltipRenderComponent = JSX.Element;
 
 export const TOOLTIP_DEFAULT_ICON_PROPS: Partial<HtmlIconProps> = {

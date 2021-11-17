@@ -1,4 +1,2 @@
-import { getIcon, registerIcon } from './factory';
-import { GuiIcon } from './gui-icon';
-
-export { GuiIcon, registerIcon, getIcon };
+export { getIcon, registerIcon } from './factory';
+export { GuiIcon } from './gui-icon';
