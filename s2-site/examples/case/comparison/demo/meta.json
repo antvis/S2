@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "对比表",
+    "en": "Measure Comparison Sheet"
+  },
+  "demos": [
+    {
+      "filename": "measure-comparison.tsx",
+      "title": {
+        "zh": "指标对比表",
+        "en": "Measure Comparison Sheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/90KJwZ8KgY/f087c06e-9522-43dc-9213-a3ccc9520212.png"
+    },
+    {
+      "filename": "multiple-people-comparison.tsx",
+      "title": {
+        "zh": "多人群对比表",
+        "en": "Multiple People Comparison Sheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/GVz3yaFf5O/b57857b9-a307-474a-a418-c97f627311a1.png"
+    }
+  ]
+}

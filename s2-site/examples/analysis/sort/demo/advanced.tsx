@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent, SortParams } from '@antv/s2';
+import { SheetComponent } from '@antv/s2';
 import insertCss from 'insert-css';
+import 'antd/es/cascader/style/index.css';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
@@ -23,15 +24,37 @@ fetch(
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
-        values: ['price'],
+        values: ['price', 'cost'],
       },
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
       data,
-      sortParams
+      sortParams,
     };
 
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 600,
+      height: 480,
     };
 
     const AdvancedSortDemo = () => {
@@ -43,12 +66,12 @@ fetch(
             sheetType={'pivot'}
             adaptive={false}
             dataCfg={dataCfg}
-            options={s2options}
+            options={s2Options}
             header={{
               advancedSortCfg: {
                 open: true,
                 sortParams,
-                onSortConfirm: (ruleValues, sortParams: SortParams) => {
+                onSortConfirm: (ruleValues, sortParams) => {
                   setDataCfg({ ...dataCfg, sortParams });
                 },
               },
@@ -67,5 +90,11 @@ insertCss(`
   }
   .antv-s2-advanced-sort-btn.ant-btn:hover svg path, .antv-s2-advanced-sort-btn.ant-btn:focus svg path {
     fill: #873bf4;
+  }
+  .ant-cascader-menu-item {
+    font-size: 12px;
+  }
+  .ant-col {
+    width: 100%;
   }
 `);

@@ -12,14 +12,14 @@ import '@antv/s2/dist/s2.min.css';
 // 进度条
 const PROGRESS_BAR = {
   width: 80,
-  height: 16,
-  innerHeight: 10,
+  height: 10,
+  innerHeight: 6,
 };
 
 // 期望线
 const EXPECTED_LINE = {
   width: 1,
-  height: 20,
+  height: 12,
   color: '#000',
 };
 
@@ -95,7 +95,7 @@ class KpiStrategyDataCell extends DataCell {
     const isDown = value.startsWith('-');
     const color = isDown ? DERIVE_COLOR.down : DERIVE_COLOR.up;
     const displayValue = value.replace('-', '');
-    const text = isDown ? `↓ ${displayValue}` : `↑ ${displayValue}`;
+    const text = isDown ? `↓${displayValue}` : `↑${displayValue}`;
     const textStyle = {
       fill: color,
       fontSize: 12,
@@ -209,9 +209,9 @@ fetch('../data/kpi-strategy.json')
       totalData,
     };
 
-    const s2options = {
-      width: 800,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       hierarchyType: 'tree',
       tooltip: {
         operation: {
@@ -256,7 +256,7 @@ fetch('../data/kpi-strategy.json')
     ReactDOM.render(
       <SheetComponent
         dataCfg={s2DataConfig}
-        options={s2options}
+        options={s2Options}
         sheetType="pivot"
         themeCfg={{
           theme: merge({}, theme),

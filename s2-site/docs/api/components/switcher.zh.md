@@ -17,6 +17,7 @@ order: 3
 | overlayClassName      | `string`                                                |      |          | 弹出框样式名                           |
 | innerContentClassName | `string`                                                |      |          | 弹出框内容样式名                       |
 | onSubmit              | `(result:` [SwitcherResult](#switcherresult)`) => void` |      |          | 关闭弹窗后，处理行列切换结果的回调函数 |
+| popover              | [PopoverProps](https://ant.design/components/popover-cn/#API) |      |          | 弹窗配置, 透传给 `antd` 的 `Popover` 组件 |
 
 ## SwitcherField
 

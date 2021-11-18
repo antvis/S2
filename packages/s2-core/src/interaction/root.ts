@@ -8,7 +8,7 @@ import {
 import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
-import { ColCell, DataCell, RowCell } from '@/cell';
+import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
 import {
   CellTypes,
   InteractionName,
@@ -20,6 +20,7 @@ import {
   CustomInteraction,
   InteractionStateInfo,
   Intercept,
+  MergedCellInfo,
   S2CellType,
 } from '@/common/interface';
 import { ColHeader, RowHeader } from '@/facet/header';
@@ -28,6 +29,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
+import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -211,6 +213,14 @@ export class RootInteraction {
     this.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
+  };
+
+  public mergeCells = (cellsInfo?: MergedCellInfo[], hideData?: boolean) => {
+    mergeCells(this.spreadsheet, cellsInfo, hideData);
+  };
+
+  public unmergeCell = (removedCells: MergedCell) => {
+    unmergeCell(this.spreadsheet, removedCells);
   };
 
   /**

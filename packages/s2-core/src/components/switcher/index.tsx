@@ -1,23 +1,22 @@
-import { Button, Popover } from 'antd';
+import { Button, Popover, PopoverProps } from 'antd';
 import React, { FC, ReactNode, useState } from 'react';
 import { SwitcherIcon } from '../icons';
 import { SwitcherContent, SwitcherContentProps } from './content';
-import './index.less';
 import { getSwitcherClassName } from './util';
 import { i18n } from '@/common/i18n';
+import './index.less';
 
 export interface SwitcherProps
   extends Omit<SwitcherContentProps, 'onToggleVisible'> {
   title?: ReactNode;
-  triggerClassName?: string;
-  overlayClassName?: string;
+  // ref: https://ant.design/components/popover-cn/#API
+  popover?: PopoverProps;
 }
 
 export const Switcher: FC<SwitcherProps> = ({
   title,
-  triggerClassName,
-  overlayClassName,
-  ...props
+  popover,
+  ...otherProps
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -27,14 +26,15 @@ export const Switcher: FC<SwitcherProps> = ({
 
   return (
     <Popover
-      className={triggerClassName}
-      overlayClassName={overlayClassName}
-      placement="bottomLeft"
-      trigger="click"
       visible={visible}
-      destroyTooltipOnHide={true}
-      content={<SwitcherContent {...props} onToggleVisible={onToggleVisible} />}
+      content={
+        <SwitcherContent {...otherProps} onToggleVisible={onToggleVisible} />
+      }
       onVisibleChange={onToggleVisible}
+      trigger="click"
+      placement="bottomLeft"
+      destroyTooltipOnHide
+      {...popover}
     >
       {title || (
         <Button

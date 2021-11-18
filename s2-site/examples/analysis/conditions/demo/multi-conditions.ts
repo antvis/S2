@@ -26,9 +26,9 @@ fetch(
     const container = document.getElementById('container');
     const s2DataConfig = dataCfg;
 
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 600,
+      height: 480,
       interaction: {
         hoverHighlight: false,
       },
@@ -84,7 +84,7 @@ fetch(
         ],
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
     s2.setThemeCfg({ name: 'colorful' });
     s2.render();
   });

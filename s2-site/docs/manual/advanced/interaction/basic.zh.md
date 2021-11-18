@@ -167,7 +167,7 @@ const s2Options = {
 
 ### 选中聚光灯
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/Z0nENy85%26/929f6638-a19f-4a6c-9ad8-a9a6ef2269c3.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Omq-Ra0PO9UAAAAAAAAAAAAAARQnAQ" width="700" alt="preview" />
 
 在选中单元格后，如果需要置灰未选中的单元格，强调需要关注的数据，可配置 `selectedCellsSpotlight` 开启：
 
@@ -181,14 +181,14 @@ const s2options = {
 
 ### 十字高亮
 
-默认情况下，我们会在鼠标悬停时，高亮对应的行列头，更直观的查看数据，可配置 `hoverHighlight` 关闭：
+在鼠标悬停时，高亮对应的行列头，更直观的查看数据，默认关闭，可配置 `hoverHighlight` 开启：
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/1oWitPZ7j/802123cc-6ee6-41c7-9310-049348a016ca.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*f1f1TqoWNdMAAAAAAAAAAAAAARQnAQ" alt="preview" width="700" />
 
 ```ts
 const s2options = {
   interaction: {
-    hoverHighlight: false
+    hoverHighlight: true // 默认关闭
   }
 };
 ```
@@ -197,7 +197,7 @@ const s2options = {
 
 刷选过程中，会提示预选中的单元格，并且显示半透明的刷选蒙层
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*N3-cSrfpGc4AAAAAAAAAAAAAARQnAQ" alt="preview" width="700" />
 
 ### 隐藏列头 （明细表有效）
 
@@ -218,7 +218,7 @@ const s2options = {
 };
 ```
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/PNFrjWu%261/8b9de9d4-b4be-48dd-abdb-40f98371592e.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7NasR7RUHG4AAAAAAAAAAAAAARQnAQ" alt="preview" width="500" />
 
 ## 重置交互
 
