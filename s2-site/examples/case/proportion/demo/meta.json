@@ -5,12 +5,20 @@
   },
   "demos": [
     {
-      "filename": "basic.tsx",
+      "filename": "group-drill-down.tsx",
       "title": {
         "zh": "分群下钻表",
         "en": "Measure Comparison Sheet"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/39sk1fL9kQ/d09f226d-c9b5-4d51-bbeb-455dc5c25ace.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/MYTYI6%26cAC/drilldown.gif"
+    },
+    {
+      "filename": "single-population-proportion.tsx",
+      "title": {
+        "zh": "单人群占比表",
+        "en": "Single population proportion Sheet"
+      },
+      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*6ge6Ra_ZSRsAAAAAAAAAAAAAARQnAQ"
     }
   ]
 }

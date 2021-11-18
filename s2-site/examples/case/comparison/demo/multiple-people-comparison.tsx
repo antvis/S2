@@ -170,9 +170,9 @@ fetch('../data/multiple-people-comparison.json')
       data,
     };
 
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 600,
+      height: 480,
       tooltip: {
         operation: {
           trend: true,
@@ -184,6 +184,7 @@ fetch('../data/multiple-people-comparison.json')
         hoverHighlight: false,
       },
       style: {
+        layoutWidthType: 'colAdaptive',
         cellCfg: {
           width: 100,
         },
@@ -231,29 +232,32 @@ fetch('../data/multiple-people-comparison.json')
     };
 
     ReactDOM.render(
-      <div className="root">
-        <PaletteLegend />
-        <SheetComponent
-          dataCfg={s2DataConfig}
-          options={s2options}
-          sheetType="pivot"
-          themeCfg={{ theme }}
-        />
-      </div>,
+      <SheetComponent
+        dataCfg={s2DataConfig}
+        options={s2Options}
+        sheetType="pivot"
+        themeCfg={{ theme }}
+        header={{
+          title: '多人群对比表',
+          extra: [<PaletteLegend />],
+        }}
+      />,
       document.getElementById('container'),
     );
   });
 
 insertCss(`
-  .root{
-    display: inline-block;
+
+  .ant-page-header {
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .palette-legend {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-bottom: 8px;
+    margin-top: 8px;
   }
 
   .palette-color {

@@ -24,7 +24,7 @@ export const getTheme = (
         fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[0],
         opacity: 1,
-        textAlign: 'center',
+        textAlign: 'left',
         textBaseline: 'middle',
       },
       text: {
@@ -33,7 +33,7 @@ export const getTheme = (
         fontWeight: 'normal',
         fill: basicColors[0],
         opacity: 1,
-        textAlign: 'center',
+        textAlign: 'left',
         textBaseline: 'middle',
       },
       cell: {
@@ -73,7 +73,7 @@ export const getTheme = (
         fill: basicColors[14],
         linkTextFill: basicColors[14],
         opacity: 1,
-        textAlign: 'center',
+        textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
       },
       text: {
@@ -84,7 +84,7 @@ export const getTheme = (
         linkTextFill: basicColors[6],
         opacity: 1,
         textBaseline: 'middle',
-        textAlign: isTable ? 'center' : 'right', // default align center for row cell in table mode
+        textAlign: isTable ? 'center' : 'left', // default align center for row cell in table mode
       },
       cell: {
         // ----------- background color -----------
@@ -101,9 +101,9 @@ export const getTheme = (
         // -------------- layout -----------------
         padding: {
           top: 0,
-          right: 8,
+          right: 10,
           bottom: 0,
-          left: 8,
+          left: 10,
         },
         /* ---------- interaction state ----------- */
         interactionState: {
