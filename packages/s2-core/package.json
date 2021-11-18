@@ -49,27 +49,17 @@
     "tsc": "tsc --noEmit",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
-  "peerDependencies": {
-    "react": ">=16.14.0",
-    "react-dom": ">=16.14.0"
-  },
   "dependencies": {
     "@antv/event-emitter": "~0.1.2",
     "@antv/g-canvas": "^0.5.12",
     "@antv/g-gesture": "^1.0.0",
-    "antd": "^4.16.13",
-    "classnames": "^2.3.1",
     "csstype": "^3.0.9",
-    "lodash": "^4.17.21",
-    "react-beautiful-dnd": "^13.1.0"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@types/react-beautiful-dnd": "^13.1.2",
     "d3-dsv": "^1.1.1",
     "inquirer": "^8.2.0",
-    "inquirer-autocomplete-prompt": "^1.4.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "inquirer-autocomplete-prompt": "^1.4.0"
   },
   "sideEffects": [
     "*.css",
