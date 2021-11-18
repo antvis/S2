@@ -30,13 +30,7 @@ const output = {
 
 const plugins = [
   alias({
-    entries: [
-      { find: 'lodash', replacement: 'lodash-es' },
-      {
-        find: 'react-is',
-        replacement: 'react-is/cjs/react-is.production.min.js',
-      },
-    ],
+    entries: [{ find: 'lodash', replacement: 'lodash-es' }],
   }),
   replace({
     'process.env.NODE_ENV': JSON.stringify('production'),
@@ -72,17 +66,12 @@ if (enableAnalysis) {
   plugins.push(visualizer({ gzipSize: true }));
 }
 
-const external = ['react', 'react-dom', '@ant-design/icons', /antd/];
+const external = [];
 
 if (format === 'umd') {
   output.file = 'dist/s2.min.js';
   plugins.push(terser());
-  output.globals = {
-    react: 'React',
-    'react-dom': 'ReactDOM',
-    antd: 'antd',
-    '@ant-design/icons': 'icons',
-  };
+  output.globals = {};
 } else {
   external.push(
     'd3-interpolate',
@@ -92,7 +81,6 @@ if (format === 'umd') {
     '@antv/g-canvas',
     '@antv/event-emitter',
     'd3-timer',
-    'classnames',
   );
   output.dir = outDir;
 }
