@@ -15,7 +15,7 @@
     {
       "filename": "drill-dwon-for-pivot.tsx",
       "title": {
-        "zh": "交叉表维度下钻组件",
+        "zh": "透视表维度下钻组件",
         "en": "DrillDown in pivot sheet"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/1yhmgcHuk/2021-11-16%25252022.14.42.gif"

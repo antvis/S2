@@ -154,7 +154,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 
 ## HeaderActionIconProps
 
-功能描述： 点击自定义操作 icon 后交叉表返回的当前 icon 相关
+功能描述： 点击自定义操作 icon 后透视表返回的当前 icon 相关
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- |
