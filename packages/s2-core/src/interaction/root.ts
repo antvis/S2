@@ -7,7 +7,7 @@ import {
 } from './base-interaction/click';
 import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
-import { DataCellShiftMultiSelection } from './data-cell-shift-multi-selection';
+import { ShiftMultiSelection } from './shift-multi-selection';
 import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
 import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
 import {
@@ -267,7 +267,7 @@ export class RootInteraction {
       );
       this.interactions.set(
         InteractionName.COL_ROW_SHIHT_MULTI_SELECTION,
-        new DataCellShiftMultiSelection(this.spreadsheet),
+        new ShiftMultiSelection(this.spreadsheet),
       );
     }
 
