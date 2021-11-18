@@ -1,8 +1,9 @@
-import { keys, has, uniq, isPlainObject, map, toUpper } from 'lodash';
+import { keys, has, map, toUpper, endsWith } from 'lodash';
 import { SortMethod, SortParam } from '@/common/interface';
 import { DataType, SortActionParams } from '@/data-set/interface';
 import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
-import { sortByItems } from '@/utils/data-set-operate';
+import { sortByItems, getListBySorted } from '@/utils/data-set-operate';
+import { getDimensionsWithParentPath } from '@/utils/dataset/pivot-data-set';
 
 export const isAscSort = (sortMethod) => toUpper(sortMethod) === 'ASC';
 
@@ -31,7 +32,7 @@ export const sortAction = (
         if (Number(a) && Number(b)) {
           return (Number(a) - Number(b)) * sort;
         }
-        if (specialValues?.includes(a?.toString())) {
+        if (a && specialValues?.includes(a?.toString())) {
           return -sort;
         }
         if (Number(a) && specialValues?.includes(b?.toString())) {
@@ -41,6 +42,9 @@ export const sortAction = (
       if (a && b) {
         // 数据健全兼容，用户数据不全时，能够展示.
         return a.toString().localeCompare(b.toString(), 'zh') * sort;
+      }
+      if (a) {
+        return sort;
       }
       return -sort;
     },
@@ -52,12 +56,11 @@ const mergeDataWhenASC = (
   originValues: string[],
   asc: boolean,
 ) => {
-  let sortList = uniq(sortedValues);
   if (asc) {
     // 如果是升序，需要将无数据的项放到前面
-    sortList = sortByItems(originValues, sortList);
+    return sortByItems(originValues, sortedValues);
   }
-  return sortList;
+  return [...new Set([...sortedValues, ...originValues])];
 };
 
 export const sortByFunc = (params: SortActionParams): string[] => {
@@ -67,27 +70,40 @@ export const sortByFunc = (params: SortActionParams): string[] => {
 };
 
 export const sortByCustom = (params: SortActionParams): string[] => {
-  const { sortByValues } = params;
-  return sortByValues;
+  const { sortByValues, originValues } = params;
+  const sortedListWithPre = sortByValues.map(
+    (item) => originValues.find((i) => endsWith(i, item)) || item,
+  );
+  return getListBySorted(originValues, sortedListWithPre);
 };
 
 export const sortByMethod = (params: SortActionParams): string[] => {
-  const { sortParam, measureValues, originValues } = params;
+  const { sortParam, measureValues, originValues, dataSet } = params;
   const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam;
-  const result = map(
-    sortAction(
+  const { rows, columns } = dataSet.fields;
+  let result = originValues;
+
+  if (sortByMeasure) {
+    const dimensions = sortAction(
       measureValues,
       sortMethod,
       sortByMeasure === TOTAL_VALUE ? query[EXTRA_FIELD] : sortByMeasure,
-    ),
-    (item) => (isPlainObject(item) ? item?.[sortFieldId] : item),
-  );
+    ) as Record<string, DataType>[];
 
-  return mergeDataWhenASC(result, originValues, sortMethod === 'ASC');
+    result = getDimensionsWithParentPath(
+      sortFieldId,
+      [...rows, ...columns],
+      dimensions,
+    );
+  } else {
+    result = map(sortAction(measureValues, sortMethod)) as string[];
+  }
+
+  return mergeDataWhenASC(result, originValues, isAscSort(sortMethod));
 };
 
 export const processSort = (params: SortActionParams): string[] => {
-  const { sortParam, originValues, measureValues } = params;
+  const { sortParam, originValues, measureValues, dataSet } = params;
   const { sortFunc, sortMethod, sortBy } = sortParam;
 
   let result = [];
@@ -95,12 +111,13 @@ export const processSort = (params: SortActionParams): string[] => {
     originValues,
     measureValues,
     sortParam,
+    dataSet,
   };
   if (sortFunc) {
     result = sortByFunc(sortActionParams);
   } else if (sortBy) {
     // 自定义列表
-    result = sortByCustom({ sortByValues: sortBy });
+    result = sortByCustom({ sortByValues: sortBy, measureValues });
   } else if (sortMethod) {
     // 如果是升序，需要将无数据的项放到前面
     result = sortByMethod(sortActionParams);
@@ -133,6 +150,7 @@ export const handleSortAction = (params: SortActionParams): string[] => {
     sortParam,
     originValues,
     measureValues,
+    dataSet,
   });
 };
 
