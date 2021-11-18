@@ -9,7 +9,7 @@ import {
   S2Event,
   CellTypes,
 } from '@/common/constant';
-import { ViewMeta } from '@/common/interface';
+import { S2CellType, ViewMeta } from '@/common/interface';
 import { DataCell } from '@/cell';
 import { Node } from '@/facet/layout/node';
 
@@ -84,19 +84,12 @@ export class ShiftMultiSelection
         return;
       }
 
-      if (this.isShiftMultiSelection) {
-        const lastCell = this.spreadsheet.store.get('lastClickCell');
-
-        // 同类型支持shift区间多选
-        if (!lastCell || lastCell.cellType !== cell.cellType) {
-          this.spreadsheet.store.set('lastClickCell', cell);
-          interaction.clearState();
-          interaction.changeState({
-            cells: [cell].map((item) => getCellMeta(item)),
-            stateName: InteractionStateName.SELECTED,
-          });
-          return;
-        }
+      const lastCell = this.spreadsheet.store.get('lastClickCell');
+      const useShiftSelect =
+        this.isShiftMultiSelection &&
+        lastCell &&
+        lastCell.cellType === cell.cellType;
+      if (useShiftSelect) {
         const { start, end } = this.getShiftSelectRange(
           lastCell.getMeta() as ViewMeta,
           cell.getMeta(),
@@ -126,6 +119,10 @@ export class ShiftMultiSelection
         });
       } else {
         this.spreadsheet.store.set('lastClickCell', cell);
+        interaction.changeState({
+          cells: [cell].map((item) => getCellMeta(item)),
+          stateName: InteractionStateName.SELECTED,
+        });
       }
     });
   }
@@ -140,6 +137,10 @@ export class ShiftMultiSelection
       interaction.addIntercepts([InterceptType.HOVER]);
       let selectedCells = [getCellMeta(cell)];
       const lastCell = this.spreadsheet.store.get('lastClickCell');
+      const [rowMaxLevel, colMaxLevel] = [
+        this.spreadsheet.facet.layoutResult.rowsHierarchy.maxLevel,
+        this.spreadsheet.facet.layoutResult.colsHierarchy.maxLevel,
+      ];
       // 处理shift区间多选
       if (
         this.isShiftMultiSelection &&
@@ -152,50 +153,29 @@ export class ShiftMultiSelection
           cell.getMeta() as ViewMeta,
         );
         if (cell instanceof DataCell) {
-          // table模式下序列号行头
-          const cellIdSufFix =
-            this.spreadsheet.facet.layoutResult.colLeafNodes[0].id;
-          selectedCells = range(start.rowIndex, end.rowIndex + 1).map((row) => {
-            const cellIdPrefix = String(row);
-            return {
-              id: cellIdPrefix + '-' + cellIdSufFix,
-              colIndex: 0,
-              rowIndex: row,
-              type: cell.cellType,
-            };
-          });
+          selectedCells = this.handleSeriesNumberRowSelected(
+            start.rowIndex,
+            end.rowIndex,
+            cell,
+          );
         } else if (
           cell.cellType === CellTypes.ROW_CELL &&
-          cell.getMeta().level ===
-            this.spreadsheet.facet.layoutResult.rowsHierarchy.maxLevel
+          cell.getMeta().level === rowMaxLevel
         ) {
-          // ROW_CELL 最后一个Level支持区间选择
-          selectedCells = this.spreadsheet.facet.layoutResult.rowNodes
-            .filter(({ rowIndex }) =>
-              inRange(rowIndex, start.rowIndex, end.rowIndex + 1),
-            )
-            .map((e) => ({
-              id: e.id,
-              colIndex: e.colIndex,
-              rowIndex: e.rowIndex,
-              type: cell.cellType,
-            }));
+          selectedCells = this.handleRowSelected(
+            start.rowIndex,
+            end.rowIndex,
+            cell,
+          );
         } else if (
           cell.cellType === CellTypes.COL_CELL &&
-          cell.getMeta().level ===
-            this.spreadsheet.facet.layoutResult.colsHierarchy.maxLevel
+          cell.getMeta().level === colMaxLevel
         ) {
-          // Col_CELL 最后一个Level支持区间选择
-          selectedCells = this.spreadsheet.facet.layoutResult.colLeafNodes
-            .filter(({ colIndex }) =>
-              inRange(colIndex, start.colIndex, end.colIndex + 1),
-            )
-            .map((e) => ({
-              id: e.id,
-              colIndex: e.colIndex,
-              rowIndex: e.rowIndex,
-              type: cell.cellType,
-            }));
+          selectedCells = this.handleColSelected(
+            start.colIndex,
+            end.colIndex,
+            cell,
+          );
         }
         // 兼容行列多选
         // Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
@@ -219,4 +199,54 @@ export class ShiftMultiSelection
       );
     }
   };
+
+  private handleSeriesNumberRowSelected(
+    startIndex: number,
+    endIndex: number,
+    cell: S2CellType<ViewMeta>,
+  ) {
+    // table模式下序列号行头
+    const cellIdSufFix = this.spreadsheet.facet.layoutResult.colLeafNodes[0].id;
+    return range(startIndex, endIndex + 1).map((row) => {
+      const cellIdPrefix = String(row);
+      return {
+        id: cellIdPrefix + '-' + cellIdSufFix,
+        colIndex: 0,
+        rowIndex: row,
+        type: cell.cellType,
+      };
+    });
+  }
+
+  private handleRowSelected(
+    startIndex: number,
+    endIndex: number,
+    cell: S2CellType<ViewMeta>,
+  ) {
+    // ROW_CELL类型 最后一个Level支持区间选择
+    return this.spreadsheet.facet.layoutResult.rowNodes
+      .filter(({ rowIndex }) => inRange(rowIndex, startIndex, endIndex + 1))
+      .map((e) => ({
+        id: e.id,
+        colIndex: e.colIndex,
+        rowIndex: e.rowIndex,
+        type: cell.cellType,
+      }));
+  }
+
+  private handleColSelected(
+    startIndex: number,
+    endIndex: number,
+    cell: S2CellType<ViewMeta>,
+  ) {
+    // COL_CELL类型 最后一个Level支持区间选择
+    return this.spreadsheet.facet.layoutResult.colLeafNodes
+      .filter(({ colIndex }) => inRange(colIndex, startIndex, endIndex + 1))
+      .map((e) => ({
+        id: e.id,
+        colIndex: e.colIndex,
+        rowIndex: e.rowIndex,
+        type: cell.cellType,
+      }));
+  }
 }
