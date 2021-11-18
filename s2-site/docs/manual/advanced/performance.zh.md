@@ -63,7 +63,7 @@ const rowsMeta: PivotMeta = {
 
 在 `S2` 中，`Pivot` 作为数据训练和查询的底层透视存在i，目的是将原始数据（一维）转为多维数组。这个多维数组是将行维度、列维度的 `path` 来组装的（底层是通过 `loadash.set` 实现)，举个例子：
 
-![s2-pivot-data](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*uWq8R6-mCeUAAAAAAAAAAAAAARQnAQ)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*_fRFSYS-Vi8AAAAAAAAAAAAAARQnAQ" width="700" alt="preview" />
 
 上图中，单元格的行坐标为：浙江省[0] - 宁波市[2]，列坐标为：家具[0]-沙发[1]。因此单元格在多维数组中坐标为 [0, 2, 0, 1]，查询数据时从行列的 `Hierarchy` 层级结构中获取对应的查询路径，即可拿到对应的数据。因此在 `S2` 中查询数据不是循环遍历底层数据，而是生成查询数组路径与层级结构对比，从而获取数据。
 
@@ -137,12 +137,11 @@ public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
 
 ### 表框架大小对比
 
-![s2-compare-size](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*vQUwQ4QYVCEAAAAAAAAAAAAAARQnAQ)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ek4uSoOmeL8AAAAAAAAAAAAAARQnAQ" width="300" alt="preview" />
 
 ### 表框架渲染时间对比
 
-![s2-compare-render](
-https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NJpqQ4QJJ-gAAAAAAAAAAAAAARQnAQ)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NWRaS6ifrJYAAAAAAAAAAAAAARQnAQ" width="900" alt="preview"  />
 
 > 备注：
 >

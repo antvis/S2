@@ -60,7 +60,7 @@ const IndexPage = () => {
 
   return (
     <>
-      <SEO title={t('S2')} lang={i18n.language} />
+      <SEO title={t('S2 多维交叉分析表格')} lang={i18n.language} />
       <Banner
         coverImage={
           <img

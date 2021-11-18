@@ -45,7 +45,7 @@ sortParams: [
 ]
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*gK10Qrc2XkIAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*DlG8SYEFlS8AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 ### 2. 维度值列表（sortBy）
 
@@ -59,7 +59,7 @@ sortParams: [
 ];
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*CpV-QLBbSYAAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*5A9lSpS6uHwAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 ### 3. 度量值字段（sortByMeasure）
 
@@ -72,19 +72,20 @@ sortParams: [
 ```ts
 sortParams: [
   {
-    // city 依据（ 纸张 - price ）& 降序 排序
-    sortFieldId: 'city',
-    sortMethod: 'DESC',
+    // type 依据 浙江-舟山-price 升序 排序
+    sortFieldId: 'type',
+    sortMethod: 'ASC',
     sortByMeasure: 'price',
     query: {
-      type: '纸张',
+      province: '浙江',
+      city: '舟山',
       [EXTRA_FIELD]: 'price',
     },
   },
 ];
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*VtN5TbS56KAAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*SZ04TIhCQwkAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 #### 行+列
 
@@ -106,7 +107,7 @@ sortParams: [
 ];
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wv2WRbiJwHkAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wZ4fQJ5-AsMAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 ### 4. 汇总值
 
@@ -115,24 +116,6 @@ sortParams: [
 #### 行总计/行小计
 
 通过 `行总计/行小计` 对列头进行排序， 举例如下：
-
-**行总计** ：
-
-```ts
-sortParams: [
-  {
-    // type 依据 （ 总计 ）&（ price ）& 降序 排序
-    sortFieldId: 'type',
-    sortMethod: 'DESC',
-    sortByMeasure: TOTAL_VALUE,
-    query: {
-      [EXTRA_FIELD]: 'price',
-    },
-  },
-];
-```
-
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*6866RamqI58AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 **行小计** ：
 
@@ -151,7 +134,7 @@ sortParams: [
 ];
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*E9stTbHHMD4AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*RfN8Q5IauP8AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 #### 列总计/列小计
 
@@ -171,7 +154,7 @@ sortParams: [
 ];
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*WYC4Ro1iitAAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*ZXBjR6fZFpQAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 当有 `列小计` 时，在 `query` 中增加相应的参数获取相应的单元格，同上 `行小计`
 
@@ -206,7 +189,7 @@ sortParams: [
 ];
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*iL0lTZE3ka4AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7MLkQLxhliAAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 #### 度量值（数值）
 
@@ -229,7 +212,7 @@ sortParams: [
 ];
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*VtN5TbS56KAAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*H_TESKL1MakAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 ## 优先级
 
