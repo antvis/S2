@@ -1,3 +1,10 @@
+/**
+ * @description spec for issue #725
+ * https://github.com/antvis/S2/issues/725
+ * Wrong multi measure render
+ *
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as mockDataConfig from 'tests/data/data-issue-725.json';
