@@ -137,10 +137,6 @@ export class ShiftMultiSelection
       interaction.addIntercepts([InterceptType.HOVER]);
       let selectedCells = [getCellMeta(cell)];
       const lastCell = this.spreadsheet.store.get('lastClickCell');
-      const [rowMaxLevel, colMaxLevel] = [
-        this.spreadsheet.facet.layoutResult.rowsHierarchy.maxLevel,
-        this.spreadsheet.facet.layoutResult.colsHierarchy.maxLevel,
-      ];
       // 处理shift区间多选
       if (
         this.isShiftMultiSelection &&
@@ -148,6 +144,10 @@ export class ShiftMultiSelection
         lastCell.cellType === cell.cellType &&
         lastCell.getMeta().level === cell.getMeta().level
       ) {
+        const [rowMaxLevel, colMaxLevel] = [
+          this.spreadsheet.facet.layoutResult.rowsHierarchy.maxLevel,
+          this.spreadsheet.facet.layoutResult.colsHierarchy.maxLevel,
+        ];
         const { start, end } = this.getShiftSelectRange(
           lastCell.getMeta() as ViewMeta,
           cell.getMeta() as ViewMeta,
