@@ -167,7 +167,7 @@ const s2Options = {
 
 ### 选中聚光灯
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Omq-Ra0PO9UAAAAAAAAAAAAAARQnAQ" width="700" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Omq-Ra0PO9UAAAAAAAAAAAAAARQnAQ" width="700" alt="preview" />
 
 在选中单元格后，如果需要置灰未选中的单元格，强调需要关注的数据，可配置 `selectedCellsSpotlight` 开启：
 

@@ -8,7 +8,7 @@ order: 10
 
 S2 自带维度切换组件 Switcher 。借助它，你可以非常方便的实现交互式行列切换，以及维度隐藏的功能。
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/fyf455mio/2021-09-29%25252015.08.03.gif" height="400" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/fyf455mio/2021-09-29%25252015.08.03.gif" height="400" alt="preview" />
 
 ## 快速上手
 
@@ -134,7 +134,7 @@ const field = {
 * 如果 Switcher 组件内置的触发按钮不满足你的需求，可通过`title`定制化触发按钮
 * Switcher 组件也提供了`resetText`属性用于定义重置按钮的问题
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tElLTIzXBR0AAAAAAAAAAAAAARQnAQ" height="400" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tElLTIzXBR0AAAAAAAAAAAAAARQnAQ" height="400" alt="preview" />
 
 🎨 Switcher 组件详细的配置参考 [Switcher Props](/zh/docs/api/components/switcher) 文档。
 

@@ -20,11 +20,11 @@ const s2Options = {
 
 关闭高清适配
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/mc5rt%24aNB/128c0063-67a5-4d06-a5a5-fe5f341fa94e.png" width="600" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/mc5rt%24aNB/128c0063-67a5-4d06-a5a5-fe5f341fa94e.png" width="600" alt="preview" />
 
 开启高清适配
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/TtuUHO%26Pb/d32dc287-af59-4b1c-ba7d-17dacd4ffa24.png" width="600" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/TtuUHO%26Pb/d32dc287-af59-4b1c-ba7d-17dacd4ffa24.png" width="600" alt="preview" />
 
 ## 不同 DPR 设备间切换
 

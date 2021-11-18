@@ -12,7 +12,7 @@ S2 自带字段标记特性。用户可以根据业务语义设置不同的渲�
 
 下图直观展示了四种字段标记的形态：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*-lr0QJRCxkEAAAAAAAAAAAAAARQnAQ" width="600">
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*-lr0QJRCxkEAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
 ## 快速上手
 

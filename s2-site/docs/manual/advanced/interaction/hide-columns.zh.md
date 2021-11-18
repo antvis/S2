@@ -11,7 +11,7 @@ order: 3
 
 点击列头，弹出 tooltip, 点击 `隐藏` 按钮即可
 
-<img src="https://gw.alipayobjects.com/zos/antfincdn/pBa8%24Q1gG/15a1cdef-a4b1-4fcf-a2cf-b6f4a39f710b.png" width="400" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/pBa8%24Q1gG/15a1cdef-a4b1-4fcf-a2cf-b6f4a39f710b.png" width="400" alt="preview" />
 
 关闭交互式隐藏
 
@@ -58,4 +58,4 @@ const s2Options = {
 
 还可以集成分析组件，通过改变配置的方式，实现动态隐藏列头，具体请查看 [分析组件](/zh/docs/manual/basic/analysis/switcher/)
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ" height="300" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ" height="300" alt="preview" />
