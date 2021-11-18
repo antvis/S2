@@ -57,9 +57,7 @@ const normalizeIconCfg = (iconCfg?: IconCfg): IconCfg => {
 export const getMaxTextWidth = (contentWidth: number, iconCfg?: IconCfg) => {
   iconCfg = normalizeIconCfg(iconCfg);
   return (
-    contentWidth -
-    iconCfg.size -
-    (iconCfg.position === 'left' ? iconCfg.margin.right : iconCfg.margin.left)
+    contentWidth - iconCfg.size - iconCfg.margin.right - iconCfg.margin.left
   );
 };
 
@@ -89,41 +87,78 @@ export const getTextAndFollowingIconPosition = (
   textCfg: TextAlignCfg,
   textWidth = 0,
   iconCfg?: IconCfg,
+  iconCount = 1,
 ) => {
   const { x, width } = contentBox;
   const { textAlign, textBaseline } = textCfg;
   const { size, margin, position: iconPosition } = normalizeIconCfg(iconCfg);
 
+  const iconSpace = iconCount * (size + margin.left) + margin.right;
   let textX: number;
   let iconX: number;
 
   switch (textAlign) {
     case 'left':
-      textX = x + (iconPosition === 'left' ? size + margin.right : 0);
-      iconX = x + (iconPosition === 'left' ? 0 : textWidth + margin.left);
+      /**
+       * icon left -- text left
+       * ------------------------------------------------------
+       * | margin-left | icon | margin-right | text | padding |
+       * ------------------------------------------------------
+       *
+       * text left - icon right
+       * ------------------------------------------------------
+       * | text | margin-left | icon | margin-right | padding |
+       * ------------------------------------------------------
+       */
+      textX = x + (iconPosition === 'left' ? iconSpace : 0);
+      iconX =
+        x + (iconPosition === 'left' ? margin.left : textWidth + margin.left);
       break;
     case 'center': {
+      /**
+       * icon left -- text center
+       * ----------------------------------------------------------------
+       * | padding | margin-left | icon | margin-right | text | padding |
+       * ----------------------------------------------------------------
+       *
+       * text center - icon right
+       * ----------------------------------------------------------------
+       * | padding | text | margin-left | icon | margin-right | padding |
+       * ----------------------------------------------------------------
+       */
       const totalWidth =
-        size +
-        (iconPosition === 'left' ? margin.right : margin.left) +
+        iconSpace -
+        (iconPosition === 'left' ? margin.left : margin.right) +
         textWidth;
       const startX = x + width / 2 - totalWidth / 2;
       textX =
         startX +
         textWidth / 2 +
-        (iconPosition === 'left' ? size + margin.right : 0);
+        (iconPosition === 'left' ? iconSpace - margin.left : 0);
       iconX = startX + (iconPosition === 'left' ? 0 : textWidth + margin.left);
       break;
     }
-
-    default:
-      textX = x + width - (iconPosition === 'right' ? size + margin.left : 0);
+    default: {
+      /**
+       * icon left -- text right
+       * ------------------------------------------------------
+       * | padding | margin-left | icon | margin-right | text |
+       * ------------------------------------------------------
+       *
+       * text right - icon right
+       * ------------------------------------------------------
+       * | padding | text | margin-left | icon | margin-right |
+       * ------------------------------------------------------
+       */
+      textX = x + width - (iconPosition === 'right' ? iconSpace : 0);
       iconX =
         x +
         width -
-        (iconPosition === 'right' ? size : textWidth + size + margin.right);
-
+        (iconPosition === 'right'
+          ? iconSpace - margin.left
+          : textWidth + iconSpace - margin.left);
       break;
+    }
   }
 
   const textY = getVerticalPosition(contentBox, textBaseline, 0);
@@ -141,7 +176,7 @@ export const getTextPosition = (
 ) => getTextAndFollowingIconPosition(contentBox, textCfg).text;
 
 // 获取在列头水平滚动时，text坐标，使其始终在可视区域的格子中处于居中位置
-export const getTextPositionWhenHorizontalScrolling = (
+export const getTextAndIconPositionWhenHorizontalScrolling = (
   viewport: AreaRange,
   content: AreaRange,
   textWidth: number,

@@ -315,8 +315,7 @@ export class RowCell extends HeaderCell {
     const { text, bolderText } = this.getStyle();
     const style = isLeaf && !isTotals ? text : bolderText;
 
-    const textAlign =
-      isTotals && !this.spreadsheet.isHierarchyTreeType() ? 'right' : 'left';
+    const textAlign = text.textAlign;
 
     return {
       ...style,

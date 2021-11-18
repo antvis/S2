@@ -28,7 +28,7 @@ export class MergedCell extends DataCell {
   }
 
   public get cellType() {
-    return CellTypes.MERGED_CELLS;
+    return CellTypes.MERGED_CELL;
   }
 
   public update() {}

@@ -63,28 +63,12 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
     expect(dataCellMultiSelection.bindEvents).toBeDefined();
   });
 
-  test('should add click intercept when shift keydown', () => {
-    s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
-      key: InteractionKeyboardKey.SHIFT,
-    } as KeyboardEvent);
-
-    expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeTruthy();
-  });
-
   test('should add click intercept when command keydown', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.META,
     } as KeyboardEvent);
 
     expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeTruthy();
-  });
-
-  test('should remove click intercept when shift keyup', () => {
-    s2.emit(S2Event.GLOBAL_KEYBOARD_UP, {
-      key: InteractionKeyboardKey.SHIFT,
-    } as KeyboardEvent);
-
-    expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
   });
 
   test('should remove click intercept when command keyup', () => {
@@ -97,7 +81,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
 
   test('should select multiple data cell', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
-      key: InteractionKeyboardKey.SHIFT,
+      key: InteractionKeyboardKey.META,
     } as KeyboardEvent);
 
     s2.interaction.changeState({
@@ -132,7 +116,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
 
   test('should unselect multiple data cell', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
-      key: InteractionKeyboardKey.SHIFT,
+      key: InteractionKeyboardKey.META,
     } as KeyboardEvent);
 
     const mockCellA = createMockCell('testId2', { rowIndex: 0, colIndex: 0 });
@@ -165,7 +149,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
 
   test('should clear state when unselect all data cell and', () => {
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
-      key: InteractionKeyboardKey.SHIFT,
+      key: InteractionKeyboardKey.META,
     } as KeyboardEvent);
 
     s2.interaction.changeState({
@@ -188,5 +172,21 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
       force: false,
     });
     expect(s2.hideTooltip).toHaveBeenCalled();
+  });
+
+  test('should set lastClickCell', () => {
+    s2.interaction.changeState({
+      cells: [],
+      stateName: InteractionStateName.SELECTED,
+    });
+    const mockCell00 = createMockCell('0-0', { rowIndex: 0, colIndex: 0 });
+
+    s2.getCell = () => mockCell00.mockCell as any;
+
+    s2.emit(S2Event.DATA_CELL_CLICK, {
+      stopPropagation() {},
+    } as unknown as GEvent);
+
+    expect(s2.store.get('lastClickCell')).toEqual(mockCell00.mockCell);
   });
 });

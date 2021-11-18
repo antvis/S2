@@ -8,6 +8,7 @@ import { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';
+import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 
 jest.mock('src/sheet-type');
 jest.mock('src/facet/layout/node');
@@ -129,8 +130,10 @@ describe('Pivot Mode Test When Value In Row', () => {
         'type',
         'sub_type',
       ]);
-      expect([...sortedDimensionValues.province]).toEqual(['浙江省', '四川省']);
-      expect([...sortedDimensionValues.city]).toEqual([
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues.province),
+      ).toEqual(['浙江省', '四川省']);
+      expect(getDimensionsWithoutPathPre(sortedDimensionValues.city)).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
@@ -140,14 +143,25 @@ describe('Pivot Mode Test When Value In Row', () => {
         '南充市',
         '乐山市',
       ]);
-      expect([...sortedDimensionValues.type]).toEqual(['家具', '办公用品']);
-      expect([...sortedDimensionValues.sub_type]).toEqual([
-        '桌子',
-        '沙发',
-        '笔',
-        '纸张',
+      expect(getDimensionsWithoutPathPre(sortedDimensionValues.type)).toEqual([
+        '家具',
+        '办公用品',
       ]);
-      expect([...sortedDimensionValues[EXTRA_FIELD]]).toEqual(['number']);
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues.sub_type),
+      ).toEqual(['桌子', '沙发', '笔', '纸张']);
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues[EXTRA_FIELD]),
+      ).toEqual([
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+      ]);
     });
   });
 
@@ -245,7 +259,16 @@ describe('Pivot Mode Test When Value In Row', () => {
         '笔',
         '纸张',
       ]);
-      expect(dataSet.getDimensionValues(EXTRA_FIELD)).toEqual(['number']);
+      expect(dataSet.getDimensionValues(EXTRA_FIELD)).toEqual([
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+      ]);
       expect(dataSet.getDimensionValues('empty')).toEqual([]);
 
       // with query
@@ -277,10 +300,10 @@ describe('Pivot Mode Test When Value In Row', () => {
         '舟山市',
         '绍兴市',
         '宁波市',
+        '杭州市',
         '南充市',
         '绵阳市',
         '乐山市',
-        '杭州市',
         '成都市',
       ]);
     });

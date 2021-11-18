@@ -324,7 +324,7 @@ const s2options = {
 const s2 = new PivotSheet(container, s2DataConfig, s2options);
 
 s2.render();
-// 监听 mergedCells 的点击事件，自定义点击后的交互操作
+// 监听 mergedCell 的点击事件，自定义点击后的交互操作
 s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
   const cell: MergedCell = s2.getCell(event.target);
   s2.tooltip.show({

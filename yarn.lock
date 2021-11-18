@@ -7878,10 +7878,10 @@ jest-leak-detector@^26.6.2:
     jest-get-type "^26.3.0"
     pretty-format "^26.6.2"
 
-jest-less-loader@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/jest-less-loader/-/jest-less-loader-0.1.1.tgz#c087732315704f1989877493727814d218d82e1f"
-  integrity sha512-GXDx91QkBnSEFqxL5LFS3B6/Q1IbYmJRhss1D8IfcgyLbEsG1FxA3mYVnYQwsFCwlCpIJVir3F4qeWx58gR3CA==
+jest-less-loader@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/jest-less-loader/-/jest-less-loader-0.1.2.tgz#8d30c719a44a401304035aa7984e342afbd0f0b4"
+  integrity sha512-J04E9UnTq00I+maz9KADl/CtC+5ee2HhKPVo1ALRW3xVzmzx6ltY9L9IlupacE6uA5n/rPs1+aZexFt+1xFM/A==
 
 jest-matcher-utils@^22.0.0:
   version "22.4.3"

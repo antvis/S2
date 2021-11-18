@@ -5,7 +5,7 @@ order: 4
 
 将单元格文本标记为含有下划线的链接样式，实现链接跳转 🔗, 对于透视表和明细表，有细微的区别
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/F6RSff0pe/de0c574d-ddb1-4096-9416-13eec503ebf7.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*1VD9RY8cxLcAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
 ## 标记链接字段
 

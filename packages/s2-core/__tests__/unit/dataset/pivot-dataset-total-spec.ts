@@ -8,6 +8,7 @@ import { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { Store } from '@/common/store';
+import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 
 jest.mock('src/sheet-type');
 jest.mock('src/facet/layout/node');
@@ -114,12 +115,10 @@ describe('Pivot Dataset Total Test', () => {
         'sub_type',
         EXTRA_FIELD,
       ]);
-      expect([...sortedDimensionValues.province]).toEqual([
-        '浙江省',
-        '四川省',
-        undefined,
-      ]);
-      expect([...sortedDimensionValues.city]).toEqual([
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues.province),
+      ).toEqual(['浙江省', '四川省', 'undefined']);
+      expect(getDimensionsWithoutPathPre(sortedDimensionValues.city)).toEqual([
         '杭州市',
         '绍兴市',
         '宁波市',
@@ -128,25 +127,37 @@ describe('Pivot Dataset Total Test', () => {
         '绵阳市',
         '南充市',
         '乐山市',
-        undefined,
-        undefined,
-        undefined,
+        'undefined',
+        'undefined',
+        'undefined',
       ]);
-      expect([...sortedDimensionValues.type]).toEqual([
+      expect(getDimensionsWithoutPathPre(sortedDimensionValues.type)).toEqual([
         '家具',
         '办公用品',
-        undefined,
+        'undefined',
       ]);
-      expect([...sortedDimensionValues.sub_type]).toEqual([
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues.sub_type),
+      ).toEqual([
         '桌子',
         '沙发',
         '笔',
         '纸张',
-        undefined,
-        undefined,
-        undefined,
+        'undefined',
+        'undefined',
+        'undefined',
       ]);
-      expect([...sortedDimensionValues[EXTRA_FIELD]]).toEqual(['number']);
+      expect(
+        getDimensionsWithoutPathPre(sortedDimensionValues[EXTRA_FIELD]),
+      ).toEqual([
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+      ]);
     });
   });
 
@@ -278,7 +289,16 @@ describe('Pivot Dataset Total Test', () => {
         '笔',
         '纸张',
       ]);
-      expect(dataSet.getDimensionValues(EXTRA_FIELD)).toEqual(['number']);
+      // with total and subTotal
+      expect(dataSet.getDimensionValues(EXTRA_FIELD)).toEqual([
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+        'number',
+      ]);
       expect(dataSet.getDimensionValues('empty')).toEqual([]);
 
       // with query

@@ -25,7 +25,12 @@ import {
   splitTotal,
   isTotalData,
 } from '@/utils/data-set-operate';
-import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
+import {
+  EXTRA_FIELD,
+  TOTAL_VALUE,
+  VALUE_FIELD,
+  ID_SEPARATOR,
+} from '@/common/constant';
 import { DebuggerUtil, DEBUG_TRANSFORM_DATA } from '@/common/debug';
 import { i18n } from '@/common/i18n';
 import {
@@ -50,6 +55,7 @@ import {
   getDataPath,
   getQueryDimValues,
   deleteMetaById,
+  getDimensionsWithoutPathPre,
 } from '@/utils/dataset/pivot-data-set';
 
 export class PivotDataSet extends BaseDataSet {
@@ -237,9 +243,7 @@ export class PivotDataSet extends BaseDataSet {
         originValues,
         isSortByMeasure: !isEmpty(sortByMeasure),
       });
-      this.sortedDimensionValues[sortFieldId] = [
-        ...getListBySorted(originValues, [...(new Set(result) || [])]),
-      ];
+      this.sortedDimensionValues[sortFieldId] = result;
     });
   };
 
@@ -303,7 +307,7 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   public getDimensionValues(field: string, query?: DataType): string[] {
-    const { rows, columns } = this.fields;
+    const { rows = [], columns = [] } = this.fields || {};
     let meta: PivotMeta = new Map();
     let dimensions: string[] = [];
     if (includes(rows, field)) {
@@ -316,8 +320,11 @@ export class PivotDataSet extends BaseDataSet {
 
     if (!isEmpty(query)) {
       let sortedMeta = [];
+      const dimensionValuePath = [];
       for (const dimension of dimensions) {
         const value = get(query, dimension);
+        dimensionValuePath.push(`${value}`);
+        const cacheKey = dimensionValuePath.join(`${ID_SEPARATOR}`);
         if (meta.has(value) && !isUndefined(value)) {
           const childField = meta.get(value)?.childField;
           meta = meta.get(value).children;
@@ -325,7 +332,10 @@ export class PivotDataSet extends BaseDataSet {
             find(this.sortParams, (item) => item.sortFieldId === childField) &&
             this.sortedDimensionValues[childField]
           ) {
-            sortedMeta = [...this.sortedDimensionValues[childField]];
+            const dimensionValues = this.sortedDimensionValues[
+              childField
+            ]?.filter((item) => item?.includes(cacheKey));
+            sortedMeta = getDimensionsWithoutPathPre([...dimensionValues]);
           } else {
             sortedMeta = [...meta.keys()];
           }
@@ -338,7 +348,9 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     if (this.sortedDimensionValues[field]) {
-      return filterUndefined([...this.sortedDimensionValues[field]]);
+      return filterUndefined(
+        getDimensionsWithoutPathPre([...this.sortedDimensionValues[field]]),
+      );
     }
 
     return filterUndefined([...meta.keys()]);
