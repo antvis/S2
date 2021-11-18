@@ -31,6 +31,11 @@ describe('Scroll By Group Tests', () => {
     canvas = s2.container.get('el') as HTMLCanvasElement;
   });
 
+  afterEach(() => {
+    s2 = null;
+    canvas = null;
+  });
+
   test('should hide tooltip when start scroll', () => {
     const hideTooltipSpy = jest
       .spyOn(s2, 'hideTooltip')
@@ -122,13 +127,13 @@ describe('Scroll By Group Tests', () => {
         .spyOn(s2.facet, 'showVerticalScrollBar')
         .mockImplementation(() => {});
 
-      const onScroll = jest.fn();
-      s2.on(S2Event.LAYOUT_CELL_SCROLL, onScroll);
-
       // mock over the panel viewport
       s2.facet.cornerBBox.maxY = -9999;
       s2.facet.panelBBox.minX = -9999;
       s2.facet.panelBBox.minY = -9999;
+      jest
+        .spyOn(s2.facet, 'isScrollOverTheViewport')
+        .mockImplementation(() => true);
 
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: offset.scrollX,
@@ -156,10 +161,6 @@ describe('Scroll By Group Tests', () => {
             : showVerticalScrollBarSpy,
         ).not.toHaveBeenCalled();
       }
-
-      await sleep(200);
-      // emit scroll event
-      expect(onScroll).toHaveBeenCalledWith(offset);
     },
   );
 
