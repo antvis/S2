@@ -8,7 +8,7 @@ order: 10
 
 S2 自带维度切换组件 Switcher 。借助它，你可以非常方便的实现交互式行列切换，以及维度隐藏的功能。
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/fyf455mio/2021-09-29%25252015.08.03.gif)
+<img src="https://gw.alipayobjects.com/zos/antfincdn/fyf455mio/2021-09-29%25252015.08.03.gif" height="400" />
 
 ## 快速上手
 
@@ -54,41 +54,44 @@ ReactDOM.render(
 
 ### 维度配置
 
-Switcher 可接收三种类型的维度配置，分别是`rows`，`columns`和`values`。它们的类型皆为 [SwitcherField](/zh/docs/api/components/switcher#switcherfield)。
+Switcher 可接收三种类型的维度配置，分别是 `rows`，`columns`和`values`。它们的类型皆为 [SwitcherField](/zh/docs/api/components/switcher#switcherfield)。
 
-> 其中`rows`和`columns`两个维度可以相互拖拽到彼此的配置框中，而`values`只能在自己的配置框中更改字段顺序。
+> 其中 `rows` 和 `columns` 两个维度可以相互拖拽到彼此的配置框中，而 `values` 只能在自己的配置框中更改字段顺序。
 
 通过传入不同维度配置，Switcher 的展示形态也会有所不同：
+
 <table
         style="width: 100%; outline: none; border-collapse: collapse;"
       >
         <colgroup>
-          <col width="33%"/>
-          <col width="33%" />
+          <col width="20%"/>
+          <col width="80%" />
         </colgroup>
         <tbody>
-        <tr>
-            <td style="text-align: center;">
-            三种维度
-            </td>
+          <tr>
               <td style="text-align: center;">
-            两种维度
-            </td>
-              <td style="text-align: center;">
-            一种维度
-            </td>
-        </tr>
-         <tr style="vertical-align: top;">
-          <td>
-             <img alt="three-dimensions" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/yp0RwxxNa/93e973ba-38d1-41b5-b6c7-374dbb003850.png">
-            </td>
-            <td>
-             <img alt="two-dimensions" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/tAUVwe9CP/93feeb52-1490-430f-98a3-fdba64750f31.png">
-            </td>
+              一种维度
+              </td>
               <td>
-            <img alt="one-dimension" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/fuvYDKebN/75b333ef-56f4-4c2c-ba15-12c4fd03113c.png">
-            </td>
-        </tr>
+                <img height="200" alt="one-dimension" style="max-height: unset;" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*a0uHRZ70hDcAAAAAAAAAAAAAARQnAQ">
+              </td>
+          </tr>
+          <tr>
+              <td style="text-align: center;">
+              两种维度
+              </td>
+              <td>
+                <img height="200" alt="two-dimensions" style="max-height: unset;" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*dlP1T7hcGiIAAAAAAAAAAAAAARQnAQ">
+              </td>
+          </tr>
+          <tr>
+              <td style="text-align: center;">
+              三种维度
+              </td>
+              <td>
+                <img height="300" alt="three-dimensions" style="max-height: unset;" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*FTYGTLw7e5wAAAAAAAAAAAAAARQnAQ">
+              </td>
+          </tr>
         </tbody>
   </table>
 
@@ -115,33 +118,6 @@ const field = {
 };
 ```
 
-<table
-        style="width: 100%; outline: none; border-collapse: collapse;"
-      >
-        <colgroup>
-          <col width="50%"/>
-          <col width="50%" />
-        </colgroup>
-        <tbody>
-        <tr>
-            <td style="text-align: center;">
-            控制显隐
-            </td>
-              <td style="text-align: center;">
-            展开子项
-            </td>
-        </tr>
-         <tr style="vertical-align: top;">
-          <td>
-             <img alt="selectable" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/hqNGSM13B/a202c136-d403-4510-9271-733687504110.png">
-            </td>
-            <td>
-             <img alt="expandable" style="max-height: unset;" src="https://gw.alipayobjects.com/zos/antfincdn/5VbNE%26p2X/53dd765c-a72f-4e7a-a4ce-3904c8e7acfc.png">
-            </td>
-        </tr>
-        </tbody>
-  </table>
-
 ### 提交修改
 
 Switcher 组件会在弹窗关闭后触发 `onSubmit` 回调，且此回调会接收一个 [SwitcherResult](/zh/docs/api/components/switcher#switcherresult) 类型的参数，你可以通过该回调拿到排序的结果。
@@ -158,7 +134,7 @@ const field = {
 * 如果 Switcher 组件内置的触发按钮不满足你的需求，可通过`title`定制化触发按钮
 * Switcher 组件也提供了`resetText`属性用于定义重置按钮的问题
 
-![customize](https://gw.alipayobjects.com/zos/antfincdn/N2fNJBRwz/ef4ffb16-505b-41ed-9a72-c6804c66827a.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tElLTIzXBR0AAAAAAAAAAAAAARQnAQ" height="400" />
 
 🎨 Switcher 组件详细的配置参考 [Switcher Props](/zh/docs/api/components/switcher) 文档。
 

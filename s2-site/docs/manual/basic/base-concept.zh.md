@@ -17,7 +17,7 @@ order: 0
 
 交叉表由五部分组成，分别是行头、列头、角头、数据单元格、框架 如下图所示：
 
-![s2](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*nzcERYjsPZoAAAAAAAAAAAAAARQnAQ)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7FRBQr_tE4YAAAAAAAAAAAAAARQnAQ" width="600" />
 
 ## 行头（rowHeader）
 

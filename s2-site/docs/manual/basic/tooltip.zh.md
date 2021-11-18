@@ -21,7 +21,7 @@ const s2options = {
 };
 ```
 
-### 显示 配置项
+### 显示配置项
 
 通过配置 `showTooltip` 字段控制 `Tooltip` 的显示，默认为 `true`
 
@@ -37,9 +37,7 @@ const s2options = {
 };
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*4SNvSbjIE60AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
-
-### 操作 配置项
+### 操作配置项
 
 通过配置 `operation` 字段在 `Tooltip` 上增加操作项
 
@@ -55,9 +53,9 @@ const s2options = {
 
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*V6OdQJvABJQAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*9MaTR51tXi0AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*bllyR4r_6qMAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*mcvMTr1Sa8MAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 ### 超出指定区域自动调整位置
 
@@ -100,7 +98,7 @@ const s2options = {
 };
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*1IgsQISgpHAAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 #### 重写基类（ renderTooltip ）
 
@@ -150,8 +148,6 @@ protected renderOperation(
 }
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*fw6TSrt6nGEAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
-
 - 名称 + 提示（ renderNameTips ）
 
   当前单元格名称和提示信息
@@ -174,8 +170,6 @@ protected renderNameTips(nameTip: { name: string; tips: string }) {
 }
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NhxIS7VU87YAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
-
 - 所选项统计列表（ renderSummary ）
 
   所选项统计列表，主要按度量值区分
@@ -192,8 +186,6 @@ protected renderSummary(summaries) {
   );
 }
 ```
-
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*w4svRqPJmG4AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 - 轴列表（ renderHeadInfo ）
 
@@ -215,8 +207,6 @@ protected renderHeadInfo(headInfo) {
 }
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*VkbzTY0wcrwAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
-
 - 数据点明细信息（ renderDetail ）
 
   数据点明细信息，即当前单元格的数据信息
@@ -230,8 +220,6 @@ protected renderDetail(details: ListItem[]) {
 }
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*O6H6SKQDViUAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
-
 - 底部提示信息（ renderInfos ）
 
 底部提示信息，一般可用于快捷键操作提示
@@ -242,4 +230,4 @@ protected renderInfos(infos) {
 }
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*lp3tQL5-8YIAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*4rrAR4HBGFoAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />

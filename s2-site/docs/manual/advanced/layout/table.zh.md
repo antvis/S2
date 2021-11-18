@@ -7,13 +7,13 @@ order: 2
 
 在解析布局过程中，以下图明细表为例：
 
-![s2-table](https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*f_4NRoLcOf4AAAAAAAAAAAAAARQnAQ)
+<img alt="pivot-mode" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*PmpvRrcBEbMAAAAAAAAAAAAAARQnAQ" width="600">
 
 ## 基础概念
 
 明细表是一种基础表格，没有交叉透视分析的能力，因此明细表主要包括 **列头**和**内容区** 两部分。和透视表不同的是，明细表没有行头、角头区域。
 
-![s2-table-group](https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*_t9GQImYDfEAAAAAAAAAAAAAARQnAQ)
+<img alt="s2-table-group" src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*5q2TQJjNy2cAAAAAAAAAAAAAARQnAQ" width="800">
 
 明细表的[列头布局算法](/zh/docs/manual/advanced/layout/pivot#%E5%B1%82%E7%BA%A7%E7%BB%93%E6%9E%84)、内容区域的[按需渲染](/zh/docs/manual/advanced/layout/pivot#按需渲染)和透视表保持一致，在此不再赘述。
 
@@ -25,7 +25,7 @@ order: 2
 
 被冻结的行列，在布局上会有特殊处理。简单的说，冻结行列格子的定位是固定的。其中：
 
-![s2-table-frozen](https://gw.alipayobjects.com/mdn/rms_ca5e51/afts/img/A*UZwHR7MHGJYAAAAAAAAAAAAAARQnAQ)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tZkOSqYWVFQAAAAAAAAAAAAAARQnAQ" width="600" />
 
 + 冻结行（frozenRow) 在 y 轴上冻结
 + 冻结尾部行（frozenTrailingRow) 在 y 轴上冻结，并且 y 坐标从表格可视区底部开始逆向计算布局。

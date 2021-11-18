@@ -63,55 +63,103 @@ const s2DataConfig = {
     values: ['price'],
   },
   data: [
-     {
-      province: '浙江',
-      city: '杭州',
-      type: '笔',
-      price: '1',
+    {
+      province: "浙江",
+      city: "杭州",
+      type: "笔",
+      price: "1",
     },
     {
-      province: '浙江',
-      city: '杭州',
-      type: '纸张',
-      price: '2',
+      province: "浙江",
+      city: "杭州",
+      type: "纸张",
+      price: "2",
     },
     {
-      province: '浙江',
-      city: '舟山',
-      type: '笔',
-      price: '17',
+      province: "浙江",
+      city: "舟山",
+      type: "笔",
+      price: "17",
     },
     {
-      province: '浙江',
-      city: '舟山',
-      type: '纸张',
-      price: '0.5',
+      province: "浙江",
+      city: "舟山",
+      type: "纸张",
+      price: "6",
     },
     {
-      province: '吉林',
-      city: '丹东',
-      type: '笔',
-      price: '8',
+      province: "吉林",
+      city: "丹东",
+      type: "笔",
+      price: "8",
     },
     {
-      province: '吉林',
-      city: '白山',
-      type: '笔',
-      price: '9',
+      province: "吉林",
+      city: "白山",
+      type: "笔",
+      price: "12",
     },
     {
-      province: '吉林',
-      city: '丹东',
-      type: ' 纸张',
-      price: '3',
+      province: "吉林",
+      city: "丹东",
+      type: "纸张",
+      price: "3",
     },
     {
-      province: '吉林',
-      city: '白山',
-      type: '纸张',
-      price: '1',
+      province: "吉林",
+      city: "白山",
+      type: "纸张",
+      price: "25",
     },
-  ],
+    {
+      province: "浙江",
+      city: "杭州",
+      type: "笔",
+      cost: "0.5",
+    },
+    {
+      province: "浙江",
+      city: "杭州",
+      type: "纸张",
+      cost: "20",
+    },
+    {
+      province: "浙江",
+      city: "舟山",
+      type: "笔",
+      cost: "1.7",
+    },
+    {
+      province: "浙江",
+      city: "舟山",
+      type: "纸张",
+      cost: "0.12",
+    },
+    {
+      province: "吉林",
+      city: "丹东",
+      type: "笔",
+      cost: "10",
+    },
+    {
+      province: "吉林",
+      city: "白山",
+      type: "笔",
+      cost: "9",
+    },
+    {
+      province: "吉林",
+      city: "丹东",
+      type: "纸张",
+      cost: "3",
+    },
+    {
+      province: "吉林",
+      city: "白山",
+      type: "纸张",
+      cost: "1",
+    }
+  ]
 };
 ```
 
@@ -122,7 +170,7 @@ const s2DataConfig = {
 ```ts
 const s2options = {
   width: 600,
-  height: 600,
+  height: 600
 }
 ```
 
@@ -145,7 +193,7 @@ s2.render()
 
 ### 4. 结果
 
-![result](https://gw.alipayobjects.com/zos/antfincdn/vCukbtVNvl/616f7ef1-e626-4225-99f8-dc8f6ca630dd.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ln3cTY_Rk1cAAAAAAAAAAAAAARQnAQ" width="600" />
 
 ## 👤 Author
 
