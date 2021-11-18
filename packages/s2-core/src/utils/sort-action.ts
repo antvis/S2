@@ -72,7 +72,7 @@ export const sortByFunc = (params: SortActionParams): string[] => {
 export const sortByCustom = (params: SortActionParams): string[] => {
   const { sortByValues, originValues } = params;
   const sortedListWithPre = sortByValues.map(
-    (item) => originValues.find((i) => endsWith(i, item)) || item,
+    (item) => originValues?.find((i) => endsWith(i, item)) || item,
   );
   return getListBySorted(originValues, sortedListWithPre);
 };
@@ -81,6 +81,7 @@ export const sortByMethod = (params: SortActionParams): string[] => {
   const { sortParam, measureValues, originValues, dataSet } = params;
   const { sortByMeasure, query, sortFieldId, sortMethod } = sortParam;
   const { rows, columns } = dataSet.fields;
+  const isInRows = rows.includes(sortFieldId);
   let result = originValues;
 
   if (sortByMeasure) {
@@ -92,7 +93,7 @@ export const sortByMethod = (params: SortActionParams): string[] => {
 
     result = getDimensionsWithParentPath(
       sortFieldId,
-      [...rows, ...columns],
+      isInRows ? rows : columns,
       dimensions,
     );
   } else {
@@ -117,7 +118,7 @@ export const processSort = (params: SortActionParams): string[] => {
     result = sortByFunc(sortActionParams);
   } else if (sortBy) {
     // 自定义列表
-    result = sortByCustom({ sortByValues: sortBy, measureValues });
+    result = sortByCustom({ sortByValues: sortBy, originValues });
   } else if (sortMethod) {
     // 如果是升序，需要将无数据的项放到前面
     result = sortByMethod(sortActionParams);
