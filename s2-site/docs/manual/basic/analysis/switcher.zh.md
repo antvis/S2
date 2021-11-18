@@ -54,7 +54,7 @@ ReactDOM.render(
 
 ### 维度配置
 
-Switcher 可接收三种类型的维度配置，分别是 `rows`，`columns`和`values`。它们的类型皆为 [SwitcherField](/zh/docs/api/components/switcher#switcherfield)。
+Switcher 可接收三种类型的维度配置，分别是 `rows`，`columns` 和 `values`。它们的类型皆为 [SwitcherField](/zh/docs/api/components/switcher#switcherfield)。
 
 > 其中 `rows` 和 `columns` 两个维度可以相互拖拽到彼此的配置框中，而 `values` 只能在自己的配置框中更改字段顺序。
 
