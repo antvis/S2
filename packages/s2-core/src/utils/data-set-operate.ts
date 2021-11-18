@@ -20,7 +20,7 @@ export const getListBySorted = (list: string[], sorted: string[]) => {
 };
 
 export const filterUndefined = (values: string[]) => {
-  return filter(values, (t) => !isUndefined(t));
+  return filter(values, (t) => !isUndefined(t) && t !== 'undefined');
 };
 
 export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
