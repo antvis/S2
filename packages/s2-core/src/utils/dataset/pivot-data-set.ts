@@ -95,9 +95,9 @@ export function getDimensionsWithParentPath(
     0,
     defaultDimensions.indexOf(field) + 1,
   );
-  return dimensions.map((item) =>
-    measure.map((i) => item[i]).join(`${ID_SEPARATOR}`),
-  );
+  return dimensions
+    .map((item) => measure.map((i) => item[i]).join(`${ID_SEPARATOR}`))
+    ?.filter((item) => item);
 }
 
 /**

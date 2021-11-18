@@ -1,4 +1,4 @@
-import { keys, has, map, toUpper, endsWith } from 'lodash';
+import { keys, has, map, toUpper, endsWith, uniq } from 'lodash';
 import { SortMethod, SortParam } from '@/common/interface';
 import { DataType, SortActionParams } from '@/data-set/interface';
 import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
@@ -58,7 +58,7 @@ const mergeDataWhenASC = (
 ) => {
   if (asc) {
     // 如果是升序，需要将无数据的项放到前面
-    return sortByItems(originValues, sortedValues);
+    return sortByItems(originValues, uniq(sortedValues));
   }
   return [...new Set([...sortedValues, ...originValues])];
 };
