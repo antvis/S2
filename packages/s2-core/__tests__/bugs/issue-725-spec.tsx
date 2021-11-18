@@ -2,39 +2,71 @@
  * @description spec for issue #725
  * https://github.com/antvis/S2/issues/725
  * Wrong multi measure render
+ * Wrong group sort
  *
  */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
 import * as mockDataConfig from 'tests/data/data-issue-725.json';
-import { getContainer } from '../util/helpers';
-import { S2Options } from '@/common/interface';
-import { SheetComponent } from '@/components/sheets';
+import { assembleDataCfg } from '../util/sheet-entry';
+import { S2DataConfig } from '@/common/interface';
+import { PivotSheet } from '@/sheet-type';
+import { PivotDataSet } from '@/data-set';
+import { EXTRA_FIELD } from '@/common/constant';
+import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 
-function MainLayout({ hierarchyType }: { hierarchyType: 'grid' | 'tree' }) {
-  const [s2Options] = React.useState<S2Options>();
-  return (
-    <SheetComponent
-      dataCfg={mockDataConfig}
-      options={{ ...s2Options, hierarchyType }}
-      themeCfg={{ name: 'default' }}
-    />
-  );
-}
+jest.mock('@/sheet-type');
 
-describe('Multi Measure Correct Render Tests', () => {
-  test.each(['tree', 'grid'])(
-    'should correct render %o with empty options',
-    (type) => {
-      function render() {
-        ReactDOM.render(
-          <MainLayout hierarchyType={type as 'grid' | 'tree'} />,
-          getContainer(),
-        );
-      }
+const MockPivotSheet = PivotSheet as unknown as jest.Mock<PivotSheet>;
+let dataSet: PivotDataSet;
 
-      expect(render).not.toThrowError();
-    },
-  );
+describe('Multi Measure Correct Render Tests1', () => {
+  const dataCfg: S2DataConfig = assembleDataCfg({
+    ...mockDataConfig,
+  });
+
+  beforeEach(() => {
+    MockPivotSheet.mockClear();
+    const mockSheet = new MockPivotSheet();
+    dataSet = new PivotDataSet(mockSheet);
+    dataSet.setDataCfg(dataCfg);
+  });
+
+  test('should get correct values', () => {
+    expect(
+      getDimensionsWithoutPathPre(dataSet.getDimensionValues(EXTRA_FIELD)),
+    ).toEqual(['price', 'cost']);
+  });
+});
+
+describe('Group Sort When Have Same Child Measure', () => {
+  const dataCfg: S2DataConfig = assembleDataCfg({
+    ...mockDataConfig,
+    sortParams: [
+      {
+        sortFieldId: 'type',
+        sortByMeasure: 'cost',
+        sortMethod: 'asc',
+      },
+    ],
+  });
+
+  beforeEach(() => {
+    dataSet.setDataCfg(dataCfg);
+  });
+
+  test('should get correct group sort', () => {
+    expect(
+      getDimensionsWithoutPathPre(dataSet.getDimensionValues('type')),
+    ).toEqual(['办公用品', '家具产品', '家具产品', '办公用品']);
+    expect(
+      getDimensionsWithoutPathPre(
+        dataSet.getDimensionValues('type', { city: '白山' }),
+      ),
+    ).toEqual(['办公用品', '家具产品']);
+    expect(
+      getDimensionsWithoutPathPre(
+        dataSet.getDimensionValues('type', { city: '抚顺' }),
+      ),
+    ).toEqual(['家具产品', '办公用品']);
+  });
 });
