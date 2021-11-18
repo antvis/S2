@@ -1,6 +1,7 @@
 import { PivotSheet, S2Event, MergedCell } from '@antv/s2';
 import React from 'react';
 import '@antv/s2/dist/s2.min.css';
+import { Button } from 'antd';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
@@ -10,24 +11,24 @@ fetch(
     const container = document.getElementById('container');
 
     const TooltipComponent = (
-      <button
+      <Button
         key={'button'}
         onClick={() => {
           s2.interaction.mergeCells();
         }}
       >
         合并单元格
-      </button>
+      </Button>
     );
 
     const mergedCellsTooltip = (mergedCell: MergedCell) => (
-      <button
+      <Button
         onClick={() => {
           s2.interaction.unmergeCell(mergedCell);
         }}
       >
         取消合并单元格
-      </button>
+      </Button>
     );
 
     const s2DataConfig = {

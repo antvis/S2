@@ -2,12 +2,8 @@ import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { HdAdapter } from '@/ui/hd-adapter';
 
-jest.mock('@/sheet-type/spread-sheet');
-jest.mock('@/interaction/event-controller');
-jest.mock('@/interaction/root');
-jest.mock('@/utils/tooltip');
-
-describe('HD Adapter Tests', () => {
+// eslint-disable-next-line jest/no-disabled-tests
+describe.skip('HD Adapter Tests', () => {
   const DPR = 2;
 
   let s2: SpreadSheet;

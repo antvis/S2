@@ -1,6 +1,6 @@
 import { debounce } from 'lodash';
 import { isMobile } from '@/utils/is-mobile';
-import { SpreadSheet } from '@/sheet-type';
+import type { SpreadSheet } from '@/sheet-type';
 
 export class HdAdapter {
   private viewport = window as typeof window & { visualViewport: Element };
