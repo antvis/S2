@@ -1,3 +1,29 @@
+# [@antv/s2-v1.0.0-beta.10](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.9...@antv/s2-v1.0.0-beta.10) (2021-11-18)
+
+
+### Bug Fixes
+
+* :bug: solve the issue that the selectedCellsSpotlight does not work ([#704](https://github.com/antvis/S2/issues/704)) ([535a792](https://github.com/antvis/S2/commit/535a7929cc53a2f892e476ab87b418e6fe31adcd))
+* 🐛 interactorBorder宽度自适应 ([#705](https://github.com/antvis/S2/issues/705)) ([1271081](https://github.com/antvis/S2/commit/12710811ce2e8a1afda7e873b44ffc15d6554b3e))
+* **components:** switcher support receive antd popover props for resolve scroling with the page ([#715](https://github.com/antvis/S2/issues/715)) ([078afd3](https://github.com/antvis/S2/commit/078afd392e6cdea9f54c35ce41dc421dbe0fe7c2))
+* **copy:** fix copy data format problem ([#703](https://github.com/antvis/S2/issues/703)) ([8d15c88](https://github.com/antvis/S2/commit/8d15c883643b02ff925f33adb1feace2b3ec1cb2))
+* difficult to select the tooltip after click then merged cell ([#731](https://github.com/antvis/S2/issues/731)) ([2f5bb46](https://github.com/antvis/S2/commit/2f5bb460a4cd5520f05253ead9d8e7608645eb8f))
+* **facet:** adjustXY in pagination ([#709](https://github.com/antvis/S2/issues/709)) ([8238767](https://github.com/antvis/S2/commit/8238767661ac07f3cbcf8d2fa797823ae770b57a))
+* **facet:** scrollbar offset ([#707](https://github.com/antvis/S2/issues/707)) ([0bfa052](https://github.com/antvis/S2/commit/0bfa052dc64af97a1eda8ce27c4efcab1a71db9a))
+* **hd-adapter:** fix wrong container style when zoom scale changed ([#706](https://github.com/antvis/S2/issues/706)) ([05c8fe1](https://github.com/antvis/S2/commit/05c8fe172d5628e3c13bb512e05b5894f6b7ca76))
+* multi measure render wrong and optimize sortedDimensionValues ([#737](https://github.com/antvis/S2/issues/737)) ([6f8afaa](https://github.com/antvis/S2/commit/6f8afaa555e163d84e345b7e2800d6505fc61b05))
+* **scroll:** fix cannot scroll by mouse or touch tablet ([#698](https://github.com/antvis/S2/issues/698)) ([edbbe6f](https://github.com/antvis/S2/commit/edbbe6f2598118f1762f7077e22fa319ab63547f))
+* **scroll:** scroll by group ([#727](https://github.com/antvis/S2/issues/727)) ([b365e8b](https://github.com/antvis/S2/commit/b365e8b067ca6c92fafac404690b3157ca827a79))
+* **scroll:** sync row scroll offset when corner cell resized ([#720](https://github.com/antvis/S2/issues/720)) ([6f9b8f4](https://github.com/antvis/S2/commit/6f9b8f41002fb0b9c21c1773f54529ee3422d5ab))
+* **table:** table sort fix && col layout fix ([#722](https://github.com/antvis/S2/issues/722)) ([6219860](https://github.com/antvis/S2/commit/6219860c3be5dd43eb3307dbee7df199fcb26c06))
+
+
+### Features
+
+* :sparkles: make the head width change with the width of the sheet ([#701](https://github.com/antvis/S2/issues/701)) ([498f6d7](https://github.com/antvis/S2/commit/498f6d775ded38e2a7997151b9cef92e4bda688d))
+* **interaction:** shift interval select ([#732](https://github.com/antvis/S2/issues/732)) ([d21d410](https://github.com/antvis/S2/commit/d21d41028f505d8ad9d5cb0e5bec192a3c3a34b4))
+* merged cell related documents, tests and some refactoring ([#702](https://github.com/antvis/S2/issues/702)) ([74dc450](https://github.com/antvis/S2/commit/74dc450aed3e9057cf2b689f7c964dd40657a350))
+
 # [@antv/s2-v1.0.0-beta.9](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.8...@antv/s2-v1.0.0-beta.9) (2021-11-11)
 
 
