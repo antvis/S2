@@ -89,7 +89,7 @@ export function getDimensionsWithoutPathPre(dimensions: string[]) {
 export function getDimensionsWithParentPath(
   field: string,
   defaultDimensions: string[],
-  dimensions: Record<string, DataType>[],
+  dimensions: DataType[],
 ) {
   const measure = defaultDimensions.slice(
     0,
