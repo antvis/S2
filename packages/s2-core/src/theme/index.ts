@@ -256,6 +256,7 @@ export const getTheme = (
             backgroundColor: basicColors[2],
             backgroundOpacity: 0.6,
             borderColor: basicColors[14],
+            borderWidth: 1,
             borderOpacity: 1,
           },
           // -------------- selected -------------------
@@ -273,6 +274,7 @@ export const getTheme = (
           prepareSelect: {
             borderColor: basicColors[14],
             borderOpacity: 1,
+            borderWidth: 1,
           },
         },
 

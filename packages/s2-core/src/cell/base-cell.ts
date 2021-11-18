@@ -1,5 +1,14 @@
 import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import { each, get, includes, isEmpty, keys, pickBy } from 'lodash';
+import {
+  each,
+  forEach,
+  get,
+  includes,
+  isEmpty,
+  isNumber,
+  keys,
+  pickBy,
+} from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
@@ -229,17 +238,35 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       this.theme,
       `${this.cellType}.cell.interactionState.${stateName}`,
     );
+
+    const { x, y, height, width } = this.getCellArea();
+
     each(stateStyles, (style, styleKey) => {
       const targetShapeNames = keys(
         pickBy(SHAPE_ATTRS_MAP, (attrs) => includes(attrs, styleKey)),
       );
-      if (isEmpty(targetShapeNames)) {
-        return;
-      }
       targetShapeNames.forEach((shapeName: StateShapeLayer) => {
         const shape = this.stateShapes.has(shapeName)
           ? this.stateShapes.get(shapeName)
           : this[shapeName];
+
+        // 根据borderWidth更新borderShape大小     https://github.com/antvis/S2/pull/705
+        if (
+          shapeName === 'interactiveBorderShape' &&
+          styleKey === 'borderWidth'
+        ) {
+          if (isNumber(style)) {
+            const marginStyle = {
+              x: x + style / 2,
+              y: y + style / 2,
+              width: width - style,
+              height: height - style,
+            };
+            each(marginStyle, (style, styleKey) => {
+              updateShapeAttr(shape, styleKey, style);
+            });
+          }
+        }
         updateShapeAttr(shape, SHAPE_STYLE_MAP[styleKey], style);
       });
     });
@@ -250,6 +277,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent');
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0);
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderWidth, 1);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderColor, 'transparent');
     });
   }
