@@ -1,0 +1,248 @@
+{
+  "fields": {
+    "columns": [],
+    "rows": ["area", "province", "city", "type", "sub_type"],
+    "values": ["price", "cost"]
+  },
+  "meta": [
+    {
+      "field": "price",
+      "name": "价格"
+    },
+    {
+      "field": "city",
+      "name": "城市"
+    },
+    {
+      "field": "area",
+      "name": "区域"
+    },
+    {
+      "field": "province",
+      "name": "省份"
+    },
+    {
+      "field": "cost",
+      "name": "成本"
+    }
+  ],
+  "data": [
+    {
+      "area": "东北",
+      "province": "吉林",
+      "city": "白山",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": "",
+      "price": ""
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "city": "白山",
+      "type": "办公用品",
+      "sub_type": "笔",
+      "cost": "",
+      "price": ""
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "抚顺",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": "",
+      "price": ""
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "抚顺",
+      "type": "办公用品",
+      "sub_type": "笔",
+      "cost": "5",
+      "price": "12"
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "抚顺",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": "3",
+      "price": "4"
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "抚顺",
+      "type": "家具产品",
+      "sub_type": "餐桌",
+      "cost": "5",
+      "price": "1"
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "朝阳",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": "32",
+      "price": "4"
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "朝阳",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": "52",
+      "price": "4"
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "朝阳",
+      "type": "办公用品",
+      "sub_type": "笔",
+      "cost": "52",
+      "price": "4"
+    },
+    {
+      "area": "东北",
+      "province": "辽宁",
+      "city": "朝阳",
+      "type": "家具产品",
+      "sub_type": "餐桌",
+      "cost": "5",
+      "price": "2"
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "city": "白山",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": "4",
+      "price": "4"
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "city": "白山",
+      "type": "家具产品",
+      "sub_type": "餐桌",
+      "cost": "2",
+      "price": "3"
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "city": "丹东",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": "6",
+      "price": "2"
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "city": "丹东",
+      "type": "家具产品",
+      "sub_type": "餐桌",
+      "cost": "14",
+      "price": "9"
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "city": "丹东",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": "6",
+      "price": "1"
+    },
+    {
+      "area": "东北",
+      "province": "吉林",
+      "city": "丹东",
+      "type": "办公用品",
+      "sub_type": "笔",
+      "cost": "64",
+      "price": "1"
+    },
+    {
+      "area": "东南",
+      "province": "浙江",
+      "city": "杭州",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": "6",
+      "price": "5"
+    },
+    {
+      "area": "东南",
+      "province": "浙江",
+      "city": "杭州",
+      "type": "办公用品",
+      "sub_type": "笔",
+      "cost": "64",
+      "price": "52"
+    },
+    {
+      "area": "东南",
+      "province": "浙江",
+      "city": "舟山",
+      "type": "办公用品",
+      "sub_type": "纸张",
+      "cost": "6",
+      "price": "5"
+    },
+    {
+      "area": "东南",
+      "province": "浙江",
+      "city": "舟山",
+      "type": "办公用品",
+      "sub_type": "笔",
+      "cost": "36",
+      "price": "5"
+    },
+    {
+      "area": "东南",
+      "province": "浙江",
+      "city": "杭州",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": "2",
+      "price": "3"
+    },
+    {
+      "area": "东南",
+      "province": "浙江",
+      "city": "杭州",
+      "type": "家具产品",
+      "sub_type": "餐桌",
+      "cost": "32",
+      "price": "3"
+    },
+    {
+      "area": "东南",
+      "province": "浙江",
+      "city": "舟山",
+      "type": "家具产品",
+      "sub_type": "办公装饰品",
+      "cost": "42",
+      "price": "13"
+    },
+    {
+      "area": "东南",
+      "province": "浙江",
+      "city": "舟山",
+      "type": "家具产品",
+      "sub_type": "餐桌",
+      "cost": "2",
+      "price": "34"
+    }
+  ],
+  "totalData": []
+}
