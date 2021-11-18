@@ -165,7 +165,7 @@ describe('Scroll By Group Tests', () => {
         ).not.toHaveBeenCalled();
       }
 
-      await sleep(200);
+      await sleep(1000);
       // emit scroll event
       expect(onScroll).toHaveBeenCalledWith(offset);
     },
