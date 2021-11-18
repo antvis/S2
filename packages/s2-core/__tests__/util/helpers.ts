@@ -37,7 +37,7 @@ export const sleep = async (timeout = 0) => {
 };
 
 export const createFakeSpreadSheet = () => {
-  const container = document.createElement('div');
+  const container = getContainer();
 
   class FakeSpreadSheet extends EE {
     public options: S2Options;

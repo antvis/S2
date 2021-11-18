@@ -8,26 +8,26 @@ import './index.less';
 
 const PRE_CLASS = 's2-homepage';
 const BannerSVG =
-  'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*s0yOSpYP3pAAAAAAAAAAAAAAARQnAQ';
+  'https://gw.alipayobjects.com/zos/bmw-prod/1aa91199-b986-4553-a425-6baa18c3a9bd.svg';
 
 const IndexPage = () => {
   const { t, i18n } = useTranslation();
 
   const features = [
     {
-      icon: 'https://gw.alipayobjects.com/zos/bmw-prod/f0ae3be6-9cbb-479d-aba7-522b64d14119.svg',
+      icon: 'https://gw.alipayobjects.com/zos/bmw-prod/d55190d1-2787-4a6e-abac-3ee0355f9c46.svg',
       title: t('专业多维交叉分析'),
       description: t('告别单一维度分析，全面拥抱任意维度的自由组合分析'),
     },
     {
-      icon: 'https://gw.alipayobjects.com/zos/bmw-prod/8850a540-c1cf-4581-8ff9-9592730fc6b8.svg',
+      icon: 'https://gw.alipayobjects.com/zos/bmw-prod/79453ef5-ea77-423f-ab26-c5fb503e722e.svg',
       title: t('组件灵活，高扩展性'),
       description: t(
         '提供不同层面分析组件，且支持任意自定义扩展（包括但不限于布局、样式、交互、数据流等）',
       ),
     },
     {
-      icon: 'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*XpGXQJb8qV8AAAAAAAAAAAAAARQnAQ',
+      icon: 'https://gw.alipayobjects.com/zos/bmw-prod/15da7b71-0026-4b08-a55f-c1e90ca4839c.svg',
       title: t('高性能，秒级渲染'),
       description: t(
         '支持全量百万数据下低于 4s 的渲染，也能通过局部下钻来实现真·秒级渲染。',
@@ -36,7 +36,7 @@ const IndexPage = () => {
   ];
 
   const cases = {
-    logo: 'https://gw.alipayobjects.com/zos/bmw-prod/5fba9b98-223a-42b5-bf1f-bdfc5f9a78f2.svg',
+    logo: 'https://gw.alipayobjects.com/zos/bmw-prod/83b8e564-ab07-4670-99d7-3cec9feb6e8a.svg',
     isAppLogo: true,
     title: '多维交叉分析表格',
     description:

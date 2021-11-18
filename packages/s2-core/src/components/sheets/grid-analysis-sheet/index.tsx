@@ -1,6 +1,6 @@
 // TODO 抽取不同sheet组件的公共方法
 import React, { useEffect, useState } from 'react';
-import { forEach, isEmpty, isFunction, forIn, isObject, max } from 'lodash';
+import { isEmpty, isFunction } from 'lodash';
 import { merge } from 'lodash';
 import { Spin } from 'antd';
 import { Event } from '@antv/g-canvas';
@@ -10,7 +10,7 @@ import { GridAnalysisDataCell } from './grid-analysis-data-cell';
 import { GridAnalysisTheme } from './grid-analysis-theme';
 import { S2Event } from '@/common/constant';
 import { getBaseCellData } from '@/utils/interaction/formatter';
-import { S2Options, ThemeCfg } from '@/common/interface';
+import { S2Options } from '@/common/interface';
 import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 import { SpreadSheet, PivotSheet } from '@/sheet-type';
 import { useResizeEffect } from '@/components/sheets/hooks';
@@ -41,28 +41,6 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
   const [loading, setLoading] = useState<boolean>(true);
 
-  // 网格内行高
-  const CELL_LINE_HEIGHT = 30;
-
-  const getCellHeight = (): number => {
-    const { data } = dataCfg;
-    const height = options.style?.cellCfg?.height;
-    if (height) return height;
-    const lineHeight = options.style?.cellCfg?.lineHeight || CELL_LINE_HEIGHT;
-    if (isEmpty(data)) return lineHeight;
-    const lengths = [];
-    // TODO 还没想清楚需不需要找最大的，需不需要限定都一样的个数，先让子弹飞一飞
-    forEach(data, (value) => {
-      forIn(value, (v) => {
-        if (isObject(v) && v?.values) {
-          lengths.push(v?.values.length);
-        }
-      });
-    });
-    const maxLength = max(lengths) || 1;
-    return maxLength * lineHeight;
-  };
-
   const buildOptions = (): S2Options => {
     return getSafetyOptions(
       merge(options, {
@@ -71,10 +49,6 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
           colCfg: {
             hideMeasureColumn: true,
           },
-          cellCfg: {
-            height: getCellHeight(),
-          },
-          device: 'pc',
         },
       }),
     );

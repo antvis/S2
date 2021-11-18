@@ -1,9 +1,9 @@
 import { TableSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
-const s2options = {
+const s2Options = {
   width: 600,
-  height: 400,
+  height: 480,
   showSeriesNumber: true,
 };
 
@@ -44,6 +44,6 @@ const s2DataConfig = {
 
 const container = document.getElementById('container');
 
-const s2 = new TableSheet(container, s2DataConfig, s2options);
+const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
 s2.render();

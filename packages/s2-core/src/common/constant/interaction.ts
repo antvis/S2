@@ -24,7 +24,7 @@ export enum CellTypes {
   ROW_CELL = 'rowCell',
   COL_CELL = 'colCell',
   CORNER_CELL = 'cornerCell',
-  MERGED_CELLS = 'mergedCells',
+  MERGED_CELL = 'mergedCell',
 }
 
 export const HOVER_FOCUS_TIME = 800;

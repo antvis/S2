@@ -349,7 +349,8 @@ export class CornerCell extends HeaderCell {
     const cornerTextStyle = this.getStyle().bolderText;
     const { cornerType } = this.meta;
 
-    const textAlign = cornerType === CornerNodeType.ROW ? 'left' : 'right';
+    const textAlign =
+      cornerType === CornerNodeType.ROW ? cornerTextStyle.textAlign : 'right';
 
     return {
       ...cornerTextStyle,

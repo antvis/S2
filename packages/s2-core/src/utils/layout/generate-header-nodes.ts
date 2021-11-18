@@ -1,4 +1,4 @@
-import { isBoolean, merge } from 'lodash';
+import { includes, isBoolean, merge } from 'lodash';
 import { HeaderNodesParams } from '@/facet/layout/interface';
 import { TotalClass } from '@/facet/layout/total-class';
 import { TotalMeasure } from '@/facet/layout/total-measure';
@@ -23,7 +23,6 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
     addTotalMeasureInTotal,
   } = params;
   const { spreadsheet, collapsedCols, colCfg } = facetCfg;
-  const hideMeasure = colCfg.hideMeasureColumn ?? false;
 
   for (const [index, fieldValue] of fieldValues.entries()) {
     const isTotals = fieldValue instanceof TotalClass;
@@ -67,7 +66,12 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       value = fieldValue;
       // root[&]四川[&]成都 => {province: '四川', city: '成都' }
       nodeQuery = merge({}, query, { [currentField]: value });
-      const extraSize = hideMeasure ? 2 : 1;
+      const isValueInCols = spreadsheet.dataCfg.fields?.valueInCols ?? true;
+      const isHideMeasure =
+        colCfg?.hideMeasureColumn &&
+        isValueInCols &&
+        includes(fields, EXTRA_FIELD);
+      const extraSize = isHideMeasure ? 2 : 1;
       isLeaf = level === fields.length - extraSize;
     }
     const uniqueId = generateId(parentNode.id, value, spreadsheet);

@@ -1,24 +1,16 @@
 {
   "title": {
     "zh": "导出组件",
-    "en": "sheet"
+    "en": "Export Component"
   },
   "demos": [
-    {
-      "filename": "table.tsx",
-      "title": {
-        "zh": "明细表组件",
-        "en": "TableSheet component"
-      },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*d0CqRY6M3yMAAAAAAAAAAAAAARQnAQ"
-    },
     {
       "filename": "export.tsx",
       "title": {
         "zh": "导出组件",
         "en": "Export component"
       },
-      "screenshot": "https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*d0CqRY6M3yMAAAAAAAAAAAAAARQnAQ"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/LuLsxJzuq/2021-11-16%25252022.15.51.gif"
     }
   ]
 }
