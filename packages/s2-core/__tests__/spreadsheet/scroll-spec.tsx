@@ -127,10 +127,16 @@ describe('Scroll By Group Tests', () => {
         .spyOn(s2.facet, 'showVerticalScrollBar')
         .mockImplementation(() => {});
 
-      jest.spyOn(s2.facet, 'isScrollOverTheViewport').mockReturnValue(true);
-
       const onScroll = jest.fn();
       s2.on(S2Event.LAYOUT_CELL_SCROLL, onScroll);
+
+      // mock over the panel viewport
+      s2.facet.cornerBBox.maxY = -9999;
+      s2.facet.panelBBox.minX = -9999;
+      s2.facet.panelBBox.minY = -9999;
+      jest
+        .spyOn(s2.facet, 'isScrollOverTheViewport')
+        .mockImplementation(() => true);
 
       const wheelEvent = new WheelEvent('wheel', {
         deltaX: offset.scrollX,
