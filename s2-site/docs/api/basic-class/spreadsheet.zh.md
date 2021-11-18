@@ -95,7 +95,7 @@ export enum CellTypes {
   ROW_CELL = 'rowCell', // 行头单元格
   COL_CELL = 'colCell', // 列头单元格
   CORNER_CELL = 'cornerCell', // 角头单元格
-  MERGED_CELLS = 'mergedCells', // 合并后的单元格
+  MERGED_CELL = 'mergedCell', // 合并后的单元格
 }
 ```
 

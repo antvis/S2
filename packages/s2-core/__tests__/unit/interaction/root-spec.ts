@@ -10,12 +10,19 @@ import {
   DataCell,
   S2Options,
   SpreadSheet,
+  MergedCell,
 } from '@/index';
 import { Store } from '@/common/store';
+import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
-
+jest.mock('@/utils/interaction/merge-cells', () => {
+  return {
+    mergeCells: jest.fn(),
+    unmergeCell: jest.fn(),
+  };
+});
 const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 
 describe('RootInteraction Tests', () => {
@@ -89,6 +96,17 @@ describe('RootInteraction Tests', () => {
     expect(rootInteraction.getState()).toEqual({
       stateName: InteractionStateName.ALL_SELECTED,
     });
+  });
+
+  test('should call merge cells', () => {
+    rootInteraction.mergeCells();
+    expect(mergeCells).toBeCalled();
+  });
+
+  test('should call cancel mergedCell', () => {
+    let mergedCell: MergedCell;
+    rootInteraction.unmergeCell(mergedCell);
+    expect(unmergeCell).toBeCalled();
   });
 
   test('should get default interacted cells', () => {

@@ -6,15 +6,18 @@ import {
   get,
   includes,
   isEmpty,
+  isObject,
   isString,
   merge,
   once,
+  last,
 } from 'lodash';
 import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 import { BaseCell } from '@/cell';
 import {
   BACK_GROUND_GROUP_CONTAINER_Z_INDEX,
   FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
+  InterceptType,
   KEY_GROUP_BACK_GROUND,
   KEY_GROUP_FORE_GROUND,
   KEY_GROUP_PANEL_GROUND,
@@ -22,6 +25,7 @@ import {
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
   S2Event,
+  TOOLTIP_OPERATOR_MENUS,
 } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { i18n } from '@/common/i18n';
@@ -33,9 +37,11 @@ import {
   S2DataConfig,
   S2MountContainer,
   S2Options,
+  SortParam,
   SpreadSheetFacetCfg,
   ThemeCfg,
   TooltipData,
+  TooltipOperatorOptions,
   TooltipOptions,
   TooltipShowOptions,
   Total,
@@ -250,7 +256,37 @@ export abstract class SpreadSheet extends EE {
   ): void;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public handleGroupSort(event: CanvasEvent, meta: Node) {}
+  public handleGroupSort(event: CanvasEvent, meta: Node) {
+    event.stopPropagation();
+    this.interaction.addIntercepts([InterceptType.HOVER]);
+    const operator: TooltipOperatorOptions = {
+      onClick: ({ key }) => {
+        const { rows, columns } = this.dataCfg.fields;
+        const sortFieldId = this.isValueInCols() ? last(rows) : last(columns);
+        const { query, value } = meta;
+        const sortParam: SortParam = {
+          sortFieldId,
+          sortMethod: key as SortParam['sortMethod'],
+          sortByMeasure: value,
+          query,
+        };
+        const prevSortParams = this.dataCfg.sortParams.filter(
+          (item) => item?.sortFieldId !== sortFieldId,
+        );
+        this.setDataCfg({
+          ...this.dataCfg,
+          sortParams: [...prevSortParams, sortParam],
+        });
+        this.render();
+      },
+      menus: TOOLTIP_OPERATOR_MENUS.Sort,
+    };
+
+    this.showTooltipWithInfo(event, [], {
+      operator,
+      onlyMenu: true,
+    });
+  }
 
   public showTooltip(showOptions: TooltipShowOptions) {
     this.tooltip.show?.(showOptions);
@@ -271,6 +307,7 @@ export abstract class SpreadSheet extends EE {
       cellInfos: data,
       options,
     });
+
     this.showTooltip({
       data: tooltipData,
       position: {

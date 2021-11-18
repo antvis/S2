@@ -40,11 +40,11 @@ fetch(
       },
       data: res.data,
     };
-    const s2options = {
-      width: 660,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       hierarchyType: 'customTree',
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
     s2.render();
   });

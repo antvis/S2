@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "自定义图标",
+    "en": "custom icon"
+  },
+  "demos": [
+    {
+      "filename": "custom-svg-icon.ts",
+      "title": {
+        "zh": "自定义SVG图标",
+        "en": "custom svg icon"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/6nVulpN83/1a5abfbc-921a-4a05-8e90-3d25f18c8f1a.png"
+    },
+    {
+      "filename": "custom-header-action-icon.tsx",
+      "title": {
+        "zh": "自定义行列头操作图标",
+        "en": "Custom header action icons"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ly8HhdtVG/34054542-8698-4575-a355-71cf0e53690c.png"
+    }
+  ]
+}

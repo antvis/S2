@@ -159,36 +159,4 @@ export class PivotSheet extends SpreadSheet {
     this.setOptions(options);
     this.render(false);
   }
-
-  public handleGroupSort(event: CanvasEvent, meta: Node) {
-    event.stopPropagation();
-    this.interaction.addIntercepts([InterceptType.HOVER]);
-    const operator: TooltipOperatorOptions = {
-      onClick: ({ key }) => {
-        const { rows, columns } = this.dataCfg.fields;
-        const sortFieldId = this.isValueInCols() ? last(rows) : last(columns);
-        const { query, value } = meta;
-        const sortParam: SortParam = {
-          sortFieldId,
-          sortMethod: key as SortParam['sortMethod'],
-          sortByMeasure: value,
-          query,
-        };
-        const prevSortParams = this.dataCfg.sortParams.filter(
-          (item) => item?.sortFieldId !== sortFieldId,
-        );
-        this.setDataCfg({
-          ...this.dataCfg,
-          sortParams: [...prevSortParams, sortParam],
-        });
-        this.render();
-      },
-      menus: TOOLTIP_OPERATOR_MENUS.Sort,
-    };
-
-    this.showTooltipWithInfo(event, [], {
-      operator,
-      onlyMenu: true,
-    });
-  }
 }
