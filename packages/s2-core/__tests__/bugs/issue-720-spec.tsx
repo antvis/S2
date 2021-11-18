@@ -32,10 +32,6 @@ describe('Sync Row Scroll Offset Tests', () => {
     s2.render();
   });
 
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   test('should not reset row scroll bar offset when resize end', () => {
     s2.store.set('hRowScrollX', 20);
     s2.render(false);

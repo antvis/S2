@@ -31,6 +31,11 @@ describe('Scroll By Group Tests', () => {
     canvas = s2.container.get('el') as HTMLCanvasElement;
   });
 
+  afterEach(() => {
+    s2 = null;
+    canvas = null;
+  });
+
   test('should hide tooltip when start scroll', () => {
     const hideTooltipSpy = jest
       .spyOn(s2, 'hideTooltip')
