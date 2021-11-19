@@ -257,7 +257,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         ) {
           if (isNumber(style)) {
             const marginStyle = {
-              x: Math.ceil(x + style / 2),
+              x: Math.ceil(x + style / 2), // TODO: 边框整体重构后需revisit
               y: Math.ceil(y + style / 2),
               width: width - style - 1,
               height: height - style - 1,
