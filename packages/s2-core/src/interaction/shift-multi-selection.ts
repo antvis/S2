@@ -84,46 +84,43 @@ export class ShiftMultiSelection
         return;
       }
 
-      const lastCell = this.spreadsheet.store.get('lastClickCell');
-      const useShiftSelect =
+      const lastClickedCell = this.spreadsheet.store.get('lastClickedCell');
+      const isShiftSelect =
         this.isShiftMultiSelection &&
-        lastCell &&
-        lastCell.cellType === cell.cellType;
-      if (useShiftSelect) {
-        const { start, end } = this.getShiftSelectRange(
-          lastCell.getMeta() as ViewMeta,
-          cell.getMeta(),
-        );
+        lastClickedCell?.cellType === cell.cellType;
 
-        const cells = range(start.colIndex, end.colIndex + 1).flatMap((col) => {
-          const cellIdSufFix =
-            this.spreadsheet.facet.layoutResult.colLeafNodes[col].id;
-          return range(start.rowIndex, end.rowIndex + 1).map((row) => {
-            const cellIdPrefix = this.spreadsheet.facet.getSeriesNumberWidth()
-              ? String(row)
-              : this.spreadsheet.facet.layoutResult.rowLeafNodes[row].id;
-            return {
-              id: cellIdPrefix + '-' + cellIdSufFix,
-              colIndex: col,
-              rowIndex: row,
-              type: cell.cellType,
-            };
-          });
-        });
-
-        interaction.addIntercepts([InterceptType.CLICK, InterceptType.HOVER]);
-        this.spreadsheet.hideTooltip();
-        interaction.changeState({
-          cells,
-          stateName: InteractionStateName.SELECTED,
-        });
-      } else {
-        this.spreadsheet.store.set('lastClickCell', cell);
-        interaction.changeState({
-          cells: [cell].map((item) => getCellMeta(item)),
-          stateName: InteractionStateName.SELECTED,
-        });
+      if (!isShiftSelect) {
+        this.spreadsheet.store.set('lastClickedCell', cell);
+        return;
       }
+
+      const { start, end } = this.getShiftSelectRange(
+        lastClickedCell.getMeta() as ViewMeta,
+        cell.getMeta(),
+      );
+
+      const cells = range(start.colIndex, end.colIndex + 1).flatMap((col) => {
+        const cellIdSuffix =
+          this.spreadsheet.facet.layoutResult.colLeafNodes[col].id;
+        return range(start.rowIndex, end.rowIndex + 1).map((row) => {
+          const cellIdPrefix = this.spreadsheet.facet.getSeriesNumberWidth()
+            ? String(row)
+            : this.spreadsheet.facet.layoutResult.rowLeafNodes[row].id;
+          return {
+            id: cellIdPrefix + '-' + cellIdSuffix,
+            colIndex: col,
+            rowIndex: row,
+            type: cell.cellType,
+          };
+        });
+      });
+
+      interaction.addIntercepts([InterceptType.CLICK, InterceptType.HOVER]);
+      this.spreadsheet.hideTooltip();
+      interaction.changeState({
+        cells,
+        stateName: InteractionStateName.SELECTED,
+      });
     });
   }
 
@@ -136,7 +133,7 @@ export class ShiftMultiSelection
     if (!isNil(meta?.x)) {
       interaction.addIntercepts([InterceptType.HOVER]);
       let selectedCells = [getCellMeta(cell)];
-      const lastCell = this.spreadsheet.store.get('lastClickCell');
+      const lastCell = this.spreadsheet.store.get('lastClickedCell');
       // 处理shift区间多选
       if (
         this.isShiftMultiSelection &&
@@ -184,7 +181,7 @@ export class ShiftMultiSelection
           stateName: InteractionStateName.SELECTED,
         });
       } else {
-        this.spreadsheet.store.set('lastClickCell', cell);
+        this.spreadsheet.store.set('lastClickedCell', cell);
       }
 
       const selectedCellIds = selectedCells.map(({ id }) => id);

@@ -266,7 +266,7 @@ export class RootInteraction {
         new DataCellMultiSelection(this.spreadsheet),
       );
       this.interactions.set(
-        InteractionName.COL_ROW_SHIHT_MULTI_SELECTION,
+        InteractionName.COL_ROW_SHIFT_MULTI_SELECTION,
         new ShiftMultiSelection(this.spreadsheet),
       );
     }

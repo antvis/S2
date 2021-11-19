@@ -1,4 +1,4 @@
-import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import { Event as GEvent } from '@antv/g-canvas';
 import { omit } from 'lodash';
 import { CellMeta, S2Options, ViewMeta } from '@/common/interface';
@@ -12,36 +12,14 @@ import {
 import { ShiftMultiSelection } from '@/interaction/shift-multi-selection';
 
 jest.mock('@/interaction/event-controller');
+jest.mock('@/interaction/base-interaction/click/data-cell-click');
 
 describe('Interaction Shift Multi Selection Tests', () => {
   let shiftMultiSelection: ShiftMultiSelection;
   let s2: SpreadSheet;
 
-  const createMockCell = (
-    cellId: string,
-    { colIndex = 0, rowIndex = 0 } = {},
-  ) => {
-    const mockCellViewMeta: Partial<ViewMeta> = {
-      id: cellId,
-      colIndex,
-      rowIndex,
-      type: undefined,
-    };
-    const mockCellMeta = omit(mockCellViewMeta, 'update');
-    const mockCell = {
-      ...mockCellViewMeta,
-      getMeta: () => mockCellViewMeta,
-      hideInteractionShape: jest.fn(),
-    };
-
-    return {
-      mockCell,
-      mockCellMeta,
-    };
-  };
-
   beforeEach(() => {
-    const mockCell = createMockCell('testId1').mockCell as any;
+    const mockCell = createMockCellInfo('testId1').mockCell as any;
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;
     shiftMultiSelection = new ShiftMultiSelection(s2);
@@ -57,6 +35,10 @@ describe('Interaction Shift Multi Selection Tests', () => {
     s2.interaction.intercepts.clear();
     s2.interaction.isEqualStateName = () => false;
     s2.interaction.getInteractedCells = () => [mockCell];
+  });
+
+  afterEach(() => {
+    s2.store.set('lastClickedCell', null);
   });
 
   test('should bind events', () => {
@@ -79,12 +61,12 @@ describe('Interaction Shift Multi Selection Tests', () => {
     expect(s2.interaction.hasIntercepts([InterceptType.CLICK])).toBeFalsy();
   });
 
-  test('should set lastClickCell', () => {
+  test('should set last clicked cell', () => {
     s2.interaction.changeState({
       cells: [],
       stateName: InteractionStateName.SELECTED,
     });
-    const mockCell00 = createMockCell('0-0', { rowIndex: 0, colIndex: 0 });
+    const mockCell00 = createMockCellInfo('0-0', { rowIndex: 0, colIndex: 0 });
 
     s2.getCell = () => mockCell00.mockCell as any;
 
@@ -92,8 +74,27 @@ describe('Interaction Shift Multi Selection Tests', () => {
       stopPropagation() {},
     } as unknown as GEvent);
 
-    expect(s2.store.get('lastClickCell')).toEqual(mockCell00.mockCell);
+    expect(s2.store.get('lastClickedCell')).toEqual(mockCell00.mockCell);
   });
+
+  // should use data cell click interaction for single cell select
+  test('should not hide tooltip and change single data cell state', () => {
+    s2.store.set('lastClickedCell', null);
+
+    const mockCell00 = createMockCellInfo('8-8', { rowIndex: 8, colIndex: 8 });
+    s2.getCell = () => mockCell00.mockCell as any;
+
+    s2.emit(S2Event.DATA_CELL_CLICK, {
+      stopPropagation() {},
+    } as unknown as GEvent);
+
+    expect(s2.hideTooltip).not.toHaveBeenCalled();
+    expect(s2.interaction.getState()).toEqual({
+      cells: [],
+      force: false,
+    });
+  });
+
   test('should select range data', () => {
     s2.interaction.changeState({
       cells: [],
@@ -108,11 +109,12 @@ describe('Interaction Shift Multi Selection Tests', () => {
       getSeriesNumberWidth: () => 200,
     } as any;
 
-    const mockCell00 = createMockCell('0-0', { rowIndex: 0, colIndex: 0 });
-    const mockCell01 = createMockCell('0-1', { rowIndex: 0, colIndex: 1 });
-    const mockCell10 = createMockCell('1-0', { rowIndex: 1, colIndex: 0 });
-    const mockCell11 = createMockCell('1-1', { rowIndex: 1, colIndex: 1 });
-    s2.store.set('lastClickCell', mockCell00.mockCell as any);
+    const mockCell00 = createMockCellInfo('0-0', { rowIndex: 0, colIndex: 0 });
+    const mockCell01 = createMockCellInfo('0-1', { rowIndex: 0, colIndex: 1 });
+    const mockCell10 = createMockCellInfo('1-0', { rowIndex: 1, colIndex: 0 });
+    const mockCell11 = createMockCellInfo('1-1', { rowIndex: 1, colIndex: 1 });
+
+    s2.store.set('lastClickedCell', mockCell00.mockCell as any);
     s2.emit(S2Event.GLOBAL_KEYBOARD_DOWN, {
       key: InteractionKeyboardKey.SHIFT,
     } as KeyboardEvent);
