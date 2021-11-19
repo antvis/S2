@@ -75,12 +75,12 @@
   },
   "bundlesize": [
     {
-      "path": "./dist/index.js",
-      "maxSize": "200 kB"
+      "path": "./dist/index.min.js",
+      "maxSize": "650 kB"
     },
     {
-      "path": "./dist/style.css",
-      "maxSize": "5 kB"
+      "path": "./dist/style.min.css",
+      "maxSize": "205 kB"
     }
   ]
 }
