@@ -46,6 +46,7 @@
     "build:esm": "vite build --mode es",
     "build:cjs": "vite build --mode cjs",
     "build:umd": "vite build --mode umd",
+    "build:declaration": "ttsc -p tsconfig-declaration.json",
     "bundle:size": "bundlesize",
     "test": "jest",
     "test:live": "node ./scripts/test-live.mjs",

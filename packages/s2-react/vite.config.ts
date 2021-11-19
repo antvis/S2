@@ -3,8 +3,6 @@ import { defineConfig, LibraryFormats } from 'vite';
 import viteImp from 'vite-plugin-imp';
 import react from '@vitejs/plugin-react';
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
-import typescript from 'rollup-plugin-typescript2';
-import ttypescript from 'ttypescript';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { visualizer } from 'rollup-plugin-visualizer';
 
