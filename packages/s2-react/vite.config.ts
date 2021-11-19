@@ -17,10 +17,13 @@ const OUT_DIR_NAME_MAP = {
 export default defineConfig(({ mode, command }) => {
   const format = mode as LibraryFormats;
   const isEsmFormat = format === 'es';
+  const isUmdFormat = format === 'umd';
   const outDir = OUT_DIR_NAME_MAP[format];
 
+  const root = path.join(__dirname, command === 'serve' ? 'playground' : '');
   return {
     // 开发配置
+    root,
     server: {
       port: 3000,
       hmr: true,
@@ -55,19 +58,19 @@ export default defineConfig(({ mode, command }) => {
         },
       },
       modules: {
-        // 样式小驼峰转化,
+        // 样式小驼峰转化
         // css: goods-list => tsx: goodsList
         localsConvention: 'camelCase',
       },
     },
 
     build: {
-      minify: 'esbuild',
+      minify: isUmdFormat ? 'esbuild' : false,
       sourcemap: true,
 
       lib: {
         name: 's2-react',
-        entry: './src/index.tsx',
+        entry: './src/index.ts',
         formats: [format],
       },
       outDir: outDir,
@@ -75,18 +78,18 @@ export default defineConfig(({ mode, command }) => {
       rollupOptions: {
         plugins: [
           peerDepsExternal(),
-          typescript({
-            abortOnError: true,
-            tsconfig: 'tsconfig.json',
-            tsconfigOverride: {
-              include: ['src'],
-              exclude: ['__tests__'],
-              compilerOptions: {
-                declaration: isEsmFormat,
-              },
-            },
-            typescript: ttypescript,
-          }),
+          // typescript({
+          //   abortOnError: true,
+          //   tsconfig: 'tsconfig.json',
+          //   tsconfigOverride: {
+          //     include: ['src'],
+          //     exclude: ['__tests__'],
+          //     compilerOptions: {
+          //       declaration: isEsmFormat,
+          //     },
+          //   },
+          //   typescript: ttypescript,
+          // }),
         ],
         output: {
           entryFileNames: '[name].js',
