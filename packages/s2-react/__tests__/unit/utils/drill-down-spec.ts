@@ -17,8 +17,8 @@ import {
 } from '@/utils';
 import { PartDrillDown, PartDrillDownInfo } from '@/components';
 
-jest.mock('@/sheet-type');
-jest.mock('@/interaction/root');
+jest.mock('@antv/s2/sheet-type');
+jest.mock('@antv/s2/interaction/root');
 
 const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
 const MockRootInteraction =
