@@ -257,10 +257,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         ) {
           if (isNumber(style)) {
             const marginStyle = {
-              x: x + style / 2,
-              y: y + style / 2,
-              width: width - style,
-              height: height - style,
+              x: Math.ceil(x + style / 2),
+              y: Math.ceil(y + style / 2),
+              width: width - style - 1,
+              height: height - style - 1,
             };
             each(marginStyle, (style, styleKey) => {
               updateShapeAttr(shape, styleKey, style);
