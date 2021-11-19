@@ -1,3 +1,11 @@
+# [@antv/s2-v1.0.0-beta.11](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.10...@antv/s2-v1.0.0-beta.11) (2021-11-19)
+
+
+### Bug Fixes
+
+* 🐛 修复1px边框错位的问题 ([#744](https://github.com/antvis/S2/issues/744)) ([2b628a6](https://github.com/antvis/S2/commit/2b628a68fb9c60c730bb5e849315824117317072))
+* **placeholder:** placeholder issue ([#742](https://github.com/antvis/S2/issues/742)) ([144387a](https://github.com/antvis/S2/commit/144387af4e1ad9740b8b153b2d94e8e6a934593c))
+
 # [@antv/s2-v1.0.0-beta.10](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.9...@antv/s2-v1.0.0-beta.10) (2021-11-18)
 
 
