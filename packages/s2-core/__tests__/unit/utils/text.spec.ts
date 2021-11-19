@@ -28,7 +28,7 @@ describe('Calculate Text Ellipsis', () => {
       placeholder: '--',
     });
 
-    expect(text).toEqual('');
+    expect(text).toEqual('--');
   });
 
   it('should get correct placeholder text with 0', () => {

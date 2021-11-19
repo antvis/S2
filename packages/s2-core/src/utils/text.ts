@@ -2,6 +2,7 @@ import {
   clone,
   get,
   isArray,
+  isNil,
   isNumber,
   isString,
   memoize,
@@ -181,7 +182,9 @@ export const getEllipsisText = ({
   placeholder?: string;
 }) => {
   let font = {};
-  const finalText = text ?? placeholder ?? EMPTY_PLACEHOLDER;
+  const empty = placeholder ?? EMPTY_PLACEHOLDER;
+  // [null, undefined, ''] will return empty
+  const finalText = isNil(text) || text === '' ? empty : text;
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
