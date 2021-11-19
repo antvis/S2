@@ -181,7 +181,7 @@ export const getEllipsisText = ({
   placeholder?: string;
 }) => {
   let font = {};
-  const finalText = (text || placeholder) ?? EMPTY_PLACEHOLDER;
+  const finalText = text ?? placeholder ?? EMPTY_PLACEHOLDER;
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
