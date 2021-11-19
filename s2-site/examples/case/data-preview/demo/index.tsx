@@ -9,6 +9,9 @@ import {
   TableCornerCell,
   S2Event,
   SpreadSheet,
+  FilterParam,
+  SortMethod,
+  SortParams,
 } from '@antv/s2';
 import {
   Input,
@@ -22,9 +25,12 @@ import {
   Popover,
   Checkbox,
   message,
+  List,
 } from 'antd';
-import { get } from 'lodash';
+import { get, uniq } from 'lodash';
 import '@antv/s2/dist/s2.min.css';
+import _ from 'lodash';
+
 const { Search } = Input;
 
 const ShowList = ({ columns, setColumns, allChecked }) => {
@@ -92,13 +98,26 @@ class CustomTableColCell extends TableColCell {
   }
 
   protected renderFilterIcon(position) {
+    const sortMethod = getCurrentSortMethod(
+      this.meta.value,
+      this.spreadsheet.dataCfg.sortParams!,
+    );
+    /**
+     * 有值说明有加filter
+     */
+    const isFiltered = !!getCurrentFilterParams(
+      this.meta.value,
+      this.spreadsheet.dataCfg.filterParams!,
+    ).length;
+
     const { x, y, width, height } = position;
     const icon = new GuiIcon({
-      name: 'Filter',
+      name: iconMap[sortMethod.toLowerCase()],
       x,
       y,
       width,
       height,
+      fill: isFiltered ? 'rgb(35, 73, 229)' : 'rgb(67, 72, 91)',
     });
     this.add(icon);
 
@@ -109,6 +128,12 @@ class CustomTableColCell extends TableColCell {
     });
   }
 }
+
+const iconMap = {
+  none: 'Filter',
+  asc: 'SortUp',
+  desc: 'SortDown',
+};
 
 export const filterIcon =
   '<svg t="1633848048963" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="85936" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M0 0h1024L724.676923 488.369231V1024l-425.353846-141.784615v-393.846154L0 0z m196.923077 102.4l204.8 354.461538v362.338462l228.430769 63.015385V456.861538l212.676923-354.461538H196.923077z" opacity=".4" p-id="85937" fill="rgba(0,0,0,0.8)"></path></svg>';
@@ -126,10 +151,15 @@ const initColumns = ['province', 'city', 'type', 'price'];
 
 const App = ({ data }) => {
   const onIconClick = ({ meta }) => {
+    setinteractedCol(meta.value);
     setColModalVisible(!colModalVisible);
   };
   const s2Ref = useRef<SpreadSheet>(null);
   const [columns, setColumns] = React.useState<string[]>(initColumns);
+
+  const [interactedCol, setinteractedCol] = useState('');
+  const modalCallbackRef = useRef((e?: any) => {});
+
   const [options, setOptions] = useState<S2Options>({
     width: 600,
     height: 400,
@@ -237,24 +267,258 @@ const App = ({ data }) => {
           setColModalVisible(false);
           form.resetFields();
         }}
-        onOk={() => {}}
+        onOk={() => {
+          modalCallbackRef.current();
+          setColModalVisible(false);
+        }}
       >
-        <Form {...layout} form={form} name="control-hooks">
-          <Form.Item
-            name="sort"
-            label="排序"
-            rules={[{ required: true }]}
-            initialValue="NONE"
-          >
-            <Radio.Group>
-              <Radio value={'NONE'}>无</Radio>
-              <Radio value={'ASC'}>升序</Radio>
-              <Radio value={'DESC'}>降序</Radio>
-            </Radio.Group>
-          </Form.Item>
-        </Form>
+        <SortPopover
+          spreadsheet={s2Ref.current!}
+          fieldName={interactedCol}
+          modalCallbackRef={modalCallbackRef}
+        />
       </Modal>
     </div>
+  );
+};
+
+const convertToObject = (values: any[]): Record<string, boolean> => {
+  const initData: any = {};
+
+  values.forEach((val) => {
+    initData[val] = true;
+  });
+
+  return initData;
+};
+
+/**
+ * 返回当前sortMethod  默认为NONE
+ * @param fieldName
+ * @param sortParams
+ * @returns
+ */
+
+export const getCurrentSortMethod = (
+  fieldName: string,
+  sortParams?: SortParams,
+): SortMethod | 'NONE' => {
+  return (
+    _.get(
+      (sortParams || []).filter((param) => param.sortFieldId === fieldName),
+      '[0].sortMethod',
+      'NONE',
+    ) || 'NONE'
+  );
+};
+
+/**
+ *
+ * @param fieldName
+ * @param filterParams
+ * @returns
+ */
+export const getCurrentFilterParams = (
+  fieldName: string,
+  filterParams?: FilterParam[],
+) => {
+  const filtered: any[] = get(
+    (filterParams || []).filter((param) => param.filterKey === fieldName),
+    '[0].filteredValues',
+    [],
+  );
+
+  return filtered;
+};
+
+const SortPopover = ({
+  fieldName,
+  spreadsheet,
+  modalCallbackRef,
+}: {
+  fieldName: string;
+  spreadsheet: SpreadSheet;
+  modalCallbackRef: React.MutableRefObject<any>;
+}) => {
+  const fieldData = React.useMemo(
+    () =>
+      uniq(
+        // slice掉第一行  （第一行是column名）
+        spreadsheet.dataSet.originData.slice(1).map((item) => item[fieldName]),
+      ),
+    [spreadsheet.dataSet.originData, fieldName],
+  );
+
+  const { sortParams, filterParams } = spreadsheet.dataCfg;
+  const [sort, setsort] = React.useState(
+    getCurrentSortMethod(fieldName, sortParams),
+  );
+  const [filtered, setfiltered] = React.useState(
+    convertToObject(getCurrentFilterParams(fieldName, filterParams)),
+  );
+  const [changed, setchanged] = React.useState({
+    sort: false,
+    filter: false,
+  });
+  const [searchKeyword, setsearchKeyword] = React.useState('');
+
+  const searchedFieldData = React.useMemo(
+    () =>
+      fieldData.filter((data) => {
+        if (searchKeyword) {
+          if (typeof data === 'string') {
+            return data.search(searchKeyword) !== -1;
+          }
+          return false;
+        }
+        return true;
+      }),
+    [searchKeyword, fieldData],
+  );
+
+  const onKeywordChange = (keyword: string) => {
+    // 关键词变化时将不在关键词内的值过滤
+    setsearchKeyword(keyword);
+    setchanged((old) => ({ ...old, filter: true }));
+    const newFilter = {};
+    fieldData
+      .filter(
+        (data) =>
+          !fieldData
+            .filter((field) => {
+              if (keyword) {
+                if (typeof field === 'string') {
+                  return field.search(keyword) !== -1;
+                }
+                return false;
+              }
+              return true;
+            })
+            .includes(data),
+      )
+      .forEach((data) => {
+        newFilter[data] = true;
+      });
+    setfiltered(newFilter);
+  };
+
+  modalCallbackRef.current = () => {
+    if (changed.sort) {
+      spreadsheet.emit(S2Event.RANGE_SORT, {
+        sortKey: fieldName,
+        sortMethod: sort as any,
+        sortBy: (obj) => {
+          return fieldData.every(
+            (v) => typeof v === 'string' && !Number.isNaN(Number(v)),
+          )
+            ? Number(obj[fieldName])
+            : obj[fieldName];
+        },
+      });
+    }
+    if (changed.filter) {
+      spreadsheet.emit(S2Event.RANGE_FILTER, {
+        filterKey: fieldName,
+        // 将Object还原成数组
+        filteredValues: Object.entries(filtered)
+          .map(([fieldValue, isFiltered]) => {
+            if (isFiltered) return fieldValue;
+          })
+          .filter(Boolean),
+      });
+    }
+    setchanged({ filter: false, sort: false });
+  };
+
+  return (
+    <Form
+      style={{ padding: '1em' }}
+      labelCol={{ span: 6 }}
+      wrapperCol={{ span: 18 }}
+    >
+      <Form.Item label="数据排序: ">
+        <Radio.Group
+          onChange={(e) => {
+            setsort(e.target.value);
+            setchanged((val) => ({ ...val, sort: true }));
+          }}
+          value={sort}
+        >
+          <Radio value={'NONE'}>无</Radio>
+          <Radio value={'ASC'}>升序</Radio>
+          <Radio value={'DESC'}>降序</Radio>
+        </Radio.Group>
+        ,
+      </Form.Item>
+      <Form.Item label="数值筛选: ">
+        <div>
+          <Input.Search
+            value={searchKeyword}
+            onChange={(e) => onKeywordChange(e.target.value)}
+            placeholder="请输入搜索关键词"
+            // prefix={<Icon type="search" style={{ color: 'white' }} />}
+          />
+
+          <div>
+            <Checkbox
+              checked={searchedFieldData.every(
+                (fieldValue) => !filtered[fieldValue],
+              )}
+              indeterminate={
+                searchedFieldData.some((fieldValue) => !filtered[fieldValue]) &&
+                !searchedFieldData.every((fieldValue) => !filtered[fieldValue])
+              }
+              onChange={(e) => {
+                const {
+                  target: { checked },
+                } = e;
+                setchanged((val) => ({ ...val, filter: true }));
+
+                if (checked) {
+                  setfiltered((old) => {
+                    const newValue = {};
+                    searchedFieldData.forEach((fieldValue) => {
+                      newValue[fieldValue] = false;
+                    });
+                    return newValue;
+                  });
+                } else {
+                  // 将全部过滤
+                  setfiltered((old) => {
+                    const newValue = {};
+                    searchedFieldData.forEach((fieldValue) => {
+                      newValue[fieldValue] = true;
+                    });
+
+                    return newValue;
+                  });
+                }
+              }}
+            >
+              {'全选'}
+            </Checkbox>
+          </div>
+
+          {searchedFieldData.map((item) => {
+            return (
+              <Checkbox
+                style={{ display: 'block' }}
+                checked={!filtered[item]}
+                onChange={(e) => {
+                  setchanged((old) => ({ ...old, filter: true }));
+                  setfiltered((old) => ({
+                    ...old,
+                    [item]: !e.target.checked,
+                  }));
+                }}
+              >
+                {item}
+              </Checkbox>
+            );
+          })}
+        </div>
+      </Form.Item>
+    </Form>
   );
 };
 
