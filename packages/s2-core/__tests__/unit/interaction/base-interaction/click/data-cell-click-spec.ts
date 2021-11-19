@@ -14,7 +14,7 @@ describe('Interaction Data Cell Click Tests', () => {
 
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
-    s2.getCell = () => mockCellInfo as any;
+    s2.getCell = () => mockCellInfo.mockCell as any;
     dataCellClick = new DataCellClick(s2 as unknown as SpreadSheet);
     s2.options = {
       tooltip: {
