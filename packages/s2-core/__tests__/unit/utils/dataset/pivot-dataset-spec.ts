@@ -6,6 +6,8 @@ import {
   transformDimensionsValues,
   getDataPath,
   getQueryDimValues,
+  getDimensionsWithoutPathPre,
+  getDimensionsWithParentPath,
 } from '@/utils/dataset/pivot-data-set';
 import { S2DataConfig } from '@/common/interface';
 
@@ -59,7 +61,9 @@ describe('PivotDataSet util test', () => {
     });
     expect(result.colPivotMeta.has('家具')).toBeTrue();
     expect(result.rowPivotMeta.has('浙江省')).toBeTrue();
-    expect(result.sortedDimensionValues.province).toEqual(['浙江省', '四川省']);
+    expect(
+      getDimensionsWithoutPathPre(result.sortedDimensionValues.province),
+    ).toEqual(['浙江省', '四川省']);
   });
 
   test('for transformDimensionsValues function', () => {
@@ -72,12 +76,7 @@ describe('PivotDataSet util test', () => {
       sub_type: '桌子',
       type: '家具',
     };
-    const result = transformDimensionsValues(
-      data,
-      rows,
-      sortedDimensionValues,
-      {},
-    );
+    const result = transformDimensionsValues(data, rows, sortedDimensionValues);
     expect(result).toEqual(['浙江省', '杭州市']);
   });
 
@@ -102,10 +101,32 @@ describe('PivotDataSet util test', () => {
     expect(result).toEqual([0, 0, 0, 0]);
   });
 
-  test('for getQueryDimValues function', () => {
-    const dimensions = ['province', 'city'];
-    const query = { province: '浙江省', city: '杭州市', type: '办公用品' };
-    const result = getQueryDimValues(dimensions, query);
-    expect(result).toEqual(['浙江省', '杭州市']);
+  test('for getDimensionsWithoutPathPre function', () => {
+    const dimensions = ['芜湖市[&]家具[&]椅子', '芜湖市[&]家具', '芜湖市'];
+    expect(getDimensionsWithoutPathPre(dimensions)).toEqual([
+      '椅子',
+      '家具',
+      '芜湖市',
+    ]);
+  });
+
+  test('for getDimensionsWithParentPath function', () => {
+    const field = 'city';
+    const defaultDimensions = ['province', 'city'];
+    const dimensions = [
+      {
+        province: '辽宁省',
+        city: '芜湖市',
+        category: '家具',
+        subCategory: '椅子',
+        price: '',
+      },
+    ];
+    const result = getDimensionsWithParentPath(
+      field,
+      defaultDimensions,
+      dimensions,
+    );
+    expect(result).toEqual(['辽宁省[&]芜湖市']);
   });
 });
