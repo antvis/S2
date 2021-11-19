@@ -15,7 +15,7 @@
     {
       "filename": "pivot.tsx",
       "title": {
-        "zh": "交叉表维度切换",
+        "zh": "透视表维度切换",
         "en": "Switcher in pivot sheet"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/WaJLe8CSf/2021-11-16%25252022.19.04.gif"
@@ -23,7 +23,7 @@
     {
       "filename": "pivot-with-children.tsx",
       "title": {
-        "zh": "交叉表子维度切换",
+        "zh": "透视表子维度切换",
         "en": "Switcher with children in pivot sheet"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/EMriYgmG5/2021-11-16%25252022.20.42.gif"

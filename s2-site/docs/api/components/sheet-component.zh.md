@@ -11,12 +11,12 @@ order: 0
 | :--- | :--- | :---: | :--- | :--- |
 | sheetType | `pivot | table | gridAnalysis` | | `pivot` |  表格类型：<br> 1. `pivot`: 透视表 <br> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表|
 | spreadsheet |`(...args: S2Constructor) => SpreadSheet`|  | | | 外部自定义的表实体， 用于初始化自定义表格 |
-| dataCfg | [S2DataConfig](/zh/docs/api/general/S2DataConfig) | ✓ | |  交叉表数据映射相关配置项 |
-| options | [S2Options](/zh/docs/api/general/S2Options) | ✓ | | 交叉表属性配置项 |
+| dataCfg | [S2DataConfig](/zh/docs/api/general/S2DataConfig) | ✓ | |  透视表数据映射相关配置项 |
+| options | [S2Options](/zh/docs/api/general/S2Options) | ✓ | | 透视表属性配置项 |
 | partDrillDown | [PartDrillDown](/zh/docs/api/components/drill-down) |  | |  维度下钻相关属性 |
 | adaptive | `boolean` | | `false` | 是否根据窗口大小自适应 |
 | showPagination | `boolean` | | `true` | 是否显示默认分页(只有在 `options` 配置过 Pagination  属性才会生效) |
-| themeCfg | [ThemeCfg](/zh/docs/api/general/S2Theme) |  | | 自定义交叉表主题样式 |
+| themeCfg | [ThemeCfg](/zh/docs/api/general/S2Theme) |  | | 自定义透视表主题样式 |
 | isLoading | `boolean` | | | 控制表格的加载状态 |
 | header | [HeaderCfgProps](/zh/docs/api/components/header) | | | 表头配置项 |
 | getSpreadSheet | (spreadsheet: SpreadSheet) => void; | | | 获取表实例 |
