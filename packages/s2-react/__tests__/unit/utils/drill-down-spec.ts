@@ -5,8 +5,9 @@ import {
   Store,
   Node,
   SpreadSheet,
+  PivotSheet,
 } from '@antv/s2';
-import { sleep } from '../../util/helpers';
+import { sleep, getContainer } from '../../util/helpers';
 import { data as originData } from '../../data/mock-dataset.json';
 import { data as drillDownData } from '../../data/mock-drill-down-dataset.json';
 import {
@@ -17,12 +18,6 @@ import {
 } from '@/utils';
 import { PartDrillDown, PartDrillDownInfo } from '@/components';
 
-jest.mock('@antv/s2/sheet-type');
-jest.mock('@antv/s2/interaction/root');
-
-const MockSpreadSheet = SpreadSheet as unknown as jest.Mock<SpreadSheet>;
-const MockRootInteraction =
-  RootInteraction as unknown as jest.Mock<RootInteraction>;
 describe('Drill Down Test', () => {
   let mockInstance: SpreadSheet;
   const mockDataCfg = {
@@ -87,12 +82,11 @@ describe('Drill Down Test', () => {
   const iconClickCallback = jest.fn();
 
   beforeEach(() => {
-    MockSpreadSheet.mockClear();
-    mockInstance = new MockSpreadSheet();
+    mockInstance = new PivotSheet(getContainer(), mockDataCfg, null);
     mockInstance.store = new Store();
     mockInstance.dataSet = new PivotDataSet(mockInstance);
     mockInstance.dataSet.setDataCfg(mockDataCfg);
-    mockInstance.interaction = new MockRootInteraction(mockInstance);
+    mockInstance.interaction = new RootInteraction(mockInstance);
     mockInstance.options = mockOptions;
   });
 
