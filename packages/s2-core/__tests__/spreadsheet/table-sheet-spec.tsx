@@ -75,7 +75,7 @@ function MainLayout({ callback }) {
   const [hiddenColumnFields, setHiddenColumnFields] = React.useState<string[]>([
     'order_date',
   ]);
-  const a = `1
+  const newLineText = `1
   2`;
 
   const dataCfg: S2DataConfig = {
@@ -83,7 +83,7 @@ function MainLayout({ callback }) {
       columns,
     },
     meta,
-    data: data.map((e) => ({ ...e, express_type: a })),
+    data: data.map((e) => ({ ...e, express_type: newLineText })),
     sortParams: [
       {
         sortFieldId: 'count',
