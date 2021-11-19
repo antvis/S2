@@ -25,7 +25,6 @@ import {
 import { get, uniq } from 'lodash';
 import '@antv/s2/dist/s2.min.css';
 import 'antd/es/checkbox/style/index.css';
-import _ from 'lodash';
 
 const { Search } = Input;
 
@@ -131,7 +130,7 @@ class CustomTableColCell extends TableColCell {
      * 有值说明有加filter
      */
 
-     const isFiltered = !!getCurrentFilterParams(
+    const isFiltered = !!getCurrentFilterParams(
       this.meta.value,
       this.spreadsheet.dataCfg.filterParams,
     ).length;
@@ -478,7 +477,7 @@ const convertToObject = (values) => {
 
 export const getCurrentSortMethod = (fieldName, sortParams) => {
   return (
-    _.get(
+    get(
       (sortParams || []).filter((param) => param.sortFieldId === fieldName),
       '[0].sortMethod',
       'NONE',
