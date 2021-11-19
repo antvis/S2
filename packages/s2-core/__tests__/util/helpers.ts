@@ -3,9 +3,10 @@ import path from 'path';
 import { dsvFormat } from 'd3-dsv';
 import EE from '@antv/event-emitter';
 import { Canvas } from '@antv/g-canvas';
+import { omit } from 'lodash';
 import { RootInteraction } from '@/interaction/root';
 import { Store } from '@/common/store';
-import { S2Options } from '@/common/interface';
+import { S2Options, ViewMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
@@ -92,3 +93,26 @@ export function getGradient(
 
   return `rgb(${r},${g},${b})`;
 }
+
+export const createMockCellInfo = (
+  cellId: string,
+  { colIndex = 0, rowIndex = 0 } = {},
+) => {
+  const mockCellViewMeta: Partial<ViewMeta> = {
+    id: cellId,
+    colIndex,
+    rowIndex,
+    type: undefined,
+  };
+  const mockCellMeta = omit(mockCellViewMeta, 'update');
+  const mockCell = {
+    ...mockCellViewMeta,
+    getMeta: () => mockCellViewMeta,
+    hideInteractionShape: jest.fn(),
+  };
+
+  return {
+    mockCell,
+    mockCellMeta,
+  };
+};

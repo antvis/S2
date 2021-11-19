@@ -174,7 +174,7 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
     expect(s2.hideTooltip).toHaveBeenCalled();
   });
 
-  test('should set lastClickCell', () => {
+  test('should set lastClickedCell', () => {
     s2.interaction.changeState({
       cells: [],
       stateName: InteractionStateName.SELECTED,
@@ -187,6 +187,6 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
       stopPropagation() {},
     } as unknown as GEvent);
 
-    expect(s2.store.get('lastClickCell')).toEqual(mockCell00.mockCell);
+    expect(s2.store.get('lastClickedCell')).toEqual(mockCell00.mockCell);
   });
 });
