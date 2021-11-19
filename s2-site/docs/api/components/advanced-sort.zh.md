@@ -15,7 +15,7 @@ order: 4
 | icon          | `React.ReactNode`                                                                                                                                |      |        | 排序按钮图标                 |
 | text          | `string`                                                                                                                                         |      |        | 排序按钮名称                 |
 | ruleText      | `string`                                                                                                                                         |      |        | 规则描述                     |
-| demissions    | [Demission](#Demission)[]                                                                                                                        |      |        | 可选字段列表                 |
+| dimensions    | [Dimension](#Dimension)[]                                                                                                                        |      |        | 可选字段列表                 |
 | ruleOptions   | [RuleOption](#RuleOption)[]                                                                                                                      |      |        | 规则配置列表                 |
 | sortParams    | [SortParams](https://g.antv.vision/zh/docs/api/general/S2DataConfig#SortParams)                                                                  |      |        | 默认已有 sort 规则           |
 | onSortOpen    | `() => void`                                                                                                                                     |      |        | 打开排序弹窗的回调           |
@@ -32,13 +32,13 @@ order: 4
 | icon          | `React.ReactNode`                                                                                                                                |      |        | 排序按钮图标                 |
 | text          | `ReactNode`                                                                                                                                      |      |        | 排序按钮名称                 |
 | ruleText      | `string`                                                                                                                                         |      |        | 规则描述                     |
-| demissions    | [Demission](#Demission)[]                                                                                                                        |      |        | 可选字段列表                 |
+| dimensions    | [Dimension](#Dimension)[]                                                                                                                        |      |        | 可选字段列表                 |
 | ruleOptions   | [RuleOption](#RuleOption)[]                                                                                                                      |      |        | 规则配置列表                 |
 | sortParams    | [SortParams](https://g.antv.vision/zh/docs/api/general/S2DataConfig#SortParams)                                                                  |      |        | 默认已有 sort 规则           |
 | onSortOpen    | `() => void`                                                                                                                                     |      |        | 打开排序弹窗的回调           |
 | onSortConfirm | `(ruleValues:`[RuleValue](#RuleValue)[]`, sortParams:`[SortParams](https://g.antv.vision/zh/docs/api/general/S2DataConfig#SortParams)`) => void` |      |        | 关闭弹窗后处理排序结果的回调 |
 
-## Demission
+## Dimension
 
 可选字段列表，不配置默认为：`行头+列头+数值`
 

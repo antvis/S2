@@ -1,7 +1,14 @@
 import { S2Options } from '../interface/s2Options';
 import { Style } from '@/common/interface/basic';
 
+export enum LayoutWidthTypes {
+  Adaptive = 'adaptive',
+  ColAdaptive = 'colAdaptive',
+  Compact = 'compact',
+}
+
 export const DEFAULT_STYLE: Readonly<Style> = {
+  layoutWidthType: LayoutWidthTypes.Adaptive,
   treeRowsWidth: 120,
   collapsedRows: {},
   collapsedCols: {},
@@ -17,7 +24,6 @@ export const DEFAULT_STYLE: Readonly<Style> = {
     height: 30,
     widthByFieldValue: {},
     heightByField: {},
-    colWidthType: 'adaptive',
     totalSample: 10,
     detailSample: 30,
     maxSampleIndex: 1,
@@ -52,7 +58,6 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     },
     autoResetSheetStyle: true,
   },
-  freezeRowHeader: true,
   showSeriesNumber: false,
   scrollReachNodeField: {},
   customSVGIcons: [],
@@ -60,6 +65,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   showDefaultHeaderActionIcon: true,
   headerActionIcons: [],
   style: DEFAULT_STYLE,
+  frozenRowHeader: true,
   frozenRowCount: 0,
   frozenColCount: 0,
   frozenTrailingRowCount: 0,

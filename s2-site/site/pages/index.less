@@ -7,7 +7,21 @@
     }
 
     [class*='Cases-module--appTeaser'] {
-      height: 500px;
+      height: 450px;
+      width: 820px;
+      // 祖先模块 .slick-list 设置了 height 高于其父级高度，估有部分溢出被隐藏.
+      // 所以即使设置了 align-items: center 也无法在视觉上居中，需要加上margin-bottom: 38px;
+      margin: 0 30px 38px 30px;
+      box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+      background: #fafbfc;
+    }
+
+    [class*='Cases-module--appLogo'] {
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      width: 150px !important;
+      height: 80px;
     }
   }
 }

@@ -11,27 +11,50 @@ fetch(
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
-        values: ['price'],
+        values: ['price', 'cost'],
       },
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
       data,
     };
 
-    const s2options = {
-      width: 800,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       interaction: {
         linkFields: ['city'],
       },
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     s2.on(S2Event.GLOBAL_LINK_FIELD_JUMP, (data) => {
       console.log(data);
+
       const { key, record } = data;
       const value = record[key];
       const a = document.createElement('a');
       a.target = '_blank';
-      a.href = `https://s2.antv.vision/${key}=${value}`;
+      a.href = `https://s2.antv.vision/?${key}=${value}`;
       a.click();
       a.remove();
     });

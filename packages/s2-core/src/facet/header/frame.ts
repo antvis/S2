@@ -50,7 +50,7 @@ export class Frame extends Group {
 
   private addCornerRightBorder() {
     const cfg = this.cfg;
-    // 是否是交叉表
+    // 是否是透视表
     const { isPivotMode } = cfg;
     // 明细表啥也不要
     if (!isPivotMode) {
@@ -122,7 +122,7 @@ export class Frame extends Group {
     if (
       splitLine.showShadow &&
       showViewPortRightShadow &&
-      this.cfg.spreadsheet.isFreezeRowHeader()
+      this.cfg.spreadsheet.isFrozenRowHeader()
     ) {
       const x = position.x + width;
       const y = position.y;

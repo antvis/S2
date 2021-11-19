@@ -6,7 +6,17 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Input, Select, Slider, Space, Switch, Tooltip } from 'antd';
+import {
+  Input,
+  Radio,
+  RadioChangeEvent,
+  Select,
+  Slider,
+  Space,
+  Switch,
+  Tooltip,
+  Button,
+} from 'antd';
 import { merge } from 'lodash';
 import { data, totalData, meta } from '../data/mock-dataset.json';
 import {
@@ -27,7 +37,7 @@ import { customMerge } from '@/utils/merge';
 export const assembleOptions = (...options: Partial<S2Options>[]): S2Options =>
   customMerge(
     DEFAULT_OPTIONS,
-    { debug: true, width: 1000, height: 600 },
+    { debug: true, width: 600, height: 600 },
     ...options,
   );
 
@@ -107,10 +117,20 @@ export const SheetEntry = forwardRef(
       );
     };
 
+    const onRadioChange = (e: RadioChangeEvent) => {
+      setOptions(
+        merge({}, options, {
+          style: {
+            layoutWidthType: e.target.value,
+          },
+        }),
+      );
+    };
+
     const onFreezeRowHeaderChange = (checked: boolean) => {
       setOptions(
         merge({}, options, {
-          freezeRowHeader: checked,
+          frozenRowHeader: checked,
         }),
       );
     };
@@ -200,7 +220,7 @@ export const SheetEntry = forwardRef(
           <Switch
             checkedChildren="冻结行头开"
             unCheckedChildren="冻结行头关"
-            defaultChecked={options.freezeRowHeader}
+            defaultChecked={options.frozenRowHeader}
             onChange={onFreezeRowHeaderChange}
           />
           <Switch
@@ -219,6 +239,13 @@ export const SheetEntry = forwardRef(
               setShowResizeArea(checked);
             }}
           />
+          <Radio.Group onChange={onRadioChange} defaultValue="adaptive">
+            <Radio.Button value="adaptive">行列等宽</Radio.Button>
+            <Radio.Button value="colAdaptive">列等宽</Radio.Button>
+            <Radio.Button value="compact">紧凑</Radio.Button>
+          </Radio.Group>
+        </Space>
+        <div style={{ marginBottom: 20 }}>
           <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
             <Switch
               checkedChildren="自动重置交互样式开"
@@ -264,7 +291,8 @@ export const SheetEntry = forwardRef(
               size="small"
             />
           </Space>
-        </Space>
+        </div>
+
         <div style={{ marginBottom: 40, width: '70%' }}>
           水平滚动速率 ：
           <Slider
@@ -296,6 +324,11 @@ export const SheetEntry = forwardRef(
                 backgroundOpacity: showResizeArea ? 1 : 0,
               },
             }),
+          }}
+          header={{
+            title: 'Title',
+            description: 'description',
+            extra: [<Button key="button">click me</Button>],
           }}
           onColCellClick={props.onColCellClick}
         />

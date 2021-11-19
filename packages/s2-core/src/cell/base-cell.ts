@@ -1,5 +1,14 @@
 import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import { each, get, includes, isEmpty, keys, pickBy } from 'lodash';
+import {
+  each,
+  forEach,
+  get,
+  includes,
+  isEmpty,
+  isNumber,
+  keys,
+  pickBy,
+} from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
@@ -7,7 +16,9 @@ import {
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
 import {
+  CellThemes,
   FormatResult,
+  ResizeArea,
   S2CellType,
   S2Theme,
   StateShapeLayer,
@@ -75,7 +86,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.theme[this.cellType].icon;
   }
 
-  public getTextAndIconPosition() {
+  public getTextAndIconPosition(iconCount = 1) {
     const textStyle = this.getTextStyle();
     const iconCfg = this.getIconStyle();
     return getTextAndFollowingIconPosition(
@@ -83,6 +94,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       textStyle,
       this.actualTextWidth,
       iconCfg,
+      iconCount,
     );
   }
 
@@ -130,11 +142,13 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
   /*                common functions that will be used in subtype               */
   /* -------------------------------------------------------------------------- */
 
-  public getStyle(name?: keyof S2Theme) {
+  public getStyle<K extends keyof S2Theme = keyof CellThemes>(
+    name?: K,
+  ): S2Theme[K] {
     return this.theme[name || this.cellType];
   }
 
-  protected getResizeAreaStyle() {
+  protected getResizeAreaStyle(): ResizeArea {
     return this.getStyle('resizeArea');
   }
 
@@ -149,19 +163,20 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return getContentArea(this.getCellArea(), padding);
   }
 
-  protected getIconPosition() {
-    return this.getTextAndIconPosition().icon;
+  protected getIconPosition(iconCount = 1) {
+    return this.getTextAndIconPosition(iconCount).icon;
   }
 
   protected drawTextShape() {
     const { formattedValue } = this.getFormattedFieldValue();
     const maxTextWidth = this.getMaxTextWidth();
     const textStyle = this.getTextStyle();
-    const ellipsisText = getEllipsisText(
-      formattedValue,
-      maxTextWidth,
-      textStyle,
-    );
+    const ellipsisText = getEllipsisText({
+      text: formattedValue,
+      maxWidth: maxTextWidth,
+      fontParam: textStyle,
+      placeholder: this.spreadsheet.options.placeholder,
+    });
     this.actualText = ellipsisText;
     this.actualTextWidth = measureTextWidth(ellipsisText, textStyle);
     const position = this.getTextPosition();
@@ -223,17 +238,35 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       this.theme,
       `${this.cellType}.cell.interactionState.${stateName}`,
     );
+
+    const { x, y, height, width } = this.getCellArea();
+
     each(stateStyles, (style, styleKey) => {
       const targetShapeNames = keys(
         pickBy(SHAPE_ATTRS_MAP, (attrs) => includes(attrs, styleKey)),
       );
-      if (isEmpty(targetShapeNames)) {
-        return;
-      }
       targetShapeNames.forEach((shapeName: StateShapeLayer) => {
         const shape = this.stateShapes.has(shapeName)
           ? this.stateShapes.get(shapeName)
           : this[shapeName];
+
+        // 根据borderWidth更新borderShape大小     https://github.com/antvis/S2/pull/705
+        if (
+          shapeName === 'interactiveBorderShape' &&
+          styleKey === 'borderWidth'
+        ) {
+          if (isNumber(style)) {
+            const marginStyle = {
+              x: Math.ceil(x + style / 2), // TODO: 边框整体重构后需revisit
+              y: Math.ceil(y + style / 2),
+              width: width - style - 1,
+              height: height - style - 1,
+            };
+            each(marginStyle, (style, styleKey) => {
+              updateShapeAttr(shape, styleKey, style);
+            });
+          }
+        }
         updateShapeAttr(shape, SHAPE_STYLE_MAP[styleKey], style);
       });
     });
@@ -244,6 +277,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent');
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0);
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderWidth, 1);
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderColor, 'transparent');
     });
   }

@@ -14,7 +14,7 @@ order: 1
 | tooltip | [Tooltip](#tooltip) |    |  |  tooltip 总配置 |
 | interaction | [Interaction](#interaction) |    |  |  表格交互配置 |
 | pagination | [Pagination](#pagination) |  |    | 分页配置 |
-| freezeRowHeader | `boolean` |  |   `true` | 冻结行头 |
+| frozenRowHeader | `boolean` |  |   `true` | 冻结行头 (透视表有效) |
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
 | scrollReachNodeField | [NodeField](#nodefield) |  |  | 滚动监听的节点度量 |
 | showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |
@@ -28,6 +28,7 @@ order: 1
 | hierarchyCollapse | `boolean` |  |   `false` | 在树状结构模式下行头是否默认展开。 |
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题 |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
+| placeholder | string |    |  | 空单元格的填充内容 |
 | dataCell | [DataCellCallback](#datacellcallback) |  |    | 自定义单元格 cell |
 | cornerCell | [CellCallback](#cellcallback) |  |    | 自定义 cornerCell |
 | rowCell | [CellCallback](#cellcallback) |  |  |   自定义行头 cell |
@@ -66,12 +67,12 @@ object **必选**,_default：null_ 功能描述：样式设置
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- | --- |
-| treeRowsWidth | `number` |  |    | 树状模式行单元格宽度 |
+|layoutWidthType | `adaptive` \| `colAdaptive`  \| `compact` |    |  | 单元格宽度布局类型<br> `adaptive` : 行列等宽，均分整个 canvas 画布宽度 <br> `colAdaptive`：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度<br> `compact`：行列紧凑布局，指标维度少的时候无法布满整个画布 |
+| treeRowsWidth | `number` |  |  120  | 树状模式行单元格宽度 |
 | collapsedRows | `Record<string, boolean>` |  |    | 树状模式行的折叠、收起状态 |
 | collapsedCols | `Record<string, boolean>`  |  |    | 树状模式列的折叠、收起状态 |
 | cellCfg | [CellCfg](#cellcfg) |  |  |   单元格配置 |
 | colCfg | [ColCfg](#colcfg) |  |  |   列样式配置 |
-| rowCfg | [RowCfg](#rowcfg) |  |  |   行样式配置 |
 | device | `pc` \| `mobile` | |  `pc` | 设备类型 |
 
 ## CellCfg
@@ -80,10 +81,9 @@ object **必选**,_default：null_ 功能描述：单元格配置
 
 | 参数    | 类型   | 必选  | 默认值 | 功能描述     |
 | ------- | ------ | ---- | ------ | ------------ |
-| width   | `number` |      |              | 单元格宽度   |
-| height  | `number` |      |              | 单元格高度   |
+| width   | `number` |      |    96 | 单元格宽度   |
+| height  | `number` |      |    30 | 单元格高度   |
 | padding | `number` |      |              | 单元格内边距 |
-| lineHeight | `number` |            |        | 单元格行高 |
 
 ## ColCfg
 
@@ -91,20 +91,9 @@ object **必选**,_default：null_ 功能描述： 列样式配置
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- |
-| height | `number` |  |  |   单元格高度（普通状态） |
+| height | `number` |  | 30 |   单元格高度（普通状态） |
 | widthByFieldValue | `number`   |  |  | 根据度量值设置宽度（拖拽或者预设宽度场景） |
 | heightByField | `Record<string, number>` |    |  | 根据度量值设置高度（拖拽或者预设宽度场景） |
-| colWidthType | `adaptive` \| `compact` |    |  | 列类型，adaptive: 自适应，compact: 紧凑 |
-
-## RowCfg
-
-object **必选**,_default：null_ 功能描述：行样式配置
-
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| width | `number` |  |    | 单元格宽度 |
-| widthByField | `Record<string, number>` |    |  | 根据度量值设置宽度（拖拽或者预设宽度场景） |
-| treeRowsWidth | `adaptive` \| `compact` |    |  | 树状结构下行宽 （拖拽场景） |
 
 ## NodeField
 
@@ -165,7 +154,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 
 ## HeaderActionIconProps
 
-功能描述： 点击自定义操作 icon 后交叉表返回的当前 icon 相关
+功能描述： 点击自定义操作 icon 后透视表返回的当前 icon 相关
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- |

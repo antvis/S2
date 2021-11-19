@@ -13,8 +13,30 @@ fetch(
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
-        values: ['price'],
+        values: ['price', 'cost'],
       },
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
       data,
     };
     const TooltipComponent = (
@@ -24,9 +46,9 @@ fetch(
       <div className="tooltip-custom-component">rowTooltip</div>
     );
 
-    const s2options = {
+    const s2Options = {
       width: 600,
-      height: 300,
+      height: 480,
       tooltip: {
         tooltipComponent: TooltipComponent,
         row: {
@@ -41,7 +63,7 @@ fetch(
             sheetType={'pivot'}
             adaptive={false}
             dataCfg={s2DataConfig}
-            options={s2options}
+            options={s2Options}
           />
         </div>
       );

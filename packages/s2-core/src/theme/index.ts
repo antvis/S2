@@ -21,10 +21,10 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '500',
+        fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[0],
         opacity: 1,
-        textAlign: 'center',
+        textAlign: 'left',
         textBaseline: 'middle',
       },
       text: {
@@ -33,7 +33,7 @@ export const getTheme = (
         fontWeight: 'normal',
         fill: basicColors[0],
         opacity: 1,
-        textAlign: 'center',
+        textAlign: 'left',
         textBaseline: 'middle',
       },
       cell: {
@@ -69,11 +69,11 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[14],
         linkTextFill: basicColors[14],
         opacity: 1,
-        textAlign: 'center',
+        textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
       },
       text: {
@@ -84,7 +84,7 @@ export const getTheme = (
         linkTextFill: basicColors[6],
         opacity: 1,
         textBaseline: 'middle',
-        textAlign: isTable ? 'center' : 'right', // default align center for row cell in table mode
+        textAlign: isTable ? 'center' : 'left', // default align center for row cell in table mode
       },
       cell: {
         // ----------- background color -----------
@@ -101,21 +101,21 @@ export const getTheme = (
         // -------------- layout -----------------
         padding: {
           top: 0,
-          right: 8,
+          right: 10,
           bottom: 0,
-          left: 8,
+          left: 10,
         },
         /* ---------- interaction state ----------- */
         interactionState: {
           // -------------- hover -------------------
           hover: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- selected -------------------
           selected: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- unselected -------------------
           unselected: {
@@ -127,7 +127,7 @@ export const getTheme = (
       },
       icon: {
         fill: basicColors[0],
-        size: 12,
+        size: 10,
         margin: {
           right: 4,
           left: 4,
@@ -139,7 +139,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[0],
         opacity: 1,
         textAlign: 'center',
@@ -178,12 +178,12 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: basicColors[4],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- selected -------------------
           selected: {
             backgroundColor: basicColors[4],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- unselected -------------------
           unselected: {
@@ -209,7 +209,7 @@ export const getTheme = (
       bolderText: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: isWindows() ? 'bold' : '520',
+        fontWeight: isWindows() ? 'bold' : 520,
         fill: basicColors[13],
         opacity: 1,
         textAlign: 'right',
@@ -249,19 +249,20 @@ export const getTheme = (
           // -------------- hover -------------------
           hover: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- keep hover -------------------
           hoverFocus: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
             borderColor: basicColors[14],
+            borderWidth: 1,
             borderOpacity: 1,
           },
           // -------------- selected -------------------
           selected: {
             backgroundColor: basicColors[2],
-            backgroundOpacity: 1,
+            backgroundOpacity: 0.6,
           },
           // -------------- unselected -------------------
           unselected: {
@@ -273,6 +274,7 @@ export const getTheme = (
           prepareSelect: {
             borderColor: basicColors[14],
             borderOpacity: 1,
+            borderWidth: 1,
           },
         },
 
@@ -295,9 +297,9 @@ export const getTheme = (
     resizeArea: {
       size: 3,
       background: basicColors[7],
-      guideLineColor: basicColors[7],
-      guideLineDash: 3,
       backgroundOpacity: 0,
+      guideLineColor: basicColors[7],
+      guideLineDash: [3, 3],
       /* ---------- interaction state ----------- */
       interactionState: {
         hover: {
@@ -318,10 +320,10 @@ export const getTheme = (
     // ------------- split line -----------------
     splitLine: {
       horizontalBorderColor: basicColors[12],
-      horizontalBorderColorOpacity: 1,
+      horizontalBorderColorOpacity: 0.2,
       horizontalBorderWidth: 2,
       verticalBorderColor: basicColors[11],
-      verticalBorderColorOpacity: 1,
+      verticalBorderColorOpacity: 0.25,
       verticalBorderWidth: 2,
       showShadow: true,
       shadowWidth: 8,
@@ -340,5 +342,5 @@ export const getTheme = (
       color: basicColors[8],
       opacity: 1,
     },
-  } as S2Theme;
+  };
 };

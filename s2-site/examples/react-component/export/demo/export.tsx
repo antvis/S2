@@ -7,9 +7,9 @@ fetch(
 )
   .then((res) => res.json())
   .then((res) => {
-    const s2options = {
-      width: 800,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       enableCopy: true,
     };
 
@@ -26,7 +26,7 @@ fetch(
     ReactDOM.render(
       <SheetComponent
         dataCfg={s2DataConfig}
-        options={s2options}
+        options={s2Options}
         header={{ exportCfg: { open: true } }}
         adaptive={false}
       />,

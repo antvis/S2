@@ -12,7 +12,6 @@ import { Hierarchy } from '@/facet/layout/hierarchy';
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type';
 import { S2Options, S2TableSheetOptions } from '@/common/interface/s2Options';
-import { TextAlign, TextBaseline } from '@/common/interface';
 
 export type Formatter = (v: unknown) => string;
 
@@ -22,6 +21,14 @@ export interface FormatResult {
 }
 
 export type SortMethod = 'ASC' | 'DESC' | 'asc' | 'desc';
+
+/**
+ * 布局类型：
+ * adaptive: 行列等宽，均分整个 canvas 画布宽度
+ * colAdaptive：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度
+ * compact：行列紧凑布局，指标维度少的时候无法布满整个画布
+ */
+export type LayoutWidthType = 'adaptive' | 'colAdaptive' | 'compact';
 
 export interface Meta {
   readonly field: string; // 字段 id
@@ -131,6 +138,7 @@ export interface FilterParam {
 export type SortParams = SortParam[];
 
 export interface Style {
+  readonly layoutWidthType?: LayoutWidthType;
   // row cell's height in tree mode
   readonly treeRowsWidth?: number;
   // row header in tree mode collapse some nodes
@@ -231,7 +239,6 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
-  lineHeight?: number;
   firstDerivedMeasureRowIndex?: number;
   minorMeasureRowIndex?: number;
 }
@@ -250,8 +257,6 @@ export interface ColCfg {
   height?: number;
   // specific some col field's width
   widthByFieldValue?: Record<string, number>;
-  // col width's type
-  colWidthType?: 'adaptive' | 'compact';
   // specific some col field's height
   heightByField?: Record<string, number>;
   // hide last column(measure values), only work when has one value

@@ -83,6 +83,9 @@ describe('Sort Action Test', () => {
           'a',
         ),
       ).toEqual([{ a: '3' }, { a: 2 }, { a: '-' }, { a: undefined }]);
+      expect(sortAction([{ a: '' }, { a: '3' }, { a: 2 }], 'ASC', 'a')).toEqual(
+        [{ a: '' }, { a: 2 }, { a: '3' }],
+      );
     });
   });
 });

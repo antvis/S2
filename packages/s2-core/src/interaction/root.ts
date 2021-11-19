@@ -7,8 +7,9 @@ import {
 } from './base-interaction/click';
 import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
+import { ShiftMultiSelection } from './shift-multi-selection';
 import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
-import { ColCell, DataCell, RowCell } from '@/cell';
+import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
 import {
   CellTypes,
   InteractionName,
@@ -20,6 +21,7 @@ import {
   CustomInteraction,
   InteractionStateInfo,
   Intercept,
+  MergedCellInfo,
   S2CellType,
 } from '@/common/interface';
 import { ColHeader, RowHeader } from '@/facet/header';
@@ -28,6 +30,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
+import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -213,6 +216,14 @@ export class RootInteraction {
     });
   };
 
+  public mergeCells = (cellsInfo?: MergedCellInfo[], hideData?: boolean) => {
+    mergeCells(this.spreadsheet, cellsInfo, hideData);
+  };
+
+  public unmergeCell = (removedCells: MergedCell) => {
+    unmergeCell(this.spreadsheet, removedCells);
+  };
+
   /**
    * 注册交互（组件按自己的场景写交互，继承此方法注册）
    * @param options
@@ -253,6 +264,10 @@ export class RootInteraction {
       this.interactions.set(
         InteractionName.COL_ROW_MULTI_SELECTION,
         new DataCellMultiSelection(this.spreadsheet),
+      );
+      this.interactions.set(
+        InteractionName.COL_ROW_SHIFT_MULTI_SELECTION,
+        new ShiftMultiSelection(this.spreadsheet),
       );
     }
 

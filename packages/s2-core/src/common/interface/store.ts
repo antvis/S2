@@ -1,5 +1,10 @@
 import { BBox, Group } from '@antv/g-canvas';
-import { InteractionStateInfo, SortParam } from '../interface';
+import {
+  InteractionStateInfo,
+  S2CellType,
+  SortParam,
+  ViewMeta,
+} from '../interface';
 import { ValueRanges } from './condition';
 import { S2DataConfig } from './s2DataConfig';
 import { Node } from '@/facet/layout/node';
@@ -28,7 +33,10 @@ export interface HiddenColumnsInfo {
   // 当前显示的兄弟节点之前所隐藏的节点
   hideColumnNodes: Node[];
   // 当前隐藏列所对应展示展开按钮的兄弟节点
-  displaySiblingNode: Node;
+  displaySiblingNode: {
+    prev: Node;
+    next: Node;
+  };
 }
 
 /**
@@ -77,8 +85,9 @@ export interface StoreKey {
 
   // hover 显示的 icon 缓存
   visibleActionIcons: GuiIcon[];
-  // 冻结行头时 真实 和 实际渲染的角头宽度差值
-  freezeCornerDiffWidth: number;
+
+  // last click cell
+  lastClickedCell: S2CellType<ViewMeta>;
 
   [key: string]: unknown;
 }

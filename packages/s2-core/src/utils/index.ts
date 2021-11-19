@@ -1,6 +1,6 @@
 export { splitTotal } from './data-set-operate';
 export { auto } from './formatter';
-export { generateId } from './layout';
+export { generateId, transformCustomTreeItems } from './layout';
 export { measureTextWidth } from './text';
 export * from './drill-down';
 export * from './export/index';

@@ -29,7 +29,7 @@ export const getHiddenColumnNodes = (
 export const getHiddenColumnDisplaySiblingNode = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
-): Node => {
+): HiddenColumnsInfo['displaySiblingNode'] => {
   const initColumnNodes = spreadsheet.getInitColumnNodes();
   const hiddenColumnIndexes = getHiddenColumnNodes(
     spreadsheet,
@@ -43,7 +43,10 @@ export const getHiddenColumnDisplaySiblingNode = (
   const prevSiblingNode = initColumnNodes.find(
     (node) => node.colIndex === firstHiddenColumnIndex - 1,
   );
-  return nextSiblingNode ?? prevSiblingNode;
+  return {
+    prev: prevSiblingNode || null,
+    next: nextSiblingNode || null,
+  };
 };
 
 /**

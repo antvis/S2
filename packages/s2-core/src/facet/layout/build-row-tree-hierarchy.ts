@@ -1,4 +1,4 @@
-import { isEmpty, merge, isBoolean } from 'lodash';
+import { isEmpty, merge, isBoolean, keys } from 'lodash';
 import { FieldValue, TreeHeaderParams } from '@/facet/layout/interface';
 import { layoutArrange, layoutHierarchy } from '@/facet/layout/layout-hooks';
 import { TotalClass } from '@/facet/layout/total-class';
@@ -6,8 +6,10 @@ import { i18n } from '@/common/i18n';
 import { Node } from '@/facet/layout/node';
 import { generateId } from '@/utils/layout/generate-id';
 import { SpreadSheet } from '@/sheet-type';
-import { getIntersections, filterUndefined } from '@/utils/data-set-operate';
+import { getListBySorted, filterUndefined } from '@/utils/data-set-operate';
+import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 import { PivotDataSet } from '@/data-set';
+import { ID_SEPARATOR } from '@/common/constant';
 
 const addTotals = (
   spreadsheet: SpreadSheet,
@@ -34,13 +36,18 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const { parentNode, currentField, level, facetCfg, hierarchy, pivotMeta } =
     params;
   const { spreadsheet, dataSet, collapsedRows, hierarchyCollapse } = facetCfg;
-  const query = parentNode.query;
+  const { query, id } = parentNode;
   const isDrillDownItem = spreadsheet.dataCfg.fields.rows?.length <= level;
   const sortedDimensionValues =
-    (dataSet as PivotDataSet)?.sortedDimensionValues?.get(currentField) || [];
-
+    (dataSet as PivotDataSet)?.sortedDimensionValues?.[currentField] || [];
+  const dimensions = sortedDimensionValues?.filter((item) =>
+    item?.includes(id?.split(`root${ID_SEPARATOR}`)[1]),
+  );
   const dimValues = filterUndefined(
-    getIntersections([...sortedDimensionValues], [...(pivotMeta.keys() || [])]),
+    getListBySorted(
+      [...(pivotMeta.keys() || [])],
+      [...getDimensionsWithoutPathPre(dimensions)],
+    ),
   );
 
   let fieldValues: FieldValue[] = layoutArrange(

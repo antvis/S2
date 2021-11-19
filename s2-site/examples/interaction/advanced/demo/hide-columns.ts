@@ -9,16 +9,38 @@ fetch(
     const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {
-        columns: ['type', 'price', 'province', 'city'],
+        columns: ['type', 'province', 'city', 'price', 'cost'],
       },
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
       data,
     };
 
-    const s2options = {
-      width: 800,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       interaction: {
-        hiddenColumnFields: ['price'],
+        hiddenColumnFields: ['province', 'price'],
       },
       tooltip: {
         showTooltip: true,
@@ -27,7 +49,7 @@ fetch(
         },
       },
     };
-    const s2 = new TableSheet(container, s2DataConfig, s2options);
+    const s2 = new TableSheet(container, s2DataConfig, s2Options);
 
     s2.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, (cell) => {
       console.log('列头展开', cell);

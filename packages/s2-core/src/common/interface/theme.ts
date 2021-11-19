@@ -36,10 +36,14 @@ export interface InteractionStateTheme {
   backgroundOpacity?: number;
   /* 背景填充色 */
   backgroundColor?: string;
+  /* 文本透明度 */
+  textOpacity?: number;
   /* 边线颜色 */
   borderColor?: string;
   /* 边线宽度 */
   borderWidth?: number;
+  /* 边线透明度 */
+  borderOpacity?: number;
   /* 透明度 */
   opacity?: number;
 }
@@ -120,7 +124,7 @@ export interface ResizeArea {
   /* 参考线颜色 */
   guideLineColor?: string;
   /* 参考线间隔 */
-  guideLineDash?: number;
+  guideLineDash?: number[];
   /* 热区背景色透明度 */
   backgroundOpacity?: number;
   /* 交互态 */
@@ -167,7 +171,7 @@ export interface SplitLine {
     right: string;
   };
 }
-export interface DefaultCellTheme {
+export interface DefaultCellTheme extends GridAnalysisCellTheme {
   /* 粗体文本样式 */
   bolderText?: TextTheme;
   /* 文本样式 */
@@ -178,11 +182,21 @@ export interface DefaultCellTheme {
   icon?: IconTheme;
   /* 序号列宽 */
   seriesNumberWidth?: number;
-  /* 额外属性字段 */
-  [key: string]: any;
 }
 
-type CellThemes = {
+export interface GridAnalysisCellTheme {
+  // 次级文本，如副指标
+  minorText?: TextTheme;
+  // 衍生指标
+  derivedMeasureText?: {
+    mainUp: string;
+    mainDown: string;
+    minorUp: string;
+    minorDown: string;
+  };
+}
+
+export type CellThemes = {
   [K in CellTypes]?: DefaultCellTheme;
 };
 
@@ -197,8 +211,6 @@ export interface S2Theme extends CellThemes {
   prepareSelectMask?: InteractionStateTheme;
   /* 画布背景底色 */
   background?: Background;
-  /* 额外属性字段 */
-  [key: string]: any;
 }
 
 export type ThemeName = 'default' | 'colorful' | 'gray';

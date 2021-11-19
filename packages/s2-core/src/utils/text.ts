@@ -2,6 +2,7 @@ import {
   clone,
   get,
   isArray,
+  isNil,
   isNumber,
   isString,
   memoize,
@@ -11,9 +12,10 @@ import {
 } from 'lodash';
 import { CellCfg, MultiData } from '@/common/interface';
 import { S2Options } from '@/common/interface/s2Options';
-import { DefaultCellTheme, S2Theme } from '@/common/interface/theme';
+import { DefaultCellTheme } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell/data-cell';
+import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -166,14 +168,23 @@ export const measureTextWidthRoughly = (text: any, font: any = {}): number => {
  * @param font optional 文本字体 或 优先显示的文本
  * @param priority optional 优先显示的文本
  */
-export const getEllipsisText = (
-  text: string,
-  maxWidth: number,
-  fontParam?: unknown,
-  priorityParam?: string[],
-) => {
+export const getEllipsisText = ({
+  text,
+  maxWidth,
+  fontParam,
+  priorityParam,
+  placeholder,
+}: {
+  text: string;
+  maxWidth: number;
+  fontParam?: unknown;
+  priorityParam?: string[];
+  placeholder?: string;
+}) => {
   let font = {};
-  const finalText = text ?? '-';
+  const empty = placeholder ?? EMPTY_PLACEHOLDER;
+  // [null, undefined, ''] will return empty
+  const finalText = isNil(text) || text === '' ? empty : text;
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
@@ -272,21 +283,23 @@ const getStyle = (
   colIndex: number,
   value: string | number,
   options: S2Options,
-  theme: DefaultCellTheme,
+  dataCellTheme: DefaultCellTheme,
 ) => {
   const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
   const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
   const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
   const isMinor = rowIndex === minorMeasureIndex;
   const isDerivedMeasure = colIndex >= derivedMeasureIndex;
-  const style = isMinor ? clone(theme.minorText) : clone(theme.text);
-  const derivedMeasureText = theme.derivedMeasureText;
+  const style = isMinor
+    ? clone(dataCellTheme.minorText)
+    : clone(dataCellTheme.text);
+  const derivedMeasureText = dataCellTheme.derivedMeasureText;
   const upFill = isMinor
     ? derivedMeasureText?.minorUp
-    : derivedMeasureText?.mainUp || theme.dataCell.icon.upIconColor;
+    : derivedMeasureText?.mainUp || dataCellTheme.icon.upIconColor;
   const downFill = isMinor
     ? derivedMeasureText?.minorDown
-    : derivedMeasureText?.mainDown || theme.dataCell.icon.downIconColor;
+    : derivedMeasureText?.mainDown || dataCellTheme.icon.downIconColor;
   if (isDerivedMeasure) {
     const isUp = getDataState(value);
     return merge(style, {
@@ -303,9 +316,9 @@ const getStyle = (
 export const drawObjectText = (cell: DataCell) => {
   const { x, y, height, width } = cell.getContentArea();
   const text = cell.getMeta().fieldValue as MultiData;
-  const cellStyle = cell.getStyle('dataCell') as DefaultCellTheme;
-  const labelStyle = cellStyle.bolderText;
-  const padding = cellStyle.cell.padding;
+  const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
+  const labelStyle = dataCellStyle.bolderText;
+  const padding = dataCellStyle.cell.padding;
 
   // 指标个数相同，任取其一即可
   const realWidth = width / (text.values[0].length + 1);
@@ -315,7 +328,11 @@ export const drawObjectText = (cell: DataCell) => {
     [],
     calX(x, padding.right),
     y + realHeight / 2,
-    getEllipsisText(text.label || '-', width - padding.left, labelStyle),
+    getEllipsisText({
+      text: text.label,
+      maxWidth: width - padding.left,
+      fontParam: labelStyle,
+    }),
     labelStyle,
   );
 
@@ -335,7 +352,7 @@ export const drawObjectText = (cell: DataCell) => {
         j,
         curText,
         cell?.getMeta().spreadsheet.options,
-        cellStyle,
+        dataCellStyle,
       );
       curWidth = j === 0 ? realWidth * 2 : realWidth;
       curX = calX(x, padding.right, totalWidth);
@@ -345,9 +362,12 @@ export const drawObjectText = (cell: DataCell) => {
         [],
         curX,
         curY,
-        getEllipsisText(`${curText}`, curWidth, curStyle),
+        getEllipsisText({
+          text: `${curText}`,
+          maxWidth: curWidth,
+          fontParam: curStyle,
+        }),
         curStyle,
-        curStyle?.fill,
       );
     }
   }

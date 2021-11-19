@@ -1,7 +1,7 @@
 import { each, isEmpty } from 'lodash';
 import { IGroup, IShape } from '@antv/g-base';
-import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
+import { translateGroupX } from '@/facet/utils';
 import {
   KEY_GROUP_COL_SCROLL,
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
@@ -30,7 +30,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
-
     this.scrollGroup = this.addGroup({
       name: KEY_GROUP_COL_SCROLL,
       zIndex: FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
@@ -43,19 +42,16 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
    * @param cornerWidth only has real meaning when scroll contains rowCell
    * @param type
    */
-  public onColScroll(scrollX: number, cornerWidth: number, type: string) {
-    // this is works in scroll-keep-text-center feature
+  public onColScroll(scrollX: number, type: string) {
     if (this.headerConfig.scrollX !== scrollX) {
-      this.headerConfig.offset = scrollX;
       this.headerConfig.scrollX = scrollX;
-      this.headerConfig.cornerWidth = cornerWidth || 0;
       this.render(type);
     }
   }
 
   protected clip() {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
-    const scrollXOffset = spreadsheet.isFreezeRowHeader() ? scrollX : 0;
+    const scrollXOffset = spreadsheet.isFrozenRowHeader() ? scrollX : 0;
     this.scrollGroup.setClip({
       type: 'rect',
       attrs: {
@@ -90,14 +86,13 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
     return (
       // don't care about scrollY, because there is only freeze col-header exist
       width + scrollX > item.x &&
-      scrollX - (spreadsheet.isFreezeRowHeader() ? 0 : cornerWidth) <
+      scrollX - (spreadsheet.isFrozenRowHeader() ? 0 : cornerWidth) <
         item.x + item.width
     );
   }
 
   protected layout() {
     const { data, spreadsheet } = this.headerConfig;
-
     const colCell = spreadsheet?.facet?.cfg?.colCell;
 
     each(data, (node: Node) => {
@@ -123,6 +118,6 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
   protected offset() {
     const { position, scrollX } = this.headerConfig;
     // 暂时不考虑移动y
-    translateGroup(this.scrollGroup, position.x - scrollX, 0);
+    translateGroupX(this.scrollGroup, position.x - scrollX);
   }
 }

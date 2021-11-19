@@ -110,7 +110,7 @@ const getOptions = () => {
     hierarchyType: 'grid',
     hierarchyCollapse: false,
     showSeriesNumber: false,
-    freezeRowHeader: false,
+    frozenRowHeader: false,
     totals: {
       row: {
         showGrandTotals: true,
@@ -133,7 +133,6 @@ const getOptions = () => {
       colCfg: {
         widthByFieldValue: {},
         heightByField: {},
-        colWidthType: 'adaptive',
       },
       cellCfg: {
         height: 32,

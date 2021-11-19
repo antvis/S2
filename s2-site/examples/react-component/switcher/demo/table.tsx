@@ -9,9 +9,9 @@ fetch(
 )
   .then((res) => res.json())
   .then((data) => {
-    const s2options = {
-      width: 800,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
     };
 
     // 明细表只需要 columns 字段
@@ -69,7 +69,7 @@ fetch(
             sheetType={'table'}
             adaptive={false}
             dataCfg={{ data, fields }}
-            options={{ ...s2options, hiddenColumnFields }}
+            options={{ ...s2Options, interaction: { hiddenColumnFields } }}
           />
         </div>
       );

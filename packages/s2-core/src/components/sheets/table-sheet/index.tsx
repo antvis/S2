@@ -29,7 +29,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     spreadsheet,
     dataCfg,
     options,
-    adaptive = false,
+    adaptive,
     header,
     themeCfg,
     isLoading,
@@ -48,7 +48,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     onDataCellMouseUp,
     onContextMenu,
     getSpreadSheet,
-    showPagination = true,
+    showPagination,
   } = props;
   const container = useRef<HTMLDivElement>();
   const baseSpreadsheet = useRef<SpreadSheet>();
@@ -189,7 +189,12 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   }, []);
 
   // handle box size change and resize
-  useResizeEffect(container.current, ownSpreadsheet, adaptive, options);
+  useResizeEffect({
+    spreadsheet: ownSpreadsheet,
+    container: container.current,
+    adaptive,
+    options,
+  });
 
   // handle pagination change
   usePaginationEffect(ownSpreadsheet, options, current, pageSize);
@@ -218,6 +223,11 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     ownSpreadsheet?.hideColumns(options.interaction?.hiddenColumnFields);
   }, [ownSpreadsheet, options.interaction?.hiddenColumnFields]);
 
+  useEffect(() => {
+    setCurrent(options?.pagination?.current || 1);
+    setPageSize(options?.pagination?.pageSize || 10);
+  }, [options?.pagination]);
+
   return (
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
@@ -238,4 +248,9 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   );
 });
 
+TableSheet.defaultProps = {
+  options: {} as S2Options,
+  adaptive: false,
+  showPagination: true,
+};
 TableSheet.displayName = 'TableSheet';

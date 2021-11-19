@@ -5,8 +5,8 @@ export const mockGridAnalysisOptions = {
   height: 600,
   hierarchyType: 'grid',
   style: {
+    layoutWidthType: 'colAdaptive',
     cellCfg: {
-      lineHeight: 20,
       width: 400,
       height: 100,
       minorMeasureRowIndex: 3,
@@ -139,10 +139,8 @@ export const mockGridAnalysisDataCfg = {
 export const mockTabularOptions = {
   width: 800,
   height: 600,
-  // hierarchyType: 'grid',
   style: {
     cellCfg: {
-      lineHeight: 30,
       width: 400,
       height: 300,
       minorMeasureRowIndex: 3,

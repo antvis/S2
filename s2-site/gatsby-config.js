@@ -5,14 +5,14 @@ module.exports = {
     {
       resolve: '@antv/gatsby-theme-antv',
       options: {
-        GATrackingId: ``,
+        GATrackingId: `G-SJ4N89WC85`,
       },
     },
   ],
   // 站点配置
   siteMetadata: {
     title: 'S2',
-    description: 'Ant effective spreadsheet render core lib homepage',
+    description: '多维交叉分析表格',
     siteUrl: homepage,
     githubUrl: repository.url,
     showLanguageSwitcher: true,

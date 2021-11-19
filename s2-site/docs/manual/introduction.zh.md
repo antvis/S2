@@ -7,7 +7,7 @@ redirect_from:
 
 
 
-![introduction](https://gw.alipayobjects.com/zos/antfincdn/ZGG1Q9Xsxb/05744783-846f-4285-ab14-7484b007d640.png)
+![introduction](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*X_KJQZAxjKUAAAAAAAAAAAAAARQnAQ)
 
 <div align="center">
 <p>
@@ -32,21 +32,20 @@ redirect_from:
 
 ## ❓ 什么是 S2
 
-[S2](https://github.com/antvis/s2) 是一个面向可视分析领域的数据驱动的表可视化引擎。"S" 取自于 "Spreadsheet" 的两个 "S"，"2" 代表了透视表中的行列两个维度。旨在提供高性能、易扩展、美观、易用的多维表格。
+[S2](https://github.com/antvis/s2) 是一个面向可视分析领域的数据驱动的表可视化引擎。"S" 取自于 "SpreadSheet" 的两个 "S"，"2" 代表了透视表中的行列两个维度。旨在提供美观、易用、高性能、易扩展的多维表格。
 
 ## ✨ 特性
 
-1. 多维交叉分析： 告别单一分析维度，全面拥抱任意维度的自由组合分析。
-2. 高性能：能支持全量百万数据下 `<8s` 渲染，也能通过局部下钻来实现秒级渲染。
-3. 高扩展性：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据 hook 流等）。
-4. 开箱即用：提供不同分析场景下开箱即用的 react 表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景的表渲染。
+1. 开箱即用：提供不同场景下开箱即用的 `react` 表组件及配套分析组件，只需要简单的配置即可轻松实现复杂场景。
+2. 多维交叉分析： 告别单一分析维度，全面拥抱任意维度的自由组合分析。
+3. 高性能：能支持全量百万数据下 `<4s` 渲染，也能通过局部下钻来实现秒级渲染。
+4. 高扩展性：支持任意的自定义扩展（包括但不局限于布局，样式，交互，数据流等）。
 5. 交互友好：支持丰富的交互形式（单选、圈选、行选、列选、冻结行头、宽高拖拽，自定义交互等）
 
 ## 📦 安装
 
 ```bash
-$ npm install @antv/s2
-# yarn add @antv/s2
+npm install @antv/s2
 ```
 
 ## 🔨 使用
@@ -64,55 +63,103 @@ const s2DataConfig = {
     values: ['price'],
   },
   data: [
-     {
-      province: '浙江',
-      city: '杭州',
-      type: '笔',
-      price: '1',
+    {
+      province: "浙江",
+      city: "杭州",
+      type: "笔",
+      price: "1",
     },
     {
-      province: '浙江',
-      city: '杭州',
-      type: '纸张',
-      price: '2',
+      province: "浙江",
+      city: "杭州",
+      type: "纸张",
+      price: "2",
     },
     {
-      province: '浙江',
-      city: '舟山',
-      type: '笔',
-      price: '17',
+      province: "浙江",
+      city: "舟山",
+      type: "笔",
+      price: "17",
     },
     {
-      province: '浙江',
-      city: '舟山',
-      type: '纸张',
-      price: '0.5',
+      province: "浙江",
+      city: "舟山",
+      type: "纸张",
+      price: "6",
     },
     {
-      province: '吉林',
-      city: '丹东',
-      type: '笔',
-      price: '8',
+      province: "吉林",
+      city: "丹东",
+      type: "笔",
+      price: "8",
     },
     {
-      province: '吉林',
-      city: '白山',
-      type: '笔',
-      price: '9',
+      province: "吉林",
+      city: "白山",
+      type: "笔",
+      price: "12",
     },
     {
-      province: '吉林',
-      city: '丹东',
-      type: ' 纸张',
-      price: '3',
+      province: "吉林",
+      city: "丹东",
+      type: "纸张",
+      price: "3",
     },
     {
-      province: '吉林',
-      city: '白山',
-      type: '纸张',
-      price: '1',
+      province: "吉林",
+      city: "白山",
+      type: "纸张",
+      price: "25",
     },
-  ],
+    {
+      province: "浙江",
+      city: "杭州",
+      type: "笔",
+      cost: "0.5",
+    },
+    {
+      province: "浙江",
+      city: "杭州",
+      type: "纸张",
+      cost: "20",
+    },
+    {
+      province: "浙江",
+      city: "舟山",
+      type: "笔",
+      cost: "1.7",
+    },
+    {
+      province: "浙江",
+      city: "舟山",
+      type: "纸张",
+      cost: "0.12",
+    },
+    {
+      province: "吉林",
+      city: "丹东",
+      type: "笔",
+      cost: "10",
+    },
+    {
+      province: "吉林",
+      city: "白山",
+      type: "笔",
+      cost: "9",
+    },
+    {
+      province: "吉林",
+      city: "丹东",
+      type: "纸张",
+      cost: "3",
+    },
+    {
+      province: "吉林",
+      city: "白山",
+      type: "纸张",
+      cost: "1",
+    }
+  ]
 };
 ```
 
@@ -122,8 +169,8 @@ const s2DataConfig = {
 
 ```ts
 const s2options = {
-  width: 800,
-  height: 600,
+  width: 600,
+  height: 600
 }
 ```
 
@@ -146,11 +193,11 @@ s2.render()
 
 ### 4. 结果
 
-![result](https://gw.alipayobjects.com/zos/antfincdn/vCukbtVNvl/616f7ef1-e626-4225-99f8-dc8f6ca630dd.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ln3cTY_Rk1cAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
-## Author
+## 👤 Author
 
-👤 [**@AntV**](https://github.com/orgs/antvis/people)
+[**@AntV**](https://github.com/orgs/antvis/people)
 
 ## 🤝 参与贡献
 

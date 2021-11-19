@@ -65,28 +65,54 @@ describe('hide-columns test', () => {
   test('should get next sibling node when hidden node is not at the last', () => {
     // hide single column
     expect(getHiddenColumnDisplaySiblingNode(sheet, ['3'])).toEqual({
-      field: '4',
-      colIndex: 4,
+      prev: {
+        field: '2',
+        colIndex: 2,
+      },
+      next: {
+        field: '4',
+        colIndex: 4,
+      },
     });
 
     // hide a continuous column list
     expect(getHiddenColumnDisplaySiblingNode(sheet, ['3', '4'])).toEqual({
-      field: '5',
-      colIndex: 5,
+      prev: {
+        field: '2',
+        colIndex: 2,
+      },
+      next: {
+        field: '5',
+        colIndex: 5,
+      },
     });
   });
 
   test('should get pre sibling node when hidden node is at the last', () => {
     // hide single column
     expect(getHiddenColumnDisplaySiblingNode(sheet, ['5'])).toEqual({
-      field: '4',
-      colIndex: 4,
+      prev: {
+        field: '4',
+        colIndex: 4,
+      },
+      next: null,
+    });
+
+    expect(getHiddenColumnDisplaySiblingNode(sheet, ['1'])).toEqual({
+      prev: null,
+      next: {
+        field: '2',
+        colIndex: 2,
+      },
     });
 
     // hide a continuous column list
     expect(getHiddenColumnDisplaySiblingNode(sheet, ['3', '4', '5'])).toEqual({
-      field: '2',
-      colIndex: 2,
+      prev: {
+        field: '2',
+        colIndex: 2,
+      },
+      next: null,
     });
   });
 
@@ -138,7 +164,10 @@ describe('hide-columns test', () => {
     // save hidden meta
     expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual([
       {
-        displaySiblingNode: { field: '4', colIndex: 4 },
+        displaySiblingNode: {
+          prev: { field: '2', colIndex: 2 },
+          next: { field: '4', colIndex: 4 },
+        },
         hideColumnNodes: [{ field: '3', colIndex: 3 }],
       },
     ]);
@@ -153,7 +182,7 @@ describe('hide-columns test', () => {
 
     expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual([
       {
-        displaySiblingNode: { field: '4', colIndex: 4 },
+        displaySiblingNode: { next: null, prev: { field: '4', colIndex: 4 } },
         hideColumnNodes: [{ field: '5', colIndex: 5 }],
       },
     ]);
@@ -169,13 +198,13 @@ describe('hide-columns test', () => {
     expect(columnsHidden).toHaveBeenCalledWith(
       // current hidden column infos
       {
-        displaySiblingNode: { colIndex: 4, field: '4' },
+        displaySiblingNode: { next: null, prev: { colIndex: 4, field: '4' } },
         hideColumnNodes: [{ colIndex: 5, field: '5' }],
       },
       // hidden columns detail
       [
         {
-          displaySiblingNode: { colIndex: 4, field: '4' },
+          displaySiblingNode: { next: null, prev: { colIndex: 4, field: '4' } },
           hideColumnNodes: [{ colIndex: 5, field: '5' }],
         },
       ],
@@ -195,7 +224,10 @@ describe('hide-columns test', () => {
 
     expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual([
       {
-        displaySiblingNode: { field: '4', colIndex: 4 },
+        displaySiblingNode: {
+          prev: { field: '1', colIndex: 1 },
+          next: { field: '4', colIndex: 4 },
+        },
         hideColumnNodes: [
           { field: '2', colIndex: 2 },
           { field: '3', colIndex: 3 },
@@ -209,11 +241,17 @@ describe('hide-columns test', () => {
 
     expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual([
       {
-        displaySiblingNode: { field: '2', colIndex: 2 },
+        displaySiblingNode: {
+          prev: null,
+          next: { field: '2', colIndex: 2 },
+        },
         hideColumnNodes: [{ field: '1', colIndex: 1 }],
       },
       {
-        displaySiblingNode: { field: '4', colIndex: 4 },
+        displaySiblingNode: {
+          prev: { field: '2', colIndex: 2 },
+          next: { field: '4', colIndex: 4 },
+        },
         hideColumnNodes: [{ field: '3', colIndex: 3 }],
       },
     ]);

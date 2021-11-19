@@ -18,7 +18,6 @@ async function main() {
       type: 'autocomplete',
       message:
         '📢 请选择测试文件 (支持文件名搜索, 直接回车默认 spread-sheet-spec 🔍 )',
-      searchText: 'We are searching the internet for you!',
       emptyText: '未匹配到测试文件',
       name: 'path',
       loop: true,

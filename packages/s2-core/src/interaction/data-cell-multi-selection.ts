@@ -9,12 +9,8 @@ import {
   InteractionStateName,
   S2Event,
 } from '@/common/constant';
-import { S2CellType, ViewMeta } from '@/common/interface';
-
-const ACTIVATE_KEYS = [
-  InteractionKeyboardKey.SHIFT,
-  InteractionKeyboardKey.META,
-];
+import { CellMeta, S2CellType, ViewMeta } from '@/common/interface';
+import { DataCell } from '@/cell';
 
 export class DataCellMultiSelection
   extends BaseEvent
@@ -32,7 +28,7 @@ export class DataCellMultiSelection
     this.spreadsheet.on(
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
-        if (ACTIVATE_KEYS.includes(event.key as InteractionKeyboardKey)) {
+        if (event.key === InteractionKeyboardKey.META) {
           this.isMultiSelection = true;
           this.spreadsheet.interaction.addIntercepts([InterceptType.CLICK]);
         }
@@ -42,7 +38,7 @@ export class DataCellMultiSelection
 
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
-      if (ACTIVATE_KEYS.includes(event.key as InteractionKeyboardKey)) {
+      if (event.key === InteractionKeyboardKey.META) {
         this.isMultiSelection = false;
         this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
       }
@@ -53,7 +49,7 @@ export class DataCellMultiSelection
     const id = cell.getMeta().id;
     const { interaction } = this.spreadsheet;
     let selectedCells = interaction.getCells();
-    let cells = [];
+    let cells: CellMeta[] = [];
     if (interaction.getCurrentStateName() !== InteractionStateName.SELECTED) {
       selectedCells = [];
     }
@@ -69,7 +65,7 @@ export class DataCellMultiSelection
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.DATA_CELL_CLICK, (event: Event) => {
       event.stopPropagation();
-      const cell = this.spreadsheet.getCell(event.target);
+      const cell: DataCell = this.spreadsheet.getCell(event.target);
       const meta = cell.getMeta();
       const { interaction } = this.spreadsheet;
 
@@ -83,7 +79,6 @@ export class DataCellMultiSelection
         }
 
         interaction.addIntercepts([InterceptType.CLICK, InterceptType.HOVER]);
-        this.getSelectedCells(cell);
         this.spreadsheet.hideTooltip();
         interaction.changeState({
           cells: selectedCells,

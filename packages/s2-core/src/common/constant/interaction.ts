@@ -7,6 +7,7 @@ export enum InteractionName {
   BRUSH_SELECTION = 'brushSelection',
   COL_ROW_RESIZE = 'rowColResize',
   COL_ROW_MULTI_SELECTION = 'colRowMultiSelection',
+  COL_ROW_SHIFT_MULTI_SELECTION = 'colRowShiftMultiSelection',
 }
 
 export enum InteractionStateName {
@@ -24,7 +25,7 @@ export enum CellTypes {
   ROW_CELL = 'rowCell',
   COL_CELL = 'colCell',
   CORNER_CELL = 'cornerCell',
-  MERGED_CELLS = 'mergedCells',
+  MERGED_CELL = 'mergedCell',
 }
 
 export const HOVER_FOCUS_TIME = 800;
@@ -36,6 +37,7 @@ export const SHAPE_STYLE_MAP = {
   backgroundColor: 'fill',
   borderOpacity: 'strokeOpacity',
   borderColor: 'stroke',
+  borderWidth: 'lineWidth',
   opacity: 'opacity',
 };
 
@@ -44,7 +46,7 @@ export const SHAPE_ATTRS_MAP = {
   textShape: ['textOpacity'],
   linkFieldShape: ['opacity'],
   interactiveBgShape: ['backgroundColor', 'backgroundOpacity'],
-  interactiveBorderShape: ['borderColor', 'borderOpacity'],
+  interactiveBorderShape: ['borderColor', 'borderOpacity', 'borderWidth'],
 };
 
 export const INTERACTION_STATE_INFO_KEY = 'interactionStateInfo';

@@ -7,7 +7,7 @@ order: 1
 
 数据处理流程是：`原始数据 -> 生成多维数组 -> 生成层级结构 -> 获取数据` ，接下来我们会逐一讲解，目标是实现下图透视表：
 
-![s2-data-process-demo](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*J2fuRIJnQdgAAAAAAAAAAAAAARQnAQ)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*J2fuRIJnQdgAAAAAAAAAAAAAARQnAQ" alt="s2-data-process-demo" width="600" />
 
 ## 原始数据
 
@@ -47,7 +47,7 @@ const dataCfg = {
     }]
 };
 const options = {
-    width: 800,
+    width: 600,
     height: 600
 };
 

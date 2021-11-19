@@ -1,16 +1,18 @@
 import { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
-import { isEmpty, isEqual, max } from 'lodash';
+import { isEmpty, isEqual, last, max } from 'lodash';
+import { KEY_SERIES_NUMBER_NODE } from './../common/constant/basic';
+import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import {
   getResizeAreaAttrs,
-  getResizeAreaGroupById,
+  getOrCreateResizeAreaGroupById,
 } from '@/utils/interaction/resize';
 import {
   CellTypes,
   EXTRA_FIELD,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
-  ResizeAreaType,
+  ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
 import { FormatResult, TextTheme } from '@/common/interface';
@@ -68,7 +70,12 @@ export class CornerCell extends HeaderCell {
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
 
     const maxWidth = this.getMaxTextWidth();
-    const text = getEllipsisText(formattedValue, maxWidth, textStyle);
+    const text = getEllipsisText({
+      text: formattedValue,
+      maxWidth: maxWidth,
+      fontParam: textStyle,
+      placeholder: this.spreadsheet.options.placeholder,
+    });
     this.actualText = text;
     const ellipseIndex = text.indexOf('...');
 
@@ -82,7 +89,11 @@ export class CornerCell extends HeaderCell {
       firstLine = formattedValue.substr(0, lastIndex);
       secondLine = formattedValue.slice(lastIndex);
       // 第二行重新计算...逻辑
-      secondLine = getEllipsisText(secondLine, maxWidth, textStyle);
+      secondLine = getEllipsisText({
+        text: secondLine,
+        maxWidth: maxWidth,
+        fontParam: textStyle,
+      });
     }
 
     const { x: textX } = getTextPosition(
@@ -135,7 +146,6 @@ export class CornerCell extends HeaderCell {
     if (!this.showTreeIcon() || this.meta.cornerType !== CornerNodeType.ROW) {
       return;
     }
-    // 只有交叉表才有icon
     const { hierarchyCollapse } = this.headerConfig;
 
     const { size } = this.getStyle().icon;
@@ -177,9 +187,6 @@ export class CornerCell extends HeaderCell {
    * @private
    */
   protected drawBorderShape() {
-    if (this.meta.cornerType !== CornerNodeType.ROW) {
-      return;
-    }
     const { x, y, width, height } = this.getCellArea();
     const {
       horizontalBorderColor,
@@ -222,39 +229,87 @@ export class CornerCell extends HeaderCell {
     );
   }
 
+  private isLastRowCornerCell() {
+    const { cornerType, field } = this.meta;
+    const { rows } = this.headerConfig;
+    return (
+      cornerType === CornerNodeType.ROW &&
+      (this.spreadsheet.isHierarchyTreeType() || last(rows) === field)
+    );
+  }
+
+  private getResizeAreaEffect() {
+    const { key } = this.meta;
+
+    if (key === KEY_SERIES_NUMBER_NODE) {
+      return ResizeAreaEffect.Series;
+    }
+
+    return this.isLastRowCornerCell() && this.spreadsheet.isHierarchyTreeType()
+      ? ResizeAreaEffect.Tree
+      : ResizeAreaEffect.Field;
+  }
+
   private drawResizeArea() {
     const resizeStyle = this.getResizeAreaStyle();
-    const resizeArea = getResizeAreaGroupById(
+
+    const resizeArea = getOrCreateResizeAreaGroupById(
       this.spreadsheet,
       KEY_GROUP_CORNER_RESIZE_AREA,
     );
-    const { position, scrollX, width: headerWidth } = this.headerConfig;
-    const { x, y, width: cellWidth, height: cellHeight, field } = this.meta;
-    const freezeCornerDiffWidth =
-      this.spreadsheet.facet.getFreezeCornerDiffWidth();
 
+    const {
+      position,
+      scrollX,
+      scrollY,
+      width: headerWidth,
+      height: headerHeight,
+    } = this.headerConfig;
+    const { x, y, width, height, field, cornerType } = this.meta;
+
+    const resizeAreaBBox = {
+      x: x + width - resizeStyle.size / 2,
+      y,
+      width: resizeStyle.size,
+      height,
+    };
+
+    const resizeClipAreaBBox = {
+      x: 0,
+      y: 0,
+      width: headerWidth,
+      height: headerHeight,
+    };
+
+    if (
+      cornerType === CornerNodeType.Col ||
+      !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+        scrollX,
+        scrollY,
+      })
+    ) {
+      return;
+    }
+    // 将相对坐标映射到全局坐标系中
+    // 最后一个维度需要撑满角头高度
     const offsetX = position.x + x - scrollX;
-    const offsetY = position.y + y;
-    const freezeOffsetX =
-      this.spreadsheet.isFreezeRowHeader() && x + cellWidth > headerWidth
-        ? freezeCornerDiffWidth - scrollX
-        : 0;
+    const offsetY = position.y + (this.isLastRowCornerCell() ? 0 : y);
 
     resizeArea.addShape('rect', {
       attrs: {
         ...getResizeAreaAttrs({
           theme: resizeStyle,
-          type: ResizeAreaType.Col,
           id: field,
-          effect: ResizeAreaEffect.Filed,
+          type: ResizeDirectionType.Horizontal,
+          effect: this.getResizeAreaEffect(),
           offsetX,
           offsetY,
-          width: cellWidth,
-          height: cellHeight,
+          width,
+          height,
         }),
-        x: offsetX + cellWidth - resizeStyle.size - freezeOffsetX,
+        x: offsetX + width - resizeStyle.size / 2,
         y: offsetY,
-        height: cellHeight,
+        height: this.isLastRowCornerCell() ? headerHeight : height,
       },
     });
   }
@@ -262,9 +317,7 @@ export class CornerCell extends HeaderCell {
   private showTreeIcon() {
     // 批量折叠或者展开的icon，只存在树状结构的第一个cell前
     return (
-      this.headerConfig.spreadsheet.isHierarchyTreeType() &&
-      this.headerConfig.spreadsheet.isPivotMode() &&
-      this.meta?.x === 0
+      this.headerConfig.spreadsheet.isHierarchyTreeType() && this.meta?.x === 0
     );
   }
 
@@ -294,9 +347,14 @@ export class CornerCell extends HeaderCell {
 
   protected getTextStyle(): TextTheme {
     const cornerTextStyle = this.getStyle().bolderText;
+    const { cornerType } = this.meta;
+
+    const textAlign =
+      cornerType === CornerNodeType.ROW ? cornerTextStyle.textAlign : 'right';
+
     return {
       ...cornerTextStyle,
-      textAlign: this.spreadsheet.isHierarchyTreeType() ? 'left' : 'center',
+      textAlign,
       textBaseline: 'middle',
     };
   }

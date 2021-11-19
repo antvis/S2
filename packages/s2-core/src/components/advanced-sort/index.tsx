@@ -27,7 +27,7 @@ import './index.less';
 
 const { Sider, Content } = Layout;
 
-export interface Demission {
+export interface Dimension {
   field: string;
   name: string;
   list: string[];
@@ -53,7 +53,7 @@ export interface AdvancedSortCfgProps {
   icon?: React.ReactNode;
   text?: string;
   ruleText?: string;
-  demissions?: Demission[];
+  dimensions?: Dimension[];
   ruleOptions?: RuleOption[];
   sortParams?: SortParam[];
   onSortOpen?: () => void;
@@ -70,7 +70,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   icon,
   text,
   ruleText,
-  demissions,
+  dimensions,
   ruleOptions,
   sortParams,
   onSortOpen,
@@ -80,10 +80,10 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   const [isCustomVisible, setIsCustomVisible] = useState(false);
   const [ruleList, setRuleList] = useState([]);
   const [rules, setRules] = useState([]);
-  const [manualDemissionList, setManualDemissionList] = useState([]);
-  const [demissionList, setDemissionList] = useState([]);
+  const [manualDimensionList, setManualDimensionList] = useState([]);
+  const [dimensionList, setDimensionList] = useState([]);
   const [sortBy, setSortBy] = useState([]);
-  const [currentDemission, setCurrentDemission] = useState<Demission>();
+  const [currentDimension, setCurrentDimension] = useState<Dimension>();
   const [form] = Form.useForm();
 
   const handleModal = () => {
@@ -98,31 +98,34 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   const handleCustom = () => {
     setIsCustomVisible(!isCustomVisible);
   };
-  const handleDemission = (demission) => {
-    if (!find(ruleList, (item) => item.field === demission.field)) {
-      setCurrentDemission(demission);
-      setRuleList([...ruleList, demission]);
+  const handleDimension = (dimension) => {
+    if (!find(ruleList, (item) => item.field === dimension.field)) {
+      setCurrentDimension(dimension);
+      setRuleList([...ruleList, dimension]);
     }
-    setDemissionList(
-      filter(demissionList, (item) => item.field !== demission.field),
+    setDimensionList(
+      filter(dimensionList, (item) => item.field !== dimension.field),
     );
   };
-  const handleCustomSort = (demission, splitOrders) => {
+  const handleCustomSort = (dimension, splitOrders) => {
     handleCustom();
+    setCurrentDimension(dimension);
     if (splitOrders) {
       setSortBy(splitOrders);
     } else {
       setSortBy(
-        find(manualDemissionList, (item) => item.field === demission.field)
+        find(manualDimensionList, (item) => item.field === dimension.field)
           ?.list || [],
       );
     }
   };
   const customSort = () => {
     handleCustom();
-    form.getFieldValue(currentDemission?.field).sortBy = sortBy;
+    const currentFieldValue = form.getFieldsValue([currentDimension?.field]);
+    currentFieldValue.sortBy = sortBy;
+    form.setFieldsValue({ [currentDimension?.field]: currentFieldValue });
     const newRuleList = map(ruleList, (item) => {
-      if (item.field === currentDemission?.field) {
+      if (item.field === currentDimension?.field) {
         return {
           ...item,
           rule: 'sortBy',
@@ -138,21 +141,21 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   const customCancel = () => {
     handleCustom();
   };
-  const deleteRule = (demission) => {
-    setRuleList(filter(ruleList, (item) => item.field !== demission.field));
-    setDemissionList([...demissionList, demission]);
+  const deleteRule = (dimension) => {
+    setRuleList(filter(ruleList, (item) => item.field !== dimension.field));
+    setDimensionList([...dimensionList, dimension]);
   };
   const onFinish = () => {
     const ruleValue = form.getFieldsValue();
     const { values = [] } = sheet.dataCfg.fields;
     const ruleValues = [];
-    const sortParams = [];
+    const currentSortParams = [];
     forEach(keys(ruleValue), (item) => {
-      const { sortMethod, rule = [], sortBy } = ruleValue[item];
+      const { sortMethod, rule = [], sortBy: currentSortBy } = ruleValue[item];
       const current: SortParam = { sortFieldId: item };
-      if (rule[0] === 'sortByMeasure') {
+      if (rule[0] === 'sortByMeasure' || rule[1]) {
         // 如果不是数值 key ，则按照汇总值排序
-        if (!includes(values, item)) {
+        if (!includes(values, rule[1])) {
           current.sortByMeasure = TOTAL_VALUE;
         } else {
           current.sortByMeasure = rule[1];
@@ -162,28 +165,27 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
           $$extra$$: rule[1],
         };
       } else if (rule[0] === 'sortBy') {
-        current.sortBy = sortBy;
+        current.sortBy = currentSortBy;
       } else {
         current.sortMethod = sortMethod;
       }
       ruleValues.push({ field: item, ...ruleValue[item] });
-      sortParams.push(current);
+      currentSortParams.push(current);
     });
-
     if (onSortConfirm) {
-      onSortConfirm(ruleValues, sortParams);
+      onSortConfirm(ruleValues, currentSortParams);
     }
     handleModal();
   };
-  const getDemissionList = (list) => {
+  const getDimensionList = (list) => {
     return filter(
       list,
       (item) => !find(sortParams, (i) => i.sortFieldId === item.field),
     );
   };
-  const getManualDemissionList = () => {
-    if (demissions) {
-      return demissions;
+  const getManualDimensionList = () => {
+    if (dimensions) {
+      return dimensions;
     }
     const { fields = {} } = sheet.dataCfg || {};
     const { rows = [], columns = [] } = fields;
@@ -211,21 +213,26 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   };
   const getRuleList = () => {
     return map(sortParams, (item) => {
-      const { sortFieldId, sortMethod, sortBy, sortByMeasure } = item;
-      let rule: string;
-      if (sortBy) {
-        rule = 'sortBy';
+      const {
+        sortFieldId,
+        sortMethod,
+        sortBy: currentSortBy,
+        sortByMeasure,
+      } = item;
+      let rule: string[];
+      if (currentSortBy) {
+        rule = ['sortBy'];
       } else if (sortByMeasure) {
-        rule = 'sortByMeasure';
+        rule = ['sortByMeasure', sortByMeasure];
       } else {
-        rule = 'sortMethod';
+        rule = ['sortMethod'];
       }
       return {
         field: sortFieldId,
         name: sheet.dataSet.getFieldName(sortFieldId),
         rule,
         sortMethod,
-        sortBy,
+        sortBy: currentSortBy,
         sortByMeasure,
       };
     });
@@ -236,13 +243,13 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
       <Sider width={120} className={`${ADVANCED_PRE_CLS}-sider-layout`}>
         <div className={`${ADVANCED_PRE_CLS}-title`}>{i18n('可选字段')}</div>
         <div>
-          {map(demissionList, (item) => {
+          {map(dimensionList, (item) => {
             return (
               <div
-                className={`${ADVANCED_PRE_CLS}-demission-item`}
+                className={`${ADVANCED_PRE_CLS}-dimension-item`}
                 key={item.field}
                 onClick={() => {
-                  handleDemission(item);
+                  handleDimension(item);
                 }}
               >
                 {item.name}
@@ -265,7 +272,13 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
           className={`${ADVANCED_PRE_CLS}-custom-form`}
         >
           {map(ruleList, (item) => {
-            const { field, name, rule, sortMethod, sortBy } = item || {};
+            const {
+              field,
+              name,
+              rule,
+              sortMethod,
+              sortBy: currentSortBy,
+            } = item || {};
             return (
               <Form.Item name={field} key={field}>
                 <Form.Item name={[field, 'name']} initialValue={name} noStyle>
@@ -279,7 +292,7 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
                 </span>
                 <Form.Item
                   name={[field, 'rule']}
-                  initialValue={[rule || 'sortMethod']}
+                  initialValue={rule || ['sortMethod']}
                   noStyle
                 >
                   <Cascader
@@ -311,14 +324,21 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
                         </Radio.Group>
                       </Form.Item>
                     ) : (
-                      <a
-                        className={`${ADVANCED_PRE_CLS}-rule-end`}
-                        onClick={() => {
-                          handleCustomSort(item, sortBy);
-                        }}
-                      >
-                        {i18n('设置顺序')}
-                      </a>
+                      <>
+                        <a
+                          className={`${ADVANCED_PRE_CLS}-rule-end`}
+                          onClick={() => {
+                            handleCustomSort(item, currentSortBy);
+                          }}
+                        >
+                          {i18n('设置顺序')}
+                        </a>
+                        <Form.Item
+                          noStyle
+                          name={[field, 'sortBy']}
+                          initialValue={currentSortBy}
+                        />
+                      </>
                     );
                   }}
                 </Form.Item>
@@ -339,12 +359,12 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
   useEffect(() => {
     if (isSortVisible) {
       const initRuleList = getRuleList();
-      const manualDemissions = getManualDemissionList();
-      const initDemissionList = getDemissionList(manualDemissions);
+      const manualDimensions = getManualDimensionList();
+      const initDimensionList = getDimensionList(manualDimensions);
       const initRuleOptions = getRuleOptions();
       setRuleList(initRuleList);
-      setManualDemissionList(manualDemissions);
-      setDemissionList(initDemissionList);
+      setManualDimensionList(manualDimensions);
+      setDimensionList(initDimensionList);
       setRules(initRuleOptions);
     }
   }, [isSortVisible]);

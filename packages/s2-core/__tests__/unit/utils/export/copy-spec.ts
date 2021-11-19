@@ -38,7 +38,7 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2)).toEqual('浙江省\t\n');
+    expect(getSelectedData(s2)).toEqual('"浙江省"');
   });
 
   it('should copy col data', () => {
@@ -71,5 +71,33 @@ describe('List Table Core Data Process', () => {
     });
     expect(getSelectedData(s2).split('\n').length).toBe(33);
     expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(6);
+  });
+
+  it('should copy format data', () => {
+    const ss = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'province', formatter: (v) => v + '元' }],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+          copyWithFormat: true,
+        },
+        showSeriesNumber: true,
+      }),
+    );
+    ss.render();
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[0];
+    ss.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    expect(getSelectedData(ss)).toEqual('"浙江省元"');
   });
 });
