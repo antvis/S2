@@ -35,26 +35,74 @@ const IndexPage = () => {
     },
   ];
 
-  const cases = {
-    logo: 'https://gw.alipayobjects.com/zos/bmw-prod/83b8e564-ab07-4670-99d7-3cec9feb6e8a.svg',
-    isAppLogo: true,
-    title: '多维交叉分析表格',
-    description:
-      'S2 是多维交叉分析领域的表格解决方案，数据驱动视图，提供底层核心库、基础组件库、业务场景库，具备自由扩展的能力，让开发者既能开箱即用，也能基于自身场景自由发挥。',
-    link: '#',
-    image:
-      'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*2PywSZP23xUAAAAAAAAAAAAAARQnAQ',
-  };
+  const cases = [
+    {
+      logo: 'https://gw.alipayobjects.com/zos/bmw-prod/291cec1b-9052-4904-a484-56c582815e7b.svg',
+      isAppLogo: true,
+      title: '指标对比表',
+      description: '将不同维度下的不同指标进行分组查看和分析的透视表叫指标对比表。',
+      link: `/${ i18n.language }/examples/case/comparison#measure-comparison`,
+      image:
+        'https://gw.alipayobjects.com/zos/antfincdn/90KJwZ8KgY/f087c06e-9522-43dc-9213-a3ccc9520212.png',
+    },
+    {
+      logo: 'https://gw.alipayobjects.com/zos/bmw-prod/291cec1b-9052-4904-a484-56c582815e7b.svg',
+      isAppLogo: true,
+      title: '多人群对比表',
+      description: '不同维度同类对象的对比分析表格叫对比表，而专用于不同属性、偏好等的人群对比分析表格叫人群对比表。',
+      link: `/${ i18n.language }/examples/case/comparison#multiple-people-comparison`,
+      image:
+        'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*02QuR7cajBwAAAAAAAAAAAAAARQnAQ',
+    },
+    {
+      logo: 'https://gw.alipayobjects.com/zos/bmw-prod/2f23b9d9-9d6c-43bf-8c71-796c92a2e7b3.svg',
+      isAppLogo: true,
+      title: '分群下钻表',
+      description: '多维细分网格化的分群探索表格叫分群下钻表。',
+      link: `/${ i18n.language }/examples/case/proportion#group-drill-down`,
+      image:
+        'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*ZzmVRojcgXMAAAAAAAAAAAAAARQnAQ',
+    },
+    {
+      logo: 'https://gw.alipayobjects.com/zos/bmw-prod/dca6e7f0-f2e9-4a2b-baea-64fff4933bf4.svg',
+      isAppLogo: true,
+      title: '单人群占比表',
+      description: '不同维度同类对象的对比分析表格叫对比表，而专用于不同属性、偏好等的人群对比分析表格叫人群对比表。',
+      link: `/${ i18n.language }/examples/case/proportion#single-population-proportion`,
+      image:
+        'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*kbmJRr2iHTEAAAAAAAAAAAAAARQnAQ',
+    },
+    {
+      logo: 'https://gw.alipayobjects.com/zos/bmw-prod/02dc8b8b-6bca-4289-a725-4e14c2900763.svg',
+      isAppLogo: true,
+      title: 'KPI 趋势表',
+      description: '用户监控业务KPI进展和趋势的透视表叫KPI趋势表。',
+      link: `/${ i18n.language }/examples/case/kpi-strategy#basic`,
+      image:
+        'https://gw.alipayobjects.com/zos/antfincdn/BLitStN%24sR/196f5853-98cf-414f-af83-16b9c594c377.png',
+    },
+    {
+      logo: 'https://gw.alipayobjects.com/zos/bmw-prod/55b878d3-73dc-471d-869c-5fddc7d4ae72.svg',
+      isAppLogo: true,
+      title: '性能对比表',
+      description: '在相同环境下，将多个表格框架的渲染时间进行对比。',
+      link: `/${ i18n.language }/examples/case/performance-compare#basic`,
+      image:
+        'https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*2AMHR60DzzkAAAAAAAAAAAAAARQnAQ',
+    },
+
+
+  ];
 
   const bannerButtons = [
     {
       text: t('图表示例'),
-      link: `/${i18n.language}/examples`,
+      link: `/${ i18n.language }/examples`,
       type: 'primary',
     },
     {
       text: t('现在开始使用'),
-      link: `/${i18n.language}/docs/manual/getting-started`,
+      link: `/${ i18n.language }/docs/manual/getting-started`,
     },
   ];
 
@@ -65,21 +113,21 @@ const IndexPage = () => {
         coverImage={
           <img
             width="100%"
-            style={{ marginRight: '30px', marginTop: '40px' }}
-            src={BannerSVG}
-            alt={'banner'}
+            style={ { marginRight: '30px', marginTop: '40px' } }
+            src={ BannerSVG }
+            alt={ 'banner' }
           />
         }
-        title={t('S2 多维交叉分析表格')}
-        description={t(
+        title={ t('S2 多维交叉分析表格') }
+        description={ t(
           'S2 是多维交叉分析领域的表格解决方案，数据驱动视图，提供底层核心库、基础组件库、业务场景库，具备自由扩展的能力，让开发者既能开箱即用，也能基于自身场景自由发挥。',
-        )}
-        className="banner"
-        buttons={bannerButtons}
-        showGithubStars={true}
+        ) }
+        className='banner'
+        buttons={ bannerButtons }
+        showGithubStars={ true }
       />
       <Features id="features" features={features} style={{ width: '100%' }} />
-      <Cases className={`${PRE_CLASS}-cases`} cases={[cases]} />
+      <Cases className={`${PRE_CLASS}-cases`} cases={cases} />
     </>
   );
 };
