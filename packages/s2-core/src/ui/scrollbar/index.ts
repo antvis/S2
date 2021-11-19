@@ -309,7 +309,7 @@ export class ScrollBar extends Group {
 
   private bindEvents = () => {
     this.on('mousedown', this.onStartEvent(false));
-    // 因为上层交叉表交互 prevent 事件，导致 container 上的 mouseup 事件没有执行，
+    // 因为上层透视表交互 prevent 事件，导致 container 上的 mouseup 事件没有执行，
     // 整个拖拽过程没有 cancel 掉。
     this.on('mouseup', this.onMouseUp);
     this.on('touchstart', this.onStartEvent(true));

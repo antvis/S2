@@ -1,5 +1,5 @@
 /**
- * 交叉表核心数据流程（保证基本数据正确）
+ * 透视表核心数据流程（保证基本数据正确）
  * */
 import { flattenDeep, get, size, uniq } from 'lodash';
 import { assembleDataCfg, assembleOptions } from '../../util/sheet-entry';

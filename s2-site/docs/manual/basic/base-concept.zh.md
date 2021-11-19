@@ -15,7 +15,7 @@ order: 0
 
 ### 构成
 
-交叉表由五部分组成，分别是行头、列头、角头、数据单元格、框架 如下图所示：
+透视表由五部分组成，分别是行头、列头、角头、数据单元格、框架 如下图所示：
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7FRBQr_tE4YAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
