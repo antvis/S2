@@ -6,8 +6,9 @@ import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import ttypescript from 'ttypescript';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import { visualizer } from 'rollup-plugin-visualizer';
 
-const OUT_DIR_NAME_MAP = {
+const OUT_DIR_NAME_MAP: { [key in LibraryFormats]?: string } = {
   es: 'esm',
   cjs: 'lib',
   umd: 'dist',
@@ -16,11 +17,11 @@ const OUT_DIR_NAME_MAP = {
 // eslint-disable-next-line import/no-default-export
 export default defineConfig(({ mode, command }) => {
   const format = mode as LibraryFormats;
-  const isEsmFormat = format === 'es';
-  const isUmdFormat = format === 'umd';
   const outDir = OUT_DIR_NAME_MAP[format];
 
+  const isUmdFormat = format === 'umd';
   const root = path.join(__dirname, command === 'serve' ? 'playground' : '');
+
   return {
     // 开发配置
     root,
@@ -33,6 +34,7 @@ export default defineConfig(({ mode, command }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),
+        lodash: 'lodash-es',
       },
     },
 
@@ -42,14 +44,18 @@ export default defineConfig(({ mode, command }) => {
       ),
     },
     plugins: [
+      peerDepsExternal(),
       viteCommonjs(),
-      react({
-        jsxRuntime: 'classic',
-      }),
-      // TODO: antd 按需引入还是整个 external?
+      react(),
       viteImp({
-        libList: [],
+        libList: [
+          {
+            libName: 'antd',
+            style: (name) => `antd/es/${name}/style/index.less`,
+          },
+        ],
       }),
+      visualizer({ gzipSize: true }),
     ],
     css: {
       preprocessorOptions: {
@@ -69,35 +75,19 @@ export default defineConfig(({ mode, command }) => {
       sourcemap: true,
 
       lib: {
-        name: 's2-react',
+        name: 'S2-React',
         entry: './src/index.ts',
         formats: [format],
       },
       outDir: outDir,
 
       rollupOptions: {
-        plugins: [
-          peerDepsExternal(),
-          // typescript({
-          //   abortOnError: true,
-          //   tsconfig: 'tsconfig.json',
-          //   tsconfigOverride: {
-          //     include: ['src'],
-          //     exclude: ['__tests__'],
-          //     compilerOptions: {
-          //       declaration: isEsmFormat,
-          //     },
-          //   },
-          //   typescript: ttypescript,
-          // }),
-        ],
         output: {
-          entryFileNames: '[name].js',
+          entryFileNames: `[name]${isUmdFormat ? '.min' : ''}.js`,
+          assetFileNames: `[name]${isUmdFormat ? '.min' : ''}.[ext]`,
           globals: {
             react: 'React',
             'react-dom': 'ReactDOM',
-            antd: 'antd',
-            '@ant-design/icons': 'icons',
             '@antv/s2': 'S2',
           },
         },

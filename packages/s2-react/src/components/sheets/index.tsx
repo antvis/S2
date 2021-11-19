@@ -1,9 +1,9 @@
 import React from 'react';
-import type { SpreadSheet } from '@antv/s2';
+import { SpreadSheet } from '@antv/s2';
 import { BaseSheet } from './base-sheet';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
 import { TableSheet } from './table-sheet';
-import type { SpreadsheetProps } from './interface';
+import { SpreadsheetProps } from './interface';
 
 const Sheet = React.forwardRef(
   (props: SpreadsheetProps, ref: React.MutableRefObject<SpreadSheet>) => {
