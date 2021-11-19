@@ -33,6 +33,8 @@ jobs:
 
       - name: Install dependencies
         run: yarn
+        
+      - run: yarn build
 
       - name: Test
         run: |
