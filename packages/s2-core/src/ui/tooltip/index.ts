@@ -126,7 +126,6 @@ export class BaseTooltip {
       this.container = container;
     }
     this.container.className = `${TOOLTIP_PREFIX_CLS}-container`;
-    this.container.id = `${TOOLTIP_PREFIX_CLS}-container`;
     return this.container;
   }
 }
