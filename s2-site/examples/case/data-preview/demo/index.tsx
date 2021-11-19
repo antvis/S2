@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
+import insertCss from 'insert-css';
 import {
   SheetComponent,
-  S2Options,
-  S2DataConfig,
   TableColCell,
   GuiIcon,
   TableCornerCell,
   S2Event,
-  SpreadSheet,
-  FilterParam,
-  SortMethod,
-  SortParams,
+  InteractionStateName,
+  CellTypes,
 } from '@antv/s2';
 import {
   Input,
@@ -21,11 +18,9 @@ import {
   Modal,
   Radio,
   Form,
-  InputNumber,
   Popover,
   Checkbox,
   message,
-  List,
 } from 'antd';
 import { get, uniq } from 'lodash';
 import '@antv/s2/dist/s2.min.css';
@@ -65,20 +60,49 @@ const ShowList = ({ columns, setColumns, allChecked }) => {
         </div>
       ))}
     >
-      <Button>呈现列</Button>
+      <Button>隐藏列</Button>
     </Popover>
   );
 };
 
+class CustomCornerCell extends TableCornerCell {
+  drawBackgroundShape() {
+    super.drawBackgroundShape();
+  }
+
+  drawInteractiveBgShape() {
+    super.drawInteractiveBgShape();
+  }
+
+  drawTextShape() {
+    const { x, y, width: cellWidth, height: cellHeight, key } = this.meta;
+    const padding = 4;
+    this.textShape = this.addShape('polygon', {
+      zIndex: 4,
+      attrs: {
+        fill: 'rgba(0,0,0,0.1)',
+        points: [
+          [x + cellWidth - padding + 2, y + padding],
+          [x + cellWidth - padding + 2, y + cellHeight - padding],
+          [
+            x + cellWidth - padding - cellHeight + padding * 2,
+            y + cellHeight - padding,
+          ],
+        ],
+      },
+    });
+  }
+}
+
 class CustomTableColCell extends TableColCell {
-  private onIconClick: Function;
+  onIconClick;
 
   constructor(meta, spreadsheet, headerConfig, callback) {
     super(meta, spreadsheet, headerConfig);
     this.onIconClick = callback;
   }
 
-  protected drawTextShape() {
+  drawTextShape() {
     super.drawTextShape();
 
     const { x, y, width: cellWidth, height: cellHeight } = this.meta;
@@ -97,17 +121,17 @@ class CustomTableColCell extends TableColCell {
     });
   }
 
-  protected renderFilterIcon(position) {
+  renderFilterIcon(position) {
     const sortMethod = getCurrentSortMethod(
       this.meta.value,
-      this.spreadsheet.dataCfg.sortParams!,
+      this.spreadsheet.dataCfg.sortParams,
     );
     /**
      * 有值说明有加filter
      */
     const isFiltered = !!getCurrentFilterParams(
       this.meta.value,
-      this.spreadsheet.dataCfg.filterParams!,
+      this.spreadsheet.dataCfg.filterParams,
     ).length;
 
     const { x, y, width, height } = position;
@@ -142,35 +166,93 @@ export const sortUp =
 export const sortDown =
   '<svg t="1634734501800" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2875" width="200" height="200"><path d="M279.15323 958.059228l217.110799-363.160177-141.539436 0L354.724593 63.957829l-151.123938 0 0 530.943021L62.057421 594.900849 279.15323 958.059228 279.15323 958.059228zM570.078783 64.464885l386.443791 0 0 108.976114L570.078583 173.440999 570.078783 64.464885 570.078783 64.464885zM570.078783 369.594007 878.364965 369.594007l0-108.974515L570.078783 260.619492 570.078783 369.594007zM570.078783 565.747016l230.128573 0 0-108.976114L570.078783 456.770901 570.078783 565.747016 570.078783 565.747016zM570.078783 761.904621l151.972163 0L722.050945 652.930305l-151.972163 0L570.078783 761.904621zM570.078783 958.059228l73.813355 0 0-108.974315-73.813355 0L570.078783 958.059228z" p-id="2876"></path></svg>';
 
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
+const getSearchResult = (searchKey, data, columns) => {
+  if (!searchKey) {
+    return [];
+  }
+  const results = [];
+  data.forEach((row, rowId) => {
+    columns.forEach((col, colId) => {
+      if ((row[col] || '').toLowerCase().includes(searchKey.toLowerCase())) {
+        results.push({
+          col: colId,
+          row: rowId,
+        });
+      }
+    });
+  });
+
+  return results;
 };
 
 const initColumns = ['province', 'city', 'type', 'price'];
+
+const scrollToCell = (rowIndex, colIndex, options, facet, interaction) => {
+  const { frozenRowCount } = options;
+  const colsNodes = facet.layoutResult.colLeafNodes;
+
+  let offsetX = 0;
+  let offsetY = 0;
+
+  offsetY = facet.viewCellHeights.getCellOffsetY(rowIndex - 1);
+  offsetX = facet.layoutResult.colLeafNodes.find(
+    (item) => item.colIndex === colIndex,
+  )?.x;
+  if (frozenRowCount > 0 && rowIndex > frozenRowCount - 1) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    offsetY -= facet.getTotalHeightForRange(0, frozenRowCount - 1);
+  }
+
+  if (offsetY < 0) {
+    offsetY = 0;
+  }
+
+  facet.scrollWithAnimation({
+    offsetX: {
+      value: offsetX,
+    },
+    offsetY: {
+      value: offsetY,
+    },
+  });
+
+  interaction.changeState({
+    stateName: InteractionStateName.SELECTED,
+    cells: [
+      {
+        colIndex,
+        rowIndex,
+        id: `${String(rowIndex)}-${colsNodes[colIndex + 1].id}`,
+        type: CellTypes.DATA_CELL,
+      },
+    ],
+  });
+};
 
 const App = ({ data }) => {
   const onIconClick = ({ meta }) => {
     setinteractedCol(meta.value);
     setColModalVisible(!colModalVisible);
   };
-  const s2Ref = useRef<SpreadSheet>(null);
-  const [columns, setColumns] = React.useState<string[]>(initColumns);
+  const s2Ref = useRef(null);
+  const [columns, setColumns] = React.useState(initColumns);
 
   const [interactedCol, setinteractedCol] = useState('');
-  const modalCallbackRef = useRef((e?: any) => {});
+  const modalCallbackRef = useRef((e) => {});
 
-  const [options, setOptions] = useState<S2Options>({
+  const [options, setOptions] = useState({
     width: 600,
     height: 400,
     showSeriesNumber: true,
     interaction: {
       enableCopy: true,
+      autoResetSheetStyle: false,
     },
     colCell: (item, spreadsheet, headerConfig) => {
       let cell;
       if (item.colIndex === 0) {
-        cell = new TableCornerCell(item, spreadsheet, headerConfig);
+        cell = new CustomCornerCell(item, spreadsheet, headerConfig);
       } else {
         cell = new CustomTableColCell(
           item,
@@ -202,7 +284,7 @@ const App = ({ data }) => {
     },
     showDefaultHeaderActionIcon: false,
   });
-  const [dataCfg, setDataCfg] = useState<S2DataConfig>({
+  const [dataCfg, setDataCfg] = useState({
     fields: {
       columns,
     },
@@ -228,11 +310,61 @@ const App = ({ data }) => {
   }, []);
 
   const [searchKey, setSearchKey] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
   const [colModalVisible, setColModalVisible] = useState(false);
-  const [colModalMeta, setColModalMeta] = useState(null);
+  const [searchResultActiveIndex, setSearchResultActiveIndex] = useState(-1);
   const [form] = Form.useForm();
 
   const allChecked = columns.length === initColumns.length;
+
+  const focusNext = (results, currentIndex) => {
+    const length = results.length;
+    let nextIndex = currentIndex + 1;
+    if (nextIndex >= length) {
+      nextIndex = 0;
+    }
+    setSearchResultActiveIndex(nextIndex);
+    const current = results[nextIndex];
+    scrollToCell(
+      current.row,
+      current.col,
+      s2Ref.current.options,
+      s2Ref.current.facet,
+      s2Ref.current.interaction,
+    );
+  };
+
+  const focusPrev = (results) => {
+    const length = results.length;
+    let nextIndex = searchResultActiveIndex - 1;
+    if (nextIndex < 0) {
+      nextIndex = length - 1;
+    }
+    setSearchResultActiveIndex(nextIndex);
+    const current = results[nextIndex];
+    scrollToCell(
+      current.row,
+      current.col,
+      s2Ref.current.options,
+      s2Ref.current.facet,
+      s2Ref.current.interaction,
+    );
+  };
+
+  const search = (key) => {
+    let searchData = [];
+    if (s2Ref.current) {
+      searchData = s2Ref.current.dataSet.getDisplayDataSet();
+    }
+    console.log(key, searchData, columns);
+    const results = getSearchResult(key, searchData, columns);
+    console.log(results);
+    setSearchResult(results);
+    setSearchResultActiveIndex(-1);
+    if (results.length > 0) {
+      focusNext(results, -1);
+    }
+  };
 
   return (
     <div>
@@ -247,10 +379,39 @@ const App = ({ data }) => {
           allowClear
           enterButton="Search"
           value={searchKey}
-          onSearch={() => {}}
+          onChange={(e) => {
+            setSearchKey(e.target.value);
+          }}
+          onSearch={(key) => {
+            search(key);
+          }}
         />
-        <Button shape="circle" icon={<antdIcons.ArrowLeftOutlined />} />
-        <Button shape="circle" icon={<antdIcons.ArrowRightOutlined />} />
+
+        {searchResult.length ? (
+          <>
+            <div>{`${searchResultActiveIndex + 1}/${
+              searchResult.length + 1
+            }`}</div>
+            <Button
+              shape="circle"
+              icon={<antdIcons.ArrowLeftOutlined />}
+              onClick={() => {
+                if (searchResult.length > 0) {
+                  focusPrev(searchResult, searchResultActiveIndex);
+                }
+              }}
+            />
+            <Button
+              shape="circle"
+              icon={<antdIcons.ArrowRightOutlined />}
+              onClick={() => {
+                if (searchResult.length > 0) {
+                  focusNext(searchResult, searchResultActiveIndex);
+                }
+              }}
+            />
+          </>
+        ) : null}
       </Space>
 
       <Divider />
@@ -259,10 +420,19 @@ const App = ({ data }) => {
         dataCfg={dataCfg}
         options={options}
         sheetType="table"
+        onColCellClick={(e) => {
+          // 最左侧列的格子点击后全选
+          if (e.viewMeta.colIndex === 0) {
+            s2Ref.current?.interaction.changeState({
+              stateName: InteractionStateName.ALL_SELECTED,
+            });
+          }
+        }}
       />
       <Modal
         title="列设置"
         visible={colModalVisible}
+        className="antv-s2-data-preview-demo-modal"
         onCancel={() => {
           setColModalVisible(false);
           form.resetFields();
@@ -273,7 +443,7 @@ const App = ({ data }) => {
         }}
       >
         <SortPopover
-          spreadsheet={s2Ref.current!}
+          spreadsheet={s2Ref.current}
           fieldName={interactedCol}
           modalCallbackRef={modalCallbackRef}
         />
@@ -282,8 +452,8 @@ const App = ({ data }) => {
   );
 };
 
-const convertToObject = (values: any[]): Record<string, boolean> => {
-  const initData: any = {};
+const convertToObject = (values) => {
+  const initData = {};
 
   values.forEach((val) => {
     initData[val] = true;
@@ -299,10 +469,7 @@ const convertToObject = (values: any[]): Record<string, boolean> => {
  * @returns
  */
 
-export const getCurrentSortMethod = (
-  fieldName: string,
-  sortParams?: SortParams,
-): SortMethod | 'NONE' => {
+export const getCurrentSortMethod = (fieldName, sortParams) => {
   return (
     _.get(
       (sortParams || []).filter((param) => param.sortFieldId === fieldName),
@@ -318,11 +485,8 @@ export const getCurrentSortMethod = (
  * @param filterParams
  * @returns
  */
-export const getCurrentFilterParams = (
-  fieldName: string,
-  filterParams?: FilterParam[],
-) => {
-  const filtered: any[] = get(
+export const getCurrentFilterParams = (fieldName, filterParams) => {
+  const filtered = get(
     (filterParams || []).filter((param) => param.filterKey === fieldName),
     '[0].filteredValues',
     [],
@@ -331,15 +495,7 @@ export const getCurrentFilterParams = (
   return filtered;
 };
 
-const SortPopover = ({
-  fieldName,
-  spreadsheet,
-  modalCallbackRef,
-}: {
-  fieldName: string;
-  spreadsheet: SpreadSheet;
-  modalCallbackRef: React.MutableRefObject<any>;
-}) => {
+const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
   const fieldData = React.useMemo(
     () =>
       uniq(
@@ -376,7 +532,7 @@ const SortPopover = ({
     [searchKeyword, fieldData],
   );
 
-  const onKeywordChange = (keyword: string) => {
+  const onKeywordChange = (keyword) => {
     // 关键词变化时将不在关键词内的值过滤
     setsearchKeyword(keyword);
     setchanged((old) => ({ ...old, filter: true }));
@@ -406,7 +562,7 @@ const SortPopover = ({
     if (changed.sort) {
       spreadsheet.emit(S2Event.RANGE_SORT, {
         sortKey: fieldName,
-        sortMethod: sort as any,
+        sortMethod: sort,
         sortBy: (obj) => {
           return fieldData.every(
             (v) => typeof v === 'string' && !Number.isNaN(Number(v)),
@@ -436,7 +592,7 @@ const SortPopover = ({
       labelCol={{ span: 6 }}
       wrapperCol={{ span: 18 }}
     >
-      <Form.Item label="数据排序: ">
+      <Form.Item label="数据排序: " className="sort-item">
         <Radio.Group
           onChange={(e) => {
             setsort(e.target.value);
@@ -450,58 +606,58 @@ const SortPopover = ({
         </Radio.Group>
         ,
       </Form.Item>
-      <Form.Item label="数值筛选: ">
+      <Form.Item label="数值筛选: " className="filter-item">
         <div>
           <Input.Search
             value={searchKeyword}
             onChange={(e) => onKeywordChange(e.target.value)}
             placeholder="请输入搜索关键词"
-            // prefix={<Icon type="search" style={{ color: 'white' }} />}
+            className="search-box"
           />
 
-          <div>
-            <Checkbox
-              checked={searchedFieldData.every(
-                (fieldValue) => !filtered[fieldValue],
-              )}
-              indeterminate={
-                searchedFieldData.some((fieldValue) => !filtered[fieldValue]) &&
-                !searchedFieldData.every((fieldValue) => !filtered[fieldValue])
+          <Checkbox
+            className="check-item"
+            checked={searchedFieldData.every(
+              (fieldValue) => !filtered[fieldValue],
+            )}
+            indeterminate={
+              searchedFieldData.some((fieldValue) => !filtered[fieldValue]) &&
+              !searchedFieldData.every((fieldValue) => !filtered[fieldValue])
+            }
+            onChange={(e) => {
+              const {
+                target: { checked },
+              } = e;
+              setchanged((val) => ({ ...val, filter: true }));
+
+              if (checked) {
+                setfiltered((old) => {
+                  const newValue = {};
+                  searchedFieldData.forEach((fieldValue) => {
+                    newValue[fieldValue] = false;
+                  });
+                  return newValue;
+                });
+              } else {
+                // 将全部过滤
+                setfiltered((old) => {
+                  const newValue = {};
+                  searchedFieldData.forEach((fieldValue) => {
+                    newValue[fieldValue] = true;
+                  });
+
+                  return newValue;
+                });
               }
-              onChange={(e) => {
-                const {
-                  target: { checked },
-                } = e;
-                setchanged((val) => ({ ...val, filter: true }));
-
-                if (checked) {
-                  setfiltered((old) => {
-                    const newValue = {};
-                    searchedFieldData.forEach((fieldValue) => {
-                      newValue[fieldValue] = false;
-                    });
-                    return newValue;
-                  });
-                } else {
-                  // 将全部过滤
-                  setfiltered((old) => {
-                    const newValue = {};
-                    searchedFieldData.forEach((fieldValue) => {
-                      newValue[fieldValue] = true;
-                    });
-
-                    return newValue;
-                  });
-                }
-              }}
-            >
-              {'全选'}
-            </Checkbox>
-          </div>
+            }}
+          >
+            {'全选'}
+          </Checkbox>
 
           {searchedFieldData.map((item) => {
             return (
               <Checkbox
+                className="check-item"
                 style={{ display: 'block' }}
                 checked={!filtered[item]}
                 onChange={(e) => {
@@ -527,3 +683,19 @@ fetch('../data/basic.json')
   .then((res) => {
     ReactDOM.render(<App data={res} />, document.getElementById('container'));
   });
+
+insertCss(`
+  .antv-s2-data-preview-demo-modal .filter-item{
+    margin-top: 20px;
+  }
+  .antv-s2-data-preview-demo-modal .check-item{
+    margin-bottom: 5px;
+    display: flex;
+  }
+  .antv-s2-data-preview-demo-modal .ant-checkbox{
+    margin-left: 5px
+  }
+  .antv-s2-data-preview-demo-modal .search-box{
+    margin-bottom: 5px
+  }
+`);
