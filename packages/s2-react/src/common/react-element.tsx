@@ -17,7 +17,7 @@ export class ReactElement extends React.PureComponent<Props> {
       htmlNode = element;
     }
     return (
-      <span
+      <div
         style={style}
         className={cx(`${S2_PREFIX_CLS}-react-element`, className)}
         dangerouslySetInnerHTML={{ __html: htmlNode }}

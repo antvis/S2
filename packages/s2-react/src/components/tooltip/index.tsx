@@ -103,10 +103,10 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
     );
   };
 
-  const { data, options, tooltipComponent } = props;
+  const { data, options, tooltipComponent, element } = props;
 
-  if (tooltipComponent) {
-    return tooltipComponent;
+  if (tooltipComponent || element) {
+    return <>{tooltipComponent || element}</>;
   }
 
   return <>{renderContent(data, options)}</>;

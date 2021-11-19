@@ -28,12 +28,8 @@ import {
 } from '@/components/sheets/hooks';
 import { S2Pagination } from '@/components/pagination';
 import { REACT_DEFAULT_OPTIONS } from '@/common/constant';
-import { ReactElement } from '@/common/react-element';
 import { TooltipComponent } from '@/components/tooltip';
-import {
-  TooltipRenderProps,
-  TooltipRenderComponent,
-} from '@/components/tooltip/interface';
+import { TooltipRenderProps } from '@/components/tooltip/interface';
 
 export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
@@ -80,19 +76,8 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
       tooltipOptions: TooltipShowOptions,
       tooltipContainer: HTMLElement,
     ) => {
-      let tooltipComponent: TooltipRenderComponent;
-      if (s2Options.tooltip.tooltipComponent || tooltipOptions.element) {
-        tooltipComponent = (
-          <ReactElement
-            element={
-              s2Options.tooltip.tooltipComponent || tooltipOptions.element
-            }
-          />
-        );
-      }
       const tooltipProps: TooltipRenderProps = {
         ...tooltipOptions,
-        tooltipComponent,
       };
       ReactDOM.render(<TooltipComponent {...tooltipProps} />, tooltipContainer);
     };

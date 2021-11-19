@@ -29,13 +29,9 @@ import { BaseSheetProps } from '@/components/sheets/interface';
 import { useResizeEffect } from '@/components/sheets/hooks';
 import { S2Pagination } from '@/components/pagination';
 import { TooltipComponent } from '@/components/tooltip';
-import {
-  TooltipRenderProps,
-  TooltipRenderComponent,
-} from '@/components/tooltip/interface';
+import { TooltipRenderProps } from '@/components/tooltip/interface';
 import { HandleDrillDown, HandleDrillDownIcon } from '@/utils';
 import { REACT_DEFAULT_OPTIONS } from '@/common/constant';
-import { ReactElement } from '@/common/react-element';
 
 import './index.less';
 
@@ -86,19 +82,8 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       tooltipOptions: TooltipShowOptions,
       tooltipContainer: HTMLElement,
     ) => {
-      let tooltipComponent: TooltipRenderComponent;
-      if (s2Options.tooltip.tooltipComponent || tooltipOptions.element) {
-        tooltipComponent = (
-          <ReactElement
-            element={
-              s2Options.tooltip.tooltipComponent || tooltipOptions.element
-            }
-          />
-        );
-      }
       const tooltipProps: TooltipRenderProps = {
         ...tooltipOptions,
-        tooltipComponent,
       };
       ReactDOM.render(<TooltipComponent {...tooltipProps} />, tooltipContainer);
     };
