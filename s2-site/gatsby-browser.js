@@ -2,6 +2,7 @@ window.react = require('react');
 window.reactDom = require('react-dom');
 window.antd = require('antd');
 window.cascaderCss = require('antd/es/cascader/style/index.css');
+window.checkboxCss = require('antd/es/checkbox/style/index.css');
 window.s2 = require('@antv/s2');
 window.gCanvas = require('@antv/g-canvas');
 window.s2Css = require('@antv/s2/dist/s2.min.css');

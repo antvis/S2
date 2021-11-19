@@ -1,5 +1,5 @@
 ---
 title: Data Preview Table
-order: 2
+order: 5
 ---
 `markdown:examples/case/data-preview/index.zh.md`

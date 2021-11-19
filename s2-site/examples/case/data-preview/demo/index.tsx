@@ -24,6 +24,7 @@ import {
 } from 'antd';
 import { get, uniq } from 'lodash';
 import '@antv/s2/dist/s2.min.css';
+import 'antd/es/checkbox/style/index.css';
 import _ from 'lodash';
 
 const { Search } = Input;
@@ -129,10 +130,17 @@ class CustomTableColCell extends TableColCell {
     /**
      * 有值说明有加filter
      */
-    const isFiltered = !!getCurrentFilterParams(
+
+     const isFiltered = !!getCurrentFilterParams(
       this.meta.value,
       this.spreadsheet.dataCfg.filterParams,
     ).length;
+
+    console.log(
+      this.meta.value,
+      this.spreadsheet.dataCfg.filterParams,
+      isFiltered,
+    );
 
     const { x, y, width, height } = position;
     const icon = new GuiIcon({
@@ -141,7 +149,7 @@ class CustomTableColCell extends TableColCell {
       y,
       width,
       height,
-      fill: isFiltered ? 'rgb(35, 73, 229)' : 'rgb(67, 72, 91)',
+      fill: isFiltered ? '#873bf4' : 'rgb(67, 72, 91)',
     });
     this.add(icon);
 
@@ -160,7 +168,7 @@ const iconMap = {
 };
 
 export const filterIcon =
-  '<svg t="1633848048963" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="85936" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M0 0h1024L724.676923 488.369231V1024l-425.353846-141.784615v-393.846154L0 0z m196.923077 102.4l204.8 354.461538v362.338462l228.430769 63.015385V456.861538l212.676923-354.461538H196.923077z" opacity=".4" p-id="85937" fill="rgba(0,0,0,0.8)"></path></svg>';
+  '<svg t="1633848048963" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="85936" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M0 0h1024L724.676923 488.369231V1024l-425.353846-141.784615v-393.846154L0 0z m196.923077 102.4l204.8 354.461538v362.338462l228.430769 63.015385V456.861538l212.676923-354.461538H196.923077z" opacity=".4" p-id="85937"></path></svg>';
 export const sortUp =
   '<svg t="1634734477742" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2208" width="200" height="200"><path d="M569.508769 653.352619l151.594419 0 0 108.819221-151.594419 0L569.508769 653.352619zM569.508769 65.693452l385.479045 0 0 108.828814L569.508569 174.522266 569.508769 65.693452 569.508769 65.693452zM569.508769 261.583239l307.513506 0 0 108.819021L569.508769 370.402259 569.508769 261.583239 569.508769 261.583239zM569.508769 457.463032l229.552363 0 0 108.821019-229.552363 0C569.508769 566.284051 569.508769 457.463032 569.508769 457.463032zM569.508769 849.232612l73.62868 0 0 108.826815-73.62868 0L569.508769 849.232612zM354.693414 427.846912l0 530.212516L203.94622 958.059428 203.94622 427.846912 62.754748 427.846912 279.308125 65.187795 495.87849 427.846912 354.693414 427.846912z" p-id="2209"></path></svg>';
 export const sortDown =
@@ -303,7 +311,6 @@ const App = ({ data }) => {
 
   useEffect(() => {
     s2Ref.current.on(S2Event.GLOBAL_COPIED, (data) => {
-      console.log(data);
       message.success('复制成功');
     });
     return () => s2Ref.current.off(S2Event.GLOBAL_COPIED);
@@ -614,64 +621,64 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
             placeholder="请输入搜索关键词"
             className="search-box"
           />
-
-          <Checkbox
-            className="check-item"
-            checked={searchedFieldData.every(
-              (fieldValue) => !filtered[fieldValue],
-            )}
-            indeterminate={
-              searchedFieldData.some((fieldValue) => !filtered[fieldValue]) &&
-              !searchedFieldData.every((fieldValue) => !filtered[fieldValue])
-            }
-            onChange={(e) => {
-              const {
-                target: { checked },
-              } = e;
-              setchanged((val) => ({ ...val, filter: true }));
-
-              if (checked) {
-                setfiltered((old) => {
-                  const newValue = {};
-                  searchedFieldData.forEach((fieldValue) => {
-                    newValue[fieldValue] = false;
-                  });
-                  return newValue;
-                });
-              } else {
-                // 将全部过滤
-                setfiltered((old) => {
-                  const newValue = {};
-                  searchedFieldData.forEach((fieldValue) => {
-                    newValue[fieldValue] = true;
-                  });
-
-                  return newValue;
-                });
+          <div className="check-item-list">
+            <Checkbox
+              className="check-item"
+              checked={searchedFieldData.every(
+                (fieldValue) => !filtered[fieldValue],
+              )}
+              indeterminate={
+                searchedFieldData.some((fieldValue) => !filtered[fieldValue]) &&
+                !searchedFieldData.every((fieldValue) => !filtered[fieldValue])
               }
-            }}
-          >
-            {'全选'}
-          </Checkbox>
+              onChange={(e) => {
+                const {
+                  target: { checked },
+                } = e;
+                setchanged((val) => ({ ...val, filter: true }));
 
-          {searchedFieldData.map((item) => {
-            return (
-              <Checkbox
-                className="check-item"
-                style={{ display: 'block' }}
-                checked={!filtered[item]}
-                onChange={(e) => {
-                  setchanged((old) => ({ ...old, filter: true }));
-                  setfiltered((old) => ({
-                    ...old,
-                    [item]: !e.target.checked,
-                  }));
-                }}
-              >
-                {item}
-              </Checkbox>
-            );
-          })}
+                if (checked) {
+                  setfiltered((old) => {
+                    const newValue = {};
+                    searchedFieldData.forEach((fieldValue) => {
+                      newValue[fieldValue] = false;
+                    });
+                    return newValue;
+                  });
+                } else {
+                  // 将全部过滤
+                  setfiltered((old) => {
+                    const newValue = {};
+                    searchedFieldData.forEach((fieldValue) => {
+                      newValue[fieldValue] = true;
+                    });
+
+                    return newValue;
+                  });
+                }
+              }}
+            >
+              {'全选'}
+            </Checkbox>
+
+            {searchedFieldData.map((item) => {
+              return (
+                <Checkbox
+                  className="check-item"
+                  checked={!filtered[item]}
+                  onChange={(e) => {
+                    setchanged((old) => ({ ...old, filter: true }));
+                    setfiltered((old) => ({
+                      ...old,
+                      [item]: !e.target.checked,
+                    }));
+                  }}
+                >
+                  {item}
+                </Checkbox>
+              );
+            })}
+          </div>
         </div>
       </Form.Item>
     </Form>
@@ -688,12 +695,12 @@ insertCss(`
   .antv-s2-data-preview-demo-modal .filter-item{
     margin-top: 20px;
   }
-  .antv-s2-data-preview-demo-modal .check-item{
-    margin-bottom: 5px;
+  .antv-s2-data-preview-demo-modal .check-item-list{
     display: flex;
+    flex-direction: column;
   }
-  .antv-s2-data-preview-demo-modal .ant-checkbox{
-    margin-left: 5px
+  .ant-checkbox-wrapper.check-item {
+    margin-left: 0;
   }
   .antv-s2-data-preview-demo-modal .search-box{
     margin-bottom: 5px
