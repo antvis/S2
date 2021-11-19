@@ -40,12 +40,13 @@
     "pivot table"
   ],
   "scripts": {
-    "start": "vite",
+    "start": "cross-env PLAYGROUND=true vite",
     "clean": "rimraf lib esm dist",
-    "build": "run-s clean build:*",
-    "build:esm": "vite build --mode es",
-    "build:cjs": "vite build --mode cjs",
-    "build:umd": "vite build --mode umd",
+    "build": "run-s clean build:declaration build:esm build:cjs build:umd",
+    "build:esm": "cross-env FORMAT=es vite build",
+    "build:cjs": "cross-env FORMAT=cjs vite build",
+    "build:umd": "cross-env FORMAT=umd vite build",
+    "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:declaration": "ttsc -p tsconfig-declaration.json",
     "bundle:size": "bundlesize",
     "test": "jest",
