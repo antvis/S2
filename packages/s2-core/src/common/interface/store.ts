@@ -87,7 +87,7 @@ export interface StoreKey {
   visibleActionIcons: GuiIcon[];
 
   // last click cell
-  lastClickCell: S2CellType<ViewMeta>;
+  lastClickedCell: S2CellType<ViewMeta>;
 
   [key: string]: unknown;
 }
