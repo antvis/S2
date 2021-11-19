@@ -1,20 +1,7 @@
-import { last } from 'lodash';
-import { Event as CanvasEvent } from '@antv/g-canvas';
 import { SpreadSheet } from './spread-sheet';
 import { DataCell } from '@/cell';
-import {
-  InterceptType,
-  S2Event,
-  TOOLTIP_OPERATOR_MENUS,
-} from '@/common/constant';
-import {
-  S2Options,
-  SortParam,
-  SpreadSheetFacetCfg,
-  TooltipOperatorOptions,
-  ViewMeta,
-} from '@/common/interface';
-import { Node } from '@/facet/layout/node';
+import { S2Event } from '@/common/constant';
+import { S2Options, SpreadSheetFacetCfg, ViewMeta } from '@/common/interface';
 import { RowCellCollapseTreeRowsType } from '@/common/interface/emitter';
 import { PivotDataSet } from '@/data-set';
 import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';
@@ -158,37 +145,5 @@ export class PivotSheet extends SpreadSheet {
     };
     this.setOptions(options);
     this.render(false);
-  }
-
-  public handleGroupSort(event: CanvasEvent, meta: Node) {
-    event.stopPropagation();
-    this.interaction.addIntercepts([InterceptType.HOVER]);
-    const operator: TooltipOperatorOptions = {
-      onClick: ({ key }) => {
-        const { rows, columns } = this.dataCfg.fields;
-        const sortFieldId = this.isValueInCols() ? last(rows) : last(columns);
-        const { query, value } = meta;
-        const sortParam: SortParam = {
-          sortFieldId,
-          sortMethod: key as SortParam['sortMethod'],
-          sortByMeasure: value,
-          query,
-        };
-        const prevSortParams = this.dataCfg.sortParams.filter(
-          (item) => item?.sortFieldId !== sortFieldId,
-        );
-        this.setDataCfg({
-          ...this.dataCfg,
-          sortParams: [...prevSortParams, sortParam],
-        });
-        this.render();
-      },
-      menus: TOOLTIP_OPERATOR_MENUS.Sort,
-    };
-
-    this.showTooltipWithInfo(event, [], {
-      operator,
-      onlyMenu: true,
-    });
   }
 }

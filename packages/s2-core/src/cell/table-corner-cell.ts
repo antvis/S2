@@ -5,4 +5,8 @@ export class TableCornerCell extends TableColCell {
   public getStyle(name?: string) {
     return name ? this.theme[name] : get(this, 'theme.cornerCell');
   }
+
+  protected showSortIcon() {
+    return false;
+  }
 }

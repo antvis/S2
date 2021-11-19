@@ -169,7 +169,7 @@ describe('Interaction Event Controller Tests', () => {
       eventNames: [S2Event.CORNER_CELL_MOUSE_DOWN],
     },
     {
-      type: CellTypes.MERGED_CELLS,
+      type: CellTypes.MERGED_CELL,
       eventNames: [S2Event.MERGED_CELLS_MOUSE_DOWN],
     },
   ])('should emit mouse down for %o', expectEvents(OriginEventType.MOUSE_DOWN));
@@ -208,7 +208,7 @@ describe('Interaction Event Controller Tests', () => {
       ],
     },
     {
-      type: CellTypes.MERGED_CELLS,
+      type: CellTypes.MERGED_CELL,
       eventNames: [
         S2Event.MERGED_CELLS_MOUSE_MOVE,
         S2Event.MERGED_CELLS_HOVER,
@@ -238,7 +238,7 @@ describe('Interaction Event Controller Tests', () => {
       eventNames: [S2Event.CORNER_CELL_MOUSE_UP],
     },
     {
-      type: CellTypes.MERGED_CELLS,
+      type: CellTypes.MERGED_CELL,
       eventNames: [S2Event.MERGED_CELLS_MOUSE_UP],
     },
   ])(
@@ -264,7 +264,7 @@ describe('Interaction Event Controller Tests', () => {
       eventNames: [S2Event.CORNER_CELL_DOUBLE_CLICK],
     },
     {
-      type: CellTypes.MERGED_CELLS,
+      type: CellTypes.MERGED_CELL,
       eventNames: [S2Event.MERGED_CELLS_DOUBLE_CLICK],
     },
   ])(

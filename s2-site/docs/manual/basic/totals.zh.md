@@ -15,13 +15,13 @@ order: 5
 
 平铺模式下，給当前维度额外增加一行/列
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*hqnGSZBKnlEAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*eeU9SoHeRwoAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 #### 形式二：挂靠节点
 
 树状模式下，挂靠到当前节点所在行/列中
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*0l39T4mKRPsAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*rb--Tqm-Uc0AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 ### 总计
 
@@ -29,12 +29,23 @@ order: 5
 
 #### 1. 单度量值
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NZUsTYZllO0AAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*YOcuTLNDYXIAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
+平铺：
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*E34ET6WPRYcAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
+
+树状：
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*nLqvRYWFGRoAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
 
 #### 2. 多度量值
 
-待放图...
+平铺：
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*QY_iSpJLVLQAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
+
+树状：
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*XUzVTZ9951MAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
 
 ## 使用
 

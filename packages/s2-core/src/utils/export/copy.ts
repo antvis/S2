@@ -1,3 +1,4 @@
+import { getCsvString } from './export-worker';
 import { copyToClipboard } from '@/utils/export';
 import { Formatter, S2CellType, ViewMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
@@ -33,10 +34,10 @@ export const processCopyData = (
   spreadsheet: SpreadSheet,
 ): string => {
   const getRowString = (pre: string, cur: S2CellType) =>
-    pre + (cur ? format(cur, spreadsheet) : '') + '\t';
+    pre + (cur ? getCsvString(format(cur, spreadsheet)) : '') + '\t';
   const getColString = (pre: string, cur: S2CellType[]) =>
-    pre + cur.reduce(getRowString, '') + '\n';
-  return cells.reduce(getColString, '').slice(0, -2);
+    pre + cur.reduce(getRowString, '').slice(0, -1) + '\n';
+  return cells.reduce(getColString, '').slice(0, -1);
 };
 
 export const getTwoDimData = (cells: S2CellType[]) => {

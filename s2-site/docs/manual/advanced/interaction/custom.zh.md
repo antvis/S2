@@ -103,7 +103,3 @@ s2.render();
 ```
 
 <playground path='interaction/advanced/demo/custom.ts' rid='container' height='400'></playground>
-
-## 4 效果
-
-![preview](https://gw.alipayobjects.com/zos/antfincdn/loLnamrCW/Kapture%2525202021-10-19%252520at%25252014.52.56.gif)

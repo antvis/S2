@@ -3,9 +3,9 @@ title: 高级排序
 order: 1
 ---
 
-S2自带高级排序组件，可根据选择组合数据提供給用户使用
+`S2` 自带高级排序组件，可根据选择组合数据提供給用户使用。
 
->注意：内部不维护状态
+> 注意：内部不维护状态
 
 ## 快速上手
 
@@ -22,7 +22,7 @@ const AdvancedSortDemo = () => {
   return (
     <div>
       <SheetComponent
-        sheetType={'pivot'}
+        sheetType="pivot"
         adaptive={false}
         dataCfg={dataCfg}
         options={s2options}
@@ -52,10 +52,9 @@ ReactDOM.render(<AdvancedSortDemo />, document.getElementById('container'));
 advancedSortCfg: {
   open: true,
 }
-
 ```
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*QCRdRIzLKwYAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*E4dxS6EpfHEAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 ### 提交
 
@@ -84,13 +83,13 @@ advancedSortCfg: {
 | text      | `ReactNode`       |      |        | 排序按钮名称 |
 | ruleText  | `string`          |      |        | 规则描述     |
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*oreXQrKd7cQAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*R45ZQK4Xk3kAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*HslZQo19WwkAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*myN3SYxjPXsAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 #### 维度列表
 
-支持自定义维度列表 `demissions` ，不配置默认为：`行头+列头+数值`
+支持自定义维度列表 `dimension` ，不配置默认为：`行头+列头+数值`
 
 | 属性  | 类型       | 必选 | 默认值 | 功能描述 |
 | :---- | :--------- | :--- | :----- | :------- |
@@ -98,7 +97,7 @@ advancedSortCfg: {
 | name  | `string`   |      | ✓      | 维度名称 |
 | list  | `string[]` |      | ✓      | 维度列表 |
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*IZrSSJpqq40AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*6g9aTKIOlRcAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 `list` 用于手动排序
 
@@ -116,7 +115,7 @@ advancedSortCfg: {
 | value    | `'sortMethod' | 'sortBy' | 'sortByMeasure'` | ✓    |        | 规则值     |
 | children | `RuleOption[]`                              |      | ✓      | 规则子列表 |
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*77KeT5mr_qoAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*V2PWTItVICQAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
 #### 打开排序弹窗
 

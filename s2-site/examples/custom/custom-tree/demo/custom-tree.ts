@@ -1,22 +1,6 @@
-// import { PivotSheet, transformCustomTreeItems } from '@antv/s2';
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, transformCustomTreeItems } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
-// @TODO 等下个版本发布了把上面注释打开
-const transformCustomTreeItems = (itemConfig) => {
-    if (itemConfig) {
-        return itemConfig.map((config) => {
-        return {
-            key: config.key,
-            title: config.title,
-            children: transformCustomTreeItems(config.children),
-            collapsed: config.collapsed,
-            description: config.description,
-        };
-        });
-    }
-    return [];
-};
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/af54ea12-01d7-4696-a51c-c4d5e4ede28e.json',
 )
@@ -40,11 +24,11 @@ fetch(
       },
       data: res.data,
     };
-    const s2options = {
-      width: 660,
-      height: 600,
+    const s2Options = {
+      width: 600,
+      height: 480,
       hierarchyType: 'customTree',
     };
-    const s2 = new PivotSheet(container, s2DataConfig, s2options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
     s2.render();
   });

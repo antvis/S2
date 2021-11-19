@@ -1,6 +1,6 @@
 import { Event } from '@antv/g-canvas';
 import { BaseEvent, BaseEventImplement } from '../../base-event';
-import { S2Event } from '@/common/constant';
+import { InterceptType, S2Event } from '@/common/constant';
 
 export class MergedCellsClick extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -10,6 +10,11 @@ export class MergedCellsClick extends BaseEvent implements BaseEventImplement {
   private bindDataCellClick() {
     this.spreadsheet.on(S2Event.MERGED_CELLS_CLICK, (event: Event) => {
       event.stopPropagation();
+      const { interaction } = this.spreadsheet;
+      if (interaction.hasIntercepts([InterceptType.CLICK])) {
+        return;
+      }
+      interaction.addIntercepts([InterceptType.HOVER]);
     });
   }
 }

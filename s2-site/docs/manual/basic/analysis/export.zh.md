@@ -15,7 +15,7 @@ const s2options = {
 };
 ```
 
-使用快捷键command/ctrl + c即可复制选中区域（局部复制）
+使用快捷键 `command/ctrl + c` 即可复制选中区域（局部复制）
 
 ![复制](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*oL8_S5zBKSYAAAAAAAAAAAAAARQnAQ)
 

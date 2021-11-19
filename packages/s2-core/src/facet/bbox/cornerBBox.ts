@@ -25,7 +25,7 @@ export class CornerBBox extends BaseBBox {
       rowsHierarchy.width + this.facet.getSeriesNumberWidth(),
     );
 
-    // 在行头不固定时，不需要需要对应角头bbox进行裁剪
+    // 在行头不固定时，无需对角头 BBox 进行裁剪
     if (this.spreadsheet.isScrollContainsRowHeader()) {
       return this.originalWidth;
     }
@@ -39,14 +39,14 @@ export class CornerBBox extends BaseBBox {
 
     const maxCornerBBoxWidth = canvasWidth * CORNER_MAX_WIDTH_RATIO;
     const colsHierarchyWidth = colsHierarchy.width;
-    const panelWidthWidthUnclippedCorner = canvasWidth - this.originalWidth;
+    const panelWidthWidthUnClippedCorner = canvasWidth - this.originalWidth;
 
     // 不需要裁剪条件：
     // 1. 角头的宽度没有超过最大的角头范围
     // 2. 列头的宽度没有超过在不裁剪角头前提下的剩余范围
     if (
       this.originalWidth <= maxCornerBBoxWidth ||
-      colsHierarchyWidth <= panelWidthWidthUnclippedCorner
+      colsHierarchyWidth <= panelWidthWidthUnClippedCorner
     ) {
       return this.originalWidth;
     }
@@ -58,7 +58,7 @@ export class CornerBBox extends BaseBBox {
     if (colsHierarchyWidth <= maxPanelWidth) {
       clippedWidth =
         this.originalWidth -
-        (colsHierarchyWidth - panelWidthWidthUnclippedCorner);
+        (colsHierarchyWidth - panelWidthWidthUnClippedCorner);
     } else {
       clippedWidth = maxCornerBBoxWidth;
     }

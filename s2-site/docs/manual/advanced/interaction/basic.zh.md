@@ -26,6 +26,7 @@ order: 0
 | 行/列头快捷多选   | `S2Event.GLOBAL_SELECTED` |  单击行/列头，选中对应行/列头所有单元格 （含不在可视范围内的）, 再次单击取消选中   |
 | 行/列头手动调整宽高  | `S2Event.LAYOUT_RESIZE` |  鼠标悬浮在行/列头单元格边缘，出现指示条和光标，按住鼠标左键拖动，调整宽高  |
 | 刷选   | `S2Event.GLOBAL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED` | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量 |
+| 快捷多选   | `S2Event.GLOBAL_SELECTED` | Command点击 单个增量多选; shift单击 start -> end的区间选择 |
 | 悬停   | `S2Event.GLOBAL_HOVER` | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](#十字高亮） （对应行/列), 可设置 `hoverHighlight: false` 关闭 |
 | 复制   | `S2Event.GLOBAL_COPIED` | 复制选中的单元格数据 |
 | 隐藏列头   | `S2Event.LAYOUT_TABLE_COL_EXPANDED` `S2Event.LAYOUT_TABLE_COL_HIDDEN` | 隐藏/展开 列头 （明细表有效） |
@@ -167,7 +168,7 @@ const s2Options = {
 
 ### 选中聚光灯
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/Z0nENy85%26/929f6638-a19f-4a6c-9ad8-a9a6ef2269c3.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Omq-Ra0PO9UAAAAAAAAAAAAAARQnAQ" width="700" alt="preview" />
 
 在选中单元格后，如果需要置灰未选中的单元格，强调需要关注的数据，可配置 `selectedCellsSpotlight` 开启：
 
@@ -181,14 +182,14 @@ const s2options = {
 
 ### 十字高亮
 
-默认情况下，我们会在鼠标悬停时，高亮对应的行列头，更直观的查看数据，可配置 `hoverHighlight` 关闭：
+在鼠标悬停时，高亮对应的行列头，更直观的查看数据，默认关闭，可配置 `hoverHighlight` 开启：
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/1oWitPZ7j/802123cc-6ee6-41c7-9310-049348a016ca.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*f1f1TqoWNdMAAAAAAAAAAAAAARQnAQ" alt="preview" width="700" />
 
 ```ts
 const s2options = {
   interaction: {
-    hoverHighlight: false
+    hoverHighlight: true // 默认关闭
   }
 };
 ```
@@ -197,7 +198,17 @@ const s2options = {
 
 刷选过程中，会提示预选中的单元格，并且显示半透明的刷选蒙层
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/HXv13NOg%26/02f11164-9dee-41ee-80d6-694d2e7eaf5a.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*N3-cSrfpGc4AAAAAAAAAAAAAARQnAQ" alt="preview" width="700" />
+
+### 快捷键多选
+
+(Command/Ctrl) + click: 单个多选叠加
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ubk0RrTI0ZsAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+
+SHIFT + click: 区间选择（类似刷选）
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wq-XRYpVAGMAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
 ### 隐藏列头 （明细表有效）
 
@@ -218,7 +229,7 @@ const s2options = {
 };
 ```
 
-![preview](https://gw.alipayobjects.com/zos/antfincdn/PNFrjWu%261/8b9de9d4-b4be-48dd-abdb-40f98371592e.png)
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*7NasR7RUHG4AAAAAAAAAAAAAARQnAQ" alt="preview" width="500" />
 
 ## 重置交互
 

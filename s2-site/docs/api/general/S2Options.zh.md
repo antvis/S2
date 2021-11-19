@@ -84,7 +84,6 @@ object **必选**,_default：null_ 功能描述：单元格配置
 | width   | `number` |      |    96 | 单元格宽度   |
 | height  | `number` |      |    30 | 单元格高度   |
 | padding | `number` |      |              | 单元格内边距 |
-| lineHeight | `number` |            |        | 单元格行高 |
 
 ## ColCfg
 
@@ -155,7 +154,7 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 
 ## HeaderActionIconProps
 
-功能描述： 点击自定义操作 icon 后交叉表返回的当前 icon 相关
+功能描述： 点击自定义操作 icon 后透视表返回的当前 icon 相关
 
 | 参数 | 类型 | 必选  | 默认值 | 功能描述 |
 | --- | --- | :-:  | --- | --- |
