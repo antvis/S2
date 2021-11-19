@@ -1,3 +1,10 @@
+# [@antv/s2-v1.0.0-beta.12](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.11...@antv/s2-v1.0.0-beta.12) (2021-11-19)
+
+
+### Bug Fixes
+
+* **tooltip:** tooltip don't show ([#749](https://github.com/antvis/S2/issues/749)) ([25bda19](https://github.com/antvis/S2/commit/25bda197c21c9276963fb68eecae4a91d5a9841c))
+
 # [@antv/s2-v1.0.0-beta.11](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.10...@antv/s2-v1.0.0-beta.11) (2021-11-19)
 
 
