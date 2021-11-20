@@ -56,21 +56,14 @@ fetch(
         },
       },
     };
-    const TooltipComponentDemo = () => {
-      return (
-        <div>
-          <SheetComponent
-            sheetType={'pivot'}
-            adaptive={false}
-            dataCfg={s2DataConfig}
-            options={s2Options}
-          />
-        </div>
-      );
-    };
 
     ReactDOM.render(
-      <TooltipComponentDemo />,
+      <SheetComponent
+        sheetType="pivot"
+        adaptive={false}
+        dataCfg={s2DataConfig}
+        options={s2Options}
+      />,
       document.getElementById('container'),
     );
   });

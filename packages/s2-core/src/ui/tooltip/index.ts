@@ -1,7 +1,7 @@
 import { SpreadSheet } from '@/sheet-type';
 import { TooltipPosition, TooltipShowOptions } from '@/common/interface';
 import {
-  getOptions,
+  getTooltipDefaultOptions,
   getAutoAdjustPosition,
   setContainerStyle,
 } from '@/utils/tooltip';
@@ -37,7 +37,7 @@ export class BaseTooltip {
    */
   public show(showOptions: TooltipShowOptions) {
     const { position, options, element } = showOptions;
-    const { enterable } = getOptions(options);
+    const { enterable } = getTooltipDefaultOptions(options);
     const container = this.getContainer();
     const { tooltipComponent, getTooltipComponent, autoAdjustBoundary } =
       this.spreadsheet.options.tooltip || {};

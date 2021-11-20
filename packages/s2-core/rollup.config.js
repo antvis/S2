@@ -70,7 +70,6 @@ const external = [];
 if (format === 'umd') {
   output.file = 'dist/s2.min.js';
   plugins.push(terser());
-  output.globals = {};
 } else {
   external.push(
     'd3-interpolate',

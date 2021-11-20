@@ -6,5 +6,6 @@ window.checkboxCss = require('antd/es/checkbox/style/index.css');
 window.s2 = require('@antv/s2');
 window.gCanvas = require('@antv/g-canvas');
 window.s2Css = require('@antv/s2/dist/s2.min.css');
+window.s2ReactCss = require('@antv/s2-react/dist/style.min.css');
 window.lodash = require('lodash');
-window.antdIcons= require('@ant-design/icons');
+window.antdIcons = require('@ant-design/icons');
