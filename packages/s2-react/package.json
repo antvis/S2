@@ -1,0 +1,86 @@
+{
+  "name": "@antv/s2-react",
+  "version": "0.1.0",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "unpkg": "dist/index.js",
+  "types": "esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./esm/index.js",
+      "require": "./lib/index.js"
+    }
+  },
+  "description": "effective spreadsheet render react lib",
+  "license": "MIT",
+  "homepage": "https://s2.antv.vision",
+  "author": "https://github.com/orgs/antvis/people",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/S2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/S2/issues"
+  },
+  "files": [
+    "esm",
+    "lib",
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "antv",
+    "s2",
+    "s2-react",
+    "spreadsheet",
+    "pivot table"
+  ],
+  "scripts": {
+    "start": "cross-env PLAYGROUND=true vite",
+    "clean": "rimraf lib esm dist",
+    "build": "run-s clean build:declaration build:esm build:cjs build:umd",
+    "build:esm": "cross-env FORMAT=es vite build",
+    "build:cjs": "cross-env FORMAT=cjs vite build",
+    "build:umd": "cross-env FORMAT=umd vite build",
+    "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
+    "build:declaration": "ttsc -p tsconfig-declaration.json",
+    "bundle:size": "bundlesize",
+    "test": "jest",
+    "test:live": "node ./scripts/test-live.mjs",
+    "test:coverage": "yarn test --coverage",
+    "test:watch": "yarn test --watch",
+    "tsc": "tsc --noEmit",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+  },
+  "peerDependencies": {
+    "@antv/s2": "^0.2.5",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "dependencies": {
+    "antd": "^4.16.13",
+    "classnames": "^2.3.1",
+    "lodash": "^4.17.21",
+    "react-beautiful-dnd": "^13.1.0"
+  },
+  "devDependencies": {
+    "@antv/s2": "^0.2.5",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@types/react-beautiful-dnd": "^13.1.2"
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/index.min.js",
+      "maxSize": "650 kB"
+    },
+    {
+      "path": "./dist/style.min.css",
+      "maxSize": "205 kB"
+    }
+  ]
+}
