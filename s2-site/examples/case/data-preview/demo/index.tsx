@@ -135,12 +135,6 @@ class CustomTableColCell extends TableColCell {
       this.spreadsheet.dataCfg.filterParams,
     ).length;
 
-    console.log(
-      this.meta.value,
-      this.spreadsheet.dataCfg.filterParams,
-      isFiltered,
-    );
-
     const { x, y, width, height } = position;
     const icon = new GuiIcon({
       name: iconMap[sortMethod.toLowerCase()],
@@ -206,8 +200,6 @@ const scrollToCell = (rowIndex, colIndex, options, facet, interaction) => {
     (item) => item.colIndex === colIndex,
   )?.x;
   if (frozenRowCount > 0 && rowIndex > frozenRowCount - 1) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
     offsetY -= facet.getTotalHeightForRange(0, frozenRowCount - 1);
   }
 
@@ -362,9 +354,7 @@ const App = ({ data }) => {
     if (s2Ref.current) {
       searchData = s2Ref.current.dataSet.getDisplayDataSet();
     }
-    console.log(key, searchData, columns);
     const results = getSearchResult(key, searchData, columns);
-    console.log(results);
     setSearchResult(results);
     setSearchResultActiveIndex(-1);
     if (results.length > 0) {

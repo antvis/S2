@@ -10,7 +10,7 @@
         "zh": "行列联动高亮",
         "en": "Hover Highlighting"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/NHmJ9YSG1/2021-11-16%25252019.41.12.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/l23NpRrPmF/hover.gif"
     },
     {
       "filename": "click-highlight.ts",
@@ -18,7 +18,7 @@
         "zh": "单选高亮",
         "en": "Click Highlighting"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/7%24EuyYhQ5/2021-11-16%25252019.56.15.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/0lw2grIHZN/click.gif"
     },
     {
       "filename": "select-highlight.ts",
@@ -26,7 +26,7 @@
         "zh": "圈选高亮",
         "en": "Multiple Select Highlighting"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/zHNqTiSLS/2021-11-16%25252019.59.20.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/WBFq3TzTY9/multi-select.gif"
     },
 
     {
@@ -35,7 +35,7 @@
         "zh": "行高列宽调整",
         "en": "Resize Height And Width"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/QtIDTkWFq/2021-11-16%25252020.01.18.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/F6l3SoxBCx/resize.gif"
     },
     {
       "filename": "frozen.ts",
@@ -43,7 +43,7 @@
         "zh": "行列冻结",
         "en": "Freeze Rows And Cols"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/jQLmtDcH%24/2021-11-16%25252020.03.21.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/%24a16EsOCR8/frozeb.gif"
     },
     {
       "filename": "auto-reset-sheet-style.ts",
@@ -51,7 +51,7 @@
         "zh": "自动交互状态重置",
         "en": "Disable auto reset sheet style"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/OBGwclFtR/2021-11-16%25252020.05.16.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/Lb0%26u6LtAu/reset.gif"
     }
   ]
 }
