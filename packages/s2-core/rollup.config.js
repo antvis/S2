@@ -19,6 +19,7 @@ const OUT_DIR_NAME_MAP = {
 
 const outDir = OUT_DIR_NAME_MAP[format];
 const isEsmFormat = format === 'esm';
+const isUmdFormat = format === 'umd';
 
 const output = {
   format: format,
@@ -50,14 +51,13 @@ const plugins = [
     typescript: ttypescript,
   }),
   postcss({
-    minimize: true,
+    minimize: isUmdFormat,
     use: {
       sass: null,
       stylus: null,
       less: { javascriptEnabled: true },
     },
-    extract: true,
-    output: outDir + '/index.min.css',
+    extract: `style${isUmdFormat ? '.min' : ''}.css`,
   }),
 ];
 
@@ -67,7 +67,7 @@ if (enableAnalysis) {
 
 const external = [];
 
-if (format === 'umd') {
+if (isUmdFormat) {
   output.file = 'dist/index.min.js';
   plugins.push(terser());
 } else {

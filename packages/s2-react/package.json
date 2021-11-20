@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
-  "unpkg": "dist/index.js",
+  "unpkg": "dist/index.min.js",
   "types": "esm/index.d.ts",
   "exports": {
     ".": {
@@ -42,7 +42,7 @@
   "scripts": {
     "start": "cross-env PLAYGROUND=true vite",
     "clean": "rimraf lib esm dist",
-    "build": "run-s clean build:declaration build:esm build:cjs build:umd",
+    "build": "run-s clean build:esm build:cjs build:umd build:declaration",
     "build:esm": "cross-env FORMAT=es vite build",
     "build:cjs": "cross-env FORMAT=cjs vite build",
     "build:umd": "cross-env FORMAT=umd vite build",
