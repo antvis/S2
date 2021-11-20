@@ -1,4 +1,4 @@
 ---
-title: 分群下钻表
+title: 占比表
 order: 2
 ---
