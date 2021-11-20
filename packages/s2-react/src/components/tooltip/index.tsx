@@ -20,8 +20,8 @@ import { TooltipOperator } from './components/operator';
 import { SimpleTips } from './components/simple-tips';
 import { TooltipSummary } from './components/summary';
 import { TooltipRenderProps } from './interface';
+import '@antv/s2/esm/index.css';
 
-import '@antv/s2/esm/style.css';
 import './index.less';
 
 export const TooltipComponent = (props: TooltipRenderProps) => {
