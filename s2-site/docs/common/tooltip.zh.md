@@ -21,7 +21,7 @@ object **必选**,_default：null_ 功能描述： tooltip 配置
 
 | 参数             | 类型                                  | 必选  | 默认值 | 功能描述                |
 | ---------------- | ------------------------------------- | :---: | ------ | ----------------------- |
-| showTooltip      | `boolean`                             |       | `true` | 是否展示 tooltip        |
+| showTooltip      | `boolean`                             |       | `false` | 是否展示 tooltip        |
 | operation        | [TooltipOperation](#tooltipoperation) |       |        | tooltip 操作配置项      |
 | tooltipComponent | `Element | string`                         |       |        | 自定义 tooltip 弹框组件 |
 
@@ -31,6 +31,6 @@ object **必选**,_default：null_ 功能描述： tooltip 操作配置项
 
 | 参数          | 类型      | 必选  | 默认值  | 功能描述                      |
 | ------------- | --------- | :---: | ------- | ----------------------------- |
-| hiddenColumns | `boolean` |       | `true`  | 是否开启隐藏列 （明细表有效） |
+| hiddenColumns | `boolean` |       | `false`  | 是否开启隐藏列 （明细表有效） |
 | trend         | `boolean` |       | `false` | 是否显示趋势图 icon           |
 | sort          | `boolean` |       | `false` | 是否开启组内排序              |
