@@ -4,7 +4,7 @@ import {
   Event as CanvasEvent,
   LooseObject,
 } from '@antv/g-canvas';
-import { each, get, isEmpty } from 'lodash';
+import { each, get, isEmpty, isNil } from 'lodash';
 import {
   CellTypes,
   IMAGE,
@@ -107,10 +107,10 @@ export class EventController {
       keyEqualTo(event.key, InteractionKeyboardKey.COPY) &&
       (event.metaKey || event.ctrlKey)
     ) {
-      this.spreadsheet.emit(
-        S2Event.GLOBAL_COPIED,
-        getSelectedData(this.spreadsheet),
-      );
+      const copyData = getSelectedData(this.spreadsheet);
+      if (!isNil(copyData)) {
+        this.spreadsheet.emit(S2Event.GLOBAL_COPIED, copyData);
+      }
     }
   }
 

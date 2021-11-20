@@ -1,8 +1,7 @@
-import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import { Event as GEvent } from '@antv/g-canvas';
-import { omit } from 'lodash';
 import { DataCellClick } from '@/interaction/base-interaction/click';
-import { S2Options, ViewMeta } from '@/common/interface';
+import { S2Options } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { InteractionStateName, S2Event } from '@/common/constant';
 
@@ -11,21 +10,11 @@ jest.mock('@/interaction/event-controller');
 describe('Interaction Data Cell Click Tests', () => {
   let dataCellClick: DataCellClick;
   let s2: SpreadSheet;
-  const mockCellViewMeta: Partial<ViewMeta> = {
-    id: '1',
-    colIndex: 0,
-    rowIndex: 0,
-    type: undefined,
-  };
-  const mockCellMeta = omit(mockCellViewMeta, 'update');
-  const mockCell = {
-    ...mockCellViewMeta,
-    getMeta: () => mockCellViewMeta,
-  };
+  const mockCellInfo = createMockCellInfo('testId');
 
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
-    s2.getCell = () => mockCell as any;
+    s2.getCell = () => mockCellInfo.mockCell as any;
     dataCellClick = new DataCellClick(s2 as unknown as SpreadSheet);
     s2.options = {
       tooltip: {
@@ -46,7 +35,7 @@ describe('Interaction Data Cell Click Tests', () => {
       stopPropagation() {},
     } as unknown as GEvent);
     expect(s2.interaction.getState()).toEqual({
-      cells: [mockCellMeta],
+      cells: [mockCellInfo.mockCellMeta],
       stateName: InteractionStateName.SELECTED,
     });
     expect(s2.showTooltipWithInfo).toHaveBeenCalled();
@@ -59,7 +48,7 @@ describe('Interaction Data Cell Click Tests', () => {
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
-    expect(selected).toHaveBeenCalledWith([mockCell]);
+    expect(selected).toHaveBeenCalledWith([mockCellInfo.mockCell]);
   });
 
   test('should emit link field jump event when link field text click', () => {

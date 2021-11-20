@@ -8,7 +8,7 @@ import {
 import { ValueRanges } from './condition';
 import { S2DataConfig } from './s2DataConfig';
 import { Node } from '@/facet/layout/node';
-import { PartDrillDownFieldInLevel } from '@/components/sheets/interface';
+import { PartDrillDownFieldInLevel } from '@/common/interface';
 import { GuiIcon } from '@/common/icons';
 
 export interface Selected {
@@ -87,7 +87,7 @@ export interface StoreKey {
   visibleActionIcons: GuiIcon[];
 
   // last click cell
-  lastClickCell: S2CellType<ViewMeta>;
+  lastClickedCell: S2CellType<ViewMeta>;
 
   [key: string]: unknown;
 }

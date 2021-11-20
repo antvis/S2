@@ -23,7 +23,7 @@ import {
   every,
   isObject,
 } from 'lodash';
-import React from 'react';
+import * as CSS from 'csstype';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
@@ -181,7 +181,7 @@ export const getMergedQuery = (meta: ViewMeta) => {
  */
 export const setContainerStyle = (
   container: HTMLElement,
-  options: { style?: React.CSSProperties; className?: string } = {
+  options: { style?: CSS.Properties; className?: string } = {
     className: '',
   },
 ) => {

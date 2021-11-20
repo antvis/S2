@@ -1,20 +1,7 @@
-import { last } from 'lodash';
-import { Event as CanvasEvent } from '@antv/g-canvas';
 import { SpreadSheet } from './spread-sheet';
 import { DataCell } from '@/cell';
-import {
-  InterceptType,
-  S2Event,
-  TOOLTIP_OPERATOR_MENUS,
-} from '@/common/constant';
-import {
-  S2Options,
-  SortParam,
-  SpreadSheetFacetCfg,
-  TooltipOperatorOptions,
-  ViewMeta,
-} from '@/common/interface';
-import { Node } from '@/facet/layout/node';
+import { S2Event } from '@/common/constant';
+import { S2Options, SpreadSheetFacetCfg, ViewMeta } from '@/common/interface';
 import { RowCellCollapseTreeRowsType } from '@/common/interface/emitter';
 import { PivotDataSet } from '@/data-set';
 import { CustomTreePivotDataSet } from '@/data-set/custom-tree-pivot-data-set';

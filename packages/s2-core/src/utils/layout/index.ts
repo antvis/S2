@@ -1,2 +1,2 @@
 export { generateId } from './generate-id';
-export { transformCustomTreeItems } from './transform-custom-tree-items';
+export * from './transform-custom-tree-items';

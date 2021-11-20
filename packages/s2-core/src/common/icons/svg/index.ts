@@ -18,4 +18,5 @@ export {
   ExpandColIcon,
   Trend,
   DrillDownIcon,
+  EyeOutlined,
 } from './svgs';

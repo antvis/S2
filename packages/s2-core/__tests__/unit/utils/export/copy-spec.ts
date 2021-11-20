@@ -1,5 +1,5 @@
 import { TableSheet } from 'src/sheet-type';
-import { assembleDataCfg, assembleOptions } from '../../../util/sheet-entry';
+import { assembleDataCfg, assembleOptions } from '../../../util';
 import { getContainer } from '../../../util/helpers';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { getSelectedData } from '@/utils/export/copy';
@@ -26,7 +26,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2)).toEqual('');
+    expect(getSelectedData(s2)).toEqual(undefined);
   });
 
   it('should copy normal data', () => {

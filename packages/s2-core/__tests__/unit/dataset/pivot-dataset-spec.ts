@@ -2,7 +2,7 @@
  * pivot mode base data-set test.
  */
 import { get, keys } from 'lodash';
-import { assembleDataCfg } from '../../util/sheet-entry';
+import { assembleDataCfg } from '../../util';
 import { data as drillDownData } from '../../data/mock-drill-down-dataset.json';
 import { ViewMeta } from '@/common/interface';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';

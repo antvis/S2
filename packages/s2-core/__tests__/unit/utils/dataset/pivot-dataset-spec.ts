@@ -1,4 +1,4 @@
-import { assembleDataCfg } from 'tests/util/sheet-entry';
+import { assembleDataCfg } from 'tests/util';
 import { get } from 'lodash';
 import {
   deleteMetaById,
