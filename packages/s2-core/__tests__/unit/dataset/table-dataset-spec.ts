@@ -1,7 +1,7 @@
 /**
  * table mode data-set test.
  */
-import { assembleDataCfg } from '../../util/sheet-entry';
+import { assembleDataCfg } from '../../util';
 import { S2DataConfig } from '@/common/interface';
 import { TableSheet } from '@/sheet-type';
 import { TableDataSet } from '@/data-set/table-data-set';

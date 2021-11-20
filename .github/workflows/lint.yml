@@ -34,11 +34,11 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Lint scripts, type, style and docs
-        run: yarn lint
-
       - name: Build
         run: yarn build
+
+      - name: Lint scripts, type, style and docs
+        run: yarn lint
 
       - name: Bundle size
         run: yarn bundle:size

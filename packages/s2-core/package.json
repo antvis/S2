@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "1.0.0-beta.12",
+  "version": "1.0.0-beta.13",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/s2.min.js",
@@ -35,11 +35,11 @@
   "scripts": {
     "start": "yarn test:live",
     "clean": "rimraf lib esm dist",
-    "build": "run-s clean build:*",
-    "build:esm": "rollup -c rollup.config.js --environment FORMAT:esm ",
-    "build:cjs": "rollup -c rollup.config.js --environment FORMAT:cjs",
-    "build:umd": "rollup -c rollup.config.js --environment FORMAT:umd",
-    "build:analysis": "rollup -c rollup.config.js --environment FORMAT:esm,ANALYSIS",
+    "build": "run-s clean build:esm build:cjs build:umd",
+    "build:esm": "cross-env FORMAT=esm rollup -c rollup.config.js",
+    "build:cjs": "cross-env FORMAT=cjs rollup -c rollup.config.js",
+    "build:umd": "cross-env FORMAT=umd rollup -c rollup.config.js",
+    "build:analysis": "cross-env FORMAT=esm ANALYSIS=true rollup -c rollup.config.js",
     "bundle:size": "bundlesize",
     "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
     "test:live": "node ./scripts/test-live.mjs",
@@ -49,26 +49,17 @@
     "tsc": "tsc --noEmit",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
-  "peerDependencies": {
-    "react": ">=16.14.0",
-    "react-dom": ">=16.14.0"
-  },
   "dependencies": {
     "@antv/event-emitter": "~0.1.2",
     "@antv/g-canvas": "^0.5.12",
     "@antv/g-gesture": "^1.0.0",
-    "antd": "^4.16.13",
-    "classnames": "^2.3.1",
-    "lodash": "^4.17.21",
-    "react-beautiful-dnd": "^13.1.0"
+    "csstype": "^3.0.9",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@types/react-beautiful-dnd": "^13.1.2",
     "d3-dsv": "^1.1.1",
     "inquirer": "^8.2.0",
-    "inquirer-autocomplete-prompt": "^1.4.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "inquirer-autocomplete-prompt": "^1.4.0"
   },
   "sideEffects": [
     "*.css",

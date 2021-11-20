@@ -404,3 +404,22 @@ export interface ScrollRatio {
   horizontal?: number;
   vertical?: number;
 }
+
+// 用于和下钻组件进行交互联动
+export interface PartDrillDownDataCache {
+  // 执行下钻的行头id
+  rowId: string;
+  // 下钻的行头level
+  drillLevel: number;
+  // 下钻的维度
+  drillField: string;
+  // 下钻的数据
+  drillData: Record<string, string | number>[];
+}
+
+export interface PartDrillDownFieldInLevel {
+  // 下钻的维度
+  drillField: string;
+  // 下钻的层级
+  drillLevel: number;
+}

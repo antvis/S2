@@ -6,7 +6,7 @@
  */
 import { get } from 'lodash';
 import { TableSheet } from 'src/sheet-type';
-import { assembleDataCfg, assembleOptions } from '../../util/sheet-entry';
+import { assembleDataCfg, assembleOptions } from '../../util';
 import { getContainer } from '../../util/helpers';
 
 describe('List Table Core Data Process', () => {
