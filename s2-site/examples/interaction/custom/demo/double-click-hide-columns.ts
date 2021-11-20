@@ -1,5 +1,4 @@
 import { TableSheet, BaseEvent, S2Event } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 class HiddenInteraction extends BaseEvent {
   bindEvents() {

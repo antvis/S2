@@ -9,9 +9,9 @@ import {
   TooltipDetail,
   TooltipOperator,
   TooltipSummary,
-} from '@antv/s2';
+} from '@antv/s2-react';
 import insertCss from 'insert-css';
-import '@antv/s2/dist/s2.min.css';
+import '@antv/s2-react/dist/style.min.css';
 
 const extra = [
   {
@@ -130,21 +130,14 @@ fetch(
         },
       },
     };
-    const TooltipRenderDemo = () => {
-      return (
-        <div>
-          <SheetComponent
-            sheetType={'pivot'}
-            adaptive={false}
-            dataCfg={s2DataConfig}
-            options={s2Options}
-          />
-        </div>
-      );
-    };
 
     ReactDOM.render(
-      <TooltipRenderDemo />,
+      <SheetComponent
+        sheetType={'pivot'}
+        adaptive={false}
+        dataCfg={s2DataConfig}
+        options={s2Options}
+      />,
       document.getElementById('container'),
     );
   });

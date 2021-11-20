@@ -1,7 +1,6 @@
 import { PivotSheet } from '@antv/s2';
 import { Group, IShape } from '@antv/g-canvas';
 import { get } from 'lodash';
-import '@antv/s2/dist/s2.min.css';
 
 // 自定义角头单元格，实现特有功能
 class CustomCornerHeader extends Group {

@@ -9,7 +9,7 @@ import {
   TooltipNameTipsOptions,
   TooltipHeadInfo as TooltipHeadInfoType,
   TooltipInterpretationOptions,
-  getOptions,
+  getTooltipDefaultOptions,
 } from '@antv/s2';
 import { TooltipDetail } from './components/detail';
 import { Divider } from './components/divider';
@@ -20,7 +20,6 @@ import { TooltipOperator } from './components/operator';
 import { SimpleTips } from './components/simple-tips';
 import { TooltipSummary } from './components/summary';
 import { TooltipRenderProps } from './interface';
-import '@antv/s2/esm/index.css';
 
 import './index.less';
 
@@ -81,7 +80,7 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
   };
 
   const renderContent = (data?: TooltipData, options?: TooltipOptions) => {
-    const option = getOptions(options);
+    const option = getTooltipDefaultOptions(options);
     const { operator, onlyMenu } = option;
     const { summaries, headInfo, details, interpretation, infos, tips, name } =
       data || {};
