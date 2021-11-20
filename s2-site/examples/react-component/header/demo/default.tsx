@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button } from 'antd';
 import { SheetComponent } from '@antv/s2';
+import insertCss from 'insert-css';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
@@ -32,8 +33,7 @@ fetch(
       advancedSortCfg: { open: true },
       extra: [
         <Button size={'small'} style={{ verticalAlign: 'top' }}>
-          {' '}
-          插入内容{' '}
+          插入内容
         </Button>,
       ],
     };
@@ -49,3 +49,8 @@ fetch(
     );
   });
 
+insertCss(`
+  .s2-header {
+    margin:0px !important;
+  }
+`);

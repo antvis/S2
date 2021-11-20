@@ -1,4 +1,4 @@
-import { PivotSheet, SpreadSheet, Node } from '@antv/s2';
+import { PivotSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(

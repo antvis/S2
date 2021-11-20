@@ -1,6 +1,6 @@
 import { PivotSheet } from '@antv/s2';
 import '@antv/s2/dist/s2.min.css';
-import { SpreadSheet, Node } from '@antv/s2';
+import { Node } from '@antv/s2';
 const generateId = (id) => {
   return `s2-${id}`;
 };

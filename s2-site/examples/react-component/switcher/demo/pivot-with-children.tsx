@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { SheetComponent, Switcher } from '@antv/s2';
 import insertCss from 'insert-css';
 import '@antv/s2/dist/s2.min.css';
-import { update } from 'lodash';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/a2e9799d-f03a-4847-8756-2976a032b485.json',
