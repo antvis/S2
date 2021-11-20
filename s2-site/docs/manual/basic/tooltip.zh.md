@@ -100,7 +100,7 @@ const s2options = {
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
-#### 重写 spreadsheet.showTooltip() 方法
+#### 重写展示方法
 
 在引用 `SheetComponent` 时重写表用来展示 `Tooltip` 的方法 `spreadsheet.showTooltip()` , 详情可参考[`spreadsheet`](/zh/docs/api/basic-class/spreadsheet)
 
@@ -133,7 +133,7 @@ tooltip: {
   ```tsx
   instance.showTooltip = (tooltipOptions) => {
     const { position } = tooltipOptions;
-    instance.tooltip.show({ ...tooltipOptions, position: { position.x + 1, position.y + 1 } });
+    instance.tooltip.show({ ...tooltipOptions, position: { x: position.x + 1, y: position.y + 1 } });
   };
   ```
 
@@ -141,13 +141,13 @@ tooltip: {
 
   - 名称
 
-    当前单元格名称
+    当前单元格名称, 一般只有单元格中文案被省略才会显示
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
       const { data } = tooltipOptions;
       const name = `${data.name} - 测试`;
-      instance.tooltip.show({ ...tooltipOptions, data: { ...data, data.name ? name : '' } });
+      instance.tooltip.show({ ...tooltipOptions, data: { ...data, name: data.name ? name : '' } });
     };
     ```
 
@@ -158,14 +158,7 @@ tooltip: {
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
       const { data } = tooltipOptions;
-      const extra = [
-        {
-          field: 'type',
-          value: '笔',
-          tips: '说明：这是笔的说明',
-        },
-      ];
-      const { tips } = extra.find((item) => item.value === data.name) || {};
+      const tips = '说明：这是个说明';
       instance.tooltip.show({ ...tooltipOptions, data: { ...data, tips } });
     };
     ```
