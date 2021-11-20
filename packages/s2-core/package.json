@@ -67,11 +67,11 @@
   ],
   "bundlesize": [
     {
-      "path": "./dist/s2.min.js",
+      "path": "./dist/index.min.js",
       "maxSize": "200 kB"
     },
     {
-      "path": "./dist/s2.min.css",
+      "path": "./dist/style.min.css",
       "maxSize": "5 kB"
     }
   ]
