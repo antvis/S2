@@ -53,7 +53,7 @@ fetch(
       const value = record[key];
       const a = document.createElement('a');
       a.target = '_blank';
-      a.href = `https://s2.antv.vision/?${key}=${value}`;
+      a.href = `https://antv-s2.gitee.io/zh/docs/manual/introduction?${key}=${value}`;
       a.click();
       a.remove();
     });
