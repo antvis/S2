@@ -1,13 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { merge } from 'lodash';
-import {
-  SheetComponent,
-  DataCell,
-  CornerCell,
-  measureTextWidth,
-} from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
+import { DataCell, CornerCell, measureTextWidth } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 // 进度条
 const PROGRESS_BAR = {

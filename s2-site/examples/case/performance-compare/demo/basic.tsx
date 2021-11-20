@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { compact } from 'lodash';
-import { SheetComponent } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 const disableColor = '#d3d7d4';
 const colors = [
@@ -63,7 +63,7 @@ function getDataConfig(rawData) {
 function getOptions(rawData) {
   return {
     width: 600,
-    height: 480,
+    height: 200,
     interaction: {
       selectedCellsSpotlight: false,
       hoverHighlight: false,

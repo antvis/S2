@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import insertCss from 'insert-css';
-import { SheetComponent } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 const PALETTE_COLORS = [
   {
@@ -56,29 +56,28 @@ const getTargetColor = (value) => {
 
 const PaletteLegend = () => {
   return (
-    <div className='palette-legend'>
-      <div className='palette-limit'>0%</div>
-      { PALETTE_COLORS.map((color) => (
+    <div className="palette-legend">
+      <div className="palette-limit">0%</div>
+      {PALETTE_COLORS.map((color) => (
         <span
-          key={ color.background }
-          className='palette-color'
-          style={ { background: color.background } }
+          key={color.background}
+          className="palette-color"
+          style={{ background: color.background }}
         />
-      )) }
-      <div className='palette-limit'>100%</div>
+      ))}
+      <div className="palette-limit">100%</div>
     </div>
   );
 };
-
 
 fetch('../data/single-population-proportion.json')
   .then((res) => res.json())
   .then(({ data }) => {
     const s2DataConfig = {
       fields: {
-        rows: [ 'type', 'job' ],
-        columns: [ 'age', 'city' ],
-        values: [ 'count' ],
+        rows: ['type', 'job'],
+        columns: ['age', 'city'],
+        values: ['count'],
         valueInCols: true,
       },
       meta: [
@@ -119,6 +118,7 @@ fetch('../data/single-population-proportion.json')
         hoverHighlight: false,
       },
       style: {
+        layoutWidthType: 'colAdaptive',
         colCfg: {
           hideMeasureColumn: true,
         },
@@ -132,7 +132,7 @@ fetch('../data/single-population-proportion.json')
             field: 'count',
             mapping(value) {
               return {
-                fill: value >= 70 ? '#fff' : '#282b32',
+                fill: value >= 50 ? '#fff' : '#282b32',
               };
             },
           },
@@ -152,12 +152,12 @@ fetch('../data/single-population-proportion.json')
     };
 
     ReactDOM.render(
-      <div className='root'>
+      <div className="root">
         <SheetComponent
-          dataCfg={ s2DataConfig }
-          options={ s2options }
-          sheetType='pivot'
-          adaptive={ false }
+          dataCfg={s2DataConfig}
+          options={s2options}
+          sheetType="pivot"
+          adaptive={false}
           header={{
             title: '单人群占比表',
             extra: [<PaletteLegend />],
@@ -179,7 +179,7 @@ insertCss(`
     align-items: center;
     margin-bottom: 8px;
   }
-  
+
  .palette-color {
     width: 12px;
     height: 12px;
@@ -197,5 +197,8 @@ insertCss(`
   .palette-limit + .palette-color {
     margin-left: 5px;
   }
-`);
 
+  .s2-header {
+    margin:0px !important;
+  }
+`);

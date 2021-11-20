@@ -3,7 +3,7 @@
   "version": "1.0.0-beta.13",
   "main": "lib/index.js",
   "module": "esm/index.js",
-  "unpkg": "dist/s2.min.js",
+  "unpkg": "dist/index.min.js",
   "types": "esm/index.d.ts",
   "description": "effective spreadsheet render core lib",
   "license": "MIT",
@@ -67,11 +67,11 @@
   ],
   "bundlesize": [
     {
-      "path": "./dist/s2.min.js",
+      "path": "./dist/index.min.js",
       "maxSize": "200 kB"
     },
     {
-      "path": "./dist/s2.min.css",
+      "path": "./dist/style.min.css",
       "maxSize": "5 kB"
     }
   ]

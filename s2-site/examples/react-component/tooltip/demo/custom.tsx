@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
 import insertCss from 'insert-css';
-import '@antv/s2/dist/s2.min.css';
+import '@antv/s2-react/dist/style.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
   .then((data) => {
@@ -56,20 +56,16 @@ fetch(
         },
       },
     };
-    const TooltipComponentDemo = () => {
-      return (
-        <div>
-          <SheetComponent
-            sheetType={'pivot'}
-            adaptive={false}
-            dataCfg={s2DataConfig}
-            options={s2Options}
-          />
-        </div>
-      );
-    };
 
-    ReactDOM.render(<TooltipComponentDemo />, document.getElementById('container'));
+    ReactDOM.render(
+      <SheetComponent
+        sheetType="pivot"
+        adaptive={false}
+        dataCfg={s2DataConfig}
+        options={s2Options}
+      />,
+      document.getElementById('container'),
+    );
   });
 
 insertCss(`

@@ -1,5 +1,4 @@
 import { SortMethod, TableSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 fetch('../data/basic.json')
   .then((res) => res.json())

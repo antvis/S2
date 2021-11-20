@@ -10,7 +10,7 @@
         "zh": "性能对比表",
         "en": "Performance Compare"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/4pGsQq0aIW/6b123789-20f2-4c70-bd6c-d5b3ab8146c2.png"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/qOOrO1WEZr/41e23d54-9a21-4ef3-9609-aa46ca871d83.png"
     },
     {
       "filename": "pivot.tsx",
@@ -18,7 +18,7 @@
         "zh": "100w数据性能表现-透视表",
         "en": "Performance-Pivot"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/p4Lc7ViXPe/pivot.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/aQQMy0LpzT/scroll-pivot.gif"
     },
     {
       "filename": "table.tsx",
@@ -26,7 +26,7 @@
         "zh": "100w数据性能表现-明细表",
         "en": "Performance-Table"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/52si2QspnF/table.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/vkrof17e%24O/scroll-table.gif"
     }
   ]
 }

@@ -1,5 +1,4 @@
 import { TableSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
@@ -40,7 +39,7 @@ fetch(
       width: 600,
       height: 480,
       interaction: {
-        autoResetSheetStyle: true, // 在鼠标移出表格区域后，自动reset选中状态
+        autoResetSheetStyle: true, // 在鼠标移出表格区域后，自动 reset hover 高亮状态
       },
     };
 

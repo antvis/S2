@@ -9,9 +9,9 @@ import {
   TooltipDetail,
   TooltipOperator,
   TooltipSummary,
-} from '@antv/s2';
+} from '@antv/s2-react';
 import insertCss from 'insert-css';
-import '@antv/s2/dist/s2.min.css';
+import '@antv/s2-react/dist/style.min.css';
 
 const extra = [
   {
@@ -81,12 +81,12 @@ class CustomTooltip extends BaseTooltip {
   }
 
   renderInfos(infos) {
-    return <Infos infos={`按住Cmd/Ctrl或框选，查看多个数据点`} />;
+    return <Infos infos={`按住 Shift 多选或框选，查看多个数据点`} />;
   }
 }
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
   .then((data) => {
@@ -130,21 +130,14 @@ fetch(
         },
       },
     };
-    const TooltipRenderDemo = () => {
-      return (
-        <div>
-          <SheetComponent
-            sheetType={'pivot'}
-            adaptive={false}
-            dataCfg={s2DataConfig}
-            options={s2Options}
-          />
-        </div>
-      );
-    };
 
     ReactDOM.render(
-      <TooltipRenderDemo />,
+      <SheetComponent
+        sheetType={'pivot'}
+        adaptive={false}
+        dataCfg={s2DataConfig}
+        options={s2Options}
+      />,
       document.getElementById('container'),
     );
   });

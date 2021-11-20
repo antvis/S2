@@ -1,5 +1,5 @@
 ---
-title: Group drill down sheet
+title: Proportion sheet
 order: 2
 ---
 

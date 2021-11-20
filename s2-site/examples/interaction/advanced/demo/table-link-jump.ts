@@ -1,5 +1,4 @@
 import { S2Event, TableSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
@@ -53,7 +52,7 @@ fetch(
       const value = record[key];
       const a = document.createElement('a');
       a.target = '_blank';
-      a.href = `https://s2.antv.vision/?${key}=${value}`;
+      a.href = `https://antv-s2.gitee.io/zh/docs/manual/introduction?${key}=${value}`;
       a.click();
       a.remove();
     });

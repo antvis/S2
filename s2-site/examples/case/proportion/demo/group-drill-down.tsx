@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/ff31b171-17a7-4d29-b20a-0b90a810d2de.json',
@@ -12,7 +12,7 @@ fetch(
       const [s2DataConfig, setS2DataConfig] = useState(data.dataCfg);
       const [drillDownField, setDrillDownField] = useState('');
       const s2options = {
-        width: 600,
+        width: 800,
         height: 600,
         tooltip: {
           showTooltip: false,
@@ -88,7 +88,7 @@ fetch(
               ))}
             </div>
             <div className="antv-s2-tooltip-infos">
-              按住 Cmd/Ctrl 多选单元格进行人群合并
+              按住 Shift 多选单元格进行人群合并
             </div>
           </div>
         );
@@ -136,9 +136,9 @@ insertCss(`
     text-align: center;
   }
   .antv-s2-breadcrumb {
-    position: absolute;
-    left: 0px;
-    top: 48px;
+  position: absolute;
+    left: 130px;
+    top: 11px;
   }
   .antv-s2-breadcrumb-all {
      color: #706f6f;
@@ -149,5 +149,8 @@ insertCss(`
   }
   .antv-s2-advanced-sort {
     display: none;
+  }
+  .s2-header {
+    margin:0px !important;
   }
 `);
