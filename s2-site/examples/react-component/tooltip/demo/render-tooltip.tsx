@@ -81,7 +81,7 @@ class CustomTooltip extends BaseTooltip {
   }
 
   renderInfos(infos) {
-    return <Infos infos={`按住Cmd/Ctrl或框选，查看多个数据点`} />;
+    return <Infos infos={`按住 Shift 多选或框选，查看多个数据点`} />;
   }
 }
 
