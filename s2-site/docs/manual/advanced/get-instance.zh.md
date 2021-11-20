@@ -63,7 +63,7 @@ function App() {
 当 `sheetType` 变更时，底层会使用不同的表格类进行渲染，也就意味着此时 `实例` 已经发生了变更，变更前注册事件会被注销，`S2` 对这种场景进行了优化，不管是 `ref` 还是 `getSpreadSheet` 方式，拿到的都是最新的实例，只需要监听 `sheetType`, 变更时对事件重新监听即可
 
 ```tsx
-import { SpreadSheet, SheetComponent, S2Event } from '@antv/s2'
+import { SpreadSheet, S2Event } from '@antv/s2'
 import { SheetComponent } from '@antv/s2-react'
 
 function App() {
