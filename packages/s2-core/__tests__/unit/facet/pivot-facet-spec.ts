@@ -2,7 +2,7 @@
  * pivot mode pivot test.
  */
 import { Canvas } from '@antv/g-canvas';
-import { assembleDataCfg, assembleOptions } from 'tests/util/sheet-entry';
+import { assembleDataCfg, assembleOptions } from 'tests/util';
 import { size, get, find } from 'lodash';
 import { getMockPivotMeta } from './util';
 import { SpreadSheet } from '@/sheet-type';

@@ -1,5 +1,3 @@
-import { LineChartOutlined, EyeOutlined } from '@ant-design/icons';
-import { HtmlIconProps } from '../icons/html-icon';
 import {
   TooltipOperation,
   TooltipOperatorMenu,
@@ -14,15 +12,6 @@ export const TOOLTIP_CONTAINER_CLS = `${TOOLTIP_PREFIX_CLS}-container`;
 
 export const TOOLTIP_OPERATION_PREFIX_CLS = `${TOOLTIP_PREFIX_CLS}-operation`;
 
-export const TOOLTIP_DEFAULT_ICON_PROPS: Partial<HtmlIconProps> = {
-  width: 14,
-  height: 14,
-  style: {
-    verticalAlign: 'sub',
-    marginRight: 4,
-  },
-};
-
 export const TOOLTIP_POSITION_OFFSET: TooltipPosition = {
   x: 15,
   y: 10,
@@ -36,17 +25,16 @@ export const TOOLTIP_OPERATOR_MENUS: Record<
     {
       id: 'trend',
       text: i18n('趋势'),
-      icon: LineChartOutlined,
+      icon: 'Trend',
     },
   ],
   HiddenColumns: [
     {
       id: 'hiddenColumns',
       text: i18n('隐藏'),
-      icon: EyeOutlined,
+      icon: 'EyeOutlined',
     },
   ],
-
   Sort: [
     {
       id: 'asc',
