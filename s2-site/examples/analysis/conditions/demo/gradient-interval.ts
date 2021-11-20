@@ -1,5 +1,4 @@
 import { PivotSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 // 可借助 tinygradient 完成功能更全面的颜色过渡
 function getGradient(rate, startColor, endColor) {

@@ -161,10 +161,7 @@ export const getAutoAdjustPosition = ({
   };
 };
 
-/**
- * get default options
- */
-export const getOptions = (options?: TooltipOptions) => {
+export const getTooltipDefaultOptions = (options?: TooltipOptions) => {
   return {
     operator: { onClick: noop, menus: [] },
     enterable: true,

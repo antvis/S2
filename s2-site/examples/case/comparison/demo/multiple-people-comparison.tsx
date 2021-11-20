@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import insertCss from 'insert-css';
-import { SheetComponent, ColCell } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
+import { ColCell } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 const PALETTE_COLORS = [
   {

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import insertCss from 'insert-css';
 import {
-  SheetComponent,
   TableColCell,
   GuiIcon,
   TableCornerCell,
@@ -10,6 +9,7 @@ import {
   InteractionStateName,
   CellTypes,
 } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
 import {
   Input,
   Divider,
@@ -23,7 +23,7 @@ import {
   message,
 } from 'antd';
 import { get, uniq } from 'lodash';
-import '@antv/s2/dist/s2.min.css';
+import '@antv/s2-react/dist/style.min.css';
 import 'antd/es/checkbox/style/index.css';
 
 const { Search } = Input;

@@ -1,5 +1,4 @@
 import { TableSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 const s2Options = {
   width: 600,
