@@ -118,6 +118,7 @@ fetch('../data/single-population-proportion.json')
         hoverHighlight: false,
       },
       style: {
+        layoutWidthType: 'colAdaptive',
         colCfg: {
           hideMeasureColumn: true,
         },
@@ -131,7 +132,7 @@ fetch('../data/single-population-proportion.json')
             field: 'count',
             mapping(value) {
               return {
-                fill: value >= 70 ? '#fff' : '#282b32',
+                fill: value >= 50 ? '#fff' : '#282b32',
               };
             },
           },
@@ -195,5 +196,9 @@ insertCss(`
 
   .palette-limit + .palette-color {
     margin-left: 5px;
+  }
+
+  .s2-header {
+    margin:0px !important;
   }
 `);

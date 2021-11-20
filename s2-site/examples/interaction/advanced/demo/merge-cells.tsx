@@ -12,6 +12,7 @@ fetch(
 
     const TooltipComponent = (
       <Button
+        className="s2-action-btn"
         key={'button'}
         onClick={() => {
           s2.interaction.mergeCells();
@@ -19,7 +20,7 @@ fetch(
       >
         合并单元格
       </Button>
-    );
+    ); // (按住 Cmd/ Ctrl 多选)
 
     const mergedCellsTooltip = (mergedCell: MergedCell) => (
       <Button
@@ -72,3 +73,9 @@ fetch(
 
     s2.render();
   });
+
+insertCss(`
+  .antv-s2-tooltip-container  {
+    padding: 10px 64px;
+  }
+`);

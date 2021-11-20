@@ -185,10 +185,10 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2-react@^0.1.0-beta.3":
-  version "0.1.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@antv/s2-react/-/s2-react-0.1.0-beta.3.tgz#34a84c3536442b1805674c01ba7c5e263525b2be"
-  integrity sha512-9b+lN76e2M1lW46qhg7dvhqGQvYIQLdMm++0fWNOm+fVGAJEaA/+9BF2XXciXRwFAeVQtDcA2Amh4Xnk9q5cEA==
+"@antv/s2@^1.0.0-beta.12":
+  version "1.0.0-beta.12"
+  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.0.0-beta.12.tgz#454bef7c1fd67806b7525063045adbf9aadd579f"
+  integrity sha512-LUH6NTeZ9W4Z1kKg5N/ZTCrR5eHkMPtbvBusNX7Hmc0zn+DpsyHUArRxH/mTAs7OBoKtgOLtexTAwazsw+gBrQ==
   dependencies:
     antd "^4.16.13"
     classnames "^2.3.1"
