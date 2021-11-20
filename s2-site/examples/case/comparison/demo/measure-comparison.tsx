@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  SheetComponent,
   ColCell,
   DataCell,
   CornerCell,
@@ -9,6 +8,7 @@ import {
   ID_SEPARATOR,
   measureTextWidth,
 } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2/dist/s2.min.css';
 
 const UP_COLOR = '#F46649';

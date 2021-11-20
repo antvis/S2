@@ -8,7 +8,8 @@ order: 8
 ## ref 方式 （推荐）
 
 ```tsx
-import { SpreadSheet, SheetComponent } from '@antv/s2'
+import { SpreadSheet } from '@antv/s2'
+import { SheetComponent } from '@antv/s2-react'
 
 function App() {
   const s2Ref = React.useRef<SpreadSheet>()
@@ -26,7 +27,8 @@ function App() {
 ## getSpreadSheet 方式
 
 ```tsx
-import { SpreadSheet, SheetComponent } from '@antv/s2'
+import { SpreadSheet } from '@antv/s2'
+import { SheetComponent } from '@antv/s2-react'
 
 function App() {
   const s2Ref = React.useRef<SpreadSheet>()
@@ -62,6 +64,7 @@ function App() {
 
 ```tsx
 import { SpreadSheet, SheetComponent, S2Event } from '@antv/s2'
+import { SheetComponent } from '@antv/s2-react'
 
 function App() {
   const s2Ref = React.useRef<SpreadSheet>()

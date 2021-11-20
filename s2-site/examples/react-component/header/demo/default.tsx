@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button } from 'antd';
-import { SheetComponent } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(
@@ -48,4 +48,3 @@ fetch(
       document.getElementById('container'),
     );
   });
-

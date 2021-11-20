@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2/dist/s2.min.css';
 
 fetch(

@@ -10,6 +10,7 @@ import {
   InteractionStateName,
   CellTypes,
 } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
 import {
   Input,
   Divider,

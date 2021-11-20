@@ -24,11 +24,14 @@ $ yarn add @antv/s2
 <script src="./dist/s2.min.js"></script>
 ```
 
-注意，通过浏览器引入需要引入 `react`、`react-dom`、`antd`、`ant-design`等前置库。如需兼容`IE`，需要引入 `polyfill` 兼容。
+如需兼容`IE`，需要自行引入 `polyfill` 兼容。
 
 ## 🔨 使用
 
-创建 `S2` 表格有两种方式，基础类和 `React` 版本
+创建 `S2` 表格有两种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 版本
+
+- core 版本: [`@antv/s2`](https://github.com/antvis/S2/tree/master/packages/s2-core)
+- react 版本: [`@antv/s2-react`](https://github.com/antvis/S2/tree/master/packages/s2-react)
 
 ### 基础类
 
@@ -186,7 +189,7 @@ s2.render()
 ```ts
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2/dist/s2.min.css';
 
 const container = document.getElementById('container');
@@ -195,7 +198,8 @@ ReactDOM.render(
   <SheetComponent
     dataCfg={s2DataConfig}
     options={s2options}
-  />, document.getElementById('container'),
+  />,
+  document.getElementById('container'),
 );
 
 ```

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent, Switcher } from '@antv/s2';
+import { SheetComponent, Switcher } from '@antv/s2-react';
 import insertCss from 'insert-css';
 import '@antv/s2/dist/s2.min.css';
 

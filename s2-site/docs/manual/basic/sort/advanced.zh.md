@@ -14,7 +14,8 @@ order: 1
 ```ts
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent, SortParams } from '@antv/s2';
+import { SortParams } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
 
 const AdvancedSortDemo = () => {
   const [dataCfg, setDataCfg] = useState(s2DataConfig);

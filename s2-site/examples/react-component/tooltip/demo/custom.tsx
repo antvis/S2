@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SheetComponent } from '@antv/s2';
+import { SheetComponent } from '@antv/s2-react';
 import insertCss from 'insert-css';
 import '@antv/s2/dist/s2.min.css';
 
@@ -69,7 +69,10 @@ fetch(
       );
     };
 
-    ReactDOM.render(<TooltipComponentDemo />, document.getElementById('container'));
+    ReactDOM.render(
+      <TooltipComponentDemo />,
+      document.getElementById('container'),
+    );
   });
 
 insertCss(`
