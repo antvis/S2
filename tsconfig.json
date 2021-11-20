@@ -1,35 +1,24 @@
 {
   "compilerOptions": {
     "jsx": "react",
-
-    "declaration": true,
+    "module": "esnext",
+    "declaration": false,
     "sourceMap": true,
-    "inlineSources": true,
     "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "baseUrl": ".",
-    "paths": {
-      "tslib": [
-        "/node_modules/tslib/tslib.d.ts"
-      ]
-    },
-    "outDir": "lib",
     "importHelpers": true,
+    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": [
-      "esnext",
-      "dom"
+    "downlevelIteration": true,
+    "resolveJsonModule": true,
+    "lib": ["esnext", "dom"],
+    "plugins": [
+      {
+        "transform": "@zerollup/ts-transform-paths",
+        "exclude": ["*"]
+      }
     ],
-    "types": [
-      "jest",
-      "node"
-    ],
-    "resolveJsonModule": true
+    "skipLibCheck": true
   },
-  "include": [
-    "packages",
-    "s2-site"
-  ]
+  "exclude": ["node_modules", "coverage", "esm", "lib", "dist"]
 }

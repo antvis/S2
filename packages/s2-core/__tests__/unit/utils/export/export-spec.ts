@@ -1,5 +1,5 @@
 import { TableSheet, PivotSheet } from 'src/sheet-type';
-import { assembleDataCfg, assembleOptions } from '../../../util/sheet-entry';
+import { assembleDataCfg, assembleOptions } from '../../../util';
 import { getContainer } from '../../../util/helpers';
 import { copyData } from '@/utils';
 

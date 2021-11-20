@@ -130,6 +130,9 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
   } else if (selectedRows.length) {
     data = processRowSelected(spreadsheet, selectedRows);
   } else {
+    if (!cells.length) {
+      return;
+    }
     // normal selected
     data = processCopyData(getTwoDimData(cells), spreadsheet);
   }
