@@ -26,7 +26,7 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
 
-    expect(getSelectedData(s2)).toEqual('');
+    expect(getSelectedData(s2)).toEqual(undefined);
   });
 
   it('should copy normal data', () => {
