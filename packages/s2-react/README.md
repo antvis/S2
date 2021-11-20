@@ -114,6 +114,7 @@ const s2options = {
 
 ```ts
 import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 const container = document.getElementById('container');
 

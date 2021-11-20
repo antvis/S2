@@ -15,12 +15,8 @@ order: 1
 ```typescript
 import React from "react";
 import ReactDOM from "react-dom";
-import {
-  SheetComponent,
-  PivotSheet,
-  DataCfg,
-  SpreadsheetOptions,
-} from "@antv/s2";
+import { SheetComponent } from "@antv/s2-react";
+import '@antv/s2-react/dist/style.min.css';
 
 // 1. 准备明细数据
 const data = [
@@ -58,7 +54,7 @@ const data = [
 const dataCfg = {
   fields: {
     rows: ["province", "city"]
-    columns: ["type", "sub_type"], 
+    columns: ["type", "sub_type"],
     values: ["price"]
   },
   data,
@@ -76,7 +72,7 @@ ReactDOM.render(
     dataCfg={dataCfg}
     options={options}
   />,
-  "#container"
+  document.getElementById('container')
 );
 
 ```

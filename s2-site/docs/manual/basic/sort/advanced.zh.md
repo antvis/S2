@@ -16,6 +16,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { SortParams } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 const AdvancedSortDemo = () => {
   const [dataCfg, setDataCfg] = useState(s2DataConfig);

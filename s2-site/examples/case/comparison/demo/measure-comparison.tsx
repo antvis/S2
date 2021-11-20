@@ -9,7 +9,7 @@ import {
   measureTextWidth,
 } from '@antv/s2';
 import { SheetComponent } from '@antv/s2-react';
-import '@antv/s2/dist/s2.min.css';
+import '@antv/s2-react/dist/style.min.css';
 
 const UP_COLOR = '#F46649';
 const DOWN_COLOR = '#2AA491';

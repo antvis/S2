@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
 import insertCss from 'insert-css';
 import 'antd/es/cascader/style/index.css';
-import '@antv/s2/dist/s2.min.css';
+import '@antv/s2-react/dist/style.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/6531b95e-a955-4735-91d6-e63fc32b3f34.json',

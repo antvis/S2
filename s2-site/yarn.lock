@@ -36,7 +36,7 @@
     lodash "^4.17.21"
     resize-observer-polyfill "^1.5.0"
 
-"@antv/event-emitter@^0.1.1", "@antv/event-emitter@~0.1.2":
+"@antv/event-emitter@^0.1.1":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@antv/event-emitter/-/event-emitter-0.1.2.tgz#a17b7cb86e6d071880dc6bfb232756f88624ecbc"
   integrity sha512-6C6NJOdoNVptCr5y9BVOhKkCgW7LFs/SpcRyAExUeSjAm0zJqcqNkSIRGsXYhj4PJI+CZICHzGwwiSnIsE68Ug==
@@ -70,14 +70,6 @@
     "@antv/util" "~2.0.0"
     gl-matrix "^3.0.0"
     tslib "^2.0.3"
-
-"@antv/g-gesture@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@antv/g-gesture/-/g-gesture-1.0.0.tgz#4586991b746852e0890b963d728bba3761d6cd05"
-  integrity sha512-RljojCkmkTyxBOd6qLCOtF3Yk8JAYpa8J+CuHkjH4/SFFeJhakAkQnYAkLccaGrjYWAwC9IOPzEgK1cTd7v/gw==
-  dependencies:
-    "@antv/event-emitter" "~0.1.2"
-    d3-ease "^1.0.5"
 
 "@antv/g-math@^0.1.6":
   version "0.1.7"
@@ -185,26 +177,28 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2@^1.0.0-beta.12":
-  version "1.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.0.0-beta.12.tgz#454bef7c1fd67806b7525063045adbf9aadd579f"
-  integrity sha512-LUH6NTeZ9W4Z1kKg5N/ZTCrR5eHkMPtbvBusNX7Hmc0zn+DpsyHUArRxH/mTAs7OBoKtgOLtexTAwazsw+gBrQ==
+"@antv/s2-react@^0.1.0-beta.3":
+  version "0.1.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@antv/s2-react/-/s2-react-0.1.0-beta.3.tgz#34a84c3536442b1805674c01ba7c5e263525b2be"
+  integrity sha512-9b+lN76e2M1lW46qhg7dvhqGQvYIQLdMm++0fWNOm+fVGAJEaA/+9BF2XXciXRwFAeVQtDcA2Amh4Xnk9q5cEA==
   dependencies:
     antd "^4.16.13"
     classnames "^2.3.1"
     lodash "^4.17.21"
     react-beautiful-dnd "^13.1.0"
 
-"@antv/s2@^1.0.0-beta.10":
-  version "1.0.0-beta.14"
-  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.0.0-beta.14.tgz#1de0bed2e77c2940b349480536aa12e710387713"
-  integrity sha512-DDcV4RGccebwjaYO2/1SBlf8mtIJP8GBqDVUkr4qjmDYp/zptLJpfFJFdQzTh/hxxx6IV4Ng39t5uNBvH23mkQ==
+"@antv/s2@^1.0.0-beta.12":
+  version "1.0.0-beta.12"
+  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.0.0-beta.12.tgz#454bef7c1fd67806b7525063045adbf9aadd579f"
+  integrity sha512-LUH6NTeZ9W4Z1kKg5N/ZTCrR5eHkMPtbvBusNX7Hmc0zn+DpsyHUArRxH/mTAs7OBoKtgOLtexTAwazsw+gBrQ==
   dependencies:
     "@antv/event-emitter" "~0.1.2"
     "@antv/g-canvas" "^0.5.12"
     "@antv/g-gesture" "^1.0.0"
-    csstype "^3.0.9"
+    antd "^4.16.13"
+    classnames "^2.3.1"
     lodash "^4.17.21"
+    react-beautiful-dnd "^13.1.0"
 
 "@antv/util@^2.0.9", "@antv/util@~2.0.0":
   version "2.0.17"
@@ -4575,11 +4569,6 @@ csstype@^3.0.2, csstype@^3.0.6, csstype@^3.0.8:
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.9.tgz#6410af31b26bd0520933d02cbc64fce9ce3fbf0b"
   integrity sha512-rpw6JPxK6Rfg1zLOYCSwle2GFOOsnjmDYDaBwEcwoOg4qlsIVCN789VkBZDJAGi4T07gI4YSutR43t9Zz4Lzuw==
-
-csstype@^3.0.9:
-  version "3.0.10"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.10.tgz#2ad3a7bed70f35b965707c092e5f30b327c290e5"
-  integrity sha512-2u44ZG2OcNUO9HDp/Jl8C07x6pU/eTR3ncV91SiK3dhG9TWvRVsCoJw14Ckx5DgWkzGA3waZWO3d7pgqpUI/XA==
 
 cwd@^0.9.1:
   version "0.9.1"
