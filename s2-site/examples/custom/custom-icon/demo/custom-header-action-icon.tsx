@@ -9,7 +9,7 @@ const RowTooltip = <div>RowTooltip</div>;
 const ColTooltip = <div>ColTooltip</div>;
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
   .then((data) => {

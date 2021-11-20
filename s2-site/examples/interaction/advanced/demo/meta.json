@@ -10,7 +10,7 @@
         "zh": "链接跳转 - 透视表",
         "en": "Link jump"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/YLqX0KKvy/2021-11-16%25252020.24.58.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/W0bikxI2pn/link-pivot.gif"
     },
     {
       "filename": "table-link-jump.ts",
@@ -18,7 +18,7 @@
         "zh": "链接跳转 - 明细表",
         "en": "Link jump"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/rhDZXzc3W/2021-11-16%25252020.25.55.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/aygNlbA0fu/link-table.gif"
     },
     {
       "filename": "hide-columns.ts",
@@ -26,7 +26,7 @@
         "zh": "明细表隐藏列头",
         "en": "Hide table columns"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/ioWEF3%24c%24/2021-11-16%25252020.06.52.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/nDXb10yy0v/hide.gif"
     },
     {
       "filename": "scroll-speed-ratio.ts",
@@ -42,7 +42,7 @@
         "zh": "合并单元格",
         "en": "Merge cells"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/DUUJc%26k4s/2021-11-16%25252020.12.29.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/uSfo7Zbfiz/merge-cell.gif"
     }
   ]
 }
