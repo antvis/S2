@@ -57,7 +57,7 @@ const plugins = [
       less: { javascriptEnabled: true },
     },
     extract: true,
-    output: outDir + '/s2.min.css',
+    output: outDir + '/index.min.css',
   }),
 ];
 
@@ -68,7 +68,7 @@ if (enableAnalysis) {
 const external = [];
 
 if (format === 'umd') {
-  output.file = 'dist/s2.min.js';
+  output.file = 'dist/index.min.js';
   plugins.push(terser());
 } else {
   external.push(

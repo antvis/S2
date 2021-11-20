@@ -17,11 +17,10 @@ $ yarn add @antv/s2
 
 ```html
 <!-- 引入在线资源 -->
-<link type="text/css" href="//unpkg.com/@antv/s2@latest/dist/s2.min.css">
-<script type="text/javascript" src="//unpkg.com/@antv/s2@latest/dist/s2.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@antv/s2@latest/dist/index.min.js"></script>
 
 <!-- 下载到本地 引入本地脚本 -->
-<script src="./dist/s2.min.js"></script>
+<script src="./dist/index.min.js"></script>
 ```
 
 如需兼容`IE`，需要自行引入 `polyfill` 兼容。

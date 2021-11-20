@@ -3,7 +3,7 @@
   "version": "0.2.5",
   "main": "lib/index.js",
   "module": "esm/index.js",
-  "unpkg": "dist/s2.min.js",
+  "unpkg": "dist/index.min.js",
   "types": "esm/index.d.ts",
   "description": "effective spreadsheet render core lib",
   "license": "MIT",
