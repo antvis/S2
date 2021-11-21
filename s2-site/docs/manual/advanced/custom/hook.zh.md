@@ -11,7 +11,7 @@ order: 1
 
 ## layoutCoordinate
 
-用于改变行、列叶子节点的尺寸（长、宽）和坐标（x、y，比如改变行高、列宽等。[例子](/zh/examples/custom/layout-coordinate#basic)。
+用于改变行、列叶子节点的尺寸（长、宽）和坐标（x、y），比如改变行高、列宽等。[例子](/zh/examples/custom/layout-coordinate#basic)。
 
 ## layoutDataPosition
 

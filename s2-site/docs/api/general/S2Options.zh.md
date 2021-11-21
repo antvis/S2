@@ -55,11 +55,11 @@ order: 1
 
 boolean ｜ object **必选**,_default: null_ 功能描述： 分页配置
 
-| 参数      | 类型   | 必选  | 默认值 | 功能描述            |
-| --------- | ------ | :--:  | ------ | ------------------- |
-| pageSize  | `number` |  ✓   |             | 每页数量            |
-| current   | `number` |     |       1      | 当前页（从 1 开始） |
-| total     | `number` |      |              | 数据总条数          |
+| 参数      | 说明          | 类型   | 默认值 | 必选  |
+| --------- | ------------------- | ------ | ------ | :--:  |
+| pageSize  | 每页数量            | `number` | - |  ✓   |
+| current   | 当前页（从 1 开始） | `number` |       1      |     |
+| total     | 数据总条数          | `number` | - |      |
 
 ## Style
 
@@ -79,30 +79,30 @@ object **必选**,_default：null_ 功能描述：样式设置
 
 object **必选**,_default：null_ 功能描述：单元格配置
 
-| 参数    | 类型   | 必选  | 默认值 | 功能描述     |
-| ------- | ------ | ---- | ------ | ------------ |
-| width   | `number` |      |    96 | 单元格宽度   |
-| height  | `number` |      |    30 | 单元格高度   |
-| padding | `number` |      |              | 单元格内边距 |
+| 参数    | 说明 | 类型   | 默认值 | 必选  |
+| ------- | ------------ | ------ | ------ | ---- |
+| width   | 单元格宽度   | `number` |    96 | - |
+| height  | 单元格高度   | `number` |    30 | - |
+| padding | 单元格内边距 | `number` |              | - |
 
 ## ColCfg
 
 object **必选**,_default：null_ 功能描述： 列样式配置
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| height | `number` |  | 30 |   单元格高度（普通状态） |
-| widthByFieldValue | `number`   |  |  | 根据度量值设置宽度（拖拽或者预设宽度场景） |
-| heightByField | `Record<string, number>` |    |  | 根据度量值设置高度（拖拽或者预设宽度场景） |
+| 参数 | 说明 | 类型 | 默认值 | 必选  |
+| --- | --- | --- | --- | :-:  |
+| height |   单元格高度（普通状态） | `number` | 30 | - |
+| widthByFieldValue | 根据度量值设置宽度（拖拽或者预设宽度场景） | `number`   |  | - |
+| heightByField | 根据度量值设置高度（拖拽或者预设宽度场景） | `Record<string, number>` |  | - |
 
 ## NodeField
 
 object 可选，_default：{}_ 功能描述：滚动监听的节点度量
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| rowField | `string[]` |  |    | 行头中需要监听滚动吸顶的度量 id |
-| colField | `string[]` |  |    | 列头中需要监听滚动吸「左」的度量 id |
+| 参数 | 说明 | 类型 | 默认值 | 必选  |
+| --- | --- | --- | --- | :-:  |
+| rowField | 行头中需要监听滚动吸顶的度量 id | `string[]` | - |  |
+| colField | 列头中需要监听滚动吸「左」的度量 id | `string[]` | - |  |
 
 ## DataCellCallback
 
@@ -122,11 +122,11 @@ CellCallback = (node: Node, spreadsheet: SpreadSheet, ...restOptions: unknown[])
 
 功能描述：自定义单元格
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| node | [Node](#node) | ✓ |    | 当前渲染的 node 节点 |
-| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |    | 表类实例，可以访问任意的配置信息 |
-| restOptions | `unknown[]` |  |    | 不定参数，传递额外的信息 |
+| 参数 | 说明 | 类型 | 默认值 | 必选  |
+| --- | --- | --- | --- | :-:  |
+| node | 当前渲染的 node 节点 | [Node](#node) | - | ✓ |
+| spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](#spreadsheet) | - | ✓ |
+| restOptions | 不定参数，传递额外的信息 | `unknown[]` | - |  |
 
 ## CornerHeaderCallback
 
@@ -136,11 +136,11 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 
 功能描述：自定义角头
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| parent | [S2CellType](#s2celltype) | ✓ |  |   父级单元格 |
-| spreadsheet | [SpreadSheet](#spreadsheet) | ✓   |  | 表类实例，可以访问任意的配置信息 |
-| restOptions | `unknown[]` |  |  |   不定参数，传递额外的信息 |
+| 参数 | 说明 | 类型 | 默认值 | 必选  |
+| --- | --- | --- | --- | :-:  |
+| parent |   父级单元格 | [S2CellType](#s2celltype) | - | ✓ |
+| spreadsheet | 表类实例，可以访问任意的配置信息 | [SpreadSheet](#spreadsheet) | - | ✓   |
+| restOptions |   不定参数，传递额外的信息 | `unknown[]` | - |  |
 
 `markdown:docs/common/custom/layoutHierarchy.zh.md`
 
@@ -156,11 +156,11 @@ CornerHeaderCallback = (parent: S2CellType, spreadsheet: SpreadSheet, ...restOpt
 
 功能描述： 点击自定义操作 icon 后透视表返回的当前 icon 相关
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| iconName | string | ✓ |    | 当前点击的 icon 名称 |
-| meta | Node | ✓ |    | 当前 cell 的 meta 信息 |
-| event | Event | ✓ |  false  | 当前点击事件信息 |
+| 参数 | 说明                   | 类型 | 默认值 | 必选  |
+| --- | --- | --- | --- | :-:  |
+| iconName | 当前点击的 icon 名称 | string | - | ✓ |
+| meta | 当前 cell 的 meta 信息 | Node | - | ✓ |
+| event | 当前点击事件信息 | Event |  false  | ✓ |
 
 `markdown:docs/common/custom/customSvgIcons.zh.md`
 
@@ -172,10 +172,10 @@ FilterDataItemCallback = (valueField: string, data: DataItem) => DataItem
 
 功能描述：转换，过滤数据
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| valueField | `string` | ✓ |    | 表类实例，可以访问任意的配置信息 |
-| data | [DataItem](#dataitem) | ✓   |  | 数据格式 |
+| 参数 | 说明                             | 类型 | 默认值 | 必选  |
+| --- | --- | --- | --- | :-:  |
+| valueField | 表类实例，可以访问任意的配置信息 | `string` | - | ✓ |
+| data | 数据格式 | [DataItem](#dataitem) | - | ✓   |
 
 ## MappingDataItemCallback
 
@@ -185,10 +185,10 @@ MappingDataItemCallback = (valueField: string, data: DataItem) => Record<string,
 
 功能描述：数据隐射，用于显示在 tooltip 中
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-: | --- | --- |
-| valueField | `string` | ✓ |  |   表类实例，可以访问任意的配置信息 |
-| data | [DataItem](#dataitem) | ✓ |    | 数据格式 |
+| 参数 | 说明                             | 类型 | 默认值 | 必选  |
+| --- | --- | --- | --- | :-: |
+| valueField |   表类实例，可以访问任意的配置信息 | `string` | - | ✓ |
+| data | 数据格式 | [DataItem](#dataitem) | - | ✓ |
 
 ## DataItem
 
@@ -213,24 +213,24 @@ OtterLayout = (spreadsheet: SpreadSheet, rowNode: Node, colNode: Node) => void;
 
 功能描述：自定义布局
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- |
-| spreadsheet | [SpreadSheet](#spreadsheet) | ✓ |  |   表类实例，可以访问任意的配置信息 |
-| rowNode | [Node](#node) | ✓ |  |   行节点 |
-| colNode | [Node](#node) | ✓ |  |   列节点 |
+| 参数 | 说明      | 类型 | 默认值 | 必选  |
+| --- | --- | --- | --- | :-:  |
+| spreadsheet |   表类实例，可以访问任意的配置信息 | [SpreadSheet](#spreadsheet) |  | ✓ |
+| rowNode |   行节点 | [Node](#node) |  | ✓ |
+| colNode |   列节点 | [Node](#node) |  | ✓ |
 
 ## LayoutResult
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-: | --- | --- |
-| colNodes | [Node[]](#node) |  |  |   列的所有节点 |
-| colsHierarchy | [Hierarchy](#hierarchy) |  |  |   列的结构信息 |
-| rowNodes | [Node[]](#node) |  |  |   行的所有节点 |
-| rowsHierarchy | [Hierarchy](#hierarchy) | ✓ |  |   行的结构信息 |
-| rowLeafNodes | [Node[]](#node) |  |  |   行的所有叶子节点，用于笛卡尔交叉 |
-| colLeafNodes | [Node[]](#node) |  |  |   列的所有叶子节点，用于笛卡尔交叉 |
-| getViewMeta | `(rowIndex: number, colIndex: number) => ViewMeta` | | |  获取交叉出 [x,y] 对应坐标的信息 |
-| spreadsheet | [SpreadSheet](#spreadsheet) |  | |  表类实例，可以访问任意的配置信息 |
+| 参数 | 说明                             | 类型 | 默认值 | 必选  |
+| --- | --- | --- | --- | :-: |
+| colNodes |   列的所有节点 | [Node[]](#node) |  |  |
+| colsHierarchy |   列的结构信息 | [Hierarchy](#hierarchy) |  |  |
+| rowNodes |   行的所有节点 | [Node[]](#node) |  |  |
+| rowsHierarchy |   行的结构信息 | [Hierarchy](#hierarchy) |  | ✓ |
+| rowLeafNodes |   行的所有叶子节点，用于笛卡尔交叉 | [Node[]](#node) |  |  |
+| colLeafNodes |   列的所有叶子节点，用于笛卡尔交叉 | [Node[]](#node) |  |  |
+| getViewMeta |  获取交叉出 [x,y] 对应坐标的信息 | `(rowIndex: number, colIndex: number) => ViewMeta` | | |
+| spreadsheet |  表类实例，可以访问任意的配置信息 | [SpreadSheet](#spreadsheet) | |  |
 
 ## DataSet
 
@@ -240,8 +240,8 @@ DataSet = (spreadsheet: SpreadSheet) => BaseDataSet;
 
 ## MergedCellInfo
 
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-: | --- | --- |
-| colIndex | `boolean` |  |  |   列索引 |
-| rowIndex | `boolean` |  |  |   行索引 |
-| showText | `boolean` |  |  |   是否显示文本 |
+| 参数            | 说明                 | 类型                   | 默认值 | 必选 |
+| --------------- | ------------------ | ---------------------- | ------ | ---- |
+| colIndex        | 单元格的列索引        | `number`               | -      |      |
+| rowIndex        | 单元格的行索引        | `number`               | -      |      |
+| showText        | 合并单元格是否展示当前单元格的 meta 信息，只需要对一个单元格进行标识，</br>若未对单元格进行标识，会默认使用第一个选中点击的单元格的 meta 信息 | `booelan`      | -      |      |
