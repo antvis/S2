@@ -45,7 +45,9 @@ export default defineConfig({
   plugins: [
     peerDepsExternal(),
     viteCommonjs(),
-    react(),
+    react({
+      jsxRuntime: 'classic',
+    }),
     viteImp({
       libList: [
         {
