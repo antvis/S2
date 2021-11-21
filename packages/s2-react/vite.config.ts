@@ -48,14 +48,14 @@ export default defineConfig({
     react({
       jsxRuntime: 'classic',
     }),
-    viteImp({
-      libList: [
-        {
-          libName: 'antd',
-          style: (name) => `antd/es/${name}/style/index.less`,
-        },
-      ],
-    }),
+    // viteImp({
+    //   libList: [
+    //     {
+    //       libName: 'antd',
+    //       style: (name) => `antd/es/${name}/style/index.less`,
+    //     },
+    //   ],
+    // }),
     isAnalysisMode && visualizer({ gzipSize: true }),
   ].filter(Boolean),
   css: {
