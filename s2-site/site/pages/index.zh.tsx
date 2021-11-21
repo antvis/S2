@@ -73,7 +73,7 @@ const IndexPage = () => {
         '不同维度同类对象的对比分析表格叫对比表，而专用于不同属性、偏好等的人群对比分析表格叫人群对比表。',
       link: `/${i18n.language}/examples/case/proportion#single-population-proportion`,
       image:
-        'https://gw.alipayobjects.com/zos/antfincdn/j0YpJn3U6K/bdf98f6f-6000-4370-bfaa-b6552a0b4217.png',
+        'https://gw.alipayobjects.com/zos/antfincdn/eNow%2604Qsv/6e579a67-4a4f-4b90-ad91-3fbb1def67fc.png',
     },
     {
       logo: 'https://gw.alipayobjects.com/zos/bmw-prod/02dc8b8b-6bca-4289-a725-4e14c2900763.svg',
