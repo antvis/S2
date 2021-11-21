@@ -1,5 +1,5 @@
 ---
-title: 自定义排序
+title: 自定义排序 
 order: 2
 ---
 
@@ -9,17 +9,18 @@ order: 2
 
 ## 使用
 
-通过在 [dataConfig](`https://g.antv.vision/zh/docs/api/general/S2DataConfig.zh.md`) 中传入 [sortParams](https://g.antv.vision/zh/docs/api/general/S2DataConfig#SortParams) 数据驱动
+通过在 [dataConfig](`https://g.antv.vision/zh/docs/api/general/S2DataConfig.zh.md`)
+中传入 [sortParams](https://g.antv.vision/zh/docs/api/general/S2DataConfig#SortParams) 数据驱动
 
-| 细分配置项名称 | 类型                                  | 必选 | 功能描述                                    |
-| :------------- | :------------------------------------ | :--- | :------------------------------------------ |
-| sortFieldId    | `string`                              | ✓    | 度量 Id，即要被排序的 Id                    |
-| sortMethod     | `ASC` \| `DESC` \| `asc` \| `desc`    |      | 排序方式                                    |
-| sortBy         | `string[]`                            |      | 自定义排序列表                              |
-| sortByMeasure  | `string`                              |      | 按照度量值（数值）排序                      |
-| query          | `object`                              |      | 筛选条件，缩小排序范围 如 ：`{city:'白山'}` |
-| type           | `string`                              |      | 组内排序用来显示icon                        |
-| sortFunc       | `(v: SortFuncParam) => Array<string>` |      | 自定义排序的function                        |
+| 参数          | 说明                                        | 类型                                  | 默认值 | 必选 |
+| ------------- | ------------------------------------------- | ------------------------------------- | ------ | ---- |
+| sortFieldId   | 度量 Id，即要被排序的 Id                    | `string`                              | -      | ✓   |
+| sortMethod    | 排序方式                                    | `ASC` \| `DESC` \| `asc` \| `desc`  | -      |      |
+| sortBy        | 自定义排序列表                              | `string[]`                            | -      |      |
+| sortByMeasure | 按照度量值（数值）排序                      | `string`                              | -      |      |
+| query         | 筛选条件，缩小排序范围 如 ：`{city:'白山'}` | `object`                              | -      |      |
+| type          | 组内排序用来显示icon                        | `string`                              | -      |      |
+| sortFunc      | 自定义排序的function                        | `(v: SortFuncParam) => Array<string>` | -      |      |
 
 ```ts
 const s2DataConfig = {
@@ -53,9 +54,9 @@ sortParams: [
 
 ```ts
 sortParams: [
-  { sortFieldId: 'province', sortBy: ['吉林', '浙江'] },
-  { sortFieldId: 'city', sortBy: ['舟山', '杭州', '白山', '丹东'] },
-  { sortFieldId: 'type', sortBy: ['纸张', '笔'] },
+  { sortFieldId: 'province', sortBy: [ '吉林', '浙江' ] },
+  { sortFieldId: 'city', sortBy: [ '舟山', '杭州', '白山', '丹东' ] },
+  { sortFieldId: 'type', sortBy: [ '纸张', '笔' ] },
 ];
 ```
 
@@ -162,15 +163,15 @@ sortParams: [
 
 `sortFunc` 会根据当前条件返回 `SortFuncParam` 参数，支持 `维度值` 和 `度量值` 两种方式
 
-| 细分配置项名称 | 类型                                  | 必选 | 功能描述                                    |
-| :------------- | :------------------------------------ | :--- | :------------------------------------------ |
-| sortFieldId    | `string`                              | ✓    | 度量 Id，即要被排序的 Id                    |
-| sortMethod     | `ASC` \| `DESC` \| `asc` \| `desc`    |      | 排序方式                                    |
-| sortBy         | `string[]`                            |      | 自定义排序列表                              |
-| sortByMeasure  | `string`                              |      | 按照度量值（数值）排序                      |
-| query          | `object`                              |      | 筛选条件，缩小排序范围 如 ：`{city:'白山'}` |
-| type           | `string`                              |      | 组内排序用来显示icon                        |
-| data           | `Array<string | Record<string, any>>` |      | 当前排序数据列表                            |
+| 参数            | 说明                                      | 类型                                  | 默认值 | 必选 |
+| :------------- | :------------------------------------------ | :------------------------------------ | ------ | :--- |
+| sortFieldId    | 度量 Id，即要被排序的 Id                    | `string`                              | -      | ✓    |
+| sortMethod     | 排序方式                                    | `ASC` \| `DESC` \| `asc` \| `desc`    | -      |      |
+| sortBy         | 自定义排序列表                              | `string[]`                            | -      |      |
+| sortByMeasure  | 按照度量值（数值）排序                      | `string`                              | -      |      |
+| query          | 筛选条件，缩小排序范围 如 ：`{city:'白山'}` | `object`                              | -      |      |
+| type           | 组内排序用来显示icon                        | `string`                              | -      |      |
+| data           | 当前排序数据列表                            | `Array<string | Record<string, any>>` | -      |      |
 
 #### 维度值（行/列头）
 
@@ -201,7 +202,7 @@ sortParams: [
     // sortFieldId 为度量值时，需传入 query 定位数值列表，params.data 为带有度量值的 data 列表
     sortFieldId: 'city',
     sortByMeasure: 'price',
-    sortFunc: function (params) {
+    sortFunc: function(params) {
       const { data, sortByMeasure, sortFieldId } = params || {};
       return data
         ?.sort((a, b) => b[sortByMeasure] - a[sortByMeasure])

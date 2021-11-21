@@ -34,7 +34,7 @@ $ yarn add @antv/s2
 
 ### 基础类
 
-#### 1. 数据准备
+#### 1. 数据(data)准备
 
 <details>
   <summary> s2DataConfig</summary>
@@ -177,7 +177,7 @@ s2.render()
 
 #### 4. 结果
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ln3cTY_Rk1cAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+<playground path='basic/pivot/demo/grid.ts' rid='container' height='400'></playground>
 
 ### `React` 版本
 
@@ -202,6 +202,8 @@ ReactDOM.render(
 );
 
 ```
+
+​📊 查看demo [React 版本透视表](/zh/examples/react-component/sheet#pivot)。
 
 ## ⌨️ 本地开发
 

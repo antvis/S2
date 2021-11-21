@@ -77,6 +77,8 @@ ReactDOM.render(
 
 ```
 
+​📊 查看demo [React 版本透视表](/zh/examples/react-component/sheet#pivot)。
+
 ### 类方式
 
 如果不打算依赖 React，可以在上面第三步之后直接调用：
@@ -85,3 +87,5 @@ ReactDOM.render(
 const pivotSheet = new PivotSheet("#container", dataCfg, options);
 pivotSheet.render();
 ```
+
+​📊 查看demo [类方式透视表](/zh/examples/basic/pivot#grid)。

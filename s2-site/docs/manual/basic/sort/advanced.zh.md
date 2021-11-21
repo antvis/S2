@@ -78,12 +78,12 @@ advancedSortCfg: {
 
 `S2` 提供了对入口 `Button` 的显示定制以及规则文案定制
 
-| 属性      | 类型              | 必选 | 默认值 | 功能描述     |
-| :-------- | :---------------- | :--- | :----- | :----------- |
-| className | `string`          |      |        | class类名称  |
-| icon      | `React.ReactNode` |      |        | 排序按钮图标 |
-| text      | `ReactNode`       |      |        | 排序按钮名称 |
-| ruleText  | `string`          |      |        | 规则描述     |
+| 参数            | 说明                 | 类型                   | 默认值 | 必选 |
+| --------------- | ------------------ | ---------------------- | ------ | ---- |
+| className    | class类名称    | `string`            | -      |      |
+| icon    | 排序按钮图标    | `React.ReactNode`          | -      |      |
+| text    | 排序按钮名称    | `ReactNode`             | -      |      |
+| ruleText    | 规则描述    | `string`            | -      |      |
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*R45ZQK4Xk3kAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
@@ -93,11 +93,11 @@ advancedSortCfg: {
 
 支持自定义维度列表 `dimension` ，不配置默认为：`行头+列头+数值`
 
-| 属性  | 类型       | 必选 | 默认值 | 功能描述 |
-| :---- | :--------- | :--- | :----- | :------- |
-| field | `string`   |      | ✓      | 维度id   |
-| name  | `string`   |      | ✓      | 维度名称 |
-| list  | `string[]` |      | ✓      | 维度列表 |
+| 参数  | 说明     | 类型       | 默认值 | 必选 |
+| ----- | -------- | ---------- | ------ | ---- |
+| field | 维度id   | `string`   | -      | ✓   |
+| name  | 维度名称 | `string`   | -      | ✓   |
+| list  | 维度列表 | `string[]` | -      | ✓   |
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*6g9aTKIOlRcAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
