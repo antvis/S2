@@ -8,37 +8,7 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((data) => {
-    const s2DataConfig = {
-      fields: {
-        rows: ['province', 'city'],
-        columns: ['type'],
-        values: ['price', 'cost'],
-      },
-      meta: [
-        {
-          field: 'province',
-          name: '省份',
-        },
-        {
-          field: 'city',
-          name: '城市',
-        },
-        {
-          field: 'type',
-          name: '商品类别',
-        },
-        {
-          field: 'price',
-          name: '价格',
-        },
-        {
-          field: 'cost',
-          name: '成本',
-        },
-      ],
-      data,
-    };
+  .then((dataCfg) => {
     const TooltipComponent = (
       <div className="tooltip-custom-component">tooltipComponent</div>
     );
@@ -61,7 +31,7 @@ fetch(
       <SheetComponent
         sheetType="pivot"
         adaptive={false}
-        dataCfg={s2DataConfig}
+        dataCfg={dataCfg}
         options={s2Options}
       />,
       document.getElementById('container'),

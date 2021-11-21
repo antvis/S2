@@ -173,7 +173,8 @@ export class ColCell extends HeaderCell {
 
   protected getActionIconsWidth() {
     const { size, margin } = this.getStyle().icon;
-    return (size + margin.left) * this.getActionIconsCount() + margin.right;
+    const iconCount = this.getActionIconsCount();
+    return (size + margin.left) * iconCount + iconCount > 0 ? margin.right : 0;
   }
 
   protected getColResizeAreaKey() {

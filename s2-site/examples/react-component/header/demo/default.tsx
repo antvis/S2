@@ -47,3 +47,12 @@ fetch(
       document.getElementById('container'),
     );
   });
+<<<<<<< HEAD
+
+insertCss(`
+  .s2-header {
+    margin:0px !important;
+  }
+`);
+=======
+>>>>>>> origin/master

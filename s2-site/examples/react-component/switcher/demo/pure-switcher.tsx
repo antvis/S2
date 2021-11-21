@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Switcher } from '@antv/s2';
-import { SearchIcon } from '@antv/s2/esm/common/icons';
-import insertCss from 'insert-css';
+import { Switcher } from '@antv/s2-react';
 
 const switcherFields = {
   rows: {

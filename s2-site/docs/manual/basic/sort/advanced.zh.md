@@ -3,13 +3,13 @@ title: 高级排序
 order: 1
 ---
 
-`S2` 自带高级排序组件，可根据选择组合数据提供給用户使用。
+`SheetComponent` 自带高级排序组件，可根据选择组合数据提供給用户使用。
 
 > 注意：内部不维护状态
 
 ## 快速上手
 
-使用 `S2` 的组件 `SheetComponent` ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](https://g.antv.vision/zh/docs/api/components/advanced-sort#advancedsortcfgprops)
+使用 `s2-react` 的组件 `SheetComponent` ，并给 `header` 配置 `advancedSortCfg` ，配置具体信息可查看 [AdvancedSortCfgProps](https://g.antv.vision/zh/docs/api/components/advanced-sort#advancedsortcfgprops)
 
 ```ts
 import React, { useState } from 'react';
