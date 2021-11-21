@@ -2,7 +2,7 @@
 
 <div align="center">
 
-数据驱动的多维分析表格。
+数据驱动的多维分析表格 (React 版本)。
 
 <p>
  <a href="https://www.npmjs.com/package/@antv/s2-react" title="npm">
@@ -12,7 +12,7 @@
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react.svg" alt="version">
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2-react" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react/beta.svg" alt="version">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react.svg" alt="version">
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
