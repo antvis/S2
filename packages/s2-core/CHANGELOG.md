@@ -1,3 +1,17 @@
+# [@antv/s2-v1.0.0-beta.13](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.12...@antv/s2-v1.0.0-beta.13) (2021-11-21)
+
+
+### Bug Fixes
+
+* **copy:** do not copy when no cell selected ([#752](https://github.com/antvis/S2/issues/752)) ([1bc1192](https://github.com/antvis/S2/commit/1bc119273dbbec4e4c8e11424cb9c6613dab076c))
+* table sheet sort ([#763](https://github.com/antvis/S2/issues/763)) ([e5dd71a](https://github.com/antvis/S2/commit/e5dd71aed3292c1b08ed1e6917ac0beead260a26))
+
+
+### Reverts
+
+* Revert "chore(release): core 1.0.0-beta.15 react 1.0.0-beta.1" ([fe69519](https://github.com/antvis/S2/commit/fe695191fa4c3f7fcb2058573ba4d6c8d482568f))
+* Revert "chore(release): core 1.0.0-beta.15 react 1.0.0-beta.1" ([e92727c](https://github.com/antvis/S2/commit/e92727cda59832bfcddcbb310e8dc754b8f83548))
+
 # [@antv/s2-v1.0.0-beta.12](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.11...@antv/s2-v1.0.0-beta.12) (2021-11-19)
 
 
