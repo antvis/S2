@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { ListItem, TooltipHeadInfo, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 
 export const TooltipHead = (props: TooltipHeadInfo) => {

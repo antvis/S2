@@ -24,7 +24,7 @@ export const getTheme = (
         fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[0],
         opacity: 1,
-        textAlign: 'left',
+        textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
       },
       text: {
@@ -33,7 +33,7 @@ export const getTheme = (
         fontWeight: 'normal',
         fill: basicColors[0],
         opacity: 1,
-        textAlign: 'left',
+        textAlign: isTable ? 'center' : 'left',
         textBaseline: 'middle',
       },
       cell: {
