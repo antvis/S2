@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
@@ -59,8 +59,8 @@
   "peerDependencies": {
     "@antv/s2": "^1.0.0",
     "antd": "^4.16.13",
-    "react-dom": "^16.8.0",
-    "react": "^16.8.0"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
   },
   "dependencies": {
     "classnames": "^2.3.1",
