@@ -11,5 +11,5 @@ window.s2React = require('@antv/s2-react');
 
 window.cascaderCss = require('antd/es/cascader/style/index.css');
 window.checkboxCss = require('antd/es/checkbox/style/index.css');
-window.s2Css = require('@antv/s2/dist/s2.min.css');
+window.s2Css = require('@antv/s2/dist/style.min.css');
 window.s2ReactCss = require('@antv/s2-react/dist/style.min.css');
