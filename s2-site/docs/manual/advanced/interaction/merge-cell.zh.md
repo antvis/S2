@@ -354,7 +354,7 @@ s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
 | --------------- | ------------------ | ---------------------- | ------ | ---- |
 | colIndex        | 单元格的列索引        | `number`               | -      |      |
 | rowIndex        | 单元格的行索引        | `number`               | -      |      |
-| showText        | 合并单元格是否展示当前单元格的 meta 信息，只需要对一个单元格进行标识，若未对单元格进行标识，会默认使用第一个选中点击的单元格的 meta 信息 | `booelan`      | -      |      |
+| showText        | 合并单元格是否展示当前单元格的 meta 信息，只需要对一个单元格进行标识，</br>若未对单元格进行标识，会默认使用第一个选中点击的单元格的 meta 信息 | `booelan`      | -      |      |
 
 ### mergeCells
 
@@ -365,7 +365,7 @@ s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
 | 参数            | 说明                 | 类型                   | 默认值 | 必选 |
 | --------------- | ------------------ | ---------------------- | ------ | ---- |
 | cellsInfo       | 指定一个合并单元格的信息，未传则默认使用当前选中所有的单元格信息 | `MergedCellInfo[]`    | -      |      |
-| hideData        | hideData 为 true 时，合并单元格不显示内容i111。 | `boolean` | false     |      |
+| hideData        | hideData 为 true 时，合并单元格不显示内容。 | `boolean` | false     |      |
 
 ### unmergeCells
 
