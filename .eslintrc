@@ -80,6 +80,7 @@
         ]
       }
     ],
+    "react/display-name": 1,
     "react/prop-types": 0,
     "react/state-in-constructor": 0,
     "react/jsx-props-no-spreading": 0,

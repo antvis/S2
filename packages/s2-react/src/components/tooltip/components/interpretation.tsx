@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { TooltipInterpretationOptions, TOOLTIP_PREFIX_CLS } from '@antv/s2';
 import { Icon } from './icon';
 import { ReactElement } from '@/common/react-element';
