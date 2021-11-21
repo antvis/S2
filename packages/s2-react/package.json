@@ -58,8 +58,8 @@
   },
   "peerDependencies": {
     "@antv/s2": "^0.2.5",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
   },
   "dependencies": {
     "antd": "^4.16.13",
