@@ -48,4 +48,17 @@ export const TOOLTIP_OPERATOR_MENUS: Record<
     },
     { id: 'none', text: i18n('不排序') },
   ],
+  TableSort: [
+    {
+      id: 'asc',
+      icon: 'groupAsc',
+      text: i18n('升序'),
+    },
+    {
+      id: 'desc',
+      icon: 'groupDesc',
+      text: i18n('降序'),
+    },
+    { id: 'none', text: i18n('不排序') },
+  ],
 };

@@ -1,17 +1,35 @@
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, find } from 'lodash';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
 import { getExtraPaddingForExpandIcon } from 'src/utils/cell/table-col-cell';
 import { getContentArea } from 'src/utils/cell/cell';
+import { getSortTypeIcon } from 'src/utils/sort-action';
 import { Group } from '@antv/g-canvas';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
 import { S2Event, HORIZONTAL_RESIZE_AREA_KEY_PRE } from '@/common/constant';
 import { renderIcon, renderLine } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
-import { DefaultCellTheme, IconTheme } from '@/common/interface';
+import { DefaultCellTheme, IconTheme, SortParam } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
 
 export class TableColCell extends ColCell {
+  protected handleRestOptions(...[headerConfig]) {
+    this.headerConfig = { ...headerConfig };
+    const { field } = this.meta;
+    const sortParams = this.spreadsheet.dataCfg.sortParams;
+    const sortParam: SortParam = find(
+      sortParams,
+      (item) => item?.sortFieldId === field,
+    );
+
+    const type = getSortTypeIcon(sortParam, true);
+    this.headerConfig.sortParam = {
+      ...this.headerConfig.sortParam,
+      ...(sortParam || {}),
+      type,
+    };
+  }
+
   protected isFrozenCell() {
     const { frozenColCount, frozenTrailingColCount } = this.spreadsheet.options;
     const { colIndex } = this.meta;
