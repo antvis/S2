@@ -29,10 +29,10 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/S2wyJFnPD/2021-11-16%25252022.11.14.gif"
     },
     {
-      "filename": "render-tooltip.tsx",
+      "filename": "custom-show-tooltip.tsx",
       "title": {
-        "zh": "重写基类",
-        "en": "Custom Render"
+        "zh": "重写展示方法",
+        "en": "Custom Show Tooltip"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/cCvomQ6ai/2021-11-16%25252022.13.08.gif"
     }
