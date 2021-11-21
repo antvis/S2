@@ -23,6 +23,8 @@
     "build": "lerna run build --include-dependencies --stream --concurrency 1",
     "bundle:size": "lerna run bundle:size --stream",
     "release": "lerna exec --concurrency 1 -- npx --no-install semantic-release",
+    "prepublish:manual": "yarn build",
+    "publish:manual": "lerna publish",
     "test": "lerna run test --stream",
     "test:coverage": "lerna run test:coverage --stream",
     "test:watch": "lerna run test:watch --stream",
