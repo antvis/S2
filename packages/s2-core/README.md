@@ -1,12 +1,8 @@
-<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en-US.md)
-
-<h1 align="center">[WIP]S2</h1>
+<h1 align="center">@antv/s2</h1>
 
 <div align="center">
 
 数据驱动的多维分析表格。
-
-🚧 激情建设中。.. 详见 [Roadmap for S2](https://github.com/antvis/S2/discussions/258)
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
