@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Switcher } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
+import { Switcher } from '@antv/s2-react';
 
 const switcherFields = {
   rows: {

@@ -1,5 +1,5 @@
 import { TableSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
+
 import insertCss from 'insert-css';
 
 const defaultScrollSpeedRatio = 1;
@@ -105,12 +105,12 @@ insertCss(`
     cursor: pointer;
     transition: .3s ease-in-out;
   }​
-  
+
   input[type="range"]::-webkit-slider-thumb:hover {
     background-color: white;
     border: 2px solid #2C60D3;
   }
-  
+
   input[type="range"]::-webkit-slider-thumb:active {
     transform: scale(1.5);
   }

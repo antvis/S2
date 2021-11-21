@@ -1,6 +1,6 @@
 import { PivotSheet, S2Event, MergedCell } from '@antv/s2';
 import React from 'react';
-import '@antv/s2/dist/s2.min.css';
+
 import { Button } from 'antd';
 
 fetch(

@@ -1,11 +1,13 @@
-import { PivotSheet } from '@antv/s2';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 fetch(
-  'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',
+  'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
   .then((data) => {
-    const container = document.getElementById('container');
     const s2DataConfig = {
       fields: {
         rows: ['province', 'city'],
@@ -40,11 +42,21 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
+      tooltip: {
+        showTooltip: true,
+        row: {
+          showTooltip: false,
+        },
+      },
     };
 
-    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
-
-    s2.setThemeCfg({ name: 'gray' });
-
-    s2.render();
+    ReactDOM.render(
+      <SheetComponent
+        sheetType="pivot"
+        adaptive={false}
+        dataCfg={s2DataConfig}
+        options={s2Options}
+      />,
+      document.getElementById('container'),
+    );
   });

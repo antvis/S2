@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button } from 'antd';
-import { SheetComponent } from '@antv/s2';
-import insertCss from 'insert-css';
-import '@antv/s2/dist/s2.min.css';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
@@ -48,9 +47,12 @@ fetch(
       document.getElementById('container'),
     );
   });
+<<<<<<< HEAD
 
 insertCss(`
   .s2-header {
     margin:0px !important;
   }
 `);
+=======
+>>>>>>> origin/master

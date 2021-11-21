@@ -18,12 +18,8 @@ order: 2
 ```typescript
 import React from "react";
 import ReactDOM from "react-dom";
-import {
-  TableSheet,
-  SheetComponent,
-  DataCfg,
-  SpreadsheetOptions,
-} from "@antv/s2";
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 // 1. 准备明细数据
 const data = [
@@ -81,7 +77,7 @@ ReactDOM.render(
     options={s2Options}
     sheetType={"table"}
   />,
-  mountNode
+  document.getElementById('container')
 );
 ```
 
