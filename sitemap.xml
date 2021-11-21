@@ -103,8 +103,8 @@
 <url> <loc>https://s2.antv.vision/en/docs/manual/advanced/interaction/link-jump</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/manual/advanced/interaction/link-jump</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/docs/manual/advanced/interaction/merge-cell</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://s2.antv.vision/en/docs/manual/advanced/layout/pivot</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/docs/manual/advanced/layout/table</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://s2.antv.vision/en/docs/manual/advanced/layout/pivot</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/manual/advanced/interaction/merge-cell</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/manual/advanced/layout/table</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/docs/manual/basic/analysis/export</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
@@ -136,6 +136,7 @@
 <url> <loc>https://s2.antv.vision/zh/examples/analysis/totals/API</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/examples/analysis/totals</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/examples/analysis/totals</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://s2.antv.vision/en/examples/basic/pivot/API</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/examples/basic/pivot/API</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/examples/basic/pivot</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/examples/basic/pivot</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
@@ -229,7 +230,6 @@
 <url> <loc>https://s2.antv.vision/zh/examples/theme/default/API</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/examples/theme/default</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/examples/theme/default</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://s2.antv.vision/en/examples/basic/pivot/API</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/manual</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/en/docs/manual</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://s2.antv.vision/zh/docs/api</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
