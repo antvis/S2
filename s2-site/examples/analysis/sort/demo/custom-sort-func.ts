@@ -1,6 +1,8 @@
 import { PivotSheet, EXTRA_FIELD } from '@antv/s2';
 
-fetch('../data/basic.json')
+fetch(
+  'https://gw.alipayobjects.com/os/bmw-prod/6531b95e-a955-4735-91d6-e63fc32b3f34.json',
+)
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');
@@ -39,7 +41,7 @@ fetch('../data/basic.json')
           sortFieldId: 'province',
           sortFunc: (params) => {
             const { data } = params;
-            return data?.sort((a, b) => a?.localeCompare(b));
+            return (data as string[])?.sort((a, b) => a?.localeCompare(b));
           },
         },
         {

@@ -4,8 +4,38 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then((data) => {
     const container = document.getElementById('container');
+    const s2DataConfig = {
+      fields: {
+        rows: ['province', 'city'],
+        columns: ['type'],
+        values: ['price', 'cost'],
+      },
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
+      data,
+    };
 
     const s2Options = {
       width: 600,
@@ -16,9 +46,9 @@ fetch(
       conditions: {
         text: [
           {
-            field: 'number',
+            field: 'price',
             mapping(fieldValue) {
-              if (fieldValue >= 7000) {
+              if (fieldValue >= 15) {
                 return {
                   fill: '#fff',
                 };
@@ -28,25 +58,25 @@ fetch(
         ],
         background: [
           {
-            field: 'number',
+            field: 'price',
             mapping(fieldValue) {
-              if (fieldValue <= 1397) {
+              if (fieldValue <= 2) {
                 return {
                   fill: '#B8E1FF',
                 };
-              } else if (fieldValue <= 2797) {
+              } else if (fieldValue <= 5) {
                 return {
                   fill: '#9AC5FF',
                 };
-              } else if (fieldValue <= 4191) {
+              } else if (fieldValue <= 10) {
                 return {
                   fill: '#7DAAFF',
                 };
-              } else if (fieldValue <= 5588) {
+              } else if (fieldValue <= 15) {
                 return {
                   fill: '#5B8FF9',
                 };
-              } else if (fieldValue <= 6985) {
+              } else if (fieldValue <= 20) {
                 return {
                   fill: '#3D76DD',
                 };
@@ -59,7 +89,7 @@ fetch(
         ],
       },
     };
-    const s2 = new PivotSheet(container, dataCfg, s2Options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     s2.render();
   });

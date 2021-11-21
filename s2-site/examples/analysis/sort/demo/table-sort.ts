@@ -1,10 +1,10 @@
-import { TableSheet } from '@antv/s2';
+import { SortMethod, TableSheet } from '@antv/s2';
 
 fetch('../data/basic.json')
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');
-    const canConvertToNumber = (sortKey) =>
+    const canConvertToNumber = (sortKey: string) =>
       data.every((item) => {
         const v = item[sortKey];
         return typeof v === 'string' && !Number.isNaN(Number(v));

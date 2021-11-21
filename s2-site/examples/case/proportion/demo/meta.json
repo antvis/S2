@@ -1,14 +1,14 @@
 {
   "title": {
     "zh": "占比表",
-    "en": "Measure Comparison Sheet"
+    "en": "Group drill down sheet"
   },
   "demos": [
     {
       "filename": "group-drill-down.tsx",
       "title": {
         "zh": "分群下钻表",
-        "en": "Group drill down sheet"
+        "en": "Measure Comparison Sheet"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/RYy4GI8Y8d/demo.gif"
     },

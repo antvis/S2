@@ -1,4 +1,4 @@
-import { PivotSheet, EXTRA_FIELD, TOTAL_VALUE } from '@antv/s2';
+import { PivotSheet, S2DataConfig, EXTRA_FIELD, TOTAL_VALUE } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/ad982192-a708-4732-99af-153f422e7b75.json',
@@ -6,11 +6,11 @@ fetch(
   .then((res) => res.json())
   .then((data) => {
     const container = document.getElementById('container');
-    const s2DataConfig = {
+    const s2DataConfig: S2DataConfig = {
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
-        values: ['price'],
+        values: ['price', 'cost'],
       },
       meta: [
         {
@@ -29,6 +29,10 @@ fetch(
           field: 'price',
           name: '价格',
         },
+        {
+          field: 'cost',
+          name: '成本',
+        },
       ],
       data,
       sortParams: [
@@ -42,7 +46,7 @@ fetch(
           },
         },
         {
-          // type 依据 （ type - 小计 ）&（ price ）& 降序 排序
+          // type 依据 （ 浙江 - 小计 ）&（ price ）& 降序 排序
           sortFieldId: 'type',
           sortMethod: 'DESC',
           sortByMeasure: TOTAL_VALUE,

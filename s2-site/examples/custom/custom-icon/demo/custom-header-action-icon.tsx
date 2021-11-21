@@ -11,8 +11,38 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((dataCfg) => {
+  .then((data) => {
     const container = document.getElementById('container');
+    const s2DataConfig = {
+      fields: {
+        rows: ['province', 'city'],
+        columns: ['type'],
+        values: ['price', 'cost'],
+      },
+      meta: [
+        {
+          field: 'province',
+          name: '省份',
+        },
+        {
+          field: 'city',
+          name: '城市',
+        },
+        {
+          field: 'type',
+          name: '商品类别',
+        },
+        {
+          field: 'price',
+          name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
+        },
+      ],
+      data,
+    };
 
     const s2Options = {
       width: 600,
@@ -43,8 +73,7 @@ fetch(
         {
           iconNames: ['SortDown'],
           belongsCell: 'colCell',
-          displayCondition: (meta) =>
-            meta.id === 'root[&]办公用品[&]笔[&]number',
+          displayCondition: (meta) => meta.id === 'root[&]笔[&]price',
           action: (props) => {
             const { meta, event } = props;
             meta.spreadsheet.tooltip.show({
@@ -77,7 +106,7 @@ fetch(
         },
       ],
     };
-    const s2 = new PivotSheet(container, dataCfg, s2Options);
+    const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
     s2.render();
   });

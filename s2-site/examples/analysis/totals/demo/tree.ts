@@ -10,7 +10,7 @@ fetch(
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
-        values: ['price'],
+        values: ['price', 'cost'],
       },
       meta: [
         {
@@ -28,6 +28,10 @@ fetch(
         {
           field: 'price',
           name: '价格',
+        },
+        {
+          field: 'cost',
+          name: '成本',
         },
       ],
       data,
