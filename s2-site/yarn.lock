@@ -185,20 +185,19 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2-react@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@antv/s2-react/-/s2-react-1.0.0.tgz#ecf884134c3e0f0b7eb1daac476d928640b77b87"
-  integrity sha512-Ry9QoJqRc3tfnoWNLV1cUdABnofbHgP0X90ju70wQChE88O+npFlPAdjVMWdzIKeJjiMrfTGhUtm0MTNLLeWcA==
+"@antv/s2-react@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@antv/s2-react/-/s2-react-1.0.2.tgz#58551f1679539b9721da161c3caa18e44591b601"
+  integrity sha512-qb+6/CY4GpAfcjOwXLOTN5fycvt2n2iGrS2Lw+CoCpUcpYhA2TLG2v5CmdxHSeTjg+coP07yS5Qq7v8VzFtmKg==
   dependencies:
-    antd "^4.16.13"
     classnames "^2.3.1"
     lodash "^4.17.21"
     react-beautiful-dnd "^13.1.0"
 
-"@antv/s2@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.0.0.tgz#256b2739b214967cd47f577580506f600d40c20a"
-  integrity sha512-SF/Ss6raDMY9K218Zh+ZsfLb6uDdkColyVoQlTAvjBm3K3+3AJraJXfEhhiXquE1jNcPVJtaa1R9TA40LKFuRw==
+"@antv/s2@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.0.2.tgz#2a958f1a69f051bcc059c378da5d6e78b2af0c45"
+  integrity sha512-x+m016U88JNtEtM3pSiir3bSiGeKqzB60Dd4ZcFxhV7Rj54UQDhs0MMIJbv2tjUUnF5AOxhVFoKDd0PdQBS1+g==
   dependencies:
     "@antv/event-emitter" "~0.1.2"
     "@antv/g-canvas" "^0.5.12"
@@ -2407,7 +2406,7 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-antd@^4.0.0, antd@^4.16.13, antd@^4.2.2:
+antd@^4.0.0, antd@^4.2.2:
   version "4.16.13"
   resolved "https://registry.yarnpkg.com/antd/-/antd-4.16.13.tgz#e9b9b4a590db28747aae1cab98981649a35880af"
   integrity sha512-EMPD3fzKe7oayx9keD/GA1oKatcx7j5CGlkJj5eLS0/eEDDEkxVj3DFmKOPuHYt4BK7ltTzMFS+quSTmqUXPiw==
