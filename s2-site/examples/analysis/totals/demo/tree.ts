@@ -1,5 +1,4 @@
 import { PivotSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/ad982192-a708-4732-99af-153f422e7b75.json',
@@ -11,7 +10,7 @@ fetch(
       fields: {
         rows: ['province', 'city'],
         columns: ['type'],
-        values: ['price', 'cost'],
+        values: ['price'],
       },
       meta: [
         {
@@ -29,10 +28,6 @@ fetch(
         {
           field: 'price',
           name: '价格',
-        },
-        {
-          field: 'cost',
-          name: '成本',
         },
       ],
       data,

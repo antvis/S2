@@ -1,5 +1,4 @@
 import { S2Event, TableSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/d62448ea-1f58-4498-8f76-b025dd53e570.json',

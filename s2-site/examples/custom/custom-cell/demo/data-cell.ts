@@ -1,5 +1,4 @@
 import { PivotSheet, DataCell } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 // 自定义单元格，实现特有功能
 class CustomDataCell extends DataCell {

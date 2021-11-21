@@ -160,6 +160,8 @@ export interface TooltipOperation {
   trend?: boolean;
   // 组内排序
   sort?: boolean;
+  // 明细表排序
+  tableSort?: boolean;
 }
 
 export interface AutoAdjustPositionOptions {

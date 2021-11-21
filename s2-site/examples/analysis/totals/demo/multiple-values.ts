@@ -1,5 +1,4 @@
 import { PivotSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cadff60b-363b-438a-b490-eb3367b998b3.json',

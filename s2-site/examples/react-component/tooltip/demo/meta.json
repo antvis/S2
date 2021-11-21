@@ -7,10 +7,10 @@
     {
       "filename": "basic.ts",
       "title": {
-        "zh": "显示",
+        "zh": "hover 显示",
         "en": "Basic Show"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/xG1ta7x8%26/2021-11-16%25252022.08.27.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/UuEx0wndW7/efa70cc6-5106-4d81-9957-25c99b4fad32.png"
     },
     {
       "filename": "operation.ts",
@@ -18,7 +18,7 @@
         "zh": "操作项",
         "en": "Operation"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/cjETL6uvj/2021-11-16%25252022.10.50.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HRIacdrQje/4455252e-bed7-4265-8fee-90ed85a6ae11.png"
     },
     {
       "filename": "custom.tsx",
@@ -26,15 +26,15 @@
         "zh": "自定义 Tooltip 组件",
         "en": "Custom Component"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/S2wyJFnPD/2021-11-16%25252022.11.14.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/j1fkyyIDdh/939fb3ed-b1c7-48a4-a329-bd1d64ddcb9c.png"
     },
     {
-      "filename": "render-tooltip.tsx",
+      "filename": "custom-show-tooltip.tsx",
       "title": {
-        "zh": "重写基类",
-        "en": "Custom Render"
+        "zh": "重写展示方法",
+        "en": "Custom Show Tooltip"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/cCvomQ6ai/2021-11-16%25252022.13.08.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/sSx1H%24pJOs/6305fe29-5640-4d4d-b1ef-577cc6a32eb3.png"
     }
   ]
 }

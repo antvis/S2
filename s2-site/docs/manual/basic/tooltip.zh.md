@@ -23,7 +23,7 @@ const s2options = {
 
 ### 显示配置项
 
-通过配置 `showTooltip` 字段控制 `Tooltip` 的显示，默认为 `true`
+通过配置 `showTooltip` 字段控制 `Tooltip` 的显示，默认为 `false`
 
 ```ts
 const s2options = {
@@ -100,134 +100,155 @@ const s2options = {
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
-#### 重写基类（ renderTooltip ）
+#### 重写展示方法
 
-使用 `renderTooltip` 配置，并自定义类组件继承 `BaseTooltip` 来重写方法
+在引用 `SheetComponent` 时重写表用来展示 `Tooltip` 的方法 `spreadsheet.showTooltip()` , 详情可参考[`spreadsheet`](/zh/docs/api/basic-class/spreadsheet)
 
 ```ts
+// options 配置 tooltip显示
 tooltip: {
-  renderTooltip: (spreadsheet) => {
-    return new CustomTooltip(spreadsheet);
-  },
+  showTooltip: true,
 }
 ```
 
 ```tsx
-class CustomTooltip extends BaseTooltip {
-  protected renderInfos() {
-    return <div>测试</div>
-  }
-}
+<SheetComponent
+  getSpreadSheet={(instance) => {
+    instance.showTooltip = (tooltipOptions) => {
+      // 可自定义这里的 tooltipOptions
+      instance.tooltip.show(tooltipOptions);
+    };
+  }}
+  ...
+/>;
+
 ```
 
-##### 可重写方法
+##### 可自定义显示内容
 
-以下所有方法都可覆盖所有单元格和事件
+以下所有显示内容都可覆盖所有单元格和事件, 自定义数据具体细节可查看 [TooltipShowOptions](/zh/docs/api/common/custom-tooltip)
 
-- 操作栏（ renderOperation ）
+- 显示位置 (position)
 
-```tsx
-protected renderOperation(
-  operator: TooltipOperatorOptions,
-  onlyMenu?: boolean,
-) {
-  const customOperator = {
-    onClick: () => {
-      console.log('测试');
-    },
-    menus: [
-      {
-        id: 'trend',
-        icon: 'trend',
-        text: '趋势',
-      },
-    ],
+  ```tsx
+  instance.showTooltip = (tooltipOptions) => {
+    const { position } = tooltipOptions;
+    instance.tooltip.show({ ...tooltipOptions, position: { x: position.x + 1, y: position.y + 1 } });
   };
+  ```
 
-  return <TooltipOperator {...customOperator} />;
-}
-```
+- 展示层数据 (data)
 
-- 名称 + 提示（ renderNameTips ）
+  - 名称
 
-  当前单元格名称和提示信息
+    当前单元格名称, 一般只有单元格中文案被省略才会显示
 
-```tsx
-const extra = [
-  {
-    field: 'type',
-    value: '笔',
-    tips: '说明：这是笔的说明',
-  },
-];
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const name = `${data.name} - 测试`;
+      instance.tooltip.show({ ...tooltipOptions, data: { ...data, name: data.name ? name : '' } });
+    };
+    ```
 
-protected renderNameTips(nameTip: { name: string; tips: string }) {
-  const { tips } = extra.find((item) => item.value === nameTip.name) || {};
-  if (tips) {
-    return <SimpleTips tips={tips} name={`${nameTip.name} - 测试`} />;
-  }
-  return super.renderNameTips(nameTip);
-}
-```
+  - 提示
 
-- 所选项统计列表（ renderSummary ）
+    当前单元格提示信息
 
-  所选项统计列表，主要按度量值区分
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const tips = '说明：这是个说明';
+      instance.tooltip.show({ ...tooltipOptions, data: { ...data, tips } });
+    };
+    ```
 
-```tsx
-protected renderSummary(summaries) {
-  const customSummaries = (summaries || []).map((item) => {
-    return { ...item, name: `${item.name} - 测试` };
-  });
-  return (
-    customSummaries.length > 0 && (
-      <TooltipSummary summaries={customSummaries} />
-    )
-  );
-}
-```
+  - 所选项统计列表（ summaries ）
 
-- 轴列表（ renderHeadInfo ）
+    所选项统计列表，主要按度量值区分，具体详情可查看 [TooltipSummaryOptions](/zh/docs/api/common/custom-tooltip#TooltipSummaryOptions)
 
-  轴列表，在数据单元格中显示 `行/列头` 名称
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const customSummaries = (data.summaries || []).map((item) => {
+        return { ...item, name: `${item.name} - 测试` };
+      });
+      instance.tooltip.show({ ...tooltipOptions, data: { ...data, summaries: customSummaries } });
+    };
+    ```
 
-```tsx
-protected renderHeadInfo(headInfo) {
-  const { cols = [], rows = [] } = headInfo || {};
-  const customCols = cols.map(item=> {
-      return {...item, value: `${item.value} - 测试`}
-  });
-  return (
-    (cols.length > 0 || rows.length > 0) && (
-      <>
-        <TooltipHead cols={customCols} rows={rows} />
-      </>
-    )
-  );
-}
-```
+  - 轴列表（ headInfo ）
 
-- 数据点明细信息（ renderDetail ）
+    轴列表，在数据单元格中显示 `行/列头` 名称，具体详情可查看 [TooltipHeadInfo](/zh/docs/api/common/custom-tooltip#TooltipHeadInfo)
 
-  数据点明细信息，即当前单元格的数据信息
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const { cols = [], rows = [] } = data.headInfo || {};
+      const customCols = cols.map(item=> {
+        return {...item, value: `${item.value} - 测试`}
+      });
+      instance.tooltip.show({
+        ...tooltipOptions, 
+        data: {
+          ...data, 
+          headInfo: { rows, cols: customCols } 
+        } 
+      });
+    };    
+    ```
 
-```tsx
-protected renderDetail(details: ListItem[]) {
-  const customDetails = (details || []).map((item) => {
-    return { name: `${item.name} - 测试`, value: `${item.value} - w` };
-  });
-  return <TooltipDetail list={customDetails} />;
-}
-```
+  - 数据点明细信息（ details ）
 
-- 底部提示信息（ renderInfos ）
+    数据点明细信息，即当前单元格的数据信息, 具体详情可查看 [ListItem](/zh/docs/api/common/custom-tooltip#ListItem)
 
-底部提示信息，一般可用于快捷键操作提示
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const customDetails = (data.details || []).map((item) => {
+        return { name: `${item.name} - 测试`, value: `${item.value} - w` };
+      });
+      instance.tooltip.show({ ...tooltipOptions, data: { ...data, details: customDetails } });
+    };    
+    ```
 
-```tsx
-protected renderInfos(infos) {
-  return <Infos infos={`按住 Shift 多选或框选，查看多个数据点`} />;
-}
-```
+  - 底部提示信息（ infos ）
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*4rrAR4HBGFoAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+    底部提示信息，一般可用于快捷键操作提示
+
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { data } = tooltipOptions;
+      const infos = '按住 Shift 多选或框选，查看多个数据点';
+      instance.tooltip.show({ ...tooltipOptions, data: { ...data, infos } });
+    };
+    ```
+
+  <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*4rrAR4HBGFoAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+
+- 部分配置 ( options )
+
+  `tooltip` 部分配置, 具体细节可查看 [TooltipOptions](/zh/docs/api/common/custom-tooltip#TooltipOptions)
+
+  - 操作栏（ operator ）
+  
+    可操作配置, 具体细节参考 [TooltipOperatorOptions](/zh/docs/api/common/custom-tooltip#TooltipOperatorOptions)
+
+    ```tsx
+    instance.showTooltip = (tooltipOptions) => {
+      const { options } = tooltipOptions;
+      const customOperator = {
+        onClick: () => {
+          console.log('测试');
+        },
+        menus: [
+          {
+            id: 'trend',
+            icon: 'trend',
+            text: '趋势',
+          },
+        ],
+      };
+      instance.tooltip.show({ ...tooltipOptions, options: { ...options, operator: customOperator } });
+    };
+    ```

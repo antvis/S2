@@ -1,13 +1,11 @@
 <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18">  [简体中文](./README.md) ｜
 English
 
-<h1 align="center">[WIP]S2</h1>
+<h1 align="center">S2</h1>
 
 <div align="center">
 
 Data-driven multi-dimensional analysis table.
-
-🚧 Coming soon ... [Roadmap for S2](https://github.com/antvis/S2/discussions/258)
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
@@ -155,7 +153,6 @@ const s2options = {
 
 ```ts
 import { PivotSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css'
 
 const container = document.getElementById('container');
 
@@ -168,9 +165,16 @@ s2.render()
 
 ![result](https://gw.alipayobjects.com/zos/antfincdn/vCukbtVNvl/616f7ef1-e626-4225-99f8-dc8f6ca630dd.png)
 
-## Author
+### 📦 Packages
 
-👤 [**@AntV**](https://github.com/orgs/antvis/people)
+| Package  | Latest  |  Beta | Size |
+|---|---|---|---|
+| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)  | ![latest](https://img.shields.io/npm/v/@antv/s2.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react)  | ![latest](https://img.shields.io/npm/v/@antv/s2-react.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  |
+
+## 👤 Author
+
+[**@AntV**](https://github.com/orgs/antvis/people)
 
 ## 🤝  Contributing
 

@@ -1,6 +1,9 @@
+import { Node } from 'src/facet/layout/node';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import { SpreadSheet } from './spread-sheet';
 import { TableDataCell, TableRowCell } from '@/cell';
 import {
+  InterceptType,
   KEY_GROUP_PANEL_FROZEN_BOTTOM,
   KEY_GROUP_PANEL_FROZEN_COL,
   KEY_GROUP_PANEL_FROZEN_ROW,
@@ -8,8 +11,15 @@ import {
   KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
+  TOOLTIP_OPERATOR_MENUS,
 } from '@/common/constant';
-import { S2Options, SpreadSheetFacetCfg, ViewMeta } from '@/common/interface';
+import {
+  S2Options,
+  SortParam,
+  SpreadSheetFacetCfg,
+  TooltipOperatorOptions,
+  ViewMeta,
+} from '@/common/interface';
 import { TableDataSet } from '@/data-set';
 import { TableFacet } from '@/facet';
 
@@ -138,5 +148,42 @@ export class TableSheet extends SpreadSheet {
   public destroy() {
     super.destroy();
     this.clearFrozenGroups();
+  }
+
+  public handleGroupSort(event: CanvasEvent, meta: Node) {
+    event.stopPropagation();
+    this.interaction.addIntercepts([InterceptType.HOVER]);
+    const operator: TooltipOperatorOptions = {
+      onClick: ({ key }) => {
+        const { field } = meta;
+
+        const prevOtherSortParams = [];
+        let prevSelectedSortParams: SortParam;
+        this.dataCfg.sortParams.forEach((item) => {
+          if (item?.sortFieldId !== field) {
+            prevOtherSortParams.push(item);
+          } else {
+            prevSelectedSortParams = item;
+          }
+        });
+
+        const sortParam: SortParam = {
+          ...(prevSelectedSortParams || {}),
+          sortFieldId: field,
+          sortMethod: key as SortParam['sortMethod'],
+        };
+        this.setDataCfg({
+          ...this.dataCfg,
+          sortParams: [...prevOtherSortParams, sortParam],
+        });
+        this.render();
+      },
+      menus: TOOLTIP_OPERATOR_MENUS.TableSort,
+    };
+
+    this.showTooltipWithInfo(event, [], {
+      operator,
+      onlyMenu: true,
+    });
   }
 }

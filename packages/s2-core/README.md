@@ -1,14 +1,13 @@
-<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en-US.md)
-
-<h1 align="center">[WIP]S2</h1>
+<h1 align="center">@antv/s2</h1>
 
 <div align="center">
 
 数据驱动的多维分析表格。
 
-🚧 激情建设中。.. 详见 [Roadmap for S2](https://github.com/antvis/S2/discussions/258)
-
 <p>
+  <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
+    <img src="https://img.shields.io/npm/dm/@antv/s2.svg" alt="npm"/>
+  </a>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg" alt="version">
   </a>
@@ -27,19 +26,16 @@
 </p>
 
 <p>
-  <a href="https://david-dm.org/antvis/s2" target="_blank">
-    <img src="https://status.david-dm.org/gh/antvis/S2.svg" alt="dependencies"/>
-  </a>
-  <a href="https://david-dm.org/antvis/S2?type=dev" title="devDependencies status" target="_blank">
-    <img src="https://david-dm.org/antvis/S2/dev-status.svg" alt="devDependencies"/>
-  </a>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square" alt="bundle size"/>
+    <img alt="npm bundle size" src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/s2.min.js?label=gzip%20size&compression=gzip" alt="bundle size"/>
+  </a>
+  <a href="https://github.com/antvis/S2/discussions" target="_blank">
+    <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="Discussions"/>
   </a>
   <a href="https://github.com/actions-cool/issues-helper" target="_blank">
-    <img src="https://img.shields.io/badge/Issues%20Manage%20By-issues--helper-blueviolet" alt="issues-helper"/>
+    <img src="https://img.shields.io/badge/using-issues--helper-blueviolet" alt="issues-helper"/>
   </a>
-  <a href="#" target="_blank" target="_blank">
+  <a href="https://github.com/antvis/S2/blob/master/LICENSE" target="_blank" target="_blank">
     <img alt="License: MIT@AntV" src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" alt="license"/>
   </a>
 </p>
@@ -151,7 +147,6 @@ const s2options = {
 
 ```ts
 import { PivotSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css'
 
 const container = document.getElementById('container');
 
@@ -185,6 +180,10 @@ yarn site:bootstrap
 
 yarn site:start
 ```
+
+## 👬 Contributors
+
+![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
 
 ## 📄 License
 
