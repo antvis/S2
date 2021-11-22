@@ -1,7 +1,7 @@
-import { Node } from 'src/facet/layout/node';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { last } from 'lodash';
 import { SpreadSheet } from './spread-sheet';
+import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell';
 import {
   InterceptType,
@@ -10,6 +10,7 @@ import {
 } from '@/common/constant';
 import {
   S2Options,
+  SortMethod,
   SortParam,
   SpreadSheetFacetCfg,
   TooltipOperatorOptions,
@@ -160,28 +161,32 @@ export class PivotSheet extends SpreadSheet {
     this.render(false);
   }
 
+  public groupSortByMethod(sortMethod: SortMethod, meta: Node) {
+    const { rows, columns } = this.dataCfg.fields;
+    const sortFieldId = this.isValueInCols() ? last(rows) : last(columns);
+    const { query, value } = meta;
+    const sortParam: SortParam = {
+      sortFieldId,
+      sortMethod,
+      sortByMeasure: value,
+      query,
+    };
+    const prevSortParams = this.dataCfg.sortParams.filter(
+      (item) => item?.sortFieldId !== sortFieldId,
+    );
+    this.setDataCfg({
+      ...this.dataCfg,
+      sortParams: [...prevSortParams, sortParam],
+    });
+    this.render();
+  }
+
   public handleGroupSort(event: CanvasEvent, meta: Node) {
     event.stopPropagation();
     this.interaction.addIntercepts([InterceptType.HOVER]);
     const operator: TooltipOperatorOptions = {
       onClick: ({ key }) => {
-        const { rows, columns } = this.dataCfg.fields;
-        const sortFieldId = this.isValueInCols() ? last(rows) : last(columns);
-        const { query, value } = meta;
-        const sortParam: SortParam = {
-          sortFieldId,
-          sortMethod: key as SortParam['sortMethod'],
-          sortByMeasure: value,
-          query,
-        };
-        const prevSortParams = this.dataCfg.sortParams.filter(
-          (item) => item?.sortFieldId !== sortFieldId,
-        );
-        this.setDataCfg({
-          ...this.dataCfg,
-          sortParams: [...prevSortParams, sortParam],
-        });
-        this.render();
+        this.groupSortByMethod(key, meta);
       },
       menus: TOOLTIP_OPERATOR_MENUS.Sort,
     };
