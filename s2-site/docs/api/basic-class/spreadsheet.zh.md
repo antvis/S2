@@ -59,7 +59,6 @@ order: 1
 | getCellType | 根据 event.target 获取当前 单元格类型 | `(target: EventTarget) => CellTypes` |
 | getTotalsConfig | 获取总计小计配置 | `(dimension: string) => Total` |
 | getInitColumnNodes | 获取初次渲染的列头信息 （比如：隐藏列头前） | `() => Node[]` |
-| hideColumns | 隐藏列头 | `(fields: string[]) => Total` |
 
 ### S2MountContainer
 

@@ -35,7 +35,7 @@ class HiddenInteraction extends BaseEvent {
       // 获取当前单元格元数据
       const meta = cell.getMeta();
       // 隐藏当前列
-      this.spreadsheet.hideColumns([meta.field]);
+      this.spreadsheet.interaction.hideColumns([meta.field]);
     });
   }
 }

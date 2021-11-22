@@ -109,6 +109,15 @@ describe('RootInteraction Tests', () => {
     expect(unmergeCell).toBeCalled();
   });
 
+  test('should call hideColumns', () => {
+    const hideColumnsSpy = jest
+      .spyOn(rootInteraction, 'hideColumns')
+      .mockImplementation(() => {});
+
+    rootInteraction.hideColumns(['field1']);
+    expect(hideColumnsSpy).toHaveBeenCalledTimes(1);
+  });
+
   test('should get default interacted cells', () => {
     expect(rootInteraction.getInteractedCells()).toEqual([]);
   });
