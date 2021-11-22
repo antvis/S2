@@ -1,12 +1,4 @@
 {
-  "globals": {
-    "ts-jest": {
-      "diagnostics": {
-        "warnOnly": true
-      }
-    }
-  },
-  "preset": "ts-jest",
   "runner": "jest-electron/runner",
   "testEnvironment": "jest-electron/environment",
   "setupFilesAfterEnv": ["jest-extended", "./__tests__/setup.js"],
@@ -23,6 +15,7 @@
   "transformIgnorePatterns": [],
   "testRegex": "/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js)?$",
   "transform": {
+    "\\.(t|j)sx?$": "@swc/jest",
     "\\.(less|css)$": "jest-less-loader",
     "\\.svg$": "jest-raw-loader"
   },
