@@ -1,3 +1,10 @@
+# [@antv/s2-v1.0.0-beta.15](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.14...@antv/s2-v1.0.0-beta.15) (2021-11-22)
+
+
+### Bug Fixes
+
+* optimize handleGroupSort and add pivot sheet basic class tests ([#785](https://github.com/antvis/S2/issues/785)) ([9a92cf3](https://github.com/antvis/S2/commit/9a92cf38485d550f9d7a0f4930e03e7170a12c89))
+
 # [@antv/s2-v1.0.0-beta.14](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.13...@antv/s2-v1.0.0-beta.14) (2021-11-22)
 
 
