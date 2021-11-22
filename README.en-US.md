@@ -201,6 +201,10 @@ yarn site:start
 
 ![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
 
+## 📧 Contact Us
+
+<img src="width: 100%; height: auto" href="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg" alt="S2"></a>
+
 ## 📄 License
 
 MIT@[AntV](https://github.com/antvis).
