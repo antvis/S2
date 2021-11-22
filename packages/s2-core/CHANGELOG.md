@@ -1,3 +1,16 @@
+# [@antv/s2-v1.0.0-beta.14](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.13...@antv/s2-v1.0.0-beta.14) (2021-11-22)
+
+
+### Bug Fixes
+
+* **copy:** copy data with data sorted or filtered ([#781](https://github.com/antvis/S2/issues/781)) ([c602590](https://github.com/antvis/S2/commit/c60259037f2289cbebd1c04f40f8bf2bd84aebd7))
+* **interaction:** move hideColumns method to interaction scope ([#786](https://github.com/antvis/S2/issues/786)) ([f5dee01](https://github.com/antvis/S2/commit/f5dee011fea7f6ee482c7b861358a02aa8160bcf))
+
+
+### Features
+
+* add more util export ([#784](https://github.com/antvis/S2/issues/784)) ([a4e7127](https://github.com/antvis/S2/commit/a4e7127e0e6e16ae83cedeb22713ceaedb99a690))
+
 ## [1.0.1](https://github.com/antvis/S2/compare/v0.1.0-alpha.15...v1.0.1) (2021-11-21)
 
 
