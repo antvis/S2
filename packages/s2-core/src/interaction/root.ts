@@ -9,6 +9,7 @@ import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { ShiftMultiSelection } from './shift-multi-selection';
 import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
+import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
 import {
   CellTypes,
@@ -223,6 +224,10 @@ export class RootInteraction {
   public unmergeCell = (removedCells: MergedCell) => {
     unmergeCell(this.spreadsheet, removedCells);
   };
+
+  public hideColumns(hiddenColumnFields: string[] = []) {
+    hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields);
+  }
 
   /**
    * 注册交互（组件按自己的场景写交互，继承此方法注册）

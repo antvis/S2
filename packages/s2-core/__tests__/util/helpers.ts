@@ -11,6 +11,8 @@ import { SpreadSheet } from '@/sheet-type';
 import { BaseTooltip } from '@/ui/tooltip';
 import { customMerge } from '@/utils/merge';
 import { DEFAULT_OPTIONS } from '@/common/constant';
+import { PanelBBox } from '@/facet/bbox/panelBBox';
+import { BaseFacet } from '@/facet';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
@@ -55,6 +57,11 @@ export const createFakeSpreadSheet = () => {
     height: DEFAULT_OPTIONS.height,
     container,
   });
+  s2.facet = {} as BaseFacet;
+  s2.facet.panelBBox = {
+    maxX: s2.options.width,
+    maxY: s2.options.height,
+  } as PanelBBox;
   s2.container.draw = jest.fn();
   s2.store = new Store();
   s2.tooltip = {

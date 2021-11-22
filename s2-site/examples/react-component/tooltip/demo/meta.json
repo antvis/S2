@@ -5,7 +5,7 @@
   },
   "demos": [
     {
-      "filename": "basic.ts",
+      "filename": "basic.tsx",
       "title": {
         "zh": "hover 显示",
         "en": "Basic Show"
@@ -13,7 +13,7 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/UuEx0wndW7/efa70cc6-5106-4d81-9957-25c99b4fad32.png"
     },
     {
-      "filename": "operation.ts",
+      "filename": "operation.tsx",
       "title": {
         "zh": "操作项",
         "en": "Operation"

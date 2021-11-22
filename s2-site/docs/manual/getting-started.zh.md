@@ -29,12 +29,12 @@ $ yarn add @antv/s2
 
 创建 `S2` 表格有两种方式，基础类版本 `(s2-core)` 和 基于 `core` 层 封装的 `React` 版本
 
-- core 版本: [`@antv/s2`](https://github.com/antvis/S2/tree/master/packages/s2-core)
-- react 版本: [`@antv/s2-react`](https://github.com/antvis/S2/tree/master/packages/s2-react)
+- core 版本：[`@antv/s2`](https://github.com/antvis/S2/tree/master/packages/s2-core)
+- react 版本：[`@antv/s2-react`](https://github.com/antvis/S2/tree/master/packages/s2-react)
 
 ### 基础类
 
-#### 1. 数据准备
+#### 1. 数据 (data) 准备
 
 <details>
   <summary> s2DataConfig</summary>
@@ -167,7 +167,6 @@ const s2options = {
 ```ts
 import { PivotSheet } from '@antv/s2';
 
-
 const container = document.getElementById('container');
 
 const s2 = new PivotSheet(container, s2DataConfig, s2options)
@@ -177,11 +176,15 @@ s2.render()
 
 #### 4. 结果
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ln3cTY_Rk1cAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+<playground path='basic/pivot/demo/grid.ts' rid='container' height='400'></playground>
+
+#### tooltip 注意事项
+
+`@antv/s2` 中只保留了 tooltip 的核心显隐逻辑，我们将所有 tooltip 定制化交互都迁移到了`@antv/s2-react` 中，因此如果您有 tooltip 的需求，我们强烈建议您使用`@antv/s2-react`，细节参见 [tooltip 组件使用文档](https://s2.antv.vision/zh/examples/gallery#category-Tooltip%E7%BB%84%E4%BB%B6)。
 
 ### `React` 版本
 
-`S2` 提供了开箱即用的 `React` 版本[表格组件](/zh/examples/gallery#category-表格组件)，还有配套丰富的[分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件），还有配套丰富的 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
 使用 `React` 版本 `S2`，只有渲染这一步有所不同：
 
@@ -202,6 +205,8 @@ ReactDOM.render(
 );
 
 ```
+
+​📊 查看 demo [React 版本透视表](/zh/examples/react-component/sheet#pivot)。
 
 ## ⌨️ 本地开发
 

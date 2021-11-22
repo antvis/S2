@@ -1,5 +1,5 @@
 ---
-title: 合并单元格 Merge Cell 
+title: 合并单元格 Merge Cell
 order: 5
 ---
 
@@ -313,7 +313,7 @@ const s2options = {
     // 表格渲染后，会展示一个合并单元格
     mergedCellsInfo: [
       { colIndex: 1, rowIndex: 6, showText: true }, // 此单元格的 meta 信息将作为合并单元的 meta 信息
-      { colIndex: 1, rowIndex: 7 }, 
+      { colIndex: 1, rowIndex: 7 },
       { colIndex: 2, rowIndex: 6 },
       { colIndex: 2, rowIndex: 7 },
       { colIndex: 3, rowIndex: 6 },
@@ -354,18 +354,18 @@ s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
 | --------------- | ------------------ | ---------------------- | ------ | ---- |
 | colIndex        | 单元格的列索引        | `number`               | -      |      |
 | rowIndex        | 单元格的行索引        | `number`               | -      |      |
-| showText        | 合并单元格是否展示当前单元格的 meta 信息，只需要对一个单元格进行标识，若未对单元格进行标识，会默认使用第一个选中点击的单元格的 meta 信息 | `booelan`      | -      |      |
+| showText        | 合并单元格是否展示当前单元格的 meta 信息，只需要对一个单元格进行标识，</br>若未对单元格进行标识，会默认使用第一个选中点击的单元格的 meta 信息 | `booelan`      | -      |      |
 
 ### mergeCells
 
-<description> **function unmergeCell(removedCells: MergedCell): void** </description>
+<description> **function mergeCells(cellsInfo?: MergedCellInfo[], hideData?: boolean): void** </description>
 
 合并单元格方法
 
 | 参数            | 说明                 | 类型                   | 默认值 | 必选 |
 | --------------- | ------------------ | ---------------------- | ------ | ---- |
 | cellsInfo       | 指定一个合并单元格的信息，未传则默认使用当前选中所有的单元格信息 | `MergedCellInfo[]`    | -      |      |
-| hideData        | hideData 为 true 时，合并单元格不显示内容i111。 | `boolean` | false     |      |
+| hideData        | hideData 为 true 时，合并单元格不显示内容。 | `boolean` | false     |      |
 
 ### unmergeCells
 

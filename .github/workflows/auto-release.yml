@@ -2,9 +2,10 @@ name: 🚀 Auto Release
 on:
   push:
     branches:
-      # - master # 正式版 先不发
+      - latest-release # 正式版
       - beta
       - alpha
+      - next
 
 jobs:
   release:
@@ -65,52 +66,6 @@ jobs:
               "msgtype": "link",
               "link": {
                 "title": "🚨 自动发布失败",
-                "text": "🔗 请点击链接查看具体原因, 及时修复 🚑",
-                "messageUrl": "https://github.com/antvis/S2/actions/workflows/auto-release.yml",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png"
-              }
-            }
-
-      - name: Install site dependencies
-        run: yarn site:bootstrap
-
-      - name: 🚀 Build Site Deploy After Release
-        run: yarn site:build
-
-      - name: 🚀 Deploy site to github pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./s2-site/public
-
-      # 官网部署成功通知
-      - name: Deploy site success ding talk dev group notify
-        if: ${{ success() }}
-        uses: zcong1993/actions-ding@master
-        with:
-          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
-          body: |
-            {
-              "msgtype": "link",
-              "link": {
-                "title": "🚀 官网部署成功",
-                "text": "https://s2.antv.vision",
-                "messageUrl": "https://s2.antv.vision",
-                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png"
-              }
-            }
-
-      # 官网部署失败通知
-      - name: Deploy site failed ding talk dev group notify
-        if: ${{ failure() }}
-        uses: zcong1993/actions-ding@master
-        with:
-          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
-          body: |
-            {
-              "msgtype": "link",
-              "link": {
-                "title": "🚨 官网部署失败",
                 "text": "🔗 请点击链接查看具体原因, 及时修复 🚑",
                 "messageUrl": "https://github.com/antvis/S2/actions/workflows/auto-release.yml",
                 "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png"

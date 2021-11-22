@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2-react",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.3-beta1",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
@@ -57,20 +57,21 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "peerDependencies": {
-    "@antv/s2": "^0.2.5",
+    "@antv/s2": "^1.0.0",
+    "antd": "^4.16.13",
     "react": "^16.8.0",
     "react-dom": "^16.8.0"
   },
   "dependencies": {
-    "antd": "^4.16.13",
     "classnames": "^2.3.1",
     "lodash": "^4.17.21",
     "react-beautiful-dnd": "^13.1.0"
   },
   "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.1.2",
+    "antd": "^4.16.13",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "@types/react-beautiful-dnd": "^13.1.2"
+    "react-dom": "^17.0.2"
   },
   "bundlesize": [
     {
