@@ -9,10 +9,10 @@
     <img src="https://img.shields.io/npm/dm/@antv/s2-react.svg" alt="npm"/>
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2-react" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react.svg" alt="version">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react/latest.svg" alt="latest version">
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2-react" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react.svg" alt="version">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2-react/beta.svg" alt="beta version">
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>

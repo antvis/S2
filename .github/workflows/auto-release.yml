@@ -2,9 +2,10 @@ name: 🚀 Auto Release
 on:
   push:
     branches:
-      # - master # 正式版 先不发
+      - latest-release # 正式版
       - beta
       - alpha
+      - next
 
 jobs:
   release:

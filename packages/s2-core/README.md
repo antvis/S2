@@ -9,10 +9,10 @@
     <img src="https://img.shields.io/npm/dm/@antv/s2.svg" alt="npm"/>
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg" alt="version">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/latest.svg" alt="latest version">
   </a>
     <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg" alt="version">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg" alt="beta version">
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
@@ -27,7 +27,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="npm bundle size" src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/s2.min.js?label=gzip%20size&compression=gzip" alt="bundle size"/>
+    <img alt="npm bundle size" src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip" alt="bundle size"/>
   </a>
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
     <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="Discussions"/>
