@@ -3,6 +3,7 @@ import { copyToClipboard } from '@/utils/export';
 import { Formatter, S2CellType, ViewMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
+import { DataType } from '@/data-set/interface';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -70,10 +71,13 @@ export const getTwoDimData = (cells: S2CellType[]) => {
   return twoDimDataArray;
 };
 
-const processAllSelected = (spreadsheet: SpreadSheet) => {
+const processAllSelected = (
+  displayData: DataType[],
+  spreadsheet: SpreadSheet,
+) => {
   // 全选复制
   const selectedFiled = spreadsheet.dataCfg.fields.columns;
-  return spreadsheet.dataCfg.data.reduce((pre, cur) => {
+  return displayData.reduce((pre, cur) => {
     return (
       pre +
       '\n' +
@@ -83,11 +87,11 @@ const processAllSelected = (spreadsheet: SpreadSheet) => {
 };
 
 const processColSelected = (
-  spreadsheet: SpreadSheet,
+  displayData: DataType[],
   selectedCols: S2CellType<ViewMeta>[],
 ) => {
   const selectedFiled = selectedCols.map((e) => e.getMeta().field);
-  return spreadsheet.dataCfg.data.reduce((pre, cur) => {
+  return displayData.reduce((pre, cur) => {
     return (
       pre +
       '\n' +
@@ -97,11 +101,11 @@ const processColSelected = (
 };
 
 const processRowSelected = (
-  spreadsheet: SpreadSheet,
+  displayData: DataType[],
   selectedRows: S2CellType<ViewMeta>[],
 ) => {
   const selectedIndex = selectedRows.map((e) => e.getMeta().rowIndex);
-  return spreadsheet.dataCfg.data
+  return displayData
     .filter((e, i) => selectedIndex.includes(i))
     .map((e) =>
       Object.keys(e)
@@ -123,12 +127,14 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
     ({ cellType }) => cellType === CellTypes.ROW_CELL,
   );
 
+  const displayData = spreadsheet.dataSet.getDisplayDataSet();
+
   if (interaction.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
-    data = processAllSelected(spreadsheet);
+    data = processAllSelected(displayData, spreadsheet);
   } else if (selectedCols.length) {
-    data = processColSelected(spreadsheet, selectedCols);
+    data = processColSelected(displayData, selectedCols);
   } else if (selectedRows.length) {
-    data = processRowSelected(spreadsheet, selectedRows);
+    data = processRowSelected(displayData, selectedRows);
   } else {
     if (!cells.length) {
       return;
