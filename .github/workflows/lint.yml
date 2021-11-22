@@ -56,7 +56,6 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           labels: '🚨 lint failed'
 
-
       - name: Remove failed label
         if: ${{ success() && github.event.pull_request.number != '' }}
         uses: actions-cool/issues-helper@main
