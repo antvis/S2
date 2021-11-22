@@ -1,4 +1,3 @@
-import { SimpleBBox } from '@antv/g-canvas';
 import { isEmpty, isObject } from 'lodash';
 import { CellTypes } from '../common/constant';
 import { ViewMeta } from '../common/interface';

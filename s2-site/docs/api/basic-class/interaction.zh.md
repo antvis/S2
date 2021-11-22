@@ -38,6 +38,9 @@ this.spreadsheet.interaction.xx()
 | getRowColActiveCells | 获取行头和列头激活的单元格 | `() => RowCell[] | ColCell[]` |
 | getAllCells | 获取所有单元格 | `() => S2CellType[]` |
 | selectAll | 选中所有单元格 | `() => void` |
+| hideColumns | 隐藏列 (明细表有效) | `(hiddenColumnFields: string[]) => void` |
+| mergeCells | 合并单元格 | `(cellsInfo?: MergedCellInfo[], hideData?: boolean) => void` |
+| unmergeCells | 取消合并单元格 | `(removedCells: MergedCell) => void` |
 | updatePanelGroupAllDataCells | 更新所有数值单元格 | `() => void` |
 | updateCells | 更新指定单元格 | `(cells: S2CellType[]) => void` |
 | addIntercepts | 新增交互拦截 | `(interceptTypes: InterceptType[]) => void` |
@@ -90,5 +93,16 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | ColCell
   | CornerCell
   | RowCell
+  | MergedCell
   | BaseCell<T>;
+```
+
+### MergedCellInfo
+
+```ts
+interface MergedCellInfo {
+  colIndex?: number;
+  rowIndex?: number;
+  showText?: boolean;
+}
 ```
