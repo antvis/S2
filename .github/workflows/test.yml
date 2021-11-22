@@ -24,7 +24,9 @@ jobs:
         run: yarn
 
       - name: Build
-        run: yarn workspace @antv/s2 build:esm
+        run: |
+          ls -al  node_modules/@antv 
+          yarn build:s2-core-esm
 
       - name: Test
         run: |

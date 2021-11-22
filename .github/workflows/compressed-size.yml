@@ -16,5 +16,5 @@ jobs:
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         pattern: "./packages/**/dist/**/*.{js,css}"
-        build-script: "build"
+        build-script: "build:umd"
         clean-script: "clean:lock-file"
