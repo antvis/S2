@@ -24,7 +24,9 @@ jobs:
         run: yarn
 
       - name: Build
-        run: yarn build
+        run: |
+          yarn workspace @antv/s2 build:esm
+          yarn build:umd
 
       - name: Lint scripts, type, style and docs
         run: yarn lint
