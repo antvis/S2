@@ -194,11 +194,9 @@ yarn site:start
 
 <img style="width: 300px; height: auto" alt="S2" src="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg"></a>
 
-
 ## 👬 Contributors
 
 ![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
-
 
 ## 📄 License
 
