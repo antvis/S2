@@ -35,6 +35,14 @@
         "en": "Custom Show Tooltip"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/sSx1H%24pJOs/6305fe29-5640-4d4d-b1ef-577cc6a32eb3.png"
+    },
+    {
+      "filename": "custom-interaction-tooltip.tsx",
+      "title": {
+        "zh": "自定义点击交互 Tooltip",
+        "en": "Custom Click Tooltip"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/kpvnavJgo0/tooltip.gif"
     }
   ]
 }

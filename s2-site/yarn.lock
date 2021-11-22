@@ -87,10 +87,10 @@
     "@antv/util" "~2.0.0"
     gl-matrix "^3.0.0"
 
-"@antv/gatsby-theme-antv@^1.1.13":
-  version "1.1.13"
-  resolved "https://registry.yarnpkg.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.13.tgz#1acf9055de52ff5ffc8e73bdd02c7920f0284ef8"
-  integrity sha512-SUfmwviW6wsL8dPBZzv8ULs/yyR4bx82XB8/x4fERFk0Ut2On4q54ekwG5OgBban8bsivsPNTTWkp7+x/cRhjQ==
+"@antv/gatsby-theme-antv@^1.1.15":
+  version "1.1.15"
+  resolved "https://registry.yarnpkg.com/@antv/gatsby-theme-antv/-/gatsby-theme-antv-1.1.15.tgz#25ad49656fbb7eef4eccfef62d8395aee8edc530"
+  integrity sha512-4H9wBLJvZXrR1vQOaggIQzXLyZEyp1610YDbmTLLoUcPbmhrzehH8LmBM0WsXi94DUsRXNdf3n/462SMamD7KQ==
   dependencies:
     "@ant-design/icons" "^4.1.0"
     "@hot-loader/react-dom" "^16.9.0+4.12.11"
@@ -151,8 +151,6 @@
     ptz-i18n "^1.0.0"
     rc-drawer "^4.0.0"
     rc-footer "^0.6.1"
-    react "^16.9.0"
-    react-dom "^16.9.0"
     react-github-btn "^1.2.0"
     react-github-button "^0.1.11"
     react-helmet "^6.0.0"
@@ -12482,7 +12480,7 @@ react-dev-utils@^4.2.3:
     strip-ansi "3.0.1"
     text-table "0.2.0"
 
-react-dom@^16.10.2, react-dom@^16.9.0:
+react-dom@^16.10.2:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
   integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
@@ -12650,7 +12648,7 @@ react-use@^15.0.0:
     ts-easing "^0.2.0"
     tslib "^2.0.0"
 
-react@^16.10.2, react@^16.9.0:
+react@^16.10.2:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
