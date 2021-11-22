@@ -1,7 +1,5 @@
 import { PivotSheet, S2Event, MergedCell } from '@antv/s2';
-import React from 'react';
-
-import { Button } from 'antd';
+import insertCss from 'insert-css';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
@@ -9,28 +7,21 @@ fetch(
   .then((res) => res.json())
   .then((res) => {
     const container = document.getElementById('container');
+    const tooltipComponent = () => {
+      const button = document.createElement('button');
+      button.innerText = '点击合并单元格';
+      button.className = 'merge-cells-button';
+      button.onclick = () => s2.interaction.mergeCells();
+      return button;
+    } // (按住 Cmd/ Ctrl 多选)
 
-    const TooltipComponent = (
-      <Button
-        className="s2-action-btn"
-        key={'button'}
-        onClick={() => {
-          s2.interaction.mergeCells();
-        }}
-      >
-        合并单元格
-      </Button>
-    ); // (按住 Cmd/ Ctrl 多选)
-
-    const mergedCellsTooltip = (mergedCell: MergedCell) => (
-      <Button
-        onClick={() => {
-          s2.interaction.unmergeCell(mergedCell);
-        }}
-      >
-        取消合并单元格
-      </Button>
-    );
+    const mergedCellsTooltip = (mergedCell: MergedCell) => {
+      const button = document.createElement('button');
+      button.innerText = '取消合并单元格';
+      button.className = 'merge-cells-button';
+      button.onclick = () => s2.interaction.unmergeCell(mergedCell);
+      return button;
+    }
 
     const s2DataConfig = {
       fields: {
@@ -47,7 +38,8 @@ fetch(
       height: 480,
       selectedCellsSpotlight: true,
       tooltip: {
-        tooltipComponent: TooltipComponent,
+        showTooltip: true,
+        tooltipComponent: tooltipComponent(),
       },
       mergedCellsInfo: [
         [
@@ -60,11 +52,13 @@ fetch(
         ],
       ],
     };
-
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
+
     s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
+      console.log('mergedCellsClick', event);
       const cell: MergedCell = s2.getCell(event.target);
+      s2.tooltip.hide();
       s2.tooltip.show({
         position: { x: event.clientX, y: event.clientY },
         element: mergedCellsTooltip(cell),
@@ -75,6 +69,26 @@ fetch(
   });
 
 insertCss(`
+  .merge-cells-button {
+    border: 1px solid transparent;
+    box-shadow: 0 2px #00000004;
+    cursor: pointer;
+    height: 32px;
+    padding: 4px 15px;
+    font-size: 14px;
+    border-radius: 2px;
+    color: #000000d9;
+    border-color: #d9d9d9;
+    background: #fff;
+  }
+  .merge-cells-button:hover {
+    color: #40a9ff;
+    border-color: #40a9ff;
+  }
+  .merge-cells-button:active {
+    color: #096dd9;
+    border-color: #096dd9;
+  }
   .antv-s2-tooltip-container  {
     padding: 10px 64px;
   }
