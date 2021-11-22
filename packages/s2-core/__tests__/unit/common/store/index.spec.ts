@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Store } from '@/common/store';
 
 describe('Store Test', () => {
   let store: Store;
+
   beforeEach(() => {
     store = new Store();
   });
+
   test('should set and get valid key', () => {
     store.set('scrollX', 100);
     expect(store.get('scrollX')).toEqual(100);
@@ -24,5 +25,11 @@ describe('Store Test', () => {
 
     store.clear();
     expect(store.get('scrollX')).toBeUndefined();
+  });
+
+  test('should get store size', () => {
+    store.set('scrollX', 100);
+
+    expect(store.size()).toEqual(1);
   });
 });
