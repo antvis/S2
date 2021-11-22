@@ -1,9 +1,14 @@
 import { TableSheet } from 'src/sheet-type';
 import { assembleDataCfg, assembleOptions } from '../../../util/sheet-entry';
 import { getContainer } from '../../../util/helpers';
-import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
+import {
+  CellTypes,
+  InteractionStateName,
+  SortMethodType,
+} from '@/common/constant/interaction';
 import { getSelectedData } from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
+import { S2Event } from '@/common/constant';
 
 describe('List Table Core Data Process', () => {
   const s2 = new TableSheet(
@@ -99,5 +104,55 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     expect(getSelectedData(ss)).toEqual('"浙江省元"');
+  });
+
+  it('should copy correct data with data filtered', () => {
+    s2.emit(S2Event.RANGE_FILTER, {
+      filterKey: 'province',
+      filteredValues: ['浙江省'],
+    });
+
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[3];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getSelectedData(s2);
+    expect(data).toBe('2330\t四川省\t乐山市\t家具\t桌子');
+
+    s2.interaction.changeState({
+      stateName: InteractionStateName.ALL_SELECTED,
+    });
+    expect(getSelectedData(s2).split('\n').length).toEqual(17);
+    // clear filter condition
+    s2.emit(S2Event.RANGE_FILTER, {
+      filterKey: 'province',
+      filteredValues: [],
+    });
+  });
+
+  it('should copy correct data with data sorted', () => {
+    s2.emit(S2Event.RANGE_SORT, {
+      sortKey: 'number',
+      sortMethod: 'DESC' as SortMethodType,
+    });
+
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[0];
+
+    s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getSelectedData(s2);
+    expect(data).toBe('7789\t浙江省\t杭州市\t家具\t桌子');
+    s2.interaction.changeState({
+      stateName: InteractionStateName.ALL_SELECTED,
+    });
+    expect(getSelectedData(s2).split('\n').length).toEqual(33);
   });
 });

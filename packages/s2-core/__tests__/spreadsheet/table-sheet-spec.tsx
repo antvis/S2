@@ -98,6 +98,7 @@ function MainLayout({ callback }) {
         sortMethod: 'ASC',
       },
     ],
+    filterParams: [{ filterKey: 'area', filteredValues: ['华东'] }],
   } as unknown as S2DataConfig;
 
   const options: S2Options = {
