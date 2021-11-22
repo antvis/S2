@@ -23,7 +23,8 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - run: yarn build
+      - name: Build
+        run: yarn workspace @antv/s2 build:esm
 
       - name: Test
         run: |
