@@ -1,6 +1,6 @@
 import { DEFAULT_STYLE } from '@antv/s2';
 import { getSafetyOptions } from '@/utils/merge';
-import { getTooltipComponent } from '@/common/constant/tooltip';
+import { getTooltipComponent } from '@/utils/tooltip';
 
 describe('merge test', () => {
   test('should get safety options', () => {
