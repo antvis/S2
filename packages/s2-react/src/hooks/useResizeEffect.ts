@@ -24,7 +24,7 @@ export const useResizeEffect = (params: UseResizeEffectParams) => {
 
   const render = React.useCallback(
     (width: number, height: number) => {
-      s2.changeSize(width);
+      s2.changeSize(width, height);
       s2.render(false);
       isFirstRender.current = false;
     },

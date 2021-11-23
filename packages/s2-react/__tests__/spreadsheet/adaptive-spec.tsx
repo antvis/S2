@@ -158,6 +158,39 @@ describe('SheetComponent adaptive Tests', () => {
     expect(canvas.style.height).toEqual(`${s2Options.height}px`);
   });
 
+  test("should don't update canvas size when container resize but disable adaptive", async () => {
+    const newContainerWidth = 800;
+    const newContainerHeight = 300;
+    const containerId = 'resizeContainer';
+
+    // render by option
+    act(() => {
+      ReactDOM.render(
+        <MainLayout adaptive={false} containerId={containerId} />,
+        getContainer(),
+      );
+    });
+
+    // parent size changed, trigger resize observer
+    act(() => {
+      document
+        .getElementById(containerId)
+        .setAttribute(
+          'style',
+          `width: ${newContainerWidth}px; height: ${newContainerHeight}px`,
+        );
+    });
+
+    await sleep(1000);
+
+    const canvas = s2.container.get('el') as HTMLCanvasElement;
+
+    expect(s2.options.width).toEqual(s2Options.width);
+    expect(s2.container.cfg.width).toEqual(s2Options.width);
+    expect(canvas.style.width).toEqual(`${s2Options.width}px`);
+    expect(canvas.style.height).toEqual(`${s2Options.height}px`);
+  });
+
   // canvas need to set "display: block", otherwise have `5px` difference with container
   test('should container height equal canvas height', async () => {
     const containerId = 'blockContainer';
