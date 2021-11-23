@@ -23,7 +23,7 @@ import {
 import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
-import { useResizeEffect } from '@/components/sheets/hooks';
+import { useResizeEffect } from '@/hooks';
 import { S2Pagination } from '@/components/pagination';
 import {
   handleDrillDown,

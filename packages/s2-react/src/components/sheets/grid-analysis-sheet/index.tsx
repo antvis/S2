@@ -16,7 +16,7 @@ import { Header } from '../../header';
 import { BaseSheetProps } from '../interface';
 import { GridAnalysisDataCell } from './grid-analysis-data-cell';
 import { GridAnalysisTheme } from './grid-analysis-theme';
-import { useResizeEffect } from '@/components/sheets/hooks';
+import { useResizeEffect } from '@/hooks';
 import { getSafetyOptions } from '@/utils';
 
 export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {

@@ -86,7 +86,7 @@ const s2 = new TableSheet(container, dataCfg, options);
 
 s2.render();
 
-describe('tablesheet normal spec', () => {
+describe('TableSheet normal spec', () => {
   test('demo', () => {
     expect(1).toBe(1);
   });

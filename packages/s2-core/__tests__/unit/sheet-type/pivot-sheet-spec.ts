@@ -208,6 +208,12 @@ describe('PivotSheet Tests', () => {
     expect(canvas.style.height).toEqual(`500px`);
   });
 
+  test('should set display:block style with canvas', () => {
+    const canvas = s2.container.get('el') as HTMLCanvasElement;
+
+    expect(canvas.style.display).toEqual('block');
+  });
+
   test('should update scroll offset', () => {
     const updateScrollOffsetSpy = jest
       .spyOn(s2.facet, 'updateScrollOffset')
