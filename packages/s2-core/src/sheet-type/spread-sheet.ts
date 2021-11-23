@@ -537,6 +537,13 @@ export abstract class SpreadSheet extends EE {
       zIndex: FRONT_GROUND_GROUP_CONTAINER_Z_INDEX,
     });
     this.initPanelGroupChildren();
+    this.updateContainerStyle();
+  }
+
+  // canvas 需要设置为 块级元素, 不然和父元素有 5px 的高度差
+  protected updateContainerStyle() {
+    const canvas = this.container.get('el') as HTMLCanvasElement;
+    canvas.style.display = 'block';
   }
 
   protected initPanelGroupChildren() {
