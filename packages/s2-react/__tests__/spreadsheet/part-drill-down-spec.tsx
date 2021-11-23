@@ -241,7 +241,7 @@ describe('part drill down', () => {
       getContainer(),
     );
   });
-  test('HandleDrillDown', () => {
+  test('handleDrillDown', () => {
     expect(1).toBe(1);
   });
 });

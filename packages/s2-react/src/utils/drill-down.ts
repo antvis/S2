@@ -35,7 +35,7 @@ export interface ActionIconParams {
   // 下钻维度的列表组件展示
   callback: (
     spreadsheet: SpreadSheet,
-    cashDrillFields: string[],
+    cacheDrillFields: string[],
     disabledFields: string[],
     event?: Event,
   ) => void;
@@ -46,7 +46,7 @@ export interface ActionIconParams {
  * @param spreadsheet
  * @param meta
  */
-export const getDrillDownCash = (spreadsheet: SpreadSheet, meta: Node) => {
+export const getDrillDownCache = (spreadsheet: SpreadSheet, meta: Node) => {
   const drillDownDataCache = spreadsheet.store.get(
     'drillDownDataCache',
     [],
@@ -54,7 +54,7 @@ export const getDrillDownCash = (spreadsheet: SpreadSheet, meta: Node) => {
   const cache = drillDownDataCache.find((dc) => dc.rowId === meta.id);
   return {
     drillDownDataCache: drillDownDataCache,
-    drillDownCurrentCash: cache,
+    drillDownCurrentCache: cache,
   };
 };
 
@@ -67,12 +67,12 @@ export const handleActionIconClick = (params: ActionIconParams) => {
 
   if (iconName === 'DrillDownIcon') {
     spreadsheet.store.set('drillDownNode', meta);
-    const { drillDownDataCache, drillDownCurrentCash } = getDrillDownCash(
+    const { drillDownDataCache, drillDownCurrentCache } = getDrillDownCache(
       spreadsheet,
       meta,
     );
-    const cache = drillDownCurrentCash?.drillField
-      ? [drillDownCurrentCash?.drillField]
+    const cache = drillDownCurrentCache?.drillField
+      ? [drillDownCurrentCache?.drillField]
       : [];
     const disabled = [];
     // 父节点已经下钻过的维度不应该再下钻
@@ -86,12 +86,12 @@ export const handleActionIconClick = (params: ActionIconParams) => {
   }
 };
 
-export const HandleDrillDownIcon = (
+export const handleDrillDownIcon = (
   props: SpreadsheetProps,
   spreadsheet: SpreadSheet,
   callback: (
     spreadsheet: SpreadSheet,
-    cashDownDrillFields: string[],
+    cacheDownDrillFields: string[],
     disabledFields: string[],
     event?: Event,
   ) => void,
@@ -145,17 +145,17 @@ export const HandleDrillDownIcon = (
   return props.options;
 };
 
-export const HandleDrillDown = (params: DrillDownParams) => {
+export const handleDrillDown = (params: DrillDownParams) => {
   const { fetchData, spreadsheet, drillFields, drillItemsNum } = params;
   spreadsheet.store.set('drillItemsNum', drillItemsNum);
   const meta = spreadsheet.store.get('drillDownNode');
-  const { drillDownDataCache, drillDownCurrentCash } = getDrillDownCash(
+  const { drillDownDataCache, drillDownCurrentCache } = getDrillDownCache(
     spreadsheet,
     meta,
   );
   let newDrillDownDataCache = clone(drillDownDataCache);
   // 如果当前节点已有下钻缓存，需要清除
-  if (drillDownCurrentCash) {
+  if (drillDownCurrentCache) {
     newDrillDownDataCache = filter(
       drillDownDataCache,
       (cache) => cache.rowId !== meta.id,

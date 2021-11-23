@@ -20,6 +20,8 @@
     "clean": "lerna clean -y && rimraf node_modules",
     "clean:lock-file": "rm -rf yarn.lock",
     "core:start": "yarn workspace @antv/s2 start",
+    "react:start": "yarn workspace @antv/s2-react test:live",
+    "react:playground": "yarn workspace @antv/s2-react start",
     "build": "lerna run build --include-dependencies --stream --concurrency 1",
     "build:umd": "lerna run build:umd --include-dependencies --stream --concurrency 1",
     "bundle:size": "lerna run bundle:size --stream",

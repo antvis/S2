@@ -1,5 +1,5 @@
 ---
-title: 合并单元格 Merge Cell
+title: 合并单元格
 order: 5
 ---
 
@@ -313,7 +313,7 @@ const s2options = {
     // 表格渲染后，会展示一个合并单元格
     mergedCellsInfo: [
       { colIndex: 1, rowIndex: 6, showText: true }, // 此单元格的 meta 信息将作为合并单元的 meta 信息
-      { colIndex: 1, rowIndex: 7 },
+      { colIndex: 1, rowIndex: 7 }, 
       { colIndex: 2, rowIndex: 6 },
       { colIndex: 2, rowIndex: 7 },
       { colIndex: 3, rowIndex: 6 },
@@ -337,7 +337,7 @@ s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
 
 ## demo 演示
 
-- 合并操作：shift + 单选操作，选择多个连续单元格通过 tooltip 进行合并
+- 合并操作：Cmd/Ctrl + 单选操作，选择多个连续单元格通过 tooltip 进行合并
 - 取消合并操作：点击合并单元格，通过 tooltip 取消合并
 
 <playground path='interaction/advanced/demo/merge-cells.tsx' rid='container' height='400'></playground>
