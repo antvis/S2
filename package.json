@@ -16,10 +16,11 @@
     "spreadsheet"
   ],
   "scripts": {
-    "bootstrap": "npx lerna bootstrap",
+    "bootstrap": "npx lerna bootstrap && yarn workspace @antv/s2 build:esm",
     "clean": "lerna clean -y && rimraf node_modules",
     "clean:lock-file": "rm -rf yarn.lock",
     "core:start": "yarn workspace @antv/s2 start",
+    "core:watch": " yarn workspace @antv/s2 watch",
     "react:start": "yarn workspace @antv/s2-react test:live",
     "react:playground": "yarn workspace @antv/s2-react start",
     "build": "lerna run build --include-dependencies --stream --concurrency 1",
