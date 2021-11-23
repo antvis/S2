@@ -12,9 +12,9 @@ import { data as originData } from '../../data/mock-dataset.json';
 import { data as drillDownData } from '../../data/mock-drill-down-dataset.json';
 import {
   handleActionIconClick,
-  HandleDrillDown,
-  HandleDrillDownIcon,
-  getDrillDownCash,
+  handleDrillDown,
+  handleDrillDownIcon,
+  getDrillDownCache,
 } from '@/utils';
 import { PartDrillDown, PartDrillDownInfo } from '@/components';
 
@@ -90,7 +90,7 @@ describe('Drill Down Test', () => {
     mockInstance.options = mockOptions;
   });
 
-  test('for HandleDrillDown function', async () => {
+  test('for handleDrillDown function', async () => {
     mockInstance.store.set('drillDownNode', cityNode);
     const drillDownCfg = {
       rows: mockDataCfg.fields.rows,
@@ -98,14 +98,14 @@ describe('Drill Down Test', () => {
       fetchData,
       spreadsheet: mockInstance,
     };
-    HandleDrillDown(drillDownCfg);
+    handleDrillDown(drillDownCfg);
     await sleep(1000);
     expect(mockInstance.store.get('drillDownDataCache')).not.toBeEmpty();
     expect(mockInstance.store.get('drillDownIdPathMap')).not.toBeEmpty();
   });
 
-  test('for HandleDrillDownIcon function', async () => {
-    const mergedOptions = HandleDrillDownIcon(
+  test('for handleDrillDownIcon function', async () => {
+    const mergedOptions = handleDrillDownIcon(
       {
         options: mockInstance.options,
         dataCfg: mockInstance.dataCfg,
@@ -130,7 +130,7 @@ describe('Drill Down Test', () => {
     );
   });
 
-  test('for getDrillDownCash function', async () => {
+  test('for getDrillDownCache function', async () => {
     const mockDrillDownDataCache = {
       rowId: 'root[&]浙江省[&]杭州市',
       drillLevel: 0,
@@ -138,11 +138,11 @@ describe('Drill Down Test', () => {
       drillDownData,
     };
     mockInstance.store.set('drillDownDataCache', [mockDrillDownDataCache]);
-    const { drillDownDataCache, drillDownCurrentCash } = getDrillDownCash(
+    const { drillDownDataCache, drillDownCurrentCache } = getDrillDownCache(
       mockInstance,
       cityNode,
     );
     expect(drillDownDataCache).not.toBeEmpty();
-    expect(drillDownCurrentCash).toEqual(mockDrillDownDataCache);
+    expect(drillDownCurrentCache).toEqual(mockDrillDownDataCache);
   });
 });
