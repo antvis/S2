@@ -41,11 +41,12 @@ export class BaseTooltip {
     const container = this.getContainer();
     const { tooltipComponent, getTooltipComponent, autoAdjustBoundary } =
       this.spreadsheet.options.tooltip || {};
+    this.container.innerHTML = '';
 
     if (getTooltipComponent) {
       getTooltipComponent(showOptions, container);
     } else {
-      const customComponent = element || tooltipComponent;
+      const customComponent = tooltipComponent || element;
       if (customComponent) {
         if (typeof customComponent === 'string') {
           this.container.innerHTML = customComponent;
