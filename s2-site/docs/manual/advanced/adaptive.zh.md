@@ -1,0 +1,79 @@
+---
+title: 表格自适应
+order: 9
+---
+
+表格默认根据配置的 `width` 和 `height` 渲染
+
+```ts
+const s2Options = {
+  width: 600,
+  height: 400,
+}
+```
+
+![preview](https://gw.alipayobjects.com/zos/antfincdn/WmM9%24SLfu/2396a53f-8946-497a-9e68-fd89f01077ff.png)
+
+### 窗口自适应
+
+如果想让表格撑满整个父容器, 可以监听 窗口的 `resize` 事件, 或使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 监听容器大小变化, 然后更新表格宽高
+
+```ts
+import { PivotSheet } from '@antv/s2'
+import { debounce } from 'lodash'
+
+const s2 = new PivotSheet(...)
+
+const debounceRender = debounce((width, height) => {
+  s2.changeSize(width, height)
+  s2.render(false) // 不重新加载数据
+}, 200)
+
+window.addEventListener('resize', () => {
+  const parent = /* 你的容器节点 */
+  const { width, height } = parent.getBoundingClientRect()
+  debounceRender(width, height)
+})
+```
+
+![preview](https://gw.alipayobjects.com/zos/antfincdn/8kmgXX%267U/Kapture%2525202021-11-23%252520at%25252017.59.16.gif)
+
+### 容器自适应
+
+如果是容器本身大小发生改变, 而不是窗口, 那么可以使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 获取到实时的容器大小
+
+```ts
+import { PivotSheet } from '@antv/s2'
+import { debounce } from 'lodash'
+
+const s2 = new PivotSheet(...)
+
+const parent = /* 你的容器节点 */
+
+const debounceRender = debounce((width, height) => {
+  s2.changeSize(width, height)
+  s2.render(false) // 不重新加载数据
+}, 200)
+
+const resizeObserver = new ResizeObserver(([entry] = []) => {
+  const [size] = entry.borderBoxSize || [];
+  debounceRender(size.inlineSize, size.blockSize)
+});
+
+resizeObserver.observe(parent);
+
+// 取消监听
+// resizeObserver.unobserve(parent)
+```
+
+![preview](https://gw.alipayobjects.com/zos/antfincdn/IFNNjZ862/Kapture%2525202021-11-23%252520at%25252019.07.37.gif)
+
+### React 组件
+
+如果是使用 `@antv/s2-react` 的方式, 那么配置 `adaptive` 参数即可, 默认集成了上面的两种方式
+
+```tsx
+import { SheetComponent } from '@antv/s2-react'
+
+<SheetComponent adaptive />
+```
