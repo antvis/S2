@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { isFunction, merge } from 'lodash';
 import { Spin } from 'antd';
 import { Event } from '@antv/g-canvas';
-import ReactDOM from 'react-dom';
 import {
   SpreadSheet,
   PivotSheet,
@@ -11,8 +10,6 @@ import {
   S2Options,
   getBaseCellData,
   getSafetyDataConfig,
-  getSafetyOptions,
-  TooltipShowOptions,
   S2Constructor,
 } from '@antv/s2';
 import { Header } from '../../header';
@@ -20,9 +17,7 @@ import { BaseSheetProps } from '../interface';
 import { GridAnalysisDataCell } from './grid-analysis-data-cell';
 import { GridAnalysisTheme } from './grid-analysis-theme';
 import { useResizeEffect } from '@/components/sheets/hooks';
-import { REACT_DEFAULT_OPTIONS } from '@/common/constant';
-import { TooltipRenderProps } from '@/components/tooltip/interface';
-import { TooltipComponent } from '@/components/tooltip';
+import { getSafetyOptions } from '@/utils';
 
 export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
   const {
@@ -82,26 +77,8 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
     setLoading(false);
   };
 
-  const getOptions = (): S2Options => {
-    const s2Options = merge({}, REACT_DEFAULT_OPTIONS, buildOptions());
-    const getTooltipComponent = (
-      tooltipOptions: TooltipShowOptions,
-      tooltipContainer: HTMLElement,
-    ) => {
-      const tooltipProps: TooltipRenderProps = {
-        ...tooltipOptions,
-      };
-      ReactDOM.render(<TooltipComponent {...tooltipProps} />, tooltipContainer);
-    };
-
-    return {
-      ...s2Options,
-      tooltip: { ...s2Options.tooltip, getTooltipComponent },
-    };
-  };
-
   const initSpreadSheet = (): SpreadSheet => {
-    const params: S2Constructor = [container, dataCfg, getOptions()];
+    const params: S2Constructor = [container, dataCfg, buildOptions()];
     if (spreadsheet) {
       return spreadsheet(...params);
     }
