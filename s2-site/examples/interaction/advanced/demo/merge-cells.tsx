@@ -1,4 +1,4 @@
-import { PivotSheet, S2Event, MergedCell } from '@antv/s2';
+import { PivotSheet, S2Event } from '@antv/s2';
 import insertCss from 'insert-css';
 
 fetch(
@@ -7,7 +7,7 @@ fetch(
   .then((res) => res.json())
   .then((res) => {
     const container = document.getElementById('container');
-    const tooltipComponent = () => {
+    const dataCellTooltip = () => {
       const button = document.createElement('button');
       button.innerText = '点击合并单元格';
       button.className = 'merge-cells-button';
@@ -15,7 +15,7 @@ fetch(
       return button;
     } // (按住 Cmd/ Ctrl 多选)
 
-    const mergedCellsTooltip = (mergedCell: MergedCell) => {
+    const mergedCellsTooltip = (mergedCell) => {
       const button = document.createElement('button');
       button.innerText = '取消合并单元格';
       button.className = 'merge-cells-button';
@@ -37,10 +37,6 @@ fetch(
       width: 600,
       height: 480,
       selectedCellsSpotlight: true,
-      tooltip: {
-        showTooltip: true,
-        tooltipComponent: tooltipComponent(),
-      },
       mergedCellsInfo: [
         [
           { colIndex: 1, rowIndex: 6, showText: true },
@@ -54,11 +50,15 @@ fetch(
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
+    s2.on(S2Event.DATA_CELL_CLICK, (event) => {
+      s2.tooltip.show({
+        position: { x: event.clientX, y: event.clientY },
+        element: dataCellTooltip(),
+      });
+    });
 
     s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
-      console.log('mergedCellsClick', event);
-      const cell: MergedCell = s2.getCell(event.target);
-      s2.tooltip.hide();
+      const cell = s2.getCell(event.target);
       s2.tooltip.show({
         position: { x: event.clientX, y: event.clientY },
         element: mergedCellsTooltip(cell),
