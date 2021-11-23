@@ -124,19 +124,32 @@ describe('Tooltip Tests', () => {
   });
 
   test('should display custom dom element', () => {
-    const element = document.createElement('span');
+    const element1 = document.createElement('span');
+    const element2 = document.createElement('span');
 
-    element.className = 'text';
+    element1.className = 'text1';
+    element2.className = 'text2';
 
     tooltip.show({
       position: {
         x: 10,
         y: 10,
       },
-      element,
+      element: element1,
     });
 
-    expect(tooltip.container.querySelector('.text')).toBeTruthy();
+    expect(tooltip.container.querySelector('.text1')).toBeTruthy();
+
+    tooltip.show({
+      position: {
+        x: 10,
+        y: 10,
+      },
+      element: element2,
+    });
+
+    expect(tooltip.container.querySelector('.text2')).toBeTruthy();
+    expect(tooltip.container.children.length).toBe(1);
   });
 
   test('should display custom string tooltipComponent', () => {

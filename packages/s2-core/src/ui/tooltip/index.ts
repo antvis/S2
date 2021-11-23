@@ -41,6 +41,7 @@ export class BaseTooltip {
     const container = this.getContainer();
     const { tooltipComponent, getTooltipComponent, autoAdjustBoundary } =
       this.spreadsheet.options.tooltip || {};
+    this.container.innerHTML = '';
 
     if (getTooltipComponent) {
       getTooltipComponent(showOptions, container);
