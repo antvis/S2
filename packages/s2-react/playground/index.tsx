@@ -116,7 +116,7 @@ const Playground: FC = () => {
     data,
   };
 
-  return <SheetComponent dataCfg={s2DataConfig} options={s2options} adaptive />;
+  return <SheetComponent dataCfg={s2DataConfig} options={s2options} />;
 };
 
 ReactDOM.render(<Playground />, document.getElementById('root'));

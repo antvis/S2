@@ -39,7 +39,7 @@ export const useResizeEffect = (params: UseResizeEffectParams) => {
       s2?.changeSize(options.width, options.height);
       s2?.render(false);
     }
-  }, [s2, options.width, options.height, adaptive]);
+  }, [options.width, options.height, adaptive]);
 
   // rerender by container resize or window resize
   React.useLayoutEffect(() => {
@@ -65,5 +65,5 @@ export const useResizeEffect = (params: UseResizeEffectParams) => {
     return () => {
       resizeObserver.unobserve(container);
     };
-  }, [container, s2, adaptive, render, debounceRender]);
+  }, [adaptive, container, debounceRender, render]);
 };
