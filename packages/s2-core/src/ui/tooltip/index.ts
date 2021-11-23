@@ -46,7 +46,7 @@ export class BaseTooltip {
     if (getTooltipComponent) {
       getTooltipComponent(showOptions, container);
     } else {
-      const customComponent = element || tooltipComponent;
+      const customComponent = tooltipComponent || element;
       if (customComponent) {
         if (typeof customComponent === 'string') {
           this.container.innerHTML = customComponent;
