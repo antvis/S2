@@ -384,7 +384,17 @@ export abstract class SpreadSheet extends EE {
    * @param width
    * @param height
    */
-  public changeSize(width: number, height: number) {
+  public changeSize(
+    width: number = this.options.width,
+    height: number = this.options.height,
+  ) {
+    const isEqualSize =
+      width === this.options.width && height === this.options.height;
+
+    if (isEqualSize) {
+      return;
+    }
+
     this.options = merge({}, this.options, { width, height });
     // resize the canvas
     this.container.changeSize(width, height);

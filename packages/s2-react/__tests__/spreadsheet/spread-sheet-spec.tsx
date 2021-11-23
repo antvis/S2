@@ -48,12 +48,10 @@ function MainLayout() {
       current: 1,
     },
     tooltip: {
+      showTooltip: true,
       operation: {
         trend: true,
         hiddenColumns: true,
-      },
-      row: {
-        showTooltip: false,
       },
     },
     totals: showTotals && {

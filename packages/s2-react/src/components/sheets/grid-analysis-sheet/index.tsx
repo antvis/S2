@@ -19,7 +19,7 @@ import { Header } from '../../header';
 import { BaseSheetProps } from '../interface';
 import { GridAnalysisDataCell } from './grid-analysis-data-cell';
 import { GridAnalysisTheme } from './grid-analysis-theme';
-import { useResizeEffect } from '@/components/sheets/hooks';
+import { useResizeEffect } from '@/hooks';
 import { REACT_DEFAULT_OPTIONS } from '@/common/constant';
 import { TooltipRenderProps } from '@/components/tooltip/interface';
 import { TooltipComponent } from '@/components/tooltip';

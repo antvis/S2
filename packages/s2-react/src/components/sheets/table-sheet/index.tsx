@@ -22,10 +22,7 @@ import {
 } from '@antv/s2';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
-import {
-  useResizeEffect,
-  usePaginationEffect,
-} from '@/components/sheets/hooks';
+import { useResizeEffect, usePaginationEffect } from '@/hooks';
 import { S2Pagination } from '@/components/pagination';
 import { REACT_DEFAULT_OPTIONS } from '@/common/constant';
 import { TooltipComponent } from '@/components/tooltip';
