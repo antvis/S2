@@ -540,10 +540,6 @@ export abstract class SpreadSheet extends EE {
     return this.store.get('initColumnNodes', []);
   }
 
-  public hideColumns(hiddenColumnFields: string[] = []) {
-    hideColumnsByThunkGroup(this, hiddenColumnFields);
-  }
-
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息
   private initHiddenColumnsDetail = once(() => {
     const { hiddenColumnFields } = this.options.interaction;

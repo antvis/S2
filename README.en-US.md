@@ -12,9 +12,9 @@ Data-driven multi-dimensional analysis table.
     <img src="https://img.shields.io/npm/dm/@antv/s2.svg" alt="npm"/>
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg" alt="version">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/latest.svg" alt="version">
   </a>
-    <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
+  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg" alt="version">
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
@@ -30,7 +30,7 @@ Data-driven multi-dimensional analysis table.
 
 <p>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="npm bundle size" src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/s2.min.js?label=gzip%20size&compression=gzip" alt="bundle size"/>
+    <img alt="npm bundle size" src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip" alt="bundle size"/>
   </a>
   <a href="https://github.com/antvis/S2/discussions" target="_blank">
     <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="Discussions"/>
@@ -200,6 +200,10 @@ yarn site:start
 ## 👬 Contributors
 
 ![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
+
+## 📧 Contact Us
+
+<img src="width: 100%; height: auto" href="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg" alt="S2"></a>
 
 ## 📄 License
 

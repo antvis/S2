@@ -30,7 +30,7 @@ import { useResizeEffect } from '@/components/sheets/hooks';
 import { S2Pagination } from '@/components/pagination';
 import { TooltipComponent } from '@/components/tooltip';
 import { TooltipRenderProps } from '@/components/tooltip/interface';
-import { HandleDrillDown, HandleDrillDownIcon } from '@/utils';
+import { handleDrillDown, handleDrillDownIcon } from '@/utils';
 import { REACT_DEFAULT_OPTIONS } from '@/common/constant';
 
 import './index.less';
@@ -232,7 +232,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
 
     // 处理下钻参数
     if (partDrillDown) {
-      curOptions = HandleDrillDownIcon(curProps, curSheet, iconClickCallback);
+      curOptions = handleDrillDownIcon(curProps, curSheet, iconClickCallback);
     }
 
     curSheet.setOptions(getSafetyOptions(curOptions));
@@ -319,7 +319,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       clearDrillDownInfo(ownSpreadsheet.store.get('drillDownNode')?.id);
     } else {
       setLoading(true);
-      HandleDrillDown({
+      handleDrillDown({
         rows: dataCfg.fields.rows,
         drillFields: drillFields,
         fetchData: partDrillDown.fetchData,

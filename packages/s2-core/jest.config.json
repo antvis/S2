@@ -1,28 +1,20 @@
 {
-  "globals": {
-    "ts-jest": {
-      "diagnostics": {
-        "warnOnly": true
-      }
-    }
-  },
   "runner": "jest-electron/runner",
   "testEnvironment": "jest-electron/environment",
   "setupFilesAfterEnv": ["jest-extended", "./__tests__/setup.js"],
-  "preset": "ts-jest",
   "clearMocks": true,
   "collectCoverage": false,
   "collectCoverageFrom": [
     "src/**/*.{ts,js}",
     "!**/node_modules/**",
-    "!**/vendor/**",
     "!**/interface/**",
     "!**/interface.ts"
   ],
-  "coverageReporters": ["json", "lcov", "text", "clover", "html"],
+  "coverageReporters": ["text", "clover", "html"],
   "transformIgnorePatterns": [],
   "testRegex": "/__tests__/*.*(-|\\.)spec\\.(tsx|ts|js)?$",
   "transform": {
+    "\\.(t|j)sx?$": "@swc/jest",
     "\\.(less|css)$": "jest-less-loader",
     "\\.svg$": "jest-raw-loader"
   },

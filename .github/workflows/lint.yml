@@ -24,7 +24,9 @@ jobs:
         run: yarn
 
       - name: Build
-        run: yarn build
+        run: |
+          yarn workspace @antv/s2 build:esm
+          yarn build:umd
 
       - name: Lint scripts, type, style and docs
         run: yarn lint
@@ -55,7 +57,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           labels: '🚨 lint failed'
-
 
       - name: Remove failed label
         if: ${{ success() && github.event.pull_request.number != '' }}
