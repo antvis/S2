@@ -5,12 +5,6 @@
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
   "types": "esm/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./esm/index.js",
-      "require": "./lib/index.js"
-    }
-  },
   "description": "effective spreadsheet render react lib",
   "license": "MIT",
   "homepage": "https://s2.antv.vision",

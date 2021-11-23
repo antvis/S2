@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import insertCss from 'insert-css';
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
+import { S2Options } from '@antv/s2';
 
 const PALETTE_COLORS = [
   {
@@ -108,8 +109,8 @@ fetch('../data/single-population-proportion.json')
       width: 800,
       height: 600,
       tooltip: {
+        showTooltip: true,
         operation: {
-          trend: true,
           hiddenColumns: true,
         },
       },
@@ -155,7 +156,7 @@ fetch('../data/single-population-proportion.json')
       <div className="root">
         <SheetComponent
           dataCfg={s2DataConfig}
-          options={s2options}
+          options={s2options as S2Options}
           sheetType="pivot"
           adaptive={false}
           header={{
