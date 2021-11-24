@@ -1,0 +1,9 @@
+#!/bin/sh
+
+yarn site:sync-s2-lock
+git checkout -b site-sync-s2-lock
+git add .
+git commit -m "[WIP]docs: sync s2 lock"
+git push origin site-sync-s2-lock --no-verify
+git checkout -
+git branch -D site-sync-s2-lock
