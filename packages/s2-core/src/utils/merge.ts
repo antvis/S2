@@ -16,8 +16,12 @@ export const customMerge = (...objects: unknown[]) => {
 
 export const getSafetyDataConfig = (dataConfig: Partial<S2DataConfig>) => {
   const result = merge({}, DEFAULT_DATA_CONFIG, dataConfig) as S2DataConfig;
-  if (!isEmpty(result.fields.customTreeItems)) {
-    // when there are custom tree config, valueInCols must be false
+
+  // 自定义树和数值为空的场景, 关闭 数值置于列头
+  if (
+    !isEmpty(result.fields.customTreeItems) ||
+    isEmpty(result.fields.values)
+  ) {
     result.fields.valueInCols = false;
   }
   return result;

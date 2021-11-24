@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
+import { S2Options } from '@antv/s2';
 import { SheetComponent } from '@/components';
 
 const Playground: FC = () => {
@@ -102,16 +103,19 @@ const Playground: FC = () => {
       cost: '1',
     },
   ];
-  const s2options = {
+  const s2options: S2Options = {
     width: 600,
     height: 400,
+    style: {
+      layoutWidthType: 'colAdaptive',
+    },
   };
 
   const s2DataConfig = {
     fields: {
       rows: ['province', 'city'],
       columns: ['type'],
-      values: ['price'],
+      values: [''],
     },
     data,
   };
