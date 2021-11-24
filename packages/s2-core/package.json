@@ -29,8 +29,11 @@
   "keywords": [
     "antv",
     "s2",
+    "S2",
+    "s2-core",
     "spreadsheet",
-    "pivot table"
+    "pivot table",
+    "table"
   ],
   "scripts": {
     "start": "yarn test:live",

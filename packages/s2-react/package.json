@@ -5,7 +5,7 @@
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
   "types": "esm/index.d.ts",
-  "description": "effective spreadsheet render react lib",
+  "description": "use S2 with react",
   "license": "MIT",
   "homepage": "https://s2.antv.vision",
   "author": "https://github.com/orgs/antvis/people",
@@ -31,7 +31,8 @@
     "s2",
     "s2-react",
     "spreadsheet",
-    "pivot table"
+    "pivot table",
+    "table"
   ],
   "scripts": {
     "start": "cross-env PLAYGROUND=true vite",
