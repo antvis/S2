@@ -3,4 +3,4 @@ title: Merge Cell
 order: 5
 ---
 
-`markdown:docs/manual/interaction/merge-cell.zh.md`
+`markdown:docs/manual/advanced/interaction/merge-cell.zh.md`
