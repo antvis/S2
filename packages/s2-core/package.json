@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "1.0.0-beta.15",
+  "version": "1.0.3",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
@@ -29,8 +29,11 @@
   "keywords": [
     "antv",
     "s2",
+    "S2",
+    "s2-core",
     "spreadsheet",
-    "pivot table"
+    "pivot table",
+    "table"
   ],
   "scripts": {
     "start": "yarn test:live",
@@ -41,7 +44,7 @@
     "build:umd": "cross-env FORMAT=umd rollup -c rollup.config.js",
     "build:analysis": "cross-env FORMAT=esm ANALYSIS=true rollup -c rollup.config.js",
     "bundle:size": "bundlesize",
-    "watch": "rimraf esm && FORMAT=es rollup -w -c rollup.config.js",
+    "watch": "rimraf esm && FORMAT=esm rollup -w -c rollup.config.js",
     "test:live": "node ./scripts/test-live.mjs",
     "test": "jest",
     "test:coverage": "yarn test --coverage",

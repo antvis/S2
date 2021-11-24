@@ -1,8 +1,7 @@
 // TODO 所有表组件抽取公共hook
 import { Event as GEvent } from '@antv/g-canvas';
 import { Spin } from 'antd';
-import ReactDOM from 'react-dom';
-import { forIn, isFunction, merge } from 'lodash';
+import { forIn, isFunction } from 'lodash';
 import React, { memo, StrictMode, useEffect, useRef, useState } from 'react';
 import {
   SpreadSheet,
@@ -16,20 +15,13 @@ import {
   S2Event,
   getBaseCellData,
   getSafetyDataConfig,
-  getSafetyOptions,
   TableSheet as BaseTableSheet,
-  TooltipShowOptions,
 } from '@antv/s2';
 import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
-import {
-  useResizeEffect,
-  usePaginationEffect,
-} from '@/components/sheets/hooks';
+import { useResizeEffect, usePaginationEffect } from '@/hooks';
 import { S2Pagination } from '@/components/pagination';
-import { REACT_DEFAULT_OPTIONS } from '@/common/constant';
-import { TooltipComponent } from '@/components/tooltip';
-import { TooltipRenderProps } from '@/components/tooltip/interface';
+import { getSafetyOptions } from '@/utils';
 
 export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
@@ -70,26 +62,8 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     options?.pagination?.pageSize || 10,
   );
 
-  const getOptions = (): S2Options => {
-    const s2Options = merge({}, REACT_DEFAULT_OPTIONS, options);
-    const getTooltipComponent = (
-      tooltipOptions: TooltipShowOptions,
-      tooltipContainer: HTMLElement,
-    ) => {
-      const tooltipProps: TooltipRenderProps = {
-        ...tooltipOptions,
-      };
-      ReactDOM.render(<TooltipComponent {...tooltipProps} />, tooltipContainer);
-    };
-
-    return {
-      ...s2Options,
-      tooltip: { ...s2Options.tooltip, getTooltipComponent },
-    };
-  };
-
   const renderSpreadSheet = (): SpreadSheet => {
-    const params: S2Constructor = [container.current, dataCfg, getOptions()];
+    const params: S2Constructor = [container.current, dataCfg, options];
 
     if (spreadsheet) {
       return spreadsheet(...params);

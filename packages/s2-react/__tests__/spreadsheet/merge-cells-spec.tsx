@@ -7,7 +7,6 @@ import {
   S2Options,
   PivotSheet,
   DEFAULT_STYLE,
-  mergeCells,
   MergedCell,
 } from '@antv/s2';
 import {
@@ -18,6 +17,7 @@ import { data as mockData, totalData, meta } from '../data/mock-dataset.json';
 import { getContainer } from '../util/helpers';
 import { SheetComponent, SheetType } from '@/components';
 import 'antd/dist/antd.min.css';
+import '@antv/s2/esm/style.css';
 
 const data = mockData.map((row) => {
   row['profit-tongbi'] = 0.2233;
