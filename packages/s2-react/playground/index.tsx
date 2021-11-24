@@ -106,16 +106,13 @@ const Playground: FC = () => {
   const s2options: S2Options = {
     width: 600,
     height: 400,
-    style: {
-      layoutWidthType: 'colAdaptive',
-    },
   };
 
   const s2DataConfig = {
     fields: {
       rows: ['province', 'city'],
       columns: ['type'],
-      values: [''],
+      values: ['price'],
     },
     data,
   };
