@@ -10,7 +10,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]') && startsWith(github.event.head_commit.message , 'chore(release):')"
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && startsWith(github.event.head_commit.message , 'chore(release):')"
 
     steps:
       - uses: actions/checkout@v2
@@ -33,36 +33,27 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn release
 
-      # 内部开发群
+      # 内部开发和服务群
       - name: Release success ding talk official group notify
         if: ${{ success() }}
         uses: visiky/dingtalk-release-notify@main
         with:
-          DING_TALK_TOKEN: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          DING_TALK_TOKEN: |
+            ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+            ${{ secrets.DING_TALK_GROUP_TOKEN }}
           notify_title: '🎉 {release_tag} 发布 🎉'
-          notify_body: '### { title }<hr /> ![preview](https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png) <hr /> { body } <hr />'
+          notify_body: '### { title } <hr /> ![preview](https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png) <hr /> { body } <hr />'
           at_all: false
           enable_prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') }}
 
-      # 金牌服务群
-      - name: Release success ding talk dev group notify
-        if: ${{ success() }}
-        uses: visiky/dingtalk-release-notify@main
-        with:
-          DING_TALK_TOKEN: ${{ secrets.DING_TALK_GROUP_TOKEN }}
-          notify_title: '🎉 {release_tag} 发布 🎉'
-          notify_body: '### { title }<hr /> ![preview](https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png) <hr /> { body } <hr />'
-          at_all: false
-          enable_prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') }}
-
-      # 官方讨论群, 只推送正式版发布通知
+      # 官方对外讨论群, 只推送正式版发布通知
       - name: Latest release success ding talk public group notify
         if: ${{ success() && contains(github.ref_name, 'latest-release') }}
         uses: visiky/dingtalk-release-notify@main
         with:
           DING_TALK_TOKEN: ${{ secrets.DING_TALK_PUBLIC_TOKEN }}
           notify_title: '🎉 {release_tag} 发布 🎉'
-          notify_body: '### { title }<hr /> ![preview](https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png) <hr /> { body } <hr />'
+          notify_body: '### { title } <hr /> ![preview](https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png) <hr /> { body } <hr />'
           at_all: false
           enable_prerelease: false
 
