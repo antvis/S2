@@ -1,6 +1,5 @@
 {
   "name": "@antv/s2",
-  "private": true,
   "workspaces": [
     "packages/*"
   ],
