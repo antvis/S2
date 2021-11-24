@@ -1,3 +1,11 @@
+# [@antv/s2-react-v1.0.0-beta.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.0.0-beta.1...@antv/s2-react-v1.0.0-beta.2) (2021-11-24)
+
+
+### Bug Fixes
+
+* **components:** fix cannot update table size by container resized ([#796](https://github.com/antvis/S2/issues/796)) ([b48fc3c](https://github.com/antvis/S2/commit/b48fc3cfa77afc50cc553b0c3a08beb0e5baec9e))
+* remove exports config ([#795](https://github.com/antvis/S2/issues/795)) ([b5ab046](https://github.com/antvis/S2/commit/b5ab046976fbf76c8ac8c9fc74bf5e7b94702e56))
+
 ## [1.0.3](https://github.com/antvis/S2/compare/v0.1.1...v1.0.3) (2021-11-24)
 
 
