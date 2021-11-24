@@ -1,28 +1,21 @@
-import { isArray, mergeWith } from 'lodash';
-import { data, totalData, meta } from '../data/mock-dataset.json';
+import { data, totalData, meta } from 'tests/data/mock-dataset.json';
 import {
   DEFAULT_OPTIONS,
   S2DataConfig,
   S2Options,
   DEFAULT_DATA_CONFIG,
 } from '@/index';
+import { customMerge } from '@/utils';
 
 export const assembleOptions = (...options: Partial<S2Options>[]) =>
-  mergeWith(
-    {},
+  customMerge(
     DEFAULT_OPTIONS,
     { debug: true, width: 600, height: 600 },
     ...options,
-    (origin, updated) => {
-      if (isArray(origin) && isArray(updated)) {
-        return updated;
-      }
-    },
   );
 
 export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
-  mergeWith(
-    {},
+  customMerge(
     DEFAULT_DATA_CONFIG,
     {
       fields: {
@@ -36,9 +29,4 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
       totalData,
     },
     ...dataCfg,
-    (origin, updated) => {
-      if (isArray(origin) && isArray(updated)) {
-        return updated;
-      }
-    },
   );

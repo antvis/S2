@@ -1,6 +1,7 @@
-import { getContainer } from 'tests/util/helpers';
+import { getContainer, sleep } from 'tests/util/helpers';
 import * as dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
+import { cloneDeep } from 'lodash';
 import { PivotSheet } from '@/sheet-type';
 import {
   CustomSVGIcon,
@@ -14,10 +15,12 @@ import {
   TOOLTIP_CONTAINER_CLS,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
-import { getSafetyDataConfig } from '@/utils';
+import { customMerge, getSafetyDataConfig } from '@/utils';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
+
+const originalDataCfg = cloneDeep(dataCfg);
 
 describe('PivotSheet Tests', () => {
   let s2: PivotSheet;
@@ -374,5 +377,48 @@ describe('PivotSheet Tests', () => {
       },
     ]);
     expect(renderSpy).toHaveBeenCalledTimes(2);
+  });
+
+  describe('Test Layout by dataCfg fields', () => {
+    beforeEach(() => {
+      s2.destroy();
+    });
+
+    it('should render column leaf nodes if columns is empty but config values fields', () => {
+      const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
+        fields: {
+          columns: [],
+        },
+      } as S2DataConfig);
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+      sheet.render();
+
+      expect(sheet.facet.layoutResult.colLeafNodes).toHaveLength(
+        originalDataCfg.fields.values.length,
+      );
+
+      expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
+    });
+
+    // https://github.com/antvis/S2/issues/777
+    it('should cannot render row leaf nodes if values is empty', () => {
+      const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
+        fields: {
+          values: [],
+          valueInCols: true,
+        },
+      } as S2DataConfig);
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+      sheet.render();
+
+      // if value empty, not render value cell in row leaf nodes
+      expect(sheet.facet.layoutResult.rowLeafNodes).toHaveLength(0);
+      expect(sheet.facet.layoutResult.colNodes).toHaveLength(1);
+      expect(sheet.facet.layoutResult.colNodes[0].field).toEqual(
+        dataCfg.fields.columns[0],
+      );
+      // modify valueInCols config
+      expect(sheet.dataCfg.fields.valueInCols).toBeFalsy();
+    });
   });
 });

@@ -75,7 +75,7 @@ export abstract class BaseDataSet {
    * 获得字段名称
    * @param field
    */
-  public getFieldFormatter(field: string, viewMeta?: ViewMeta): Formatter {
+  public getFieldFormatter(field: string): Formatter {
     return get(this.getFieldMeta(field, this.meta), 'formatter', identity);
   }
 
