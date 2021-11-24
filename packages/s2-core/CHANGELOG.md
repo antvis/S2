@@ -1,3 +1,14 @@
+# [@antv/s2-v1.0.0-beta.16](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.15...@antv/s2-v1.0.0-beta.16) (2021-11-24)
+
+
+### Bug Fixes
+
+* **components:** fix cannot update table size by container resized ([#796](https://github.com/antvis/S2/issues/796)) ([b48fc3c](https://github.com/antvis/S2/commit/b48fc3cfa77afc50cc553b0c3a08beb0e5baec9e))
+* **facet:** getAdjustedScrollY add negative check ([#816](https://github.com/antvis/S2/issues/816)) ([675eab8](https://github.com/antvis/S2/commit/675eab8e1555f0e8da0bd5c4a7d117ad5a667dcb))
+* remove '' on copied data ([#817](https://github.com/antvis/S2/issues/817)) ([2bfb1d2](https://github.com/antvis/S2/commit/2bfb1d2e05d9165589811e7352bbe9f73e209398))
+* solve the wrong collapse status and tweak the default icon size for the corner cell and close [#791](https://github.com/antvis/S2/issues/791) ([#798](https://github.com/antvis/S2/issues/798)) ([6bfa17b](https://github.com/antvis/S2/commit/6bfa17b258adf865046743bf4343e9c9a2144d99))
+* tooltip childNode repete show and add test ([#803](https://github.com/antvis/S2/issues/803)) ([744d0ea](https://github.com/antvis/S2/commit/744d0ea05e74fb630b4d3e7f6d4ebe8efba0f7e8))
+
 ## [1.0.3](https://github.com/antvis/S2/compare/v0.1.1...v1.0.3) (2021-11-24)
 
 
