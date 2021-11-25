@@ -494,7 +494,7 @@ export abstract class BaseFacet {
     if (scrollY + panelHeight >= rendererHeight) {
       return rendererHeight - panelHeight;
     }
-    return scrollY;
+    return Math.max(0, scrollY);
   };
 
   private getAdjustedScrollOffset = ({

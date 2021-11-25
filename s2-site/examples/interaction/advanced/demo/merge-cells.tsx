@@ -7,8 +7,8 @@ fetch(
   .then((res) => res.json())
   .then((res) => {
     const container = document.getElementById('container');
+    const button = document.createElement('button');
     const dataCellTooltip = () => {
-      const button = document.createElement('button');
       button.innerText = '点击合并单元格';
       button.className = 'merge-cells-button';
       button.onclick = () => s2.interaction.mergeCells();
@@ -16,7 +16,6 @@ fetch(
     } // (按住 Cmd/ Ctrl 多选)
 
     const mergedCellsTooltip = (mergedCell) => {
-      const button = document.createElement('button');
       button.innerText = '取消合并单元格';
       button.className = 'merge-cells-button';
       button.onclick = () => s2.interaction.unmergeCell(mergedCell);

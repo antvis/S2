@@ -32,9 +32,9 @@ const handleGridRowColHierarchy = (params: HeaderParams) => {
     isRowHeader,
   } = params;
   // add new total measure in total node
-  let addTotalMeasureInTotal;
+  let addTotalMeasureInTotal: boolean;
   // add measure info in total query
-  let addMeasureInTotalQuery;
+  let addMeasureInTotalQuery: boolean;
   if (isRowHeader) {
     addTotalMeasureInTotal = !isValueInCols && moreThanOneValue;
     addMeasureInTotalQuery = !isValueInCols && !moreThanOneValue;

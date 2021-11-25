@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
+import type { S2Options } from '@antv/s2';
 import { SheetComponent } from '@/components';
 
-const Playground: FC = () => {
+const Playground: React.FC = () => {
   const data = [
     {
       province: '浙江',
@@ -102,7 +103,7 @@ const Playground: FC = () => {
       cost: '1',
     },
   ];
-  const s2options = {
+  const s2options: S2Options = {
     width: 600,
     height: 400,
   };

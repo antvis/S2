@@ -30,12 +30,19 @@ const format = (cell: S2CellType, spreadsheet: SpreadSheet) => {
   return meta.fieldValue;
 };
 
+const convertString = (v: string) => {
+  if (/\t|\n/.test(v)) {
+    return JSON.stringify(v);
+  }
+  return v;
+};
+
 export const processCopyData = (
   cells: S2CellType[][],
   spreadsheet: SpreadSheet,
 ): string => {
   const getRowString = (pre: string, cur: S2CellType) =>
-    pre + (cur ? getCsvString(format(cur, spreadsheet)) : '') + '\t';
+    pre + (cur ? convertString(format(cur, spreadsheet)) : '') + '\t';
   const getColString = (pre: string, cur: S2CellType[]) =>
     pre + cur.reduce(getRowString, '').slice(0, -1) + '\n';
   return cells.reduce(getColString, '').slice(0, -1);

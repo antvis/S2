@@ -490,14 +490,14 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   private getFieldFormatterForTotalValue(cellMeta?: ViewMeta) {
-    let valueField;
+    let valueField: string;
     // 当数据置于行头时，小计总计列尝试去找对应的指标
     if (!this.spreadsheet.isValueInCols() && cellMeta) {
       valueField = get(cellMeta.rowQuery, EXTRA_FIELD);
     }
 
     // 如果没有找到对应指标，则默认取第一个维度
-    valueField = valueField ?? this.fields.values[0];
+    valueField = valueField ?? get(this.fields.values, 0);
 
     return super.getFieldFormatter(valueField);
   }

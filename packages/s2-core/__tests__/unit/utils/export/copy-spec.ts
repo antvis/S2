@@ -1,6 +1,8 @@
 import { TableSheet } from 'src/sheet-type';
 import { assembleDataCfg, assembleOptions } from '../../../util';
 import { getContainer } from '../../../util/helpers';
+import { data as originalData } from '../../../data/mock-dataset.json';
+
 import {
   CellTypes,
   InteractionStateName,
@@ -43,7 +45,7 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2)).toEqual('"浙江省"');
+    expect(getSelectedData(s2)).toEqual('浙江省');
   });
 
   it('should copy col data', () => {
@@ -103,7 +105,7 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(ss)).toEqual('"浙江省元"');
+    expect(getSelectedData(ss)).toEqual('浙江省元');
   });
 
   it('should copy correct data with data filtered', () => {
@@ -154,5 +156,38 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.ALL_SELECTED,
     });
     expect(getSelectedData(s2).split('\n').length).toEqual(33);
+  });
+
+  it('should copy correct data with \n data', () => {
+    const newLineText = `1
+    2`;
+    const sss = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [{ field: 'province', formatter: (v) => v + '元' }],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+        data: originalData.map((e) => ({ ...e, city: newLineText })),
+      }),
+      assembleOptions({
+        interaction: {
+          enableCopy: true,
+        },
+        showSeriesNumber: true,
+      }),
+    );
+    sss.render();
+
+    const cell = sss.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.DATA_CELL)[20];
+
+    sss.interaction.changeState({
+      cells: [getCellMeta(cell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    const data = getSelectedData(sss);
+    expect(data).toBe(JSON.stringify(newLineText));
   });
 });
