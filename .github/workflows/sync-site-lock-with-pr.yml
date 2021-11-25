@@ -27,8 +27,16 @@ jobs:
       - name: Sync Locale site @antv/s2 and @antv/s2-react lock
         run: yarn site:sync-s2-lock
 
+      - name: Push lock
+        run: |
+          git checkout -b ci-sync-s2-lock
+          git add .
+          git commit -m "chore: 🤖 auto sync site s2 lock"
+          git push origin ci-sync-s2-lock -n
+
       # 使用官方的 github cli 便捷的创建 pr
       - name: Create PR
-        run: gh pr create --title "chore: 🤖 auto sync site s2 lock" --body "This PR is created automatically." --base master
+        run: |
+          gh pr create -f --base master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
