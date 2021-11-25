@@ -1,0 +1,34 @@
+name: 🔁 Sync Site Lock
+
+# 自动发布 action 执行完成后再执行 (无论成功失败都会执行)
+on:
+  workflow_run:
+    workflows: ["🚀 Auto Release"]
+    types:
+      - completed
+
+jobs:
+  sync-site-lock:
+    runs-on: ubuntu-latest
+    # 自动发布成功后
+    if: github.event.workflow_run.conclusion == 'success'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Sync Locale site @antv/s2 and @antv/s2-react lock
+        run: yarn site:sync-s2-lock
+
+      # 使用官方的 github cli 便捷的创建 pr
+      - name: Create PR
+        run: gh pr create --title "chore: 🤖 auto sync site s2 lock" --body "This PR is created automatically." --base master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
