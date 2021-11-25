@@ -24,7 +24,5 @@ export const addTotals = (params: TotalParams) => {
     }
   }
 
-  if (totalValue) {
-    fieldValues[action]?.(totalValue);
-  }
+  fieldValues[action]?.(totalValue);
 };

@@ -38,9 +38,6 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     hierarchy,
   } = params;
 
-  if (!currentField) {
-    return;
-  }
   const index = fields.indexOf(currentField);
   const { dataSet, values, spreadsheet } = facetCfg;
   const fieldValues: FieldValue[] = [];
@@ -85,7 +82,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       currentField,
       lastField: fields[index - 1],
       isFirstField: index === 0,
-      fieldValues: compact(fieldValues),
+      fieldValues,
       spreadsheet,
     });
   }
