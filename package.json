@@ -54,7 +54,7 @@
     "lint:fix-style": "yarn lint:style --fix",
     "lint:fix-docs": "yarn lint:docs --fix",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && lerna run changelog --stream",
-    "upgrade": "yarn upgrade-interactive",
+    "update:deps": "yarn upgrade-interactive",
     "prepare": "husky install && yarn build:core"
   },
   "commitlint": {
