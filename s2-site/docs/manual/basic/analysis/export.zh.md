@@ -11,7 +11,9 @@ order: 11
 
 ```typescript
 const s2options = {
-  enableCopy: true
+  interaction: {
+    enableCopy: true
+  }
 };
 ```
 
