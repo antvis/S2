@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { compact, isEmpty } from 'lodash';
 import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { layoutArrange } from '@/facet/layout/layout-hooks';
@@ -37,6 +37,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     facetCfg,
     hierarchy,
   } = params;
+
   const index = fields.indexOf(currentField);
   const { dataSet, values, spreadsheet } = facetCfg;
   const fieldValues: FieldValue[] = [];
@@ -88,7 +89,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
   generateHeaderNodes({
     currentField,
     fields,
-    fieldValues,
+    fieldValues: compact(fieldValues),
     facetCfg,
     hierarchy,
     parentNode,

@@ -1,4 +1,4 @@
-import { getContainer, sleep } from 'tests/util/helpers';
+import { getContainer } from 'tests/util/helpers';
 import * as dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
 import { cloneDeep } from 'lodash';
@@ -37,11 +37,16 @@ describe('PivotSheet Tests', () => {
     customSVGIcons: [customSVGIcon],
   };
 
-  const container = getContainer();
+  let container: HTMLDivElement;
 
   beforeAll(() => {
+    container = getContainer();
     s2 = new PivotSheet(container, dataCfg, s2Options);
     s2.render();
+  });
+
+  afterAll(() => {
+    container?.remove();
   });
 
   describe('PivotSheet Tooltip Tests', () => {
@@ -384,7 +389,7 @@ describe('PivotSheet Tests', () => {
       s2.destroy();
     });
 
-    it('should render column leaf nodes if columns is empty but config values fields', () => {
+    it('should render column leaf nodes if column fields is empty but config values fields', () => {
       const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
         fields: {
           columns: [],
@@ -393,16 +398,56 @@ describe('PivotSheet Tests', () => {
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
       sheet.render();
 
-      expect(sheet.facet.layoutResult.colLeafNodes).toHaveLength(
+      const { layoutResult } = sheet.facet;
+
+      expect(layoutResult.colLeafNodes).toHaveLength(
         originalDataCfg.fields.values.length,
       );
-
+      expect(layoutResult.colNodes).toHaveLength(
+        originalDataCfg.fields.values.length,
+      );
       expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
+    });
+
+    it('should render empty row nodes if rows fields is empty', () => {
+      const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
+        fields: {
+          rows: [],
+        },
+      } as S2DataConfig);
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+      sheet.render();
+
+      const { layoutResult } = sheet.facet;
+
+      expect(layoutResult.rowLeafNodes).toHaveLength(0);
+      expect(layoutResult.rowNodes).toHaveLength(0);
+      expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
+    });
+
+    it('should only render value nodes in column if rows & columns fields is empty', () => {
+      const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
+        fields: {
+          rows: [],
+          columns: [],
+        },
+      } as S2DataConfig);
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+      sheet.render();
+
+      const { layoutResult } = sheet.facet;
+
+      expect(layoutResult.colLeafNodes).toHaveLength(
+        originalDataCfg.fields.values.length,
+      );
+      expect(layoutResult.colNodes).toHaveLength(
+        originalDataCfg.fields.values.length,
+      );
     });
 
     // https://github.com/antvis/S2/issues/777
     it('should cannot render row leaf nodes if values is empty', () => {
-      const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
+      const layoutDataCfg: S2DataConfig = customMerge(originalDataCfg, {
         fields: {
           values: [],
           valueInCols: true,
@@ -411,11 +456,17 @@ describe('PivotSheet Tests', () => {
       const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
       sheet.render();
 
+      const { layoutResult } = sheet.facet;
       // if value empty, not render value cell in row leaf nodes
-      expect(sheet.facet.layoutResult.rowLeafNodes).toHaveLength(0);
-      expect(sheet.facet.layoutResult.colNodes).toHaveLength(1);
-      expect(sheet.facet.layoutResult.colNodes[0].field).toEqual(
-        dataCfg.fields.columns[0],
+      expect(layoutResult.rowLeafNodes).toHaveLength(0);
+      expect(layoutResult.colNodes).toHaveLength(
+        originalDataCfg.fields.columns.length,
+      );
+      expect(layoutResult.colLeafNodes).toHaveLength(
+        originalDataCfg.fields.columns.length,
+      );
+      expect(layoutResult.colNodes[0].field).toEqual(
+        originalDataCfg.fields.columns[0],
       );
       // modify valueInCols config
       expect(sheet.dataCfg.fields.valueInCols).toBeFalsy();
