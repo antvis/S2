@@ -24,7 +24,8 @@
     "build": "yarn clean && gatsby build --no-uglify --prefix-paths",
     "clean": "gatsby clean",
     "preview": "gatsby serve",
-    "deploy": "yarn build && gh-pages -d public"
+    "deploy": "yarn build && gh-pages -d public",
+    "sync:s2-lock": "yarn upgrade @antv/s2 @antv/s2-react --latest"
   },
   "resolutions": {
     "monaco-editor-webpack-plugin": "2.0.0",
