@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { S2Event, SpreadSheet } from '@antv/s2';
 import { getContainer } from '../util/helpers';
-import { SheetEntry } from '../util/sheet-entry';
+import { SheetEntry } from '../../playground/sheet-entry';
 
 function MainLayout() {
   const [linkFields, setLinkFields] = useState<string[]>(['city']);

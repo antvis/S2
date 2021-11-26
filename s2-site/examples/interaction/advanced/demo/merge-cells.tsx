@@ -13,14 +13,14 @@ fetch(
       button.className = 'merge-cells-button';
       button.onclick = () => s2.interaction.mergeCells();
       return button;
-    } // (按住 Cmd/ Ctrl 多选)
+    }; // (按住 Cmd/ Ctrl 多选)
 
     const mergedCellsTooltip = (mergedCell) => {
       button.innerText = '取消合并单元格';
       button.className = 'merge-cells-button';
       button.onclick = () => s2.interaction.unmergeCell(mergedCell);
       return button;
-    }
+    };
 
     const s2DataConfig = {
       fields: {
@@ -52,7 +52,7 @@ fetch(
     s2.on(S2Event.DATA_CELL_CLICK, (event) => {
       s2.tooltip.show({
         position: { x: event.clientX, y: event.clientY },
-        element: dataCellTooltip(),
+        content: dataCellTooltip(),
       });
     });
 
@@ -60,7 +60,7 @@ fetch(
       const cell = s2.getCell(event.target);
       s2.tooltip.show({
         position: { x: event.clientX, y: event.clientY },
-        element: mergedCellsTooltip(cell),
+        content: mergedCellsTooltip(cell),
       });
     });
 

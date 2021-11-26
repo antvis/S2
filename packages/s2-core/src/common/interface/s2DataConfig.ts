@@ -50,7 +50,6 @@ export interface S2DataConfig {
   sortParams?: SortParams;
   // field filer params
   filterParams?: FilterParam[];
-
   // extra config
   [key: string]: any;
 }

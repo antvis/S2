@@ -21,7 +21,7 @@ export const Interpretation = (props: TooltipInterpretationOptions) => {
   };
 
   const renderElement = () => {
-    return <ReactElement element={render} />;
+    return <ReactElement content={render} />;
   };
 
   return (

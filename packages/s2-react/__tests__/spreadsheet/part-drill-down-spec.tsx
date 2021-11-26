@@ -58,9 +58,7 @@ const getOptions = () => {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            element: ColTooltip,
+            content: ColTooltip,
           });
         },
       },

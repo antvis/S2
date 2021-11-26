@@ -6,11 +6,26 @@ title: '🐛'
 
 ### 🏷 Version
 
+<!-- Required! -->
+
+| Package      | Version |
+| -------------- | --------- |
+| @antv/s2       | -         |
+| @antv/s2-react | -         |
+
 ### 🖋 Description
+
+<!-- Required! -->
+
+### ⌨️ Code Snapshots
+
+<!-- eg. `s2Options` and `s2DataCfg`, or `<SheetComponent {...} />` -->
 
 ### 🔗 Reproduce Link
 
-### 🖥 Steps to Reproduce
+### 🤔 Steps to Reproduce
+
+<!-- Required! -->
 
 ### 😊 Expected Behavior
 

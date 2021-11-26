@@ -36,7 +36,7 @@ fetch(
             const { meta, event } = props;
             meta.spreadsheet.tooltip.show({
               position: { x: event.clientX, y: event.clientY },
-              element: ColTooltip,
+              content: ColTooltip,
             });
           },
         },
@@ -49,7 +49,7 @@ fetch(
             const { meta, event } = props;
             meta.spreadsheet.tooltip.show({
               position: { x: event.clientX, y: event.clientY },
-              element: ColTooltip,
+              content: ColTooltip,
             });
           },
         },
@@ -60,7 +60,7 @@ fetch(
             const { meta, event } = props;
             meta.spreadsheet.tooltip.show({
               position: { x: event.clientX, y: event.clientY },
-              element: CornerTooltip,
+              content: CornerTooltip,
             });
           },
         },
@@ -71,7 +71,7 @@ fetch(
             const { meta, event } = props;
             meta.spreadsheet.tooltip.show({
               position: { x: event.clientX, y: event.clientY },
-              element: RowTooltip,
+              content: RowTooltip,
             });
           },
         },
