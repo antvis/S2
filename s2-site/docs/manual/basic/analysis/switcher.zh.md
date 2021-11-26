@@ -132,7 +132,7 @@ const field = {
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*tElLTIzXBR0AAAAAAAAAAAAAARQnAQ" height="400" alt="preview" />
 
-* `Switcher` 组件的弹出层基于 `Antd Design` 的 [Popover](https://ant.design/components/popover-cn/) 开发，支持透传 `Popover` [配置项](https://ant.design/components/popover-cn/#API), 进行弹出层的自定义，比如 `触发方式`, `箭头指向`, `卡片弹出方向` 等
+* `Switcher` 组件的弹出层基于 `antd` 的 [Popover](https://ant.design/components/popover-cn/) 开发，支持透传 `Popover` [配置项](https://ant.design/components/popover-cn/#API), 进行弹出层的自定义，比如 `触发方式`, `箭头指向`, `卡片弹出方向` 等
 
 ```tsx
 <Switcher popover={{ arrowPointAtCenter: true }} />
