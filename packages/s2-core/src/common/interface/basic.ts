@@ -288,7 +288,7 @@ export interface MergedCellInfo {
 }
 
 /**
- * mergedCell intermediate state, temporary use
+ * the data cell and meta that make up the mergedCell, temporary use
  */
 export type TempMergedCell = {
   cells: S2CellType[];
