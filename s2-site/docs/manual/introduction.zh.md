@@ -208,7 +208,7 @@ s2.render()
 ```bash
 git clone git@github.com:antvis/S2.git
 
-cd s2
+cd S2
 
 yarn
 

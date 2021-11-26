@@ -212,7 +212,7 @@ ReactDOM.render(
 
 ```shell
 git clone git@github.com:antvis/S2.git
-cd s2
+cd S2
 
 # 本地启动开发
 yarn
