@@ -273,12 +273,12 @@ export class PivotDataSet extends BaseDataSet {
     let newColumns = columns;
     let newRows = rows;
     if (valueInCols) {
-      newColumns = PivotDataSet.isCustomMeasuresPosition(customValueOrder)
-        ? PivotDataSet.handleCustomMeasuresOrder(customValueOrder, newColumns)
+      newColumns = this.isCustomMeasuresPosition(customValueOrder)
+        ? this.handleCustomMeasuresOrder(customValueOrder, newColumns)
         : uniq([...columns, EXTRA_FIELD]);
     } else {
-      newRows = PivotDataSet.isCustomMeasuresPosition(customValueOrder)
-        ? PivotDataSet.handleCustomMeasuresOrder(customValueOrder, newRows)
+      newRows = this.isCustomMeasuresPosition(customValueOrder)
+        ? this.handleCustomMeasuresOrder(customValueOrder, newRows)
         : uniq([...rows, EXTRA_FIELD]);
     }
 
@@ -516,7 +516,7 @@ export class PivotDataSet extends BaseDataSet {
    * @param customValueOrder 用户配置度量组位置，从 0 开始
    * @param fields Rows || Columns
    */
-  private static handleCustomMeasuresOrder(
+  private handleCustomMeasuresOrder(
     customValueOrder: number,
     fields: string[],
   ) {
@@ -530,7 +530,7 @@ export class PivotDataSet extends BaseDataSet {
   }
 
   // 是否开启自定义度量组位置值
-  private static isCustomMeasuresPosition(customValueOrder?: number) {
+  private isCustomMeasuresPosition(customValueOrder?: number) {
     return isNumber(customValueOrder);
   }
 }
