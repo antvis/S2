@@ -1,19 +1,20 @@
 <img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18">  [简体中文](./README.md) ｜
 English
 
-<h1 align="center">[WIP]S2</h1>
+<h1 align="center">S2</h1>
 
 <div align="center">
 
 Data-driven multi-dimensional analysis table.
 
-🚧 Coming soon ... [Roadmap for S2](https://github.com/antvis/S2/discussions/258)
-
 <p>
-  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2.svg" alt="version">
+  <a href="https://www.npmjs.com/package/@antv/s2" title="npm">
+    <img src="https://img.shields.io/npm/dm/@antv/s2.svg" alt="npm"/>
   </a>
-    <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
+  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/latest.svg" alt="version">
+  </a>
+  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg" alt="version">
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
@@ -28,19 +29,16 @@ Data-driven multi-dimensional analysis table.
 </p>
 
 <p>
-  <a href="https://david-dm.org/antvis/s2" target="_blank">
-    <img src="https://status.david-dm.org/gh/antvis/S2.svg" alt="dependencies"/>
-  </a>
-  <a href="https://david-dm.org/antvis/S2?type=dev" title="devDependencies status" target="_blank">
-    <img src="https://david-dm.org/antvis/S2/dev-status.svg" alt="devDependencies"/>
-  </a>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/@antv/s2?style=flat-square" alt="bundle size"/>
+    <img alt="npm bundle size" src="https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip" alt="bundle size"/>
+  </a>
+  <a href="https://github.com/antvis/S2/discussions" target="_blank">
+    <img src="https://img.shields.io/badge/discussions-on%20github-blue" alt="Discussions"/>
   </a>
   <a href="https://github.com/actions-cool/issues-helper" target="_blank">
-    <img src="https://img.shields.io/badge/Issues%20Manage%20By-issues--helper-blueviolet" alt="issues-helper"/>
+    <img src="https://img.shields.io/badge/using-issues--helper-blueviolet" alt="issues-helper"/>
   </a>
-  <a href="#" target="_blank" target="_blank">
+  <a href="https://github.com/antvis/S2/blob/master/LICENSE" target="_blank" target="_blank">
     <img alt="License: MIT@AntV" src="https://img.shields.io/badge/License-MIT@AntV-yellow.svg" alt="license"/>
   </a>
 </p>
@@ -167,11 +165,11 @@ s2.render()
 
 ![result](https://gw.alipayobjects.com/zos/antfincdn/vCukbtVNvl/616f7ef1-e626-4225-99f8-dc8f6ca630dd.png)
 
-## Author
+## 👤 Author
 
-👤 [**@AntV**](https://github.com/orgs/antvis/people)
+[**@AntV**](https://github.com/orgs/antvis/people)
 
-## 🤝  Contributing
+## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome.
 Feel free to check [issues](https://github.com/antvis/S2/issues) page if you want to contribute.
@@ -179,7 +177,7 @@ Feel free to check [issues](https://github.com/antvis/S2/issues) page if you wan
 ```bash
 git clone git@github.com:antvis/S2.git
 
-cd s2
+cd S2
 
 yarn
 
@@ -191,6 +189,14 @@ yarn site:bootstrap
 
 yarn site:start
 ```
+
+## 👬 Contributors
+
+![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
+
+## 📧 Contact Us
+
+<img src="width: 100%; height: auto" href="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg" alt="S2"></a>
 
 ## 📄 License
 

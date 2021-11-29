@@ -175,7 +175,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     disabledFields?: string[],
     event?: GEvent,
   ) => {
-    const element = (
+    const content = (
       <DrillDown
         {...partDrillDown.drillConfig}
         setDrillFields={setDrillFields}
@@ -189,15 +189,12 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       if (!showTooltip) {
         return;
       }
-      sheetInstance.showTooltip({
+      sheetInstance.showTooltip<React.ReactNode>({
         position: {
           x: event.clientX,
           y: event.clientY,
         },
-        // TODO: s2-react增加自己的options类型
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        element,
+        content,
       });
     }
   };

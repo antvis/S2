@@ -1,10 +1,12 @@
 import { DEFAULT_STYLE } from '@antv/s2';
 import { getSafetyOptions } from '@/utils/merge';
-import { getTooltipComponent } from '@/utils/tooltip';
 
 describe('merge test', () => {
   test('should get safety options', () => {
-    expect(getSafetyOptions(null)).toStrictEqual({
+    const options = getSafetyOptions(null);
+    Reflect.deleteProperty(options.tooltip, 'renderTooltip');
+
+    expect(options).toStrictEqual({
       width: 600,
       height: 480,
       debug: false,
@@ -19,7 +21,6 @@ describe('merge test', () => {
           trend: false,
           sort: true,
         },
-        getTooltipComponent,
       },
       interaction: {
         linkFields: [],
@@ -58,6 +59,8 @@ describe('merge test', () => {
       },
     });
 
+    Reflect.deleteProperty(options.tooltip, 'renderTooltip');
+
     expect(options.tooltip).toStrictEqual({
       showTooltip: false,
       autoAdjustBoundary: 'body',
@@ -66,7 +69,6 @@ describe('merge test', () => {
         trend: false,
         sort: false,
       },
-      getTooltipComponent,
     });
   });
 });

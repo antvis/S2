@@ -176,7 +176,7 @@ s2.render()
 
 [**@AntV**](https://github.com/orgs/antvis/people)
 
-## 🤝  Contributing
+## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome.
 Feel free to check [issues](https://github.com/antvis/S2/issues) page if you want to contribute.
@@ -184,7 +184,7 @@ Feel free to check [issues](https://github.com/antvis/S2/issues) page if you wan
 ```bash
 git clone git@github.com:antvis/S2.git
 
-cd s2
+cd S2
 
 yarn
 

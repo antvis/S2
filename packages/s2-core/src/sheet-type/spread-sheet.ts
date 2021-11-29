@@ -35,6 +35,7 @@ import {
   S2Options,
   SpreadSheetFacetCfg,
   ThemeCfg,
+  TooltipContentType,
   TooltipData,
   TooltipOptions,
   TooltipShowOptions,
@@ -198,10 +199,10 @@ export abstract class SpreadSheet extends EE {
   }
 
   private renderTooltip(): BaseTooltip {
-    return new BaseTooltip(this);
+    return this.options.tooltip?.renderTooltip?.(this) || new BaseTooltip(this);
   }
 
-  protected abstract bindEvents();
+  protected abstract bindEvents(): void;
 
   public abstract getDataSet(options: S2Options): BaseDataSet;
 
@@ -249,10 +250,11 @@ export abstract class SpreadSheet extends EE {
     preventRender?: boolean,
   ): void;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public handleGroupSort(event: CanvasEvent, meta: Node) {}
+  public abstract handleGroupSort(event: CanvasEvent, meta: Node): void;
 
-  public showTooltip(showOptions: TooltipShowOptions) {
+  public showTooltip<T = TooltipContentType>(
+    showOptions: TooltipShowOptions<T>,
+  ) {
     this.tooltip.show?.(showOptions);
   }
 
@@ -261,7 +263,7 @@ export abstract class SpreadSheet extends EE {
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
-    const { showTooltip, tooltipComponent } = getTooltipOptions(this, event);
+    const { showTooltip, content } = getTooltipOptions(this, event);
     if (!showTooltip) {
       return;
     }
@@ -282,7 +284,7 @@ export abstract class SpreadSheet extends EE {
         enterable: true,
         ...options,
       },
-      element: tooltipComponent,
+      content,
     });
   }
 

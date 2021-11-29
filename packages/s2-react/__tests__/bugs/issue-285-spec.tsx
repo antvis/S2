@@ -10,7 +10,7 @@ import { act } from 'react-dom/test-utils';
 import { Switch } from 'antd';
 import { S2DataConfig } from '@antv/s2';
 import { getContainer } from '../util/helpers';
-import { SheetEntry } from '../util/sheet-entry';
+import { SheetEntry } from '../../playground/sheet-entry';
 import * as withColHeaderDataCfg from '../data/data-issue-285/data-col-header.json';
 import * as withoutColHeaderDataCfg from '../data/data-issue-285/data-without-col-header.json';
 

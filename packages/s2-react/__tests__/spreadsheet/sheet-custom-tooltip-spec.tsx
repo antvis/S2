@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { getContainer } from '../util/helpers';
-import { assembleDataCfg, assembleOptions } from '../util/sheet-entry';
+import { assembleDataCfg, assembleOptions } from '../../playground/sheet-entry';
 import { SheetComponent } from '@/components';
 
 const extra = [

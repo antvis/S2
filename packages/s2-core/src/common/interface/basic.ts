@@ -34,7 +34,7 @@ export interface Meta {
   readonly field: string; // 字段 id
   readonly name?: string; // 字段名称
   // 格式化
-  // 数值字段：一般用于格式化数字带戴维
+  // 数值字段：一般用于格式化数字单位
   // 文本字段：一般用于做字段枚举值的别名
   readonly formatter?: Formatter;
 }
@@ -78,6 +78,8 @@ export interface Fields {
   values?: string[];
   // measure values in cols as new col, only works for PivotSheet
   valueInCols?: boolean;
+  // the order of the measure values in rows or cols, only works for PivotSheet
+  customValueOrder?: number;
 }
 
 export interface Total {
@@ -288,7 +290,7 @@ export interface MergedCellInfo {
 }
 
 /**
- * mergedCell intermediate state, temporary use
+ * the data cell and meta that make up the mergedCell, temporary use
  */
 export type TempMergedCell = {
   cells: S2CellType[];

@@ -106,7 +106,7 @@ fetch(
         };
         viewMeta.spreadsheet.tooltip.show({
           position,
-          element: dataCellTooltip(viewMeta),
+          content: dataCellTooltip(viewMeta),
         });
       };
       return (

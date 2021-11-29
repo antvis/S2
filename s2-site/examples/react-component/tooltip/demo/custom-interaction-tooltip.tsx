@@ -33,7 +33,7 @@ fetch(
         };
         spreadsheet.tooltip.show({
           position,
-          element: <CustomTooltip />,
+          content: <CustomTooltip />,
         });
       } else {
         spreadsheet.hideTooltip();
