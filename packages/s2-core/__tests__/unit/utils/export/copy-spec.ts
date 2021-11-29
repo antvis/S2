@@ -73,11 +73,15 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy all data', () => {
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[3];
     s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
       stateName: InteractionStateName.ALL_SELECTED,
     });
     expect(getSelectedData(s2).split('\n').length).toBe(33);
-    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(6);
+    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(5);
   });
 
   it('should copy format data', () => {
@@ -126,6 +130,7 @@ describe('List Table Core Data Process', () => {
     expect(data).toBe('2330\t四川省\t乐山市\t家具\t桌子');
 
     s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
       stateName: InteractionStateName.ALL_SELECTED,
     });
     expect(getSelectedData(s2).split('\n').length).toEqual(17);
@@ -153,6 +158,7 @@ describe('List Table Core Data Process', () => {
     const data = getSelectedData(s2);
     expect(data).toBe('7789\t浙江省\t杭州市\t家具\t桌子');
     s2.interaction.changeState({
+      cells: [getCellMeta(cell)],
       stateName: InteractionStateName.ALL_SELECTED,
     });
     expect(getSelectedData(s2).split('\n').length).toEqual(33);
