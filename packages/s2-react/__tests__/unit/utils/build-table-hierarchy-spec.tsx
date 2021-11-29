@@ -11,7 +11,7 @@ import {
   buildTableHierarchy,
   TableSheet,
 } from '@antv/s2';
-import { assembleDataCfg } from '../../util/sheet-entry';
+import { assembleDataCfg } from '../../../playground/sheet-entry';
 import { getContainer } from '../../util/helpers';
 import { SheetComponent } from '@/components';
 

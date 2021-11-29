@@ -51,7 +51,7 @@ export interface InteractionOptions {
   customInteractions?: CustomInteraction[];
 }
 
-export interface S2BasicOptions {
+export interface S2BasicOptions<T = Element | string> {
   // canvas's width
   readonly width: number;
   // canvas's height
@@ -65,7 +65,7 @@ export interface S2BasicOptions {
   // total config
   readonly totals?: Totals;
   // tooltip configs
-  readonly tooltip?: Tooltip;
+  readonly tooltip?: Tooltip<T>;
   // interaction configs
   readonly interaction?: InteractionOptions;
   // pagination config
@@ -146,8 +146,8 @@ export interface S2TableSheetOptions {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface S2PivotSheetOptions {}
 
-export interface S2Options
-  extends S2BasicOptions,
+export interface S2Options<T = Element | string>
+  extends S2BasicOptions<T>,
     S2TableSheetOptions,
     S2PivotSheetOptions {
   // custom data set

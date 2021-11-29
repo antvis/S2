@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { S2Options } from '@antv/s2';
 import { getContainer } from '../util/helpers';
-import { SheetEntry } from '../util/sheet-entry';
+import { SheetEntry } from '../../playground/sheet-entry';
 import { CustomHover } from './custom/custom-interaction';
 
 const options: Partial<S2Options> = {

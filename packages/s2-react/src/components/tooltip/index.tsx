@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 import React from 'react';
 import {
   ListItem,
@@ -14,7 +14,7 @@ import {
 import { TooltipDetail } from './components/detail';
 import { Divider } from './components/divider';
 import { TooltipHead } from './components/head-info';
-import { Infos } from './components/infos';
+import { TooltipInfos } from './components/infos';
 import { Interpretation } from './components/interpretation';
 import { TooltipOperator } from './components/operator';
 import { SimpleTips } from './components/simple-tips';
@@ -70,7 +70,7 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
   };
 
   const renderInfos = (infos: string) => {
-    return infos && <Infos infos={infos} />;
+    return infos && <TooltipInfos infos={infos} />;
   };
 
   const renderInterpretation = (
@@ -102,10 +102,10 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
     );
   };
 
-  const { data, options, tooltipComponent, element } = props;
+  const { data, options, content } = props;
 
-  if (tooltipComponent || element) {
-    return <>{tooltipComponent || element}</>;
+  if (!isNil(content)) {
+    return <>{content}</>;
   }
 
   return <>{renderContent(data, options)}</>;
