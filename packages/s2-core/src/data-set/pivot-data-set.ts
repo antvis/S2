@@ -13,6 +13,7 @@ import {
   filter,
   forEach,
   unset,
+  isNumber,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -268,10 +269,18 @@ export class PivotDataSet extends BaseDataSet {
 
   public processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
     const { data, meta = [], fields, sortParams = [], totalData } = dataCfg;
-    const { columns, rows, values, valueInCols } = fields;
-
-    const newColumns = valueInCols ? uniq([...columns, EXTRA_FIELD]) : columns;
-    const newRows = !valueInCols ? uniq([...rows, EXTRA_FIELD]) : rows;
+    const { columns, rows, values, valueInCols, customValueOrder } = fields;
+    let newColumns = columns;
+    let newRows = rows;
+    if (valueInCols) {
+      newColumns = this.isCustomMeasuresPosition(customValueOrder)
+        ? this.handleCustomMeasuresOrder(customValueOrder, newColumns)
+        : uniq([...columns, EXTRA_FIELD]);
+    } else {
+      newRows = this.isCustomMeasuresPosition(customValueOrder)
+        ? this.handleCustomMeasuresOrder(customValueOrder, newRows)
+        : uniq([...rows, EXTRA_FIELD]);
+    }
 
     const valueFormatter = (value: string) => {
       const findOne = find(meta, (mt: Meta) => mt.field === value);
@@ -500,5 +509,28 @@ export class PivotDataSet extends BaseDataSet {
     valueField = valueField ?? get(this.fields.values, 0);
 
     return super.getFieldFormatter(valueField);
+  }
+
+  /**
+   * 自定义度量组位置值
+   * @param customValueOrder 用户配置度量组位置，从 0 开始
+   * @param fields Rows || Columns
+   */
+  private handleCustomMeasuresOrder(
+    customValueOrder: number,
+    fields: string[],
+  ) {
+    const newFields = uniq([...fields]);
+    if (fields.length >= customValueOrder) {
+      newFields.splice(customValueOrder, 0, EXTRA_FIELD);
+      return newFields;
+    }
+    // 当用户配置的度量组位置大于等于度量组数量时，默认放在最后
+    return [...newFields, EXTRA_FIELD];
+  }
+
+  // 是否开启自定义度量组位置值
+  private isCustomMeasuresPosition(customValueOrder?: number) {
+    return isNumber(customValueOrder);
   }
 }

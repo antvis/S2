@@ -78,6 +78,8 @@ export interface Fields {
   values?: string[];
   // measure values in cols as new col, only works for PivotSheet
   valueInCols?: boolean;
+  // the order of the measure values in rows or cols, only works for PivotSheet
+  customValueOrder?: number;
 }
 
 export interface Total {

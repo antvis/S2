@@ -54,7 +54,8 @@ object **必选**,_default：null_
 | rows           | 行维度列表         | `string[]` | `[]`   |      |
 | columns        | 列维度列表         | `string[]` | `[]`   |      |
 | values         | 指标维度列表       | `string[]` | `[]`   |      |
-| valueInCols    | 指标维度是否在列头 | `boolean`  | `true` |      |
+| valueInCols    | 指标维度是否在列头   | `boolean`  | `true` |      |
+| customValueOrder | 自定义指标维度在行列头中的位置顺序 | `number`  | - |      |
 
 ### Meta
 
