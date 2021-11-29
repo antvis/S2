@@ -1,3 +1,16 @@
+# [@antv/s2-react-v1.1.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.0.3...@antv/s2-react-v1.1.0) (2021-11-29)
+
+
+### Bug Fixes
+
+* **facet:** fix render crash if value fields is empty ([#822](https://github.com/antvis/S2/issues/822)) ([c91522a](https://github.com/antvis/S2/commit/c91522a7ae3d6c181f271772ee3d2b47f40d3a20))
+* **facet:** remove extra row node if row fields is empty ([#824](https://github.com/antvis/S2/issues/824)) ([ab044c1](https://github.com/antvis/S2/commit/ab044c16466bdfe0d17cb9bf0365deb97a8fd38f))
+
+
+### Features
+
+* refactor react tooltip ([#831](https://github.com/antvis/S2/issues/831)) ([3e57279](https://github.com/antvis/S2/commit/3e572792398d3aec446a56ee70405702be2ced65))
+
 ## [1.0.3](https://github.com/antvis/S2/compare/v0.1.1...v1.0.3) (2021-11-24)
 
 
@@ -472,6 +485,3 @@
 ### Performance Improvements
 
 * **sa:** fix console.time & sa performance ([#672](https://github.com/antvis/S2/issues/672)) ([cb5990f](https://github.com/antvis/S2/commit/cb5990f81f8c9b4da674eebdb0c49bb8eaa4f19d))
-
-
-
