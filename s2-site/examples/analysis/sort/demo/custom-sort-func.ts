@@ -44,8 +44,8 @@ fetch('../data/basic.json')
         },
         {
           // sortFieldId 为度量值时，需传入 query 定位数值列表，params.data 为带有度量值的 data 列表
-          sortFieldId: 'city',
-          sortByMeasure: 'price',
+          sortFieldId: 'price',
+          sortByMeasure: 'city',
           sortFunc: function (params) {
             const { data, sortByMeasure, sortFieldId } = params || {};
             return data
