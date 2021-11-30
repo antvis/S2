@@ -31,7 +31,7 @@ const getFormat = (meta: CellMeta, spreadsheet: SpreadSheet) => {
   return (v: string) => v;
 };
 
-const getValueFomeMeta = (
+const getValueFromMeta = (
   meta: CellMeta,
   displayData: DataType[],
   spreadsheet: SpreadSheet,
@@ -46,7 +46,7 @@ const format = (
   spreadsheet: SpreadSheet,
 ) => {
   const formatter = getFormat(meta, spreadsheet);
-  return formatter(getValueFomeMeta(meta, displayData, spreadsheet));
+  return formatter(getValueFromMeta(meta, displayData, spreadsheet));
 };
 
 export const convertString = (v: string) => {
