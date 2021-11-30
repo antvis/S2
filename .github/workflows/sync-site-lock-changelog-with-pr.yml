@@ -1,4 +1,4 @@
-name: 🔁 Sync Site Lock
+name: 🔁 Sync Site S2 Lock And Changelog With PR
 
 # 自动发布 action 执行完成后再执行 (无论成功失败都会执行)
 on:
@@ -21,6 +21,14 @@ jobs:
           node-version: 16.x
           cache: 'yarn'
 
+      - name: Git bootstrap
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install dependencies
         run: yarn
 
@@ -29,10 +37,10 @@ jobs:
 
       - name: Push lock
         run: |
-          git checkout -b ci-sync-s2-lock
+          git checkout latest-release
           git add .
-          git commit -m "chore: 🤖 auto sync site s2 lock" --no-verify
-          git push origin ci-sync-s2-lock --no-verify
+          git commit -m "chore: 🤖 auto sync site s2 lock and changelog" --no-verify
+          git push origin latest-release --no-verify
 
       # 使用官方的 github cli 便捷的创建 pr
       - name: Create PR
