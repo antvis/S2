@@ -1,3 +1,4 @@
+import { getCsvString } from './export-worker';
 import { copyToClipboard } from '@/utils/export';
 import { CellMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
@@ -29,7 +30,7 @@ const format = (
 
 const convertString = (v: string) => {
   if (/\t|\n/.test(v)) {
-    return JSON.stringify(v);
+    return getCsvString(v);
   }
   return v;
 };
@@ -131,7 +132,7 @@ const processRowSelected = (
 
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
   const interaction = spreadsheet.interaction;
-  const cells = interaction.getState().cells;
+  const cells = interaction.getState().cells || [];
   let data: string;
   const selectedCols = cells.filter(({ type }) => type === CellTypes.COL_CELL);
   const selectedRows = cells.filter(({ type }) => type === CellTypes.ROW_CELL);
