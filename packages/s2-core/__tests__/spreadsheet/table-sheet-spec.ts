@@ -37,12 +37,14 @@ const meta = [
   },
 ];
 
+const newLineText = `1\t\n2`;
+
 const dataCfg: S2DataConfig = {
   fields: {
     columns,
   },
   meta,
-  data,
+  data: data.map((e) => ({ ...e, express_type: newLineText })),
   sortParams: [
     {
       sortFieldId: 'count',
