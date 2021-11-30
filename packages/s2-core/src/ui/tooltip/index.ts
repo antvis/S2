@@ -109,7 +109,9 @@ export class BaseTooltip {
       return;
     }
 
-    container.appendChild(displayContent as Element);
+    if (displayContent instanceof Element) {
+      container.appendChild(displayContent as Element);
+    }
   }
 
   public clearContent() {
