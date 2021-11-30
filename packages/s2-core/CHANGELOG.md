@@ -1,3 +1,12 @@
+# [@antv/s2-v1.1.2](https://github.com/antvis/S2/compare/@antv/s2-v1.1.1...@antv/s2-v1.1.2) (2021-11-30)
+
+
+### Bug Fixes
+
+* copy refactor ([#834](https://github.com/antvis/S2/issues/834)) ([dac76ab](https://github.com/antvis/S2/commit/dac76ab72da266eddfcfafecacea47e4ea831cf9))
+* **copy:** copy \r\n problem ([#843](https://github.com/antvis/S2/issues/843)) ([6f885ab](https://github.com/antvis/S2/commit/6f885ab24ab7afbd11eec123cd8f13824f023d0b))
+* **table:** column should not be formatted ([#845](https://github.com/antvis/S2/issues/845)) ([ed8423a](https://github.com/antvis/S2/commit/ed8423afb3d4a1957806dd7f890769a278755076))
+
 # [@antv/s2-v1.1.1](https://github.com/antvis/S2/compare/@antv/s2-v1.1.0...@antv/s2-v1.1.1) (2021-11-30)
 
 
