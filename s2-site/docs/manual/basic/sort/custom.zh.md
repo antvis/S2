@@ -215,6 +215,8 @@ sortParams: [
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*H_TESKL1MakAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
+📊 查看demo [自定义排序](/zh/examples/analysis/sort#custom-sort-func)。
+
 ## 优先级
 
 1. `sortParams` 里的条件优先级高于原始数据
