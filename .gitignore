@@ -6,6 +6,9 @@
 *.log
 *.zip
 coverage
+esm
+dist
+lib
 
 # Mac files
 .DS_Store
@@ -27,7 +30,3 @@ packages/s2-*/esm/
 packages/s2-*/dist/
 packages/s2-*/coverage/
 packages/s2-*/stats.html
-
-
-
-
