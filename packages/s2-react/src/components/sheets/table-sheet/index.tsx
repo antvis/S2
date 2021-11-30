@@ -63,7 +63,11 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   );
 
   const renderSpreadSheet = (): SpreadSheet => {
-    const params: S2Constructor = [container.current, dataCfg, options];
+    const params: S2Constructor = [
+      container.current,
+      dataCfg,
+      getSafetyOptions(options),
+    ];
 
     if (spreadsheet) {
       return spreadsheet(...params);
