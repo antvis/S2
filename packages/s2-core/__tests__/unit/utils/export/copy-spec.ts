@@ -11,6 +11,7 @@ import {
 import { getSelectedData } from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { S2Event } from '@/common/constant';
+import { getCsvString } from '@/utils/export/export-worker';
 
 describe('List Table Core Data Process', () => {
   const s2 = new TableSheet(
@@ -191,6 +192,6 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(sss);
-    expect(data).toBe(JSON.stringify(newLineText));
+    expect(data).toBe(getCsvString(newLineText));
   });
 });
