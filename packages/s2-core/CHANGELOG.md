@@ -1,3 +1,10 @@
+# [@antv/s2-v1.0.0-beta.18](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.17...@antv/s2-v1.0.0-beta.18) (2021-11-30)
+
+
+### Bug Fixes
+
+* **copy:** copy \r\n problem ([#843](https://github.com/antvis/S2/issues/843)) ([6f885ab](https://github.com/antvis/S2/commit/6f885ab24ab7afbd11eec123cd8f13824f023d0b))
+
 # [@antv/s2-v1.0.0-beta.17](https://github.com/antvis/S2/compare/@antv/s2-v1.0.0-beta.16...@antv/s2-v1.0.0-beta.17) (2021-11-30)
 
 
