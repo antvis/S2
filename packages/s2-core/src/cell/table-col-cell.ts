@@ -8,7 +8,12 @@ import { isLastColumnAfterHidden } from '@/utils/hide-columns';
 import { S2Event, HORIZONTAL_RESIZE_AREA_KEY_PRE } from '@/common/constant';
 import { renderIcon, renderLine } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
-import { DefaultCellTheme, IconTheme, SortParam } from '@/common/interface';
+import {
+  DefaultCellTheme,
+  FormatResult,
+  IconTheme,
+  SortParam,
+} from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
 
@@ -183,5 +188,14 @@ export class TableColCell extends ColCell {
 
   protected getHorizontalResizeAreaName() {
     return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${'table-col-cell'}`;
+  }
+
+  // 明细表列头不应该格式化 https://github.com/antvis/S2/issues/840
+  protected getFormattedFieldValue(): FormatResult {
+    const { label } = this.meta;
+    return {
+      formattedValue: label,
+      value: label,
+    };
   }
 }

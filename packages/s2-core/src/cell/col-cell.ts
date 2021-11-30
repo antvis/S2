@@ -94,9 +94,8 @@ export class ColCell extends HeaderCell {
 
   protected getFormattedFieldValue(): FormatResult {
     const { label, key } = this.meta;
-    // 格式化枚举值
-    const f = this.headerConfig.formatter(key);
-    const content = f(label);
+    const formatter = this.headerConfig.formatter(key);
+    const content = formatter(label);
     return {
       formattedValue: content,
       value: label,

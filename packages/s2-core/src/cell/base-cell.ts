@@ -1,14 +1,5 @@
 import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import {
-  each,
-  forEach,
-  get,
-  includes,
-  isEmpty,
-  isNumber,
-  keys,
-  pickBy,
-} from 'lodash';
+import { each, get, includes, isNumber, keys, pickBy } from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
