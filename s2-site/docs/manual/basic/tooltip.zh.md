@@ -46,7 +46,7 @@ const s2options = {
   tooltip: {
     operation: {
       trend: true, // 显示趋势图按钮
-      hiddenColumns: true, //开启隐藏列 (明细表有效)
+      hiddenColumns: true, //开启隐藏列 （明细表有效）
     },
   }
 };
@@ -59,10 +59,10 @@ const s2options = {
 
 ### 超出指定区域自动调整位置
 
-通过配置 `autoAdjustBoundary` 字段开启:
+通过配置 `autoAdjustBoundary` 字段开启：
 
-- `container` : tooltip 超出表格容器范围时, 自动调整位置, 始终在表格内显示
-- `body` : tooltip 超出浏览器窗口可视范围时, 自动调整位置, 始终在可视范围内显示
+- `container` : tooltip 超出表格容器范围时，自动调整位置，始终在表格内显示
+- `body` : tooltip 超出浏览器窗口可视范围时，自动调整位置，始终在可视范围内显示
 - `null` : 关闭自动调整
 
 ```ts
@@ -76,36 +76,105 @@ const s2options = {
 
 ### 自定义
 
-#### 组件（ tooltipComponent ）
+#### 自定义 Tooltip 内容
 
-自定义 `Tooltip` 弹框，直接在 `tooltip` 配置则所有单元格的 `Tooltip` 显示都为该组件，也可以分别給行、列、数据单元格配置相应的组件
+##### 1. 配置级
+
+配置 `tooltip.content` 自定义 `Tooltip` 内容，还可以給 `行 (row)`、`列 (col)`、`数据 (cell)` 三种类型的单元格分别配置自定义内容
+
+`tooltip.content` 优先级 小于 `row.content`, `col.content`, `cell.content`
 
 ```tsx
-const TooltipComponent = (
-  <div className="tooltip-custom-component">tooltipComponent</div>
+const TooltipContent = (
+  <div>content</div>
 );
-const RowTooltip = (
-  <div className="tooltip-custom-component">rowTooltip</div>
+const RowTooltipContent = (
+  <div>rowTooltip</div>
 );
 
 const s2options = {
   tooltip: {
-    tooltipComponent: TooltipComponent,
+    content: TooltipContent,
     row: {
-      tooltipComponent: RowTooltip,
+      content: RowTooltipContent,
     },
+    col: {
+      content: xx
+    }
+    cell: {
+      content: xx
+    }
   },
 };
 ```
 
+##### 2. 方法级
+
+通过表格实例 可以手动显示 `tooltip`
+
+```ts
+const TooltipContent = (
+  <div>content</div>
+);
+
+s2.showTooltip({
+  content: TooltipContent
+})
+
+// 或者 s2.tooltip.show({ content: TooltipContent })
+```
+
+<playground path='react-component/tooltip/demo/custom-content.tsx' rid='container-1' height='300'></playground>
+
+##### 3. 内容显示优先级
+
+`方法调用` > `单元格配置` > `基本配置`
+
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+
+#### 自定义 Tooltip 类
+
+继承 `BaseTooltip` 基类，自定义 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法
+
+```ts
+import { BaseTooltip, SpreadSheet } from '@antv/s2';
+
+export class CustomTooltip extends BaseTooltip {
+  constructor(spreadsheet: SpreadSheet) {
+    super(spreadsheet);
+  }
+
+  renderContent() {}
+
+  clearContent() {}
+
+  show(showOptions) {}
+
+  hide() {}
+
+  destroy() {}
+}
+```
+
+让表格渲染时，使用你自定义的 `Tooltip`
+
+```ts
+const s2Options = {
+  tooltip: {
+    showTooltip: true,
+    renderTooltip: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
+  },
+}
+```
+
+<playground path='react-component/tooltip/demo/custom-tooltip.tsx' rid='container-2' height='300'></playground>
 
 #### 重写展示方法
 
-在引用 `SheetComponent` 时重写表用来展示 `Tooltip` 的方法 `spreadsheet.showTooltip()` , 详情可参考[`spreadsheet`](/zh/docs/api/basic-class/spreadsheet)
+除了上面说到的 `自定义 Tooltip 类` 自定义展示方法外，也可以修改 [表格实例]([`spreadsheet`](/zh/docs/api/basic-class/spreadsheet)) 上 `Tooltip` 的方法 `spreadsheet.showTooltip()` ([如何获取表格实例](zh/docs/manual/advanced/get-instance))
 
 ```ts
-// options 配置 tooltip显示
+// options 配置 tooltip 显示
 tooltip: {
   showTooltip: true,
 }
@@ -126,7 +195,7 @@ tooltip: {
 
 ##### 可自定义显示内容
 
-以下所有显示内容都可覆盖所有单元格和事件, 自定义数据具体细节可查看 [TooltipShowOptions](/zh/docs/api/common/custom-tooltip)
+以下所有显示内容都可覆盖所有单元格和事件，自定义数据具体细节可查看 [TooltipShowOptions](/zh/docs/api/common/custom-tooltip)
 
 - 显示位置 (position)
 
@@ -141,7 +210,7 @@ tooltip: {
 
   - 名称
 
-    当前单元格名称, 一般只有单元格中文案被省略才会显示
+    当前单元格名称，一般只有单元格中文案被省略才会显示
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -189,18 +258,18 @@ tooltip: {
         return {...item, value: `${item.value} - 测试`}
       });
       instance.tooltip.show({
-        ...tooltipOptions, 
+        ...tooltipOptions,
         data: {
-          ...data, 
-          headInfo: { rows, cols: customCols } 
-        } 
+          ...data,
+          headInfo: { rows, cols: customCols }
+        }
       });
-    };    
+    };
     ```
 
   - 数据点明细信息（ details ）
 
-    数据点明细信息，即当前单元格的数据信息, 具体详情可查看 [ListItem](/zh/docs/api/common/custom-tooltip#ListItem)
+    数据点明细信息，即当前单元格的数据信息，具体详情可查看 [ListItem](/zh/docs/api/common/custom-tooltip#ListItem)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -209,7 +278,7 @@ tooltip: {
         return { name: `${item.name} - 测试`, value: `${item.value} - w` };
       });
       instance.tooltip.show({ ...tooltipOptions, data: { ...data, details: customDetails } });
-    };    
+    };
     ```
 
   - 底部提示信息（ infos ）
@@ -219,7 +288,7 @@ tooltip: {
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
       const { data } = tooltipOptions;
-      const infos = '按住 Shift 多选或框选，查看多个数据点';
+      const infos = '按住 Cmd/Ctrl 或框选，查看多个数据点';
       instance.tooltip.show({ ...tooltipOptions, data: { ...data, infos } });
     };
     ```
@@ -228,11 +297,11 @@ tooltip: {
 
 - 部分配置 ( options )
 
-  `tooltip` 部分配置, 具体细节可查看 [TooltipOptions](/zh/docs/api/common/custom-tooltip#TooltipOptions)
+  `tooltip` 部分配置，具体细节可查看 [TooltipOptions](/zh/docs/api/common/custom-tooltip#TooltipOptions)
 
   - 操作栏（ operator ）
-  
-    可操作配置, 具体细节参考 [TooltipOperatorOptions](/zh/docs/api/common/custom-tooltip#TooltipOperatorOptions)
+
+    可操作配置，具体细节参考 [TooltipOperatorOptions](/zh/docs/api/common/custom-tooltip#TooltipOperatorOptions)
 
     ```tsx
     instance.showTooltip = (tooltipOptions) => {
@@ -252,3 +321,5 @@ tooltip: {
       instance.tooltip.show({ ...tooltipOptions, options: { ...options, operator: customOperator } });
     };
     ```
+
+<playground path='react-component/tooltip/demo/custom-show-tooltip.tsx' rid='container-3' height='300'></playground>

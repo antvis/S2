@@ -1,9 +1,10 @@
 import { getCsvString } from './export-worker';
 import { copyToClipboard } from '@/utils/export';
-import { Formatter, S2CellType, ViewMeta } from '@/common/interface';
+import { CellMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { DataType } from '@/data-set/interface';
+import { ID_SEPARATOR } from '@/common';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -12,43 +13,43 @@ export function keyEqualTo(key: string, compareKey: string) {
   return String(key).toLowerCase() === String(compareKey).toLowerCase();
 }
 
-const format = (cell: S2CellType, spreadsheet: SpreadSheet) => {
-  const meta = cell.getMeta();
-  const rowField = meta.rowId;
-  const rowMeta = spreadsheet.dataSet.getFieldMeta(rowField);
-  let formatter: Formatter;
-  if (rowMeta) {
-    // format by row field
-    formatter = spreadsheet.dataSet.getFieldFormatter(rowField);
-  } else {
-    // format by value field
-    formatter = spreadsheet.dataSet.getFieldFormatter(meta.valueField);
-  }
+const format = (
+  meta: CellMeta,
+  displayData: DataType[],
+  spreadsheet: SpreadSheet,
+) => {
+  const ids = meta.id.split(ID_SEPARATOR);
+  const fieldId = ids[ids.length - 1];
+  const formatter = spreadsheet.dataSet.getFieldFormatter(fieldId);
+  const value = displayData[meta.rowIndex][fieldId];
   if (formatter && spreadsheet.options.interaction.copyWithFormat) {
-    return formatter(meta.fieldValue);
+    return formatter(value);
   }
-  return meta.fieldValue;
+  return value;
 };
 
 const convertString = (v: string) => {
   if (/\t|\n/.test(v)) {
-    return JSON.stringify(v);
+    return getCsvString(v);
   }
   return v;
 };
 
 export const processCopyData = (
-  cells: S2CellType[][],
+  displayData: DataType[],
+  cells: CellMeta[][],
   spreadsheet: SpreadSheet,
 ): string => {
-  const getRowString = (pre: string, cur: S2CellType) =>
-    pre + (cur ? convertString(format(cur, spreadsheet)) : '') + '\t';
-  const getColString = (pre: string, cur: S2CellType[]) =>
+  const getRowString = (pre: string, cur: CellMeta) =>
+    pre +
+    (cur ? convertString(format(cur, displayData, spreadsheet)) : '') +
+    '\t';
+  const getColString = (pre: string, cur: CellMeta[]) =>
     pre + cur.reduce(getRowString, '').slice(0, -1) + '\n';
   return cells.reduce(getColString, '').slice(0, -1);
 };
 
-export const getTwoDimData = (cells: S2CellType[]) => {
+export const getTwoDimData = (cells: CellMeta[]) => {
   if (!cells?.length) return [];
   const [minCell, maxCell] = [
     { row: Infinity, col: Infinity },
@@ -56,7 +57,7 @@ export const getTwoDimData = (cells: S2CellType[]) => {
   ];
   // get left-top cell and right-bottom cell position
   cells.forEach((e) => {
-    const { rowIndex, colIndex } = e.getMeta();
+    const { rowIndex, colIndex } = e;
     minCell.col = Math.min(colIndex, minCell.col);
     minCell.row = Math.min(rowIndex, minCell.row);
     maxCell.col = Math.max(colIndex, maxCell.col);
@@ -66,12 +67,12 @@ export const getTwoDimData = (cells: S2CellType[]) => {
     maxCell.row - minCell.row + 1,
     maxCell.col - minCell.col + 1,
   ];
-  const twoDimDataArray: S2CellType[][] = new Array(rowLen)
+  const twoDimDataArray: CellMeta[][] = new Array(rowLen)
     .fill('')
     .map(() => new Array(colLen).fill(''));
 
   cells.forEach((e) => {
-    const { rowIndex, colIndex } = e.getMeta();
+    const { rowIndex, colIndex } = e;
     const [diffRow, diffCol] = [rowIndex - minCell.row, colIndex - minCell.col];
     twoDimDataArray[diffRow][diffCol] = e;
   });
@@ -87,31 +88,38 @@ const processAllSelected = (
   return displayData.reduce((pre, cur) => {
     return (
       pre +
-      '\n' +
-      selectedFiled.reduce((prev, curr) => prev + '\t' + cur[curr], '')
+      selectedFiled
+        .reduce((prev, curr) => prev + cur[curr] + '\t', '')
+        .slice(0, -1) +
+      '\n'
     );
   }, '');
 };
 
 const processColSelected = (
   displayData: DataType[],
-  selectedCols: S2CellType<ViewMeta>[],
+  selectedCols: CellMeta[],
 ) => {
-  const selectedFiled = selectedCols.map((e) => e.getMeta().field);
+  const selectedFiled = selectedCols.map((e) => {
+    const ids = e.id.split(ID_SEPARATOR);
+    return ids[ids.length - 1];
+  });
   return displayData.reduce((pre, cur) => {
     return (
       pre +
-      '\n' +
-      selectedFiled.reduce((prev, curr) => prev + '\t' + cur[curr], '')
+      selectedFiled
+        .reduce((prev, curr) => prev + cur[curr] + '\t', '')
+        .slice(0, -1) +
+      '\n'
     );
   }, '');
 };
 
 const processRowSelected = (
   displayData: DataType[],
-  selectedRows: S2CellType<ViewMeta>[],
+  selectedRows: CellMeta[],
 ) => {
-  const selectedIndex = selectedRows.map((e) => e.getMeta().rowIndex);
+  const selectedIndex = selectedRows.map((e) => e.rowIndex);
   return displayData
     .filter((e, i) => selectedIndex.includes(i))
     .map((e) =>
@@ -124,18 +132,17 @@ const processRowSelected = (
 
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
   const interaction = spreadsheet.interaction;
-  const cells = interaction.getActiveCells();
-
+  const cells = interaction.getState().cells || [];
   let data: string;
-  const selectedCols = cells.filter(
-    ({ cellType }) => cellType === CellTypes.COL_CELL,
-  );
-  const selectedRows = cells.filter(
-    ({ cellType }) => cellType === CellTypes.ROW_CELL,
-  );
+  const selectedCols = cells.filter(({ type }) => type === CellTypes.COL_CELL);
+  const selectedRows = cells.filter(({ type }) => type === CellTypes.ROW_CELL);
 
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
 
+  if (spreadsheet.isPivotMode()) {
+    // 透视表之后实现
+    return;
+  }
   if (interaction.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
     data = processAllSelected(displayData, spreadsheet);
   } else if (selectedCols.length) {
@@ -147,8 +154,9 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
       return;
     }
     // normal selected
-    data = processCopyData(getTwoDimData(cells), spreadsheet);
+    data = processCopyData(displayData, getTwoDimData(cells), spreadsheet);
   }
+
   if (data) {
     copyToClipboard(data);
   }

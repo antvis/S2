@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { SpreadSheet } from '@antv/s2';
 import { getContainer, getGradient } from '../util/helpers';
-import { SheetEntry } from '../util/sheet-entry';
+import { SheetEntry } from '../../playground/sheet-entry';
 
 const sheetInstance: MutableRefObject<SpreadSheet> = { current: null };
 

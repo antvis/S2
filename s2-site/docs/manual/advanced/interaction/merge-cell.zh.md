@@ -278,7 +278,7 @@ const s2DataConfig = {
   meta: res.meta
 };
 // 将单元格合并操作集成到未合并单元格的 tooltip 操作中
-const TooltipComponent = (
+const TooltipContent = (
   <Button
     key={ 'button' }
     onClick={ () => {
@@ -308,12 +308,12 @@ const s2options = {
     height: 400,
     showSeriesNumber: true,
     tooltip: {
-      tooltipComponent: TooltipComponent,
+      content: TooltipContent,
     },
     // 表格渲染后，会展示一个合并单元格
     mergedCellsInfo: [
       { colIndex: 1, rowIndex: 6, showText: true }, // 此单元格的 meta 信息将作为合并单元的 meta 信息
-      { colIndex: 1, rowIndex: 7 }, 
+      { colIndex: 1, rowIndex: 7 },
       { colIndex: 2, rowIndex: 6 },
       { colIndex: 2, rowIndex: 7 },
       { colIndex: 3, rowIndex: 6 },
@@ -329,7 +329,7 @@ s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
   const cell: MergedCell = s2.getCell(event.target);
   s2.tooltip.show({
     position: { x: event.clientX, y: event.clientY },
-    element: mergedCellsTooltip(cell),
+    content: mergedCellsTooltip(cell),
   });
 });
 

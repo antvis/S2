@@ -5,12 +5,13 @@
  *
  */
 import { find } from 'lodash';
-import { getContainer } from '../util/helpers';
-import * as mockDataConfig from '../data/data-issue-372.json';
+import * as mockDataConfig from 'tests/data/data-issue-372.json';
+import { getContainer } from 'tests/util/helpers';
 import { PivotSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
+import { S2Options } from '@/common';
 
-const s2options = {
+const s2options: S2Options = {
   width: 800,
   height: 600,
   totals: {
@@ -25,8 +26,11 @@ const s2options = {
 };
 
 describe('GrandTotal Cells Rendering Test', () => {
-  const s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
-  s2.render();
+  let s2: PivotSheet;
+  beforeEach(() => {
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
+    s2.render();
+  });
   test('should get right height of GrandTotal node', () => {
     const hierarchy = s2.facet.layoutResult.colsHierarchy;
     const grandTotalNode = find(

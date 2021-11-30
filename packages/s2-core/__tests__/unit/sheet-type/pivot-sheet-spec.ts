@@ -1,8 +1,11 @@
+// eslint-disable-next-line max-classes-per-file
 import { getContainer } from 'tests/util/helpers';
 import * as dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
-import { PivotSheet } from '@/sheet-type';
+import { cloneDeep } from 'lodash';
+import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import {
+  CellTypes,
   CustomSVGIcon,
   getIcon,
   InterceptType,
@@ -11,13 +14,14 @@ import {
   S2DataConfig,
   S2Event,
   S2Options,
+  TooltipShowOptions,
   TOOLTIP_CONTAINER_CLS,
 } from '@/common';
 import { Node } from '@/facet/layout/node';
-import { getSafetyDataConfig } from '@/utils';
+import { customMerge, getSafetyDataConfig } from '@/utils';
+import { BaseTooltip } from '@/ui/tooltip';
 
-jest.mock('@/interaction/event-controller');
-jest.mock('@/interaction/root');
+const originalDataCfg = cloneDeep(dataCfg);
 
 describe('PivotSheet Tests', () => {
   let s2: PivotSheet;
@@ -28,20 +32,40 @@ describe('PivotSheet Tests', () => {
   };
 
   const s2Options: S2Options = {
-    width: 300,
-    height: 200,
+    width: 100,
+    height: 100,
     hierarchyType: 'grid',
     customSVGIcons: [customSVGIcon],
+    tooltip: {
+      showTooltip: true,
+    },
+    interaction: {
+      autoResetSheetStyle: false,
+    },
   };
 
-  const container = getContainer();
+  let container: HTMLDivElement;
 
   beforeAll(() => {
+    container = getContainer();
     s2 = new PivotSheet(container, dataCfg, s2Options);
     s2.render();
   });
 
+  afterAll(() => {
+    container?.remove();
+    s2?.destroy();
+  });
+
   describe('PivotSheet Tooltip Tests', () => {
+    const getCellNameByType = (cellType: CellTypes) => {
+      return {
+        [CellTypes.ROW_CELL]: 'row',
+        [CellTypes.COL_CELL]: 'col',
+        [CellTypes.DATA_CELL]: 'cell',
+      }[cellType];
+    };
+
     test('should init tooltip', () => {
       s2.showTooltip({ position: { x: 0, y: 0 } });
 
@@ -51,13 +75,15 @@ describe('PivotSheet Tests', () => {
     });
 
     test('should destroy tooltip', () => {
-      const destroyTooltipSpy = jest
-        .spyOn(s2.tooltip, 'destroy')
-        .mockImplementation(() => {});
+      s2.tooltip.destroy();
 
-      s2.destroy();
-
-      expect(destroyTooltipSpy).toHaveBeenCalledTimes(1);
+      // remove container
+      expect(s2.tooltip.container.children).toHaveLength(0);
+      // reset position
+      expect(s2.tooltip.position).toEqual({
+        x: 0,
+        y: 0,
+      });
     });
 
     test('should show tooltip when call showTooltip', () => {
@@ -70,7 +96,13 @@ describe('PivotSheet Tests', () => {
       expect(showTooltipSpy).toHaveBeenCalledTimes(1);
     });
 
-    test("should dont't show tooltip when call showTooltipWithInfo if enable tooltip", () => {
+    test("should dont't show tooltip when call showTooltipWithInfo if disable tooltip", () => {
+      Object.defineProperty(s2.options, 'tooltip', {
+        value: {
+          showTooltip: false,
+        },
+        configurable: true,
+      });
       const showTooltipSpy = jest
         .spyOn(s2.tooltip, 'show')
         .mockImplementation(() => {});
@@ -87,7 +119,6 @@ describe('PivotSheet Tests', () => {
         },
         configurable: true,
       });
-
       const showTooltipSpy = jest
         .spyOn(s2.tooltip, 'show')
         .mockImplementation(() => {});
@@ -105,6 +136,227 @@ describe('PivotSheet Tests', () => {
       s2.hideTooltip();
 
       expect(hideTooltipSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('should use default tooltip content from tooltip config first', () => {
+      const tooltipContent = 'tooltip content';
+
+      const sheet = new PivotSheet(
+        container,
+        dataCfg,
+        customMerge(s2Options, {
+          tooltip: {
+            content: tooltipContent,
+            autoAdjustBoundary: null,
+          } as S2Options['tooltip'],
+        }),
+      );
+
+      sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
+
+      expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+    });
+
+    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+      'should use %o tooltip content from tooltip config first for string content',
+      (cellType) => {
+        const tooltipContent = `${cellType} tooltip content`;
+        const defaultTooltipContent = 'default tooltip content';
+
+        jest
+          .spyOn(SpreadSheet.prototype, 'getCellType')
+          .mockImplementation(() => cellType);
+
+        const sheet = new PivotSheet(
+          container,
+          dataCfg,
+          customMerge(s2Options, {
+            tooltip: {
+              content: defaultTooltipContent,
+              [getCellNameByType(cellType)]: {
+                content: tooltipContent,
+              },
+            } as S2Options['tooltip'],
+          }),
+        );
+        sheet.render();
+        sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
+
+        expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
+      },
+    );
+
+    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+      'should replace %o tooltip content if call showTooltip method for string content',
+      (cellType) => {
+        const tooltipContent = `${cellType} tooltip content`;
+        const defaultTooltipContent = 'default tooltip content';
+        const methodTooltipContent = 'method tooltip content';
+
+        jest
+          .spyOn(SpreadSheet.prototype, 'getCellType')
+          .mockImplementation(() => cellType);
+
+        const sheet = new PivotSheet(
+          container,
+          dataCfg,
+          customMerge(s2Options, {
+            tooltip: {
+              content: defaultTooltipContent,
+              [getCellNameByType(cellType)]: {
+                content: tooltipContent,
+              },
+            } as S2Options['tooltip'],
+          }),
+        );
+        sheet.render();
+        sheet.showTooltip({
+          position: { x: 0, y: 0 },
+          content: methodTooltipContent,
+        });
+
+        expect(sheet.tooltip.container.innerHTML).toEqual(methodTooltipContent);
+      },
+    );
+
+    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+      'should use %o tooltip content from tooltip config first for element content',
+      (cellType) => {
+        const tooltipContent = document.createElement('span');
+        const defaultTooltipContent = document.createElement('div');
+
+        jest
+          .spyOn(SpreadSheet.prototype, 'getCellType')
+          .mockImplementation(() => cellType);
+
+        const sheet = new PivotSheet(
+          container,
+          dataCfg,
+          customMerge(s2Options, {
+            tooltip: {
+              content: defaultTooltipContent,
+              [getCellNameByType(cellType)]: {
+                content: tooltipContent,
+              },
+            } as S2Options['tooltip'],
+          }),
+        );
+        sheet.render();
+        sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
+
+        expect(sheet.tooltip.container.contains(tooltipContent)).toBeTruthy();
+        expect(
+          sheet.tooltip.container.contains(defaultTooltipContent),
+        ).toBeFalsy();
+      },
+    );
+
+    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+      'should replace %o tooltip content if call showTooltip method for element content',
+      (cellType) => {
+        const tooltipContent = document.createElement('span');
+        const defaultTooltipContent = document.createElement('div');
+        const methodTooltipContent = document.createElement('a');
+
+        jest
+          .spyOn(SpreadSheet.prototype, 'getCellType')
+          .mockImplementation(() => cellType);
+
+        const sheet = new PivotSheet(
+          container,
+          dataCfg,
+          customMerge(s2Options, {
+            tooltip: {
+              content: defaultTooltipContent,
+              [getCellNameByType(cellType)]: {
+                content: tooltipContent,
+              },
+            } as S2Options['tooltip'],
+          }),
+        );
+        sheet.render();
+        sheet.showTooltip({
+          position: { x: 0, y: 0 },
+          content: methodTooltipContent,
+        });
+
+        expect(
+          sheet.tooltip.container.contains(methodTooltipContent),
+        ).toBeTruthy();
+      },
+    );
+
+    test('should render custom tooltip', () => {
+      const customShow = jest.fn();
+      const customHide = jest.fn();
+      const customDestroy = jest.fn();
+
+      class CustomTooltip extends BaseTooltip {
+        constructor(spreadsheet: SpreadSheet) {
+          super(spreadsheet);
+        }
+
+        public show<T = string | Element>(
+          showOptions: TooltipShowOptions<T>,
+        ): void {
+          customShow(showOptions);
+        }
+
+        public hide(): void {
+          customHide();
+        }
+
+        public destroy(): void {
+          customDestroy();
+        }
+      }
+
+      const sheet = new PivotSheet(
+        container,
+        dataCfg,
+        customMerge(s2Options, {
+          tooltip: {
+            showTooltip: true,
+            renderTooltip: (spreadsheet) => new CustomTooltip(spreadsheet),
+            autoAdjustBoundary: null,
+          } as S2Options['tooltip'],
+        }),
+      );
+
+      sheet.showTooltipWithInfo({ clientX: 0, clientY: 0 } as MouseEvent, []);
+      sheet.hideTooltip();
+      sheet.destroyTooltip();
+
+      expect(customShow).toHaveBeenCalled();
+      expect(customHide).toHaveBeenCalled();
+      expect(customDestroy).toHaveBeenCalled();
+    });
+
+    test('should show invalid custom tooltip warning', () => {
+      const warnSpy = jest
+        .spyOn(console, 'warn')
+        .mockImplementationOnce(() => {});
+      class CustomTooltip {}
+
+      const sheet = new PivotSheet(
+        container,
+        dataCfg,
+        customMerge(s2Options, {
+          tooltip: {
+            showTooltip: true,
+            renderTooltip: () => new CustomTooltip(),
+            autoAdjustBoundary: null,
+          },
+        }),
+      );
+
+      sheet.render();
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        `[Custom Tooltip]: ${(
+          sheet.tooltip as unknown
+        )?.constructor?.toString()} should be extends from BaseTooltip`,
+      );
     });
   });
 
@@ -163,6 +415,43 @@ describe('PivotSheet Tests', () => {
     // emit hooks
     expect(beforeRender).toHaveBeenCalledTimes(1);
     expect(afterRender).toHaveBeenCalledTimes(1);
+  });
+
+  test('should destroy sheet', () => {
+    const facetDestroySpy = jest
+      .spyOn(s2.facet, 'destroy')
+      .mockImplementation(() => {});
+
+    const hdAdapterDestroySpy = jest
+      .spyOn(s2.hdAdapter, 'destroy')
+      .mockImplementation(() => {});
+
+    s2.render(false);
+
+    s2.store.set('test', 111);
+    s2.tooltip.container.classList.add('destroy-test');
+    s2.interaction.addIntercepts([InterceptType.HOVER]);
+    s2.interaction.interactions.set('test-interaction', null);
+    s2.destroy();
+
+    // clear store
+    expect(s2.store.size()).toEqual(0);
+    // clear interaction
+    expect(s2.interaction.getState()).toEqual({
+      cells: [],
+      force: false,
+    });
+    expect(s2.interaction.getHoverTimer()).toBeNull();
+    expect(s2.interaction.interactions.size).toEqual(0);
+    expect(s2.interaction.intercepts.size).toEqual(0);
+    expect(s2.interaction.eventController.canvasEventHandlers).toHaveLength(0);
+    expect(s2.interaction.eventController.domEventListeners).toHaveLength(0);
+    // destroy tooltip
+    expect(s2.tooltip.container.children).toHaveLength(0);
+    // destroy facet
+    expect(facetDestroySpy).toHaveBeenCalledTimes(1);
+    // destroy hdAdapter
+    expect(hdAdapterDestroySpy).toHaveBeenCalledTimes(1);
   });
 
   test('should updatePagination', () => {
@@ -230,8 +519,8 @@ describe('PivotSheet Tests', () => {
     expect(s2.container.get('height')).toEqual(s2.options.height);
 
     // sheet group
-    expect(s2.backgroundGroup.getChildren()).toEqual([]);
-    expect(s2.foregroundGroup.getChildren()).toEqual([]);
+    expect(s2.backgroundGroup.getChildren()).toHaveLength(1);
+    expect(s2.foregroundGroup.getChildren()).toHaveLength(9);
 
     // panel scroll group
     expect(s2.panelGroup.getChildren()).toHaveLength(1);
@@ -374,5 +663,94 @@ describe('PivotSheet Tests', () => {
       },
     ]);
     expect(renderSpy).toHaveBeenCalledTimes(2);
+  });
+
+  describe('Test Layout by dataCfg fields', () => {
+    beforeEach(() => {
+      s2.destroy();
+    });
+
+    it('should render column leaf nodes if column fields is empty but config values fields', () => {
+      const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
+        fields: {
+          columns: [],
+        },
+      } as S2DataConfig);
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+      sheet.render();
+
+      const { layoutResult } = sheet.facet;
+
+      expect(layoutResult.colLeafNodes).toHaveLength(
+        originalDataCfg.fields.values.length,
+      );
+      expect(layoutResult.colNodes).toHaveLength(
+        originalDataCfg.fields.values.length,
+      );
+      expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
+    });
+
+    it('should render empty row nodes if rows fields is empty', () => {
+      const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
+        fields: {
+          rows: [],
+        },
+      } as S2DataConfig);
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+      sheet.render();
+
+      const { layoutResult } = sheet.facet;
+
+      expect(layoutResult.rowLeafNodes).toHaveLength(0);
+      expect(layoutResult.rowNodes).toHaveLength(0);
+      expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
+    });
+
+    it('should only render value nodes in column if rows & columns fields is empty', () => {
+      const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
+        fields: {
+          rows: [],
+          columns: [],
+        },
+      } as S2DataConfig);
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+      sheet.render();
+
+      const { layoutResult } = sheet.facet;
+
+      expect(layoutResult.colLeafNodes).toHaveLength(
+        originalDataCfg.fields.values.length,
+      );
+      expect(layoutResult.colNodes).toHaveLength(
+        originalDataCfg.fields.values.length,
+      );
+    });
+
+    // https://github.com/antvis/S2/issues/777
+    it('should cannot render row leaf nodes if values is empty', () => {
+      const layoutDataCfg: S2DataConfig = customMerge(originalDataCfg, {
+        fields: {
+          values: [],
+          valueInCols: true,
+        },
+      } as S2DataConfig);
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+      sheet.render();
+
+      const { layoutResult } = sheet.facet;
+      // if value empty, not render value cell in row leaf nodes
+      expect(layoutResult.rowLeafNodes).toHaveLength(0);
+      expect(layoutResult.colNodes).toHaveLength(
+        originalDataCfg.fields.columns.length,
+      );
+      expect(layoutResult.colLeafNodes).toHaveLength(
+        originalDataCfg.fields.columns.length,
+      );
+      expect(layoutResult.colNodes[0].field).toEqual(
+        originalDataCfg.fields.columns[0],
+      );
+      // modify valueInCols config
+      expect(sheet.dataCfg.fields.valueInCols).toBeFalsy();
+    });
   });
 });

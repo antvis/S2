@@ -1,10 +1,15 @@
-# [@antv/s2-react-v1.0.0-beta.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.0.0-beta.1...@antv/s2-react-v1.0.0-beta.2) (2021-11-24)
+# [@antv/s2-react-v1.1.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.0.3...@antv/s2-react-v1.1.0) (2021-11-29)
 
 
 ### Bug Fixes
 
-* **components:** fix cannot update table size by container resized ([#796](https://github.com/antvis/S2/issues/796)) ([b48fc3c](https://github.com/antvis/S2/commit/b48fc3cfa77afc50cc553b0c3a08beb0e5baec9e))
-* remove exports config ([#795](https://github.com/antvis/S2/issues/795)) ([b5ab046](https://github.com/antvis/S2/commit/b5ab046976fbf76c8ac8c9fc74bf5e7b94702e56))
+* **facet:** fix render crash if value fields is empty ([#822](https://github.com/antvis/S2/issues/822)) ([c91522a](https://github.com/antvis/S2/commit/c91522a7ae3d6c181f271772ee3d2b47f40d3a20))
+* **facet:** remove extra row node if row fields is empty ([#824](https://github.com/antvis/S2/issues/824)) ([ab044c1](https://github.com/antvis/S2/commit/ab044c16466bdfe0d17cb9bf0365deb97a8fd38f))
+
+
+### Features
+
+* refactor react tooltip ([#831](https://github.com/antvis/S2/issues/831)) ([3e57279](https://github.com/antvis/S2/commit/3e572792398d3aec446a56ee70405702be2ced65))
 
 ## [1.0.3](https://github.com/antvis/S2/compare/v0.1.1...v1.0.3) (2021-11-24)
 
@@ -123,51 +128,6 @@
 
 ### Features
 
-<<<<<<< HEAD
-* ✨ v0.1.0 ([#66](https://github.com/antvis/S2/issues/66)) ([a8cff41](https://github.com/antvis/S2/commit/a8cff413a15a4c050c82e87808e9ec2af8eb576d)), closes [#7](https://github.com/antvis/S2/issues/7) [#10](https://github.com/antvis/S2/issues/10) [#12](https://github.com/antvis/S2/issues/12) [#13](https://github.com/antvis/S2/issues/13) [#16](https://github.com/antvis/S2/issues/16) [#17](https://github.com/antvis/S2/issues/17) [#11](https://github.com/antvis/S2/issues/11) [#19](https://github.com/antvis/S2/issues/19) [#18](https://github.com/antvis/S2/issues/18) [#21](https://github.com/antvis/S2/issues/21) [#23](https://github.com/antvis/S2/issues/23) [#20](https://github.com/antvis/S2/issues/20) [#24](https://github.com/antvis/S2/issues/24) [#20](https://github.com/antvis/S2/issues/20) [#26](https://github.com/antvis/S2/issues/26) [#27](https://github.com/antvis/S2/issues/27) [#28](https://github.com/antvis/S2/issues/28) [#29](https://github.com/antvis/S2/issues/29) [#35](https://github.com/antvis/S2/issues/35) [#37](https://github.com/antvis/S2/issues/37) [#38](https://github.com/antvis/S2/issues/38) [#39](https://github.com/antvis/S2/issues/39) [#42](https://github.com/antvis/S2/issues/42) [#43](https://github.com/antvis/S2/issues/43) [#44](https://github.com/antvis/S2/issues/44) [#45](https://github.com/antvis/S2/issues/45) [#47](https://github.com/antvis/S2/issues/47) [#46](https://github.com/antvis/S2/issues/46) [#48](https://github.com/antvis/S2/issues/48) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#49](https://github.com/antvis/S2/issues/49) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#50](https://github.com/antvis/S2/issues/50) [#51](https://github.com/antvis/S2/issues/51) [#52](https://github.com/antvis/S2/issues/52) [#55](https://github.com/antvis/S2/issues/55) [#57](https://github.com/antvis/S2/issues/57) [#58](https://github.com/antvis/S2/issues/58) [#59](https://github.com/antvis/S2/issues/59) [#14](https://github.com/antvis/S2/issues/14) [#30](https://github.com/antvis/S2/issues/30) [#60](https://github.com/antvis/S2/issues/60) [#61](https://github.com/antvis/S2/issues/61) [#64](https://github.com/antvis/S2/issues/64) [#65](https://github.com/antvis/S2/issues/65)
-
-
-### Reverts
-
-* Revert "chore(release): core 1.0.0-beta.15 react 1.0.0-beta.1" ([fe69519](https://github.com/antvis/S2/commit/fe695191fa4c3f7fcb2058573ba4d6c8d482568f))
-* Revert "chore(release): core 1.0.0-beta.15 react 1.0.0-beta.1" ([e92727c](https://github.com/antvis/S2/commit/e92727cda59832bfcddcbb310e8dc754b8f83548))
-
-# @antv/s2-react-v1.0.0-beta.1 (2021-11-23)
-
-
-### Bug Fixes
-
-* **interaction:** move hideColumns method to interaction scope ([#786](https://github.com/antvis/S2/issues/786)) ([f5dee01](https://github.com/antvis/S2/commit/f5dee011fea7f6ee482c7b861358a02aa8160bcf))
-
-
-### Features
-
-* ✨ v0.1.0 ([#66](https://github.com/antvis/S2/issues/66)) ([a8cff41](https://github.com/antvis/S2/commit/a8cff413a15a4c050c82e87808e9ec2af8eb576d)), closes [#7](https://github.com/antvis/S2/issues/7) [#10](https://github.com/antvis/S2/issues/10) [#12](https://github.com/antvis/S2/issues/12) [#13](https://github.com/antvis/S2/issues/13) [#16](https://github.com/antvis/S2/issues/16) [#17](https://github.com/antvis/S2/issues/17) [#11](https://github.com/antvis/S2/issues/11) [#19](https://github.com/antvis/S2/issues/19) [#18](https://github.com/antvis/S2/issues/18) [#21](https://github.com/antvis/S2/issues/21) [#23](https://github.com/antvis/S2/issues/23) [#20](https://github.com/antvis/S2/issues/20) [#24](https://github.com/antvis/S2/issues/24) [#20](https://github.com/antvis/S2/issues/20) [#26](https://github.com/antvis/S2/issues/26) [#27](https://github.com/antvis/S2/issues/27) [#28](https://github.com/antvis/S2/issues/28) [#29](https://github.com/antvis/S2/issues/29) [#35](https://github.com/antvis/S2/issues/35) [#37](https://github.com/antvis/S2/issues/37) [#38](https://github.com/antvis/S2/issues/38) [#39](https://github.com/antvis/S2/issues/39) [#42](https://github.com/antvis/S2/issues/42) [#43](https://github.com/antvis/S2/issues/43) [#44](https://github.com/antvis/S2/issues/44) [#45](https://github.com/antvis/S2/issues/45) [#47](https://github.com/antvis/S2/issues/47) [#46](https://github.com/antvis/S2/issues/46) [#48](https://github.com/antvis/S2/issues/48) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#49](https://github.com/antvis/S2/issues/49) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#50](https://github.com/antvis/S2/issues/50) [#51](https://github.com/antvis/S2/issues/51) [#52](https://github.com/antvis/S2/issues/52) [#55](https://github.com/antvis/S2/issues/55) [#57](https://github.com/antvis/S2/issues/57) [#58](https://github.com/antvis/S2/issues/58) [#59](https://github.com/antvis/S2/issues/59) [#14](https://github.com/antvis/S2/issues/14) [#30](https://github.com/antvis/S2/issues/30) [#60](https://github.com/antvis/S2/issues/60) [#61](https://github.com/antvis/S2/issues/61) [#64](https://github.com/antvis/S2/issues/64) [#65](https://github.com/antvis/S2/issues/65)
-
-
-### Reverts
-
-* Revert "chore(release): core 1.0.0-beta.15 react 1.0.0-beta.1" ([fe69519](https://github.com/antvis/S2/commit/fe695191fa4c3f7fcb2058573ba4d6c8d482568f))
-* Revert "chore(release): core 1.0.0-beta.15 react 1.0.0-beta.1" ([e92727c](https://github.com/antvis/S2/commit/e92727cda59832bfcddcbb310e8dc754b8f83548))
-
-# @antv/s2-react-v1.0.0-beta.1 (2021-11-22)
-
-
-### Bug Fixes
-
-* **interaction:** move hideColumns method to interaction scope ([#786](https://github.com/antvis/S2/issues/786)) ([f5dee01](https://github.com/antvis/S2/commit/f5dee011fea7f6ee482c7b861358a02aa8160bcf))
-
-
-### Features
-
-* ✨ v0.1.0 ([#66](https://github.com/antvis/S2/issues/66)) ([a8cff41](https://github.com/antvis/S2/commit/a8cff413a15a4c050c82e87808e9ec2af8eb576d)), closes [#7](https://github.com/antvis/S2/issues/7) [#10](https://github.com/antvis/S2/issues/10) [#12](https://github.com/antvis/S2/issues/12) [#13](https://github.com/antvis/S2/issues/13) [#16](https://github.com/antvis/S2/issues/16) [#17](https://github.com/antvis/S2/issues/17) [#11](https://github.com/antvis/S2/issues/11) [#19](https://github.com/antvis/S2/issues/19) [#18](https://github.com/antvis/S2/issues/18) [#21](https://github.com/antvis/S2/issues/21) [#23](https://github.com/antvis/S2/issues/23) [#20](https://github.com/antvis/S2/issues/20) [#24](https://github.com/antvis/S2/issues/24) [#20](https://github.com/antvis/S2/issues/20) [#26](https://github.com/antvis/S2/issues/26) [#27](https://github.com/antvis/S2/issues/27) [#28](https://github.com/antvis/S2/issues/28) [#29](https://github.com/antvis/S2/issues/29) [#35](https://github.com/antvis/S2/issues/35) [#37](https://github.com/antvis/S2/issues/37) [#38](https://github.com/antvis/S2/issues/38) [#39](https://github.com/antvis/S2/issues/39) [#42](https://github.com/antvis/S2/issues/42) [#43](https://github.com/antvis/S2/issues/43) [#44](https://github.com/antvis/S2/issues/44) [#45](https://github.com/antvis/S2/issues/45) [#47](https://github.com/antvis/S2/issues/47) [#46](https://github.com/antvis/S2/issues/46) [#48](https://github.com/antvis/S2/issues/48) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#49](https://github.com/antvis/S2/issues/49) [#32](https://github.com/antvis/S2/issues/32) [#31](https://github.com/antvis/S2/issues/31) [#50](https://github.com/antvis/S2/issues/50) [#51](https://github.com/antvis/S2/issues/51) [#52](https://github.com/antvis/S2/issues/52) [#55](https://github.com/antvis/S2/issues/55) [#57](https://github.com/antvis/S2/issues/57) [#58](https://github.com/antvis/S2/issues/58) [#59](https://github.com/antvis/S2/issues/59) [#14](https://github.com/antvis/S2/issues/14) [#30](https://github.com/antvis/S2/issues/30) [#60](https://github.com/antvis/S2/issues/60) [#61](https://github.com/antvis/S2/issues/61) [#64](https://github.com/antvis/S2/issues/64) [#65](https://github.com/antvis/S2/issues/65)
-
-
-### Reverts
-
-* Revert "chore(release): core 1.0.0-beta.15 react 1.0.0-beta.1" ([fe69519](https://github.com/antvis/S2/commit/fe695191fa4c3f7fcb2058573ba4d6c8d482568f))
-* Revert "chore(release): core 1.0.0-beta.15 react 1.0.0-beta.1" ([e92727c](https://github.com/antvis/S2/commit/e92727cda59832bfcddcbb310e8dc754b8f83548))
-=======
 * :art: only show the header cell tooltip when the text is omitted ([#633](https://github.com/antvis/S2/issues/633)) ([ad785db](https://github.com/antvis/S2/commit/ad785dbbaba3547f47d0d6390d5f1f3958165d86))
 * :sparkles: add column header labels for the corner header ([#320](https://github.com/antvis/S2/issues/320)) ([1b87bda](https://github.com/antvis/S2/commit/1b87bda6e6c2decfbd60c975d78afbcf5f0eb400))
 * :sparkles: add skeleton for empty data and close [#507](https://github.com/antvis/S2/issues/507) ([#532](https://github.com/antvis/S2/issues/532)) ([ba1b447](https://github.com/antvis/S2/commit/ba1b44764c0a817dc8453bbb5c56714cdbc354af))
@@ -213,7 +173,6 @@
 * **sa:** fix console.time & sa performance ([#672](https://github.com/antvis/S2/issues/672)) ([cb5990f](https://github.com/antvis/S2/commit/cb5990f81f8c9b4da674eebdb0c49bb8eaa4f19d))
 
 
->>>>>>> origin/master
 
 ## [1.0.1](https://github.com/antvis/S2/compare/v0.1.0-alpha.15...v1.0.1) (2021-11-21)
 

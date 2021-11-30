@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from 'antd';
-import { TOOLTIP_DEFAULT_ICON_PROPS } from '@/components/tooltip/interface';
+import { TOOLTIP_DEFAULT_ICON_PROPS } from '@/components/tooltip/constants';
 import { HtmlIcon } from '@/common/icons';
 import { ADVANCED_PRE_CLS } from '@/common/constant';
 

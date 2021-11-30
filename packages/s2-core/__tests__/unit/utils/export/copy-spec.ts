@@ -11,6 +11,7 @@ import {
 import { getSelectedData } from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { S2Event } from '@/common/constant';
+import { getCsvString } from '@/utils/export/export-worker';
 
 describe('List Table Core Data Process', () => {
   const s2 = new TableSheet(
@@ -73,11 +74,14 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy all data', () => {
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[3];
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
     expect(getSelectedData(s2).split('\n').length).toBe(33);
-    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(6);
+    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(5);
   });
 
   it('should copy format data', () => {
@@ -188,6 +192,6 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(sss);
-    expect(data).toBe(JSON.stringify(newLineText));
+    expect(data).toBe(getCsvString(newLineText));
   });
 });

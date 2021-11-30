@@ -413,4 +413,55 @@ describe('Pivot Dataset Test', () => {
       expect(defaultFormatter).toEqual(dataConfig.meta[0].formatter);
     });
   });
+
+  describe('the order of the measure values in rows or cols', () => {
+    test('should index of the rows of EXTRA_FIELD is 1 when customValueOrder is 1 and valueInCols is false', () => {
+      const mockDataCfg: S2DataConfig = assembleDataCfg(dataCfg, {
+        fields: {
+          valueInCols: false,
+          customValueOrder: 1,
+        },
+      });
+      const newData = dataSet.processDataCfg(mockDataCfg);
+      expect(newData.fields.rows).toEqual(['province', EXTRA_FIELD, 'city']);
+      expect(newData.fields.columns).toEqual(['type', 'sub_type']);
+      expect(newData.fields.values).toEqual(['number']);
+    });
+    test('should index of the cols of EXTRA_FIELD is 0 when customValueOrder is 0 and valueInCols is true', () => {
+      const mockDataCfg: S2DataConfig = assembleDataCfg(dataCfg, {
+        fields: {
+          valueInCols: true,
+          customValueOrder: 0,
+        },
+      });
+      const newData = dataSet.processDataCfg(mockDataCfg);
+      expect(newData.fields.rows).toEqual(['province', 'city']);
+      expect(newData.fields.columns).toEqual([EXTRA_FIELD, 'type', 'sub_type']);
+      expect(newData.fields.values).toEqual(['number']);
+    });
+    test('should customValueOrder is too big, order feature does not work', () => {
+      const mockDataCfg: S2DataConfig = assembleDataCfg(dataCfg, {
+        fields: {
+          valueInCols: true,
+          customValueOrder: 3,
+        },
+      });
+      const newData = dataSet.processDataCfg(mockDataCfg);
+      expect(newData.fields.rows).toEqual(['province', 'city']);
+      expect(newData.fields.columns).toEqual(['type', 'sub_type', EXTRA_FIELD]);
+      expect(newData.fields.values).toEqual(['number']);
+    });
+    test('should customValueOrder is not number, order feature does not work', () => {
+      const mockDataCfg: S2DataConfig = assembleDataCfg(dataCfg, {
+        fields: {
+          valueInCols: true,
+          customValueOrder: undefined,
+        },
+      });
+      const newData = dataSet.processDataCfg(mockDataCfg);
+      expect(newData.fields.rows).toEqual(['province', 'city']);
+      expect(newData.fields.columns).toEqual(['type', 'sub_type', EXTRA_FIELD]);
+      expect(newData.fields.values).toEqual(['number']);
+    });
+  });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "1.0.0-beta.16",
+  "version": "1.1.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
@@ -44,7 +44,7 @@
     "build:umd": "cross-env FORMAT=umd rollup -c rollup.config.js",
     "build:analysis": "cross-env FORMAT=esm ANALYSIS=true rollup -c rollup.config.js",
     "bundle:size": "bundlesize",
-    "watch": "rimraf esm && FORMAT=esm rollup -w -c rollup.config.js",
+    "watch": "rimraf esm && yarn build:esm -w",
     "test:live": "node ./scripts/test-live.mjs",
     "test": "jest",
     "test:coverage": "yarn test --coverage",

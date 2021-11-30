@@ -16,6 +16,7 @@ import {
   Switch,
   Tooltip,
   Button,
+  Popover,
 } from 'antd';
 import { merge } from 'lodash';
 import {
@@ -28,12 +29,14 @@ import {
   S2Event,
   customMerge,
 } from '@antv/s2';
-import { data, totalData, meta } from '../data/mock-dataset.json';
+import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
 import { SheetComponent, SheetType } from '@/components';
 import { REACT_DEFAULT_OPTIONS } from '@/common/constant/options';
 import 'antd/dist/antd.min.css';
 
-export const assembleOptions = (...options: Partial<S2Options>[]): S2Options =>
+export const assembleOptions = (
+  ...options: Partial<S2Options<React.ReactNode>>[]
+): S2Options =>
   customMerge(
     REACT_DEFAULT_OPTIONS,
     { debug: true, width: 600, height: 600 },
@@ -58,7 +61,7 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
   );
 
 interface SheetEntryProps {
-  options: Partial<S2Options>;
+  options: Partial<S2Options<React.ReactNode>>;
   dataCfg: Partial<S2DataConfig>;
   forceUpdateDataCfg?: boolean; // 是否强制替换 dataCfg
   themeCfg?: ThemeCfg;
@@ -181,10 +184,10 @@ export const SheetEntry = forwardRef(
       max: 10,
       step: 0.1,
       marks: {
-        0.5: '0.5倍',
+        0.2: '0.2',
         1: '1 (默认)',
-        2: '2倍',
-        10: '10倍',
+        2: '2',
+        10: '10',
       },
     };
 
@@ -202,111 +205,129 @@ export const SheetEntry = forwardRef(
       };
 
     return (
-      <div>
-        <Space style={{ marginBottom: 20 }}>
-          <Switch
-            checkedChildren="树形"
-            unCheckedChildren="平铺"
-            checked={mode === 'tree'}
-            onChange={onModeChange}
-          />
-          <Switch
-            checkedChildren="数值挂列头"
-            unCheckedChildren="数值挂行头"
-            defaultChecked={valueInCols}
-            onChange={onValueInColsChange}
-          />
-          <Switch
-            checkedChildren="冻结行头开"
-            unCheckedChildren="冻结行头关"
-            defaultChecked={options.frozenRowHeader}
-            onChange={onFreezeRowHeaderChange}
-          />
-          <Switch
-            checkedChildren="容器宽高自适应开"
-            unCheckedChildren="容器宽高自适应关"
-            defaultChecked={adaptive}
-            onChange={(checked) => {
-              setAdaptive(checked);
-            }}
-          />
-          <Switch
-            checkedChildren="resize热区开"
-            unCheckedChildren="resize热区关"
-            defaultChecked={showResizeArea}
-            onChange={(checked) => {
-              setShowResizeArea(checked);
-            }}
-          />
-          <Radio.Group onChange={onRadioChange} defaultValue="adaptive">
-            <Radio.Button value="adaptive">行列等宽</Radio.Button>
-            <Radio.Button value="colAdaptive">列等宽</Radio.Button>
-            <Radio.Button value="compact">紧凑</Radio.Button>
-          </Radio.Group>
-        </Space>
-        <div style={{ marginBottom: 20 }}>
-          <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
+      <>
+        <div className="filter-section">
+          <Space style={{ marginBottom: 20 }}>
             <Switch
-              checkedChildren="自动重置交互样式开"
-              unCheckedChildren="自动重置交互样式关"
-              defaultChecked={initOptions.interaction.autoResetSheetStyle}
-              onChange={onAutoResetSheetStyleChange}
+              checkedChildren="树形"
+              unCheckedChildren="平铺"
+              checked={mode === 'tree'}
+              onChange={onModeChange}
             />
-          </Tooltip>
-          <Space>
-            <Tooltip title="显示的tooltip超过指定区域时自动调整, 使其不遮挡">
-              tooltip 自动调整:
-            </Tooltip>
-            <Select
-              defaultValue={options.tooltip.autoAdjustBoundary}
-              onChange={onAutoAdjustBoundary}
-              style={{ width: 180 }}
-              size="small"
+            <Switch
+              checkedChildren="数值挂列头"
+              unCheckedChildren="数值挂行头"
+              defaultChecked={valueInCols}
+              onChange={onValueInColsChange}
+            />
+            <Switch
+              checkedChildren="冻结行头开"
+              unCheckedChildren="冻结行头关"
+              defaultChecked={options.frozenRowHeader}
+              onChange={onFreezeRowHeaderChange}
+            />
+            <Switch
+              checkedChildren="容器宽高自适应开"
+              unCheckedChildren="容器宽高自适应关"
+              defaultChecked={adaptive}
+              onChange={(checked) => {
+                setAdaptive(checked);
+              }}
+            />
+            <Switch
+              checkedChildren="resize热区开"
+              unCheckedChildren="resize热区关"
+              defaultChecked={showResizeArea}
+              onChange={(checked) => {
+                setShowResizeArea(checked);
+              }}
+            />
+            <Radio.Group onChange={onRadioChange} defaultValue="adaptive">
+              <Radio.Button value="adaptive">行列等宽</Radio.Button>
+              <Radio.Button value="colAdaptive">列等宽</Radio.Button>
+              <Radio.Button value="compact">紧凑</Radio.Button>
+            </Radio.Group>
+          </Space>
+          <div>
+            <Space>
+              <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
+                <Switch
+                  checkedChildren="自动重置交互样式开"
+                  unCheckedChildren="自动重置交互样式关"
+                  defaultChecked={initOptions.interaction.autoResetSheetStyle}
+                  onChange={onAutoResetSheetStyleChange}
+                />
+              </Tooltip>
+              <Tooltip title="显示的tooltip超过指定区域时自动调整, 使其不遮挡">
+                tooltip 自动调整:
+              </Tooltip>
+              <Select
+                defaultValue={options.tooltip.autoAdjustBoundary}
+                onChange={onAutoAdjustBoundary}
+                style={{ width: 180 }}
+                size="small"
+              >
+                <Select.Option value="container">
+                  container (表格区域)
+                </Select.Option>
+                <Select.Option value="body">
+                  body (浏览器可视区域)
+                </Select.Option>
+                <Select.Option value="">无</Select.Option>
+              </Select>
+            </Space>
+            <Space style={{ marginLeft: 10 }}>
+              设置宽度 ：
+              <Input
+                style={{ width: 100 }}
+                placeholder="宽度(px)"
+                onChange={onSizeChange('width')}
+                defaultValue={options.width}
+                suffix="px"
+                size="small"
+              />
+              设置高度 ：
+              <Input
+                style={{ width: 100 }}
+                placeholder="高度(px)"
+                onChange={onSizeChange('height')}
+                defaultValue={options.height}
+                suffix="px"
+                size="small"
+              />
+            </Space>
+            <Popover
+              placement="bottomRight"
+              content={
+                <>
+                  <div style={{ width: '600px' }}>
+                    水平滚动速率 ：
+                    <Slider
+                      {...sliderOptions}
+                      defaultValue={
+                        options.interaction.scrollSpeedRatio.horizontal
+                      }
+                      onChange={onScrollSpeedRatioChange('horizontal')}
+                    />
+                    垂直滚动速率 ：
+                    <Slider
+                      {...sliderOptions}
+                      defaultValue={
+                        options.interaction.scrollSpeedRatio.vertical
+                      }
+                      onChange={onScrollSpeedRatioChange('vertical')}
+                    />
+                  </div>
+                </>
+              }
             >
-              <Select.Option value="container">
-                container (表格区域)
-              </Select.Option>
-              <Select.Option value="body">body (浏览器可视区域)</Select.Option>
-              <Select.Option value="">无</Select.Option>
-            </Select>
-          </Space>
-          <Space>
-            设置宽度 ：
-            <Input
-              style={{ width: 100 }}
-              placeholder="宽度(px)"
-              onChange={onSizeChange('width')}
-              defaultValue={options.width}
-              suffix="px"
-              size="small"
-            />
-            设置高度 ：
-            <Input
-              style={{ width: 100 }}
-              placeholder="高度(px)"
-              onChange={onSizeChange('height')}
-              defaultValue={options.height}
-              suffix="px"
-              size="small"
-            />
-          </Space>
+              <Button size="small" style={{ marginLeft: 20 }}>
+                滚动速率调整
+              </Button>
+            </Popover>
+          </div>
+          <div style={{ marginTop: 20 }}>{props.header}</div>
         </div>
-
-        <div style={{ marginBottom: 40, width: '70%' }}>
-          水平滚动速率 ：
-          <Slider
-            {...sliderOptions}
-            defaultValue={options.interaction.scrollSpeedRatio.horizontal}
-            onChange={onScrollSpeedRatioChange('horizontal')}
-          />
-          垂直滚动速率 ：
-          <Slider
-            {...sliderOptions}
-            defaultValue={options.interaction.scrollSpeedRatio.vertical}
-            onChange={onScrollSpeedRatioChange('vertical')}
-          />
-        </div>
-        <div style={{ marginBottom: 20 }}>{props.header}</div>
         <SheetComponent
           dataCfg={dataCfg as S2DataConfig}
           options={options}
@@ -331,7 +352,7 @@ export const SheetEntry = forwardRef(
           }}
           onColCellClick={props.onColCellClick}
         />
-      </div>
+      </>
     );
   },
 );

@@ -9,8 +9,8 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const TooltipComponent = (
-      <div className="tooltip-custom-component">tooltipComponent</div>
+    const CustomTooltip = (
+      <div className="tooltip-custom-component">content</div>
     );
     const RowTooltip = (
       <div className="tooltip-custom-component">rowTooltip</div>
@@ -20,9 +20,9 @@ fetch(
       width: 600,
       height: 480,
       tooltip: {
-        tooltipComponent: TooltipComponent,
+        content: CustomTooltip,
         row: {
-          tooltipComponent: RowTooltip,
+          content: RowTooltip,
         },
       },
     };

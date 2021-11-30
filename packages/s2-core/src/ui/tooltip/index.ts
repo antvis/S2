@@ -1,5 +1,10 @@
-import { SpreadSheet } from '@/sheet-type';
-import { TooltipPosition, TooltipShowOptions } from '@/common/interface';
+import { isNil } from 'lodash';
+import type { SpreadSheet } from '@/sheet-type';
+import {
+  TooltipContentType,
+  TooltipPosition,
+  TooltipShowOptions,
+} from '@/common/interface';
 import {
   getTooltipDefaultOptions,
   getAutoAdjustPosition,
@@ -33,30 +38,17 @@ export class BaseTooltip {
    * @param position
    * @param data
    * @param options {@link TooltipOptions}
-   * @param element
+   * @param content
    */
-  public show(showOptions: TooltipShowOptions) {
-    const { position, options, element } = showOptions;
+  public show<T = Element | string>(showOptions: TooltipShowOptions<T>) {
+    const { position, options, content } = showOptions;
     const { enterable } = getTooltipDefaultOptions(options);
     const container = this.getContainer();
-    const { tooltipComponent, getTooltipComponent, autoAdjustBoundary } =
-      this.spreadsheet.options.tooltip || {};
-    this.container.innerHTML = '';
+    const { autoAdjustBoundary } = this.spreadsheet.options.tooltip || {};
 
-    if (getTooltipComponent) {
-      getTooltipComponent(showOptions, container);
-    } else {
-      const customComponent = tooltipComponent || element;
-      if (customComponent) {
-        if (typeof customComponent === 'string') {
-          this.container.innerHTML = customComponent;
-        } else {
-          this.container.appendChild(customComponent);
-        }
-      }
-    }
+    this.options = showOptions as unknown as TooltipShowOptions;
 
-    this.options = showOptions;
+    this.renderContent<T>(content);
 
     const { x, y } = getAutoAdjustPosition({
       spreadsheet: this.spreadsheet,
@@ -92,10 +84,39 @@ export class BaseTooltip {
   }
 
   public destroy() {
-    if (this.container) {
+    const container = this.getContainer();
+    if (container) {
       this.resetPosition();
-      document.body.removeChild(this.container);
+      container?.remove();
     }
+  }
+
+  public renderContent<T = TooltipContentType>(content: T) {
+    this.clearContent();
+
+    const { content: contentFromOptions } =
+      this.spreadsheet.options.tooltip || {};
+    const container = this.getContainer();
+    const displayContent = content ?? contentFromOptions;
+
+    // 兼容 displayContent = '' 空字符串的场景
+    if (isNil(displayContent)) {
+      return;
+    }
+
+    if (typeof displayContent === 'string') {
+      container.innerHTML = displayContent;
+      return;
+    }
+
+    if (displayContent instanceof Element) {
+      container.appendChild(displayContent as Element);
+    }
+  }
+
+  public clearContent() {
+    const container = this.getContainer();
+    container.innerHTML = '';
   }
 
   public disablePointerEvent() {
@@ -125,6 +146,7 @@ export class BaseTooltip {
       const container = document.createElement('div');
       document.body.appendChild(container);
       this.container = container;
+      return this.container;
     }
     this.container.className = `${TOOLTIP_PREFIX_CLS}-container`;
     return this.container;

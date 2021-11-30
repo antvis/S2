@@ -4,6 +4,7 @@ import {
   getSafetyDataConfig,
   getSafetyOptions,
 } from '@/utils/merge';
+import type { S2DataConfig } from '@/common';
 
 describe('merge test', () => {
   test('should replace old array with new one', () => {
@@ -27,7 +28,7 @@ describe('merge test', () => {
         columns: [],
         values: [],
         customTreeItems: [],
-        valueInCols: true,
+        valueInCols: false,
       },
       meta: [],
       sortParams: [],
@@ -36,12 +37,13 @@ describe('merge test', () => {
   });
 
   test('should cancel valueInCols if customTreeItems is not empty by get safety data config', () => {
-    const fields = {
+    const fields: Partial<S2DataConfig['fields']> = {
       customTreeItems: [{ key: '1', title: 'test' }],
+      valueInCols: true,
     };
     expect(
       getSafetyDataConfig({
-        fields: fields,
+        fields,
       }),
     ).toStrictEqual({
       data: [],
@@ -51,6 +53,31 @@ describe('merge test', () => {
         rows: [],
         columns: [],
         values: [],
+        valueInCols: false,
+      },
+      meta: [],
+      sortParams: [],
+      filterParams: [],
+    });
+  });
+
+  test('should cancel valueInCols if value is empty by get safety data config', () => {
+    const fields: Partial<S2DataConfig['fields']> = {
+      values: [],
+      valueInCols: true,
+    };
+    expect(
+      getSafetyDataConfig({
+        fields,
+      }),
+    ).toStrictEqual({
+      data: [],
+      totalData: [],
+      fields: {
+        ...fields,
+        rows: [],
+        columns: [],
+        customTreeItems: [],
         valueInCols: false,
       },
       meta: [],
@@ -129,12 +156,13 @@ describe('merge test', () => {
     const dataConfig = getSafetyDataConfig({
       fields: {
         rows: ['test'],
+        values: ['value'],
       },
     });
     expect(dataConfig.fields).toStrictEqual({
       rows: ['test'],
       columns: [],
-      values: [],
+      values: ['value'],
       customTreeItems: [],
       valueInCols: true,
     });

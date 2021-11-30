@@ -1,5 +1,5 @@
 ---
-title: 表格容器自适应
+title: Table adaptive
 order: 9
 ---
 

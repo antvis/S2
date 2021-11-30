@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { HeaderActionIconProps, S2Options, ThemeName, Node } from '@antv/s2';
 import { getContainer } from '../util/helpers';
-import { SheetEntry, assembleDataCfg } from '../util/sheet-entry';
+import { SheetEntry, assembleDataCfg } from '../../playground/sheet-entry';
 import { SheetType } from '@/components';
 import '@antv/s2/esm/style.css';
 
@@ -49,7 +49,7 @@ function MainLayout() {
       current: 1,
     },
     tooltip: {
-      showTooltip: true,
+      showTooltip: false,
       operation: {
         trend: true,
         hiddenColumns: true,
@@ -69,9 +69,9 @@ function MainLayout() {
     },
     interaction: {
       selectedCellsSpotlight: spotLight,
-      hoverHighlight: hoverHighlight,
+      hoverHighlight,
     },
-    showSeriesNumber: showSeriesNumber,
+    showSeriesNumber,
     customSVGIcons: !showDefaultActionIcons && [
       {
         name: 'Filter',
@@ -93,9 +93,7 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            element: ColTooltip,
+            content: ColTooltip,
           });
         },
       },
@@ -108,9 +106,7 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            element: ColTooltip,
+            content: ColTooltip,
           });
         },
       },
@@ -121,9 +117,7 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            element: CornerTooltip,
+            content: CornerTooltip,
           });
         },
       },
@@ -134,9 +128,7 @@ function MainLayout() {
           const { meta, event } = props;
           meta.spreadsheet.tooltip.show({
             position: { x: event.clientX, y: event.clientY },
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            element: RowTooltip,
+            content: RowTooltip,
           });
         },
       },
