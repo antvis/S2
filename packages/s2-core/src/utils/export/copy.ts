@@ -1,10 +1,8 @@
-import { getCsvString } from './export-worker';
 import { copyToClipboard } from '@/utils/export';
 import { CellMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { DataType } from '@/data-set/interface';
-import { ID_SEPARATOR } from '@/common';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -13,24 +11,48 @@ export function keyEqualTo(key: string, compareKey: string) {
   return String(key).toLowerCase() === String(compareKey).toLowerCase();
 }
 
+const newLine = '\r\n';
+const newTab = '\t';
+
+const getColNodeField = (spreadsheet: SpreadSheet, id: string) =>
+  spreadsheet.getColumnNodes().find((col) => col.id === id)?.field;
+
+const getFiledIdFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
+  const ids = meta.id.split('-');
+  return getColNodeField(spreadsheet, ids[ids.length - 1]);
+};
+
+const getFormat = (meta: CellMeta, spreadsheet: SpreadSheet) => {
+  const ids = meta.id.split('-');
+  const fieldId = getColNodeField(spreadsheet, ids[ids.length - 1]);
+  if (spreadsheet.options.interaction.copyWithFormat) {
+    return spreadsheet.dataSet.getFieldFormatter(fieldId);
+  }
+  return (v: string) => v;
+};
+
+const getValueFromMeta = (
+  meta: CellMeta,
+  displayData: DataType[],
+  spreadsheet: SpreadSheet,
+) => {
+  const fieldId = getFiledIdFromMeta(meta, spreadsheet);
+  return displayData[meta.rowIndex][fieldId];
+};
+
 const format = (
   meta: CellMeta,
   displayData: DataType[],
   spreadsheet: SpreadSheet,
 ) => {
-  const ids = meta.id.split(ID_SEPARATOR);
-  const fieldId = ids[ids.length - 1];
-  const formatter = spreadsheet.dataSet.getFieldFormatter(fieldId);
-  const value = displayData[meta.rowIndex][fieldId];
-  if (formatter && spreadsheet.options.interaction.copyWithFormat) {
-    return formatter(value);
-  }
-  return value;
+  const formatter = getFormat(meta, spreadsheet);
+  return formatter(getValueFromMeta(meta, displayData, spreadsheet));
 };
 
-const convertString = (v: string) => {
-  if (/\t|\n/.test(v)) {
-    return getCsvString(v);
+export const convertString = (v: string) => {
+  if (/\n/.test(v)) {
+    // 单元格内换行
+    return '"' + v.replace(/\r\n?/g, '\n') + '"';
   }
   return v;
 };
@@ -43,10 +65,10 @@ export const processCopyData = (
   const getRowString = (pre: string, cur: CellMeta) =>
     pre +
     (cur ? convertString(format(cur, displayData, spreadsheet)) : '') +
-    '\t';
+    newTab;
   const getColString = (pre: string, cur: CellMeta[]) =>
-    pre + cur.reduce(getRowString, '').slice(0, -1) + '\n';
-  return cells.reduce(getColString, '').slice(0, -1);
+    pre + cur.reduce(getRowString, '').slice(0, -1) + newLine;
+  return cells.reduce(getColString, '').slice(0, -2);
 };
 
 export const getTwoDimData = (cells: CellMeta[]) => {
@@ -79,40 +101,21 @@ export const getTwoDimData = (cells: CellMeta[]) => {
   return twoDimDataArray;
 };
 
-const processAllSelected = (
-  displayData: DataType[],
-  spreadsheet: SpreadSheet,
-) => {
-  // 全选复制
-  const selectedFiled = spreadsheet.dataCfg.fields.columns;
-  return displayData.reduce((pre, cur) => {
-    return (
-      pre +
-      selectedFiled
-        .reduce((prev, curr) => prev + cur[curr] + '\t', '')
-        .slice(0, -1) +
-      '\n'
-    );
-  }, '');
-};
-
 const processColSelected = (
   displayData: DataType[],
+  spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
 ) => {
-  const selectedFiled = selectedCols.map((e) => {
-    const ids = e.id.split(ID_SEPARATOR);
-    return ids[ids.length - 1];
-  });
-  return displayData.reduce((pre, cur) => {
-    return (
-      pre +
-      selectedFiled
-        .reduce((prev, curr) => prev + cur[curr] + '\t', '')
-        .slice(0, -1) +
-      '\n'
-    );
-  }, '');
+  const selectedFiled = selectedCols.length
+    ? selectedCols.map((e) => getColNodeField(spreadsheet, e.id))
+    : spreadsheet.dataCfg.fields.columns;
+  return displayData
+    .map((row) => {
+      return selectedFiled
+        .map((filed) => convertString(row[filed]))
+        .join(newTab);
+    })
+    .join(newLine);
 };
 
 const processRowSelected = (
@@ -124,10 +127,10 @@ const processRowSelected = (
     .filter((e, i) => selectedIndex.includes(i))
     .map((e) =>
       Object.keys(e)
-        .map((key) => e[key])
-        .join('\t'),
+        .map((key) => convertString(e[key]))
+        .join(newTab),
     )
-    .join('\n');
+    .join(newLine);
 };
 
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
@@ -144,9 +147,9 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
     return;
   }
   if (interaction.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
-    data = processAllSelected(displayData, spreadsheet);
+    data = processColSelected(displayData, spreadsheet, []);
   } else if (selectedCols.length) {
-    data = processColSelected(displayData, selectedCols);
+    data = processColSelected(displayData, spreadsheet, selectedCols);
   } else if (selectedRows.length) {
     data = processRowSelected(displayData, selectedRows);
   } else {
