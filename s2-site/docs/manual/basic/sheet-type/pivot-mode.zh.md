@@ -84,7 +84,8 @@ ReactDOM.render(
 如果不打算依赖 React，可以在上面第三步之后直接调用：
 
 ```typescript
-const pivotSheet = new PivotSheet("#container", dataCfg, options);
+const container = document.getElementById('container');
+const pivotSheet = new PivotSheet(container, dataCfg, options);
 pivotSheet.render();
 ```
 
