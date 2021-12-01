@@ -416,14 +416,20 @@ export class DataCell extends BaseCell<ViewMeta> {
       verticalBorderColorOpacity,
     } = this.getStyle().cell;
 
+    // 完全绘制在 Cell 内，否则会被其他 Cell 遮挡，导致 Border 粗细不一
+    const horizontalBorderY = Math.floor(
+      y + height - horizontalBorderWidth / 2,
+    );
+    const verticalBorderX = Math.floor(x + width - verticalBorderWidth / 2);
+
     // horizontal border
     renderLine(
       this,
       {
         x1: x,
-        y1: y + height,
+        y1: horizontalBorderY,
         x2: x + width,
-        y2: y + height,
+        y2: horizontalBorderY,
       },
       {
         stroke: horizontalBorderColor,
@@ -436,9 +442,9 @@ export class DataCell extends BaseCell<ViewMeta> {
     renderLine(
       this,
       {
-        x1: x + width,
+        x1: verticalBorderX,
         y1: y,
-        x2: x + width,
+        x2: verticalBorderX,
         y2: y + height,
       },
       {
