@@ -5,11 +5,20 @@ import { SwitcherResult } from './interface';
 import { Switcher, SwitcherProps } from '.';
 import './index.less';
 
-export interface SwitcherCfgProps extends Omit<SwitcherProps, 'onSubmit'> {
+type SwitcherBasicCfg = Pick<
+  SwitcherProps,
+  | 'title'
+  | 'resetText'
+  | 'innerContentClassName'
+  | 'contentTitleText'
+  | 'popover'
+>;
+
+export interface SwitcherCfgProps extends SwitcherBasicCfg {
   open: boolean;
 }
 
-export interface SwitcherHeaderProps extends Omit<SwitcherProps, 'onSubmit'> {
+export interface SwitcherHeaderProps extends SwitcherBasicCfg {
   sheet: SpreadSheet;
   dataCfg: S2DataConfig;
   options: S2Options;
