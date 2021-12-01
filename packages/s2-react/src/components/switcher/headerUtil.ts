@@ -5,7 +5,7 @@ import {
   TableSheet,
   Fields,
 } from '@antv/s2';
-import { filter, find, get, isEmpty, map } from 'lodash';
+import { filter, find, isEmpty, map } from 'lodash';
 import { FieldType, SWITCHER_FIELDS } from './constant';
 import { SwitcherField, SwitcherFields, SwitcherResult } from './interface';
 
