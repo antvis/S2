@@ -1,11 +1,12 @@
 import React, { ReactNode } from 'react';
 import { PageHeader } from 'antd';
 import cx from 'classnames';
-import { SpreadSheet } from '@antv/s2';
+import { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
 import { Export, ExportCfgProps } from '../export';
 import { AdvancedSort, AdvancedSortCfgProps } from '../advanced-sort';
 
 import './index.less';
+import { SwitcherCfgProps, SwitcherHeader } from '../switcher/header';
 
 export interface HeaderCfgProps {
   width?: number;
@@ -14,10 +15,13 @@ export interface HeaderCfgProps {
   description?: string;
   exportCfg?: ExportCfgProps;
   advancedSortCfg?: AdvancedSortCfgProps;
+  switcherCfg?: SwitcherCfgProps;
   extra?: ReactNode[];
 }
 
 export interface HeaderProps extends HeaderCfgProps {
+  dataCfg?: S2DataConfig;
+  options?: S2Options;
   sheet: SpreadSheet;
 }
 
@@ -28,23 +32,43 @@ export const Header: React.FC<HeaderProps> = ({
   description,
   exportCfg,
   advancedSortCfg,
+  switcherCfg,
   sheet,
   extra = [],
+  dataCfg,
+  options,
   ...restProps
 }) => {
   const PRE_CLASS = 's2-header';
 
-  let extraOperationComponents = extra;
-  if (advancedSortCfg.open) {
-    const advancedSortNode = (
-      <AdvancedSort key={'advancedSort'} sheet={sheet} {...advancedSortCfg} />
-    );
-    extraOperationComponents = extra.concat([advancedSortNode]);
-  }
-  if (exportCfg.open) {
-    const exportNode = <Export key={'export'} sheet={sheet} {...exportCfg} />;
-    extraOperationComponents.push(exportNode);
-  }
+  const getExtraComponents = () => {
+    let extraOperationComponents = extra;
+    if (switcherCfg.open) {
+      const switcherNode = (
+        <SwitcherHeader
+          key={'switcher'}
+          sheet={sheet}
+          dataCfg={dataCfg}
+          options={options}
+          {...switcherCfg}
+        />
+      );
+      extraOperationComponents.push(switcherNode);
+    }
+
+    if (advancedSortCfg.open) {
+      const advancedSortNode = (
+        <AdvancedSort key={'advancedSort'} sheet={sheet} {...advancedSortCfg} />
+      );
+      extraOperationComponents = extra.concat([advancedSortNode]);
+    }
+    if (exportCfg.open) {
+      const exportNode = <Export key={'export'} sheet={sheet} {...exportCfg} />;
+      extraOperationComponents.push(exportNode);
+    }
+
+    return extraOperationComponents;
+  };
 
   return (
     <PageHeader
@@ -52,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
       style={{ width: `${width}px` }}
       ghost={false}
       title={title}
-      extra={extraOperationComponents}
+      extra={getExtraComponents()}
       {...restProps}
     >
       {description}
@@ -63,4 +87,5 @@ export const Header: React.FC<HeaderProps> = ({
 Header.defaultProps = {
   exportCfg: { open: false },
   advancedSortCfg: { open: false },
+  switcherCfg: { open: false },
 };

@@ -232,7 +232,14 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   return (
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
-        {header && <Header {...header} sheet={ownSpreadsheet} />}
+        {header && (
+          <Header
+            {...header}
+            sheet={ownSpreadsheet}
+            dataCfg={getSafetyDataConfig(dataCfg)}
+            options={getSafetyOptions(options)}
+          />
+        )}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
         {showPagination && (
           <S2Pagination

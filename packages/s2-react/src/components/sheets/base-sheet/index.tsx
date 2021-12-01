@@ -341,7 +341,13 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && (
-          <Header {...header} sheet={ownSpreadsheet} width={options.width} />
+          <Header
+            {...header}
+            sheet={ownSpreadsheet}
+            width={options.width}
+            dataCfg={getSafetyDataConfig(dataCfg)}
+            options={getSafetyOptions(options)}
+          />
         )}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
         {showPagination && (
