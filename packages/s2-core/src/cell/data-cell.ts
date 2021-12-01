@@ -416,11 +416,9 @@ export class DataCell extends BaseCell<ViewMeta> {
       verticalBorderColorOpacity,
     } = this.getStyle().cell;
 
-    // 完全绘制在 Cell 内，否则会被其他 Cell 遮挡，导致 Border 粗细不一
-    const horizontalBorderY = Math.floor(
-      y + height - horizontalBorderWidth / 2,
-    );
-    const verticalBorderX = Math.floor(x + width - verticalBorderWidth / 2);
+    // 完全绘制在 Cell 内，否则会导致 Border 粗细不一： https://github.com/antvis/S2/issues/426
+    const horizontalBorderY = y + height - horizontalBorderWidth / 2;
+    const verticalBorderX = x + width - verticalBorderWidth / 2;
 
     // horizontal border
     renderLine(

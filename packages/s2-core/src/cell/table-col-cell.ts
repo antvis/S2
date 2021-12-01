@@ -6,7 +6,7 @@ import { getSortTypeIcon } from 'src/utils/sort-action';
 import { Group } from '@antv/g-canvas';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
 import { S2Event, HORIZONTAL_RESIZE_AREA_KEY_PRE } from '@/common/constant';
-import { renderIcon, renderLine } from '@/utils/g-renders';
+import { renderIcon, renderLine, renderRect } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
 import {
   DefaultCellTheme,
@@ -197,5 +197,33 @@ export class TableColCell extends ColCell {
       formattedValue: label,
       value: label,
     };
+  }
+
+  protected drawBackgroundShape() {
+    const { backgroundColor } = this.getStyle().cell;
+    this.backgroundShape = renderRect(this, {
+      ...this.getCellArea(),
+      fill: backgroundColor,
+    });
+  }
+
+  protected drawRightBorder() {
+    const { x, y, width: cellWidth, height: cellHeight } = this.meta;
+    const linePositionX =
+      x + cellWidth - this.theme.colCell.cell.verticalBorderWidth / 2;
+
+    renderLine(
+      this,
+      {
+        x1: linePositionX,
+        y1: y,
+        x2: linePositionX,
+        y2: y + cellHeight,
+      },
+      {
+        stroke: this.theme.colCell.cell.verticalBorderColor,
+        lineWidth: this.theme.colCell.cell.verticalBorderWidth,
+      },
+    );
   }
 }

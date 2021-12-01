@@ -302,7 +302,7 @@ export class ColCell extends HeaderCell {
     this.drawVerticalResizeArea();
   }
 
-  private drawRightBorder() {
+  protected drawRightBorder() {
     if (!this.meta.isLeaf) {
       const { height, viewportHeight } = this.headerConfig;
       const { x, y, width: cellWidth, height: cellHeight } = this.meta;
