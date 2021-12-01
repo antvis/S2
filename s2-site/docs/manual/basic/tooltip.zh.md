@@ -30,7 +30,7 @@ const s2options = {
   tooltip: {
       showTooltip: true,
       row: {
-        // 行头设置不显示
+        // 单独设置行头不显示
         showTooltip: false,
       }
   }
@@ -78,6 +78,35 @@ const s2options = {
 
 #### 自定义 Tooltip 内容
 
+对于 `@antv/s2` 类的使用方式: tooltip 内容 可以是任意 `dom` 节点或者 `字符串`
+
+```ts
+const content = document.createElement('div')
+
+const s2options = {
+  tooltip: {
+    content,
+    // content: '我是字符串'
+  },
+};
+```
+
+对于 `@antv/s2-react` 组件的使用方式: tooltip 内容 可以是任意的 `jsx` 元素
+
+```ts
+const content = (
+  <div>
+    <span>我是自定义内容</span>
+  </div>
+)
+
+const s2options = {
+  tooltip: {
+    content,
+  },
+};
+```
+
 ##### 1. 配置级
 
 配置 `tooltip.content` 自定义 `Tooltip` 内容，还可以給 `行 (row)`、`列 (col)`、`数据 (cell)` 三种类型的单元格分别配置自定义内容
@@ -88,21 +117,30 @@ const s2options = {
 const TooltipContent = (
   <div>content</div>
 );
+
 const RowTooltipContent = (
   <div>rowTooltip</div>
 );
 
+const ColTooltipContent = (
+  <div>colTooltip</div>
+);
+
+const CellTooltipContent = (
+  <div>cellTooltip</div>
+);
+
 const s2options = {
   tooltip: {
-    content: TooltipContent,
+    content: <TooltipContent/>,
     row: {
-      content: RowTooltipContent,
+      content: <RowTooltipContent/>,
     },
     col: {
-      content: xx
+      content: <ColTooltipContent/>
     }
     cell: {
-      content: xx
+      content: <CellTooltipContent/>
     }
   },
 };
@@ -118,7 +156,7 @@ const TooltipContent = (
 );
 
 s2.showTooltip({
-  content: TooltipContent
+  content: <TooltipContent/>
 })
 
 // 或者 s2.tooltip.show({ content: TooltipContent })
