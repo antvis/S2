@@ -14,6 +14,8 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success'
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: 'latest-release'
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
@@ -37,9 +39,8 @@ jobs:
 
       - name: Push lock
         run: |
-          git checkout latest-release
           git add .
-          git commit -m "chore: 🤖 auto sync site s2 lock and changelog" --no-verify
+          git commit -m "chore: 🤖 auto sync site s2 lock and changelog [skip ci]" --no-verify
           git push origin latest-release --no-verify
 
       # 使用官方的 github cli 便捷的创建 pr
