@@ -42,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
   const PRE_CLASS = 's2-header';
 
   const getExtraComponents = () => {
-    let extraOperationComponents = extra;
+    let extraOperationComponents = [...extra];
     if (switcherCfg.open) {
       const switcherNode = (
         <SwitcherHeader
@@ -66,7 +66,6 @@ export const Header: React.FC<HeaderProps> = ({
       const exportNode = <Export key={'export'} sheet={sheet} {...exportCfg} />;
       extraOperationComponents.push(exportNode);
     }
-
     return extraOperationComponents;
   };
 
