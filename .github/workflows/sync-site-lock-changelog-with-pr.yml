@@ -14,6 +14,8 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success'
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: 'latest-release'
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
@@ -28,9 +30,6 @@ jobs:
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Switch branch
-        run: git checkout latest-release
 
       - name: Install dependencies
         run: yarn
