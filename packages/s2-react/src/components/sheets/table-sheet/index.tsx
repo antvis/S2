@@ -14,6 +14,7 @@ import {
   S2_PREFIX_CLS,
   S2Event,
   getBaseCellData,
+  getSafetyDataConfig,
   TableSheet as BaseTableSheet,
 } from '@antv/s2';
 import { Header } from '@/components/header';
@@ -235,7 +236,14 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   return (
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
-        {header && <Header {...header} sheet={ownSpreadsheet} />}
+        {header && (
+          <Header
+            {...header}
+            sheet={ownSpreadsheet}
+            dataCfg={getSafetyDataConfig(dataCfg)}
+            options={getSheetComponentOptions(options)}
+          />
+        )}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
         {showPagination && (
           <S2Pagination

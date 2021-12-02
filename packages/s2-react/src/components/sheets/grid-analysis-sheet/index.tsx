@@ -10,6 +10,7 @@ import {
   S2Options,
   getBaseCellData,
   S2Constructor,
+  getSafetyDataConfig,
 } from '@antv/s2';
 import { Header } from '../../header';
 import { BaseSheetProps } from '../interface';
@@ -180,7 +181,14 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
 
   return (
     <Spin spinning={isLoading === undefined ? loading : isLoading}>
-      {header && <Header {...header} sheet={ownSpreadsheet} />}
+      {header && (
+        <Header
+          {...header}
+          sheet={ownSpreadsheet}
+          dataCfg={getSafetyDataConfig(dataCfg)}
+          options={getSheetComponentOptions(options)}
+        />
+      )}
       <div
         ref={(e: HTMLDivElement) => {
           container = e;

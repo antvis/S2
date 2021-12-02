@@ -11,9 +11,9 @@ order: 0
 | --------------- | ------------------ | ---------------------- | ------ | ---- |
 | title           | 自定义标题           | `React.ReactNode`      | -      |      |
 | description     | 自定义说明           | `string`               | -      |      |
-| classname       | 表头类名             | `string`               | -      |      |
+| className       | 表头类名             | `string`               | -      |      |
 | style           | 表头样式             | `React.CSSPropertie`  | -      |      |
-| classname       | 表头类名             | `string`               | -      |      |
-| extra           | 自定义表头右侧操作区   |  `reactnode[]`         | -       |      |
+| extra           | 自定义表头右侧操作区   |  `React.ReactNode`         | -       |      |
 | advancedSortCfg | 配置高级排序         | [AdvancedSortCfgProps](/zh/docs/api/components/advanced-sort) | {open: false} |      |
 | exportCfg       | 配置导出             | [ExportCfgProps](/zh/docs/api/components/export)  | {open: false} |      |
+| switcherCfg       | 配置指标切换             | [SwitcherCfgProps](/zh/docs/api/components/switcher#switchercfgprops)  | {open: false} |      |
