@@ -1,14 +1,10 @@
-import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
+import { PivotSheet, TableSheet } from '@antv/s2';
+import { getMockSheetInstance } from 'tests/util/helpers';
 import { generateSwitcherFieldsCfgFromResult } from '../../../../src/components/switcher/headerUtil';
 import {
   generateSheetConfig,
   generateSwitcherFields,
 } from '@/components/switcher/headerUtil';
-
-function getMockSheetInstance(Sheet: typeof SpreadSheet) {
-  const instance = Object.create(Sheet.prototype);
-  return instance as unknown as SpreadSheet;
-}
 
 describe('headerUtil test', () => {
   test('should generate correct switcher fields config for pivot sheet', () => {
