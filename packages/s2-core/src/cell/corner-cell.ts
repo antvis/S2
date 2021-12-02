@@ -143,7 +143,7 @@ export class CornerCell extends HeaderCell {
    * 绘制折叠展开的icon
    */
   private drawTreeIcon() {
-    if (!this.showTreeIcon() || this.meta.cornerType !== CornerNodeType.ROW) {
+    if (!this.showTreeIcon() || this.meta.cornerType === CornerNodeType.Col) {
       return;
     }
     const { hierarchyCollapse } = this.headerConfig;
@@ -239,9 +239,9 @@ export class CornerCell extends HeaderCell {
   }
 
   private getResizeAreaEffect() {
-    const { key } = this.meta;
+    const { cornerType } = this.meta;
 
-    if (key === KEY_SERIES_NUMBER_NODE) {
+    if (cornerType === CornerNodeType.Series) {
       return ResizeAreaEffect.Series;
     }
 
@@ -350,7 +350,7 @@ export class CornerCell extends HeaderCell {
     const { cornerType } = this.meta;
 
     const textAlign =
-      cornerType === CornerNodeType.ROW ? cornerTextStyle.textAlign : 'right';
+      cornerType === CornerNodeType.Col ? 'right' : cornerTextStyle.textAlign;
 
     return {
       ...cornerTextStyle,

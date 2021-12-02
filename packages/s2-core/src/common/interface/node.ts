@@ -2,4 +2,5 @@
 export enum CornerNodeType {
   ROW = 'row',
   Col = 'col',
+  Series = 'series',
 }
