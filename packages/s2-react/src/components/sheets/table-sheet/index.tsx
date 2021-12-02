@@ -21,7 +21,7 @@ import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
 import { useResizeEffect, usePaginationEffect } from '@/hooks';
 import { S2Pagination } from '@/components/pagination';
-import { getSafetyOptions } from '@/utils';
+import { getSheetComponentOptions } from '@/utils';
 
 export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
@@ -66,7 +66,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     const params: S2Constructor = [
       container.current,
       dataCfg,
-      getSafetyOptions(options),
+      getSheetComponentOptions(options),
     ];
 
     if (spreadsheet) {
@@ -151,13 +151,13 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
 
   const setOptions = (newOptions?: S2Options) => {
     const curOptions = newOptions || options;
-    ownSpreadsheet.setOptions(getSafetyOptions(curOptions));
+    ownSpreadsheet.setOptions(curOptions);
   };
 
   const setDataCfg = () => {
     // reset the options since it could be changed by layout
     setOptions();
-    ownSpreadsheet.setDataCfg(getSafetyDataConfig(dataCfg));
+    ownSpreadsheet.setDataCfg(dataCfg);
   };
 
   const update = (reset?: () => void, reloadData = true) => {
@@ -174,8 +174,8 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     }
     baseSpreadsheet.current = renderSpreadSheet();
     bindEvent();
-    baseSpreadsheet.current.setDataCfg(getSafetyDataConfig(dataCfg));
-    baseSpreadsheet.current.setOptions(getSafetyOptions(options));
+    baseSpreadsheet.current.setDataCfg(dataCfg);
+    baseSpreadsheet.current.setOptions(options);
     baseSpreadsheet.current.setThemeCfg(themeCfg);
     baseSpreadsheet.current.render();
     setLoading(false);
@@ -241,7 +241,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
             {...header}
             sheet={ownSpreadsheet}
             dataCfg={getSafetyDataConfig(dataCfg)}
-            options={getSafetyOptions(options)}
+            options={getSheetComponentOptions(options)}
           />
         )}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
