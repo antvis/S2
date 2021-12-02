@@ -20,8 +20,9 @@ import {
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
+  BorderPosition,
 } from '@/common/interface';
-import { getMaxTextWidth } from '@/utils/cell/cell';
+import { getMaxTextWidth, getBorderPositionAndStyle } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
 import { getIconPositionCfg } from '@/utils/condition/condition';
 import {
@@ -406,51 +407,24 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @private
    */
   protected drawBorderShape() {
-    const { x, y, height, width } = this.getCellArea();
-    const {
-      horizontalBorderColor,
-      horizontalBorderWidth,
-      horizontalBorderColorOpacity,
-      verticalBorderColor,
-      verticalBorderWidth,
-      verticalBorderColorOpacity,
-    } = this.getStyle().cell;
-
-    // 完全绘制在 Cell 内，否则会导致 Border 粗细不一： https://github.com/antvis/S2/issues/426
-    const horizontalBorderY = y + height - horizontalBorderWidth / 2;
-    const verticalBorderX = x + width - verticalBorderWidth / 2;
+    const { position: horizontalPosition, style: horizontalStyle } =
+      getBorderPositionAndStyle(
+        BorderPosition.BOTTOM,
+        this.getCellArea(),
+        this.getStyle().cell,
+      );
+    const { position: verticalPosition, style: verticalStyle } =
+      getBorderPositionAndStyle(
+        BorderPosition.RIGHT,
+        this.getCellArea(),
+        this.getStyle().cell,
+      );
 
     // horizontal border
-    renderLine(
-      this,
-      {
-        x1: x,
-        y1: horizontalBorderY,
-        x2: x + width,
-        y2: horizontalBorderY,
-      },
-      {
-        stroke: horizontalBorderColor,
-        lineWidth: horizontalBorderWidth,
-        opacity: horizontalBorderColorOpacity,
-      },
-    );
+    renderLine(this, horizontalPosition, horizontalStyle);
 
     // vertical border
-    renderLine(
-      this,
-      {
-        x1: verticalBorderX,
-        y1: y,
-        x2: verticalBorderX,
-        y2: y + height,
-      },
-      {
-        stroke: verticalBorderColor,
-        lineWidth: verticalBorderWidth,
-        opacity: verticalBorderColorOpacity,
-      },
-    );
+    renderLine(this, verticalPosition, verticalStyle);
   }
 
   /**
@@ -508,5 +482,14 @@ export class DataCell extends BaseCell<ViewMeta> {
       SHAPE_STYLE_MAP.opacity,
       1,
     );
+  }
+
+  protected drawLeftBorder() {
+    const { position, style } = getBorderPositionAndStyle(
+      BorderPosition.LEFT,
+      this.getCellArea(),
+      this.getStyle().cell,
+    );
+    renderLine(this, position, style);
   }
 }

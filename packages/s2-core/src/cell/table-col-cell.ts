@@ -206,24 +206,4 @@ export class TableColCell extends ColCell {
       fill: backgroundColor,
     });
   }
-
-  protected drawRightBorder() {
-    const { x, y, width: cellWidth, height: cellHeight } = this.meta;
-    const linePositionX =
-      x + cellWidth - this.theme.colCell.cell.verticalBorderWidth / 2;
-
-    renderLine(
-      this,
-      {
-        x1: linePositionX,
-        y1: y,
-        x2: linePositionX,
-        y2: y + cellHeight,
-      },
-      {
-        stroke: this.theme.colCell.cell.verticalBorderColor,
-        lineWidth: this.theme.colCell.cell.verticalBorderWidth,
-      },
-    );
-  }
 }

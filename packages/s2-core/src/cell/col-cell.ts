@@ -1,4 +1,4 @@
-import { Point } from '@antv/g-canvas';
+import { Point, SimpleBBox } from '@antv/g-canvas';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import {
@@ -13,6 +13,7 @@ import {
   ResizeAreaEffect,
 } from '@/common/constant';
 import {
+  BorderPosition,
   FormatResult,
   TextAlign,
   TextBaseline,
@@ -24,6 +25,7 @@ import { AreaRange } from '@/common/interface/scroll';
 import {
   getTextAndIconPositionWhenHorizontalScrolling,
   getTextAndFollowingIconPosition,
+  getBorderPositionAndStyle,
 } from '@/utils/cell/cell';
 
 export class ColCell extends HeaderCell {
@@ -45,19 +47,18 @@ export class ColCell extends HeaderCell {
     this.drawTextShape();
     // draw action icons
     this.drawActionIcons();
-    // draw right border
-    this.drawRightBorder();
+    // draw borders
+    this.drawBorders();
     // draw resize ares
     this.drawResizeArea();
     this.update();
   }
 
   protected drawBackgroundShape() {
-    const { backgroundColor, horizontalBorderColor } = this.getStyle().cell;
+    const { backgroundColor } = this.getStyle().cell;
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
       fill: backgroundColor,
-      stroke: horizontalBorderColor,
     });
   }
 
@@ -302,24 +303,27 @@ export class ColCell extends HeaderCell {
     this.drawVerticalResizeArea();
   }
 
-  protected drawRightBorder() {
-    if (!this.meta.isLeaf) {
-      const { height, viewportHeight } = this.headerConfig;
-      const { x, y, width: cellWidth, height: cellHeight } = this.meta;
+  protected drawHorizontalBorder() {
+    const { position, style } = getBorderPositionAndStyle(
+      BorderPosition.TOP,
+      this.meta as SimpleBBox,
+      this.theme.colCell.cell,
+    );
 
-      renderLine(
-        this,
-        {
-          x1: x + cellWidth,
-          y1: y + cellHeight,
-          x2: x + cellWidth,
-          y2: y + height + viewportHeight,
-        },
-        {
-          stroke: this.theme.colCell.cell.horizontalBorderColor,
-          lineWidth: 1,
-        },
-      );
-    }
+    renderLine(this, position, style);
+  }
+
+  protected drawVerticalBorder() {
+    const { position, style } = getBorderPositionAndStyle(
+      BorderPosition.RIGHT,
+      this.meta as SimpleBBox,
+      this.theme.colCell.cell,
+    );
+    renderLine(this, position, style);
+  }
+
+  protected drawBorders() {
+    this.drawHorizontalBorder();
+    this.drawVerticalBorder();
   }
 }

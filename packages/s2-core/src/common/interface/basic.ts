@@ -22,6 +22,13 @@ export interface FormatResult {
 
 export type SortMethod = 'ASC' | 'DESC' | 'asc' | 'desc';
 
+export enum BorderPosition {
+  TOP = 'TOP',
+  BOTTOM = 'BOTTOM',
+  LEFT = 'LEFT',
+  RIGHT = 'RIGHT',
+}
+
 /**
  * 布局类型：
  * adaptive: 行列等宽，均分整个 canvas 画布宽度

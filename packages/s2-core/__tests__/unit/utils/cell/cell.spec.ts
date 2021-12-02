@@ -1,3 +1,4 @@
+import { BorderPosition, CellTheme } from 'src/common/interface';
 import { SimpleBBox } from '@antv/g-canvas';
 import { AreaRange } from '@/common/interface/scroll';
 import {
@@ -5,6 +6,7 @@ import {
   getMaxTextWidth,
   getTextAndFollowingIconPosition,
   getTextAndIconPositionWhenHorizontalScrolling,
+  getBorderPositionAndStyle,
 } from '@/utils/cell/cell';
 
 describe('Cell Content Test', () => {
@@ -487,5 +489,73 @@ describe('Horizontal Scrolling Text Position Test', () => {
         textWidth,
       ),
     ).toEqual(50);
+  });
+
+  test('should get border position', () => {
+    const contentBox = {
+      x: 0,
+      y: 0,
+      width: 200,
+      height: 50,
+    };
+    const style = {
+      verticalBorderColorOpacity: 1,
+      verticalBorderColor: '#000',
+      verticalBorderWidth: 2,
+      horizontalBorderColor: '#000',
+      horizontalBorderColorOpacity: 1,
+      horizontalBorderWidth: 2,
+    };
+    expect(
+      getBorderPositionAndStyle(
+        BorderPosition.LEFT,
+        contentBox,
+        style as CellTheme,
+      ).position,
+    ).toEqual({
+      x1: 1,
+      y1: 0,
+      x2: 1,
+      y2: 50,
+    });
+
+    expect(
+      getBorderPositionAndStyle(
+        BorderPosition.RIGHT,
+        contentBox,
+        style as CellTheme,
+      ).position,
+    ).toEqual({
+      x1: 199,
+      y1: 0,
+      x2: 199,
+      y2: 50,
+    });
+
+    expect(
+      getBorderPositionAndStyle(
+        BorderPosition.TOP,
+        contentBox,
+        style as CellTheme,
+      ).position,
+    ).toEqual({
+      x1: 0,
+      y1: 1,
+      x2: 200,
+      y2: 1,
+    });
+
+    expect(
+      getBorderPositionAndStyle(
+        BorderPosition.BOTTOM,
+        contentBox,
+        style as CellTheme,
+      ).position,
+    ).toEqual({
+      x1: 0,
+      y1: 49,
+      x2: 200,
+      y2: 49,
+    });
   });
 });

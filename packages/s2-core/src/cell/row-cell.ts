@@ -9,9 +9,9 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme } from '@/common/interface';
+import { BorderPosition, FormatResult, TextTheme } from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
-import { getTextPosition } from '@/utils/cell/cell';
+import { getTextPosition, getBorderPositionAndStyle } from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
@@ -171,49 +171,34 @@ export class RowCell extends HeaderCell {
   }
 
   protected drawRectBorder() {
-    const { position, width, viewportWidth, scrollX } = this.headerConfig;
-    const {
-      horizontalBorderColor,
-      horizontalBorderWidth,
-      horizontalBorderColorOpacity,
-      verticalBorderColor,
-      verticalBorderWidth,
-      verticalBorderColorOpacity,
-    } = this.getStyle().cell;
-    const { x, y, height, width: cellWidth } = this.getCellArea();
-    // horizontal border
+    const { x } = this.getCellArea();
+
     const contentIndent = this.getContentIndent();
-    const horizontalBorderY = y + height - horizontalBorderWidth / 2;
-    renderLine(
-      this,
-      {
-        x1: x + contentIndent,
-        y1: horizontalBorderY,
-        x2: position.x + width + viewportWidth + scrollX,
-        y2: horizontalBorderY,
-      },
-      {
-        stroke: horizontalBorderColor,
-        lineWidth: horizontalBorderWidth,
-        opacity: horizontalBorderColorOpacity,
-      },
-    );
+
+    const { position: horizontalPosition, style: horizontalStyle } =
+      getBorderPositionAndStyle(
+        BorderPosition.BOTTOM,
+        {
+          ...this.getCellArea(),
+          x: x + contentIndent,
+        },
+        this.getStyle().cell,
+      );
+    const { position: verticalPosition, style: verticalStyle } =
+      getBorderPositionAndStyle(
+        BorderPosition.LEFT,
+        {
+          ...this.getCellArea(),
+          x: x + contentIndent,
+        },
+        this.getStyle().cell,
+      );
+
+    // horizontal border
+    renderLine(this, horizontalPosition, horizontalStyle);
 
     // vertical border
-    renderLine(
-      this,
-      {
-        x1: x + contentIndent + cellWidth,
-        y1: y,
-        x2: x + contentIndent + cellWidth,
-        y2: y + height,
-      },
-      {
-        stroke: verticalBorderColor,
-        lineWidth: verticalBorderWidth,
-        opacity: verticalBorderColorOpacity,
-      },
-    );
+    renderLine(this, verticalPosition, verticalStyle);
   }
 
   protected drawResizeAreaInLeaf() {
