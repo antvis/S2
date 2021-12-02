@@ -393,7 +393,7 @@ export interface CellAttrs<T extends Record<string, unknown> = Node>
   appendInfo?: CellAppendInfo<T>;
 }
 
-export type S2MountContainer = string | HTMLElement;
+export type S2MountContainer = string | Element;
 
 export type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];
 
