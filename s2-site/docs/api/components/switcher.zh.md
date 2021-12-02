@@ -5,17 +5,17 @@ order: 3
 
 ## Switcher 组件 Props
 
-| 属性                  | 说明                                      | 类型                                                    | 默认值   | 必选 |
-| :-------------------- | :------------------------------------- | :------------------------------------------------------ | :------- | :--- |
-| rows                  | 行头配置描述                           | [SwitcherField](#switcherfield)                         |          |      |
-| columns               | 列头配置描述                           | [SwitcherField](#switcherfield)                         |          |      |
-| values                | 指标配置描述                           | [SwitcherField](#switcherfield)                         |          |      |
-| title                 | 打开切换弹窗的触发节点                 | `ReactNode`                                             |          |      |
-| contentTitleText      | 弹窗默认标题文字                       | `string`                                                | 行列切换 |      |
-| resetText             | 重置按钮文字                           | `string`                                                | 恢复默认 |      |
-| innerContentClassName | 弹出框内容样式名                       | `string`                                                |          |      |
-| onSubmit              | 关闭弹窗后，处理行列切换结果的回调函数 | `(result:` [SwitcherResult](#switcherresult)`) => void` |          |      |
-| popover              | 弹窗配置，透传给 `antd` 的 `Popover` 组件 | [PopoverProps](https://ant.design/components/popover-cn/#API) |          |      |
+| 属性                  | 说明                                      | 类型                                                          | 默认值   | 必选 |
+| :-------------------- | :---------------------------------------- | :------------------------------------------------------------ | :------- | :--- |
+| rows                  | 行头配置描述                              | [SwitcherField](#switcherfield)                               |          |      |
+| columns               | 列头配置描述                              | [SwitcherField](#switcherfield)                               |          |      |
+| values                | 指标配置描述                              | [SwitcherField](#switcherfield)                               |          |      |
+| title                 | 打开切换弹窗的触发节点                    | `ReactNode`                                                   |          |      |
+| contentTitleText      | 弹窗默认标题文字                          | `string`                                                      | 行列切换 |      |
+| resetText             | 重置按钮文字                              | `string`                                                      | 恢复默认 |      |
+| innerContentClassName | 弹出框内容样式名                          | `string`                                                      |          |      |
+| onSubmit              | 关闭弹窗后，处理行列切换结果的回调函数    | `(result:` [SwitcherResult](#switcherresult)`) => void`       |          |      |
+| popover               | 弹窗配置，透传给 `antd` 的 `Popover` 组件 | [PopoverProps](https://ant.design/components/popover-cn/#API) |          |      |
 
 ## SwitcherField
 
@@ -61,10 +61,11 @@ order: 3
 ## SwitcherCfgProps
 
 内置 header 组件配置参数，本质上是 Switcher 组件 Props 的子集
-| 属性                  | 说明                                      | 类型                                                    | 默认值   | 必选 |
-| :-------------------- | :------------------------------------- | :------------------------------------------------------ | :------- | :--- |
-| title                 | 打开切换弹窗的触发节点                 | `ReactNode`                                             |          |      |
-| contentTitleText      | 弹窗默认标题文字                       | `string`                                                | 行列切换 |      |
-| resetText             | 重置按钮文字                           | `string`                                                | 恢复默认 |      |
-| innerContentClassName | 弹出框内容样式名                       | `string`                                                |          |      |
-| popover              | 弹窗配置，透传给 `antd` 的 `Popover` 组件 | [PopoverProps](https://ant.design/components/popover-cn/#API) |  
+
+| 属性                  | 说明                                      | 类型                                                          | 默认值   | 必选 |
+| :-------------------- | :---------------------------------------- | :------------------------------------------------------------ | :------- | :--- |
+| title                 | 打开切换弹窗的触发节点                    | `ReactNode`                                                   |          |      |
+| contentTitleText      | 弹窗默认标题文字                          | `string`                                                      | 行列切换 |      |
+| resetText             | 重置按钮文字                              | `string`                                                      | 恢复默认 |      |
+| innerContentClassName | 弹出框内容样式名                          | `string`                                                      |          |      |
+| popover               | 弹窗配置，透传给 `antd` 的 `Popover` 组件 | [PopoverProps](https://ant.design/components/popover-cn/#API) |
