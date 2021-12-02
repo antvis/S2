@@ -1,7 +1,7 @@
 import { concat, filter, find, forEach, isEmpty, map } from 'lodash';
 import {
   DataCellClick,
-  MergedCellsClick,
+  MergedCellClick,
   RowColumnClick,
   RowTextClick,
 } from './base-interaction/click';
@@ -31,7 +31,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
-import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
+import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -221,7 +221,7 @@ export class RootInteraction {
   };
 
   public mergeCells = (cellsInfo?: MergedCellInfo[], hideData?: boolean) => {
-    mergeCells(this.spreadsheet, cellsInfo, hideData);
+    mergeCell(this.spreadsheet, cellsInfo, hideData);
   };
 
   public unmergeCell = (removedCells: MergedCell) => {
@@ -253,7 +253,7 @@ export class RootInteraction {
     );
     this.interactions.set(
       InteractionName.MERGED_CELLS_CLICK,
-      new MergedCellsClick(this.spreadsheet),
+      new MergedCellClick(this.spreadsheet),
     );
     this.interactions.set(
       InteractionName.HOVER,

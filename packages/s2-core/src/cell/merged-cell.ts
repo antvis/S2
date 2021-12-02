@@ -2,7 +2,7 @@ import { isEmpty, isObject } from 'lodash';
 import { CellTypes } from '../common/constant';
 import { ViewMeta } from '../common/interface';
 import { DataCell } from './data-cell';
-import { getPolygonPoints } from '@/utils/interaction/merge-cells';
+import { getPolygonPoints } from '@/utils/interaction/merge-cell';
 import { SpreadSheet } from '@/sheet-type';
 import { S2CellType } from '@/common/interface/interaction';
 import { renderPolygon } from '@/utils/g-renders';

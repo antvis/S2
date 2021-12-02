@@ -59,7 +59,7 @@ import type {
   S2CellType,
   FrameConfig,
 } from '@/common/interface';
-import { updateMergedCells } from '@/utils/interaction/merge-cells';
+import { updateMergedCells } from '@/utils/interaction/merge-cell';
 import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
 
 export abstract class BaseFacet {
