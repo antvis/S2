@@ -1,6 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
-import { generateSheetConfig, generateSwitcherFields } from './headerUtil';
+import {
+  generateSheetConfig,
+  generateSwitcherFields,
+  generateSwitcherFieldsCfgFromResult,
+} from './headerUtil';
 import { SwitcherResult } from './interface';
 import { Switcher, SwitcherProps } from '.';
 import './index.less';
@@ -63,7 +67,14 @@ export const SwitcherHeader: FC<SwitcherHeaderProps> = ({
       sheet.setOptions({ interaction: { hiddenColumnFields } });
     }
     sheet.render();
-    setFields(generateSwitcherFields(sheet, sheet.dataCfg, hiddenColumnFields));
+    setFields(
+      generateSwitcherFieldsCfgFromResult(
+        sheet,
+        result,
+        sheet.dataCfg?.meta,
+        hiddenColumnFields,
+      ),
+    );
   };
 
   return <Switcher {...fields} onSubmit={onSubmit} {...props} />;

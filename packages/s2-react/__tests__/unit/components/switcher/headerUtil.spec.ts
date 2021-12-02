@@ -1,4 +1,5 @@
 import { PivotSheet, SpreadSheet, TableSheet } from '@antv/s2';
+import { generateSwitcherFieldsCfgFromResult } from '../../../../src/components/switcher/headerUtil';
 import {
   generateSheetConfig,
   generateSwitcherFields,
@@ -192,6 +193,104 @@ describe('headerUtil test', () => {
         values: [],
       },
       hiddenColumnFields: ['col-a'],
+    });
+  });
+
+  test('should generate correct switcher fields config from result for pivot sheet', () => {
+    const sheet = getMockSheetInstance(PivotSheet);
+    const result = {
+      rows: {
+        items: [],
+        hideItems: [],
+      },
+      columns: {
+        items: [{ id: 'col-a' }, { id: 'col-b' }, { id: 'col-c' }],
+        hideItems: [{ id: 'col-a' }],
+      },
+      values: {
+        items: [{ id: 'value-a' }, { id: 'value-b' }, { id: 'value-c' }],
+        hideItems: [],
+      },
+    };
+
+    const cfg = generateSwitcherFieldsCfgFromResult(sheet, result, [], []);
+    expect(cfg).toEqual({
+      columns: {
+        items: [
+          {
+            id: 'col-a',
+            checked: false,
+          },
+          {
+            id: 'col-b',
+            checked: true,
+          },
+          {
+            id: 'col-c',
+            checked: true,
+          },
+        ],
+        selectable: false,
+        expandable: false,
+      },
+      values: {
+        items: [
+          {
+            id: 'value-a',
+            checked: true,
+          },
+          {
+            id: 'value-b',
+            checked: true,
+          },
+          {
+            id: 'value-c',
+            checked: true,
+          },
+        ],
+        selectable: true,
+        expandable: true,
+      },
+    });
+  });
+
+  test('should generate correct switcher fields config from result for table sheet', () => {
+    const sheet = getMockSheetInstance(TableSheet);
+    const result = {
+      rows: {
+        items: [],
+        hideItems: [],
+      },
+      columns: {
+        items: [{ id: 'col-a' }, { id: 'col-b' }, { id: 'col-c' }],
+        hideItems: [{ id: 'col-a' }],
+      },
+      values: {
+        items: [],
+        hideItems: [],
+      },
+    };
+
+    const cfg = generateSwitcherFieldsCfgFromResult(sheet, result, [], []);
+    expect(cfg).toEqual({
+      columns: {
+        items: [
+          {
+            id: 'col-a',
+            checked: false,
+          },
+          {
+            id: 'col-b',
+            checked: true,
+          },
+          {
+            id: 'col-c',
+            checked: true,
+          },
+        ],
+        selectable: true,
+        expandable: false,
+      },
     });
   });
 });

@@ -4,8 +4,9 @@ import {
   SpreadSheet,
   TableSheet,
   Fields,
+  Meta,
 } from '@antv/s2';
-import { filter, find, isEmpty, map } from 'lodash';
+import { filter, find, isEmpty, map, reduce } from 'lodash';
 import { FieldType, SWITCHER_FIELDS } from './constant';
 import { SwitcherField, SwitcherFields, SwitcherResult } from './interface';
 
@@ -73,4 +74,33 @@ export const generateSheetConfig = (
     : undefined;
 
   return { fields, hiddenColumnFields };
+};
+
+export const getSwitcherFields = (result: SwitcherResult) => {
+  return reduce(
+    result,
+    (cfg, value, field) => {
+      cfg.fields[field] = map(value.items, 'id');
+      cfg.hiddenFields.push(...map(value.hideItems, 'id'));
+      return cfg;
+    },
+    {
+      fields: {},
+      hiddenFields: [],
+    } as { fields: Fields; hiddenFields: string[] },
+  );
+};
+
+export const generateSwitcherFieldsCfgFromResult = (
+  sheet: SpreadSheet,
+  result: SwitcherResult,
+  meta: Meta[] = [],
+  hiddenColumnFields: string[] = [],
+) => {
+  const { fields, hiddenFields } = getSwitcherFields(result);
+  return generateSwitcherFields(
+    sheet,
+    { fields, meta },
+    hiddenFields.concat(hiddenColumnFields),
+  );
 };
