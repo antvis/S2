@@ -84,8 +84,6 @@ describe('SheetComponent Tooltip Tests', () => {
 
     s2.showTooltip({ position: { x: 0, y: 0 }, content });
 
-    expect(s2.tooltip.container.querySelector('#custom-content')).toHaveLength(
-      1,
-    );
+    expect(s2.tooltip.container.querySelector('#custom-content')).toBeTruthy();
   });
 });
