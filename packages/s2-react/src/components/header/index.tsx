@@ -1,22 +1,22 @@
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { PageHeader } from 'antd';
 import cx from 'classnames';
 import { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
 import { Export, ExportCfgProps } from '../export';
 import { AdvancedSort, AdvancedSortCfgProps } from '../advanced-sort';
 
-import './index.less';
 import { SwitcherCfgProps, SwitcherHeader } from '../switcher/header';
+import './index.less';
 
 export interface HeaderCfgProps {
   width?: number;
   className?: string;
-  title?: React.ReactNode;
+  title?: ReactNode;
   description?: string;
   exportCfg?: ExportCfgProps;
   advancedSortCfg?: AdvancedSortCfgProps;
   switcherCfg?: SwitcherCfgProps;
-  extra?: ReactNode[];
+  extra?: ReactNode;
 }
 
 export interface HeaderProps extends HeaderCfgProps {
@@ -25,7 +25,7 @@ export interface HeaderProps extends HeaderCfgProps {
   sheet: SpreadSheet;
 }
 
-export const Header: React.FC<HeaderProps> = ({
+export const Header: FC<HeaderProps> = ({
   className,
   title,
   width,
@@ -34,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({
   advancedSortCfg,
   switcherCfg,
   sheet,
-  extra = [],
+  extra,
   dataCfg,
   options,
   ...restProps
@@ -42,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
   const PRE_CLASS = 's2-header';
 
   const getExtraComponents = () => {
-    let extraOperationComponents = [...extra];
+    const extraOperationComponents = [extra];
     if (switcherCfg.open) {
       const switcherNode = (
         <SwitcherHeader
@@ -60,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({
       const advancedSortNode = (
         <AdvancedSort key={'advancedSort'} sheet={sheet} {...advancedSortCfg} />
       );
-      extraOperationComponents = extra.concat([advancedSortNode]);
+      extraOperationComponents.push(advancedSortNode);
     }
     if (exportCfg.open) {
       const exportNode = <Export key={'export'} sheet={sheet} {...exportCfg} />;
