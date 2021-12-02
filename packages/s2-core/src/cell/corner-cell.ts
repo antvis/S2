@@ -191,23 +191,14 @@ export class CornerCell extends HeaderCell {
    * @private
    */
   protected drawBorderShape() {
-    const { position: horizontalPosition, style: horizontalStyle } =
-      getBorderPositionAndStyle(
-        BorderPosition.TOP,
+    [BorderPosition.TOP, BorderPosition.LEFT].forEach((type) => {
+      const { position, style } = getBorderPositionAndStyle(
+        type,
         this.getCellArea(),
         this.getStyle().cell,
       );
-    const { position: verticalPosition, style: verticalStyle } =
-      getBorderPositionAndStyle(
-        BorderPosition.LEFT,
-        this.getCellArea(),
-        this.getStyle().cell,
-      );
-
-    // horizontal border
-    renderLine(this, horizontalPosition, horizontalStyle);
-    // vertical border
-    renderLine(this, verticalPosition, verticalStyle);
+      renderLine(this, position, style);
+    });
   }
 
   private isLastRowCornerCell() {

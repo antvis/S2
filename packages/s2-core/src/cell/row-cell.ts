@@ -174,33 +174,20 @@ export class RowCell extends HeaderCell {
     const { x } = this.getCellArea();
 
     const contentIndent = this.getContentIndent();
-
-    const { position: horizontalPosition, style: horizontalStyle } =
-      getBorderPositionAndStyle(
-        BorderPosition.BOTTOM,
+    const finalX = this.spreadsheet.isHierarchyTreeType()
+      ? x
+      : x + contentIndent;
+    [BorderPosition.BOTTOM, BorderPosition.LEFT].forEach((type) => {
+      const { position, style } = getBorderPositionAndStyle(
+        type,
         {
           ...this.getCellArea(),
-          x: x + contentIndent,
+          x: finalX,
         },
         this.getStyle().cell,
       );
-
-    // horizontal border
-    renderLine(this, horizontalPosition, horizontalStyle);
-
-    // 树状布局不需要垂直边框
-    if (!this.spreadsheet.isHierarchyTreeType()) {
-      const { position: verticalPosition, style: verticalStyle } =
-        getBorderPositionAndStyle(
-          BorderPosition.LEFT,
-          {
-            ...this.getCellArea(),
-            x: x + contentIndent,
-          },
-          this.getStyle().cell,
-        );
-      renderLine(this, verticalPosition, verticalStyle);
-    }
+      renderLine(this, position, style);
+    });
   }
 
   protected drawResizeAreaInLeaf() {

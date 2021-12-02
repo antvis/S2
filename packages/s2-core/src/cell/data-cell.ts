@@ -407,24 +407,15 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @private
    */
   protected drawBorderShape() {
-    const { position: horizontalPosition, style: horizontalStyle } =
-      getBorderPositionAndStyle(
-        BorderPosition.BOTTOM,
-        this.getCellArea(),
-        this.getStyle().cell,
-      );
-    const { position: verticalPosition, style: verticalStyle } =
-      getBorderPositionAndStyle(
-        BorderPosition.RIGHT,
+    [BorderPosition.BOTTOM, BorderPosition.RIGHT].forEach((type) => {
+      const { position, style } = getBorderPositionAndStyle(
+        type,
         this.getCellArea(),
         this.getStyle().cell,
       );
 
-    // horizontal border
-    renderLine(this, horizontalPosition, horizontalStyle);
-
-    // vertical border
-    renderLine(this, verticalPosition, verticalStyle);
+      renderLine(this, position, style);
+    });
   }
 
   /**

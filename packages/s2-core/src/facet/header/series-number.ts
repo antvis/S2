@@ -13,6 +13,8 @@ import { BorderPosition, Padding, ViewMeta } from '@/common/interface';
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;
 
+  private leftBorderShape: IShape;
+
   /**
    * Get seriesNumber header by config
    * @param viewportBBox
@@ -104,6 +106,9 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     if (this.backgroundShape) {
       this.backgroundShape.translate(position.x, position.y + scrollY);
     }
+    if (this.leftBorderShape) {
+      this.leftBorderShape.translate(position.x, position.y + scrollY);
+    }
   }
 
   private addBackGround() {
@@ -119,17 +124,28 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       stroke: 'transparent',
       opacity: rowCellTheme.backgroundColorOpacity,
     });
+
+    const { position: borderPosition, style: borderStyle } =
+      getBorderPositionAndStyle(
+        BorderPosition.LEFT,
+        {
+          x: position.x,
+          y: -position.y,
+          width,
+          height,
+        },
+        rowCellTheme,
+      );
+
+    this.leftBorderShape = renderLine(this, borderPosition, borderStyle);
   }
 
   private addBorder(group: IGroup, cellData) {
     const cellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
 
-    const { position: verticalPosition, style: verticalStyle } =
-      getBorderPositionAndStyle(BorderPosition.LEFT, cellData, cellTheme);
     const { position: horizontalPosition, style: horizontalStyle } =
       getBorderPositionAndStyle(BorderPosition.BOTTOM, cellData, cellTheme);
 
-    renderLine(group as Group, verticalPosition, verticalStyle);
     renderLine(group as Group, horizontalPosition, horizontalStyle);
   }
 
