@@ -16,9 +16,9 @@ order: 4
   header={{
     title: '表头标题', 
     description: '表头描述',
-    exportCfg: { open: true }, // 导出 link
-    advancedSortCfg: { open: true }, // 高级排序 link
-    switcherCfg: { open: true }, // 指标切换 link
+    exportCfg: { open: true }, // 开启导出功能
+    advancedSortCfg: { open: true }, // 开启高级排序功能
+    switcherCfg: { open: true }, // 开启指标切换功能
     extra: (<button>  插入内容 </button>), //自定义 ReactNode 
   }}
 />

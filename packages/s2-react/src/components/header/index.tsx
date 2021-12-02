@@ -42,31 +42,25 @@ export const Header: FC<HeaderProps> = ({
   const PRE_CLASS = 's2-header';
 
   const getExtraComponents = () => {
-    const extraOperationComponents = [extra];
-    if (switcherCfg.open) {
-      const switcherNode = (
-        <SwitcherHeader
-          key={'switcher'}
-          sheet={sheet}
-          dataCfg={dataCfg}
-          options={options}
-          {...switcherCfg}
-        />
-      );
-      extraOperationComponents.push(switcherNode);
-    }
-
-    if (advancedSortCfg.open) {
-      const advancedSortNode = (
-        <AdvancedSort key={'advancedSort'} sheet={sheet} {...advancedSortCfg} />
-      );
-      extraOperationComponents.push(advancedSortNode);
-    }
-    if (exportCfg.open) {
-      const exportNode = <Export key={'export'} sheet={sheet} {...exportCfg} />;
-      extraOperationComponents.push(exportNode);
-    }
-    return extraOperationComponents;
+    return (
+      <>
+        {extra}
+        {switcherCfg.open && (
+          <SwitcherHeader
+            sheet={sheet}
+            dataCfg={dataCfg}
+            options={options}
+            {...switcherCfg}
+          />
+        )}
+        {advancedSortCfg.open && (
+          <AdvancedSort sheet={sheet} {...advancedSortCfg} />
+        )}
+        {exportCfg.open && (
+          <Export key={'export'} sheet={sheet} {...exportCfg} />
+        )}
+      </>
+    );
   };
 
   return (

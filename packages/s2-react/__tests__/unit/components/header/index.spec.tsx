@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
 import { getMockSheetInstance } from 'tests/util/helpers';
 import { Header } from '@/components/header';
+
 describe('header component test', () => {
   test('should render basic header without extra', () => {
     const sheet = getMockSheetInstance();
@@ -27,9 +28,16 @@ describe('header component test', () => {
         switcherCfg={{ open: true }}
       />,
     );
-    // export组件没有文字显示，只能通过className查找
+    screen.debug();
+
+    // export 组件
     expect(container.querySelector('.antv-s2-export')).toBeDefined();
-    expect(screen.getByText('高级排序')).toBeDefined();
-    expect(screen.getByText('行列切换')).toBeDefined();
+    // switcher 组件
+    expect(
+      container.querySelector('.antv-s2-switcher-entry-button'),
+    ).toBeDefined();
+
+    // 高级排序组件
+    expect(container.querySelector('.antv-s2-advanced-sort-btn')).toBeDefined();
   });
 });
