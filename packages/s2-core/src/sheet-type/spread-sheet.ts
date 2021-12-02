@@ -164,9 +164,9 @@ export abstract class SpreadSheet extends EE {
   }
 
   private getMountContainer(dom: S2MountContainer) {
-    const mountContainer = isString(dom)
-      ? document.getElementById(dom)
-      : (dom as HTMLElement);
+    const mountContainer = (
+      isString(dom) ? document.querySelector(dom) : dom
+    ) as HTMLElement;
 
     if (!mountContainer) {
       throw new Error('Target mount container is not a DOM element');

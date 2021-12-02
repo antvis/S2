@@ -1,31 +1,28 @@
-import { InputNumber, Switch } from 'antd';
-import React, { MutableRefObject, useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { SpreadSheet } from '@antv/s2';
+import { S2Options, SpreadSheet } from '@antv/s2';
 import { getContainer, getGradient } from '../util/helpers';
-import { SheetEntry } from '../../playground/sheet-entry';
+import * as mockDataConfig from '../data/simple-data.json';
+import { SheetComponent } from '@/components';
 
-const sheetInstance: MutableRefObject<SpreadSheet> = { current: null };
+const sheetInstance: React.MutableRefObject<SpreadSheet> = { current: null };
+
+const intervalValue = { min: 0, max: 1000 };
+const backgroundValue = { min: 0, max: 1000 };
+
+const s2Options: S2Options = {
+  width: 200,
+  height: 200,
+  hdAdapter: false,
+};
 
 function MainLayout() {
-  const [isCompare, setCompare] = useState(true);
-  const [intervalValue, setIntervalValue] = useState({ min: 0, max: 1000 });
-  const [backgroundValue, setBackgroundValue] = useState({ min: 0, max: 1000 });
-  const [enableBg, setEnableBg] = useState(true);
-
-  const onCompareChange = (checked) => {
-    setCompare(checked);
-  };
-
-  const onBgChange = (checked) => {
-    setEnableBg(checked);
-  };
-
   return (
-    <SheetEntry
-      dataCfg={{}}
+    <SheetComponent
+      dataCfg={mockDataConfig}
       options={{
+        ...s2Options,
         conditions: {
           interval: [
             {
@@ -35,17 +32,12 @@ function MainLayout() {
                   (fieldValue - intervalValue.min) /
                   (intervalValue.max - intervalValue.min);
                 const intervalColor = getGradient(rage, '#7ee5f6', '#3a9dbf');
-                return isCompare
-                  ? {
-                      fill: intervalColor,
-                      isCompare: true,
-                      minValue: intervalValue.min,
-                      maxValue: intervalValue.max,
-                    }
-                  : {
-                      fill: '',
-                      isCompare,
-                    };
+                return {
+                  fill: intervalColor,
+                  isCompare: true,
+                  minValue: intervalValue.min,
+                  maxValue: intervalValue.max,
+                };
               },
             },
           ],
@@ -57,11 +49,9 @@ function MainLayout() {
                   (value - backgroundValue.min) /
                   (backgroundValue.max - backgroundValue.min);
                 const intervalColor = getGradient(rage, '#daccfa', '#a171f7');
-                return (
-                  enableBg && {
-                    fill: intervalColor,
-                  }
-                );
+                return {
+                  fill: intervalColor,
+                };
               },
             },
           ],
@@ -70,91 +60,14 @@ function MainLayout() {
               field: 'number',
               mapping(fieldValue) {
                 return {
-                  fill: fieldValue >= 15000 && enableBg ? '#fff' : '#282b32',
+                  fill: fieldValue >= 15000 && '#fff',
                 };
               },
             },
           ],
         },
-        totals: {
-          row: {
-            showGrandTotals: true,
-            showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
-            subTotalsDimensions: ['province'],
-          },
-          col: {
-            showGrandTotals: true,
-            showSubTotals: true,
-            reverseLayout: true,
-            reverseSubLayout: true,
-            subTotalsDimensions: ['type', 'sub_type'],
-          },
-        },
       }}
       ref={sheetInstance}
-      header={
-        <div>
-          <div style={{ display: 'block', marginBottom: 20 }}>
-            开启颜色条自定义区间：
-            <Switch
-              checkedChildren="是"
-              unCheckedChildren="否"
-              defaultChecked={isCompare}
-              onChange={onCompareChange}
-              style={{ marginRight: 10 }}
-            />
-            最小值：{' '}
-            <InputNumber
-              disabled={!isCompare}
-              value={intervalValue.min}
-              onChange={(v) => {
-                const updated = { ...intervalValue, min: v };
-                setIntervalValue(updated);
-              }}
-            />
-            最大值：{' '}
-            <InputNumber
-              disabled={!isCompare}
-              value={intervalValue.max}
-              onChange={(v) => {
-                const updated = { ...intervalValue, max: v };
-                setIntervalValue(updated);
-              }}
-            />
-          </div>
-
-          <div style={{ display: 'block', marginBottom: 20 }}>
-            开启背景自定义区间：
-            <Switch
-              checkedChildren="是"
-              unCheckedChildren="否"
-              defaultChecked={enableBg}
-              onChange={onBgChange}
-              style={{ marginRight: 10 }}
-            />
-            最小值：{' '}
-            <InputNumber
-              disabled={!enableBg}
-              value={backgroundValue.min}
-              onChange={(v) => {
-                const updated = { ...backgroundValue, min: v };
-                setBackgroundValue(updated);
-              }}
-            />
-            最大值：{' '}
-            <InputNumber
-              disabled={!enableBg}
-              value={backgroundValue.max}
-              onChange={(v) => {
-                const updated = { ...backgroundValue, max: v };
-                setBackgroundValue(updated);
-              }}
-            />
-          </div>
-        </div>
-      }
     />
   );
 }

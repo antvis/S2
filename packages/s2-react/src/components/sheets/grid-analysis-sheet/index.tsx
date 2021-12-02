@@ -1,6 +1,6 @@
 // TODO 抽取不同sheet组件的公共方法
 import React, { useEffect, useState } from 'react';
-import { isFunction, merge } from 'lodash';
+import { isFunction } from 'lodash';
 import { Spin } from 'antd';
 import { Event } from '@antv/g-canvas';
 import {
@@ -9,7 +9,6 @@ import {
   S2Event,
   S2Options,
   getBaseCellData,
-  getSafetyDataConfig,
   S2Constructor,
 } from '@antv/s2';
 import { Header } from '../../header';
@@ -17,7 +16,7 @@ import { BaseSheetProps } from '../interface';
 import { GridAnalysisDataCell } from './grid-analysis-data-cell';
 import { GridAnalysisTheme } from './grid-analysis-theme';
 import { useResizeEffect } from '@/hooks';
-import { getSafetyOptions } from '@/utils';
+import { getSheetComponentOptions } from '@/utils';
 
 export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
   const {
@@ -46,16 +45,14 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const buildOptions = (): S2Options => {
-    return getSafetyOptions(
-      merge(options, {
-        dataCell: GridAnalysisDataCell,
-        style: {
-          colCfg: {
-            hideMeasureColumn: true,
-          },
+    return getSheetComponentOptions(options, {
+      dataCell: GridAnalysisDataCell,
+      style: {
+        colCfg: {
+          hideMeasureColumn: true,
         },
-      }),
-    );
+      },
+    });
   };
 
   const setOptions = (sheetInstance?: SpreadSheet) => {
@@ -136,8 +133,7 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
     if (!baseSpreadsheet) {
       baseSpreadsheet = initSpreadSheet();
       bindEvent();
-      const newDataCfg = getSafetyDataConfig(dataCfg);
-      baseSpreadsheet.setDataCfg(newDataCfg);
+      baseSpreadsheet.setDataCfg(dataCfg);
       setOptions(baseSpreadsheet);
       baseSpreadsheet.setThemeCfg(themeCfg);
       baseSpreadsheet.render();

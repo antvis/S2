@@ -1,8 +1,7 @@
-import { S2Options, DEFAULT_OPTIONS, SpreadSheet } from '@antv/s2';
+import { S2Options, SpreadSheet } from '@antv/s2';
 import { CustomTooltip } from '../../components/tooltip/custom-tooltip';
 
-export const REACT_DEFAULT_OPTIONS: Readonly<S2Options> = {
-  ...DEFAULT_OPTIONS,
+export const SHEET_COMPONENT_DEFAULT_OPTIONS: Readonly<Partial<S2Options>> = {
   tooltip: {
     showTooltip: true,
     autoAdjustBoundary: 'body',
@@ -14,4 +13,4 @@ export const REACT_DEFAULT_OPTIONS: Readonly<S2Options> = {
     renderTooltip: (spreadsheet: SpreadSheet) => new CustomTooltip(spreadsheet),
   },
   showDefaultHeaderActionIcon: true,
-};
+} as const;
