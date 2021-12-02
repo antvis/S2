@@ -90,7 +90,6 @@
     "@semantic-release/git": "^10.0.0",
     "@swc/core": "^1.2.111",
     "@swc/jest": "^0.2.5",
-    "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
     "@types/jest": "^27.0.2",

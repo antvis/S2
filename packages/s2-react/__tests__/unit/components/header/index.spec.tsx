@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import { getMockSheetInstance } from 'tests/util/helpers';
 import { Header } from '@/components/header';
 describe('header component test', () => {
@@ -7,14 +7,14 @@ describe('header component test', () => {
     const sheet = getMockSheetInstance();
     const title = 'this is title';
     render(<Header sheet={sheet} title={title} />);
-    expect(screen.getByText(title)).toBeInTheDocument();
+    expect(screen.getByText(title)).toBeDefined();
   });
 
   test('should render header with extra', () => {
     const sheet = getMockSheetInstance();
     const extra = 'this is extra';
     render(<Header sheet={sheet} extra={extra} />);
-    expect(screen.getByText(extra)).toBeInTheDocument();
+    expect(screen.getByText(extra)).toBeDefined();
   });
 
   test('should render header with internal component', () => {
@@ -28,8 +28,8 @@ describe('header component test', () => {
       />,
     );
     // export组件没有文字显示，只能通过className查找
-    expect(container.querySelector('.antv-s2-export')).toBeInTheDocument();
-    expect(screen.getByText('高级排序')).toBeInTheDocument();
-    expect(screen.getByText('行列切换')).toBeInTheDocument();
+    expect(container.querySelector('.antv-s2-export')).toBeDefined();
+    expect(screen.getByText('高级排序')).toBeDefined();
+    expect(screen.getByText('行列切换')).toBeDefined();
   });
 });
