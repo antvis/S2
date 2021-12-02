@@ -192,7 +192,7 @@ function MainLayout() {
             <Space size="middle">
               <Radio.Group onChange={onRadioChange} defaultValue="default">
                 <Radio.Button value="default">默认</Radio.Button>
-                <Radio.Button value="simple">简约蓝</Radio.Button>
+                <Radio.Button value="gray">简约灰</Radio.Button>
                 <Radio.Button value="colorful">多彩蓝</Radio.Button>
               </Radio.Group>
 

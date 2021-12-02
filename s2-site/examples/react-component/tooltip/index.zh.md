@@ -1,5 +1,4 @@
 ---
 title: Tooltip 组件
-order: 1
+order: 2
 ---
-

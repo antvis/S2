@@ -1,5 +1,4 @@
 ---
 title: Header Component
-order: 4
+order: 1
 ---
-

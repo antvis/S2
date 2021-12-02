@@ -184,7 +184,14 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
 
   return (
     <Spin spinning={isLoading === undefined ? loading : isLoading}>
-      {header && <Header {...header} sheet={ownSpreadsheet} />}
+      {header && (
+        <Header
+          {...header}
+          sheet={ownSpreadsheet}
+          dataCfg={getSafetyDataConfig(dataCfg)}
+          options={getSafetyOptions(options)}
+        />
+      )}
       <div
         ref={(e: HTMLDivElement) => {
           container = e;

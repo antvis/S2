@@ -7,6 +7,7 @@ import {
   Store,
   S2Options,
   SpreadSheet,
+  PivotSheet,
   BaseTooltip,
   customMerge,
   DEFAULT_OPTIONS,
@@ -80,4 +81,9 @@ export function getGradient(rate, startColor, endColor) {
   const g = start[1] + (end[1] - start[1]) * rate;
   const b = start[2] + (end[2] - start[2]) * rate;
   return `rgb(${r},${g},${b})`;
+}
+
+export function getMockSheetInstance(Sheet: typeof SpreadSheet = PivotSheet) {
+  const instance = Object.create(Sheet.prototype);
+  return instance as unknown as SpreadSheet;
 }
