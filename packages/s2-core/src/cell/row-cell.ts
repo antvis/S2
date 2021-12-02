@@ -184,21 +184,23 @@ export class RowCell extends HeaderCell {
         },
         this.getStyle().cell,
       );
-    const { position: verticalPosition, style: verticalStyle } =
-      getBorderPositionAndStyle(
-        BorderPosition.LEFT,
-        {
-          ...this.getCellArea(),
-          x: x + contentIndent,
-        },
-        this.getStyle().cell,
-      );
 
     // horizontal border
     renderLine(this, horizontalPosition, horizontalStyle);
 
-    // vertical border
-    renderLine(this, verticalPosition, verticalStyle);
+    // 树状布局不需要垂直边框
+    if (!this.spreadsheet.isHierarchyTreeType()) {
+      const { position: verticalPosition, style: verticalStyle } =
+        getBorderPositionAndStyle(
+          BorderPosition.LEFT,
+          {
+            ...this.getCellArea(),
+            x: x + contentIndent,
+          },
+          this.getStyle().cell,
+        );
+      renderLine(this, verticalPosition, verticalStyle);
+    }
   }
 
   protected drawResizeAreaInLeaf() {
