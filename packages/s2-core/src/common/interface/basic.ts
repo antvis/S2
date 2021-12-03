@@ -22,6 +22,13 @@ export interface FormatResult {
 
 export type SortMethod = 'ASC' | 'DESC' | 'asc' | 'desc';
 
+export enum CellBorderPosition {
+  TOP = 'TOP',
+  BOTTOM = 'BOTTOM',
+  LEFT = 'LEFT',
+  RIGHT = 'RIGHT',
+}
+
 /**
  * 布局类型：
  * adaptive: 行列等宽，均分整个 canvas 画布宽度
@@ -393,7 +400,7 @@ export interface CellAttrs<T extends Record<string, unknown> = Node>
   appendInfo?: CellAppendInfo<T>;
 }
 
-export type S2MountContainer = string | HTMLElement;
+export type S2MountContainer = string | Element;
 
 export type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];
 

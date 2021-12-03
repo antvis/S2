@@ -1,6 +1,6 @@
 import { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
 import { isEmpty, isEqual, last, max } from 'lodash';
-import { KEY_SERIES_NUMBER_NODE } from './../common/constant/basic';
+import { TextAlign } from './../common/interface/theme';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import {
@@ -15,9 +15,17 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme } from '@/common/interface';
+import {
+  CellBorderPosition,
+  FormatResult,
+  TextTheme,
+} from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
-import { getTextPosition, getVerticalPosition } from '@/utils/cell/cell';
+import {
+  getTextPosition,
+  getVerticalPosition,
+  getBorderPositionAndStyle,
+} from '@/utils/cell/cell';
 import {
   renderLine,
   renderRect,
@@ -143,7 +151,7 @@ export class CornerCell extends HeaderCell {
    * 绘制折叠展开的icon
    */
   private drawTreeIcon() {
-    if (!this.showTreeIcon() || this.meta.cornerType !== CornerNodeType.Row) {
+    if (!this.showTreeIcon() || this.meta.cornerType === CornerNodeType.Col) {
       return;
     }
     const { hierarchyCollapse } = this.headerConfig;
@@ -187,46 +195,14 @@ export class CornerCell extends HeaderCell {
    * @private
    */
   protected drawBorderShape() {
-    const { x, y, width, height } = this.getCellArea();
-    const {
-      horizontalBorderColor,
-      horizontalBorderWidth,
-      horizontalBorderColorOpacity,
-      verticalBorderColor,
-      verticalBorderWidth,
-      verticalBorderColorOpacity,
-    } = this.getStyle().cell;
-
-    // horizontal border
-    renderLine(
-      this,
-      {
-        x1: x,
-        y1: y,
-        x2: x + width,
-        y2: y,
-      },
-      {
-        stroke: horizontalBorderColor,
-        lineWidth: horizontalBorderWidth,
-        opacity: horizontalBorderColorOpacity,
-      },
-    );
-    // vertical border
-    renderLine(
-      this,
-      {
-        x1: x + width,
-        y1: y,
-        x2: x + width,
-        y2: y + height,
-      },
-      {
-        stroke: verticalBorderColor,
-        lineWidth: verticalBorderWidth,
-        opacity: verticalBorderColorOpacity,
-      },
-    );
+    [CellBorderPosition.TOP, CellBorderPosition.LEFT].forEach((type) => {
+      const { position, style } = getBorderPositionAndStyle(
+        type,
+        this.getCellArea(),
+        this.getStyle().cell,
+      );
+      renderLine(this, position, style);
+    });
   }
 
   private isLastRowCornerCell() {
@@ -239,9 +215,9 @@ export class CornerCell extends HeaderCell {
   }
 
   private getResizeAreaEffect() {
-    const { key } = this.meta;
+    const { cornerType } = this.meta;
 
-    if (key === KEY_SERIES_NUMBER_NODE) {
+    if (cornerType === CornerNodeType.Series) {
       return ResizeAreaEffect.Series;
     }
 
@@ -349,8 +325,8 @@ export class CornerCell extends HeaderCell {
     const cornerTextStyle = this.getStyle().bolderText;
     const { cornerType } = this.meta;
 
-    const textAlign =
-      cornerType === CornerNodeType.Row ? cornerTextStyle.textAlign : 'right';
+    const textAlign: TextAlign =
+      cornerType === CornerNodeType.Col ? 'right' : cornerTextStyle.textAlign;
 
     return {
       ...cornerTextStyle,

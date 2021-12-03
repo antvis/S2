@@ -73,12 +73,18 @@ const options: S2Options = {
     enableCopy: true,
     hoverHighlight: false,
     linkFields: ['order_id', 'customer_name'],
+    hiddenColumnFields: ['order_date'],
   },
   frozenRowCount: 2,
   frozenColCount: 1,
   frozenTrailingColCount: 1,
   frozenTrailingRowCount: 1,
   showDefaultHeaderActionIcon: true,
+  tooltip: {
+    operation: {
+      hiddenColumns: true,
+    },
+  },
 };
 
 describe('TableSheet normal spec', () => {

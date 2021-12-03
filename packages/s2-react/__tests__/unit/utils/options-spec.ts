@@ -1,9 +1,12 @@
 import { DEFAULT_STYLE } from '@antv/s2';
-import { getSafetyOptions } from '@/utils/merge';
+import { getSheetComponentOptions } from '@/utils/options';
 
-describe('merge test', () => {
+describe('Options Tests', () => {
   test('should get safety options', () => {
-    const options = getSafetyOptions(null);
+    const options = getSheetComponentOptions();
+
+    expect(options.tooltip.renderTooltip).toBeFunction();
+
     Reflect.deleteProperty(options.tooltip, 'renderTooltip');
 
     expect(options).toStrictEqual({
@@ -50,7 +53,7 @@ describe('merge test', () => {
   });
 
   test('should get custom options', () => {
-    const options = getSafetyOptions({
+    const options = getSheetComponentOptions({
       tooltip: {
         showTooltip: false,
         operation: {
@@ -58,6 +61,8 @@ describe('merge test', () => {
         },
       },
     });
+
+    expect(options.tooltip.renderTooltip).toBeFunction();
 
     Reflect.deleteProperty(options.tooltip, 'renderTooltip');
 

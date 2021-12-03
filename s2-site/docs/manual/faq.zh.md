@@ -67,12 +67,37 @@ s2.render();
 
 可以调用 `s2.changeSize` 根据缩放比改变图表大小, 使图表和父元素缩放比保持一致
 
-```tsx
+```ts
 const scale = 0.8
 s2.changeSize(width * scale, height * scale)
 s2.render(false)
 ```
 
 可参考 [issue #808](https://github.com/antvis/S2/issues/808) (感谢[cylnet](https://github.com/cylnet))
+
+### 图表渲染不出来, 怎么回事?
+
+图表需要挂载在 `dom` 节点上, 请确保该节点存在
+
+```html
+<div id="container"></div>
+```
+
+```ts
+const pivotSheet = new PivotSheet(document.getElementById('container'), dataCfg, options);
+```
+
+如果传入的是选择器, S2 会使用 [`document.querySelector()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/querySelector) 去查找, 也就意味着, 只要节点存在, 且选择器符合 `querySelector` 的语法, 都是可以的
+
+```ts
+const pivotSheet = new PivotSheet('#container', dataCfg, options);
+const pivotSheet = new PivotSheet('.container', dataCfg, options);
+const pivotSheet = new PivotSheet('#container > div', dataCfg, options);
+const pivotSheet = new PivotSheet('#container > div[title="xx"]', dataCfg, options);
+```
+
+### 为什么在小程序上面图表无法显示?
+
+目前 `S2` 只支持 `web` 平台, 小程序暂不支持.
 
 ## 2. 错误和警告

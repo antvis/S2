@@ -164,9 +164,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private getMountContainer(dom: S2MountContainer) {
-    const mountContainer = isString(dom)
-      ? document.getElementById(dom)
-      : (dom as HTMLElement);
+    const mountContainer = isString(dom) ? document.querySelector(dom) : dom;
 
     if (!mountContainer) {
       throw new Error('Target mount container is not a DOM element');
@@ -519,7 +517,7 @@ export abstract class SpreadSheet extends EE {
     const { width, height } = this.options;
     // base canvas group
     this.container = new Canvas({
-      container: this.dom,
+      container: this.dom as HTMLElement,
       width,
       height,
       localRefresh: false,

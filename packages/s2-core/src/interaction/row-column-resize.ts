@@ -302,20 +302,6 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private isResizeMoreThanMaxCornerWidthLimit(offsetX: number) {
-    const resizeInfo = this.getResizeInfo();
-
-    const isResizeFreezeRowHeader =
-      resizeInfo.effect !== ResizeAreaEffect.Cell &&
-      this.spreadsheet.isFrozenRowHeader();
-
-    const { width: canvasWidth } = this.spreadsheet.options;
-    const maxCornerWidth = Math.floor(canvasWidth * CORNER_MAX_WIDTH_RATIO);
-    const isMoreThanMaxRowHeaderWidthLimit = offsetX >= maxCornerWidth;
-
-    return isResizeFreezeRowHeader && isMoreThanMaxRowHeaderWidthLimit;
-  }
-
   private resizeMouseMove = (event: CanvasEvent) => {
     if (!this.resizeReferenceGroup?.get('visible')) {
       return;
@@ -359,10 +345,6 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
     guideLineStart: ResizeGuideLinePath,
     guideLineEnd: ResizeGuideLinePath,
   ) {
-    if (this.isResizeMoreThanMaxCornerWidthLimit(originalEvent.offsetX)) {
-      return;
-    }
-
     let offsetX = originalEvent.offsetX - this.resizeStartPosition.offsetX;
     if (resizeInfo.width + offsetX < MIN_CELL_WIDTH) {
       // 禁止拖到最小宽度

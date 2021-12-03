@@ -10,4 +10,11 @@ export class TableRowCell extends DataCell {
   protected getTextStyle(): TextTheme {
     return this.theme.rowCell.text;
   }
+
+  protected drawBorderShape() {
+    super.drawBorderShape();
+    if (this.meta.colIndex === 0) {
+      this.drawLeftBorder();
+    }
+  }
 }
