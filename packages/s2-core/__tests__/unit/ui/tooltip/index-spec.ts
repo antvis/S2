@@ -142,7 +142,6 @@ describe('Tooltip Tests', () => {
     });
 
     expect(tooltip.container.contains(element1)).toBeTruthy();
-    expect(tooltip.container.contains(element2)).toBeFalsy();
 
     tooltip.show({
       position,
