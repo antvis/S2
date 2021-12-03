@@ -1,4 +1,4 @@
-import { BorderPosition, CellTheme } from 'src/common/interface';
+import { CellBorderPosition, CellTheme } from 'src/common/interface';
 import { SimpleBBox } from '@antv/g-canvas';
 import { AreaRange } from '@/common/interface/scroll';
 import {
@@ -521,7 +521,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
 
     expect(
       getBorderPositionAndStyle(
-        BorderPosition.RIGHT,
+        CellBorderPosition.RIGHT,
         contentBox,
         style as CellTheme,
       ).position,
@@ -534,7 +534,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
 
     expect(
       getBorderPositionAndStyle(
-        BorderPosition.TOP,
+        CellBorderPosition.TOP,
         contentBox,
         style as CellTheme,
       ).position,
@@ -547,7 +547,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
 
     expect(
       getBorderPositionAndStyle(
-        BorderPosition.BOTTOM,
+        CellBorderPosition.BOTTOM,
         contentBox,
         style as CellTheme,
       ).position,
