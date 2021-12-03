@@ -170,13 +170,6 @@ function MainLayout() {
     s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, (e) => {
       console.log('趋势图icon点击', e);
     });
-
-    s2Ref.current?.on(S2Event.GLOBAL_ACTION_ICON_HOVER, () => {
-      console.log(1);
-    });
-    s2Ref.current?.on(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
-      console.log(2);
-    });
   }, [sheetType]);
 
   //  ================== Config ========================
@@ -202,7 +195,7 @@ function MainLayout() {
           subTotalsDimensions: ['type'],
         },
       },
-      customSVGIcons: [
+      customSVGIcons: !options.showDefaultHeaderActionIcon && [
         {
           name: 'Filter',
           svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
@@ -212,7 +205,7 @@ function MainLayout() {
           svg: 'https://gw.alipayobjects.com/zos/antfincdn/UxDm6TCYP3/filter%26sort_asc%2Bfilter.svg',
         },
       ],
-      headerActionIcons: [
+      headerActionIcons: !options.showDefaultHeaderActionIcon && [
         {
           iconNames: ['Filter'],
           belongsCell: 'colCell',

@@ -21,10 +21,10 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
 
   const renderTitle = (text: string, icon: Element | string) => {
     return (
-      <>
+      <span>
         <Icon icon={icon} className={`${TOOLTIP_PREFIX_CLS}-operator-icon`} />
         {text}
-      </>
+      </span>
     );
   };
 
@@ -75,11 +75,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
       );
 
       return (
-        <Dropdown
-          key={id}
-          overlay={menuRender}
-          {...(!size(children) && { onClick })}
-        >
+        <Dropdown overlay={menuRender} {...(!size(children) && { onClick })}>
           {renderTitle(text, icon)}
         </Dropdown>
       );
