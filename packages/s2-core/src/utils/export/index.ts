@@ -1,7 +1,7 @@
 import { last, isEmpty, clone, trim, max, isObject, forEach } from 'lodash';
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
-import { ViewMeta } from '@/common/interface';
+import { CornerNodeType, ViewMeta } from '@/common/interface';
 import {
   ID_SEPARATOR,
   EMPTY_PLACEHOLDER,
@@ -201,20 +201,24 @@ export const copyData = (
     headers = colHeader.map((item, index) => {
       if (sheetInstance.isPivotMode()) {
         const { columns, rows, data } = sheetInstance.facet.cornerHeader.cfg;
-        const colNode = data.filter((e) => e.cornerType === 'col');
-        const rowNode = data.filter((e) => e.cornerType === 'row');
+        const colNodes = data.filter(
+          ({ cornerType }) => cornerType === CornerNodeType.Col,
+        );
+        const rowNodes = data.filter(
+          ({ cornerType }) => cornerType === CornerNodeType.Row,
+        );
 
         if (index < colHeader.length - 1) {
           return [
             ...Array(rowLength - 1).fill(''),
-            colNode.find((v) => v.field === columns[index])?.label || '',
+            colNodes.find(({ field }) => field === columns[index])?.label || '',
             ...item,
           ];
         }
         if (index < colHeader.length) {
           return [
             ...rows.map(
-              (row) => rowNode.find((v) => v.field === row)?.label || '',
+              (row) => rowNodes.find(({ field }) => field === row)?.label || '',
             ),
             ...item,
           ];
