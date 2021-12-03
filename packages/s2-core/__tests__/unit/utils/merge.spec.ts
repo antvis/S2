@@ -114,6 +114,7 @@ describe('merge test', () => {
           vertical: 1,
         },
         autoResetSheetStyle: true,
+        resize: true,
       },
       frozenRowHeader: true,
       showSeriesNumber: false,
@@ -140,15 +141,14 @@ describe('merge test', () => {
         },
       },
     });
-
     expect(options.tooltip).toStrictEqual({
-      showTooltip: false,
       autoAdjustBoundary: 'body',
       operation: {
         hiddenColumns: false,
         trend: false,
         sort: false,
       },
+      showTooltip: false,
     });
   });
 
