@@ -100,8 +100,9 @@ describe('Interaction Data Cell Click Tests', () => {
     // trigger hover
     s2.emit(S2Event.DATA_CELL_HOVER, event);
 
-    // toggle click
+    // select
     s2.emit(S2Event.DATA_CELL_CLICK, event);
+    // unselect
     s2.emit(S2Event.DATA_CELL_CLICK, event);
 
     // wait hover focus time trigger
@@ -110,6 +111,8 @@ describe('Interaction Data Cell Click Tests', () => {
     expect(s2.interaction.getCurrentStateName()).not.toEqual(
       InteractionStateName.HOVER_FOCUS,
     );
+
+    // only call show tooltip once for cell clicked
     expect(showTooltipWithInfoSpy).toHaveReturnedTimes(1);
   });
 });

@@ -130,21 +130,19 @@ describe('Tooltip Tests', () => {
   test('should display custom dom element', () => {
     const element1 = document.createElement('span');
     const element2 = document.createElement('span');
+
     const position = {
       x: 10,
       y: 10,
     };
-
-    element1.className = 'text1';
-    element2.className = 'text2';
 
     tooltip.show({
       position,
       content: element1,
     });
 
-    expect(tooltip.container.querySelector('.text1')).toBeTruthy();
     expect(tooltip.container.contains(element1)).toBeTruthy();
+    expect(tooltip.container.contains(element2)).toBeFalsy();
 
     tooltip.show({
       position,
