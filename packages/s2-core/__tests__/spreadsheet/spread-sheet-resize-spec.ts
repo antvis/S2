@@ -10,7 +10,7 @@ import {
 
 function renderSheet(options: S2Options) {
   const s2 = new PivotSheet(getContainer(), mockDataConfig, {
-    height: 200,
+    height: 150,
     ...options,
   });
   s2.setThemeCfg({
@@ -75,5 +75,33 @@ describe('SpreadSheet Resize Active Tests', () => {
     const group = s2.facet.foregroundGroup;
 
     expect(group.findById(KEY_GROUP_COL_RESIZE_AREA)).toBeNull();
+  });
+
+  test('should disable col cell vertical direction resize area', () => {
+    const s2 = renderSheet({
+      interaction: {
+        resizeActive: {
+          enableColCellVerticalResize: false,
+        },
+      },
+    } as S2Options);
+
+    const group = s2.facet.foregroundGroup;
+
+    expect(group.findById(KEY_GROUP_COL_RESIZE_AREA)).toBeDefined();
+  });
+
+  test('should disable col cell horizontal direction resize area', () => {
+    const s2 = renderSheet({
+      interaction: {
+        resizeActive: {
+          enableColCellHorizontalResize: false,
+        },
+      },
+    } as S2Options);
+
+    const group = s2.facet.foregroundGroup;
+
+    expect(group.findById(KEY_GROUP_COL_RESIZE_AREA)).toBeDefined();
   });
 });
