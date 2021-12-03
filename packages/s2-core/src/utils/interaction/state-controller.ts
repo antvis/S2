@@ -33,8 +33,8 @@ export const clearState = (spreadsheet: SpreadSheet) => {
 
 /**
  * @desc set the interaction state information
- * @param stateName the name of interaction state
  * @param spreadsheet sheet instance
+ * @param interactionStateInfo
  */
 export const setState = (
   spreadsheet: SpreadSheet,

@@ -214,7 +214,7 @@ export const getActiveCellsInfo = (sheet: SpreadSheet) => {
  * @param cellsInfo
  * @param hideData
  */
-export const mergeCells = (
+export const mergeCell = (
   sheet: SpreadSheet,
   cellsInfo?: MergedCellInfo[],
   hideData?: boolean,
