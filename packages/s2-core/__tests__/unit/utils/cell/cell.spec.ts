@@ -508,7 +508,7 @@ describe('Horizontal Scrolling Text Position Test', () => {
     };
     expect(
       getBorderPositionAndStyle(
-        BorderPosition.LEFT,
+        CellBorderPosition.LEFT,
         contentBox,
         style as CellTheme,
       ).position,
