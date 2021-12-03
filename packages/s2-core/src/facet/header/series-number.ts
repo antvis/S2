@@ -1,16 +1,19 @@
-import { BBox, IGroup, IShape } from '@antv/g-canvas';
+import { BBox, Group, IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
+import { getBorderPositionAndStyle } from 'src/utils/cell/cell';
 import { translateGroup } from '../utils';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type/index';
-import { renderRect } from '@/utils/g-renders';
+import { renderRect, renderLine } from '@/utils/g-renders';
 import { measureTextWidth } from '@/utils/text';
 import { getAdjustPosition } from '@/utils/text-absorption';
-import { Padding, ViewMeta } from '@/common/interface';
+import { CellBorderPosition, Padding, ViewMeta } from '@/common/interface';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;
+
+  private leftBorderShape: IShape;
 
   /**
    * Get seriesNumber header by config
@@ -91,7 +94,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
         // 添加边框
         if (!isLeaf) {
-          this.addBottomBorder(borderGroup, item);
+          this.addBorder(borderGroup, item);
         }
       }
     });
@@ -102,6 +105,9 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     translateGroup(this, position.x - scrollX, position.y - scrollY);
     if (this.backgroundShape) {
       this.backgroundShape.translate(position.x, position.y + scrollY);
+    }
+    if (this.leftBorderShape) {
+      this.leftBorderShape.translate(position.x, position.y + scrollY);
     }
   }
 
@@ -118,23 +124,29 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
       stroke: 'transparent',
       opacity: rowCellTheme.backgroundColorOpacity,
     });
+
+    const { position: borderPosition, style: borderStyle } =
+      getBorderPositionAndStyle(
+        CellBorderPosition.LEFT,
+        {
+          x: position.x,
+          y: -position.y,
+          width,
+          height,
+        },
+        rowCellTheme,
+      );
+
+    this.leftBorderShape = renderLine(this, borderPosition, borderStyle);
   }
 
-  private addBottomBorder(group: IGroup, cellData) {
-    const { position, width } = this.headerConfig;
-    const { x, y } = cellData;
-    group.addShape('line', {
-      attrs: {
-        x1: x,
-        y1: y,
-        x2: position.x + width,
-        y2: y,
-        stroke:
-          this.headerConfig.spreadsheet.theme.rowCell.cell
-            .horizontalBorderColor,
-        lineWidth: 1,
-      },
-    });
+  private addBorder(group: IGroup, cellData) {
+    const cellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
+
+    const { position: horizontalPosition, style: horizontalStyle } =
+      getBorderPositionAndStyle(CellBorderPosition.BOTTOM, cellData, cellTheme);
+
+    renderLine(group as Group, horizontalPosition, horizontalStyle);
   }
 
   private addText(group: IGroup, cellData: ViewMeta) {
