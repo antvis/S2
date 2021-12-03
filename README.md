@@ -179,24 +179,32 @@ git clone git@github.com:antvis/S2.git
 
 cd S2
 
-yarn
+# 安装依赖
+yarn # 或者 yarn bootstrap
 
+# 调试 s2-core
 yarn core:start
 
+# 调试 s2-react
+yarn react:playground
+
+# 单元测试
+yarn test
+
+# 打包
+yarn build
+
+# 代码风格和类型检测
+yarn lint
+
 # 本地启动官网
-
 yarn site:bootstrap
-
 yarn site:start
 ```
 
 ## 📧 联系我们
 
 <img style="width: 300px; height: auto" alt="S2" src="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg"></a>
-
-## 👬 Contributors
-
-![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
 
 ## 📄 License
 

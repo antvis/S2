@@ -144,6 +144,7 @@ describe('Tooltip Tests', () => {
     });
 
     expect(tooltip.container.querySelector('.text1')).toBeTruthy();
+    expect(tooltip.container.contains(element1)).toBeTruthy();
 
     tooltip.show({
       position,
@@ -151,6 +152,8 @@ describe('Tooltip Tests', () => {
     });
 
     expect(tooltip.container.querySelector('.text2')).toBeTruthy();
+    expect(tooltip.container.contains(element2)).toBeTruthy();
+    expect(tooltip.container.contains(element1)).toBeFalsy();
     expect(tooltip.container.children).toHaveLength(1);
   });
 
@@ -193,6 +196,7 @@ describe('Tooltip Tests', () => {
     });
 
     expect(tooltip.container.querySelector('.text')).toBeTruthy();
+    expect(tooltip.container.contains(element)).toBeTruthy();
   });
 
   test('should replace tooltip content by call method', () => {

@@ -1,6 +1,5 @@
 // TODO 抽取不同sheet组件的公共方法
 import React, { useEffect, useState } from 'react';
-import { isFunction } from 'lodash';
 import { Spin } from 'antd';
 import { Event } from '@antv/g-canvas';
 import {
@@ -84,50 +83,27 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
   };
 
   const bindEvent = () => {
-    baseSpreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (ev: Event) => {
-      if (isFunction(onDataCellMouseUp)) {
-        onDataCellMouseUp(getBaseCellData(ev));
-      }
+    baseSpreadsheet.on(S2Event.DATA_CELL_MOUSE_UP, (event: Event) => {
+      onDataCellMouseUp?.(getBaseCellData(event));
     });
-    baseSpreadsheet.on(S2Event.ROW_CELL_CLICK, (ev: Event) => {
-      if (isFunction(onRowCellClick)) {
-        onRowCellClick(getBaseCellData(ev));
-      }
+    baseSpreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
+      onRowCellClick?.(getBaseCellData(event));
     });
-    baseSpreadsheet.on(S2Event.COL_CELL_CLICK, (ev: Event) => {
-      if (isFunction(onColCellClick)) {
-        onColCellClick(getBaseCellData(ev));
-      }
+    baseSpreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
+      onColCellClick?.(getBaseCellData(event));
     });
-
-    baseSpreadsheet.on(S2Event.MERGED_CELLS_CLICK, (ev: Event) => {
-      if (isFunction(onMergedCellsClick)) {
-        onMergedCellsClick(getBaseCellData(ev));
-      }
+    baseSpreadsheet.on(S2Event.MERGED_CELLS_CLICK, (event: Event) => {
+      onMergedCellsClick?.(getBaseCellData(event));
     });
-    baseSpreadsheet.on(S2Event.ROW_CELL_DOUBLE_CLICK, (ev: Event) => {
-      if (isFunction(onRowCellClick)) {
-        onRowCellDoubleClick(getBaseCellData(ev));
-      }
+    baseSpreadsheet.on(S2Event.ROW_CELL_DOUBLE_CLICK, (event: Event) => {
+      onRowCellDoubleClick?.(getBaseCellData(event));
     });
-    baseSpreadsheet.on(S2Event.COL_CELL_DOUBLE_CLICK, (ev: Event) => {
-      if (isFunction(onColCellClick)) {
-        onColCellDoubleClick(getBaseCellData(ev));
-      }
+    baseSpreadsheet.on(S2Event.COL_CELL_DOUBLE_CLICK, (event: Event) => {
+      onColCellDoubleClick?.(getBaseCellData(event));
     });
-
-    baseSpreadsheet.on(S2Event.MERGED_CELLS_DOUBLE_CLICK, (ev: Event) => {
-      if (isFunction(onMergedCellsClick)) {
-        onMergedCellsDoubleClick(getBaseCellData(ev));
-      }
+    baseSpreadsheet.on(S2Event.MERGED_CELLS_DOUBLE_CLICK, (event: Event) => {
+      onMergedCellsDoubleClick?.(getBaseCellData(event));
     });
-  };
-
-  const unBindEvent = () => {
-    baseSpreadsheet.off(S2Event.MERGED_CELLS_CLICK);
-    baseSpreadsheet.off(S2Event.ROW_CELL_CLICK);
-    baseSpreadsheet.off(S2Event.COL_CELL_CLICK);
-    baseSpreadsheet.off(S2Event.DATA_CELL_MOUSE_UP);
   };
 
   const buildSpreadSheet = () => {
@@ -147,7 +123,6 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
   useEffect(() => {
     buildSpreadSheet();
     return () => {
-      unBindEvent();
       baseSpreadsheet.destroy();
     };
   }, []);

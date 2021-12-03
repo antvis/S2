@@ -89,5 +89,9 @@ export interface BaseSheetProps {
   onMergedCellsClick?: (data: TargetCellInfo) => void;
   onMergedCellsDoubleClick?: (data: TargetCellInfo) => void;
   onContextMenu?: (data: TargetCellInfo) => void;
+  onRowCellHover?: (data: TargetCellInfo) => void;
+  onColCellHover?: (data: TargetCellInfo) => void;
+  onDataCellHover?: (data: TargetCellInfo) => void;
+  onMergedCellsHover?: (data: TargetCellInfo) => void;
   getSpreadSheet?: (spreadsheet: SpreadSheet) => void;
 }

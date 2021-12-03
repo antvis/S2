@@ -20,7 +20,7 @@ order: 1
 | showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |
 | headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
 | customSVGIcons | [CustomSVGIcon[]](#customsvgicon) |  |   `false` | 自定义 svg 图标 |
-| style | [Style](#style) |  |    | 附加样式 |
+| style | [Style](#style) |  |    | 单元格样式设置, 比如布局类型, 宽高, 边距, 是否隐藏数值列头等 |
 | frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 (明细表有效) |
 | frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 (明细表有效) |
 | frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 (明细表有效) |

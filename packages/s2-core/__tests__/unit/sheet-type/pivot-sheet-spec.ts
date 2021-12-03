@@ -66,6 +66,31 @@ describe('PivotSheet Tests', () => {
       }[cellType];
     };
 
+    test('should support callback tooltip content for string', () => {
+      s2.showTooltip({
+        position: {
+          x: 10,
+          y: 10,
+        },
+        content: () => 'custom callback content',
+      });
+
+      expect(s2.tooltip.container.innerHTML).toEqual('custom callback content');
+    });
+
+    test('should support callback tooltip content for element', () => {
+      const content = document.createElement('div');
+      s2.showTooltip({
+        position: {
+          x: 10,
+          y: 10,
+        },
+        content: () => content,
+      });
+
+      expect(s2.tooltip.container.contains(content)).toBeTruthy();
+    });
+
     test('should init tooltip', () => {
       s2.showTooltip({ position: { x: 0, y: 0 } });
 
@@ -417,43 +442,6 @@ describe('PivotSheet Tests', () => {
     expect(afterRender).toHaveBeenCalledTimes(1);
   });
 
-  test('should destroy sheet', () => {
-    const facetDestroySpy = jest
-      .spyOn(s2.facet, 'destroy')
-      .mockImplementation(() => {});
-
-    const hdAdapterDestroySpy = jest
-      .spyOn(s2.hdAdapter, 'destroy')
-      .mockImplementation(() => {});
-
-    s2.render(false);
-
-    s2.store.set('test', 111);
-    s2.tooltip.container.classList.add('destroy-test');
-    s2.interaction.addIntercepts([InterceptType.HOVER]);
-    s2.interaction.interactions.set('test-interaction', null);
-    s2.destroy();
-
-    // clear store
-    expect(s2.store.size()).toEqual(0);
-    // clear interaction
-    expect(s2.interaction.getState()).toEqual({
-      cells: [],
-      force: false,
-    });
-    expect(s2.interaction.getHoverTimer()).toBeNull();
-    expect(s2.interaction.interactions.size).toEqual(0);
-    expect(s2.interaction.intercepts.size).toEqual(0);
-    expect(s2.interaction.eventController.canvasEventHandlers).toHaveLength(0);
-    expect(s2.interaction.eventController.domEventListeners).toHaveLength(0);
-    // destroy tooltip
-    expect(s2.tooltip.container.children).toHaveLength(0);
-    // destroy facet
-    expect(facetDestroySpy).toHaveBeenCalledTimes(1);
-    // destroy hdAdapter
-    expect(hdAdapterDestroySpy).toHaveBeenCalledTimes(1);
-  });
-
   test('should updatePagination', () => {
     s2.updatePagination({
       current: 2,
@@ -663,6 +651,46 @@ describe('PivotSheet Tests', () => {
       },
     ]);
     expect(renderSpy).toHaveBeenCalledTimes(2);
+  });
+
+  test('should destroy sheet', () => {
+    const facetDestroySpy = jest
+      .spyOn(s2.facet, 'destroy')
+      .mockImplementation(() => {});
+
+    const hdAdapterDestroySpy = jest
+      .spyOn(s2.hdAdapter, 'destroy')
+      .mockImplementation(() => {});
+
+    s2.render(false);
+
+    s2.store.set('test', 111);
+    s2.tooltip.container.classList.add('destroy-test');
+    s2.interaction.addIntercepts([InterceptType.HOVER]);
+    s2.interaction.interactions.set('test-interaction', null);
+    s2.container.on('test-event', () => {});
+    s2.destroy();
+
+    // clear store
+    expect(s2.store.size()).toEqual(0);
+    // clear interaction
+    expect(s2.interaction.getState()).toEqual({
+      cells: [],
+      force: false,
+    });
+    expect(s2.interaction.getHoverTimer()).toBeNull();
+    expect(s2.interaction.interactions.size).toEqual(0);
+    expect(s2.interaction.intercepts.size).toEqual(0);
+    expect(s2.interaction.eventController.canvasEventHandlers).toHaveLength(0);
+    expect(s2.interaction.eventController.domEventListeners).toHaveLength(0);
+    // destroy tooltip
+    expect(s2.tooltip.container.children).toHaveLength(0);
+    // destroy facet
+    expect(facetDestroySpy).toHaveBeenCalledTimes(1);
+    // destroy hdAdapter
+    expect(hdAdapterDestroySpy).toHaveBeenCalledTimes(1);
+    // clear all canvas events
+    expect(s2.getEvents()).toEqual({});
   });
 
   describe('Test Layout by dataCfg fields', () => {

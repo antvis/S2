@@ -80,35 +80,38 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
       string,
       (...args: unknown[]) => unknown
     > = {
-      [S2Event.DATA_CELL_MOUSE_UP]: (ev: GEvent) => {
-        onDataCellMouseUp?.(getBaseCellData(ev));
+      [S2Event.DATA_CELL_MOUSE_UP]: (event: GEvent) => {
+        onDataCellMouseUp?.(getBaseCellData(event));
       },
-      [S2Event.MERGED_CELLS_CLICK]: (ev: GEvent) => {
-        onMergedCellsClick?.(getBaseCellData(ev));
+      [S2Event.MERGED_CELLS_CLICK]: (event: GEvent) => {
+        onMergedCellsClick?.(getBaseCellData(event));
       },
-      [S2Event.ROW_CELL_CLICK]: (ev: GEvent) => {
-        onRowCellClick?.(getBaseCellData(ev));
+      [S2Event.ROW_CELL_CLICK]: (event: GEvent) => {
+        onRowCellClick?.(getBaseCellData(event));
       },
-      [S2Event.COL_CELL_CLICK]: (ev: GEvent) => {
-        onColCellClick?.(getBaseCellData(ev));
+      [S2Event.COL_CELL_CLICK]: (event: GEvent) => {
+        onColCellClick?.(getBaseCellData(event));
       },
-      [S2Event.DATA_CELL_CLICK]: (ev: GEvent) => {
-        onDataCellClick?.(getBaseCellData(ev));
+      [S2Event.DATA_CELL_CLICK]: (event: GEvent) => {
+        onDataCellClick?.(getBaseCellData(event));
       },
-      [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (ev: GEvent) => {
-        onMergedCellsDoubleClick?.(getBaseCellData(ev));
+      [S2Event.DATA_CELL_HOVER]: (event: GEvent) => {
+        onDataCellClick?.(getBaseCellData(event));
       },
-      [S2Event.ROW_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
-        onRowCellDoubleClick?.(getBaseCellData(ev));
+      [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (event: GEvent) => {
+        onMergedCellsDoubleClick?.(getBaseCellData(event));
       },
-      [S2Event.COL_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
-        onColCellDoubleClick?.(getBaseCellData(ev));
+      [S2Event.ROW_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onRowCellDoubleClick?.(getBaseCellData(event));
       },
-      [S2Event.DATA_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
-        onDataCellDoubleClick?.(getBaseCellData(ev));
+      [S2Event.COL_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onColCellDoubleClick?.(getBaseCellData(event));
       },
-      [S2Event.GLOBAL_CONTEXT_MENU]: (ev: GEvent) => {
-        onContextMenu?.(getBaseCellData(ev));
+      [S2Event.DATA_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onDataCellDoubleClick?.(getBaseCellData(event));
+      },
+      [S2Event.GLOBAL_CONTEXT_MENU]: (event: GEvent) => {
+        onContextMenu?.(getBaseCellData(event));
       },
       [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
         targetRow: TargetLayoutNode,
@@ -130,22 +133,6 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
 
     forIn(EVENT_LISTENER_CONFIG, (handler, event: keyof EmitterType) => {
       baseSpreadsheet.current.on(event, handler);
-    });
-  };
-
-  const unBindEvent = () => {
-    [
-      S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
-      S2Event.LAYOUT_ROW_NODE_BORDER_REACHED,
-      S2Event.LAYOUT_COL_NODE_BORDER_REACHED,
-      S2Event.LAYOUT_CELL_SCROLL,
-      S2Event.RANGE_SORT,
-      S2Event.MERGED_CELLS_CLICK,
-      S2Event.ROW_CELL_CLICK,
-      S2Event.COL_CELL_CLICK,
-      S2Event.DATA_CELL_MOUSE_UP,
-    ].forEach((eventName) => {
-      baseSpreadsheet.current.off(eventName);
     });
   };
 
@@ -186,7 +173,6 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   useEffect(() => {
     buildSpreadSheet();
     return () => {
-      unBindEvent();
       baseSpreadsheet.current.destroy();
     };
   }, []);

@@ -50,7 +50,7 @@ describe('SheetComponent Tooltip Tests', () => {
     await sleep(1000);
 
     const showTooltip = () => {
-      s2.tooltip.show({ position: { x: 0, y: 0 }, content: '111' });
+      s2.showTooltip({ position: { x: 0, y: 0 }, content: '111' });
     };
 
     Array.from({ length: 10 }).forEach(() => {
@@ -85,5 +85,70 @@ describe('SheetComponent Tooltip Tests', () => {
     s2.showTooltip({ position: { x: 0, y: 0 }, content });
 
     expect(s2.tooltip.container.querySelector('#custom-content')).toBeTruthy();
+  });
+
+  test('should support callback tooltip content for string', async () => {
+    await sleep(1000);
+
+    s2.showTooltip({
+      position: {
+        x: 10,
+        y: 10,
+      },
+      content: () => 'custom callback content',
+    });
+
+    expect(s2.tooltip.container.innerHTML).toEqual('custom callback content');
+  });
+
+  test('should support callback tooltip content for element', async () => {
+    await sleep(1000);
+
+    const content = (
+      <div id="custom-callback-content">custom callback content</div>
+    );
+
+    s2.showTooltip({
+      position: {
+        x: 10,
+        y: 10,
+      },
+      content: () => content,
+    });
+
+    expect(
+      s2.tooltip.container.querySelector('#custom-callback-content'),
+    ).toBeTruthy();
+  });
+
+  // https://github.com/antvis/S2/issues/852
+  test('should not show unique key prop warning', async () => {
+    await sleep(1000);
+
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+    const content = (
+      <div>
+        <div>content1</div>
+        <div>content2</div>
+      </div>
+    );
+
+    Array.from({ length: 3 }).forEach(() => {
+      s2.showTooltip({
+        position: {
+          x: 10,
+          y: 10,
+        },
+        content,
+      });
+    });
+
+    expect(errorSpy).not.toThrowError();
+    expect(warnSpy).not.toThrowError();
+
+    errorSpy.mockRestore();
+    warnSpy.mockRestore();
   });
 });

@@ -23,7 +23,7 @@ import { TooltipRenderProps } from './interface';
 
 import './index.less';
 
-export const TooltipComponent = (props: TooltipRenderProps) => {
+export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
   const renderDivider = () => {
     return <Divider />;
   };
@@ -105,7 +105,7 @@ export const TooltipComponent = (props: TooltipRenderProps) => {
   const { data, options, content } = props;
 
   if (!isNil(content)) {
-    return <>{content}</>;
+    return content as React.ReactElement;
   }
 
   return <>{renderContent(data, options)}</>;
