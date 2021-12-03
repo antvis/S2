@@ -28,7 +28,6 @@ describe('header component test', () => {
         switcherCfg={{ open: true }}
       />,
     );
-    screen.debug();
 
     // export 组件
     expect(container.querySelector('.antv-s2-export')).toBeDefined();

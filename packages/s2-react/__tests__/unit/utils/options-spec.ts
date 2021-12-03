@@ -35,6 +35,7 @@ describe('Options Tests', () => {
           vertical: 1,
         },
         autoResetSheetStyle: true,
+        resize: true,
       },
       frozenRowHeader: true,
       showSeriesNumber: false,
