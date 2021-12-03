@@ -131,9 +131,11 @@ export class RootInteraction {
   // 获取 cells 中在可视区域内的实例列表
   public getActiveCells() {
     const ids = this.getCells().map((item) => item.id);
-    // 这里的顺序要以 ids 中的顺序为准，代表点击 cell 的顺序
     const allCells = this.getAllCells();
-    return map(ids, (id) => find(allCells, (cell) => cell.getMeta().id === id));
+    // 这里的顺序要以 ids 中的顺序为准，代表点击 cell 的顺序
+    return map(ids, (id) =>
+      find(allCells, (cell) => cell?.getMeta()?.id === id),
+    ).filter((cell) => cell); // 去除 undefined
   }
 
   public clearStyleIndependent() {

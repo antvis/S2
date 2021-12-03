@@ -17,9 +17,9 @@ import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
-jest.mock('@/utils/interaction/merge-cells', () => {
+jest.mock('@/utils/interaction/merge-cell', () => {
   return {
-    mergeCells: jest.fn(),
+    mergeCell: jest.fn(),
     unmergeCell: jest.fn(),
   };
 });
