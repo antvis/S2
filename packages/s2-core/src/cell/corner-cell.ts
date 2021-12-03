@@ -1,6 +1,6 @@
 import { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
 import { isEmpty, isEqual, last, max } from 'lodash';
-import { KEY_SERIES_NUMBER_NODE } from './../common/constant/basic';
+import { TextAlign } from './../common/interface/theme';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import {
@@ -233,7 +233,7 @@ export class CornerCell extends HeaderCell {
     const { cornerType, field } = this.meta;
     const { rows } = this.headerConfig;
     return (
-      cornerType === CornerNodeType.ROW &&
+      cornerType === CornerNodeType.Row &&
       (this.spreadsheet.isHierarchyTreeType() || last(rows) === field)
     );
   }
@@ -349,7 +349,7 @@ export class CornerCell extends HeaderCell {
     const cornerTextStyle = this.getStyle().bolderText;
     const { cornerType } = this.meta;
 
-    const textAlign =
+    const textAlign: TextAlign =
       cornerType === CornerNodeType.Col ? 'right' : cornerTextStyle.textAlign;
 
     return {
