@@ -132,9 +132,8 @@ export class RootInteraction {
   public getActiveCells() {
     const ids = this.getCells().map((item) => item.id);
     // 这里的顺序要以 ids 中的顺序为准，代表点击 cell 的顺序
-    return map(ids, (id) =>
-      find(this.getAllCells(), (cell) => cell.getMeta().id === id),
-    );
+    const allCells = this.getAllCells();
+    return map(ids, (id) => find(allCells, (cell) => cell.getMeta().id === id));
   }
 
   public clearStyleIndependent() {
@@ -270,7 +269,7 @@ export class RootInteraction {
         new RowColumnResize(this.spreadsheet),
       );
       this.interactions.set(
-        InteractionName.CELL_MULTI_SELECTION,
+        InteractionName.DATA_CELL_MULTI_SELECTION,
         new DataCellMultiSelection(this.spreadsheet),
       );
       this.interactions.set(

@@ -6,7 +6,7 @@ export enum InteractionName {
   HOVER = 'hover',
   BRUSH_SELECTION = 'brushSelection',
   COL_ROW_RESIZE = 'rowColResize',
-  CELL_MULTI_SELECTION = 'cellMultiSelection',
+  DATA_CELL_MULTI_SELECTION = 'dataCellMultiSelection',
   COL_ROW_SHIFT_MULTI_SELECTION = 'colRowShiftMultiSelection',
 }
 
