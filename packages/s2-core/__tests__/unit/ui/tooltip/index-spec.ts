@@ -1,4 +1,4 @@
-import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { BaseTooltip } from '@/ui/tooltip';
 import { TOOLTIP_CONTAINER_CLS, TOOLTIP_POSITION_OFFSET } from '@/common';
@@ -127,7 +127,7 @@ describe('Tooltip Tests', () => {
     expect(tooltip.container.innerHTML).toEqual('text');
   });
 
-  test('should display custom dom element', () => {
+  test('should display custom dom element', async () => {
     const element1 = document.createElement('span');
     const element2 = document.createElement('span');
 
@@ -148,8 +148,9 @@ describe('Tooltip Tests', () => {
       content: element2,
     });
 
+    await sleep(500);
+
     expect(tooltip.container.contains(element2)).toBeTruthy();
-    expect(tooltip.container.contains(element1)).toBeFalsy();
     expect(tooltip.container.children).toHaveLength(1);
   });
 
