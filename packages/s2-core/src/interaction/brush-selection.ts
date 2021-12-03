@@ -105,7 +105,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private bindMouseUp() {
-    // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应时间
+    // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       event.preventDefault();
 
