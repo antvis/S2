@@ -48,7 +48,7 @@ export interface InteractionOptions {
   // the ratio to control scroll speed, default set to 1
   readonly scrollSpeedRatio?: ScrollRatio;
   // enable resize area, default set to all enable
-  readonly resizeActive?: ResizeActiveOptions;
+  readonly resize?: boolean | ResizeActiveOptions;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

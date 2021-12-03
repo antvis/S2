@@ -1,6 +1,6 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { getContainer } from 'tests/util/helpers';
-import { PivotSheet, SpreadSheet } from '@/sheet-type';
+import { PivotSheet } from '@/sheet-type';
 import {
   KEY_GROUP_COL_RESIZE_AREA,
   KEY_GROUP_CORNER_RESIZE_AREA,
@@ -38,8 +38,8 @@ describe('SpreadSheet Resize Active Tests', () => {
   test('should disable row cell resize area', () => {
     const s2 = renderSheet({
       interaction: {
-        resizeActive: {
-          enableRowCellVerticalResize: false,
+        resize: {
+          rowCellVertical: false,
         },
       },
     } as S2Options);
@@ -51,8 +51,8 @@ describe('SpreadSheet Resize Active Tests', () => {
   test('should disable corner cell resize area', () => {
     const s2 = renderSheet({
       interaction: {
-        resizeActive: {
-          enableCornerCellHorizontalResize: false,
+        resize: {
+          cornerCellHorizontal: false,
         },
       },
     } as S2Options);
@@ -65,9 +65,9 @@ describe('SpreadSheet Resize Active Tests', () => {
   test('should disable col cell resize area', () => {
     const s2 = renderSheet({
       interaction: {
-        resizeActive: {
-          enableColCellHorizontalResize: false,
-          enableColCellVerticalResize: false,
+        resize: {
+          colCellHorizontal: false,
+          colCellVertical: false,
         },
       },
     } as S2Options);
@@ -80,8 +80,8 @@ describe('SpreadSheet Resize Active Tests', () => {
   test('should disable col cell vertical direction resize area', () => {
     const s2 = renderSheet({
       interaction: {
-        resizeActive: {
-          enableColCellVerticalResize: false,
+        resize: {
+          colCellVertical: false,
         },
       },
     } as S2Options);
@@ -94,8 +94,8 @@ describe('SpreadSheet Resize Active Tests', () => {
   test('should disable col cell horizontal direction resize area', () => {
     const s2 = renderSheet({
       interaction: {
-        resizeActive: {
-          enableColCellHorizontalResize: false,
+        resize: {
+          colCellHorizontal: false,
         },
       },
     } as S2Options);

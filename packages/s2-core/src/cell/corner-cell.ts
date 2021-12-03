@@ -227,7 +227,7 @@ export class CornerCell extends HeaderCell {
   }
 
   private drawResizeArea() {
-    if (!this.getResizeActiveOptions().enableCornerCellHorizontalResize) {
+    if (!this.shouldDrawResizeAreaByType('cornerCellHorizontal')) {
       return;
     }
 

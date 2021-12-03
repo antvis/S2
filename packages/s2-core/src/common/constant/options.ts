@@ -57,12 +57,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       vertical: 1,
     },
     autoResetSheetStyle: true,
-    resizeActive: {
-      enableColCellHorizontalResize: true,
-      enableColCellVerticalResize: true,
-      enableCornerCellHorizontalResize: true,
-      enableRowCellVerticalResize: true,
-    },
+    resize: true,
   },
   showSeriesNumber: false,
   scrollReachNodeField: {},
