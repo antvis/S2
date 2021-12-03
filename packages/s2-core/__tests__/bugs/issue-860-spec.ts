@@ -24,7 +24,7 @@ describe('Column Formatter Tests', () => {
   });
   test('should get correct row hierarchy with empty row node', () => {
     const layoutResult = s2.facet.layoutResult;
-    expect(layoutResult.rowNodes).toHaveLength(7);
-    expect(layoutResult.rowLeafNodes).toHaveLength(4);
+    expect(layoutResult.rowNodes).toHaveLength(8);
+    expect(layoutResult.rowLeafNodes).toHaveLength(5);
   });
 });
