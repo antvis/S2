@@ -5,7 +5,7 @@
  *
  */
 import { getContainer } from 'tests/util/helpers';
-import dataCfg from '../data/data-issue.json';
+import dataCfg from '../data/data-issue-860.json';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { S2Options } from '@/common/interface';
 

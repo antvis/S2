@@ -706,6 +706,27 @@ describe('PivotSheet Tests', () => {
       expect(sheet.dataCfg.fields.valueInCols).toBeTruthy();
     });
 
+    it('should render row nodes if rows fields contain empty string value', () => {
+      const layoutDataCfg: S2DataConfig = {
+        fields: {
+          rows: ['row'],
+        },
+        data: [
+          {
+            row: 'a',
+          },
+          {
+            row: '',
+          },
+        ],
+      } as S2DataConfig;
+      const sheet = new PivotSheet(getContainer(), layoutDataCfg, s2Options);
+      sheet.render();
+
+      const { layoutResult } = sheet.facet;
+      expect(layoutResult.rowNodes).toHaveLength(2);
+    });
+
     it('should only render value nodes in column if rows & columns fields is empty', () => {
       const layoutDataCfg: S2DataConfig = customMerge(dataCfg, {
         fields: {
