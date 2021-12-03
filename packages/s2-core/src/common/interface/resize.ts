@@ -53,3 +53,10 @@ export interface ResizeInfo {
   height: number;
   size: number;
 }
+
+export interface ResizeActiveOptions {
+  enableRowCellVerticalResize?: boolean; // 行头垂直方向resize -> 针对行头叶子节点
+  enableCornerCellHorizontalResize?: boolean; // 角头水平方向resize -> 针对角头CornerNodeType为Series和Row
+  enableColCellHorizontalResize?: boolean; // 列头水平方向resize -> 针对列头叶子节点
+  enableColCellVerticalResize?: boolean; // 列头垂直方向resize -> 针对列头各层级节点
+}

@@ -195,7 +195,10 @@ export class RowCell extends HeaderCell {
   }
 
   protected drawResizeAreaInLeaf() {
-    if (!this.meta.isLeaf) {
+    if (
+      !this.meta.isLeaf ||
+      !this.getResizeActiveOptions().enableRowCellVerticalResize
+    ) {
       return;
     }
 

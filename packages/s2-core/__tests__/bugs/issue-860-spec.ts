@@ -15,7 +15,7 @@ const s2options: S2Options = {
   frozenRowHeader: false,
 };
 
-describe('Column Formatter Tests', () => {
+describe('Empty String Row Value Tests', () => {
   let s2: SpreadSheet;
 
   beforeEach(() => {

@@ -143,6 +143,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.getStyle('resizeArea');
   }
 
+  protected getResizeActiveOptions() {
+    return this.spreadsheet.options?.interaction?.resizeActive;
+  }
+
   protected getCellArea() {
     const { x, y, height, width } = this.meta;
     return { x, y, height, width };

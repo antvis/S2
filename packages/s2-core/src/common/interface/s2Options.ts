@@ -1,3 +1,4 @@
+import { ResizeActiveOptions } from './resize';
 import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
 import {
@@ -46,6 +47,8 @@ export interface InteractionOptions {
   readonly hiddenColumnFields?: string[];
   // the ratio to control scroll speed, default set to 1
   readonly scrollSpeedRatio?: ScrollRatio;
+  // enable resize area, default set to all enable
+  readonly resizeActive?: ResizeActiveOptions;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

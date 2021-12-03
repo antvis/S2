@@ -193,6 +193,10 @@ export class ColCell extends HeaderCell {
   }
 
   protected drawHorizontalResizeArea() {
+    if (!this.getResizeActiveOptions().enableColCellVerticalResize) {
+      return;
+    }
+
     const { cornerWidth, width: headerWidth } = this.headerConfig;
     const { y, height } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
@@ -232,7 +236,10 @@ export class ColCell extends HeaderCell {
   }
 
   protected drawVerticalResizeArea() {
-    if (!this.meta.isLeaf) {
+    if (
+      !this.meta.isLeaf ||
+      !this.getResizeActiveOptions().enableColCellHorizontalResize
+    ) {
       return;
     }
 
