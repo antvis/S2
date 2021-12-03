@@ -148,7 +148,6 @@ describe('Tooltip Tests', () => {
       content: element2,
     });
 
-    expect(tooltip.container.querySelector('.text2')).toBeTruthy();
     expect(tooltip.container.contains(element2)).toBeTruthy();
     expect(tooltip.container.contains(element1)).toBeFalsy();
     expect(tooltip.container.children).toHaveLength(1);
