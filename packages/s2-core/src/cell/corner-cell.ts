@@ -143,7 +143,7 @@ export class CornerCell extends HeaderCell {
    * 绘制折叠展开的icon
    */
   private drawTreeIcon() {
-    if (!this.showTreeIcon() || this.meta.cornerType !== CornerNodeType.ROW) {
+    if (!this.showTreeIcon() || this.meta.cornerType !== CornerNodeType.Row) {
       return;
     }
     const { hierarchyCollapse } = this.headerConfig;
@@ -233,7 +233,7 @@ export class CornerCell extends HeaderCell {
     const { cornerType, field } = this.meta;
     const { rows } = this.headerConfig;
     return (
-      cornerType === CornerNodeType.ROW &&
+      cornerType === CornerNodeType.Row &&
       (this.spreadsheet.isHierarchyTreeType() || last(rows) === field)
     );
   }
@@ -350,7 +350,7 @@ export class CornerCell extends HeaderCell {
     const { cornerType } = this.meta;
 
     const textAlign =
-      cornerType === CornerNodeType.ROW ? cornerTextStyle.textAlign : 'right';
+      cornerType === CornerNodeType.Row ? cornerTextStyle.textAlign : 'right';
 
     return {
       ...cornerTextStyle,
