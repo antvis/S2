@@ -1,4 +1,4 @@
-import { compact, isEmpty } from 'lodash';
+import { filter, isEmpty, isUndefined } from 'lodash';
 import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { layoutArrange } from '@/facet/layout/layout-hooks';
@@ -39,6 +39,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
   } = params;
 
   const index = fields.indexOf(currentField);
+
   const { dataSet, values, spreadsheet } = facetCfg;
   const fieldValues: FieldValue[] = [];
 
@@ -72,7 +73,7 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       if (currentField === EXTRA_FIELD) {
         fieldValues.push(...dataSet.fields?.values);
       } else {
-        fieldValues.push(fieldName || currentField);
+        fieldValues.push(fieldName);
       }
     }
     // hide measure in columns
@@ -86,10 +87,16 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       spreadsheet,
     });
   }
+
+  const omitUndefinedFieldValues = filter(
+    fieldValues,
+    (value) => !isUndefined(value),
+  );
+
   generateHeaderNodes({
     currentField,
     fields,
-    fieldValues: compact(fieldValues),
+    fieldValues: omitUndefinedFieldValues,
     facetCfg,
     hierarchy,
     parentNode,
