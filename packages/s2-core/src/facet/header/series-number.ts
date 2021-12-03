@@ -8,7 +8,7 @@ import { SpreadSheet } from '@/sheet-type/index';
 import { renderRect, renderLine } from '@/utils/g-renders';
 import { measureTextWidth } from '@/utils/text';
 import { getAdjustPosition } from '@/utils/text-absorption';
-import { BorderPosition, Padding, ViewMeta } from '@/common/interface';
+import { CellBorderPosition, Padding, ViewMeta } from '@/common/interface';
 
 export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   private backgroundShape: IShape;
@@ -127,7 +127,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
     const { position: borderPosition, style: borderStyle } =
       getBorderPositionAndStyle(
-        BorderPosition.LEFT,
+        CellBorderPosition.LEFT,
         {
           x: position.x,
           y: -position.y,
@@ -144,7 +144,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     const cellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
 
     const { position: horizontalPosition, style: horizontalStyle } =
-      getBorderPositionAndStyle(BorderPosition.BOTTOM, cellData, cellTheme);
+      getBorderPositionAndStyle(CellBorderPosition.BOTTOM, cellData, cellTheme);
 
     renderLine(group as Group, horizontalPosition, horizontalStyle);
   }

@@ -2,7 +2,7 @@ import { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
 import { AreaRange } from './../../common/interface/scroll';
 import {
-  BorderPosition,
+  CellBorderPosition,
   CellTheme,
   IconCfg,
   Padding,
@@ -208,7 +208,7 @@ export const getTextAndIconPositionWhenHorizontalScrolling = (
 };
 
 export const getBorderPositionAndStyle = (
-  position: BorderPosition,
+  position: CellBorderPosition,
   contentBox: SimpleBBox,
   style: CellTheme,
 ) => {
@@ -228,9 +228,12 @@ export const getBorderPositionAndStyle = (
   let borderStyle;
 
   // horizontal
-  if (position === BorderPosition.TOP || position === BorderPosition.BOTTOM) {
+  if (
+    position === CellBorderPosition.TOP ||
+    position === CellBorderPosition.BOTTOM
+  ) {
     let yPosition = y;
-    if (position === BorderPosition.TOP) {
+    if (position === CellBorderPosition.TOP) {
       // 完全绘制在 Cell 内，否则会导致 Border 粗细不一： https://github.com/antvis/S2/issues/426
       yPosition = y + verticalBorderWidth / 2;
     } else {
@@ -248,9 +251,12 @@ export const getBorderPositionAndStyle = (
   }
 
   // vertical
-  if (position === BorderPosition.LEFT || position === BorderPosition.RIGHT) {
+  if (
+    position === CellBorderPosition.LEFT ||
+    position === CellBorderPosition.RIGHT
+  ) {
     let xPosition = x;
-    if (position === BorderPosition.LEFT) {
+    if (position === CellBorderPosition.LEFT) {
       xPosition = x + horizontalBorderWidth / 2;
     } else {
       xPosition = x + width - horizontalBorderWidth / 2;

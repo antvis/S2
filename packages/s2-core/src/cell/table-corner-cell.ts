@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 import { getBorderPositionAndStyle } from 'src/utils/cell/cell';
-import { BorderPosition } from 'src/common/interface';
+import { CellBorderPosition } from 'src/common/interface';
 import { renderLine } from 'src/utils/g-renders';
 import { TableColCell } from './table-col-cell';
 
@@ -15,7 +15,7 @@ export class TableCornerCell extends TableColCell {
 
   protected drawLeftBorder() {
     const { position, style } = getBorderPositionAndStyle(
-      BorderPosition.LEFT,
+      CellBorderPosition.LEFT,
       this.getCellArea(),
       this.getStyle().cell,
     );

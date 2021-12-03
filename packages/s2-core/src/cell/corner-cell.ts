@@ -15,7 +15,11 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import { BorderPosition, FormatResult, TextTheme } from '@/common/interface';
+import {
+  CellBorderPosition,
+  FormatResult,
+  TextTheme,
+} from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
 import {
   getTextPosition,
@@ -191,7 +195,7 @@ export class CornerCell extends HeaderCell {
    * @private
    */
   protected drawBorderShape() {
-    [BorderPosition.TOP, BorderPosition.LEFT].forEach((type) => {
+    [CellBorderPosition.TOP, CellBorderPosition.LEFT].forEach((type) => {
       const { position, style } = getBorderPositionAndStyle(
         type,
         this.getCellArea(),

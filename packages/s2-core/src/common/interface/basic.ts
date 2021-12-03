@@ -22,7 +22,7 @@ export interface FormatResult {
 
 export type SortMethod = 'ASC' | 'DESC' | 'asc' | 'desc';
 
-export enum BorderPosition {
+export enum CellBorderPosition {
   TOP = 'TOP',
   BOTTOM = 'BOTTOM',
   LEFT = 'LEFT',

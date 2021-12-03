@@ -9,7 +9,11 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import { BorderPosition, FormatResult, TextTheme } from '@/common/interface';
+import {
+  CellBorderPosition,
+  FormatResult,
+  TextTheme,
+} from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { getTextPosition, getBorderPositionAndStyle } from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
@@ -177,7 +181,7 @@ export class RowCell extends HeaderCell {
     const finalX = this.spreadsheet.isHierarchyTreeType()
       ? x
       : x + contentIndent;
-    [BorderPosition.BOTTOM, BorderPosition.LEFT].forEach((type) => {
+    [CellBorderPosition.BOTTOM, CellBorderPosition.LEFT].forEach((type) => {
       const { position, style } = getBorderPositionAndStyle(
         type,
         {

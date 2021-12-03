@@ -13,7 +13,7 @@ import {
   ResizeAreaEffect,
 } from '@/common/constant';
 import {
-  BorderPosition,
+  CellBorderPosition,
   FormatResult,
   TextAlign,
   TextBaseline,
@@ -305,7 +305,7 @@ export class ColCell extends HeaderCell {
 
   protected drawHorizontalBorder() {
     const { position, style } = getBorderPositionAndStyle(
-      BorderPosition.TOP,
+      CellBorderPosition.TOP,
       this.meta as SimpleBBox,
       this.theme.colCell.cell,
     );
@@ -315,7 +315,7 @@ export class ColCell extends HeaderCell {
 
   protected drawVerticalBorder() {
     const { position, style } = getBorderPositionAndStyle(
-      BorderPosition.RIGHT,
+      CellBorderPosition.RIGHT,
       this.meta as SimpleBBox,
       this.theme.colCell.cell,
     );

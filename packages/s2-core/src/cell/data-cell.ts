@@ -20,7 +20,7 @@ import {
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
-  BorderPosition,
+  CellBorderPosition,
 } from '@/common/interface';
 import { getMaxTextWidth, getBorderPositionAndStyle } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
@@ -407,7 +407,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @private
    */
   protected drawBorderShape() {
-    [BorderPosition.BOTTOM, BorderPosition.RIGHT].forEach((type) => {
+    [CellBorderPosition.BOTTOM, CellBorderPosition.RIGHT].forEach((type) => {
       const { position, style } = getBorderPositionAndStyle(
         type,
         this.getCellArea(),
@@ -477,7 +477,7 @@ export class DataCell extends BaseCell<ViewMeta> {
 
   protected drawLeftBorder() {
     const { position, style } = getBorderPositionAndStyle(
-      BorderPosition.LEFT,
+      CellBorderPosition.LEFT,
       this.getCellArea(),
       this.getStyle().cell,
     );
