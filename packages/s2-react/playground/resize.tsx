@@ -11,10 +11,10 @@ const RESIZE_CONFIG: Array<{
   label: string;
   value: keyof ResizeActiveOptions;
 }> = [
-  { label: '角头热区', value: 'enableCornerCellHorizontalResize' },
-  { label: '行头热区', value: 'enableRowCellVerticalResize' },
-  { label: '列头水平热区', value: 'enableColCellHorizontalResize' },
-  { label: '列头垂直热区', value: 'enableColCellVerticalResize' },
+  { label: '角头热区', value: 'cornerCellHorizontal' },
+  { label: '行头热区', value: 'rowCellVertical' },
+  { label: '列头水平方向resize热区', value: 'colCellHorizontal' },
+  { label: '列头垂直方向resize热区', value: 'colCellVertical' },
 ];
 
 export const ResizeConfig: FC<{
@@ -34,7 +34,7 @@ export const ResizeConfig: FC<{
   };
 
   const onResizeActiveChange = (checkedAreas: string[]) => {
-    const resizeActive = RESIZE_CONFIG.reduce((cfg, item) => {
+    const resize = RESIZE_CONFIG.reduce((cfg, item) => {
       const type = item.value;
       cfg[type] = checkedAreas.includes(type);
       return cfg;
@@ -42,7 +42,7 @@ export const ResizeConfig: FC<{
 
     const updatedOptions = {
       interaction: {
-        resizeActive,
+        resize,
       },
     } as S2Options;
 
@@ -59,12 +59,7 @@ export const ResizeConfig: FC<{
       />
       <Checkbox.Group
         options={RESIZE_CONFIG}
-        defaultValue={[
-          'enableCornerCellHorizontalResize',
-          'enableRowCellVerticalResize',
-          'enableColCellHorizontalResize',
-          'enableColCellVerticalResize',
-        ]}
+        defaultValue={RESIZE_CONFIG.map((item) => item.value)}
         onChange={onResizeActiveChange}
       />
     </>

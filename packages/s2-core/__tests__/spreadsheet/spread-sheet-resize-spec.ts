@@ -35,6 +35,20 @@ describe('SpreadSheet Resize Active Tests', () => {
     expect(group.findById(KEY_GROUP_COL_RESIZE_AREA)).toBeDefined();
   });
 
+  test('should all resize area when set resize to false', () => {
+    const s2 = renderSheet({
+      interaction: {
+        resize: false,
+      },
+    } as S2Options);
+
+    const group = s2.facet.foregroundGroup;
+
+    expect(group.findById(KEY_GROUP_ROW_RESIZE_AREA)).toBeNull();
+    expect(group.findById(KEY_GROUP_CORNER_RESIZE_AREA)).toBeNull();
+    expect(group.findById(KEY_GROUP_COL_RESIZE_AREA)).toBeNull();
+  });
+
   test('should disable row cell resize area', () => {
     const s2 = renderSheet({
       interaction: {
