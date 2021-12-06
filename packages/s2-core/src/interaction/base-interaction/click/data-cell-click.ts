@@ -29,6 +29,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
         return;
       }
 
+      interaction.clearHoverTimer();
       this.emitLinkFieldClickEvent(event);
 
       const cell: DataCell = this.spreadsheet.getCell(event.target);

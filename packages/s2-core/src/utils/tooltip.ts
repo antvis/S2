@@ -536,12 +536,13 @@ export const getActiveCellsTooltipData = (
 export const getTooltipOptionsByCellType = (
   cellTooltipConfig: Tooltip = {},
   cellType: CellTypes,
-) => {
+): Tooltip => {
   const getOptionsByCell = (cellConfig: BaseTooltipConfig) => {
     return { ...cellTooltipConfig, ...cellConfig };
   };
 
-  const { col, row, cell } = cellTooltipConfig;
+  const { col, row, data, corner } = cellTooltipConfig;
+
   if (cellType === CellTypes.COL_CELL) {
     return getOptionsByCell(col);
   }
@@ -549,7 +550,10 @@ export const getTooltipOptionsByCellType = (
     return getOptionsByCell(row);
   }
   if (cellType === CellTypes.DATA_CELL) {
-    return getOptionsByCell(cell);
+    return getOptionsByCell(data);
+  }
+  if (cellType === CellTypes.CORNER_CELL) {
+    return getOptionsByCell(corner);
   }
 
   return { ...cellTooltipConfig };
@@ -558,7 +562,7 @@ export const getTooltipOptionsByCellType = (
 export const getTooltipOptions = (
   spreadsheet: SpreadSheet,
   event: CanvasEvent | MouseEvent | Event,
-) => {
+): Tooltip => {
   const cellType = spreadsheet.getCellType?.(event.target);
   return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType);
 };

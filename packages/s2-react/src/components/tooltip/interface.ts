@@ -1,8 +1,10 @@
 import { TooltipShowOptions } from '@antv/s2';
-export interface TooltipRenderProps
-  extends TooltipShowOptions<React.ReactNode> {
-  readonly content?: React.ReactNode;
+
+export interface TooltipRenderProps<T = React.ReactNode>
+  extends TooltipShowOptions<T> {
+  readonly content?: T;
 }
+
 export type TooltipInfosProps = {
   infos: string;
 };

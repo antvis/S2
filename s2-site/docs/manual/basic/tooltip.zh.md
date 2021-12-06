@@ -11,12 +11,28 @@ order: 7
 
 ## 使用
 
-在 `s2options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，还可通过 `row`、`col`、`cell` 分别配置行头、列头、数据单元格
+在 `s2options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格
+
+```ts
+const s2options = {
+  tooltip: {}
+};
+```
+
+还可以对不同类型的单元格单独配置:
+
+- `corner`: 角头
+- `row`: 行头
+- `col`: 列头
+- `data`: 数值
 
 ```ts
 const s2options = {
   tooltip: {
-    ...
+    corner: {},
+    row: {},
+    col: {},
+    data: {},
   }
 };
 ```
@@ -28,11 +44,11 @@ const s2options = {
 ```ts
 const s2options = {
   tooltip: {
-      showTooltip: true,
-      row: {
-        // 单独设置行头不显示
-        showTooltip: false,
-      }
+    showTooltip: true,
+    row: {
+      // 单独设置行头不显示
+      showTooltip: false,
+    }
   }
 };
 ```
@@ -61,8 +77,8 @@ const s2options = {
 
 通过配置 `autoAdjustBoundary` 字段开启：
 
-- `container` : tooltip 超出表格容器范围时，自动调整位置，始终在表格内显示
-- `body` : tooltip 超出浏览器窗口可视范围时，自动调整位置，始终在可视范围内显示
+- `container` : tooltip 超出**表格容器**范围时，自动调整位置，始终在表格内显示
+- `body` : tooltip 超出**浏览器窗口**可视范围时，自动调整位置，始终在可视范围内显示
 - `null` : 关闭自动调整
 
 ```ts
@@ -78,7 +94,7 @@ const s2options = {
 
 #### 自定义 Tooltip 内容
 
-对于 `@antv/s2` 类的使用方式: tooltip 内容 可以是任意 `dom` 节点或者 `字符串`
+对于 `@antv/s2` 类的使用方式：tooltip 内容 可以是任意 `dom` 节点或者 `字符串`
 
 ```ts
 const content = document.createElement('div')
@@ -91,7 +107,7 @@ const s2options = {
 };
 ```
 
-对于 `@antv/s2-react` 组件的使用方式: tooltip 内容 可以是任意的 `jsx` 元素
+对于 `@antv/s2-react` 组件的使用方式：tooltip 内容 可以是任意的 `jsx` 元素
 
 ```ts
 const content = (
@@ -107,11 +123,25 @@ const s2options = {
 };
 ```
 
+同时, `content` 还支持回调的方式, 可以根据[当前单元格信息](/zh/docs/api/basic-class/interaction)然后动态的更改内容
+
+```ts
+const TooltipContent = (props) => <div>...</div>
+
+const s2options = {
+  tooltip: {
+    content: (cell) => {
+      const meta = cell.getMeta()
+      console.log('当前单元格信息:', meta)
+      return <TooltipContent {...meta}/>
+    },
+  },
+};
+```
+
 ##### 1. 配置级
 
-配置 `tooltip.content` 自定义 `Tooltip` 内容，还可以給 `行 (row)`、`列 (col)`、`数据 (cell)` 三种类型的单元格分别配置自定义内容
-
-`tooltip.content` 优先级 小于 `row.content`, `col.content`, `cell.content`
+对不同的单元格进行配置时, `tooltip.content` 的优先级 小于 `row.content`, `col.content`, `data.content`, `corner.content`
 
 ```tsx
 const TooltipContent = (
@@ -126,21 +156,21 @@ const ColTooltipContent = (
   <div>colTooltip</div>
 );
 
-const CellTooltipContent = (
-  <div>cellTooltip</div>
+const DataTooltipContent = (
+  <div>dataTooltip</div>
 );
 
 const s2options = {
   tooltip: {
-    content: <TooltipContent/>,
+    content: TooltipContent,
     row: {
-      content: <RowTooltipContent/>,
+      content: RowTooltipContent,
     },
     col: {
-      content: <ColTooltipContent/>
+      content: ColTooltipContent
     }
-    cell: {
-      content: <CellTooltipContent/>
+    data: {
+      content: DataTooltipContent
     }
   },
 };
@@ -156,7 +186,7 @@ const TooltipContent = (
 );
 
 s2.showTooltip({
-  content: <TooltipContent/>
+  content: TooltipContent
 })
 
 // 或者 s2.tooltip.show({ content: TooltipContent })
@@ -172,7 +202,7 @@ s2.showTooltip({
 
 #### 自定义 Tooltip 类
 
-继承 `BaseTooltip` 基类，自定义 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法
+继承 `BaseTooltip` 基类，可重写 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法，结合 `this.spreadsheet` 实例，来实现满足你业务的 `tooltip`
 
 ```ts
 import { BaseTooltip, SpreadSheet } from '@antv/s2';
@@ -186,7 +216,9 @@ export class CustomTooltip extends BaseTooltip {
 
   clearContent() {}
 
-  show(showOptions) {}
+  show(showOptions) {
+    console.log(this.spreadsheet)
+  }
 
   hide() {}
 
@@ -194,7 +226,7 @@ export class CustomTooltip extends BaseTooltip {
 }
 ```
 
-让表格渲染时，使用你自定义的 `Tooltip`
+覆盖默认，使用你自定义的 `Tooltip`
 
 ```ts
 const s2Options = {
@@ -206,6 +238,63 @@ const s2Options = {
 ```
 
 <playground path='react-component/tooltip/demo/custom-tooltip.tsx' rid='container-2' height='300'></playground>
+
+#### 自定义 Tooltip 显示时机
+
+在 `tooltip` 开启前提下的默认情况：
+
+- 行列头**点击**时显示 `tooltip`, 单元格文字**被省略**时悬停显示 `tooltip`
+- 数值单元格悬停超过 **800ms** 显示 `tooltip`
+
+比如想自定义成鼠标悬停行头时显示 `tooltip`, 可通过自定义交互 [详情](/zh/docs/manual/advanced/interaction/custom), 监听行头单元格的 [交互事件](/zh/docs/manual/advanced/interaction/basic#%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6) `S2Event.ROW_CELL_HOVER`. [例子](/zh/examples/interaction/custom#row-col-hover-tooltip)
+
+```ts
+import { PivotSheet, BaseEvent, S2Event } from '@antv/s2';
+
+class RowHoverInteraction extends BaseEvent {
+  bindEvents() {
+    this.spreadsheet.on(S2Event.ROW_CELL_HOVER, (event) => {
+      this.spreadsheet.tooltip.show({
+        position: { x:0, y:0 },
+        content: "..."
+      })
+    })
+  }
+}
+
+const s2options = {
+  tooltip: {
+    showTooltip: true,
+  }
+  interaction: {
+    customInteractions: [
+      {
+        key: 'RowHoverInteraction',
+        interaction: RowHoverInteraction,
+      },
+    ],
+  }
+};
+
+```
+
+如果使用的是 `React` 组件, 也可以使用 [单元格回调函数](zh/docs/api/components/sheet-component) 来进行自定义. [例子](/zh/examples/react-component/tooltip#custom-hover-show-tooltip)
+
+```tsx
+const CustomColCellTooltip = () => <div>col cell tooltip</div>;
+
+const onRowCellHover = ({ event, viewMeta }) => {
+  viewMeta.spreadsheet.tooltip.show({
+    position: {
+      x: event.clientX,
+      y: event.clientY,
+    },
+    content: <CustomRowCellTooltip />,
+  });
+};
+
+<SheetComponent onRowCellHover={onRowCellHover} />
+```
 
 #### 重写展示方法
 
