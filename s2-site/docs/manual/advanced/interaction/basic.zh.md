@@ -155,12 +155,7 @@ const s2Options = {
 }
 ```
 
-<details>
-<summary>点击查看详情</summary>
-
-`markdown:docs/common/interaction.zh.md`
-
-</details>
+[查看具体 API 配置详情](/zh/docs/api/basic-class/interaction#interaction)
 
 ## 交互默认样式
 
