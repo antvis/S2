@@ -57,6 +57,22 @@ jobs:
       #     at_all: false
       #     enable_prerelease: false
 
+      - name: Release success ding talk official group notify
+        if: ${{ success() }}
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          body: |
+            {
+              "msgtype": "link",
+              "link": {
+                "title": "🎉 自动发布成功",
+                "text": "🔗 点击查看具体详情",
+                "messageUrl": "https://github.com/antvis/S2/releases",
+                "picUrl": "https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png"
+              }
+            }
+
       # 发布失败通知内部开发群
       - name: Release failed ding talk dev group notify
         if: ${{ failure() }}
