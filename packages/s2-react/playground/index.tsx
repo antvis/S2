@@ -10,13 +10,13 @@ import {
   Popover,
   Slider,
   Button,
+  Collapse,
 } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
   HeaderActionIconProps,
   S2Options,
-  ThemeName,
   Node,
   S2DataConfig,
   TargetCellInfo,
@@ -24,6 +24,7 @@ import {
   S2Event,
   TooltipAutoAdjustBoundary,
   customMerge,
+  ThemeCfg,
 } from '@antv/s2';
 import {
   pivotSheetDataCfg,
@@ -31,6 +32,7 @@ import {
   sliderOptions,
   tableSheetDataCfg,
 } from './config';
+import { ResizeConfig } from './resize';
 import { getSheetComponentOptions } from '@/utils';
 import { SheetComponent, SheetType } from '@/components';
 
@@ -69,10 +71,9 @@ function MainLayout() {
   const [isPivotSheet, setIsPivotSheet] = React.useState(true);
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
-  const [themeName, setThemeName] = React.useState<ThemeName>('default');
-  const [showCustomTooltip, setShowCustomTooltip] = React.useState(true);
+  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
+  const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState(false);
-  const [showResizeArea, setShowResizeArea] = React.useState(false);
   const [options, setOptions] =
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
   const [dataCfg, setDataCfg] =
@@ -132,7 +133,11 @@ function MainLayout() {
   };
 
   const onThemeChange = (e: RadioChangeEvent) => {
-    setThemeName(e.target.value);
+    setThemeCfg(
+      customMerge({}, themeCfg, {
+        name: e.target.value,
+      }),
+    );
   };
 
   const onSheetTypeChange = (checked: boolean) => {
@@ -321,12 +326,7 @@ function MainLayout() {
             defaultChecked={adaptive}
             onChange={setAdaptive}
           />
-          <Switch
-            checkedChildren="宽高调整热区开"
-            unCheckedChildren="宽高调整热区关"
-            defaultChecked={showResizeArea}
-            onChange={setShowResizeArea}
-          />
+
           <Tooltip title="布局类型">
             <Radio.Group
               onChange={onLayoutWidthTypeChange}
@@ -511,6 +511,11 @@ function MainLayout() {
           </Space>
         </div>
       </div>
+      <Collapse accordion>
+        <Collapse.Panel header="宽高调整热区配置" key="resize">
+          <ResizeConfig setOptions={setOptions} setThemeCfg={setThemeCfg} />
+        </Collapse.Panel>
+      </Collapse>
       {render && (
         <SheetComponent
           dataCfg={{ ...dataCfg } as S2DataConfig}
@@ -518,14 +523,7 @@ function MainLayout() {
           sheetType={sheetType}
           adaptive={adaptive}
           ref={s2Ref}
-          themeCfg={{
-            name: themeName,
-            theme: {
-              resizeArea: {
-                backgroundOpacity: showResizeArea ? 1 : 0,
-              },
-            },
-          }}
+          themeCfg={themeCfg}
           header={{
             title: 'Title',
             description: 'description',

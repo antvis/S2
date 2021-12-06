@@ -15,6 +15,7 @@ import {
 import {
   CellBorderPosition,
   FormatResult,
+  ResizeActiveOptions,
   TextAlign,
   TextBaseline,
   TextTheme,
@@ -193,6 +194,10 @@ export class ColCell extends HeaderCell {
   }
 
   protected drawHorizontalResizeArea() {
+    if (!this.shouldDrawResizeAreaByType('colCellVertical')) {
+      return;
+    }
+
     const { cornerWidth, width: headerWidth } = this.headerConfig;
     const { y, height } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
@@ -232,7 +237,10 @@ export class ColCell extends HeaderCell {
   }
 
   protected drawVerticalResizeArea() {
-    if (!this.meta.isLeaf) {
+    if (
+      !this.meta.isLeaf ||
+      !this.shouldDrawResizeAreaByType('colCellHorizontal')
+    ) {
       return;
     }
 
