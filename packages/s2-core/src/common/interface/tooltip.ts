@@ -152,7 +152,8 @@ export interface BaseTooltipConfig<T = TooltipContentType> {
 export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {
   readonly row?: BaseTooltipConfig<T>;
   readonly col?: BaseTooltipConfig<T>;
-  readonly cell?: BaseTooltipConfig<T>;
+  readonly corner?: BaseTooltipConfig<T>;
+  readonly data?: BaseTooltipConfig<T>;
 }
 
 export interface TooltipOperation {

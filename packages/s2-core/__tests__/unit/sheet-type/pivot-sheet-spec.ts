@@ -62,7 +62,8 @@ describe('PivotSheet Tests', () => {
       return {
         [CellTypes.ROW_CELL]: 'row',
         [CellTypes.COL_CELL]: 'col',
-        [CellTypes.DATA_CELL]: 'cell',
+        [CellTypes.DATA_CELL]: 'data',
+        [CellTypes.CORNER_CELL]: 'corner',
       }[cellType];
     };
 
@@ -182,7 +183,12 @@ describe('PivotSheet Tests', () => {
       expect(sheet.tooltip.container.innerHTML).toEqual(tooltipContent);
     });
 
-    test.each([CellTypes.ROW_CELL, CellTypes.COL_CELL, CellTypes.DATA_CELL])(
+    test.each([
+      CellTypes.ROW_CELL,
+      CellTypes.COL_CELL,
+      CellTypes.DATA_CELL,
+      CellTypes.CORNER_CELL,
+    ])(
       'should use %o tooltip content from tooltip config first for string content',
       (cellType) => {
         const tooltipContent = `${cellType} tooltip content`;

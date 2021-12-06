@@ -11,7 +11,7 @@ order: 7
 
 ## 使用
 
-在 `s2options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，还可通过 `row`、`col`、`cell` 分别配置行头、列头、数据单元格
+在 `s2options` 中配置 [tooltip](/zh/docs/api/general/S2Options#tooltip) 字段，默认作用于**所有**单元格
 
 ```ts
 const s2options = {
@@ -19,12 +19,20 @@ const s2options = {
 };
 ```
 
+还可以对不同类型的单元格单独配置:
+
+- `corner`: 角头
+- `row`: 行头
+- `col`: 列头
+- `data`: 数值
+
 ```ts
 const s2options = {
   tooltip: {
+    corner: {},
     row: {},
     col: {},
-    cell: {}
+    data: {},
   }
 };
 ```
@@ -150,8 +158,8 @@ const ColTooltipContent = (
   <div>colTooltip</div>
 );
 
-const CellTooltipContent = (
-  <div>cellTooltip</div>
+const DataTooltipContent = (
+  <div>dataTooltip</div>
 );
 
 const s2options = {
@@ -163,8 +171,8 @@ const s2options = {
     col: {
       content: ColTooltipContent
     }
-    cell: {
-      content: CellTooltipContent
+    data: {
+      content: DataTooltipContent
     }
   },
 };
