@@ -1,3 +1,21 @@
+# [@antv/s2-v1.2.0](https://github.com/antvis/S2/compare/@antv/s2-v1.1.2...@antv/s2-v1.2.0) (2021-12-06)
+
+
+### Bug Fixes
+
+* **cell:**  border width issue ([#859](https://github.com/antvis/S2/issues/859)) ([114e7fc](https://github.com/antvis/S2/commit/114e7fc9b7d37f2512dc17a812d280858b571f61))
+* **export:** export corner bug ([#856](https://github.com/antvis/S2/issues/856)) ([ccbc851](https://github.com/antvis/S2/commit/ccbc85142697d14f6d899899beef1a2fd2a9ec38))
+* fix series resize area ([#858](https://github.com/antvis/S2/issues/858)) ([76407db](https://github.com/antvis/S2/commit/76407db3bf0975f6ad815e0078c4db5a293b6db4))
+* only omit undefined row cell ([#861](https://github.com/antvis/S2/issues/861)) ([9386688](https://github.com/antvis/S2/commit/9386688c14607a260c446c9c18f2d11bf05eb5b6))
+* revert default palette change ([#863](https://github.com/antvis/S2/issues/863)) ([c49fa9f](https://github.com/antvis/S2/commit/c49fa9f86db47783337a06c005df33145418b8e3))
+* the order of multiple selection of cells is wrong ([#857](https://github.com/antvis/S2/issues/857)) ([63d1fcb](https://github.com/antvis/S2/commit/63d1fcb2a5653683e51a36afd280b81b4fc4ed55))
+
+
+### Features
+
+* **resize:** add resize active options, close [#855](https://github.com/antvis/S2/issues/855) ([#864](https://github.com/antvis/S2/issues/864)) ([1ce0951](https://github.com/antvis/S2/commit/1ce0951c20cc28495bf1c062d7c57128c3ef91fb))
+* **tooltip:** enhance tooltip ([#862](https://github.com/antvis/S2/issues/862)) ([9e411b5](https://github.com/antvis/S2/commit/9e411b555ef320b856f67a0fcf0da8971de1c529))
+
 # @antv/s2-v1.0.0 (2021-12-06)
 
 
