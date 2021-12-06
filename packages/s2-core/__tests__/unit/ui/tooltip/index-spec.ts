@@ -1,4 +1,4 @@
-import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { BaseTooltip } from '@/ui/tooltip';
 import { TOOLTIP_CONTAINER_CLS, TOOLTIP_POSITION_OFFSET } from '@/common';
@@ -127,30 +127,30 @@ describe('Tooltip Tests', () => {
     expect(tooltip.container.innerHTML).toEqual('text');
   });
 
-  test('should display custom dom element', () => {
+  test('should display custom dom element', async () => {
     const element1 = document.createElement('span');
     const element2 = document.createElement('span');
+
     const position = {
       x: 10,
       y: 10,
     };
-
-    element1.className = 'text1';
-    element2.className = 'text2';
 
     tooltip.show({
       position,
       content: element1,
     });
 
-    expect(tooltip.container.querySelector('.text1')).toBeTruthy();
+    expect(tooltip.container.contains(element1)).toBeTruthy();
 
     tooltip.show({
       position,
       content: element2,
     });
 
-    expect(tooltip.container.querySelector('.text2')).toBeTruthy();
+    await sleep(500);
+
+    expect(tooltip.container.contains(element2)).toBeTruthy();
     expect(tooltip.container.children).toHaveLength(1);
   });
 
@@ -193,6 +193,7 @@ describe('Tooltip Tests', () => {
     });
 
     expect(tooltip.container.querySelector('.text')).toBeTruthy();
+    expect(tooltip.container.contains(element)).toBeTruthy();
   });
 
   test('should replace tooltip content by call method', () => {

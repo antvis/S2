@@ -1,5 +1,6 @@
+import type { Event as CanvasEvent } from '@antv/g-canvas';
 import type { SpreadSheet } from '@/sheet-type';
-import type { SortParam } from '@/common/interface';
+import type { S2CellType, SortParam } from '@/common/interface';
 import type { BaseTooltip } from '@/ui/tooltip';
 
 export type TooltipDataItem = Record<string, any>;
@@ -80,7 +81,8 @@ export type TooltipShowOptions<T = TooltipContentType> = {
   data?: TooltipData;
   cellInfos?: TooltipDataItem[];
   options?: TooltipOptions;
-  content?: T;
+  content?: ((cell: S2CellType) => T) | T;
+  event?: CanvasEvent | MouseEvent;
 };
 
 export type TooltipData = {
@@ -140,7 +142,7 @@ export type TooltipContentType = Element | string;
 export interface BaseTooltipConfig<T = TooltipContentType> {
   readonly showTooltip?: boolean;
   // Custom content
-  readonly content?: T;
+  readonly content?: TooltipShowOptions<T>['content'];
   // Tooltip operation
   readonly operation?: TooltipOperation;
   readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
@@ -150,7 +152,8 @@ export interface BaseTooltipConfig<T = TooltipContentType> {
 export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {
   readonly row?: BaseTooltipConfig<T>;
   readonly col?: BaseTooltipConfig<T>;
-  readonly cell?: BaseTooltipConfig<T>;
+  readonly corner?: BaseTooltipConfig<T>;
+  readonly data?: BaseTooltipConfig<T>;
 }
 
 export interface TooltipOperation {

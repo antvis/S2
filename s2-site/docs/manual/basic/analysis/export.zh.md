@@ -34,3 +34,35 @@ const s2options = {
 点击复制或下载按钮，导出全量数据（全量复制）
 
 ![导出](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*d0CqRY6M3yMAAAAAAAAAAAAAARQnAQ)
+
+## 原始导出方法
+
+```tsx
+import { copyData, copyToClipboard, download} from '@antv/s2'
+
+const data = copyData(spreadsheet, '\t', false)
+
+copyToClipboard(data)
+download(data, 'filename')
+```
+
+### copyData
+
+| 参数       | 说明               | 类型            | 默认值 | 必选  |
+| :---------- | :---------- | :--------------- | :------ |  :---- |
+| spreadsheet   | s2实例   | `SpreadSheet`          |     |   ✓  |
+| split   | 分隔符 | `string`           |    |   ✓  |
+| isFormat   | 是否格式化 | `boolean`           |  false  |     |
+
+### copyToClipboard
+
+| 参数       | 说明               | 类型            | 默认值 | 必选  |
+| :---------- | :---------- | :--------------- | :------ |  :---- |
+| data   | 拷贝数据   | `string`          |     |   ✓  |
+
+### download
+
+| 参数       | 说明               | 类型            | 默认值 | 必选  |
+| :---------- | :---------- | :--------------- | :------ |  :---- |
+| data | 拷贝数据 | `string` |     |   ✓  |
+| filename | 文件名称 | `string` |     |   ✓  |

@@ -13,8 +13,8 @@ redirect_from:
 | data           | 原始数据        | [Data[]](#data) |    |   ✓   |
 | fields         | 维度指标配置项       | [Fields](#fields) |    |   ✓     |
 | totalData        | 总计数据       | [Data[]](#data) |    |      |
-| meta    | 全局化配置表数数据元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息。 | `Meta[]`  |  |       |
-| sortParams    | 全局化配置表数数据元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息。 | `SortParams`  |  |       |
+| meta    | 全局化配置表数数据元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息。 | [Meta[]](#meta)  |  |       |
+| sortParams    | 全局化配置表数数据元信息，以度量为单位进行配置。在 `meta` 上的配置将同时影响所有组件的文本信息。 | [SortParams](#sortparams)  |  |       |
 
 ### Data
 

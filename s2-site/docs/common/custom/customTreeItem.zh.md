@@ -5,7 +5,9 @@ order: 8
 
 ## CustomTreeItem
 
-功能描述：自定义树状结构的配置，基本兼容 [AntD Tree](https://ant.design/components/tree-cn/) 数据配置项；
+[可参考自定义目录树](/zh/docs/manual/advanced/custom/category-tree)
+
+功能描述：自定义树状结构的配置，兼容 [antd Tree](https://ant.design/components/tree-cn/) 数据配置项；
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | :-:  |

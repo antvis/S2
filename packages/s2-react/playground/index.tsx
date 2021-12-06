@@ -40,9 +40,14 @@ import './index.less';
 import 'antd/dist/antd.min.css';
 import '@antv/s2/esm/style.css';
 
-const CustomTooltip = () => <div>自定义 Tooltip</div>;
+const CustomTooltip = () => (
+  <div>
+    自定义 Tooltip <div>1</div>
+    <div>2</div>
+  </div>
+);
 
-const ColTooltip = <div>custom colTooltip</div>;
+const CustomColTooltip = () => <div>custom colTooltip</div>;
 
 const ActionIconTooltip = ({ name }) => <div>{name} Tooltip</div>;
 
@@ -147,12 +152,20 @@ function MainLayout() {
     }
   };
 
-  const onColCellClick = ({ event }: TargetCellInfo) => {
-    console.log('onColCellClick: ', event);
+  const logHandler = (name: string) => (cellInfo: TargetCellInfo) => {
+    if (options.debug) {
+      console.debug(name, cellInfo);
+    }
+  };
+
+  const onColCellClick = (cellInfo: TargetCellInfo) => {
+    console.log('cellInfo: ', cellInfo);
+    logHandler('onColCellClick')(cellInfo);
     if (!options.showDefaultHeaderActionIcon) {
+      const { event } = cellInfo;
       s2Ref.current.showTooltip({
         position: { x: event.clientX, y: event.clientY },
-        content: ColTooltip,
+        content: <CustomColTooltip />,
       });
     }
   };
@@ -271,12 +284,6 @@ function MainLayout() {
               updateOptions({ debug: checked });
             }}
           />
-          <Popover
-            title={'s2Options'}
-            content={<pre>{JSON.stringify(options, undefined, 2)}</pre>}
-          >
-            <Button size="small">查看当前Options</Button>
-          </Popover>
         </Space>
       </div>
       <div className="filter-section">
@@ -520,9 +527,12 @@ function MainLayout() {
           header={{
             title: 'Title',
             description: 'description',
-            extra: [<Button key="button">click me</Button>],
+            extra: <Button>click me</Button>,
           }}
           onColCellClick={onColCellClick}
+          onRowCellClick={logHandler('onRowCellClick')}
+          onCornerCellClick={logHandler('onCornerCellClick')}
+          onDataCellClick={logHandler('onDataCellClick')}
         />
       )}
     </div>

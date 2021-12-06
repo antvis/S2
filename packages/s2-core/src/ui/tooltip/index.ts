@@ -48,7 +48,7 @@ export class BaseTooltip {
 
     this.options = showOptions as unknown as TooltipShowOptions;
 
-    this.renderContent<T>(content);
+    this.renderContent<T>(content as T);
 
     const { x, y } = getAutoAdjustPosition({
       spreadsheet: this.spreadsheet,
