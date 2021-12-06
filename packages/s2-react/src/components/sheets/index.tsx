@@ -8,24 +8,31 @@ import { SpreadsheetProps } from './interface';
 const Sheet = React.forwardRef(
   (props: SpreadsheetProps, ref: React.MutableRefObject<SpreadSheet>) => {
     const { sheetType, ...otherProps } = props;
-    const sheetProps: SpreadsheetProps = {
-      ...otherProps,
-      getSpreadSheet: (instance) => {
-        if (ref) {
-          ref.current = instance;
-        }
-        otherProps.getSpreadSheet?.(instance);
-      },
-    };
 
-    switch (sheetType) {
-      case 'table':
-        return <TableSheet {...sheetProps} />;
-      case 'gridAnalysis':
-        return <GridAnalysisSheet {...sheetProps} />;
-      default:
-        return <BaseSheet {...sheetProps} />;
-    }
+    const sheetProps: SpreadsheetProps = React.useMemo(() => {
+      return {
+        ...otherProps,
+        getSpreadSheet: (instance) => {
+          if (ref) {
+            ref.current = instance;
+          }
+          otherProps.getSpreadSheet?.(instance);
+        },
+      };
+    }, [otherProps, ref]);
+
+    const CurrentSheet = React.useMemo(() => {
+      switch (sheetType) {
+        case 'table':
+          return <TableSheet {...sheetProps} />;
+        case 'gridAnalysis':
+          return <GridAnalysisSheet {...sheetProps} />;
+        default:
+          return <BaseSheet {...sheetProps} />;
+      }
+    }, [sheetType, sheetProps]);
+
+    return <React.StrictMode>{CurrentSheet}</React.StrictMode>;
   },
 );
 

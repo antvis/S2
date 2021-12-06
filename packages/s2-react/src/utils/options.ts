@@ -4,4 +4,5 @@ import { SHEET_COMPONENT_DEFAULT_OPTIONS } from '@/common/constant';
 
 export const getSheetComponentOptions = (
   ...options: Partial<S2Options<React.ReactNode>>[]
-) => customMerge(DEFAULT_OPTIONS, SHEET_COMPONENT_DEFAULT_OPTIONS, ...options);
+): S2Options =>
+  customMerge(DEFAULT_OPTIONS, SHEET_COMPONENT_DEFAULT_OPTIONS, ...options);

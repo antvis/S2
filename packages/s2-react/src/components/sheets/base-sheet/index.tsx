@@ -1,7 +1,7 @@
 import { Event as GEvent } from '@antv/g-canvas';
 import { Spin } from 'antd';
-import { forIn, isEmpty, isFunction } from 'lodash';
-import React, { memo, StrictMode, useEffect, useRef, useState } from 'react';
+import { forIn, isEmpty } from 'lodash';
+import React from 'react';
 import {
   S2Event,
   S2_PREFIX_CLS,
@@ -34,7 +34,7 @@ import {
 
 import './index.less';
 
-export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
+export const BaseSheet: React.FC<BaseSheetProps> = React.memo((props) => {
   const {
     spreadsheet,
     dataCfg,
@@ -45,69 +45,36 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     rowLevel,
     colLevel,
     isLoading,
-    onListSort,
-    onRowColLayout,
-    onRowCellScroll,
-    onColCellScroll,
-    onCellScroll,
-
-    onRowCellClick,
-    onRowCellHover,
-    onRowCellDoubleClick,
-
-    onColCellClick,
-    onColCellHover,
-    onColCellDoubleClick,
-
-    onDataCellClick,
-    onDataCellHover,
-    onDataCellDoubleClick,
-
-    onMergedCellClick,
-    onMergedCellHover,
-    onMergedCellsDoubleClick,
-
-    onCornerCellDoubleClick,
-    onCornerCellHover,
-    onCornerCellClick,
-
-    onDataCellMouseUp,
     getSpreadSheet,
     partDrillDown,
     showPagination,
   } = props;
-  const container = useRef<HTMLDivElement>();
-  const baseSpreadsheet = useRef<SpreadSheet>();
+  const container = React.useRef<HTMLDivElement>();
+  const s2Ref = React.useRef<SpreadSheet>();
 
-  const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
-  const [drillFields, setDrillFields] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [total, setTotal] = useState<number>(0);
-  const [current, setCurrent] = useState<number>(
+  const [drillFields, setDrillFields] = React.useState<string[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [total, setTotal] = React.useState<number>(0);
+  const [current, setCurrent] = React.useState<number>(
     options.pagination?.current || 1,
   );
-  const [pageSize, setPageSize] = useState<number>(
+  const [pageSize, setPageSize] = React.useState<number>(
     options.pagination?.pageSize || 10,
   );
 
-  const renderSpreadSheet = (): SpreadSheet => {
-    const params: S2Constructor = [
-      container.current,
-      dataCfg,
-      getSheetComponentOptions(options),
-    ];
+  const renderSpreadSheet = React.useCallback<() => SpreadSheet>(() => {
+    const s2Options = getSheetComponentOptions(options);
     if (spreadsheet) {
-      return spreadsheet(...params);
+      return spreadsheet(container.current, dataCfg, s2Options);
     }
-    return new PivotSheet(...params);
-  };
+    return new PivotSheet(container.current, dataCfg, s2Options);
+  }, [dataCfg, options, spreadsheet]);
 
-  const bindEvent = () => {
-    baseSpreadsheet.current.on(
+  const bindEvent = React.useCallback(() => {
+    s2Ref.current.on(
       S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
       (layoutResult: LayoutResult) => {
         if (rowLevel && colLevel) {
-          // TODO: 这里为啥返回 {level: '', id: '', label: ''} 这样的结构
           const rows: LayoutRow[] = layoutResult.rowsHierarchy
             .getNodesLessThanLevel(rowLevel)
             .map((value) => {
@@ -120,149 +87,147 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
               return [value.level, value.id, value.label];
             });
 
-          onRowColLayout?.(rows, cols);
+          props.onRowColLayout?.(rows, cols);
         }
       },
     );
 
-    const EVENT_LISTENER_CONFIG: Record<
-      string,
-      (...args: unknown[]) => unknown
-    > = {
-      [S2Event.DATA_CELL_MOUSE_UP]: (event: GEvent) => {
-        onDataCellMouseUp?.(getBaseCellData(event));
-      },
+    const EVENT_LISTENER_CONFIG: Record<string, (...args: unknown[]) => void> =
+      {
+        [S2Event.DATA_CELL_MOUSE_UP]: (event: GEvent) => {
+          props.onDataCellMouseUp?.(getBaseCellData(event));
+        },
 
-      [S2Event.MERGED_CELLS_CLICK]: (event: GEvent) => {
-        onMergedCellClick?.(getBaseCellData(event));
-      },
-      [S2Event.MERGED_CELLS_HOVER]: (event: GEvent) => {
-        onMergedCellHover?.(getBaseCellData(event));
-      },
-      [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (event: GEvent) => {
-        onMergedCellsDoubleClick?.(getBaseCellData(event));
-      },
+        [S2Event.MERGED_CELLS_CLICK]: (event: GEvent) => {
+          props.onMergedCellClick?.(getBaseCellData(event));
+        },
+        [S2Event.MERGED_CELLS_HOVER]: (event: GEvent) => {
+          props.onMergedCellHover?.(getBaseCellData(event));
+        },
+        [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (event: GEvent) => {
+          props.onMergedCellsDoubleClick?.(getBaseCellData(event));
+        },
 
-      [S2Event.ROW_CELL_CLICK]: (event: GEvent) => {
-        onRowCellClick?.(getBaseCellData(event));
-      },
-      [S2Event.ROW_CELL_HOVER]: (event: GEvent) => {
-        onRowCellHover?.(getBaseCellData(event));
-      },
-      [S2Event.ROW_CELL_DOUBLE_CLICK]: (event: GEvent) => {
-        onRowCellDoubleClick?.(getBaseCellData(event));
-      },
+        [S2Event.ROW_CELL_CLICK]: (event: GEvent) => {
+          props.onRowCellClick?.(getBaseCellData(event));
+        },
+        [S2Event.ROW_CELL_HOVER]: (event: GEvent) => {
+          props.onRowCellHover?.(getBaseCellData(event));
+        },
+        [S2Event.ROW_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+          props.onRowCellDoubleClick?.(getBaseCellData(event));
+        },
 
-      [S2Event.COL_CELL_CLICK]: (event: GEvent) => {
-        onColCellClick?.(getBaseCellData(event));
-      },
-      [S2Event.COL_CELL_HOVER]: (event: GEvent) => {
-        onColCellHover?.(getBaseCellData(event));
-      },
-      [S2Event.COL_CELL_DOUBLE_CLICK]: (event: GEvent) => {
-        onColCellDoubleClick?.(getBaseCellData(event));
-      },
+        [S2Event.COL_CELL_CLICK]: (event: GEvent) => {
+          props.onColCellClick?.(getBaseCellData(event));
+        },
+        [S2Event.COL_CELL_HOVER]: (event: GEvent) => {
+          props.onColCellHover?.(getBaseCellData(event));
+        },
+        [S2Event.COL_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+          props.onColCellDoubleClick?.(getBaseCellData(event));
+        },
 
-      [S2Event.DATA_CELL_DOUBLE_CLICK]: (event: GEvent) => {
-        onDataCellDoubleClick?.(getBaseCellData(event));
-      },
-      [S2Event.DATA_CELL_CLICK]: (event: GEvent) => {
-        onDataCellClick?.(getBaseCellData(event));
-      },
-      [S2Event.DATA_CELL_HOVER]: (event: GEvent) => {
-        onDataCellHover?.(getBaseCellData(event));
-      },
+        [S2Event.DATA_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+          props.onDataCellDoubleClick?.(getBaseCellData(event));
+        },
+        [S2Event.DATA_CELL_CLICK]: (event: GEvent) => {
+          props.onDataCellClick?.(getBaseCellData(event));
+        },
+        [S2Event.DATA_CELL_HOVER]: (event: GEvent) => {
+          props.onDataCellHover?.(getBaseCellData(event));
+        },
 
-      [S2Event.CORNER_CELL_DOUBLE_CLICK]: (event: GEvent) => {
-        onCornerCellDoubleClick?.(getBaseCellData(event));
-      },
-      [S2Event.CORNER_CELL_HOVER]: (event: GEvent) => {
-        onCornerCellHover?.(getBaseCellData(event));
-      },
-      [S2Event.CORNER_CELL_CLICK]: (event: GEvent) => {
-        onCornerCellClick?.(getBaseCellData(event));
-      },
+        [S2Event.CORNER_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+          props.onCornerCellDoubleClick?.(getBaseCellData(event));
+        },
+        [S2Event.CORNER_CELL_HOVER]: (event: GEvent) => {
+          props.onCornerCellHover?.(getBaseCellData(event));
+        },
+        [S2Event.CORNER_CELL_CLICK]: (event: GEvent) => {
+          props.onCornerCellClick?.(getBaseCellData(event));
+        },
 
-      [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
-        targetRow: TargetLayoutNode,
-      ) => {
-        onRowCellScroll?.(targetRow);
-      },
-      [S2Event.LAYOUT_COL_NODE_BORDER_REACHED]: (
-        targetCol: TargetLayoutNode,
-      ) => {
-        onColCellScroll?.(targetCol);
-      },
-      [S2Event.LAYOUT_CELL_SCROLL]: (value: CellScrollPosition) => {
-        onCellScroll?.(value);
-      },
-      [S2Event.RANGE_SORT]: (value: ListSortParams) => {
-        onListSort?.(value);
-      },
-    };
+        [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
+          targetRow: TargetLayoutNode,
+        ) => {
+          props.onRowCellScroll?.(targetRow);
+        },
+        [S2Event.LAYOUT_COL_NODE_BORDER_REACHED]: (
+          targetCol: TargetLayoutNode,
+        ) => {
+          props.onColCellScroll?.(targetCol);
+        },
+        [S2Event.LAYOUT_CELL_SCROLL]: (value: CellScrollPosition) => {
+          props.onCellScroll?.(value);
+        },
+        [S2Event.RANGE_SORT]: (value: ListSortParams) => {
+          props.onListSort?.(value);
+        },
+      };
 
     forIn(EVENT_LISTENER_CONFIG, (handler, event: keyof EmitterType) => {
-      baseSpreadsheet.current.on(event, handler);
+      s2Ref.current.on(event, handler);
     });
-  };
+  }, [colLevel, props, rowLevel]);
 
-  const onIconClick = (
-    sheetInstance: SpreadSheet,
-    cacheDrillFields?: string[],
-    disabledFields?: string[],
-    event?: GEvent,
-  ) => {
-    const content = (
-      <DrillDown
-        {...partDrillDown.drillConfig}
-        setDrillFields={setDrillFields}
-        drillFields={cacheDrillFields}
-        disabledFields={disabledFields}
-      />
-    );
+  const onIconClick = React.useCallback(
+    (
+      sheetInstance: SpreadSheet,
+      cacheDrillFields?: string[],
+      disabledFields?: string[],
+      event?: GEvent,
+    ) => {
+      const content = (
+        <DrillDown
+          {...partDrillDown.drillConfig}
+          setDrillFields={setDrillFields}
+          drillFields={cacheDrillFields}
+          disabledFields={disabledFields}
+        />
+      );
 
-    if (event) {
-      const { showTooltip } = getTooltipOptions(sheetInstance, event);
-      if (!showTooltip) {
-        return;
+      if (event) {
+        const { showTooltip } = getTooltipOptions(sheetInstance, event);
+        if (!showTooltip) {
+          return;
+        }
+        sheetInstance.showTooltip<React.ReactNode>({
+          position: {
+            x: event.clientX,
+            y: event.clientY,
+          },
+          content,
+        });
       }
-      sheetInstance.showTooltip<React.ReactNode>({
-        position: {
-          x: event.clientX,
-          y: event.clientY,
-        },
-        content,
-      });
-    }
-  };
+    },
+    [partDrillDown.drillConfig],
+  );
 
-  const setOptions = (
-    sheetInstance?: SpreadSheet,
-    sheetProps?: BaseSheetProps,
-  ) => {
-    const curSheet = sheetInstance || ownSpreadsheet;
-    const curProps = sheetProps || props;
-    let curOptions = options;
+  const setOptions = React.useCallback(
+    (sheetProps: BaseSheetProps = props) => {
+      const curProps = sheetProps;
 
-    // 处理下钻参数
-    if (partDrillDown) {
-      curOptions = handleDrillDownIcon(curProps, curSheet, onIconClick);
-    }
+      const currentOptions = partDrillDown
+        ? handleDrillDownIcon(curProps, s2Ref.current, onIconClick)
+        : options;
 
-    curSheet.setOptions(curOptions);
-  };
+      s2Ref.current.setOptions(currentOptions);
+    },
+    [onIconClick, options, partDrillDown, props],
+  );
 
   const setDataCfg = () => {
     // reset the options since it could be changed by layout
     setOptions();
-    ownSpreadsheet.setDataCfg(getSafetyDataConfig(dataCfg));
+    s2Ref.current?.setDataCfg(getSafetyDataConfig(dataCfg));
   };
 
   const update = (reset?: () => void, reloadData?: boolean) => {
-    if (!ownSpreadsheet) return;
-    if (isFunction(reset)) reset();
-    ownSpreadsheet.render(reloadData);
-    setTotal(ownSpreadsheet.facet.viewCellHeights.getTotalLength());
+    if (!s2Ref.current) return;
+    reset?.();
+    s2Ref.current.render(reloadData);
+    setTotal(s2Ref.current.facet.viewCellHeights.getTotalLength());
     setLoading(false);
   };
 
@@ -271,65 +236,69 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
    * @param rowId 不传表示全部清空
    */
   const clearDrillDownInfo = (rowId?: string) => {
-    if (!ownSpreadsheet) return;
     setLoading(true);
-    ownSpreadsheet.clearDrillDownData(rowId);
+    s2Ref.current.clearDrillDownData(rowId);
   };
 
-  const buildSpreadSheet = () => {
-    if (baseSpreadsheet.current) {
+  const buildSpreadSheet = React.useCallback(() => {
+    if (s2Ref.current) {
       return;
     }
-    baseSpreadsheet.current = renderSpreadSheet();
+    setLoading(true);
+    s2Ref.current = renderSpreadSheet();
+    s2Ref.current.setDataCfg(dataCfg);
+    setOptions(s2Ref.current);
+    s2Ref.current.setThemeCfg(themeCfg);
     bindEvent();
-    baseSpreadsheet.current.setDataCfg(getSafetyDataConfig(dataCfg));
-    setOptions(baseSpreadsheet.current, props);
-    baseSpreadsheet.current.setThemeCfg(themeCfg);
-    baseSpreadsheet.current.render();
+    s2Ref.current.render();
     setLoading(false);
-    setOwnSpreadsheet(baseSpreadsheet.current);
-    getSpreadSheet?.(baseSpreadsheet.current);
-  };
+    getSpreadSheet?.(s2Ref.current);
+  }, [
+    bindEvent,
+    dataCfg,
+    getSpreadSheet,
+    renderSpreadSheet,
+    setOptions,
+    themeCfg,
+  ]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     buildSpreadSheet();
     return () => {
-      baseSpreadsheet.current.destroy();
+      s2Ref.current.destroy();
     };
-  }, []);
+  }, [buildSpreadSheet]);
 
   // handle box size change and resize
   useResizeEffect({
-    spreadsheet: ownSpreadsheet,
+    spreadsheet: s2Ref.current,
     container: container.current,
     adaptive,
     options,
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     update(setDataCfg);
   }, [dataCfg]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     update(setOptions, false);
   }, [options]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     update(() => {
-      ownSpreadsheet.setThemeCfg(themeCfg);
+      s2Ref.current.setThemeCfg(themeCfg);
     });
-  }, [JSON.stringify(themeCfg)]);
+  }, [themeCfg]);
 
-  useEffect(() => {
-    if (!ownSpreadsheet) return;
+  React.useEffect(() => {
     buildSpreadSheet();
-  }, [spreadsheet]);
+  }, [buildSpreadSheet, spreadsheet]);
 
-  useEffect(() => {
-    if (!ownSpreadsheet) return;
-    ownSpreadsheet.hideTooltip();
+  React.useEffect(() => {
+    s2Ref.current.hideTooltip();
     if (isEmpty(drillFields)) {
-      clearDrillDownInfo(ownSpreadsheet.store.get('drillDownNode')?.id);
+      clearDrillDownInfo(s2Ref.current.store.get('drillDownNode')?.id);
     } else {
       setLoading(true);
       handleDrillDown({
@@ -337,29 +306,33 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
         drillFields: drillFields,
         fetchData: partDrillDown.fetchData,
         drillItemsNum: partDrillDown?.drillItemsNum,
-        spreadsheet: ownSpreadsheet,
+        spreadsheet: s2Ref.current,
       });
     }
     setOptions();
-  }, [drillFields]);
+  }, [dataCfg.fields.rows, drillFields, partDrillDown, setOptions]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isEmpty(partDrillDown?.clearDrillDown)) return;
     clearDrillDownInfo(partDrillDown?.clearDrillDown?.rowId);
   }, [partDrillDown?.clearDrillDown]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!partDrillDown?.drillItemsNum) return;
     clearDrillDownInfo();
   }, [partDrillDown?.drillItemsNum]);
 
-  useEffect(() => {
-    if (!partDrillDown || !ownSpreadsheet) return;
+  React.useEffect(() => {
+    if (!partDrillDown) {
+      return;
+    }
     update(setOptions);
-  }, [partDrillDown?.drillConfig?.dataSet]);
+  }, [partDrillDown, partDrillDown.drillConfig.dataSet, setOptions]);
 
-  useEffect(() => {
-    if (!ownSpreadsheet || isEmpty(options.pagination)) return;
+  React.useEffect(() => {
+    if (isEmpty(options.pagination)) {
+      return;
+    }
     const newOptions = customMerge(options, {
       pagination: {
         current,
@@ -369,17 +342,17 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     const newProps = customMerge(props, {
       options: newOptions,
     });
-    setOptions(ownSpreadsheet, newProps);
+    setOptions(newProps);
     update(null, false);
-  }, [pageSize, current]);
+  }, [pageSize, current, options, props, setOptions]);
 
   return (
-    <StrictMode>
+    <React.StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && (
           <Header
             {...header}
-            sheet={ownSpreadsheet}
+            sheet={s2Ref.current}
             width={options.width}
             dataCfg={getSafetyDataConfig(dataCfg)}
             options={getSheetComponentOptions(options)}
@@ -397,7 +370,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
           />
         )}
       </Spin>
-    </StrictMode>
+    </React.StrictMode>
   );
 });
 
