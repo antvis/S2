@@ -141,9 +141,7 @@ const s2options = {
 
 ##### 1. 配置级
 
-配置 `tooltip.content` 自定义 `Tooltip` 内容，还可以給 `行 (row)`、`列 (col)`、`数据 (cell)` 三种类型的单元格分别配置自定义内容
-
-`tooltip.content` 优先级 小于 `row.content`, `col.content`, `cell.content`
+对不同的单元格进行配置时, `tooltip.content` 的优先级 小于 `row.content`, `col.content`, `data.content`, `corner.content`
 
 ```tsx
 const TooltipContent = (
