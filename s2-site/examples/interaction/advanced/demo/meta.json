@@ -37,12 +37,12 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/e0z41b3e4/2021-11-16%25252020.11.53.gif"
     },
     {
-      "filename": "resize.ts",
+      "filename": "resize-active.ts",
       "title": {
         "zh": "自定义resize热区",
         "en": "Custom resize area"
       },
-      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/4vvt7uqA9/2021-12-06%25252010.36.39.gif"
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HEfCpSTRO/2021-12-06%25252011.39.15.gif"
     },
     {
       "filename": "merge-cell.ts",
