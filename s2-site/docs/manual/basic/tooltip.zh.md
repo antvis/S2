@@ -272,6 +272,24 @@ const s2options = {
 
 ```
 
+如果使用的是 `React` 组件, 也可以使用 [单元格回调函数](zh/docs/api/components/sheet-component) 来进行自定义. [例子](/zh/examples/react-component/tooltip#custom-hover-show-tooltip)
+
+```tsx
+const CustomColCellTooltip = () => <div>col cell tooltip</div>;
+
+const onRowCellHover = ({ event, viewMeta }) => {
+  viewMeta.spreadsheet.tooltip.show({
+    position: {
+      x: event.clientX,
+      y: event.clientY,
+    },
+    content: <CustomRowCellTooltip />,
+  });
+};
+
+<SheetComponent onRowCellHover={onRowCellHover} />
+```
+
 #### 重写展示方法
 
 除了上面说到的 `自定义 Tooltip 类` 自定义展示方法外，也可以修改 [表格实例]([`spreadsheet`](/zh/docs/api/basic-class/spreadsheet)) 上 `Tooltip` 的方法 `spreadsheet.showTooltip()` ([如何获取表格实例](zh/docs/manual/advanced/get-instance))

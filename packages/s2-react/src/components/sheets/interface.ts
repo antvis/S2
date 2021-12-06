@@ -86,12 +86,14 @@ export interface BaseSheetProps {
   onDataCellClick?: (data: TargetCellInfo) => void;
   onDataCellDoubleClick?: (data: TargetCellInfo) => void;
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
-  onMergedCellsClick?: (data: TargetCellInfo) => void;
+  onMergedCellClick?: (data: TargetCellInfo) => void;
   onMergedCellsDoubleClick?: (data: TargetCellInfo) => void;
   onContextMenu?: (data: TargetCellInfo) => void;
   onRowCellHover?: (data: TargetCellInfo) => void;
   onColCellHover?: (data: TargetCellInfo) => void;
   onDataCellHover?: (data: TargetCellInfo) => void;
-  onMergedCellsHover?: (data: TargetCellInfo) => void;
+  onMergedCellHover?: (data: TargetCellInfo) => void;
+  onCornerCellDoubleClick?: (data: TargetCellInfo) => void;
+  onCornerCellHover?: (data: TargetCellInfo) => void;
   getSpreadSheet?: (spreadsheet: SpreadSheet) => void;
 }

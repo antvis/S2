@@ -52,18 +52,25 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     onCellScroll,
 
     onRowCellClick,
-    onColCellClick,
-    onDataCellClick,
-    onMergedCellsClick,
-
     onRowCellHover,
-    onColCellHover,
-    onDataCellHover,
-    onMergedCellsHover,
-
     onRowCellDoubleClick,
+
+    onColCellClick,
+    onColCellHover,
     onColCellDoubleClick,
+
+    onDataCellClick,
+    onDataCellHover,
+    onDataCellDoubleClick,
+
+    onMergedCellClick,
+    onMergedCellHover,
     onMergedCellsDoubleClick,
+
+    onCornerCellDoubleClick,
+    onCornerCellHover,
+    onCornerCellClick,
+
     onDataCellMouseUp,
     getSpreadSheet,
     partDrillDown,
@@ -125,39 +132,57 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       [S2Event.DATA_CELL_MOUSE_UP]: (event: GEvent) => {
         onDataCellMouseUp?.(getBaseCellData(event));
       },
+
       [S2Event.MERGED_CELLS_CLICK]: (event: GEvent) => {
-        onMergedCellsClick?.(getBaseCellData(event));
-      },
-      [S2Event.ROW_CELL_CLICK]: (event: GEvent) => {
-        onRowCellClick?.(getBaseCellData(event));
-      },
-      [S2Event.COL_CELL_CLICK]: (event: GEvent) => {
-        onColCellClick?.(getBaseCellData(event));
-      },
-      [S2Event.DATA_CELL_CLICK]: (event: GEvent) => {
-        onDataCellClick?.(getBaseCellData(event));
+        onMergedCellClick?.(getBaseCellData(event));
       },
       [S2Event.MERGED_CELLS_HOVER]: (event: GEvent) => {
-        onMergedCellsHover?.(getBaseCellData(event));
-      },
-      [S2Event.ROW_CELL_HOVER]: (event: GEvent) => {
-        onRowCellHover?.(getBaseCellData(event));
-      },
-      [S2Event.COL_CELL_HOVER]: (event: GEvent) => {
-        onColCellHover?.(getBaseCellData(event));
-      },
-      [S2Event.DATA_CELL_HOVER]: (event: GEvent) => {
-        onDataCellHover?.(getBaseCellData(event));
+        onMergedCellHover?.(getBaseCellData(event));
       },
       [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (event: GEvent) => {
         onMergedCellsDoubleClick?.(getBaseCellData(event));
       },
+
+      [S2Event.ROW_CELL_CLICK]: (event: GEvent) => {
+        onRowCellClick?.(getBaseCellData(event));
+      },
+      [S2Event.ROW_CELL_HOVER]: (event: GEvent) => {
+        onRowCellHover?.(getBaseCellData(event));
+      },
       [S2Event.ROW_CELL_DOUBLE_CLICK]: (event: GEvent) => {
         onRowCellDoubleClick?.(getBaseCellData(event));
+      },
+
+      [S2Event.COL_CELL_CLICK]: (event: GEvent) => {
+        onColCellClick?.(getBaseCellData(event));
+      },
+      [S2Event.COL_CELL_HOVER]: (event: GEvent) => {
+        onColCellHover?.(getBaseCellData(event));
       },
       [S2Event.COL_CELL_DOUBLE_CLICK]: (event: GEvent) => {
         onColCellDoubleClick?.(getBaseCellData(event));
       },
+
+      [S2Event.DATA_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onDataCellDoubleClick?.(getBaseCellData(event));
+      },
+      [S2Event.DATA_CELL_CLICK]: (event: GEvent) => {
+        onDataCellClick?.(getBaseCellData(event));
+      },
+      [S2Event.DATA_CELL_HOVER]: (event: GEvent) => {
+        onDataCellHover?.(getBaseCellData(event));
+      },
+
+      [S2Event.CORNER_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onCornerCellDoubleClick?.(getBaseCellData(event));
+      },
+      [S2Event.CORNER_CELL_HOVER]: (event: GEvent) => {
+        onCornerCellHover?.(getBaseCellData(event));
+      },
+      [S2Event.CORNER_CELL_CLICK]: (event: GEvent) => {
+        onCornerCellClick?.(getBaseCellData(event));
+      },
+
       [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
         targetRow: TargetLayoutNode,
       ) => {

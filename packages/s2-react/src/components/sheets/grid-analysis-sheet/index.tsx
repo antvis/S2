@@ -32,7 +32,7 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
     isLoading,
     onRowCellClick,
     onColCellClick,
-    onMergedCellsClick,
+    onMergedCellClick,
     onRowCellDoubleClick,
     onColCellDoubleClick,
     onMergedCellsDoubleClick,
@@ -93,7 +93,7 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
       onColCellClick?.(getBaseCellData(event));
     });
     baseSpreadsheet.on(S2Event.MERGED_CELLS_CLICK, (event: Event) => {
-      onMergedCellsClick?.(getBaseCellData(event));
+      onMergedCellClick?.(getBaseCellData(event));
     });
     baseSpreadsheet.on(S2Event.ROW_CELL_DOUBLE_CLICK, (event: Event) => {
       onRowCellDoubleClick?.(getBaseCellData(event));

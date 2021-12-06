@@ -119,17 +119,17 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
           getActiveCellsTooltipData(this.spreadsheet),
         );
       }
-      this.resetToUnDraggedStage();
+      this.resetDrag();
     });
 
-    // 刷选过程中右键弹出系统菜单时,应该重置刷选, 防止系统菜单关闭后依然是刷选状态
+    // 刷选过程中右键弹出系统菜单时, 应该重置刷选, 防止系统菜单关闭后 mouse up 未相应依然是刷选状态
     this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, () => {
       this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
-      this.resetToUnDraggedStage();
+      this.resetDrag();
     });
   }
 
-  private resetToUnDraggedStage() {
+  private resetDrag() {
     this.hidePrepareSelectMaskShape();
     this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
   }

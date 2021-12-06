@@ -70,7 +70,7 @@ function MainLayout() {
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeName, setThemeName] = React.useState<ThemeName>('default');
-  const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
+  const [showCustomTooltip, setShowCustomTooltip] = React.useState(true);
   const [adaptive, setAdaptive] = React.useState(false);
   const [showResizeArea, setShowResizeArea] = React.useState(false);
   const [options, setOptions] =
@@ -154,6 +154,7 @@ function MainLayout() {
   };
 
   const onColCellClick = (cellInfo: TargetCellInfo) => {
+    console.log('cellInfo: ', cellInfo);
     logHandler('onColCellClick')(cellInfo);
     if (!options.showDefaultHeaderActionIcon) {
       const { event } = cellInfo;
@@ -528,7 +529,7 @@ function MainLayout() {
           header={{
             title: 'Title',
             description: 'description',
-            extra: [<Button key="button">click me</Button>],
+            extra: <Button>click me</Button>,
           }}
           onColCellClick={onColCellClick}
           onRowCellClick={logHandler('onRowCellClick')}

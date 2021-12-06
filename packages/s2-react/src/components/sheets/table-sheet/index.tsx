@@ -40,7 +40,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     onDataCellDoubleClick,
     onRowCellClick,
     onColCellClick,
-    onMergedCellsClick,
+    onMergedCellClick,
     onRowCellDoubleClick,
     onColCellDoubleClick,
     onMergedCellsDoubleClick,
@@ -84,7 +84,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
         onDataCellMouseUp?.(getBaseCellData(event));
       },
       [S2Event.MERGED_CELLS_CLICK]: (event: GEvent) => {
-        onMergedCellsClick?.(getBaseCellData(event));
+        onMergedCellClick?.(getBaseCellData(event));
       },
       [S2Event.ROW_CELL_CLICK]: (event: GEvent) => {
         onRowCellClick?.(getBaseCellData(event));
