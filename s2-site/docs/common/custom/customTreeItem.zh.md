@@ -13,6 +13,6 @@ order: 8
 | --- | --- | --- | --- | :-:  |
 | key | 当前节点位移的id | `string` |    | ✓ |
 | title | 当前节点展示名 | `string` |    | ✓ |
-| collapsed | 节点是否收起(只会在自身代表非叶子节点生效) | `boolean` |  `true`  |  |
+| collapsed | 节点是否收起(只会在自身代表非叶子节点生效) | `boolean` |  `false`  |  |
 | description | 节点的额外描述信息 | `string` |  ""  |  |
 | children | 子节点 | string | `CustomTreeItem`   |  |
