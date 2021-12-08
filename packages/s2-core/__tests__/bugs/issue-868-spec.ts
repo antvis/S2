@@ -18,6 +18,6 @@ describe('Measure Test', () => {
   s2.render();
   test('should get measure value when the data type of the row header is number', () => {
     const dataCell = s2.interaction.getPanelGroupAllDataCells()[0];
-    expect(dataCell.actualText).toEqual(2);
+    expect(dataCell.getActualText()).toEqual(2);
   });
 });
