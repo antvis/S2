@@ -63,6 +63,7 @@ export enum S2Event {
   LAYOUT_TABLE_COL_HIDDEN = 'layout:table-col-hidden',
   LAYOUT_AFTER_RENDER = 'layout:after-render',
   LAYOUT_BEFORE_RENDER = 'layout:before-render',
+  LAYOUT_DESTROY = 'layout:destroy',
 
   /** ================ Table Layout Resize ================  */
   LAYOUT_RESIZE = 'layout:resize',

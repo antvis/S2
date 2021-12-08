@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import type { SpreadSheet, S2Options } from '@antv/s2';
 
 export interface UseResizeEffectParams {
-  container: HTMLDivElement;
+  container: HTMLElement;
   spreadsheet: SpreadSheet;
   adaptive: boolean;
   options: S2Options;
@@ -11,7 +11,7 @@ export interface UseResizeEffectParams {
 
 const RENDER_DELAY = 200; // ms
 
-export const useResizeEffect = (params: UseResizeEffectParams) => {
+export const useResize = (params: UseResizeEffectParams) => {
   const {
     container,
     spreadsheet: s2,
@@ -39,7 +39,7 @@ export const useResizeEffect = (params: UseResizeEffectParams) => {
       s2?.changeSize(options.width, options.height);
       s2?.render(false);
     }
-  }, [options.width, options.height, adaptive]);
+  }, [options.width, options.height, adaptive, s2]);
 
   // rerender by container resize or window resize
   React.useLayoutEffect(() => {

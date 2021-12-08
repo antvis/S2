@@ -139,6 +139,7 @@ export interface EmitterType {
   ) => void;
   [S2Event.LAYOUT_BEFORE_RENDER]: () => void;
   [S2Event.LAYOUT_AFTER_RENDER]: () => void;
+  [S2Event.LAYOUT_DESTROY]: () => void;
 
   /** ================ Layout Resize ================  */
   [S2Event.LAYOUT_RESIZE]: ResizeHandler;

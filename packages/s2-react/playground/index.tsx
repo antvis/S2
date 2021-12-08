@@ -65,8 +65,7 @@ const defaultOptions: S2Options = customMerge(
 
 function MainLayout() {
   const [render, setRender] = React.useState(true);
-  const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
-  const [isPivotSheet, setIsPivotSheet] = React.useState(true);
+  const [sheetType, setSheetType] = React.useState<SheetType>('gridAnalysis');
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeName, setThemeName] = React.useState<ThemeName>('default');
@@ -78,20 +77,17 @@ function MainLayout() {
   const [dataCfg, setDataCfg] =
     React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
   const s2Ref = React.useRef<SpreadSheet>();
-  const [, forceRender] = React.useState({});
 
   //  ================== Callback ========================
   const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
-    setOptions(customMerge(options, newOptions));
-    forceRender({});
+    setOptions(customMerge({}, options, newOptions));
   };
 
   const updateDataCfg = (newDataCfg: Partial<S2DataConfig>) => {
     const currentDataCfg =
       sheetType === 'pivot' ? pivotSheetDataCfg : tableSheetDataCfg;
 
-    setDataCfg(customMerge(currentDataCfg, newDataCfg));
-    forceRender({});
+    setDataCfg(customMerge({}, currentDataCfg, newDataCfg));
   };
 
   const onAutoAdjustBoundary = (value: TooltipAutoAdjustBoundary) => {
@@ -135,16 +131,8 @@ function MainLayout() {
     setThemeName(e.target.value);
   };
 
-  const onSheetTypeChange = (checked: boolean) => {
-    setIsPivotSheet(checked);
-    // 透视表
-    if (checked) {
-      setSheetType('pivot');
-      setDataCfg(pivotSheetDataCfg);
-    } else {
-      setSheetType('table');
-      setDataCfg(tableSheetDataCfg);
-    }
+  const onSheetTypeChange = (type: SheetType) => {
+    setSheetType(type);
   };
 
   const logHandler = (name: string) => (cellInfo: TargetCellInfo) => {
@@ -154,7 +142,6 @@ function MainLayout() {
   };
 
   const onColCellClick = (cellInfo: TargetCellInfo) => {
-    console.log('cellInfo: ', cellInfo);
     logHandler('onColCellClick')(cellInfo);
     if (!options.showDefaultHeaderActionIcon) {
       const { event } = cellInfo;
@@ -173,9 +160,24 @@ function MainLayout() {
     });
   }, [sheetType]);
 
+  React.useEffect(() => {
+    switch (sheetType) {
+      case 'pivot':
+      case 'gridAnalysis':
+        setDataCfg(pivotSheetDataCfg);
+        break;
+      case 'table':
+        setDataCfg(tableSheetDataCfg);
+        break;
+      default:
+        break;
+    }
+  }, [sheetType]);
+
   //  ================== Config ========================
 
   const mergedOptions: Partial<S2Options<React.ReactNode>> = customMerge(
+    {},
     {
       pagination: showPagination && {
         pageSize: 10,
@@ -502,19 +504,25 @@ function MainLayout() {
               checked={showCustomTooltip}
               onChange={setShowCustomTooltip}
             />
-            <Switch
-              checkedChildren="透视表"
-              unCheckedChildren="明细表"
-              checked={isPivotSheet}
-              onChange={onSheetTypeChange}
-            />
+            <Tooltip title="表格类型">
+              <Select
+                defaultValue={sheetType}
+                onChange={onSheetTypeChange}
+                style={{ width: 120 }}
+                size="small"
+              >
+                <Select.Option value="pivot">透视表</Select.Option>
+                <Select.Option value="table">明细表</Select.Option>
+                <Select.Option value="gridAnalysis">网格分析表</Select.Option>
+              </Select>
+            </Tooltip>
           </Space>
         </div>
       </div>
       {render && (
         <SheetComponent
-          dataCfg={{ ...dataCfg } as S2DataConfig}
-          options={{ ...mergedOptions } as S2Options}
+          dataCfg={dataCfg as S2DataConfig}
+          options={mergedOptions as S2Options}
           sheetType={sheetType}
           adaptive={adaptive}
           ref={s2Ref}
@@ -531,6 +539,8 @@ function MainLayout() {
             description: 'description',
             extra: <Button>click me</Button>,
           }}
+          onLoad={() => console.log(1)}
+          onDestroy={() => console.log(2)}
           onColCellClick={onColCellClick}
           onRowCellClick={logHandler('onRowCellClick')}
           onCornerCellClick={logHandler('onCornerCellClick')}
