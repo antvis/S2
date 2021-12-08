@@ -49,7 +49,7 @@ export function transformDimensionsValues(
       sortedDimensionValues[dimension].push(cacheKey);
     }
 
-    return dimensionValue;
+    return `${dimensionValue}`;
   });
 }
 
