@@ -1,3 +1,17 @@
+# [@antv/s2-react-v1.2.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.1.1...@antv/s2-react-v1.2.0) (2021-12-06)
+
+
+### Bug Fixes
+
+* **cell:**  border width issue ([#859](https://github.com/antvis/S2/issues/859)) ([114e7fc](https://github.com/antvis/S2/commit/114e7fc9b7d37f2512dc17a812d280858b571f61))
+
+
+### Features
+
+* **components:** add switcher header config ([#851](https://github.com/antvis/S2/issues/851)) ([1ced482](https://github.com/antvis/S2/commit/1ced482715ce1d751bb0f40aac9c804d2409e890))
+* **resize:** add resize active options, close [#855](https://github.com/antvis/S2/issues/855) ([#864](https://github.com/antvis/S2/issues/864)) ([1ce0951](https://github.com/antvis/S2/commit/1ce0951c20cc28495bf1c062d7c57128c3ef91fb))
+* **tooltip:** enhance tooltip ([#862](https://github.com/antvis/S2/issues/862)) ([9e411b5](https://github.com/antvis/S2/commit/9e411b555ef320b856f67a0fcf0da8971de1c529))
+
 # [@antv/s2-react-v1.1.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.1.0...@antv/s2-react-v1.1.1) (2021-11-30)
 
 

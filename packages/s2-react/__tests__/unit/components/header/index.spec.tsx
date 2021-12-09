@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { getMockSheetInstance } from 'tests/util/helpers';
 import { Header } from '@/components/header';
 
@@ -28,7 +28,6 @@ describe('header component test', () => {
         switcherCfg={{ open: true }}
       />,
     );
-    screen.debug();
 
     // export 组件
     expect(container.querySelector('.antv-s2-export')).toBeDefined();

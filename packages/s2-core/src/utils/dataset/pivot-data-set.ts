@@ -1,4 +1,4 @@
-import { set, map, reduce, isUndefined, forEach, last } from 'lodash';
+import { set, map, reduce, isUndefined, forEach, last, isNil } from 'lodash';
 import { DataType } from '@/data-set/interface';
 import {
   DataPathParams,
@@ -49,7 +49,11 @@ export function transformDimensionsValues(
       sortedDimensionValues[dimension].push(cacheKey);
     }
 
-    return dimensionValue;
+    // 保证 undefined 之外的数据都为 string 类型
+    if (dimensionValue === undefined) {
+      return dimensionValue;
+    }
+    return `${dimensionValue}`;
   });
 }
 
