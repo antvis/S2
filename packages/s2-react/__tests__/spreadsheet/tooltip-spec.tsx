@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { SpreadSheet, S2Options, BaseTooltip } from '@antv/s2';
-import * as mockDataConfig from '../data/simple-data.json';
-import { getContainer, sleep } from '../util/helpers';
+import { SpreadSheet, S2Options, BaseTooltip, S2Event } from '@antv/s2';
+import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { Event as GEvent } from '@antv/g-canvas';
 import { SheetComponent } from '@/components/sheets';
 import { CustomTooltip } from '@/components/tooltip/custom-tooltip';
 
@@ -11,6 +12,9 @@ const s2Options: S2Options = {
   height: 200,
   hdAdapter: false,
   tooltip: {
+    operation: {
+      trend: true,
+    },
     showTooltip: true,
   },
 };
@@ -150,5 +154,27 @@ describe('SheetComponent Tooltip Tests', () => {
 
     errorSpy.mockRestore();
     warnSpy.mockRestore();
+  });
+
+  // https://github.com/antvis/S2/issues/873
+  test('should not throw error when hover trend icon', async () => {
+    await sleep(1000);
+
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const mockCell = createMockCellInfo('test', { rowIndex: 0, colIndex: 0 });
+
+    s2.getCell = () => mockCell.mockCell;
+
+    s2.emit(S2Event.DATA_CELL_CLICK, { stopPropagation: () => {} } as GEvent);
+
+    document
+      .querySelector('.ant-dropdown-trigger')
+      .dispatchEvent(new Event('click'));
+
+    expect(errorSpy).not.toThrowError(
+      'Uncaught Error: React.Children.only expected to receive a single React element child.',
+    );
+
+    errorSpy.mockRestore();
   });
 });
