@@ -15,7 +15,6 @@ import {
 import {
   CellBorderPosition,
   FormatResult,
-  ResizeActiveOptions,
   TextAlign,
   TextBaseline,
   TextTheme,
