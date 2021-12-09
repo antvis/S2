@@ -1,14 +1,11 @@
 import React, { memo, useEffect } from 'react';
+import { SpreadSheet } from '@antv/s2';
 import { BaseSheet } from '../base-sheet';
-import { BaseSheetComponentProps } from '@/components/sheets/interface';
-import { useSpreadSheet } from '@/hooks';
+import { SheetComponentsProps } from '@/components/sheets/interface';
 
-export const TableSheet: React.FC<BaseSheetComponentProps> = memo((props) => {
+export const TableSheet: React.FC<SheetComponentsProps> = memo((props) => {
   const { options } = props;
-  const { s2Ref, loading, containerRef, pagination } = useSpreadSheet(props, {
-    sheetType: 'table',
-  });
-
+  const s2Ref = React.useRef<SpreadSheet>();
   useEffect(() => {
     s2Ref.current?.setOptions({ interaction: { hiddenColumnFields: [] } });
     s2Ref.current?.interaction.hideColumns(
@@ -16,16 +13,7 @@ export const TableSheet: React.FC<BaseSheetComponentProps> = memo((props) => {
     );
   }, [options.interaction?.hiddenColumnFields, s2Ref]);
 
-  return (
-    <BaseSheet
-      {...props}
-      loading={loading}
-      containerRef={containerRef}
-      s2Ref={s2Ref}
-      pagination={pagination}
-      sheetType="table"
-    />
-  );
+  return <BaseSheet {...props} ref={s2Ref} />;
 });
 
 TableSheet.displayName = 'TableSheet';

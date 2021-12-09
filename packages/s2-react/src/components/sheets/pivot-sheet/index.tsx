@@ -4,19 +4,17 @@ import React from 'react';
 import { SpreadSheet, getTooltipOptions } from '@antv/s2';
 import { BaseSheet } from '../base-sheet';
 import { DrillDown } from '@/components/drill-down';
-import { BaseSheetComponentProps } from '@/components/sheets/interface';
-import { useSpreadSheet } from '@/hooks';
+import { SheetComponentsProps } from '@/components/sheets/interface';
+
 import { handleDrillDown, handleDrillDownIcon } from '@/utils';
 
-export const PivotSheet: React.FC<BaseSheetComponentProps> = React.memo(
+export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { dataCfg, partDrillDown } = props;
 
+    const s2Ref = React.useRef<SpreadSheet>();
+
     const [drillFields, setDrillFields] = React.useState<string[]>([]);
-    const { s2Ref, loading, setLoading, containerRef, pagination } =
-      useSpreadSheet(props, {
-        sheetType: 'pivot',
-      });
 
     const onDrillDownIconClick = React.useCallback(
       (
@@ -52,7 +50,7 @@ export const PivotSheet: React.FC<BaseSheetComponentProps> = React.memo(
     );
 
     const updateDrillDownOptions = React.useCallback(
-      (sheetProps: BaseSheetComponentProps = props) => {
+      (sheetProps: SheetComponentsProps = props) => {
         if (partDrillDown) {
           const drillDownOptions = handleDrillDownIcon(
             sheetProps,
@@ -64,15 +62,6 @@ export const PivotSheet: React.FC<BaseSheetComponentProps> = React.memo(
       },
       [onDrillDownIconClick, partDrillDown, props, s2Ref],
     );
-
-    // const update = React.useCallback(
-    //   (reset?: () => void, reloadData?: boolean) => {
-    //     reset?.();
-    //     s2Ref.current.render(reloadData);
-    // setTotal(s2Ref.current.facet.viewCellHeights.getTotalLength());
-    //   },
-    //   [],
-    // );
 
     /**
      * 清空下钻信息
@@ -90,7 +79,8 @@ export const PivotSheet: React.FC<BaseSheetComponentProps> = React.memo(
       if (isEmpty(drillFields)) {
         clearDrillDownInfo(s2Ref.current.store.get('drillDownNode')?.id);
       } else {
-        setLoading(true);
+        // TODO 下钻整体流程梳理
+        // setLoading(true);
         handleDrillDown({
           rows: dataCfg.fields.rows,
           drillFields: drillFields,
@@ -106,7 +96,6 @@ export const PivotSheet: React.FC<BaseSheetComponentProps> = React.memo(
       drillFields,
       partDrillDown,
       s2Ref,
-      setLoading,
       updateDrillDownOptions,
     ]);
 
@@ -129,16 +118,7 @@ export const PivotSheet: React.FC<BaseSheetComponentProps> = React.memo(
       s2Ref.current.render();
     }, [partDrillDown, s2Ref, updateDrillDownOptions]);
 
-    return (
-      <BaseSheet
-        {...props}
-        loading={loading}
-        containerRef={containerRef}
-        s2Ref={s2Ref}
-        pagination={pagination}
-        sheetType="pivot"
-      />
-    );
+    return <BaseSheet {...props} ref={s2Ref} />;
   },
 );
 

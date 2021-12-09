@@ -65,7 +65,7 @@ const defaultOptions: S2Options = customMerge(
 
 function MainLayout() {
   const [render, setRender] = React.useState(true);
-  const [sheetType, setSheetType] = React.useState<SheetType>('gridAnalysis');
+  const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeName, setThemeName] = React.useState<ThemeName>('default');

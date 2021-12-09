@@ -8,19 +8,19 @@ import { PivotSheet } from './pivot-sheet';
 
 const Sheet = React.forwardRef(
   (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
-    const { sheetType, ...otherProps } = props;
+    const { sheetType } = props;
 
     const sheetProps: SheetComponentsProps = React.useMemo(() => {
       return {
-        ...otherProps,
+        ...props,
         getSpreadSheet: (instance) => {
           if (ref) {
             ref.current = instance;
           }
-          otherProps.getSpreadSheet?.(instance);
+          props.getSpreadSheet?.(instance);
         },
       };
-    }, [otherProps, ref]);
+    }, [props, ref]);
 
     const CurrentSheet = React.useMemo(() => {
       switch (sheetType) {
@@ -28,10 +28,8 @@ const Sheet = React.forwardRef(
           return <TableSheet {...sheetProps} />;
         case 'gridAnalysis':
           return <GridAnalysisSheet {...sheetProps} />;
-        case 'pivot':
-          return <PivotSheet {...sheetProps} />;
         default:
-          return <BaseSheet {...sheetProps} />;
+          return <PivotSheet {...sheetProps} />;
       }
     }, [sheetType, sheetProps]);
 
