@@ -135,10 +135,6 @@ public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
 
 ## 性能对比
 
-### 表框架大小对比
-
-<img src="https://gw.alipayobjects.com/zos/antfincdn/D%264jyDzI6/s2-size.png" width="300" alt="preview" />
-
 ### 表框架渲染时间对比
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NWRaS6ifrJYAAAAAAAAAAAAAARQnAQ" width="900" alt="preview"  />
