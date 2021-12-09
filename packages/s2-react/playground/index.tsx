@@ -26,6 +26,10 @@ import {
   customMerge,
 } from '@antv/s2';
 import {
+  mockGridAnalysisOptions,
+  mockGridAnalysisDataCfg,
+} from '../__tests__/data/grid-analysis-data';
+import {
   pivotSheetDataCfg,
   s2Options as playgroundS2Options,
   sliderOptions,
@@ -162,14 +166,15 @@ function MainLayout() {
 
   React.useEffect(() => {
     switch (sheetType) {
-      case 'pivot':
       case 'gridAnalysis':
-        setDataCfg(pivotSheetDataCfg);
+        setDataCfg(mockGridAnalysisDataCfg);
+        updateOptions(mockGridAnalysisOptions);
         break;
       case 'table':
         setDataCfg(tableSheetDataCfg);
         break;
       default:
+        setDataCfg(pivotSheetDataCfg);
         break;
     }
   }, [sheetType]);
@@ -353,7 +358,7 @@ function MainLayout() {
               <Switch
                 checkedChildren="自动重置交互样式开"
                 unCheckedChildren="自动重置交互样式关"
-                defaultChecked={mergedOptions.interaction.autoResetSheetStyle}
+                defaultChecked={mergedOptions?.interaction?.autoResetSheetStyle}
                 onChange={(checked) => {
                   updateOptions({
                     interaction: {
