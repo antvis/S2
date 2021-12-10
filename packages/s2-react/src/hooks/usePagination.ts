@@ -10,7 +10,7 @@ export const usePagination = (
   s2: SpreadSheet,
   props: BaseSheetComponentProps,
 ) => {
-  const { options } = props;
+  const { options, dataCfg } = props;
   const [total, setTotal] = React.useState<number>(0);
   const [current, setCurrent] = React.useState<number>(
     options.pagination?.current || DEFAULT_PAGE_NUMBER,
@@ -20,7 +20,7 @@ export const usePagination = (
   );
 
   React.useEffect(() => {
-    if (isEmpty(options.pagination)) {
+    if (!s2 || isEmpty(options.pagination)) {
       return;
     }
     s2.setOptions({
@@ -36,6 +36,13 @@ export const usePagination = (
     setCurrent(options?.pagination?.current || DEFAULT_PAGE_NUMBER);
     setPageSize(options?.pagination?.pageSize || DEFAULT_PAGE_SIZE);
   }, [options.pagination]);
+
+  React.useEffect(() => {
+    if (!s2 || isEmpty(options.pagination)) {
+      return;
+    }
+    setTotal(s2.facet.viewCellHeights.getTotalLength());
+  }, [options.pagination, dataCfg, s2]);
 
   return {
     total,

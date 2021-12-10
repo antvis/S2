@@ -1,5 +1,5 @@
 import { Spin } from 'antd';
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   S2_PREFIX_CLS,
   S2Options,
@@ -21,7 +21,7 @@ export const BaseSheet = React.forwardRef(
       sheetType,
     });
 
-    useEffect(() => {
+    React.useEffect(() => {
       if (ref) {
         ref.current = s2Ref.current;
       }

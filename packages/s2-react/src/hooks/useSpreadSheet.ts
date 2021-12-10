@@ -11,7 +11,7 @@ import { getSheetComponentOptions } from '../utils';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
 import { usePagination } from './usePagination';
-import { useResize } from './useResizeEffect';
+import { useResize } from './useResize';
 
 export interface UseSpreadSheetConfig {
   s2Options?: S2Options;
@@ -27,7 +27,7 @@ export function useSpreadSheet(
 
   const { spreadsheet: customSpreadSheet, dataCfg, options, themeCfg } = props;
   const { loading, setLoading } = useLoading(s2Ref.current, props.loading);
-  const { registerEvent } = useEvents(s2Ref.current, props);
+  const { registerEvent } = useEvents(props);
   const pagination = usePagination(s2Ref.current, props);
 
   const renderSpreadSheet = React.useCallback(
@@ -49,7 +49,7 @@ export function useSpreadSheet(
     setLoading(true);
     s2Ref.current = renderSpreadSheet(containerRef.current);
     s2Ref.current.setThemeCfg(props.themeCfg);
-    registerEvent();
+    registerEvent(s2Ref.current);
     s2Ref.current.render();
     setLoading(false);
     props.getSpreadSheet?.(s2Ref.current);
@@ -83,10 +83,9 @@ export function useSpreadSheet(
   }, [themeCfg]);
 
   useResize({
-    spreadsheet: s2Ref.current,
+    s2: s2Ref.current,
     container: containerRef.current,
     adaptive: props.adaptive,
-    options: props.options,
   });
 
   return {

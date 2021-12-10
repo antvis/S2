@@ -11,6 +11,7 @@ import {
   Node,
   SpreadSheet,
   ThemeCfg,
+  ViewMeta,
 } from '@antv/s2';
 import React from 'react';
 import { DrillDownProps } from '@/components/drill-down';
@@ -100,6 +101,7 @@ export interface BaseSheetComponentProps {
   onDataCellClick?: (data: TargetCellInfo) => void;
   onDataCellDoubleClick?: (data: TargetCellInfo) => void;
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
+  onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onMergedCellClick?: (data: TargetCellInfo) => void;
   onMergedCellsDoubleClick?: (data: TargetCellInfo) => void;
   onContextMenu?: (data: TargetCellInfo) => void;

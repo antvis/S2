@@ -6,16 +6,20 @@ import {
   CellScrollPosition,
   ListSortParams,
   EmitterType,
+  ViewMeta,
 } from '@antv/s2';
 import React from 'react';
 import { Event as GEvent } from '@antv/g-canvas';
 import { forIn } from 'lodash';
 import { BaseSheetComponentProps } from '../components/sheets/interface';
 
-export function useEvents(s2: SpreadSheet, props: BaseSheetComponentProps) {
-  const registerEvent = React.useCallback(() => {
-    const EVENT_LISTENER_CONFIG: Record<string, (...args: unknown[]) => void> =
-      {
+export function useEvents(props: BaseSheetComponentProps) {
+  const registerEvent = React.useCallback(
+    (s2: SpreadSheet) => {
+      const EVENT_LISTENER_CONFIG: Record<
+        string,
+        (...args: unknown[]) => void
+      > = {
         // ============== merged cell ====================
         [S2Event.MERGED_CELLS_CLICK]: (event: GEvent) => {
           props.onMergedCellClick?.(getBaseCellData(event));
@@ -62,6 +66,9 @@ export function useEvents(s2: SpreadSheet, props: BaseSheetComponentProps) {
         [S2Event.DATA_CELL_MOUSE_UP]: (event: GEvent) => {
           props.onDataCellMouseUp?.(getBaseCellData(event));
         },
+        [S2Event.DATA_CELL_TREND_ICON_CLICK]: (meta: ViewMeta) => {
+          props.onDataCellTrendIconClick?.(meta);
+        },
 
         // ============== corner cell ====================
         [S2Event.CORNER_CELL_DOUBLE_CLICK]: (event: GEvent) => {
@@ -101,10 +108,12 @@ export function useEvents(s2: SpreadSheet, props: BaseSheetComponentProps) {
         },
       };
 
-    forIn(EVENT_LISTENER_CONFIG, (handler, event: keyof EmitterType) => {
-      s2?.on(event, handler);
-    });
-  }, [props, s2]);
+      forIn(EVENT_LISTENER_CONFIG, (handler, event: keyof EmitterType) => {
+        s2?.on(event, handler);
+      });
+    },
+    [props],
+  );
 
   return { registerEvent };
 }

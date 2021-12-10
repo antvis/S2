@@ -99,12 +99,14 @@ export const createMockCellInfo = (
     colIndex,
     rowIndex,
     type: undefined,
+    update: jest.fn(),
   };
   const mockCellMeta = omit(mockCellViewMeta, 'update');
   const mockCell = {
     ...mockCellViewMeta,
     getMeta: () => mockCellViewMeta,
     hideInteractionShape: jest.fn(),
+    getActualText: jest.fn(),
   } as any;
 
   return {
