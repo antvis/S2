@@ -11,6 +11,7 @@ import { getSheetComponentOptions } from '../utils';
 import { useEvents } from './useEvents';
 import { useLoading } from './useLoading';
 import { usePagination } from './usePagination';
+import { usePrevious } from './usePrevious';
 import { useResize } from './useResize';
 
 export interface UseSpreadSheetConfig {
@@ -29,6 +30,9 @@ export function useSpreadSheet(
   const { loading, setLoading } = useLoading(s2Ref.current, props.loading);
   const { registerEvent } = useEvents(props);
   const pagination = usePagination(s2Ref.current, props);
+  const prevDataCfg = usePrevious(dataCfg);
+  const prevOptions = usePrevious(options);
+  const prevThemeCfg = usePrevious(themeCfg);
 
   const renderSpreadSheet = React.useCallback(
     (container: HTMLDivElement) => {
@@ -64,23 +68,21 @@ export function useSpreadSheet(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // dataCfg changed
+  // dataCfg, options or theme changed
   React.useEffect(() => {
-    s2Ref.current?.setDataCfg(dataCfg);
-    s2Ref.current?.render();
-  }, [dataCfg]);
-
-  // options changed
-  React.useEffect(() => {
-    s2Ref.current?.setOptions(options);
-    s2Ref.current?.render(false);
-  }, [options]);
-
-  // theme changed
-  React.useEffect(() => {
-    s2Ref.current?.setThemeCfg(themeCfg);
-    s2Ref.current?.render(false);
-  }, [themeCfg]);
+    let reloadData = false;
+    if (!Object.is(prevDataCfg, dataCfg)) {
+      reloadData = true;
+      s2Ref.current?.setDataCfg(dataCfg);
+    }
+    if (!Object.is(prevOptions, options)) {
+      s2Ref.current?.setOptions(options);
+    }
+    if (!Object.is(prevThemeCfg, themeCfg)) {
+      s2Ref.current?.setThemeCfg(themeCfg);
+    }
+    s2Ref.current?.render(reloadData);
+  }, [dataCfg, options, prevDataCfg, prevOptions, prevThemeCfg, themeCfg]);
 
   useResize({
     s2: s2Ref.current,
