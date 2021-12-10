@@ -1,4 +1,12 @@
-import { filter, find, forEach, isEmpty, isEqual, map } from 'lodash';
+import {
+  differenceWith,
+  filter,
+  find,
+  forEach,
+  isEmpty,
+  isEqual,
+  map,
+} from 'lodash';
 import { MergedCell } from '@/cell/merged-cell';
 import { MergedCellInfo, TempMergedCell, ViewMeta } from '@/common/interface';
 import { S2CellType } from '@/common/interface/interaction';
@@ -170,11 +178,12 @@ export const getTempMergedCell = (
   );
   let viewMeta: ViewMeta | Node = cellsMeta;
   let mergedAllCells: S2CellType[] = cells;
-  // 当 MergedCell 只有部分在可视区域时，在此获取 MergedCell 不在可视区域内的 cells
-  if (
+  // some cells are invisible and some cells are visible
+  const isPartiallyVisible =
     invisibleCellInfo?.length > 0 &&
-    invisibleCellInfo.length < cellsInfos.length
-  ) {
+    invisibleCellInfo.length < cellsInfos.length;
+  // 当 MergedCell 只有部分在可视区域时，在此获取 MergedCell 不在可视区域内的 cells
+  if (isPartiallyVisible) {
     const { cells: invisibleCells, cellsMeta: invisibleMeta } =
       getInvisibleInfo(invisibleCellInfo, sheet);
     viewMeta = viewMeta || invisibleMeta;
@@ -187,6 +196,7 @@ export const getTempMergedCell = (
   return {
     cells: mergedAllCells,
     viewMeta: viewMeta as ViewMeta,
+    isPartiallyVisible,
   };
 };
 
@@ -198,9 +208,11 @@ export const getActiveCellsInfo = (sheet: SpreadSheet) => {
   const { interaction } = sheet;
   const cells = interaction.getActiveCells();
   const mergedCellsInfo: MergedCellInfo[] = [];
-  forEach(cells, (cell) => {
+  forEach(cells, (cell, index) => {
     const meta = cell.getMeta();
+    const showText = index === 0 ? { showText: true } : {};
     mergedCellsInfo.push({
+      ...showText,
       colIndex: meta?.colIndex,
       rowIndex: meta?.rowIndex,
     });
@@ -231,12 +243,12 @@ export const mergeCell = (
     sheet.panelScrollGroup.getChildren(),
     (child) => !(child instanceof MergedCell),
   ) as unknown as S2CellType[];
-  const { cells, viewMeta } = getTempMergedCell(
+  const { cells, viewMeta, isPartiallyVisible } = getTempMergedCell(
     allVisibleCells,
     sheet,
     mergeCellInfo,
   );
-
+  // console.log('mergeCellInfo', mergeCellInfo, 'viewMeta', viewMeta, 333);
   if (!isEmpty(cells)) {
     const mergedCellInfoList = sheet.options?.mergedCellsInfo || [];
     mergedCellInfoList.push(mergeCellInfo);
@@ -244,7 +256,9 @@ export const mergeCell = (
       mergedCellsInfo: mergedCellInfoList,
     });
     const meta = hideData ? undefined : viewMeta;
-    sheet.panelScrollGroup.add(new MergedCell(sheet, cells, meta));
+    sheet.panelScrollGroup.add(
+      new MergedCell(sheet, cells, meta, isPartiallyVisible),
+    );
   }
 };
 
@@ -314,23 +328,84 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   ) as unknown as S2CellType[];
   if (isEmpty(allCells)) return;
 
-  // allVisibleMergedCells 所有可视区域的 mergedCell
-  const allVisibleMergedCells: TempMergedCell[] = [];
+  // allVisibleTempMergedCells 所有可视区域的 mergedCell
+  const allVisibleTempMergedCells: TempMergedCell[] = [];
   mergedCellsInfo.forEach((cellsInfo: MergedCellInfo[]) => {
     const tempMergedCell = getTempMergedCell(allCells, sheet, cellsInfo);
     if (tempMergedCell.cells.length > 0) {
-      allVisibleMergedCells.push(tempMergedCell);
+      allVisibleTempMergedCells.push(tempMergedCell);
     }
   });
   const oldMergedCells = filter(
     sheet.panelScrollGroup.getChildren(),
     (child) => child instanceof MergedCell,
   ) as unknown as MergedCell[];
-  // 移除所有旧的合并单元格，重新添加可视区域的合并单元格。
-  oldMergedCells.forEach((oldMergedCell) => {
-    oldMergedCell.remove(true);
-  });
-  allVisibleMergedCells.forEach(({ cells, viewMeta }) => {
-    sheet.panelScrollGroup.add(new MergedCell(sheet, cells, viewMeta));
-  });
+  if (true) {
+    const oldTempMergedCells: TempMergedCell[] = map(
+      oldMergedCells,
+      (mergedCell) => {
+        return {
+          cells: mergedCell.cells,
+          viewMeta: mergedCell.getMeta(),
+          isPartiallyVisible: mergedCell.isPartiallyVisible,
+        };
+      },
+    );
+    // get partially visible mergedCells
+    const partiallyVisibleMergedCells = allVisibleTempMergedCells.filter(
+      (tempMergedCell) => tempMergedCell.isPartiallyVisible,
+    );
+    // compare oldTempMergedCells and allTempMergedCells, find remove MergedCells and add MergedCells
+    const removeTempMergedCells = differenceWith(
+      oldTempMergedCells,
+      allVisibleTempMergedCells,
+      (old, now) => {
+        return (
+          isEqual(old.viewMeta.id, now.viewMeta.id) && !old.isPartiallyVisible
+        );
+      },
+    );
+    // 现在需要解决的问题是：isPartiallyVisible 从 true 变成 false，需要重新渲染一次，重点在于这个变化的过程
+    const addTempMergedCells = differenceWith(
+      allVisibleTempMergedCells,
+      oldTempMergedCells,
+      (now, old) => {
+        return (
+          isEqual(old.viewMeta.id, now.viewMeta.id) && !old.isPartiallyVisible
+        );
+      },
+    );
+
+    // remove old MergedCells
+    forEach(
+      [...removeTempMergedCells, ...partiallyVisibleMergedCells],
+      (tempMergedCell) => {
+        const oldMergedCell = find(oldMergedCells, (mergedCell) => {
+          return isEqual(mergedCell.getMeta().id, tempMergedCell.viewMeta.id);
+        });
+        oldMergedCell?.remove(true);
+      },
+    );
+    // add new MergedCells
+    forEach(
+      [...addTempMergedCells, ...partiallyVisibleMergedCells],
+      ({ cells, viewMeta, isPartiallyVisible }) => {
+        sheet.panelScrollGroup.add(
+          new MergedCell(sheet, cells, viewMeta, isPartiallyVisible),
+        );
+      },
+    );
+  } else {
+    // 移除所有旧的合并单元格，重新添加可视区域的合并单元格。
+    oldMergedCells.forEach((oldMergedCell) => {
+      oldMergedCell.remove(true);
+    });
+    allVisibleTempMergedCells.forEach(
+      ({ cells, viewMeta, isPartiallyVisible }) => {
+        sheet.panelScrollGroup.add(
+          new MergedCell(sheet, cells, viewMeta, isPartiallyVisible),
+        );
+      },
+    );
+  }
 };

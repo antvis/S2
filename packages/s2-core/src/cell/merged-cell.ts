@@ -14,12 +14,16 @@ import { drawObjectText } from '@/utils/text';
 export class MergedCell extends DataCell {
   public cells: S2CellType[];
 
+  public isPartiallyVisible: boolean;
+
   public constructor(
     spreadsheet: SpreadSheet,
     cells: S2CellType[],
     meta?: ViewMeta,
+    isPartiallyVisible = true, // 合并的单元格只有部分可见。为了方便 Diff 操作，故新增此属性
   ) {
     super(meta, spreadsheet, cells);
+    this.isPartiallyVisible = isPartiallyVisible;
   }
 
   handleRestOptions(...[cells]: [S2CellType[]]) {
@@ -45,11 +49,12 @@ export class MergedCell extends DataCell {
    */
   protected drawBackgroundShape() {
     const allPoints = getPolygonPoints(this.cells);
+    // g-base 无法渲染不再可视区域内的图形
     const cellTheme = this.theme.dataCell.cell;
     this.backgroundShape = renderPolygon(this, {
       points: allPoints,
-      stroke: cellTheme.horizontalBorderColor,
-      fill: cellTheme.backgroundColor,
+      stroke: cellTheme.horizontalBorderColor, // cellTheme.horizontalBorderColor, 'blue'
+      fill: cellTheme.backgroundColor, // cellTheme.backgroundColor 'red'
       lineHeight: cellTheme.horizontalBorderWidth,
     });
   }
