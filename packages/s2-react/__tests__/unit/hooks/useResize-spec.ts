@@ -1,9 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { PivotSheet, S2Event, S2Options, SpreadSheet } from '@antv/s2';
+import { PivotSheet, S2Options, SpreadSheet } from '@antv/s2';
 import { getContainer } from 'tests/util/helpers';
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { Event as GEvent } from '@antv/g-canvas';
-import { BaseSheetComponentProps } from '../../../src/components';
 import { useResize } from '@/hooks';
 
 const s2Options: S2Options = {
@@ -14,27 +12,24 @@ const s2Options: S2Options = {
 
 describe('useResize tests', () => {
   let s2: SpreadSheet;
+  let container: HTMLDivElement;
 
   beforeEach(() => {
-    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
-  });
-
-  test('should be defined', () => {
-    const { result } = renderHook(() =>
-      useResize({
-        container: null,
-        s2,
-        adaptive: false,
-      }),
-    );
-
-    expect(result.current).toBeDefined();
+    container = getContainer();
+    s2 = new PivotSheet(container, mockDataConfig, s2Options);
+    s2.render();
+    jest.spyOn(s2, 'buildFacet' as any).mockImplementation(() => {});
   });
 
   test('should rerender when option width or height changed and adaptive disable', () => {
+    const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+    const changeSizeSpy = jest
+      .spyOn(s2, 'changeSize')
+      .mockImplementation(() => {});
+
     const { rerender } = renderHook(() =>
       useResize({
-        container: null,
+        container,
         s2,
         adaptive: false,
       }),
@@ -53,7 +48,40 @@ describe('useResize tests', () => {
     expect(s2.options.width).toEqual(300);
     expect(s2.options.height).toEqual(400);
 
-    expect(canvas.style.width).toEqual(`1000px`);
-    expect(canvas.style.height).toEqual(`500px`);
+    expect(canvas.style.width).toEqual(`200px`);
+    expect(canvas.style.height).toEqual(`200px`);
+
+    expect(renderSpy).toHaveBeenCalled();
+    expect(changeSizeSpy).toHaveBeenCalled();
+
+    renderSpy.mockRestore();
+    changeSizeSpy.mockRestore();
+  });
+
+  test('should cannot change table size when width or height updated and enable adaptive', () => {
+    const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
+    const changeSizeSpy = jest
+      .spyOn(s2, 'changeSize')
+      .mockImplementation(() => {});
+
+    const { rerender } = renderHook(() =>
+      useResize({
+        container,
+        s2,
+        adaptive: true,
+      }),
+    );
+
+    act(() => {
+      s2.setOptions({ width: 300, height: 400 });
+    });
+
+    rerender();
+
+    expect(renderSpy).not.toHaveBeenCalled();
+    expect(changeSizeSpy).not.toHaveBeenCalled();
+
+    renderSpy.mockRestore();
+    changeSizeSpy.mockRestore();
   });
 });
