@@ -88,12 +88,9 @@ function MainLayout() {
   const s2Ref = React.useRef<SpreadSheet>();
 
   //  ================== Callback ========================
-  const updateOptions = React.useCallback(
-    (newOptions: Partial<S2Options<React.ReactNode>>) => {
-      setOptions(customMerge({}, options, newOptions));
-    },
-    [options],
-  );
+  const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
+    setOptions(customMerge({}, options, newOptions));
+  };
 
   const updateDataCfg = (newDataCfg: Partial<S2DataConfig>) => {
     const currentDataCfg =
@@ -192,7 +189,8 @@ function MainLayout() {
         updateOptions(defaultOptions);
         break;
     }
-  }, [sheetType, updateOptions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sheetType]);
 
   //  ================== Config ========================
 
