@@ -13,11 +13,11 @@ interface Props {
   containerId?: string;
 }
 
-const s2Options: S2Options = Object.freeze({
+const s2Options: S2Options = {
   width: 200,
   height: 200,
   hdAdapter: false,
-});
+};
 
 let s2: SpreadSheet;
 
@@ -39,11 +39,7 @@ function MainLayout({
         adaptive={adaptive}
         sheetType="pivot"
         dataCfg={mockDataConfig}
-        options={{
-          width: 200,
-          height: 200,
-          hdAdapter: false,
-        }}
+        options={s2Options}
         themeCfg={{ name: 'default' }}
         getSpreadSheet={(instance) => {
           s2 = instance;
@@ -75,7 +71,7 @@ describe('SheetComponent adaptive Tests', () => {
   test('should use container width when container width less than options width and table first rendered', async () => {
     act(() => {
       ReactDOM.render(
-        <MainLayout adaptive containerWidth={s2Options.width - 100} />,
+        <MainLayout adaptive={true} containerWidth={s2Options.width - 100} />,
         getContainer(),
       );
     });

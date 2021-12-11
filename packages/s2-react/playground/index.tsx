@@ -88,9 +88,12 @@ function MainLayout() {
   const s2Ref = React.useRef<SpreadSheet>();
 
   //  ================== Callback ========================
-  const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
-    setOptions(customMerge({}, options, newOptions));
-  };
+  const updateOptions = React.useCallback(
+    (newOptions: Partial<S2Options<React.ReactNode>>) => {
+      setOptions(customMerge({}, options, newOptions));
+    },
+    [options],
+  );
 
   const updateDataCfg = (newDataCfg: Partial<S2DataConfig>) => {
     const currentDataCfg =
@@ -189,7 +192,7 @@ function MainLayout() {
         updateOptions(defaultOptions);
         break;
     }
-  }, [sheetType]);
+  }, [sheetType, updateOptions]);
 
   //  ================== Config ========================
 
@@ -281,7 +284,7 @@ function MainLayout() {
 
   return (
     <div className="playground">
-      <Collapse activeKey="filter">
+      <Collapse defaultActiveKey="filter">
         <Collapse.Panel header="筛选器" key="filter">
           <Space style={{ marginBottom: 20 }}>
             <Switch

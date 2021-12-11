@@ -1,7 +1,6 @@
 import React from 'react';
 import { debounce } from 'lodash';
-import type { S2Options, SpreadSheet } from '@antv/s2';
-import { usePrevious } from './usePrevious';
+import type { SpreadSheet } from '@antv/s2';
 
 export interface UseResizeEffectParams {
   container: HTMLElement;
@@ -14,7 +13,6 @@ const RENDER_DELAY = 200; // ms
 export const useResize = (params: UseResizeEffectParams) => {
   const { container, s2, adaptive } = params;
 
-  const prevOptions = usePrevious<S2Options>(s2?.options);
   // 第一次自适应时不需要 debounce, 防止抖动
   const isFirstRender = React.useRef<boolean>(true);
 
@@ -28,18 +26,11 @@ export const useResize = (params: UseResizeEffectParams) => {
 
   // rerender by option
   React.useEffect(() => {
-    if (!adaptive && s2 && prevOptions) {
-      const isChanged =
-        prevOptions.width !== s2.options.width ||
-        prevOptions.height !== s2.options.height;
-
-      if (!isChanged) {
-        return;
-      }
+    if (!adaptive && s2) {
       s2.changeSize(s2.options.width, s2.options.height);
       s2.render(false);
     }
-  }, [s2?.options.width, s2?.options.height, adaptive, s2, prevOptions]);
+  }, [s2?.options.width, s2?.options.height, adaptive, s2]);
 
   // rerender by container resize or window resize
   React.useLayoutEffect(() => {
@@ -66,5 +57,5 @@ export const useResize = (params: UseResizeEffectParams) => {
       resizeObserver.unobserve(container);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [adaptive, container, render]);
+  }, [adaptive, container]);
 };
