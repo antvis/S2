@@ -20,29 +20,29 @@ order: 2
 
 ```ts
 const s2options = {
-    width: 660,
-    height: 600,
-    hierarchyType: 'customTree', // 目录树
+  width: 660,
+  height: 600,
+  hierarchyType: 'customTree', // 目录树
 };
 
 const s2DataConfig = {
-    fields: {
-        rows: [], // 空
-        columns: ['type', 'sub_type'],
-        values: [
-            'measure-a',
-        ],
-        customTreeItems, // 行自定义树结构
-        valueInCols: false,
-    },
-    data,
+  fields: {
+    rows: [], // 空
+    columns: ['type', 'sub_type'],
+    values: [
+      'measure-a',
+    ],
+    customTreeItems, // 行自定义树结构
+    valueInCols: false,
+  },
+  data,
 };
 
 ```
 
 ## 结构描述
 
-`dataCfg.fields.customTreeItems` 结构完全兼容 [AntD Tree](https://ant.design/components/tree-cn/) 树形的配置方式，并且在其基础上增加额外的功能元信息。
+`dataCfg.fields.customTreeItems` 结构完全兼容 [antd Tree](https://ant.design/components/tree-cn/) 树形的配置方式，并且在其基础上增加额外的功能元信息。
 
 ```ts
 export interface CustomTreeItem {
@@ -59,4 +59,4 @@ export interface CustomTreeItem {
 }
 ```
 
-此结构也可以通过内部的一个方法 `transformCustomTreeItems` 进行转换，参考[例子](/zh/examples/custom/custom-tree#custom-tree)
+此结构也可以通过内部的一个方法 `transformCustomTreeItems` 进行转换，参考 [例子](/zh/examples/custom/custom-tree#custom-tree)

@@ -58,6 +58,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     },
     autoResetSheetStyle: true,
     rowHeightResizeAffectCellType: ResizeAffectCellType.ALL,
+    resize: true,
   },
   showSeriesNumber: false,
   scrollReachNodeField: {},

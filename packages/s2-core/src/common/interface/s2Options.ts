@@ -1,3 +1,4 @@
+import { ResizeActiveOptions } from './resize';
 import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
 import {
@@ -49,6 +50,8 @@ export interface InteractionOptions {
   readonly scrollSpeedRatio?: ScrollRatio;
   // when resizing row's height, affect current row or all row
   readonly rowHeightResizeAffectCellType?: ResizeAffectCellType;
+  // enable resize area, default set to all enable
+  readonly resize?: boolean | ResizeActiveOptions;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

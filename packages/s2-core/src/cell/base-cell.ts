@@ -1,5 +1,5 @@
 import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import { each, get, includes, isNumber, keys, pickBy } from 'lodash';
+import { each, get, includes, isBoolean, isNumber, keys, pickBy } from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
@@ -9,6 +9,7 @@ import {
 import {
   CellThemes,
   FormatResult,
+  ResizeActiveOptions,
   ResizeArea,
   S2CellType,
   S2Theme,
@@ -141,6 +142,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected getResizeAreaStyle(): ResizeArea {
     return this.getStyle('resizeArea');
+  }
+
+  protected shouldDrawResizeAreaByType(type: keyof ResizeActiveOptions) {
+    const resize = this.spreadsheet.options?.interaction?.resize;
+    if (isBoolean(resize)) {
+      return resize;
+    }
+
+    return resize[type];
   }
 
   protected getCellArea() {

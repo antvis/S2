@@ -5,7 +5,7 @@ order: 0
 
 ## SpreadsheetProps
 
-功能描述： 基于 core 层封装的 react 版开箱即用组件。
+功能描述： 基于 `core` 层封装的 `react` 版开箱即用的组件。
 
 | 参数 | 说明                                                         | 类型 | 默认值  | 必选 |
 | :--- | :--- | :--- | :--- | :---: |
@@ -21,16 +21,22 @@ order: 0
 | header | 表头配置项 | [HeaderCfgProps](/zh/docs/api/components/header) | | |
 | getSpreadSheet | 获取表实例 | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; | | |
 | onListSort | 排序回调，用于做自定义排序 |  (params: [ListSortParams](#listsortparams) ) => void; | |  |
-| onRowCellClick| 行头单击回调事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onRowCellDoubleClick| 行头双击回调事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onColCellClick| 列头单击回调事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onColCellDoubleClick| 列头双击回调事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onCornerCellClick| 角头单击回调事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onDataCellClick| | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onDataCellDoubleClick| 交叉单元格双击回调事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onMergedCellClick| | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onMergedCellDoubleClick| 合并单元格双击回调事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onContextMenu| 右键单元格单击回调事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onRowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onRowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onRowCellDoubleClick | 行头鼠标双击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onColCellClick | 列头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onColCellHover | 列头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onColCellDoubleClick | 列头鼠标双击事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onCornerCellClick | 角头鼠标单击事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onCornerCellHover | 角头鼠标悬停事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onCornerCellDoubleClick | 角头鼠标双击事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onDataCellClick | 数值单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onDataCellHover | 数值单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onDataCellDoubleClick | 交叉单元格双击事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onMergedCellHover | 合并单元格鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onMergedCellClick | 合并单元格鼠标点击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onMergedCellDoubleClick | 合并单元格鼠标双击事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onContextMenu | 右键单元格单击事件| (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 
 ### ListSortParams
 
@@ -51,6 +57,6 @@ order: 0
 
 | 参数 | 说明                   | 类型 | 默认值  | 必选 |
 | :--- | :--- | :--- | :--- | :---: |
-| target | 交互作用对象 | `any` | | ✓ |
-| event | 事件 | `Event` | | ✓ |
-| viewMeta | 当前交互作用的结点信息 | `Node` | | ✓ |
+| target | 交互作用对象 | [S2CellType](/zh/docs/api/basic-class/base-cell) | |  |
+| event | 事件 | [Event](#) | |  |
+| viewMeta | 当前节点信息 | [Node](/zh/docs/api/basic-class/node) | |  |

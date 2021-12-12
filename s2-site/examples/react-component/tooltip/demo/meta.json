@@ -7,7 +7,7 @@
     {
       "filename": "basic.tsx",
       "title": {
-        "zh": "hover 显示",
+        "zh": "基本展示",
         "en": "Basic Show"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/UuEx0wndW7/efa70cc6-5106-4d81-9957-25c99b4fad32.png"
@@ -45,12 +45,20 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/sSx1H%24pJOs/6305fe29-5640-4d4d-b1ef-577cc6a32eb3.png"
     },
     {
-      "filename": "custom-interaction-tooltip.tsx",
+      "filename": "custom-click-show-tooltip.tsx",
       "title": {
-        "zh": "自定义点击交互 Tooltip",
-        "en": "Custom Click Tooltip"
+        "zh": "自定义点击显示 Tooltip",
+        "en": "Custom Click Show Tooltip"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/kpvnavJgo0/tooltip.gif"
+    },
+    {
+      "filename": "custom-hover-show-tooltip.tsx",
+      "title": {
+        "zh": "自定义悬停显示 Tooltip",
+        "en": "Custom Hover Show Tooltip"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/c%24ICO1qvb/Kapture%2525202021-12-03%252520at%25252016.30.11.gif"
     }
   ]
 }

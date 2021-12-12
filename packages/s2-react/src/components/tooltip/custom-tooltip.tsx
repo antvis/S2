@@ -1,7 +1,6 @@
 import { BaseTooltip, SpreadSheet } from '@antv/s2';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { merge } from 'lodash';
 import { TooltipComponent } from '@/components/tooltip';
 import { TooltipRenderProps } from '@/components/tooltip/interface';
 
@@ -15,19 +14,22 @@ export class CustomTooltip extends BaseTooltip {
     const { content: contentFromOptions } = this.spreadsheet.options.tooltip;
     // 方法级 s2.showTooltip({ content: '' })
     const showOptions = this.options;
-    // 优先级: 方法级 > 配置级
-    const tooltipProps: TooltipRenderProps = merge(
-      {},
-      {
-        content: contentFromOptions,
-      },
-      showOptions,
+    const tooltipProps: TooltipRenderProps = {
+      ...showOptions,
+    };
+    // 优先级: 方法级 > 配置级, 兼容 content 为空字符串的场景
+    const content = showOptions.content ?? contentFromOptions;
+
+    ReactDOM.render(
+      <TooltipComponent {...tooltipProps} content={content} />,
+      this.container,
     );
-    ReactDOM.render(<TooltipComponent {...tooltipProps} />, this.container);
   }
 
   destroy() {
     super.destroy();
-    ReactDOM.unmountComponentAtNode(this.container);
+    if (this.container) {
+      ReactDOM.unmountComponentAtNode(this.container);
+    }
   }
 }

@@ -10,13 +10,13 @@ import {
   Popover,
   Slider,
   Button,
+  Collapse,
 } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
   HeaderActionIconProps,
   S2Options,
-  ThemeName,
   Node,
   S2DataConfig,
   TargetCellInfo,
@@ -24,6 +24,7 @@ import {
   S2Event,
   TooltipAutoAdjustBoundary,
   customMerge,
+  ThemeCfg,
 } from '@antv/s2';
 import {
   pivotSheetDataCfg,
@@ -31,6 +32,7 @@ import {
   sliderOptions,
   tableSheetDataCfg,
 } from './config';
+import { ResizeConfig } from './resize';
 import { getSheetComponentOptions } from '@/utils';
 import { SheetComponent, SheetType } from '@/components';
 
@@ -38,9 +40,14 @@ import './index.less';
 import 'antd/dist/antd.min.css';
 import '@antv/s2/esm/style.css';
 
-const CustomTooltip = () => <div>自定义 Tooltip</div>;
+const CustomTooltip = () => (
+  <div>
+    自定义 Tooltip <div>1</div>
+    <div>2</div>
+  </div>
+);
 
-const ColTooltip = <div>custom colTooltip</div>;
+const CustomColTooltip = () => <div>custom colTooltip</div>;
 
 const ActionIconTooltip = ({ name }) => <div>{name} Tooltip</div>;
 
@@ -64,10 +71,9 @@ function MainLayout() {
   const [isPivotSheet, setIsPivotSheet] = React.useState(true);
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
-  const [themeName, setThemeName] = React.useState<ThemeName>('default');
+  const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
   const [showCustomTooltip, setShowCustomTooltip] = React.useState(false);
   const [adaptive, setAdaptive] = React.useState(false);
-  const [showResizeArea, setShowResizeArea] = React.useState(false);
   const [options, setOptions] =
     React.useState<Partial<S2Options<React.ReactNode>>>(defaultOptions);
   const [dataCfg, setDataCfg] =
@@ -127,7 +133,11 @@ function MainLayout() {
   };
 
   const onThemeChange = (e: RadioChangeEvent) => {
-    setThemeName(e.target.value);
+    setThemeCfg(
+      customMerge({}, themeCfg, {
+        name: e.target.value,
+      }),
+    );
   };
 
   const onSheetTypeChange = (checked: boolean) => {
@@ -142,12 +152,20 @@ function MainLayout() {
     }
   };
 
-  const onColCellClick = ({ event }: TargetCellInfo) => {
-    console.log('onColCellClick: ', event);
+  const logHandler = (name: string) => (cellInfo: TargetCellInfo) => {
+    if (options.debug) {
+      console.debug(name, cellInfo);
+    }
+  };
+
+  const onColCellClick = (cellInfo: TargetCellInfo) => {
+    console.log('cellInfo: ', cellInfo);
+    logHandler('onColCellClick')(cellInfo);
     if (!options.showDefaultHeaderActionIcon) {
+      const { event } = cellInfo;
       s2Ref.current.showTooltip({
         position: { x: event.clientX, y: event.clientY },
-        content: ColTooltip,
+        content: <CustomColTooltip />,
       });
     }
   };
@@ -266,12 +284,6 @@ function MainLayout() {
               updateOptions({ debug: checked });
             }}
           />
-          <Popover
-            title={'s2Options'}
-            content={<pre>{JSON.stringify(options, undefined, 2)}</pre>}
-          >
-            <Button size="small">查看当前Options</Button>
-          </Popover>
         </Space>
       </div>
       <div className="filter-section">
@@ -283,6 +295,20 @@ function MainLayout() {
             onChange={(checked) => {
               updateOptions({
                 hierarchyType: checked ? 'tree' : 'grid',
+              });
+            }}
+          />
+          <Switch
+            checkedChildren="显示指标列头"
+            unCheckedChildren="隐藏指标列头"
+            checked={mergedOptions.style.colCfg.hideMeasureColumn === true}
+            onChange={(checked) => {
+              updateOptions({
+                style: {
+                  colCfg: {
+                    hideMeasureColumn: checked,
+                  },
+                },
               });
             }}
           />
@@ -314,12 +340,7 @@ function MainLayout() {
             defaultChecked={adaptive}
             onChange={setAdaptive}
           />
-          <Switch
-            checkedChildren="宽高调整热区开"
-            unCheckedChildren="宽高调整热区关"
-            defaultChecked={showResizeArea}
-            onChange={setShowResizeArea}
-          />
+
           <Tooltip title="布局类型">
             <Radio.Group
               onChange={onLayoutWidthTypeChange}
@@ -504,6 +525,11 @@ function MainLayout() {
           </Space>
         </div>
       </div>
+      <Collapse accordion>
+        <Collapse.Panel header="宽高调整热区配置" key="resize">
+          <ResizeConfig setOptions={setOptions} setThemeCfg={setThemeCfg} />
+        </Collapse.Panel>
+      </Collapse>
       {render && (
         <SheetComponent
           dataCfg={{ ...dataCfg } as S2DataConfig}
@@ -511,20 +537,16 @@ function MainLayout() {
           sheetType={sheetType}
           adaptive={adaptive}
           ref={s2Ref}
-          themeCfg={{
-            name: themeName,
-            theme: {
-              resizeArea: {
-                backgroundOpacity: showResizeArea ? 1 : 0,
-              },
-            },
-          }}
+          themeCfg={themeCfg}
           header={{
             title: 'Title',
             description: 'description',
-            extra: [<Button key="button">click me</Button>],
+            extra: <Button>click me</Button>,
           }}
           onColCellClick={onColCellClick}
+          onRowCellClick={logHandler('onRowCellClick')}
+          onCornerCellClick={logHandler('onCornerCellClick')}
+          onDataCellClick={logHandler('onDataCellClick')}
         />
       )}
     </div>

@@ -1,5 +1,6 @@
-import { S2DataConfig, S2Options } from '@antv/s2';
-import { SliderSingleProps } from 'antd';
+import type { S2DataConfig, S2Options } from '@antv/s2';
+import type { SliderSingleProps } from 'antd';
+import React from 'react';
 import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
 
 export const tableSheetDataCfg: Partial<S2DataConfig> = {
@@ -24,7 +25,7 @@ export const pivotSheetDataCfg: S2DataConfig = {
   },
 };
 
-export const s2Options: S2Options = {
+export const s2Options: S2Options<React.ReactNode> = {
   debug: true,
   width: 600,
   height: 600,

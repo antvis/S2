@@ -3,9 +3,11 @@ import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import {
   clone,
   forEach,
+  forIn,
   get,
   includes,
   isEmpty,
+  isFunction,
   isString,
   merge,
   once,
@@ -253,7 +255,14 @@ export abstract class SpreadSheet extends EE {
   public showTooltip<T = TooltipContentType>(
     showOptions: TooltipShowOptions<T>,
   ) {
-    this.tooltip.show?.(showOptions);
+    const { content, event } = showOptions;
+    const cell = this.getCell(event?.target);
+    const displayContent = isFunction(content) ? content(cell) : content;
+
+    this.tooltip.show?.({
+      ...showOptions,
+      content: displayContent,
+    });
   }
 
   public showTooltipWithInfo(
@@ -282,6 +291,7 @@ export abstract class SpreadSheet extends EE {
         enterable: true,
         ...options,
       },
+      event,
       content,
     });
   }
@@ -345,6 +355,7 @@ export abstract class SpreadSheet extends EE {
     this.interaction.destroy();
     this.store.clear();
     this.destroyTooltip();
+    this.clearCanvasEvent();
   }
 
   /**
@@ -565,4 +576,11 @@ export abstract class SpreadSheet extends EE {
     }
     hideColumnsByThunkGroup(this, hiddenColumnFields, true);
   });
+
+  private clearCanvasEvent() {
+    const canvasEvents = this.getEvents();
+    forIn(canvasEvents, (_, event: keyof EmitterType) => {
+      this.off(event);
+    });
+  }
 }
