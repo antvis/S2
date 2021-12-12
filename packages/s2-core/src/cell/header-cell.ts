@@ -28,7 +28,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.headerConfig = { ...headerConfig };
     const { value, query } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams;
-    const isSortCell = this.isSortCell(); // 是否是数值节点
+    const isSortCell = this.isSortCell(); // 改单元格是否为需要展示排序 icon 单元格
     const sortParam: SortParam = find(
       sortParams.reverse(),
       (item) =>
