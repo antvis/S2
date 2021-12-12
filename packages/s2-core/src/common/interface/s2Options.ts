@@ -5,6 +5,7 @@ import {
   HeaderActionIcon,
   CustomSVGIcon,
   ScrollRatio,
+  ResizeAffectCellType,
 } from './basic';
 import { Tooltip } from './tooltip';
 import {
@@ -46,6 +47,8 @@ export interface InteractionOptions {
   readonly hiddenColumnFields?: string[];
   // the ratio to control scroll speed, default set to 1
   readonly scrollSpeedRatio?: ScrollRatio;
+  // when resizing row's height, affect current row or all row
+  readonly rowHeightResizeAffectCellType?: ResizeAffectCellType;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

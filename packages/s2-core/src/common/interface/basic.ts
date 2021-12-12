@@ -257,6 +257,7 @@ export interface RowCfg {
   width?: number;
   // specific some row field's width
   widthByField?: Record<string, number>;
+  heightByField?: Record<string, number>;
   // tree row width(拖拽产生的，无需主动设置)
   treeRowsWidth?: number;
 }
@@ -412,6 +413,11 @@ export interface OriginalEvent extends Event {
 export interface ScrollRatio {
   horizontal?: number;
   vertical?: number;
+}
+
+export enum ResizeAffectCellType {
+  ALL = 'all',
+  CURRENT = 'current',
 }
 
 // 用于和下钻组件进行交互联动

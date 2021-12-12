@@ -12,6 +12,7 @@ import {
 } from 'lodash';
 import { BaseFacet } from 'src/facet/base-facet';
 import { getDataCellId } from 'src/utils/cell/data-cell';
+import { getIndexRangeWithOffsets } from './utils';
 import {
   EXTRA_FIELD,
   LayoutWidthTypes,
@@ -338,7 +339,8 @@ export class PivotFacet extends BaseFacet {
   ) {
     const { cellCfg, spreadsheet } = this.cfg;
     const isTree = spreadsheet.isHierarchyTreeType();
-
+    const heightByField =
+      spreadsheet.options.style?.rowCfg?.heightByField ?? {};
     // 1、calculate first node's width in every level
     if (isTree) {
       rowsHierarchy.width = this.getTreeRowHeaderWidth();
@@ -365,8 +367,12 @@ export class PivotFacet extends BaseFacet {
         currentNode.rowIndex ??= i;
         currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
+
+        const nodeHeight = heightByField[currentNode.id]
+          ? heightByField[currentNode.id]
+          : cellCfg.height;
         currentNode.height =
-          cellCfg.height +
+          nodeHeight +
           this.rowCellTheme.padding?.top +
           this.rowCellTheme.padding?.bottom;
         preLeafNode = currentNode;
@@ -649,31 +655,7 @@ export class PivotFacet extends BaseFacet {
       },
 
       getIndexRange: (minHeight: number, maxHeight: number) => {
-        let yMin = findIndex(
-          heights,
-          (height: number, idx: number) => {
-            const y = minHeight;
-            return y >= height && y < heights[idx + 1];
-          },
-          0,
-        );
-
-        yMin = Math.max(yMin, 0);
-
-        let yMax = findIndex(
-          heights,
-          (height: number, idx: number) => {
-            const y = maxHeight;
-            return y >= height && y < heights[idx + 1];
-          },
-          yMin,
-        );
-        yMax = Math.min(yMax === -1 ? Infinity : yMax, heights.length - 2);
-
-        return {
-          start: yMin,
-          end: yMax,
-        };
+        return getIndexRangeWithOffsets(heights, minHeight, maxHeight);
       },
     };
   }

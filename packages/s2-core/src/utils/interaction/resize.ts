@@ -1,3 +1,4 @@
+import { FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX } from 'src/common/constant';
 import { IGroup, ShapeAttrs, SimpleBBox } from '@antv/g-canvas';
 import { ResizeInfo } from '@/common/interface/resize';
 import { SpreadSheet } from '@/sheet-type/spread-sheet';
@@ -49,6 +50,7 @@ export const getOrCreateResizeAreaGroupById = (
     existedResizeArea ||
     spreadsheet.foregroundGroup.addGroup({
       id,
+      zIndex: FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX,
     })
   );
 };

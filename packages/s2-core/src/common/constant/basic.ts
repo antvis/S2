@@ -11,6 +11,7 @@ export const BACK_GROUND_GROUP_CONTAINER_Z_INDEX = 0;
 export const FRONT_GROUND_GROUP_CONTAINER_Z_INDEX = 3; // 约定这个 z-index 为 0 的 container 作为基准
 export const FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX = 3;
 export const FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX = 4;
+export const FRONT_GROUND_GROUP_RESIZE_AREA_Z_INDEX = 5;
 export const FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX = 5;
 
 // panelGroup 上的 children 层叠顺序
@@ -31,6 +32,7 @@ export const KEY_GROUP_PANEL_FROZEN_TRAILING_COL = 'frozenTrailingColGroup';
 export const KEY_GROUP_PANEL_FROZEN_TOP = 'frozenTopGroup';
 export const KEY_GROUP_PANEL_FROZEN_BOTTOM = 'frozenBottomGroup';
 export const KEY_GROUP_ROW_RESIZE_AREA = 'rowResizeAreaGroup';
+export const KEY_GROUP_FROZEN_ROW_RESIZE_AREA = 'rowFrozenResizeAreaGroup';
 export const KEY_GROUP_ROW_INDEX_RESIZE_AREA = 'rowIndexResizeAreaGroup';
 export const KEY_GROUP_CORNER_RESIZE_AREA = 'cornerResizeAreaGroup';
 export const KEY_GROUP_COL_RESIZE_AREA = 'colResizeAreaGroup';

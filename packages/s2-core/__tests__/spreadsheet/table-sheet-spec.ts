@@ -1,5 +1,10 @@
 import { getContainer, getMockData } from 'tests/util/helpers';
-import { TableSheet, S2Options, S2DataConfig } from '@/index';
+import {
+  TableSheet,
+  S2Options,
+  S2DataConfig,
+  ResizeAffectCellType,
+} from '@/index';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
@@ -74,6 +79,7 @@ const options: S2Options = {
     hoverHighlight: false,
     linkFields: ['order_id', 'customer_name'],
     hiddenColumnFields: ['order_date'],
+    rowHeightResizeAffectCellType: ResizeAffectCellType.CURRENT,
   },
   frozenRowCount: 2,
   frozenColCount: 1,
