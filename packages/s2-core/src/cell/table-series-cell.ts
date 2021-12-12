@@ -59,6 +59,9 @@ export class TableRowCell extends DataCell {
     const colHeight = this.spreadsheet.facet.layoutResult.colsHierarchy.height;
     const { scrollY } = this.spreadsheet.facet.getScrollOffset();
 
+    const yOffset =
+      y + (isFrozenTrailingRow ? 0 : colHeight) - (isFrozen ? 0 : scrollY);
+
     resizeArea.addShape('rect', {
       attrs: {
         ...getResizeAreaAttrs({
@@ -67,17 +70,12 @@ export class TableRowCell extends DataCell {
           type: ResizeDirectionType.Vertical,
           effect: ResizeAreaEffect.Cell,
           offsetX: x,
-          offsetY: y + colHeight + (isFrozen ? 0 : scrollY),
+          offsetY: yOffset,
           width,
           height,
         }),
         x: x,
-        y:
-          y +
-          (isFrozenTrailingRow ? 0 : colHeight) +
-          height -
-          resizeStyle.size / 2 -
-          (isFrozen ? 0 : scrollY),
+        y: yOffset + height - resizeStyle.size / 2,
         width,
       },
     });

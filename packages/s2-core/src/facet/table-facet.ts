@@ -1,7 +1,7 @@
 import { IGroup } from '@antv/g-base';
 import { Group } from '@antv/g-canvas';
 import { getDataCellId } from 'src/utils/cell/data-cell';
-import { get, last, maxBy, set, size } from 'lodash';
+import { get, isBoolean, last, maxBy, set, size } from 'lodash';
 import { TableColHeader } from 'src/facet/header/table-col';
 import { ColHeader } from 'src/facet/header/col';
 import { getOccupiedWidthForTableCol } from 'src/utils/cell/table-col-cell';
@@ -11,6 +11,7 @@ import type {
   SplitLine,
   SpreadSheetFacetCfg,
   ViewMeta,
+  ResizeActiveOptions,
 } from '../common/interface';
 import { KEY_GROUP_FROZEN_ROW_RESIZE_AREA, TableRowCell } from '..';
 import {
@@ -174,7 +175,9 @@ export class TableFacet extends BaseFacet {
       if (
         isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
       ) {
-        y = this.panelBBox.maxY - (cellRange.end + 1 - rowIndex) * cellHeight;
+        y =
+          this.panelBBox.maxY -
+          this.getTotalHeightForRange(rowIndex, cellRange.end);
       }
 
       if (isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)) {
@@ -543,7 +546,7 @@ export class TableFacet extends BaseFacet {
     } = this.spreadsheet.options;
     const colLeafNodes = this.layoutResult.colLeafNodes;
     const dataLength = this.spreadsheet.dataSet.getMultiData({}).length;
-
+    const cellRange = this.getCellRange();
     const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
     const splitLineGroup = this.foregroundGroup.addGroup({
       id: 'frozenSplitLine',
@@ -599,7 +602,10 @@ export class TableFacet extends BaseFacet {
     if (frozenRowCount > 0) {
       const y =
         this.cornerBBox.height +
-        this.getTotalHeightForRange(0, frozenRowCount - 1);
+        this.getTotalHeightForRange(
+          cellRange.start,
+          cellRange.start + frozenRowCount - 1,
+        );
       renderLine(
         splitLineGroup as Group,
         {
@@ -666,8 +672,8 @@ export class TableFacet extends BaseFacet {
       const y =
         this.panelBBox.maxY -
         this.getTotalHeightForRange(
-          dataLength - frozenTrailingRowCount,
-          dataLength - 1,
+          cellRange.end - frozenTrailingRowCount + 1,
+          cellRange.end,
         );
       renderLine(
         splitLineGroup as Group,
@@ -804,6 +810,16 @@ export class TableFacet extends BaseFacet {
   }
 
   protected updateRowResizeArea() {
+    const resize = this.spreadsheet.options?.interaction?.resize;
+
+    if (isBoolean(resize)) {
+      if (!resize) {
+        return;
+      }
+    } else if (!(resize as ResizeActiveOptions)?.rowCellVertical) {
+      return;
+    }
+
     const rowResizeGroup = this.spreadsheet.foregroundGroup.findById(
       KEY_GROUP_ROW_RESIZE_AREA,
     );
