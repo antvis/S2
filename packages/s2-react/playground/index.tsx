@@ -26,6 +26,8 @@ import {
   customMerge,
   ThemeCfg,
 } from '@antv/s2';
+import { forEach, random } from 'lodash';
+import { DataType } from '@antv/s2';
 import {
   pivotSheetDataCfg,
   s2Options as playgroundS2Options,
@@ -34,11 +36,76 @@ import {
 } from './config';
 import { ResizeConfig } from './resize';
 import { getSheetComponentOptions } from '@/utils';
-import { SheetComponent, SheetType } from '@/components';
+import {
+  SheetComponent,
+  SheetType,
+  PartDrillDown,
+  PartDrillDownInfo,
+} from '@/components';
 
 import './index.less';
 import 'antd/dist/antd.min.css';
 import '@antv/s2/esm/style.css';
+
+const fieldMap = {
+  channel: ['物美', '华联'],
+  sex: ['男', '女'],
+};
+
+const partDrillDown = {
+  drillConfig: {
+    dataSet: [
+      {
+        name: '销售渠道',
+        value: 'channel',
+        type: 'text',
+      },
+      {
+        name: '客户性别',
+        value: 'sex',
+        type: 'text',
+      },
+    ],
+  },
+  // drillItemsNum: 1,
+  fetchData: (meta, drillFields) =>
+    new Promise<PartDrillDownInfo>((resolve) => {
+      // 弹窗 -> 选择 -> 请求数据
+
+      const dataSet = meta.spreadsheet.dataSet;
+      const field = drillFields[0];
+      const rowDatas = dataSet
+        .getMultiData(meta.query)
+        .filter((item) => item.sub_type && item.type);
+      const drillDownData: DataType[] = [];
+      forEach(rowDatas, (data: DataType) => {
+        const { number, sub_type: subType, type } = data;
+        const number0 = random(50, number);
+        const number1 = number - number0;
+        const dataItem0 = {
+          ...meta.query,
+          number: number0,
+          sub_type: subType,
+          type,
+          [field]: fieldMap[field][0],
+        };
+        drillDownData.push(dataItem0);
+        const dataItem1 = {
+          ...meta.query,
+          number: number1,
+          sub_type: subType,
+          type,
+          [field]: fieldMap[field][1],
+        };
+
+        drillDownData.push(dataItem1);
+      });
+      resolve({
+        drillField: field,
+        drillData: drillDownData,
+      });
+    }),
+} as PartDrillDown;
 
 const CustomTooltip = () => (
   <div>
@@ -524,6 +591,8 @@ function MainLayout() {
           adaptive={adaptive}
           ref={s2Ref}
           themeCfg={themeCfg}
+          isLoading={false}
+          partDrillDown={partDrillDown}
           header={{
             title: 'Title',
             description: 'description',

@@ -1,4 +1,4 @@
-import { set, map, reduce, isUndefined, forEach, last, isNil } from 'lodash';
+import { set, map, reduce, isUndefined, forEach, last } from 'lodash';
 import { DataType } from '@/data-set/interface';
 import {
   DataPathParams,
