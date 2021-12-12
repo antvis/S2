@@ -527,6 +527,7 @@ function MainLayout() {
           header={{
             title: 'Title',
             description: 'description',
+            exportCfg: { open: true },
             extra: <Button>click me</Button>,
           }}
           onColCellClick={onColCellClick}
