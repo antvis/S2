@@ -299,6 +299,20 @@ function MainLayout() {
             }}
           />
           <Switch
+            checkedChildren="显示指标列头"
+            unCheckedChildren="隐藏指标列头"
+            checked={mergedOptions.style.colCfg.hideMeasureColumn === true}
+            onChange={(checked) => {
+              updateOptions({
+                style: {
+                  colCfg: {
+                    hideMeasureColumn: checked,
+                  },
+                },
+              });
+            }}
+          />
+          <Switch
             checkedChildren="数值挂列头"
             unCheckedChildren="数值挂行头"
             defaultChecked={dataCfg.fields.valueInCols}
