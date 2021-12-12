@@ -3,7 +3,6 @@ import { S2Options } from '@antv/s2';
 export const mockGridAnalysisOptions = {
   width: 1000,
   height: 600,
-  hierarchyType: 'grid',
   style: {
     layoutWidthType: 'colAdaptive',
     cellCfg: {

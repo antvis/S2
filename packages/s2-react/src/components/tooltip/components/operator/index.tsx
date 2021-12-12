@@ -64,7 +64,7 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
 
     return map(menus, (menu: TooltipOperatorMenu) => {
       const { id, icon, text, children } = menu;
-      const menuRender = !isEmpty(children) && (
+      const menuRender = !isEmpty(children) ? (
         <Menu
           className={`${TOOLTIP_PREFIX_CLS}-operator-menus`}
           onClick={onClick}
@@ -72,6 +72,8 @@ export const TooltipOperator = (props: TooltipOperatorOptions) => {
         >
           {map(children, (subMenu: TooltipOperatorMenu) => renderMenu(subMenu))}
         </Menu>
+      ) : (
+        <></>
       );
 
       return (

@@ -8,7 +8,7 @@ import {
   Node,
   PivotDataSet,
 } from '@antv/s2';
-import { PartDrillDownInfo, SpreadsheetProps } from '@/components';
+import { PartDrillDownInfo, SheetComponentsProps } from '@/components';
 import { PartDrillDownDataCache } from '@/components/sheets/interface';
 import { i18n } from '@/common/i18n';
 
@@ -87,7 +87,7 @@ export const handleActionIconClick = (params: ActionIconParams) => {
 };
 
 export const handleDrillDownIcon = (
-  props: SpreadsheetProps,
+  props: SheetComponentsProps,
   spreadsheet: SpreadSheet,
   callback: (
     spreadsheet: SpreadSheet,

@@ -11,14 +11,29 @@ import {
   Node,
   SpreadSheet,
   ThemeCfg,
+  ViewMeta,
 } from '@antv/s2';
+import React from 'react';
 import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
 
 export type SheetType = 'pivot' | 'table' | 'gridAnalysis';
 
-export interface SpreadsheetProps extends BaseSheetProps {
+export interface SheetComponentsProps extends BaseSheetComponentProps {
   sheetType?: SheetType;
+}
+
+export interface BaseSheetProps extends SheetComponentsProps {
+  s2Ref?: React.MutableRefObject<SpreadSheet>;
+  containerRef?: React.MutableRefObject<HTMLDivElement>;
+  pagination?: {
+    total: number;
+    current: number;
+    pageSize: number;
+    setTotal: (value: number) => void;
+    setCurrent: (value: number) => void;
+    setPageSize: (value: number) => void;
+  };
 }
 
 export interface PartDrillDownInfo {
@@ -61,18 +76,18 @@ export interface PartDrillDownFieldInLevel {
   drillLevel: number;
 }
 
-export interface BaseSheetProps {
+export interface BaseSheetComponentProps {
   spreadsheet?: (...args: S2Constructor) => SpreadSheet;
   dataCfg: S2DataConfig;
   options: S2Options;
-  isLoading?: boolean;
+  loading?: boolean;
   partDrillDown?: PartDrillDown;
   adaptive?: boolean;
   showPagination?: boolean;
   themeCfg?: ThemeCfg;
   header?: HeaderCfgProps;
-  rowLevel?: number;
-  colLevel?: number;
+  onLoad?: () => void;
+  onDestroy?: () => void;
   onListSort?: (params: ListSortParams) => void;
   onRowColLayout?: (rows: LayoutRow[], cols: LayoutCol[]) => void;
   onRowCellScroll?: (reachedRow: TargetLayoutNode) => void;
@@ -86,6 +101,7 @@ export interface BaseSheetProps {
   onDataCellClick?: (data: TargetCellInfo) => void;
   onDataCellDoubleClick?: (data: TargetCellInfo) => void;
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
+  onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onMergedCellClick?: (data: TargetCellInfo) => void;
   onMergedCellsDoubleClick?: (data: TargetCellInfo) => void;
   onContextMenu?: (data: TargetCellInfo) => void;

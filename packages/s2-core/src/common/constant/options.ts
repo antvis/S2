@@ -1,5 +1,5 @@
-import { S2Options } from '../interface/s2Options';
-import { Style } from '@/common/interface/basic';
+import type { S2Options } from '../interface/s2Options';
+import type { Style } from '@/common/interface/basic';
 
 export enum LayoutWidthTypes {
   Adaptive = 'adaptive',

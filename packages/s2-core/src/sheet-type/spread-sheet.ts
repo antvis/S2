@@ -345,11 +345,12 @@ export abstract class SpreadSheet extends EE {
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();
-    this.emit(S2Event.LAYOUT_AFTER_RENDER);
     this.initHiddenColumnsDetail();
+    this.emit(S2Event.LAYOUT_AFTER_RENDER);
   }
 
   public destroy() {
+    this.emit(S2Event.LAYOUT_DESTROY);
     this.facet.destroy();
     this.hdAdapter?.destroy();
     this.interaction.destroy();

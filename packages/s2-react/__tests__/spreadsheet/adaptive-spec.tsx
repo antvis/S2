@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { SpreadSheet, S2Options } from '@antv/s2';
-import * as mockDataConfig from '../data/simple-data.json';
-import { getContainer, sleep } from '../util/helpers';
+import * as mockDataConfig from 'tests/data/simple-data.json';
+import { getContainer, sleep } from 'tests/util/helpers';
 import { SheetComponent } from '@/components/sheets';
 
 interface Props {
@@ -71,7 +71,7 @@ describe('SheetComponent adaptive Tests', () => {
   test('should use container width when container width less than options width and table first rendered', async () => {
     act(() => {
       ReactDOM.render(
-        <MainLayout adaptive containerWidth={s2Options.width - 100} />,
+        <MainLayout adaptive={true} containerWidth={s2Options.width - 100} />,
         getContainer(),
       );
     });
@@ -155,7 +155,7 @@ describe('SheetComponent adaptive Tests', () => {
 
     // update canvas width
     expect(canvas.style.width).toEqual(`${newContainerWidth}px`);
-    expect(canvas.style.height).toEqual(`${s2Options.height}px`);
+    expect(canvas.style.height).toEqual(`200px`);
   });
 
   test("should don't update canvas size when container resize but disable adaptive", async () => {
@@ -185,10 +185,10 @@ describe('SheetComponent adaptive Tests', () => {
 
     const canvas = s2.container.get('el') as HTMLCanvasElement;
 
-    expect(s2.options.width).toEqual(s2Options.width);
-    expect(s2.container.cfg.width).toEqual(s2Options.width);
-    expect(canvas.style.width).toEqual(`${s2Options.width}px`);
-    expect(canvas.style.height).toEqual(`${s2Options.height}px`);
+    expect(s2.options.width).toEqual(200);
+    expect(s2.container.cfg.width).toEqual(200);
+    expect(canvas.style.width).toEqual(`200px`);
+    expect(canvas.style.height).toEqual(`200px`);
   });
 
   // canvas need to set "display: block", otherwise have `5px` difference with container

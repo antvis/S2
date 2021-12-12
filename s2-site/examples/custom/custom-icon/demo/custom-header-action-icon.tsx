@@ -1,5 +1,7 @@
 import React from 'react';
-import { PivotSheet } from '@antv/s2';
+import ReactDOM from 'react-dom';
+import { SheetComponent } from '@antv/s2-react';
+import '@antv/s2-react/dist/style.min.css';
 
 const CornerTooltip = <div>CornerTooltip</div>;
 
@@ -12,14 +14,9 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
-    const container = document.getElementById('container');
-
     const s2Options = {
       width: 600,
       height: 480,
-      tooltip: {
-        showTooltip: true,
-      },
       customSVGIcons: [
         {
           name: 'Filter',
@@ -29,22 +26,19 @@ fetch(
       showDefaultHeaderActionIcon: false,
       headerActionIcons: [
         {
-          iconNames: ['Filter'],
+          iconNames: ['SortDown'],
           belongsCell: 'colCell',
-          displayCondition: (meta) => meta.id === 'root[&]纸张[&]price',
+          displayCondition: (meta) => meta.level > 0,
           action: (props) => {
             const { meta, event } = props;
-            meta.spreadsheet.tooltip.show({
-              position: { x: event.clientX, y: event.clientY },
-              content: ColTooltip,
-            });
+            console.log(meta);
+            meta.spreadsheet.handleGroupSort(event, meta);
           },
         },
         {
-          iconNames: ['SortDown'],
+          iconNames: ['Filter'],
           belongsCell: 'colCell',
-          displayCondition: (meta) =>
-            meta.id === 'root[&]办公用品[&]笔[&]number',
+          displayCondition: (meta) => meta.id === 'root[&]家具',
           action: (props) => {
             const { meta, event } = props;
             meta.spreadsheet.tooltip.show({
@@ -76,8 +70,15 @@ fetch(
           },
         },
       ],
+      style: {
+        colCfg: {
+          hideMeasureColumn: true,
+        },
+      },
     };
-    const s2 = new PivotSheet(container, dataCfg, s2Options);
 
-    s2.render();
+    ReactDOM.render(
+      <SheetComponent dataCfg={dataCfg} options={s2Options} />,
+      document.getElementById('container'),
+    );
   });
