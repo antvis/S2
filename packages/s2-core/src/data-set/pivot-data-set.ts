@@ -151,7 +151,7 @@ export class PivotDataSet extends BaseDataSet {
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
-
+    this.indexesData = indexesData;
     this.rowPivotMeta = rowPivotMeta;
     this.colPivotMeta = colPivotMeta;
     this.sortedDimensionValues = sortedDimensionValues;
