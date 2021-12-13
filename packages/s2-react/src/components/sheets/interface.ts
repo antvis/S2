@@ -17,7 +17,7 @@ import React from 'react';
 import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
 
-export type SheetType = 'pivot' | 'table' | 'gridAnalysis';
+export type SheetType = 'pivot' | 'table' | 'gridAnalysis' | 'strategy';
 
 export interface SheetComponentsProps extends BaseSheetComponentProps {
   sheetType?: SheetType;

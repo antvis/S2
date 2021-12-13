@@ -525,6 +525,7 @@ function MainLayout() {
                   <Select.Option value="pivot">透视表</Select.Option>
                   <Select.Option value="table">明细表</Select.Option>
                   <Select.Option value="gridAnalysis">网格分析表</Select.Option>
+                  <Select.Option value="strategy">趋势分析表</Select.Option>
                 </Select>
               </Tooltip>
             </Space>

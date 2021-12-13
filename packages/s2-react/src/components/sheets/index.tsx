@@ -1,10 +1,10 @@
 import React from 'react';
 import { SpreadSheet } from '@antv/s2';
-import { BaseSheet } from './base-sheet';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
 import { TableSheet } from './table-sheet';
 import { SheetComponentsProps } from './interface';
 import { PivotSheet } from './pivot-sheet';
+import { StrategySheet } from './strategy-sheet';
 
 const Sheet = React.forwardRef(
   (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
@@ -28,6 +28,8 @@ const Sheet = React.forwardRef(
           return <TableSheet {...sheetProps} />;
         case 'gridAnalysis':
           return <GridAnalysisSheet {...sheetProps} />;
+        case 'strategy':
+          return <StrategySheet {...sheetProps} />;
         default:
           return <PivotSheet {...sheetProps} />;
       }
