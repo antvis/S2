@@ -71,12 +71,16 @@ const partDrillDown = {
   fetchData: (meta, drillFields) =>
     new Promise<PartDrillDownInfo>((resolve) => {
       // 弹窗 -> 选择 -> 请求数据
-
+      const preDrillDownfield =
+        meta.spreadsheet.store.get('drillDownNode')?.field;
       const dataSet = meta.spreadsheet.dataSet;
       const field = drillFields[0];
       const rowDatas = dataSet
-        .getMultiData(meta.query)
-        .filter((item) => item.sub_type && item.type);
+        .getMultiData(meta.query, true, true, [preDrillDownfield])
+        .filter(
+          (item) => item.sub_type && item.type && item[preDrillDownfield],
+        );
+      console.log(rowDatas);
       const drillDownData: DataType[] = [];
       forEach(rowDatas, (data: DataType) => {
         const { number, sub_type: subType, type } = data;
@@ -100,6 +104,7 @@ const partDrillDown = {
 
         drillDownData.push(dataItem1);
       });
+      console.log(drillDownData);
       resolve({
         drillField: field,
         drillData: drillDownData,

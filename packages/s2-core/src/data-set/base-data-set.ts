@@ -158,11 +158,13 @@ export abstract class BaseDataSet {
    * @param query
    * @param isTotals
    * @param isRow
+   * @param drillDownFillds
    */
   public abstract getMultiData(
     query: DataType,
     isTotals?: boolean,
     isRow?: boolean,
+    drillDownFillds?: string[],
   ): DataType[];
 
   public moreThanOneValue() {
