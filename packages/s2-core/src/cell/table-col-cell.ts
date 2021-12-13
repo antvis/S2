@@ -54,7 +54,7 @@ export class TableColCell extends ColCell {
     ) as Group;
   }
 
-  protected isValueCell() {
+  protected isSortCell() {
     return true;
   }
 

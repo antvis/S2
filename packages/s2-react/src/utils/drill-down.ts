@@ -107,9 +107,11 @@ export const handleDrillDownIcon = (
         spreadsheet.store.set('drillDownActionIconLevel', iconLevel);
       }
       displayCondition = (meta: Node) => {
+        // 只有数值置于列头且为树状分层结构时才支持下钻
         return (
           iconLevel <= meta.level &&
           spreadsheet.options.hierarchyType === 'tree' &&
+          spreadsheet.dataCfg.fields.valueInCols &&
           meta.label !== i18n('总计')
         );
       };
