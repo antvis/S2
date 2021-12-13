@@ -1,3 +1,17 @@
+# [@antv/s2-react-v1.3.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.2.0...@antv/s2-react-v1.3.0) (2021-12-13)
+
+
+### Bug Fixes
+
+* 🐛 solve the wrong data after drilling down twice ([#885](https://github.com/antvis/S2/issues/885)) ([e3c8729](https://github.com/antvis/S2/commit/e3c8729d8fd5383fa73349b9937daa7ea58e0301))
+* **components:** add empty fragment close [#873](https://github.com/antvis/S2/issues/873) ([#878](https://github.com/antvis/S2/issues/878)) ([db98788](https://github.com/antvis/S2/commit/db98788954b74b2781f98568013135c8843725f2))
+* export link problem ([#877](https://github.com/antvis/S2/issues/877)) ([aa8f428](https://github.com/antvis/S2/commit/aa8f428824ce90aa5b6c7177cc5ef4d371a1d847))
+
+
+### Features
+
+* ✨ show the sortIcon when the hideMeasureColumn is set ([#884](https://github.com/antvis/S2/issues/884)) ([de1c46a](https://github.com/antvis/S2/commit/de1c46acb12b257e32aa4cc568312abca873775a))
+
 # [@antv/s2-react-v1.2.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.1.1...@antv/s2-react-v1.2.0) (2021-12-06)
 
 
