@@ -88,15 +88,28 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     });
   }
 
-  const omitUndefinedFieldValues = filter(
-    fieldValues,
-    (value) => !isUndefined(value),
-  );
+  const hiddenColumnsDetail = spreadsheet.store.get('hiddenColumnsDetail');
+
+  const displayFieldValues = fieldValues.filter((value) => {
+    // 去除多余的节点
+    if (isUndefined(value)) {
+      return false;
+    }
+    if (isEmpty(hiddenColumnsDetail)) {
+      return true;
+    }
+    return hiddenColumnsDetail.every((detail) => {
+      return detail.hideColumnNodes.every(
+        (node) =>
+          node.parent.id !== parentNode.id && node.parent.value !== value,
+      );
+    });
+  });
 
   generateHeaderNodes({
     currentField,
     fields,
-    fieldValues: omitUndefinedFieldValues,
+    fieldValues: displayFieldValues,
     facetCfg,
     hierarchy,
     parentNode,

@@ -7,6 +7,9 @@ import {
   isLastColumnAfterHidden,
   hideColumns,
   hideColumnsByThunkGroup,
+  getValidDisplaySiblingNode,
+  getValidDisplaySiblingNodeId,
+  isEqualDisplaySiblingNodeId,
 } from '@/utils/hide-columns';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { S2Event } from '@/common/constant';
@@ -261,5 +264,69 @@ describe('hide-columns test', () => {
     hideColumnsByThunkGroup(mockSpreadSheetInstance, []);
 
     expect(mockSpreadSheetInstance.render).not.toHaveBeenCalled();
+  });
+
+  describe('Valid Display Sibling Node Tests', () => {
+    const nextNode = {
+      id: 'next',
+    } as Node;
+    const prevNode = {
+      id: 'prev',
+    } as Node;
+
+    test('should get display sibling node', () => {
+      expect(
+        getValidDisplaySiblingNode({ next: nextNode, prev: prevNode }),
+      ).toEqual(nextNode);
+
+      expect(
+        getValidDisplaySiblingNode({ next: nextNode, prev: null }),
+      ).toEqual(nextNode);
+      expect(
+        getValidDisplaySiblingNode({ next: null, prev: prevNode }),
+      ).toEqual(prevNode);
+      expect(getValidDisplaySiblingNode({ next: null, prev: null })).toEqual(
+        null,
+      );
+    });
+
+    test('should get display sibling node id', () => {
+      expect(
+        getValidDisplaySiblingNodeId({ next: nextNode, prev: prevNode }),
+      ).toEqual(nextNode.id);
+      expect(
+        getValidDisplaySiblingNodeId({ next: nextNode, prev: null }),
+      ).toEqual(nextNode.id);
+      expect(
+        getValidDisplaySiblingNodeId({ next: null, prev: prevNode }),
+      ).toEqual(prevNode.id);
+      expect(getValidDisplaySiblingNodeId({ next: null, prev: null })).toEqual(
+        null,
+      );
+    });
+
+    test('should get is equal display sibling node id', () => {
+      expect(
+        isEqualDisplaySiblingNodeId(
+          { next: nextNode, prev: prevNode },
+          nextNode.id,
+        ),
+      ).toBeTruthy();
+      expect(
+        isEqualDisplaySiblingNodeId(
+          { next: nextNode, prev: null },
+          nextNode.id,
+        ),
+      ).toBeTruthy();
+      expect(
+        isEqualDisplaySiblingNodeId(
+          { next: null, prev: prevNode },
+          prevNode.id,
+        ),
+      ).toBeTruthy();
+      expect(
+        isEqualDisplaySiblingNodeId({ next: null, prev: null }, nextNode.id),
+      ).toBeFalsy();
+    });
   });
 });

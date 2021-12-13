@@ -2,7 +2,6 @@ import { IGroup } from '@antv/g-base';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
 import { ColHeader, ColHeaderConfig } from './col';
 import {
-  KEY_GROUP_COL_RESIZE_AREA,
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
   SERIES_NUMBER_FIELD,
   KEY_GROUP_COL_FROZEN,
@@ -69,13 +68,9 @@ export class TableColHeader extends ColHeader {
     spreadsheet: SpreadSheet,
     headerConfig: ColHeaderConfig,
   ) {
-    let cell;
-    if (item.field === SERIES_NUMBER_FIELD) {
-      cell = new TableCornerCell(item, spreadsheet, headerConfig);
-    } else {
-      cell = new TableColCell(item, spreadsheet, headerConfig);
-    }
-    return cell;
+    return item.field === SERIES_NUMBER_FIELD
+      ? new TableCornerCell(item, spreadsheet, headerConfig)
+      : new TableColCell(item, spreadsheet, headerConfig);
   }
 
   protected getCellGroup(node: Node) {

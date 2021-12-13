@@ -1,11 +1,18 @@
 import { compact, isEmpty, isEqual, last, uniq } from 'lodash';
 import { HiddenColumnsInfo } from '@/common/interface/store';
 import { SpreadSheet } from '@/sheet-type';
-import { S2Event } from '@/common/constant';
+import { ID_SEPARATOR, S2Event } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 
+export const getHiddenColumnFieldKey = (field: string) => {
+  const targetFieldKey = (
+    field.includes(ID_SEPARATOR) ? 'id' : 'field'
+  ) as keyof Node;
+  return targetFieldKey;
+};
+
 /**
- * @name  获取需要隐藏的 field 转成对应的 Node
+ * @name 获取需要隐藏的 field 转成对应的 Node
  */
 export const getHiddenColumnNodes = (
   spreadsheet: SpreadSheet,
@@ -13,9 +20,10 @@ export const getHiddenColumnNodes = (
 ): Node[] => {
   const columnNodes = spreadsheet.getInitColumnNodes();
   return compact(
-    hiddenColumnFields.map((filed) =>
-      columnNodes.find((node) => node.field === filed),
-    ),
+    hiddenColumnFields.map((field) => {
+      const targetFieldKey = getHiddenColumnFieldKey(field);
+      return columnNodes.find((node) => node[targetFieldKey] === field);
+    }),
   );
 };
 
@@ -111,6 +119,7 @@ export const hideColumns = (
       hiddenColumnFields,
     },
   });
+
   const displaySiblingNode = getHiddenColumnDisplaySiblingNode(
     spreadsheet,
     selectedColumnFields,
@@ -145,7 +154,6 @@ export const hideColumnsByThunkGroup = (
   hiddenColumnFields: string[] = [],
   forceRender = false,
 ) => {
-  spreadsheet.store.set('hiddenColumnsDetail', []);
   const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
     spreadsheet.dataCfg.fields.columns,
     hiddenColumnFields,
@@ -161,8 +169,29 @@ export const isLastColumnAfterHidden = (
 ) => {
   const columnNodes = spreadsheet.getColumnNodes();
   const initColumnNodes = spreadsheet.getInitColumnNodes();
+
   return (
-    last(columnNodes).field === columnField &&
-    last(initColumnNodes).field !== columnField
+    last(columnNodes).id === columnField &&
+    last(initColumnNodes).id !== columnField
   );
+};
+
+export const getValidDisplaySiblingNode = (
+  displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
+) => {
+  return displaySiblingNode?.next || displaySiblingNode?.prev;
+};
+
+export const getValidDisplaySiblingNodeId = (
+  displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
+) => {
+  const node = getValidDisplaySiblingNode(displaySiblingNode);
+  return node?.id;
+};
+
+export const isEqualDisplaySiblingNodeId = (
+  displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
+  nodeId: string,
+) => {
+  return getValidDisplaySiblingNodeId(displaySiblingNode) === nodeId;
 };

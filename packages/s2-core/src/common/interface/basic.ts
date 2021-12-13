@@ -360,6 +360,7 @@ export interface ViewMeta {
   // rowId of cell
   rowId?: string;
   colId?: string;
+  field?: string;
   [key: string]: any;
 }
 

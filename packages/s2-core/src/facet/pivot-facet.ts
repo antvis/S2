@@ -36,6 +36,14 @@ export class PivotFacet extends BaseFacet {
     return this.spreadsheet.theme.rowCell.cell;
   }
 
+  private saveInitColumnNodes(columnNodes: Node[] = []) {
+    const { store } = this.spreadsheet;
+
+    if (!store.get('initColumnNodes')) {
+      store.set('initColumnNodes', columnNodes);
+    }
+  }
+
   protected doLayout(): LayoutResult {
     // 1、layout all nodes in rowHeader and colHeader
     const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =
@@ -48,6 +56,8 @@ export class PivotFacet extends BaseFacet {
         isRowHeader: false,
         facetCfg: this.cfg,
       });
+
+    this.saveInitColumnNodes(colLeafNodes);
     // 2、calculate all related nodes coordinate
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -56,6 +66,7 @@ export class PivotFacet extends BaseFacet {
       colsHierarchy,
     );
     const { dataSet, spreadsheet } = this.cfg;
+
     const getCellMeta = (rowIndex?: number, colIndex?: number): ViewMeta => {
       const i = rowIndex || 0;
       const j = colIndex || 0;
@@ -87,7 +98,7 @@ export class PivotFacet extends BaseFacet {
         rowNode: row,
         isTotals,
       });
-      let valueField;
+      let valueField: string;
       let fieldValue = null;
       if (!isEmpty(data)) {
         valueField = get(data, [EXTRA_FIELD], '');
@@ -120,7 +131,7 @@ export class PivotFacet extends BaseFacet {
       } as ViewMeta;
     };
 
-    const layoutResult = {
+    const layoutResult: LayoutResult = {
       colNodes: colsHierarchy.getNodes(),
       colsHierarchy,
       rowNodes: rowsHierarchy.getNodes(),
@@ -129,7 +140,8 @@ export class PivotFacet extends BaseFacet {
       colLeafNodes,
       getCellMeta,
       spreadsheet,
-    } as LayoutResult;
+    };
+
     return layoutDataPosition(this.cfg, layoutResult);
   }
 
