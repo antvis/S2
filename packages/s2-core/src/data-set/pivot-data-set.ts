@@ -370,7 +370,8 @@ export class PivotDataSet extends BaseDataSet {
 
     const { columns, rows: originRows } = this.fields;
     let rows = originRows;
-    const drillDownIdPathMap = this.spreadsheet.store.get('drillDownIdPathMap');
+    const drillDownIdPathMap =
+      this.spreadsheet?.store.get('drillDownIdPathMap');
     // 判断当前是否为下钻节点
     const isDrillDown = drillDownIdPathMap?.has(rowNode.id);
 
