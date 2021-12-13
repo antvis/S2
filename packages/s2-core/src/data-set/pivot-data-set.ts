@@ -20,6 +20,7 @@ import {
   unset,
   values,
 } from 'lodash';
+import type { CellMeta } from '../common';
 import {
   EXTRA_FIELD,
   ID_SEPARATOR,
@@ -34,9 +35,9 @@ import type {
   Meta,
   PartDrillDownDataCache,
   PartDrillDownFieldInLevel,
+  RowData,
   S2DataConfig,
   ViewMeta,
-  RowData,
 } from '../common/interface';
 import { Node } from '../facet/layout/node';
 import {
@@ -59,7 +60,6 @@ import {
 } from '../utils/dataset/pivot-data-set';
 import { calcActionByType } from '../utils/number-calculate';
 import { handleSortAction } from '../utils/sort-action';
-import type { CellMeta } from '../common';
 import { BaseDataSet } from './base-data-set';
 import type {
   CellDataParams,
@@ -683,7 +683,6 @@ export class PivotDataSet extends BaseDataSet {
         rowDimensionValues,
         colDimensionValues,
         careUndefined: true,
-        isFirstCreate: true,
         rowFields: rows,
         colFields: columns as string[],
         rowPivotMeta: this.rowPivotMeta,
