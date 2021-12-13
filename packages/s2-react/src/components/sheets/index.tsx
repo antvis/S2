@@ -1,6 +1,5 @@
 import React from 'react';
 import { SpreadSheet } from '@antv/s2';
-import { BaseSheet } from './base-sheet';
 import { GridAnalysisSheet } from './grid-analysis-sheet';
 import { TableSheet } from './table-sheet';
 import { SheetComponentsProps } from './interface';

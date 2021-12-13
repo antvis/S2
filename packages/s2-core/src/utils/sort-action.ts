@@ -155,10 +155,7 @@ export const handleSortAction = (params: SortActionParams): string[] => {
   });
 };
 
-export const getSortTypeIcon = (
-  sortParam: SortParam,
-  isValueCell?: boolean,
-) => {
+export const getSortTypeIcon = (sortParam: SortParam, isSortCell?: boolean) => {
   if (sortParam?.sortMethod) {
     if (isAscSort(sortParam?.sortMethod)) {
       return 'groupAsc';
@@ -167,7 +164,7 @@ export const getSortTypeIcon = (
       return 'groupDesc';
     }
   }
-  if (isValueCell) {
+  if (isSortCell) {
     return 'SortDown';
   }
 };
