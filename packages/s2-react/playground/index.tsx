@@ -394,6 +394,20 @@ function MainLayout() {
               }}
             />
             <Switch
+              checkedChildren="隐藏数值列头"
+              unCheckedChildren="显示数值列头"
+              defaultChecked={mergedOptions.style.colCfg.hideMeasureColumn}
+              onChange={(checked) => {
+                updateOptions({
+                  style: {
+                    colCfg: {
+                      hideMeasureColumn: checked,
+                    },
+                  },
+                });
+              }}
+            />
+            <Switch
               checkedChildren="冻结行头开"
               unCheckedChildren="冻结行头关"
               defaultChecked={mergedOptions.frozenRowHeader}

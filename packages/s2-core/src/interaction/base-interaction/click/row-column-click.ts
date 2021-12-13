@@ -2,7 +2,6 @@ import { Event as CanvasEvent } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
 import { concat, difference, isEmpty, isNil } from 'lodash';
 import {
-  getValidDisplaySiblingNodeId,
   hideColumns,
   hideColumnsByThunkGroup,
   isEqualDisplaySiblingNodeId,
@@ -15,7 +14,7 @@ import {
   TOOLTIP_OPERATOR_MENUS,
   InterceptType,
 } from '@/common/constant';
-import { TooltipOperatorOptions, ViewMeta } from '@/common/interface';
+import { TooltipOperatorOptions } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 import { mergeCellInfo, getTooltipOptions } from '@/utils/tooltip';
 
@@ -136,12 +135,16 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
-    const operator: TooltipOperatorOptions = operation.hiddenColumns && {
-      onClick: () => {
-        this.hideSelectedColumns();
-      },
-      menus: TOOLTIP_OPERATOR_MENUS.HiddenColumns,
-    };
+    // 当只有一个列头时, 不显示隐藏按钮
+    const isMultiColumns = this.spreadsheet.getColumnNodes().length > 1;
+
+    const operator: TooltipOperatorOptions = operation.hiddenColumns &&
+      isMultiColumns && {
+        onClick: () => {
+          this.hideSelectedColumns();
+        },
+        menus: TOOLTIP_OPERATOR_MENUS.HiddenColumns,
+      };
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       showSingleTips: true,

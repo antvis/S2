@@ -1,4 +1,4 @@
-import { filter, isEmpty, isUndefined } from 'lodash';
+import { isEmpty, isUndefined } from 'lodash';
 import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { layoutArrange } from '@/facet/layout/layout-hooks';
@@ -99,10 +99,16 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
       return true;
     }
     return hiddenColumnsDetail.every((detail) => {
-      return detail.hideColumnNodes.every(
-        (node) =>
-          node.parent.id !== parentNode.id && node.parent.value !== value,
-      );
+      return detail.hideColumnNodes.every((node) => {
+        // 有数值字段 (hideMeasureColumn: true) 隐藏父节点
+        if (node.field === EXTRA_FIELD) {
+          return (
+            node.parent.id !== parentNode.id && node.parent.value !== value
+          );
+        }
+        // 没有数值字段 (hideMeasureColumn: false) 隐藏自己即可
+        return node.value !== value;
+      });
     });
   });
 
