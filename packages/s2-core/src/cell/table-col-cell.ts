@@ -6,9 +6,14 @@ import { getSortTypeIcon } from 'src/utils/sort-action';
 import { Group } from '@antv/g-canvas';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
 import { S2Event, HORIZONTAL_RESIZE_AREA_KEY_PRE } from '@/common/constant';
-import { renderIcon, renderLine } from '@/utils/g-renders';
+import { renderIcon, renderLine, renderRect } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
-import { DefaultCellTheme, IconTheme, SortParam } from '@/common/interface';
+import {
+  DefaultCellTheme,
+  FormatResult,
+  IconTheme,
+  SortParam,
+} from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
 
@@ -53,7 +58,7 @@ export class TableColCell extends ColCell {
     ) as Group;
   }
 
-  protected isValueCell() {
+  protected isSortCell() {
     return true;
   }
 
@@ -183,5 +188,22 @@ export class TableColCell extends ColCell {
 
   protected getHorizontalResizeAreaName() {
     return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${'table-col-cell'}`;
+  }
+
+  // 明细表列头不应该格式化 https://github.com/antvis/S2/issues/840
+  protected getFormattedFieldValue(): FormatResult {
+    const { label } = this.meta;
+    return {
+      formattedValue: label,
+      value: label,
+    };
+  }
+
+  protected drawBackgroundShape() {
+    const { backgroundColor } = this.getStyle().cell;
+    this.backgroundShape = renderRect(this, {
+      ...this.getCellArea(),
+      fill: backgroundColor,
+    });
   }
 }

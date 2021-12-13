@@ -5,7 +5,7 @@ order: 5
 
 在表格中将两个或多个连续的单元格合并为一个单元格。用户可根据业务要求，在看数或展示时实现分类分析。
 
-![mergeCellGif](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*uzxfQ71t8D4AAAAAAAAAAAAAARQnAQ)
+![mergeCellGif](https://gw.alipayobjects.com/zos/antfincdn/Eq9WwyC2g/merge-cell.gif)
 
 ## 快速上手
 
@@ -277,43 +277,18 @@ const s2DataConfig = {
   data: res.data,
   meta: res.meta
 };
-// 将单元格合并操作集成到未合并单元格的 tooltip 操作中
-const TooltipComponent = (
-  <Button
-    key={ 'button' }
-    onClick={ () => {
-      s2.interaction.mergeCells();
-    } }
-  >
-    合并单元格
-  </Button>
-);
-
-// 将取消单元格合并操作集成到合并单元格的 tooltip 操作中
-const mergedCellsTooltip = (mergedCell: MergedCell) => (
-  <div>
-    合并后的tooltip
-    <Button
-      onClick={ () => {
-        s2.interaction.unmergeCell(mergedCell);
-      } }
-    >
-      取消合并单元格
-    </Button>
-  </div>
-);
 
 const s2options = {
     width: 600,
     height: 400,
     showSeriesNumber: true,
     tooltip: {
-      tooltipComponent: TooltipComponent,
+      content: TooltipContent,
     },
     // 表格渲染后，会展示一个合并单元格
     mergedCellsInfo: [
       { colIndex: 1, rowIndex: 6, showText: true }, // 此单元格的 meta 信息将作为合并单元的 meta 信息
-      { colIndex: 1, rowIndex: 7 }, 
+      { colIndex: 1, rowIndex: 7 },
       { colIndex: 2, rowIndex: 6 },
       { colIndex: 2, rowIndex: 7 },
       { colIndex: 3, rowIndex: 6 },
@@ -323,16 +298,40 @@ const s2options = {
 ;
 const s2 = new PivotSheet(container, s2DataConfig, s2options);
 
-s2.render();
-// 监听 mergedCell 的点击事件，自定义点击后的交互操作
-s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
-  const cell: MergedCell = s2.getCell(event.target);
+// 将单元格合并操作集成到未合并单元格的 tooltip 操作中
+const dataCellTooltip = () => {
+  button.innerText = '点击合并单元格';
+  button.className = 'merge-cells-button';
+  button.onclick = () => s2.interaction.mergeCells(); // 不传入 cellsInfo 时，默认使用当前选中所有的单元格信息
+  return button;
+}; // (按住 Cmd/ Ctrl 多选)
+
+// 将取消单元格合并操作集成到合并单元格的 tooltip 操作中
+const mergedCellsTooltip = (mergedCell) => {
+  button.innerText = '取消合并单元格';
+  button.className = 'merge-cells-button';
+  button.onclick = () => s2.interaction.unmergeCell(mergedCell);
+  return button;
+};
+
+// 监听 dataCell 的点击事件，自定义点击后的交互操作
+s2.on(S2Event.DATA_CELL_CLICK, (event) => {
   s2.tooltip.show({
     position: { x: event.clientX, y: event.clientY },
-    element: mergedCellsTooltip(cell),
+    content: dataCellTooltip(),
   });
 });
 
+// 监听 mergedCell 的点击事件，自定义点击后的交互操作
+s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
+  const cell = s2.getCell(event.target);
+  s2.tooltip.show({
+    position: { x: event.clientX, y: event.clientY },
+    content: mergedCellsTooltip(cell),
+  });
+});
+
+s2.render();
 ```
 
 ## demo 演示
@@ -364,7 +363,7 @@ s2.on(S2Event.MERGED_CELLS_CLICK, (event) => {
 
 | 参数            | 说明                 | 类型                   | 默认值 | 必选 |
 | --------------- | ------------------ | ---------------------- | ------ | ---- |
-| cellsInfo       | 指定一个合并单元格的信息，未传则默认使用当前选中所有的单元格信息 | `MergedCellInfo[]`    | -      |      |
+| cellsInfo       | 指定一个合并单元格的信息，未传则默认使用当前选中所有的单元格信息 | `MergedCellInfo[]`   | -      |      |
 | hideData        | hideData 为 true 时，合并单元格不显示内容。 | `boolean` | false     |      |
 
 ### unmergeCells

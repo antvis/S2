@@ -1,6 +1,6 @@
 import { Event as GEvent } from '@antv/g-canvas';
 import { Spin } from 'antd';
-import { forIn, isEmpty, isFunction, merge } from 'lodash';
+import { forIn, isEmpty, isFunction } from 'lodash';
 import React, { memo, StrictMode, useEffect, useRef, useState } from 'react';
 import {
   S2Event,
@@ -19,6 +19,7 @@ import {
   getBaseCellData,
   getTooltipOptions,
   getSafetyDataConfig,
+  customMerge,
 } from '@antv/s2';
 import { DrillDown } from '@/components/drill-down';
 import { Header } from '@/components/header';
@@ -28,7 +29,7 @@ import { S2Pagination } from '@/components/pagination';
 import {
   handleDrillDown,
   handleDrillDownIcon,
-  getSafetyOptions,
+  getSheetComponentOptions,
 } from '@/utils';
 
 import './index.less';
@@ -49,12 +50,27 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     onRowCellScroll,
     onColCellScroll,
     onCellScroll,
+
     onRowCellClick,
-    onColCellClick,
-    onMergedCellsClick,
+    onRowCellHover,
     onRowCellDoubleClick,
+
+    onColCellClick,
+    onColCellHover,
     onColCellDoubleClick,
+
+    onDataCellClick,
+    onDataCellHover,
+    onDataCellDoubleClick,
+
+    onMergedCellClick,
+    onMergedCellHover,
     onMergedCellsDoubleClick,
+
+    onCornerCellDoubleClick,
+    onCornerCellHover,
+    onCornerCellClick,
+
     onDataCellMouseUp,
     getSpreadSheet,
     partDrillDown,
@@ -75,7 +91,11 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   );
 
   const renderSpreadSheet = (): SpreadSheet => {
-    const params: S2Constructor = [container.current, dataCfg, options];
+    const params: S2Constructor = [
+      container.current,
+      dataCfg,
+      getSheetComponentOptions(options),
+    ];
     if (spreadsheet) {
       return spreadsheet(...params);
     }
@@ -109,27 +129,60 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       string,
       (...args: unknown[]) => unknown
     > = {
-      [S2Event.DATA_CELL_MOUSE_UP]: (ev: GEvent) => {
-        onDataCellMouseUp?.(getBaseCellData(ev));
+      [S2Event.DATA_CELL_MOUSE_UP]: (event: GEvent) => {
+        onDataCellMouseUp?.(getBaseCellData(event));
       },
-      [S2Event.MERGED_CELLS_CLICK]: (ev: GEvent) => {
-        onMergedCellsClick?.(getBaseCellData(ev));
+
+      [S2Event.MERGED_CELLS_CLICK]: (event: GEvent) => {
+        onMergedCellClick?.(getBaseCellData(event));
       },
-      [S2Event.ROW_CELL_CLICK]: (ev: GEvent) => {
-        onRowCellClick?.(getBaseCellData(ev));
+      [S2Event.MERGED_CELLS_HOVER]: (event: GEvent) => {
+        onMergedCellHover?.(getBaseCellData(event));
       },
-      [S2Event.COL_CELL_CLICK]: (ev: GEvent) => {
-        onColCellClick?.(getBaseCellData(ev));
+      [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (event: GEvent) => {
+        onMergedCellsDoubleClick?.(getBaseCellData(event));
       },
-      [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (ev: GEvent) => {
-        onMergedCellsDoubleClick?.(getBaseCellData(ev));
+
+      [S2Event.ROW_CELL_CLICK]: (event: GEvent) => {
+        onRowCellClick?.(getBaseCellData(event));
       },
-      [S2Event.ROW_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
-        onRowCellDoubleClick?.(getBaseCellData(ev));
+      [S2Event.ROW_CELL_HOVER]: (event: GEvent) => {
+        onRowCellHover?.(getBaseCellData(event));
       },
-      [S2Event.COL_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
-        onColCellDoubleClick?.(getBaseCellData(ev));
+      [S2Event.ROW_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onRowCellDoubleClick?.(getBaseCellData(event));
       },
+
+      [S2Event.COL_CELL_CLICK]: (event: GEvent) => {
+        onColCellClick?.(getBaseCellData(event));
+      },
+      [S2Event.COL_CELL_HOVER]: (event: GEvent) => {
+        onColCellHover?.(getBaseCellData(event));
+      },
+      [S2Event.COL_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onColCellDoubleClick?.(getBaseCellData(event));
+      },
+
+      [S2Event.DATA_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onDataCellDoubleClick?.(getBaseCellData(event));
+      },
+      [S2Event.DATA_CELL_CLICK]: (event: GEvent) => {
+        onDataCellClick?.(getBaseCellData(event));
+      },
+      [S2Event.DATA_CELL_HOVER]: (event: GEvent) => {
+        onDataCellHover?.(getBaseCellData(event));
+      },
+
+      [S2Event.CORNER_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onCornerCellDoubleClick?.(getBaseCellData(event));
+      },
+      [S2Event.CORNER_CELL_HOVER]: (event: GEvent) => {
+        onCornerCellHover?.(getBaseCellData(event));
+      },
+      [S2Event.CORNER_CELL_CLICK]: (event: GEvent) => {
+        onCornerCellClick?.(getBaseCellData(event));
+      },
+
       [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
         targetRow: TargetLayoutNode,
       ) => {
@@ -153,29 +206,13 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     });
   };
 
-  const unBindEvent = () => {
-    [
-      S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
-      S2Event.LAYOUT_ROW_NODE_BORDER_REACHED,
-      S2Event.LAYOUT_COL_NODE_BORDER_REACHED,
-      S2Event.LAYOUT_CELL_SCROLL,
-      S2Event.RANGE_SORT,
-      S2Event.MERGED_CELLS_CLICK,
-      S2Event.ROW_CELL_CLICK,
-      S2Event.COL_CELL_CLICK,
-      S2Event.DATA_CELL_MOUSE_UP,
-    ].forEach((eventName) => {
-      baseSpreadsheet.current.off(eventName);
-    });
-  };
-
-  const iconClickCallback = (
+  const onIconClick = (
     sheetInstance: SpreadSheet,
     cacheDrillFields?: string[],
     disabledFields?: string[],
     event?: GEvent,
   ) => {
-    const element = (
+    const content = (
       <DrillDown
         {...partDrillDown.drillConfig}
         setDrillFields={setDrillFields}
@@ -189,15 +226,12 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
       if (!showTooltip) {
         return;
       }
-      sheetInstance.showTooltip({
+      sheetInstance.showTooltip<React.ReactNode>({
         position: {
           x: event.clientX,
           y: event.clientY,
         },
-        // TODO: s2-react增加自己的options类型
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        element,
+        content,
       });
     }
   };
@@ -212,10 +246,10 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
 
     // 处理下钻参数
     if (partDrillDown) {
-      curOptions = handleDrillDownIcon(curProps, curSheet, iconClickCallback);
+      curOptions = handleDrillDownIcon(curProps, curSheet, onIconClick);
     }
 
-    curSheet.setOptions(getSafetyOptions(curOptions));
+    curSheet.setOptions(curOptions);
   };
 
   const setDataCfg = () => {
@@ -260,7 +294,6 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   useEffect(() => {
     buildSpreadSheet();
     return () => {
-      unBindEvent();
       baseSpreadsheet.current.destroy();
     };
   }, []);
@@ -327,13 +360,13 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
 
   useEffect(() => {
     if (!ownSpreadsheet || isEmpty(options.pagination)) return;
-    const newOptions = merge({}, options, {
+    const newOptions = customMerge(options, {
       pagination: {
         current,
         pageSize,
       },
     });
-    const newProps = merge({}, props, {
+    const newProps = customMerge(props, {
       options: newOptions,
     });
     setOptions(ownSpreadsheet, newProps);
@@ -344,7 +377,13 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
         {header && (
-          <Header {...header} sheet={ownSpreadsheet} width={options.width} />
+          <Header
+            {...header}
+            sheet={ownSpreadsheet}
+            width={options.width}
+            dataCfg={getSafetyDataConfig(dataCfg)}
+            options={getSheetComponentOptions(options)}
+          />
         )}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
         {showPagination && (

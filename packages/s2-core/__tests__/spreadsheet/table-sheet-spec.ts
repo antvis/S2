@@ -1,4 +1,4 @@
-import { getMockData } from '../../../s2-react/__tests__/util/helpers';
+import { getContainer, getMockData } from 'tests/util/helpers';
 import { TableSheet, S2Options, S2DataConfig } from '@/index';
 
 const data = getMockData(
@@ -23,7 +23,7 @@ const columns = [
   'count',
   'discount',
   'profit',
-] as const;
+];
 
 const meta = [
   {
@@ -33,16 +33,18 @@ const meta = [
   {
     field: 'profit',
     name: '利润',
-    formatter: (v) => `${v}元`,
+    formatter: (v: number) => `${v}元`,
   },
 ];
+
+const newLineText = `1\t\n2`;
 
 const dataCfg: S2DataConfig = {
   fields: {
     columns,
   },
   meta,
-  data,
+  data: data.map((e) => ({ ...e, express_type: newLineText })),
   sortParams: [
     {
       sortFieldId: 'count',
@@ -53,7 +55,7 @@ const dataCfg: S2DataConfig = {
       sortMethod: 'ASC',
     },
   ],
-} as unknown as S2DataConfig;
+};
 
 const options: S2Options = {
   width: 800,
@@ -71,23 +73,25 @@ const options: S2Options = {
     enableCopy: true,
     hoverHighlight: false,
     linkFields: ['order_id', 'customer_name'],
+    hiddenColumnFields: ['order_date'],
   },
   frozenRowCount: 2,
   frozenColCount: 1,
   frozenTrailingColCount: 1,
   frozenTrailingRowCount: 1,
   showDefaultHeaderActionIcon: true,
+  tooltip: {
+    operation: {
+      hiddenColumns: true,
+    },
+  },
 };
-
-const container = document.createElement('div');
-document.body.appendChild(container);
-
-const s2 = new TableSheet(container, dataCfg, options);
-
-s2.render();
 
 describe('TableSheet normal spec', () => {
   test('demo', () => {
+    const s2 = new TableSheet(getContainer(), dataCfg, options);
+    s2.render();
+
     expect(1).toBe(1);
   });
 });

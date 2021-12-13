@@ -1,5 +1,7 @@
-import { SpreadSheet } from '@/sheet-type';
-import { SortParam } from '@/common/interface';
+import type { Event as CanvasEvent } from '@antv/g-canvas';
+import type { SpreadSheet } from '@/sheet-type';
+import type { S2CellType, SortParam } from '@/common/interface';
+import type { BaseTooltip } from '@/ui/tooltip';
 
 export type TooltipDataItem = Record<string, any>;
 
@@ -74,12 +76,13 @@ export type TooltipInterpretationOptions = {
   render?: Element | string;
 };
 
-export type TooltipShowOptions = {
+export type TooltipShowOptions<T = TooltipContentType> = {
   position: TooltipPosition;
   data?: TooltipData;
   cellInfos?: TooltipDataItem[];
   options?: TooltipOptions;
-  element?: Element | string;
+  content?: ((cell: S2CellType) => T) | T;
+  event?: CanvasEvent | MouseEvent;
 };
 
 export type TooltipData = {
@@ -134,23 +137,23 @@ export interface OrderOption {
 
 export type TooltipAutoAdjustBoundary = 'body' | 'container';
 
-export interface BaseTooltipConfig {
+export type TooltipContentType = Element | string;
+
+export interface BaseTooltipConfig<T = TooltipContentType> {
   readonly showTooltip?: boolean;
-  // replace the whole default tooltip component
-  readonly tooltipComponent?: Element | string;
+  // Custom content
+  readonly content?: TooltipShowOptions<T>['content'];
   // Tooltip operation
   readonly operation?: TooltipOperation;
   readonly autoAdjustBoundary?: TooltipAutoAdjustBoundary;
-  readonly getTooltipComponent?: (
-    options: TooltipShowOptions,
-    container: HTMLElement,
-  ) => void;
+  readonly renderTooltip?: (spreadsheet: SpreadSheet) => BaseTooltip;
 }
 
-export interface Tooltip extends BaseTooltipConfig {
-  readonly row?: BaseTooltipConfig;
-  readonly col?: BaseTooltipConfig;
-  readonly cell?: BaseTooltipConfig;
+export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {
+  readonly row?: BaseTooltipConfig<T>;
+  readonly col?: BaseTooltipConfig<T>;
+  readonly corner?: BaseTooltipConfig<T>;
+  readonly data?: BaseTooltipConfig<T>;
 }
 
 export interface TooltipOperation {

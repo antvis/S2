@@ -9,19 +9,20 @@ export const addTotals = (params: TotalParams) => {
   const totalsConfig = spreadsheet.getTotalsConfig(
     isFirstField ? currentField : lastField,
   );
-  let func: 'unshift' | 'push';
-  let value;
+  let action: 'unshift' | 'push';
+  let totalValue: TotalClass;
   if (isFirstField) {
     // check to see if grand total is added
     if (totalsConfig.showGrandTotals) {
-      func = totalsConfig.reverseLayout ? 'unshift' : 'push';
-      value = new TotalClass(totalsConfig.label, false, true);
+      action = totalsConfig.reverseLayout ? 'unshift' : 'push';
+      totalValue = new TotalClass(totalsConfig.label, false, true);
     }
   } else if (totalsConfig?.showSubTotals && size(fieldValues) > 1) {
     if (currentField !== EXTRA_FIELD) {
-      func = totalsConfig.reverseSubLayout ? 'unshift' : 'push';
-      value = new TotalClass(totalsConfig.subLabel, true);
+      action = totalsConfig.reverseSubLayout ? 'unshift' : 'push';
+      totalValue = new TotalClass(totalsConfig.subLabel, true);
     }
   }
-  fieldValues[func]?.(value);
+
+  fieldValues[action]?.(totalValue);
 };

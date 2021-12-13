@@ -22,6 +22,7 @@ import {
   mapKeys,
   every,
   isObject,
+  merge,
 } from 'lodash';
 import * as CSS from 'csstype';
 import { Event as CanvasEvent } from '@antv/g-canvas';
@@ -533,31 +534,35 @@ export const getActiveCellsTooltipData = (
 };
 
 export const getTooltipOptionsByCellType = (
-  cellTooltip: Tooltip,
+  cellTooltipConfig: Tooltip = {},
   cellType: CellTypes,
-) => {
-  const getOptionsByCell = (cell: BaseTooltipConfig) => {
-    return { ...cellTooltip, ...cell };
+): Tooltip => {
+  const getOptionsByCell = (cellConfig: BaseTooltipConfig) => {
+    return { ...cellTooltipConfig, ...cellConfig };
   };
 
-  const { col, row, cell } = cellTooltip || {};
-  if (col && cellType === CellTypes.COL_CELL) {
+  const { col, row, data, corner } = cellTooltipConfig;
+
+  if (cellType === CellTypes.COL_CELL) {
     return getOptionsByCell(col);
   }
-  if (row && cellType === CellTypes.ROW_CELL) {
+  if (cellType === CellTypes.ROW_CELL) {
     return getOptionsByCell(row);
   }
-  if (cell && cellType === CellTypes.DATA_CELL) {
-    return getOptionsByCell(cell);
+  if (cellType === CellTypes.DATA_CELL) {
+    return getOptionsByCell(data);
+  }
+  if (cellType === CellTypes.CORNER_CELL) {
+    return getOptionsByCell(corner);
   }
 
-  return { ...cellTooltip };
+  return { ...cellTooltipConfig };
 };
 
 export const getTooltipOptions = (
   spreadsheet: SpreadSheet,
   event: CanvasEvent | MouseEvent | Event,
-) => {
+): Tooltip => {
   const cellType = spreadsheet.getCellType?.(event.target);
   return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType);
 };

@@ -9,9 +9,13 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import { FormatResult, TextTheme } from '@/common/interface';
+import {
+  CellBorderPosition,
+  FormatResult,
+  TextTheme,
+} from '@/common/interface';
 import { RowHeaderConfig } from '@/facet/header/row';
-import { getTextPosition } from '@/utils/cell/cell';
+import { getTextPosition, getBorderPositionAndStyle } from '@/utils/cell/cell';
 import { renderLine, renderRect, renderTreeIcon } from '@/utils/g-renders';
 import { getAllChildrenNodeHeight } from '@/utils/get-all-children-node-height';
 import { getAdjustPosition } from '@/utils/text-absorption';
@@ -171,52 +175,30 @@ export class RowCell extends HeaderCell {
   }
 
   protected drawRectBorder() {
-    const { position, width, viewportWidth, scrollX } = this.headerConfig;
-    const {
-      horizontalBorderColor,
-      horizontalBorderWidth,
-      horizontalBorderColorOpacity,
-      verticalBorderColor,
-      verticalBorderWidth,
-      verticalBorderColorOpacity,
-    } = this.getStyle().cell;
-    const { x, y, height, width: cellWidth } = this.getCellArea();
-    // horizontal border
-    const contentIndent = this.getContentIndent();
-    renderLine(
-      this,
-      {
-        x1: x + contentIndent,
-        y1: y + height,
-        x2: position.x + width + viewportWidth + scrollX,
-        y2: y + height,
-      },
-      {
-        stroke: horizontalBorderColor,
-        lineWidth: horizontalBorderWidth,
-        opacity: horizontalBorderColorOpacity,
-      },
-    );
+    const { x } = this.getCellArea();
 
-    // vertical border
-    renderLine(
-      this,
-      {
-        x1: x + contentIndent + cellWidth,
-        y1: y,
-        x2: x + contentIndent + cellWidth,
-        y2: y + height,
-      },
-      {
-        stroke: verticalBorderColor,
-        lineWidth: verticalBorderWidth,
-        opacity: verticalBorderColorOpacity,
-      },
-    );
+    const contentIndent = this.getContentIndent();
+    const finalX = this.spreadsheet.isHierarchyTreeType()
+      ? x
+      : x + contentIndent;
+    [CellBorderPosition.BOTTOM, CellBorderPosition.LEFT].forEach((type) => {
+      const { position, style } = getBorderPositionAndStyle(
+        type,
+        {
+          ...this.getCellArea(),
+          x: finalX,
+        },
+        this.getStyle().cell,
+      );
+      renderLine(this, position, style);
+    });
   }
 
   protected drawResizeAreaInLeaf() {
-    if (!this.meta.isLeaf) {
+    if (
+      !this.meta.isLeaf ||
+      !this.shouldDrawResizeAreaByType('rowCellVertical')
+    ) {
       return;
     }
 

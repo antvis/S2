@@ -109,7 +109,6 @@ export const getInvisibleInfo = (
       cellInfo.rowIndex,
       cellInfo.colIndex,
     );
-
     if (meta) {
       const cell = sheet?.facet?.cfg.dataCell(meta);
       viewMeta = cellInfo?.showText ? meta : viewMeta;
@@ -123,14 +122,14 @@ export const getInvisibleInfo = (
  * get { cells, invisibleCellInfo, cellsMeta } in the inside of visible area through mergeCellInfo
  * @param cellsInfos
  * @param allVisibleCells
- * @returns { cells, visibleCellInfo, cellsMeta }
+ * @returns { cells, invisibleCellInfo, cellsMeta }
  */
-const getVisibleInfo = (
+export const getVisibleInfo = (
   cellsInfos: MergedCellInfo[],
   allVisibleCells: S2CellType[],
 ) => {
   const cells: S2CellType[] = [];
-  const visibleCellInfo: MergedCellInfo[] = [];
+  const invisibleCellInfo: MergedCellInfo[] = [];
   let cellsMeta: ViewMeta | Node | undefined;
   forEach(cellsInfos, (cellInfo: MergedCellInfo) => {
     const findCell = find(allVisibleCells, (cell: S2CellType) => {
@@ -148,45 +147,45 @@ const getVisibleInfo = (
         ? (findCell?.getMeta() as ViewMeta)
         : cellsMeta;
     } else {
-      visibleCellInfo.push(cellInfo);
+      invisibleCellInfo.push(cellInfo);
     }
   });
-  return { cells, visibleCellInfo, cellsMeta };
+  return { cells, invisibleCellInfo, cellsMeta };
 };
 
 /**
- * return the collections of cells depended by the merged cells information
+ * get the data cell and meta that make up the mergedCell
  * @param cellsInfos
  * @param allVisibleCells
  * @param sheet
  */
-const getCellsByInfo = (
+export const getTempMergedCell = (
   allVisibleCells: S2CellType[],
   sheet?: SpreadSheet,
   cellsInfos: MergedCellInfo[] = [],
 ): TempMergedCell => {
-  const { cellsMeta, cells, visibleCellInfo } = getVisibleInfo(
+  const { cellsMeta, cells, invisibleCellInfo } = getVisibleInfo(
     cellsInfos,
     allVisibleCells,
   );
   let viewMeta: ViewMeta | Node = cellsMeta;
-  let allCells: S2CellType[] = cells;
+  let mergedAllCells: S2CellType[] = cells;
   // 当 MergedCell 只有部分在可视区域时，在此获取 MergedCell 不在可视区域内的 cells
   if (
-    visibleCellInfo?.length > 0 &&
-    visibleCellInfo.length < cellsInfos.length
+    invisibleCellInfo?.length > 0 &&
+    invisibleCellInfo.length < cellsInfos.length
   ) {
     const { cells: invisibleCells, cellsMeta: invisibleMeta } =
-      getInvisibleInfo(visibleCellInfo, sheet);
+      getInvisibleInfo(invisibleCellInfo, sheet);
     viewMeta = viewMeta || invisibleMeta;
-    allCells = cells.concat(invisibleCells);
+    mergedAllCells = cells.concat(invisibleCells);
   }
 
   if (!isEmpty(cells) && !viewMeta) {
-    viewMeta = cells[0]?.getMeta() as ViewMeta; // 如果没有指定合并后的文本绘制的位置，默认画在选择的第一个单元格内
+    viewMeta = mergedAllCells[0]?.getMeta() as ViewMeta; // 如果没有指定合并后的文本绘制的位置，默认画在选择的第一个单元格内
   }
   return {
-    cells: allCells,
+    cells: mergedAllCells,
     viewMeta: viewMeta as ViewMeta,
   };
 };
@@ -215,14 +214,14 @@ export const getActiveCellsInfo = (sheet: SpreadSheet) => {
  * @param cellsInfo
  * @param hideData
  */
-export const mergeCells = (
+export const mergeCell = (
   sheet: SpreadSheet,
   cellsInfo?: MergedCellInfo[],
   hideData?: boolean,
 ) => {
-  const mergeCellsInfo = cellsInfo || getActiveCellsInfo(sheet);
+  const mergeCellInfo = cellsInfo || getActiveCellsInfo(sheet);
 
-  if (mergeCellsInfo?.length <= 1) {
+  if (mergeCellInfo?.length <= 1) {
     // eslint-disable-next-line no-console
     console.error('then merged cells must be more than one');
     return;
@@ -232,17 +231,17 @@ export const mergeCells = (
     sheet.panelScrollGroup.getChildren(),
     (child) => !(child instanceof MergedCell),
   ) as unknown as S2CellType[];
-  const { cells, viewMeta } = getCellsByInfo(
+  const { cells, viewMeta } = getTempMergedCell(
     allVisibleCells,
     sheet,
-    mergeCellsInfo,
+    mergeCellInfo,
   );
 
   if (!isEmpty(cells)) {
-    const mergedCellsInfo = sheet.options?.mergedCellsInfo || [];
-    mergedCellsInfo.push(mergeCellsInfo);
+    const mergedCellInfoList = sheet.options?.mergedCellsInfo || [];
+    mergedCellInfoList.push(mergeCellInfo);
     sheet.setOptions({
-      mergedCellsInfo: mergedCellsInfo,
+      mergedCellsInfo: mergedCellInfoList,
     });
     const meta = hideData ? undefined : viewMeta;
     sheet.panelScrollGroup.add(new MergedCell(sheet, cells, meta));
@@ -254,17 +253,16 @@ export const mergeCells = (
  * @param removeMergedCell
  * @param mergedCellsInfo
  */
-const removeUnmergedCellsInfo = (
+export const removeUnmergedCellsInfo = (
   removeMergedCell: MergedCell,
   mergedCellsInfo: MergedCellInfo[][],
-) => {
+): MergedCellInfo[][] => {
   const removeCellInfo = map(removeMergedCell.cells, (cell: S2CellType) => {
     return {
       colIndex: cell.getMeta().colIndex,
       rowIndex: cell.getMeta().rowIndex,
     };
   });
-
   return filter(mergedCellsInfo, (mergedCellInfo) => {
     const newMergedCellInfo = mergedCellInfo.map((info) => {
       if (info.showText) {
@@ -319,7 +317,7 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
   // allVisibleMergedCells 所有可视区域的 mergedCell
   const allVisibleMergedCells: TempMergedCell[] = [];
   mergedCellsInfo.forEach((cellsInfo: MergedCellInfo[]) => {
-    const tempMergedCell = getCellsByInfo(allCells, sheet, cellsInfo);
+    const tempMergedCell = getTempMergedCell(allCells, sheet, cellsInfo);
     if (tempMergedCell.cells.length > 0) {
       allVisibleMergedCells.push(tempMergedCell);
     }

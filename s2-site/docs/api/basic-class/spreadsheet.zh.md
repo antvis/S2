@@ -104,13 +104,23 @@ export enum CellTypes {
 
 ```ts
 type BBox = {
-    x: number;
-    y: number;
-    minX: number;
-    minY: number;
-    maxX: number;
-    maxY: number;
-    width: number;
-    height: number;
+  x: number;
+  y: number;
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+  width: number;
+  height: number;
 };
+```
+
+### S2Constructor
+
+功能描述：透视表内部构造参数
+
+```ts
+export type S2MountContainer = string | HTMLElement;
+
+export type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];
 ```

@@ -1,4 +1,4 @@
-import { createFakeSpreadSheet } from 'tests/util/helpers';
+import { createFakeSpreadSheet, sleep } from 'tests/util/helpers';
 import type { SpreadSheet } from '@/sheet-type/spread-sheet';
 import { BaseTooltip } from '@/ui/tooltip';
 import { TOOLTIP_CONTAINER_CLS, TOOLTIP_POSITION_OFFSET } from '@/common';
@@ -13,6 +13,10 @@ describe('Tooltip Tests', () => {
   beforeEach(() => {
     s2 = createFakeSpreadSheet();
     tooltip = new BaseTooltip(s2);
+  });
+
+  afterEach(() => {
+    tooltip?.destroy();
   });
 
   test('should init tooltip', () => {
@@ -117,44 +121,44 @@ describe('Tooltip Tests', () => {
         x: 10,
         y: 10,
       },
-      element: 'text',
+      content: 'text',
     });
 
     expect(tooltip.container.innerHTML).toEqual('text');
   });
 
-  test('should display custom dom element', () => {
+  test('should display custom dom element', async () => {
     const element1 = document.createElement('span');
     const element2 = document.createElement('span');
+
     const position = {
       x: 10,
       y: 10,
     };
 
-    element1.className = 'text1';
-    element2.className = 'text2';
+    tooltip.show({
+      position,
+      content: element1,
+    });
+
+    expect(tooltip.container.contains(element1)).toBeTruthy();
 
     tooltip.show({
       position,
-      element: element1,
+      content: element2,
     });
 
-    expect(tooltip.container.querySelector('.text1')).toBeTruthy();
+    await sleep(500);
 
-    tooltip.show({
-      position,
-      element: element2,
-    });
-
-    expect(tooltip.container.querySelector('.text2')).toBeTruthy();
-    expect(tooltip.container.children.length).toBe(1);
+    expect(tooltip.container.contains(element2)).toBeTruthy();
+    expect(tooltip.container.children).toHaveLength(1);
   });
 
-  test('should display custom string tooltipComponent', () => {
+  test('should display custom string content', () => {
     Object.defineProperty(s2.options, 'tooltip', {
       value: {
         ...s2.options.tooltip,
-        tooltipComponent: 'text',
+        content: 'text',
       },
       configurable: true,
     });
@@ -169,14 +173,14 @@ describe('Tooltip Tests', () => {
     expect(tooltip.container.innerHTML).toEqual('text');
   });
 
-  test('should display custom dom tooltipComponent', () => {
+  test('should display custom dom content', () => {
     const element = document.createElement('span');
     element.className = 'text';
 
     Object.defineProperty(s2.options, 'tooltip', {
       value: {
         ...s2.options.tooltip,
-        tooltipComponent: element,
+        content: element,
       },
       configurable: true,
     });
@@ -189,31 +193,97 @@ describe('Tooltip Tests', () => {
     });
 
     expect(tooltip.container.querySelector('.text')).toBeTruthy();
+    expect(tooltip.container.contains(element)).toBeTruthy();
   });
 
-  test('should get getTooltipComponent', () => {
-    const getTooltipComponent = jest.fn();
+  test('should replace tooltip content by call method', () => {
+    const position = {
+      x: 10,
+      y: 10,
+    };
 
+    tooltip.show({
+      position,
+      content: 'content1',
+    });
+
+    expect(tooltip.container.innerHTML).toEqual('content1');
+
+    tooltip.show({
+      position,
+      content: 'content2',
+    });
+
+    expect(tooltip.container.innerHTML).toEqual('content2');
+  });
+
+  test('should set empty tooltip content', () => {
+    const position = {
+      x: 10,
+      y: 10,
+    };
+
+    tooltip.show({
+      position,
+      content: 'content1',
+    });
+
+    expect(tooltip.container.innerHTML).toEqual('content1');
+
+    tooltip.show({
+      position,
+      content: '',
+    });
+
+    expect(tooltip.container.innerHTML).toEqual('');
+  });
+
+  test('should display custom string content by call method and ignore option config', () => {
     Object.defineProperty(s2.options, 'tooltip', {
       value: {
         ...s2.options.tooltip,
-        getTooltipComponent,
+        content: 'text',
       },
       configurable: true,
     });
 
-    const showOptions = {
+    tooltip.show({
       position: {
         x: 10,
         y: 10,
       },
-    };
+      content: 'content',
+    });
 
-    tooltip.show(showOptions);
+    expect(tooltip.container.innerHTML).toEqual('content');
+  });
 
-    expect(getTooltipComponent).toHaveBeenCalledWith(
-      showOptions,
-      tooltip.container,
-    );
+  test('should display custom string content by call method and ignore all option config', () => {
+    Object.defineProperty(s2.options, 'tooltip', {
+      value: {
+        ...s2.options.tooltip,
+        content: 'text',
+        row: {
+          content: 'row content',
+        },
+        col: {
+          content: 'col content',
+        },
+        cell: {
+          content: 'cell content',
+        },
+      },
+      configurable: true,
+    });
+
+    tooltip.show({
+      position: {
+        x: 10,
+        y: 10,
+      },
+      content: 'custom content',
+    });
+
+    expect(tooltip.container.innerHTML).toEqual('custom content');
   });
 });

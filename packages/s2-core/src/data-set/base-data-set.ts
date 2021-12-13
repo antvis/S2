@@ -75,7 +75,7 @@ export abstract class BaseDataSet {
    * 获得字段名称
    * @param field
    */
-  public getFieldFormatter(field: string, viewMeta?: ViewMeta): Formatter {
+  public getFieldFormatter(field: string): Formatter {
     return get(this.getFieldMeta(field, this.meta), 'formatter', identity);
   }
 
@@ -158,11 +158,13 @@ export abstract class BaseDataSet {
    * @param query
    * @param isTotals
    * @param isRow
+   * @param drillDownFields
    */
   public abstract getMultiData(
     query: DataType,
     isTotals?: boolean,
     isRow?: boolean,
+    drillDownFields?: string[],
   ): DataType[];
 
   public moreThanOneValue() {

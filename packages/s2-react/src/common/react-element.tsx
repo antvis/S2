@@ -1,20 +1,20 @@
 import React from 'react';
 import cx from 'classnames';
-import { S2_PREFIX_CLS } from '@antv/s2';
+import { S2_PREFIX_CLS, TooltipContentType } from '@antv/s2';
 
 interface Props {
-  element: Element | string;
+  content: TooltipContentType;
   style?: any;
   className?: string;
 }
 export class ReactElement extends React.PureComponent<Props> {
   render() {
-    const { style = {}, className, element } = this.props;
+    const { style = {}, className, content } = this.props;
     let htmlNode: string;
-    if (typeof element !== 'string') {
-      htmlNode = element?.innerHTML || '';
+    if (typeof content !== 'string') {
+      htmlNode = content?.innerHTML || '';
     } else {
-      htmlNode = element;
+      htmlNode = content;
     }
     return (
       <div

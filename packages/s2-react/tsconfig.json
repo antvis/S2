@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "tests/*": ["./__tests__/*"],
     },
     "useDefineForClassFields": true,
     "forceConsistentCasingInFileNames": true,

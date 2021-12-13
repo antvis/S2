@@ -8,7 +8,7 @@ fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json',
 )
   .then((res) => res.json())
-  .then((data) => {
+  .then((dataCfg) => {
     const s2Options = {
       width: 600,
       height: 480,
@@ -16,7 +16,7 @@ fetch(
 
     // 明细表只需要 columns 字段
     const defaultFields = {
-      columns: ['province', 'city', 'type', 'price', 'cost'],
+      columns: ['province', 'city', 'type', 'sub_type', 'number'],
     };
 
     const defaultSwitcherFields = {
@@ -26,8 +26,8 @@ fetch(
           { id: 'province' },
           { id: 'city' },
           { id: 'type' },
-          { id: 'price' },
-          { id: 'cost' },
+          { id: 'sub_type' },
+          { id: 'number' },
         ],
       },
     };
@@ -66,9 +66,9 @@ fetch(
         <div>
           <Switcher {...switcherFields} onSubmit={onSubmit} />
           <SheetComponent
-            sheetType={'table'}
+            sheetType="table"
             adaptive={false}
-            dataCfg={{ data, fields }}
+            dataCfg={{ ...dataCfg, fields }}
             options={{ ...s2Options, interaction: { hiddenColumnFields } }}
           />
         </div>

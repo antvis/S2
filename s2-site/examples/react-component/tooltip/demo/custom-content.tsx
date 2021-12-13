@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { SheetComponent } from '@antv/s2-react';
+import insertCss from 'insert-css';
 import '@antv/s2-react/dist/style.min.css';
 
 fetch(
@@ -8,45 +9,38 @@ fetch(
 )
   .then((res) => res.json())
   .then((dataCfg) => {
+    const CustomTooltip = (
+      <div className="tooltip-custom-component">content</div>
+    );
+    const RowTooltip = (
+      <div className="tooltip-custom-component">rowTooltip</div>
+    );
+
     const s2Options = {
       width: 600,
       height: 480,
       tooltip: {
-        showTooltip: true,
+        content: CustomTooltip,
         row: {
-          showTooltip: false,
+          content: RowTooltip,
         },
       },
     };
 
-    const CustomTooltip = () => <div>demo</div>;
-
-    const onColCellClick = (value) => {
-      if (!value?.viewMeta) {
-        return;
-      }
-      const { spreadsheet, id } = value.viewMeta;
-      if (id === 'root[&]家具') {
-        const position = {
-          x: value.event.clientX,
-          y: value.event.clientY,
-        };
-        spreadsheet.tooltip.show({
-          position,
-          element: <CustomTooltip />,
-        });
-      } else {
-        spreadsheet.hideTooltip();
-      }
-    };
     ReactDOM.render(
       <SheetComponent
         sheetType="pivot"
         adaptive={false}
         dataCfg={dataCfg}
         options={s2Options}
-        onColCellClick={onColCellClick}
       />,
       document.getElementById('container'),
     );
   });
+
+insertCss(`
+  .tooltip-custom-component {
+    padding: 12px;
+    height: 50px;
+  }
+`);

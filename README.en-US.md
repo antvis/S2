@@ -176,7 +176,7 @@ s2.render()
 
 [**@AntV**](https://github.com/orgs/antvis/people)
 
-## 🤝  Contributing
+## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome.
 Feel free to check [issues](https://github.com/antvis/S2/issues) page if you want to contribute.
@@ -184,7 +184,7 @@ Feel free to check [issues](https://github.com/antvis/S2/issues) page if you wan
 ```bash
 git clone git@github.com:antvis/S2.git
 
-cd s2
+cd S2
 
 yarn
 
@@ -197,13 +197,13 @@ yarn site:bootstrap
 yarn site:start
 ```
 
-## 👬 Contributors
-
-![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
-
 ## 📧 Contact Us
 
 <img src="width: 100%; height: auto" href="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg" alt="S2"></a>
+
+## 👬 Contributors
+
+![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
 
 ## 📄 License
 

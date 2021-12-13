@@ -86,6 +86,9 @@ describe('PivotSheet Export Test', () => {
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
     expect(rows).toHaveLength(14);
+    expect(rows[0].split('\t')[1]).toEqual('"province"');
+    expect(rows[1].split('\t')[1]).toEqual('"city"');
+
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(34);
     });
@@ -108,6 +111,8 @@ describe('PivotSheet Export Test', () => {
     const data = copyData(s2, '\t');
     const rows = data.split('\n');
     expect(rows).toHaveLength(16);
+    expect(rows[0].split('\t')[1]).toEqual('"province"');
+    expect(rows[1].split('\t')[1]).toEqual('"city"');
     rows.forEach((e) => {
       expect(e.split('\t')).toHaveLength(34);
     });

@@ -21,7 +21,7 @@ import { Header } from '@/components/header';
 import { BaseSheetProps } from '@/components/sheets/interface';
 import { useResizeEffect, usePaginationEffect } from '@/hooks';
 import { S2Pagination } from '@/components/pagination';
-import { getSafetyOptions } from '@/utils';
+import { getSheetComponentOptions } from '@/utils';
 
 export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   const {
@@ -40,7 +40,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     onDataCellDoubleClick,
     onRowCellClick,
     onColCellClick,
-    onMergedCellsClick,
+    onMergedCellClick,
     onRowCellDoubleClick,
     onColCellDoubleClick,
     onMergedCellsDoubleClick,
@@ -63,7 +63,11 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   );
 
   const renderSpreadSheet = (): SpreadSheet => {
-    const params: S2Constructor = [container.current, dataCfg, options];
+    const params: S2Constructor = [
+      container.current,
+      dataCfg,
+      getSheetComponentOptions(options),
+    ];
 
     if (spreadsheet) {
       return spreadsheet(...params);
@@ -76,35 +80,38 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
       string,
       (...args: unknown[]) => unknown
     > = {
-      [S2Event.DATA_CELL_MOUSE_UP]: (ev: GEvent) => {
-        onDataCellMouseUp?.(getBaseCellData(ev));
+      [S2Event.DATA_CELL_MOUSE_UP]: (event: GEvent) => {
+        onDataCellMouseUp?.(getBaseCellData(event));
       },
-      [S2Event.MERGED_CELLS_CLICK]: (ev: GEvent) => {
-        onMergedCellsClick?.(getBaseCellData(ev));
+      [S2Event.MERGED_CELLS_CLICK]: (event: GEvent) => {
+        onMergedCellClick?.(getBaseCellData(event));
       },
-      [S2Event.ROW_CELL_CLICK]: (ev: GEvent) => {
-        onRowCellClick?.(getBaseCellData(ev));
+      [S2Event.ROW_CELL_CLICK]: (event: GEvent) => {
+        onRowCellClick?.(getBaseCellData(event));
       },
-      [S2Event.COL_CELL_CLICK]: (ev: GEvent) => {
-        onColCellClick?.(getBaseCellData(ev));
+      [S2Event.COL_CELL_CLICK]: (event: GEvent) => {
+        onColCellClick?.(getBaseCellData(event));
       },
-      [S2Event.DATA_CELL_CLICK]: (ev: GEvent) => {
-        onDataCellClick?.(getBaseCellData(ev));
+      [S2Event.DATA_CELL_CLICK]: (event: GEvent) => {
+        onDataCellClick?.(getBaseCellData(event));
       },
-      [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (ev: GEvent) => {
-        onMergedCellsDoubleClick?.(getBaseCellData(ev));
+      [S2Event.DATA_CELL_HOVER]: (event: GEvent) => {
+        onDataCellClick?.(getBaseCellData(event));
       },
-      [S2Event.ROW_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
-        onRowCellDoubleClick?.(getBaseCellData(ev));
+      [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (event: GEvent) => {
+        onMergedCellsDoubleClick?.(getBaseCellData(event));
       },
-      [S2Event.COL_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
-        onColCellDoubleClick?.(getBaseCellData(ev));
+      [S2Event.ROW_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onRowCellDoubleClick?.(getBaseCellData(event));
       },
-      [S2Event.DATA_CELL_DOUBLE_CLICK]: (ev: GEvent) => {
-        onDataCellDoubleClick?.(getBaseCellData(ev));
+      [S2Event.COL_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onColCellDoubleClick?.(getBaseCellData(event));
       },
-      [S2Event.GLOBAL_CONTEXT_MENU]: (ev: GEvent) => {
-        onContextMenu?.(getBaseCellData(ev));
+      [S2Event.DATA_CELL_DOUBLE_CLICK]: (event: GEvent) => {
+        onDataCellDoubleClick?.(getBaseCellData(event));
+      },
+      [S2Event.GLOBAL_CONTEXT_MENU]: (event: GEvent) => {
+        onContextMenu?.(getBaseCellData(event));
       },
       [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
         targetRow: TargetLayoutNode,
@@ -129,31 +136,15 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     });
   };
 
-  const unBindEvent = () => {
-    [
-      S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
-      S2Event.LAYOUT_ROW_NODE_BORDER_REACHED,
-      S2Event.LAYOUT_COL_NODE_BORDER_REACHED,
-      S2Event.LAYOUT_CELL_SCROLL,
-      S2Event.RANGE_SORT,
-      S2Event.MERGED_CELLS_CLICK,
-      S2Event.ROW_CELL_CLICK,
-      S2Event.COL_CELL_CLICK,
-      S2Event.DATA_CELL_MOUSE_UP,
-    ].forEach((eventName) => {
-      baseSpreadsheet.current.off(eventName);
-    });
-  };
-
   const setOptions = (newOptions?: S2Options) => {
     const curOptions = newOptions || options;
-    ownSpreadsheet.setOptions(getSafetyOptions(curOptions));
+    ownSpreadsheet.setOptions(curOptions);
   };
 
   const setDataCfg = () => {
     // reset the options since it could be changed by layout
     setOptions();
-    ownSpreadsheet.setDataCfg(getSafetyDataConfig(dataCfg));
+    ownSpreadsheet.setDataCfg(dataCfg);
   };
 
   const update = (reset?: () => void, reloadData = true) => {
@@ -170,8 +161,8 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     }
     baseSpreadsheet.current = renderSpreadSheet();
     bindEvent();
-    baseSpreadsheet.current.setDataCfg(getSafetyDataConfig(dataCfg));
-    baseSpreadsheet.current.setOptions(getSafetyOptions(options));
+    baseSpreadsheet.current.setDataCfg(dataCfg);
+    baseSpreadsheet.current.setOptions(options);
     baseSpreadsheet.current.setThemeCfg(themeCfg);
     baseSpreadsheet.current.render();
     setLoading(false);
@@ -182,7 +173,6 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   useEffect(() => {
     buildSpreadSheet();
     return () => {
-      unBindEvent();
       baseSpreadsheet.current.destroy();
     };
   }, []);
@@ -232,7 +222,14 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   return (
     <StrictMode>
       <Spin spinning={isLoading === undefined ? loading : isLoading}>
-        {header && <Header {...header} sheet={ownSpreadsheet} />}
+        {header && (
+          <Header
+            {...header}
+            sheet={ownSpreadsheet}
+            dataCfg={getSafetyDataConfig(dataCfg)}
+            options={getSheetComponentOptions(options)}
+          />
+        )}
         <div ref={container} className={`${S2_PREFIX_CLS}-container`} />
         {showPagination && (
           <S2Pagination

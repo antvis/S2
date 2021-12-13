@@ -59,7 +59,7 @@ import type {
   S2CellType,
   FrameConfig,
 } from '@/common/interface';
-import { updateMergedCells } from '@/utils/interaction/merge-cells';
+import { updateMergedCells } from '@/utils/interaction/merge-cell';
 import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
 
 export abstract class BaseFacet {
@@ -494,7 +494,7 @@ export abstract class BaseFacet {
     if (scrollY + panelHeight >= rendererHeight) {
       return rendererHeight - panelHeight;
     }
-    return scrollY;
+    return Math.max(0, scrollY);
   };
 
   private getAdjustedScrollOffset = ({

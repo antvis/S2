@@ -71,16 +71,16 @@ export const Export: React.FC<ExportProps> = ({
   const menu = (
     <Menu>
       <Menu.Item key="copyOriginal" onClick={() => exportData(false)}>
-        <a href="`javascript:void(0)`">{copyOriginalText}</a>
+        {copyOriginalText}
       </Menu.Item>
       <Menu.Item key="copyFormat" onClick={() => exportData(true)}>
-        <a href="`javascript:void(0)`">{copyFormatText}</a>
+        {copyFormatText}
       </Menu.Item>
       <Menu.Item key="downloadOriginal" onClick={() => downLoadData(false)}>
-        <a href="`javascript:void(0)`">{downloadOriginalText}</a>
+        {downloadOriginalText}
       </Menu.Item>
       <Menu.Item key="downloadFormat" onClick={() => downLoadData(true)}>
-        <a href="`javascript:void(0)`">{downloadFormatText}</a>
+        {downloadFormatText}
       </Menu.Item>
     </Menu>
   );

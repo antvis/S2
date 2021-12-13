@@ -9,7 +9,7 @@ order: 1
 
 这是一个自定义交互类的基本格式：
 
-继承 `BaseEvent` 拿到当前表格实例 `this.spreadsheet`, 实现 `bindEvents` 方法，结合 `this.spreadsheet` 提供的 [一系列方法](/zh/docs/api/general/S2Options#spreadsheet)，自定义交互，最后表格初始化时会注册默认交互，和自定义交互。
+继承 `BaseEvent` 拿到当前表格实例 `this.spreadsheet`, 实现 `bindEvents` 方法，结合 `this.spreadsheet` 提供的 [一系列方法](/zh/docs/api/basic-class/spreadsheet)，自定义交互，最后表格初始化时会注册默认交互，和自定义交互。
 
 ```ts
 import { BaseEvent } from '@antv/s2';
@@ -21,7 +21,7 @@ class HiddenInteraction extends BaseEvent {
 }
 ```
 
-监听 `列头` 双击 `S2Event.COL_CELL_DOUBLE_CLICK`
+监听 `列头` 双击事件: `S2Event.COL_CELL_DOUBLE_CLICK`
 
 ```ts
 import { BaseEvent, S2Event } from '@antv/s2';
@@ -46,6 +46,7 @@ class HiddenInteraction extends BaseEvent {
 
 ```ts
 import { TableSheet } from '@antv/s2';
+
 const s2options = {
   width: 600,
   height: 300,

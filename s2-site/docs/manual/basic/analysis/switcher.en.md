@@ -2,4 +2,4 @@
 title: Switcher
 order: 10
 ---
-`markdown:docs/manual/analysis/switcher.zh.md`
+`markdown:docs/manual/basic/analysis/switcher.zh.md`

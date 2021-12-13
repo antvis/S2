@@ -1,17 +1,7 @@
-import {
-  head,
-  last,
-  isEmpty,
-  get,
-  clone,
-  trim,
-  max,
-  isObject,
-  forEach,
-} from 'lodash';
+import { last, isEmpty, clone, trim, max, isObject, forEach } from 'lodash';
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
-import { ViewMeta } from '@/common/interface';
+import { CornerNodeType, ViewMeta } from '@/common/interface';
 import {
   ID_SEPARATOR,
   EMPTY_PLACEHOLDER,
@@ -129,7 +119,7 @@ const processValueInRow = (
   const tempCell = [];
 
   if (viewMeta) {
-    const { data, fieldValue, valueField } = viewMeta;
+    const { fieldValue, valueField } = viewMeta;
     // The main measure.
     if (!isFormat) {
       tempCell.push(fieldValue);
@@ -209,6 +199,33 @@ export const copyData = (
 
     // Generate the table header.
     headers = colHeader.map((item, index) => {
+      if (sheetInstance.isPivotMode()) {
+        const { columns, rows, data } = sheetInstance.facet.cornerHeader.cfg;
+        const colNodes = data.filter(
+          ({ cornerType }) => cornerType === CornerNodeType.Col,
+        );
+        const rowNodes = data.filter(
+          ({ cornerType }) => cornerType === CornerNodeType.Row,
+        );
+
+        if (index < colHeader.length - 1) {
+          return [
+            ...Array(rowLength - 1).fill(''),
+            colNodes.find(({ field }) => field === columns[index])?.label || '',
+            ...item,
+          ];
+        }
+        if (index < colHeader.length) {
+          return [
+            ...rows.map(
+              (row) => rowNodes.find(({ field }) => field === row)?.label || '',
+            ),
+            ...item,
+          ];
+        }
+        return rowsHeader.concat(...item);
+      }
+
       return index < colHeader.length
         ? Array(rowLength)
             .fill('')

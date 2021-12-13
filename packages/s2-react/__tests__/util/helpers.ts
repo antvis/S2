@@ -7,11 +7,14 @@ import {
   Store,
   S2Options,
   SpreadSheet,
+  PivotSheet,
   BaseTooltip,
   customMerge,
   DEFAULT_OPTIONS,
   RootInteraction,
 } from '@antv/s2';
+import { ViewMeta } from '@antv/s2';
+import { omit } from 'lodash';
 
 export const parseCSV = (csv: string, header?: string[]) => {
   const DELIMITER = ',';
@@ -81,3 +84,31 @@ export function getGradient(rate, startColor, endColor) {
   const b = start[2] + (end[2] - start[2]) * rate;
   return `rgb(${r},${g},${b})`;
 }
+
+export function getMockSheetInstance(Sheet: typeof SpreadSheet = PivotSheet) {
+  const instance = Object.create(Sheet.prototype);
+  return instance as unknown as SpreadSheet;
+}
+
+export const createMockCellInfo = (
+  cellId: string,
+  { colIndex = 0, rowIndex = 0 } = {},
+) => {
+  const mockCellViewMeta: Partial<ViewMeta> = {
+    id: cellId,
+    colIndex,
+    rowIndex,
+    type: undefined,
+  };
+  const mockCellMeta = omit(mockCellViewMeta, 'update');
+  const mockCell = {
+    ...mockCellViewMeta,
+    getMeta: () => mockCellViewMeta,
+    hideInteractionShape: jest.fn(),
+  } as any;
+
+  return {
+    mockCell,
+    mockCellMeta,
+  };
+};

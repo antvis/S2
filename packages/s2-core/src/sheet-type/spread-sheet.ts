@@ -3,9 +3,11 @@ import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import {
   clone,
   forEach,
+  forIn,
   get,
   includes,
   isEmpty,
+  isFunction,
   isString,
   merge,
   once,
@@ -35,6 +37,7 @@ import {
   S2Options,
   SpreadSheetFacetCfg,
   ThemeCfg,
+  TooltipContentType,
   TooltipData,
   TooltipOptions,
   TooltipShowOptions,
@@ -163,9 +166,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private getMountContainer(dom: S2MountContainer) {
-    const mountContainer = isString(dom)
-      ? document.getElementById(dom)
-      : (dom as HTMLElement);
+    const mountContainer = isString(dom) ? document.querySelector(dom) : dom;
 
     if (!mountContainer) {
       throw new Error('Target mount container is not a DOM element');
@@ -198,10 +199,10 @@ export abstract class SpreadSheet extends EE {
   }
 
   private renderTooltip(): BaseTooltip {
-    return new BaseTooltip(this);
+    return this.options.tooltip?.renderTooltip?.(this) || new BaseTooltip(this);
   }
 
-  protected abstract bindEvents();
+  protected abstract bindEvents(): void;
 
   public abstract getDataSet(options: S2Options): BaseDataSet;
 
@@ -249,11 +250,19 @@ export abstract class SpreadSheet extends EE {
     preventRender?: boolean,
   ): void;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public handleGroupSort(event: CanvasEvent, meta: Node) {}
+  public abstract handleGroupSort(event: CanvasEvent, meta: Node): void;
 
-  public showTooltip(showOptions: TooltipShowOptions) {
-    this.tooltip.show?.(showOptions);
+  public showTooltip<T = TooltipContentType>(
+    showOptions: TooltipShowOptions<T>,
+  ) {
+    const { content, event } = showOptions;
+    const cell = this.getCell(event?.target);
+    const displayContent = isFunction(content) ? content(cell) : content;
+
+    this.tooltip.show?.({
+      ...showOptions,
+      content: displayContent,
+    });
   }
 
   public showTooltipWithInfo(
@@ -261,7 +270,7 @@ export abstract class SpreadSheet extends EE {
     data: TooltipData[],
     options?: TooltipOptions,
   ) {
-    const { showTooltip, tooltipComponent } = getTooltipOptions(this, event);
+    const { showTooltip, content } = getTooltipOptions(this, event);
     if (!showTooltip) {
       return;
     }
@@ -282,7 +291,8 @@ export abstract class SpreadSheet extends EE {
         enterable: true,
         ...options,
       },
-      element: tooltipComponent,
+      event,
+      content,
     });
   }
 
@@ -345,6 +355,7 @@ export abstract class SpreadSheet extends EE {
     this.interaction.destroy();
     this.store.clear();
     this.destroyTooltip();
+    this.clearCanvasEvent();
   }
 
   /**
@@ -517,7 +528,7 @@ export abstract class SpreadSheet extends EE {
     const { width, height } = this.options;
     // base canvas group
     this.container = new Canvas({
-      container: this.dom,
+      container: this.dom as HTMLElement,
       width,
       height,
       localRefresh: false,
@@ -565,4 +576,11 @@ export abstract class SpreadSheet extends EE {
     }
     hideColumnsByThunkGroup(this, hiddenColumnFields, true);
   });
+
+  private clearCanvasEvent() {
+    const canvasEvents = this.getEvents();
+    forIn(canvasEvents, (_, event: keyof EmitterType) => {
+      this.off(event);
+    });
+  }
 }

@@ -13,13 +13,13 @@ import {
   MergedCell,
 } from '@/index';
 import { Store } from '@/common/store';
-import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
+import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 
 jest.mock('@/sheet-type');
 jest.mock('@/interaction/event-controller');
-jest.mock('@/utils/interaction/merge-cells', () => {
+jest.mock('@/utils/interaction/merge-cell', () => {
   return {
-    mergeCells: jest.fn(),
+    mergeCell: jest.fn(),
     unmergeCell: jest.fn(),
   };
 });
@@ -100,7 +100,7 @@ describe('RootInteraction Tests', () => {
 
   test('should call merge cells', () => {
     rootInteraction.mergeCells();
-    expect(mergeCells).toBeCalled();
+    expect(mergeCell).toBeCalled();
   });
 
   test('should call cancel mergedCell', () => {

@@ -1,6 +1,5 @@
-import { getCsvString } from './export-worker';
 import { copyToClipboard } from '@/utils/export';
-import { Formatter, S2CellType, ViewMeta } from '@/common/interface';
+import { CellMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { DataType } from '@/data-set/interface';
@@ -12,36 +11,67 @@ export function keyEqualTo(key: string, compareKey: string) {
   return String(key).toLowerCase() === String(compareKey).toLowerCase();
 }
 
-const format = (cell: S2CellType, spreadsheet: SpreadSheet) => {
-  const meta = cell.getMeta();
-  const rowField = meta.rowId;
-  const rowMeta = spreadsheet.dataSet.getFieldMeta(rowField);
-  let formatter: Formatter;
-  if (rowMeta) {
-    // format by row field
-    formatter = spreadsheet.dataSet.getFieldFormatter(rowField);
-  } else {
-    // format by value field
-    formatter = spreadsheet.dataSet.getFieldFormatter(meta.valueField);
+const newLine = '\r\n';
+const newTab = '\t';
+
+const getColNodeField = (spreadsheet: SpreadSheet, id: string) =>
+  spreadsheet.getColumnNodes().find((col) => col.id === id)?.field;
+
+const getFiledIdFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
+  const ids = meta.id.split('-');
+  return getColNodeField(spreadsheet, ids[ids.length - 1]);
+};
+
+const getFormat = (meta: CellMeta, spreadsheet: SpreadSheet) => {
+  const ids = meta.id.split('-');
+  const fieldId = getColNodeField(spreadsheet, ids[ids.length - 1]);
+  if (spreadsheet.options.interaction.copyWithFormat) {
+    return spreadsheet.dataSet.getFieldFormatter(fieldId);
   }
-  if (formatter && spreadsheet.options.interaction.copyWithFormat) {
-    return formatter(meta.fieldValue);
+  return (v: string) => v;
+};
+
+const getValueFromMeta = (
+  meta: CellMeta,
+  displayData: DataType[],
+  spreadsheet: SpreadSheet,
+) => {
+  const fieldId = getFiledIdFromMeta(meta, spreadsheet);
+  return displayData[meta.rowIndex][fieldId];
+};
+
+const format = (
+  meta: CellMeta,
+  displayData: DataType[],
+  spreadsheet: SpreadSheet,
+) => {
+  const formatter = getFormat(meta, spreadsheet);
+  return formatter(getValueFromMeta(meta, displayData, spreadsheet));
+};
+
+export const convertString = (v: string) => {
+  if (/\n/.test(v)) {
+    // 单元格内换行
+    return '"' + v.replace(/\r\n?/g, '\n') + '"';
   }
-  return meta.fieldValue;
+  return v;
 };
 
 export const processCopyData = (
-  cells: S2CellType[][],
+  displayData: DataType[],
+  cells: CellMeta[][],
   spreadsheet: SpreadSheet,
 ): string => {
-  const getRowString = (pre: string, cur: S2CellType) =>
-    pre + (cur ? getCsvString(format(cur, spreadsheet)) : '') + '\t';
-  const getColString = (pre: string, cur: S2CellType[]) =>
-    pre + cur.reduce(getRowString, '').slice(0, -1) + '\n';
-  return cells.reduce(getColString, '').slice(0, -1);
+  const getRowString = (pre: string, cur: CellMeta) =>
+    pre +
+    (cur ? convertString(format(cur, displayData, spreadsheet)) : '') +
+    newTab;
+  const getColString = (pre: string, cur: CellMeta[]) =>
+    pre + cur.reduce(getRowString, '').slice(0, -1) + newLine;
+  return cells.reduce(getColString, '').slice(0, -2);
 };
 
-export const getTwoDimData = (cells: S2CellType[]) => {
+export const getTwoDimData = (cells: CellMeta[]) => {
   if (!cells?.length) return [];
   const [minCell, maxCell] = [
     { row: Infinity, col: Infinity },
@@ -49,7 +79,7 @@ export const getTwoDimData = (cells: S2CellType[]) => {
   ];
   // get left-top cell and right-bottom cell position
   cells.forEach((e) => {
-    const { rowIndex, colIndex } = e.getMeta();
+    const { rowIndex, colIndex } = e;
     minCell.col = Math.min(colIndex, minCell.col);
     minCell.row = Math.min(rowIndex, minCell.row);
     maxCell.col = Math.max(colIndex, maxCell.col);
@@ -59,80 +89,67 @@ export const getTwoDimData = (cells: S2CellType[]) => {
     maxCell.row - minCell.row + 1,
     maxCell.col - minCell.col + 1,
   ];
-  const twoDimDataArray: S2CellType[][] = new Array(rowLen)
+  const twoDimDataArray: CellMeta[][] = new Array(rowLen)
     .fill('')
     .map(() => new Array(colLen).fill(''));
 
   cells.forEach((e) => {
-    const { rowIndex, colIndex } = e.getMeta();
+    const { rowIndex, colIndex } = e;
     const [diffRow, diffCol] = [rowIndex - minCell.row, colIndex - minCell.col];
     twoDimDataArray[diffRow][diffCol] = e;
   });
   return twoDimDataArray;
 };
 
-const processAllSelected = (
-  displayData: DataType[],
-  spreadsheet: SpreadSheet,
-) => {
-  // 全选复制
-  const selectedFiled = spreadsheet.dataCfg.fields.columns;
-  return displayData.reduce((pre, cur) => {
-    return (
-      pre +
-      '\n' +
-      selectedFiled.reduce((prev, curr) => prev + '\t' + cur[curr], '')
-    );
-  }, '');
-};
-
 const processColSelected = (
   displayData: DataType[],
-  selectedCols: S2CellType<ViewMeta>[],
+  spreadsheet: SpreadSheet,
+  selectedCols: CellMeta[],
 ) => {
-  const selectedFiled = selectedCols.map((e) => e.getMeta().field);
-  return displayData.reduce((pre, cur) => {
-    return (
-      pre +
-      '\n' +
-      selectedFiled.reduce((prev, curr) => prev + '\t' + cur[curr], '')
-    );
-  }, '');
+  const selectedFiled = selectedCols.length
+    ? selectedCols.map((e) => getColNodeField(spreadsheet, e.id))
+    : spreadsheet.dataCfg.fields.columns;
+  return displayData
+    .map((row) => {
+      return selectedFiled
+        .map((filed) => convertString(row[filed]))
+        .join(newTab);
+    })
+    .join(newLine);
 };
 
 const processRowSelected = (
   displayData: DataType[],
-  selectedRows: S2CellType<ViewMeta>[],
+  selectedRows: CellMeta[],
 ) => {
-  const selectedIndex = selectedRows.map((e) => e.getMeta().rowIndex);
+  const selectedIndex = selectedRows.map((e) => e.rowIndex);
   return displayData
     .filter((e, i) => selectedIndex.includes(i))
     .map((e) =>
       Object.keys(e)
-        .map((key) => e[key])
-        .join('\t'),
+        .map((key) => convertString(e[key]))
+        .join(newTab),
     )
-    .join('\n');
+    .join(newLine);
 };
 
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
   const interaction = spreadsheet.interaction;
-  const cells = interaction.getActiveCells();
-
+  const cells = interaction.getState().cells || [];
   let data: string;
-  const selectedCols = cells.filter(
-    ({ cellType }) => cellType === CellTypes.COL_CELL,
-  );
-  const selectedRows = cells.filter(
-    ({ cellType }) => cellType === CellTypes.ROW_CELL,
-  );
+  const selectedCols = cells.filter(({ type }) => type === CellTypes.COL_CELL);
+  const selectedRows = cells.filter(({ type }) => type === CellTypes.ROW_CELL);
 
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
 
+  if (spreadsheet.isPivotMode()) {
+    // 透视表之后实现
+    return;
+  }
   if (interaction.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
-    data = processAllSelected(displayData, spreadsheet);
+    data = processColSelected(displayData, spreadsheet, []);
   } else if (selectedCols.length) {
-    data = processColSelected(displayData, selectedCols);
+    data = processColSelected(displayData, spreadsheet, selectedCols);
   } else if (selectedRows.length) {
     data = processRowSelected(displayData, selectedRows);
   } else {
@@ -140,8 +157,9 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
       return;
     }
     // normal selected
-    data = processCopyData(getTwoDimData(cells), spreadsheet);
+    data = processCopyData(displayData, getTwoDimData(cells), spreadsheet);
   }
+
   if (data) {
     copyToClipboard(data);
   }

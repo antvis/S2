@@ -14,7 +14,7 @@ order: 7
 | sortByMeasure | 按照度量值（数值）排序                      | `string`                              | -      |      |
 | query         | 筛选条件，缩小排序范围 如 ：`{city:'白山'}` | `object`                              | -      |      |
 | type          | 组内排序用来显示icon                        | `string`                              | -      |      |
-| sortFunc      | 自定义排序的function                        | `(v: SortFuncParam) => Array<string>` | -      |      |
+| sortFunc      | 自定义排序的function                        | `(v: SortFuncParam) => string[]` | -      |      |
 
 #### SortFuncParam
 

@@ -1,7 +1,16 @@
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { BBox } from '@antv/g-canvas';
-import { getAutoAdjustPosition, setContainerStyle } from '@/utils/tooltip';
-import { SpreadSheet, TOOLTIP_POSITION_OFFSET } from '@/index';
+import {
+  getAutoAdjustPosition,
+  setContainerStyle,
+  getTooltipOptions,
+} from '@/utils/tooltip';
+import {
+  CellTypes,
+  SpreadSheet,
+  Tooltip,
+  TOOLTIP_POSITION_OFFSET,
+} from '@/index';
 import { BaseFacet } from '@/facet/base-facet';
 
 describe('Tooltip Utils Tests', () => {
@@ -184,6 +193,51 @@ describe('Tooltip Utils Tests', () => {
         y: panelBBox.maxY - tooltipSize.height + containerSize.top,
       });
     });
+  });
+
+  describe('Get Tooltip Options Tests', () => {
+    const getCellNameByType = (cellType: CellTypes) => {
+      return {
+        [CellTypes.ROW_CELL]: 'row',
+        [CellTypes.COL_CELL]: 'col',
+        [CellTypes.DATA_CELL]: 'data',
+        [CellTypes.CORNER_CELL]: 'corner',
+      }[cellType];
+    };
+    test.each([
+      CellTypes.ROW_CELL,
+      CellTypes.COL_CELL,
+      CellTypes.DATA_CELL,
+      CellTypes.CORNER_CELL,
+    ])(
+      'should use %o tooltip content from tooltip config first for string content',
+      (cellType) => {
+        const tooltipContent = `${cellType} tooltip content`;
+        const defaultTooltipContent = 'default tooltip content';
+        const type = getCellNameByType(cellType);
+
+        const tooltip: Tooltip = {
+          content: defaultTooltipContent,
+          [type]: {
+            content: tooltipContent,
+          },
+        };
+
+        const spreadsheet = {
+          getCellType: () => cellType,
+          options: {
+            tooltip,
+          },
+        } as unknown as SpreadSheet;
+
+        expect(getTooltipOptions(spreadsheet, {} as Event)).toEqual({
+          content: tooltipContent,
+          [type]: {
+            content: tooltipContent,
+          },
+        });
+      },
+    );
   });
 
   test('should set container style', () => {
