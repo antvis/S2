@@ -96,7 +96,7 @@ export interface S2BasicOptions<T = Element | string> {
   // empty cell placeholder
   readonly placeholder?: string;
   // custom corner text
-  readonly cornerText: string;
+  readonly cornerText?: string;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell

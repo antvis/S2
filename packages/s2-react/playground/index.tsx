@@ -597,7 +597,7 @@ function MainLayout() {
           </div>
           <SheetComponent
             dataCfg={strategyDataCfg}
-            options={{ width: 1200, height: 400 }}
+            options={{ width: 1200, height: 400, cornerText: '指标' }}
             sheetType="strategy"
           />
         </TabPane>

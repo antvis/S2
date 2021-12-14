@@ -1,10 +1,9 @@
 import React from 'react';
-import { SpreadSheet } from '@antv/s2';
+import { customMerge, SpreadSheet } from '@antv/s2';
 import { BaseSheet } from '../base-sheet';
 import { StrategyDataCell } from './strategy-data-cell';
 import { StrategyTheme } from './strategy-theme';
 import { SheetComponentsProps } from '@/components/sheets/interface';
-import { getSheetComponentOptions } from '@/utils';
 
 export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
@@ -12,8 +11,10 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
 
     const s2Ref = React.useRef<SpreadSheet>();
     const s2Options = React.useMemo(() => {
-      return getSheetComponentOptions(options, {
+      return customMerge(options, {
         dataCell: StrategyDataCell,
+        hierarchyType: 'tree',
+        showDefaultHeaderActionIcon: false,
         style: {
           colCfg: {
             hideMeasureColumn: true,

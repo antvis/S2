@@ -1,10 +1,9 @@
 import React from 'react';
-import { SpreadSheet } from '@antv/s2';
+import { SpreadSheet, customMerge } from '@antv/s2';
 import { BaseSheet } from '../base-sheet';
 import { GridAnalysisDataCell } from './grid-analysis-data-cell';
 import { GridAnalysisTheme } from './grid-analysis-theme';
 import { SheetComponentsProps } from '@/components/sheets/interface';
-import { getSheetComponentOptions } from '@/utils';
 
 export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
@@ -12,8 +11,9 @@ export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
 
     const s2Ref = React.useRef<SpreadSheet>();
     const s2Options = React.useMemo(() => {
-      return getSheetComponentOptions(options, {
+      return customMerge(options, {
         dataCell: GridAnalysisDataCell,
+        showDefaultHeaderActionIcon: false,
         style: {
           colCfg: {
             hideMeasureColumn: true,
