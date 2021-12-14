@@ -13,8 +13,9 @@ import {
   InteractionStateName,
   TOOLTIP_OPERATOR_MENUS,
   InterceptType,
+  CellTypes,
 } from '@/common/constant';
-import { TooltipOperatorOptions } from '@/common/interface';
+import { TooltipOperation, TooltipOperatorOptions } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 import { mergeCellInfo, getTooltipOptions } from '@/utils/tooltip';
 
@@ -135,21 +136,31 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
-    // 当只有一个列头时, 不显示隐藏按钮
-    const isMultiColumns = this.spreadsheet.getColumnNodes().length > 1;
+    const operator = this.getTooltipOperator(event, operation);
+    this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
+      showSingleTips: true,
+      operator,
+    });
+  }
 
-    const operator: TooltipOperatorOptions = operation.hiddenColumns &&
+  private getTooltipOperator(
+    event: CanvasEvent,
+    operation: TooltipOperation,
+  ): TooltipOperatorOptions {
+    const cellType = this.spreadsheet.getCellType(event.target);
+    const isColCell = cellType === CellTypes.COL_CELL;
+    // 是列头单元格, 且大于一个时, 显示隐藏按钮
+    const isMultiColumns =
+      isColCell && this.spreadsheet.getColumnNodes().length > 1;
+
+    const operator = operation.hiddenColumns &&
       isMultiColumns && {
         onClick: () => {
           this.hideSelectedColumns();
         },
         menus: TOOLTIP_OPERATOR_MENUS.HiddenColumns,
       };
-
-    this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
-      showSingleTips: true,
-      operator,
-    });
+    return operator;
   }
 
   private bindTableColExpand() {
