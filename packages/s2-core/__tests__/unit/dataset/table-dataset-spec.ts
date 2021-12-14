@@ -74,4 +74,65 @@ describe('Table Mode Dataset Test', () => {
       ).toEqual('沙发');
     });
   });
+
+  describe('test for sort and filter', () => {
+    it('should getCellData with filteredValues', () => {
+      dataSet.setDataCfg({
+        ...dataCfg,
+        filterParams: [
+          {
+            filterKey: 'province',
+            filteredValues: ['浙江省'],
+          },
+        ],
+      });
+      expect(
+        dataSet.getCellData({
+          query: {
+            rowIndex: 0,
+            col: 'city',
+          },
+        }),
+      ).toEqual('成都市');
+    });
+    it('should getCellData with filterFunction', () => {
+      dataSet.setDataCfg({
+        ...dataCfg,
+        filterParams: [
+          {
+            filterKey: 'province',
+            filterFunction: (row) => row.province === '浙江省',
+          },
+        ],
+      });
+      expect(
+        dataSet.getCellData({
+          query: {
+            rowIndex: 0,
+            col: 'city',
+          },
+        }),
+      ).toEqual('杭州市');
+    });
+
+    it('should getCellData with sort', () => {
+      dataSet.setDataCfg({
+        ...dataCfg,
+        sortParams: [
+          {
+            sortFieldId: 'number',
+            sortMethod: 'ASC',
+          },
+        ],
+      });
+      expect(
+        dataSet.getCellData({
+          query: {
+            rowIndex: 0,
+            col: 'number',
+          },
+        }),
+      ).toEqual(245);
+    });
+  });
 });
