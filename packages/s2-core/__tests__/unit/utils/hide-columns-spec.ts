@@ -1,3 +1,4 @@
+import { getContainer } from 'tests/util/helpers';
 import { RootInteraction } from '@/interaction/root';
 import { Node } from '@/facet/layout/node';
 import {
@@ -18,11 +19,11 @@ describe('hide-columns test', () => {
   let sheet: SpreadSheet;
   let mockSpreadSheetInstance: PivotSheet;
   const initColumnNodes: Partial<Node>[] = [
-    { field: '1', colIndex: 1 },
-    { field: '2', colIndex: 2 },
-    { field: '3', colIndex: 3 },
-    { field: '4', colIndex: 4 },
-    { field: '5', colIndex: 5 },
+    { field: '1', id: 'id-1', colIndex: 1 },
+    { field: '2', id: 'id-2', colIndex: 2 },
+    { field: '3', id: 'id-3', colIndex: 3 },
+    { field: '4', id: 'id-4', colIndex: 4 },
+    { field: '5', id: 'id-5', colIndex: 5 },
   ];
   beforeEach(() => {
     sheet = {
@@ -31,7 +32,7 @@ describe('hide-columns test', () => {
     } as PivotSheet;
 
     mockSpreadSheetInstance = new PivotSheet(
-      document.createElement('div'),
+      getContainer(),
       {
         fields: {
           rows: [],
@@ -59,9 +60,9 @@ describe('hide-columns test', () => {
 
   test('should return hidden column list', () => {
     expect(getHiddenColumnNodes(sheet, ['1', '2', '3'])).toEqual([
-      { field: '1', colIndex: 1 },
-      { field: '2', colIndex: 2 },
-      { field: '3', colIndex: 3 },
+      { field: '1', id: 'id-1', colIndex: 1 },
+      { field: '2', id: 'id-2', colIndex: 2 },
+      { field: '3', id: 'id-3', colIndex: 3 },
     ]);
   });
 
@@ -70,10 +71,12 @@ describe('hide-columns test', () => {
     expect(getHiddenColumnDisplaySiblingNode(sheet, ['3'])).toEqual({
       prev: {
         field: '2',
+        id: 'id-2',
         colIndex: 2,
       },
       next: {
         field: '4',
+        id: 'id-4',
         colIndex: 4,
       },
     });
@@ -82,10 +85,12 @@ describe('hide-columns test', () => {
     expect(getHiddenColumnDisplaySiblingNode(sheet, ['3', '4'])).toEqual({
       prev: {
         field: '2',
+        id: 'id-2',
         colIndex: 2,
       },
       next: {
         field: '5',
+        id: 'id-5',
         colIndex: 5,
       },
     });
@@ -96,6 +101,7 @@ describe('hide-columns test', () => {
     expect(getHiddenColumnDisplaySiblingNode(sheet, ['5'])).toEqual({
       prev: {
         field: '4',
+        id: 'id-4',
         colIndex: 4,
       },
       next: null,
@@ -105,6 +111,7 @@ describe('hide-columns test', () => {
       prev: null,
       next: {
         field: '2',
+        id: 'id-2',
         colIndex: 2,
       },
     });
@@ -113,6 +120,7 @@ describe('hide-columns test', () => {
     expect(getHiddenColumnDisplaySiblingNode(sheet, ['3', '4', '5'])).toEqual({
       prev: {
         field: '2',
+        id: 'id-2',
         colIndex: 2,
       },
       next: null,
@@ -168,10 +176,10 @@ describe('hide-columns test', () => {
     expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual([
       {
         displaySiblingNode: {
-          prev: { field: '2', colIndex: 2 },
-          next: { field: '4', colIndex: 4 },
+          prev: { field: '2', id: 'id-2', colIndex: 2 },
+          next: { field: '4', id: 'id-4', colIndex: 4 },
         },
-        hideColumnNodes: [{ field: '3', colIndex: 3 }],
+        hideColumnNodes: [{ field: '3', id: 'id-3', colIndex: 3 }],
       },
     ]);
     // reset interaction
@@ -185,8 +193,11 @@ describe('hide-columns test', () => {
 
     expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual([
       {
-        displaySiblingNode: { next: null, prev: { field: '4', colIndex: 4 } },
-        hideColumnNodes: [{ field: '5', colIndex: 5 }],
+        displaySiblingNode: {
+          next: null,
+          prev: { field: '4', id: 'id-4', colIndex: 4 },
+        },
+        hideColumnNodes: [{ field: '5', id: 'id-5', colIndex: 5 }],
       },
     ]);
   });
@@ -201,14 +212,20 @@ describe('hide-columns test', () => {
     expect(columnsHidden).toHaveBeenCalledWith(
       // current hidden column infos
       {
-        displaySiblingNode: { next: null, prev: { colIndex: 4, field: '4' } },
-        hideColumnNodes: [{ colIndex: 5, field: '5' }],
+        displaySiblingNode: {
+          next: null,
+          prev: { colIndex: 4, id: 'id-4', field: '4' },
+        },
+        hideColumnNodes: [{ colIndex: 5, id: 'id-5', field: '5' }],
       },
       // hidden columns detail
       [
         {
-          displaySiblingNode: { next: null, prev: { colIndex: 4, field: '4' } },
-          hideColumnNodes: [{ colIndex: 5, field: '5' }],
+          displaySiblingNode: {
+            next: null,
+            prev: { colIndex: 4, id: 'id-4', field: '4' },
+          },
+          hideColumnNodes: [{ colIndex: 5, id: 'id-5', field: '5' }],
         },
       ],
     );
@@ -228,12 +245,12 @@ describe('hide-columns test', () => {
     expect(mockSpreadSheetInstance.store.get('hiddenColumnsDetail')).toEqual([
       {
         displaySiblingNode: {
-          prev: { field: '1', colIndex: 1 },
-          next: { field: '4', colIndex: 4 },
+          prev: { field: '1', id: 'id-1', colIndex: 1 },
+          next: { field: '4', id: 'id-4', colIndex: 4 },
         },
         hideColumnNodes: [
-          { field: '2', colIndex: 2 },
-          { field: '3', colIndex: 3 },
+          { field: '2', id: 'id-2', colIndex: 2 },
+          { field: '3', id: 'id-3', colIndex: 3 },
         ],
       },
     ]);
@@ -246,16 +263,16 @@ describe('hide-columns test', () => {
       {
         displaySiblingNode: {
           prev: null,
-          next: { field: '2', colIndex: 2 },
+          next: { field: '2', id: 'id-2', colIndex: 2 },
         },
-        hideColumnNodes: [{ field: '1', colIndex: 1 }],
+        hideColumnNodes: [{ field: '1', id: 'id-1', colIndex: 1 }],
       },
       {
         displaySiblingNode: {
-          prev: { field: '2', colIndex: 2 },
-          next: { field: '4', colIndex: 4 },
+          prev: { field: '2', id: 'id-2', colIndex: 2 },
+          next: { field: '4', id: 'id-4', colIndex: 4 },
         },
-        hideColumnNodes: [{ field: '3', colIndex: 3 }],
+        hideColumnNodes: [{ field: '3', id: 'id-3', colIndex: 3 }],
       },
     ]);
   });
@@ -300,9 +317,9 @@ describe('hide-columns test', () => {
       expect(
         getValidDisplaySiblingNodeId({ next: null, prev: prevNode }),
       ).toEqual(prevNode.id);
-      expect(getValidDisplaySiblingNodeId({ next: null, prev: null })).toEqual(
-        null,
-      );
+      expect(
+        getValidDisplaySiblingNodeId({ next: null, prev: null }),
+      ).toBeUndefined();
     });
 
     test('should get is equal display sibling node id', () => {

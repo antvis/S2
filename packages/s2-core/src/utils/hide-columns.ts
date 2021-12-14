@@ -1,4 +1,4 @@
-import { compact, isEmpty, isEqual, last, uniq } from 'lodash';
+import { compact, get, isEmpty, isEqual, last, uniq } from 'lodash';
 import { HiddenColumnsInfo } from '@/common/interface/store';
 import { SpreadSheet } from '@/sheet-type';
 import { ID_SEPARATOR, S2Event } from '@/common/constant';
@@ -169,10 +169,11 @@ export const isLastColumnAfterHidden = (
 ) => {
   const columnNodes = spreadsheet.getColumnNodes();
   const initColumnNodes = spreadsheet.getInitColumnNodes();
+  const fieldKey = getHiddenColumnFieldKey(columnField);
 
   return (
-    last(columnNodes).id === columnField &&
-    last(initColumnNodes).id !== columnField
+    get(last(columnNodes), fieldKey) === columnField &&
+    get(last(initColumnNodes), fieldKey) !== columnField
   );
 };
 
