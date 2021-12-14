@@ -9,7 +9,7 @@ import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { ShiftMultiSelection } from './shift-multi-selection';
 import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
-import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
+import { hideColumnsByThunkGroup, hideColumns } from '@/utils/hide-columns';
 import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
 import {
   CellTypes,
@@ -230,7 +230,11 @@ export class RootInteraction {
   };
 
   public hideColumns(hiddenColumnFields: string[] = []) {
-    hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields);
+    if (this.spreadsheet.isTableMode()) {
+      hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, true);
+      return;
+    }
+    hideColumns(this.spreadsheet, hiddenColumnFields, true);
   }
 
   /**

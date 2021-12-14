@@ -125,6 +125,11 @@ describe('hide-columns test', () => {
       },
       next: null,
     });
+
+    expect(getHiddenColumnDisplaySiblingNode(sheet, [])).toEqual({
+      prev: null,
+      next: null,
+    });
   });
 
   test('should group continuous hidden list', () => {

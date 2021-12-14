@@ -36,14 +36,6 @@ export class PivotFacet extends BaseFacet {
     return this.spreadsheet.theme.rowCell.cell;
   }
 
-  private saveInitColumnNodes(columnNodes: Node[] = []) {
-    const { store } = this.spreadsheet;
-
-    if (!store.get('initColumnNodes')) {
-      store.set('initColumnNodes', columnNodes);
-    }
-  }
-
   protected doLayout(): LayoutResult {
     // 1、layout all nodes in rowHeader and colHeader
     const { leafNodes: rowLeafNodes, hierarchy: rowsHierarchy } =

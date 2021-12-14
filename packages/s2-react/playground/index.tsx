@@ -147,7 +147,7 @@ const defaultOptions: S2Options = customMerge(
 
 function MainLayout() {
   const [render, setRender] = React.useState(true);
-  const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
+  const [sheetType, setSheetType] = React.useState<SheetType>('table');
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });

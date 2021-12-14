@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { getContainer } from 'tests/util/helpers';
+import { getContainer, sleep } from 'tests/util/helpers';
 import * as dataCfg from 'tests/data/simple-data.json';
 import { Canvas, Event as GEvent } from '@antv/g-canvas';
 import { cloneDeep } from 'lodash';
@@ -521,9 +521,9 @@ describe('PivotSheet Tests', () => {
     expect(s2.panelGroup.findAllByName(KEY_GROUP_PANEL_SCROLL)).toHaveLength(1);
   });
 
-  test('should get empty init column nodes', () => {
-    // don't save column nodes for pivot table
-    expect(s2.getInitColumnNodes()).toHaveLength(0);
+  test('should init column nodes', () => {
+    // [type -> cost, type -> price] => [笔 -> cost, 笔 -> price]
+    expect(s2.getInitColumnNodes()).toHaveLength(2);
   });
 
   test('should get pivot mode', () => {

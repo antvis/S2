@@ -147,19 +147,20 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     event: CanvasEvent,
     operation: TooltipOperation,
   ): TooltipOperatorOptions {
-    const cellType = this.spreadsheet.getCellType(event.target);
-    const isColCell = cellType === CellTypes.COL_CELL;
-    // 是列头单元格, 且大于一个时, 显示隐藏按钮
-    const isMultiColumns =
-      isColCell && this.spreadsheet.getColumnNodes().length > 1;
+    const cell = this.spreadsheet.getCell(event.target);
+    const cellMeta = cell.getMeta?.();
+    const isColCell = cell.cellType === CellTypes.COL_CELL;
+    // 是叶子节点, 并且是列头单元格, 且大于一个时, 显示隐藏按钮
+    const isMultiColumns = this.spreadsheet.getColumnNodes().length > 1;
+    const enableHiddenColumnOperator =
+      isColCell && isMultiColumns && cellMeta.isLeaf && operation.hiddenColumns;
 
-    const operator = operation.hiddenColumns &&
-      isMultiColumns && {
-        onClick: () => {
-          this.hideSelectedColumns();
-        },
-        menus: TOOLTIP_OPERATOR_MENUS.HiddenColumns,
-      };
+    const operator = enableHiddenColumnOperator && {
+      onClick: () => {
+        this.hideSelectedColumns();
+      },
+      menus: TOOLTIP_OPERATOR_MENUS.HiddenColumns,
+    };
     return operator;
   }
 

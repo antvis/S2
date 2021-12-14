@@ -29,7 +29,7 @@ export const getHiddenColumnNodes = (
 
 /**
  * @name 获取隐藏列兄弟节点
- * @description 获取当前隐藏列(兼容多选) 所对应为未隐藏的兄弟节点, 如果是尾节点被隐藏, 则返回他的前一个兄弟节点
+ * @description 获取当前隐藏列(兼容多选) 所对应为未隐藏的兄弟节点
  * @param hideColumns 经过分组的连续隐藏列
    [ 1, 2, 3, -, -, -, (7 √), 8, 9 ]
   [ 1, 2, 3, (4 √), - ]
@@ -38,6 +38,12 @@ export const getHiddenColumnDisplaySiblingNode = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
 ): HiddenColumnsInfo['displaySiblingNode'] => {
+  if (isEmpty(hiddenColumnFields)) {
+    return {
+      prev: null,
+      next: null,
+    };
+  }
   const initColumnNodes = spreadsheet.getInitColumnNodes();
   const hiddenColumnIndexes = getHiddenColumnNodes(
     spreadsheet,
