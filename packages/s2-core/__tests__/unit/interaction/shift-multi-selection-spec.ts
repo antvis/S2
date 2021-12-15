@@ -121,6 +121,10 @@ describe('Interaction Shift Multi Selection Tests', () => {
 
     s2.getCell = () => mockCell11.mockCell as any;
 
+    s2.on(S2Event.GLOBAL_SELECTED, (cells) => {
+      expect(cells).toEqual([]);
+    });
+
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
