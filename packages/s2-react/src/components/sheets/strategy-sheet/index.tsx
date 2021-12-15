@@ -1,18 +1,19 @@
 import React from 'react';
-import { SpreadSheet, customMerge } from '@antv/s2';
+import { customMerge, SpreadSheet } from '@antv/s2';
 import { BaseSheet } from '../base-sheet';
-import { GridAnalysisDataCell } from './grid-analysis-data-cell';
-import { GridAnalysisTheme } from './grid-analysis-theme';
+import { StrategyDataCell } from './strategy-data-cell';
+import { StrategyTheme } from './strategy-theme';
 import { SheetComponentsProps } from '@/components/sheets/interface';
 
-export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
+export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, ...restProps } = props;
 
     const s2Ref = React.useRef<SpreadSheet>();
     const s2Options = React.useMemo(() => {
       return customMerge(options, {
-        dataCell: GridAnalysisDataCell,
+        dataCell: StrategyDataCell,
+        hierarchyType: 'tree',
         showDefaultHeaderActionIcon: false,
         style: {
           colCfg: {
@@ -26,7 +27,7 @@ export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
       <BaseSheet
         {...restProps}
         themeCfg={{
-          theme: GridAnalysisTheme,
+          theme: StrategyTheme,
         }}
         options={s2Options}
         ref={s2Ref}
@@ -35,4 +36,4 @@ export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
   },
 );
 
-GridAnalysisSheet.displayName = 'GridAnalysisSheet';
+StrategySheet.displayName = 'StrategySheet';

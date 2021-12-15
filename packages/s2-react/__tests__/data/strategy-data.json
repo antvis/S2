@@ -1,0 +1,565 @@
+{
+  "singleMeasure": {
+    "fields": {
+      "rows": ["province", "city"],
+      "columns": ["date"],
+      "values": ["number"]
+    },
+    "meta": [
+      {
+        "field": "number",
+        "name": "数量"
+      }
+    ],
+    "data": [
+      {
+        "number": {
+          "values": [[3877, 234324, "+32%"]]
+        },
+        "province": "浙江省",
+        "city": "宁波市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[3877, -234324, "-32%"]]
+        },
+        "province": "浙江省",
+        "city": "舟山市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[5877, -4324, "-32%"]]
+        },
+        "province": "浙江省",
+        "city": "杭州市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "绍兴市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "杭州市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "绍兴市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "宁波市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "舟山市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "杭州市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "绍兴市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "宁波市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "舟山市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "杭州市",
+        "date": "2021-5"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "绍兴市",
+        "date": "2021-5"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "宁波市",
+        "date": "2021-5"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "舟山市",
+        "date": "2021-5"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "成都市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "绵阳市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "南充市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "乐山市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "成都市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "绵阳市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "南充市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "乐山市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "成都市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "绵阳市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "南充市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "乐山市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "成都市",
+        "date": "2021-5"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "绵阳市",
+        "date": "2021-5"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "南充市",
+        "date": "2021-5"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "乐山市",
+        "date": "2021-5"
+      }
+    ]
+  },
+  "multiMeasure": {
+    "fields": {
+      "rows": ["province", "city"],
+      "columns": ["date"],
+      "values": ["number", "price"],
+      "valueInCols": false
+    },
+    "meta": [
+      {
+        "field": "number",
+        "name": "数量"
+      },
+      {
+        "field": "price",
+        "name": "单价"
+      }
+    ],
+    "data": [
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "宁波市",
+        "date": "2021-12"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "舟山市",
+        "date": "2021-12"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "杭州市",
+        "date": "2021-12"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "绍兴市",
+        "date": "2021-12"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "杭州市",
+        "date": "2021-8"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "绍兴市",
+        "date": "2021-8"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "宁波市",
+        "date": "2021-8"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "舟山市",
+        "date": "2021-8"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "杭州市",
+        "date": "2021-7"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "绍兴市",
+        "date": "2021-7"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "宁波市",
+        "date": "2021-7"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "舟山市",
+        "date": "2021-7"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "杭州市",
+        "date": "2021-5"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "绍兴市",
+        "date": "2021-5"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "宁波市",
+        "date": "2021-5"
+      },
+      {
+        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "浙江省",
+        "city": "舟山市",
+        "date": "2021-5"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "成都市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "绵阳市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "南充市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "乐山市",
+        "date": "2021-12"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "成都市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "绵阳市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "南充市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "乐山市",
+        "date": "2021-8"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "成都市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "绵阳市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "南充市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "乐山市",
+        "date": "2021-7"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "成都市",
+        "date": "2021-5"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "绵阳市",
+        "date": "2021-5"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "南充市",
+        "date": "2021-5"
+      },
+      {
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
+        "province": "四川省",
+        "city": "乐山市",
+        "date": "2021-5"
+      }
+    ]
+  }
+}

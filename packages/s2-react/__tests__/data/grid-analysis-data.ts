@@ -1,7 +1,7 @@
 import { S2Options } from '@antv/s2';
 
 export const mockGridAnalysisOptions = {
-  width: 1000,
+  width: 1600,
   height: 600,
   style: {
     layoutWidthType: 'colAdaptive',
