@@ -659,6 +659,27 @@ describe('PivotSheet Tests', () => {
     expect(renderSpy).toHaveBeenCalledTimes(2);
   });
 
+  test('should handle group sort when hideMeasureColumn', () => {
+    const nodeMeta = new Node({
+      id: '1',
+      key: '1',
+      value: 'testValue',
+      query: {
+        type: '笔',
+      },
+    });
+    s2.options.style.colCfg.hideMeasureColumn = true;
+    s2.groupSortByMethod('asc', nodeMeta);
+    expect(s2.dataCfg.sortParams).toEqual([
+      {
+        query: { $$extra$$: 'price', type: '笔' },
+        sortByMeasure: 'price',
+        sortFieldId: 'field',
+        sortMethod: 'asc',
+      },
+    ]);
+  });
+
   test('should destroy sheet', () => {
     const facetDestroySpy = jest
       .spyOn(s2.facet, 'destroy')
