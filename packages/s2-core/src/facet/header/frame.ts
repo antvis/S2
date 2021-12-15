@@ -35,9 +35,9 @@ export class Frame extends Group {
   }
 
   public onChangeShadowVisibility(scrollX: number, maxScrollX: number) {
-    this.cfg.showViewPortLeftShadow = scrollX > 0;
+    this.cfg.showViewportLeftShadow = scrollX > 0;
     // baseFacet#renderHScrollBar render condition
-    this.cfg.showViewPortRightShadow =
+    this.cfg.showViewportRightShadow =
       Math.floor(scrollX) < Math.floor(maxScrollX);
 
     this.render();
@@ -117,7 +117,7 @@ export class Frame extends Group {
   }
 
   private addSplitLineLeftShadow() {
-    if (!this.cfg.showViewPortLeftShadow) {
+    if (!this.cfg.showViewportLeftShadow) {
       return;
     }
 
@@ -137,7 +137,7 @@ export class Frame extends Group {
   }
 
   private addSplitLineRightShadow() {
-    if (!this.cfg.showViewPortRightShadow) {
+    if (!this.cfg.showViewportRightShadow) {
       return;
     }
 

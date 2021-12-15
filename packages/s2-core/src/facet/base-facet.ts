@@ -1108,8 +1108,8 @@ export abstract class BaseFacet {
         height: cornerHeight,
         viewportWidth: width,
         viewportHeight: height,
-        showViewPortLeftShadow: false,
-        showViewPortRightShadow: false,
+        showViewportLeftShadow: false,
+        showViewportRightShadow: false,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
