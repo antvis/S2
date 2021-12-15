@@ -141,7 +141,7 @@ export interface SortParam extends Sort {
 export interface FilterParam {
   filterKey: string;
   filteredValues?: unknown[];
-  filterFunction?: (row: DataType) => boolean;
+  customFilter?: (row: DataType) => boolean;
 }
 
 export type SortParams = SortParam[];

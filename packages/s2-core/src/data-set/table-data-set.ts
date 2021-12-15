@@ -57,12 +57,12 @@ export class TableDataSet extends BaseDataSet {
   }
 
   handleDimensionValueFilter = () => {
-    each(this.filterParams, ({ filterKey, filteredValues, filterFunction }) => {
+    each(this.filterParams, ({ filterKey, filteredValues, customFilter }) => {
       const defaultFilterFunc = (row: DataType) =>
         row[filterKey] && !includes(filteredValues, row[filterKey]);
       this.displayData = [
         ...this.getStartRows(),
-        ...filter(this.getMovableRows(), filterFunction || defaultFilterFunc),
+        ...filter(this.getMovableRows(), customFilter || defaultFilterFunc),
         ...this.getEndRows(),
       ];
     });

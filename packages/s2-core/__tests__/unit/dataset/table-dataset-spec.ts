@@ -95,13 +95,13 @@ describe('Table Mode Dataset Test', () => {
         }),
       ).toEqual('成都市');
     });
-    it('should getCellData with filterFunction', () => {
+    it('should getCellData with customFilter', () => {
       dataSet.setDataCfg({
         ...dataCfg,
         filterParams: [
           {
             filterKey: 'province',
-            filterFunction: (row) => row.province === '浙江省',
+            customFilter: (row) => row.province === '浙江省',
           },
         ],
       });

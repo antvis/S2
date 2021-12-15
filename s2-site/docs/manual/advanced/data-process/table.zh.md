@@ -65,6 +65,8 @@ const options = {
         {
             filterKey: 'city',
             filteredValues: ['杭州市'],
+            // 优先级高
+            customFilter: (row) => row['city'] === '杭州市',
         }
     ]
 }
