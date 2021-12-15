@@ -153,7 +153,7 @@ const defaultOptions: S2Options = customMerge(
 
 function MainLayout() {
   const [render, setRender] = React.useState(true);
-  const [sheetType, setSheetType] = React.useState<SheetType>('table');
+  const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
@@ -224,8 +224,8 @@ function MainLayout() {
     );
   };
 
-  const onSheetTypeChange = (type: SheetType) => {
-    setSheetType(type);
+  const onSheetTypeChange = (e: RadioChangeEvent) => {
+    setSheetType(e.target.value);
   };
 
   const logHandler =
@@ -364,60 +364,16 @@ function MainLayout() {
         <TabPane tab="基础表" key="basic">
           <Collapse defaultActiveKey="filter">
             <Collapse.Panel header="筛选器" key="filter">
-              <Space style={{ marginBottom: 20 }}>
-                <Switch
-                  checkedChildren="渲染组件"
-                  unCheckedChildren="卸载组件"
-                  defaultChecked={render}
-                  onChange={onToggleRender}
-                />
-                <Switch
-                  checkedChildren="调试模式开"
-                  unCheckedChildren="调试模式关"
-                  defaultChecked={mergedOptions.debug}
-                  onChange={(checked) => {
-                    updateOptions({ debug: checked });
-                  }}
-                />
-                <Switch
-                  checkedChildren="树形"
-                  unCheckedChildren="平铺"
-                  checked={mergedOptions.hierarchyType === 'tree'}
-                  onChange={(checked) => {
-                    updateOptions({
-                      hierarchyType: checked ? 'tree' : 'grid',
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="数值挂列头"
-                  unCheckedChildren="数值挂行头"
-                  defaultChecked={dataCfg.fields?.valueInCols}
-                  onChange={(checked) => {
-                    updateDataCfg({
-                      fields: {
-                        valueInCols: checked,
-                      },
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="冻结行头开"
-                  unCheckedChildren="冻结行头关"
-                  defaultChecked={mergedOptions.frozenRowHeader}
-                  onChange={(checked) => {
-                    updateOptions({
-                      frozenRowHeader: checked,
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="容器宽高自适应开"
-                  unCheckedChildren="容器宽高自适应关"
-                  defaultChecked={adaptive}
-                  onChange={setAdaptive}
-                />
-
+              <Space>
+                <Tooltip title="表格类型">
+                  <Radio.Group
+                    onChange={onSheetTypeChange}
+                    defaultValue={sheetType}
+                  >
+                    <Radio.Button value="pivot">透视表</Radio.Button>
+                    <Radio.Button value="table">明细表</Radio.Button>
+                  </Radio.Group>
+                </Tooltip>
                 <Tooltip title="布局类型">
                   <Radio.Group
                     onChange={onLayoutWidthTypeChange}
@@ -436,59 +392,39 @@ function MainLayout() {
                   </Radio.Group>
                 </Tooltip>
               </Space>
-              <div>
-                <Space>
-                  <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
-                    <Switch
-                      checkedChildren="自动重置交互样式开"
-                      unCheckedChildren="自动重置交互样式关"
-                      defaultChecked={
-                        mergedOptions?.interaction?.autoResetSheetStyle
-                      }
-                      onChange={(checked) => {
-                        updateOptions({
-                          interaction: {
-                            autoResetSheetStyle: checked,
-                          },
-                        });
-                      }}
-                    />
-                  </Tooltip>
-                  <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
-                    <Select
-                      defaultValue={mergedOptions.tooltip.autoAdjustBoundary}
-                      onChange={onAutoAdjustBoundary}
-                      style={{ width: 230 }}
-                      size="small"
-                    >
-                      <Select.Option value="container">
-                        container (表格区域)
-                      </Select.Option>
-                      <Select.Option value="body">
-                        body (浏览器可视区域)
-                      </Select.Option>
-                      <Select.Option value="">关闭</Select.Option>
-                    </Select>
-                  </Tooltip>
-                </Space>
-                <Space style={{ marginLeft: 10 }}>
-                  <Input
-                    style={{ width: 150 }}
-                    onChange={onSizeChange('width')}
-                    defaultValue={mergedOptions.width}
-                    suffix="px"
-                    prefix="宽度"
+              <Space style={{ margin: '20px 0', display: 'flex' }}>
+                <Tooltip title="tooltip 自动调整: 显示的tooltip超过指定区域时自动调整, 使其不遮挡">
+                  <Select
+                    defaultValue={mergedOptions.tooltip.autoAdjustBoundary}
+                    onChange={onAutoAdjustBoundary}
+                    style={{ width: 230 }}
                     size="small"
-                  />
-                  <Input
-                    style={{ width: 150 }}
-                    onChange={onSizeChange('height')}
-                    defaultValue={mergedOptions.height}
-                    suffix="px"
-                    prefix="高度"
-                    size="small"
-                  />
-                </Space>
+                  >
+                    <Select.Option value="container">
+                      container (表格区域)
+                    </Select.Option>
+                    <Select.Option value="body">
+                      body (浏览器可视区域)
+                    </Select.Option>
+                    <Select.Option value="">关闭</Select.Option>
+                  </Select>
+                </Tooltip>
+                <Input
+                  style={{ width: 150 }}
+                  onChange={onSizeChange('width')}
+                  defaultValue={mergedOptions.width}
+                  suffix="px"
+                  prefix="宽度"
+                  size="small"
+                />
+                <Input
+                  style={{ width: 150 }}
+                  onChange={onSizeChange('height')}
+                  defaultValue={mergedOptions.height}
+                  suffix="px"
+                  prefix="高度"
+                  size="small"
+                />
                 <Popover
                   placement="bottomRight"
                   content={
@@ -519,96 +455,171 @@ function MainLayout() {
                     滚动速率调整
                   </Button>
                 </Popover>
-              </div>
-              <div style={{ marginTop: 20 }}>
-                <Space size="middle">
+              </Space>
+              <Space style={{ margin: '20px 0', display: 'flex' }}>
+                <Switch
+                  checkedChildren="渲染组件"
+                  unCheckedChildren="卸载组件"
+                  defaultChecked={render}
+                  onChange={onToggleRender}
+                />
+                <Switch
+                  checkedChildren="调试模式开"
+                  unCheckedChildren="调试模式关"
+                  defaultChecked={mergedOptions.debug}
+                  onChange={(checked) => {
+                    updateOptions({ debug: checked });
+                  }}
+                />
+                <Switch
+                  checkedChildren="树形"
+                  unCheckedChildren="平铺"
+                  checked={mergedOptions.hierarchyType === 'tree'}
+                  onChange={(checked) => {
+                    updateOptions({
+                      hierarchyType: checked ? 'tree' : 'grid',
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="数值挂列头"
+                  unCheckedChildren="数值挂行头"
+                  defaultChecked={dataCfg.fields?.valueInCols}
+                  onChange={(checked) => {
+                    updateDataCfg({
+                      fields: {
+                        valueInCols: checked,
+                      },
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="隐藏数值"
+                  unCheckedChildren="显示数值"
+                  defaultChecked={mergedOptions.style.colCfg.hideMeasureColumn}
+                  onChange={(checked) => {
+                    updateOptions({
+                      style: {
+                        colCfg: {
+                          hideMeasureColumn: checked,
+                        },
+                      },
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="冻结行头开"
+                  unCheckedChildren="冻结行头关"
+                  defaultChecked={mergedOptions.frozenRowHeader}
+                  onChange={(checked) => {
+                    updateOptions({
+                      frozenRowHeader: checked,
+                    });
+                  }}
+                  disabled={sheetType === 'table'}
+                />
+                <Switch
+                  checkedChildren="容器宽高自适应开"
+                  unCheckedChildren="容器宽高自适应关"
+                  defaultChecked={adaptive}
+                  onChange={setAdaptive}
+                />
+                <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
                   <Switch
-                    checkedChildren="显示序号"
-                    unCheckedChildren="不显示序号"
-                    checked={mergedOptions.showSeriesNumber}
-                    onChange={(checked) => {
-                      updateOptions({
-                        showSeriesNumber: checked,
-                      });
-                    }}
-                  />
-                  <Switch
-                    checkedChildren="分页"
-                    unCheckedChildren="不分页"
-                    checked={showPagination}
-                    onChange={setShowPagination}
-                  />
-                  <Switch
-                    checkedChildren="汇总"
-                    unCheckedChildren="无汇总"
-                    checked={showTotals}
-                    onChange={setShowTotals}
-                  />
-                  <Switch
-                    checkedChildren="选中聚光灯开"
-                    unCheckedChildren="选中聚光灯关"
-                    checked={mergedOptions.interaction.selectedCellsSpotlight}
+                    checkedChildren="自动重置交互样式开"
+                    unCheckedChildren="自动重置交互样式关"
+                    defaultChecked={
+                      mergedOptions?.interaction?.autoResetSheetStyle
+                    }
                     onChange={(checked) => {
                       updateOptions({
                         interaction: {
-                          selectedCellsSpotlight: checked,
+                          autoResetSheetStyle: checked,
                         },
                       });
                     }}
                   />
-                  <Switch
-                    checkedChildren="hover十字器开"
-                    unCheckedChildren="hover十字器关"
-                    checked={mergedOptions.interaction.hoverHighlight}
-                    onChange={(checked) => {
-                      updateOptions({
-                        interaction: {
-                          hoverHighlight: checked,
-                        },
-                      });
-                    }}
-                  />
-                  <Switch
-                    checkedChildren="默认actionIcons"
-                    unCheckedChildren="自定义actionIcons"
-                    checked={mergedOptions.showDefaultHeaderActionIcon}
-                    onChange={(checked) => {
-                      updateOptions({
-                        showDefaultHeaderActionIcon: checked,
-                      });
-                    }}
-                  />
-                  <Switch
-                    checkedChildren="开启Tooltip"
-                    unCheckedChildren="关闭Tooltip"
-                    checked={mergedOptions.tooltip.showTooltip}
-                    onChange={(checked) => {
-                      updateOptions({
-                        tooltip: {
-                          showTooltip: checked,
-                        },
-                      });
-                    }}
-                  />
-                  <Switch
-                    checkedChildren="自定义Tooltip"
-                    unCheckedChildren="默认Tooltip"
-                    checked={showCustomTooltip}
-                    onChange={setShowCustomTooltip}
-                  />
-                  <Tooltip title="表格类型">
-                    <Select
-                      defaultValue={sheetType}
-                      onChange={onSheetTypeChange}
-                      style={{ width: 120 }}
-                      size="small"
-                    >
-                      <Select.Option value="pivot">透视表</Select.Option>
-                      <Select.Option value="table">明细表</Select.Option>
-                    </Select>
-                  </Tooltip>
-                </Space>
-              </div>
+                </Tooltip>
+              </Space>
+              <Space size="middle">
+                <Switch
+                  checkedChildren="显示序号"
+                  unCheckedChildren="不显示序号"
+                  checked={mergedOptions.showSeriesNumber}
+                  onChange={(checked) => {
+                    updateOptions({
+                      showSeriesNumber: checked,
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="分页"
+                  unCheckedChildren="不分页"
+                  checked={showPagination}
+                  onChange={setShowPagination}
+                />
+                <Switch
+                  checkedChildren="汇总"
+                  unCheckedChildren="无汇总"
+                  checked={showTotals}
+                  onChange={setShowTotals}
+                />
+                <Switch
+                  checkedChildren="选中聚光灯开"
+                  unCheckedChildren="选中聚光灯关"
+                  checked={mergedOptions.interaction.selectedCellsSpotlight}
+                  onChange={(checked) => {
+                    updateOptions({
+                      interaction: {
+                        selectedCellsSpotlight: checked,
+                      },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="hover十字器开"
+                  unCheckedChildren="hover十字器关"
+                  checked={mergedOptions.interaction.hoverHighlight}
+                  onChange={(checked) => {
+                    updateOptions({
+                      interaction: {
+                        hoverHighlight: checked,
+                      },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="默认actionIcons"
+                  unCheckedChildren="自定义actionIcons"
+                  checked={mergedOptions.showDefaultHeaderActionIcon}
+                  onChange={(checked) => {
+                    updateOptions({
+                      showDefaultHeaderActionIcon: checked,
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="开启Tooltip"
+                  unCheckedChildren="关闭Tooltip"
+                  checked={mergedOptions.tooltip.showTooltip}
+                  onChange={(checked) => {
+                    updateOptions({
+                      tooltip: {
+                        showTooltip: checked,
+                      },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="自定义Tooltip"
+                  unCheckedChildren="默认Tooltip"
+                  checked={showCustomTooltip}
+                  onChange={setShowCustomTooltip}
+                />
+              </Space>
             </Collapse.Panel>
             <Collapse.Panel header="宽高调整热区配置" key="resize">
               <ResizeConfig setOptions={setOptions} setThemeCfg={setThemeCfg} />
