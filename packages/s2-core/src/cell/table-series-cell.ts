@@ -57,10 +57,19 @@ export class TableRowCell extends DataCell {
       resizeAreaId,
     );
     const colHeight = this.spreadsheet.facet.layoutResult.colsHierarchy.height;
-    const { scrollY } = this.spreadsheet.facet.getScrollOffset();
+    const { scrollY: sy } = this.spreadsheet.facet.getScrollOffset();
+    const paginationSy = this.spreadsheet.facet.getPaginationScrollY();
+    const scrollY = sy + paginationSy;
 
-    const yOffset =
-      y + (isFrozenTrailingRow ? 0 : colHeight) - (isFrozen ? 0 : scrollY);
+    let yOffset = y + (isFrozenTrailingRow ? 0 : colHeight);
+
+    if (!isFrozenTrailingRow) {
+      if (isFrozenRow) {
+        yOffset -= paginationSy;
+      } else {
+        yOffset -= scrollY;
+      }
+    }
 
     resizeArea.addShape('rect', {
       attrs: {

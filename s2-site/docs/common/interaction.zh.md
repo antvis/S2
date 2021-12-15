@@ -17,6 +17,7 @@ order: 5
 | scrollSpeedRatio       | 用于控制滚动速率，分水平和垂直两个方向，默认为 1      | [ScrollRatio](/zh/docs/api/general/S2Options#scrollratio)                                |         |       |
 | autoResetSheetStyle    | 用于控制点击表格外区域和按下 esc 键时是否重置交互状态 | `boolean`                                                                                | `true`  |       |
 | resize                 | 用于控制 resize 热区是否显示                          | `boolean`   \| [ResizeActiveOptions](/zh/docs/api/general/S2Options#resizeactiveoptions) | `true`  |       |
+| rowResizeType  | 用于控制行高 resize 时是同时对所有 Cell 生效，还是只对当前行生效。默认对所有行生效    |  `all` \| `current` | `all`  |  |
 
 ### CustomInteraction
 

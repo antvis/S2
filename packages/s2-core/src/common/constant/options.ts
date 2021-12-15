@@ -1,5 +1,5 @@
 import { S2Options } from '../interface/s2Options';
-import { Style, ResizeAffectCellType } from '@/common/interface/basic';
+import { Style, ResizeType } from '@/common/interface/basic';
 
 export enum LayoutWidthTypes {
   Adaptive = 'adaptive',
@@ -19,6 +19,7 @@ export const DEFAULT_STYLE: Readonly<Style> = {
   rowCfg: {
     width: 96,
     widthByField: {},
+    heightByField: {},
   },
   colCfg: {
     height: 30,
@@ -57,7 +58,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       vertical: 1,
     },
     autoResetSheetStyle: true,
-    rowHeightResizeAffectCellType: ResizeAffectCellType.ALL,
+    rowResizeType: ResizeType.ALL,
     resize: true,
   },
   showSeriesNumber: false,

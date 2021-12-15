@@ -415,7 +415,7 @@ export interface ScrollRatio {
   vertical?: number;
 }
 
-export enum ResizeAffectCellType {
+export enum ResizeType {
   ALL = 'all',
   CURRENT = 'current',
 }

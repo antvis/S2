@@ -5,7 +5,7 @@ import {
   IShape,
 } from '@antv/g-canvas';
 import { clone, isEmpty, throttle } from 'lodash';
-import { ResizeAffectCellType } from 'src/common/interface/basic';
+import { ResizeType } from 'src/common/interface/basic';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import {
   ResizeDetail,
@@ -240,14 +240,15 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeHeightDetail(): ResizeDetail {
-    const { rowHeightResizeAffectCellType } =
-      this.spreadsheet.options.interaction;
+    const { rowResizeType } = this.spreadsheet.options.interaction;
+    const { heightByField } = this.spreadsheet.options.style.rowCfg;
     const { padding: rowCellPadding } = this.spreadsheet.theme.rowCell.cell;
     const { start, end } = this.getResizeGuideLinePosition();
     const baseHeight = Math.floor(end.y - start.y);
     const height = baseHeight - rowCellPadding.top - rowCellPadding.bottom;
     const resizeInfo = this.getResizeInfo();
 
+    let rowCellStyle;
     switch (resizeInfo.effect) {
       case ResizeAreaEffect.Field:
         return {
@@ -261,22 +262,27 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           },
         };
       case ResizeAreaEffect.Cell:
+        if (
+          heightByField[String(resizeInfo.id)] ||
+          rowResizeType === ResizeType.CURRENT
+        ) {
+          rowCellStyle = {
+            rowCfg: {
+              heightByField: {
+                [resizeInfo.id]: height,
+              },
+            },
+          };
+        } else {
+          rowCellStyle = {
+            cellCfg: {
+              height,
+            },
+          };
+        }
         return {
           eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
-          style:
-            rowHeightResizeAffectCellType === ResizeAffectCellType.ALL
-              ? {
-                  cellCfg: {
-                    height,
-                  },
-                }
-              : {
-                  rowCfg: {
-                    heightByField: {
-                      [resizeInfo.id]: height,
-                    },
-                  },
-                },
+          style: rowCellStyle,
         };
       default:
         return null;
