@@ -13,209 +13,257 @@
     ],
     "data": [
       {
-        "number": 3877,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 234324, "+32%"]]
+        },
         "province": "浙江省",
         "city": "宁波市",
         "date": "2021-12"
       },
       {
-        "number": 4342,
-        "price": 2323,
+        "number": {
+          "values": [[3877, -234324, "-32%"]]
+        },
         "province": "浙江省",
         "city": "舟山市",
         "date": "2021-12"
       },
       {
-        "number": 5343,
-        "price": 2323,
+        "number": {
+          "values": [[5877, -4324, "-32%"]]
+        },
         "province": "浙江省",
         "city": "杭州市",
         "date": "2021-12"
       },
       {
-        "number": 632,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "绍兴市",
         "date": "2021-12"
       },
       {
-        "number": 5343,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "杭州市",
         "date": "2021-8"
       },
       {
-        "number": 632,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "绍兴市",
         "date": "2021-8"
       },
       {
-        "number": 7234,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "宁波市",
         "date": "2021-8"
       },
       {
-        "number": 834,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "舟山市",
         "date": "2021-8"
       },
       {
-        "number": 945,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "杭州市",
         "date": "2021-7"
       },
       {
-        "number": 1304,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "绍兴市",
         "date": "2021-7"
       },
       {
-        "number": 1145,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "宁波市",
         "date": "2021-7"
       },
       {
-        "number": 1432,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "舟山市",
         "date": "2021-7"
       },
       {
-        "number": 1343,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "杭州市",
         "date": "2021-5"
       },
       {
-        "number": 1354,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "绍兴市",
         "date": "2021-5"
       },
       {
-        "number": 1523,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "宁波市",
         "date": "2021-5"
       },
       {
-        "number": 1634,
-        "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "舟山市",
         "date": "2021-5"
       },
       {
-        "number": 1723,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "成都市",
         "date": "2021-12"
       },
       {
-        "number": 1822,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "绵阳市",
         "date": "2021-12"
       },
       {
-        "number": 1943,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "南充市",
         "date": "2021-12"
       },
       {
-        "number": 2330,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "乐山市",
         "date": "2021-12"
       },
       {
-        "number": 2451,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "成都市",
         "date": "2021-8"
       },
       {
-        "number": 2244,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "绵阳市",
         "date": "2021-8"
       },
       {
-        "number": 2333,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "南充市",
         "date": "2021-8"
       },
       {
-        "number": 2445,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "乐山市",
         "date": "2021-8"
       },
       {
-        "number": 2335,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "成都市",
         "date": "2021-7"
       },
       {
-        "number": 245,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "绵阳市",
         "date": "2021-7"
       },
       {
-        "number": 2457,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "南充市",
         "date": "2021-7"
       },
       {
-        "number": 2458,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "乐山市",
         "date": "2021-7"
       },
       {
-        "number": 4004,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "成都市",
         "date": "2021-5"
       },
       {
-        "number": 3077,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "绵阳市",
         "date": "2021-5"
       },
       {
-        "number": 3551,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "南充市",
         "date": "2021-5"
       },
       {
-        "number": 352,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "乐山市",
         "date": "2021-5"
@@ -241,209 +289,273 @@
     ],
     "data": [
       {
-        "number": 3877,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "宁波市",
         "date": "2021-12"
       },
       {
-        "number": 4342,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "舟山市",
         "date": "2021-12"
       },
       {
-        "number": 5343,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "杭州市",
         "date": "2021-12"
       },
       {
-        "number": 632,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "绍兴市",
         "date": "2021-12"
       },
       {
-        "number": 5343,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "杭州市",
         "date": "2021-8"
       },
       {
-        "number": 632,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "绍兴市",
         "date": "2021-8"
       },
       {
-        "number": 7234,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "宁波市",
         "date": "2021-8"
       },
       {
-        "number": 834,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "舟山市",
         "date": "2021-8"
       },
       {
-        "number": 945,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "杭州市",
         "date": "2021-7"
       },
       {
-        "number": 1304,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "绍兴市",
         "date": "2021-7"
       },
       {
-        "number": 1145,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "宁波市",
         "date": "2021-7"
       },
       {
-        "number": 1432,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "舟山市",
         "date": "2021-7"
       },
       {
-        "number": 1343,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "杭州市",
         "date": "2021-5"
       },
       {
-        "number": 1354,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "绍兴市",
         "date": "2021-5"
       },
       {
-        "number": 1523,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "宁波市",
         "date": "2021-5"
       },
       {
-        "number": 1634,
         "price": 2323,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "浙江省",
         "city": "舟山市",
         "date": "2021-5"
       },
       {
-        "number": 1723,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "成都市",
         "date": "2021-12"
       },
       {
-        "number": 1822,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "绵阳市",
         "date": "2021-12"
       },
       {
-        "number": 1943,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "南充市",
         "date": "2021-12"
       },
       {
-        "number": 2330,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "乐山市",
         "date": "2021-12"
       },
       {
-        "number": 2451,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "成都市",
         "date": "2021-8"
       },
       {
-        "number": 2244,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "绵阳市",
         "date": "2021-8"
       },
       {
-        "number": 2333,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "南充市",
         "date": "2021-8"
       },
       {
-        "number": 2445,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "乐山市",
         "date": "2021-8"
       },
       {
-        "number": 2335,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "成都市",
         "date": "2021-7"
       },
       {
-        "number": 245,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "绵阳市",
         "date": "2021-7"
       },
       {
-        "number": 2457,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "南充市",
         "date": "2021-7"
       },
       {
-        "number": 2458,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "乐山市",
         "date": "2021-7"
       },
       {
-        "number": 4004,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "成都市",
         "date": "2021-5"
       },
       {
-        "number": 3077,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "绵阳市",
         "date": "2021-5"
       },
       {
-        "number": 3551,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "南充市",
         "date": "2021-5"
       },
       {
-        "number": 352,
+        "number": {
+          "values": [[3877, 4324, "42%"]]
+        },
         "province": "四川省",
         "city": "乐山市",
         "date": "2021-5"

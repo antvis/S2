@@ -291,15 +291,15 @@ const getStyle = (
   const isMinor = rowIndex === minorMeasureIndex;
   const isDerivedMeasure = colIndex >= derivedMeasureIndex;
   const style = isMinor
-    ? clone(dataCellTheme.minorText)
+    ? clone(dataCellTheme?.minorText)
     : clone(dataCellTheme.text);
   const derivedMeasureText = dataCellTheme.derivedMeasureText;
   const upFill = isMinor
     ? derivedMeasureText?.minorUp
-    : derivedMeasureText?.mainUp || dataCellTheme.icon.upIconColor;
+    : derivedMeasureText?.mainUp;
   const downFill = isMinor
     ? derivedMeasureText?.minorDown
-    : derivedMeasureText?.mainDown || dataCellTheme.icon.downIconColor;
+    : derivedMeasureText?.mainDown;
   if (isDerivedMeasure) {
     const isUp = getDataState(value);
     return merge(style, {
@@ -317,25 +317,32 @@ export const drawObjectText = (cell: DataCell) => {
   const { x, y, height, width } = cell.getContentArea();
   const text = cell.getMeta().fieldValue as MultiData;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
-  const labelStyle = dataCellStyle.bolderText;
-  const padding = dataCellStyle.cell.padding;
 
+  const padding = dataCellStyle.cell.padding;
   // 指标个数相同，任取其一即可
   const realWidth = width / (text.values[0].length + 1);
   const realHeight = height / (text.values.length + 1);
-  renderText(
-    cell,
-    [],
-    calX(x, padding.right),
-    y + realHeight / 2,
-    getEllipsisText({
-      text: text.label,
-      maxWidth: width - padding.left,
-      fontParam: labelStyle,
-    }),
-    labelStyle,
-  );
+  let labelHeight = 0;
+  // 绘制单元格主标题
+  if (text?.label) {
+    labelHeight = realHeight / 2;
+    const labelStyle = dataCellStyle.bolderText;
 
+    renderText(
+      cell,
+      [],
+      calX(x, padding.right),
+      y + labelHeight,
+      getEllipsisText({
+        text: text.label,
+        maxWidth: width - padding.left,
+        fontParam: labelStyle,
+      }),
+      labelStyle,
+    );
+  }
+
+  // 绘制指标
   const { values: textValues } = text;
   let curText: string | number;
   let curX: number;
@@ -343,7 +350,7 @@ export const drawObjectText = (cell: DataCell) => {
   let curWidth: number;
   let totalWidth = 0;
   for (let i = 0; i < textValues.length; i += 1) {
-    curY = y + realHeight / 2 + realHeight * (i + 1); // 加上label的高度
+    curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
     totalWidth = 0;
     for (let j = 0; j < textValues[i].length; j += 1) {
       curText = textValues[i][j] || '-';
