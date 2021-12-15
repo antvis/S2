@@ -1117,11 +1117,8 @@ export abstract class BaseFacet {
         height: cornerHeight,
         viewportWidth: width,
         viewportHeight: height,
-        // When both a row header and a panel scroll bar exist, show viewport shadow
-        showViewPortLeftShadow:
-          !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
-        showViewPortRightShadow:
-          !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
+        showViewPortLeftShadow: false,
+        showViewPortRightShadow: false,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
