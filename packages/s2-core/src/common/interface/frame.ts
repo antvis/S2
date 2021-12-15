@@ -9,7 +9,7 @@ export interface FrameConfig {
   height: number;
   viewportWidth: number;
   viewportHeight: number;
-  showViewPortLeftShadow: boolean;
+  showViewportLeftShadow: boolean;
   showViewPortRightShadow: boolean;
   scrollContainsRowHeader: boolean;
   isPivotMode: boolean;
