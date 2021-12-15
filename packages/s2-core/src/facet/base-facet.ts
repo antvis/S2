@@ -4,16 +4,7 @@ import { Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import * as d3Timer from 'd3-timer';
 import { Group } from '@antv/g-canvas';
-import {
-  debounce,
-  each,
-  find,
-  get,
-  isNil,
-  isUndefined,
-  last,
-  reduce,
-} from 'lodash';
+import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
