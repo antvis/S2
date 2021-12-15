@@ -541,13 +541,6 @@ export abstract class BaseFacet {
           hRowScrollX,
           KEY_GROUP_ROW_INDEX_RESIZE_AREA,
         );
-        this.centerFrame.onChangeShadowVisibility(
-          hRowScrollX,
-          this.cornerBBox.originalWidth -
-            this.cornerBBox.width -
-            this.scrollBarSize * 2,
-          true,
-        );
         this.cornerHeader.onRowScrollX(
           hRowScrollX,
           KEY_GROUP_CORNER_RESIZE_AREA,
@@ -898,7 +891,6 @@ export abstract class BaseFacet {
     this.centerFrame.onChangeShadowVisibility(
       scrollX,
       this.getRealWidth() - this.panelBBox.width,
-      false,
     );
     this.centerFrame.onBorderScroll(this.getRealScrollX(scrollX));
     this.columnHeader.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
@@ -1125,8 +1117,9 @@ export abstract class BaseFacet {
         height: cornerHeight,
         viewportWidth: width,
         viewportHeight: height,
-        showCornerRightShadow: !isNil(this.hRowScrollBar),
         // When both a row header and a panel scroll bar exist, show viewport shadow
+        showViewPortLeftShadow:
+          !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
         showViewPortRightShadow:
           !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
         scrollContainsRowHeader:

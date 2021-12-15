@@ -15,8 +15,8 @@ export class Frame extends Group {
     this.addCornerBottomBorder();
     // corner右边的竖线条
     this.addCornerRightBorder();
-    // 一级纵向分割线右侧的shadow
-    this.addSplitLineRightShadow();
+    // 一级纵向分割线两侧的shadow
+    this.addSplitLineShadow();
   }
 
   /**
@@ -34,17 +34,12 @@ export class Frame extends Group {
     this.render();
   }
 
-  public onChangeShadowVisibility(
-    scrollX: number,
-    maxScrollX: number,
-    cornerRightShadow: boolean,
-  ) {
-    const visible = scrollX < maxScrollX;
-    if (cornerRightShadow) {
-      this.cfg.showCornerRightShadow = visible;
-    } else {
-      this.cfg.showViewPortRightShadow = visible;
-    }
+  public onChangeShadowVisibility(scrollX: number, maxScrollX: number) {
+    this.cfg.showViewPortLeftShadow = scrollX > 0;
+    // baseFacet#renderHScrollBar render condition
+    this.cfg.showViewPortRightShadow =
+      Math.floor(scrollX) < Math.floor(maxScrollX);
+
     this.render();
   }
 
@@ -103,38 +98,68 @@ export class Frame extends Group {
     });
   }
 
-  private addSplitLineRightShadow() {
+  private addSplitLineShadow() {
     const cfg = this.cfg;
+    const { isPivotMode, spreadsheet } = cfg;
+    const splitLine = spreadsheet.theme?.splitLine;
+
+    if (
+      !isPivotMode ||
+      !splitLine.showShadow ||
+      !spreadsheet.isFrozenRowHeader()
+    ) {
+      return;
+    }
+
+    // do render...
+    this.addSplitLineLeftShadow();
+    this.addSplitLineRightShadow();
+  }
+
+  private addSplitLineLeftShadow() {
+    if (!this.cfg.showViewPortLeftShadow) {
+      return;
+    }
+
+    const { width, height, viewportHeight, position, spreadsheet } = this.cfg;
+    const splitLine = spreadsheet.theme?.splitLine;
+    const x = position.x + width;
+    const y = position.y;
+    this.addShape('rect', {
+      attrs: {
+        x,
+        y,
+        width: splitLine.shadowWidth,
+        height: viewportHeight + height,
+        fill: `l (0) 0:${splitLine.shadowColors?.left} 1:${splitLine.shadowColors?.right}`,
+      },
+    });
+  }
+
+  private addSplitLineRightShadow() {
+    if (!this.cfg.showViewPortRightShadow) {
+      return;
+    }
+
     const {
       width,
       height,
       viewportHeight,
+      viewportWidth,
       position,
-      isPivotMode,
       spreadsheet,
-      showViewPortRightShadow,
-    } = cfg;
-
-    if (!isPivotMode) {
-      return;
-    }
+    } = this.cfg;
     const splitLine = spreadsheet.theme?.splitLine;
-    if (
-      splitLine.showShadow &&
-      showViewPortRightShadow &&
-      this.cfg.spreadsheet.isFrozenRowHeader()
-    ) {
-      const x = position.x + width;
-      const y = position.y;
-      this.addShape('rect', {
-        attrs: {
-          x,
-          y,
-          width: splitLine.shadowWidth,
-          height: viewportHeight + height,
-          fill: `l (0) 0:${splitLine.shadowColors?.left} 1:${splitLine.shadowColors?.right}`,
-        },
-      });
-    }
+    const x = position.x + width + viewportWidth - splitLine.shadowWidth;
+    const y = position.y;
+    this.addShape('rect', {
+      attrs: {
+        x,
+        y,
+        width: splitLine.shadowWidth,
+        height: viewportHeight + height,
+        fill: `l (0) 0:${splitLine.shadowColors?.right} 1:${splitLine.shadowColors?.left}`,
+      },
+    });
   }
 }
