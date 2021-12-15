@@ -1177,7 +1177,7 @@ export abstract class BaseFacet {
 
   protected abstract doLayout(): LayoutResult;
 
-  protected abstract getViewCellHeights(
+  public abstract getViewCellHeights(
     layoutResult: LayoutResult,
   ): ViewCellHeights;
 }

@@ -5,6 +5,7 @@ import { get, isBoolean, last, maxBy, set, size } from 'lodash';
 import { TableColHeader } from 'src/facet/header/table-col';
 import { ColHeader } from 'src/facet/header/col';
 import { getOccupiedWidthForTableCol } from 'src/utils/cell/table-col-cell';
+import { getIndexRangeWithOffsets } from 'src/utils/facet';
 import type {
   LayoutResult,
   S2CellType,
@@ -24,7 +25,6 @@ import {
   translateGroupY,
   isFrozenTrailingCol,
   isFrozenTrailingRow,
-  getIndexRangeWithOffsets,
 } from './utils';
 import { CornerBBox } from './bbox/cornerBBox';
 import {
@@ -48,7 +48,7 @@ import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
 import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
 
 export class TableFacet extends BaseFacet {
-  protected rowOffsets: number[];
+  public rowOffsets: number[];
 
   public constructor(cfg: SpreadSheetFacetCfg) {
     super(cfg);
@@ -438,7 +438,7 @@ export class TableFacet extends BaseFacet {
     }
   }
 
-  protected getViewCellHeights() {
+  public getViewCellHeights() {
     const { dataSet } = this.cfg;
 
     this.initRowOffsets();
@@ -545,7 +545,6 @@ export class TableFacet extends BaseFacet {
       frozenTrailingRowCount,
     } = this.spreadsheet.options;
     const colLeafNodes = this.layoutResult.colLeafNodes;
-    const dataLength = this.spreadsheet.dataSet.getMultiData({}).length;
     const cellRange = this.getCellRange();
     const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
     const splitLineGroup = this.foregroundGroup.addGroup({

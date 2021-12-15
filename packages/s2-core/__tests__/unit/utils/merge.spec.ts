@@ -115,6 +115,7 @@ describe('merge test', () => {
         },
         autoResetSheetStyle: true,
         resize: true,
+        rowHeightResizeAffectCellType: 'all',
       },
       frozenRowHeader: true,
       showSeriesNumber: false,

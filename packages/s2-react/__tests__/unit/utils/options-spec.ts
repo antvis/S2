@@ -36,6 +36,7 @@ describe('Options Tests', () => {
         },
         autoResetSheetStyle: true,
         resize: true,
+        rowHeightResizeAffectCellType: 'all',
       },
       frozenRowHeader: true,
       showSeriesNumber: false,

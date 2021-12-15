@@ -1,6 +1,5 @@
 import {
   find,
-  findIndex,
   forEach,
   get,
   includes,
@@ -12,7 +11,7 @@ import {
 } from 'lodash';
 import { BaseFacet } from 'src/facet/base-facet';
 import { getDataCellId } from 'src/utils/cell/data-cell';
-import { getIndexRangeWithOffsets } from './utils';
+import { getIndexRangeWithOffsets } from 'src/utils/facet';
 import {
   EXTRA_FIELD,
   LayoutWidthTypes,
@@ -629,7 +628,7 @@ export class PivotFacet extends BaseFacet {
     return get(this.spreadsheet, 'options.scrollReachNodeField.rowField', []);
   }
 
-  protected getViewCellHeights(layoutResult: LayoutResult) {
+  public getViewCellHeights(layoutResult: LayoutResult) {
     const { rowLeafNodes } = layoutResult;
 
     const heights = reduce(

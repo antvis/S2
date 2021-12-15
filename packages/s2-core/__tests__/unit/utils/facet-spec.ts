@@ -1,6 +1,9 @@
-import { getSubTotalNodeWidthOrHeightByLevel } from '@/utils/facet';
+import {
+  getSubTotalNodeWidthOrHeightByLevel,
+  getIndexRangeWithOffsets,
+} from '@/utils/facet';
 
-describe('getSubTotalNodeWidthOrHeightByLevel Test', () => {
+describe('Facet util test', () => {
   test('should get correct width of subTotal node', () => {
     const sampleNodesForAllLevels = [
       {
@@ -17,5 +20,18 @@ describe('getSubTotalNodeWidthOrHeightByLevel Test', () => {
       getSubTotalNodeWidthOrHeightByLevel(sampleNodesForAllLevels, -1, 'width'),
     ).toEqual(20);
     expect(getSubTotalNodeWidthOrHeightByLevel([], -1, 'width')).toEqual(0);
+  });
+
+  test('should get correct index range for given offsets', () => {
+    const offsets = [0, 30, 60, 90, 120, 150, 160, 170, 190];
+    expect(getIndexRangeWithOffsets(offsets, 0, 31)).toStrictEqual({
+      start: 0,
+      end: 1,
+    });
+
+    expect(getIndexRangeWithOffsets(offsets, 101, 200)).toStrictEqual({
+      start: 3,
+      end: 7,
+    });
   });
 });
