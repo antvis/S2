@@ -84,6 +84,10 @@ export class DataCellMultiSelection
           cells: selectedCells,
           stateName: InteractionStateName.SELECTED,
         });
+        this.spreadsheet.emit(
+          S2Event.GLOBAL_SELECTED,
+          interaction.getActiveCells(),
+        );
         this.spreadsheet.showTooltipWithInfo(
           event,
           getActiveCellsTooltipData(this.spreadsheet),
