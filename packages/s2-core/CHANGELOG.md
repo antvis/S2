@@ -1,3 +1,16 @@
+# [@antv/s2-v1.3.0](https://github.com/antvis/S2/compare/@antv/s2-v1.2.0...@antv/s2-v1.3.0) (2021-12-13)
+
+
+### Bug Fixes
+
+* 🐛 solve the issue that the measure does not shown when the type of dimensions are number ([#871](https://github.com/antvis/S2/issues/871)) ([296b50b](https://github.com/antvis/S2/commit/296b50bc0af25032e72a7aee332eccd9b557e72c))
+* 🐛 solve the wrong data after drilling down twice ([#885](https://github.com/antvis/S2/issues/885)) ([e3c8729](https://github.com/antvis/S2/commit/e3c8729d8fd5383fa73349b9937daa7ea58e0301))
+
+
+### Features
+
+* ✨ show the sortIcon when the hideMeasureColumn is set ([#884](https://github.com/antvis/S2/issues/884)) ([de1c46a](https://github.com/antvis/S2/commit/de1c46acb12b257e32aa4cc568312abca873775a))
+
 # [@antv/s2-v1.2.0](https://github.com/antvis/S2/compare/@antv/s2-v1.1.2...@antv/s2-v1.2.0) (2021-12-06)
 
 

@@ -1,21 +1,17 @@
-import { get, isEmpty, find } from 'lodash';
-import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
-import { getExtraPaddingForExpandIcon } from 'src/utils/cell/table-col-cell';
-import { getContentArea } from 'src/utils/cell/cell';
-import { getSortTypeIcon } from 'src/utils/sort-action';
+import { find, get } from 'lodash';
 import { Group } from '@antv/g-canvas';
-import { isLastColumnAfterHidden } from '@/utils/hide-columns';
-import { S2Event, HORIZONTAL_RESIZE_AREA_KEY_PRE } from '@/common/constant';
-import { renderIcon, renderLine, renderRect } from '@/utils/g-renders';
 import { ColCell } from '@/cell/col-cell';
 import {
-  DefaultCellTheme,
-  FormatResult,
-  IconTheme,
-  SortParam,
-} from '@/common/interface';
-import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
+  HORIZONTAL_RESIZE_AREA_KEY_PRE,
+  KEY_GROUP_FROZEN_COL_RESIZE_AREA,
+} from '@/common/constant';
+import { FormatResult, SortParam } from '@/common/interface';
+import { isFrozenCol, isFrozenTrailingCol } from '@/facet/utils';
+import { getContentArea } from '@/utils/cell/cell';
+import { getExtraPaddingForExpandIcon } from '@/utils/cell/table-col-cell';
+import { renderRect } from '@/utils/g-renders';
 import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
+import { getSortTypeIcon } from '@/utils/sort-action';
 
 export class TableColCell extends ColCell {
   protected handleRestOptions(...[headerConfig]) {
@@ -71,31 +67,6 @@ export class TableColCell extends ColCell {
     return get(style, 'bolderText');
   }
 
-  protected initCell() {
-    super.initCell();
-    this.addExpandColumnIconShapes();
-  }
-
-  private hasHiddenColumnCell() {
-    const {
-      interaction: { hiddenColumnFields = [] },
-      tooltip: { operation },
-    } = this.spreadsheet.options;
-
-    if (isEmpty(hiddenColumnFields) || !operation.hiddenColumns) {
-      return false;
-    }
-    const hiddenColumnsDetail = this.spreadsheet.store.get(
-      'hiddenColumnsDetail',
-      [],
-    );
-    return !!hiddenColumnsDetail.find((column) => {
-      const { prev, next } = column?.displaySiblingNode || {};
-      const hiddenSiblingNode = next || prev;
-      return hiddenSiblingNode?.field === this.meta?.field;
-    });
-  }
-
   public getContentArea() {
     const { padding } = this.getStyle()?.cell || this.theme.dataCell.cell;
     const newPadding = { ...padding };
@@ -113,77 +84,6 @@ export class TableColCell extends ColCell {
     }
 
     return getContentArea(this.getCellArea(), newPadding);
-  }
-
-  private getExpandIconTheme(): IconTheme {
-    const themeCfg = this.getStyle() as DefaultCellTheme;
-    return themeCfg.icon;
-  }
-
-  private addExpandColumnSplitLine() {
-    const { x, y, width, height } = this.meta;
-    const {
-      horizontalBorderColor,
-      horizontalBorderWidth,
-      horizontalBorderColorOpacity,
-    } = this.theme.splitLine;
-    const lineX = this.isLastColumn() ? x + width - horizontalBorderWidth : x;
-
-    renderLine(
-      this,
-      {
-        x1: lineX,
-        y1: y,
-        x2: lineX,
-        y2: y + height,
-      },
-      {
-        stroke: horizontalBorderColor,
-        lineWidth: horizontalBorderWidth,
-        strokeOpacity: horizontalBorderColorOpacity,
-      },
-    );
-  }
-
-  private addExpandColumnIconShapes() {
-    if (!this.hasHiddenColumnCell()) {
-      return;
-    }
-    this.addExpandColumnSplitLine();
-    this.addExpandColumnIcon();
-  }
-
-  private addExpandColumnIcon() {
-    const iconConfig = this.getExpandColumnIconConfig();
-    const icon = renderIcon(this, {
-      ...iconConfig,
-      name: 'ExpandColIcon',
-      cursor: 'pointer',
-    });
-    icon.on('click', () => {
-      this.spreadsheet.emit(S2Event.LAYOUT_TABLE_COL_EXPANDED, this.meta);
-    });
-  }
-
-  // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
-  private getExpandColumnIconConfig() {
-    const { size } = this.getExpandIconTheme();
-    const { x, y, width, height } = this.getCellArea();
-
-    const baseIconX = x - size;
-    const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;
-    const iconY = y + height / 2 - size / 2;
-
-    return {
-      x: iconX,
-      y: iconY,
-      width: size * 2,
-      height: size,
-    };
-  }
-
-  private isLastColumn() {
-    return isLastColumnAfterHidden(this.spreadsheet, this.meta.field);
   }
 
   protected getHorizontalResizeAreaName() {

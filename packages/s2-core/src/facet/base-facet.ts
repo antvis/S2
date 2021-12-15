@@ -109,6 +109,12 @@ export abstract class BaseFacet {
 
   public centerFrame: Frame;
 
+  protected abstract doLayout(): LayoutResult;
+
+  protected abstract getViewCellHeights(
+    layoutResult: LayoutResult,
+  ): ViewCellHeights;
+
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
 
   get scrollBarTheme() {
@@ -1173,9 +1179,11 @@ export abstract class BaseFacet {
     this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
   }, 300);
 
-  protected abstract doLayout(): LayoutResult;
-
-  protected abstract getViewCellHeights(
-    layoutResult: LayoutResult,
-  ): ViewCellHeights;
+  protected saveInitColumnNodes(columnNodes: Node[] = []) {
+    const { store } = this.spreadsheet;
+    const initColumnNodes = store.get('initColumnNodes', []);
+    if (initColumnNodes.length !== columnNodes.length) {
+      store.set('initColumnNodes', columnNodes);
+    }
+  }
 }

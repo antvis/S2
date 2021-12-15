@@ -9,7 +9,6 @@ export const TableSheet: React.FC<SheetComponentsProps> = React.memo(
     const s2Ref = React.useRef<SpreadSheet>();
 
     React.useEffect(() => {
-      s2Ref.current?.setOptions({ interaction: { hiddenColumnFields: [] } });
       s2Ref.current?.interaction.hideColumns(
         options.interaction?.hiddenColumnFields,
       );

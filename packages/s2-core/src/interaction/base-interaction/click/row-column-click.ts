@@ -1,7 +1,11 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
 import { concat, difference, isEmpty, isNil } from 'lodash';
-import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
+import {
+  hideColumns,
+  hideColumnsByThunkGroup,
+  isEqualDisplaySiblingNodeId,
+} from '@/utils/hide-columns';
 import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
 import {
   S2Event,
@@ -9,8 +13,9 @@ import {
   InteractionStateName,
   TOOLTIP_OPERATOR_MENUS,
   InterceptType,
+  CellTypes,
 } from '@/common/constant';
-import { TooltipOperatorOptions } from '@/common/interface';
+import { TooltipOperation, TooltipOperatorOptions } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 import { mergeCellInfo, getTooltipOptions } from '@/utils/tooltip';
 
@@ -131,18 +136,32 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       ? mergeCellInfo(interaction.getActiveCells())
       : [];
 
-    const operator: TooltipOperatorOptions = this.spreadsheet.isTableMode() &&
-      operation.hiddenColumns && {
-        onClick: () => {
-          this.hideSelectedColumns();
-        },
-        menus: TOOLTIP_OPERATOR_MENUS.HiddenColumns,
-      };
-
+    const operator = this.getTooltipOperator(event, operation);
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       showSingleTips: true,
       operator,
     });
+  }
+
+  private getTooltipOperator(
+    event: CanvasEvent,
+    operation: TooltipOperation,
+  ): TooltipOperatorOptions {
+    const cell = this.spreadsheet.getCell(event.target);
+    const cellMeta = cell.getMeta?.();
+    const isColCell = cell.cellType === CellTypes.COL_CELL;
+    // 是叶子节点, 并且是列头单元格, 且大于一个时, 显示隐藏按钮
+    const isMultiColumns = this.spreadsheet.getColumnNodes().length > 1;
+    const enableHiddenColumnOperator =
+      isColCell && isMultiColumns && cellMeta.isLeaf && operation.hiddenColumns;
+
+    const operator = enableHiddenColumnOperator && {
+      onClick: () => {
+        this.hideSelectedColumns();
+      },
+      menus: TOOLTIP_OPERATOR_MENUS.HiddenColumns,
+    };
+    return operator;
   }
 
   private bindTableColExpand() {
@@ -162,50 +181,56 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
    * 这样不用每次 render 的时候实时计算, 渲染列头单元格 直接取数据即可
    */
   public hideSelectedColumns() {
-    const { interaction, options } = this.spreadsheet;
-    const selectedColumnFields: string[] = interaction
-      .getActiveCells()
-      .map((cell) => cell.getMeta().field);
+    const { interaction } = this.spreadsheet;
 
-    const { hiddenColumnFields: defaultHiddenColumnFields } =
-      options.interaction;
-    // 当前点击的, 和默认隐藏的
-    const hiddenColumnFields = [
-      ...defaultHiddenColumnFields,
-      ...selectedColumnFields,
-    ];
-    // 兼容多选
-    hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, true);
+    const selectedColumnNodes = interaction
+      .getActiveCells()
+      .map((cell) => cell.getMeta());
+
+    if (this.spreadsheet.isTableMode()) {
+      const selectedColumnFields = selectedColumnNodes.map(
+        ({ field }) => field,
+      );
+      // 兼容多选
+      hideColumnsByThunkGroup(this.spreadsheet, selectedColumnFields, true);
+    } else {
+      const selectedColumnFields = selectedColumnNodes.map(({ id }) => id);
+      hideColumns(this.spreadsheet, selectedColumnFields, true);
+    }
   }
 
   private handleExpandIconClick(node: Node) {
-    const { hiddenColumnFields: lastHideColumnFields } =
-      this.spreadsheet.options.interaction;
-    const hiddenColumnsDetail = this.spreadsheet.store.get(
+    const lastHiddenColumnsDetail = this.spreadsheet.store.get(
       'hiddenColumnsDetail',
       [],
     );
     const { hideColumnNodes = [] } =
-      hiddenColumnsDetail.find(
-        ({ displaySiblingNode }) =>
-          displaySiblingNode?.next?.field === node.field,
+      lastHiddenColumnsDetail.find(({ displaySiblingNode }) =>
+        isEqualDisplaySiblingNodeId(displaySiblingNode, node.id),
       ) || {};
-    const willDisplayColumnFields = hideColumnNodes.map(({ field }) => field);
+
+    const { hiddenColumnFields: lastHideColumnFields } =
+      this.spreadsheet.options.interaction;
+
+    const willDisplayColumnFields = hideColumnNodes.map((hideColumnNode) =>
+      this.spreadsheet.isTableMode() ? hideColumnNode.field : hideColumnNode.id,
+    );
+    const hiddenColumnFields = difference(
+      lastHideColumnFields,
+      willDisplayColumnFields,
+    );
+
+    const hiddenColumnsDetail = lastHiddenColumnsDetail.filter(
+      ({ displaySiblingNode }) =>
+        !isEqualDisplaySiblingNodeId(displaySiblingNode, node.id),
+    );
+
     this.spreadsheet.setOptions({
       interaction: {
-        hiddenColumnFields: difference(
-          lastHideColumnFields,
-          willDisplayColumnFields,
-        ),
+        hiddenColumnFields,
       },
     });
-    this.spreadsheet.store.set(
-      'hiddenColumnsDetail',
-      hiddenColumnsDetail.filter(
-        ({ displaySiblingNode }) =>
-          displaySiblingNode?.next?.field !== node.field,
-      ),
-    );
+    this.spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
     this.spreadsheet.interaction.reset();
     this.spreadsheet.render(false);
   }

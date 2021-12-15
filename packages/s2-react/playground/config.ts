@@ -3,13 +3,12 @@ import type { SliderSingleProps } from 'antd';
 import React from 'react';
 import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
 
-export const tableSheetDataCfg: Partial<S2DataConfig> = {
+export const tableSheetDataCfg: S2DataConfig = {
   data,
   totalData,
   meta,
   fields: {
     columns: ['province', 'city', 'type', 'sub_type', 'number'],
-    valueInCols: true,
   },
 };
 
