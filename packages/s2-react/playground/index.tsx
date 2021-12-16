@@ -666,29 +666,41 @@ function MainLayout() {
           )}
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
-          <div style={{ margin: 20 }}>
-            <Space size="middle">
-              <Switch
-                checkedChildren="多指标"
-                unCheckedChildren="单指标"
-                onChange={(checked) => {
-                  const newDataCfg = checked ? multiMeasure : singleMeasure;
-                  setStrategyDataCfg(newDataCfg);
-                }}
-              />
-            </Space>
-          </div>
+          <Space size="middle" style={{ marginBottom: 20, display: 'flex' }}>
+            <Switch
+              checkedChildren="多指标"
+              unCheckedChildren="单指标"
+              onChange={(checked) => {
+                const newDataCfg = checked ? multiMeasure : singleMeasure;
+                setStrategyDataCfg(newDataCfg);
+              }}
+            />
+          </Space>
           <SheetComponent
-            dataCfg={strategyDataCfg}
-            options={{ width: 1200, height: 400, cornerText: '指标' }}
             sheetType="strategy"
+            dataCfg={strategyDataCfg}
+            options={{ width: 1000, height: 400, cornerText: '指标' }}
+            valuesConfig={{
+              originalValueField: 'originalValue',
+              fields: [
+                {
+                  label: '指标',
+                },
+                {
+                  label: '环比值',
+                },
+                {
+                  label: '环比率',
+                },
+              ],
+            }}
           />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">
           <SheetComponent
+            sheetType="gridAnalysis"
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
-            sheetType="gridAnalysis"
           />
         </TabPane>
       </Tabs>

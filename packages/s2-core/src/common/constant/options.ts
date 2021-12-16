@@ -1,4 +1,5 @@
 import type { S2Options } from '../interface/s2Options';
+import { EMPTY_PLACEHOLDER } from './basic';
 import type { Style } from '@/common/interface/basic';
 
 export enum LayoutWidthTypes {
@@ -73,4 +74,5 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   frozenTrailingColCount: 0,
   hdAdapter: true,
   cornerText: '',
+  placeholder: EMPTY_PLACEHOLDER,
 };

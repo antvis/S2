@@ -19,8 +19,23 @@ import { HeaderCfgProps } from '@/components/header';
 
 export type SheetType = 'pivot' | 'table' | 'gridAnalysis' | 'strategy';
 
-export interface SheetComponentsProps extends BaseSheetComponentProps {
+export interface SheetComponentsProps
+  extends BaseSheetComponentProps,
+    StrategySheetProps {
   sheetType?: SheetType;
+}
+
+export interface StrategySheetProps {
+  valuesConfig?: {
+    // 原始值字段
+    originalValueField?: string;
+    fields?: {
+      // 数值标题
+      label?: string;
+      // 数值占单元格宽度百分比
+      widthPercent?: string;
+    }[];
+  };
 }
 
 export interface BaseSheetProps extends SheetComponentsProps {

@@ -257,7 +257,9 @@ export abstract class SpreadSheet extends EE {
   ) {
     const { content, event } = showOptions;
     const cell = this.getCell(event?.target);
-    const displayContent = isFunction(content) ? content(cell) : content;
+    const displayContent = isFunction(content)
+      ? content(cell, showOptions)
+      : content;
 
     this.tooltip.show?.({
       ...showOptions,
