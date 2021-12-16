@@ -17,10 +17,20 @@ import React from 'react';
 import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
 
-export type SheetType = 'pivot' | 'table' | 'gridAnalysis' | 'strategy';
+export type SheetType = 'pivot' | 'table';
 
 export interface SheetComponentsProps extends BaseSheetComponentProps {
   sheetType?: SheetType;
+}
+
+export interface StrategySheetProps extends BaseSheetComponentProps {
+  valuesConfig?: {
+    originalValueKey?: string;
+    fields?: {
+      label?: string;
+      widthPercent?: string;
+    }[];
+  };
 }
 
 export interface BaseSheetProps extends SheetComponentsProps {

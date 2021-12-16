@@ -22,7 +22,6 @@ import {
   mapKeys,
   every,
   isObject,
-  merge,
 } from 'lodash';
 import * as CSS from 'csstype';
 import { Event as CanvasEvent } from '@antv/g-canvas';
@@ -47,6 +46,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { i18n } from '@/common/i18n';
 import {
   CellTypes,
+  EMPTY_PLACEHOLDER,
   EXTRA_FIELD,
   PRECISION,
   VALUE_FIELD,
@@ -441,7 +441,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
       value = '';
     } else if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
       // 如果选中的单元格都无数据，则显示"-"
-      value = '-';
+      value = EMPTY_PLACEHOLDER;
     } else {
       const dataSum = getDataSumByField(selected, VALUE_FIELD);
       value = parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems

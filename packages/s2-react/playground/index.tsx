@@ -54,6 +54,8 @@ import {
   SheetType,
   PartDrillDown,
   PartDrillDownInfo,
+  GridAnalysisSheet,
+  StrategySheet,
 } from '@/components';
 
 import './index.less';
@@ -360,7 +362,7 @@ function MainLayout() {
 
   return (
     <div className="playground">
-      <Tabs defaultActiveKey="basic" type="card">
+      <Tabs defaultActiveKey="strategy" type="card">
         <TabPane tab="基础表" key="basic">
           <Collapse defaultActiveKey="filter">
             <Collapse.Panel header="筛选器" key="filter">
@@ -666,29 +668,39 @@ function MainLayout() {
           )}
         </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
-          <div style={{ margin: 20 }}>
-            <Space size="middle">
-              <Switch
-                checkedChildren="多指标"
-                unCheckedChildren="单指标"
-                onChange={(checked) => {
-                  const newDataCfg = checked ? multiMeasure : singleMeasure;
-                  setStrategyDataCfg(newDataCfg);
-                }}
-              />
-            </Space>
-          </div>
-          <SheetComponent
+          <Space size="middle" style={{ marginBottom: 20, display: 'flex' }}>
+            <Switch
+              checkedChildren="多指标"
+              unCheckedChildren="单指标"
+              onChange={(checked) => {
+                const newDataCfg = checked ? multiMeasure : singleMeasure;
+                setStrategyDataCfg(newDataCfg);
+              }}
+            />
+          </Space>
+          <StrategySheet
             dataCfg={strategyDataCfg}
-            options={{ width: 1200, height: 400, cornerText: '指标' }}
-            sheetType="strategy"
+            options={{ width: 1000, height: 400, cornerText: '指标' }}
+            valuesConfig={{
+              originalValueKey: 'originalValue',
+              fields: [
+                {
+                  label: '指标',
+                },
+                {
+                  label: '环比值',
+                },
+                {
+                  label: '环比率',
+                },
+              ],
+            }}
           />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">
-          <SheetComponent
+          <GridAnalysisSheet
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
-            sheetType="gridAnalysis"
           />
         </TabPane>
       </Tabs>
