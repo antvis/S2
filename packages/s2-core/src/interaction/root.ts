@@ -237,55 +237,65 @@ export class RootInteraction {
     hideColumns(this.spreadsheet, hiddenColumnFields, true);
   }
 
-  /**
-   * 注册交互（组件按自己的场景写交互，继承此方法注册）
-   * @param options
-   */
+  private getDefaultInteractions() {
+    const { resize, brushSelection } = this.spreadsheet.options.interaction;
+    return [
+      {
+        key: InteractionName.DATA_CELL_CLICK,
+        interaction: DataCellClick,
+      },
+      {
+        key: InteractionName.ROW_COLUMN_CLICK,
+        interaction: RowColumnClick,
+      },
+      {
+        key: InteractionName.ROW_TEXT_CLICK,
+        interaction: RowTextClick,
+      },
+      {
+        key: InteractionName.MERGED_CELLS_CLICK,
+        interaction: MergedCellClick,
+      },
+      {
+        key: InteractionName.HOVER,
+        interaction: HoverEvent,
+        enable: !isMobile(),
+      },
+      {
+        key: InteractionName.BRUSH_SELECTION,
+        interaction: BrushSelection,
+        enable: !isMobile() && brushSelection,
+      },
+      {
+        key: InteractionName.COL_ROW_RESIZE,
+        interaction: RowColumnResize,
+        enable: !isMobile() && resize,
+      },
+      {
+        key: InteractionName.DATA_CELL_MULTI_SELECTION,
+        interaction: DataCellMultiSelection,
+        enable: !isMobile(),
+      },
+      {
+        key: InteractionName.COL_ROW_SHIFT_MULTI_SELECTION,
+        interaction: ShiftMultiSelection,
+        enable: !isMobile(),
+      },
+    ];
+  }
+
   private registerInteractions() {
+    const { customInteractions } = this.spreadsheet.options.interaction;
+
     this.interactions.clear();
 
-    this.interactions.set(
-      InteractionName.DATA_CELL_CLICK,
-      new DataCellClick(this.spreadsheet),
-    );
-    this.interactions.set(
-      InteractionName.ROW_COLUMN_CLICK,
-      new RowColumnClick(this.spreadsheet),
-    );
-    this.interactions.set(
-      InteractionName.ROW_TEXT_CLICK,
-      new RowTextClick(this.spreadsheet),
-    );
-    this.interactions.set(
-      InteractionName.MERGED_CELLS_CLICK,
-      new MergedCellClick(this.spreadsheet),
-    );
-    this.interactions.set(
-      InteractionName.HOVER,
-      new HoverEvent(this.spreadsheet),
-    );
+    const defaultInteractions = this.getDefaultInteractions();
+    defaultInteractions.forEach(({ key, interaction: Interaction, enable }) => {
+      if (enable !== false) {
+        this.interactions.set(key, new Interaction(this.spreadsheet));
+      }
+    });
 
-    if (!isMobile()) {
-      this.interactions.set(
-        InteractionName.BRUSH_SELECTION,
-        new BrushSelection(this.spreadsheet),
-      );
-      this.interactions.set(
-        InteractionName.COL_ROW_RESIZE,
-        new RowColumnResize(this.spreadsheet),
-      );
-      this.interactions.set(
-        InteractionName.DATA_CELL_MULTI_SELECTION,
-        new DataCellMultiSelection(this.spreadsheet),
-      );
-      this.interactions.set(
-        InteractionName.COL_ROW_SHIFT_MULTI_SELECTION,
-        new ShiftMultiSelection(this.spreadsheet),
-      );
-    }
-
-    const customInteractions =
-      this.spreadsheet.options?.interaction.customInteractions;
     if (!isEmpty(customInteractions)) {
       forEach(customInteractions, (customInteraction: CustomInteraction) => {
         const CustomInteractionClass = customInteraction.interaction;

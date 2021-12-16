@@ -116,6 +116,7 @@ describe('merge test', () => {
         },
         autoResetSheetStyle: true,
         resize: true,
+        brushSelection: true,
       },
       frozenRowHeader: true,
       showSeriesNumber: false,

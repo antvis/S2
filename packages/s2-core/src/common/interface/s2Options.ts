@@ -49,6 +49,8 @@ export interface InteractionOptions {
   readonly scrollSpeedRatio?: ScrollRatio;
   // enable resize area, default set to all enable
   readonly resize?: boolean | ResizeActiveOptions;
+  // enable mouse drag brush selection
+  readonly brushSelection?: boolean;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];
