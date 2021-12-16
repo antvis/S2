@@ -913,6 +913,7 @@ export class TableFacet extends BaseFacet {
 
   // 对 panelScrollGroup 以及四个方向的 frozenGroup 做 Clip，避免有透明度时冻结分组和滚动分组展示重叠
   protected clip(scrollX: number, scrollY: number) {
+    const colLeafNodes = this.layoutResult.colLeafNodes;
     const paginationScrollY = this.getPaginationScrollY();
     const {
       frozenRowGroup,
@@ -995,7 +996,7 @@ export class TableFacet extends BaseFacet {
         attrs: {
           x: 0,
           y: frozenRowGroupHeight + this.cornerBBox.height,
-          width: this.getSeriesNumberWidth(),
+          width: colLeafNodes?.[0]?.width ?? 0,
           height: panelScrollGroupHeight,
         },
       });
