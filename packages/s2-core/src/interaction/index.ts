@@ -5,3 +5,4 @@ export * from './data-cell-multi-selection';
 export * from './event-controller';
 export * from './root';
 export * from './row-column-resize';
+export * from './shift-multi-selection';

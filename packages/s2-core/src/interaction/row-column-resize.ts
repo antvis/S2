@@ -21,7 +21,6 @@ import {
   RESIZE_START_GUIDE_LINE_ID,
   RESIZE_END_GUIDE_LINE_ID,
   S2Event,
-  CORNER_MAX_WIDTH_RATIO,
   ResizeDirectionType,
   ResizeAreaEffect,
 } from '@/common/constant';

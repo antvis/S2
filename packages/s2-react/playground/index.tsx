@@ -456,7 +456,9 @@ function MainLayout() {
                   </Button>
                 </Popover>
               </Space>
-              <Space style={{ margin: '20px 0', display: 'flex' }}>
+              <Space
+                style={{ marginTop: 20, display: 'flex', flexWrap: 'wrap' }}
+              >
                 <Switch
                   checkedChildren="渲染组件"
                   unCheckedChildren="卸载组件"
@@ -527,24 +529,6 @@ function MainLayout() {
                   defaultChecked={adaptive}
                   onChange={setAdaptive}
                 />
-                <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
-                  <Switch
-                    checkedChildren="自动重置交互样式开"
-                    unCheckedChildren="自动重置交互样式关"
-                    defaultChecked={
-                      mergedOptions?.interaction?.autoResetSheetStyle
-                    }
-                    onChange={(checked) => {
-                      updateOptions({
-                        interaction: {
-                          autoResetSheetStyle: checked,
-                        },
-                      });
-                    }}
-                  />
-                </Tooltip>
-              </Space>
-              <Space size="middle">
                 <Switch
                   checkedChildren="显示序号"
                   unCheckedChildren="不显示序号"
@@ -566,30 +550,6 @@ function MainLayout() {
                   unCheckedChildren="无汇总"
                   checked={showTotals}
                   onChange={setShowTotals}
-                />
-                <Switch
-                  checkedChildren="选中聚光灯开"
-                  unCheckedChildren="选中聚光灯关"
-                  checked={mergedOptions.interaction.selectedCellsSpotlight}
-                  onChange={(checked) => {
-                    updateOptions({
-                      interaction: {
-                        selectedCellsSpotlight: checked,
-                      },
-                    });
-                  }}
-                />
-                <Switch
-                  checkedChildren="hover十字器开"
-                  unCheckedChildren="hover十字器关"
-                  checked={mergedOptions.interaction.hoverHighlight}
-                  onChange={(checked) => {
-                    updateOptions({
-                      interaction: {
-                        hoverHighlight: checked,
-                      },
-                    });
-                  }}
                 />
                 <Switch
                   checkedChildren="默认actionIcons"
@@ -619,6 +579,50 @@ function MainLayout() {
                   checked={showCustomTooltip}
                   onChange={setShowCustomTooltip}
                 />
+              </Space>
+            </Collapse.Panel>
+            <Collapse.Panel header="交互配置" key="interaction">
+              <Space>
+                <Switch
+                  checkedChildren="选中聚光灯开"
+                  unCheckedChildren="选中聚光灯关"
+                  checked={mergedOptions.interaction.selectedCellsSpotlight}
+                  onChange={(checked) => {
+                    updateOptions({
+                      interaction: {
+                        selectedCellsSpotlight: checked,
+                      },
+                    });
+                  }}
+                />
+                <Switch
+                  checkedChildren="hover十字器开"
+                  unCheckedChildren="hover十字器关"
+                  checked={mergedOptions.interaction.hoverHighlight}
+                  onChange={(checked) => {
+                    updateOptions({
+                      interaction: {
+                        hoverHighlight: checked,
+                      },
+                    });
+                  }}
+                />
+                <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
+                  <Switch
+                    checkedChildren="自动重置交互样式开"
+                    unCheckedChildren="自动重置交互样式关"
+                    defaultChecked={
+                      mergedOptions?.interaction?.autoResetSheetStyle
+                    }
+                    onChange={(checked) => {
+                      updateOptions({
+                        interaction: {
+                          autoResetSheetStyle: checked,
+                        },
+                      });
+                    }}
+                  />
+                </Tooltip>
               </Space>
             </Collapse.Panel>
             <Collapse.Panel header="宽高调整热区配置" key="resize">

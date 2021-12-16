@@ -26,6 +26,8 @@ const getStrategySheetOptions: GetStrategySheetOptions = (
     },
     interaction: {
       autoResetSheetStyle: true,
+      // 趋势分析表不开启刷选
+      brushSelection: false,
     },
     tooltip: {
       operation: {
