@@ -387,39 +387,22 @@ describe('RootInteraction Tests', () => {
         rootInteraction.interactions.has(InteractionName[key]),
       ).toBeTruthy();
     });
+  });
 
+  test.each`
+    key                                              | expected
+    ${InteractionName.DATA_CELL_CLICK}               | ${DataCellClick}
+    ${InteractionName.ROW_COLUMN_CLICK}              | ${RowColumnClick}
+    ${InteractionName.ROW_TEXT_CLICK}                | ${RowTextClick}
+    ${InteractionName.MERGED_CELLS_CLICK}            | ${MergedCellClick}
+    ${InteractionName.HOVER}                         | ${HoverEvent}
+    ${InteractionName.BRUSH_SELECTION}               | ${BrushSelection}
+    ${InteractionName.COL_ROW_RESIZE}                | ${RowColumnResize}
+    ${InteractionName.DATA_CELL_MULTI_SELECTION}     | ${DataCellMultiSelection}
+    ${InteractionName.COL_ROW_SHIFT_MULTI_SELECTION} | ${ShiftMultiSelection}
+  `('should register correctly interaction instance', ({ key, expected }) => {
     // 保证对应的交互实例注册正确
-    expect(
-      rootInteraction.interactions.get(InteractionName.DATA_CELL_CLICK),
-    ).toBeInstanceOf(DataCellClick);
-    expect(
-      rootInteraction.interactions.get(InteractionName.ROW_COLUMN_CLICK),
-    ).toBeInstanceOf(RowColumnClick);
-    expect(
-      rootInteraction.interactions.get(InteractionName.ROW_TEXT_CLICK),
-    ).toBeInstanceOf(RowTextClick);
-    expect(
-      rootInteraction.interactions.get(InteractionName.MERGED_CELLS_CLICK),
-    ).toBeInstanceOf(MergedCellClick);
-    expect(
-      rootInteraction.interactions.get(InteractionName.HOVER),
-    ).toBeInstanceOf(HoverEvent);
-    expect(
-      rootInteraction.interactions.get(InteractionName.BRUSH_SELECTION),
-    ).toBeInstanceOf(BrushSelection);
-    expect(
-      rootInteraction.interactions.get(InteractionName.COL_ROW_RESIZE),
-    ).toBeInstanceOf(RowColumnResize);
-    expect(
-      rootInteraction.interactions.get(
-        InteractionName.DATA_CELL_MULTI_SELECTION,
-      ),
-    ).toBeInstanceOf(DataCellMultiSelection);
-    expect(
-      rootInteraction.interactions.get(
-        InteractionName.COL_ROW_SHIFT_MULTI_SELECTION,
-      ),
-    ).toBeInstanceOf(ShiftMultiSelection);
+    expect(rootInteraction.interactions.get(key)).toBeInstanceOf(expected);
   });
 
   test('should register custom interaction', () => {
