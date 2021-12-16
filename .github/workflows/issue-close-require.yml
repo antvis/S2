@@ -13,19 +13,19 @@ jobs:
         with:
           actions: 'close-issues'
           labels: '🤔 Need Reproduce'
-          inactive-day: 7
+          inactive-day: 15
           body: |
-            由于该 issue 被标记为需要复现，却 7 天未收到回应。现关闭 issue，若有任何问题，可评论回复。
+            由于该 issue 被标记为需要复现，却 15 天未收到回应。现关闭 issue，若有任何问题，可评论回复。
             
-            Since the issue was labeled as "need reproduce" but no response was received for 7 days. Now close the issue. If you have any questions, feel free to comment.
+            Since the issue was labeled as "need reproduce" but no response was received for 15 days. Now close the issue. If you have any questions, feel free to comment.
 
       - name: Needs more info
         uses: actions-cool/issues-helper@main
         with:
           actions: 'close-issues'
           labels: '👀 need more info'
-          inactive-day: 7
+          inactive-day: 15
           body: |
-            由于该 issue 被标记为需要复现，却 7 天未收到回应。现关闭 issue，若有任何问题，可评论回复。
+            由于该 issue 被标记为需要复现，却 15 天未收到回应。现关闭 issue，若有任何问题，可评论回复。
             
-            Since the issue was labeled as "need reproduce" but no response was received for 7 days. Now close the issue. If you have any questions, feel free to comment.
+            Since the issue was labeled as "need reproduce" but no response was received for 15 days. Now close the issue. If you have any questions, feel free to comment.
