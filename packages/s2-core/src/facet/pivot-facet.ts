@@ -338,8 +338,12 @@ export class PivotFacet extends BaseFacet {
   ) {
     const { cellCfg, spreadsheet } = this.cfg;
     const isTree = spreadsheet.isHierarchyTreeType();
-    const heightByField =
-      spreadsheet.options.style?.rowCfg?.heightByField ?? {};
+    const heightByField = get(
+      spreadsheet,
+      'options.style.rowCfg.heightByField',
+      {},
+    );
+
     // 1、calculate first node's width in every level
     if (isTree) {
       rowsHierarchy.width = this.getTreeRowHeaderWidth();
@@ -366,12 +370,8 @@ export class PivotFacet extends BaseFacet {
         currentNode.rowIndex ??= i;
         currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
-
-        const nodeHeight = heightByField[currentNode.id]
-          ? heightByField[currentNode.id]
-          : cellCfg.height;
         currentNode.height =
-          nodeHeight +
+          (heightByField[currentNode.id] ?? cellCfg.height) +
           this.rowCellTheme.padding?.top +
           this.rowCellTheme.padding?.bottom;
         preLeafNode = currentNode;

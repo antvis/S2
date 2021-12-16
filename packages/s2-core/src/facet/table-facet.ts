@@ -405,8 +405,12 @@ export class TableFacet extends BaseFacet {
     const { cellCfg } = this.cfg;
 
     if (this.rowOffsets) {
-      const heightByField =
-        this.spreadsheet.options.style?.rowCfg?.heightByField ?? {};
+      const heightByField = get(
+        this.spreadsheet,
+        'options.style.rowCfg.heightByField',
+        {},
+      );
+
       const customHeight = heightByField[String(index)];
       if (customHeight) {
         return customHeight;
@@ -421,16 +425,18 @@ export class TableFacet extends BaseFacet {
 
   protected initRowOffsets() {
     const { dataSet } = this.cfg;
-    const heightByField =
-      this.spreadsheet.options.style?.rowCfg?.heightByField ?? {};
+    const heightByField = get(
+      this.spreadsheet,
+      'options.style.rowCfg.heightByField',
+      {},
+    );
     if (Object.keys(heightByField).length) {
       const data = dataSet.getDisplayDataSet();
       this.rowOffsets = [0];
       let lastOffset = 0;
       data.forEach((_, idx) => {
-        const currentHeight = heightByField[String(idx)]
-          ? heightByField[String(idx)]
-          : this.getDefaultCellHeight();
+        const currentHeight =
+          heightByField[String(idx)] ?? this.getDefaultCellHeight();
         const currentOffset = lastOffset + currentHeight;
         this.rowOffsets.push(currentOffset);
         lastOffset = currentOffset;
@@ -809,7 +815,8 @@ export class TableFacet extends BaseFacet {
   }
 
   protected updateRowResizeArea() {
-    const resize = this.spreadsheet.options?.interaction?.resize;
+    const { foregroundGroup, options } = this.spreadsheet;
+    const resize = get(options, 'interaction.resize');
 
     if (isBoolean(resize)) {
       if (!resize) {
@@ -819,10 +826,8 @@ export class TableFacet extends BaseFacet {
       return;
     }
 
-    const rowResizeGroup = this.spreadsheet.foregroundGroup.findById(
-      KEY_GROUP_ROW_RESIZE_AREA,
-    );
-    const rowResizeFrozenGroup = this.spreadsheet.foregroundGroup.findById(
+    const rowResizeGroup = foregroundGroup.findById(KEY_GROUP_ROW_RESIZE_AREA);
+    const rowResizeFrozenGroup = foregroundGroup.findById(
       KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
     );
     if (rowResizeGroup) {

@@ -240,8 +240,14 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeHeightDetail(): ResizeDetail {
-    const { rowResizeType } = this.spreadsheet.options.interaction;
-    const { heightByField } = this.spreadsheet.options.style.rowCfg;
+    const {
+      options: {
+        interaction: { rowResizeType },
+        style: {
+          rowCfg: { heightByField },
+        },
+      },
+    } = this.spreadsheet;
     const { padding: rowCellPadding } = this.spreadsheet.theme.rowCell.cell;
     const { start, end } = this.getResizeGuideLinePosition();
     const baseHeight = Math.floor(end.y - start.y);
