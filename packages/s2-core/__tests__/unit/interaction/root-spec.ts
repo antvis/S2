@@ -205,91 +205,6 @@ describe('RootInteraction Tests', () => {
     expect(rootInteraction.eventController.domEventListeners).toBeFalsy();
   });
 
-  test('should register default interaction', () => {
-    expect(rootInteraction.interactions.size).toEqual(9);
-    Object.keys(InteractionName).forEach((key) => {
-      expect(
-        rootInteraction.interactions.has(InteractionName[key]),
-      ).toBeTruthy();
-    });
-
-    // 保证对应的交互实例注册正确
-    expect(
-      rootInteraction.interactions.get(InteractionName.DATA_CELL_CLICK),
-    ).toBeInstanceOf(DataCellClick);
-    expect(
-      rootInteraction.interactions.get(InteractionName.ROW_COLUMN_CLICK),
-    ).toBeInstanceOf(RowColumnClick);
-    expect(
-      rootInteraction.interactions.get(InteractionName.ROW_TEXT_CLICK),
-    ).toBeInstanceOf(RowTextClick);
-    expect(
-      rootInteraction.interactions.get(InteractionName.MERGED_CELLS_CLICK),
-    ).toBeInstanceOf(MergedCellClick);
-    expect(
-      rootInteraction.interactions.get(InteractionName.HOVER),
-    ).toBeInstanceOf(HoverEvent);
-    expect(
-      rootInteraction.interactions.get(InteractionName.BRUSH_SELECTION),
-    ).toBeInstanceOf(BrushSelection);
-    expect(
-      rootInteraction.interactions.get(InteractionName.COL_ROW_RESIZE),
-    ).toBeInstanceOf(RowColumnResize);
-    expect(
-      rootInteraction.interactions.get(
-        InteractionName.DATA_CELL_MULTI_SELECTION,
-      ),
-    ).toBeInstanceOf(DataCellMultiSelection);
-    expect(
-      rootInteraction.interactions.get(
-        InteractionName.COL_ROW_SHIFT_MULTI_SELECTION,
-      ),
-    ).toBeInstanceOf(ShiftMultiSelection);
-  });
-
-  test('should register custom interaction', () => {
-    class MyInteraction extends BaseEvent {
-      bindEvents() {}
-    }
-
-    const customInteraction = {
-      key: 'customInteraction',
-      interaction: MyInteraction,
-    };
-
-    mockSpreadSheetInstance.options.interaction.customInteractions = [
-      customInteraction,
-    ];
-
-    rootInteraction = new RootInteraction(mockSpreadSheetInstance);
-    expect(rootInteraction.interactions.size).toEqual(10);
-    expect(
-      rootInteraction.interactions.has(customInteraction.key),
-    ).toBeTruthy();
-    expect(
-      rootInteraction.interactions.get(customInteraction.key),
-    ).toBeInstanceOf(MyInteraction);
-  });
-
-  test('should disable brush and resize interaction by options', () => {
-    mockSpreadSheetInstance.options = {
-      interaction: {
-        brushSelection: false,
-        resize: false,
-      },
-    } as S2Options;
-
-    rootInteraction = new RootInteraction(mockSpreadSheetInstance);
-    expect(rootInteraction.interactions.size).toEqual(7);
-    expect(
-      rootInteraction.interactions.has(InteractionName.BRUSH_SELECTION),
-    ).toBeFalsy();
-    [...rootInteraction.interactions.values()].forEach((interaction) => {
-      expect(interaction).not.toBeInstanceOf(BrushSelection);
-      expect(interaction).not.toBeInstanceOf(RowColumnResize);
-    });
-  });
-
   describe('RootInteraction Change State', () => {
     test('should update cell style when update interaction state', () => {
       const cells = [mockCell, mockCell, mockCell];
@@ -461,6 +376,92 @@ describe('RootInteraction Tests', () => {
       await sleep(300);
 
       expect(flag).toBeFalsy();
+    });
+  });
+
+  test('should register default interaction', () => {
+    rootInteraction = new RootInteraction(mockSpreadSheetInstance);
+    expect(rootInteraction.interactions.size).toEqual(9);
+    Object.keys(InteractionName).forEach((key) => {
+      expect(
+        rootInteraction.interactions.has(InteractionName[key]),
+      ).toBeTruthy();
+    });
+
+    // 保证对应的交互实例注册正确
+    expect(
+      rootInteraction.interactions.get(InteractionName.DATA_CELL_CLICK),
+    ).toBeInstanceOf(DataCellClick);
+    expect(
+      rootInteraction.interactions.get(InteractionName.ROW_COLUMN_CLICK),
+    ).toBeInstanceOf(RowColumnClick);
+    expect(
+      rootInteraction.interactions.get(InteractionName.ROW_TEXT_CLICK),
+    ).toBeInstanceOf(RowTextClick);
+    expect(
+      rootInteraction.interactions.get(InteractionName.MERGED_CELLS_CLICK),
+    ).toBeInstanceOf(MergedCellClick);
+    expect(
+      rootInteraction.interactions.get(InteractionName.HOVER),
+    ).toBeInstanceOf(HoverEvent);
+    expect(
+      rootInteraction.interactions.get(InteractionName.BRUSH_SELECTION),
+    ).toBeInstanceOf(BrushSelection);
+    expect(
+      rootInteraction.interactions.get(InteractionName.COL_ROW_RESIZE),
+    ).toBeInstanceOf(RowColumnResize);
+    expect(
+      rootInteraction.interactions.get(
+        InteractionName.DATA_CELL_MULTI_SELECTION,
+      ),
+    ).toBeInstanceOf(DataCellMultiSelection);
+    expect(
+      rootInteraction.interactions.get(
+        InteractionName.COL_ROW_SHIFT_MULTI_SELECTION,
+      ),
+    ).toBeInstanceOf(ShiftMultiSelection);
+  });
+
+  test('should register custom interaction', () => {
+    class MyInteraction extends BaseEvent {
+      bindEvents() {}
+    }
+
+    const customInteraction = {
+      key: 'customInteraction',
+      interaction: MyInteraction,
+    };
+
+    mockSpreadSheetInstance.options.interaction.customInteractions = [
+      customInteraction,
+    ];
+
+    rootInteraction = new RootInteraction(mockSpreadSheetInstance);
+    expect(rootInteraction.interactions.size).toEqual(10);
+    expect(
+      rootInteraction.interactions.has(customInteraction.key),
+    ).toBeTruthy();
+    expect(
+      rootInteraction.interactions.get(customInteraction.key),
+    ).toBeInstanceOf(MyInteraction);
+  });
+
+  test('should disable brush and resize interaction by options', () => {
+    mockSpreadSheetInstance.options = {
+      interaction: {
+        brushSelection: false,
+        resize: false,
+      },
+    } as S2Options;
+
+    rootInteraction = new RootInteraction(mockSpreadSheetInstance);
+    expect(rootInteraction.interactions.size).toEqual(7);
+    expect(
+      rootInteraction.interactions.has(InteractionName.BRUSH_SELECTION),
+    ).toBeFalsy();
+    [...rootInteraction.interactions.values()].forEach((interaction) => {
+      expect(interaction).not.toBeInstanceOf(BrushSelection);
+      expect(interaction).not.toBeInstanceOf(RowColumnResize);
     });
   });
 });
