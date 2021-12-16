@@ -121,6 +121,17 @@ describe('Interaction Shift Multi Selection Tests', () => {
 
     s2.getCell = () => mockCell11.mockCell as any;
 
+    s2.interaction.getActiveCells = () =>
+      [
+        mockCell00.mockCell,
+        mockCell10.mockCell,
+        mockCell01.mockCell,
+        mockCell11.mockCell,
+      ] as any;
+
+    const selected = jest.fn();
+    s2.on(S2Event.GLOBAL_SELECTED, selected);
+
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
@@ -138,6 +149,12 @@ describe('Interaction Shift Multi Selection Tests', () => {
       ],
       stateName: InteractionStateName.SELECTED,
     });
+    expect(selected).toHaveBeenCalledWith([
+      mockCell00.mockCell,
+      mockCell10.mockCell,
+      mockCell01.mockCell,
+      mockCell11.mockCell,
+    ]);
     expect(
       s2.interaction.hasIntercepts([InterceptType.CLICK, InterceptType.HOVER]),
     ).toBeTruthy();
