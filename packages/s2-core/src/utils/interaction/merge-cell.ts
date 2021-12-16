@@ -314,6 +314,17 @@ export const unmergeCell = (sheet: SpreadSheet, removedCells: MergedCell) => {
   }
 };
 
+const mergeTempMergedCell = (
+  TempMergedCells: TempMergedCell[],
+  otherTempMergedCells: TempMergedCell[],
+) => {
+  const mergedTempMergedCells: Record<string, TempMergedCell> = {};
+  [...TempMergedCells, ...otherTempMergedCells].forEach((cell) => {
+    mergedTempMergedCells[cell.viewMeta.id] = cell;
+  });
+  return Object.values(mergedTempMergedCells);
+};
+
 /**
  * update the merge
  * @param sheet the base sheet instance
@@ -336,76 +347,61 @@ export const updateMergedCells = (sheet: SpreadSheet) => {
       allVisibleTempMergedCells.push(tempMergedCell);
     }
   });
+  // 获取 oldTempMergedCells 便用后续进行 diff 操作
   const oldMergedCells = filter(
     sheet.panelScrollGroup.getChildren(),
     (child) => child instanceof MergedCell,
   ) as unknown as MergedCell[];
-  if (true) {
-    const oldTempMergedCells: TempMergedCell[] = map(
-      oldMergedCells,
-      (mergedCell) => {
-        return {
-          cells: mergedCell.cells,
-          viewMeta: mergedCell.getMeta(),
-          isPartiallyVisible: mergedCell.isPartiallyVisible,
-        };
-      },
-    );
-    // get partially visible mergedCells
-    const partiallyVisibleMergedCells = allVisibleTempMergedCells.filter(
-      (tempMergedCell) => tempMergedCell.isPartiallyVisible,
-    );
-    // compare oldTempMergedCells and allTempMergedCells, find remove MergedCells and add MergedCells
-    const removeTempMergedCells = differenceWith(
-      oldTempMergedCells,
-      allVisibleTempMergedCells,
-      (old, now) => {
-        return (
-          isEqual(old.viewMeta.id, now.viewMeta.id) && !old.isPartiallyVisible
-        );
-      },
-    );
-    // 现在需要解决的问题是：isPartiallyVisible 从 true 变成 false，需要重新渲染一次，重点在于这个变化的过程
-    const addTempMergedCells = differenceWith(
-      allVisibleTempMergedCells,
-      oldTempMergedCells,
-      (now, old) => {
-        return (
-          isEqual(old.viewMeta.id, now.viewMeta.id) && !old.isPartiallyVisible
-        );
-      },
-    );
+  const oldTempMergedCells: TempMergedCell[] = map(
+    oldMergedCells,
+    (mergedCell) => {
+      return {
+        cells: mergedCell.cells,
+        viewMeta: mergedCell.getMeta(),
+        isPartiallyVisible: mergedCell.isPartiallyVisible,
+      };
+    },
+  );
 
-    // remove old MergedCells
-    forEach(
-      [...removeTempMergedCells, ...partiallyVisibleMergedCells],
-      (tempMergedCell) => {
-        const oldMergedCell = find(oldMergedCells, (mergedCell) => {
-          return isEqual(mergedCell.getMeta().id, tempMergedCell.viewMeta.id);
-        });
-        oldMergedCell?.remove(true);
-      },
-    );
-    // add new MergedCells
-    forEach(
-      [...addTempMergedCells, ...partiallyVisibleMergedCells],
-      ({ cells, viewMeta, isPartiallyVisible }) => {
-        sheet.panelScrollGroup.add(
-          new MergedCell(sheet, cells, viewMeta, isPartiallyVisible),
-        );
-      },
-    );
-  } else {
-    // 移除所有旧的合并单元格，重新添加可视区域的合并单元格。
-    oldMergedCells.forEach((oldMergedCell) => {
-      oldMergedCell.remove(true);
-    });
-    allVisibleTempMergedCells.forEach(
-      ({ cells, viewMeta, isPartiallyVisible }) => {
-        sheet.panelScrollGroup.add(
-          new MergedCell(sheet, cells, viewMeta, isPartiallyVisible),
-        );
-      },
-    );
-  }
+  // get partially visible mergedCells
+  const partiallyVisibleMergedCells = allVisibleTempMergedCells.filter(
+    (tempMergedCell) => tempMergedCell.isPartiallyVisible,
+  );
+  // compare oldTempMergedCells and allTempMergedCells, find remove MergedCells and add MergedCells
+  const removeTempMergedCells = differenceWith(
+    oldTempMergedCells,
+    allVisibleTempMergedCells,
+    (old, now) => {
+      return (
+        isEqual(old.viewMeta.id, now.viewMeta.id) && !old.isPartiallyVisible
+      );
+    },
+  );
+  // 现在需要解决的问题是：isPartiallyVisible 从 true 变成 false，需要重新渲染一次，重点在于这个变化的过程
+  const addTempMergedCells = differenceWith(
+    allVisibleTempMergedCells,
+    oldTempMergedCells,
+    (now, old) => {
+      return isEqual(old.viewMeta.id, now.viewMeta.id);
+    },
+  );
+  // remove old MergedCells
+  forEach(
+    mergeTempMergedCell(removeTempMergedCells, partiallyVisibleMergedCells),
+    (tempMergedCell) => {
+      const oldMergedCell = find(oldMergedCells, (mergedCell) => {
+        return isEqual(mergedCell.getMeta().id, tempMergedCell.viewMeta.id);
+      });
+      oldMergedCell?.remove(true);
+    },
+  );
+  // add new MergedCells
+  forEach(
+    mergeTempMergedCell(addTempMergedCells, partiallyVisibleMergedCells),
+    ({ cells, viewMeta, isPartiallyVisible }) => {
+      sheet.panelScrollGroup.add(
+        new MergedCell(sheet, cells, viewMeta, isPartiallyVisible),
+      );
+    },
+  );
 };
