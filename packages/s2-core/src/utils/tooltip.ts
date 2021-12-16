@@ -22,7 +22,6 @@ import {
   mapKeys,
   every,
   isObject,
-  merge,
 } from 'lodash';
 import * as CSS from 'csstype';
 import { Event as CanvasEvent } from '@antv/g-canvas';

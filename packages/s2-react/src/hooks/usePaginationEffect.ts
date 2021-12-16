@@ -1,7 +1,7 @@
 import React from 'react';
-import { isEmpty, merge } from 'lodash';
+import { isEmpty } from 'lodash';
 import type { SpreadSheet, S2Options } from '@antv/s2';
-import { getSafetyOptions } from '@antv/s2';
+import { getSafetyOptions, customMerge } from '@antv/s2';
 
 export const usePaginationEffect = (
   s2: SpreadSheet,
@@ -13,7 +13,7 @@ export const usePaginationEffect = (
     if (!s2 || isEmpty(options?.pagination)) {
       return;
     }
-    const newOptions = merge({}, options, {
+    const newOptions = customMerge(options, {
       pagination: {
         current,
         pageSize,
