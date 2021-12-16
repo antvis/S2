@@ -7,11 +7,11 @@ import styles from './index.module.less';
 
 export const DataTooltip: React.FC<CustomTooltipProps> = ({
   cell,
-  detail,
+  defaultTooltipShowOptions,
   valuesConfig,
 }) => {
   const meta = cell.getMeta();
-  const currentRow = last(detail.data.headInfo.rows);
+  const currentRow = last(defaultTooltipShowOptions.data.headInfo.rows);
   const rowName = currentRow.value;
   const [value, ...derivedValues] = first(meta.fieldValue?.values) || [];
   const originalValue = get(meta.fieldValue, valuesConfig?.originalValueField);

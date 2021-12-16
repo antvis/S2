@@ -130,9 +130,9 @@ const TooltipContent = (props) => <div>...</div>
 
 const s2options = {
   tooltip: {
-    content: (cell, detail) => {
+    content: (cell, defaultTooltipShowOptions) => {
       console.log('当前单元格：', cell)
-      console.log('默认 tooltip 详细信息：', detail)
+      console.log('默认 tooltip 详细信息：', defaultTooltipShowOptions)
       return <TooltipContent cell={cell} detail={detail} />
     },
   },

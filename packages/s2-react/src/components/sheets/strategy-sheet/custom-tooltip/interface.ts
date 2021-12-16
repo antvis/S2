@@ -3,6 +3,6 @@ import { StrategySheetProps } from '../../interface';
 
 export interface CustomTooltipProps {
   cell: S2CellType;
-  detail?: TooltipShowOptions<React.ReactNode>;
+  defaultTooltipShowOptions?: TooltipShowOptions<React.ReactNode>;
   valuesConfig?: StrategySheetProps['valuesConfig'];
 }

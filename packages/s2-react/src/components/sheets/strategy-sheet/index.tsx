@@ -32,16 +32,26 @@ const getStrategySheetOptions: GetStrategySheetOptions = (
         hiddenColumns: true,
       },
       row: {
-        content: (cell, detail) => <RowTooltip cell={cell} detail={detail} />,
+        content: (cell, defaultTooltipShowOptions) => (
+          <RowTooltip
+            cell={cell}
+            defaultTooltipShowOptions={defaultTooltipShowOptions}
+          />
+        ),
       },
       col: {
-        content: (cell, detail) => <ColTooltip cell={cell} detail={detail} />,
+        content: (cell, defaultTooltipShowOptions) => (
+          <ColTooltip
+            cell={cell}
+            defaultTooltipShowOptions={defaultTooltipShowOptions}
+          />
+        ),
       },
       data: {
-        content: (cell, detail) => (
+        content: (cell, defaultTooltipShowOptions) => (
           <DataTooltip
             cell={cell}
-            detail={detail}
+            defaultTooltipShowOptions={defaultTooltipShowOptions}
             valuesConfig={props.valuesConfig}
           />
         ),

@@ -16,6 +16,7 @@ describe('Options Tests', () => {
       hierarchyType: 'grid',
       conditions: {},
       cornerText: '',
+      placeholder: '-',
       totals: {},
       tooltip: {
         showTooltip: true,

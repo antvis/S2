@@ -81,7 +81,12 @@ export type TooltipShowOptions<T = TooltipContentType> = {
   data?: TooltipData;
   cellInfos?: TooltipDataItem[];
   options?: TooltipOptions;
-  content?: ((cell: S2CellType, detail: TooltipShowOptions<T>) => T) | T;
+  content?:
+    | ((
+        cell: S2CellType,
+        defaultTooltipShowOptions: TooltipShowOptions<T>,
+      ) => T)
+    | T;
   event?: CanvasEvent | MouseEvent;
 };
 

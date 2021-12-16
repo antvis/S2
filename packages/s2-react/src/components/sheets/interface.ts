@@ -32,7 +32,7 @@ export interface StrategySheetProps {
     fields?: {
       // 数值标题
       label?: string;
-      // 数值占单元格百分比
+      // 数值占单元格宽度百分比
       widthPercent?: string;
     }[];
   };
