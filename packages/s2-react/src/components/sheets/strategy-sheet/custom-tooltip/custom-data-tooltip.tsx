@@ -1,8 +1,7 @@
 import React from 'react';
 import cls from 'classnames';
 import { first, get, isEmpty, last } from 'lodash';
-import { EMPTY_PLACEHOLDER } from '@antv/s2';
-import { isUpDerivedValue } from '../../../../utils/strategy';
+import { isUpDataValue } from '@antv/s2';
 import { CustomTooltipProps } from './interface';
 import styles from './index.module.less';
 
@@ -15,23 +14,22 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({
   const currentRow = last(detail.data.headInfo.rows);
   const rowName = currentRow.value;
   const [value, ...derivedValues] = first(meta.fieldValue?.values) || [];
-  const originalValue = get(meta.fieldValue, valuesConfig?.originalValueKey);
+  const originalValue = get(meta.fieldValue, valuesConfig?.originalValueField);
+  const { placeholder } = meta.spreadsheet.options;
 
   return (
     <div className={cls(styles.strategySheetTooltip, styles.data)}>
       <div className={styles.header}>
         <span className={styles.label}>{rowName}</span>
-        <span>{value ?? EMPTY_PLACEHOLDER}</span>
+        <span>{value ?? placeholder}</span>
       </div>
-      <div className={styles.originalValue}>
-        {originalValue ?? EMPTY_PLACEHOLDER}
-      </div>
+      <div className={styles.originalValue}>{originalValue ?? placeholder}</div>
       {!isEmpty(derivedValues) && (
         <>
           <div className={styles.divider}></div>
           <ul className={styles.derivedValues}>
             {derivedValues.map((derivedValue, i) => {
-              const isUp = isUpDerivedValue(derivedValue);
+              const isUp = isUpDataValue(derivedValue);
               return (
                 <li className={styles.value} key={i}>
                   <span className={styles.derivedValueLabel}>
@@ -45,7 +43,7 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({
                   >
                     <span className={styles.icon}></span>
                     <span className={styles.value}>
-                      {derivedValue ?? EMPTY_PLACEHOLDER}
+                      {derivedValue ?? placeholder}
                     </span>
                   </span>
                 </li>

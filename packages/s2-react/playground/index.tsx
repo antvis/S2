@@ -54,8 +54,6 @@ import {
   SheetType,
   PartDrillDown,
   PartDrillDownInfo,
-  GridAnalysisSheet,
-  StrategySheet,
 } from '@/components';
 
 import './index.less';
@@ -362,7 +360,7 @@ function MainLayout() {
 
   return (
     <div className="playground">
-      <Tabs defaultActiveKey="strategy" type="card">
+      <Tabs defaultActiveKey="basic" type="card">
         <TabPane tab="基础表" key="basic">
           <Collapse defaultActiveKey="filter">
             <Collapse.Panel header="筛选器" key="filter">
@@ -678,11 +676,12 @@ function MainLayout() {
               }}
             />
           </Space>
-          <StrategySheet
+          <SheetComponent
+            sheetType="strategy"
             dataCfg={strategyDataCfg}
             options={{ width: 1000, height: 400, cornerText: '指标' }}
             valuesConfig={{
-              originalValueKey: 'originalValue',
+              originalValueField: 'originalValue',
               fields: [
                 {
                   label: '指标',
@@ -698,7 +697,8 @@ function MainLayout() {
           />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">
-          <GridAnalysisSheet
+          <SheetComponent
+            sheetType="gridAnalysis"
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
           />

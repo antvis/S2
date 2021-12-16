@@ -17,17 +17,22 @@ import React from 'react';
 import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
 
-export type SheetType = 'pivot' | 'table';
+export type SheetType = 'pivot' | 'table' | 'gridAnalysis' | 'strategy';
 
-export interface SheetComponentsProps extends BaseSheetComponentProps {
+export interface SheetComponentsProps
+  extends BaseSheetComponentProps,
+    StrategySheetProps {
   sheetType?: SheetType;
 }
 
-export interface StrategySheetProps extends BaseSheetComponentProps {
+export interface StrategySheetProps {
   valuesConfig?: {
-    originalValueKey?: string;
+    // 原始值字段
+    originalValueField?: string;
     fields?: {
+      // 数值标题
       label?: string;
+      // 数值占单元格百分比
       widthPercent?: string;
     }[];
   };

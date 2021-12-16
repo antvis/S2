@@ -6,14 +6,14 @@ import { StrategyTheme } from './strategy-theme';
 import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
 import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
 import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
-import { StrategySheetProps } from '@/components/sheets/interface';
+import { SheetComponentsProps } from '@/components/sheets/interface';
 
 export type GetStrategySheetOptions = (
-  props: StrategySheetProps,
+  props: SheetComponentsProps,
 ) => Partial<S2Options<React.ReactNode>>;
 
 const getStrategySheetOptions: GetStrategySheetOptions = (
-  props: StrategySheetProps,
+  props: SheetComponentsProps,
 ) => {
   return {
     dataCell: StrategyDataCell,
@@ -50,7 +50,7 @@ const getStrategySheetOptions: GetStrategySheetOptions = (
   };
 };
 
-export const StrategySheet: React.FC<StrategySheetProps> = React.memo(
+export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
