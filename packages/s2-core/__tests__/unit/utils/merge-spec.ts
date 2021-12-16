@@ -94,6 +94,7 @@ describe('merge test', () => {
       debug: false,
       hierarchyType: 'grid',
       conditions: {},
+      cornerText: '',
       totals: {},
       tooltip: {
         showTooltip: false,
