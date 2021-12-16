@@ -9,8 +9,8 @@ order: 0
 
 | 参数 | 说明                                                         | 类型 | 默认值  | 必选 |
 | :--- | :--- | :--- | :--- | :---: |
-| sheetType |  表格类型：<br> 1. `pivot`: 透视表 <br> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表| `pivot | table | gridAnalysis` | `pivot` | |
-| spreadsheet | | (...args: [S2Constructor](/zh/docs/api/basic-class/spreadsheet#s2constructor)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | |  |
+| sheetType |  表格类型：<br/> 1. `pivot`: 透视表 <br/> 2. `table`: 明细表 <br> 3. `gridAnalysis`: 网格分析表 <br/> 4. `strategy`: 趋势分析表 | `pivot | table | gridAnalysis | strategy` | `pivot` | |
+| spreadsheet | 自定义表 | (...args: [S2Constructor](/zh/docs/api/basic-class/spreadsheet#s2constructor)) => [SpreadSheet](/zh/docs/api/basic-class/spreadsheet) | |  |
 | dataCfg |  透视表数据映射相关配置项 | [S2DataConfig](/zh/docs/api/general/S2DataConfig) | | ✓ |
 | options | 透视表属性配置项 | [S2Options](/zh/docs/api/general/S2Options) | | ✓ |
 | partDrillDown |  维度下钻相关属性 | [PartDrillDown](/zh/docs/api/components/drill-down) | |  |
@@ -19,7 +19,7 @@ order: 0
 | themeCfg | 自定义透视表主题样式 | [ThemeCfg](/zh/docs/api/general/S2Theme) | |  |
 | loading | 控制表格的加载状态 | `boolean` | | |
 | header | 表头配置项 | [HeaderCfgProps](/zh/docs/api/components/header) | | |
-| getSpreadSheet | 获取表实例 | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; | | |
+| getSpreadSheet | 获取表实例 [详情](/zh/docs/manual/advanced/get-instance) | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; | | |
 | onListSort | 排序回调，用于做自定义排序 |  (params: [ListSortParams](#listsortparams) ) => void; | |  |
 | onRowCellClick | 行头鼠标单击事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onRowCellHover | 行头鼠标悬停事件 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |

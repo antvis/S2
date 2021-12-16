@@ -130,6 +130,7 @@ describe('merge test', () => {
       frozenTrailingRowCount: 0,
       frozenTrailingColCount: 0,
       hdAdapter: true,
+      placeholder: '-',
     });
   });
 
