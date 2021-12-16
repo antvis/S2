@@ -1,9 +1,9 @@
 import React from 'react';
 import { SpreadSheet } from '@antv/s2';
-import { GridAnalysisSheet } from './grid-analysis-sheet';
 import { TableSheet } from './table-sheet';
 import { SheetComponentsProps } from './interface';
 import { PivotSheet } from './pivot-sheet';
+import { GridAnalysisSheet } from './grid-analysis-sheet';
 import { StrategySheet } from './strategy-sheet';
 
 const Sheet = React.forwardRef(

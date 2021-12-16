@@ -2,11 +2,7 @@ import { last, isEmpty, clone, trim, max, isObject, forEach } from 'lodash';
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
 import { CornerNodeType, ViewMeta } from '@/common/interface';
-import {
-  ID_SEPARATOR,
-  EMPTY_PLACEHOLDER,
-  ROOT_BEGINNING_REGEX,
-} from '@/common/constant';
+import { ID_SEPARATOR, ROOT_BEGINNING_REGEX } from '@/common/constant';
 import { MultiData } from '@/common/interface';
 
 export const copyToClipboard = (str: string) => {
@@ -129,7 +125,7 @@ const processValueInRow = (
     }
   } else {
     // If the meta equals null then it will be replaced by '-'.
-    tempCell.push(EMPTY_PLACEHOLDER);
+    tempCell.push(sheetInstance.options.placeholder);
   }
   return tempCell.join('    ');
 };

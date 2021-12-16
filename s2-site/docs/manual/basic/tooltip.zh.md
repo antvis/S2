@@ -19,7 +19,7 @@ const s2options = {
 };
 ```
 
-还可以对不同类型的单元格单独配置:
+还可以对不同类型的单元格单独配置：
 
 - `corner`: 角头
 - `row`: 行头
@@ -123,17 +123,17 @@ const s2options = {
 };
 ```
 
-同时, `content` 还支持回调的方式, 可以根据[当前单元格信息](/zh/docs/api/basic-class/interaction)然后动态的更改内容
+同时，`content` 还支持回调的方式，可以根据 [当前单元格信息](/zh/docs/api/basic-class/interaction) 和 默认 `tooltip` 的详细信息，灵活的自定义内容
 
 ```ts
 const TooltipContent = (props) => <div>...</div>
 
 const s2options = {
   tooltip: {
-    content: (cell) => {
-      const meta = cell.getMeta()
-      console.log('当前单元格信息:', meta)
-      return <TooltipContent {...meta}/>
+    content: (cell, defaultTooltipShowOptions) => {
+      console.log('当前单元格：', cell)
+      console.log('默认 tooltip 详细信息：', defaultTooltipShowOptions)
+      return <TooltipContent cell={cell} detail={detail} />
     },
   },
 };
@@ -141,7 +141,7 @@ const s2options = {
 
 ##### 1. 配置级
 
-对不同的单元格进行配置时, `tooltip.content` 的优先级 小于 `row.content`, `col.content`, `data.content`, `corner.content`
+对不同的单元格进行配置时，`tooltip.content` 的优先级 小于 `row.content`, `col.content`, `data.content`, `corner.content`
 
 ```tsx
 const TooltipContent = (
@@ -278,7 +278,7 @@ const s2options = {
 
 ```
 
-如果使用的是 `React` 组件, 也可以使用 [单元格回调函数](zh/docs/api/components/sheet-component) 来进行自定义. [例子](/zh/examples/react-component/tooltip#custom-hover-show-tooltip)
+如果使用的是 `React` 组件，也可以使用 [单元格回调函数](zh/docs/api/components/sheet-component) 来进行自定义。[例子](/zh/examples/react-component/tooltip#custom-hover-show-tooltip)
 
 ```tsx
 const CustomColCellTooltip = () => <div>col cell tooltip</div>;

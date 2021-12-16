@@ -266,7 +266,7 @@ export const getEllipsisText = ({
  * @param value
  * @param font
  */
-export const getDataState = (value: number | string): boolean => {
+export const isUpDataValue = (value: number | string): boolean => {
   if (isNumber(value)) {
     return value >= 0;
   }
@@ -301,7 +301,7 @@ const getStyle = (
     ? derivedMeasureText?.minorDown
     : derivedMeasureText?.mainDown;
   if (isDerivedMeasure) {
-    const isUp = getDataState(value);
+    const isUp = isUpDataValue(value);
     return merge(style, {
       fill: isUp ? upFill : downFill,
     });
