@@ -1,5 +1,5 @@
 import { Event, ShapeAttrs } from '@antv/g-canvas';
-import { Padding } from '../interface/theme';
+import { BaseHeaderConfig } from '../../facet/header/base';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { CustomTreeItem, ResizeInfo } from '@/common/interface';
@@ -221,10 +221,10 @@ export type LayoutCallback = (
   colNode: Node,
 ) => void;
 
-export type CellCallback = (
+export type CellCallback<T extends BaseHeaderConfig> = (
   node: Node,
   spreadsheet: SpreadSheet,
-  ...restOptions: unknown[]
+  headerConfig: T,
 ) => S2CellType;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;

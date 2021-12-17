@@ -186,7 +186,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     return isMaxLevel && this.cellType === CellTypes.ROW_CELL;
   }
 
-  private handleHover(cells: CellMeta[]) {
+  protected handleHover(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.HOVER);
       if (this.defaultHideActionIcons()) {
@@ -196,7 +196,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
     }
   }
 
-  private handleSelect(cells: CellMeta[], nodes: Node[]) {
+  protected handleSelect(cells: CellMeta[], nodes: Node[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.SELECTED);
     }

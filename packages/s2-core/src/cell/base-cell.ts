@@ -200,7 +200,7 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     // handle link nodes
     if (showLinkFieldShape) {
       const device = this.spreadsheet.options.style.device;
-      let fillColor;
+      let fillColor: string;
 
       // 配置了链接跳转
       if (isMobile(device)) {

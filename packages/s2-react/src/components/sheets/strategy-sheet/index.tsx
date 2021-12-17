@@ -1,11 +1,12 @@
 import React from 'react';
 import { customMerge, SpreadSheet, S2Options } from '@antv/s2';
 import { BaseSheet } from '../base-sheet';
-import { StrategyDataCell } from './strategy-data-cell';
 import { StrategyTheme } from './strategy-theme';
 import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
 import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
 import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
+import { CustomColCell } from './custom-col-cell';
+import { CustomDataCell } from './custom-data-cell';
 import { SheetComponentsProps } from '@/components/sheets/interface';
 
 export type GetStrategySheetOptions = (
@@ -16,11 +17,16 @@ const getStrategySheetOptions: GetStrategySheetOptions = (
   props: SheetComponentsProps,
 ) => {
   return {
-    dataCell: StrategyDataCell,
+    dataCell: (viewMeta) => new CustomDataCell(viewMeta, viewMeta.spreadsheet),
+    colCell: (...args) => {
+      CustomColCell.valuesConfig = props.valuesConfig;
+      return new CustomColCell(...args);
+    },
     hierarchyType: 'tree',
     showDefaultHeaderActionIcon: false,
     style: {
       colCfg: {
+        height: 38,
         hideMeasureColumn: true,
       },
     },

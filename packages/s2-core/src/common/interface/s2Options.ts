@@ -8,6 +8,9 @@ import {
   ScrollRatio,
 } from './basic';
 import { Tooltip } from './tooltip';
+import { ColHeaderConfig } from '@/facet/header/col';
+import { RowHeaderConfig } from '@/facet/header/row';
+import { CornerHeaderConfig } from '@/facet/header/corner';
 import {
   CellCallback,
   CornerHeaderCallback,
@@ -104,11 +107,11 @@ export interface S2BasicOptions<T = Element | string> {
   // custom data cell
   readonly dataCell?: DataCellCallback;
   // custom corner cell
-  readonly cornerCell?: CellCallback;
+  readonly cornerCell?: CellCallback<CornerHeaderConfig>;
   // custom row cell
-  readonly rowCell?: CellCallback;
+  readonly rowCell?: CellCallback<RowHeaderConfig>;
   // custom col cell
-  readonly colCell?: CellCallback;
+  readonly colCell?: CellCallback<ColHeaderConfig>;
   // custom frame
   readonly frame?: FrameCallback;
   // custom corner header
