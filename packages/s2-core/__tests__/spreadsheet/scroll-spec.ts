@@ -275,8 +275,8 @@ describe('Scroll By Group Tests', () => {
 
       canvas.dispatchEvent(wheelEvent);
 
-      // wait requestAnimationFrame
-      await sleep(500);
+      // wait requestAnimationFrame and debounce
+      await sleep(1000);
 
       // emit global canvas hover
       s2.container.emit(OriginEventType.MOUSE_MOVE, { target: {} });
