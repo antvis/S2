@@ -1151,7 +1151,11 @@ export abstract class BaseFacet {
   }
 
   protected onAfterScroll = debounce(() => {
-    this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+    const { interaction } = this.spreadsheet;
+    // 如果是选中单元格状态, 则不取消 hover
+    if (!interaction.isSelectedState()) {
+      this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+    }
   }, 300);
 
   protected abstract doLayout(): LayoutResult;
