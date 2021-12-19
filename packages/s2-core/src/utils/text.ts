@@ -1,12 +1,10 @@
 import {
-  clone,
   get,
   isArray,
   isNil,
   isNumber,
   isString,
   memoize,
-  merge,
   toString,
   values,
 } from 'lodash';
@@ -285,28 +283,28 @@ const getStyle = (
   options: S2Options,
   dataCellTheme: DefaultCellTheme,
 ) => {
-  const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
-  const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
-  const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
-  const isMinor = rowIndex === minorMeasureIndex;
-  const isDerivedMeasure = colIndex >= derivedMeasureIndex;
-  const style = isMinor
-    ? clone(dataCellTheme?.minorText)
-    : clone(dataCellTheme.text);
-  const derivedMeasureText = dataCellTheme.derivedMeasureText;
-  const upFill = isMinor
-    ? derivedMeasureText?.minorUp
-    : derivedMeasureText?.mainUp;
-  const downFill = isMinor
-    ? derivedMeasureText?.minorDown
-    : derivedMeasureText?.mainDown;
-  if (isDerivedMeasure) {
-    const isUp = isUpDataValue(value);
-    return merge(style, {
-      fill: isUp ? upFill : downFill,
-    });
-  }
-  return style;
+  // const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
+  // const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
+  // const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
+  // const isMinor = rowIndex === minorMeasureIndex;
+  // const isDerivedMeasure = colIndex >= derivedMeasureIndex;
+  // const style = isMinor
+  //   ? clone(dataCellTheme?.minorText)
+  //   : clone(dataCellTheme.text);
+  // const derivedMeasureText = dataCellTheme.derivedMeasureText;
+  // const upFill = isMinor
+  //   ? derivedMeasureText?.minorUp
+  //   : derivedMeasureText?.mainUp;
+  // const downFill = isMinor
+  //   ? derivedMeasureText?.minorDown
+  //   : derivedMeasureText?.mainDown;
+  // if (isDerivedMeasure) {
+  //   const isUp = isUpDataValue(value);
+  //   return merge(style, {
+  //     fill: isUp ? upFill : downFill,
+  //   });
+  // }
+  return dataCellTheme.text;
 };
 
 /**
@@ -319,9 +317,11 @@ export const drawObjectText = (cell: DataCell) => {
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
 
   const padding = dataCellStyle.cell.padding;
+  const totalTextWidth = width - padding.left - padding.right;
   // 指标个数相同，任取其一即可
-  const realWidth = width / (text.values[0].length + 1);
-  const realHeight = height / (text.values.length + 1);
+  const realWidth = totalTextWidth / (text.values[0].length + 1);
+  const totalTextHeight = height - padding.top - padding.top;
+  const realHeight = totalTextHeight / (text.values.length + 1);
   let labelHeight = 0;
   // 绘制单元格主标题
   if (text?.label) {
@@ -353,7 +353,7 @@ export const drawObjectText = (cell: DataCell) => {
     curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
     totalWidth = 0;
     for (let j = 0; j < textValues[i].length; j += 1) {
-      curText = textValues[i][j] || '-';
+      curText = textValues[i][j];
       const curStyle = getStyle(
         i,
         j,
@@ -361,7 +361,9 @@ export const drawObjectText = (cell: DataCell) => {
         cell?.getMeta().spreadsheet.options,
         dataCellStyle,
       );
-      curWidth = j === 0 ? realWidth * 2 : realWidth;
+
+      curWidth = realWidth; // TODO 宽度映射
+
       curX = calX(x, padding.right, totalWidth);
       totalWidth += curWidth;
       renderText(
@@ -373,6 +375,7 @@ export const drawObjectText = (cell: DataCell) => {
           text: `${curText}`,
           maxWidth: curWidth,
           fontParam: curStyle,
+          placeholder: cell?.getMeta().spreadsheet.options.placeholder,
         }),
         curStyle,
       );

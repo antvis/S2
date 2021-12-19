@@ -126,6 +126,48 @@ const partDrillDown = {
     }),
 } as PartDrillDown;
 
+const strategyOptions = {
+  width: 1000,
+  height: 400,
+  cornerText: '指标',
+  style: {
+    cellCfg: {
+      valuesCfg: {
+        originalValueField: 'originalValue',
+        fields: [
+          {
+            label: '指标',
+          },
+          {
+            label: '环比值',
+            text: (value) => {
+              let fill = '#29A294';
+              if (Number(value) > 0) {
+                fill = '#FF4D4F';
+              }
+              return {
+                fill,
+              };
+            },
+          },
+          {
+            label: '环比率',
+            text: (value) => {
+              let fill = '#29A294';
+              if (Number(value) > 0) {
+                fill = '#FF4D4F';
+              }
+              return {
+                fill,
+              };
+            },
+          },
+        ],
+      },
+    },
+  },
+} as S2Options;
+
 const CustomTooltip = () => (
   <div>
     自定义 Tooltip <div>1</div>
@@ -679,21 +721,7 @@ function MainLayout() {
           <SheetComponent
             sheetType="strategy"
             dataCfg={strategyDataCfg}
-            options={{ width: 1000, height: 400, cornerText: '指标' }}
-            valuesConfig={{
-              originalValueField: 'originalValue',
-              fields: [
-                {
-                  label: '指标',
-                },
-                {
-                  label: '环比值',
-                },
-                {
-                  label: '环比率',
-                },
-              ],
-            }}
+            options={strategyOptions}
           />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">

@@ -85,12 +85,13 @@ export class ColCell extends HeaderCell {
     const { isLeaf, isTotals } = this.meta;
     const { text, bolderText } = this.getStyle();
     const textStyle = isLeaf && !isTotals ? text : bolderText;
-
+    const hideMeasureColumn =
+      this.spreadsheet.options.style.colCfg.hideMeasureColumn;
     let textAlign: TextAlign;
     let textBaseline: TextBaseline;
 
-    if (isLeaf) {
-      // 最后一个层级的维值，与 dataCell 对齐方式保持一致
+    if (isLeaf && !hideMeasureColumn) {
+      // 最后一个层级的非维值指标单元格，与 dataCell 对齐方式保持一致
       textAlign = this.theme.dataCell.text.textAlign;
       textBaseline = this.theme.dataCell.text.textBaseline;
     } else {
