@@ -60,7 +60,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const { options, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
     const s2Options = React.useMemo(() => {
-      return customMerge({}, options, getStrategySheetOptions(props));
+      return customMerge({}, options, getStrategySheetOptions());
     }, [options, props]);
 
     return (
