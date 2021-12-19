@@ -64,11 +64,7 @@ export class TableRowCell extends DataCell {
     let yOffset = y + (isFrozenTrailingRow ? 0 : colHeight);
 
     if (!isFrozenTrailingRow) {
-      if (isFrozenRow) {
-        yOffset -= paginationSy;
-      } else {
-        yOffset -= scrollY;
-      }
+      yOffset -= isFrozenRow ? paginationSy : scrollY;
     }
 
     resizeArea.addShape('rect', {

@@ -74,7 +74,6 @@ const options: S2Options = {
     hoverHighlight: false,
     linkFields: ['order_id', 'customer_name'],
     hiddenColumnFields: ['order_date'],
-    rowResizeType: ResizeType.CURRENT,
     resize: true,
   },
   frozenRowCount: 2,

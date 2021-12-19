@@ -6,7 +6,6 @@ import {
   HeaderActionIcon,
   CustomSVGIcon,
   ScrollRatio,
-  ResizeType,
 } from './basic';
 import { Tooltip } from './tooltip';
 import {
@@ -48,8 +47,6 @@ export interface InteractionOptions {
   readonly hiddenColumnFields?: string[];
   // the ratio to control scroll speed, default set to 1
   readonly scrollSpeedRatio?: ScrollRatio;
-  // when resizing row's height, affect current row or all row
-  readonly rowResizeType?: ResizeType;
   // enable resize area, default set to all enable
   readonly resize?: boolean | ResizeActiveOptions;
   /** ***********CUSTOM INTERACTION HOOKS**************** */

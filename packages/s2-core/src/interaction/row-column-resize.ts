@@ -4,8 +4,7 @@ import {
   ShapeAttrs,
   IShape,
 } from '@antv/g-canvas';
-import { clone, isEmpty, throttle } from 'lodash';
-import { ResizeType } from 'src/common/interface/basic';
+import { clone, isEmpty, throttle, get } from 'lodash';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import {
   ResizeDetail,
@@ -22,9 +21,9 @@ import {
   RESIZE_START_GUIDE_LINE_ID,
   RESIZE_END_GUIDE_LINE_ID,
   S2Event,
-  CORNER_MAX_WIDTH_RATIO,
   ResizeDirectionType,
   ResizeAreaEffect,
+  ResizeType,
 } from '@/common/constant';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -242,7 +241,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   private getResizeHeightDetail(): ResizeDetail {
     const {
       options: {
-        interaction: { rowResizeType },
+        interaction: { resize },
         style: {
           rowCfg: { heightByField },
         },
@@ -270,7 +269,7 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
       case ResizeAreaEffect.Cell:
         if (
           heightByField[String(resizeInfo.id)] ||
-          rowResizeType === ResizeType.CURRENT
+          get(resize, 'rowResizeType') === ResizeType.CURRENT
         ) {
           rowCellStyle = {
             rowCfg: {

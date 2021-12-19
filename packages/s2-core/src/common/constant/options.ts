@@ -1,5 +1,6 @@
 import { S2Options } from '../interface/s2Options';
-import { Style, ResizeType } from '@/common/interface/basic';
+import { Style } from '@/common/interface/basic';
+import { ResizeType } from '@/common/constant/resize';
 
 export enum LayoutWidthTypes {
   Adaptive = 'adaptive',
@@ -58,8 +59,13 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       vertical: 1,
     },
     autoResetSheetStyle: true,
-    rowResizeType: ResizeType.ALL,
-    resize: true,
+    resize: {
+      rowCellVertical: true,
+      cornerCellHorizontal: true,
+      colCellHorizontal: true,
+      colCellVertical: true,
+      rowResizeType: ResizeType.ALL,
+    },
   },
   showSeriesNumber: false,
   scrollReachNodeField: {},

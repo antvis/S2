@@ -415,11 +415,6 @@ export interface ScrollRatio {
   vertical?: number;
 }
 
-export enum ResizeType {
-  ALL = 'all',
-  CURRENT = 'current',
-}
-
 // 用于和下钻组件进行交互联动
 export interface PartDrillDownDataCache {
   // 执行下钻的行头id

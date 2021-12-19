@@ -39,7 +39,9 @@ export const ResizeConfig: FC<{
   const onSwitchRowReisizeType = (enable: boolean) => {
     const opts = {
       interaction: {
-        rowResizeType: enable ? ResizeType.CURRENT : ResizeType.ALL,
+        resize: {
+          rowResizeType: enable ? ResizeType.CURRENT : ResizeType.ALL,
+        },
       },
     };
     setRowResizeAffectCurrent(enable);
