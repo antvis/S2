@@ -253,13 +253,10 @@ export interface CellCfg {
     originalValueField?: string;
     // 每一列数值占单元格宽度百分比 Map
     widthPercentMap?: number[];
-    // 与 MultiData 二位数组一一对应
-    fields?: {
-      // 数值标题
-      label?: string;
-
-      text?: Condition[];
-    }[][];
+    // 条件格式
+    conditions?: { text: Condition };
+    // 与 MultiData 二位数组一一对应的数值标题
+    fieldLabels?: string[][];
   };
 }
 

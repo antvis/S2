@@ -1,20 +1,3 @@
-import { S2Options } from '@antv/s2';
-
-export const mockGridAnalysisOptions = {
-  width: 1600,
-  height: 600,
-  style: {
-    layoutWidthType: 'colAdaptive',
-    cellCfg: {
-      width: 400,
-      height: 100,
-      valuesCfg: {
-        widthPercentMap: [40, 20, 20, 20],
-      },
-    },
-  },
-} as S2Options;
-
 export const mockGridAnalysisDataCfg = {
   fields: {
     rows: ['level'],

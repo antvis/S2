@@ -1,5 +1,4 @@
 import {
-  get,
   isArray,
   isEmpty,
   isNil,
@@ -9,12 +8,11 @@ import {
   toString,
   values,
 } from 'lodash';
-import { CellCfg, MultiData } from '@/common/interface';
-import { S2Options } from '@/common/interface/s2Options';
 import { DefaultCellTheme } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell/data-cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
+import { Condition, MultiData, ViewMeta } from '@/common/interface';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -277,35 +275,24 @@ const calX = (x: number, paddingRight: number, total?: number) => {
   return x + paddingRight / 2 + extra;
 };
 
-const getStyle = (
+const getTextStyle = (
   rowIndex: number,
   colIndex: number,
-  value: string | number,
-  options: S2Options,
+  meta: ViewMeta,
+  data: string | number,
   dataCellTheme: DefaultCellTheme,
+  textCondition: Condition,
 ) => {
-  // const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
-  // const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
-  // const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
-  // const isMinor = rowIndex === minorMeasureIndex;
-  // const isDerivedMeasure = colIndex >= derivedMeasureIndex;
-  // const style = isMinor
-  //   ? clone(dataCellTheme?.minorText)
-  //   : clone(dataCellTheme.text);
-  // const derivedMeasureText = dataCellTheme.derivedMeasureText;
-  // const upFill = isMinor
-  //   ? derivedMeasureText?.minorUp
-  //   : derivedMeasureText?.mainUp;
-  // const downFill = isMinor
-  //   ? derivedMeasureText?.minorDown
-  //   : derivedMeasureText?.mainDown;
-  // if (isDerivedMeasure) {
-  //   const isUp = isUpDataValue(value);
-  //   return merge(style, {
-  //     fill: isUp ? upFill : downFill,
-  //   });
-  // }
-  return dataCellTheme.text;
+  const { isTotals } = meta;
+  const textStyle = isTotals ? dataCellTheme.bolderText : dataCellTheme.text;
+  let fill = textStyle.fill;
+  if (textCondition?.mapping) {
+    fill = textCondition?.mapping(data, {
+      rowIndex,
+      colIndex,
+    }).fill;
+  }
+  return { ...textStyle, fill };
 };
 
 /**
@@ -356,14 +343,14 @@ export const drawObjectText = (cell: DataCell) => {
     totalWidth = 0;
     for (let j = 0; j < textValues[i].length; j += 1) {
       curText = textValues[i][j];
-      const curStyle = getStyle(
+      const curStyle = getTextStyle(
         i,
         j,
+        cell?.getMeta(),
         curText,
-        cell?.getMeta().spreadsheet.options,
         dataCellStyle,
+        valuesCfg.conditions?.text,
       );
-
       curWidth = !isEmpty(widthPercentMap)
         ? totalTextWidth * (widthPercentMap[j] / 100)
         : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可

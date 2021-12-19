@@ -32,10 +32,8 @@ import {
 import corePkg from '@antv/s2/package.json';
 import { forEach, random } from 'lodash';
 import { DataType } from '@antv/s2';
-import {
-  mockGridAnalysisOptions,
-  mockGridAnalysisDataCfg,
-} from '../__tests__/data/grid-analysis-data';
+import { isUpDataValue } from '@antv/s2';
+import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
 import {
   singleMeasure,
   multiMeasure,
@@ -134,37 +132,60 @@ const strategyOptions = {
     cellCfg: {
       valuesCfg: {
         originalValueField: 'originalValue',
-        fields: [
-          [
-            {
-              label: '指标',
-            },
-            {
-              label: '环比值',
-              text: (value) => {
-                let fill = '#29A294';
-                if (Number(value) > 0) {
-                  fill = '#FF4D4F';
-                }
+        conditions: {
+          text: {
+            mapping: (value, cellInfo) => {
+              const { colIndex } = cellInfo;
+              if (colIndex === 0) {
                 return {
-                  fill,
+                  fill: '#000',
                 };
-              },
+              }
+              let fill = '#29A294';
+              if (isUpDataValue(value)) {
+                fill = '#FF4D4F';
+              }
+              return {
+                fill,
+              };
             },
-            {
-              label: '环比率',
-              text: (value) => {
-                let fill = '#29A294';
-                if (Number(value) > 0) {
-                  fill = '#FF4D4F';
-                }
+          },
+        },
+        fieldLabels: [['指标', '环比值', '环比率']],
+      },
+    },
+  },
+} as S2Options;
+
+const mockGridAnalysisOptions = {
+  width: 1600,
+  height: 600,
+  style: {
+    layoutWidthType: 'colAdaptive',
+    cellCfg: {
+      width: 400,
+      height: 100,
+      valuesCfg: {
+        widthPercentMap: [40, 20, 20, 20],
+        conditions: {
+          text: {
+            mapping: (value, cellInfo) => {
+              const { colIndex } = cellInfo;
+              if (colIndex <= 1) {
                 return {
-                  fill,
+                  fill: '#000',
                 };
-              },
+              }
+              let fill = '#29A294';
+              if (isUpDataValue(value)) {
+                fill = '#FF4D4F';
+              }
+              return {
+                fill,
+              };
             },
-          ],
-        ],
+          },
+        },
       },
     },
   },

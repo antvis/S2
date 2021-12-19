@@ -17,7 +17,7 @@ export interface MappingResult extends ValueRange {
 }
 
 export type MappingFunction = (
-  fieldValue: number,
+  fieldValue: number | string,
   data: Record<string, any>,
 ) => MappingResult;
 

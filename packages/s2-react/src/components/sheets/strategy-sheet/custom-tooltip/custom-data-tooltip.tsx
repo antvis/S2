@@ -33,7 +33,7 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({
               return (
                 <li className={styles.value} key={i}>
                   <span className={styles.derivedValueLabel}>
-                    {valuesCfg?.fields?.[i + 1]?.label}
+                    {valuesCfg?.fieldLabels?.[0][i + 1]}
                   </span>
                   <span
                     className={cls(styles.derivedValueGroup, {
