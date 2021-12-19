@@ -247,17 +247,19 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
-  // valueCfg of object dataItem
+  // valueCfg of MultiData
   valuesCfg?: {
     // 原始值字段
     originalValueField?: string;
+    // 每一列数值占单元格宽度百分比 Map
+    widthPercentMap?: number[];
+    // 与 MultiData 二位数组一一对应
     fields?: {
       // 数值标题
       label?: string;
-      // 数值占单元格宽度百分比
-      widthPercent?: string;
+
       text?: Condition[];
-    }[];
+    }[][];
   };
 }
 

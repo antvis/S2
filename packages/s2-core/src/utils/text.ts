@@ -1,6 +1,7 @@
 import {
   get,
   isArray,
+  isEmpty,
   isNil,
   isNumber,
   isString,
@@ -314,12 +315,13 @@ const getStyle = (
 export const drawObjectText = (cell: DataCell) => {
   const { x, y, height, width } = cell.getContentArea();
   const text = cell.getMeta().fieldValue as MultiData;
+  const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
+  const widthPercentMap = valuesCfg?.widthPercentMap;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
 
   const padding = dataCellStyle.cell.padding;
   const totalTextWidth = width - padding.left - padding.right;
-  // 指标个数相同，任取其一即可
-  const realWidth = totalTextWidth / (text.values[0].length + 1);
+
   const totalTextHeight = height - padding.top - padding.top;
   const realHeight = totalTextHeight / (text.values.length + 1);
   let labelHeight = 0;
@@ -362,7 +364,9 @@ export const drawObjectText = (cell: DataCell) => {
         dataCellStyle,
       );
 
-      curWidth = realWidth; // TODO 宽度映射
+      curWidth = !isEmpty(widthPercentMap)
+        ? totalTextWidth * (widthPercentMap[j] / 100)
+        : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
 
       curX = calX(x, padding.right, totalWidth);
       totalWidth += curWidth;

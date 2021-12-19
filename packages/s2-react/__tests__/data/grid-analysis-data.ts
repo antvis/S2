@@ -8,8 +8,9 @@ export const mockGridAnalysisOptions = {
     cellCfg: {
       width: 400,
       height: 100,
-      minorMeasureRowIndex: 3,
-      firstDerivedMeasureRowIndex: 2,
+      valuesCfg: {
+        widthPercentMap: [40, 20, 20, 20],
+      },
     },
   },
 } as S2Options;

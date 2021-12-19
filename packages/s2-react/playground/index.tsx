@@ -135,33 +135,35 @@ const strategyOptions = {
       valuesCfg: {
         originalValueField: 'originalValue',
         fields: [
-          {
-            label: '指标',
-          },
-          {
-            label: '环比值',
-            text: (value) => {
-              let fill = '#29A294';
-              if (Number(value) > 0) {
-                fill = '#FF4D4F';
-              }
-              return {
-                fill,
-              };
+          [
+            {
+              label: '指标',
             },
-          },
-          {
-            label: '环比率',
-            text: (value) => {
-              let fill = '#29A294';
-              if (Number(value) > 0) {
-                fill = '#FF4D4F';
-              }
-              return {
-                fill,
-              };
+            {
+              label: '环比值',
+              text: (value) => {
+                let fill = '#29A294';
+                if (Number(value) > 0) {
+                  fill = '#FF4D4F';
+                }
+                return {
+                  fill,
+                };
+              },
             },
-          },
+            {
+              label: '环比率',
+              text: (value) => {
+                let fill = '#29A294';
+                if (Number(value) > 0) {
+                  fill = '#FF4D4F';
+                }
+                return {
+                  fill,
+                };
+              },
+            },
+          ],
         ],
       },
     },
