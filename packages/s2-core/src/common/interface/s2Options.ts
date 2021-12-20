@@ -1,13 +1,11 @@
-import { ResizeActiveOptions } from './resize';
-import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
 import {
   FilterDataItemCallback,
   HeaderActionIcon,
   CustomSVGIcon,
-  ScrollRatio,
 } from './basic';
 import { Tooltip } from './tooltip';
+import { InteractionOptions } from './interaction';
 import { ColHeaderConfig } from '@/facet/header/col';
 import { RowHeaderConfig } from '@/facet/header/row';
 import { CornerHeaderConfig } from '@/facet/header/corner';
@@ -33,31 +31,6 @@ import {
 import { BaseDataSet } from '@/data-set';
 import { SpreadSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
-
-export interface InteractionOptions {
-  // record which row/col field need extra link info
-  readonly linkFields?: string[];
-  // focus selected cell, like the spotlight
-  readonly selectedCellsSpotlight?: boolean;
-  // highlight all row header cells and column header cells to which the hovered cell belongs
-  readonly hoverHighlight?: boolean;
-  // enable Command + C to copy spread data
-  readonly enableCopy?: boolean;
-  // copy with filed format
-  readonly copyWithFormat?: boolean;
-  // auto reset sheet style when click outside or press ecs key, default true
-  readonly autoResetSheetStyle?: boolean;
-  readonly hiddenColumnFields?: string[];
-  // the ratio to control scroll speed, default set to 1
-  readonly scrollSpeedRatio?: ScrollRatio;
-  // enable resize area, default set to all enable
-  readonly resize?: boolean | ResizeActiveOptions;
-  // enable mouse drag brush selection
-  readonly brushSelection?: boolean;
-  /** ***********CUSTOM INTERACTION HOOKS**************** */
-  // register custom interactions
-  customInteractions?: CustomInteraction[];
-}
 
 export interface S2BasicOptions<T = Element | string> {
   // canvas's width
