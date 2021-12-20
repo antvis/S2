@@ -111,8 +111,8 @@ export interface Total {
  * 但是内部配置我倾向于仍然按照字段所属维度区，即配置的row，代表的是行维度而不是行小计
  */
 export interface Totals {
-  row?: Total;
-  col?: Total;
+  readonly row?: Partial<Readonly<Total>>;
+  readonly col?: Partial<Readonly<Total>>;
   // 前端计算 totals
   calcTotals?: boolean;
 }
