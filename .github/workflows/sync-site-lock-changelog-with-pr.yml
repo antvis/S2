@@ -50,6 +50,6 @@ jobs:
       # 使用官方的 github cli 便捷的创建 pr
       - name: Create PR
         run: |
-          gh pr create --title "chore: 🤖 auto sync site s2 lock and changelog [skip ci]" --body "🤖"
+          gh pr create --title "chore: 🤖 auto sync site s2 lock and changelog [skip ci]" --body "🤖 由 [[Sync Site S2 Lock And Changelog With PR](https://github.com/antvis/S2/blob/master/.github/workflows/sync-site-lock-changelog-with-pr.yml)] action 自动创建."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
