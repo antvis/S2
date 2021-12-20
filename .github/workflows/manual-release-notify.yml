@@ -1,4 +1,4 @@
-name: 🎉  Manual Release Notify
+name: 🎉 Manual Release Notify
 
 on:
   release:
