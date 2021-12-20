@@ -1152,7 +1152,7 @@ export abstract class BaseFacet {
 
   protected onAfterScroll = debounce(() => {
     const { interaction } = this.spreadsheet;
-    // 如果是选中单元格状态, 则不取消 hover
+    // 如果是选中单元格状态, 则继续保留 hover 拦截, 避免滚动后 hover 清空已选单元格
     if (!interaction.isSelectedState()) {
       this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
     }

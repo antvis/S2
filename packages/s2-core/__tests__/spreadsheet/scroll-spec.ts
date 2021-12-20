@@ -275,13 +275,14 @@ describe('Scroll By Group Tests', () => {
 
       canvas.dispatchEvent(wheelEvent);
 
+      expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
+
       // wait requestAnimationFrame and debounce
       await sleep(1000);
 
       // emit global canvas hover
       s2.container.emit(OriginEventType.MOUSE_MOVE, { target: {} });
 
-      expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
       expect(s2.interaction.getState()).toEqual({
         stateName: InteractionStateName.SELECTED,
         cells: [cellA.mockCellMeta, cellB.mockCellMeta],
