@@ -303,7 +303,7 @@ export const drawObjectText = (cell: DataCell) => {
   const { x, y, height, width } = cell.getContentArea();
   const text = cell.getMeta().fieldValue as MultiData;
   const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
-  const widthPercentMap = valuesCfg?.widthPercentMap;
+  const widthPercentCfg = valuesCfg?.widthPercentCfg;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
 
   const padding = dataCellStyle.cell.padding;
@@ -351,8 +351,8 @@ export const drawObjectText = (cell: DataCell) => {
         dataCellStyle,
         valuesCfg.conditions?.text,
       );
-      curWidth = !isEmpty(widthPercentMap)
-        ? totalTextWidth * (widthPercentMap[j] / 100)
+      curWidth = !isEmpty(widthPercentCfg)
+        ? totalTextWidth * (widthPercentCfg[j] / 100)
         : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
 
       curX = calX(x, padding.right, totalWidth);

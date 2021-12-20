@@ -252,7 +252,7 @@ export interface CellCfg {
     // 原始值字段
     originalValueField?: string;
     // 每一列数值占单元格宽度百分比 Map
-    widthPercentMap?: number[];
+    widthPercentCfg?: number[];
     // 条件格式
     conditions?: { text: Condition };
     // 与 MultiData 二位数组一一对应的数值标题

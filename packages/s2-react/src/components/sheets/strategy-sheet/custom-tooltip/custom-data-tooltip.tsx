@@ -23,7 +23,9 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({
         <span className={styles.label}>{rowName}</span>
         <span>{value ?? placeholder}</span>
       </div>
-      <div className={styles.originalValue}>{originalValue || placeholder}</div>
+      <div className={styles.originalValue}>
+        {originalValue?.[0]?.[0] || placeholder}
+      </div>
       {!isEmpty(derivedValues) && (
         <>
           <div className={styles.divider}></div>

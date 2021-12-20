@@ -141,12 +141,8 @@ const strategyOptions = {
                   fill: '#000',
                 };
               }
-              let fill = '#29A294';
-              if (isUpDataValue(value)) {
-                fill = '#FF4D4F';
-              }
               return {
-                fill,
+                fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
               };
             },
           },
@@ -166,7 +162,7 @@ const mockGridAnalysisOptions = {
       width: 400,
       height: 100,
       valuesCfg: {
-        widthPercentMap: [40, 20, 20, 20],
+        widthPercentCfg: [40, 20, 20, 20],
         conditions: {
           text: {
             mapping: (value, cellInfo) => {
@@ -176,12 +172,8 @@ const mockGridAnalysisOptions = {
                   fill: '#000',
                 };
               }
-              let fill = '#29A294';
-              if (isUpDataValue(value)) {
-                fill = '#FF4D4F';
-              }
               return {
-                fill,
+                fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
               };
             },
           },
