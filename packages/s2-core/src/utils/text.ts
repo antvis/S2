@@ -1,7 +1,6 @@
 import {
-  clone,
-  get,
   isArray,
+  isEmpty,
   isNil,
   isNumber,
   isString,
@@ -9,13 +8,11 @@ import {
   toString,
   values,
 } from 'lodash';
-import { customMerge } from '@/utils/merge';
-import { CellCfg, MultiData } from '@/common/interface';
-import { S2Options } from '@/common/interface/s2Options';
 import { DefaultCellTheme } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell/data-cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
+import { Condition, MultiData, ViewMeta } from '@/common/interface';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -278,35 +275,24 @@ const calX = (x: number, paddingRight: number, total?: number) => {
   return x + paddingRight / 2 + extra;
 };
 
-const getStyle = (
+const getTextStyle = (
   rowIndex: number,
   colIndex: number,
-  value: string | number,
-  options: S2Options,
+  meta: ViewMeta,
+  data: string | number,
   dataCellTheme: DefaultCellTheme,
+  textCondition: Condition,
 ) => {
-  const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
-  const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
-  const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
-  const isMinor = rowIndex === minorMeasureIndex;
-  const isDerivedMeasure = colIndex >= derivedMeasureIndex;
-  const style = isMinor
-    ? clone(dataCellTheme?.minorText)
-    : clone(dataCellTheme.text);
-  const derivedMeasureText = dataCellTheme.derivedMeasureText;
-  const upFill = isMinor
-    ? derivedMeasureText?.minorUp
-    : derivedMeasureText?.mainUp;
-  const downFill = isMinor
-    ? derivedMeasureText?.minorDown
-    : derivedMeasureText?.mainDown;
-  if (isDerivedMeasure) {
-    const isUp = isUpDataValue(value);
-    return customMerge(style, {
-      fill: isUp ? upFill : downFill,
-    });
+  const { isTotals } = meta;
+  const textStyle = isTotals ? dataCellTheme.bolderText : dataCellTheme.text;
+  let fill = textStyle.fill;
+  if (textCondition?.mapping) {
+    fill = textCondition?.mapping(data, {
+      rowIndex,
+      colIndex,
+    }).fill;
   }
-  return style;
+  return { ...textStyle, fill };
 };
 
 /**
@@ -316,12 +302,15 @@ const getStyle = (
 export const drawObjectText = (cell: DataCell) => {
   const { x, y, height, width } = cell.getContentArea();
   const text = cell.getMeta().fieldValue as MultiData;
+  const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
+  const widthPercentCfg = valuesCfg?.widthPercentCfg;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
 
   const padding = dataCellStyle.cell.padding;
-  // 指标个数相同，任取其一即可
-  const realWidth = width / (text.values[0].length + 1);
-  const realHeight = height / (text.values.length + 1);
+  const totalTextWidth = width - padding.left - padding.right;
+
+  const totalTextHeight = height - padding.top - padding.top;
+  const realHeight = totalTextHeight / (text.values.length + 1);
   let labelHeight = 0;
   // 绘制单元格主标题
   if (text?.label) {
@@ -353,15 +342,19 @@ export const drawObjectText = (cell: DataCell) => {
     curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
     totalWidth = 0;
     for (let j = 0; j < textValues[i].length; j += 1) {
-      curText = textValues[i][j] || '-';
-      const curStyle = getStyle(
+      curText = textValues[i][j];
+      const curStyle = getTextStyle(
         i,
         j,
+        cell?.getMeta(),
         curText,
-        cell?.getMeta().spreadsheet.options,
         dataCellStyle,
+        valuesCfg.conditions?.text,
       );
-      curWidth = j === 0 ? realWidth * 2 : realWidth;
+      curWidth = !isEmpty(widthPercentCfg)
+        ? totalTextWidth * (widthPercentCfg[j] / 100)
+        : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
+
       curX = calX(x, padding.right, totalWidth);
       totalWidth += curWidth;
       renderText(
@@ -373,6 +366,7 @@ export const drawObjectText = (cell: DataCell) => {
           text: `${curText}`,
           maxWidth: curWidth,
           fontParam: curStyle,
+          placeholder: cell?.getMeta().spreadsheet.options.placeholder,
         }),
         curStyle,
       );

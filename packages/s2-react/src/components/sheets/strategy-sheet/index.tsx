@@ -9,19 +9,12 @@ import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { SheetComponentsProps } from '@/components/sheets/interface';
 
-export type GetStrategySheetOptions = (
-  props: SheetComponentsProps,
-) => Partial<S2Options<React.ReactNode>>;
+export type GetStrategySheetOptions = () => Partial<S2Options<React.ReactNode>>;
 
-const getStrategySheetOptions: GetStrategySheetOptions = (
-  props: SheetComponentsProps,
-) => {
+const getStrategySheetOptions: GetStrategySheetOptions = () => {
   return {
     dataCell: (viewMeta) => new CustomDataCell(viewMeta, viewMeta.spreadsheet),
-    colCell: (...args) => {
-      CustomColCell.valuesConfig = props.valuesConfig;
-      return new CustomColCell(...args);
-    },
+    colCell: (...args) => new CustomColCell(...args),
     hierarchyType: 'tree',
     showDefaultHeaderActionIcon: false,
     style: {
@@ -60,7 +53,6 @@ const getStrategySheetOptions: GetStrategySheetOptions = (
           <DataTooltip
             cell={cell}
             defaultTooltipShowOptions={defaultTooltipShowOptions}
-            valuesConfig={props.valuesConfig}
           />
         ),
       },
@@ -73,8 +65,8 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const { options, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
     const s2Options = React.useMemo(() => {
-      return customMerge({}, options, getStrategySheetOptions(props));
-    }, [options, props]);
+      return customMerge({}, options, getStrategySheetOptions());
+    }, [options]);
 
     return (
       <BaseSheet

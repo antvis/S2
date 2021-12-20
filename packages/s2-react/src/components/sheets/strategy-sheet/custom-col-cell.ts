@@ -6,7 +6,6 @@ import {
   updateShapeAttr,
 } from '@antv/s2';
 import { ColHeaderConfig } from '@antv/s2/esm/facet/header/col';
-import { StrategySheetProps } from '../interface';
 
 // hover时 指标名与单元格原始文字间隔
 const CELL_TEXT_ACTIVE_MARGIN = {
@@ -25,8 +24,6 @@ const INDICATOR_LABEL_MARGIN = 10;
  * --------------------------------------
  */
 export class CustomColCell extends ColCell {
-  static valuesConfig: StrategySheetProps['valuesConfig'];
-
   constructor(
     meta: Node,
     spreadsheet: SpreadSheet,
@@ -60,9 +57,9 @@ export class CustomColCell extends ColCell {
   }
 
   private getIndicatorLabels() {
-    const { fields } = CustomColCell.valuesConfig;
+    const { fieldLabels } = this.spreadsheet.options.style.cellCfg.valuesCfg;
     const whiteSpace = ' '.repeat(INDICATOR_LABEL_MARGIN);
-    return fields.map(({ label }) => label).join(whiteSpace);
+    return fieldLabels?.[0]?.map((label) => label).join(whiteSpace);
   }
 
   private toggleDisplayIndicatorLabel(visible: boolean) {
