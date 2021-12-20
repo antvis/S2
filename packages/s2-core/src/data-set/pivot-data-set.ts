@@ -391,8 +391,8 @@ export class PivotDataSet extends BaseDataSet {
       colPivotMeta: this.colPivotMeta,
     });
     if (isTotals) {
-      const { totals = {} } = this.spreadsheet.options;
-      if (totals.calcTotals) {
+      const { calcTotals } = this.spreadsheet?.options?.totals || {};
+      if (calcTotals) {
         // 前端计算汇总值
         const totalValue = getDataSumByField(
           this.getMultiData(query),
