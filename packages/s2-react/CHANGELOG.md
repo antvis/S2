@@ -1,3 +1,22 @@
+# [@antv/s2-react-v1.4.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.3.0...@antv/s2-react-v1.4.0-alpha.1) (2021-12-20)
+
+
+### Bug Fixes
+
+* **table:** 修复明细表 onDataCellHover 无法触发 ([#896](https://github.com/antvis/S2/issues/896)) ([794406a](https://github.com/antvis/S2/commit/794406a25fbc0f0be9f434aa8cde8cf324e278ab))
+* 修复错误修改DefaultOptions问题 ([#910](https://github.com/antvis/S2/issues/910)) ([c6e3235](https://github.com/antvis/S2/commit/c6e32350b15611b4fe9aa457baf45329443c7aff))
+
+
+### Features
+
+* ✨ init strategy sheet ([#897](https://github.com/antvis/S2/issues/897)) ([481385b](https://github.com/antvis/S2/commit/481385b92f0693bdf003db63031dc9ed8befd35d))
+* ✨ 增加对象型数值单元格宽度和文本条件的映射 ([#916](https://github.com/antvis/S2/issues/916)) ([b94cf36](https://github.com/antvis/S2/commit/b94cf36f2e076d6fa7856d6ac8e71a8685cb3b0b))
+* **interaction:** 支持禁用刷选功能 ([#908](https://github.com/antvis/S2/issues/908)) ([ea63461](https://github.com/antvis/S2/commit/ea63461fb0a108a823d9c572fa15a10e1500ba38))
+* **interaction:** 透视表支持隐藏列头 ([#890](https://github.com/antvis/S2/issues/890)) ([ee938d6](https://github.com/antvis/S2/commit/ee938d6e43a703ef9b3b1a86a0c44dce9d833984)), closes [#892](https://github.com/antvis/S2/issues/892)
+* **strategy-sheet:** 自定义趋势分析表 tooltip ([#905](https://github.com/antvis/S2/issues/905)) ([eb02845](https://github.com/antvis/S2/commit/eb0284559bb3fb179e5e1a89e5b27cb8b080fcb8))
+* **strategy-sheet:** 趋势分析表禁用多选和快捷多选 ([#919](https://github.com/antvis/S2/issues/919)) ([9b840ad](https://github.com/antvis/S2/commit/9b840ada180e75ab8413f435416e6ced1636bfd6))
+* 新增趋势分析表hover列头显示指标名 ([#913](https://github.com/antvis/S2/issues/913)) ([4ff9373](https://github.com/antvis/S2/commit/4ff9373d1094150883c0554e636fac1bca4104c7)), closes [#898](https://github.com/antvis/S2/issues/898) [#902](https://github.com/antvis/S2/issues/902) [#907](https://github.com/antvis/S2/issues/907) [#910](https://github.com/antvis/S2/issues/910)
+
 # [@antv/s2-react-v1.3.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.2.0...@antv/s2-react-v1.3.0-alpha.1) (2021-12-15)
 
 ### Bug Fixes
