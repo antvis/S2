@@ -28,7 +28,7 @@ const getStrategySheetOptions: GetStrategySheetOptions = () => {
       // 趋势分析表禁用 刷选, 多选, 区间多选
       brushSelection: true,
       multiSelection: false,
-      rangeMultiSelection: false,
+      rangeSelection: false,
     },
     tooltip: {
       operation: {

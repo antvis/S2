@@ -8,20 +8,20 @@ import {
   InterceptType,
   S2Event,
 } from '@/common/constant';
-import { RangeMultiSelection } from '@/interaction/shift-multi-selection';
+import { RangeSelection } from '@/interaction/range-selection';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/base-interaction/click/data-cell-click');
 
-describe('Interaction Shift Multi Selection Tests', () => {
-  let shiftMultiSelection: RangeMultiSelection;
+describe('Interaction Range Selection Tests', () => {
+  let rangeSelection: RangeSelection;
   let s2: SpreadSheet;
 
   beforeEach(() => {
     const mockCell = createMockCellInfo('testId1').mockCell as any;
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;
-    shiftMultiSelection = new RangeMultiSelection(s2);
+    rangeSelection = new RangeSelection(s2);
     s2.options = {
       ...s2.options,
       tooltip: {
@@ -41,7 +41,7 @@ describe('Interaction Shift Multi Selection Tests', () => {
   });
 
   test('should bind events', () => {
-    expect(shiftMultiSelection.bindEvents).toBeDefined();
+    expect(rangeSelection.bindEvents).toBeDefined();
   });
 
   test('should add click intercept when shift keydown', () => {

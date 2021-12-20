@@ -7,7 +7,7 @@ export enum InteractionName {
   BRUSH_SELECTION = 'brushSelection',
   COL_ROW_RESIZE = 'rowColResize',
   DATA_CELL_MULTI_SELECTION = 'dataCellMultiSelection',
-  RANGE_MULTI_SELECTION = 'rangeMultiSelection',
+  RANGE_SELECTION = 'rangeSelection',
 }
 
 export enum InteractionStateName {

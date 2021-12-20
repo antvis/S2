@@ -108,7 +108,7 @@ export interface InteractionOptions {
   // enable Command / Ctrl + click multi selection
   readonly multiSelection?: boolean;
   // enable Shift + click multi selection
-  readonly rangeMultiSelection?: boolean;
+  readonly rangeSelection?: boolean;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

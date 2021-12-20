@@ -61,7 +61,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     resize: true,
     brushSelection: true,
     multiSelection: true,
-    rangeMultiSelection: true,
+    rangeSelection: true,
   },
   showSeriesNumber: false,
   scrollReachNodeField: {},

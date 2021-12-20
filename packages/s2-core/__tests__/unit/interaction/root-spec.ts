@@ -20,7 +20,7 @@ import {
   BrushSelection,
   RowColumnResize,
   DataCellMultiSelection,
-  RangeMultiSelection,
+  RangeSelection,
   BaseEvent,
 } from '@/index';
 import { Store } from '@/common/store';
@@ -403,7 +403,7 @@ describe('RootInteraction Tests', () => {
     ${InteractionName.BRUSH_SELECTION}           | ${BrushSelection}
     ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
     ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
-    ${InteractionName.RANGE_MULTI_SELECTION}     | ${RangeMultiSelection}
+    ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
   `(
     'should register correctly interaction instance for %o',
     ({ key, expected }) => {
@@ -439,11 +439,11 @@ describe('RootInteraction Tests', () => {
   });
 
   test.each`
-    option                   | name                                         | expected
-    ${`brushSelection`}      | ${InteractionName.BRUSH_SELECTION}           | ${BrushSelection}
-    ${`resize`}              | ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
-    ${`multiSelection`}      | ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
-    ${`rangeMultiSelection`} | ${InteractionName.RANGE_MULTI_SELECTION}     | ${RangeMultiSelection}
+    option              | name                                         | expected
+    ${`brushSelection`} | ${InteractionName.BRUSH_SELECTION}           | ${BrushSelection}
+    ${`resize`}         | ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
+    ${`multiSelection`} | ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
+    ${`rangeSelection`} | ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
   `(
     'should disable interaction by options %o',
     ({ option, name, expected }) => {

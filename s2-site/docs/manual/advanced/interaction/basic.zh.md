@@ -209,7 +209,7 @@ const s2options = {
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ubk0RrTI0ZsAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
-Shift + click: 区间选择（类似刷选）, 默认开启，可配置 `rangeMultiSelection` 关闭：
+Shift + click: 区间选择（类似刷选）, 默认开启，可配置 `rangeSelection` 关闭：
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wq-XRYpVAGMAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
@@ -217,7 +217,7 @@ Shift + click: 区间选择（类似刷选）, 默认开启，可配置 `rangeMu
 const s2options = {
   interaction: {
     multiSelection: false // 默认 true
-    rangeMultiSelection: false // 默认 true
+    rangeSelection: false // 默认 true
   }
 };
 ```

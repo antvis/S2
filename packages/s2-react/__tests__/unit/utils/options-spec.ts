@@ -40,7 +40,7 @@ describe('Options Tests', () => {
         resize: true,
         brushSelection: true,
         multiSelection: true,
-        rangeMultiSelection: true,
+        rangeSelection: true,
       },
       frozenRowHeader: true,
       showSeriesNumber: false,

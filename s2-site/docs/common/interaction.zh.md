@@ -19,7 +19,7 @@ order: 5
 | resize                 | 用于控制 resize 热区是否显示                          | `boolean`   \| [ResizeActiveOptions](/zh/docs/api/general/S2Options#resizeactiveoptions) | `true`  |       |
 | brushSelection                 | 是否允许刷选                         | `boolean` | `true`  |       |
 | multiSelection                 | 是否允许多选                         | `boolean` | `true`  |       |
-| rangeMultiSelection                 | 是否允许区间快捷多选                         | `boolean` | `true`  |       |
+| rangeSelection                 | 是否允许区间快捷多选                         | `boolean` | `true`  |       |
 
 ### CustomInteraction
 
