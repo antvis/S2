@@ -126,7 +126,7 @@ describe('merge test', () => {
         resize: true,
         brushSelection: true,
         multiSelection: true,
-        rangeSelection: true,
+        rangeMultiSelection: true,
       },
       frozenRowHeader: true,
       showSeriesNumber: false,
