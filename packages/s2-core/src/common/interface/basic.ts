@@ -423,11 +423,6 @@ export interface OriginalEvent extends Event {
   layerY: number;
 }
 
-export interface ScrollRatio {
-  horizontal?: number;
-  vertical?: number;
-}
-
 // 用于和下钻组件进行交互联动
 export interface PartDrillDownDataCache {
   // 执行下钻的行头id

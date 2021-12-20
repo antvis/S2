@@ -47,20 +47,6 @@ function getStatusColorByProgress(realProgress, expectedProgress) {
 
 const CONTAINER_COLOR = '#E9E9E9';
 
-class KpiStrategyCornelCell extends CornerCell {
-  drawCellText() {
-    if (this.meta.cornerType === 'col') {
-      return;
-    }
-    super.drawCellText();
-  }
-
-  getFormattedFieldValue() {
-    const text = '指标';
-    return { formattedValue: text, value: text };
-  }
-}
-
 class KpiStrategyDataCell extends DataCell {
   // 重写数值单元格
   initCell() {
@@ -228,8 +214,8 @@ fetch('../data/kpi-strategy.json')
           width: 150,
         },
       },
-      // 覆盖默认角头单元格, 使其在树状结构下只显示 [指标] 两个值
-      cornerCell: (...args) => new KpiStrategyCornelCell(...args),
+      // 自定义角头文本
+      cornerText: '指标',
       // 覆盖默认数值单元格, 额外绘制衍生指标和子弹图
       dataCell: (viewMeta) =>
         new KpiStrategyDataCell(viewMeta, viewMeta.spreadsheet),
