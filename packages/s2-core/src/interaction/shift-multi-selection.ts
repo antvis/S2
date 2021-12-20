@@ -22,7 +22,7 @@ export class ShiftMultiSelection
   public bindEvents() {
     this.bindKeyboardDown();
     this.bindDataCellClick();
-    this.bindRowColCellClick();
+    this.bindColCellClick();
     this.bindKeyboardUp();
   }
 
@@ -47,12 +47,9 @@ export class ShiftMultiSelection
     });
   }
 
-  private bindRowColCellClick() {
-    this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
-      this.handleRowColClick(event);
-    });
+  private bindColCellClick() {
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
-      this.handleRowColClick(event);
+      this.handleColClick(event);
     });
   }
 
@@ -121,10 +118,14 @@ export class ShiftMultiSelection
         cells,
         stateName: InteractionStateName.SELECTED,
       });
+      this.spreadsheet.emit(
+        S2Event.GLOBAL_SELECTED,
+        interaction.getActiveCells(),
+      );
     });
   }
 
-  private handleRowColClick = (event: Event) => {
+  private handleColClick = (event: Event) => {
     event.stopPropagation();
     const { interaction } = this.spreadsheet;
     const cell = this.spreadsheet.getCell(event.target);

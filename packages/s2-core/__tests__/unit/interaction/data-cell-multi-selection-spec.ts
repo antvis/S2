@@ -44,6 +44,12 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
     const mockCell = createMockCell('testId1').mockCell as any;
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;
+    s2.dataCfg = {
+      ...s2.dataCfg,
+      fields: {
+        valueInCols: false,
+      },
+    };
     dataCellMultiSelection = new DataCellMultiSelection(s2);
     s2.options = {
       ...s2.options,
@@ -98,9 +104,20 @@ describe('Interaction Data Cell Multi Selection Tests', () => {
 
     s2.getCell = () => mockCellB.mockCell as any;
 
+    s2.interaction.getActiveCells = () =>
+      [mockCellA.mockCell, mockCellB.mockCell] as any;
+
+    const selected = jest.fn();
+    s2.on(S2Event.GLOBAL_SELECTED, selected);
+
     s2.emit(S2Event.DATA_CELL_CLICK, {
       stopPropagation() {},
     } as unknown as GEvent);
+
+    expect(selected).toHaveBeenCalledWith([
+      mockCellA.mockCell,
+      mockCellB.mockCell,
+    ]);
 
     expect(s2.interaction.getState()).toEqual({
       cells: [mockCellA.mockCellMeta, mockCellB.mockCellMeta],
