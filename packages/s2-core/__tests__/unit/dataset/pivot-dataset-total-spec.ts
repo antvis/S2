@@ -223,6 +223,93 @@ describe('Pivot Dataset Total Test', () => {
       ).toContainEntries([[VALUE_FIELD, 78868]]);
     });
 
+    describe('getCellData function when totals calculated', () => {
+      beforeEach(() => {
+        MockPivotSheet.mockClear();
+        const mockSheet = new MockPivotSheet();
+        mockSheet.store = new Store();
+        mockSheet.options = {
+          width: 800,
+          height: 600,
+          totals: {
+            calcTotals: true,
+          },
+        };
+        dataCfg = assembleDataCfg({
+          meta: [],
+          totalData: [],
+        });
+        dataSet = new PivotDataSet(mockSheet);
+        dataSet.setDataCfg(dataCfg);
+      });
+      test('should get correct total cell data', () => {
+        expect(
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              type: '家具',
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          }),
+        ).toContainEntries([[VALUE_FIELD, 18375]]);
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              type: '家具',
+              sub_type: '桌子',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          }),
+        ).toContainEntries([[VALUE_FIELD, 26193]]);
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              city: '杭州市',
+              type: '家具',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          }),
+        ).toContainEntries([[VALUE_FIELD, 13132]]);
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              province: '浙江省',
+              city: '杭州市',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          }),
+        ).toContainEntries([[VALUE_FIELD, 15420]]);
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              type: '家具',
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          }),
+        ).toContainEntries([[VALUE_FIELD, 49709]]);
+
+        expect(
+          dataSet.getCellData({
+            query: {
+              [EXTRA_FIELD]: 'number',
+            },
+            isTotals: true,
+          }),
+        ).toContainEntries([[VALUE_FIELD, 78868]]);
+      });
+    });
+
     test('getMultiData function', () => {
       const specialQuery = {
         province: '浙江省',
