@@ -1,9 +1,14 @@
 /* eslint-disable jest/no-conditional-expect */
 import * as mockDataConfig from 'tests/data/simple-data.json';
-import { getContainer, sleep } from 'tests/util/helpers';
+import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { S2Options } from '@/common/interface';
-import { InterceptType, S2Event } from '@/common/constant';
+import { CellMeta, S2Options } from '@/common/interface';
+import {
+  InteractionStateName,
+  InterceptType,
+  OriginEventType,
+  S2Event,
+} from '@/common/constant';
 
 const s2options: S2Options = {
   width: 200,
@@ -26,6 +31,10 @@ describe('Scroll By Group Tests', () => {
   let canvas: HTMLCanvasElement;
 
   beforeEach(() => {
+    jest
+      .spyOn(SpreadSheet.prototype, 'getCell')
+      .mockImplementation(() => createMockCellInfo('testId').mockCell as any);
+
     s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
     s2.render();
     canvas = s2.container.get('el') as HTMLCanvasElement;
@@ -220,6 +229,64 @@ describe('Scroll By Group Tests', () => {
       await sleep(200);
       // emit scroll event
       expect(onScroll).not.toHaveBeenCalled();
+    },
+  );
+
+  // https://github.com/antvis/S2/issues/904
+  test.each([
+    {
+      type: 'horizontal',
+      offset: {
+        scrollX: 20,
+        scrollY: 0,
+      },
+    },
+    {
+      type: 'vertical',
+      offset: {
+        scrollX: 0,
+        scrollY: 20,
+      },
+    },
+  ])(
+    'should not clear selected cells when hover cells after scroll by %o',
+    async ({ offset }) => {
+      const dataCellHover = jest.fn();
+
+      const cellA = createMockCellInfo('cell-a');
+      const cellB = createMockCellInfo('cell-b');
+
+      s2.on(S2Event.DATA_CELL_HOVER, dataCellHover);
+
+      s2.facet.cornerBBox.maxY = -9999;
+      s2.facet.panelBBox.minX = -9999;
+      s2.facet.panelBBox.minY = -9999;
+
+      // selected cells
+      s2.interaction.changeState({
+        stateName: InteractionStateName.SELECTED,
+        cells: [cellA.mockCellMeta, cellB.mockCellMeta] as CellMeta[],
+      });
+
+      const wheelEvent = new WheelEvent('wheel', {
+        deltaX: offset.scrollX,
+        deltaY: offset.scrollY,
+      });
+
+      canvas.dispatchEvent(wheelEvent);
+
+      expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
+
+      // wait requestAnimationFrame and debounce
+      await sleep(1000);
+
+      // emit global canvas hover
+      s2.container.emit(OriginEventType.MOUSE_MOVE, { target: {} });
+
+      expect(s2.interaction.getState()).toEqual({
+        stateName: InteractionStateName.SELECTED,
+        cells: [cellA.mockCellMeta, cellB.mockCellMeta],
+      });
     },
   );
 });

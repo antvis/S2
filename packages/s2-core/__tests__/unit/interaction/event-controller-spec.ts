@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import { Canvas, BBox } from '@antv/g-canvas';
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { EmitterType } from '@/common/interface/emitter';
