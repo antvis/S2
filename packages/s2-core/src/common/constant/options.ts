@@ -60,6 +60,8 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     autoResetSheetStyle: true,
     resize: true,
     brushSelection: true,
+    multiSelection: true,
+    rangeMultiSelection: true,
   },
   showSeriesNumber: false,
   scrollReachNodeField: {},

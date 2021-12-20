@@ -28,6 +28,7 @@ import {
   customMerge,
   ThemeCfg,
   ViewMeta,
+  InteractionName,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { forEach, random } from 'lodash';
@@ -741,6 +742,7 @@ function MainLayout() {
             sheetType="strategy"
             dataCfg={strategyDataCfg}
             options={strategyOptions}
+            ref={s2Ref}
           />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">
@@ -748,6 +750,7 @@ function MainLayout() {
             sheetType="gridAnalysis"
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
+            ref={s2Ref}
           />
         </TabPane>
       </Tabs>

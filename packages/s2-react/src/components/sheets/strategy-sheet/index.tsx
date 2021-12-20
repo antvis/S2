@@ -25,8 +25,10 @@ const getStrategySheetOptions: GetStrategySheetOptions = () => {
     },
     interaction: {
       autoResetSheetStyle: true,
-      // 趋势分析表不开启刷选
-      brushSelection: false,
+      // 趋势分析表禁用 刷选, 多选, 区间多选
+      brushSelection: true,
+      multiSelection: false,
+      rangeMultiSelection: false,
     },
     tooltip: {
       operation: {

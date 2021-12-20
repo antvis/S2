@@ -39,7 +39,7 @@ order: 0
 - `layout:xx`: 布局改变事件
 - `cell:xx`:  单元格级别的事件，整个表格分为不同的单元格类型，你可以对特定的单元格进行实践监听，实现自定义需求
 
-[所有事件](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts)
+[详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts)
 
 <details>
 <summary>点击查看所有交互事件</summary>
@@ -118,7 +118,7 @@ order: 0
 | 右键      | `S2Event.GLOBAL_CONTEXT_MENU`      | 图表区域按下右键                             |
 | 选中      | `S2Event.GLOBAL_SELECTED`          | 选中单元格时，如：刷选，多选，单选           |
 | 悬停      | `S2Event.GLOBAL_HOVER`             | 鼠标悬停在单元格                             |
-| 重置      | `S2Event.GLOBAL_RESET`             | 点击空白处，按下 Esc, 键等重置交互样式时     |
+| 重置      | `S2Event.GLOBAL_RESET`             | 点击空白处，按下 Esc 键 重置交互样式时     |
 | 链接跳转  | `S2Event.GLOBAL_LINK_FIELD_JUMP`   | 点击行列头被编辑为链接字段的文本时           |
 | icon 点击 | `S2Event.GLOBAL_ACTION_ICON_CLICK` | 单元格右侧的操作 icon 点击时，比如：排序图标 |
 | icon 悬停 | `S2Event.GLOBAL_ACTION_ICON_HOVER` | 单元格右侧的操作 icon 悬停时，比如：排序图标 |
@@ -205,13 +205,22 @@ const s2options = {
 
 ### 快捷键多选
 
-(Command/Ctrl) + click: 单个多选叠加
+(Command/Ctrl) + click: 单个多选叠加，默认开启，可配置 `multiSelection` 关闭：
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ubk0RrTI0ZsAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
-Shift + click: 区间选择（类似刷选）
+Shift + click: 区间选择（类似刷选）, 默认开启，可配置 `rangeMultiSelection` 关闭：
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wq-XRYpVAGMAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+
+```ts
+const s2options = {
+  interaction: {
+    multiSelection: false // 默认 true
+    rangeMultiSelection: false // 默认 true
+  }
+};
+```
 
 ### 隐藏列头 （明细表有效）
 

@@ -13,11 +13,11 @@ import { S2CellType, ViewMeta } from '@/common/interface';
 import { DataCell } from '@/cell';
 import { Node } from '@/facet/layout/node';
 
-export class ShiftMultiSelection
+export class RangeMultiSelection
   extends BaseEvent
   implements BaseEventImplement
 {
-  private isShiftMultiSelection = false;
+  private isRangeMultiSelection = false;
 
   public bindEvents() {
     this.bindKeyboardDown();
@@ -31,7 +31,7 @@ export class ShiftMultiSelection
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
         if (event.key === InteractionKeyboardKey.SHIFT) {
-          this.isShiftMultiSelection = true;
+          this.isRangeMultiSelection = true;
           this.spreadsheet.interaction.addIntercepts([InterceptType.CLICK]);
         }
       },
@@ -41,7 +41,7 @@ export class ShiftMultiSelection
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
-        this.isShiftMultiSelection = false;
+        this.isRangeMultiSelection = false;
         this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
       }
     });
@@ -83,7 +83,7 @@ export class ShiftMultiSelection
 
       const lastClickedCell = this.spreadsheet.store.get('lastClickedCell');
       const isShiftSelect =
-        this.isShiftMultiSelection &&
+        this.isRangeMultiSelection &&
         lastClickedCell?.cellType === cell.cellType;
 
       if (!isShiftSelect) {
@@ -137,7 +137,7 @@ export class ShiftMultiSelection
       const lastCell = this.spreadsheet.store.get('lastClickedCell');
       // 处理shift区间多选
       if (
-        this.isShiftMultiSelection &&
+        this.isRangeMultiSelection &&
         lastCell &&
         lastCell.cellType === cell.cellType &&
         lastCell.getMeta().level === cell.getMeta().level

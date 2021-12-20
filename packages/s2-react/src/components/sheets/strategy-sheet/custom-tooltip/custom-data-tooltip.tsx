@@ -10,8 +10,8 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({
   defaultTooltipShowOptions,
 }) => {
   const meta = cell.getMeta();
-  const currentRow = last(defaultTooltipShowOptions.data.headInfo.rows);
-  const rowName = currentRow.value;
+  const currentRow = last(defaultTooltipShowOptions.data?.headInfo?.rows);
+  const rowName = currentRow?.value;
   const [value, ...derivedValues] = first(meta.fieldValue?.values) || [];
   const { placeholder, style } = meta.spreadsheet.options;
   const valuesCfg = style.cellCfg?.valuesCfg;

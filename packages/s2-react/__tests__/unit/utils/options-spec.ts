@@ -39,6 +39,8 @@ describe('Options Tests', () => {
         autoResetSheetStyle: true,
         resize: true,
         brushSelection: true,
+        multiSelection: true,
+        rangeMultiSelection: true,
       },
       frozenRowHeader: true,
       showSeriesNumber: false,

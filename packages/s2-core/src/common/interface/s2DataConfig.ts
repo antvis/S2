@@ -52,5 +52,5 @@ export interface S2DataConfig {
   // field filer params
   filterParams?: FilterParam[];
   // extra config
-  [key: string]: any;
+  [key: string]: unknown;
 }

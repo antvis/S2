@@ -1,7 +1,6 @@
 import { createFakeSpreadSheet, createMockCellInfo } from 'tests/util/helpers';
 import { Event as GEvent } from '@antv/g-canvas';
-import { omit } from 'lodash';
-import { CellMeta, S2Options, ViewMeta } from '@/common/interface';
+import { S2Options } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
   InteractionKeyboardKey,
@@ -9,20 +8,20 @@ import {
   InterceptType,
   S2Event,
 } from '@/common/constant';
-import { ShiftMultiSelection } from '@/interaction/shift-multi-selection';
+import { RangeMultiSelection } from '@/interaction/shift-multi-selection';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/base-interaction/click/data-cell-click');
 
 describe('Interaction Shift Multi Selection Tests', () => {
-  let shiftMultiSelection: ShiftMultiSelection;
+  let shiftMultiSelection: RangeMultiSelection;
   let s2: SpreadSheet;
 
   beforeEach(() => {
     const mockCell = createMockCellInfo('testId1').mockCell as any;
     s2 = createFakeSpreadSheet();
     s2.getCell = () => mockCell;
-    shiftMultiSelection = new ShiftMultiSelection(s2);
+    shiftMultiSelection = new RangeMultiSelection(s2);
     s2.options = {
       ...s2.options,
       tooltip: {

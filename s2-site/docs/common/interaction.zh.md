@@ -14,10 +14,12 @@ order: 5
 | enableCopy             | 是否允许复制                                          | `boolean`                                                                                | `false` |       |
 | copyWithFormat         | 是否使用 field format 格式复制                        | `boolean`                                                                                | `false` |       |
 | customInteractions     | 自定义交互 [详情](zh/docs/manual/advanced/interaction/custom)                                          | [CustomInteraction[]](#custominteraction)                                                |         |       |
-| scrollSpeedRatio       | 用于控制滚动速率，分水平和垂直两个方向，默认为 1      | [ScrollRatio](/zh/docs/api/general/S2Options#scrollratio)                                |         |       |
+| scrollSpeedRatio       | 用于控制滚动速率，分水平和垂直两个方向，默认为 1      | [ScrollSpeedRatio](/zh/docs/api/general/S2Options#scrollspeedratio)                                |         |       |
 | autoResetSheetStyle    | 用于控制点击表格外区域和按下 esc 键时是否重置交互状态 | `boolean`                                                                                | `true`  |       |
 | resize                 | 用于控制 resize 热区是否显示                          | `boolean`   \| [ResizeActiveOptions](/zh/docs/api/general/S2Options#resizeactiveoptions) | `true`  |       |
 | brushSelection                 | 是否允许刷选                         | `boolean` | `true`  |       |
+| multiSelection                 | 是否允许多选                         | `boolean` | `true`  |       |
+| rangeMultiSelection                 | 是否允许区间快捷多选                         | `boolean` | `true`  |       |
 
 ### CustomInteraction
 
@@ -28,10 +30,10 @@ order: 5
 | key         | 交互的唯一标识 | `string`                                          |        |   ✓   |
 | interaction |                | [InteractionConstructor](#InteractionConstructor) |        |   ✓   |
 
-### ScrollRatio
+### ScrollSpeedRatio
 
 ```js
-interface ScrollRatio {
+interface ScrollSpeedRatio {
   horizontal?: number; // 水平滚动速率，默认为 1
   vertical?: number; // 垂直滚动速率，默认为 1
 }
