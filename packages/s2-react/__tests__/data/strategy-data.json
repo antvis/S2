@@ -26,7 +26,7 @@
     "data": [
       {
         "number": {
-          "originalValue": 122.22,
+          "originalValue": [[3877, 234324, "+32%"]],
           "values": [[3877, 234324, "+32%"]]
         },
         "province": "浙江省",
@@ -35,7 +35,7 @@
       },
       {
         "number": {
-          "originalValue": 122.33,
+          "originalValue": [[3877, -234324, "-32%"]],
           "values": [[3877, -234324, "-32%"]]
         },
         "province": "浙江省",
@@ -44,8 +44,8 @@
       },
       {
         "number": {
-          "originalValue": 122.22,
-          "values": [[5877, -4324, "-32%"]]
+          "originalValue": [[5877, -4324, "+2%"]],
+          "values": [[5877, -4324, "+2%"]]
         },
         "province": "浙江省",
         "city": "杭州市",
@@ -53,7 +53,7 @@
       },
       {
         "number": {
-          "originalValue": 122.22,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -62,7 +62,7 @@
       },
       {
         "number": {
-          "originalValue": 122.22,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -71,7 +71,7 @@
       },
       {
         "number": {
-          "originalValue": 12222.22,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -80,7 +80,7 @@
       },
       {
         "number": {
-          "originalValue": 122.22,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -89,7 +89,7 @@
       },
       {
         "number": {
-          "originalValue": 122.22,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -98,7 +98,7 @@
       },
       {
         "number": {
-          "originalValue": 122.22,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -107,7 +107,7 @@
       },
       {
         "number": {
-          "originalValue": 122.22,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -116,7 +116,7 @@
       },
       {
         "number": {
-          "originalValue": 122.22,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -125,7 +125,7 @@
       },
       {
         "number": {
-          "originalValue": 122.22,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -134,7 +134,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -143,7 +143,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -152,7 +152,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -161,7 +161,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -170,7 +170,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -179,7 +179,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -188,7 +188,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -197,7 +197,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -206,7 +206,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -215,7 +215,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -224,7 +224,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -233,7 +233,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -242,7 +242,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -251,7 +251,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -260,7 +260,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -269,7 +269,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -278,7 +278,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -287,7 +287,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -296,7 +296,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -305,7 +305,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -318,7 +318,7 @@
     "fields": {
       "rows": ["province", "city"],
       "columns": ["date"],
-      "originalValue": 222.33,
+      "originalValue": [[3877, 4324, "42%"]],
       "values": ["number", "price"],
       "valueInCols": false
     },
@@ -336,7 +336,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -346,7 +346,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -356,7 +356,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -366,7 +366,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -376,7 +376,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -386,7 +386,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -396,7 +396,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -406,7 +406,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -416,7 +416,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -426,7 +426,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -436,7 +436,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -446,7 +446,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -456,7 +456,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -466,7 +466,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -476,7 +476,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -486,7 +486,7 @@
       {
         "price": 2323,
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "浙江省",
@@ -495,7 +495,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -504,7 +504,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -513,7 +513,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -522,7 +522,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -531,7 +531,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -540,7 +540,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -549,7 +549,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -558,7 +558,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -567,7 +567,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -576,7 +576,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -585,7 +585,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -594,7 +594,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -603,7 +603,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -612,7 +612,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -621,7 +621,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",
@@ -630,7 +630,7 @@
       },
       {
         "number": {
-          "originalValue": 222.33,
+          "originalValue": [[3877, 4324, "42%"]],
           "values": [[3877, 4324, "42%"]]
         },
         "province": "四川省",

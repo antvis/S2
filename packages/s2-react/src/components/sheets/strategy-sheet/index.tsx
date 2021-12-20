@@ -8,13 +8,9 @@ import { ColTooltip } from './custom-tooltip/custom-col-tooltip';
 import { DataTooltip } from './custom-tooltip/custom-data-tooltip';
 import { SheetComponentsProps } from '@/components/sheets/interface';
 
-export type GetStrategySheetOptions = (
-  props: SheetComponentsProps,
-) => Partial<S2Options<React.ReactNode>>;
+export type GetStrategySheetOptions = () => Partial<S2Options<React.ReactNode>>;
 
-const getStrategySheetOptions: GetStrategySheetOptions = (
-  props: SheetComponentsProps,
-) => {
+const getStrategySheetOptions: GetStrategySheetOptions = () => {
   return {
     dataCell: StrategyDataCell,
     hierarchyType: 'tree',
@@ -54,7 +50,6 @@ const getStrategySheetOptions: GetStrategySheetOptions = (
           <DataTooltip
             cell={cell}
             defaultTooltipShowOptions={defaultTooltipShowOptions}
-            valuesConfig={props.valuesConfig}
           />
         ),
       },
@@ -67,7 +62,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const { options, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
     const s2Options = React.useMemo(() => {
-      return customMerge({}, options, getStrategySheetOptions(props));
+      return customMerge({}, options, getStrategySheetOptions());
     }, [options, props]);
 
     return (

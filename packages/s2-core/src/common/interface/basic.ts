@@ -1,8 +1,7 @@
 import { Event, ShapeAttrs } from '@antv/g-canvas';
-import { Padding } from '../interface/theme';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
-import { CustomTreeItem, ResizeInfo } from '@/common/interface';
+import { Condition, CustomTreeItem, ResizeInfo } from '@/common/interface';
 import { S2BasicOptions } from '@/common/interface/s2Options';
 import { BaseDataSet } from '@/data-set';
 import { Frame } from '@/facet/header';
@@ -248,8 +247,17 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
-  firstDerivedMeasureRowIndex?: number;
-  minorMeasureRowIndex?: number;
+  // valueCfg of MultiData
+  valuesCfg?: {
+    // 原始值字段
+    originalValueField?: string;
+    // 每一列数值占单元格宽度百分比 Map
+    widthPercentCfg?: number[];
+    // 条件格式
+    conditions?: { text: Condition };
+    // 与 MultiData 二位数组一一对应的数值标题
+    fieldLabels?: string[][];
+  };
 }
 
 export interface RowCfg {

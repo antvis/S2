@@ -32,10 +32,8 @@ import {
 import corePkg from '@antv/s2/package.json';
 import { forEach, random } from 'lodash';
 import { DataType } from '@antv/s2';
-import {
-  mockGridAnalysisOptions,
-  mockGridAnalysisDataCfg,
-} from '../__tests__/data/grid-analysis-data';
+import { isUpDataValue } from '@antv/s2';
+import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
 import {
   singleMeasure,
   multiMeasure,
@@ -125,6 +123,65 @@ const partDrillDown = {
       });
     }),
 } as PartDrillDown;
+
+const strategyOptions = {
+  width: 1000,
+  height: 400,
+  cornerText: '指标',
+  style: {
+    cellCfg: {
+      valuesCfg: {
+        originalValueField: 'originalValue',
+        conditions: {
+          text: {
+            mapping: (value, cellInfo) => {
+              const { colIndex } = cellInfo;
+              if (colIndex === 0) {
+                return {
+                  fill: '#000',
+                };
+              }
+              return {
+                fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
+              };
+            },
+          },
+        },
+        fieldLabels: [['指标', '环比值', '环比率']],
+      },
+    },
+  },
+} as S2Options;
+
+const mockGridAnalysisOptions = {
+  width: 1600,
+  height: 600,
+  style: {
+    layoutWidthType: 'colAdaptive',
+    cellCfg: {
+      width: 400,
+      height: 100,
+      valuesCfg: {
+        widthPercentCfg: [40, 20, 20, 20],
+        conditions: {
+          text: {
+            mapping: (value, cellInfo) => {
+              const { colIndex } = cellInfo;
+              if (colIndex <= 1) {
+                return {
+                  fill: '#000',
+                };
+              }
+              return {
+                fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
+              };
+            },
+          },
+        },
+      },
+    },
+  },
+} as S2Options;
 
 const CustomTooltip = () => (
   <div>
@@ -683,21 +740,7 @@ function MainLayout() {
           <SheetComponent
             sheetType="strategy"
             dataCfg={strategyDataCfg}
-            options={{ width: 1000, height: 400, cornerText: '指标' }}
-            valuesConfig={{
-              originalValueField: 'originalValue',
-              fields: [
-                {
-                  label: '指标',
-                },
-                {
-                  label: '环比值',
-                },
-                {
-                  label: '环比率',
-                },
-              ],
-            }}
+            options={strategyOptions}
           />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">
