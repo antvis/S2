@@ -22,11 +22,11 @@ order: 0
 | 名称                | 事件名                                                                | 描述                                                                                                                              |
 | :------------------ | :-------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
 | 单选                | `S2Event.GLOBAL_SELECTED`                                             | 单击单元格，弹出 tooltip, 展示对应单元格的信息，再次单击取消选中                                                                  |
-| 多选                | `S2Event.GLOBAL_SELECTED`                                             | 单选单元格后，按住 `Shift` 键，继续单选                                                                                           |
+| 多选                | `S2Event.GLOBAL_SELECTED`                                             | 单选单元格后，按住 `Command / Ctrl` 键，继续单选                                                                                           |
 | 行/列头快捷多选     | `S2Event.GLOBAL_SELECTED`                                             | 单击行/列头，选中对应行/列头所有单元格 （含不在可视范围内的）, 再次单击取消选中                                                   |
 | 行/列头手动调整宽高 | `S2Event.LAYOUT_RESIZE`                                               | 鼠标悬浮在行/列头单元格边缘，出现指示条和光标，按住鼠标左键拖动，调整宽高                                                         |
 | 刷选                | `S2Event.GLOBAL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`            | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量                |
-| 快捷多选            | `S2Event.GLOBAL_SELECTED`                                             | Command 点击 单个增量多选；shift 单击 start -> end 的区间选择                                                                     |
+| 区间快捷多选            | `S2Event.GLOBAL_SELECTED`                                             | 单选单元格 (start), 然后按住 `Shift` 再次选中一个单元格 (end), 选中两个单元格区间所有单元格                                                                     |
 | 悬停                | `S2Event.GLOBAL_HOVER`                                                | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](#十字高亮） （对应行/列), 可设置 `hoverHighlight: false` 关闭 |
 | 复制                | `S2Event.GLOBAL_COPIED`                                               | 复制选中的单元格数据                                                                                                              |
 | 隐藏列头            | `S2Event.LAYOUT_TABLE_COL_EXPANDED` `S2Event.LAYOUT_TABLE_COL_HIDDEN` | 隐藏/展开 列头 （明细表有效）                                                                                                     |
@@ -165,7 +165,7 @@ const s2Options = {
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Omq-Ra0PO9UAAAAAAAAAAAAAARQnAQ" width="700" alt="preview" />
 
-在选中单元格后，如果需要置灰未选中的单元格，强调需要关注的数据，可配置 `selectedCellsSpotlight` 开启：
+在选中单元格后，如果需要置灰未选中的单元格，强调需要关注的数据，默认关闭，可配置 `selectedCellsSpotlight` 开启：
 
 ```ts
 const s2options = {
@@ -184,16 +184,24 @@ const s2options = {
 ```ts
 const s2options = {
   interaction: {
-    hoverHighlight: true // 默认关闭
+    hoverHighlight: true // 默认 false
   }
 };
 ```
 
 ### 刷选
 
-刷选过程中，会提示预选中的单元格，并且显示半透明的刷选蒙层
+刷选过程中，会提示预选中的单元格，并且显示半透明的刷选蒙层，默认开启，可配置 `brushSelection` 关闭：
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*N3-cSrfpGc4AAAAAAAAAAAAAARQnAQ" alt="preview" width="700" />
+
+```ts
+const s2options = {
+  interaction: {
+    brushSelection: false // 默认 true
+  }
+};
+```
 
 ### 快捷键多选
 
@@ -201,7 +209,7 @@ const s2options = {
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ubk0RrTI0ZsAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
-SHIFT + click: 区间选择（类似刷选）
+Shift + click: 区间选择（类似刷选）
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wq-XRYpVAGMAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
@@ -237,7 +245,7 @@ const s2options = {
 对应事件：`GLOBAL_RESET`
 
 ```ts
-s2.on(S2Event.GLOBAL_RESET,() => {
+s2.on(S2Event.GLOBAL_RESET, () => {
   console.log('重置')
 })
 ```
@@ -269,12 +277,12 @@ const s2options = {
 
 ## 自定义 resize 开启范围
 
-可配置 `resize` 控制需要开启的热区范围，分为 角头，行头，列头三个部分，默认为全部开启。可以通过设置`boolean`类型值快捷开启或关闭所有 resize 热区，也可以通过对象类型配置各个区域的热区开启或关闭。[查看具体例子](/zh/examples/interaction/advanced#resize)
+可配置 `resize` 控制需要开启的单元格宽高调整热区范围，分为 角头，行头，列头三个部分，默认为全部开启。可以通过设置`boolean` 类型值快捷开启或关闭所有 resize 热区，也可以通过对象类型配置各个区域的热区开启或关闭。[查看具体例子](/zh/examples/interaction/advanced#resize)
 
 ```ts
 const s2options = {
   interaction: {
-   resize:true
+    resize: true
   },
 };
 // 等价于
