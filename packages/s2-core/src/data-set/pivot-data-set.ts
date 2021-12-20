@@ -58,6 +58,7 @@ import {
   deleteMetaById,
   getDimensionsWithoutPathPre,
 } from '@/utils/dataset/pivot-data-set';
+import { getDataSumByField } from '@/utils/number-calculate';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -388,6 +389,21 @@ export class PivotDataSet extends BaseDataSet {
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
+    if (isTotals) {
+      const { totals = {} } = this.spreadsheet.options;
+      if (totals.calcTotals) {
+        // 前端计算汇总值
+        const totalValue = getDataSumByField(
+          this.getMultiData(query),
+          VALUE_FIELD,
+        );
+        return {
+          ...query,
+          [VALUE_FIELD]: totalValue,
+          [query[EXTRA_FIELD]]: totalValue,
+        };
+      }
+    }
     const data = get(this.indexesData, path);
 
     return data;
@@ -432,6 +448,7 @@ export class PivotDataSet extends BaseDataSet {
       rowDimensionValues,
       colDimensionValues,
       careUndefined: true,
+      isFirstCreate: true,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });

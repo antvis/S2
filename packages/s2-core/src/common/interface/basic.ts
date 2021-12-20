@@ -1,5 +1,4 @@
 import { Event, ShapeAttrs } from '@antv/g-canvas';
-import { Padding } from '../interface/theme';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
 import { CustomTreeItem, ResizeInfo } from '@/common/interface';
@@ -112,8 +111,10 @@ export interface Total {
  * 但是内部配置我倾向于仍然按照字段所属维度区，即配置的row，代表的是行维度而不是行小计
  */
 export interface Totals {
-  readonly row?: Partial<Readonly<Total>>;
-  readonly col?: Partial<Readonly<Total>>;
+  row?: Total;
+  col?: Total;
+  // 前端计算 totals
+  calcTotals?: boolean;
 }
 
 export interface Sort {
