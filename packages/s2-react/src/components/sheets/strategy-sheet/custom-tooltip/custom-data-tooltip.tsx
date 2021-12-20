@@ -3,6 +3,9 @@ import cls from 'classnames';
 import { first, get, isEmpty, last } from 'lodash';
 import { isUpDataValue } from '@antv/s2';
 import { CustomTooltipProps } from './interface';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import styles from './index.module.less';
 
 export const DataTooltip: React.FC<CustomTooltipProps> = ({

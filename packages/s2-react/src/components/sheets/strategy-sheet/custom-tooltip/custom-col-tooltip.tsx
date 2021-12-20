@@ -1,6 +1,8 @@
 import React from 'react';
 import cls from 'classnames';
 import { CustomTooltipProps } from './interface';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import styles from './index.module.less';
 
 export const ColTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {

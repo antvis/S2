@@ -23,10 +23,6 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Build
-        run: |
-          yarn workspace @antv/s2 build:cjs
-
       - name: Test
         run: |
           yarn test:coverage
