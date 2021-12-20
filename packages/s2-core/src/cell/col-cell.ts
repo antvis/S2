@@ -57,8 +57,8 @@ export class ColCell extends HeaderCell {
     this.drawBorders();
     // draw resize ares
     this.drawResizeArea();
-    this.update();
     this.addExpandColumnIconShapes();
+    this.update();
   }
 
   protected drawBackgroundShape() {

@@ -118,6 +118,10 @@ export class ShiftMultiSelection
         cells,
         stateName: InteractionStateName.SELECTED,
       });
+      this.spreadsheet.emit(
+        S2Event.GLOBAL_SELECTED,
+        interaction.getActiveCells(),
+      );
     });
   }
 

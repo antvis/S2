@@ -114,7 +114,7 @@ export class RootInteraction {
     return currentState?.stateName === InteractionStateName.SELECTED;
   }
 
-  private isActiveCell(cell: S2CellType) {
+  public isActiveCell(cell: S2CellType) {
     return this.getCells().find((meta) => cell.getMeta().id === meta.id);
   }
 

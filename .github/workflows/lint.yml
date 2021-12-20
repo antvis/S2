@@ -44,7 +44,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             你好, @${{ github.event.pull_request.user.login }} CI 执行失败, 请点击 [Details] 按钮查看, 并根据日志修复
-            Hello, @${{ github.event.pull_request.user.login }} CI run failed, please click the [Details] button try to fixed it.
+
+            Hello, @${{ github.event.pull_request.user.login }} CI run failed, please click the [Details] button for detailed log information and fix it.
             <!-- Created by actions-cool/maintain-one-comment -->
           emojis: 'eyes'
           body-include: '<!-- Created by actions-cool/maintain-one-comment -->'

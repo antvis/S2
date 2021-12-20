@@ -9,7 +9,6 @@ import {
   isEmpty,
   isFunction,
   isString,
-  merge,
   once,
 } from 'lodash';
 import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
@@ -369,7 +368,10 @@ export abstract class SpreadSheet extends EE {
    */
   public setThemeCfg(themeCfg: ThemeCfg) {
     const theme = themeCfg?.theme || {};
-    this.theme = merge({}, getTheme({ ...themeCfg, spreadsheet: this }), theme);
+    this.theme = customMerge(
+      getTheme({ ...themeCfg, spreadsheet: this }),
+      theme,
+    );
   }
 
   /**
@@ -377,7 +379,7 @@ export abstract class SpreadSheet extends EE {
    * @param pagination
    */
   public updatePagination(pagination: Pagination) {
-    this.options = merge({}, this.options, {
+    this.options = customMerge(this.options, {
       pagination,
     });
 
@@ -409,7 +411,7 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
-    this.options = merge({}, this.options, { width, height });
+    this.options = customMerge(this.options, { width, height });
     // resize the canvas
     this.container.changeSize(width, height);
   }
@@ -449,8 +451,7 @@ export abstract class SpreadSheet extends EE {
    */
   public updateScrollOffset(offsetConfig: OffsetConfig): void {
     this.facet.updateScrollOffset(
-      merge(
-        {},
+      customMerge(
         {
           offsetX: {
             value: undefined,
