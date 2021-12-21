@@ -142,7 +142,6 @@ export class TableFacet extends BaseFacet {
     const {
       dataSet,
       spreadsheet,
-      cellCfg,
       frozenTrailingColCount,
       frozenTrailingRowCount,
     } = this.cfg;
@@ -155,7 +154,7 @@ export class TableFacet extends BaseFacet {
       });
 
     this.saveInitColumnNodes(colLeafNodes);
-    this.calculateNodesCoordinate(colLeafNodes, colsHierarchy);
+    this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
 
     const getCellMeta = (rowIndex: number, colIndex: number) => {
       const showSeriesNumber = this.getSeriesNumberWidth() > 0;
@@ -234,33 +233,15 @@ export class TableFacet extends BaseFacet {
     return layoutResult;
   }
 
-  private calculateNodesCoordinate(
-    colLeafNodes: Node[],
-    colsHierarchy: Hierarchy,
-  ) {
-    this.calculateColWidth(colLeafNodes);
-    this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
-  }
-
   private getAdaptiveColWidth(colLeafNodes: Node[]) {
     const { cellCfg } = this.cfg;
-    const colHeaderColSize = colLeafNodes.length;
-    const canvasW = this.getCanvasHW().width;
-    const size = Math.max(1, colHeaderColSize);
-    return Math.max(cellCfg.width, canvasW / size);
-  }
-
-  private calculateColWidth(colLeafNodes: Node[]) {
-    const { rowCfg, cellCfg } = this.cfg;
-    let colWidth;
     if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
-      colWidth = this.getAdaptiveColWidth(colLeafNodes);
-    } else {
-      colWidth = -1;
+      const seriesNumberWidth = this.getSeriesNumberWidth();
+      const colHeaderColSize = colLeafNodes.length;
+      const canvasW = this.getCanvasHW().width - seriesNumberWidth;
+      return Math.max(cellCfg.width, canvasW / Math.max(1, colHeaderColSize));
     }
-
-    rowCfg.width = colWidth;
-    cellCfg.width = colWidth;
+    return cellCfg.width;
   }
 
   private getColNodeHeight(col: Node) {
@@ -282,6 +263,8 @@ export class TableFacet extends BaseFacet {
       colsHierarchy.height += levelSample.height;
     }
 
+    const adaptiveColWitdth = this.getAdaptiveColWidth(colLeafNodes);
+
     const nodes = [];
 
     for (let i = 0; i < allNodes.length; i++) {
@@ -289,7 +272,10 @@ export class TableFacet extends BaseFacet {
 
       currentNode.colIndex = i;
       currentNode.x = preLeafNode.x + preLeafNode.width;
-      currentNode.width = this.calculateColLeafNodesWidth(currentNode);
+      currentNode.width = this.calculateColLeafNodesWidth(
+        currentNode,
+        adaptiveColWitdth,
+      );
       preLeafNode = currentNode;
       currentNode.y = 0;
 
@@ -329,8 +315,12 @@ export class TableFacet extends BaseFacet {
     }
   }
 
-  private calculateColLeafNodesWidth(col: Node): number {
-    const { cellCfg, colCfg, dataSet, spreadsheet } = this.cfg;
+  private calculateColLeafNodesWidth(
+    col: Node,
+    adaptiveColWitdth: number,
+  ): number {
+    const { colCfg, dataSet, spreadsheet } = this.cfg;
+    const layoutWidthType = this.spreadsheet.getLayoutWidthType();
 
     const userDragWidth = get(
       get(colCfg, 'widthByFieldValue'),
@@ -340,52 +330,50 @@ export class TableFacet extends BaseFacet {
     let colWidth;
     if (userDragWidth) {
       colWidth = userDragWidth;
-    } else if (cellCfg.width === -1) {
-      const datas = dataSet.getDisplayDataSet();
-      const colLabel = col.label;
+    } else {
+      if (layoutWidthType === LayoutWidthTypes.Compact) {
+        const datas = dataSet.getDisplayDataSet();
+        const colLabel = col.label;
 
-      const allLabels =
-        datas?.map((data) => `${data[col.key]}`)?.slice(0, 50) || []; // 采样取了前50
-      allLabels.push(colLabel);
-      const maxLabel = maxBy(allLabels, (label) =>
-        measureTextWidthRoughly(label),
-      );
+        const allLabels =
+          datas?.map((data) => `${data[col.key]}`)?.slice(0, 50) || []; // 采样取了前50
+        allLabels.push(colLabel);
+        const maxLabel = maxBy(allLabels, (label) =>
+          measureTextWidthRoughly(label),
+        );
 
-      const seriesNumberWidth = this.getSeriesNumberWidth();
-      const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell;
-      const {
-        text: dataCellTextStyle,
-        cell: cellStyle,
-        icon: iconStyle,
-      } = spreadsheet.theme.dataCell;
+        const { bolderText: colCellTextStyle } = spreadsheet.theme.colCell;
+        const { text: dataCellTextStyle, cell: cellStyle } =
+          spreadsheet.theme.dataCell;
 
-      DebuggerUtil.getInstance().logger(
-        'Max Label In Col:',
-        col.field,
-        maxLabel,
-      );
+        DebuggerUtil.getInstance().logger(
+          'Max Label In Col:',
+          col.field,
+          maxLabel,
+        );
 
-      // 最长的 Label 如果是列名，按列名的标准计算宽度
-      if (colLabel === maxLabel) {
-        colWidth =
-          measureTextWidth(maxLabel, colCellTextStyle) +
-          getOccupiedWidthForTableCol(
-            this.spreadsheet,
-            col,
-            spreadsheet.theme.colCell,
-          );
+        // 最长的 Label 如果是列名，按列名的标准计算宽度
+        if (colLabel === maxLabel) {
+          colWidth =
+            measureTextWidth(maxLabel, colCellTextStyle) +
+            getOccupiedWidthForTableCol(
+              this.spreadsheet,
+              col,
+              spreadsheet.theme.colCell,
+            );
+        } else {
+          colWidth =
+            measureTextWidth(maxLabel, dataCellTextStyle) +
+            cellStyle.padding.left +
+            cellStyle.padding.right;
+        }
       } else {
-        colWidth =
-          measureTextWidth(maxLabel, dataCellTextStyle) +
-          cellStyle.padding.left +
-          cellStyle.padding.right;
+        colWidth = adaptiveColWitdth;
       }
 
       if (col.field === SERIES_NUMBER_FIELD) {
-        colWidth = seriesNumberWidth;
+        colWidth = this.getSeriesNumberWidth();
       }
-    } else {
-      colWidth = cellCfg.width;
     }
 
     return colWidth;
