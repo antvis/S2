@@ -28,7 +28,7 @@ import {
 import { ColHeader, RowHeader } from '@/facet/header';
 import { BaseEvent } from '@/interaction/base-event';
 import { SpreadSheet } from '@/sheet-type';
-import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
+import { getAllChildCells } from '@/utils/get-all-child-cells';
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
 import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
@@ -153,7 +153,10 @@ export class RootInteraction {
   }
 
   public getPanelGroupAllDataCells(): DataCell[] {
-    return getAllPanelDataCell(this.spreadsheet?.panelGroup?.get('children'));
+    return getAllChildCells(
+      this.spreadsheet?.panelGroup?.get('children'),
+      DataCell,
+    );
   }
 
   public getAllRowHeaderCells() {
@@ -182,15 +185,15 @@ export class RootInteraction {
       children,
       (group) => group instanceof ColHeader,
     )[0];
-    let currentNode = colHeader?.cfg?.children;
-    if (isEmpty(currentNode)) {
+
+    const headerChildren = colHeader?.cfg?.children;
+
+    if (isEmpty(headerChildren)) {
       return [];
     }
-    while (!currentNode?.[0]?.cellType) {
-      currentNode = currentNode?.[0]?.cfg?.children;
-    }
 
-    const colCells = currentNode;
+    const colCells = getAllChildCells(headerChildren, ColCell);
+
     return colCells.filter(
       (cell: S2CellType) => cell.cellType === CellTypes.COL_CELL,
     ) as ColCell[];

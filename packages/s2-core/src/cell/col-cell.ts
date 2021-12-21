@@ -231,16 +231,11 @@ export class ColCell extends HeaderCell {
     });
   }
 
-  protected drawVerticalResizeArea() {
-    if (!this.meta.isLeaf) {
-      return;
-    }
-
-    const { x, y, label, width, height, parent } = this.meta;
+  protected shouldAddResizeArea() {
+    const { x, y, width, height } = this.meta;
     const {
       scrollX,
       scrollY,
-      position,
       scrollContainsRowHeader,
       cornerWidth,
       height: headerHeight,
@@ -248,7 +243,6 @@ export class ColCell extends HeaderCell {
     } = this.headerConfig;
 
     const resizeStyle = this.getResizeAreaStyle();
-    const resizeArea = this.getColResizeArea();
 
     const resizeAreaBBox = {
       x: x + width - resizeStyle.size / 2,
@@ -264,17 +258,36 @@ export class ColCell extends HeaderCell {
       height: headerHeight,
     };
 
-    if (
-      !shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
-        scrollX,
-        scrollY,
-      })
-    ) {
+    return shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+      scrollX,
+      scrollY,
+    });
+  }
+
+  protected getVerticalResizeAreaOffset() {
+    const { x, y } = this.meta;
+    const { scrollX, position } = this.headerConfig;
+    return {
+      x: position.x + x - scrollX,
+      y: position.y + y,
+    };
+  }
+
+  protected drawVerticalResizeArea() {
+    if (!this.meta.isLeaf) {
       return;
     }
 
-    const offsetX = position.x + x - scrollX;
-    const offsetY = position.y + y;
+    const { label, width, height, parent } = this.meta;
+
+    const resizeStyle = this.getResizeAreaStyle();
+    const resizeArea = this.getColResizeArea();
+
+    if (!this.shouldAddResizeArea()) {
+      return;
+    }
+
+    const { x: offsetX, y: offsetY } = this.getVerticalResizeAreaOffset();
 
     // 列宽调整热区
     // 基准线是根据container坐标来的，因此把热区画在container
