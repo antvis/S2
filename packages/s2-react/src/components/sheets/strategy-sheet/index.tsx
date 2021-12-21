@@ -64,20 +64,22 @@ const getStrategySheetOptions: GetStrategySheetOptions = () => {
 
 export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
-    const { options, ...restProps } = props;
+    const { options, themeCfg, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
+
+    const S2ThemeCfg = React.useMemo(() => {
+      return customMerge({}, themeCfg, { theme: StrategyTheme });
+    }, [themeCfg]);
     const s2Options = React.useMemo(() => {
       return customMerge({}, options, getStrategySheetOptions());
     }, [options]);
 
     return (
       <BaseSheet
-        {...restProps}
-        themeCfg={{
-          theme: StrategyTheme,
-        }}
         options={s2Options}
+        themeCfg={S2ThemeCfg}
         ref={s2Ref}
+        {...restProps}
       />
     );
   },
