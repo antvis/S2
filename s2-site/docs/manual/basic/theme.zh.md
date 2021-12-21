@@ -141,13 +141,21 @@ s2.render();
     </tr>
      <tr>
     <td style="text-align: center;"> 默认</td>
-    <td style="text-align: center;"> 多彩蓝</td>
     <td style="text-align: center;"> 简约灰</td>
+    <td style="text-align: center;"> 多彩蓝</td>
     </tr>
     <tr>
-        <td rowspan=7 style="text-align: center; background: #000000; color: white;"> #000000</td>
-        <td rowspan=7 style="text-align: center; background: #000000; color: white; "> #000000</td>
-        <td rowspan=7  style="text-align: center;  background: #FFFFFF;"> #FFFFFF</td>
+        <td rowspan=8 style="text-align: center; background: #000000; color: white;"> #000000</td>
+        <td rowspan=8 style="text-align: center; background: #000000;  color: white;"> #000000</td>
+        <td rowspan=8  style="text-align: center;  background: #FFFFFF;"> #FFFFFF</td>
+        <td style="text-align: left;">
+            角头单元格粗体文本颜色 </br>
+        </td>
+        <td style="text-align: left;">
+            cornerCell.bolderText.fill</br>
+        </td>
+    </tr>
+     <tr>
         <td style="text-align: left;">
             角头单元格文本颜色 </br>
         </td>
@@ -204,8 +212,8 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=2 style="text-align: center; background: #F0F7FF; "> #F0F7FF</td>
-        <td rowspan=2 style="text-align: center; background: #F4F7FE;"> #F4F7FE</td>
+        <td rowspan=2 style="text-align: center; background: #f7faff; "> #f7faff</td>
+        <td rowspan=2 style="text-align: center; background: #FcFcFd;"> #FcFcFd</td>
         <td rowspan=2 style="text-align: center;  background: #F4F7FE;"> #F4F7FE</td>
         <td style="text-align: left;">
             行头单元格背景填充色 </br>
@@ -223,14 +231,22 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=4 style="text-align: center; background: #D9EAFF; "> #D9EAFF</td>
-        <td rowspan=4 style="text-align: center; background: #E0E9FE;"> #E0E9FE</td>
-        <td rowspan=4 style="text-align: center;  background: #DDE7FD;"> #DDE7FD</td>
+        <td rowspan=5 style="text-align: center; background: #E1EAFE; "> #E1EAFE</td>
+        <td rowspan=5 style="text-align: center; background: #F4F5F7;"> #F4F5F7</td>
+        <td rowspan=5 style="text-align: center;  background: #DDE7FD;"> #DDE7FD</td>
         <td style="text-align: left;">
             行头单元格鼠标悬停态背景填充色 </br>
         </td>
         <td style="text-align: left;">
             rowCell.interactionState.hover.backgroundColor</br>
+        </td>
+    </tr>
+     <tr>
+        <td style="text-align: left;">
+            行头单元格鼠标选中态背景填充色 </br>
+        </td>
+        <td style="text-align: left;">
+            rowCell.interactionState.selected.backgroundColor</br>
         </td>
     </tr>
  <tr>
@@ -258,8 +274,8 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=2 style="text-align: center; background: #FFFFFF; "> #FFFFFF</td>
-        <td rowspan=2 style="text-align: center; background: #E0E9FE;"> #E0E9FE</td>
+        <td rowspan=2 style="text-align: center; background: #E1EAFE; "> #E1EAFE</td>
+        <td rowspan=2 style="text-align: center; background: #E7E8EA;"> #E7E8EA</td>
         <td rowspan=2 style="text-align: center;  background: #3471F9;"> #3471F9</td>
         <td style="text-align: left;">
             角头单元格背景填充色 </br>
@@ -277,9 +293,9 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td style="text-align: center; background: #D9EAFF; "> #D9EAFF</td>
-        <td style="text-align: center; background: #CCDBFD;"> #CCDBFD</td>
-        <td style="text-align: center;  background: #2C60D3;"> #2C60D3</td>
+        <td rowspan=2 style="text-align: center; background: #CCDBFD; "> #CCDBFD</td>
+        <td rowspan=2 style="text-align: center; background: #E7E8EA;"> #E7E8EA</td>
+        <td rowspan=2 style="text-align: center;  background: #2C60D3;"> #2C60D3</td>
         <td style="text-align: left;">
             列头单元格鼠标鼠标悬停态背景填充色 </br>
         </td>
@@ -287,9 +303,17 @@ s2.render();
             colCell.cell.interactionState.hover.backgroundColor</br>
         </td>
     </tr>
+     <tr>
+        <td style="text-align: left;">
+            列头单元格鼠标鼠标选中态背景填充色 </br>
+        </td>
+        <td style="text-align: left;">
+            colCell.cell.interactionState.selected.backgroundColor</br>
+        </td>
+    </tr>
     <tr>
         <td style="text-align: center; background: #2C60D3; color:white;"> #2C60D3</td>
-        <td style="text-align: center; background: #2C60D3;color:white; "> #2C60D3</td>
+        <td style="text-align: center; background: #CECFD1;color:white; "> #CECFD1</td>
         <td style="text-align: center;  background: #2C60D3;color:white;"> #2C60D3</td>
         <td style="text-align: left;">
             刷选预选中状态蒙板背景填充色 </br>
@@ -300,7 +324,7 @@ s2.render();
     </tr>
     <tr>
         <td style="text-align: center; background: #0000EE; color:white;"> #0000EE</td>
-        <td style="text-align: center; background: #0000EE; color:white; "> #0000EE</td>
+        <td style="text-align: center; background: #A9AAAB; color:white; "> #A9AAAB</td>
         <td style="text-align: center;  background: #0000EE; color:white;"> #0000EE</td>
         <td style="text-align: left;">
             行头单元格链接文本颜色 </br>
@@ -310,20 +334,44 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td style="text-align: center; background: #75C0F8; "> #75C0F8</td>
-        <td style="text-align: center; background: #75C0F8;"> #75C0F8</td>
-        <td style="text-align: center;  background: #75C0F8;"> #75C0F8</td>
+        <td rowspan=4 style="text-align: center; background: #326EF4; "> #326EF4</td>
+        <td rowspan=4 style="text-align: center; background: #616162;"> #616162</td>
+        <td rowspan=4 style="text-align: center;  background: #326EF4;"> #326EF4</td>
         <td style="text-align: left;">
-            数据单元格条件颜色填充色 </br>
+            数据单元格柱状图填充色 </br>
         </td>
         <td style="text-align: left;">
             dataCell.cell.miniBarChartFillColor</br>
         </td>
     </tr>
+       <tr>
+        <td style="text-align: left;">
+            resize 蒙层背景色 </br>
+        </td>
+        <td style="text-align: left;">
+            resizeArea.background</br>
+        </td>
+    </tr>
+       <tr>
+        <td style="text-align: left;">
+            resize 热区参考线颜色 </br>
+        </td>
+        <td style="text-align: left;">
+            resizeArea.guideLineColor</br>
+        </td>
+    </tr>
+       <tr>
+        <td style="text-align: left;">
+            resize 热区悬停态背景颜色 </br>
+        </td>
+        <td style="text-align: left;">
+            resizeArea.interactionState.hover。backgroundColor</br>
+        </td>
+    </tr>
     <tr>
-        <td style="text-align: center; background: #FFFFFF; "> #FFFFFF</td>
-        <td style="text-align: center; background: #FFFFFF;"> #FFFFFF</td>
-        <td style="text-align: center;  background: #FFFFFF;"> #FFFFFF</td>
+        <td rowspan=2 style="text-align: center; background: #FFFFFF; "> #FFFFFF</td>
+        <td rowspan=2 style="text-align: center; background: #FFFFFF;"> #FFFFFF</td>
+        <td rowspan=2 style="text-align: center;  background: #FFFFFF;"> #FFFFFF</td>
         <td style="text-align: left;">
             数据单元格背景填充色 </br>
         </td>
@@ -331,9 +379,17 @@ s2.render();
             dataCell.cell.backgroundColor</br>
         </td>
     </tr>
+     <tr>
+        <td style="text-align: left;">
+            表格背景填充色 </br>
+        </td>
+        <td style="text-align: left;">
+            background.color</br>
+        </td>
+    </tr>
     <tr>
-        <td rowspan=4 style="text-align: center; background: #E6E9F1; "> #E6E9F1</td>
-        <td rowspan=4 style="text-align: center; background: #E0E9FE;"> #E0E9FE</td>
+        <td rowspan=4 style="text-align: center; background: #EBF2FF; "> #EBF2FF</td>
+        <td rowspan=4 style="text-align: center; background: #F2F2F2;"> #F2F2F2</td>
         <td rowspan=4 style="text-align: center;  background: #E0E9FE;"> #E0E9FE</td>
         <td style="text-align: left;">
             行头单元格水平边框颜色 </br>
@@ -367,8 +423,8 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=4 style="text-align: center; background: #E6E9F1; "> #E6E9F1</td>
-        <td rowspan=4 style="text-align: center; background: #BDD1FD;"> #BDD1FD</td>
+        <td rowspan=4 style="text-align: center; background: #D6E3FE; "> #D6E3FE</td>
+        <td rowspan=4 style="text-align: center; background: #E8E6E6;"> #E8E6E6</td>
         <td rowspan=4 style="text-align: center;  background: #5286F9;"> #5286F9</td>
         <td style="text-align: left;">
             角头单元格水平边框颜色 </br>
@@ -402,8 +458,8 @@ s2.render();
         </td>
     </tr>
      <tr>
-        <td style="text-align: center; background: #D1D4DC; "> #D1D4DC</td>
-        <td style="text-align: center; background: #B6C1DA;"> #B6C1DA</td>
+        <td style="text-align: center; background: #3471F9; "> #3471F9</td>
+        <td style="text-align: center; background: #D1D4DC;"> #D1D4DC</td>
         <td style="text-align: center;  background: #5286F9;"> #5286F9</td>
         <td style="text-align: left;">
             表体水平边框颜色（一级横向分割线） </br>
@@ -413,8 +469,8 @@ s2.render();
         </td>
     </tr>
   <tr>
-        <td style="text-align: center; background: #D1D4DC; "> #D1D4DC</td>
-        <td style="text-align: center; background: #B6C1DA;"> #B6C1DA</td>
+        <td style="text-align: center; background: #3471F9; "> #3471F9</td>
+        <td style="text-align: center; background: #BEC2CB;"> #BEC2CB</td>
         <td style="text-align: center;  background: #3471F9;"> #3471F9</td>
         <td style="text-align: left;">
            表体垂直边框颜色（一级纵向分割线） </br>
@@ -443,9 +499,9 @@ s2.render();
         </td>
     </tr>
     <tr>
-        <td rowspan=4 style="text-align: center; background: #121826; color: white; "> #121826</td>
-        <td rowspan=4 style="text-align: center; background: #121826; color: white;"> #121826</td>
-        <td rowspan=4 style="text-align: center;  background: #121826; color: white;"> #121826</td>
+        <td rowspan=5 style="text-align: center; background: #121826; color: white; "> #121826</td>
+        <td rowspan=5 style="text-align: center; background: #121826; color: white;"> #121826</td>
+        <td rowspan=5 style="text-align: center;  background: #121826; color: white;"> #121826</td>
         <td style="text-align: left;">
            行头单元格粗体文本颜色 </br>
         </td>
@@ -455,10 +511,18 @@ s2.render();
     </tr>
      <tr>
         <td style="text-align: left;">
-           行头单元格文本颜色 </br>
+           行头单元格粗体链接文本颜色 </br>
         </td>
         <td style="text-align: left;">
-            rowCell.text.fill</br>
+            rowCell.bolderText.linkTextFill</br>
+        </td>
+    </tr>
+      <tr>
+        <td style="text-align: left;">
+           行头单元格链接文本颜色 </br>
+        </td>
+        <td style="text-align: left;">
+            rowCell.text.linkTextFill</br>
         </td>
     </tr>
      <tr>
