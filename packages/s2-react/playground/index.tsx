@@ -28,7 +28,7 @@ import {
   customMerge,
   ThemeCfg,
   ViewMeta,
-  InteractionName,
+  S2Theme,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { forEach, random } from 'lodash';
@@ -45,6 +45,7 @@ import {
   s2Options as playgroundS2Options,
   sliderOptions,
   tableSheetDataCfg,
+  defaultTheme,
 } from './config';
 import { ResizeConfig } from './resize';
 import { getSheetComponentOptions } from '@/utils';
@@ -129,6 +130,14 @@ const strategyOptions = {
   width: 1000,
   height: 400,
   cornerText: '指标',
+  headerActionIcons: [
+    {
+      iconNames: ['Trend'],
+      belongsCell: 'rowCell',
+      defaultHide: true,
+      action: () => {},
+    },
+  ],
   style: {
     cellCfg: {
       valuesCfg: {
@@ -742,6 +751,10 @@ function MainLayout() {
             sheetType="strategy"
             dataCfg={strategyDataCfg}
             options={strategyOptions}
+            themeCfg={{
+              theme: defaultTheme as unknown as S2Theme,
+              name: 'gray',
+            }}
             ref={s2Ref}
           />
         </TabPane>

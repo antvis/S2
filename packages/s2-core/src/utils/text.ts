@@ -349,7 +349,7 @@ export const drawObjectText = (cell: DataCell) => {
         cell?.getMeta(),
         curText,
         dataCellStyle,
-        valuesCfg.conditions?.text,
+        valuesCfg?.conditions?.text,
       );
       curWidth = !isEmpty(widthPercentCfg)
         ? totalTextWidth * (widthPercentCfg[j] / 100)

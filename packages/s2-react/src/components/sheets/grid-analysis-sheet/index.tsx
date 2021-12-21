@@ -7,7 +7,7 @@ import { SheetComponentsProps } from '@/components/sheets/interface';
 
 export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
-    const { options, ...restProps } = props;
+    const { options, themeCfg, ...restProps } = props;
 
     const s2Ref = React.useRef<SpreadSheet>();
     const s2Options = React.useMemo(() => {
@@ -22,14 +22,16 @@ export const GridAnalysisSheet: React.FC<SheetComponentsProps> = React.memo(
       });
     }, [options]);
 
+    const S2ThemeCfg = React.useMemo(() => {
+      return customMerge({}, themeCfg, { theme: GridAnalysisTheme });
+    }, [themeCfg]);
+
     return (
       <BaseSheet
-        {...restProps}
-        themeCfg={{
-          theme: GridAnalysisTheme,
-        }}
         options={s2Options}
+        themeCfg={S2ThemeCfg}
         ref={s2Ref}
+        {...restProps}
       />
     );
   },
