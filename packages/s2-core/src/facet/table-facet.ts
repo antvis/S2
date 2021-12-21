@@ -818,11 +818,10 @@ export class TableFacet extends BaseFacet {
     const { foregroundGroup, options } = this.spreadsheet;
     const resize = get(options, 'interaction.resize');
 
-    if (isBoolean(resize)) {
-      if (!resize) {
-        return;
-      }
-    } else if (!(resize as ResizeActiveOptions)?.rowCellVertical) {
+    if (
+      (isBoolean(resize) && !resize) ||
+      !(resize as ResizeActiveOptions)?.rowCellVertical
+    ) {
       return;
     }
 
