@@ -14,6 +14,7 @@ import {
   S2Event,
   SHAPE_STYLE_MAP,
 } from '@/common/constant';
+import { EmitterType } from '@/common/interface/emitter';
 import { ResizeInfo } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { getSelectedData, keyEqualTo } from '@/utils/export/copy';
@@ -23,6 +24,11 @@ interface EventListener {
   target: EventTarget;
   type: string;
   handler: EventListenerOrEventListenerObject;
+}
+
+interface S2EventHandler {
+  type: keyof EmitterType;
+  handler: EmitterType[keyof EmitterType];
 }
 
 interface EventHandler {
@@ -37,6 +43,8 @@ export class EventController {
   private target: LooseObject;
 
   public canvasEventHandlers: EventHandler[] = [];
+
+  public s2EventHandlers: S2EventHandler[] = [];
 
   public domEventListeners: EventListener[] = [];
 
@@ -56,6 +64,7 @@ export class EventController {
   public bindEvents() {
     this.clearAllEvents();
 
+    // canvas events
     this.addCanvasEvent(OriginEventType.MOUSE_DOWN, this.onCanvasMousedown);
     this.addCanvasEvent(OriginEventType.MOUSE_MOVE, this.onCanvasMousemove);
     this.addCanvasEvent(OriginEventType.MOUSE_OUT, this.onCanvasMouseout);
@@ -63,6 +72,13 @@ export class EventController {
     this.addCanvasEvent(OriginEventType.DOUBLE_CLICK, this.onCanvasDoubleClick);
     this.addCanvasEvent(OriginEventType.CONTEXT_MENU, this.onCanvasContextMenu);
 
+    // spreadsheet events
+    this.addS2Event(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
+      this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
+      this.spreadsheet.interaction.clearState();
+    });
+
+    // dom events
     this.addDomEventListener(
       document,
       OriginEventType.CLICK,
@@ -70,7 +86,6 @@ export class EventController {
         this.resetSheetStyle(event);
       },
     );
-
     this.addDomEventListener(
       window,
       OriginEventType.KEY_DOWN,
@@ -317,10 +332,6 @@ export class EventController {
       return;
     }
 
-    this.spreadsheet.on(S2Event.GLOBAL_ACTION_ICON_CLICK, () => {
-      this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
-      this.spreadsheet.interaction.clearState();
-    });
     const cell = this.spreadsheet.getCell(event.target);
     if (cell) {
       const cellType = cell.cellType;
@@ -452,6 +463,17 @@ export class EventController {
     this.canvasEventHandlers.push({ type: eventType, handler });
   }
 
+  private addS2Event<K extends keyof EmitterType>(
+    eventType: K,
+    handler: EmitterType[K],
+  ) {
+    this.spreadsheet.on(eventType, handler);
+    this.s2EventHandlers.push({
+      type: eventType,
+      handler,
+    });
+  }
+
   private addDomEventListener(
     target: EventTarget,
     type: string,
@@ -470,10 +492,14 @@ export class EventController {
     each(this.canvasEventHandlers, ({ type, handler }) => {
       this.canvasContainer?.off(type, handler);
     });
+    each(this.s2EventHandlers, ({ type, handler }) => {
+      this.spreadsheet.off(type, handler);
+    });
     each(this.domEventListeners, (event) => {
       event.target.removeEventListener(event.type, event.handler);
     });
     this.canvasEventHandlers = [];
+    this.s2EventHandlers = [];
     this.domEventListeners = [];
   }
 }
