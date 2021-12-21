@@ -72,11 +72,19 @@ export abstract class BaseDataSet {
   }
 
   /**
-   * 获得字段名称
+   * 获得字段格式方法
    * @param field
    */
   public getFieldFormatter(field: string): Formatter {
     return get(this.getFieldMeta(field, this.meta), 'formatter', identity);
+  }
+
+  /**
+   * 获得字段描述
+   * @param field
+   */
+  public getFieldDescription(field: string): string {
+    return get(this.getFieldMeta(field, this.meta), 'description');
   }
 
   public setDataCfg(dataCfg: S2DataConfig) {
@@ -104,7 +112,7 @@ export abstract class BaseDataSet {
     }
     const fieldValues = compact(
       map(this.originData, (item) => {
-        const value = item[field];
+        const value = item[field] as string;
         return isNil(value) ? null : Number.parseFloat(value);
       }),
     );
