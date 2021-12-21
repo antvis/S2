@@ -9,6 +9,7 @@ order: 1
 ```bash
 # npm
 $ npm install @antv/s2
+
 # yarn
 $ yarn add @antv/s2
 ```
@@ -184,7 +185,7 @@ s2.render()
 
 ### `React` 版本
 
-`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件），还有配套丰富的 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
+`S2` 提供了开箱即用的 `React` 版本 [表格组件](/zh/examples/gallery#category-表格组件)，还有配套丰富的 [分析组件](/zh/examples/gallery#category-Tooltip), 帮助开发者快速满足业务看数分析需求。
 
 使用 `React` 版本 `S2`，只有渲染这一步有所不同：
 

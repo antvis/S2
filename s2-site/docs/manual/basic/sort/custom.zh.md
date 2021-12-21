@@ -18,15 +18,19 @@ order: 2
 | sortMethod    | 排序方式                                    | `ASC` \| `DESC` \| `asc` \| `desc`  | -      |      |
 | sortBy        | 自定义排序列表                              | `string[]`                            | -      |      |
 | sortByMeasure | 按照度量值（数值）排序                      | `string`                              | -      |      |
-| query         | 筛选条件，缩小排序范围 如 ：`{city:'白山'}` | `object`                              | -      |      |
+| query         | 筛选条件，缩小排序范围 如 ：`{ city: '成都' }` | `object`                              | -      |      |
 | type          | 组内排序用来显示icon                        | `string`                              | -      |      |
 | sortFunc      | 自定义排序的function                        | `(v: SortFuncParam) => Array<string>` | -      |      |
 
 ```ts
+import { EXTRA_FIELD } from "@antv/s2";
+
 const s2DataConfig = {
   sortParams: [
     {
-      sortFieldId: 'type', sortMethod: 'DESC'
+      sortFieldId: 'type', sortMethod: 'DESC',
+      // EXTRA_FIELD 是 dataCfg.fields.values 字段的虚拟 fieldId
+      query: { city: '成都', [EXTRA_FIELD]: 'price' }
     }
   ],
   ...
