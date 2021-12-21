@@ -251,6 +251,7 @@ export class RowCell extends HeaderCell {
     resizeArea.addShape('rect', {
       attrs: {
         ...getResizeAreaAttrs({
+          id: this.meta.id,
           theme: resizeStyle,
           type: ResizeDirectionType.Vertical,
           effect: ResizeAreaEffect.Cell,

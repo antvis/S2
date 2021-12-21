@@ -14,3 +14,8 @@ export enum ResizeAreaEffect {
   Tree = 'tree',
   Series = 'series',
 }
+
+export enum ResizeType {
+  ALL = 'all',
+  CURRENT = 'current',
+}
