@@ -4,6 +4,7 @@ name: 🔁 Sync Site S2 Lock And Changelog With PR
 on:
   workflow_run:
     workflows: ["🚀 Auto Release"]
+    branches: [latest] # 只有正式版发布才同步 changelog 和 lock
     types:
       - completed
 
