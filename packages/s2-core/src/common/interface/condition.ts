@@ -25,7 +25,7 @@ export type MappingFunction = (
  * One field can hold a condition
  */
 export interface Condition {
-  readonly field: string;
+  readonly field?: string;
   readonly mapping: MappingFunction;
 }
 

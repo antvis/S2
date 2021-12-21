@@ -28,7 +28,6 @@ import {
   customMerge,
   ThemeCfg,
   ViewMeta,
-  InteractionName,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { forEach, random } from 'lodash';
