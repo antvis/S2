@@ -79,6 +79,14 @@ export abstract class BaseDataSet {
     return get(this.getFieldMeta(field, this.meta), 'formatter', identity);
   }
 
+  /**
+   * 获得字段描述
+   * @param field
+   */
+  public getFieldDescription(field: string): string {
+    return get(this.getFieldMeta(field, this.meta), 'description');
+  }
+
   public setDataCfg(dataCfg: S2DataConfig) {
     this.getFieldMeta.cache.clear();
     const { fields, meta, data, totalData, sortParams, filterParams } =

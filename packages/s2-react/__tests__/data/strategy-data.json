@@ -8,19 +8,23 @@
     "meta": [
       {
         "field": "number",
-        "name": "数量"
+        "name": "数量",
+        "description": "我是数量(number)的字段描述"
       },
       {
         "field": "province",
-        "name": "省份"
+        "name": "省份",
+        "description": "我是省份(province)的字段描述"
       },
       {
         "field": "city",
-        "name": "城市"
+        "name": "城市",
+        "description": "我是城市(city)的字段描述"
       },
       {
         "field": "date",
-        "name": "日期"
+        "name": "日期",
+        "description": "我是日期(date)的字段描述"
       }
     ],
     "data": [
@@ -325,11 +329,13 @@
     "meta": [
       {
         "field": "number",
-        "name": "数量"
+        "name": "数量",
+        "description": "我是数量(number)的字段描述"
       },
       {
         "field": "price",
-        "name": "单价"
+        "name": "单价",
+        "description": "我是单价(price)的字段描述"
       }
     ],
     "data": [

@@ -9,9 +9,7 @@ import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { SheetComponentsProps } from '@/components/sheets/interface';
 
-export type GetStrategySheetOptions = () => Partial<S2Options<React.ReactNode>>;
-
-const getStrategySheetOptions: GetStrategySheetOptions = () => {
+const getStrategySheetOptions = (): Partial<S2Options<React.ReactNode>> => {
   return {
     dataCell: (viewMeta) => new CustomDataCell(viewMeta, viewMeta.spreadsheet),
     colCell: (...args) => new CustomColCell(...args),

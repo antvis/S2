@@ -40,6 +40,7 @@ export type LayoutWidthType = 'adaptive' | 'colAdaptive' | 'compact';
 export interface Meta {
   readonly field: string; // 字段 id
   readonly name?: string; // 字段名称
+  readonly description?: string; // 字段描述
   // 格式化
   // 数值字段：一般用于格式化数字单位
   // 文本字段：一般用于做字段枚举值的别名
