@@ -38,7 +38,7 @@ export enum CellBorderPosition {
 export type LayoutWidthType = 'adaptive' | 'colAdaptive' | 'compact';
 
 export interface Meta {
-  readonly field: string; // 字段 id
+  readonly field?: string; // 字段 id
   readonly name?: string; // 字段名称
   readonly description?: string; // 字段描述
   // 格式化

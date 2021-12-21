@@ -72,7 +72,7 @@ export abstract class BaseDataSet {
   }
 
   /**
-   * 获得字段名称
+   * 获得字段格式方法
    * @param field
    */
   public getFieldFormatter(field: string): Formatter {
@@ -112,7 +112,7 @@ export abstract class BaseDataSet {
     }
     const fieldValues = compact(
       map(this.originData, (item) => {
-        const value = item[field];
+        const value = item[field] as string;
         return isNil(value) ? null : Number.parseFloat(value);
       }),
     );
