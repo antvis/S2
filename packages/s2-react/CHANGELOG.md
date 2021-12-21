@@ -1,3 +1,16 @@
+# [@antv/s2-react-v1.4.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.4.0-alpha.1...@antv/s2-react-v1.4.0-alpha.2) (2021-12-21)
+
+
+### Bug Fixes
+
+* 🐛 修复趋势分析表和网格分析表无法自定义主题 ([#927](https://github.com/antvis/S2/issues/927)) ([59dc814](https://github.com/antvis/S2/commit/59dc814e9e3b63229a76009a803dfac1dbe9c9c0))
+
+
+### Features
+
+* **facet:** 明细表增加行高 resize 调整 && 行高 resize 增加选项 ([#909](https://github.com/antvis/S2/issues/909)) ([cee6bdc](https://github.com/antvis/S2/commit/cee6bdced0cf3749e683ce157478ea2557da3a53))
+* 新增字段描述功能 ([#925](https://github.com/antvis/S2/issues/925)) ([e37d561](https://github.com/antvis/S2/commit/e37d561e9effe78e5ac1cebba21fa2ecee246fb1))
+
 # [@antv/s2-react-v1.4.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.3.0...@antv/s2-react-v1.4.0-alpha.1) (2021-12-20)
 
 
