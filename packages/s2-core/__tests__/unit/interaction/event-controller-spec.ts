@@ -127,7 +127,7 @@ describe('Interaction Event Controller Tests', () => {
   });
 
   test('should register s2 events', () => {
-    const s2EventTypes: string[] = [S2Event.GLOBAL_ACTION_ICON_CLICK];
+    const s2EventTypes: S2Event[] = [S2Event.GLOBAL_ACTION_ICON_CLICK];
 
     expect(eventController.s2EventHandlers).toHaveLength(s2EventTypes.length);
     eventController.s2EventHandlers.forEach((item) => {
