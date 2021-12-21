@@ -3,6 +3,7 @@ import {
   ResizeActiveOptions,
   S2Options,
   ThemeCfg,
+  ResizeType,
 } from '@antv/s2';
 import { Checkbox, Switch } from 'antd';
 import React, { FC } from 'react';
@@ -22,6 +23,8 @@ export const ResizeConfig: FC<{
   setOptions: (cb: (prev: S2Options) => S2Options) => void;
 }> = ({ setThemeCfg, setOptions }) => {
   const [showResizeArea, setShowResizeArea] = React.useState(false);
+  const [rowResizeAffectCurrent, setRowResizeAffectCurrent] =
+    React.useState(false);
 
   const onShowResizeAreaChange = (enable: boolean) => {
     const theme = {
@@ -31,6 +34,18 @@ export const ResizeConfig: FC<{
     };
     setShowResizeArea(enable);
     setThemeCfg((prev) => customMerge({}, prev, { theme }));
+  };
+
+  const onSwitchRowReisizeType = (enable: boolean) => {
+    const opts = {
+      interaction: {
+        resize: {
+          rowResizeType: enable ? ResizeType.CURRENT : ResizeType.ALL,
+        },
+      },
+    };
+    setRowResizeAffectCurrent(enable);
+    setOptions((prev) => customMerge({}, prev, opts));
   };
 
   const onResizeActiveChange = (checkedAreas: string[]) => {
@@ -61,6 +76,12 @@ export const ResizeConfig: FC<{
         options={RESIZE_CONFIG}
         defaultValue={RESIZE_CONFIG.map((item) => item.value)}
         onChange={onResizeActiveChange}
+      />
+      <Switch
+        checkedChildren="行高单行调整开"
+        unCheckedChildren="行高单行调整关"
+        defaultChecked={rowResizeAffectCurrent}
+        onChange={onSwitchRowReisizeType}
       />
     </>
   );

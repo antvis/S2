@@ -527,7 +527,7 @@ export abstract class BaseFacet {
         const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
         const hRowScrollX = newOffset;
         this.setScrollOffset({ hRowScrollX });
-        this.rowHeader.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
+        this.rowHeader?.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
         this.rowIndexHeader?.onRowScrollX(
           hRowScrollX,
           KEY_GROUP_ROW_INDEX_RESIZE_AREA,
@@ -865,7 +865,7 @@ export abstract class BaseFacet {
       this.cornerBBox.width - scrollX,
       this.cornerBBox.height - scrollY,
     );
-    this.rowHeader.onScrollXY(
+    this.rowHeader?.onScrollXY(
       this.getRealScrollX(scrollX, hRowScroll),
       scrollY,
       KEY_GROUP_ROW_RESIZE_AREA,
@@ -1021,7 +1021,9 @@ export abstract class BaseFacet {
     this.cornerHeader = this.getCornerHeader();
     this.centerFrame = this.getCenterFrame();
 
-    this.foregroundGroup.add(this.rowHeader);
+    if (this.rowHeader) {
+      this.foregroundGroup.add(this.rowHeader);
+    }
     this.foregroundGroup.add(this.columnHeader);
     this.foregroundGroup.add(this.cornerHeader);
     this.foregroundGroup.add(this.centerFrame);
@@ -1160,7 +1162,7 @@ export abstract class BaseFacet {
 
   protected abstract doLayout(): LayoutResult;
 
-  protected abstract getViewCellHeights(
+  public abstract getViewCellHeights(
     layoutResult: LayoutResult,
   ): ViewCellHeights;
 }

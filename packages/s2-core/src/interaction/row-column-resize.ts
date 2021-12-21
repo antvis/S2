@@ -4,7 +4,7 @@ import {
   ShapeAttrs,
   IShape,
 } from '@antv/g-canvas';
-import { clone, isEmpty, throttle } from 'lodash';
+import { clone, isEmpty, throttle, get } from 'lodash';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import {
   ResizeDetail,
@@ -21,9 +21,9 @@ import {
   RESIZE_START_GUIDE_LINE_ID,
   RESIZE_END_GUIDE_LINE_ID,
   S2Event,
-  CORNER_MAX_WIDTH_RATIO,
   ResizeDirectionType,
   ResizeAreaEffect,
+  ResizeType,
 } from '@/common/constant';
 
 export class RowColumnResize extends BaseEvent implements BaseEventImplement {
@@ -239,12 +239,21 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
   }
 
   private getResizeHeightDetail(): ResizeDetail {
+    const {
+      options: {
+        interaction: { resize },
+        style: {
+          rowCfg: { heightByField },
+        },
+      },
+    } = this.spreadsheet;
     const { padding: rowCellPadding } = this.spreadsheet.theme.rowCell.cell;
     const { start, end } = this.getResizeGuideLinePosition();
     const baseHeight = Math.floor(end.y - start.y);
     const height = baseHeight - rowCellPadding.top - rowCellPadding.bottom;
     const resizeInfo = this.getResizeInfo();
 
+    let rowCellStyle;
     switch (resizeInfo.effect) {
       case ResizeAreaEffect.Field:
         return {
@@ -258,13 +267,27 @@ export class RowColumnResize extends BaseEvent implements BaseEventImplement {
           },
         };
       case ResizeAreaEffect.Cell:
-        return {
-          eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
-          style: {
+        if (
+          heightByField[String(resizeInfo.id)] ||
+          get(resize, 'rowResizeType') === ResizeType.CURRENT
+        ) {
+          rowCellStyle = {
+            rowCfg: {
+              heightByField: {
+                [resizeInfo.id]: height,
+              },
+            },
+          };
+        } else {
+          rowCellStyle = {
             cellCfg: {
               height,
             },
-          },
+          };
+        }
+        return {
+          eventType: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
+          style: rowCellStyle,
         };
       default:
         return null;
