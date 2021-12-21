@@ -126,6 +126,16 @@ describe('Interaction Event Controller Tests', () => {
     });
   });
 
+  test('should register s2 events', () => {
+    const s2EventTypes: string[] = [S2Event.GLOBAL_ACTION_ICON_CLICK];
+
+    expect(eventController.s2EventHandlers).toHaveLength(s2EventTypes.length);
+    eventController.s2EventHandlers.forEach((item) => {
+      expect(s2EventTypes.includes(item.type)).toBeTruthy();
+      expect(item.handler).toBeFunction();
+    });
+  });
+
   test('should register dom events', () => {
     const domEventTypes: string[] = [
       OriginEventType.CLICK,
@@ -145,6 +155,7 @@ describe('Interaction Event Controller Tests', () => {
   test('should clear all events', () => {
     eventController.clearAllEvents();
     expect(eventController.canvasEventHandlers).toHaveLength(0);
+    expect(eventController.s2EventHandlers).toHaveLength(0);
     expect(eventController.domEventListeners).toHaveLength(0);
   });
 
