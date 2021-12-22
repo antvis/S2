@@ -3,7 +3,7 @@ title: 高级排序
 order: 1
 ---
 
-`SheetComponent` 自带高级排序组件，可根据选择组合数据提供给用户使用。
+`SheetComponent` 自带高级排序组件，可选择使用。
 
 > 注意：内部不维护状态
 
