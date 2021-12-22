@@ -435,6 +435,7 @@ export class PivotFacet extends BaseFacet {
     hierarchy: Hierarchy,
     isRowHeader?: boolean,
   ) {
+    const moreThanOneValue = this.cfg.dataSet.moreThanOneValue();
     const { maxLevel } = hierarchy;
     const grandTotalNode = find(
       hierarchy.getNodes(0),
@@ -450,16 +451,18 @@ export class PivotFacet extends BaseFacet {
       forEach(grandTotalChildren, (node: Node) => {
         node.x = hierarchy.getNodes(maxLevel)[0].x;
       });
-    } else if (
-      maxLevel > 1 ||
-      (maxLevel <= 1 && !this.cfg.dataSet.moreThanOneValue())
-    ) {
+    } else if (maxLevel > 1 || (maxLevel <= 1 && !moreThanOneValue)) {
       // 只有当列头总层级大于1级或列头为1级单指标时总计格高度才需要填充
-      // 填充列总单元格高度
-      grandTotalNode.height = hierarchy.height;
-      // 调整其叶子结点位置
+      // 填充列总计单元格高度
+      const grandTotalChildrenHeight = grandTotalChildren?.[0]?.height ?? 0;
+      grandTotalNode.height = hierarchy.height - grandTotalChildrenHeight;
+      // 调整其叶子结点位置, 以非小计行为准
+      const positionY = find(
+        hierarchy.getNodes(maxLevel),
+        (node: Node) => !node.isTotalMeasure,
+      )?.y;
       forEach(grandTotalChildren, (node: Node) => {
-        node.y = hierarchy.getNodes(maxLevel)[0].y;
+        node.y = positionY;
       });
     }
   }
@@ -495,14 +498,25 @@ export class PivotFacet extends BaseFacet {
         });
       } else {
         // 填充列总单元格高度
-        subTotalNode.height = getSubTotalNodeWidthOrHeightByLevel(
+        const totalHeight = getSubTotalNodeWidthOrHeightByLevel(
           hierarchy.sampleNodesForAllLevels,
           subTotalNode.level,
           'height',
         );
-        // 调整其叶子结点位置
+        const subTotalNodeChildrenHeight =
+          subTotalNodeChildren?.[0]?.height ?? 0;
+        subTotalNode.height = totalHeight - subTotalNodeChildrenHeight;
+        // 调整其叶子结点位置,以非小计单元格为准
         forEach(subTotalNodeChildren, (node: Node) => {
           node.y = hierarchy.getNodes(maxLevel)[0].y;
+        });
+        // 调整其叶子结点位置, 以非小计行为准
+        const positionY = find(
+          hierarchy.getNodes(maxLevel),
+          (node: Node) => !node.isTotalMeasure,
+        )?.y;
+        forEach(subTotalNodeChildren, (node: Node) => {
+          node.y = positionY;
         });
       }
     });
