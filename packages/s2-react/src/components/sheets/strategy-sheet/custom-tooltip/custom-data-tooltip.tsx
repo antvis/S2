@@ -1,7 +1,7 @@
 import React from 'react';
 import cls from 'classnames';
 import { first, get, isEmpty, last } from 'lodash';
-import { isUpDataValue } from '@antv/s2';
+import { isUpDataValue, MultiData } from '@antv/s2';
 import { CustomTooltipProps } from './interface';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -15,7 +15,8 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({
   const meta = cell.getMeta();
   const currentRow = last(defaultTooltipShowOptions.data?.headInfo?.rows);
   const rowName = currentRow?.value;
-  const [value, ...derivedValues] = first(meta.fieldValue?.values) || [];
+  const [value, ...derivedValues] =
+    first((meta.fieldValue as MultiData)?.values) || [];
   const { placeholder, style } = meta.spreadsheet.options;
   const valuesCfg = style.cellCfg?.valuesCfg;
   const originalValue = get(meta.fieldValue, valuesCfg?.originalValueField);
