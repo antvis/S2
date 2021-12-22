@@ -116,7 +116,7 @@ sortParams: [
 
 ### 4. 汇总值
 
-`行/列头` 的非叶子节点，此时 `sortByMeasure` 为汇总虚拟字段 `$$total$$`
+`行/列头` 的非叶子节点，此时 `sortByMeasure` 为汇总虚拟字段 TOTAL_VALUE，值为 `$$total$$`。
 
 #### 行总计/行小计
 
@@ -125,6 +125,10 @@ sortParams: [
 **行小计** ：
 
 ```ts
+import { TOTAL_VALUE, EXTRA_FIELD } from "@antv/s2";
+
+...
+
 sortParams: [
   {
     // type 依据 （ 浙江 - 小计 ）&（ price ）& 降序 排序
@@ -146,6 +150,10 @@ sortParams: [
 通过 `列总计/列小计` 对行头进行排序，举例如下：
 
 ```ts
+import { TOTAL_VALUE, EXTRA_FIELD } from "@antv/s2";
+
+...
+
 sortParams: [
   {
     // province 依据（ province - 小计 ）&（ 总计 - price ）& 升序 排序

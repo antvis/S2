@@ -217,7 +217,8 @@ cd S2
 
 # 本地启动开发
 yarn
-yarn core:start
+yarn core:watch
+yarn react:playground
 
 # 本地启动官网
 yarn site:bootstrap
