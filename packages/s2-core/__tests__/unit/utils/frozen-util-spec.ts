@@ -232,7 +232,7 @@ describe('Frozen util test', () => {
   });
 
   describe('getValidFrozenOptions', () => {
-    it('should return valid frozen options', () => {
+    it('should return valid frozen options when forzenCount overflow', () => {
       expect(
         getValidFrozenOptions(
           {
@@ -254,21 +254,23 @@ describe('Frozen util test', () => {
       expect(
         getValidFrozenOptions(
           {
-            frozenColCount: 10,
-            frozenRowCount: 10,
+            frozenColCount: 2,
+            frozenRowCount: 2,
             frozenTrailingColCount: 10,
             frozenTrailingRowCount: 10,
           },
-          20,
-          20,
+          5,
+          5,
         ),
       ).toStrictEqual({
-        frozenColCount: 10,
-        frozenRowCount: 10,
-        frozenTrailingColCount: 10,
-        frozenTrailingRowCount: 10,
+        frozenColCount: 2,
+        frozenRowCount: 2,
+        frozenTrailingColCount: 3,
+        frozenTrailingRowCount: 3,
       });
+    });
 
+    it('should return original frozen options when forzenCount is all zero', () => {
       expect(
         getValidFrozenOptions(
           {
@@ -285,6 +287,26 @@ describe('Frozen util test', () => {
         frozenRowCount: 0,
         frozenTrailingColCount: 0,
         frozenTrailingRowCount: 0,
+      });
+    });
+
+    it('should return original frozen options when forzenCount is exact fit', () => {
+      expect(
+        getValidFrozenOptions(
+          {
+            frozenColCount: 10,
+            frozenRowCount: 10,
+            frozenTrailingColCount: 10,
+            frozenTrailingRowCount: 10,
+          },
+          20,
+          20,
+        ),
+      ).toStrictEqual({
+        frozenColCount: 10,
+        frozenRowCount: 10,
+        frozenTrailingColCount: 10,
+        frozenTrailingRowCount: 10,
       });
     });
   });
