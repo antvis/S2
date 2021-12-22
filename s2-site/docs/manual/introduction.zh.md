@@ -214,7 +214,7 @@ cd S2
 yarn # 或者 yarn bootstrap
 
 # 调试 s2-core
-yarn core:start
+yarn core:watch
 
 # 调试 s2-react
 yarn react:playground

@@ -179,7 +179,7 @@ module.exports = {
           en: 'Basic Sheets',
         },
       },
-       {
+      {
         slug: 'theme',
         icon: 'skin',
         title: {
@@ -207,7 +207,7 @@ module.exports = {
         slug: 'react-component',
         icon: 'build',
         title: {
-          zh: 'React组件',
+          zh: 'React 组件',
           en: 'React Component',
         },
       },
