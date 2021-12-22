@@ -157,7 +157,7 @@ export class TableFacet extends BaseFacet {
     this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
 
     const getCellMeta = (rowIndex: number, colIndex: number) => {
-      const showSeriesNumber = this.getSeriesNumberWidth() > 0;
+      const showSeriesNumber = this.cfg.showSeriesNumber;
       const col = colLeafNodes[colIndex];
       const cellHeight = this.getCellHeight(rowIndex);
 
@@ -235,9 +235,10 @@ export class TableFacet extends BaseFacet {
 
   private getAdaptiveColWidth(colLeafNodes: Node[]) {
     const { cellCfg } = this.cfg;
+    const { showSeriesNumber } = this.cfg;
     if (this.spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Compact) {
       const seriesNumberWidth = this.getSeriesNumberWidth();
-      const colHeaderColSize = colLeafNodes.length;
+      const colHeaderColSize = colLeafNodes.length - (showSeriesNumber ? 1 : 0);
       const canvasW = this.getCanvasHW().width - seriesNumberWidth;
       return Math.max(cellCfg.width, canvasW / Math.max(1, colHeaderColSize));
     }

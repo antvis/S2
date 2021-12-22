@@ -11,10 +11,10 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
     spreadsheet,
     dataSet,
     interaction: { hiddenColumnFields = [] },
+    showSeriesNumber,
   } = facetCfg;
 
   const hasInitColumnNodes = !isEmpty(spreadsheet.store.get('initColumnNodes'));
-  const showSeriesNumber = spreadsheet.options?.showSeriesNumber;
 
   const displayedColumns = hasInitColumnNodes
     ? difference(columns, hiddenColumnFields)
