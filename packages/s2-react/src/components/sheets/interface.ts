@@ -68,6 +68,7 @@ export interface BaseSheetProps {
   isLoading?: boolean;
   partDrillDown?: PartDrillDown;
   adaptive?: boolean;
+  adaptiveRef?: React.MutableRefObject<HTMLDivElement>;
   showPagination?: boolean;
   themeCfg?: ThemeCfg;
   header?: HeaderCfgProps;

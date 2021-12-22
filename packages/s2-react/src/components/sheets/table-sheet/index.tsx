@@ -29,6 +29,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     dataCfg,
     options,
     adaptive,
+    adaptiveRef,
     header,
     themeCfg,
     isLoading,
@@ -52,6 +53,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     showPagination,
   } = props;
   const container = useRef<HTMLDivElement>();
+
   const baseSpreadsheet = useRef<SpreadSheet>();
 
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
@@ -185,7 +187,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
   // handle box size change and resize
   useResizeEffect({
     spreadsheet: ownSpreadsheet,
-    container: container.current,
+    container: adaptiveRef.current || container.current,
     adaptive,
     options,
   });
