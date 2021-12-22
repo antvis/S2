@@ -9,55 +9,53 @@ import { CustomColCell } from './custom-col-cell';
 import { CustomDataCell } from './custom-data-cell';
 import { SheetComponentsProps } from '@/components/sheets/interface';
 
-const getStrategySheetOptions = (): Partial<S2Options<React.ReactNode>> => {
-  return {
-    dataCell: (viewMeta) => new CustomDataCell(viewMeta, viewMeta.spreadsheet),
-    colCell: (...args) => new CustomColCell(...args),
-    hierarchyType: 'tree',
-    showDefaultHeaderActionIcon: false,
-    style: {
-      colCfg: {
-        height: 38,
-        hideMeasureColumn: true,
-      },
+const strategySheetOptions: Partial<S2Options<React.ReactNode>> = {
+  dataCell: (viewMeta) => new CustomDataCell(viewMeta, viewMeta.spreadsheet),
+  colCell: (...args) => new CustomColCell(...args),
+  hierarchyType: 'tree',
+  showDefaultHeaderActionIcon: false,
+  style: {
+    colCfg: {
+      height: 38,
+      hideMeasureColumn: true,
     },
-    interaction: {
-      autoResetSheetStyle: true,
-      // 趋势分析表禁用 刷选, 多选, 区间多选
-      brushSelection: true,
-      multiSelection: false,
-      rangeSelection: false,
+  },
+  interaction: {
+    autoResetSheetStyle: true,
+    // 趋势分析表禁用 刷选, 多选, 区间多选
+    brushSelection: false,
+    multiSelection: false,
+    rangeSelection: false,
+  },
+  tooltip: {
+    operation: {
+      hiddenColumns: true,
     },
-    tooltip: {
-      operation: {
-        hiddenColumns: true,
-      },
-      row: {
-        content: (cell, defaultTooltipShowOptions) => (
-          <RowTooltip
-            cell={cell}
-            defaultTooltipShowOptions={defaultTooltipShowOptions}
-          />
-        ),
-      },
-      col: {
-        content: (cell, defaultTooltipShowOptions) => (
-          <ColTooltip
-            cell={cell}
-            defaultTooltipShowOptions={defaultTooltipShowOptions}
-          />
-        ),
-      },
-      data: {
-        content: (cell, defaultTooltipShowOptions) => (
-          <DataTooltip
-            cell={cell}
-            defaultTooltipShowOptions={defaultTooltipShowOptions}
-          />
-        ),
-      },
+    row: {
+      content: (cell, defaultTooltipShowOptions) => (
+        <RowTooltip
+          cell={cell}
+          defaultTooltipShowOptions={defaultTooltipShowOptions}
+        />
+      ),
     },
-  };
+    col: {
+      content: (cell, defaultTooltipShowOptions) => (
+        <ColTooltip
+          cell={cell}
+          defaultTooltipShowOptions={defaultTooltipShowOptions}
+        />
+      ),
+    },
+    data: {
+      content: (cell, defaultTooltipShowOptions) => (
+        <DataTooltip
+          cell={cell}
+          defaultTooltipShowOptions={defaultTooltipShowOptions}
+        />
+      ),
+    },
+  },
 };
 
 export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
@@ -65,17 +63,18 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const { options, themeCfg, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
 
-    const S2ThemeCfg = React.useMemo(() => {
+    const s2ThemeCfg = React.useMemo(() => {
       return customMerge({}, themeCfg, { theme: StrategyTheme });
     }, [themeCfg]);
+
     const s2Options = React.useMemo(() => {
-      return customMerge({}, options, getStrategySheetOptions());
+      return customMerge({}, options, strategySheetOptions);
     }, [options]);
 
     return (
       <BaseSheet
         options={s2Options}
-        themeCfg={S2ThemeCfg}
+        themeCfg={s2ThemeCfg}
         ref={s2Ref}
         {...restProps}
       />

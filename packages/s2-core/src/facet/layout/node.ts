@@ -261,6 +261,8 @@ export class Node {
   // node is grand total or subtotal(not normal node)
   public isTotals: boolean;
 
+  public colId: string;
+
   public static blankNode(): Node {
     return new Node({
       id: '',
@@ -301,6 +303,10 @@ export class Node {
   public inCollapseNode?: boolean;
 
   public cornerType?: CornerNodeType;
+
+  public isGrandTotals?: boolean;
+
+  public isSubTotals?: boolean;
 
   [key: string]: any;
 

@@ -33,7 +33,6 @@ import {
 import corePkg from '@antv/s2/package.json';
 import { forEach, random } from 'lodash';
 import { DataType } from '@antv/s2';
-import { isUpDataValue } from '@antv/s2';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
 import {
   singleMeasure,
@@ -42,13 +41,14 @@ import {
 import reactPkg from '../package.json';
 import {
   pivotSheetDataCfg,
-  s2Options as playgroundS2Options,
   sliderOptions,
   tableSheetDataCfg,
   defaultTheme,
+  strategyOptions,
+  mockGridAnalysisOptions,
+  defaultOptions,
 } from './config';
 import { ResizeConfig } from './resize';
-import { getSheetComponentOptions } from '@/utils';
 import {
   SheetComponent,
   SheetType,
@@ -66,7 +66,7 @@ const fieldMap = {
   sex: ['男', '女'],
 };
 
-const partDrillDown = {
+const partDrillDown: PartDrillDown = {
   drillConfig: {
     dataSet: [
       {
@@ -124,74 +124,7 @@ const partDrillDown = {
         drillData: drillDownData,
       });
     }),
-} as PartDrillDown;
-
-const strategyOptions = {
-  width: 1000,
-  height: 400,
-  cornerText: '指标',
-  headerActionIcons: [
-    {
-      iconNames: ['Trend'],
-      belongsCell: 'rowCell',
-      defaultHide: true,
-      action: () => {},
-    },
-  ],
-  style: {
-    cellCfg: {
-      valuesCfg: {
-        originalValueField: 'originalValue',
-        conditions: {
-          text: {
-            mapping: (value, cellInfo) => {
-              const { colIndex } = cellInfo;
-              if (colIndex === 0) {
-                return {
-                  fill: '#000',
-                };
-              }
-              return {
-                fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
-              };
-            },
-          },
-        },
-        fieldLabels: [['指标', '环比值', '环比率']],
-      },
-    },
-  },
-} as S2Options;
-
-const mockGridAnalysisOptions = {
-  width: 1600,
-  height: 600,
-  style: {
-    layoutWidthType: 'colAdaptive',
-    cellCfg: {
-      width: 400,
-      height: 100,
-      valuesCfg: {
-        widthPercentCfg: [40, 20, 20, 20],
-        conditions: {
-          text: {
-            mapping: (value, cellInfo) => {
-              const { colIndex } = cellInfo;
-              if (colIndex <= 1) {
-                return {
-                  fill: '#000',
-                };
-              }
-              return {
-                fill: isUpDataValue(value) ? '#FF4D4F' : '#29A294',
-              };
-            },
-          },
-        },
-      },
-    },
-  },
-} as S2Options;
+};
 
 const CustomTooltip = () => (
   <div>
@@ -203,20 +136,6 @@ const CustomTooltip = () => (
 const CustomColTooltip = () => <div>custom colTooltip</div>;
 
 const ActionIconTooltip = ({ name }) => <div>{name} Tooltip</div>;
-
-const defaultOptions: S2Options = customMerge(
-  getSheetComponentOptions({
-    tooltip: {
-      operation: {
-        sort: true,
-        tableSort: true,
-        trend: true,
-        hiddenColumns: true,
-      },
-    },
-  }),
-  playgroundS2Options,
-);
 
 function MainLayout() {
   const [render, setRender] = React.useState(true);
