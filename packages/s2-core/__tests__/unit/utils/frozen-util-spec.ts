@@ -1,3 +1,4 @@
+import { getValidFrozenOptions } from 'src/utils/layout/frozen';
 import {
   getFrozenDataCellType,
   calculateFrozenCornerCells,
@@ -226,6 +227,64 @@ describe('Frozen util test', () => {
         frozenRow: [1, 2, 0, 1],
         frozenTrailingCol: [3, 3, 2, 11],
         frozenTrailingRow: [1, 2, 999, 999],
+      });
+    });
+  });
+
+  describe('getValidFrozenOptions', () => {
+    it('should return valid frozen options', () => {
+      expect(
+        getValidFrozenOptions(
+          {
+            frozenColCount: 10,
+            frozenRowCount: 10,
+            frozenTrailingColCount: 10,
+            frozenTrailingRowCount: 10,
+          },
+          5,
+          5,
+        ),
+      ).toStrictEqual({
+        frozenColCount: 5,
+        frozenRowCount: 5,
+        frozenTrailingColCount: 0,
+        frozenTrailingRowCount: 0,
+      });
+
+      expect(
+        getValidFrozenOptions(
+          {
+            frozenColCount: 10,
+            frozenRowCount: 10,
+            frozenTrailingColCount: 10,
+            frozenTrailingRowCount: 10,
+          },
+          20,
+          20,
+        ),
+      ).toStrictEqual({
+        frozenColCount: 10,
+        frozenRowCount: 10,
+        frozenTrailingColCount: 10,
+        frozenTrailingRowCount: 10,
+      });
+
+      expect(
+        getValidFrozenOptions(
+          {
+            frozenColCount: 0,
+            frozenRowCount: 0,
+            frozenTrailingColCount: 0,
+            frozenTrailingRowCount: 0,
+          },
+          30,
+          30,
+        ),
+      ).toStrictEqual({
+        frozenColCount: 0,
+        frozenRowCount: 0,
+        frozenTrailingColCount: 0,
+        frozenTrailingRowCount: 0,
       });
     });
   });
