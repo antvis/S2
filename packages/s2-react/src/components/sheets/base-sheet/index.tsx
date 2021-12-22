@@ -40,6 +40,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     dataCfg,
     options,
     adaptive,
+    adaptiveRef,
     header,
     themeCfg,
     rowLevel,
@@ -301,7 +302,7 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
   // handle box size change and resize
   useResizeEffect({
     spreadsheet: ownSpreadsheet,
-    container: container.current,
+    container: adaptiveRef.current || container.current,
     adaptive,
     options,
   });
