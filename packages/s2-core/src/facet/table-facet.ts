@@ -46,7 +46,7 @@ import { renderLine } from '@/utils/g-renders';
 import { TableDataSet } from '@/data-set';
 import { PanelIndexes } from '@/utils/indexes';
 import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
-import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
+import { getAllChildCells } from '@/utils/get-all-child-cells';
 
 export class TableFacet extends BaseFacet {
   public rowOffsets: number[];
@@ -849,12 +849,13 @@ export class TableFacet extends BaseFacet {
     if (rowResizeFrozenGroup) {
       rowResizeFrozenGroup.set('children', []);
     }
-    const allCells = getAllPanelDataCell(this.panelGroup.getChildren());
+    const allCells: TableRowCell[] = getAllChildCells(
+      this.panelGroup.getChildren(),
+      TableRowCell,
+    );
 
     allCells.forEach((cell) => {
-      if (cell instanceof TableRowCell) {
-        cell.drawResizeArea();
-      }
+      cell.drawResizeArea();
     });
   }
 
