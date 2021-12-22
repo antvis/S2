@@ -23,8 +23,16 @@ describe('Spread Sheet Tests', () => {
   };
 
   describe('Mount Sheet tests', () => {
+    let container: HTMLDivElement;
+    beforeEach(() => {
+      container = getContainer();
+    });
+
+    afterEach(() => {
+      container?.remove();
+    });
+
     test('should display scroll bar if s2Options.width more than browser window width', () => {
-      const container = getContainer();
       act(() => {
         ReactDOM.render(
           <SheetComponent
@@ -42,8 +50,6 @@ describe('Spread Sheet Tests', () => {
     });
 
     test('should hidden scroll bar if window width more than s2Options.width', () => {
-      const container = getContainer();
-
       act(() => {
         ReactDOM.render(
           <SheetComponent options={s2Options} dataCfg={mockDataConfig} />,
