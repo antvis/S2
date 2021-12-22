@@ -20,7 +20,7 @@ export interface MultiData {
   // the title of one cell of the gridAnalysisSheet
   label?: string;
   values: (string | number)[][];
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export type SimpleDataItem = string | number;
