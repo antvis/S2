@@ -1,3 +1,11 @@
+# [@antv/s2-react-v1.4.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.4.0-alpha.2...@antv/s2-react-v1.4.0-alpha.3) (2021-12-22)
+
+
+### Bug Fixes
+
+* **components:** 修复配置的宽度超过浏览器可视窗口宽度无法滚动的问题 close [#889](https://github.com/antvis/S2/issues/889) ([#931](https://github.com/antvis/S2/issues/931)) ([bf03b37](https://github.com/antvis/S2/commit/bf03b37d816258d465ffd4ede9bb759b1adaee12))
+* **startegysheet:** 趋势分析表列头文字根据数值坐标动态计算 ([#929](https://github.com/antvis/S2/issues/929)) ([38af37e](https://github.com/antvis/S2/commit/38af37ecc1dc5b27493d41aab195f894c7b542e2))
+
 # [@antv/s2-react-v1.4.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.4.0-alpha.1...@antv/s2-react-v1.4.0-alpha.2) (2021-12-21)
 
 
