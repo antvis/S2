@@ -12,7 +12,7 @@ order: 2
 | 参数 | 参数 | 类型 | 默认值  | 必选 |
 | :--- | :--- | :--- | :--- | :---: |
 | theme |主题 schema | [S2Theme](#s2theme) | - | |
-| palette | 色板 schema | <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/default.ts" target="_blank" >paletteDefault</a> \| <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/simple-blue.ts" target="_blank" >paletteGray</a> \|  <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/colorful-blue.ts" target="_blank" >paletteColorful</a>  | <a href="https://github.com/antvis/S2/blob/master/packages/s2-core/src/theme/palette/default.ts" target="_blank" >paletteDefault</a>| |
+| palette | 色板 schema | [Palette](#palette) | - | |
 | name |  色板 schema | `default` \|  `colorful` \| `gray`  | `default`| |
 
 ### Palette
