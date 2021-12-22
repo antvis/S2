@@ -1,4 +1,4 @@
-import { Point } from '@antv/g-canvas';
+import { Point, SimpleBBox } from '@antv/g-canvas';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import {
@@ -13,6 +13,7 @@ import {
   ResizeAreaEffect,
 } from '@/common/constant';
 import {
+  CellBorderPosition,
   FormatResult,
   TextAlign,
   TextBaseline,
@@ -24,6 +25,7 @@ import { AreaRange } from '@/common/interface/scroll';
 import {
   getTextAndIconPositionWhenHorizontalScrolling,
   getTextAndFollowingIconPosition,
+  getBorderPositionAndStyle,
 } from '@/utils/cell/cell';
 
 export class ColCell extends HeaderCell {
@@ -45,19 +47,18 @@ export class ColCell extends HeaderCell {
     this.drawTextShape();
     // draw action icons
     this.drawActionIcons();
-    // draw right border
-    this.drawRightBorder();
+    // draw borders
+    this.drawBorders();
     // draw resize ares
     this.drawResizeArea();
     this.update();
   }
 
   protected drawBackgroundShape() {
-    const { backgroundColor, horizontalBorderColor } = this.getStyle().cell;
+    const { backgroundColor } = this.getStyle().cell;
     this.backgroundShape = renderRect(this, {
       ...this.getCellArea(),
       fill: backgroundColor,
-      stroke: horizontalBorderColor,
     });
   }
 
@@ -94,9 +95,8 @@ export class ColCell extends HeaderCell {
 
   protected getFormattedFieldValue(): FormatResult {
     const { label, key } = this.meta;
-    // 格式化枚举值
-    const f = this.headerConfig.formatter(key);
-    const content = f(label);
+    const formatter = this.headerConfig.formatter(key);
+    const content = formatter(label);
     return {
       formattedValue: content,
       value: label,
@@ -193,6 +193,10 @@ export class ColCell extends HeaderCell {
   }
 
   protected drawHorizontalResizeArea() {
+    if (!this.shouldDrawResizeAreaByType('colCellVertical')) {
+      return;
+    }
+
     const { cornerWidth, width: headerWidth } = this.headerConfig;
     const { y, height } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
@@ -274,7 +278,10 @@ export class ColCell extends HeaderCell {
   }
 
   protected drawVerticalResizeArea() {
-    if (!this.meta.isLeaf) {
+    if (
+      !this.meta.isLeaf ||
+      !this.shouldDrawResizeAreaByType('colCellHorizontal')
+    ) {
       return;
     }
 
@@ -316,24 +323,27 @@ export class ColCell extends HeaderCell {
     this.drawVerticalResizeArea();
   }
 
-  private drawRightBorder() {
-    if (!this.meta.isLeaf) {
-      const { height, viewportHeight } = this.headerConfig;
-      const { x, y, width: cellWidth, height: cellHeight } = this.meta;
+  protected drawHorizontalBorder() {
+    const { position, style } = getBorderPositionAndStyle(
+      CellBorderPosition.TOP,
+      this.meta as SimpleBBox,
+      this.theme.colCell.cell,
+    );
 
-      renderLine(
-        this,
-        {
-          x1: x + cellWidth,
-          y1: y + cellHeight,
-          x2: x + cellWidth,
-          y2: y + height + viewportHeight,
-        },
-        {
-          stroke: this.theme.colCell.cell.horizontalBorderColor,
-          lineWidth: 1,
-        },
-      );
-    }
+    renderLine(this, position, style);
+  }
+
+  protected drawVerticalBorder() {
+    const { position, style } = getBorderPositionAndStyle(
+      CellBorderPosition.RIGHT,
+      this.meta as SimpleBBox,
+      this.theme.colCell.cell,
+    );
+    renderLine(this, position, style);
+  }
+
+  protected drawBorders() {
+    this.drawHorizontalBorder();
+    this.drawVerticalBorder();
   }
 }

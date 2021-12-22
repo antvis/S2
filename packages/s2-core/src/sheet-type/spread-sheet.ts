@@ -3,11 +3,12 @@ import { Canvas, Event as CanvasEvent, IGroup } from '@antv/g-canvas';
 import {
   clone,
   forEach,
+  forIn,
   get,
   includes,
   isEmpty,
+  isFunction,
   isString,
-  merge,
   once,
 } from 'lodash';
 import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
@@ -164,9 +165,7 @@ export abstract class SpreadSheet extends EE {
   }
 
   private getMountContainer(dom: S2MountContainer) {
-    const mountContainer = isString(dom)
-      ? document.getElementById(dom)
-      : (dom as HTMLElement);
+    const mountContainer = isString(dom) ? document.querySelector(dom) : dom;
 
     if (!mountContainer) {
       throw new Error('Target mount container is not a DOM element');
@@ -255,7 +254,14 @@ export abstract class SpreadSheet extends EE {
   public showTooltip<T = TooltipContentType>(
     showOptions: TooltipShowOptions<T>,
   ) {
-    this.tooltip.show?.(showOptions);
+    const { content, event } = showOptions;
+    const cell = this.getCell(event?.target);
+    const displayContent = isFunction(content) ? content(cell) : content;
+
+    this.tooltip.show?.({
+      ...showOptions,
+      content: displayContent,
+    });
   }
 
   public showTooltipWithInfo(
@@ -284,6 +290,7 @@ export abstract class SpreadSheet extends EE {
         enterable: true,
         ...options,
       },
+      event,
       content,
     });
   }
@@ -347,6 +354,7 @@ export abstract class SpreadSheet extends EE {
     this.interaction.destroy();
     this.store.clear();
     this.destroyTooltip();
+    this.clearCanvasEvent();
   }
 
   /**
@@ -357,7 +365,10 @@ export abstract class SpreadSheet extends EE {
    */
   public setThemeCfg(themeCfg: ThemeCfg) {
     const theme = themeCfg?.theme || {};
-    this.theme = merge({}, getTheme({ ...themeCfg, spreadsheet: this }), theme);
+    this.theme = customMerge(
+      getTheme({ ...themeCfg, spreadsheet: this }),
+      theme,
+    );
   }
 
   /**
@@ -365,7 +376,7 @@ export abstract class SpreadSheet extends EE {
    * @param pagination
    */
   public updatePagination(pagination: Pagination) {
-    this.options = merge({}, this.options, {
+    this.options = customMerge(this.options, {
       pagination,
     });
 
@@ -397,7 +408,7 @@ export abstract class SpreadSheet extends EE {
       return;
     }
 
-    this.options = merge({}, this.options, { width, height });
+    this.options = customMerge(this.options, { width, height });
     // resize the canvas
     this.container.changeSize(width, height);
   }
@@ -437,8 +448,7 @@ export abstract class SpreadSheet extends EE {
    */
   public updateScrollOffset(offsetConfig: OffsetConfig): void {
     this.facet.updateScrollOffset(
-      merge(
-        {},
+      customMerge(
         {
           offsetX: {
             value: undefined,
@@ -519,7 +529,7 @@ export abstract class SpreadSheet extends EE {
     const { width, height } = this.options;
     // base canvas group
     this.container = new Canvas({
-      container: this.dom,
+      container: this.dom as HTMLElement,
       width,
       height,
       localRefresh: false,
@@ -567,4 +577,11 @@ export abstract class SpreadSheet extends EE {
     }
     hideColumnsByThunkGroup(this, hiddenColumnFields, true);
   });
+
+  private clearCanvasEvent() {
+    const canvasEvents = this.getEvents();
+    forIn(canvasEvents, (_, event: keyof EmitterType) => {
+      this.off(event);
+    });
+  }
 }

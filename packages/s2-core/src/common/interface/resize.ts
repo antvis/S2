@@ -2,6 +2,7 @@ import { Style } from './basic';
 import { ResizeArea } from './theme';
 import { S2Event } from '@/common/constant/events/basic';
 import {
+  ResizeType,
   ResizeAreaEffect,
   ResizeDirectionType,
 } from '@/common/constant/resize';
@@ -52,4 +53,12 @@ export interface ResizeInfo {
   width: number;
   height: number;
   size: number;
+}
+
+export interface ResizeActiveOptions {
+  rowCellVertical?: boolean; // 行头垂直方向resize -> 针对行头叶子节点
+  cornerCellHorizontal?: boolean; // 角头水平方向resize -> 针对角头CornerNodeType为Series和Row
+  colCellHorizontal?: boolean; // 列头水平方向resize -> 针对列头叶子节点
+  colCellVertical?: boolean; // 列头垂直方向resize -> 针对列头各层级节点
+  rowResizeType?: ResizeType; // 行高调整时，影响当前行还是全部行
 }

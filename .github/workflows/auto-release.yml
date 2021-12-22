@@ -2,7 +2,7 @@ name: 🚀 Auto Release
 on:
   push:
     branches:
-      - latest-release # 正式版
+      - latest # 正式版
       - beta
       - alpha
       - next
@@ -27,35 +27,13 @@ jobs:
       - name: Build
         run: yarn build
 
+      # 自动发布完成后 触发 github.release.published 事件
+      # 如果是 action 自带的 机器人 token, 出于安全考虑, github 会禁止循环触发, 使用真实用户的 token 可解决这个问题
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.JINKE_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn release
-
-      # 内部开发和服务群
-      - name: Release success ding talk official group notify
-        if: ${{ success() }}
-        uses: visiky/dingtalk-release-notify@main
-        with:
-          DING_TALK_TOKEN: |
-            ${{ secrets.DING_TALK_ACCESS_TOKEN }}
-            ${{ secrets.DING_TALK_GROUP_TOKEN }}
-          notify_title: '🎉 {release_tag} 发布 🎉'
-          notify_body: '### { title } <hr /> ![preview](https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png) <hr /> { body } <hr />'
-          at_all: false
-          enable_prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') }}
-
-      # 官方对外讨论群, 只推送正式版发布通知
-      - name: Latest release success ding talk public group notify
-        if: ${{ success() && contains(github.ref_name, 'latest-release') }}
-        uses: visiky/dingtalk-release-notify@main
-        with:
-          DING_TALK_TOKEN: ${{ secrets.DING_TALK_PUBLIC_TOKEN }}
-          notify_title: '🎉 {release_tag} 发布 🎉'
-          notify_body: '### { title } <hr /> ![preview](https://gw.alipayobjects.com/zos/antfincdn/ISzgBCtgR/2c5c4aaa-4f40-46f7-8f6b-427fa9ff07bb.png) <hr /> { body } <hr />'
-          at_all: false
-          enable_prerelease: false
 
       # 发布失败通知内部开发群
       - name: Release failed ding talk dev group notify
@@ -63,6 +41,7 @@ jobs:
         uses: zcong1993/actions-ding@master
         with:
           dingToken: ${{ secrets.DING_TALK_ACCESS_TOKEN }}
+          ignoreError: true
           body: |
             {
               "msgtype": "link",

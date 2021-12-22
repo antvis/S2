@@ -1,5 +1,5 @@
 import { getContainer, getMockData } from 'tests/util/helpers';
-import { TableSheet, S2Options, S2DataConfig } from '@/index';
+import { TableSheet, S2Options, S2DataConfig, ResizeType } from '@/index';
 
 const data = getMockData(
   '../../../s2-react/__tests__/data/tableau-supermarket.csv',
@@ -37,12 +37,14 @@ const meta = [
   },
 ];
 
+const newLineText = `1\t\n2`;
+
 const dataCfg: S2DataConfig = {
   fields: {
     columns,
   },
   meta,
-  data,
+  data: data.map((e) => ({ ...e, express_type: newLineText })),
   sortParams: [
     {
       sortFieldId: 'count',
@@ -71,12 +73,19 @@ const options: S2Options = {
     enableCopy: true,
     hoverHighlight: false,
     linkFields: ['order_id', 'customer_name'],
+    hiddenColumnFields: ['order_date'],
+    resize: true,
   },
   frozenRowCount: 2,
-  frozenColCount: 1,
-  frozenTrailingColCount: 1,
-  frozenTrailingRowCount: 1,
+  frozenColCount: 2,
+  frozenTrailingColCount: 2,
+  frozenTrailingRowCount: 2,
   showDefaultHeaderActionIcon: true,
+  tooltip: {
+    operation: {
+      hiddenColumns: true,
+    },
+  },
 };
 
 describe('TableSheet normal spec', () => {

@@ -6,10 +6,10 @@ import {
   isNumber,
   isString,
   memoize,
-  merge,
   toString,
   values,
 } from 'lodash';
+import { customMerge } from '@/utils/merge';
 import { CellCfg, MultiData } from '@/common/interface';
 import { S2Options } from '@/common/interface/s2Options';
 import { DefaultCellTheme } from '@/common/interface/theme';
@@ -302,7 +302,7 @@ const getStyle = (
     : derivedMeasureText?.mainDown || dataCellTheme.icon.downIconColor;
   if (isDerivedMeasure) {
     const isUp = getDataState(value);
-    return merge(style, {
+    return customMerge(style, {
       fill: isUp ? upFill : downFill,
     });
   }

@@ -10,6 +10,10 @@ order: 1
 
 ## 使用
 
+```html
+<div id="container"></div>
+```
+
 ### React 组件方式
 
 ```typescript
@@ -18,7 +22,7 @@ import ReactDOM from "react-dom";
 import { SheetComponent } from "@antv/s2-react";
 import '@antv/s2-react/dist/style.min.css';
 
-// 1. 准备明细数据
+// 1. 准备数据
 const data = [
   {
     province: "浙江",
@@ -77,15 +81,16 @@ ReactDOM.render(
 
 ```
 
-​📊 查看demo [React 版本透视表](/zh/examples/react-component/sheet#pivot)。
+​📊 查看 demo [React 版本透视表](/zh/examples/react-component/sheet#pivot)。
 
 ### 类方式
 
-如果不打算依赖 React，可以在上面第三步之后直接调用：
+如果不打算依赖 `React`，可以在上面第三步之后直接调用：
 
 ```typescript
-const pivotSheet = new PivotSheet("#container", dataCfg, options);
+const container = document.getElementById('container');
+const pivotSheet = new PivotSheet(container, dataCfg, options);
 pivotSheet.render();
 ```
 
-​📊 查看demo [类方式透视表](/zh/examples/basic/pivot#grid)。
+​📊 查看 demo [类方式透视表](/zh/examples/basic/pivot#grid)。

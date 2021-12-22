@@ -106,7 +106,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     });
     cell.update();
 
-    if (cell.getActualText() !== meta.value) {
+    if (cell.getActualText() !== cell.getFieldValue()) {
       const showSingleTips = true;
       const options: TooltipOptions = {
         isTotals: meta.isTotals,

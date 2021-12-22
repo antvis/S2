@@ -8,7 +8,7 @@ import {
   InteractionStateName,
   SortMethodType,
 } from '@/common/constant/interaction';
-import { getSelectedData } from '@/utils/export/copy';
+import { convertString, getSelectedData } from '@/utils/export/copy';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { S2Event } from '@/common/constant';
 
@@ -57,7 +57,7 @@ describe('List Table Core Data Process', () => {
       cells: [getCellMeta(cell)],
       stateName: InteractionStateName.SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toBe(33);
+    expect(getSelectedData(s2).split('\n').length).toBe(32);
   });
 
   it('should copy row data', () => {
@@ -73,11 +73,14 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy all data', () => {
+    const cell = s2.interaction
+      .getAllCells()
+      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[3];
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toBe(33);
-    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(6);
+    expect(getSelectedData(s2).split('\n').length).toBe(32);
+    expect(getSelectedData(s2).split('\n')[1].split('\t').length).toBe(5);
   });
 
   it('should copy format data', () => {
@@ -128,7 +131,7 @@ describe('List Table Core Data Process', () => {
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toEqual(17);
+    expect(getSelectedData(s2).split('\n').length).toEqual(16);
     // clear filter condition
     s2.emit(S2Event.RANGE_FILTER, {
       filterKey: 'province',
@@ -155,7 +158,7 @@ describe('List Table Core Data Process', () => {
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
-    expect(getSelectedData(s2).split('\n').length).toEqual(33);
+    expect(getSelectedData(s2).split('\n').length).toEqual(32);
   });
 
   it('should copy correct data with \n data', () => {
@@ -188,6 +191,6 @@ describe('List Table Core Data Process', () => {
       stateName: InteractionStateName.SELECTED,
     });
     const data = getSelectedData(sss);
-    expect(data).toBe(JSON.stringify(newLineText));
+    expect(data).toBe(convertString(newLineText));
   });
 });

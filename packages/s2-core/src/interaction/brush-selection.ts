@@ -105,7 +105,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private bindMouseUp() {
-    // The constant 'GLOBAL_MOUSE_UP' is used to monitor the event of the mouse moving off the table.
+    // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       event.preventDefault();
 
@@ -119,9 +119,19 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
           getActiveCellsTooltipData(this.spreadsheet),
         );
       }
-      this.hidePrepareSelectMaskShape();
-      this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
+      this.resetDrag();
     });
+
+    // 刷选过程中右键弹出系统菜单时, 应该重置刷选, 防止系统菜单关闭后 mouse up 未相应依然是刷选状态
+    this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, () => {
+      this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+      this.resetDrag();
+    });
+  }
+
+  private resetDrag() {
+    this.hidePrepareSelectMaskShape();
+    this.setBrushSelectionStage(InteractionBrushSelectionStage.UN_DRAGGED);
   }
 
   private isValidBrushSelection() {

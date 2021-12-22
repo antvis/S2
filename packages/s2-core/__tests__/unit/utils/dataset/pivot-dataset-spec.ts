@@ -5,7 +5,6 @@ import {
   transformIndexesData,
   transformDimensionsValues,
   getDataPath,
-  getQueryDimValues,
   getDimensionsWithoutPathPre,
   getDimensionsWithParentPath,
 } from '@/utils/dataset/pivot-data-set';
@@ -78,6 +77,20 @@ describe('PivotDataSet util test', () => {
     };
     const result = transformDimensionsValues(data, rows, sortedDimensionValues);
     expect(result).toEqual(['浙江省', '杭州市']);
+  });
+
+  test('for return type of transformDimensionsValues function', () => {
+    const rows = ['row0', 'row1'];
+    const sortedDimensionValues = {};
+    const data = {
+      row0: 0,
+      number: 7789,
+      row1: 1,
+      sub_type: '桌子',
+      type: '家具',
+    };
+    const result = transformDimensionsValues(data, rows, sortedDimensionValues);
+    expect(result).toEqual(['0', '1']);
   });
 
   test('for getDataPath function', () => {

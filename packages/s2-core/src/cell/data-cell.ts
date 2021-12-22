@@ -20,8 +20,9 @@ import {
   TextTheme,
   ViewMeta,
   ViewMetaIndexType,
+  CellBorderPosition,
 } from '@/common/interface';
-import { getMaxTextWidth } from '@/utils/cell/cell';
+import { getMaxTextWidth, getBorderPositionAndStyle } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
 import { getIconPositionCfg } from '@/utils/condition/condition';
 import {
@@ -406,47 +407,15 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @private
    */
   protected drawBorderShape() {
-    const { x, y, height, width } = this.getCellArea();
-    const {
-      horizontalBorderColor,
-      horizontalBorderWidth,
-      horizontalBorderColorOpacity,
-      verticalBorderColor,
-      verticalBorderWidth,
-      verticalBorderColorOpacity,
-    } = this.getStyle().cell;
+    [CellBorderPosition.BOTTOM, CellBorderPosition.RIGHT].forEach((type) => {
+      const { position, style } = getBorderPositionAndStyle(
+        type,
+        this.getCellArea(),
+        this.getStyle().cell,
+      );
 
-    // horizontal border
-    renderLine(
-      this,
-      {
-        x1: x,
-        y1: y + height,
-        x2: x + width,
-        y2: y + height,
-      },
-      {
-        stroke: horizontalBorderColor,
-        lineWidth: horizontalBorderWidth,
-        opacity: horizontalBorderColorOpacity,
-      },
-    );
-
-    // vertical border
-    renderLine(
-      this,
-      {
-        x1: x + width,
-        y1: y,
-        x2: x + width,
-        y2: y + height,
-      },
-      {
-        stroke: verticalBorderColor,
-        lineWidth: verticalBorderWidth,
-        opacity: verticalBorderColorOpacity,
-      },
-    );
+      renderLine(this, position, style);
+    });
   }
 
   /**
@@ -504,5 +473,14 @@ export class DataCell extends BaseCell<ViewMeta> {
       SHAPE_STYLE_MAP.opacity,
       1,
     );
+  }
+
+  protected drawLeftBorder() {
+    const { position, style } = getBorderPositionAndStyle(
+      CellBorderPosition.LEFT,
+      this.getCellArea(),
+      this.getStyle().cell,
+    );
+    renderLine(this, position, style);
   }
 }

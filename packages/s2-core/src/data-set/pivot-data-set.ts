@@ -370,9 +370,10 @@ export class PivotDataSet extends BaseDataSet {
 
     const { columns, rows: originRows } = this.fields;
     let rows = originRows;
-    const isDrillDown = !isEmpty(
-      get(this, 'spreadsheet?.store.drillDownIdPathMap'),
-    );
+    const drillDownIdPathMap =
+      this.spreadsheet?.store.get('drillDownIdPathMap');
+    // 判断当前是否为下钻节点
+    const isDrillDown = drillDownIdPathMap?.has(rowNode.id);
 
     // 如果是下钻结点，小计行维度在 originRows 中并不存在
     if (!isTotals || isDrillDown) {
@@ -421,12 +422,16 @@ export class PivotDataSet extends BaseDataSet {
     query: DataType,
     isTotals?: boolean,
     isRow?: boolean,
+    drillDownFields?: string[],
   ): DataType[] {
     if (isEmpty(query)) {
       return compact(customFlattenDeep(this.indexesData));
     }
     const { rows, columns, values: valueList } = this.fields;
-    const rowDimensionValues = getQueryDimValues(rows, query);
+    const totalRows = !isEmpty(drillDownFields)
+      ? rows.concat(drillDownFields)
+      : rows;
+    const rowDimensionValues = getQueryDimValues(totalRows, query);
     const colDimensionValues = getQueryDimValues(columns, query);
     const path = getDataPath({
       rowDimensionValues,

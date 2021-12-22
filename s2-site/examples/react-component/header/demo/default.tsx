@@ -31,11 +31,12 @@ fetch(
       description: '表头描述',
       exportCfg: { open: true },
       advancedSortCfg: { open: true },
-      extra: [
+      switcherCfg: { open: true },
+      extra: (
         <Button size={'small'} style={{ verticalAlign: 'top' }}>
           插入内容
-        </Button>,
-      ],
+        </Button>
+      ),
     };
 
     ReactDOM.render(
@@ -54,4 +55,3 @@ insertCss(`
     margin:0px !important;
   }
 `);
-

@@ -1,7 +1,7 @@
-import { concat, filter, forEach, isEmpty } from 'lodash';
+import { concat, filter, find, forEach, isEmpty, map } from 'lodash';
 import {
   DataCellClick,
-  MergedCellsClick,
+  MergedCellClick,
   RowColumnClick,
   RowTextClick,
 } from './base-interaction/click';
@@ -31,7 +31,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { getAllChildCells } from '@/utils/get-all-child-cells';
 import { clearState, setState } from '@/utils/interaction/state-controller';
 import { isMobile } from '@/utils/is-mobile';
-import { mergeCells, unmergeCell } from '@/utils/interaction/merge-cells';
+import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
 
 export class RootInteraction {
   public spreadsheet: SpreadSheet;
@@ -131,7 +131,11 @@ export class RootInteraction {
   // 获取 cells 中在可视区域内的实例列表
   public getActiveCells() {
     const ids = this.getCells().map((item) => item.id);
-    return this.getAllCells().filter((cell) => ids.includes(cell.getMeta().id));
+    const allCells = this.getAllCells();
+    // 这里的顺序要以 ids 中的顺序为准，代表点击 cell 的顺序
+    return map(ids, (id) =>
+      find(allCells, (cell) => cell?.getMeta()?.id === id),
+    ).filter((cell) => cell); // 去除 undefined
   }
 
   public clearStyleIndependent() {
@@ -221,7 +225,7 @@ export class RootInteraction {
   };
 
   public mergeCells = (cellsInfo?: MergedCellInfo[], hideData?: boolean) => {
-    mergeCells(this.spreadsheet, cellsInfo, hideData);
+    mergeCell(this.spreadsheet, cellsInfo, hideData);
   };
 
   public unmergeCell = (removedCells: MergedCell) => {
@@ -253,7 +257,7 @@ export class RootInteraction {
     );
     this.interactions.set(
       InteractionName.MERGED_CELLS_CLICK,
-      new MergedCellsClick(this.spreadsheet),
+      new MergedCellClick(this.spreadsheet),
     );
     this.interactions.set(
       InteractionName.HOVER,
@@ -270,7 +274,7 @@ export class RootInteraction {
         new RowColumnResize(this.spreadsheet),
       );
       this.interactions.set(
-        InteractionName.COL_ROW_MULTI_SELECTION,
+        InteractionName.DATA_CELL_MULTI_SELECTION,
         new DataCellMultiSelection(this.spreadsheet),
       );
       this.interactions.set(

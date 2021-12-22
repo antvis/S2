@@ -1,8 +1,8 @@
 import { Group, Point } from '@antv/g-canvas';
 import { get, includes, isEmpty } from 'lodash';
-import { CornerBBox } from '../bbox/cornerBBox';
-import { PanelBBox } from '../bbox/panelBBox';
 import { BaseHeader, BaseHeaderConfig } from './base';
+import { PanelBBox } from '@/facet/bbox/panelBBox';
+import { CornerBBox } from '@/facet/bbox/cornerBBox';
 import { translateGroupX } from '@/facet/utils';
 import { CornerCell } from '@/cell/corner-cell';
 import { KEY_SERIES_NUMBER_NODE } from '@/common/constant';
@@ -119,7 +119,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
       // different type different height
       sNode.height = colsHierarchy?.sampleNodeForLastLevel?.height;
       sNode.isPivotMode = true;
-      sNode.cornerType = CornerNodeType.ROW;
+      sNode.cornerType = CornerNodeType.Series;
       cornerNodes.push(sNode);
     }
 
@@ -146,7 +146,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
         cNode.seriesNumberWidth = seriesNumberWidth;
         cNode.isPivotMode = true;
         cNode.spreadsheet = s2;
-        cNode.cornerType = CornerNodeType.ROW;
+        cNode.cornerType = CornerNodeType.Row;
         cornerNodes.push(cNode);
       } else {
         // spreadsheet type grid mode
@@ -164,7 +164,7 @@ export class CornerHeader extends BaseHeader<CornerHeaderConfig> {
           cNode.height = colsHierarchy.sampleNodeForLastLevel.height;
           cNode.field = field;
           cNode.isPivotMode = true;
-          cNode.cornerType = CornerNodeType.ROW;
+          cNode.cornerType = CornerNodeType.Row;
           cNode.spreadsheet = s2;
           cornerNodes.push(cNode);
         });

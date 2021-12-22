@@ -2,6 +2,8 @@ import { SimpleBBox } from '@antv/g-canvas';
 import { merge } from 'lodash';
 import { AreaRange } from './../../common/interface/scroll';
 import {
+  CellBorderPosition,
+  CellTheme,
   IconCfg,
   Padding,
   TextAlignCfg,
@@ -203,4 +205,80 @@ export const getTextAndIconPositionWhenHorizontalScrolling = (
     position = content.start + content.width / 2;
   }
   return position;
+};
+
+export const getBorderPositionAndStyle = (
+  position: CellBorderPosition,
+  contentBox: SimpleBBox,
+  style: CellTheme,
+) => {
+  const { x, y, width, height } = contentBox;
+  const {
+    horizontalBorderWidth,
+    horizontalBorderColorOpacity,
+    horizontalBorderColor,
+    verticalBorderWidth,
+    verticalBorderColor,
+    verticalBorderColorOpacity,
+  } = style;
+  let x1;
+  let y1;
+  let x2;
+  let y2;
+  let borderStyle;
+
+  // horizontal
+  if (
+    position === CellBorderPosition.TOP ||
+    position === CellBorderPosition.BOTTOM
+  ) {
+    let yPosition = y;
+    if (position === CellBorderPosition.TOP) {
+      // 完全绘制在 Cell 内，否则会导致 Border 粗细不一： https://github.com/antvis/S2/issues/426
+      yPosition = y + verticalBorderWidth / 2;
+    } else {
+      yPosition = y + height - verticalBorderWidth / 2;
+    }
+    y1 = yPosition;
+    y2 = yPosition;
+    x1 = x;
+    x2 = x + width;
+    borderStyle = {
+      lineWidth: horizontalBorderWidth,
+      stroke: horizontalBorderColor,
+      strokeOpacity: horizontalBorderColorOpacity,
+    };
+  }
+
+  // vertical
+  if (
+    position === CellBorderPosition.LEFT ||
+    position === CellBorderPosition.RIGHT
+  ) {
+    let xPosition = x;
+    if (position === CellBorderPosition.LEFT) {
+      xPosition = x + horizontalBorderWidth / 2;
+    } else {
+      xPosition = x + width - horizontalBorderWidth / 2;
+    }
+    x1 = xPosition;
+    x2 = xPosition;
+    y1 = y;
+    y2 = y + height;
+    borderStyle = {
+      lineWidth: verticalBorderWidth,
+      stroke: verticalBorderColor,
+      strokeOpacity: verticalBorderColorOpacity,
+    };
+  }
+
+  return {
+    position: {
+      x1,
+      x2,
+      y1,
+      y2,
+    },
+    style: borderStyle,
+  };
 };

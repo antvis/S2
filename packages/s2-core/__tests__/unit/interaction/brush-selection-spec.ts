@@ -160,6 +160,45 @@ describe('Interaction Brush Selection Tests', () => {
     ).toHaveBeenCalled();
   });
 
+  // https://github.com/antvis/S2/issues/852
+  test('should clear brush selection state when mouse down and context menu clicked', () => {
+    const globalMouseUp = jest.fn();
+    mockSpreadSheetInstance.on(S2Event.GLOBAL_MOUSE_UP, globalMouseUp);
+
+    emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, {
+      layerX: 10,
+      layerY: 20,
+    });
+    emitEvent(S2Event.DATA_CELL_MOUSE_MOVE, {
+      layerX: 12,
+      layerY: 22,
+    });
+
+    expect(brushSelectionInstance.brushSelectionStage).toEqual(
+      InteractionBrushSelectionStage.DRAGGED,
+    );
+
+    emitEvent(S2Event.GLOBAL_CONTEXT_MENU, {});
+
+    expect(globalMouseUp).not.toHaveBeenCalled();
+    expect(brushSelectionInstance.brushSelectionStage).toEqual(
+      InteractionBrushSelectionStage.UN_DRAGGED,
+    );
+    expect(
+      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
+        InterceptType.HOVER,
+      ]),
+    ).toBeFalsy();
+    expect(
+      brushSelectionInstance.spreadsheet.interaction.hasIntercepts([
+        InterceptType.BRUSH_SELECTION,
+      ]),
+    ).toBeFalsy();
+    expect(
+      brushSelectionInstance.hidePrepareSelectMaskShape,
+    ).toHaveReturnedTimes(1);
+  });
+
   test('should skip brush selection if mouse move less than valid distance', () => {
     emitEvent(S2Event.DATA_CELL_MOUSE_MOVE, {});
 

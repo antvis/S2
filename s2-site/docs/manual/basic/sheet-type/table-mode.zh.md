@@ -13,6 +13,10 @@ order: 2
 
 ## 使用
 
+```html
+<div id="container"></div>
+```
+
 ### React 组件方式
 
 ```typescript
@@ -21,7 +25,7 @@ import ReactDOM from "react-dom";
 import { SheetComponent } from '@antv/s2-react';
 import '@antv/s2-react/dist/style.min.css';
 
-// 1. 准备明细数据
+// 1. 准备数据
 const data = [
   {
     province: "浙江",

@@ -39,6 +39,7 @@ fetch(
         spreadsheet.hideTooltip();
       }
     };
+
     ReactDOM.render(
       <SheetComponent
         sheetType="pivot"

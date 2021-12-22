@@ -20,7 +20,7 @@ order: 1
 | showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |
 | headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
 | customSVGIcons | [CustomSVGIcon[]](#customsvgicon) |  |   `false` | 自定义 svg 图标 |
-| style | [Style](#style) |  |    | 附加样式 |
+| style | [Style](#style) |  |    | 单元格样式设置, 比如布局类型, 宽高, 边距, 是否隐藏数值列头等 |
 | frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 (明细表有效) |
 | frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 (明细表有效) |
 | frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 (明细表有效) |
@@ -73,6 +73,7 @@ object **必选**,_default：null_ 功能描述：样式设置
 | collapsedCols | `Record<string, boolean>`  |  |    | 树状模式列的折叠、收起状态 |
 | cellCfg | [CellCfg](#cellcfg) |  |  |   单元格配置 |
 | colCfg | [ColCfg](#colcfg) |  |  |   列样式配置 |
+| rowCfg | [RowCfg](#rowcfg) |  |  |   行样式配置 |
 | device | `pc` \| `mobile` | |  `pc` | 设备类型 |
 
 ## CellCfg
@@ -91,9 +92,20 @@ object **必选**,_default：null_ 功能描述： 列样式配置
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | --- | --- | --- | --- | :-:  |
-| height |   单元格高度（普通状态） | `number` | 30 | - |
-| widthByFieldValue | 根据度量值设置宽度（拖拽或者预设宽度场景） | `number`   |  | - |
-| heightByField | 根据度量值设置高度（拖拽或者预设宽度场景） | `Record<string, number>` |  | - |
+| height |   单元格高度（普通状态） | `number` | 30 |  |
+| widthByFieldValue | 根据度量值设置宽度（拖拽或者预设宽度场景） | `number`   | - |  |
+| heightByField | 根据度量值设置高度（拖拽或者预设宽度场景） | `Record<string, number>` | - |  |
+| hideMeasureColumn | 默认数值挂列头, 会同时显示列头和数值, 隐藏数值列, 使其更美观。<br> 且数值只有一个时才能生效。 | `boolean` | false |  |
+
+## RowCfg
+
+object **必选**,_default：null_ 功能描述： 行样式配置
+
+| 参数 | 说明 | 类型 | 默认值 | 必选  |
+| --- | --- | --- | --- | :-:  |
+| width |   行单元格宽度 | `number` | 96 |  |
+| widthByField | 根据度量值设置宽度（拖拽或者预设宽度场景） | `Record<string, number>`  | - |  |
+| heightByField | 根据度量值设置高度（拖拽或者预设宽度场景） | `Record<string, number>` | - |  |
 
 ## NodeField
 

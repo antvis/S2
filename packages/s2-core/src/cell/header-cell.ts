@@ -13,6 +13,7 @@ import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
 import { EXTRA_FIELD, S2Event } from '@/common/constant';
+import { CellTypes } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { SortParam } from '@/common/interface';
 
@@ -27,16 +28,15 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.headerConfig = { ...headerConfig };
     const { value, query } = this.meta;
     const sortParams = this.spreadsheet.dataCfg.sortParams;
-    const isValueCell = this.isValueCell(); // 是否是数值节点
+    const isSortCell = this.isSortCell(); // 改单元格是否为需要展示排序 icon 单元格
     const sortParam: SortParam = find(
       sortParams.reverse(),
       (item) =>
-        isValueCell &&
+        isSortCell &&
         item?.sortByMeasure === value &&
         isEqual(get(item, 'query'), query),
     );
-
-    const type = getSortTypeIcon(sortParam, isValueCell);
+    const type = getSortTypeIcon(sortParam, isSortCell);
     this.headerConfig.sortParam = {
       ...this.headerConfig.sortParam,
       ...(sortParam || { query }),
@@ -176,8 +176,14 @@ export abstract class HeaderCell extends BaseCell<Node> {
     });
   }
 
-  protected isValueCell() {
-    return this.meta.key === EXTRA_FIELD;
+  protected isSortCell() {
+    // 数值置于列头, 排序 icon 绘制在列头叶子节点; 置于行头, 排序 icon 绘制在行头叶子节点
+    const isValueInCols = this.meta.spreadsheet?.isValueInCols?.();
+    const isMaxLevel = this.meta.level === this.meta.hierarchy?.maxLevel;
+    if (isValueInCols) {
+      return isMaxLevel && this.cellType === CellTypes.COL_CELL;
+    }
+    return isMaxLevel && this.cellType === CellTypes.ROW_CELL;
   }
 
   private handleHover(cells: CellMeta[]) {

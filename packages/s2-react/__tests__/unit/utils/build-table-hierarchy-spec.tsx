@@ -11,8 +11,8 @@ import {
   buildTableHierarchy,
   TableSheet,
 } from '@antv/s2';
-import { assembleDataCfg } from '../../../playground/sheet-entry';
 import { getContainer } from '../../util/helpers';
+import { data, totalData, meta } from '../../data/mock-dataset.json';
 import { SheetComponent } from '@/components';
 
 let spreadsheetIns: SpreadSheet;
@@ -26,15 +26,16 @@ const getSpreadSheet = (
   return spreadsheetIns;
 };
 
-const tableDataFields = {
-  fields: {
-    columns: ['province', 'city', 'type', 'sub_type', 'number'],
-    valueInCols: true,
-  },
-};
-
 const getDataCfg = () => {
-  return assembleDataCfg(tableDataFields);
+  return {
+    data,
+    totalData,
+    meta,
+    fields: {
+      columns: ['province', 'city', 'type', 'sub_type', 'number'],
+      valueInCols: true,
+    },
+  };
 };
 
 const getOptions = () => {
@@ -42,14 +43,13 @@ const getOptions = () => {
     width: 800,
     height: 600,
     showSeriesNumber: true,
-    mode: 'table',
     style: {
       cellCfg: {
         height: 32,
       },
       device: 'pc',
     },
-  };
+  } as S2Options;
 };
 
 function MainLayout(props) {

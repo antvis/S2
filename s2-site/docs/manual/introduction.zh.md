@@ -5,8 +5,6 @@ redirect_from:
   - /zh/docs/manual
 ---
 
-
-
 ![introduction](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*X_KJQZAxjKUAAAAAAAAAAAAAARQnAQ)
 
 <div align="center">
@@ -182,7 +180,6 @@ const s2options = {
 
 ```ts
 import { PivotSheet } from '@antv/s2';
-import '@antv/s2/dist/s2.min.css'
 
 const container = document.getElementById('container');
 
@@ -195,25 +192,54 @@ s2.render()
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*Ln3cTY_Rk1cAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
+### 📦 Packages
+
+| Package  | Latest  |  Beta | Alpha | Size | Download |
+|---|---|---|---| --- | --- |
+| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)  | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2.svg) |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react)  | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
+
 ## 👤 Author
 
 [**@AntV**](https://github.com/orgs/antvis/people)
 
 ## 🤝 参与贡献
 
-初次使用 S2，建议从[快速上手](zh/docs/manual/getting-started)教程开始了解，如果有遇到问题或不满足的需求，可以移步至[issue](https://github.com/antvis/s2/issues) 区给我们留下建议。
-
-提交代码前请参考我们的[贡献指南](zh/docs/manual/contribution)
-
 ```bash
 git clone git@github.com:antvis/S2.git
 
 cd S2
 
-yarn
+# 安装依赖
+yarn # 或者 yarn bootstrap
 
+# 调试 s2-core
 yarn core:start
+
+# 调试 s2-react
+yarn react:playground
+
+# 单元测试
+yarn test
+
+# 打包
+yarn build
+
+# 代码风格和类型检测
+yarn lint
+
+# 本地启动官网
+yarn site:bootstrap
+yarn site:start
 ```
+
+## 📧 联系我们
+
+<img style="width: 300px; height: auto" alt="S2" src="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg"></a>
+
+## 👬 Contributors
+
+![https://github.com/antvis/s2/graphs/contributors](https://contrib.rocks/image?repo=antvis/s2)
 
 ## 📄 License
 

@@ -1,14 +1,5 @@
 import { BBox, Group, IShape, Point, SimpleBBox } from '@antv/g-canvas';
-import {
-  each,
-  forEach,
-  get,
-  includes,
-  isEmpty,
-  isNumber,
-  keys,
-  pickBy,
-} from 'lodash';
+import { each, get, includes, isBoolean, isNumber, keys, pickBy } from 'lodash';
 import {
   CellTypes,
   InteractionStateName,
@@ -18,6 +9,7 @@ import {
 import {
   CellThemes,
   FormatResult,
+  ResizeActiveOptions,
   ResizeArea,
   S2CellType,
   S2Theme,
@@ -102,6 +94,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.actualText;
   }
 
+  public getFieldValue() {
+    return this.getFormattedFieldValue().formattedValue;
+  }
+
   /**
    * in case there are more params to be handled
    * @param options any type's rest params
@@ -150,6 +146,15 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
 
   protected getResizeAreaStyle(): ResizeArea {
     return this.getStyle('resizeArea');
+  }
+
+  protected shouldDrawResizeAreaByType(type: keyof ResizeActiveOptions) {
+    const resize = this.spreadsheet.options?.interaction?.resize;
+    if (isBoolean(resize)) {
+      return resize;
+    }
+
+    return resize[type];
   }
 
   protected getCellArea() {
@@ -257,8 +262,8 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
         ) {
           if (isNumber(style)) {
             const marginStyle = {
-              x: Math.ceil(x + style / 2), // TODO: 边框整体重构后需revisit
-              y: Math.ceil(y + style / 2),
+              x: x + style / 2, // TODO: 边框整体重构后需revisit
+              y: y + style / 2,
               width: width - style - 1,
               height: height - style - 1,
             };

@@ -1,6 +1,5 @@
 import {
   find,
-  findIndex,
   forEach,
   get,
   includes,
@@ -12,6 +11,7 @@ import {
 } from 'lodash';
 import { BaseFacet } from 'src/facet/base-facet';
 import { getDataCellId } from 'src/utils/cell/data-cell';
+import { getIndexRangeWithOffsets } from 'src/utils/facet';
 import {
   EXTRA_FIELD,
   LayoutWidthTypes,
@@ -338,6 +338,11 @@ export class PivotFacet extends BaseFacet {
   ) {
     const { cellCfg, spreadsheet } = this.cfg;
     const isTree = spreadsheet.isHierarchyTreeType();
+    const heightByField = get(
+      spreadsheet,
+      'options.style.rowCfg.heightByField',
+      {},
+    );
 
     // 1、calculate first node's width in every level
     if (isTree) {
@@ -366,7 +371,7 @@ export class PivotFacet extends BaseFacet {
         currentNode.colIndex ??= i;
         currentNode.y = preLeafNode.y + preLeafNode.height;
         currentNode.height =
-          cellCfg.height +
+          (heightByField[currentNode.id] ?? cellCfg.height) +
           this.rowCellTheme.padding?.top +
           this.rowCellTheme.padding?.bottom;
         preLeafNode = currentNode;
@@ -623,7 +628,7 @@ export class PivotFacet extends BaseFacet {
     return get(this.spreadsheet, 'options.scrollReachNodeField.rowField', []);
   }
 
-  protected getViewCellHeights(layoutResult: LayoutResult) {
+  public getViewCellHeights(layoutResult: LayoutResult) {
     const { rowLeafNodes } = layoutResult;
 
     const heights = reduce(
@@ -649,31 +654,7 @@ export class PivotFacet extends BaseFacet {
       },
 
       getIndexRange: (minHeight: number, maxHeight: number) => {
-        let yMin = findIndex(
-          heights,
-          (height: number, idx: number) => {
-            const y = minHeight;
-            return y >= height && y < heights[idx + 1];
-          },
-          0,
-        );
-
-        yMin = Math.max(yMin, 0);
-
-        let yMax = findIndex(
-          heights,
-          (height: number, idx: number) => {
-            const y = maxHeight;
-            return y >= height && y < heights[idx + 1];
-          },
-          yMin,
-        );
-        yMax = Math.min(yMax === -1 ? Infinity : yMax, heights.length - 2);
-
-        return {
-          start: yMin,
-          end: yMax,
-        };
+        return getIndexRangeWithOffsets(heights, minHeight, maxHeight);
       },
     };
   }

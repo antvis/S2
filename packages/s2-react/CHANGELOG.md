@@ -1,3 +1,51 @@
+# [@antv/s2-react-v1.3.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.2.0...@antv/s2-react-v1.3.0) (2021-12-13)
+
+
+### Bug Fixes
+
+* 🐛 solve the wrong data after drilling down twice ([#885](https://github.com/antvis/S2/issues/885)) ([e3c8729](https://github.com/antvis/S2/commit/e3c8729d8fd5383fa73349b9937daa7ea58e0301))
+* **components:** add empty fragment close [#873](https://github.com/antvis/S2/issues/873) ([#878](https://github.com/antvis/S2/issues/878)) ([db98788](https://github.com/antvis/S2/commit/db98788954b74b2781f98568013135c8843725f2))
+* export link problem ([#877](https://github.com/antvis/S2/issues/877)) ([aa8f428](https://github.com/antvis/S2/commit/aa8f428824ce90aa5b6c7177cc5ef4d371a1d847))
+
+
+### Features
+
+* ✨ show the sortIcon when the hideMeasureColumn is set ([#884](https://github.com/antvis/S2/issues/884)) ([de1c46a](https://github.com/antvis/S2/commit/de1c46acb12b257e32aa4cc568312abca873775a))
+
+# [@antv/s2-react-v1.2.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.1.1...@antv/s2-react-v1.2.0) (2021-12-06)
+
+
+### Bug Fixes
+
+* **cell:**  border width issue ([#859](https://github.com/antvis/S2/issues/859)) ([114e7fc](https://github.com/antvis/S2/commit/114e7fc9b7d37f2512dc17a812d280858b571f61))
+
+
+### Features
+
+* **components:** add switcher header config ([#851](https://github.com/antvis/S2/issues/851)) ([1ced482](https://github.com/antvis/S2/commit/1ced482715ce1d751bb0f40aac9c804d2409e890))
+* **resize:** add resize active options, close [#855](https://github.com/antvis/S2/issues/855) ([#864](https://github.com/antvis/S2/issues/864)) ([1ce0951](https://github.com/antvis/S2/commit/1ce0951c20cc28495bf1c062d7c57128c3ef91fb))
+* **tooltip:** enhance tooltip ([#862](https://github.com/antvis/S2/issues/862)) ([9e411b5](https://github.com/antvis/S2/commit/9e411b555ef320b856f67a0fcf0da8971de1c529))
+
+# [@antv/s2-react-v1.1.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.1.0...@antv/s2-react-v1.1.1) (2021-11-30)
+
+
+### Bug Fixes
+
+* invalid react tooltip config ([#835](https://github.com/antvis/S2/issues/835)) ([10b44e7](https://github.com/antvis/S2/commit/10b44e7ef3b87fb042a4c515123e86ff94cb053e))
+
+# [@antv/s2-react-v1.1.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.0.3...@antv/s2-react-v1.1.0) (2021-11-29)
+
+
+### Bug Fixes
+
+* **facet:** fix render crash if value fields is empty ([#822](https://github.com/antvis/S2/issues/822)) ([c91522a](https://github.com/antvis/S2/commit/c91522a7ae3d6c181f271772ee3d2b47f40d3a20))
+* **facet:** remove extra row node if row fields is empty ([#824](https://github.com/antvis/S2/issues/824)) ([ab044c1](https://github.com/antvis/S2/commit/ab044c16466bdfe0d17cb9bf0365deb97a8fd38f))
+
+
+### Features
+
+* refactor react tooltip ([#831](https://github.com/antvis/S2/issues/831)) ([3e57279](https://github.com/antvis/S2/commit/3e572792398d3aec446a56ee70405702be2ced65))
+
 ## [1.0.3](https://github.com/antvis/S2/compare/v0.1.1...v1.0.3) (2021-11-24)
 
 
@@ -472,6 +520,3 @@
 ### Performance Improvements
 
 * **sa:** fix console.time & sa performance ([#672](https://github.com/antvis/S2/issues/672)) ([cb5990f](https://github.com/antvis/S2/commit/cb5990f81f8c9b4da674eebdb0c49bb8eaa4f19d))
-
-
-

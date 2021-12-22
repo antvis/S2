@@ -200,8 +200,8 @@ sortParams: [
 sortParams: [
   {
     // sortFieldId 为度量值时，需传入 query 定位数值列表，params.data 为带有度量值的 data 列表
-    sortFieldId: 'city',
-    sortByMeasure: 'price',
+    sortFieldId: 'price',
+    sortByMeasure: 'city',
     sortFunc: function(params) {
       const { data, sortByMeasure, sortFieldId } = params || {};
       return data
@@ -214,6 +214,8 @@ sortParams: [
 ```
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*H_TESKL1MakAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+
+📊 查看demo [自定义排序](/zh/examples/analysis/sort#custom-sort-func)。
 
 ## 优先级
 

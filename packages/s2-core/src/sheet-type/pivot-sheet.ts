@@ -1,9 +1,10 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { last } from 'lodash';
+import { clone, last, set } from 'lodash';
 import { SpreadSheet } from './spread-sheet';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell';
 import {
+  EXTRA_FIELD,
   InterceptType,
   S2Event,
   TOOLTIP_OPERATOR_MENUS,
@@ -163,13 +164,22 @@ export class PivotSheet extends SpreadSheet {
 
   public groupSortByMethod(sortMethod: SortMethod, meta: Node) {
     const { rows, columns } = this.dataCfg.fields;
+    const ifHideMeasureColumn = this.options.style.colCfg.hideMeasureColumn;
     const sortFieldId = this.isValueInCols() ? last(rows) : last(columns);
     const { query, value } = meta;
+    const sortQuery = clone(query);
+    let sortValue = value;
+    // 数值置于列头且隐藏了指标列头的情况, 会默认取第一个指标做组内排序, 需要还原指标列的query, 所以多指标时请不要这么用……
+    if (ifHideMeasureColumn && this.isValueInCols()) {
+      sortValue = this.dataSet.fields.values[0];
+      sortQuery[EXTRA_FIELD] = sortValue;
+    }
+
     const sortParam: SortParam = {
       sortFieldId,
       sortMethod,
-      sortByMeasure: value,
-      query,
+      sortByMeasure: sortValue,
+      query: sortQuery,
     };
     const prevSortParams = this.dataCfg.sortParams.filter(
       (item) => item?.sortFieldId !== sortFieldId,
