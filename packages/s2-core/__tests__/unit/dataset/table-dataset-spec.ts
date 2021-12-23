@@ -115,6 +115,28 @@ describe('Table Mode Dataset Test', () => {
       ).toEqual('杭州市');
     });
 
+    it('should getCellData with customFilter and filteredValues', () => {
+      dataSet.setDataCfg({
+        ...dataCfg,
+        filterParams: [
+          {
+            filterKey: 'province',
+            filteredValues: ['浙江省'],
+            customFilter: (row) =>
+              row.province === '浙江省' || row.province === '四川省',
+          },
+        ],
+      });
+      expect(
+        dataSet.getCellData({
+          query: {
+            rowIndex: 0,
+            col: 'city',
+          },
+        }),
+      ).toEqual('成都市');
+    });
+
     it('should getCellData with sort', () => {
       dataSet.setDataCfg({
         ...dataCfg,

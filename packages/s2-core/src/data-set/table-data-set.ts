@@ -62,7 +62,12 @@ export class TableDataSet extends BaseDataSet {
         row[filterKey] && !includes(filteredValues, row[filterKey]);
       this.displayData = [
         ...this.getStartRows(),
-        ...filter(this.getMovableRows(), customFilter || defaultFilterFunc),
+        ...filter(this.getMovableRows(), (row) => {
+          if (customFilter) {
+            return customFilter(row) && defaultFilterFunc(row);
+          }
+          return defaultFilterFunc(row);
+        }),
         ...this.getEndRows(),
       ];
     });
