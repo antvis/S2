@@ -2,9 +2,7 @@ import { PivotSheet, DataCell } from '@antv/s2';
 
 // 自定义单元格，实现特有功能
 class CustomDataCell extends DataCell {
-  /**
-   * Draw cell backgroud with image
-   */
+  // 重写绘制背景方法, 添加一个背景图片
   drawBackgroundShape() {
     this.backgroundShape = this.addShape('image', {
       attrs: {
@@ -33,7 +31,9 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
-      hoverHighlight: false, // 为了视觉效果，可不设置
+      interaction: {
+        hoverHighlight: false, // 关闭 hover 十字高亮, 为了视觉效果，可不设置
+      },
       dataCell: (viewMeta) => {
         return new CustomDataCell(viewMeta, viewMeta?.spreadsheet);
       },
