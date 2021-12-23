@@ -109,9 +109,21 @@ export class RootInteraction {
     return this.getCurrentStateName() === stateName;
   }
 
-  public isSelectedState() {
+  private isStateOf(stateName: InteractionStateName) {
     const currentState = this.getState();
-    return currentState?.stateName === InteractionStateName.SELECTED;
+    return currentState?.stateName === stateName;
+  }
+
+  public isSelectedState() {
+    return this.isStateOf(InteractionStateName.SELECTED);
+  }
+
+  public isHoverFocusState() {
+    return this.isStateOf(InteractionStateName.HOVER_FOCUS);
+  }
+
+  public isHoverState() {
+    return this.isStateOf(InteractionStateName.HOVER);
   }
 
   public isActiveCell(cell: S2CellType) {
@@ -335,7 +347,6 @@ export class RootInteraction {
       return;
     }
 
-    this.clearState();
     this.setState(interactionStateInfo);
     this.updatePanelGroupAllDataCells();
     this.draw();

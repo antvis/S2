@@ -282,10 +282,18 @@ describe('RootInteraction Tests', () => {
       expect(rootInteraction.getActiveCells()).toEqual([]);
     });
 
-    test("should get it's selected", () => {
-      expect(rootInteraction.isSelectedState()).toBeTruthy();
+    test.each`
+      stateName                        | handler
+      ${InteractionStateName.SELECTED} | ${'isSelectedState'}
+      ${InteractionStateName.HOVER}    | ${'isHoverState'}
+    `('should get correctly %o state', ({ stateName, handler }) => {
+      rootInteraction.changeState({
+        cells: [getCellMeta(mockCell)],
+        stateName: stateName,
+      });
+      expect(rootInteraction[handler]()).toBeTruthy();
       rootInteraction.resetState();
-      expect(rootInteraction.isSelectedState()).toBeFalsy();
+      expect(rootInteraction[handler]()).toBeFalsy();
     });
 
     test('should get current cell status is equal', () => {

@@ -92,6 +92,8 @@ export interface InteractionOptions {
   readonly selectedCellsSpotlight?: boolean;
   // highlight all row header cells and column header cells to which the hovered cell belongs
   readonly hoverHighlight?: boolean;
+  // keep cell hovered after 800ms duration
+  readonly hoverFocus?: boolean;
   // enable Command + C to copy spread data
   readonly enableCopy?: boolean;
   // copy with filed format
