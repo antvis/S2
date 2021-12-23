@@ -214,9 +214,10 @@ cd S2
 yarn # 或者 yarn bootstrap
 
 # 调试 s2-core
-yarn core:watch
+yarn core:start
 
 # 调试 s2-react
+yarn core:watch
 yarn react:playground
 
 # 单元测试
