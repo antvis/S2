@@ -55,6 +55,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     hiddenColumnFields: [],
     selectedCellsSpotlight: false,
     hoverHighlight: true,
+    hoverFocus: true,
     scrollSpeedRatio: {
       horizontal: 1,
       vertical: 1,
