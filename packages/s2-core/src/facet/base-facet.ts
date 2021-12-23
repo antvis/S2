@@ -212,7 +212,7 @@ export abstract class BaseFacet {
   }
 
   public getSeriesNumberWidth(): number {
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { showSeriesNumber } = this.cfg;
     return showSeriesNumber
       ? this.spreadsheet.theme.rowCell.seriesNumberWidth
       : 0;

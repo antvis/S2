@@ -12,7 +12,7 @@ import {
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
 import { includeCell } from '@/utils/cell/data-cell';
-import { EXTRA_FIELD, S2Event } from '@/common/constant';
+import { S2Event } from '@/common/constant';
 import { CellTypes } from '@/common/constant';
 import { getSortTypeIcon } from '@/utils/sort-action';
 import { SortParam } from '@/common/interface';

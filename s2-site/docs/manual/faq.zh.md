@@ -3,6 +3,8 @@ title: 常见问题
 order: 8
 ---
 
+在提出问题前，建议仔细阅读一遍文档。
+
 ## 1. 使用问题
 
 ### 性能问题
@@ -96,7 +98,41 @@ const pivotSheet = new PivotSheet('#container > div', dataCfg, options);
 const pivotSheet = new PivotSheet('#container > div[title="xx"]', dataCfg, options);
 ```
 
-### 为什么在小程序上面图表无法显示？
+### 手动更新表格宽高后，为什么滚动条不显示了？
+
+表格不感知变化，需要更新完配置后调用一次 `render` 方法触发更新
+
+```ts
+s2.changeSize(200, 200)
+s2.render(false)
+```
+
+### 表格可以根据外部容器的宽高自动撑满吗？
+
+可以，请查看 [这篇文章](/zh/docs/manual/advanced/adaptive)
+
+### 表格支持导出 `Excel` 吗？
+
+支持，请查看 [这篇文章](/zh/docs/manual/basic/analysis/export), 或者 [示例](/zh/examples/react-component/export#export)
+
+### 表格导出乱码怎么办？
+
+请检查 `Excel` 的编码设置是否正确
+
+![excel](https://gw.alipayobjects.com/zos/antfincdn/G1FBvKgYe/5e4e38fd-cd0d-4d98-b897-b40dd97effdc.png)
+
+### S2 有对应的 `Vue` 或者 `Angular` 版本吗？
+
+目前，S2 由两个包构成
+
+- `@antv/s2`: 基于 `canvas` 开发，提供表格渲染
+- `@antv/s2-react`: 基于 `@antv/s2` 封装，提供配套的分析组件
+
+也就是说 `@antv/s2` 和框架无关，你可以在 `Vue`, `Angular` 等框架中使用。
+
+配套的 [分析组件](/zh/examples/react-component), 目前还没有 `@antv/s2-vue`, `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
+
+### 为什么在小程序上面表格无法显示？
 
 目前 `S2` 只支持 `web` 平台，小程序暂不支持。
 

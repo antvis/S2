@@ -12,11 +12,20 @@ const s2Options = {
 }
 ```
 
+需要注意的是，表格基于 `canvas` 渲染，配置的宽高其实就是设置 `canvas` 的 `width` 和 `height`, 也就是意味着 `100%`, `80vw` 之类的配置是不生效的
+
+```ts
+const s2Options = {
+  width: '100%', // ❌
+  height: '20vh',// ❌
+}
+```
+
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/WmM9%24SLfu/2396a53f-8946-497a-9e68-fd89f01077ff.png)
 
 ### 窗口自适应
 
-如果想让表格撑满整个父容器, 可以监听 窗口的 `resize` 事件, 或使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 监听容器大小变化, 然后更新表格宽高
+如果想让表格撑满整个父容器，可以监听 窗口的 `resize` 事件，或使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 监听容器大小变化，然后更新表格宽高
 
 ```ts
 import { PivotSheet } from '@antv/s2'
@@ -40,7 +49,7 @@ window.addEventListener('resize', () => {
 
 ### 容器自适应
 
-如果是容器本身大小发生改变, 而不是窗口, 那么可以使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 获取到实时的容器大小
+如果是容器本身大小发生改变，而不是窗口，那么可以使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 获取到实时的容器大小
 
 ```ts
 import { PivotSheet } from '@antv/s2'
@@ -70,7 +79,7 @@ resizeObserver.observe(parent);
 
 ### React 组件
 
-如果是使用 `@antv/s2-react` 的方式, 那么配置 `adaptive` 参数即可, 默认集成了上面的两种方式
+如果是使用 `@antv/s2-react` 的方式，那么配置 `adaptive` 参数即可，默认集成了上面的两种方式
 
 ```tsx
 import { SheetComponent } from '@antv/s2-react'
