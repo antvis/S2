@@ -131,7 +131,7 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
   // handle box size change and resize
   useResizeEffect({
     spreadsheet: ownSpreadsheet,
-    container: adaptiveRef.current || container,
+    container: adaptiveRef?.current || container,
     adaptive,
     options,
   });
