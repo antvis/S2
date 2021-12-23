@@ -298,7 +298,7 @@ const onRowCellHover = ({ event, viewMeta }) => {
 
 #### 重写展示方法
 
-除了上面说到的 `自定义 Tooltip 类` 自定义展示方法外，也可以修改 [表格实例]([`spreadsheet`](/zh/docs/api/basic-class/spreadsheet)) 上 `Tooltip` 的方法 `spreadsheet.showTooltip()` ([如何获取表格实例](zh/docs/manual/advanced/get-instance))
+除了上面说到的 `自定义 Tooltip 类` 自定义展示方法外，也可以修改 [表格实例]([`spreadsheet`](/zh/docs/api/basic-class/spreadsheet)) 上 `Tooltip` 的方法 `spreadsheet.showTooltip()`。[了解如何获取表格实例？](zh/docs/manual/advanced/get-instance)
 
 ```ts
 // options 配置 tooltip 显示

@@ -5,7 +5,7 @@ order: 5
 
 ## 简介
 
-小计总计属于表的透视功能，可以給行和列分别配置小计总计。
+小计总计属于表的透视功能，可以给行和列分别配置小计总计。
 
 ### 小计
 
@@ -13,15 +13,15 @@ order: 5
 
 #### 形式一：增加额外行/列
 
-平铺模式下，給当前维度额外增加一行/列
+平铺模式下，给当前维度额外增加一行/列
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*eeU9SoHeRwoAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/sK5Rx1%26Sp/c4dcee0c-af4b-4be6-b665-c810eec78101.png" width = "600"  alt="row" />
 
 #### 形式二：挂靠节点
 
 树状模式下，挂靠到当前节点所在行/列中
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*rb--Tqm-Uc0AAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/Ljeww3JNa/543f1a66-51e3-4134-a2ec-83fd6a64f7d9.png" width = "600"  alt="row" />
 
 ### 总计
 
@@ -31,21 +31,21 @@ order: 5
 
 平铺：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*E34ET6WPRYcAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/9GwQ67LQ%26/c11b6f7b-ff0a-4ce3-89e7-1eccb95719a3.png" width="600"  alt="row" />
 
 树状：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*nLqvRYWFGRoAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/MRc64qzqf/d77ae378-4512-45a8-b2e0-9fb7e4a19c45.png" width="600"  alt="row" />
 
 #### 2. 多度量值
 
 平铺：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*QY_iSpJLVLQAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/bPhcUuHCi/6cd43952-58fb-469a-b4bb-fdd142bf3317.png" width="600"  alt="row" />
 
 树状：
 
-<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*XUzVTZ9951MAAAAAAAAAAAAAARQnAQ" width = "500"  alt="row" />
+<img src="https://gw.alipayobjects.com/zos/antfincdn/GekvQBQAw/8dde8830-e496-458c-b05e-bcd4f3e4bc0c.png" width="600"  alt="row" />
 
 ## 使用
 

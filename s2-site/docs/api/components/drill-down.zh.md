@@ -47,9 +47,9 @@ order: 2
 | ---------- | ---------- | --------------- | ------ | ----  |
 | dataSet | 下钻数据源配置 | [DataSet[]](#dataset) |  | ✓ |
 | className | 透传样式名 | `string` |  | |
-| titleText | 下钻完成后展示的个数，默认全部展示  | `string` |  | |
-| searchText | 点击下钻后的回调 | `string` |  | |
-| clearButtonText |  | `string` | |  |
+| titleText | 标题  | `string` |  | |
+| searchText | 搜索框文案 | `string` |  | |
+| clearButtonText | 重置按钮文案  | `string` | |  |
 | drillFields | 允许下钻的维度 | `string[]` |  | |
 | disabledFields | 不允许下钻的维度| `string[]` | |  |
 | getDrillFields | 内部获取当前下钻维度的回调 | `Function` | |  |
@@ -66,5 +66,5 @@ order: 2
 | name | 展示名字 | `string` | | ✓ |
 | value | 具体值 | `string` |  | ✓ |
 | type | 维度类型, 不同类型对应 icon 不同 | `text` \| `location` \| `date`  |   |  |
-| `disabled` | 是否允许选择 | boolean |   |  |
-| `icon` | 列表 item 的 icon | React.ReactNode |  |   |
+| disabled | 是否允许选择 | `boolean` |   |  |
+| icon | 列表 item 的 icon | `React.ReactNode` |  |   |

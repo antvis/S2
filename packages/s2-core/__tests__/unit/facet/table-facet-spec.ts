@@ -85,40 +85,146 @@ describe('Table Mode Facet Test', () => {
       expect(rowsHierarchy.getIndexNodes()).toHaveLength(0);
     });
   });
+});
 
-  describe('should get correct col hierarchy', () => {
-    const { colsHierarchy } = facet.layoutResult;
-    test('col hierarchy structure', () => {
-      const indexNodes = colsHierarchy.getIndexNodes();
-      expect(indexNodes).toHaveLength(5);
-      expect(indexNodes.map((node) => node.key)).toEqual([
-        'province',
-        'city',
-        'type',
-        'sub_type',
-        'price',
-      ]);
+describe('Table Mode Facet Test With Adaptive Layout', () => {
+  const ss: SpreadSheet = new MockSpreadSheet();
+  const dataSet: TableDataSet = new MockTableDataSet(ss);
+  const options = {
+    spreadsheet: ss,
+    dataSet: dataSet,
+    ...assembleDataCfg().fields,
+    ...assembleOptions({}),
+    ...DEFAULT_STYLE,
+    layoutWidthType: 'adaptive',
+    columns: ['province', 'city', 'type', 'sub_type', 'price'],
+  };
+
+  describe('should get correct col layout', () => {
+    const facet: TableFacet = new TableFacet({
+      ...options,
+      showSeriesNumber: false,
     });
+    const { colCfg, cellCfg } = facet.cfg;
 
-    test('col hierarchy coordinate', () => {
-      const { width, style } = facet.spreadsheet.options;
-      const { cellCfg, rowCfg, colCfg } = facet.cfg;
-      const { colLeafNodes, colsHierarchy } = facet.layoutResult;
-      expect(cellCfg.width).toEqual(
-        Math.max(style.cellCfg.width, width / colLeafNodes.length),
-      );
-      expect(rowCfg.width).toEqual(
-        Math.max(style.cellCfg.width, width / colLeafNodes.length),
-      );
-      expect(colsHierarchy.sampleNodeForLastLevel.height).toEqual(
-        colCfg.height,
+    test('col hierarchy coordinate with adaptive layout', () => {
+      const { colLeafNodes } = facet.layoutResult;
+
+      const colHeaderColSize = colLeafNodes.length;
+      const canvasW = facet.getCanvasHW().width;
+      const adaptiveWith = Math.max(
+        cellCfg.width,
+        canvasW / Math.max(1, colHeaderColSize),
       );
 
-      colsHierarchy.getNodes().forEach((node, index) => {
+      colLeafNodes.forEach((node, index) => {
         expect(node.y).toBe(0);
-        expect(node.x).toBe(index * cellCfg.width);
-        expect(node.width).toBe(cellCfg.width);
+        expect(node.x).toBe(index * adaptiveWith);
+        expect(node.width).toBe(adaptiveWith);
         expect(node.height).toBe(colCfg.height);
+      });
+    });
+  });
+
+  describe('should get correct col layout with seriesNumber', () => {
+    const ss: SpreadSheet = new MockSpreadSheet();
+    const dataSet: TableDataSet = new MockTableDataSet(ss);
+    const facet = new TableFacet({
+      ...options,
+      spreadsheet: ss,
+      dataSet,
+      showSeriesNumber: true,
+    });
+    const { colCfg, cellCfg } = facet.cfg;
+
+    test('col hierarchy coordinate with adaptive layout', () => {
+      const { colLeafNodes } = facet.layoutResult;
+
+      const seriesNumberWidth = facet.getSeriesNumberWidth();
+      const colHeaderColSize = colLeafNodes.length - 1;
+      const canvasW = facet.getCanvasHW().width - seriesNumberWidth;
+      const adaptiveWith = Math.max(
+        cellCfg.width,
+        canvasW / Math.max(1, colHeaderColSize),
+      );
+
+      const seriesNumberNode = colLeafNodes[0];
+      expect(seriesNumberNode.y).toBe(0);
+      expect(seriesNumberNode.x).toBe(0);
+      expect(seriesNumberNode.width).toBe(seriesNumberWidth);
+      expect(seriesNumberNode.height).toBe(colCfg.height);
+      colLeafNodes.slice(1).forEach((node, index) => {
+        expect(node.y).toBe(0);
+        expect(node.x).toBe(index * adaptiveWith + seriesNumberWidth);
+        expect(node.width).toBe(adaptiveWith);
+        expect(node.height).toBe(colCfg.height);
+      });
+    });
+  });
+});
+
+describe('Table Mode Facet Test With Compact Layout', () => {
+  describe('should get correct col layout', () => {
+    const ss: SpreadSheet = new MockSpreadSheet();
+    const dataSet: TableDataSet = new MockTableDataSet(ss);
+    ss.getLayoutWidthType = () => {
+      return 'compact';
+    };
+    const facet: TableFacet = new TableFacet({
+      spreadsheet: ss,
+      dataSet: dataSet,
+      ...assembleDataCfg().fields,
+      ...assembleOptions(),
+      ...DEFAULT_STYLE,
+      columns: ['province', 'city', 'type', 'sub_type', 'price'],
+    });
+    const { colCfg } = facet.cfg;
+
+    test('col hierarchy coordinate with compact layout', () => {
+      const { colLeafNodes } = facet.layoutResult;
+
+      const COMPACT_WIDTH = [52, 52, 64, 40, 72.765625];
+
+      let lastX = 0;
+      colLeafNodes.forEach((node, index) => {
+        expect(node.y).toBe(0);
+        expect(node.x).toBe(lastX);
+        expect(node.width).toBe(COMPACT_WIDTH[index]);
+        expect(node.height).toBe(colCfg.height);
+        lastX += COMPACT_WIDTH[index];
+      });
+    });
+  });
+
+  describe('should get correct col layout with seriesNumber', () => {
+    const ss: SpreadSheet = new MockSpreadSheet();
+    const dataSet: TableDataSet = new MockTableDataSet(ss);
+    ss.getLayoutWidthType = () => {
+      return 'compact';
+    };
+    const facet: TableFacet = new TableFacet({
+      spreadsheet: ss,
+      dataSet: dataSet,
+      ...assembleDataCfg().fields,
+      ...assembleOptions(),
+      ...DEFAULT_STYLE,
+      columns: ['province', 'city', 'type', 'sub_type', 'price'],
+      showSeriesNumber: true,
+    });
+    const { colCfg } = facet.cfg;
+
+    test('col hierarchy coordinate with compact layout', () => {
+      const { colLeafNodes } = facet.layoutResult;
+
+      const COMPACT_WIDTH = [80, 52, 52, 64, 40, 72.765625];
+
+      let lastX = 0;
+      colLeafNodes.forEach((node, index) => {
+        expect(node.y).toBe(0);
+        expect(node.x).toBe(lastX);
+        expect(node.width).toBe(COMPACT_WIDTH[index]);
+        expect(node.height).toBe(colCfg.height);
+        lastX += COMPACT_WIDTH[index];
       });
     });
   });
