@@ -59,6 +59,9 @@ export class CustomColCell extends ColCell {
   private drawIndicatorLabels() {
     const { y, height } = this.meta;
     const indicatorLabelDetail = this.getIndicatorLabelDetail();
+    if (isEmpty(indicatorLabelDetail)) {
+      return;
+    }
     const dataCellStyle = this.getStyle(CellTypes.DATA_CELL);
     const colCellStyle = this.getStyle(CellTypes.COL_CELL);
 
@@ -92,7 +95,7 @@ export class CustomColCell extends ColCell {
     const { fieldLabels = [] } =
       this.spreadsheet.options.style?.cellCfg?.valuesCfg || {};
     if (isEmpty(fieldLabels)) {
-      return;
+      return [];
     }
 
     const dataCellTextShapes = this.getCurrentColumnDataCellTextShapes();
@@ -107,7 +110,6 @@ export class CustomColCell extends ColCell {
 
   private toggleDisplayIndicatorLabel(visible: boolean) {
     this.toggleIndicatorLabelGroup(visible);
-    this.toggleOriginalColumnTextPosition(visible);
   }
 
   private toggleOriginalColumnTextPosition(visible: boolean) {
@@ -120,7 +122,12 @@ export class CustomColCell extends ColCell {
 
   private toggleIndicatorLabelGroup(visible: boolean) {
     const indicatorLabelGroup = this.findById(this.meta.id);
-    indicatorLabelGroup?.set('visible', visible);
+
+    // 配置了 label, 才显示 label shape, 并且把原始列头文字上移
+    if (indicatorLabelGroup) {
+      indicatorLabelGroup?.set('visible', visible);
+      this.toggleOriginalColumnTextPosition(visible);
+    }
   }
 
   public updateByState(name: InteractionStateName) {
