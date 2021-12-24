@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { SpreadSheet, S2Options } from '@antv/s2';
+import type { SpreadSheet, S2Options } from '@antv/s2';
 import * as mockDataConfig from '../data/simple-data.json';
 import { getContainer, sleep } from '../util/helpers';
 import { SheetComponent } from '@/components/sheets';

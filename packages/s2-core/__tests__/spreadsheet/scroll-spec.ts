@@ -275,8 +275,6 @@ describe('Scroll By Group Tests', () => {
 
       canvas.dispatchEvent(wheelEvent);
 
-      expect(s2.interaction.hasIntercepts([InterceptType.HOVER])).toBeTruthy();
-
       // wait requestAnimationFrame and debounce
       await sleep(1000);
 
