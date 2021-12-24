@@ -593,6 +593,18 @@ function MainLayout() {
                     });
                   }}
                 />
+                <Switch
+                  checkedChildren="hover聚焦开"
+                  unCheckedChildren="hover聚焦关"
+                  checked={mergedOptions.interaction.hoverFocus}
+                  onChange={(checked) => {
+                    updateOptions({
+                      interaction: {
+                        hoverFocus: checked,
+                      },
+                    });
+                  }}
+                />
                 <Tooltip title="开启后,点击空白处,按下ESC键, 取消高亮, 清空选中单元格, 等交互样式">
                   <Switch
                     checkedChildren="自动重置交互样式开"

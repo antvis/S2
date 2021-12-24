@@ -157,7 +157,7 @@ const s2Options = {
 
 [查看具体 API 配置详情](/zh/docs/api/basic-class/interaction#interaction)
 
-## 交互默认样式
+## 交互默认样式和行为
 
 > 如何修改默认样式？请查看 《主题》 了解
 
@@ -177,14 +177,28 @@ const s2options = {
 
 ### 十字高亮
 
-在鼠标悬停时，高亮对应的行列头，更直观的查看数据，默认关闭，可配置 `hoverHighlight` 开启：
+在鼠标悬停时，高亮当前单元格和对应的行列头单元格，形成一个"十字高亮"的效果，更直观的查看数据，默认开启，可配置 `hoverHighlight` 关闭：
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*f1f1TqoWNdMAAAAAAAAAAAAAARQnAQ" alt="preview" width="700" />
 
 ```ts
 const s2options = {
   interaction: {
-    hoverHighlight: true // 默认 false
+    hoverHighlight: false // 默认开启
+  }
+};
+```
+
+### 悬停聚焦
+
+鼠标悬停在当前单元格超过 `800ms` 后，保持当前高亮，显示 `tooltip`, 所对应的行列头取消高亮，聚焦于当前数据，默认开启，可配置 `hoverFocus` 关闭：
+
+<img src="https://gw.alipayobjects.com/zos/antfincdn/1OIXucjGb/9c0b42b5-259e-4693-83b3-8cf6a034be93.png" alt="preview" width="600" />
+
+```ts
+const s2options = {
+  interaction: {
+    hoverFocus: false // 默认开启
   }
 };
 ```

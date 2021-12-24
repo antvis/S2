@@ -108,9 +108,7 @@ describe('Interaction Data Cell Click Tests', () => {
     // wait hover focus time trigger
     await sleep(HOVER_FOCUS_TIME + 500);
 
-    expect(s2.interaction.getCurrentStateName()).not.toEqual(
-      InteractionStateName.HOVER_FOCUS,
-    );
+    expect(s2.interaction.isHoverFocusState()).toBeFalsy();
 
     // only call show tooltip once for cell clicked
     expect(showTooltipWithInfoSpy).toHaveReturnedTimes(1);

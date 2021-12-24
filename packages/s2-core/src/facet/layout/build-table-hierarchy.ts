@@ -9,7 +9,7 @@ export const buildTableHierarchy = (params: TableHeaderParams) => {
   const { columns, spreadsheet, dataSet } = facetCfg;
 
   const hiddenColumnsDetail = spreadsheet.store.get('hiddenColumnsDetail');
-  const showSeriesNumber = spreadsheet.options?.showSeriesNumber;
+  const showSeriesNumber = facetCfg?.showSeriesNumber;
 
   const displayedColumns = columns.filter((column) => {
     if (!hiddenColumnsDetail) {

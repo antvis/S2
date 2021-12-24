@@ -255,20 +255,20 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
           ? this.stateShapes.get(shapeName)
           : this[shapeName];
 
-        // 根据borderWidth更新borderShape大小     https://github.com/antvis/S2/pull/705
+        // 根据borderWidth更新borderShape大小 https://github.com/antvis/S2/pull/705
         if (
           shapeName === 'interactiveBorderShape' &&
           styleKey === 'borderWidth'
         ) {
           if (isNumber(style)) {
             const marginStyle = {
-              x: x + style / 2, // TODO: 边框整体重构后需revisit
+              x: x + style / 2,
               y: y + style / 2,
               width: width - style - 1,
               height: height - style - 1,
             };
-            each(marginStyle, (style, styleKey) => {
-              updateShapeAttr(shape, styleKey, style);
+            each(marginStyle, (currentStyle, currentStyleKey) => {
+              updateShapeAttr(shape, currentStyleKey, currentStyle);
             });
           }
         }
