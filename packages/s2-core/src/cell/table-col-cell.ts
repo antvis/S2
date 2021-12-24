@@ -157,7 +157,7 @@ export class TableColCell extends ColCell {
     };
   }
 
-  protected shouldAddResizeArea() {
+  protected shouldAddVerticalResizeArea() {
     if (this.isFrozenCell()) {
       return true;
     }

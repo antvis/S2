@@ -235,7 +235,7 @@ export class ColCell extends HeaderCell {
     });
   }
 
-  protected shouldAddResizeArea() {
+  protected shouldAddVerticalResizeArea() {
     const { x, y, width, height } = this.meta;
     const {
       scrollX,
@@ -290,7 +290,7 @@ export class ColCell extends HeaderCell {
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
 
-    if (!this.shouldAddResizeArea()) {
+    if (!this.shouldAddVerticalResizeArea()) {
       return;
     }
 
