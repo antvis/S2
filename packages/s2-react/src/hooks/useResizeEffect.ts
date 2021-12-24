@@ -1,24 +1,35 @@
 import React from 'react';
 import { debounce } from 'lodash';
 import type { SpreadSheet, S2Options } from '@antv/s2';
+import { Adaptive } from '@/components';
 
 export interface UseResizeEffectParams {
-  container: HTMLDivElement;
+  container: HTMLElement;
   spreadsheet: SpreadSheet;
-  adaptive: boolean;
+  adaptive: Adaptive;
   options: S2Options;
 }
 
 const RENDER_DELAY = 200; // ms
 
-export const useResizeEffect = (params: UseResizeEffectParams) => {
-  const {
-    container,
-    spreadsheet: s2,
-    adaptive,
-    options = {} as S2Options,
-  } = params;
+function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
+  let container = paramsContainer;
+  let adaptiveWidth = true;
+  let adaptiveHeight = true;
+  if (typeof adaptive !== 'boolean') {
+    container = adaptive?.getContainer() || paramsContainer;
+    adaptiveWidth = adaptive?.width ?? true;
+    adaptiveHeight = adaptive?.height ?? true;
+  }
+  return { container, adaptiveWidth, adaptiveHeight };
+}
 
+export const useResizeEffect = (params: UseResizeEffectParams) => {
+  const { spreadsheet: s2, adaptive, options = {} as S2Options } = params;
+  const { container, adaptiveWidth, adaptiveHeight } = analyzeAdaptive(
+    params.container,
+    adaptive,
+  );
   // 第一次自适应时不需要 debounce, 防止抖动
   const isFirstRender = React.useRef<boolean>(true);
 
@@ -50,11 +61,13 @@ export const useResizeEffect = (params: UseResizeEffectParams) => {
     const resizeObserver = new ResizeObserver(([entry] = []) => {
       if (entry) {
         const [size] = entry.borderBoxSize || [];
+        const width = adaptiveWidth ? size?.inlineSize : options?.width;
+        const height = adaptiveHeight ? size?.blockSize : options?.height;
         if (isFirstRender.current) {
-          render(size.inlineSize, size.blockSize);
+          render(width, height);
           return;
         }
-        debounceRender(size.inlineSize, size.blockSize);
+        debounceRender(width, height);
       }
     });
 
@@ -65,5 +78,14 @@ export const useResizeEffect = (params: UseResizeEffectParams) => {
     return () => {
       resizeObserver.unobserve(container);
     };
-  }, [adaptive, container, debounceRender, render]);
+  }, [
+    adaptive,
+    adaptiveHeight,
+    adaptiveWidth,
+    container,
+    debounceRender,
+    options?.height,
+    options?.width,
+    render,
+  ]);
 };

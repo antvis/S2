@@ -52,6 +52,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     showPagination,
   } = props;
   const container = useRef<HTMLDivElement>();
+
   const baseSpreadsheet = useRef<SpreadSheet>();
 
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
