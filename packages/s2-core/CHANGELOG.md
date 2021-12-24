@@ -1,3 +1,18 @@
+# [@antv/s2-v1.4.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.4.0-alpha.3...@antv/s2-v1.4.0-alpha.4) (2021-12-24)
+
+
+### Bug Fixes
+
+* :bug: 修复列头小计总计位置漂移问题， close [#836](https://github.com/antvis/S2/issues/836) ([#934](https://github.com/antvis/S2/issues/934)) ([3dc04b7](https://github.com/antvis/S2/commit/3dc04b7816eedfbc8669227fef850414f9b3c72c))
+* **facet:** table adaptive layout  ([#932](https://github.com/antvis/S2/issues/932)) ([f35cd3b](https://github.com/antvis/S2/commit/f35cd3b6bc389371f57cde3f33ed3965ab237f1b))
+* **table:** add frozen opts validation & frozen col resize fix ([#933](https://github.com/antvis/S2/issues/933)) ([c88f649](https://github.com/antvis/S2/commit/c88f64946346c730191266bfadbc7b11cb0144e1))
+
+
+### Features
+
+* **interaction:** 新增 hoverFocus 配置项 ([#944](https://github.com/antvis/S2/issues/944)) ([e4f82c0](https://github.com/antvis/S2/commit/e4f82c02823a908378847e7b5e44fa3d150d36db))
+* **table filter:** add custom filter function ([#894](https://github.com/antvis/S2/issues/894)) ([2c7b49d](https://github.com/antvis/S2/commit/2c7b49de9ce204829e90e335b15860c95c34eee6))
+
 # [@antv/s2-v1.4.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.4.0-alpha.2...@antv/s2-v1.4.0-alpha.3) (2021-12-22)
 
 
