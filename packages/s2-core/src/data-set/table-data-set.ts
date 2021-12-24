@@ -96,6 +96,9 @@ export class TableDataSet extends BaseDataSet {
   }
 
   public getCellData({ query }: CellDataParams): DataType {
+    if (this.displayData.length === 0 && query.rowIndex === 0) {
+      return;
+    }
     return this.displayData[query.rowIndex][query.col];
   }
 
