@@ -1,8 +1,7 @@
 import { TableSheet } from 'src/sheet-type';
-import { assembleDataCfg, assembleOptions } from '../../../util';
-import { getContainer } from '../../../util/helpers';
-import { data as originalData } from '../../../data/mock-dataset.json';
-
+import { assembleDataCfg, assembleOptions } from 'tests/util';
+import { getContainer } from 'tests/util/helpers';
+import { data as originalData } from 'tests/data/mock-dataset.json';
 import {
   CellTypes,
   InteractionStateName,
@@ -13,19 +12,26 @@ import { getCellMeta } from '@/utils/interaction/select-event';
 import { S2Event } from '@/common/constant';
 
 describe('List Table Core Data Process', () => {
-  const s2 = new TableSheet(
-    getContainer(),
-    assembleDataCfg({
-      meta: [],
-      fields: {
-        columns: ['province', 'city', 'type', 'sub_type', 'number'],
-      },
-    }),
-    assembleOptions({
-      showSeriesNumber: true,
-    }),
-  );
-  s2.render();
+  let s2: TableSheet;
+  beforeEach(() => {
+    s2 = new TableSheet(
+      getContainer(),
+      assembleDataCfg({
+        meta: [],
+        fields: {
+          columns: ['province', 'city', 'type', 'sub_type', 'number'],
+        },
+      }),
+      assembleOptions({
+        showSeriesNumber: true,
+      }),
+    );
+    s2.render();
+  });
+
+  afterEach(() => {
+    s2.destroy();
+  });
 
   it('should copy no data', () => {
     s2.interaction.changeState({
@@ -73,9 +79,6 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy all data', () => {
-    const cell = s2.interaction
-      .getAllCells()
-      .filter(({ cellType }) => cellType === CellTypes.ROW_CELL)[3];
     s2.interaction.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });

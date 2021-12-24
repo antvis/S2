@@ -127,12 +127,12 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
   });
 
   describe('should get correct col layout with seriesNumber', () => {
-    const ss: SpreadSheet = new MockSpreadSheet();
-    const dataSet: TableDataSet = new MockTableDataSet(ss);
+    const s2: SpreadSheet = new MockSpreadSheet();
+    const s2DataSet: TableDataSet = new MockTableDataSet(s2);
     const facet = new TableFacet({
       ...options,
-      spreadsheet: ss,
-      dataSet,
+      spreadsheet: s2,
+      dataSet: s2DataSet,
       showSeriesNumber: true,
     });
     const { colCfg, cellCfg } = facet.cfg;
@@ -151,12 +151,12 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       const seriesNumberNode = colLeafNodes[0];
       expect(seriesNumberNode.y).toBe(0);
       expect(seriesNumberNode.x).toBe(0);
-      // expect(seriesNumberNode.width).toBe(seriesNumberWidth);
+      expect(seriesNumberNode.width).toBe(seriesNumberWidth);
       expect(seriesNumberNode.height).toBe(colCfg.height);
 
       colLeafNodes.slice(1).forEach((node, index) => {
         expect(node.y).toBe(0);
-        // expect(node.x).toBe(index * adaptiveWith + seriesNumberWidth);
+        expect(node.x).toBe(index * adaptiveWith + seriesNumberWidth);
         expect(node.width).toBe(adaptiveWith);
         expect(node.height).toBe(colCfg.height);
       });
@@ -217,7 +217,7 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     test('col hierarchy coordinate with compact layout with seriesNumber', () => {
       const { colLeafNodes } = facet.layoutResult;
 
-      const COMPACT_WIDTH = [52, 52, 64, 40, 72.765625];
+      const COMPACT_WIDTH = [80, 52, 52, 64, 40, 72.765625];
 
       let lastX = 0;
       colLeafNodes.forEach((node, index) => {
