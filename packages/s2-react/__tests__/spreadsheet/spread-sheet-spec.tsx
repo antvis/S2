@@ -52,13 +52,7 @@ describe('Spread Sheet Tests', () => {
     test('should hidden scroll bar if window width more than s2Options.width', () => {
       act(() => {
         ReactDOM.render(
-          <SheetComponent
-            options={{
-              ...s2Options,
-              width: window.innerWidth - 100,
-            }}
-            dataCfg={mockDataConfig}
-          />,
+          <SheetComponent options={s2Options} dataCfg={mockDataConfig} />,
           container,
         );
       });
