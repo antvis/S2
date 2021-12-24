@@ -1,3 +1,18 @@
+# [@antv/s2-react-v1.4.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.3.0...@antv/s2-react-v1.4.0) (2021-12-24)
+
+
+### Bug Fixes
+
+* **components:** 修复配置的宽度超过浏览器可视窗口宽度无法滚动的问题 close [#889](https://github.com/antvis/S2/issues/889) ([#931](https://github.com/antvis/S2/issues/931)) ([bf03b37](https://github.com/antvis/S2/commit/bf03b37d816258d465ffd4ede9bb759b1adaee12))
+* **table:** 修复明细表 onDataCellHover 无法触发 ([#896](https://github.com/antvis/S2/issues/896)) ([794406a](https://github.com/antvis/S2/commit/794406a25fbc0f0be9f434aa8cde8cf324e278ab))
+* 修复错误修改DefaultOptions问题 ([#910](https://github.com/antvis/S2/issues/910)) ([c6e3235](https://github.com/antvis/S2/commit/c6e32350b15611b4fe9aa457baf45329443c7aff))
+
+
+### Features
+
+* **facet:** 明细表增加行高 resize 调整 && 行高 resize 增加选项 ([#909](https://github.com/antvis/S2/issues/909)) ([cee6bdc](https://github.com/antvis/S2/commit/cee6bdced0cf3749e683ce157478ea2557da3a53))
+* 自适应机制优化: 开启 adaptive 读取容器宽高, 关闭情况下再读取配置项 ([#940](https://github.com/antvis/S2/issues/940)) ([62c1bd0](https://github.com/antvis/S2/commit/62c1bd02de2e5538ccf9bd035068ae28d2cd0370))
+
 # [@antv/s2-react-v1.3.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.2.0...@antv/s2-react-v1.3.0) (2021-12-13)
 
 

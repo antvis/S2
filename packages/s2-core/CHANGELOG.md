@@ -1,3 +1,26 @@
+# [@antv/s2-v1.4.0](https://github.com/antvis/S2/compare/@antv/s2-v1.3.0...@antv/s2-v1.4.0) (2021-12-24)
+
+
+### Bug Fixes
+
+* :bug: 修复列头小计总计位置漂移问题， close [#836](https://github.com/antvis/S2/issues/836) ([#934](https://github.com/antvis/S2/issues/934)) ([3dc04b7](https://github.com/antvis/S2/commit/3dc04b7816eedfbc8669227fef850414f9b3c72c))
+* :bug: 修复指标列头 hover 行为和维值列头不一致问题 ([#912](https://github.com/antvis/S2/issues/912)) ([8fa67bb](https://github.com/antvis/S2/commit/8fa67bbec21e0d336a3ac4bc589d472100a9e89f))
+* **components:** 修复配置的宽度超过浏览器可视窗口宽度无法滚动的问题 close [#889](https://github.com/antvis/S2/issues/889) ([#931](https://github.com/antvis/S2/issues/931)) ([bf03b37](https://github.com/antvis/S2/commit/bf03b37d816258d465ffd4ede9bb759b1adaee12))
+* event-controller 重复注册事件 ([#922](https://github.com/antvis/S2/issues/922)) ([683f8e8](https://github.com/antvis/S2/commit/683f8e893dda6fa6f2a687b2014f499d95e198a3))
+* **facet:** table adaptive layout  ([#932](https://github.com/antvis/S2/issues/932)) ([f35cd3b](https://github.com/antvis/S2/commit/f35cd3b6bc389371f57cde3f33ed3965ab237f1b))
+* **frame:** incorrect viewport splitline shadow ([#898](https://github.com/antvis/S2/issues/898)) ([197381e](https://github.com/antvis/S2/commit/197381e01bb79135f3217546baee5434ef28253d))
+* **interactive:** global selected event emit ([#902](https://github.com/antvis/S2/issues/902)) ([bd4eca3](https://github.com/antvis/S2/commit/bd4eca3a7f8ca46109c15f3d06003970429b2011))
+* **scroll:** 修复滚动表格后, 鼠标移动会重置已选中单元格 close [#904](https://github.com/antvis/S2/issues/904) ([#914](https://github.com/antvis/S2/issues/914)) ([d6ebc3d](https://github.com/antvis/S2/commit/d6ebc3dc2773977b8a5a5aa4203d513281b6090c))
+* **table:** add frozen opts validation & frozen col resize fix ([#933](https://github.com/antvis/S2/issues/933)) ([c88f649](https://github.com/antvis/S2/commit/c88f64946346c730191266bfadbc7b11cb0144e1))
+* **table:** 明细表数据为空时添加兜底 ([#947](https://github.com/antvis/S2/issues/947)) ([529ad10](https://github.com/antvis/S2/commit/529ad10474b98f3a01edf5232819539a49f5ea1e))
+* 修复错误修改DefaultOptions问题 ([#910](https://github.com/antvis/S2/issues/910)) ([c6e3235](https://github.com/antvis/S2/commit/c6e32350b15611b4fe9aa457baf45329443c7aff))
+
+
+### Features
+
+* **facet:** 明细表增加行高 resize 调整 && 行高 resize 增加选项 ([#909](https://github.com/antvis/S2/issues/909)) ([cee6bdc](https://github.com/antvis/S2/commit/cee6bdced0cf3749e683ce157478ea2557da3a53))
+* **table filter:** add custom filter function ([#894](https://github.com/antvis/S2/issues/894)) ([2c7b49d](https://github.com/antvis/S2/commit/2c7b49de9ce204829e90e335b15860c95c34eee6))
+
 # [@antv/s2-v1.3.0](https://github.com/antvis/S2/compare/@antv/s2-v1.2.0...@antv/s2-v1.3.0) (2021-12-13)
 
 
