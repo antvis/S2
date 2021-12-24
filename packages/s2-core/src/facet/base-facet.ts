@@ -4,16 +4,7 @@ import { Wheel } from '@antv/g-gesture';
 import { interpolateArray } from 'd3-interpolate';
 import * as d3Timer from 'd3-timer';
 import { Group } from '@antv/g-canvas';
-import {
-  debounce,
-  each,
-  find,
-  get,
-  isNil,
-  isUndefined,
-  last,
-  reduce,
-} from 'lodash';
+import { debounce, each, find, get, isUndefined, last, reduce } from 'lodash';
 import { CornerBBox } from './bbox/cornerBBox';
 import { PanelBBox } from './bbox/panelBBox';
 import {
@@ -32,7 +23,7 @@ import {
   InterceptType,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
-import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
+import { getAllChildCells } from '@/utils/get-all-child-cells';
 import {
   ColHeader,
   CornerHeader,
@@ -61,6 +52,7 @@ import type {
 } from '@/common/interface';
 import { updateMergedCells } from '@/utils/interaction/merge-cell';
 import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
+import { DataCell } from '@/cell';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -215,7 +207,7 @@ export abstract class BaseFacet {
   }
 
   public getSeriesNumberWidth(): number {
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { showSeriesNumber } = this.cfg;
     return showSeriesNumber
       ? this.spreadsheet.theme.rowCell.seriesNumberWidth
       : 0;
@@ -494,6 +486,10 @@ export abstract class BaseFacet {
     if (scrollY + panelHeight >= rendererHeight) {
       return rendererHeight - panelHeight;
     }
+    // 当数据为空时，rendererHeight 可能为 0，此时 scrollY 为负值，需要调整为 0。
+    if (scrollY < 0) {
+      return 0;
+    }
     return Math.max(0, scrollY);
   };
 
@@ -536,17 +532,10 @@ export abstract class BaseFacet {
         const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
         const hRowScrollX = newOffset;
         this.setScrollOffset({ hRowScrollX });
-        this.rowHeader.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
+        this.rowHeader?.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
         this.rowIndexHeader?.onRowScrollX(
           hRowScrollX,
           KEY_GROUP_ROW_INDEX_RESIZE_AREA,
-        );
-        this.centerFrame.onChangeShadowVisibility(
-          hRowScrollX,
-          this.cornerBBox.originalWidth -
-            this.cornerBBox.width -
-            this.scrollBarSize * 2,
-          true,
         );
         this.cornerHeader.onRowScrollX(
           hRowScrollX,
@@ -881,7 +870,7 @@ export abstract class BaseFacet {
       this.cornerBBox.width - scrollX,
       this.cornerBBox.height - scrollY,
     );
-    this.rowHeader.onScrollXY(
+    this.rowHeader?.onScrollXY(
       this.getRealScrollX(scrollX, hRowScroll),
       scrollY,
       KEY_GROUP_ROW_RESIZE_AREA,
@@ -898,7 +887,6 @@ export abstract class BaseFacet {
     this.centerFrame.onChangeShadowVisibility(
       scrollX,
       this.getRealWidth() - this.panelBBox.width,
-      false,
     );
     this.centerFrame.onBorderScroll(this.getRealScrollX(scrollX));
     this.columnHeader.onColScroll(scrollX, KEY_GROUP_COL_RESIZE_AREA);
@@ -930,7 +918,10 @@ export abstract class BaseFacet {
           this.addCell(cell);
         }
       });
-      const allCells = getAllPanelDataCell(this.panelGroup.getChildren());
+      const allCells = getAllChildCells(
+        this.panelGroup.getChildren(),
+        DataCell,
+      );
       // remove cell from panelCell
       each(remove, ([i, j]) => {
         const findOne = find(
@@ -1038,7 +1029,9 @@ export abstract class BaseFacet {
     this.cornerHeader = this.getCornerHeader();
     this.centerFrame = this.getCenterFrame();
 
-    this.foregroundGroup.add(this.rowHeader);
+    if (this.rowHeader) {
+      this.foregroundGroup.add(this.rowHeader);
+    }
     this.foregroundGroup.add(this.columnHeader);
     this.foregroundGroup.add(this.cornerHeader);
     this.foregroundGroup.add(this.centerFrame);
@@ -1125,10 +1118,8 @@ export abstract class BaseFacet {
         height: cornerHeight,
         viewportWidth: width,
         viewportHeight: height,
-        showCornerRightShadow: !isNil(this.hRowScrollBar),
-        // When both a row header and a panel scroll bar exist, show viewport shadow
-        showViewPortRightShadow:
-          !isNil(this.hRowScrollBar) && !isNil(this.hScrollBar),
+        showViewportLeftShadow: false,
+        showViewportRightShadow: false,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
         isPivotMode: this.cfg.spreadsheet.isPivotMode(),
@@ -1170,12 +1161,16 @@ export abstract class BaseFacet {
   }
 
   protected onAfterScroll = debounce(() => {
-    this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+    const { interaction } = this.spreadsheet;
+    // 如果是选中单元格状态, 则继续保留 hover 拦截, 避免滚动后 hover 清空已选单元格
+    if (!interaction.isSelectedState()) {
+      this.spreadsheet.interaction.removeIntercepts([InterceptType.HOVER]);
+    }
   }, 300);
 
   protected abstract doLayout(): LayoutResult;
 
-  protected abstract getViewCellHeights(
+  public abstract getViewCellHeights(
     layoutResult: LayoutResult,
   ): ViewCellHeights;
 }

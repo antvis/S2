@@ -40,7 +40,8 @@ describe('Interaction Hover Tests', () => {
       ({
         update: mockCellUpdate,
         getMeta: () => mockCell,
-        getActualText: () => '',
+        getActualText: () => '...',
+        getFieldValue: () => '',
       } as any);
     hoverEvent = new HoverEvent(s2 as unknown as SpreadSheet);
     s2.options = {

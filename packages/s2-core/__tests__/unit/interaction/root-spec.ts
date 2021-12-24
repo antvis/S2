@@ -191,6 +191,7 @@ describe('RootInteraction Tests', () => {
     });
     // clear events
     expect(rootInteraction.eventController.canvasEventHandlers).toBeFalsy();
+    expect(rootInteraction.eventController.s2EventHandlers).toBeFalsy();
     expect(rootInteraction.eventController.domEventListeners).toBeFalsy();
   });
 

@@ -19,6 +19,14 @@ describe('merge test', () => {
     });
   });
 
+  test('should return new object', () => {
+    const obj = { name: 'name' };
+    const result = customMerge(obj, { age: 100 });
+
+    expect(obj).toEqual({ name: 'name' });
+    expect(result).toEqual({ name: 'name', age: 100 });
+  });
+
   test('should get safety data config', () => {
     expect(getSafetyDataConfig(null)).toStrictEqual({
       data: [],
@@ -114,7 +122,13 @@ describe('merge test', () => {
           vertical: 1,
         },
         autoResetSheetStyle: true,
-        resize: true,
+        resize: {
+          colCellHorizontal: true,
+          colCellVertical: true,
+          cornerCellHorizontal: true,
+          rowCellVertical: true,
+          rowResizeType: 'all',
+        },
       },
       frozenRowHeader: true,
       showSeriesNumber: false,

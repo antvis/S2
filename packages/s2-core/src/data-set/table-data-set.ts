@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { each, orderBy, filter, includes, isEmpty } from 'lodash';
+import { each, orderBy, filter, includes } from 'lodash';
 import { CellDataParams, DataType } from './interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
 import { S2DataConfig } from '@/common/interface';
@@ -24,6 +24,7 @@ export class TableDataSet extends BaseDataSet {
    */
   protected getStartRows() {
     const { frozenRowCount } = this.spreadsheet.options || {};
+    if (!frozenRowCount) return [];
     const { displayData } = this;
     return displayData.slice(0, frozenRowCount);
   }
@@ -56,13 +57,17 @@ export class TableDataSet extends BaseDataSet {
   }
 
   handleDimensionValueFilter = () => {
-    each(this.filterParams, ({ filterKey, filteredValues }) => {
+    each(this.filterParams, ({ filterKey, filteredValues, customFilter }) => {
+      const defaultFilterFunc = (row: DataType) =>
+        row[filterKey] && !includes(filteredValues, row[filterKey]);
       this.displayData = [
         ...this.getStartRows(),
-        ...filter(
-          this.getMovableRows(),
-          (row) => row[filterKey] && !includes(filteredValues, row[filterKey]),
-        ),
+        ...filter(this.getMovableRows(), (row) => {
+          if (customFilter) {
+            return customFilter(row) && defaultFilterFunc(row);
+          }
+          return defaultFilterFunc(row);
+        }),
         ...this.getEndRows(),
       ];
     });
@@ -91,6 +96,9 @@ export class TableDataSet extends BaseDataSet {
   }
 
   public getCellData({ query }: CellDataParams): DataType {
+    if (this.displayData.length === 0 && query.rowIndex === 0) {
+      return;
+    }
     return this.displayData[query.rowIndex][query.col];
   }
 

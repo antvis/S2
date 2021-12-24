@@ -1,4 +1,6 @@
-<h1 align="center">@antv/s2</h1>
+<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> 简体中文 | [English](./README.en-US.md)
+
+<h1 align="center">S2</h1>
 
 <div align="center">
 
@@ -9,10 +11,10 @@
     <img src="https://img.shields.io/npm/dm/@antv/s2.svg" alt="npm"/>
   </a>
   <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/latest.svg" alt="latest version">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/latest.svg" alt="version">
   </a>
-    <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
-    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg" alt="beta version">
+  <a href="https://www.npmjs.com/package/@antv/s2" target="_blank">
+    <img alt="Version" src="https://img.shields.io/npm/v/@antv/s2/beta.svg" alt="version">
   </a>
    <a href="https://github.com/antvis/S2/actions/workflows/test.yml" target="_blank">
     <img src="https://github.com/antvis/S2/actions/workflows/test.yml/badge.svg" alt="ci test status"/>
@@ -44,7 +46,12 @@
 
 S2 是 AntV 在多维交叉分析表格领域的解决方案，完全基于数据驱动的方式。通过提供底层能力库，基础组件，业务场景组件以及自由扩展的能力，让开发者基于自身场景自由选择，既能开箱即用，又能自由发挥。
 
-<!-- ### 🏠 [Homepage](https://s2.antv.vision) -->
+## 🏠 官网
+
+![homepage](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
+
+* [主页](https://antv-s2.gitee.io)
+* [Demo 示例](https://antv-s2.gitee.io/zh/examples/gallery)
 
 ## ✨ 特性
 
@@ -159,13 +166,16 @@ s2.render()
 
 ![result](https://gw.alipayobjects.com/zos/antfincdn/vCukbtVNvl/616f7ef1-e626-4225-99f8-dc8f6ca630dd.png)
 
-## tooltip 注意事项
+### 📦 Packages
 
-`@antv/s2` 中只保留了 tooltip 的核心显隐逻辑，我们将所有 tooltip 定制化交互都迁移到了`@antv/s2-react` 中，因此如果您有 tooltip 的需求，我们强烈建议您使用`@antv/s2-react`，细节参见 [tooltip 组件使用文档](https://s2.antv.vision/zh/examples/gallery#category-Tooltip%E7%BB%84%E4%BB%B6)。
+| Package  | Latest  |  Beta | Alpha | Size | Download |
+|---|---|---|---| --- | --- |
+| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)  | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2.svg) |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react)  | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
 
-## Author
+## 👤 Author
 
-👤 [**@AntV**](https://github.com/orgs/antvis/people)
+[**@AntV**](https://github.com/orgs/antvis/people)
 
 ## 🤝 参与贡献
 
@@ -177,8 +187,11 @@ cd S2
 # 安装依赖
 yarn # 或者 yarn bootstrap
 
-# 调试
+# 调试 s2-core
 yarn core:start
+
+# 调试 s2-react
+yarn react:playground
 
 # 单元测试
 yarn test
@@ -193,6 +206,10 @@ yarn lint
 yarn site:bootstrap
 yarn site:start
 ```
+
+## 📧 联系我们
+
+<img style="width: 300px; height: auto" alt="S2" src="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg"></a>
 
 ## 👬 Contributors
 

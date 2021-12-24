@@ -4,6 +4,7 @@ name: 🔁 Sync Site S2 Lock And Changelog With PR
 on:
   workflow_run:
     workflows: ["🚀 Auto Release"]
+    branches: [latest] # 只有正式版发布才同步 changelog 和 lock
     types:
       - completed
 
@@ -15,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: 'latest-release'
+          ref: 'latest'
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
@@ -31,6 +32,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Checkout branch
+        run: |
+          git checkout -b chore-sync
+
       - name: Install dependencies
         run: yarn
 
@@ -41,11 +46,11 @@ jobs:
         run: |
           git add .
           git commit -m "chore: 🤖 auto sync site s2 lock and changelog [skip ci]" --no-verify
-          git push origin latest-release --no-verify
+          git push origin chore-sync --no-verify
 
       # 使用官方的 github cli 便捷的创建 pr
       - name: Create PR
         run: |
-          gh pr create --fill --base master
+          gh pr create --title "chore: 🤖 auto sync site s2 lock and changelog [skip ci]" --body "🤖 由 [[Sync Site S2 Lock And Changelog With PR](https://github.com/antvis/S2/blob/master/.github/workflows/sync-site-lock-changelog-with-pr.yml)] action 自动创建."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

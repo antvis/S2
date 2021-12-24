@@ -94,6 +94,10 @@ export abstract class BaseCell<T extends SimpleBBox> extends Group {
     return this.actualText;
   }
 
+  public getFieldValue() {
+    return this.getFormattedFieldValue().formattedValue;
+  }
+
   /**
    * in case there are more params to be handled
    * @param options any type's rest params

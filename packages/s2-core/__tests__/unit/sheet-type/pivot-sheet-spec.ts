@@ -709,6 +709,7 @@ describe('PivotSheet Tests', () => {
     expect(s2.interaction.interactions.size).toEqual(0);
     expect(s2.interaction.intercepts.size).toEqual(0);
     expect(s2.interaction.eventController.canvasEventHandlers).toHaveLength(0);
+    expect(s2.interaction.eventController.s2EventHandlers).toHaveLength(0);
     expect(s2.interaction.eventController.domEventListeners).toHaveLength(0);
     // destroy tooltip
     expect(s2.tooltip.container.children).toHaveLength(0);

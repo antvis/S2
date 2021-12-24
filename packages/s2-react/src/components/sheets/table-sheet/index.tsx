@@ -37,6 +37,8 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     onColCellScroll,
     onCellScroll,
     onDataCellClick,
+    onDataCellHover,
+    onColCellHover,
     onDataCellDoubleClick,
     onRowCellClick,
     onColCellClick,
@@ -50,6 +52,7 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
     showPagination,
   } = props;
   const container = useRef<HTMLDivElement>();
+
   const baseSpreadsheet = useRef<SpreadSheet>();
 
   const [ownSpreadsheet, setOwnSpreadsheet] = useState<SpreadSheet>();
@@ -92,11 +95,14 @@ export const TableSheet: React.FC<BaseSheetProps> = memo((props) => {
       [S2Event.COL_CELL_CLICK]: (event: GEvent) => {
         onColCellClick?.(getBaseCellData(event));
       },
+      [S2Event.COL_CELL_HOVER]: (event: GEvent) => {
+        onColCellHover?.(getBaseCellData(event));
+      },
       [S2Event.DATA_CELL_CLICK]: (event: GEvent) => {
         onDataCellClick?.(getBaseCellData(event));
       },
       [S2Event.DATA_CELL_HOVER]: (event: GEvent) => {
-        onDataCellClick?.(getBaseCellData(event));
+        onDataCellHover?.(getBaseCellData(event));
       },
       [S2Event.MERGED_CELLS_DOUBLE_CLICK]: (event: GEvent) => {
         onMergedCellsDoubleClick?.(getBaseCellData(event));
