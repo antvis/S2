@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.4.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.4.0-alpha.3...@antv/s2-react-v1.4.0-alpha.4) (2021-12-24)
+
+
+### Bug Fixes
+
+* 修复未配置 label时, hover 数值单元格报错, 并且列头文字上移的问题 ([#946](https://github.com/antvis/S2/issues/946)) ([d84cf75](https://github.com/antvis/S2/commit/d84cf757252949ac84c1adbf6193683c4ec0a350))
+
+
+### Features
+
+* **interaction:** 新增 hoverFocus 配置项 ([#944](https://github.com/antvis/S2/issues/944)) ([e4f82c0](https://github.com/antvis/S2/commit/e4f82c02823a908378847e7b5e44fa3d150d36db))
+
 # [@antv/s2-react-v1.4.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.4.0-alpha.2...@antv/s2-react-v1.4.0-alpha.3) (2021-12-22)
 
 
