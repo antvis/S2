@@ -4,7 +4,7 @@ import { DataItem, S2DataConfig } from './s2DataConfig';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Condition, CustomTreeItem, ResizeInfo } from '@/common/interface';
 import { S2BasicOptions } from '@/common/interface/s2Options';
-import { BaseDataSet } from '@/data-set';
+import { BaseDataSet, DataType } from '@/data-set';
 import { Frame } from '@/facet/header';
 import { CellTypes } from '@/common/constant';
 import { FrameConfig } from '@/common/interface/frame';
@@ -142,7 +142,8 @@ export interface SortParam extends Sort {
 
 export interface FilterParam {
   filterKey: string;
-  filteredValues: unknown[];
+  filteredValues?: unknown[];
+  customFilter?: (row: DataType) => boolean;
 }
 
 export type SortParams = SortParam[];

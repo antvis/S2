@@ -5,6 +5,7 @@ import { get, isBoolean, last, maxBy, set } from 'lodash';
 import { TableColHeader } from 'src/facet/header/table-col';
 import { ColHeader } from 'src/facet/header/col';
 import { getOccupiedWidthForTableCol } from 'src/utils/cell/table-col-cell';
+import { getValidFrozenOptions } from 'src/utils/layout/frozen';
 import { getIndexRangeWithOffsets } from 'src/utils/facet';
 import type {
   LayoutResult,
@@ -45,7 +46,7 @@ import { renderLine } from '@/utils/g-renders';
 import { TableDataSet } from '@/data-set';
 import { PanelIndexes } from '@/utils/indexes';
 import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
-import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
+import { getAllChildCells } from '@/utils/get-all-child-cells';
 
 export class TableFacet extends BaseFacet {
   public rowOffsets: number[];
@@ -124,12 +125,7 @@ export class TableFacet extends BaseFacet {
   }
 
   protected doLayout(): LayoutResult {
-    const {
-      dataSet,
-      spreadsheet,
-      frozenTrailingColCount,
-      frozenTrailingRowCount,
-    } = this.cfg;
+    const { dataSet, spreadsheet } = this.cfg;
 
     const rowsHierarchy = new Hierarchy();
     const { leafNodes: colLeafNodes, hierarchy: colsHierarchy } =
@@ -146,6 +142,12 @@ export class TableFacet extends BaseFacet {
       const cellHeight = this.getCellHeight(rowIndex);
 
       const cellRange = this.getCellRange();
+      const { frozenTrailingColCount, frozenTrailingRowCount } =
+        getValidFrozenOptions(
+          this.cfg,
+          colLeafNodes.length,
+          cellRange.end - cellRange.start + 1,
+        );
 
       let data;
 
@@ -240,13 +242,16 @@ export class TableFacet extends BaseFacet {
     colLeafNodes: Node[],
     colsHierarchy: Hierarchy,
   ) {
-    const { frozenTrailingColCount } = this.spreadsheet?.options;
     let preLeafNode = Node.blankNode();
     const allNodes = colsHierarchy.getNodes();
     for (const levelSample of colsHierarchy.sampleNodesForAllLevels) {
       levelSample.height = this.getColNodeHeight(levelSample);
       colsHierarchy.height += levelSample.height;
     }
+    const { frozenTrailingColCount } = getValidFrozenOptions(
+      this.spreadsheet?.options,
+      allNodes.length,
+    );
 
     const adaptiveColWitdth = this.getAdaptiveColWidth(colLeafNodes);
 
@@ -517,14 +522,20 @@ export class TableFacet extends BaseFacet {
   };
 
   protected renderFrozenGroupSplitLine = () => {
+    const colLeafNodes = this.layoutResult.colLeafNodes;
+    const cellRange = this.getCellRange();
+    const dataLength = cellRange.end - cellRange.start;
     const {
       frozenRowCount,
       frozenColCount,
       frozenTrailingColCount,
       frozenTrailingRowCount,
-    } = this.spreadsheet.options;
-    const colLeafNodes = this.layoutResult.colLeafNodes;
-    const cellRange = this.getCellRange();
+    } = getValidFrozenOptions(
+      this.spreadsheet.options,
+      colLeafNodes.length,
+      dataLength,
+    );
+
     const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
     const splitLineGroup = this.foregroundGroup.addGroup({
       id: 'frozenSplitLine',
@@ -682,15 +693,19 @@ export class TableFacet extends BaseFacet {
   };
 
   protected renderFrozenPanelCornerGroup = () => {
+    const colLength = this.layoutResult.colLeafNodes.length;
+    const cellRange = this.getCellRange();
+
     const {
       frozenRowCount,
       frozenColCount,
       frozenTrailingRowCount,
       frozenTrailingColCount,
-    } = this.spreadsheet.options;
-
-    const colLength = this.layoutResult.colLeafNodes.length;
-    const cellRange = this.getCellRange();
+    } = getValidFrozenOptions(
+      this.spreadsheet.options,
+      colLength,
+      cellRange.end - cellRange.start + 1,
+    );
 
     const result = calculateFrozenCornerCells(
       {
@@ -808,12 +823,13 @@ export class TableFacet extends BaseFacet {
     if (rowResizeFrozenGroup) {
       rowResizeFrozenGroup.set('children', []);
     }
-    const allCells = getAllPanelDataCell(this.panelGroup.getChildren());
+    const allCells: TableRowCell[] = getAllChildCells(
+      this.panelGroup.getChildren(),
+      TableRowCell,
+    );
 
     allCells.forEach((cell) => {
-      if (cell instanceof TableRowCell) {
-        cell.drawResizeArea();
-      }
+      cell.drawResizeArea();
     });
   }
 
@@ -855,14 +871,19 @@ export class TableFacet extends BaseFacet {
   }
 
   protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+    const colLength = this.layoutResult.colLeafNodes.length;
+    const cellRange = this.getCellRange();
+
     const {
       frozenColCount,
       frozenRowCount,
       frozenTrailingColCount,
       frozenTrailingRowCount,
-    } = this.spreadsheet.options;
-
-    const colLength = this.layoutResult.colLeafNodes.length;
+    } = getValidFrozenOptions(
+      this.spreadsheet.options,
+      colLength,
+      cellRange.end - cellRange.start + 1,
+    );
 
     const indexes = calculateInViewIndexes(
       scrollX,
@@ -872,8 +893,6 @@ export class TableFacet extends BaseFacet {
       this.panelBBox,
       this.getRealScrollX(this.cornerBBox.width),
     );
-
-    const cellRange = this.getCellRange();
 
     return splitInViewIndexesWithFrozen(
       indexes,

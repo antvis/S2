@@ -23,6 +23,7 @@ export class TableDataSet extends BaseDataSet {
    */
   protected getStartRows() {
     const { frozenRowCount } = this.spreadsheet.options || {};
+    if (!frozenRowCount) return [];
     const { displayData } = this;
     return displayData.slice(0, frozenRowCount);
   }
@@ -55,13 +56,17 @@ export class TableDataSet extends BaseDataSet {
   }
 
   handleDimensionValueFilter = () => {
-    each(this.filterParams, ({ filterKey, filteredValues }) => {
+    each(this.filterParams, ({ filterKey, filteredValues, customFilter }) => {
+      const defaultFilterFunc = (row: DataType) =>
+        row[filterKey] && !includes(filteredValues, row[filterKey]);
       this.displayData = [
         ...this.getStartRows(),
-        ...filter(
-          this.getMovableRows(),
-          (row) => row[filterKey] && !includes(filteredValues, row[filterKey]),
-        ),
+        ...filter(this.getMovableRows(), (row) => {
+          if (customFilter) {
+            return customFilter(row) && defaultFilterFunc(row);
+          }
+          return defaultFilterFunc(row);
+        }),
         ...this.getEndRows(),
       ];
     });

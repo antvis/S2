@@ -1,5 +1,6 @@
 import { IGroup } from '@antv/g-base';
 import { isFrozenCol, isFrozenTrailingCol } from 'src/facet/utils';
+import { getValidFrozenOptions } from 'src/utils/layout/frozen';
 import { ColHeader, ColHeaderConfig } from './col';
 import {
   KEY_GROUP_FROZEN_COL_RESIZE_AREA,
@@ -16,9 +17,9 @@ import { SpreadSheet } from '@/sheet-type/index';
  * Column Header for SpreadSheet
  */
 export class TableColHeader extends ColHeader {
-  protected frozenColGroup: IGroup;
+  public frozenColGroup: IGroup;
 
-  protected frozenTrailingColGroup: IGroup;
+  public frozenTrailingColGroup: IGroup;
 
   constructor(cfg: ColHeaderConfig) {
     super(cfg);
@@ -103,10 +104,23 @@ export class TableColHeader extends ColHeader {
     return super.isColCellInRect(item);
   }
 
-  protected clip(): void {
+  public getScrollGroupClipBBox = () => {
     const { width, height, scrollX, spreadsheet } = this.headerConfig;
-    const { frozenColCount, frozenTrailingColCount } = spreadsheet.options;
+    const options = spreadsheet.options;
+    if (!options.frozenColCount && !options.frozenTrailingColCount) {
+      return {
+        x: scrollX,
+        y: 0,
+        width,
+        height,
+      };
+    }
+
     const colLeafNodes = spreadsheet.facet?.layoutResult.colLeafNodes;
+    const { frozenColCount, frozenTrailingColCount } = getValidFrozenOptions(
+      spreadsheet.options,
+      colLeafNodes.length,
+    );
 
     let frozenColWidth = 0;
     let frozenTrailingColWidth = 0;
@@ -120,14 +134,18 @@ export class TableColHeader extends ColHeader {
 
     const frozenClipWidth = width - frozenColWidth - frozenTrailingColWidth;
 
+    return {
+      x: scrollX + frozenColWidth,
+      y: 0,
+      width: frozenClipWidth,
+      height,
+    };
+  };
+
+  protected clip(): void {
     this.scrollGroup.setClip({
       type: 'rect',
-      attrs: {
-        x: scrollX + frozenColWidth,
-        y: 0,
-        width: frozenClipWidth,
-        height,
-      },
+      attrs: this.getScrollGroupClipBBox(),
     });
   }
 }
