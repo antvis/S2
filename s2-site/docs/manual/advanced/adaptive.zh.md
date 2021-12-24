@@ -79,35 +79,48 @@ resizeObserver.observe(parent);
 
 ### React 组件
 
-如果是使用 `@antv/s2-react` 的方式, 那么可通过配置 `adaptive` 和 `adaptiveRef` 参数实现。
+如果是使用 `@antv/s2-react` 的方式, 那么可通过配置 `adaptive` 参数实现。
 
-| 参数            | 说明                 | 类型                   | 默认值 | 必选 |
-| --------------- | ------------------ | ---------------------- | ------ | ---- |
-| adaptive        | 是否开启自适应        | `boolean`               | -      |      |
-| adaptiveRef     | 表格的宽高，根据 `adaptiveRef` 绑定元素的宽高变化。 <br/>⚠️ 1. 只有当 `adaptive` 为 `true` 时，`adaptiveRef` 才生效。 <br/> 2. 不包含 `header` 和 `pagenation` 需要高度。 | `React.MutableRefObject<HTMLDivElement>` | -      |      |
+```ts
+// `adaptive` 的类型 `Adaptive`
+export type Adaptive =
+  | boolean 
+  | {
+      width?: boolean;
+      height?: boolean;
+      container: () => AdaptiveContainer;
+    }
+```
 
-// 配置 `adaptive` 和 `adaptiveRef` 后，表格会自适应 `adaptiveRef` 所绑定 `div` 的大小，并且会自动计算表格的宽高。
+// 配置为 boolean 值时, 容器默认为内部的 container, 宽高都自适应
+
+```tsx
+import { SheetComponent } from '@antv/s2-react';
+
+<SheetComponent adaptive={true} />
+<SheetComponent adaptive={false} />
+```
+
+// 配置为 object 时, 就代表自己指定容器自适应开启, 可具体配置只 自适应宽度, 还是高度, 还是宽高都自适应。
 
 ```tsx
 import { SheetComponent } from '@antv/s2-react';
 
 const adaptiveRef = useRef<HTMLDivElement>();
+const containerId = 'containerId';
 
 <div
+  id={containerId}
   style={{
     width: 600,
     height: 400,
   }}
   ref={ adaptiveRef }
 >
-  <SheetComponent adaptive adaptiveRef={adaptiveRef} />
+  <SheetComponent adaptive={{
+    width: true,
+    height: false,
+    getContainer: () => containerRef.current // 或者使用 document.getElementById(containerId)
+  }} />
 </div>
-```
-
-// 只配置 `adaptive`，表格会自适应父容器宽度，但无法自适应其高度。
-
-```tsx
-import { SheetComponent } from '@antv/s2-react';
-
-<SheetComponent adaptive />
 ```
