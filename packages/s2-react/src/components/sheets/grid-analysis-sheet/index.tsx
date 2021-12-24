@@ -25,7 +25,6 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
     dataCfg,
     options,
     adaptive,
-    adaptiveRef,
     header,
     themeCfg = {
       theme: GridAnalysisTheme,
@@ -131,7 +130,7 @@ export const GridAnalysisSheet: React.FC<BaseSheetProps> = (props) => {
   // handle box size change and resize
   useResizeEffect({
     spreadsheet: ownSpreadsheet,
-    container: adaptiveRef?.current || container,
+    container,
     adaptive,
     options,
   });
