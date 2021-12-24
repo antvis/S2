@@ -1,10 +1,10 @@
 import React from 'react';
 import { debounce } from 'lodash';
 import type { SpreadSheet, S2Options } from '@antv/s2';
-import { Adaptive, AdaptiveContainer } from '@/components';
+import { Adaptive } from '@/components';
 
 export interface UseResizeEffectParams {
-  container: AdaptiveContainer;
+  container: HTMLElement;
   spreadsheet: SpreadSheet;
   adaptive: Adaptive;
   options: S2Options;
@@ -12,15 +12,12 @@ export interface UseResizeEffectParams {
 
 const RENDER_DELAY = 200; // ms
 
-function analyzeAdaptive(
-  paramsContainer: AdaptiveContainer,
-  adaptive: Adaptive,
-) {
+function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
   let container = paramsContainer;
   let adaptiveWidth = true;
   let adaptiveHeight = true;
   if (typeof adaptive !== 'boolean') {
-    container = adaptive?.container() || paramsContainer;
+    container = adaptive?.getContainer() || paramsContainer;
     adaptiveWidth = adaptive?.width ?? true;
     adaptiveHeight = adaptive?.height ?? true;
   }

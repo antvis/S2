@@ -68,7 +68,7 @@ describe('SheetComponent adaptive Tests', () => {
       ReactDOM.render(
         <MainLayout
           adaptive={{
-            container: () => document.getElementById(containerId),
+            getContainer: () => document.getElementById(containerId),
             ...adaptive,
           }}
           containerId={containerId}
@@ -142,7 +142,7 @@ describe('SheetComponent adaptive Tests', () => {
       ReactDOM.render(
         <MainLayout
           adaptive={{
-            container: () => document.getElementById(containerId),
+            getContainer: () => document.getElementById(containerId),
           }}
           containerId={containerId}
           containerWidth={200}
@@ -180,7 +180,9 @@ describe('SheetComponent adaptive Tests', () => {
     act(() => {
       ReactDOM.render(
         <MainLayout
-          adaptive={{ container: () => document.getElementById(containerId) }}
+          adaptive={{
+            getContainer: () => document.getElementById(containerId),
+          }}
           containerId={containerId}
         />,
         getContainer(),

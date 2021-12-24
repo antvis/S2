@@ -88,7 +88,7 @@ export type Adaptive =
   | {
       width?: boolean;
       height?: boolean;
-      container: () => AdaptiveContainer;
+      getContainer: () => HTMLElement;
     }
 ```
 
@@ -120,7 +120,7 @@ const containerId = 'containerId';
   <SheetComponent adaptive={{
     width: true,
     height: false,
-    getContainer: () => containerRef.current // 或者使用 document.getElementById(containerId)
+    getContainer: () => adaptiveRef.current // 或者使用 document.getElementById(containerId)
   }} />
 </div>
 ```
