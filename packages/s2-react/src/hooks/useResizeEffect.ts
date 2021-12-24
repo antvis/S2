@@ -12,16 +12,24 @@ export interface UseResizeEffectParams {
 
 const RENDER_DELAY = 200; // ms
 
-export const useResizeEffect = (params: UseResizeEffectParams) => {
-  const { spreadsheet: s2, adaptive, options = {} as S2Options } = params;
-  let container = params.container;
+function analyzeAdaptive(paramsContainer: HTMLDivElement, adaptive: Adaptive) {
+  let container = paramsContainer;
   let adaptiveWidth = true;
   let adaptiveHeight = true;
   if (typeof adaptive !== 'boolean') {
-    container = adaptive?.container() || params.container;
+    container = adaptive?.container() || paramsContainer;
     adaptiveWidth = adaptive?.width ?? true;
     adaptiveHeight = adaptive?.height ?? true;
   }
+  return { container, adaptiveWidth, adaptiveHeight };
+}
+
+export const useResizeEffect = (params: UseResizeEffectParams) => {
+  const { spreadsheet: s2, adaptive, options = {} as S2Options } = params;
+  const { container, adaptiveWidth, adaptiveHeight } = analyzeAdaptive(
+    params.container,
+    adaptive,
+  );
   // 第一次自适应时不需要 debounce, 防止抖动
   const isFirstRender = React.useRef<boolean>(true);
 
