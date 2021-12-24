@@ -5,7 +5,6 @@ redirect_from:
   - /zh/docs/manual
 ---
 
-![introduction](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*X_KJQZAxjKUAAAAAAAAAAAAAARQnAQ)
 
 <div align="center">
 <p>
@@ -31,6 +30,8 @@ redirect_from:
 ## ❓ 什么是 S2
 
 [S2](https://github.com/antvis/s2) 是一个面向可视分析领域的数据驱动的表可视化引擎。"S" 取自于 "SpreadSheet" 的两个 "S"，"2" 代表了透视表中的行列两个维度。旨在提供美观、易用、高性能、易扩展的多维表格。
+
+![demos](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
 
 ## ✨ 特性
 
