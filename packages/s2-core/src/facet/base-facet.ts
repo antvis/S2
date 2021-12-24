@@ -486,6 +486,10 @@ export abstract class BaseFacet {
     if (scrollY + panelHeight >= rendererHeight) {
       return rendererHeight - panelHeight;
     }
+    // 当数据为空时，rendererHeight 可能为 0，此时 scrollY 为负值，需要调整为 0。
+    if (scrollY < 0) {
+      return 0;
+    }
     return Math.max(0, scrollY);
   };
 

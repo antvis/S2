@@ -75,6 +75,25 @@ describe('Table Mode Dataset Test', () => {
     });
   });
 
+  describe('test dataset query when no data', () => {
+    test('should handle getCellData when no data', () => {
+      MockTableSheet.mockClear();
+      const emptyDataSet = new TableDataSet(new MockTableSheet());
+      emptyDataSet.setDataCfg({
+        ...dataCfg,
+        data: [],
+      });
+      expect(
+        emptyDataSet.getCellData({
+          query: {
+            col: 'sub_type',
+            rowIndex: 0,
+          },
+        }),
+      ).toEqual(undefined);
+    });
+  });
+
   describe('test for sort and filter', () => {
     it('should getCellData with filteredValues', () => {
       dataSet.setDataCfg({
