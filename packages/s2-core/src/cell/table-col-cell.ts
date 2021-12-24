@@ -4,6 +4,7 @@ import { getExtraPaddingForExpandIcon } from 'src/utils/cell/table-col-cell';
 import { getContentArea } from 'src/utils/cell/cell';
 import { getSortTypeIcon } from 'src/utils/sort-action';
 import { Group } from '@antv/g-canvas';
+import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { isLastColumnAfterHidden } from '@/utils/hide-columns';
 import { S2Event, HORIZONTAL_RESIZE_AREA_KEY_PRE } from '@/common/constant';
 import { renderIcon, renderLine, renderRect } from '@/utils/g-renders';
@@ -16,6 +17,7 @@ import {
 } from '@/common/interface';
 import { KEY_GROUP_FROZEN_COL_RESIZE_AREA } from '@/common/constant';
 import { getOrCreateResizeAreaGroupById } from '@/utils/interaction/resize';
+import { TableColHeader } from '@/facet/header/table-col';
 
 export class TableColCell extends ColCell {
   protected handleRestOptions(...[headerConfig]) {
@@ -143,6 +145,46 @@ export class TableColCell extends ColCell {
         strokeOpacity: horizontalBorderColorOpacity,
       },
     );
+  }
+
+  protected getVerticalResizeAreaOffset() {
+    const { x, y } = this.meta;
+    const { scrollX, position } = this.headerConfig;
+
+    return {
+      x: position.x + x - (this.isFrozenCell() ? 0 : scrollX),
+      y: position.y + y,
+    };
+  }
+
+  protected shouldAddVerticalResizeArea() {
+    if (this.isFrozenCell()) {
+      return true;
+    }
+
+    const { x, y, width, height } = this.meta;
+    const { scrollX, scrollY } = this.headerConfig;
+
+    const headerInstance = this.headerConfig.spreadsheet.facet
+      .columnHeader as TableColHeader;
+
+    const resizeStyle = this.getResizeAreaStyle();
+    const resizeAreaBBox = {
+      x: x + width - resizeStyle.size / 2,
+      y,
+      width: resizeStyle.size,
+      height,
+    };
+    const scrollGroupBBox = headerInstance.getScrollGroupClipBBox();
+    const resizeClipAreaBBox = {
+      ...scrollGroupBBox,
+      x: scrollGroupBBox.x - scrollX,
+    };
+
+    return shouldAddResizeArea(resizeAreaBBox, resizeClipAreaBBox, {
+      scrollX,
+      scrollY,
+    });
   }
 
   private addExpandColumnIconShapes() {

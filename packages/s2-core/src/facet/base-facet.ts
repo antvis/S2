@@ -23,7 +23,7 @@ import {
   InterceptType,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
-import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
+import { getAllChildCells } from '@/utils/get-all-child-cells';
 import {
   ColHeader,
   CornerHeader,
@@ -52,6 +52,7 @@ import type {
 } from '@/common/interface';
 import { updateMergedCells } from '@/utils/interaction/merge-cell';
 import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
+import { DataCell } from '@/cell';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -913,7 +914,10 @@ export abstract class BaseFacet {
           this.addCell(cell);
         }
       });
-      const allCells = getAllPanelDataCell(this.panelGroup.getChildren());
+      const allCells = getAllChildCells(
+        this.panelGroup.getChildren(),
+        DataCell,
+      );
       // remove cell from panelCell
       each(remove, ([i, j]) => {
         const findOne = find(
