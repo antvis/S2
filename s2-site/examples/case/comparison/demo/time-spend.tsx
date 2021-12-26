@@ -237,7 +237,7 @@ fetch('../data/time-spend.json')
     };
 
     const s2Options = {
-      width: 1140,
+      width: 1150,
       height: 420,
       showDefaultHeaderActionIcon: false,
       dataCell: (viewMeta) => {
@@ -252,8 +252,8 @@ fetch('../data/time-spend.json')
           hideMeasureColumn: true,
         },
         cellCfg: {
-          width: 60,
-          height: 60,
+          width: 40,
+          height: 40,
         },
       },
     };
