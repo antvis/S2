@@ -224,6 +224,10 @@ module.exports = {
       // markdown 文档中的 playground 若干设置
       splitPaneMainSize: '75%',
     },
+    docsearchOptions: {
+      apiKey: 'b374aeb00854d3e88723968d90b21e4d',
+      indexName: 'antv_s2',
+    },
     // 编辑器配置
     playground: {
       container: '<div id="container" />',
