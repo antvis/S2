@@ -1,17 +1,14 @@
 # [@antv/s2-react-v1.4.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.4.0-alpha.3...@antv/s2-react-v1.4.0-alpha.4) (2021-12-24)
 
-
 ### Bug Fixes
 
-* 修复未配置 label时, hover 数值单元格报错, 并且列头文字上移的问题 ([#946](https://github.com/antvis/S2/issues/946)) ([d84cf75](https://github.com/antvis/S2/commit/d84cf757252949ac84c1adbf6193683c4ec0a350))
-
+* 修复未配置 label 时，hover 数值单元格报错，并且列头文字上移的问题 ([#946](https://github.com/antvis/S2/issues/946)) ([d84cf75](https://github.com/antvis/S2/commit/d84cf757252949ac84c1adbf6193683c4ec0a350))
 
 ### Features
 
 * **interaction:** 新增 hoverFocus 配置项 ([#944](https://github.com/antvis/S2/issues/944)) ([e4f82c0](https://github.com/antvis/S2/commit/e4f82c02823a908378847e7b5e44fa3d150d36db))
 
 # [@antv/s2-react-v1.4.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.4.0-alpha.2...@antv/s2-react-v1.4.0-alpha.3) (2021-12-22)
-
 
 ### Bug Fixes
 
@@ -20,11 +17,9 @@
 
 # [@antv/s2-react-v1.4.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.4.0-alpha.1...@antv/s2-react-v1.4.0-alpha.2) (2021-12-21)
 
-
 ### Bug Fixes
 
 * 🐛 修复趋势分析表和网格分析表无法自定义主题 ([#927](https://github.com/antvis/S2/issues/927)) ([59dc814](https://github.com/antvis/S2/commit/59dc814e9e3b63229a76009a803dfac1dbe9c9c0))
-
 
 ### Features
 
@@ -33,12 +28,10 @@
 
 # [@antv/s2-react-v1.4.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.3.0...@antv/s2-react-v1.4.0-alpha.1) (2021-12-20)
 
-
 ### Bug Fixes
 
 * **table:** 修复明细表 onDataCellHover 无法触发 ([#896](https://github.com/antvis/S2/issues/896)) ([794406a](https://github.com/antvis/S2/commit/794406a25fbc0f0be9f434aa8cde8cf324e278ab))
-* 修复错误修改DefaultOptions问题 ([#910](https://github.com/antvis/S2/issues/910)) ([c6e3235](https://github.com/antvis/S2/commit/c6e32350b15611b4fe9aa457baf45329443c7aff))
-
+* 修复错误修改 DefaultOptions 问题 ([#910](https://github.com/antvis/S2/issues/910)) ([c6e3235](https://github.com/antvis/S2/commit/c6e32350b15611b4fe9aa457baf45329443c7aff))
 
 ### Features
 
@@ -48,7 +41,7 @@
 * **interaction:** 透视表支持隐藏列头 ([#890](https://github.com/antvis/S2/issues/890)) ([ee938d6](https://github.com/antvis/S2/commit/ee938d6e43a703ef9b3b1a86a0c44dce9d833984)), closes [#892](https://github.com/antvis/S2/issues/892)
 * **strategy-sheet:** 自定义趋势分析表 tooltip ([#905](https://github.com/antvis/S2/issues/905)) ([eb02845](https://github.com/antvis/S2/commit/eb0284559bb3fb179e5e1a89e5b27cb8b080fcb8))
 * **strategy-sheet:** 趋势分析表禁用多选和快捷多选 ([#919](https://github.com/antvis/S2/issues/919)) ([9b840ad](https://github.com/antvis/S2/commit/9b840ada180e75ab8413f435416e6ced1636bfd6))
-* 新增趋势分析表hover列头显示指标名 ([#913](https://github.com/antvis/S2/issues/913)) ([4ff9373](https://github.com/antvis/S2/commit/4ff9373d1094150883c0554e636fac1bca4104c7)), closes [#898](https://github.com/antvis/S2/issues/898) [#902](https://github.com/antvis/S2/issues/902) [#907](https://github.com/antvis/S2/issues/907) [#910](https://github.com/antvis/S2/issues/910)
+* 新增趋势分析表 hover 列头显示指标名 ([#913](https://github.com/antvis/S2/issues/913)) ([4ff9373](https://github.com/antvis/S2/commit/4ff9373d1094150883c0554e636fac1bca4104c7)), closes [#898](https://github.com/antvis/S2/issues/898) [#902](https://github.com/antvis/S2/issues/902) [#907](https://github.com/antvis/S2/issues/907) [#910](https://github.com/antvis/S2/issues/910)
 
 # [@antv/s2-react-v1.3.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.2.0...@antv/s2-react-v1.3.0-alpha.1) (2021-12-15)
 

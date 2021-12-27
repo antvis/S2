@@ -468,8 +468,8 @@ export class TableFacet extends BaseFacet {
             ? maxHeight / defaultCellHeight - 1
             : Math.floor(maxHeight / defaultCellHeight);
         return {
-          start: yMin,
-          end: yMax,
+          start: Math.max(0, yMin),
+          end: Math.max(0, yMax),
         };
       },
     };

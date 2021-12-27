@@ -305,6 +305,10 @@ describe('Table Mode Facet With Frozen Test', () => {
       start: 37,
       end: 49,
     });
+    expect(viewCellHeights.getIndexRange(0, 0)).toStrictEqual({
+      start: 0,
+      end: 0,
+    });
 
     expect(viewCellHeights.getTotalHeight()).toBe(960);
     expect(viewCellHeights.getTotalLength()).toBe(32);
@@ -362,5 +366,34 @@ describe('Table Mode Facet Test With Custom Row Height', () => {
     expect(viewCellHeights.getTotalLength()).toBe(32);
     expect(viewCellHeights.getCellOffsetY(0)).toBe(0);
     expect(viewCellHeights.getCellOffsetY(7)).toBe(650);
+  });
+});
+
+describe('Table Mode Facet Test With Zero Height', () => {
+  const ss: SpreadSheet = new MockSpreadSheet();
+  const dataSet: TableDataSet = new MockTableDataSet(ss);
+  ss.options = merge({}, assembleOptions(), {
+    width: 0,
+    height: 0,
+  });
+  const facet: TableFacet = new TableFacet({
+    spreadsheet: ss,
+    dataSet: dataSet,
+    ...assembleDataCfg().fields,
+    ...merge({}, assembleOptions()),
+    ...DEFAULT_STYLE,
+    columns: ['province', 'city', 'type', 'sub_type', 'price'],
+  });
+
+  test('should get correct panelBBox', () => {
+    const panelBBox = facet.panelBBox;
+    expect(panelBBox.width).toBe(0);
+    expect(panelBBox.height).toBe(0);
+  });
+
+  test('should get correct initial scroll position', () => {
+    const { scrollX, scrollY } = facet.getScrollOffset();
+    expect(scrollX).toBe(0);
+    expect(scrollY).toBe(0);
   });
 });

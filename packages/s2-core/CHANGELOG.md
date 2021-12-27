@@ -1,12 +1,10 @@
 # [@antv/s2-v1.4.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.4.0-alpha.3...@antv/s2-v1.4.0-alpha.4) (2021-12-24)
 
-
 ### Bug Fixes
 
 * :bug: 修复列头小计总计位置漂移问题， close [#836](https://github.com/antvis/S2/issues/836) ([#934](https://github.com/antvis/S2/issues/934)) ([3dc04b7](https://github.com/antvis/S2/commit/3dc04b7816eedfbc8669227fef850414f9b3c72c))
 * **facet:** table adaptive layout  ([#932](https://github.com/antvis/S2/issues/932)) ([f35cd3b](https://github.com/antvis/S2/commit/f35cd3b6bc389371f57cde3f33ed3965ab237f1b))
 * **table:** add frozen opts validation & frozen col resize fix ([#933](https://github.com/antvis/S2/issues/933)) ([c88f649](https://github.com/antvis/S2/commit/c88f64946346c730191266bfadbc7b11cb0144e1))
-
 
 ### Features
 
@@ -15,7 +13,6 @@
 
 # [@antv/s2-v1.4.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.4.0-alpha.2...@antv/s2-v1.4.0-alpha.3) (2021-12-22)
 
-
 ### Bug Fixes
 
 * **components:** 修复配置的宽度超过浏览器可视窗口宽度无法滚动的问题 close [#889](https://github.com/antvis/S2/issues/889) ([#931](https://github.com/antvis/S2/issues/931)) ([bf03b37](https://github.com/antvis/S2/commit/bf03b37d816258d465ffd4ede9bb759b1adaee12))
@@ -23,12 +20,10 @@
 
 # [@antv/s2-v1.4.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.4.0-alpha.1...@antv/s2-v1.4.0-alpha.2) (2021-12-21)
 
-
 ### Bug Fixes
 
 * 🐛 修复趋势分析表和网格分析表无法自定义主题 ([#927](https://github.com/antvis/S2/issues/927)) ([59dc814](https://github.com/antvis/S2/commit/59dc814e9e3b63229a76009a803dfac1dbe9c9c0))
 * event-controller 重复注册事件 ([#922](https://github.com/antvis/S2/issues/922)) ([683f8e8](https://github.com/antvis/S2/commit/683f8e893dda6fa6f2a687b2014f499d95e198a3))
-
 
 ### Features
 
@@ -37,15 +32,13 @@
 
 # [@antv/s2-v1.4.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.3.0...@antv/s2-v1.4.0-alpha.1) (2021-12-20)
 
-
 ### Bug Fixes
 
 * :bug: 修复指标列头 hover 行为和维值列头不一致问题 ([#912](https://github.com/antvis/S2/issues/912)) ([8fa67bb](https://github.com/antvis/S2/commit/8fa67bbec21e0d336a3ac4bc589d472100a9e89f))
 * **frame:** incorrect viewport splitline shadow ([#898](https://github.com/antvis/S2/issues/898)) ([197381e](https://github.com/antvis/S2/commit/197381e01bb79135f3217546baee5434ef28253d))
 * **interactive:** global selected event emit ([#902](https://github.com/antvis/S2/issues/902)) ([bd4eca3](https://github.com/antvis/S2/commit/bd4eca3a7f8ca46109c15f3d06003970429b2011))
-* **scroll:** 修复滚动表格后, 鼠标移动会重置已选中单元格 close [#904](https://github.com/antvis/S2/issues/904) ([#914](https://github.com/antvis/S2/issues/914)) ([d6ebc3d](https://github.com/antvis/S2/commit/d6ebc3dc2773977b8a5a5aa4203d513281b6090c))
-* 修复错误修改DefaultOptions问题 ([#910](https://github.com/antvis/S2/issues/910)) ([c6e3235](https://github.com/antvis/S2/commit/c6e32350b15611b4fe9aa457baf45329443c7aff))
-
+* **scroll:** 修复滚动表格后，鼠标移动会重置已选中单元格 close [#904](https://github.com/antvis/S2/issues/904) ([#914](https://github.com/antvis/S2/issues/914)) ([d6ebc3d](https://github.com/antvis/S2/commit/d6ebc3dc2773977b8a5a5aa4203d513281b6090c))
+* 修复错误修改 DefaultOptions 问题 ([#910](https://github.com/antvis/S2/issues/910)) ([c6e3235](https://github.com/antvis/S2/commit/c6e32350b15611b4fe9aa457baf45329443c7aff))
 
 ### Features
 
@@ -55,7 +48,7 @@
 * **interaction:** 透视表支持隐藏列头 ([#890](https://github.com/antvis/S2/issues/890)) ([ee938d6](https://github.com/antvis/S2/commit/ee938d6e43a703ef9b3b1a86a0c44dce9d833984)), closes [#892](https://github.com/antvis/S2/issues/892)
 * **strategy-sheet:** 自定义趋势分析表 tooltip ([#905](https://github.com/antvis/S2/issues/905)) ([eb02845](https://github.com/antvis/S2/commit/eb0284559bb3fb179e5e1a89e5b27cb8b080fcb8))
 * **strategy-sheet:** 趋势分析表禁用多选和快捷多选 ([#919](https://github.com/antvis/S2/issues/919)) ([9b840ad](https://github.com/antvis/S2/commit/9b840ada180e75ab8413f435416e6ced1636bfd6))
-* 新增趋势分析表hover列头显示指标名 ([#913](https://github.com/antvis/S2/issues/913)) ([4ff9373](https://github.com/antvis/S2/commit/4ff9373d1094150883c0554e636fac1bca4104c7)), closes [#898](https://github.com/antvis/S2/issues/898) [#902](https://github.com/antvis/S2/issues/902) [#907](https://github.com/antvis/S2/issues/907) [#910](https://github.com/antvis/S2/issues/910)
+* 新增趋势分析表 hover 列头显示指标名 ([#913](https://github.com/antvis/S2/issues/913)) ([4ff9373](https://github.com/antvis/S2/commit/4ff9373d1094150883c0554e636fac1bca4104c7)), closes [#898](https://github.com/antvis/S2/issues/898) [#902](https://github.com/antvis/S2/issues/902) [#907](https://github.com/antvis/S2/issues/907) [#910](https://github.com/antvis/S2/issues/910)
 
 # [@antv/s2-v1.3.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.2.0...@antv/s2-v1.3.0-alpha.1) (2021-12-15)
 

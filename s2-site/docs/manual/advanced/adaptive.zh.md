@@ -79,10 +79,48 @@ resizeObserver.observe(parent);
 
 ### React 组件
 
-如果是使用 `@antv/s2-react` 的方式，那么配置 `adaptive` 参数即可，默认集成了上面的两种方式
+如果是使用 `@antv/s2-react` 的方式, 那么可通过配置 `adaptive` 参数实现。
+
+```ts
+// `adaptive` 的类型 `Adaptive`
+export type Adaptive =
+  | boolean 
+  | {
+      width?: boolean;
+      height?: boolean;
+      getContainer: () => HTMLElement;
+    }
+```
+
+// 配置为 boolean 值时, 容器默认为内部的 container, 宽高都自适应
 
 ```tsx
-import { SheetComponent } from '@antv/s2-react'
+import { SheetComponent } from '@antv/s2-react';
 
-<SheetComponent adaptive />
+<SheetComponent adaptive={true} />
+<SheetComponent adaptive={false} />
+```
+
+// 配置为 object 时, 就代表自己指定容器自适应开启, 可具体配置只 自适应宽度, 还是高度, 还是宽高都自适应。
+
+```tsx
+import { SheetComponent } from '@antv/s2-react';
+
+const adaptiveRef = useRef<HTMLDivElement>();
+const containerId = 'containerId';
+
+<div
+  id={containerId}
+  style={{
+    width: 600,
+    height: 400,
+  }}
+  ref={ adaptiveRef }
+>
+  <SheetComponent adaptive={{
+    width: true,
+    height: false,
+    getContainer: () => adaptiveRef.current // 或者使用 document.getElementById(containerId)
+  }} />
+</div>
 ```

@@ -1,17 +1,35 @@
 import React from 'react';
 import { debounce } from 'lodash';
-import type { SpreadSheet } from '@antv/s2';
+import type { SpreadSheet, S2Options } from '@antv/s2';
+import { Adaptive } from '@/components';
 
 export interface UseResizeEffectParams {
   container: HTMLElement;
   s2: SpreadSheet;
-  adaptive: boolean;
+  adaptive: Adaptive;
 }
 
 const RENDER_DELAY = 200; // ms
 
+function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
+  let container = paramsContainer;
+  let adaptiveWidth = true;
+  let adaptiveHeight = true;
+  if (typeof adaptive !== 'boolean') {
+    container = adaptive?.getContainer() || paramsContainer;
+    adaptiveWidth = adaptive?.width ?? true;
+    adaptiveHeight = adaptive?.height ?? true;
+  }
+  return { container, adaptiveWidth, adaptiveHeight };
+}
+
 export const useResize = (params: UseResizeEffectParams) => {
-  const { container, s2, adaptive } = params;
+  const { s2, adaptive } = params;
+
+  const { container, adaptiveWidth, adaptiveHeight } = analyzeAdaptive(
+    params.container,
+    adaptive,
+  );
 
   // 第一次自适应时不需要 debounce, 防止抖动
   const isFirstRender = React.useRef<boolean>(true);
@@ -41,11 +59,16 @@ export const useResize = (params: UseResizeEffectParams) => {
     const resizeObserver = new ResizeObserver(([entry] = []) => {
       if (entry) {
         const [size] = entry.borderBoxSize || [];
-        if (isFirstRender.current) {
-          render(size.inlineSize, size.blockSize);
+        const width = adaptiveWidth ? size?.inlineSize : s2?.options.width;
+        const height = adaptiveHeight ? size?.blockSize : s2?.options.height;
+        if (!adaptiveWidth && !adaptiveHeight) {
           return;
         }
-        debounceRender(size.inlineSize, size.blockSize);
+        if (isFirstRender.current) {
+          render(width, height);
+          return;
+        }
+        debounceRender(width, height);
       }
     });
 
@@ -57,5 +80,12 @@ export const useResize = (params: UseResizeEffectParams) => {
       resizeObserver.unobserve(container);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [adaptive, container]);
+  }, [
+    adaptive,
+    container,
+    adaptiveWidth,
+    adaptiveHeight,
+    s2?.options.width,
+    s2?.options.height,
+  ]);
 };

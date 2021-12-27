@@ -49,7 +49,12 @@ S2 is a solution in multi-dimensional cross-analysis tables, which provides data
  It supplements multi-dimensional analysis tables in the industry. By providing the core library, essential components,
 demo components and expansion capabilities, it allows developers to use it quickly and freely.
 
-<!-- ### 🏠 [Homepage](https://s2.antv.vision) -->
+## 🏠 Homepage
+
+![homepage](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
+
+* [Homepage](https://s2.antv.vision)
+* [Demos](https://antv-s2.gitee.io/en/examples/gallery)
 
 ## ✨ Features
 
@@ -199,7 +204,7 @@ yarn site:start
 
 ## 📧 Contact Us
 
-<img src="width: 100%; height: auto" href="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg" alt="S2"></a>
+<img style="width: 300px; height: auto" alt="S2" src="https://gw.alipayobjects.com/zos/antfincdn/2zjO70QLdp/7939a108-930c-42a9-a0d3-fbfdc2cc44cf.jpg">
 
 ## 👬 Contributors
 
