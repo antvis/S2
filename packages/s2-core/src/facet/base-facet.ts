@@ -928,9 +928,12 @@ export abstract class BaseFacet {
           allCells,
           (cell) => cell.get('name') === `${i}-${j}`,
         );
-        updateMergedCells(this.spreadsheet);
         findOne?.remove(true);
       });
+      updateMergedCells(this.spreadsheet);
+      DebuggerUtil.getInstance().logger(
+        `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
+      );
     });
     this.preCellIndexes = indexes;
   };
