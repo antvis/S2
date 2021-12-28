@@ -13,7 +13,6 @@ const getStrategySheetOptions = (): Partial<S2Options<React.ReactNode>> => {
   return {
     dataCell: (viewMeta) => new CustomDataCell(viewMeta, viewMeta.spreadsheet),
     colCell: (...args) => new CustomColCell(...args),
-    hierarchyType: 'tree',
     showDefaultHeaderActionIcon: false,
     style: {
       colCfg: {
