@@ -33,10 +33,13 @@ import {
 import corePkg from '@antv/s2/package.json';
 import { forEach, random } from 'lodash';
 import { DataType } from '@antv/s2';
+import { customTreeFields } from '../__tests__/data/custom-tree-fields';
+import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';
 import {
   singleMeasure,
   multiMeasure,
+  customTree,
 } from '../__tests__/data/strategy-data.json';
 import reactPkg from '../package.json';
 import {
@@ -44,7 +47,7 @@ import {
   sliderOptions,
   tableSheetDataCfg,
   defaultTheme,
-  strategyOptions,
+  strategyOptions as mockStrategyOptions,
   mockGridAnalysisOptions,
   defaultOptions,
 } from './config';
@@ -150,7 +153,9 @@ function MainLayout() {
   const [dataCfg, setDataCfg] =
     React.useState<Partial<S2DataConfig>>(pivotSheetDataCfg);
   const [strategyDataCfg, setStrategyDataCfg] =
-    React.useState<S2DataConfig>(singleMeasure);
+    React.useState<S2DataConfig>(customTree);
+  const [strategyOptions, setStrategyOptions] =
+    React.useState<S2Options>(mockStrategyOptions);
   const s2Ref = React.useRef<SpreadSheet>();
 
   //  ================== Callback ========================
@@ -346,6 +351,31 @@ function MainLayout() {
     },
     options,
   );
+
+  const onStrategyDataTypeChange = (e: RadioChangeEvent) => {
+    let newDataCfg;
+    switch (e.target.value) {
+      case 'multiMeasure':
+        newDataCfg = multiMeasure;
+        setStrategyOptions(
+          customMerge({}, strategyOptions, { hierarchyType: 'tree' }),
+        );
+        break;
+      case 'customTree':
+        newDataCfg = customTree;
+        setStrategyOptions(
+          customMerge({}, strategyOptions, { hierarchyType: 'customTree' }),
+        );
+        break;
+      default:
+        newDataCfg = singleMeasure;
+        setStrategyOptions(
+          customMerge({}, strategyOptions, { hierarchyType: 'tree' }),
+        );
+        break;
+    }
+    setStrategyDataCfg(newDataCfg);
+  };
 
   return (
     <div className="playground">
@@ -670,16 +700,22 @@ function MainLayout() {
             />
           )}
         </TabPane>
+        <TabPane tab="自定义目录树" key="customTree">
+          <SheetComponent
+            dataCfg={{ data: dataCustomTrees, fields: customTreeFields }}
+            options={{ width: 600, height: 480, hierarchyType: 'customTree' }}
+          />
+        </TabPane>
         <TabPane tab="趋势分析表" key="strategy">
           <Space size="middle" style={{ marginBottom: 20, display: 'flex' }}>
-            <Switch
-              checkedChildren="多指标"
-              unCheckedChildren="单指标"
-              onChange={(checked) => {
-                const newDataCfg = checked ? multiMeasure : singleMeasure;
-                setStrategyDataCfg(newDataCfg);
-              }}
-            />
+            <Radio.Group
+              onChange={onStrategyDataTypeChange}
+              defaultValue="customTree"
+            >
+              <Radio.Button value="singleMeasure">单指标</Radio.Button>
+              <Radio.Button value="multiMeasure">多指标</Radio.Button>
+              <Radio.Button value="customTree">自定义目录树</Radio.Button>
+            </Radio.Group>
           </Space>
           <SheetComponent
             sheetType="strategy"
@@ -689,7 +725,6 @@ function MainLayout() {
               theme: defaultTheme as unknown as S2Theme,
               name: 'gray',
             }}
-            ref={s2Ref}
           />
         </TabPane>
         <TabPane tab="网格分析表" key="gridAnalysis">
@@ -697,7 +732,6 @@ function MainLayout() {
             sheetType="gridAnalysis"
             dataCfg={mockGridAnalysisDataCfg}
             options={mockGridAnalysisOptions}
-            ref={s2Ref}
           />
         </TabPane>
       </Tabs>

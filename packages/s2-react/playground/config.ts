@@ -1,6 +1,5 @@
 import { customMerge, isUpDataValue, S2DataConfig, S2Options } from '@antv/s2';
 import type { SliderSingleProps } from 'antd';
-import React from 'react';
 import { getSheetComponentOptions } from '../src/utils';
 import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
 
@@ -107,7 +106,6 @@ export const strategyOptions: S2Options = {
   width: 1000,
   height: 400,
   cornerText: '指标',
-  hierarchyType: 'tree',
   headerActionIcons: [
     {
       iconNames: ['Trend'],
@@ -119,7 +117,6 @@ export const strategyOptions: S2Options = {
   style: {
     cellCfg: {
       valuesCfg: {
-        widthPercentCfg: [50, 30, 30],
         originalValueField: 'originalValue',
         conditions: {
           text: {
