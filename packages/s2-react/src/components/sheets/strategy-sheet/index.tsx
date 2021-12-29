@@ -1,5 +1,5 @@
 import React from 'react';
-import { customMerge, SpreadSheet } from '@antv/s2';
+import { customMerge, SpreadSheet, ViewMeta, ColHeaderConfig } from '@antv/s2';
 import { isEmpty, size } from 'lodash';
 import { BaseSheet } from '../base-sheet';
 import { StrategyTheme } from './strategy-theme';
@@ -31,9 +31,13 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
         return {};
       }
       return {
-        dataCell: (viewMeta) =>
+        dataCell: (viewMeta: ViewMeta) =>
           new CustomDataCell(viewMeta, viewMeta.spreadsheet),
-        colCell: (...args) => new CustomColCell(...args),
+        colCell: (
+          node: Node,
+          spreadsheet: SpreadSheet,
+          headerConfig: ColHeaderConfig,
+        ) => new CustomColCell(node, spreadsheet, headerConfig),
         showDefaultHeaderActionIcon: false,
         hierarchyType: isEmpty(dataCfg.fields.rows) ? 'customTree' : 'tree',
 
