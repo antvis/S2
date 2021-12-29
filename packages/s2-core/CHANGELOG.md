@@ -1,3 +1,10 @@
+# [@antv/s2-v1.5.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.5.0-alpha.1...@antv/s2-v1.5.0-alpha.2) (2021-12-29)
+
+
+### Bug Fixes
+
+* 修复错误版本号 ([0a79d09](https://github.com/antvis/S2/commit/0a79d099721256b3d3295601d1b2a5e9850ea858))
+
 # [@antv/s2-v1.5.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.4.0...@antv/s2-v1.5.0-alpha.1) (2021-12-29)
 
 
