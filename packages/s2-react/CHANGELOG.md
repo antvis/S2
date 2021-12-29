@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.5.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.5.0-alpha.2...@antv/s2-react-v1.5.0-alpha.3) (2021-12-29)
+
+
+### Bug Fixes
+
+* **stratgysheet:** 逻辑兜底 ([ca8ea28](https://github.com/antvis/S2/commit/ca8ea28d13d51decff6a975ca517cc769db652ba))
+
 # [@antv/s2-react-v1.5.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.5.0-alpha.1...@antv/s2-react-v1.5.0-alpha.2) (2021-12-29)
 
 
