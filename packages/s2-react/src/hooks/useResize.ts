@@ -16,7 +16,7 @@ function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
   let adaptiveWidth = true;
   let adaptiveHeight = true;
   if (typeof adaptive !== 'boolean') {
-    container = adaptive?.getContainer() || paramsContainer;
+    container = adaptive?.getContainer?.() || paramsContainer;
     adaptiveWidth = adaptive?.width ?? true;
     adaptiveHeight = adaptive?.height ?? true;
   }

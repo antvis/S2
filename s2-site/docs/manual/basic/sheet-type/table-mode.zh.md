@@ -68,13 +68,13 @@ const s2DataCfg = {
   data,
 };
 
-// 3. S2 相关配置
+// 3. 添加配置
 const s2Options = {
   width: 400,
   height: 200,
 };
 
-// 5, 渲染 React 组件
+// 4, 渲染
 ReactDOM.render(
   <SheetComponent
     dataCfg={s2DataCfg}
@@ -89,8 +89,11 @@ ReactDOM.render(
 
 如果不打算依赖 React，可以在上面第三步之后直接调用：
 
-```typescript
-const sheet = new TableSheet("#mountNode", dataCfg, options);
+```ts
+import { TableSheet } from "@antv/s2";
+
+const container = document.getElementById('container');
+const sheet = new TableSheet(container, dataCfg, options);
 sheet.render();
 ```
 
@@ -106,12 +109,12 @@ sheet.render();
 
 行列冻结通过在 `s2Options` 中传入这些属性控制：
 
-```typescript
+```ts
 {
-    frozenRowCount: number; // 冻结行的数量，从顶部开始计数
-    frozenTrailingRowCount: number; // 冻结行数量，从底部开始计数
-    frozenColCount: number; // 冻结列的数量，从左侧开始计数
-    frozenTrailingColCount: number; // 冻结列的数量，从右侧开始计数
+  frozenRowCount: number; // 冻结行的数量，从顶部开始计数
+  frozenTrailingRowCount: number; // 冻结行数量，从底部开始计数
+  frozenColCount: number; // 冻结列的数量，从左侧开始计数
+  frozenTrailingColCount: number; // 冻结列的数量，从右侧开始计数
 }
 ```
 

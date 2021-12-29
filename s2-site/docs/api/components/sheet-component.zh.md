@@ -14,7 +14,7 @@ order: 0
 | dataCfg |  透视表数据映射相关配置项 | [S2DataConfig](/zh/docs/api/general/S2DataConfig) | | ✓ |
 | options | 透视表属性配置项 | [S2Options](/zh/docs/api/general/S2Options) | | ✓ |
 | partDrillDown |  维度下钻相关属性 | [PartDrillDown](/zh/docs/api/components/drill-down) | |  |
-| adaptive | 是否根据窗口大小自适应 | `boolean` | `false` | |
+| adaptive | 是否根据窗口大小自适应 | `boolean | { width?: boolean, height?: boolean, getContainer: () => HTMLElement }` | `false` | |
 | showPagination | 是否显示默认分页<br>（只有在 `options` 配置过 `pagination`  属性才会生效） | `boolean` | `true` | |
 | themeCfg | 自定义透视表主题样式 | [ThemeCfg](/zh/docs/api/general/S2Theme) | |  |
 | loading | 控制表格的加载状态 | `boolean` | | |
@@ -40,8 +40,6 @@ order: 0
 
 ### ListSortParams
 
-<description> **required**  _object_ </description>
-
 功能描述：排序回调函数的返回的信息。
 
 | 参数 | 说明                      | 类型 | 默认值  | 必选 |
@@ -50,8 +48,6 @@ order: 0
 | sortMethod | 当前排序方式 | `string` | | ✓ |
 
 ### TargetCellInfo
-
-<description> **required**  _object_ </description>
 
 功能描述：交互回调函数的返回信息。
 
