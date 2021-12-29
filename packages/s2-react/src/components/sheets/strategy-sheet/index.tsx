@@ -45,12 +45,12 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           headerConfig: ColHeaderConfig,
         ) => new CustomColCell(node, spreadsheet, headerConfig),
         showDefaultHeaderActionIcon: false,
-        hierarchyType: isEmpty(dataCfg.fields.rows) ? 'customTree' : 'tree',
+        hierarchyType: isEmpty(dataCfg?.fields?.rows) ? 'customTree' : 'tree',
 
         style: {
           colCfg: {
             height: 38,
-            hideMeasureColumn: !(size(dataCfg.fields.values) > 1),
+            hideMeasureColumn: !(size(dataCfg?.fields?.values) > 1),
           },
         },
         interaction: {
