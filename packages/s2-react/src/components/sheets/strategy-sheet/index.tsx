@@ -1,5 +1,11 @@
 import React from 'react';
-import { customMerge, SpreadSheet, ViewMeta, ColHeaderConfig } from '@antv/s2';
+import {
+  customMerge,
+  SpreadSheet,
+  ViewMeta,
+  ColHeaderConfig,
+  Node,
+} from '@antv/s2';
 import { isEmpty, size } from 'lodash';
 import { BaseSheet } from '../base-sheet';
 import { StrategyTheme } from './strategy-theme';

@@ -6,8 +6,8 @@ import {
   Node,
   SpreadSheet,
   updateShapeAttr,
+  ColHeaderConfig,
 } from '@antv/s2';
-import { ColHeaderConfig } from '@antv/s2/esm/facet/header/col';
 import { get, isEmpty } from 'lodash';
 
 // hover时 指标名与单元格原始文字间隔
