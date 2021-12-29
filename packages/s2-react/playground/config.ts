@@ -107,6 +107,7 @@ export const strategyOptions: S2Options = {
   width: 1000,
   height: 400,
   cornerText: '指标',
+  hierarchyType: 'tree',
   headerActionIcons: [
     {
       iconNames: ['Trend'],

@@ -12,7 +12,6 @@ import { SheetComponentsProps } from '@/components/sheets/interface';
 const strategySheetOptions: Partial<S2Options<React.ReactNode>> = {
   dataCell: (viewMeta) => new CustomDataCell(viewMeta, viewMeta.spreadsheet),
   colCell: (...args) => new CustomColCell(...args),
-  hierarchyType: 'tree',
   showDefaultHeaderActionIcon: false,
   style: {
     colCfg: {
