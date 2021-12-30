@@ -372,8 +372,12 @@ export class PivotDataSet extends BaseDataSet {
     let rows = originRows;
     const drillDownIdPathMap =
       this.spreadsheet?.store.get('drillDownIdPathMap');
+
     // 判断当前是否为下钻节点
-    const isDrillDown = drillDownIdPathMap?.has(rowNode.id);
+    // 需检查 rowNode.id 是否属于下钻根节点(drillDownIdPathMap.keys)的下属节点
+    const isDrillDown = Array.from(drillDownIdPathMap?.keys() ?? []).some(
+      (parentPath) => rowNode.id.startsWith(parentPath),
+    );
 
     // 如果是下钻结点，小计行维度在 originRows 中并不存在
     if (!isTotals || isDrillDown) {
