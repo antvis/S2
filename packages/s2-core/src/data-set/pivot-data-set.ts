@@ -407,7 +407,9 @@ export class PivotDataSet extends BaseDataSet {
       colPivotMeta: this.colPivotMeta,
     });
 
-    return isTotals ? this.getTotalValue(query) : get(this.indexesData, path);
+    return isTotals
+      ? this.getTotalValue(query) || get(this.indexesData, path)
+      : get(this.indexesData, path);
   }
 
   getCustomData = (path: number[]) => {
