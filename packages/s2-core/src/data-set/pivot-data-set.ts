@@ -366,6 +366,22 @@ export class PivotDataSet extends BaseDataSet {
     return filterUndefined([...meta.keys()]);
   }
 
+  getTotalValue(query: DataType) {
+    const { calcTotals } = this.spreadsheet?.options?.totals || {};
+    if (calcTotals) {
+      // 前端计算汇总值
+      const totalValue = getDataSumByField(
+        this.getMultiData(query),
+        VALUE_FIELD,
+      );
+      return {
+        ...query,
+        [VALUE_FIELD]: totalValue,
+        [query[EXTRA_FIELD]]: totalValue,
+      };
+    }
+  }
+
   public getCellData(params: CellDataParams): DataType {
     const { query, rowNode, isTotals = false } = params || {};
 
@@ -390,24 +406,8 @@ export class PivotDataSet extends BaseDataSet {
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
-    if (isTotals) {
-      const { calcTotals } = this.spreadsheet?.options?.totals || {};
-      if (calcTotals) {
-        // 前端计算汇总值
-        const totalValue = getDataSumByField(
-          this.getMultiData(query),
-          VALUE_FIELD,
-        );
-        return {
-          ...query,
-          [VALUE_FIELD]: totalValue,
-          [query[EXTRA_FIELD]]: totalValue,
-        };
-      }
-    }
-    const data = get(this.indexesData, path);
 
-    return data;
+    return isTotals ? this.getTotalValue(query) : get(this.indexesData, path);
   }
 
   getCustomData = (path: number[]) => {

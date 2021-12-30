@@ -2,6 +2,7 @@
  * pivot mode base data-set test.
  */
 import { get, keys } from 'lodash';
+import * as multidataCfg from 'tests/data/simple-data.json';
 import { assembleDataCfg } from '../../util';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
 import { S2DataConfig } from '@/common/interface';
@@ -307,6 +308,50 @@ describe('Pivot Dataset Total Test', () => {
             isTotals: true,
           }),
         ).toContainEntries([[VALUE_FIELD, 78868]]);
+      });
+
+      describe('getCellData function when totals calculated when multi values', () => {
+        beforeEach(() => {
+          MockPivotSheet.mockClear();
+          const mockSheet = new MockPivotSheet();
+          mockSheet.store = new Store();
+          mockSheet.options = {
+            width: 800,
+            height: 600,
+            totals: {
+              calcTotals: true,
+            },
+          };
+          dataCfg = assembleDataCfg({
+            ...multidataCfg,
+            meta: [],
+            totalData: [],
+          });
+          dataSet = new PivotDataSet(mockSheet);
+          dataSet.setDataCfg(dataCfg);
+        });
+        test('should get correct total cell data', () => {
+          expect(
+            dataSet.getCellData({
+              query: {
+                province: '浙江',
+                type: '笔',
+                [EXTRA_FIELD]: 'price',
+              },
+              isTotals: true,
+            }),
+          ).toContainEntries([[VALUE_FIELD, 2]]);
+          expect(
+            dataSet.getCellData({
+              query: {
+                province: '浙江',
+                type: '笔',
+                [EXTRA_FIELD]: 'cost',
+              },
+              isTotals: true,
+            }),
+          ).toContainEntries([[VALUE_FIELD, 4]]);
+        });
       });
     });
 
