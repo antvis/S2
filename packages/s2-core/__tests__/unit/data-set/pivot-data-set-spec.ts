@@ -3,7 +3,10 @@
  */
 import { get, keys } from 'lodash';
 import { assembleDataCfg } from '../../util';
-import { data as drillDownData } from '../../data/mock-drill-down-dataset.json';
+import {
+  data as drillDownData,
+  totalData as drillDownTotalData,
+} from '../../data/mock-drill-down-dataset.json';
 import { ViewMeta } from '@/common/interface';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
 import { S2DataConfig } from '@/common/interface';
@@ -357,19 +360,70 @@ describe('Pivot Dataset Test', () => {
       parent: provinceNode,
     });
 
+    const districtNode = new Node({
+      id: `root[&]浙江省[&]杭州市[&]西湖区`,
+      key: '',
+      value: '',
+      field: 'district',
+      parent: cityNode,
+    });
+
     test('transformDrillDownData function', () => {
-      dataSet.transformDrillDownData('district', drillDownData, cityNode);
+      dataSet.transformDrillDownData('district', drillDownData, null, cityNode);
       const metaMap = dataSet.rowPivotMeta.get('浙江省').children.get('杭州市');
       expect(metaMap.childField).toEqual('district');
       expect(metaMap.children.get('西湖区')).not.toBeEmpty();
     });
 
     test('clearDrillDownData function', () => {
-      dataSet.transformDrillDownData('district', drillDownData, cityNode);
+      dataSet.transformDrillDownData('district', drillDownData, null, cityNode);
       dataSet.clearDrillDownData('root[&]浙江省[&]杭州市');
       const metaMap = dataSet.rowPivotMeta.get('浙江省').children.get('杭州市');
       expect(metaMap.childField).toBeUndefined();
       expect(metaMap.children).toBeEmpty();
+    });
+
+    test('transformDrillDownData function with totalData', () => {
+      dataSet.transformDrillDownData(
+        'district',
+        drillDownData,
+        drillDownTotalData,
+        cityNode,
+      );
+
+      const cellData = dataSet.getCellData({
+        query: {
+          province: '浙江省',
+          city: '杭州市',
+          district: '西湖区',
+          [EXTRA_FIELD]: 'number',
+        },
+        isTotals: true,
+        rowNode: districtNode,
+      });
+      expect(cellData.number).toEqual(110);
+    });
+
+    test('clearDrillDownData function with totalData', () => {
+      dataSet.transformDrillDownData(
+        'district',
+        drillDownData,
+        drillDownTotalData,
+        cityNode,
+      );
+      dataSet.clearDrillDownData('root[&]浙江省[&]杭州市');
+
+      const cellData = dataSet.getCellData({
+        query: {
+          province: '浙江省',
+          city: '杭州市',
+          district: '西湖区',
+          [EXTRA_FIELD]: 'number',
+        },
+        isTotals: true,
+        rowNode: districtNode,
+      });
+      expect(cellData).toBeUndefined();
     });
   });
 
