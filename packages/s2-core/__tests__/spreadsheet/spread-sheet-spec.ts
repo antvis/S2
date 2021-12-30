@@ -50,5 +50,16 @@ describe('SpreadSheet Tests', () => {
 
       expect(init).toThrowError('Target mount container is not a DOM element');
     });
+
+    test('should update scroll offset immediately', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, s2options);
+      s2.render();
+      expect(s2.facet.hScrollBar.current()).toEqual(0);
+      s2.updateScrollOffset({
+        offsetX: { value: 30 },
+      });
+
+      expect(s2.facet.hScrollBar.current()).toBeGreaterThan(0);
+    });
   });
 });

@@ -23,7 +23,7 @@ import {
   InterceptType,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
-import { getAllPanelDataCell } from '@/utils/getAllPanelDataCell';
+import { getAllChildCells } from '@/utils/get-all-child-cells';
 import {
   ColHeader,
   CornerHeader,
@@ -52,6 +52,7 @@ import type {
 } from '@/common/interface';
 import { updateMergedCells } from '@/utils/interaction/merge-cell';
 import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
+import { DataCell } from '@/cell';
 
 export abstract class BaseFacet {
   // spreadsheet instance
@@ -84,11 +85,11 @@ export abstract class BaseFacet {
 
   protected timer: d3Timer.Timer;
 
-  protected hScrollBar: ScrollBar;
+  public hScrollBar: ScrollBar;
 
-  protected hRowScrollBar: ScrollBar;
+  public hRowScrollBar: ScrollBar;
 
-  protected vScrollBar: ScrollBar;
+  public vScrollBar: ScrollBar;
 
   public rowHeader: RowHeader;
 
@@ -206,7 +207,7 @@ export abstract class BaseFacet {
   }
 
   public getSeriesNumberWidth(): number {
-    const { showSeriesNumber } = this.spreadsheet.options;
+    const { showSeriesNumber } = this.cfg;
     return showSeriesNumber
       ? this.spreadsheet.theme.rowCell.seriesNumberWidth
       : 0;
@@ -407,8 +408,8 @@ export abstract class BaseFacet {
   scrollWithAnimation = (offsetConfig: OffsetConfig) => {
     const { scrollX: adjustedScrollX, scrollY: adjustedScrollY } =
       this.getAdjustedScrollOffset({
-        scrollX: offsetConfig.offsetX.value,
-        scrollY: offsetConfig.offsetY.value,
+        scrollX: offsetConfig.offsetX.value || 0,
+        scrollY: offsetConfig.offsetY.value || 0,
       });
     if (this.timer) {
       this.timer.stop();
@@ -433,8 +434,8 @@ export abstract class BaseFacet {
 
   scrollImmediately = (offsetConfig: OffsetConfig) => {
     const { scrollX, scrollY } = this.getAdjustedScrollOffset({
-      scrollX: offsetConfig.offsetX.value,
-      scrollY: offsetConfig.offsetY.value,
+      scrollX: offsetConfig.offsetX.value || 0,
+      scrollY: offsetConfig.offsetY.value || 0,
     });
     this.setScrollOffset({ scrollX, scrollY });
     this.startScroll(scrollX, scrollY);
@@ -485,6 +486,10 @@ export abstract class BaseFacet {
     if (scrollY + panelHeight >= rendererHeight) {
       return rendererHeight - panelHeight;
     }
+    // 当数据为空时，rendererHeight 可能为 0，此时 scrollY 为负值，需要调整为 0。
+    if (scrollY < 0) {
+      return 0;
+    }
     return Math.max(0, scrollY);
   };
 
@@ -527,7 +532,7 @@ export abstract class BaseFacet {
         const newOffset = this.getValidScrollBarOffset(offset, maxOffset);
         const hRowScrollX = newOffset;
         this.setScrollOffset({ hRowScrollX });
-        this.rowHeader.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
+        this.rowHeader?.onRowScrollX(hRowScrollX, KEY_GROUP_ROW_RESIZE_AREA);
         this.rowIndexHeader?.onRowScrollX(
           hRowScrollX,
           KEY_GROUP_ROW_INDEX_RESIZE_AREA,
@@ -865,7 +870,7 @@ export abstract class BaseFacet {
       this.cornerBBox.width - scrollX,
       this.cornerBBox.height - scrollY,
     );
-    this.rowHeader.onScrollXY(
+    this.rowHeader?.onScrollXY(
       this.getRealScrollX(scrollX, hRowScroll),
       scrollY,
       KEY_GROUP_ROW_RESIZE_AREA,
@@ -895,11 +900,11 @@ export abstract class BaseFacet {
 
   realCellRender = (scrollX: number, scrollY: number) => {
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
-    // DebuggerUtil.getInstance().logger(
-    //   'renderIndex:',
-    //   this.preCellIndexes,
-    //   indexes,
-    // );
+    DebuggerUtil.getInstance().logger(
+      'renderIndex:',
+      this.preCellIndexes,
+      indexes,
+    );
     const { add, remove } = diffPanelIndexes(this.preCellIndexes, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
@@ -913,7 +918,10 @@ export abstract class BaseFacet {
           this.addCell(cell);
         }
       });
-      const allCells = getAllPanelDataCell(this.panelGroup.getChildren());
+      const allCells = getAllChildCells(
+        this.panelGroup.getChildren(),
+        DataCell,
+      );
       // remove cell from panelCell
       each(remove, ([i, j]) => {
         const findOne = find(
@@ -923,9 +931,9 @@ export abstract class BaseFacet {
         findOne?.remove(true);
       });
       updateMergedCells(this.spreadsheet);
-      // DebuggerUtil.getInstance().logger(
-      //   `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
-      // );
+      DebuggerUtil.getInstance().logger(
+        `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
+      );
     });
     this.preCellIndexes = indexes;
   };
@@ -1021,7 +1029,9 @@ export abstract class BaseFacet {
     this.cornerHeader = this.getCornerHeader();
     this.centerFrame = this.getCenterFrame();
 
-    this.foregroundGroup.add(this.rowHeader);
+    if (this.rowHeader) {
+      this.foregroundGroup.add(this.rowHeader);
+    }
     this.foregroundGroup.add(this.columnHeader);
     this.foregroundGroup.add(this.cornerHeader);
     this.foregroundGroup.add(this.centerFrame);
@@ -1160,7 +1170,7 @@ export abstract class BaseFacet {
 
   protected abstract doLayout(): LayoutResult;
 
-  protected abstract getViewCellHeights(
+  public abstract getViewCellHeights(
     layoutResult: LayoutResult,
   ): ViewCellHeights;
 }

@@ -233,6 +233,9 @@ function MainLayout() {
   const onColCellClick = (cellInfo: TargetCellInfo) => {
     console.log('cellInfo: ', cellInfo);
     logHandler('onColCellClick')(cellInfo);
+    s2Ref.current.updateScrollOffset({
+      offsetX: { value: 30 },
+    });
     if (!options.showDefaultHeaderActionIcon) {
       const { event } = cellInfo;
       s2Ref.current.showTooltip({

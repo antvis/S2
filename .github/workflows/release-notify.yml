@@ -2,15 +2,16 @@ name: 🎉 Release Notify
 
 on:
   release:
-    types: [published]
+    # published: latest release 和 pre release 都会触发
+    # prereleased: 只有 pre release 触发
+    # released: 只有 latest release 触发
+    types: [released]
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      # 只推送正式版通知
       - name: Latest release notify
-        if: ${{ contains(github.ref_name, 'latest') }}
         uses: visiky/dingtalk-release-notify@main
         with:
           DING_TALK_TOKEN: |

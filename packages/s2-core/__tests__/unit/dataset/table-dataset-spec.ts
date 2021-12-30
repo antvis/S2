@@ -74,4 +74,106 @@ describe('Table Mode Dataset Test', () => {
       ).toEqual('沙发');
     });
   });
+
+  describe('test dataset query when no data', () => {
+    test('should handle getCellData when no data', () => {
+      MockTableSheet.mockClear();
+      const emptyDataSet = new TableDataSet(new MockTableSheet());
+      emptyDataSet.setDataCfg({
+        ...dataCfg,
+        data: [],
+      });
+      expect(
+        emptyDataSet.getCellData({
+          query: {
+            col: 'sub_type',
+            rowIndex: 0,
+          },
+        }),
+      ).toEqual(undefined);
+    });
+  });
+
+  describe('test for sort and filter', () => {
+    it('should getCellData with filteredValues', () => {
+      dataSet.setDataCfg({
+        ...dataCfg,
+        filterParams: [
+          {
+            filterKey: 'province',
+            filteredValues: ['浙江省'],
+          },
+        ],
+      });
+      expect(
+        dataSet.getCellData({
+          query: {
+            rowIndex: 0,
+            col: 'city',
+          },
+        }),
+      ).toEqual('成都市');
+    });
+    it('should getCellData with customFilter', () => {
+      dataSet.setDataCfg({
+        ...dataCfg,
+        filterParams: [
+          {
+            filterKey: 'province',
+            customFilter: (row) => row.province === '浙江省',
+          },
+        ],
+      });
+      expect(
+        dataSet.getCellData({
+          query: {
+            rowIndex: 0,
+            col: 'city',
+          },
+        }),
+      ).toEqual('杭州市');
+    });
+
+    it('should getCellData with customFilter and filteredValues', () => {
+      dataSet.setDataCfg({
+        ...dataCfg,
+        filterParams: [
+          {
+            filterKey: 'province',
+            filteredValues: ['浙江省'],
+            customFilter: (row) =>
+              row.province === '浙江省' || row.province === '四川省',
+          },
+        ],
+      });
+      expect(
+        dataSet.getCellData({
+          query: {
+            rowIndex: 0,
+            col: 'city',
+          },
+        }),
+      ).toEqual('成都市');
+    });
+
+    it('should getCellData with sort', () => {
+      dataSet.setDataCfg({
+        ...dataCfg,
+        sortParams: [
+          {
+            sortFieldId: 'number',
+            sortMethod: 'ASC',
+          },
+        ],
+      });
+      expect(
+        dataSet.getCellData({
+          query: {
+            rowIndex: 0,
+            col: 'number',
+          },
+        }),
+      ).toEqual(245);
+    });
+  });
 });

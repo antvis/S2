@@ -179,7 +179,7 @@ module.exports = {
           en: 'Basic Sheets',
         },
       },
-       {
+      {
         slug: 'theme',
         icon: 'skin',
         title: {
@@ -207,7 +207,7 @@ module.exports = {
         slug: 'react-component',
         icon: 'build',
         title: {
-          zh: 'React组件',
+          zh: 'React 组件',
           en: 'React Component',
         },
       },
@@ -223,6 +223,10 @@ module.exports = {
     mdPlayground: {
       // markdown 文档中的 playground 若干设置
       splitPaneMainSize: '75%',
+    },
+    docsearchOptions: {
+      apiKey: 'b374aeb00854d3e88723968d90b21e4d',
+      indexName: 'antv_s2',
     },
     // 编辑器配置
     playground: {

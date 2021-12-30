@@ -5,7 +5,6 @@ redirect_from:
   - /zh/docs/manual
 ---
 
-![introduction](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*X_KJQZAxjKUAAAAAAAAAAAAAARQnAQ)
 
 <div align="center">
 <p>
@@ -31,6 +30,8 @@ redirect_from:
 ## ❓ 什么是 S2
 
 [S2](https://github.com/antvis/s2) 是一个面向可视分析领域的数据驱动的表可视化引擎。"S" 取自于 "SpreadSheet" 的两个 "S"，"2" 代表了透视表中的行列两个维度。旨在提供美观、易用、高性能、易扩展的多维表格。
+
+![demos](https://gw.alipayobjects.com/zos/antfincdn/6R5Koawk9L/huaban%2525202.png)
 
 ## ✨ 特性
 
@@ -194,10 +195,10 @@ s2.render()
 
 ### 📦 Packages
 
-| Package  | Latest  |  Beta | Size | Download |
-|---|---|---|---| --- |
-| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)  | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2.svg) |
-| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react)  | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
+| Package  | Latest  |  Beta | Alpha | Size | Download |
+|---|---|---|---| --- | --- |
+| [@antv/s2](https://github.com/antvis/S2/tree/master/packages/s2-core)  | ![latest](https://img.shields.io/npm/v/@antv/s2/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2.svg) |
+| [@antv/s2-react](https://github.com/antvis/S2/tree/master/packages/s2-react)  | ![latest](https://img.shields.io/npm/v/@antv/s2-react/latest.svg)  |  ![beta](https://img.shields.io/npm/v/@antv/s2-react/beta.svg) | ![alpha](https://img.shields.io/npm/v/@antv/s2-react/alpha.svg) | ![size](https://img.badgesize.io/https:/unpkg.com/@antv/s2-react@latest/dist/index.min.js?label=gzip%20size&compression=gzip)  | ![download](https://img.shields.io/npm/dm/@antv/s2-react.svg) |
 
 ## 👤 Author
 
@@ -217,6 +218,7 @@ yarn # 或者 yarn bootstrap
 yarn core:start
 
 # 调试 s2-react
+yarn core:watch
 yarn react:playground
 
 # 单元测试

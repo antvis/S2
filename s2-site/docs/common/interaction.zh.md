@@ -40,7 +40,8 @@ interface ScrollRatio {
 
 | 参数                 | 说明                             | 类型      | 默认值 | 必选  |
 | -------------------- | -------------------------------- | --------- | ------ | :---: |
-| rowCellVertical      | 是否开启行头垂直方向 resize 热区 | `boolean` |        |       |
-| cornerCellHorizontal | 是否开启角头水平方向 resize 热区 | `boolean` |        |       |
-| colCellHorizontal    | 是否开启列头水平方向 resize 热区 | `boolean` |        |       |
-| colCellVertical      | 是否开启列头垂直方向 resize 热区 | `boolean` |        |       |
+| rowCellVertical      | 是否开启行头垂直方向 resize 热区 | `boolean` |  true  |       |
+| cornerCellHorizontal | 是否开启角头水平方向 resize 热区 | `boolean` |  true  |       |
+| colCellHorizontal    | 是否开启列头水平方向 resize 热区 | `boolean` |  true  |       |
+| colCellVertical      | 是否开启列头垂直方向 resize 热区 | `boolean` |  true  |       |
+| rowResizeType        | 用于控制行高 resize 时是同时对所有 Cell 生效，还是只对当前行生效。默认对所有行生效|  `all`\| `current` | `all`  |  |

@@ -1,4 +1,4 @@
-import { PivotSheet, S2DataConfig, EXTRA_FIELD } from '@antv/s2';
+import { PivotSheet, EXTRA_FIELD } from '@antv/s2';
 
 fetch('../data/basic.json')
   .then((res) => res.json())

@@ -12,11 +12,20 @@ const s2Options = {
 }
 ```
 
+需要注意的是，表格基于 `canvas` 渲染，配置的宽高其实就是设置 `canvas` 的 `width` 和 `height`, 也就是意味着 `100%`, `80vw` 之类的配置是不生效的
+
+```ts
+const s2Options = {
+  width: '100%', // ❌
+  height: '20vh',// ❌
+}
+```
+
 ![preview](https://gw.alipayobjects.com/zos/antfincdn/WmM9%24SLfu/2396a53f-8946-497a-9e68-fd89f01077ff.png)
 
 ### 窗口自适应
 
-如果想让表格撑满整个父容器, 可以监听 窗口的 `resize` 事件, 或使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 监听容器大小变化, 然后更新表格宽高
+如果想让表格撑满整个父容器，可以监听 窗口的 `resize` 事件，或使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 监听容器大小变化，然后更新表格宽高
 
 ```ts
 import { PivotSheet } from '@antv/s2'
@@ -40,7 +49,7 @@ window.addEventListener('resize', () => {
 
 ### 容器自适应
 
-如果是容器本身大小发生改变, 而不是窗口, 那么可以使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 获取到实时的容器大小
+如果是容器本身大小发生改变，而不是窗口，那么可以使用 [ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver) 获取到实时的容器大小
 
 ```ts
 import { PivotSheet } from '@antv/s2'
@@ -70,10 +79,59 @@ resizeObserver.observe(parent);
 
 ### React 组件
 
-如果是使用 `@antv/s2-react` 的方式, 那么配置 `adaptive` 参数即可, 默认集成了上面的两种方式
+如果是使用 `@antv/s2-react` 的方式，可以配置 `adaptive` 参数开启自适应。
+
+```ts
+// `adaptive` 的类型 `Adaptive`
+type Adaptive =
+  | boolean
+  | {
+      width?: boolean;
+      height?: boolean;
+      getContainer?: () => HTMLElement;
+    }
+```
+
+配置为 `boolean` 值时，容器默认为内部的 container, 宽高都自适应
 
 ```tsx
-import { SheetComponent } from '@antv/s2-react'
+import { SheetComponent } from '@antv/s2-react';
 
-<SheetComponent adaptive />
+<SheetComponent adaptive={true} />
+<SheetComponent adaptive={false} />
+```
+
+也可以配置只对宽度或高度开启自适应，上面的配置等同于
+
+```tsx
+import { SheetComponent } from '@antv/s2-react';
+
+<SheetComponent adaptive={{ width: true, height: true }} />
+<SheetComponent adaptive={{ width: false, height: false }} />
+```
+
+还可以自定义自适应的容器
+
+```tsx
+import { SheetComponent } from '@antv/s2-react';
+
+const adaptiveRef = React.useRef<HTMLDivElement>();
+const containerId = 'containerId';
+
+<div
+  id={containerId}
+  style={{
+    width: 600,
+    height: 400,
+  }}
+  ref={ adaptiveRef }
+>
+  <SheetComponent
+    adaptive={{
+      width: true,
+      height: false,
+      getContainer: () => adaptiveRef.current // 或者使用 document.getElementById(containerId)
+    }}
+  />
+</div>
 ```

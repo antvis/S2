@@ -61,13 +61,22 @@ export interface PartDrillDownFieldInLevel {
   drillLevel: number;
 }
 
+// 是否开启自适应宽高，并指定容器
+export type Adaptive =
+  | boolean
+  | {
+      width?: boolean;
+      height?: boolean;
+      getContainer?: () => HTMLElement;
+    };
+
 export interface BaseSheetProps {
   spreadsheet?: (...args: S2Constructor) => SpreadSheet;
   dataCfg: S2DataConfig;
   options: S2Options;
   isLoading?: boolean;
   partDrillDown?: PartDrillDown;
-  adaptive?: boolean;
+  adaptive?: Adaptive;
   showPagination?: boolean;
   themeCfg?: ThemeCfg;
   header?: HeaderCfgProps;
