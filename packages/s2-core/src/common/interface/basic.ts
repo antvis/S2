@@ -436,6 +436,8 @@ export interface PartDrillDownDataCache {
   drillField: string;
   // 下钻的数据
   drillData: Record<string, string | number>[];
+  // 下钻的总计数据
+  drillTotalData?: Record<string, string | number>[];
 }
 
 export interface PartDrillDownFieldInLevel {
