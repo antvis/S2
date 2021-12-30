@@ -57,24 +57,25 @@ order: 5
 
 object **必选**,_default：null_ 功能描述： 小计总计配置
 
-| 参数            | 说明                 | 类型                   | 默认值 | 必选 |
-| --------------- | ------------------ | ---------------------- | ------ | ---- |
-| row | 列总计      | [Total](/zh/docs/api/general/S2Options#total)      | {}      |      |
-| col   | 行总计    |[Total](/zh/docs/api/general/S2Options#total)         | {}      |      |
+| 参数       | 说明         | 类型                                          | 默认值  | 必选 |
+| ---------- | ------------ | --------------------------------------------- | ------- | ---- |
+| row        | 列总计       | [Total](/zh/docs/api/general/S2Options#total) | {}      |      |
+| col        | 行总计       | [Total](/zh/docs/api/general/S2Options#total) | {}      |      |
+| calcTotals | 是否计算总计 | `boolean`                                     | `false` |      |
 
 #### Total
 
 object **必选**,_default：null_ 功能描述： 小计总计算配置
 
-| 参数            | 说明                 | 类型                   | 默认值 | 必选 |
-| --------------- | ------------------ | ---------------------- | ------ | ---- |
-| showGrandTotals | 是否显示总计       | `boolean`                | false      |      ✓  |
-| showSubTotals     | 是否显示小计    | `boolean`                | false      |   ✓   |
-| subTotalsDimensions | 小计的汇总维度       | `string[]`                | []      |      ✓  |
-| reverseLayout     | 总计布局位置，默认下或右    | `boolean`                | false      |   ✓   |
-| reverseSubLayout   | 小计布局位置，默认下或右    | `boolean`                | false      |   ✓   |
-| label | 总计别名       | `string`                | -      |        |
-| subLabel | 小计别名       | `string`                | -      |        |
+| 参数                | 说明                     | 类型       | 默认值 | 必选 |
+| ------------------- | ------------------------ | ---------- | ------ | ---- |
+| showGrandTotals     | 是否显示总计             | `boolean`  | false  | ✓    |
+| showSubTotals       | 是否显示小计             | `boolean`  | false  | ✓    |
+| subTotalsDimensions | 小计的汇总维度           | `string[]` | []     | ✓    |
+| reverseLayout       | 总计布局位置，默认下或右 | `boolean`  | false  | ✓    |
+| reverseSubLayout    | 小计布局位置，默认下或右 | `boolean`  | false  | ✓    |
+| label               | 总计别名                 | `string`   | -      |      |
+| subLabel            | 小计别名                 | `string`   | -      |      |
 
 ```typescript
 const s2options = {
@@ -98,7 +99,9 @@ const s2options = {
 
 ```
 
-### 2. 数据传入
+### 2. 数据
+
+#### 1. 数据传入
 
 数据根据行/列位置以及 key 值传入，维度 key 值没有包含所有行、列的 key，举例如下：
 
@@ -134,7 +137,7 @@ const s2options = {
 
 ```
 
-#### 方式一：集合到 data 中
+##### 方式一：集合到 data 中
 
 ```typescript
 const s2DataConfig = {
@@ -155,7 +158,7 @@ const s2DataConfig = {
 
 ```
 
-#### 方式二：传入 totalData
+##### 方式二：传入 totalData
 
 ```typescript
 const s2DataConfig = {
@@ -175,5 +178,32 @@ const s2DataConfig = {
     ],
     ...
 }
+
+```
+
+#### 2. 计算出数据
+
+配置 `totals` 的 `calcTotals` 属性来实现计算汇总数据，举例如下：
+
+```typescript
+const s2options = {
+  totals: {
+    row: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['province'],
+    },
+    col: {
+      showGrandTotals: true,
+      showSubTotals: true,
+      reverseLayout: true,
+      reverseSubLayout: true,
+      subTotalsDimensions: ['type'],
+    },
+    calcTotals: true,
+  },
+};
 
 ```
