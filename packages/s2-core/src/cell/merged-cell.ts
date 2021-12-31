@@ -39,9 +39,7 @@ export class MergedCell extends DataCell {
   protected initCell() {
     // TODO：1、条件格式支持； 2、交互态扩展； 3、合并后的单元格文字布局及文字内容（目前参考Excel合并后只保留第一个单元格子的数据）
     this.drawBackgroundShape();
-    // this.drawStateShapes();
     this.drawTextShape();
-    // this.update();
   }
 
   /**
@@ -49,12 +47,11 @@ export class MergedCell extends DataCell {
    */
   protected drawBackgroundShape() {
     const allPoints = getPolygonPoints(this.cells);
-    // g-base 无法渲染不再可视区域内的图形
     const cellTheme = this.theme.dataCell.cell;
     this.backgroundShape = renderPolygon(this, {
       points: allPoints,
-      stroke: cellTheme.horizontalBorderColor, // cellTheme.horizontalBorderColor, 'blue'
-      fill: cellTheme.backgroundColor, // cellTheme.backgroundColor 'red'
+      stroke: cellTheme.horizontalBorderColor,
+      fill: cellTheme.backgroundColor,
       lineHeight: cellTheme.horizontalBorderWidth,
     });
   }

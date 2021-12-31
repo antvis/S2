@@ -102,7 +102,7 @@ export const getPolygonPoints = (cells: S2CellType[]) => {
 };
 
 /**
- * get cells in the outside of visible area through mergeCellInfo
+ * get cells on the outside of visible area through mergeCellInfo
  * @param invisibleCellInfo
  * @param sheet
  */
@@ -349,6 +349,7 @@ export const MergedCellConvertTempMergedCells = (
 
 /**
  * 对比两个TempMergedCell，返回 mainTempMergedCells 中存在的，但是 otherTempMergedCells 中不存在的的 TempMergedCell
+ * 因为 g-base 无法渲染不在可视区域内的图形，所以 isPartiallyVisible 为 true 时也需要重新渲染
  * @param mainTempMergedCells
  * @param compareTempMergedCells
  */
