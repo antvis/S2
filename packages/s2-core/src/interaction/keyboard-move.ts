@@ -1,8 +1,10 @@
 import { inRange } from 'lodash';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
-import { scrollToCell } from '@/utils/interaction/scrollToCell';
 import { TableFacet } from '@/facet';
+import { RootInteraction } from '@/interaction';
+import { InteractionStateName, S2Options, CellTypes } from '@/common';
+import { getDataCellId } from '@/utils';
 
 export class KeyboardMove extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -49,10 +51,12 @@ export class KeyboardMove extends BaseEvent implements BaseEventImplement {
           const rowInRange = inRange(
             rowCol.row,
             frozenRowCount,
-            dataSet.getDisplayDataSet().length - frozenTrailingRowCount,
+            this.spreadsheet.isTableMode()
+              ? dataSet.getDisplayDataSet().length
+              : dataSet.fields.rows.length - frozenTrailingRowCount,
           );
           if (rowCol && colInRange && rowInRange) {
-            scrollToCell(
+            this.scrollToCell(
               rowCol.row,
               rowCol.col,
               this.spreadsheet.options,
@@ -63,5 +67,65 @@ export class KeyboardMove extends BaseEvent implements BaseEventImplement {
         }
       },
     );
+  }
+
+  public scrollToCell(
+    rowIndex: number,
+    colIndex: number,
+    options: S2Options,
+    facet: TableFacet,
+    interaction: RootInteraction,
+  ) {
+    const { frozenRowCount, frozenColCount = 0 } = options;
+    const colsNodes = facet.layoutResult.colLeafNodes;
+    const rowsNodes = facet.layoutResult.rowLeafNodes;
+
+    let offsetX = 0;
+    let offsetY = 0;
+
+    offsetX = colsNodes.find((item) => item.colIndex === colIndex)?.x || 0;
+    if (frozenColCount > 1) {
+      const firstUnfrozenNodeX =
+        colsNodes.find((item) => item.colIndex === frozenColCount)?.x || 0;
+      offsetX -= firstUnfrozenNodeX;
+    }
+
+    offsetY = facet.viewCellHeights.getCellOffsetY(rowIndex - 1);
+
+    if (frozenRowCount > 0 && rowIndex > frozenRowCount - 1) {
+      offsetY -= facet.getTotalHeightForRange(0, frozenRowCount - 1);
+    }
+
+    if (offsetY < 0) {
+      offsetY = 0;
+    }
+
+    if (offsetX < 0) {
+      offsetX = 0;
+    }
+
+    facet.scrollWithAnimation({
+      offsetX: {
+        value: offsetX,
+      },
+      offsetY: {
+        value: offsetY,
+      },
+    });
+    const rowId = this.spreadsheet.isTableMode()
+      ? String(rowIndex)
+      : rowsNodes[rowIndex].id;
+
+    interaction.changeState({
+      stateName: InteractionStateName.SELECTED,
+      cells: [
+        {
+          colIndex,
+          rowIndex,
+          id: getDataCellId(rowId, colsNodes[colIndex].id),
+          type: CellTypes.DATA_CELL,
+        },
+      ],
+    });
   }
 }
