@@ -721,6 +721,7 @@ function MainLayout() {
             sheetType="strategy"
             dataCfg={strategyDataCfg}
             options={strategyOptions}
+            onRowCellClick={(v) => console.log(v)}
             themeCfg={{
               theme: defaultTheme as unknown as S2Theme,
               name: 'gray',

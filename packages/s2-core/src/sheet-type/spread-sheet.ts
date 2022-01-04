@@ -60,9 +60,6 @@ import { registerIcon, getIcon } from '@/common/icons/factory';
 import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 
 export abstract class SpreadSheet extends EE {
-  // dom id
-  public dom: S2MountContainer;
-
   // theme config
   public theme: S2Theme;
 
@@ -138,13 +135,12 @@ export abstract class SpreadSheet extends EE {
     options: S2Options,
   ) {
     super();
-    this.dom = this.getMountContainer(dom);
     this.dataCfg = getSafetyDataConfig(dataCfg);
     this.options = getSafetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
 
     this.initTooltip();
-    this.initGroups();
+    this.initGroups(dom);
     this.bindEvents();
     this.initInteraction();
     this.initTheme();
@@ -339,8 +335,11 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
   }
 
-  public render(reloadData = true) {
+  public render(reloadData = true, reBuildDataSet = false) {
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
+    if (reBuildDataSet) {
+      this.dataSet = this.getDataSet(this.options);
+    }
     if (reloadData) {
       this.clearDrillDownData('', true);
       this.dataSet.setDataCfg(this.dataCfg);
@@ -525,14 +524,13 @@ export abstract class SpreadSheet extends EE {
    * 3. panelGroup -- main facet group belongs to
    * 4. foregroundGroup
    * @param dom
-   * @param options
    * @private
    */
-  protected initGroups() {
+  protected initGroups(dom: S2MountContainer) {
     const { width, height } = this.options;
     // base canvas group
     this.container = new Canvas({
-      container: this.dom as HTMLElement,
+      container: this.getMountContainer(dom) as HTMLElement,
       width,
       height,
       localRefresh: false,
