@@ -60,9 +60,6 @@ import { registerIcon, getIcon } from '@/common/icons/factory';
 import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 
 export abstract class SpreadSheet extends EE {
-  // dom id
-  public dom: S2MountContainer;
-
   // theme config
   public theme: S2Theme;
 
