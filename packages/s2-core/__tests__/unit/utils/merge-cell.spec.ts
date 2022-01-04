@@ -1,4 +1,4 @@
-import { pick } from 'lodash';
+import { IGroup } from '@antv/g-canvas';
 import { SpreadSheet } from '@/sheet-type';
 import { Store } from '@/common/store';
 import {
@@ -11,9 +11,13 @@ import {
   getVisibleInfo,
   getTempMergedCell,
   removeUnmergedCellsInfo,
+  updateMergedCells,
+  mergeTempMergedCell,
+  MergedCellConvertTempMergedCells,
+  differenceTempMergedCells,
 } from '@/utils';
 import { RootInteraction } from '@/interaction/root';
-import { MergedCellInfo, S2CellType } from '@/common/interface';
+import { MergedCellInfo, S2CellType, TempMergedCell } from '@/common/interface';
 import { BaseFacet } from '@/facet';
 import { MergedCell } from '@/cell';
 
@@ -94,6 +98,7 @@ describe('Merge Cells Test', () => {
         rowIndex: 3,
       },
     ];
+
     mockAllVisibleCells = [
       { getMeta: jest.fn().mockReturnValue(mockMergeCellInfo[2]) },
       { getMeta: jest.fn().mockReturnValue(mockMergeCellInfo[3]) },
@@ -118,7 +123,13 @@ describe('Merge Cells Test', () => {
     mockInstance.interaction.getActiveCells = jest
       .fn()
       .mockReturnValue([mockActiveCells]);
-    expect(getActiveCellsInfo(mockInstance)).toEqual([cellInfo]);
+
+    expect(getActiveCellsInfo(mockInstance)).toEqual([
+      {
+        ...cellInfo,
+        showText: true,
+      },
+    ]);
   });
 
   test('should get rectangle edges', () => {
@@ -238,9 +249,7 @@ describe('Merge Cells Test', () => {
       .mockImplementation(() => mockAllVisibleCells);
 
     const result = getActiveCellsInfo(mockInstance);
-    const expectCellInfo = pick(mockMergeCellInfo[2], ['colIndex', 'rowIndex']);
-
-    expect(result).toEqual([expectCellInfo, mockMergeCellInfo[3]]);
+    expect(result).toEqual([mockMergeCellInfo[2], mockMergeCellInfo[3]]);
   });
 
   test('should remove unmergedCells Info, return new mergedCell info (removeUnmergedCellsInfo).', () => {
@@ -254,5 +263,113 @@ describe('Merge Cells Test', () => {
     const result = removeUnmergedCellsInfo(mockMergedCell, mergedCellsInfo);
 
     expect(result).toEqual([[mockMergeCellInfo[0], mockMergeCellInfo[1]]]);
+  });
+
+  describe('Update mergedCells', () => {
+    test('should not update mergedCells when mergedCellsInfo is empty', () => {
+      mockInstance.options = {
+        width: 100,
+        height: 100,
+        mergedCellsInfo: undefined,
+      };
+
+      mockInstance.panelScrollGroup = {
+        getChildren: jest.fn().mockReturnValue([]),
+      } as unknown as IGroup;
+      updateMergedCells(mockInstance);
+      expect(mockInstance.panelScrollGroup.getChildren).not.toHaveBeenCalled();
+      mockInstance.options = {
+        ...mockInstance.options,
+        mergedCellsInfo: [],
+      };
+      updateMergedCells(mockInstance);
+      expect(mockInstance.panelScrollGroup.getChildren).not.toHaveBeenCalled();
+    });
+
+    test('should not update mergedCells when visible area do not contain MergedCell', () => {
+      mockInstance.options = {
+        width: 100,
+        height: 100,
+        mergedCellsInfo: [mockMergeCellInfo],
+      };
+      mockInstance.panelScrollGroup = {
+        getChildren: jest.fn().mockReturnValue([]),
+      } as unknown as IGroup;
+      updateMergedCells(mockInstance);
+      expect(mockInstance.panelScrollGroup.getChildren).toHaveBeenCalled();
+    });
+
+    test('should merge TempMergedCell when cell viewMeta id is equal. (mergeTempMergedCell)', () => {
+      const mockTempMergedCell = [
+        { viewMeta: { id: '1' } },
+        { viewMeta: { id: '2' } },
+      ] as TempMergedCell[];
+      const mockOtherTempMergedCell = [
+        { viewMeta: { id: '4' } },
+        { viewMeta: { id: '2' } },
+      ] as TempMergedCell[];
+
+      const result = mergeTempMergedCell(
+        mockTempMergedCell,
+        mockOtherTempMergedCell,
+      );
+
+      expect(result).toEqual([
+        { viewMeta: { id: '1' } },
+        { viewMeta: { id: '2' } },
+        { viewMeta: { id: '4' } },
+      ]);
+    });
+
+    test('should convert TempMergedCell to MergedCell. (MergedCellConvertTempMergedCells)', () => {
+      const mockMergedCell = {
+        cells: mockAllVisibleCells,
+        getMeta: jest.fn().mockReturnValue(mockMergeCellInfo[2]),
+        isPartiallyVisible: true,
+      } as unknown as MergedCell;
+      const result = MergedCellConvertTempMergedCells([mockMergedCell]);
+
+      expect(result).toEqual([
+        {
+          cells: mockAllVisibleCells,
+          viewMeta: mockMergeCellInfo[2],
+          isPartiallyVisible: true,
+        },
+      ]);
+    });
+
+    test('should get TempMergedCells exist in mainTempMergedCells but does not exist in compareTempMergedCells. (differenceTempMergedCells)', () => {
+      const mainTempMergedCells = [
+        { viewMeta: { id: '1' } },
+        { viewMeta: { id: '2' } },
+      ] as TempMergedCell[];
+      const compareTempMergedCells = [
+        { viewMeta: { id: '1' } },
+        { viewMeta: { id: '3' } },
+      ] as TempMergedCell[];
+
+      const result = differenceTempMergedCells(
+        mainTempMergedCells,
+        compareTempMergedCells,
+      );
+
+      expect(result).toEqual([{ viewMeta: { id: '2' } }]);
+    });
+
+    test('should get TempMergedCells when MergedCell isPartiallyVisible is true. (differenceTempMergedCells)', () => {
+      const mainTempMergedCells = [
+        { viewMeta: { id: '1' }, isPartiallyVisible: true },
+      ] as TempMergedCell[];
+      const compareTempMergedCells = [
+        { viewMeta: { id: '1' }, isPartiallyVisible: true },
+      ] as TempMergedCell[];
+
+      const result = differenceTempMergedCells(
+        mainTempMergedCells,
+        compareTempMergedCells,
+      );
+
+      expect(result).toEqual(mainTempMergedCells);
+    });
   });
 });
