@@ -1,3 +1,11 @@
+# [@antv/s2-v1.5.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.5.0-alpha.2...@antv/s2-v1.5.0-alpha.3) (2022-01-04)
+
+
+### Bug Fixes
+
+* table facet test add toFixed ([#960](https://github.com/antvis/S2/issues/960)) ([e1b9e34](https://github.com/antvis/S2/commit/e1b9e343803cb7beac9692f4e473429160cfa7f3))
+* 自定义目录树切换优化 ([#964](https://github.com/antvis/S2/issues/964)) ([6957795](https://github.com/antvis/S2/commit/695779573dbca5f8481accdc996b61968959b36e))
+
 # [@antv/s2-v1.5.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.5.0-alpha.1...@antv/s2-v1.5.0-alpha.2) (2021-12-29)
 
 
