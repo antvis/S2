@@ -36,6 +36,13 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
       if (isEmpty(dataCfg)) {
         return {};
       }
+      let hideMeasureColumn = false;
+      if (
+        size(dataCfg?.fields?.values) === 1 &&
+        options.hierarchyType !== 'customTree'
+      ) {
+        hideMeasureColumn = true;
+      }
       return {
         dataCell: (viewMeta: ViewMeta) =>
           new CustomDataCell(viewMeta, viewMeta.spreadsheet),
@@ -50,7 +57,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
         style: {
           colCfg: {
             height: 38,
-            hideMeasureColumn: !(size(dataCfg?.fields?.values) > 1),
+            hideMeasureColumn,
           },
         },
         interaction: {
@@ -95,7 +102,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const s2DataCfg = React.useMemo(() => {
       const defaultFields = {
         fields: {
-          valueInCols: !(size(dataCfg.fields.values) > 1),
+          valueInCols: !(size(dataCfg?.fields?.values) > 1), // 多指标数值挂行头，单指标挂列头
         },
       };
       return customMerge({}, dataCfg, defaultFields);

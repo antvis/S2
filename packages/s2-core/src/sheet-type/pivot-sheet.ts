@@ -1,5 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { clone, last, set } from 'lodash';
+import { clone, last } from 'lodash';
 import { SpreadSheet } from './spread-sheet';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell';
@@ -28,7 +28,6 @@ export class PivotSheet extends SpreadSheet {
     if (dataSet) {
       return dataSet(this);
     }
-
     const realDataSet =
       hierarchyType === 'customTree'
         ? new CustomTreePivotDataSet(this)
@@ -140,10 +139,10 @@ export class PivotSheet extends SpreadSheet {
         },
       },
     };
-    // post to x-report to store state
     this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
       collapsedRows: options.style.collapsedRows,
     });
+
     this.setOptions(options);
     this.render(false);
     this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {

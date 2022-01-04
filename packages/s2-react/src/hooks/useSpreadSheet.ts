@@ -71,17 +71,28 @@ export function useSpreadSheet(
   // dataCfg, options or theme changed
   React.useEffect(() => {
     let reloadData = false;
+    let reBuildDataSet = false;
     if (!Object.is(prevDataCfg, dataCfg)) {
       reloadData = true;
       s2Ref.current?.setDataCfg(dataCfg);
     }
+
     if (!Object.is(prevOptions, options)) {
+      if (
+        !Object.is(prevOptions?.hierarchyType, options?.hierarchyType) &&
+        Object.is(options?.hierarchyType, 'customTree')
+      ) {
+        // 自定义树目录需要重新构建 CustomTreePivotDataSet
+        reBuildDataSet = true;
+        reloadData = true;
+        s2Ref.current?.setDataCfg(dataCfg);
+      }
       s2Ref.current?.setOptions(options);
     }
     if (!Object.is(prevThemeCfg, themeCfg)) {
       s2Ref.current?.setThemeCfg(themeCfg);
     }
-    s2Ref.current?.render(reloadData);
+    s2Ref.current?.render(reloadData, reBuildDataSet);
   }, [dataCfg, options, prevDataCfg, prevOptions, prevThemeCfg, themeCfg]);
 
   useResize({
