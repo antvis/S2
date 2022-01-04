@@ -8,6 +8,7 @@ export enum InteractionName {
   COL_ROW_RESIZE = 'rowColResize',
   DATA_CELL_MULTI_SELECTION = 'dataCellMultiSelection',
   COL_ROW_SHIFT_MULTI_SELECTION = 'colRowShiftMultiSelection',
+  KEYBOARD_MOVE = 'keyboardMove',
 }
 
 export enum InteractionStateName {
@@ -62,6 +63,10 @@ export enum InteractionKeyboardKey {
   COPY = 'c',
   ESC = 'Escape',
   META = 'Meta',
+  ARROW_UP = 'ArrowUp',
+  ARROW_DOWN = 'ArrowDown',
+  ARROW_LEFT = 'ArrowLeft',
+  ARROW_RIGHT = 'ArrowRight',
 }
 
 export enum SortMethodType {
