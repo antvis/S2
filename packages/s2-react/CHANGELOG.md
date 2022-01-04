@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.5.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.5.0-alpha.3...@antv/s2-react-v1.5.0-alpha.4) (2022-01-04)
+
+
+### Bug Fixes
+
+* 自定义目录树切换优化 ([#964](https://github.com/antvis/S2/issues/964)) ([6957795](https://github.com/antvis/S2/commit/695779573dbca5f8481accdc996b61968959b36e))
+
 # [@antv/s2-react-v1.5.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.5.0-alpha.2...@antv/s2-react-v1.5.0-alpha.3) (2021-12-29)
 
 
