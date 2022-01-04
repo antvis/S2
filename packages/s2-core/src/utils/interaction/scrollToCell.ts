@@ -26,7 +26,7 @@ export const scrollToCell = (
   offsetY = facet.viewCellHeights.getCellOffsetY(rowIndex - 1);
 
   if (frozenRowCount > 0 && rowIndex > frozenRowCount - 1) {
-    offsetY -= (facet as any).getTotalHeightForRange(0, frozenRowCount - 1);
+    offsetY -= facet.getTotalHeightForRange(0, frozenRowCount - 1);
   }
 
   if (offsetY < 0) {
