@@ -3,7 +3,11 @@ import { getCellMeta } from 'src/utils/interaction/select-event';
 import _, { isEmpty } from 'lodash';
 import { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
-import { InterceptType, S2Event } from '@/common/constant';
+import {
+  InterceptType,
+  S2Event,
+  BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
+} from '@/common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
@@ -17,17 +21,6 @@ import {
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
 import { getActiveCellsTooltipData } from '@/utils/tooltip';
-
-interface BrushScrollConfig {
-  x: {
-    value: number;
-    scroll: boolean;
-  };
-  y: {
-    value: number;
-    scroll: boolean;
-  };
-}
 
 /**
  * Panel area's brush selection interaction
@@ -143,22 +136,19 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     };
   };
 
-  private requestAnimationId = null;
+  private autoScrollIntervalId = null;
 
-  private requestAnimationTimeStamp = null;
-
-  private scrollDelta = {
-    x: {
-      value: 0,
-      scroll: false,
-    },
-    y: {
-      value: 0,
-      scroll: false,
-    },
+  private autoScrollConfig = {
+    ...BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   };
 
-  private scrollWithConfig = (config: BrushScrollConfig) => {
+  private autoScroll = () => {
+    if (
+      this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
+    ) {
+      return;
+    }
+    const config = this.autoScrollConfig;
     const scrollOffset = this.spreadsheet.facet.getScrollOffset();
     const offsetCfg = {
       offsetX: {
@@ -174,7 +164,6 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     if (config.y.scroll) {
       offsetCfg.offsetY.value += config.y.value > 0 ? 30 : -30;
     }
-
     if (config.x.scroll) {
       offsetCfg.offsetX.value += config.x.value > 0 ? 100 : -100; // todo
       if (offsetCfg.offsetX.value < 0) {
@@ -183,67 +172,59 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     }
 
     this.spreadsheet.facet.updateScrollOffset(offsetCfg);
-
-    const target = this.spreadsheet.container.getShape(
-      this.endBrushPoint.x,
-      this.endBrushPoint.y,
-    );
-
-    const cell = this.spreadsheet.getCell(target);
-    if (!cell) {
-      return;
-    }
-
-    this.endBrushPoint = {
-      ...this.endBrushPoint,
-      rowIndex: cell.getMeta().rowIndex,
-      colIndex: cell.getMeta().colIndex,
-    };
-
-    const { interaction } = this.spreadsheet;
-    interaction.addIntercepts([InterceptType.HOVER]);
-    interaction.clearStyleIndependent();
-    this.updatePrepareSelectMask();
-    this.showPrepareSelectedCells();
+    this.renderPrepareSelected(this.endBrushPoint);
   };
 
-  private rafCb = () => {
-    if (
-      this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
-    ) {
-      return;
-    }
-    this.scrollWithConfig(this.scrollDelta);
-  };
-
-  private scrollCallback = (x, y) => {
+  private handleScroll = _.throttle((x, y) => {
     const {
       x: { value: newX, needScroll: needScrollForX },
       y: { value: newY, needScroll: needScrollForY },
     } = this.formatBrushPointForScroll({ x, y });
 
-    const target = this.spreadsheet.container.getShape(newX, newY);
+    const config = this.autoScrollConfig;
+    if (needScrollForY) {
+      config.y.value = y;
+      config.y.scroll = true;
+    }
+    if (needScrollForX) {
+      config.x.value = x;
+      config.x.scroll = true;
+    }
+
+    this.renderPrepareSelected({
+      x: newX,
+      y: newY,
+    });
+
+    if (needScrollForY || needScrollForX) {
+      this.clearAutoScroll();
+      this.autoScroll();
+      this.autoScrollIntervalId = setInterval(this.autoScroll, 300);
+    }
+  }, 30);
+
+  private clearAutoScroll = () => {
+    if (this.autoScrollIntervalId) {
+      clearInterval(this.autoScrollIntervalId);
+      this.autoScrollIntervalId = null;
+    }
+  };
+
+  private renderPrepareSelected = (point: Point) => {
+    const { x, y } = point;
+    const target = this.spreadsheet.container.getShape(x, y);
 
     const cell = this.spreadsheet.getCell(target);
     if (!cell) {
       return;
     }
-
-    if (needScrollForY) {
-      this.scrollDelta.y.value = y;
-      this.scrollDelta.y.scroll = true;
-    }
-
-    if (needScrollForX) {
-      this.scrollDelta.x.value = x;
-      this.scrollDelta.x.scroll = true; // scroll 改为 auto scroll
-    }
+    const { rowIndex, colIndex } = cell.getMeta();
 
     this.endBrushPoint = {
-      x: newX,
-      y: newY,
-      rowIndex: cell.getMeta().rowIndex,
-      colIndex: cell.getMeta().colIndex,
+      x,
+      y,
+      rowIndex,
+      colIndex,
     };
 
     const { interaction } = this.spreadsheet;
@@ -251,23 +232,6 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     interaction.clearStyleIndependent();
     this.updatePrepareSelectMask();
     this.showPrepareSelectedCells();
-
-    if (needScrollForY || needScrollForX) {
-      this.clearScrollRaf();
-      this.rafCb();
-      this.requestAnimationId = setInterval(this.rafCb, 300);
-    }
-  };
-
-  private scroll = _.throttle((x, y) => {
-    this.scrollCallback(x, y);
-  }, 30);
-
-  private clearScrollRaf = () => {
-    if (this.requestAnimationId) {
-      clearInterval(this.requestAnimationId);
-      this.requestAnimationId = null;
-    }
   };
 
   private bindMouseMove() {
@@ -278,39 +242,18 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       ) {
         return;
       }
-      const { interaction } = this.spreadsheet;
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
       const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
 
-      this.clearScrollRaf();
+      this.clearAutoScroll();
       if (!this.isPointInCanvas(pointInCanvas)) {
         const deltaX = pointInCanvas.x - this.endBrushPoint.x;
         const deltaY = pointInCanvas.y - this.endBrushPoint.y;
-        this.scroll(deltaX, deltaY);
+        this.handleScroll(deltaX, deltaY);
         return;
       }
 
-      const target = this.spreadsheet.container.getShape(
-        pointInCanvas.x,
-        pointInCanvas.y,
-      );
-      const cell = this.spreadsheet.getCell(target);
-      if (!cell) {
-        return;
-      }
-      const { colIndex, rowIndex } = cell.getMeta();
-
-      this.endBrushPoint = {
-        x: pointInCanvas.x,
-        y: pointInCanvas.y,
-        colIndex,
-        rowIndex,
-      };
-
-      interaction.addIntercepts([InterceptType.HOVER]);
-      interaction.clearStyleIndependent();
-      this.updatePrepareSelectMask();
-      this.showPrepareSelectedCells();
+      this.renderPrepareSelected(pointInCanvas);
     });
   }
 
@@ -318,7 +261,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       event.preventDefault();
-      this.clearScrollRaf();
+      this.clearAutoScroll();
       if (this.isValidBrushSelection()) {
         this.spreadsheet.interaction.addIntercepts([
           InterceptType.BRUSH_SELECTION,
@@ -377,16 +320,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private resetScrollDelta() {
-    this.scrollDelta = {
-      x: {
-        value: 0,
-        scroll: false,
-      },
-      y: {
-        value: 0,
-        scroll: false,
-      },
-    };
+    this.autoScrollConfig = { ...BRUSH_AUTO_SCROLL_INITIAL_CONFIG };
   }
 
   private getBrushPoint(event: CanvasEvent): BrushPoint {

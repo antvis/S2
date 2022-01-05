@@ -76,3 +76,14 @@ export enum InterceptType {
   MULTI_SELECTION = 'multiSelection',
   RESIZE = 'resize',
 }
+
+export const BRUSH_AUTO_SCROLL_INITIAL_CONFIG = {
+  x: {
+    value: 0,
+    scroll: false,
+  },
+  y: {
+    value: 0,
+    scroll: false,
+  },
+};
