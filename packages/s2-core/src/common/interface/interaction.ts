@@ -76,3 +76,13 @@ export type Intercept =
   | InterceptType.BRUSH_SELECTION
   | InterceptType.MULTI_SELECTION
   | InterceptType.RESIZE;
+
+export interface BrushAutoScrollConfigItem {
+  value: number;
+  scroll: boolean;
+}
+
+export interface BrushAutoScrollConfig {
+  x: BrushAutoScrollConfigItem;
+  y: BrushAutoScrollConfigItem;
+}

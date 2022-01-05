@@ -3,20 +3,18 @@ import { getCellMeta } from 'src/utils/interaction/select-event';
 import _, { isEmpty } from 'lodash';
 import { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
-import {
-  InterceptType,
-  S2Event,
-  BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
-} from '@/common/constant';
+import { InterceptType, S2Event } from '@/common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
+  BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
 } from '@/common/constant/interaction';
 import {
   BrushPoint,
   BrushRange,
   OriginalEvent,
   ViewMeta,
+  BrushAutoScrollConfig,
 } from '@/common/interface';
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
@@ -138,8 +136,33 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private autoScrollIntervalId = null;
 
-  private autoScrollConfig = {
+  private autoScrollConfig: BrushAutoScrollConfig = {
     ...BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
+  };
+
+  private getNextScrollDelta = (config: BrushAutoScrollConfig) => {
+    let x = 0;
+    let y = 0;
+
+    if (config.y.scroll) {
+      const lastIndex = this.endBrushPoint.rowIndex;
+      const nextIndex =
+        this.endBrushPoint.rowIndex + (config.y.value > 0 ? 1 : -1);
+      y =
+        this.spreadsheet.facet.viewCellHeights.getCellOffsetY(nextIndex) -
+        this.spreadsheet.facet.viewCellHeights.getCellOffsetY(lastIndex);
+    }
+
+    if (config.x.scroll) {
+      const nextIndex =
+        this.endBrushPoint.colIndex + (config.x.value > 0 ? 1 : -1);
+      x = this.spreadsheet.facet.layoutResult.colLeafNodes[nextIndex].width;
+    }
+
+    return {
+      x,
+      y,
+    };
   };
 
   private autoScroll = () => {
