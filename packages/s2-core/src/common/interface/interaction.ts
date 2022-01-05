@@ -57,6 +57,8 @@ export interface BrushPoint {
   colIndex: number;
   x: number;
   y: number;
+  scrollX?: number;
+  scrollY?: number;
 }
 
 export interface BrushRange {

@@ -1,6 +1,6 @@
 import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import { isEmpty } from 'lodash';
+import _, { isEmpty } from 'lodash';
 import { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
 import { InterceptType, S2Event } from '@/common/constant';
@@ -17,6 +17,17 @@ import {
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
 import { getActiveCellsTooltipData } from '@/utils/tooltip';
+
+interface BrushScrollConfig {
+  x: {
+    value: number;
+    scroll: boolean;
+  };
+  y: {
+    value: number;
+    scroll: boolean;
+  };
+}
 
 /**
  * Panel area's brush selection interaction
@@ -82,13 +93,186 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       this.initPrepareSelectMaskShape();
       this.setDisplayedDataCells();
       this.startBrushPoint = this.getBrushPoint(event);
+      this.resetScrollDelta();
     });
   }
 
-  private bindMouseMove() {
-    this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (event: CanvasEvent) => {
-      event.preventDefault();
+  private isPointInCanvas(point: { x: number; y: number }) {
+    const { height, width } = this.spreadsheet.facet.getCanvasHW();
 
+    return point.x > 0 && point.x < width && point.y > 0 && point.y < height;
+  }
+
+  private formatBrushPointForScroll = (delta: { x: number; y: number }) => {
+    const { x, y } = delta;
+    const { facet } = this.spreadsheet;
+    const { width, height } = facet.getCanvasHW();
+    const { minX, minY, maxX, maxY } = facet.panelBBox;
+    let newX = this.endBrushPoint.x + x;
+    let newY = this.endBrushPoint.y + y;
+    let needScrollForX = true;
+    let needScrollForY = true;
+    const vScrollBarWidth = facet.vScrollBar.getBBox().width;
+    const extraPixel = 2; // 额外加 1px 缩进，保证 getShape 在 panelBox 内
+
+    if (newX > width) {
+      newX = maxX - vScrollBarWidth - extraPixel;
+    } else if (newX < 0) {
+      newX = minX + extraPixel;
+    } else {
+      needScrollForX = false;
+    }
+
+    if (newY > height) {
+      newY = maxY - extraPixel;
+    } else if (newY < 0) {
+      newY = minY + extraPixel;
+    } else {
+      needScrollForY = false;
+    }
+
+    return {
+      x: {
+        value: newX,
+        needScroll: needScrollForX,
+      },
+      y: {
+        value: newY,
+        needScroll: needScrollForY,
+      },
+    };
+  };
+
+  private requestAnimationId = null;
+
+  private requestAnimationTimeStamp = null;
+
+  private scrollDelta = {
+    x: {
+      value: 0,
+      scroll: false,
+    },
+    y: {
+      value: 0,
+      scroll: false,
+    },
+  };
+
+  private scrollWithConfig = (config: BrushScrollConfig) => {
+    const scrollOffset = this.spreadsheet.facet.getScrollOffset();
+    const offsetCfg = {
+      offsetX: {
+        value: scrollOffset.scrollX,
+        animate: true,
+      },
+      offsetY: {
+        value: scrollOffset.scrollY,
+        animate: true,
+      },
+    };
+
+    if (config.y.scroll) {
+      offsetCfg.offsetY.value += config.y.value > 0 ? 30 : -30;
+    }
+
+    if (config.x.scroll) {
+      offsetCfg.offsetX.value += config.x.value > 0 ? 100 : -100; // todo
+      if (offsetCfg.offsetX.value < 0) {
+        offsetCfg.offsetX.value = 0;
+      }
+    }
+
+    this.spreadsheet.facet.updateScrollOffset(offsetCfg);
+
+    const target = this.spreadsheet.container.getShape(
+      this.endBrushPoint.x,
+      this.endBrushPoint.y,
+    );
+
+    const cell = this.spreadsheet.getCell(target);
+    if (!cell) {
+      return;
+    }
+
+    this.endBrushPoint = {
+      ...this.endBrushPoint,
+      rowIndex: cell.getMeta().rowIndex,
+      colIndex: cell.getMeta().colIndex,
+    };
+
+    const { interaction } = this.spreadsheet;
+    interaction.addIntercepts([InterceptType.HOVER]);
+    interaction.clearStyleIndependent();
+    this.updatePrepareSelectMask();
+    this.showPrepareSelectedCells();
+  };
+
+  private rafCb = () => {
+    if (
+      this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
+    ) {
+      return;
+    }
+    this.scrollWithConfig(this.scrollDelta);
+  };
+
+  private scrollCallback = (x, y) => {
+    const {
+      x: { value: newX, needScroll: needScrollForX },
+      y: { value: newY, needScroll: needScrollForY },
+    } = this.formatBrushPointForScroll({ x, y });
+
+    const target = this.spreadsheet.container.getShape(newX, newY);
+
+    const cell = this.spreadsheet.getCell(target);
+    if (!cell) {
+      return;
+    }
+
+    if (needScrollForY) {
+      this.scrollDelta.y.value = y;
+      this.scrollDelta.y.scroll = true;
+    }
+
+    if (needScrollForX) {
+      this.scrollDelta.x.value = x;
+      this.scrollDelta.x.scroll = true; // scroll 改为 auto scroll
+    }
+
+    this.endBrushPoint = {
+      x: newX,
+      y: newY,
+      rowIndex: cell.getMeta().rowIndex,
+      colIndex: cell.getMeta().colIndex,
+    };
+
+    const { interaction } = this.spreadsheet;
+    interaction.addIntercepts([InterceptType.HOVER]);
+    interaction.clearStyleIndependent();
+    this.updatePrepareSelectMask();
+    this.showPrepareSelectedCells();
+
+    if (needScrollForY || needScrollForX) {
+      this.clearScrollRaf();
+      this.rafCb();
+      this.requestAnimationId = setInterval(this.rafCb, 300);
+    }
+  };
+
+  private scroll = _.throttle((x, y) => {
+    this.scrollCallback(x, y);
+  }, 30);
+
+  private clearScrollRaf = () => {
+    if (this.requestAnimationId) {
+      clearInterval(this.requestAnimationId);
+      this.requestAnimationId = null;
+    }
+  };
+
+  private bindMouseMove() {
+    this.spreadsheet.on(S2Event.GLOBAL_MOUSE_MOVE, (event) => {
+      event.preventDefault();
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
       ) {
@@ -96,7 +280,33 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       }
       const { interaction } = this.spreadsheet;
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
-      this.endBrushPoint = this.getBrushPoint(event);
+      const pointInCanvas = this.spreadsheet.container.getPointByEvent(event);
+
+      this.clearScrollRaf();
+      if (!this.isPointInCanvas(pointInCanvas)) {
+        const deltaX = pointInCanvas.x - this.endBrushPoint.x;
+        const deltaY = pointInCanvas.y - this.endBrushPoint.y;
+        this.scroll(deltaX, deltaY);
+        return;
+      }
+
+      const target = this.spreadsheet.container.getShape(
+        pointInCanvas.x,
+        pointInCanvas.y,
+      );
+      const cell = this.spreadsheet.getCell(target);
+      if (!cell) {
+        return;
+      }
+      const { colIndex, rowIndex } = cell.getMeta();
+
+      this.endBrushPoint = {
+        x: pointInCanvas.x,
+        y: pointInCanvas.y,
+        colIndex,
+        rowIndex,
+      };
+
       interaction.addIntercepts([InterceptType.HOVER]);
       interaction.clearStyleIndependent();
       this.updatePrepareSelectMask();
@@ -108,7 +318,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     // 使用全局的 mouseup, 而不是 canvas 的 mouse up 防止刷选过程中移出表格区域时无法响应事件
     this.spreadsheet.on(S2Event.GLOBAL_MOUSE_UP, (event) => {
       event.preventDefault();
-
+      this.clearScrollRaf();
       if (this.isValidBrushSelection()) {
         this.spreadsheet.interaction.addIntercepts([
           InterceptType.BRUSH_SELECTION,
@@ -166,7 +376,21 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.prepareSelectMaskShape?.hide();
   }
 
+  private resetScrollDelta() {
+    this.scrollDelta = {
+      x: {
+        value: 0,
+        scroll: false,
+      },
+      y: {
+        value: 0,
+        scroll: false,
+      },
+    };
+  }
+
   private getBrushPoint(event: CanvasEvent): BrushPoint {
+    const { scrollY } = this.spreadsheet.facet.getScrollOffset();
     const originalEvent = event.originalEvent as unknown as OriginalEvent;
     const point: Point = {
       x: originalEvent.layerX,
@@ -179,11 +403,13 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       ...point,
       rowIndex,
       colIndex,
+      scrollY,
     };
   }
 
   // 四个刷选方向: 左 => 右, 右 => 左, 上 => 下, 下 => 上, 将最终结果进行重新排序, 获取真实的 row, col index
   private getBrushRange(): BrushRange {
+    const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
     const minRowIndex = Math.min(
       this.startBrushPoint.rowIndex,
       this.endBrushPoint.rowIndex,
@@ -200,10 +426,15 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       this.startBrushPoint.colIndex,
       this.endBrushPoint.colIndex,
     );
-    const minX = Math.min(this.startBrushPoint.x, this.endBrushPoint.x);
-    const maxX = Math.max(this.startBrushPoint.x, this.endBrushPoint.x);
-    const minY = Math.min(this.startBrushPoint.y, this.endBrushPoint.y);
-    const maxY = Math.max(this.startBrushPoint.y, this.endBrushPoint.y);
+    const startXInView =
+      this.startBrushPoint.x + this.startBrushPoint.scrollX - scrollX;
+    const startYInView =
+      this.startBrushPoint.y + this.startBrushPoint.scrollY - scrollY;
+    // startBrushPoint 和 endBrushPoint 加上当前 offset
+    const minX = Math.min(startXInView, this.endBrushPoint.x);
+    const maxX = Math.max(startXInView, this.endBrushPoint.x);
+    const minY = Math.min(startYInView, this.endBrushPoint.y);
+    const maxY = Math.max(startYInView, this.endBrushPoint.y);
 
     return {
       start: {
@@ -236,6 +467,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   // 获取对角线的两个坐标, 得到对应矩阵并且有数据的单元格
   private getBrushRangeDataCells(): DataCell[] {
+    this.setDisplayedDataCells();
     return this.displayedDataCells.filter((cell) => {
       const meta = cell.getMeta();
       return this.isInBrushRange(meta);
@@ -256,11 +488,39 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.brushRangeDataCells = brushRangeDataCells;
   };
 
+  private getSelectedCellMetas = (range: BrushRange) => {
+    const metas = [];
+    const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
+    for (
+      let rowIndex = range.start.rowIndex;
+      rowIndex < range.end.rowIndex + 1;
+      rowIndex++
+    ) {
+      for (
+        let colIndex = range.start.colIndex;
+        colIndex < range.end.colIndex + 1;
+        colIndex++
+      ) {
+        const colId = colLeafNodes[colIndex].id;
+        metas.push({
+          colIndex,
+          rowIndex,
+          id: `${rowIndex}-${colId}`,
+          type: 'dataCell',
+        });
+      }
+    }
+    return metas;
+  };
+
   // 最终刷选的cell
   private updateSelectedCells() {
     const { interaction } = this.spreadsheet;
+
+    const range = this.getBrushRange();
+
     interaction.changeState({
-      cells: this.brushRangeDataCells.map((item) => getCellMeta(item)),
+      cells: this.getSelectedCellMetas(range),
       stateName: InteractionStateName.SELECTED,
     });
     this.spreadsheet.emit(

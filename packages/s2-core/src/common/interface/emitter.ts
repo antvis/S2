@@ -51,6 +51,7 @@ export interface EmitterType {
   [S2Event.GLOBAL_KEYBOARD_DOWN]: KeyboardEventHandler;
   [S2Event.GLOBAL_KEYBOARD_UP]: KeyboardEventHandler;
   [S2Event.GLOBAL_MOUSE_UP]: MouseEventHandler;
+  [S2Event.GLOBAL_MOUSE_MOVE]: MouseEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_UP]: CanvasEventHandler;
   [S2Event.LAYOUT_RESIZE_MOUSE_MOVE]: CanvasEventHandler;

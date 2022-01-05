@@ -109,6 +109,13 @@ export class EventController {
         this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_UP, event);
       },
     );
+    this.addDomEventListener(
+      window,
+      OriginEventType.MOUSE_MOVE,
+      (event: MouseEvent) => {
+        this.spreadsheet.emit(S2Event.GLOBAL_MOUSE_MOVE, event);
+      },
+    );
   }
 
   private getTargetType() {
@@ -398,6 +405,7 @@ export class EventController {
       return;
     }
     const cell = spreadsheet.getCell(event.target);
+
     if (cell) {
       const cellType = cell.cellType;
       if (this.target === event.target) {
