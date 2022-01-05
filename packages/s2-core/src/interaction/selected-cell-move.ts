@@ -2,7 +2,7 @@ import { inRange } from 'lodash';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
 import { TableFacet } from '@/facet';
-import { InteractionStateName, CellTypes } from '@/common';
+import { InteractionStateName, CellTypes, CellMeta } from '@/common';
 import { getDataCellId } from '@/utils';
 import { SpreadSheet } from '@/sheet-type';
 
@@ -20,27 +20,29 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         if (SelectedCellMoveMap.includes(event.key as InteractionKeyboardKey)) {
           const cells = this.spreadsheet.interaction.getCells();
           const cell = cells.length ? cells[cells.length - 1] : null;
-          const getRowCol = (code: string) => {
-            switch (code) {
-              case InteractionKeyboardKey.ARROW_RIGHT:
-                return { row: cell.rowIndex, col: cell.colIndex + 1 };
-              case InteractionKeyboardKey.ARROW_LEFT:
-                return { row: cell.rowIndex, col: cell.colIndex - 1 };
-              case InteractionKeyboardKey.ARROW_UP:
-                return { row: cell.rowIndex - 1, col: cell.colIndex };
-              case InteractionKeyboardKey.ARROW_DOWN:
-                return { row: cell.rowIndex + 1, col: cell.colIndex };
-              default:
-                break;
-            }
-          };
-          const rowCol = cell && getRowCol(event.key);
+          const rowCol = this.getMoveInfo(event.key, cell);
           if (rowCol) {
             this.scrollToActiveCell(this.spreadsheet, rowCol.row, rowCol.col);
           }
         }
       },
     );
+  }
+
+  private getMoveInfo(code: string, cell: CellMeta) {
+    if (!cell) return;
+    switch (code) {
+      case InteractionKeyboardKey.ARROW_RIGHT:
+        return { row: cell.rowIndex, col: cell.colIndex + 1 };
+      case InteractionKeyboardKey.ARROW_LEFT:
+        return { row: cell.rowIndex, col: cell.colIndex - 1 };
+      case InteractionKeyboardKey.ARROW_UP:
+        return { row: cell.rowIndex - 1, col: cell.colIndex };
+      case InteractionKeyboardKey.ARROW_DOWN:
+        return { row: cell.rowIndex + 1, col: cell.colIndex };
+      default:
+        break;
+    }
   }
 
   private getOffsetX(colIndex: number) {
@@ -86,7 +88,6 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     const {
       frozenRowCount = 0,
       frozenColCount = 0,
-      frozenTrailingRowCount = 0,
       frozenTrailingColCount = 0,
     } = this.spreadsheet.options;
     const { colLeafNodes, rowLeafNodes } = spreadsheet.facet.layoutResult;
