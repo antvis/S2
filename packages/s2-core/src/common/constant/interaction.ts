@@ -8,7 +8,7 @@ export enum InteractionName {
   COL_ROW_RESIZE = 'rowColResize',
   DATA_CELL_MULTI_SELECTION = 'dataCellMultiSelection',
   COL_ROW_SHIFT_MULTI_SELECTION = 'colRowShiftMultiSelection',
-  KEYBOARD_MOVE = 'keyboardMove',
+  SELECTED_CELL_MOVE = 'selectedCellMove',
 }
 
 export enum InteractionStateName {

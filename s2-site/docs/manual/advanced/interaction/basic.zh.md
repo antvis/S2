@@ -205,6 +205,10 @@ SHIFT + click: 区间选择（类似刷选）
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wq-XRYpVAGMAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
+### 移动高亮单元
+
+点击数据单元后，使用键盘上下左右键即可移动当前高亮区域
+
 ### 隐藏列头 （明细表有效）
 
 列头隐藏后，会在紧邻的兄弟单元格显示一个展示按钮，和一个隐藏提示线，鼠标单击即可展开，可配置 `hiddenColumns` 实现 `默认隐藏` 和 `交互式隐藏`. [查看具体例子](zh/examples/interaction/advanced#hide-columns)

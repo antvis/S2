@@ -8,7 +8,7 @@ import {
 import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { ShiftMultiSelection } from './shift-multi-selection';
-import { KeyboardMove } from './keyboard-move';
+import { SelectedCellMove } from './selected-cell-move';
 import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
 import { hideColumnsByThunkGroup } from '@/utils/hide-columns';
 import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
@@ -283,8 +283,8 @@ export class RootInteraction {
         new ShiftMultiSelection(this.spreadsheet),
       );
       this.interactions.set(
-        InteractionName.KEYBOARD_MOVE,
-        new KeyboardMove(this.spreadsheet),
+        InteractionName.SELECTED_CELL_MOVE,
+        new SelectedCellMove(this.spreadsheet),
       );
     }
 
