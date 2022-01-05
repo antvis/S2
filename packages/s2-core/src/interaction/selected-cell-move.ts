@@ -127,5 +127,6 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
         },
       ],
     });
+    spreadsheet.emit(S2Event.GLOBAL_SELECTED, interaction.getActiveCells());
   }
 }
