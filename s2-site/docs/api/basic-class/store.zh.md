@@ -47,8 +47,6 @@ interface HiddenColumnsInfo {
 interface PartDrillDownInfo {
   // 下钻数据
   drillData: Record<string, string | number>[];
-  // 下钻总计数据
-  drillTotalData?: Record<string, string | number>[];
   // 下钻字段
   drillField: string;
 }
