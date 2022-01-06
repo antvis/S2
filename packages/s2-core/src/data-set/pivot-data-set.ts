@@ -124,13 +124,13 @@ export class PivotDataSet extends BaseDataSet {
     const store = this.spreadsheet.store;
 
     // 1、通过values在data中注入额外的维度信息，并分离`明细数据`&`汇总数据`
-    const transfromedData = this.standardTransform(drillDownData, dataValues);
+    const transformedData = this.standardTransform(drillDownData, dataValues);
 
-    const totalData = splitTotal(transfromedData, {
+    const totalData = splitTotal(transformedData, {
       columns: this.fields.columns,
       rows: nextRowFields,
     });
-    const originData = difference(transfromedData, totalData);
+    const originData = difference(transformedData, totalData);
 
     // 2. 检查该节点是否已经存在下钻维度
     const rowNodeId = rowNode?.id;
