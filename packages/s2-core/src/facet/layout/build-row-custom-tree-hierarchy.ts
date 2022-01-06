@@ -40,7 +40,7 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       level,
       parent: parentNode,
       field: key,
-      isTotals: false, // 自定义行头不会存在概念
+      isTotals: false, // 自定义行头不会存在总计概念
       isCollapsed,
       hierarchy,
       query: valueQuery,
