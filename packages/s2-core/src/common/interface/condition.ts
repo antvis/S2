@@ -29,7 +29,7 @@ export interface Condition {
   readonly mapping: MappingFunction;
 }
 
-type IconPosition = 'left' | 'right';
+export type IconPosition = 'left' | 'right';
 
 export interface IconCondition extends Condition {
   readonly position?: IconPosition; // right by default
