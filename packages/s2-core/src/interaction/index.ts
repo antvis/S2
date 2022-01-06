@@ -6,3 +6,4 @@ export * from './event-controller';
 export * from './root';
 export * from './row-column-resize';
 export * from './range-selection';
+export * from './selected-cell-move';

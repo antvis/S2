@@ -21,6 +21,7 @@ import {
   RowColumnResize,
   DataCellMultiSelection,
   RangeSelection,
+  SelectedCellMove,
   BaseEvent,
 } from '@/index';
 import { Store } from '@/common/store';
@@ -389,7 +390,7 @@ describe('RootInteraction Tests', () => {
   });
 
   test('should get correctly default interaction size', () => {
-    expect(defaultInteractionSize).toEqual(9);
+    expect(defaultInteractionSize).toEqual(10);
   });
 
   test('should register default interaction', () => {
@@ -413,6 +414,7 @@ describe('RootInteraction Tests', () => {
     ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
     ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
     ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
+    ${InteractionName.SELECTED_CELL_MOVE}        | ${SelectedCellMove}
   `(
     'should register correctly interaction instance for %o',
     ({ key, expected }) => {
@@ -448,11 +450,12 @@ describe('RootInteraction Tests', () => {
   });
 
   test.each`
-    option              | name                                         | expected
-    ${`brushSelection`} | ${InteractionName.BRUSH_SELECTION}           | ${BrushSelection}
-    ${`resize`}         | ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
-    ${`multiSelection`} | ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
-    ${`rangeSelection`} | ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
+    option                | name                                         | expected
+    ${`brushSelection`}   | ${InteractionName.BRUSH_SELECTION}           | ${BrushSelection}
+    ${`resize`}           | ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
+    ${`multiSelection`}   | ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
+    ${`rangeSelection`}   | ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
+    ${`selectedCellMove`} | ${InteractionName.SELECTED_CELL_MOVE}        | ${SelectedCellMove}
   `(
     'should disable interaction by options %o',
     ({ option, name, expected }) => {
