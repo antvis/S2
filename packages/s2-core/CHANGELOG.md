@@ -1,3 +1,15 @@
+# [@antv/s2-v1.5.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.5.0-alpha.3...@antv/s2-v1.5.0-alpha.4) (2022-01-06)
+
+
+### Bug Fixes
+
+* 修复自定义树取值路径错误问题 ([#970](https://github.com/antvis/S2/issues/970)) ([9290061](https://github.com/antvis/S2/commit/92900617f39b4d29e6a4e12ca88772b29f994d39))
+
+
+### Features
+
+* **interaction:**  支持通过键盘方向键移动选中的单元格 ([#967](https://github.com/antvis/S2/issues/967)) ([c1a98ec](https://github.com/antvis/S2/commit/c1a98ec30c161624a48fda16bce0888b0af60f6b))
+
 # [@antv/s2-v1.5.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.5.0-alpha.2...@antv/s2-v1.5.0-alpha.3) (2022-01-04)
 
 
