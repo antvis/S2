@@ -369,14 +369,14 @@ describe('Pivot Dataset Test', () => {
     });
 
     test('transformDrillDownData function', () => {
-      dataSet.transformDrillDownData('district', drillDownData, null, cityNode);
+      dataSet.transformDrillDownData('district', drillDownData, cityNode);
       const metaMap = dataSet.rowPivotMeta.get('浙江省').children.get('杭州市');
       expect(metaMap.childField).toEqual('district');
       expect(metaMap.children.get('西湖区')).not.toBeEmpty();
     });
 
     test('clearDrillDownData function', () => {
-      dataSet.transformDrillDownData('district', drillDownData, null, cityNode);
+      dataSet.transformDrillDownData('district', drillDownData, cityNode);
       dataSet.clearDrillDownData('root[&]浙江省[&]杭州市');
       const metaMap = dataSet.rowPivotMeta.get('浙江省').children.get('杭州市');
       expect(metaMap.childField).toBeUndefined();
@@ -386,8 +386,7 @@ describe('Pivot Dataset Test', () => {
     test('transformDrillDownData function with totalData', () => {
       dataSet.transformDrillDownData(
         'district',
-        drillDownData,
-        drillDownTotalData,
+        [...drillDownData, ...drillDownTotalData],
         cityNode,
       );
 
@@ -407,8 +406,7 @@ describe('Pivot Dataset Test', () => {
     test('clearDrillDownData function with totalData', () => {
       dataSet.transformDrillDownData(
         'district',
-        drillDownData,
-        drillDownTotalData,
+        [...drillDownData, ...drillDownTotalData],
         cityNode,
       );
       dataSet.clearDrillDownData('root[&]浙江省[&]杭州市');
