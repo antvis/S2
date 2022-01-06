@@ -14,6 +14,7 @@ import {
   forEach,
   unset,
   isNumber,
+  difference,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -110,13 +111,11 @@ export class PivotDataSet extends BaseDataSet {
    * Provide a way to append some drill-down data in indexesData
    * @param extraRowField
    * @param drillDownData
-   * @param drillDownTotalData
    * @param rowNode
    */
   public transformDrillDownData(
     extraRowField: string,
     drillDownData: DataType[],
-    drillDownTotalData: DataType[],
     rowNode: Node,
   ) {
     const { columns, values: dataValues } = this.fields;
@@ -124,18 +123,14 @@ export class PivotDataSet extends BaseDataSet {
     const nextRowFields = [...currentRowFields, extraRowField];
     const store = this.spreadsheet.store;
 
-    // 1、通过values在data中注入额外的维度信息
-    drillDownData = this.standardTransform(drillDownData, dataValues);
-    drillDownTotalData = this.standardTransform(drillDownTotalData, dataValues);
+    // 1、通过values在data中注入额外的维度信息，并分离`明细数据`&`汇总数据`
+    const transfromedData = this.standardTransform(drillDownData, dataValues);
 
-    drillDownTotalData = []
-      .concat(
-        splitTotal(drillDownData, {
-          columns: this.fields.columns,
-          rows: nextRowFields,
-        }),
-      )
-      .concat(drillDownTotalData);
+    const totalData = splitTotal(transfromedData, {
+      columns: this.fields.columns,
+      rows: nextRowFields,
+    });
+    const originData = difference(transfromedData, totalData);
 
     // 2. 检查该节点是否已经存在下钻维度
     const rowNodeId = rowNode?.id;
@@ -158,8 +153,8 @@ export class PivotDataSet extends BaseDataSet {
     } = transformIndexesData({
       rows: nextRowFields,
       columns,
-      originData: drillDownData,
-      totalData: drillDownTotalData,
+      originData,
+      totalData,
       indexesData: this.indexesData,
       sortedDimensionValues: this.sortedDimensionValues,
       rowPivotMeta: this.rowPivotMeta,

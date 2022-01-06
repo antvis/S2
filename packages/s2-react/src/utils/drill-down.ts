@@ -164,11 +164,10 @@ export const handleDrillDown = (params: DrillDownParams) => {
     );
   }
   fetchData(meta, drillFields).then((info) => {
-    const { drillData, drillTotalData, drillField } = info;
+    const { drillData, drillField } = info;
     (spreadsheet.dataSet as PivotDataSet).transformDrillDownData(
       drillField,
       drillData,
-      drillTotalData ?? [],
       meta,
     );
 
@@ -179,7 +178,6 @@ export const handleDrillDown = (params: DrillDownParams) => {
         rowId: meta.id,
         drillLevel,
         drillData,
-        drillTotalData,
         drillField,
       };
       newDrillDownDataCache.push(newDrillDownData);
