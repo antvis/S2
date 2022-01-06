@@ -501,7 +501,7 @@ export class TableFacet extends BaseFacet {
     );
   };
 
-  protected getTotalHeightForRange = (start: number, end: number) => {
+  public getTotalHeightForRange = (start: number, end: number) => {
     if (start < 0 || end < 0) return 0;
 
     if (this.rowOffsets) {

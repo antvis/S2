@@ -8,6 +8,7 @@ import {
 import { HoverEvent } from './base-interaction/hover';
 import { EventController } from './event-controller';
 import { RangeSelection } from './range-selection';
+import { SelectedCellMove } from './selected-cell-move';
 import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
 import { hideColumnsByThunkGroup, hideColumns } from '@/utils/hide-columns';
 import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
@@ -253,8 +254,14 @@ export class RootInteraction {
   }
 
   private getDefaultInteractions() {
-    const { resize, brushSelection, multiSelection, rangeSelection } =
-      this.spreadsheet.options.interaction;
+    const {
+      resize,
+      brushSelection,
+      multiSelection,
+      rangeSelection,
+      selectedCellMove,
+    } = this.spreadsheet.options.interaction;
+
     return [
       {
         key: InteractionName.DATA_CELL_CLICK,
@@ -296,6 +303,11 @@ export class RootInteraction {
         key: InteractionName.RANGE_SELECTION,
         interaction: RangeSelection,
         enable: !isMobile() && rangeSelection,
+      },
+      {
+        key: InteractionName.SELECTED_CELL_MOVE,
+        interaction: SelectedCellMove,
+        enable: !isMobile() && selectedCellMove,
       },
     ];
   }

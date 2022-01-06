@@ -32,12 +32,13 @@ order: 0
 | 隐藏列头            | `S2Event.LAYOUT_TABLE_COL_EXPANDED` `S2Event.LAYOUT_TABLE_COL_HIDDEN` | 隐藏/展开 列头 （明细表有效）                                                                                                     |
 | 链接跳转            | `S2Event.GLOBAL_LINK_FIELD_JUMP`                                      | 行头/列头 链接跳转                                                                                                                |
 | 重置                | `S2Event.GLOBAL_RESET`                                                | 再次点击，点击空白处，或按下 `Esc` 取消选中的单元格                                                                               |
+| 移动高亮单元格                | `S2Event.GLOBAL_SELECTED`                                                | 点击数值单元格后，使用键盘方向键即可移动当前高亮单元格                                                                        |
 
 ## 交互事件
 
 - `global:xx`: 全局图表事件
 - `layout:xx`: 布局改变事件
-- `cell:xx`:  单元格级别的事件，整个表格分为不同的单元格类型，你可以对特定的单元格进行实践监听，实现自定义需求
+- `cell:xx`:  单元格级别的事件，整个表格分为不同的单元格类型，你可以对特定的单元格进行事件监听，实现自定义需求
 
 [详情](https://github.com/antvis/S2/blob/master/packages/s2-core/src/common/constant/events/basic.ts)
 
@@ -159,7 +160,7 @@ const s2Options = {
 
 ## 交互默认样式和行为
 
-> 如何修改默认样式？请查看 《主题》 了解
+> 如何修改默认样式？请查看 [主题配置](/zh/docs/manual/basic/theme)
 
 ### 选中聚光灯
 
@@ -184,7 +185,7 @@ const s2options = {
 ```ts
 const s2options = {
   interaction: {
-    hoverHighlight: false // 默认开启
+    hoverHighlight: false // 默认 true
   }
 };
 ```
@@ -198,7 +199,7 @@ const s2options = {
 ```ts
 const s2options = {
   interaction: {
-    hoverFocus: false // 默认开启
+    hoverFocus: false // 默认 true
   }
 };
 ```
@@ -232,6 +233,20 @@ const s2options = {
   interaction: {
     multiSelection: false // 默认 true
     rangeSelection: false // 默认 true
+  }
+};
+```
+
+### 移动高亮单元格
+
+点击数值单元格后，使用键盘方向键即可移动当前高亮单元格，默认开启，可配置 `selectedCellMove` 关闭：
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*w2M7Q7PzS3gAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+
+```ts
+const s2options = {
+  interaction: {
+    selectedCellMove: false // 默认 true
   }
 };
 ```

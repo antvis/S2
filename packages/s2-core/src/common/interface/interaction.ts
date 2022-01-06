@@ -111,6 +111,8 @@ export interface InteractionOptions {
   readonly multiSelection?: boolean;
   // enable Shift + click multi selection
   readonly rangeSelection?: boolean;
+  // use arrow keyboard to move selected cell
+  readonly selectedCellMove?: boolean;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];
