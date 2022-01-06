@@ -1,3 +1,15 @@
+# [@antv/s2-react-v1.5.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-react-v1.5.0-alpha.4...@antv/s2-react-v1.5.0-alpha.5) (2022-01-06)
+
+
+### Bug Fixes
+
+* 修改 s2-react 错误的 peerDependencies close [#963](https://github.com/antvis/S2/issues/963) ([#966](https://github.com/antvis/S2/issues/966)) ([f852704](https://github.com/antvis/S2/commit/f85270457d1045eccd2a453ba513d58e4d1652a7))
+
+
+### Features
+
+* **interaction:**  支持通过键盘方向键移动选中的单元格 ([#967](https://github.com/antvis/S2/issues/967)) ([c1a98ec](https://github.com/antvis/S2/commit/c1a98ec30c161624a48fda16bce0888b0af60f6b))
+
 # [@antv/s2-react-v1.5.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.5.0-alpha.3...@antv/s2-react-v1.5.0-alpha.4) (2022-01-04)
 
 
