@@ -48,6 +48,7 @@ const s2options = {
 
 * `text`，`background` 和 `interval` 的均为 [Condition](/zh/docs/api/general/S2Options#condition) 数组类型
   * 包含 `field` 和 `mapping` 两个字段
+  * 一个字段 ID 多次匹配到同一范围的字段标记规则，以最后一个规则为准。
 * `icon` 稍有不同，为 [IconCondition](/zh/docs/api/general/S2Options#iconcondition) 数组类型
   * 多一个 `position` 字段用于指定图标相对于文字的位置
 
@@ -57,8 +58,8 @@ const s2options = {
 
 `field` 用于指定将字段标记应用于哪些字段上，其取值范围会因表的形态不同而不同：
 
-* 对于透视表，`field` 取值范围是 `values`
-* 对于明细表，`field` 取值范围是 `columns`
+* 对于透视表，`field` 取值范围或正则匹配范围是 `values`
+* 对于明细表，`field` 取值范围或正则匹配范围是 `columns`
 
 <table
   style="width: 100%; outline: none; border-collapse: collapse;"
