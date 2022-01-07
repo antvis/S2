@@ -278,37 +278,62 @@ export class PivotFacet extends BaseFacet {
       `${col.value}`,
       col.width,
     );
-    let colWidth: number;
     if (userDragWidth) {
       return userDragWidth;
     }
+
     if (this.spreadsheet.getLayoutWidthType() === LayoutWidthTypes.Compact) {
-      // compat
+      const {
+        bolderText: colCellTextStyle,
+        cell: colCellStyle,
+        icon: colIconStyle,
+      } = this.spreadsheet.theme.colCell;
+
+      // leaf node rough width
+      const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
+        col.field,
+      );
+      const leafNodeLabel = cellFormatter?.(col.value) ?? col.label;
+      const iconWidth =
+        this.spreadsheet.isValueInCols() &&
+        this.spreadsheet.options.showDefaultHeaderActionIcon
+          ? colIconStyle.size +
+            colIconStyle.margin.left +
+            colIconStyle.margin.right
+          : 0;
+      const leafNodeRoughWidth =
+        measureTextWidthRoughly(leafNodeLabel) + iconWidth;
+
+      // will deal with real width calculation in multiple values render pr
       const multiData = dataSet.getMultiData(
         col.query,
         col.isTotals || col.isTotalMeasure,
       );
-      const colLabel = col.label;
-      // will deal with real width calculation in multiple values render pr
-      const allLabels = multiData
+      const allDataLabels = multiData
         .map((data) => `${handleDataItem(data, filterDisplayDataItem)}`)
         ?.slice(0, 50);
-      allLabels.push(colLabel);
-      const maxLabel = maxBy(allLabels, (label) =>
+      const maxDataLabel = maxBy(allDataLabels, (label) =>
         measureTextWidthRoughly(label),
       );
-      const { bolderText: colCellTextStyle, cell: colCellStyle } =
-        this.spreadsheet.theme.colCell;
+
+      // compare result
+      const isLeafGreater =
+        leafNodeRoughWidth > measureTextWidthRoughly(maxDataLabel);
+      const maxLabel = isLeafGreater ? leafNodeLabel : maxDataLabel;
+      const appendedWidth = isLeafGreater ? iconWidth : 0;
+
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
         col.field,
         maxLabel,
       );
-      colWidth =
+
+      return (
         measureTextWidth(maxLabel, colCellTextStyle) +
         colCellStyle.padding?.left +
-        colCellStyle.padding?.right;
-      return colWidth;
+        colCellStyle.padding?.right +
+        appendedWidth
+      );
     }
     // adaptive
     if (this.spreadsheet.isHierarchyTreeType()) {
