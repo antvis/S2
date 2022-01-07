@@ -180,6 +180,14 @@ module.exports = {
         },
       },
       {
+        slug: 'layout',
+        icon: 'other',
+        title: {
+          zh: '布局',
+          en: 'Layout',
+        }
+      },
+      {
         slug: 'theme',
         icon: 'skin',
         title: {
