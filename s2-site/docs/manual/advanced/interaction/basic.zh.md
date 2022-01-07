@@ -32,6 +32,7 @@ order: 0
 | 隐藏列头            | `S2Event.LAYOUT_TABLE_COL_EXPANDED` `S2Event.LAYOUT_TABLE_COL_HIDDEN` | 隐藏/展开 列头 （明细表有效）                                                                                                     |
 | 链接跳转            | `S2Event.GLOBAL_LINK_FIELD_JUMP`                                      | 行头/列头 链接跳转                                                                                                                |
 | 重置                | `S2Event.GLOBAL_RESET`                                                | 再次点击，点击空白处，或按下 `Esc` 取消选中的单元格                                                                               |
+| 移动高亮单元格                | `S2Event.GLOBAL_SELECTED`                                                | 点击数值单元格后，使用键盘方向键即可移动当前高亮单元格                                                                        |
 
 ## 交互事件
 
@@ -204,6 +205,12 @@ const s2options = {
 SHIFT + click: 区间选择（类似刷选）
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*wq-XRYpVAGMAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
+
+### 移动高亮单元格
+
+点击数值单元格后，使用键盘方向键即可移动当前高亮单元格
+
+<img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*w2M7Q7PzS3gAAAAAAAAAAAAAARQnAQ" width="600" alt="preview" />
 
 ### 隐藏列头 （明细表有效）
 

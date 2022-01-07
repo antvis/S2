@@ -67,7 +67,7 @@ export type Adaptive =
   | {
       width?: boolean;
       height?: boolean;
-      getContainer: () => HTMLElement;
+      getContainer?: () => HTMLElement;
     };
 
 export interface BaseSheetProps {

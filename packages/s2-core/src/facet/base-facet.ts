@@ -85,11 +85,11 @@ export abstract class BaseFacet {
 
   protected timer: d3Timer.Timer;
 
-  protected hScrollBar: ScrollBar;
+  public hScrollBar: ScrollBar;
 
-  protected hRowScrollBar: ScrollBar;
+  public hRowScrollBar: ScrollBar;
 
-  protected vScrollBar: ScrollBar;
+  public vScrollBar: ScrollBar;
 
   public rowHeader: RowHeader;
 
@@ -408,8 +408,8 @@ export abstract class BaseFacet {
   scrollWithAnimation = (offsetConfig: OffsetConfig) => {
     const { scrollX: adjustedScrollX, scrollY: adjustedScrollY } =
       this.getAdjustedScrollOffset({
-        scrollX: offsetConfig.offsetX.value,
-        scrollY: offsetConfig.offsetY.value,
+        scrollX: offsetConfig.offsetX.value || 0,
+        scrollY: offsetConfig.offsetY.value || 0,
       });
     if (this.timer) {
       this.timer.stop();
@@ -434,8 +434,8 @@ export abstract class BaseFacet {
 
   scrollImmediately = (offsetConfig: OffsetConfig) => {
     const { scrollX, scrollY } = this.getAdjustedScrollOffset({
-      scrollX: offsetConfig.offsetX.value,
-      scrollY: offsetConfig.offsetY.value,
+      scrollX: offsetConfig.offsetX.value || 0,
+      scrollY: offsetConfig.offsetY.value || 0,
     });
     this.setScrollOffset({ scrollX, scrollY });
     this.startScroll(scrollX, scrollY);
@@ -900,11 +900,11 @@ export abstract class BaseFacet {
 
   realCellRender = (scrollX: number, scrollY: number) => {
     const indexes = this.calculateXYIndexes(scrollX, scrollY);
-    // DebuggerUtil.getInstance().logger(
-    //   'renderIndex:',
-    //   this.preCellIndexes,
-    //   indexes,
-    // );
+    DebuggerUtil.getInstance().logger(
+      'renderIndex:',
+      this.preCellIndexes,
+      indexes,
+    );
     const { add, remove } = diffPanelIndexes(this.preCellIndexes, indexes);
 
     DebuggerUtil.getInstance().debugCallback(DEBUG_VIEW_RENDER, () => {
@@ -931,9 +931,9 @@ export abstract class BaseFacet {
         findOne?.remove(true);
       });
       updateMergedCells(this.spreadsheet);
-      // DebuggerUtil.getInstance().logger(
-      //   `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
-      // );
+      DebuggerUtil.getInstance().logger(
+        `Render Cell Panel: ${allCells?.length}, Add: ${add?.length}, Remove: ${remove?.length}`,
+      );
     });
     this.preCellIndexes = indexes;
   };
@@ -1059,17 +1059,18 @@ export abstract class BaseFacet {
 
   protected getColHeader(): ColHeader {
     if (!this.columnHeader) {
-      const { x, width, height } = this.panelBBox;
+      const scrollContainsRowHeader =
+        this.cfg.spreadsheet.isScrollContainsRowHeader();
+      const { x, width, height, originalWidth } = this.panelBBox;
       return new ColHeader({
-        width,
+        width: scrollContainsRowHeader ? originalWidth : width,
         cornerWidth: this.cornerBBox.width,
         height: this.cornerBBox.height,
         viewportWidth: width,
         viewportHeight: height,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader:
-          this.cfg.spreadsheet.isScrollContainsRowHeader(),
+        scrollContainsRowHeader,
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
         sortParam: this.cfg.spreadsheet.store.get('sortParam'),

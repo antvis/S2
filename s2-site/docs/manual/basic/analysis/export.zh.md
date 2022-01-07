@@ -5,11 +5,13 @@ order: 11
 
 ## 简介
 
-此功能可快速将表内容导出到剪切板
+此功能可快速将表格内容复制到剪切板
 
 ### 复制
 
-```typescript
+`@antv/s2` 核心层提供了基础的复制功能，可配置 `enableCopy` 开启
+
+```ts
 const s2options = {
   interaction: {
     enableCopy: true
@@ -23,11 +25,17 @@ const s2options = {
 
 ### 导出
 
-```typescript
+`@antv/s2-react` 组件层提供了导出功能
+
+```ts
 <SheetComponent
   dataCfg={dataCfg}
   options={options}
-  header={{ exportCfg: { open: true } }}
+  header={{
+    exportCfg: {
+      open: true
+    }
+  }}
 />
 ```
 
@@ -35,34 +43,4 @@ const s2options = {
 
 ![导出](https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*d0CqRY6M3yMAAAAAAAAAAAAAARQnAQ)
 
-## 原始导出方法
-
-```tsx
-import { copyData, copyToClipboard, download} from '@antv/s2'
-
-const data = copyData(spreadsheet, '\t', false)
-
-copyToClipboard(data)
-download(data, 'filename')
-```
-
-### copyData
-
-| 参数       | 说明               | 类型            | 默认值 | 必选  |
-| :---------- | :---------- | :--------------- | :------ |  :---- |
-| spreadsheet   | s2实例   | `SpreadSheet`          |     |   ✓  |
-| split   | 分隔符 | `string`           |    |   ✓  |
-| isFormat   | 是否格式化 | `boolean`           |  false  |     |
-
-### copyToClipboard
-
-| 参数       | 说明               | 类型            | 默认值 | 必选  |
-| :---------- | :---------- | :--------------- | :------ |  :---- |
-| data   | 拷贝数据   | `string`          |     |   ✓  |
-
-### download
-
-| 参数       | 说明               | 类型            | 默认值 | 必选  |
-| :---------- | :---------- | :--------------- | :------ |  :---- |
-| data | 拷贝数据 | `string` |     |   ✓  |
-| filename | 文件名称 | `string` |     |   ✓  |
+`markdown:docs/common/export.zh.md`
