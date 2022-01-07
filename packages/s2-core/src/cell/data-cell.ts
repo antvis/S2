@@ -423,7 +423,11 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param conditions
    */
   protected findFieldCondition(conditions: Condition[]): Condition {
-    return find(conditions, (item) => item.field === this.meta.valueField);
+    return find(conditions, (item) => {
+      return item.field instanceof RegExp
+        ? item.field.test(this.meta.valueField)
+        : item.field === this.meta.valueField;
+    });
   }
 
   /**
