@@ -1,3 +1,11 @@
+# [@antv/s2-v1.5.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-v1.5.0-alpha.4...@antv/s2-v1.5.0-alpha.5) (2022-01-07)
+
+
+### Bug Fixes
+
+* 优化复制功能，解决大数据量复制导致的页面崩溃问题 ([#968](https://github.com/antvis/S2/issues/968)) ([b9e5d36](https://github.com/antvis/S2/commit/b9e5d3617815240342bf211bb919c82c1eaa3656))
+* 修复点击非表格区域报错 ([#974](https://github.com/antvis/S2/issues/974)) ([5c98ac4](https://github.com/antvis/S2/commit/5c98ac4b5383855a6661e4fc8e9f3fd515bbfece))
+
 # [@antv/s2-v1.5.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.5.0-alpha.3...@antv/s2-v1.5.0-alpha.4) (2022-01-06)
 
 
