@@ -1,0 +1,24 @@
+{
+  "title": {
+    "zh": "透视表",
+    "en": "Pivot"
+  },
+  "demos": [
+    {
+      "filename": "compact.ts",
+      "title": {
+        "zh": "紧凑布局",
+        "en": "Compact"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/yzBFZaMMLH/55a2d580-1121-468e-9d0b-25f3e9ae25df.png"
+    },
+    {
+      "filename": "colAdaptive.ts",
+      "title": {
+        "zh": "列等宽布局",
+        "en": "ColAdaptive"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/cEkDC%26g%24xj/df31b66d-4a76-4e69-be5a-f467af2d337d.png"
+    }
+  ]
+}
