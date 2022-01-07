@@ -13,7 +13,13 @@ import { generateId } from '@/utils/layout/generate-id';
  * @param params
  */
 export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
-  const { facetCfg, customTreeItems, level, parentNode, hierarchy } = params;
+  const {
+    facetCfg,
+    customTreeItems = [],
+    level,
+    parentNode,
+    hierarchy,
+  } = params;
   const { spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
   for (const customTreeItem of customTreeItems) {
     const { key, title, collapsed, children } = customTreeItem;
