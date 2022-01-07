@@ -5,7 +5,7 @@ import { CornerNodeType, ViewMeta } from '@/common/interface';
 import { ID_SEPARATOR, ROOT_BEGINNING_REGEX } from '@/common/constant';
 import { MultiData } from '@/common/interface';
 
-export const copyToClipboard = (str: string) => {
+export const copyToClipboardByExecCommand = (str: string) => {
   try {
     const el = document.createElement('textarea');
     el.value = str;
@@ -18,6 +18,27 @@ export const copyToClipboard = (str: string) => {
     // eslint-disable-next-line no-console
     console.error(e);
     return false;
+  }
+};
+
+export const copyToClipboardByClipboard = (str: string) => {
+  navigator.clipboard
+    .writeText(str)
+    .then(() => {
+      return true;
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      return false;
+    });
+};
+
+export const copyToClipboard = (str: string) => {
+  if (!navigator.clipboard) {
+    copyToClipboardByExecCommand(str);
+  } else {
+    copyToClipboardByClipboard(str);
   }
 };
 

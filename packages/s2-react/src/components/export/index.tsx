@@ -8,6 +8,7 @@ import {
   download,
   S2_PREFIX_CLS,
 } from '@antv/s2';
+import { isNull } from 'lodash';
 import { DotIcon } from '../icons/index';
 
 export interface DataSet {
@@ -51,7 +52,7 @@ export const Export: React.FC<ExportProps> = ({
 
   const exportData = (isFormat: boolean) => {
     const data = copyData(sheet, '\t', isFormat);
-    if (copyToClipboard(data)) {
+    if (!isNull(copyToClipboard(data))) {
       message.success(successText);
     } else {
       message.error(errorText);
