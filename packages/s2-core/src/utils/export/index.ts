@@ -9,41 +9,34 @@ import {
 } from '@/common/constant';
 import { MultiData } from '@/common/interface';
 
-export const copyToClipboardByExecCommand = (str: string) => {
+export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
   try {
-    const el = document.createElement('textarea');
-    el.value = str;
-    document.body.appendChild(el);
-    el.select();
+    const textarea = document.createElement('textarea');
+    textarea.value = str;
+    document.body.appendChild(textarea);
+    textarea.select();
+
     const success = document.execCommand('copy');
-    document.body.removeChild(el);
-    return success;
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
-    return false;
+    document.body.removeChild(textarea);
+
+    if (success) {
+      return Promise.resolve();
+    }
+    return Promise.reject();
+  } catch (err) {
+    return Promise.reject(err);
   }
 };
 
-export const copyToClipboardByClipboard = (str: string) => {
-  navigator.clipboard
-    .writeText(str)
-    .then(() => {
-      return true;
-    })
-    .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.error(err);
-      return false;
-    });
+export const copyToClipboardByClipboard = (str: string): Promise<void> => {
+  return navigator.clipboard.writeText(str);
 };
 
-export const copyToClipboard = (str: string) => {
+export const copyToClipboard = (str: string): Promise<void> => {
   if (!navigator.clipboard) {
-    copyToClipboardByExecCommand(str);
-  } else {
-    copyToClipboardByClipboard(str);
+    return copyToClipboardByExecCommand(str);
   }
+  return copyToClipboardByClipboard(str);
 };
 
 export const download = (str: string, fileName: string) => {
