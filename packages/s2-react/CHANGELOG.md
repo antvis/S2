@@ -1,3 +1,18 @@
+# [@antv/s2-react-v1.5.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.4.0...@antv/s2-react-v1.5.0) (2022-01-07)
+
+
+### Bug Fixes
+
+* bug: 修复交叉表手动设置滚动不生效问题 ([#955](https://github.com/antvis/S2/issues/955)) ([64eeee8](https://github.com/antvis/S2/commit/64eeee8454c90116c7fcfba891606c836317b49e))
+* **components:** adaptive getContainer 类型修改为可选, 并优化相关文档 ([#952](https://github.com/antvis/S2/issues/952)) ([1b1863d](https://github.com/antvis/S2/commit/1b1863df5414ad553f3ff38e0092549fba3442de))
+* **export:** 优化复制数据到剪贴板的逻辑 ([#976](https://github.com/antvis/S2/issues/976)) ([a841c77](https://github.com/antvis/S2/commit/a841c77c57bb4c9b8aa39f2224dc3adb860b7337))
+* 修改 s2-react 错误的 peerDependencies close [#963](https://github.com/antvis/S2/issues/963) ([#966](https://github.com/antvis/S2/issues/966)) ([f852704](https://github.com/antvis/S2/commit/f85270457d1045eccd2a453ba513d58e4d1652a7))
+
+
+### Features
+
+* **interaction:**  支持通过键盘方向键移动选中的单元格 ([#967](https://github.com/antvis/S2/issues/967)) ([c1a98ec](https://github.com/antvis/S2/commit/c1a98ec30c161624a48fda16bce0888b0af60f6b))
+
 # [@antv/s2-react-v1.4.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.3.0...@antv/s2-react-v1.4.0) (2021-12-24)
 
 
