@@ -10,7 +10,7 @@ import {
 import { MultiData } from '@/common/interface';
 
 export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
-  try {
+  return new Promise((resolve, reject) => {
     const textarea = document.createElement('textarea');
     textarea.value = str;
     document.body.appendChild(textarea);
@@ -20,12 +20,11 @@ export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
     document.body.removeChild(textarea);
 
     if (success) {
-      return Promise.resolve();
+      resolve();
+    } else {
+      reject();
     }
-    return Promise.reject();
-  } catch (err) {
-    return Promise.reject(err);
-  }
+  });
 };
 
 export const copyToClipboardByClipboard = (str: string): Promise<void> => {
