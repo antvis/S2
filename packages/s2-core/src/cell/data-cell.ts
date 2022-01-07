@@ -1,6 +1,6 @@
 import { Point } from '@antv/g-base';
 import { IShape } from '@antv/g-canvas';
-import { clamp, find, first, get, isEmpty, isEqual } from 'lodash';
+import { clamp, findLast, first, get, isEmpty, isEqual } from 'lodash';
 import { BaseCell } from '@/cell/base-cell';
 import {
   CellTypes,
@@ -423,7 +423,7 @@ export class DataCell extends BaseCell<ViewMeta> {
    * @param conditions
    */
   protected findFieldCondition(conditions: Condition[]): Condition {
-    return find(conditions, (item) => {
+    return findLast(conditions, (item) => {
       return item.field instanceof RegExp
         ? item.field.test(this.meta.valueField)
         : item.field === this.meta.valueField;
