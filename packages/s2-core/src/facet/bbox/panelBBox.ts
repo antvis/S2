@@ -2,9 +2,8 @@ import { BaseBBox } from './baseBBox';
 
 export class PanelBBox extends BaseBBox {
   calculateBBox() {
-    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
-    this.originalWidth = Math.floor(rowsHierarchy.width);
-    this.originalHeight = Math.floor(colsHierarchy.height);
+    this.originalWidth = this.facet.getRealWidth();
+    this.originalHeight = this.facet.getRealHeight();
 
     const { cornerBBox } = this.facet;
     const cornerPosition = {
@@ -22,11 +21,10 @@ export class PanelBBox extends BaseBBox {
       canvasHeight - cornerPosition.y - scrollBarSize,
     );
 
-    const realWidth = this.facet.getRealWidth();
-    const realHeight = this.facet.getRealHeight();
-
-    panelWidth = Math.abs(Math.floor(Math.min(panelWidth, realWidth)));
-    panelHeight = Math.abs(Math.floor(Math.min(panelHeight, realHeight)));
+    panelWidth = Math.abs(Math.floor(Math.min(panelWidth, this.originalWidth)));
+    panelHeight = Math.abs(
+      Math.floor(Math.min(panelHeight, this.originalHeight)),
+    );
 
     this.x = cornerPosition.x;
     this.y = cornerPosition.y;
