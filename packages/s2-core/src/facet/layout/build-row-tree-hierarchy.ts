@@ -1,4 +1,4 @@
-import { isEmpty, merge, isBoolean, keys } from 'lodash';
+import { isEmpty, merge, isBoolean } from 'lodash';
 import { FieldValue, TreeHeaderParams } from '@/facet/layout/interface';
 import { layoutArrange, layoutHierarchy } from '@/facet/layout/layout-hooks';
 import { TotalClass } from '@/facet/layout/total-class';
