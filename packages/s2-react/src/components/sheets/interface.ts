@@ -101,8 +101,8 @@ export interface BaseSheetComponentProps {
   onListSort?: (params: ListSortParams) => void;
   onRowColLayout?: (rows: LayoutRow[], cols: LayoutCol[]) => void;
   onAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
-  onCollapseRows(collapsedRows: Record<string, boolean>);
-  onCollapseRowsAll(hierarchyCollapse: boolean);
+  onCollapseRows?: (collapsedRows: Record<string, boolean>) => void;
+  onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
   onRowCellScroll?: (reachedRow: TargetLayoutNode) => void;
   onColCellScroll?: (reachedCol: TargetLayoutNode) => void;
   onCellScroll?: (position: CellScrollPosition) => void;
