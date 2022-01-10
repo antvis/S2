@@ -72,6 +72,7 @@ export const createFakeSpreadSheet = () => {
   s2.hideTooltip = jest.fn();
   s2.showTooltip = jest.fn();
   s2.showTooltipWithInfo = jest.fn();
+  s2.isTableMode = jest.fn();
 
   const interaction = new RootInteraction(s2 as unknown as SpreadSheet);
   s2.interaction = interaction;
