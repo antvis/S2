@@ -25,7 +25,7 @@ order: 0
 | 多选                | `S2Event.GLOBAL_SELECTED`                                             | 单选单元格后，按住 `Command / Ctrl` 键，继续单选                                                                                           |
 | 行/列头快捷多选     | `S2Event.GLOBAL_SELECTED`                                             | 单击行/列头，选中对应行/列头所有单元格 （含不在可视范围内的）, 再次单击取消选中                                                   |
 | 行/列头手动调整宽高 | `S2Event.LAYOUT_RESIZE`                                               | 鼠标悬浮在行/列头单元格边缘，出现指示条和光标，按住鼠标左键拖动，调整宽高                                                         |
-| 刷选                | `S2Event.GLOBAL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`            | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量                |
+| 刷选                | `S2Event.DATE_CELL_BRUSH_SELECTION` `S2Event.GLOBAL_SELECTED`            | 批量选中刷选范围内的单元格，刷选过程中，显示刷选范围提示蒙层，刷选完成后，弹出 tooltip, 展示被刷选单元格信息和数量                |
 | 区间快捷多选            | `S2Event.GLOBAL_SELECTED`                                             | 单选单元格 (start), 然后按住 `Shift` 再次选中一个单元格 (end), 选中两个单元格区间所有单元格                                                                     |
 | 悬停                | `S2Event.GLOBAL_HOVER`                                                | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](#十字高亮） （对应行/列), 可设置 `hoverHighlight: false` 关闭 |
 | 复制                | `S2Event.GLOBAL_COPIED`                                               | 复制选中的单元格数据                                                                                                              |
@@ -132,7 +132,7 @@ order: 0
 import { PivotSheet, S2Event } from '@antv/s2';
 const s2 = new PivotSheet(container, s2DataConfig, s2options);
 
-s2.on(S2Event.GLOBAL_BRUSH_SELECTION, (cells) => {
+s2.on(S2Event.DATE_CELL_BRUSH_SELECTION, (cells) => {
   console.log('刷选的单元格：', cells)
   ...
 })

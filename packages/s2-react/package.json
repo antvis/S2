@@ -53,7 +53,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "peerDependencies": {
-    "@antv/s2": "1.x",
+    "@antv/s2": "^1.0.0",
     "antd": ">=4.16.13",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
