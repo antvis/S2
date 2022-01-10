@@ -7,6 +7,7 @@ import {
   ListSortParams,
   EmitterType,
   ViewMeta,
+  LayoutResult,
 } from '@antv/s2';
 import React from 'react';
 import { Event as GEvent } from '@antv/g-canvas';
