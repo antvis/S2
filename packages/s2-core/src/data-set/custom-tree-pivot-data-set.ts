@@ -1,4 +1,4 @@
-import { get, intersection } from 'lodash';
+import { forEach, get, has, intersection, uniq } from 'lodash';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { CellDataParams, DataType } from '@/data-set/interface';
 import { S2DataConfig } from '@/common/interface';
@@ -32,6 +32,7 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     // 3、values 不需要参与计算，默认就在行头结构中
     dataCfg.fields.rows = [EXTRA_FIELD];
     dataCfg.fields.valueInCols = false;
+    const { data, ...restCfg } = dataCfg;
     const { values } = dataCfg.fields;
     // 将源数据中的value值，映射为 $$extra$$,$$value$$
     // {
@@ -42,16 +43,24 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     //                      $$value$$=11
     // 此时 province, city 均配置在columns里面
     // }
-    dataCfg.data = dataCfg.data.map((data) => {
-      // 正常数据omit后只会唯一存在 value key
-      const keys = Object.keys(data);
-      const valueKey = get(intersection(values, keys), 0);
-      return {
-        ...data,
-        [EXTRA_FIELD]: valueKey,
-        [VALUE_FIELD]: data[valueKey],
-      };
+    const transformedData = [];
+    forEach(data, (dataItem) => {
+      forEach(values, (value) => {
+        if (has(dataItem, value)) {
+          transformedData.push({
+            ...dataItem,
+            [EXTRA_FIELD]: value,
+            [VALUE_FIELD]: dataItem[value],
+          });
+        } else {
+          transformedData.push(dataItem);
+        }
+      });
     });
-    return dataCfg;
+
+    return {
+      data: uniq(transformedData),
+      ...restCfg,
+    };
   }
 }

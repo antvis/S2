@@ -98,14 +98,14 @@ export function useEvents(props: BaseSheetComponentProps) {
         },
 
         [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
-          targetRow: TargetLayoutNode,
+          reachedRow: TargetLayoutNode,
         ) => {
-          props.onRowCellScroll?.(targetRow);
+          props.onRowCellScroll?.(reachedRow);
         },
         [S2Event.LAYOUT_COL_NODE_BORDER_REACHED]: (
-          targetCol: TargetLayoutNode,
+          reachedCol: TargetLayoutNode,
         ) => {
-          props.onColCellScroll?.(targetCol);
+          props.onColCellScroll?.(reachedCol);
         },
         [S2Event.LAYOUT_CELL_SCROLL]: (value: CellScrollPosition) => {
           props.onCellScroll?.(value);
