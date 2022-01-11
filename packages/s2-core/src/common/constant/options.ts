@@ -80,4 +80,5 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   frozenTrailingRowCount: 0,
   frozenTrailingColCount: 0,
   hdAdapter: true,
+  supportCSSTransform: false,
 };

@@ -95,6 +95,8 @@ export interface S2BasicOptions<T = Element | string> {
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // empty cell placeholder
   readonly placeholder?: string;
+  
+  readonly supportCSSTransform?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
@@ -155,5 +157,4 @@ export interface S2Options<T = Element | string>
     S2PivotSheetOptions {
   // custom data set
   readonly dataSet?: (spreadsheet: SpreadSheet) => BaseDataSet;
-  supportCSSTransform?: boolean;
 }

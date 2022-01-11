@@ -526,7 +526,7 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initGroups() {
-    const { width, height, supportCSSTransform = false } = this.options;
+    const { width, height, supportCSSTransform } = this.options;
     // base canvas group
     this.container = new Canvas({
       container: this.dom as HTMLElement,
