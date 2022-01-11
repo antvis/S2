@@ -641,14 +641,15 @@ export abstract class BaseFacet {
   };
 
   private getScrollBarPosition = () => {
-    const { maxX, maxY, width, height } = this.panelBBox;
+    const { maxX, maxY } = this.panelBBox;
+    const { width, height } = this.getCanvasHW();
     const isContentMode =
       this.spreadsheet.options.interaction.scrollBarPostion ===
       ScrollbarPositionType.content;
 
     return {
-      maxX: isContentMode ? maxX : width,
-      maxY: isContentMode ? maxY : height,
+      maxX: (isContentMode ? maxX : width) - this.scrollBarSize,
+      maxY: isContentMode ? maxY : height - this.scrollBarSize,
     };
   };
 
@@ -667,7 +668,7 @@ export abstract class BaseFacet {
         thumbLen: thumbHeight,
         thumbOffset: (scrollY * (height - thumbHeight)) / maxOffset,
         position: {
-          x: maxX - this.scrollBarSize,
+          x: maxX,
           y: this.panelBBox.minY,
         },
         theme: this.scrollBarTheme,

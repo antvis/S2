@@ -288,47 +288,36 @@ describe('Scroll By Group Tests', () => {
     },
   );
 
-  // test.each([
-  //   {
-  //     type: 'horizontal',
-  //     offset: {
-  //       scrollX: 20,
-  //       scrollY: 0,
-  //     },
-  //   },
-  //   {
-  //     type: 'vertical',
-  //     offset: {
-  //       scrollX: 0,
-  //       scrollY: 20,
-  //     },
-  //   },
-  // ])('should render correct scroll position', async ({ offset }) => {
-  //   s2.setOptions({
-  //     interaction: {
-  //       scrollBarPostion: ScrollbarPositionType.canvas,
-  //     },
-  //     style: {
-  //       layoutWidthType: "compact"
-  //     }
-  //   });
-  //   s2.changeSize(100, 1000); // 纵向滚动条
-  //   s2.render(false);
+  test('should render correct scroll position', () => {
+    s2.setOptions({
+      interaction: {
+        scrollBarPostion: ScrollbarPositionType.content,
+      },
+      style: {
+        layoutWidthType: 'compact',
+      },
+    });
+    s2.changeSize(100, 1000); // 横向滚动条
+    s2.render(false);
+    expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(220);
+    expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(220);
 
-  //   // let bbox = s2.facet.vScrollBar.getCanvasBBox();
+    s2.changeSize(1000, 150); // 纵向滚动条
+    s2.render(false);
+    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(191);
 
-  //   // console.log(bbox);
+    s2.setOptions({
+      interaction: {
+        scrollBarPostion: ScrollbarPositionType.canvas,
+      },
+    });
+    s2.changeSize(100, 1000); // 横向滚动条
+    s2.render(false);
+    expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(994);
+    expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(994);
 
-  //   // s2.changeSize(100, 1000); // 横向滚动条
-  //   // s2.render(false);
-
-  //   // bbox = s2.facet.vScrollBar.getCanvasBBox();
-  //   // console.log(bbox);
-  //   // s2.setOptions({
-  //   //   interaction: {
-  //   //     scrollBarPostion: ScrollbarPositionType.canvas,
-  //   //   },
-  //   // });
-  //   // s2.render(false);
-  // });
+    s2.changeSize(1000, 200); // 纵向滚动条
+    s2.render(false);
+    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(994);
+  });
 });
