@@ -12,6 +12,7 @@ import {
   SpreadSheet,
   ThemeCfg,
   ViewMeta,
+  LayoutResult,
 } from '@antv/s2';
 import React from 'react';
 import { DrillDownProps } from '@/components/drill-down';
@@ -99,6 +100,9 @@ export interface BaseSheetComponentProps {
   onDestroy?: () => void;
   onListSort?: (params: ListSortParams) => void;
   onRowColLayout?: (rows: LayoutRow[], cols: LayoutCol[]) => void;
+  onAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
+  onCollapseRows?: (collapsedRows: Record<string, boolean>) => void;
+  onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
   onRowCellScroll?: (reachedRow: TargetLayoutNode) => void;
   onColCellScroll?: (reachedCol: TargetLayoutNode) => void;
   onCellScroll?: (position: CellScrollPosition) => void;

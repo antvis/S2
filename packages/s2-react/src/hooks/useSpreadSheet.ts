@@ -78,10 +78,7 @@ export function useSpreadSheet(
     }
 
     if (!Object.is(prevOptions, options)) {
-      if (
-        !Object.is(prevOptions?.hierarchyType, options?.hierarchyType) &&
-        Object.is(options?.hierarchyType, 'customTree')
-      ) {
+      if (!Object.is(prevOptions?.hierarchyType, options?.hierarchyType)) {
         // 自定义树目录需要重新构建 CustomTreePivotDataSet
         reBuildDataSet = true;
         reloadData = true;

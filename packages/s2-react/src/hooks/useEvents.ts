@@ -7,6 +7,7 @@ import {
   ListSortParams,
   EmitterType,
   ViewMeta,
+  LayoutResult,
 } from '@antv/s2';
 import React from 'react';
 import { Event as GEvent } from '@antv/g-canvas';
@@ -82,6 +83,20 @@ export function useEvents(props: BaseSheetComponentProps) {
         },
 
         // ============== layout ====================
+        [S2Event.LAYOUT_AFTER_HEADER_LAYOUT]: (layoutResult: LayoutResult) => {
+          props.onAfterHeaderLayout?.(layoutResult);
+        },
+        [S2Event.LAYOUT_COLLAPSE_ROWS]: (
+          collapsedRows: Record<string, boolean>,
+        ) => {
+          props.onCollapseRows?.(collapsedRows);
+        },
+        [S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL]: (
+          hierarchyCollapse: boolean,
+        ) => {
+          props.onCollapseRowsAll?.(hierarchyCollapse);
+        },
+
         [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
           targetRow: TargetLayoutNode,
         ) => {
