@@ -45,6 +45,12 @@ export class RangeSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private bindColCellClick() {
+    if (this.spreadsheet.isTableMode()) {
+      // series-number click
+      this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
+        this.handleColClick(event);
+      });
+    }
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
       this.handleColClick(event);
     });

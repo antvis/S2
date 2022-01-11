@@ -78,6 +78,7 @@ describe('RootInteraction Tests', () => {
       draw: jest.fn(),
     } as unknown as Canvas;
     mockSpreadSheetInstance.panelGroup = new Group('');
+    mockSpreadSheetInstance.isTableMode = jest.fn();
     rootInteraction = new RootInteraction(mockSpreadSheetInstance);
     rootInteraction.getPanelGroupAllDataCells = () => panelGroupAllDataCells;
     rootInteraction.getAllColHeaderCells = () => [];

@@ -37,6 +37,7 @@ describe('State Controller Utils Tests', () => {
       interaction: { selectedCellsSpotlight: false },
     } as S2Options;
     mockInstance.store = new Store();
+    mockInstance.isTableMode = jest.fn();
     mockInstance.interaction = new RootInteraction(mockInstance);
   });
 
