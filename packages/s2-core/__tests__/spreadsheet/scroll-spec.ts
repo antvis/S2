@@ -2,7 +2,7 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { CellMeta, S2Options } from '@/common/interface';
+import { CellMeta, S2Options, ScrollbarPositionType } from '@/common/interface';
 import {
   InteractionStateName,
   InterceptType,
@@ -287,4 +287,48 @@ describe('Scroll By Group Tests', () => {
       });
     },
   );
+
+  // test.each([
+  //   {
+  //     type: 'horizontal',
+  //     offset: {
+  //       scrollX: 20,
+  //       scrollY: 0,
+  //     },
+  //   },
+  //   {
+  //     type: 'vertical',
+  //     offset: {
+  //       scrollX: 0,
+  //       scrollY: 20,
+  //     },
+  //   },
+  // ])('should render correct scroll position', async ({ offset }) => {
+  //   s2.setOptions({
+  //     interaction: {
+  //       scrollBarPostion: ScrollbarPositionType.canvas,
+  //     },
+  //     style: {
+  //       layoutWidthType: "compact"
+  //     }
+  //   });
+  //   s2.changeSize(100, 1000); // 纵向滚动条
+  //   s2.render(false);
+
+  //   // let bbox = s2.facet.vScrollBar.getCanvasBBox();
+
+  //   // console.log(bbox);
+
+  //   // s2.changeSize(100, 1000); // 横向滚动条
+  //   // s2.render(false);
+
+  //   // bbox = s2.facet.vScrollBar.getCanvasBBox();
+  //   // console.log(bbox);
+  //   // s2.setOptions({
+  //   //   interaction: {
+  //   //     scrollBarPostion: ScrollbarPositionType.canvas,
+  //   //   },
+  //   // });
+  //   // s2.render(false);
+  // });
 });
