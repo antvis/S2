@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.6.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.6.0-alpha.1...@antv/s2-react-v1.6.0-alpha.2) (2022-01-11)
+
+
+### Bug Fixes
+
+* **s2-react:** 修复 hierarchyType 切换导致的渲染问题 ([#984](https://github.com/antvis/S2/issues/984)) ([34f6dd4](https://github.com/antvis/S2/commit/34f6dd4373991aed23a6f5340fc4dcc5e27ef91e))
+
 # [@antv/s2-react-v1.6.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.5.0...@antv/s2-react-v1.6.0-alpha.1) (2022-01-10)
 
 
