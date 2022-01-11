@@ -1,3 +1,11 @@
+# [@antv/s2-v1.6.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.6.0-alpha.1...@antv/s2-v1.6.0-alpha.2) (2022-01-11)
+
+
+### Bug Fixes
+
+* **interaction:** shift区间多选在明细表序列号上失效 ([#981](https://github.com/antvis/S2/issues/981)) ([38e4f93](https://github.com/antvis/S2/commit/38e4f935eb061ebaeb0c5a1a453adf593945770c))
+* **s2-react:** 修复 hierarchyType 切换导致的渲染问题 ([#984](https://github.com/antvis/S2/issues/984)) ([34f6dd4](https://github.com/antvis/S2/commit/34f6dd4373991aed23a6f5340fc4dcc5e27ef91e))
+
 # [@antv/s2-v1.6.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.5.0...@antv/s2-v1.6.0-alpha.1) (2022-01-10)
 
 
