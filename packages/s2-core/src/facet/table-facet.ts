@@ -811,12 +811,12 @@ export class TableFacet extends BaseFacet {
 
   protected getColHeader(): ColHeader {
     if (!this.columnHeader) {
-      const { x, width, height } = this.panelBBox;
+      const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
       return new TableColHeader({
         width,
         height: this.cornerBBox.height,
-        viewportWidth: width,
-        viewportHeight: height,
+        viewportWidth,
+        viewportHeight,
         cornerWidth: this.cornerBBox.width,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,

@@ -35,5 +35,16 @@ export class PanelBBox extends BaseBBox {
     this.maxY = cornerPosition.y + this.viewportHeight;
     this.minX = cornerPosition.x;
     this.minY = cornerPosition.y;
+
+    const { frozenTrailingColCount, frozenTrailingRowCount } =
+      this.spreadsheet.options;
+    if (frozenTrailingColCount > 0) {
+      this.viewportWidth = this.width;
+      this.maxX = cornerPosition.x + this.width;
+    }
+    if (frozenTrailingRowCount > 0) {
+      this.viewportHeight = this.height;
+      this.maxY = cornerPosition.y + this.height;
+    }
   }
 }
