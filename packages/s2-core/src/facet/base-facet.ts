@@ -1077,19 +1077,17 @@ export abstract class BaseFacet {
 
   protected getColHeader(): ColHeader {
     if (!this.columnHeader) {
-      const scrollContainsRowHeader =
-        this.cfg.spreadsheet.isScrollContainsRowHeader();
-      const { x, originalWidth, viewportHeight, viewportWidth } =
-        this.panelBBox;
+      const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
       return new ColHeader({
-        width: scrollContainsRowHeader ? originalWidth : viewportWidth,
+        width,
         cornerWidth: this.cornerBBox.width,
         height: this.cornerBBox.height,
         viewportWidth,
         viewportHeight,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
-        scrollContainsRowHeader,
+        scrollContainsRowHeader:
+          this.cfg.spreadsheet.isScrollContainsRowHeader(),
         formatter: (field: string): Formatter =>
           this.cfg.dataSet.getFieldFormatter(field),
         sortParam: this.cfg.spreadsheet.store.get('sortParam'),
