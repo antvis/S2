@@ -1,5 +1,14 @@
 import { IShape, Point, ShapeAttrs } from '@antv/g-canvas';
-import { isEmpty, isEqual, last, max } from 'lodash';
+import {
+  cond,
+  constant,
+  isEmpty,
+  isEqual,
+  last,
+  matches,
+  max,
+  stubTrue,
+} from 'lodash';
 import { TextAlign } from './../common/interface/theme';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
@@ -305,12 +314,16 @@ export class CornerCell extends HeaderCell {
     const textCfg = this.textShapes?.[0]?.cfg.attrs;
     const { textBaseline, textAlign } = this.getTextStyle();
     const { size, margin } = this.getStyle().icon;
+
     const iconX =
       textCfg?.x +
-      (textAlign === 'center'
-        ? this.actualTextWidth / 2
-        : this.actualTextWidth) +
+      cond([
+        [matches('center'), constant(this.actualTextWidth / 2)],
+        [matches('right'), constant(0)],
+        [stubTrue, constant(this.actualTextWidth)],
+      ])(textAlign) +
       margin.left;
+
     const iconY = getVerticalPosition(
       this.getContentArea(),
       textBaseline,
