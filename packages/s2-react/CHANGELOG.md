@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.6.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.6.0-alpha.2...@antv/s2-react-v1.6.0-alpha.3) (2022-01-11)
+
+
+### Bug Fixes
+
+* 修复多指标情况下自定义树展示不全的问题 ([#986](https://github.com/antvis/S2/issues/986)) ([087e8e2](https://github.com/antvis/S2/commit/087e8e2ab1958ef708f4731185caf5f34583b831))
+
 # [@antv/s2-react-v1.6.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.6.0-alpha.1...@antv/s2-react-v1.6.0-alpha.2) (2022-01-11)
 
 
