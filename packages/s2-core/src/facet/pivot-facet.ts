@@ -710,7 +710,7 @@ export class PivotFacet extends BaseFacet {
     } = spreadsheet.theme.cornerCell;
     const { field, isLeaf } = node;
 
-    // rowNodeWitdh = maxLabelWidth + rowIconWidth + paddingWidth
+    // calc rowNodeWitdh
     const rowIconWidth = this.getExpectedCellIconWidth(
       CellTypes.ROW_CELL,
       !spreadsheet.isValueInCols() &&
@@ -733,7 +733,7 @@ export class PivotFacet extends BaseFacet {
       rowCellStyle.padding.left +
       rowCellStyle.padding.right;
 
-    // fieldNameNodeWidth = fieldNameWidth + cornerIconWidth + paddingWidth
+    // calc corner fieldNameNodeWidth
     const fieldName = dataSet.getFieldName(field);
     const cornerIconWidth = this.getExpectedCellIconWidth(
       CellTypes.CORNER_CELL,
