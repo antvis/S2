@@ -1,6 +1,7 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useCallback } from 'react';
 import { debounce } from 'lodash';
-import type { SpreadSheet, S2Options } from '@antv/s2';
+import type { SpreadSheet } from '@antv/s2';
 import { Adaptive } from '@/components';
 
 export interface UseResizeEffectParams {
@@ -25,7 +26,6 @@ function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
 
 export const useResize = (params: UseResizeEffectParams) => {
   const { s2, adaptive } = params;
-
   const { container, adaptiveWidth, adaptiveHeight } = analyzeAdaptive(
     params.container,
     adaptive,
@@ -34,21 +34,24 @@ export const useResize = (params: UseResizeEffectParams) => {
   // 第一次自适应时不需要 debounce, 防止抖动
   const isFirstRender = React.useRef<boolean>(true);
 
-  const render = (width: number, height: number) => {
-    s2.changeSize(width, height);
-    s2.render(false);
-    isFirstRender.current = false;
-  };
+  const render = useCallback(
+    (width: number, height: number) => {
+      s2.changeSize(width, height);
+      s2.render(false);
+      isFirstRender.current = false;
+    },
+    [s2],
+  );
 
   const debounceRender = debounce(render, RENDER_DELAY);
 
   // rerender by option
   React.useEffect(() => {
     if (!adaptive && s2) {
-      s2.changeSize(s2.options.width, s2.options.height);
+      s2.changeSize(s2?.options.width, s2?.options.height);
       s2.render(false);
     }
-  }, [s2?.options.width, s2?.options.height, adaptive, s2]);
+  }, [s2?.options.width, s2?.options.height, adaptive]);
 
   // rerender by container resize or window resize
   React.useLayoutEffect(() => {
@@ -79,13 +82,5 @@ export const useResize = (params: UseResizeEffectParams) => {
     return () => {
       resizeObserver.unobserve(container);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    adaptive,
-    container,
-    adaptiveWidth,
-    adaptiveHeight,
-    s2?.options.width,
-    s2?.options.height,
-  ]);
+  }, [adaptiveWidth, adaptiveHeight, s2?.options.width, s2?.options.height]);
 };

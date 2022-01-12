@@ -1,4 +1,4 @@
-import { forEach, get, has, intersection, uniq } from 'lodash';
+import { forEach, get, has, uniq } from 'lodash';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { CellDataParams, DataType } from '@/data-set/interface';
 import { S2DataConfig } from '@/common/interface';
