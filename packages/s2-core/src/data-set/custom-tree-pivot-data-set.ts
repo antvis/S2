@@ -1,9 +1,13 @@
-import { forEach, get, has, uniq } from 'lodash';
+import { forEach, get, has, intersection, isEmpty, keys, uniq } from 'lodash';
 import { PivotDataSet } from '@/data-set/pivot-data-set';
 import { CellDataParams, DataType } from '@/data-set/interface';
 import { S2DataConfig } from '@/common/interface';
 import { EXTRA_FIELD, VALUE_FIELD } from '@/common/constant';
-import { getDataPath, getQueryDimValues } from '@/utils/dataset/pivot-data-set';
+import {
+  getDataPath,
+  getQueryDimValues,
+  transformIndexesData,
+} from '@/utils/dataset/pivot-data-set';
 
 export class CustomTreePivotDataSet extends PivotDataSet {
   getCellData(params: CellDataParams): DataType {
@@ -23,6 +27,28 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     });
     const data = get(this.indexesData, path);
     return data;
+  }
+
+  setDataCfg(dataCfg: S2DataConfig) {
+    super.setDataCfg(dataCfg);
+    this.sortedDimensionValues = {};
+    this.rowPivotMeta = new Map();
+    this.colPivotMeta = new Map();
+
+    const { rows, columns } = this.fields;
+    const { indexesData } = transformIndexesData({
+      rows,
+      columns,
+      originData: this.originData,
+      totalData: [], // 自定义目录树没有 totalData 概念
+      indexesData: this.indexesData,
+      sortedDimensionValues: this.sortedDimensionValues,
+      rowPivotMeta: this.rowPivotMeta,
+      colPivotMeta: this.colPivotMeta,
+    });
+    this.indexesData = indexesData;
+
+    this.handleDimensionValuesSort();
   }
 
   processDataCfg(dataCfg: S2DataConfig): S2DataConfig {
@@ -45,17 +71,19 @@ export class CustomTreePivotDataSet extends PivotDataSet {
     // }
     const transformedData = [];
     forEach(data, (dataItem) => {
-      forEach(values, (value) => {
-        if (has(dataItem, value)) {
-          transformedData.push({
-            ...dataItem,
-            [EXTRA_FIELD]: value,
-            [VALUE_FIELD]: dataItem[value],
-          });
-        } else {
-          transformedData.push(dataItem);
-        }
-      });
+      if (isEmpty(intersection(keys(dataItem), values))) {
+        transformedData.push(dataItem);
+      } else {
+        forEach(values, (value) => {
+          if (has(dataItem, value)) {
+            transformedData.push({
+              ...dataItem,
+              [EXTRA_FIELD]: value,
+              [VALUE_FIELD]: dataItem[value],
+            });
+          }
+        });
+      }
     });
 
     return {
