@@ -82,5 +82,12 @@ export const useResize = (params: UseResizeEffectParams) => {
     return () => {
       resizeObserver.unobserve(container);
     };
-  }, [adaptiveWidth, adaptiveHeight, s2?.options.width, s2?.options.height]);
+  }, [
+    container,
+    adaptive,
+    adaptiveWidth,
+    adaptiveHeight,
+    s2?.options.width,
+    s2?.options.height,
+  ]);
 };
