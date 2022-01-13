@@ -14,17 +14,17 @@ order: 1
 | tooltip | [Tooltip](#tooltip) |    |  |  tooltip 总配置 |
 | interaction | [Interaction](#interaction) |    |  |  表格交互配置 |
 | pagination | [Pagination](#pagination) |  |    | 分页配置 |
-| frozenRowHeader | `boolean` |  |   `true` | 冻结行头 (透视表有效) |
+| frozenRowHeader | `boolean` |  |   `true` | 冻结行头 （透视表有效） |
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
 | scrollReachNodeField | [NodeField](#nodefield) |  |  | 滚动监听的节点度量 |
 | showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |
 | headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
 | customSVGIcons | [CustomSVGIcon[]](#customsvgicon) |  |   `false` | 自定义 svg 图标 |
-| style | [Style](#style) |  |    | 单元格样式设置, 比如布局类型, 宽高, 边距, 是否隐藏数值列头等 |
-| frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 (明细表有效) |
-| frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 (明细表有效) |
-| frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 (明细表有效) |
-| frozenTrailingColCount | `number` |    |  | 冻结列的数量，从右侧开始计数 (明细表有效) |
+| style | [Style](#style) |  |    | 单元格样式设置，比如布局类型，宽高，边距，是否隐藏数值列头等 |
+| frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 （明细表有效） |
+| frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 （明细表有效） |
+| frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 （明细表有效） |
+| frozenTrailingColCount | `number` |    |  | 冻结列的数量，从右侧开始计数 （明细表有效） |
 | hierarchyCollapse | `boolean` |  |   `false` | 在树状结构模式下行头是否默认展开。 |
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题 |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
@@ -42,7 +42,7 @@ order: 1
 | mappingDisplayDataItem | [MappingDataItemCallback](#mappingdataitemcallback) |  |    | 转换数据，用于 tooltip 显示 |
 | otterLayout | [OtterLayout](#otterlayout) |  |  |   自定义 layout |
 | dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
-| supportCSSTransform | `boolean` |  |   `false` | 设置为true可解决父元素缩放引起的鼠标定位错误 |
+| supportCSSTransform | `boolean` |  |   `false` | 开启后支持 CSS transform, 解决父元素设置 `transform` 后，鼠标坐标响应不正确的问题  |
 
 `markdown:docs/common/interaction.zh.md`
 
