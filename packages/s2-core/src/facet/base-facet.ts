@@ -348,12 +348,24 @@ export abstract class BaseFacet {
    * @protected
    */
   protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+    const {
+      viewportHeight: height,
+      viewportWidth: width,
+      x,
+      y,
+    } = this.panelBBox;
+
     const indexes = calculateInViewIndexes(
       scrollX,
       scrollY,
       this.viewCellWidths,
       this.viewCellHeights,
-      this.panelBBox,
+      {
+        width,
+        height,
+        x,
+        y,
+      },
       this.getRealScrollX(this.cornerBBox.width),
     );
 
@@ -480,16 +492,22 @@ export abstract class BaseFacet {
   private getAdjustedScrollX = (scrollX: number): number => {
     const colsHierarchyWidth = this.layoutResult.colsHierarchy.width;
     const panelWidth = this.panelBBox.width;
-    if (scrollX + panelWidth >= colsHierarchyWidth) {
+    if (
+      scrollX + panelWidth >= colsHierarchyWidth &&
+      colsHierarchyWidth > panelWidth
+    ) {
       return colsHierarchyWidth - panelWidth;
     }
-    return scrollX;
+    return Math.max(0, scrollX);
   };
 
   private getAdjustedScrollY = (scrollY: number): number => {
     const rendererHeight = this.getRendererHeight();
     const panelHeight = this.panelBBox.height;
-    if (scrollY + panelHeight >= rendererHeight) {
+    if (
+      scrollY + panelHeight >= rendererHeight &&
+      rendererHeight > panelHeight
+    ) {
       return rendererHeight - panelHeight;
     }
     // 当数据为空时，rendererHeight 可能为 0，此时 scrollY 为负值，需要调整为 0。
@@ -1028,7 +1046,7 @@ export abstract class BaseFacet {
 
     this.rowHeader = this.getRowHeader();
     this.columnHeader = this.getColHeader();
-    if (seriesNumberWidth > 0) {
+    if (seriesNumberWidth > 0 && this.rowIndexHeader) {
       this.rowIndexHeader = this.getSeriesNumberHeader();
       this.foregroundGroup.add(this.rowIndexHeader);
     }
@@ -1045,13 +1063,13 @@ export abstract class BaseFacet {
 
   protected getRowHeader(): RowHeader {
     if (!this.rowHeader) {
-      const { y, width, height } = this.panelBBox;
+      const { y, viewportHeight, viewportWidth, height } = this.panelBBox;
       const seriesNumberWidth = this.getSeriesNumberWidth();
       return new RowHeader({
         width: this.cornerBBox.width,
         height,
-        viewportWidth: width,
-        viewportHeight: height,
+        viewportWidth,
+        viewportHeight,
         position: { x: 0, y },
         data: this.layoutResult.rowNodes,
         hierarchyType: this.cfg.hierarchyType,
@@ -1065,13 +1083,13 @@ export abstract class BaseFacet {
 
   protected getColHeader(): ColHeader {
     if (!this.columnHeader) {
-      const { x, width, height } = this.panelBBox;
+      const { x, width, viewportHeight, viewportWidth } = this.panelBBox;
       return new ColHeader({
         width,
         cornerWidth: this.cornerBBox.width,
         height: this.cornerBBox.height,
-        viewportWidth: width,
-        viewportHeight: height,
+        viewportWidth,
+        viewportHeight,
         position: { x, y: 0 },
         data: this.layoutResult.colNodes,
         scrollContainsRowHeader:
@@ -1111,7 +1129,7 @@ export abstract class BaseFacet {
 
   protected getCenterFrame(): Frame {
     if (!this.centerFrame) {
-      const { width, height } = this.panelBBox;
+      const { viewportWidth, viewportHeight } = this.panelBBox;
       const cornerWidth = this.cornerBBox.width;
       const cornerHeight = this.cornerBBox.height;
       const frame = this.cfg?.frame;
@@ -1122,8 +1140,8 @@ export abstract class BaseFacet {
         },
         width: cornerWidth,
         height: cornerHeight,
-        viewportWidth: width,
-        viewportHeight: height,
+        viewportWidth,
+        viewportHeight,
         showViewportLeftShadow: false,
         showViewportRightShadow: false,
         scrollContainsRowHeader:
@@ -1146,8 +1164,10 @@ export abstract class BaseFacet {
     const { scrollX, scrollY: sy, hRowScrollX } = this.getScrollOffset();
     let scrollY = sy + this.getPaginationScrollY();
 
-    const maxScrollY =
-      this.viewCellHeights.getTotalHeight() - this.panelBBox.height;
+    const maxScrollY = Math.max(
+      0,
+      this.viewCellHeights.getTotalHeight() - this.panelBBox.height,
+    );
 
     if (scrollY > maxScrollY) {
       scrollY = maxScrollY;

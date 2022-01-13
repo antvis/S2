@@ -205,7 +205,7 @@ export class ColCell extends HeaderCell {
       return;
     }
 
-    const { cornerWidth, width: headerWidth } = this.headerConfig;
+    const { cornerWidth, viewportWidth: headerWidth } = this.headerConfig;
     const { y, height } = this.meta;
     const resizeStyle = this.getResizeAreaStyle();
     const resizeArea = this.getColResizeArea();
