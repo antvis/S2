@@ -291,7 +291,7 @@ describe('Scroll By Group Tests', () => {
   test('should render correct scroll position', () => {
     s2.setOptions({
       interaction: {
-        scrollBarPostion: ScrollbarPositionType.content,
+        scrollbarPosition: ScrollbarPositionType.content,
       },
       style: {
         layoutWidthType: 'compact',
@@ -308,7 +308,7 @@ describe('Scroll By Group Tests', () => {
 
     s2.setOptions({
       interaction: {
-        scrollBarPostion: ScrollbarPositionType.canvas,
+        scrollbarPosition: ScrollbarPositionType.canvas,
       },
     });
     s2.changeSize(100, 1000); // 横向滚动条

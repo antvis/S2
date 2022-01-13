@@ -51,7 +51,7 @@ export interface InteractionOptions {
   // enable resize area, default set to all enable
   readonly resize?: boolean | ResizeActiveOptions;
   // controls scrollbar's position type
-  readonly scrollBarPostion?: ScrollbarPositionType;
+  readonly scrollbarPosition?: ScrollbarPositionType;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

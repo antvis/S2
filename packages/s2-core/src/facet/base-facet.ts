@@ -530,7 +530,7 @@ export abstract class BaseFacet {
       this.cornerBBox.width < this.cornerBBox.originalWidth
     ) {
       const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
-      const { maxY } = this.getScrollBarPosition();
+      const { maxY } = this.getScrollbarPosition();
       const thumbLen =
         (this.cornerBBox.width * this.cornerBBox.width) /
         this.cornerBBox.originalWidth;
@@ -584,7 +584,7 @@ export abstract class BaseFacet {
     if (Math.floor(width) < Math.floor(realWidth)) {
       const halfScrollSize = this.scrollBarSize / 2;
 
-      const { maxY } = this.getScrollBarPosition();
+      const { maxY } = this.getScrollbarPosition();
       const finalWidth =
         width +
         (this.cfg.spreadsheet.isScrollContainsRowHeader()
@@ -640,11 +640,11 @@ export abstract class BaseFacet {
     }
   };
 
-  private getScrollBarPosition = () => {
+  private getScrollbarPosition = () => {
     const { maxX, maxY } = this.panelBBox;
     const { width, height } = this.getCanvasHW();
     const isContentMode =
-      this.spreadsheet.options.interaction.scrollBarPostion ===
+      this.spreadsheet.options.interaction.scrollbarPosition ===
       ScrollbarPositionType.content;
 
     return {
@@ -660,7 +660,7 @@ export abstract class BaseFacet {
         MIN_SCROLL_BAR_HEIGHT,
       );
       const maxOffset = realHeight - height;
-      const { maxX } = this.getScrollBarPosition();
+      const { maxX } = this.getScrollbarPosition();
 
       this.vScrollBar = new ScrollBar({
         isHorizontal: false,
