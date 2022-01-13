@@ -95,6 +95,8 @@ export interface S2BasicOptions<T = Element | string> {
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // empty cell placeholder
   readonly placeholder?: string;
+  
+  readonly supportCSSTransform?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell

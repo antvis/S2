@@ -526,13 +526,14 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initGroups() {
-    const { width, height } = this.options;
+    const { width, height, supportCSSTransform } = this.options;
     // base canvas group
     this.container = new Canvas({
       container: this.dom as HTMLElement,
       width,
       height,
       localRefresh: false,
+      supportCSSTransform,
     });
 
     // the main three layer groups

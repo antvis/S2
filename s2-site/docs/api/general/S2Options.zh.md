@@ -42,6 +42,7 @@ order: 1
 | mappingDisplayDataItem | [MappingDataItemCallback](#mappingdataitemcallback) |  |    | 转换数据，用于 tooltip 显示 |
 | otterLayout | [OtterLayout](#otterlayout) |  |  |   自定义 layout |
 | dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
+| supportCSSTransform | `boolean` |  |   `false` | 设置为true可解决父元素缩放引起的鼠标定位错误 |
 
 `markdown:docs/common/interaction.zh.md`
 
