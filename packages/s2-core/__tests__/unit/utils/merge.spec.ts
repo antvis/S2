@@ -129,6 +129,7 @@ describe('merge test', () => {
           rowCellVertical: true,
           rowResizeType: 'all',
         },
+        scrollBarPostion: 'content',
       },
       frozenRowHeader: true,
       showSeriesNumber: false,
