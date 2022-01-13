@@ -17,7 +17,7 @@ order: 5
 | scrollSpeedRatio       | 用于控制滚动速率，分水平和垂直两个方向，默认为 1      | [ScrollRatio](/zh/docs/api/general/S2Options#scrollratio)                                |         |       |
 | autoResetSheetStyle    | 用于控制点击表格外区域和按下 esc 键时是否重置交互状态 | `boolean`                                                                                | `true`  |       |
 | resize                 | 用于控制 resize 热区是否显示                          | `boolean`   \| [ResizeActiveOptions](/zh/docs/api/general/S2Options#resizeactiveoptions) | `true`  |       |
-| scrollBarPostion | 用于控制滚动条展示在内容区边缘还是画布边缘 | `content`\| `canvas`  | `content`  |   |
+| scrollbarPosition | 用于控制滚动条展示在内容区边缘还是画布边缘 | `content`\| `canvas`  | `content`  |   |
 
 ### CustomInteraction
 
