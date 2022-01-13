@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.6.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.6.0-alpha.3...@antv/s2-react-v1.6.0-alpha.4) (2022-01-13)
+
+
+### Bug Fixes
+
+* **useResize:** :bug: 修复自适应模式下重复渲染问题 ([#991](https://github.com/antvis/S2/issues/991)) ([1b8ab5c](https://github.com/antvis/S2/commit/1b8ab5cb931e67e5bd2db5297c7a1e813e8c96aa))
+
 # [@antv/s2-react-v1.6.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.6.0-alpha.2...@antv/s2-react-v1.6.0-alpha.3) (2022-01-11)
 
 
