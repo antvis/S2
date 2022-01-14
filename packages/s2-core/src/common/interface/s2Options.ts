@@ -3,8 +3,6 @@ import {
   FilterDataItemCallback,
   HeaderActionIcon,
   CustomSVGIcon,
-  ScrollRatio,
-  ScrollbarPositionType,
 } from './basic';
 import { Tooltip } from './tooltip';
 import { InteractionOptions } from './interaction';
@@ -33,7 +31,6 @@ import {
 import { BaseDataSet } from '@/data-set';
 import { SpreadSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
-
 export interface S2BasicOptions<T = Element | string> {
   // canvas's width
   readonly width: number;
