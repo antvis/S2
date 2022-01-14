@@ -526,7 +526,7 @@ export abstract class SpreadSheet extends EE {
    * @param dom
    * @private
    */
-  protected initGroups() {
+  protected initGroups(dom: S2MountContainer) {
     const { width, height, supportCSSTransform } = this.options;
     // base canvas group
     this.container = new Canvas({
