@@ -184,13 +184,13 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     test('col hierarchy coordinate with compact layout', () => {
       const { colLeafNodes } = facet.layoutResult;
 
-      const COMPACT_WIDTH = [52, 52, 64, 40, 72.765625];
+      const COMPACT_WIDTH = [52, 52, 64, 40, 72.76];
 
       let lastX = 0;
       colLeafNodes.forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
-        expect(node.width).toBe(COMPACT_WIDTH[index]);
+        expect(node.width).toBeCloseTo(COMPACT_WIDTH[index]);
         expect(node.height).toBe(colCfg.height);
         lastX += COMPACT_WIDTH[index];
       });
