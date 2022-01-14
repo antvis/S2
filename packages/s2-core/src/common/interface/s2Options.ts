@@ -1,3 +1,4 @@
+import { ScrollbarPositionType } from '../constant/interaction';
 import { ResizeActiveOptions } from './resize';
 import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
@@ -6,7 +7,6 @@ import {
   HeaderActionIcon,
   CustomSVGIcon,
   ScrollRatio,
-  ScrollbarPositionType,
 } from './basic';
 import { Tooltip } from './tooltip';
 import {
@@ -98,7 +98,6 @@ export interface S2BasicOptions<T = Element | string> {
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // empty cell placeholder
   readonly placeholder?: string;
-  
   readonly supportCSSTransform?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */

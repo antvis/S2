@@ -21,6 +21,7 @@ import {
   KEY_GROUP_ROW_RESIZE_AREA,
   MIN_SCROLL_BAR_HEIGHT,
   InterceptType,
+  ScrollbarPositionType,
 } from '@/common/constant';
 import type { S2WheelEvent, ScrollOffset } from '@/common/interface/scroll';
 import { getAllChildCells } from '@/utils/get-all-child-cells';
@@ -49,7 +50,6 @@ import {
   ViewMeta,
   S2CellType,
   FrameConfig,
-  ScrollbarPositionType,
 } from '@/common/interface';
 import { updateMergedCells } from '@/utils/interaction/merge-cell';
 import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
@@ -645,7 +645,7 @@ export abstract class BaseFacet {
     const { width, height } = this.getCanvasHW();
     const isContentMode =
       this.spreadsheet.options.interaction.scrollbarPosition ===
-      ScrollbarPositionType.content;
+      ScrollbarPositionType.CONTENT;
 
     return {
       maxX: (isContentMode ? maxX : width) - this.scrollBarSize,

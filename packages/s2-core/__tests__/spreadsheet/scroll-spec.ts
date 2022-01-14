@@ -2,12 +2,13 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { CellMeta, S2Options, ScrollbarPositionType } from '@/common/interface';
+import { CellMeta, S2Options } from '@/common/interface';
 import {
   InteractionStateName,
   InterceptType,
   OriginEventType,
   S2Event,
+  ScrollbarPositionType,
 } from '@/common/constant';
 
 const s2options: S2Options = {
@@ -291,7 +292,7 @@ describe('Scroll By Group Tests', () => {
   test('should render correct scroll position', () => {
     s2.setOptions({
       interaction: {
-        scrollbarPosition: ScrollbarPositionType.content,
+        scrollbarPosition: ScrollbarPositionType.CONTENT,
       },
       style: {
         layoutWidthType: 'compact',
@@ -308,7 +309,7 @@ describe('Scroll By Group Tests', () => {
 
     s2.setOptions({
       interaction: {
-        scrollbarPosition: ScrollbarPositionType.canvas,
+        scrollbarPosition: ScrollbarPositionType.CANVAS,
       },
     });
     s2.changeSize(100, 1000); // 横向滚动条
