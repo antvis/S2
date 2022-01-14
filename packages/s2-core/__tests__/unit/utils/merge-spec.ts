@@ -134,6 +134,7 @@ describe('merge test', () => {
           rowCellVertical: true,
           rowResizeType: 'all',
         },
+        scrollbarPosition: 'content',
       },
       frozenRowHeader: true,
       showSeriesNumber: false,
@@ -149,6 +150,7 @@ describe('merge test', () => {
       frozenTrailingColCount: 0,
       hdAdapter: true,
       placeholder: '-',
+      supportCSSTransform: false,
     });
   });
 

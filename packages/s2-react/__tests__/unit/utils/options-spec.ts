@@ -1,4 +1,4 @@
-import { DEFAULT_STYLE, S2Options } from '@antv/s2';
+import { DEFAULT_STYLE } from '@antv/s2';
 import { getSheetComponentOptions } from '@/utils/options';
 
 describe('Options Tests', () => {
@@ -37,6 +37,7 @@ describe('Options Tests', () => {
           horizontal: 1,
           vertical: 1,
         },
+        scrollbarPosition: 'content',
         autoResetSheetStyle: true,
         brushSelection: true,
         multiSelection: true,
@@ -62,7 +63,8 @@ describe('Options Tests', () => {
       frozenTrailingRowCount: 0,
       frozenTrailingColCount: 0,
       hdAdapter: true,
-    } as S2Options);
+      supportCSSTransform: false,
+    });
   });
 
   test('should get custom options', () => {

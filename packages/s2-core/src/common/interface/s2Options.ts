@@ -3,6 +3,8 @@ import {
   FilterDataItemCallback,
   HeaderActionIcon,
   CustomSVGIcon,
+  ScrollRatio,
+  ScrollbarPositionType,
 } from './basic';
 import { Tooltip } from './tooltip';
 import { InteractionOptions } from './interaction';
@@ -75,6 +77,8 @@ export interface S2BasicOptions<T = Element | string> {
   readonly placeholder?: string;
   // custom corner text
   readonly cornerText?: string;
+
+  readonly supportCSSTransform?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
