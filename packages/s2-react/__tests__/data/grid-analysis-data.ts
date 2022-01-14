@@ -126,8 +126,6 @@ export const mockTabularOptions = {
     cellCfg: {
       width: 400,
       height: 300,
-      minorMeasureRowIndex: 3,
-      firstDerivedMeasureRowIndex: 2,
     },
   },
 };

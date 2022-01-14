@@ -272,8 +272,6 @@ describe('Interaction Row Column Resize Tests', () => {
       detailSample: 30,
       height: 30,
       heightByField: {},
-      maxSampleIndex: 1,
-      totalSample: 10,
       widthByFieldValue: {
         [resizeInfo.id]: 5,
       },
