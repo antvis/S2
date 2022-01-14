@@ -463,7 +463,7 @@ export class PivotFacet extends BaseFacet {
       } else {
         // same level -> same width
         const levelSampleNode = sampleNodeByLevel.get(currentNode.level);
-        currentNode.width = levelSampleNode.width;
+        currentNode.width = levelSampleNode?.width;
       }
 
       layoutCoordinate(this.cfg, currentNode, null);
