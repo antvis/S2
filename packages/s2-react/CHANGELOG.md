@@ -1,3 +1,16 @@
+# [@antv/s2-react-v1.6.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.5.0...@antv/s2-react-v1.6.0) (2022-01-14)
+
+
+### Bug Fixes
+
+* **react:** 修复 s2-react 无法安装到 alpha 版本 s2 的问题 ([#983](https://github.com/antvis/S2/issues/983)) ([98ab427](https://github.com/antvis/S2/commit/98ab427d9e06cdcf83994cd418a3153fa1e0c4cc))
+
+
+### Features
+
+* **facet:** add scrollBarPosition option  ([#997](https://github.com/antvis/S2/issues/997)) ([8937dc8](https://github.com/antvis/S2/commit/8937dc84255c68b9d5b75255263866b8c1c359aa))
+* 增加supportCSSTransform设置 ([#990](https://github.com/antvis/S2/issues/990)) ([be45f83](https://github.com/antvis/S2/commit/be45f83ec0bfea402fab127641264c362405d289))
+
 # [@antv/s2-react-v1.5.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.4.0...@antv/s2-react-v1.5.0) (2022-01-07)
 
 
