@@ -28,7 +28,11 @@ import {
 } from '@/facet/layout/layout-hooks';
 import { Node } from '@/facet/layout/node';
 import { handleDataItem } from '@/utils/cell/data-cell';
-import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
+import {
+  measureTextWidth,
+  measureTextWidthRoughly,
+  getCellWidth,
+} from '@/utils/text';
 import { getSubTotalNodeWidthOrHeightByLevel } from '@/utils/facet';
 
 export class PivotFacet extends BaseFacet {
@@ -563,7 +567,10 @@ export class PivotFacet extends BaseFacet {
     // calculate col width
     const colSize = Math.max(1, colLeafNodes.length);
     const { cellCfg } = this.cfg;
-    return Math.max(cellCfg.width, (canvasW - rowHeaderWidth) / colSize);
+    return Math.max(
+      getCellWidth(cellCfg),
+      (canvasW - rowHeaderWidth) / colSize,
+    );
   }
 
   /**
@@ -578,11 +585,11 @@ export class PivotFacet extends BaseFacet {
     const size = Math.max(1, rowHeaderColSize + colHeaderColSize);
     if (!rowHeaderWidth) {
       // canvasW / (rowHeader's col size + colHeader's col size) = [celCfg.width, canvasW]
-      return Math.max(cellCfg.width, canvasW / size);
+      return Math.max(getCellWidth(cellCfg), canvasW / size);
     }
     // (canvasW - rowHeaderW) / (colHeader's col size) = [celCfg.width, canvasW]
     return Math.max(
-      cellCfg.width,
+      getCellWidth(cellCfg),
       (canvasW - rowHeaderWidth) / colHeaderColSize,
     );
   }

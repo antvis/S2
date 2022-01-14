@@ -27,9 +27,6 @@ export const DEFAULT_STYLE: Readonly<Style> = {
     height: 30,
     widthByFieldValue: {},
     heightByField: {},
-    totalSample: 10,
-    detailSample: 30,
-    maxSampleIndex: 1,
   },
   device: 'pc',
 };

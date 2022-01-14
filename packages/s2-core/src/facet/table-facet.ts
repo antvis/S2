@@ -320,7 +320,7 @@ export class TableFacet extends BaseFacet {
       `${col.value}`,
       col.width,
     );
-    let colWidth;
+    let colWidth: number;
     if (userDragWidth) {
       colWidth = userDragWidth;
     } else {

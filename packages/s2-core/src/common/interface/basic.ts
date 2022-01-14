@@ -282,11 +282,6 @@ export interface ColCfg {
   heightByField?: Record<string, number>;
   // hide last column(measure values), only work when has one value
   hideMeasureColumn?: boolean;
-  // 列宽计算小计，明细数据采样的个数
-  totalSample?: number;
-  detailSample?: number;
-  // 列宽取计算的第几个最大值
-  maxSampleIndex?: number;
 }
 
 /**
