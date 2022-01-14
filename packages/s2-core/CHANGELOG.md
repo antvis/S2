@@ -1,3 +1,19 @@
+# [@antv/s2-v1.6.0](https://github.com/antvis/S2/compare/@antv/s2-v1.5.0...@antv/s2-v1.6.0) (2022-01-14)
+
+
+### Bug Fixes
+
+* **facet:** 交叉表 compact 模式下行/列头宽度计算错误 ([#972](https://github.com/antvis/S2/issues/972)) ([2c59806](https://github.com/antvis/S2/commit/2c598066c70be4e53bb15f6f610dcf906c424af7))
+* **facet:** 数据量较少时，维持 panelBBox 宽高 ([#989](https://github.com/antvis/S2/issues/989)) ([c79d6b1](https://github.com/antvis/S2/commit/c79d6b1b892cfaa397d95fba6ff6151c44ed7632))
+* **interaction:** shift区间多选在明细表序列号上失效 ([#981](https://github.com/antvis/S2/issues/981)) ([38e4f93](https://github.com/antvis/S2/commit/38e4f935eb061ebaeb0c5a1a453adf593945770c))
+* scrollbarOpts to enum const ([#1001](https://github.com/antvis/S2/issues/1001)) ([f7ffcf0](https://github.com/antvis/S2/commit/f7ffcf06a3d8011fadab23ff325e72398d926184))
+
+
+### Features
+
+* **facet:** add scrollBarPosition option  ([#997](https://github.com/antvis/S2/issues/997)) ([8937dc8](https://github.com/antvis/S2/commit/8937dc84255c68b9d5b75255263866b8c1c359aa))
+* 增加supportCSSTransform设置 ([#990](https://github.com/antvis/S2/issues/990)) ([be45f83](https://github.com/antvis/S2/commit/be45f83ec0bfea402fab127641264c362405d289))
+
 # [@antv/s2-v1.5.0](https://github.com/antvis/S2/compare/@antv/s2-v1.4.0...@antv/s2-v1.5.0) (2022-01-07)
 
 
