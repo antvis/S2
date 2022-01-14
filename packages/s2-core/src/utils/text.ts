@@ -12,7 +12,7 @@ import { DefaultCellTheme } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell/data-cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
-import { Condition, MultiData, ViewMeta } from '@/common/interface';
+import { CellCfg, Condition, MultiData, ViewMeta } from '@/common/interface';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
