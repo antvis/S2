@@ -8,24 +8,17 @@ describe('Options Tests', () => {
     expect(options.tooltip.renderTooltip).toBeFunction();
 
     Reflect.deleteProperty(options.tooltip, 'renderTooltip');
-
     expect(options).toStrictEqual({
       width: 600,
       height: 480,
       debug: false,
       hierarchyType: 'grid',
       conditions: {},
-      cornerText: '',
-      placeholder: '-',
       totals: {},
       tooltip: {
         showTooltip: true,
         autoAdjustBoundary: 'body',
-        operation: {
-          hiddenColumns: true,
-          trend: false,
-          sort: true,
-        },
+        operation: { hiddenColumns: true, trend: false, sort: true },
       },
       interaction: {
         linkFields: [],
@@ -33,24 +26,17 @@ describe('Options Tests', () => {
         selectedCellsSpotlight: false,
         hoverHighlight: true,
         hoverFocus: true,
-        scrollSpeedRatio: {
-          horizontal: 1,
-          vertical: 1,
-        },
-        scrollbarPosition: 'content',
+        scrollSpeedRatio: { horizontal: 1, vertical: 1 },
         autoResetSheetStyle: true,
-        brushSelection: true,
-        multiSelection: true,
-        rangeSelection: true,
+        scrollbarPosition: 'content',
         resize: {
+          rowCellVertical: true,
+          cornerCellHorizontal: true,
           colCellHorizontal: true,
           colCellVertical: true,
-          cornerCellHorizontal: true,
-          rowCellVertical: true,
           rowResizeType: 'all',
         },
       },
-      frozenRowHeader: true,
       showSeriesNumber: false,
       scrollReachNodeField: {},
       customSVGIcons: [],
@@ -58,11 +44,14 @@ describe('Options Tests', () => {
       showDefaultHeaderActionIcon: true,
       headerActionIcons: [],
       style: DEFAULT_STYLE,
+      frozenRowHeader: true,
       frozenRowCount: 0,
       frozenColCount: 0,
       frozenTrailingRowCount: 0,
       frozenTrailingColCount: 0,
       hdAdapter: true,
+      cornerText: '',
+      placeholder: '-',
       supportCSSTransform: false,
     });
   });
