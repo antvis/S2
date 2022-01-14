@@ -2,7 +2,7 @@
 import * as mockDataConfig from 'tests/data/simple-data.json';
 import { createMockCellInfo, getContainer, sleep } from 'tests/util/helpers';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
-import { CellMeta, S2Options } from '@/common/interface';
+import { CellMeta, S2Options, ScrollbarPositionType } from '@/common/interface';
 import {
   InteractionStateName,
   InterceptType,
@@ -287,4 +287,37 @@ describe('Scroll By Group Tests', () => {
       });
     },
   );
+
+  test('should render correct scroll position', () => {
+    s2.setOptions({
+      interaction: {
+        scrollbarPosition: ScrollbarPositionType.content,
+      },
+      style: {
+        layoutWidthType: 'compact',
+      },
+    });
+    s2.changeSize(100, 1000); // 横向滚动条
+    s2.render(false);
+    expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(220);
+    expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(220);
+
+    s2.changeSize(1000, 150); // 纵向滚动条
+    s2.render(false);
+    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(191);
+
+    s2.setOptions({
+      interaction: {
+        scrollbarPosition: ScrollbarPositionType.canvas,
+      },
+    });
+    s2.changeSize(100, 1000); // 横向滚动条
+    s2.render(false);
+    expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(994);
+    expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(994);
+
+    s2.changeSize(1000, 200); // 纵向滚动条
+    s2.render(false);
+    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(994);
+  });
 });

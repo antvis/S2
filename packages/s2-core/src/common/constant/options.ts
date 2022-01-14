@@ -1,5 +1,5 @@
 import { S2Options } from '../interface/s2Options';
-import { Style } from '@/common/interface/basic';
+import { ScrollbarPositionType, Style } from '@/common/interface/basic';
 import { ResizeType } from '@/common/constant/resize';
 
 export enum LayoutWidthTypes {
@@ -59,6 +59,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       vertical: 1,
     },
     autoResetSheetStyle: true,
+    scrollbarPosition: ScrollbarPositionType.content,
     resize: {
       rowCellVertical: true,
       cornerCellHorizontal: true,

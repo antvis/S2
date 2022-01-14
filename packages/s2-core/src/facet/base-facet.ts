@@ -41,7 +41,7 @@ import {
   DEBUG_HEADER_LAYOUT,
   DEBUG_VIEW_RENDER,
 } from '@/common/debug';
-import type {
+import {
   Formatter,
   LayoutResult,
   OffsetConfig,
@@ -49,6 +49,7 @@ import type {
   ViewMeta,
   S2CellType,
   FrameConfig,
+  ScrollbarPositionType,
 } from '@/common/interface';
 import { updateMergedCells } from '@/utils/interaction/merge-cell';
 import { PanelIndexes, diffPanelIndexes } from '@/utils/indexes';
@@ -529,6 +530,7 @@ export abstract class BaseFacet {
       this.cornerBBox.width < this.cornerBBox.originalWidth
     ) {
       const maxOffset = this.cornerBBox.originalWidth - this.cornerBBox.width;
+      const { maxY } = this.getScrollbarPosition();
       const thumbLen =
         (this.cornerBBox.width * this.cornerBBox.width) /
         this.cornerBBox.originalWidth;
@@ -538,7 +540,7 @@ export abstract class BaseFacet {
         thumbLen,
         position: {
           x: this.cornerBBox.minX + this.scrollBarSize / 2,
-          y: this.panelBBox.maxY,
+          y: maxY,
         },
         thumbOffset:
           (rowScrollX * (this.cornerBBox.width - thumbLen)) / maxOffset,
@@ -582,6 +584,7 @@ export abstract class BaseFacet {
     if (Math.floor(width) < Math.floor(realWidth)) {
       const halfScrollSize = this.scrollBarSize / 2;
 
+      const { maxY } = this.getScrollbarPosition();
       const finalWidth =
         width +
         (this.cfg.spreadsheet.isScrollContainsRowHeader()
@@ -593,7 +596,7 @@ export abstract class BaseFacet {
           (this.cfg.spreadsheet.isScrollContainsRowHeader()
             ? -this.cornerBBox.width + halfScrollSize
             : halfScrollSize),
-        y: this.panelBBox.maxY,
+        y: maxY,
       };
       const finaleRealWidth =
         realWidth +
@@ -637,6 +640,19 @@ export abstract class BaseFacet {
     }
   };
 
+  private getScrollbarPosition = () => {
+    const { maxX, maxY } = this.panelBBox;
+    const { width, height } = this.getCanvasHW();
+    const isContentMode =
+      this.spreadsheet.options.interaction.scrollbarPosition ===
+      ScrollbarPositionType.content;
+
+    return {
+      maxX: (isContentMode ? maxX : width) - this.scrollBarSize,
+      maxY: isContentMode ? maxY : height - this.scrollBarSize,
+    };
+  };
+
   renderVScrollBar = (height: number, realHeight: number, scrollY: number) => {
     if (height < realHeight) {
       const thumbHeight = Math.max(
@@ -644,6 +660,7 @@ export abstract class BaseFacet {
         MIN_SCROLL_BAR_HEIGHT,
       );
       const maxOffset = realHeight - height;
+      const { maxX } = this.getScrollbarPosition();
 
       this.vScrollBar = new ScrollBar({
         isHorizontal: false,
@@ -651,7 +668,7 @@ export abstract class BaseFacet {
         thumbLen: thumbHeight,
         thumbOffset: (scrollY * (height - thumbHeight)) / maxOffset,
         position: {
-          x: this.panelBBox.maxX - this.scrollBarSize,
+          x: maxX,
           y: this.panelBBox.minY,
         },
         theme: this.scrollBarTheme,
