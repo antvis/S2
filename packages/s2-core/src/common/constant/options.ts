@@ -1,7 +1,7 @@
+import { S2Options } from '../interface/s2Options';
 import { ScrollbarPositionType } from '../constant/interaction';
 import { EMPTY_PLACEHOLDER } from './basic';
-import type { S2Options } from '@/common/interface/s2Options';
-import type { Style } from '@/common/interface/basic';
+import { Style } from '@/common/interface/basic';
 import { ResizeType } from '@/common/constant/resize';
 
 export enum LayoutWidthTypes {

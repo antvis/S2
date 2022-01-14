@@ -26,9 +26,12 @@ describe('Options Tests', () => {
         selectedCellsSpotlight: false,
         hoverHighlight: true,
         hoverFocus: true,
-        scrollSpeedRatio: { horizontal: 1, vertical: 1 },
-        autoResetSheetStyle: true,
+        scrollSpeedRatio: {
+          horizontal: 1,
+          vertical: 1,
+        },
         scrollbarPosition: 'content',
+        autoResetSheetStyle: true,
         resize: {
           rowCellVertical: true,
           cornerCellHorizontal: true,
