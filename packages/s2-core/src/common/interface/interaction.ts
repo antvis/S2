@@ -3,6 +3,7 @@ import type {
   InteractionStateName,
   CellTypes,
   InterceptType,
+  ScrollbarPositionType,
 } from '../constant';
 import type { ViewMeta } from './basic';
 import type { ResizeActiveOptions } from './resize';
@@ -113,6 +114,8 @@ export interface InteractionOptions {
   readonly rangeSelection?: boolean;
   // use arrow keyboard to move selected cell
   readonly selectedCellMove?: boolean;
+  // controls scrollbar's position type
+  readonly scrollbarPosition?: ScrollbarPositionType;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];

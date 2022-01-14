@@ -21,6 +21,7 @@ order: 5
 | brushSelection                 | 是否允许刷选                         | `boolean` | `true`  |       |
 | multiSelection                 | 是否允许多选                         | `boolean` | `true`  |       |
 | rangeSelection                 | 是否允许区间快捷多选                         | `boolean` | `true`  |       |
+| scrollbarPosition | 用于控制滚动条展示在内容区边缘还是画布边缘 | `content`\| `canvas`  | `content`  |   |
 
 ### CustomInteraction
 

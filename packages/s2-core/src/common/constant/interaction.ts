@@ -81,3 +81,8 @@ export enum InterceptType {
   MULTI_SELECTION = 'multiSelection',
   RESIZE = 'resize',
 }
+
+export enum ScrollbarPositionType {
+  CONTENT = 'content',
+  CANVAS = 'canvas',
+}

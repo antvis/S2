@@ -1,3 +1,4 @@
+import { ScrollbarPositionType } from '../constant/interaction';
 import { EMPTY_PLACEHOLDER } from './basic';
 import type { S2Options } from '@/common/interface/s2Options';
 import type { Style } from '@/common/interface/basic';
@@ -61,6 +62,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     brushSelection: true,
     multiSelection: true,
     rangeSelection: true,
+    scrollbarPosition: ScrollbarPositionType.CONTENT,
     resize: {
       rowCellVertical: true,
       cornerCellHorizontal: true,
@@ -84,4 +86,5 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   hdAdapter: true,
   cornerText: '',
   placeholder: EMPTY_PLACEHOLDER,
+  supportCSSTransform: false,
 };
