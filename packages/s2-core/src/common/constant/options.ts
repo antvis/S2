@@ -58,6 +58,9 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       vertical: 1,
     },
     autoResetSheetStyle: true,
+    brushSelection: true,
+    multiSelection: true,
+    rangeSelection: true,
     scrollbarPosition: ScrollbarPositionType.content,
     resize: {
       rowCellVertical: true,
