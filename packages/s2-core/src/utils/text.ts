@@ -12,7 +12,7 @@ import { DefaultCellTheme } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
 import { DataCell } from '@/cell/data-cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
-import { Condition, MultiData, ViewMeta } from '@/common/interface';
+import { CellCfg, Condition, MultiData, ViewMeta } from '@/common/interface';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -172,7 +172,7 @@ export const getEllipsisText = ({
   priorityParam,
   placeholder,
 }: {
-  text: string;
+  text: string | number;
   maxWidth: number;
   fontParam?: unknown;
   priorityParam?: string[];
@@ -181,7 +181,7 @@ export const getEllipsisText = ({
   let font = {};
   const empty = placeholder ?? EMPTY_PLACEHOLDER;
   // [null, undefined, ''] will return empty
-  const finalText = isNil(text) || text === '' ? empty : text;
+  const finalText = isNil(text) || text === '' ? empty : `${text}`;
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
@@ -363,7 +363,7 @@ export const drawObjectText = (cell: DataCell) => {
         curX,
         curY,
         getEllipsisText({
-          text: `${curText}`,
+          text: curText,
           maxWidth: curWidth,
           fontParam: curStyle,
           placeholder: cell?.getMeta().spreadsheet.options.placeholder,
