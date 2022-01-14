@@ -1,3 +1,4 @@
+import { ScrollbarPositionType } from '../constant/interaction';
 import { ResizeActiveOptions } from './resize';
 import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
@@ -49,6 +50,8 @@ export interface InteractionOptions {
   readonly scrollSpeedRatio?: ScrollRatio;
   // enable resize area, default set to all enable
   readonly resize?: boolean | ResizeActiveOptions;
+  // controls scrollbar's position type
+  readonly scrollbarPosition?: ScrollbarPositionType;
   /** ***********CUSTOM INTERACTION HOOKS**************** */
   // register custom interactions
   customInteractions?: CustomInteraction[];
@@ -95,6 +98,7 @@ export interface S2BasicOptions<T = Element | string> {
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // empty cell placeholder
   readonly placeholder?: string;
+  readonly supportCSSTransform?: boolean;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell

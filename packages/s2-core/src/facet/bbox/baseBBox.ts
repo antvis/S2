@@ -32,6 +32,11 @@ export abstract class BaseBBox implements BBox {
 
   originalHeight = 0;
 
+  // 视口宽高，数据少时可能小于 bbox 的宽高
+  viewportHeight = 0;
+
+  viewportWidth = 0;
+
   constructor(facet: BaseFacet, autoCalculateBBoxWhenCreated = false) {
     this.facet = facet;
     this.spreadsheet = facet.spreadsheet;
