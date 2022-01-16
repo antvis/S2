@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback } from 'react';
-import { debounce } from 'lodash';
+import { debounce, round } from 'lodash';
 import type { SpreadSheet } from '@antv/s2';
 import { Adaptive } from '@/components';
 
@@ -51,7 +51,7 @@ export const useResize = (params: UseResizeEffectParams) => {
       s2.changeSize(s2?.options.width, s2?.options.height);
       s2.render(false);
     }
-  }, [s2?.options.width, s2?.options.height, adaptive]);
+  }, [s2?.options.width, s2?.options.height, adaptive, s2]);
 
   // rerender by container resize or window resize
   React.useLayoutEffect(() => {
@@ -62,8 +62,12 @@ export const useResize = (params: UseResizeEffectParams) => {
     const resizeObserver = new ResizeObserver(([entry] = []) => {
       if (entry) {
         const [size] = entry.borderBoxSize || [];
-        const width = adaptiveWidth ? size?.inlineSize : s2?.options.width;
-        const height = adaptiveHeight ? size?.blockSize : s2?.options.height;
+        const width = adaptiveWidth
+          ? round(size?.inlineSize)
+          : s2?.options.width;
+        const height = adaptiveHeight
+          ? round(size?.blockSize)
+          : s2?.options.height;
         if (!adaptiveWidth && !adaptiveHeight) {
           return;
         }
@@ -84,10 +88,10 @@ export const useResize = (params: UseResizeEffectParams) => {
     };
   }, [
     container,
-    adaptive,
     adaptiveWidth,
     adaptiveHeight,
     s2?.options.width,
     s2?.options.height,
+    render,
   ]);
 };
