@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.7.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.7.0-alpha.1...@antv/s2-react-v1.7.0-alpha.2) (2022-01-16)
+
+
+### Bug Fixes
+
+* 修复高度自适应死循环问题 ([#1007](https://github.com/antvis/S2/issues/1007)) ([6fff9a0](https://github.com/antvis/S2/commit/6fff9a0511f042ee17eed7abb8af7e53233a0b66))
+
 # [@antv/s2-react-v1.7.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.6.0...@antv/s2-react-v1.7.0-alpha.1) (2022-01-14)
 
 
