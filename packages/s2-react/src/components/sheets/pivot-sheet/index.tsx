@@ -2,6 +2,7 @@ import { Event as GEvent } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 import React from 'react';
 import { SpreadSheet, getTooltipOptions } from '@antv/s2';
+import { useLatest } from 'ahooks';
 import { BaseSheet } from '../base-sheet';
 import { DrillDown } from '@/components/drill-down';
 import { SheetComponentsProps } from '@/components/sheets/interface';
@@ -11,6 +12,7 @@ import { handleDrillDown, handleDrillDownIcon } from '@/utils';
 export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { dataCfg, partDrillDown } = props;
+    const latestPropsRef = useLatest(props);
 
     const s2Ref = React.useRef<SpreadSheet>();
 
@@ -50,7 +52,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
     );
 
     const updateDrillDownOptions = React.useCallback(
-      (sheetProps: SheetComponentsProps = props) => {
+      (sheetProps: SheetComponentsProps = latestPropsRef.current) => {
         if (partDrillDown) {
           const drillDownOptions = handleDrillDownIcon(
             sheetProps,
@@ -60,7 +62,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
           s2Ref.current.setOptions(drillDownOptions);
         }
       },
-      [onDrillDownIconClick, partDrillDown, props, s2Ref],
+      [onDrillDownIconClick, partDrillDown, latestPropsRef, s2Ref],
     );
 
     /**
