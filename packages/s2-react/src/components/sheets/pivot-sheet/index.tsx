@@ -85,8 +85,6 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       if (isEmpty(drillFields)) {
         clearDrillDownInfo(s2Ref.current.store.get('drillDownNode')?.id);
       } else {
-        // TODO 下钻整体流程梳理
-        // setLoading(true);
         handleDrillDown({
           rows: rowFieldsRef.current,
           drillFields: drillFields,
