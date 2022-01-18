@@ -57,7 +57,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     let offsetX = 0;
     offsetX = this.getNodeX(colLeafNodes, colIndex);
     if (isTable) {
-      offsetX -= colLeafNodes[0]?.x;
+      offsetX -= colLeafNodes[0]?.width;
     }
     if (frozenColCount > 1) {
       const firstUnfrozenNodeX = isTable
