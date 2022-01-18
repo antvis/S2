@@ -1,7 +1,7 @@
 import { Event as GEvent } from '@antv/g-canvas';
 import { isEmpty } from 'lodash';
 import React from 'react';
-import { SpreadSheet, getTooltipOptions } from '@antv/s2';
+import { SpreadSheet, getTooltipOptions, HeaderActionIcon } from '@antv/s2';
 import { useLatest } from 'ahooks';
 import { BaseSheet } from '../base-sheet';
 import { DrillDown } from '@/components/drill-down';
@@ -13,6 +13,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { dataCfg, partDrillDown } = props;
     const latestPropsRef = useLatest(props);
+    const drillDownIconRef = React.useRef<HeaderActionIcon>();
 
     const s2Ref = React.useRef<SpreadSheet>();
 
@@ -53,15 +54,15 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
 
     const updateDrillDownOptions = React.useCallback(
       (sheetProps: SheetComponentsProps = latestPropsRef.current) => {
-        if (partDrillDown) {
-          const drillDownOptions = handleDrillDownIcon(
-            sheetProps,
-            s2Ref.current,
-            onDrillDownIconClick,
-          );
-          s2Ref.current.setOptions(drillDownOptions);
-        }
+        const drillDownOptions = handleDrillDownIcon(
+          sheetProps,
+          s2Ref.current,
+          onDrillDownIconClick,
+          drillDownIconRef,
+        );
+        s2Ref.current.setOptions(drillDownOptions);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [onDrillDownIconClick, partDrillDown, latestPropsRef, s2Ref],
     );
 

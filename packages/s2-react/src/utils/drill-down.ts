@@ -7,7 +7,9 @@ import {
   SpreadSheet,
   Node,
   PivotDataSet,
+  HeaderActionIcon,
 } from '@antv/s2';
+import React from 'react';
 import { PartDrillDownInfo, SheetComponentsProps } from '@/components';
 import { PartDrillDownDataCache } from '@/components/sheets/interface';
 import { i18n } from '@/common/i18n';
@@ -95,8 +97,9 @@ export const handleDrillDownIcon = (
     disabledFields: string[],
     event?: Event,
   ) => void,
+  drillDownIconRef: React.MutableRefObject<HeaderActionIcon>,
 ): S2Options => {
-  if (props?.partDrillDown) {
+  if (props?.partDrillDown && !drillDownIconRef.current) {
     let displayCondition = props.partDrillDown?.displayCondition;
     if (isEmpty(displayCondition)) {
       let iconLevel = spreadsheet.store.get('drillDownActionIconLevel', -1);
@@ -136,12 +139,16 @@ export const handleDrillDownIcon = (
         }
       },
     };
-    if (
-      !JSON.stringify(props.options.headerActionIcons).includes('DrillDownIcon')
-    ) {
-      // 防止切换视图多次 push drillDownActionIcon
-      props.options.headerActionIcons.push(drillDownActionIcon);
-    }
+    props.options.headerActionIcons.push(drillDownActionIcon);
+    drillDownIconRef.current = drillDownActionIcon;
+  } else if (!props?.partDrillDown && drillDownIconRef.current) {
+    // clear previous added icon
+    const nextHeaderIcons =
+      props.options.headerActionIcons?.filter(
+        (icon) => icon !== drillDownIconRef.current,
+      ) ?? [];
+    set(props.options, 'headerActionIcons', nextHeaderIcons);
+    drillDownIconRef.current = null;
   }
 
   return props.options;
