@@ -5,6 +5,7 @@ import { TableFacet } from '@/facet';
 import { InteractionStateName, CellTypes, CellMeta } from '@/common';
 import { getDataCellId } from '@/utils';
 import { SpreadSheet } from '@/sheet-type';
+import { Node } from '@/facet/layout/node';
 
 export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -45,17 +46,22 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     }
   }
 
+  private getNodeX(colLeafNodes: Node[], index: number) {
+    return colLeafNodes.find((item) => item.colIndex === index)?.x || 0;
+  }
+
   private getOffsetX(colIndex: number) {
     const { colLeafNodes } = this.spreadsheet.facet.layoutResult;
+    const isTable = this.spreadsheet.isTableMode();
     const { frozenColCount = 0 } = this.spreadsheet.options;
     let offsetX = 0;
-    offsetX = this.spreadsheet.isTableMode()
-      ? colLeafNodes.find((item) => item.colIndex === colIndex)?.x -
-        colLeafNodes[0]?.x
-      : colLeafNodes.find((item) => item.colIndex === colIndex)?.x || 0;
+    offsetX = this.getNodeX(colLeafNodes, colIndex);
+    if (isTable) {
+      offsetX -= colLeafNodes[0]?.x;
+    }
     if (frozenColCount > 1) {
-      const firstUnfrozenNodeX = this.spreadsheet.isTableMode()
-        ? colLeafNodes.find((item) => item.colIndex === frozenColCount)?.x || 0
+      const firstUnfrozenNodeX = isTable
+        ? this.getNodeX(colLeafNodes, frozenColCount)
         : 0;
       offsetX -= firstUnfrozenNodeX;
     }
