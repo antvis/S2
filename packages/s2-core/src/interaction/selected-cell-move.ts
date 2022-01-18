@@ -49,7 +49,10 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     const { colLeafNodes } = this.spreadsheet.facet.layoutResult;
     const { frozenColCount = 0 } = this.spreadsheet.options;
     let offsetX = 0;
-    offsetX = colLeafNodes.find((item) => item.colIndex === colIndex)?.x || 0;
+    offsetX = this.spreadsheet.isTableMode()
+      ? colLeafNodes.find((item) => item.colIndex === colIndex)?.x -
+        colLeafNodes[0]?.x
+      : colLeafNodes.find((item) => item.colIndex === colIndex)?.x || 0;
     if (frozenColCount > 1) {
       const firstUnfrozenNodeX = this.spreadsheet.isTableMode()
         ? colLeafNodes.find((item) => item.colIndex === frozenColCount)?.x || 0
