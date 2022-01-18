@@ -113,6 +113,9 @@ describe('Drill Down Test', () => {
       },
       mockInstance,
       iconClickCallback,
+      {
+        current: null,
+      },
     );
     expect(mergedOptions.headerActionIcons).not.toBeEmpty();
   });
