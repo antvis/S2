@@ -99,7 +99,12 @@ export const handleDrillDownIcon = (
   ) => void,
   drillDownIconRef: React.MutableRefObject<HeaderActionIcon>,
 ): S2Options => {
-  if (props?.partDrillDown && !drillDownIconRef.current) {
+  const nextHeaderIcons =
+    props.options.headerActionIcons?.filter(
+      (icon) => icon !== drillDownIconRef.current,
+    ) ?? [];
+
+  if (props?.partDrillDown) {
     let displayCondition = props.partDrillDown?.displayCondition;
     if (isEmpty(displayCondition)) {
       let iconLevel = spreadsheet.store.get('drillDownActionIconLevel', -1);
@@ -119,9 +124,7 @@ export const handleDrillDownIcon = (
         );
       };
     }
-    if (!props.options?.headerActionIcons) {
-      set(props.options, 'headerActionIcons', []);
-    }
+
     const drillDownActionIcon = {
       belongsCell: 'rowCell',
       iconNames: ['DrillDownIcon'],
@@ -139,17 +142,15 @@ export const handleDrillDownIcon = (
         }
       },
     };
-    props.options.headerActionIcons.push(drillDownActionIcon);
+
     drillDownIconRef.current = drillDownActionIcon;
+    nextHeaderIcons.push(drillDownActionIcon);
   } else if (!props?.partDrillDown && drillDownIconRef.current) {
-    // clear previous added icon
-    const nextHeaderIcons =
-      props.options.headerActionIcons?.filter(
-        (icon) => icon !== drillDownIconRef.current,
-      ) ?? [];
-    set(props.options, 'headerActionIcons', nextHeaderIcons);
+    // clear previous icon ref
     drillDownIconRef.current = null;
   }
+
+  set(props.options, 'headerActionIcons', nextHeaderIcons);
 
   return props.options;
 };
