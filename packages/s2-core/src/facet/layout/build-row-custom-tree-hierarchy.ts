@@ -22,7 +22,7 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
   } = params;
   const { spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
   for (const customTreeItem of customTreeItems) {
-    const { key, title, collapsed, children } = customTreeItem;
+    const { key, title, collapsed, children, ...rest } = customTreeItem;
     // query只与值本身有关，不会涉及到parent节点
     const valueQuery = { [EXTRA_FIELD]: key };
     // 保持和其他场景头部生成id的格式一致
@@ -51,6 +51,7 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       hierarchy,
       query: valueQuery,
       spreadsheet,
+      extra: rest,
     });
     hierarchy.pushNode(item);
 
