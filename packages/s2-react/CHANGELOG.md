@@ -1,3 +1,11 @@
+# [@antv/s2-react-v1.7.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.7.0-alpha.2...@antv/s2-react-v1.7.0-alpha.3) (2022-01-19)
+
+
+### Bug Fixes
+
+* 下钻参数变更后未正确重置 ([#1015](https://github.com/antvis/S2/issues/1015)) ([c922cd2](https://github.com/antvis/S2/commit/c922cd26e9dc64a4d196679a44707c7c85ed4027))
+* 加载下钻数据引起render死循环 ([#1010](https://github.com/antvis/S2/issues/1010)) ([b784268](https://github.com/antvis/S2/commit/b78426857882fb255e5621606dd52dd50c4d21c9))
+
 # [@antv/s2-react-v1.7.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.7.0-alpha.1...@antv/s2-react-v1.7.0-alpha.2) (2022-01-16)
 
 
