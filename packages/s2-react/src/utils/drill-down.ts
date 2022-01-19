@@ -7,7 +7,9 @@ import {
   SpreadSheet,
   Node,
   PivotDataSet,
+  HeaderActionIcon,
 } from '@antv/s2';
+import React from 'react';
 import { PartDrillDownInfo, SheetComponentsProps } from '@/components';
 import { PartDrillDownDataCache } from '@/components/sheets/interface';
 import { i18n } from '@/common/i18n';
@@ -95,7 +97,13 @@ export const handleDrillDownIcon = (
     disabledFields: string[],
     event?: Event,
   ) => void,
+  drillDownIconRef: React.MutableRefObject<HeaderActionIcon>,
 ): S2Options => {
+  const nextHeaderIcons =
+    props.options.headerActionIcons?.filter(
+      (icon) => icon !== drillDownIconRef.current,
+    ) ?? [];
+
   if (props?.partDrillDown) {
     let displayCondition = props.partDrillDown?.displayCondition;
     if (isEmpty(displayCondition)) {
@@ -116,9 +124,7 @@ export const handleDrillDownIcon = (
         );
       };
     }
-    if (!props.options?.headerActionIcons) {
-      set(props.options, 'headerActionIcons', []);
-    }
+
     const drillDownActionIcon = {
       belongsCell: 'rowCell',
       iconNames: ['DrillDownIcon'],
@@ -136,13 +142,15 @@ export const handleDrillDownIcon = (
         }
       },
     };
-    if (
-      !JSON.stringify(props.options.headerActionIcons).includes('DrillDownIcon')
-    ) {
-      // 防止切换视图多次 push drillDownActionIcon
-      props.options.headerActionIcons.push(drillDownActionIcon);
-    }
+
+    drillDownIconRef.current = drillDownActionIcon;
+    nextHeaderIcons.push(drillDownActionIcon);
+  } else if (!props?.partDrillDown && drillDownIconRef.current) {
+    // clear previous icon ref
+    drillDownIconRef.current = null;
   }
+
+  set(props.options, 'headerActionIcons', nextHeaderIcons);
 
   return props.options;
 };
