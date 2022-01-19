@@ -652,9 +652,12 @@
         },
         "measure-b": {
           "originalValue": [[377, 324, -0.02]],
-          "values": [[377, 324, " -0.02%"]]
+          "values": [[377, 324, "-0.02"]]
         },
-        "measure-c": 3,
+        "measure-c": {
+          "originalValue": [[377, 0, null]],
+          "values": [[377, 0, null]]
+        },
         "measure-d": 4,
         "measure-e": 5,
         "measure-f": 6,

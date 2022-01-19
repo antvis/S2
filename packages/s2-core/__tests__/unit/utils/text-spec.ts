@@ -3,7 +3,6 @@ import {
   getEllipsisTextInner,
   isUpDataValue,
   measureTextWidth,
-  drawObjectText,
   getCellWidth,
 } from '@/utils/text';
 
@@ -87,14 +86,21 @@ describe('Text Utils Tests', () => {
     expect(text).toEqual('t...');
   });
 
-  test('should get correct data status', () => {
-    const isUpNumber = isUpDataValue(0);
-    const isUpString = isUpDataValue('-10');
-    expect(isUpNumber).toEqual(true);
-    expect(isUpString).toEqual(false);
+  test.each`
+    value     | expected
+    ${0}      | ${true}
+    ${'-10'}  | ${false}
+    ${''}     | ${false}
+    ${' -10'} | ${false}
+    ${'-10 '} | ${false}
+    ${' 10'}  | ${true}
+    ${'10 '}  | ${true}
+    ${' 10 '} | ${true}
+  `('should get correct data status', ({ value, expected }) => {
+    expect(isUpDataValue(value)).toEqual(expected);
   });
 
-  test('should get correct cell width', () => {
+  test('should get correct cell width for %s', () => {
     const singleCellCfg = {
       width: 90,
     };
