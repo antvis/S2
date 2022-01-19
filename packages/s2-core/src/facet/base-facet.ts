@@ -173,8 +173,8 @@ export abstract class BaseFacet {
         ...originEvent,
         deltaX,
         deltaY,
-        layerX: x / 3,
-        layerY: y / 3,
+        layerX: x,
+        layerY: y,
       } as unknown as S2WheelEvent);
     });
   };
