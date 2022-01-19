@@ -51,7 +51,7 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       hierarchy,
       query: valueQuery,
       spreadsheet,
-      extra: { ...rest },
+      extra: rest,
     });
     hierarchy.pushNode(item);
 
