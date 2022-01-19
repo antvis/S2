@@ -1,3 +1,10 @@
+# [@antv/s2-v1.7.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.7.0-alpha.1...@antv/s2-v1.7.0-alpha.2) (2022-01-19)
+
+
+### Features
+
+* node增加节点信息参数便于透传额外业务信息 ([#1019](https://github.com/antvis/S2/issues/1019)) ([e5f2055](https://github.com/antvis/S2/commit/e5f2055291fd3240d1ccc64c11d40c18c97e39d2))
+
 # [@antv/s2-v1.7.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.6.0...@antv/s2-v1.7.0-alpha.1) (2022-01-14)
 
 
