@@ -104,18 +104,18 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       clearDrillDownInfo(partDrillDown?.clearDrillDown?.rowId);
     }, [partDrillDown?.clearDrillDown]);
 
-    React.useEffect(() => {
-      if (!partDrillDown?.drillItemsNum) {
-        return;
-      }
-      clearDrillDownInfo();
-    }, [partDrillDown?.drillItemsNum]);
-
+    /**
+     * 表格重渲染 effect
+     */
     React.useEffect(() => {
       updateDrillDownOptions();
       s2Ref.current.render();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [partDrillDown]);
+    }, [
+      partDrillDown?.drillConfig,
+      partDrillDown?.displayCondition,
+      partDrillDown?.drillItemsNum,
+    ]);
 
     return <BaseSheet {...props} ref={s2Ref} />;
   },
