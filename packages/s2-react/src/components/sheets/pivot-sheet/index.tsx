@@ -11,7 +11,7 @@ import { handleDrillDown, handleDrillDownIcon } from '@/utils';
 
 export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
-    const { dataCfg, partDrillDown } = props;
+    const { dataCfg, partDrillDown, options } = props;
     // 记录 headerIcons 中的 下钻 icon
     const drillDownIconRef = React.useRef<HeaderActionIcon>();
 
@@ -115,6 +115,7 @@ export const PivotSheet: React.FC<SheetComponentsProps> = React.memo(
       partDrillDown?.drillConfig,
       partDrillDown?.displayCondition,
       partDrillDown?.drillItemsNum,
+      options.hierarchyType,
     ]);
 
     return <BaseSheet {...props} ref={s2Ref} />;
