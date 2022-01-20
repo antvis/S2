@@ -101,11 +101,14 @@ describe('Text Utils Tests', () => {
     ${' 10'}  | ${true}
     ${'10 '}  | ${true}
     ${' 10 '} | ${true}
-  `('should get correct data status', ({ value, expected }) => {
-    expect(isUpDataValue(value)).toEqual(expected);
-  });
+  `(
+    'should get correct data status when value=$value',
+    ({ value, expected }) => {
+      expect(isUpDataValue(value)).toEqual(expected);
+    },
+  );
 
-  test('should get correct cell width for %s', () => {
+  test('should get correct cell width', () => {
     const singleCellCfg = {
       width: 90,
     };
