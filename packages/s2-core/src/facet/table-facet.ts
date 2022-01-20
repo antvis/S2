@@ -904,7 +904,7 @@ export class TableFacet extends BaseFacet {
     this.updateRowResizeArea();
   }
 
-  public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+  protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
     const colLength = this.layoutResult.colLeafNodes.length;
     const cellRange = this.getCellRange();
 
