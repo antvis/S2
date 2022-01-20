@@ -340,15 +340,10 @@ export abstract class BaseFacet {
    the panel viewable area must vary with the horizontal distance of the scroll
    * @param scrollX
    * @param scrollY
-   * @protected
+   * @public
    */
-  protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
-    const {
-      viewportHeight: height,
-      viewportWidth: width,
-      x,
-      y,
-    } = this.panelBBox;
+  public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+    const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
 
     const indexes = calculateInViewIndexes(
       scrollX,
@@ -358,8 +353,8 @@ export abstract class BaseFacet {
       {
         width,
         height,
-        x,
-        y,
+        x: 0,
+        y: 0,
       },
       this.getRealScrollX(this.cornerBBox.width),
     );
@@ -822,7 +817,7 @@ export abstract class BaseFacet {
   };
 
   onWheel = (event: S2WheelEvent) => {
-    const ratio = this.cfg.interaction.scrollSpeedRatio;
+    const ratio = this.spreadsheet.options.interaction.scrollSpeedRatio;
     const { deltaX, deltaY, layerX, layerY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,
