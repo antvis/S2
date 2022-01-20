@@ -7,27 +7,27 @@ order: 1
 
 ## layoutArrange
 
-可手动设置行、列顺序，适用于局部调整，非规则调整。比如指定某行在行首、指定某列在列尾。[例子](/zh/examples/custom/layout-arrange#basic)。
+可手动设置行、列顺序，适用于局部调整，非规则调整。比如指定某行在行首、指定某列在列尾。[例子](/zh/examples/custom/custom-layout#custom-layout-arrange)。
 
 ## layoutCoordinate
 
-用于改变行、列叶子节点的尺寸（长、宽）和坐标（x、y），比如改变行高、列宽等。[例子](/zh/examples/custom/layout-coordinate#basic)。
+用于改变行、列叶子节点的尺寸（长、宽）和坐标（x、y），比如改变行高、列宽等。[例子](/zh/examples/custom/custom-layout#custom-coordinate)。
 
 ## layoutDataPosition
 
-动态改变数据的定位，修订某些格子的数值。[例子](/zh/examples/custom/layout-data-position#basic)。
+动态改变数据的定位，修订某些格子的数值。[例子](/zh/examples/custom/custom-layout#custom-data-position)。
 
 ## layoutHierarchy
 
-手动控制行列结构的增加、删除的特殊场景。[例子](/zh/examples/custom/layout-hierarchy#basic)。
+手动控制行列结构的增加、删除的特殊场景。[例子](/zh/examples/custom/custom-layout#custom-layout-hierarchy)。
 
 ## headerActionIcons
 
-设置行头或者列头的行动点图标，比如字段的趋势弹窗，字段的下钻等。[例子](/zh/examples/custom/header-action-icon#basic)。
+设置行头或者列头的行动点图标，比如字段的趋势弹窗，字段的下钻等。[例子](/zh/examples/custom/custom-icon#custom-header-action-icon)。
 
 ## customSVGIcons
 
-自定义图标，当 `S2` 提供的图标不满足需求时，开发者可以自己定义图标，用于透视表上的图标展示。[例子](custom-svg-icon#basic)
+自定义图标，当 `S2` 提供的图标不满足需求时，开发者可以自己定义图标，用于透视表上的图标展示。[例子](/zh/examples/custom/custom-icon/#custom-svg-icon)
 
 ## dataCell
 
@@ -51,4 +51,4 @@ order: 1
 
 ## frame
 
-修改框架的默认实现，比如修改分割线、阴影、滚动条等。[例子](/zh/examples/case/measure-comparison#basic)
+修改框架的默认实现，比如修改分割线、阴影、滚动条等。[例子](/zh/examples/case/comparison#measure-comparison)
