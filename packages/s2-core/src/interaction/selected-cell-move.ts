@@ -1,10 +1,10 @@
 import { inRange } from 'lodash';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
-import { TableFacet } from '@/facet';
 import { InteractionStateName, CellTypes, CellMeta } from '@/common';
 import { getDataCellId } from '@/utils';
 import { SpreadSheet } from '@/sheet-type';
+import { calculateInViewIndexes } from '@/facet/utils';
 
 export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -22,12 +22,7 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
           const cell = cells.length ? cells[cells.length - 1] : null;
           const rowCol = this.getMoveInfo(event.key, cell);
           if (rowCol) {
-            this.scrollToActiveCell(
-              this.spreadsheet,
-              rowCol.row,
-              rowCol.col,
-              event.key as InteractionKeyboardKey,
-            );
+            this.scrollToActiveCell(this.spreadsheet, rowCol.row, rowCol.col);
           }
         }
       },
@@ -55,25 +50,17 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     rowIndex: number,
     colIndex: number,
   ) {
-    const {
-      frozenRowCount = 0,
-      frozenColCount = 0,
-      frozenTrailingColCount = 0,
-      frozenTrailingRowCount = 0,
-    } = this.spreadsheet.options;
     const { rowLeafNodes } = spreadsheet.facet.layoutResult;
-
     const colInRange = inRange(
       colIndex,
-      frozenColCount,
-      spreadsheet.dataSet.fields.columns.length - frozenTrailingColCount + 1,
+      0,
+      spreadsheet.dataSet.fields.columns.length,
     );
     const rowInRange = inRange(
       rowIndex,
-      frozenRowCount,
+      0,
       spreadsheet.isTableMode()
-        ? spreadsheet.dataSet.getDisplayDataSet().length -
-            frozenTrailingRowCount
+        ? spreadsheet.dataSet.getDisplayDataSet().length
         : rowLeafNodes.length,
     );
     if (!(colInRange && rowInRange)) {
@@ -86,14 +73,9 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     spreadsheet: SpreadSheet,
     rowIndex: number,
     colIndex: number,
-    key: InteractionKeyboardKey,
   ) {
-    const {
-      frozenRowCount = 0,
-      frozenColCount = 0,
-      frozenTrailingColCount = 0,
-      frozenTrailingRowCount = 0,
-    } = spreadsheet.options;
+    const { frozenRowCount = 0, frozenTrailingRowCount = 0 } =
+      spreadsheet.options;
     const { colLeafNodes, rowLeafNodes } = spreadsheet.facet.layoutResult;
     const { facet, interaction, isTableMode } = spreadsheet;
     if (!this.isInRange(spreadsheet, rowIndex, colIndex)) {
@@ -102,41 +84,63 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
 
     const { scrollX, scrollY } = facet.getScrollOffset();
 
-    const { center } = facet.calculateXYIndexes(scrollX, scrollY);
+    const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
 
-    let offsetX = -2;
-    let offsetY = -2;
+    const frozenColWidth = Math.floor(
+      this.spreadsheet.frozenColGroup.getBBox().width,
+    );
+    const frozenTrailingColWidth = Math.floor(
+      this.spreadsheet.frozenTrailingColGroup.getBBox().width,
+    );
+    const frozenRowHeight = Math.floor(
+      this.spreadsheet.frozenRowGroup.getBBox().height,
+    );
+    const frozenTrailingRowHeight = Math.floor(
+      this.spreadsheet.frozenTrailingRowGroup.getBBox().height,
+    );
+
+    const indexes = calculateInViewIndexes(
+      scrollX,
+      scrollY,
+      facet.viewCellWidths,
+      facet.viewCellHeights,
+      {
+        width: width - frozenColWidth - frozenTrailingColWidth,
+        height: height - frozenRowHeight - frozenTrailingRowHeight,
+        x: frozenColWidth,
+        y: frozenRowHeight,
+      },
+      facet.getRealScrollX(facet.cornerBBox.width),
+    );
+
+    const { center } = { center: indexes };
+
+    // 小于0的初始值
+    let offsetX = -1;
+    let offsetY = -1;
 
     const targetNode = colLeafNodes.find((node) => node.colIndex === colIndex);
-    if (colIndex - frozenColCount <= center[0]) {
-      const FrozenWidth = spreadsheet.frozenColGroup.getBBox().width;
-      offsetX = targetNode.x - FrozenWidth;
-    } else if (colIndex + frozenTrailingColCount >= center[1]) {
-      const FrozenTrailingWidth =
-        spreadsheet.frozenTrailingColGroup.getBBox().width;
-      offsetX =
-        targetNode.x +
-        targetNode.width -
-        facet.panelBBox.viewportWidth +
-        FrozenTrailingWidth;
+    // offsetX
+    if (colIndex <= center[0]) {
+      offsetX = targetNode.x - frozenColWidth;
+    } else if (colIndex >= center[1]) {
+      if (colLeafNodes.length - colIndex > frozenTrailingRowCount) {
+        offsetX =
+          targetNode.x + targetNode.width - width + frozenTrailingColWidth;
+      }
     }
 
-    if (rowIndex - frozenRowCount < center[2]) {
+    // offsetY
+    if (rowIndex <= center[2]) {
       offsetY = facet.viewCellHeights.getCellOffsetY(rowIndex - frozenRowCount);
-    } else if (rowIndex + frozenTrailingRowCount >= center[3]) {
-      const y = facet.viewCellHeights.getCellOffsetY(
-        rowIndex + frozenTrailingRowCount,
-      );
-      const viewportHeight = facet.panelBBox.viewportHeight;
-      const cellHeight = isTableMode()
-        ? (facet as TableFacet).getCellHeight(rowIndex)
-        : rowLeafNodes.find((node) => node.rowIndex === rowIndex)?.height;
-      offsetY = y + cellHeight - viewportHeight;
+    } else if (rowIndex >= center[3]) {
+      const y = facet.viewCellHeights.getCellOffsetY(rowIndex + 1);
+      offsetY = y + frozenTrailingRowHeight - height;
     }
 
     facet.scrollWithAnimation({
-      offsetX: { value: offsetX !== -2 ? offsetX : scrollX },
-      offsetY: { value: offsetY !== -2 ? offsetY : scrollY },
+      offsetX: { value: offsetX !== -1 ? offsetX : scrollX },
+      offsetY: { value: offsetY !== -1 ? offsetY : scrollY },
     });
     const rowId = isTableMode() ? String(rowIndex) : rowLeafNodes[rowIndex].id;
 
