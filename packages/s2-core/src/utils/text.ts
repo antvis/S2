@@ -382,7 +382,7 @@ export const getCellWidth = (cellCfg: CellCfg) => {
   const { width } = cellCfg;
   let cellWidth = width;
   // 以第一行为准
-  const fieldLabels = cellCfg?.valuesCfg?.fieldLabels[0];
+  const fieldLabels = cellCfg?.valuesCfg?.fieldLabels?.[0];
   // 一个单元格中绘制多个指标的情况，cellCfg 的宽度作为单个指标的宽度，整体单元格宽度需要考虑指标个数
   if (!isEmpty(fieldLabels)) {
     cellWidth = fieldLabels.length * width;

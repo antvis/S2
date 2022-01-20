@@ -1,4 +1,5 @@
 import { isEmpty, isUndefined, isBoolean } from 'lodash';
+import { layoutHierarchy } from './layout-hooks';
 import { CustomTreeHeaderParams } from '@/facet/layout/interface';
 import { Node } from '@/facet/layout/node';
 import { EXTRA_FIELD } from '@/common/constant';
@@ -53,13 +54,19 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       spreadsheet,
       extra: rest,
     });
-    hierarchy.pushNode(item);
 
     if (isEmpty(children)) {
       item.isLeaf = true;
     }
+    const expandCurrentNode = layoutHierarchy(
+      facetCfg,
+      parentNode,
+      item,
+      hierarchy,
+    );
+
     // go recursive
-    if (!isEmpty(children) && !isCollapsed) {
+    if (!isEmpty(children) && !isCollapsed && expandCurrentNode) {
       buildRowCustomTreeHierarchy({
         facetCfg,
         parentNode: item,
