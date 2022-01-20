@@ -1,4 +1,4 @@
-import { PivotSheet } from '@antv/s2';
+import { PivotSheet, EXTRA_FIELD } from '@antv/s2';
 
 fetch('../data/basic.json')
   .then((res) => res.json())
@@ -31,6 +31,13 @@ fetch('../data/basic.json')
       data,
     };
 
+    const calcFunc = (query, data) => {
+      const sum = data.reduce((pre, next) => {
+        return pre + next[next[EXTRA_FIELD]];
+      }, 0);
+      return sum * 2;
+    };
+
     const s2Options = {
       width: 600,
       height: 480,
@@ -43,10 +50,10 @@ fetch('../data/basic.json')
           reverseSubLayout: true,
           subTotalsDimensions: ['province'],
           calcTotals: {
-            aggregation: 'SUM',
+            calcFunc,
           },
           calcSubTotals: {
-            aggregation: 'SUM',
+            calcFunc,
           },
         },
         col: {
@@ -56,10 +63,10 @@ fetch('../data/basic.json')
           reverseSubLayout: true,
           subTotalsDimensions: ['type'],
           calcTotals: {
-            aggregation: 'SUM',
+            calcFunc,
           },
           calcSubTotals: {
-            aggregation: 'SUM',
+            calcFunc,
           },
         },
       },
