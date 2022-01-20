@@ -1,3 +1,11 @@
+# [@antv/s2-v1.7.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.7.0-alpha.2...@antv/s2-v1.7.0-alpha.3) (2022-01-20)
+
+
+### Bug Fixes
+
+* **drilldown:** 修复clearDrillDown下钻清除错误及重渲逻辑 ([#1023](https://github.com/antvis/S2/issues/1023)) ([63c94c3](https://github.com/antvis/S2/commit/63c94c3bb061cd1c7619c2d19ee710cecc0ad10e))
+* **strategy-sheet:** 修复衍生指标颜色,图标显示不正确 & tooltip 不显示指标名 ([#1024](https://github.com/antvis/S2/issues/1024)) ([1f67fc0](https://github.com/antvis/S2/commit/1f67fc0ac6dcf7525c9b8080f74896c1df55ce03))
+
 # [@antv/s2-v1.7.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.7.0-alpha.1...@antv/s2-v1.7.0-alpha.2) (2022-01-19)
 
 
