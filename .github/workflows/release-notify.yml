@@ -11,7 +11,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Latest release notify
+      - name: Latest Release Notify
         uses: visiky/dingtalk-release-notify@main
         with:
           DING_TALK_TOKEN: |

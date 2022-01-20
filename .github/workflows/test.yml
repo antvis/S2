@@ -22,11 +22,11 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --ignore-scripts
 
       - name: Build
         run: |
-          yarn workspace @antv/s2 build:cjs
+          yarn core:build
 
       - name: Test
         run: |

@@ -21,12 +21,11 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --ignore-scripts
 
       - name: Build
         run: |
-          yarn workspace @antv/s2 build:esm
-          yarn build:umd
+          yarn build
 
       - name: Lint scripts, type, style and docs
         run: yarn lint
