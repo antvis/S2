@@ -62,6 +62,7 @@ import {
   getDimensionsWithoutPathPre,
 } from '@/utils/dataset/pivot-data-set';
 import { getDataSumByField } from '@/utils/number-calculate';
+import { getAggregationAndCalcFuncByQuery } from '@/utils/data-set-operate';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -369,42 +370,12 @@ export class PivotDataSet extends BaseDataSet {
     return filterUndefined([...meta.keys()]);
   }
 
-  getAggregationAndCalcFuncByQuery(query: DataType) {
-    const { isRowTotal, isRowSubTotal, isColTotal, isColSubTotal } =
-      this.getTotalStatus(query);
-    const { row, col } = this.spreadsheet?.options?.totals || {};
-    const {
-      calcTotals: rowCalcTotals = {},
-      calcSubTotals: rowCalcSubTotals = {},
-    } = row || {};
-    const {
-      calcTotals: colCalcTotals = {},
-      calcSubTotals: colCalcSubTotals = {},
-    } = col || {};
-    const getCalcTotals = (dimensionTotals, totalType) => {
-      if (
-        (dimensionTotals.aggregation || dimensionTotals.calcFunc) &&
-        totalType
-      ) {
-        return {
-          aggregation: dimensionTotals.aggregation,
-          calcFunc: dimensionTotals.calcFunc,
-        };
-      }
-    };
-
-    // 优先级: 列总计/小计 > 行总计/小计
-    return (
-      getCalcTotals(colCalcTotals, isColTotal) ||
-      getCalcTotals(colCalcSubTotals, isColSubTotal) ||
-      getCalcTotals(rowCalcTotals, isRowTotal) ||
-      getCalcTotals(rowCalcSubTotals, isRowSubTotal)
-    );
-  }
-
   getTotalValue(query: DataType) {
     const { aggregation, calcFunc } =
-      this.getAggregationAndCalcFuncByQuery(query) || {};
+      getAggregationAndCalcFuncByQuery(
+        this.getTotalStatus(query),
+        this.spreadsheet.options.totals,
+      ) || {};
     // 前端计算汇总值
     if (aggregation || calcFunc) {
       const data = this.getMultiData(query);

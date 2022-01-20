@@ -88,6 +88,13 @@ export interface Fields {
   customValueOrder?: number;
 }
 
+export interface TotalsStatus {
+  isRowTotal: boolean;
+  isRowSubTotal: boolean;
+  isColTotal: boolean;
+  isColSubTotal: boolean;
+}
+
 export enum EAggregation {
   SUM = 'SUM',
 }
