@@ -1177,7 +1177,7 @@ export abstract class BaseFacet {
 
     const maxScrollY = Math.max(
       0,
-      this.viewCellHeights.getTotalHeight() - this.panelBBox.height,
+      this.viewCellHeights.getTotalHeight() - this.panelBBox.viewportHeight,
     );
 
     if (scrollY > maxScrollY) {
