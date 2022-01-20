@@ -88,11 +88,26 @@ export interface Fields {
   customValueOrder?: number;
 }
 
+export enum EAggregation {
+  SUM = 'SUM',
+}
+
+export type Aggregation = EAggregation.SUM; // 目前只有求和
+
+export interface CalcTotals {
+  aggregation?: Aggregation; // 聚合方式
+  calcFunc?: (query: DataType, arr: DataType[]) => number;
+}
+
 export interface Total {
   /** 是否显示总计 */
   showGrandTotals: boolean;
   /** 是否显示小计 */
   showSubTotals: boolean;
+  // 前端计算总计
+  calcTotals?: CalcTotals;
+  // 前端计算小计
+  calcSubTotals?: CalcTotals;
   /** 小计的汇总维度 */
   subTotalsDimensions: string[];
   /** 总计布局位置，默认是下或右 */
@@ -113,8 +128,6 @@ export interface Total {
 export interface Totals {
   readonly row?: Partial<Readonly<Total>>;
   readonly col?: Partial<Readonly<Total>>;
-  // 前端计算 totals
-  calcTotals?: boolean;
 }
 
 export interface Sort {

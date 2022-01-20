@@ -14,6 +14,8 @@ import {
   forEach,
   unset,
   isNumber,
+  every,
+  first,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -42,6 +44,7 @@ import {
   ViewMeta,
   PartDrillDownDataCache,
   PartDrillDownFieldInLevel,
+  EAggregation,
 } from '@/common/interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
 import {
@@ -366,14 +369,51 @@ export class PivotDataSet extends BaseDataSet {
     return filterUndefined([...meta.keys()]);
   }
 
+  getAggregationAndCalcFuncByQuery(query: DataType) {
+    const { isRowTotal, isRowSubTotal, isColTotal, isColSubTotal } =
+      this.getTotalStatus(query);
+    const { row, col } = this.spreadsheet?.options?.totals || {};
+    const {
+      calcTotals: rowCalcTotals = {},
+      calcSubTotals: rowCalcSubTotals = {},
+    } = row || {};
+    const {
+      calcTotals: colCalcTotals = {},
+      calcSubTotals: colCalcSubTotals = {},
+    } = col || {};
+    const getCalcTotals = (dimensionTotals, totalType) => {
+      if (
+        (dimensionTotals.aggregation || dimensionTotals.calcFunc) &&
+        totalType
+      ) {
+        return {
+          aggregation: dimensionTotals.aggregation,
+          calcFunc: dimensionTotals.calcFunc,
+        };
+      }
+    };
+
+    // 优先级: 列总计/小计 > 行总计/小计
+    return (
+      getCalcTotals(colCalcTotals, isColTotal) ||
+      getCalcTotals(colCalcSubTotals, isColSubTotal) ||
+      getCalcTotals(rowCalcTotals, isRowTotal) ||
+      getCalcTotals(rowCalcSubTotals, isRowSubTotal)
+    );
+  }
+
   getTotalValue(query: DataType) {
-    const { calcTotals } = this.spreadsheet?.options?.totals || {};
-    if (calcTotals) {
-      // 前端计算汇总值
-      const totalValue = getDataSumByField(
-        this.getMultiData(query),
-        VALUE_FIELD,
-      );
+    const { aggregation, calcFunc } =
+      this.getAggregationAndCalcFuncByQuery(query) || {};
+    // 前端计算汇总值
+    if (aggregation || calcFunc) {
+      const data = this.getMultiData(query);
+      let totalValue: number;
+      if (calcFunc) {
+        totalValue = calcFunc(query, data);
+      } else if (aggregation === EAggregation.SUM) {
+        totalValue = getDataSumByField(data, VALUE_FIELD);
+      }
       return {
         ...query,
         [VALUE_FIELD]: totalValue,
@@ -406,10 +446,13 @@ export class PivotDataSet extends BaseDataSet {
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });
+    const data = get(this.indexesData, path);
+    if (data) {
+      // 如果已经有数据则取已有数据
+      return data;
+    }
 
-    return isTotals
-      ? this.getTotalValue(query) || get(this.indexesData, path)
-      : get(this.indexesData, path);
+    return isTotals ? this.getTotalValue(query) : data;
   }
 
   getCustomData = (path: number[]) => {
@@ -434,6 +477,33 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     return currentData;
+  };
+
+  public getTotalStatus = (query: DataType) => {
+    const { columns, rows } = this.fields;
+    const isTotals = (dimensions: string[], isSubTotal?: boolean) => {
+      if (isSubTotal) {
+        const firstDimension = find(dimensions, (item) => !has(query, item));
+        return firstDimension && firstDimension !== first(dimensions);
+      }
+      return every(dimensions, (item) => !has(query, item));
+    };
+    const getDimensions = (dimensions: string[], hasExtra: boolean) => {
+      return hasExtra
+        ? dimensions.filter((item) => item !== EXTRA_FIELD)
+        : dimensions;
+    };
+
+    return {
+      isRowTotal: isTotals(
+        getDimensions(rows, !this.spreadsheet.isValueInCols()),
+      ),
+      isRowSubTotal: isTotals(rows, true),
+      isColTotal: isTotals(
+        getDimensions(columns, this.spreadsheet.isValueInCols()),
+      ),
+      isColSubTotal: isTotals(columns, true),
+    };
   };
 
   public getMultiData(
