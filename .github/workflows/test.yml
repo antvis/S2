@@ -22,11 +22,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn --ignore-scripts
-
-      - name: Build
-        run: |
-          yarn core:build
+        run: yarn
 
       - name: Test
         run: |

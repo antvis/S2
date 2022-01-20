@@ -21,11 +21,11 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn --ignore-scripts
+        run: yarn
 
       - name: Build
         run: |
-          yarn build
+          yarn react:build
 
       - name: Lint scripts, type, style and docs
         run: yarn lint
