@@ -1,5 +1,6 @@
 import { customMerge, isUpDataValue, S2DataConfig, S2Options } from '@antv/s2';
 import type { SliderSingleProps } from 'antd';
+import { isNil } from 'lodash';
 import { getSheetComponentOptions } from '../src/utils';
 import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
 
@@ -122,7 +123,9 @@ export const strategyOptions: S2Options = {
           text: {
             mapping: (value, cellInfo) => {
               const { colIndex } = cellInfo;
-              if (colIndex === 0) {
+              const isNormalValue = isNil(value);
+
+              if (colIndex === 0 || isNormalValue) {
                 return {
                   fill: '#000',
                 };

@@ -6,6 +6,7 @@ import {
   isString,
   memoize,
   toString,
+  trim,
   values,
 } from 'lodash';
 import { DefaultCellTheme } from '@/common/interface/theme';
@@ -267,7 +268,7 @@ export const isUpDataValue = (value: number | string): boolean => {
   if (isNumber(value)) {
     return value >= 0;
   }
-  return !/^-/.test(value);
+  return !!value && !trim(value).startsWith('-');
 };
 
 const calX = (x: number, paddingRight: number, total?: number) => {

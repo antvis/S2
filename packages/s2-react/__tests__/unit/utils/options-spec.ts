@@ -26,6 +26,9 @@ describe('Options Tests', () => {
         selectedCellsSpotlight: false,
         hoverHighlight: true,
         hoverFocus: true,
+        brushSelection: true,
+        multiSelection: true,
+        rangeSelection: true,
         scrollSpeedRatio: {
           horizontal: 1,
           vertical: 1,
