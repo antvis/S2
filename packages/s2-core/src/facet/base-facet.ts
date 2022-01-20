@@ -343,12 +343,7 @@ export abstract class BaseFacet {
    * @public
    */
   public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
-    const {
-      viewportHeight: height,
-      viewportWidth: width,
-      x,
-      y,
-    } = this.panelBBox;
+    const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
 
     const indexes = calculateInViewIndexes(
       scrollX,
@@ -358,8 +353,8 @@ export abstract class BaseFacet {
       {
         width,
         height,
-        x,
-        y,
+        x: 0,
+        y: 0,
       },
       this.getRealScrollX(this.cornerBBox.width),
     );
