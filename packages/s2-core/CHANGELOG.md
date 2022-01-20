@@ -1,3 +1,10 @@
+# [@antv/s2-v1.7.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.7.0-alpha.3...@antv/s2-v1.7.0-alpha.4) (2022-01-20)
+
+
+### Bug Fixes
+
+* 自定义目录树增加layoutHierarchy的hook修复层级问题 ([#1030](https://github.com/antvis/S2/issues/1030)) ([bdc9fa2](https://github.com/antvis/S2/commit/bdc9fa27d2c1a7e8e18093b5a92fb325f1be5f38))
+
 # [@antv/s2-v1.7.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.7.0-alpha.2...@antv/s2-v1.7.0-alpha.3) (2022-01-20)
 
 
