@@ -340,9 +340,9 @@ export abstract class BaseFacet {
    the panel viewable area must vary with the horizontal distance of the scroll
    * @param scrollX
    * @param scrollY
-   * @protected
+   * @public
    */
-  protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+  public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
     const {
       viewportHeight: height,
       viewportWidth: width,
