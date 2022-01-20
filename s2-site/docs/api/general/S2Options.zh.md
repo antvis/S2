@@ -14,17 +14,17 @@ order: 1
 | tooltip | [Tooltip](#tooltip) |    |  |  tooltip 总配置 |
 | interaction | [Interaction](#interaction) |    |  |  表格交互配置 |
 | pagination | [Pagination](#pagination) |  |    | 分页配置 |
-| frozenRowHeader | `boolean` |  |   `true` | 冻结行头 (透视表有效) |
+| frozenRowHeader | `boolean` |  |   `true` | 冻结行头 （透视表有效） |
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
 | scrollReachNodeField | [NodeField](#nodefield) |  |  | 滚动监听的节点度量 |
 | showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |
 | headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
 | customSVGIcons | [CustomSVGIcon[]](#customsvgicon) |  |   `false` | 自定义 svg 图标 |
-| style | [Style](#style) |  |    | 单元格样式设置, 比如布局类型, 宽高, 边距, 是否隐藏数值列头等 |
-| frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 (明细表有效) |
-| frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 (明细表有效) |
-| frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 (明细表有效) |
-| frozenTrailingColCount | `number` |    |  | 冻结列的数量，从右侧开始计数 (明细表有效) |
+| style | [Style](#style) |  |    | 单元格样式设置，比如布局类型，宽高，边距，是否隐藏数值列头等 |
+| frozenRowCount | `number` |  |    | 冻结行的数量，从顶部开始计数 （明细表有效） |
+| frozenColCount | `number` |  |    | 冻结列的数量，从左侧开始计数 （明细表有效） |
+| frozenTrailingRowCount | `number` |    |  | 冻结行数量，从底部开始计数 （明细表有效） |
+| frozenTrailingColCount | `number` |    |  | 冻结列的数量，从右侧开始计数 （明细表有效） |
 | hierarchyCollapse | `boolean` |  |   `false` | 在树状结构模式下行头是否默认展开。 |
 | hdAdapter | `boolean` |  |   `true` | 是否开启高清屏适配，解决多屏切换，高清视网膜屏字体渲染模糊的问题 |
 | mergedCellsInfo | [MergedCellInfo[][]](#mergedcellinfo) |    |  | 合并单元格信息 |
@@ -42,6 +42,7 @@ order: 1
 | mappingDisplayDataItem | [MappingDataItemCallback](#mappingdataitemcallback) |  |    | 转换数据，用于 tooltip 显示 |
 | otterLayout | [OtterLayout](#otterlayout) |  |  |   自定义 layout |
 | dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
+| supportCSSTransform | `boolean` |  |   `false` | 开启后支持 CSS transform, 解决父元素设置 `transform` 后，鼠标坐标响应不正确的问题  |
 
 `markdown:docs/common/interaction.zh.md`
 
@@ -61,51 +62,7 @@ boolean ｜ object **必选**,_default: null_ 功能描述： 分页配置
 | current   | 当前页（从 1 开始） | `number` |       1      |     |
 | total     | 数据总条数          | `number` | - |      |
 
-## Style
-
-object **必选**,_default：null_ 功能描述：样式设置
-
-| 参数 | 类型 | 必选  | 默认值 | 功能描述 |
-| --- | --- | :-:  | --- | --- | --- |
-|layoutWidthType | `adaptive` \| `colAdaptive`  \| `compact` |    |  | 单元格宽度布局类型<br> `adaptive` : 行列等宽，均分整个 canvas 画布宽度 <br> `colAdaptive`：列等宽，行头紧凑布局，列等分画布宽度减去行头宽度的剩余宽度<br> `compact`：行列紧凑布局，指标维度少的时候无法布满整个画布 |
-| treeRowsWidth | `number` |  |  120  | 树状模式行单元格宽度 |
-| collapsedRows | `Record<string, boolean>` |  |    | 树状模式行的折叠、收起状态 |
-| collapsedCols | `Record<string, boolean>`  |  |    | 树状模式列的折叠、收起状态 |
-| cellCfg | [CellCfg](#cellcfg) |  |  |   单元格配置 |
-| colCfg | [ColCfg](#colcfg) |  |  |   列样式配置 |
-| rowCfg | [RowCfg](#rowcfg) |  |  |   行样式配置 |
-| device | `pc` \| `mobile` | |  `pc` | 设备类型 |
-
-## CellCfg
-
-object **必选**,_default：null_ 功能描述：单元格配置
-
-| 参数    | 说明 | 类型   | 默认值 | 必选  |
-| ------- | ------------ | ------ | ------ | ---- |
-| width   | 单元格宽度   | `number` |    96 | - |
-| height  | 单元格高度   | `number` |    30 | - |
-| padding | 单元格内边距 | `number` |              | - |
-
-## ColCfg
-
-object **必选**,_default：null_ 功能描述： 列样式配置
-
-| 参数 | 说明 | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-:  |
-| height |   单元格高度（普通状态） | `number` | 30 |  |
-| widthByFieldValue | 根据度量值设置宽度（拖拽或者预设宽度场景） | `number`   | - |  |
-| heightByField | 根据度量值设置高度（拖拽或者预设宽度场景） | `Record<string, number>` | - |  |
-| hideMeasureColumn | 默认数值挂列头, 会同时显示列头和数值, 隐藏数值列, 使其更美观。<br> 且数值只有一个时才能生效。 | `boolean` | false |  |
-
-## RowCfg
-
-object **必选**,_default：null_ 功能描述： 行样式配置
-
-| 参数 | 说明 | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-:  |
-| width |   行单元格宽度 | `number` | 96 |  |
-| widthByField | 根据度量值设置宽度（拖拽或者预设宽度场景） | `Record<string, number>`  | - |  |
-| heightByField | 根据度量值设置高度（拖拽或者预设宽度场景） | `Record<string, number>` | - |  |
+`markdown:docs/common/style.zh.md`
 
 ## NodeField
 

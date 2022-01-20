@@ -8,7 +8,7 @@ import {
   download,
   S2_PREFIX_CLS,
 } from '@antv/s2';
-import { DotIcon } from '../icons/index';
+import { DotIcon } from '@/components/icons';
 
 export interface DataSet {
   icon?: React.ReactNode;
@@ -51,11 +51,16 @@ export const Export: React.FC<ExportProps> = ({
 
   const exportData = (isFormat: boolean) => {
     const data = copyData(sheet, '\t', isFormat);
-    if (copyToClipboard(data)) {
-      message.success(successText);
-    } else {
-      message.error(errorText);
-    }
+
+    copyToClipboard(data)
+      .then(() => {
+        message.success(successText);
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log('copy failed: ', error);
+        message.error(errorText);
+      });
   };
 
   const downLoadData = (isFormat: boolean) => {

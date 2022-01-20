@@ -3,7 +3,7 @@ title: 常见问题
 order: 8
 ---
 
-在提出问题前，建议仔细阅读一遍文档。
+**在提出问题前，建议仔细阅读一遍文档。**
 
 ## 1. 使用问题
 
@@ -43,8 +43,8 @@ order: 8
 ```ts
 <script src="./dist/index.min.js"></script>
 <script>
-const s2 = new window.S2.PivotSheet(container, s2DataConfig, s2options);
-s2.render();
+   const s2 = new window.S2.PivotSheet(container, s2DataConfig, s2options);
+   s2.render();
 </script>
 ```
 
@@ -67,7 +67,15 @@ s2.render();
 
 ### 父级元素使用了 `transform: scale` 后，图表鼠标坐标响应不正确
 
-可以调用 `s2.changeSize` 根据缩放比改变图表大小，使图表和父元素缩放比保持一致
+可以开启 `supportCSSTransform` 属性
+
+```ts
+const s2Options = {
+   supportCSSTransform: true
+}
+```
+
+也可以手动调用 `s2.changeSize` 根据缩放比改变图表大小，使图表和父元素缩放比保持一致
 
 ```ts
 const scale = 0.8
@@ -75,7 +83,34 @@ s2.changeSize(width * scale, height * scale)
 s2.render(false)
 ```
 
-可参考 [issue #808](https://github.com/antvis/S2/issues/808) （感谢 [cylnet](https://github.com/cylnet))
+可参考 issue [#808](https://github.com/antvis/S2/issues/808) [#990](https://github.com/antvis/S2/pull/990) （感谢 [@cylnet](https://github.com/cylnet) [@xiaochong44](https://github.com/xiaochong44))
+
+### 如何更新表格配置？
+
+```ts
+const pivotSheet = new PivotSheet(document.getElementById('container'), dataCfg, options);
+```
+
+更新 options: [可选项](https://s2.antv.vision/zh/docs/api/general/S2Options)
+
+```ts
+pivotSheet.setOptions({ ... })
+pivotSheet.render(false) // 重新渲染，不更新数据
+```
+
+更新 dataCfg: [可选项](https://s2.antv.vision/zh/docs/api/general/S2DataConfig)
+
+```ts
+pivotSheet.setDataCfg({ ... })
+pivotSheet.render(true) // 重新渲染，且更新数据
+```
+
+更新 theme: [可选项](https://s2.antv.vision/zh/docs/api/general/S2Theme)
+
+```ts
+pivotSheet.setThemeCfg({ ... })
+pivotSheet.render(false)  // 重新渲染，不更新数据
+```
 
 ### 图表渲染不出来，怎么回事？
 
@@ -131,6 +166,10 @@ s2.render(false)
 也就是说 `@antv/s2` 和框架无关，你可以在 `Vue`, `Angular` 等框架中使用。
 
 配套的 [分析组件](/zh/examples/react-component), 目前还没有 `@antv/s2-vue`, `@antv/s2-angular` 的开发计划，欢迎社区一起建设 👏🏻.
+
+### 怎样贡献代码？
+
+请查看 [贡献指南](https://s2.antv.vision/zh/docs/manual/contribution)
 
 ### 为什么在小程序上面表格无法显示？
 

@@ -8,6 +8,7 @@ export enum InteractionName {
   COL_ROW_RESIZE = 'rowColResize',
   DATA_CELL_MULTI_SELECTION = 'dataCellMultiSelection',
   COL_ROW_SHIFT_MULTI_SELECTION = 'colRowShiftMultiSelection',
+  SELECTED_CELL_MOVE = 'selectedCellMove',
 }
 
 export enum InteractionStateName {
@@ -62,6 +63,10 @@ export enum InteractionKeyboardKey {
   COPY = 'c',
   ESC = 'Escape',
   META = 'Meta',
+  ARROW_UP = 'ArrowUp',
+  ARROW_DOWN = 'ArrowDown',
+  ARROW_LEFT = 'ArrowLeft',
+  ARROW_RIGHT = 'ArrowRight',
 }
 
 export enum SortMethodType {
@@ -75,4 +80,9 @@ export enum InterceptType {
   BRUSH_SELECTION = 'brushSelection',
   MULTI_SELECTION = 'multiSelection',
   RESIZE = 'resize',
+}
+
+export enum ScrollbarPositionType {
+  CONTENT = 'content',
+  CANVAS = 'canvas',
 }
