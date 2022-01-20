@@ -822,7 +822,7 @@ export abstract class BaseFacet {
   };
 
   onWheel = (event: S2WheelEvent) => {
-    const ratio = this.cfg.interaction.scrollSpeedRatio;
+    const ratio = this.spreadsheet.options.interaction.scrollSpeedRatio;
     const { deltaX, deltaY, layerX, layerY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,
@@ -1177,7 +1177,7 @@ export abstract class BaseFacet {
 
     const maxScrollY = Math.max(
       0,
-      this.viewCellHeights.getTotalHeight() - this.panelBBox.height,
+      this.viewCellHeights.getTotalHeight() - this.panelBBox.viewportHeight,
     );
 
     if (scrollY > maxScrollY) {
