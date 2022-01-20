@@ -908,12 +908,7 @@ export class TableFacet extends BaseFacet {
     const colLength = this.layoutResult.colLeafNodes.length;
     const cellRange = this.getCellRange();
 
-    const {
-      viewportHeight: height,
-      viewportWidth: width,
-      x,
-      y,
-    } = this.panelBBox;
+    const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
 
     const {
       frozenColCount,
@@ -934,8 +929,8 @@ export class TableFacet extends BaseFacet {
       {
         width,
         height,
-        x,
-        y,
+        x: 0,
+        y: 0,
       },
       this.getRealScrollX(this.cornerBBox.width),
     );
