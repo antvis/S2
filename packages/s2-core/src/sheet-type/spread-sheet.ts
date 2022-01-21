@@ -277,7 +277,10 @@ export abstract class SpreadSheet extends EE {
     const tooltipData = getTooltipData({
       spreadsheet: this,
       cellInfos: data,
-      options,
+      options: {
+        enableFormat: true,
+        ...options,
+      },
     });
 
     this.showTooltip({

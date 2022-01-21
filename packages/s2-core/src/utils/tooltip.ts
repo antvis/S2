@@ -165,6 +165,7 @@ export const getTooltipDefaultOptions = (options?: TooltipOptions) => {
   return {
     operator: { onClick: noop, menus: [] },
     enterable: true,
+    enableFormat: true,
     ...options,
   } as TooltipOptions;
 };
@@ -473,16 +474,19 @@ export const getTooltipData = (params: TooltipDataParam) => {
     });
   } else if (options.showSingleTips) {
     // 行列头hover & 明细表所有hover
-    const metaName = find(
-      spreadsheet?.dataCfg?.meta,
-      (item) => item?.field === firstCellInfo.value,
-    )?.name;
+    const getFieldName = (field: string) =>
+      find(spreadsheet.dataCfg?.meta, (item) => item?.field === field)?.name;
+
     const currentFormatter = getFieldFormatter(
       spreadsheet,
-      firstCellInfo?.valueField,
+      firstCellInfo.valueField,
     );
-    firstCellInfo.name =
-      metaName || currentFormatter(firstCellInfo.value) || '';
+    const formattedValue = currentFormatter(firstCellInfo.value);
+    const cellName = options.enableFormat
+      ? getFieldName(firstCellInfo.value) || formattedValue
+      : getFieldName(firstCellInfo.valueField);
+
+    firstCellInfo.name = cellName || '';
   } else {
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
     details = getDetailList(spreadsheet, firstCellInfo, options);
