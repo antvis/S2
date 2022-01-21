@@ -1,7 +1,8 @@
-import { BBox, Group, IGroup, IShape } from '@antv/g-canvas';
+import { Group, IGroup, IShape } from '@antv/g-canvas';
 import { each } from 'lodash';
 import { getBorderPositionAndStyle } from 'src/utils/cell/cell';
 import { translateGroup } from '../utils';
+import { PanelBBox } from '../bbox/panelBBox';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { Node } from '@/facet/layout/node';
 import { SpreadSheet } from '@/sheet-type/index';
@@ -25,13 +26,13 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
    */
 
   public static getSeriesNumberHeader(
-    viewportBBox: BBox,
+    viewportBBox: PanelBBox,
     seriesNumberWidth: number,
     leafNodes: Node[],
     spreadsheet: SpreadSheet,
     cornerWidth: number,
   ): SeriesNumberHeader {
-    const { width, height } = viewportBBox;
+    const { height, viewportHeight } = viewportBBox;
     const seriesNodes: Node[] = [];
     const isHierarchyTreeType = spreadsheet.isHierarchyTreeType();
     leafNodes.forEach((node: Node): void => {
@@ -53,8 +54,8 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     return new SeriesNumberHeader({
       width: cornerWidth,
       height,
-      viewportWidth: width,
-      viewportHeight: height,
+      viewportWidth: cornerWidth,
+      viewportHeight: viewportHeight,
       position: { x: 0, y: viewportBBox.y },
       data: seriesNodes,
       spreadsheet,
@@ -65,7 +66,18 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
     super(cfg);
   }
 
-  public clip(): void {}
+  public clip(): void {
+    const { width, viewportHeight, scrollY } = this.headerConfig;
+    this.setClip({
+      type: 'rect',
+      attrs: {
+        x: 0,
+        y: scrollY,
+        width,
+        height: viewportHeight,
+      },
+    });
+  }
 
   public layout() {
     const { data, scrollY, height, spreadsheet } = this.headerConfig;
@@ -113,13 +125,13 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
 
   private addBackGround() {
     const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell.cell;
-    const { position, width, height } = this.headerConfig;
+    const { position, width, viewportHeight } = this.headerConfig;
 
     this.backgroundShape = renderRect(this, {
       x: position.x,
       y: -position.y,
       width,
-      height,
+      height: viewportHeight,
       fill: rowCellTheme.backgroundColor,
       stroke: 'transparent',
       opacity: rowCellTheme.backgroundColorOpacity,
@@ -132,7 +144,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
           x: position.x,
           y: -position.y,
           width,
-          height,
+          height: viewportHeight,
         },
         rowCellTheme,
       );
