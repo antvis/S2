@@ -1057,7 +1057,7 @@ export abstract class BaseFacet {
 
     this.rowHeader = this.getRowHeader();
     this.columnHeader = this.getColHeader();
-    if (seriesNumberWidth > 0 && this.rowIndexHeader) {
+    if (seriesNumberWidth > 0 && !this.rowIndexHeader) {
       this.rowIndexHeader = this.getSeriesNumberHeader();
       this.foregroundGroup.add(this.rowIndexHeader);
     }
