@@ -6,31 +6,7 @@ import { data, totalData, meta } from '../__tests__/data/mock-dataset.json';
 export const tableSheetDataCfg: Partial<S2DataConfig> = {
   data,
   totalData,
-  meta: [
-    {
-      field: 'number',
-      name: '数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量数量',
-      formatter: (v) => {
-        return `${v} 元`;
-      },
-    },
-    {
-      field: 'province',
-      name: '省份',
-    },
-    {
-      field: 'city',
-      name: '城市',
-    },
-    {
-      field: 'type',
-      name: '类别',
-    },
-    {
-      field: 'sub_type',
-      name: '子类别',
-    },
-  ],
+  meta,
   fields: {
     columns: ['province', 'city', 'type', 'sub_type', 'number'],
     valueInCols: true,
@@ -40,31 +16,7 @@ export const tableSheetDataCfg: Partial<S2DataConfig> = {
 export const pivotSheetDataCfg: S2DataConfig = {
   data,
   totalData,
-  meta: [
-    {
-      field: 'number',
-      name: '数量',
-      formatter: (v) => {
-        return `${v} 元`;
-      },
-    },
-    {
-      field: 'province',
-      name: '省份',
-    },
-    {
-      field: 'city',
-      name: '城市',
-    },
-    {
-      field: 'type',
-      name: '类别',
-    },
-    {
-      field: 'sub_type',
-      name: '子类别',
-    },
-  ],
+  meta,
   fields: {
     rows: ['province', 'city'],
     columns: ['type', 'sub_type'],
