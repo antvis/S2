@@ -355,6 +355,7 @@ export abstract class SpreadSheet extends EE {
     this.store.clear();
     this.destroyTooltip();
     this.clearCanvasEvent();
+    this.container.destroy();
   }
 
   /**
