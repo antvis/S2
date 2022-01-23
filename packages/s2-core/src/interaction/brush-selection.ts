@@ -90,8 +90,11 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private isPointInCanvas(point: { x: number; y: number }) {
     const { height, width } = this.spreadsheet.facet.getCanvasHW();
+    const { minX, minY } = this.spreadsheet.facet.panelBBox;
 
-    return point.x > 0 && point.x < width && point.y > 0 && point.y < height;
+    return (
+      point.x > minX && point.x < width && point.y > minY && point.y < height
+    );
   }
 
   private formatBrushPointForScroll = (delta: { x: number; y: number }) => {
@@ -104,11 +107,11 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     let needScrollForX = true;
     let needScrollForY = true;
     const vScrollBarWidth = facet.vScrollBar.getBBox().width;
-    const extraPixel = 2; // 额外加 1px 缩进，保证 getShape 在 panelBox 内
+    const extraPixel = 2; // 额外加缩进，保证 getShape 在 panelBox 内
 
     if (newX > width) {
       newX = maxX - vScrollBarWidth - extraPixel;
-    } else if (newX < 0) {
+    } else if (newX < minX) {
       newX = minX + extraPixel;
     } else {
       needScrollForX = false;
@@ -116,7 +119,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
     if (newY > height) {
       newY = maxY - extraPixel;
-    } else if (newY < 0) {
+    } else if (newY <= minY) {
       newY = minY + extraPixel;
     } else {
       needScrollForY = false;
@@ -136,27 +139,44 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private autoScrollIntervalId = null;
 
-  private autoScrollConfig: BrushAutoScrollConfig = {
-    ...BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
+  private autoScrollConfig: BrushAutoScrollConfig = _.cloneDeep(
+    BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
+  );
+
+  private validateYIndex = (yIndex: number) => {
+    if (yIndex < 0) return 0;
+    const max = this.spreadsheet.dataSet.getDisplayDataSet().length - 1;
+    return Math.min(yIndex, max);
+  };
+
+  private validateXIndex = (xIndex: number) => {
+    if (xIndex < 0) return null;
+    const max = this.spreadsheet.facet.layoutResult.colLeafNodes.length - 1;
+    if (xIndex > max) {
+      return null;
+    }
+    return xIndex;
   };
 
   private getNextScrollDelta = (config: BrushAutoScrollConfig) => {
     let x = 0;
     let y = 0;
+    const { getCellOffsetY } = this.spreadsheet.facet.viewCellHeights;
 
     if (config.y.scroll) {
       const lastIndex = this.endBrushPoint.rowIndex;
-      const nextIndex =
-        this.endBrushPoint.rowIndex + (config.y.value > 0 ? 1 : -1);
-      y =
-        this.spreadsheet.facet.viewCellHeights.getCellOffsetY(nextIndex) -
-        this.spreadsheet.facet.viewCellHeights.getCellOffsetY(lastIndex);
+      const dir = config.y.value > 0 ? 1 : -1;
+      const nextIndex = this.validateYIndex(this.endBrushPoint.rowIndex + dir);
+      y = getCellOffsetY(nextIndex) - getCellOffsetY(lastIndex);
     }
 
     if (config.x.scroll) {
-      const nextIndex =
-        this.endBrushPoint.colIndex + (config.x.value > 0 ? 1 : -1);
-      x = this.spreadsheet.facet.layoutResult.colLeafNodes[nextIndex].width;
+      const dir = config.x.value > 0 ? 1 : -1;
+      const nextIndex = this.validateXIndex(this.endBrushPoint.colIndex + dir);
+      x = _.isNil(nextIndex)
+        ? 0
+        : dir *
+          this.spreadsheet.facet.layoutResult.colLeafNodes[nextIndex].width;
     }
 
     return {
@@ -184,11 +204,17 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       },
     };
 
+    const { x: deltaX, y: deltaY } = this.getNextScrollDelta(config);
+    if (deltaY === 0 && deltaX === 0) {
+      this.clearAutoScroll();
+      return;
+    }
+
     if (config.y.scroll) {
-      offsetCfg.offsetY.value += config.y.value > 0 ? 30 : -30;
+      offsetCfg.offsetY.value += deltaY;
     }
     if (config.x.scroll) {
-      offsetCfg.offsetX.value += config.x.value > 0 ? 100 : -100; // todo
+      offsetCfg.offsetX.value += deltaX;
       if (offsetCfg.offsetX.value < 0) {
         offsetCfg.offsetX.value = 0;
       }
@@ -199,6 +225,12 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   };
 
   private handleScroll = _.throttle((x, y) => {
+    if (
+      this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
+    ) {
+      return;
+    }
+
     const {
       x: { value: newX, needScroll: needScrollForX },
       y: { value: newY, needScroll: needScrollForY },
@@ -230,6 +262,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     if (this.autoScrollIntervalId) {
       clearInterval(this.autoScrollIntervalId);
       this.autoScrollIntervalId = null;
+      this.resetScrollDelta();
     }
   };
 
@@ -238,7 +271,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     const target = this.spreadsheet.container.getShape(x, y);
 
     const cell = this.spreadsheet.getCell(target);
-    if (!cell) {
+
+    if (!cell || !(cell instanceof DataCell)) {
       return;
     }
     const { rowIndex, colIndex } = cell.getMeta();
@@ -343,7 +377,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private resetScrollDelta() {
-    this.autoScrollConfig = { ...BRUSH_AUTO_SCROLL_INITIAL_CONFIG };
+    this.autoScrollConfig = _.cloneDeep(BRUSH_AUTO_SCROLL_INITIAL_CONFIG);
   }
 
   private getBrushPoint(event: CanvasEvent): BrushPoint {
@@ -448,6 +482,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private getSelectedCellMetas = (range: BrushRange) => {
     const metas = [];
     const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
+    const rowLeafNodes = this.spreadsheet.facet.layoutResult.rowLeafNodes ?? [];
     for (
       let rowIndex = range.start.rowIndex;
       rowIndex < range.end.rowIndex + 1;
@@ -459,10 +494,14 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
         colIndex++
       ) {
         const colId = colLeafNodes[colIndex].id;
+        let rowId = String(rowIndex);
+        if (rowLeafNodes.length) {
+          rowId = rowLeafNodes[rowIndex].id;
+        }
         metas.push({
           colIndex,
           rowIndex,
-          id: `${rowIndex}-${colId}`,
+          id: `${rowId}-${colId}`,
           type: 'dataCell',
         });
       }

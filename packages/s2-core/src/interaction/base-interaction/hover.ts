@@ -7,6 +7,7 @@ import { S2Event } from '@/common/constant';
 import {
   HOVER_FOCUS_TIME,
   InteractionStateName,
+  InterceptType,
 } from '@/common/constant/interaction';
 import { S2CellType, ViewMeta, TooltipOptions } from '@/common/interface';
 import { getActiveHoverRowColCells } from '@/utils/interaction/hover-event';
@@ -64,6 +65,9 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
     interaction.clearHoverTimer();
 
     const hoverTimer = setTimeout(() => {
+      if (interaction.hasIntercepts([InterceptType.HOVER])) {
+        return;
+      }
       interaction.changeState({
         cells: [getCellMeta(cell)],
         stateName: InteractionStateName.HOVER_FOCUS,
