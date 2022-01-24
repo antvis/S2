@@ -1,3 +1,4 @@
+import { VALUE_FIELD } from '../../common/constant/basic';
 import { copyToClipboard } from '@/utils/export';
 import { CellMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
@@ -14,16 +15,31 @@ export function keyEqualTo(key: string, compareKey: string) {
 const newLine = '\r\n';
 const newTab = '\t';
 
-const getColNodeField = (spreadsheet: SpreadSheet, id: string) =>
-  spreadsheet.getColumnNodes().find((col) => col.id === id)?.field;
+const getColNodeField = (spreadsheet: SpreadSheet, id: string) => {
+  const colNode = spreadsheet.getColumnNodes().find((col) => col.id === id);
+  if (spreadsheet.isTableMode()) {
+    return colNode?.field;
+  }
+  if (spreadsheet.isPivotMode()) {
+    return colNode?.value;
+  }
+};
 
 const getFiledIdFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
   const ids = meta.id.split('-');
   return getColNodeField(spreadsheet, ids[ids.length - 1]);
 };
 
-const getFormat = (meta: CellMeta, spreadsheet: SpreadSheet) => {
-  const ids = meta.id.split('-');
+const getHeaderNodeFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
+  const [rowId, colId] = meta.id.split('-');
+  return [
+    spreadsheet.getRowNodes().find((row) => row.id === rowId),
+    spreadsheet.getColumnNodes().find((col) => col.id === colId),
+  ];
+};
+
+const getFormat = (cellId: string, spreadsheet: SpreadSheet) => {
+  const ids = cellId.split('-');
   const fieldId = getColNodeField(spreadsheet, ids[ids.length - 1]);
   if (spreadsheet.options.interaction.copyWithFormat) {
     return spreadsheet.dataSet.getFieldFormatter(fieldId);
@@ -36,8 +52,21 @@ const getValueFromMeta = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
 ) => {
-  const fieldId = getFiledIdFromMeta(meta, spreadsheet);
-  return displayData[meta.rowIndex][fieldId];
+  if (spreadsheet.isTableMode()) {
+    const fieldId = getFiledIdFromMeta(meta, spreadsheet);
+    return displayData[meta.rowIndex][fieldId];
+  }
+  if (spreadsheet.isPivotMode) {
+    const [rowNode, colNode] = getHeaderNodeFromMeta(meta, spreadsheet);
+    const cell = spreadsheet.dataSet.getCellData({
+      query: {
+        ...rowNode.query,
+        ...colNode.query,
+      },
+      rowNode: rowNode,
+    });
+    return cell[VALUE_FIELD];
+  }
 };
 
 const format = (
@@ -45,7 +74,7 @@ const format = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
 ) => {
-  const formatter = getFormat(meta, spreadsheet);
+  const formatter = getFormat(meta.id, spreadsheet);
   return formatter(getValueFromMeta(meta, displayData, spreadsheet));
 };
 
@@ -106,31 +135,97 @@ const processColSelected = (
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
 ) => {
-  const selectedFiled = selectedCols.length
-    ? selectedCols.map((e) => getColNodeField(spreadsheet, e.id))
-    : spreadsheet.dataCfg.fields.columns;
-  return displayData
-    .map((row) => {
-      return selectedFiled
-        .map((filed) => convertString(row[filed]))
-        .join(newTab);
-    })
-    .join(newLine);
+  if (spreadsheet.isTableMode()) {
+    const selectedFiled = selectedCols.length
+      ? selectedCols.map((e) => getColNodeField(spreadsheet, e.id))
+      : spreadsheet.dataCfg.fields.columns;
+    return displayData
+      .map((row) => {
+        return selectedFiled
+          .map((filed) => convertString(row[filed]))
+          .join(newTab);
+      })
+      .join(newLine);
+  }
+  if (spreadsheet.isPivotMode()) {
+    const allRowLeafNodes = spreadsheet
+      .getRowNodes()
+      .filter((node) => node.isLeaf);
+    const allColLeafNodes = spreadsheet
+      .getColumnNodes()
+      .filter((node) => node.isLeaf);
+
+    const colNodes = selectedCols.length
+      ? selectedCols.reduce((arr, e) => {
+          arr.push(
+            ...allColLeafNodes.filter((node) => node.id.startsWith(e.id)),
+          );
+          return arr;
+        }, [])
+      : allColLeafNodes;
+    return allRowLeafNodes
+      .map((rowNode) => {
+        return colNodes
+          .map((colNode) => {
+            const cellData = spreadsheet.dataSet.getCellData({
+              query: {
+                ...rowNode.query,
+                ...colNode.query,
+              },
+              rowNode,
+            });
+            return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
+          })
+          .join(newTab);
+      })
+      .join(newLine);
+  }
 };
 
 const processRowSelected = (
   displayData: DataType[],
+  spreadsheet: SpreadSheet,
   selectedRows: CellMeta[],
 ) => {
-  const selectedIndex = selectedRows.map((e) => e.rowIndex);
-  return displayData
-    .filter((e, i) => selectedIndex.includes(i))
-    .map((e) =>
-      Object.keys(e)
-        .map((key) => convertString(e[key]))
-        .join(newTab),
-    )
-    .join(newLine);
+  if (spreadsheet.isTableMode()) {
+    const selectedIndex = selectedRows.map((e) => e.rowIndex);
+    return displayData
+      .filter((e, i) => selectedIndex.includes(i))
+      .map((e) =>
+        Object.keys(e)
+          .map((key) => convertString(e[key]))
+          .join(newTab),
+      )
+      .join(newLine);
+  }
+  if (spreadsheet.isPivotMode()) {
+    const allRowLeafNodes = spreadsheet
+      .getRowNodes()
+      .filter((node) => node.isLeaf);
+    const allColLeafNodes = spreadsheet
+      .getColumnNodes()
+      .filter((node) => node.isLeaf);
+    const rowNodes = selectedRows.reduce((arr, e) => {
+      arr.push(...allRowLeafNodes.filter((node) => node.id.startsWith(e.id)));
+      return arr;
+    }, []);
+    return rowNodes
+      .map((rowNode) => {
+        return allColLeafNodes
+          .map((colNode) => {
+            const cellData = spreadsheet.dataSet.getCellData({
+              query: {
+                ...rowNode.query,
+                ...colNode.query,
+              },
+              rowNode,
+            });
+            return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
+          })
+          .join(newTab);
+      })
+      .join(newLine);
+  }
 };
 
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
@@ -142,8 +237,8 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
 
   const displayData = spreadsheet.dataSet.getDisplayDataSet();
 
-  if (spreadsheet.isPivotMode()) {
-    // 透视表之后实现
+  if (spreadsheet.isPivotMode() && spreadsheet.isHierarchyTreeType()) {
+    // 树状模式透视表之后实现
     return;
   }
   if (interaction.getCurrentStateName() === InteractionStateName.ALL_SELECTED) {
@@ -151,7 +246,7 @@ export const getSelectedData = (spreadsheet: SpreadSheet) => {
   } else if (selectedCols.length) {
     data = processColSelected(displayData, spreadsheet, selectedCols);
   } else if (selectedRows.length) {
-    data = processRowSelected(displayData, selectedRows);
+    data = processRowSelected(displayData, spreadsheet, selectedRows);
   } else {
     if (!cells.length) {
       return;
