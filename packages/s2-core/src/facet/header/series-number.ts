@@ -80,7 +80,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   public layout() {
-    const { data, scrollY, height, spreadsheet } = this.headerConfig;
+    const { data, scrollY, viewportHeight, spreadsheet } = this.headerConfig;
     if (spreadsheet.isPivotMode) {
       //  添加矩形背景
       this.addBackGround();
@@ -93,7 +93,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
         y,
         cellHeight,
         scrollY,
-        height,
+        viewportHeight,
       );
       if (isHeaderCellInViewport) {
         // 按需渲染：视窗内的才渲染
@@ -162,7 +162,7 @@ export class SeriesNumberHeader extends BaseHeader<BaseHeaderConfig> {
   }
 
   private addText(group: IGroup, cellData: ViewMeta) {
-    const { scrollY, height } = this.headerConfig;
+    const { scrollY, viewportHeight: height } = this.headerConfig;
     const rowCellTheme = this.headerConfig.spreadsheet.theme.rowCell;
     const {
       label,
