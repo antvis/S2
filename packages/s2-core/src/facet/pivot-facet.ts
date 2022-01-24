@@ -786,7 +786,8 @@ export class PivotFacet extends BaseFacet {
       },
 
       getTotalLength: () => {
-        return heights.length;
+        // 多了一个数据 [0]
+        return heights.length - 1;
       },
 
       getIndexRange: (minHeight: number, maxHeight: number) => {

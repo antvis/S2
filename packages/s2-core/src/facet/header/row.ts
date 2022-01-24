@@ -38,7 +38,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
       data,
       spreadsheet,
       width,
-      height,
+      viewportHeight,
       seriesNumberWidth,
       scrollY,
       scrollX,
@@ -48,7 +48,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
     // row'cell only show when visible
     const rowCellInRect = (item: Node): boolean => {
       return (
-        height + scrollY > item.y && // bottom
+        viewportHeight + scrollY > item.y && // bottom
         scrollY < item.y + item.height && // top
         width - seriesNumberWidth + scrollX > item.x && // left
         scrollX - seriesNumberWidth < item.x + item.width
@@ -84,7 +84,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
   }
 
   protected clip(): void {
-    const { width, height, scrollX, scrollY, seriesNumberWidth } =
+    const { width, viewportHeight, scrollX, scrollY, seriesNumberWidth } =
       this.headerConfig;
     this.setClip({
       type: 'rect',
@@ -93,7 +93,7 @@ export class RowHeader extends BaseHeader<RowHeaderConfig> {
         x: scrollX - seriesNumberWidth,
         y: scrollY,
         width,
-        height,
+        height: viewportHeight,
       },
     });
   }

@@ -292,6 +292,10 @@ export const BaseSheet: React.FC<BaseSheetProps> = memo((props) => {
     setLoading(false);
     setOwnSpreadsheet(baseSpreadsheet.current);
     getSpreadSheet?.(baseSpreadsheet.current);
+    setTotal(
+      options?.pagination?.total ??
+        baseSpreadsheet.current.facet.viewCellHeights.getTotalLength(),
+    );
   };
 
   useEffect(() => {
