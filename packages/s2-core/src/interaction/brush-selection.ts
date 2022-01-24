@@ -1,6 +1,6 @@
 import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import _, { isEmpty } from 'lodash';
+import _, { clone, isEmpty } from 'lodash';
 import { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
 import { InterceptType, S2Event } from '@/common/constant';
@@ -19,6 +19,8 @@ import {
 import { DataCell } from '@/cell';
 import { FRONT_GROUND_GROUP_BRUSH_SELECTION_Z_INDEX } from '@/common/constant';
 import { getActiveCellsTooltipData } from '@/utils/tooltip';
+import { isFrozenTrailingCol, isFrozenTrailingRow } from '@/facet/utils';
+import { getValidFrozenOptions } from '@/utils/layout/frozen';
 
 /**
  * Panel area's brush selection interaction
@@ -37,6 +39,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   public brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
 
   private brushSelectionMinimumMoveDistance = 5;
+
+  private scrollAnimationComplete = true;
 
   public bindEvents() {
     this.bindMouseDown();
@@ -158,25 +162,79 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     return xIndex;
   };
 
+  private getScrollOffsetForCol = (
+    colIndex: number,
+    direction: 'leading' | 'trailing',
+  ) => {
+    const { width } = this.spreadsheet.facet.panelBBox;
+    const colNode = this.spreadsheet.facet.layoutResult.colLeafNodes[colIndex];
+    if (direction === 'leading') {
+      return colNode.x;
+    }
+    return Math.max(0, colNode.x + colNode.width - width);
+  };
+
+  private getScrollOffsetForRow = (
+    rowIndex: number,
+    direction: 'leading' | 'trailing',
+  ) => {
+    const { getCellOffsetY } = this.spreadsheet.facet.viewCellHeights;
+    const rowOffset = getCellOffsetY(rowIndex + 1);
+    const { height } = this.spreadsheet.facet.panelBBox;
+    const lastRowOffset = getCellOffsetY(rowIndex);
+
+    if (direction === 'leading') {
+      return lastRowOffset;
+    }
+    return rowOffset - height;
+  };
+
+  private adjustNextRowIndexWithFrozen = (
+    rowIndex: number,
+    dir: 'trailing' | 'leading',
+  ) => {
+    const dataLength = this.spreadsheet.dataSet.getDisplayDataSet().length;
+    const colLength = this.spreadsheet.facet.layoutResult.colLeafNodes.length;
+    const { frozenTrailingRowCount } = getValidFrozenOptions(
+      this.spreadsheet.options,
+      colLength,
+      dataLength,
+    );
+    if (
+      frozenTrailingRowCount > 0 &&
+      dir === 'trailing' &&
+      isFrozenTrailingRow(rowIndex, dataLength - 1, frozenTrailingRowCount)
+    ) {
+      const { x, y } = this.endBrushPoint;
+
+      const minY = this.spreadsheet.frozenTrailingRowGroup.getBBox().minY;
+      const target = this.spreadsheet.container.getShape(x, minY - 10);
+    }
+  };
+
   private getNextScrollDelta = (config: BrushAutoScrollConfig) => {
+    const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
+
     let x = 0;
     let y = 0;
-    const { getCellOffsetY } = this.spreadsheet.facet.viewCellHeights;
 
     if (config.y.scroll) {
-      const lastIndex = this.endBrushPoint.rowIndex;
-      const dir = config.y.value > 0 ? 1 : -1;
-      const nextIndex = this.validateYIndex(this.endBrushPoint.rowIndex + dir);
-      y = getCellOffsetY(nextIndex) - getCellOffsetY(lastIndex);
+      const dir = config.y.value > 0 ? 'trailing' : 'leading';
+      this.adjustNextRowIndexWithFrozen(this.endBrushPoint.rowIndex, dir);
+      const nextIndex = this.validateYIndex(
+        this.endBrushPoint.rowIndex + (config.y.value > 0 ? 1 : -1),
+      );
+      y = this.getScrollOffsetForRow(nextIndex, dir) - scrollY;
     }
 
     if (config.x.scroll) {
-      const dir = config.x.value > 0 ? 1 : -1;
-      const nextIndex = this.validateXIndex(this.endBrushPoint.colIndex + dir);
+      const dir = config.x.value > 0 ? 'trailing' : 'leading';
+      const nextIndex = this.validateXIndex(
+        this.endBrushPoint.colIndex + (config.x.value > 0 ? 1 : -1),
+      );
       x = _.isNil(nextIndex)
         ? 0
-        : dir *
-          this.spreadsheet.facet.layoutResult.colLeafNodes[nextIndex].width;
+        : this.getScrollOffsetForCol(nextIndex, dir) - scrollX;
     }
 
     return {
@@ -185,9 +243,19 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     };
   };
 
+  private onScrollAnimationComplete = () => {
+    this.scrollAnimationComplete = true;
+    if (
+      this.brushSelectionStage !== InteractionBrushSelectionStage.UN_DRAGGED
+    ) {
+      this.renderPrepareSelected(this.endBrushPoint);
+    }
+  };
+
   private autoScroll = () => {
     if (
-      this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
+      this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED ||
+      !this.scrollAnimationComplete
     ) {
       return;
     }
@@ -220,8 +288,11 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       }
     }
 
-    this.spreadsheet.facet.updateScrollOffset(offsetCfg);
-    this.renderPrepareSelected(this.endBrushPoint);
+    this.scrollAnimationComplete = false;
+    this.spreadsheet.facet.scrollWithAnimation(
+      offsetCfg,
+      this.onScrollAnimationComplete,
+    );
   };
 
   private handleScroll = _.throttle((x, y) => {
@@ -381,7 +452,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private getBrushPoint(event: CanvasEvent): BrushPoint {
-    const { scrollY } = this.spreadsheet.facet.getScrollOffset();
+    const { scrollY, scrollX } = this.spreadsheet.facet.getScrollOffset();
     const originalEvent = event.originalEvent as unknown as OriginalEvent;
     const point: Point = {
       x: originalEvent.layerX,
@@ -395,6 +466,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       rowIndex,
       colIndex,
       scrollY,
+      scrollX,
     };
   }
 
@@ -426,7 +498,6 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     const maxX = Math.max(startXInView, this.endBrushPoint.x);
     const minY = Math.min(startYInView, this.endBrushPoint.y);
     const maxY = Math.max(startYInView, this.endBrushPoint.y);
-
     return {
       start: {
         rowIndex: minRowIndex,
