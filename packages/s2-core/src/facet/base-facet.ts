@@ -1052,15 +1052,17 @@ export abstract class BaseFacet {
 
     this.rowHeader = this.getRowHeader();
     this.columnHeader = this.getColHeader();
-    if (seriesNumberWidth > 0 && this.rowIndexHeader) {
+    if (seriesNumberWidth > 0 && !this.rowIndexHeader) {
       this.rowIndexHeader = this.getSeriesNumberHeader();
-      this.foregroundGroup.add(this.rowIndexHeader);
     }
     this.cornerHeader = this.getCornerHeader();
     this.centerFrame = this.getCenterFrame();
 
     if (this.rowHeader) {
       this.foregroundGroup.add(this.rowHeader);
+    }
+    if (this.rowIndexHeader) {
+      this.foregroundGroup.add(this.rowIndexHeader);
     }
     this.foregroundGroup.add(this.columnHeader);
     this.foregroundGroup.add(this.cornerHeader);
