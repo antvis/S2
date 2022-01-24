@@ -14,6 +14,8 @@ import {
   forEach,
   unset,
   isNumber,
+  every,
+  first,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -42,6 +44,7 @@ import {
   ViewMeta,
   PartDrillDownDataCache,
   PartDrillDownFieldInLevel,
+  EAggregation,
 } from '@/common/interface';
 import { BaseDataSet } from '@/data-set/base-data-set';
 import {
@@ -58,6 +61,8 @@ import {
   deleteMetaById,
   getDimensionsWithoutPathPre,
 } from '@/utils/dataset/pivot-data-set';
+import { getDataSumByField } from '@/utils/number-calculate';
+import { getAggregationAndCalcFuncByQuery } from '@/utils/data-set-operate';
 
 export class PivotDataSet extends BaseDataSet {
   // row dimension values pivot structure
@@ -365,6 +370,29 @@ export class PivotDataSet extends BaseDataSet {
     return filterUndefined([...meta.keys()]);
   }
 
+  getTotalValue(query: DataType) {
+    const { aggregation, calcFunc } =
+      getAggregationAndCalcFuncByQuery(
+        this.getTotalStatus(query),
+        this.spreadsheet.options.totals,
+      ) || {};
+    // 前端计算汇总值
+    if (aggregation || calcFunc) {
+      const data = this.getMultiData(query);
+      let totalValue: number;
+      if (calcFunc) {
+        totalValue = calcFunc(query, data);
+      } else if (aggregation === EAggregation.SUM) {
+        totalValue = getDataSumByField(data, VALUE_FIELD);
+      }
+      return {
+        ...query,
+        [VALUE_FIELD]: totalValue,
+        [query[EXTRA_FIELD]]: totalValue,
+      };
+    }
+  }
+
   public getCellData(params: CellDataParams): DataType {
     const { query, rowNode, isTotals = false } = params || {};
 
@@ -390,8 +418,12 @@ export class PivotDataSet extends BaseDataSet {
       colPivotMeta: this.colPivotMeta,
     });
     const data = get(this.indexesData, path);
+    if (data) {
+      // 如果已经有数据则取已有数据
+      return data;
+    }
 
-    return data;
+    return isTotals ? this.getTotalValue(query) : data;
   }
 
   getCustomData = (path: number[]) => {
@@ -418,6 +450,33 @@ export class PivotDataSet extends BaseDataSet {
     return currentData;
   };
 
+  public getTotalStatus = (query: DataType) => {
+    const { columns, rows } = this.fields;
+    const isTotals = (dimensions: string[], isSubTotal?: boolean) => {
+      if (isSubTotal) {
+        const firstDimension = find(dimensions, (item) => !has(query, item));
+        return firstDimension && firstDimension !== first(dimensions);
+      }
+      return every(dimensions, (item) => !has(query, item));
+    };
+    const getDimensions = (dimensions: string[], hasExtra: boolean) => {
+      return hasExtra
+        ? dimensions.filter((item) => item !== EXTRA_FIELD)
+        : dimensions;
+    };
+
+    return {
+      isRowTotal: isTotals(
+        getDimensions(rows, !this.spreadsheet.isValueInCols()),
+      ),
+      isRowSubTotal: isTotals(rows, true),
+      isColTotal: isTotals(
+        getDimensions(columns, this.spreadsheet.isValueInCols()),
+      ),
+      isColSubTotal: isTotals(columns, true),
+    };
+  };
+
   public getMultiData(
     query: DataType,
     isTotals?: boolean,
@@ -437,6 +496,7 @@ export class PivotDataSet extends BaseDataSet {
       rowDimensionValues,
       colDimensionValues,
       careUndefined: true,
+      isFirstCreate: true,
       rowPivotMeta: this.rowPivotMeta,
       colPivotMeta: this.colPivotMeta,
     });

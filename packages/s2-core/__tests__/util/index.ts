@@ -30,3 +30,16 @@ export const assembleDataCfg = (...dataCfg: Partial<S2DataConfig>[]) =>
     },
     ...dataCfg,
   );
+
+export const TOTALS_OPTIONS = {
+  row: {
+    showGrandTotals: true,
+    showSubTotals: true,
+    subTotalsDimensions: ['province', 'city'],
+  },
+  col: {
+    showGrandTotals: true,
+    showSubTotals: true,
+    subTotalsDimensions: ['type', 'sub_type'],
+  },
+};
