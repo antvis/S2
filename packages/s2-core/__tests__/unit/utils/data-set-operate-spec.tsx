@@ -3,7 +3,9 @@ import {
   flattenDeep as customFlattenDeep,
   flatten as customFlatten,
   getListBySorted,
+  getAggregationAndCalcFuncByQuery,
 } from '@/utils/data-set-operate';
+import { EAggregation } from '@/common/interface';
 
 describe('Data Set Operate Test', () => {
   const data = [];
@@ -73,6 +75,127 @@ describe('Data Set Operate Test', () => {
     it('should get correct list by sub sorted list', () => {
       expect(getListBySorted(list, ['四川省'])).toEqual(['四川省', '浙江省']);
       expect(getListBySorted(list, ['浙江省'])).toEqual(['浙江省', '四川省']);
+    });
+  });
+
+  describe('Dataset Operate Test GetAggregationAndCalcFuncByQuery', () => {
+    let totalsOptions = {};
+    beforeEach(() => {
+      totalsOptions = {
+        row: {
+          calcTotals: {
+            aggregation: EAggregation.SUM,
+          },
+          calcSubTotals: {
+            calcFunc: () => 'rowSubTotals',
+          },
+        },
+        col: {
+          calcTotals: {
+            calcFunc: () => 'colTotals',
+          },
+          calcSubTotals: {
+            calcFunc: () => 'colSubTotals',
+          },
+        },
+      };
+    });
+
+    it('should get correct aggregation and calcFunc', () => {
+      // 行总计
+      expect(
+        getAggregationAndCalcFuncByQuery(
+          {
+            isRowTotal: true,
+            isRowSubTotal: false,
+            isColTotal: false,
+            isColSubTotal: false,
+          },
+          totalsOptions,
+        ),
+      ).toEqual({ aggregation: EAggregation.SUM, calcFunc: undefined });
+      // 行总计 & 列总计
+      expect(
+        getAggregationAndCalcFuncByQuery(
+          {
+            isRowTotal: true,
+            isRowSubTotal: false,
+            isColTotal: true,
+            isColSubTotal: false,
+          },
+          totalsOptions,
+        ).toString(),
+      ).toEqual(
+        { aggregation: undefined, calcFunc: () => 'colTotals' }.toString(),
+      );
+      // 行总计 & 列小计
+      expect(
+        getAggregationAndCalcFuncByQuery(
+          {
+            isRowTotal: true,
+            isRowSubTotal: false,
+            isColTotal: false,
+            isColSubTotal: true,
+          },
+          totalsOptions,
+        ).toString(),
+      ).toEqual(
+        {
+          aggregation: undefined,
+          calcFunc: () => 'colSubTotals',
+        }.toString(),
+      );
+      // 行小计
+      expect(
+        getAggregationAndCalcFuncByQuery(
+          {
+            isRowTotal: false,
+            isRowSubTotal: true,
+            isColTotal: false,
+            isColSubTotal: false,
+          },
+          totalsOptions,
+        ).toString(),
+      ).toEqual(
+        {
+          aggregation: undefined,
+          calcFunc: () => 'rowSubTotals',
+        }.toString(),
+      );
+      // 行小计 & 列总计
+      expect(
+        getAggregationAndCalcFuncByQuery(
+          {
+            isRowTotal: false,
+            isRowSubTotal: true,
+            isColTotal: true,
+            isColSubTotal: false,
+          },
+          totalsOptions,
+        ).toString(),
+      ).toEqual(
+        {
+          aggregation: undefined,
+          calcFunc: () => 'colTotals',
+        }.toString(),
+      );
+      // 行小计 & 列小计
+      expect(
+        getAggregationAndCalcFuncByQuery(
+          {
+            isRowTotal: false,
+            isRowSubTotal: true,
+            isColTotal: false,
+            isColSubTotal: true,
+          },
+          totalsOptions,
+        ).toString(),
+      ).toEqual(
+        {
+          aggregation: undefined,
+          calcFunc: () => 'colSubTotals',
+        }.toString(),
+      );
     });
   });
 });

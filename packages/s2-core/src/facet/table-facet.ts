@@ -398,7 +398,7 @@ export class TableFacet extends BaseFacet {
     );
   }
 
-  protected getCellHeight(index: number) {
+  public getCellHeight(index: number) {
     const { cellCfg } = this.cfg;
 
     if (this.rowOffsets) {
@@ -904,16 +904,11 @@ export class TableFacet extends BaseFacet {
     this.updateRowResizeArea();
   }
 
-  protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+  public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
     const colLength = this.layoutResult.colLeafNodes.length;
     const cellRange = this.getCellRange();
 
-    const {
-      viewportHeight: height,
-      viewportWidth: width,
-      x,
-      y,
-    } = this.panelBBox;
+    const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
 
     const {
       frozenColCount,
@@ -934,8 +929,8 @@ export class TableFacet extends BaseFacet {
       {
         width,
         height,
-        x,
-        y,
+        x: 0,
+        y: 0,
       },
       this.getRealScrollX(this.cornerBBox.width),
     );
