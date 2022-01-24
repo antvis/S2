@@ -27,6 +27,14 @@
         "en": "How to spend the day"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/dTESDSdF%262/a364a2c2-c4e1-4b01-a616-927bf41d7a86.png"
+    },
+    {
+      "filename": "philosophers.tsx",
+      "title": {
+        "zh": "哲学家的观点",
+        "en": "Points of Philosophers"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/lnIo05mgw%26/1e369f72-be9b-4be8-804d-33445bf72d41.png"
     }
   ]
 }

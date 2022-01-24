@@ -19,7 +19,7 @@ order: 4
 | getTextStyle | 获取文本样式 | `() => void` |
 | getFormattedFieldValue | 获取格式化后的字段值 | `() => { formattedValue: string, value: string }` |
 | getMaxTextWidth | 获取文本最大宽度 | `() => number` |
-| getTextPosition | 获取文本最大宽度 | [Point](#point) |
+| getTextPosition | 获取文本坐标 | [Point](#point) |
 | getContentArea | 获取内容区域 | `() => { x: number, y: number, width: number, height: number }` |
 | updateByState | 根据状态更新单元格样式 | `(stateName: InteractionStateName, cell: S2CellType) => void` |
 | hideInteractionShape | 隐藏单元格的交互图层 | `() => void` |

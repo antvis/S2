@@ -5,7 +5,7 @@
   },
   "demos": [
     {
-      "filename": "drill-dwon.tsx",
+      "filename": "basic-panel.tsx",
       "title": {
         "zh": "维度下钻组件",
         "en": "DrillDown component"
@@ -13,7 +13,7 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/3DoOlPsFYh/drill.gif"
     },
     {
-      "filename": "drill-dwon-for-pivot.tsx",
+      "filename": "for-pivot.tsx",
       "title": {
         "zh": "透视表维度下钻组件",
         "en": "DrillDown in pivot sheet"

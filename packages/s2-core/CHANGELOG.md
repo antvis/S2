@@ -1,3 +1,36 @@
+# [@antv/s2-v1.6.0](https://github.com/antvis/S2/compare/@antv/s2-v1.5.0...@antv/s2-v1.6.0) (2022-01-14)
+
+
+### Bug Fixes
+
+* **facet:** 交叉表 compact 模式下行/列头宽度计算错误 ([#972](https://github.com/antvis/S2/issues/972)) ([2c59806](https://github.com/antvis/S2/commit/2c598066c70be4e53bb15f6f610dcf906c424af7))
+* **facet:** 数据量较少时，维持 panelBBox 宽高 ([#989](https://github.com/antvis/S2/issues/989)) ([c79d6b1](https://github.com/antvis/S2/commit/c79d6b1b892cfaa397d95fba6ff6151c44ed7632))
+* **interaction:** shift区间多选在明细表序列号上失效 ([#981](https://github.com/antvis/S2/issues/981)) ([38e4f93](https://github.com/antvis/S2/commit/38e4f935eb061ebaeb0c5a1a453adf593945770c))
+* scrollbarOpts to enum const ([#1001](https://github.com/antvis/S2/issues/1001)) ([f7ffcf0](https://github.com/antvis/S2/commit/f7ffcf06a3d8011fadab23ff325e72398d926184))
+
+
+### Features
+
+* **facet:** add scrollBarPosition option  ([#997](https://github.com/antvis/S2/issues/997)) ([8937dc8](https://github.com/antvis/S2/commit/8937dc84255c68b9d5b75255263866b8c1c359aa))
+* 增加supportCSSTransform设置 ([#990](https://github.com/antvis/S2/issues/990)) ([be45f83](https://github.com/antvis/S2/commit/be45f83ec0bfea402fab127641264c362405d289))
+
+# [@antv/s2-v1.5.0](https://github.com/antvis/S2/compare/@antv/s2-v1.4.0...@antv/s2-v1.5.0) (2022-01-07)
+
+
+### Bug Fixes
+
+* bug: 修复交叉表手动设置滚动不生效问题 ([#955](https://github.com/antvis/S2/issues/955)) ([64eeee8](https://github.com/antvis/S2/commit/64eeee8454c90116c7fcfba891606c836317b49e))
+* **export:** 优化复制数据到剪贴板的逻辑 ([#976](https://github.com/antvis/S2/issues/976)) ([a841c77](https://github.com/antvis/S2/commit/a841c77c57bb4c9b8aa39f2224dc3adb860b7337))
+* **facet:** frozenRowHeader=false滚动时列头展示不全 ([#975](https://github.com/antvis/S2/issues/975)) ([298802e](https://github.com/antvis/S2/commit/298802e1a35d5512a6438c7738d820d1baa74877))
+* table facet test add toFixed ([#960](https://github.com/antvis/S2/issues/960)) ([e1b9e34](https://github.com/antvis/S2/commit/e1b9e343803cb7beac9692f4e473429160cfa7f3))
+* 优化复制功能，解决大数据量复制导致的页面崩溃问题 ([#968](https://github.com/antvis/S2/issues/968)) ([b9e5d36](https://github.com/antvis/S2/commit/b9e5d3617815240342bf211bb919c82c1eaa3656))
+
+
+### Features
+
+* **interaction:**  支持通过键盘方向键移动选中的单元格 ([#967](https://github.com/antvis/S2/issues/967)) ([c1a98ec](https://github.com/antvis/S2/commit/c1a98ec30c161624a48fda16bce0888b0af60f6b))
+* 字段标记(filed)可使用正则进行匹配 ([#973](https://github.com/antvis/S2/issues/973)) ([5502936](https://github.com/antvis/S2/commit/5502936d4b7b7eb2940a3dd7c22b3f0cffcd2c9e))
+
 # [@antv/s2-v1.4.0](https://github.com/antvis/S2/compare/@antv/s2-v1.3.0...@antv/s2-v1.4.0) (2021-12-24)
 
 

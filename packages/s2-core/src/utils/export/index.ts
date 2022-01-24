@@ -9,20 +9,33 @@ import {
 } from '@/common/constant';
 import { MultiData } from '@/common/interface';
 
-export const copyToClipboard = (str: string) => {
-  try {
-    const el = document.createElement('textarea');
-    el.value = str;
-    document.body.appendChild(el);
-    el.select();
+export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const textarea = document.createElement('textarea');
+    textarea.value = str;
+    document.body.appendChild(textarea);
+    textarea.select();
+
     const success = document.execCommand('copy');
-    document.body.removeChild(el);
-    return success;
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
-    return false;
+    document.body.removeChild(textarea);
+
+    if (success) {
+      resolve();
+    } else {
+      reject();
+    }
+  });
+};
+
+export const copyToClipboardByClipboard = (str: string): Promise<void> => {
+  return navigator.clipboard.writeText(str);
+};
+
+export const copyToClipboard = (str: string): Promise<void> => {
+  if (!navigator.clipboard) {
+    return copyToClipboardByExecCommand(str);
   }
+  return copyToClipboardByClipboard(str);
 };
 
 export const download = (str: string, fileName: string) => {

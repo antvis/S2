@@ -140,7 +140,6 @@ const defaultOptions: S2Options = customMerge(
 function MainLayout() {
   const [render, setRender] = React.useState(true);
   const [sheetType, setSheetType] = React.useState<SheetType>('pivot');
-  const [isPivotSheet, setIsPivotSheet] = React.useState(true);
   const [showPagination, setShowPagination] = React.useState(false);
   const [showTotals, setShowTotals] = React.useState(false);
   const [themeCfg, setThemeCfg] = React.useState<ThemeCfg>({ name: 'default' });
@@ -213,7 +212,6 @@ function MainLayout() {
   };
 
   const onSheetTypeChange = (checked: boolean) => {
-    setIsPivotSheet(checked);
     // 透视表
     if (checked) {
       setSheetType('pivot');
@@ -594,7 +592,7 @@ function MainLayout() {
             <Switch
               checkedChildren="透视表"
               unCheckedChildren="明细表"
-              checked={isPivotSheet}
+              checked={sheetType === 'pivot'}
               onChange={onSheetTypeChange}
             />
           </Space>

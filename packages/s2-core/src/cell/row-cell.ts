@@ -116,7 +116,8 @@ export class RowCell extends HeaderCell {
         if (!isCollapsed) {
           const oldScrollY = this.spreadsheet.store.get('scrollY');
           // 可视窗口高度
-          const viewportHeight = this.spreadsheet.facet.panelBBox.height || 0;
+          const viewportHeight =
+            this.spreadsheet.facet.panelBBox.viewportHeight || 0;
           // 被折叠项的高度
           const deleteHeight = getAllChildrenNodeHeight(this.meta);
           // 折叠后真实高度
@@ -213,7 +214,7 @@ export class RowCell extends HeaderCell {
       position,
       seriesNumberWidth,
       width: headerWidth,
-      height: headerHeight,
+      viewportHeight: headerHeight,
       scrollX,
       scrollY,
     } = this.headerConfig;
@@ -343,7 +344,7 @@ export class RowCell extends HeaderCell {
 
   protected getTextPosition(): Point {
     const { y, height: contentHeight } = this.getContentArea();
-    const { scrollY, height } = this.headerConfig;
+    const { scrollY, viewportHeight: height } = this.headerConfig;
 
     const { fontSize } = this.getTextStyle();
     const textIndent = this.getTextIndent();

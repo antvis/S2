@@ -27,6 +27,7 @@
     "react:playground": "yarn workspace @antv/s2-react start",
     "react:build": "yarn workspace @antv/s2-react build",
     "react:test": "yarn workspace @antv/s2-react test",
+    "react:watch": " yarn workspace @antv/s2-react watch",
     "build": "lerna run build --include-dependencies --stream --concurrency 1",
     "build:umd": "lerna run build:umd --include-dependencies --stream --concurrency 1",
     "bundle:size": "lerna run bundle:size --stream",

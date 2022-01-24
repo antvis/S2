@@ -277,7 +277,10 @@ export abstract class SpreadSheet extends EE {
     const tooltipData = getTooltipData({
       spreadsheet: this,
       cellInfos: data,
-      options,
+      options: {
+        enableFormat: true,
+        ...options,
+      },
     });
 
     this.showTooltip({
@@ -355,6 +358,7 @@ export abstract class SpreadSheet extends EE {
     this.store.clear();
     this.destroyTooltip();
     this.clearCanvasEvent();
+    this.container.destroy();
   }
 
   /**
@@ -526,13 +530,14 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initGroups() {
-    const { width, height } = this.options;
+    const { width, height, supportCSSTransform } = this.options;
     // base canvas group
     this.container = new Canvas({
       container: this.dom as HTMLElement,
       width,
       height,
       localRefresh: false,
+      supportCSSTransform,
     });
 
     // the main three layer groups

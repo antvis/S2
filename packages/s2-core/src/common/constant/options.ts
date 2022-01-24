@@ -1,4 +1,5 @@
 import { S2Options } from '../interface/s2Options';
+import { ScrollbarPositionType } from '../constant/interaction';
 import { Style } from '@/common/interface/basic';
 import { ResizeType } from '@/common/constant/resize';
 
@@ -59,6 +60,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       vertical: 1,
     },
     autoResetSheetStyle: true,
+    scrollbarPosition: ScrollbarPositionType.CONTENT,
     resize: {
       rowCellVertical: true,
       cornerCellHorizontal: true,
@@ -80,4 +82,5 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   frozenTrailingRowCount: 0,
   frozenTrailingColCount: 0,
   hdAdapter: true,
+  supportCSSTransform: false,
 };

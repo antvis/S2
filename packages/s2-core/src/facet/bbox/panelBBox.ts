@@ -2,9 +2,8 @@ import { BaseBBox } from './baseBBox';
 
 export class PanelBBox extends BaseBBox {
   calculateBBox() {
-    const { rowsHierarchy, colsHierarchy } = this.layoutResult;
-    this.originalWidth = Math.floor(rowsHierarchy.width);
-    this.originalHeight = Math.floor(colsHierarchy.height);
+    this.originalWidth = this.facet.getRealWidth();
+    this.originalHeight = this.facet.getRealHeight();
 
     const { cornerBBox } = this.facet;
     const cornerPosition = {
@@ -16,25 +15,36 @@ export class PanelBBox extends BaseBBox {
     const { width: canvasWidth, height: canvasHeight } =
       this.spreadsheet.options;
 
-    let panelWidth = Math.max(0, canvasWidth - cornerPosition.x);
-    let panelHeight = Math.max(
+    const panelWidth = Math.max(0, canvasWidth - cornerPosition.x);
+    const panelHeight = Math.max(
       0,
       canvasHeight - cornerPosition.y - scrollBarSize,
     );
-
-    const realWidth = this.facet.getRealWidth();
-    const realHeight = this.facet.getRealHeight();
-
-    panelWidth = Math.abs(Math.floor(Math.min(panelWidth, realWidth)));
-    panelHeight = Math.abs(Math.floor(Math.min(panelHeight, realHeight)));
 
     this.x = cornerPosition.x;
     this.y = cornerPosition.y;
     this.width = panelWidth;
     this.height = panelHeight;
-    this.maxX = cornerPosition.x + panelWidth;
-    this.maxY = cornerPosition.y + panelHeight;
+    this.viewportHeight = Math.abs(
+      Math.floor(Math.min(panelHeight, this.originalHeight)),
+    );
+    this.viewportWidth = Math.abs(
+      Math.floor(Math.min(panelWidth, this.originalWidth)),
+    );
+    this.maxX = cornerPosition.x + this.viewportWidth;
+    this.maxY = cornerPosition.y + this.viewportHeight;
     this.minX = cornerPosition.x;
     this.minY = cornerPosition.y;
+
+    const { frozenTrailingColCount, frozenTrailingRowCount } =
+      this.spreadsheet.options;
+    if (frozenTrailingColCount > 0) {
+      this.viewportWidth = this.width;
+      this.maxX = cornerPosition.x + this.width;
+    }
+    if (frozenTrailingRowCount > 0) {
+      this.viewportHeight = this.height;
+      this.maxY = cornerPosition.y + this.height;
+    }
   }
 }

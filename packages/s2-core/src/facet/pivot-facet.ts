@@ -12,6 +12,9 @@ import {
 import { BaseFacet } from 'src/facet/base-facet';
 import { getDataCellId } from 'src/utils/cell/data-cell';
 import { getIndexRangeWithOffsets } from 'src/utils/facet';
+import { CellTypes } from 'src/common/constant/interaction';
+import { HeaderActionIcon } from 'src/common/interface/basic';
+import { shouldShowActionIcons } from 'src/utils/cell/header-cell';
 import {
   EXTRA_FIELD,
   LayoutWidthTypes,
@@ -30,6 +33,7 @@ import { Node } from '@/facet/layout/node';
 import { handleDataItem } from '@/utils/cell/data-cell';
 import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
 import { getSubTotalNodeWidthOrHeightByLevel } from '@/utils/facet';
+import { IconTheme } from '@/common';
 
 export class PivotFacet extends BaseFacet {
   get rowCellTheme() {
@@ -278,37 +282,61 @@ export class PivotFacet extends BaseFacet {
       `${col.value}`,
       col.width,
     );
-    let colWidth: number;
     if (userDragWidth) {
       return userDragWidth;
     }
+
     if (this.spreadsheet.getLayoutWidthType() === LayoutWidthTypes.Compact) {
-      // compat
+      const {
+        bolderText: colCellTextStyle,
+        cell: colCellStyle,
+        icon: colIconStyle,
+      } = this.spreadsheet.theme.colCell;
+
+      // leaf node rough width
+      const cellFormatter = this.spreadsheet.dataSet.getFieldFormatter(
+        col.field,
+      );
+      const leafNodeLabel = cellFormatter?.(col.value) ?? col.label;
+      const iconWidth = this.getExpectedCellIconWidth(
+        CellTypes.COL_CELL,
+        this.spreadsheet.isValueInCols() &&
+          this.spreadsheet.options.showDefaultHeaderActionIcon,
+        colIconStyle,
+      );
+      const leafNodeRoughWidth =
+        measureTextWidthRoughly(leafNodeLabel) + iconWidth;
+
+      // will deal with real width calculation in multiple values render pr
       const multiData = dataSet.getMultiData(
         col.query,
         col.isTotals || col.isTotalMeasure,
       );
-      const colLabel = col.label;
-      // will deal with real width calculation in multiple values render pr
-      const allLabels = multiData
+      const allDataLabels = multiData
         .map((data) => `${handleDataItem(data, filterDisplayDataItem)}`)
         ?.slice(0, 50);
-      allLabels.push(colLabel);
-      const maxLabel = maxBy(allLabels, (label) =>
+      const maxDataLabel = maxBy(allDataLabels, (label) =>
         measureTextWidthRoughly(label),
       );
-      const { bolderText: colCellTextStyle, cell: colCellStyle } =
-        this.spreadsheet.theme.colCell;
+
+      // compare result
+      const isLeafNodeWidthLonger =
+        leafNodeRoughWidth > measureTextWidthRoughly(maxDataLabel);
+      const maxLabel = isLeafNodeWidthLonger ? leafNodeLabel : maxDataLabel;
+      const appendedWidth = isLeafNodeWidthLonger ? iconWidth : 0;
+
       DebuggerUtil.getInstance().logger(
         'Max Label In Col:',
         col.field,
         maxLabel,
       );
-      colWidth =
+
+      return (
         measureTextWidth(maxLabel, colCellTextStyle) +
         colCellStyle.padding?.left +
-        colCellStyle.padding?.right;
-      return colWidth;
+        colCellStyle.padding?.right +
+        appendedWidth
+      );
     }
     // adaptive
     if (this.spreadsheet.isHierarchyTreeType()) {
@@ -321,6 +349,46 @@ export class PivotFacet extends BaseFacet {
     const { colCfg } = this.cfg;
     const userDraggedHeight = get(colCfg, `heightByField.${col.key}`);
     return userDraggedHeight || colCfg.height;
+  }
+
+  /**
+   * 获得图标区域预估宽度
+   * 不考虑用户自定义的 displayCondition 条件
+   * @param iconStyle 图标样式
+   * @returns 宽度
+   */
+  private getExpectedCellIconWidth(
+    cellType: CellTypes,
+    useDefaultIcon: boolean,
+    iconStyle: IconTheme,
+  ): number {
+    // count icons
+    let iconCount = 0;
+    if (useDefaultIcon) {
+      iconCount = 1;
+    } else {
+      const customIcons = find(
+        this.spreadsheet.options.headerActionIcons,
+        (headerActionIcon: HeaderActionIcon) =>
+          shouldShowActionIcons(
+            {
+              ...headerActionIcon,
+              // ignore condition func when layout calc
+              displayCondition: () => true,
+            },
+            null,
+            cellType,
+          ),
+      );
+
+      iconCount = customIcons?.iconNames.length ?? 0;
+    }
+
+    // calc width
+    return iconCount
+      ? iconCount * (iconStyle.size + iconStyle.margin.left) +
+          iconStyle.margin.right
+      : 0;
   }
 
   /**
@@ -343,17 +411,19 @@ export class PivotFacet extends BaseFacet {
       'options.style.rowCfg.heightByField',
       {},
     );
+    const sampleNodeByLevel = new Map();
 
     // 1、calculate first node's width in every level
     if (isTree) {
       rowsHierarchy.width = this.getTreeRowHeaderWidth();
     } else {
       for (const levelSample of rowsHierarchy.sampleNodesForAllLevels) {
-        levelSample.width = this.calculateRowLeafNodesWidth(
+        levelSample.width = this.calculateGridRowNodesWidth(
           levelSample,
           colLeafNodes,
         );
         rowsHierarchy.width += levelSample.width;
+        sampleNodeByLevel.set(levelSample.level, levelSample);
       }
     }
 
@@ -379,18 +449,23 @@ export class PivotFacet extends BaseFacet {
         rowsHierarchy.height += currentNode.height;
       }
 
+      // calc node.x
       if (isTree || currentNode.level === 0) {
         currentNode.x = 0;
       } else {
-        const preLevelSample = rowsHierarchy.sampleNodesForAllLevels.find(
-          (n) => n.level === currentNode.level - 1,
-        );
+        const preLevelSample = sampleNodeByLevel.get(currentNode.level - 1);
         currentNode.x = preLevelSample?.x + preLevelSample?.width;
       }
-      currentNode.width = this.calculateRowLeafNodesWidth(
-        currentNode,
-        colLeafNodes,
-      );
+
+      // calc node.width
+      if (isTree) {
+        currentNode.width = this.getTreeRowHeaderWidth();
+      } else {
+        // same level -> same width
+        const levelSampleNode = sampleNodeByLevel.get(currentNode.level);
+        currentNode.width = levelSampleNode?.width;
+      }
+
       layoutCoordinate(this.cfg, currentNode, null);
     }
     if (!isTree) {
@@ -523,16 +598,13 @@ export class PivotFacet extends BaseFacet {
   }
 
   /**
-   * 计算行叶子节点宽度
+   * 计算 grid 模式下 node 宽度
    * @param node
    * @returns
    */
-  private calculateRowLeafNodesWidth(node: Node, colLeafNodes: Node[]): number {
+  private calculateGridRowNodesWidth(node: Node, colLeafNodes: Node[]): number {
     const { rowCfg, spreadsheet } = this.cfg;
-    if (spreadsheet.isHierarchyTreeType()) {
-      // all node's width is the same
-      return this.getTreeRowHeaderWidth();
-    }
+
     const userDragWidth = get(rowCfg, `widthByField.${node.key}`);
     if (userDragWidth) {
       return userDragWidth;
@@ -612,26 +684,76 @@ export class PivotFacet extends BaseFacet {
     return width;
   }
 
+  /**
+   * 计算 compact 模式下 node 宽度
+   *
+   * |   fieldName  |
+   *  _______________
+   * | label - icon  | <- node
+   * | label - icon  |
+   * | label - icon  |
+   *
+   * @param node 目标节点
+   * @returns 宽度
+   */
   private getCompactGridRowWidth(node: Node): number {
     const { dataSet, spreadsheet } = this.cfg;
-    // compat => find current column node's max text label
-    const { field } = node;
-    // row nodes max label
-    const dimValues = dataSet.getDimensionValues(node.field)?.slice(0, 50);
-    const maxLabel = maxBy(dimValues, (v) => `${v}`.length);
-    // field name
-    const fieldName = dataSet.getFieldName(field);
-    const measureText =
-      measureTextWidthRoughly(maxLabel) > measureTextWidthRoughly(fieldName)
-        ? maxLabel
-        : fieldName;
-    const textStyle = spreadsheet.theme.rowCell.bolderText;
-    DebuggerUtil.getInstance().logger('Max Label In Row:', field, measureText);
-    return (
-      measureTextWidth(measureText, textStyle) +
-      this.rowCellTheme.padding?.left +
-      this.rowCellTheme.padding?.right
+    const {
+      bolderText: rowTextStyle,
+      icon: rowIconStyle,
+      cell: rowCellStyle,
+    } = spreadsheet.theme.rowCell;
+    const {
+      bolderText: cornerTextStyle,
+      icon: cornerIconStyle,
+      cell: cornerCellStyle,
+    } = spreadsheet.theme.cornerCell;
+    const { field, isLeaf } = node;
+
+    // calc rowNodeWitdh
+    const rowIconWidth = this.getExpectedCellIconWidth(
+      CellTypes.ROW_CELL,
+      !spreadsheet.isValueInCols() &&
+        isLeaf &&
+        spreadsheet.options.showDefaultHeaderActionIcon,
+      rowIconStyle,
     );
+    const allLabels = dataSet
+      .getDimensionValues(field)
+      ?.slice(0, 50)
+      .map(
+        (dimValue) =>
+          this.spreadsheet.dataSet.getFieldFormatter(field)?.(dimValue) ??
+          dimValue,
+      );
+    const maxLabel = maxBy(allLabels, (label) => `${label}`.length);
+    const rowNodeWidth =
+      measureTextWidth(maxLabel, rowTextStyle) +
+      rowIconWidth +
+      rowCellStyle.padding.left +
+      rowCellStyle.padding.right;
+
+    // calc corner fieldNameNodeWidth
+    const fieldName = dataSet.getFieldName(field);
+    const cornerIconWidth = this.getExpectedCellIconWidth(
+      CellTypes.CORNER_CELL,
+      false,
+      cornerIconStyle,
+    );
+    const fieldNameNodeWidth =
+      measureTextWidth(fieldName, cornerTextStyle) +
+      cornerIconWidth +
+      cornerCellStyle.padding.left +
+      cornerCellStyle.padding.right;
+
+    DebuggerUtil.getInstance().logger(
+      'Max Label In Row:',
+      field,
+      rowNodeWidth > fieldNameNodeWidth ? maxLabel : fieldName,
+    );
+
+    // return max
+    return Math.max(rowNodeWidth, fieldNameNodeWidth);
   }
 
   private getScrollColField(): string[] {
@@ -664,7 +786,8 @@ export class PivotFacet extends BaseFacet {
       },
 
       getTotalLength: () => {
-        return heights.length;
+        // 多了一个数据 [0]
+        return heights.length - 1;
       },
 
       getIndexRange: (minHeight: number, maxHeight: number) => {
