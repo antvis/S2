@@ -25,7 +25,6 @@ fetch(
   .then((data) => {
     const weights = data.map((item) => item.weight);
     const maxWeight = max(weights);
-
     const minWeight = min(weights);
     const weightSpan = maxWeight - minWeight;
 
@@ -101,8 +100,8 @@ fetch(
           <div className="antv-s2-tooltip-head-info-list">
             <div>姓名：{name}</div>
             <div>国家：{country}</div>
-            <div>出生：{start}</div>
-            <div>逝世：{end}</div>
+            <div>出生：{getFormatter(start)}</div>
+            <div>逝世：{getFormatter(end)}</div>
             {ponitsLines.length > 1 ? (
               <div>
                 观点:
