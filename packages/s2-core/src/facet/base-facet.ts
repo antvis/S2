@@ -1058,11 +1058,11 @@ export abstract class BaseFacet {
     this.cornerHeader = this.getCornerHeader();
     this.centerFrame = this.getCenterFrame();
 
-    if (this.rowHeader) {
-      this.foregroundGroup.add(this.rowHeader);
-    }
     if (this.rowIndexHeader) {
       this.foregroundGroup.add(this.rowIndexHeader);
+    }
+    if (this.rowHeader) {
+      this.foregroundGroup.add(this.rowHeader);
     }
     this.foregroundGroup.add(this.columnHeader);
     this.foregroundGroup.add(this.cornerHeader);
