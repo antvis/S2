@@ -88,14 +88,18 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     const { colLeafNodes } = facet.layoutResult;
     const { scrollX, scrollY } = facet.getScrollOffset();
     const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
-    const frozenColWidth = Math.floor(frozenColGroup.getBBox().width);
-    const frozenTrailingColWidth = Math.floor(
-      frozenTrailingColGroup.getBBox().width,
-    );
-    const frozenRowHeight = Math.floor(frozenRowGroup.getBBox().height);
-    const frozenTrailingRowHeight = Math.floor(
-      frozenTrailingRowGroup.getBBox().height,
-    );
+    const frozenColWidth = frozenColGroup
+      ? Math.floor(frozenColGroup.getBBox().width)
+      : 0;
+    const frozenTrailingColWidth = frozenTrailingColGroup
+      ? Math.floor(frozenTrailingColGroup.getBBox().width)
+      : 0;
+    const frozenRowHeight = frozenRowGroup
+      ? Math.floor(frozenRowGroup.getBBox().height)
+      : 0;
+    const frozenTrailingRowHeight = frozenTrailingRowGroup
+      ? Math.floor(frozenTrailingRowGroup.getBBox().height)
+      : 0;
 
     const indexes = calculateInViewIndexes(
       scrollX,
