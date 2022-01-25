@@ -106,7 +106,7 @@ export const sliderOptions: SliderSingleProps = {
 export const strategyOptions: S2Options = {
   width: 1000,
   height: 400,
-  cornerText: '指标',
+  cornerText: '时间',
   headerActionIcons: [
     {
       iconNames: ['Trend'],
@@ -136,7 +136,6 @@ export const strategyOptions: S2Options = {
             },
           },
         },
-        fieldLabels: [['指标', '环比值', '环比率']],
       },
     },
   },
