@@ -52,10 +52,12 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     colIndex: number,
   ) {
     const { rowLeafNodes } = spreadsheet.facet.layoutResult;
+    const seriesCount =
+      spreadsheet.isTableMode() && spreadsheet.options.showSeriesNumber ? 1 : 0;
     const colInRange = inRange(
       colIndex,
       0,
-      spreadsheet.dataSet.fields.columns.length,
+      spreadsheet.dataSet.fields.columns.length + seriesCount,
     );
     const rowInRange = inRange(
       rowIndex,
