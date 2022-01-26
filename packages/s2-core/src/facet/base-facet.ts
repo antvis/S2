@@ -346,15 +346,10 @@ export abstract class BaseFacet {
    the panel viewable area must vary with the horizontal distance of the scroll
    * @param scrollX
    * @param scrollY
-   * @protected
+   * @public
    */
-  protected calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
-    const {
-      viewportHeight: height,
-      viewportWidth: width,
-      x,
-      y,
-    } = this.panelBBox;
+  public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
+    const { viewportHeight: height, viewportWidth: width } = this.panelBBox;
 
     const indexes = calculateInViewIndexes(
       scrollX,
@@ -364,8 +359,8 @@ export abstract class BaseFacet {
       {
         width,
         height,
-        x,
-        y,
+        x: 0,
+        y: 0,
       },
       this.getRealScrollX(this.cornerBBox.width),
     );
@@ -828,7 +823,7 @@ export abstract class BaseFacet {
   };
 
   onWheel = (event: S2WheelEvent) => {
-    const ratio = this.cfg.interaction.scrollSpeedRatio;
+    const ratio = this.spreadsheet.options.interaction.scrollSpeedRatio;
     const { deltaX, deltaY, layerX, layerY } = event;
     const [optimizedDeltaX, optimizedDeltaY] = optimizeScrollXY(
       deltaX,
@@ -1063,13 +1058,15 @@ export abstract class BaseFacet {
 
     this.rowHeader = this.getRowHeader();
     this.columnHeader = this.getColHeader();
-    if (seriesNumberWidth > 0 && this.rowIndexHeader) {
+    if (seriesNumberWidth > 0 && !this.rowIndexHeader) {
       this.rowIndexHeader = this.getSeriesNumberHeader();
-      this.foregroundGroup.add(this.rowIndexHeader);
     }
     this.cornerHeader = this.getCornerHeader();
     this.centerFrame = this.getCenterFrame();
 
+    if (this.rowIndexHeader) {
+      this.foregroundGroup.add(this.rowIndexHeader);
+    }
     if (this.rowHeader) {
       this.foregroundGroup.add(this.rowHeader);
     }
@@ -1183,7 +1180,7 @@ export abstract class BaseFacet {
 
     const maxScrollY = Math.max(
       0,
-      this.viewCellHeights.getTotalHeight() - this.panelBBox.height,
+      this.viewCellHeights.getTotalHeight() - this.panelBBox.viewportHeight,
     );
 
     if (scrollY > maxScrollY) {

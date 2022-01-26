@@ -1,6 +1,6 @@
 import { filter, isUndefined, keys, get, reduce, every } from 'lodash';
 import { Data } from '@/common/interface/s2DataConfig';
-import { Fields } from '@/common/interface/index';
+import { Fields, TotalsStatus, Totals } from '@/common/interface/index';
 
 export const getListBySorted = (list: string[], sorted: string[]) => {
   return list.sort((a, b) => {
@@ -107,5 +107,40 @@ export function splitTotal(rawData: Data[], fields: Fields): Data[] {
       return result;
     },
     [],
+  );
+}
+
+export function getAggregationAndCalcFuncByQuery(
+  totalsStatus: TotalsStatus,
+  totalsOptions: Totals,
+) {
+  const { isRowTotal, isRowSubTotal, isColTotal, isColSubTotal } = totalsStatus;
+  const { row, col } = totalsOptions || {};
+  const {
+    calcTotals: rowCalcTotals = {},
+    calcSubTotals: rowCalcSubTotals = {},
+  } = row || {};
+  const {
+    calcTotals: colCalcTotals = {},
+    calcSubTotals: colCalcSubTotals = {},
+  } = col || {};
+  const getCalcTotals = (dimensionTotals, totalType) => {
+    if (
+      (dimensionTotals.aggregation || dimensionTotals.calcFunc) &&
+      totalType
+    ) {
+      return {
+        aggregation: dimensionTotals.aggregation,
+        calcFunc: dimensionTotals.calcFunc,
+      };
+    }
+  };
+
+  // 优先级: 列总计/小计 > 行总计/小计
+  return (
+    getCalcTotals(colCalcTotals, isColTotal) ||
+    getCalcTotals(colCalcSubTotals, isColSubTotal) ||
+    getCalcTotals(rowCalcTotals, isRowTotal) ||
+    getCalcTotals(rowCalcSubTotals, isRowSubTotal)
   );
 }

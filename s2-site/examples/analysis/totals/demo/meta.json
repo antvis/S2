@@ -27,6 +27,22 @@
         "en": "Tree Totals"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/fjQwAfmonL/b697e97f-8bfb-49fe-a123-195ce1aa8a82.png"
+    },
+    {
+      "filename": "calculate.ts",
+      "title": {
+        "zh": "配置计算汇总值",
+        "en": "Calculate Totals"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/S4FZba2BY7/8e25e21c-28d3-4572-8585-f0b7435ab7c8.png"
+    },
+    {
+      "filename": "custom.ts",
+      "title": {
+        "zh": "自定义计算汇总值",
+        "en": "Custom Calculate Totals"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/S4FZba2BY7/8e25e21c-28d3-4572-8585-f0b7435ab7c8.png"
     }
   ]
 }

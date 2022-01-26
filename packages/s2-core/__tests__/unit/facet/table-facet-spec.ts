@@ -120,7 +120,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       colLeafNodes.forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(index * adaptiveWith);
-        expect(node.width).toBe(adaptiveWith);
+        expect(Math.round(node.width)).toBe(adaptiveWith);
         expect(node.height).toBe(colCfg.height);
       });
     });

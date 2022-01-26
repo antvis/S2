@@ -16,7 +16,6 @@ import {
   map,
   pick,
   some,
-  reduce,
   uniq,
   noop,
   mapKeys,
@@ -51,53 +50,7 @@ import {
   VALUE_FIELD,
 } from '@/common/constant';
 import { Tooltip, ViewMeta } from '@/common/interface';
-
-const isNotNumber = (value: unknown) => {
-  return Number.isNaN(Number(value));
-};
-
-/**
- * 浮点数加法，解决精度问题
- * 因为乘法也有精度问题，故用字符串形式
- * TODO：因为暂时只支持加法，自己先实现，如果有其他场景考虑用现有库
- * @param arg1
- * @param arg2
- */
-function accAdd(arg1: number, arg2: number) {
-  const [pre1, next1 = ''] = arg1?.toString()?.split('.');
-  const [pre2, next2 = ''] = arg2?.toString()?.split('.');
-  const r1 = next1?.length || 0;
-  const r2 = next2?.length || 0;
-  const m = Math.pow(10, Math.max(r1, r2));
-  const suffix = Array(Math.abs(r1 - r2))
-    .fill('0')
-    ?.join('');
-  const number1 = r2 > r1 ? `${pre1}${next1}${suffix}` : `${pre1}${next1}`;
-  const number2 = r1 > r2 ? `${pre2}${next2}${suffix}` : `${pre2}${next2}`;
-
-  return (Number.parseInt(number1, 10) + Number.parseInt(number2, 10)) / m;
-}
-
-/**
- * calculate sum value
- */
-export const getDataSumByField = (
-  data: TooltipDataItem[],
-  field: string,
-): number => {
-  const sum = reduce(
-    data,
-    (pre, next) => {
-      const fieldValue = get(next, field, 0);
-      const v = isNotNumber(fieldValue)
-        ? 0
-        : Number.parseFloat(fieldValue) || Number(fieldValue);
-      return accAdd(pre, v);
-    },
-    0,
-  );
-  return sum;
-};
+import { isNotNumber, getDataSumByField } from '@/utils/number-calculate';
 
 /** whether the data of hover is selected */
 export const isHoverDataInSelectedData = (
@@ -165,6 +118,7 @@ export const getTooltipDefaultOptions = (options?: TooltipOptions) => {
   return {
     operator: { onClick: noop, menus: [] },
     enterable: true,
+    enableFormat: true,
     ...options,
   } as TooltipOptions;
 };
@@ -473,16 +427,19 @@ export const getTooltipData = (params: TooltipDataParam) => {
     });
   } else if (options.showSingleTips) {
     // 行列头hover & 明细表所有hover
-    const metaName = find(
-      spreadsheet?.dataCfg?.meta,
-      (item) => item?.field === firstCellInfo.value,
-    )?.name;
+    const getFieldName = (field: string) =>
+      find(spreadsheet.dataCfg?.meta, (item) => item?.field === field)?.name;
+
     const currentFormatter = getFieldFormatter(
       spreadsheet,
-      firstCellInfo?.valueField,
+      firstCellInfo.valueField,
     );
-    firstCellInfo.name =
-      metaName || currentFormatter(firstCellInfo.value) || '';
+    const formattedValue = currentFormatter(firstCellInfo.value);
+    const cellName = options.enableFormat
+      ? getFieldName(firstCellInfo.value) || formattedValue
+      : getFieldName(firstCellInfo.valueField);
+
+    firstCellInfo.name = cellName || '';
   } else {
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
     details = getDetailList(spreadsheet, firstCellInfo, options);

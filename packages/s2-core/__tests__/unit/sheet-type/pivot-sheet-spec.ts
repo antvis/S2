@@ -717,8 +717,14 @@ describe('PivotSheet Tests', () => {
     expect(facetDestroySpy).toHaveBeenCalledTimes(1);
     // destroy hdAdapter
     expect(hdAdapterDestroySpy).toHaveBeenCalledTimes(1);
-    // clear all canvas events
+    // clear all sheet events
     expect(s2.getEvents()).toEqual({});
+    // clear all canvas events
+    expect(s2.container.getEvents()).toEqual({});
+    // clear canvas group and shapes
+    expect(s2.container.getChildren()).not.toBeDefined();
+    // destroy canvas
+    expect(s2.container.get('el')).not.toBeDefined();
   });
 
   describe('Test Layout by dataCfg fields', () => {

@@ -44,7 +44,7 @@
     "build:analysis": "cross-env FORMAT=es ANALYSIS=true vite build",
     "build:declaration": "ttsc -p tsconfig-declaration.json",
     "bundle:size": "bundlesize",
-    "watch": "rimraf esm && yarn build:esm -w",
+    "watch": "rimraf esm && concurrently \"yarn build:esm -w\" \"yarn build:declaration -w\"",
     "test": "jest",
     "test:live": "node ./scripts/test-live.mjs",
     "test:coverage": "yarn test --coverage",
@@ -67,6 +67,7 @@
   "devDependencies": {
     "@types/react-beautiful-dnd": "^13.1.2",
     "antd": "^4.16.13",
+    "concurrently": "^7.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },

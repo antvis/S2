@@ -29,10 +29,10 @@ import {
   ThemeCfg,
   ViewMeta,
   S2Theme,
+  DataType,
 } from '@antv/s2';
 import corePkg from '@antv/s2/package.json';
 import { forEach, random } from 'lodash';
-import { DataType } from '@antv/s2';
 import { customTreeFields } from '../__tests__/data/custom-tree-fields';
 import { dataCustomTrees } from '../__tests__/data/data-custom-trees';
 import { mockGridAnalysisDataCfg } from '../__tests__/data/grid-analysis-data';

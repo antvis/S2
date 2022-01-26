@@ -113,6 +113,7 @@ export class HoverEvent extends BaseEvent implements BaseEventImplement {
         enterable: true,
         hideSummary: true,
         showSingleTips,
+        enableFormat: this.spreadsheet.isPivotMode(),
       };
       const data = this.getCellInfo(meta, showSingleTips);
       this.spreadsheet.showTooltipWithInfo(event, data, options);

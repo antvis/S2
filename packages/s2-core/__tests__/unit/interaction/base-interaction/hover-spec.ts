@@ -43,7 +43,6 @@ describe('Interaction Hover Tests', () => {
         getActualText: () => '...',
         getFieldValue: () => '',
       } as any);
-    hoverEvent = new HoverEvent(s2 as unknown as SpreadSheet);
     s2.options = {
       interaction: {
         hoverHighlight: true,
@@ -54,6 +53,7 @@ describe('Interaction Hover Tests', () => {
       },
     } as S2Options;
     s2.isTableMode = jest.fn(() => true);
+    hoverEvent = new HoverEvent(s2 as unknown as SpreadSheet);
   });
 
   afterEach(() => {

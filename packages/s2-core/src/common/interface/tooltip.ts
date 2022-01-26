@@ -42,6 +42,7 @@ export interface TooltipOptions {
   isTotals?: boolean;
   showSingleTips?: boolean;
   onlyMenu?: boolean;
+  enableFormat?: boolean;
 }
 
 export interface TooltipSummaryOptions {
