@@ -1,3 +1,21 @@
+# [@antv/s2-v1.7.0](https://github.com/antvis/S2/compare/@antv/s2-v1.6.0...@antv/s2-v1.7.0) (2022-01-24)
+
+
+### Bug Fixes
+
+* **facet:** scroll speed options & pagination totals ([#1031](https://github.com/antvis/S2/issues/1031)) ([2082c22](https://github.com/antvis/S2/commit/2082c22950a0bfb043cfdf8ed37c28328b1e3b93))
+* **facet:** 序号列应早于列头添加到group ([#1040](https://github.com/antvis/S2/issues/1040)) ([0f82076](https://github.com/antvis/S2/commit/0f82076aabfaa874cd0b88f6554da3422676d61a))
+* **interactive:** table move problem ([#1013](https://github.com/antvis/S2/issues/1013)) ([f73a1c9](https://github.com/antvis/S2/commit/f73a1c9cbf5ccbcbe1d01a23e0880f9c8cf45937))
+* **s2-core:** 修复延迟销毁表格时没有移除canvas节点的问题 close [#1011](https://github.com/antvis/S2/issues/1011) ([#1033](https://github.com/antvis/S2/issues/1033)) ([608dc49](https://github.com/antvis/S2/commit/608dc49c54abd7c3cc7d96c2b7285499358a5cfe))
+* **tooltip:** 修复单元格文字过长时 tooltip 显示被截断 close [#1028](https://github.com/antvis/S2/issues/1028) ([#1034](https://github.com/antvis/S2/issues/1034)) ([4e654e7](https://github.com/antvis/S2/commit/4e654e78d34fdcddb2176fb88c802ffd679cf9c0))
+* **tooltip:** 修复明细表列头的 tooltip 内容被错误的格式化 close [#998](https://github.com/antvis/S2/issues/998) ([#1036](https://github.com/antvis/S2/issues/1036)) ([279458d](https://github.com/antvis/S2/commit/279458de7167068194010473f6994ae5e19024c0))
+
+
+### Features
+
+* 完善交叉表分页功能 ([#1037](https://github.com/antvis/S2/issues/1037)) ([9c8657d](https://github.com/antvis/S2/commit/9c8657d8c711057a88b19dd1fd1705655b86a94e))
+* 支持配置前端计算小计/总计 ([#921](https://github.com/antvis/S2/issues/921)) ([999cfc1](https://github.com/antvis/S2/commit/999cfc1a522a8d1f2331c28be23a21fa31da3b5a))
+
 # [@antv/s2-v1.6.0](https://github.com/antvis/S2/compare/@antv/s2-v1.5.0...@antv/s2-v1.6.0) (2022-01-14)
 
 
