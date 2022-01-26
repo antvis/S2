@@ -11,9 +11,14 @@ import {
 } from 'lodash';
 import { DefaultCellTheme } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
-import { DataCell } from '@/cell/data-cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
-import { CellCfg, Condition, MultiData, ViewMeta } from '@/common/interface';
+import {
+  CellCfg,
+  Condition,
+  MultiData,
+  S2CellType,
+  ViewMeta,
+} from '@/common/interface';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -299,11 +304,19 @@ const getTextStyle = (
 /**
  * @desc draw text shape of object
  * @param cell
+ * @multiData 自定义文本内容
+ * @disabledConditions 是否禁用条件格式
  */
-export const drawObjectText = (cell: DataCell) => {
+export const drawObjectText = (
+  cell: S2CellType,
+  multiData?: MultiData,
+  disabledConditions?: boolean,
+) => {
   const { x, y, height, width } = cell.getContentArea();
-  const text = cell.getMeta().fieldValue as MultiData;
+  const text = multiData || (cell.getMeta().fieldValue as MultiData);
   const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
+  const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
+
   const widthPercentCfg = valuesCfg?.widthPercentCfg;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
 
@@ -347,10 +360,10 @@ export const drawObjectText = (cell: DataCell) => {
       const curStyle = getTextStyle(
         i,
         j,
-        cell?.getMeta(),
+        cell?.getMeta() as ViewMeta,
         curText,
         dataCellStyle,
-        valuesCfg?.conditions?.text,
+        textCondition,
       );
       curWidth = !isEmpty(widthPercentCfg)
         ? totalTextWidth * (widthPercentCfg[j] / 100)
@@ -380,12 +393,7 @@ export const drawObjectText = (cell: DataCell) => {
  */
 export const getCellWidth = (cellCfg: CellCfg) => {
   const { width } = cellCfg;
-  let cellWidth = width;
-  // 以第一行为准
-  const fieldLabels = cellCfg?.valuesCfg?.fieldLabels?.[0];
-  // 一个单元格中绘制多个指标的情况，cellCfg 的宽度作为单个指标的宽度，整体单元格宽度需要考虑指标个数
-  if (!isEmpty(fieldLabels)) {
-    cellWidth = fieldLabels.length * width;
-  }
+  const cellWidth = width;
+  // TODO 根据当前列的指标个数返回列宽
   return cellWidth;
 };

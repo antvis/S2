@@ -5,8 +5,9 @@ import {
   ViewMeta,
   ColHeaderConfig,
   Node,
+  MultiData,
 } from '@antv/s2';
-import { isEmpty, size } from 'lodash';
+import { forEach, forIn, get, isEmpty, isObject, max, size } from 'lodash';
 import { BaseSheet } from '../base-sheet';
 import { StrategyTheme } from './strategy-theme';
 import { RowTooltip } from './custom-tooltip/custom-row-tooltip';
@@ -22,7 +23,6 @@ import { SheetComponentsProps } from '@/components/sheets/interface';
  * 2. 单指标时数值置于列头，且隐藏指标列头
  * 3. 多指标时数值置于行头，不隐藏指标列头
  */
-
 export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
   (props) => {
     const { options, themeCfg, dataCfg, ...restProps } = props;
@@ -31,6 +31,24 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const s2ThemeCfg = React.useMemo(() => {
       return customMerge({}, themeCfg, { theme: StrategyTheme });
     }, [themeCfg]);
+
+    const getCellWidth = () => {
+      const { data } = dataCfg;
+      const lengths = [];
+      // 采样前50，根据指标个数获取单元格列宽
+      // TODO 动态根据内容来计算列宽
+      const demoData = data.slice(0, 50) || [];
+      forEach(demoData, (value) => {
+        forIn(value, (v: MultiData) => {
+          if (isObject(v) && v?.values) {
+            lengths.push(size(v?.values[0]));
+          }
+        });
+      });
+      const maxLength = max(lengths) || 1;
+      const cellWidth = get(options, 'style.cellCfg.width', 0);
+      return maxLength * cellWidth;
+    };
 
     const strategySheetOptions = React.useMemo(() => {
       if (isEmpty(dataCfg)) {
@@ -69,6 +87,9 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           colCfg: {
             height: 38,
             hideMeasureColumn,
+          },
+          cellCfg: {
+            width: getCellWidth(),
           },
         },
         interaction: {

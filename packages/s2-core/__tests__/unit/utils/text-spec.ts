@@ -109,18 +109,12 @@ describe('Text Utils Tests', () => {
   );
 
   test('should get correct cell width', () => {
-    const singleCellCfg = {
+    const cellCfg = {
       width: 90,
     };
-    const multiCellCfg = {
-      width: 90,
-      valuesCfg: {
-        fieldLabels: [['指标', '同比']],
-      },
-    };
-    const singleWidth = getCellWidth(singleCellCfg);
-    const multiWidth = getCellWidth(multiCellCfg);
-    expect(singleWidth).toEqual(90);
-    expect(multiWidth).toEqual(180);
+
+    const width = getCellWidth(cellCfg);
+
+    expect(width).toEqual(90);
   });
 });

@@ -41,10 +41,11 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
               const isUp = isUpDataValue(derivedValue);
               const isDown = !isNormal && !isUp;
 
+              // TODO 需要适配下指标名
               return (
                 <li className={styles.value} key={i}>
                   <span className={styles.derivedValueLabel}>
-                    {valuesCfg?.fieldLabels?.[0][i + 1]}
+                    {/* {valuesCfg?.fieldLabels?.[0][i + 1]} */}
                   </span>
                   <span
                     className={cls(styles.derivedValueGroup, {

@@ -40,7 +40,7 @@ import {
   singleMeasure,
   multiMeasure,
   customTree,
-} from '../__tests__/data/strategy-data.json';
+} from '../__tests__/data/strategy-data';
 import reactPkg from '../package.json';
 import {
   pivotSheetDataCfg,
