@@ -31,9 +31,10 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const s2ThemeCfg = React.useMemo(() => {
       return customMerge({}, themeCfg, { theme: StrategyTheme });
     }, [themeCfg]);
-    const lengths = [];
+
     const getCellWidth = () => {
       const { data } = dataCfg;
+      const lengths = [];
       // 采样前50，根据指标个数获取单元格列宽
       // TODO 动态根据内容来计算列宽
       const demoData = data.slice(0, 50) || [];
