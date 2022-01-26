@@ -1,4 +1,4 @@
-import { VALUE_FIELD } from '../../common/constant/basic';
+import { VALUE_FIELD } from '@/common/constant/basic';
 import { copyToClipboard } from '@/utils/export';
 import { CellMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
@@ -17,12 +17,10 @@ const newTab = '\t';
 
 const getColNodeField = (spreadsheet: SpreadSheet, id: string) => {
   const colNode = spreadsheet.getColumnNodes().find((col) => col.id === id);
-  if (spreadsheet.isTableMode()) {
-    return colNode?.field;
-  }
   if (spreadsheet.isPivotMode()) {
     return colNode?.value;
   }
+  return colNode?.field;
 };
 
 const getFiledIdFromMeta = (meta: CellMeta, spreadsheet: SpreadSheet) => {
@@ -52,11 +50,7 @@ const getValueFromMeta = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
 ) => {
-  if (spreadsheet.isTableMode()) {
-    const fieldId = getFiledIdFromMeta(meta, spreadsheet);
-    return displayData[meta.rowIndex][fieldId];
-  }
-  if (spreadsheet.isPivotMode) {
+  if (spreadsheet.isPivotMode()) {
     const [rowNode, colNode] = getHeaderNodeFromMeta(meta, spreadsheet);
     const cell = spreadsheet.dataSet.getCellData({
       query: {
@@ -67,6 +61,8 @@ const getValueFromMeta = (
     });
     return cell[VALUE_FIELD];
   }
+  const fieldId = getFiledIdFromMeta(meta, spreadsheet);
+  return displayData[meta.rowIndex][fieldId];
 };
 
 const format = (
@@ -130,56 +126,115 @@ export const getTwoDimData = (cells: CellMeta[]) => {
   return twoDimDataArray;
 };
 
+const processTableColSelected = (
+  displayData: DataType[],
+  spreadsheet: SpreadSheet,
+  selectedCols: CellMeta[],
+) => {
+  const selectedFiled = selectedCols.length
+    ? selectedCols.map((e) => getColNodeField(spreadsheet, e.id))
+    : spreadsheet.dataCfg.fields.columns;
+  return displayData
+    .map((row) => {
+      return selectedFiled
+        .map((filed) => convertString(row[filed]))
+        .join(newTab);
+    })
+    .join(newLine);
+};
+
+const processPivotColSelected = (
+  spreadsheet: SpreadSheet,
+  selectedCols: CellMeta[],
+) => {
+  const allRowLeafNodes = spreadsheet
+    .getRowNodes()
+    .filter((node) => node.isLeaf);
+  const allColLeafNodes = spreadsheet
+    .getColumnNodes()
+    .filter((node) => node.isLeaf);
+
+  const colNodes = selectedCols.length
+    ? selectedCols.reduce((arr, e) => {
+        arr.push(...allColLeafNodes.filter((node) => node.id.startsWith(e.id)));
+        return arr;
+      }, [])
+    : allColLeafNodes;
+  return allRowLeafNodes
+    .map((rowNode) => {
+      return colNodes
+        .map((colNode) => {
+          const cellData = spreadsheet.dataSet.getCellData({
+            query: {
+              ...rowNode.query,
+              ...colNode.query,
+            },
+            rowNode,
+          });
+          return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
+        })
+        .join(newTab);
+    })
+    .join(newLine);
+};
 const processColSelected = (
   displayData: DataType[],
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
 ) => {
-  if (spreadsheet.isTableMode()) {
-    const selectedFiled = selectedCols.length
-      ? selectedCols.map((e) => getColNodeField(spreadsheet, e.id))
-      : spreadsheet.dataCfg.fields.columns;
-    return displayData
-      .map((row) => {
-        return selectedFiled
-          .map((filed) => convertString(row[filed]))
-          .join(newTab);
-      })
-      .join(newLine);
-  }
   if (spreadsheet.isPivotMode()) {
-    const allRowLeafNodes = spreadsheet
-      .getRowNodes()
-      .filter((node) => node.isLeaf);
-    const allColLeafNodes = spreadsheet
-      .getColumnNodes()
-      .filter((node) => node.isLeaf);
-
-    const colNodes = selectedCols.length
-      ? selectedCols.reduce((arr, e) => {
-          arr.push(
-            ...allColLeafNodes.filter((node) => node.id.startsWith(e.id)),
-          );
-          return arr;
-        }, [])
-      : allColLeafNodes;
-    return allRowLeafNodes
-      .map((rowNode) => {
-        return colNodes
-          .map((colNode) => {
-            const cellData = spreadsheet.dataSet.getCellData({
-              query: {
-                ...rowNode.query,
-                ...colNode.query,
-              },
-              rowNode,
-            });
-            return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
-          })
-          .join(newTab);
-      })
-      .join(newLine);
+    return processPivotColSelected(spreadsheet, selectedCols);
   }
+  return processTableColSelected(displayData, spreadsheet, selectedCols);
+};
+
+const processTableRowSelected = (
+  displayData: DataType[],
+  spreadsheet: SpreadSheet,
+  selectedRows: CellMeta[],
+) => {
+  const selectedIndex = selectedRows.map((e) => e.rowIndex);
+  return displayData
+    .filter((e, i) => selectedIndex.includes(i))
+    .map((e) =>
+      Object.keys(e)
+        .map((key) => convertString(e[key]))
+        .join(newTab),
+    )
+    .join(newLine);
+};
+
+const processPivotRowSelected = (
+  displayData: DataType[],
+  spreadsheet: SpreadSheet,
+  selectedRows: CellMeta[],
+) => {
+  const allRowLeafNodes = spreadsheet
+    .getRowNodes()
+    .filter((node) => node.isLeaf);
+  const allColLeafNodes = spreadsheet
+    .getColumnNodes()
+    .filter((node) => node.isLeaf);
+  const rowNodes = selectedRows.reduce((arr, e) => {
+    arr.push(...allRowLeafNodes.filter((node) => node.id.startsWith(e.id)));
+    return arr;
+  }, []);
+  return rowNodes
+    .map((rowNode) =>
+      allColLeafNodes
+        .map((colNode) => {
+          const cellData = spreadsheet.dataSet.getCellData({
+            query: {
+              ...rowNode.query,
+              ...colNode.query,
+            },
+            rowNode,
+          });
+          return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
+        })
+        .join(newTab),
+    )
+    .join(newLine);
 };
 
 const processRowSelected = (
@@ -187,45 +242,10 @@ const processRowSelected = (
   spreadsheet: SpreadSheet,
   selectedRows: CellMeta[],
 ) => {
-  if (spreadsheet.isTableMode()) {
-    const selectedIndex = selectedRows.map((e) => e.rowIndex);
-    return displayData
-      .filter((e, i) => selectedIndex.includes(i))
-      .map((e) =>
-        Object.keys(e)
-          .map((key) => convertString(e[key]))
-          .join(newTab),
-      )
-      .join(newLine);
-  }
   if (spreadsheet.isPivotMode()) {
-    const allRowLeafNodes = spreadsheet
-      .getRowNodes()
-      .filter((node) => node.isLeaf);
-    const allColLeafNodes = spreadsheet
-      .getColumnNodes()
-      .filter((node) => node.isLeaf);
-    const rowNodes = selectedRows.reduce((arr, e) => {
-      arr.push(...allRowLeafNodes.filter((node) => node.id.startsWith(e.id)));
-      return arr;
-    }, []);
-    return rowNodes
-      .map((rowNode) => {
-        return allColLeafNodes
-          .map((colNode) => {
-            const cellData = spreadsheet.dataSet.getCellData({
-              query: {
-                ...rowNode.query,
-                ...colNode.query,
-              },
-              rowNode,
-            });
-            return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
-          })
-          .join(newTab);
-      })
-      .join(newLine);
+    return processPivotRowSelected(displayData, spreadsheet, selectedRows);
   }
+  return processTableRowSelected(displayData, spreadsheet, selectedRows);
 };
 
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
