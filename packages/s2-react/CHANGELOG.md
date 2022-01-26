@@ -1,3 +1,39 @@
+# [@antv/s2-react-v1.8.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.7.0...@antv/s2-react-v1.8.0-alpha.1) (2022-01-26)
+
+
+### Bug Fixes
+
+* 🐛 修复趋势分析表和网格分析表无法自定义主题 ([#927](https://github.com/antvis/S2/issues/927)) ([59dc814](https://github.com/antvis/S2/commit/59dc814e9e3b63229a76009a803dfac1dbe9c9c0))
+* bug: 修复趋势分析表自定义目录树渲染出错的问题 ([12a652a](https://github.com/antvis/S2/commit/12a652a47ea5b1188b894fc30b2e8cab06b02e77))
+* **drilldown:** 修复clearDrillDown下钻清除错误及重渲逻辑 ([#1023](https://github.com/antvis/S2/issues/1023)) ([63c94c3](https://github.com/antvis/S2/commit/63c94c3bb061cd1c7619c2d19ee710cecc0ad10e))
+* **s2-react:** 修复 hierarchyType 切换导致的渲染问题 ([#984](https://github.com/antvis/S2/issues/984)) ([34f6dd4](https://github.com/antvis/S2/commit/34f6dd4373991aed23a6f5340fc4dcc5e27ef91e))
+* **startegysheet:** 趋势分析表列头文字根据数值坐标动态计算 ([#929](https://github.com/antvis/S2/issues/929)) ([38af37e](https://github.com/antvis/S2/commit/38af37ecc1dc5b27493d41aab195f894c7b542e2))
+* **strategy-sheet:** 修复衍生指标颜色,图标显示不正确 & tooltip 不显示指标名 ([#1024](https://github.com/antvis/S2/issues/1024)) ([1f67fc0](https://github.com/antvis/S2/commit/1f67fc0ac6dcf7525c9b8080f74896c1df55ce03))
+* **stratgysheet:** 逻辑兜底 ([ca8ea28](https://github.com/antvis/S2/commit/ca8ea28d13d51decff6a975ca517cc769db652ba))
+* **useResize:** :bug: 修复自适应模式下重复渲染问题 ([#991](https://github.com/antvis/S2/issues/991)) ([1b8ab5c](https://github.com/antvis/S2/commit/1b8ab5cb931e67e5bd2db5297c7a1e813e8c96aa))
+* 下钻参数变更后未正确重置 ([#1015](https://github.com/antvis/S2/issues/1015)) ([c922cd2](https://github.com/antvis/S2/commit/c922cd26e9dc64a4d196679a44707c7c85ed4027))
+* 修复多指标情况下自定义树展示不全的问题 ([#986](https://github.com/antvis/S2/issues/986)) ([087e8e2](https://github.com/antvis/S2/commit/087e8e2ab1958ef708f4731185caf5f34583b831))
+* 修复未配置 label时, hover 数值单元格报错, 并且列头文字上移的问题 ([#946](https://github.com/antvis/S2/issues/946)) ([d84cf75](https://github.com/antvis/S2/commit/d84cf757252949ac84c1adbf6193683c4ec0a350))
+* 修复错误版本号 ([0a79d09](https://github.com/antvis/S2/commit/0a79d099721256b3d3295601d1b2a5e9850ea858))
+* 修复高度自适应死循环问题 ([#1007](https://github.com/antvis/S2/issues/1007)) ([6fff9a0](https://github.com/antvis/S2/commit/6fff9a0511f042ee17eed7abb8af7e53233a0b66))
+* 列宽计算适配多指标情况 ([#996](https://github.com/antvis/S2/issues/996)) ([e1d9c0f](https://github.com/antvis/S2/commit/e1d9c0f305ee6c2bc3d1f9235afffc8b87840bd8))
+* 加载下钻数据引起render死循环 ([#1010](https://github.com/antvis/S2/issues/1010)) ([b784268](https://github.com/antvis/S2/commit/b78426857882fb255e5621606dd52dd50c4d21c9))
+* 自定义目录树切换优化 ([#964](https://github.com/antvis/S2/issues/964)) ([6957795](https://github.com/antvis/S2/commit/695779573dbca5f8481accdc996b61968959b36e))
+
+
+### Features
+
+* ✨ init strategy sheet ([#897](https://github.com/antvis/S2/issues/897)) ([481385b](https://github.com/antvis/S2/commit/481385b92f0693bdf003db63031dc9ed8befd35d))
+* ✨ 增加对象型数值单元格宽度和文本条件的映射 ([#916](https://github.com/antvis/S2/issues/916)) ([b94cf36](https://github.com/antvis/S2/commit/b94cf36f2e076d6fa7856d6ac8e71a8685cb3b0b))
+* **interaction:** 支持禁用刷选功能 ([#908](https://github.com/antvis/S2/issues/908)) ([ea63461](https://github.com/antvis/S2/commit/ea63461fb0a108a823d9c572fa15a10e1500ba38))
+* **interaction:** 新增 hoverFocus 配置项 ([#944](https://github.com/antvis/S2/issues/944)) ([e4f82c0](https://github.com/antvis/S2/commit/e4f82c02823a908378847e7b5e44fa3d150d36db))
+* **interaction:** 透视表支持隐藏列头 ([#890](https://github.com/antvis/S2/issues/890)) ([ee938d6](https://github.com/antvis/S2/commit/ee938d6e43a703ef9b3b1a86a0c44dce9d833984)), closes [#892](https://github.com/antvis/S2/issues/892)
+* **strategy-sheet:** 自定义趋势分析表 tooltip ([#905](https://github.com/antvis/S2/issues/905)) ([eb02845](https://github.com/antvis/S2/commit/eb0284559bb3fb179e5e1a89e5b27cb8b080fcb8))
+* **strategy-sheet:** 趋势分析表禁用多选和快捷多选 ([#919](https://github.com/antvis/S2/issues/919)) ([9b840ad](https://github.com/antvis/S2/commit/9b840ada180e75ab8413f435416e6ced1636bfd6))
+* 新增字段描述功能 ([#925](https://github.com/antvis/S2/issues/925)) ([e37d561](https://github.com/antvis/S2/commit/e37d561e9effe78e5ac1cebba21fa2ecee246fb1))
+* 新增趋势分析表hover列头显示指标名 ([#913](https://github.com/antvis/S2/issues/913)) ([4ff9373](https://github.com/antvis/S2/commit/4ff9373d1094150883c0554e636fac1bca4104c7)), closes [#898](https://github.com/antvis/S2/issues/898) [#902](https://github.com/antvis/S2/issues/902) [#907](https://github.com/antvis/S2/issues/907) [#910](https://github.com/antvis/S2/issues/910)
+* 趋势分析表列头支持多文本展示 ([#1049](https://github.com/antvis/S2/issues/1049)) ([7df40f7](https://github.com/antvis/S2/commit/7df40f76cf00ef3736b7cc67634eb682de6a93e2))
+
 # [@antv/s2-react-v1.7.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-react-v1.7.0-alpha.4...@antv/s2-react-v1.7.0-alpha.5) (2022-01-26)
 
 
