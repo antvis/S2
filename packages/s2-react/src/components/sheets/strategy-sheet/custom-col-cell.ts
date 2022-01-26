@@ -1,6 +1,6 @@
 import { drawObjectText } from '@antv/s2';
 import { ColCell, Node, SpreadSheet, ColHeaderConfig } from '@antv/s2';
-import { includes, split } from 'lodash';
+import { isArray, split } from 'lodash';
 
 /**
  * Cell for StrategySheet
@@ -18,11 +18,19 @@ export class CustomColCell extends ColCell {
     super(meta, spreadsheet, headerConfig);
   }
 
+  protected safeJsonParse(val: string) {
+    try {
+      return [JSON.parse(val)];
+    } catch (err) {
+      return false;
+    }
+  }
+
   protected drawTextShape() {
     const fieldValue = this.getMeta()?.value;
-    if (includes(fieldValue, ',')) {
-      const values = split(fieldValue, ',');
-      drawObjectText(this, { values: [values] }, true);
+    const values = this.safeJsonParse(fieldValue);
+    if (isArray(values)) {
+      drawObjectText(this, { values }, true);
     } else {
       super.drawTextShape();
     }
