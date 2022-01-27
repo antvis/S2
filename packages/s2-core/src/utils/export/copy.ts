@@ -4,6 +4,7 @@ import { CellMeta } from '@/common/interface';
 import { SpreadSheet } from '@/sheet-type';
 import { CellTypes, InteractionStateName } from '@/common/constant/interaction';
 import { DataType } from '@/data-set/interface';
+import { Node } from '@/facet/layout/node';
 
 export function keyEqualTo(key: string, compareKey: string) {
   if (!key || !compareKey) {
@@ -143,6 +144,29 @@ const processTableColSelected = (
     .join(newLine);
 };
 
+const getPivotCopyData = (
+  spreadsheet: SpreadSheet,
+  leafRows: Node[],
+  leafCols: Node[],
+) => {
+  return leafRows
+    .map((rowNode) =>
+      leafCols
+        .map((colNode) => {
+          const cellData = spreadsheet.dataSet.getCellData({
+            query: {
+              ...rowNode.query,
+              ...colNode.query,
+            },
+            rowNode,
+          });
+          return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
+        })
+        .join(newTab),
+    )
+    .join(newLine);
+};
+
 const processPivotColSelected = (
   spreadsheet: SpreadSheet,
   selectedCols: CellMeta[],
@@ -160,22 +184,7 @@ const processPivotColSelected = (
         return arr;
       }, [])
     : allColLeafNodes;
-  return allRowLeafNodes
-    .map((rowNode) => {
-      return colNodes
-        .map((colNode) => {
-          const cellData = spreadsheet.dataSet.getCellData({
-            query: {
-              ...rowNode.query,
-              ...colNode.query,
-            },
-            rowNode,
-          });
-          return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
-        })
-        .join(newTab);
-    })
-    .join(newLine);
+  return getPivotCopyData(spreadsheet, allRowLeafNodes, colNodes);
 };
 const processColSelected = (
   displayData: DataType[],
@@ -190,7 +199,6 @@ const processColSelected = (
 
 const processTableRowSelected = (
   displayData: DataType[],
-  spreadsheet: SpreadSheet,
   selectedRows: CellMeta[],
 ) => {
   const selectedIndex = selectedRows.map((e) => e.rowIndex);
@@ -205,7 +213,6 @@ const processTableRowSelected = (
 };
 
 const processPivotRowSelected = (
-  displayData: DataType[],
   spreadsheet: SpreadSheet,
   selectedRows: CellMeta[],
 ) => {
@@ -219,22 +226,7 @@ const processPivotRowSelected = (
     arr.push(...allRowLeafNodes.filter((node) => node.id.startsWith(e.id)));
     return arr;
   }, []);
-  return rowNodes
-    .map((rowNode) =>
-      allColLeafNodes
-        .map((colNode) => {
-          const cellData = spreadsheet.dataSet.getCellData({
-            query: {
-              ...rowNode.query,
-              ...colNode.query,
-            },
-            rowNode,
-          });
-          return getFormat(colNode.id, spreadsheet)(cellData[VALUE_FIELD]);
-        })
-        .join(newTab),
-    )
-    .join(newLine);
+  return getPivotCopyData(spreadsheet, rowNodes, allColLeafNodes);
 };
 
 const processRowSelected = (
@@ -243,9 +235,9 @@ const processRowSelected = (
   selectedRows: CellMeta[],
 ) => {
   if (spreadsheet.isPivotMode()) {
-    return processPivotRowSelected(displayData, spreadsheet, selectedRows);
+    return processPivotRowSelected(spreadsheet, selectedRows);
   }
-  return processTableRowSelected(displayData, spreadsheet, selectedRows);
+  return processTableRowSelected(displayData, selectedRows);
 };
 
 export const getSelectedData = (spreadsheet: SpreadSheet) => {
