@@ -1,4 +1,6 @@
-export const singleMeasure = {
+import type { S2DataConfig } from '@antv/s2';
+
+export const singleMeasure: S2DataConfig = {
   fields: {
     rows: ['province', 'city'],
     columns: ['date'],
@@ -318,7 +320,7 @@ export const singleMeasure = {
   ],
 };
 
-export const multiMeasure = {
+export const multiMeasure: S2DataConfig = {
   fields: {
     rows: ['province', 'city'],
     columns: ['date'],
@@ -644,7 +646,7 @@ export const multiMeasure = {
   ],
 };
 
-export const customTree = {
+export const customTree: S2DataConfig = {
   data: [
     {
       'measure-a': {
@@ -662,7 +664,7 @@ export const customTree = {
       'measure-d': 4,
       'measure-e': 5,
       'measure-f': 6,
-      type: '2021',
+      date: '2021',
       sub_type: JSON.stringify(['数值', '环比', '同比']),
     },
     {
@@ -672,13 +674,19 @@ export const customTree = {
       'measure-d': 43,
       'measure-e': 45,
       'measure-f': 65,
-      type: '家具',
-      sub_type: '椅子',
+      date: '2022',
+      sub_type: JSON.stringify(['数值', '环比', '同比']),
+    },
+  ],
+  meta: [
+    {
+      field: 'date',
+      name: '时间',
     },
   ],
   fields: {
     rows: [],
-    columns: ['type', 'sub_type'],
+    columns: ['date', 'sub_type'],
     values: [
       'measure-a',
       'measure-b',

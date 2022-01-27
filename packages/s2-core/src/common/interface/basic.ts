@@ -280,8 +280,6 @@ export interface CellCfg {
     widthPercentCfg?: number[];
     // 条件格式
     conditions?: { text: Condition };
-    // 与 MultiData 二位数组一一对应的数值标题
-    fieldLabels?: string[][];
   };
 }
 

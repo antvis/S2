@@ -10,15 +10,40 @@ import styles from './index.module.less';
 
 export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const meta = cell.getMeta();
-  const currentRow = find(meta.spreadsheet.getRowNodes(), {
-    rowIndex: meta.rowIndex,
-  });
+
+  const currentRow = React.useMemo(
+    () =>
+      find(meta.spreadsheet.getRowNodes(), {
+        rowIndex: meta.rowIndex,
+      }),
+    [meta],
+  );
+
+  const currentLeafCol = React.useMemo(
+    () =>
+      find(meta.spreadsheet.getColumnNodes(), {
+        colIndex: meta.colIndex,
+        isLeaf: true,
+      }),
+    [meta],
+  );
+
+  const [, ...derivedLabels] = React.useMemo(() => {
+    try {
+      return JSON.parse(currentLeafCol.value);
+    } catch {
+      return [];
+    }
+  }, [currentLeafCol.value]);
+
   const rowName = meta.spreadsheet.dataSet.getFieldName(
     currentRow?.valueFiled || currentRow?.value,
   );
+
   const [value, ...derivedValues] = first(
     (meta.fieldValue as MultiData)?.values,
   ) || [meta.fieldValue];
+
   const { placeholder, style } = meta.spreadsheet.options;
   const valuesCfg = style.cellCfg?.valuesCfg;
   const originalValue = get(meta.fieldValue, valuesCfg?.originalValueField);
@@ -41,11 +66,10 @@ export const DataTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
               const isUp = isUpDataValue(derivedValue);
               const isDown = !isNormal && !isUp;
 
-              // TODO 需要适配下指标名
               return (
                 <li className={styles.value} key={i}>
                   <span className={styles.derivedValueLabel}>
-                    {/* {valuesCfg?.fieldLabels?.[0][i + 1]} */}
+                    {derivedLabels[i]}
                   </span>
                   <span
                     className={cls(styles.derivedValueGroup, {

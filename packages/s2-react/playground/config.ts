@@ -16,7 +16,6 @@ export const defaultTheme = {
   rowCell: {
     cell: {
       backgroundColor: BASIC_BACKGROUND_COLOR,
-
       interactionState: {
         hover: {
           backgroundColor: INTERACTIVE_BACKGROUND_COLOR,
@@ -121,6 +120,7 @@ export const strategyOptions: S2Options = {
         originalValueField: 'originalValue',
         conditions: {
           text: {
+            field: 'number',
             mapping: (value, cellInfo) => {
               const { colIndex } = cellInfo;
               const isNormalValue = isNil(value);
@@ -153,6 +153,7 @@ export const mockGridAnalysisOptions: S2Options = {
         widthPercentCfg: [40, 20, 20, 20],
         conditions: {
           text: {
+            field: 'number',
             mapping: (value, cellInfo) => {
               const { colIndex } = cellInfo;
               if (colIndex <= 1) {
