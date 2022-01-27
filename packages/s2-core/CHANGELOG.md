@@ -1,3 +1,10 @@
+# [@antv/s2-v1.8.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.8.0-alpha.1...@antv/s2-v1.8.0-alpha.2) (2022-01-27)
+
+
+### Bug Fixes
+
+* **strategy-sheet:** 修复趋势分析表多列头时 tooltip 不显示指标名 ([d01ba98](https://github.com/antvis/S2/commit/d01ba98cd8eedc8347ddce9a988ca9f7a2a25d73))
+
 # [@antv/s2-v1.8.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.7.0...@antv/s2-v1.8.0-alpha.1) (2022-01-26)
 
 
