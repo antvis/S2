@@ -42,6 +42,7 @@ type MappingFunction = (
 
   // 仅用于柱状图字段标记，可选
   isCompare?: boolean;
+  rangeDirection?: 'col' | 'row';
   minValue?: number;
   maxValue?: number;
 } | null| undefined // 返回值为空时，表示当前字段不显示字段标记样式

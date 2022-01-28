@@ -21,6 +21,8 @@ import {
   ViewMeta,
   ViewMetaIndexType,
   CellBorderPosition,
+  ValueRange,
+  RangeDirection,
 } from '@/common/interface';
 import { getMaxTextWidth, getBorderPositionAndStyle } from '@/utils/cell/cell';
 import { includeCell } from '@/utils/cell/data-cell';
@@ -282,9 +284,31 @@ export class DataCell extends BaseCell<ViewMeta> {
       if (!attrs) {
         return;
       }
-      const { minValue, maxValue } = attrs.isCompare
-        ? attrs
-        : this.spreadsheet.dataSet.getValueRangeByField(this.meta.valueField);
+
+      let valueRange: ValueRange = {};
+      if (attrs.isCompare) {
+        if (
+          attrs.rangeDirection === RangeDirection.COL ||
+          attrs.rangeDirection === RangeDirection.ROW
+        ) {
+          // 计算单元格所在行或列的最大最小值
+          valueRange = this.spreadsheet.dataSet.getRowColValueRangeByCell(
+            this.meta,
+            attrs.rangeDirection,
+          );
+        } else {
+          // 自定义最大最小值
+          valueRange = { minValue: attrs.minValue, maxValue: attrs.maxValue };
+        }
+      } else {
+        // 计算 this.meta.fieldValue 所有值的最大最小值
+        valueRange = this.spreadsheet.dataSet.getValueRangeByField(
+          this.meta.valueField,
+        );
+      }
+      const minValue = valueRange?.minValue;
+      const maxValue = valueRange?.maxValue;
+
       const fieldValue = parseNumberWithPrecision(
         this.meta.fieldValue as number,
       );

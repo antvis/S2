@@ -100,6 +100,7 @@ const s2options = {
 | isCompare |仅用于**柱状图**字段标记，当为 `true` 时，可以定制柱状图的最大最小值 |`boolean`| -      |      |
 | minValue | 仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图最小值  |`number` | -      |      |
 | maxValue |  仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制柱状图最大值 |`number` | -      |      |
+| rangeDirection | 仅用于**柱状图**字段标记且 `isCompare` 为 `true` 时，定制每列或行的柱状图有独立的最大最小值  |`'col'` &#124; `'row'`| -      |      |
 
 > 如果`mapping`函数返回值为空，则表明不渲染该单元格的字段标记
 

@@ -7,6 +7,13 @@ export interface ValueRange {
 
 export type ValueRanges = Record<string, ValueRange>;
 
+export enum RangeDirection {
+  // 计算行的最大最小值
+  COL = 'col',
+  // 计算列的最大最小值
+  ROW = 'row',
+}
+
 export interface MappingResult extends ValueRange {
   // only used in icon condition
   icon?: string;
@@ -14,6 +21,8 @@ export interface MappingResult extends ValueRange {
   fill: string;
   // only used in interval condition
   isCompare?: boolean;
+  // only used in interval condition
+  rangeDirection?: RangeDirection;
 }
 
 export type MappingFunction = (

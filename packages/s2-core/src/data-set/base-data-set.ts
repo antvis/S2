@@ -17,8 +17,7 @@ import {
   S2DataConfig,
   SortParams,
 } from '../common/interface';
-import { ValueRange } from './../common/interface/condition';
-import { ViewMeta } from '@/common/interface';
+import { ValueRange, ViewMeta, RangeDirection } from '@/common/interface';
 import { CellDataParams, DataType } from '@/data-set/interface';
 import { SpreadSheet } from '@/sheet-type';
 import {
@@ -115,6 +114,49 @@ export abstract class BaseDataSet {
     setValueRangeState(this.spreadsheet, {
       [field]: range,
     });
+    return range;
+  }
+
+  /**
+   * 计算单元格所在行或列的最大最小值，并将计算结果存入 store
+   * @param cellMeta 单元格信息
+   * @param rangeDirection 行或列
+   * @returns 最大最小值
+   */
+  public getRowColValueRangeByCell(
+    cellMeta: ViewMeta,
+    rangeDirection: RangeDirection,
+  ): ValueRange {
+    const isColRangeType = rangeDirection === RangeDirection.COL;
+    const id = isColRangeType ? cellMeta.colId : cellMeta.rowId;
+    const cacheRange = getValueRangeState(this.spreadsheet, id);
+    if (cacheRange) {
+      return cacheRange;
+    }
+
+    let data = this.originData;
+    const { valueField } = cellMeta;
+    const query = isColRangeType ? cellMeta.colQuery : cellMeta.rowQuery;
+    if (query) {
+      data = this.originData.filter((item) =>
+        Object.keys(query).every((key) => item[key] === query[key]),
+      );
+    }
+    const values = compact(
+      map(data, (item) => {
+        const value = item[valueField];
+        return isNil(value) ? null : Number.parseFloat(value);
+      }),
+    );
+    const range = {
+      maxValue: max(values),
+      minValue: min(values),
+    };
+
+    setValueRangeState(this.spreadsheet, {
+      [id]: range,
+    });
+
     return range;
   }
 
