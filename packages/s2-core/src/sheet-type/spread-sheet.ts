@@ -530,7 +530,9 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initGroups() {
-    const { width, height, supportCSSTransform } = this.options;
+    const MIN_DPR = 1;
+    const { width, height, supportCSSTransform, devicePixelRatio } =
+      this.options;
     // base canvas group
     this.container = new Canvas({
       container: this.dom as HTMLElement,
@@ -538,6 +540,7 @@ export abstract class SpreadSheet extends EE {
       height,
       localRefresh: false,
       supportCSSTransform,
+      pixelRatio: Math.max(devicePixelRatio, MIN_DPR),
     });
 
     // the main three layer groups

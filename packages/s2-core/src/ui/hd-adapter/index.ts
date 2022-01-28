@@ -77,13 +77,18 @@ export class HdAdapter {
     this.renderByDevicePixelRatio();
   };
 
-  private renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
+  private renderByDevicePixelRatio = (ratio?: number) => {
     const {
       container,
-      options: { width, height },
+      options: { width, height, devicePixelRatio },
     } = this.spreadsheet;
 
-    container.set('pixelRatio', ratio);
+    // 缩放时, 以向上取整后的缩放比为准
+    // 设备像素比改变时, 取当前和用户配置中最大的, 保证显示效果
+    const pixelRatio =
+      ratio ?? Math.max(window.devicePixelRatio, devicePixelRatio);
+
+    container.set('pixelRatio', pixelRatio);
     container.changeSize(width, height);
 
     this.spreadsheet.render(false);
@@ -92,7 +97,7 @@ export class HdAdapter {
   private renderByZoomScale = debounce(
     (event: Event & { target: VisualViewport }) => {
       const ratio = Math.ceil(event.target.scale);
-      if (ratio > 1) {
+      if (ratio >= 1) {
         this.renderByDevicePixelRatio(ratio);
       }
     },

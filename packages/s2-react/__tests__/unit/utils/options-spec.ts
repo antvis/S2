@@ -58,6 +58,7 @@ describe('Options Tests', () => {
       frozenTrailingColCount: 0,
       hdAdapter: true,
       supportCSSTransform: false,
+      devicePixelRatio: window.devicePixelRatio,
     });
   });
 

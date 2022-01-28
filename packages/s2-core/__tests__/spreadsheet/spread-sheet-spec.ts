@@ -17,6 +17,11 @@ describe('SpreadSheet Tests', () => {
       container.id = 'container';
       document.body.appendChild(container);
     });
+
+    afterAll(() => {
+      container?.remove();
+    });
+
     test('should init sheet by dom container', () => {
       const mountContainer = document.querySelector('#container');
       const s2 = new PivotSheet(mountContainer, mockDataConfig, s2options);
@@ -49,6 +54,39 @@ describe('SpreadSheet Tests', () => {
       }
 
       expect(init).toThrowError('Target mount container is not a DOM element');
+    });
+
+    // https://github.com/antvis/S2/issues/1050
+    test.each([
+      { devicePixelRatio: 1 },
+      { devicePixelRatio: 2 },
+      { devicePixelRatio: 3 },
+    ])('should render sheet by custom DPR by %s', ({ devicePixelRatio }) => {
+      const s2 = new PivotSheet(container, mockDataConfig, {
+        ...s2options,
+        devicePixelRatio,
+      });
+      s2.render();
+
+      const canvas = s2.container.get('el') as HTMLCanvasElement;
+      expect(canvas.width).toEqual(s2options.width * devicePixelRatio);
+      expect(canvas.height).toEqual(s2options.height * devicePixelRatio);
+      expect(canvas.style.width).toEqual(`${s2options.width}px`);
+      expect(canvas.style.height).toEqual(`${s2options.height}px`);
+    });
+
+    test('should render sheet if custom DPR less than zero', () => {
+      const s2 = new PivotSheet(container, mockDataConfig, {
+        ...s2options,
+        devicePixelRatio: 0,
+      });
+      s2.render();
+
+      const canvas = s2.container.get('el') as HTMLCanvasElement;
+      expect(canvas.width).toEqual(s2options.width);
+      expect(canvas.height).toEqual(s2options.height);
+      expect(canvas.style.width).toEqual(`${s2options.width}px`);
+      expect(canvas.style.height).toEqual(`${s2options.height}px`);
     });
 
     test('should update scroll offset immediately', () => {
