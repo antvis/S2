@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.8.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.2...@antv/s2-react-v1.8.0-alpha.3) (2022-01-28)
+
+
+### Bug Fixes
+
+* **strategy-sheet:** 修复自定义树布局模式下, 获取不到字段描述 ([#1052](https://github.com/antvis/S2/issues/1052)) ([21cc6aa](https://github.com/antvis/S2/commit/21cc6aac7577477dea1d82dc3ddfc315970f03e1))
+
 # [@antv/s2-react-v1.8.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.1...@antv/s2-react-v1.8.0-alpha.2) (2022-01-27)
 
 
