@@ -107,7 +107,7 @@ export const processSort = (params: SortActionParams): string[] => {
   const { sortParam, originValues, measureValues, dataSet } = params;
   const { sortFunc, sortMethod, sortBy } = sortParam;
 
-  let result = [];
+  let result = originValues;
   const sortActionParams = {
     originValues,
     measureValues,
@@ -119,7 +119,7 @@ export const processSort = (params: SortActionParams): string[] => {
   } else if (sortBy) {
     // 自定义列表
     result = sortByCustom({ sortByValues: sortBy, originValues });
-  } else if (sortMethod) {
+  } else if (isAscSort(sortMethod) || isDescSort(sortMethod)) {
     // 如果是升序，需要将无数据的项放到前面
     result = sortByMethod(sortActionParams);
   }
