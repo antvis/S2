@@ -9,7 +9,7 @@ export const ColTooltip: React.FC<CustomTooltipProps> = ({ cell }) => {
   const meta = cell.getMeta();
 
   // 趋势分析表叶子节点显示是指标标题, tooltip 中没必要再显示了
-  if (meta.isLeaf) {
+  if (meta.isLeaf && meta.level !== 0) {
     return null;
   }
 

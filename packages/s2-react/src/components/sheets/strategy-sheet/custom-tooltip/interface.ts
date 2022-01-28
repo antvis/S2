@@ -1,6 +1,6 @@
-import { S2CellType, TooltipShowOptions } from '@antv/s2';
+import { S2CellType, TooltipShowOptions, Node, ViewMeta } from '@antv/s2';
 
 export interface CustomTooltipProps {
-  cell: S2CellType;
+  cell: S2CellType<Node | ViewMeta>;
   defaultTooltipShowOptions?: TooltipShowOptions<React.ReactNode>;
 }
