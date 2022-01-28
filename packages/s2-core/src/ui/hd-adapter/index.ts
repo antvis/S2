@@ -1,4 +1,5 @@
 import { debounce } from 'lodash';
+import { MIN_DEVICE_PIXEL_RATIO } from '@/common/constant/options';
 import { isMobile } from '@/utils/is-mobile';
 import type { SpreadSheet } from '@/sheet-type';
 
@@ -77,7 +78,7 @@ export class HdAdapter {
     this.renderByDevicePixelRatio();
   };
 
-  private renderByDevicePixelRatio = (ratio?: number) => {
+  private renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
     const {
       container,
       options: { width, height, devicePixelRatio },
@@ -85,8 +86,11 @@ export class HdAdapter {
 
     // 缩放时, 以向上取整后的缩放比为准
     // 设备像素比改变时, 取当前和用户配置中最大的, 保证显示效果
-    const pixelRatio =
-      ratio ?? Math.max(window.devicePixelRatio, devicePixelRatio);
+    const pixelRatio = Math.max(
+      ratio,
+      devicePixelRatio,
+      MIN_DEVICE_PIXEL_RATIO,
+    );
 
     container.set('pixelRatio', pixelRatio);
     container.changeSize(width, height);
