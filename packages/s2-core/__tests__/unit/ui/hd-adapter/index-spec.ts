@@ -5,7 +5,8 @@ import { HdAdapter } from '@/ui/hd-adapter';
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 
-describe('HD Adapter Tests', () => {
+// eslint-disable-next-line jest/no-disabled-tests
+describe.skip('HD Adapter Tests', () => {
   const DPR = 2;
 
   let s2: SpreadSheet;

@@ -20,6 +20,7 @@ import {
   KEY_GROUP_FORE_GROUND,
   KEY_GROUP_PANEL_GROUND,
   KEY_GROUP_PANEL_SCROLL,
+  MIN_DEVICE_PIXEL_RATIO,
   PANEL_GROUP_GROUP_CONTAINER_Z_INDEX,
   PANEL_GROUP_SCROLL_GROUP_Z_INDEX,
   S2Event,
@@ -530,7 +531,6 @@ export abstract class SpreadSheet extends EE {
    * @private
    */
   protected initGroups() {
-    const MIN_DPR = 1;
     const { width, height, supportCSSTransform, devicePixelRatio } =
       this.options;
     // base canvas group
@@ -540,7 +540,7 @@ export abstract class SpreadSheet extends EE {
       height,
       localRefresh: false,
       supportCSSTransform,
-      pixelRatio: Math.max(devicePixelRatio, MIN_DPR),
+      pixelRatio: Math.max(devicePixelRatio, MIN_DEVICE_PIXEL_RATIO),
     });
 
     // the main three layer groups

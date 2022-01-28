@@ -133,7 +133,6 @@ const defaultOptions: S2Options = customMerge(
         hiddenColumns: true,
       },
     },
-    devicePixelRatio: 1,
   }),
   playgroundS2Options,
 );
