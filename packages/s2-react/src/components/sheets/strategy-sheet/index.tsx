@@ -6,6 +6,9 @@ import {
   ColHeaderConfig,
   Node,
   MultiData,
+  S2Options,
+  S2DataConfig,
+  ThemeCfg,
 } from '@antv/s2';
 import { forEach, forIn, get, isEmpty, isObject, max, size } from 'lodash';
 import { BaseSheet } from '../base-sheet';
@@ -28,11 +31,11 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const { options, themeCfg, dataCfg, ...restProps } = props;
     const s2Ref = React.useRef<SpreadSheet>();
 
-    const s2ThemeCfg = React.useMemo(() => {
+    const s2ThemeCfg = React.useMemo<ThemeCfg>(() => {
       return customMerge({}, themeCfg, { theme: StrategyTheme });
     }, [themeCfg]);
 
-    const getCellWidth = () => {
+    const getCellWidth = React.useCallback(() => {
       const { data } = dataCfg;
       const lengths = [];
       // 采样前50，根据指标个数获取单元格列宽
@@ -48,14 +51,16 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
       const maxLength = max(lengths) || 1;
       const cellWidth = get(options, 'style.cellCfg.width', 0);
       return maxLength * cellWidth;
-    };
+    }, [dataCfg, options]);
 
-    const strategySheetOptions = React.useMemo(() => {
+    const strategySheetOptions = React.useMemo<
+      Partial<S2Options<React.ReactNode>>
+    >(() => {
       if (isEmpty(dataCfg)) {
         return {};
       }
       let hideMeasureColumn = false;
-      let hierarchyType = 'tree';
+      let hierarchyType: S2Options['hierarchyType'] = 'tree';
 
       // 根据 dataConfig 切换 hierarchyType
       if (
@@ -82,7 +87,6 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
         ) => new CustomColCell(node, spreadsheet, headerConfig),
         showDefaultHeaderActionIcon: false,
         hierarchyType,
-
         style: {
           colCfg: {
             height: 38,
@@ -129,9 +133,9 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
           },
         },
       };
-    }, [dataCfg, options.hierarchyType]);
+    }, [dataCfg, getCellWidth, options.hierarchyType]);
 
-    const s2DataCfg = React.useMemo(() => {
+    const s2DataCfg = React.useMemo<S2DataConfig>(() => {
       const defaultFields = {
         fields: {
           valueInCols: !(size(dataCfg?.fields?.values) > 1), // 多指标数值挂行头，单指标挂列头
@@ -140,7 +144,7 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
       return customMerge({}, dataCfg, defaultFields);
     }, [dataCfg]);
 
-    const s2Options = React.useMemo(() => {
+    const s2Options = React.useMemo<S2Options>(() => {
       return customMerge({}, options, strategySheetOptions);
     }, [options, strategySheetOptions]);
 

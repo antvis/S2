@@ -328,6 +328,10 @@ export const multiMeasure: S2DataConfig = {
   },
   meta: [
     {
+      field: 'date',
+      name: '时间',
+    },
+    {
       field: 'number',
       name: '数量',
       description: '我是数量(number)的字段描述',
@@ -699,24 +703,29 @@ export const customTree: S2DataConfig = {
       {
         key: 'custom-node-1',
         title: '自定义节点A',
+        description: '自定义节点A描述',
         children: [
           {
             key: 'measure-a',
             title: '指标A',
+            description: '指标A描述',
             children: [
               {
                 key: 'measure-b',
                 title: '指标B',
                 children: [],
+                description: '指标B描述',
               },
               {
                 key: 'custom-node-2',
                 title: '自定义节点B',
+                description: '自定义节点B描述',
                 children: [],
               },
               {
                 key: 'measure-c',
                 title: '指标C',
+                description: '指标C描述',
                 children: [],
               },
             ],
@@ -724,6 +733,7 @@ export const customTree: S2DataConfig = {
           {
             key: 'custom-node-5',
             title: '自定义节点E',
+            description: '自定义节点E描述',
             children: [],
           },
         ],
@@ -731,19 +741,23 @@ export const customTree: S2DataConfig = {
       {
         key: 'measure-e',
         title: '指标E',
+        description: '指标E描述',
         children: [
           {
             key: 'custom-node-3',
             title: '自定义节点C',
+            description: '自定义节点C描述',
             children: [],
           },
           {
             key: 'custom-node-4',
             title: '自定义节点D',
+            description: '自定义节点D描述',
             children: [
               {
                 key: 'measure-f',
                 title: '指标F',
+                description: '指标F描述',
                 children: [],
               },
             ],
