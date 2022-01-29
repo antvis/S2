@@ -4,7 +4,7 @@
 import { get, keys } from 'lodash';
 import { assembleDataCfg } from '../../util';
 import { data as drillDownData } from '../../data/mock-drill-down-dataset.json';
-import { ViewMeta } from '@/common/interface';
+import { ViewMeta, SortMethod } from '@/common/interface';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
 import { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
@@ -287,6 +287,26 @@ describe('Pivot Dataset Test', () => {
         '绵阳市',
         '乐山市',
         '成都市',
+      ]);
+      const sortMethod = 'none' as SortMethod;
+      dataCfg.sortParams = [
+        { sortFieldId: 'province', sortMethod },
+        { sortFieldId: 'city', sortMethod },
+      ];
+      dataSet.setDataCfg(dataCfg);
+      expect(dataSet.getDimensionValues('province')).toEqual([
+        '浙江省',
+        '四川省',
+      ]);
+      expect(dataSet.getDimensionValues('city')).toEqual([
+        '杭州市',
+        '绍兴市',
+        '宁波市',
+        '舟山市',
+        '成都市',
+        '绵阳市',
+        '南充市',
+        '乐山市',
       ]);
     });
 
