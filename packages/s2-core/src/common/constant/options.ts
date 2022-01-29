@@ -3,6 +3,8 @@ import { ScrollbarPositionType } from '../constant/interaction';
 import { Style } from '@/common/interface/basic';
 import { ResizeType } from '@/common/constant/resize';
 
+export const MIN_DEVICE_PIXEL_RATIO = 1;
+
 export enum LayoutWidthTypes {
   Adaptive = 'adaptive',
   ColAdaptive = 'colAdaptive',
@@ -83,4 +85,5 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   frozenTrailingColCount: 0,
   hdAdapter: true,
   supportCSSTransform: false,
+  devicePixelRatio: window.devicePixelRatio,
 };

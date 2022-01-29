@@ -17,9 +17,9 @@ describe.skip('HD Adapter Tests', () => {
   ) => void;
 
   beforeEach(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    window.devicePixelRatio = DPR;
+    Object.defineProperty(window, 'devicePixelRatio', {
+      value: DPR,
+    });
     Object.defineProperty(visualViewport, 'scale', {
       value: 1,
       configurable: true,

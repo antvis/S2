@@ -99,6 +99,8 @@ export interface S2BasicOptions<T = Element | string> {
   // empty cell placeholder
   readonly placeholder?: string;
   readonly supportCSSTransform?: boolean;
+  // custom device pixel ratio, default "window.devicePixelRatio"
+  readonly devicePixelRatio?: number;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell

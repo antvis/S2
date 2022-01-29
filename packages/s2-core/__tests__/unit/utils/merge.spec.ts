@@ -145,6 +145,7 @@ describe('merge test', () => {
       frozenTrailingColCount: 0,
       hdAdapter: true,
       supportCSSTransform: false,
+      devicePixelRatio: window.devicePixelRatio,
     });
   });
 
