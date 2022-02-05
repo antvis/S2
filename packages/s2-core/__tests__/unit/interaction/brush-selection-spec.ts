@@ -1,15 +1,15 @@
 import { Group } from '@antv/g-canvas';
 import { range } from 'lodash';
+import { DataCell } from 'src/cell/data-cell';
 import { RootInteraction } from '@/interaction/root';
 import {
   BrushSelection,
   CellTypes,
-  DataCell,
   InteractionBrushSelectionStage,
   InterceptType,
+  Node,
   OriginalEvent,
   PivotSheet,
-  S2CellType,
   S2Event,
   SpreadSheet,
   ViewMeta,
@@ -18,9 +18,11 @@ import {
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
 jest.mock('@/utils/tooltip');
+jest.mock('src/cell/data-cell');
 
 const MockRootInteraction =
   RootInteraction as unknown as jest.Mock<RootInteraction>;
+const MockDataCell = DataCell as unknown as jest.Mock<DataCell>;
 
 describe('Interaction Brush Selection Tests', () => {
   let brushSelectionInstance: BrushSelection;
@@ -36,15 +38,11 @@ describe('Interaction Brush Selection Tests', () => {
     rowIndex: 3,
   };
 
-  const startBrushDataCell = {
-    cellType: CellTypes.DATA_CELL,
-    getMeta: () => startBrushDataCellMeta,
-  } as unknown as S2CellType;
+  const startBrushDataCell = new MockDataCell();
+  startBrushDataCell.getMeta = () => startBrushDataCellMeta as ViewMeta;
 
-  const endBrushDataCell = {
-    cellType: CellTypes.DATA_CELL,
-    getMeta: () => endBrushDataCellMeta,
-  } as unknown as S2CellType;
+  const endBrushDataCell = new MockDataCell();
+  endBrushDataCell.getMeta = () => endBrushDataCellMeta as ViewMeta;
 
   const panelGroupAllDataCells = Array.from<number[]>({ length: 4 })
     .fill(range(10))
@@ -71,6 +69,13 @@ describe('Interaction Brush Selection Tests', () => {
     } as any);
   };
 
+  const emitGlobalEvent = (type: S2Event, event: Partial<MouseEvent>) => {
+    brushSelectionInstance.spreadsheet.emit(type, {
+      ...event,
+      preventDefault() {},
+    } as any);
+  };
+
   beforeEach(() => {
     MockRootInteraction.mockClear();
 
@@ -86,6 +91,23 @@ describe('Interaction Brush Selection Tests', () => {
     mockRootInteraction.getPanelGroupAllDataCells = () =>
       panelGroupAllDataCells;
     mockSpreadSheetInstance.interaction = mockRootInteraction;
+    mockSpreadSheetInstance.render();
+    mockSpreadSheetInstance.facet.layoutResult.colLeafNodes = Array.from(
+      new Array(10),
+    ).map((_, idx) => {
+      return {
+        colIndex: idx,
+        id: idx,
+      };
+    }) as unknown[] as Node[];
+    mockSpreadSheetInstance.facet.layoutResult.rowLeafNodes = Array.from(
+      new Array(10),
+    ).map((_, idx) => {
+      return {
+        rowIndex: idx,
+        id: idx,
+      };
+    }) as unknown[] as Node[];
     brushSelectionInstance = new BrushSelection(mockSpreadSheetInstance);
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;
@@ -126,6 +148,8 @@ describe('Interaction Brush Selection Tests', () => {
     expect(brushSelectionInstance.startBrushPoint).toStrictEqual({
       x: 10,
       y: 20,
+      scrollX: 0,
+      scrollY: 0,
       rowIndex: 1,
       colIndex: 0,
     });
@@ -139,9 +163,9 @@ describe('Interaction Brush Selection Tests', () => {
       layerX: 10,
       layerY: 20,
     });
-    emitEvent(S2Event.DATA_CELL_MOUSE_MOVE, {
-      layerX: 12,
-      layerY: 22,
+    emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
+      clientX: 12,
+      clientY: 22,
     });
     emitEvent(S2Event.GLOBAL_MOUSE_UP, {});
 
@@ -169,9 +193,9 @@ describe('Interaction Brush Selection Tests', () => {
       layerX: 10,
       layerY: 20,
     });
-    emitEvent(S2Event.DATA_CELL_MOUSE_MOVE, {
-      layerX: 12,
-      layerY: 22,
+    emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
+      clientX: 12,
+      clientY: 22,
     });
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
@@ -200,7 +224,7 @@ describe('Interaction Brush Selection Tests', () => {
   });
 
   test('should skip brush selection if mouse move less than valid distance', () => {
-    emitEvent(S2Event.DATA_CELL_MOUSE_MOVE, {});
+    emitEvent(S2Event.GLOBAL_MOUSE_MOVE, {});
 
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.UN_DRAGGED,
@@ -214,11 +238,11 @@ describe('Interaction Brush Selection Tests', () => {
     ).toBeFalsy();
   });
 
-  test('should get brush selection range cells', () => {
+  test('should get brush selection range cells', async () => {
     const selectedFn = jest.fn();
     const brushSelectionFn = jest.fn();
 
-    mockSpreadSheetInstance.getCell = jest.fn(() => endBrushDataCell) as any;
+    mockSpreadSheetInstance.getCell = jest.fn(() => startBrushDataCell) as any;
 
     mockSpreadSheetInstance.on(S2Event.GLOBAL_SELECTED, selectedFn);
     mockSpreadSheetInstance.on(
@@ -229,8 +253,13 @@ describe('Interaction Brush Selection Tests', () => {
     // ================== mouse down ==================
     emitEvent(S2Event.DATA_CELL_MOUSE_DOWN, { layerX: 10, layerY: 20 });
 
+    mockSpreadSheetInstance.getCell = jest.fn(() => endBrushDataCell) as any;
     // ================== mouse move ==================
-    emitEvent(S2Event.DATA_CELL_MOUSE_MOVE, { layerX: 100, layerY: 200 });
+    emitGlobalEvent(S2Event.GLOBAL_MOUSE_MOVE, {
+      clientX: 100,
+      clientY: 200,
+    });
+
     expect(brushSelectionInstance.brushSelectionStage).toEqual(
       InteractionBrushSelectionStage.DRAGGED,
     );
@@ -261,7 +290,7 @@ describe('Interaction Brush Selection Tests', () => {
       InteractionBrushSelectionStage.UN_DRAGGED,
     );
     // get brush range selected cells
-    expect(brushSelectionInstance.brushRangeDataCells).toHaveLength(1);
+    expect(brushSelectionInstance.brushRangeDataCells).toHaveLength(15);
     brushSelectionInstance.brushRangeDataCells.forEach((cell) => {
       const { rowIndex, colIndex } = cell.getMeta();
       expect(rowIndex).toBeLessThanOrEqual(endBrushDataCellMeta.rowIndex);

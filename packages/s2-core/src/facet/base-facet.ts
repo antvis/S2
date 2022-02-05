@@ -413,7 +413,11 @@ export abstract class BaseFacet {
     this.backgroundGroup.set('children', []);
   };
 
-  scrollWithAnimation = (offsetConfig: OffsetConfig, cb?: () => void) => {
+  scrollWithAnimation = (
+    offsetConfig: OffsetConfig,
+    duration = 200,
+    cb?: () => void,
+  ) => {
     const { scrollX: adjustedScrollX, scrollY: adjustedScrollY } =
       this.getAdjustedScrollOffset({
         scrollX: offsetConfig.offsetX.value || 0,
@@ -422,7 +426,6 @@ export abstract class BaseFacet {
     if (this.timer) {
       this.timer.stop();
     }
-    const duration = 200;
     const oldOffset = Object.values(this.getScrollOffset());
     const newOffset: number[] = [
       adjustedScrollX === undefined ? oldOffset[0] : adjustedScrollX,

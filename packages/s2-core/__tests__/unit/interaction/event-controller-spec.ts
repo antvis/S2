@@ -142,6 +142,7 @@ describe('Interaction Event Controller Tests', () => {
       OriginEventType.KEY_DOWN,
       OriginEventType.KEY_UP,
       OriginEventType.MOUSE_UP,
+      OriginEventType.MOUSE_MOVE,
     ];
     expect(eventController.domEventListeners).toHaveLength(
       domEventTypes.length,

@@ -55,6 +55,30 @@ import { getAllChildCells } from '@/utils/get-all-child-cells';
 export class TableFacet extends BaseFacet {
   public rowOffsets: number[];
 
+  public frozenGroupSize: Record<
+    string,
+    {
+      width?: number;
+      height?: number;
+      range?: number[];
+    }
+  > = {
+    col: {
+      width: 0,
+    },
+    row: {
+      height: 0,
+    },
+    trailingRow: {
+      height: 0,
+    },
+    trailingCol: {
+      width: 0,
+    },
+  };
+
+  public panelScrollGroupIndexes = [];
+
   public constructor(cfg: SpreadSheetFacetCfg) {
     super(cfg);
 
@@ -864,10 +888,76 @@ export class TableFacet extends BaseFacet {
   }
 
   public render() {
+    this.calculateFrozenGroupInfo();
     this.renderFrozenPanelCornerGroup();
     super.render();
     this.initFrozenGroupPosition();
     this.renderFrozenGroupSplitLine();
+  }
+
+  private getFrozenOptions = () => {
+    const colLength = this.layoutResult.colLeafNodes.length;
+    const cellRange = this.getCellRange();
+
+    return getValidFrozenOptions(
+      this.spreadsheet.options,
+      colLength,
+      cellRange.end - cellRange.start + 1,
+    );
+  };
+
+  public calculateFrozenGroupInfo() {
+    const {
+      frozenColCount,
+      frozenRowCount,
+      frozenTrailingColCount,
+      frozenTrailingRowCount,
+    } = this.getFrozenOptions();
+
+    const colLeafNodes = this.layoutResult.colLeafNodes;
+    const viewCellHeights = this.viewCellHeights;
+    const cellRange = this.getCellRange();
+
+    if (frozenColCount > 0) {
+      this.frozenGroupSize.col.width =
+        colLeafNodes[frozenColCount - 1].x +
+        colLeafNodes[frozenColCount - 1].width -
+        0;
+      this.frozenGroupSize.col.range = [0, frozenColCount - 1];
+    }
+
+    if (frozenRowCount > 0) {
+      this.frozenGroupSize.row.height =
+        viewCellHeights.getCellOffsetY(cellRange.start + frozenRowCount) -
+        viewCellHeights.getCellOffsetY(cellRange.start);
+      this.frozenGroupSize.row.range = [
+        cellRange.start,
+        cellRange.start + frozenRowCount,
+      ];
+    }
+
+    if (frozenTrailingColCount > 0) {
+      this.frozenGroupSize.trailingCol.width =
+        colLeafNodes[colLeafNodes.length - 1].x -
+        colLeafNodes[colLeafNodes.length - frozenTrailingColCount].x +
+        colLeafNodes[colLeafNodes.length - 1].width;
+      this.frozenGroupSize.trailingCol.range = [
+        colLeafNodes.length - frozenTrailingColCount,
+        colLeafNodes.length - 1,
+      ];
+    }
+
+    if (frozenTrailingRowCount > 0) {
+      this.frozenGroupSize.trailingRow.height =
+        viewCellHeights.getCellOffsetY(cellRange.end + 1) -
+        viewCellHeights.getCellOffsetY(
+          cellRange.end + 1 - frozenTrailingRowCount,
+        );
+      this.frozenGroupSize.trailingRow.range = [
+        cellRange.end - frozenTrailingRowCount,
+        cellRange.end,
+      ];
+    }
   }
 
   protected getRowHeader() {
@@ -915,25 +1005,38 @@ export class TableFacet extends BaseFacet {
       frozenRowCount,
       frozenTrailingColCount,
       frozenTrailingRowCount,
-    } = getValidFrozenOptions(
-      this.spreadsheet.options,
-      colLength,
-      cellRange.end - cellRange.start + 1,
-    );
+    } = this.getFrozenOptions();
+
+    const finalViewport = {
+      width,
+      height,
+      x: 0,
+      y: 0,
+    };
+
+    if (frozenTrailingColCount > 0 || frozenColCount > 0) {
+      const { trailingCol, col } = this.frozenGroupSize;
+      finalViewport.width -= trailingCol.width + col.width;
+      finalViewport.x += col.width;
+    }
+
+    if (frozenTrailingRowCount > 0 || frozenRowCount > 0) {
+      const { row, trailingRow } = this.frozenGroupSize;
+
+      finalViewport.height -= row.height + trailingRow.height;
+      finalViewport.y += row.height;
+    }
 
     const indexes = calculateInViewIndexes(
       scrollX,
       scrollY,
       this.viewCellWidths,
       this.viewCellHeights,
-      {
-        width,
-        height,
-        x: 0,
-        y: 0,
-      },
+      finalViewport,
       this.getRealScrollX(this.cornerBBox.width),
     );
+
+    this.panelScrollGroupIndexes = indexes;
 
     return splitInViewIndexesWithFrozen(
       indexes,
