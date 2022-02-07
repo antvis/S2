@@ -14,11 +14,7 @@ export interface TooltipOperatorMenu {
 }
 
 export interface TooltipOperatorOptions {
-  onClick?: (options: {
-    key: string[];
-    keyPath: string[];
-    [key: string]: unknown;
-  }) => void;
+  onClick?: (...args: unknown[]) => void;
   menus: TooltipOperatorMenu[];
 }
 

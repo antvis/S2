@@ -9,7 +9,7 @@ import {
 import { Icon } from '../icon';
 import './index.less';
 
-interface TooltipOperatorProps extends Omit<TooltipOperatorOptions, 'onClick'> {
+interface TooltipOperatorProps extends TooltipOperatorOptions {
   onlyMenu: boolean;
   onClick: MenuProps['onClick'];
 }
