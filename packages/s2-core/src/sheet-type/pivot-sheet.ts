@@ -7,7 +7,7 @@ import {
   EXTRA_FIELD,
   InterceptType,
   S2Event,
-  TOOLTIP_OPERATOR_MENUS,
+  TOOLTIP_OPERATOR_SORT_MENUS,
 } from '@/common/constant';
 import {
   S2Options,
@@ -195,9 +195,9 @@ export class PivotSheet extends SpreadSheet {
     this.interaction.addIntercepts([InterceptType.HOVER]);
     const operator: TooltipOperatorOptions = {
       onClick: ({ key }) => {
-        this.groupSortByMethod(key, meta);
+        this.groupSortByMethod(key as unknown as SortMethod, meta);
       },
-      menus: TOOLTIP_OPERATOR_MENUS.Sort,
+      menus: TOOLTIP_OPERATOR_SORT_MENUS,
     };
 
     this.showTooltipWithInfo(event, [], {

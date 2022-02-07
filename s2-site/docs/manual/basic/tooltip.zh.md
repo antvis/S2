@@ -62,7 +62,7 @@ const s2options = {
   tooltip: {
     operation: {
       trend: true, // 显示趋势图按钮
-      hiddenColumns: true, //开启隐藏列 （明细表有效）
+      hiddenColumns: true, //开启隐藏列 （叶子节点有效）
     },
   }
 };
@@ -200,6 +200,40 @@ s2.showTooltip({
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
 
+#### 自定义 Tooltip 操作项
+
+除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，也可以监听各自的点击事件
+
+```ts
+const s2Options = {
+  tooltip: {
+    operation: {
+      trend: true,
+      menus: [
+        {
+          key: 'custom-a',
+          text: '操作 1',
+          icon: 'Trend',
+          onClick: () => {
+            console.log('操作 1 点击');
+          },
+        },
+        {
+          key: 'custom-a',
+          text: '操作 2',
+          icon: 'EyeOutlined',
+          onClick: () => {
+            console.log('操作 2 点击');
+          },
+        },
+      ],
+    },
+  },
+};
+```
+
+<playground path='react-component/tooltip/demo/custom-operation.tsx' rid='container-custom-operations' height='300'></playground>
+
 #### 自定义 Tooltip 类
 
 继承 `BaseTooltip` 基类，可重写 `显示 (show)`, `隐藏 (hide)`, `销毁 (destroy)` 等方法，结合 `this.spreadsheet` 实例，来实现满足你业务的 `tooltip`
@@ -327,10 +361,10 @@ tooltip: {
 - 显示位置 (position)
 
   ```tsx
-  instance.showTooltip = (tooltipOptions) => {
-    const { position } = tooltipOptions;
-    instance.tooltip.show({ ...tooltipOptions, position: { x: position.x + 1, y: position.y + 1 } });
-  };
+    instance.showTooltip = (tooltipOptions) => {
+      const { position } = tooltipOptions;
+      instance.tooltip.show({ ...tooltipOptions, position: { x: position.x + 1, y: position.y + 1 } });
+    };
   ```
 
 - 展示层数据 (data)
@@ -434,14 +468,17 @@ tooltip: {
     instance.showTooltip = (tooltipOptions) => {
       const { options } = tooltipOptions;
       const customOperator = {
-        onClick: () => {
-          console.log('测试');
+        onClick: ({ key }) => {
+          console.log('任意菜单项点击', key);
         },
         menus: [
           {
-            id: 'trend',
+            key: 'trend',
             icon: 'trend',
             text: '趋势',
+            onClick: () => {
+              console.log('当前菜单项点击')
+            }
           },
         ],
       };

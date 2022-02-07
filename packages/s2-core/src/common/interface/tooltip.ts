@@ -6,16 +6,20 @@ import type { BaseTooltip } from '@/ui/tooltip';
 export type TooltipDataItem = Record<string, any>;
 
 export interface TooltipOperatorMenu {
-  id: string;
+  key: string;
   icon?: Element | string;
   text?: string;
+  onClick?: () => void;
   children?: TooltipOperatorMenu[]; // subMenu
 }
 
 export interface TooltipOperatorOptions {
-  onClick: (...params: unknown[]) => void;
+  onClick?: (options: {
+    key: string[];
+    keyPath: string[];
+    [key: string]: unknown;
+  }) => void;
   menus: TooltipOperatorMenu[];
-  [key: string]: unknown;
 }
 
 export interface TooltipPosition {
@@ -171,6 +175,8 @@ export interface TooltipOperation {
   sort?: boolean;
   // 明细表排序
   tableSort?: boolean;
+  // 自定义操作项
+  menus?: TooltipOperatorMenu[];
 }
 
 export interface AutoAdjustPositionOptions {

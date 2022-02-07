@@ -4,9 +4,9 @@ import { getCellMeta } from '@/utils/interaction/select-event';
 import { DataCell } from '@/cell/data-cell';
 import {
   InteractionStateName,
-  TOOLTIP_OPERATOR_MENUS,
   InterceptType,
   S2Event,
+  TOOLTIP_OPERATOR_TREND_MENU,
 } from '@/common/constant';
 import {
   CellAppendInfo,
@@ -56,13 +56,16 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
   }
 
   private getTooltipOperator(meta: ViewMeta): TooltipOperatorOptions {
-    const operator: TooltipOperatorOptions = this.spreadsheet.options.tooltip
-      .operation.trend && {
+    const trendMenu = {
+      ...TOOLTIP_OPERATOR_TREND_MENU,
       onClick: () => {
         this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, meta);
         this.spreadsheet.hideTooltip();
       },
-      menus: TOOLTIP_OPERATOR_MENUS.Trend,
+    };
+    const operator: TooltipOperatorOptions = this.spreadsheet.options.tooltip
+      .operation.trend && {
+      menus: [trendMenu],
     };
 
     return operator;

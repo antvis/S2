@@ -1,6 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import { concat, difference, isEmpty, isNil } from 'lodash';
+import { compact, concat, difference, isEmpty, isNil } from 'lodash';
 import {
   hideColumns,
   hideColumnsByThunkGroup,
@@ -11,11 +11,15 @@ import {
   S2Event,
   InteractionKeyboardKey,
   InteractionStateName,
-  TOOLTIP_OPERATOR_MENUS,
   InterceptType,
   CellTypes,
+  TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
 } from '@/common/constant';
-import { TooltipOperation, TooltipOperatorOptions } from '@/common/interface';
+import {
+  TooltipOperation,
+  TooltipOperatorMenu,
+  TooltipOperatorOptions,
+} from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 import { mergeCellInfo, getTooltipOptions } from '@/utils/tooltip';
 
@@ -155,11 +159,16 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     const enableHiddenColumnOperator =
       isColCell && isMultiColumns && cellMeta.isLeaf && operation.hiddenColumns;
 
-    const operator = enableHiddenColumnOperator && {
-      onClick: () => {
-        this.hideSelectedColumns();
-      },
-      menus: TOOLTIP_OPERATOR_MENUS.HiddenColumns,
+    const hiddenColumnsMenu: TooltipOperatorMenu =
+      enableHiddenColumnOperator && {
+        ...TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
+        onClick: () => {
+          this.hideSelectedColumns();
+        },
+      };
+
+    const operator: TooltipOperatorOptions = {
+      menus: compact([hiddenColumnsMenu, ...(operation.menus || [])]),
     };
     return operator;
   }
