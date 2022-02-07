@@ -19,7 +19,7 @@ order: 2
 
 <description> **optional**  _object_ </description>
 
- 功能描述： 表主题色板 `Schama`
+ 功能描述： 表主题色板 `Schema`
 
 | 参数 | 参数 | 类型 | 默认值  | 必选 |
 | :--- |  :--- | :--- | :--- | :---: |
@@ -30,17 +30,17 @@ order: 2
 
 <description> **optional**  _object_ </description>
 
- 功能描述： 表主题 `Schama`
+ 功能描述： 表主题 `Schema`
 
 | 参数 | 参数 | 类型 | 默认值  | 必选 |
 | :--- | :--- | :--- | :--- | :---: |
 | cornerCell | 角头单元格主题 | [DefaultCellTheme](#defaultcelltheme) | | |
-| rowCell |  角头单元格主题 | [DefaultCellTheme](#defaultcelltheme) | | |
-| colCell | 行头单元格主题 | [DefaultCellTheme](#defaultcelltheme) |  | |
-| dataCell | 数据单元格主题 | [DefaultCellTheme](#defaultcelltheme) |  | |
+| rowCell |  行头单元格主题 | [DefaultCellTheme](#defaultcelltheme) | | |
+| colCell | 列头单元格主题 | [DefaultCellTheme](#defaultcelltheme) |  | |
+| dataCell | 数值单元格主题 | [DefaultCellTheme](#defaultcelltheme) |  | |
 | resizeArea |  列宽行高调整热区 | [ResizeArea](#resizearea) | | |
 | scrollBar | 滚动条样式 | [ScrollBarTheme](#scrollbartheme) |  | |
-| splitLine | 框架分割线样式 | [SplitLine](#splitline) |  | |
+| splitLine | 单元格分割线样式 | [SplitLine](#splitline) |  | |
 | prepareSelectMask | 刷选遮罩样式  | [InteractionStateTheme](#interactionstatetheme) |  | |
 | background |  刷选遮罩样式  | [Background](#background) | | |
 | [key: string] |  额外属性字段，用于用户自定义主题时传参  | `unknown` | | |
@@ -67,7 +67,7 @@ order: 2
 
 | 参数 | 说明 | 类型 | 默认值  | 必选 |
 | :--- | :--- | :--- | :---  | :---: |
-| size | 热区尺寸 | `number` | 3 |  |
+| size | 热区大小 | `number` | 3 |  |
 | background | 热区背景色 | `string` | - | |
 | backgroundOpacity | 热区背景色透明度 | `number` | - |  |
 | guideLineColor | 参考线颜色 | `string` | - |  |
@@ -86,7 +86,7 @@ order: 2
 | thumbHoverColor | 滚动条 Hover 态颜色 | `string` | `rgba(0,0,0,0.4)` | |
 | thumbColor | 滚动条颜色 | `string` | `rgba(0,0,0,0.15)` | |
 | size |  滚动条尺寸 | `number` | Mobile: 3 <br> PC: 6 | |
-| hoverSize |  滚动条 Hover 态尺寸 | `number` | 16 | |
+| hoverSize |  滚动条 Hover 态大小 | `number` | 16 | |
 | lineCap | 指定如何绘制每一条线段末端 | `butt` \| `round` \| `square` | `round` | |
 
 #### SplitLine
