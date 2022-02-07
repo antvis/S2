@@ -1,8 +1,4 @@
-import {
-  TooltipOperation,
-  TooltipOperatorMenu,
-  TooltipPosition,
-} from '@/common/interface';
+import { TooltipOperatorMenu, TooltipPosition } from '@/common/interface';
 import { S2_PREFIX_CLS } from '@/common/constant/classnames';
 import { i18n } from '@/common/i18n';
 

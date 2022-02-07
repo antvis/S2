@@ -23,7 +23,7 @@ fetch(
               },
             },
             {
-              key: 'custom-a',
+              key: 'custom-b',
               text: '操作2',
               icon: 'EyeOutlined',
               onClick: () => {

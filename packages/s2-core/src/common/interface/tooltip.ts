@@ -14,12 +14,8 @@ export interface TooltipOperatorMenu {
 }
 
 export interface TooltipOperatorOptions {
-  onClick?: (options: {
-    key: string[];
-    keyPath: string[];
-    [key: string]: unknown;
-  }) => void;
-  menus: TooltipOperatorMenu[];
+  onClick?: (...args: unknown[]) => void;
+  menus?: TooltipOperatorMenu[];
 }
 
 export interface TooltipPosition {
@@ -166,7 +162,7 @@ export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {
   readonly data?: BaseTooltipConfig<T>;
 }
 
-export interface TooltipOperation {
+export interface TooltipOperation extends TooltipOperatorOptions {
   // 隐藏列 (明细表有效)
   hiddenColumns?: boolean;
   // 趋势图
@@ -175,8 +171,6 @@ export interface TooltipOperation {
   sort?: boolean;
   // 明细表排序
   tableSort?: boolean;
-  // 自定义操作项
-  menus?: TooltipOperatorMenu[];
 }
 
 export interface AutoAdjustPositionOptions {

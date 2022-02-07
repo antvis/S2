@@ -168,6 +168,7 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       };
 
     const operator: TooltipOperatorOptions = {
+      onClick: operation.onClick,
       menus: compact([hiddenColumnsMenu, ...(operation.menus || [])]),
     };
     return operator;

@@ -219,7 +219,7 @@ const s2Options = {
           },
         },
         {
-          key: 'custom-a',
+          key: 'custom-b',
           text: '操作 2',
           icon: 'EyeOutlined',
           onClick: () => {

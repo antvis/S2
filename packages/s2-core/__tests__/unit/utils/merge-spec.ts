@@ -111,6 +111,7 @@ describe('merge test', () => {
           hiddenColumns: false,
           trend: false,
           sort: false,
+          menus: [],
         },
       },
       interaction: {
@@ -160,6 +161,12 @@ describe('merge test', () => {
         showTooltip: false,
         operation: {
           sort: false,
+          menus: [
+            {
+              key: 'custom',
+              text: 'custom',
+            },
+          ],
         },
       },
     });
@@ -169,6 +176,12 @@ describe('merge test', () => {
         hiddenColumns: false,
         trend: false,
         sort: false,
+        menus: [
+          {
+            key: 'custom',
+            text: 'custom',
+          },
+        ],
       },
       showTooltip: false,
     });
