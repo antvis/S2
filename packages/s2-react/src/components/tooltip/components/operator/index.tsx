@@ -1,4 +1,4 @@
-import { Menu, Dropdown } from 'antd';
+import { Menu, Dropdown, MenuProps } from 'antd';
 import { isEmpty, map } from 'lodash';
 import React from 'react';
 import {
@@ -9,6 +9,11 @@ import {
 import { Icon } from '../icon';
 import './index.less';
 
+interface TooltipOperatorProps extends Omit<TooltipOperatorOptions, 'onClick'> {
+  onlyMenu: boolean;
+  onClick: MenuProps['onClick'];
+}
+
 /**
  * tooltip menu
  *  - UI
@@ -16,7 +21,7 @@ import './index.less';
  *    delay 300ms show
  */
 
-export const TooltipOperator = (props: TooltipOperatorOptions) => {
+export const TooltipOperator = (props: TooltipOperatorProps) => {
   const { menus, onlyMenu, onClick: onMenuClick } = props;
 
   const renderTitle = (menu: TooltipOperatorMenu) => {
