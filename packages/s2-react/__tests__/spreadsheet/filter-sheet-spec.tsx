@@ -72,7 +72,9 @@ function MainLayout() {
     width: 800,
     height: 600,
     showSeriesNumber: true,
-    enableCopy: true,
+    interaction: {
+      enableCopy: true,
+    },
     style: {
       cellCfg: {
         height: 32,
