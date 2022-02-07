@@ -98,5 +98,4 @@ object **必选**,_default：null_ 功能描述： tooltip 操作项列表
 | key      | `string`                                    |   ✓   |        | 唯一标识       |
 | text     | `string`                                    |       |        | 名称           |
 | icon     | `React.ReactNode`                           |       |        | 自定义图标     |
-| onClick  | `() => void`                                |       |        | 操作项点击事件 |
 | children | [TooltipOperatorMenu](#tooltipoperatormenu) |       |        | 子菜单列表     |
