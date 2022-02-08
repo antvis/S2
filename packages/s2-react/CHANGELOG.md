@@ -1,3 +1,11 @@
+# [@antv/s2-react-v1.8.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.3...@antv/s2-react-v1.8.0-alpha.4) (2022-02-08)
+
+
+### Features
+
+* **tooltip:** 支持自定义 tooltip 操作项 ([#1058](https://github.com/antvis/S2/issues/1058)) ([fc9cc66](https://github.com/antvis/S2/commit/fc9cc6621eb0d3794020375929460de94afcab79))
+* 支持自定义设备像素比 ([#1054](https://github.com/antvis/S2/issues/1054)) ([49ac6ac](https://github.com/antvis/S2/commit/49ac6ac3a259d3622a064333213b9a352ea344bb))
+
 # [@antv/s2-react-v1.8.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.2...@antv/s2-react-v1.8.0-alpha.3) (2022-01-28)
 
 
