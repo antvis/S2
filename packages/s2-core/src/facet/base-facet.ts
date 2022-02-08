@@ -155,9 +155,8 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    (
-      this.spreadsheet.container.get('el') as HTMLCanvasElement
-    ).addEventListener('wheel', this.onWheel);
+    const canvas = this.spreadsheet.container.get('el') as HTMLCanvasElement;
+    canvas?.addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
@@ -305,7 +304,7 @@ export abstract class BaseFacet {
 
   private unbindEvents = () => {
     const canvas = this.spreadsheet.container.get('el') as HTMLElement;
-    canvas.removeEventListener('wheel', this.onWheel);
+    canvas?.removeEventListener('wheel', this.onWheel);
     this.mobileWheel.destroy();
   };
 
