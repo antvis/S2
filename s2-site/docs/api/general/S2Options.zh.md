@@ -44,6 +44,7 @@ order: 1
 | otterLayout | [OtterLayout](#otterlayout) |  |  |   自定义 layout |
 | dataSet | [DataSet](#dataset) |  |  |   自定义数据集 |
 | supportCSSTransform | `boolean` |  |   `false` | 开启后支持 CSS transform, 解决父元素设置 `transform` 后，鼠标坐标响应不正确的问题  |
+| devicePixelRatio | `number` |  |   `window.devicePixelRatio` | 自定义设备像素比  |
 
 `markdown:docs/common/interaction.zh.md`
 

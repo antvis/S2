@@ -59,6 +59,7 @@ describe('Options Tests', () => {
       cornerText: '',
       placeholder: '-',
       supportCSSTransform: false,
+      devicePixelRatio: window.devicePixelRatio,
     });
   });
 

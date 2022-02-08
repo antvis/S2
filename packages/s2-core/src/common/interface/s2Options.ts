@@ -76,6 +76,8 @@ export interface S2BasicOptions<T = Element | string> {
   // custom corner text
   readonly cornerText?: string;
   readonly supportCSSTransform?: boolean;
+  // custom device pixel ratio, default "window.devicePixelRatio"
+  readonly devicePixelRatio?: number;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell

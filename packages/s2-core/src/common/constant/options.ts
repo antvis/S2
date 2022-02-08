@@ -4,6 +4,8 @@ import { EMPTY_PLACEHOLDER } from './basic';
 import { Style } from '@/common/interface/basic';
 import { ResizeType } from '@/common/constant/resize';
 
+export const MIN_DEVICE_PIXEL_RATIO = 1;
+
 export enum LayoutWidthTypes {
   Adaptive = 'adaptive',
   ColAdaptive = 'colAdaptive',
@@ -88,4 +90,5 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
   cornerText: '',
   placeholder: EMPTY_PLACEHOLDER,
   supportCSSTransform: false,
+  devicePixelRatio: window.devicePixelRatio,
 };

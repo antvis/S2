@@ -152,6 +152,7 @@ describe('merge test', () => {
       hdAdapter: true,
       placeholder: '-',
       supportCSSTransform: false,
+      devicePixelRatio: window.devicePixelRatio,
     });
   });
 
