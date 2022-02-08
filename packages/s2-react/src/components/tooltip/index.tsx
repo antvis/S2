@@ -2,9 +2,7 @@ import { isEmpty } from 'lodash';
 import React from 'react';
 import {
   ListItem,
-  TooltipData,
   TooltipOperatorOptions,
-  TooltipOptions,
   TooltipSummaryOptions,
   TooltipNameTipsOptions,
   TooltipHeadInfo as TooltipHeadInfoType,

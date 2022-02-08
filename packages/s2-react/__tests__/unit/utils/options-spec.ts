@@ -18,7 +18,7 @@ describe('Options Tests', () => {
       tooltip: {
         showTooltip: true,
         autoAdjustBoundary: 'body',
-        operation: { hiddenColumns: true, trend: false, sort: true },
+        operation: { hiddenColumns: true, trend: false, sort: true, menus: [] },
       },
       interaction: {
         linkFields: [],
@@ -68,6 +68,12 @@ describe('Options Tests', () => {
         showTooltip: false,
         operation: {
           sort: false,
+          menus: [
+            {
+              key: 'custom',
+              text: 'custom',
+            },
+          ],
         },
       },
     });
@@ -83,6 +89,12 @@ describe('Options Tests', () => {
         hiddenColumns: true,
         trend: false,
         sort: false,
+        menus: [
+          {
+            key: 'custom',
+            text: 'custom',
+          },
+        ],
       },
     });
   });

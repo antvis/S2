@@ -46,6 +46,7 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
       hiddenColumns: false,
       trend: false,
       sort: false,
+      menus: [],
     },
   },
   interaction: {

@@ -6,16 +6,16 @@ import type { BaseTooltip } from '@/ui/tooltip';
 export type TooltipDataItem = Record<string, any>;
 
 export interface TooltipOperatorMenu {
-  id: string;
+  key: string;
   icon?: Element | string;
   text?: string;
+  onClick?: () => void;
   children?: TooltipOperatorMenu[]; // subMenu
 }
 
 export interface TooltipOperatorOptions {
-  onClick: (...params: unknown[]) => void;
-  menus: TooltipOperatorMenu[];
-  [key: string]: unknown;
+  onClick?: (...args: unknown[]) => void;
+  menus?: TooltipOperatorMenu[];
 }
 
 export interface TooltipPosition {
@@ -162,7 +162,7 @@ export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {
   readonly data?: BaseTooltipConfig<T>;
 }
 
-export interface TooltipOperation {
+export interface TooltipOperation extends TooltipOperatorOptions {
   // 隐藏列 (明细表有效)
   hiddenColumns?: boolean;
   // 趋势图

@@ -33,7 +33,9 @@ object **必选**,_default：null_ 功能描述： tooltip 操作配置项
 
 | 参数          | 说明                          | 类型      | 默认值  | 必选 |
 | ------------- | ----------------------------- | --------- | ------- | :--: |
-| hiddenColumns | 是否开启隐藏列 （明细表有效）   | `boolean` | `false`  |      |
+| hiddenColumns | 是否开启隐藏列（叶子节点有效）   | `boolean` | `false`  |      |
 | trend         | 是否显示趋势图 icon           | `boolean` | `false` |      |
 | sort          | 是否开启组内排序              | `boolean` | `false` |      |
 | tableSort     | 是否开启明细表列头排序         | `boolean` | `false` |      |
+| menus         | 自定义操作配置项         | `boolean` | `-` |      |
+| onClick       | 操作项点击回调函数         | `({ item, key, keyPath, domEvent }) => void` | `-` |      |

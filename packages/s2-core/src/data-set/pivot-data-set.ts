@@ -383,7 +383,7 @@ export class PivotDataSet extends BaseDataSet {
     const { aggregation, calcFunc } =
       getAggregationAndCalcFuncByQuery(
         this.getTotalStatus(query),
-        this.spreadsheet.options.totals,
+        this.spreadsheet.options?.totals,
       ) || {};
     // 前端计算汇总值
     if (aggregation || calcFunc) {

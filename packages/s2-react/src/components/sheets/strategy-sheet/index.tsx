@@ -22,7 +22,7 @@ import { SheetComponentsProps } from '@/components/sheets/interface';
 
 /* *
  * 趋势分析表特性：
- * 1. 维度为空时默人为自定义目录树结构
+ * 1. 维度为空时默认为自定义目录树结构
  * 2. 单指标时数值置于列头，且隐藏指标列头
  * 3. 多指标时数值置于行头，不隐藏指标列头
  */

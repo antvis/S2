@@ -73,16 +73,16 @@ describe('Text Utils Tests', () => {
 
   test('should get correct text width', () => {
     const width = measureTextWidth('test', font);
-    expect(Math.floor(width)).toEqual(21);
+    expect(Math.floor(width)).toEqual(16);
   });
 
   test('should get correct text width roughly', () => {
     const width = measureTextWidth('test', font);
-    expect(Math.floor(width)).toEqual(21);
+    expect(Math.floor(width)).toEqual(16);
   });
 
   test('should get correct ellipsis text inner', () => {
-    const text = getEllipsisTextInner('test', 20, font);
+    const text = getEllipsisTextInner('test', 15, font);
     expect(text).toEqual('t...');
   });
 
