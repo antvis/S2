@@ -406,7 +406,7 @@ export abstract class BaseFacet {
   };
 
   clearAllGroup = () => {
-    const children = this.panelGroup.cfg.children;
+    const children = this.panelGroup.getChildren() || [];
     for (let i = children.length - 1; i >= 0; i--) {
       const child = children[i];
       if (child instanceof Group) {
