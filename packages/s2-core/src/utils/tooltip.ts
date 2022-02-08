@@ -26,6 +26,7 @@ import * as CSS from 'csstype';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
+import { customMerge } from './merge';
 import { AutoAdjustPositionOptions, ListItem } from '@/common/interface';
 import { LayoutResult } from '@/common/interface/basic';
 import {
@@ -494,7 +495,7 @@ export const getTooltipOptionsByCellType = (
   cellType: CellTypes,
 ): Tooltip => {
   const getOptionsByCell = (cellConfig: BaseTooltipConfig) => {
-    return { ...cellTooltipConfig, ...cellConfig };
+    return customMerge(cellTooltipConfig, cellConfig);
   };
 
   const { col, row, data, corner } = cellTooltipConfig;

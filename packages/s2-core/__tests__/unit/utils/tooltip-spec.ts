@@ -1,5 +1,6 @@
 import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { BBox } from '@antv/g-canvas';
+import { omit } from 'lodash';
 import {
   getAutoAdjustPosition,
   setContainerStyle,
@@ -12,6 +13,8 @@ import {
   TOOLTIP_POSITION_OFFSET,
 } from '@/index';
 import { BaseFacet } from '@/facet/base-facet';
+
+jest.mock('@/interaction/event-controller');
 
 describe('Tooltip Utils Tests', () => {
   let s2: SpreadSheet;
@@ -204,6 +207,7 @@ describe('Tooltip Utils Tests', () => {
         [CellTypes.CORNER_CELL]: 'corner',
       }[cellType];
     };
+
     test.each([
       CellTypes.ROW_CELL,
       CellTypes.COL_CELL,
@@ -234,6 +238,60 @@ describe('Tooltip Utils Tests', () => {
           content: tooltipContent,
           [type]: {
             content: tooltipContent,
+          },
+        });
+      },
+    );
+
+    test.each([
+      CellTypes.ROW_CELL,
+      CellTypes.COL_CELL,
+      CellTypes.DATA_CELL,
+      CellTypes.CORNER_CELL,
+    ])(
+      'should use %o tooltip options and merge base tooltip config',
+      (cellType) => {
+        const type = getCellNameByType(cellType);
+
+        const tooltip: Tooltip = {
+          showTooltip: false,
+          content: '',
+          operation: {
+            hiddenColumns: true,
+            trend: true,
+            sort: true,
+            tableSort: true,
+            menus: [{ key: 'menu-a', text: 'menu-a' }],
+          },
+          [type]: {
+            showTooltip: true,
+            operation: {
+              hiddenColumns: false,
+              menus: [{ key: 'menu-b', text: 'menu-b' }],
+            },
+          },
+        };
+
+        const spreadsheet = {
+          getCellType: () => cellType,
+          options: {
+            tooltip,
+          },
+        } as unknown as SpreadSheet;
+
+        const tooltipOptions = omit(
+          getTooltipOptions(spreadsheet, {} as Event),
+          [type],
+        );
+        expect(tooltipOptions).toEqual({
+          showTooltip: true,
+          content: '',
+          operation: {
+            hiddenColumns: false,
+            trend: true,
+            sort: true,
+            tableSort: true,
+            menus: [{ key: 'menu-b', text: 'menu-b' }],
           },
         });
       },
