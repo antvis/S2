@@ -260,6 +260,7 @@ export abstract class BaseFacet {
     this.unbindEvents();
     this.clearAllGroup();
     this.preCellIndexes = null;
+    cancelAnimationFrame(this.scrollFrameId);
   }
 
   setScrollOffset = (scrollOffset: ScrollOffset) => {
@@ -816,6 +817,20 @@ export abstract class BaseFacet {
     return false;
   };
 
+  cancelScrollFrame = () => {
+    if (isMobile() && this.scrollFrameId) {
+      return false;
+    }
+    cancelAnimationFrame(this.scrollFrameId);
+    return true;
+  };
+
+  clearScrollFrameIdOnMobile = () => {
+    if (isMobile()) {
+      this.scrollFrameId = null;
+    }
+  };
+
   onWheel = (event: S2WheelEvent) => {
     const ratio = this.spreadsheet.options.interaction.scrollSpeedRatio;
     const { deltaX, deltaY, layerX, layerY } = event;
@@ -837,7 +852,9 @@ export abstract class BaseFacet {
     event.preventDefault?.();
     this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 
-    cancelAnimationFrame(this.scrollFrameId);
+    if (!this.cancelScrollFrame()) {
+      return;
+    }
 
     this.scrollFrameId = requestAnimationFrame(() => {
       const {
@@ -866,6 +883,7 @@ export abstract class BaseFacet {
       }
 
       this.delayHideScrollbarOnMobile();
+      this.clearScrollFrameIdOnMobile();
     });
   };
 
