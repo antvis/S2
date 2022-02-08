@@ -1,9 +1,13 @@
 import { Event as CanvasEvent, IShape, Point } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import _, { isEmpty } from 'lodash';
+import _, { get, isEmpty } from 'lodash';
 import { BaseEventImplement } from './base-event';
 import { BaseEvent } from './base-interaction';
-import { InterceptType, S2Event } from '@/common/constant';
+import {
+  InterceptType,
+  S2Event,
+  BrushScrollDirection,
+} from '@/common/constant';
 import {
   InteractionBrushSelectionStage,
   InteractionStateName,
@@ -44,11 +48,11 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   public brushSelectionStage = InteractionBrushSelectionStage.UN_DRAGGED;
 
-  private brushSelectionMinimumMoveDistance = 5;
+  public brushSelectionMinimumMoveDistance = 5;
 
-  private scrollAnimationComplete = true;
+  public scrollAnimationComplete = true;
 
-  private mouseMoveDistanceFromCanvas = 0;
+  public mouseMoveDistanceFromCanvas = 0;
 
   public bindEvents() {
     this.bindMouseDown();
@@ -139,7 +143,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.mouseMoveDistanceFromCanvas = delta;
   };
 
-  private formatBrushPointForScroll = (delta: { x: number; y: number }) => {
+  public formatBrushPointForScroll = (delta: { x: number; y: number }) => {
     const { x, y } = delta;
     const { facet } = this.spreadsheet;
     const { width, height } = facet.getCanvasHW();
@@ -151,7 +155,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     const vScrollBarWidth = facet.vScrollBar.getBBox().width;
     const extraPixel = 2; // 额外加缩进，保证 getShape 在 panelBox 内
 
-    if (newX > width) {
+    if (newX > maxX) {
       newX = maxX - vScrollBarWidth - extraPixel;
     } else if (newX < minX) {
       newX = minX + extraPixel;
@@ -159,7 +163,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       needScrollForX = false;
     }
 
-    if (newY > height) {
+    if (newY > maxY) {
       newY = maxY - extraPixel;
     } else if (newY <= minY) {
       newY = minY + extraPixel;
@@ -185,15 +189,16 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     BRUSH_AUTO_SCROLL_INITIAL_CONFIG,
   );
 
-  private validateYIndex = (yIndex: number) => {
-    const frozenInfo = (this.spreadsheet.facet as TableFacet).frozenGroupSize;
+  public validateYIndex = (yIndex: number) => {
+    const { facet } = this.spreadsheet;
+    const frozenInfo = (facet as TableFacet).frozenGroupSize;
     let min = 0;
     if (frozenInfo && frozenInfo.row.range) {
       min = frozenInfo.row.range[1] + 1;
     }
     if (yIndex < min) return null;
 
-    let max = this.spreadsheet.facet.getCellRange().end;
+    let max = facet.getCellRange().end;
     if (frozenInfo && frozenInfo.trailingRow.range) {
       max = frozenInfo.trailingRow.range[0] - 1;
     }
@@ -204,8 +209,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     return yIndex;
   };
 
-  private validateXIndex = (xIndex: number) => {
-    const frozenInfo = (this.spreadsheet.facet as TableFacet).frozenGroupSize;
+  public validateXIndex = (xIndex: number) => {
+    const { facet } = this.spreadsheet;
+    const frozenInfo = (facet as TableFacet).frozenGroupSize;
 
     let min = 0;
     if (frozenInfo && frozenInfo.col.range) {
@@ -213,7 +219,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     }
     if (xIndex < min) return null;
 
-    let max = this.spreadsheet.facet.layoutResult.colLeafNodes.length - 1;
+    let max = facet.layoutResult.colLeafNodes.length - 1;
     if (frozenInfo && frozenInfo.trailingCol.range) {
       max = frozenInfo.trailingCol.range[0] - 1;
     }
@@ -223,67 +229,68 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     return xIndex;
   };
 
-  private getScrollOffsetForCol = (
+  public getScrollOffsetForCol = (
     colIndex: number,
-    direction: 'leading' | 'trailing',
+    direction: BrushScrollDirection,
   ) => {
-    const { width } = this.spreadsheet.facet.panelBBox;
-    const colNode = this.spreadsheet.facet.layoutResult.colLeafNodes[colIndex];
-    if (direction === 'leading') {
-      return (
-        colNode.x -
-        (this.spreadsheet.facet as TableFacet).frozenGroupSize.col.width
-      );
-    }
-    return (
-      colNode.x +
-      colNode.width -
-      (width -
-        (this.spreadsheet.facet as TableFacet).frozenGroupSize.trailingCol
-          .width)
+    const { facet } = this.spreadsheet;
+    const { width } = facet.panelBBox;
+    const frozenColWidth = get(facet, 'frozenGroupSize.col.width', 0);
+    const frozenTrailingColWidth = get(
+      facet,
+      'frozenGroupSize.trailingCol.width',
+      0,
     );
+
+    const colNode = facet.layoutResult.colLeafNodes[colIndex];
+    if (direction === BrushScrollDirection.LEADING) {
+      return colNode.x - frozenColWidth;
+    }
+    return colNode.x + colNode.width - (width - frozenTrailingColWidth);
   };
 
-  private getScrollOffsetForRow = (
+  public getScrollOffsetForRow = (
     rowIndex: number,
-    direction: 'leading' | 'trailing',
+    direction: BrushScrollDirection,
   ) => {
-    const { getCellOffsetY } = this.spreadsheet.facet.viewCellHeights;
+    const { facet } = this.spreadsheet;
+    const { getCellOffsetY } = facet.viewCellHeights;
     const rowOffset = getCellOffsetY(rowIndex + 1);
-    const { height } = this.spreadsheet.facet.panelBBox;
+
+    const { height } = facet.panelBBox;
     const lastRowOffset = getCellOffsetY(rowIndex);
 
-    if (direction === 'leading') {
-      return (
-        lastRowOffset -
-        (this.spreadsheet.facet as TableFacet).frozenGroupSize.row.height
-      );
+    const frozenRowHeight = get(facet, 'frozenGroupSize.row.height', 0);
+    const frozenTrailingRowHeight = get(
+      facet,
+      'frozenGroupSize.trailingRow.height',
+      0,
+    );
+
+    if (direction === BrushScrollDirection.LEADING) {
+      return lastRowOffset - frozenRowHeight;
     }
 
-    return (
-      rowOffset -
-      (height -
-        (this.spreadsheet.facet as TableFacet).frozenGroupSize.trailingRow
-          .height)
-    );
+    return rowOffset - (height - frozenTrailingRowHeight);
   };
 
-  private adjustNextColIndexWithFrozen = (
+  public adjustNextColIndexWithFrozen = (
     colIndex: number,
-    dir: 'trailing' | 'leading',
+    dir: BrushScrollDirection,
   ) => {
-    const dataLength = this.spreadsheet.dataSet.getDisplayDataSet().length;
-    const colLength = this.spreadsheet.facet.layoutResult.colLeafNodes.length;
+    const { facet, dataSet, options } = this.spreadsheet;
+    const dataLength = dataSet.getDisplayDataSet().length;
+    const colLength = facet.layoutResult.colLeafNodes.length;
+
     const { frozenTrailingColCount, frozenColCount } = getValidFrozenOptions(
-      this.spreadsheet.options,
+      options,
       colLength,
       dataLength,
     );
-    const panelIndexes = (this.spreadsheet.facet as TableFacet)
-      .panelScrollGroupIndexes;
+    const panelIndexes = (facet as TableFacet).panelScrollGroupIndexes;
     if (
       frozenTrailingColCount > 0 &&
-      dir === 'trailing' &&
+      dir === BrushScrollDirection.TRAILING &&
       isFrozenTrailingCol(colIndex, frozenTrailingColCount, colLength)
     ) {
       return panelIndexes[1];
@@ -291,7 +298,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
     if (
       frozenColCount > 0 &&
-      dir === 'leading' &&
+      dir === BrushScrollDirection.LEADING &&
       isFrozenCol(colIndex, frozenColCount)
     ) {
       return panelIndexes[0];
@@ -299,23 +306,23 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     return colIndex;
   };
 
-  private adjustNextRowIndexWithFrozen = (
+  public adjustNextRowIndexWithFrozen = (
     rowIndex: number,
-    dir: 'trailing' | 'leading',
+    dir: BrushScrollDirection,
   ) => {
-    const dataLength = this.spreadsheet.dataSet.getDisplayDataSet().length;
-    const colLength = this.spreadsheet.facet.layoutResult.colLeafNodes.length;
-    const cellRange = this.spreadsheet.facet.getCellRange();
+    const { facet, dataSet, options } = this.spreadsheet;
+    const dataLength = dataSet.getDisplayDataSet().length;
+    const colLength = facet.layoutResult.colLeafNodes.length;
+    const cellRange = facet.getCellRange();
     const { frozenTrailingRowCount, frozenRowCount } = getValidFrozenOptions(
-      this.spreadsheet.options,
+      options,
       colLength,
       dataLength,
     );
-    const panelIndexes = (this.spreadsheet.facet as TableFacet)
-      .panelScrollGroupIndexes;
+    const panelIndexes = (facet as TableFacet).panelScrollGroupIndexes;
     if (
       frozenTrailingRowCount > 0 &&
-      dir === 'trailing' &&
+      dir === BrushScrollDirection.TRAILING &&
       isFrozenTrailingRow(rowIndex, cellRange.end, frozenTrailingRowCount)
     ) {
       return panelIndexes[3];
@@ -323,7 +330,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
     if (
       frozenRowCount > 0 &&
-      dir === 'leading' &&
+      dir === BrushScrollDirection.LEADING &&
       isFrozenRow(rowIndex, cellRange.start, frozenRowCount)
     ) {
       return panelIndexes[2];
@@ -331,6 +338,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     return rowIndex;
   };
 
+  // 加单测，加里面调的几个小函数里面
   private getNextScrollDelta = (config: BrushAutoScrollConfig) => {
     const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
 
@@ -338,7 +346,10 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     let y = 0;
 
     if (config.y.scroll) {
-      const dir = config.y.value > 0 ? 'trailing' : 'leading';
+      const dir =
+        config.y.value > 0
+          ? BrushScrollDirection.TRAILING
+          : BrushScrollDirection.LEADING;
       const rowIndex = this.adjustNextRowIndexWithFrozen(
         this.endBrushPoint.rowIndex,
         dir,
@@ -352,7 +363,10 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     }
 
     if (config.x.scroll) {
-      const dir = config.x.value > 0 ? 'trailing' : 'leading';
+      const dir =
+        config.x.value > 0
+          ? BrushScrollDirection.TRAILING
+          : BrushScrollDirection.LEADING;
       const colIndex = this.adjustNextColIndexWithFrozen(
         this.endBrushPoint.colIndex,
         dir,
@@ -602,7 +616,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   // 四个刷选方向: 左 => 右, 右 => 左, 上 => 下, 下 => 上, 将最终结果进行重新排序, 获取真实的 row, col index
-  private getBrushRange(): BrushRange {
+  public getBrushRange(): BrushRange {
     const { scrollX, scrollY } = this.spreadsheet.facet.getScrollOffset();
     const minRowIndex = Math.min(
       this.startBrushPoint.rowIndex,
@@ -681,7 +695,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     this.brushRangeDataCells = brushRangeDataCells;
   };
 
-  private getSelectedCellMetas = (range: BrushRange) => {
+  public getSelectedCellMetas = (range: BrushRange) => {
     const metas = [];
     const colLeafNodes = this.spreadsheet.facet.layoutResult.colLeafNodes;
     const rowLeafNodes = this.spreadsheet.facet.layoutResult.rowLeafNodes ?? [];

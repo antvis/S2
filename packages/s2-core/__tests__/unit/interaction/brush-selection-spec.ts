@@ -1,8 +1,9 @@
 import { Group } from '@antv/g-canvas';
-import { range } from 'lodash';
+import { max, range } from 'lodash';
 import { DataCell } from 'src/cell/data-cell';
 import { RootInteraction } from '@/interaction/root';
 import {
+  BrushScrollDirection,
   BrushSelection,
   CellTypes,
   InteractionBrushSelectionStage,
@@ -14,6 +15,7 @@ import {
   SpreadSheet,
   ViewMeta,
 } from '@/index';
+import { TableFacet } from '@/facet';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/root');
@@ -98,6 +100,8 @@ describe('Interaction Brush Selection Tests', () => {
       return {
         colIndex: idx,
         id: idx,
+        x: idx * 100,
+        width: 100,
       };
     }) as unknown[] as Node[];
     mockSpreadSheetInstance.facet.layoutResult.rowLeafNodes = Array.from(
@@ -106,8 +110,16 @@ describe('Interaction Brush Selection Tests', () => {
       return {
         rowIndex: idx,
         id: idx,
+        y: idx * 100,
+        height: 100,
       };
     }) as unknown[] as Node[];
+    mockSpreadSheetInstance.facet.getCellRange = () => {
+      return {
+        start: 0,
+        end: 9,
+      };
+    };
     brushSelectionInstance = new BrushSelection(mockSpreadSheetInstance);
     brushSelectionInstance.brushSelectionStage =
       InteractionBrushSelectionStage.UN_DRAGGED;
@@ -301,5 +313,266 @@ describe('Interaction Brush Selection Tests', () => {
     // emit event
     expect(selectedFn).toHaveBeenCalledTimes(1);
     expect(brushSelectionFn).toHaveBeenCalledTimes(1);
+  });
+
+  test('should get correct formatted brush point', async () => {
+    const EXTRA_PIXEL = 2;
+    const VSCROLLBAR_WIDTH = 5;
+    const { width, height } = mockSpreadSheetInstance.facet.getCanvasHW();
+    const minX = 10;
+    const minY = 10;
+    const maxY = height + 10;
+    const maxX = width + 10;
+    mockSpreadSheetInstance.facet.panelBBox = {
+      minX,
+      minY,
+      maxY,
+      maxX,
+    } as any;
+    brushSelectionInstance.endBrushPoint = {
+      x: maxX - 10,
+      y: maxY - 10,
+      scrollX: 0,
+      colIndex: 0,
+      rowIndex: 0,
+    };
+    mockSpreadSheetInstance.facet.vScrollBar = {
+      getBBox: () =>
+        ({
+          width: VSCROLLBAR_WIDTH,
+        } as any),
+    } as any;
+    let result = brushSelectionInstance.formatBrushPointForScroll({
+      x: 20,
+      y: 20,
+    });
+
+    expect(result).toStrictEqual({
+      x: {
+        needScroll: true,
+        value: maxX - VSCROLLBAR_WIDTH - EXTRA_PIXEL,
+      },
+      y: {
+        needScroll: true,
+        value: maxY - EXTRA_PIXEL,
+      },
+    });
+
+    brushSelectionInstance.endBrushPoint = {
+      x: maxX - 10,
+      y: maxY - 10,
+      scrollX: 0,
+      colIndex: 0,
+      rowIndex: 0,
+    };
+
+    result = brushSelectionInstance.formatBrushPointForScroll({
+      x: 1,
+      y: 1,
+    });
+
+    expect(result).toStrictEqual({
+      x: {
+        needScroll: false,
+        value: maxX - 10 + 1,
+      },
+      y: {
+        needScroll: false,
+        value: maxY - 10 + 1,
+      },
+    });
+
+    brushSelectionInstance.endBrushPoint = {
+      x: minX + 10,
+      y: minY + 10,
+      scrollX: 0,
+      colIndex: 0,
+      rowIndex: 0,
+    };
+
+    result = brushSelectionInstance.formatBrushPointForScroll({
+      x: -20,
+      y: -20,
+    });
+
+    expect(result).toStrictEqual({
+      x: {
+        needScroll: true,
+        value: minX + EXTRA_PIXEL,
+      },
+      y: {
+        needScroll: true,
+        value: minY + EXTRA_PIXEL,
+      },
+    });
+  });
+
+  test('shoud get correct selected cell metas', async () => {
+    expect(
+      brushSelectionInstance.getSelectedCellMetas({
+        start: {
+          colIndex: 0,
+          rowIndex: 0,
+        },
+        end: {
+          colIndex: 9,
+          rowIndex: 9,
+        },
+      } as any).length,
+    ).toBe(100);
+  });
+
+  test('shoud get correct adjusted frozen rowIndex and colIndex', async () => {
+    const { adjustNextColIndexWithFrozen, adjustNextRowIndexWithFrozen } =
+      brushSelectionInstance;
+    mockSpreadSheetInstance.setOptions({
+      frozenColCount: 1,
+      frozenRowCount: 1,
+      frozenTrailingColCount: 1,
+      frozenTrailingRowCount: 1,
+    });
+    mockSpreadSheetInstance.dataSet.getDisplayDataSet = () => {
+      return Array.from(new Array(10)).map(() => {
+        return {};
+      });
+    };
+    (mockSpreadSheetInstance.facet as TableFacet).panelScrollGroupIndexes = [
+      1, 8, 1, 8,
+    ];
+
+    expect(adjustNextColIndexWithFrozen(9, BrushScrollDirection.TRAILING)).toBe(
+      8,
+    );
+    expect(adjustNextColIndexWithFrozen(0, BrushScrollDirection.LEADING)).toBe(
+      1,
+    );
+    expect(adjustNextColIndexWithFrozen(7, BrushScrollDirection.TRAILING)).toBe(
+      7,
+    );
+
+    expect(adjustNextRowIndexWithFrozen(9, BrushScrollDirection.TRAILING)).toBe(
+      8,
+    );
+    expect(adjustNextRowIndexWithFrozen(0, BrushScrollDirection.LEADING)).toBe(
+      1,
+    );
+    expect(adjustNextRowIndexWithFrozen(7, BrushScrollDirection.TRAILING)).toBe(
+      7,
+    );
+  });
+
+  test('shoud get correct scroll offset for row and col', async () => {
+    const { facet } = mockSpreadSheetInstance;
+    expect(
+      brushSelectionInstance.getScrollOffsetForCol(
+        7,
+        BrushScrollDirection.LEADING,
+      ),
+    ).toBe(700);
+    expect(
+      brushSelectionInstance.getScrollOffsetForCol(
+        7,
+        BrushScrollDirection.TRAILING,
+      ),
+    ).toBe(200);
+
+    (facet as TableFacet).frozenGroupSize = {
+      col: {
+        width: 100,
+      },
+      trailingCol: {
+        width: 100,
+      },
+    };
+
+    expect(
+      brushSelectionInstance.getScrollOffsetForCol(
+        7,
+        BrushScrollDirection.LEADING,
+      ),
+    ).toBe(600);
+    expect(
+      brushSelectionInstance.getScrollOffsetForCol(
+        7,
+        BrushScrollDirection.TRAILING,
+      ),
+    ).toBe(300);
+
+    facet.panelBBox = {
+      height: facet.getCanvasHW().height,
+    } as any;
+
+    facet.viewCellHeights = facet.getViewCellHeights(facet.layoutResult);
+
+    expect(
+      brushSelectionInstance.getScrollOffsetForRow(
+        7,
+        BrushScrollDirection.LEADING,
+      ),
+    ).toBe(700);
+    expect(
+      brushSelectionInstance.getScrollOffsetForRow(
+        7,
+        BrushScrollDirection.TRAILING,
+      ),
+    ).toBe(320);
+
+    (facet as TableFacet).frozenGroupSize = {
+      row: {
+        height: 100,
+      },
+      trailingRow: {
+        height: 100,
+      },
+    };
+    expect(
+      brushSelectionInstance.getScrollOffsetForRow(
+        7,
+        BrushScrollDirection.LEADING,
+      ),
+    ).toBe(600);
+    expect(
+      brushSelectionInstance.getScrollOffsetForRow(
+        7,
+        BrushScrollDirection.TRAILING,
+      ),
+    ).toBe(420);
+  });
+
+  test('shoud get valid x and y index', async () => {
+    const { validateXIndex, validateYIndex } = brushSelectionInstance;
+    expect(validateXIndex(-1)).toBe(null);
+    expect(validateXIndex(1)).toBe(1);
+    expect(validateXIndex(10)).toBe(null);
+    expect(validateXIndex(9)).toBe(9);
+
+    expect(validateYIndex(-1)).toBe(null);
+    expect(validateYIndex(1)).toBe(1);
+    expect(validateYIndex(10)).toBe(null);
+    expect(validateYIndex(9)).toBe(9);
+
+    (mockSpreadSheetInstance.facet as TableFacet).frozenGroupSize = {
+      col: {
+        range: [0, 1],
+      },
+      trailingCol: {
+        range: [8, 9],
+      },
+      row: {
+        range: [0, 1],
+      },
+      trailingRow: {
+        range: [8, 9],
+      },
+    };
+
+    expect(validateXIndex(1)).toBe(null);
+    expect(validateXIndex(2)).toBe(2);
+    expect(validateXIndex(8)).toBe(null);
+    expect(validateXIndex(7)).toBe(7);
+    expect(validateXIndex(1)).toBe(null);
+    expect(validateXIndex(2)).toBe(2);
+    expect(validateXIndex(8)).toBe(null);
+    expect(validateXIndex(7)).toBe(7);
   });
 });
