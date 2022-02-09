@@ -1,4 +1,4 @@
-import { filter, isUndefined, keys, get, reduce, every } from 'lodash';
+import { filter, isUndefined, keys, get, reduce, every, memoize } from 'lodash';
 import { Data } from '@/common/interface/s2DataConfig';
 import { Fields, TotalsStatus, Totals } from '@/common/interface/index';
 
@@ -19,9 +19,9 @@ export const getListBySorted = (list: string[], sorted: string[]) => {
   });
 };
 
-export const filterUndefined = (values: string[]) => {
+export const filterUndefined = memoize((values: string[]) => {
   return filter(values, (t) => !isUndefined(t) && t !== 'undefined');
-};
+});
 
 export const flattenDeep = (data: Record<any, any>[] | Record<any, any>) =>
   keys(data)?.reduce((pre, next) => {
