@@ -17,10 +17,10 @@ import {
  */
 
 export interface MultiData {
+  values: (string | number)[][];
+  originalValues?: (string | number)[][];
   // the title of one cell of the gridAnalysisSheet
   label?: string;
-  values: (string | number)[][];
-  originalValues: (string | number)[][];
   [key: string]: unknown;
 }
 
