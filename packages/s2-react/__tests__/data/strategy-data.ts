@@ -31,7 +31,7 @@ export const singleMeasure: S2DataConfig = {
   data: [
     {
       number: {
-        originalValue: [[3877, 234324, '+32%']],
+        originalValues: [[3877, 234324, 0.32]],
         values: [[3877, 234324, '+32%']],
       },
       province: '浙江省',
@@ -40,7 +40,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, -234324, '-32%']],
+        originalValues: [[3877, -234324, -0.32]],
         values: [[3877, -234324, '-32%']],
       },
       province: '浙江省',
@@ -49,7 +49,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[5877, -4324, '+2%']],
+        originalValues: [[5877, -4324, 0.02]],
         values: [[5877, -4324, '+2%']],
       },
       province: '浙江省',
@@ -58,7 +58,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -67,7 +67,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -76,7 +76,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -85,7 +85,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -94,7 +94,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -103,7 +103,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -112,7 +112,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -121,7 +121,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -130,7 +130,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -139,7 +139,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -148,7 +148,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -157,7 +157,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -166,7 +166,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -175,7 +175,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -184,7 +184,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -193,7 +193,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -202,7 +202,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -211,7 +211,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -220,7 +220,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -229,7 +229,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -238,7 +238,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -247,7 +247,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -256,7 +256,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -265,7 +265,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -274,7 +274,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -283,7 +283,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -292,7 +292,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -301,7 +301,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -310,7 +310,7 @@ export const singleMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -346,7 +346,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -356,7 +356,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -366,7 +366,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -376,7 +376,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -386,7 +386,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -396,7 +396,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -406,7 +406,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -416,7 +416,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -426,7 +426,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -436,7 +436,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -446,7 +446,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -456,7 +456,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -466,7 +466,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -476,7 +476,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -486,7 +486,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -496,7 +496,7 @@ export const multiMeasure: S2DataConfig = {
     {
       price: 2323,
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '浙江省',
@@ -505,7 +505,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -514,7 +514,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -523,7 +523,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -532,7 +532,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -541,7 +541,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -550,7 +550,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -559,7 +559,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -568,7 +568,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -577,7 +577,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -586,7 +586,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -595,7 +595,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -604,7 +604,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -613,7 +613,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -622,7 +622,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -631,7 +631,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -640,7 +640,7 @@ export const multiMeasure: S2DataConfig = {
     },
     {
       number: {
-        originalValue: [[3877, 4324, '42%']],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       province: '四川省',
@@ -654,15 +654,15 @@ export const customTree: S2DataConfig = {
   data: [
     {
       'measure-a': {
-        originalValue: [[3877, 4324, 0.42]],
+        originalValues: [[3877, 4324, 0.42]],
         values: [[3877, 4324, '42%']],
       },
       'measure-b': {
-        originalValue: [[377, 324, -0.02]],
+        originalValues: [[377, 324, -0.02]],
         values: [[377, 324, '-0.02']],
       },
       'measure-c': {
-        originalValue: [[377, 0, null]],
+        originalValues: [[377, 0, null]],
         values: [[377, 0, null]],
       },
       'measure-d': 4,

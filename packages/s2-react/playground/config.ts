@@ -117,7 +117,7 @@ export const strategyOptions: S2Options = {
   style: {
     cellCfg: {
       valuesCfg: {
-        originalValueField: 'originalValue',
+        originalValueField: 'originalValues',
         conditions: {
           text: {
             field: 'number',
