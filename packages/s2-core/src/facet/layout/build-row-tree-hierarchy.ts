@@ -108,6 +108,10 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       spreadsheet,
     });
 
+    if (level > hierarchy.maxLevel) {
+      hierarchy.maxLevel = level;
+    }
+
     const emptyChildren = isEmpty(pivotMetaValue?.children);
     if (emptyChildren || isTotals) {
       node.isLeaf = true;

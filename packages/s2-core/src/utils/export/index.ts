@@ -1,4 +1,13 @@
-import { last, isEmpty, clone, trim, max, isObject, forEach } from 'lodash';
+import {
+  last,
+  isEmpty,
+  clone,
+  trim,
+  max,
+  isObject,
+  forEach,
+  isArray,
+} from 'lodash';
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
 import { CornerNodeType, ViewMeta } from '@/common/interface';
@@ -53,11 +62,12 @@ export const download = (str: string, fileName: string) => {
 };
 
 /*
- * Process the multi-measure
+ * Process the multi-measure with multi-lines
+ * For Grid-analysis-sheet
  * use the ' ' to divide different measures in the same line
  * use the '$' to divide different lines
  */
-const processObjectValue = (data: MultiData) => {
+const processObjectValueInCol = (data: MultiData) => {
   const tempCell = data?.label ? [data?.label] : [];
   const values = data?.values;
   if (!isEmpty(values)) {
@@ -66,6 +76,17 @@ const processObjectValue = (data: MultiData) => {
     });
   }
   return tempCell.join('$');
+};
+
+/*
+ * Process the multi-measure with single-lines
+ * For StrategySheet
+ */
+const processObjectValueInRow = (data: MultiData, isFormat: boolean) => {
+  if (!isFormat) {
+    return data?.originalValues[0];
+  }
+  return data?.values[0];
 };
 
 /* Process the data in detail mode. */
@@ -109,7 +130,7 @@ const processValueInCol = (
   const { fieldValue, valueField } = viewMeta;
 
   if (isObject(fieldValue)) {
-    return processObjectValue(fieldValue);
+    return processObjectValueInCol(fieldValue);
   }
 
   if (!isFormat) {
@@ -125,10 +146,14 @@ const processValueInRow = (
   sheetInstance: SpreadSheet,
   isFormat?: boolean,
 ): string => {
-  const tempCell = [];
+  let tempCell = [];
 
   if (viewMeta) {
     const { fieldValue, valueField } = viewMeta;
+    if (isObject(fieldValue)) {
+      tempCell = processObjectValueInRow(fieldValue, isFormat);
+      return tempCell.join('    ');
+    }
     // The main measure.
     if (!isFormat) {
       tempCell.push(fieldValue);
@@ -141,6 +166,23 @@ const processValueInRow = (
     tempCell.push(sheetInstance.options.placeholder);
   }
   return tempCell.join('    ');
+};
+
+const safeJsonParse = (val: string) => {
+  try {
+    return JSON.parse(val);
+  } catch (err) {
+    return false;
+  }
+};
+
+/* Get the label name for the header. */
+const getHeaderLabel = (val: string) => {
+  const label = safeJsonParse(val);
+  if (isArray(label)) {
+    return label.join('    ');
+  }
+  return val;
 };
 
 /**
@@ -156,9 +198,9 @@ export const copyData = (
 ): string => {
   const { rowsHierarchy, rowLeafNodes, colLeafNodes, getCellMeta } =
     sheetInstance?.facet?.layoutResult;
+  const { maxLevel } = rowsHierarchy;
   const { valueInCols } = sheetInstance.dataCfg.fields;
   // Generate the table header.
-
   const rowsHeader = rowsHierarchy.sampleNodesForAllLevels.map((item) =>
     sheetInstance.dataSet.getFieldName(item.key),
   );
@@ -169,6 +211,52 @@ export const copyData = (
     return length > pre ? length : pre;
   }, 0);
 
+  // Generate the table body.
+  let detailRows = [];
+  let maxRowLength = 0;
+
+  if (!sheetInstance.isPivotMode()) {
+    detailRows = processValueInDetail(sheetInstance, split, isFormat);
+  } else {
+    // Filter out the related row head leaf nodes.
+    const caredRowLeafNodes = rowLeafNodes.filter((row) => row.height !== 0);
+    for (const rowNode of caredRowLeafNodes) {
+      // Removing the space at the beginning of the line of the label.
+      rowNode.label = trim(rowNode?.label);
+      const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
+      const tempLine = id.split(ID_SEPARATOR);
+      // TODO 兼容下钻，需要获取下钻最大层级
+      const totalLevel = sheetInstance.isHierarchyTreeType()
+        ? maxLevel + 1
+        : maxLevel; // 树状需要增加小计层级
+      const emptyLength = totalLevel - tempLine.length;
+      if (emptyLength > 0) {
+        tempLine.push(...new Array(emptyLength));
+      }
+
+      // 指标挂行头且为平铺模式下，获取指标名称
+      const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));
+      tempLine[tempLine.length - 1] = lastLabel;
+
+      for (const colNode of colLeafNodes) {
+        if (valueInCols) {
+          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
+          tempLine.push(processValueInCol(viewMeta, sheetInstance, isFormat));
+        } else {
+          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
+          tempLine.push(processValueInRow(viewMeta, sheetInstance, isFormat));
+        }
+      }
+      maxRowLength = max([tempLine.length, maxRowLength]);
+      const lineString = tempLine
+        .map((value) => getCsvString(value))
+        .join(split);
+
+      detailRows.push(lineString);
+    }
+  }
+
+  // Generate the table header.
   let headers: string[][] = [];
 
   if (isEmpty(colLeafNodes) && !sheetInstance.isPivotMode()) {
@@ -178,12 +266,14 @@ export const copyData = (
     // Get the table header of Columns.
     const tempColHeader = clone(colLeafNodes).map((colItem) => {
       let curColItem = colItem;
+
       const tempCol = [];
       // Generate the column dimensions.
       while (curColItem.level !== undefined) {
-        tempCol.push(curColItem.label);
+        tempCol.push(getHeaderLabel(curColItem.label));
         curColItem = curColItem.parent;
       }
+
       return tempCol;
     });
 
@@ -232,6 +322,7 @@ export const copyData = (
             ...item,
           ];
         }
+
         return rowsHeader.concat(...item);
       }
 
@@ -245,57 +336,13 @@ export const copyData = (
 
   const headerRow = headers
     .map((header) => {
+      const emptyLength = maxRowLength - header.length;
+      if (emptyLength > 0) {
+        header.unshift(...new Array(emptyLength));
+      }
       return header.map((h) => getCsvString(h)).join(split);
     })
     .join('\r\n');
-
-  // Generate the table body.
-  let detailRows = [];
-  let colLevel = 0;
-
-  if (!sheetInstance.isPivotMode()) {
-    detailRows = processValueInDetail(sheetInstance, split, isFormat);
-  } else {
-    // Filter out the related row head leaf nodes.
-    const caredRowLeafNodes = rowLeafNodes.filter((row) => row.height !== 0);
-    for (const rowNode of caredRowLeafNodes) {
-      // Removing the space at the beginning of the line of the label.
-      rowNode.label = trim(rowNode?.label);
-      const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
-      const tempLine = id.split(ID_SEPARATOR);
-      if (tempLine.length < colLevel) {
-        // total row completion
-        tempLine.push(...new Array(colLevel - tempLine.length));
-      } else {
-        colLevel = tempLine.length;
-      }
-      const lastLabel = sheetInstance.dataSet.getFieldName(last(tempLine));
-      tempLine[tempLine.length - 1] = lastLabel;
-      const { rows: tempRows } = sheetInstance?.dataCfg?.fields;
-
-      // Adapt to drill down mode.
-      const emptyLength = tempRows.length - tempLine.length;
-      for (let i = 0; i < emptyLength; i++) {
-        tempLine.push('');
-      }
-
-      for (const colNode of colLeafNodes) {
-        if (valueInCols) {
-          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
-          tempLine.push(processValueInCol(viewMeta, sheetInstance, isFormat));
-        } else {
-          const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
-          tempLine.push(processValueInRow(viewMeta, sheetInstance, isFormat));
-        }
-      }
-
-      const lineString = tempLine
-        .map((value) => getCsvString(value))
-        .join(split);
-
-      detailRows.push(lineString);
-    }
-  }
 
   const data = [headerRow].concat(detailRows);
   const result = data.join('\r\n');

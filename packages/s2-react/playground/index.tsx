@@ -722,6 +722,7 @@ function MainLayout() {
             dataCfg={strategyDataCfg}
             options={strategyOptions}
             onRowCellClick={(v) => console.log(v)}
+            header={{ exportCfg: { open: true } }}
             themeCfg={{
               theme: defaultTheme as unknown as S2Theme,
               name: 'gray',

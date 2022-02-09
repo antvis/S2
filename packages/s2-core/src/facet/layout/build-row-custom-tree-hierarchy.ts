@@ -39,7 +39,7 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       // 用户有自定义开关后，以用户操作为准，否则用默认配置
       isCollapsed = userCollapsed ? collapsedRow : defaultCollapsed;
     }
-    const item = new Node({
+    const node = new Node({
       id: uniqueId,
       key,
       label: title,
@@ -55,13 +55,17 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       extra: rest,
     });
 
+    if (level > hierarchy.maxLevel) {
+      hierarchy.maxLevel = level;
+    }
+
     if (isEmpty(children)) {
-      item.isLeaf = true;
+      node.isLeaf = true;
     }
     const expandCurrentNode = layoutHierarchy(
       facetCfg,
       parentNode,
-      item,
+      node,
       hierarchy,
     );
 
@@ -69,7 +73,7 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     if (!isEmpty(children) && !isCollapsed && expandCurrentNode) {
       buildRowCustomTreeHierarchy({
         facetCfg,
-        parentNode: item,
+        parentNode: node,
         level: level + 1,
         hierarchy,
         customTreeItems: children,
