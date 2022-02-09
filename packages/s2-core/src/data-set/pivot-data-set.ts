@@ -17,6 +17,7 @@ import {
   difference,
   every,
   first,
+  memoize,
 } from 'lodash';
 import { Node } from '@/facet/layout/node';
 import {
@@ -329,55 +330,60 @@ export class PivotDataSet extends BaseDataSet {
     };
   }
 
-  public getDimensionValues(field: string, query?: DataType): string[] {
-    const { rows = [], columns = [] } = this.fields || {};
-    let meta: PivotMeta = new Map();
-    let dimensions: string[] = [];
-    if (includes(rows, field)) {
-      meta = this.rowPivotMeta;
-      dimensions = rows;
-    } else if (includes(columns, field)) {
-      meta = this.colPivotMeta;
-      dimensions = columns;
-    }
+  public getDimensionValues = memoize(
+    (field: string, query?: DataType): string[] => {
+      const { rows = [], columns = [] } = this.fields || {};
+      let meta: PivotMeta = new Map();
+      let dimensions: string[] = [];
+      if (includes(rows, field)) {
+        meta = this.rowPivotMeta;
+        dimensions = rows;
+      } else if (includes(columns, field)) {
+        meta = this.colPivotMeta;
+        dimensions = columns;
+      }
 
-    if (!isEmpty(query)) {
-      let sortedMeta = [];
-      const dimensionValuePath = [];
-      for (const dimension of dimensions) {
-        const value = get(query, dimension);
-        dimensionValuePath.push(`${value}`);
-        const cacheKey = dimensionValuePath.join(`${ID_SEPARATOR}`);
-        if (meta.has(value) && !isUndefined(value)) {
-          const childField = meta.get(value)?.childField;
-          meta = meta.get(value).children;
-          if (
-            find(this.sortParams, (item) => item.sortFieldId === childField) &&
-            this.sortedDimensionValues[childField]
-          ) {
-            const dimensionValues = this.sortedDimensionValues[
-              childField
-            ]?.filter((item) => item?.includes(cacheKey));
-            sortedMeta = getDimensionsWithoutPathPre([...dimensionValues]);
-          } else {
-            sortedMeta = [...meta.keys()];
+      if (!isEmpty(query)) {
+        let sortedMeta = [];
+        const dimensionValuePath = [];
+        for (const dimension of dimensions) {
+          const value = get(query, dimension);
+          dimensionValuePath.push(`${value}`);
+          const cacheKey = dimensionValuePath.join(`${ID_SEPARATOR}`);
+          if (meta.has(value) && !isUndefined(value)) {
+            const childField = meta.get(value)?.childField;
+            meta = meta.get(value).children;
+            if (
+              find(
+                this.sortParams,
+                (item) => item.sortFieldId === childField,
+              ) &&
+              this.sortedDimensionValues[childField]
+            ) {
+              const dimensionValues = this.sortedDimensionValues[
+                childField
+              ]?.filter((item) => item?.includes(cacheKey));
+              sortedMeta = getDimensionsWithoutPathPre([...dimensionValues]);
+            } else {
+              sortedMeta = [...meta.keys()];
+            }
           }
         }
+        if (isEmpty(sortedMeta)) {
+          return [];
+        }
+        return filterUndefined(getListBySorted([...meta.keys()], sortedMeta));
       }
-      if (isEmpty(sortedMeta)) {
-        return [];
+
+      if (this.sortedDimensionValues[field]) {
+        return filterUndefined(
+          getDimensionsWithoutPathPre([...this.sortedDimensionValues[field]]),
+        );
       }
-      return filterUndefined(getListBySorted([...meta.keys()], sortedMeta));
-    }
 
-    if (this.sortedDimensionValues[field]) {
-      return filterUndefined(
-        getDimensionsWithoutPathPre([...this.sortedDimensionValues[field]]),
-      );
-    }
-
-    return filterUndefined([...meta.keys()]);
-  }
+      return filterUndefined([...meta.keys()]);
+    },
+  );
 
   getTotalValue(query: DataType) {
     const { aggregation, calcFunc } =

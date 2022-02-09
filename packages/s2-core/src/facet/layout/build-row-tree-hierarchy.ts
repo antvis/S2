@@ -86,7 +86,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       value = fieldValue;
       nodeQuery = merge({}, query, { [currentField]: value });
     }
-    const uniqueId = generateId(parentNode.id, value, spreadsheet);
+    const uniqueId = generateId(parentNode.id, value);
     const collapsedRow = collapsedRows[uniqueId];
     const isCollapse = isBoolean(collapsedRow)
       ? collapsedRow

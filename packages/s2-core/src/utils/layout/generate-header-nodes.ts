@@ -1,4 +1,4 @@
-import { includes, isBoolean, merge } from 'lodash';
+import { includes, isBoolean, memoize } from 'lodash';
 import { HeaderNodesParams } from '@/facet/layout/interface';
 import { TotalClass } from '@/facet/layout/total-class';
 import { TotalMeasure } from '@/facet/layout/total-measure';
@@ -9,7 +9,7 @@ import { Node } from '@/facet/layout/node';
 import { layoutHierarchy } from '@/facet/layout/layout-hooks';
 import { buildGridHierarchy } from '@/facet/layout/build-gird-hierarchy';
 
-export const generateHeaderNodes = (params: HeaderNodesParams) => {
+export const generateHeaderNodes = memoize((params: HeaderNodesParams) => {
   const {
     currentField,
     fields,
@@ -75,7 +75,7 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       const extraSize = isHideMeasure ? 2 : 1;
       isLeaf = level === fields.length - extraSize;
     }
-    const uniqueId = generateId(parentNode.id, value, spreadsheet);
+    const uniqueId = generateId(parentNode.id, value);
     if (!uniqueId) return;
     // TODO need merge with collapsedRows
     const isCollapsed = isBoolean(collapsedCols[uniqueId])
@@ -137,4 +137,4 @@ export const generateHeaderNodes = (params: HeaderNodesParams) => {
       });
     }
   }
-};
+});
