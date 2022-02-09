@@ -202,7 +202,7 @@ s2.showTooltip({
 
 #### 自定义 Tooltip 操作项
 
-除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，也可以监听各自的点击事件
+除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，支持嵌套，也可以监听各自的点击事件
 
 ```ts
 const s2Options = {
@@ -217,6 +217,14 @@ const s2Options = {
           onClick: () => {
             console.log('操作 1 点击');
           },
+          children: [{
+            key: 'custom-a-a',
+            text: '操作 1-1',
+            icon: 'Trend',
+            onClick: () => {
+              console.log('操作 1-1 点击');
+            },
+          }]
         },
         {
           key: 'custom-b',
@@ -224,6 +232,35 @@ const s2Options = {
           icon: 'EyeOutlined',
           onClick: () => {
             console.log('操作 2 点击');
+          },
+        },
+      ],
+    },
+  },
+};
+```
+
+还可以通过 `visible` 参数控制当前操作项是否显示，支持传入一个回调，可以根据当前 [单元格信息](/zh/docs/api/basic-class/base-cell) 动态显示
+
+```ts
+const s2Options = {
+  tooltip: {
+    operation: {
+      menus: [
+        {
+          key: 'custom-a',
+          text: '操作 1',
+          icon: 'Trend',
+          visible: false,
+        },
+        {
+          key: 'custom-b',
+          text: '操作 2',
+          icon: 'EyeOutlined',
+          visible: (cell) => {
+            // 叶子节点不显示
+            const meta = cell.getMeta()
+            return meta.isLeaf
           },
         },
       ],

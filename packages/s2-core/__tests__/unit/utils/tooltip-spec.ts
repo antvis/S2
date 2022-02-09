@@ -8,6 +8,8 @@ import {
 } from '@/utils/tooltip';
 import {
   CellTypes,
+  getTooltipVisibleOperator,
+  S2CellType,
   SpreadSheet,
   Tooltip,
   TOOLTIP_POSITION_OFFSET,
@@ -296,6 +298,83 @@ describe('Tooltip Utils Tests', () => {
         });
       },
     );
+
+    test('should filter not displayed tooltip operation menus', () => {
+      const mockCell = {
+        cellType: CellTypes.DATA_CELL,
+      } as unknown as S2CellType;
+      const onClick = jest.fn();
+
+      const defaultMenus = [
+        {
+          key: 'default-menu',
+          text: 'default-menu',
+        },
+      ];
+
+      const operation: Tooltip['operation'] = {
+        onClick,
+        menus: [
+          { key: 'menu-0', text: '默认显示(未声明visible属性)' },
+          { key: 'menu-1', text: '默认显示', visible: true },
+          { key: 'menu-2', text: '默认隐藏', visible: false },
+          { key: 'menu-3', text: '动态始终显示', visible: () => true },
+          { key: 'menu-4', text: '动态始终显示', visible: () => false },
+          {
+            key: 'menu-5',
+            text: '动态显示',
+            visible: (cell) => cell.cellType === CellTypes.DATA_CELL,
+          },
+          {
+            key: 'menu-6',
+            text: '动态隐藏',
+            visible: (cell) => cell.cellType !== CellTypes.DATA_CELL,
+          },
+          {
+            key: 'menu-7',
+            text: '父节点显示, 子节点隐藏',
+            visible: true,
+            children: [
+              {
+                key: 'menu-7-1',
+                text: '父节点显示, 子节点隐藏',
+                visible: false,
+              },
+            ],
+          },
+          {
+            key: 'menu-8',
+            text: '父节点隐藏, 子节点显示 (应该父,子都不显示)',
+            visible: false,
+            children: [
+              {
+                key: 'menu-8-1',
+                text: '父节点隐藏, 子节点显示',
+                visible: true,
+              },
+            ],
+          },
+        ],
+      };
+      const operator = getTooltipVisibleOperator(operation, {
+        cell: mockCell,
+        defaultMenus,
+      });
+      const visibleSubMenus = operator.menus.find(
+        ({ key }) => key === 'menu-7',
+      );
+
+      expect(operator.onClick).toEqual(onClick);
+      expect(operator.menus.map(({ key }) => key)).toEqual([
+        'default-menu',
+        'menu-0',
+        'menu-1',
+        'menu-3',
+        'menu-5',
+        'menu-7',
+      ]);
+      expect(visibleSubMenus.children).toHaveLength(0);
+    });
   });
 
   test('should set container style', () => {

@@ -21,6 +21,8 @@ import {
   mapKeys,
   every,
   isObject,
+  isFunction,
+  compact,
 } from 'lodash';
 import * as CSS from 'csstype';
 import { Event as CanvasEvent } from '@antv/g-canvas';
@@ -39,6 +41,9 @@ import {
   TooltipPosition,
   TooltipSummaryOptions,
   BaseTooltipConfig,
+  TooltipOperatorOptions,
+  TooltipOperation,
+  TooltipOperatorMenu,
 } from '@/common/interface/tooltip';
 import { TOOLTIP_POSITION_OFFSET } from '@/common/constant/tooltip';
 import { S2CellType } from '@/common/interface/interaction';
@@ -522,4 +527,32 @@ export const getTooltipOptions = (
 ): Tooltip => {
   const cellType = spreadsheet.getCellType?.(event.target);
   return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType);
+};
+
+export const getTooltipVisibleOperator = (
+  operation: TooltipOperation,
+  options: { defaultMenus?: TooltipOperatorMenu[]; cell: S2CellType },
+): TooltipOperatorOptions => {
+  const { defaultMenus = [], cell } = options;
+
+  const getDisplayMenus = (menus: TooltipOperatorMenu[] = []) => {
+    return menus
+      .filter((menu) => {
+        return isFunction(menu.visible)
+          ? menu.visible(cell)
+          : menu.visible ?? true;
+      })
+      .map((menu) => {
+        if (menu.children) {
+          menu.children = getDisplayMenus(menu.children);
+        }
+        return menu;
+      });
+  };
+  const displayMenus = getDisplayMenus(operation.menus);
+
+  return {
+    onClick: operation.onClick,
+    menus: compact([...defaultMenus, ...displayMenus]),
+  };
 };

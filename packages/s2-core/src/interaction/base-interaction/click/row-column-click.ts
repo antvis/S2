@@ -1,6 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { getCellMeta } from 'src/utils/interaction/select-event';
-import { compact, concat, difference, isEmpty, isNil } from 'lodash';
+import { concat, difference, isEmpty, isNil } from 'lodash';
 import {
   hideColumns,
   hideColumnsByThunkGroup,
@@ -21,7 +21,11 @@ import {
   TooltipOperatorOptions,
 } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
-import { mergeCellInfo, getTooltipOptions } from '@/utils/tooltip';
+import {
+  mergeCellInfo,
+  getTooltipOptions,
+  getTooltipVisibleOperator,
+} from '@/utils/tooltip';
 
 export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private isMultiSelection = false;
@@ -167,11 +171,10 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
         },
       };
 
-    const operator: TooltipOperatorOptions = {
-      onClick: operation.onClick,
-      menus: compact([hiddenColumnsMenu, ...(operation.menus || [])]),
-    };
-    return operator;
+    return getTooltipVisibleOperator(operation, {
+      defaultMenus: [hiddenColumnsMenu],
+      cell,
+    });
   }
 
   private bindTableColExpand() {
