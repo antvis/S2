@@ -20,9 +20,9 @@ export class CustomColCell extends ColCell {
 
   protected drawTextShape() {
     const fieldValue = this.getMeta()?.value;
-    const values = [safeJsonParse(fieldValue)];
+    const values = safeJsonParse(fieldValue);
     if (isArray(values)) {
-      drawObjectText(this, { values }, true);
+      drawObjectText(this, { values: [values] }, true);
     } else {
       super.drawTextShape();
     }
