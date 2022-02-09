@@ -1,3 +1,25 @@
+# [@antv/s2-v1.8.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.8.0-alpha.3...@antv/s2-v1.8.0-alpha.4) (2022-02-09)
+
+
+### Bug Fixes
+
+* **interaction:** 修复刷选不显示预选框, 行列多选功能异常等交互问题 ([#1063](https://github.com/antvis/S2/issues/1063)) ([f0b988d](https://github.com/antvis/S2/commit/f0b988d5c0842f8a747237a3a89da8d74410f713))
+* **tooltip:** 修复不同类型的单元格配置合并问题 ([#1059](https://github.com/antvis/S2/issues/1059)) ([8d73988](https://github.com/antvis/S2/commit/8d73988983b2426a98408e43fc3bc00f28eabaad))
+* 修复卸载组件报错 ([c2562dc](https://github.com/antvis/S2/commit/c2562dc1fa287313d88aad1f99df7173a8c788c6))
+* 只在移动端绑定tap事件，防止多次触发 collapse 事件 ([#1060](https://github.com/antvis/S2/issues/1060)) ([31f3f68](https://github.com/antvis/S2/commit/31f3f68fcf414d8945bea2f24c820d2d06275de2))
+
+
+### Features
+
+*  数据导出适配自定义目录树 ([#1062](https://github.com/antvis/S2/issues/1062)) ([9111f73](https://github.com/antvis/S2/commit/9111f737e9359be7cf3f554d5315dcae4cef10e1))
+* refactor mobile scrolling ([#1061](https://github.com/antvis/S2/issues/1061)) ([bf995e3](https://github.com/antvis/S2/commit/bf995e3ccb93d86f2966ba6a0190cb3b84818833))
+* **tooltip:** tooltip 操作项支持动态显示 ([#1067](https://github.com/antvis/S2/issues/1067)) ([41ad27d](https://github.com/antvis/S2/commit/41ad27dd10970dc65b02d1684e54e19d8fae65bb))
+
+
+### Performance Improvements
+
+* lodash 使用优化 ([#1064](https://github.com/antvis/S2/issues/1064)) ([4b4aaee](https://github.com/antvis/S2/commit/4b4aaee6a33a4e89d03ed88a23d6bb1da27e0f12))
+
 # [@antv/s2-v1.8.0-alpha.3](https://github.com/antvis/S2/compare/@antv/s2-v1.8.0-alpha.2...@antv/s2-v1.8.0-alpha.3) (2022-02-08)
 
 
