@@ -665,19 +665,43 @@ export const customTree: S2DataConfig = {
         originalValues: [[377, 0, null]],
         values: [[377, 0, null]],
       },
-      'measure-d': 4,
-      'measure-e': 5,
-      'measure-f': 6,
+      'measure-d': {
+        originalValues: [[377, 324, 0.02]],
+        values: [[377, 324, '0.02']],
+      },
+      'measure-e': {
+        originalValues: [[377, 324, 0.02]],
+        values: [[377, 324, '0.02']],
+      },
+      'measure-f': {
+        originalValues: [[377, 324, 0.02]],
+        values: [[377, 324, '0.02']],
+      },
       date: '2021',
       sub_type: JSON.stringify(['数值', '环比', '同比']),
     },
     {
-      'measure-a': 11,
-      'measure-b': 22,
-      'measure-c': 32,
-      'measure-d': 43,
-      'measure-e': 45,
-      'measure-f': 65,
+      'measure-a': {
+        originalValues: [[377, '', 0.02]],
+        values: [[377, '', '0.02']],
+      },
+      'measure-b': {
+        originalValues: [[377, 324, 0.02]],
+        values: [[377, 324, '0.02']],
+      },
+      'measure-c': {
+        originalValues: [[null, 324, 0.02]],
+        values: [[null, 324, '0.02']],
+      },
+      'measure-d': {
+        originalValues: [[377, 324, 0.02]],
+        values: [[377, 324, '0.02']],
+      },
+
+      'measure-f': {
+        originalValues: [[377, 324, 0.02]],
+        values: [[377, 324, '0.02']],
+      },
       date: '2022',
       sub_type: JSON.stringify(['数值', '环比', '同比']),
     },
