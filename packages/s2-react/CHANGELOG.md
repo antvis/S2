@@ -1,3 +1,17 @@
+# [@antv/s2-react-v1.8.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.4...@antv/s2-react-v1.8.0-alpha.5) (2022-02-09)
+
+
+### Bug Fixes
+
+* **interaction:** 修复刷选不显示预选框, 行列多选功能异常等交互问题 ([#1063](https://github.com/antvis/S2/issues/1063)) ([f0b988d](https://github.com/antvis/S2/commit/f0b988d5c0842f8a747237a3a89da8d74410f713))
+* 修复自定义列头名称不显示问题 ([447e7e5](https://github.com/antvis/S2/commit/447e7e5a82bbd266e08792c35e59c2a29581d738))
+
+
+### Features
+
+*  数据导出适配自定义目录树 ([#1062](https://github.com/antvis/S2/issues/1062)) ([9111f73](https://github.com/antvis/S2/commit/9111f737e9359be7cf3f554d5315dcae4cef10e1))
+* **tooltip:** tooltip 操作项支持动态显示 ([#1067](https://github.com/antvis/S2/issues/1067)) ([41ad27d](https://github.com/antvis/S2/commit/41ad27dd10970dc65b02d1684e54e19d8fae65bb))
+
 # [@antv/s2-react-v1.8.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.3...@antv/s2-react-v1.8.0-alpha.4) (2022-02-08)
 
 
