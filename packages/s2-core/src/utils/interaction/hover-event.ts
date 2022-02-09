@@ -1,10 +1,7 @@
 import { filter } from 'lodash';
+import { generateId } from '../layout/generate-id';
 import { ID_SEPARATOR } from '@/common/constant';
 import { ColCell, RowCell } from '@/cell';
-
-const generateId = (parentId: string, childrenId: string) => {
-  return `${parentId}${ID_SEPARATOR}${childrenId}`;
-};
 
 /**
  * @description Return all the row cells or column cells which are needed to be highlighted.
