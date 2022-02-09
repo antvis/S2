@@ -138,14 +138,14 @@ export const StrategySheet: React.FC<SheetComponentsProps> = React.memo(
     const s2DataCfg = React.useMemo<S2DataConfig>(() => {
       const defaultFields = {
         fields: {
-          valueInCols: !(size(dataCfg?.fields?.values) > 1), // 多指标数值挂行头，单指标挂列头
+          valueInCols: size(dataCfg?.fields?.values) <= 1, // 多指标数值挂行头，单指标挂列头
         },
       };
-      return customMerge({}, dataCfg, defaultFields);
+      return customMerge(dataCfg, defaultFields);
     }, [dataCfg]);
 
     const s2Options = React.useMemo<S2Options>(() => {
-      return customMerge({}, options, strategySheetOptions);
+      return customMerge(options, strategySheetOptions);
     }, [options, strategySheetOptions]);
 
     return (

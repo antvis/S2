@@ -1,6 +1,9 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { compact, get } from 'lodash';
-import { getTooltipOptions } from '../../../utils/tooltip';
+import { get } from 'lodash';
+import {
+  getTooltipOptions,
+  getTooltipVisibleOperator,
+} from '../../../utils/tooltip';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { DataCell } from '@/cell/data-cell';
 import {
@@ -60,6 +63,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     event: CanvasEvent,
     meta: ViewMeta,
   ): TooltipOperatorOptions {
+    const cell = this.spreadsheet.getCell(event.target);
     const { operation } = getTooltipOptions(this.spreadsheet, event);
     const trendMenu = operation.trend && {
       ...TOOLTIP_OPERATOR_TREND_MENU,
@@ -69,12 +73,10 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
       },
     };
 
-    const operator: TooltipOperatorOptions = {
-      onClick: operation.onClick,
-      menus: compact([trendMenu, ...(operation.menus || [])]),
-    };
-
-    return operator;
+    return getTooltipVisibleOperator(operation, {
+      defaultMenus: [trendMenu],
+      cell,
+    });
   }
 
   private showTooltip(event: CanvasEvent, meta: ViewMeta) {

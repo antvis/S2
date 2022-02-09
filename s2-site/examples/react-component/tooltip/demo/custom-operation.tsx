@@ -21,6 +21,16 @@ fetch(
               onClick: () => {
                 console.log('操作1点击');
               },
+              children: [
+                {
+                  key: 'custom-a-a',
+                  text: '操作 1-1',
+                  icon: 'Trend',
+                  onClick: () => {
+                    console.log('操作 1-1 点击');
+                  },
+                },
+              ],
             },
             {
               key: 'custom-b',
@@ -28,6 +38,28 @@ fetch(
               icon: 'EyeOutlined',
               onClick: () => {
                 console.log('操作2点击');
+              },
+            },
+            {
+              key: 'custom-c',
+              text: '操作3',
+              icon: 'EyeOutlined',
+              visible: false,
+              onClick: () => {
+                console.log('操作3点击');
+              },
+            },
+            {
+              key: 'custom-c',
+              text: '操作4',
+              icon: 'EyeOutlined',
+              visible: (cell) => {
+                // 叶子节点才显示
+                const meta = cell.getMeta();
+                return meta.isLeaf;
+              },
+              onClick: () => {
+                console.log('操作4点击');
               },
             },
           ],

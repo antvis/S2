@@ -13,7 +13,7 @@ object **必选**,_default：null_ 功能描述： tooltip 显示配置
 | data      | [TooltipData](#tooltipdata)                                                 |       |        | tooltip 数据        |
 | cellInfos | `Record<string, any>`                                                       |       |        | 单元格信息          |
 | options   | [TooltipOptions](#tooltipoptions)                                           |       |        | tooltip 部分配置    |
-| content   | `React.ReactNode` \| `(cell, defaultTooltipShowOptions) => React.ReactNode` |       |        | 自定义 tooltip 内容 |
+| content   | `React.ReactNode | string` \| `(cell, defaultTooltipShowOptions) => React.ReactNode | string` |       |        | 自定义 tooltip 内容 |
 | event     | `Event`                                                                     |       |        | 当前事件 Event      |
 
 ### TooltipPosition
@@ -86,7 +86,7 @@ object **可选**,_default：null_ 功能描述： tooltip 操作栏配置
 
 | 参数    | 类型                                         | 必选  | 默认值 | 功能描述                                                                                   |
 | ------- | -------------------------------------------- | :---: | ------ | ------------------------------------------------------------------------------------------ |
-| menus   | [TooltipOperatorMenu](#tooltipoperatormenu)  |     |        | 操作项列表                                                                                 |
+| menus   | [TooltipOperatorMenu[]](#tooltipoperatormenu)  |     |        | 操作项列表  |
 | onClick | `({ item, key, keyPath, domEvent }) => void` |      |        | 点击事件，透传 `antd` `Menu` 组件的 [onClick](https://ant.design/components/menu-cn/#Menu) |
 
 ##### TooltipOperatorMenu
@@ -96,6 +96,8 @@ object **必选**,_default：null_ 功能描述： tooltip 操作项列表
 | 参数     | 类型                                        | 必选  | 默认值 | 功能描述       |
 | -------- | ------------------------------------------- | :---: | ------ | -------------- |
 | key      | `string`                                    |   ✓   |        | 唯一标识       |
-| text     | `string`                                    |       |        | 名称           |
-| icon     | `React.ReactNode`                           |       |        | 自定义图标     |
+| text     | `string`   |       |        | 名称           |
+| icon     | `React.ReactNode \| string`   |       |        | 自定义图标     |
+| visible  | `boolean \| (cell) => boolean`                           |      |   `true`      | 操作项是否显示，可传入一个函数根据当前单元格信息动态显示     |
+| onClick  | `() => void`                           |       |        | 点击事件回调     |
 | children | [TooltipOperatorMenu](#tooltipoperatormenu) |       |        | 子菜单列表     |
