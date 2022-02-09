@@ -46,7 +46,6 @@ describe('Options Tests', () => {
       showSeriesNumber: false,
       scrollReachNodeField: {},
       customSVGIcons: [],
-      customHeaderCells: null,
       showDefaultHeaderActionIcon: true,
       headerActionIcons: [],
       style: DEFAULT_STYLE,
