@@ -3,7 +3,7 @@
  * https://github.com/antvis/g
  */
 import { Group, IShape, ShapeAttrs, SimpleBBox } from '@antv/g-canvas';
-import { forEach, isEmpty, set } from 'lodash';
+import { forEach, isEmpty, set, isFunction } from 'lodash';
 import { GuiIcon, GuiIconCfg } from '@/common/icons/gui-icon';
 import { TextTheme } from '@/common/interface/theme';
 
@@ -95,7 +95,7 @@ export function renderTreeIcon(
     ...area,
     fill,
   });
-  if (onClick) {
+  if (isFunction(onClick)) {
     icon.on('click', onClick);
   }
   group?.add(icon);
