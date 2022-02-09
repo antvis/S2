@@ -1,5 +1,5 @@
 ---
-title: 自定义行列头操作图标
+title: 自定义 icon
 order: 3
 ---
 
@@ -55,6 +55,37 @@ const s2Options = {
 
 `markdown:docs/common/header-action-icon.zh.md`
 
-### 完整示例
+### 自定义行列头 icon 示例
 
 <playground path='custom/custom-icon/demo/custom-header-action-icon.tsx' rid='container' height='400'></playground>
+
+### 自定义单元格 icon 示例
+
+> 单元格标记详情，可查看 [字段标记](/zh/docs/manual/basic/conditions) 章节
+
+```javascript
+const s2Options = {
+  customSVGIcons: [
+    {
+      name: 'Filter',
+      svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+    },
+  ],
+  conditions: {
+    icon: [
+      {
+        field: 'number',
+        mapping(fieldValue, data) {
+          return {
+            // 使用自定义 icon 名称
+            icon: 'Filter',
+            fill: '#30BF78',
+          };
+        },
+      },
+    ],
+  },
+}
+```
+
+<playground path='custom/custom-icon/demo/custom-data-cell-icon.tsx' rid='customDataCellIcon' height='400'></playground>
