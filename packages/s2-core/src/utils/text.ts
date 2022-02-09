@@ -397,3 +397,11 @@ export const getCellWidth = (cellCfg: CellCfg) => {
   // TODO 根据当前列的指标个数返回列宽
   return cellWidth;
 };
+
+export const safeJsonParse = (val: string) => {
+  try {
+    return JSON.parse(val);
+  } catch (err) {
+    return false;
+  }
+};

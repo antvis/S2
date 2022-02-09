@@ -8,6 +8,7 @@ import {
   forEach,
   isArray,
 } from 'lodash';
+import { safeJsonParse } from '../text';
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
 import { CornerNodeType, ViewMeta } from '@/common/interface';
@@ -68,14 +69,14 @@ export const download = (str: string, fileName: string) => {
  * use the '$' to divide different lines
  */
 const processObjectValueInCol = (data: MultiData) => {
-  const tempCell = data?.label ? [data?.label] : [];
+  const tempCells = data?.label ? [data?.label] : [];
   const values = data?.values;
   if (!isEmpty(values)) {
     forEach(values, (value) => {
-      tempCell.push(value.join(' '));
+      tempCells.push(value.join(' '));
     });
   }
-  return tempCell.join('$');
+  return tempCells.join('$');
 };
 
 /*
@@ -84,9 +85,9 @@ const processObjectValueInCol = (data: MultiData) => {
  */
 const processObjectValueInRow = (data: MultiData, isFormat: boolean) => {
   if (!isFormat) {
-    return data?.originalValues[0];
+    return data?.originalValues?.[0] ?? data?.values?.[0];
   }
-  return data?.values[0];
+  return data?.values?.[0];
 };
 
 /* Process the data in detail mode. */
@@ -146,34 +147,26 @@ const processValueInRow = (
   sheetInstance: SpreadSheet,
   isFormat?: boolean,
 ): string => {
-  let tempCell = [];
+  let tempCells = [];
 
   if (viewMeta) {
     const { fieldValue, valueField } = viewMeta;
     if (isObject(fieldValue)) {
-      tempCell = processObjectValueInRow(fieldValue, isFormat);
-      return tempCell.join('    ');
+      tempCells = processObjectValueInRow(fieldValue, isFormat);
+      return tempCells.join('    ');
     }
     // The main measure.
     if (!isFormat) {
-      tempCell.push(fieldValue);
+      tempCells.push(fieldValue);
     } else {
       const mainFormatter = sheetInstance.dataSet.getFieldFormatter(valueField);
-      tempCell.push(mainFormatter(fieldValue));
+      tempCells.push(mainFormatter(fieldValue));
     }
   } else {
     // If the meta equals null then it will be replaced by '-'.
-    tempCell.push(sheetInstance.options.placeholder);
+    tempCells.push(sheetInstance.options.placeholder);
   }
-  return tempCell.join('    ');
-};
-
-const safeJsonParse = (val: string) => {
-  try {
-    return JSON.parse(val);
-  } catch (err) {
-    return false;
-  }
+  return tempCells.join('    ');
 };
 
 /* Get the label name for the header. */
