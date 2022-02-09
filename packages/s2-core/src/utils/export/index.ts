@@ -108,7 +108,7 @@ const processValueInDetail = (
     } else {
       tempRows = columns.map((v: string) => {
         const mainFormatter = sheetInstance.dataSet.getFieldFormatter(v);
-        return getCsvString(mainFormatter(record[v]));
+        return getCsvString(mainFormatter(record[v], record));
       });
     }
     if (sheetInstance.options.showSeriesNumber) {
@@ -130,7 +130,7 @@ const processValueInCol = (
     // If the meta equals null, replacing it with blank line.
     return '';
   }
-  const { fieldValue, valueField } = viewMeta;
+  const { fieldValue, valueField, data } = viewMeta;
 
   if (isObject(fieldValue)) {
     return processObjectValueInCol(fieldValue);
@@ -140,7 +140,7 @@ const processValueInCol = (
     return `${fieldValue}`;
   }
   const mainFormatter = sheetInstance.dataSet.getFieldFormatter(valueField);
-  return mainFormatter(fieldValue);
+  return mainFormatter(fieldValue, data);
 };
 
 /* Process the data when the value position is on the rows. */
@@ -152,7 +152,7 @@ const processValueInRow = (
   let tempCells = [];
 
   if (viewMeta) {
-    const { fieldValue, valueField } = viewMeta;
+    const { fieldValue, valueField, data } = viewMeta;
     if (isObject(fieldValue)) {
       tempCells = processObjectValueInRow(fieldValue, isFormat);
       return tempCells;
@@ -162,7 +162,7 @@ const processValueInRow = (
       tempCells.push(fieldValue);
     } else {
       const mainFormatter = sheetInstance.dataSet.getFieldFormatter(valueField);
-      tempCells.push(mainFormatter(fieldValue));
+      tempCells.push(mainFormatter(fieldValue, data));
     }
   } else {
     // If the meta equals null then it will be replaced by '-'.
