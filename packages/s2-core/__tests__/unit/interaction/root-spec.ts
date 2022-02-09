@@ -23,6 +23,7 @@ import {
   RangeSelection,
   SelectedCellMove,
   BaseEvent,
+  GuiIcon,
 } from '@/index';
 import { Store } from '@/common/store';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
@@ -102,6 +103,43 @@ describe('RootInteraction Tests', () => {
       cells: [getCellMeta(mockCell)],
       stateName: InteractionStateName.SELECTED,
     });
+  });
+
+  test('should clear interaction state correct', () => {
+    const icon = new GuiIcon({
+      name: '',
+      x: 0,
+      y: 0,
+      width: 20,
+      height: 20,
+    });
+    mockSpreadSheetInstance.store.set('visibleActionIcons', [icon]);
+    rootInteraction.setState({
+      cells: [getCellMeta(mockCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    rootInteraction.setInteractedCells(mockCell);
+    rootInteraction.addIntercepts([InterceptType.CLICK]);
+
+    rootInteraction.clearState();
+
+    // clear state
+    expect(rootInteraction.getState()).toEqual({
+      cells: [],
+      force: false,
+    });
+    expect(rootInteraction.getActiveCells()).toHaveLength(0);
+    expect(rootInteraction.getCells()).toHaveLength(0);
+    // hide action icon
+    expect(icon.get('visible')).toBeFalsy();
+    // reset icon store
+    expect(
+      mockSpreadSheetInstance.store.get('visibleActionIcons'),
+    ).toHaveLength(0);
+    // hide interaction shape
+    expect(mockCell.hideInteractionShape).toHaveBeenCalledTimes(1);
+    // draw call
+    expect(mockSpreadSheetInstance.container.draw).toHaveBeenCalledTimes(1);
   });
 
   test('should set all selected interaction state correct', () => {
@@ -251,6 +289,19 @@ describe('RootInteraction Tests', () => {
         force: true,
       });
       expect(mockSpreadSheetInstance.container.draw).toHaveBeenCalled();
+    });
+
+    test('should update last selected cells when repeated call changeState', () => {
+      rootInteraction.changeState({
+        cells: [getCellMeta(mockCell)],
+        stateName: InteractionStateName.SELECTED,
+      });
+      rootInteraction.setInteractedCells(mockCell);
+      rootInteraction.changeState({
+        cells: [getCellMeta(mockCell), getCellMeta(mockCell)],
+        stateName: InteractionStateName.SELECTED,
+      });
+      expect(rootInteraction.getActiveCells()).toHaveLength(2);
     });
   });
 
