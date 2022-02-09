@@ -194,21 +194,19 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    const rowField = this.meta.rowId;
-    const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowField);
+    const { rowId, valueField, fieldValue, data } = this.meta;
+    const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     let formatter: Formatter;
     if (rowMeta) {
       // format by row field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(rowField);
+      formatter = this.spreadsheet.dataSet.getFieldFormatter(rowId);
     } else {
       // format by value field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(
-        this.meta.valueField,
-      );
+      formatter = this.spreadsheet.dataSet.getFieldFormatter(valueField);
     }
-    const formattedValue = formatter(this.meta.fieldValue);
+    const formattedValue = formatter(fieldValue, data);
     return {
-      value: this.meta.fieldValue,
+      value: fieldValue,
       formattedValue,
     };
   }

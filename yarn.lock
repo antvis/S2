@@ -71,10 +71,10 @@
     gl-matrix "^3.0.0"
     tslib "^2.0.3"
 
-"@antv/g-gesture@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@antv/g-gesture/-/g-gesture-1.0.0.tgz#4586991b746852e0890b963d728bba3761d6cd05"
-  integrity sha512-RljojCkmkTyxBOd6qLCOtF3Yk8JAYpa8J+CuHkjH4/SFFeJhakAkQnYAkLccaGrjYWAwC9IOPzEgK1cTd7v/gw==
+"@antv/g-gesture@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@antv/g-gesture/-/g-gesture-1.0.1.tgz#bbc44809ddd24a06e53dfb31f8340a445f474743"
+  integrity sha512-7zANDfE/aWSWTetJO8uKcI/rvnGPzpfsga0F3IuLKcVjWwSAHocmccMz0bzkltNcm43UY1C2vX2HCBKMCwDdvg==
   dependencies:
     "@antv/event-emitter" "~0.1.2"
     d3-ease "^1.0.5"

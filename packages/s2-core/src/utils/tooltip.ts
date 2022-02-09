@@ -29,7 +29,7 @@ import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
-import { AutoAdjustPositionOptions, ListItem } from '@/common/interface';
+import { AutoAdjustPositionOptions, Data, ListItem } from '@/common/interface';
 import { LayoutResult } from '@/common/interface/basic';
 import {
   SummaryParam,
@@ -167,8 +167,8 @@ export const getFriendlyVal = (val: any): number | string => {
 export const getFieldFormatter = (spreadsheet: SpreadSheet, field: string) => {
   const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
 
-  return (v: any) => {
-    return getFriendlyVal(formatter(v));
+  return (v: unknown, data?: Data) => {
+    return getFriendlyVal(formatter(v, data));
   };
 };
 
@@ -184,7 +184,7 @@ export const getListItem = (
   const dataValue = isObject(data[field])
     ? JSON.stringify(data[field])
     : data[field];
-  const value = formatter(valueField || dataValue);
+  const value = formatter(valueField || dataValue, data);
 
   return {
     name,
@@ -405,7 +405,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
       const dataSum = getDataSumByField(selected, VALUE_FIELD);
       value = parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems
       if (currentFormatter) {
-        value = currentFormatter(dataSum);
+        value = currentFormatter(dataSum, selected);
       }
     }
     summaries.push({

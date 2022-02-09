@@ -151,17 +151,6 @@ export class RowCell extends HeaderCell {
     });
   }
 
-  protected getFormattedValue(value: string): string {
-    let content = value;
-    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
-      this.meta.field,
-    );
-    if (formatter) {
-      content = formatter(value);
-    }
-    return content;
-  }
-
   // draw text
   protected drawTextShape() {
     super.drawTextShape();
