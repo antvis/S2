@@ -171,13 +171,13 @@ export class RootInteraction {
 
   public getPanelGroupAllDataCells(): DataCell[] {
     return getAllChildCells(
-      this.spreadsheet?.panelGroup?.get('children'),
+      this.spreadsheet.panelGroup?.getChildren(),
       DataCell,
     );
   }
 
   public getAllRowHeaderCells() {
-    const children = this.spreadsheet?.foregroundGroup?.getChildren();
+    const children = this.spreadsheet.foregroundGroup?.getChildren();
     const rowHeader = filter(
       children,
       (group) => group instanceof RowHeader,
@@ -362,6 +362,7 @@ export class RootInteraction {
       return;
     }
 
+    this.clearState();
     this.setState(interactionStateInfo);
     this.updatePanelGroupAllDataCells();
     this.draw();
