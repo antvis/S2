@@ -12,7 +12,6 @@ import { CornerHeaderConfig } from '@/facet/header/corner';
 import {
   CellCallback,
   CornerHeaderCallback,
-  CustomHeaderCells,
   DataCellCallback,
   FrameCallback,
   MappingDataItemCallback,
@@ -57,8 +56,6 @@ export interface S2BasicOptions<T = Element | string> {
   readonly showSeriesNumber?: boolean;
   // scroll reach node border(which field node belongs to) event config
   readonly scrollReachNodeField?: NodeField;
-  // custom config of showing columns and rows
-  readonly customHeaderCells?: CustomHeaderCells;
   // if show the default header actionIcons
   readonly showDefaultHeaderActionIcon?: boolean;
   // header cells including ColCell, RowCell, CornerCell action icon's config

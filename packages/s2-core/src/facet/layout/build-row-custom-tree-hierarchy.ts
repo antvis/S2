@@ -27,7 +27,7 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     // query只与值本身有关，不会涉及到parent节点
     const valueQuery = { [EXTRA_FIELD]: key };
     // 保持和其他场景头部生成id的格式一致
-    const uniqueId = generateId(parentNode.id, title, spreadsheet);
+    const uniqueId = generateId(parentNode.id, title);
     const defaultCollapsed = isUndefined(collapsed) ? false : collapsed;
     let isCollapsed;
     const collapsedRow = collapsedRows[uniqueId];

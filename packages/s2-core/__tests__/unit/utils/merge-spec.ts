@@ -141,7 +141,6 @@ describe('merge test', () => {
       showSeriesNumber: false,
       scrollReachNodeField: {},
       customSVGIcons: [],
-      customHeaderCells: null,
       showDefaultHeaderActionIcon: false,
       headerActionIcons: [],
       style: DEFAULT_STYLE,

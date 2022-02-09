@@ -1,8 +1,4 @@
-import { PivotSheet, Node } from '@antv/s2';
-
-const generateId = (id) => {
-  return `s2-${id}`;
-};
+import { PivotSheet, Node, generateId } from '@antv/s2';
 
 fetch(
   'https://gw.alipayobjects.com/os/bmw-prod/cd9814d0-6dfa-42a6-8455-5a6bd0ff93ca.json',
@@ -63,8 +59,8 @@ fetch(
           const nextLabel = '宁波B';
 
           const parentNode = node.parent;
-          const preUniqueId = generateId(parentNode.id, preLabel, s2);
-          const nextUniqueId = generateId(parentNode.id, nextLabel, s2);
+          const preUniqueId = generateId(parentNode.id, preLabel);
+          const nextUniqueId = generateId(parentNode.id, nextLabel);
           const preNode = new Node({
             ...node,
             ...node.config,

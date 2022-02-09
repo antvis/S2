@@ -1,4 +1,4 @@
-import { isEmpty, isUndefined } from 'lodash';
+import { isEmpty, isUndefined, memoize } from 'lodash';
 import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { layoutArrange } from '@/facet/layout/layout-hooks';
@@ -27,7 +27,7 @@ const hideMeasureColumn = (
  *
  * @param params
  */
-export const buildGridHierarchy = (params: GridHeaderParams) => {
+export const buildGridHierarchy = memoize((params: GridHeaderParams) => {
   const {
     addTotalMeasureInTotal,
     addMeasureInTotalQuery,
@@ -124,4 +124,4 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     addMeasureInTotalQuery,
     addTotalMeasureInTotal,
   });
-};
+});
