@@ -5,13 +5,14 @@ import {
   TargetCellInfo,
   LayoutCol,
   LayoutRow,
-  ListSortParams,
   S2Constructor,
   Node,
   SpreadSheet,
   ThemeCfg,
   ViewMeta,
   LayoutResult,
+  TableSortParams,
+  SortParams,
 } from '@antv/s2';
 import React from 'react';
 import { DrillDownProps } from '@/components/drill-down';
@@ -97,7 +98,7 @@ export interface BaseSheetComponentProps {
   header?: HeaderCfgProps;
   onLoad?: () => void;
   onDestroy?: () => void;
-  onListSort?: (params: ListSortParams) => void;
+  onListSortChange?: (params: TableSortParams | SortParams) => void;
   onRowColLayout?: (rows: LayoutRow[], cols: LayoutCol[]) => void;
   onAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
   onCollapseRows?: (collapsedRows: Record<string, boolean>) => void;

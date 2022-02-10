@@ -3,7 +3,8 @@ import {
   S2Event,
   getBaseCellData,
   CellScrollPosition,
-  ListSortParams,
+  TableSortParams,
+  SortParams,
   EmitterType,
   ViewMeta,
   LayoutResult,
@@ -106,8 +107,8 @@ export function useEvents(props: BaseSheetComponentProps) {
         },
 
         // ============== sort ====================
-        [S2Event.RANGE_SORT]: (value: ListSortParams) => {
-          props.onListSort?.(value);
+        [S2Event.RANGE_SORT]: (value: TableSortParams | SortParams) => {
+          props.onListSortChange?.(value);
         },
       };
 
