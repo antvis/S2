@@ -769,14 +769,6 @@ export class PivotFacet extends BaseFacet {
     return Math.max(rowNodeWidth, fieldNameNodeWidth);
   }
 
-  private getScrollColField(): string[] {
-    return get(this.spreadsheet, 'options.scrollReachNodeField.colField', []);
-  }
-
-  private getScrollRowField(): string[] {
-    return get(this.spreadsheet, 'options.scrollReachNodeField.rowField', []);
-  }
-
   public getViewCellHeights(layoutResult: LayoutResult) {
     const { rowLeafNodes } = layoutResult;
 

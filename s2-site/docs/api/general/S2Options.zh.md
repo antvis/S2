@@ -16,7 +16,6 @@ order: 1
 | pagination | [Pagination](#pagination) |  |    | 分页配置 |
 | frozenRowHeader | `boolean` |  |   `true` | 冻结行头 （透视表有效） |
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
-| scrollReachNodeField | [NodeField](#nodefield) |  |  | 滚动监听的节点度量 |
 | showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |
 | headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
 | customSVGIcons | [CustomSVGIcon[]](#customsvgicon) |  |   `false` | 自定义 svg 图标 |

@@ -54,8 +54,6 @@ export interface S2BasicOptions<T = Element | string> {
   readonly frozenRowHeader?: boolean;
   // show Series Number
   readonly showSeriesNumber?: boolean;
-  // scroll reach node border(which field node belongs to) event config
-  readonly scrollReachNodeField?: NodeField;
   // if show the default header actionIcons
   readonly showDefaultHeaderActionIcon?: boolean;
   // header cells including ColCell, RowCell, CornerCell action icon's config
