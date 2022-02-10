@@ -19,6 +19,7 @@ import {
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
   SeriesNumberHeader,
   TableRowCell,
+  TableSortParams,
 } from '..';
 import {
   calculateFrozenCornerCells,
@@ -59,7 +60,8 @@ export class TableFacet extends BaseFacet {
     super(cfg);
 
     const s2 = this.spreadsheet;
-    s2.on(S2Event.RANGE_SORT, ({ sortKey, sortMethod, sortBy }) => {
+    s2.on(S2Event.RANGE_SORT, (sortParams) => {
+      const { sortKey, sortMethod, sortBy } = sortParams as TableSortParams;
       set(s2.dataCfg, 'sortParams', [
         {
           sortFieldId: sortKey,
