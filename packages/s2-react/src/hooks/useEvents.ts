@@ -107,8 +107,8 @@ export function useEvents(props: BaseSheetComponentProps) {
         },
 
         // ============== sort ====================
-        [S2Event.RANGE_SORT]: (value: TableSortParams | SortParams) => {
-          props.onListSortChange?.(value);
+        [S2Event.RANGE_SORT]: (value: SortParams) => {
+          props.onSortChange?.(value);
         },
       };
 

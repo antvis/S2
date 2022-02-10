@@ -11,7 +11,6 @@ import {
   ThemeCfg,
   ViewMeta,
   LayoutResult,
-  TableSortParams,
   SortParams,
 } from '@antv/s2';
 import React from 'react';
@@ -98,7 +97,7 @@ export interface BaseSheetComponentProps {
   header?: HeaderCfgProps;
   onLoad?: () => void;
   onDestroy?: () => void;
-  onListSortChange?: (params: TableSortParams | SortParams) => void;
+  onSortChange?: (params: SortParams) => void;
   onRowColLayout?: (rows: LayoutRow[], cols: LayoutCol[]) => void;
   onAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
   onCollapseRows?: (collapsedRows: Record<string, boolean>) => void;
