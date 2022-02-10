@@ -7,13 +7,16 @@ import {
   isObject,
   forEach,
   isArray,
+  concat,
+  flatten,
+  size,
 } from 'lodash';
-import { safeJsonParse } from '../text';
 import { getCsvString } from './export-worker';
 import { SpreadSheet } from '@/sheet-type';
 import { CornerNodeType, ViewMeta } from '@/common/interface';
 import { ID_SEPARATOR, ROOT_BEGINNING_REGEX } from '@/common/constant';
 import { MultiData } from '@/common/interface';
+import { safeJsonParse } from '@/utils/text';
 
 export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -146,14 +149,14 @@ const processValueInRow = (
   viewMeta: ViewMeta,
   sheetInstance: SpreadSheet,
   isFormat?: boolean,
-): string => {
+) => {
   let tempCells = [];
 
   if (viewMeta) {
     const { fieldValue, valueField } = viewMeta;
     if (isObject(fieldValue)) {
       tempCells = processObjectValueInRow(fieldValue, isFormat);
-      return tempCells.join('    ');
+      return tempCells;
     }
     // The main measure.
     if (!isFormat) {
@@ -173,9 +176,22 @@ const processValueInRow = (
 const getHeaderLabel = (val: string) => {
   const label = safeJsonParse(val);
   if (isArray(label)) {
-    return label.join('    ');
+    return label;
   }
   return val;
+};
+
+/**
+ * 当列头label存在数组情况，需要将其他层级补齐空格
+ * eg [ ['数值', '环比'], '2021'] => [ ['数值', '环比'], ['2021', '']
+ */
+const processColHeaders = (headers: any[][], arrayLength: number) => {
+  const result = headers.map((header) =>
+    header.map((item) =>
+      isArray(item) ? item : [item, ...new Array(arrayLength - 1)],
+    ),
+  );
+  return result;
 };
 
 /**
@@ -217,7 +233,7 @@ export const copyData = (
       // Removing the space at the beginning of the line of the label.
       rowNode.label = trim(rowNode?.label);
       const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
-      const tempLine = id.split(ID_SEPARATOR);
+      let tempLine = id.split(ID_SEPARATOR);
       // TODO 兼容下钻，需要获取下钻最大层级
       const totalLevel = sheetInstance.isHierarchyTreeType()
         ? maxLevel + 1
@@ -237,7 +253,12 @@ export const copyData = (
           tempLine.push(processValueInCol(viewMeta, sheetInstance, isFormat));
         } else {
           const viewMeta = getCellMeta(rowNode.rowIndex, colNode.colIndex);
-          tempLine.push(processValueInRow(viewMeta, sheetInstance, isFormat));
+          const lintItem = processValueInRow(viewMeta, sheetInstance, isFormat);
+          if (isArray(lintItem)) {
+            tempLine = tempLine.concat(...lintItem);
+          } else {
+            tempLine.push(lintItem);
+          }
         }
       }
       maxRowLength = max([tempLine.length, maxRowLength]);
@@ -256,19 +277,29 @@ export const copyData = (
     // when there is no column in detail mode
     headers = [rowsHeader];
   } else {
+    // 当列头label为array时用于补全其他层级的label
+    let arrayLength = 0;
     // Get the table header of Columns.
-    const tempColHeader = clone(colLeafNodes).map((colItem) => {
+    let tempColHeader = clone(colLeafNodes).map((colItem) => {
       let curColItem = colItem;
 
       const tempCol = [];
+
       // Generate the column dimensions.
       while (curColItem.level !== undefined) {
-        tempCol.push(getHeaderLabel(curColItem.label));
+        const label = getHeaderLabel(curColItem.label);
+        if (isArray(label)) {
+          arrayLength = max([arrayLength, size(label)]);
+        }
+        tempCol.push(label);
         curColItem = curColItem.parent;
       }
-
       return tempCol;
     });
+
+    if (arrayLength > 1) {
+      tempColHeader = processColHeaders(tempColHeader, arrayLength);
+    }
 
     const colLevels = tempColHeader.map((colHeader) => colHeader.length);
     const colLevel = max(colLevels);
@@ -286,7 +317,7 @@ export const copyData = (
         )
         .map((item) => item[i])
         .map((colItem) => sheetInstance.dataSet.getFieldName(colItem));
-      colHeader.push(colHeaderItem);
+      colHeader.push(flatten(colHeaderItem));
     }
 
     // Generate the table header.
