@@ -266,6 +266,7 @@ function MainLayout() {
     {
       width: 600,
       height: 400,
+      hierarchyCollapse: false,
       pagination: showPagination && {
         pageSize: 10,
         current: 1,
@@ -500,6 +501,19 @@ function MainLayout() {
                   }}
                   disabled={sheetType === 'table'}
                 />
+                <Tooltip title="树状模式生效">
+                  <Switch
+                    checkedChildren="收起子节点"
+                    unCheckedChildren="展开子节点"
+                    disabled={mergedOptions.hierarchyType !== 'tree'}
+                    checked={mergedOptions.hierarchyCollapse}
+                    onChange={(checked) => {
+                      updateOptions({
+                        hierarchyCollapse: checked,
+                      });
+                    }}
+                  />
+                </Tooltip>
                 <Switch
                   checkedChildren="数值挂列头"
                   unCheckedChildren="数值挂行头"
