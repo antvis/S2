@@ -16,7 +16,7 @@ import {
   FrameCallback,
   MappingDataItemCallback,
   MergedCellInfo,
-  NodeField,
+  ScrollReachNodeField,
   Pagination,
   Style,
   Totals,
@@ -29,7 +29,6 @@ import {
 } from '@/common/interface/hooks';
 import { BaseDataSet } from '@/data-set';
 import { SpreadSheet } from '@/sheet-type';
-import { Node } from '@/facet/layout/node';
 
 export interface S2BasicOptions<T = Element | string> {
   // canvas's width
@@ -55,7 +54,7 @@ export interface S2BasicOptions<T = Element | string> {
   // show Series Number
   readonly showSeriesNumber?: boolean;
   // scroll reach node border(which field node belongs to) event config
-  readonly scrollReachNodeField?: NodeField;
+  readonly scrollReachNodeField?: ScrollReachNodeField;
   // if show the default header actionIcons
   readonly showDefaultHeaderActionIcon?: boolean;
   // header cells including ColCell, RowCell, CornerCell action icon's config
@@ -107,13 +106,6 @@ export interface S2BasicOptions<T = Element | string> {
   // determine data mapping when shows in tooltip
   mappingDisplayDataItem?: MappingDataItemCallback;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
-
-  /** ***********CUSTOM LAYOUT HOOKS**************** */
-  otterLayout?: (
-    spreadsheet: SpreadSheet,
-    rowNode: Node,
-    colNode: Node,
-  ) => void;
 }
 
 // Table sheet options

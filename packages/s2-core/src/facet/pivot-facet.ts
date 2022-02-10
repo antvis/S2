@@ -153,7 +153,7 @@ export class PivotFacet extends BaseFacet {
       .getColumnNodes()
       .find(
         (value) =>
-          includes(this.getScrollColField(), value.field) &&
+          includes(this.getScrollColFields(), value.field) &&
           scrollX > value.x &&
           scrollX < value.x + value.width,
       );
@@ -161,7 +161,7 @@ export class PivotFacet extends BaseFacet {
       .getRowNodes()
       .find(
         (value) =>
-          includes(this.getScrollRowField(), value.field) &&
+          includes(this.getScrollRowFields(), value.field) &&
           scrollY > value.y &&
           scrollY < value.y + value.height,
       );
@@ -769,12 +769,12 @@ export class PivotFacet extends BaseFacet {
     return Math.max(rowNodeWidth, fieldNameNodeWidth);
   }
 
-  private getScrollColField(): string[] {
-    return get(this.spreadsheet, 'options.scrollReachNodeField.colField', []);
+  private getScrollColFields(): string[] {
+    return this.spreadsheet.options.scrollReachNodeField?.colFields || [];
   }
 
-  private getScrollRowField(): string[] {
-    return get(this.spreadsheet, 'options.scrollReachNodeField.rowField', []);
+  private getScrollRowFields(): string[] {
+    return this.spreadsheet.options.scrollReachNodeField?.rowFields || [];
   }
 
   public getViewCellHeights(layoutResult: LayoutResult) {
