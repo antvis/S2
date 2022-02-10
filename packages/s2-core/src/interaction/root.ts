@@ -1,4 +1,5 @@
-import { concat, filter, find, forEach, isEmpty, map } from 'lodash';
+import { concat, filter, find, forEach, isEmpty, isNil, map } from 'lodash';
+import { getCellMeta } from 'src/utils/interaction/select-event';
 import {
   DataCellClick,
   MergedCellClick,
@@ -11,6 +12,7 @@ import { RangeSelection } from './range-selection';
 import { SelectedCellMove } from './selected-cell-move';
 import { BrushSelection, DataCellMultiSelection, RowColumnResize } from './';
 import { hideColumnsByThunkGroup, hideColumns } from '@/utils/hide-columns';
+import { Node } from '@/facet/layout/node';
 import { ColCell, DataCell, MergedCell, RowCell } from '@/cell';
 import {
   CellTypes,
@@ -18,6 +20,7 @@ import {
   InteractionStateName,
   INTERACTION_STATE_INFO_KEY,
   InterceptType,
+  S2Event,
 } from '@/common/constant';
 import {
   CustomInteraction,
@@ -25,6 +28,7 @@ import {
   Intercept,
   MergedCellInfo,
   S2CellType,
+  SelectHeaderCellInfo,
 } from '@/common/interface';
 import { ColHeader, RowHeader } from '@/facet/header';
 import { BaseEvent } from '@/interaction/base-event';
@@ -235,6 +239,59 @@ export class RootInteraction {
     this.changeState({
       stateName: InteractionStateName.ALL_SELECTED,
     });
+  };
+
+  public selectHeaderCell = (selectHeaderCellInfo: SelectHeaderCellInfo) => {
+    const { cell } = selectHeaderCellInfo || {};
+    if (isEmpty(cell)) {
+      return;
+    }
+    const lastState = this.getState();
+    const meta = cell?.getMeta() as Node;
+    if (isNil(meta.x)) {
+      return;
+    }
+    this.addIntercepts([InterceptType.HOVER]);
+    // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
+    let leafNodes = selectHeaderCellInfo?.isTreeRowClick
+      ? Node.getAllLeavesOfNode(meta).filter(
+          (node) => node.rowIndex === meta.rowIndex,
+        )
+      : Node.getAllChildrenNode(meta);
+    let selectedCells = [getCellMeta(cell)];
+
+    if (selectHeaderCellInfo?.isMultiSelection && this.isSelectedState()) {
+      selectedCells = isEmpty(lastState?.cells)
+        ? selectedCells
+        : concat(lastState?.cells, selectedCells);
+      leafNodes = isEmpty(lastState?.nodes)
+        ? leafNodes
+        : concat(lastState?.nodes, leafNodes);
+    }
+
+    // 兼容行列多选
+    // Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
+    this.changeState({
+      cells: selectedCells,
+      nodes: leafNodes,
+      stateName: InteractionStateName.SELECTED,
+    });
+
+    const selectedCellIds = selectedCells.map(({ id }) => id);
+    // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
+    this.updateCells(this.getRowColActiveCells(selectedCellIds));
+
+    if (!selectHeaderCellInfo?.isTreeRowClick) {
+      leafNodes.forEach((node) => {
+        node?.belongsCell?.updateByState(
+          InteractionStateName.SELECTED,
+          node.belongsCell,
+        );
+      });
+    }
+    this.spreadsheet.emit(S2Event.GLOBAL_SELECTED, this.getActiveCells());
+
+    return true;
   };
 
   public mergeCells = (cellsInfo?: MergedCellInfo[], hideData?: boolean) => {
