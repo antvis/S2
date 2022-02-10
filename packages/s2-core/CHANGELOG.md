@@ -1,3 +1,16 @@
+# [@antv/s2-v1.8.0-alpha.6](https://github.com/antvis/S2/compare/@antv/s2-v1.8.0-alpha.5...@antv/s2-v1.8.0-alpha.6) (2022-02-10)
+
+
+### Bug Fixes
+
+* 修复子节点收起后角头全部展开收起不生效 close [#1072](https://github.com/antvis/S2/issues/1072) ([#1074](https://github.com/antvis/S2/issues/1074)) ([6f70f38](https://github.com/antvis/S2/commit/6f70f389fe8a0825dfc80cac871e25adc45280ad))
+* 重命名 scrollReachNodeField ([a46a9ff](https://github.com/antvis/S2/commit/a46a9ff4b41040d4d43a64d92468a943cefe632b))
+
+
+### Features
+
+* **interaction:** interaction增加点击行列头方法供外部调用 ([#1073](https://github.com/antvis/S2/issues/1073)) ([b5d6712](https://github.com/antvis/S2/commit/b5d6712255e0851cd67c3c2346e12125910cbc13))
+
 # [@antv/s2-v1.8.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-v1.8.0-alpha.4...@antv/s2-v1.8.0-alpha.5) (2022-02-10)
 
 
