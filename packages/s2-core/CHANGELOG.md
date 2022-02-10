@@ -1,3 +1,15 @@
+# [@antv/s2-v1.8.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-v1.8.0-alpha.4...@antv/s2-v1.8.0-alpha.5) (2022-02-10)
+
+
+### Bug Fixes
+
+* 修复交叉表取值错误的问题 ([1e8e4bd](https://github.com/antvis/S2/commit/1e8e4bd048beea68d9ccf5d3ed8971f788d03950))
+
+
+### Features
+
+* 单元格内多指标支持分列导出 ([#1070](https://github.com/antvis/S2/issues/1070)) ([766fdc4](https://github.com/antvis/S2/commit/766fdc4ecb9360b41a921ec24debb4a7d935df13))
+
 # [@antv/s2-v1.8.0-alpha.4](https://github.com/antvis/S2/compare/@antv/s2-v1.8.0-alpha.3...@antv/s2-v1.8.0-alpha.4) (2022-02-09)
 
 
