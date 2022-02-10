@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.8.0-alpha.6](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.5...@antv/s2-react-v1.8.0-alpha.6) (2022-02-10)
+
+
+### Features
+
+* 单元格内多指标支持分列导出 ([#1070](https://github.com/antvis/S2/issues/1070)) ([766fdc4](https://github.com/antvis/S2/commit/766fdc4ecb9360b41a921ec24debb4a7d935df13))
+
 # [@antv/s2-react-v1.8.0-alpha.5](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.4...@antv/s2-react-v1.8.0-alpha.5) (2022-02-09)
 
 
