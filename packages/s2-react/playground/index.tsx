@@ -255,6 +255,7 @@ function MainLayout() {
 
   const mergedOptions: Partial<S2Options<React.ReactNode>> = customMerge(
     {
+      hierarchyCollapse: false,
       pagination: showPagination && {
         pageSize: 10,
         current: 1,
@@ -371,6 +372,20 @@ function MainLayout() {
               });
             }}
           />
+          <Tooltip title="树状模式生效">
+            <Switch
+              checkedChildren="收起子节点"
+              unCheckedChildren="展开子节点"
+              disabled={mergedOptions.hierarchyType !== 'tree'}
+              checked={mergedOptions.hierarchyCollapse}
+              onChange={(checked) => {
+                updateOptions({
+                  hierarchyCollapse: checked,
+                });
+              }}
+            />
+          </Tooltip>
+
           <Switch
             checkedChildren="显示指标列头"
             unCheckedChildren="隐藏指标列头"

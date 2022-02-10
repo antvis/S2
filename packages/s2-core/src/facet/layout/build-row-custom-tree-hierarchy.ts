@@ -1,4 +1,4 @@
-import { isEmpty, isUndefined, isBoolean } from 'lodash';
+import { isEmpty, get } from 'lodash';
 import { CustomTreeHeaderParams } from '@/facet/layout/interface';
 import { Node } from '@/facet/layout/node';
 import { EXTRA_FIELD } from '@/common/constant';
@@ -21,17 +21,11 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
     const valueQuery = { [EXTRA_FIELD]: key };
     // 保持和其他场景头部生成id的格式一致
     const uniqueId = generateId(parentNode.id, title, spreadsheet);
-    const defaultCollapsed = isUndefined(collapsed) ? false : collapsed;
-    let isCollapsed;
-    const collapsedRow = collapsedRows[uniqueId];
-    const userCollapsed = isBoolean(collapsedRow);
-    if (hierarchyCollapse) {
-      // 全部都收起
-      isCollapsed = userCollapsed ? collapsedRow : hierarchyCollapse;
-    } else {
-      // 用户有自定义开关后，以用户操作为准，否则用默认配置
-      isCollapsed = userCollapsed ? collapsedRow : defaultCollapsed;
-    }
+    const defaultCollapsed = collapsed ?? false;
+    const isCollapsedRow = get(collapsedRows, uniqueId);
+    const isCollapsed =
+      isCollapsedRow ?? (hierarchyCollapse || defaultCollapsed);
+
     const item = new Node({
       id: uniqueId,
       key,
