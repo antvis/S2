@@ -13,16 +13,32 @@ fetch(
       interaction: {
         hoverHighlight: false,
       },
+      // 自定义icon
+      customSVGIcons: [
+        {
+          name: 'Filter',
+          svg: 'https://gw.alipayobjects.com/zos/antfincdn/gu1Fsz3fw0/filter%26sort_filter.svg',
+        },
+      ],
       conditions: {
         icon: [
           {
             field: 'number',
-            position: 'right',
             mapping(fieldValue, data) {
               return {
                 // icon 用于指定图标条件格式所使用的 icon 类型
-                icon: 'CellUp',
+                icon: 'Filter',
                 fill: '#30BF78',
+              };
+            },
+          },
+          {
+            field: 'cost',
+            position: 'left',
+            mapping(fieldValue, data) {
+              return {
+                icon: 'CellDown',
+                fill: '#F4664A',
               };
             },
           },

@@ -44,7 +44,7 @@ type MappingFunction = (
   isCompare?: boolean;
   minValue?: number;
   maxValue?: number;
-} | null| undefined // 返回值为空时，表示当前字段不显示字段标记样式
+} | null | undefined // 返回值为空时，表示当前字段不显示字段标记样式
 
 ```
 
