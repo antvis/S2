@@ -49,6 +49,14 @@ export interface InteractionStateInfo {
   force?: boolean;
 }
 
+export interface SelectHeaderCellInfo {
+  // target header cell
+  cell: S2CellType<ViewMeta>;
+  // whether the target header cell is in tree mode
+  isTreeRowClick?: boolean;
+  isMultiSelection?: boolean;
+}
+
 export type InteractionConstructor = new (
   spreadsheet: SpreadSheet,
 ) => BaseEvent;

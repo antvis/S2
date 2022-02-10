@@ -1,6 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { getCellMeta } from 'src/utils/interaction/select-event';
-import { concat, difference, isEmpty, isNil } from 'lodash';
+import { difference } from 'lodash';
 import {
   hideColumns,
   hideColumnsByThunkGroup,
@@ -10,7 +9,6 @@ import { BaseEvent, BaseEventImplement } from '@/interaction/base-event';
 import {
   S2Event,
   InteractionKeyboardKey,
-  InteractionStateName,
   InterceptType,
   CellTypes,
   TOOLTIP_OPERATOR_HIDDEN_COLUMNS_MENU,
@@ -73,60 +71,20 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
   private handleRowColClick = (event: CanvasEvent, isTreeRowClick = false) => {
     event.stopPropagation();
     const { interaction } = this.spreadsheet;
-    const lastState = interaction.getState();
     const cell = this.spreadsheet.getCell(event.target);
-    const meta = cell?.getMeta() as Node;
 
     if (interaction.isSelectedCell(cell)) {
       interaction.reset();
       return;
     }
 
-    if (!isNil(meta.x)) {
-      interaction.addIntercepts([InterceptType.HOVER]);
-      // 树状结构的行头点击不需要遍历当前行头的所有子节点，因为只会有一级
-      let leafNodes = isTreeRowClick
-        ? Node.getAllLeavesOfNode(meta).filter(
-            (node) => node.rowIndex === meta.rowIndex,
-          )
-        : Node.getAllChildrenNode(meta);
-      let selectedCells = [getCellMeta(cell)];
-
-      if (this.isMultiSelection && interaction.isSelectedState()) {
-        selectedCells = isEmpty(lastState?.cells)
-          ? selectedCells
-          : concat(lastState?.cells, selectedCells);
-        leafNodes = isEmpty(lastState?.nodes)
-          ? leafNodes
-          : concat(lastState?.nodes, leafNodes);
-      }
-
-      // 兼容行列多选
-      // Set the header cells (colCell or RowCell)  selected information and update the dataCell state.
-      interaction.changeState({
-        cells: selectedCells,
-        nodes: leafNodes,
-        stateName: InteractionStateName.SELECTED,
-      });
-
-      const selectedCellIds = selectedCells.map(({ id }) => id);
-      // Update the interaction state of all the selected cells:  header cells(colCell or RowCell) and dataCells belong to them.
-      interaction.updateCells(
-        interaction.getRowColActiveCells(selectedCellIds),
-      );
-
-      if (!isTreeRowClick) {
-        leafNodes.forEach((node) => {
-          node?.belongsCell?.updateByState(
-            InteractionStateName.SELECTED,
-            node.belongsCell,
-          );
-        });
-      }
-      this.spreadsheet.emit(
-        S2Event.GLOBAL_SELECTED,
-        interaction.getActiveCells(),
-      );
+    if (
+      interaction.selectHeaderCell({
+        cell,
+        isTreeRowClick,
+        isMultiSelection: this.isMultiSelection,
+      })
+    ) {
       this.showTooltip(event);
     }
   };

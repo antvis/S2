@@ -57,6 +57,7 @@ describe('RootInteraction Tests', () => {
           colIndex: id,
           rowIndex: 1,
           id: `0-${id}`,
+          x: 1,
         };
       },
     } as unknown as DataCell);
@@ -147,6 +148,13 @@ describe('RootInteraction Tests', () => {
     expect(rootInteraction.getState()).toEqual({
       stateName: InteractionStateName.ALL_SELECTED,
     });
+  });
+
+  test('should set headerCell selected interaction state correct', () => {
+    rootInteraction.selectHeaderCell({ cell: mockCell });
+    const state = rootInteraction.getState();
+    expect(state.stateName).toEqual(InteractionStateName.SELECTED);
+    expect(state.cells).toEqual([getCellMeta(mockCell)]);
   });
 
   test('should call merge cells', () => {
