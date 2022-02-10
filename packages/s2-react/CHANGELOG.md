@@ -1,3 +1,10 @@
+# [@antv/s2-react-v1.8.0-alpha.7](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.6...@antv/s2-react-v1.8.0-alpha.7) (2022-02-10)
+
+
+### Bug Fixes
+
+* 修复子节点收起后角头全部展开收起不生效 close [#1072](https://github.com/antvis/S2/issues/1072) ([#1074](https://github.com/antvis/S2/issues/1074)) ([6f70f38](https://github.com/antvis/S2/commit/6f70f389fe8a0825dfc80cac871e25adc45280ad))
+
 # [@antv/s2-react-v1.8.0-alpha.6](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.5...@antv/s2-react-v1.8.0-alpha.6) (2022-02-10)
 
 
