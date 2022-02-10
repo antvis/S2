@@ -119,7 +119,6 @@ export class PivotSheet extends SpreadSheet {
   protected bindEvents() {
     this.off(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS);
     this.off(S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL);
-    // collapse rows in tree mode of SpreadSheet
     this.on(
       S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
       this.handleRowCellCollapseTreeRows,
@@ -140,7 +139,6 @@ export class PivotSheet extends SpreadSheet {
         },
       },
     };
-    // post to x-report to store state
     this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
       collapsedRows: options.style.collapsedRows,
     });
@@ -155,7 +153,7 @@ export class PivotSheet extends SpreadSheet {
     const options: Partial<S2Options> = {
       hierarchyCollapse: !isCollapsed,
       style: {
-        collapsedRows: {}, // 清空用户操作的缓存
+        collapsedRows: null,
       },
     };
     this.setOptions(options);
