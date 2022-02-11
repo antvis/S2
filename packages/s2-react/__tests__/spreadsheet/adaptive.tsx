@@ -265,7 +265,7 @@ describe('SheetComponent adaptive Tests', () => {
 
     const { height: containerHeight } = container.getBoundingClientRect();
 
-    expect(`${containerHeight}px`).toEqual(canvas.style.height);
+    expect(`${Math.round(containerHeight)}px`).toEqual(canvas.style.height);
   });
 
   // https://github.com/antvis/S2/issues/901

@@ -1,4 +1,4 @@
-import { includes, isBoolean, memoize } from 'lodash';
+import { includes, isBoolean } from 'lodash';
 import { HeaderNodesParams } from '@/facet/layout/interface';
 import { TotalClass } from '@/facet/layout/total-class';
 import { TotalMeasure } from '@/facet/layout/total-measure';
@@ -9,7 +9,7 @@ import { Node } from '@/facet/layout/node';
 import { layoutHierarchy } from '@/facet/layout/layout-hooks';
 import { buildGridHierarchy } from '@/facet/layout/build-gird-hierarchy';
 
-export const generateHeaderNodes = memoize((params: HeaderNodesParams) => {
+export const generateHeaderNodes = (params: HeaderNodesParams) => {
   const {
     currentField,
     fields,
@@ -78,8 +78,8 @@ export const generateHeaderNodes = memoize((params: HeaderNodesParams) => {
     const uniqueId = generateId(parentNode.id, value);
     if (!uniqueId) return;
     // TODO need merge with collapsedRows
-    const isCollapsed = isBoolean(collapsedCols[uniqueId])
-      ? collapsedCols[uniqueId]
+    const isCollapsed = isBoolean(collapsedCols?.[uniqueId])
+      ? collapsedCols?.[uniqueId]
       : false;
     // create new header nodes
     const node = new Node({
@@ -137,4 +137,4 @@ export const generateHeaderNodes = memoize((params: HeaderNodesParams) => {
       });
     }
   }
-});
+};

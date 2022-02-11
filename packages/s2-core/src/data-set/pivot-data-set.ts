@@ -329,7 +329,7 @@ export class PivotDataSet extends BaseDataSet {
     };
   }
 
-  public getDimensionValues = (field: string, query?: DataType): string[] => {
+  public getDimensionValues(field: string, query?: DataType): string[] {
     const { rows = [], columns = [] } = this.fields || {};
     let meta: PivotMeta = new Map();
     let dimensions: string[] = [];
@@ -377,7 +377,7 @@ export class PivotDataSet extends BaseDataSet {
     }
 
     return filterUndefined([...meta.keys()]);
-  };
+  }
 
   getTotalValue(query: DataType) {
     const { aggregation, calcFunc } =
