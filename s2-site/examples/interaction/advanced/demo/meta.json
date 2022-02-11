@@ -21,10 +21,18 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/aygNlbA0fu/link-table.gif"
     },
     {
-      "filename": "hide-columns.ts",
+      "filename": "pivot-hide-columns.ts",
       "title": {
-        "zh": "明细表隐藏列头",
-        "en": "Hide table columns"
+        "zh": "隐藏列头 - 透视表",
+        "en": "Hide pivot sheet columns"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/0TMss8KAY/Kapture%2525202022-02-11%252520at%25252017.52.53.gif"
+    },
+    {
+      "filename": "table-hide-columns.ts",
+      "title": {
+        "zh": "隐藏列头 - 明细表",
+        "en": "Hide table sheet columns"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/nDXb10yy0v/hide.gif"
     },

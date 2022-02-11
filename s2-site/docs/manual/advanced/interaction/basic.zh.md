@@ -29,7 +29,7 @@ order: 0
 | 区间快捷多选            | `S2Event.GLOBAL_SELECTED`                                             | 单选单元格 (start), 然后按住 `Shift` 再次选中一个单元格 (end), 选中两个单元格区间所有单元格                                                                     |
 | 悬停                | `S2Event.GLOBAL_HOVER`                                                | 鼠标悬停时，对应单元格高亮展示，如果是数值单元格，则默认 [十字高亮](#十字高亮） （对应行/列), 可设置 `hoverHighlight: false` 关闭 |
 | 复制                | `S2Event.GLOBAL_COPIED`                                               | 复制选中的单元格数据                                                                                                              |
-| 隐藏列头            | `S2Event.LAYOUT_TABLE_COL_EXPANDED` `S2Event.LAYOUT_TABLE_COL_HIDDEN` | 隐藏/展开 列头 （明细表有效）                                                                                                     |
+| 隐藏列头            | `S2Event.LAYOUT_COLS_EXPANDED` `S2Event.LAYOUT_COLS_HIDDEN` | 隐藏/展开 列头                                                                                                     |
 | 链接跳转            | `S2Event.GLOBAL_LINK_FIELD_JUMP`                                      | 行头/列头 链接跳转                                                                                                                |
 | 重置                | `S2Event.GLOBAL_RESET`                                                | 再次点击，点击空白处，或按下 `Esc` 取消选中的单元格                                                                               |
 | 移动高亮单元格                | `S2Event.GLOBAL_SELECTED`                                                | 点击数值单元格后，使用键盘方向键即可移动当前高亮单元格                                                                        |
@@ -105,8 +105,8 @@ order: 0
 | 列头宽度改变             | `S2Event.LAYOUT_RESIZE_COL_WIDTH`   |                                             |
 | 行头宽度改变             | `S2Event.LAYOUT_RESIZE_COL_HEIGHT`  |                                             |
 | 树状结构宽度改变         | `S2Event.LAYOUT_RESIZE_TREE_WIDTH`  | 树状模式下，单元格宽度发生改变时触发        |
-| 列头展开                 | `S2Event.LAYOUT_TABLE_COL_EXPANDED` | 列头展开时触发，明细表有效                  |
-| 列头隐藏                 | `S2Event.LAYOUT_TABLE_COL_HIDDEN`   | 列头隐藏时触发，明细表有效                  |
+| 列头展开                 | `S2Event.LAYOUT_COLS_EXPANDED` | 列头展开时触发，明细表有效                  |
+| 列头隐藏                 | `S2Event.LAYOUT_COLS_HIDDEN`   | 列头隐藏时触发，明细表有效                  |
 
 ### 全局
 
@@ -251,11 +251,17 @@ const s2options = {
 };
 ```
 
-### 隐藏列头 （明细表有效）
+### 隐藏列头
 
-列头隐藏后，会在紧邻的兄弟单元格显示一个展示按钮，和一个隐藏提示线，鼠标单击即可展开，可配置 `hiddenColumns` 实现 `默认隐藏` 和 `交互式隐藏`. [查看具体例子](zh/examples/interaction/advanced#hide-columns)
+同时支持透视表，和明细表，点击叶子节点的列头后，显示隐藏列头按钮，点击隐藏后，会在紧邻的兄弟单元格显示一个展示按钮，和一个隐藏提示线，鼠标单击即可展开，可配置 `hiddenColumns` 实现 `默认隐藏` 和 `交互式隐藏`. 查看 [详情](/zh/docs/manual/advanced/interaction/hide-columns/) 或 [具体例子](zh/examples/interaction/advanced#pivot-hide-columns)
 
 ```ts
+const dataCfg = {
+  fields: {
+    columns: ['fieldA', 'fieldB']
+  }
+}
+
 const s2options = {
   interaction: {
     // 默认隐藏

@@ -1000,10 +1000,11 @@ export abstract class BaseFacet {
     this.realCellRender(scrollX, scrollY);
   };
 
-  protected init(): void {
+  protected init() {
     // layout
     DebuggerUtil.getInstance().debugCallback(DEBUG_HEADER_LAYOUT, () => {
       this.layoutResult = this.doLayout();
+      this.saveInitColumnLeafNodes(this.layoutResult.colLeafNodes);
       this.spreadsheet.emit(
         S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
         this.layoutResult,
@@ -1225,11 +1226,17 @@ export abstract class BaseFacet {
     }
   }, 300);
 
-  protected saveInitColumnNodes(columnNodes: Node[] = []) {
-    const { store } = this.spreadsheet;
-    const initColumnNodes = store.get('initColumnNodes', []);
-    if (initColumnNodes.length !== columnNodes.length) {
-      store.set('initColumnNodes', columnNodes);
+  protected saveInitColumnLeafNodes(columnNodes: Node[] = []) {
+    const { store, options } = this.spreadsheet;
+    const { hiddenColumnFields } = options.interaction;
+
+    // 当前显示的 + 被隐藏的
+    const originalColumnsLength =
+      columnNodes.length + hiddenColumnFields.length;
+    const initColumnLeafNodes = store.get('initColumnLeafNodes', []);
+
+    if (originalColumnsLength !== initColumnLeafNodes.length) {
+      store.set('initColumnLeafNodes', columnNodes);
     }
   }
 }

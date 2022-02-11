@@ -18,7 +18,7 @@ export const getHiddenColumnNodes = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
 ): Node[] => {
-  const columnNodes = spreadsheet.getInitColumnNodes();
+  const columnNodes = spreadsheet.getInitColumnLeafNodes();
   return compact(
     hiddenColumnFields.map((field) => {
       const targetFieldKey = getHiddenColumnFieldKey(field);
@@ -44,17 +44,17 @@ export const getHiddenColumnDisplaySiblingNode = (
       next: null,
     };
   }
-  const initColumnNodes = spreadsheet.getInitColumnNodes();
+  const initColumnLeafNodes = spreadsheet.getInitColumnLeafNodes();
   const hiddenColumnIndexes = getHiddenColumnNodes(
     spreadsheet,
     hiddenColumnFields,
   ).map((node) => node?.colIndex);
   const lastHiddenColumnIndex = Math.max(...hiddenColumnIndexes);
   const firstHiddenColumnIndex = Math.min(...hiddenColumnIndexes);
-  const nextSiblingNode = initColumnNodes.find(
+  const nextSiblingNode = initColumnLeafNodes.find(
     (node) => node.colIndex === lastHiddenColumnIndex + 1,
   );
-  const prevSiblingNode = initColumnNodes.find(
+  const prevSiblingNode = initColumnLeafNodes.find(
     (node) => node.colIndex === firstHiddenColumnIndex - 1,
   );
   return {
@@ -142,7 +142,7 @@ export const hideColumns = (
   ];
 
   spreadsheet.emit(
-    S2Event.LAYOUT_TABLE_COL_HIDDEN,
+    S2Event.LAYOUT_COLS_HIDDEN,
     currentHiddenColumnsInfo,
     hiddenColumnsDetail,
   );
@@ -174,12 +174,12 @@ export const isLastColumnAfterHidden = (
   columnField: string,
 ) => {
   const columnNodes = spreadsheet.getColumnNodes();
-  const initColumnNodes = spreadsheet.getInitColumnNodes();
+  const initColumnLeafNodes = spreadsheet.getInitColumnLeafNodes();
   const fieldKey = getHiddenColumnFieldKey(columnField);
 
   return (
     get(last(columnNodes), fieldKey) === columnField &&
-    get(last(initColumnNodes), fieldKey) !== columnField
+    get(last(initColumnLeafNodes), fieldKey) !== columnField
   );
 };
 

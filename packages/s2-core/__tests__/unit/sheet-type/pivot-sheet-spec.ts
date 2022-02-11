@@ -523,7 +523,7 @@ describe('PivotSheet Tests', () => {
 
   test('should init column nodes', () => {
     // [type -> cost, type -> price] => [笔 -> cost, 笔 -> price]
-    expect(s2.getInitColumnNodes()).toHaveLength(2);
+    expect(s2.getInitColumnLeafNodes()).toHaveLength(2);
   });
 
   test('should get pivot mode', () => {

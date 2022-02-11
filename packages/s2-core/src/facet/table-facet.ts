@@ -139,7 +139,6 @@ export class TableFacet extends BaseFacet {
         isRowHeader: false,
         facetCfg: this.cfg,
       });
-    this.saveInitColumnNodes(colLeafNodes);
     this.calculateColNodesCoordinate(colLeafNodes, colsHierarchy);
 
     const getCellMeta = (rowIndex: number, colIndex: number) => {

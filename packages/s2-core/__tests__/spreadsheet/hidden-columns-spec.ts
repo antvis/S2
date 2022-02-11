@@ -29,9 +29,9 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       expect(tableSheet.getColumnNodes().map((node) => node.field)).toEqual(
         mockTableDataConfig.fields.columns,
       );
-      expect(tableSheet.getInitColumnNodes().map((node) => node.field)).toEqual(
-        mockTableDataConfig.fields.columns,
-      );
+      expect(
+        tableSheet.getInitColumnLeafNodes().map((node) => node.field),
+      ).toEqual(mockTableDataConfig.fields.columns);
     });
 
     test('should hidden column correctly', () => {

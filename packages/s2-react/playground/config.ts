@@ -183,5 +183,8 @@ export const defaultOptions: S2Options = customMerge(
         hiddenColumns: true,
       },
     },
+    interaction: {
+      hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
+    },
   }),
 );

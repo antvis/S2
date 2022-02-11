@@ -377,7 +377,7 @@ function MainLayout() {
 
   return (
     <div className="playground">
-      <Tabs defaultActiveKey="strategy" type="card">
+      <Tabs defaultActiveKey="strategy" type="card" destroyInactiveTabPane>
         <TabPane tab="基础表" key="basic">
           <Collapse defaultActiveKey="filter">
             <Collapse.Panel header="筛选器" key="filter">
