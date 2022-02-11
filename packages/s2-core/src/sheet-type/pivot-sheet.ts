@@ -1,5 +1,5 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
-import { clone, last, set } from 'lodash';
+import { clone, last } from 'lodash';
 import { SpreadSheet } from './spread-sheet';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell';
@@ -7,7 +7,7 @@ import {
   EXTRA_FIELD,
   InterceptType,
   S2Event,
-  TOOLTIP_OPERATOR_MENUS,
+  TOOLTIP_OPERATOR_SORT_MENUS,
 } from '@/common/constant';
 import {
   S2Options,
@@ -28,7 +28,6 @@ export class PivotSheet extends SpreadSheet {
     if (dataSet) {
       return dataSet(this);
     }
-
     const realDataSet =
       hierarchyType === 'customTree'
         ? new CustomTreePivotDataSet(this)
@@ -142,6 +141,7 @@ export class PivotSheet extends SpreadSheet {
     this.emit(S2Event.LAYOUT_COLLAPSE_ROWS, {
       collapsedRows: options.style.collapsedRows,
     });
+
     this.setOptions(options);
     this.render(false);
     this.emit(S2Event.LAYOUT_AFTER_COLLAPSE_ROWS, {
@@ -182,6 +182,8 @@ export class PivotSheet extends SpreadSheet {
     const prevSortParams = this.dataCfg.sortParams.filter(
       (item) => item?.sortFieldId !== sortFieldId,
     );
+    // 触发排序事件
+    this.emit(S2Event.RANGE_SORT, [...prevSortParams, sortParam]);
     this.setDataCfg({
       ...this.dataCfg,
       sortParams: [...prevSortParams, sortParam],
@@ -194,9 +196,11 @@ export class PivotSheet extends SpreadSheet {
     this.interaction.addIntercepts([InterceptType.HOVER]);
     const operator: TooltipOperatorOptions = {
       onClick: ({ key }) => {
-        this.groupSortByMethod(key, meta);
+        this.groupSortByMethod(key as unknown as SortMethod, meta);
+        // 排序事件完成触发
+        this.emit(S2Event.RANGE_SORTED, event);
       },
-      menus: TOOLTIP_OPERATOR_MENUS.Sort,
+      menus: TOOLTIP_OPERATOR_SORT_MENUS,
     };
 
     this.showTooltipWithInfo(event, [], {

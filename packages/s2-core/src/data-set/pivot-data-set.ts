@@ -14,6 +14,7 @@ import {
   forEach,
   unset,
   isNumber,
+  difference,
   every,
   first,
 } from 'lodash';
@@ -123,11 +124,18 @@ export class PivotDataSet extends BaseDataSet {
     rowNode: Node,
   ) {
     const { columns, values: dataValues } = this.fields;
-    const rows = Node.getFieldPath(rowNode, true);
+    const currentRowFields = Node.getFieldPath(rowNode, true);
+    const nextRowFields = [...currentRowFields, extraRowField];
     const store = this.spreadsheet.store;
 
-    // 1、通过values在data中注入额外的维度信息
-    drillDownData = this.standardTransform(drillDownData, dataValues);
+    // 1、通过values在data中注入额外的维度信息，并分离`明细数据`&`汇总数据`
+    const transformedData = this.standardTransform(drillDownData, dataValues);
+
+    const totalData = splitTotal(transformedData, {
+      columns: this.fields.columns,
+      rows: nextRowFields,
+    });
+    const originData = difference(transformedData, totalData);
 
     // 2. 检查该节点是否已经存在下钻维度
     const rowNodeId = rowNode?.id;
@@ -148,9 +156,10 @@ export class PivotDataSet extends BaseDataSet {
       colPivotMeta,
       sortedDimensionValues,
     } = transformIndexesData({
-      rows: [...rows, extraRowField],
+      rows: nextRowFields,
       columns,
-      originData: drillDownData,
+      originData,
+      totalData,
       indexesData: this.indexesData,
       sortedDimensionValues: this.sortedDimensionValues,
       rowPivotMeta: this.rowPivotMeta,
@@ -374,7 +383,7 @@ export class PivotDataSet extends BaseDataSet {
     const { aggregation, calcFunc } =
       getAggregationAndCalcFuncByQuery(
         this.getTotalStatus(query),
-        this.spreadsheet.options.totals,
+        this.spreadsheet.options?.totals,
       ) || {};
     // 前端计算汇总值
     if (aggregation || calcFunc) {
@@ -400,8 +409,12 @@ export class PivotDataSet extends BaseDataSet {
     let rows = originRows;
     const drillDownIdPathMap =
       this.spreadsheet?.store.get('drillDownIdPathMap');
+
     // 判断当前是否为下钻节点
-    const isDrillDown = drillDownIdPathMap?.has(rowNode.id);
+    // 需检查 rowNode.id 是否属于下钻根节点(drillDownIdPathMap.keys)的下属节点
+    const isDrillDown = Array.from(drillDownIdPathMap?.keys() ?? []).some(
+      (parentPath) => rowNode.id.startsWith(parentPath),
+    );
 
     // 如果是下钻结点，小计行维度在 originRows 中并不存在
     if (!isTotals || isDrillDown) {

@@ -1,4 +1,5 @@
 import { isEmpty, get } from 'lodash';
+import { layoutHierarchy } from './layout-hooks';
 import { CustomTreeHeaderParams } from '@/facet/layout/interface';
 import { Node } from '@/facet/layout/node';
 import { EXTRA_FIELD } from '@/common/constant';
@@ -13,20 +14,26 @@ import { generateId } from '@/utils/layout/generate-id';
  * @param params
  */
 export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
-  const { facetCfg, customTreeItems, level, parentNode, hierarchy } = params;
+  const {
+    facetCfg,
+    customTreeItems = [],
+    level,
+    parentNode,
+    hierarchy,
+  } = params;
   const { spreadsheet, collapsedRows, hierarchyCollapse } = facetCfg;
   for (const customTreeItem of customTreeItems) {
-    const { key, title, collapsed, children } = customTreeItem;
+    const { key, title, collapsed, children, ...rest } = customTreeItem;
     // query只与值本身有关，不会涉及到parent节点
     const valueQuery = { [EXTRA_FIELD]: key };
     // 保持和其他场景头部生成id的格式一致
-    const uniqueId = generateId(parentNode.id, title, spreadsheet);
+    const uniqueId = generateId(parentNode.id, title);
     const defaultCollapsed = collapsed ?? false;
     const isCollapsedRow = get(collapsedRows, uniqueId);
     const isCollapsed =
       isCollapsedRow ?? (hierarchyCollapse || defaultCollapsed);
 
-    const item = new Node({
+    const node = new Node({
       id: uniqueId,
       key,
       label: title,
@@ -34,22 +41,33 @@ export const buildRowCustomTreeHierarchy = (params: CustomTreeHeaderParams) => {
       level,
       parent: parentNode,
       field: key,
-      isTotals: false, // 自定义行头不会存在自定义行头概念
+      isTotals: false, // 自定义行头不会存在总计概念
       isCollapsed,
       hierarchy,
       query: valueQuery,
       spreadsheet,
+      extra: rest,
     });
-    hierarchy.pushNode(item);
+
+    if (level > hierarchy.maxLevel) {
+      hierarchy.maxLevel = level;
+    }
 
     if (isEmpty(children)) {
-      item.isLeaf = true;
+      node.isLeaf = true;
     }
+    const expandCurrentNode = layoutHierarchy(
+      facetCfg,
+      parentNode,
+      node,
+      hierarchy,
+    );
+
     // go recursive
-    if (!isEmpty(children) && !isCollapsed) {
+    if (!isEmpty(children) && !isCollapsed && expandCurrentNode) {
       buildRowCustomTreeHierarchy({
         facetCfg,
-        parentNode: item,
+        parentNode: node,
         level: level + 1,
         hierarchy,
         customTreeItems: children,

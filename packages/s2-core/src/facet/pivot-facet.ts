@@ -2,7 +2,6 @@ import {
   find,
   forEach,
   get,
-  includes,
   isEmpty,
   last,
   maxBy,
@@ -31,7 +30,11 @@ import {
 } from '@/facet/layout/layout-hooks';
 import { Node } from '@/facet/layout/node';
 import { handleDataItem } from '@/utils/cell/data-cell';
-import { measureTextWidth, measureTextWidthRoughly } from '@/utils/text';
+import {
+  measureTextWidth,
+  measureTextWidthRoughly,
+  getCellWidth,
+} from '@/utils/text';
 import { getSubTotalNodeWidthOrHeightByLevel } from '@/utils/facet';
 import { IconTheme } from '@/common';
 
@@ -52,6 +55,8 @@ export class PivotFacet extends BaseFacet {
         isRowHeader: false,
         facetCfg: this.cfg,
       });
+
+    this.saveInitColumnNodes(colLeafNodes);
     // 2、calculate all related nodes coordinate
     this.calculateNodesCoordinate(
       rowLeafNodes,
@@ -60,6 +65,7 @@ export class PivotFacet extends BaseFacet {
       colsHierarchy,
     );
     const { dataSet, spreadsheet } = this.cfg;
+
     const getCellMeta = (rowIndex?: number, colIndex?: number): ViewMeta => {
       const i = rowIndex || 0;
       const j = colIndex || 0;
@@ -75,23 +81,25 @@ export class PivotFacet extends BaseFacet {
         row.isTotalMeasure ||
         col.isTotals ||
         col.isTotalMeasure;
+      const { hierarchyType } = spreadsheet.options;
       const hideMeasure =
         get(spreadsheet, 'facet.cfg.colCfg.hideMeasureColumn') ?? false;
-      // 如果hide measure query中是没有度量信息的，所以需要自动补上
+      // 如果在非自定义目录情况下hide measure query中是没有度量信息的，所以需要自动补上
       // 存在一个场景的冲突，如果是多个度量，定位数据数据是无法知道哪一列代表什么
       // 因此默认只会去 第一个度量拼接query
-      const measureInfo = hideMeasure
-        ? {
-            [EXTRA_FIELD]: dataSet.fields.values?.[0],
-          }
-        : {};
+      const measureInfo =
+        hideMeasure && hierarchyType !== 'customTree'
+          ? {
+              [EXTRA_FIELD]: dataSet.fields.values?.[0],
+            }
+          : {};
       const dataQuery = merge({}, rowQuery, colQuery, measureInfo);
       const data = dataSet.getCellData({
         query: dataQuery,
         rowNode: row,
         isTotals,
       });
-      let valueField;
+      let valueField: string;
       let fieldValue = null;
       if (!isEmpty(data)) {
         valueField = get(data, [EXTRA_FIELD], '');
@@ -124,7 +132,7 @@ export class PivotFacet extends BaseFacet {
       } as ViewMeta;
     };
 
-    const layoutResult = {
+    const layoutResult: LayoutResult = {
       colNodes: colsHierarchy.getNodes(),
       colsHierarchy,
       rowNodes: rowsHierarchy.getNodes(),
@@ -133,50 +141,9 @@ export class PivotFacet extends BaseFacet {
       colLeafNodes,
       getCellMeta,
       spreadsheet,
-    } as LayoutResult;
-    return layoutDataPosition(this.cfg, layoutResult);
-  }
+    };
 
-  // TODO cell sticky border event
-  protected fireReachBorderEvent(scrollX: number, scrollY: number) {
-    const colNode = this.spreadsheet
-      .getColumnNodes()
-      .find(
-        (value) =>
-          includes(this.getScrollColField(), value.field) &&
-          scrollX > value.x &&
-          scrollX < value.x + value.width,
-      );
-    const rowNode = this.spreadsheet
-      .getRowNodes()
-      .find(
-        (value) =>
-          includes(this.getScrollRowField(), value.field) &&
-          scrollY > value.y &&
-          scrollY < value.y + value.height,
-      );
-    const reachedBorderId = this.spreadsheet.store.get('lastReachedBorderId', {
-      rowId: '',
-      colId: '',
-    });
-    if (colNode && reachedBorderId.colId !== colNode.id) {
-      this.spreadsheet.store.set(
-        'lastReachedBorderId',
-        merge({}, reachedBorderId, {
-          colId: colNode.id,
-        }),
-      );
-      this.spreadsheet.emit(S2Event.LAYOUT_COL_NODE_BORDER_REACHED, colNode);
-    }
-    if (rowNode && reachedBorderId.rowId !== rowNode.id) {
-      this.spreadsheet.store.set(
-        'lastReachedBorderId',
-        merge({}, reachedBorderId, {
-          rowId: rowNode.id,
-        }),
-      );
-      this.spreadsheet.emit(S2Event.LAYOUT_ROW_NODE_BORDER_REACHED, rowNode);
-    }
+    return layoutDataPosition(this.cfg, layoutResult);
   }
 
   private calculateNodesCoordinate(
@@ -629,7 +596,10 @@ export class PivotFacet extends BaseFacet {
     // calculate col width
     const colSize = Math.max(1, colLeafNodes.length);
     const { cellCfg } = this.cfg;
-    return Math.max(cellCfg.width, (canvasW - rowHeaderWidth) / colSize);
+    return Math.max(
+      getCellWidth(cellCfg),
+      (canvasW - rowHeaderWidth) / colSize,
+    );
   }
 
   /**
@@ -644,11 +614,11 @@ export class PivotFacet extends BaseFacet {
     const size = Math.max(1, rowHeaderColSize + colHeaderColSize);
     if (!rowHeaderWidth) {
       // canvasW / (rowHeader's col size + colHeader's col size) = [celCfg.width, canvasW]
-      return Math.max(cellCfg.width, canvasW / size);
+      return Math.max(getCellWidth(cellCfg), canvasW / size);
     }
     // (canvasW - rowHeaderW) / (colHeader's col size) = [celCfg.width, canvasW]
     return Math.max(
-      cellCfg.width,
+      getCellWidth(cellCfg),
       (canvasW - rowHeaderWidth) / colHeaderColSize,
     );
   }
@@ -660,8 +630,8 @@ export class PivotFacet extends BaseFacet {
   private getTreeRowHeaderWidth(): number {
     const { rows, dataSet, rowCfg, treeRowsWidth } = this.cfg;
     // user drag happened
-    if (rowCfg.treeRowsWidth) {
-      return rowCfg.treeRowsWidth;
+    if (rowCfg?.treeRowsWidth) {
+      return rowCfg?.treeRowsWidth;
     }
     // + province/city/level
     const treeHeaderLabel = rows
@@ -754,14 +724,6 @@ export class PivotFacet extends BaseFacet {
 
     // return max
     return Math.max(rowNodeWidth, fieldNameNodeWidth);
-  }
-
-  private getScrollColField(): string[] {
-    return get(this.spreadsheet, 'options.scrollReachNodeField.colField', []);
-  }
-
-  private getScrollRowField(): string[] {
-    return get(this.spreadsheet, 'options.scrollReachNodeField.rowField', []);
   }
 
   public getViewCellHeights(layoutResult: LayoutResult) {

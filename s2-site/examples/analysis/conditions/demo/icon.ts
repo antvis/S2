@@ -26,16 +26,6 @@ fetch(
               };
             },
           },
-          {
-            field: 'cost',
-            position: 'left',
-            mapping(fieldValue, data) {
-              return {
-                icon: 'CellDown',
-                fill: '#F4664A',
-              };
-            },
-          },
         ],
       },
     };

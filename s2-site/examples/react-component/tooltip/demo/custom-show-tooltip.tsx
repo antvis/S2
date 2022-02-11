@@ -38,14 +38,17 @@ fetch(
               };
             });
             const customOperator = {
-              onClick: () => {
-                console.log('测试');
+              onClick: ({ key }) => {
+                console.log('任意菜单项点击', key);
               },
               menus: [
                 {
                   id: 'trend',
                   icon: 'trend',
                   text: '趋势',
+                  onClick: () => {
+                    console.log('当前菜单项点击');
+                  },
                 },
               ],
             };

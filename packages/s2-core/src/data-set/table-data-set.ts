@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { each, orderBy, filter, includes } from 'lodash';
 import { CellDataParams, DataType } from './interface';
 import { BaseDataSet } from '@/data-set/base-data-set';

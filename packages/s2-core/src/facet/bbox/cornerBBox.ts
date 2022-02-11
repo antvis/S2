@@ -38,7 +38,7 @@ export class CornerBBox extends BaseBBox {
     const { width: canvasWidth } = this.spreadsheet.options;
 
     const maxCornerBBoxWidth = canvasWidth * CORNER_MAX_WIDTH_RATIO;
-    const colsHierarchyWidth = colsHierarchy.width;
+    const colsHierarchyWidth = colsHierarchy?.width;
     const panelWidthWidthUnClippedCorner = canvasWidth - this.originalWidth;
 
     // 不需要裁剪条件：

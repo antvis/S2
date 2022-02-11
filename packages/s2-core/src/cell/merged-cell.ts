@@ -60,7 +60,9 @@ export class MergedCell extends DataCell {
    * Render data text
    */
   public drawTextShape() {
-    if (isEmpty(this.meta)) return;
+    if (isEmpty(this.meta)) {
+      return;
+    }
     if (isObject(this.meta.fieldValue)) {
       drawObjectText(this);
     } else {

@@ -9,10 +9,10 @@ import { SwitcherCfgProps, SwitcherHeader } from '../switcher/header';
 import './index.less';
 
 export interface HeaderCfgProps {
-  width?: number;
+  width?: React.CSSProperties['width'];
   className?: string;
   title?: ReactNode;
-  description?: string;
+  description?: ReactNode;
   exportCfg?: ExportCfgProps;
   advancedSortCfg?: AdvancedSortCfgProps;
   switcherCfg?: SwitcherCfgProps;
@@ -66,7 +66,7 @@ export const Header: FC<HeaderProps> = ({
   return (
     <PageHeader
       className={cx(PRE_CLASS, className)}
-      style={{ width: `${width}px` }}
+      style={{ width }}
       ghost={false}
       title={title}
       extra={getExtraComponents()}

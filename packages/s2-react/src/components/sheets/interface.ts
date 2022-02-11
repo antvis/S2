@@ -5,20 +5,35 @@ import {
   TargetCellInfo,
   LayoutCol,
   LayoutRow,
-  ListSortParams,
-  TargetLayoutNode,
   S2Constructor,
   Node,
   SpreadSheet,
   ThemeCfg,
+  ViewMeta,
+  LayoutResult,
+  SortParams,
 } from '@antv/s2';
+import React from 'react';
 import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
 
-export type SheetType = 'pivot' | 'table' | 'gridAnalysis';
+export type SheetType = 'pivot' | 'table' | 'gridAnalysis' | 'strategy';
 
-export interface SpreadsheetProps extends BaseSheetProps {
+export interface SheetComponentsProps extends BaseSheetComponentProps {
   sheetType?: SheetType;
+}
+
+export interface BaseSheetProps extends SheetComponentsProps {
+  s2Ref?: React.MutableRefObject<SpreadSheet>;
+  containerRef?: React.MutableRefObject<HTMLDivElement>;
+  pagination?: {
+    total: number;
+    current: number;
+    pageSize: number;
+    setTotal: (value: number) => void;
+    setCurrent: (value: number) => void;
+    setPageSize: (value: number) => void;
+  };
 }
 
 export interface PartDrillDownInfo {
@@ -42,25 +57,6 @@ export interface PartDrillDown {
   displayCondition?: (meta: Node) => boolean;
 }
 
-// 用于和下钻组件进行交互联动
-export interface PartDrillDownDataCache {
-  // 执行下钻的行头id
-  rowId: string;
-  // 下钻的行头level
-  drillLevel: number;
-  // 下钻的维度
-  drillField: string;
-  // 下钻的数据
-  drillData: Record<string, string | number>[];
-}
-
-export interface PartDrillDownFieldInLevel {
-  // 下钻的维度
-  drillField: string;
-  // 下钻的层级
-  drillLevel: number;
-}
-
 // 是否开启自适应宽高，并指定容器
 export type Adaptive =
   | boolean
@@ -70,22 +66,23 @@ export type Adaptive =
       getContainer?: () => HTMLElement;
     };
 
-export interface BaseSheetProps {
+export interface BaseSheetComponentProps {
   spreadsheet?: (...args: S2Constructor) => SpreadSheet;
   dataCfg: S2DataConfig;
   options: S2Options;
-  isLoading?: boolean;
+  loading?: boolean;
   partDrillDown?: PartDrillDown;
   adaptive?: Adaptive;
   showPagination?: boolean;
   themeCfg?: ThemeCfg;
   header?: HeaderCfgProps;
-  rowLevel?: number;
-  colLevel?: number;
-  onListSort?: (params: ListSortParams) => void;
+  onLoad?: () => void;
+  onDestroy?: () => void;
+  onSortChange?: (params: SortParams) => void;
   onRowColLayout?: (rows: LayoutRow[], cols: LayoutCol[]) => void;
-  onRowCellScroll?: (reachedRow: TargetLayoutNode) => void;
-  onColCellScroll?: (reachedCol: TargetLayoutNode) => void;
+  onAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
+  onCollapseRows?: (collapsedRows: Record<string, boolean>) => void;
+  onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
   onCellScroll?: (position: CellScrollPosition) => void;
   onRowCellClick?: (data: TargetCellInfo) => void;
   onRowCellDoubleClick?: (data: TargetCellInfo) => void;
@@ -95,6 +92,7 @@ export interface BaseSheetProps {
   onDataCellClick?: (data: TargetCellInfo) => void;
   onDataCellDoubleClick?: (data: TargetCellInfo) => void;
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
+  onDataCellTrendIconClick?: (meta: ViewMeta) => void;
   onMergedCellClick?: (data: TargetCellInfo) => void;
   onMergedCellsDoubleClick?: (data: TargetCellInfo) => void;
   onContextMenu?: (data: TargetCellInfo) => void;

@@ -6,16 +6,17 @@ import type { BaseTooltip } from '@/ui/tooltip';
 export type TooltipDataItem = Record<string, any>;
 
 export interface TooltipOperatorMenu {
-  id: string;
+  key: string;
   icon?: Element | string;
   text?: string;
-  children?: TooltipOperatorMenu[]; // subMenu
+  onClick?: () => void;
+  visible?: boolean | ((cell: S2CellType) => boolean);
+  children?: TooltipOperatorMenu[];
 }
 
 export interface TooltipOperatorOptions {
-  onClick: (...params: unknown[]) => void;
-  menus: TooltipOperatorMenu[];
-  [key: string]: unknown;
+  onClick?: (...args: unknown[]) => void;
+  menus?: TooltipOperatorMenu[];
 }
 
 export interface TooltipPosition {
@@ -82,7 +83,12 @@ export type TooltipShowOptions<T = TooltipContentType> = {
   data?: TooltipData;
   cellInfos?: TooltipDataItem[];
   options?: TooltipOptions;
-  content?: ((cell: S2CellType) => T) | T;
+  content?:
+    | ((
+        cell: S2CellType,
+        defaultTooltipShowOptions: TooltipShowOptions<T>,
+      ) => T)
+    | T;
   event?: CanvasEvent | MouseEvent;
 };
 
@@ -157,7 +163,7 @@ export interface Tooltip<T = TooltipContentType> extends BaseTooltipConfig<T> {
   readonly data?: BaseTooltipConfig<T>;
 }
 
-export interface TooltipOperation {
+export interface TooltipOperation extends TooltipOperatorOptions {
   // 隐藏列 (明细表有效)
   hiddenColumns?: boolean;
   // 趋势图

@@ -1,36 +1,46 @@
 import React from 'react';
 import { SpreadSheet } from '@antv/s2';
-import { BaseSheet } from './base-sheet';
-import { GridAnalysisSheet } from './grid-analysis-sheet';
 import { TableSheet } from './table-sheet';
-import { SpreadsheetProps } from './interface';
+import { SheetComponentsProps } from './interface';
+import { PivotSheet } from './pivot-sheet';
+import { GridAnalysisSheet } from './grid-analysis-sheet';
+import { StrategySheet } from './strategy-sheet';
 
 const Sheet = React.forwardRef(
-  (props: SpreadsheetProps, ref: React.MutableRefObject<SpreadSheet>) => {
-    const { sheetType, ...otherProps } = props;
-    const sheetProps: SpreadsheetProps = {
-      ...otherProps,
-      getSpreadSheet: (instance) => {
-        if (ref) {
-          ref.current = instance;
-        }
-        otherProps.getSpreadSheet?.(instance);
-      },
-    };
+  (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
+    const { sheetType } = props;
 
-    switch (sheetType) {
-      case 'table':
-        return <TableSheet {...sheetProps} />;
-      case 'gridAnalysis':
-        return <GridAnalysisSheet {...sheetProps} />;
-      default:
-        return <BaseSheet {...sheetProps} />;
-    }
+    const sheetProps: SheetComponentsProps = React.useMemo(() => {
+      return {
+        ...props,
+        getSpreadSheet: (instance) => {
+          if (ref) {
+            ref.current = instance;
+          }
+          props.getSpreadSheet?.(instance);
+        },
+      };
+    }, [props, ref]);
+
+    const CurrentSheet = React.useMemo(() => {
+      switch (sheetType) {
+        case 'table':
+          return <TableSheet {...sheetProps} />;
+        case 'gridAnalysis':
+          return <GridAnalysisSheet {...sheetProps} />;
+        case 'strategy':
+          return <StrategySheet {...sheetProps} />;
+        default:
+          return <PivotSheet {...sheetProps} />;
+      }
+    }, [sheetType, sheetProps]);
+
+    return <React.StrictMode>{CurrentSheet}</React.StrictMode>;
   },
 );
 
 Sheet.displayName = 'SheetComponent';
 
 export const SheetComponent: React.ForwardRefExoticComponent<
-  SpreadsheetProps & React.RefAttributes<SpreadSheet>
+  SheetComponentsProps & React.RefAttributes<SpreadSheet>
 > = React.memo(Sheet);

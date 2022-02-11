@@ -61,9 +61,6 @@ import { registerIcon, getIcon } from '@/common/icons/factory';
 import { getSafetyDataConfig, getSafetyOptions } from '@/utils/merge';
 
 export abstract class SpreadSheet extends EE {
-  // dom id
-  public dom: S2MountContainer;
-
   // theme config
   public theme: S2Theme;
 
@@ -139,13 +136,12 @@ export abstract class SpreadSheet extends EE {
     options: S2Options,
   ) {
     super();
-    this.dom = this.getMountContainer(dom);
     this.dataCfg = getSafetyDataConfig(dataCfg);
     this.options = getSafetyOptions(options);
     this.dataSet = this.getDataSet(this.options);
 
     this.initTooltip();
-    this.initGroups();
+    this.initGroups(dom);
     this.bindEvents();
     this.initInteraction();
     this.initTheme();
@@ -257,7 +253,9 @@ export abstract class SpreadSheet extends EE {
   ) {
     const { content, event } = showOptions;
     const cell = this.getCell(event?.target);
-    const displayContent = isFunction(content) ? content(cell) : content;
+    const displayContent = isFunction(content)
+      ? content(cell, showOptions)
+      : content;
 
     this.tooltip.show?.({
       ...showOptions,
@@ -309,7 +307,9 @@ export abstract class SpreadSheet extends EE {
 
   public registerIcons() {
     const customSVGIcons = this.options.customSVGIcons;
-    if (isEmpty(customSVGIcons)) return;
+    if (isEmpty(customSVGIcons)) {
+      return;
+    }
 
     forEach(customSVGIcons, (customSVGIcon: CustomSVGIcon) => {
       if (isEmpty(getIcon(customSVGIcon.name))) {
@@ -327,9 +327,6 @@ export abstract class SpreadSheet extends EE {
   public setDataCfg(dataCfg: S2DataConfig) {
     this.store.set('originalDataCfg', dataCfg);
     const newDataCfg = clone(dataCfg);
-    const lastSortParam = this.store.get('sortParam');
-    const { sortParams } = newDataCfg;
-    newDataCfg.sortParams = [].concat(lastSortParam || [], sortParams || []);
     this.dataCfg = getSafetyDataConfig(newDataCfg);
     // clear value ranger after each updated data cfg
     clearValueRangeState(this);
@@ -341,18 +338,22 @@ export abstract class SpreadSheet extends EE {
     this.registerIcons();
   }
 
-  public render(reloadData = true) {
+  public render(reloadData = true, reBuildDataSet = false) {
     this.emit(S2Event.LAYOUT_BEFORE_RENDER);
+    if (reBuildDataSet) {
+      this.dataSet = this.getDataSet(this.options);
+    }
     if (reloadData) {
       this.clearDrillDownData('', true);
       this.dataSet.setDataCfg(this.dataCfg);
     }
     this.buildFacet();
-    this.emit(S2Event.LAYOUT_AFTER_RENDER);
     this.initHiddenColumnsDetail();
+    this.emit(S2Event.LAYOUT_AFTER_RENDER);
   }
 
   public destroy() {
+    this.emit(S2Event.LAYOUT_DESTROY);
     this.facet.destroy();
     this.hdAdapter?.destroy();
     this.interaction.destroy();
@@ -527,15 +528,14 @@ export abstract class SpreadSheet extends EE {
    * 3. panelGroup -- main facet group belongs to
    * 4. foregroundGroup
    * @param dom
-   * @param options
    * @private
    */
-  protected initGroups() {
+  protected initGroups(dom: S2MountContainer) {
     const { width, height, supportCSSTransform, devicePixelRatio } =
       this.options;
     // base canvas group
     this.container = new Canvas({
-      container: this.dom as HTMLElement,
+      container: this.getMountContainer(dom) as HTMLElement,
       width,
       height,
       localRefresh: false,

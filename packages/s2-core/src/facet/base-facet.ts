@@ -102,6 +102,12 @@ export abstract class BaseFacet {
 
   public centerFrame: Frame;
 
+  protected abstract doLayout(): LayoutResult;
+
+  protected abstract getViewCellHeights(
+    layoutResult: LayoutResult,
+  ): ViewCellHeights;
+
   protected scrollFrameId: ReturnType<typeof requestAnimationFrame> = null;
 
   get scrollBarTheme() {
@@ -149,9 +155,8 @@ export abstract class BaseFacet {
   };
 
   onContainerWheelForPc = () => {
-    (
-      this.spreadsheet.container.get('el') as HTMLCanvasElement
-    ).addEventListener('wheel', this.onWheel);
+    const canvas = this.spreadsheet.container.get('el') as HTMLCanvasElement;
+    canvas?.addEventListener('wheel', this.onWheel);
   };
 
   onContainerWheelForMobile = () => {
@@ -300,7 +305,7 @@ export abstract class BaseFacet {
 
   private unbindEvents = () => {
     const canvas = this.spreadsheet.container.get('el') as HTMLElement;
-    canvas.removeEventListener('wheel', this.onWheel);
+    canvas?.removeEventListener('wheel', this.onWheel);
     this.mobileWheel.destroy();
   };
 
@@ -401,7 +406,7 @@ export abstract class BaseFacet {
   };
 
   clearAllGroup = () => {
-    const children = this.panelGroup.cfg.children;
+    const children = this.panelGroup.getChildren() || [];
     for (let i = children.length - 1; i >= 0; i--) {
       const child = children[i];
       if (child instanceof Group) {
@@ -1220,9 +1225,11 @@ export abstract class BaseFacet {
     }
   }, 300);
 
-  protected abstract doLayout(): LayoutResult;
-
-  public abstract getViewCellHeights(
-    layoutResult: LayoutResult,
-  ): ViewCellHeights;
+  protected saveInitColumnNodes(columnNodes: Node[] = []) {
+    const { store } = this.spreadsheet;
+    const initColumnNodes = store.get('initColumnNodes', []);
+    if (initColumnNodes.length !== columnNodes.length) {
+      store.set('initColumnNodes', columnNodes);
+    }
+  }
 }

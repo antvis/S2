@@ -89,7 +89,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
         [currentField]: value,
       };
     }
-    const uniqueId = generateId(parentNode.id, value, spreadsheet);
+    const uniqueId = generateId(parentNode.id, value);
     const isCollapsedRow = get(collapsedRows, uniqueId);
     const isCollapse = isCollapsedRow ?? hierarchyCollapse;
 
@@ -109,6 +109,10 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       query: nodeQuery,
       spreadsheet,
     });
+
+    if (level > hierarchy.maxLevel) {
+      hierarchy.maxLevel = level;
+    }
 
     const emptyChildren = isEmpty(pivotMetaValue?.children);
     if (emptyChildren || isTotals) {
