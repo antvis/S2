@@ -7,7 +7,6 @@ import {
   isObject,
   forEach,
   isArray,
-  concat,
   flatten,
   size,
 } from 'lodash';
@@ -235,9 +234,7 @@ export const copyData = (
       const id = rowNode.id.replace(ROOT_BEGINNING_REGEX, '');
       let tempLine = id.split(ID_SEPARATOR);
       // TODO 兼容下钻，需要获取下钻最大层级
-      const totalLevel = sheetInstance.isHierarchyTreeType()
-        ? maxLevel + 1
-        : maxLevel; // 树状需要增加小计层级
+      const totalLevel = maxLevel + 1;
       const emptyLength = totalLevel - tempLine.length;
       if (emptyLength > 0) {
         tempLine.push(...new Array(emptyLength));

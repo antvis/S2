@@ -673,8 +673,8 @@ export class PivotFacet extends BaseFacet {
   private getTreeRowHeaderWidth(): number {
     const { rows, dataSet, rowCfg, treeRowsWidth } = this.cfg;
     // user drag happened
-    if (rowCfg.treeRowsWidth) {
-      return rowCfg.treeRowsWidth;
+    if (rowCfg?.treeRowsWidth) {
+      return rowCfg?.treeRowsWidth;
     }
     // + province/city/level
     const treeHeaderLabel = rows

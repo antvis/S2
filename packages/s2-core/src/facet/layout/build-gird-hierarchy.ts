@@ -1,4 +1,4 @@
-import { isEmpty, isUndefined, memoize } from 'lodash';
+import { isEmpty, isUndefined } from 'lodash';
 import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { layoutArrange } from '@/facet/layout/layout-hooks';
@@ -13,7 +13,7 @@ const hideMeasureColumn = (
   field: string,
   cfg: SpreadSheetFacetCfg,
 ) => {
-  const hideMeasure = cfg.colCfg.hideMeasureColumn ?? false;
+  const hideMeasure = cfg.colCfg?.hideMeasureColumn ?? false;
   const valueInCol = cfg.dataSet.fields.valueInCols;
   for (const value of fieldValues) {
     if (hideMeasure && valueInCol && field === EXTRA_FIELD) {
@@ -27,7 +27,7 @@ const hideMeasureColumn = (
  *
  * @param params
  */
-export const buildGridHierarchy = memoize((params: GridHeaderParams) => {
+export const buildGridHierarchy = (params: GridHeaderParams) => {
   const {
     addTotalMeasureInTotal,
     addMeasureInTotalQuery,
@@ -124,4 +124,4 @@ export const buildGridHierarchy = memoize((params: GridHeaderParams) => {
     addMeasureInTotalQuery,
     addTotalMeasureInTotal,
   });
-});
+};
