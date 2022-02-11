@@ -5,13 +5,13 @@ import {
   TargetCellInfo,
   LayoutCol,
   LayoutRow,
-  ListSortParams,
   S2Constructor,
   Node,
   SpreadSheet,
   ThemeCfg,
   ViewMeta,
   LayoutResult,
+  SortParams,
 } from '@antv/s2';
 import React from 'react';
 import { DrillDownProps } from '@/components/drill-down';
@@ -57,25 +57,6 @@ export interface PartDrillDown {
   displayCondition?: (meta: Node) => boolean;
 }
 
-// 用于和下钻组件进行交互联动
-export interface PartDrillDownDataCache {
-  // 执行下钻的行头id
-  rowId: string;
-  // 下钻的行头level
-  drillLevel: number;
-  // 下钻的维度
-  drillField: string;
-  // 下钻的数据
-  drillData: Record<string, string | number>[];
-}
-
-export interface PartDrillDownFieldInLevel {
-  // 下钻的维度
-  drillField: string;
-  // 下钻的层级
-  drillLevel: number;
-}
-
 // 是否开启自适应宽高，并指定容器
 export type Adaptive =
   | boolean
@@ -97,7 +78,7 @@ export interface BaseSheetComponentProps {
   header?: HeaderCfgProps;
   onLoad?: () => void;
   onDestroy?: () => void;
-  onListSort?: (params: ListSortParams) => void;
+  onSortChange?: (params: SortParams) => void;
   onRowColLayout?: (rows: LayoutRow[], cols: LayoutCol[]) => void;
   onAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
   onCollapseRows?: (collapsedRows: Record<string, boolean>) => void;
