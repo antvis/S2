@@ -16,7 +16,6 @@ import {
   FrameCallback,
   MappingDataItemCallback,
   MergedCellInfo,
-  ScrollReachNodeField,
   Pagination,
   Style,
   Totals,
