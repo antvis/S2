@@ -3,7 +3,6 @@ import {
   S2Event,
   getBaseCellData,
   CellScrollPosition,
-  TableSortParams,
   SortParams,
   EmitterType,
   ViewMeta,
