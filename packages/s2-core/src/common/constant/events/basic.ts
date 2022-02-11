@@ -52,8 +52,6 @@ export enum S2Event {
 
   /** ================ Table Layout ================  */
   LAYOUT_AFTER_HEADER_LAYOUT = 'layout:after-header-layout',
-  LAYOUT_COL_NODE_BORDER_REACHED = 'layout:col-node-border-reached',
-  LAYOUT_ROW_NODE_BORDER_REACHED = 'layout:row-node-border-reached',
   LAYOUT_CELL_SCROLL = 'layout:cell-scroll',
   LAYOUT_PAGINATION = 'layout:pagination',
   LAYOUT_COLLAPSE_ROWS = 'layout:collapsed-rows',

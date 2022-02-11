@@ -2,7 +2,6 @@ import {
   find,
   forEach,
   get,
-  includes,
   isEmpty,
   last,
   maxBy,
@@ -145,48 +144,6 @@ export class PivotFacet extends BaseFacet {
     };
 
     return layoutDataPosition(this.cfg, layoutResult);
-  }
-
-  // TODO cell sticky border event
-  protected fireReachBorderEvent(scrollX: number, scrollY: number) {
-    const colNode = this.spreadsheet
-      .getColumnNodes()
-      .find(
-        (value) =>
-          includes(this.getScrollColFields(), value.field) &&
-          scrollX > value.x &&
-          scrollX < value.x + value.width,
-      );
-    const rowNode = this.spreadsheet
-      .getRowNodes()
-      .find(
-        (value) =>
-          includes(this.getScrollRowFields(), value.field) &&
-          scrollY > value.y &&
-          scrollY < value.y + value.height,
-      );
-    const reachedBorderId = this.spreadsheet.store.get('lastReachedBorderId', {
-      rowId: '',
-      colId: '',
-    });
-    if (colNode && reachedBorderId.colId !== colNode.id) {
-      this.spreadsheet.store.set(
-        'lastReachedBorderId',
-        merge({}, reachedBorderId, {
-          colId: colNode.id,
-        }),
-      );
-      this.spreadsheet.emit(S2Event.LAYOUT_COL_NODE_BORDER_REACHED, colNode);
-    }
-    if (rowNode && reachedBorderId.rowId !== rowNode.id) {
-      this.spreadsheet.store.set(
-        'lastReachedBorderId',
-        merge({}, reachedBorderId, {
-          rowId: rowNode.id,
-        }),
-      );
-      this.spreadsheet.emit(S2Event.LAYOUT_ROW_NODE_BORDER_REACHED, rowNode);
-    }
   }
 
   private calculateNodesCoordinate(
@@ -767,14 +724,6 @@ export class PivotFacet extends BaseFacet {
 
     // return max
     return Math.max(rowNodeWidth, fieldNameNodeWidth);
-  }
-
-  private getScrollColFields(): string[] {
-    return this.spreadsheet.options.scrollReachNodeField?.colFields || [];
-  }
-
-  private getScrollRowFields(): string[] {
-    return this.spreadsheet.options.scrollReachNodeField?.rowFields || [];
   }
 
   public getViewCellHeights(layoutResult: LayoutResult) {

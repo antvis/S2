@@ -139,7 +139,6 @@ describe('merge test', () => {
       },
       frozenRowHeader: true,
       showSeriesNumber: false,
-      scrollReachNodeField: {},
       customSVGIcons: [],
       showDefaultHeaderActionIcon: false,
       headerActionIcons: [],

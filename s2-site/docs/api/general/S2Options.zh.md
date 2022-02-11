@@ -16,7 +16,6 @@ order: 1
 | pagination | [Pagination](#pagination) |  |    | 分页配置 |
 | frozenRowHeader | `boolean` |  |   `true` | 冻结行头 （透视表有效） |
 | showSeriesNumber | `boolean` |  |  `false` | 是否显示行序号 |
-| scrollReachNodeField | [ScrollReachNodeField](#scrollreachnodefield) |  |  | 表格滚动至指定的节点配置 |
 | showDefaultHeaderActionIcon |`boolean` |  |   `true` | 是否展示默认行列头操作图标 |
 | headerActionIcons | [HeaderActionIcon[]](#headeractionicon) |  |   `false` | 自定义行列头操作图标（需要将 `showDefaultHeaderActionIcon` 置为 `false`） |
 | customSVGIcons | [CustomSVGIcon[]](#customsvgicon) |  |   `false` | 自定义 svg 图标 |
@@ -64,15 +63,6 @@ boolean ｜ object **必选**,_default: null_ 功能描述： 分页配置
 | total     | 数据总条数          | `number` | - |      |
 
 `markdown:docs/common/style.zh.md`
-
-## ScrollReachNodeField
-
-object 可选，_default：{}_ 功能描述：表格滚动至指定的节点配置
-
-| 参数 | 说明 | 类型 | 默认值 | 必选  |
-| --- | --- | --- | --- | :-:  |
-| rowFields | 行头中需要监听滚动吸顶的度量 id | `string[]` | - |  |
-| colFields | 列头中需要监听滚动吸「左」的度量 id | `string[]` | - |  |
 
 ## DataCellCallback
 
