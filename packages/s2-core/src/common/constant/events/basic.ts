@@ -42,7 +42,7 @@ export enum S2Event {
   MERGED_CELLS_DOUBLE_CLICK = 'merged-cells:double-click',
   MERGED_CELLS_MOUSE_DOWN = 'merged-cells:mouse-down',
 
-  /** ================ Table Sort ================  */
+  /** ================ Sort ================  */
   RANGE_SORT = 'sort:range-sort',
   RANGE_SORTED = 'sort:range-sorted',
 

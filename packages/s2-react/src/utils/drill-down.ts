@@ -8,10 +8,10 @@ import {
   Node,
   PivotDataSet,
   HeaderActionIcon,
+  PartDrillDownDataCache,
 } from '@antv/s2';
 import React from 'react';
 import { PartDrillDownInfo, SheetComponentsProps } from '@/components';
-import { PartDrillDownDataCache } from '@/components/sheets/interface';
 import { i18n } from '@/common/i18n';
 
 export interface DrillDownParams {
