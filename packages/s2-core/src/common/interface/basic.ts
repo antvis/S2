@@ -1,7 +1,8 @@
 import { Event, ShapeAttrs } from '@antv/g-canvas';
 import { S2CellType } from './interaction';
 import { DataItem, S2DataConfig } from './s2DataConfig';
-import { CustomTreeItem, ResizeInfo } from '@/common/interface';
+import { BaseHeaderConfig } from '@/facet/header/base';
+import { Condition, CustomTreeItem, ResizeInfo } from '@/common/interface';
 import { S2BasicOptions } from '@/common/interface/s2Options';
 import { BaseDataSet, DataType } from '@/data-set';
 import { Frame } from '@/facet/header';
@@ -37,8 +38,9 @@ export enum CellBorderPosition {
 export type LayoutWidthType = 'adaptive' | 'colAdaptive' | 'compact';
 
 export interface Meta {
-  readonly field: string; // 字段 id
+  readonly field?: string; // 字段 id
   readonly name?: string; // 字段名称
+  readonly description?: string; // 字段描述
   // 格式化
   // 数值字段：一般用于格式化数字单位
   // 文本字段：一般用于做字段枚举值的别名
@@ -191,13 +193,6 @@ export type Pagination = {
   total?: number;
 };
 
-export interface NodeField {
-  // 行头中需要监听滚动吸顶的度量id
-  rowField?: string[];
-  // 列头中需要监听滚动吸「左」的度量id
-  colField?: string[];
-}
-
 export interface CustomSVGIcon {
   // icon 类型名
   name: string;
@@ -243,10 +238,10 @@ export type LayoutCallback = (
   colNode: Node,
 ) => void;
 
-export type CellCallback = (
+export type CellCallback<T extends BaseHeaderConfig> = (
   node: Node,
   spreadsheet: SpreadSheet,
-  ...restOptions: unknown[]
+  headerConfig: T,
 ) => S2CellType;
 
 export type DataCellCallback = (viewMeta: ViewMeta) => S2CellType;
@@ -270,8 +265,15 @@ export type HierarchyCallback = (
 export interface CellCfg {
   width?: number;
   height?: number;
-  firstDerivedMeasureRowIndex?: number;
-  minorMeasureRowIndex?: number;
+  // valueCfg of MultiData
+  valuesCfg?: {
+    // 原始值字段
+    originalValueField?: string;
+    // 每一列数值占单元格宽度百分比 Map
+    widthPercentCfg?: number[];
+    // 条件格式
+    conditions?: { text: Condition };
+  };
 }
 
 export interface RowCfg {
@@ -293,11 +295,6 @@ export interface ColCfg {
   heightByField?: Record<string, number>;
   // hide last column(measure values), only work when has one value
   hideMeasureColumn?: boolean;
-  // 列宽计算小计，明细数据采样的个数
-  totalSample?: number;
-  detailSample?: number;
-  // 列宽取计算的第几个最大值
-  maxSampleIndex?: number;
 }
 
 /**
@@ -384,6 +381,7 @@ export interface ViewMeta {
   // rowId of cell
   rowId?: string;
   colId?: string;
+  field?: string;
   [key: string]: any;
 }
 
@@ -426,16 +424,15 @@ export interface CellAttrs<T extends Record<string, unknown> = Node>
 
 export type S2MountContainer = string | Element;
 
-export type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];
+export type S2Constructor<T = Element | string> = [
+  S2MountContainer,
+  S2DataConfig,
+  S2Options<T>,
+];
 
 export interface OriginalEvent extends Event {
   layerX: number;
   layerY: number;
-}
-
-export interface ScrollRatio {
-  horizontal?: number;
-  vertical?: number;
 }
 
 // 用于和下钻组件进行交互联动

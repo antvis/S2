@@ -1,4 +1,4 @@
-import { each, isEmpty } from 'lodash';
+import { each } from 'lodash';
 import { IGroup, IShape } from '@antv/g-base';
 import { BaseHeader, BaseHeaderConfig } from './base';
 import { translateGroupX } from '@/facet/utils';
@@ -7,7 +7,7 @@ import {
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
 } from '@/common/constant';
 import { ColCell } from '@/cell';
-import { Formatter, S2CellType } from '@/common/interface';
+import { Formatter } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 
 import { SpreadSheet } from '@/sheet-type/index';
@@ -94,20 +94,16 @@ export class ColHeader extends BaseHeader<ColHeaderConfig> {
 
   protected layout() {
     const { data, spreadsheet } = this.headerConfig;
-    const colCell = spreadsheet?.facet?.cfg?.colCell;
+    const { colCell } = spreadsheet.options;
 
     each(data, (node: Node) => {
       const item = node;
 
       if (this.isColCellInRect(item)) {
-        let cell: S2CellType;
-        if (colCell) {
-          cell = colCell(item, spreadsheet, this.headerConfig);
-        }
+        const cell =
+          colCell?.(item, spreadsheet, this.headerConfig) ||
+          this.getCellInstance(item, spreadsheet, this.headerConfig);
 
-        if (isEmpty(cell)) {
-          cell = this.getCellInstance(item, spreadsheet, this.headerConfig);
-        }
         item.belongsCell = cell;
 
         const group = this.getCellGroup(item);

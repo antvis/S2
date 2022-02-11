@@ -1,6 +1,6 @@
 {
   "name": "@antv/s2",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "unpkg": "dist/index.min.js",
@@ -55,7 +55,7 @@
   "dependencies": {
     "@antv/event-emitter": "~0.1.2",
     "@antv/g-canvas": "^0.5.12",
-    "@antv/g-gesture": "^1.0.0",
+    "@antv/g-gesture": "^1.0.1",
     "csstype": "^3.0.9",
     "lodash": "^4.17.21"
   },

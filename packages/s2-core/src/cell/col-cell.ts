@@ -1,32 +1,38 @@
 import { Point, SimpleBBox } from '@antv/g-canvas';
-import { shouldAddResizeArea } from './../utils/interaction/resize';
+import { isEmpty } from 'lodash';
+import { isEqualDisplaySiblingNodeId } from './../utils/hide-columns';
 import { HeaderCell } from './header-cell';
-import {
-  getResizeAreaAttrs,
-  getOrCreateResizeAreaGroupById,
-} from '@/utils/interaction/resize';
+import { shouldAddResizeArea } from '@/utils/interaction/resize';
 import {
   CellTypes,
-  KEY_GROUP_COL_RESIZE_AREA,
   HORIZONTAL_RESIZE_AREA_KEY_PRE,
-  ResizeDirectionType,
+  KEY_GROUP_COL_RESIZE_AREA,
   ResizeAreaEffect,
+  ResizeDirectionType,
+  S2Event,
 } from '@/common/constant';
 import {
   CellBorderPosition,
+  DefaultCellTheme,
   FormatResult,
+  IconTheme,
   TextAlign,
   TextBaseline,
   TextTheme,
 } from '@/common/interface';
-import { ColHeaderConfig } from '@/facet/header/col';
-import { renderLine, renderRect } from '@/utils/g-renders';
 import { AreaRange } from '@/common/interface/scroll';
+import { ColHeaderConfig } from '@/facet/header/col';
 import {
-  getTextAndIconPositionWhenHorizontalScrolling,
-  getTextAndFollowingIconPosition,
   getBorderPositionAndStyle,
+  getTextAndFollowingIconPosition,
+  getTextAndIconPositionWhenHorizontalScrolling,
 } from '@/utils/cell/cell';
+import { renderIcon, renderLine, renderRect } from '@/utils/g-renders';
+import { isLastColumnAfterHidden } from '@/utils/hide-columns';
+import {
+  getOrCreateResizeAreaGroupById,
+  getResizeAreaAttrs,
+} from '@/utils/interaction/resize';
 
 export class ColCell extends HeaderCell {
   protected headerConfig: ColHeaderConfig;
@@ -51,6 +57,7 @@ export class ColCell extends HeaderCell {
     this.drawBorders();
     // draw resize ares
     this.drawResizeArea();
+    this.addExpandColumnIconShapes();
     this.update();
   }
 
@@ -78,12 +85,13 @@ export class ColCell extends HeaderCell {
     const { isLeaf, isTotals } = this.meta;
     const { text, bolderText } = this.getStyle();
     const textStyle = isLeaf && !isTotals ? text : bolderText;
-
+    const hideMeasureColumn =
+      this.spreadsheet.options.style.colCfg.hideMeasureColumn;
     let textAlign: TextAlign;
     let textBaseline: TextBaseline;
 
-    if (isLeaf) {
-      // 最后一个层级的维值，与 dataCell 对齐方式保持一致
+    if (isLeaf && !hideMeasureColumn) {
+      // 最后一个层级的非维值指标单元格，与 dataCell 对齐方式保持一致
       textAlign = this.theme.dataCell.text.textAlign;
       textBaseline = this.theme.dataCell.text.textBaseline;
     } else {
@@ -345,5 +353,99 @@ export class ColCell extends HeaderCell {
   protected drawBorders() {
     this.drawHorizontalBorder();
     this.drawVerticalBorder();
+  }
+
+  protected hasHiddenColumnCell() {
+    const {
+      interaction: { hiddenColumnFields = [] },
+      tooltip: { operation },
+    } = this.spreadsheet.options;
+
+    const hiddenColumnsDetail = this.spreadsheet.store.get(
+      'hiddenColumnsDetail',
+      [],
+    );
+
+    if (
+      isEmpty(hiddenColumnsDetail) ||
+      isEmpty(hiddenColumnFields) ||
+      !operation.hiddenColumns
+    ) {
+      return false;
+    }
+    return !!hiddenColumnsDetail.find((column) =>
+      isEqualDisplaySiblingNodeId(column?.displaySiblingNode, this.meta.id),
+    );
+  }
+
+  private getExpandIconTheme(): IconTheme {
+    const themeCfg = this.getStyle() as DefaultCellTheme;
+    return themeCfg.icon;
+  }
+
+  private addExpandColumnSplitLine() {
+    const { x, y, width, height } = this.meta;
+    const {
+      horizontalBorderColor,
+      horizontalBorderWidth,
+      horizontalBorderColorOpacity,
+    } = this.theme.splitLine;
+    const lineX = this.isLastColumn() ? x + width - horizontalBorderWidth : x;
+
+    renderLine(
+      this,
+      {
+        x1: lineX,
+        y1: y,
+        x2: lineX,
+        y2: y + height,
+      },
+      {
+        stroke: horizontalBorderColor,
+        lineWidth: horizontalBorderWidth,
+        strokeOpacity: horizontalBorderColorOpacity,
+      },
+    );
+  }
+
+  private addExpandColumnIconShapes() {
+    if (!this.hasHiddenColumnCell()) {
+      return;
+    }
+    this.addExpandColumnSplitLine();
+    this.addExpandColumnIcon();
+  }
+
+  private addExpandColumnIcon() {
+    const iconConfig = this.getExpandColumnIconConfig();
+    const icon = renderIcon(this, {
+      ...iconConfig,
+      name: 'ExpandColIcon',
+      cursor: 'pointer',
+    });
+    icon.on('click', () => {
+      this.spreadsheet.emit(S2Event.LAYOUT_TABLE_COL_EXPANDED, this.meta);
+    });
+  }
+
+  // 在隐藏的下一个兄弟节点的起始坐标显示隐藏提示线和展开按钮, 如果是尾元素, 则显示在前一个兄弟节点的结束坐标
+  private getExpandColumnIconConfig() {
+    const { size } = this.getExpandIconTheme();
+    const { x, y, width, height } = this.getCellArea();
+
+    const baseIconX = x - size;
+    const iconX = this.isLastColumn() ? baseIconX + width : baseIconX;
+    const iconY = y + height / 2 - size / 2;
+
+    return {
+      x: iconX,
+      y: iconY,
+      width: size * 2,
+      height: size,
+    };
+  }
+
+  private isLastColumn() {
+    return isLastColumnAfterHidden(this.spreadsheet, this.meta.id);
   }
 }

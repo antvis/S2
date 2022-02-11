@@ -21,11 +21,14 @@ import {
   mapKeys,
   every,
   isObject,
+  isFunction,
+  compact,
 } from 'lodash';
 import * as CSS from 'csstype';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
+import { customMerge } from './merge';
 import { AutoAdjustPositionOptions, ListItem } from '@/common/interface';
 import { LayoutResult } from '@/common/interface/basic';
 import {
@@ -38,6 +41,9 @@ import {
   TooltipPosition,
   TooltipSummaryOptions,
   BaseTooltipConfig,
+  TooltipOperatorOptions,
+  TooltipOperation,
+  TooltipOperatorMenu,
 } from '@/common/interface/tooltip';
 import { TOOLTIP_POSITION_OFFSET } from '@/common/constant/tooltip';
 import { S2CellType } from '@/common/interface/interaction';
@@ -394,7 +400,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
       value = '';
     } else if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
       // 如果选中的单元格都无数据，则显示"-"
-      value = '-';
+      value = spreadsheet.options.placeholder;
     } else {
       const dataSum = getDataSumByField(selected, VALUE_FIELD);
       value = parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems
@@ -494,7 +500,7 @@ export const getTooltipOptionsByCellType = (
   cellType: CellTypes,
 ): Tooltip => {
   const getOptionsByCell = (cellConfig: BaseTooltipConfig) => {
-    return { ...cellTooltipConfig, ...cellConfig };
+    return customMerge(cellTooltipConfig, cellConfig);
   };
 
   const { col, row, data, corner } = cellTooltipConfig;
@@ -521,4 +527,32 @@ export const getTooltipOptions = (
 ): Tooltip => {
   const cellType = spreadsheet.getCellType?.(event.target);
   return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType);
+};
+
+export const getTooltipVisibleOperator = (
+  operation: TooltipOperation,
+  options: { defaultMenus?: TooltipOperatorMenu[]; cell: S2CellType },
+): TooltipOperatorOptions => {
+  const { defaultMenus = [], cell } = options;
+
+  const getDisplayMenus = (menus: TooltipOperatorMenu[] = []) => {
+    return menus
+      .filter((menu) => {
+        return isFunction(menu.visible)
+          ? menu.visible(cell)
+          : menu.visible ?? true;
+      })
+      .map((menu) => {
+        if (menu.children) {
+          menu.children = getDisplayMenus(menu.children);
+        }
+        return menu;
+      });
+  };
+  const displayMenus = getDisplayMenus(operation.menus);
+
+  return {
+    onClick: operation.onClick,
+    menus: compact([...defaultMenus, ...displayMenus]),
+  };
 };

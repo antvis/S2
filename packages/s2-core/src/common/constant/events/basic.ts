@@ -42,7 +42,7 @@ export enum S2Event {
   MERGED_CELLS_DOUBLE_CLICK = 'merged-cells:double-click',
   MERGED_CELLS_MOUSE_DOWN = 'merged-cells:mouse-down',
 
-  /** ================ Table Sort ================  */
+  /** ================ Sort ================  */
   RANGE_SORT = 'sort:range-sort',
   RANGE_SORTED = 'sort:range-sorted',
 
@@ -52,8 +52,6 @@ export enum S2Event {
 
   /** ================ Table Layout ================  */
   LAYOUT_AFTER_HEADER_LAYOUT = 'layout:after-header-layout',
-  LAYOUT_COL_NODE_BORDER_REACHED = 'layout:col-node-border-reached',
-  LAYOUT_ROW_NODE_BORDER_REACHED = 'layout:row-node-border-reached',
   LAYOUT_CELL_SCROLL = 'layout:cell-scroll',
   LAYOUT_PAGINATION = 'layout:pagination',
   LAYOUT_COLLAPSE_ROWS = 'layout:collapsed-rows',
@@ -63,6 +61,7 @@ export enum S2Event {
   LAYOUT_TABLE_COL_HIDDEN = 'layout:table-col-hidden',
   LAYOUT_AFTER_RENDER = 'layout:after-render',
   LAYOUT_BEFORE_RENDER = 'layout:before-render',
+  LAYOUT_DESTROY = 'layout:destroy',
 
   /** ================ Table Layout Resize ================  */
   LAYOUT_RESIZE = 'layout:resize',

@@ -2,6 +2,7 @@ import { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
+import { isMobile } from '@/utils/is-mobile';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
@@ -112,6 +113,9 @@ export class RowCell extends HeaderCell {
       fill,
       isCollapsed,
       () => {
+        if (isMobile()) {
+          return;
+        }
         // 折叠行头时因scrollY没变，导致底层出现空白
         if (!isCollapsed) {
           const oldScrollY = this.spreadsheet.store.get('scrollY');
@@ -139,16 +143,18 @@ export class RowCell extends HeaderCell {
     );
 
     // in mobile, we use this cell
-    this.gm = new GM(this, {
-      gestures: ['Tap'],
-    });
-    this.gm.on('tap', () => {
-      this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
-        id,
-        isCollapsed: !isCollapsed,
-        node: this.meta,
+    if (isMobile()) {
+      this.gm = new GM(this, {
+        gestures: ['Tap'],
       });
-    });
+      this.gm.on('tap', () => {
+        this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
+          id,
+          isCollapsed: !isCollapsed,
+          node: this.meta,
+        });
+      });
+    }
   }
 
   protected getFormattedValue(value: string): string {

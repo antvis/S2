@@ -16,7 +16,6 @@ this.spreadsheet.store.set('key', value) // 存储
 | scrollX | 垂直滚动偏移 | `number` |
 | hRowScrollX | 垂直行头滚动偏移 | `number` |
 | sortParam | 列头排序配置 | [SortParam](#SortParam) |
-| lastReachedBorderId | ? | `{rowId: string, colId: string}` |
 | drillDownIdPathMap | 下钻节点 id 和对应生成的 path 寻址路径 | `Map<string, number[][]>` |
 | drillDownNode | 当前下钻节点 | [Node](/zh/docs/api/base-class/node) |
 | drillItemsNum | 下钻数据的个数控制 | `number` |

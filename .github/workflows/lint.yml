@@ -23,6 +23,7 @@ jobs:
       - name: Install dependencies
         run: yarn
 
+      # prepare 已经跑过 core:build 了, 这里只需要跑 react
       - name: Build
         run: |
           yarn react:build

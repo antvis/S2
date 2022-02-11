@@ -34,6 +34,8 @@ export interface BaseNodeConfig {
   height?: number;
   padding?: number;
   children?: Node[];
+  // 额外的节点信息
+  extra?: Record<string, any>;
 }
 
 /**
@@ -68,6 +70,7 @@ export class Node {
       inCollapseNode,
       isTotalMeasure,
       isLeaf,
+      extra,
     } = cfg;
     this.id = id;
     this.key = key;
@@ -103,6 +106,7 @@ export class Node {
       value: '',
       label: '',
     };
+    this.extra = extra;
   }
 
   /**
@@ -261,6 +265,8 @@ export class Node {
   // node is grand total or subtotal(not normal node)
   public isTotals: boolean;
 
+  public colId: string;
+
   public static blankNode(): Node {
     return new Node({
       id: '',
@@ -301,6 +307,10 @@ export class Node {
   public inCollapseNode?: boolean;
 
   public cornerType?: CornerNodeType;
+
+  public isGrandTotals?: boolean;
+
+  public isSubTotals?: boolean;
 
   [key: string]: any;
 

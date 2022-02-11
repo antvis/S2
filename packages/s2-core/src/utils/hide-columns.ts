@@ -1,11 +1,18 @@
-import { compact, isEmpty, isEqual, last, uniq } from 'lodash';
+import { compact, get, isEmpty, isEqual, last, uniq } from 'lodash';
 import { HiddenColumnsInfo } from '@/common/interface/store';
 import { SpreadSheet } from '@/sheet-type';
-import { S2Event } from '@/common/constant';
+import { ID_SEPARATOR, S2Event } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 
+export const getHiddenColumnFieldKey = (field: string) => {
+  const targetFieldKey = (
+    field.includes(ID_SEPARATOR) ? 'id' : 'field'
+  ) as keyof Node;
+  return targetFieldKey;
+};
+
 /**
- * @name  获取需要隐藏的 field 转成对应的 Node
+ * @name 获取需要隐藏的 field 转成对应的 Node
  */
 export const getHiddenColumnNodes = (
   spreadsheet: SpreadSheet,
@@ -13,15 +20,16 @@ export const getHiddenColumnNodes = (
 ): Node[] => {
   const columnNodes = spreadsheet.getInitColumnNodes();
   return compact(
-    hiddenColumnFields.map((filed) =>
-      columnNodes.find((node) => node.field === filed),
-    ),
+    hiddenColumnFields.map((field) => {
+      const targetFieldKey = getHiddenColumnFieldKey(field);
+      return columnNodes.find((node) => node[targetFieldKey] === field);
+    }),
   );
 };
 
 /**
  * @name 获取隐藏列兄弟节点
- * @description 获取当前隐藏列(兼容多选) 所对应为未隐藏的兄弟节点, 如果是尾节点被隐藏, 则返回他的前一个兄弟节点
+ * @description 获取当前隐藏列(兼容多选) 所对应为未隐藏的兄弟节点
  * @param hideColumns 经过分组的连续隐藏列
    [ 1, 2, 3, -, -, -, (7 √), 8, 9 ]
   [ 1, 2, 3, (4 √), - ]
@@ -30,6 +38,12 @@ export const getHiddenColumnDisplaySiblingNode = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
 ): HiddenColumnsInfo['displaySiblingNode'] => {
+  if (isEmpty(hiddenColumnFields)) {
+    return {
+      prev: null,
+      next: null,
+    };
+  }
   const initColumnNodes = spreadsheet.getInitColumnNodes();
   const hiddenColumnIndexes = getHiddenColumnNodes(
     spreadsheet,
@@ -111,6 +125,7 @@ export const hideColumns = (
       hiddenColumnFields,
     },
   });
+
   const displaySiblingNode = getHiddenColumnDisplaySiblingNode(
     spreadsheet,
     selectedColumnFields,
@@ -145,7 +160,6 @@ export const hideColumnsByThunkGroup = (
   hiddenColumnFields: string[] = [],
   forceRender = false,
 ) => {
-  spreadsheet.store.set('hiddenColumnsDetail', []);
   const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
     spreadsheet.dataCfg.fields.columns,
     hiddenColumnFields,
@@ -161,8 +175,30 @@ export const isLastColumnAfterHidden = (
 ) => {
   const columnNodes = spreadsheet.getColumnNodes();
   const initColumnNodes = spreadsheet.getInitColumnNodes();
+  const fieldKey = getHiddenColumnFieldKey(columnField);
+
   return (
-    last(columnNodes).field === columnField &&
-    last(initColumnNodes).field !== columnField
+    get(last(columnNodes), fieldKey) === columnField &&
+    get(last(initColumnNodes), fieldKey) !== columnField
   );
+};
+
+export const getValidDisplaySiblingNode = (
+  displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
+) => {
+  return displaySiblingNode?.next || displaySiblingNode?.prev;
+};
+
+export const getValidDisplaySiblingNodeId = (
+  displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
+) => {
+  const node = getValidDisplaySiblingNode(displaySiblingNode);
+  return node?.id;
+};
+
+export const isEqualDisplaySiblingNodeId = (
+  displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
+  nodeId: string,
+) => {
+  return getValidDisplaySiblingNodeId(displaySiblingNode) === nodeId;
 };

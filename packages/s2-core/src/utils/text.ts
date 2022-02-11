@@ -1,21 +1,24 @@
 import {
-  clone,
-  get,
   isArray,
+  isEmpty,
   isNil,
   isNumber,
   isString,
   memoize,
   toString,
+  trim,
   values,
 } from 'lodash';
-import { customMerge } from '@/utils/merge';
-import { CellCfg, MultiData } from '@/common/interface';
-import { S2Options } from '@/common/interface/s2Options';
 import { DefaultCellTheme } from '@/common/interface/theme';
 import { renderText } from '@/utils/g-renders';
-import { DataCell } from '@/cell/data-cell';
 import { CellTypes, EMPTY_PLACEHOLDER } from '@/common/constant';
+import {
+  CellCfg,
+  Condition,
+  MultiData,
+  S2CellType,
+  ViewMeta,
+} from '@/common/interface';
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -175,7 +178,7 @@ export const getEllipsisText = ({
   priorityParam,
   placeholder,
 }: {
-  text: string;
+  text: string | number;
   maxWidth: number;
   fontParam?: unknown;
   priorityParam?: string[];
@@ -184,7 +187,7 @@ export const getEllipsisText = ({
   let font = {};
   const empty = placeholder ?? EMPTY_PLACEHOLDER;
   // [null, undefined, ''] will return empty
-  const finalText = isNil(text) || text === '' ? empty : text;
+  const finalText = isNil(text) || text === '' ? empty : `${text}`;
   let priority = priorityParam;
   if (fontParam && isArray(fontParam)) {
     priority = fontParam as string[];
@@ -266,11 +269,11 @@ export const getEllipsisText = ({
  * @param value
  * @param font
  */
-export const getDataState = (value: number | string): boolean => {
+export const isUpDataValue = (value: number | string): boolean => {
   if (isNumber(value)) {
     return value >= 0;
   }
-  return !/^-/.test(value);
+  return !!value && !trim(value).startsWith('-');
 };
 
 const calX = (x: number, paddingRight: number, total?: number) => {
@@ -278,64 +281,71 @@ const calX = (x: number, paddingRight: number, total?: number) => {
   return x + paddingRight / 2 + extra;
 };
 
-const getStyle = (
+const getTextStyle = (
   rowIndex: number,
   colIndex: number,
-  value: string | number,
-  options: S2Options,
+  meta: ViewMeta,
+  data: string | number,
   dataCellTheme: DefaultCellTheme,
+  textCondition: Condition,
 ) => {
-  const cellCfg = get(options, 'style.cellCfg', {}) as Partial<CellCfg>;
-  const derivedMeasureIndex = cellCfg?.firstDerivedMeasureRowIndex;
-  const minorMeasureIndex = cellCfg?.minorMeasureRowIndex;
-  const isMinor = rowIndex === minorMeasureIndex;
-  const isDerivedMeasure = colIndex >= derivedMeasureIndex;
-  const style = isMinor
-    ? clone(dataCellTheme.minorText)
-    : clone(dataCellTheme.text);
-  const derivedMeasureText = dataCellTheme.derivedMeasureText;
-  const upFill = isMinor
-    ? derivedMeasureText?.minorUp
-    : derivedMeasureText?.mainUp || dataCellTheme.icon.upIconColor;
-  const downFill = isMinor
-    ? derivedMeasureText?.minorDown
-    : derivedMeasureText?.mainDown || dataCellTheme.icon.downIconColor;
-  if (isDerivedMeasure) {
-    const isUp = getDataState(value);
-    return customMerge(style, {
-      fill: isUp ? upFill : downFill,
-    });
+  const { isTotals } = meta;
+  const textStyle = isTotals ? dataCellTheme.bolderText : dataCellTheme.text;
+  let fill = textStyle.fill;
+  if (textCondition?.mapping) {
+    fill = textCondition?.mapping(data, {
+      rowIndex,
+      colIndex,
+    }).fill;
   }
-  return style;
+  return { ...textStyle, fill };
 };
 
 /**
  * @desc draw text shape of object
  * @param cell
+ * @multiData 自定义文本内容
+ * @disabledConditions 是否禁用条件格式
  */
-export const drawObjectText = (cell: DataCell) => {
+export const drawObjectText = (
+  cell: S2CellType,
+  multiData?: MultiData,
+  disabledConditions?: boolean,
+) => {
   const { x, y, height, width } = cell.getContentArea();
-  const text = cell.getMeta().fieldValue as MultiData;
+  const text = multiData || (cell.getMeta().fieldValue as MultiData);
+  const { valuesCfg } = cell?.getMeta().spreadsheet.options.style.cellCfg;
+  const textCondition = disabledConditions ? null : valuesCfg?.conditions?.text;
+
+  const widthPercentCfg = valuesCfg?.widthPercentCfg;
   const dataCellStyle = cell.getStyle(CellTypes.DATA_CELL);
-  const labelStyle = dataCellStyle.bolderText;
+
   const padding = dataCellStyle.cell.padding;
+  const totalTextWidth = width - padding.left - padding.right;
 
-  // 指标个数相同，任取其一即可
-  const realWidth = width / (text.values[0].length + 1);
-  const realHeight = height / (text.values.length + 1);
-  renderText(
-    cell,
-    [],
-    calX(x, padding.right),
-    y + realHeight / 2,
-    getEllipsisText({
-      text: text.label,
-      maxWidth: width - padding.left,
-      fontParam: labelStyle,
-    }),
-    labelStyle,
-  );
+  const totalTextHeight = height - padding.top - padding.top;
+  const realHeight = totalTextHeight / (text.values.length + 1);
+  let labelHeight = 0;
+  // 绘制单元格主标题
+  if (text?.label) {
+    labelHeight = realHeight / 2;
+    const labelStyle = dataCellStyle.bolderText;
 
+    renderText(
+      cell,
+      [],
+      calX(x, padding.right),
+      y + labelHeight,
+      getEllipsisText({
+        text: text.label,
+        maxWidth: width - padding.left,
+        fontParam: labelStyle,
+      }),
+      labelStyle,
+    );
+  }
+
+  // 绘制指标
   const { values: textValues } = text;
   let curText: string | number;
   let curX: number;
@@ -343,18 +353,22 @@ export const drawObjectText = (cell: DataCell) => {
   let curWidth: number;
   let totalWidth = 0;
   for (let i = 0; i < textValues.length; i += 1) {
-    curY = y + realHeight / 2 + realHeight * (i + 1); // 加上label的高度
+    curY = y + realHeight * (i + 1) + labelHeight; // 加上label的高度
     totalWidth = 0;
     for (let j = 0; j < textValues[i].length; j += 1) {
-      curText = textValues[i][j] || '-';
-      const curStyle = getStyle(
+      curText = textValues[i][j];
+      const curStyle = getTextStyle(
         i,
         j,
+        cell?.getMeta() as ViewMeta,
         curText,
-        cell?.getMeta().spreadsheet.options,
         dataCellStyle,
+        textCondition,
       );
-      curWidth = j === 0 ? realWidth * 2 : realWidth;
+      curWidth = !isEmpty(widthPercentCfg)
+        ? totalTextWidth * (widthPercentCfg[j] / 100)
+        : totalTextWidth / text.values[0].length; // 指标个数相同，任取其一即可
+
       curX = calX(x, padding.right, totalWidth);
       totalWidth += curWidth;
       renderText(
@@ -363,12 +377,31 @@ export const drawObjectText = (cell: DataCell) => {
         curX,
         curY,
         getEllipsisText({
-          text: `${curText}`,
+          text: curText,
           maxWidth: curWidth,
           fontParam: curStyle,
+          placeholder: cell?.getMeta().spreadsheet.options.placeholder,
         }),
         curStyle,
       );
     }
+  }
+};
+
+/**
+ * 根据 cellCfg 配置获取当前单元格宽度
+ */
+export const getCellWidth = (cellCfg: CellCfg) => {
+  const { width } = cellCfg;
+  const cellWidth = width;
+  // TODO 根据当前列的指标个数返回列宽
+  return cellWidth;
+};
+
+export const safeJsonParse = (val: string) => {
+  try {
+    return JSON.parse(val);
+  } catch (err) {
+    return false;
   }
 };

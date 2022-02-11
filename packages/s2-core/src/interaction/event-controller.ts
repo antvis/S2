@@ -136,7 +136,7 @@ export class EventController {
   }
 
   private resetSheetStyle(event: Event) {
-    if (!this.isAutoResetSheetStyle) {
+    if (!this.isAutoResetSheetStyle || !this.spreadsheet) {
       return;
     }
 
@@ -178,7 +178,7 @@ export class EventController {
   }
 
   private getContainerRect() {
-    const { maxX, maxY } = this.spreadsheet.facet.panelBBox;
+    const { maxX, maxY } = this.spreadsheet.facet?.panelBBox || {};
     const { width, height } = this.spreadsheet.options;
     return {
       width: Math.min(width, maxX),
