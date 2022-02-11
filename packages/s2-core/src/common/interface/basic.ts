@@ -193,11 +193,11 @@ export type Pagination = {
   total?: number;
 };
 
-export interface NodeField {
+export interface ScrollReachNodeField {
   // 行头中需要监听滚动吸顶的度量id
-  rowField?: string[];
+  rowFields?: string[];
   // 列头中需要监听滚动吸「左」的度量id
-  colField?: string[];
+  colFields?: string[];
 }
 
 export interface CustomSVGIcon {

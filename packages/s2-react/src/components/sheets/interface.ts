@@ -6,7 +6,6 @@ import {
   LayoutCol,
   LayoutRow,
   ListSortParams,
-  TargetLayoutNode,
   S2Constructor,
   Node,
   SpreadSheet,
@@ -103,8 +102,6 @@ export interface BaseSheetComponentProps {
   onAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
   onCollapseRows?: (collapsedRows: Record<string, boolean>) => void;
   onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
-  onRowCellScroll?: (reachedRow: TargetLayoutNode) => void;
-  onColCellScroll?: (reachedCol: TargetLayoutNode) => void;
   onCellScroll?: (position: CellScrollPosition) => void;
   onRowCellClick?: (data: TargetCellInfo) => void;
   onRowCellDoubleClick?: (data: TargetCellInfo) => void;

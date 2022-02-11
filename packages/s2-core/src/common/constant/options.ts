@@ -75,7 +75,6 @@ export const DEFAULT_OPTIONS: Readonly<S2Options> = {
     },
   },
   showSeriesNumber: false,
-  scrollReachNodeField: {},
   customSVGIcons: [],
   showDefaultHeaderActionIcon: false,
   headerActionIcons: [],

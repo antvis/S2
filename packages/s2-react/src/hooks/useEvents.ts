@@ -2,7 +2,6 @@ import {
   SpreadSheet,
   S2Event,
   getBaseCellData,
-  TargetLayoutNode,
   CellScrollPosition,
   ListSortParams,
   EmitterType,
@@ -95,17 +94,6 @@ export function useEvents(props: BaseSheetComponentProps) {
           hierarchyCollapse: boolean,
         ) => {
           props.onCollapseRowsAll?.(hierarchyCollapse);
-        },
-
-        [S2Event.LAYOUT_ROW_NODE_BORDER_REACHED]: (
-          reachedRow: TargetLayoutNode,
-        ) => {
-          props.onRowCellScroll?.(reachedRow);
-        },
-        [S2Event.LAYOUT_COL_NODE_BORDER_REACHED]: (
-          reachedCol: TargetLayoutNode,
-        ) => {
-          props.onColCellScroll?.(reachedCol);
         },
         [S2Event.LAYOUT_CELL_SCROLL]: (value: CellScrollPosition) => {
           props.onCellScroll?.(value);

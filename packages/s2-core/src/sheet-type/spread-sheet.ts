@@ -307,7 +307,9 @@ export abstract class SpreadSheet extends EE {
 
   public registerIcons() {
     const customSVGIcons = this.options.customSVGIcons;
-    if (isEmpty(customSVGIcons)) return;
+    if (isEmpty(customSVGIcons)) {
+      return;
+    }
 
     forEach(customSVGIcons, (customSVGIcon: CustomSVGIcon) => {
       if (isEmpty(getIcon(customSVGIcon.name))) {
