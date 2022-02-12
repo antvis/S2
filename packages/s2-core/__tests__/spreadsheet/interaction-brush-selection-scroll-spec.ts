@@ -75,30 +75,31 @@ describe('Bursh selection scroll spec', () => {
     s2.render();
     const dataCells = s2.panelScrollGroup.getChildren();
     const target = dataCells.find((item) => item instanceof DataCell);
-
+    const offsetY = s2.container.get('el').getBoundingClientRect().top;
     s2.emit(S2Event.DATA_CELL_MOUSE_DOWN, {
       target,
       originalEvent: { layerX: 1, layerY: 1 },
       preventDefault() {},
     } as any);
     await sleep(40);
+
     s2.emit(S2Event.GLOBAL_MOUSE_MOVE, {
       clientX: 400,
-      clientY: 400,
+      clientY: 400 + offsetY,
       preventDefault() {},
     } as any);
     await sleep(40);
 
     s2.emit(S2Event.GLOBAL_MOUSE_MOVE, {
       clientX: 400,
-      clientY: 1000,
+      clientY: 1000 + offsetY,
       preventDefault() {},
     } as any);
     await sleep(100);
 
     s2.emit(S2Event.GLOBAL_MOUSE_UP, {
       clientX: 400,
-      clientY: 1000,
+      clientY: 1000 + offsetY,
       preventDefault() {},
     } as any);
 
@@ -126,6 +127,7 @@ describe('Bursh selection scroll spec', () => {
     });
 
     s2.render();
+    const offsetY = s2.container.get('el').getBoundingClientRect().top;
     const dataCells = s2.frozenTopGroup.getChildren();
     const target = dataCells.find((item) => item instanceof DataCell);
 
@@ -137,21 +139,21 @@ describe('Bursh selection scroll spec', () => {
 
     s2.emit(S2Event.GLOBAL_MOUSE_MOVE, {
       clientX: 400,
-      clientY: 1000,
+      clientY: 400 + offsetY,
       preventDefault() {},
     } as any);
     await sleep(40);
 
     s2.emit(S2Event.GLOBAL_MOUSE_MOVE, {
       clientX: 400,
-      clientY: 1600,
+      clientY: 1000 + offsetY,
       preventDefault() {},
     } as any);
     await sleep(30);
 
     s2.emit(S2Event.GLOBAL_MOUSE_UP, {
       clientX: 400,
-      clientY: 1600,
+      clientY: 1000 + offsetY,
       preventDefault() {},
     } as any);
 
