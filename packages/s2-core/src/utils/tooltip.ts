@@ -177,6 +177,7 @@ export const getListItem = (
   data: TooltipDataItem,
   field: string,
   valueField?: string,
+  useCompleteDataForFormatter = true,
 ): ListItem => {
   const name = spreadsheet?.dataSet?.getFieldName(field);
   const formatter = getFieldFormatter(spreadsheet, field);
@@ -184,7 +185,10 @@ export const getListItem = (
   const dataValue = isObject(data[field])
     ? JSON.stringify(data[field])
     : data[field];
-  const value = formatter(valueField || dataValue, data);
+  const value = formatter(
+    valueField || dataValue,
+    useCompleteDataForFormatter ? data : undefined,
+  );
 
   return {
     name,
@@ -202,7 +206,7 @@ export const getFieldList = (
     (field) => field !== EXTRA_FIELD && activeData[field],
   );
   const fieldList = map(currFields, (field: string): ListItem => {
-    return getListItem(spreadsheet, activeData, field);
+    return getListItem(spreadsheet, activeData, field, undefined, false);
   });
   return fieldList;
 };
