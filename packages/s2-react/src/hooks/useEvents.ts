@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { Event as GEvent } from '@antv/g-canvas';
 import { BaseSheetComponentProps } from '@/components';
 
-const useCellEvent = (
+export const useCellEvent = (
   eventName: keyof EmitterType,
   handler: (data: TargetCellInfo) => void,
   s2: SpreadSheet,
@@ -25,7 +25,7 @@ const useCellEvent = (
   }, [s2, handler]);
 };
 
-const useS2Event = (
+export const useS2Event = (
   eventName: keyof EmitterType,
   handler: (args: any) => void,
   s2: SpreadSheet,
