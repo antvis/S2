@@ -174,10 +174,17 @@ export const getFieldFormatter = (spreadsheet: SpreadSheet, field: string) => {
 
 export const getListItem = (
   spreadsheet: SpreadSheet,
-  data: TooltipDataItem,
-  field: string,
-  valueField?: string,
-  useCompleteDataForFormatter = true,
+  {
+    data,
+    field,
+    valueField,
+    useCompleteDataForFormatter = true,
+  }: {
+    data: TooltipDataItem;
+    field: string;
+    valueField?: string;
+    useCompleteDataForFormatter?: boolean;
+  },
 ): ListItem => {
   const name = spreadsheet?.dataSet?.getFieldName(field);
   const formatter = getFieldFormatter(spreadsheet, field);
@@ -206,7 +213,11 @@ export const getFieldList = (
     (field) => field !== EXTRA_FIELD && activeData[field],
   );
   const fieldList = map(currFields, (field: string): ListItem => {
-    return getListItem(spreadsheet, activeData, field, undefined, false);
+    return getListItem(spreadsheet, {
+      data: activeData,
+      field,
+      useCompleteDataForFormatter: false,
+    });
   });
   return fieldList;
 };
@@ -258,12 +269,11 @@ export const getDetailList = (
     if (isTotals) {
       // total/subtotal
       valItem.push(
-        getListItem(
-          spreadsheet,
-          activeData,
+        getListItem(spreadsheet, {
+          data: activeData,
           field,
-          get(activeData, VALUE_FIELD),
-        ),
+          valueField: get(activeData, VALUE_FIELD),
+        }),
       );
     }
     // the value hangs at the head of the column, match the displayed fields according to the metric itself
@@ -281,10 +291,12 @@ export const getDetailList = (
       ) as Record<string, string | number>;
 
       forEach(mappedResult, (_, key) => {
-        valItem.push(getListItem(spreadsheet, mappedResult, key));
+        valItem.push(
+          getListItem(spreadsheet, { data: mappedResult, field: key }),
+        );
       });
     } else {
-      valItem.push(getListItem(spreadsheet, activeData, field));
+      valItem.push(getListItem(spreadsheet, { data: activeData, field }));
     }
 
     return valItem;
