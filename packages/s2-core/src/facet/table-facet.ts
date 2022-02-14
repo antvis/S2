@@ -55,7 +55,7 @@ import { getAllChildCells } from '@/utils/get-all-child-cells';
 export class TableFacet extends BaseFacet {
   public rowOffsets: number[];
 
-  public frozenGroupSize: Record<
+  public frozenGroupInfo: Record<
     string,
     {
       width?: number;
@@ -900,7 +900,7 @@ export class TableFacet extends BaseFacet {
     const cellRange = this.getCellRange();
 
     return getValidFrozenOptions(
-      this.spreadsheet.options,
+      this.cfg,
       colLength,
       cellRange.end - cellRange.start + 1,
     );
@@ -917,43 +917,41 @@ export class TableFacet extends BaseFacet {
     const colLeafNodes = this.layoutResult.colLeafNodes;
     const viewCellHeights = this.viewCellHeights;
     const cellRange = this.getCellRange();
+    const { col, row, trailingCol, trailingRow } = this.frozenGroupInfo;
 
     if (frozenColCount > 0) {
-      this.frozenGroupSize.col.width =
+      col.width =
         colLeafNodes[frozenColCount - 1].x +
         colLeafNodes[frozenColCount - 1].width -
         0;
-      this.frozenGroupSize.col.range = [0, frozenColCount - 1];
+      col.range = [0, frozenColCount - 1];
     }
 
     if (frozenRowCount > 0) {
-      this.frozenGroupSize.row.height =
+      row.height =
         viewCellHeights.getCellOffsetY(cellRange.start + frozenRowCount) -
         viewCellHeights.getCellOffsetY(cellRange.start);
-      this.frozenGroupSize.row.range = [
-        cellRange.start,
-        cellRange.start + frozenRowCount,
-      ];
+      row.range = [cellRange.start, cellRange.start + frozenRowCount];
     }
 
     if (frozenTrailingColCount > 0) {
-      this.frozenGroupSize.trailingCol.width =
+      trailingCol.width =
         colLeafNodes[colLeafNodes.length - 1].x -
         colLeafNodes[colLeafNodes.length - frozenTrailingColCount].x +
         colLeafNodes[colLeafNodes.length - 1].width;
-      this.frozenGroupSize.trailingCol.range = [
+      trailingCol.range = [
         colLeafNodes.length - frozenTrailingColCount,
         colLeafNodes.length - 1,
       ];
     }
 
     if (frozenTrailingRowCount > 0) {
-      this.frozenGroupSize.trailingRow.height =
+      trailingRow.height =
         viewCellHeights.getCellOffsetY(cellRange.end + 1) -
         viewCellHeights.getCellOffsetY(
           cellRange.end + 1 - frozenTrailingRowCount,
         );
-      this.frozenGroupSize.trailingRow.range = [
+      trailingRow.range = [
         cellRange.end - frozenTrailingRowCount,
         cellRange.end,
       ];
@@ -1015,13 +1013,13 @@ export class TableFacet extends BaseFacet {
     };
 
     if (frozenTrailingColCount > 0 || frozenColCount > 0) {
-      const { trailingCol, col } = this.frozenGroupSize;
+      const { trailingCol, col } = this.frozenGroupInfo;
       finalViewport.width -= trailingCol.width + col.width;
       finalViewport.x += col.width;
     }
 
     if (frozenTrailingRowCount > 0 || frozenRowCount > 0) {
-      const { row, trailingRow } = this.frozenGroupSize;
+      const { row, trailingRow } = this.frozenGroupInfo;
 
       finalViewport.height -= row.height + trailingRow.height;
       finalViewport.y += row.height;

@@ -98,7 +98,7 @@ export enum ScrollbarPositionType {
   CANVAS = 'canvas',
 }
 
-export enum BrushScrollDirection {
+export enum ScrollDirection {
   LEADING = 'leading',
   TRAILING = 'trailing',
 }

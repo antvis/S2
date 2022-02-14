@@ -405,7 +405,6 @@ export class EventController {
       return;
     }
     const cell = spreadsheet.getCell(event.target);
-
     if (cell) {
       const cellType = cell.cellType;
       if (this.target === event.target) {

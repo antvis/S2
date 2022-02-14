@@ -238,11 +238,53 @@ describe('Table Mode Facet With Frozen Test', () => {
     dataSet: dataSet,
     ...assembleDataCfg().fields,
     ...assembleOptions({
+      frozenColCount: 2,
+      frozenRowCount: 2,
       frozenTrailingColCount: 2,
       frozenTrailingRowCount: 2,
     }),
     ...DEFAULT_STYLE,
     columns: ['province', 'city', 'type', 'sub_type', 'price'],
+  });
+
+  test('should get correct frozenInfo', () => {
+    facet.calculateFrozenGroupInfo();
+    expect(facet.frozenGroupInfo).toStrictEqual({
+      col: {
+        range: [0, 1],
+        width: 240,
+      },
+      row: {
+        height: 60,
+        range: [0, 2],
+      },
+      trailingCol: {
+        range: [3, 4],
+        width: 240,
+      },
+      trailingRow: {
+        height: 60,
+        range: [29, 31],
+      },
+    });
+  });
+
+  test('should get correct xy indexes with frozen', () => {
+    expect(facet.calculateXYIndexes(0, 0)).toStrictEqual({
+      center: [2, 2, 2, 16],
+      frozenCol: [0, 1, 2, 16],
+      frozenRow: [2, 2, 0, 1],
+      frozenTrailingCol: [3, 4, 2, 16],
+      frozenTrailingRow: [2, 2, 30, 31],
+    });
+
+    expect(facet.calculateXYIndexes(100, 200)).toStrictEqual({
+      center: [2, 2, 8, 23],
+      frozenCol: [0, 1, 8, 23],
+      frozenRow: [2, 2, 0, 1],
+      frozenTrailingCol: [3, 4, 8, 23],
+      frozenTrailingRow: [2, 2, 30, 31],
+    });
   });
 
   test('should get correct col layout with frozen col', () => {

@@ -1,11 +1,13 @@
 import { Group } from '@antv/g-canvas';
-import { max, range } from 'lodash';
+import { range } from 'lodash';
 import { DataCell } from 'src/cell/data-cell';
 import { RootInteraction } from '@/interaction/root';
 import {
-  BrushScrollDirection,
+  ScrollDirection,
   BrushSelection,
   CellTypes,
+  getScrollOffsetForCol,
+  getScrollOffsetForRow,
   InteractionBrushSelectionStage,
   InterceptType,
   Node,
@@ -440,43 +442,33 @@ describe('Interaction Brush Selection Tests', () => {
       1, 8, 1, 8,
     ];
 
-    expect(adjustNextColIndexWithFrozen(9, BrushScrollDirection.TRAILING)).toBe(
-      8,
-    );
-    expect(adjustNextColIndexWithFrozen(0, BrushScrollDirection.LEADING)).toBe(
-      1,
-    );
-    expect(adjustNextColIndexWithFrozen(7, BrushScrollDirection.TRAILING)).toBe(
-      7,
-    );
+    expect(adjustNextColIndexWithFrozen(9, ScrollDirection.TRAILING)).toBe(8);
+    expect(adjustNextColIndexWithFrozen(0, ScrollDirection.LEADING)).toBe(1);
+    expect(adjustNextColIndexWithFrozen(7, ScrollDirection.TRAILING)).toBe(7);
 
-    expect(adjustNextRowIndexWithFrozen(9, BrushScrollDirection.TRAILING)).toBe(
-      8,
-    );
-    expect(adjustNextRowIndexWithFrozen(0, BrushScrollDirection.LEADING)).toBe(
-      1,
-    );
-    expect(adjustNextRowIndexWithFrozen(7, BrushScrollDirection.TRAILING)).toBe(
-      7,
-    );
+    expect(adjustNextRowIndexWithFrozen(9, ScrollDirection.TRAILING)).toBe(8);
+    expect(adjustNextRowIndexWithFrozen(0, ScrollDirection.LEADING)).toBe(1);
+    expect(adjustNextRowIndexWithFrozen(7, ScrollDirection.TRAILING)).toBe(7);
   });
 
   test('shoud get correct scroll offset for row and col', async () => {
     const { facet } = mockSpreadSheetInstance;
     expect(
-      brushSelectionInstance.getScrollOffsetForCol(
+      getScrollOffsetForCol(
         7,
-        BrushScrollDirection.LEADING,
+        ScrollDirection.LEADING,
+        mockSpreadSheetInstance,
       ),
     ).toBe(700);
     expect(
-      brushSelectionInstance.getScrollOffsetForCol(
+      getScrollOffsetForCol(
         7,
-        BrushScrollDirection.TRAILING,
+        ScrollDirection.TRAILING,
+        mockSpreadSheetInstance,
       ),
     ).toBe(200);
 
-    (facet as TableFacet).frozenGroupSize = {
+    (facet as TableFacet).frozenGroupInfo = {
       col: {
         width: 100,
       },
@@ -486,15 +478,17 @@ describe('Interaction Brush Selection Tests', () => {
     };
 
     expect(
-      brushSelectionInstance.getScrollOffsetForCol(
+      getScrollOffsetForCol(
         7,
-        BrushScrollDirection.LEADING,
+        ScrollDirection.LEADING,
+        mockSpreadSheetInstance,
       ),
     ).toBe(600);
     expect(
-      brushSelectionInstance.getScrollOffsetForCol(
+      getScrollOffsetForCol(
         7,
-        BrushScrollDirection.TRAILING,
+        ScrollDirection.TRAILING,
+        mockSpreadSheetInstance,
       ),
     ).toBe(300);
 
@@ -505,19 +499,21 @@ describe('Interaction Brush Selection Tests', () => {
     facet.viewCellHeights = facet.getViewCellHeights(facet.layoutResult);
 
     expect(
-      brushSelectionInstance.getScrollOffsetForRow(
+      getScrollOffsetForRow(
         7,
-        BrushScrollDirection.LEADING,
+        ScrollDirection.LEADING,
+        mockSpreadSheetInstance,
       ),
     ).toBe(700);
     expect(
-      brushSelectionInstance.getScrollOffsetForRow(
+      getScrollOffsetForRow(
         7,
-        BrushScrollDirection.TRAILING,
+        ScrollDirection.TRAILING,
+        mockSpreadSheetInstance,
       ),
     ).toBe(320);
 
-    (facet as TableFacet).frozenGroupSize = {
+    (facet as TableFacet).frozenGroupInfo = {
       row: {
         height: 100,
       },
@@ -526,15 +522,17 @@ describe('Interaction Brush Selection Tests', () => {
       },
     };
     expect(
-      brushSelectionInstance.getScrollOffsetForRow(
+      getScrollOffsetForRow(
         7,
-        BrushScrollDirection.LEADING,
+        ScrollDirection.LEADING,
+        mockSpreadSheetInstance,
       ),
     ).toBe(600);
     expect(
-      brushSelectionInstance.getScrollOffsetForRow(
+      getScrollOffsetForRow(
         7,
-        BrushScrollDirection.TRAILING,
+        ScrollDirection.TRAILING,
+        mockSpreadSheetInstance,
       ),
     ).toBe(420);
   });
@@ -551,7 +549,7 @@ describe('Interaction Brush Selection Tests', () => {
     expect(validateYIndex(10)).toBe(null);
     expect(validateYIndex(9)).toBe(9);
 
-    (mockSpreadSheetInstance.facet as TableFacet).frozenGroupSize = {
+    (mockSpreadSheetInstance.facet as TableFacet).frozenGroupInfo = {
       col: {
         range: [0, 1],
       },
