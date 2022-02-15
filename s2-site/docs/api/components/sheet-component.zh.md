@@ -36,7 +36,7 @@ order: 0
 | onMergedCellsHoverr | 合并单元格鼠标悬停事件                                                                                               | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onMergedCellClick | 合并单元格鼠标点击事件                                                                                               | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onMergedCellDoubleClick | 合并单元格鼠标双击事件                                                                                               | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onContextMenu | 右键单元格单击事件                                                                                                 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onGlobalContextMenu | 右键单元格单击事件                                                                                                 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 
 ### TargetCellInfo
 
