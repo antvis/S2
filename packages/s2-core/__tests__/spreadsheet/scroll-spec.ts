@@ -8,6 +8,7 @@ import {
   InterceptType,
   OriginEventType,
   S2Event,
+  ScrollbarPositionType,
 } from '@/common/constant';
 
 const s2options: S2Options = {
@@ -287,4 +288,37 @@ describe('Scroll By Group Tests', () => {
       });
     },
   );
+
+  test('should render correct scroll position', () => {
+    s2.setOptions({
+      interaction: {
+        scrollbarPosition: ScrollbarPositionType.CONTENT,
+      },
+      style: {
+        layoutWidthType: 'compact',
+      },
+    });
+    s2.changeSize(100, 1000); // 横向滚动条
+    s2.render(false);
+    expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(220);
+    expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(220);
+
+    s2.changeSize(1000, 150); // 纵向滚动条
+    s2.render(false);
+    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(189);
+
+    s2.setOptions({
+      interaction: {
+        scrollbarPosition: ScrollbarPositionType.CANVAS,
+      },
+    });
+    s2.changeSize(100, 1000); // 横向滚动条
+    s2.render(false);
+    expect(s2.facet.hScrollBar.getCanvasBBox().y).toBe(994);
+    expect(s2.facet.hRowScrollBar.getCanvasBBox().y).toBe(994);
+
+    s2.changeSize(1000, 200); // 纵向滚动条
+    s2.render(false);
+    expect(s2.facet.vScrollBar.getCanvasBBox().x).toBe(994);
+  });
 });

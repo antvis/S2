@@ -38,13 +38,26 @@ describe('Interaction Keyboard Move Tests', () => {
     s2.facet = {
       layoutResult: {
         colLeafNodes: [
-          { x: 0, id: '0' },
-          { x: 1, id: '1' },
+          { x: 0, id: '0', colIndex: 0 },
+          { x: 1, id: '1', colIndex: 1 },
         ],
       },
-      viewCellHeights: { getCellOffsetY: (index) => 0 },
       getTotalHeightForRange: (start, end) => 0,
       scrollWithAnimation: (data) => {},
+      getScrollOffset: () => ({ scrollX: 0, scrollY: 0 }),
+      panelBBox: {
+        viewportHeight: 200,
+        viewportWidth: 200,
+      },
+      viewCellWidths: [],
+      viewCellHeights: {
+        getCellOffsetY: (index) => 0,
+        getIndexRange: () => [0, 3],
+      },
+      getRealScrollX: () => 0,
+      cornerBBox: {
+        width: 80,
+      },
     } as any;
     s2.interaction.intercepts.clear();
     s2.interaction.isEqualStateName = () => false;

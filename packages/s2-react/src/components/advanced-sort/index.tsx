@@ -10,6 +10,7 @@ import {
   forEach,
   filter,
   find,
+  uniq,
 } from 'lodash';
 import cx from 'classnames';
 import { SpreadSheet, SortParam, SortMethod, TOTAL_VALUE } from '@antv/s2';
@@ -105,11 +106,13 @@ export const AdvancedSort: React.FC<AdvancedSortProps> = ({
     handleCustom();
     setCurrentDimension(dimension);
     if (splitOrders) {
-      setSortBy(splitOrders);
+      setSortBy(uniq(splitOrders));
     } else {
       setSortBy(
-        find(manualDimensionList, (item) => item.field === dimension.field)
-          ?.list || [],
+        uniq(
+          find(manualDimensionList, (item) => item.field === dimension.field)
+            ?.list || [],
+        ),
       );
     }
   };

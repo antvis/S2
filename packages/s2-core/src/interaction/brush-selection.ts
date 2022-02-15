@@ -94,6 +94,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
       ) {
         return;
       }
+
       const { interaction } = this.spreadsheet;
       this.setBrushSelectionStage(InteractionBrushSelectionStage.DRAGGED);
       this.endBrushPoint = this.getBrushPoint(event);

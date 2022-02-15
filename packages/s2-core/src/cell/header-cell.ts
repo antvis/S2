@@ -117,7 +117,7 @@ export abstract class HeaderCell extends BaseCell<Node> {
   }
 
   // 是否设置为默认隐藏 action icon，默认隐藏的交互为 hover 后可见
-  protected defaultHideActionIcons() {
+  protected hasDefaultHideActionIcon() {
     const actionIconCfg = this.getActionIconCfg();
     return actionIconCfg?.defaultHide;
   }
@@ -186,17 +186,17 @@ export abstract class HeaderCell extends BaseCell<Node> {
     return isMaxLevel && this.cellType === CellTypes.ROW_CELL;
   }
 
-  private handleHover(cells: CellMeta[]) {
+  protected handleHover(cells: CellMeta[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.HOVER);
-      if (this.defaultHideActionIcons()) {
+      if (this.hasDefaultHideActionIcon()) {
         // hover 只会有一个 cell
-        this.toggleActionIcon(cells?.[0].id);
+        this.toggleActionIcon(cells?.[0]?.id);
       }
     }
   }
 
-  private handleSelect(cells: CellMeta[], nodes: Node[]) {
+  protected handleSelect(cells: CellMeta[], nodes: Node[]) {
     if (includeCell(cells, this)) {
       this.updateByState(InteractionStateName.SELECTED);
     }

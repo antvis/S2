@@ -8,7 +8,7 @@ import {
   FrozenOpts,
   FrozenCellIndex,
 } from '@/common/constant/frozen';
-import { Pagination, ScrollRatio } from '@/common/interface';
+import { Pagination, ScrollSpeedRatio } from '@/common/interface';
 
 export const isFrozenCol = (colIndex: number, frozenCount: number) => {
   return frozenCount > 0 && colIndex < frozenCount;
@@ -59,7 +59,8 @@ export const calculateInViewIndexes = (
   let xMin = findIndex(
     widths,
     (width: number, idx: number) => {
-      const x = scrollX - (isNil(rowRemainWidth) ? 0 : rowRemainWidth);
+      const x =
+        scrollX - (isNil(rowRemainWidth) ? 0 : rowRemainWidth) + viewport.x;
       return x >= width && x < widths[idx + 1];
     },
     0,
@@ -69,7 +70,7 @@ export const calculateInViewIndexes = (
   let xMax = findIndex(
     widths,
     (width: number, idx: number) => {
-      const x = viewport.width + scrollX;
+      const x = viewport.width + scrollX + viewport.x;
       return x >= width && x < widths[idx + 1];
     },
     xMin,
@@ -77,8 +78,8 @@ export const calculateInViewIndexes = (
   xMax = Math.min(xMax === -1 ? Infinity : xMax, widths.length - 2);
 
   const { start: yMin, end: yMax } = heights.getIndexRange(
-    scrollY,
-    viewport.height + scrollY,
+    scrollY + viewport.y,
+    viewport.height + scrollY + viewport.y,
   );
 
   // use direction
@@ -101,7 +102,7 @@ export const calculateInViewIndexes = (
 export const optimizeScrollXY = (
   x: number,
   y: number,
-  ratio: ScrollRatio,
+  ratio: ScrollSpeedRatio,
 ): [number, number] => {
   const ANGLE = 2; // 调参工程师
   const angle = Math.abs(x / y);

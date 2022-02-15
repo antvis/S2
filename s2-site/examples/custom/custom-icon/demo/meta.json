@@ -19,6 +19,14 @@
         "en": "Custom header action icons"
       },
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/pBAAuAlwEB/custom.gif"
+    },
+    {
+      "filename": "custom-data-cell-icon.tsx",
+      "title": {
+        "zh": "自定义单元格图标",
+        "en": "Custom data cell icons"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/5a0Ad8vz3/2689a04f-7965-4e30-be6f-9aaefc007482.png"
     }
   ]
 }

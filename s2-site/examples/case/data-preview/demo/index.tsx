@@ -231,13 +231,13 @@ const scrollToCell = (rowIndex, colIndex, options, facet, interaction) => {
 
 const App = ({ data }) => {
   const onIconClick = ({ meta }) => {
-    setinteractedCol(meta.value);
+    setInteractedCol(meta.value);
     setColModalVisible(!colModalVisible);
   };
   const s2Ref = useRef(null);
   const [columns, setColumns] = React.useState(initColumns);
 
-  const [interactedCol, setinteractedCol] = useState('');
+  const [interactedCol, setInteractedCol] = useState('');
   const modalCallbackRef = useRef((e) => {});
 
   const [options, setOptions] = useState({

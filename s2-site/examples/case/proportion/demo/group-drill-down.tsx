@@ -22,8 +22,6 @@ fetch(
           cellCfg: {
             width: 250,
             height: 130,
-            minorMeasureRowIndex: 3,
-            firstDerivedMeasureRowIndex: 2,
           },
         },
       };

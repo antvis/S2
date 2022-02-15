@@ -51,8 +51,6 @@ export interface StoreKey {
   hRowScrollX: number;
   // column cell click sort params
   sortParam: SortParam;
-  // last reached border node id
-  lastReachedBorderId: ReachedBorderId;
   // 下钻节点id和对应生成的 path寻址路径
   drillDownIdPathMap: Map<string, number[][]>;
   // 当前下钻节点

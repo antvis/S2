@@ -102,6 +102,7 @@ describe('merge test', () => {
       debug: false,
       hierarchyType: 'grid',
       conditions: {},
+      cornerText: '',
       totals: {},
       tooltip: {
         showTooltip: false,
@@ -110,6 +111,7 @@ describe('merge test', () => {
           hiddenColumns: false,
           trend: false,
           sort: false,
+          menus: [],
         },
       },
       interaction: {
@@ -117,11 +119,15 @@ describe('merge test', () => {
         hiddenColumnFields: [],
         selectedCellsSpotlight: false,
         hoverHighlight: true,
+        hoverFocus: true,
         scrollSpeedRatio: {
           horizontal: 1,
           vertical: 1,
         },
         autoResetSheetStyle: true,
+        brushSelection: true,
+        multiSelection: true,
+        rangeSelection: true,
         resize: {
           colCellHorizontal: true,
           colCellVertical: true,
@@ -129,12 +135,11 @@ describe('merge test', () => {
           rowCellVertical: true,
           rowResizeType: 'all',
         },
+        scrollbarPosition: 'content',
       },
       frozenRowHeader: true,
       showSeriesNumber: false,
-      scrollReachNodeField: {},
       customSVGIcons: [],
-      customHeaderCells: null,
       showDefaultHeaderActionIcon: false,
       headerActionIcons: [],
       style: DEFAULT_STYLE,
@@ -143,6 +148,9 @@ describe('merge test', () => {
       frozenTrailingRowCount: 0,
       frozenTrailingColCount: 0,
       hdAdapter: true,
+      placeholder: '-',
+      supportCSSTransform: false,
+      devicePixelRatio: window.devicePixelRatio,
     });
   });
 
@@ -152,6 +160,12 @@ describe('merge test', () => {
         showTooltip: false,
         operation: {
           sort: false,
+          menus: [
+            {
+              key: 'custom',
+              text: 'custom',
+            },
+          ],
         },
       },
     });
@@ -161,6 +175,12 @@ describe('merge test', () => {
         hiddenColumns: false,
         trend: false,
         sort: false,
+        menus: [
+          {
+            key: 'custom',
+            text: 'custom',
+          },
+        ],
       },
       showTooltip: false,
     });

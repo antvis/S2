@@ -41,6 +41,9 @@ fetch(
       tooltip: {
         showTooltip: true,
       },
+      interaction: {
+        enableCopy: true,
+      },
       // 配置小计总计显示
       totals: {
         row: {
@@ -58,7 +61,6 @@ fetch(
           subTotalsDimensions: ['type'],
         },
       },
-      enableCopy: true,
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 

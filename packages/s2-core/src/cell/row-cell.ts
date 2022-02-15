@@ -2,6 +2,7 @@ import { Point } from '@antv/g-canvas';
 import { GM } from '@antv/g-gesture';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
+import { isMobile } from '@/utils/is-mobile';
 import {
   CellTypes,
   KEY_GROUP_ROW_RESIZE_AREA,
@@ -112,11 +113,15 @@ export class RowCell extends HeaderCell {
       fill,
       isCollapsed,
       () => {
+        if (isMobile()) {
+          return;
+        }
         // 折叠行头时因scrollY没变，导致底层出现空白
         if (!isCollapsed) {
           const oldScrollY = this.spreadsheet.store.get('scrollY');
           // 可视窗口高度
-          const viewportHeight = this.spreadsheet.facet.panelBBox.height || 0;
+          const viewportHeight =
+            this.spreadsheet.facet.panelBBox.viewportHeight || 0;
           // 被折叠项的高度
           const deleteHeight = getAllChildrenNodeHeight(this.meta);
           // 折叠后真实高度
@@ -138,16 +143,18 @@ export class RowCell extends HeaderCell {
     );
 
     // in mobile, we use this cell
-    this.gm = new GM(this, {
-      gestures: ['Tap'],
-    });
-    this.gm.on('tap', () => {
-      this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
-        id,
-        isCollapsed: !isCollapsed,
-        node: this.meta,
+    if (isMobile()) {
+      this.gm = new GM(this, {
+        gestures: ['Tap'],
       });
-    });
+      this.gm.on('tap', () => {
+        this.spreadsheet.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, {
+          id,
+          isCollapsed: !isCollapsed,
+          node: this.meta,
+        });
+      });
+    }
   }
 
   protected getFormattedValue(value: string): string {
@@ -213,7 +220,7 @@ export class RowCell extends HeaderCell {
       position,
       seriesNumberWidth,
       width: headerWidth,
-      height: headerHeight,
+      viewportHeight: headerHeight,
       scrollX,
       scrollY,
     } = this.headerConfig;
@@ -343,7 +350,7 @@ export class RowCell extends HeaderCell {
 
   protected getTextPosition(): Point {
     const { y, height: contentHeight } = this.getContentArea();
-    const { scrollY, height } = this.headerConfig;
+    const { scrollY, viewportHeight: height } = this.headerConfig;
 
     const { fontSize } = this.getTextStyle();
     const textIndent = this.getTextIndent();

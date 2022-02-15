@@ -3,53 +3,23 @@
 @tooltip-prefix-cls: antv-s2-tooltip;
 
 .@{tooltip-prefix-cls} {
-  &.trans-2-middle {
-    transform: translateX(-90px) translateY(-160%);
-    pointer-events: none;
-  }
-
   &-tips,
   &-name {
-    padding: 12px 12px 4px 12px;
+    padding: 12px;
     line-height: 16px;
-    font-size: 12px;
-    letter-spacing: -0.2px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 2;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
     overflow-wrap: break-word;
-    text-align: left;
-    font-family: PingFangSC-Regular;
-    opacity: 0.85;
-    color: #000;
-
-    &::after {
-      position: absolute;
-      left: 50%;
-      bottom: -12px;
-      content: '';
-      transform: translateX(-3px);
-      width: 0;
-      height: 0;
-    }
+    color: rgba(0, 0, 0, 0.85);
   }
 
   &-tips {
     padding: 4px 12px;
-    opacity: 0.45;
-    color: #000;
+    color: rgba(0, 0, 0, 0.45);
   }
 
   &-infos {
     padding: 4px 12px;
     line-height: 20px;
-    font-size: 12px;
-    opacity: 0.45;
-    font-family: PingFangSC-Regular;
-    color: #000;
-    letter-spacing: -0.2px;
+    color: rgba(0, 0, 0, 0.45);
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-line-clamp: 2;
@@ -62,23 +32,32 @@
   }
 
   &-summary {
-    text-align: left;
     line-height: 20px;
-    font-size: 12px;
     color: rgba(0, 0, 0, 0.65);
     overflow: hidden;
-    padding: 12px 12px 4px;
+    padding: 12px;
 
-    .@{tooltip-prefix-cls}-summary-val {
-      float: right;
+    &-item {
+      display: flex;
+    }
+
+    &-key {
+      margin-right: 20px;
+    }
+
+    &-val {
+      flex: 1;
+      text-align: right;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
 
   &-interpretation {
-    font-size: 12px;
     color: rgba(0, 0, 0, 0.65);
     overflow: hidden;
-    padding: 12px 12px 4px;
+    padding: 12px;
 
     .@{tooltip-prefix-cls}-interpretation-head {
       margin-bottom: 12px;
@@ -95,17 +74,18 @@
   }
 
   &-head-info-list {
-    font-family: PingFangSC-Regular;
-    font-size: 12px;
     color: #a2a2a2;
-    letter-spacing: 0;
-    text-align: left;
     padding: 12px 12px 4px;
     line-height: 20px;
   }
 
-  &-bold {
+  &-bold,
+  &-selected {
     font-weight: bold;
+  }
+
+  &-selected {
+    margin-right: 5px;
   }
 
   &-highlight {
@@ -120,109 +100,24 @@
     padding: 2px 12px 8px;
 
     .@{tooltip-prefix-cls}-detail-item {
-      font-size: 12px;
       color: rgba(0, 0, 0, 0.65);
       overflow: hidden;
       margin: 4px 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
 
       &-key {
         margin-right: 20px;
       }
 
       &-val {
-        float: right;
+        flex: 1;
+        text-align: right;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
-    }
-  }
-
-  &-rich-text {
-    padding: 2px 0 8px;
-    color: #666;
-    font-size: 12px;
-    line-height: 1.5;
-    font-weight: 400;
-    letter-spacing: -0.2px;
-
-    * {
-      padding: 0;
-      margin: 0;
-    }
-
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
-      line-height: 36px;
-      letter-spacing: -0.2px;
-      color: #222;
-    }
-
-    h2 {
-      font-size: 24px;
-      font-weight: 700;
-      line-height: 32px;
-      letter-spacing: -0.2px;
-      color: #222;
-    }
-
-    h3 {
-      font-size: 20px;
-      font-weight: 700;
-      line-height: 28px;
-      letter-spacing: -0.2px;
-      color: #222;
-    }
-
-    h4 {
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 24px;
-      letter-spacing: -0.2px;
-      color: #222;
-    }
-
-    a {
-      text-decoration: none;
-    }
-
-    a:hover,
-    a:active,
-    a:visited,
-    a:focus {
-      text-decoration: none;
-      transition: color 86400s ease-in 86400s;
-    }
-
-    ul {
-      display: block;
-      list-style-type: disc;
-      margin-block-start: 1em;
-      margin-block-end: 1em;
-      margin-inline-start: 0;
-      margin-inline-end: 0;
-      padding-inline-start: 0;
-    }
-
-    ol {
-      display: block;
-      list-style-type: decimal;
-      margin-block-start: 1em;
-      margin-block-end: 1em;
-      margin-inline-start: 0;
-      margin-inline-end: 0;
-      padding-inline-start: 0;
-    }
-
-    li {
-      margin-left: 23px;
-    }
-
-    span {
-      line-height: 1.2;
-    }
-
-    strong,
-    b {
-      font-weight: 700;
     }
   }
 }

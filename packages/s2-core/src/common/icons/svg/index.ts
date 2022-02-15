@@ -8,6 +8,7 @@ export {
   GlobalDesc,
   GroupAsc,
   GroupDesc,
+  GroupNone,
   Minus,
   Plus,
   SortDown,

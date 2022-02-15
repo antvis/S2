@@ -1,4 +1,4 @@
-import { isEmpty, merge, isBoolean, keys } from 'lodash';
+import { isEmpty, get } from 'lodash';
 import { FieldValue, TreeHeaderParams } from '@/facet/layout/interface';
 import { layoutArrange, layoutHierarchy } from '@/facet/layout/layout-hooks';
 import { TotalClass } from '@/facet/layout/total-class';
@@ -9,7 +9,7 @@ import { SpreadSheet } from '@/sheet-type';
 import { getListBySorted, filterUndefined } from '@/utils/data-set-operate';
 import { getDimensionsWithoutPathPre } from '@/utils/dataset/pivot-data-set';
 import { PivotDataSet } from '@/data-set';
-import { ID_SEPARATOR } from '@/common/constant';
+import { ID_SEPARATOR, ROOT_ID } from '@/common/constant';
 
 const addTotals = (
   spreadsheet: SpreadSheet,
@@ -41,7 +41,7 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
   const sortedDimensionValues =
     (dataSet as PivotDataSet)?.sortedDimensionValues?.[currentField] || [];
   const dimensions = sortedDimensionValues?.filter((item) =>
-    item?.includes(id?.split(`root${ID_SEPARATOR}`)[1]),
+    item?.includes(id?.split(`${ROOT_ID}${ID_SEPARATOR}`)[1]),
   );
   const dimValues = filterUndefined(
     getListBySorted(
@@ -84,13 +84,15 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       nodeQuery = query;
     } else {
       value = fieldValue;
-      nodeQuery = merge({}, query, { [currentField]: value });
+      nodeQuery = {
+        ...query,
+        [currentField]: value,
+      };
     }
-    const uniqueId = generateId(parentNode.id, value, spreadsheet);
-    const collapsedRow = collapsedRows[uniqueId];
-    const isCollapse = isBoolean(collapsedRow)
-      ? collapsedRow
-      : hierarchyCollapse;
+    const uniqueId = generateId(parentNode.id, value);
+    const isCollapsedRow = get(collapsedRows, uniqueId);
+    const isCollapse = isCollapsedRow ?? hierarchyCollapse;
+
     const node = new Node({
       id: uniqueId,
       key: currentField,
@@ -107,6 +109,10 @@ export const buildRowTreeHierarchy = (params: TreeHeaderParams) => {
       query: nodeQuery,
       spreadsheet,
     });
+
+    if (level > hierarchy.maxLevel) {
+      hierarchy.maxLevel = level;
+    }
 
     const emptyChildren = isEmpty(pivotMetaValue?.children);
     if (emptyChildren || isTotals) {

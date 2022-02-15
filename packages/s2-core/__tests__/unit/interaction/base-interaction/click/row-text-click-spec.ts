@@ -7,7 +7,7 @@ import { S2Event } from '@/common/constant';
 
 jest.mock('@/interaction/event-controller');
 jest.mock('@/interaction/base-interaction/click/row-column-click');
-jest.mock('@/interaction/shift-multi-selection');
+jest.mock('@/interaction/range-selection');
 
 describe('Interaction Row Text Click Tests', () => {
   let rowTextClick: RowTextClick;

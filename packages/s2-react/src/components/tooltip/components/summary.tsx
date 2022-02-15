@@ -1,6 +1,7 @@
 import React from 'react';
 import { size, reduce } from 'lodash';
 import { SummaryProps, TOOLTIP_PREFIX_CLS } from '@antv/s2';
+import cls from 'classnames';
 import { i18n } from '@/common/i18n';
 
 export const TooltipSummary: React.FC<SummaryProps> = React.memo((props) => {
@@ -14,9 +15,9 @@ export const TooltipSummary: React.FC<SummaryProps> = React.memo((props) => {
     );
     return (
       <div className={`${TOOLTIP_PREFIX_CLS}-summary-item`}>
-        <span className={`${TOOLTIP_PREFIX_CLS}-bold`}>
+        <span className={`${TOOLTIP_PREFIX_CLS}-selected`}>
           {count} {i18n('项')}
-        </span>{' '}
+        </span>
         {i18n('已选择')}
       </div>
     );
@@ -38,7 +39,10 @@ export const TooltipSummary: React.FC<SummaryProps> = React.memo((props) => {
             {name}（{i18n('总和')})
           </span>
           <span
-            className={`${TOOLTIP_PREFIX_CLS}-summary-val ${TOOLTIP_PREFIX_CLS}-bold`}
+            className={cls(
+              `${TOOLTIP_PREFIX_CLS}-summary-val`,
+              `${TOOLTIP_PREFIX_CLS}-bold`,
+            )}
           >
             {value}
           </span>

@@ -1,6 +1,6 @@
 import { PivotSheet, TableSheet } from '@antv/s2';
 import { getMockSheetInstance } from 'tests/util/helpers';
-import { generateSwitcherFieldsCfgFromResult } from '../../../../src/components/switcher/headerUtil';
+import { generateSwitcherFieldsCfgFromResult } from '@/components/switcher/headerUtil';
 import {
   generateSheetConfig,
   generateSwitcherFields,

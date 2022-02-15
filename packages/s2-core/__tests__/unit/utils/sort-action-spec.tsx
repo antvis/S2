@@ -1,4 +1,4 @@
-import { sortAction } from '@/utils/sort-action';
+import { sortAction, sortByCustom } from '@/utils/sort-action';
 
 describe('Sort Action Test', () => {
   describe('Sort Action', () => {
@@ -86,6 +86,78 @@ describe('Sort Action Test', () => {
       expect(sortAction([{ a: '' }, { a: '3' }, { a: 2 }], 'ASC', 'a')).toEqual(
         [{ a: '' }, { a: 2 }, { a: '3' }],
       );
+    });
+  });
+});
+
+describe('Sort By Custom Test', () => {
+  describe('Sort By Custom', () => {
+    test('sort by custom with equal sub node', () => {
+      const params = {
+        originValues: [
+          'Monday[&]noon',
+          'Monday[&]afternoon',
+          'Monday[&]morning',
+          'Tuesday[&]afternoon',
+          'Tuesday[&]noon',
+          'Tuesday[&]morning',
+        ],
+        sortByValues: ['morning', 'noon', 'afternoon'],
+      };
+      expect(sortByCustom(params)).toEqual([
+        'Monday[&]morning',
+        'Monday[&]noon',
+        'Monday[&]afternoon',
+        'Tuesday[&]morning',
+        'Tuesday[&]noon',
+        'Tuesday[&]afternoon',
+      ]);
+    });
+    test('sort by custom with repeated sub node', () => {
+      const params = {
+        originValues: [
+          'Monday[&]noon',
+          'Monday[&]afternoon',
+          'Tuesday[&]afternoon',
+          'Tuesday[&]noon',
+          'Tuesday[&]morning',
+          'Wednesday[&]afternoon',
+          'Wednesday[&]morning',
+        ],
+        sortByValues: ['morning', 'noon', 'afternoon'],
+      };
+      expect(sortByCustom(params)).toEqual([
+        'Monday[&]noon',
+        'Monday[&]afternoon',
+        'Tuesday[&]morning',
+        'Tuesday[&]noon',
+        'Tuesday[&]afternoon',
+        'Wednesday[&]morning',
+        'Wednesday[&]afternoon',
+      ]);
+    });
+    test('sort by custom with unordered node', () => {
+      const params = {
+        originValues: [
+          'Monday[&]afternoon',
+          'Tuesday[&]afternoon',
+          'Wednesday[&]afternoon',
+          'Monday[&]noon',
+          'Tuesday[&]noon',
+          'Wednesday[&]morning',
+          'Tuesday[&]morning',
+        ],
+        sortByValues: ['morning', 'noon', 'afternoon'],
+      };
+      expect(sortByCustom(params)).toEqual([
+        'Monday[&]noon',
+        'Monday[&]afternoon',
+        'Tuesday[&]morning',
+        'Tuesday[&]noon',
+        'Tuesday[&]afternoon',
+        'Wednesday[&]morning',
+        'Wednesday[&]afternoon',
+      ]);
     });
   });
 });

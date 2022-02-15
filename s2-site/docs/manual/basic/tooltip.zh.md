@@ -19,7 +19,7 @@ const s2options = {
 };
 ```
 
-还可以对不同类型的单元格单独配置:
+还可以对不同类型的单元格单独配置：
 
 - `corner`: 角头
 - `row`: 行头
@@ -62,7 +62,7 @@ const s2options = {
   tooltip: {
     operation: {
       trend: true, // 显示趋势图按钮
-      hiddenColumns: true, //开启隐藏列 （明细表有效）
+      hiddenColumns: true, //开启隐藏列 （叶子节点有效）
     },
   }
 };
@@ -123,17 +123,17 @@ const s2options = {
 };
 ```
 
-同时, `content` 还支持回调的方式, 可以根据[当前单元格信息](/zh/docs/api/basic-class/interaction)然后动态的更改内容
+同时，`content` 还支持回调的方式，可以根据 [当前单元格信息](/zh/docs/api/basic-class/interaction) 和 默认 `tooltip` 的详细信息，灵活的自定义内容
 
 ```ts
 const TooltipContent = (props) => <div>...</div>
 
 const s2options = {
   tooltip: {
-    content: (cell) => {
-      const meta = cell.getMeta()
-      console.log('当前单元格信息:', meta)
-      return <TooltipContent {...meta}/>
+    content: (cell, defaultTooltipShowOptions) => {
+      console.log('当前单元格：', cell)
+      console.log('默认 tooltip 详细信息：', defaultTooltipShowOptions)
+      return <TooltipContent cell={cell} detail={detail} />
     },
   },
 };
@@ -141,7 +141,7 @@ const s2options = {
 
 ##### 1. 配置级
 
-对不同的单元格进行配置时, `tooltip.content` 的优先级 小于 `row.content`, `col.content`, `data.content`, `corner.content`
+对不同的单元格进行配置时，`tooltip.content` 的优先级 小于 `row.content`, `col.content`, `data.content`, `corner.content`
 
 ```tsx
 const TooltipContent = (
@@ -199,6 +199,77 @@ s2.showTooltip({
 `方法调用` > `单元格配置` > `基本配置`
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*EwvcRZjOslMAAAAAAAAAAAAAARQnAQ" width = "600"  alt="row" />
+
+#### 自定义 Tooltip 操作项
+
+除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，支持嵌套，也可以监听各自的点击事件
+
+```ts
+const s2Options = {
+  tooltip: {
+    operation: {
+      trend: true,
+      menus: [
+        {
+          key: 'custom-a',
+          text: '操作 1',
+          icon: 'Trend',
+          onClick: () => {
+            console.log('操作 1 点击');
+          },
+          children: [{
+            key: 'custom-a-a',
+            text: '操作 1-1',
+            icon: 'Trend',
+            onClick: () => {
+              console.log('操作 1-1 点击');
+            },
+          }]
+        },
+        {
+          key: 'custom-b',
+          text: '操作 2',
+          icon: 'EyeOutlined',
+          onClick: () => {
+            console.log('操作 2 点击');
+          },
+        },
+      ],
+    },
+  },
+};
+```
+
+还可以通过 `visible` 参数控制当前操作项是否显示，支持传入一个回调，可以根据当前 [单元格信息](/zh/docs/api/basic-class/base-cell) 动态显示
+
+```ts
+const s2Options = {
+  tooltip: {
+    operation: {
+      menus: [
+        {
+          key: 'custom-a',
+          text: '操作 1',
+          icon: 'Trend',
+          visible: false,
+        },
+        {
+          key: 'custom-b',
+          text: '操作 2',
+          icon: 'EyeOutlined',
+          visible: (cell) => {
+            // 叶子节点不显示
+            const meta = cell.getMeta()
+            return meta.isLeaf
+          },
+        },
+      ],
+    },
+  },
+};
+```
+
+<playground path='react-component/tooltip/demo/custom-operation.tsx' rid='container-custom-operations' height='300'></playground>
 
 #### 自定义 Tooltip 类
 
@@ -278,7 +349,7 @@ const s2options = {
 
 ```
 
-如果使用的是 `React` 组件, 也可以使用 [单元格回调函数](zh/docs/api/components/sheet-component) 来进行自定义. [例子](/zh/examples/react-component/tooltip#custom-hover-show-tooltip)
+如果使用的是 `React` 组件，也可以使用 [单元格回调函数](zh/docs/api/components/sheet-component) 来进行自定义。[例子](/zh/examples/react-component/tooltip#custom-hover-show-tooltip)
 
 ```tsx
 const CustomColCellTooltip = () => <div>col cell tooltip</div>;
@@ -327,10 +398,10 @@ tooltip: {
 - 显示位置 (position)
 
   ```tsx
-  instance.showTooltip = (tooltipOptions) => {
-    const { position } = tooltipOptions;
-    instance.tooltip.show({ ...tooltipOptions, position: { x: position.x + 1, y: position.y + 1 } });
-  };
+    instance.showTooltip = (tooltipOptions) => {
+      const { position } = tooltipOptions;
+      instance.tooltip.show({ ...tooltipOptions, position: { x: position.x + 1, y: position.y + 1 } });
+    };
   ```
 
 - 展示层数据 (data)
@@ -434,14 +505,17 @@ tooltip: {
     instance.showTooltip = (tooltipOptions) => {
       const { options } = tooltipOptions;
       const customOperator = {
-        onClick: () => {
-          console.log('测试');
+        onClick: ({ key }) => {
+          console.log('任意菜单项点击', key);
         },
         menus: [
           {
-            id: 'trend',
+            key: 'trend',
             icon: 'trend',
             text: '趋势',
+            onClick: () => {
+              console.log('当前菜单项点击')
+            }
           },
         ],
       };

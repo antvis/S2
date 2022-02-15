@@ -9,9 +9,6 @@ export interface CellScrollPosition {
   scrollY: number;
   thumbOffset?: number;
 }
-
-export type TargetLayoutNode = Node;
-
 export interface ListSortParams {
   sortFieldId: string;
   sortMethod: string;

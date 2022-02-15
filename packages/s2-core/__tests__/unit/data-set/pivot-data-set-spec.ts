@@ -2,9 +2,12 @@
  * pivot mode base data-set test.
  */
 import { get, keys } from 'lodash';
-import { assembleDataCfg } from '../../util';
-import { data as drillDownData } from '../../data/mock-drill-down-dataset.json';
-import { ViewMeta } from '@/common/interface';
+import { assembleDataCfg } from 'tests/util';
+import {
+  data as drillDownData,
+  totalData as drillDownTotalData,
+} from 'tests/data/mock-drill-down-dataset.json';
+import { ViewMeta, SortMethod } from '@/common/interface';
 import { EXTRA_FIELD, TOTAL_VALUE, VALUE_FIELD } from '@/common/constant';
 import { S2DataConfig } from '@/common/interface';
 import { PivotSheet } from '@/sheet-type';
@@ -288,6 +291,26 @@ describe('Pivot Dataset Test', () => {
         '乐山市',
         '成都市',
       ]);
+      const sortMethod = 'none' as SortMethod;
+      dataCfg.sortParams = [
+        { sortFieldId: 'province', sortMethod },
+        { sortFieldId: 'city', sortMethod },
+      ];
+      dataSet.setDataCfg(dataCfg);
+      expect(dataSet.getDimensionValues('province')).toEqual([
+        '浙江省',
+        '四川省',
+      ]);
+      expect(dataSet.getDimensionValues('city')).toEqual([
+        '杭州市',
+        '绍兴市',
+        '宁波市',
+        '舟山市',
+        '成都市',
+        '绵阳市',
+        '南充市',
+        '乐山市',
+      ]);
     });
 
     test('sort by list', () => {
@@ -357,6 +380,14 @@ describe('Pivot Dataset Test', () => {
       parent: provinceNode,
     });
 
+    const districtNode = new Node({
+      id: `root[&]浙江省[&]杭州市[&]西湖区`,
+      key: '',
+      value: '',
+      field: 'district',
+      parent: cityNode,
+    });
+
     test('transformDrillDownData function', () => {
       dataSet.transformDrillDownData('district', drillDownData, cityNode);
       const metaMap = dataSet.rowPivotMeta.get('浙江省').children.get('杭州市');
@@ -371,20 +402,64 @@ describe('Pivot Dataset Test', () => {
       expect(metaMap.childField).toBeUndefined();
       expect(metaMap.children).toBeEmpty();
     });
+
+    test('transformDrillDownData function with totalData', () => {
+      dataSet.transformDrillDownData(
+        'district',
+        [...drillDownData, ...drillDownTotalData],
+        cityNode,
+      );
+
+      const cellData = dataSet.getCellData({
+        query: {
+          province: '浙江省',
+          city: '杭州市',
+          district: '西湖区',
+          [EXTRA_FIELD]: 'number',
+        },
+        isTotals: true,
+        rowNode: districtNode,
+      });
+      expect(cellData.number).toEqual(110);
+    });
+
+    test('clearDrillDownData function with totalData', () => {
+      dataSet.transformDrillDownData(
+        'district',
+        [...drillDownData, ...drillDownTotalData],
+        cityNode,
+      );
+      dataSet.clearDrillDownData('root[&]浙江省[&]杭州市');
+
+      const cellData = dataSet.getCellData({
+        query: {
+          province: '浙江省',
+          city: '杭州市',
+          district: '西湖区',
+          [EXTRA_FIELD]: 'number',
+        },
+        isTotals: true,
+        rowNode: districtNode,
+      });
+      expect(cellData).toBeUndefined();
+    });
   });
 
-  describe('row formatter test', () => {
+  describe('meta config test', () => {
     let dataConfig: S2DataConfig;
+
     beforeEach(() => {
       dataConfig = assembleDataCfg({
         meta: [
           {
             field: 'price',
-            formatter: jest.fn(),
+            name: '价格',
+            description: '价格描述',
           },
           {
             field: 'cost',
-            formatter: jest.fn(),
+            name: '成本',
+            description: '成本描述',
           },
         ],
         fields: {
@@ -394,23 +469,72 @@ describe('Pivot Dataset Test', () => {
       });
       dataSet.setDataCfg(dataConfig);
     });
+
+    test('should return correct field name', () => {
+      expect(dataSet.getFieldName('price')).toStrictEqual('价格');
+      expect(dataSet.getFieldName('cost')).toStrictEqual('成本');
+      expect(dataSet.getFieldName('')).toEqual('');
+      // 找不到名字返回字段本身
+      expect(dataSet.getFieldName('not-found-field')).toEqual(
+        'not-found-field',
+      );
+    });
+
+    test('should return correct field description', () => {
+      expect(dataSet.getFieldDescription('price')).toStrictEqual('价格描述');
+      expect(dataSet.getFieldDescription('cost')).toStrictEqual('成本描述');
+      expect(dataSet.getFieldDescription('')).toBeUndefined();
+      expect(dataSet.getFieldDescription('xxxx')).toBeUndefined();
+    });
+  });
+
+  describe('row formatter test', () => {
+    let dataConfig: S2DataConfig;
+    const mockPriceFormatter = jest.fn();
+    const mockCostFormatter = jest.fn();
+
+    beforeEach(() => {
+      dataConfig = assembleDataCfg({
+        meta: [
+          {
+            field: 'price',
+            formatter: mockPriceFormatter,
+          },
+          {
+            field: 'cost',
+            formatter: mockCostFormatter,
+          },
+        ],
+        fields: {
+          values: ['price', 'cost'],
+          valueInCols: false,
+        },
+      });
+      dataSet.setDataCfg(dataConfig);
+    });
+
+    afterEach(() => {
+      mockPriceFormatter.mockReset();
+      mockCostFormatter.mockReset();
+    });
+
     test('should return correct total measure formatter when values in rows', () => {
       const priceFormatter = dataSet.getFieldFormatter(TOTAL_VALUE, {
         rowQuery: { [EXTRA_FIELD]: 'price' },
       } as unknown as ViewMeta);
-      expect(priceFormatter).toEqual(dataConfig.meta[0].formatter);
+      expect(priceFormatter).toEqual(mockPriceFormatter);
 
       const costFormatter = dataSet.getFieldFormatter(TOTAL_VALUE, {
         rowQuery: { [EXTRA_FIELD]: 'cost' },
       } as unknown as ViewMeta);
-      expect(costFormatter).toEqual(dataConfig.meta[1].formatter);
+      expect(costFormatter).toEqual(mockCostFormatter);
     });
 
     test('should return default total measure formatter when values in rows', () => {
       const defaultFormatter = dataSet.getFieldFormatter(TOTAL_VALUE, {
         rowQuery: {},
       } as unknown as ViewMeta);
-      expect(defaultFormatter).toEqual(dataConfig.meta[0].formatter);
+      expect(defaultFormatter).toEqual(mockPriceFormatter);
     });
   });
 

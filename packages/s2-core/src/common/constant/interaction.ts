@@ -7,7 +7,7 @@ export enum InteractionName {
   BRUSH_SELECTION = 'brushSelection',
   COL_ROW_RESIZE = 'rowColResize',
   DATA_CELL_MULTI_SELECTION = 'dataCellMultiSelection',
-  COL_ROW_SHIFT_MULTI_SELECTION = 'colRowShiftMultiSelection',
+  RANGE_SELECTION = 'rangeSelection',
   SELECTED_CELL_MOVE = 'selectedCellMove',
 }
 
@@ -80,4 +80,9 @@ export enum InterceptType {
   BRUSH_SELECTION = 'brushSelection',
   MULTI_SELECTION = 'multiSelection',
   RESIZE = 'resize',
+}
+
+export enum ScrollbarPositionType {
+  CONTENT = 'content',
+  CANVAS = 'canvas',
 }

@@ -1,12 +1,16 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { get } from 'lodash';
+import {
+  getTooltipOptions,
+  getTooltipVisibleOperator,
+} from '../../../utils/tooltip';
 import { getCellMeta } from '@/utils/interaction/select-event';
 import { DataCell } from '@/cell/data-cell';
 import {
   InteractionStateName,
-  TOOLTIP_OPERATOR_MENUS,
   InterceptType,
   S2Event,
+  TOOLTIP_OPERATOR_TREND_MENU,
 } from '@/common/constant';
 import {
   CellAppendInfo,
@@ -55,17 +59,24 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
-  private getTooltipOperator(meta: ViewMeta): TooltipOperatorOptions {
-    const operator: TooltipOperatorOptions = this.spreadsheet.options.tooltip
-      .operation.trend && {
+  private getTooltipOperator(
+    event: CanvasEvent,
+    meta: ViewMeta,
+  ): TooltipOperatorOptions {
+    const cell = this.spreadsheet.getCell(event.target);
+    const { operation } = getTooltipOptions(this.spreadsheet, event);
+    const trendMenu = operation.trend && {
+      ...TOOLTIP_OPERATOR_TREND_MENU,
       onClick: () => {
         this.spreadsheet.emit(S2Event.DATA_CELL_TREND_ICON_CLICK, meta);
         this.spreadsheet.hideTooltip();
       },
-      menus: TOOLTIP_OPERATOR_MENUS.Trend,
     };
 
-    return operator;
+    return getTooltipVisibleOperator(operation, {
+      defaultMenus: [trendMenu],
+      cell,
+    });
   }
 
   private showTooltip(event: CanvasEvent, meta: ViewMeta) {
@@ -89,7 +100,7 @@ export class DataCellClick extends BaseEvent implements BaseEventImplement {
     const cellInfos: TooltipData[] = [
       cellData || { ...meta.rowQuery, ...meta.colQuery },
     ];
-    const operator = this.getTooltipOperator(meta);
+    const operator = this.getTooltipOperator(event, meta);
 
     this.spreadsheet.showTooltipWithInfo(event, cellInfos, {
       isTotals,

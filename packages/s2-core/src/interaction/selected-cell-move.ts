@@ -1,10 +1,10 @@
 import { inRange } from 'lodash';
 import { BaseEvent, BaseEventImplement } from './base-interaction';
 import { InteractionKeyboardKey, S2Event } from '@/common/constant';
-import { TableFacet } from '@/facet';
 import { InteractionStateName, CellTypes, CellMeta } from '@/common';
 import { getDataCellId } from '@/utils';
 import { SpreadSheet } from '@/sheet-type';
+import { calculateInViewIndexes } from '@/facet/utils';
 
 export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
   public bindEvents() {
@@ -45,39 +45,106 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     }
   }
 
-  private getOffsetX(colIndex: number) {
-    const { colLeafNodes } = this.spreadsheet.facet.layoutResult;
-    const { frozenColCount = 0 } = this.spreadsheet.options;
-    let offsetX = 0;
-    offsetX = colLeafNodes.find((item) => item.colIndex === colIndex)?.x || 0;
-    if (frozenColCount > 1) {
-      const firstUnfrozenNodeX = this.spreadsheet.isTableMode()
-        ? colLeafNodes.find((item) => item.colIndex === frozenColCount)?.x || 0
-        : 0;
-      offsetX -= firstUnfrozenNodeX;
+  // 判断是否在可移动范围内
+  private isInRange(
+    spreadsheet: SpreadSheet,
+    rowIndex: number,
+    colIndex: number,
+  ) {
+    const { rowLeafNodes } = spreadsheet.facet.layoutResult;
+    const seriesCount =
+      spreadsheet.isTableMode() && spreadsheet.options.showSeriesNumber ? 1 : 0;
+    const colInRange = inRange(
+      colIndex,
+      0,
+      spreadsheet.dataSet.fields.columns.length + seriesCount,
+    );
+    const rowInRange = inRange(
+      rowIndex,
+      0,
+      spreadsheet.isTableMode()
+        ? spreadsheet.dataSet.getDisplayDataSet().length
+        : rowLeafNodes.length,
+    );
+    if (!(colInRange && rowInRange)) {
+      return false;
     }
-    if (offsetX < 0) {
-      offsetX = 0;
-    }
-    return offsetX;
+    return true;
   }
 
-  private getOffsetY(rowIndex: number) {
-    const { frozenRowCount = 0 } = this.spreadsheet.options;
-    const { facet, isTableMode } = this.spreadsheet;
-    let offsetY = 0;
-    offsetY = facet.viewCellHeights.getCellOffsetY(rowIndex - 1);
-    if (frozenRowCount > 0 && rowIndex > frozenRowCount - 1) {
-      const firstUnfrozenNodeY = isTableMode()
-        ? (facet as TableFacet).getTotalHeightForRange(0, frozenRowCount - 1)
-        : 0;
-      offsetY -= firstUnfrozenNodeY;
+  // 计算需要滚动的offset
+  private calculateOffset(
+    spreadsheet: SpreadSheet,
+    rowIndex: number,
+    colIndex: number,
+  ) {
+    const { frozenRowCount = 0, frozenTrailingRowCount = 0 } =
+      spreadsheet.options;
+    const {
+      facet,
+      frozenColGroup,
+      frozenTrailingColGroup,
+      frozenRowGroup,
+      frozenTrailingRowGroup,
+    } = spreadsheet;
+    const { colLeafNodes } = facet.layoutResult;
+    const { scrollX, scrollY } = facet.getScrollOffset();
+    const { viewportHeight: height, viewportWidth: width } = facet.panelBBox;
+    const frozenColWidth = frozenColGroup
+      ? Math.floor(frozenColGroup.getBBox().width)
+      : 0;
+    const frozenTrailingColWidth = frozenTrailingColGroup
+      ? Math.floor(frozenTrailingColGroup.getBBox().width)
+      : 0;
+    const frozenRowHeight = frozenRowGroup
+      ? Math.floor(frozenRowGroup.getBBox().height)
+      : 0;
+    const frozenTrailingRowHeight = frozenTrailingRowGroup
+      ? Math.floor(frozenTrailingRowGroup.getBBox().height)
+      : 0;
+
+    const indexes = calculateInViewIndexes(
+      scrollX,
+      scrollY,
+      facet.viewCellWidths,
+      facet.viewCellHeights,
+      {
+        width: width - frozenColWidth - frozenTrailingColWidth,
+        height: height - frozenRowHeight - frozenTrailingRowHeight,
+        x: frozenColWidth,
+        y: frozenRowHeight,
+      },
+      facet.getRealScrollX(facet.cornerBBox.width),
+    );
+
+    // 小于0的初始值
+    let offsetX = -1;
+    let offsetY = -1;
+
+    const targetNode = colLeafNodes.find((node) => node.colIndex === colIndex);
+    // offsetX
+    if (colIndex <= indexes[0]) {
+      // scroll left
+      offsetX = targetNode.x - frozenColWidth;
+    } else if (
+      colIndex >= indexes[1] &&
+      colIndex < colLeafNodes.length - frozenTrailingRowCount
+    ) {
+      // scroll right
+      offsetX =
+        targetNode.x + targetNode.width - width + frozenTrailingColWidth;
     }
 
-    if (offsetY < 0) {
-      offsetY = 0;
+    // offsetY
+    if (rowIndex <= indexes[2]) {
+      // scroll top
+      offsetY = facet.viewCellHeights.getCellOffsetY(rowIndex - frozenRowCount);
+    } else if (rowIndex >= indexes[3]) {
+      // scroll bottom
+      const y = facet.viewCellHeights.getCellOffsetY(rowIndex + 1);
+      offsetY = y + frozenTrailingRowHeight - height;
     }
-    return offsetY;
+    return { offsetX, offsetY };
   }
 
   public scrollToActiveCell(
@@ -85,37 +152,22 @@ export class SelectedCellMove extends BaseEvent implements BaseEventImplement {
     rowIndex: number,
     colIndex: number,
   ) {
-    const {
-      frozenRowCount = 0,
-      frozenColCount = 0,
-      frozenTrailingColCount = 0,
-    } = this.spreadsheet.options;
-    const { colLeafNodes, rowLeafNodes } = spreadsheet.facet.layoutResult;
-    const { facet, interaction, isTableMode } = spreadsheet;
-
-    const colInRange = inRange(
-      colIndex,
-      frozenColCount,
-      spreadsheet.dataSet.fields.columns.length - frozenTrailingColCount,
-    );
-    const rowInRange = inRange(
-      rowIndex,
-      frozenRowCount,
-      isTableMode()
-        ? spreadsheet.dataSet.getDisplayDataSet().length
-        : rowLeafNodes.length,
-    );
-
-    if (!(colInRange && rowInRange)) {
+    if (!this.isInRange(spreadsheet, rowIndex, colIndex)) {
       return;
     }
-
+    const { offsetX, offsetY } = this.calculateOffset(
+      spreadsheet,
+      rowIndex,
+      colIndex,
+    );
+    const { colLeafNodes, rowLeafNodes } = spreadsheet.facet.layoutResult;
+    const { facet, interaction, isTableMode } = spreadsheet;
+    const { scrollX, scrollY } = facet.getScrollOffset();
     facet.scrollWithAnimation({
-      offsetX: { value: this.getOffsetX(colIndex) },
-      offsetY: { value: this.getOffsetY(rowIndex) },
+      offsetX: { value: offsetX > 0 ? offsetX : scrollX },
+      offsetY: { value: offsetY > 0 ? offsetY : scrollY },
     });
     const rowId = isTableMode() ? String(rowIndex) : rowLeafNodes[rowIndex].id;
-
     interaction.changeState({
       stateName: InteractionStateName.SELECTED,
       cells: [

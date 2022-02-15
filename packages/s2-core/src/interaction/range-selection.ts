@@ -13,11 +13,8 @@ import { S2CellType, ViewMeta } from '@/common/interface';
 import { DataCell } from '@/cell';
 import { Node } from '@/facet/layout/node';
 
-export class ShiftMultiSelection
-  extends BaseEvent
-  implements BaseEventImplement
-{
-  private isShiftMultiSelection = false;
+export class RangeSelection extends BaseEvent implements BaseEventImplement {
+  private isRangeSelection = false;
 
   public bindEvents() {
     this.bindKeyboardDown();
@@ -31,7 +28,7 @@ export class ShiftMultiSelection
       S2Event.GLOBAL_KEYBOARD_DOWN,
       (event: KeyboardEvent) => {
         if (event.key === InteractionKeyboardKey.SHIFT) {
-          this.isShiftMultiSelection = true;
+          this.isRangeSelection = true;
           this.spreadsheet.interaction.addIntercepts([InterceptType.CLICK]);
         }
       },
@@ -41,13 +38,19 @@ export class ShiftMultiSelection
   private bindKeyboardUp() {
     this.spreadsheet.on(S2Event.GLOBAL_KEYBOARD_UP, (event: KeyboardEvent) => {
       if (event.key === InteractionKeyboardKey.SHIFT) {
-        this.isShiftMultiSelection = false;
+        this.isRangeSelection = false;
         this.spreadsheet.interaction.removeIntercepts([InterceptType.CLICK]);
       }
     });
   }
 
   private bindColCellClick() {
+    if (this.spreadsheet.isTableMode()) {
+      // series-number click
+      this.spreadsheet.on(S2Event.ROW_CELL_CLICK, (event: Event) => {
+        this.handleColClick(event);
+      });
+    }
     this.spreadsheet.on(S2Event.COL_CELL_CLICK, (event: Event) => {
       this.handleColClick(event);
     });
@@ -83,8 +86,7 @@ export class ShiftMultiSelection
 
       const lastClickedCell = this.spreadsheet.store.get('lastClickedCell');
       const isShiftSelect =
-        this.isShiftMultiSelection &&
-        lastClickedCell?.cellType === cell.cellType;
+        this.isRangeSelection && lastClickedCell?.cellType === cell.cellType;
 
       if (!isShiftSelect) {
         this.spreadsheet.store.set('lastClickedCell', cell);
@@ -137,7 +139,7 @@ export class ShiftMultiSelection
       const lastCell = this.spreadsheet.store.get('lastClickedCell');
       // 处理shift区间多选
       if (
-        this.isShiftMultiSelection &&
+        this.isRangeSelection &&
         lastCell &&
         lastCell.cellType === cell.cellType &&
         lastCell.getMeta().level === cell.getMeta().level

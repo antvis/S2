@@ -16,17 +16,19 @@ import {
   map,
   pick,
   some,
-  reduce,
   uniq,
   noop,
   mapKeys,
   every,
   isObject,
+  isFunction,
+  compact,
 } from 'lodash';
 import * as CSS from 'csstype';
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
+import { customMerge } from './merge';
 import { AutoAdjustPositionOptions, ListItem } from '@/common/interface';
 import { LayoutResult } from '@/common/interface/basic';
 import {
@@ -39,6 +41,9 @@ import {
   TooltipPosition,
   TooltipSummaryOptions,
   BaseTooltipConfig,
+  TooltipOperatorOptions,
+  TooltipOperation,
+  TooltipOperatorMenu,
 } from '@/common/interface/tooltip';
 import { TOOLTIP_POSITION_OFFSET } from '@/common/constant/tooltip';
 import { S2CellType } from '@/common/interface/interaction';
@@ -51,53 +56,7 @@ import {
   VALUE_FIELD,
 } from '@/common/constant';
 import { Tooltip, ViewMeta } from '@/common/interface';
-
-const isNotNumber = (value: unknown) => {
-  return Number.isNaN(Number(value));
-};
-
-/**
- * 浮点数加法，解决精度问题
- * 因为乘法也有精度问题，故用字符串形式
- * TODO：因为暂时只支持加法，自己先实现，如果有其他场景考虑用现有库
- * @param arg1
- * @param arg2
- */
-function accAdd(arg1: number, arg2: number) {
-  const [pre1, next1 = ''] = arg1?.toString()?.split('.');
-  const [pre2, next2 = ''] = arg2?.toString()?.split('.');
-  const r1 = next1?.length || 0;
-  const r2 = next2?.length || 0;
-  const m = Math.pow(10, Math.max(r1, r2));
-  const suffix = Array(Math.abs(r1 - r2))
-    .fill('0')
-    ?.join('');
-  const number1 = r2 > r1 ? `${pre1}${next1}${suffix}` : `${pre1}${next1}`;
-  const number2 = r1 > r2 ? `${pre2}${next2}${suffix}` : `${pre2}${next2}`;
-
-  return (Number.parseInt(number1, 10) + Number.parseInt(number2, 10)) / m;
-}
-
-/**
- * calculate sum value
- */
-export const getDataSumByField = (
-  data: TooltipDataItem[],
-  field: string,
-): number => {
-  const sum = reduce(
-    data,
-    (pre, next) => {
-      const fieldValue = get(next, field, 0);
-      const v = isNotNumber(fieldValue)
-        ? 0
-        : Number.parseFloat(fieldValue) || Number(fieldValue);
-      return accAdd(pre, v);
-    },
-    0,
-  );
-  return sum;
-};
+import { isNotNumber, getDataSumByField } from '@/utils/number-calculate';
 
 /** whether the data of hover is selected */
 export const isHoverDataInSelectedData = (
@@ -165,6 +124,7 @@ export const getTooltipDefaultOptions = (options?: TooltipOptions) => {
   return {
     operator: { onClick: noop, menus: [] },
     enterable: true,
+    enableFormat: true,
     ...options,
   } as TooltipOptions;
 };
@@ -440,7 +400,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
       value = '';
     } else if (every(selected, (item) => isNotNumber(get(item, VALUE_FIELD)))) {
       // 如果选中的单元格都无数据，则显示"-"
-      value = '-';
+      value = spreadsheet.options.placeholder;
     } else {
       const dataSum = getDataSumByField(selected, VALUE_FIELD);
       value = parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems
@@ -473,16 +433,19 @@ export const getTooltipData = (params: TooltipDataParam) => {
     });
   } else if (options.showSingleTips) {
     // 行列头hover & 明细表所有hover
-    const metaName = find(
-      spreadsheet?.dataCfg?.meta,
-      (item) => item?.field === firstCellInfo.value,
-    )?.name;
+    const getFieldName = (field: string) =>
+      find(spreadsheet.dataCfg?.meta, (item) => item?.field === field)?.name;
+
     const currentFormatter = getFieldFormatter(
       spreadsheet,
-      firstCellInfo?.valueField,
+      firstCellInfo.valueField,
     );
-    firstCellInfo.name =
-      metaName || currentFormatter(firstCellInfo.value) || '';
+    const formattedValue = currentFormatter(firstCellInfo.value);
+    const cellName = options.enableFormat
+      ? getFieldName(firstCellInfo.value) || formattedValue
+      : getFieldName(firstCellInfo.valueField);
+
+    firstCellInfo.name = cellName || '';
   } else {
     headInfo = getHeadInfo(spreadsheet, firstCellInfo, options);
     details = getDetailList(spreadsheet, firstCellInfo, options);
@@ -537,7 +500,7 @@ export const getTooltipOptionsByCellType = (
   cellType: CellTypes,
 ): Tooltip => {
   const getOptionsByCell = (cellConfig: BaseTooltipConfig) => {
-    return { ...cellTooltipConfig, ...cellConfig };
+    return customMerge(cellTooltipConfig, cellConfig);
   };
 
   const { col, row, data, corner } = cellTooltipConfig;
@@ -564,4 +527,32 @@ export const getTooltipOptions = (
 ): Tooltip => {
   const cellType = spreadsheet.getCellType?.(event.target);
   return getTooltipOptionsByCellType(spreadsheet.options.tooltip, cellType);
+};
+
+export const getTooltipVisibleOperator = (
+  operation: TooltipOperation,
+  options: { defaultMenus?: TooltipOperatorMenu[]; cell: S2CellType },
+): TooltipOperatorOptions => {
+  const { defaultMenus = [], cell } = options;
+
+  const getDisplayMenus = (menus: TooltipOperatorMenu[] = []) => {
+    return menus
+      .filter((menu) => {
+        return isFunction(menu.visible)
+          ? menu.visible(cell)
+          : menu.visible ?? true;
+      })
+      .map((menu) => {
+        if (menu.children) {
+          menu.children = getDisplayMenus(menu.children);
+        }
+        return menu;
+      });
+  };
+  const displayMenus = getDisplayMenus(operation.menus);
+
+  return {
+    onClick: operation.onClick,
+    menus: compact([...defaultMenus, ...displayMenus]),
+  };
 };
