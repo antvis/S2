@@ -106,10 +106,6 @@ const S2EventCases = [
     name: 'onLayoutResizeTreeWidth',
   },
   {
-    event: S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
-    name: 'onLayoutResizeMouseDown',
-  },
-  {
     event: S2Event.LAYOUT_RESIZE_MOUSE_UP,
     name: 'onLayoutResizeMouseUp',
   },

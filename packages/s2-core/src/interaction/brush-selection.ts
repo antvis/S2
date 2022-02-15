@@ -74,7 +74,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private bindMouseDown() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_DOWN, (event: CanvasEvent) => {
-      event?.preventDefault();
+      event?.preventDefault?.();
       if (this.spreadsheet.interaction.hasIntercepts([InterceptType.CLICK])) {
         return;
       }
@@ -87,7 +87,7 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
 
   private bindMouseMove() {
     this.spreadsheet.on(S2Event.DATA_CELL_MOUSE_MOVE, (event: CanvasEvent) => {
-      event?.preventDefault();
+      event?.preventDefault?.();
 
       if (
         this.brushSelectionStage === InteractionBrushSelectionStage.UN_DRAGGED
@@ -170,8 +170,8 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   private getBrushPoint(event: CanvasEvent): BrushPoint {
     const originalEvent = event.originalEvent as unknown as OriginalEvent;
     const point: Point = {
-      x: originalEvent.layerX,
-      y: originalEvent.layerY,
+      x: originalEvent?.layerX,
+      y: originalEvent?.layerY,
     };
     const cell = this.spreadsheet.getCell(event.target);
     const { colIndex, rowIndex } = cell.getMeta();
