@@ -13,33 +13,153 @@ const s2Options: S2Options = {
 };
 const S2EventCases = [
   {
+    event: S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
+    name: 'onRowCellCollapseTreeRows',
+  },
+  {
     event: S2Event.DATA_CELL_TREND_ICON_CLICK,
     name: 'onDataCellTrendIconClick',
   },
   {
-    event: S2Event.CORNER_CELL_HOVER,
-    name: 'onCornerCellHover',
+    event: S2Event.DATE_CELL_BRUSH_SELECTION,
+    name: 'onDataCellBrushSelection',
   },
   {
-    event: S2Event.CORNER_CELL_DOUBLE_CLICK,
-    name: 'onCornerCellDoubleClick',
+    event: S2Event.SORT_BEFORE_SORT,
+    name: 'onBeforeSort',
   },
   {
-    event: S2Event.CORNER_CELL_CLICK,
-    name: 'onCornerCellClick',
+    event: S2Event.SORT_AFTER_SORT,
+    name: 'onAfterSort',
+  },
+  {
+    event: S2Event.FILTER_BEFORE_FILTER,
+    name: 'onBeforeFilter',
+  },
+  {
+    event: S2Event.FILTER_AFTER_FILTER,
+    name: 'onAfterFilter',
+  },
+  {
+    event: S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
+    name: 'onLayoutAfterHeaderLayout',
   },
 
   {
-    event: S2Event.MERGED_CELLS_CLICK,
-    name: 'onMergedCellClick',
+    event: S2Event.LAYOUT_PAGINATION,
+    name: 'onLayoutPagination',
+  },
+  {
+    event: S2Event.LAYOUT_AFTER_COLLAPSE_ROWS,
+    name: 'onLayoutAfterCollapseRows',
+  },
+  {
+    event: S2Event.LAYOUT_TREE_ROWS_COLLAPSE_ALL,
+    name: 'onCollapseRowsAll',
+  },
+  {
+    event: S2Event.LAYOUT_TABLE_COL_EXPANDED,
+    name: 'onLayoutTableColExpanded',
+  },
+  {
+    event: S2Event.LAYOUT_TABLE_COL_HIDDEN,
+    name: 'onLayoutTableColHidden',
+  },
+  {
+    event: S2Event.LAYOUT_BEFORE_RENDER,
+    name: 'onLayoutTableColExpanded',
   },
   {
     event: S2Event.LAYOUT_AFTER_RENDER,
-    name: 'onLoad',
+    name: 'onLayoutTableColHidden',
   },
   {
     event: S2Event.LAYOUT_DESTROY,
-    name: 'onDestroy',
+    name: 'onLayoutTableColHidden',
+  },
+  {
+    event: S2Event.LAYOUT_RESIZE,
+    name: 'onLayoutTableColHidden',
+  },
+  {
+    event: S2Event.LAYOUT_RESIZE_SERIES_WIDTH,
+    name: 'onLayoutTableColHidden',
+  },
+  {
+    event: S2Event.LAYOUT_RESIZE_ROW_WIDTH,
+    name: 'onLayoutResizeRowWidth',
+  },
+  {
+    event: S2Event.LAYOUT_RESIZE_ROW_HEIGHT,
+    name: 'onLayoutResizeRowHeight',
+  },
+  {
+    event: S2Event.LAYOUT_RESIZE_COL_WIDTH,
+    name: 'onLayoutResizeColWidth',
+  },
+  {
+    event: S2Event.LAYOUT_RESIZE_COL_HEIGHT,
+    name: 'onLayoutResizeColHeight',
+  },
+  {
+    event: S2Event.LAYOUT_RESIZE_TREE_WIDTH,
+    name: 'onLayoutResizeTreeWidth',
+  },
+  {
+    event: S2Event.LAYOUT_RESIZE_MOUSE_DOWN,
+    name: 'onLayoutResizeMouseDown',
+  },
+  {
+    event: S2Event.LAYOUT_RESIZE_MOUSE_UP,
+    name: 'onLayoutResizeMouseUp',
+  },
+  {
+    event: S2Event.LAYOUT_RESIZE_MOUSE_MOVE,
+    name: 'onLayoutResizeMouseMove',
+  },
+  {
+    event: S2Event.GLOBAL_KEYBOARD_DOWN,
+    name: 'onGlobalKeyBoardDown',
+  },
+  {
+    event: S2Event.GLOBAL_KEYBOARD_UP,
+    name: 'onGlobalKeyBoardUp',
+  },
+  {
+    event: S2Event.GLOBAL_COPIED,
+    name: 'onGlobalCopied',
+  },
+  {
+    event: S2Event.GLOBAL_ACTION_ICON_HOVER,
+    name: 'onGlobalActionIconHover',
+  },
+  {
+    event: S2Event.GLOBAL_ACTION_ICON_CLICK,
+    name: 'onGlobalActionIconClick',
+  },
+  {
+    event: S2Event.GLOBAL_CONTEXT_MENU,
+    name: 'onGlobalContextMenu',
+  },
+  {
+    event: S2Event.GLOBAL_HOVER,
+    name: 'onGlobalMouseHover',
+  },
+  {
+    event: S2Event.GLOBAL_SELECTED,
+    name: 'onGlobalSelected',
+  },
+  {
+    event: S2Event.GLOBAL_MOUSE_UP,
+    name: 'onGlobalMouseUp',
+  },
+  {
+    event: S2Event.GLOBAL_RESET,
+    name: 'onGlobalReset',
+  },
+  {
+    event: S2Event.GLOBAL_LINK_FIELD_JUMP,
+    name: 'onGlobalLinkFieldJump',
   },
 ].map((i) => ({
   ...i,
@@ -48,6 +168,58 @@ const S2EventCases = [
   toString: () => i.name,
 }));
 const cellEventCases = [
+  {
+    event: S2Event.ROW_CELL_HOVER,
+    name: 'onRowCellHover',
+  },
+  {
+    event: S2Event.ROW_CELL_CLICK,
+    name: 'onRowCellClick',
+  },
+  {
+    event: S2Event.ROW_CELL_DOUBLE_CLICK,
+    name: 'onRowCellDoubleClick',
+  },
+  {
+    event: S2Event.ROW_CELL_MOUSE_DOWN,
+    name: 'onRowCellMouseDown',
+  },
+  {
+    event: S2Event.ROW_CELL_MOUSE_UP,
+    name: 'onRowCellMouseUp',
+  },
+  {
+    event: S2Event.ROW_CELL_MOUSE_MOVE,
+    name: 'onRowCellMouseMove',
+  },
+  {
+    event: S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
+    name: 'onRowCellCollapseTreeRows',
+  },
+  {
+    event: S2Event.COL_CELL_HOVER,
+    name: 'onColCellHover',
+  },
+  {
+    event: S2Event.COL_CELL_CLICK,
+    name: 'onColCellClick',
+  },
+  {
+    event: S2Event.COL_CELL_DOUBLE_CLICK,
+    name: 'onColCellDoubleClick',
+  },
+  {
+    event: S2Event.COL_CELL_MOUSE_DOWN,
+    name: 'onColCellMouseDown',
+  },
+  {
+    event: S2Event.COL_CELL_MOUSE_UP,
+    name: 'onColCellMouseUp',
+  },
+  {
+    event: S2Event.COL_CELL_MOUSE_MOVE,
+    name: 'onColCellMouseMove',
+  },
   {
     event: S2Event.DATA_CELL_HOVER,
     name: 'onDataCellHover',
@@ -61,38 +233,64 @@ const cellEventCases = [
     name: 'onDataCellDoubleClick',
   },
   {
+    event: S2Event.DATA_CELL_MOUSE_DOWN,
+    name: 'onDataCellMouseDown',
+  },
+  {
     event: S2Event.DATA_CELL_MOUSE_UP,
     name: 'onDataCellMouseUp',
   },
-
   {
-    event: S2Event.ROW_CELL_CLICK,
-    name: 'onRowCellClick',
+    event: S2Event.DATA_CELL_MOUSE_MOVE,
+    name: 'onDataCellMouseMove',
   },
   {
-    event: S2Event.ROW_CELL_DOUBLE_CLICK,
-    name: 'onRowCellDoubleClick',
+    event: S2Event.CORNER_CELL_HOVER,
+    name: 'onCornerCellHover',
   },
   {
-    event: S2Event.ROW_CELL_HOVER,
-    name: 'onRowCellHover',
-  },
-
-  {
-    event: S2Event.COL_CELL_CLICK,
-    name: 'onColCellClick',
+    event: S2Event.CORNER_CELL_CLICK,
+    name: 'onCornerCellClick',
   },
   {
-    event: S2Event.COL_CELL_DOUBLE_CLICK,
-    name: 'onColCellDoubleClick',
+    event: S2Event.CORNER_CELL_DOUBLE_CLICK,
+    name: 'onCornerCellDoubleClick',
   },
   {
-    event: S2Event.COL_CELL_HOVER,
-    name: 'onColCellHover',
+    event: S2Event.CORNER_CELL_MOUSE_DOWN,
+    name: 'onCornerCellMouseDown',
+  },
+  {
+    event: S2Event.CORNER_CELL_MOUSE_UP,
+    name: 'onCornerCellMouseUp',
+  },
+  {
+    event: S2Event.CORNER_CELL_MOUSE_MOVE,
+    name: 'onCornerCellMouseMove',
+  },
+  {
+    event: S2Event.MERGED_CELLS_HOVER,
+    name: 'onMergedCellsHoverer',
   },
   {
     event: S2Event.MERGED_CELLS_CLICK,
     name: 'onMergedCellClick',
+  },
+  {
+    event: S2Event.MERGED_CELLS_DOUBLE_CLICK,
+    name: 'onMergedCellsDoubleClick',
+  },
+  {
+    event: S2Event.MERGED_CELLS_MOUSE_DOWN,
+    name: 'onMergedCellsMouseDown',
+  },
+  {
+    event: S2Event.MERGED_CELLS_MOUSE_UP,
+    name: 'onMergedCellsMouseUp',
+  },
+  {
+    event: S2Event.MERGED_CELLS_MOUSE_MOVE,
+    name: 'onMergedCellsMouseMove',
   },
 ].map((i) => ({
   ...i,
