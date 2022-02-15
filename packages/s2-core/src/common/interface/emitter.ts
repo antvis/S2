@@ -61,12 +61,12 @@ export interface EmitterType {
   [S2Event.GLOBAL_SELECTED]: SelectedHandler;
 
   /** ================ Sort ================  */
-  [S2Event.RANGE_SORT]: (info: TableSortParams | SortParams) => void;
-  [S2Event.RANGE_SORTED]: SortedHandler | CanvasEventHandler;
+  [S2Event.SORT_BEFORE_SORT]: (info: TableSortParams | SortParams) => void;
+  [S2Event.SORT_AFTER_SORT]: SortedHandler | CanvasEventHandler;
 
   /** ================ Filter ================  */
-  [S2Event.RANGE_FILTER]: (info: FilterParam) => void;
-  [S2Event.RANGE_FILTERED]: (data: Data[]) => any;
+  [S2Event.FILTER_BEFORE_FILTER]: (info: FilterParam) => void;
+  [S2Event.FILTER_AFTER_FILTER]: (data: Data[]) => any;
 
   /** ================ Cell ================  */
   [S2Event.GLOBAL_LINK_FIELD_JUMP]: (data: {
@@ -111,7 +111,7 @@ export interface EmitterType {
   [S2Event.CORNER_CELL_DOUBLE_CLICK]: CanvasEventHandler;
   [S2Event.CORNER_CELL_MOUSE_UP]: CanvasEventHandler;
 
-  /** ================ Merged Cell ================  */
+  /** ================ Merged Cells ================  */
   [S2Event.MERGED_CELLS_MOUSE_DOWN]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_MOUSE_MOVE]: CanvasEventHandler;
   [S2Event.MERGED_CELLS_HOVER]: CanvasEventHandler;

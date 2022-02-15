@@ -116,7 +116,7 @@ describe('List Table Core Data Process', () => {
   });
 
   it('should copy correct data with data filtered', () => {
-    s2.emit(S2Event.RANGE_FILTER, {
+    s2.emit(S2Event.FILTER_BEFORE_FILTER, {
       filterKey: 'province',
       filteredValues: ['浙江省'],
     });
@@ -137,14 +137,14 @@ describe('List Table Core Data Process', () => {
     });
     expect(getSelectedData(s2).split('\n').length).toEqual(16);
     // clear filter condition
-    s2.emit(S2Event.RANGE_FILTER, {
+    s2.emit(S2Event.FILTER_BEFORE_FILTER, {
       filterKey: 'province',
       filteredValues: [],
     });
   });
 
   it('should copy correct data with data sorted', () => {
-    s2.emit(S2Event.RANGE_SORT, {
+    s2.emit(S2Event.SORT_BEFORE_SORT, {
       sortKey: 'number',
       sortMethod: 'DESC' as SortMethodType,
     });

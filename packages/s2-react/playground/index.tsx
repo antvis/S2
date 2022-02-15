@@ -702,12 +702,15 @@ function MainLayout() {
                 advancedSortCfg: { open: true },
               }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
-              onLoad={logHandler('onLoad')}
+              onAfterRender={logHandler('onLoad')}
               onDestroy={logHandler('onDestroy')}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
               onCornerCellClick={logHandler('onCornerCellClick')}
               onDataCellClick={logHandler('onDataCellClick')}
+              onLayoutAfterHeaderLayout={(data) => {
+                console.log(data);
+              }}
             />
           )}
         </TabPane>

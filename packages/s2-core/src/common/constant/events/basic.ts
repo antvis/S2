@@ -1,12 +1,12 @@
 export enum S2Event {
   /** ================ Row Cell ================  */
-  ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
+  ROW_CELL_HOVER = 'row-cell:hover',
   ROW_CELL_CLICK = 'row-cell:click',
   ROW_CELL_DOUBLE_CLICK = 'row-cell:double-click',
-  ROW_CELL_HOVER = 'row-cell:hover',
   ROW_CELL_MOUSE_DOWN = 'row-cell:mouse-down',
   ROW_CELL_MOUSE_UP = 'row-cell:mouse-up',
   ROW_CELL_MOUSE_MOVE = 'row-cell:mouse-move',
+  ROW_CELL_COLLAPSE_TREE_ROWS = 'row-cell:collapsed-tree-rows',
 
   /** ================ Col Cell ================  */
   COL_CELL_HOVER = 'col-cell:hover',
@@ -27,28 +27,28 @@ export enum S2Event {
   DATE_CELL_BRUSH_SELECTION = 'data-cell:brush-selection',
 
   /** ================ Corner Cell ================  */
+  CORNER_CELL_HOVER = 'corner-cell:hover',
   CORNER_CELL_CLICK = 'corner-cell:click',
   CORNER_CELL_DOUBLE_CLICK = 'corner-cell:double-click',
+  CORNER_CELL_MOUSE_DOWN = 'corner-cell:mouse-down',
   CORNER_CELL_MOUSE_UP = 'corner-cell:mouse-up',
   CORNER_CELL_MOUSE_MOVE = 'corner-cell:mouse-move',
-  CORNER_CELL_HOVER = 'corner-cell:hover',
-  CORNER_CELL_MOUSE_DOWN = 'corner-cell:mouse-down',
 
-  /** ================ Merged Cell ================  */
-  MERGED_CELLS_MOUSE_UP = 'merged-cells:mouse-up',
-  MERGED_CELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
+  /** ================ Merged Cells ================  */
   MERGED_CELLS_HOVER = 'merged-cells:hover',
   MERGED_CELLS_CLICK = 'merged-cells:click',
   MERGED_CELLS_DOUBLE_CLICK = 'merged-cells:double-click',
   MERGED_CELLS_MOUSE_DOWN = 'merged-cells:mouse-down',
+  MERGED_CELLS_MOUSE_UP = 'merged-cells:mouse-up',
+  MERGED_CELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
 
   /** ================ Sort ================  */
-  RANGE_SORT = 'sort:range-sort',
-  RANGE_SORTED = 'sort:range-sorted',
+  SORT_BEFORE_SORT = 'sort:range-sort',
+  SORT_AFTER_SORT = 'sort:range-sorted',
 
   /** ================ Table Filter ================  */
-  RANGE_FILTER = 'filter:range-filter',
-  RANGE_FILTERED = 'filter:range-filtered',
+  FILTER_BEFORE_FILTER = 'filter:range-filter',
+  FILTER_AFTER_FILTER = 'filter:range-filtered',
 
   /** ================ Table Layout ================  */
   LAYOUT_AFTER_HEADER_LAYOUT = 'layout:after-header-layout',
