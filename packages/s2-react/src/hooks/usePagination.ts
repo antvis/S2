@@ -1,5 +1,5 @@
 import React from 'react';
-import { SpreadSheet } from '@antv/s2';
+import { S2Event, SpreadSheet } from '@antv/s2';
 import { isEmpty } from 'lodash';
 import { BaseSheetComponentProps } from '../components';
 
@@ -41,7 +41,12 @@ export const usePagination = (
     if (!s2 || isEmpty(options.pagination)) {
       return;
     }
-    setTotal(s2.facet.viewCellHeights.getTotalLength());
+
+    const totalUpdateCallback = (data) => setTotal(data.total);
+    s2.on(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);
+    return () => {
+      s2.off(S2Event.LAYOUT_PAGINATION, totalUpdateCallback);
+    };
   }, [options.pagination, dataCfg, s2]);
 
   return {
