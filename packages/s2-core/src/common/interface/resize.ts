@@ -40,6 +40,11 @@ export interface ResizeDetail {
   seriesNumberWidth?: number;
 }
 
+export interface ResizeParams {
+  resizeDetail?: ResizeInfo;
+  style?: Style;
+}
+
 export interface ResizeInfo {
   theme: ResizeArea;
   isResizeArea?: boolean;

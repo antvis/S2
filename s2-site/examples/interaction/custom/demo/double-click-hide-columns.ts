@@ -26,7 +26,7 @@ class ContextMenuInteraction extends BaseEvent {
   bindEvents() {
     // 禁止弹出右键菜单
     this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, (event) => {
-      event.preventDefault();
+      event?.preventDefault?.();
       console.log('右键', event);
     });
   }

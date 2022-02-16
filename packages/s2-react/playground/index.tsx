@@ -377,7 +377,7 @@ function MainLayout() {
 
   return (
     <div className="playground">
-      <Tabs defaultActiveKey="strategy" type="card">
+      <Tabs defaultActiveKey="basic" type="card">
         <TabPane tab="基础表" key="basic">
           <Collapse defaultActiveKey="filter">
             <Collapse.Panel header="筛选器" key="filter">
@@ -702,12 +702,15 @@ function MainLayout() {
                 advancedSortCfg: { open: true },
               }}
               onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
-              onLoad={logHandler('onLoad')}
+              onAfterRender={logHandler('onLoad')}
               onDestroy={logHandler('onDestroy')}
               onColCellClick={onColCellClick}
               onRowCellClick={logHandler('onRowCellClick')}
               onCornerCellClick={logHandler('onCornerCellClick')}
               onDataCellClick={logHandler('onDataCellClick')}
+              onLayoutResizeMouseDown={(data) => {
+                console.log(data);
+              }}
             />
           )}
         </TabPane>
