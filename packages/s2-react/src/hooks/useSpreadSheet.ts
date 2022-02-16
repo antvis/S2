@@ -5,6 +5,7 @@ import {
   SpreadSheet,
   TableSheet,
 } from '@antv/s2';
+import { useUpdate } from 'ahooks';
 import React from 'react';
 import type { BaseSheetComponentProps, SheetType } from '../components';
 import { getSheetComponentOptions } from '../utils';
@@ -23,13 +24,13 @@ export function useSpreadSheet(
   props: BaseSheetComponentProps,
   config: UseSpreadSheetConfig,
 ) {
+  const forceUpdate = useUpdate();
   const s2Ref = React.useRef<SpreadSheet>();
-  const [s2Instance, setS2Instance] = React.useState<SpreadSheet>();
   const containerRef = React.useRef<HTMLDivElement>();
 
   const { spreadsheet: customSpreadSheet, dataCfg, options, themeCfg } = props;
-  const { loading, setLoading } = useLoading(s2Instance, props.loading);
-  const pagination = usePagination(s2Instance, props);
+  const { loading, setLoading } = useLoading(s2Ref.current, props.loading);
+  const pagination = usePagination(s2Ref.current, props);
   const prevDataCfg = usePrevious(dataCfg);
   const prevOptions = usePrevious(options);
   const prevThemeCfg = usePrevious(themeCfg);
@@ -57,9 +58,13 @@ export function useSpreadSheet(
     s2Ref.current.setThemeCfg(props.themeCfg);
     s2Ref.current.render();
     setLoading(false);
-    setS2Instance(s2Ref.current);
+
+    // 子 hooks 内使用了 s2Ref.current 作为 dep
+    // forceUpdate 一下保证子 hooks 能 rerender
+    forceUpdate();
+
     props.getSpreadSheet?.(s2Ref.current);
-  }, [props, renderSpreadSheet, setLoading]);
+  }, [props, renderSpreadSheet, setLoading, forceUpdate]);
 
   // init
   React.useEffect(() => {
