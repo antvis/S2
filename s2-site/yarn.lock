@@ -183,20 +183,20 @@
     "@antv/util" "^2.0.9"
     tslib "^2.0.3"
 
-"@antv/s2-react@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@antv/s2-react/-/s2-react-1.8.0.tgz#5184a23e77529b786bc97933559a0d0274c2bd9d"
-  integrity sha512-1J0/mrec2PYb+TE3KkkgmAJXTvy4pkKxGusEiqtNkJ+ipHGZesCYGVoWLACrlSQFufvoY+tZJkzVHGy6OW5l8A==
+"@antv/s2-react@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@antv/s2-react/-/s2-react-1.9.0.tgz#7f873dfd2fce3ea64356b90f7a253d9fb331b3b8"
+  integrity sha512-y5bkzJL9QchNdIy7P2RZZFbNnh+Im226OC8U5yUEHJGhN/ycfgmRcQWF1zfDQHxr3vtbxSmdJ9R6VkRZqEb/bg==
   dependencies:
     ahooks "^3.1.5"
     classnames "^2.3.1"
     lodash "^4.17.21"
     react-beautiful-dnd "^13.1.0"
 
-"@antv/s2@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.8.0.tgz#833272b61358df256c282b14ad9c777e22760f55"
-  integrity sha512-xF/uegJwH7nFe//V1Xd9gx4nEq3GiqOkG6gso08HHMCvVSGxcp4z9Oof/zhYlVYiuKVvmJW4mHp0s9ZKfQxobw==
+"@antv/s2@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@antv/s2/-/s2-1.9.0.tgz#c74406892a31987628e01d69b2b0300d0e13be02"
+  integrity sha512-/jeZdmSQFJoLht5qOKnuiK3i+EjybZCgkgbWY3VEd7Ui7adHYnghwea9mLSyH2gnqPimmGOF3ZHfHs/8etA8FA==
   dependencies:
     "@antv/event-emitter" "~0.1.2"
     "@antv/g-canvas" "^0.5.12"
