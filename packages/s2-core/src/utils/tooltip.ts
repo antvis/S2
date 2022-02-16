@@ -29,7 +29,7 @@ import { Event as CanvasEvent } from '@antv/g-canvas';
 import { handleDataItem } from './cell/data-cell';
 import { isMultiDataItem } from './data-item-type-checker';
 import { customMerge } from './merge';
-import { AutoAdjustPositionOptions, ListItem } from '@/common/interface';
+import { AutoAdjustPositionOptions, Data, ListItem } from '@/common/interface';
 import { LayoutResult } from '@/common/interface/basic';
 import {
   SummaryParam,
@@ -167,16 +167,24 @@ export const getFriendlyVal = (val: any): number | string => {
 export const getFieldFormatter = (spreadsheet: SpreadSheet, field: string) => {
   const formatter = spreadsheet?.dataSet?.getFieldFormatter(field);
 
-  return (v: any) => {
-    return getFriendlyVal(formatter(v));
+  return (v: unknown, data?: Data) => {
+    return getFriendlyVal(formatter(v, data));
   };
 };
 
 export const getListItem = (
   spreadsheet: SpreadSheet,
-  data: TooltipDataItem,
-  field: string,
-  valueField?: string,
+  {
+    data,
+    field,
+    valueField,
+    useCompleteDataForFormatter = true,
+  }: {
+    data: TooltipDataItem;
+    field: string;
+    valueField?: string;
+    useCompleteDataForFormatter?: boolean;
+  },
 ): ListItem => {
   const name = spreadsheet?.dataSet?.getFieldName(field);
   const formatter = getFieldFormatter(spreadsheet, field);
@@ -184,7 +192,10 @@ export const getListItem = (
   const dataValue = isObject(data[field])
     ? JSON.stringify(data[field])
     : data[field];
-  const value = formatter(valueField || dataValue);
+  const value = formatter(
+    valueField || dataValue,
+    useCompleteDataForFormatter ? data : undefined,
+  );
 
   return {
     name,
@@ -202,7 +213,11 @@ export const getFieldList = (
     (field) => field !== EXTRA_FIELD && activeData[field],
   );
   const fieldList = map(currFields, (field: string): ListItem => {
-    return getListItem(spreadsheet, activeData, field);
+    return getListItem(spreadsheet, {
+      data: activeData,
+      field,
+      useCompleteDataForFormatter: false,
+    });
   });
   return fieldList;
 };
@@ -254,12 +269,11 @@ export const getDetailList = (
     if (isTotals) {
       // total/subtotal
       valItem.push(
-        getListItem(
-          spreadsheet,
-          activeData,
+        getListItem(spreadsheet, {
+          data: activeData,
           field,
-          get(activeData, VALUE_FIELD),
-        ),
+          valueField: get(activeData, VALUE_FIELD),
+        }),
       );
     }
     // the value hangs at the head of the column, match the displayed fields according to the metric itself
@@ -277,10 +291,12 @@ export const getDetailList = (
       ) as Record<string, string | number>;
 
       forEach(mappedResult, (_, key) => {
-        valItem.push(getListItem(spreadsheet, mappedResult, key));
+        valItem.push(
+          getListItem(spreadsheet, { data: mappedResult, field: key }),
+        );
       });
     } else {
-      valItem.push(getListItem(spreadsheet, activeData, field));
+      valItem.push(getListItem(spreadsheet, { data: activeData, field }));
     }
 
     return valItem;
@@ -405,7 +421,7 @@ export const getSummaries = (params: SummaryParam): TooltipSummaryOptions[] => {
       const dataSum = getDataSumByField(selected, VALUE_FIELD);
       value = parseFloat(dataSum.toPrecision(PRECISION)); // solve accuracy problems
       if (currentFormatter) {
-        value = currentFormatter(dataSum);
+        value = currentFormatter(dataSum, selected);
       }
     }
     summaries.push({

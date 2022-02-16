@@ -28,11 +28,12 @@ export function useSpreadSheet(
 
   const { spreadsheet: customSpreadSheet, dataCfg, options, themeCfg } = props;
   const { loading, setLoading } = useLoading(s2Ref.current, props.loading);
-  const { registerEvent } = useEvents(props);
   const pagination = usePagination(s2Ref.current, props);
   const prevDataCfg = usePrevious(dataCfg);
   const prevOptions = usePrevious(options);
   const prevThemeCfg = usePrevious(themeCfg);
+
+  useEvents(props, s2Ref.current);
 
   const renderSpreadSheet = React.useCallback(
     (container: HTMLDivElement) => {
@@ -53,11 +54,10 @@ export function useSpreadSheet(
     setLoading(true);
     s2Ref.current = renderSpreadSheet(containerRef.current);
     s2Ref.current.setThemeCfg(props.themeCfg);
-    registerEvent(s2Ref.current);
     s2Ref.current.render();
     setLoading(false);
     props.getSpreadSheet?.(s2Ref.current);
-  }, [props, registerEvent, renderSpreadSheet, setLoading]);
+  }, [props, renderSpreadSheet, setLoading]);
 
   // init
   React.useEffect(() => {

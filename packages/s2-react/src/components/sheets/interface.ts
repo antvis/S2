@@ -3,8 +3,7 @@ import {
   S2Options,
   CellScrollPosition,
   TargetCellInfo,
-  LayoutCol,
-  LayoutRow,
+  ResizeParams,
   S2Constructor,
   Node,
   SpreadSheet,
@@ -12,8 +11,14 @@ import {
   ViewMeta,
   LayoutResult,
   SortParams,
+  DataCell,
+  Data,
 } from '@antv/s2';
+import { Event as CanvasEvent } from '@antv/g-canvas';
 import React from 'react';
+import { DataType } from '@antv/s2';
+import { HiddenColumnsInfo } from '@antv/s2';
+import { ResizeInfo } from '@antv/s2';
 import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
 
@@ -76,31 +81,116 @@ export interface BaseSheetComponentProps {
   showPagination?: boolean;
   themeCfg?: ThemeCfg;
   header?: HeaderCfgProps;
-  onLoad?: () => void;
-  onDestroy?: () => void;
-  onSortChange?: (params: SortParams) => void;
-  onRowColLayout?: (rows: LayoutRow[], cols: LayoutCol[]) => void;
-  onAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
-  onCollapseRows?: (collapsedRows: Record<string, boolean>) => void;
-  onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
-  onCellScroll?: (position: CellScrollPosition) => void;
+  getSpreadSheet?: (spreadsheet: SpreadSheet) => void;
+
+  // ============== Row Cell ====================
+  onRowCellHover?: (data: TargetCellInfo) => void;
   onRowCellClick?: (data: TargetCellInfo) => void;
   onRowCellDoubleClick?: (data: TargetCellInfo) => void;
+  onRowCellMouseDown?: (data: TargetCellInfo) => void;
+  onRowCellMouseUp?: (data: TargetCellInfo) => void;
+  onRowCellMouseMove?: (data: TargetCellInfo) => void;
+  onRowCellCollapseTreeRows?: (params: {
+    id: number;
+    isCollapsed: boolean;
+    node: Node;
+  }) => void;
+
+  // ============== Col Cell ====================
+  onColCellHover?: (data: TargetCellInfo) => void;
   onColCellClick?: (data: TargetCellInfo) => void;
   onColCellDoubleClick?: (data: TargetCellInfo) => void;
-  onCornerCellClick?: (data: TargetCellInfo) => void;
+  onColCellMouseDown?: (data: TargetCellInfo) => void;
+  onColCellMouseUp?: (data: TargetCellInfo) => void;
+  onColCellMouseMove?: (data: TargetCellInfo) => void;
+
+  // ============== Data Cell ====================
+  onDataCellHover?: (data: TargetCellInfo) => void;
   onDataCellClick?: (data: TargetCellInfo) => void;
   onDataCellDoubleClick?: (data: TargetCellInfo) => void;
+  onDataCellMouseDown?: (data: TargetCellInfo) => void;
   onDataCellMouseUp?: (data: TargetCellInfo) => void;
+  onDataCellMouseMove?: (data: TargetCellInfo) => void;
   onDataCellTrendIconClick?: (meta: ViewMeta) => void;
+  onDataCellBrushSelection?: (brushRangeDataCells: DataCell[]) => void;
+
+  // ============== Corner Cell ====================
+  onCornerCellHover?: (data: TargetCellInfo) => void;
+  onCornerCellClick?: (data: TargetCellInfo) => void;
+  onCornerCellDoubleClick?: (data: TargetCellInfo) => void;
+  onCornerCellMouseDown?: (data: TargetCellInfo) => void;
+  onCornerCellMouseUp?: (data: TargetCellInfo) => void;
+  onCornerCellMouseMove?: (data: TargetCellInfo) => void;
+
+  // ============== Merged Cells ====================
+  onMergedCellsHoverer?: (data: TargetCellInfo) => void;
   onMergedCellClick?: (data: TargetCellInfo) => void;
   onMergedCellsDoubleClick?: (data: TargetCellInfo) => void;
-  onContextMenu?: (data: TargetCellInfo) => void;
-  onRowCellHover?: (data: TargetCellInfo) => void;
-  onColCellHover?: (data: TargetCellInfo) => void;
-  onDataCellHover?: (data: TargetCellInfo) => void;
-  onMergedCellHover?: (data: TargetCellInfo) => void;
-  onCornerCellDoubleClick?: (data: TargetCellInfo) => void;
-  onCornerCellHover?: (data: TargetCellInfo) => void;
-  getSpreadSheet?: (spreadsheet: SpreadSheet) => void;
+  onMergedCellsMouseDown?: (data: TargetCellInfo) => void;
+  onMergedCellsMouseUp?: (data: TargetCellInfo) => void;
+  onMergedCellsMouseMove?: (data: TargetCellInfo) => void;
+
+  // ============== Sort ====================
+  onGroupSort?: (params: SortParams) => void;
+  onGroupSorted?: (event: CanvasEvent) => void;
+
+  // ============== Filter ====================
+  onFilter?: (data: { filterKey: string; filteredValues: string[] }) => void;
+  onFiltered?: (data: DataType[]) => void;
+
+  // ============== Layout ====================
+  onLayoutAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
+  onLayoutPagination?: (data: {
+    pageSize: number;
+    pageCount: number;
+    total: number;
+    current: number;
+  }) => void;
+  onLayoutCellScroll?: (position: CellScrollPosition) => void;
+  onLayoutAfterCollapseRows?: (data: {
+    collapsedRows: Record<string, boolean>;
+  }) => void;
+  onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
+  onLayoutTableColExpanded?: (node: Node) => void;
+  onLayoutTableColHidden?: (data: {
+    currentHiddenColumnsInfo: HiddenColumnsInfo;
+    hiddenColumnsDetail: HiddenColumnsInfo[];
+  }) => void;
+  onBeforeRender?: () => void;
+  onAfterRender?: () => void;
+  onDestroy?: () => void;
+
+  // ============== Resize ====================
+  onLayoutResize?: (params: ResizeParams) => void;
+  onLayoutResizeSeriesWidth?: (params: ResizeParams) => void;
+  onLayoutResizeRowWidth?: (params: ResizeParams) => void;
+  onLayoutResizeRowHeight?: (params: ResizeParams) => void;
+  onLayoutResizeColWidth?: (params: ResizeParams) => void;
+  onLayoutResizeColHeight?: (params: ResizeParams) => void;
+  onLayoutResizeTreeWidth?: (params: ResizeParams) => void;
+  onLayoutResizeMouseDown?: (data: {
+    event: Partial<MouseEvent>;
+    resizeInfo?: ResizeInfo;
+  }) => void;
+  onLayoutResizeMouseUp?: (data: {
+    event: Partial<MouseEvent>;
+    resizeInfo?: ResizeInfo;
+  }) => void;
+  onLayoutResizeMouseMove?: (data: {
+    event: Partial<MouseEvent>;
+    resizeInfo?: ResizeInfo;
+  }) => void;
+
+  // ============== Global ====================
+  onKeyBoardDown?: (event: KeyboardEvent) => void;
+  onKeyBoardUp?: (event: KeyboardEvent) => void;
+  onCopied?: (copyData: string) => void;
+  onActionIconHover?: (event: CanvasEvent) => void;
+  onActionIconClick?: (event: CanvasEvent) => void;
+  onContextMenu?: (event: CanvasEvent) => void;
+  onMouseHover?: (event: CanvasEvent) => void;
+  onSelected?: (cells: DataCell[]) => void;
+  onMouseUp?: (event: MouseEvent) => void;
+  onReset?: (event: KeyboardEvent) => void;
+  onLinkFieldJump?: (data: { key: string; record: Data }) => void;
 }
