@@ -24,11 +24,12 @@ export function useSpreadSheet(
   config: UseSpreadSheetConfig,
 ) {
   const s2Ref = React.useRef<SpreadSheet>();
+  const [s2Instance, setS2Instance] = React.useState<SpreadSheet>();
   const containerRef = React.useRef<HTMLDivElement>();
 
   const { spreadsheet: customSpreadSheet, dataCfg, options, themeCfg } = props;
-  const { loading, setLoading } = useLoading(s2Ref.current, props.loading);
-  const pagination = usePagination(s2Ref.current, props);
+  const { loading, setLoading } = useLoading(s2Instance, props.loading);
+  const pagination = usePagination(s2Instance, props);
   const prevDataCfg = usePrevious(dataCfg);
   const prevOptions = usePrevious(options);
   const prevThemeCfg = usePrevious(themeCfg);
@@ -56,6 +57,7 @@ export function useSpreadSheet(
     s2Ref.current.setThemeCfg(props.themeCfg);
     s2Ref.current.render();
     setLoading(false);
+    setS2Instance(s2Ref.current);
     props.getSpreadSheet?.(s2Ref.current);
   }, [props, renderSpreadSheet, setLoading]);
 
