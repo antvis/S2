@@ -5,6 +5,7 @@ import {
   SpreadSheet,
   TableSheet,
 } from '@antv/s2';
+import { useUpdate } from 'ahooks';
 import React from 'react';
 import type { BaseSheetComponentProps, SheetType } from '../components';
 import { getSheetComponentOptions } from '../utils';
@@ -23,6 +24,7 @@ export function useSpreadSheet(
   props: BaseSheetComponentProps,
   config: UseSpreadSheetConfig,
 ) {
+  const forceUpdate = useUpdate();
   const s2Ref = React.useRef<SpreadSheet>();
   const containerRef = React.useRef<HTMLDivElement>();
 
@@ -56,8 +58,13 @@ export function useSpreadSheet(
     s2Ref.current.setThemeCfg(props.themeCfg);
     s2Ref.current.render();
     setLoading(false);
+
+    // 子 hooks 内使用了 s2Ref.current 作为 dep
+    // forceUpdate 一下保证子 hooks 能 rerender
+    forceUpdate();
+
     props.getSpreadSheet?.(s2Ref.current);
-  }, [props, renderSpreadSheet, setLoading]);
+  }, [props, renderSpreadSheet, setLoading, forceUpdate]);
 
   // init
   React.useEffect(() => {
