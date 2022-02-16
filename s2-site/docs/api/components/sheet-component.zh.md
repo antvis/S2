@@ -20,7 +20,7 @@ order: 0
 | loading | 控制表格的加载状态                                                                                                 | `boolean` | | |
 | header | 表头配置项                                                                                                     | [HeaderCfgProps](/zh/docs/api/components/header) | | |
 | getSpreadSheet | 获取表实例 [详情](/zh/docs/manual/advanced/get-instance)                                                         | (spreadsheet: [SpreadSheet](/zh/docs/api/basic-class/spreadsheet)) => void; | | |
-| onSort | 组内排序时触发回调事件（暂只支持透视表）                                                                                      |  (params: [SortParams](#sortparams) ) => void; | |  |
+| onGroupSort | 组内排序时触发回调事件（暂只支持透视表）                                                                                      |  (params: [SortParams](#sortparams) ) => void; | |  |
 | onRowCellClick | 行头鼠标单击事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onRowCellHover | 行头鼠标悬停事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onRowCellDoubleClick | 行头鼠标双击事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -36,7 +36,7 @@ order: 0
 | onMergedCellsHoverr | 合并单元格鼠标悬停事件                                                                                               | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onMergedCellClick | 合并单元格鼠标点击事件                                                                                               | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onMergedCellDoubleClick | 合并单元格鼠标双击事件                                                                                               | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onGlobalContextMenu | 右键单元格单击事件                                                                                                 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
+| onContextMenu | 右键单元格单击事件                                                                                                 | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 
 ### TargetCellInfo
 

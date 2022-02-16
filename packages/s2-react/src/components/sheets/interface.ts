@@ -131,15 +131,12 @@ export interface BaseSheetComponentProps {
   onMergedCellsMouseMove?: (data: TargetCellInfo) => void;
 
   // ============== Sort ====================
-  onBeforeSort?: (params: SortParams) => void;
-  onAfterSort?: (event: CanvasEvent) => void;
+  onGroupSort?: (params: SortParams) => void;
+  onGroupSorted?: (event: CanvasEvent) => void;
 
   // ============== Filter ====================
-  onBeforeFilter?: (data: {
-    filterKey: string;
-    filteredValues: string[];
-  }) => void;
-  onAfterFilter?: (data: DataType[]) => void;
+  onFilter?: (data: { filterKey: string; filteredValues: string[] }) => void;
+  onFiltered?: (data: DataType[]) => void;
 
   // ============== Layout ====================
   onLayoutAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
@@ -185,15 +182,15 @@ export interface BaseSheetComponentProps {
   }) => void;
 
   // ============== Global ====================
-  onGlobalKeyBoardDown?: (event: KeyboardEvent) => void;
-  onGlobalKeyBoardUp?: (event: KeyboardEvent) => void;
-  onGlobalCopied?: (copyData: string) => void;
-  onGlobalActionIconHover?: (event: CanvasEvent) => void;
-  onGlobalActionIconClick?: (event: CanvasEvent) => void;
-  onGlobalContextMenu?: (event: CanvasEvent) => void;
-  onGlobalMouseHover?: (event: CanvasEvent) => void;
-  onGlobalSelected?: (cells: DataCell[]) => void;
-  onGlobalMouseUp?: (event: MouseEvent) => void;
-  onGlobalReset?: (event: KeyboardEvent) => void;
-  onGlobalLinkFieldJump?: (data: { key: string; record: Data }) => void;
+  onKeyBoardDown?: (event: KeyboardEvent) => void;
+  onKeyBoardUp?: (event: KeyboardEvent) => void;
+  onCopied?: (copyData: string) => void;
+  onActionIconHover?: (event: CanvasEvent) => void;
+  onActionIconClick?: (event: CanvasEvent) => void;
+  onContextMenu?: (event: CanvasEvent) => void;
+  onMouseHover?: (event: CanvasEvent) => void;
+  onSelected?: (cells: DataCell[]) => void;
+  onMouseUp?: (event: MouseEvent) => void;
+  onReset?: (event: KeyboardEvent) => void;
+  onLinkFieldJump?: (data: { key: string; record: Data }) => void;
 }

@@ -101,7 +101,7 @@ function MainLayout() {
     <Space direction="vertical">
       <Button
         onClick={() => {
-          s2Ref.current.emit(S2Event.FILTER_BEFORE_FILTER, {
+          s2Ref.current.emit(S2Event.FILTER, {
             filterKey: 'customer_type',
             filteredValues: ['消费者'],
           });
@@ -112,7 +112,7 @@ function MainLayout() {
 
       <Button
         onClick={() => {
-          s2Ref.current.emit(S2Event.FILTER_BEFORE_FILTER, {
+          s2Ref.current.emit(S2Event.FILTER, {
             filterKey: 'customer_type',
             filteredValues: [],
           });
@@ -137,7 +137,7 @@ describe('table sheet filter spec', () => {
   });
 
   test('filter customer_type values', () => {
-    spreadSheet.emit(S2Event.FILTER_BEFORE_FILTER, {
+    spreadSheet.emit(S2Event.FILTER, {
       filterKey: 'customer_type',
       filteredValues: ['消费者'],
     });
@@ -149,12 +149,12 @@ describe('table sheet filter spec', () => {
   });
 
   test('reset filter params on customer_type', () => {
-    spreadSheet.emit(S2Event.FILTER_BEFORE_FILTER, {
+    spreadSheet.emit(S2Event.FILTER, {
       filterKey: 'customer_type',
       filteredValues: ['消费者'],
     });
 
-    spreadSheet.emit(S2Event.FILTER_BEFORE_FILTER, {
+    spreadSheet.emit(S2Event.FILTER, {
       filterKey: 'customer_type',
       filteredValues: [],
     });
@@ -166,11 +166,11 @@ describe('table sheet filter spec', () => {
   });
 
   test('filtered event fired with new data', () => {
-    spreadSheet.on(S2Event.FILTER_AFTER_FILTER, (data) => {
+    spreadSheet.on(S2Event.FILTERED, (data) => {
       expect(data.length).toStrictEqual(468);
     });
 
-    spreadSheet.emit(S2Event.FILTER_BEFORE_FILTER, {
+    spreadSheet.emit(S2Event.FILTER, {
       filterKey: 'customer_type',
       filteredValues: ['消费者'],
     });

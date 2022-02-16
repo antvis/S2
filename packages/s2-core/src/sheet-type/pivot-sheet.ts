@@ -183,7 +183,7 @@ export class PivotSheet extends SpreadSheet {
       (item) => item?.sortFieldId !== sortFieldId,
     );
     // 触发排序事件
-    this.emit(S2Event.SORT_BEFORE_SORT, [...prevSortParams, sortParam]);
+    this.emit(S2Event.SORT_GROUP_SORT, [...prevSortParams, sortParam]);
     this.setDataCfg({
       ...this.dataCfg,
       sortParams: [...prevSortParams, sortParam],
@@ -198,7 +198,7 @@ export class PivotSheet extends SpreadSheet {
       onClick: ({ key }) => {
         this.groupSortByMethod(key as unknown as SortMethod, meta);
         // 排序事件完成触发
-        this.emit(S2Event.SORT_AFTER_SORT, event);
+        this.emit(S2Event.SORT_GROUP_SORTED, event);
       },
       menus: TOOLTIP_OPERATOR_SORT_MENUS,
     };

@@ -556,7 +556,7 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
 
   modalCallbackRef.current = () => {
     if (changed.sort) {
-      spreadsheet.emit(S2Event.SORT_BEFORE_SORT, {
+      spreadsheet.emit(S2Event.SORT_GROUP_SORT, {
         sortKey: fieldName,
         sortMethod: sort,
         sortBy: (obj) => {
@@ -569,7 +569,7 @@ const SortPopover = ({ fieldName, spreadsheet, modalCallbackRef }) => {
       });
     }
     if (changed.filter) {
-      spreadsheet.emit(S2Event.FILTER_BEFORE_FILTER, {
+      spreadsheet.emit(S2Event.FILTER, {
         filterKey: fieldName,
         // 将Object还原成数组
         filteredValues: Object.entries(filtered)

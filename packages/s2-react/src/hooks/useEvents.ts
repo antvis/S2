@@ -115,12 +115,12 @@ export function useEvents(props: BaseSheetComponentProps, s2: SpreadSheet) {
   );
 
   // ============== Sort ====================
-  useS2Event(S2Event.SORT_BEFORE_SORT, props.onBeforeSort, s2);
-  useS2Event(S2Event.SORT_AFTER_SORT, props.onAfterSort, s2);
+  useS2Event(S2Event.SORT_GROUP_SORT, props.onGroupSort, s2);
+  useS2Event(S2Event.SORT_GROUP_SORTED, props.onGroupSorted, s2);
 
   // ============== Filter ====================
-  useS2Event(S2Event.FILTER_BEFORE_FILTER, props.onBeforeFilter, s2);
-  useS2Event(S2Event.FILTER_AFTER_FILTER, props.onAfterFilter, s2);
+  useS2Event(S2Event.FILTER, props.onFilter, s2);
+  useS2Event(S2Event.FILTERED, props.onFiltered, s2);
 
   // ============== Layout ====================
   useS2Event(
@@ -188,23 +188,15 @@ export function useEvents(props: BaseSheetComponentProps, s2: SpreadSheet) {
   );
 
   // ============== Global ====================
-  useS2Event(S2Event.GLOBAL_KEYBOARD_DOWN, props.onGlobalKeyBoardDown, s2);
-  useS2Event(S2Event.GLOBAL_KEYBOARD_UP, props.onGlobalKeyBoardUp, s2);
-  useS2Event(S2Event.GLOBAL_COPIED, props.onGlobalCopied, s2);
-  useS2Event(
-    S2Event.GLOBAL_ACTION_ICON_HOVER,
-    props.onGlobalActionIconHover,
-    s2,
-  );
-  useS2Event(
-    S2Event.GLOBAL_ACTION_ICON_CLICK,
-    props.onGlobalActionIconClick,
-    s2,
-  );
-  useS2Event(S2Event.GLOBAL_CONTEXT_MENU, props.onGlobalContextMenu, s2);
-  useS2Event(S2Event.GLOBAL_HOVER, props.onGlobalMouseHover, s2);
-  useS2Event(S2Event.GLOBAL_SELECTED, props.onGlobalSelected, s2);
-  useS2Event(S2Event.GLOBAL_MOUSE_UP, props.onGlobalMouseUp, s2);
-  useS2Event(S2Event.GLOBAL_RESET, props.onGlobalReset, s2);
-  useS2Event(S2Event.GLOBAL_LINK_FIELD_JUMP, props.onGlobalLinkFieldJump, s2);
+  useS2Event(S2Event.GLOBAL_KEYBOARD_DOWN, props.onKeyBoardDown, s2);
+  useS2Event(S2Event.GLOBAL_KEYBOARD_UP, props.onKeyBoardUp, s2);
+  useS2Event(S2Event.GLOBAL_COPIED, props.onCopied, s2);
+  useS2Event(S2Event.GLOBAL_ACTION_ICON_HOVER, props.onActionIconHover, s2);
+  useS2Event(S2Event.GLOBAL_ACTION_ICON_CLICK, props.onActionIconClick, s2);
+  useS2Event(S2Event.GLOBAL_CONTEXT_MENU, props.onContextMenu, s2);
+  useS2Event(S2Event.GLOBAL_HOVER, props.onMouseHover, s2);
+  useS2Event(S2Event.GLOBAL_SELECTED, props.onSelected, s2);
+  useS2Event(S2Event.GLOBAL_MOUSE_UP, props.onMouseUp, s2);
+  useS2Event(S2Event.GLOBAL_RESET, props.onReset, s2);
+  useS2Event(S2Event.GLOBAL_LINK_FIELD_JUMP, props.onLinkFieldJump, s2);
 }

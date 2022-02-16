@@ -25,20 +25,20 @@ const S2EventCases = [
     name: 'onDataCellBrushSelection',
   },
   {
-    event: S2Event.SORT_BEFORE_SORT,
-    name: 'onBeforeSort',
+    event: S2Event.SORT_GROUP_SORT,
+    name: 'onGroupSort',
   },
   {
-    event: S2Event.SORT_AFTER_SORT,
-    name: 'onAfterSort',
+    event: S2Event.SORT_GROUP_SORTED,
+    name: 'onGroupSorted',
   },
   {
-    event: S2Event.FILTER_BEFORE_FILTER,
-    name: 'onBeforeFilter',
+    event: S2Event.FILTER,
+    name: 'onFilter',
   },
   {
-    event: S2Event.FILTER_AFTER_FILTER,
-    name: 'onAfterFilter',
+    event: S2Event.FILTERED,
+    name: 'onFiltered',
   },
   {
     event: S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
@@ -115,47 +115,47 @@ const S2EventCases = [
   },
   {
     event: S2Event.GLOBAL_KEYBOARD_DOWN,
-    name: 'onGlobalKeyBoardDown',
+    name: 'onKeyBoardDown',
   },
   {
     event: S2Event.GLOBAL_KEYBOARD_UP,
-    name: 'onGlobalKeyBoardUp',
+    name: 'onKeyBoardUp',
   },
   {
     event: S2Event.GLOBAL_COPIED,
-    name: 'onGlobalCopied',
+    name: 'onCopied',
   },
   {
     event: S2Event.GLOBAL_ACTION_ICON_HOVER,
-    name: 'onGlobalActionIconHover',
+    name: 'onActionIconHover',
   },
   {
     event: S2Event.GLOBAL_ACTION_ICON_CLICK,
-    name: 'onGlobalActionIconClick',
+    name: 'onActionIconClick',
   },
   {
     event: S2Event.GLOBAL_CONTEXT_MENU,
-    name: 'onGlobalContextMenu',
+    name: 'onContextMenu',
   },
   {
     event: S2Event.GLOBAL_HOVER,
-    name: 'onGlobalMouseHover',
+    name: 'onMouseHover',
   },
   {
     event: S2Event.GLOBAL_SELECTED,
-    name: 'onGlobalSelected',
+    name: 'onSelected',
   },
   {
     event: S2Event.GLOBAL_MOUSE_UP,
-    name: 'onGlobalMouseUp',
+    name: 'onMouseUp',
   },
   {
     event: S2Event.GLOBAL_RESET,
-    name: 'onGlobalReset',
+    name: 'onReset',
   },
   {
     event: S2Event.GLOBAL_LINK_FIELD_JUMP,
-    name: 'onGlobalLinkFieldJump',
+    name: 'onLinkFieldJump',
   },
 ].map((i) => ({
   ...i,

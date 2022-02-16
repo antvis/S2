@@ -213,7 +213,7 @@ function MainLayout({ callback }) {
         sheetType={'table'}
         spreadsheet={getSpreadSheet(s2Ref)}
         onDataCellDoubleClick={logData}
-        onGlobalContextMenu={logData}
+        onContextMenu={logData}
       />
     </Space>
   );

@@ -43,12 +43,12 @@ export enum S2Event {
   MERGED_CELLS_MOUSE_MOVE = 'merged-cells:mouse-move',
 
   /** ================ Sort ================  */
-  SORT_BEFORE_SORT = 'sort:range-sort',
-  SORT_AFTER_SORT = 'sort:range-sorted',
+  SORT_GROUP_SORT = 'sort:range-sort',
+  SORT_GROUP_SORTED = 'sort:range-sorted',
 
   /** ================ Table Filter ================  */
-  FILTER_BEFORE_FILTER = 'filter:range-filter',
-  FILTER_AFTER_FILTER = 'filter:range-filtered',
+  FILTER = 'filter:range-filter',
+  FILTERED = 'filter:range-filtered',
 
   /** ================ Table Layout ================  */
   LAYOUT_AFTER_HEADER_LAYOUT = 'layout:after-header-layout',
