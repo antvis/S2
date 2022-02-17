@@ -53,6 +53,17 @@ const s2Options = {
 
 透视表存在多列头，需要指定列头对应的 [节点 id](/zh/docs/api/basic-class/node)
 
+<details>
+  <summary>如何获取列头 Id?</summary>
+
+```ts
+  // https://s2.antv.vision/zh/docs/api/basic-class/spreadsheet
+  const s2 = new PivotSheet()
+  console.log(s2.getColumnNodes())
+```
+
+</details>
+
 ```ts
 const s2DataConfig = {
   fields: {
@@ -73,7 +84,7 @@ const s2DataConfig = {
 
 const s2Options = {
   interaction: {
-    hiddenColumnFields: ['root[&] 家具 [&] 沙发 [&]number'],
+    hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
   }
 }
 ```

@@ -183,14 +183,5 @@ export const defaultOptions: S2Options = customMerge(
         hiddenColumns: true,
       },
     },
-    interaction: {
-      // hiddenColumnFields: [
-      //   'root[&]家具[&]沙发[&]number',
-      //   'root[&]家具[&]桌子[&]number',
-      //   // 'root[&]办公用品[&]笔[&]number',
-      //   'root[&]办公用品[&]纸张[&]number',
-      // ],
-      // hiddenColumnFields: ['city'],
-    },
   }),
 );

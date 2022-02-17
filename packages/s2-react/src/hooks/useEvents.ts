@@ -1,5 +1,4 @@
 import {
-  EmitterType,
   getBaseCellData,
   S2Event,
   SpreadSheet,
@@ -10,7 +9,7 @@ import React from 'react';
 import { BaseSheetComponentProps } from '@/components';
 
 export const useCellEvent = (
-  eventName: keyof EmitterType,
+  eventName: S2Event,
   handler: (data: TargetCellInfo) => void,
   s2: SpreadSheet,
 ) => {
@@ -27,7 +26,7 @@ export const useCellEvent = (
 };
 
 export const useS2Event = (
-  eventName: keyof EmitterType,
+  eventName: S2Event,
   handler: (args: unknown) => void,
   s2: SpreadSheet,
 ) => {
