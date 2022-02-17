@@ -1,3 +1,11 @@
+# [@antv/s2-v1.9.1](https://github.com/antvis/S2/compare/@antv/s2-v1.9.0...@antv/s2-v1.9.1) (2022-02-17)
+
+
+### Bug Fixes
+
+* 回退排序筛选事件变量名 ([#1097](https://github.com/antvis/S2/issues/1097)) ([9eeb1cd](https://github.com/antvis/S2/commit/9eeb1cdafdd051834383a1423583e221388a581e))
+* 明细表增加排序事件回调 close[#1087](https://github.com/antvis/S2/issues/1087) ([#1099](https://github.com/antvis/S2/issues/1099)) ([bfccdc3](https://github.com/antvis/S2/commit/bfccdc31012c3653af25b07b3e6eede029f9a5bb))
+
 # [@antv/s2-v1.9.0](https://github.com/antvis/S2/compare/@antv/s2-v1.8.0...@antv/s2-v1.9.0) (2022-02-16)
 
 
