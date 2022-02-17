@@ -184,7 +184,13 @@ export const defaultOptions: S2Options = customMerge(
       },
     },
     interaction: {
-      hiddenColumnFields: ['root[&]家具[&]沙发[&]number'],
+      // hiddenColumnFields: [
+      //   'root[&]家具[&]沙发[&]number',
+      //   'root[&]家具[&]桌子[&]number',
+      //   // 'root[&]办公用品[&]笔[&]number',
+      //   'root[&]办公用品[&]纸张[&]number',
+      // ],
+      // hiddenColumnFields: ['city'],
     },
   }),
 );

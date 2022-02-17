@@ -1,7 +1,6 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { difference } from 'lodash';
 import {
-  hideColumns,
   hideColumnsByThunkGroup,
   isEqualDisplaySiblingNodeId,
 } from '@/utils/hide-columns';
@@ -147,6 +146,10 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     });
   }
 
+  private getHideColumnField = (node: Node) => {
+    return this.spreadsheet.isTableMode() ? node.field : node.id;
+  };
+
   /**
    * 隐藏选中的列
    * 每次点击存储两个信息
@@ -164,16 +167,11 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
       .getActiveCells()
       .map((cell) => cell.getMeta());
 
-    if (this.spreadsheet.isTableMode()) {
-      const selectedColumnFields = selectedColumnNodes.map(
-        ({ field }) => field,
-      );
-      // 兼容多选
-      hideColumnsByThunkGroup(this.spreadsheet, selectedColumnFields, true);
-    } else {
-      const selectedColumnFields = selectedColumnNodes.map(({ id }) => id);
-      hideColumns(this.spreadsheet, selectedColumnFields, true);
-    }
+    const selectedColumnFields = selectedColumnNodes.map(
+      this.getHideColumnField,
+    );
+    // 兼容多选
+    hideColumnsByThunkGroup(this.spreadsheet, selectedColumnFields, true);
   }
 
   private handleExpandIconClick(node: Node) {
@@ -189,8 +187,8 @@ export class RowColumnClick extends BaseEvent implements BaseEventImplement {
     const { hiddenColumnFields: lastHideColumnFields } =
       this.spreadsheet.options.interaction;
 
-    const willDisplayColumnFields = hideColumnNodes.map((hideColumnNode) =>
-      this.spreadsheet.isTableMode() ? hideColumnNode.field : hideColumnNode.id,
+    const willDisplayColumnFields = hideColumnNodes.map(
+      this.getHideColumnField,
     );
     const hiddenColumnFields = difference(
       lastHideColumnFields,

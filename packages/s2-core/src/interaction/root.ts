@@ -303,11 +303,7 @@ export class RootInteraction {
   };
 
   public hideColumns(hiddenColumnFields: string[] = []) {
-    if (this.spreadsheet.isTableMode()) {
-      hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, true);
-      return;
-    }
-    hideColumns(this.spreadsheet, hiddenColumnFields, true);
+    hideColumnsByThunkGroup(this.spreadsheet, hiddenColumnFields, true);
   }
 
   private getDefaultInteractions() {

@@ -11,7 +11,8 @@ const s2Options: S2Options = {
   height: 200,
   hdAdapter: false,
 };
-const S2EventCases = [
+
+const S2EventCases: Array<{ event: S2Event; name: string }> = [
   {
     event: S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
     name: 'onRowCellCollapseTreeRows',
@@ -58,12 +59,12 @@ const S2EventCases = [
     name: 'onCollapseRowsAll',
   },
   {
-    event: S2Event.LAYOUT_TABLE_COL_EXPANDED,
-    name: 'onLayoutTableColExpanded',
+    event: S2Event.LAYOUT_COLS_EXPANDED,
+    name: 'onLayoutColsExpanded',
   },
   {
-    event: S2Event.LAYOUT_TABLE_COL_HIDDEN,
-    name: 'onLayoutTableColHidden',
+    event: S2Event.LAYOUT_COLS_HIDDEN,
+    name: 'onLayoutColsHidden',
   },
   {
     event: S2Event.LAYOUT_BEFORE_RENDER,
@@ -163,6 +164,7 @@ const S2EventCases = [
   // 在测试中，模拟 toString 方法，方便使用 %s 打印出 name
   toString: () => i.name,
 }));
+
 const cellEventCases = [
   {
     event: S2Event.ROW_CELL_HOVER,

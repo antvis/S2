@@ -152,6 +152,20 @@ export const hideColumns = (
 };
 
 /**
+ * @name 获取配置的列头
+ * @description 明细表: 配置的是 field,直接使用, 透视表: 需要将 field 转成布局之后的唯一id
+ */
+export const getColumns = (spreadsheet: SpreadSheet) => {
+  const { columns = [] } = spreadsheet.dataCfg.fields;
+
+  if (spreadsheet.isTableMode()) {
+    return columns;
+  }
+
+  return spreadsheet.getInitColumnLeafNodes().map(({ id }) => id);
+};
+
+/**
  * @name 根据分组隐藏指定列
  * @description 根据配置的隐藏列自动分组, 批量隐藏
  */
@@ -160,8 +174,9 @@ export const hideColumnsByThunkGroup = (
   hiddenColumnFields: string[] = [],
   forceRender = false,
 ) => {
+  const columns = getColumns(spreadsheet);
   const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
-    spreadsheet.dataCfg.fields.columns,
+    columns,
     hiddenColumnFields,
   );
   hiddenColumnsGroup.forEach((fields) => {

@@ -11,6 +11,7 @@ import {
   getValidDisplaySiblingNode,
   getValidDisplaySiblingNodeId,
   isEqualDisplaySiblingNodeId,
+  getColumns,
 } from '@/utils/hide-columns';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { S2Event } from '@/common/constant';
@@ -18,6 +19,7 @@ import { S2Event } from '@/common/constant';
 describe('hide-columns test', () => {
   let sheet: SpreadSheet;
   let mockSpreadSheetInstance: PivotSheet;
+
   const initColumnNodes: Partial<Node>[] = [
     { field: '1', id: 'id-1', colIndex: 1 },
     { field: '2', id: 'id-2', colIndex: 2 },
@@ -25,6 +27,7 @@ describe('hide-columns test', () => {
     { field: '4', id: 'id-4', colIndex: 4 },
     { field: '5', id: 'id-5', colIndex: 5 },
   ];
+
   beforeEach(() => {
     sheet = {
       getInitColumnLeafNodes: () => initColumnNodes,
@@ -49,6 +52,7 @@ describe('hide-columns test', () => {
     mockSpreadSheetInstance.interaction = {
       reset: jest.fn(),
     } as unknown as RootInteraction;
+    mockSpreadSheetInstance.isTableMode = () => true;
   });
 
   test('should return empty list when there is not init columns', () => {
@@ -63,6 +67,34 @@ describe('hide-columns test', () => {
       { field: '1', id: 'id-1', colIndex: 1 },
       { field: '2', id: 'id-2', colIndex: 2 },
       { field: '3', id: 'id-3', colIndex: 3 },
+    ]);
+  });
+
+  test('should get columns for table mode', () => {
+    jest
+      .spyOn(mockSpreadSheetInstance, 'isTableMode')
+      .mockImplementationOnce(() => true);
+
+    expect(getColumns(mockSpreadSheetInstance)).toEqual([
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+    ]);
+  });
+
+  test('should get columns for pivot mode', () => {
+    jest
+      .spyOn(mockSpreadSheetInstance, 'isTableMode')
+      .mockImplementationOnce(() => false);
+
+    expect(getColumns(mockSpreadSheetInstance)).toEqual([
+      'id-1',
+      'id-2',
+      'id-3',
+      'id-4',
+      'id-5',
     ]);
   });
 
