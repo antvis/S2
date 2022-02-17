@@ -25,20 +25,20 @@ const S2EventCases = [
     name: 'onDataCellBrushSelection',
   },
   {
-    event: S2Event.SORT_GROUP_SORT,
-    name: 'onGroupSort',
+    event: S2Event.RANGE_SORT,
+    name: 'onRangeSort',
   },
   {
-    event: S2Event.SORT_GROUP_SORTED,
-    name: 'onGroupSorted',
+    event: S2Event.RANGE_SORTED,
+    name: 'onRangeSorted',
   },
   {
-    event: S2Event.FILTER,
-    name: 'onFilter',
+    event: S2Event.RANGE_FILTER,
+    name: 'onRangeFilter',
   },
   {
-    event: S2Event.FILTERED,
-    name: 'onFiltered',
+    event: S2Event.RANGE_FILTERED,
+    name: 'onRangeFiltered',
   },
   {
     event: S2Event.LAYOUT_AFTER_HEADER_LAYOUT,
