@@ -131,12 +131,15 @@ export interface BaseSheetComponentProps {
   onMergedCellsMouseMove?: (data: TargetCellInfo) => void;
 
   // ============== Sort ====================
-  onGroupSort?: (params: SortParams) => void;
-  onGroupSorted?: (event: CanvasEvent) => void;
+  onRangeSort?: (params: SortParams) => void;
+  onRangeSorted?: (event: CanvasEvent) => void;
 
   // ============== Filter ====================
-  onFilter?: (data: { filterKey: string; filteredValues: string[] }) => void;
-  onFiltered?: (data: DataType[]) => void;
+  onRangeFilter?: (data: {
+    filterKey: string;
+    filteredValues: string[];
+  }) => void;
+  onRangeFiltered?: (data: DataType[]) => void;
 
   // ============== Layout ====================
   onLayoutAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
