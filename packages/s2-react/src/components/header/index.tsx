@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react';
-import { PageHeader } from 'antd';
+import { PageHeader, PageHeaderProps } from 'antd';
 import cx from 'classnames';
 import { S2DataConfig, S2Options, SpreadSheet } from '@antv/s2';
 import { Export, ExportCfgProps } from '../export';
@@ -8,15 +8,12 @@ import { AdvancedSort, AdvancedSortCfgProps } from '../advanced-sort';
 import { SwitcherCfgProps, SwitcherHeader } from '../switcher/header';
 import './index.less';
 
-export interface HeaderCfgProps {
+export interface HeaderCfgProps extends PageHeaderProps {
   width?: React.CSSProperties['width'];
-  className?: string;
-  title?: ReactNode;
   description?: ReactNode;
   exportCfg?: ExportCfgProps;
   advancedSortCfg?: AdvancedSortCfgProps;
   switcherCfg?: SwitcherCfgProps;
-  extra?: ReactNode;
 }
 
 export interface HeaderProps extends HeaderCfgProps {
