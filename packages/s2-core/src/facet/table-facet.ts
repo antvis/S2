@@ -60,7 +60,7 @@ export class TableFacet extends BaseFacet {
     super(cfg);
 
     const s2 = this.spreadsheet;
-    s2.on(S2Event.SORT_GROUP_SORT, (sortParams) => {
+    s2.on(S2Event.RANGE_SORT, (sortParams) => {
       const { sortKey, sortMethod, sortBy } = sortParams as TableSortParams;
       set(s2.dataCfg, 'sortParams', [
         {
@@ -72,12 +72,12 @@ export class TableFacet extends BaseFacet {
       s2.setDataCfg(s2.dataCfg);
       s2.render(true);
       s2.emit(
-        S2Event.SORT_GROUP_SORTED,
+        S2Event.RANGE_SORTED,
         (s2.dataSet as TableDataSet).getDisplayDataSet(),
       );
     });
 
-    s2.on(S2Event.FILTER, (params) => {
+    s2.on(S2Event.RANGE_FILTER, (params) => {
       /** remove filter params on current key if passed an empty filterValues field */
       const unFilter =
         !params.filteredValues || params.filteredValues.length === 0;
@@ -104,7 +104,7 @@ export class TableFacet extends BaseFacet {
 
       s2.render(true);
       s2.emit(
-        S2Event.FILTERED,
+        S2Event.RANGE_FILTERED,
         (s2.dataSet as TableDataSet).getDisplayDataSet(),
       );
     });
@@ -126,8 +126,8 @@ export class TableFacet extends BaseFacet {
 
   public destroy() {
     super.destroy();
-    this.spreadsheet.off(S2Event.SORT_GROUP_SORT);
-    this.spreadsheet.off(S2Event.FILTER);
+    this.spreadsheet.off(S2Event.RANGE_SORT);
+    this.spreadsheet.off(S2Event.RANGE_FILTER);
   }
 
   protected doLayout(): LayoutResult {

@@ -117,12 +117,12 @@ export function useEvents(props: BaseSheetComponentProps, s2: SpreadSheet) {
   );
 
   // ============== Sort ====================
-  useS2Event(S2Event.SORT_GROUP_SORT, props.onGroupSort, s2);
-  useS2Event(S2Event.SORT_GROUP_SORTED, props.onGroupSorted, s2);
+  useS2Event(S2Event.RANGE_SORT, props.onRangeSort, s2);
+  useS2Event(S2Event.RANGE_SORTED, props.onRangeSorted, s2);
 
   // ============== Filter ====================
-  useS2Event(S2Event.FILTER, props.onFilter, s2);
-  useS2Event(S2Event.FILTERED, props.onFiltered, s2);
+  useS2Event(S2Event.RANGE_FILTER, props.onRangeFilter, s2);
+  useS2Event(S2Event.RANGE_FILTERED, props.onRangeFiltered, s2);
 
   // ============== Layout ====================
   useS2Event(

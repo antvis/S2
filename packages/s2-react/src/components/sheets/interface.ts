@@ -131,12 +131,15 @@ export interface BaseSheetComponentProps {
   onMergedCellsMouseMove?: (data: TargetCellInfo) => void;
 
   // ============== Sort ====================
-  onGroupSort?: (params: SortParams) => void;
-  onGroupSorted?: (event: CanvasEvent) => void;
+  onRangeSort?: (params: SortParams) => void;
+  onRangeSorted?: (event: CanvasEvent) => void;
 
   // ============== Filter ====================
-  onFilter?: (data: { filterKey: string; filteredValues: string[] }) => void;
-  onFiltered?: (data: DataType[]) => void;
+  onRangeFilter?: (data: {
+    filterKey: string;
+    filteredValues: string[];
+  }) => void;
+  onRangeFiltered?: (data: DataType[]) => void;
 
   // ============== Layout ====================
   onLayoutAfterHeaderLayout?: (layoutResult: LayoutResult) => void;
@@ -189,8 +192,8 @@ export interface BaseSheetComponentProps {
   onActionIconClick?: (event: CanvasEvent) => void;
   onContextMenu?: (event: CanvasEvent) => void;
   onMouseHover?: (event: CanvasEvent) => void;
-  onSelected?: (cells: DataCell[]) => void;
   onMouseUp?: (event: MouseEvent) => void;
+  onSelected?: (cells: DataCell[]) => void;
   onReset?: (event: KeyboardEvent) => void;
   onLinkFieldJump?: (data: { key: string; record: Data }) => void;
 }

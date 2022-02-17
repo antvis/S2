@@ -61,12 +61,12 @@ export interface EmitterType {
   [S2Event.GLOBAL_SELECTED]: SelectedHandler;
 
   /** ================ Sort ================  */
-  [S2Event.SORT_GROUP_SORT]: (info: TableSortParams | SortParams) => void;
-  [S2Event.SORT_GROUP_SORTED]: SortedHandler | CanvasEventHandler;
+  [S2Event.RANGE_SORT]: (info: TableSortParams | SortParams) => void;
+  [S2Event.RANGE_SORTED]: SortedHandler | CanvasEventHandler;
 
   /** ================ Filter ================  */
-  [S2Event.FILTER]: (info: FilterParam) => void;
-  [S2Event.FILTERED]: (data: Data[]) => any;
+  [S2Event.RANGE_FILTER]: (info: FilterParam) => void;
+  [S2Event.RANGE_FILTERED]: (data: Data[]) => any;
 
   /** ================ Cell ================  */
   [S2Event.GLOBAL_LINK_FIELD_JUMP]: (data: {
