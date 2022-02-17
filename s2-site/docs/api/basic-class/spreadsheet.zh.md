@@ -58,7 +58,7 @@ order: 1
 | getCell | 根据 event.target 获取当前 单元格 | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [S2CellType](/zh/docs/api/basic-class/base-cell#s2celltype) |
 | getCellType | 根据 event.target 获取当前 单元格类型 | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [CellTypes](/zh/docs/api/basic-class/base-cell#celltypes) |
 | getTotalsConfig | 获取总计小计配置 | (dimension: string) => [Total](/zh/docs/api/general/S2Options#totals) |
-| getInitColumnNodes | 获取初次渲染的列头信息 （比如：隐藏列头前） | () => [Node[]](/zh/docs/api/basic-class/node/) |
+| getInitColumnLeafNodes | 获取初次渲染的列头叶子节点 （比如：隐藏列头前） | () => [Node[]](/zh/docs/api/basic-class/node/) |
 
 ### S2MountContainer
 

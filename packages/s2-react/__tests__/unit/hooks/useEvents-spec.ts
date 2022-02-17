@@ -12,7 +12,7 @@ const s2Options: S2Options = {
   hdAdapter: false,
 };
 
-const S2EventCases: Array<{ event: S2Event; name: string }> = [
+const S2EventCases = [
   {
     event: S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
     name: 'onRowCellCollapseTreeRows',
@@ -68,23 +68,23 @@ const S2EventCases: Array<{ event: S2Event; name: string }> = [
   },
   {
     event: S2Event.LAYOUT_BEFORE_RENDER,
-    name: 'onLayoutTableColExpanded',
+    name: 'onBeforeRender',
   },
   {
     event: S2Event.LAYOUT_AFTER_RENDER,
-    name: 'onLayoutTableColHidden',
+    name: 'onAfterRender',
   },
   {
     event: S2Event.LAYOUT_DESTROY,
-    name: 'onLayoutTableColHidden',
+    name: 'onDestroy',
   },
   {
     event: S2Event.LAYOUT_RESIZE,
-    name: 'onLayoutTableColHidden',
+    name: 'onLayoutResize',
   },
   {
     event: S2Event.LAYOUT_RESIZE_SERIES_WIDTH,
-    name: 'onLayoutTableColHidden',
+    name: 'onLayoutResizeSeriesWidth',
   },
   {
     event: S2Event.LAYOUT_RESIZE_ROW_WIDTH,
@@ -319,7 +319,7 @@ describe('useEvents tests', () => {
   });
 
   test.each(
-    cellEventCases.concat(S2EventCases) as Array<{
+    cellEventCases.concat(S2EventCases as any) as Array<{
       event: S2Event;
       name: keyof BaseSheetComponentProps;
       eventHook: typeof useCellEvent | typeof useS2Event;

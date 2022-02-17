@@ -46,7 +46,6 @@ order: 0
 | onCornerCellHover | 角头鼠标悬停事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onCornerCellClick | 角头鼠标单击事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onCornerCellDoubleClick | 角头鼠标双击事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
-| onCornerCellDoubleClick | 角头鼠标双击事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onCornerCellMouseUp | 角头鼠标按下事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onCornerCellMouseUp |角头鼠标松开事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
 | onCornerCellMouseMove | 角头鼠标移动事件                                                                                                  | (data: [TargetCellInfo](#targetcellinfo)) => void | | |
@@ -65,10 +64,10 @@ order: 0
 | onLayoutCellScroll | 单元格滚动事件                                                                            | ({position: [CellScrollPosition](#cellscrollposition)} ) => void; | | |
 | onLayoutAfterCollapseRows | 树状模式下收起行头后的事件回调                                                                           | ({collapsedRows: Record<string, boolean> ) => void; | | |
 | onCollapseRowsAll | 树状模式下收起全部的事件回调                                                                           | ({hierarchyCollapse: boolean ) => void; | | |
-| onLayoutTableColExpanded | 明细开启隐藏列头（tooltip.operation.hiddenColumns = true）后，展开列头的事件回调 | ({hierarchyCollapse: boolean ) => void; | | |
-| onLayoutTableColHidden | 明细开启隐藏列头（tooltip.operation.hiddenColumns = true）后，隐藏列头的事件回调  | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; | | |
+| onLayoutColsExpanded | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头展开的事件回调 | ({hierarchyCollapse: boolean ) => void; | | |
+| onLayoutColsHidden | 开启隐藏列头（tooltip.operation.hiddenColumns = true）后，列头隐藏的事件回调  | ({data: { currentHiddenColumnsInfo:[HiddenColumnsInfo](#hiddencolumnsinfo);hiddenColumnsDetail:[HiddenColumnsInfo](#hiddencolumnsinfo)[];} ) => void; | | |
 | onBeforeRender | 开始 render 前的事件 | () => void; | | |
-| onAftereRender | render 完成的事件 | () => void; | | |
+| onAfterRender | render 完成的事件 | () => void; | | |
 | onDestroy | 表格销毁事件 | () => void; | | |
 | onLayoutResize | 表格整体 changeSize 事件 | (params: [ResizeParams](#resizeparams)) => void; | | |
 | onLayoutResizeSeriesWidth | 表格序号行宽事件 | (params: [ResizeParams](#resizeparams)) => void; | | |
@@ -116,12 +115,12 @@ order: 0
 
 ### HiddenColumnsInfo
 
-功能描述： 明细开启[隐藏列头](/zh/docs/manual/advanced/interaction/hide-columns)后，隐藏列头的结点信息
+功能描述： 开启 [隐藏列头](/zh/docs/manual/advanced/interaction/hide-columns) 后，隐藏列头的节点信息
 
 | 参数 | 说明 | 类型 | 默认值  | 必选 |
 | :--- | :--- | :--- | :--- | :---: |
-| hideColumnNodes | 当前隐藏的结点信息 | [Node](/zh/docs/api/basic-class/node)[] | | |
-| displaySiblingNode | 展示的相邻结点信息 | {prev:[Node](/zh/docs/api/basic-class/node);next: [Node](/zh/docs/api/basic-class/node);} | | |
+| hideColumnNodes | 当前隐藏的节点信息 | [Node](/zh/docs/api/basic-class/node)[] | | |
+| displaySiblingNode | 展示的相邻节点信息 | {prev:[Node](/zh/docs/api/basic-class/node);next: [Node](/zh/docs/api/basic-class/node);} | | |
 
 ### ResizeParams
 
