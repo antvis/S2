@@ -854,7 +854,7 @@ export abstract class BaseFacet {
       return;
     }
 
-    event.preventDefault?.();
+    event?.preventDefault?.();
     this.spreadsheet.interaction.addIntercepts([InterceptType.HOVER]);
 
     if (!this.cancelScrollFrame()) {

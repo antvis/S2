@@ -13,6 +13,8 @@ export interface S2PaginationProps {
   setPageSize?: (pageSize: number) => void;
 }
 
+const PRE_CLASS = `${S2_PREFIX_CLS}-pagination`;
+
 export const S2Pagination: React.FC<S2PaginationProps> = ({
   pagination,
   current,
@@ -28,7 +30,6 @@ export const S2Pagination: React.FC<S2PaginationProps> = ({
 
   // only show the pagination when the pageSize > 5
   const showQuickJumper = total / pageSize > 5;
-  const PRE_CLASS = `${S2_PREFIX_CLS}-pagination`;
 
   return (
     <div className={PRE_CLASS}>

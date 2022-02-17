@@ -1,3 +1,30 @@
+# [@antv/s2-react-v1.9.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0...@antv/s2-react-v1.9.0) (2022-02-16)
+
+
+### Bug Fixes
+
+* s2-react 事件在 react hooks 使用中事件改变后未及时更新 ([#1091](https://github.com/antvis/S2/issues/1091)) ([304c03b](https://github.com/antvis/S2/commit/304c03b8b1dde57fbd2948954d8bd481051da205))
+* 初始化后更新dataCfg不触发分页total变化 ([#1090](https://github.com/antvis/S2/issues/1090)) ([1244df6](https://github.com/antvis/S2/commit/1244df675090c05c6f7ac2208fc6a9b0917eb1db))
+
+
+### Features
+
+* s2-react 全量透出事件回调函数 ([#1092](https://github.com/antvis/S2/issues/1092)) ([7e5fe5d](https://github.com/antvis/S2/commit/7e5fe5db5df582966df4ecdc1bb96a33e139a979))
+
+# [@antv/s2-react-v1.8.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.7.0...@antv/s2-react-v1.8.0) (2022-02-11)
+
+
+### Bug Fixes
+
+* 修复子节点收起后角头全部展开收起不生效 close [#1072](https://github.com/antvis/S2/issues/1072) ([#1074](https://github.com/antvis/S2/issues/1074)) ([6f70f38](https://github.com/antvis/S2/commit/6f70f389fe8a0825dfc80cac871e25adc45280ad))
+* 当不同父节点下存在相同子节点时高级排序出错 close [#1065](https://github.com/antvis/S2/issues/1065) ([#1066](https://github.com/antvis/S2/issues/1066)) ([b561ac4](https://github.com/antvis/S2/commit/b561ac48f2e06a0f252e62edcfdc67839fe2689c))
+
+
+### Features
+
+* ✨ 新趋势分析表 ([#1080](https://github.com/antvis/S2/issues/1080)) ([f88fefb](https://github.com/antvis/S2/commit/f88fefbabc2df1226ef9484d4848aa77db833b67)), closes [#869](https://github.com/antvis/S2/issues/869) [#871](https://github.com/antvis/S2/issues/871) [#876](https://github.com/antvis/S2/issues/876) [#873](https://github.com/antvis/S2/issues/873) [#878](https://github.com/antvis/S2/issues/878) [#897](https://github.com/antvis/S2/issues/897) [#890](https://github.com/antvis/S2/issues/890) [#892](https://github.com/antvis/S2/issues/892) [#906](https://github.com/antvis/S2/issues/906) [#905](https://github.com/antvis/S2/issues/905) [#908](https://github.com/antvis/S2/issues/908) [#916](https://github.com/antvis/S2/issues/916) [#913](https://github.com/antvis/S2/issues/913) [#898](https://github.com/antvis/S2/issues/898) [#902](https://github.com/antvis/S2/issues/902) [#907](https://github.com/antvis/S2/issues/907) [#910](https://github.com/antvis/S2/issues/910) [#919](https://github.com/antvis/S2/issues/919) [#925](https://github.com/antvis/S2/issues/925) [#927](https://github.com/antvis/S2/issues/927) [#929](https://github.com/antvis/S2/issues/929) [#944](https://github.com/antvis/S2/issues/944) [#946](https://github.com/antvis/S2/issues/946) [#958](https://github.com/antvis/S2/issues/958) [#964](https://github.com/antvis/S2/issues/964) [#961](https://github.com/antvis/S2/issues/961) [#970](https://github.com/antvis/S2/issues/970) [#974](https://github.com/antvis/S2/issues/974) [#984](https://github.com/antvis/S2/issues/984) [#986](https://github.com/antvis/S2/issues/986) [#991](https://github.com/antvis/S2/issues/991) [#995](https://github.com/antvis/S2/issues/995) [#996](https://github.com/antvis/S2/issues/996) [#1003](https://github.com/antvis/S2/issues/1003) [#1005](https://github.com/antvis/S2/issues/1005) [#990](https://github.com/antvis/S2/issues/990) [#992](https://github.com/antvis/S2/issues/992) [#993](https://github.com/antvis/S2/issues/993) [#997](https://github.com/antvis/S2/issues/997) [#972](https://github.com/antvis/S2/issues/972) [#1001](https://github.com/antvis/S2/issues/1001) [#1002](https://github.com/antvis/S2/issues/1002) [#1007](https://github.com/antvis/S2/issues/1007) [#1010](https://github.com/antvis/S2/issues/1010) [#1019](https://github.com/antvis/S2/issues/1019) [#1015](https://github.com/antvis/S2/issues/1015) [#1023](https://github.com/antvis/S2/issues/1023) [#1024](https://github.com/antvis/S2/issues/1024) [#1030](https://github.com/antvis/S2/issues/1030) [#1046](https://github.com/antvis/S2/issues/1046) [#1049](https://github.com/antvis/S2/issues/1049) [#1052](https://github.com/antvis/S2/issues/1052) [#1058](https://github.com/antvis/S2/issues/1058) [#1059](https://github.com/antvis/S2/issues/1059) [#1062](https://github.com/antvis/S2/issues/1062) [#1063](https://github.com/antvis/S2/issues/1063) [#1064](https://github.com/antvis/S2/issues/1064) [#1067](https://github.com/antvis/S2/issues/1067) [#1069](https://github.com/antvis/S2/issues/1069) [#1070](https://github.com/antvis/S2/issues/1070) [#1071](https://github.com/antvis/S2/issues/1071) [#1073](https://github.com/antvis/S2/issues/1073) [#1076](https://github.com/antvis/S2/issues/1076) [#1075](https://github.com/antvis/S2/issues/1075) [#1077](https://github.com/antvis/S2/issues/1077)
+* 支持自定义设备像素比 ([#1054](https://github.com/antvis/S2/issues/1054)) ([49ac6ac](https://github.com/antvis/S2/commit/49ac6ac3a259d3622a064333213b9a352ea344bb))
+
 # [@antv/s2-react-v1.8.0-alpha.7](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0-alpha.6...@antv/s2-react-v1.8.0-alpha.7) (2022-02-10)
 
 
