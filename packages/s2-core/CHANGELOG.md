@@ -1,3 +1,12 @@
+# [@antv/s2-v1.9.0](https://github.com/antvis/S2/compare/@antv/s2-v1.8.0...@antv/s2-v1.9.0) (2022-02-16)
+
+
+### Features
+
+* Meta内formatter增加入参提供完整数据 close [#994](https://github.com/antvis/S2/issues/994) ([#1085](https://github.com/antvis/S2/issues/1085)) ([c4f3c47](https://github.com/antvis/S2/commit/c4f3c47b75dd0e97319f32a17c6596b5b4922f9b))
+* s2-react 全量透出事件回调函数 ([#1092](https://github.com/antvis/S2/issues/1092)) ([7e5fe5d](https://github.com/antvis/S2/commit/7e5fe5db5df582966df4ecdc1bb96a33e139a979))
+* 全量展示小计项 ([#1086](https://github.com/antvis/S2/issues/1086)) ([ae24364](https://github.com/antvis/S2/commit/ae24364585424f11417eb7814744f90f736e3bda))
+
 # [@antv/s2-v1.8.0](https://github.com/antvis/S2/compare/@antv/s2-v1.7.0...@antv/s2-v1.8.0) (2022-02-11)
 
 

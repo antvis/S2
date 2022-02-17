@@ -1,3 +1,16 @@
+# [@antv/s2-react-v1.9.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0...@antv/s2-react-v1.9.0) (2022-02-16)
+
+
+### Bug Fixes
+
+* s2-react 事件在 react hooks 使用中事件改变后未及时更新 ([#1091](https://github.com/antvis/S2/issues/1091)) ([304c03b](https://github.com/antvis/S2/commit/304c03b8b1dde57fbd2948954d8bd481051da205))
+* 初始化后更新dataCfg不触发分页total变化 ([#1090](https://github.com/antvis/S2/issues/1090)) ([1244df6](https://github.com/antvis/S2/commit/1244df675090c05c6f7ac2208fc6a9b0917eb1db))
+
+
+### Features
+
+* s2-react 全量透出事件回调函数 ([#1092](https://github.com/antvis/S2/issues/1092)) ([7e5fe5d](https://github.com/antvis/S2/commit/7e5fe5db5df582966df4ecdc1bb96a33e139a979))
+
 # [@antv/s2-react-v1.8.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.7.0...@antv/s2-react-v1.8.0) (2022-02-11)
 
 
