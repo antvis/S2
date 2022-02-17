@@ -1,3 +1,11 @@
+# [@antv/s2-react-v1.9.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.9.0...@antv/s2-react-v1.9.1) (2022-02-17)
+
+
+### Bug Fixes
+
+* **header:** header props types ([#1096](https://github.com/antvis/S2/issues/1096)) ([e85c5df](https://github.com/antvis/S2/commit/e85c5df5b2c3354718b8b27cef847c4ccc52115a))
+* 回退排序筛选事件变量名 ([#1097](https://github.com/antvis/S2/issues/1097)) ([9eeb1cd](https://github.com/antvis/S2/commit/9eeb1cdafdd051834383a1423583e221388a581e))
+
 # [@antv/s2-react-v1.9.0](https://github.com/antvis/S2/compare/@antv/s2-react-v1.8.0...@antv/s2-react-v1.9.0) (2022-02-16)
 
 
