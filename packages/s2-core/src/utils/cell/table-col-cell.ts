@@ -61,17 +61,17 @@ export const getExtraPaddingForExpandIcon = (
 };
 
 export const getOccupiedWidthForTableCol = (
-  ss: SpreadSheet,
+  s2: SpreadSheet,
   meta: Node,
   style: DefaultCellTheme,
 ) => {
   const padding = get(style, 'cell.padding');
-  const expandIconPadding = getExtraPaddingForExpandIcon(ss, meta.field, style);
+  const expandIconPadding = getExtraPaddingForExpandIcon(s2, meta.field, style);
 
   return (
     padding.left +
     padding.right +
-    getTableColIconsWidth(ss, meta, CellTypes.COL_CELL, get(style, 'icon')) +
+    getTableColIconsWidth(s2, meta, CellTypes.COL_CELL, get(style, 'icon')) +
     expandIconPadding.left +
     expandIconPadding.right
   );

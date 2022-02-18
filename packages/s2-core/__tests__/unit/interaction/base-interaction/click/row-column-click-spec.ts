@@ -58,8 +58,9 @@ describe('Interaction Data Cell Click Tests', () => {
       },
       data: [],
     };
-    s2.getInitColumnNodes = () => initColumnNodes as Node[];
+    s2.getInitColumnLeafNodes = () => initColumnNodes as Node[];
     s2.getColumnNodes = () => initColumnNodes as Node[];
+    s2.getColumnLeafNodes = () => initColumnNodes as Node[];
     s2.options = {
       interaction: {
         hiddenColumnFields: ['a'],
@@ -103,7 +104,7 @@ describe('Interaction Data Cell Click Tests', () => {
 
   test('should expand columns correctly', () => {
     const columnsExpand = jest.fn();
-    s2.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, columnsExpand);
+    s2.on(S2Event.LAYOUT_COLS_EXPANDED, columnsExpand);
 
     const mockNode: Partial<Node> = {
       field: 'a',
@@ -117,7 +118,7 @@ describe('Interaction Data Cell Click Tests', () => {
     ];
     s2.store.set('hiddenColumnsDetail', defaultColumnsDetail);
 
-    s2.emit(S2Event.LAYOUT_TABLE_COL_EXPANDED, mockNode as Node);
+    s2.emit(S2Event.LAYOUT_COLS_EXPANDED, mockNode as Node);
 
     // emit hook
     expect(columnsExpand).toHaveBeenCalled();
@@ -140,7 +141,7 @@ describe('Interaction Data Cell Click Tests', () => {
 
   test('should hidden columns correctly', () => {
     const columnsHidden = jest.fn();
-    s2.on(S2Event.LAYOUT_TABLE_COL_HIDDEN, columnsHidden);
+    s2.on(S2Event.LAYOUT_COLS_HIDDEN, columnsHidden);
 
     // trigger hidden icon click
     rowColumnClick.hideSelectedColumns();

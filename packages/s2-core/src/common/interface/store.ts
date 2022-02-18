@@ -69,8 +69,8 @@ export interface StoreKey {
   activeResizeArea: Group;
   // interval condition
   valueRanges: ValueRanges;
-  // 初次渲染时的列头节点
-  initColumnNodes: Node[];
+  // 初次渲染时的列头叶子节点
+  initColumnLeafNodes: Node[];
   /**
    * 隐藏列详情
    *  | a, b, [c,d 隐藏] [icon e ] , [f 隐藏], [icon g]   |
