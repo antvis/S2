@@ -79,14 +79,8 @@ export class CornerCell extends HeaderCell {
 
     const textStyle = this.getTextStyle();
 
-    let cornerText: string;
+    const cornerText = this.getCornerText(label);
 
-    if (isEqual(label, EXTRA_FIELD)) {
-      cornerText = this.spreadsheet.options?.cornerText || DEFAULT_CORNER_TEXT;
-    } else {
-      const { formattedValue } = this.getFormattedFieldValue();
-      cornerText = formattedValue;
-    }
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
 
     const maxWidth = this.getMaxTextWidth();
@@ -369,5 +363,16 @@ export class CornerCell extends HeaderCell {
       x: 0,
       y: 0,
     };
+  }
+
+  protected getCornerText(label: string) {
+    let cornerText: string;
+    if (isEqual(label, EXTRA_FIELD)) {
+      cornerText = this.spreadsheet.options?.cornerText || DEFAULT_CORNER_TEXT;
+    } else {
+      const { formattedValue } = this.getFormattedFieldValue();
+      cornerText = formattedValue;
+    }
+    return cornerText;
   }
 }
