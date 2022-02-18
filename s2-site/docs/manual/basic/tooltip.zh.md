@@ -202,26 +202,26 @@ s2.showTooltip({
 
 #### 自定义 Tooltip 操作项
 
-除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，支持嵌套，也可以监听各自的点击事件
+除了默认提供的操作项，还可以配置 `operation.menus` 自定义操作项，支持嵌套，也可以监听各自的 `onClick` 点击事件，可以拿到 当前 `tooltip` 对应的 [单元格信息](/zh/docs/api/basic-class/base-cell)
 
 ```ts
 const s2Options = {
   tooltip: {
     operation: {
-      trend: true,
       menus: [
         {
           key: 'custom-a',
           text: '操作 1',
           icon: 'Trend',
-          onClick: () => {
+          onClick: (cell) => {
             console.log('操作 1 点击');
+            console.log('tooltip 对应的单元格：', cell)
           },
           children: [{
             key: 'custom-a-a',
             text: '操作 1-1',
             icon: 'Trend',
-            onClick: () => {
+            onClick: (cell) => {
               console.log('操作 1-1 点击');
             },
           }]
@@ -230,7 +230,7 @@ const s2Options = {
           key: 'custom-b',
           text: '操作 2',
           icon: 'EyeOutlined',
-          onClick: () => {
+          onClick: (cell) => {
             console.log('操作 2 点击');
           },
         },
