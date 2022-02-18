@@ -5,6 +5,7 @@ import {
   TOOLTIP_PREFIX_CLS,
   TooltipOperatorMenu,
   TooltipOperatorOptions,
+  S2CellType,
 } from '@antv/s2';
 import { Icon } from '../icon';
 import './index.less';
@@ -12,6 +13,7 @@ import './index.less';
 interface TooltipOperatorProps extends TooltipOperatorOptions {
   onlyMenu: boolean;
   onClick: MenuProps['onClick'];
+  cell: S2CellType;
 }
 
 /**
@@ -22,11 +24,11 @@ interface TooltipOperatorProps extends TooltipOperatorOptions {
  */
 
 export const TooltipOperator = (props: TooltipOperatorProps) => {
-  const { menus, onlyMenu, onClick: onMenuClick } = props;
+  const { menus, onlyMenu, onClick: onMenuClick, cell } = props;
 
   const renderTitle = (menu: TooltipOperatorMenu) => {
     return (
-      <span onClick={menu.onClick}>
+      <span onClick={() => menu.onClick?.(cell)}>
         <Icon
           icon={menu.icon}
           className={`${TOOLTIP_PREFIX_CLS}-operator-icon`}
@@ -45,7 +47,7 @@ export const TooltipOperator = (props: TooltipOperatorProps) => {
           title={renderTitle(menu)}
           key={key}
           popupClassName={`${TOOLTIP_PREFIX_CLS}-operator-submenu-popup`}
-          onTitleClick={onClick}
+          onTitleClick={() => onClick?.(cell)}
         >
           {map(children, (subMenu: TooltipOperatorMenu) => renderMenu(subMenu))}
         </Menu.SubMenu>
