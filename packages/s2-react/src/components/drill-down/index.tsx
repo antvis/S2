@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Button, ConfigProvider, Empty, Input, Menu } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
@@ -25,6 +25,7 @@ export interface DrillDownProps {
   titleText?: string;
   searchText?: string;
   clearButtonText?: string;
+  extra?: ReactNode;
   dataSet: DataSet[];
   drillFields?: string[];
   disabledFields?: string[];
@@ -37,6 +38,7 @@ export const DrillDown: React.FC<DrillDownProps> = ({
   titleText = i18n('选择下钻维度'),
   clearButtonText = i18n('恢复默认'),
   searchText = i18n('搜索字段'),
+  extra,
   drillFields,
   dataSet,
   disabledFields,
@@ -118,6 +120,7 @@ export const DrillDown: React.FC<DrillDownProps> = ({
             className={`${PRE_CLASS}-empty`}
           />
         )}
+        {extra}
         <Menu
           className={`${PRE_CLASS}-menu`}
           selectedKeys={drillFields}
