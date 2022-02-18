@@ -1,44 +1,45 @@
 import {
-  EmitterType,
   getBaseCellData,
   S2Event,
   SpreadSheet,
   TargetCellInfo,
 } from '@antv/s2';
-import { useEffect } from 'react';
 import { Event as GEvent } from '@antv/g-canvas';
+import React from 'react';
 import { BaseSheetComponentProps } from '@/components';
 
 export const useCellEvent = (
-  eventName: keyof EmitterType,
+  eventName: S2Event,
   handler: (data: TargetCellInfo) => void,
   s2: SpreadSheet,
 ) => {
-  useEffect(() => {
+  React.useEffect(() => {
     const handlerFn = (event: GEvent) => {
       handler?.(getBaseCellData(event));
     };
     s2?.on(eventName, handlerFn);
+
     return () => {
       s2?.off(eventName, handlerFn);
     };
-  }, [s2, handler]);
+  }, [s2, handler, eventName]);
 };
 
 export const useS2Event = (
-  eventName: keyof EmitterType,
-  handler: (args: any) => void,
+  eventName: S2Event,
+  handler: (args: unknown) => void,
   s2: SpreadSheet,
 ) => {
-  useEffect(() => {
-    const handlerFn = (args: any) => {
+  React.useEffect(() => {
+    const handlerFn = (args: unknown) => {
       handler?.(args);
     };
     s2?.on(eventName, handlerFn);
+
     return () => {
       s2?.off(eventName, handlerFn);
     };
-  }, [s2, handler]);
+  }, [s2, handler, eventName]);
 };
 
 export function useEvents(props: BaseSheetComponentProps, s2: SpreadSheet) {
@@ -140,12 +141,8 @@ export function useEvents(props: BaseSheetComponentProps, s2: SpreadSheet) {
     props.onCollapseRowsAll,
     s2,
   );
-  useS2Event(
-    S2Event.LAYOUT_TABLE_COL_EXPANDED,
-    props.onLayoutTableColExpanded,
-    s2,
-  );
-  useS2Event(S2Event.LAYOUT_TABLE_COL_HIDDEN, props.onLayoutTableColHidden, s2);
+  useS2Event(S2Event.LAYOUT_COLS_EXPANDED, props.onLayoutColsExpanded, s2);
+  useS2Event(S2Event.LAYOUT_COLS_HIDDEN, props.onLayoutColsHidden, s2);
 
   useS2Event(S2Event.LAYOUT_BEFORE_RENDER, props.onBeforeRender, s2);
   useS2Event(S2Event.LAYOUT_AFTER_RENDER, props.onAfterRender, s2);

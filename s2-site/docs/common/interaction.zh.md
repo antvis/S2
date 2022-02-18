@@ -11,7 +11,7 @@ order: 5
 | selectedCellsSpotlight | 是否开启选中高亮聚光灯效果                            | `boolean`                                                                                | `false` |       |
 | hoverHighlight         | 鼠标悬停时高亮当前单元格，以及所对应的行头，列头      | `boolean`                                                                                | `true`  |       |
 | hoverFocus             | 鼠标悬停在当前单元格超过 800ms 后，保持当前高亮，显示 tooltip, 所对应的行头，列头取消高亮       | `boolean`                                                                                | `true`  |       |
-| hiddenColumnFields     | 隐藏列 （明细表有效）                                 | `string[]`                                                                               |         |       |
+| hiddenColumnFields     | 用于配置默认隐藏的列，透视表需要配置列头唯一 id, 明细表配置列头 field 字段即可                                | `string[]`                                                                               |         |       |
 | enableCopy             | 是否允许复制                                          | `boolean`                                                                                | `false` |       |
 | copyWithFormat         | 是否使用 field format 格式复制                        | `boolean`                                                                                | `false` |       |
 | customInteractions     | 自定义交互 [详情](zh/docs/manual/advanced/interaction/custom)                                          | [CustomInteraction[]](#custominteraction)                                                |         |       |

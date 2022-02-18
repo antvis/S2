@@ -41,7 +41,7 @@ this.spreadsheet.interaction.xx()
 | getAllCells | 获取所有单元格 | `() => S2CellType[]` |
 | selectAll | 选中所有单元格 | `() => void` |
 | selectHeaderCell | 选中指定行列头单元格 | `(selectHeaderCellInfo: SelectHeaderCellInfo) => boolean` |
-| hideColumns | 隐藏列 （明细表有效） | `(hiddenColumnFields: string[]) => void` |
+| hideColumns | 隐藏列 | `(hiddenColumnFields: string[]) => void` |
 | mergeCells | 合并单元格 | `(cellsInfo?: MergedCellInfo[], hideData?: boolean) => void` |
 | unmergeCells | 取消合并单元格 | `(removedCells: MergedCell) => void` |
 | updatePanelGroupAllDataCells | 更新所有数值单元格 | `() => void` |

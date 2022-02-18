@@ -62,7 +62,7 @@ const s2options = {
   tooltip: {
     operation: {
       trend: true, // 显示趋势图按钮
-      hiddenColumns: true, //开启隐藏列 （叶子节点有效）
+      hiddenColumns: true, //开启隐藏列（叶子节点有效）
     },
   }
 };

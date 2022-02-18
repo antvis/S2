@@ -428,7 +428,7 @@ export abstract class SpreadSheet extends EE {
       return this.facet.layoutResult.rowNodes;
     }
     return this.facet.layoutResult.rowNodes.filter(
-      (value) => value.level === level,
+      (node) => node.level === level,
     );
   }
 
@@ -437,12 +437,15 @@ export abstract class SpreadSheet extends EE {
    * @param level -1 = get all
    */
   public getColumnNodes(level = -1): Node[] {
+    const colNodes = this.facet?.layoutResult.colNodes || [];
     if (level === -1) {
-      return this.facet?.layoutResult.colNodes;
+      return colNodes;
     }
-    return this.facet?.layoutResult.colNodes.filter(
-      (value) => value.level === level,
-    );
+    return colNodes.filter((node) => node.level === level);
+  }
+
+  public getColumnLeafNodes(): Node[] {
+    return this.getColumnNodes().filter((node) => node.isLeaf);
   }
 
   /**
@@ -573,8 +576,8 @@ export abstract class SpreadSheet extends EE {
     });
   }
 
-  public getInitColumnNodes(): Node[] {
-    return this.store.get('initColumnNodes', []);
+  public getInitColumnLeafNodes(): Node[] {
+    return this.store.get('initColumnLeafNodes', []);
   }
 
   // 初次渲染时, 如果配置了隐藏列, 则生成一次相关配置信息

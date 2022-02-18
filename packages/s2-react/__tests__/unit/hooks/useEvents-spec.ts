@@ -11,6 +11,7 @@ const s2Options: S2Options = {
   height: 200,
   hdAdapter: false,
 };
+
 const S2EventCases = [
   {
     event: S2Event.ROW_CELL_COLLAPSE_TREE_ROWS,
@@ -58,32 +59,32 @@ const S2EventCases = [
     name: 'onCollapseRowsAll',
   },
   {
-    event: S2Event.LAYOUT_TABLE_COL_EXPANDED,
-    name: 'onLayoutTableColExpanded',
+    event: S2Event.LAYOUT_COLS_EXPANDED,
+    name: 'onLayoutColsExpanded',
   },
   {
-    event: S2Event.LAYOUT_TABLE_COL_HIDDEN,
-    name: 'onLayoutTableColHidden',
+    event: S2Event.LAYOUT_COLS_HIDDEN,
+    name: 'onLayoutColsHidden',
   },
   {
     event: S2Event.LAYOUT_BEFORE_RENDER,
-    name: 'onLayoutTableColExpanded',
+    name: 'onBeforeRender',
   },
   {
     event: S2Event.LAYOUT_AFTER_RENDER,
-    name: 'onLayoutTableColHidden',
+    name: 'onAfterRender',
   },
   {
     event: S2Event.LAYOUT_DESTROY,
-    name: 'onLayoutTableColHidden',
+    name: 'onDestroy',
   },
   {
     event: S2Event.LAYOUT_RESIZE,
-    name: 'onLayoutTableColHidden',
+    name: 'onLayoutResize',
   },
   {
     event: S2Event.LAYOUT_RESIZE_SERIES_WIDTH,
-    name: 'onLayoutTableColHidden',
+    name: 'onLayoutResizeSeriesWidth',
   },
   {
     event: S2Event.LAYOUT_RESIZE_ROW_WIDTH,
@@ -163,6 +164,7 @@ const S2EventCases = [
   // 在测试中，模拟 toString 方法，方便使用 %s 打印出 name
   toString: () => i.name,
 }));
+
 const cellEventCases = [
   {
     event: S2Event.ROW_CELL_HOVER,
@@ -317,7 +319,7 @@ describe('useEvents tests', () => {
   });
 
   test.each(
-    cellEventCases.concat(S2EventCases) as Array<{
+    cellEventCases.concat(S2EventCases as any) as Array<{
       event: S2Event;
       name: keyof BaseSheetComponentProps;
       eventHook: typeof useCellEvent | typeof useS2Event;
