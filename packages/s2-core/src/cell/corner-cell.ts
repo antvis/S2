@@ -19,6 +19,7 @@ import {
 import {
   CellTypes,
   EXTRA_FIELD,
+  DEFAULT_CORNER_TEXT,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -73,18 +74,19 @@ export class CornerCell extends HeaderCell {
   protected drawCellText() {
     const { label } = this.meta;
 
-    if (isEqual(label, EXTRA_FIELD)) {
-      // don't render extra node
-      return;
-    }
-
     const { x } = this.getContentArea();
     const { y, height } = this.getCellArea();
 
     const textStyle = this.getTextStyle();
-    const { formattedValue } = this.getFormattedFieldValue();
-    const cornerText = this.spreadsheet.options?.cornerText || formattedValue;
 
+    let cornerText: string;
+
+    if (isEqual(label, EXTRA_FIELD)) {
+      cornerText = this.spreadsheet.options?.cornerText || DEFAULT_CORNER_TEXT;
+    } else {
+      const { formattedValue } = this.getFormattedFieldValue();
+      cornerText = formattedValue;
+    }
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
 
     const maxWidth = this.getMaxTextWidth();
