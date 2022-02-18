@@ -64,6 +64,7 @@ import 'antd/dist/antd.min.css';
 import '@antv/s2/esm/style.css';
 
 const { TabPane } = Tabs;
+
 const fieldMap = {
   channel: ['物美', '华联'],
   sex: ['男', '女'],
@@ -83,6 +84,7 @@ const partDrillDown: PartDrillDown = {
         type: 'text',
       },
     ],
+    extra: <div>test</div>,
   },
   // drillItemsNum: 1,
   fetchData: (meta, drillFields) =>
@@ -157,6 +159,7 @@ function MainLayout() {
   const [strategyOptions, setStrategyOptions] =
     React.useState<S2Options>(mockStrategyOptions);
   const s2Ref = React.useRef<SpreadSheet>();
+  const [columnOptions, setColumnOptions] = React.useState([]);
 
   //  ================== Callback ========================
   const updateOptions = (newOptions: Partial<S2Options<React.ReactNode>>) => {
@@ -237,11 +240,26 @@ function MainLayout() {
     }
   };
 
+  const getColumnOptions = (sheetType: SheetType) => {
+    if (sheetType === 'table') {
+      return dataCfg.fields.columns;
+    }
+    return s2Ref.current?.getInitColumnLeafNodes().map(({ id }) => id) || [];
+  };
+
   //  ================== Hooks ========================
 
   React.useEffect(() => {
     s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, (meta) => {
       console.log('趋势图icon点击', meta);
+    });
+
+    s2Ref.current?.on(S2Event.LAYOUT_COLS_EXPANDED, (data) => {
+      console.log('列头展开', data);
+    });
+
+    s2Ref.current?.on(S2Event.LAYOUT_COLS_HIDDEN, (data) => {
+      console.log('列头隐藏', data);
     });
   }, [sheetType]);
 
@@ -256,6 +274,7 @@ function MainLayout() {
         updateOptions(defaultOptions);
         break;
     }
+    setColumnOptions(getColumnOptions(sheetType));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sheetType]);
 
@@ -377,9 +396,9 @@ function MainLayout() {
 
   return (
     <div className="playground">
-      <Tabs defaultActiveKey="basic" type="card">
+      <Tabs defaultActiveKey="basic" type="card" destroyInactiveTabPane>
         <TabPane tab="基础表" key="basic">
-          <Collapse defaultActiveKey="filter">
+          <Collapse defaultActiveKey={['filter', 'interaction']}>
             <Collapse.Panel header="筛选器" key="filter">
               <Space>
                 <Tooltip title="表格类型">
@@ -664,6 +683,37 @@ function MainLayout() {
                       });
                     }}
                   />
+                </Tooltip>
+                <Tooltip
+                  title={
+                    <>
+                      <p>默认隐藏列 </p>
+                      <p>明细表: 列头指定 field: number</p>
+                      <p>透视表: 列头指定id: root[&]家具[&]沙发[&]number</p>
+                    </>
+                  }
+                >
+                  <Select
+                    style={{ width: 300 }}
+                    defaultValue={mergedOptions.interaction.hiddenColumnFields}
+                    mode="multiple"
+                    placeholder="默认隐藏列"
+                    onChange={(fields) => {
+                      updateOptions({
+                        interaction: {
+                          hiddenColumnFields: fields,
+                        },
+                      });
+                    }}
+                  >
+                    {columnOptions.map((column) => {
+                      return (
+                        <Select.Option value={column} key={column}>
+                          {column}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
                 </Tooltip>
               </Space>
             </Collapse.Panel>

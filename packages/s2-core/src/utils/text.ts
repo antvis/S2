@@ -402,6 +402,6 @@ export const safeJsonParse = (val: string) => {
   try {
     return JSON.parse(val);
   } catch (err) {
-    return false;
+    return null;
   }
 };

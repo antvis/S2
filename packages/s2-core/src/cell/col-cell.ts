@@ -424,7 +424,7 @@ export class ColCell extends HeaderCell {
       cursor: 'pointer',
     });
     icon.on('click', () => {
-      this.spreadsheet.emit(S2Event.LAYOUT_TABLE_COL_EXPANDED, this.meta);
+      this.spreadsheet.emit(S2Event.LAYOUT_COLS_EXPANDED, this.meta);
     });
   }
 

@@ -21,11 +21,19 @@ export const BaseSheet = React.forwardRef(
       sheetType,
     });
 
+    // 同步实例
     React.useEffect(() => {
       if (ref) {
         ref.current = s2Ref.current;
       }
     }, [ref, s2Ref]);
+
+    // 默认隐藏列
+    React.useEffect(() => {
+      s2Ref.current?.interaction.hideColumns(
+        options.interaction?.hiddenColumnFields,
+      );
+    }, [options.interaction?.hiddenColumnFields, s2Ref]);
 
     return (
       <React.StrictMode>

@@ -11,6 +11,7 @@ import {
   getValidDisplaySiblingNode,
   getValidDisplaySiblingNodeId,
   isEqualDisplaySiblingNodeId,
+  getColumns,
 } from '@/utils/hide-columns';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { S2Event } from '@/common/constant';
@@ -18,6 +19,7 @@ import { S2Event } from '@/common/constant';
 describe('hide-columns test', () => {
   let sheet: SpreadSheet;
   let mockSpreadSheetInstance: PivotSheet;
+
   const initColumnNodes: Partial<Node>[] = [
     { field: '1', id: 'id-1', colIndex: 1 },
     { field: '2', id: 'id-2', colIndex: 2 },
@@ -25,9 +27,10 @@ describe('hide-columns test', () => {
     { field: '4', id: 'id-4', colIndex: 4 },
     { field: '5', id: 'id-5', colIndex: 5 },
   ];
+
   beforeEach(() => {
     sheet = {
-      getInitColumnNodes: () => initColumnNodes,
+      getInitColumnLeafNodes: () => initColumnNodes,
       getColumnNodes: () => initColumnNodes,
     } as PivotSheet;
 
@@ -43,16 +46,17 @@ describe('hide-columns test', () => {
       },
       null,
     );
-    mockSpreadSheetInstance.getInitColumnNodes = () =>
+    mockSpreadSheetInstance.getInitColumnLeafNodes = () =>
       initColumnNodes as Node[];
     mockSpreadSheetInstance.render = jest.fn();
     mockSpreadSheetInstance.interaction = {
       reset: jest.fn(),
     } as unknown as RootInteraction;
+    mockSpreadSheetInstance.isTableMode = () => true;
   });
 
   test('should return empty list when there is not init columns', () => {
-    sheet.getInitColumnNodes = function fn() {
+    sheet.getInitColumnLeafNodes = function fn() {
       return [];
     };
     expect(getHiddenColumnNodes(sheet, ['1', '2', '3'])).toEqual([]);
@@ -63,6 +67,34 @@ describe('hide-columns test', () => {
       { field: '1', id: 'id-1', colIndex: 1 },
       { field: '2', id: 'id-2', colIndex: 2 },
       { field: '3', id: 'id-3', colIndex: 3 },
+    ]);
+  });
+
+  test('should get columns for table mode', () => {
+    jest
+      .spyOn(mockSpreadSheetInstance, 'isTableMode')
+      .mockImplementationOnce(() => true);
+
+    expect(getColumns(mockSpreadSheetInstance)).toEqual([
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+    ]);
+  });
+
+  test('should get columns for pivot mode', () => {
+    jest
+      .spyOn(mockSpreadSheetInstance, 'isTableMode')
+      .mockImplementationOnce(() => false);
+
+    expect(getColumns(mockSpreadSheetInstance)).toEqual([
+      'id-1',
+      'id-2',
+      'id-3',
+      'id-4',
+      'id-5',
     ]);
   });
 
@@ -160,7 +192,7 @@ describe('hide-columns test', () => {
 
   test('should get correct last column when default last column has been hidden', () => {
     // hidden last column
-    sheet.getInitColumnNodes = () => initColumnNodes.slice(0, -1) as Node[];
+    sheet.getInitColumnLeafNodes = () => initColumnNodes.slice(0, -1) as Node[];
     expect(isLastColumnAfterHidden(sheet, '5')).toBeTruthy();
     expect(isLastColumnAfterHidden(sheet, '4')).toBeFalsy();
   });
@@ -209,7 +241,7 @@ describe('hide-columns test', () => {
 
   test('should hide columns correctly', () => {
     const columnsHidden = jest.fn();
-    mockSpreadSheetInstance.on(S2Event.LAYOUT_TABLE_COL_HIDDEN, columnsHidden);
+    mockSpreadSheetInstance.on(S2Event.LAYOUT_COLS_HIDDEN, columnsHidden);
 
     hideColumns(mockSpreadSheetInstance, ['5']);
 

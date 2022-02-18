@@ -14,8 +14,10 @@ export class CustomTooltip extends BaseTooltip {
     const { content: contentFromOptions } = this.spreadsheet.options.tooltip;
     // 方法级 s2.showTooltip({ content: '' })
     const showOptions = this.options;
+    const cell = this.spreadsheet.getCell(showOptions.event?.target);
     const tooltipProps: TooltipRenderProps = {
       ...showOptions,
+      cell,
     };
     // 优先级: 方法级 > 配置级, 兼容 content 为空字符串的场景
     const content = showOptions.content ?? contentFromOptions;

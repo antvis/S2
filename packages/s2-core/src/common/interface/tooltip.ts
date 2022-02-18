@@ -9,7 +9,7 @@ export interface TooltipOperatorMenu {
   key: string;
   icon?: Element | string;
   text?: string;
-  onClick?: () => void;
+  onClick?: (cell: S2CellType) => void;
   visible?: boolean | ((cell: S2CellType) => boolean);
   children?: TooltipOperatorMenu[];
 }

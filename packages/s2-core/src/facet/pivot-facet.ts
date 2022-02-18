@@ -56,7 +56,6 @@ export class PivotFacet extends BaseFacet {
         facetCfg: this.cfg,
       });
 
-    this.saveInitColumnNodes(colLeafNodes);
     // 2、calculate all related nodes coordinate
     this.calculateNodesCoordinate(
       rowLeafNodes,

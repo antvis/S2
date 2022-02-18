@@ -154,8 +154,8 @@ export interface BaseSheetComponentProps {
     collapsedRows: Record<string, boolean>;
   }) => void;
   onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
-  onLayoutTableColExpanded?: (node: Node) => void;
-  onLayoutTableColHidden?: (data: {
+  onLayoutColsExpanded?: (node: Node) => void;
+  onLayoutColsHidden?: (data: {
     currentHiddenColumnsInfo: HiddenColumnsInfo;
     hiddenColumnsDetail: HiddenColumnsInfo[];
   }) => void;
