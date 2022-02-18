@@ -84,6 +84,7 @@ const partDrillDown: PartDrillDown = {
         type: 'text',
       },
     ],
+    extra: <div>test</div>,
   },
   // drillItemsNum: 1,
   fetchData: (meta, drillFields) =>
