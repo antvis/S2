@@ -365,14 +365,12 @@ export class CornerCell extends HeaderCell {
     };
   }
 
-  protected getCornerText(label: string) {
-    let cornerText: string;
+  protected getCornerText(label: string): string {
     if (isEqual(label, EXTRA_FIELD)) {
-      cornerText = this.spreadsheet.options?.cornerText || DEFAULT_CORNER_TEXT;
-    } else {
-      const { formattedValue } = this.getFormattedFieldValue();
-      cornerText = formattedValue;
+      return this.spreadsheet.options?.cornerText || DEFAULT_CORNER_TEXT;
     }
-    return cornerText;
+
+    const { formattedValue } = this.getFormattedFieldValue();
+    return formattedValue;
   }
 }
