@@ -52,6 +52,7 @@ order: 2
 | titleText | 标题  | `string` |  | |
 | searchText | 搜索框文案 | `string` |  | |
 | clearButtonText | 重置按钮文案  | `string` | |  |
+| extra | 自定义插入的节点（插入在搜索框和下钻菜单中间）  | `ReactNode` | |  |
 | drillFields | 允许下钻的维度 | `string[]` |  | |
 | disabledFields | 不允许下钻的维度| `string[]` | |  |
 | getDrillFields | 内部获取当前下钻维度的回调 | `Function` | |  |
