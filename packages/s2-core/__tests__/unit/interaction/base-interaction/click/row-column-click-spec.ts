@@ -60,6 +60,7 @@ describe('Interaction Data Cell Click Tests', () => {
     };
     s2.getInitColumnLeafNodes = () => initColumnNodes as Node[];
     s2.getColumnNodes = () => initColumnNodes as Node[];
+    s2.getColumnLeafNodes = () => initColumnNodes as Node[];
     s2.options = {
       interaction: {
         hiddenColumnFields: ['a'],
