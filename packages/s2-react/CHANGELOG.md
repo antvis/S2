@@ -1,3 +1,16 @@
+# [@antv/s2-react-v1.10.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.9.1...@antv/s2-react-v1.10.0-alpha.1) (2022-02-18)
+
+
+### Bug Fixes
+
+* 修复行头为空无默认角头指标文字问题 ([#1104](https://github.com/antvis/S2/issues/1104)) ([62e94af](https://github.com/antvis/S2/commit/62e94af75473f64aea606d831baa112d5e85cc4e))
+
+
+### Features
+
+* **interaction:** 透视表支持隐藏列头 ([#1081](https://github.com/antvis/S2/issues/1081)) ([d770a99](https://github.com/antvis/S2/commit/d770a997ae88d9d7f2167aab52d07a5b6de82db6))
+* **tooltip:** tooltip 自定义操作项点击事件透出 cell 信息 close [#1106](https://github.com/antvis/S2/issues/1106) ([#1107](https://github.com/antvis/S2/issues/1107)) ([c266e02](https://github.com/antvis/S2/commit/c266e02d8c6665dfda2d469dcfdb10ed3cffd81c))
+
 # [@antv/s2-react-v1.9.1](https://github.com/antvis/S2/compare/@antv/s2-react-v1.9.0...@antv/s2-react-v1.9.1) (2022-02-17)
 
 
