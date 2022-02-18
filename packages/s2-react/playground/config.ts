@@ -105,7 +105,7 @@ export const sliderOptions: SliderSingleProps = {
 export const strategyOptions: S2Options = {
   width: 1000,
   height: 400,
-  cornerText: '时间',
+  cornerText: '指标',
   headerActionIcons: [
     {
       iconNames: ['Trend'],
