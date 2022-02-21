@@ -10,10 +10,12 @@ export const addTotals = (params: TotalParams) => {
   );
   let action: 'unshift' | 'push';
   let totalValue: TotalClass;
-  if (totalsConfig?.showGrandTotals && isFirstField) {
+  if (isFirstField) {
     // check to see if grand total is added
-    action = totalsConfig.reverseLayout ? 'unshift' : 'push';
-    totalValue = new TotalClass(totalsConfig.label, false, true);
+    if (totalsConfig?.showGrandTotals) {
+      action = totalsConfig.reverseLayout ? 'unshift' : 'push';
+      totalValue = new TotalClass(totalsConfig.label, false, true);
+    }
   } else if (totalsConfig?.showSubTotals && currentField !== EXTRA_FIELD) {
     action = totalsConfig.reverseSubLayout ? 'unshift' : 'push';
     totalValue = new TotalClass(totalsConfig.subLabel, true);
