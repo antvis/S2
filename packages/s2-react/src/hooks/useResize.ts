@@ -5,7 +5,10 @@ import type { SpreadSheet } from '@antv/s2';
 import { Adaptive } from '@/components';
 
 export interface UseResizeEffectParams {
-  container: HTMLElement;
+  container: HTMLElement; // 只包含了 sheet 容器
+  wrapper: HTMLElement; // 包含了 sheet + foot(page) + header
+  header: HTMLElement;
+  foot: HTMLElement;
   s2: SpreadSheet;
   adaptive: Adaptive;
 }
@@ -25,11 +28,12 @@ function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
 }
 
 export const useResize = (params: UseResizeEffectParams) => {
-  const { s2, adaptive } = params;
-  const { container, adaptiveWidth, adaptiveHeight } = analyzeAdaptive(
-    params.container,
-    adaptive,
-  );
+  const { s2, adaptive, container, foot, header } = params;
+  const {
+    container: wrapper,
+    adaptiveWidth,
+    adaptiveHeight,
+  } = analyzeAdaptive(params.wrapper, adaptive);
 
   // 第一次自适应时不需要 debounce, 防止抖动
   const isFirstRender = React.useRef<boolean>(true);
@@ -55,7 +59,7 @@ export const useResize = (params: UseResizeEffectParams) => {
 
   // rerender by container resize or window resize
   React.useLayoutEffect(() => {
-    if (!container || !adaptive) {
+    if (!wrapper || !adaptive || !container) {
       return;
     }
 
@@ -71,23 +75,31 @@ export const useResize = (params: UseResizeEffectParams) => {
         if (!adaptiveWidth && !adaptiveHeight) {
           return;
         }
+        const containHeight =
+          height -
+          foot.getBoundingClientRect().height -
+          header.getBoundingClientRect().height -
+          16; // padding
         if (isFirstRender.current) {
-          render(width, height);
+          render(width, containHeight);
           return;
         }
-        debounceRender(width, height);
+        debounceRender(width, containHeight);
       }
     });
 
-    resizeObserver.observe(container, {
+    resizeObserver.observe(wrapper, {
       box: 'border-box',
     });
 
     return () => {
-      resizeObserver.unobserve(container);
+      resizeObserver.unobserve(wrapper);
     };
   }, [
+    wrapper,
     container,
+    foot,
+    header,
     adaptiveWidth,
     adaptiveHeight,
     s2?.options.width,
