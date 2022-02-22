@@ -9,7 +9,7 @@ order: 6
 
 `S2` 可以用于实现明细表，也可以实现透视表，还可以实现趋势分析表等。
 
-为了更好的理解本文，在阅读本文前，希望你能熟悉 `S2` 的使用，对[基本概念](/zh/docs/manual/basic/base-concept)有初步认知。
+为了更好的理解本文，在阅读本文前，希望你能熟悉 `S2` 的使用，对 [基本概念](/zh/docs/manual/basic/base-concept) 有初步认知。
 
 ## 性能解读
 
@@ -34,23 +34,23 @@ order: 6
 ```ts
 // Meta
 const rowsMeta: PivotMeta = {
-  东北: {
+  东北：{
     id: 0,
     children: {
-      黑龙江: {
+      黑龙江：{
         id: 0,
         children: {},
       },
-      辽宁: {
+      辽宁：{
         id: 1,
         children: {},
       },
     },
   },
-  华北: {
+  华北：{
     id: 1,
     children: {
-      山西: {
+      山西：{
         id: 0,
         children: {},
       },
@@ -61,11 +61,11 @@ const rowsMeta: PivotMeta = {
 
 通过这样的数据结构，我们就实现了表格行列树结构的前端表达。「形」有了后，我们就需要「魂」，也就是数据。
 
-在 `S2` 中，`Pivot` 作为数据训练和查询的底层透视存在i，目的是将原始数据（一维）转为多维数组。这个多维数组是将行维度、列维度的 `path` 来组装的（底层是通过 `loadash.set` 实现)，举个例子：
+在 `S2` 中，`Pivot` 作为数据训练和查询的底层透视存在 i，目的是将原始数据（一维）转为多维数组。这个多维数组是将行维度、列维度的 `path` 来组装的（底层是通过 `loadash.set` 实现），举个例子：
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*_fRFSYS-Vi8AAAAAAAAAAAAAARQnAQ" width="700" alt="preview" />
 
-上图中，单元格的行坐标为：浙江省[0] - 宁波市[0]，列坐标为：家具[0]-沙发[1]。因此单元格在多维数组中坐标为 [0, 0, 0, 1]，查询数据时从行列的 `Hierarchy` 层级结构中获取对应的查询路径，即可拿到对应的数据。因此在 `S2` 中查询数据不是循环遍历底层数据，而是生成查询数组路径与层级结构对比，从而获取数据。
+上图中，单元格的行坐标为：浙江省 [0] - 宁波市 [0]，列坐标为：家具 [0]-沙发 [1]。因此单元格在多维数组中坐标为 [0, 0, 0, 1]，查询数据时从行列的 `Hierarchy` 层级结构中获取对应的查询路径，即可拿到对应的数据。因此在 `S2` 中查询数据不是循环遍历底层数据，而是生成查询数组路径与层级结构对比，从而获取数据。
 
 ```ts
 // 原始数据通过转换
@@ -82,12 +82,12 @@ const data = [
   [ // 华北
     [ // 山西
       [undefined, undefined, { order_amt: 651.45, type: '办公用品', sub_type: '容器，箱子' }],
-    ], 
-  ], 
+    ],
+  ],
 ];
 ```
 
-这样，通过遍历一次原始数据，生成 `Meta` 和转换后的数组数据，查询数据时间复杂度是 O(n)。此方案的优点是性能优异，理论上最快方案，时间复杂度 O(n*m)是线性的根据明细数据的行数*列数决定。
+这样，通过遍历一次原始数据，生成 `Meta` 和转换后的数组数据，查询数据时间复杂度是 O(n)。此方案的优点是性能优异，理论上最快方案，时间复杂度 O(n*m) 是线性的根据明细数据的行数*列数决定。
 
 ### 按需渲染
 
@@ -136,6 +136,11 @@ public getFieldMeta = memoize((field: string, meta?: Meta[]): Meta => {
 ## 性能对比
 
 ### 表框架渲染时间对比
+
+查看 `100w` 条数据实际性能表现：
+
+- [透视表](/zh/examples/case/performance-compare#pivot)
+- [明细表](/zh/examples/case/performance-compare#table)
 
 <img src="https://gw.alipayobjects.com/mdn/rms_56cbb2/afts/img/A*NWRaS6ifrJYAAAAAAAAAAAAAARQnAQ" width="900" alt="preview"  />
 
