@@ -21,6 +21,14 @@
       "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/HRIacdrQje/4455252e-bed7-4265-8fee-90ed85a6ae11.png"
     },
     {
+      "filename": "custom-operation.tsx",
+      "title": {
+        "zh": "自定义操作项",
+        "en": "Custom Operation"
+      },
+      "screenshot": "https://gw.alipayobjects.com/zos/antfincdn/le1o4zCn9/d5fd21d4-95bb-448e-9c10-92a1dd4495ae.png"
+    },
+    {
       "filename": "custom-content.tsx",
       "title": {
         "zh": "自定义 Tooltip 内容",

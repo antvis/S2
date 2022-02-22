@@ -28,9 +28,9 @@ order: 1
 | frozenBottomGroup | 底部冻结区域 group |  [Group](https://g.antv.vision/zh/docs/api/group) |
 | interaction | 交互 |  [Interaction](/zh/docs/api/basic-class/interaction) |
 | hdAdapter | 高清适配 | [HdAdapter](https://github.com/antvis/S2/blob/master/packages/s2-core/src/ui/hd-adapter/index.ts) |
-| on | 事件订阅 | `(event: name, listener: () => void) => void` |
-| emit | 事件发布 | `(event: name, ...args: any[]) => void` |
-| getDataSet | 获取数据集 | `(options: S2Options) => BaseDataSet` |
+| on | 事件订阅 | (event: [S2Event](zh/docs/manual/advanced/interaction/basic#交互事件）, listener: () => void) => void |
+| emit | 事件发布 | (event: [S2Event](zh/docs/manual/advanced/interaction/basic#交互事件）, ...args: any[]) => void |
+| getDataSet | 获取数据集 | (options: [S2Options](/zh/docs/api/general/S2Options)) => [BaseDataSet](/zh/docs/api/basic-class/base-data-set) |
 | isPivotMode | 是否是透视表 | `() => boolean` |
 | isHierarchyTreeType | 是否是树状结构 | `() => boolean` |
 | isScrollContainsRowHeader | 是否是包含行头的滚动 | `() => boolean` |
@@ -38,27 +38,27 @@ order: 1
 | isTableMode | 是否是明细表 | `() => boolean` |
 | isValueInCols | 是否是数值置于行头 | `() => boolean` |
 | clearDrillDownData | 清除下钻数据 | `(rowNodeId?: string) => void` |
-| showTooltip | 显示 tooltip | `(showOptions: TooltipShowOptions) => void` |
-| showTooltipWithInfo |  显示 tooltip, 并且展示一些默认信息 | `(event: CanvasEvent | MouseEvent, data: TooltipData[], options?: TooltipOptions) => void` |
+| showTooltip | 显示 tooltip | (showOptions: [TooltipShowOptions](/zh/docs/api/common/custom-tooltip)) => void |
+| showTooltipWithInfo |  显示 tooltip, 并且展示一些默认信息 | (event: `CanvasEvent | MouseEvent`, data: [TooltipData[]](/zh/docs/api/common/custom-tooltip), options?: [TooltipOptions](/zh/docs/api/common/custom-tooltip)) => void |
 | hideTooltip | 隐藏 tooltip | `() => void` |
 | destroyTooltip | 销毁 tooltip | `() => void` |
 | registerIcons | 注册 自定义 svg 图标 （根据 `options.customSVGIcons`) | `() => void` |
-| setDataCfg | 更新数据配置 | `(dataCfg: S2DataConfig) => void` |
-| setOptions | 更新表格配置 | `(dataCfg: S2Options) => void` |
+| setDataCfg | 更新数据配置 | (dataCfg: [S2DataConfig](/zh/docs/api/general/S2DataConfig) ) => void |
+| setOptions | 更新表格配置 | (options: [S2Options](/zh/docs/api/general/S2Options)) => void |
 | render | 重新渲染表格，如果 reloadData = true, 则会重新计算数据 | `(reloadData: boolean) => void` |
 | destroy | 销毁表格 | `() => void` |
-| setThemeCfg | 更新主题配置 | `(themeCfg: ThemeCfg) => void` |
-| updatePagination | 更新分页 | `(pagination: Pagination) => void` |
+| setThemeCfg | 更新主题配置 | (themeCfg: [ThemeCfg](/zh/docs/api/general/S2Theme)) => void |
+| updatePagination | 更新分页 | (pagination: [Pagination](/zh/docs/api/general/S2Options#pagination)) => void |
 | getContentHeight | 获取当前表格实际内容高度 | `() => number` |
 | changeSize | 修改表格画布大小，不用重新加载数据 | `(width?: number, height?: number) => void` |
-| getLayoutWidthType | 获取单元格宽度布局类型（LayoutWidthType: `adaptive` \| `colAdaptive` \| `compact`） | `() => LayoutWidthType` |
-| getRowNodes | 获取行头节点 | `(level: number) => Node[]` |
-| getColumnNodes | 获取列节点 | `(level: number) => Node[]` |
-| updateScrollOffset | 更新滚动偏移 | `(config: OffsetConfig) => void` |
-| getCell | 根据 event.target 获取当前 单元格 | `(target: EventTarget) => S2CellType` |
-| getCellType | 根据 event.target 获取当前 单元格类型 | `(target: EventTarget) => CellTypes` |
-| getTotalsConfig | 获取总计小计配置 | `(dimension: string) => Total` |
-| getInitColumnNodes | 获取初次渲染的列头信息 （比如：隐藏列头前） | `() => Node[]` |
+| getLayoutWidthType | 获取单元格宽度布局类型（LayoutWidthType: `adaptive（自适应）` \| `colAdaptive（列自适应）` \| `compact（紧凑）`） | () => `LayoutWidthType`|
+| getRowNodes | 获取行头节点 | (level: number) => [Node[]](/zh/docs/api/basic-class/node/) |
+| getColumnNodes | 获取列头节点 | (level: number) => [Node[]](/zh/docs/api/basic-class/node/) |
+| updateScrollOffset | 更新滚动偏移 | (config: [OffsetConfig](#offsetconfig)) => void |
+| getCell | 根据 event.target 获取当前 单元格 | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [S2CellType](/zh/docs/api/basic-class/base-cell#s2celltype) |
+| getCellType | 根据 event.target 获取当前 单元格类型 | (target: [EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)) => [CellTypes](/zh/docs/api/basic-class/base-cell#celltypes) |
+| getTotalsConfig | 获取总计小计配置 | (dimension: string) => [Total](/zh/docs/api/general/S2Options#totals) |
+| getInitColumnLeafNodes | 获取初次渲染的列头叶子节点 （比如：隐藏列头前） | () => [Node[]](/zh/docs/api/basic-class/node/) |
 
 ### S2MountContainer
 
@@ -120,7 +120,7 @@ type BBox = {
 功能描述：透视表内部构造参数
 
 ```ts
-export type S2MountContainer = string | HTMLElement;
+type S2MountContainer = string | HTMLElement;
 
-export type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];
+type S2Constructor = [S2MountContainer, S2DataConfig, S2Options];
 ```

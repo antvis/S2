@@ -11,7 +11,8 @@ import {
   KEY_GROUP_PANEL_FROZEN_TRAILING_COL,
   KEY_GROUP_PANEL_FROZEN_TRAILING_ROW,
   PANEL_GROUP_FROZEN_GROUP_Z_INDEX,
-  TOOLTIP_OPERATOR_MENUS,
+  S2Event,
+  TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
 } from '@/common/constant';
 import {
   S2Options,
@@ -170,15 +171,19 @@ export class TableSheet extends SpreadSheet {
         const sortParam: SortParam = {
           ...(prevSelectedSortParams || {}),
           sortFieldId: field,
-          sortMethod: key as SortParam['sortMethod'],
+          sortMethod: key as unknown as SortParam['sortMethod'],
         };
+        // 触发排序事件
+        this.emit(S2Event.RANGE_SORT, [sortParam]);
+
         this.setDataCfg({
           ...this.dataCfg,
           sortParams: [...prevOtherSortParams, sortParam],
         });
+
         this.render();
       },
-      menus: TOOLTIP_OPERATOR_MENUS.TableSort,
+      menus: TOOLTIP_OPERATOR_TABLE_SORT_MENUS,
     };
 
     this.showTooltipWithInfo(event, [], {

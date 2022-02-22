@@ -26,6 +26,8 @@ this.spreadsheet.interaction.xx()
 | getCurrentStateName | 获取当前状态名 | `() => void` |
 | isEqualStateName | 是否是相同的状态名 | `(name: InteractionStateName) => void` |
 | isSelectedState | 是否是选中状态 | `() => void` |
+| isHoverState | 是否是悬停状态 | `() => void` |
+| isHoverFocusState | 是否是悬停聚焦状态 （悬停在单元格 800ms 后） | `() => void` |
 | isSelectedCell | 是否是选中的单元格 | `(cell: S2CellType) => void` |
 | isActiveCell | 是否是激活的单元格 | `(cell: S2CellType) => void` |
 | getCells | 获取当前 interaction 记录的 Cells 元信息列表，包括不在视口内的格子 | `() => Partial<ViewMeta>[]` |
@@ -38,7 +40,8 @@ this.spreadsheet.interaction.xx()
 | getRowColActiveCells | 获取行头和列头激活的单元格 | `() => RowCell[] | ColCell[]` |
 | getAllCells | 获取所有单元格 | `() => S2CellType[]` |
 | selectAll | 选中所有单元格 | `() => void` |
-| hideColumns | 隐藏列 (明细表有效) | `(hiddenColumnFields: string[]) => void` |
+| selectHeaderCell | 选中指定行列头单元格 | `(selectHeaderCellInfo: SelectHeaderCellInfo) => boolean` |
+| hideColumns | 隐藏列 | `(hiddenColumnFields: string[]) => void` |
 | mergeCells | 合并单元格 | `(cellsInfo?: MergedCellInfo[], hideData?: boolean) => void` |
 | unmergeCells | 取消合并单元格 | `(removedCells: MergedCell) => void` |
 | updatePanelGroupAllDataCells | 更新所有数值单元格 | `() => void` |
@@ -95,6 +98,16 @@ type S2CellType<T extends SimpleBBox = ViewMeta> =
   | RowCell
   | MergedCell
   | BaseCell<T>;
+```
+
+### SelectHeaderCellInfo
+
+```ts
+interface SelectHeaderCellInfo {
+  cell: S2CellType<ViewMeta>; // 目标单元格
+  isTreeRowClick?: boolean; // 是否是树形结构下的行头点击（该情况下只会高亮整行，而不会高亮所有叶子节点）
+  isMultiSelection?: boolean; // 是否是多选
+}
 ```
 
 ### MergedCellInfo

@@ -5,7 +5,6 @@ redirect_from:
   - /zh/docs/api
 ---
 
-
 数据映射，description
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
@@ -66,9 +65,10 @@ array object **必选**,_default：null_
 
 | 参数 | 说明 | 类型 | 默认值 | 必选  |
 | :--| :--------| :--- | :----- | :--- |
-| field  | 字段id | `string` | | ✓   |
-| name | 字段名称 | `string`|  | ✓  |
-| formatter | 格式化 <br/>数值字段：一般用于格式化数字单位<br/>文本字段：一般用于做字段枚举值的别名 | `(value: unknown) => string` | | |
+| field  | 字段 id | `string` | |    |
+| name | 字段名称 | `string`|  |   |
+| description | 字段描述 | `string`|  |   |
+| formatter | 格式化 <br/>数值字段：一般用于格式化数字单位<br/>文本字段：一般用于做字段枚举值的别名<br/> 第二个参数在以下情况会传入：data cell 格式化，复制/导出，tooltip 展示（**且仅在选择多个单元格时，data 类型为数组**） | `(value: unknown, data?: Data | Data[]) => string` | | |
 
 `markdown:docs/common/sort-params.zh.md`
 

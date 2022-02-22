@@ -41,6 +41,7 @@ jest.mock('src/sheet-type', () => {
         getLayoutWidthType: jest.fn().mockRejectedValue('adaptive'),
         emit: jest.fn(),
         isScrollContainsRowHeader: jest.fn(),
+        getColumnLeafNodes: jest.fn().mockReturnValue([]),
         isHierarchyTreeType: jest.fn(),
       };
     }),
@@ -127,17 +128,17 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
   });
 
   describe('should get correct col layout with seriesNumber', () => {
-    const ss: SpreadSheet = new MockSpreadSheet();
-    const dataSet: TableDataSet = new MockTableDataSet(ss);
+    const s2: SpreadSheet = new MockSpreadSheet();
+    const s2DataSet: TableDataSet = new MockTableDataSet(s2);
     const facet = new TableFacet({
       ...options,
-      spreadsheet: ss,
-      dataSet,
+      spreadsheet: s2,
+      dataSet: s2DataSet,
       showSeriesNumber: true,
     });
     const { colCfg, cellCfg } = facet.cfg;
 
-    test('col hierarchy coordinate with adaptive layout', () => {
+    test('col hierarchy coordinate with adaptive layout with seriesNumber', () => {
       const { colLeafNodes } = facet.layoutResult;
 
       const seriesNumberWidth = facet.getSeriesNumberWidth();
@@ -153,6 +154,7 @@ describe('Table Mode Facet Test With Adaptive Layout', () => {
       expect(seriesNumberNode.x).toBe(0);
       expect(seriesNumberNode.width).toBe(seriesNumberWidth);
       expect(seriesNumberNode.height).toBe(colCfg.height);
+
       colLeafNodes.slice(1).forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(index * adaptiveWith + seriesNumberWidth);
@@ -183,13 +185,13 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     test('col hierarchy coordinate with compact layout', () => {
       const { colLeafNodes } = facet.layoutResult;
 
-      const COMPACT_WIDTH = [52, 52, 64, 40, 73];
+      const COMPACT_WIDTH = [52, 52, 64, 40, 72];
 
       let lastX = 0;
       colLeafNodes.forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
-        expect(Math.round(node.width)).toBe(Math.round(COMPACT_WIDTH[index]));
+        expect(Math.floor(node.width)).toEqual(COMPACT_WIDTH[index]);
         expect(node.height).toBe(colCfg.height);
         lastX += COMPACT_WIDTH[index];
       });
@@ -213,16 +215,16 @@ describe('Table Mode Facet Test With Compact Layout', () => {
     });
     const { colCfg } = facet.cfg;
 
-    test('col hierarchy coordinate with compact layout', () => {
+    test('col hierarchy coordinate with compact layout with seriesNumber', () => {
       const { colLeafNodes } = facet.layoutResult;
 
-      const COMPACT_WIDTH = [80, 52, 52, 64, 40, 73];
+      const COMPACT_WIDTH = [80, 52, 52, 64, 40, 72];
 
       let lastX = 0;
       colLeafNodes.forEach((node, index) => {
         expect(node.y).toBe(0);
         expect(node.x).toBe(lastX);
-        expect(Math.round(node.width)).toBe(Math.round(COMPACT_WIDTH[index]));
+        expect(Math.floor(node.width)).toBe(COMPACT_WIDTH[index]);
         expect(node.height).toBe(colCfg.height);
         lastX += COMPACT_WIDTH[index];
       });

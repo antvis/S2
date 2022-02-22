@@ -11,6 +11,19 @@ import {
   S2Options,
   SpreadSheet,
   MergedCell,
+  InteractionName,
+  DataCellClick,
+  RowColumnClick,
+  RowTextClick,
+  MergedCellClick,
+  HoverEvent,
+  BrushSelection,
+  RowColumnResize,
+  DataCellMultiSelection,
+  RangeSelection,
+  SelectedCellMove,
+  BaseEvent,
+  GuiIcon,
 } from '@/index';
 import { Store } from '@/common/store';
 import { mergeCell, unmergeCell } from '@/utils/interaction/merge-cell';
@@ -29,8 +42,8 @@ describe('RootInteraction Tests', () => {
   let rootInteraction: RootInteraction;
   let mockSpreadSheetInstance: SpreadSheet;
   let panelGroupAllDataCells: DataCell[];
-
   let mockCell: DataCell;
+  const defaultInteractionSize = Object.keys(InteractionName).length;
 
   const getMockCell = (id: number) =>
     ({
@@ -44,6 +57,7 @@ describe('RootInteraction Tests', () => {
           colIndex: id,
           rowIndex: 1,
           id: `0-${id}`,
+          x: 1,
         };
       },
     } as unknown as DataCell);
@@ -92,11 +106,55 @@ describe('RootInteraction Tests', () => {
     });
   });
 
+  test('should clear interaction state correct', () => {
+    const icon = new GuiIcon({
+      name: '',
+      x: 0,
+      y: 0,
+      width: 20,
+      height: 20,
+    });
+    mockSpreadSheetInstance.store.set('visibleActionIcons', [icon]);
+    rootInteraction.setState({
+      cells: [getCellMeta(mockCell)],
+      stateName: InteractionStateName.SELECTED,
+    });
+    rootInteraction.setInteractedCells(mockCell);
+    rootInteraction.addIntercepts([InterceptType.CLICK]);
+
+    rootInteraction.clearState();
+
+    // clear state
+    expect(rootInteraction.getState()).toEqual({
+      cells: [],
+      force: false,
+    });
+    expect(rootInteraction.getActiveCells()).toHaveLength(0);
+    expect(rootInteraction.getCells()).toHaveLength(0);
+    // hide action icon
+    expect(icon.get('visible')).toBeFalsy();
+    // reset icon store
+    expect(
+      mockSpreadSheetInstance.store.get('visibleActionIcons'),
+    ).toHaveLength(0);
+    // hide interaction shape
+    expect(mockCell.hideInteractionShape).toHaveBeenCalledTimes(1);
+    // draw call
+    expect(mockSpreadSheetInstance.container.draw).toHaveBeenCalledTimes(1);
+  });
+
   test('should set all selected interaction state correct', () => {
     rootInteraction.selectAll();
     expect(rootInteraction.getState()).toEqual({
       stateName: InteractionStateName.ALL_SELECTED,
     });
+  });
+
+  test('should set headerCell selected interaction state correct', () => {
+    rootInteraction.selectHeaderCell({ cell: mockCell });
+    const state = rootInteraction.getState();
+    expect(state.stateName).toEqual(InteractionStateName.SELECTED);
+    expect(state.cells).toEqual([getCellMeta(mockCell)]);
   });
 
   test('should call merge cells', () => {
@@ -240,6 +298,19 @@ describe('RootInteraction Tests', () => {
       });
       expect(mockSpreadSheetInstance.container.draw).toHaveBeenCalled();
     });
+
+    test('should update last selected cells when repeated call changeState', () => {
+      rootInteraction.changeState({
+        cells: [getCellMeta(mockCell)],
+        stateName: InteractionStateName.SELECTED,
+      });
+      rootInteraction.setInteractedCells(mockCell);
+      rootInteraction.changeState({
+        cells: [getCellMeta(mockCell), getCellMeta(mockCell)],
+        stateName: InteractionStateName.SELECTED,
+      });
+      expect(rootInteraction.getActiveCells()).toHaveLength(2);
+    });
   });
 
   describe('RootInteraction Calc Utils Tests', () => {
@@ -272,10 +343,18 @@ describe('RootInteraction Tests', () => {
       expect(rootInteraction.getActiveCells()).toEqual([]);
     });
 
-    test("should get it's selected", () => {
-      expect(rootInteraction.isSelectedState()).toBeTruthy();
+    test.each`
+      stateName                        | handler
+      ${InteractionStateName.SELECTED} | ${'isSelectedState'}
+      ${InteractionStateName.HOVER}    | ${'isHoverState'}
+    `('should get correctly %o state', ({ stateName, handler }) => {
+      rootInteraction.changeState({
+        cells: [getCellMeta(mockCell)],
+        stateName: stateName,
+      });
+      expect(rootInteraction[handler]()).toBeTruthy();
       rootInteraction.resetState();
-      expect(rootInteraction.isSelectedState()).toBeFalsy();
+      expect(rootInteraction[handler]()).toBeFalsy();
     });
 
     test('should get current cell status is equal', () => {
@@ -369,4 +448,91 @@ describe('RootInteraction Tests', () => {
       expect(flag).toBeFalsy();
     });
   });
+
+  test('should get correctly default interaction size', () => {
+    expect(defaultInteractionSize).toEqual(10);
+  });
+
+  test('should register default interaction', () => {
+    rootInteraction = new RootInteraction(mockSpreadSheetInstance);
+    expect(rootInteraction.interactions.size).toEqual(defaultInteractionSize);
+    Object.keys(InteractionName).forEach((key) => {
+      expect(
+        rootInteraction.interactions.has(InteractionName[key]),
+      ).toBeTruthy();
+    });
+  });
+
+  test.each`
+    key                                          | expected
+    ${InteractionName.DATA_CELL_CLICK}           | ${DataCellClick}
+    ${InteractionName.ROW_COLUMN_CLICK}          | ${RowColumnClick}
+    ${InteractionName.ROW_TEXT_CLICK}            | ${RowTextClick}
+    ${InteractionName.MERGED_CELLS_CLICK}        | ${MergedCellClick}
+    ${InteractionName.HOVER}                     | ${HoverEvent}
+    ${InteractionName.BRUSH_SELECTION}           | ${BrushSelection}
+    ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
+    ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
+    ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
+    ${InteractionName.SELECTED_CELL_MOVE}        | ${SelectedCellMove}
+  `(
+    'should register correctly interaction instance for %o',
+    ({ key, expected }) => {
+      // 保证对应的交互实例注册正确
+      expect(rootInteraction.interactions.get(key)).toBeInstanceOf(expected);
+    },
+  );
+
+  test('should register custom interaction', () => {
+    class MyInteraction extends BaseEvent {
+      bindEvents() {}
+    }
+
+    const customInteraction = {
+      key: 'customInteraction',
+      interaction: MyInteraction,
+    };
+
+    mockSpreadSheetInstance.options.interaction.customInteractions = [
+      customInteraction,
+    ];
+
+    rootInteraction = new RootInteraction(mockSpreadSheetInstance);
+    expect(rootInteraction.interactions.size).toEqual(
+      defaultInteractionSize + 1,
+    );
+    expect(
+      rootInteraction.interactions.has(customInteraction.key),
+    ).toBeTruthy();
+    expect(
+      rootInteraction.interactions.get(customInteraction.key),
+    ).toBeInstanceOf(MyInteraction);
+  });
+
+  test.each`
+    option                | name                                         | expected
+    ${`brushSelection`}   | ${InteractionName.BRUSH_SELECTION}           | ${BrushSelection}
+    ${`resize`}           | ${InteractionName.COL_ROW_RESIZE}            | ${RowColumnResize}
+    ${`multiSelection`}   | ${InteractionName.DATA_CELL_MULTI_SELECTION} | ${DataCellMultiSelection}
+    ${`rangeSelection`}   | ${InteractionName.RANGE_SELECTION}           | ${RangeSelection}
+    ${`selectedCellMove`} | ${InteractionName.SELECTED_CELL_MOVE}        | ${SelectedCellMove}
+  `(
+    'should disable interaction by options %o',
+    ({ option, name, expected }) => {
+      mockSpreadSheetInstance.options = {
+        interaction: {
+          [option]: false,
+        },
+      } as unknown as S2Options;
+
+      rootInteraction = new RootInteraction(mockSpreadSheetInstance);
+      expect(rootInteraction.interactions.size).toEqual(
+        defaultInteractionSize - 1,
+      );
+      expect(rootInteraction.interactions.has(name)).toBeFalsy();
+      [...rootInteraction.interactions.values()].forEach((interaction) => {
+        expect(interaction).not.toBeInstanceOf(expected);
+      });
+    },
+  );
 });

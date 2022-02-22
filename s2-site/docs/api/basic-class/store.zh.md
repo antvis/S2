@@ -16,7 +16,6 @@ this.spreadsheet.store.set('key', value) // 存储
 | scrollX | 垂直滚动偏移 | `number` |
 | hRowScrollX | 垂直行头滚动偏移 | `number` |
 | sortParam | 列头排序配置 | [SortParam](#SortParam) |
-| lastReachedBorderId | ? | `{rowId: string, colId: string}` |
 | drillDownIdPathMap | 下钻节点 id 和对应生成的 path 寻址路径 | `Map<string, number[][]>` |
 | drillDownNode | 当前下钻节点 | [Node](/zh/docs/api/base-class/node) |
 | drillItemsNum | 下钻数据的个数控制 | `number` |
@@ -26,7 +25,7 @@ this.spreadsheet.store.set('key', value) // 存储
 | panelBBox | 可视区域包裹盒模型 | [BBox](#BBox) |
 | activeResizeArea | 当前调整大小区域 group | [Group](https://g.antv.vision/zh/docs/api/group) |
 | valueRanges | ? | [ValueRanges](#ValueRanges) |
-| initColumnNodes | 初次渲染时的列头节点 | [Node[]](/zh/docs/api/base-class/node)|
+| initColumnLeafNodes | 初次渲染时的列头叶子节点 | [Node[]](/zh/docs/api/base-class/node)|
 | hiddenColumnsDetail | 隐藏的列头详情 | [HiddenColumnsInfo[]](#hiddencolumnsinfo) |
 | [key: string] | 其他任意字段 | `unknown` |
 

@@ -1,4 +1,4 @@
-import { difference, isEmpty, map } from 'lodash';
+import { map } from 'lodash';
 import { TableHeaderParams } from '@/facet/layout/interface';
 import { SERIES_NUMBER_FIELD } from '@/common/constant';
 import { i18n } from '@/common/i18n';
@@ -6,19 +6,21 @@ import { generateHeaderNodes } from '@/utils/layout/generate-header-nodes';
 
 export const buildTableHierarchy = (params: TableHeaderParams) => {
   const { facetCfg, hierarchy, parentNode } = params;
-  const {
-    columns,
-    spreadsheet,
-    dataSet,
-    interaction: { hiddenColumnFields = [] },
-    showSeriesNumber,
-  } = facetCfg;
+  const { columns, spreadsheet, dataSet } = facetCfg;
 
-  const hasInitColumnNodes = !isEmpty(spreadsheet.store.get('initColumnNodes'));
+  const hiddenColumnsDetail = spreadsheet.store.get('hiddenColumnsDetail');
+  const showSeriesNumber = facetCfg?.showSeriesNumber;
 
-  const displayedColumns = hasInitColumnNodes
-    ? difference(columns, hiddenColumnFields)
-    : columns;
+  const displayedColumns = columns.filter((column) => {
+    if (!hiddenColumnsDetail) {
+      return true;
+    }
+    return hiddenColumnsDetail.every((detail) => {
+      return detail.hideColumnNodes.every((node) => {
+        return node.field !== column;
+      });
+    });
+  });
   const fields = [...displayedColumns];
 
   const fieldValues = map(displayedColumns, (val) => dataSet.getFieldName(val));

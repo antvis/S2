@@ -1,4 +1,4 @@
-import { filter, isEmpty, isUndefined } from 'lodash';
+import { isEmpty, isUndefined, uniqWith } from 'lodash';
 import { FieldValue, GridHeaderParams } from '@/facet/layout/interface';
 import { TotalMeasure } from '@/facet/layout/total-measure';
 import { layoutArrange } from '@/facet/layout/layout-hooks';
@@ -13,7 +13,7 @@ const hideMeasureColumn = (
   field: string,
   cfg: SpreadSheetFacetCfg,
 ) => {
-  const hideMeasure = cfg.colCfg.hideMeasureColumn ?? false;
+  const hideMeasure = cfg.colCfg?.hideMeasureColumn ?? false;
   const valueInCol = cfg.dataSet.fields.valueInCols;
   for (const value of fieldValues) {
     if (hideMeasure && valueInCol && field === EXTRA_FIELD) {
@@ -88,15 +88,40 @@ export const buildGridHierarchy = (params: GridHeaderParams) => {
     });
   }
 
-  const omitUndefinedFieldValues = filter(
-    fieldValues,
-    (value) => !isUndefined(value),
-  );
+  const hiddenColumnsDetail = spreadsheet.store.get('hiddenColumnsDetail');
+  const isEqualValueLeafNode =
+    uniqWith(spreadsheet.getColumnLeafNodes(), (prev, next) => {
+      return prev.value === next.value;
+    }).length === 1;
+
+  const displayFieldValues = fieldValues.filter((value) => {
+    // 去除多余的节点
+    if (isUndefined(value)) {
+      return false;
+    }
+    if (isEmpty(hiddenColumnsDetail)) {
+      return true;
+    }
+    return hiddenColumnsDetail.every((detail) => {
+      return detail.hideColumnNodes.every((node) => {
+        // 有数值字段 (hideMeasureColumn: true) 隐藏父节点
+        // 多列头场景(数值挂列头, 为隐藏数值列头, 自定义目录多指标等) 叶子节点是数值, 叶子节点的文本内容都一样, 需要额外比较父级节点的id是否相同, 确定到底渲染哪一列
+        const isMeasureField = node.field === EXTRA_FIELD;
+        if (isMeasureField || isEqualValueLeafNode) {
+          return (
+            node.parent.id !== parentNode.id && node.parent.value !== value
+          );
+        }
+        // 没有数值字段 (hideMeasureColumn: false) 隐藏自己即可
+        return node.value !== value;
+      });
+    });
+  });
 
   generateHeaderNodes({
     currentField,
     fields,
-    fieldValues: omitUndefinedFieldValues,
+    fieldValues: displayFieldValues,
     facetCfg,
     hierarchy,
     parentNode,

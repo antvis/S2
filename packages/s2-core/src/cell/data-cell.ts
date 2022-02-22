@@ -117,12 +117,14 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   public update() {
-    const stateName = this.spreadsheet.interaction?.getCurrentStateName();
-    const cells = this.spreadsheet.interaction?.getCells();
+    const stateName = this.spreadsheet.interaction.getCurrentStateName();
+    const cells = this.spreadsheet.interaction.getCells();
+
     if (stateName === InteractionStateName.ALL_SELECTED) {
       this.updateByState(InteractionStateName.SELECTED);
       return;
     }
+
     if (isEmpty(cells) || !stateName) {
       return;
     }
@@ -170,7 +172,7 @@ export class DataCell extends BaseCell<ViewMeta> {
     let fill = textStyle.fill;
     const textCondition = this.findFieldCondition(this.conditions?.text);
     if (textCondition?.mapping) {
-      fill = this.mappingValue(textCondition)?.fill || textStyle.fill;
+      fill = this.mappingValue(textCondition)?.fill;
     }
 
     return { ...textStyle, fill };
@@ -192,21 +194,19 @@ export class DataCell extends BaseCell<ViewMeta> {
   }
 
   protected getFormattedFieldValue(): FormatResult {
-    const rowField = this.meta.rowId;
-    const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowField);
+    const { rowId, valueField, fieldValue, data } = this.meta;
+    const rowMeta = this.spreadsheet.dataSet.getFieldMeta(rowId);
     let formatter: Formatter;
     if (rowMeta) {
       // format by row field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(rowField);
+      formatter = this.spreadsheet.dataSet.getFieldFormatter(rowId);
     } else {
       // format by value field
-      formatter = this.spreadsheet.dataSet.getFieldFormatter(
-        this.meta.valueField,
-      );
+      formatter = this.spreadsheet.dataSet.getFieldFormatter(valueField);
     }
-    const formattedValue = formatter(this.meta.fieldValue);
+    const formattedValue = formatter(fieldValue, data);
     return {
-      value: this.meta.fieldValue,
+      value: fieldValue,
       formattedValue,
     };
   }

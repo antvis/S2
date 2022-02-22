@@ -12,7 +12,7 @@ import * as mockDataConfig from '../data/simple-data.json';
 import { getContainer } from '../util/helpers';
 import type {
   SheetType,
-  SpreadsheetProps,
+  SheetComponentsProps,
 } from '@/components/sheets/interface';
 import { SheetComponent } from '@/components/sheets';
 
@@ -23,7 +23,7 @@ const mockRef = {
 };
 
 function MainLayout(
-  props: Partial<SpreadsheetProps> & { toggleSheetType?: boolean },
+  props: Partial<SheetComponentsProps> & { toggleSheetType?: boolean },
 ) {
   const s2Ref = React.useRef<SpreadSheet>(null);
   const buttonRef = React.useRef<HTMLButtonElement>(null);

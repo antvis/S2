@@ -1,27 +1,35 @@
-import { compact, isEmpty, isEqual, last, uniq } from 'lodash';
+import { compact, get, isEmpty, isEqual, last, uniq } from 'lodash';
 import { HiddenColumnsInfo } from '@/common/interface/store';
 import { SpreadSheet } from '@/sheet-type';
-import { S2Event } from '@/common/constant';
+import { ID_SEPARATOR, S2Event } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 
+export const getHiddenColumnFieldKey = (field: string) => {
+  const targetFieldKey = (
+    field.includes(ID_SEPARATOR) ? 'id' : 'field'
+  ) as keyof Node;
+  return targetFieldKey;
+};
+
 /**
- * @name  获取需要隐藏的 field 转成对应的 Node
+ * @name 获取需要隐藏的 field 转成对应的 Node
  */
 export const getHiddenColumnNodes = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
 ): Node[] => {
-  const columnNodes = spreadsheet.getInitColumnNodes();
+  const columnNodes = spreadsheet.getInitColumnLeafNodes();
   return compact(
-    hiddenColumnFields.map((filed) =>
-      columnNodes.find((node) => node.field === filed),
-    ),
+    hiddenColumnFields.map((field) => {
+      const targetFieldKey = getHiddenColumnFieldKey(field);
+      return columnNodes.find((node) => node[targetFieldKey] === field);
+    }),
   );
 };
 
 /**
  * @name 获取隐藏列兄弟节点
- * @description 获取当前隐藏列(兼容多选) 所对应为未隐藏的兄弟节点, 如果是尾节点被隐藏, 则返回他的前一个兄弟节点
+ * @description 获取当前隐藏列(兼容多选) 所对应为未隐藏的兄弟节点
  * @param hideColumns 经过分组的连续隐藏列
    [ 1, 2, 3, -, -, -, (7 √), 8, 9 ]
   [ 1, 2, 3, (4 √), - ]
@@ -30,17 +38,23 @@ export const getHiddenColumnDisplaySiblingNode = (
   spreadsheet: SpreadSheet,
   hiddenColumnFields: string[] = [],
 ): HiddenColumnsInfo['displaySiblingNode'] => {
-  const initColumnNodes = spreadsheet.getInitColumnNodes();
+  if (isEmpty(hiddenColumnFields)) {
+    return {
+      prev: null,
+      next: null,
+    };
+  }
+  const initColumnLeafNodes = spreadsheet.getInitColumnLeafNodes();
   const hiddenColumnIndexes = getHiddenColumnNodes(
     spreadsheet,
     hiddenColumnFields,
   ).map((node) => node?.colIndex);
   const lastHiddenColumnIndex = Math.max(...hiddenColumnIndexes);
   const firstHiddenColumnIndex = Math.min(...hiddenColumnIndexes);
-  const nextSiblingNode = initColumnNodes.find(
+  const nextSiblingNode = initColumnLeafNodes.find(
     (node) => node.colIndex === lastHiddenColumnIndex + 1,
   );
-  const prevSiblingNode = initColumnNodes.find(
+  const prevSiblingNode = initColumnLeafNodes.find(
     (node) => node.colIndex === firstHiddenColumnIndex - 1,
   );
   return {
@@ -111,6 +125,7 @@ export const hideColumns = (
       hiddenColumnFields,
     },
   });
+
   const displaySiblingNode = getHiddenColumnDisplaySiblingNode(
     spreadsheet,
     selectedColumnFields,
@@ -127,13 +142,27 @@ export const hideColumns = (
   ];
 
   spreadsheet.emit(
-    S2Event.LAYOUT_TABLE_COL_HIDDEN,
+    S2Event.LAYOUT_COLS_HIDDEN,
     currentHiddenColumnsInfo,
     hiddenColumnsDetail,
   );
   spreadsheet.store.set('hiddenColumnsDetail', hiddenColumnsDetail);
   spreadsheet.interaction.reset();
   spreadsheet.render(false);
+};
+
+/**
+ * @name 获取配置的列头
+ * @description 明细表: 配置的是 field,直接使用, 透视表: 需要将 field 转成布局之后的唯一id
+ */
+export const getColumns = (spreadsheet: SpreadSheet) => {
+  const { columns = [] } = spreadsheet.dataCfg.fields;
+
+  if (spreadsheet.isTableMode()) {
+    return columns;
+  }
+
+  return spreadsheet.getInitColumnLeafNodes().map(({ id }) => id);
 };
 
 /**
@@ -145,9 +174,9 @@ export const hideColumnsByThunkGroup = (
   hiddenColumnFields: string[] = [],
   forceRender = false,
 ) => {
-  spreadsheet.store.set('hiddenColumnsDetail', []);
+  const columns = getColumns(spreadsheet);
   const hiddenColumnsGroup = getHiddenColumnsThunkGroup(
-    spreadsheet.dataCfg.fields.columns,
+    columns,
     hiddenColumnFields,
   );
   hiddenColumnsGroup.forEach((fields) => {
@@ -160,9 +189,31 @@ export const isLastColumnAfterHidden = (
   columnField: string,
 ) => {
   const columnNodes = spreadsheet.getColumnNodes();
-  const initColumnNodes = spreadsheet.getInitColumnNodes();
+  const initColumnLeafNodes = spreadsheet.getInitColumnLeafNodes();
+  const fieldKey = getHiddenColumnFieldKey(columnField);
+
   return (
-    last(columnNodes).field === columnField &&
-    last(initColumnNodes).field !== columnField
+    get(last(columnNodes), fieldKey) === columnField &&
+    get(last(initColumnLeafNodes), fieldKey) !== columnField
   );
+};
+
+export const getValidDisplaySiblingNode = (
+  displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
+) => {
+  return displaySiblingNode?.next || displaySiblingNode?.prev;
+};
+
+export const getValidDisplaySiblingNodeId = (
+  displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
+) => {
+  const node = getValidDisplaySiblingNode(displaySiblingNode);
+  return node?.id;
+};
+
+export const isEqualDisplaySiblingNodeId = (
+  displaySiblingNode: HiddenColumnsInfo['displaySiblingNode'],
+  nodeId: string,
+) => {
+  return getValidDisplaySiblingNodeId(displaySiblingNode) === nodeId;
 };

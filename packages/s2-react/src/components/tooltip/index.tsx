@@ -1,10 +1,8 @@
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty } from 'lodash';
 import React from 'react';
 import {
   ListItem,
-  TooltipData,
   TooltipOperatorOptions,
-  TooltipOptions,
   TooltipSummaryOptions,
   TooltipNameTipsOptions,
   TooltipHeadInfo as TooltipHeadInfoType,
@@ -24,6 +22,8 @@ import { TooltipRenderProps } from './interface';
 import './index.less';
 
 export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
+  const { data, options, content, cell } = props;
+
   const renderDivider = () => {
     return <Divider />;
   };
@@ -38,6 +38,7 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
           onClick={operator.onClick}
           menus={operator.menus}
           onlyMenu={onlyMenu}
+          cell={cell}
         />
       )
     );
@@ -79,7 +80,7 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
     return interpretation && <Interpretation {...interpretation} />;
   };
 
-  const renderContent = (data?: TooltipData, options?: TooltipOptions) => {
+  const renderContent = () => {
     const option = getTooltipDefaultOptions(options);
     const { operator, onlyMenu } = option;
     const { summaries, headInfo, details, interpretation, infos, tips, name } =
@@ -89,9 +90,9 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
     if (onlyMenu) {
       return renderOperation(operator, true);
     }
-    return (
+
+    const DefaultContent = (
       <>
-        {renderOperation(operator)}
         {renderNameTips(nameTip)}
         {renderSummary(summaries)}
         {renderInterpretation(interpretation)}
@@ -100,13 +101,14 @@ export const TooltipComponent: React.FC<TooltipRenderProps> = (props) => {
         {renderInfos(infos)}
       </>
     );
+
+    return (
+      <>
+        {renderOperation(operator)}
+        {content ?? DefaultContent}
+      </>
+    );
   };
 
-  const { data, options, content } = props;
-
-  if (!isNil(content)) {
-    return content as React.ReactElement;
-  }
-
-  return <>{renderContent(data, options)}</>;
+  return renderContent();
 };

@@ -269,11 +269,8 @@ describe('Interaction Row Column Resize Tests', () => {
 
     // update style options
     expect(s2.options.style.colCfg).toEqual({
-      detailSample: 30,
       height: 30,
       heightByField: {},
-      maxSampleIndex: 1,
-      totalSample: 10,
       widthByFieldValue: {
         [resizeInfo.id]: 5,
       },

@@ -36,11 +36,14 @@ fetch(
     const s2Options = {
       width: 600,
       height: 480,
-      selectedCellsSpotlight: true,
-      hoverHighlight: true,
       hierarchyType: 'tree',
       tooltip: {
         showTooltip: true,
+      },
+      interaction: {
+        enableCopy: true,
+        selectedCellsSpotlight: true,
+        hoverHighlight: true,
       },
       totals: {
         row: {
@@ -58,7 +61,6 @@ fetch(
           subTotalsDimensions: ['type'],
         },
       },
-      enableCopy: true,
     };
     const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 

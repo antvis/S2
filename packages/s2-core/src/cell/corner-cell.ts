@@ -19,6 +19,7 @@ import {
 import {
   CellTypes,
   EXTRA_FIELD,
+  DEFAULT_CORNER_TEXT,
   KEY_GROUP_CORNER_RESIZE_AREA,
   ResizeAreaEffect,
   ResizeDirectionType,
@@ -73,22 +74,18 @@ export class CornerCell extends HeaderCell {
   protected drawCellText() {
     const { label } = this.meta;
 
-    if (isEqual(label, EXTRA_FIELD)) {
-      // don't render extra node
-      return;
-    }
-
     const { x } = this.getContentArea();
     const { y, height } = this.getCellArea();
 
     const textStyle = this.getTextStyle();
-    const { formattedValue } = this.getFormattedFieldValue();
+
+    const cornerText = this.getCornerText(label);
 
     // 当为树状结构下需要计算文本前收起展开的icon占的位置
 
     const maxWidth = this.getMaxTextWidth();
     const text = getEllipsisText({
-      text: formattedValue,
+      text: cornerText,
       maxWidth: maxWidth,
       fontParam: textStyle,
       placeholder: this.spreadsheet.options.placeholder,
@@ -103,8 +100,8 @@ export class CornerCell extends HeaderCell {
     if (ellipseIndex !== -1 && this.spreadsheet.isHierarchyTreeType()) {
       // 剪裁到 ... 最有点的后1个像素位置
       const lastIndex = ellipseIndex + (isIPhoneX() ? 1 : 0);
-      firstLine = formattedValue.substr(0, lastIndex);
-      secondLine = formattedValue.slice(lastIndex);
+      firstLine = cornerText.substr(0, lastIndex);
+      secondLine = cornerText.slice(lastIndex);
       // 第二行重新计算...逻辑
       secondLine = getEllipsisText({
         text: secondLine,
@@ -366,5 +363,14 @@ export class CornerCell extends HeaderCell {
       x: 0,
       y: 0,
     };
+  }
+
+  protected getCornerText(label: string): string {
+    if (isEqual(label, EXTRA_FIELD)) {
+      return this.spreadsheet.options?.cornerText || DEFAULT_CORNER_TEXT;
+    }
+
+    const { formattedValue } = this.getFormattedFieldValue();
+    return formattedValue;
   }
 }

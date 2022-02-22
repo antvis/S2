@@ -69,13 +69,9 @@ export class TableColHeader extends ColHeader {
     spreadsheet: SpreadSheet,
     headerConfig: ColHeaderConfig,
   ) {
-    let cell;
-    if (item.field === SERIES_NUMBER_FIELD) {
-      cell = new TableCornerCell(item, spreadsheet, headerConfig);
-    } else {
-      cell = new TableColCell(item, spreadsheet, headerConfig);
-    }
-    return cell;
+    return item.field === SERIES_NUMBER_FIELD
+      ? new TableCornerCell(item, spreadsheet, headerConfig)
+      : new TableColCell(item, spreadsheet, headerConfig);
   }
 
   protected getCellGroup(node: Node) {

@@ -1,23 +1,21 @@
-import { ScrollbarPositionType } from '../constant/interaction';
-import { ResizeActiveOptions } from './resize';
-import { CustomInteraction } from './interaction';
 import { Conditions } from './condition';
 import {
   FilterDataItemCallback,
   HeaderActionIcon,
   CustomSVGIcon,
-  ScrollRatio,
 } from './basic';
 import { Tooltip } from './tooltip';
+import { InteractionOptions } from './interaction';
+import { ColHeaderConfig } from '@/facet/header/col';
+import { RowHeaderConfig } from '@/facet/header/row';
+import { CornerHeaderConfig } from '@/facet/header/corner';
 import {
   CellCallback,
   CornerHeaderCallback,
-  CustomHeaderCells,
   DataCellCallback,
   FrameCallback,
   MappingDataItemCallback,
   MergedCellInfo,
-  NodeField,
   Pagination,
   Style,
   Totals,
@@ -30,32 +28,6 @@ import {
 } from '@/common/interface/hooks';
 import { BaseDataSet } from '@/data-set';
 import { SpreadSheet } from '@/sheet-type';
-import { Node } from '@/facet/layout/node';
-
-export interface InteractionOptions {
-  // record which row/col field need extra link info
-  readonly linkFields?: string[];
-  // focus selected cell, like the spotlight
-  readonly selectedCellsSpotlight?: boolean;
-  // highlight all row header cells and column header cells to which the hovered cell belongs
-  readonly hoverHighlight?: boolean;
-  // enable Command + C to copy spread data
-  readonly enableCopy?: boolean;
-  // copy with filed format
-  readonly copyWithFormat?: boolean;
-  // auto reset sheet style when click outside or press ecs key, default true
-  readonly autoResetSheetStyle?: boolean;
-  readonly hiddenColumnFields?: string[];
-  // the ratio to control scroll speed, default set to 1
-  readonly scrollSpeedRatio?: ScrollRatio;
-  // enable resize area, default set to all enable
-  readonly resize?: boolean | ResizeActiveOptions;
-  // controls scrollbar's position type
-  readonly scrollbarPosition?: ScrollbarPositionType;
-  /** ***********CUSTOM INTERACTION HOOKS**************** */
-  // register custom interactions
-  customInteractions?: CustomInteraction[];
-}
 
 export interface S2BasicOptions<T = Element | string> {
   // canvas's width
@@ -80,10 +52,6 @@ export interface S2BasicOptions<T = Element | string> {
   readonly frozenRowHeader?: boolean;
   // show Series Number
   readonly showSeriesNumber?: boolean;
-  // scroll reach node border(which field node belongs to) event config
-  readonly scrollReachNodeField?: NodeField;
-  // custom config of showing columns and rows
-  readonly customHeaderCells?: CustomHeaderCells;
   // if show the default header actionIcons
   readonly showDefaultHeaderActionIcon?: boolean;
   // header cells including ColCell, RowCell, CornerCell action icon's config
@@ -98,17 +66,21 @@ export interface S2BasicOptions<T = Element | string> {
   readonly mergedCellsInfo?: MergedCellInfo[][];
   // empty cell placeholder
   readonly placeholder?: string;
+  // custom corner text
+  readonly cornerText?: string;
   readonly supportCSSTransform?: boolean;
+  // custom device pixel ratio, default "window.devicePixelRatio"
+  readonly devicePixelRatio?: number;
 
   /** ***********CUSTOM CELL/HEADER HOOKS**************** */
   // custom data cell
   readonly dataCell?: DataCellCallback;
   // custom corner cell
-  readonly cornerCell?: CellCallback;
+  readonly cornerCell?: CellCallback<CornerHeaderConfig>;
   // custom row cell
-  readonly rowCell?: CellCallback;
+  readonly rowCell?: CellCallback<RowHeaderConfig>;
   // custom col cell
-  readonly colCell?: CellCallback;
+  readonly colCell?: CellCallback<ColHeaderConfig>;
   // custom frame
   readonly frame?: FrameCallback;
   // custom corner header
@@ -131,13 +103,6 @@ export interface S2BasicOptions<T = Element | string> {
   // determine data mapping when shows in tooltip
   mappingDisplayDataItem?: MappingDataItemCallback;
   /** ***********CUSTOM LIFECYCLE HOOKS**************** */
-
-  /** ***********CUSTOM LAYOUT HOOKS**************** */
-  otterLayout?: (
-    spreadsheet: SpreadSheet,
-    rowNode: Node,
-    colNode: Node,
-  ) => void;
 }
 
 // Table sheet options

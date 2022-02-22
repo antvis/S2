@@ -1,13 +1,13 @@
-import React from 'react';
-import { debounce } from 'lodash';
-import type { SpreadSheet, S2Options } from '@antv/s2';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useCallback } from 'react';
+import { debounce, round } from 'lodash';
+import type { SpreadSheet } from '@antv/s2';
 import { Adaptive } from '@/components';
 
 export interface UseResizeEffectParams {
   container: HTMLElement;
-  spreadsheet: SpreadSheet;
+  s2: SpreadSheet;
   adaptive: Adaptive;
-  options: S2Options;
 }
 
 const RENDER_DELAY = 200; // ms
@@ -24,16 +24,17 @@ function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
   return { container, adaptiveWidth, adaptiveHeight };
 }
 
-export const useResizeEffect = (params: UseResizeEffectParams) => {
-  const { spreadsheet: s2, adaptive, options = {} as S2Options } = params;
+export const useResize = (params: UseResizeEffectParams) => {
+  const { s2, adaptive } = params;
   const { container, adaptiveWidth, adaptiveHeight } = analyzeAdaptive(
     params.container,
     adaptive,
   );
+
   // 第一次自适应时不需要 debounce, 防止抖动
   const isFirstRender = React.useRef<boolean>(true);
 
-  const render = React.useCallback(
+  const render = useCallback(
     (width: number, height: number) => {
       s2.changeSize(width, height);
       s2.render(false);
@@ -46,11 +47,11 @@ export const useResizeEffect = (params: UseResizeEffectParams) => {
 
   // rerender by option
   React.useEffect(() => {
-    if (!adaptive) {
-      s2?.changeSize(options.width, options.height);
-      s2?.render(false);
+    if (!adaptive && s2) {
+      s2.changeSize(s2?.options.width, s2?.options.height);
+      s2.render(false);
     }
-  }, [options.width, options.height, adaptive]);
+  }, [s2?.options.width, s2?.options.height, adaptive, s2]);
 
   // rerender by container resize or window resize
   React.useLayoutEffect(() => {
@@ -61,8 +62,15 @@ export const useResizeEffect = (params: UseResizeEffectParams) => {
     const resizeObserver = new ResizeObserver(([entry] = []) => {
       if (entry) {
         const [size] = entry.borderBoxSize || [];
-        const width = adaptiveWidth ? size?.inlineSize : options?.width;
-        const height = adaptiveHeight ? size?.blockSize : options?.height;
+        const width = adaptiveWidth
+          ? round(size?.inlineSize)
+          : s2?.options.width;
+        const height = adaptiveHeight
+          ? round(size?.blockSize)
+          : s2?.options.height;
+        if (!adaptiveWidth && !adaptiveHeight) {
+          return;
+        }
         if (isFirstRender.current) {
           render(width, height);
           return;
@@ -79,13 +87,11 @@ export const useResizeEffect = (params: UseResizeEffectParams) => {
       resizeObserver.unobserve(container);
     };
   }, [
-    adaptive,
-    adaptiveHeight,
-    adaptiveWidth,
     container,
-    debounceRender,
-    options?.height,
-    options?.width,
+    adaptiveWidth,
+    adaptiveHeight,
+    s2?.options.width,
+    s2?.options.height,
     render,
   ]);
 };

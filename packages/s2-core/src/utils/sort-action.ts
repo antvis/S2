@@ -1,7 +1,7 @@
 import { keys, has, map, toUpper, endsWith, uniq } from 'lodash';
 import { SortMethod, SortParam } from '@/common/interface';
 import { DataType, SortActionParams } from '@/data-set/interface';
-import { EXTRA_FIELD, TOTAL_VALUE } from '@/common/constant';
+import { EXTRA_FIELD, ID_SEPARATOR, TOTAL_VALUE } from '@/common/constant';
 import { sortByItems, getListBySorted } from '@/utils/data-set-operate';
 import { getDimensionsWithParentPath } from '@/utils/dataset/pivot-data-set';
 
@@ -71,10 +71,43 @@ export const sortByFunc = (params: SortActionParams): string[] => {
 
 export const sortByCustom = (params: SortActionParams): string[] => {
   const { sortByValues, originValues } = params;
-  const sortedListWithPre = sortByValues.map(
-    (item) => originValues?.find((i) => endsWith(i, item)) || item,
+
+  // 从 originValues 中过滤出所有包含 sortByValue 的 id
+  const idWithPre = originValues.filter((originItem) =>
+    sortByValues.find((value) => endsWith(originItem, value)),
   );
-  return getListBySorted(originValues, sortedListWithPre);
+  // 将 id 拆分为父节点和目标节点
+  const idListWithPre = idWithPre.map((idStr) => {
+    const ids = idStr.split(ID_SEPARATOR);
+    if (ids.length > 1) {
+      const parentId = ids.slice(0, ids.length - 1).join(ID_SEPARATOR);
+      return [parentId, ids[ids.length - 1]];
+    }
+    return ids;
+  });
+  // 获取父节点顺序
+  const parentOrder = Array.from(new Set(idListWithPre.map((id) => id[0])));
+  // 排序
+  idListWithPre.sort((a: string[], b: string[]) => {
+    const aParent = a.slice(0, a.length - 1);
+    const bParent = b.slice(0, b.length - 1);
+    // 父节点不同时，按 parentOrder 排序
+    if (aParent.join() !== bParent.join()) {
+      const aParentIndex = parentOrder.indexOf(aParent[0]);
+      const bParentIndex = parentOrder.indexOf(bParent[0]);
+      return aParentIndex - bParentIndex;
+    }
+    // 父节点相同时，按 sortByValues 排序
+    const aIndex = sortByValues.indexOf(a[a.length - 1]);
+    const bIndex = sortByValues.indexOf(b[b.length - 1]);
+    return aIndex - bIndex;
+  });
+  // 拼接 id
+  const sortedIdWithPre = idListWithPre.map((idArr) =>
+    idArr.join(ID_SEPARATOR),
+  );
+
+  return getListBySorted(originValues, sortedIdWithPre);
 };
 
 export const sortByMethod = (params: SortActionParams): string[] => {
@@ -107,7 +140,7 @@ export const processSort = (params: SortActionParams): string[] => {
   const { sortParam, originValues, measureValues, dataSet } = params;
   const { sortFunc, sortMethod, sortBy } = sortParam;
 
-  let result = [];
+  let result = originValues;
   const sortActionParams = {
     originValues,
     measureValues,
@@ -119,7 +152,7 @@ export const processSort = (params: SortActionParams): string[] => {
   } else if (sortBy) {
     // 自定义列表
     result = sortByCustom({ sortByValues: sortBy, originValues });
-  } else if (sortMethod) {
+  } else if (isAscSort(sortMethod) || isDescSort(sortMethod)) {
     // 如果是升序，需要将无数据的项放到前面
     result = sortByMethod(sortActionParams);
   }

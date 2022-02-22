@@ -9,12 +9,12 @@ class HiddenInteraction extends BaseEvent {
       this.spreadsheet.interaction.hideColumns([meta.field]);
     });
 
-    this.spreadsheet.on(S2Event.LAYOUT_TABLE_COL_EXPANDED, (cell) => {
+    this.spreadsheet.on(S2Event.LAYOUT_COLS_EXPANDED, (cell) => {
       console.log('列头展开:', cell);
     });
 
     this.spreadsheet.on(
-      S2Event.LAYOUT_TABLE_COL_HIDDEN,
+      S2Event.LAYOUT_COLS_HIDDEN,
       (currentHiddenColumnsInfo, hiddenColumnsDetail) => {
         console.log('列头隐藏:', currentHiddenColumnsInfo, hiddenColumnsDetail);
       },
@@ -26,7 +26,7 @@ class ContextMenuInteraction extends BaseEvent {
   bindEvents() {
     // 禁止弹出右键菜单
     this.spreadsheet.on(S2Event.GLOBAL_CONTEXT_MENU, (event) => {
-      event.preventDefault();
+      event?.preventDefault?.();
       console.log('右键', event);
     });
   }
