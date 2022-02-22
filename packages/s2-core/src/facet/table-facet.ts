@@ -807,9 +807,6 @@ export class TableFacet extends BaseFacet {
         data: this.layoutResult.colNodes,
         scrollContainsRowHeader:
           this.cfg.spreadsheet.isScrollContainsRowHeader(),
-        formatter: (field) => {
-          return this.cfg.dataSet.getFieldFormatter(field);
-        },
         sortParam: this.cfg.spreadsheet.store.get('sortParam'),
         spreadsheet: this.spreadsheet,
       });
