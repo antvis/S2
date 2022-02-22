@@ -90,15 +90,6 @@ export class TableColCell extends ColCell {
     return `${HORIZONTAL_RESIZE_AREA_KEY_PRE}${'table-col-cell'}`;
   }
 
-  // 明细表列头不应该格式化 https://github.com/antvis/S2/issues/840
-  protected getFormattedFieldValue(): FormatResult {
-    const { label } = this.meta;
-    return {
-      formattedValue: label,
-      value: label,
-    };
-  }
-
   protected drawBackgroundShape() {
     const { backgroundColor } = this.getStyle().cell;
     this.backgroundShape = renderRect(this, {

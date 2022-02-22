@@ -349,10 +349,6 @@ export class CornerCell extends HeaderCell {
     };
   }
 
-  protected getFormattedFieldValue(): FormatResult {
-    return { formattedValue: this.meta.label, value: this.meta.label };
-  }
-
   protected getMaxTextWidth(): number {
     const { width } = this.getContentArea();
     return width - this.getTreeIconWidth() - this.getActionIconsWidth();

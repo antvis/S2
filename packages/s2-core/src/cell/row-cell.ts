@@ -303,21 +303,6 @@ export class RowCell extends HeaderCell {
     };
   }
 
-  protected getFormattedFieldValue(): FormatResult {
-    const { label } = this.meta;
-    let content = label;
-    const formatter = this.spreadsheet.dataSet.getFieldFormatter(
-      this.meta.field,
-    );
-    if (formatter) {
-      content = formatter(label);
-    }
-    return {
-      formattedValue: content,
-      value: label,
-    };
-  }
-
   protected getIconPosition() {
     const { x, y, textAlign } = this.textShape.cfg.attrs;
 

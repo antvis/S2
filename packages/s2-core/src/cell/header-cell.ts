@@ -8,6 +8,7 @@ import {
   HeaderActionIcon,
   HeaderActionIconProps,
   CellMeta,
+  FormatResult,
 } from '@/common/interface';
 import { BaseHeaderConfig } from '@/facet/header/base';
 import { Node } from '@/facet/layout/node';
@@ -46,6 +47,15 @@ export abstract class HeaderCell extends BaseCell<Node> {
 
   protected initCell() {
     this.actionIcons = [];
+  }
+
+  // 头部cell都不需要使用formatter进行格式化，formatter只针对于data cell
+  protected getFormattedFieldValue(): FormatResult {
+    const { label } = this.meta;
+    return {
+      formattedValue: label,
+      value: label,
+    };
   }
 
   protected showActionIcons(actionIconCfg: HeaderActionIcon) {
