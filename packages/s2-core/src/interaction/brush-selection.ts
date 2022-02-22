@@ -380,9 +380,14 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     }
 
     this.scrollAnimationComplete = false;
+    let ratio = 3;
+    // x 轴滚动速度慢
+    if (config.x.scroll) {
+      ratio = 0.5;
+    }
     this.spreadsheet.facet.scrollWithAnimation(
       offsetCfg,
-      Math.max(16, 200 - this.mouseMoveDistanceFromCanvas * 3),
+      Math.max(16, 300 - this.mouseMoveDistanceFromCanvas * ratio),
       this.onScrollAnimationComplete,
     );
   };
