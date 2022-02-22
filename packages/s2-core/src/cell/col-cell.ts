@@ -101,16 +101,6 @@ export class ColCell extends HeaderCell {
     return { ...textStyle, textAlign, textBaseline };
   }
 
-  protected getFormattedFieldValue(): FormatResult {
-    const { label, key } = this.meta;
-    const formatter = this.headerConfig.formatter(key);
-    const content = formatter(label);
-    return {
-      formattedValue: content,
-      value: label,
-    };
-  }
-
   protected getMaxTextWidth(): number {
     const { width } = this.getContentArea();
     return width - this.getActionIconsWidth();

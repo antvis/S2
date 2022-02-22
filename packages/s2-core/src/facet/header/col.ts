@@ -7,14 +7,11 @@ import {
   FRONT_GROUND_GROUP_COL_SCROLL_Z_INDEX,
 } from '@/common/constant';
 import { ColCell } from '@/cell';
-import { Formatter } from '@/common/interface';
 import { Node } from '@/facet/layout/node';
 
 import { SpreadSheet } from '@/sheet-type/index';
 
 export interface ColHeaderConfig extends BaseHeaderConfig {
-  // format field value
-  formatter: (field: string) => Formatter;
   // corner width used when scroll {@link ColHeader#onColScroll}
   cornerWidth?: number;
   scrollContainsRowHeader?: boolean;
