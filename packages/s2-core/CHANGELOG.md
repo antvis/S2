@@ -1,3 +1,11 @@
+# [@antv/s2-v1.10.0-alpha.2](https://github.com/antvis/S2/compare/@antv/s2-v1.10.0-alpha.1...@antv/s2-v1.10.0-alpha.2) (2022-02-22)
+
+
+### Bug Fixes
+
+* 不添加总计时错误地添加了小计节点 ([#1111](https://github.com/antvis/S2/issues/1111)) ([65739aa](https://github.com/antvis/S2/commit/65739aa9768bb281b89230c4de699e2a06073892))
+* 增加行头收起展开按钮回调事件的透传参数 ([#1121](https://github.com/antvis/S2/issues/1121)) ([300a253](https://github.com/antvis/S2/commit/300a2538446a07ebfcd0c6355966e89c925529a0))
+
 # [@antv/s2-v1.10.0-alpha.1](https://github.com/antvis/S2/compare/@antv/s2-v1.9.1...@antv/s2-v1.10.0-alpha.1) (2022-02-18)
 
 
