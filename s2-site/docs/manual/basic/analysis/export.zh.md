@@ -28,6 +28,8 @@ const s2options = {
 `@antv/s2-react` 组件层提供了导出功能
 
 ```ts
+import { SheetComponent } from '@antv/s2-react'
+
 <SheetComponent
   dataCfg={dataCfg}
   options={options}

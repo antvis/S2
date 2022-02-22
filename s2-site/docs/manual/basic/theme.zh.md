@@ -68,7 +68,7 @@ const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 const customTheme = {
     background: {
-    color: HEADER_BACK_COLOR,
+        color: '#353c59',
     }
 };
 

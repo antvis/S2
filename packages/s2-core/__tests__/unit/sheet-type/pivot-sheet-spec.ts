@@ -586,19 +586,20 @@ describe('PivotSheet Tests', () => {
         node: null,
       };
 
-      const collapsedRows = {
-        [treeRowType.id]: treeRowType.isCollapsed,
+      const collapsedRowsType = {
+        collapsedRows: {
+          [treeRowType.id]: treeRowType.isCollapsed,
+        },
+        meta: null,
       };
 
       s2.emit(S2Event.ROW_CELL_COLLAPSE_TREE_ROWS, treeRowType);
 
-      expect(collapseRows).toHaveBeenCalledWith({
-        collapsedRows,
-      });
-      expect(afterCollapseRows).toHaveBeenCalledWith({
-        collapsedRows,
-      });
-      expect(s2.options.style.collapsedRows).toEqual(collapsedRows);
+      expect(collapseRows).toHaveBeenCalledWith(collapsedRowsType);
+      expect(afterCollapseRows).toHaveBeenCalledWith(collapsedRowsType);
+      expect(s2.options.style.collapsedRows).toEqual(
+        collapsedRowsType.collapsedRows,
+      );
       expect(renderSpy).toHaveBeenCalledTimes(1);
 
       renderSpy.mockRestore();
