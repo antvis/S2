@@ -114,33 +114,27 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
   }
 
   private setMoveDistanceFromCanvas = (
-    point: { x: number; y: number },
+    delta: { x: number; y: number },
     needScrollForX: boolean,
     needScrollForY: boolean,
   ) => {
-    const { facet } = this.spreadsheet;
-    const { width, height } = facet.getCanvasHW();
-    const { minX, minY } = facet.panelBBox;
-
-    let delta = 0;
+    let deltaVal = 0;
 
     if (needScrollForX) {
-      delta = Math.min(Math.abs(point.x - width), Math.abs(point.x - minX));
+      deltaVal = delta.x;
     }
 
     if (needScrollForY) {
-      const deltaY = Math.min(
-        Math.abs(point.y - height),
-        Math.abs(point.y - minY),
-      );
+      const deltaY = delta.y;
+
       if (needScrollForX) {
-        delta = Math.max(deltaY, delta);
+        deltaVal = Math.max(deltaY, deltaVal);
       } else {
-        delta = deltaY;
+        deltaVal = deltaY;
       }
     }
 
-    this.mouseMoveDistanceFromCanvas = delta;
+    this.mouseMoveDistanceFromCanvas = deltaVal;
   };
 
   public formatBrushPointForScroll = (delta: { x: number; y: number }) => {
@@ -383,8 +377,9 @@ export class BrushSelection extends BaseEvent implements BaseEventImplement {
     let ratio = 3;
     // x 轴滚动速度慢
     if (config.x.scroll) {
-      ratio = 0.5;
+      ratio = 1;
     }
+
     this.spreadsheet.facet.scrollWithAnimation(
       offsetCfg,
       Math.max(16, 300 - this.mouseMoveDistanceFromCanvas * ratio),
