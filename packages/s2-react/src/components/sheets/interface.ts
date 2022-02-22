@@ -19,6 +19,7 @@ import React from 'react';
 import { DataType } from '@antv/s2';
 import { HiddenColumnsInfo } from '@antv/s2';
 import { ResizeInfo } from '@antv/s2';
+import { CollapsedRowsType } from '@antv/s2';
 import { DrillDownProps } from '@/components/drill-down';
 import { HeaderCfgProps } from '@/components/header';
 
@@ -150,9 +151,7 @@ export interface BaseSheetComponentProps {
     current: number;
   }) => void;
   onLayoutCellScroll?: (position: CellScrollPosition) => void;
-  onLayoutAfterCollapseRows?: (data: {
-    collapsedRows: Record<string, boolean>;
-  }) => void;
+  onLayoutAfterCollapseRows?: (data: CollapsedRowsType) => void;
   onCollapseRowsAll?: (hierarchyCollapse: boolean) => void;
   onLayoutColsExpanded?: (node: Node) => void;
   onLayoutColsHidden?: (data: {
