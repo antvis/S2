@@ -548,11 +548,16 @@ export class TableFacet extends BaseFacet {
       dataLength,
     );
 
+    // 在分页条件下需要额外处理 Y 轴滚动值
+    const relativeScrollY = Math.floor(scrollY - this.getPaginationScrollY());
+
     // scroll boundary
     const maxScrollX = Math.max(0, last(this.viewCellWidths) - viewportWidth);
     const maxScrollY = Math.max(
       0,
-      this.viewCellHeights.getTotalHeight() - viewportHeight,
+      this.viewCellHeights.getCellOffsetY(cellRange.end + 1) -
+        this.viewCellHeights.getCellOffsetY(cellRange.start) -
+        viewportHeight,
     );
 
     // remove previous splitline group
@@ -633,7 +638,7 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow && scrollY > 0) {
+      if (style.showShadow && relativeScrollY > 0) {
         splitLineGroup.addShape('rect', {
           attrs: {
             x: 0,
@@ -703,7 +708,7 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow && Math.floor(scrollY) < Math.floor(maxScrollY)) {
+      if (style.showShadow && relativeScrollY < Math.floor(maxScrollY)) {
         splitLineGroup.addShape('rect', {
           attrs: {
             x: 0,
