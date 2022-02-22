@@ -28,8 +28,6 @@ export function useSpreadSheet(
   const s2Ref = React.useRef<SpreadSheet>();
   const containerRef = React.useRef<HTMLDivElement>();
   const wrapRef = React.useRef<HTMLDivElement>();
-  const headerRef = React.useRef<HTMLDivElement>();
-  const footRef = React.useRef<HTMLDivElement>();
 
   const { spreadsheet: customSpreadSheet, dataCfg, options, themeCfg } = props;
   const { loading, setLoading } = useLoading(s2Ref.current, props.loading);
@@ -106,8 +104,6 @@ export function useSpreadSheet(
     s2: s2Ref.current,
     container: containerRef.current,
     wrapper: wrapRef.current,
-    header: headerRef.current,
-    foot: footRef.current,
     adaptive: props.adaptive,
   });
 
@@ -115,8 +111,6 @@ export function useSpreadSheet(
     s2Ref,
     containerRef,
     wrapRef,
-    headerRef,
-    footRef,
     loading,
     setLoading,
     pagination,

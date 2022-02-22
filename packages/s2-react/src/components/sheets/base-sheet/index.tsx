@@ -17,17 +17,10 @@ import './index.less';
 export const BaseSheet = React.forwardRef(
   (props: SheetComponentsProps, ref: React.MutableRefObject<SpreadSheet>) => {
     const { dataCfg, options, header, showPagination, sheetType } = props;
-    const {
-      s2Ref,
-      loading,
-      containerRef,
-      pagination,
-      wrapRef,
-      headerRef,
-      footRef,
-    } = useSpreadSheet(props, {
-      sheetType,
-    });
+    const { s2Ref, loading, containerRef, pagination, wrapRef } =
+      useSpreadSheet(props, {
+        sheetType,
+      });
 
     // 同步实例
     React.useEffect(() => {
@@ -45,27 +38,26 @@ export const BaseSheet = React.forwardRef(
 
     return (
       <React.StrictMode>
-        <div ref={wrapRef} className={`${S2_PREFIX_CLS}-div`}>
-          <Spin spinning={loading}>
+        <Spin spinning={loading}>
+          <div
+            ref={wrapRef}
+            className={`${S2_PREFIX_CLS}-div ${S2_PREFIX_CLS}-wrapper`}
+          >
             {header && (
-              <div ref={headerRef} className={`${S2_PREFIX_CLS}-div`}>
-                <Header
-                  {...header}
-                  sheet={s2Ref.current}
-                  width={options.width}
-                  dataCfg={getSafetyDataConfig(dataCfg)}
-                  options={getSheetComponentOptions(options)}
-                />
-              </div>
+              <Header
+                {...header}
+                sheet={s2Ref.current}
+                width={options.width}
+                dataCfg={getSafetyDataConfig(dataCfg)}
+                options={getSheetComponentOptions(options)}
+              />
             )}
             <div ref={containerRef} className={`${S2_PREFIX_CLS}-container`} />
             {showPagination && (
-              <div ref={footRef} className={`${S2_PREFIX_CLS}-div`}>
-                <S2Pagination {...pagination} pagination={options.pagination} />
-              </div>
+              <S2Pagination {...pagination} pagination={options.pagination} />
             )}
-          </Spin>
-        </div>
+          </div>
+        </Spin>
       </React.StrictMode>
     );
   },

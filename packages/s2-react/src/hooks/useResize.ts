@@ -7,8 +7,6 @@ import { Adaptive } from '@/components';
 export interface UseResizeEffectParams {
   container: HTMLElement; // 只包含了 sheet 容器
   wrapper: HTMLElement; // 包含了 sheet + foot(page) + header
-  header: HTMLElement;
-  foot: HTMLElement;
   s2: SpreadSheet;
   adaptive: Adaptive;
 }
@@ -28,7 +26,7 @@ function analyzeAdaptive(paramsContainer: HTMLElement, adaptive: Adaptive) {
 }
 
 export const useResize = (params: UseResizeEffectParams) => {
-  const { s2, adaptive, container, foot, header } = params;
+  const { s2, adaptive, container } = params;
   const {
     container: wrapper,
     adaptiveWidth,
@@ -70,21 +68,16 @@ export const useResize = (params: UseResizeEffectParams) => {
           ? round(size?.inlineSize)
           : s2?.options.width;
         const height = adaptiveHeight
-          ? round(size?.blockSize)
+          ? container.getBoundingClientRect().height // 去除 header 和 page 后才是 sheet 真正的高度
           : s2?.options.height;
         if (!adaptiveWidth && !adaptiveHeight) {
           return;
         }
-        const containHeight =
-          height -
-          foot.getBoundingClientRect().height -
-          header.getBoundingClientRect().height -
-          16; // padding
         if (isFirstRender.current) {
-          render(width, containHeight);
+          render(width, height);
           return;
         }
-        debounceRender(width, containHeight);
+        debounceRender(width, height);
       }
     });
 
@@ -98,8 +91,6 @@ export const useResize = (params: UseResizeEffectParams) => {
   }, [
     wrapper,
     container,
-    foot,
-    header,
     adaptiveWidth,
     adaptiveHeight,
     s2?.options.width,

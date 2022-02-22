@@ -1,13 +1,25 @@
 @preCls: antv-s2;
 
+.ant-spin-nested-loading,
+.ant-spin-container {
+  height: 100%;
+}
+
 .@{preCls} {
   &-div {
     padding: 0;
     margin: 0;
   }
 
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
   &-container {
     overflow: auto;
+    flex: 1 1 auto;
 
     canvas {
       display: block;
