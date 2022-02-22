@@ -14,10 +14,11 @@ import { S2Event, SortMethodType } from '@/common/constant';
 import { Node } from '@/facet/layout/node';
 import { DataCell } from '@/cell/data-cell';
 
-type CollapsedRowsType = {
+export type CollapsedRowsType = {
   collapsedRows: Record<string, boolean> & {
     [x: number]: any;
   };
+  meta?: Node;
 };
 
 export type TableSortParams = {
