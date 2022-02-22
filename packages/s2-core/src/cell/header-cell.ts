@@ -1,6 +1,7 @@
 import { Event as CanvasEvent } from '@antv/g-canvas';
 import { first, map, includes, find, isEqual, get, forEach } from 'lodash';
 import { shouldShowActionIcons } from 'src/utils/cell/header-cell';
+import { EXTRA_FIELD } from '@/common/constant/basic';
 import { BaseCell } from '@/cell/base-cell';
 import { InteractionStateName } from '@/common/constant/interaction';
 import { GuiIcon } from '@/common/icons';
@@ -49,11 +50,21 @@ export abstract class HeaderCell extends BaseCell<Node> {
     this.actionIcons = [];
   }
 
-  // 头部cell都不需要使用formatter进行格式化，formatter只针对于data cell
+  // 头部cell不需要使用formatter进行格式化，formatter只针对于data cell
   protected getFormattedFieldValue(): FormatResult {
-    const { label } = this.meta;
+    const { label, field } = this.meta;
+
+    if (!isEqual(field, EXTRA_FIELD)) {
+      return {
+        formattedValue: label,
+        value: label,
+      };
+    }
+
+    const fieldName = this.spreadsheet.dataSet.getFieldName(label);
+
     return {
-      formattedValue: label,
+      formattedValue: fieldName || label,
       value: label,
     };
   }
