@@ -17,6 +17,7 @@ import type {
 } from '../common/interface';
 import {
   KEY_GROUP_FROZEN_ROW_RESIZE_AREA,
+  KEY_GROUP_FROZEN_SPLIT_LINE,
   SeriesNumberHeader,
   TableRowCell,
   TableSortParams,
@@ -525,7 +526,7 @@ export class TableFacet extends BaseFacet {
     return `l (${angle}) 0:${style.shadowColors?.left} 1:${style.shadowColors?.right}`;
   };
 
-  protected renderFrozenGroupSplitLine = () => {
+  protected renderFrozenGroupSplitLine = (scrollX: number, scrollY: number) => {
     const {
       width: panelWidth,
       height: panelHeight,
@@ -547,9 +548,19 @@ export class TableFacet extends BaseFacet {
       dataLength,
     );
 
+    // scroll boundary
+    const maxScrollX = Math.max(0, last(this.viewCellWidths) - viewportWidth);
+    const maxScrollY = Math.max(
+      0,
+      this.viewCellHeights.getTotalHeight() - viewportHeight,
+    );
+
+    // remove previous splitline group
+    this.foregroundGroup.findById(KEY_GROUP_FROZEN_SPLIT_LINE)?.remove();
+
     const style: SplitLine = get(this.cfg, 'spreadsheet.theme.splitLine');
     const splitLineGroup = this.foregroundGroup.addGroup({
-      id: 'frozenSplitLine',
+      id: KEY_GROUP_FROZEN_SPLIT_LINE,
       zIndex: FRONT_GROUND_GROUP_COL_FROZEN_Z_INDEX,
     });
 
@@ -588,7 +599,7 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow) {
+      if (style.showShadow && scrollX > 0) {
         splitLineGroup.addShape('rect', {
           attrs: {
             x,
@@ -622,7 +633,7 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow) {
+      if (style.showShadow && scrollY > 0) {
         splitLineGroup.addShape('rect', {
           attrs: {
             x: 0,
@@ -658,7 +669,7 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow) {
+      if (style.showShadow && Math.floor(scrollX) < Math.floor(maxScrollX)) {
         splitLineGroup.addShape('rect', {
           attrs: {
             x: x - style.shadowWidth,
@@ -692,7 +703,7 @@ export class TableFacet extends BaseFacet {
         },
       );
 
-      if (style.showShadow) {
+      if (style.showShadow && Math.floor(scrollY) < Math.floor(maxScrollY)) {
         splitLineGroup.addShape('rect', {
           attrs: {
             x: 0,
@@ -852,7 +863,6 @@ export class TableFacet extends BaseFacet {
     this.renderFrozenPanelCornerGroup();
     super.render();
     this.initFrozenGroupPosition();
-    this.renderFrozenGroupSplitLine();
   }
 
   protected getRowHeader() {
@@ -887,6 +897,7 @@ export class TableFacet extends BaseFacet {
 
     super.translateRelatedGroups(scrollX, scrollY, hRowScroll);
     this.updateRowResizeArea();
+    this.renderFrozenGroupSplitLine(scrollX, scrollY);
   }
 
   public calculateXYIndexes(scrollX: number, scrollY: number): PanelIndexes {
