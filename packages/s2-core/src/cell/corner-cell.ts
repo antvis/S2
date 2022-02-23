@@ -9,7 +9,6 @@ import {
   max,
   stubTrue,
 } from 'lodash';
-import { TextAlign } from './../common/interface/theme';
 import { shouldAddResizeArea } from './../utils/interaction/resize';
 import { HeaderCell } from './header-cell';
 import {
@@ -25,11 +24,7 @@ import {
   ResizeDirectionType,
   S2Event,
 } from '@/common/constant';
-import {
-  CellBorderPosition,
-  FormatResult,
-  TextTheme,
-} from '@/common/interface';
+import { CellBorderPosition, TextTheme } from '@/common/interface';
 import { CornerHeaderConfig } from '@/facet/header/corner';
 import {
   getTextPosition,
@@ -336,15 +331,13 @@ export class CornerCell extends HeaderCell {
   }
 
   protected getTextStyle(): TextTheme {
-    const cornerTextStyle = this.getStyle().bolderText;
     const { cornerType } = this.meta;
-
-    const textAlign: TextAlign =
-      cornerType === CornerNodeType.Col ? 'right' : cornerTextStyle.textAlign;
+    const { text, bolderText } = this.getStyle();
+    const cornerTextStyle =
+      cornerType === CornerNodeType.Col ? text : bolderText;
 
     return {
       ...cornerTextStyle,
-      textAlign,
       textBaseline: 'middle',
     };
   }
