@@ -9,6 +9,7 @@ describe('Copy Tests', () => {
     const result = await navigator.clipboard.readText();
 
     expect(result).toEqual(text);
+    expect(document.querySelector('textarea')).not.toBeDefined();
   });
 
   test('should sync copy text to clipboard', async () => {

@@ -17,7 +17,7 @@ import { ID_SEPARATOR, ROOT_BEGINNING_REGEX } from '@/common/constant';
 import { MultiData } from '@/common/interface';
 import { safeJsonParse } from '@/utils/text';
 
-export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
+export const copyToClipboardSync = (str: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     const textarea = document.createElement('textarea');
     textarea.value = str;
@@ -36,17 +36,17 @@ export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
   });
 };
 
-export const copyToClipboardByClipboard = (str: string): Promise<void> => {
+export const copyToClipboardAsync = (str: string): Promise<void> => {
   return navigator.clipboard.writeText(str).catch(() => {
-    return copyToClipboardByExecCommand(str);
+    return copyToClipboardSync(str);
   });
 };
 
 export const copyToClipboard = (str: string, sync = false): Promise<void> => {
   if (!navigator.clipboard || sync) {
-    return copyToClipboardByExecCommand(str);
+    return copyToClipboardSync(str);
   }
-  return copyToClipboardByClipboard(str);
+  return copyToClipboardAsync(str);
 };
 
 export const download = (str: string, fileName: string) => {
