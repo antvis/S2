@@ -27,7 +27,6 @@ import {
   TooltipAutoAdjustBoundary,
   customMerge,
   ThemeCfg,
-  ViewMeta,
   S2Theme,
   DataType,
 } from '@antv/s2';
@@ -223,9 +222,10 @@ function MainLayout() {
   };
 
   const logHandler =
-    (name: string) => (cellInfo?: TargetCellInfo | ViewMeta) => {
+    (name: string) =>
+    (...args: unknown[]) => {
       if (options.debug) {
-        console.debug(name, cellInfo);
+        console.debug(name, ...args);
       }
     };
 
@@ -253,14 +253,6 @@ function MainLayout() {
     s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, (meta) => {
       console.log('趋势图icon点击', meta);
     });
-
-    s2Ref.current?.on(S2Event.LAYOUT_COLS_EXPANDED, (data) => {
-      console.log('列头展开', data);
-    });
-
-    s2Ref.current?.on(S2Event.LAYOUT_COLS_HIDDEN, (data) => {
-      console.log('列头隐藏', data);
-    });
   }, [sheetType]);
 
   React.useEffect(() => {
@@ -283,9 +275,6 @@ function MainLayout() {
   const mergedOptions: Partial<S2Options<React.ReactNode>> = customMerge(
     {},
     {
-      width: 600,
-      height: 400,
-      hierarchyCollapse: false,
       pagination: showPagination && {
         pageSize: 10,
         current: 1,
@@ -370,7 +359,7 @@ function MainLayout() {
   );
 
   const onStrategyDataTypeChange = (e: RadioChangeEvent) => {
-    let newDataCfg;
+    let newDataCfg: S2DataConfig;
     switch (e.target.value) {
       case 'multiMeasure':
         newDataCfg = multiMeasure;
@@ -758,9 +747,10 @@ function MainLayout() {
               onRowCellClick={logHandler('onRowCellClick')}
               onCornerCellClick={logHandler('onCornerCellClick')}
               onDataCellClick={logHandler('onDataCellClick')}
-              onLayoutResizeMouseDown={(data) => {
-                console.log(data);
-              }}
+              onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
+              onCopied={logHandler('onCopied')}
+              onLayoutColsHidden={logHandler('onLayoutColsHidden')}
+              onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
             />
           )}
         </TabPane>

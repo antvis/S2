@@ -14,6 +14,7 @@ import { copyData, copyToClipboard, download } from '@antv/s2'
 const data = copyData(spreadsheet, '\t', false)
 
 // 复制数据到剪贴板
+// 同步复制：copyToClipboard(data, false)
 copyToClipboard(data)
   .then(() => {
     console.log('复制成功')
@@ -39,6 +40,7 @@ download(data, 'filename')
 | 参数 | 说明     | 类型     | 默认值 | 必选 |
 | :--- | :------- | :------- | :----- | :--- |
 | data | 数据源 | `string` |        | ✓    |
+| sync | 是否同步复制数据 （默认异步） | `boolean` |   `false`     |     |
 
 ### download
 
