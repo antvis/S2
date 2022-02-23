@@ -14,7 +14,6 @@ import {
 import {
   CellBorderPosition,
   DefaultCellTheme,
-  FormatResult,
   IconTheme,
   TextAlign,
   TextBaseline,
