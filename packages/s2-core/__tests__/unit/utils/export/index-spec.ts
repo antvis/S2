@@ -15,9 +15,8 @@ describe('Copy Tests', () => {
   test('should sync copy text to clipboard', async () => {
     const text = '222';
 
-    jest.spyOn(document.body, 'removeChild').mockImplementationOnce(() => {
-      return null;
-    });
+    // 复制成功后不移除临时节点, 便于测试
+    jest.spyOn(document.body, 'removeChild').mockImplementationOnce(() => null);
 
     await copyToClipboard(text, true);
 
@@ -33,9 +32,7 @@ describe('Copy Tests', () => {
   test('should sync copy text to clipboard if async copy failed', async () => {
     const text = '222';
 
-    jest.spyOn(document.body, 'removeChild').mockImplementationOnce(() => {
-      return null;
-    });
+    jest.spyOn(document.body, 'removeChild').mockImplementationOnce(() => null);
 
     // 模拟复制失败
     jest
