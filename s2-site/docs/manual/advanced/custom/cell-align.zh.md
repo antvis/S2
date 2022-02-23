@@ -20,7 +20,7 @@ S2 中单元格排序有两个大的原则：
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/6wPCHImDZ/b36ca38e-aa8e-4ef6-a903-b9d605204de0.png)
 
-角头的`textBaseline`被内部规定为`middle`，因此只能自定义`textAlign`，下面是三种对齐方式的展示形态：
+角头的 `textBaseline` 被内部规定为 `middle`，因此只能自定义 `textAlign`，下面是三种对齐方式的展示形态：
 
 <table style="width: 100%; outline: none; border-collapse: collapse;">
   <colgroup>
@@ -89,7 +89,7 @@ cornerCell: {
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/GPEd6w4pj/f2bb3ba9-e4a4-4304-a7b6-a1b9e59e768a.png)
 
-由于滑动居中的特性，行头的`textBaseline`被内部规定为`top`，因此只能自定义`textAlign`，下面是三种对齐方式的展示形态：
+由于滑动居中的特性，行头的 `textBaseline` 被内部规定为 `top`，因此只能自定义 `textAlign`，下面是三种对齐方式的展示形态：
 
 <table style="width: 100%; outline: none; border-collapse: collapse;">
   <colgroup>
@@ -153,7 +153,7 @@ rowCell: {
 
 ## 列头对齐方式
 
-由于滑动居中的特性，列头非叶子节点单元格的`textBaseline`被内部规定为`top`，`textAlign`被内部规定为`center`；叶子节点单元格对齐方式和数据单元格保持一致，所以无法为其自定义对齐方式。
+由于滑动居中的特性，列头非叶子节点单元格的 `textBaseline` 被内部规定为 `top`，`textAlign` 被内部规定为 `center`；叶子节点单元格对齐方式和数据单元格保持一致，所以无法为其自定义对齐方式。
 
 ## 数据单元格对齐方式
 
@@ -162,7 +162,7 @@ rowCell: {
 
 ![img](https://gw.alipayobjects.com/zos/antfincdn/WHa%26eKOrP/00951ab0-b25c-4512-a056-541efff7c9dc.png)
 
-数据单元格`textBaseline`和`textAlign`均无限制，皆可自定义：
+数据单元格 `textBaseline` 和 `textAlign` 均无限制，皆可自定义：
 
 <table style="width: 100%; outline: none; border-collapse: collapse;">
   <colgroup>
