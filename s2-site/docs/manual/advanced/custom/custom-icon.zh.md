@@ -1,5 +1,5 @@
 ---
-title: 自定义 icon
+title: 自定义 Icon
 order: 3
 ---
 
