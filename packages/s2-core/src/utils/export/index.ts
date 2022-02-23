@@ -22,6 +22,7 @@ export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
     const textarea = document.createElement('textarea');
     textarea.value = str;
     document.body.appendChild(textarea);
+    textarea.focus();
     textarea.select();
 
     const success = document.execCommand('copy');
@@ -36,11 +37,13 @@ export const copyToClipboardByExecCommand = (str: string): Promise<void> => {
 };
 
 export const copyToClipboardByClipboard = (str: string): Promise<void> => {
-  return navigator.clipboard.writeText(str);
+  return navigator.clipboard.writeText(str).catch(() => {
+    return copyToClipboardByExecCommand(str);
+  });
 };
 
-export const copyToClipboard = (str: string): Promise<void> => {
-  if (!navigator.clipboard) {
+export const copyToClipboard = (str: string, sync = false): Promise<void> => {
+  if (!navigator.clipboard || sync) {
     return copyToClipboardByExecCommand(str);
   }
   return copyToClipboardByClipboard(str);
