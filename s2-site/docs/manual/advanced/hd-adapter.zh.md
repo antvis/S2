@@ -43,7 +43,7 @@ const renderByDevicePixelRatio = (ratio = window.devicePixelRatio) => {
   const newHeight = Math.floor(height * ratio);
 
   // 内部的更新容器大小方法
-  changeSize(newWidth, newHeight);
+  changeSheetSize(newWidth, newHeight);
 };
 ```
 
@@ -83,7 +83,7 @@ const renderByZoomScale = debounce((e) => {
     const newHeight = Math.floor(height * ratio);
 
     // 内部的更新容器大小方法
-    changeSize(newWidth, newHeight);
+    changeSheetSize(newWidth, newHeight);
   }
 }, 350);
 ```

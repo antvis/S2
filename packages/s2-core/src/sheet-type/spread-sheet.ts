@@ -401,7 +401,7 @@ export abstract class SpreadSheet extends EE {
    * @param width
    * @param height
    */
-  public changeSize(
+  public changeSheetSize(
     width: number = this.options.width,
     height: number = this.options.height,
   ) {

@@ -38,7 +38,7 @@ export const useResize = (params: UseResizeEffectParams) => {
 
   const render = useCallback(
     (width: number, height: number) => {
-      s2.changeSize(width, height);
+      s2.changeSheetSize(width, height);
       s2.render(false);
       isFirstRender.current = false;
     },
@@ -50,7 +50,6 @@ export const useResize = (params: UseResizeEffectParams) => {
   // rerender by option
   React.useEffect(() => {
     if (!adaptive && s2) {
-      s2.changeSize(s2?.options.width, s2?.options.height);
       s2.render(false);
     }
   }, [s2?.options.width, s2?.options.height, adaptive, s2]);

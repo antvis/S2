@@ -34,7 +34,7 @@ import { debounce } from 'lodash'
 const s2 = new PivotSheet(...)
 
 const debounceRender = debounce((width, height) => {
-  s2.changeSize(width, height)
+  s2.changeSheetSize(width, height)
   s2.render(false) // 不重新加载数据
 }, 200)
 
@@ -60,7 +60,7 @@ const s2 = new PivotSheet(...)
 const parent = /* 你的容器节点 */
 
 const debounceRender = debounce((width, height) => {
-  s2.changeSize(width, height)
+  s2.changeSheetSize(width, height)
   s2.render(false) // 不重新加载数据
 }, 200)
 

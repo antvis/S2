@@ -13,9 +13,11 @@ const s2Options: S2Options = {
 describe('useResize tests', () => {
   let s2: SpreadSheet;
   let container: HTMLDivElement;
+  let wrapper: HTMLDivElement;
 
   beforeEach(() => {
     container = getContainer();
+    wrapper = getContainer();
     s2 = new PivotSheet(container, mockDataConfig, s2Options);
     s2.render();
     jest.spyOn(s2, 'buildFacet' as any).mockImplementation(() => {});
@@ -24,12 +26,13 @@ describe('useResize tests', () => {
   test('should rerender when option width or height changed and adaptive disable', () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
     const changeSizeSpy = jest
-      .spyOn(s2, 'changeSize')
+      .spyOn(s2, 'changeSheetSize')
       .mockImplementation(() => {});
 
     const { rerender } = renderHook(() =>
       useResize({
         container,
+        wrapper,
         s2,
         adaptive: false,
       }),
@@ -61,12 +64,13 @@ describe('useResize tests', () => {
   test('should cannot change table size when width or height updated and enable adaptive', () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
     const changeSizeSpy = jest
-      .spyOn(s2, 'changeSize')
+      .spyOn(s2, 'changeSheetSize')
       .mockImplementation(() => {});
 
     const { rerender } = renderHook(() =>
       useResize({
         container,
+        wrapper,
         s2,
         adaptive: true,
       }),

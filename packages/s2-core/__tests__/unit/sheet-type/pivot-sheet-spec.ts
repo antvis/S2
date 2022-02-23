@@ -480,7 +480,7 @@ describe('PivotSheet Tests', () => {
   });
 
   test('should change sheet size', () => {
-    s2.changeSize(1000, 500);
+    s2.changeSheetSize(1000, 500);
 
     expect(s2.options.width).toEqual(1000);
     expect(s2.options.height).toEqual(500);
