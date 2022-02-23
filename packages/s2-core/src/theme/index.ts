@@ -30,10 +30,10 @@ export const getTheme = (
       text: {
         fontFamily: FONT_FAMILY,
         fontSize: 12,
-        fontWeight: 'normal',
+        fontWeight: isWindows() ? 'bold' : 500,
         fill: basicColors[0],
         opacity: 1,
-        textAlign: isTable ? 'center' : 'left',
+        textAlign: 'right',
         textBaseline: 'middle',
       },
       cell: {
