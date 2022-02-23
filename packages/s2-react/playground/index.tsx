@@ -13,6 +13,7 @@ import {
   Collapse,
   Tag,
   Tabs,
+  message,
 } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -223,9 +224,10 @@ function MainLayout() {
   };
 
   const logHandler =
-    (name: string) => (cellInfo?: TargetCellInfo | ViewMeta) => {
+    (name: string) =>
+    (...args: unknown[]) => {
       if (options.debug) {
-        console.debug(name, cellInfo);
+        console.debug(name, ...args);
       }
     };
 
@@ -253,14 +255,6 @@ function MainLayout() {
     s2Ref.current?.on(S2Event.DATA_CELL_TREND_ICON_CLICK, (meta) => {
       console.log('趋势图icon点击', meta);
     });
-
-    s2Ref.current?.on(S2Event.LAYOUT_COLS_EXPANDED, (data) => {
-      console.log('列头展开', data);
-    });
-
-    s2Ref.current?.on(S2Event.LAYOUT_COLS_HIDDEN, (data) => {
-      console.log('列头隐藏', data);
-    });
   }, [sheetType]);
 
   React.useEffect(() => {
@@ -283,9 +277,6 @@ function MainLayout() {
   const mergedOptions: Partial<S2Options<React.ReactNode>> = customMerge(
     {},
     {
-      width: 600,
-      height: 400,
-      hierarchyCollapse: false,
       pagination: showPagination && {
         pageSize: 10,
         current: 1,
@@ -370,7 +361,7 @@ function MainLayout() {
   );
 
   const onStrategyDataTypeChange = (e: RadioChangeEvent) => {
-    let newDataCfg;
+    let newDataCfg: S2DataConfig;
     switch (e.target.value) {
       case 'multiMeasure':
         newDataCfg = multiMeasure;
@@ -721,48 +712,58 @@ function MainLayout() {
               <ResizeConfig setOptions={setOptions} setThemeCfg={setThemeCfg} />
             </Collapse.Panel>
           </Collapse>
-          {render && (
-            <SheetComponent
-              key="basic"
-              dataCfg={dataCfg as S2DataConfig}
-              options={mergedOptions as S2Options}
-              sheetType={sheetType}
-              adaptive={adaptive}
-              ref={s2Ref}
-              themeCfg={themeCfg}
-              partDrillDown={partDrillDown}
-              header={{
-                title: (
-                  <a href="https://github.com/antvis/S2">
-                    {reactPkg.name} playground
-                  </a>
-                ),
-                description: (
-                  <Space>
-                    <span>
-                      {reactPkg.name}: <Tag>{reactPkg.version}</Tag>
-                    </span>
-                    <span>
-                      {corePkg.name}: <Tag>{corePkg.version}</Tag>
-                    </span>
-                  </Space>
-                ),
-                switcherCfg: { open: true },
-                exportCfg: { open: true },
-                advancedSortCfg: { open: true },
-              }}
-              onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
-              onAfterRender={logHandler('onLoad')}
-              onDestroy={logHandler('onDestroy')}
-              onColCellClick={onColCellClick}
-              onRowCellClick={logHandler('onRowCellClick')}
-              onCornerCellClick={logHandler('onCornerCellClick')}
-              onDataCellClick={logHandler('onDataCellClick')}
-              onLayoutResizeMouseDown={(data) => {
-                console.log(data);
-              }}
-            />
-          )}
+          <iframe
+            src="https://s2.antv.vision/zh/examples/react-component/export#export"
+            frameBorder="0"
+            width="1000px"
+            height="1000px"
+          >
+            {render && (
+              <SheetComponent
+                key="basic"
+                dataCfg={dataCfg as S2DataConfig}
+                options={mergedOptions as S2Options}
+                sheetType={sheetType}
+                adaptive={adaptive}
+                ref={s2Ref}
+                themeCfg={themeCfg}
+                partDrillDown={partDrillDown}
+                header={{
+                  title: (
+                    <a href="https://github.com/antvis/S2">
+                      {reactPkg.name} playground
+                    </a>
+                  ),
+                  description: (
+                    <Space>
+                      <span>
+                        {reactPkg.name}: <Tag>{reactPkg.version}</Tag>
+                      </span>
+                      <span>
+                        {corePkg.name}: <Tag>{corePkg.version}</Tag>
+                      </span>
+                    </Space>
+                  ),
+                  switcherCfg: { open: true },
+                  exportCfg: { open: true },
+                  advancedSortCfg: { open: true },
+                }}
+                onDataCellTrendIconClick={logHandler(
+                  'onDataCellTrendIconClick',
+                )}
+                onAfterRender={logHandler('onLoad')}
+                onDestroy={logHandler('onDestroy')}
+                onColCellClick={onColCellClick}
+                onRowCellClick={logHandler('onRowCellClick')}
+                onCornerCellClick={logHandler('onCornerCellClick')}
+                onDataCellClick={logHandler('onDataCellClick')}
+                onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
+                onCopied={logHandler('onCopied')}
+                onLayoutColsHidden={logHandler('onLayoutColsHidden')}
+                onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
+              />
+            )}
+          </iframe>
         </TabPane>
         <TabPane tab="自定义目录树" key="customTree">
           <SheetComponent
