@@ -13,7 +13,6 @@ import {
   Collapse,
   Tag,
   Tabs,
-  message,
 } from 'antd';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -28,7 +27,6 @@ import {
   TooltipAutoAdjustBoundary,
   customMerge,
   ThemeCfg,
-  ViewMeta,
   S2Theme,
   DataType,
 } from '@antv/s2';
@@ -712,58 +710,49 @@ function MainLayout() {
               <ResizeConfig setOptions={setOptions} setThemeCfg={setThemeCfg} />
             </Collapse.Panel>
           </Collapse>
-          <iframe
-            src="https://s2.antv.vision/zh/examples/react-component/export#export"
-            frameBorder="0"
-            width="1000px"
-            height="1000px"
-          >
-            {render && (
-              <SheetComponent
-                key="basic"
-                dataCfg={dataCfg as S2DataConfig}
-                options={mergedOptions as S2Options}
-                sheetType={sheetType}
-                adaptive={adaptive}
-                ref={s2Ref}
-                themeCfg={themeCfg}
-                partDrillDown={partDrillDown}
-                header={{
-                  title: (
-                    <a href="https://github.com/antvis/S2">
-                      {reactPkg.name} playground
-                    </a>
-                  ),
-                  description: (
-                    <Space>
-                      <span>
-                        {reactPkg.name}: <Tag>{reactPkg.version}</Tag>
-                      </span>
-                      <span>
-                        {corePkg.name}: <Tag>{corePkg.version}</Tag>
-                      </span>
-                    </Space>
-                  ),
-                  switcherCfg: { open: true },
-                  exportCfg: { open: true },
-                  advancedSortCfg: { open: true },
-                }}
-                onDataCellTrendIconClick={logHandler(
-                  'onDataCellTrendIconClick',
-                )}
-                onAfterRender={logHandler('onLoad')}
-                onDestroy={logHandler('onDestroy')}
-                onColCellClick={onColCellClick}
-                onRowCellClick={logHandler('onRowCellClick')}
-                onCornerCellClick={logHandler('onCornerCellClick')}
-                onDataCellClick={logHandler('onDataCellClick')}
-                onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
-                onCopied={logHandler('onCopied')}
-                onLayoutColsHidden={logHandler('onLayoutColsHidden')}
-                onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
-              />
-            )}
-          </iframe>
+          {render && (
+            <SheetComponent
+              key="basic"
+              dataCfg={dataCfg as S2DataConfig}
+              options={mergedOptions as S2Options}
+              sheetType={sheetType}
+              adaptive={adaptive}
+              ref={s2Ref}
+              themeCfg={themeCfg}
+              partDrillDown={partDrillDown}
+              header={{
+                title: (
+                  <a href="https://github.com/antvis/S2">
+                    {reactPkg.name} playground
+                  </a>
+                ),
+                description: (
+                  <Space>
+                    <span>
+                      {reactPkg.name}: <Tag>{reactPkg.version}</Tag>
+                    </span>
+                    <span>
+                      {corePkg.name}: <Tag>{corePkg.version}</Tag>
+                    </span>
+                  </Space>
+                ),
+                switcherCfg: { open: true },
+                exportCfg: { open: true },
+                advancedSortCfg: { open: true },
+              }}
+              onDataCellTrendIconClick={logHandler('onDataCellTrendIconClick')}
+              onAfterRender={logHandler('onLoad')}
+              onDestroy={logHandler('onDestroy')}
+              onColCellClick={onColCellClick}
+              onRowCellClick={logHandler('onRowCellClick')}
+              onCornerCellClick={logHandler('onCornerCellClick')}
+              onDataCellClick={logHandler('onDataCellClick')}
+              onLayoutResizeMouseDown={logHandler('onLayoutResizeMouseDown')}
+              onCopied={logHandler('onCopied')}
+              onLayoutColsHidden={logHandler('onLayoutColsHidden')}
+              onLayoutColsExpanded={logHandler('onLayoutColsExpanded')}
+            />
+          )}
         </TabPane>
         <TabPane tab="自定义目录树" key="customTree">
           <SheetComponent
