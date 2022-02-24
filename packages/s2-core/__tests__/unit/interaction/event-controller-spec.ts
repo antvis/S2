@@ -356,7 +356,7 @@ describe('Interaction Event Controller Tests', () => {
     expect(copied).toHaveBeenCalledWith(MOCK_COPY_DATA);
   });
 
-  test("should dont't trigger sheet copy event", () => {
+  test('should not trigger sheet copy event if outside the canvas container', () => {
     window.dispatchEvent(new Event('click', {}));
 
     const copied = jest.fn();
@@ -375,7 +375,7 @@ describe('Interaction Event Controller Tests', () => {
     { type: OriginEventType.KEY_DOWN, event: S2Event.GLOBAL_KEYBOARD_DOWN },
     { type: OriginEventType.KEY_UP, event: S2Event.GLOBAL_KEYBOARD_DOWN },
   ])(
-    "should dont't trigger sheet %o if not click the canvas container",
+    'should not trigger sheet %o if outside the canvas container',
     ({ type, event }) => {
       // 模拟点击的不是表格区域
       window.dispatchEvent(new Event('click', {}));
@@ -388,7 +388,7 @@ describe('Interaction Event Controller Tests', () => {
     },
   );
 
-  test("should dont't reset if current interaction has brush selection", () => {
+  test('should not reset if current interaction has brush selection', () => {
     spreadsheet.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
@@ -399,7 +399,7 @@ describe('Interaction Event Controller Tests', () => {
     expect(reset).not.toHaveBeenCalled();
   });
 
-  test("should dont't reset if current mouse on the canvas container", () => {
+  test('should not reset if current mouse on the canvas container', () => {
     const containsMock = jest
       .spyOn(HTMLElement.prototype, 'contains')
       .mockImplementation(() => true);
@@ -473,7 +473,7 @@ describe('Interaction Event Controller Tests', () => {
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
   });
 
-  test("should dont't reset if current mouse on the tooltip and outside the canvas container", () => {
+  test('should not reset if current mouse on the tooltip and outside the canvas container', () => {
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
     spreadsheet.tooltip.container.getBoundingClientRect = () =>
