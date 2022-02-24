@@ -67,7 +67,7 @@ export const useResize = (params: UseResizeEffectParams) => {
           ? round(size?.inlineSize)
           : s2?.options.width;
         const height = adaptiveHeight
-          ? container.getBoundingClientRect().height // 去除 header 和 page 后才是 sheet 真正的高度
+          ? round(container?.getBoundingClientRect().height) // 去除 header 和 page 后才是 sheet 真正的高度
           : s2?.options.height;
         if (!adaptiveWidth && !adaptiveHeight) {
           return;

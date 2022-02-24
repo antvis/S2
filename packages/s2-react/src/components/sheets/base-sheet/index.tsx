@@ -39,10 +39,7 @@ export const BaseSheet = React.forwardRef(
     return (
       <React.StrictMode>
         <Spin spinning={loading}>
-          <div
-            ref={wrapRef}
-            className={`${S2_PREFIX_CLS}-div ${S2_PREFIX_CLS}-wrapper`}
-          >
+          <div ref={wrapRef} className={`${S2_PREFIX_CLS}-wrapper`}>
             {header && (
               <Header
                 {...header}
