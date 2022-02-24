@@ -48,6 +48,8 @@ export class EventController {
 
   public domEventListeners: EventListener[] = [];
 
+  private isCanvasEffect = false;
+
   constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
     this.bindEvents();
@@ -80,16 +82,20 @@ export class EventController {
 
     // dom events
     this.addDomEventListener(
-      document,
+      window,
       OriginEventType.CLICK,
       (event: MouseEvent) => {
         this.resetSheetStyle(event);
+        this.isCanvasEffect = this.isMouseOnTheCanvasContainer(event);
       },
     );
     this.addDomEventListener(
       window,
       OriginEventType.KEY_DOWN,
       (event: KeyboardEvent) => {
+        if (!this.isCanvasEffect) {
+          return;
+        }
         this.onKeyboardCopy(event);
         this.onKeyboardEsc(event);
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_DOWN, event);
@@ -99,6 +105,9 @@ export class EventController {
       window,
       OriginEventType.KEY_UP,
       (event: KeyboardEvent) => {
+        if (!this.isCanvasEffect) {
+          return;
+        }
         this.spreadsheet.emit(S2Event.GLOBAL_KEYBOARD_UP, event);
       },
     );

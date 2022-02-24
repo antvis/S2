@@ -4,6 +4,7 @@ import { createFakeSpreadSheet } from 'tests/util/helpers';
 import { EmitterType } from '@/common/interface/emitter';
 import {
   CellTypes,
+  InteractionKeyboardKey,
   InteractionStateName,
   InterceptType,
   OriginEventType,
@@ -15,10 +16,20 @@ import { RootInteraction } from '@/interaction/root';
 import { CellMeta, S2Options } from '@/common/interface';
 import { BaseFacet } from '@/facet';
 
+const MOCK_COPY_DATA = 'data';
+
 jest.mock('@/interaction/brush-selection');
 jest.mock('@/interaction/base-interaction/click/row-column-click');
 jest.mock('@/interaction/base-interaction/click/data-cell-click');
 jest.mock('@/interaction/base-interaction/hover');
+jest.mock('@/utils/export/copy', () => {
+  const originalModule = jest.requireActual('@/utils/export/copy');
+  return {
+    __esModule: true,
+    ...originalModule,
+    getSelectedData: jest.fn(() => MOCK_COPY_DATA),
+  };
+});
 
 const s2Options: S2Options = {
   width: 200,
@@ -94,6 +105,9 @@ describe('Interaction Event Controller Tests', () => {
     eventController = new EventController(
       spreadsheet as unknown as SpreadSheet,
     );
+    Object.defineProperty(eventController, 'isCanvasEffect', {
+      value: true,
+    });
   });
 
   afterEach(() => {
@@ -321,12 +335,65 @@ describe('Interaction Event Controller Tests', () => {
     expect(keyboardDown).toHaveBeenCalled();
   });
 
+  test('should copy data', () => {
+    const copied = jest.fn();
+    spreadsheet.on(S2Event.GLOBAL_COPIED, copied);
+
+    window.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: InteractionKeyboardKey.ARROW_UP,
+        metaKey: true,
+      }),
+    );
+    expect(copied).not.toHaveBeenCalled();
+
+    window.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: InteractionKeyboardKey.COPY,
+        metaKey: true,
+      }),
+    );
+    expect(copied).toHaveBeenCalledWith(MOCK_COPY_DATA);
+  });
+
+  test("should dont't trigger sheet copy event", () => {
+    window.dispatchEvent(new Event('click', {}));
+
+    const copied = jest.fn();
+    spreadsheet.on(S2Event.GLOBAL_COPIED, copied);
+
+    window.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: InteractionKeyboardKey.COPY,
+        metaKey: true,
+      }),
+    );
+    expect(copied).not.toHaveBeenCalled();
+  });
+
+  test.each([
+    { type: OriginEventType.KEY_DOWN, event: S2Event.GLOBAL_KEYBOARD_DOWN },
+    { type: OriginEventType.KEY_UP, event: S2Event.GLOBAL_KEYBOARD_DOWN },
+  ])(
+    "should dont't trigger sheet %o if not click the canvas container",
+    ({ type, event }) => {
+      // 模拟点击的不是表格区域
+      window.dispatchEvent(new Event('click', {}));
+
+      const handler = jest.fn();
+      spreadsheet.on(event, handler);
+
+      window.dispatchEvent(new KeyboardEvent(type, {}));
+      expect(handler).not.toHaveBeenCalled();
+    },
+  );
+
   test("should dont't reset if current interaction has brush selection", () => {
     spreadsheet.interaction.addIntercepts([InterceptType.BRUSH_SELECTION]);
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
-    document.dispatchEvent(new Event('click', {}));
+    window.dispatchEvent(new Event('click', {}));
 
     expect(spreadsheet.interaction.removeIntercepts).toHaveBeenCalled();
     expect(reset).not.toHaveBeenCalled();
@@ -340,7 +407,7 @@ describe('Interaction Event Controller Tests', () => {
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
-    document.dispatchEvent(
+    window.dispatchEvent(
       new MouseEvent('click', {
         clientX: 100,
         clientY: 100,
@@ -356,7 +423,7 @@ describe('Interaction Event Controller Tests', () => {
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
-    document.dispatchEvent(
+    window.dispatchEvent(
       new MouseEvent('click', {
         clientX: 300,
         clientY: 300,
@@ -377,7 +444,7 @@ describe('Interaction Event Controller Tests', () => {
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
-    document.dispatchEvent(
+    window.dispatchEvent(
       new MouseEvent('click', {
         clientX: 120,
         clientY: 120,
@@ -398,7 +465,9 @@ describe('Interaction Event Controller Tests', () => {
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
-    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    window.dispatchEvent(
+      new KeyboardEvent('keydown', { key: InteractionKeyboardKey.ESC }),
+    );
 
     expect(reset).toHaveBeenCalled();
     expect(spreadsheet.interaction.reset).toHaveBeenCalled();
@@ -415,7 +484,7 @@ describe('Interaction Event Controller Tests', () => {
         height: 200,
       } as DOMRect);
 
-    document.dispatchEvent(
+    window.dispatchEvent(
       new MouseEvent('click', {
         clientX: 300,
         clientY: 300,
@@ -436,7 +505,7 @@ describe('Interaction Event Controller Tests', () => {
       },
     });
 
-    document.dispatchEvent(
+    window.dispatchEvent(
       new MouseEvent('click', {
         clientX: 100,
         clientY: 100,
@@ -462,7 +531,7 @@ describe('Interaction Event Controller Tests', () => {
     const reset = jest.fn();
     spreadsheet.on(S2Event.GLOBAL_RESET, reset);
 
-    document.dispatchEvent(
+    window.dispatchEvent(
       new MouseEvent('click', {
         clientX: 120,
         clientY: 120,
