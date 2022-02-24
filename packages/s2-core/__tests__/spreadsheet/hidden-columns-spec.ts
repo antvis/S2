@@ -5,7 +5,7 @@ import { difference } from 'lodash';
 import { PivotSheet, TableSheet } from '@/sheet-type';
 import { S2Options } from '@/common';
 
-const s2options: S2Options = {
+const s2Options: S2Options = {
   width: 400,
   height: 120,
   tooltip: {
@@ -21,7 +21,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
       tableSheet = new TableSheet(
         getContainer(),
         mockTableDataConfig,
-        s2options,
+        s2Options,
       );
       tableSheet.render();
     });
@@ -128,7 +128,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     test('should default hidden columns by interaction hiddenColumnFields config', () => {
       const hiddenColumns = ['cost'];
       const sheet = new TableSheet(getContainer(), mockTableDataConfig, {
-        ...s2options,
+        ...s2Options,
         interaction: {
           hiddenColumnFields: hiddenColumns,
         },
@@ -169,7 +169,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     };
 
     beforeEach(() => {
-      pivotSheet = new PivotSheet(getContainer(), pivotDataCfg, s2options);
+      pivotSheet = new PivotSheet(getContainer(), pivotDataCfg, s2Options);
       pivotSheet.render();
     });
 
@@ -239,7 +239,7 @@ describe('SpreadSheet Hidden Columns Tests', () => {
     test('should default hidden columns by interaction hiddenColumnFields config', () => {
       const hiddenColumns = [typePriceColumnId];
       const sheet = new PivotSheet(getContainer(), pivotDataCfg, {
-        ...s2options,
+        ...s2Options,
         interaction: {
           hiddenColumnFields: hiddenColumns,
         },

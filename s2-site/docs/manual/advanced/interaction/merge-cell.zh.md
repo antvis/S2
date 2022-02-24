@@ -278,7 +278,7 @@ const s2DataConfig = {
   meta: res.meta
 };
 
-const s2options = {
+const s2Options = {
     width: 600,
     height: 400,
     showSeriesNumber: true,
@@ -296,7 +296,7 @@ const s2options = {
     ]
   }
 ;
-const s2 = new PivotSheet(container, s2DataConfig, s2options);
+const s2 = new PivotSheet(container, s2DataConfig, s2Options);
 
 // 将单元格合并操作集成到未合并单元格的 tooltip 操作中
 const dataCellTooltip = () => {

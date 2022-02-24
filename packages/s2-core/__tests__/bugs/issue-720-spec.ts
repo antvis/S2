@@ -10,7 +10,7 @@ import { S2Event } from '../../src/common/constant';
 import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { S2Options } from '@/common/interface';
 
-const s2options: S2Options = {
+const s2Options: S2Options = {
   width: 200,
   height: 200,
   style: {
@@ -28,7 +28,7 @@ describe('Sync Row Scroll Offset Tests', () => {
   let s2: SpreadSheet;
 
   beforeEach(() => {
-    s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
   });
 
