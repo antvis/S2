@@ -14,12 +14,7 @@ import { getIndexRangeWithOffsets } from 'src/utils/facet';
 import { CellTypes } from 'src/common/constant/interaction';
 import { HeaderActionIcon } from 'src/common/interface/basic';
 import { shouldShowActionIcons } from 'src/utils/cell/header-cell';
-import {
-  EXTRA_FIELD,
-  LayoutWidthTypes,
-  S2Event,
-  VALUE_FIELD,
-} from '@/common/constant';
+import { EXTRA_FIELD, LayoutWidthTypes, VALUE_FIELD } from '@/common/constant';
 import { DebuggerUtil } from '@/common/debug';
 import { LayoutResult, ViewMeta } from '@/common/interface';
 import { buildHeaderHierarchy } from '@/facet/layout/build-header-hierarchy';
@@ -572,9 +567,15 @@ export class PivotFacet extends BaseFacet {
     const { rowCfg, spreadsheet } = this.cfg;
 
     const userDragWidth = get(rowCfg, `widthByField.${node.key}`);
+    const userCustomWidth = get(rowCfg, 'width');
     if (userDragWidth) {
       return userDragWidth;
     }
+
+    if (userCustomWidth) {
+      return userCustomWidth;
+    }
+
     if (spreadsheet.getLayoutWidthType() !== LayoutWidthTypes.Adaptive) {
       // compact or colAdaptive
       return this.getCompactGridRowWidth(node);

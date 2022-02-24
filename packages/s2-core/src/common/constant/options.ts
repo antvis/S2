@@ -22,7 +22,7 @@ export const DEFAULT_STYLE: Readonly<Style> = {
     height: 30,
   },
   rowCfg: {
-    width: 96,
+    width: null,
     widthByField: {},
     heightByField: {},
   },
