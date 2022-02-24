@@ -25,9 +25,6 @@ describe('useResize tests', () => {
 
   test('should rerender when option width or height changed and adaptive disable', () => {
     const renderSpy = jest.spyOn(s2, 'render').mockImplementation(() => {});
-    const changeSizeSpy = jest
-      .spyOn(s2, 'changeSheetSize')
-      .mockImplementation(() => {});
 
     const { rerender } = renderHook(() =>
       useResize({
@@ -55,10 +52,8 @@ describe('useResize tests', () => {
     expect(canvas.style.height).toEqual(`200px`);
 
     expect(renderSpy).toHaveBeenCalled();
-    expect(changeSizeSpy).toHaveBeenCalled();
 
     renderSpy.mockRestore();
-    changeSizeSpy.mockRestore();
   });
 
   test('should cannot change table size when width or height updated and enable adaptive', () => {
