@@ -5,7 +5,7 @@ import { PivotSheet, SpreadSheet } from '@/sheet-type';
 import { S2Options } from '@/common/interface';
 import { S2Event } from '@/common/constant';
 
-const s2options: S2Options = {
+const s2Options: S2Options = {
   width: 600,
   height: 400,
   tooltip: {
@@ -21,7 +21,7 @@ describe('Interaction Tooltip Tests', () => {
       .spyOn(SpreadSheet.prototype, 'getCell')
       .mockImplementation(() => createMockCellInfo('testId').mockCell as any);
 
-    s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
   });
 

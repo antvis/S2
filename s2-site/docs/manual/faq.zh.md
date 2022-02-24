@@ -43,7 +43,7 @@ order: 8
 ```ts
 <script src="./dist/index.min.js"></script>
 <script>
-   const s2 = new window.S2.PivotSheet(container, s2DataConfig, s2options);
+   const s2 = new window.S2.PivotSheet(container, s2DataConfig, s2Options);
    s2.render();
 </script>
 ```
@@ -181,35 +181,38 @@ s2.render(false)
 
 ### 为什么我的 Issue 被关闭了？
 
-提交 Issue, 请严格按照 `Issue 模板` 填写，提供一些**有意义**的信息，包括但不限于：
+请严格按照 `Issue 模板` 填写，提供一些**有意义**的信息，包括但不限于：
 
-- 你**实际**安装的版本号
+- 你**实际**安装的版本号：
 
-> 推荐不写 或者写 `latest`, 让开发者来猜测
+> 避免 `latest` 或者 `*` 这种没有实际意义的版本号，提供你实际使用的版本可以帮助我们更快的定位问题，有可能你使用的功能在新版本中才支持，或者 bug 在新版本中已经被修复了
 
 - **详细的** bug 描述
 
-> 推荐直接写 `有 bug, 点不了，报错了` 或者直接贴一张控制台报错 （没 sourcemap 的那种）
+> 并不是每个人都了解你这段文字对应的上下文，提供完整的复现步骤，贴上报错截图，gif, 请不要惜字如金
 
-- 你的**复现步骤**, 可复现链接
+- 你的**复现步骤**, 和可复现链接
 
-> 推荐不写，让开发者根据你的描述自行搭建可复现的 demo
+> 推荐使用 官方 [codesandbox 模板](https://codesandbox.io/s/29zle) 大家一些最小的可复现 demo
 
 - 你的**配置信息**, 并且使用 markdown 的 `code` 标签
 
-> 推荐不写，或者贴一份 1000 行并且没压缩过的业务代码片段，代码都给你了，你找不出问题？
+> 不要贴一大段没格式化过的业务代码，请提供 s2Options s2DataConfig 之类的配置文件，合理的使用 `markdown` 语法，节约大家的时间
 
 - 你的预期是什么？目前的行为是什么？
 
-> 推荐不写，预期肯定是"没问题", 目前的行为肯定是 "有问题"啊，这有啥写的必要
+> 预期是 "没问题", 目前是 "有问题", 这种描述和没说没什么区别，请尽量的描述的具体一点
 
 - 尽量抹去一些带有你自己业务语义的一些名词和描述
 
-在提出问题前，请确保你已经阅读过 [官方文档](https://s2.antv.vision/zh/docs/manual/introduction) 和 [常见问题](https://s2.antv.vision/zh/docs/manual/faq)
+在提出问题前，请确保你已经阅读过 [官方文档](https://s2.antv.vision/zh/docs/manual/introduction) 和 [常见问题](https://s2.antv.vision/zh/docs/manual/faq), 并且已经搜索查阅过相关 [Issues 列表](https://github.com/antvis/S2/issues?q=is%3Aissue+is%3Aclosed)
 
-请不要提交一些模棱两可，带有 `解谜` 性质一堆干巴巴的文字，或者是开局一张图，内容全靠猜，节约大家的时间。
+强烈建议阅读：
 
-强烈建议阅读：[如何向开源项目提交无法解答的问题](https://zhuanlan.zhihu.com/p/25795393) 和 [如何有效地报告 Bug](https://www.chiark.greenend.org.uk/~sgtatham/bugs-cn.html).
+- [《如何向开源项目提交无法解答的问题》](https://zhuanlan.zhihu.com/p/25795393)
+- [《如何有效地报告 Bug》](https://www.chiark.greenend.org.uk/~sgtatham/bugs-cn.html)
+- [《提问的智慧》](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way)
+- [《如何向开源社区提问题》](https://github.com/seajs/seajs/issues/545)
 
 一个很好的例子：[#852](https://github.com/antvis/S2/issues/852)
 一个不好的例子：[#1057](https://github.com/antvis/S2/issues/1057)

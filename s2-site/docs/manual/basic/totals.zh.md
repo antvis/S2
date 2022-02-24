@@ -79,7 +79,7 @@ object **必选**,_default：null_ 功能描述： 小计总计算配置
 | calcSubTotals       | 计算小计                 | `CalcTotals` |        |      |
 
 ```typescript
-const s2options = {
+const s2Options = {
   totals: {
     row: {
       showGrandTotals: true,
@@ -188,10 +188,10 @@ const s2DataConfig = {
 
 ##### 1. 配置聚合方式
 
-通过配置 `aggregation` 来实现, 聚合方式目前只支持 `SUM` (求和)
+通过配置 `aggregation` 来实现，聚合方式目前只支持 `SUM` （求和）
 
 ```typescript
-const s2options = {
+const s2Options = {
   totals: {
     row: {
       showGrandTotals: true,
@@ -223,7 +223,7 @@ const s2options = {
 通过配置 `calcFunc: (query: Record<string, any>, arr: Record<string, any>[]) => number` 来实现
 
 ```typescript
-const s2options = {
+const s2Options = {
   totals: {
     row: {
       showGrandTotals: true,
@@ -258,6 +258,6 @@ const s2options = {
 
 1. 数据传入优先级高于计算数据
 
-2. 配置自定义方法优先级大于配置聚合方式, 即配置 `calcFunc > aggregation`
+2. 配置自定义方法优先级大于配置聚合方式，即配置 `calcFunc > aggregation`
 
-3. 当同一个单元格为 `行+列` 汇总值时, **优先级**为: `列总计/列小计 > 行总计/行小计`
+3. 当同一个单元格为 `行+列` 汇总值时，**优先级**为：`列总计/列小计 > 行总计/行小计`

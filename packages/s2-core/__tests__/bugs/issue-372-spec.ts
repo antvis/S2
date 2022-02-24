@@ -11,7 +11,7 @@ import { PivotSheet } from '@/sheet-type';
 import { Node } from '@/facet/layout/node';
 import { S2Options } from '@/common';
 
-const s2options: S2Options = {
+const s2Options: S2Options = {
   width: 800,
   height: 600,
   totals: {
@@ -28,7 +28,7 @@ const s2options: S2Options = {
 describe('GrandTotal Cells Rendering Test', () => {
   let s2: PivotSheet;
   beforeEach(() => {
-    s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
   });
   test('should get right height of GrandTotal node', () => {
