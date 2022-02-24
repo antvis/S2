@@ -312,9 +312,7 @@ export abstract class SpreadSheet extends EE {
     }
 
     forEach(customSVGIcons, (customSVGIcon: CustomSVGIcon) => {
-      if (isEmpty(getIcon(customSVGIcon.name))) {
-        registerIcon(customSVGIcon.name, customSVGIcon.svg);
-      }
+      registerIcon(customSVGIcon.name, customSVGIcon.svg);
     });
   }
 
