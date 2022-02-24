@@ -16,6 +16,7 @@ S2 提供开箱即用的维度切换组件 `Switcher` 。借助它，你可以�
 const switcherFields = {
   rows: {
     items: [{ id: "province" }, { id: "city" }],
+    allowEmpty: false,
   },
   columns: {
     items: [{ id: "type" }],
@@ -112,6 +113,19 @@ const field = {
   ],
 };
 ```
+
+* 如果当前维度在移动交互中需要至少保留一个子项不能被拖拽出去，可以设置 `allowEmpty:false`, 该属性用于控制维度是否可以将全部子项拖出到其他维度：
+
+```js
+const field = {
+  allowEmpty: false, // 默认：true
+  items: [
+    /*...*/
+  ],
+};
+```
+
+![allowEmpty](https://gw.alipayobjects.com/zos/antfincdn/rUmA%26o3J%26/2022-02-24%25252017.31.46.gif)
 
 ### 提交修改
 
