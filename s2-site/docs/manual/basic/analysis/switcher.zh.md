@@ -125,6 +125,8 @@ const field = {
 };
 ```
 
+![allowEmpty](https://gw.alipayobjects.com/zos/antfincdn/rUmA%26o3J%26/2022-02-24%25252017.31.46.gif)
+
 ### 提交修改
 
  `Switcher` 组件在弹窗关闭后会触发 `onSubmit` 回调，且此回调会接收一个 [SwitcherResult](/zh/docs/api/components/switcher#switcherresult) 类型的参数，你可以通过该回调拿到修改后的结果。
