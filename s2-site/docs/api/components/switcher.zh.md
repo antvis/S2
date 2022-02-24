@@ -27,6 +27,7 @@ order: 3
 | expandable | 是否打开展开子项的 checkbox 用于控制展开和隐藏子项 | `boolean`                         | `false`    |      |
 | expandText | 展开子项的 checkbox 对应的文字                     | `string`                          | `展开子项` |      |
 | selectable | 是否打开字段的 checkbox 用于控制显隐               | `boolean`                         | `false`    |      |
+| allowEmpty | 当前维度是否可以将全部子项拖出               | `boolean`                         | `true`    |      |
 
 ## SwitcherItem
 
