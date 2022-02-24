@@ -100,7 +100,7 @@ const s2DataConfig = {
 ### 2. 配置项准备
 
 ```ts
-const s2options = {
+const s2Options = {
   width: 600,
   height: 600,
 }

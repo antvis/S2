@@ -11,7 +11,7 @@ import {
   ScrollbarPositionType,
 } from '@/common/constant';
 
-const s2options: S2Options = {
+const s2Options: S2Options = {
   width: 200,
   height: 200,
   hierarchyType: 'grid',
@@ -36,7 +36,7 @@ describe('Scroll By Group Tests', () => {
       .spyOn(SpreadSheet.prototype, 'getCell')
       .mockImplementation(() => createMockCellInfo('testId').mockCell as any);
 
-    s2 = new PivotSheet(getContainer(), mockDataConfig, s2options);
+    s2 = new PivotSheet(getContainer(), mockDataConfig, s2Options);
     s2.render();
     canvas = s2.container.get('el') as HTMLCanvasElement;
   });

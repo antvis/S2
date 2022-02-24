@@ -12,7 +12,7 @@ order: 11
 `@antv/s2` 核心层提供了基础的复制功能，可配置 `enableCopy` 开启
 
 ```ts
-const s2options = {
+const s2Options = {
   interaction: {
     enableCopy: true
   }

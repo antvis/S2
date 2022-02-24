@@ -105,7 +105,7 @@ fetch('../data/single-population-proportion.json')
       ],
       data,
     };
-    const s2options = {
+    const s2Options = {
       width: 800,
       height: 600,
       tooltip: {
@@ -156,7 +156,7 @@ fetch('../data/single-population-proportion.json')
       <div className="root">
         <SheetComponent
           dataCfg={s2DataConfig}
-          options={s2options as S2Options}
+          options={s2Options as S2Options}
           sheetType="pivot"
           adaptive={false}
           header={{
