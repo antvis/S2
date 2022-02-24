@@ -24,6 +24,7 @@ export type DimensionItemProps = DimensionCommonProps & {
   index: number;
   item: SwitcherItem;
   expandChildren: boolean;
+  isDragDisabled: boolean;
 };
 
 export const DimensionItem: FC<DimensionItemProps> = ({
@@ -31,13 +32,14 @@ export const DimensionItem: FC<DimensionItemProps> = ({
   item: { id, displayName, checked = true, children = [] },
   expandable,
   expandChildren,
+  isDragDisabled,
   selectable,
   index,
   draggingItemId,
   onVisibleItemChange,
 }) => {
   return (
-    <Draggable draggableId={id} index={index}>
+    <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
       {(provided, snapshot) => (
         <div
           {...provided.draggableProps}
@@ -45,7 +47,8 @@ export const DimensionItem: FC<DimensionItemProps> = ({
           className={cx(
             getSwitcherClassName(selectable ? 'checkable-list' : 'normal-list'),
             {
-              'list-dragging': snapshot.isDragging,
+              dragging: snapshot.isDragging,
+              'disable-dragging': isDragDisabled,
             },
           )}
         >
