@@ -75,11 +75,11 @@ const s2Options = {
 }
 ```
 
-也可以手动调用 `s2.changeSize` 根据缩放比改变图表大小，使图表和父元素缩放比保持一致
+也可以手动调用 `s2.changeSheetSize` 根据缩放比改变图表大小，使图表和父元素缩放比保持一致
 
 ```ts
 const scale = 0.8
-s2.changeSize(width * scale, height * scale)
+s2.changeSheetSize(width * scale, height * scale)
 s2.render(false)
 ```
 
@@ -138,7 +138,7 @@ const pivotSheet = new PivotSheet('#container > div[title="xx"]', dataCfg, optio
 表格不感知变化，需要更新完配置后调用一次 `render` 方法触发更新
 
 ```ts
-s2.changeSize(200, 200)
+s2.changeSheetSize(200, 200)
 s2.render(false)
 ```
 
