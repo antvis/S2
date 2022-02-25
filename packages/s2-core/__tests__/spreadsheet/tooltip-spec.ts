@@ -31,6 +31,8 @@ describe('Tooltip Tests', () => {
     expect(
       document.querySelector(`body > .${CONTAINER_CLASS_NAME}`),
     ).toBeFalsy();
+
+    s2.destroy();
   });
 
   test('should render default tooltip container', async () => {
@@ -47,6 +49,8 @@ describe('Tooltip Tests', () => {
     expect(
       document.querySelector(`body > div[class^="${CONTAINER_CLASS_NAME}"]`),
     ).toBeTruthy();
+
+    s2.destroy();
   });
 
   test('should render custom tooltip mount container', async () => {
@@ -74,5 +78,7 @@ describe('Tooltip Tests', () => {
         `#custom-container > div[class^="${CONTAINER_CLASS_NAME}"]`,
       ),
     ).toBeTruthy();
+
+    s2.destroy();
   });
 });
