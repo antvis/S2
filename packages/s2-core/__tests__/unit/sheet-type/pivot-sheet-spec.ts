@@ -251,6 +251,8 @@ describe('PivotSheet Tests', () => {
         });
 
         expect(sheet.tooltip.container.innerHTML).toEqual(methodTooltipContent);
+
+        sheet.destroy();
       },
     );
 
@@ -369,6 +371,8 @@ describe('PivotSheet Tests', () => {
       expect(customShow).toHaveBeenCalled();
       expect(customHide).toHaveBeenCalled();
       expect(customDestroy).toHaveBeenCalled();
+
+      sheet.destroy();
     });
 
     test('should show invalid custom tooltip warning', () => {
@@ -396,6 +400,8 @@ describe('PivotSheet Tests', () => {
           sheet.tooltip as unknown
         )?.constructor?.toString()} should be extends from BaseTooltip`,
       );
+
+      sheet.destroy();
     });
   });
 
